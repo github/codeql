@@ -1,0 +1,8 @@
+| ReDoS.swift:64:22:64:22 | a* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| ReDoS.swift:65:22:65:22 | a* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| ReDoS.swift:66:22:66:22 | a* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| ReDoS.swift:69:18:69:18 | a* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| ReDoS.swift:73:26:73:33 | (?:.\|\\n)* | This part of the regular expression may cause exponential backtracking on strings starting with 'x' and containing many repetitions of '\\n'. |
+| ReDoS.swift:77:46:77:46 | a* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| ReDoS.swift:79:57:79:57 | a* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| ReDoS.swift:82:57:82:57 | a* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |

@@ -6,9 +6,9 @@ import semmle.go.dataflow.internal.DataFlowDispatch
  * that contains the substring `key: val`.
  */
 string metadata(Locatable l, string key) {
-  exists(string f, int line, Comment c, string kv |
-    l.hasLocationInfo(f, line, _, _, _) and
-    c.hasLocationInfo(f, line, _, _, _) and
+  exists(Comment c, string kv |
+    l.getFile() = c.getFile() and
+    l.getLocation().getStartLine() = c.getLocation().getStartLine() and
     kv = c.getText().regexpFind("\\b(\\w+: \\S+)", _, _) and
     key = kv.regexpCapture("(\\w+): (\\S+)", 1) and
     result = kv.regexpCapture("(\\w+): (\\S+)", 2)
@@ -17,10 +17,10 @@ string metadata(Locatable l, string key) {
 
 query predicate missingCallee(DataFlow::CallNode call, FuncDef callee) {
   metadata(call.asExpr(), "callee") = metadata(callee, "name") and
-  not viableCallable(call.asExpr()).getFuncDef() = callee
+  not viableCallable(call.asExpr()).asCallable().getFuncDef() = callee
 }
 
 query predicate spuriousCallee(DataFlow::CallNode call, FuncDef callee) {
-  viableCallable(call.asExpr()).getFuncDef() = callee and
+  viableCallable(call.asExpr()).asCallable().getFuncDef() = callee and
   not metadata(call.asExpr(), "callee") = metadata(callee, "name")
 }

@@ -211,7 +211,7 @@ int ModeledCallTarget(int x) {
 }
 
 void InitArray() {
-    char a_pad[32] = ""; 
+    char a_pad[32] = "";
     char a_nopad[4] = "foo";
     char a_infer[] = "blah";
     char b[2];
@@ -306,7 +306,7 @@ int main(int argc, char **argv) {
 
 class ThisAliasTest {
   int x, y;
-  
+
   void setX(int arg) {
     this->x = arg;
   }
@@ -396,4 +396,55 @@ int FusedBlockPhiOperand(int x, int y, int z, bool b1) {
   }
 
   return ret;
+}
+
+void vla(int n1, int n2, int n3, bool b1) {
+  int b[n1];
+  int c[n1][n2];
+
+  *b = 0;
+  b[0] = 1;
+
+  **(c + 1) = 0;
+
+  if(b1) {
+    int b[n1];
+  } else {
+    int b[n2];
+  }
+}
+
+void nested_array_designators() {
+  int x[1][2] = {[0][0] = 1234, [0][1] = 5678};
+}
+
+[[noreturn]] void noreturnFunc();
+
+int noreturnTest(int x) {
+    if (x < 10) {
+        return x;
+    } else {
+        noreturnFunc();
+    }
+}
+
+int noreturnTest2(int x) {
+    if (x < 10) {
+        noreturnFunc();
+    }
+    return x;
+}
+
+void Conditional(bool a, int x, int y) {
+    int z = a ? x : y;
+}
+
+static void NonEscapingParams(void *a, void *b)
+{
+}
+
+static void EscapingParams(void *a, void *b)
+{
+  Escape(a);
+  Escape(b);
 }

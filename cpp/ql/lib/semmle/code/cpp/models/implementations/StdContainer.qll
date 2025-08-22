@@ -2,8 +2,10 @@
  * Provides models for C++ containers `std::array`, `std::vector`, `std::deque`, `std::list` and `std::forward_list`.
  */
 
-import semmle.code.cpp.models.interfaces.Taint
+import semmle.code.cpp.models.interfaces.FlowSource
 import semmle.code.cpp.models.interfaces.Iterator
+import semmle.code.cpp.models.interfaces.SideEffect
+import semmle.code.cpp.models.interfaces.Alias
 
 /**
  * A sequence container template class (for example, `std::vector`) from the
@@ -56,19 +58,14 @@ private class Vector extends StdSequenceContainer {
 }
 
 /**
- * Additional model for standard container constructors that reference the
- * value type of the container (that is, the `T` in `std::vector<T>`).  For
- * example the fill constructor:
- * ```
- * std::vector<std::string> v(100, potentially_tainted_string);
- * ```
+ * The standard container functions `push_back` and `push_front`.
  */
-private class StdSequenceContainerConstructor extends Constructor, TaintFunction {
-  StdSequenceContainerConstructor() {
-    this.getDeclaringType() instanceof Vector or
-    this.getDeclaringType() instanceof Deque or
-    this.getDeclaringType() instanceof List or
-    this.getDeclaringType() instanceof ForwardList
+class StdSequenceContainerPush extends MemberFunction, SideEffectFunction, AliasFunction {
+  StdSequenceContainerPush() {
+    this.getClassAndName("push_back") instanceof Vector or
+    this.getClassAndName(["push_back", "push_front"]) instanceof Deque or
+    this.getClassAndName("push_front") instanceof ForwardList or
+    this.getClassAndName(["push_back", "push_front"]) instanceof List
   }
 
   /**
@@ -80,87 +77,114 @@ private class StdSequenceContainerConstructor extends Constructor, TaintFunction
       this.getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
   }
 
-  /**
-   * Gets the index of a parameter to this function that is an iterator.
-   */
-  int getAnIteratorParameterIndex() { this.getParameter(result).getType() instanceof Iterator }
+  override predicate parameterNeverEscapes(int index) { index = -1 }
 
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // taint flow from any parameter of the value type to the returned object
-    (
-      input.isParameterDeref(this.getAValueTypeParameterIndex()) or
-      input.isParameter(this.getAnIteratorParameterIndex())
-    ) and
-    (
-      output.isReturnValue() // TODO: this is only needed for AST data flow, which treats constructors as returning the new object
-      or
-      output.isQualifierObject()
-    )
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = -1 and
+    buffer = false and
+    mustWrite = true
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    // the `std::vector<bool>` specialization doesn't take a reference as a
+    // parameter. So we need to check that the parameter is actually a
+    // reference.
+    this.getParameter(i).getUnspecifiedType() instanceof ReferenceType and
+    buffer = false
   }
 }
 
-/**
- * The standard container function `data`.
- */
-private class StdSequenceContainerData extends TaintFunction {
-  StdSequenceContainerData() {
-    this.getClassAndName("data") instanceof Array or
-    this.getClassAndName("data") instanceof Vector
+private class StdSequenceContainerPopFrontOrBack extends MemberFunction, SideEffectFunction,
+  AliasFunction
+{
+  StdSequenceContainerPopFrontOrBack() {
+    this.getClassAndName("pop_back") instanceof Vector or
+    this.getClassAndName("pop_front") instanceof ForwardList or
+    this.getClassAndName(["pop_front", "pop_back"]) instanceof Deque or
+    this.getClassAndName(["pop_front", "pop_back"]) instanceof List
   }
 
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from container itself (qualifier) to return value
-    input.isQualifierObject() and
-    output.isReturnValueDeref()
-    or
-    // reverse flow from returned reference to the qualifier (for writes to
-    // `data`)
-    input.isReturnValueDeref() and
-    output.isQualifierObject()
-  }
-}
+  override predicate parameterNeverEscapes(int index) { index = -1 }
 
-/**
- * The standard container functions `push_back` and `push_front`.
- */
-private class StdSequenceContainerPush extends TaintFunction {
-  StdSequenceContainerPush() {
-    this.getClassAndName("push_back") instanceof Vector or
-    this.getClassAndName(["push_back", "push_front"]) instanceof Deque or
-    this.getClassAndName("push_front") instanceof ForwardList or
-    this.getClassAndName(["push_back", "push_front"]) instanceof List
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = -1 and
+    buffer = false and
+    mustWrite = true
   }
 
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from parameter to qualifier
-    input.isParameterDeref(0) and
-    output.isQualifierObject()
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = -1 and
+    buffer = false
   }
 }
 
-/**
- * The standard container functions `front` and `back`.
- */
-private class StdSequenceContainerFrontBack extends TaintFunction {
-  StdSequenceContainerFrontBack() {
-    this.getClassAndName(["front", "back"]) instanceof Array or
-    this.getClassAndName(["front", "back"]) instanceof Deque or
-    this.getClassAndName("front") instanceof ForwardList or
-    this.getClassAndName(["front", "back"]) instanceof List or
-    this.getClassAndName(["front", "back"]) instanceof Vector
+private class StdSequenceContainerClear extends MemberFunction, SideEffectFunction, AliasFunction {
+  StdSequenceContainerClear() {
+    this.getClassAndName("clear") instanceof Vector or
+    this.getClassAndName("clear") instanceof Deque or
+    this.getClassAndName("clear") instanceof ForwardList or
+    this.getClassAndName("clear") instanceof List
   }
 
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from object to returned reference
-    input.isQualifierObject() and
-    output.isReturnValueDeref()
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = -1 and
+    buffer = false and
+    mustWrite = true
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = -1 and
+    buffer = false
+  }
+}
+
+private class StdVectorReserve extends MemberFunction, SideEffectFunction, AliasFunction {
+  StdVectorReserve() { this.getClassAndName("reserve") instanceof Vector }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = -1 and
+    buffer = false and
+    mustWrite = true
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = -1 and
+    buffer = false
   }
 }
 
 /**
  * The standard container functions `insert` and `insert_after`.
  */
-private class StdSequenceContainerInsert extends TaintFunction {
+class StdSequenceContainerInsert extends MemberFunction, SideEffectFunction, AliasFunction {
   StdSequenceContainerInsert() {
     this.getClassAndName("insert") instanceof Deque or
     this.getClassAndName("insert") instanceof List or
@@ -182,29 +206,149 @@ private class StdSequenceContainerInsert extends TaintFunction {
    */
   int getAnIteratorParameterIndex() { this.getParameter(result).getType() instanceof Iterator }
 
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from parameter to container itself (qualifier) and return value
-    (
-      input.isQualifierObject() or
-      input.isParameterDeref(this.getAValueTypeParameterIndex()) or
-      input.isParameter(this.getAnIteratorParameterIndex())
-    ) and
-    (
-      output.isQualifierObject() or
-      output.isReturnValue()
-    )
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = -1 and
+    buffer = false and
+    mustWrite = true
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    this.getParameter(i).getUnspecifiedType() instanceof ReferenceType and
+    buffer = false
+  }
+}
+
+private class StdSequenceContainerFrontBack extends MemberFunction, SideEffectFunction,
+  AliasFunction
+{
+  StdSequenceContainerFrontBack() {
+    this.getClassAndName(["front", "back"]) instanceof Deque or
+    this.getClassAndName(["front", "back"]) instanceof List or
+    this.getClassAndName(["front", "back"]) instanceof Vector or
+    // forward_list does not have a 'back' member function
+    this.getClassAndName("front") instanceof ForwardList
+  }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = -1 and buffer = false
   }
 }
 
 /**
- * The standard container function `assign`.
+ * The standard container functions `at` and `operator[]`.
  */
-private class StdSequenceContainerAssign extends TaintFunction {
-  StdSequenceContainerAssign() {
-    this.getClassAndName("assign") instanceof Deque or
-    this.getClassAndName("assign") instanceof ForwardList or
-    this.getClassAndName("assign") instanceof List or
-    this.getClassAndName("assign") instanceof Vector
+class StdSequenceContainerAt extends MemberFunction, SideEffectFunction, AliasFunction {
+  StdSequenceContainerAt() {
+    this.getClassAndName(["at", "operator[]"]) instanceof Array or
+    this.getClassAndName(["at", "operator[]"]) instanceof Deque or
+    this.getClassAndName(["at", "operator[]"]) instanceof Vector
+  }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    none()
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = -1 and buffer = false
+  }
+}
+
+private class StdSequenceContainerMemberEquals extends MemberFunction, SideEffectFunction,
+  AliasFunction
+{
+  StdSequenceContainerMemberEquals() {
+    this.getClassAndName("operator==") instanceof Array or
+    this.getClassAndName("operator==") instanceof Deque or
+    this.getClassAndName("operator==") instanceof Vector
+  }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 or index = 0 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    none()
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = -1 and buffer = false
+    or
+    i = 0 and buffer = false
+  }
+}
+
+private class StdSequenceContainerEquals extends Function, SideEffectFunction, AliasFunction {
+  StdSequenceContainerEquals() {
+    this.hasGlobalOrStdOrBslName("operator==") and
+    not this instanceof MemberFunction and
+    this.getNumberOfParameters() = 2 and
+    (
+      this.getParameter(0).getUnspecifiedType().(ReferenceType).getBaseType() instanceof Vector and
+      this.getParameter(1).getUnspecifiedType().(ReferenceType).getBaseType() instanceof Vector
+      or
+      this.getParameter(0).getUnspecifiedType().(ReferenceType).getBaseType() instanceof List and
+      this.getParameter(1).getUnspecifiedType().(ReferenceType).getBaseType() instanceof List
+      or
+      this.getParameter(0).getUnspecifiedType().(ReferenceType).getBaseType() instanceof Deque and
+      this.getParameter(1).getUnspecifiedType().(ReferenceType).getBaseType() instanceof Deque
+    )
+  }
+
+  override predicate parameterNeverEscapes(int index) { index = 0 or index = 1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    none()
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = [0, 1] and buffer = false
+  }
+}
+
+/**
+ * The standard `emplace` function.
+ */
+class StdSequenceEmplace extends MemberFunction {
+  StdSequenceEmplace() {
+    this.getClassAndName("emplace") instanceof Vector
+    or
+    this.getClassAndName("emplace") instanceof List
+    or
+    this.getClassAndName("emplace") instanceof Deque
   }
 
   /**
@@ -215,70 +359,149 @@ private class StdSequenceContainerAssign extends TaintFunction {
     this.getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
       this.getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
   }
-
-  /**
-   * Gets the index of a parameter to this function that is an iterator.
-   */
-  int getAnIteratorParameterIndex() { this.getParameter(result).getType() instanceof Iterator }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from parameter to container itself (qualifier)
-    (
-      input.isParameterDeref(this.getAValueTypeParameterIndex()) or
-      input.isParameter(this.getAnIteratorParameterIndex())
-    ) and
-    output.isQualifierObject()
-  }
-}
-
-/**
- * The standard container functions `at` and `operator[]`.
- */
-private class StdSequenceContainerAt extends TaintFunction {
-  StdSequenceContainerAt() {
-    this.getClassAndName(["at", "operator[]"]) instanceof Array or
-    this.getClassAndName(["at", "operator[]"]) instanceof Deque or
-    this.getClassAndName(["at", "operator[]"]) instanceof Vector
-  }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from qualifier to referenced return value
-    input.isQualifierObject() and
-    output.isReturnValueDeref()
-    or
-    // reverse flow from returned reference to the qualifier
-    input.isReturnValueDeref() and
-    output.isQualifierObject()
-  }
 }
 
 /**
  * The standard vector `emplace` function.
  */
-class StdVectorEmplace extends TaintFunction {
-  StdVectorEmplace() { this.getClassAndName("emplace") instanceof Vector }
+class StdVectorEmplace extends StdSequenceEmplace {
+  StdVectorEmplace() { this.getDeclaringType() instanceof Vector }
+}
 
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from any parameter except the position iterator to qualifier and return value
-    // (here we assume taint flow from any constructor parameter to the constructed object)
-    input.isParameterDeref([1 .. this.getNumberOfParameters() - 1]) and
-    (
-      output.isQualifierObject() or
-      output.isReturnValue()
-    )
+private class StdSequenceSize extends MemberFunction, SideEffectFunction, AliasFunction {
+  StdSequenceSize() {
+    this.getClassAndName("size") instanceof Vector
+    or
+    this.getClassAndName("size") instanceof List
+    or
+    this.getClassAndName("size") instanceof Deque
+  }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = -1 and buffer = false
+  }
+}
+
+private class StdSequenceDestructor extends Destructor, SideEffectFunction, AliasFunction {
+  StdSequenceDestructor() {
+    this.getDeclaringType() instanceof Vector
+    or
+    this.getDeclaringType() instanceof List
+    or
+    this.getDeclaringType() instanceof Deque
+  }
+
+  private Destructor getElementDestructor() {
+    result.getDeclaringType() = this.getTemplateArgument(0)
+  }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() {
+    this.getElementDestructor().(SideEffectFunction).hasOnlySpecificReadSideEffects()
+    or
+    not exists(this.getElementDestructor())
+  }
+
+  override predicate hasOnlySpecificWriteSideEffects() {
+    this.getElementDestructor().(SideEffectFunction).hasOnlySpecificWriteSideEffects()
+    or
+    not exists(this.getElementDestructor())
+  }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = -1 and buffer = false and mustWrite = true
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = -1 and buffer = false
+  }
+}
+
+private class StdSequenceConstructor extends Constructor, SideEffectFunction, AliasFunction {
+  StdSequenceConstructor() {
+    this.getDeclaringType() instanceof Vector
+    or
+    this.getDeclaringType() instanceof List
+    or
+    this.getDeclaringType() instanceof Deque
+  }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = -1 and buffer = false and mustWrite = true
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    this.getParameter(i).getUnspecifiedType() instanceof ReferenceType and
+    buffer = false
+  }
+}
+
+private class InitializerList extends Class {
+  InitializerList() { this.hasQualifiedName(["std", "bsl"], "initializer_list") }
+
+  Type getElementType() { result = this.getTemplateArgument(0) }
+}
+
+private class InitializerListConstructor extends Constructor, SideEffectFunction, AliasFunction {
+  InitializerListConstructor() { this.getDeclaringType() instanceof InitializerList }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = -1 and buffer = false and mustWrite = true
   }
 }
 
 /**
  * The standard vector `emplace_back` function.
  */
-class StdVectorEmplaceBack extends TaintFunction {
-  StdVectorEmplaceBack() { this.getClassAndName("emplace_back") instanceof Vector }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from any parameter to qualifier
-    // (here we assume taint flow from any constructor parameter to the constructed object)
-    input.isParameterDeref([0 .. this.getNumberOfParameters() - 1]) and
-    output.isQualifierObject()
+class StdSequenceEmplaceBack extends MemberFunction {
+  StdSequenceEmplaceBack() {
+    this.getClassAndName("emplace_back") instanceof Vector
+    or
+    this.getClassAndName("emplace_back") instanceof List
+    or
+    this.getClassAndName("emplace_back") instanceof Deque
   }
+
+  /**
+   * Gets the index of a parameter to this function that is a reference to the
+   * value type of the container.
+   */
+  int getAValueTypeParameterIndex() {
+    this.getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
+      this.getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
+  }
+}
+
+/**
+ * The standard vector `emplace_back` function.
+ */
+class StdVectorEmplaceBack extends StdSequenceEmplaceBack {
+  StdVectorEmplaceBack() { this.getDeclaringType() instanceof Vector }
 }

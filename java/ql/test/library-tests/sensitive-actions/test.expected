@@ -1,0 +1,69 @@
+sensitiveMethodCall
+| Test.java:62:9:62:22 | aaPasswordaa(...) |
+| Test.java:63:9:63:20 | aaPasswdaa(...) |
+| Test.java:64:9:64:21 | aaAccountaa(...) |
+| Test.java:65:9:65:19 | aaAccntaa(...) |
+| Test.java:66:9:66:21 | aaTrustedaa(...) |
+| Test.java:67:9:67:28 | aaRefreshaaTokenaa(...) |
+| Test.java:100:9:100:28 | aaHashedPasswordaa(...) |
+| Test.java:101:9:101:26 | aaHashedPasswdaa(...) |
+| Test.java:102:9:102:27 | aaHashedAccountaa(...) |
+| Test.java:103:9:103:25 | aaHashedAccntaa(...) |
+| Test.java:104:9:104:27 | aaHashedTrustedaa(...) |
+| Test.java:105:9:105:34 | aaHashedRefreshaaTokenaa(...) |
+| Test.java:107:9:107:27 | aaCryptPasswordaa(...) |
+| Test.java:108:9:108:25 | aaCryptPasswdaa(...) |
+| Test.java:109:9:109:26 | aaCryptAccountaa(...) |
+| Test.java:110:9:110:24 | aaCryptAccntaa(...) |
+| Test.java:111:9:111:26 | aaCryptTrustedaa(...) |
+| Test.java:112:9:112:33 | aaCryptRefreshaaTokenaa(...) |
+sensitiveVarAccess
+| Test.java:55:15:55:26 | aaPasswordaa |
+| Test.java:56:15:56:24 | aaPasswdaa |
+| Test.java:57:15:57:25 | aaAccountaa |
+| Test.java:58:15:58:23 | aaAccntaa |
+| Test.java:59:15:59:25 | aaTrustedaa |
+| Test.java:60:15:60:32 | aaRefreshaaTokenaa |
+| Test.java:125:15:125:24 | aaPasswdaa |
+| Test.java:126:15:126:26 | aaPasswordaa |
+| Test.java:140:15:140:34 | aaPasswdaaQuestionaa |
+| Test.java:141:15:141:36 | aaPasswordaaQuestionaa |
+sensitiveVariable
+| Test.java:48:9:48:33 | String aaPasswordaa |
+| Test.java:49:9:49:31 | String aaPasswdaa |
+| Test.java:53:9:53:39 | String aaRefreshaaTokenaa |
+| Test.java:54:9:54:38 | String aaSecretaaTokenaa |
+| Test.java:72:9:72:39 | String aaHashedPasswordaa |
+| Test.java:73:9:73:37 | String aaHashedPasswdaa |
+| Test.java:77:9:77:45 | String aaHashedRefreshaaTokenaa |
+| Test.java:78:9:78:44 | String aaHashedsecretaatokenaa |
+| Test.java:79:9:79:38 | String aaCryptPasswordaa |
+| Test.java:80:9:80:36 | String aaCryptPasswdaa |
+| Test.java:84:9:84:44 | String aaCryptRefreshaaTokenaa |
+| Test.java:85:9:85:43 | String aaCryptSecretaaTokenaa |
+| Test.java:117:9:117:34 | String aaChallengeaa |
+| Test.java:118:9:118:31 | String aaPasswdaa |
+| Test.java:119:9:119:33 | String aaPasswordaa |
+| Test.java:120:9:120:33 | String aaPasscodeaa |
+| Test.java:121:9:121:35 | String aaPassphraseaa |
+| Test.java:122:9:122:30 | String aaTokenaa |
+| Test.java:123:9:123:31 | String aaSecretaa |
+sensitiveDataMethod
+| Test.java:3:18:3:29 | aaPasswordaa |
+| Test.java:5:18:5:27 | aaPasswdaa |
+| Test.java:7:18:7:28 | aaAccountaa |
+| Test.java:9:18:9:26 | aaAccntaa |
+| Test.java:11:18:11:28 | aaTrustedaa |
+| Test.java:13:18:13:35 | aaRefreshaaTokenaa |
+| Test.java:17:18:17:35 | aaHashedPasswordaa |
+| Test.java:19:18:19:33 | aaHashedPasswdaa |
+| Test.java:21:18:21:34 | aaHashedAccountaa |
+| Test.java:23:18:23:32 | aaHashedAccntaa |
+| Test.java:25:18:25:34 | aaHashedTrustedaa |
+| Test.java:27:18:27:41 | aaHashedRefreshaaTokenaa |
+| Test.java:31:18:31:34 | aaCryptPasswordaa |
+| Test.java:33:18:33:32 | aaCryptPasswdaa |
+| Test.java:35:18:35:33 | aaCryptAccountaa |
+| Test.java:37:18:37:31 | aaCryptAccntaa |
+| Test.java:39:18:39:33 | aaCryptTrustedaa |
+| Test.java:41:18:41:40 | aaCryptRefreshaaTokenaa |

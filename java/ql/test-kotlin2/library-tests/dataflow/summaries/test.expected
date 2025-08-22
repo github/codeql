@@ -1,0 +1,241 @@
+models
+| 1 | Summary: java.util; List; true; get; (int); ; Argument[this].Element; ReturnValue; value; manual |
+| 2 | Summary: java.util; List; true; set; (int,Object); ; Argument[1]; Argument[this].Element; value; manual |
+| 3 | Summary: kotlin.collections; ArraysKt; false; copyOf; (byte[]); ; Argument[0]; ReturnValue; taint; df-generated |
+| 4 | Summary: kotlin.collections; ArraysKt; false; plus; (char[],char[]); ; Argument[0]; ReturnValue; taint; df-generated |
+| 5 | Summary: kotlin.collections; ArraysKt; false; withIndex; (Object[]); ; Argument[0].ArrayElement; ReturnValue; taint; manual |
+| 6 | Summary: kotlin.collections; CollectionsKt; false; toList; (Iterable); ; Argument[0].Element; ReturnValue; taint; df-generated |
+| 7 | Summary: kotlin.collections; IndexedValue; false; IndexedValue; (int,Object); ; Argument[1]; Argument[this]; taint; df-generated |
+| 8 | Summary: kotlin.collections; IndexedValue; false; component2; (); ; Argument[this]; ReturnValue; taint; df-generated |
+| 9 | Summary: kotlin.collections; IndexedValue; false; getValue; (); ; Argument[this]; ReturnValue; taint; df-generated |
+| 10 | Summary: kotlin.io; CloseableKt; false; use; ; ; Argument[0]; Argument[1].Parameter[0]; value; manual |
+| 11 | Summary: kotlin.io; FileTreeWalk; false; maxDepth; (int); ; Argument[this]; ReturnValue; taint; df-generated |
+| 12 | Summary: kotlin.text; MatchGroup; false; MatchGroup; (String,IntRange); ; Argument[0]; Argument[this]; taint; df-generated |
+| 13 | Summary: kotlin.text; MatchGroup; false; component2; (); ; Argument[this]; ReturnValue; taint; df-generated |
+| 14 | Summary: kotlin.text; MatchGroup; false; getValue; (); ; Argument[this]; ReturnValue; taint; df-generated |
+| 15 | Summary: kotlin.text; StringsKt; false; capitalize; (String); ; Argument[0]; ReturnValue; taint; df-generated |
+| 16 | Summary: kotlin.text; StringsKt; false; insertRange; (StringBuilder,int,char[],int,int); ; Argument[2]; Argument[0]; taint; df-generated |
+| 17 | Summary: kotlin.text; StringsKt; false; insertRange; (StringBuilder,int,char[],int,int); ; Argument[2]; ReturnValue; taint; df-generated |
+| 18 | Summary: kotlin.text; StringsKt; false; replaceFirstCharWithChar; (String,Function1); ; Argument[0]; ReturnValue; taint; df-generated |
+| 19 | Summary: kotlin.time; TimedValue; false; TimedValue; (Object,Duration); ; Argument[0]; Argument[this]; taint; df-generated |
+| 20 | Summary: kotlin.time; TimedValue; false; component1; (); ; Argument[this]; ReturnValue; taint; df-generated |
+| 21 | Summary: kotlin.time; TimedValue; false; getDuration; (); ; Argument[this]; ReturnValue; taint; df-generated |
+| 22 | Summary: kotlin; Pair; false; Pair; (Object,Object); ; Argument[0]; Argument[this]; taint; df-generated |
+| 23 | Summary: kotlin; Pair; false; component1; (); ; Argument[this]; ReturnValue; taint; df-generated |
+| 24 | Summary: kotlin; Pair; false; getSecond; (); ; Argument[this]; ReturnValue; taint; df-generated |
+| 25 | Summary: kotlin; StandardKt; false; apply; ; ; Argument[0]; Argument[1].Parameter[0]; value; manual |
+| 26 | Summary: kotlin; StandardKt; false; apply; ; ; Argument[0]; ReturnValue; value; manual |
+| 27 | Summary: kotlin; StandardKt; false; with; ; ; Argument[0]; Argument[1].Parameter[0]; value; manual |
+| 28 | Summary: kotlin; Triple; false; Triple; (Object,Object,Object); ; Argument[1]; Argument[this]; taint; df-generated |
+| 29 | Summary: kotlin; Triple; false; component1; (); ; Argument[this]; ReturnValue; taint; df-generated |
+| 30 | Summary: kotlin; Triple; false; getSecond; (); ; Argument[this]; ReturnValue; taint; df-generated |
+| 31 | Summary: kotlin; TuplesKt; false; to; (Object,Object); ; Argument[0]; ReturnValue; taint; df-generated |
+| 32 | Summary: kotlin; TuplesKt; false; toList; (Pair); ; Argument[0]; ReturnValue; taint; df-generated |
+edges
+| apply.kt:6:9:6:20 | taint(...) : String | apply.kt:6:28:6:41 | $this$apply : String | provenance | MaD:25 |
+| apply.kt:6:28:6:41 | $this$apply : String | apply.kt:6:35:6:38 | this | provenance |  |
+| apply.kt:7:14:7:25 | taint(...) : String | apply.kt:7:14:7:40 | apply(...) | provenance | MaD:26 |
+| list.kt:6:9:6:9 | l [post update] : List [<element>] : String | list.kt:7:14:7:14 | l | provenance |  |
+| list.kt:6:9:6:9 | l [post update] : List [<element>] : String | list.kt:8:14:8:14 | l : List [<element>] : String | provenance |  |
+| list.kt:6:9:6:9 | l [post update] : List [<element>] : String | list.kt:9:19:9:19 | l : List [<element>] : String | provenance |  |
+| list.kt:6:16:6:25 | taint(...) : String | list.kt:6:9:6:9 | l [post update] : List [<element>] : String | provenance | MaD:2 |
+| list.kt:8:14:8:14 | l : List [<element>] : String | list.kt:8:14:8:17 | get(...) | provenance | MaD:1 |
+| list.kt:9:19:9:19 | l : List [<element>] : String | list.kt:10:18:10:18 | s | provenance |  |
+| list.kt:13:17:13:40 | {...} : String[] [[]] : String | list.kt:14:14:14:14 | a | provenance |  |
+| list.kt:13:17:13:40 | {...} : String[] [[]] : String | list.kt:15:14:15:14 | a : String[] [[]] : String | provenance |  |
+| list.kt:13:17:13:40 | {...} : String[] [[]] : String | list.kt:16:19:16:19 | a : String[] [[]] : String | provenance |  |
+| list.kt:13:25:13:34 | taint(...) : String | list.kt:13:17:13:40 | {...} : String[] [[]] : String | provenance |  |
+| list.kt:15:14:15:14 | a : String[] [[]] : String | list.kt:15:14:15:17 | ...[...] | provenance |  |
+| list.kt:16:19:16:19 | a : String[] [[]] : String | list.kt:17:18:17:18 | s | provenance |  |
+| test.kt:16:14:16:21 | taint(...) : byte[] | test.kt:16:14:16:30 | copyOf(...) | provenance | MaD:3 |
+| test.kt:17:14:17:21 | taint(...) : FileTreeWalk | test.kt:17:14:17:33 | maxDepth(...) | provenance | MaD:11 |
+| test.kt:20:14:20:15 | sb [post update] : StringBuilder | test.kt:21:14:21:15 | sb | provenance |  |
+| test.kt:20:32:20:40 | taint(...) : char[] | test.kt:20:14:20:15 | sb [post update] : StringBuilder | provenance | MaD:16 |
+| test.kt:20:32:20:40 | taint(...) : char[] | test.kt:20:14:20:47 | insertRange(...) | provenance | MaD:17 |
+| test.kt:23:14:23:22 | taint(...) : char[] | test.kt:23:14:23:27 | plus(...) | provenance | MaD:4 |
+| test.kt:25:17:25:36 | new Pair<String,String>(...) : Pair | test.kt:26:14:26:14 | p | provenance |  |
+| test.kt:25:17:25:36 | new Pair<String,String>(...) : Pair | test.kt:27:14:27:14 | p : Pair | provenance |  |
+| test.kt:25:17:25:36 | new Pair<String,String>(...) : Pair | test.kt:28:14:28:14 | p : Pair | provenance |  |
+| test.kt:25:17:25:36 | new Pair<String,String>(...) : Pair | test.kt:43:17:43:17 | p : Pair | provenance |  |
+| test.kt:25:22:25:31 | taint(...) : String | test.kt:25:17:25:36 | new Pair<String,String>(...) : Pair | provenance | MaD:22 |
+| test.kt:27:14:27:14 | p : Pair | test.kt:27:14:27:27 | component1(...) | provenance | MaD:23 |
+| test.kt:28:14:28:14 | p : Pair | test.kt:28:14:28:21 | getSecond(...) | provenance | MaD:24 |
+| test.kt:30:14:30:23 | taint(...) : String | test.kt:30:14:30:36 | capitalize(...) | provenance | MaD:15 |
+| test.kt:31:14:31:23 | taint(...) : String | test.kt:31:14:31:53 | replaceFirstCharWithChar(...) | provenance | MaD:18 |
+| test.kt:33:17:33:42 | new Triple<String,String,String>(...) : Triple | test.kt:34:14:34:14 | t | provenance |  |
+| test.kt:33:17:33:42 | new Triple<String,String,String>(...) : Triple | test.kt:35:14:35:14 | t : Triple | provenance |  |
+| test.kt:33:17:33:42 | new Triple<String,String,String>(...) : Triple | test.kt:36:14:36:14 | t : Triple | provenance |  |
+| test.kt:33:28:33:37 | taint(...) : String | test.kt:33:17:33:42 | new Triple<String,String,String>(...) : Triple | provenance | MaD:28 |
+| test.kt:35:14:35:14 | t : Triple | test.kt:35:14:35:27 | component1(...) | provenance | MaD:29 |
+| test.kt:36:14:36:14 | t : Triple | test.kt:36:14:36:21 | getSecond(...) | provenance | MaD:30 |
+| test.kt:38:18:38:27 | taint(...) : String | test.kt:38:18:38:33 | to(...) : Pair | provenance | MaD:31 |
+| test.kt:38:18:38:33 | to(...) : Pair | test.kt:39:14:39:15 | p1 | provenance |  |
+| test.kt:38:18:38:33 | to(...) : Pair | test.kt:40:14:40:15 | p1 : Pair | provenance |  |
+| test.kt:38:18:38:33 | to(...) : Pair | test.kt:41:14:41:15 | p1 : Pair | provenance |  |
+| test.kt:40:14:40:15 | p1 : Pair | test.kt:40:14:40:28 | component1(...) | provenance | MaD:23 |
+| test.kt:41:14:41:15 | p1 : Pair | test.kt:41:14:41:22 | getSecond(...) | provenance | MaD:24 |
+| test.kt:43:17:43:17 | p : Pair | test.kt:43:17:43:26 | toList(...) : List | provenance | MaD:32 |
+| test.kt:43:17:43:26 | toList(...) : List | test.kt:44:14:44:14 | l | provenance |  |
+| test.kt:43:17:43:26 | toList(...) : List | test.kt:45:14:45:14 | l : List | provenance |  |
+| test.kt:43:17:43:26 | toList(...) : List | test.kt:47:18:47:18 | s | provenance |  |
+| test.kt:45:14:45:14 | l : List | test.kt:45:14:45:17 | get(...) | provenance | MaD:1 |
+| test.kt:50:18:50:59 | new TimedValue<String>(...) : TimedValue | test.kt:51:14:51:15 | tv | provenance |  |
+| test.kt:50:18:50:59 | new TimedValue<String>(...) : TimedValue | test.kt:52:14:52:15 | tv : TimedValue | provenance |  |
+| test.kt:50:18:50:59 | new TimedValue<String>(...) : TimedValue | test.kt:53:14:53:15 | tv : TimedValue | provenance |  |
+| test.kt:50:29:50:38 | taint(...) : String | test.kt:50:18:50:59 | new TimedValue<String>(...) : TimedValue | provenance | MaD:19 |
+| test.kt:52:14:52:15 | tv : TimedValue | test.kt:52:14:52:28 | component1(...) | provenance | MaD:20 |
+| test.kt:53:14:53:15 | tv : TimedValue | test.kt:53:14:53:24 | getDuration(...) | provenance | MaD:21 |
+| test.kt:55:19:55:57 | new MatchGroup(...) : MatchGroup | test.kt:56:14:56:16 | mg0 | provenance |  |
+| test.kt:55:19:55:57 | new MatchGroup(...) : MatchGroup | test.kt:57:14:57:16 | mg0 : MatchGroup | provenance |  |
+| test.kt:55:19:55:57 | new MatchGroup(...) : MatchGroup | test.kt:58:14:58:16 | mg0 : MatchGroup | provenance |  |
+| test.kt:55:30:55:39 | taint(...) : String | test.kt:55:19:55:57 | new MatchGroup(...) : MatchGroup | provenance | MaD:12 |
+| test.kt:57:14:57:16 | mg0 : MatchGroup | test.kt:57:14:57:22 | getValue(...) | provenance | MaD:14 |
+| test.kt:58:14:58:16 | mg0 : MatchGroup | test.kt:58:14:58:29 | component2(...) | provenance | MaD:13 |
+| test.kt:60:18:60:52 | new IndexedValue<String>(...) : IndexedValue | test.kt:61:14:61:15 | iv | provenance |  |
+| test.kt:60:18:60:52 | new IndexedValue<String>(...) : IndexedValue | test.kt:63:14:63:15 | iv : IndexedValue | provenance |  |
+| test.kt:60:42:60:51 | taint(...) : String | test.kt:60:18:60:52 | new IndexedValue<String>(...) : IndexedValue | provenance | MaD:7 |
+| test.kt:63:14:63:15 | iv : IndexedValue | test.kt:63:14:63:28 | component2(...) | provenance | MaD:8 |
+| test.kt:65:23:65:45 | {...} : String[] [[]] : String | test.kt:66:14:66:20 | strings : String[] [[]] : String | provenance |  |
+| test.kt:65:23:65:45 | {...} : String[] [[]] : String | test.kt:67:14:67:20 | strings : String[] [[]] : String | provenance |  |
+| test.kt:65:23:65:45 | {...} : String[] [[]] : String | test.kt:68:14:68:20 | strings : String[] [[]] : String | provenance |  |
+| test.kt:65:23:65:45 | {...} : String[] [[]] : String | test.kt:70:19:70:25 | strings : String[] [[]] : String | provenance |  |
+| test.kt:65:35:65:44 | taint(...) : String | test.kt:65:23:65:45 | {...} : String[] [[]] : String | provenance |  |
+| test.kt:66:14:66:20 | strings : String[] [[]] : String | test.kt:66:14:66:32 | withIndex(...) | provenance | MaD:5 |
+| test.kt:67:14:67:20 | strings : String[] [[]] : String | test.kt:67:14:67:32 | withIndex(...) : Iterable | provenance | MaD:5 |
+| test.kt:67:14:67:32 | withIndex(...) : Iterable | test.kt:67:14:67:41 | toList(...) | provenance | MaD:6 |
+| test.kt:68:14:68:20 | strings : String[] [[]] : String | test.kt:68:14:68:32 | withIndex(...) : Iterable | provenance | MaD:5 |
+| test.kt:68:14:68:32 | withIndex(...) : Iterable | test.kt:68:14:68:41 | toList(...) : List | provenance | MaD:6 |
+| test.kt:68:14:68:41 | toList(...) : List | test.kt:68:14:68:44 | get(...) : IndexedValue | provenance | MaD:1 |
+| test.kt:68:14:68:44 | get(...) : IndexedValue | test.kt:68:14:68:50 | getValue(...) | provenance | MaD:9 |
+| test.kt:70:19:70:25 | strings : String[] [[]] : String | test.kt:70:19:70:37 | withIndex(...) : Iterable | provenance | MaD:5 |
+| test.kt:70:19:70:37 | withIndex(...) : Iterable | test.kt:71:18:71:18 | x : IndexedValue | provenance |  |
+| test.kt:71:18:71:18 | x : IndexedValue | test.kt:71:18:71:24 | getValue(...) | provenance | MaD:9 |
+| use.kt:8:9:8:20 | taint(...) : Closeable | use.kt:8:28:8:29 | it : Closeable | provenance | MaD:10 |
+| use.kt:8:28:8:29 | it : Closeable | use.kt:8:39:8:40 | it | provenance |  |
+| use.kt:9:14:9:25 | taint(...) : Closeable | use.kt:9:14:9:36 | use(...) | provenance | MaD:10 |
+| use.kt:9:14:9:25 | taint(...) : Closeable | use.kt:9:31:9:36 | it : Closeable | provenance | MaD:10 |
+| use.kt:9:31:9:36 | it : Closeable | use.kt:9:33:9:34 | it : Closeable | provenance |  |
+| with.kt:6:14:6:25 | taint(...) : String | with.kt:6:28:6:41 | $this$with : String | provenance | MaD:27 |
+| with.kt:6:28:6:41 | $this$with : String | with.kt:6:35:6:38 | this | provenance |  |
+| with.kt:7:19:7:30 | taint(...) : String | with.kt:7:14:7:40 | with(...) | provenance | MaD:27 |
+| with.kt:7:19:7:30 | taint(...) : String | with.kt:7:33:7:40 | $this$with : String | provenance | MaD:27 |
+| with.kt:7:33:7:40 | $this$with : String | with.kt:7:35:7:38 | this : String | provenance |  |
+nodes
+| apply.kt:6:9:6:20 | taint(...) : String | semmle.label | taint(...) : String |
+| apply.kt:6:28:6:41 | $this$apply : String | semmle.label | $this$apply : String |
+| apply.kt:6:35:6:38 | this | semmle.label | this |
+| apply.kt:7:14:7:25 | taint(...) : String | semmle.label | taint(...) : String |
+| apply.kt:7:14:7:40 | apply(...) | semmle.label | apply(...) |
+| list.kt:6:9:6:9 | l [post update] : List [<element>] : String | semmle.label | l [post update] : List [<element>] : String |
+| list.kt:6:16:6:25 | taint(...) : String | semmle.label | taint(...) : String |
+| list.kt:7:14:7:14 | l | semmle.label | l |
+| list.kt:8:14:8:14 | l : List [<element>] : String | semmle.label | l : List [<element>] : String |
+| list.kt:8:14:8:17 | get(...) | semmle.label | get(...) |
+| list.kt:9:19:9:19 | l : List [<element>] : String | semmle.label | l : List [<element>] : String |
+| list.kt:10:18:10:18 | s | semmle.label | s |
+| list.kt:13:17:13:40 | {...} : String[] [[]] : String | semmle.label | {...} : String[] [[]] : String |
+| list.kt:13:25:13:34 | taint(...) : String | semmle.label | taint(...) : String |
+| list.kt:14:14:14:14 | a | semmle.label | a |
+| list.kt:15:14:15:14 | a : String[] [[]] : String | semmle.label | a : String[] [[]] : String |
+| list.kt:15:14:15:17 | ...[...] | semmle.label | ...[...] |
+| list.kt:16:19:16:19 | a : String[] [[]] : String | semmle.label | a : String[] [[]] : String |
+| list.kt:17:18:17:18 | s | semmle.label | s |
+| test.kt:16:14:16:21 | taint(...) : byte[] | semmle.label | taint(...) : byte[] |
+| test.kt:16:14:16:30 | copyOf(...) | semmle.label | copyOf(...) |
+| test.kt:17:14:17:21 | taint(...) : FileTreeWalk | semmle.label | taint(...) : FileTreeWalk |
+| test.kt:17:14:17:33 | maxDepth(...) | semmle.label | maxDepth(...) |
+| test.kt:20:14:20:15 | sb [post update] : StringBuilder | semmle.label | sb [post update] : StringBuilder |
+| test.kt:20:14:20:47 | insertRange(...) | semmle.label | insertRange(...) |
+| test.kt:20:32:20:40 | taint(...) : char[] | semmle.label | taint(...) : char[] |
+| test.kt:21:14:21:15 | sb | semmle.label | sb |
+| test.kt:23:14:23:22 | taint(...) : char[] | semmle.label | taint(...) : char[] |
+| test.kt:23:14:23:27 | plus(...) | semmle.label | plus(...) |
+| test.kt:25:17:25:36 | new Pair<String,String>(...) : Pair | semmle.label | new Pair<String,String>(...) : Pair |
+| test.kt:25:22:25:31 | taint(...) : String | semmle.label | taint(...) : String |
+| test.kt:26:14:26:14 | p | semmle.label | p |
+| test.kt:27:14:27:14 | p : Pair | semmle.label | p : Pair |
+| test.kt:27:14:27:27 | component1(...) | semmle.label | component1(...) |
+| test.kt:28:14:28:14 | p : Pair | semmle.label | p : Pair |
+| test.kt:28:14:28:21 | getSecond(...) | semmle.label | getSecond(...) |
+| test.kt:30:14:30:23 | taint(...) : String | semmle.label | taint(...) : String |
+| test.kt:30:14:30:36 | capitalize(...) | semmle.label | capitalize(...) |
+| test.kt:31:14:31:23 | taint(...) : String | semmle.label | taint(...) : String |
+| test.kt:31:14:31:53 | replaceFirstCharWithChar(...) | semmle.label | replaceFirstCharWithChar(...) |
+| test.kt:33:17:33:42 | new Triple<String,String,String>(...) : Triple | semmle.label | new Triple<String,String,String>(...) : Triple |
+| test.kt:33:28:33:37 | taint(...) : String | semmle.label | taint(...) : String |
+| test.kt:34:14:34:14 | t | semmle.label | t |
+| test.kt:35:14:35:14 | t : Triple | semmle.label | t : Triple |
+| test.kt:35:14:35:27 | component1(...) | semmle.label | component1(...) |
+| test.kt:36:14:36:14 | t : Triple | semmle.label | t : Triple |
+| test.kt:36:14:36:21 | getSecond(...) | semmle.label | getSecond(...) |
+| test.kt:38:18:38:27 | taint(...) : String | semmle.label | taint(...) : String |
+| test.kt:38:18:38:33 | to(...) : Pair | semmle.label | to(...) : Pair |
+| test.kt:39:14:39:15 | p1 | semmle.label | p1 |
+| test.kt:40:14:40:15 | p1 : Pair | semmle.label | p1 : Pair |
+| test.kt:40:14:40:28 | component1(...) | semmle.label | component1(...) |
+| test.kt:41:14:41:15 | p1 : Pair | semmle.label | p1 : Pair |
+| test.kt:41:14:41:22 | getSecond(...) | semmle.label | getSecond(...) |
+| test.kt:43:17:43:17 | p : Pair | semmle.label | p : Pair |
+| test.kt:43:17:43:26 | toList(...) : List | semmle.label | toList(...) : List |
+| test.kt:44:14:44:14 | l | semmle.label | l |
+| test.kt:45:14:45:14 | l : List | semmle.label | l : List |
+| test.kt:45:14:45:17 | get(...) | semmle.label | get(...) |
+| test.kt:47:18:47:18 | s | semmle.label | s |
+| test.kt:50:18:50:59 | new TimedValue<String>(...) : TimedValue | semmle.label | new TimedValue<String>(...) : TimedValue |
+| test.kt:50:29:50:38 | taint(...) : String | semmle.label | taint(...) : String |
+| test.kt:51:14:51:15 | tv | semmle.label | tv |
+| test.kt:52:14:52:15 | tv : TimedValue | semmle.label | tv : TimedValue |
+| test.kt:52:14:52:28 | component1(...) | semmle.label | component1(...) |
+| test.kt:53:14:53:15 | tv : TimedValue | semmle.label | tv : TimedValue |
+| test.kt:53:14:53:24 | getDuration(...) | semmle.label | getDuration(...) |
+| test.kt:55:19:55:57 | new MatchGroup(...) : MatchGroup | semmle.label | new MatchGroup(...) : MatchGroup |
+| test.kt:55:30:55:39 | taint(...) : String | semmle.label | taint(...) : String |
+| test.kt:56:14:56:16 | mg0 | semmle.label | mg0 |
+| test.kt:57:14:57:16 | mg0 : MatchGroup | semmle.label | mg0 : MatchGroup |
+| test.kt:57:14:57:22 | getValue(...) | semmle.label | getValue(...) |
+| test.kt:58:14:58:16 | mg0 : MatchGroup | semmle.label | mg0 : MatchGroup |
+| test.kt:58:14:58:29 | component2(...) | semmle.label | component2(...) |
+| test.kt:60:18:60:52 | new IndexedValue<String>(...) : IndexedValue | semmle.label | new IndexedValue<String>(...) : IndexedValue |
+| test.kt:60:42:60:51 | taint(...) : String | semmle.label | taint(...) : String |
+| test.kt:61:14:61:15 | iv | semmle.label | iv |
+| test.kt:63:14:63:15 | iv : IndexedValue | semmle.label | iv : IndexedValue |
+| test.kt:63:14:63:28 | component2(...) | semmle.label | component2(...) |
+| test.kt:65:23:65:45 | {...} : String[] [[]] : String | semmle.label | {...} : String[] [[]] : String |
+| test.kt:65:35:65:44 | taint(...) : String | semmle.label | taint(...) : String |
+| test.kt:66:14:66:20 | strings : String[] [[]] : String | semmle.label | strings : String[] [[]] : String |
+| test.kt:66:14:66:32 | withIndex(...) | semmle.label | withIndex(...) |
+| test.kt:67:14:67:20 | strings : String[] [[]] : String | semmle.label | strings : String[] [[]] : String |
+| test.kt:67:14:67:32 | withIndex(...) : Iterable | semmle.label | withIndex(...) : Iterable |
+| test.kt:67:14:67:41 | toList(...) | semmle.label | toList(...) |
+| test.kt:68:14:68:20 | strings : String[] [[]] : String | semmle.label | strings : String[] [[]] : String |
+| test.kt:68:14:68:32 | withIndex(...) : Iterable | semmle.label | withIndex(...) : Iterable |
+| test.kt:68:14:68:41 | toList(...) : List | semmle.label | toList(...) : List |
+| test.kt:68:14:68:44 | get(...) : IndexedValue | semmle.label | get(...) : IndexedValue |
+| test.kt:68:14:68:50 | getValue(...) | semmle.label | getValue(...) |
+| test.kt:70:19:70:25 | strings : String[] [[]] : String | semmle.label | strings : String[] [[]] : String |
+| test.kt:70:19:70:37 | withIndex(...) : Iterable | semmle.label | withIndex(...) : Iterable |
+| test.kt:71:18:71:18 | x : IndexedValue | semmle.label | x : IndexedValue |
+| test.kt:71:18:71:24 | getValue(...) | semmle.label | getValue(...) |
+| use.kt:8:9:8:20 | taint(...) : Closeable | semmle.label | taint(...) : Closeable |
+| use.kt:8:28:8:29 | it : Closeable | semmle.label | it : Closeable |
+| use.kt:8:39:8:40 | it | semmle.label | it |
+| use.kt:9:14:9:25 | taint(...) : Closeable | semmle.label | taint(...) : Closeable |
+| use.kt:9:14:9:36 | use(...) | semmle.label | use(...) |
+| use.kt:9:31:9:36 | it : Closeable | semmle.label | it : Closeable |
+| use.kt:9:33:9:34 | it : Closeable | semmle.label | it : Closeable |
+| with.kt:6:14:6:25 | taint(...) : String | semmle.label | taint(...) : String |
+| with.kt:6:28:6:41 | $this$with : String | semmle.label | $this$with : String |
+| with.kt:6:35:6:38 | this | semmle.label | this |
+| with.kt:7:14:7:40 | with(...) | semmle.label | with(...) |
+| with.kt:7:19:7:30 | taint(...) : String | semmle.label | taint(...) : String |
+| with.kt:7:33:7:40 | $this$with : String | semmle.label | $this$with : String |
+| with.kt:7:35:7:38 | this : String | semmle.label | this : String |
+subpaths
+| use.kt:9:14:9:25 | taint(...) : Closeable | use.kt:9:31:9:36 | it : Closeable | use.kt:9:33:9:34 | it : Closeable | use.kt:9:14:9:36 | use(...) |
+| with.kt:7:19:7:30 | taint(...) : String | with.kt:7:33:7:40 | $this$with : String | with.kt:7:35:7:38 | this : String | with.kt:7:14:7:40 | with(...) |
+testFailures
+| test.kt:28:14:28:21 | getSecond(...) | Unexpected result: hasTaintFlow=a |
+| test.kt:35:14:35:27 | component1(...) | Unexpected result: hasTaintFlow=d |
+| test.kt:41:14:41:22 | getSecond(...) | Unexpected result: hasTaintFlow=e |
+| test.kt:53:14:53:24 | getDuration(...) | Unexpected result: hasTaintFlow=f |
+| test.kt:58:14:58:29 | component2(...) | Unexpected result: hasTaintFlow=g |

@@ -3,8 +3,9 @@
  * @description Modifying the default value of a parameter can lead to unexpected
  *              results.
  * @kind path-problem
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  * @problem.severity error
  * @sub-severity low
  * @precision high
@@ -13,11 +14,11 @@
 
 import python
 import semmle.python.functions.ModificationOfParameterWithDefault
-import DataFlow::PathGraph
+import ModificationOfParameterWithDefault::Flow::PathGraph
 
 from
-  ModificationOfParameterWithDefault::Configuration config, DataFlow::PathNode source,
-  DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+  ModificationOfParameterWithDefault::Flow::PathNode source,
+  ModificationOfParameterWithDefault::Flow::PathNode sink
+where ModificationOfParameterWithDefault::Flow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This expression mutates a $@.", source.getNode(),
   "default value"

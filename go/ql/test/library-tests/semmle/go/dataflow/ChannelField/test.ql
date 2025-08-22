@@ -1,18 +1,12 @@
 import go
-import DataFlow::PathGraph
+import semmle.go.dataflow.ExternalFlow
+import ModelValidation
+import utils.test.InlineFlowTest
 
-class TestConfig extends DataFlow::Configuration {
-  TestConfig() { this = "test config" }
+module Flow = DataFlow::Global<DefaultFlowConfig>;
 
-  override predicate isSource(DataFlow::Node source) {
-    source.(DataFlow::CallNode).getTarget().getName() = "source"
-  }
+import Flow::PathGraph
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink = any(DataFlow::CallNode c | c.getTarget().getName() = "sink").getAnArgument()
-  }
-}
-
-from DataFlow::PathNode source, DataFlow::PathNode sink, TestConfig c
-where c.hasFlowPath(source, sink)
+from Flow::PathNode source, Flow::PathNode sink
+where Flow::flowPath(source, sink)
 select source, source, sink, "path"

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.IO;
-using Semmle.Util.Logging;
 using Mono.Unix;
+using Semmle.Util.Logging;
 
 namespace Semmle.Util
 {
@@ -107,7 +107,7 @@ namespace Semmle.Util
             var result = outPath.ToString(preamble, length - preamble);  // Trim off leading \\?\
 
             return result.StartsWith("UNC")
-                ? @"\" + result.Substring(3)
+                ? @$"\{result[3..]}"
                 : result;
         }
     }
@@ -208,7 +208,7 @@ namespace Semmle.Util
         /// Create cache with a given capacity.
         /// </summary>
         /// <param name="pathStrategy">The algorithm for determining the canonical path.</param>
-        /// <param name="capacity">The size of the cache.</param>
+        /// <param name="maxCapacity">The size of the cache.</param>
         public CanonicalPathCache(int maxCapacity, PathStrategy pathStrategy)
         {
             if (maxCapacity <= 0)
@@ -230,7 +230,6 @@ namespace Semmle.Util
         /// </remarks>
         ///
         /// <param name="maxCapacity">Size of the cache.</param>
-        /// <param name="symlinks">Policy for following symlinks.</param>
         /// <returns>A new CanonicalPathCache.</returns>
         public static CanonicalPathCache Create(ILogger logger, int maxCapacity)
         {
@@ -268,7 +267,7 @@ namespace Semmle.Util
                     catch  // lgtm[cs/catch-of-all-exceptions]
                     {
                         // Failed to late-bind a suitable library.
-                        logger.Log(Severity.Warning, "Preserving symlinks in canonical paths");
+                        logger.LogWarning("Preserving symlinks in canonical paths");
                         pathStrategy = new QueryDirectoryStrategy();
                     }
                     break;

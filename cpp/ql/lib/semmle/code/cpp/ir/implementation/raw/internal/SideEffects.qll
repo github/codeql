@@ -16,6 +16,10 @@ private predicate isDeeplyConst(Type t) {
   or
   isDeeplyConst(t.(Decltype).getBaseType())
   or
+  isDeeplyConst(t.(TypeofType).getBaseType())
+  or
+  isDeeplyConst(t.(IntrinsicTransformedType).getBaseType())
+  or
   isDeeplyConst(t.(ReferenceType).getBaseType())
   or
   exists(SpecifiedType specType | specType = t |
@@ -36,6 +40,10 @@ private predicate isDeeplyConstBelow(Type t) {
   or
   isDeeplyConstBelow(t.(Decltype).getBaseType())
   or
+  isDeeplyConstBelow(t.(TypeofType).getBaseType())
+  or
+  isDeeplyConstBelow(t.(IntrinsicTransformedType).getBaseType())
+  or
   isDeeplyConst(t.(PointerType).getBaseType())
   or
   isDeeplyConst(t.(ReferenceType).getBaseType())
@@ -45,6 +53,8 @@ private predicate isDeeplyConstBelow(Type t) {
   isDeeplyConst(t.(ArrayType).getBaseType())
   or
   isDeeplyConst(t.(GNUVectorType).getBaseType())
+  or
+  isDeeplyConst(t.(ScalableVectorType).getBaseType())
   or
   isDeeplyConst(t.(FunctionPointerIshType).getBaseType())
   or
@@ -120,9 +130,9 @@ private predicate hasDefaultSideEffect(Call call, ParameterIndex i, boolean buff
 }
 
 /**
- * A `Call` or `NewOrNewArrayExpr`.
+ * A `Call` or `NewOrNewArrayExpr` or `DeleteOrDeleteArrayExpr`.
  *
- * Both kinds of expression invoke a function as part of their evaluation. This class provides a
+ * All kinds of expression invoke a function as part of their evaluation. This class provides a
  * way to treat both kinds of function similarly, and to get the invoked `Function`.
  */
 class CallOrAllocationExpr extends Expr {
@@ -130,6 +140,8 @@ class CallOrAllocationExpr extends Expr {
     this instanceof Call
     or
     this instanceof NewOrNewArrayExpr
+    or
+    this instanceof DeleteOrDeleteArrayExpr
   }
 
   /** Gets the `Function` invoked by this expression, if known. */
@@ -137,6 +149,8 @@ class CallOrAllocationExpr extends Expr {
     result = this.(Call).getTarget()
     or
     result = this.(NewOrNewArrayExpr).getAllocator()
+    or
+    result = this.(DeleteOrDeleteArrayExpr).getDeallocator()
   }
 }
 

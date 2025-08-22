@@ -9,6 +9,7 @@ private import semmle.code.csharp.frameworks.Moq
 private import semmle.code.csharp.frameworks.system.web.Security
 private import semmle.code.csharp.frameworks.system.security.cryptography.X509Certificates
 private import semmle.code.csharp.frameworks.Test
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
 
 /**
  * A data flow source for hard coded credentials.
@@ -18,7 +19,7 @@ abstract class Source extends DataFlow::ExprNode { }
 /**
  * A data flow sink for hard coded credentials.
  */
-abstract class Sink extends DataFlow::ExprNode {
+abstract class Sink extends ApiSinkExprNode {
   /**
    * Gets a description of this sink, including a placeholder for the sink and a placeholder for
    * the supplementary element.
@@ -40,12 +41,10 @@ abstract class Sanitizer extends DataFlow::ExprNode { }
 /**
  * A taint-tracking configuration for hard coded credentials.
  */
-class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "HardcodedCredentials" }
+private module HardcodedCredentialsConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink instanceof Sink and
     // Ignore values that are ultimately returned by mocks, as they don't represent "real"
     // credentials.
@@ -53,8 +52,24 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
     not any(ReturnedByMockObject mock).getAnArgument() = sink.asExpr()
   }
 
-  override predicate hasFlowPath(DataFlow::PathNode source, DataFlow::PathNode sink) {
-    super.hasFlowPath(source, sink) and
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/**
+ * A taint-tracking module for hard coded credentials.
+ */
+module HardcodedCredentials {
+  import TaintTracking::Global<HardcodedCredentialsConfig> as Super
+  import Super
+
+  /**
+   * Holds if data can flow from `source` to `sink`.
+   *
+   * The corresponding paths are generated from the end-points and the graph
+   * included in the module `PathGraph`.
+   */
+  predicate flowPath(HardcodedCredentials::PathNode source, HardcodedCredentials::PathNode sink) {
+    Super::flowPath(source, sink) and
     // Exclude hard-coded credentials in tests if they only flow to calls to methods with a name
     // like "Add*" "Create*" or "Update*". The rationale is that hard-coded credentials within
     // tests that are only used for creating or setting values within tests are unlikely to
@@ -71,8 +86,6 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
       )
     )
   }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 }
 
 /**
@@ -117,7 +130,7 @@ private class CredentialVar extends Assignable {
     exists(string name | name = this.getName() |
       name.regexpMatch("(?i).*pass(wd|word|code|phrase)(?!.*question).*")
       or
-      name.regexpMatch("(?i).*(puid|username|userid).*")
+      name.regexpMatch("(?i).*(puid|username|userid)(?!.*(characters|claimtype)).*")
       or
       name.regexpMatch("(?i).*(cert)(?!.*(format|name)).*")
     )

@@ -4,7 +4,7 @@
  */
 
 import csharp
-private import semmle.code.csharp.dataflow.ExternalFlow
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 module HardcodedSymmetricEncryptionKey {
   private import semmle.code.csharp.frameworks.system.security.cryptography.SymmetricAlgorithm
@@ -57,32 +57,37 @@ module HardcodedSymmetricEncryptionKey {
 
   private class CryptographicBuffer extends Class {
     CryptographicBuffer() {
-      this.hasQualifiedName("Windows.Security.Cryptography", "CryptographicBuffer")
+      this.hasFullyQualifiedName("Windows.Security.Cryptography", "CryptographicBuffer")
     }
   }
 
   /**
    * A taint-tracking configuration for uncontrolled data in path expression vulnerabilities.
    */
-  class TaintTrackingConfiguration extends TaintTracking::Configuration {
-    TaintTrackingConfiguration() { this = "HardcodedSymmetricEncryptionKey" }
+  private module HardCodedSymmetricEncryptionConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
     /**
      * Since `CryptographicBuffer` uses native code inside, taint tracking doesn't pass through it.
      * Need to create an additional custom step.
      */
-    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
       exists(MethodCall mc, CryptographicBuffer c |
         pred.asExpr() = mc.getAnArgument() and
         mc.getTarget() = c.getAMethod() and
         succ.asExpr() = mc
       )
     }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
+
+  /**
+   * A taint-tracking module for uncontrolled data in path expression vulnerabilities.
+   */
+  module HardCodedSymmetricEncryption = TaintTracking::Global<HardCodedSymmetricEncryptionConfig>;
 }

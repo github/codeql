@@ -2,6 +2,8 @@
  * Provides classes and predicates for def-use and use-use pairs. Built on top of the SSA library for
  * maximal precision.
  */
+overlay[local?]
+module;
 
 import java
 private import SSA
@@ -13,7 +15,7 @@ private import SSA
  *
  * This is the transitive closure of `adjacentUseUseSameVar`.
  */
-predicate useUsePairSameVar(RValue use1, RValue use2) { adjacentUseUseSameVar+(use1, use2) }
+predicate useUsePairSameVar(VarRead use1, VarRead use2) { adjacentUseUseSameVar+(use1, use2) }
 
 /**
  * Holds if `use1` and `use2` form a use-use-pair of the same
@@ -23,7 +25,7 @@ predicate useUsePairSameVar(RValue use1, RValue use2) { adjacentUseUseSameVar+(u
  *
  * This is the transitive closure of `adjacentUseUse`.
  */
-predicate useUsePair(RValue use1, RValue use2) { adjacentUseUse+(use1, use2) }
+predicate useUsePair(VarRead use1, VarRead use2) { adjacentUseUse+(use1, use2) }
 
 /**
  * Holds if there exists a path from `def` to `use` without passing through another
@@ -31,7 +33,7 @@ predicate useUsePair(RValue use1, RValue use2) { adjacentUseUse+(use1, use2) }
  *
  * Other paths may also exist, so the SSA variables in `def` and `use` can be different.
  */
-predicate defUsePair(VariableUpdate def, RValue use) {
+predicate defUsePair(VariableUpdate def, VarRead use) {
   exists(SsaVariable v |
     v.getAUse() = use and v.getAnUltimateDefinition().(SsaExplicitUpdate).getDefiningExpr() = def
   )
@@ -43,7 +45,7 @@ predicate defUsePair(VariableUpdate def, RValue use) {
  *
  * Other paths may also exist, so the SSA variables can be different.
  */
-predicate parameterDefUsePair(Parameter p, RValue use) {
+predicate parameterDefUsePair(Parameter p, VarRead use) {
   exists(SsaVariable v |
     v.getAUse() = use and v.getAnUltimateDefinition().(SsaImplicitInit).isParameterDefinition(p)
   )

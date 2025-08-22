@@ -1,8 +1,9 @@
 /** Provides summary models relating to file content inputs of Android. */
+deprecated module;
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.dataflow.TaintTracking2
+import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.android.Android
 
 /** The `startActivityForResult` method of Android's `Activity` class. */
@@ -29,36 +30,34 @@ class GetContentIntent extends ClassInstanceExpr {
 }
 
 /** Taint configuration that identifies `GET_CONTENT` `Intent` instances passed to `startActivityForResult`. */
-class GetContentIntentConfig extends TaintTracking2::Configuration {
-  GetContentIntentConfig() { this = "GetContentIntentConfig" }
+module GetContentIntentConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof GetContentIntent }
 
-  override predicate isSource(DataFlow2::Node src) { src.asExpr() instanceof GetContentIntent }
-
-  override predicate isSink(DataFlow2::Node sink) {
-    exists(MethodAccess ma |
+  predicate isSink(DataFlow::Node sink) {
+    exists(MethodCall ma |
       ma.getMethod() instanceof StartActivityForResultMethod and sink.asExpr() = ma.getArgument(0)
     )
   }
 
-  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet content) {
-    super.allowImplicitRead(node, content)
-    or
+  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet content) {
     // Allow the wrapped intent created by Intent.getChooser to be consumed
     // by at the sink:
-    this.isSink(node) and
+    isSink(node) and
     allowIntentExtrasImplicitRead(node, content)
   }
 }
 
+module GetContentsIntentFlow = TaintTracking::Global<GetContentIntentConfig>;
+
 /** A `GET_CONTENT` `Intent` instances that is passed to `startActivityForResult`. */
 class AndroidFileIntentInput extends DataFlow::Node {
-  MethodAccess ma;
+  MethodCall ma;
 
   AndroidFileIntentInput() {
     this.asExpr() = ma.getArgument(0) and
     ma.getMethod() instanceof StartActivityForResultMethod and
-    exists(GetContentIntentConfig cc, GetContentIntent gi |
-      cc.hasFlow(DataFlow::exprNode(gi), DataFlow::exprNode(ma.getArgument(0)))
+    exists(GetContentIntent gi |
+      GetContentsIntentFlow::flow(DataFlow::exprNode(gi), DataFlow::exprNode(ma.getArgument(0)))
     )
   }
 

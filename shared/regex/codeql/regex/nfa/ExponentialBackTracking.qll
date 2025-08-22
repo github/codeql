@@ -3,7 +3,7 @@
  *
  *   James Kirrage, Asiri Rathnayake, Hayo Thielecke: Static Analysis for
  *     Regular Expression Denial-of-Service Attacks. NSS 2013.
- *     (http://www.cs.bham.ac.uk/~hxt/research/reg-exp-sec.pdf)
+ *     (https://arxiv.org/abs/1301.0849)
  *   Asiri Rathnayake, Hayo Thielecke: Static Analysis for Regular Expression
  *     Exponential Runtime via Substructural Logics. 2014.
  *     (https://www.cs.bham.ac.uk/~hxt/research/redos_full.pdf)
@@ -61,6 +61,8 @@
  *   * Lastly we ensure that any state reached by repeating `n` copies of `w` has
  *     a suffix `x` (possible empty) that is most likely __not__ accepted.
  */
+overlay[local?]
+module;
 
 private import NfaUtils as NfaUtils
 private import codeql.regex.RegexTreeView

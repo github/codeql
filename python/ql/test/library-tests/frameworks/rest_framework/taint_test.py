@@ -1,5 +1,6 @@
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
@@ -81,7 +82,7 @@ def test_taint(request: Request, routed_param): # $ requestHandler routedParamet
     )
     ensure_not_tainted(request.user.password)
 
-    return Response("ok") # $ HttpResponse responseBody="ok"
+    return Response("ok") # $ HttpResponse
 
 
 # class based view
@@ -89,7 +90,7 @@ def test_taint(request: Request, routed_param): # $ requestHandler routedParamet
 
 
 class MyClass(APIView):
-    def initial(self, request, *args, **kwargs): # $ requestHandler
+    def initial(self, request, *args, **kwargs): # $ requestHandler routedParameter=kwargs
         # this method will be called before processing any request
         ensure_tainted(request) # $ tainted
 
@@ -105,14 +106,33 @@ class MyClass(APIView):
         # same as for standard Django view
         ensure_tainted(self.args, self.kwargs) # $ tainted
 
-        return Response("ok") # $ HttpResponse responseBody="ok"
+        return Response("ok") # $ HttpResponse
 
+# Viewsets
+# see https://www.django-rest-framework.org/api-guide/viewsets/
+
+class MyModelViewSet(ModelViewSet):
+    def retrieve(self, request, routed_param): # $ requestHandler routedParameter=routed_param
+        ensure_tainted(
+            request, # $ tainted
+            request.GET, # $ tainted
+            request.GET.get("pk"), # $ tainted
+            request.data # $ tainted
+        )
+
+        ensure_tainted(routed_param) # $ tainted
+
+        # same as for standard Django view
+        ensure_tainted(self.args, self.kwargs) # $ tainted
+
+        return Response("retrieve") # $ HttpResponse
 
 
 # fake setup, you can't actually run this
 urlpatterns = [
     path("test-taint/<routed_param>", test_taint),  # $ routeSetup="test-taint/<routed_param>"
     path("ClassView/<routed_param>", MyClass.as_view()), # $ routeSetup="ClassView/<routed_param>"
+    path("MyModelViewSet/<routed_param>", MyModelViewSet.as_view()) # $ routeSetup="MyModelViewSet/<routed_param>"
 ]
 
 # tests with no route-setup, but we can still tell that these are using Django REST

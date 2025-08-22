@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["newrelic/newrelic-dotnet-agent/.github/workflows/publish_release_notes.yml", "*", "input.agent_version", "code-injection", "generated"]
+     - ["newrelic/newrelic-dotnet-agent/.github/workflows/post_deploy_agent.yml", "*", "input.test_mode", "code-injection", "generated"]
+     - ["newrelic/newrelic-dotnet-agent/.github/workflows/multiverse_run.yml", "*", "input.agentVersion", "code-injection", "generated"]
+     - ["newrelic/newrelic-dotnet-agent/.github/workflows/build_download_site_index_files.yml", "*", "input.dry-run", "code-injection", "generated"]
+     - ["newrelic/newrelic-dotnet-agent/.github/workflows/build_download_site_index_files.yml", "*", "input.prefix", "code-injection", "generated"]

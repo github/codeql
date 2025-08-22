@@ -16,7 +16,7 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.Rmi
-import DataFlow::PathGraph
+import BindingUnsafeRemoteObjectFlow::PathGraph
 
 /**
  * A method that binds a name to a remote object.
@@ -24,10 +24,10 @@ import DataFlow::PathGraph
 private class BindMethod extends Method {
   BindMethod() {
     (
-      getDeclaringType().hasQualifiedName("java.rmi", "Naming") or
-      getDeclaringType().hasQualifiedName("java.rmi.registry", "Registry")
+      this.getDeclaringType().hasQualifiedName("java.rmi", "Naming") or
+      this.getDeclaringType().hasQualifiedName("java.rmi.registry", "Registry")
     ) and
-    hasName(["bind", "rebind"])
+    this.hasName(["bind", "rebind"])
   }
 }
 
@@ -48,23 +48,19 @@ private predicate hasVulnerableMethod(RefType type) {
  * A taint-tracking configuration for unsafe remote objects
  * that are vulnerable to deserialization attacks.
  */
-private class BindingUnsafeRemoteObjectConfig extends TaintTracking::Configuration {
-  BindingUnsafeRemoteObjectConfig() { this = "BindingUnsafeRemoteObjectConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
+private module BindingUnsafeRemoteObjectConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     exists(ConstructorCall cc | cc = source.asExpr() |
       hasVulnerableMethod(cc.getConstructedType().getAnAncestor())
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma | ma.getArgument(1) = sink.asExpr() |
-      ma.getMethod() instanceof BindMethod
-    )
+  predicate isSink(DataFlow::Node sink) {
+    exists(MethodCall ma | ma.getArgument(1) = sink.asExpr() | ma.getMethod() instanceof BindMethod)
   }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+  predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+    exists(MethodCall ma, Method m | m = ma.getMethod() |
       m.getDeclaringType().hasQualifiedName("java.rmi.server", "UnicastRemoteObject") and
       m.hasName("exportObject") and
       not m.getParameterType([2, 4]).(RefType).hasQualifiedName("java.io", "ObjectInputFilter") and
@@ -74,6 +70,14 @@ private class BindingUnsafeRemoteObjectConfig extends TaintTracking::Configurati
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, BindingUnsafeRemoteObjectConfig conf
-where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Unsafe deserialization in a remote object."
+private module BindingUnsafeRemoteObjectFlow =
+  TaintTracking::Global<BindingUnsafeRemoteObjectConfig>;
+
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, BindingUnsafeRemoteObjectFlow::PathNode source,
+  BindingUnsafeRemoteObjectFlow::PathNode sink, string message
+) {
+  BindingUnsafeRemoteObjectFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message = "Unsafe deserialization in a remote object."
+}

@@ -1,0 +1,16 @@
+name: Test
+
+on:
+  pull_request_target:
+    branches: [ master, main, dev ]
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - id: modified_files
+        uses: trilom/file-changes-action@v1.2.4
+        with:
+          output: ","
+      - run: echo "${{ steps.modified_files.outputs.files_modified }}"

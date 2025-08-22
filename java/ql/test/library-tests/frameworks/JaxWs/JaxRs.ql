@@ -1,12 +1,10 @@
 import java
 import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.security.XSS
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
-class JaxRsTest extends InlineExpectationsTest {
-  JaxRsTest() { this = "JaxRsTest" }
-
-  override string getARelevantTag() {
+module JaxRsTest implements TestSig {
+  string getARelevantTag() {
     result =
       [
         "ResourceMethod", "RootResourceClass", "NonRootResourceClass",
@@ -18,7 +16,7 @@ class JaxRsTest extends InlineExpectationsTest {
       ]
   }
 
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "ResourceMethod" and
     exists(JaxRsResourceMethod resourceMethod |
       resourceMethod.getLocation() = location and
@@ -125,7 +123,7 @@ class JaxRsTest extends InlineExpectationsTest {
     )
     or
     tag = "MessageBodyReaderReadFromCall" and
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof MessageBodyReaderReadFrom and
       ma.getLocation() = location and
       element = ma.toString() and
@@ -133,7 +131,7 @@ class JaxRsTest extends InlineExpectationsTest {
     )
     or
     tag = "MessageBodyReaderReadCall" and
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof MessageBodyReaderRead and
       ma.getLocation() = location and
       element = ma.toString() and
@@ -168,3 +166,5 @@ class JaxRsTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<JaxRsTest>

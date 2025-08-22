@@ -1,0 +1,4 @@
+| exception_groups.py:4:1:6:5 | ExceptGroupStmt |
+| exception_groups.py:7:1:9:5 | ExceptGroupStmt |
+| exception_groups.py:10:1:12:5 | ExceptGroupStmt |
+| exception_groups.py:13:1:15:5 | ExceptGroupStmt |

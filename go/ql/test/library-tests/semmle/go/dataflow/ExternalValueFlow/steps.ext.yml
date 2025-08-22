@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["github.com/nonexistent/test", "T", False, "StepArgRes", "", "", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["github.com/nonexistent/test", "T", False, "StepArgRes1", "", "", "Argument[0]", "ReturnValue[1]", "value", "manual"]
+      - ["github.com/nonexistent/test", "T", False, "StepArgArg", "", "", "Argument[0]", "Argument[1]", "value", "df-generated"]
+      - ["github.com/nonexistent/test", "T", False, "StepArgArgIgnored", "", "", "Argument[0]", "Argument[1]", "value", "df-generated"]
+      - ["github.com/nonexistent/test", "T", False, "StepArgQual", "", "", "Argument[0]", "Argument[receiver]", "value", "manual"]
+      - ["github.com/nonexistent/test", "T", False, "StepQualRes", "", "", "Argument[receiver]", "ReturnValue", "value", "manual"]
+      - ["github.com/nonexistent/test", "T", False, "StepQualArg", "", "", "Argument[receiver]", "Argument[0]", "value", "manual"]
+      - ["github.com/nonexistent/test", "", False, "StepArgResNoQual", "", "", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["github.com/nonexistent/test", "", False, "StepArgResContent", "", "", "Argument[0]", "ReturnValue.ArrayElement", "value", "manual"]
+      - ["github.com/nonexistent/test", "", False, "StepArgContentRes", "", "", "Argument[0].ArrayElement", "ReturnValue", "value", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: neutralModel
+    data:
+      - ["github.com/nonexistent/test", "T", "StepArgArgIgnored", "", "summary", "manual"]

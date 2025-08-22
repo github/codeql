@@ -1,15 +1,13 @@
 /** This tests that we are able to detect remote flow sources and sinks. */
 
 import cpp
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import semmle.code.cpp.security.FlowSources
 
-class RemoteFlowSourceTest extends InlineExpectationsTest {
-  RemoteFlowSourceTest() { this = "RemoteFlowSourceTest" }
+module RemoteFlowSourceTest implements TestSig {
+  string getARelevantTag() { result = "remote_source" }
 
-  override string getARelevantTag() { result = "remote_source" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "remote_source" and
     exists(RemoteFlowSource node, int n |
       n =
@@ -31,12 +29,10 @@ class RemoteFlowSourceTest extends InlineExpectationsTest {
   }
 }
 
-class RemoteFlowSinkTest extends InlineExpectationsTest {
-  RemoteFlowSinkTest() { this = "RemoteFlowSinkTest" }
+module RemoteFlowSinkTest implements TestSig {
+  string getARelevantTag() { result = "remote_sink" }
 
-  override string getARelevantTag() { result = "remote_sink" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "remote_sink" and
     exists(RemoteFlowSink node, int n |
       n =
@@ -57,3 +53,5 @@ class RemoteFlowSinkTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<MergeTests<RemoteFlowSourceTest, RemoteFlowSinkTest>>

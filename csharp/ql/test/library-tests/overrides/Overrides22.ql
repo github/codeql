@@ -1,4 +1,5 @@
 import csharp
+import semmle.code.csharp.commons.QualifiedName
 
 from Overridable v1, Overridable v2, string kind
 where
@@ -9,4 +10,4 @@ where
   ) and
   v1.fromSource() and
   v2.fromSource()
-select v1.getQualifiedNameWithTypes(), v2.getQualifiedNameWithTypes(), kind
+select getFullyQualifiedNameWithTypes(v1), getFullyQualifiedNameWithTypes(v2), kind

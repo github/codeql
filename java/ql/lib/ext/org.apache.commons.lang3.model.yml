@@ -3,6 +3,10 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
+      - ["org.apache.commons.lang3", "SerializationUtils", False, "deserialize", "", "", "Argument[0]", "unsafe-deserialization", "manual"]
+      # Note these sinks do not use the sink kind `regex-use[0]` because the regex injection query needs to select them separately from
+      # other `regex-use[0]` sinks in order to avoid FPs. As a result, these sinks are currently not used in the polynomial ReDoS query.
+      # TODO: refactor the `regex-use%` sink kind so that the polynomial ReDoS query can also use these sinks.
       - ["org.apache.commons.lang3", "RegExUtils", False, "removeAll", "(String,String)", "", "Argument[1]", "regex-use", "manual"]
       - ["org.apache.commons.lang3", "RegExUtils", False, "removeFirst", "(String,String)", "", "Argument[1]", "regex-use", "manual"]
       - ["org.apache.commons.lang3", "RegExUtils", False, "removePattern", "(String,String)", "", "Argument[1]", "regex-use", "manual"]
@@ -104,13 +108,13 @@ extensions:
       - ["org.apache.commons.lang3", "StringUtils", False, "join", "(java.lang.Iterable,char)", "", "Argument[0].Element", "ReturnValue", "taint", "manual"]
       - ["org.apache.commons.lang3", "StringUtils", False, "join", "(java.lang.Iterable,java.lang.String)", "", "Argument[0].Element", "ReturnValue", "taint", "manual"]
       - ["org.apache.commons.lang3", "StringUtils", False, "join", "(java.lang.Iterable,java.lang.String)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
-      - ["org.apache.commons.lang3", "StringUtils", False, "join", "(java.lang.Object[])", "", "Argument[0].ArrayElement", "ReturnValue", "taint", "manual"]
-      - ["org.apache.commons.lang3", "StringUtils", False, "join", "(java.lang.Object[],char)", "", "Argument[0].ArrayElement", "ReturnValue", "taint", "manual"]
-      - ["org.apache.commons.lang3", "StringUtils", False, "join", "(java.lang.Object[],char,int,int)", "", "Argument[0].ArrayElement", "ReturnValue", "taint", "manual"]
-      - ["org.apache.commons.lang3", "StringUtils", False, "join", "(java.lang.Object[],java.lang.String)", "", "Argument[0].ArrayElement", "ReturnValue", "taint", "manual"]
-      - ["org.apache.commons.lang3", "StringUtils", False, "join", "(java.lang.Object[],java.lang.String)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
-      - ["org.apache.commons.lang3", "StringUtils", False, "join", "(java.lang.Object[],java.lang.String,int,int)", "", "Argument[0].ArrayElement", "ReturnValue", "taint", "manual"]
-      - ["org.apache.commons.lang3", "StringUtils", False, "join", "(java.lang.Object[],java.lang.String,int,int)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.commons.lang3", "StringUtils", False, "join", "(Object[])", "", "Argument[0].ArrayElement", "ReturnValue", "taint", "manual"]
+      - ["org.apache.commons.lang3", "StringUtils", False, "join", "(Object[],char)", "", "Argument[0].ArrayElement", "ReturnValue", "taint", "manual"]
+      - ["org.apache.commons.lang3", "StringUtils", False, "join", "(Object[],char,int,int)", "", "Argument[0].ArrayElement", "ReturnValue", "taint", "manual"]
+      - ["org.apache.commons.lang3", "StringUtils", False, "join", "(Object[],String)", "", "Argument[0].ArrayElement", "ReturnValue", "taint", "manual"]
+      - ["org.apache.commons.lang3", "StringUtils", False, "join", "(Object[],String)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.commons.lang3", "StringUtils", False, "join", "(Object[],String,int,int)", "", "Argument[0].ArrayElement", "ReturnValue", "taint", "manual"]
+      - ["org.apache.commons.lang3", "StringUtils", False, "join", "(Object[],String,int,int)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
       - ["org.apache.commons.lang3", "StringUtils", False, "join", "(java.util.Iterator,char)", "", "Argument[0].Element", "ReturnValue", "taint", "manual"]
       - ["org.apache.commons.lang3", "StringUtils", False, "join", "(java.util.Iterator,java.lang.String)", "", "Argument[0].Element", "ReturnValue", "taint", "manual"]
       - ["org.apache.commons.lang3", "StringUtils", False, "join", "(java.util.Iterator,java.lang.String)", "", "Argument[1]", "ReturnValue", "taint", "manual"]

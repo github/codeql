@@ -12,6 +12,9 @@ private import semmle.code.cpp.ir.internal.Overlap
  * Provides the newtype used to represent operands across all phases of the IR.
  */
 private module Internal {
+  private class TAliasedChiInstruction =
+    TAliasedSsaChiInstruction or TAliasedSsaChiAfterUninitializedGroupInstruction;
+
   /**
    * An IR operand. `TOperand` is shared across all phases of the IR. There are branches of this
    * type for operands created directly from the AST (`TRegisterOperand` and `TNonSSAMemoryOperand`),
@@ -23,9 +26,8 @@ private module Internal {
   newtype TOperand =
     // RAW
     TRegisterOperand(TRawInstruction useInstr, RegisterOperandTag tag, TRawInstruction defInstr) {
-      defInstr = RawConstruction::getRegisterOperandDefinition(useInstr, tag) and
-      not RawConstruction::isInCycle(useInstr) and
-      strictcount(RawConstruction::getRegisterOperandDefinition(useInstr, tag)) = 1
+      defInstr = unique( | | RawConstruction::getRegisterOperandDefinition(useInstr, tag)) and
+      not RawConstruction::isInCycle(useInstr)
     } or
     // Placeholder for Phi and Chi operands in stages that don't have the corresponding instructions
     TNoOperand() { none() } or
@@ -53,7 +55,7 @@ private module Internal {
     ) {
       exists(AliasedConstruction::getPhiOperandDefinition(useInstr, predecessorBlock, overlap))
     } or
-    TAliasedChiOperand(TAliasedSsaChiInstruction useInstr, ChiOperandTag tag) { any() }
+    TAliasedChiOperand(TAliasedChiInstruction useInstr, ChiOperandTag tag) { any() }
 }
 
 /**
@@ -74,19 +76,11 @@ private module Shared {
 
   class TNonSsaMemoryOperand = Internal::TNonSsaMemoryOperand;
 
-  /** DEPRECATED: Alias for TNonSsaMemoryOperand */
-  deprecated class TNonSSAMemoryOperand = TNonSsaMemoryOperand;
-
   /**
    * Returns the non-Phi memory operand with the specified parameters.
    */
   TNonSsaMemoryOperand nonSsaMemoryOperand(TRawInstruction useInstr, MemoryOperandTag tag) {
     result = Internal::TNonSsaMemoryOperand(useInstr, tag)
-  }
-
-  /** DEPRECATED: Alias for nonSsaMemoryOperand */
-  deprecated TNonSSAMemoryOperand nonSSAMemoryOperand(TRawInstruction useInstr, MemoryOperandTag tag) {
-    result = nonSsaMemoryOperand(useInstr, tag)
   }
 }
 
@@ -167,9 +161,6 @@ module UnaliasedSsaOperands {
   TChiOperand chiOperand(Unaliased::Instruction useInstr, ChiOperandTag tag) { none() }
 }
 
-/** DEPRECATED: Alias for UnaliasedSsaOperands */
-deprecated module UnaliasedSSAOperands = UnaliasedSsaOperands;
-
 /**
  * Provides wrappers for the constructors of each branch of `TOperand` that is used by the
  * aliased SSA stage.
@@ -210,13 +201,13 @@ module AliasedSsaOperands {
     )
   }
 
+  private class TChiInstruction =
+    TAliasedSsaChiInstruction or TAliasedSsaChiAfterUninitializedGroupInstruction;
+
   /**
    * Returns the Chi operand with the specified parameters.
    */
-  TChiOperand chiOperand(TAliasedSsaChiInstruction useInstr, ChiOperandTag tag) {
+  TChiOperand chiOperand(TChiInstruction useInstr, ChiOperandTag tag) {
     result = Internal::TAliasedChiOperand(useInstr, tag)
   }
 }
-
-/** DEPRECATED: Alias for AliasedSsaOperands */
-deprecated module AliasedSSAOperands = AliasedSsaOperands;

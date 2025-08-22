@@ -1,0 +1,20 @@
+| A.java:3:9:3:49 | someFun(...) | A.java:3:9:3:20 | ExtensionsKt | A.java:3:30:3:44 | new SomeClass(...) |
+| A.java:3:9:3:49 | someFun(...) | A.java:3:9:3:20 | ExtensionsKt | A.java:3:47:3:48 | "" |
+| extensions.kt:21:5:21:38 | someClassMethod(...) | extensions.kt:21:5:21:15 | new SomeClass(...) | extensions.kt:21:33:21:37 | "foo" |
+| extensions.kt:22:5:22:30 | someFun(...) | extensions.kt:22:5:22:30 | ExtensionsKt | extensions.kt:22:5:22:15 | new SomeClass(...) |
+| extensions.kt:22:5:22:30 | someFun(...) | extensions.kt:22:5:22:30 | ExtensionsKt | extensions.kt:22:25:22:29 | "foo" |
+| extensions.kt:23:5:23:30 | bothFun(...) | extensions.kt:23:5:23:30 | ExtensionsKt | extensions.kt:23:5:23:15 | new SomeClass(...) |
+| extensions.kt:23:5:23:30 | bothFun(...) | extensions.kt:23:5:23:30 | ExtensionsKt | extensions.kt:23:25:23:29 | "foo" |
+| extensions.kt:24:5:24:35 | bothFunDiffTypes(...) | extensions.kt:24:5:24:35 | ExtensionsKt | extensions.kt:24:5:24:15 | new SomeClass(...) |
+| extensions.kt:24:5:24:35 | bothFunDiffTypes(...) | extensions.kt:24:5:24:35 | ExtensionsKt | extensions.kt:24:34:24:34 | 1 |
+| extensions.kt:25:5:25:44 | anotherClassMethod(...) | extensions.kt:25:5:25:18 | new AnotherClass(...) | extensions.kt:25:39:25:43 | "foo" |
+| extensions.kt:26:5:26:36 | anotherFun(...) | extensions.kt:26:5:26:36 | ExtensionsKt | extensions.kt:26:5:26:18 | new AnotherClass(...) |
+| extensions.kt:26:5:26:36 | anotherFun(...) | extensions.kt:26:5:26:36 | ExtensionsKt | extensions.kt:26:31:26:35 | "foo" |
+| extensions.kt:27:5:27:33 | bothFun(...) | extensions.kt:27:5:27:33 | ExtensionsKt | extensions.kt:27:5:27:18 | new AnotherClass(...) |
+| extensions.kt:27:5:27:33 | bothFun(...) | extensions.kt:27:5:27:33 | ExtensionsKt | extensions.kt:27:28:27:32 | "foo" |
+| extensions.kt:28:5:28:42 | bothFunDiffTypes(...) | extensions.kt:28:5:28:42 | ExtensionsKt | extensions.kt:28:5:28:18 | new AnotherClass(...) |
+| extensions.kt:28:5:28:42 | bothFunDiffTypes(...) | extensions.kt:28:5:28:42 | ExtensionsKt | extensions.kt:28:37:28:41 | "foo" |
+| extensions.kt:29:5:29:27 | bar(...) | extensions.kt:29:5:29:27 | ExtensionsKt | extensions.kt:29:5:29:16 | "someString" |
+| extensions.kt:29:5:29:27 | bar(...) | extensions.kt:29:5:29:27 | ExtensionsKt | extensions.kt:29:22:29:26 | "foo" |
+| extensions.kt:31:5:31:32 | baz(...) | extensions.kt:31:5:31:32 | new (...) | extensions.kt:31:5:31:16 | "someString" |
+| extensions.kt:31:5:31:32 | baz(...) | extensions.kt:31:5:31:32 | new (...) | extensions.kt:31:22:31:31 | "bazParam" |

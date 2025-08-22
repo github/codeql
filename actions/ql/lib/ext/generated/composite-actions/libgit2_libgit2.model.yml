@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["libgit2/libgit2", "*", "input.command", "code-injection", "generated"]
+     - ["libgit2/libgit2", "*", "input.container-version", "code-injection", "generated"]
+     - ["libgit2/libgit2", "*", "input.container", "code-injection", "generated"]
+     - ["libgit2/libgit2", "*", "input.base", "code-injection", "generated"]
+     - ["libgit2/libgit2", "*", "input.config-path", "code-injection", "generated"]
+     - ["libgit2/libgit2", "*", "input.registry", "code-injection", "generated"]
+     - ["libgit2/libgit2", "*", "input.dockerfile", "code-injection", "generated"]

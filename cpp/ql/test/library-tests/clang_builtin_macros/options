@@ -1,1 +1,1 @@
-semmle-extractor-options: --edg --clang
+semmle-extractor-options: --clang

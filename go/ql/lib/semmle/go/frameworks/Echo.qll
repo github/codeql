@@ -1,5 +1,5 @@
 /**
- * Provides classes for working with untrusted flow sources, taint propagators, and HTTP sinks
+ * Provides classes for working with remote flow sources, taint propagators, and HTTP sinks
  * from the `github.com/labstack/echo` package.
  */
 
@@ -10,23 +10,6 @@ private module Echo {
   private string packagePath() { result = package("github.com/labstack/echo", "") }
 
   /**
-   * Data from a `Context` interface method, considered as a source of untrusted flow.
-   */
-  private class EchoContextSource extends UntrustedFlowSource::Range {
-    EchoContextSource() {
-      exists(DataFlow::MethodCallNode call, string methodName |
-        methodName =
-          [
-            "Param", "ParamValues", "QueryParam", "QueryParams", "QueryString", "FormValue",
-            "FormParams", "FormFile", "MultipartForm", "Cookie", "Cookies"
-          ] and
-        call.getTarget().hasQualifiedName(packagePath(), "Context", methodName) and
-        this = call.getResult(0)
-      )
-    }
-  }
-
-  /**
    * Data from a `Context` interface method that is not generally exploitable for open-redirect attacks.
    */
   private class EchoContextRedirectUnexploitableSource extends Http::Redirect::UnexploitableSource {
@@ -35,41 +18,6 @@ private module Echo {
         methodName = ["FormValue", "FormParams", "FormFile", "MultipartForm", "Cookie", "Cookies"] and
         call.getTarget().hasQualifiedName(packagePath(), "Context", methodName) and
         this = call.getResult(0)
-      )
-    }
-  }
-
-  /**
-   * Models of `Context.Get/Set`. `Context` behaves like a map, with corresponding taint propagation.
-   */
-  private class ContextMapModels extends TaintTracking::FunctionModel, Method {
-    string methodName;
-    FunctionInput input;
-    FunctionOutput output;
-
-    ContextMapModels() {
-      (
-        methodName = "Get" and input.isReceiver() and output.isResult()
-        or
-        methodName = "Set" and input.isParameter(1) and output.isReceiver()
-      ) and
-      this.hasQualifiedName(packagePath(), "Context", methodName)
-    }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp = input and outp = output
-    }
-  }
-
-  /**
-   * A call to a method on `Context` struct that unmarshals data into a target.
-   */
-  private class EchoContextBinder extends UntrustedFlowSource::Range {
-    EchoContextBinder() {
-      exists(DataFlow::MethodCallNode call |
-        call.getTarget().hasQualifiedName(packagePath(), "Context", "Bind")
-      |
-        this = FunctionOutput::parameter(0).getExitNode(call)
       )
     }
   }
@@ -107,17 +55,18 @@ private module Echo {
   }
 
   /**
-   * The `echo.Context.Redirect` method.
+   * DEPRECATED: Use `FileSystemAccess::Range` instead.
+   *
+   * The File system access sinks
    */
-  private class EchoRedirectMethod extends Http::Redirect::Range, DataFlow::CallNode {
-    EchoRedirectMethod() {
-      exists(Method m | m.hasQualifiedName(packagePath(), "Context", "Redirect") |
+  deprecated class FsOperations extends FileSystemAccess::Range, DataFlow::CallNode {
+    FsOperations() {
+      exists(Method m |
+        m.hasQualifiedName(packagePath(), "Context", ["Attachment", "File"]) and
         this = m.getACall()
       )
     }
 
-    override DataFlow::Node getUrl() { result = this.getArgument(1) }
-
-    override Http::ResponseWriter getResponseWriter() { none() }
+    override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
   }
 }

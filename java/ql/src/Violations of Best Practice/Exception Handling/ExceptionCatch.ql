@@ -21,7 +21,7 @@ private predicate relevantTypeNames(string typeName, string message) {
 }
 
 private Type getAThrownExceptionType(TryStmt t) {
-  exists(MethodAccess ma, Exception e |
+  exists(MethodCall ma, Exception e |
     t.getBlock() = ma.getEnclosingStmt().getEnclosingStmt*() and
     ma.getMethod().getAnException() = e and
     result = e.getType()

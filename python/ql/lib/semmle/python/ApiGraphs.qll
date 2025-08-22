@@ -155,18 +155,6 @@ module API {
      */
     DataFlow::LocalSourceNode asSource() { Impl::use(this, result) }
 
-    /** DEPRECATED. This predicate has been renamed to `getAValueReachableFromSource()`. */
-    deprecated DataFlow::Node getAUse() { result = this.getAValueReachableFromSource() }
-
-    /** DEPRECATED. This predicate has been renamed to `asSource()`. */
-    deprecated DataFlow::LocalSourceNode getAnImmediateUse() { result = this.asSource() }
-
-    /** DEPRECATED. This predicate has been renamed to `asSink()`. */
-    deprecated DataFlow::Node getARhs() { result = this.asSink() }
-
-    /** DEPRECATED. This predicate has been renamed to `getAValueReachingSink()`. */
-    deprecated DataFlow::Node getAValueReachingRhs() { result = this.getAValueReachingSink() }
-
     /**
      * Gets a call to the function represented by this API component.
      */
@@ -208,6 +196,12 @@ module API {
     Node getReturn() { result = this.getASuccessor(Label::return()) }
 
     /**
+     * Gets a node representing instances of the class represented by this node, as specified via
+     * type annotations.
+     */
+    Node getInstanceFromAnnotation() { result = this.getASuccessor(Label::annotation()) }
+
+    /**
      * Gets a node representing the `i`th parameter of the function represented by this node.
      *
      * This predicate may have multiple results when there are multiple invocations of this API component.
@@ -237,6 +231,13 @@ module API {
      * Gets a node representing a subclass of the class represented by this node.
      */
     Node getASubclass() { result = this.getASuccessor(Label::subclass()) }
+
+    /**
+     * Gets a node representing an instance of the class (or a transitive subclass of the class) represented by this node.
+     */
+    Node getAnInstance() {
+      result in [this.getASubclass*().getReturn(), this.getASubclass*().getInstanceFromAnnotation()]
+    }
 
     /**
      * Gets a node representing the result from awaiting this node.
@@ -269,7 +270,7 @@ module API {
      */
     Node getSubscript(string key) {
       exists(API::Node index | result = this.getSubscriptAt(index) |
-        key = index.getAValueReachingSink().asExpr().(PY::StrConst).getText()
+        key = index.getAValueReachingSink().asExpr().(PY::StringLiteral).getText()
       )
     }
 
@@ -340,6 +341,9 @@ module API {
      */
     DataFlow::Node getInducingNode() { this = Impl::MkUse(result) or this = Impl::MkDef(result) }
 
+    /** Gets the location of this node */
+    PY::Location getLocation() { result = this.getInducingNode().getLocation() }
+
     /**
      * Holds if this element is at the specified location.
      * The location spans column `startcolumn` of line `startline` to
@@ -347,7 +351,7 @@ module API {
      * For more information, see
      * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
-    predicate hasLocationInfo(
+    deprecated predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
       this.getInducingNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
@@ -838,6 +842,10 @@ module API {
         lbl = Label::return() and
         ref = pred.getACall()
         or
+        // Getting an instance via a type annotation
+        lbl = Label::annotation() and
+        ref = pred.getAnAnnotatedInstance()
+        or
         // Awaiting a node that is a use of `base`
         lbl = Label::await() and
         ref = pred.getAnAwaited()
@@ -846,6 +854,13 @@ module API {
         lbl = Label::subscript() and
         ref = pred.getSubscript(_) and
         ref.asCfgNode().isLoad()
+        or
+        // Subscript via comprehension
+        lbl = Label::subscript() and
+        exists(PY::Comp comp |
+          pred.asExpr() = comp.getIterable() and
+          ref.asExpr() = comp.getNthInnerLoop(0).getTarget()
+        )
         or
         // Subclassing a node
         lbl = Label::subclass() and
@@ -987,7 +1002,7 @@ module API {
     DataFlow::LocalSourceNode trackUseNode(DataFlow::LocalSourceNode src) {
       Stages::TypeTracking::ref() and
       result = trackUseNode(src, DataFlow::TypeTracker::end()) and
-      result instanceof DataFlow::ExprNode
+      result instanceof DataFlow::LocalSourceNodeNotModuleVariableNode
     }
 
     /**
@@ -1076,6 +1091,7 @@ module API {
         } or
         MkLabelSelfParameter() or
         MkLabelReturn() or
+        MkLabelAnnotation() or
         MkLabelSubclass() or
         MkLabelAwait() or
         MkLabelSubscript() or
@@ -1145,6 +1161,11 @@ module API {
         override string toString() { result = "getReturn()" }
       }
 
+      /** A label for annotations. */
+      class LabelAnnotation extends ApiLabel, MkLabelAnnotation {
+        override string toString() { result = "getAnnotatedInstance()" }
+      }
+
       /** A label that gets the subclass of a class. */
       class LabelSubclass extends ApiLabel, MkLabelSubclass {
         override string toString() { result = "getASubclass()" }
@@ -1203,6 +1224,9 @@ module API {
 
     /** Gets the `return` edge label. */
     LabelReturn return() { any() }
+
+    /** Gets the `annotation` edge label. */
+    LabelAnnotation annotation() { any() }
 
     /** Gets the `subclass` edge label. */
     LabelSubclass subclass() { any() }

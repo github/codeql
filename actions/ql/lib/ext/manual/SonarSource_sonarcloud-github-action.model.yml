@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["SonarSource/sonarcloud-github-action", "*", "input.args", "secret-exfiltration", "manual"]
+

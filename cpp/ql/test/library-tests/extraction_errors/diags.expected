@@ -1,0 +1,10 @@
+| file://:0:0:0:0 | There was an error during this compilation |
+| test.cpp:6:14:6:14 | identifier 'no_such_function' is undefined |
+| test.cpp:9:14:9:14 | identifier 'nsf2' is undefined |
+| test.cpp:11:7:11:7 | too few arguments in function call |
+| test.cpp:14:1:14:1 | identifier 'uint32_t' is undefined |
+| test.cpp:15:5:15:5 | 'this' may only be used inside a nonstatic member function |
+| test.cpp:15:10:15:10 | expected a ';' |
+| test.cpp:16:5:16:5 | identifier 'so_is_this' is undefined |
+| test.cpp:16:16:16:16 | expected a ')' |
+| test.cpp:16:16:16:16 | expected an expression |

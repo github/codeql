@@ -1,13 +1,54 @@
+models
+| 1 | Sink: os/exec; ; false; Command; ; ; Argument[0]; command-injection; manual |
+| 2 | Source: github.com/emicklei/go-restful; Request; true; BodyParameter; ; ; ReturnValue[0]; remote; manual |
+| 3 | Source: github.com/emicklei/go-restful; Request; true; PathParameters; ; ; ReturnValue; remote; manual |
+| 4 | Source: github.com/emicklei/go-restful; Request; true; QueryParameters; ; ; ReturnValue; remote; manual |
+| 5 | Source: github.com/emicklei/go-restful; Request; true; ReadEntity; ; ; Argument[0]; remote; manual |
+edges
+| gorestful.go:15:15:15:44 | call to QueryParameters | gorestful.go:15:15:15:47 | index expression | provenance | Src:MaD:4 Sink:MaD:1 |
+| gorestful.go:17:2:17:39 | ... := ...[0] | gorestful.go:18:15:18:17 | val | provenance | Src:MaD:2 Sink:MaD:1 |
+| gorestful.go:21:15:21:38 | call to PathParameters | gorestful.go:21:15:21:45 | index expression | provenance | Src:MaD:3 Sink:MaD:1 |
+| gorestful.go:23:21:23:24 | &... | gorestful.go:24:15:24:21 | selection of cmd | provenance | Src:MaD:5 Sink:MaD:1 |
+| gorestful_v2.go:15:15:15:44 | call to QueryParameters | gorestful_v2.go:15:15:15:47 | index expression | provenance | Src:MaD:4 Sink:MaD:1 |
+| gorestful_v2.go:17:2:17:39 | ... := ...[0] | gorestful_v2.go:18:15:18:17 | val | provenance | Src:MaD:2 Sink:MaD:1 |
+| gorestful_v2.go:21:15:21:38 | call to PathParameters | gorestful_v2.go:21:15:21:45 | index expression | provenance | Src:MaD:3 Sink:MaD:1 |
+| gorestful_v2.go:23:21:23:24 | &... | gorestful_v2.go:24:15:24:21 | selection of cmd | provenance | Src:MaD:5 Sink:MaD:1 |
+nodes
+| gorestful.go:15:15:15:44 | call to QueryParameters | semmle.label | call to QueryParameters |
+| gorestful.go:15:15:15:47 | index expression | semmle.label | index expression |
+| gorestful.go:16:15:16:43 | call to QueryParameter | semmle.label | call to QueryParameter |
+| gorestful.go:17:2:17:39 | ... := ...[0] | semmle.label | ... := ...[0] |
+| gorestful.go:18:15:18:17 | val | semmle.label | val |
+| gorestful.go:19:15:19:44 | call to HeaderParameter | semmle.label | call to HeaderParameter |
+| gorestful.go:20:15:20:42 | call to PathParameter | semmle.label | call to PathParameter |
+| gorestful.go:21:15:21:38 | call to PathParameters | semmle.label | call to PathParameters |
+| gorestful.go:21:15:21:45 | index expression | semmle.label | index expression |
+| gorestful.go:23:21:23:24 | &... | semmle.label | &... |
+| gorestful.go:24:15:24:21 | selection of cmd | semmle.label | selection of cmd |
+| gorestful_v2.go:15:15:15:44 | call to QueryParameters | semmle.label | call to QueryParameters |
+| gorestful_v2.go:15:15:15:47 | index expression | semmle.label | index expression |
+| gorestful_v2.go:16:15:16:43 | call to QueryParameter | semmle.label | call to QueryParameter |
+| gorestful_v2.go:17:2:17:39 | ... := ...[0] | semmle.label | ... := ...[0] |
+| gorestful_v2.go:18:15:18:17 | val | semmle.label | val |
+| gorestful_v2.go:19:15:19:44 | call to HeaderParameter | semmle.label | call to HeaderParameter |
+| gorestful_v2.go:20:15:20:42 | call to PathParameter | semmle.label | call to PathParameter |
+| gorestful_v2.go:21:15:21:38 | call to PathParameters | semmle.label | call to PathParameters |
+| gorestful_v2.go:21:15:21:45 | index expression | semmle.label | index expression |
+| gorestful_v2.go:23:21:23:24 | &... | semmle.label | &... |
+| gorestful_v2.go:24:15:24:21 | selection of cmd | semmle.label | selection of cmd |
+subpaths
+invalidModelRow
+#select
 | gorestful.go:15:15:15:47 | index expression | gorestful.go:15:15:15:44 | call to QueryParameters | gorestful.go:15:15:15:47 | index expression | This command depends on $@. | gorestful.go:15:15:15:44 | call to QueryParameters | a user-provided value |
 | gorestful.go:16:15:16:43 | call to QueryParameter | gorestful.go:16:15:16:43 | call to QueryParameter | gorestful.go:16:15:16:43 | call to QueryParameter | This command depends on $@. | gorestful.go:16:15:16:43 | call to QueryParameter | a user-provided value |
-| gorestful.go:18:15:18:17 | val | gorestful.go:17:12:17:39 | call to BodyParameter | gorestful.go:18:15:18:17 | val | This command depends on $@. | gorestful.go:17:12:17:39 | call to BodyParameter | a user-provided value |
+| gorestful.go:18:15:18:17 | val | gorestful.go:17:2:17:39 | ... := ...[0] | gorestful.go:18:15:18:17 | val | This command depends on $@. | gorestful.go:17:2:17:39 | ... := ...[0] | a user-provided value |
 | gorestful.go:19:15:19:44 | call to HeaderParameter | gorestful.go:19:15:19:44 | call to HeaderParameter | gorestful.go:19:15:19:44 | call to HeaderParameter | This command depends on $@. | gorestful.go:19:15:19:44 | call to HeaderParameter | a user-provided value |
 | gorestful.go:20:15:20:42 | call to PathParameter | gorestful.go:20:15:20:42 | call to PathParameter | gorestful.go:20:15:20:42 | call to PathParameter | This command depends on $@. | gorestful.go:20:15:20:42 | call to PathParameter | a user-provided value |
 | gorestful.go:21:15:21:45 | index expression | gorestful.go:21:15:21:38 | call to PathParameters | gorestful.go:21:15:21:45 | index expression | This command depends on $@. | gorestful.go:21:15:21:38 | call to PathParameters | a user-provided value |
 | gorestful.go:24:15:24:21 | selection of cmd | gorestful.go:23:21:23:24 | &... | gorestful.go:24:15:24:21 | selection of cmd | This command depends on $@. | gorestful.go:23:21:23:24 | &... | a user-provided value |
 | gorestful_v2.go:15:15:15:47 | index expression | gorestful_v2.go:15:15:15:44 | call to QueryParameters | gorestful_v2.go:15:15:15:47 | index expression | This command depends on $@. | gorestful_v2.go:15:15:15:44 | call to QueryParameters | a user-provided value |
 | gorestful_v2.go:16:15:16:43 | call to QueryParameter | gorestful_v2.go:16:15:16:43 | call to QueryParameter | gorestful_v2.go:16:15:16:43 | call to QueryParameter | This command depends on $@. | gorestful_v2.go:16:15:16:43 | call to QueryParameter | a user-provided value |
-| gorestful_v2.go:18:15:18:17 | val | gorestful_v2.go:17:12:17:39 | call to BodyParameter | gorestful_v2.go:18:15:18:17 | val | This command depends on $@. | gorestful_v2.go:17:12:17:39 | call to BodyParameter | a user-provided value |
+| gorestful_v2.go:18:15:18:17 | val | gorestful_v2.go:17:2:17:39 | ... := ...[0] | gorestful_v2.go:18:15:18:17 | val | This command depends on $@. | gorestful_v2.go:17:2:17:39 | ... := ...[0] | a user-provided value |
 | gorestful_v2.go:19:15:19:44 | call to HeaderParameter | gorestful_v2.go:19:15:19:44 | call to HeaderParameter | gorestful_v2.go:19:15:19:44 | call to HeaderParameter | This command depends on $@. | gorestful_v2.go:19:15:19:44 | call to HeaderParameter | a user-provided value |
 | gorestful_v2.go:20:15:20:42 | call to PathParameter | gorestful_v2.go:20:15:20:42 | call to PathParameter | gorestful_v2.go:20:15:20:42 | call to PathParameter | This command depends on $@. | gorestful_v2.go:20:15:20:42 | call to PathParameter | a user-provided value |
 | gorestful_v2.go:21:15:21:45 | index expression | gorestful_v2.go:21:15:21:38 | call to PathParameters | gorestful_v2.go:21:15:21:45 | index expression | This command depends on $@. | gorestful_v2.go:21:15:21:38 | call to PathParameters | a user-provided value |

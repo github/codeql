@@ -1,0 +1,134 @@
+models
+| 1 | Summary: System.Collections.Generic; ICollection<T>; true; Add; (T); ; Argument[0]; Argument[this].Element; value; manual |
+| 2 | Summary: System.Collections.Generic; List<T>; false; ForEach; (System.Action<T>); ; Argument[this].Element; Argument[0].Parameter[0]; value; manual |
+edges
+| TypeFlowDispatch.cs:11:42:11:42 | x : String | TypeFlowDispatch.cs:13:11:13:11 | access to parameter x : String | provenance |  |
+| TypeFlowDispatch.cs:11:42:11:42 | x : String | TypeFlowDispatch.cs:13:11:13:11 | access to parameter x : String | provenance |  |
+| TypeFlowDispatch.cs:13:11:13:11 | access to parameter x : String | TypeFlowDispatch.cs:23:20:23:20 | x : String | provenance |  |
+| TypeFlowDispatch.cs:13:11:13:11 | access to parameter x : String | TypeFlowDispatch.cs:23:20:23:20 | x : String | provenance |  |
+| TypeFlowDispatch.cs:16:46:16:46 | x : String | TypeFlowDispatch.cs:18:19:18:19 | access to parameter x : String | provenance |  |
+| TypeFlowDispatch.cs:16:46:16:46 | x : String | TypeFlowDispatch.cs:18:19:18:19 | access to parameter x : String | provenance |  |
+| TypeFlowDispatch.cs:18:19:18:19 | access to parameter x : String | TypeFlowDispatch.cs:11:42:11:42 | x : String | provenance |  |
+| TypeFlowDispatch.cs:18:19:18:19 | access to parameter x : String | TypeFlowDispatch.cs:11:42:11:42 | x : String | provenance |  |
+| TypeFlowDispatch.cs:23:20:23:20 | x : String | TypeFlowDispatch.cs:23:32:23:32 | access to parameter x | provenance |  |
+| TypeFlowDispatch.cs:23:20:23:20 | x : String | TypeFlowDispatch.cs:23:32:23:32 | access to parameter x | provenance |  |
+| TypeFlowDispatch.cs:23:39:23:49 | call to method Source<String> : String | TypeFlowDispatch.cs:16:46:16:46 | x : String | provenance |  |
+| TypeFlowDispatch.cs:23:39:23:49 | call to method Source<String> : String | TypeFlowDispatch.cs:16:46:16:46 | x : String | provenance |  |
+| TypeFlowDispatch.cs:29:37:29:37 | l : List<T> [element] : String | TypeFlowDispatch.cs:31:9:31:9 | access to parameter l : List<T> [element] : String | provenance |  |
+| TypeFlowDispatch.cs:29:37:29:37 | l : List<T> [element] : String | TypeFlowDispatch.cs:31:9:31:9 | access to parameter l : List<T> [element] : String | provenance |  |
+| TypeFlowDispatch.cs:31:9:31:9 | access to parameter l : List<T> [element] : String | TypeFlowDispatch.cs:39:34:39:34 | x : String | provenance | MaD:2 |
+| TypeFlowDispatch.cs:31:9:31:9 | access to parameter l : List<T> [element] : String | TypeFlowDispatch.cs:39:34:39:34 | x : String | provenance | MaD:2 |
+| TypeFlowDispatch.cs:36:13:36:19 | access to local variable tainted : List<T> [element] : String | TypeFlowDispatch.cs:39:25:39:31 | access to local variable tainted : List<T> [element] : String | provenance |  |
+| TypeFlowDispatch.cs:36:13:36:19 | access to local variable tainted : List<T> [element] : String | TypeFlowDispatch.cs:39:25:39:31 | access to local variable tainted : List<T> [element] : String | provenance |  |
+| TypeFlowDispatch.cs:36:23:36:54 | object creation of type List<String> : List<T> [element] : String | TypeFlowDispatch.cs:36:13:36:19 | access to local variable tainted : List<T> [element] : String | provenance |  |
+| TypeFlowDispatch.cs:36:23:36:54 | object creation of type List<String> : List<T> [element] : String | TypeFlowDispatch.cs:36:13:36:19 | access to local variable tainted : List<T> [element] : String | provenance |  |
+| TypeFlowDispatch.cs:36:42:36:52 | call to method Source<String> : String | TypeFlowDispatch.cs:36:23:36:54 | object creation of type List<String> : List<T> [element] : String | provenance | MaD:1 |
+| TypeFlowDispatch.cs:36:42:36:52 | call to method Source<String> : String | TypeFlowDispatch.cs:36:23:36:54 | object creation of type List<String> : List<T> [element] : String | provenance | MaD:1 |
+| TypeFlowDispatch.cs:39:25:39:31 | access to local variable tainted : List<T> [element] : String | TypeFlowDispatch.cs:29:37:29:37 | l : List<T> [element] : String | provenance |  |
+| TypeFlowDispatch.cs:39:25:39:31 | access to local variable tainted : List<T> [element] : String | TypeFlowDispatch.cs:29:37:29:37 | l : List<T> [element] : String | provenance |  |
+| TypeFlowDispatch.cs:39:34:39:34 | x : String | TypeFlowDispatch.cs:39:46:39:46 | access to parameter x | provenance |  |
+| TypeFlowDispatch.cs:39:34:39:34 | x : String | TypeFlowDispatch.cs:39:46:39:46 | access to parameter x | provenance |  |
+| TypeFlowDispatch.cs:42:42:42:42 | x : String | TypeFlowDispatch.cs:44:11:44:11 | access to parameter x : String | provenance |  |
+| TypeFlowDispatch.cs:42:42:42:42 | x : String | TypeFlowDispatch.cs:44:11:44:11 | access to parameter x : String | provenance |  |
+| TypeFlowDispatch.cs:44:11:44:11 | access to parameter x : String | TypeFlowDispatch.cs:52:32:52:32 | t : String | provenance |  |
+| TypeFlowDispatch.cs:44:11:44:11 | access to parameter x : String | TypeFlowDispatch.cs:52:32:52:32 | t : String | provenance |  |
+| TypeFlowDispatch.cs:47:46:47:46 | x : String | TypeFlowDispatch.cs:49:19:49:19 | access to parameter x : String | provenance |  |
+| TypeFlowDispatch.cs:47:46:47:46 | x : String | TypeFlowDispatch.cs:49:19:49:19 | access to parameter x : String | provenance |  |
+| TypeFlowDispatch.cs:49:19:49:19 | access to parameter x : String | TypeFlowDispatch.cs:42:42:42:42 | x : String | provenance |  |
+| TypeFlowDispatch.cs:49:19:49:19 | access to parameter x : String | TypeFlowDispatch.cs:42:42:42:42 | x : String | provenance |  |
+| TypeFlowDispatch.cs:52:32:52:32 | t : String | TypeFlowDispatch.cs:52:43:52:43 | access to parameter t | provenance |  |
+| TypeFlowDispatch.cs:52:32:52:32 | t : String | TypeFlowDispatch.cs:52:43:52:43 | access to parameter t | provenance |  |
+| TypeFlowDispatch.cs:57:38:57:48 | call to method Source<String> : String | TypeFlowDispatch.cs:47:46:47:46 | x : String | provenance |  |
+| TypeFlowDispatch.cs:57:38:57:48 | call to method Source<String> : String | TypeFlowDispatch.cs:47:46:47:46 | x : String | provenance |  |
+| TypeFlowDispatch.cs:61:29:61:29 | l : List<T> [element] : String | TypeFlowDispatch.cs:63:27:63:27 | access to parameter l : List<T> [element] : String | provenance |  |
+| TypeFlowDispatch.cs:61:29:61:29 | l : List<T> [element] : String | TypeFlowDispatch.cs:63:27:63:27 | access to parameter l : List<T> [element] : String | provenance |  |
+| TypeFlowDispatch.cs:63:27:63:27 | access to parameter l : List<T> [element] : String | TypeFlowDispatch.cs:64:15:64:15 | access to local variable x : String | provenance |  |
+| TypeFlowDispatch.cs:63:27:63:27 | access to parameter l : List<T> [element] : String | TypeFlowDispatch.cs:64:15:64:15 | access to local variable x : String | provenance |  |
+| TypeFlowDispatch.cs:64:15:64:15 | access to local variable x : String | TypeFlowDispatch.cs:52:32:52:32 | t : String | provenance |  |
+| TypeFlowDispatch.cs:64:15:64:15 | access to local variable x : String | TypeFlowDispatch.cs:52:32:52:32 | t : String | provenance |  |
+| TypeFlowDispatch.cs:67:33:67:33 | l : List<T> [element] : String | TypeFlowDispatch.cs:69:17:69:17 | access to parameter l : List<T> [element] : String | provenance |  |
+| TypeFlowDispatch.cs:67:33:67:33 | l : List<T> [element] : String | TypeFlowDispatch.cs:69:17:69:17 | access to parameter l : List<T> [element] : String | provenance |  |
+| TypeFlowDispatch.cs:69:17:69:17 | access to parameter l : List<T> [element] : String | TypeFlowDispatch.cs:61:29:61:29 | l : List<T> [element] : String | provenance |  |
+| TypeFlowDispatch.cs:69:17:69:17 | access to parameter l : List<T> [element] : String | TypeFlowDispatch.cs:61:29:61:29 | l : List<T> [element] : String | provenance |  |
+| TypeFlowDispatch.cs:74:13:74:19 | access to local variable tainted : List<T> [element] : String | TypeFlowDispatch.cs:77:21:77:27 | access to local variable tainted : List<T> [element] : String | provenance |  |
+| TypeFlowDispatch.cs:74:13:74:19 | access to local variable tainted : List<T> [element] : String | TypeFlowDispatch.cs:77:21:77:27 | access to local variable tainted : List<T> [element] : String | provenance |  |
+| TypeFlowDispatch.cs:74:23:74:54 | object creation of type List<String> : List<T> [element] : String | TypeFlowDispatch.cs:74:13:74:19 | access to local variable tainted : List<T> [element] : String | provenance |  |
+| TypeFlowDispatch.cs:74:23:74:54 | object creation of type List<String> : List<T> [element] : String | TypeFlowDispatch.cs:74:13:74:19 | access to local variable tainted : List<T> [element] : String | provenance |  |
+| TypeFlowDispatch.cs:74:42:74:52 | call to method Source<String> : String | TypeFlowDispatch.cs:74:23:74:54 | object creation of type List<String> : List<T> [element] : String | provenance | MaD:1 |
+| TypeFlowDispatch.cs:74:42:74:52 | call to method Source<String> : String | TypeFlowDispatch.cs:74:23:74:54 | object creation of type List<String> : List<T> [element] : String | provenance | MaD:1 |
+| TypeFlowDispatch.cs:77:21:77:27 | access to local variable tainted : List<T> [element] : String | TypeFlowDispatch.cs:67:33:67:33 | l : List<T> [element] : String | provenance |  |
+| TypeFlowDispatch.cs:77:21:77:27 | access to local variable tainted : List<T> [element] : String | TypeFlowDispatch.cs:67:33:67:33 | l : List<T> [element] : String | provenance |  |
+nodes
+| TypeFlowDispatch.cs:11:42:11:42 | x : String | semmle.label | x : String |
+| TypeFlowDispatch.cs:11:42:11:42 | x : String | semmle.label | x : String |
+| TypeFlowDispatch.cs:13:11:13:11 | access to parameter x : String | semmle.label | access to parameter x : String |
+| TypeFlowDispatch.cs:13:11:13:11 | access to parameter x : String | semmle.label | access to parameter x : String |
+| TypeFlowDispatch.cs:16:46:16:46 | x : String | semmle.label | x : String |
+| TypeFlowDispatch.cs:16:46:16:46 | x : String | semmle.label | x : String |
+| TypeFlowDispatch.cs:18:19:18:19 | access to parameter x : String | semmle.label | access to parameter x : String |
+| TypeFlowDispatch.cs:18:19:18:19 | access to parameter x : String | semmle.label | access to parameter x : String |
+| TypeFlowDispatch.cs:23:20:23:20 | x : String | semmle.label | x : String |
+| TypeFlowDispatch.cs:23:20:23:20 | x : String | semmle.label | x : String |
+| TypeFlowDispatch.cs:23:32:23:32 | access to parameter x | semmle.label | access to parameter x |
+| TypeFlowDispatch.cs:23:32:23:32 | access to parameter x | semmle.label | access to parameter x |
+| TypeFlowDispatch.cs:23:39:23:49 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| TypeFlowDispatch.cs:23:39:23:49 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| TypeFlowDispatch.cs:29:37:29:37 | l : List<T> [element] : String | semmle.label | l : List<T> [element] : String |
+| TypeFlowDispatch.cs:29:37:29:37 | l : List<T> [element] : String | semmle.label | l : List<T> [element] : String |
+| TypeFlowDispatch.cs:31:9:31:9 | access to parameter l : List<T> [element] : String | semmle.label | access to parameter l : List<T> [element] : String |
+| TypeFlowDispatch.cs:31:9:31:9 | access to parameter l : List<T> [element] : String | semmle.label | access to parameter l : List<T> [element] : String |
+| TypeFlowDispatch.cs:36:13:36:19 | access to local variable tainted : List<T> [element] : String | semmle.label | access to local variable tainted : List<T> [element] : String |
+| TypeFlowDispatch.cs:36:13:36:19 | access to local variable tainted : List<T> [element] : String | semmle.label | access to local variable tainted : List<T> [element] : String |
+| TypeFlowDispatch.cs:36:23:36:54 | object creation of type List<String> : List<T> [element] : String | semmle.label | object creation of type List<String> : List<T> [element] : String |
+| TypeFlowDispatch.cs:36:23:36:54 | object creation of type List<String> : List<T> [element] : String | semmle.label | object creation of type List<String> : List<T> [element] : String |
+| TypeFlowDispatch.cs:36:42:36:52 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| TypeFlowDispatch.cs:36:42:36:52 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| TypeFlowDispatch.cs:39:25:39:31 | access to local variable tainted : List<T> [element] : String | semmle.label | access to local variable tainted : List<T> [element] : String |
+| TypeFlowDispatch.cs:39:25:39:31 | access to local variable tainted : List<T> [element] : String | semmle.label | access to local variable tainted : List<T> [element] : String |
+| TypeFlowDispatch.cs:39:34:39:34 | x : String | semmle.label | x : String |
+| TypeFlowDispatch.cs:39:34:39:34 | x : String | semmle.label | x : String |
+| TypeFlowDispatch.cs:39:46:39:46 | access to parameter x | semmle.label | access to parameter x |
+| TypeFlowDispatch.cs:39:46:39:46 | access to parameter x | semmle.label | access to parameter x |
+| TypeFlowDispatch.cs:42:42:42:42 | x : String | semmle.label | x : String |
+| TypeFlowDispatch.cs:42:42:42:42 | x : String | semmle.label | x : String |
+| TypeFlowDispatch.cs:44:11:44:11 | access to parameter x : String | semmle.label | access to parameter x : String |
+| TypeFlowDispatch.cs:44:11:44:11 | access to parameter x : String | semmle.label | access to parameter x : String |
+| TypeFlowDispatch.cs:47:46:47:46 | x : String | semmle.label | x : String |
+| TypeFlowDispatch.cs:47:46:47:46 | x : String | semmle.label | x : String |
+| TypeFlowDispatch.cs:49:19:49:19 | access to parameter x : String | semmle.label | access to parameter x : String |
+| TypeFlowDispatch.cs:49:19:49:19 | access to parameter x : String | semmle.label | access to parameter x : String |
+| TypeFlowDispatch.cs:52:32:52:32 | t : String | semmle.label | t : String |
+| TypeFlowDispatch.cs:52:32:52:32 | t : String | semmle.label | t : String |
+| TypeFlowDispatch.cs:52:43:52:43 | access to parameter t | semmle.label | access to parameter t |
+| TypeFlowDispatch.cs:52:43:52:43 | access to parameter t | semmle.label | access to parameter t |
+| TypeFlowDispatch.cs:57:38:57:48 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| TypeFlowDispatch.cs:57:38:57:48 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| TypeFlowDispatch.cs:61:29:61:29 | l : List<T> [element] : String | semmle.label | l : List<T> [element] : String |
+| TypeFlowDispatch.cs:61:29:61:29 | l : List<T> [element] : String | semmle.label | l : List<T> [element] : String |
+| TypeFlowDispatch.cs:63:27:63:27 | access to parameter l : List<T> [element] : String | semmle.label | access to parameter l : List<T> [element] : String |
+| TypeFlowDispatch.cs:63:27:63:27 | access to parameter l : List<T> [element] : String | semmle.label | access to parameter l : List<T> [element] : String |
+| TypeFlowDispatch.cs:64:15:64:15 | access to local variable x : String | semmle.label | access to local variable x : String |
+| TypeFlowDispatch.cs:64:15:64:15 | access to local variable x : String | semmle.label | access to local variable x : String |
+| TypeFlowDispatch.cs:67:33:67:33 | l : List<T> [element] : String | semmle.label | l : List<T> [element] : String |
+| TypeFlowDispatch.cs:67:33:67:33 | l : List<T> [element] : String | semmle.label | l : List<T> [element] : String |
+| TypeFlowDispatch.cs:69:17:69:17 | access to parameter l : List<T> [element] : String | semmle.label | access to parameter l : List<T> [element] : String |
+| TypeFlowDispatch.cs:69:17:69:17 | access to parameter l : List<T> [element] : String | semmle.label | access to parameter l : List<T> [element] : String |
+| TypeFlowDispatch.cs:74:13:74:19 | access to local variable tainted : List<T> [element] : String | semmle.label | access to local variable tainted : List<T> [element] : String |
+| TypeFlowDispatch.cs:74:13:74:19 | access to local variable tainted : List<T> [element] : String | semmle.label | access to local variable tainted : List<T> [element] : String |
+| TypeFlowDispatch.cs:74:23:74:54 | object creation of type List<String> : List<T> [element] : String | semmle.label | object creation of type List<String> : List<T> [element] : String |
+| TypeFlowDispatch.cs:74:23:74:54 | object creation of type List<String> : List<T> [element] : String | semmle.label | object creation of type List<String> : List<T> [element] : String |
+| TypeFlowDispatch.cs:74:42:74:52 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| TypeFlowDispatch.cs:74:42:74:52 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| TypeFlowDispatch.cs:77:21:77:27 | access to local variable tainted : List<T> [element] : String | semmle.label | access to local variable tainted : List<T> [element] : String |
+| TypeFlowDispatch.cs:77:21:77:27 | access to local variable tainted : List<T> [element] : String | semmle.label | access to local variable tainted : List<T> [element] : String |
+subpaths
+testFailures
+#select
+| TypeFlowDispatch.cs:23:32:23:32 | access to parameter x | TypeFlowDispatch.cs:23:39:23:49 | call to method Source<String> : String | TypeFlowDispatch.cs:23:32:23:32 | access to parameter x | $@ | TypeFlowDispatch.cs:23:39:23:49 | call to method Source<String> : String | call to method Source<String> : String |
+| TypeFlowDispatch.cs:23:32:23:32 | access to parameter x | TypeFlowDispatch.cs:23:39:23:49 | call to method Source<String> : String | TypeFlowDispatch.cs:23:32:23:32 | access to parameter x | $@ | TypeFlowDispatch.cs:23:39:23:49 | call to method Source<String> : String | call to method Source<String> : String |
+| TypeFlowDispatch.cs:39:46:39:46 | access to parameter x | TypeFlowDispatch.cs:36:42:36:52 | call to method Source<String> : String | TypeFlowDispatch.cs:39:46:39:46 | access to parameter x | $@ | TypeFlowDispatch.cs:36:42:36:52 | call to method Source<String> : String | call to method Source<String> : String |
+| TypeFlowDispatch.cs:39:46:39:46 | access to parameter x | TypeFlowDispatch.cs:36:42:36:52 | call to method Source<String> : String | TypeFlowDispatch.cs:39:46:39:46 | access to parameter x | $@ | TypeFlowDispatch.cs:36:42:36:52 | call to method Source<String> : String | call to method Source<String> : String |
+| TypeFlowDispatch.cs:52:43:52:43 | access to parameter t | TypeFlowDispatch.cs:57:38:57:48 | call to method Source<String> : String | TypeFlowDispatch.cs:52:43:52:43 | access to parameter t | $@ | TypeFlowDispatch.cs:57:38:57:48 | call to method Source<String> : String | call to method Source<String> : String |
+| TypeFlowDispatch.cs:52:43:52:43 | access to parameter t | TypeFlowDispatch.cs:57:38:57:48 | call to method Source<String> : String | TypeFlowDispatch.cs:52:43:52:43 | access to parameter t | $@ | TypeFlowDispatch.cs:57:38:57:48 | call to method Source<String> : String | call to method Source<String> : String |
+| TypeFlowDispatch.cs:52:43:52:43 | access to parameter t | TypeFlowDispatch.cs:74:42:74:52 | call to method Source<String> : String | TypeFlowDispatch.cs:52:43:52:43 | access to parameter t | $@ | TypeFlowDispatch.cs:74:42:74:52 | call to method Source<String> : String | call to method Source<String> : String |
+| TypeFlowDispatch.cs:52:43:52:43 | access to parameter t | TypeFlowDispatch.cs:74:42:74:52 | call to method Source<String> : String | TypeFlowDispatch.cs:52:43:52:43 | access to parameter t | $@ | TypeFlowDispatch.cs:74:42:74:52 | call to method Source<String> : String | call to method Source<String> : String |

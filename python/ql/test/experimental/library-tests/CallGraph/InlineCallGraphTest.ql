@@ -1,5 +1,5 @@
 import python
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 private import semmle.python.dataflow.new.internal.DataFlowDispatch as TT
 
 /** Holds when `call` is resolved to `callable` using points-to based call-graph. */
@@ -31,18 +31,13 @@ predicate typeTrackerCallEdge(CallNode call, Function callable) {
 predicate typeTrackerClassCall(CallNode call, Function callable) {
   exists(call.getLocation().getFile().getRelativePath()) and
   exists(callable.getLocation().getFile().getRelativePath()) and
-  exists(TT::NormalCall cc |
-    cc = TT::TNormalCall(call, _, any(TT::TCallType t | t instanceof TT::CallTypeClass)) and
-    TT::TFunction(callable) = TT::viableCallable(cc)
-  )
+  TT::resolveCall(call, callable, any(TT::TCallType t | t instanceof TT::CallTypeClass))
 }
 
-class CallGraphTest extends InlineExpectationsTest {
-  CallGraphTest() { this = "CallGraphTest" }
+module CallGraphTest implements TestSig {
+  string getARelevantTag() { result in ["pt", "tt"] }
 
-  override string getARelevantTag() { result in ["pt", "tt"] }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
     exists(CallNode call, Function target |
       tag = "tt" and
@@ -58,6 +53,8 @@ class CallGraphTest extends InlineExpectationsTest {
   }
 }
 
+import MakeTest<CallGraphTest>
+
 bindingset[call, target]
 string getCallEdgeValue(CallNode call, Function target) {
   if call.getLocation().getFile() = target.getLocation().getFile()
@@ -65,7 +62,7 @@ string getCallEdgeValue(CallNode call, Function target) {
   else
     exists(string fixedRelativePath |
       fixedRelativePath =
-        target.getLocation().getFile().getRelativePath().regexpCapture(".*/CallGraph[^/]*/(.*)", 1)
+        target.getLocation().getFile().getAbsolutePath().regexpCapture(".*/CallGraph[^/]*/(.*)", 1)
     |
       // the value needs to be enclosed in quotes to allow special characters
       result = "\"" + fixedRelativePath + ":" + betterQualName(target) + "\""
@@ -108,7 +105,7 @@ query predicate pointsTo_found_typeTracker_notFound(CallNode call, string qualna
     not typeTrackerCallEdge(call, target) and
     qualname = getCallEdgeValue(call, target) and
     // ignore SPURIOUS call edges
-    not exists(FalsePositiveExpectation spuriousResult |
+    not exists(FalsePositiveTestExpectation spuriousResult |
       spuriousResult.getTag() = "pt" and
       spuriousResult.getValue() = getCallEdgeValue(call, target) and
       spuriousResult.getLocation().getFile() = call.getLocation().getFile() and
@@ -127,7 +124,7 @@ query predicate typeTracker_found_pointsTo_notFound(CallNode call, string qualna
     // between the two).
     not typeTrackerClassCall(call, target) and
     // ignore SPURIOUS call edges
-    not exists(FalsePositiveExpectation spuriousResult |
+    not exists(FalsePositiveTestExpectation spuriousResult |
       spuriousResult.getTag() = "tt" and
       spuriousResult.getValue() = getCallEdgeValue(call, target) and
       spuriousResult.getLocation().getFile() = call.getLocation().getFile() and

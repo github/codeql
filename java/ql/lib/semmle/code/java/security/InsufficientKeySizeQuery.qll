@@ -1,17 +1,26 @@
 /** Provides data flow configurations to be used in queries related to insufficient key sizes. */
+overlay[local?]
+module;
 
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.security.InsufficientKeySize
 
-/** A data flow configuration for tracking key sizes used in cryptographic algorithms. */
-class KeySizeConfiguration extends DataFlow::Configuration {
-  KeySizeConfiguration() { this = "KeySizeConfiguration" }
+/**
+ * A data flow configuration for tracking key sizes used in cryptographic algorithms.
+ */
+module KeySizeConfig implements DataFlow::StateConfigSig {
+  class FlowState = KeySizeState;
 
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
+  predicate isSource(DataFlow::Node source, KeySizeState state) {
     source.(InsufficientKeySizeSource).hasState(state)
   }
 
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
+  predicate isSink(DataFlow::Node sink, KeySizeState state) {
     sink.(InsufficientKeySizeSink).hasState(state)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
+
+/** Tracks key sizes used in cryptographic algorithms. */
+module KeySizeFlow = DataFlow::GlobalWithState<KeySizeConfig>;

@@ -1,3 +1,451 @@
+## 4.0.13
+
+No user-facing changes.
+
+## 4.0.12
+
+### Minor Analysis Improvements
+
+* The regular expressions in `SensitiveDataHeuristics.qll` have been extended to find more instances of sensitive data such as secrets used in authentication, finance and health information, and device data. The heuristics have also been refined to find fewer false positive matches. This will improve results for queries related to sensitive information.
+
+## 4.0.11
+
+### Minor Analysis Improvements
+
+* Type annotations such as `foo : Bar` are now treated by the call graph as an indication that `foo` may be an instance of `Bar`.
+
+### Bug Fixes
+
+- The Python parser is now able to correctly parse expressions such as `match[1]` and `match()` where `match` is not used as a keyword.
+
+## 4.0.10
+
+No user-facing changes.
+
+## 4.0.9
+
+No user-facing changes.
+
+## 4.0.8
+
+### Minor Analysis Improvements
+
+- The Python extractor now extracts files in hidden directories by default. If you would like to skip files in hidden directories, add `paths-ignore: ["**/.*/**"]` to your [Code Scanning config](https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#specifying-directories-to-scan). If you would like to skip all hidden files, you can use `paths-ignore: ["**/.*"]`. When using the CodeQL CLI for extraction, specify the configuration (creating the configuration file if necessary) using the `--codescanning-config` option.
+
+## 4.0.7
+
+### Minor Analysis Improvements
+
+* Added modeling for the `hdbcli` PyPI package as a database library implementing PEP 249.
+* Added header write model for `send_header` in `http.server`.
+
+## 4.0.6
+
+No user-facing changes.
+
+## 4.0.5
+
+No user-facing changes.
+
+## 4.0.4
+
+### Minor Analysis Improvements
+
+- Added the methods `getMinArguments` and `getMaxArguments` to the `Function` class. These return the minimum and maximum positional arguments that the given function accepts.
+
+### Bug Fixes
+
+- `MatchLiteralPattern`s such as `case None: ...` are now never pruned from the extracted source code. This fixes some situations where code was wrongly identified as unreachable.
+
+## 4.0.3
+
+No user-facing changes.
+
+## 4.0.2
+
+No user-facing changes.
+
+## 4.0.1
+
+### Bug Fixes
+
+- Fixed a bug in the extractor where a comment inside a subscript could sometimes cause the AST to be missing nodes.
+- Using the `break` and `continue` keywords outside of a loop, which is a syntax error but is accepted by our parser, would cause the control-flow construction to fail. This is now no longer the case.
+
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated TypeTracking library.
+* Deleted the deprecated `classRef` predicate from the `FieldStorage` module, use `subclassRef` instead.
+* Deleted a lot of deprecated modules and predicates from `Stdlib.qll`, use API-graphs directly instead.
+
+### Minor Analysis Improvements
+
+* Additional data flow models for the builtin functions `map`, `filter`, `zip`, and `enumerate` have been added.
+
+## 3.1.1
+
+### Minor Analysis Improvements
+
+* The sensitive data library has been improved so that `snake_case` style variable names are recognized more reliably. This may result in more sensitive data being identified, and more results from queries that use the sensitive data library.
+- Additional taint steps through methods of `lxml.etree.Element` and `lxml.etree.ElementTree` objects from the `lxml` PyPI package have been modeled. 
+
+## 3.1.0
+
+### New Features
+
+* Added support for parameter annotations in API graphs. This means that in a function definition such as `def foo(x: Bar): ...`, you can now use the `getInstanceFromAnnotation()` method to step from `Bar` to `x`. In addition to this, the `getAnInstance` method now also includes instances arising from parameter annotations.
+
+### Minor Analysis Improvements
+
+* Added modeling of `fastapi.Request` and `starlette.requests.Request` as sources of untrusted input,
+  and modeling of tainted data flow out of these request objects.
+
+## 3.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated data flow API that was based on extending a configuration class. See https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries for instructions on migrating your queries to use the new API.
+
+### Bug Fixes
+
+- Fixed a problem with the control-flow graph construction, where writing `case True:` or `case False:` would cause parts of the graph to be pruned by mistake.
+
+## 2.2.0
+
+### Major Analysis Improvements
+
+* Added modeling of the `bottle` framework, leading to new remote flow sources and header writes
+
+## 2.1.2
+
+### Minor Analysis Improvements
+
+- Added partial support for the `copy.replace` method, [added](https://docs.python.org/3.13/library/copy.html#copy.replace) in Python 3.13.
+- Added support for type parameter defaults, as specified in [PEP-696](https://peps.python.org/pep-0696/).
+
+## 2.1.1
+
+### Minor Analysis Improvements
+
+* Modelled that `re.finditer` returns an iterable of `re.Match` objects. This is now understood by the API graph in many cases.
+* Type tracking, and hence the API graph, is now able to correctly trace through comprehensions.
+* More precise modelling of the dataflow through comprehensions. In particular, captured variables are now handled correctly.
+* Dataflow out of yield is added, allowing proper tracing through generators.
+* Added several models of standard library functions and classes, in anticipation of no longer extracting the standard library in a future release.
+
+## 2.1.0
+
+### New Features
+
+* Added support for custom threat-models, which can be used in most of our taint-tracking queries, see our [documentation](https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models) for more details.
+
+### Minor Analysis Improvements
+
+* The common sanitizer guard `StringConstCompareBarrier` has been renamed to `ConstCompareBarrier` and expanded to cover comparisons with other constant values such as `None`. This may result in fewer false positive results for several queries. 
+
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `explorationLimit` predicate from `DataFlow::Configuration`, use `FlowExploration<explorationLimit>` instead.
+* Deleted the deprecated `semmle.python.RegexTreeView` module, use `semmle.python.regexp.RegexTreeView` instead.
+* Deleted the deprecated `RegexString` class from  `regex.qll`.
+* Deleted the deprecated `Regex` class, use `RegExp` instead.
+* Deleted the deprecated `semmle/python/security/SQL.qll` file.
+* Deleted the deprecated `useSSL` predicates from the LDAP libraries, use `useSsl` instead.
+
+## 1.0.7
+
+No user-facing changes.
+
+## 1.0.6
+
+No user-facing changes.
+
+## 1.0.5
+
+### Minor Analysis Improvements
+
+* Added support for `DictionaryElement[<key>]` and `DictionaryElementAny` when Customizing Library Models for `sourceModel` (see https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-python/)
+
+## 1.0.4
+
+### Minor Analysis Improvements
+
+* Additional modelling to detect direct writes to the `Set-Cookie` header has been added for several web frameworks.
+
+## 1.0.3
+
+### Minor Analysis Improvements
+
+* A number of Python queries now support sinks defined using data extensions. The format of data extensions for Python has been documented.
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+No user-facing changes.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+### New Features
+
+* A Python MaD (Models as Data) row may now contain a dotted path in the `type` column. Like in Ruby, a path to a class will refer to instances of that class. This means that the summary `["foo", "Member[MyClass].Instance.Member[instance_method]", "Argument[0]", "ReturnValue", "value"]` can now be written `["foo.MS_Class", "Member[instance_method]", "Argument[0]", "ReturnValue", "value"]`. To refer to an actual class, one may add a `!` at the end of the path.
+
+### Minor Analysis Improvements
+
+* The `request` parameter of Flask `SessionInterface.open_session` method is now modeled as a remote flow source.
+* Additional heuristics for a new sensitive data classification for private information (e.g. credit card numbers) have been added to the shared `SensitiveDataHeuristics.qll` library. This may result in additional results for queries that use sensitive data such as `py/clear-text-storage-sensitive-data` and `py/clear-text-logging-sensitive-data`.
+
+## 0.12.1
+
+### Major Analysis Improvements
+
+* Added modeling of the `pyramid` framework, leading to new remote flow sources and sinks.
+
+## 0.12.0
+
+### Breaking Changes
+
+* Deleted the deprecated `RegExpPatterns` module from `Regexp.qll`.
+* Deleted the deprecated `Security/CWE-020/HostnameRegexpShared.qll` file.
+
+### Deprecated APIs
+
+- Renamed the `StrConst` class to `StringLiteral`, for greater consistency with other languages. The `StrConst` and `Str` classes are now deprecated and will be removed in a future release.
+
+## 0.11.14
+
+### Minor Analysis Improvements
+
+* Improved the type-tracking capabilities (and therefore also API graphs) to allow tracking items in tuples and dictionaries.
+
+## 0.11.13
+
+No user-facing changes.
+
+## 0.11.12
+
+No user-facing changes.
+
+## 0.11.11
+
+No user-facing changes.
+
+## 0.11.10
+
+### Minor Analysis Improvements
+
+* Fixed missing flow for dictionary updates (`d[<key>] = ...`) when `<key>` is a string constant not used in dictionary literals or as name of keyword-argument.
+* Fixed flow for iterable unpacking (`a,b = my_tuple`) when it occurs on top-level (module) scope.
+
+## 0.11.9
+
+### Minor Analysis Improvements
+
+* The name "certification" is no longer seen as possibly being a certificate, and will therefore no longer be flagged in queries like "clear-text-logging" which look for sensitive data.
+* Added modeling of the `psycopg` PyPI package as a SQL database library.
+
+## 0.11.8
+
+### Minor Analysis Improvements
+
+* Added `html.escape` as a sanitizer for HTML.
+
+### Bug Fixes
+
+* Fixed the `a` (ASCII) inline flag not being recognized by the regular expression library.
+
+## 0.11.7
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `LDAP`, `HTTP`, `URL`, `CGI` etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `localSourceStoreStep` predicate, use `flowsToStoreStep` instead.
+* Deleted the deprecated `iteration_defined_variable` predicate from the `SSA` library.
+* Deleted various deprecated predicates from the points-to libraries.
+* Deleted the deprecated `semmle/python/security/OverlyLargeRangeQuery.qll`, `semmle/python/security/regexp/ExponentialBackTracking.qll`, `semmle/python/security/regexp/NfaUtils.qll`, and `semmle/python/security/regexp/NfaUtils.qll` files.
+* The diagnostic query `py/diagnostics/successfully-extracted-files`, and therefore the Code Scanning UI measure of scanned Python files, now considers any Python file seen during extraction, even one with some errors, to be extracted / scanned.
+
+## 0.11.6
+
+### Major Analysis Improvements
+
+* Added support for global data-flow through captured variables.
+
+### Minor Analysis Improvements
+
+* Captured subclass relationships ahead-of-time for most popular PyPI packages so we are able to resolve subclass relationships even without having the packages installed. For example we have captured that `flask_restful.Resource` is a subclass of `flask.views.MethodView`, so our Flask modeling will still consider a function named `post` on a `class Foo(flask_restful.Resource):` as a HTTP request handler.
+* Python now makes use of the shared type tracking library, exposed as `semmle.python.dataflow.new.TypeTracking`. The existing type tracking library, `semmle.python.dataflow.new.TypeTracker`, has consequently been deprecated.
+
+### Bug Fixes
+
+- We would previously confuse all captured variables into a single scope entry node. Now they each get their own node so they can be tracked properly.
+- The dataflow graph no longer contains SSA variables. Instead, flow is directed via the corresponding controlflow nodes. This should make the graph and the flow simpler to understand. Minor improvements in flow computation has been observed, but in general negligible changes to alerts are expected.
+
+## 0.11.5
+
+No user-facing changes.
+
+## 0.11.4
+
+### Minor Analysis Improvements
+
+- Added support for tarfile extraction filters as defined in [PEP-706](https://peps.python.org/pep-0706). In particular, calls to `TarFile.extract`, and `TarFile.extractall` are no longer considered to be sinks for the `py/tarslip` query if a sufficiently safe filter is provided.
+* Added modeling of `*args` and `**kwargs` as routed-parameters in request handlers for django/flask/FastAPI/tornado.
+- Added support for type parameters in function and class definitions, as well as the new Python 3.12 type alias statement.
+* Added taint-flow modeling for regular expressions with `re` module from the standard library.
+
+## 0.11.3
+
+### Minor Analysis Improvements
+
+* Added basic flow for attributes defined on classes, when the attribute lookup is on a direct reference to that class (so not instance, cls parameter, or self parameter). Example: class definition `class Foo: my_tuples = (dangerous, safe)` and usage `SINK(Foo.my_tuples[0])`.
+
+## 0.11.2
+
+### Minor Analysis Improvements
+
+* Added support for functions decorated with `contextlib.contextmanager`.
+* Namespace packages in the form of regular packages with missing `__init__.py`-files are now allowed. This enables the analysis to resolve modules and functions inside such packages.
+
+## 0.11.1
+
+### Minor Analysis Improvements
+
+* Added better support for API graphs when encountering `from ... import *`. For example in the code `from foo import *; Bar()`, we will now find a result for `API::moduleImport("foo").getMember("Bar").getACall()`
+* Deleted the deprecated `isBarrierGuard` predicate from the dataflow library and its uses, use `isBarrier` and the `BarrierGuard` module instead.
+* Deleted the deprecated `getAUse`, `getAnImmediateUse`, `getARhs`, and `getAValueReachingRhs` predicates from the `API::Node` class.
+* Deleted the deprecated `fullyQualifiedToAPIGraphPath` class from `SubclassFinder.qll`, use `fullyQualifiedToApiGraphPath` instead.
+* Deleted the deprecated `Paths.qll` file.
+* Deleted the deprecated `semmle.python.security.performance` folder, use `semmle.python.security.regexp` instead.
+* Deleted the deprecated `semmle.python.security.strings` and `semmle.python.web` folders.
+* Improved modeling of decoding through pickle related functions (which can lead to code execution), resulting in additional sinks for the _Deserializing untrusted input_ query (`py/unsafe-deserialization`). Added support for `pandas.read_pickle`, `numpy.load` and `joblib.load`.
+
+## 0.11.0
+
+### Minor Analysis Improvements
+
+* Django Rest Framework better handles custom `ModelViewSet` classes functions
+* Regular expression fragments residing inside implicitly concatenated strings now have better location information.
+
+### Bug Fixes
+
+* Subterms of regular expressions encoded as single-line string literals now have better source-location information.
+
+## 0.10.5
+
+No user-facing changes.
+
+## 0.10.4
+
+### Minor Analysis Improvements
+
+* Regular expressions containing multiple parse mode flags are now interpretted correctly. For example `"(?is)abc.*"` with both the `i` and `s` flags.
+* Added `shlex.quote` as a sanitizer for the `py/shell-command-constructed-from-input` query.
+
+## 0.10.3
+
+### Minor Analysis Improvements
+
+* Support analyzing packages (folders with python code) that do not have `__init__.py` files, although this is technically required, we see real world projects that don't have this.
+* Added modeling of AWS Lambda handlers that can be identified with `AWS::Serverless::Function` in YAML files, where the event parameter is modeled as a remote-flow-source.
+* Improvements of the `aiohttp` models including remote-flow-sources from type annotations, new path manipulation, and SSRF sinks.
+
+### Bug Fixes
+
+* Fixed the computation of locations for imports with aliases in jump-to-definition.
+
+## 0.10.2
+
+No user-facing changes.
+
+## 0.10.1
+
+### New Features
+
+* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`. 
+  Hence it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
+
+### Minor Analysis Improvements
+
+* Data flow configurations can now include a predicate `neverSkip(Node node)`
+  in order to ensure inclusion of certain nodes in the path explanations. The
+  predicate defaults to the end-points of the additional flow steps provided in
+  the configuration, which means that such steps now always are visible by
+  default in path explanations.
+* Add support for Models as Data for Reflected XSS query
+* Parameters with a default value are now considered a `DefinitionNode`. This improvement was motivated by allowing type-tracking and API graphs to follow flow from such a default value to a use by a captured variable.
+
+## 0.10.0
+
+### New Features
+
+* It is now possible to specify flow summaries in the format "MyPkg;Member[list_map];Argument[1].ListElement;Argument[0].Parameter[0];value"
+
+### Minor Analysis Improvements
+
+* Deleted many models that used the old dataflow library, the new models can be found in the `python/ql/lib/semmle/python/frameworks` folder.
+* More precise modeling of several container functions (such as `sorted`, `reversed`) and methods (such as `set.add`, `list.append`).
+* Added modeling of taint flow through the template argument of `flask.render_template_string` and `flask.stream_template_string`.
+* Deleted many deprecated predicates and classes with uppercase `API`, `HTTP`, `XSS`, `SQL`, etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `getName()` predicate from the `Container` class, use `getAbsolutePath()` instead.
+* Deleted many deprecated module names that started with a lowercase letter, use the versions that start with an uppercase letter instead.
+* Deleted many deprecated predicates in `PointsTo.qll`. 
+* Deleted many deprecated files from the `semmle.python.security` package.
+* Deleted the deprecated `BottleRoutePointToExtension` class from `Extensions.qll`.
+* Type tracking is now aware of flow summaries. This leads to a richer API graph, and may lead to more results in some queries.
+
+## 0.9.4
+
+No user-facing changes.
+
+## 0.9.3
+
+No user-facing changes.
+
+## 0.9.2
+
+### Minor Analysis Improvements
+
+* Type tracking is now aware of reads of captured variables (variables defined in an outer scope). This leads to a richer API graph, and may lead to more results in some queries.
+* Added more content-flow/field-flow for dictionaries, by adding support for reads through `mydict.get("key")` and `mydict.setdefault("key", value)`, and store steps through `dict["key"] = value` and `mydict.setdefault("key", value)`.
+
+## 0.9.1
+
+### Minor Analysis Improvements
+
+* Added support for querying the contents of YAML files.
+
+## 0.9.0
+
+### Deprecated APIs
+
+* The recently introduced new data flow and taint tracking APIs have had a
+  number of module and predicate renamings. The old APIs remain in place for
+  now.
+
+### Minor Analysis Improvements
+
+* Added modeling of SQL execution in the packages `sqlite3.dbapi2`, `cassandra-driver`, `aiosqlite`, and the functions `sqlite3.Connection.executescript`/`sqlite3.Cursor.executescript` and `asyncpg.connection.connect()`.
+* Fixed module resolution so we allow imports of definitions that have had an attribute assigned to it, such as `class Foo; Foo.bar = 42`.
+
+### Bug Fixes
+
+* Fixed some accidental predicate visibility in the backwards-compatible wrapper for data flow configurations. In particular, `DataFlow::hasFlowPath`, `DataFlow::hasFlow`, `DataFlow::hasFlowTo`, and `DataFlow::hasFlowToExpr` were accidentally exposed in a single version.
+
+## 0.8.3
+
+No user-facing changes.
+
 ## 0.8.2
 
 ### New Features

@@ -19,28 +19,28 @@ int strcmp(const char *s1, const char *s2);
 
 //// Test code /////
 
-void bad1(wchar_t *wstr) {
+static void bad1(wchar_t *wstr) {
     // BAD -- Not allocating space for '\0' terminator
     wchar_t *wbuffer = (wchar_t *)malloc(wcslen(wstr));
     wcscpy(wbuffer, wstr);
     free(wbuffer);
 }
 
-void bad2(wchar_t *wstr) {
+static void bad2(wchar_t *wstr) {
     // BAD -- Not allocating space for '\0' terminator
     wchar_t *wbuffer = (wchar_t *)malloc(wcslen(wstr) * sizeof(wchar_t));
     wcscpy(wbuffer, wstr);
     free(wbuffer);
 }
 
-void good1(wchar_t *wstr) {
+static void good1(wchar_t *wstr) {
     // GOOD -- Allocating extra character for terminator
     wchar_t *wbuffer = (wchar_t *)malloc((wcslen(wstr) + 1) * sizeof(wchar_t));
     wcscpy(wbuffer, wstr);
     free(wbuffer);
 }
 
-void bad3(char *str) {
+static void bad3(char *str) {
     // BAD -- zero-termination proved by sprintf (as destination)
     char *buffer = (char *)malloc(strlen(str));
     sprintf(buffer, "%s", str);
@@ -50,7 +50,7 @@ void bad3(char *str) {
 void decode(char *dest, char *src);
 void wdecode(wchar_t *dest, wchar_t *src);
 
-void bad4(char *str) {
+static void bad4(char *str) {
     // BAD -- zero-termination proved by wprintf (as parameter)
     char *buffer = (char *)malloc(strlen(str));
     decode(buffer, str);
@@ -58,7 +58,7 @@ void bad4(char *str) {
     free(buffer);
 }
 
-void bad5(char *str) {
+static void bad5(char *str) {
     // BAD -- zero-termination proved by strcat (as destination)
     char *buffer = (char *)malloc(strlen(str));
     buffer[0] = 0;
@@ -66,7 +66,7 @@ void bad5(char *str) {
     free(buffer);
 }
 
-void bad6(char *str, char *dest) {
+static void bad6(char *str, char *dest) {
     // BAD -- zero-termination proved by strcat (as source)
     char *buffer = (char *)malloc(strlen(str));
     decode(buffer, str);
@@ -74,7 +74,7 @@ void bad6(char *str, char *dest) {
     free(buffer);
 }
 
-void bad7(char *str, char *str2) {
+static void bad7(char *str, char *str2) {
     // BAD -- zero-termination proved by strcmp
     char *buffer = (char *)malloc(strlen(str));
     decode(buffer, str);
@@ -84,7 +84,7 @@ void bad7(char *str, char *str2) {
     free(buffer);
 }
 
-void bad8(wchar_t *str) {
+static void bad8(wchar_t *str) {
     // BAD -- zero-termination proved by wcslen
     wchar_t *wbuffer = (wchar_t *)malloc(wcslen(str));
     wdecode(wbuffer, str);
@@ -94,21 +94,21 @@ void bad8(wchar_t *str) {
     free(wbuffer);
 }
 
-void good2(char *str, char *dest) {
+static void good2(char *str, char *dest) {
     // GOOD -- zero-termination not proven
     char *buffer = (char *)malloc(strlen(str));
     decode(buffer, str);
     free(buffer);
 }
 
-void bad9(wchar_t *wstr) {
+static void bad9(wchar_t *wstr) {
     // BAD -- using new
     wchar_t *wbuffer = new wchar_t[wcslen(wstr)];
     wcscpy(wbuffer, wstr);
     delete wbuffer;
 }
 
-void good3(char *str) {
+static void good3(char *str) {
     // GOOD -- zero-termination not required for this printf
     char *buffer = (char *)malloc(strlen(str));
     decode(buffer, str);
@@ -116,7 +116,7 @@ void good3(char *str) {
     free(buffer);
 }
 
-void good4(char *str) {
+static void good4(char *str) {
     // GOOD -- zero-termination not required for this printf
     char *buffer = (char *)malloc(strlen(str));
     decode(buffer, str);

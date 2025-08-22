@@ -21,7 +21,7 @@ import WordexpTaint::PathGraph
  * The `wordexp` function, which can perform command substitution.
  */
 private class WordexpFunction extends Function {
-  WordexpFunction() { hasGlobalName("wordexp") }
+  WordexpFunction() { this.hasGlobalName("wordexp") }
 }
 
 /**
@@ -40,7 +40,7 @@ module WordexpTaintConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) {
     exists(FunctionCall fc | fc.getTarget() instanceof WordexpFunction |
-      fc.getArgument(0) = sink.asExpr() and
+      fc.getArgument(0) = sink.asIndirectArgument(1) and
       not isCommandSubstitutionDisabled(fc)
     )
   }
@@ -48,6 +48,10 @@ module WordexpTaintConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
 }
 
 module WordexpTaint = TaintTracking::Global<WordexpTaintConfig>;

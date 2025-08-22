@@ -10,7 +10,7 @@
  * @tags security
  *       maintainability
  *       frameworks/asp.net
- *       external/cwe/cwe-11
+ *       external/cwe/cwe-011
  *       external/cwe/cwe-532
  */
 
@@ -19,6 +19,17 @@ import semmle.code.asp.WebConfig
 
 from SystemWebXmlElement web, XmlAttribute debugAttribute
 where
-  debugAttribute = web.getAChild("compilation").getAttribute("debug") and
-  not debugAttribute.getValue().toLowerCase() = "false"
+  exists(CompilationXmlElement compilation | compilation.getParent() = web |
+    debugAttribute = compilation.getAttribute("debug") and
+    not debugAttribute.getValue().toLowerCase() = "false"
+  ) and
+  not exists(
+    TransformXmlAttribute attribute, CompilationXmlElement compilation,
+    WebConfigReleaseTransformXml file
+  |
+    compilation = attribute.getElement() and
+    file = compilation.getFile() and
+    attribute.getRemoveAttributes() = "debug" and
+    file.getParentContainer() = web.getFile().getParentContainer()
+  )
 select debugAttribute, "The 'debug' flag is set for an ASP.NET configuration file."

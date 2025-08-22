@@ -2,7 +2,7 @@
 
 import java
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.DataFlow2
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * Holds if `array` is initialized only with constants.
@@ -43,13 +43,13 @@ private class ArrayUpdate extends Expr {
       not assign.getSource() instanceof CompileTimeConstantExpr
     )
     or
-    exists(StaticMethodAccess ma |
+    exists(StaticMethodCall ma |
       ma.getMethod().hasQualifiedName("java.lang", "System", "arraycopy") and
       ma = this and
       ma.getArgument(2) = array
     )
     or
-    exists(MethodAccess ma, Method m |
+    exists(MethodCall ma, Method m |
       m = ma.getMethod() and
       ma = this and
       ma.getArgument(0) = array
@@ -64,7 +64,7 @@ private class ArrayUpdate extends Expr {
       m.getAnOverride*().hasQualifiedName("org.bouncycastle.crypto", "Digest", "doFinal")
     )
     or
-    exists(MethodAccess ma, Method m |
+    exists(MethodCall ma, Method m |
       m = ma.getMethod() and
       ma = this and
       ma.getArgument(1) = array
@@ -80,19 +80,20 @@ private class ArrayUpdate extends Expr {
   Expr getArray() { result = array }
 }
 
-/**
- * A config that tracks dataflow from creating an array to an operation that updates it.
- */
-private class ArrayUpdateConfig extends DataFlow2::Configuration {
-  ArrayUpdateConfig() { this = "ArrayUpdateConfig" }
+private predicate arrayUpdateSrc(DataFlow::Node source) {
+  source.asExpr() instanceof StaticByteArrayCreation
+}
 
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof StaticByteArrayCreation
-  }
+private predicate arrayUpdateSink(DataFlow::Node sink) {
+  sink.asExpr() = any(ArrayUpdate upd).getArray()
+}
 
-  override predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(ArrayUpdate upd).getArray() }
+private module ArrayUpdateFlowFwd = DataFlow::SimpleGlobal<arrayUpdateSrc/1>;
 
-  override predicate isBarrierOut(DataFlow::Node node) { this.isSink(node) }
+private module ArrayUpdateFlow = ArrayUpdateFlowFwd::Graph<arrayUpdateSink/1>;
+
+private predicate arrayReachesUpdate(StaticByteArrayCreation array) {
+  exists(ArrayUpdateFlow::PathNode src | src.isSource() and src.getNode().asExpr() = array)
 }
 
 /**
@@ -101,7 +102,7 @@ private class ArrayUpdateConfig extends DataFlow2::Configuration {
 private class StaticInitializationVectorSource extends DataFlow::Node {
   StaticInitializationVectorSource() {
     exists(StaticByteArrayCreation array | array = this.asExpr() |
-      not exists(ArrayUpdateConfig config | config.hasFlow(DataFlow2::exprNode(array), _)) and
+      not arrayReachesUpdate(array) and
       // Reduce FPs from utility methods that return an empty array in an exceptional case
       not exists(ReturnStmt ret |
         array.getADimension().(CompileTimeConstantExpr).getIntValue() = 0 and
@@ -115,49 +116,19 @@ private class StaticInitializationVectorSource extends DataFlow::Node {
  * A sink that initializes a cipher with unsafe parameters.
  */
 private class EncryptionInitializationSink extends DataFlow::Node {
-  EncryptionInitializationSink() {
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
-      m.hasQualifiedName("javax.crypto", "Cipher", "init") and
-      m.getParameterType(2)
-          .(RefType)
-          .hasQualifiedName("java.security.spec", "AlgorithmParameterSpec") and
-      ma.getArgument(2) = this.asExpr()
-    )
-  }
-}
-
-/**
- * Holds if `fromNode` to `toNode` is a dataflow step
- * that creates cipher's parameters with initialization vector.
- */
-private predicate createInitializationVectorSpecStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-  exists(ConstructorCall cc, RefType type |
-    cc = toNode.asExpr() and type = cc.getConstructedType()
-  |
-    type.hasQualifiedName("javax.crypto.spec", "IvParameterSpec") and
-    cc.getArgument(0) = fromNode.asExpr()
-    or
-    type.hasQualifiedName("javax.crypto.spec", ["GCMParameterSpec", "RC2ParameterSpec"]) and
-    cc.getArgument(1) = fromNode.asExpr()
-    or
-    type.hasQualifiedName("javax.crypto.spec", "RC5ParameterSpec") and
-    cc.getArgument(3) = fromNode.asExpr()
-  )
+  EncryptionInitializationSink() { sinkNode(this, "encryption-iv") }
 }
 
 /**
  * A config that tracks dataflow to initializing a cipher with a static initialization vector.
  */
-class StaticInitializationVectorConfig extends TaintTracking::Configuration {
-  StaticInitializationVectorConfig() { this = "StaticInitializationVectorConfig" }
+module StaticInitializationVectorConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof StaticInitializationVectorSource }
 
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof StaticInitializationVectorSource
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof EncryptionInitializationSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof EncryptionInitializationSink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    createInitializationVectorSpecStep(fromNode, toNode)
-  }
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
+
+/** Tracks the flow from a static initialization vector to the initialization of a cipher */
+module StaticInitializationVectorFlow = TaintTracking::Global<StaticInitializationVectorConfig>;

@@ -16,23 +16,12 @@ import go
 module CleartextLogging {
   import CleartextLoggingCustomizations::CleartextLogging
 
-  /**
-   * A data-flow tracking configuration for clear-text logging of sensitive information.
-   *
-   * This configuration identifies flows from `Source`s, which are sources of
-   * sensitive data, to `Sink`s, which is an abstract class representing all
-   * the places sensitive data may be stored in cleartext. Additional sources or sinks can be
-   * added either by extending the relevant class, or by subclassing this configuration itself,
-   * and amending the sources and sinks.
-   */
-  class Configuration extends DataFlow::Configuration {
-    Configuration() { this = "CleartextLogging" }
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-    override predicate isBarrier(DataFlow::Node node) {
+    predicate isBarrier(DataFlow::Node node) {
       node instanceof Barrier
       or
       exists(DataFlow::CallNode call | node = call.getResult() |
@@ -42,7 +31,9 @@ module CleartextLogging {
       )
     }
 
-    override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg) {
+    predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+
+    predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg) {
       // A taint propagating data-flow edge through structs: a tainted write taints the entire struct.
       exists(Write write |
         write.writesField(trg.(DataFlow::PostUpdateNode).getPreUpdateNode(), _, src)
@@ -50,10 +41,21 @@ module CleartextLogging {
       or
       // taint steps that do not include flow through fields. Field reads would produce FPs due to
       // the additional taint step above that taints whole structs from individual field writes.
-      TaintTracking::localTaintStep(src, trg) and
+      TaintTracking::defaultAdditionalTaintStep(src, trg, _) and
       not TaintTracking::fieldReadStep(src, trg) and
       // Also exclude protobuf field fetches, since they amount to single field reads.
       not any(Protobuf::GetMethod gm).taintStep(src, trg)
     }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
+
+  /**
+   * Tracks data flow for reasoning about clear-text logging of sensitive
+   * information, from `Source`s, which are sources of sensitive data, to
+   * `Sink`s, which is an abstract class representing all the places sensitive
+   * data may be stored in cleartext. Additional sources or sinks can be added
+   * by extending the relevant class.
+   */
+  module Flow = DataFlow::Global<Config>;
 }

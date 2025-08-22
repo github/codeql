@@ -7,7 +7,8 @@
  */
 
 import internal.CaptureModels
+import SinkModels
 
-from DataFlowTargetApi api, string sink
-where sink = captureSink(api)
+from DataFlowSinkTargetApi api, string sink
+where sink = Heuristic::captureSink(api)
 select sink order by sink

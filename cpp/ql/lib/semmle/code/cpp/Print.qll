@@ -6,11 +6,9 @@ private import PrintAST
  * that requests that function, or no `PrintASTConfiguration` exists.
  */
 private predicate shouldPrintDeclaration(Declaration decl) {
-  not decl instanceof Function
+  not (decl instanceof Function or decl instanceof GlobalOrNamespaceVariable)
   or
-  not exists(PrintAstConfiguration c)
-  or
-  exists(PrintAstConfiguration config | config.shouldPrintFunction(decl))
+  exists(PrintAstConfiguration config | config.shouldPrintDeclaration(decl))
 }
 
 /**
@@ -35,7 +33,7 @@ private string getScopePrefix(Declaration decl) {
     result = "(" + type.getEnclosingFunction().(DumpFunction).getIdentityString() + ")::"
   )
   or
-  decl instanceof TemplateParameter and result = ""
+  decl instanceof TypeTemplateParameter and result = ""
 }
 
 /**
@@ -167,6 +165,30 @@ private class DerivedDumpType extends DumpType, DerivedType {
 }
 
 private class DecltypeDumpType extends DumpType, Decltype {
+  override string getTypeSpecifier() { result = this.getBaseType().(DumpType).getTypeSpecifier() }
+
+  override string getDeclaratorPrefix() {
+    result = this.getBaseType().(DumpType).getDeclaratorPrefix()
+  }
+
+  override string getDeclaratorSuffix() {
+    result = this.getBaseType().(DumpType).getDeclaratorSuffix()
+  }
+}
+
+private class TypeofDumpType extends DumpType, TypeofType {
+  override string getTypeSpecifier() { result = this.getBaseType().(DumpType).getTypeSpecifier() }
+
+  override string getDeclaratorPrefix() {
+    result = this.getBaseType().(DumpType).getDeclaratorPrefix()
+  }
+
+  override string getDeclaratorSuffix() {
+    result = this.getBaseType().(DumpType).getDeclaratorSuffix()
+  }
+}
+
+private class IntrinsicTransformedDumpType extends DumpType, IntrinsicTransformedType {
   override string getTypeSpecifier() { result = this.getBaseType().(DumpType).getTypeSpecifier() }
 
   override string getDeclaratorPrefix() {

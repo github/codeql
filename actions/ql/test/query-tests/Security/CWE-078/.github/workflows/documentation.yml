@@ -1,0 +1,87 @@
+name: Documentation
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  parse_commit_info:
+    runs-on: ubuntu-latest
+    outputs:
+      can_deploy: ${{ steps.decide.outputs.can_deploy }}
+      deploy_to: ${{ steps.decide.outputs.deploy_to }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Copy build utils
+        run: |
+          cp -r .github/utils ../utils
+
+      - name: Decide Whether to Build and/or Release
+        id: decide
+        run: |
+          set -xe
+          CAN_DEPLOY=$(python ../utils/please.py can_i_deploy_documentation)
+          DEPLOY_TO=$(python ../utils/please.py where_can_i_deploy_documentation)
+
+          echo "can_deploy=$CAN_DEPLOY" >> $GITHUB_OUTPUT
+          echo "deploy_to=$DEPLOY_TO" >> $GITHUB_OUTPUT
+          echo github.ref ${{ github.ref }}
+
+  build-documentation:
+    runs-on: ubuntu-latest
+    needs: parse_commit_info
+
+    strategy:
+      matrix:
+        python-version: [3.11]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: pre-release
+
+      - name: Install Package
+        shell: bash
+        run: |
+          make doc-deps
+
+      - name: Environment Information
+        shell: bash
+        run: |
+          ls -la
+          ls -la doc
+          pip list
+
+      - name: Build docs
+        shell: bash
+        run: |
+          pushd doc; make doc; popd
+
+      - name: Environment Information
+        shell: bash
+        run: |
+          ls -la doc
+          cat doc/_variables.yml
+          ls -la doc/reference
+
+      - name: Deploy to Documentation to a Branch
+        uses: JamesIves/github-pages-deploy-action@v4
+        if: contains(needs.parse_commit_info.outputs.can_deploy, 'true')
+        with:
+          folder: doc/_site
+          branch: ${{ needs.parse_commit_info.outputs.deploy_to }}
+          commit-message: ${{ github.event.head_commit.message }}

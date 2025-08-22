@@ -1,13 +1,11 @@
 import ql
 import codeql_ql.dataflow.DataFlow
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
-class GetAStringValueTest extends InlineExpectationsTest {
-  GetAStringValueTest() { this = "getAStringValue" }
+module GetAStringValueTest implements TestSig {
+  string getARelevantTag() { result = "getAStringValue" }
 
-  override string getARelevantTag() { result = "getAStringValue" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(Expr e |
       e = any(Call c).getAnArgument() and
       tag = "getAStringValue" and
@@ -17,3 +15,5 @@ class GetAStringValueTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<GetAStringValueTest>

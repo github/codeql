@@ -121,9 +121,96 @@
 | clang.cpp:87:25:87:51 | volatile int |  | <none> |
 | clang.cpp:88:25:88:42 | __is_volatile | int | 0 |
 | clang.cpp:88:25:88:42 | int |  | <none> |
+| clang.cpp:94:24:94:40 | __is_trivial | int | 1 |
+| clang.cpp:94:24:94:40 | int |  | <none> |
+| clang.cpp:95:24:95:39 | S2 |  | <none> |
+| clang.cpp:95:24:95:39 | __is_trivial | S2 | 0 |
+| clang.cpp:97:42:97:84 | __reference_binds_to_temporary | int &,long & | 0 |
+| clang.cpp:97:42:97:84 | int & |  | <none> |
+| clang.cpp:97:42:97:84 | long & |  | <none> |
+| clang.cpp:98:42:98:91 | __reference_binds_to_temporary | const int &,long & | 1 |
+| clang.cpp:98:42:98:91 | const int & |  | <none> |
+| clang.cpp:98:42:98:91 | long & |  | <none> |
+| clang.cpp:100:22:100:43 | __is_same_as | int,int | 1 |
+| clang.cpp:100:22:100:43 | int |  | <none> |
+| clang.cpp:100:22:100:43 | int |  | <none> |
+| clang.cpp:101:22:101:45 | __is_same_as | int,float | 0 |
+| clang.cpp:101:22:101:45 | float |  | <none> |
+| clang.cpp:101:22:101:45 | int |  | <none> |
+| clang.cpp:103:28:103:52 | __is_bounded_array | int[] | 0 |
+| clang.cpp:103:28:103:52 | int[] |  | <none> |
+| clang.cpp:104:28:104:54 | __is_bounded_array | int[42] | 1 |
+| clang.cpp:104:28:104:54 | int[42] |  | <none> |
+| clang.cpp:104:51:104:52 | 42 |  | 42 |
+| clang.cpp:104:51:104:52 | (unsigned long)... |  | 42 |
+| clang.cpp:106:30:106:56 | __is_unbounded_array | int[] | 1 |
+| clang.cpp:106:30:106:56 | int[] |  | <none> |
+| clang.cpp:107:30:107:58 | __is_unbounded_array | int[42] | 0 |
+| clang.cpp:107:30:107:58 | int[42] |  | <none> |
+| clang.cpp:107:55:107:56 | 42 |  | 42 |
+| clang.cpp:107:55:107:56 | (unsigned long)... |  | 42 |
+| clang.cpp:109:28:109:50 | __is_referenceable | int | 1 |
+| clang.cpp:109:28:109:50 | int |  | <none> |
+| clang.cpp:110:28:110:51 | __is_referenceable | void | 0 |
+| clang.cpp:110:28:110:51 | void |  | <none> |
+| clang.cpp:112:44:112:82 | __is_trivially_equality_comparable | int | 1 |
+| clang.cpp:112:44:112:82 | int |  | <none> |
+| clang.cpp:113:44:113:83 | __is_trivially_equality_comparable | void | 0 |
+| clang.cpp:113:44:113:83 | void |  | <none> |
+| clang.cpp:119:26:119:44 | E |  | <none> |
+| clang.cpp:119:26:119:44 | __is_scoped_enum | E | 1 |
+| clang.cpp:120:26:120:46 | __is_scoped_enum | int | 0 |
+| clang.cpp:120:26:120:46 | int |  | <none> |
+| clang.cpp:122:36:122:66 | __is_trivially_relocatable | int | 1 |
+| clang.cpp:122:36:122:66 | int |  | <none> |
+| clang.cpp:123:36:123:67 | __is_trivially_relocatable | void | 0 |
+| clang.cpp:123:36:123:67 | void |  | <none> |
+| file://:0:0:0:0 | 0 |  | 0 |
 | file://:0:0:0:0 | 0 |  | 0 |
 | file://:0:0:0:0 | 1 |  | 1 |
+| file://:0:0:0:0 | 1 |  | 1 |
 | file://:0:0:0:0 | 2 |  | 2 |
+| gcc.cpp:3:25:3:25 | 8 |  | 8 |
+| gcc.cpp:4:25:4:59 | 0 |  | 0 |
+| gcc.cpp:4:25:4:59 | __builtin_has_attribute | v,0 | 1 |
+| gcc.cpp:4:49:4:49 | v |  | <none> |
+| gcc.cpp:5:25:5:62 | 0 |  | 0 |
+| gcc.cpp:5:25:5:62 | __builtin_has_attribute | v,0 | 0 |
+| gcc.cpp:5:49:5:49 | v |  | <none> |
+| gcc.cpp:13:50:13:111 | __builtin_is_pointer_interconvertible_with_class | i | 1 |
+| gcc.cpp:13:99:13:110 | i |  | <none> |
+| gcc.cpp:14:50:14:111 | __builtin_is_pointer_interconvertible_with_class | d | 0 |
+| gcc.cpp:14:99:14:110 | d |  | <none> |
+| gcc.cpp:16:35:16:95 | __builtin_is_corresponding_member | i,i | 1 |
+| gcc.cpp:16:69:16:80 | i |  | <none> |
+| gcc.cpp:16:83:16:94 | i |  | <none> |
+| gcc.cpp:17:35:17:95 | __builtin_is_corresponding_member | i,d | 0 |
+| gcc.cpp:17:69:17:80 | i |  | <none> |
+| gcc.cpp:17:83:17:94 | d |  | <none> |
+| gcc.cpp:19:34:19:67 | __is_nothrow_convertible | int,int | 1 |
+| gcc.cpp:19:34:19:67 | int |  | <none> |
+| gcc.cpp:19:34:19:67 | int |  | <none> |
+| gcc.cpp:20:34:20:72 | __is_nothrow_convertible | a_struct,int | 0 |
+| gcc.cpp:20:34:20:72 | a_struct |  | <none> |
+| gcc.cpp:20:34:20:72 | int |  | <none> |
+| gcc.cpp:22:26:22:51 | __is_convertible | int,int | 1 |
+| gcc.cpp:22:26:22:51 | int |  | <none> |
+| gcc.cpp:22:26:22:51 | int |  | <none> |
+| gcc.cpp:23:26:23:56 | __is_convertible | a_struct,int | 0 |
+| gcc.cpp:23:26:23:56 | a_struct |  | <none> |
+| gcc.cpp:23:26:23:56 | int |  | <none> |
+| gcc.cpp:25:47:25:95 | __reference_constructs_from_temporary | int &&,int | 1 |
+| gcc.cpp:25:47:25:95 | int |  | <none> |
+| gcc.cpp:25:47:25:95 | int && |  | <none> |
+| gcc.cpp:26:47:26:97 | __reference_constructs_from_temporary | int &&,int && | 0 |
+| gcc.cpp:26:47:26:97 | int && |  | <none> |
+| gcc.cpp:26:47:26:97 | int && |  | <none> |
+| gcc.cpp:28:45:28:91 | __reference_converts_from_temporary | int &&,int | 1 |
+| gcc.cpp:28:45:28:91 | int |  | <none> |
+| gcc.cpp:28:45:28:91 | int && |  | <none> |
+| gcc.cpp:29:45:29:93 | __reference_converts_from_temporary | int &&,int && | 0 |
+| gcc.cpp:29:45:29:93 | int && |  | <none> |
+| gcc.cpp:29:45:29:93 | int && |  | <none> |
 | ms.cpp:38:41:38:45 | 0 |  | 0 |
 | ms.cpp:88:27:88:45 | __has_assign | empty | 0 |
 | ms.cpp:88:27:88:45 | empty |  | <none> |
@@ -448,3 +535,38 @@
 | ms.cpp:272:51:272:104 | __is_pointer_interconvertible_base_of | empty,abstract | 0 |
 | ms.cpp:272:51:272:104 | abstract |  | <none> |
 | ms.cpp:272:51:272:104 | empty |  | <none> |
+| ms.cpp:274:44:274:85 | __is_trivially_copy_assignable | has_assign | 0 |
+| ms.cpp:274:44:274:85 | has_assign |  | <none> |
+| ms.cpp:275:44:275:78 | __is_trivially_copy_assignable | int | 1 |
+| ms.cpp:275:44:275:78 | int |  | <none> |
+| ms.cpp:277:51:277:107 | __is_assignable_no_precondition_check | a_struct,a_struct | 1 |
+| ms.cpp:277:51:277:107 | a_struct |  | <none> |
+| ms.cpp:277:51:277:107 | a_struct |  | <none> |
+| ms.cpp:278:51:278:104 | __is_assignable_no_precondition_check | a_struct,empty | 0 |
+| ms.cpp:278:51:278:104 | a_struct |  | <none> |
+| ms.cpp:278:51:278:104 | empty |  | <none> |
+| ms.cpp:279:51:279:102 | __is_assignable_no_precondition_check | a_struct,int | 0 |
+| ms.cpp:279:51:279:102 | a_struct |  | <none> |
+| ms.cpp:279:51:279:102 | int |  | <none> |
+| ms.cpp:281:54:281:117 | __is_pointer_interconvertible_with_class | a_struct,i | 1 |
+| ms.cpp:281:54:281:117 | a_struct |  | <none> |
+| ms.cpp:281:105:281:116 | i |  | <none> |
+| ms.cpp:282:54:282:117 | __is_pointer_interconvertible_with_class | a_struct,d | 0 |
+| ms.cpp:282:54:282:117 | a_struct |  | <none> |
+| ms.cpp:282:105:282:116 | d |  | <none> |
+| ms.cpp:284:39:284:111 | __is_corresponding_member | a_struct,a_struct,i,i | 1 |
+| ms.cpp:284:39:284:111 | a_struct |  | <none> |
+| ms.cpp:284:39:284:111 | a_struct |  | <none> |
+| ms.cpp:284:85:284:96 | i |  | <none> |
+| ms.cpp:284:99:284:110 | i |  | <none> |
+| ms.cpp:285:39:285:111 | __is_corresponding_member | a_struct,a_struct,i,d | 0 |
+| ms.cpp:285:39:285:111 | a_struct |  | <none> |
+| ms.cpp:285:39:285:111 | a_struct |  | <none> |
+| ms.cpp:285:85:285:96 | i |  | <none> |
+| ms.cpp:285:99:285:110 | d |  | <none> |
+| ms.cpp:287:34:287:59 | __is_valid_winrt_type | int | 1 |
+| ms.cpp:287:34:287:59 | int |  | <none> |
+| ms.cpp:288:27:288:45 | __is_win_class | int | 0 |
+| ms.cpp:288:27:288:45 | int |  | <none> |
+| ms.cpp:289:31:289:53 | __is_win_interface | int | 0 |
+| ms.cpp:289:31:289:53 | int |  | <none> |

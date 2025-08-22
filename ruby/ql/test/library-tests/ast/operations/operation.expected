@@ -230,3 +230,18 @@
 | operations.rb:103:1:103:17 | ... \|\|= ... | \|\|= | operations.rb:103:17:103:17 | 7 | AssignLogicalOrExpr |
 | operations.rb:103:13:103:15 | ... \|\| ... | \|\| | operations.rb:103:1:103:11 | CONSTANT4 | LogicalOrExpr |
 | operations.rb:103:13:103:15 | ... \|\| ... | \|\| | operations.rb:103:17:103:17 | 7 | LogicalOrExpr |
+| operations.rb:104:1:104:3 | ... = ... | = | operations.rb:104:1:104:3 | FOO | AssignExpr |
+| operations.rb:104:1:104:3 | ... = ... | = | operations.rb:104:1:104:3 | call to [] | AssignExpr |
+| operations.rb:104:1:104:32 | ... = ... | = | operations.rb:104:1:104:20 | (..., ...) | AssignExpr |
+| operations.rb:104:1:104:32 | ... = ... | = | operations.rb:104:24:104:32 | [...] | AssignExpr |
+| operations.rb:104:6:104:10 | ... = ... | = | operations.rb:104:6:104:10 | BAR | AssignExpr |
+| operations.rb:104:6:104:10 | ... = ... | = | operations.rb:104:6:104:10 | call to [] | AssignExpr |
+| operations.rb:104:13:104:15 | ... = ... | = | operations.rb:104:13:104:15 | __synth__2 | AssignExpr |
+| operations.rb:104:13:104:15 | ... = ... | = | operations.rb:104:13:104:15 | foo | AssignExpr |
+| operations.rb:104:13:104:20 | ... = ... | = | operations.rb:104:13:104:20 | FOO | AssignExpr |
+| operations.rb:104:13:104:20 | ... = ... | = | operations.rb:104:13:104:20 | call to [] | AssignExpr |
+| operations.rb:104:24:104:32 | * ... | * | operations.rb:104:24:104:32 | [...] | SplatExpr |
+| operations.rb:104:24:104:32 | ... = ... | = | operations.rb:104:24:104:32 | * ... | AssignExpr |
+| operations.rb:104:24:104:32 | ... = ... | = | operations.rb:104:24:104:32 | __synth__3 | AssignExpr |
+| operations.rb:106:1:107:1 | ... / ... | / | operations.rb:106:1:106:3 | foo | DivExpr |
+| operations.rb:106:1:107:1 | ... / ... | / | operations.rb:107:1:107:1 | 5 | DivExpr |

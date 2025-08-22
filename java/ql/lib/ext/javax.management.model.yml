@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.management", "Notification", True, "Notification", "(String,Object,long,String)", "", "Argument[3]", "Argument[this]", "taint", "df-manual"]
+      - ["javax.management", "Notification", True, "Notification", "(String,Object,long,long,String)", "", "Argument[4]", "Argument[this]", "taint", "df-manual"]
+      - ["javax.management", "Notification", True, "getMessage", "()", "", "Argument[this]", "ReturnValue", "taint", "df-manual"]
+      - ["javax.management", "ObjectName", True, "ObjectName", "(String)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]

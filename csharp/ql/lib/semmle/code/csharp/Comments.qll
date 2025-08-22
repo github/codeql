@@ -8,6 +8,13 @@
 import Element
 import Location
 
+private Location unmapLoc(Location l) {
+  result.(SourceLocation).getMappedLocation() = l
+  or
+  not exists(result.(SourceLocation).getMappedLocation()) and
+  result = l
+}
+
 /**
  * A single line of comment.
  *
@@ -19,7 +26,7 @@ class CommentLine extends @commentline {
   string toString() { none() }
 
   /** Gets the location of this comment line. */
-  Location getLocation() { commentline_location(this, result) }
+  Location getLocation() { commentline_location(this, unmapLoc(result)) }
 
   /** Gets the containing comment block. */
   CommentBlock getParent() { result.getAChild() = this }
@@ -70,28 +77,28 @@ class XmlCommentLine extends CommentLine, @xmldoccomment {
   override string toString() { result = "/// ..." }
 
   private string xmlAttributeRegex() {
-    result = "(" + xmlIdentifierRegex() + ")(?:\\s*=\\s*[\"']([^\"']*)[\"'])"
+    result = "(" + this.xmlIdentifierRegex() + ")(?:\\s*=\\s*[\"']([^\"']*)[\"'])"
   }
 
   private string xmlIdentifierRegex() { result = "\\w+" }
 
-  private string xmlTagOpenRegex() { result = "<\\s*" + xmlIdentifierRegex() }
+  private string xmlTagOpenRegex() { result = "<\\s*" + this.xmlIdentifierRegex() }
 
   private string xmlTagIntroRegex() {
-    result = xmlTagOpenRegex() + "(?:\\s*" + xmlAttributeRegex() + ")*"
+    result = this.xmlTagOpenRegex() + "(?:\\s*" + this.xmlAttributeRegex() + ")*"
   }
 
-  private string xmlTagCloseRegex() { result = "</\\s*" + xmlIdentifierRegex() + "\\s*>" }
+  private string xmlTagCloseRegex() { result = "</\\s*" + this.xmlIdentifierRegex() + "\\s*>" }
 
   /** Gets the text inside the XML element at character offset `offset`. */
   private string getElement(int offset) {
-    result = getText().regexpFind(xmlTagIntroRegex(), _, offset)
+    result = this.getText().regexpFind(this.xmlTagIntroRegex(), _, offset)
   }
 
   /** Gets the name of the opening tag at offset `offset`. */
   string getOpenTag(int offset) {
     exists(int offset1, int offset2 |
-      result = getElement(offset1).regexpFind(xmlIdentifierRegex(), 0, offset2) and
+      result = this.getElement(offset1).regexpFind(this.xmlIdentifierRegex(), 0, offset2) and
       offset = offset1 + offset2
     )
   }
@@ -100,9 +107,9 @@ class XmlCommentLine extends CommentLine, @xmldoccomment {
   string getCloseTag(int offset) {
     exists(int offset1, int offset2 |
       result =
-        getText()
-            .regexpFind(xmlTagCloseRegex(), _, offset1)
-            .regexpFind(xmlIdentifierRegex(), 0, offset2) and
+        this.getText()
+            .regexpFind(this.xmlTagCloseRegex(), _, offset1)
+            .regexpFind(this.xmlIdentifierRegex(), 0, offset2) and
       offset = offset1 + offset2
     )
   }
@@ -112,14 +119,14 @@ class XmlCommentLine extends CommentLine, @xmldoccomment {
     exists(int offset1, int offset2 |
       (
         result =
-          getText()
-              .regexpFind(xmlTagIntroRegex() + "\\s*/>", _, offset1)
-              .regexpFind(xmlIdentifierRegex(), 0, offset2) or
+          this.getText()
+              .regexpFind(this.xmlTagIntroRegex() + "\\s*/>", _, offset1)
+              .regexpFind(this.xmlIdentifierRegex(), 0, offset2) or
         result =
-          getText()
-              .regexpFind(xmlTagIntroRegex() + "\\s*>\\s*</" + xmlIdentifierRegex() + "\\s*>", _,
-                offset1)
-              .regexpFind(xmlIdentifierRegex(), 0, offset2)
+          this.getText()
+              .regexpFind(this.xmlTagIntroRegex() + "\\s*>\\s*</" + this.xmlIdentifierRegex() +
+                  "\\s*>", _, offset1)
+              .regexpFind(this.xmlIdentifierRegex(), 0, offset2)
       ) and
       offset = offset1 + offset2
     )
@@ -130,18 +137,18 @@ class XmlCommentLine extends CommentLine, @xmldoccomment {
    * for a given XML attribute name `key` and element offset `offset`.
    */
   string getAttribute(string element, string key, int offset) {
-    exists(int offset1, int offset2, string elt, string pair | elt = getElement(offset1) |
-      element = elt.regexpFind(xmlIdentifierRegex(), 0, offset2) and
+    exists(int offset1, int offset2, string elt, string pair | elt = this.getElement(offset1) |
+      element = elt.regexpFind(this.xmlIdentifierRegex(), 0, offset2) and
       offset = offset1 + offset2 and
-      pair = elt.regexpFind(xmlAttributeRegex(), _, _) and
-      key = pair.regexpCapture(xmlAttributeRegex(), 1) and
-      result = pair.regexpCapture(xmlAttributeRegex(), 2)
+      pair = elt.regexpFind(this.xmlAttributeRegex(), _, _) and
+      key = pair.regexpCapture(this.xmlAttributeRegex(), 1) and
+      result = pair.regexpCapture(this.xmlAttributeRegex(), 2)
     )
   }
 
   /** Holds if the XML element at the given offset is not empty. */
   predicate hasBody(string element, int offset) {
-    element = getOpenTag(offset) and not element = getEmptyTag(offset)
+    element = this.getOpenTag(offset) and not element = this.getEmptyTag(offset)
   }
 }
 
@@ -156,13 +163,13 @@ class XmlCommentLine extends CommentLine, @xmldoccomment {
  */
 class CommentBlock extends @commentblock {
   /** Gets a textual representation of this comment block. */
-  string toString() { result = getChild(0).toString() }
+  string toString() { result = this.getChild(0).toString() }
 
   /** Gets the location of this comment block */
-  Location getLocation() { commentblock_location(this, result) }
+  Location getLocation() { commentblock_location(this, unmapLoc(result)) }
 
   /** Gets the number of lines in this comment block. */
-  int getNumLines() { result = count(getAChild()) }
+  int getNumLines() { result = count(this.getAChild()) }
 
   /** Gets the `c`th child of this comment block (numbered from 0). */
   CommentLine getChild(int c) { commentblock_child(this, result, c) }
@@ -189,23 +196,23 @@ class CommentBlock extends @commentblock {
   Element getAnElement() { commentblock_binding(this, result, _) }
 
   /** Gets a line of text in this comment block. */
-  string getALine() { result = getAChild().getText() }
+  string getALine() { result = this.getAChild().getText() }
 
   /** Holds if the comment has no associated `Element`. */
-  predicate isOrphan() { not exists(getElement()) }
+  predicate isOrphan() { not exists(this.getElement()) }
 
   /** Holds if this block consists entirely of XML comments. */
   predicate isXmlCommentBlock() {
-    forall(CommentLine l | l = getAChild() | l instanceof XmlCommentLine)
+    forall(CommentLine l | l = this.getAChild() | l instanceof XmlCommentLine)
   }
 
   /** Gets a `CommentLine` containing text. */
-  CommentLine getANonEmptyLine() { result = getAChild() and result.getText().length() != 0 }
+  CommentLine getANonEmptyLine() { result = this.getAChild() and result.getText().length() != 0 }
 
   /** Gets a `CommentLine` that might contain code. */
   CommentLine getAProbableCodeLine() {
     // Logic taken verbatim from Java query CommentedCode.qll
-    result = getAChild() and
+    result = this.getAChild() and
     exists(string trimmed | trimmed = result.getText().regexpReplaceAll("\\s*//.*$", "") |
       trimmed.matches("%;") or trimmed.matches("%{") or trimmed.matches("%}")
     )

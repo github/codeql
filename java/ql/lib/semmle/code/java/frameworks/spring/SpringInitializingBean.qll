@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 
 /**
@@ -8,14 +11,14 @@ import java
  */
 class InitializingBeanClass extends Class {
   InitializingBeanClass() {
-    getAnAncestor().hasQualifiedName("org.springframework.beans.factory", "InitializingBean")
+    this.getAnAncestor().hasQualifiedName("org.springframework.beans.factory", "InitializingBean")
   }
 
   /**
    * Gets the `afterPropertiesSet()` method, which is called after the bean has been initialized.
    */
   Method getAfterPropertiesSet() {
-    inherits(result) and
+    this.inherits(result) and
     result.hasName("afterPropertiesSet")
   }
 }

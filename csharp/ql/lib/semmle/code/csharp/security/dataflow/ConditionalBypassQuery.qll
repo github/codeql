@@ -6,7 +6,8 @@
 import csharp
 private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.controlflow.BasicBlocks
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Net
 private import semmle.code.csharp.security.SensitiveActions
@@ -14,12 +15,12 @@ private import semmle.code.csharp.security.SensitiveActions
 /**
  * A data flow source for user-controlled bypass of sensitive method.
  */
-abstract class Source extends DataFlow::Node { }
+abstract class Source extends ApiSourceNode { }
 
 /**
  * A data flow sink for user-controlled bypass of sensitive method.
  */
-abstract class Sink extends DataFlow::ExprNode {
+abstract class Sink extends ApiSinkExprNode {
   /** Gets the 'MethodCall' which is considered sensitive. */
   abstract MethodCall getSensitiveMethodCall();
 }
@@ -32,18 +33,37 @@ abstract class Sanitizer extends DataFlow::ExprNode { }
 /**
  * A taint-tracking configuration for user-controlled bypass of sensitive method.
  */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "UserControlledBypassOfSensitiveMethodConfiguration" }
+private module ConditionalBypassConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getLocation()
+    or
+    // from ConditionalBypass.ql
+    result = sink.(Sink).getSensitiveMethodCall().getLocation()
+  }
 }
 
-/** A source of remote user input. */
-class RemoteSource extends Source instanceof RemoteFlowSource { }
+/**
+ * A taint-tracking module for user-controlled bypass of sensitive method.
+ */
+module ConditionalBypass = TaintTracking::Global<ConditionalBypassConfig>;
+
+/**
+ * DEPRECATED: Use `ThreatModelSource` instead.
+ *
+ * A source of remote user input.
+ */
+deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
+
+/** A source supported by the current threat model. */
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /** The result of a reverse dns may be user-controlled. */
 class ReverseDnsSource extends Source {

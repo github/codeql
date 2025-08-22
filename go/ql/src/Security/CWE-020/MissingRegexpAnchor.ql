@@ -8,13 +8,13 @@
  * @id go/regex/missing-regexp-anchor
  * @tags correctness
  *       security
- *       external/cwe/cwe-20
+ *       external/cwe/cwe-020
  */
 
 import go
 
 /**
- * Holds if `src` is a pattern for a collection of alternatives where
+ * Holds if `re` is a pattern for a collection of alternatives where
  * only the first or last alternative is anchored, indicating a
  * precedence mistake explained by `msg`.
  *
@@ -46,7 +46,7 @@ predicate isInterestingSemiAnchoredRegexpString(string re, string msg) {
 }
 
 /**
- * Holds if `src` is an unanchored pattern for a URL, indicating a
+ * Holds if `re` is an unanchored pattern for a URL, indicating a
  * mistake explained by `msg`.
  */
 bindingset[re]
@@ -60,10 +60,8 @@ predicate isInterestingUnanchoredRegexpString(string re, string msg) {
       "hosts may come before or after it."
 }
 
-class Config extends DataFlow::Configuration {
-  Config() { this = "MissingRegexpAnchor::Config" }
-
-  predicate isSourceString(DataFlow::Node source, string msg) {
+module Config implements DataFlow::ConfigSig {
+  additional predicate isSourceString(DataFlow::Node source, string msg) {
     exists(Expr e | e = source.asExpr() |
       isInterestingUnanchoredRegexpString(e.getStringValue(), msg)
       or
@@ -71,11 +69,17 @@ class Config extends DataFlow::Configuration {
     )
   }
 
-  override predicate isSource(DataFlow::Node source) { isSourceString(source, _) }
+  predicate isSource(DataFlow::Node source) { isSourceString(source, _) }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof RegexpPattern }
+  predicate isSink(DataFlow::Node sink) { sink instanceof RegexpPattern }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) { none() }
 }
 
-from Config c, DataFlow::PathNode source, string msg
-where c.hasFlowPath(source, _) and c.isSourceString(source.getNode(), msg)
-select source.getNode(), msg
+module Flow = DataFlow::Global<Config>;
+
+from DataFlow::Node source, string msg
+where Flow::flow(source, _) and Config::isSourceString(source, msg)
+select source, msg

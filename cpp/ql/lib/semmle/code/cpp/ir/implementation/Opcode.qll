@@ -42,6 +42,7 @@ private newtype TOpcode =
   TCompareGT() or
   TCompareLE() or
   TCompareGE() or
+  TSpaceship() or
   TPointerAdd() or
   TPointerSub() or
   TPointerDiff() or
@@ -55,6 +56,7 @@ private newtype TOpcode =
   TVariableAddress() or
   TFieldAddress() or
   TFunctionAddress() or
+  TVirtualDeleteFunctionAddress() or
   TElementsAddress() or
   TConstant() or
   TStringConstant() or
@@ -88,9 +90,12 @@ private newtype TOpcode =
   TSizedBufferMayWriteSideEffect() or
   TInitializeDynamicAllocation() or
   TChi() or
+  TUninitializedGroup() or
   TInlineAsm() or
   TUnreached() or
-  TNewObj()
+  TNewObj() or
+  TTypeidExpr() or
+  TTypeidType()
 
 /**
  * An opcode that specifies the operation performed by an `Instruction`.
@@ -135,11 +140,11 @@ class Opcode extends TOpcode {
    * Holds if the instruction must have an operand with the specified `OperandTag`.
    */
   final predicate hasOperand(OperandTag tag) {
-    hasOperandInternal(tag)
+    this.hasOperandInternal(tag)
     or
-    hasAddressOperand() and tag instanceof AddressOperandTag
+    this.hasAddressOperand() and tag instanceof AddressOperandTag
     or
-    hasBufferSizeOperand() and tag instanceof BufferSizeOperandTag
+    this.hasBufferSizeOperand() and tag instanceof BufferSizeOperandTag
   }
 
   /**
@@ -762,6 +767,15 @@ module Opcode {
   }
 
   /**
+   * The `Opcode` for a `SpaceshipInstruction`.
+   *
+   * See the `SpaceshipInstruction` documentation for more details.
+   */
+  class Spaceship extends BinaryOpcode, TSpaceship {
+    final override string toString() { result = "Spaceship" }
+  }
+
+  /**
    * The `Opcode` for a `PointerAddInstruction`.
    *
    * See the `PointerAddInstruction` documentation for more details.
@@ -885,6 +899,15 @@ module Opcode {
    */
   class FunctionAddress extends Opcode, TFunctionAddress {
     final override string toString() { result = "FunctionAddress" }
+  }
+
+  /**
+   * The `Opcode` for a `VirtualDeleteFunctionAddress`.
+   *
+   * See the `VirtualDeleteFunctionAddressInstruction` documentation for more details.
+   */
+  class VirtualDeleteFunctionAddress extends Opcode, TVirtualDeleteFunctionAddress {
+    final override string toString() { result = "VirtualDeleteFunctionAddress" }
   }
 
   /**
@@ -1228,6 +1251,17 @@ module Opcode {
   }
 
   /**
+   * The `Opcode` for a `UninitializedGroup`.
+   *
+   * See the `UninitializedGroupInstruction` documentation for more details.
+   */
+  class UninitializedGroup extends Opcode, TUninitializedGroup {
+    final override string toString() { result = "UninitializedGroup" }
+
+    override GroupedMemoryAccess getWriteMemoryAccess() { any() }
+  }
+
+  /**
    * The `Opcode` for an `InlineAsmInstruction`.
    *
    * See the `InlineAsmInstruction` documentation for more details.
@@ -1258,5 +1292,30 @@ module Opcode {
    */
   class NewObj extends Opcode, TNewObj {
     final override string toString() { result = "NewObj" }
+  }
+
+  /**
+   * The `Opcode` for a `TypeidInstruction`.
+   *
+   * See the `TypeidInstruction` documentation for more details.
+   */
+  abstract class Typeid extends Opcode { }
+
+  /**
+   * The `Opcode` for a `TypeidExprInstruction`.
+   *
+   * See the `TypeidExprInstruction` documentation for more details.
+   */
+  class TypeidExpr extends Typeid, UnaryOpcode, TTypeidExpr {
+    final override string toString() { result = "TypeidExpr" }
+  }
+
+  /**
+   * The `Opcode` for a `TypeidTypeInstruction`.
+   *
+   * See the `TypeidTypeInstruction` documentation for more details.
+   */
+  class TypeidType extends Typeid, TTypeidType {
+    final override string toString() { result = "TypeidType" }
   }
 }

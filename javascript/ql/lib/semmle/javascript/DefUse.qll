@@ -183,7 +183,7 @@ class VarDef extends ControlFlowNode {
   Expr getTarget() { defn(this, result) }
 
   /** Gets a variable defined by this node, if any. */
-  Variable getAVariable() { result = getTarget().(BindingPattern).getAVariable() }
+  Variable getAVariable() { result = this.getTarget().(BindingPattern).getAVariable() }
 
   /**
    * Gets the source of this definition, that is, the data flow node representing
@@ -232,8 +232,8 @@ class VarUse extends ControlFlowNode, @varref instanceof RValue {
    * For global variables, each definition is considered to reach each use.
    */
   VarDef getADef() {
-    result = getSsaVariable().getDefinition().getAContributingVarDef() or
-    result.getAVariable() = getVariable().(GlobalVariable)
+    result = this.getSsaVariable().getDefinition().getAContributingVarDef() or
+    result.getAVariable() = this.getVariable().(GlobalVariable)
   }
 
   /**
@@ -242,72 +242,4 @@ class VarUse extends ControlFlowNode, @varref instanceof RValue {
    * This predicate is only defined for variables that can be SSA-converted.
    */
   SsaVariable getSsaVariable() { result.getAUse() = this }
-}
-
-/**
- * Holds if the definition of `v` in `def` reaches `use` along some control flow path
- * without crossing another definition of `v`.
- * DEPRECATED: Use the `SSA.qll` library instead.
- */
-deprecated predicate definitionReaches(Variable v, VarDef def, VarUse use) {
-  v = use.getVariable() and
-  exists(BasicBlock bb, int i, int next | next = nextDefAfter(bb, v, i, def) |
-    exists(int j | j in [i + 1 .. next - 1] | bb.useAt(j, v, use))
-    or
-    exists(BasicBlock succ | succ = bb.getASuccessor() |
-      succ.isLiveAtEntry(v, use) and
-      next = bb.length()
-    )
-  )
-}
-
-/**
- * Holds if the definition of local variable `v` in `def` reaches `use` along some control flow path
- * without crossing another definition of `v`.
- * DEPRECATED: Use the `SSA.qll` library instead.
- */
-deprecated predicate localDefinitionReaches(LocalVariable v, VarDef def, VarUse use) {
-  exists(SsaExplicitDefinition ssa |
-    ssa.defines(def, v) and
-    ssa = getAPseudoDefinitionInput*(use.getSsaVariable().getDefinition())
-  )
-}
-
-/**
- * Holds if `nd` is a pseudo-definition and the result is one of its inputs.
- * DEPRECATED: Use the `SSA.qll` library instead.
- */
-deprecated private SsaDefinition getAPseudoDefinitionInput(SsaDefinition nd) {
-  result = nd.(SsaPseudoDefinition).getAnInput()
-}
-
-/**
- * Holds if `d` is a definition of `v` at index `i` in `bb`, and the result is the next index
- * in `bb` after `i` at which the same variable is defined, or `bb.length()` if there is none.
- */
-deprecated private int nextDefAfter(BasicBlock bb, Variable v, int i, VarDef d) {
-  bb.defAt(i, v, d) and
-  result =
-    min(int jj |
-      (bb.defAt(jj, v, _) or jj = bb.length()) and
-      jj > i
-    )
-}
-
-/**
- * Holds if the `later` definition of `v` could overwrite its `earlier` definition.
- *
- * This is the case if there is a path from `earlier` to `later` that does not cross
- * another definition of `v`.
- * DEPRECATED: Use the `SSA.qll` library instead.
- */
-deprecated predicate localDefinitionOverwrites(LocalVariable v, VarDef earlier, VarDef later) {
-  exists(BasicBlock bb, int next | next = nextDefAfter(bb, v, _, earlier) |
-    bb.defAt(next, v, later)
-    or
-    exists(BasicBlock succ | succ = bb.getASuccessor() |
-      succ.localMayBeOverwritten(v, later) and
-      next = bb.length()
-    )
-  )
 }

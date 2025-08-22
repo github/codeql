@@ -34,18 +34,18 @@ Global taint tracking library
 
 The ``semmle.code.<language>.dataflow.TaintTracking`` library provides a framework for implementing solvers for global taint tracking problems:
 
-  #. Subclass ``TaintTracking::Configuration`` following this template:
+  #. Implement ``DataFlow::ConfigSig`` and use ``TaintTracking::Global`` following this template:
 
      .. code-block:: ql
     
-       class Config extends TaintTracking::Configuration {
-         Config() { this = "<some unique identifier>" }
-         override predicate isSource(DataFlow::Node nd) { ... }
-         override predicate isSink(DataFlow::Node nd) { ... }
+       module Config implements DataFlow::ConfigSig {
+         predicate isSource(DataFlow::Node nd) { ... }
+         predicate isSink(DataFlow::Node nd) { ... }
        }
+       module Flow = TaintTracking::Global<Config>;
 
-  #. Use ``Config.hasFlow(source, sink)`` to find inter-procedural paths.
+  #. Use ``Flow::flow(source, sink)`` to find inter-procedural paths.
 
 .. note::
 
-  In addition to the taint tracking configuration described here, there is also an equivalent *data flow* configuration in ``semmle.code.<language>.dataflow.DataFlow``, ``DataFlow::Configuration``. Data flow configurations are used to track whether the exact value produced by a source is used by a sink, whereas taint tracking configurations are used to determine whether the source may influence the value used at the sink. Whether you use taint tracking or data flow depends on the analysis problem you are trying to solve.
+  In addition to the taint tracking flow configuration described here, there is also an equivalent *data flow* in ``semmle.code.<language>.dataflow.DataFlow``, ``DataFlow::Global<DataFlow::ConfigSig>``. Data flow is used to track whether the exact value produced by a source is used by a sink, whereas taint tracking is used to determine whether the source may influence the value used at the sink. Whether you use taint tracking or data flow depends on the analysis problem you are trying to solve.

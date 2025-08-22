@@ -2,18 +2,18 @@ import javascript
 
 class Assertion extends DataFlow::CallNode {
   Assertion() {
-    getCalleeName() = "checkEscaped" or
-    getCalleeName() = "checkStripped" or
-    getCalleeName() = "checkNotEscaped"
+    this.getCalleeName() = "checkEscaped" or
+    this.getCalleeName() = "checkStripped" or
+    this.getCalleeName() = "checkNotEscaped"
   }
 
-  predicate shouldBeSanitizer() { getCalleeName() != "checkNotEscaped" }
+  predicate shouldBeSanitizer() { this.getCalleeName() != "checkNotEscaped" }
 
   string getMessage() {
-    if shouldBeSanitizer() and not getArgument(0) instanceof HtmlSanitizerCall
+    if this.shouldBeSanitizer() and not this.getArgument(0) instanceof HtmlSanitizerCall
     then result = "Should be marked as sanitizer"
     else
-      if not shouldBeSanitizer() and getArgument(0) instanceof HtmlSanitizerCall
+      if not this.shouldBeSanitizer() and this.getArgument(0) instanceof HtmlSanitizerCall
       then result = "Should not be marked as sanitizer"
       else result = "OK"
   }

@@ -128,3 +128,27 @@ func accessingHeaders(c *revel.Controller) {
 	tainted2 := c.Request.Header.GetAll("somekey")
 	sink(tainted2[0])
 }
+
+func headerMutators(c *revel.Controller) {
+	tainted := c.Request.UserAgent()
+
+	var cleanHeaders revel.RevelHeader
+	cleanHeaders.Set(tainted, "clean")
+	sink(cleanHeaders.Get("clean"))
+
+	var cleanHeaders2 revel.RevelHeader
+	cleanHeaders2.Set("clean", tainted)
+	sink(cleanHeaders2.Get("clean"))
+
+	var cleanHeaders3 revel.RevelHeader
+	cleanHeaders3.Add(tainted, "clean")
+	sink(cleanHeaders3.Get("clean"))
+
+	var cleanHeaders4 revel.RevelHeader
+	cleanHeaders4.Add("clean", tainted)
+	sink(cleanHeaders4.Get("clean"))
+
+	var cleanHeaders5 revel.RevelHeader
+	cleanHeaders5.SetCookie(tainted)
+	sink(cleanHeaders5.Get("clean"))
+}

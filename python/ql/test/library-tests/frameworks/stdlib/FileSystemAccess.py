@@ -5,23 +5,25 @@ import stat
 import tempfile
 import shutil
 
-open("file")  # $ getAPathArgument="file"
-open(file="file")  # $ getAPathArgument="file"
+open("file")  # $ getAPathArgument="file" threatModelSource[file]=open(..)
+open(file="file")  # $ getAPathArgument="file" threatModelSource[file]=open(..)
 
 o = open
 
-o("file")  # $ getAPathArgument="file"
-o(file="file")  # $ getAPathArgument="file"
+o("file")  # $ getAPathArgument="file" threatModelSource[file]=o(..)
+o(file="file")  # $ getAPathArgument="file" threatModelSource[file]=o(..)
 
 
-builtins.open("file")  # $ getAPathArgument="file"
-builtins.open(file="file")  # $ getAPathArgument="file"
+builtins.open("file")  # $ getAPathArgument="file" threatModelSource[file]=builtins.open(..)
+builtins.open(file="file")  # $ getAPathArgument="file" threatModelSource[file]=builtins.open(..)
 
 
-io.open("file")  # $ getAPathArgument="file"
-io.open(file="file")  # $ getAPathArgument="file"
+io.open("file")  # $ getAPathArgument="file" threatModelSource[file]=io.open(..)
+io.open(file="file")  # $ getAPathArgument="file" threatModelSource[file]=io.open(..)
+io.open_code("file")  # $ getAPathArgument="file"
+io.FileIO("file")  # $ getAPathArgument="file"
 
-f = open("path") # $ getAPathArgument="path"
+f = open("path") # $ getAPathArgument="path" threatModelSource[file]=open(..)
 f.write("foo") # $ getAPathArgument="path" fileWriteData="foo"
 lines = ["foo"]
 f.writelines(lines) # $ getAPathArgument="path" fileWriteData=lines

@@ -7,7 +7,6 @@ private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
-private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries as DataFlowImplForHttpClientLibraries
 
 /**
  * A call that makes an HTTP request using `RestClient`.
@@ -17,7 +16,7 @@ private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries 
  * RestClient::Request.execute(url: "http://example.com").body
  * ```
  */
-class RestClientHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode {
+class RestClientHttpRequest extends Http::Client::Request::Range instanceof DataFlow::CallNode {
   API::Node requestNode;
   API::Node connectionNode;
 
@@ -38,9 +37,9 @@ class RestClientHttpRequest extends Http::Client::Request::Range, DataFlow::Call
   }
 
   override DataFlow::Node getAUrlPart() {
-    result = this.getKeywordArgument("url")
+    result = super.getKeywordArgument("url")
     or
-    result = this.getArgument(0) and
+    result = super.getArgument(0) and
     // this rules out the alternative above
     not result.asExpr().getExpr() instanceof Pair
   }
@@ -58,8 +57,7 @@ class RestClientHttpRequest extends Http::Client::Request::Range, DataFlow::Call
   override predicate disablesCertificateValidation(
     DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
   ) {
-    any(RestClientDisablesCertificateValidationConfiguration config)
-        .hasFlow(argumentOrigin, disablingNode) and
+    RestClientDisablesCertificateValidationFlow::flow(argumentOrigin, disablingNode) and
     disablingNode = this.getCertificateValidationControllingValue()
   }
 
@@ -67,17 +65,19 @@ class RestClientHttpRequest extends Http::Client::Request::Range, DataFlow::Call
 }
 
 /** A configuration to track values that can disable certificate validation for RestClient. */
-private class RestClientDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration
-{
-  RestClientDisablesCertificateValidationConfiguration() {
-    this = "RestClientDisablesCertificateValidationConfiguration"
-  }
-
-  override predicate isSource(DataFlow::Node source) {
+private module RestClientDisablesCertificateValidationConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source = API::getTopLevelMember("OpenSSL").getMember("SSL").getMember("VERIFY_NONE").asSource()
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink = any(RestClientHttpRequest req).getCertificateValidationControllingValue()
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // Used for a library model
+  }
 }
+
+private module RestClientDisablesCertificateValidationFlow =
+  DataFlow::Global<RestClientDisablesCertificateValidationConfig>;

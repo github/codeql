@@ -12,26 +12,49 @@ a malicious user may be able to run commands to exfiltrate data or compromise th
 
 <recommendation>
 <p>
-If possible, use hard-coded string literals to specify the command to run. Instead of interpreting
-user input directly as command names, examine the input and then choose among hard-coded string
-literals.
+Whenever possible, use hard-coded string literals for commands and avoid shell 
+string interpreters like <code>sh -c</code>.
 </p>
 <p>
-If this is not possible, then add sanitization code to verify that the user input is safe before
-using it.
+If given arguments as a single string, avoid simply splitting the string on 
+whitespace. Arguments may contain quoted whitespace, causing them to split into 
+multiple arguments.
+</p>
+<p>
+If this is not possible, sanitize user input to avoid characters like spaces and
+various kinds of quotes that can alter the meaning of the command.
 </p>
 </recommendation>
 
 <example>
 <p>
-In the following example, assume the function <code>handler</code> is an HTTP request handler in a
-web application, whose parameter <code>req</code> contains the request object:
+In the following example, assume the function <code>handler</code> is an HTTP request
+handler in a web application, whose parameter <code>req</code> contains the request object:
 </p>
-<sample src="CommandInjection.go"/>
+<sample src="examples/CommandInjection.go"/>
 <p>
-The handler extracts the name of a system command from the request object, and then runs it without
-any further checks, which can cause a command-injection vulnerability.
+The handler extracts the image file name from the request and uses the image name to construct a 
+shell command that is executed using <code>`sh -c`</code>, which can lead to command injection.
 </p>
+<p>
+It's better to avoid shell commands by using the <code>exec.Command</code> function directly, 
+as shown in the following example:
+</p>
+<sample src="examples/CommandInjectionGood.go"/>
+<p>
+Alternatively, a regular expression can be used to ensure that the image name is safe to use 
+in a shell command:
+</p>
+<sample src="examples/CommandInjectionGood2.go"/>
+<p>
+Some commands, like <code>git</code>, can indirectly execute commands if an attacker specifies
+the flags given to the command. 
+</p>
+<p>
+To mitigate this risk, either add a <code>--</code> argument to ensure subsequent arguments are
+not interpreted as flags, or verify that the argument does not start with <code>"--"</code>.
+</p>
+<sample src="examples/CommandInjectionGood3.go"/>
 </example>
 <references>
 <li>

@@ -1,25 +1,33 @@
 edges
-| code_injection.py:0:0:0:0 | ModuleVariableNode for code_injection.request | code_injection.py:6:12:6:18 | ControlFlowNode for request |
-| code_injection.py:0:0:0:0 | ModuleVariableNode for code_injection.request | code_injection.py:18:16:18:22 | ControlFlowNode for request |
-| code_injection.py:1:26:1:32 | ControlFlowNode for ImportMember | code_injection.py:1:26:1:32 | GSSA Variable request |
-| code_injection.py:1:26:1:32 | GSSA Variable request | code_injection.py:0:0:0:0 | ModuleVariableNode for code_injection.request |
-| code_injection.py:6:12:6:18 | ControlFlowNode for request | code_injection.py:6:12:6:23 | ControlFlowNode for Attribute |
-| code_injection.py:6:12:6:23 | ControlFlowNode for Attribute | code_injection.py:7:10:7:13 | ControlFlowNode for code |
-| code_injection.py:6:12:6:23 | ControlFlowNode for Attribute | code_injection.py:8:10:8:13 | ControlFlowNode for code |
-| code_injection.py:6:12:6:23 | ControlFlowNode for Attribute | code_injection.py:10:10:10:12 | ControlFlowNode for cmd |
-| code_injection.py:18:16:18:22 | ControlFlowNode for request | code_injection.py:18:16:18:27 | ControlFlowNode for Attribute |
-| code_injection.py:18:16:18:27 | ControlFlowNode for Attribute | code_injection.py:21:20:21:27 | ControlFlowNode for obj_name |
+| code_injection.py:1:26:1:32 | ControlFlowNode for ImportMember | code_injection.py:1:26:1:32 | ControlFlowNode for request | provenance |  |
+| code_injection.py:1:26:1:32 | ControlFlowNode for request | code_injection.py:6:12:6:18 | ControlFlowNode for request | provenance |  |
+| code_injection.py:1:26:1:32 | ControlFlowNode for request | code_injection.py:18:16:18:22 | ControlFlowNode for request | provenance |  |
+| code_injection.py:6:5:6:8 | ControlFlowNode for code | code_injection.py:7:10:7:13 | ControlFlowNode for code | provenance |  |
+| code_injection.py:6:5:6:8 | ControlFlowNode for code | code_injection.py:8:10:8:13 | ControlFlowNode for code | provenance |  |
+| code_injection.py:6:5:6:8 | ControlFlowNode for code | code_injection.py:9:5:9:7 | ControlFlowNode for cmd | provenance | AdditionalTaintStep |
+| code_injection.py:6:12:6:18 | ControlFlowNode for request | code_injection.py:6:12:6:23 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| code_injection.py:6:12:6:23 | ControlFlowNode for Attribute | code_injection.py:6:12:6:35 | ControlFlowNode for Attribute() | provenance | dict.get |
+| code_injection.py:6:12:6:35 | ControlFlowNode for Attribute() | code_injection.py:6:5:6:8 | ControlFlowNode for code | provenance |  |
+| code_injection.py:9:5:9:7 | ControlFlowNode for cmd | code_injection.py:10:10:10:12 | ControlFlowNode for cmd | provenance |  |
+| code_injection.py:18:5:18:12 | ControlFlowNode for obj_name | code_injection.py:21:20:21:27 | ControlFlowNode for obj_name | provenance |  |
+| code_injection.py:18:16:18:22 | ControlFlowNode for request | code_injection.py:18:16:18:27 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| code_injection.py:18:16:18:27 | ControlFlowNode for Attribute | code_injection.py:18:16:18:38 | ControlFlowNode for Attribute() | provenance | dict.get |
+| code_injection.py:18:16:18:38 | ControlFlowNode for Attribute() | code_injection.py:18:5:18:12 | ControlFlowNode for obj_name | provenance |  |
 nodes
-| code_injection.py:0:0:0:0 | ModuleVariableNode for code_injection.request | semmle.label | ModuleVariableNode for code_injection.request |
 | code_injection.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
-| code_injection.py:1:26:1:32 | GSSA Variable request | semmle.label | GSSA Variable request |
+| code_injection.py:1:26:1:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| code_injection.py:6:5:6:8 | ControlFlowNode for code | semmle.label | ControlFlowNode for code |
 | code_injection.py:6:12:6:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | code_injection.py:6:12:6:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| code_injection.py:6:12:6:35 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | code_injection.py:7:10:7:13 | ControlFlowNode for code | semmle.label | ControlFlowNode for code |
 | code_injection.py:8:10:8:13 | ControlFlowNode for code | semmle.label | ControlFlowNode for code |
+| code_injection.py:9:5:9:7 | ControlFlowNode for cmd | semmle.label | ControlFlowNode for cmd |
 | code_injection.py:10:10:10:12 | ControlFlowNode for cmd | semmle.label | ControlFlowNode for cmd |
+| code_injection.py:18:5:18:12 | ControlFlowNode for obj_name | semmle.label | ControlFlowNode for obj_name |
 | code_injection.py:18:16:18:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | code_injection.py:18:16:18:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| code_injection.py:18:16:18:38 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | code_injection.py:21:20:21:27 | ControlFlowNode for obj_name | semmle.label | ControlFlowNode for obj_name |
 subpaths
 #select

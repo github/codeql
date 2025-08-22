@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["vuetifyjs/vuetify", "*", "input.name", "code-injection", "generated"]
+     - ["vuetifyjs/vuetify", "*", "input.path", "code-injection", "generated"]
+     - ["vuetifyjs/vuetify", "*", "input.npm-tag", "code-injection", "generated"]
+     - ["vuetifyjs/vuetify", "*", "input.release-id", "code-injection", "generated"]

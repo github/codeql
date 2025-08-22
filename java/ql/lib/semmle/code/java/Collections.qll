@@ -2,6 +2,8 @@
  * Provides classes and predicates for reasoning about instances of
  * `java.util.Collection` and their methods.
  */
+overlay[local?]
+module;
 
 import java
 
@@ -82,7 +84,7 @@ class CollectionMutator extends CollectionMethod {
 }
 
 /** A method call that mutates a collection. */
-class CollectionMutation extends MethodAccess {
+class CollectionMutation extends MethodCall {
   CollectionMutation() { this.getMethod() instanceof CollectionMutator }
 
   /** Holds if the result of this call is not immediately discarded. */

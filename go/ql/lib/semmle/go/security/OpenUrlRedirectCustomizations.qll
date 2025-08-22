@@ -32,13 +32,6 @@ module OpenUrlRedirect {
   abstract class Barrier extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `Barrier` instead.
-   *
-   * A barrier guard for unvalidated URL redirect vulnerabilities.
-   */
-  abstract deprecated class BarrierGuard extends DataFlow::BarrierGuard { }
-
-  /**
    * An additional taint propagation step specific to this query.
    */
   bindingset[this]
@@ -50,10 +43,15 @@ module OpenUrlRedirect {
   }
 
   /**
+   * DEPRECATED: Use `ActiveThreatModelSource` or `Source` instead.
+   */
+  deprecated class UntrustedFlowAsSource = ThreatModelFlowAsSource;
+
+  /**
    * A source of third-party user input, considered as a flow source for URL redirects.
    */
-  class UntrustedFlowAsSource extends Source, UntrustedFlowSource {
-    UntrustedFlowAsSource() {
+  private class ThreatModelFlowAsSource extends Source instanceof ActiveThreatModelSource {
+    ThreatModelFlowAsSource() {
       // exclude some fields and methods of URLs that are generally not attacker-controllable for
       // open redirect exploits
       not this instanceof Http::Redirect::UnexploitableSource
@@ -77,6 +75,13 @@ module OpenUrlRedirect {
     }
   }
 
+  bindingset[var, w]
+  pragma[inline_late]
+  private predicate useIsDominated(SsaWithFields var, Write w, DataFlow::ReadNode sanitizedRead) {
+    w.dominatesNode(sanitizedRead.asInstruction()) and
+    sanitizedRead = var.getAUse()
+  }
+
   /**
    * An access to a variable that is preceded by an assignment to its `Path` field.
    *
@@ -85,13 +90,10 @@ module OpenUrlRedirect {
    */
   class PathAssignmentBarrier extends Barrier, Read {
     PathAssignmentBarrier() {
-      exists(Write w, Field f, SsaWithFields var |
-        f.getName() = "Path" and
+      exists(Write w, SsaWithFields var |
         hasHostnameSanitizingSubstring(w.getRhs()) and
-        this = var.getAUse()
-      |
-        w.writesField(var.getAUse(), f, _) and
-        w.dominatesNode(insn)
+        w.writesField(var.getAUse(), any(Field f | f.getName() = "Path"), _) and
+        useIsDominated(var, w, this)
       )
     }
   }

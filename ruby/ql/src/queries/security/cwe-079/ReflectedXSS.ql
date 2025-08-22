@@ -15,9 +15,9 @@
 
 import codeql.ruby.AST
 import codeql.ruby.security.ReflectedXSSQuery
-import DataFlow::PathGraph
+import ReflectedXssFlow::PathGraph
 
-from ReflectedXss::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from ReflectedXssFlow::PathNode source, ReflectedXssFlow::PathNode sink
+where ReflectedXssFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Cross-site scripting vulnerability due to a $@.",
   source.getNode(), "user-provided value"

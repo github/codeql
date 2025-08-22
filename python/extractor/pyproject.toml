@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "extractor-python"
+version = "0.0.1"
+description = ""
+authors = []
+packages = [
+    { include = "buildtools" },
+    { include = "semmle" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+pyyaml = "^6.0.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest-mock = "^3.11.1"
+pytest = "^7.4.2"
+# packaging 24.0 was wrongly released as supporting Python 3.7, while it actually
+# didn't. So as long as we support Python 3.7, we need to stick to <24.0.
+packaging = "<24.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

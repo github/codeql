@@ -4,22 +4,26 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.Networking
 import semmle.code.java.security.HttpsUrls
+private import semmle.code.java.security.Sanitizers
 
 /**
  * A taint tracking configuration for HTTP connections.
  */
-class HttpStringToUrlOpenMethodFlowConfig extends TaintTracking::Configuration {
-  HttpStringToUrlOpenMethodFlowConfig() { this = "HttpStringToUrlOpenMethodFlowConfig" }
+module HttpStringToUrlOpenMethodFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof HttpStringLiteral }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof HttpStringLiteral }
+  predicate isSink(DataFlow::Node sink) { sink instanceof UrlOpenSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof UrlOpenSink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(HttpUrlsAdditionalTaintStep c).step(node1, node2)
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
-  }
+  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
+
+/**
+ * Detect taint flow of HTTP connections.
+ */
+module HttpStringToUrlOpenMethodFlow = TaintTracking::Global<HttpStringToUrlOpenMethodFlowConfig>;

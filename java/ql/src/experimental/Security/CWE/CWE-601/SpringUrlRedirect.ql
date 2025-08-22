@@ -12,31 +12,29 @@
  */
 
 import java
-import experimental.semmle.code.java.security.SpringUrlRedirect
+deprecated import experimental.semmle.code.java.security.SpringUrlRedirect
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.controlflow.Guards
-import DataFlow::PathGraph
+deprecated import SpringUrlRedirectFlow::PathGraph
 
 private predicate startsWithSanitizer(Guard g, Expr e, boolean branch) {
-  g.(MethodAccess).getMethod().hasName("startsWith") and
-  g.(MethodAccess).getMethod().getDeclaringType() instanceof TypeString and
-  g.(MethodAccess).getMethod().getNumberOfParameters() = 1 and
-  e = g.(MethodAccess).getQualifier() and
+  g.(MethodCall).getMethod().hasName("startsWith") and
+  g.(MethodCall).getMethod().getDeclaringType() instanceof TypeString and
+  g.(MethodCall).getMethod().getNumberOfParameters() = 1 and
+  e = g.(MethodCall).getQualifier() and
   branch = true
 }
 
-class SpringUrlRedirectFlowConfig extends TaintTracking::Configuration {
-  SpringUrlRedirectFlowConfig() { this = "SpringUrlRedirectFlowConfig" }
+deprecated module SpringUrlRedirectFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSink(DataFlow::Node sink) { sink instanceof SpringUrlRedirectSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof SpringUrlRedirectSink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+  predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
     springUrlRedirectTaintStep(fromNode, toNode)
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     // Exclude the case where the left side of the concatenated string is not `redirect:`.
     // E.g: `String url = "/path?token=" + request.getParameter("token");`
     // Note this is quite a broad sanitizer (it will also sanitize the right-hand side of `url = "http://" + request.getParameter("token")`);
@@ -46,7 +44,7 @@ class SpringUrlRedirectFlowConfig extends TaintTracking::Configuration {
       not ae instanceof RedirectBuilderExpr
     )
     or
-    exists(MethodAccess ma, int index |
+    exists(MethodCall ma, int index |
       ma.getMethod().hasName("format") and
       ma.getMethod().getDeclaringType() instanceof TypeString and
       ma.getArgument(index) = node.asExpr() and
@@ -62,7 +60,15 @@ class SpringUrlRedirectFlowConfig extends TaintTracking::Configuration {
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, SpringUrlRedirectFlowConfig conf
-where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Potentially untrusted URL redirection due to $@.",
-  source.getNode(), "user-provided value"
+deprecated module SpringUrlRedirectFlow = TaintTracking::Global<SpringUrlRedirectFlowConfig>;
+
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, SpringUrlRedirectFlow::PathNode source,
+  SpringUrlRedirectFlow::PathNode sink, string message1, DataFlow::Node sourceNode, string message2
+) {
+  SpringUrlRedirectFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "Potentially untrusted URL redirection due to $@." and
+  sourceNode = source.getNode() and
+  message2 = "user-provided value"
+}

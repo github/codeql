@@ -1,0 +1,18 @@
+edges
+| test.js:4:9:4:20 | { EnvValue } | test.js:4:9:4:31 | EnvValue | provenance |  |
+| test.js:4:9:4:31 | EnvValue | test.js:5:35:5:42 | EnvValue | provenance |  |
+| test.js:4:9:4:31 | EnvValue | test.js:6:23:6:30 | EnvValue | provenance |  |
+| test.js:4:9:4:31 | EnvValue | test.js:7:22:7:29 | EnvValue | provenance |  |
+| test.js:4:24:4:31 | req.body | test.js:4:9:4:20 | { EnvValue } | provenance |  |
+nodes
+| test.js:4:9:4:20 | { EnvValue } | semmle.label | { EnvValue } |
+| test.js:4:9:4:31 | EnvValue | semmle.label | EnvValue |
+| test.js:4:24:4:31 | req.body | semmle.label | req.body |
+| test.js:5:35:5:42 | EnvValue | semmle.label | EnvValue |
+| test.js:6:23:6:30 | EnvValue | semmle.label | EnvValue |
+| test.js:7:22:7:29 | EnvValue | semmle.label | EnvValue |
+subpaths
+#select
+| test.js:5:35:5:42 | EnvValue | test.js:4:24:4:31 | req.body | test.js:5:35:5:42 | EnvValue | this environment variable assignment is $@. | test.js:4:24:4:31 | req.body | user controllable |
+| test.js:6:23:6:30 | EnvValue | test.js:4:24:4:31 | req.body | test.js:6:23:6:30 | EnvValue | this environment variable assignment is $@. | test.js:4:24:4:31 | req.body | user controllable |
+| test.js:7:22:7:29 | EnvValue | test.js:4:24:4:31 | req.body | test.js:7:22:7:29 | EnvValue | this environment variable assignment is $@. | test.js:4:24:4:31 | req.body | user controllable |

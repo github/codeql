@@ -1,13 +1,21 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using Semmle.Util.Logging;
 
 namespace Semmle.Util
 {
     public static class FileUtils
     {
+        public const string NugetExeUrl = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe";
+
+        public static readonly char[] NewLineCharacters = ['\r', '\n'];
+
         public static string ConvertToWindows(string path)
         {
             return path.Replace('/', '\\');
@@ -79,17 +87,194 @@ namespace Semmle.Util
         }
 
         /// <summary>
-        /// Computes the hash of <paramref name="filePath"/>.
+        /// Computes the hash of the file at <paramref name="filePath"/>.
         /// </summary>
         public static string ComputeFileHash(string filePath)
         {
             using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            using var shaAlg = SHA256.Create();
-            var sha = shaAlg.ComputeHash(fileStream);
+            var sha = SHA256.HashData(fileStream);
+            return GetHashString(sha);
+        }
+
+        /// <summary>
+        /// Computes the hash of <paramref name="input"/>.
+        /// </summary>
+        public static string ComputeHash(string input)
+        {
+            var bytes = Encoding.Unicode.GetBytes(input);
+            var sha = MD5.HashData(bytes); // MD5 to keep it shorter than SHA256
+            return GetHashString(sha).ToUpper();
+        }
+
+        private static string GetHashString(byte[] sha)
+        {
             var hex = new StringBuilder(sha.Length * 2);
             foreach (var b in sha)
+            {
                 hex.AppendFormat("{0:x2}", b);
+            }
             return hex.ToString();
+        }
+
+        private static async Task DownloadFileAsync(string address, string filename, HttpClient httpClient, CancellationToken token)
+        {
+            using var contentStream = await httpClient.GetStreamAsync(address, token);
+            using var stream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
+            await contentStream.CopyToAsync(stream, token);
+        }
+
+        private static void DownloadFileWithRetry(string address, string fileName, int tryCount, int timeoutMilliSeconds, ILogger logger)
+        {
+            logger.LogDebug($"Downloading {address} to {fileName}.");
+            using HttpClient client = new();
+
+            for (var i = 0; i < tryCount; i++)
+            {
+                logger.LogDebug($"Attempt {i + 1} of {tryCount}. Timeout: {timeoutMilliSeconds} ms.");
+                using var cts = new CancellationTokenSource();
+                cts.CancelAfter(timeoutMilliSeconds);
+                try
+                {
+                    DownloadFileAsync(address, fileName, client, cts.Token).GetAwaiter().GetResult();
+                    logger.LogDebug($"Downloaded {address} to {fileName}.");
+                    return;
+                }
+                catch (Exception exc)
+                {
+                    logger.LogDebug($"Failed to download {address} to {fileName}. Exception: {exc.Message}");
+                    timeoutMilliSeconds *= 2;
+
+                    if (i == tryCount - 1)
+                    {
+                        logger.LogDebug($"Failed to download {address} to {fileName} after {tryCount} attempts.");
+                        // Rethrowing the last exception
+                        throw;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Downloads the file at <paramref name="address"/> to <paramref name="fileName"/>.
+        /// </summary>
+        public static void DownloadFile(string address, string fileName, ILogger logger) =>
+           DownloadFileWithRetry(address, fileName, tryCount: 3, timeoutMilliSeconds: 10000, logger);
+
+        public static string ConvertPathToSafeRelativePath(string path)
+        {
+            // Remove all leading path separators / or \
+            // For example, UNC paths have two leading \\
+            path = path.TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
+            if (path.Length > 1 && path[1] == ':')
+                path = $"{path[0]}_{path[2..]}";
+
+            return path;
+        }
+
+        public static string NestPaths(ILogger logger, string? outerpath, string innerpath)
+        {
+            var nested = innerpath;
+            if (!string.IsNullOrEmpty(outerpath))
+            {
+                innerpath = ConvertPathToSafeRelativePath(innerpath);
+
+                nested = Path.Combine(outerpath, innerpath);
+            }
+            try
+            {
+                var directoryName = Path.GetDirectoryName(nested);
+                if (directoryName is null)
+                {
+                    logger.LogWarning($"Failed to get directory name from path '{nested}'.");
+                    throw new InvalidOperationException();
+                }
+                Directory.CreateDirectory(directoryName);
+            }
+            catch (PathTooLongException)
+            {
+                logger.LogWarning($"Failed to create parent directory of '{nested}': Path too long.");
+                throw;
+            }
+            return nested;
+        }
+
+        private static readonly Lazy<string> tempFolderPath = new Lazy<string>(() =>
+        {
+            var tempPath = Path.GetTempPath();
+            var name = Guid.NewGuid().ToString("N").ToUpper();
+            var tempFolder = Path.Combine(tempPath, "GitHub", name);
+            Directory.CreateDirectory(tempFolder);
+            return tempFolder;
+        });
+
+        public static string GetTemporaryWorkingDirectory(Func<string, string?> getEnvironmentVariable, string lang, out bool shouldCleanUp)
+        {
+            var tempFolder = getEnvironmentVariable($"CODEQL_EXTRACTOR_{lang}_SCRATCH_DIR");
+            if (!string.IsNullOrEmpty(tempFolder))
+            {
+                shouldCleanUp = false;
+                return tempFolder;
+            }
+
+            shouldCleanUp = true;
+            return tempFolderPath.Value;
+        }
+
+        public static string GetTemporaryWorkingDirectory(out bool shouldCleanUp) =>
+            GetTemporaryWorkingDirectory(Environment.GetEnvironmentVariable, "CSHARP", out shouldCleanUp);
+
+        public static FileInfo CreateTemporaryFile(string extension, out bool shouldCleanUpContainingFolder)
+        {
+            var tempFolder = GetTemporaryWorkingDirectory(out shouldCleanUpContainingFolder);
+            Directory.CreateDirectory(tempFolder);
+            string outputPath;
+            do
+            {
+                outputPath = Path.Combine(tempFolder, Path.GetRandomFileName() + extension);
+            }
+            while (File.Exists(outputPath));
+
+            File.Create(outputPath);
+
+            return new FileInfo(outputPath);
+        }
+
+        public static string SafeGetDirectoryName(string path, ILogger logger)
+        {
+            try
+            {
+                var dir = Path.GetDirectoryName(path);
+                if (dir is null)
+                {
+                    return "";
+                }
+
+                if (!dir.EndsWith(Path.DirectorySeparatorChar))
+                {
+                    dir += Path.DirectorySeparatorChar;
+                }
+
+                return dir;
+            }
+            catch (Exception ex)
+            {
+                logger.LogDebug($"Failed to get directory name for {path}: {ex.Message}");
+                return "";
+            }
+        }
+
+        public static string? SafeGetFileName(string path, ILogger logger)
+        {
+            try
+            {
+                return Path.GetFileName(path);
+            }
+            catch (Exception ex)
+            {
+                logger.LogDebug($"Failed to get file name for {path}: {ex.Message}");
+                return null;
+            }
         }
     }
 }

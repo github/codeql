@@ -1,8 +1,10 @@
 private import java
 private import semmle.code.java.Collections
 private import semmle.code.java.dataflow.internal.ContainerFlow
-private import CaptureModelsSpecific as Specific
-private import CaptureModels
+private import CaptureModels as CaptureModels
+private import CaptureModels::ModelGeneratorCommonInput as ModelGeneratorInput
+private import CaptureModels::SummaryModelGeneratorInput as SummaryModelGeneratorInput
+private import CaptureModelsPrinting
 
 /**
  * A type representing instantiations of class types
@@ -81,7 +83,7 @@ private predicate localTypeParameter(Callable callable, TypeVariable tv) {
 private string getAccessPath(Type t) {
   if
     t instanceof Array and
-    not Specific::isPrimitiveTypeUsedForBulkData(t.(Array).getElementType())
+    not CaptureModels::isPrimitiveTypeUsedForBulkData(t.(Array).getElementType())
   then result = ".ArrayElement"
   else
     if t instanceof ContainerType or t instanceof IterableClass
@@ -134,7 +136,7 @@ private string implicit(Callable callable, TypeVariable tv) {
     then access = getAccessPath(decl)
     else access = getSyntheticField(tv)
   |
-    result = Specific::qualifierString() + access
+    result = ModelGeneratorInput::qualifierString() + access
   )
 }
 
@@ -283,13 +285,19 @@ private predicate output(Callable callable, TypeVariable tv, string output) {
   functionalSink(callable, tv, output)
 }
 
+module ModelPrintingInput implements ModelPrintingSummarySig {
+  class SummaryApi = TypeBasedFlowTargetApi;
+
+  string getProvenance() { result = "tb-generated" }
+}
+
+private module Printing = ModelPrintingSummary<ModelPrintingInput>;
+
 /**
  * A class of callables that are relevant generating summaries for based
  * on the Theorems for Free approach.
  */
-class TypeBasedFlowTargetApi extends Specific::TargetApiSpecific {
-  TypeBasedFlowTargetApi() { Specific::isRelevantForTypeBasedFlowModels(this) }
-
+class TypeBasedFlowTargetApi extends SummaryModelGeneratorInput::SummaryTargetApi {
   /**
    * Gets the string representation of all type based summaries for `this`
    * inspired by the Theorems for Free approach.
@@ -319,7 +327,7 @@ class TypeBasedFlowTargetApi extends Specific::TargetApiSpecific {
       output(this, tv, output) and
       input != output
     |
-      result = asValueModel(this, input, output)
+      result = Printing::asLiftedValueModel(this, input, output)
     )
   }
 }

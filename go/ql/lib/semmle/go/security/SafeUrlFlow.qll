@@ -16,24 +16,19 @@ import go
 module SafeUrlFlow {
   import SafeUrlFlowCustomizations::SafeUrlFlow
 
-  /**
-   * A taint-tracking configuration for reasoning about safe URLs.
-   */
-  class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "SafeUrlFlow" }
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       // propagate to a URL when its host is assigned to
       exists(Write w, Field f, SsaWithFields v | f.hasQualifiedName("net/url", "URL", "Host") |
-        w.writesField(v.getAUse(), f, pred) and succ = v.getAUse()
+        w.writesField(v.getAUse(), f, node1) and node2 = v.getAUse()
       )
     }
 
-    override predicate isSanitizerOut(DataFlow::Node node) {
+    predicate isBarrierOut(DataFlow::Node node) {
       // block propagation of this safe value when its host is overwritten
       exists(Write w, Field f | f.hasQualifiedName("net/url", "URL", "Host") |
         w.writesField(node.getASuccessor(), f, _)
@@ -41,5 +36,12 @@ module SafeUrlFlow {
       or
       node instanceof SanitizerEdge
     }
+
+    predicate observeDiffInformedIncrementalMode() {
+      none() // only used as secondary configuration
+    }
   }
+
+  /** Tracks taint flow for reasoning about safe URLs. */
+  module Flow = TaintTracking::Global<Config>;
 }

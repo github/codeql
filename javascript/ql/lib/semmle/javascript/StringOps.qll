@@ -722,7 +722,7 @@ module StringOps {
     }
 
     private class MatchCall extends DataFlow::MethodCallNode {
-      MatchCall() { this.getMethodName() = "match" }
+      MatchCall() { this.getMethodName() = ["match", "matchAll"] }
     }
 
     private class ExecCall extends DataFlow::MethodCallNode {

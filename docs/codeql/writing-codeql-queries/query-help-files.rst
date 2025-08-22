@@ -15,7 +15,7 @@ For more information about how to write useful query help in a style that is con
  
    You can access the query help for CodeQL queries by visiting `CodeQL query help <https://codeql.github.com/codeql-query-help>`__.
    You can also access the raw query help files in the `GitHub repository <https://github.com/github/codeql>`__.
-   For example, see the `JavaScript security queries <https://github.com/github/codeql/tree/main/javascript/ql/src/Security>`__ and `C/C++ critical queries <https://github.com/github/codeql/tree/main/cpp/ql/src/Critical>`__. 
+   For example, see the `JavaScript/TypeScript security queries <https://github.com/github/codeql/tree/main/javascript/ql/src/Security>`__ and `C/C++ critical queries <https://github.com/github/codeql/tree/main/cpp/ql/src/Critical>`__. 
       
 Overview
 ========

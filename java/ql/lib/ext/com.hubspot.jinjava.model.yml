@@ -3,5 +3,5 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["com.hubspot.jinjava", "Jinjava", True, "render", "", "", "Argument[0]", "ssti", "manual"]
-      - ["com.hubspot.jinjava", "Jinjava", True, "renderForResult", "", "", "Argument[0]", "ssti", "manual"]
+      - ["com.hubspot.jinjava", "Jinjava", True, "render", "", "", "Argument[0]", "template-injection", "manual"]
+      - ["com.hubspot.jinjava", "Jinjava", True, "renderForResult", "", "", "Argument[0]", "template-injection", "manual"]

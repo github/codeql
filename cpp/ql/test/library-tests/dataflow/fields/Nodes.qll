@@ -13,9 +13,6 @@ class Node extends TNode {
 
   AST::DataFlow::Node asAst() { none() }
 
-  /** DEPRECATED: Alias for asAst */
-  deprecated AST::DataFlow::Node asAST() { result = asAst() }
-
   Location getLocation() { none() }
 }
 
@@ -28,14 +25,8 @@ class AstNode extends Node, TAstNode {
 
   override AST::DataFlow::Node asAst() { result = n }
 
-  /** DEPRECATED: Alias for asAst */
-  deprecated override AST::DataFlow::Node asAST() { result = asAst() }
-
   override Location getLocation() { result = n.getLocation() }
 }
-
-/** DEPRECATED: Alias for AstNode */
-deprecated class ASTNode = AstNode;
 
 class IRNode extends Node, TIRNode {
   IR::DataFlow::Node n;

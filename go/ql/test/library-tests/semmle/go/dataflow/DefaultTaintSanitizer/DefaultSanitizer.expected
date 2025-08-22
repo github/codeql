@@ -1,0 +1,33 @@
+models
+| 1 | Source: net/http; Request; true; Body; ; ; ; remote; manual |
+| 2 | Summary: io/fs; File; true; Read; ; ; Argument[receiver]; Argument[0]; taint; manual |
+| 3 | Summary: io; Reader; true; Read; ; ; Argument[receiver]; Argument[0]; taint; manual |
+| 4 | Summary: os; File; true; Read; ; ; Argument[receiver]; Argument[0]; taint; manual |
+edges
+| Builtin.go:6:2:6:2 | definition of b | Builtin.go:8:9:8:17 | type conversion | provenance |  |
+| Builtin.go:7:2:7:15 | selection of Body | Builtin.go:6:2:6:2 | definition of b | provenance | Src:MaD:1 MaD:2 |
+| Builtin.go:7:2:7:15 | selection of Body | Builtin.go:6:2:6:2 | definition of b | provenance | Src:MaD:1 MaD:3 |
+| Builtin.go:7:2:7:15 | selection of Body | Builtin.go:6:2:6:2 | definition of b | provenance | Src:MaD:1 MaD:4 |
+| Builtin.go:12:2:12:2 | definition of b | Builtin.go:17:9:17:17 | type conversion | provenance |  |
+| Builtin.go:13:2:13:15 | selection of Body | Builtin.go:12:2:12:2 | definition of b | provenance | Src:MaD:1 MaD:2 |
+| Builtin.go:13:2:13:15 | selection of Body | Builtin.go:12:2:12:2 | definition of b | provenance | Src:MaD:1 MaD:3 |
+| Builtin.go:13:2:13:15 | selection of Body | Builtin.go:12:2:12:2 | definition of b | provenance | Src:MaD:1 MaD:4 |
+| Builtin.go:21:2:21:2 | definition of b | Builtin.go:24:10:24:18 | type conversion | provenance |  |
+| Builtin.go:22:2:22:15 | selection of Body | Builtin.go:21:2:21:2 | definition of b | provenance | Src:MaD:1 MaD:2 |
+| Builtin.go:22:2:22:15 | selection of Body | Builtin.go:21:2:21:2 | definition of b | provenance | Src:MaD:1 MaD:3 |
+| Builtin.go:22:2:22:15 | selection of Body | Builtin.go:21:2:21:2 | definition of b | provenance | Src:MaD:1 MaD:4 |
+nodes
+| Builtin.go:6:2:6:2 | definition of b | semmle.label | definition of b |
+| Builtin.go:7:2:7:15 | selection of Body | semmle.label | selection of Body |
+| Builtin.go:8:9:8:17 | type conversion | semmle.label | type conversion |
+| Builtin.go:12:2:12:2 | definition of b | semmle.label | definition of b |
+| Builtin.go:13:2:13:15 | selection of Body | semmle.label | selection of Body |
+| Builtin.go:17:9:17:17 | type conversion | semmle.label | type conversion |
+| Builtin.go:21:2:21:2 | definition of b | semmle.label | definition of b |
+| Builtin.go:22:2:22:15 | selection of Body | semmle.label | selection of Body |
+| Builtin.go:24:10:24:18 | type conversion | semmle.label | type conversion |
+subpaths
+#select
+| Builtin.go:8:9:8:17 | type conversion | Builtin.go:7:2:7:15 | selection of Body | Builtin.go:8:9:8:17 | type conversion | Found taint flow |
+| Builtin.go:17:9:17:17 | type conversion | Builtin.go:13:2:13:15 | selection of Body | Builtin.go:17:9:17:17 | type conversion | Found taint flow |
+| Builtin.go:24:10:24:18 | type conversion | Builtin.go:22:2:22:15 | selection of Body | Builtin.go:24:10:24:18 | type conversion | Found taint flow |

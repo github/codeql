@@ -12,8 +12,8 @@ the required buffer size, but do not allocate space for the zero terminator.
 </overview>
 <recommendation>
 <p>
-The expression highlighted by this rule creates a buffer that is of insufficient size to contain
-the data being copied. This makes the code vulnerable to buffer overflow which can result in anything from a segmentation fault to a security vulnerability (particularly if the array is on stack-allocated memory).
+The highlighted code segment creates a buffer without ensuring it's large enough to accommodate the copied data.
+This leaves the code susceptible to a buffer overflow attack, which could lead to anything from program crashes to malicious code execution.
 </p>
 
 <p>

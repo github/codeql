@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with the Java Servlet API.
  */
+overlay[local?]
+module;
 
 import semmle.code.java.Type
 
@@ -128,9 +130,6 @@ class HttpServletRequestGetRequestUrlMethod extends Method {
   }
 }
 
-/** DEPRECATED: Alias for HttpServletRequestGetRequestUrlMethod */
-deprecated class HttpServletRequestGetRequestURLMethod = HttpServletRequestGetRequestUrlMethod;
-
 /**
  * The method `getRequestURI()` declared in `javax.servlet.http.HttpServletRequest`.
  */
@@ -141,9 +140,6 @@ class HttpServletRequestGetRequestUriMethod extends Method {
     this.getNumberOfParameters() = 0
   }
 }
-
-/** DEPRECATED: Alias for HttpServletRequestGetRequestUriMethod */
-deprecated class HttpServletRequestGetRequestURIMethod = HttpServletRequestGetRequestUriMethod;
 
 /**
  * The method `getRemoteUser()` declared in `javax.servlet.http.HttpServletRequest`.
@@ -247,13 +243,23 @@ class TypeCookie extends Class {
 }
 
 /**
- * The method `getValue(String)` declared in `javax.servlet.http.Cookie`.
+ * The method `getValue()` declared in `javax.servlet.http.Cookie`.
  */
 class CookieGetValueMethod extends Method {
   CookieGetValueMethod() {
     this.getDeclaringType() instanceof TypeCookie and
     this.hasName("getValue") and
     this.getReturnType() instanceof TypeString
+  }
+}
+
+/**
+ * The method `setValue(String)` declared in `javax.servlet.http.Cookie`.
+ */
+class CookieSetValueMethod extends Method {
+  CookieSetValueMethod() {
+    this.getDeclaringType() instanceof TypeCookie and
+    this.hasName("setValue")
   }
 }
 
@@ -312,6 +318,16 @@ class ResponseSetHeaderMethod extends Method {
 }
 
 /**
+ * The method `setContentType` declared in `javax.servlet.http.HttpServletResponse`.
+ */
+class ResponseSetContentTypeMethod extends Method {
+  ResponseSetContentTypeMethod() {
+    this.getDeclaringType() instanceof ServletResponse and
+    this.hasName("setContentType")
+  }
+}
+
+/**
  * A class that has `javax.servlet.Servlet` as an ancestor.
  */
 class ServletClass extends Class {
@@ -339,9 +355,6 @@ class ServletWebXmlListenerType extends RefType {
   }
 }
 
-/** DEPRECATED: Alias for ServletWebXmlListenerType */
-deprecated class ServletWebXMLListenerType = ServletWebXmlListenerType;
-
 /** Holds if `m` is a request handler method (for example `doGet` or `doPost`). */
 predicate isServletRequestMethod(Method m) {
   m.getDeclaringType() instanceof ServletClass and
@@ -351,7 +364,7 @@ predicate isServletRequestMethod(Method m) {
 }
 
 /** Holds if `ma` is a call that gets a request parameter. */
-predicate isRequestGetParamMethod(MethodAccess ma) {
+predicate isRequestGetParamMethod(MethodCall ma) {
   ma.getMethod() instanceof ServletRequestGetParameterMethod or
   ma.getMethod() instanceof ServletRequestGetParameterMapMethod or
   ma.getMethod() instanceof HttpServletRequestGetQueryStringMethod
@@ -402,4 +415,9 @@ class GetServletResourceAsStreamMethod extends Method {
     this.getDeclaringType() instanceof ServletContext and
     this.hasName("getResourceAsStream")
   }
+}
+
+/** The interface `javax.servlet.http.HttpSession` */
+class HttpServletSession extends RefType {
+  HttpServletSession() { this.hasQualifiedName("javax.servlet.http", "HttpSession") }
 }

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["elastic/elasticsearch-net/.github/workflows/release.yml", "*", "input.solution", "code-injection", "generated"]

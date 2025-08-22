@@ -1,5 +1,5 @@
-using Microsoft.CodeAnalysis;
 using System.IO;
+using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -14,7 +14,7 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateModifiers(trapFile);
             ContainingType!.PopulateGenerics();
 
-            trapFile.destructors(this, string.Format("~{0}", Symbol.ContainingType.Name), ContainingType, OriginalDefinition(Context, this, Symbol));
+            trapFile.destructors(this, $"~{Symbol.ContainingType.Name}", ContainingType, OriginalDefinition(Context, this, Symbol));
             trapFile.destructor_location(this, Location);
         }
 

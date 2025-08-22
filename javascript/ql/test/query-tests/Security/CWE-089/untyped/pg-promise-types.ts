@@ -4,8 +4,8 @@ export class Foo {
   db: IDatabase;
 
   onRequest(req, res) {
-    let taint = req.params.x;
-    this.db.one(taint); // NOT OK
+    let taint = req.params.x; // $ Source
+    this.db.one(taint); // $ Alert
     res.end();
   }
 }

@@ -1,1 +1,2 @@
-Declarations/DuplicateVarDecl.ql
+query: Declarations/DuplicateVarDecl.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

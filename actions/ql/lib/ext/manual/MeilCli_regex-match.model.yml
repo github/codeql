@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["MeilCli/regex-match", "*", "input.search_string", "output.matched_first", "taint", "manual"]
+      - ["MeilCli/regex-match", "*", "input.search_string", "output.matched_json", "taint", "manual"]
+

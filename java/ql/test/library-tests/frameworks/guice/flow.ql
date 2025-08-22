@@ -2,13 +2,11 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 
-class Conf extends TaintTracking::Configuration {
-  Conf() { this = "conf" }
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src instanceof ActiveThreatModelSource }
 
-  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+  predicate isSink(DataFlow::Node sink) {
+    exists(MethodCall ma |
       sink.asExpr() = ma.getAnArgument() and
       ma.getMethod().hasName("sink")
     ) and
@@ -16,6 +14,8 @@ class Conf extends TaintTracking::Configuration {
   }
 }
 
-from Conf c, DataFlow::Node src, DataFlow::Node sink
-where c.hasFlow(src, sink)
+module Flow = TaintTracking::Global<Config>;
+
+from DataFlow::Node src, DataFlow::Node sink
+where Flow::flow(src, sink)
 select src, sink

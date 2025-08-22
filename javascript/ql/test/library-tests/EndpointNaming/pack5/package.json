@@ -1,0 +1,4 @@
+{
+    "name": "pack5",
+    "main": "./dist/index.js"
+}

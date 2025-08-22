@@ -18,7 +18,7 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.Servlets
 import semmle.code.xml.WebXML
-import DataFlow::PathGraph
+import UncaughtServletExceptionFlow::PathGraph
 
 /** Holds if a given exception type is caught. */
 private predicate exceptionIsCaught(TryStmt t, RefType exType) {
@@ -53,7 +53,7 @@ private predicate hasErrorPage() {
 /** Sink of uncaught exceptions, which shall be IO exceptions or runtime exceptions since other exception types must be explicitly caught. */
 class UncaughtServletExceptionSink extends DataFlow::ExprNode {
   UncaughtServletExceptionSink() {
-    exists(Method m, MethodAccess ma | ma.getMethod() = m |
+    exists(Method m, MethodCall ma | ma.getMethod() = m |
       isServletMethod(ma.getEnclosingCallable()) and
       exists(m.getAThrownExceptionType()) and // The called method might plausibly throw an exception.
       ma.getAnArgument() = this.getExpr() and
@@ -65,16 +65,24 @@ class UncaughtServletExceptionSink extends DataFlow::ExprNode {
   }
 }
 
-/** Taint configuration of uncaught exceptions caused by user provided data from `RemoteFlowSource` */
-class UncaughtServletExceptionConfiguration extends TaintTracking::Configuration {
-  UncaughtServletExceptionConfiguration() { this = "UncaughtServletException" }
+/** Taint configuration of uncaught exceptions caused by user provided data from `ActiveThreatModelSource` */
+module UncaughtServletExceptionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof UncaughtServletExceptionSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof UncaughtServletExceptionSink }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, UncaughtServletExceptionConfiguration c
-where c.hasFlowPath(source, sink) and not hasErrorPage()
-select sink.getNode(), source, sink, "This value depends on a $@ and can throw uncaught exception.",
-  source.getNode(), "user-provided value"
+module UncaughtServletExceptionFlow = TaintTracking::Global<UncaughtServletExceptionConfig>;
+
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, UncaughtServletExceptionFlow::PathNode source,
+  UncaughtServletExceptionFlow::PathNode sink, string message1, DataFlow::Node sourceNode,
+  string message2
+) {
+  UncaughtServletExceptionFlow::flowPath(source, sink) and
+  not hasErrorPage() and
+  sinkNode = sink.getNode() and
+  message1 = "This value depends on a $@ and can throw uncaught exception." and
+  sourceNode = source.getNode() and
+  message2 = "user-provided value"
+}

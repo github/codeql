@@ -1,3 +1,5 @@
+invalidModelRow
+#select
 | crypto.go:9:14:9:31 | call to NewCipher | crypto.go:9:2:9:31 | ... := ...[0] |
 | crypto.go:9:14:9:31 | call to NewCipher | crypto.go:9:2:9:31 | ... := ...[1] |
 | crypto.go:10:15:10:34 | call to NewGCM | crypto.go:10:2:10:34 | ... := ...[0] |
@@ -5,60 +7,65 @@
 | crypto.go:11:18:11:57 | call to Open | crypto.go:11:2:11:57 | ... := ...[0] |
 | crypto.go:11:18:11:57 | call to Open | crypto.go:11:2:11:57 | ... := ...[1] |
 | crypto.go:11:42:11:51 | ciphertext | crypto.go:11:2:11:57 | ... := ...[0] |
-| io.go:13:31:13:43 | "some string" | io.go:13:13:13:44 | call to NewReader |
-| io.go:15:3:15:3 | definition of w | io.go:15:23:15:27 | &... |
-| io.go:15:3:15:3 | definition of w | io.go:15:30:15:34 | &... |
-| io.go:15:23:15:27 | &... | io.go:14:7:14:10 | definition of buf1 |
-| io.go:15:24:15:27 | buf1 | io.go:15:23:15:27 | &... |
-| io.go:15:30:15:34 | &... | io.go:14:13:14:16 | definition of buf2 |
-| io.go:15:31:15:34 | buf2 | io.go:15:30:15:34 | &... |
-| io.go:17:14:17:19 | reader | io.go:15:3:15:3 | definition of w |
-| io.go:21:31:21:43 | "some string" | io.go:21:13:21:44 | call to NewReader |
-| io.go:24:19:24:23 | &... | io.go:22:7:22:10 | definition of buf1 |
-| io.go:24:20:24:23 | buf1 | io.go:24:19:24:23 | &... |
-| io.go:26:21:26:26 | reader | io.go:24:3:24:4 | definition of w2 |
-| io.go:30:31:30:43 | "some string" | io.go:30:13:30:44 | call to NewReader |
-| io.go:32:19:32:23 | &... | io.go:31:7:31:10 | definition of buf1 |
-| io.go:32:20:32:23 | buf1 | io.go:32:19:32:23 | &... |
-| io.go:34:16:34:21 | reader | io.go:32:3:32:4 | definition of w2 |
-| io.go:38:6:38:6 | definition of w | io.go:38:3:38:19 | ... := ...[0] |
-| io.go:38:11:38:19 | call to Pipe | io.go:38:3:38:19 | ... := ...[0] |
-| io.go:38:11:38:19 | call to Pipe | io.go:38:3:38:19 | ... := ...[1] |
-| io.go:39:17:39:31 | "some string\\n" | io.go:38:6:38:6 | definition of w |
-| io.go:42:16:42:16 | r | io.go:41:3:41:5 | definition of buf |
-| io.go:43:13:43:15 | buf | io.go:43:13:43:24 | call to String |
-| io.go:47:31:47:43 | "some string" | io.go:47:13:47:44 | call to NewReader |
-| io.go:49:18:49:23 | reader | io.go:48:3:48:5 | definition of buf |
-| io.go:53:31:53:43 | "some string" | io.go:53:13:53:44 | call to NewReader |
-| io.go:55:15:55:20 | reader | io.go:54:3:54:5 | definition of buf |
-| io.go:60:18:60:21 | &... | io.go:59:7:59:9 | definition of buf |
-| io.go:60:19:60:21 | buf | io.go:60:18:60:21 | &... |
-| io.go:61:21:61:26 | "test" | io.go:60:3:60:3 | definition of w |
-| io.go:64:31:64:43 | "some string" | io.go:64:13:64:44 | call to NewReader |
-| io.go:66:3:66:8 | reader | io.go:65:3:65:5 | definition of buf |
-| io.go:69:31:69:43 | "some string" | io.go:69:13:69:44 | call to NewReader |
-| io.go:71:3:71:8 | reader | io.go:70:3:70:5 | definition of buf |
-| io.go:75:31:75:43 | "some string" | io.go:75:13:75:44 | call to NewReader |
-| io.go:76:24:76:29 | reader | io.go:76:9:76:33 | call to LimitReader |
-| io.go:77:22:77:23 | lr | io.go:77:11:77:19 | selection of Stdout |
-| io.go:81:27:81:36 | "reader1 " | io.go:81:9:81:37 | call to NewReader |
-| io.go:82:27:82:36 | "reader2 " | io.go:82:9:82:37 | call to NewReader |
-| io.go:83:27:83:35 | "reader3" | io.go:83:9:83:36 | call to NewReader |
-| io.go:84:23:84:24 | r1 | io.go:84:8:84:33 | call to MultiReader |
-| io.go:84:27:84:28 | r2 | io.go:84:8:84:33 | call to MultiReader |
-| io.go:84:31:84:32 | r3 | io.go:84:8:84:33 | call to MultiReader |
-| io.go:85:22:85:22 | r | io.go:85:11:85:19 | selection of Stdout |
-| io.go:88:26:88:38 | "some string" | io.go:88:8:88:39 | call to NewReader |
-| io.go:90:23:90:23 | r | io.go:90:10:90:30 | call to TeeReader |
-| io.go:90:23:90:23 | r | io.go:90:26:90:29 | &... |
-| io.go:90:26:90:29 | &... | io.go:89:7:89:9 | definition of buf |
-| io.go:90:27:90:29 | buf | io.go:90:26:90:29 | &... |
-| io.go:92:22:92:24 | tee | io.go:92:11:92:19 | selection of Stdout |
-| io.go:95:26:95:38 | "some string" | io.go:95:8:95:39 | call to NewReader |
-| io.go:96:28:96:28 | r | io.go:96:8:96:36 | call to NewSectionReader |
-| io.go:97:22:97:22 | s | io.go:97:11:97:19 | selection of Stdout |
-| io.go:100:26:100:38 | "some string" | io.go:100:8:100:39 | call to NewReader |
-| io.go:101:3:101:3 | r | io.go:101:13:101:21 | selection of Stdout |
+| io.go:14:31:14:43 | "some string" | io.go:14:13:14:44 | call to NewReader |
+| io.go:16:3:16:3 | definition of w | io.go:16:23:16:27 | &... |
+| io.go:16:3:16:3 | definition of w | io.go:16:30:16:34 | &... |
+| io.go:16:23:16:27 | &... | io.go:15:7:15:10 | definition of buf1 |
+| io.go:16:24:16:27 | buf1 | io.go:16:23:16:27 | &... |
+| io.go:16:30:16:34 | &... | io.go:15:13:15:16 | definition of buf2 |
+| io.go:16:31:16:34 | buf2 | io.go:16:30:16:34 | &... |
+| io.go:18:14:18:19 | reader | io.go:16:3:16:3 | definition of w |
+| io.go:22:31:22:43 | "some string" | io.go:22:13:22:44 | call to NewReader |
+| io.go:25:19:25:23 | &... | io.go:23:7:23:10 | definition of buf1 |
+| io.go:25:20:25:23 | buf1 | io.go:25:19:25:23 | &... |
+| io.go:27:21:27:26 | reader | io.go:25:3:25:4 | definition of w2 |
+| io.go:31:31:31:43 | "some string" | io.go:31:13:31:44 | call to NewReader |
+| io.go:33:19:33:23 | &... | io.go:32:7:32:10 | definition of buf1 |
+| io.go:33:20:33:23 | buf1 | io.go:33:19:33:23 | &... |
+| io.go:35:16:35:21 | reader | io.go:33:3:33:4 | definition of w2 |
+| io.go:39:6:39:6 | definition of w | io.go:39:3:39:19 | ... := ...[0] |
+| io.go:39:11:39:19 | call to Pipe | io.go:39:3:39:19 | ... := ...[0] |
+| io.go:39:11:39:19 | call to Pipe | io.go:39:3:39:19 | ... := ...[1] |
+| io.go:40:17:40:31 | "some string\\n" | io.go:39:6:39:6 | definition of w |
+| io.go:43:16:43:16 | r | io.go:42:3:42:5 | definition of buf |
+| io.go:44:13:44:15 | buf | io.go:44:13:44:24 | call to String |
+| io.go:48:31:48:43 | "some string" | io.go:48:13:48:44 | call to NewReader |
+| io.go:50:18:50:23 | reader | io.go:49:3:49:5 | definition of buf |
+| io.go:54:31:54:43 | "some string" | io.go:54:13:54:44 | call to NewReader |
+| io.go:56:15:56:20 | reader | io.go:55:3:55:5 | definition of buf |
+| io.go:61:18:61:21 | &... | io.go:60:7:60:9 | definition of buf |
+| io.go:61:19:61:21 | buf | io.go:61:18:61:21 | &... |
+| io.go:62:21:62:26 | "test" | io.go:61:3:61:3 | definition of w |
+| io.go:65:31:65:43 | "some string" | io.go:65:13:65:44 | call to NewReader |
+| io.go:67:3:67:8 | reader | io.go:66:3:66:5 | definition of buf |
+| io.go:70:31:70:43 | "some string" | io.go:70:13:70:44 | call to NewReader |
+| io.go:72:3:72:8 | reader | io.go:71:3:71:5 | definition of buf |
+| io.go:76:31:76:43 | "some string" | io.go:76:13:76:44 | call to NewReader |
+| io.go:77:24:77:29 | reader | io.go:77:9:77:33 | call to LimitReader |
+| io.go:78:22:78:23 | lr | io.go:78:11:78:19 | selection of Stdout |
+| io.go:82:27:82:36 | "reader1 " | io.go:82:9:82:37 | call to NewReader |
+| io.go:83:27:83:36 | "reader2 " | io.go:83:9:83:37 | call to NewReader |
+| io.go:84:27:84:35 | "reader3" | io.go:84:9:84:36 | call to NewReader |
+| io.go:85:23:85:24 | r1 | io.go:85:8:85:33 | call to MultiReader |
+| io.go:85:27:85:28 | r2 | io.go:85:8:85:33 | call to MultiReader |
+| io.go:85:31:85:32 | r3 | io.go:85:8:85:33 | call to MultiReader |
+| io.go:86:22:86:22 | r | io.go:86:11:86:19 | selection of Stdout |
+| io.go:89:26:89:38 | "some string" | io.go:89:8:89:39 | call to NewReader |
+| io.go:91:23:91:23 | r | io.go:91:10:91:30 | call to TeeReader |
+| io.go:91:23:91:23 | r | io.go:91:26:91:29 | &... |
+| io.go:91:26:91:29 | &... | io.go:90:7:90:9 | definition of buf |
+| io.go:91:27:91:29 | buf | io.go:91:26:91:29 | &... |
+| io.go:93:22:93:24 | tee | io.go:93:11:93:19 | selection of Stdout |
+| io.go:96:26:96:38 | "some string" | io.go:96:8:96:39 | call to NewReader |
+| io.go:97:28:97:28 | r | io.go:97:8:97:36 | call to NewSectionReader |
+| io.go:98:22:98:22 | s | io.go:98:11:98:19 | selection of Stdout |
+| io.go:101:26:101:38 | "some string" | io.go:101:8:101:39 | call to NewReader |
+| io.go:102:3:102:3 | r | io.go:102:13:102:21 | selection of Stdout |
+| io.go:108:30:108:42 | "some string" | io.go:108:12:108:43 | call to NewReader |
+| io.go:109:12:109:33 | call to ReadAll | io.go:109:2:109:33 | ... := ...[0] |
+| io.go:109:12:109:33 | call to ReadAll | io.go:109:2:109:33 | ... := ...[1] |
+| io.go:109:27:109:32 | reader | io.go:109:2:109:33 | ... := ...[0] |
+| io.go:110:18:110:20 | buf | io.go:110:2:110:10 | selection of Stdout |
 | main.go:11:12:11:26 | call to Marshal | main.go:11:2:11:26 | ... := ...[0] |
 | main.go:11:12:11:26 | call to Marshal | main.go:11:2:11:26 | ... := ...[1] |
 | main.go:11:25:11:25 | v | main.go:11:2:11:26 | ... := ...[0] |
@@ -81,3 +88,7 @@
 | main.go:28:2:28:4 | implicit dereference | main.go:28:2:28:9 | selection of Body |
 | main.go:28:2:28:4 | req | main.go:28:2:28:4 | implicit dereference |
 | main.go:28:2:28:9 | selection of Body | main.go:27:2:27:2 | definition of b |
+| main.go:34:2:34:4 | implicit dereference | main.go:32:16:32:18 | definition of req |
+| main.go:34:2:34:4 | implicit dereference | main.go:34:2:34:9 | selection of Body |
+| main.go:34:2:34:4 | req | main.go:34:2:34:4 | implicit dereference |
+| main.go:34:2:34:9 | selection of Body | main.go:33:2:33:2 | definition of b |

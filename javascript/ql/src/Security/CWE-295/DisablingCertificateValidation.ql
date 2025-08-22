@@ -19,6 +19,8 @@ DataFlow::InvokeNode tlsInvocation() {
   or
   result = DataFlow::moduleMember("https", "Agent").getAnInstantiation()
   or
+  result = DataFlow::moduleMember("https", "createServer").getACall()
+  or
   exists(DataFlow::NewNode new |
     new = DataFlow::moduleMember("tls", "TLSSocket").getAnInstantiation()
   |
@@ -35,7 +37,7 @@ DataFlow::ObjectLiteralNode tlsOptions() { result.flowsTo(tlsInvocation().getAnA
 from DataFlow::PropWrite disable
 where
   exists(DataFlow::SourceNode env |
-    env = NodeJSLib::process().getAPropertyRead("env") and
+    env.(ThreatModelSource).getThreatModel() = "environment" and
     disable = env.getAPropertyWrite("NODE_TLS_REJECT_UNAUTHORIZED") and
     disable.getRhs().mayHaveStringValue("0")
   )

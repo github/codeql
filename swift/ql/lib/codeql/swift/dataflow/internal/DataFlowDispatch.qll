@@ -5,7 +5,6 @@ private import codeql.swift.controlflow.ControlFlowGraph
 private import codeql.swift.controlflow.CfgNodes
 private import codeql.swift.controlflow.internal.Scope
 private import FlowSummaryImpl as FlowSummaryImpl
-private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import codeql.swift.dataflow.FlowSummary as FlowSummary
 
 newtype TReturnKind =
@@ -74,7 +73,10 @@ newtype TDataFlowCall =
   TPropertyGetterCall(PropertyGetterCfgNode getter) or
   TPropertySetterCall(PropertySetterCfgNode setter) or
   TPropertyObserverCall(PropertyObserverCfgNode observer) or
-  TSummaryCall(FlowSummaryImpl::Public::SummarizedCallable c, Node receiver) {
+  TKeyPathCall(KeyPathApplicationExprCfgNode keyPathApplication) or
+  TSummaryCall(
+    FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
+  ) {
     FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
   }
 
@@ -88,6 +90,9 @@ class DataFlowCall extends TDataFlowCall {
 
   /** Gets the underlying source code call, if any. */
   ApplyExprCfgNode asCall() { none() }
+
+  /** Gets the underlying key-path application node, if any. */
+  KeyPathApplicationExprCfgNode asKeyPath() { none() }
 
   /**
    * Gets the i'th argument of call.class
@@ -138,6 +143,25 @@ private class NormalCall extends DataFlowCall, TNormalCall {
   override Location getLocation() { result = apply.getLocation() }
 }
 
+private class KeyPathCall extends DataFlowCall, TKeyPathCall {
+  private KeyPathApplicationExprCfgNode apply;
+
+  KeyPathCall() { this = TKeyPathCall(apply) }
+
+  override KeyPathApplicationExprCfgNode asKeyPath() { result = apply }
+
+  override CfgNode getArgument(int i) {
+    i = -1 and
+    result = apply.getBase()
+  }
+
+  override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(apply.getScope()) }
+
+  override string toString() { result = apply.toString() }
+
+  override Location getLocation() { result = apply.getLocation() }
+}
+
 class PropertyGetterCall extends DataFlowCall, TPropertyGetterCall {
   private PropertyGetterCfgNode getter;
 
@@ -156,7 +180,7 @@ class PropertyGetterCall extends DataFlowCall, TPropertyGetterCall {
 
   override Location getLocation() { result = getter.getLocation() }
 
-  AccessorDecl getAccessorDecl() { result = getter.getAccessorDecl() }
+  Accessor getAccessor() { result = getter.getAccessor() }
 }
 
 class PropertySetterCall extends DataFlowCall, TPropertySetterCall {
@@ -180,7 +204,7 @@ class PropertySetterCall extends DataFlowCall, TPropertySetterCall {
 
   override Location getLocation() { result = setter.getLocation() }
 
-  AccessorDecl getAccessorDecl() { result = setter.getAccessorDecl() }
+  Accessor getAccessor() { result = setter.getAccessor() }
 }
 
 class PropertyObserverCall extends DataFlowCall, TPropertyObserverCall {
@@ -192,9 +216,6 @@ class PropertyObserverCall extends DataFlowCall, TPropertyObserverCall {
     i = -1 and
     result = observer.getBase()
     or
-    // TODO: This is correct for `willSet` (which takes a `newValue` parameter),
-    // but for `didSet` (which takes an `oldValue` parameter) we need an rvalue
-    // for `getBase()`.
     i = 0 and
     result = observer.getSource()
   }
@@ -207,17 +228,17 @@ class PropertyObserverCall extends DataFlowCall, TPropertyObserverCall {
 
   override Location getLocation() { result = observer.getLocation() }
 
-  AccessorDecl getAccessorDecl() { result = observer.getAccessorDecl() }
+  Accessor getAccessor() { result = observer.getAccessor() }
 }
 
 class SummaryCall extends DataFlowCall, TSummaryCall {
   private FlowSummaryImpl::Public::SummarizedCallable c;
-  private Node receiver;
+  private FlowSummaryImpl::Private::SummaryNode receiver;
 
   SummaryCall() { this = TSummaryCall(c, receiver) }
 
   /** Gets the data flow node that this call targets. */
-  Node getReceiver() { result = receiver }
+  FlowSummaryImpl::Private::SummaryNode getReceiver() { result = receiver }
 
   override DataFlowCallable getEnclosingCallable() { result = TSummarizedCallable(c) }
 
@@ -238,11 +259,11 @@ private module Cached {
   DataFlowCallable viableCallable(DataFlowCall call) {
     result = TDataFlowFunc(call.asCall().getStaticTarget())
     or
-    result = TDataFlowFunc(call.(PropertyGetterCall).getAccessorDecl())
+    result = TDataFlowFunc(call.(PropertyGetterCall).getAccessor())
     or
-    result = TDataFlowFunc(call.(PropertySetterCall).getAccessorDecl())
+    result = TDataFlowFunc(call.(PropertySetterCall).getAccessor())
     or
-    result = TDataFlowFunc(call.(PropertyObserverCall).getAccessorDecl())
+    result = TDataFlowFunc(call.(PropertyObserverCall).getAccessor())
     or
     result = TSummarizedCallable(call.asCall().getStaticTarget())
   }
@@ -280,18 +301,6 @@ private module Cached {
 }
 
 import Cached
-
-/**
- * Holds if the set of viable implementations that can be called by `call`
- * might be improved by knowing the call context.
- */
-predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) { none() }
-
-/**
- * Gets a viable dispatch target of `call` in the context `ctx`. This is
- * restricted to those `call`s for which a context might make a difference.
- */
-DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
 
 /** A parameter position. */
 class ParameterPosition extends TParameterPosition {

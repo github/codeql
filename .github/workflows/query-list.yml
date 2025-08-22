@@ -13,6 +13,9 @@ on:
       - '.github/actions/fetch-codeql/action.yml'
       - 'misc/scripts/generate-code-scanning-query-list.py'
 
+permissions:
+  contents: read
+
 jobs:
   build:
 
@@ -20,7 +23,7 @@ jobs:
 
     steps:
     - name: Clone self (github/codeql)
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         path: codeql 
     - name: Set up Python 3.8
@@ -34,7 +37,7 @@ jobs:
       run: |
         python codeql/misc/scripts/generate-code-scanning-query-list.py > code-scanning-query-list.csv
     - name: Upload code scanning query list
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: code-scanning-query-list
         path: code-scanning-query-list.csv

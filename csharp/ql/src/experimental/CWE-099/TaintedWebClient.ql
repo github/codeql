@@ -15,10 +15,16 @@
  */
 
 import csharp
-import TaintedWebClientLib
-import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
+deprecated import TaintedWebClientLib
+deprecated import TaintedWebClient::PathGraph
 
-from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "A method of WebClient depepends on a $@.", source.getNode(),
-  "user-provided value"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, TaintedWebClient::PathNode source, TaintedWebClient::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
+  TaintedWebClient::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "A method of WebClient depepends on a $@." and
+  sourceNode = source.getNode() and
+  message2 = "user-provided value"
+}

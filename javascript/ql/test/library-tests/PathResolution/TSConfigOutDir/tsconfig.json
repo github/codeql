@@ -1,0 +1,7 @@
+{
+    "include": ["src"],
+    "compilerOptions": {
+        // Use unusual name to test independently of naming heuristics
+        "outDir": "./customOutDir"
+    }
+}

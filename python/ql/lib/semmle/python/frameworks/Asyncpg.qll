@@ -11,42 +11,6 @@ private import semmle.python.frameworks.data.ModelsAsData
 
 /** Provides models for the `asyncpg` PyPI package. */
 private module Asyncpg {
-  class AsyncpgModel extends ModelInput::TypeModelCsv {
-    override predicate row(string row) {
-      // type1;type2;path
-      row =
-        [
-          // a `ConnectionPool` that is created when the result of `asyncpg.create_pool()` is awaited.
-          "asyncpg.ConnectionPool;asyncpg;Member[create_pool].ReturnValue.Awaited",
-          // a `Connection` that is created when
-          // * - the result of `asyncpg.connect()` is awaited.
-          // * - the result of calling `acquire` on a `ConnectionPool` is awaited.
-          "asyncpg.Connection;asyncpg;Member[connect].ReturnValue.Awaited",
-          "asyncpg.Connection;asyncpg.ConnectionPool;Member[acquire].ReturnValue.Awaited",
-          // Creating an internal `~Connection` type that contains both `Connection` and `ConnectionPool`.
-          "asyncpg.~Connection;asyncpg.Connection;", //
-          "asyncpg.~Connection;asyncpg.ConnectionPool;"
-        ]
-    }
-  }
-
-  class AsyncpgSink extends ModelInput::SinkModelCsv {
-    // type;path;kind
-    override predicate row(string row) {
-      row =
-        [
-          // `Connection`s and `ConnectionPool`s provide some methods that execute SQL.
-          "asyncpg.~Connection;Member[copy_from_query,execute,fetch,fetchrow,fetchval].Argument[0,query:];sql-injection",
-          "asyncpg.~Connection;Member[executemany].Argument[0,command:];sql-injection",
-          // A model of `Connection` and `ConnectionPool`, which provide some methods that access the file system.
-          "asyncpg.~Connection;Member[copy_from_query,copy_from_table].Argument[output:];path-injection",
-          "asyncpg.~Connection;Member[copy_to_table].Argument[source:];path-injection",
-          // the `PreparedStatement` class in `asyncpg`.
-          "asyncpg.Connection;Member[prepare].Argument[0,query:];sql-injection",
-        ]
-    }
-  }
-
   /**
    * Provides models of the `Cursor` class in `asyncpg`.
    * `Cursor`s are created

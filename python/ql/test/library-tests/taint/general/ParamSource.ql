@@ -1,7 +1,5 @@
 import python
 import semmle.python.dataflow.TaintTracking
-/* Standard library sink */
-import semmle.python.security.injection.Command
 
 class TestKind extends TaintKind {
   TestKind() { this = "test" }

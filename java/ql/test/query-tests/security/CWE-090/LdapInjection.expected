@@ -1,180 +1,3 @@
-edges
-| LdapInjection.java:45:28:45:52 | jBad : String | LdapInjection.java:47:38:47:57 | ... + ... |
-| LdapInjection.java:45:55:45:81 | jBadDN : String | LdapInjection.java:47:16:47:35 | ... + ... |
-| LdapInjection.java:51:28:51:52 | jBad : String | LdapInjection.java:53:56:53:75 | ... + ... |
-| LdapInjection.java:51:55:51:85 | jBadDNName : String | LdapInjection.java:53:16:53:53 | new LdapName(...) |
-| LdapInjection.java:57:28:57:52 | jBad : String | LdapInjection.java:59:63:59:82 | ... + ... |
-| LdapInjection.java:63:28:63:59 | jBadInitial : String | LdapInjection.java:65:29:65:55 | ... + ... |
-| LdapInjection.java:69:28:69:52 | jBad : String | LdapInjection.java:71:84:71:103 | ... + ... |
-| LdapInjection.java:69:55:69:88 | jBadDNNameAdd : String | LdapInjection.java:71:16:71:81 | addAll(...) |
-| LdapInjection.java:75:28:75:52 | jBad : String | LdapInjection.java:79:47:79:66 | ... + ... |
-| LdapInjection.java:75:55:75:89 | jBadDNNameAdd2 : String | LdapInjection.java:79:16:79:44 | addAll(...) |
-| LdapInjection.java:83:28:83:52 | jBad : String | LdapInjection.java:85:75:85:94 | ... + ... |
-| LdapInjection.java:83:55:83:93 | jBadDNNameToString : String | LdapInjection.java:85:16:85:72 | toString(...) |
-| LdapInjection.java:89:28:89:52 | jBad : String | LdapInjection.java:91:76:91:95 | ... + ... |
-| LdapInjection.java:89:55:89:90 | jBadDNNameClone : String | LdapInjection.java:91:16:91:73 | (...)... |
-| LdapInjection.java:106:31:106:55 | uBad : String | LdapInjection.java:108:67:108:86 | ... + ... |
-| LdapInjection.java:106:58:106:84 | uBadDN : String | LdapInjection.java:108:20:108:39 | ... + ... |
-| LdapInjection.java:112:31:112:67 | uBadFilterCreate : String | LdapInjection.java:113:58:113:88 | create(...) |
-| LdapInjection.java:117:31:117:70 | uBadROSearchRequest : String | LdapInjection.java:121:14:121:14 | s |
-| LdapInjection.java:117:73:117:103 | uBadROSRDN : String | LdapInjection.java:121:14:121:14 | s |
-| LdapInjection.java:125:31:125:68 | uBadSearchRequest : String | LdapInjection.java:129:14:129:14 | s |
-| LdapInjection.java:125:71:125:99 | uBadSRDN : String | LdapInjection.java:129:14:129:14 | s |
-| LdapInjection.java:133:31:133:55 | uBad : String | LdapInjection.java:135:69:135:88 | ... + ... |
-| LdapInjection.java:133:58:133:87 | uBadDNSFR : String | LdapInjection.java:135:22:135:44 | ... + ... |
-| LdapInjection.java:139:31:139:75 | uBadROSearchRequestAsync : String | LdapInjection.java:143:19:143:19 | s |
-| LdapInjection.java:139:78:139:113 | uBadROSRDNAsync : String | LdapInjection.java:143:19:143:19 | s |
-| LdapInjection.java:147:31:147:73 | uBadSearchRequestAsync : String | LdapInjection.java:151:19:151:19 | s |
-| LdapInjection.java:147:76:147:109 | uBadSRDNAsync : String | LdapInjection.java:151:19:151:19 | s |
-| LdapInjection.java:155:31:155:70 | uBadFilterCreateNOT : String | LdapInjection.java:156:58:156:115 | createNOTFilter(...) |
-| LdapInjection.java:160:31:160:75 | uBadFilterCreateToString : String | LdapInjection.java:161:58:161:107 | toString(...) |
-| LdapInjection.java:165:32:165:82 | uBadFilterCreateToStringBuffer : String | LdapInjection.java:168:58:168:58 | b : StringBuilder |
-| LdapInjection.java:168:58:168:58 | b : StringBuilder | LdapInjection.java:168:58:168:69 | toString(...) |
-| LdapInjection.java:172:32:172:78 | uBadSearchRequestDuplicate : String | LdapInjection.java:176:14:176:26 | duplicate(...) |
-| LdapInjection.java:180:32:180:80 | uBadROSearchRequestDuplicate : String | LdapInjection.java:184:14:184:26 | duplicate(...) |
-| LdapInjection.java:188:32:188:74 | uBadSearchRequestSetDN : String | LdapInjection.java:192:14:192:14 | s |
-| LdapInjection.java:196:32:196:78 | uBadSearchRequestSetFilter : String | LdapInjection.java:200:14:200:14 | s |
-| LdapInjection.java:229:30:229:54 | sBad : String | LdapInjection.java:230:36:230:55 | ... + ... |
-| LdapInjection.java:229:57:229:83 | sBadDN : String | LdapInjection.java:230:14:230:33 | ... + ... |
-| LdapInjection.java:234:30:234:54 | sBad : String | LdapInjection.java:235:88:235:107 | ... + ... |
-| LdapInjection.java:234:57:234:92 | sBadDNLNBuilder : String | LdapInjection.java:235:20:235:85 | build(...) |
-| LdapInjection.java:239:30:239:54 | sBad : String | LdapInjection.java:240:100:240:119 | ... + ... |
-| LdapInjection.java:239:57:239:95 | sBadDNLNBuilderAdd : String | LdapInjection.java:240:23:240:97 | build(...) |
-| LdapInjection.java:244:30:244:63 | sBadLdapQuery : String | LdapInjection.java:245:15:245:76 | filter(...) |
-| LdapInjection.java:249:30:249:60 | sBadFilter : String | LdapInjection.java:250:66:250:112 | new HardcodedFilter(...) |
-| LdapInjection.java:249:63:249:98 | sBadDNLdapUtils : String | LdapInjection.java:250:12:250:63 | newLdapName(...) |
-| LdapInjection.java:254:30:254:63 | sBadLdapQuery : String | LdapInjection.java:255:24:255:85 | filter(...) |
-| LdapInjection.java:259:30:259:64 | sBadLdapQuery2 : String | LdapInjection.java:261:24:261:24 | q |
-| LdapInjection.java:265:30:265:73 | sBadLdapQueryWithFilter : String | LdapInjection.java:266:24:266:116 | filter(...) |
-| LdapInjection.java:270:30:270:74 | sBadLdapQueryWithFilter2 : String | LdapInjection.java:272:24:272:57 | filter(...) |
-| LdapInjection.java:276:31:276:68 | sBadLdapQueryBase : String | LdapInjection.java:277:12:277:66 | base(...) |
-| LdapInjection.java:281:31:281:71 | sBadLdapQueryComplex : String | LdapInjection.java:282:24:282:98 | is(...) |
-| LdapInjection.java:286:31:286:69 | sBadFilterToString : String | LdapInjection.java:287:18:287:83 | toString(...) |
-| LdapInjection.java:291:31:291:67 | sBadFilterEncode : String | LdapInjection.java:294:18:294:18 | s : StringBuffer |
-| LdapInjection.java:294:18:294:18 | s : StringBuffer | LdapInjection.java:294:18:294:29 | toString(...) |
-| LdapInjection.java:314:30:314:54 | aBad : String | LdapInjection.java:316:36:316:55 | ... + ... |
-| LdapInjection.java:314:57:314:83 | aBadDN : String | LdapInjection.java:316:14:316:33 | ... + ... |
-| LdapInjection.java:320:30:320:54 | aBad : String | LdapInjection.java:322:65:322:84 | ... + ... |
-| LdapInjection.java:320:57:320:94 | aBadDNObjToString : String | LdapInjection.java:322:14:322:62 | getName(...) |
-| LdapInjection.java:326:30:326:67 | aBadSearchRequest : String | LdapInjection.java:330:14:330:14 | s |
-| LdapInjection.java:334:74:334:103 | aBadDNObj : String | LdapInjection.java:338:14:338:14 | s |
-| LdapInjection.java:342:30:342:72 | aBadDNSearchRequestGet : String | LdapInjection.java:346:14:346:24 | getBase(...) |
-nodes
-| LdapInjection.java:45:28:45:52 | jBad : String | semmle.label | jBad : String |
-| LdapInjection.java:45:55:45:81 | jBadDN : String | semmle.label | jBadDN : String |
-| LdapInjection.java:47:16:47:35 | ... + ... | semmle.label | ... + ... |
-| LdapInjection.java:47:38:47:57 | ... + ... | semmle.label | ... + ... |
-| LdapInjection.java:51:28:51:52 | jBad : String | semmle.label | jBad : String |
-| LdapInjection.java:51:55:51:85 | jBadDNName : String | semmle.label | jBadDNName : String |
-| LdapInjection.java:53:16:53:53 | new LdapName(...) | semmle.label | new LdapName(...) |
-| LdapInjection.java:53:56:53:75 | ... + ... | semmle.label | ... + ... |
-| LdapInjection.java:57:28:57:52 | jBad : String | semmle.label | jBad : String |
-| LdapInjection.java:59:63:59:82 | ... + ... | semmle.label | ... + ... |
-| LdapInjection.java:63:28:63:59 | jBadInitial : String | semmle.label | jBadInitial : String |
-| LdapInjection.java:65:29:65:55 | ... + ... | semmle.label | ... + ... |
-| LdapInjection.java:69:28:69:52 | jBad : String | semmle.label | jBad : String |
-| LdapInjection.java:69:55:69:88 | jBadDNNameAdd : String | semmle.label | jBadDNNameAdd : String |
-| LdapInjection.java:71:16:71:81 | addAll(...) | semmle.label | addAll(...) |
-| LdapInjection.java:71:84:71:103 | ... + ... | semmle.label | ... + ... |
-| LdapInjection.java:75:28:75:52 | jBad : String | semmle.label | jBad : String |
-| LdapInjection.java:75:55:75:89 | jBadDNNameAdd2 : String | semmle.label | jBadDNNameAdd2 : String |
-| LdapInjection.java:79:16:79:44 | addAll(...) | semmle.label | addAll(...) |
-| LdapInjection.java:79:47:79:66 | ... + ... | semmle.label | ... + ... |
-| LdapInjection.java:83:28:83:52 | jBad : String | semmle.label | jBad : String |
-| LdapInjection.java:83:55:83:93 | jBadDNNameToString : String | semmle.label | jBadDNNameToString : String |
-| LdapInjection.java:85:16:85:72 | toString(...) | semmle.label | toString(...) |
-| LdapInjection.java:85:75:85:94 | ... + ... | semmle.label | ... + ... |
-| LdapInjection.java:89:28:89:52 | jBad : String | semmle.label | jBad : String |
-| LdapInjection.java:89:55:89:90 | jBadDNNameClone : String | semmle.label | jBadDNNameClone : String |
-| LdapInjection.java:91:16:91:73 | (...)... | semmle.label | (...)... |
-| LdapInjection.java:91:76:91:95 | ... + ... | semmle.label | ... + ... |
-| LdapInjection.java:106:31:106:55 | uBad : String | semmle.label | uBad : String |
-| LdapInjection.java:106:58:106:84 | uBadDN : String | semmle.label | uBadDN : String |
-| LdapInjection.java:108:20:108:39 | ... + ... | semmle.label | ... + ... |
-| LdapInjection.java:108:67:108:86 | ... + ... | semmle.label | ... + ... |
-| LdapInjection.java:112:31:112:67 | uBadFilterCreate : String | semmle.label | uBadFilterCreate : String |
-| LdapInjection.java:113:58:113:88 | create(...) | semmle.label | create(...) |
-| LdapInjection.java:117:31:117:70 | uBadROSearchRequest : String | semmle.label | uBadROSearchRequest : String |
-| LdapInjection.java:117:73:117:103 | uBadROSRDN : String | semmle.label | uBadROSRDN : String |
-| LdapInjection.java:121:14:121:14 | s | semmle.label | s |
-| LdapInjection.java:125:31:125:68 | uBadSearchRequest : String | semmle.label | uBadSearchRequest : String |
-| LdapInjection.java:125:71:125:99 | uBadSRDN : String | semmle.label | uBadSRDN : String |
-| LdapInjection.java:129:14:129:14 | s | semmle.label | s |
-| LdapInjection.java:133:31:133:55 | uBad : String | semmle.label | uBad : String |
-| LdapInjection.java:133:58:133:87 | uBadDNSFR : String | semmle.label | uBadDNSFR : String |
-| LdapInjection.java:135:22:135:44 | ... + ... | semmle.label | ... + ... |
-| LdapInjection.java:135:69:135:88 | ... + ... | semmle.label | ... + ... |
-| LdapInjection.java:139:31:139:75 | uBadROSearchRequestAsync : String | semmle.label | uBadROSearchRequestAsync : String |
-| LdapInjection.java:139:78:139:113 | uBadROSRDNAsync : String | semmle.label | uBadROSRDNAsync : String |
-| LdapInjection.java:143:19:143:19 | s | semmle.label | s |
-| LdapInjection.java:147:31:147:73 | uBadSearchRequestAsync : String | semmle.label | uBadSearchRequestAsync : String |
-| LdapInjection.java:147:76:147:109 | uBadSRDNAsync : String | semmle.label | uBadSRDNAsync : String |
-| LdapInjection.java:151:19:151:19 | s | semmle.label | s |
-| LdapInjection.java:155:31:155:70 | uBadFilterCreateNOT : String | semmle.label | uBadFilterCreateNOT : String |
-| LdapInjection.java:156:58:156:115 | createNOTFilter(...) | semmle.label | createNOTFilter(...) |
-| LdapInjection.java:160:31:160:75 | uBadFilterCreateToString : String | semmle.label | uBadFilterCreateToString : String |
-| LdapInjection.java:161:58:161:107 | toString(...) | semmle.label | toString(...) |
-| LdapInjection.java:165:32:165:82 | uBadFilterCreateToStringBuffer : String | semmle.label | uBadFilterCreateToStringBuffer : String |
-| LdapInjection.java:168:58:168:58 | b : StringBuilder | semmle.label | b : StringBuilder |
-| LdapInjection.java:168:58:168:69 | toString(...) | semmle.label | toString(...) |
-| LdapInjection.java:172:32:172:78 | uBadSearchRequestDuplicate : String | semmle.label | uBadSearchRequestDuplicate : String |
-| LdapInjection.java:176:14:176:26 | duplicate(...) | semmle.label | duplicate(...) |
-| LdapInjection.java:180:32:180:80 | uBadROSearchRequestDuplicate : String | semmle.label | uBadROSearchRequestDuplicate : String |
-| LdapInjection.java:184:14:184:26 | duplicate(...) | semmle.label | duplicate(...) |
-| LdapInjection.java:188:32:188:74 | uBadSearchRequestSetDN : String | semmle.label | uBadSearchRequestSetDN : String |
-| LdapInjection.java:192:14:192:14 | s | semmle.label | s |
-| LdapInjection.java:196:32:196:78 | uBadSearchRequestSetFilter : String | semmle.label | uBadSearchRequestSetFilter : String |
-| LdapInjection.java:200:14:200:14 | s | semmle.label | s |
-| LdapInjection.java:229:30:229:54 | sBad : String | semmle.label | sBad : String |
-| LdapInjection.java:229:57:229:83 | sBadDN : String | semmle.label | sBadDN : String |
-| LdapInjection.java:230:14:230:33 | ... + ... | semmle.label | ... + ... |
-| LdapInjection.java:230:36:230:55 | ... + ... | semmle.label | ... + ... |
-| LdapInjection.java:234:30:234:54 | sBad : String | semmle.label | sBad : String |
-| LdapInjection.java:234:57:234:92 | sBadDNLNBuilder : String | semmle.label | sBadDNLNBuilder : String |
-| LdapInjection.java:235:20:235:85 | build(...) | semmle.label | build(...) |
-| LdapInjection.java:235:88:235:107 | ... + ... | semmle.label | ... + ... |
-| LdapInjection.java:239:30:239:54 | sBad : String | semmle.label | sBad : String |
-| LdapInjection.java:239:57:239:95 | sBadDNLNBuilderAdd : String | semmle.label | sBadDNLNBuilderAdd : String |
-| LdapInjection.java:240:23:240:97 | build(...) | semmle.label | build(...) |
-| LdapInjection.java:240:100:240:119 | ... + ... | semmle.label | ... + ... |
-| LdapInjection.java:244:30:244:63 | sBadLdapQuery : String | semmle.label | sBadLdapQuery : String |
-| LdapInjection.java:245:15:245:76 | filter(...) | semmle.label | filter(...) |
-| LdapInjection.java:249:30:249:60 | sBadFilter : String | semmle.label | sBadFilter : String |
-| LdapInjection.java:249:63:249:98 | sBadDNLdapUtils : String | semmle.label | sBadDNLdapUtils : String |
-| LdapInjection.java:250:12:250:63 | newLdapName(...) | semmle.label | newLdapName(...) |
-| LdapInjection.java:250:66:250:112 | new HardcodedFilter(...) | semmle.label | new HardcodedFilter(...) |
-| LdapInjection.java:254:30:254:63 | sBadLdapQuery : String | semmle.label | sBadLdapQuery : String |
-| LdapInjection.java:255:24:255:85 | filter(...) | semmle.label | filter(...) |
-| LdapInjection.java:259:30:259:64 | sBadLdapQuery2 : String | semmle.label | sBadLdapQuery2 : String |
-| LdapInjection.java:261:24:261:24 | q | semmle.label | q |
-| LdapInjection.java:265:30:265:73 | sBadLdapQueryWithFilter : String | semmle.label | sBadLdapQueryWithFilter : String |
-| LdapInjection.java:266:24:266:116 | filter(...) | semmle.label | filter(...) |
-| LdapInjection.java:270:30:270:74 | sBadLdapQueryWithFilter2 : String | semmle.label | sBadLdapQueryWithFilter2 : String |
-| LdapInjection.java:272:24:272:57 | filter(...) | semmle.label | filter(...) |
-| LdapInjection.java:276:31:276:68 | sBadLdapQueryBase : String | semmle.label | sBadLdapQueryBase : String |
-| LdapInjection.java:277:12:277:66 | base(...) | semmle.label | base(...) |
-| LdapInjection.java:281:31:281:71 | sBadLdapQueryComplex : String | semmle.label | sBadLdapQueryComplex : String |
-| LdapInjection.java:282:24:282:98 | is(...) | semmle.label | is(...) |
-| LdapInjection.java:286:31:286:69 | sBadFilterToString : String | semmle.label | sBadFilterToString : String |
-| LdapInjection.java:287:18:287:83 | toString(...) | semmle.label | toString(...) |
-| LdapInjection.java:291:31:291:67 | sBadFilterEncode : String | semmle.label | sBadFilterEncode : String |
-| LdapInjection.java:294:18:294:18 | s : StringBuffer | semmle.label | s : StringBuffer |
-| LdapInjection.java:294:18:294:29 | toString(...) | semmle.label | toString(...) |
-| LdapInjection.java:314:30:314:54 | aBad : String | semmle.label | aBad : String |
-| LdapInjection.java:314:57:314:83 | aBadDN : String | semmle.label | aBadDN : String |
-| LdapInjection.java:316:14:316:33 | ... + ... | semmle.label | ... + ... |
-| LdapInjection.java:316:36:316:55 | ... + ... | semmle.label | ... + ... |
-| LdapInjection.java:320:30:320:54 | aBad : String | semmle.label | aBad : String |
-| LdapInjection.java:320:57:320:94 | aBadDNObjToString : String | semmle.label | aBadDNObjToString : String |
-| LdapInjection.java:322:14:322:62 | getName(...) | semmle.label | getName(...) |
-| LdapInjection.java:322:65:322:84 | ... + ... | semmle.label | ... + ... |
-| LdapInjection.java:326:30:326:67 | aBadSearchRequest : String | semmle.label | aBadSearchRequest : String |
-| LdapInjection.java:330:14:330:14 | s | semmle.label | s |
-| LdapInjection.java:334:74:334:103 | aBadDNObj : String | semmle.label | aBadDNObj : String |
-| LdapInjection.java:338:14:338:14 | s | semmle.label | s |
-| LdapInjection.java:342:30:342:72 | aBadDNSearchRequestGet : String | semmle.label | aBadDNSearchRequestGet : String |
-| LdapInjection.java:346:14:346:24 | getBase(...) | semmle.label | getBase(...) |
-subpaths
 #select
 | LdapInjection.java:47:16:47:35 | ... + ... | LdapInjection.java:45:55:45:81 | jBadDN : String | LdapInjection.java:47:16:47:35 | ... + ... | This LDAP query depends on a $@. | LdapInjection.java:45:55:45:81 | jBadDN | user-provided value |
 | LdapInjection.java:47:38:47:57 | ... + ... | LdapInjection.java:45:28:45:52 | jBad : String | LdapInjection.java:47:38:47:57 | ... + ... | This LDAP query depends on a $@. | LdapInjection.java:45:28:45:52 | jBad | user-provided value |
@@ -190,6 +13,7 @@ subpaths
 | LdapInjection.java:85:75:85:94 | ... + ... | LdapInjection.java:83:28:83:52 | jBad : String | LdapInjection.java:85:75:85:94 | ... + ... | This LDAP query depends on a $@. | LdapInjection.java:83:28:83:52 | jBad | user-provided value |
 | LdapInjection.java:91:16:91:73 | (...)... | LdapInjection.java:89:55:89:90 | jBadDNNameClone : String | LdapInjection.java:91:16:91:73 | (...)... | This LDAP query depends on a $@. | LdapInjection.java:89:55:89:90 | jBadDNNameClone | user-provided value |
 | LdapInjection.java:91:76:91:95 | ... + ... | LdapInjection.java:89:28:89:52 | jBad : String | LdapInjection.java:91:76:91:95 | ... + ... | This LDAP query depends on a $@. | LdapInjection.java:89:28:89:52 | jBad | user-provided value |
+| LdapInjection.java:101:29:101:75 | new BasicAttributes(...) | LdapInjection.java:100:27:100:59 | jOkAttribute : String | LdapInjection.java:101:29:101:75 | new BasicAttributes(...) | This LDAP query depends on a $@. | LdapInjection.java:100:27:100:59 | jOkAttribute | user-provided value |
 | LdapInjection.java:108:20:108:39 | ... + ... | LdapInjection.java:106:58:106:84 | uBadDN : String | LdapInjection.java:108:20:108:39 | ... + ... | This LDAP query depends on a $@. | LdapInjection.java:106:58:106:84 | uBadDN | user-provided value |
 | LdapInjection.java:108:67:108:86 | ... + ... | LdapInjection.java:106:31:106:55 | uBad : String | LdapInjection.java:108:67:108:86 | ... + ... | This LDAP query depends on a $@. | LdapInjection.java:106:31:106:55 | uBad | user-provided value |
 | LdapInjection.java:113:58:113:88 | create(...) | LdapInjection.java:112:31:112:67 | uBadFilterCreate : String | LdapInjection.java:113:58:113:88 | create(...) | This LDAP query depends on a $@. | LdapInjection.java:112:31:112:67 | uBadFilterCreate | user-provided value |
@@ -234,3 +58,376 @@ subpaths
 | LdapInjection.java:330:14:330:14 | s | LdapInjection.java:326:30:326:67 | aBadSearchRequest : String | LdapInjection.java:330:14:330:14 | s | This LDAP query depends on a $@. | LdapInjection.java:326:30:326:67 | aBadSearchRequest | user-provided value |
 | LdapInjection.java:338:14:338:14 | s | LdapInjection.java:334:74:334:103 | aBadDNObj : String | LdapInjection.java:338:14:338:14 | s | This LDAP query depends on a $@. | LdapInjection.java:334:74:334:103 | aBadDNObj | user-provided value |
 | LdapInjection.java:346:14:346:24 | getBase(...) | LdapInjection.java:342:30:342:72 | aBadDNSearchRequestGet : String | LdapInjection.java:346:14:346:24 | getBase(...) | This LDAP query depends on a $@. | LdapInjection.java:342:30:342:72 | aBadDNSearchRequestGet | user-provided value |
+edges
+| LdapInjection.java:45:28:45:52 | jBad : String | LdapInjection.java:47:38:47:57 | ... + ... | provenance | Sink:MaD:7 |
+| LdapInjection.java:45:55:45:81 | jBadDN : String | LdapInjection.java:47:16:47:35 | ... + ... | provenance | Sink:MaD:7 |
+| LdapInjection.java:51:28:51:52 | jBad : String | LdapInjection.java:53:56:53:75 | ... + ... | provenance | Sink:MaD:7 |
+| LdapInjection.java:51:55:51:85 | jBadDNName : String | LdapInjection.java:53:29:53:52 | ... + ... : String | provenance |  |
+| LdapInjection.java:53:29:53:52 | ... + ... : String | LdapInjection.java:53:16:53:53 | new LdapName(...) | provenance | Config Sink:MaD:7 |
+| LdapInjection.java:53:29:53:52 | ... + ... : String | LdapInjection.java:53:16:53:53 | new LdapName(...) | provenance | MaD:18 Sink:MaD:7 |
+| LdapInjection.java:57:28:57:52 | jBad : String | LdapInjection.java:59:63:59:82 | ... + ... | provenance | Sink:MaD:7 |
+| LdapInjection.java:63:28:63:59 | jBadInitial : String | LdapInjection.java:65:29:65:55 | ... + ... | provenance | Sink:MaD:7 |
+| LdapInjection.java:69:28:69:52 | jBad : String | LdapInjection.java:71:84:71:103 | ... + ... | provenance | Sink:MaD:7 |
+| LdapInjection.java:69:55:69:88 | jBadDNNameAdd : String | LdapInjection.java:71:53:71:79 | ... + ... : String | provenance |  |
+| LdapInjection.java:71:16:71:31 | new LdapName(...) : LdapName | LdapInjection.java:71:16:71:81 | addAll(...) | provenance | MaD:19 Sink:MaD:7 |
+| LdapInjection.java:71:40:71:80 | new LdapName(...) : LdapName | LdapInjection.java:71:16:71:31 | new LdapName(...) : LdapName | provenance | Config |
+| LdapInjection.java:71:40:71:80 | new LdapName(...) : LdapName | LdapInjection.java:71:16:71:81 | addAll(...) | provenance | Config Sink:MaD:7 |
+| LdapInjection.java:71:53:71:79 | ... + ... : String | LdapInjection.java:71:40:71:80 | new LdapName(...) : LdapName | provenance | Config |
+| LdapInjection.java:71:53:71:79 | ... + ... : String | LdapInjection.java:71:40:71:80 | new LdapName(...) : LdapName | provenance | MaD:18 |
+| LdapInjection.java:75:28:75:52 | jBad : String | LdapInjection.java:79:47:79:66 | ... + ... | provenance | Sink:MaD:7 |
+| LdapInjection.java:75:55:75:89 | jBadDNNameAdd2 : String | LdapInjection.java:78:30:78:57 | ... + ... : String | provenance |  |
+| LdapInjection.java:78:5:78:8 | name : LdapName | LdapInjection.java:79:40:79:43 | name : LdapName | provenance |  |
+| LdapInjection.java:78:17:78:58 | new LdapName(...) : LdapName | LdapInjection.java:78:17:78:68 | getRdns(...) : List | provenance | Config |
+| LdapInjection.java:78:17:78:68 | getRdns(...) : List | LdapInjection.java:78:5:78:8 | name : LdapName | provenance | Config |
+| LdapInjection.java:78:30:78:57 | ... + ... : String | LdapInjection.java:78:17:78:58 | new LdapName(...) : LdapName | provenance | Config |
+| LdapInjection.java:78:30:78:57 | ... + ... : String | LdapInjection.java:78:17:78:58 | new LdapName(...) : LdapName | provenance | MaD:18 |
+| LdapInjection.java:79:16:79:31 | new LdapName(...) : LdapName | LdapInjection.java:79:16:79:44 | addAll(...) | provenance | MaD:19 Sink:MaD:7 |
+| LdapInjection.java:79:40:79:43 | name : LdapName | LdapInjection.java:79:16:79:31 | new LdapName(...) : LdapName | provenance | Config |
+| LdapInjection.java:79:40:79:43 | name : LdapName | LdapInjection.java:79:16:79:44 | addAll(...) | provenance | Config Sink:MaD:7 |
+| LdapInjection.java:83:28:83:52 | jBad : String | LdapInjection.java:85:75:85:94 | ... + ... | provenance | Sink:MaD:7 |
+| LdapInjection.java:83:55:83:93 | jBadDNNameToString : String | LdapInjection.java:85:29:85:60 | ... + ... : String | provenance |  |
+| LdapInjection.java:85:16:85:61 | new LdapName(...) : LdapName | LdapInjection.java:85:16:85:72 | toString(...) | provenance | Config Sink:MaD:7 |
+| LdapInjection.java:85:29:85:60 | ... + ... : String | LdapInjection.java:85:16:85:61 | new LdapName(...) : LdapName | provenance | Config |
+| LdapInjection.java:85:29:85:60 | ... + ... : String | LdapInjection.java:85:16:85:61 | new LdapName(...) : LdapName | provenance | MaD:18 |
+| LdapInjection.java:89:28:89:52 | jBad : String | LdapInjection.java:91:76:91:95 | ... + ... | provenance | Sink:MaD:7 |
+| LdapInjection.java:89:55:89:90 | jBadDNNameClone : String | LdapInjection.java:91:36:91:64 | ... + ... : String | provenance |  |
+| LdapInjection.java:91:23:91:65 | new LdapName(...) : LdapName | LdapInjection.java:91:16:91:73 | (...)... | provenance | CloneStep Sink:MaD:7 |
+| LdapInjection.java:91:36:91:64 | ... + ... : String | LdapInjection.java:91:23:91:65 | new LdapName(...) : LdapName | provenance | Config |
+| LdapInjection.java:91:36:91:64 | ... + ... : String | LdapInjection.java:91:23:91:65 | new LdapName(...) : LdapName | provenance | MaD:18 |
+| LdapInjection.java:100:27:100:59 | jOkAttribute : String | LdapInjection.java:101:49:101:60 | jOkAttribute : String | provenance |  |
+| LdapInjection.java:100:27:100:59 | jOkAttribute : String | LdapInjection.java:101:63:101:74 | jOkAttribute : String | provenance |  |
+| LdapInjection.java:101:49:101:60 | jOkAttribute : String | LdapInjection.java:101:29:101:75 | new BasicAttributes(...) | provenance | MaD:17 Sink:MaD:7 |
+| LdapInjection.java:101:63:101:74 | jOkAttribute : String | LdapInjection.java:101:29:101:75 | new BasicAttributes(...) | provenance | MaD:17 Sink:MaD:7 |
+| LdapInjection.java:106:31:106:55 | uBad : String | LdapInjection.java:108:67:108:86 | ... + ... | provenance | Sink:MaD:5 |
+| LdapInjection.java:106:58:106:84 | uBadDN : String | LdapInjection.java:108:20:108:39 | ... + ... | provenance | Sink:MaD:5 |
+| LdapInjection.java:112:31:112:67 | uBadFilterCreate : String | LdapInjection.java:113:72:113:87 | uBadFilterCreate : String | provenance |  |
+| LdapInjection.java:113:72:113:87 | uBadFilterCreate : String | LdapInjection.java:113:58:113:88 | create(...) | provenance | Config Sink:MaD:4 |
+| LdapInjection.java:117:31:117:70 | uBadROSearchRequest : String | LdapInjection.java:120:9:120:43 | ... + ... : String | provenance |  |
+| LdapInjection.java:117:73:117:103 | uBadROSRDN : String | LdapInjection.java:119:55:119:78 | ... + ... : String | provenance |  |
+| LdapInjection.java:119:31:120:44 | new SearchRequest(...) : SearchRequest | LdapInjection.java:121:14:121:14 | s | provenance | Sink:MaD:2 |
+| LdapInjection.java:119:55:119:78 | ... + ... : String | LdapInjection.java:119:31:120:44 | new SearchRequest(...) : SearchRequest | provenance | Config |
+| LdapInjection.java:120:9:120:43 | ... + ... : String | LdapInjection.java:119:31:120:44 | new SearchRequest(...) : SearchRequest | provenance | Config |
+| LdapInjection.java:125:31:125:68 | uBadSearchRequest : String | LdapInjection.java:128:9:128:41 | ... + ... : String | provenance |  |
+| LdapInjection.java:125:71:125:99 | uBadSRDN : String | LdapInjection.java:127:47:127:68 | ... + ... : String | provenance |  |
+| LdapInjection.java:127:23:128:42 | new SearchRequest(...) : SearchRequest | LdapInjection.java:129:14:129:14 | s | provenance | Sink:MaD:3 |
+| LdapInjection.java:127:47:127:68 | ... + ... : String | LdapInjection.java:127:23:128:42 | new SearchRequest(...) : SearchRequest | provenance | Config |
+| LdapInjection.java:128:9:128:41 | ... + ... : String | LdapInjection.java:127:23:128:42 | new SearchRequest(...) : SearchRequest | provenance | Config |
+| LdapInjection.java:133:31:133:55 | uBad : String | LdapInjection.java:135:69:135:88 | ... + ... | provenance | Sink:MaD:6 |
+| LdapInjection.java:133:58:133:87 | uBadDNSFR : String | LdapInjection.java:135:22:135:44 | ... + ... | provenance | Sink:MaD:6 |
+| LdapInjection.java:139:31:139:75 | uBadROSearchRequestAsync : String | LdapInjection.java:142:9:142:48 | ... + ... : String | provenance |  |
+| LdapInjection.java:139:78:139:113 | uBadROSRDNAsync : String | LdapInjection.java:141:55:141:83 | ... + ... : String | provenance |  |
+| LdapInjection.java:141:31:142:49 | new SearchRequest(...) : SearchRequest | LdapInjection.java:143:19:143:19 | s | provenance | Sink:MaD:1 |
+| LdapInjection.java:141:55:141:83 | ... + ... : String | LdapInjection.java:141:31:142:49 | new SearchRequest(...) : SearchRequest | provenance | Config |
+| LdapInjection.java:142:9:142:48 | ... + ... : String | LdapInjection.java:141:31:142:49 | new SearchRequest(...) : SearchRequest | provenance | Config |
+| LdapInjection.java:147:31:147:73 | uBadSearchRequestAsync : String | LdapInjection.java:150:9:150:46 | ... + ... : String | provenance |  |
+| LdapInjection.java:147:76:147:109 | uBadSRDNAsync : String | LdapInjection.java:149:47:149:73 | ... + ... : String | provenance |  |
+| LdapInjection.java:149:23:150:47 | new SearchRequest(...) : SearchRequest | LdapInjection.java:151:19:151:19 | s | provenance | Sink:MaD:1 |
+| LdapInjection.java:149:47:149:73 | ... + ... : String | LdapInjection.java:149:23:150:47 | new SearchRequest(...) : SearchRequest | provenance | Config |
+| LdapInjection.java:150:9:150:46 | ... + ... : String | LdapInjection.java:149:23:150:47 | new SearchRequest(...) : SearchRequest | provenance | Config |
+| LdapInjection.java:155:31:155:70 | uBadFilterCreateNOT : String | LdapInjection.java:156:95:156:113 | uBadFilterCreateNOT : String | provenance |  |
+| LdapInjection.java:156:81:156:114 | create(...) : Filter | LdapInjection.java:156:58:156:115 | createNOTFilter(...) | provenance | Config Sink:MaD:4 |
+| LdapInjection.java:156:95:156:113 | uBadFilterCreateNOT : String | LdapInjection.java:156:81:156:114 | create(...) : Filter | provenance | Config |
+| LdapInjection.java:160:31:160:75 | uBadFilterCreateToString : String | LdapInjection.java:161:72:161:95 | uBadFilterCreateToString : String | provenance |  |
+| LdapInjection.java:161:58:161:96 | create(...) : Filter | LdapInjection.java:161:58:161:107 | toString(...) | provenance | Config Sink:MaD:5 |
+| LdapInjection.java:161:72:161:95 | uBadFilterCreateToString : String | LdapInjection.java:161:58:161:96 | create(...) : Filter | provenance | Config |
+| LdapInjection.java:165:32:165:82 | uBadFilterCreateToStringBuffer : String | LdapInjection.java:167:19:167:48 | uBadFilterCreateToStringBuffer : String | provenance |  |
+| LdapInjection.java:167:5:167:49 | create(...) : Filter | LdapInjection.java:167:70:167:70 | b : StringBuilder | provenance | Config |
+| LdapInjection.java:167:19:167:48 | uBadFilterCreateToStringBuffer : String | LdapInjection.java:167:5:167:49 | create(...) : Filter | provenance | Config |
+| LdapInjection.java:167:70:167:70 | b : StringBuilder | LdapInjection.java:168:58:168:58 | b : StringBuilder | provenance |  |
+| LdapInjection.java:168:58:168:58 | b : StringBuilder | LdapInjection.java:168:58:168:69 | toString(...) | provenance | MaD:16 Sink:MaD:5 |
+| LdapInjection.java:172:32:172:78 | uBadSearchRequestDuplicate : String | LdapInjection.java:175:9:175:50 | ... + ... : String | provenance |  |
+| LdapInjection.java:174:23:175:51 | new SearchRequest(...) : SearchRequest | LdapInjection.java:176:14:176:14 | s : SearchRequest | provenance |  |
+| LdapInjection.java:175:9:175:50 | ... + ... : String | LdapInjection.java:174:23:175:51 | new SearchRequest(...) : SearchRequest | provenance | Config |
+| LdapInjection.java:176:14:176:14 | s : SearchRequest | LdapInjection.java:176:14:176:26 | duplicate(...) | provenance | Config Sink:MaD:3 |
+| LdapInjection.java:180:32:180:80 | uBadROSearchRequestDuplicate : String | LdapInjection.java:183:9:183:52 | ... + ... : String | provenance |  |
+| LdapInjection.java:182:31:183:53 | new SearchRequest(...) : SearchRequest | LdapInjection.java:184:14:184:14 | s : SearchRequest | provenance |  |
+| LdapInjection.java:183:9:183:52 | ... + ... : String | LdapInjection.java:182:31:183:53 | new SearchRequest(...) : SearchRequest | provenance | Config |
+| LdapInjection.java:184:14:184:14 | s : SearchRequest | LdapInjection.java:184:14:184:26 | duplicate(...) | provenance | Config Sink:MaD:3 |
+| LdapInjection.java:188:32:188:74 | uBadSearchRequestSetDN : String | LdapInjection.java:191:17:191:38 | uBadSearchRequestSetDN : String | provenance |  |
+| LdapInjection.java:191:5:191:5 | s : SearchRequest | LdapInjection.java:192:14:192:14 | s | provenance | Sink:MaD:3 |
+| LdapInjection.java:191:17:191:38 | uBadSearchRequestSetDN : String | LdapInjection.java:191:5:191:5 | s : SearchRequest | provenance | Config |
+| LdapInjection.java:196:32:196:78 | uBadSearchRequestSetFilter : String | LdapInjection.java:199:17:199:42 | uBadSearchRequestSetFilter : String | provenance |  |
+| LdapInjection.java:199:5:199:5 | s : SearchRequest | LdapInjection.java:200:14:200:14 | s | provenance | Sink:MaD:3 |
+| LdapInjection.java:199:17:199:42 | uBadSearchRequestSetFilter : String | LdapInjection.java:199:5:199:5 | s : SearchRequest | provenance | Config |
+| LdapInjection.java:229:30:229:54 | sBad : String | LdapInjection.java:230:36:230:55 | ... + ... | provenance | Sink:MaD:13 |
+| LdapInjection.java:229:57:229:83 | sBadDN : String | LdapInjection.java:230:14:230:33 | ... + ... | provenance | Sink:MaD:13 |
+| LdapInjection.java:234:30:234:54 | sBad : String | LdapInjection.java:235:88:235:107 | ... + ... | provenance | Sink:MaD:10 |
+| LdapInjection.java:234:57:234:92 | sBadDNLNBuilder : String | LdapInjection.java:235:48:235:76 | ... + ... : String | provenance |  |
+| LdapInjection.java:235:20:235:77 | newInstance(...) : LdapNameBuilder | LdapInjection.java:235:20:235:85 | build(...) | provenance | Config Sink:MaD:10 |
+| LdapInjection.java:235:48:235:76 | ... + ... : String | LdapInjection.java:235:20:235:77 | newInstance(...) : LdapNameBuilder | provenance | Config |
+| LdapInjection.java:239:30:239:54 | sBad : String | LdapInjection.java:240:100:240:119 | ... + ... | provenance | Sink:MaD:15 |
+| LdapInjection.java:239:57:239:95 | sBadDNLNBuilderAdd : String | LdapInjection.java:240:57:240:88 | ... + ... : String | provenance |  |
+| LdapInjection.java:240:23:240:89 | add(...) : LdapNameBuilder | LdapInjection.java:240:23:240:97 | build(...) | provenance | Config Sink:MaD:9 |
+| LdapInjection.java:240:23:240:89 | add(...) : LdapNameBuilder | LdapInjection.java:240:23:240:97 | build(...) | provenance | Config Sink:MaD:15 |
+| LdapInjection.java:240:57:240:88 | ... + ... : String | LdapInjection.java:240:23:240:89 | add(...) : LdapNameBuilder | provenance | Config |
+| LdapInjection.java:244:30:244:63 | sBadLdapQuery : String | LdapInjection.java:245:47:245:75 | ... + ... : String | provenance |  |
+| LdapInjection.java:245:47:245:75 | ... + ... : String | LdapInjection.java:245:15:245:76 | filter(...) | provenance | Config Sink:MaD:12 |
+| LdapInjection.java:249:30:249:60 | sBadFilter : String | LdapInjection.java:250:86:250:111 | ... + ... : String | provenance |  |
+| LdapInjection.java:249:63:249:98 | sBadDNLdapUtils : String | LdapInjection.java:250:34:250:62 | ... + ... : String | provenance |  |
+| LdapInjection.java:250:34:250:62 | ... + ... : String | LdapInjection.java:250:12:250:63 | newLdapName(...) | provenance | Config Sink:MaD:11 |
+| LdapInjection.java:250:86:250:111 | ... + ... : String | LdapInjection.java:250:66:250:112 | new HardcodedFilter(...) | provenance | Config Sink:MaD:11 |
+| LdapInjection.java:254:30:254:63 | sBadLdapQuery : String | LdapInjection.java:255:56:255:84 | ... + ... : String | provenance |  |
+| LdapInjection.java:255:56:255:84 | ... + ... : String | LdapInjection.java:255:24:255:85 | filter(...) | provenance | Config Sink:MaD:14 |
+| LdapInjection.java:259:30:259:64 | sBadLdapQuery2 : String | LdapInjection.java:260:51:260:80 | ... + ... : String | provenance |  |
+| LdapInjection.java:260:19:260:81 | filter(...) : LdapQuery | LdapInjection.java:261:24:261:24 | q | provenance | Sink:MaD:14 |
+| LdapInjection.java:260:51:260:80 | ... + ... : String | LdapInjection.java:260:19:260:81 | filter(...) : LdapQuery | provenance | Config |
+| LdapInjection.java:265:30:265:73 | sBadLdapQueryWithFilter : String | LdapInjection.java:266:76:266:114 | ... + ... : String | provenance |  |
+| LdapInjection.java:266:56:266:115 | new HardcodedFilter(...) : HardcodedFilter | LdapInjection.java:266:24:266:116 | filter(...) | provenance | Config Sink:MaD:14 |
+| LdapInjection.java:266:76:266:114 | ... + ... : String | LdapInjection.java:266:56:266:115 | new HardcodedFilter(...) : HardcodedFilter | provenance | Config |
+| LdapInjection.java:270:30:270:74 | sBadLdapQueryWithFilter2 : String | LdapInjection.java:271:68:271:107 | ... + ... : String | provenance |  |
+| LdapInjection.java:271:48:271:108 | new HardcodedFilter(...) : HardcodedFilter | LdapInjection.java:272:56:272:56 | f : HardcodedFilter | provenance |  |
+| LdapInjection.java:271:68:271:107 | ... + ... : String | LdapInjection.java:271:48:271:108 | new HardcodedFilter(...) : HardcodedFilter | provenance | Config |
+| LdapInjection.java:272:56:272:56 | f : HardcodedFilter | LdapInjection.java:272:24:272:57 | filter(...) | provenance | Config Sink:MaD:14 |
+| LdapInjection.java:276:31:276:68 | sBadLdapQueryBase : String | LdapInjection.java:277:42:277:58 | sBadLdapQueryBase : String | provenance |  |
+| LdapInjection.java:277:12:277:59 | base(...) : LdapQueryBuilder | LdapInjection.java:277:12:277:66 | base(...) | provenance | Config Sink:MaD:11 |
+| LdapInjection.java:277:42:277:58 | sBadLdapQueryBase : String | LdapInjection.java:277:12:277:59 | base(...) : LdapQueryBuilder | provenance | Config |
+| LdapInjection.java:281:31:281:71 | sBadLdapQueryComplex : String | LdapInjection.java:282:54:282:73 | sBadLdapQueryComplex : String | provenance |  |
+| LdapInjection.java:282:24:282:74 | base(...) : LdapQueryBuilder | LdapInjection.java:282:24:282:87 | where(...) : ConditionCriteria | provenance | Config |
+| LdapInjection.java:282:24:282:87 | where(...) : ConditionCriteria | LdapInjection.java:282:24:282:98 | is(...) | provenance | Config Sink:MaD:14 |
+| LdapInjection.java:282:54:282:73 | sBadLdapQueryComplex : String | LdapInjection.java:282:24:282:74 | base(...) : LdapQueryBuilder | provenance | Config |
+| LdapInjection.java:286:31:286:69 | sBadFilterToString : String | LdapInjection.java:287:38:287:71 | ... + ... : String | provenance |  |
+| LdapInjection.java:287:18:287:72 | new HardcodedFilter(...) : HardcodedFilter | LdapInjection.java:287:18:287:83 | toString(...) | provenance | Config Sink:MaD:13 |
+| LdapInjection.java:287:38:287:71 | ... + ... : String | LdapInjection.java:287:18:287:72 | new HardcodedFilter(...) : HardcodedFilter | provenance | Config |
+| LdapInjection.java:291:31:291:67 | sBadFilterEncode : String | LdapInjection.java:293:25:293:56 | ... + ... : String | provenance |  |
+| LdapInjection.java:293:5:293:57 | new HardcodedFilter(...) : HardcodedFilter | LdapInjection.java:293:66:293:66 | s : StringBuffer | provenance | Config |
+| LdapInjection.java:293:25:293:56 | ... + ... : String | LdapInjection.java:293:5:293:57 | new HardcodedFilter(...) : HardcodedFilter | provenance | Config |
+| LdapInjection.java:293:66:293:66 | s : StringBuffer | LdapInjection.java:294:18:294:18 | s : StringBuffer | provenance |  |
+| LdapInjection.java:294:18:294:18 | s : StringBuffer | LdapInjection.java:294:18:294:29 | toString(...) | provenance | MaD:16 Sink:MaD:13 |
+| LdapInjection.java:314:30:314:54 | aBad : String | LdapInjection.java:316:36:316:55 | ... + ... | provenance | Sink:MaD:8 |
+| LdapInjection.java:314:57:314:83 | aBadDN : String | LdapInjection.java:316:14:316:33 | ... + ... | provenance | Sink:MaD:8 |
+| LdapInjection.java:320:30:320:54 | aBad : String | LdapInjection.java:322:65:322:84 | ... + ... | provenance | Sink:MaD:8 |
+| LdapInjection.java:320:57:320:94 | aBadDNObjToString : String | LdapInjection.java:322:21:322:51 | ... + ... : String | provenance |  |
+| LdapInjection.java:322:14:322:52 | new Dn(...) : Dn | LdapInjection.java:322:14:322:62 | getName(...) | provenance | Config Sink:MaD:8 |
+| LdapInjection.java:322:21:322:51 | ... + ... : String | LdapInjection.java:322:14:322:52 | new Dn(...) : Dn | provenance | Config |
+| LdapInjection.java:326:30:326:67 | aBadSearchRequest : String | LdapInjection.java:329:17:329:49 | ... + ... : String | provenance |  |
+| LdapInjection.java:329:5:329:5 | s : SearchRequestImpl | LdapInjection.java:330:14:330:14 | s | provenance | Sink:MaD:8 |
+| LdapInjection.java:329:17:329:49 | ... + ... : String | LdapInjection.java:329:5:329:5 | s : SearchRequestImpl | provenance | Config |
+| LdapInjection.java:334:74:334:103 | aBadDNObj : String | LdapInjection.java:337:22:337:44 | ... + ... : String | provenance |  |
+| LdapInjection.java:337:5:337:5 | s : SearchRequestImpl | LdapInjection.java:338:14:338:14 | s | provenance | Sink:MaD:8 |
+| LdapInjection.java:337:15:337:45 | new Dn(...) : Dn | LdapInjection.java:337:5:337:5 | s : SearchRequestImpl | provenance | Config |
+| LdapInjection.java:337:22:337:44 | ... + ... : String | LdapInjection.java:337:15:337:45 | new Dn(...) : Dn | provenance | Config |
+| LdapInjection.java:342:30:342:72 | aBadDNSearchRequestGet : String | LdapInjection.java:345:22:345:57 | ... + ... : String | provenance |  |
+| LdapInjection.java:345:5:345:5 | s : SearchRequestImpl | LdapInjection.java:346:14:346:14 | s : SearchRequestImpl | provenance |  |
+| LdapInjection.java:345:15:345:58 | new Dn(...) : Dn | LdapInjection.java:345:5:345:5 | s : SearchRequestImpl | provenance | Config |
+| LdapInjection.java:345:22:345:57 | ... + ... : String | LdapInjection.java:345:15:345:58 | new Dn(...) : Dn | provenance | Config |
+| LdapInjection.java:346:14:346:14 | s : SearchRequestImpl | LdapInjection.java:346:14:346:24 | getBase(...) | provenance | Config Sink:MaD:8 |
+models
+| 1 | Sink: com.unboundid.ldap.sdk; LDAPConnection; false; asyncSearch; ; ; Argument[0]; ldap-injection; manual |
+| 2 | Sink: com.unboundid.ldap.sdk; LDAPConnection; false; search; (ReadOnlySearchRequest); ; Argument[0]; ldap-injection; manual |
+| 3 | Sink: com.unboundid.ldap.sdk; LDAPConnection; false; search; (SearchRequest); ; Argument[0]; ldap-injection; manual |
+| 4 | Sink: com.unboundid.ldap.sdk; LDAPConnection; false; search; (SearchResultListener,String,SearchScope,DereferencePolicy,int,int,boolean,Filter,String[]); ; Argument[0..7]; ldap-injection; manual |
+| 5 | Sink: com.unboundid.ldap.sdk; LDAPConnection; false; search; (SearchResultListener,String,SearchScope,DereferencePolicy,int,int,boolean,String,String[]); ; Argument[0..7]; ldap-injection; manual |
+| 6 | Sink: com.unboundid.ldap.sdk; LDAPConnection; false; searchForEntry; (String,SearchScope,DereferencePolicy,int,boolean,String,String[]); ; Argument[0..5]; ldap-injection; manual |
+| 7 | Sink: javax.naming.directory; DirContext; true; search; ; ; Argument[0..1]; ldap-injection; manual |
+| 8 | Sink: org.apache.directory.ldap.client.api; LdapConnection; true; search; ; ; Argument[0..2]; ldap-injection; manual |
+| 9 | Sink: org.springframework.ldap.core; LdapOperations; true; searchForObject; (Name,String,ContextMapper); ; Argument[0]; jndi-injection; manual |
+| 10 | Sink: org.springframework.ldap.core; LdapTemplate; false; authenticate; (Name,String,String); ; Argument[0..1]; ldap-injection; manual |
+| 11 | Sink: org.springframework.ldap.core; LdapTemplate; false; find; ; ; Argument[0..1]; ldap-injection; manual |
+| 12 | Sink: org.springframework.ldap.core; LdapTemplate; false; findOne; ; ; Argument[0..1]; ldap-injection; manual |
+| 13 | Sink: org.springframework.ldap.core; LdapTemplate; false; search; ; ; Argument[0..1]; ldap-injection; manual |
+| 14 | Sink: org.springframework.ldap.core; LdapTemplate; false; searchForContext; ; ; Argument[0..1]; ldap-injection; manual |
+| 15 | Sink: org.springframework.ldap.core; LdapTemplate; false; searchForObject; ; ; Argument[0..1]; ldap-injection; manual |
+| 16 | Summary: java.lang; CharSequence; true; toString; ; ; Argument[this]; ReturnValue; taint; manual |
+| 17 | Summary: javax.naming.directory; BasicAttributes; true; BasicAttributes; (String,Object); ; Argument[0..1]; Argument[this]; taint; manual |
+| 18 | Summary: javax.naming.ldap; LdapName; true; LdapName; (String); ; Argument[0]; Argument[this]; taint; df-generated |
+| 19 | Summary: javax.naming; Name; true; addAll; (Name); ; Argument[this]; ReturnValue; value; dfc-generated |
+nodes
+| LdapInjection.java:45:28:45:52 | jBad : String | semmle.label | jBad : String |
+| LdapInjection.java:45:55:45:81 | jBadDN : String | semmle.label | jBadDN : String |
+| LdapInjection.java:47:16:47:35 | ... + ... | semmle.label | ... + ... |
+| LdapInjection.java:47:38:47:57 | ... + ... | semmle.label | ... + ... |
+| LdapInjection.java:51:28:51:52 | jBad : String | semmle.label | jBad : String |
+| LdapInjection.java:51:55:51:85 | jBadDNName : String | semmle.label | jBadDNName : String |
+| LdapInjection.java:53:16:53:53 | new LdapName(...) | semmle.label | new LdapName(...) |
+| LdapInjection.java:53:29:53:52 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:53:56:53:75 | ... + ... | semmle.label | ... + ... |
+| LdapInjection.java:57:28:57:52 | jBad : String | semmle.label | jBad : String |
+| LdapInjection.java:59:63:59:82 | ... + ... | semmle.label | ... + ... |
+| LdapInjection.java:63:28:63:59 | jBadInitial : String | semmle.label | jBadInitial : String |
+| LdapInjection.java:65:29:65:55 | ... + ... | semmle.label | ... + ... |
+| LdapInjection.java:69:28:69:52 | jBad : String | semmle.label | jBad : String |
+| LdapInjection.java:69:55:69:88 | jBadDNNameAdd : String | semmle.label | jBadDNNameAdd : String |
+| LdapInjection.java:71:16:71:31 | new LdapName(...) : LdapName | semmle.label | new LdapName(...) : LdapName |
+| LdapInjection.java:71:16:71:81 | addAll(...) | semmle.label | addAll(...) |
+| LdapInjection.java:71:40:71:80 | new LdapName(...) : LdapName | semmle.label | new LdapName(...) : LdapName |
+| LdapInjection.java:71:53:71:79 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:71:84:71:103 | ... + ... | semmle.label | ... + ... |
+| LdapInjection.java:75:28:75:52 | jBad : String | semmle.label | jBad : String |
+| LdapInjection.java:75:55:75:89 | jBadDNNameAdd2 : String | semmle.label | jBadDNNameAdd2 : String |
+| LdapInjection.java:78:5:78:8 | name : LdapName | semmle.label | name : LdapName |
+| LdapInjection.java:78:17:78:58 | new LdapName(...) : LdapName | semmle.label | new LdapName(...) : LdapName |
+| LdapInjection.java:78:17:78:68 | getRdns(...) : List | semmle.label | getRdns(...) : List |
+| LdapInjection.java:78:30:78:57 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:79:16:79:31 | new LdapName(...) : LdapName | semmle.label | new LdapName(...) : LdapName |
+| LdapInjection.java:79:16:79:44 | addAll(...) | semmle.label | addAll(...) |
+| LdapInjection.java:79:40:79:43 | name : LdapName | semmle.label | name : LdapName |
+| LdapInjection.java:79:47:79:66 | ... + ... | semmle.label | ... + ... |
+| LdapInjection.java:83:28:83:52 | jBad : String | semmle.label | jBad : String |
+| LdapInjection.java:83:55:83:93 | jBadDNNameToString : String | semmle.label | jBadDNNameToString : String |
+| LdapInjection.java:85:16:85:61 | new LdapName(...) : LdapName | semmle.label | new LdapName(...) : LdapName |
+| LdapInjection.java:85:16:85:72 | toString(...) | semmle.label | toString(...) |
+| LdapInjection.java:85:29:85:60 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:85:75:85:94 | ... + ... | semmle.label | ... + ... |
+| LdapInjection.java:89:28:89:52 | jBad : String | semmle.label | jBad : String |
+| LdapInjection.java:89:55:89:90 | jBadDNNameClone : String | semmle.label | jBadDNNameClone : String |
+| LdapInjection.java:91:16:91:73 | (...)... | semmle.label | (...)... |
+| LdapInjection.java:91:23:91:65 | new LdapName(...) : LdapName | semmle.label | new LdapName(...) : LdapName |
+| LdapInjection.java:91:36:91:64 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:91:76:91:95 | ... + ... | semmle.label | ... + ... |
+| LdapInjection.java:100:27:100:59 | jOkAttribute : String | semmle.label | jOkAttribute : String |
+| LdapInjection.java:101:29:101:75 | new BasicAttributes(...) | semmle.label | new BasicAttributes(...) |
+| LdapInjection.java:101:49:101:60 | jOkAttribute : String | semmle.label | jOkAttribute : String |
+| LdapInjection.java:101:63:101:74 | jOkAttribute : String | semmle.label | jOkAttribute : String |
+| LdapInjection.java:106:31:106:55 | uBad : String | semmle.label | uBad : String |
+| LdapInjection.java:106:58:106:84 | uBadDN : String | semmle.label | uBadDN : String |
+| LdapInjection.java:108:20:108:39 | ... + ... | semmle.label | ... + ... |
+| LdapInjection.java:108:67:108:86 | ... + ... | semmle.label | ... + ... |
+| LdapInjection.java:112:31:112:67 | uBadFilterCreate : String | semmle.label | uBadFilterCreate : String |
+| LdapInjection.java:113:58:113:88 | create(...) | semmle.label | create(...) |
+| LdapInjection.java:113:72:113:87 | uBadFilterCreate : String | semmle.label | uBadFilterCreate : String |
+| LdapInjection.java:117:31:117:70 | uBadROSearchRequest : String | semmle.label | uBadROSearchRequest : String |
+| LdapInjection.java:117:73:117:103 | uBadROSRDN : String | semmle.label | uBadROSRDN : String |
+| LdapInjection.java:119:31:120:44 | new SearchRequest(...) : SearchRequest | semmle.label | new SearchRequest(...) : SearchRequest |
+| LdapInjection.java:119:55:119:78 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:120:9:120:43 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:121:14:121:14 | s | semmle.label | s |
+| LdapInjection.java:125:31:125:68 | uBadSearchRequest : String | semmle.label | uBadSearchRequest : String |
+| LdapInjection.java:125:71:125:99 | uBadSRDN : String | semmle.label | uBadSRDN : String |
+| LdapInjection.java:127:23:128:42 | new SearchRequest(...) : SearchRequest | semmle.label | new SearchRequest(...) : SearchRequest |
+| LdapInjection.java:127:47:127:68 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:128:9:128:41 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:129:14:129:14 | s | semmle.label | s |
+| LdapInjection.java:133:31:133:55 | uBad : String | semmle.label | uBad : String |
+| LdapInjection.java:133:58:133:87 | uBadDNSFR : String | semmle.label | uBadDNSFR : String |
+| LdapInjection.java:135:22:135:44 | ... + ... | semmle.label | ... + ... |
+| LdapInjection.java:135:69:135:88 | ... + ... | semmle.label | ... + ... |
+| LdapInjection.java:139:31:139:75 | uBadROSearchRequestAsync : String | semmle.label | uBadROSearchRequestAsync : String |
+| LdapInjection.java:139:78:139:113 | uBadROSRDNAsync : String | semmle.label | uBadROSRDNAsync : String |
+| LdapInjection.java:141:31:142:49 | new SearchRequest(...) : SearchRequest | semmle.label | new SearchRequest(...) : SearchRequest |
+| LdapInjection.java:141:55:141:83 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:142:9:142:48 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:143:19:143:19 | s | semmle.label | s |
+| LdapInjection.java:147:31:147:73 | uBadSearchRequestAsync : String | semmle.label | uBadSearchRequestAsync : String |
+| LdapInjection.java:147:76:147:109 | uBadSRDNAsync : String | semmle.label | uBadSRDNAsync : String |
+| LdapInjection.java:149:23:150:47 | new SearchRequest(...) : SearchRequest | semmle.label | new SearchRequest(...) : SearchRequest |
+| LdapInjection.java:149:47:149:73 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:150:9:150:46 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:151:19:151:19 | s | semmle.label | s |
+| LdapInjection.java:155:31:155:70 | uBadFilterCreateNOT : String | semmle.label | uBadFilterCreateNOT : String |
+| LdapInjection.java:156:58:156:115 | createNOTFilter(...) | semmle.label | createNOTFilter(...) |
+| LdapInjection.java:156:81:156:114 | create(...) : Filter | semmle.label | create(...) : Filter |
+| LdapInjection.java:156:95:156:113 | uBadFilterCreateNOT : String | semmle.label | uBadFilterCreateNOT : String |
+| LdapInjection.java:160:31:160:75 | uBadFilterCreateToString : String | semmle.label | uBadFilterCreateToString : String |
+| LdapInjection.java:161:58:161:96 | create(...) : Filter | semmle.label | create(...) : Filter |
+| LdapInjection.java:161:58:161:107 | toString(...) | semmle.label | toString(...) |
+| LdapInjection.java:161:72:161:95 | uBadFilterCreateToString : String | semmle.label | uBadFilterCreateToString : String |
+| LdapInjection.java:165:32:165:82 | uBadFilterCreateToStringBuffer : String | semmle.label | uBadFilterCreateToStringBuffer : String |
+| LdapInjection.java:167:5:167:49 | create(...) : Filter | semmle.label | create(...) : Filter |
+| LdapInjection.java:167:19:167:48 | uBadFilterCreateToStringBuffer : String | semmle.label | uBadFilterCreateToStringBuffer : String |
+| LdapInjection.java:167:70:167:70 | b : StringBuilder | semmle.label | b : StringBuilder |
+| LdapInjection.java:168:58:168:58 | b : StringBuilder | semmle.label | b : StringBuilder |
+| LdapInjection.java:168:58:168:69 | toString(...) | semmle.label | toString(...) |
+| LdapInjection.java:172:32:172:78 | uBadSearchRequestDuplicate : String | semmle.label | uBadSearchRequestDuplicate : String |
+| LdapInjection.java:174:23:175:51 | new SearchRequest(...) : SearchRequest | semmle.label | new SearchRequest(...) : SearchRequest |
+| LdapInjection.java:175:9:175:50 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:176:14:176:14 | s : SearchRequest | semmle.label | s : SearchRequest |
+| LdapInjection.java:176:14:176:26 | duplicate(...) | semmle.label | duplicate(...) |
+| LdapInjection.java:180:32:180:80 | uBadROSearchRequestDuplicate : String | semmle.label | uBadROSearchRequestDuplicate : String |
+| LdapInjection.java:182:31:183:53 | new SearchRequest(...) : SearchRequest | semmle.label | new SearchRequest(...) : SearchRequest |
+| LdapInjection.java:183:9:183:52 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:184:14:184:14 | s : SearchRequest | semmle.label | s : SearchRequest |
+| LdapInjection.java:184:14:184:26 | duplicate(...) | semmle.label | duplicate(...) |
+| LdapInjection.java:188:32:188:74 | uBadSearchRequestSetDN : String | semmle.label | uBadSearchRequestSetDN : String |
+| LdapInjection.java:191:5:191:5 | s : SearchRequest | semmle.label | s : SearchRequest |
+| LdapInjection.java:191:17:191:38 | uBadSearchRequestSetDN : String | semmle.label | uBadSearchRequestSetDN : String |
+| LdapInjection.java:192:14:192:14 | s | semmle.label | s |
+| LdapInjection.java:196:32:196:78 | uBadSearchRequestSetFilter : String | semmle.label | uBadSearchRequestSetFilter : String |
+| LdapInjection.java:199:5:199:5 | s : SearchRequest | semmle.label | s : SearchRequest |
+| LdapInjection.java:199:17:199:42 | uBadSearchRequestSetFilter : String | semmle.label | uBadSearchRequestSetFilter : String |
+| LdapInjection.java:200:14:200:14 | s | semmle.label | s |
+| LdapInjection.java:229:30:229:54 | sBad : String | semmle.label | sBad : String |
+| LdapInjection.java:229:57:229:83 | sBadDN : String | semmle.label | sBadDN : String |
+| LdapInjection.java:230:14:230:33 | ... + ... | semmle.label | ... + ... |
+| LdapInjection.java:230:36:230:55 | ... + ... | semmle.label | ... + ... |
+| LdapInjection.java:234:30:234:54 | sBad : String | semmle.label | sBad : String |
+| LdapInjection.java:234:57:234:92 | sBadDNLNBuilder : String | semmle.label | sBadDNLNBuilder : String |
+| LdapInjection.java:235:20:235:77 | newInstance(...) : LdapNameBuilder | semmle.label | newInstance(...) : LdapNameBuilder |
+| LdapInjection.java:235:20:235:85 | build(...) | semmle.label | build(...) |
+| LdapInjection.java:235:48:235:76 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:235:88:235:107 | ... + ... | semmle.label | ... + ... |
+| LdapInjection.java:239:30:239:54 | sBad : String | semmle.label | sBad : String |
+| LdapInjection.java:239:57:239:95 | sBadDNLNBuilderAdd : String | semmle.label | sBadDNLNBuilderAdd : String |
+| LdapInjection.java:240:23:240:89 | add(...) : LdapNameBuilder | semmle.label | add(...) : LdapNameBuilder |
+| LdapInjection.java:240:23:240:97 | build(...) | semmle.label | build(...) |
+| LdapInjection.java:240:57:240:88 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:240:100:240:119 | ... + ... | semmle.label | ... + ... |
+| LdapInjection.java:244:30:244:63 | sBadLdapQuery : String | semmle.label | sBadLdapQuery : String |
+| LdapInjection.java:245:15:245:76 | filter(...) | semmle.label | filter(...) |
+| LdapInjection.java:245:47:245:75 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:249:30:249:60 | sBadFilter : String | semmle.label | sBadFilter : String |
+| LdapInjection.java:249:63:249:98 | sBadDNLdapUtils : String | semmle.label | sBadDNLdapUtils : String |
+| LdapInjection.java:250:12:250:63 | newLdapName(...) | semmle.label | newLdapName(...) |
+| LdapInjection.java:250:34:250:62 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:250:66:250:112 | new HardcodedFilter(...) | semmle.label | new HardcodedFilter(...) |
+| LdapInjection.java:250:86:250:111 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:254:30:254:63 | sBadLdapQuery : String | semmle.label | sBadLdapQuery : String |
+| LdapInjection.java:255:24:255:85 | filter(...) | semmle.label | filter(...) |
+| LdapInjection.java:255:56:255:84 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:259:30:259:64 | sBadLdapQuery2 : String | semmle.label | sBadLdapQuery2 : String |
+| LdapInjection.java:260:19:260:81 | filter(...) : LdapQuery | semmle.label | filter(...) : LdapQuery |
+| LdapInjection.java:260:51:260:80 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:261:24:261:24 | q | semmle.label | q |
+| LdapInjection.java:265:30:265:73 | sBadLdapQueryWithFilter : String | semmle.label | sBadLdapQueryWithFilter : String |
+| LdapInjection.java:266:24:266:116 | filter(...) | semmle.label | filter(...) |
+| LdapInjection.java:266:56:266:115 | new HardcodedFilter(...) : HardcodedFilter | semmle.label | new HardcodedFilter(...) : HardcodedFilter |
+| LdapInjection.java:266:76:266:114 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:270:30:270:74 | sBadLdapQueryWithFilter2 : String | semmle.label | sBadLdapQueryWithFilter2 : String |
+| LdapInjection.java:271:48:271:108 | new HardcodedFilter(...) : HardcodedFilter | semmle.label | new HardcodedFilter(...) : HardcodedFilter |
+| LdapInjection.java:271:68:271:107 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:272:24:272:57 | filter(...) | semmle.label | filter(...) |
+| LdapInjection.java:272:56:272:56 | f : HardcodedFilter | semmle.label | f : HardcodedFilter |
+| LdapInjection.java:276:31:276:68 | sBadLdapQueryBase : String | semmle.label | sBadLdapQueryBase : String |
+| LdapInjection.java:277:12:277:59 | base(...) : LdapQueryBuilder | semmle.label | base(...) : LdapQueryBuilder |
+| LdapInjection.java:277:12:277:66 | base(...) | semmle.label | base(...) |
+| LdapInjection.java:277:42:277:58 | sBadLdapQueryBase : String | semmle.label | sBadLdapQueryBase : String |
+| LdapInjection.java:281:31:281:71 | sBadLdapQueryComplex : String | semmle.label | sBadLdapQueryComplex : String |
+| LdapInjection.java:282:24:282:74 | base(...) : LdapQueryBuilder | semmle.label | base(...) : LdapQueryBuilder |
+| LdapInjection.java:282:24:282:87 | where(...) : ConditionCriteria | semmle.label | where(...) : ConditionCriteria |
+| LdapInjection.java:282:24:282:98 | is(...) | semmle.label | is(...) |
+| LdapInjection.java:282:54:282:73 | sBadLdapQueryComplex : String | semmle.label | sBadLdapQueryComplex : String |
+| LdapInjection.java:286:31:286:69 | sBadFilterToString : String | semmle.label | sBadFilterToString : String |
+| LdapInjection.java:287:18:287:72 | new HardcodedFilter(...) : HardcodedFilter | semmle.label | new HardcodedFilter(...) : HardcodedFilter |
+| LdapInjection.java:287:18:287:83 | toString(...) | semmle.label | toString(...) |
+| LdapInjection.java:287:38:287:71 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:291:31:291:67 | sBadFilterEncode : String | semmle.label | sBadFilterEncode : String |
+| LdapInjection.java:293:5:293:57 | new HardcodedFilter(...) : HardcodedFilter | semmle.label | new HardcodedFilter(...) : HardcodedFilter |
+| LdapInjection.java:293:25:293:56 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:293:66:293:66 | s : StringBuffer | semmle.label | s : StringBuffer |
+| LdapInjection.java:294:18:294:18 | s : StringBuffer | semmle.label | s : StringBuffer |
+| LdapInjection.java:294:18:294:29 | toString(...) | semmle.label | toString(...) |
+| LdapInjection.java:314:30:314:54 | aBad : String | semmle.label | aBad : String |
+| LdapInjection.java:314:57:314:83 | aBadDN : String | semmle.label | aBadDN : String |
+| LdapInjection.java:316:14:316:33 | ... + ... | semmle.label | ... + ... |
+| LdapInjection.java:316:36:316:55 | ... + ... | semmle.label | ... + ... |
+| LdapInjection.java:320:30:320:54 | aBad : String | semmle.label | aBad : String |
+| LdapInjection.java:320:57:320:94 | aBadDNObjToString : String | semmle.label | aBadDNObjToString : String |
+| LdapInjection.java:322:14:322:52 | new Dn(...) : Dn | semmle.label | new Dn(...) : Dn |
+| LdapInjection.java:322:14:322:62 | getName(...) | semmle.label | getName(...) |
+| LdapInjection.java:322:21:322:51 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:322:65:322:84 | ... + ... | semmle.label | ... + ... |
+| LdapInjection.java:326:30:326:67 | aBadSearchRequest : String | semmle.label | aBadSearchRequest : String |
+| LdapInjection.java:329:5:329:5 | s : SearchRequestImpl | semmle.label | s : SearchRequestImpl |
+| LdapInjection.java:329:17:329:49 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:330:14:330:14 | s | semmle.label | s |
+| LdapInjection.java:334:74:334:103 | aBadDNObj : String | semmle.label | aBadDNObj : String |
+| LdapInjection.java:337:5:337:5 | s : SearchRequestImpl | semmle.label | s : SearchRequestImpl |
+| LdapInjection.java:337:15:337:45 | new Dn(...) : Dn | semmle.label | new Dn(...) : Dn |
+| LdapInjection.java:337:22:337:44 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:338:14:338:14 | s | semmle.label | s |
+| LdapInjection.java:342:30:342:72 | aBadDNSearchRequestGet : String | semmle.label | aBadDNSearchRequestGet : String |
+| LdapInjection.java:345:5:345:5 | s : SearchRequestImpl | semmle.label | s : SearchRequestImpl |
+| LdapInjection.java:345:15:345:58 | new Dn(...) : Dn | semmle.label | new Dn(...) : Dn |
+| LdapInjection.java:345:22:345:57 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:346:14:346:14 | s : SearchRequestImpl | semmle.label | s : SearchRequestImpl |
+| LdapInjection.java:346:14:346:24 | getBase(...) | semmle.label | getBase(...) |
+subpaths

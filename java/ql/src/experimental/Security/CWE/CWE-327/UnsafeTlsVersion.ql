@@ -12,10 +12,16 @@
  */
 
 import java
-import SslLib
-import DataFlow::PathGraph
+deprecated import SslLib
+deprecated import UnsafeTlsVersionFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, UnsafeTlsVersionConfig conf
-where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ is unsafe.", source.getNode(),
-  source.getNode().asExpr().(StringLiteral).getValue()
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, UnsafeTlsVersionFlow::PathNode source,
+  UnsafeTlsVersionFlow::PathNode sink, string message1, DataFlow::Node sourceNode, string message2
+) {
+  UnsafeTlsVersionFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "$@ is unsafe." and
+  sourceNode = source.getNode() and
+  message2 = source.getNode().asExpr().(StringLiteral).getValue()
+}

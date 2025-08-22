@@ -12,5 +12,5 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["androidx.slice", "SliceProvider", True, "onBindSlice", "", "", "ReturnValue", "pending-intent-sent", "manual"]
-      - ["androidx.slice", "SliceProvider", True, "onCreatePermissionRequest", "", "", "ReturnValue", "pending-intent-sent", "manual"]
+      - ["androidx.slice", "SliceProvider", True, "onBindSlice", "", "", "ReturnValue", "pending-intents", "manual"]
+      - ["androidx.slice", "SliceProvider", True, "onCreatePermissionRequest", "", "", "ReturnValue", "pending-intents", "manual"]

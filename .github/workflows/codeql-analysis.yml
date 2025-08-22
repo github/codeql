@@ -18,6 +18,10 @@ on:
 
 jobs:
   CodeQL-Build:
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['actions', 'csharp']
 
     runs-on: ubuntu-latest
 
@@ -28,19 +32,18 @@ jobs:
 
     steps:
     - name: Setup dotnet
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 7.0.102
+        dotnet-version: 9.0.100
 
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       uses: github/codeql-action/init@main
-      # Override language selection by uncommenting this and choosing your languages
       with:
-        languages: csharp
+        languages: ${{ matrix.language }}
         config-file: ./.github/codeql/codeql-config.yml
 
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
@@ -56,7 +59,9 @@ jobs:
     #    uses a compiled language
 
     - run: |
-       dotnet build csharp
+       cd csharp
+       dotnet tool restore
+       dotnet build .
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@main

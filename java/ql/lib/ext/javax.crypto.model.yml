@@ -1,0 +1,28 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["javax.crypto", "Cipher", True, "init", "(int,Key,AlgorithmParameterSpec)", "", "Argument[2]", "encryption-iv", "manual"]
+      - ["javax.crypto", "Cipher", True, "init", "(int,Key,AlgorithmParameterSpec,SecureRandom)", "", "Argument[2]", "encryption-iv", "manual"]
+      - ["javax.crypto", "Cipher", False, "unwrap", "(byte[],String,int)", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["javax.crypto", "CipherSpi", True, "engineUnwrap", "(byte[],String,int)", "", "Argument[0]", "credentials-key", "hq-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.crypto", "Cipher", "doFinal", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "getAlgorithm", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "getExemptionMechanism", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "getInstance", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "getIV", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "getParameters", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "getProvider", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "init", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "toString", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "unwrap", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "update", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "updateAAD", "", "summary", "df-manual"]
+      - ["javax.crypto", "Cipher", "wrap", "", "summary", "df-manual"]
+      - ["javax.crypto", "Mac", "init", "(Key)", "summary", "df-manual"]
+      - ["javax.crypto", "Mac", "doFinal", "()", "summary", "df-manual"]

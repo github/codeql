@@ -9,22 +9,7 @@ CodeQL for C/C++
 Setup
 =====
 
-For this example you should download:
-
-- `CodeQL for Visual Studio Code <https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/>`__
-- `dotnet/coreclr database <http://downloads.lgtm.com/snapshots/cpp/dotnet/coreclr/dotnet_coreclr_fbe0c77.zip>`__
-
-.. note::
-
-   For the examples in this presentation, we will be analyzing `dotnet/coreclr <https://github.com/dotnet/coreclr>`__.
-
-   You can query the project in `the query console <https://lgtm.com/query/projects:1505958977333/lang:cpp/>`__ on LGTM.com.
-
-   .. insert database-note.rst to explain differences between database available to download and the version available in the query console.
-
-   .. include:: ../slide-snippets/database-note.rst
-
-   .. resume slides
+For this example you need to set up `CodeQL for Visual Studio Code <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/installing-codeql-for-vs-code>`__ and download the CodeQL database for `dotnet/coreclr <https://github.com/dotnet/coreclr>`__ from GitHub.
 
 .. rst-class:: agenda
 
@@ -62,8 +47,8 @@ The library class ``SecurityOptions`` provides a (configurable) model of what co
 
   import semmle.code.cpp.security.Security
 
-  class TaintedFormatConfig extends TaintTracking::Configuration {
-    override predicate isSource(DataFlow::Node source) {
+  module TaintedFormatConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
       exists (SecurityOptions opts |
         opts.isUserInput(source.asExpr(), _)
       )
@@ -85,8 +70,8 @@ Use the ``FormattingFunction`` class to fill in the definition of ``isSink``.
 
   import semmle.code.cpp.security.Security
 
-  class TaintedFormatConfig extends TaintTracking::Configuration {
-    override predicate isSink(DataFlow::Node sink) {
+  module TaintedFormatConfig implements DataFlow::ConfigSig {
+    predicate isSink(DataFlow::Node sink) {
       /* Fill me in */
     }
     ...
@@ -105,8 +90,8 @@ Use the ``FormattingFunction`` class, we can write the sink as:
 
   import semmle.code.cpp.security.Security
 
-  class TaintedFormatConfig extends TaintTracking::Configuration {
-    override predicate isSink(DataFlow::Node sink) {
+  module TaintedFormatConfig implements DataFlow::ConfigSig {
+    predicate isSink(DataFlow::Node sink) {
       exists (FormattingFunction ff, Call c |
         c.getTarget() = ff and
         c.getArgument(ff.getFormatParameterIndex()) = sink.asExpr()
@@ -132,9 +117,8 @@ Add an additional taint step that (heuristically) taints a local variable if it 
 
 .. code-block:: ql
 
-  class TaintedFormatConfig extends TaintTracking::Configuration {
-    override predicate isAdditionalTaintStep(DataFlow::Node pred,
-                                             DataFlow::Node succ) {
+  module TaintedFormatConfig implements DataFlow::ConfigSig {
+    predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
       exists (Call c, Expr arg, LocalVariable lv |
         arg = c.getAnArgument() and
         arg = pred.asExpr() and
@@ -153,8 +137,8 @@ Add a sanitizer, stopping propagation at parameters of formatting functions, to 
 
 .. code-block:: ql
 
-  class TaintedFormatConfig extends TaintTracking::Configuration {
-    override predicate isSanitizer(DataFlow::Node nd) {
+  module TaintedFormatConfig implements DataFlow::ConfigSig {
+    predicate isBarrier(DataFlow::Node nd) {
       exists (FormattingFunction ff, int idx |
         idx = ff.getFormatParameterIndex() and
         nd = DataFlow::parameterNode(ff.getParameter(idx))

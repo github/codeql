@@ -68,3 +68,17 @@ func test4(passwd: String) {
 	UserDefaults.standard.set(y, forKey: "myKey") // GOOD (not sensitive)
 	UserDefaults.standard.set(z, forKey: "myKey") // GOOD (not sensitive)
 }
+
+struct MyOuter {
+	struct MyInner {
+		var value: String
+	}
+
+	var password: MyInner
+	var harmless: MyInner
+}
+
+func test5(mo : MyOuter) {
+	UserDefaults.standard.set(mo.password.value, forKey: "myKey") // BAD
+	UserDefaults.standard.set(mo.harmless.value, forKey: "myKey") // GOOD
+}

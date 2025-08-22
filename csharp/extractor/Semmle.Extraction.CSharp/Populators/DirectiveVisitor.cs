@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -9,7 +8,7 @@ namespace Semmle.Extraction.CSharp.Populators
     internal class DirectiveVisitor : CSharpSyntaxWalker
     {
         private readonly Context cx;
-        private readonly List<IEntity> branchesTaken = new();
+        private readonly List<IEntity> branchesTaken = [];
 
         /// <summary>
         /// Gets a list of `#if`, `#elif`, and `#else` entities where the branch
@@ -60,7 +59,7 @@ namespace Semmle.Extraction.CSharp.Populators
             if (regionStarts.Count == 0)
             {
                 cx.ExtractionError("Couldn't find start region", null,
-                    cx.CreateLocation(node.GetLocation()), null, Util.Logging.Severity.Warning);
+                    cx.CreateLocation(node.GetLocation()), null, Semmle.Util.Logging.Severity.Warning);
                 return;
             }
 
@@ -95,7 +94,7 @@ namespace Semmle.Extraction.CSharp.Populators
             if (ifStarts.Count == 0)
             {
                 cx.ExtractionError("Couldn't find start if", null,
-                    cx.CreateLocation(node.GetLocation()), null, Util.Logging.Severity.Warning);
+                    cx.CreateLocation(node.GetLocation()), null, Semmle.Util.Logging.Severity.Warning);
                 return;
             }
 
@@ -108,7 +107,7 @@ namespace Semmle.Extraction.CSharp.Populators
             if (ifStarts.Count == 0)
             {
                 cx.ExtractionError("Couldn't find start if", null,
-                    cx.CreateLocation(node.GetLocation()), null, Util.Logging.Severity.Warning);
+                    cx.CreateLocation(node.GetLocation()), null, Semmle.Util.Logging.Severity.Warning);
                 return;
             }
 
@@ -123,7 +122,7 @@ namespace Semmle.Extraction.CSharp.Populators
             if (ifStarts.Count == 0)
             {
                 cx.ExtractionError("Couldn't find start if", null,
-                    cx.CreateLocation(node.GetLocation()), null, Util.Logging.Severity.Warning);
+                    cx.CreateLocation(node.GetLocation()), null, Semmle.Util.Logging.Severity.Warning);
                 return;
             }
 

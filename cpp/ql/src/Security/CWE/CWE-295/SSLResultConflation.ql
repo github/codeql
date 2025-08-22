@@ -18,7 +18,7 @@ import semmle.code.cpp.ir.dataflow.DataFlow
  * A call to `SSL_get_verify_result`.
  */
 class SslGetVerifyResultCall extends FunctionCall {
-  SslGetVerifyResultCall() { getTarget().getName() = "SSL_get_verify_result" }
+  SslGetVerifyResultCall() { this.getTarget().getName() = "SSL_get_verify_result" }
 }
 
 /**
@@ -30,6 +30,14 @@ module VerifyResultConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) {
     exists(GuardCondition guard | guard.getAChild*() = sink.asExpr())
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(GuardCondition guard | result = guard.getLocation() |
+      guard.comparesEq(sink.asExpr(), _, 0, false, _)
+    )
   }
 }
 

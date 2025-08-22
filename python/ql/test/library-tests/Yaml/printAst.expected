@@ -1,0 +1,151 @@
+nodes
+| external.yml:1:1:1:2 | [YamlScalar] 42 | semmle.label | [YamlScalar] 42 |
+| external.yml:1:1:1:2 | [YamlScalar] 42 | semmle.order | 1 |
+| file://:0:0:0:0 | (Mapping 0) name: | semmle.label | (Mapping 0) name: |
+| file://:0:0:0:0 | (Mapping 0) name: | semmle.label | (Mapping 0) name: |
+| file://:0:0:0:0 | (Mapping 0) street: | semmle.label | (Mapping 0) street: |
+| file://:0:0:0:0 | (Mapping 0) street: | semmle.label | (Mapping 0) street: |
+| file://:0:0:0:0 | (Mapping 0) x: | semmle.label | (Mapping 0) x: |
+| file://:0:0:0:0 | (Mapping 0) x: | semmle.label | (Mapping 0) x: |
+| file://:0:0:0:0 | (Mapping 1) <<: | semmle.label | (Mapping 1) <<: |
+| file://:0:0:0:0 | (Mapping 1) address: | semmle.label | (Mapping 1) address: |
+| file://:0:0:0:0 | (Mapping 1) address: | semmle.label | (Mapping 1) address: |
+| file://:0:0:0:0 | (Mapping 1) number: | semmle.label | (Mapping 1) number: |
+| file://:0:0:0:0 | (Mapping 1) number: | semmle.label | (Mapping 1) number: |
+| file://:0:0:0:0 | (Mapping 1) y: | semmle.label | (Mapping 1) y: |
+| file://:0:0:0:0 | (Mapping 2) country: | semmle.label | (Mapping 2) country: |
+| file://:0:0:0:0 | (Mapping 2) country: | semmle.label | (Mapping 2) country: |
+| merge.yaml:1:1:3:8 | [YamlSequence] - &A {  ... y: 42 } | semmle.label | [YamlSequence] - &A {  ... y: 42 } |
+| merge.yaml:1:1:3:8 | [YamlSequence] - &A {  ... y: 42 } | semmle.order | 2 |
+| merge.yaml:1:3:1:21 | [YamlMapping] &A { x: 23, y: 42 } | semmle.label | [YamlMapping] &A { x: 23, y: 42 } |
+| merge.yaml:1:8:1:8 | [YamlScalar] x | semmle.label | [YamlScalar] x |
+| merge.yaml:1:11:1:12 | [YamlScalar] 23 | semmle.label | [YamlScalar] 23 |
+| merge.yaml:1:15:1:15 | [YamlScalar] y | semmle.label | [YamlScalar] y |
+| merge.yaml:1:18:1:19 | [YamlScalar] 42 | semmle.label | [YamlScalar] 42 |
+| merge.yaml:2:3:2:3 | [YamlScalar] x | semmle.label | [YamlScalar] x |
+| merge.yaml:2:3:3:8 | [YamlMapping] x: 56 | semmle.label | [YamlMapping] x: 56 |
+| merge.yaml:2:6:2:7 | [YamlScalar] 56 | semmle.label | [YamlScalar] 56 |
+| merge.yaml:3:3:3:4 | [YamlScalar] << | semmle.label | [YamlScalar] << |
+| merge.yaml:3:7:3:8 | [YamlAliasNode] *A | semmle.label | [YamlAliasNode] *A |
+| tst.yml:1:1:14:23 | [YamlSequence] - "name ...  Knopf" | semmle.label | [YamlSequence] - "name ...  Knopf" |
+| tst.yml:1:1:14:23 | [YamlSequence] - "name ...  Knopf" | semmle.order | 3 |
+| tst.yml:1:3:1:8 | [YamlScalar] "name" | semmle.label | [YamlScalar] "name" |
+| tst.yml:1:3:6:4 | [YamlMapping] "name": "Jim Knopf" | semmle.label | [YamlMapping] "name": "Jim Knopf" |
+| tst.yml:1:11:1:21 | [YamlScalar] "Jim Knopf" | semmle.label | [YamlScalar] "Jim Knopf" |
+| tst.yml:2:3:2:9 | [YamlScalar] address | semmle.label | [YamlScalar] address |
+| tst.yml:2:12:6:3 | [YamlMapping] { | semmle.label | [YamlMapping] { |
+| tst.yml:3:5:3:12 | [YamlScalar] "street" | semmle.label | [YamlScalar] "street" |
+| tst.yml:3:14:3:13 | [YamlScalar]  | semmle.label | [YamlScalar]  |
+| tst.yml:4:5:4:12 | [YamlScalar] "number" | semmle.label | [YamlScalar] "number" |
+| tst.yml:4:15:4:16 | [YamlScalar] -1 | semmle.label | [YamlScalar] -1 |
+| tst.yml:5:5:5:13 | [YamlScalar] "country" | semmle.label | [YamlScalar] "country" |
+| tst.yml:5:16:5:27 | [YamlScalar] "Lummerland" | semmle.label | [YamlScalar] "Lummerland" |
+| tst.yml:7:3:7:6 | [YamlScalar] name | semmle.label | [YamlScalar] name |
+| tst.yml:7:3:13:19 | [YamlMapping] name: Frau Mahlzahn | semmle.label | [YamlMapping] name: Frau Mahlzahn |
+| tst.yml:7:9:7:21 | [YamlScalar] Frau Mahlzahn | semmle.label | [YamlScalar] Frau Mahlzahn |
+| tst.yml:8:3:8:9 | [YamlScalar] address | semmle.label | [YamlScalar] address |
+| tst.yml:9:5:9:10 | [YamlScalar] street | semmle.label | [YamlScalar] street |
+| tst.yml:9:5:13:19 | [YamlMapping] street: \| | semmle.label | [YamlMapping] street: \| |
+| tst.yml:9:13:10:21 | [YamlScalar] \| | semmle.label | [YamlScalar] \| |
+| tst.yml:11:5:11:10 | [YamlScalar] number | semmle.label | [YamlScalar] number |
+| tst.yml:11:13:11:15 | [YamlScalar] 133 | semmle.label | [YamlScalar] 133 |
+| tst.yml:12:5:12:11 | [YamlScalar] country | semmle.label | [YamlScalar] country |
+| tst.yml:12:14:13:18 | [YamlScalar] < | semmle.label | [YamlScalar] < |
+| tst.yml:14:3:14:23 | [YamlScalar] !includ ... nal.yml | semmle.label | [YamlScalar] !includ ... nal.yml |
+edges
+| file://:0:0:0:0 | (Mapping 0) name: | tst.yml:1:3:1:8 | [YamlScalar] "name" | semmle.label | 0 |
+| file://:0:0:0:0 | (Mapping 0) name: | tst.yml:1:3:1:8 | [YamlScalar] "name" | semmle.order | 0 |
+| file://:0:0:0:0 | (Mapping 0) name: | tst.yml:1:11:1:21 | [YamlScalar] "Jim Knopf" | semmle.label | 1 |
+| file://:0:0:0:0 | (Mapping 0) name: | tst.yml:1:11:1:21 | [YamlScalar] "Jim Knopf" | semmle.order | 1 |
+| file://:0:0:0:0 | (Mapping 0) name: | tst.yml:7:3:7:6 | [YamlScalar] name | semmle.label | 0 |
+| file://:0:0:0:0 | (Mapping 0) name: | tst.yml:7:3:7:6 | [YamlScalar] name | semmle.order | 0 |
+| file://:0:0:0:0 | (Mapping 0) name: | tst.yml:7:9:7:21 | [YamlScalar] Frau Mahlzahn | semmle.label | 1 |
+| file://:0:0:0:0 | (Mapping 0) name: | tst.yml:7:9:7:21 | [YamlScalar] Frau Mahlzahn | semmle.order | 1 |
+| file://:0:0:0:0 | (Mapping 0) street: | tst.yml:3:5:3:12 | [YamlScalar] "street" | semmle.label | 0 |
+| file://:0:0:0:0 | (Mapping 0) street: | tst.yml:3:5:3:12 | [YamlScalar] "street" | semmle.order | 0 |
+| file://:0:0:0:0 | (Mapping 0) street: | tst.yml:3:14:3:13 | [YamlScalar]  | semmle.label | 1 |
+| file://:0:0:0:0 | (Mapping 0) street: | tst.yml:3:14:3:13 | [YamlScalar]  | semmle.order | 1 |
+| file://:0:0:0:0 | (Mapping 0) street: | tst.yml:9:5:9:10 | [YamlScalar] street | semmle.label | 0 |
+| file://:0:0:0:0 | (Mapping 0) street: | tst.yml:9:5:9:10 | [YamlScalar] street | semmle.order | 0 |
+| file://:0:0:0:0 | (Mapping 0) street: | tst.yml:9:13:10:21 | [YamlScalar] \| | semmle.label | 1 |
+| file://:0:0:0:0 | (Mapping 0) street: | tst.yml:9:13:10:21 | [YamlScalar] \| | semmle.order | 1 |
+| file://:0:0:0:0 | (Mapping 0) x: | merge.yaml:1:8:1:8 | [YamlScalar] x | semmle.label | 0 |
+| file://:0:0:0:0 | (Mapping 0) x: | merge.yaml:1:8:1:8 | [YamlScalar] x | semmle.order | 0 |
+| file://:0:0:0:0 | (Mapping 0) x: | merge.yaml:1:11:1:12 | [YamlScalar] 23 | semmle.label | 1 |
+| file://:0:0:0:0 | (Mapping 0) x: | merge.yaml:1:11:1:12 | [YamlScalar] 23 | semmle.order | 1 |
+| file://:0:0:0:0 | (Mapping 0) x: | merge.yaml:2:3:2:3 | [YamlScalar] x | semmle.label | 0 |
+| file://:0:0:0:0 | (Mapping 0) x: | merge.yaml:2:3:2:3 | [YamlScalar] x | semmle.order | 0 |
+| file://:0:0:0:0 | (Mapping 0) x: | merge.yaml:2:6:2:7 | [YamlScalar] 56 | semmle.label | 1 |
+| file://:0:0:0:0 | (Mapping 0) x: | merge.yaml:2:6:2:7 | [YamlScalar] 56 | semmle.order | 1 |
+| file://:0:0:0:0 | (Mapping 1) <<: | merge.yaml:3:3:3:4 | [YamlScalar] << | semmle.label | 0 |
+| file://:0:0:0:0 | (Mapping 1) <<: | merge.yaml:3:3:3:4 | [YamlScalar] << | semmle.order | 0 |
+| file://:0:0:0:0 | (Mapping 1) <<: | merge.yaml:3:7:3:8 | [YamlAliasNode] *A | semmle.label | 1 |
+| file://:0:0:0:0 | (Mapping 1) <<: | merge.yaml:3:7:3:8 | [YamlAliasNode] *A | semmle.order | 1 |
+| file://:0:0:0:0 | (Mapping 1) address: | tst.yml:2:3:2:9 | [YamlScalar] address | semmle.label | 0 |
+| file://:0:0:0:0 | (Mapping 1) address: | tst.yml:2:3:2:9 | [YamlScalar] address | semmle.order | 0 |
+| file://:0:0:0:0 | (Mapping 1) address: | tst.yml:2:12:6:3 | [YamlMapping] { | semmle.label | 1 |
+| file://:0:0:0:0 | (Mapping 1) address: | tst.yml:2:12:6:3 | [YamlMapping] { | semmle.order | 1 |
+| file://:0:0:0:0 | (Mapping 1) address: | tst.yml:8:3:8:9 | [YamlScalar] address | semmle.label | 0 |
+| file://:0:0:0:0 | (Mapping 1) address: | tst.yml:8:3:8:9 | [YamlScalar] address | semmle.order | 0 |
+| file://:0:0:0:0 | (Mapping 1) address: | tst.yml:9:5:13:19 | [YamlMapping] street: \| | semmle.label | 1 |
+| file://:0:0:0:0 | (Mapping 1) address: | tst.yml:9:5:13:19 | [YamlMapping] street: \| | semmle.order | 1 |
+| file://:0:0:0:0 | (Mapping 1) number: | tst.yml:4:5:4:12 | [YamlScalar] "number" | semmle.label | 0 |
+| file://:0:0:0:0 | (Mapping 1) number: | tst.yml:4:5:4:12 | [YamlScalar] "number" | semmle.order | 0 |
+| file://:0:0:0:0 | (Mapping 1) number: | tst.yml:4:15:4:16 | [YamlScalar] -1 | semmle.label | 1 |
+| file://:0:0:0:0 | (Mapping 1) number: | tst.yml:4:15:4:16 | [YamlScalar] -1 | semmle.order | 1 |
+| file://:0:0:0:0 | (Mapping 1) number: | tst.yml:11:5:11:10 | [YamlScalar] number | semmle.label | 0 |
+| file://:0:0:0:0 | (Mapping 1) number: | tst.yml:11:5:11:10 | [YamlScalar] number | semmle.order | 0 |
+| file://:0:0:0:0 | (Mapping 1) number: | tst.yml:11:13:11:15 | [YamlScalar] 133 | semmle.label | 1 |
+| file://:0:0:0:0 | (Mapping 1) number: | tst.yml:11:13:11:15 | [YamlScalar] 133 | semmle.order | 1 |
+| file://:0:0:0:0 | (Mapping 1) y: | merge.yaml:1:15:1:15 | [YamlScalar] y | semmle.label | 0 |
+| file://:0:0:0:0 | (Mapping 1) y: | merge.yaml:1:15:1:15 | [YamlScalar] y | semmle.order | 0 |
+| file://:0:0:0:0 | (Mapping 1) y: | merge.yaml:1:18:1:19 | [YamlScalar] 42 | semmle.label | 1 |
+| file://:0:0:0:0 | (Mapping 1) y: | merge.yaml:1:18:1:19 | [YamlScalar] 42 | semmle.order | 1 |
+| file://:0:0:0:0 | (Mapping 2) country: | tst.yml:5:5:5:13 | [YamlScalar] "country" | semmle.label | 0 |
+| file://:0:0:0:0 | (Mapping 2) country: | tst.yml:5:5:5:13 | [YamlScalar] "country" | semmle.order | 0 |
+| file://:0:0:0:0 | (Mapping 2) country: | tst.yml:5:16:5:27 | [YamlScalar] "Lummerland" | semmle.label | 1 |
+| file://:0:0:0:0 | (Mapping 2) country: | tst.yml:5:16:5:27 | [YamlScalar] "Lummerland" | semmle.order | 1 |
+| file://:0:0:0:0 | (Mapping 2) country: | tst.yml:12:5:12:11 | [YamlScalar] country | semmle.label | 0 |
+| file://:0:0:0:0 | (Mapping 2) country: | tst.yml:12:5:12:11 | [YamlScalar] country | semmle.order | 0 |
+| file://:0:0:0:0 | (Mapping 2) country: | tst.yml:12:14:13:18 | [YamlScalar] < | semmle.label | 1 |
+| file://:0:0:0:0 | (Mapping 2) country: | tst.yml:12:14:13:18 | [YamlScalar] < | semmle.order | 1 |
+| merge.yaml:1:1:3:8 | [YamlSequence] - &A {  ... y: 42 } | merge.yaml:1:3:1:21 | [YamlMapping] &A { x: 23, y: 42 } | semmle.label | 0 |
+| merge.yaml:1:1:3:8 | [YamlSequence] - &A {  ... y: 42 } | merge.yaml:1:3:1:21 | [YamlMapping] &A { x: 23, y: 42 } | semmle.order | 0 |
+| merge.yaml:1:1:3:8 | [YamlSequence] - &A {  ... y: 42 } | merge.yaml:2:3:3:8 | [YamlMapping] x: 56 | semmle.label | 1 |
+| merge.yaml:1:1:3:8 | [YamlSequence] - &A {  ... y: 42 } | merge.yaml:2:3:3:8 | [YamlMapping] x: 56 | semmle.order | 1 |
+| merge.yaml:1:3:1:21 | [YamlMapping] &A { x: 23, y: 42 } | file://:0:0:0:0 | (Mapping 0) x: | semmle.label | 0 |
+| merge.yaml:1:3:1:21 | [YamlMapping] &A { x: 23, y: 42 } | file://:0:0:0:0 | (Mapping 0) x: | semmle.order | 0 |
+| merge.yaml:1:3:1:21 | [YamlMapping] &A { x: 23, y: 42 } | file://:0:0:0:0 | (Mapping 1) y: | semmle.label | 1 |
+| merge.yaml:1:3:1:21 | [YamlMapping] &A { x: 23, y: 42 } | file://:0:0:0:0 | (Mapping 1) y: | semmle.order | 1 |
+| merge.yaml:2:3:3:8 | [YamlMapping] x: 56 | file://:0:0:0:0 | (Mapping 0) x: | semmle.label | 0 |
+| merge.yaml:2:3:3:8 | [YamlMapping] x: 56 | file://:0:0:0:0 | (Mapping 0) x: | semmle.order | 0 |
+| merge.yaml:2:3:3:8 | [YamlMapping] x: 56 | file://:0:0:0:0 | (Mapping 1) <<: | semmle.label | 1 |
+| merge.yaml:2:3:3:8 | [YamlMapping] x: 56 | file://:0:0:0:0 | (Mapping 1) <<: | semmle.order | 1 |
+| tst.yml:1:1:14:23 | [YamlSequence] - "name ...  Knopf" | tst.yml:1:3:6:4 | [YamlMapping] "name": "Jim Knopf" | semmle.label | 0 |
+| tst.yml:1:1:14:23 | [YamlSequence] - "name ...  Knopf" | tst.yml:1:3:6:4 | [YamlMapping] "name": "Jim Knopf" | semmle.order | 0 |
+| tst.yml:1:1:14:23 | [YamlSequence] - "name ...  Knopf" | tst.yml:7:3:13:19 | [YamlMapping] name: Frau Mahlzahn | semmle.label | 1 |
+| tst.yml:1:1:14:23 | [YamlSequence] - "name ...  Knopf" | tst.yml:7:3:13:19 | [YamlMapping] name: Frau Mahlzahn | semmle.order | 1 |
+| tst.yml:1:1:14:23 | [YamlSequence] - "name ...  Knopf" | tst.yml:14:3:14:23 | [YamlScalar] !includ ... nal.yml | semmle.label | 2 |
+| tst.yml:1:1:14:23 | [YamlSequence] - "name ...  Knopf" | tst.yml:14:3:14:23 | [YamlScalar] !includ ... nal.yml | semmle.order | 2 |
+| tst.yml:1:3:6:4 | [YamlMapping] "name": "Jim Knopf" | file://:0:0:0:0 | (Mapping 0) name: | semmle.label | 0 |
+| tst.yml:1:3:6:4 | [YamlMapping] "name": "Jim Knopf" | file://:0:0:0:0 | (Mapping 0) name: | semmle.order | 0 |
+| tst.yml:1:3:6:4 | [YamlMapping] "name": "Jim Knopf" | file://:0:0:0:0 | (Mapping 1) address: | semmle.label | 1 |
+| tst.yml:1:3:6:4 | [YamlMapping] "name": "Jim Knopf" | file://:0:0:0:0 | (Mapping 1) address: | semmle.order | 1 |
+| tst.yml:2:12:6:3 | [YamlMapping] { | file://:0:0:0:0 | (Mapping 0) street: | semmle.label | 0 |
+| tst.yml:2:12:6:3 | [YamlMapping] { | file://:0:0:0:0 | (Mapping 0) street: | semmle.order | 0 |
+| tst.yml:2:12:6:3 | [YamlMapping] { | file://:0:0:0:0 | (Mapping 1) number: | semmle.label | 1 |
+| tst.yml:2:12:6:3 | [YamlMapping] { | file://:0:0:0:0 | (Mapping 1) number: | semmle.order | 1 |
+| tst.yml:2:12:6:3 | [YamlMapping] { | file://:0:0:0:0 | (Mapping 2) country: | semmle.label | 2 |
+| tst.yml:2:12:6:3 | [YamlMapping] { | file://:0:0:0:0 | (Mapping 2) country: | semmle.order | 2 |
+| tst.yml:7:3:13:19 | [YamlMapping] name: Frau Mahlzahn | file://:0:0:0:0 | (Mapping 0) name: | semmle.label | 0 |
+| tst.yml:7:3:13:19 | [YamlMapping] name: Frau Mahlzahn | file://:0:0:0:0 | (Mapping 0) name: | semmle.order | 0 |
+| tst.yml:7:3:13:19 | [YamlMapping] name: Frau Mahlzahn | file://:0:0:0:0 | (Mapping 1) address: | semmle.label | 1 |
+| tst.yml:7:3:13:19 | [YamlMapping] name: Frau Mahlzahn | file://:0:0:0:0 | (Mapping 1) address: | semmle.order | 1 |
+| tst.yml:9:5:13:19 | [YamlMapping] street: \| | file://:0:0:0:0 | (Mapping 0) street: | semmle.label | 0 |
+| tst.yml:9:5:13:19 | [YamlMapping] street: \| | file://:0:0:0:0 | (Mapping 0) street: | semmle.order | 0 |
+| tst.yml:9:5:13:19 | [YamlMapping] street: \| | file://:0:0:0:0 | (Mapping 1) number: | semmle.label | 1 |
+| tst.yml:9:5:13:19 | [YamlMapping] street: \| | file://:0:0:0:0 | (Mapping 1) number: | semmle.order | 1 |
+| tst.yml:9:5:13:19 | [YamlMapping] street: \| | file://:0:0:0:0 | (Mapping 2) country: | semmle.label | 2 |
+| tst.yml:9:5:13:19 | [YamlMapping] street: \| | file://:0:0:0:0 | (Mapping 2) country: | semmle.order | 2 |
+graphProperties
+| semmle.graphKind | tree |

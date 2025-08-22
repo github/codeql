@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.cxf.catalog", "OASISCatalogManager", True, "loadCatalog", "(URL)", "", "Argument[0]", "request-forgery", "manual"]

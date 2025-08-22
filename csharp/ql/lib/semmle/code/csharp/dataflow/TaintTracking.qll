@@ -6,6 +6,9 @@
 import csharp
 
 module TaintTracking {
-  import semmle.code.csharp.dataflow.internal.tainttracking1.TaintTracking
-  import semmle.code.csharp.dataflow.internal.tainttracking1.TaintTrackingImpl
+  import semmle.code.csharp.dataflow.internal.TaintTrackingPublic
+  private import semmle.code.csharp.dataflow.internal.DataFlowImplSpecific
+  private import semmle.code.csharp.dataflow.internal.TaintTrackingImplSpecific
+  private import codeql.dataflow.TaintTracking
+  import TaintFlowMake<Location, CsharpDataFlow, CsharpTaintTracking>
 }

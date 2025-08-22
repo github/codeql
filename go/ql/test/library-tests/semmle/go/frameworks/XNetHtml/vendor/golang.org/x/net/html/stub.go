@@ -125,6 +125,10 @@ func NewTokenizer(r io.Reader) *Tokenizer {
 	return nil
 }
 
+func NewTokenizerFragment(r io.Reader, contextTag string) *Tokenizer {
+	return nil
+}
+
 func Render(w io.Writer, n *Node) error {
 	return nil
 }

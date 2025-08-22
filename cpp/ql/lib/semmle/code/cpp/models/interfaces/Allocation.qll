@@ -90,13 +90,21 @@ abstract class AllocationFunction extends Function {
 }
 
 /**
+ * Holds if an external allocation model exists for the given parameters.
+ */
+extensible predicate allocationFunctionModel(
+  string namespace, string type, boolean subtypes, string name, string sizeArg, string multArg,
+  string reallocPtrArg, boolean requiresDealloc
+);
+
+/**
  * An `operator new` or `operator new[]` function that may be associated with
  * `new` or `new[]` expressions.  Note that `new` and `new[]` are not function
  * calls, but these functions may also be called directly.
  */
 class OperatorNewAllocationFunction extends AllocationFunction {
   OperatorNewAllocationFunction() {
-    hasGlobalName([
+    this.hasGlobalName([
         "operator new", // operator new(bytes, ...)
         "operator new[]" // operator new[](bytes, ...)
       ])
@@ -104,15 +112,15 @@ class OperatorNewAllocationFunction extends AllocationFunction {
 
   override int getSizeArg() { result = 0 }
 
-  override predicate requiresDealloc() { not exists(getPlacementArgument()) }
+  override predicate requiresDealloc() { not exists(this.getPlacementArgument()) }
 
   /**
    * Gets the position of the placement pointer if this is a placement
    * `operator new` function.
    */
   int getPlacementArgument() {
-    getNumberOfParameters() = 2 and
-    getParameter(1).getType() instanceof VoidPointerType and
+    this.getNumberOfParameters() = 2 and
+    this.getParameter(1).getType() instanceof VoidPointerType and
     result = 1
   }
 }

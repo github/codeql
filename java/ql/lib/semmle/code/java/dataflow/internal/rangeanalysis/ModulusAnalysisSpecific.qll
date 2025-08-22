@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 module Private {
   private import java as J
   private import semmle.code.java.dataflow.SSA as Ssa
@@ -14,7 +17,7 @@ module Private {
 
   class Expr = J::Expr;
 
-  class Guard = G::Guard;
+  class Guard = G::Guards_v2::Guard;
 
   class ConstantIntegerExpr = RU::ConstantIntegerExpr;
 
@@ -100,9 +103,19 @@ module Private {
     }
   }
 
-  predicate guardDirectlyControlsSsaRead = RU::guardDirectlyControlsSsaRead/3;
-
-  predicate guardControlsSsaRead = RU::guardControlsSsaRead/3;
+  /**
+   * Holds if `guard` controls the position `controlled` with the value `testIsTrue`.
+   */
+  predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
+    guard.controls(controlled.(SsaReadPositionBlock).getBlock(), testIsTrue)
+    or
+    exists(SsaReadPositionPhiInputEdge controlledEdge | controlledEdge = controlled |
+      guard.controls(controlledEdge.getOrigBlock(), testIsTrue) or
+      guard
+          .controlsBranchEdge(controlledEdge.getOrigBlock(), controlledEdge.getPhiBlock(),
+            testIsTrue)
+    )
+  }
 
   predicate valueFlowStep = RU::valueFlowStep/3;
 
@@ -110,5 +123,5 @@ module Private {
 
   predicate ssaUpdateStep = RU::ssaUpdateStep/3;
 
-  Expr getABasicBlockExpr(BasicBlock bb) { result = bb.getANode() }
+  Expr getABasicBlockExpr(BasicBlock bb) { result = bb.getANode().asExpr() }
 }

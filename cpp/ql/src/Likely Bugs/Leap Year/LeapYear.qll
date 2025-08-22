@@ -209,56 +209,19 @@ class ChecksForLeapYearFunctionCall extends FunctionCall {
  * Data flow configuration for finding a variable access that would flow into
  * a function call that includes an operation to check for leap year.
  */
-deprecated class LeapYearCheckConfiguration extends DataFlow::Configuration {
-  LeapYearCheckConfiguration() { this = "LeapYearCheckConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof VariableAccess }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(ChecksForLeapYearFunctionCall fc | sink.asExpr() = fc.getAnArgument())
-  }
-}
-
-/**
- * Data flow configuration for finding a variable access that would flow into
- * a function call that includes an operation to check for leap year.
- */
 private module LeapYearCheckConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr() instanceof VariableAccess }
 
   predicate isSink(DataFlow::Node sink) {
     exists(ChecksForLeapYearFunctionCall fc | sink.asExpr() = fc.getAnArgument())
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // only used negatively in UncheckedLeapYearAfterYearModification.ql
+  }
 }
 
 module LeapYearCheckFlow = DataFlow::Global<LeapYearCheckConfig>;
-
-/**
- * Data flow configuration for finding an operation with hardcoded 365 that will flow into
- * a `FILEINFO` field.
- */
-deprecated class FiletimeYearArithmeticOperationCheckConfiguration extends DataFlow::Configuration {
-  FiletimeYearArithmeticOperationCheckConfiguration() {
-    this = "FiletimeYearArithmeticOperationCheckConfiguration"
-  }
-
-  override predicate isSource(DataFlow::Node source) {
-    exists(Expr e, Operation op | e = source.asExpr() |
-      op.getAChild*().getValue().toInt() = 365 and
-      op.getAChild*() = e
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(StructLikeClass dds, FieldAccess fa, AssignExpr aexpr, Expr e | e = sink.asExpr() |
-      dds instanceof PackedTimeType and
-      fa.getQualifier().getUnderlyingType() = dds and
-      fa.isModified() and
-      aexpr.getAChild() = fa and
-      aexpr.getChild(1).getAChild*() = e
-    )
-  }
-}
 
 /**
  * Data flow configuration for finding an operation with hardcoded 365 that will flow into
@@ -289,54 +252,9 @@ module FiletimeYearArithmeticOperationCheckFlow =
 /**
  * Taint configuration for finding an operation with hardcoded 365 that will flow into any known date/time field.
  */
-deprecated class PossibleYearArithmeticOperationCheckConfiguration extends TaintTracking::Configuration
-{
-  PossibleYearArithmeticOperationCheckConfiguration() {
-    this = "PossibleYearArithmeticOperationCheckConfiguration"
-  }
-
-  override predicate isSource(DataFlow::Node source) {
-    exists(Operation op | op = source.asConvertedExpr() |
-      op.getAChild*().getValue().toInt() = 365 and
-      (
-        not op.getParent() instanceof Expr or
-        op.getParent() instanceof Assignment
-      )
-    )
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    // flow from anything on the RHS of an assignment to a time/date structure to that
-    // assignment.
-    exists(StructLikeClass dds, FieldAccess fa, Assignment aexpr, Expr e |
-      e = node1.asExpr() and
-      fa = node2.asExpr()
-    |
-      (dds instanceof PackedTimeType or dds instanceof UnpackedTimeType) and
-      fa.getQualifier().getUnderlyingType() = dds and
-      aexpr.getLValue() = fa and
-      aexpr.getRValue().getAChild*() = e
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(StructLikeClass dds, FieldAccess fa, AssignExpr aexpr |
-      aexpr.getRValue() = sink.asConvertedExpr()
-    |
-      (dds instanceof PackedTimeType or dds instanceof UnpackedTimeType) and
-      fa.getQualifier().getUnderlyingType() = dds and
-      fa.isModified() and
-      aexpr.getLValue() = fa
-    )
-  }
-}
-
-/**
- * Taint configuration for finding an operation with hardcoded 365 that will flow into any known date/time field.
- */
 private module PossibleYearArithmeticOperationCheckConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    exists(Operation op | op = source.asConvertedExpr() |
+    exists(Operation op | op = source.asExpr() |
       op.getAChild*().getValue().toInt() = 365 and
       (
         not op.getParent() instanceof Expr or
@@ -344,6 +262,8 @@ private module PossibleYearArithmeticOperationCheckConfig implements DataFlow::C
       )
     )
   }
+
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // flow from anything on the RHS of an assignment to a time/date structure to that
@@ -361,7 +281,7 @@ private module PossibleYearArithmeticOperationCheckConfig implements DataFlow::C
 
   predicate isSink(DataFlow::Node sink) {
     exists(StructLikeClass dds, FieldAccess fa, AssignExpr aexpr |
-      aexpr.getRValue() = sink.asConvertedExpr()
+      aexpr.getRValue() = sink.asExpr()
     |
       (dds instanceof PackedTimeType or dds instanceof UnpackedTimeType) and
       fa.getQualifier().getUnderlyingType() = dds and
@@ -369,6 +289,14 @@ private module PossibleYearArithmeticOperationCheckConfig implements DataFlow::C
       aexpr.getLValue() = fa
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    result = source.asExpr().getLocation()
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) { result = sink.asExpr().getLocation() }
 }
 
 module PossibleYearArithmeticOperationCheckFlow =

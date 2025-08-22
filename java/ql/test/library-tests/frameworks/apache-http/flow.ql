@@ -3,23 +3,17 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.XSS
 import semmle.code.java.security.UrlRedirect
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 
-class EnableLegacy extends EnableLegacyConfiguration {
-  EnableLegacy() { exists(this) }
-}
-
-class Conf extends TaintTracking::Configuration {
-  Conf() { this = "qltest:frameworks:apache-http" }
-
-  override predicate isSource(DataFlow::Node n) {
-    n.asExpr().(MethodAccess).getMethod().hasName("taint")
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) {
+    n.asExpr().(MethodCall).getMethod().hasName("taint")
     or
-    n instanceof RemoteFlowSource
+    n instanceof ActiveThreatModelSource
   }
 
-  override predicate isSink(DataFlow::Node n) {
-    exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
+  predicate isSink(DataFlow::Node n) {
+    exists(MethodCall ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
     or
     n instanceof XssSink
     or
@@ -27,8 +21,4 @@ class Conf extends TaintTracking::Configuration {
   }
 }
 
-class HasFlowTest extends InlineFlowTest {
-  override DataFlow::Configuration getValueFlowConfig() { none() }
-
-  override DataFlow::Configuration getTaintFlowConfig() { result = any(Conf c) }
-}
+import TaintFlowTest<Config>

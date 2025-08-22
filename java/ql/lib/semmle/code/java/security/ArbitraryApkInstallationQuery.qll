@@ -9,11 +9,11 @@ private import semmle.code.java.security.ArbitraryApkInstallation
  * A dataflow configuration for flow from an external source of an APK to the
  * `setData[AndType][AndNormalize]` method of an intent.
  */
-private module ApkInstallationConfig implements DataFlow::ConfigSig {
+module ApkInstallationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node instanceof ExternalApkSource }
 
   predicate isSink(DataFlow::Node node) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof SetDataMethod and
       ma.getArgument(0) = node.asExpr() and
       (
@@ -23,6 +23,10 @@ private module ApkInstallationConfig implements DataFlow::ConfigSig {
       )
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node sink) { none() }
 }
 
 module ApkInstallationFlow = DataFlow::Global<ApkInstallationConfig>;
@@ -57,7 +61,7 @@ private module InstallPackageActionConfig implements DataFlow::StateConfigSig {
         node2.asExpr() = cc
       )
       or
-      exists(MethodAccess ma |
+      exists(MethodCall ma |
         ma.getMethod() instanceof SetActionMethod and
         node1.asExpr() = ma.getArgument(0) and
         node2.asExpr() = ma.getQualifier()
@@ -68,8 +72,6 @@ private module InstallPackageActionConfig implements DataFlow::StateConfigSig {
   predicate isSink(DataFlow::Node node, FlowState state) {
     state instanceof HasInstallPackageAction and node.asExpr().getType() instanceof TypeIntent
   }
-
-  predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
 }
 
 private module InstallPackageActionFlow =
@@ -97,7 +99,7 @@ private module PackageArchiveMimeTypeConfig implements DataFlow::StateConfigSig 
   ) {
     state1 instanceof MimeTypeUnset and
     state2 instanceof HasPackageArchiveMimeType and
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getQualifier() = node2.asExpr() and
       (
         ma.getMethod() instanceof SetTypeMethod and
@@ -113,8 +115,6 @@ private module PackageArchiveMimeTypeConfig implements DataFlow::StateConfigSig 
     state instanceof HasPackageArchiveMimeType and
     node instanceof SetDataSink
   }
-
-  predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
 }
 
 private module PackageArchiveMimeTypeFlow =

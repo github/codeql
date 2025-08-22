@@ -1,0 +1,11 @@
+chained_conversion.swift:
+#    1| [NamedFunction] foo(x:)
+#    1|     InterfaceType = (inout Int) -> Int?
+#    1|   getParam(0): [ParamDecl] x
+#    1|       Type = Int
+#    1|   getBody(): [BraceStmt] { ... }
+#    2|     getElement(0): [ReturnStmt] return ...
+#    2|       getResult(): [DeclRefExpr] x
+#    2|       getResult().getFullyConverted(): [InjectIntoOptionalExpr] (Int?) ...
+#    2|         getSubExpr(): [LoadExpr] (Int) ...
+#    2|           getSubExpr(): [DotSelfExpr] .self

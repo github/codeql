@@ -9,20 +9,18 @@ import HardcodedCredentials
 /**
  * A data-flow configuration that tracks flow from a hard-coded credential in a call to a sensitive Java API which may compromise security.
  */
-class HardcodedCredentialApiCallConfiguration extends DataFlow::Configuration {
-  HardcodedCredentialApiCallConfiguration() { this = "HardcodedCredentialApiCallConfiguration" }
-
-  override predicate isSource(DataFlow::Node n) {
+module HardcodedCredentialApiCallConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) {
     n.asExpr() instanceof HardcodedExpr and
     not n.asExpr().getEnclosingCallable() instanceof ToStringMethod
   }
 
-  override predicate isSink(DataFlow::Node n) { n.asExpr() instanceof CredentialsApiSink }
+  predicate isSink(DataFlow::Node n) { n.asExpr() instanceof CredentialsApiSink }
 
-  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     node1.asExpr().getType() instanceof TypeString and
     (
-      exists(MethodAccess ma | ma.getMethod().hasName(["getBytes", "toCharArray"]) |
+      exists(MethodCall ma | ma.getMethod().hasName(["getBytes", "toCharArray"]) |
         node2.asExpr() = ma and
         ma.getQualifier() = node1.asExpr()
       )
@@ -30,7 +28,7 @@ class HardcodedCredentialApiCallConfiguration extends DataFlow::Configuration {
       // These base64 routines are usually taint propagators, and this is not a general
       // TaintTracking::Configuration, so we must specifically include them here
       // as a common transform applied to a constant before passing to a remote API.
-      exists(MethodAccess ma |
+      exists(MethodCall ma |
         ma.getMethod()
             .hasQualifiedName([
                 "java.util", "cn.hutool.core.codec", "org.apache.shiro.codec",
@@ -48,7 +46,14 @@ class HardcodedCredentialApiCallConfiguration extends DataFlow::Configuration {
     )
   }
 
-  override predicate isBarrier(DataFlow::Node n) {
-    n.asExpr().(MethodAccess).getMethod() instanceof MethodSystemGetenv
+  predicate isBarrier(DataFlow::Node n) {
+    n.asExpr().(MethodCall).getMethod() instanceof MethodSystemGetenv
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
+
+/**
+ * Tracks flow from a hard-coded credential in a call to a sensitive Java API which may compromise security.
+ */
+module HardcodedCredentialApiCallFlow = DataFlow::Global<HardcodedCredentialApiCallConfig>;

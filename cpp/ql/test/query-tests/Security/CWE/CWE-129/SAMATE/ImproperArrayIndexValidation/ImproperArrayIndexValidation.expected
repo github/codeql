@@ -1,7 +1,9 @@
 edges
-| CWE122_Heap_Based_Buffer_Overflow__c_CWE129_fgets_01.c:30:19:30:29 | fgets output argument | CWE122_Heap_Based_Buffer_Overflow__c_CWE129_fgets_01.c:52:20:52:23 | data |
+| CWE122_Heap_Based_Buffer_Overflow__c_CWE129_fgets_01.c:30:19:30:29 | fgets output argument | CWE122_Heap_Based_Buffer_Overflow__c_CWE129_fgets_01.c:33:13:33:36 | ... = ... | provenance | TaintFunction |
+| CWE122_Heap_Based_Buffer_Overflow__c_CWE129_fgets_01.c:33:13:33:36 | ... = ... | CWE122_Heap_Based_Buffer_Overflow__c_CWE129_fgets_01.c:52:20:52:23 | data | provenance |  |
 nodes
 | CWE122_Heap_Based_Buffer_Overflow__c_CWE129_fgets_01.c:30:19:30:29 | fgets output argument | semmle.label | fgets output argument |
+| CWE122_Heap_Based_Buffer_Overflow__c_CWE129_fgets_01.c:33:13:33:36 | ... = ... | semmle.label | ... = ... |
 | CWE122_Heap_Based_Buffer_Overflow__c_CWE129_fgets_01.c:52:20:52:23 | data | semmle.label | data |
 subpaths
 #select

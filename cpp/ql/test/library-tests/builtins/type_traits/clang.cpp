@@ -1,4 +1,4 @@
-// semmle-extractor-options: --clang --clang_version 100000
+// semmle-extractor-options: --clang --clang_version 190000
 
 struct S {
     void f() {}
@@ -86,3 +86,38 @@ bool bok_is_void2 = __is_void(int);
 
 bool bok_is_volatile1 = __is_volatile(volatile int);
 bool bok_is_volatile2 = __is_volatile(int);
+
+struct S2 {
+    S2() {}
+};
+
+bool bok_is_trivial1 = __is_trivial(int);
+bool bok_is_trivial2 = __is_trivial(S2);
+
+bool bok_reference_binds_to_temporary1 = __reference_binds_to_temporary(int&, long&);
+bool bok_reference_binds_to_temporary2 = __reference_binds_to_temporary(int const &, long&);
+
+bool b_is_same_as1 = __is_same_as(int, int);
+bool b_is_same_as2 = __is_same_as(int, float);
+
+bool b_is_bounded_array1 = __is_bounded_array(int[]);
+bool b_is_bounded_array2 = __is_bounded_array(int[42]);
+
+bool b_is_unbounded_array1 = __is_unbounded_array(int[]);
+bool b_is_unbounded_array2 = __is_unbounded_array(int[42]);
+
+bool b_is_referenceable1 = __is_referenceable(int);
+bool b_is_referenceable2 = __is_referenceable(void);
+
+bool b_is_trivially_equality_comparable1 = __is_trivially_equality_comparable(int);
+bool b_is_trivially_equality_comparable2 = __is_trivially_equality_comparable(void);
+
+enum class E {
+    a, b
+};
+
+bool b_is_scoped_enum1 = __is_scoped_enum(E);
+bool b_is_scoped_enum2 = __is_scoped_enum(int);
+
+bool b_is_trivially_relocatable1 = __is_trivially_relocatable(int);
+bool b_is_trivially_relocatable2 = __is_trivially_relocatable(void);

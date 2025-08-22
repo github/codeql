@@ -75,13 +75,34 @@ module UnsafeDeserialization {
   }
 
   /**
-   * An argument in a call to `YAML.load`, considered a sink
+   * An argument in a call to `YAML.unsafe_*` and `YAML.load_stream` , considered a sink
    * for unsafe deserialization. The `YAML` module is an alias of `Psych` in
    * recent versions of Ruby.
    */
   class YamlLoadArgument extends Sink {
     YamlLoadArgument() {
-      this = API::getTopLevelMember(["YAML", "Psych"]).getAMethodCall("load").getArgument(0)
+      // Note: this is safe in psych/yaml >= 4.0.0.
+      this = yamlNode().getAMethodCall("load").getArgument(0)
+      or
+      this =
+        yamlNode().getAMethodCall(["unsafe_load_file", "unsafe_load", "load_stream"]).getArgument(0)
+      or
+      this = yamlNode().getAMethodCall(["unsafe_load", "load_stream"]).getKeywordArgument("yaml")
+      or
+      this = yamlNode().getAMethodCall("unsafe_load_file").getKeywordArgument("filename")
+    }
+  }
+
+  private API::Node yamlNode() { result = API::getTopLevelMember(["YAML", "Psych"]) }
+
+  /**
+   * An argument in a call to `YAML.parse*`, considered a sink for unsafe deserialization
+   * if there is a call to `to_ruby` on the returned value.
+   */
+  class YamlParseArgument extends Sink {
+    YamlParseArgument() {
+      this =
+        yamlNode().getAMethodCall(["parse", "parse_stream", "parse_file"]).getAMethodCall("to_ruby")
     }
   }
 
@@ -105,13 +126,10 @@ module UnsafeDeserialization {
     }
   }
 
-  private string getAKnownOjModeName(boolean isSafe) {
-    result = ["compat", "custom", "json", "null", "rails", "strict", "wab"] and isSafe = true
-    or
-    result = "object" and isSafe = false
-  }
-
-  private predicate isOjModePair(CfgNodes::ExprNodes::PairCfgNode p, string modeValue) {
+  /**
+   * Oj/Ox common code to establish whether a deserialization mode is defined.
+   */
+  private predicate isModePair(CfgNodes::ExprNodes::PairCfgNode p, string modeValue) {
     p.getKey().getConstantValue().isStringlikeValue("mode") and
     DataFlow::exprNode(p.getValue()).getALocalSource().getConstantValue().isSymbol(modeValue)
   }
@@ -119,28 +137,31 @@ module UnsafeDeserialization {
   /**
    * A node representing a hash that contains the key `:mode`.
    */
-  private class OjOptionsHashWithModeKey extends DataFlow::Node {
+  private class OptionsHashWithModeKey extends DataFlow::Node {
     private string modeValue;
 
-    OjOptionsHashWithModeKey() {
+    OptionsHashWithModeKey() {
       exists(DataFlow::LocalSourceNode options |
         options.flowsTo(this) and
-        isOjModePair(options.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair(),
+        isModePair(options.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair(),
           modeValue)
       )
     }
 
     /**
-     * Holds if this hash node contains a `:mode` key whose value is one known
-     * to be `isSafe` with untrusted data.
+     * Holds if this hash node contains the `:mode`
      */
-    predicate hasKnownMode(boolean isSafe) { modeValue = getAKnownOjModeName(isSafe) }
+    predicate hasKnownMode(string mode) { modeValue = mode }
+  }
 
-    /**
-     * Holds if this hash node contains a `:mode` key whose value is one of the
-     * `Oj` modes known to be safe to use with untrusted data.
-     */
-    predicate hasSafeMode() { this.hasKnownMode(true) }
+  /**
+   * Unsafe deserialization utilizing the Oj gem
+   * See: https://github.com/ohler55/oj
+   */
+  private string getAKnownOjModeName(boolean isSafe) {
+    result = ["compat", "custom", "json", "null", "rails", "strict", "wab"] and isSafe = true
+    or
+    result = "object" and isSafe = false
   }
 
   /**
@@ -158,10 +179,7 @@ module UnsafeDeserialization {
     /**
      * Gets the value being assigned to `Oj.default_options`.
      */
-    DataFlow::Node getValue() {
-      result.asExpr() =
-        this.getArgument(0).asExpr().(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs()
-    }
+    DataFlow::Node getValue() { result = this.getArgument(0) }
   }
 
   /**
@@ -176,9 +194,9 @@ module UnsafeDeserialization {
      */
     predicate hasExplicitKnownMode(boolean isSafe) {
       exists(DataFlow::Node arg, int i | i >= 1 and arg = this.getArgument(i) |
-        arg.(OjOptionsHashWithModeKey).hasKnownMode(isSafe)
+        arg.(OptionsHashWithModeKey).hasKnownMode(getAKnownOjModeName(isSafe))
         or
-        isOjModePair(arg.asExpr(), getAKnownOjModeName(isSafe))
+        isModePair(arg.asExpr(), getAKnownOjModeName(isSafe))
       )
     }
   }
@@ -202,8 +220,120 @@ module UnsafeDeserialization {
           // anywhere to set the default options to a known safe mode.
           not ojLoad.hasExplicitKnownMode(_) and
           not exists(SetOjDefaultOptionsCall setOpts |
-            setOpts.getValue().(OjOptionsHashWithModeKey).hasSafeMode()
+            setOpts.getValue().(OptionsHashWithModeKey).hasKnownMode(getAKnownOjModeName(true))
           )
+        )
+      )
+    }
+  }
+
+  /**
+   * The first argument in a call to `Oj.object_load`, always considered as a
+   * sink for unsafe deserialization. (global and local mode options are ignored)
+   */
+  private class OjObjectLoadArgument extends Sink {
+    OjObjectLoadArgument() {
+      this = API::getTopLevelMember("Oj").getAMethodCall("object_load").getArgument(0)
+    }
+  }
+
+  /**
+   * Unsafe deserialization utilizing the Ox gem
+   * See: https://github.com/ohler55/ox
+   */
+  private string getAKnownOxModeName(boolean isSafe) {
+    result = ["generic", "limited", "hash", "hash_no_attrs"] and isSafe = true
+    or
+    result = "object" and isSafe = false
+  }
+
+  /**
+   * A call node that sets `Ox.default_options`.
+   *
+   * ```rb
+   * Ox.default_options = { mode: :limited, effort: :tolerant }
+   * ```
+   */
+  private class SetOxDefaultOptionsCall extends DataFlow::CallNode {
+    SetOxDefaultOptionsCall() {
+      this = API::getTopLevelMember("Ox").getAMethodCall("default_options=")
+    }
+
+    /**
+     * Gets the value being assigned to `Ox.default_options`.
+     */
+    DataFlow::Node getValue() { result = this.getArgument(0) }
+  }
+
+  /**
+   * A call to `Ox.load`.
+   */
+  private class OxLoadCall extends DataFlow::CallNode {
+    OxLoadCall() { this = API::getTopLevelMember("Ox").getAMethodCall("load") }
+
+    /**
+     * Holds if this call to `Ox.load` includes an explicit options hash
+     * argument that sets the mode to one that is known to be `isSafe`.
+     */
+    predicate hasExplicitKnownMode(boolean isSafe) {
+      exists(DataFlow::Node arg, int i | i >= 1 and arg = this.getArgument(i) |
+        arg.(OptionsHashWithModeKey).hasKnownMode(getAKnownOxModeName(isSafe))
+        or
+        isModePair(arg.asExpr(), getAKnownOxModeName(isSafe))
+      )
+    }
+  }
+
+  /**
+   * An argument in a call to `Ox.load` where the mode is `:object` (not the default),
+   * considered a sink for unsafe deserialization.
+   */
+  class UnsafeOxLoadArgument extends Sink {
+    UnsafeOxLoadArgument() {
+      exists(OxLoadCall oxLoad |
+        this = oxLoad.getArgument(0) and
+        // Exclude calls that explicitly pass a safe mode option.
+        not oxLoad.hasExplicitKnownMode(true) and
+        (
+          // Sinks to include:
+          // - Calls with an explicit, unsafe mode option.
+          oxLoad.hasExplicitKnownMode(false)
+          or
+          // - Calls with no explicit mode option and there exists a call
+          // anywhere to set the default options to an unsafe mode (object).
+          not oxLoad.hasExplicitKnownMode(_) and
+          exists(SetOxDefaultOptionsCall setOpts |
+            setOpts.getValue().(OptionsHashWithModeKey).hasKnownMode(getAKnownOxModeName(false))
+          )
+        )
+      )
+    }
+  }
+
+  /**
+   * The first argument in a call to `Ox.parse_obj`, always considered as a
+   * sink for unsafe deserialization.
+   */
+  class OxParseObjArgument extends Sink {
+    OxParseObjArgument() {
+      this = API::getTopLevelMember("Ox").getAMethodCall("parse_obj").getArgument(0)
+    }
+  }
+
+  /**
+   * An argument in a call to `Plist.parse_xml` where `marshal` is `true` (which is
+   * the default), considered a sink for unsafe deserialization.
+   */
+  class UnsafePlistParsexmlArgument extends Sink {
+    UnsafePlistParsexmlArgument() {
+      exists(DataFlow::CallNode plistParseXml |
+        plistParseXml = API::getTopLevelMember("Plist").getAMethodCall("parse_xml")
+      |
+        this = [plistParseXml.getArgument(0), plistParseXml.getKeywordArgument("filename_or_xml")] and
+        (
+          plistParseXml.getKeywordArgument("marshal").getConstantValue().isBoolean(true)
+          or
+          plistParseXml.getNumberOfArguments() = 1
         )
       )
     }

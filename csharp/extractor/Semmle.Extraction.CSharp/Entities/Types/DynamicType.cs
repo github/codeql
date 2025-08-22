@@ -1,6 +1,6 @@
-using Microsoft.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -11,7 +11,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static DynamicType Create(Context cx, IDynamicTypeSymbol type) => DynamicTypeFactory.Instance.CreateEntityFromSymbol(cx, type);
 
-        public override Microsoft.CodeAnalysis.Location? ReportingLocation => Context.Compilation.ObjectType.Locations.FirstOrDefault();
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => Context.Compilation.ObjectType.Locations.BestOrDefault();
 
         public override void Populate(TextWriter trapFile)
         {

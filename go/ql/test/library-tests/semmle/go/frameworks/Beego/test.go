@@ -1,15 +1,21 @@
 package test
 
+//go:generate depstubber -vendor  github.com/beego/beego/v2/server/web Controller Run,Router
+//go:generate depstubber -vendor  github.com/beego/beego/v2/server/web/context BeegoOutput,Context
+
 import (
 	"encoding/json"
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/context"
-	"github.com/astaxie/beego/logs"
-	"github.com/astaxie/beego/utils"
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"os"
+
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/context"
+	"github.com/astaxie/beego/logs"
+	"github.com/astaxie/beego/utils"
+	beegov2 "github.com/beego/beego/v2/server/web"
+	Beegov2Context "github.com/beego/beego/v2/server/web/context"
 )
 
 type subBindMe struct {
@@ -318,4 +324,22 @@ func requestBodySourceTest(ctx *context.Context, c *beego.Controller) {
 	json.Unmarshal(ctx.Input.RequestBody, &dat)
 	untrusted := dat["filepath"].(string)
 	c.SaveToFile("someReceviedFile", untrusted)
+}
+
+// BAD: using user-provided data as paths in file-system operations
+func fsOpsTest2(ctx *context.Context, c *beego.Controller, fs beego.FileSystem) {
+	input := ctx.Input
+	untrusted := input.Data()["someKey"].(string)
+	beegoOutput := context.BeegoOutput{}
+	beegoOutput.Download(untrusted, "license.txt")
+}
+
+// BAD: using user-provided data as paths in file-system operations
+func fsOpsV2Test(ctx *Beegov2Context.Context, c *beegov2.Controller) {
+	input := ctx.Input
+	untrusted := input.Data()["someKey"].(string)
+	buffer := make([]byte, 10)
+	_ = c.SaveToFileWithBuffer("filenameExistsInForm", untrusted, buffer)
+	beegoOutput := Beegov2Context.BeegoOutput{}
+	beegoOutput.Download(untrusted, "license.txt")
 }

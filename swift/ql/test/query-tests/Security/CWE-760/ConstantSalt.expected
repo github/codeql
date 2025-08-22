@@ -1,30 +1,33 @@
 edges
-| rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  |
-| rncryptor.swift:59:24:59:43 | call to Data.init(_:) :  | rncryptor.swift:63:57:63:57 | myConstantSalt1 |
-| rncryptor.swift:59:24:59:43 | call to Data.init(_:) :  | rncryptor.swift:68:106:68:106 | myConstantSalt1 |
-| rncryptor.swift:59:24:59:43 | call to Data.init(_:) :  | rncryptor.swift:71:106:71:106 | myConstantSalt1 |
-| rncryptor.swift:59:24:59:43 | call to Data.init(_:) :  | rncryptor.swift:75:127:75:127 | myConstantSalt1 |
-| rncryptor.swift:59:24:59:43 | call to Data.init(_:) :  | rncryptor.swift:78:135:78:135 | myConstantSalt1 |
-| rncryptor.swift:59:29:59:29 | abcdef123456 :  | rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  |
-| rncryptor.swift:59:29:59:29 | abcdef123456 :  | rncryptor.swift:59:24:59:43 | call to Data.init(_:) :  |
-| rncryptor.swift:60:24:60:30 | call to Data.init(_:) :  | rncryptor.swift:65:55:65:55 | myConstantSalt2 |
-| rncryptor.swift:60:24:60:30 | call to Data.init(_:) :  | rncryptor.swift:69:131:69:131 | myConstantSalt2 |
-| rncryptor.swift:60:24:60:30 | call to Data.init(_:) :  | rncryptor.swift:72:131:72:131 | myConstantSalt2 |
-| rncryptor.swift:60:24:60:30 | call to Data.init(_:) :  | rncryptor.swift:76:152:76:152 | myConstantSalt2 |
-| rncryptor.swift:60:24:60:30 | call to Data.init(_:) :  | rncryptor.swift:79:160:79:160 | myConstantSalt2 |
-| rncryptor.swift:60:29:60:29 | 0 :  | rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  |
-| rncryptor.swift:60:29:60:29 | 0 :  | rncryptor.swift:60:24:60:30 | call to Data.init(_:) :  |
-| test.swift:43:35:43:130 | [...] :  | test.swift:51:49:51:49 | constantSalt |
-| test.swift:43:35:43:130 | [...] :  | test.swift:56:59:56:59 | constantSalt |
-| test.swift:43:35:43:130 | [...] :  | test.swift:62:59:62:59 | constantSalt |
-| test.swift:43:35:43:130 | [...] :  | test.swift:67:53:67:53 | constantSalt |
+| rncryptor.swift:59:24:59:43 | call to Data.init(_:) | rncryptor.swift:63:57:63:57 | myConstantSalt1 | provenance |  |
+| rncryptor.swift:59:24:59:43 | call to Data.init(_:) | rncryptor.swift:68:106:68:106 | myConstantSalt1 | provenance |  |
+| rncryptor.swift:59:24:59:43 | call to Data.init(_:) | rncryptor.swift:71:106:71:106 | myConstantSalt1 | provenance |  |
+| rncryptor.swift:59:24:59:43 | call to Data.init(_:) | rncryptor.swift:75:127:75:127 | myConstantSalt1 | provenance |  |
+| rncryptor.swift:59:24:59:43 | call to Data.init(_:) | rncryptor.swift:78:135:78:135 | myConstantSalt1 | provenance |  |
+| rncryptor.swift:59:29:59:29 | abcdef123456 | rncryptor.swift:59:24:59:43 | call to Data.init(_:) | provenance |  |
+| rncryptor.swift:60:24:60:30 | call to Data.init(_:) | rncryptor.swift:65:55:65:55 | myConstantSalt2 | provenance |  |
+| rncryptor.swift:60:24:60:30 | call to Data.init(_:) | rncryptor.swift:69:131:69:131 | myConstantSalt2 | provenance |  |
+| rncryptor.swift:60:24:60:30 | call to Data.init(_:) | rncryptor.swift:72:131:72:131 | myConstantSalt2 | provenance |  |
+| rncryptor.swift:60:24:60:30 | call to Data.init(_:) | rncryptor.swift:76:152:76:152 | myConstantSalt2 | provenance |  |
+| rncryptor.swift:60:24:60:30 | call to Data.init(_:) | rncryptor.swift:79:160:79:160 | myConstantSalt2 | provenance |  |
+| rncryptor.swift:60:29:60:29 | 0 | rncryptor.swift:60:24:60:30 | call to Data.init(_:) | provenance |  |
+| test.swift:29:3:29:3 | this string is constant | test.swift:33:10:33:28 | call to getConstantString() | provenance |  |
+| test.swift:33:2:33:34 | call to Array<Element>.init(_:) [Collection element] | test.swift:44:27:44:44 | call to getConstantArray() [Collection element] | provenance |  |
+| test.swift:33:10:33:28 | call to getConstantString() | test.swift:33:10:33:30 | .utf8 | provenance |  |
+| test.swift:33:10:33:30 | .utf8 | test.swift:33:2:33:34 | call to Array<Element>.init(_:) [Collection element] | provenance |  |
+| test.swift:43:35:43:130 | [...] | test.swift:51:49:51:49 | constantSalt | provenance |  |
+| test.swift:43:35:43:130 | [...] | test.swift:56:59:56:59 | constantSalt | provenance |  |
+| test.swift:43:35:43:130 | [...] | test.swift:62:59:62:59 | constantSalt | provenance |  |
+| test.swift:43:35:43:130 | [...] | test.swift:67:53:67:53 | constantSalt | provenance |  |
+| test.swift:44:27:44:44 | call to getConstantArray() [Collection element] | test.swift:52:49:52:49 | constantStringSalt | provenance |  |
+| test.swift:44:27:44:44 | call to getConstantArray() [Collection element] | test.swift:57:59:57:59 | constantStringSalt | provenance |  |
+| test.swift:44:27:44:44 | call to getConstantArray() [Collection element] | test.swift:63:59:63:59 | constantStringSalt | provenance |  |
+| test.swift:44:27:44:44 | call to getConstantArray() [Collection element] | test.swift:68:53:68:53 | constantStringSalt | provenance |  |
 nodes
-| file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | semmle.label | [summary] to write: return (return) in Data.init(_:) :  |
-| rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | semmle.label | [summary param] 0 in Data.init(_:) :  |
-| rncryptor.swift:59:24:59:43 | call to Data.init(_:) :  | semmle.label | call to Data.init(_:) :  |
-| rncryptor.swift:59:29:59:29 | abcdef123456 :  | semmle.label | abcdef123456 :  |
-| rncryptor.swift:60:24:60:30 | call to Data.init(_:) :  | semmle.label | call to Data.init(_:) :  |
-| rncryptor.swift:60:29:60:29 | 0 :  | semmle.label | 0 :  |
+| rncryptor.swift:59:24:59:43 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
+| rncryptor.swift:59:29:59:29 | abcdef123456 | semmle.label | abcdef123456 |
+| rncryptor.swift:60:24:60:30 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
+| rncryptor.swift:60:29:60:29 | 0 | semmle.label | 0 |
 | rncryptor.swift:63:57:63:57 | myConstantSalt1 | semmle.label | myConstantSalt1 |
 | rncryptor.swift:65:55:65:55 | myConstantSalt2 | semmle.label | myConstantSalt2 |
 | rncryptor.swift:68:106:68:106 | myConstantSalt1 | semmle.label | myConstantSalt1 |
@@ -35,26 +38,37 @@ nodes
 | rncryptor.swift:76:152:76:152 | myConstantSalt2 | semmle.label | myConstantSalt2 |
 | rncryptor.swift:78:135:78:135 | myConstantSalt1 | semmle.label | myConstantSalt1 |
 | rncryptor.swift:79:160:79:160 | myConstantSalt2 | semmle.label | myConstantSalt2 |
-| test.swift:43:35:43:130 | [...] :  | semmle.label | [...] :  |
+| test.swift:29:3:29:3 | this string is constant | semmle.label | this string is constant |
+| test.swift:33:2:33:34 | call to Array<Element>.init(_:) [Collection element] | semmle.label | call to Array<Element>.init(_:) [Collection element] |
+| test.swift:33:10:33:28 | call to getConstantString() | semmle.label | call to getConstantString() |
+| test.swift:33:10:33:30 | .utf8 | semmle.label | .utf8 |
+| test.swift:43:35:43:130 | [...] | semmle.label | [...] |
+| test.swift:44:27:44:44 | call to getConstantArray() [Collection element] | semmle.label | call to getConstantArray() [Collection element] |
 | test.swift:51:49:51:49 | constantSalt | semmle.label | constantSalt |
+| test.swift:52:49:52:49 | constantStringSalt | semmle.label | constantStringSalt |
 | test.swift:56:59:56:59 | constantSalt | semmle.label | constantSalt |
+| test.swift:57:59:57:59 | constantStringSalt | semmle.label | constantStringSalt |
 | test.swift:62:59:62:59 | constantSalt | semmle.label | constantSalt |
+| test.swift:63:59:63:59 | constantStringSalt | semmle.label | constantStringSalt |
 | test.swift:67:53:67:53 | constantSalt | semmle.label | constantSalt |
+| test.swift:68:53:68:53 | constantStringSalt | semmle.label | constantStringSalt |
 subpaths
-| rncryptor.swift:59:29:59:29 | abcdef123456 :  | rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | rncryptor.swift:59:24:59:43 | call to Data.init(_:) :  |
-| rncryptor.swift:60:29:60:29 | 0 :  | rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | rncryptor.swift:60:24:60:30 | call to Data.init(_:) :  |
 #select
-| rncryptor.swift:63:57:63:57 | myConstantSalt1 | rncryptor.swift:59:29:59:29 | abcdef123456 :  | rncryptor.swift:63:57:63:57 | myConstantSalt1 | The value 'abcdef123456' is used as a constant salt, which is insecure for hashing passwords. |
-| rncryptor.swift:65:55:65:55 | myConstantSalt2 | rncryptor.swift:60:29:60:29 | 0 :  | rncryptor.swift:65:55:65:55 | myConstantSalt2 | The value '0' is used as a constant salt, which is insecure for hashing passwords. |
-| rncryptor.swift:68:106:68:106 | myConstantSalt1 | rncryptor.swift:59:29:59:29 | abcdef123456 :  | rncryptor.swift:68:106:68:106 | myConstantSalt1 | The value 'abcdef123456' is used as a constant salt, which is insecure for hashing passwords. |
-| rncryptor.swift:69:131:69:131 | myConstantSalt2 | rncryptor.swift:60:29:60:29 | 0 :  | rncryptor.swift:69:131:69:131 | myConstantSalt2 | The value '0' is used as a constant salt, which is insecure for hashing passwords. |
-| rncryptor.swift:71:106:71:106 | myConstantSalt1 | rncryptor.swift:59:29:59:29 | abcdef123456 :  | rncryptor.swift:71:106:71:106 | myConstantSalt1 | The value 'abcdef123456' is used as a constant salt, which is insecure for hashing passwords. |
-| rncryptor.swift:72:131:72:131 | myConstantSalt2 | rncryptor.swift:60:29:60:29 | 0 :  | rncryptor.swift:72:131:72:131 | myConstantSalt2 | The value '0' is used as a constant salt, which is insecure for hashing passwords. |
-| rncryptor.swift:75:127:75:127 | myConstantSalt1 | rncryptor.swift:59:29:59:29 | abcdef123456 :  | rncryptor.swift:75:127:75:127 | myConstantSalt1 | The value 'abcdef123456' is used as a constant salt, which is insecure for hashing passwords. |
-| rncryptor.swift:76:152:76:152 | myConstantSalt2 | rncryptor.swift:60:29:60:29 | 0 :  | rncryptor.swift:76:152:76:152 | myConstantSalt2 | The value '0' is used as a constant salt, which is insecure for hashing passwords. |
-| rncryptor.swift:78:135:78:135 | myConstantSalt1 | rncryptor.swift:59:29:59:29 | abcdef123456 :  | rncryptor.swift:78:135:78:135 | myConstantSalt1 | The value 'abcdef123456' is used as a constant salt, which is insecure for hashing passwords. |
-| rncryptor.swift:79:160:79:160 | myConstantSalt2 | rncryptor.swift:60:29:60:29 | 0 :  | rncryptor.swift:79:160:79:160 | myConstantSalt2 | The value '0' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:51:49:51:49 | constantSalt | test.swift:43:35:43:130 | [...] :  | test.swift:51:49:51:49 | constantSalt | The value '[...]' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:56:59:56:59 | constantSalt | test.swift:43:35:43:130 | [...] :  | test.swift:56:59:56:59 | constantSalt | The value '[...]' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:62:59:62:59 | constantSalt | test.swift:43:35:43:130 | [...] :  | test.swift:62:59:62:59 | constantSalt | The value '[...]' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:67:53:67:53 | constantSalt | test.swift:43:35:43:130 | [...] :  | test.swift:67:53:67:53 | constantSalt | The value '[...]' is used as a constant salt, which is insecure for hashing passwords. |
+| rncryptor.swift:63:57:63:57 | myConstantSalt1 | rncryptor.swift:59:29:59:29 | abcdef123456 | rncryptor.swift:63:57:63:57 | myConstantSalt1 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:59:29:59:29 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:65:55:65:55 | myConstantSalt2 | rncryptor.swift:60:29:60:29 | 0 | rncryptor.swift:65:55:65:55 | myConstantSalt2 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:60:29:60:29 | 0 | 0 |
+| rncryptor.swift:68:106:68:106 | myConstantSalt1 | rncryptor.swift:59:29:59:29 | abcdef123456 | rncryptor.swift:68:106:68:106 | myConstantSalt1 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:59:29:59:29 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:69:131:69:131 | myConstantSalt2 | rncryptor.swift:60:29:60:29 | 0 | rncryptor.swift:69:131:69:131 | myConstantSalt2 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:60:29:60:29 | 0 | 0 |
+| rncryptor.swift:71:106:71:106 | myConstantSalt1 | rncryptor.swift:59:29:59:29 | abcdef123456 | rncryptor.swift:71:106:71:106 | myConstantSalt1 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:59:29:59:29 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:72:131:72:131 | myConstantSalt2 | rncryptor.swift:60:29:60:29 | 0 | rncryptor.swift:72:131:72:131 | myConstantSalt2 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:60:29:60:29 | 0 | 0 |
+| rncryptor.swift:75:127:75:127 | myConstantSalt1 | rncryptor.swift:59:29:59:29 | abcdef123456 | rncryptor.swift:75:127:75:127 | myConstantSalt1 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:59:29:59:29 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:76:152:76:152 | myConstantSalt2 | rncryptor.swift:60:29:60:29 | 0 | rncryptor.swift:76:152:76:152 | myConstantSalt2 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:60:29:60:29 | 0 | 0 |
+| rncryptor.swift:78:135:78:135 | myConstantSalt1 | rncryptor.swift:59:29:59:29 | abcdef123456 | rncryptor.swift:78:135:78:135 | myConstantSalt1 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:59:29:59:29 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:79:160:79:160 | myConstantSalt2 | rncryptor.swift:60:29:60:29 | 0 | rncryptor.swift:79:160:79:160 | myConstantSalt2 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:60:29:60:29 | 0 | 0 |
+| test.swift:51:49:51:49 | constantSalt | test.swift:43:35:43:130 | [...] | test.swift:51:49:51:49 | constantSalt | The value $@ is used as a constant, which is insecure for hashing passwords. | test.swift:43:35:43:130 | [...] | [...] |
+| test.swift:52:49:52:49 | constantStringSalt | test.swift:29:3:29:3 | this string is constant | test.swift:52:49:52:49 | constantStringSalt | The value $@ is used as a constant, which is insecure for hashing passwords. | test.swift:29:3:29:3 | this string is constant | this string is constant |
+| test.swift:56:59:56:59 | constantSalt | test.swift:43:35:43:130 | [...] | test.swift:56:59:56:59 | constantSalt | The value $@ is used as a constant, which is insecure for hashing passwords. | test.swift:43:35:43:130 | [...] | [...] |
+| test.swift:57:59:57:59 | constantStringSalt | test.swift:29:3:29:3 | this string is constant | test.swift:57:59:57:59 | constantStringSalt | The value $@ is used as a constant, which is insecure for hashing passwords. | test.swift:29:3:29:3 | this string is constant | this string is constant |
+| test.swift:62:59:62:59 | constantSalt | test.swift:43:35:43:130 | [...] | test.swift:62:59:62:59 | constantSalt | The value $@ is used as a constant, which is insecure for hashing passwords. | test.swift:43:35:43:130 | [...] | [...] |
+| test.swift:63:59:63:59 | constantStringSalt | test.swift:29:3:29:3 | this string is constant | test.swift:63:59:63:59 | constantStringSalt | The value $@ is used as a constant, which is insecure for hashing passwords. | test.swift:29:3:29:3 | this string is constant | this string is constant |
+| test.swift:67:53:67:53 | constantSalt | test.swift:43:35:43:130 | [...] | test.swift:67:53:67:53 | constantSalt | The value $@ is used as a constant, which is insecure for hashing passwords. | test.swift:43:35:43:130 | [...] | [...] |
+| test.swift:68:53:68:53 | constantStringSalt | test.swift:29:3:29:3 | this string is constant | test.swift:68:53:68:53 | constantStringSalt | The value $@ is used as a constant, which is insecure for hashing passwords. | test.swift:29:3:29:3 | this string is constant | this string is constant |

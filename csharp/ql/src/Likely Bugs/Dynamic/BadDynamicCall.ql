@@ -20,7 +20,7 @@ abstract class BadDynamicCall extends DynamicExpr {
   abstract AssignableRead getARelevantVariableAccess(int i);
 
   Type possibleBadTypeForRelevantSource(Variable v, int i, Expr source) {
-    exists(Type t | t = possibleTypeForRelevantSource(v, i, source) |
+    exists(Type t | t = this.possibleTypeForRelevantSource(v, i, source) |
       // If the source can have the type of an interface or an abstract class,
       // then all possible sub types are, in principle, possible
       t instanceof Interface and result.isImplicitlyConvertibleTo(t)
@@ -37,46 +37,48 @@ abstract class BadDynamicCall extends DynamicExpr {
 
   private Type possibleTypeForRelevantSource(Variable v, int i, Expr source) {
     exists(AssignableRead read, Ssa::Definition ssaDef, Ssa::ExplicitDefinition ultimateSsaDef |
-      read = getARelevantVariableAccess(i) and
+      read = this.getARelevantVariableAccess(i) and
       v = read.getTarget() and
       result = source.getType() and
       read = ssaDef.getARead() and
       ultimateSsaDef = ssaDef.getAnUltimateDefinition()
     |
       ultimateSsaDef.getADefinition() =
-        any(AssignableDefinition def | source = def.getSource().stripImplicitCasts())
+        any(AssignableDefinition def | source = def.getSource().stripImplicit())
       or
       ultimateSsaDef.getADefinition() =
         any(AssignableDefinitions::ImplicitParameterDefinition p |
-          source = p.getParameter().getAnAssignedValue().stripImplicitCasts()
+          source = p.getParameter().getAnAssignedValue().stripImplicit()
         )
     )
   }
 }
 
 class BadDynamicMethodCall extends BadDynamicCall, DynamicMethodCall {
-  override AssignableRead getARelevantVariableAccess(int i) { result = getQualifier() and i = -1 }
+  override AssignableRead getARelevantVariableAccess(int i) {
+    result = this.getQualifier() and i = -1
+  }
 
   override predicate isBad(Variable v, ValueOrRefType pt, Expr pts, string message, string target) {
-    pt = possibleBadTypeForRelevantSource(v, -1, pts) and
-    not exists(Method m | m = getARuntimeTarget() |
+    pt = this.possibleBadTypeForRelevantSource(v, -1, pts) and
+    not exists(Method m | m = this.getARuntimeTarget() |
       pt.isImplicitlyConvertibleTo(m.getDeclaringType())
     ) and
     message =
       "The $@ of this dynamic method invocation can obtain (from $@) type $@, which does not have a method '"
-        + getLateBoundTargetName() + "' with the appropriate signature." and
+        + this.getLateBoundTargetName() + "' with the appropriate signature." and
     target = "target"
   }
 }
 
 class BadDynamicOperatorCall extends BadDynamicCall, DynamicOperatorCall {
-  override AssignableRead getARelevantVariableAccess(int i) { result = getRuntimeArgument(i) }
+  override AssignableRead getARelevantVariableAccess(int i) { result = this.getRuntimeArgument(i) }
 
   override predicate isBad(Variable v, ValueOrRefType pt, Expr pts, string message, string target) {
     exists(int i |
-      pt = possibleBadTypeForRelevantSource(v, i, pts) and
+      pt = this.possibleBadTypeForRelevantSource(v, i, pts) and
       not pt.containsTypeParameters() and
-      not exists(Type paramType | paramType = getADynamicParameterType(_, i) |
+      not exists(Type paramType | paramType = this.getADynamicParameterType(_, i) |
         pt.isImplicitlyConvertibleTo(paramType)
         or
         // If either the argument type or the parameter type contains type parameters,
@@ -93,11 +95,11 @@ class BadDynamicOperatorCall extends BadDynamicCall, DynamicOperatorCall {
     ) and
     message =
       "The $@ of this dynamic operator can obtain (from $@) type $@, which does not match an operator '"
-        + getLateBoundTargetName() + "' with the appropriate signature."
+        + this.getLateBoundTargetName() + "' with the appropriate signature."
   }
 
   private Type getADynamicParameterType(Operator o, int i) {
-    o = getARuntimeTarget() and
+    o = this.getARuntimeTarget() and
     result = o.getParameter(i).getType()
   }
 }

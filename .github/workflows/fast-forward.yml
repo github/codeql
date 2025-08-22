@@ -1,0 +1,51 @@
+# Fast-forwards the branch specified in BRANCH_NAME
+# to the github.ref/sha that this workflow is run on.
+# Used as part of the release process, to ensure
+# external query writers can always access a branch of github/codeql
+# that is compatible with the latest stable release.
+name: Fast-forward tracking branch for selected CodeQL version
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fast-forward:
+    name: Fast-forward tracking branch for selected CodeQL version
+    runs-on: ubuntu-latest
+    if: github.repository == 'github/codeql'
+    env:
+      BRANCH_NAME: 'lgtm.com'
+    steps:
+      - name: Validate chosen branch
+        if: ${{ !startsWith(github.ref_name, 'codeql-cli-') }}
+        shell: bash
+        run: |
+          echo "::error ::The $BRANCH_NAME tracking branch should only be fast-forwarded to the tip of a codeql-cli-* branch, got $GITHUB_REF_NAME instead."
+          exit 1
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Git config
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch
+        shell: bash
+        run: |
+          set -x
+          echo "Fetching $BRANCH_NAME"
+          # Explicitly unshallow and fetch to ensure the remote ref is available.
+          git fetch --unshallow origin "$BRANCH_NAME"
+          git checkout -b "$BRANCH_NAME" "origin/$BRANCH_NAME"
+
+      - name: Fast-forward
+        shell: bash
+        run: |
+          echo "Fast-forwarding $BRANCH_NAME to ${GITHUB_REF}@${GITHUB_SHA}"
+          git merge --ff-only "$GITHUB_SHA"
+          git push origin "$BRANCH_NAME"

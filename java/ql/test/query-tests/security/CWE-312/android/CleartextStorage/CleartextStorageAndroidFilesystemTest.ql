@@ -1,13 +1,11 @@
 import java
 import semmle.code.java.security.CleartextStorageAndroidFilesystemQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
-class CleartextStorageAndroidFilesystemTest extends InlineExpectationsTest {
-  CleartextStorageAndroidFilesystemTest() { this = "CleartextStorageAndroidFilesystemTest" }
+module CleartextStorageAndroidFilesystemTest implements TestSig {
+  string getARelevantTag() { result = "hasCleartextStorageAndroidFilesystem" }
 
-  override string getARelevantTag() { result = "hasCleartextStorageAndroidFilesystem" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasCleartextStorageAndroidFilesystem" and
     exists(SensitiveSource data, LocalFileOpenCall s, Expr input, Expr store |
       input = s.getAnInput() and
@@ -20,3 +18,5 @@ class CleartextStorageAndroidFilesystemTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<CleartextStorageAndroidFilesystemTest>

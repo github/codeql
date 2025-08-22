@@ -4,7 +4,9 @@
  * @kind problem
  * @problem.severity warning
  * @id go/redundant-assignment
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  *       external/cwe/cwe-480
  *       external/cwe/cwe-561
  * @precision high
@@ -16,7 +18,7 @@ import Clones
  * An assignment that may be a self assignment.
  */
 class PotentialSelfAssignment extends HashRoot, AssignStmt {
-  PotentialSelfAssignment() { getLhs().getKind() = getRhs().getKind() }
+  PotentialSelfAssignment() { this.getLhs().getKind() = this.getRhs().getKind() }
 }
 
 from PotentialSelfAssignment assgn, HashableNode rhs

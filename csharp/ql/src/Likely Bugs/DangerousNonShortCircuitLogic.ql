@@ -6,9 +6,9 @@
  * @problem.severity error
  * @precision high
  * @id cs/non-short-circuit
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
- *       logic
  *       external/cwe/cwe-480
  *       external/cwe/cwe-691
  */
@@ -41,9 +41,9 @@ class NonShortCircuit extends BinaryBitwiseOperation {
       this instanceof BitwiseOrExpr
     ) and
     not exists(AssignBitwiseOperation abo | abo.getExpandedAssignment().getRValue() = this) and
-    getLeftOperand().getType() instanceof BoolType and
-    getRightOperand().getType() instanceof BoolType and
-    getRightOperand() instanceof DangerousExpression
+    this.getLeftOperand().getType() instanceof BoolType and
+    this.getRightOperand().getType() instanceof BoolType and
+    this.getRightOperand() instanceof DangerousExpression
   }
 }
 

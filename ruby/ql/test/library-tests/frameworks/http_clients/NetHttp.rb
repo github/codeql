@@ -25,3 +25,13 @@ def get(domain, path)
 end
 
 get("example.com", "/").body
+
+Net::HTTP.post(uri, "some_body") # note: response body not accessed
+
+http = Net::HTTP.new("https://example.com")
+root_get = Net::HTTP::Get.new("/")
+http.request(root_get)
+
+Net::HTTP.start("https://example.com") do |http|
+  http.get("/")
+end

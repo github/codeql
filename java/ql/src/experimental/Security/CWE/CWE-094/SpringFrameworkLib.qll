@@ -1,3 +1,5 @@
+deprecated module;
+
 import java
 import semmle.code.java.dataflow.DataFlow
 
@@ -6,7 +8,7 @@ import semmle.code.java.dataflow.DataFlow
  */
 class WebRequestSource extends DataFlow::Node {
   WebRequestSource() {
-    exists(MethodAccess ma, Method m | ma.getMethod() = m |
+    exists(MethodCall ma, Method m | ma.getMethod() = m |
       m.getDeclaringType() instanceof WebRequest and
       (
         m.hasName("getHeader") or
@@ -17,11 +19,11 @@ class WebRequestSource extends DataFlow::Node {
         m.hasName("getParameterNames") or
         m.hasName("getParameterMap")
       ) and
-      ma = asExpr()
+      ma = this.asExpr()
     )
   }
 }
 
 class WebRequest extends RefType {
-  WebRequest() { hasQualifiedName("org.springframework.web.context.request", "WebRequest") }
+  WebRequest() { this.hasQualifiedName("org.springframework.web.context.request", "WebRequest") }
 }

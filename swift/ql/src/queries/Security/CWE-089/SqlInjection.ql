@@ -13,9 +13,9 @@
 import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.security.SqlInjectionQuery
-import DataFlow::PathGraph
+import SqlInjectionFlow::PathGraph
 
-from SqlInjectionConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
-where config.hasFlowPath(sourceNode, sinkNode)
+from SqlInjectionFlow::PathNode sourceNode, SqlInjectionFlow::PathNode sinkNode
+where SqlInjectionFlow::flowPath(sourceNode, sinkNode)
 select sinkNode.getNode(), sourceNode, sinkNode, "This query depends on a $@.",
   sourceNode.getNode(), "user-provided value"

@@ -11,6 +11,9 @@ on:
       - ".github/workflows/mad_regenerate-models.yml"
       - ".github/actions/fetch-codeql/action.yml"
 
+permissions:
+  contents: read
+
 jobs:
   regenerate-models:
     runs-on: ubuntu-latest
@@ -27,11 +30,11 @@ jobs:
             ref: "placeholder"
     steps:
       - name: Clone self (github/codeql)
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup CodeQL binaries
         uses: ./.github/actions/fetch-codeql
       - name: Clone repositories
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: repos/${{ matrix.ref }}
           ref: ${{ matrix.ref }}
@@ -56,7 +59,7 @@ jobs:
           find java -name "*.model.yml" -print0 | xargs -0 git add
           git status
           git diff --cached > models.patch
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: patch
           path: models.patch

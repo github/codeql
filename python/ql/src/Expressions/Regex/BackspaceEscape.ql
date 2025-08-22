@@ -3,7 +3,9 @@
  * @description Using '\b' to escape the backspace character in a regular expression is confusing
  *              since it could be mistaken for a word boundary assertion.
  * @kind problem
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
  * @problem.severity recommendation
  * @sub-severity high
  * @precision very-high
@@ -13,7 +15,7 @@
 import python
 import semmle.python.regex
 
-from Regex r, int offset
+from RegExp r, int offset
 where
   r.escapingChar(offset) and
   r.getChar(offset + 1) = "b" and

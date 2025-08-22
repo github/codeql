@@ -7,38 +7,39 @@ import go
 /** Provides models of commonly used functions in the `log` package. */
 module Log {
   private class LogFunction extends Function {
+    int firstPrintedArg;
+
     LogFunction() {
-      exists(string fn | fn.matches(["Fatal%", "Panic%", "Print%"]) |
+      exists(string fn |
+        fn =
+          ["Fatal", "Fatalf", "Fatalln", "Panic", "Panicf", "Panicln", "Print", "Printf", "Println"] and
+        firstPrintedArg = 0
+        or
+        fn = "Output" and firstPrintedArg = 1
+      |
         this.hasQualifiedName("log", fn)
         or
         this.(Method).hasQualifiedName("log", "Logger", fn)
       )
     }
+
+    int getFirstPrintedArg() { result = firstPrintedArg }
   }
 
   private class LogFormatter extends StringOps::Formatting::Range instanceof LogFunction {
-    LogFormatter() { this.getName().matches("%f") }
+    LogFormatter() { this.getName() = ["Fatalf", "Panicf", "Printf"] }
 
     override int getFormatStringIndex() { result = 0 }
-
-    override int getFirstFormattedParameterIndex() { result = 1 }
-  }
-
-  private class LogCall extends LoggerCall::Range, DataFlow::CallNode {
-    LogCall() { this = any(LogFunction f).getACall() }
-
-    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
   }
 
   /** A fatal log function, which calls `os.Exit`. */
   private class FatalLogFunction extends Function {
-    FatalLogFunction() {
-      exists(string fn | fn.matches("Fatal%") | this.hasQualifiedName("log", fn))
-    }
+    FatalLogFunction() { this.hasQualifiedName("log", ["Fatal", "Fatalf", "Fatalln"]) }
 
     override predicate mayReturnNormally() { none() }
   }
 
+  // These models are not implemented using Models-as-Data because they represent reverse flow.
   private class FunctionModels extends TaintTracking::FunctionModel {
     FunctionInput inp;
     FunctionOutput outp;
@@ -54,6 +55,7 @@ module Log {
     }
   }
 
+  // These are expressed using TaintTracking::FunctionModel because varargs functions don't work with Models-as-Data sumamries yet.
   private class MethodModels extends TaintTracking::FunctionModel, Method {
     FunctionInput inp;
     FunctionOutput outp;
@@ -94,18 +96,6 @@ module Log {
       // signature: func (*Logger) Println(v ...interface{})
       this.hasQualifiedName("log", "Logger", "Println") and
       (inp.isParameter(_) and outp.isReceiver())
-      or
-      // signature: func (*Logger) SetOutput(w io.Writer)
-      this.hasQualifiedName("log", "Logger", "SetOutput") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
-      // signature: func (*Logger) SetPrefix(prefix string)
-      this.hasQualifiedName("log", "Logger", "SetPrefix") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (*Logger) Writer() io.Writer
-      this.hasQualifiedName("log", "Logger", "Writer") and
-      (inp.isReceiver() and outp.isResult())
     }
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

@@ -7,7 +7,7 @@
 
 private import codeql.util.suppression.AlertSuppression as AS
 private import codeql.swift.elements.Locatable as L
-private import codeql.swift.elements.Comment as C
+private import codeql.swift.elements.Comments as C
 
 class AstNode extends L::Locatable {
   predicate hasLocationInfo(string path, int startLine, int startColumn, int endLine, int endColumn) {

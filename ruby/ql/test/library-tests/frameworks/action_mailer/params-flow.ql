@@ -3,16 +3,18 @@
  */
 
 import ruby
-import TestUtilities.InlineFlowTest
-import PathGraph
+import utils.test.InlineFlowTest
+import TaintFlow::PathGraph
 import codeql.ruby.frameworks.Rails
 
-class ParamsTaintFlowConf extends DefaultTaintFlowConf {
-  override predicate isSource(DataFlow::Node n) {
-    n.asExpr().getExpr() instanceof Rails::ParamsCall
-  }
+module ParamsTaintFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) { n.asExpr().getExpr() instanceof Rails::ParamsCall }
+
+  predicate isSink(DataFlow::Node n) { DefaultFlowConfig::isSink(n) }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, ParamsTaintFlowConf conf
-where conf.hasFlowPath(source, sink)
+import FlowTest<DefaultFlowConfig, ParamsTaintFlowConfig>
+
+from TaintFlow::PathNode source, TaintFlow::PathNode sink
+where TaintFlow::flowPath(source, sink)
 select sink, source, sink, "$@", source, source.toString()

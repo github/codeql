@@ -1,3 +1,40 @@
+models
+| 1 | Sink: os/exec; ; false; Command; ; ; Argument[0]; command-injection; manual |
+| 2 | Summary: github.com/json-iterator/go; ; false; Unmarshal; ; ; Argument[0]; Argument[1]; taint; manual |
+| 3 | Summary: github.com/json-iterator/go; ; false; UnmarshalFromString; ; ; Argument[0]; Argument[1]; taint; manual |
+| 4 | Summary: github.com/json-iterator/go; API; true; Unmarshal; ; ; Argument[0]; Argument[1]; taint; manual |
+| 5 | Summary: github.com/json-iterator/go; API; true; UnmarshalFromString; ; ; Argument[0]; Argument[1]; taint; manual |
+edges
+| jsoniter.go:23:20:23:38 | call to getUntrustedBytes | jsoniter.go:27:17:27:30 | untrustedInput | provenance |  |
+| jsoniter.go:23:20:23:38 | call to getUntrustedBytes | jsoniter.go:31:21:31:34 | untrustedInput | provenance |  |
+| jsoniter.go:24:21:24:40 | call to getUntrustedString | jsoniter.go:35:27:35:41 | untrustedString | provenance |  |
+| jsoniter.go:24:21:24:40 | call to getUntrustedString | jsoniter.go:39:31:39:45 | untrustedString | provenance |  |
+| jsoniter.go:27:17:27:30 | untrustedInput | jsoniter.go:27:33:27:37 | &... | provenance | MaD:4 |
+| jsoniter.go:27:33:27:37 | &... | jsoniter.go:28:15:28:24 | selection of field | provenance | Sink:MaD:1 |
+| jsoniter.go:31:21:31:34 | untrustedInput | jsoniter.go:31:37:31:42 | &... | provenance | MaD:2 |
+| jsoniter.go:31:37:31:42 | &... | jsoniter.go:32:15:32:25 | selection of field | provenance | Sink:MaD:1 |
+| jsoniter.go:35:27:35:41 | untrustedString | jsoniter.go:35:44:35:49 | &... | provenance | MaD:5 |
+| jsoniter.go:35:44:35:49 | &... | jsoniter.go:36:15:36:25 | selection of field | provenance | Sink:MaD:1 |
+| jsoniter.go:39:31:39:45 | untrustedString | jsoniter.go:39:48:39:53 | &... | provenance | MaD:3 |
+| jsoniter.go:39:48:39:53 | &... | jsoniter.go:40:15:40:25 | selection of field | provenance | Sink:MaD:1 |
+nodes
+| jsoniter.go:23:20:23:38 | call to getUntrustedBytes | semmle.label | call to getUntrustedBytes |
+| jsoniter.go:24:21:24:40 | call to getUntrustedString | semmle.label | call to getUntrustedString |
+| jsoniter.go:27:17:27:30 | untrustedInput | semmle.label | untrustedInput |
+| jsoniter.go:27:33:27:37 | &... | semmle.label | &... |
+| jsoniter.go:28:15:28:24 | selection of field | semmle.label | selection of field |
+| jsoniter.go:31:21:31:34 | untrustedInput | semmle.label | untrustedInput |
+| jsoniter.go:31:37:31:42 | &... | semmle.label | &... |
+| jsoniter.go:32:15:32:25 | selection of field | semmle.label | selection of field |
+| jsoniter.go:35:27:35:41 | untrustedString | semmle.label | untrustedString |
+| jsoniter.go:35:44:35:49 | &... | semmle.label | &... |
+| jsoniter.go:36:15:36:25 | selection of field | semmle.label | selection of field |
+| jsoniter.go:39:31:39:45 | untrustedString | semmle.label | untrustedString |
+| jsoniter.go:39:48:39:53 | &... | semmle.label | &... |
+| jsoniter.go:40:15:40:25 | selection of field | semmle.label | selection of field |
+subpaths
+invalidModelRow
+#select
 | jsoniter.go:28:15:28:24 | selection of field | jsoniter.go:23:20:23:38 | call to getUntrustedBytes | jsoniter.go:28:15:28:24 | selection of field | This command depends on $@. | jsoniter.go:23:20:23:38 | call to getUntrustedBytes | a user-provided value |
 | jsoniter.go:32:15:32:25 | selection of field | jsoniter.go:23:20:23:38 | call to getUntrustedBytes | jsoniter.go:32:15:32:25 | selection of field | This command depends on $@. | jsoniter.go:23:20:23:38 | call to getUntrustedBytes | a user-provided value |
 | jsoniter.go:36:15:36:25 | selection of field | jsoniter.go:24:21:24:40 | call to getUntrustedString | jsoniter.go:36:15:36:25 | selection of field | This command depends on $@. | jsoniter.go:24:21:24:40 | call to getUntrustedString | a user-provided value |

@@ -3,13 +3,13 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.springframework.jdbc.core", "JdbcTemplate", False, "batchUpdate", "", "", "Argument[0]", "sql", "manual"]
-      - ["org.springframework.jdbc.core", "JdbcTemplate", False, "batchUpdate", "(String[])", "", "Argument[0]", "sql", "manual"]
-      - ["org.springframework.jdbc.core", "JdbcTemplate", False, "execute", "", "", "Argument[0]", "sql", "manual"]
-      - ["org.springframework.jdbc.core", "JdbcTemplate", False, "query", "", "", "Argument[0]", "sql", "manual"]
-      - ["org.springframework.jdbc.core", "JdbcTemplate", False, "queryForList", "", "", "Argument[0]", "sql", "manual"]
-      - ["org.springframework.jdbc.core", "JdbcTemplate", False, "queryForMap", "", "", "Argument[0]", "sql", "manual"]
-      - ["org.springframework.jdbc.core", "JdbcTemplate", False, "queryForObject", "", "", "Argument[0]", "sql", "manual"]
-      - ["org.springframework.jdbc.core", "JdbcTemplate", False, "queryForRowSet", "", "", "Argument[0]", "sql", "manual"]
-      - ["org.springframework.jdbc.core", "JdbcTemplate", False, "queryForStream", "", "", "Argument[0]", "sql", "manual"]
-      - ["org.springframework.jdbc.core", "JdbcTemplate", False, "update", "", "", "Argument[0]", "sql", "manual"]
+      - ["org.springframework.jdbc.core", "JdbcTemplate", False, "batchUpdate", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.springframework.jdbc.core", "JdbcTemplate", False, "batchUpdate", "(String[])", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.springframework.jdbc.core", "JdbcTemplate", False, "execute", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.springframework.jdbc.core", "JdbcTemplate", False, "query", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.springframework.jdbc.core", "JdbcTemplate", False, "queryForList", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.springframework.jdbc.core", "JdbcTemplate", False, "queryForMap", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.springframework.jdbc.core", "JdbcTemplate", False, "queryForObject", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.springframework.jdbc.core", "JdbcTemplate", False, "queryForRowSet", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.springframework.jdbc.core", "JdbcTemplate", False, "queryForStream", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.springframework.jdbc.core", "JdbcTemplate", False, "update", "", "", "Argument[0]", "sql-injection", "manual"]

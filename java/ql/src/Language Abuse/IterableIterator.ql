@@ -7,8 +7,9 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/iterator-implements-iterable
- * @tags correctness
+ * @tags quality
  *       reliability
+ *       correctness
  */
 
 import java
@@ -16,7 +17,7 @@ import IterableClass
 
 /** An `Iterable` that is also its own `Iterator`. */
 class IterableIterator extends Iterable {
-  IterableIterator() { simpleIterator() instanceof ThisAccess }
+  IterableIterator() { this.simpleIterator() instanceof ThisAccess }
 }
 
 /** An `IterableIterator` that never returns any elements. */

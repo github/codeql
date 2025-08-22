@@ -15,6 +15,8 @@ private class GetDelimFunction extends TaintFunction, AliasFunction, SideEffectF
     i.isParameter(3) and o.isParameterDeref(0)
   }
 
+  override predicate isPartialWrite(FunctionOutput o) { o.isParameterDeref(3) }
+
   override predicate parameterNeverEscapes(int index) { index = [0, 1, 3] }
 
   override predicate parameterEscapesOnlyViaReturn(int index) { none() }

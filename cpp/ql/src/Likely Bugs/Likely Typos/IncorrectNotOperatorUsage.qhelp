@@ -16,7 +16,13 @@
 <p>Carefully inspect the flagged expressions. Consider the intent in the code logic, and decide whether it is necessary to change the not operator.</p>
 </recommendation>
 
-<example><sample src="IncorrectNotOperatorUsage.cpp" /></example>
+<example>
+<p>Here is an example of this issue and how it can be fixed:</p>
+
+<sample src="IncorrectNotOperatorUsage.cpp" />
+
+<p>In other cases, particularly when the expressions have <code>bool</code> type, the fix may instead be of the form <code>a &amp;&amp; !b</code>.</p>
+</example>
 
 <references>
   <li>

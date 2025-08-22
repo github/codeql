@@ -10,18 +10,9 @@ private newtype TNode =
   MkInstructionNode(IR::Instruction insn) or
   MkSsaNode(SsaDefinition ssa) or
   MkGlobalFunctionNode(Function f) or
-  MkSummarizedParameterNode(DataFlowCallable c, int i) {
-    not exists(c.getFuncDef()) and
-    c.asCallable() instanceof SummarizedCallable and
-    (
-      i in [0 .. c.getType().getNumParameter() - 1]
-      or
-      c.asFunction() instanceof Method and i = -1
-    )
-  } or
-  MkSummaryInternalNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
-    FlowSummaryImpl::Private::summaryNodeRange(c, state)
-  }
+  MkImplicitVarargsSlice(CallExpr c) { c.hasImplicitVarargs() } or
+  MkSliceElementNode(SliceExpr se) or
+  MkFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn)
 
 /** Nodes intended for only use inside the data-flow libraries. */
 module Private {
@@ -31,12 +22,21 @@ module Private {
   DataFlowCallable nodeGetEnclosingCallable(Node n) {
     result.asCallable() = n.getEnclosingCallable()
     or
-    not exists(n.getEnclosingCallable()) and result.asFileScope() = n.getFile()
+    not n instanceof FlowSummaryNode and
+    not exists(n.getEnclosingCallable()) and
+    (
+      result.asFileScope() = n.getFile()
+      or
+      not exists(n.getFile()) and
+      result.isExternalFileScope()
+    )
+    or
+    result.asSummarizedCallable() = n.(FlowSummaryNode).getSummarizedCallable()
   }
 
   /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
   predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
-    p.isParameterOf(c.asCallable(), pos)
+    p.isParameterOf(c, pos)
   }
 
   /** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
@@ -51,7 +51,7 @@ module Private {
     ReturnNode() {
       this.(Public::ResultNode).getIndex() = kind.getIndex()
       or
-      this.(SummaryNode).isReturn(kind)
+      this.(FlowSummaryNode).isReturn(kind)
     }
 
     /** Gets the kind of this returned value. */
@@ -61,9 +61,8 @@ module Private {
   /** A data flow node that represents the output of a call. */
   class OutNode extends Node {
     DataFlow::CallNode call;
-    int i;
 
-    OutNode() { this = call.getResult(i) }
+    OutNode() { this = call.getResult(_) }
 
     /** Gets the underlying call. */
     DataFlowCall getCall() { result = call.asExpr() }
@@ -72,33 +71,33 @@ module Private {
   /**
    * A data-flow node used to model flow summaries.
    */
-  class SummaryNode extends Node, MkSummaryInternalNode {
-    private SummarizedCallable c;
-    private FlowSummaryImpl::Private::SummaryNodeState state;
+  class FlowSummaryNode extends Node, MkFlowSummaryNode {
+    FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = MkFlowSummaryNode(result) }
 
-    SummaryNode() { this = MkSummaryInternalNode(c, state) }
-
-    override predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
-      c.hasLocationInfo(fp, sl, sc, el, ec)
+    SummarizedCallable getSummarizedCallable() {
+      result = this.getSummaryNode().getSummarizedCallable()
     }
 
-    override string toString() { result = "[summary] " + state + " in " + c }
+    override Location getLocation() { result = this.getSummarizedCallable().getLocation() }
+
+    override string toString() { result = this.getSummaryNode().toString() }
 
     /** Holds if this summary node is the `i`th argument of `call`. */
     predicate isArgumentOf(DataFlowCall call, int i) {
-      FlowSummaryImpl::Private::summaryArgumentNode(call, this, i)
+      // We do not currently have support for callback-based library models.
+      none()
     }
 
     /** Holds if this summary node is a return node. */
-    predicate isReturn(ReturnKind kind) { FlowSummaryImpl::Private::summaryReturnNode(this, kind) }
+    predicate isReturn(ReturnKind kind) {
+      FlowSummaryImpl::Private::summaryReturnNode(this.getSummaryNode(), kind)
+    }
 
     /** Holds if this summary node is an out node for `call`. */
-    predicate isOut(DataFlowCall call) { FlowSummaryImpl::Private::summaryOutNode(call, this, _) }
-  }
-
-  /** Gets the summary node corresponding to the callable `c` and state `state`. */
-  SummaryNode getSummaryNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
-    result = MkSummaryInternalNode(c, state)
+    predicate isOut(DataFlowCall call) {
+      // We do not currently have support for callback-based library models.
+      none()
+    }
   }
 }
 
@@ -116,15 +115,7 @@ module Public {
     ControlFlow::Root getRoot() { none() } // overridden in subclasses
 
     /** INTERNAL: Use `getRoot()` instead. */
-    Callable getEnclosingCallable() {
-      result.getFuncDef() = this.getRoot()
-      or
-      exists(DataFlowCallable dfc | result = dfc.asCallable() |
-        this = MkSummarizedParameterNode(dfc, _)
-        or
-        this = MkSummaryInternalNode(dfc.asCallable(), _)
-      )
-    }
+    Callable getEnclosingCallable() { result.getFuncDef() = this.getRoot() }
 
     /** Gets the type of this node. */
     Type getType() { none() } // overridden in subclasses
@@ -147,37 +138,38 @@ module Public {
     /** Gets a textual representation of this element. */
     string toString() { result = "data-flow node" } // overridden in subclasses
 
+    /** Gets the location of this node. */
+    Location getLocation() { none() }
+
     /**
+     * DEPRECATED: Use `getLocation()` instead.
+     *
      * Holds if this element is at the specified location.
      * The location spans column `startcolumn` of line `startline` to
      * column `endcolumn` of line `endline` in file `filepath`.
      * For more information, see
      * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
-    predicate hasLocationInfo(
+    deprecated predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      filepath = "" and
-      startline = 0 and
-      startcolumn = 0 and
-      endline = 0 and
-      endcolumn = 0
+      this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
     /** Gets the file in which this node appears. */
-    File getFile() { this.hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
+    File getFile() { result = this.getLocation().getFile() }
 
     /** Gets the start line of the location of this node. */
-    int getStartLine() { this.hasLocationInfo(_, result, _, _, _) }
+    int getStartLine() { result = this.getLocation().getStartLine() }
 
     /** Gets the start column of the location of this node. */
-    int getStartColumn() { this.hasLocationInfo(_, _, result, _, _) }
+    int getStartColumn() { result = this.getLocation().getStartColumn() }
 
     /** Gets the end line of the location of this node. */
-    int getEndLine() { this.hasLocationInfo(_, _, _, result, _) }
+    int getEndLine() { result = this.getLocation().getEndLine() }
 
     /** Gets the end column of the location of this node. */
-    int getEndColumn() { this.hasLocationInfo(_, _, _, _, result) }
+    int getEndColumn() { result = this.getLocation().getEndColumn() }
 
     /**
      * Gets an upper bound on the type of this node.
@@ -261,11 +253,7 @@ module Public {
 
     override string toString() { result = insn.toString() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      insn.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = insn.getLocation() }
   }
 
   /**
@@ -311,11 +299,7 @@ module Public {
 
     override string toString() { result = ssa.toString() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      ssa.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = ssa.getLocation() }
   }
 
   private module FunctionNode {
@@ -407,11 +391,7 @@ module Public {
 
     override string toString() { result = "function " + func.getName() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      func.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = func.getLocation() }
 
     override ResultNode getAResult() {
       result.getRoot() = this.getFunction().(DeclaredFunction).getFuncDecl()
@@ -436,6 +416,37 @@ module Public {
   }
 
   /**
+   * An implicit varargs slice creation expression.
+   *
+   * A variadic function like `f(t1 T1, ..., Tm tm, A... x)` actually sees the
+   * varargs parameter as a slice `[]A`. A call `f(t1, ..., tm, x1, ..., xn)`
+   * desugars to `f(t1, ..., tm, []A{x1, ..., xn})`, and this node corresponds
+   * to this implicit slice creation.
+   */
+  class ImplicitVarargsSlice extends Node, MkImplicitVarargsSlice {
+    CallNode call;
+
+    ImplicitVarargsSlice() { this = MkImplicitVarargsSlice(call.getCall()) }
+
+    override ControlFlow::Root getRoot() { result = call.getRoot() }
+
+    /** Gets the call containing this varargs slice creation argument. */
+    CallNode getCallNode() { result = call }
+
+    override Type getType() {
+      exists(SignatureType t | t = call.getCall().getCalleeType() |
+        result = t.getParameterType(t.getNumParameter() - 1)
+      )
+    }
+
+    override string getNodeKind() { result = "implicit varargs slice" }
+
+    override string toString() { result = "[]type{args}" }
+
+    override Location getLocation() { result = call.getLocation() }
+  }
+
+  /**
    * Gets a possible target of call `cn`.class
    *
    * This is written explicitly like this instead of using `getCalleeNode().getAPredecessor*()`
@@ -447,6 +458,7 @@ module Public {
   private DataFlow::Node getACalleeSource(DataFlow::CallNode cn) {
     result = cn.getCalleeNode() or
     basicLocalFlowStep(result, getACalleeSource(cn)) or
+    jumpStep(result, getACalleeSource(cn)) or
     result.asExpr() = getACalleeSource(cn).asExpr().(GenericFunctionInstantiationExpr).getBase()
   }
 
@@ -454,7 +466,11 @@ module Public {
   class CallNode extends ExprNode {
     override CallExpr expr;
 
-    /** Gets the declared target of this call */
+    /**
+     * Gets the declared target of this call, if it exists.
+     *
+     * This doesn't exist when a function is called via a variable.
+     */
     Function getTarget() { result = expr.getTarget() }
 
     private DataFlow::Node getACalleeSource() { result = getACalleeSource(this) }
@@ -469,13 +485,9 @@ module Public {
      * interface type.
      */
     Callable getACalleeIncludingExternals() {
-      result.asFunction() = this.getTarget()
+      result = this.getACalleeWithoutVirtualDispatch()
       or
       exists(DataFlow::Node calleeSource | calleeSource = this.getACalleeSource() |
-        result.asFuncLit() = calleeSource.asExpr()
-        or
-        calleeSource = result.asFunction().getARead()
-        or
         exists(Method declared, Method actual |
           calleeSource = declared.getARead() and
           actual.implements(declared) and
@@ -488,7 +500,21 @@ module Public {
      * As `getACalleeIncludingExternals`, except excluding external functions (those for which
      * we lack a definition, such as standard library functions).
      */
+    pragma[nomagic]
     FuncDef getACallee() { result = this.getACalleeIncludingExternals().getFuncDef() }
+
+    /**
+     * Gets the definition of a possible target of this call, excluding targets reachable via virtual dispatch.
+     */
+    Callable getACalleeWithoutVirtualDispatch() {
+      result.asFunction() = this.getTarget()
+      or
+      exists(DataFlow::Node calleeSource | calleeSource = this.getACalleeSource() |
+        result.asFuncLit() = calleeSource.asExpr()
+        or
+        calleeSource = result.asFunction().getARead()
+      )
+    }
 
     /**
      * Gets the name of the function, method or variable that is being called.
@@ -507,16 +533,11 @@ module Public {
     CallExpr getCall() { result = this.getExpr() }
 
     /**
-     * Gets the data flow node corresponding to the `i`th argument of this call.
-     *
-     * Note that the first argument in calls to the built-in function `make` is a type, which is
-     * not a data-flow node. It is skipped for the purposes of this predicate, so the (syntactically)
-     * second argument becomes the first argument in terms of data flow.
-     *
-     * For calls of the form `f(g())` where `g` has multiple results, the arguments of the call to
-     * `i` are the (implicit) element extraction nodes for the call to `g`.
+     * Gets the `i`th argument of this call, where tuple extraction has been
+     * done but arguments corresponding to a variadic parameter are still
+     * considered separate.
      */
-    Node getArgument(int i) {
+    Node getSyntacticArgument(int i) {
       if expr.getArgument(0).getType() instanceof TupleType
       then result = DataFlow::extractTupleElement(DataFlow::exprNode(expr.getArgument(0)), i)
       else
@@ -528,11 +549,59 @@ module Public {
           )
     }
 
+    /**
+     * Gets a data flow node corresponding to an argument of this call, where
+     * tuple extraction has been done but arguments corresponding to a variadic
+     * parameter are still considered separate.
+     */
+    Node getASyntacticArgument() { result = this.getSyntacticArgument(_) }
+
+    /**
+     * Gets the data flow node corresponding to the `i`th argument of this call.
+     *
+     * Note that the first argument in calls to the built-in function `make` is a type, which is
+     * not a data-flow node. It is skipped for the purposes of this predicate, so the (syntactically)
+     * second argument becomes the first argument in terms of data flow.
+     *
+     * For calls of the form `f(g())` where `g` has multiple results, the arguments of the call to
+     * `i` are the (implicit) element extraction nodes for the call to `g`.
+     *
+     * Returns a single `Node` corresponding to a variadic parameter. If there is no corresponding
+     * argument with an ellipsis (`...`), then it is a `ImplicitVarargsSlice`. This is in contrast
+     * to `getArgument` on `CallExpr`, which gets the syntactic arguments. Use
+     * `getSyntacticArgument` to get that behavior.
+     */
+    Node getArgument(int i) {
+      result = this.getSyntacticArgument(i) and
+      not (expr.hasImplicitVarargs() and i >= expr.getCalleeType().getNumParameter() - 1)
+      or
+      i = expr.getCalleeType().getNumParameter() - 1 and
+      result.(ImplicitVarargsSlice).getCallNode() = this
+    }
+
     /** Gets the data flow node corresponding to an argument of this call. */
     Node getAnArgument() { result = this.getArgument(_) }
 
     /** Gets the number of arguments of this call, if it can be determined. */
     int getNumArgument() { result = count(this.getAnArgument()) }
+
+    /**
+     * Gets the 'i'th argument without an ellipsis after it which is passed to
+     * the varargs parameter of the target of this call (if there is one).
+     */
+    Node getImplicitVarargsArgument(int i) {
+      i >= 0 and
+      expr.hasImplicitVarargs() and
+      exists(int lastParamIndex | lastParamIndex = expr.getCalleeType().getNumParameter() - 1 |
+        result = this.getSyntacticArgument(lastParamIndex + i)
+      )
+    }
+
+    /**
+     * Gets an argument without an ellipsis after it which is passed to
+     * the varargs parameter of the target of this call (if there is one).
+     */
+    Node getAnImplicitVarargsArgument() { result = this.getImplicitVarargsArgument(_) }
 
     /** Gets a function passed as the `i`th argument of this call. */
     FunctionNode getCallback(int i) { result.getASuccessor*() = this.getArgument(i) }
@@ -559,14 +628,41 @@ module Public {
     /** Gets a result of this call. */
     Node getAResult() { result = this.getResult(_) }
 
-    /** Gets the data flow node corresponding to the receiver of this call, if any. */
+    /**
+     * Gets the data flow node corresponding to the receiver of this call, if any.
+     *
+     * When a method value is assigned to a variable then when it is called it
+     * looks like a function call, as in the following example.
+     *
+     * ```go
+     * file, _ := os.Open("test.txt")
+     * f := file.Close
+     * f()
+     * ```
+     *
+     * In this case we use local flow to try to find the receiver (`file` in
+     * the  above example).
+     */
     Node getReceiver() { result = this.getACalleeSource().(MethodReadNode).getReceiver() }
 
     /** Holds if this call has an ellipsis after its last argument. */
     predicate hasEllipsis() { expr.hasEllipsis() }
   }
 
-  /** A data flow node that represents a call to a method. */
+  /**
+   * A data flow node that represents a direct call to a method.
+   *
+   * When a method value is assigned to a variable then when it is called it
+   * syntactically looks like a function call, as in the following example.
+   *
+   * ```go
+   * file, _ := os.Open("test.txt")
+   * f := file.Close
+   * f()
+   * ```
+   *
+   * In this case it will not be considered a `MethodCallNode`.
+   */
   class MethodCallNode extends CallNode {
     MethodCallNode() { expr.getTarget() instanceof Method }
 
@@ -578,19 +674,26 @@ module Public {
   /** A representation of a parameter initialization. */
   abstract class ParameterNode extends DataFlow::Node {
     /** Holds if this node initializes the `i`th parameter of `c`. */
-    abstract predicate isParameterOf(Callable c, int i);
+    abstract predicate isParameterOf(DataFlowCallable c, int i);
+
+    /** Gets the callable that this parameter belongs to. */
+    DataFlowCallable getCallable() { this.isParameterOf(result, _) }
+
+    /** Gets this parameter's position. */
+    int getPosition() { this.isParameterOf(_, result) }
   }
 
   /**
    * A summary node which represents a parameter in a function which doesn't
    * already have a parameter nodes.
    */
-  class SummarizedParameterNode extends ParameterNode, MkSummarizedParameterNode {
-    Callable c;
-    int i;
-
+  class SummarizedParameterNode extends ParameterNode, FlowSummaryNode {
     SummarizedParameterNode() {
-      this = MkSummarizedParameterNode(any(DataFlowCallable dfc | c = dfc.asCallable()), i)
+      FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), _)
+    }
+
+    private int getPos() {
+      FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), result)
     }
 
     // There are no AST representations of summarized parameter nodes
@@ -599,17 +702,35 @@ module Public {
     override string getNodeKind() { result = "external parameter node" }
 
     override Type getType() {
-      result = c.getType().getParameterType(i)
+      result =
+        this.getSummarizedCallable()
+            .getType()
+            .getParameterType(pragma[only_bind_into](this.getPos()))
       or
-      i = -1 and result = c.asFunction().(Method).getReceiverType()
+      this.getPos() = -1 and
+      result = this.getSummarizedCallable().asFunction().(Method).getReceiverType()
     }
 
-    override predicate isParameterOf(Callable call, int idx) { c = call and i = idx }
+    override predicate isParameterOf(DataFlowCallable call, int idx) {
+      this.getSummarizedCallable() = call.asSummarizedCallable() and this.getPos() = idx
+    }
+  }
 
-    override string toString() { result = "parameter " + i + " of " + c.toString() }
+  /** A representation of a parameter initialization, defined in source via an SSA node. */
+  class UnusedParameterNode extends ParameterNode, InstructionNode {
+    override IR::InitParameterInstruction insn;
+    Parameter parm;
 
-    override predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
-      c.hasLocationInfo(fp, sl, sc, el, ec)
+    UnusedParameterNode() {
+      insn = IR::initParamInstruction(parm) and
+      not exists(SsaExplicitDefinition ssa | ssa.getInstruction() = insn)
+    }
+
+    /** Gets the parameter this node initializes. */
+    override Parameter asParameter() { result = parm }
+
+    override predicate isParameterOf(DataFlowCallable c, int i) {
+      parm.isParameterOf(c.asCallable().getFuncDef(), i)
     }
   }
 
@@ -623,7 +744,9 @@ module Public {
     /** Gets the parameter this node initializes. */
     override Parameter asParameter() { result = parm }
 
-    override predicate isParameterOf(Callable c, int i) { parm.isParameterOf(c.getFuncDef(), i) }
+    override predicate isParameterOf(DataFlowCallable c, int i) {
+      parm.isParameterOf(c.asCallable().getFuncDef(), i)
+    }
   }
 
   /** A representation of a receiver initialization. */
@@ -697,7 +820,7 @@ module Public {
         or
         preupd = getAWrittenNode()
         or
-        preupd instanceof ArgumentNode and
+        preupd = any(ArgumentNode arg).getACorrespondingSyntacticArgument() and
         mutableType(preupd.getType())
       ) and
       (
@@ -729,20 +852,33 @@ module Public {
      */
     predicate argumentOf(CallExpr call, int pos) {
       call = c.asExpr() and
-      pos = i and
-      (
-        i != -1
-        or
-        exists(c.(MethodCallNode).getTarget().getBody())
-        or
-        hasExternalSpecification(c.(DataFlow::MethodCallNode).getTarget())
-      )
+      pos = i
     }
 
     /**
      * Gets the `CallNode` this is an argument to.
      */
     CallNode getCall() { result = c }
+
+    /**
+     * Gets this argument's position.
+     */
+    int getPosition() { result = i }
+
+    /**
+     * Gets a data-flow node for a syntactic argument corresponding this this
+     * argument. If this argument is not an implicit varargs slice then this
+     * will just be the argument itself. If this argument is an implicit
+     * varargs slice then this will be a data-flow node that for an argument
+     * that is stored in the implicit varargs slice.
+     */
+    Node getACorrespondingSyntacticArgument() {
+      not this instanceof DataFlow::ImplicitVarargsSlice and
+      result = this
+      or
+      this instanceof DataFlow::ImplicitVarargsSlice and
+      result = c.getAnImplicitVarargsArgument()
+    }
   }
 
   /**
@@ -753,13 +889,14 @@ module Public {
    * of the function.
    */
   class ResultNode extends InstructionNode {
-    FuncDef fd;
     int i;
 
     ResultNode() {
-      exists(IR::ReturnInstruction ret | ret.getRoot() = fd | insn = ret.getResult(i))
-      or
-      insn.(IR::ReadResultInstruction).reads(fd.getResultVar(i))
+      exists(FuncDef fd |
+        exists(IR::ReturnInstruction ret | ret.getRoot() = fd | insn = ret.getResult(i))
+        or
+        insn.(IR::ReadResultInstruction).reads(fd.getResultVar(i))
+      )
     }
 
     /** Gets the index of this result among all results of the function. */
@@ -892,6 +1029,33 @@ module Public {
 
     /** Gets the maximum of this slice node. */
     Node getMax() { result = DataFlow::instructionNode(insn.getMax()) }
+  }
+
+  /**
+   * A data-flow node which exists solely to model the value flow from array
+   * elements of the base of a `SliceNode` to array elements of the `SliceNode`
+   * itself.
+   */
+  class SliceElementNode extends Node, MkSliceElementNode {
+    IR::SliceInstruction si;
+
+    SliceElementNode() { this = MkSliceElementNode(si.getExpr()) }
+
+    override ControlFlow::Root getRoot() { result = this.getSliceNode().getRoot() }
+
+    override Type getType() {
+      result = si.getResultType().(ArrayType).getElementType() or
+      result = si.getResultType().(SliceType).getElementType()
+    }
+
+    override string getNodeKind() { result = "slice element node" }
+
+    override string toString() { result = "slice element node" }
+
+    override Location getLocation() { result = si.getLocation() }
+
+    /** Gets the `SliceNode` which this node relates to. */
+    SliceNode getSliceNode() { result = DataFlow::instructionNode(si) }
   }
 
   /**
@@ -1112,12 +1276,12 @@ module Public {
    */
   class RangeElementNode extends Node {
     DataFlow::Node base;
-    IR::ExtractTupleElementInstruction extract;
 
     RangeElementNode() {
-      this.asInstruction() = extract and
-      extract.extractsElement(_, 1) and
-      extract.getBase().(IR::GetNextEntryInstruction).getDomain() = base.asInstruction()
+      exists(IR::ExtractTupleElementInstruction extract | extract = this.asInstruction() |
+        extract.extractsElement(_, 1) and
+        extract.getBase().(IR::GetNextEntryInstruction).getDomain() = base.asInstruction()
+      )
     }
 
     /** Gets the data-flow node representing the base from which the element is read. */
@@ -1156,10 +1320,12 @@ module Public {
 private import Private
 private import Public
 
-class SummaryPostUpdateNode extends SummaryNode, PostUpdateNode {
-  private Node pre;
+class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNode {
+  private FlowSummaryNode pre;
 
-  SummaryPostUpdateNode() { FlowSummaryImpl::Private::summaryPostUpdateNode(this, pre) }
+  SummaryPostUpdateNode() {
+    FlowSummaryImpl::Private::summaryPostUpdateNode(this.getSummaryNode(), pre.getSummaryNode())
+  }
 
   override Node getPreUpdateNode() { result = pre }
 }

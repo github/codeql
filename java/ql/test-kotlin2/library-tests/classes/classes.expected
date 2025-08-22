@@ -1,0 +1,69 @@
+| classes.kt:0:0:0:0 | ClassesKt | ClassesKt | final, public |
+| classes.kt:2:1:2:18 | ClassOne | ClassOne | final, public |
+| classes.kt:4:1:6:1 | ClassTwo | ClassTwo | final, public |
+| classes.kt:8:1:10:1 | ClassThree | ClassThree | abstract, public |
+| classes.kt:12:1:15:1 | ClassFour | ClassFour | public |
+| classes.kt:17:1:18:1 | ClassFive | ClassFive | final, public |
+| classes.kt:28:1:30:1 | ClassSix | ClassSix | final, public |
+| classes.kt:34:1:47:1 | ClassSeven | ClassSeven | final, public |
+| classes.kt:49:1:51:1 | Direction | Direction | final, public |
+| classes.kt:53:1:57:1 | Color | Color | final, public |
+| classes.kt:63:1:91:1 | Class1 | Class1 | final, public |
+| classes.kt:66:20:66:54 | new Object(...) { ... } | <anonymous class> | final, private |
+| classes.kt:68:20:68:74 | new Object(...) { ... } | <anonymous class> | final, private |
+| classes.kt:72:16:77:10 | new Object(...) { ... } | <anonymous class> | final, private |
+| classes.kt:75:24:75:33 | new Object(...) { ... } | <anonymous class> | final, private |
+| classes.kt:81:16:81:38 | new Interface1(...) { ... } | <anonymous class> | final, private |
+| classes.kt:85:16:85:25 | new Object(...) { ... } | <anonymous class> | final, private |
+| classes.kt:89:16:89:44 | new Interface3<Integer>(...) { ... } | <anonymous class> | final, private |
+| classes.kt:93:1:93:26 | pulicClass | pulicClass | final, public |
+| classes.kt:94:1:94:29 | privateClass | privateClass | final, private |
+| classes.kt:95:1:95:31 | internalClass | internalClass | final, internal |
+| classes.kt:96:1:96:34 | noExplicitVisibilityClass | noExplicitVisibilityClass | final, public |
+| classes.kt:98:1:104:1 | nestedClassVisibilities | nestedClassVisibilities | final, public |
+| classes.kt:99:5:99:36 | pulicNestedClass | nestedClassVisibilities$pulicNestedClass | final, public |
+| classes.kt:100:5:100:43 | protectedNestedClass | nestedClassVisibilities$protectedNestedClass | final, protected |
+| classes.kt:101:5:101:39 | privateNestedClass | nestedClassVisibilities$privateNestedClass | final, private |
+| classes.kt:102:5:102:41 | internalNestedClass | nestedClassVisibilities$internalNestedClass | final, internal |
+| classes.kt:103:5:103:44 | noExplicitVisibilityNestedClass | nestedClassVisibilities$noExplicitVisibilityNestedClass | final, public |
+| classes.kt:106:1:106:27 | sealedClass | sealedClass | public, sealed |
+| classes.kt:107:1:107:23 | openClass | openClass | public |
+| classes.kt:109:1:136:1 | C1 | C1 | final, public |
+| classes.kt:111:9:113:9 | Local1 | C1$Local1 | final, private |
+| classes.kt:118:9:123:9 |  | C1$ | final, private |
+| classes.kt:119:13:121:13 | Local2 | C1$Local2 | final, private |
+| classes.kt:127:16:134:9 | new Object(...) { ... } | <anonymous class> | final, private |
+| classes.kt:129:17:131:17 | Local3 | C1$$Local3 | final, private |
+| classes.kt:138:1:148:1 | Cl0 | Cl0 | final, public |
+| classes.kt:140:9:146:9 |  | Cl0$ | final, private |
+| classes.kt:141:13:145:13 | Cl1 | Cl0$Cl1 | final, private |
+| classes.kt:150:1:156:1 | Cl00 | Cl00 | final, public |
+| classes.kt:151:5:155:5 | Cl01 | Cl00$Cl01 | final, public |
+| classes.kt:159:5:159:14 | X | ClassesKt$X | final, private |
+| classes.kt:162:13:162:22 | new Object(...) { ... } | <anonymous class> | final, private |
+| generic_anonymous.kt:0:0:0:0 | Generic_anonymousKt | Generic_anonymousKt | final, public |
+| generic_anonymous.kt:1:1:9:1 | Generic | Generic | final, private |
+| generic_anonymous.kt:3:19:5:3 | new Object(...) { ... } | <anonymous class> | final, private |
+| generic_anonymous.kt:15:1:33:1 | Outer | Outer | final, public |
+| generic_anonymous.kt:25:9:31:9 |  | Outer$ | final, private |
+| generic_anonymous.kt:26:13:26:37 | new Object(...) { ... } | <anonymous class> | final, private |
+| generic_anonymous.kt:27:13:27:37 | new Object(...) { ... } | <anonymous class> | final, private |
+| generic_anonymous.kt:28:13:28:41 | new Object(...) { ... } | <anonymous class> | final, private |
+| generic_anonymous.kt:29:13:29:29 | new C0<U2>(...) { ... } | <anonymous class> | final, private |
+| generic_anonymous.kt:30:13:30:33 | new C0<String>(...) { ... } | <anonymous class> | final, private |
+| localClassField.kt:1:1:11:1 | A | A | final, public |
+| localClassField.kt:3:9:3:19 | L | A$L | final, private |
+| localClassField.kt:8:9:8:19 | L | A$L | final, private |
+| local_anonymous.kt:3:1:36:1 | Class1 | LocalAnonymous.Class1 | final, public |
+| local_anonymous.kt:5:16:7:9 | new Object(...) { ... } | <anonymous class> | final, private |
+| local_anonymous.kt:11:9:11:24 |  | Class1$ | final, private |
+| local_anonymous.kt:16:23:16:49 | new Function2<Integer,Integer,Integer>(...) { ... } | <anonymous class> | final, private |
+| local_anonymous.kt:17:23:17:49 | new Function2<Integer,Integer,Integer>(...) { ... } | <anonymous class> | final, private |
+| local_anonymous.kt:21:21:21:31 | new Function1<Class1,Unit>(...) { ... } | <anonymous class> | final, private |
+| local_anonymous.kt:25:9:25:27 | LocalClass | LocalAnonymous.Class1$LocalClass | final, private |
+| local_anonymous.kt:29:31:35:5 | new Object(...) { ... } | <anonymous class> | final, private |
+| local_anonymous.kt:39:1:45:1 | Class2 | LocalAnonymous.Class2 | final, public |
+| local_anonymous.kt:40:14:44:5 | new Interface2(...) { ... } | <anonymous class> | final, private |
+| superChain.kt:1:1:1:33 | SuperChain1 | SuperChain1 | public |
+| superChain.kt:2:1:2:60 | SuperChain2 | SuperChain2 | public |
+| superChain.kt:3:1:3:60 | SuperChain3 | SuperChain3 | public |

@@ -7,13 +7,16 @@
  * @problem.severity error
  * @precision medium
  * @id java/run-finalizers-on-exit
- * @tags reliability
- *       maintainability
+ * @previous-id java/do-not-use-finalizers
+ * @tags quality
+ *       reliability
+ *       correctness
+ *       performance
  */
 
 import java
 
-from MethodAccess ma, Method runfinalizers, Class c
+from MethodCall ma, Method runfinalizers, Class c
 where
   ma.getMethod() = runfinalizers and
   runfinalizers.hasName("runFinalizersOnExit") and

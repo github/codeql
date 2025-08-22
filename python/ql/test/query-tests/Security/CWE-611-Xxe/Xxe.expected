@@ -1,27 +1,21 @@
 edges
-| test.py:0:0:0:0 | ModuleVariableNode for test.request | test.py:8:19:8:25 | ControlFlowNode for request |
-| test.py:0:0:0:0 | ModuleVariableNode for test.request | test.py:19:19:19:25 | ControlFlowNode for request |
-| test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:1:26:1:32 | GSSA Variable request |
-| test.py:1:26:1:32 | GSSA Variable request | test.py:0:0:0:0 | ModuleVariableNode for test.request |
-| test.py:8:19:8:25 | ControlFlowNode for request | test.py:8:19:8:30 | ControlFlowNode for Attribute |
-| test.py:8:19:8:30 | ControlFlowNode for Attribute | test.py:8:19:8:45 | ControlFlowNode for Subscript |
-| test.py:8:19:8:45 | ControlFlowNode for Subscript | test.py:9:34:9:44 | ControlFlowNode for xml_content |
-| test.py:19:19:19:25 | ControlFlowNode for request | test.py:19:19:19:30 | ControlFlowNode for Attribute |
-| test.py:19:19:19:30 | ControlFlowNode for Attribute | test.py:19:19:19:45 | ControlFlowNode for Subscript |
-| test.py:19:19:19:45 | ControlFlowNode for Subscript | test.py:30:34:30:44 | ControlFlowNode for xml_content |
+| test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:1:26:1:32 | ControlFlowNode for request | provenance |  |
+| test.py:1:26:1:32 | ControlFlowNode for request | test.py:9:19:9:25 | ControlFlowNode for request | provenance |  |
+| test.py:1:26:1:32 | ControlFlowNode for request | test.py:20:19:20:25 | ControlFlowNode for request | provenance |  |
+| test.py:9:5:9:15 | ControlFlowNode for xml_content | test.py:10:34:10:44 | ControlFlowNode for xml_content | provenance |  |
+| test.py:9:19:9:25 | ControlFlowNode for request | test.py:9:5:9:15 | ControlFlowNode for xml_content | provenance | AdditionalTaintStep |
+| test.py:20:5:20:15 | ControlFlowNode for xml_content | test.py:31:34:31:44 | ControlFlowNode for xml_content | provenance |  |
+| test.py:20:19:20:25 | ControlFlowNode for request | test.py:20:5:20:15 | ControlFlowNode for xml_content | provenance | AdditionalTaintStep |
 nodes
-| test.py:0:0:0:0 | ModuleVariableNode for test.request | semmle.label | ModuleVariableNode for test.request |
 | test.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
-| test.py:1:26:1:32 | GSSA Variable request | semmle.label | GSSA Variable request |
-| test.py:8:19:8:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| test.py:8:19:8:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| test.py:8:19:8:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| test.py:9:34:9:44 | ControlFlowNode for xml_content | semmle.label | ControlFlowNode for xml_content |
-| test.py:19:19:19:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| test.py:19:19:19:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| test.py:19:19:19:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| test.py:30:34:30:44 | ControlFlowNode for xml_content | semmle.label | ControlFlowNode for xml_content |
+| test.py:1:26:1:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:9:5:9:15 | ControlFlowNode for xml_content | semmle.label | ControlFlowNode for xml_content |
+| test.py:9:19:9:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:10:34:10:44 | ControlFlowNode for xml_content | semmle.label | ControlFlowNode for xml_content |
+| test.py:20:5:20:15 | ControlFlowNode for xml_content | semmle.label | ControlFlowNode for xml_content |
+| test.py:20:19:20:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:31:34:31:44 | ControlFlowNode for xml_content | semmle.label | ControlFlowNode for xml_content |
 subpaths
 #select
-| test.py:9:34:9:44 | ControlFlowNode for xml_content | test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:9:34:9:44 | ControlFlowNode for xml_content | XML parsing depends on a $@ without guarding against external entity expansion. | test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
-| test.py:30:34:30:44 | ControlFlowNode for xml_content | test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:30:34:30:44 | ControlFlowNode for xml_content | XML parsing depends on a $@ without guarding against external entity expansion. | test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| test.py:10:34:10:44 | ControlFlowNode for xml_content | test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:10:34:10:44 | ControlFlowNode for xml_content | XML parsing depends on a $@ without guarding against external entity expansion. | test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| test.py:31:34:31:44 | ControlFlowNode for xml_content | test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:31:34:31:44 | ControlFlowNode for xml_content | XML parsing depends on a $@ without guarding against external entity expansion. | test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |

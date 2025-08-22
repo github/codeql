@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["compress/flate", "", False, "NewReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["compress/flate", "", False, "NewReaderDict", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["compress/flate", "Resetter", True, "Reset", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["compress/flate", "Writer", True, "Reset", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]

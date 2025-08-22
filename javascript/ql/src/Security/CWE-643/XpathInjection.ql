@@ -13,9 +13,9 @@
 
 import javascript
 import semmle.javascript.security.dataflow.XpathInjectionQuery
-import DataFlow::PathGraph
+import XpathInjectionFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from XpathInjectionFlow::PathNode source, XpathInjectionFlow::PathNode sink
+where XpathInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "XPath expression depends on a $@.", source.getNode(),
   "user-provided value"

@@ -8,6 +8,6 @@ from Field f, SimpleType t
 where
   f.getName() = "MaxValue" and
   f.getDeclaringType() = t and
-  t.hasQualifiedName("System", "Decimal") and
+  t.hasFullyQualifiedName("System", "Decimal") and
   f.isPublic()
 select f.toString(), f.getDeclaringType().toString()

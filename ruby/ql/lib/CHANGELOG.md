@@ -1,3 +1,403 @@
+## 5.0.2
+
+### Bug Fixes
+
+* Made the following changes to `NetHttpRequest`
+  * Adds `connectionNode`, like other Ruby HTTP clients
+  * Makes `requestNode` and `connectionNode` public so subclasses can use them
+  * Adds detection of `Net::HTTP.start`, a common way to make HTTP requests in Ruby
+
+## 5.0.1
+
+### Minor Analysis Improvements
+
+* The regular expressions in `SensitiveDataHeuristics.qll` have been extended to find more instances of sensitive data such as secrets used in authentication, finance and health information, and device data. The heuristics have also been refined to find fewer false positive matches. This will improve results for queries related to sensitive information.
+
+## 5.0.0
+
+### Breaking Changes
+
+* Most classes and predicates in the AST, SSA, and control-flow-graph libraries are now annotated with `overlay[local]`, in preparation for incremental analysis. This could result in compiler errors for custom queries if they extend these classes. To mitigate such errors, look for ways to restructure custom QL code so it doesn't depend on changing the behavior of standard-library classes.
+
+## 4.1.9
+
+No user-facing changes.
+
+## 4.1.8
+
+No user-facing changes.
+
+## 4.1.7
+
+### Minor Analysis Improvements
+
+* Captured variables are currently considered live when the capturing function exits normally. Now they are also considered live when the capturing function exits via an exception.
+
+### Bug Fixes
+
+### Bug Fixes
+
+* The Ruby printAst.qll library now orders AST nodes slightly differently: child nodes that do not literally appear in the source code, but whose parent nodes do, are assigned a deterministic order based on a combination of source location and logical order within the parent. This fixes the non-deterministic ordering that sometimes occurred depending on evaluation order. The effect may also be visible in downstream uses of the printAst library, such as the AST view in the VSCode extension.
+
+## 4.1.6
+
+No user-facing changes.
+
+## 4.1.5
+
+No user-facing changes.
+
+## 4.1.4
+
+### Minor Analysis Improvements
+
+* Calls to `super` without explict arguments now have their implicit arguments generated. For example, in `def foo(x, y) { super } end` the call to `super` becomes `super(x, y)`.
+
+## 4.1.3
+
+No user-facing changes.
+
+## 4.1.2
+
+No user-facing changes.
+
+## 4.1.1
+
+No user-facing changes.
+
+## 4.1.0
+
+### Deprecated APIs
+
+* The predicates `immediatelyControls` and `controls` on the `ConditionBlock`
+  class have been deprecated in favor of the newly added `dominatingEdge`
+  predicate.
+
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `getCallNode` predicate from `API::Node`, use `asCall()` instead.
+* Deleted the deprecated `getASubclass`, `getAnImmediateSubclass`, `getASuccessor`, `getAPredecessor`, `getASuccessor`, `getDepth`, and `getPath` predicates from `API::Node`. 
+* Deleted the deprecated `Root`, `Use`, and `Def` classes from `ApiGraphs.qll`.
+* Deleted the deprecated `Label` module from `ApiGraphs.qll`.
+* Deleted the deprecated `getAUse`, `getAnImmediateUse`, `getARhs`, and `getAValueReachingRhs` predicates from `API::Node`, use `getAValueReachableFromSource`, `asSource`, `asSink`, and `getAValueReachingSink` instead.
+* Deleted the deprecated `getAVariable` predicate from the `ExprNode` class, use `getVariable` instead.
+* Deleted the deprecated `getAPotentialFieldAccessMethod` predicate from the `ActiveRecordModelClass` class.
+* Deleted the deprecated `ActiveRecordModelClassMethodCall` class from `ActiveRecord.qll`, use `ActiveRecordModelClass.getClassNode().trackModule().getMethod()` instead.
+* Deleted the deprecated `PotentiallyUnsafeSqlExecutingMethodCall` class from `ActiveRecord.qll`, use the `SqlExecution` concept instead.
+* Deleted the deprecated `ModelClass` and `ModelInstance` classes from `ActiveResource.qll`, use `ModelClassNode` and `ModelClassNode.getAnInstanceReference()` instead.
+* Deleted the deprecated `Collection` class from `ActiveResource.qll`, use `CollectionSource` instead.
+* Deleted the deprecated `ServiceInstantiation` and `ClientInstantiation` classes from `Twirp.qll`.
+* Deleted a lot of deprecated dataflow modules from `*Query.qll` files.
+* Deleted the old deprecated TypeTracking library.
+
+## 3.0.2
+
+### Minor Analysis Improvements
+
+* The sensitive data library has been improved so that `snake_case` style variable names are recognized more reliably. This may result in more sensitive data being identified, and more results from queries that use the sensitive data library.
+* Types are now being tracked in data flow, but only when the type of an object is obvious from the context. For example, `C.new` has guaranteed type `C`, while in `def add(x, y) { x + y }` we cannot assign a type to `x + y` (it could, for instance, be both `String` and `Integer`). Tracking types allows us to remove false-positive results when type incompatibility can be established.
+
+## 3.0.1
+
+No user-facing changes.
+
+## 3.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated data flow API that was based on extending a configuration class. See https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries for instructions on migrating your queries to use the new API.
+
+## 2.0.4
+
+No user-facing changes.
+
+## 2.0.3
+
+No user-facing changes.
+
+## 2.0.2
+
+### Minor Analysis Improvements
+
+* The `ExtractionError` class has been split into `ExtractionError` and `ExtractionWarning`, reporting extraction errors and warnings respectively.
+
+## 2.0.1
+
+No user-facing changes.
+
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `getURL` predicate the `Http::Request` class, use `getAUrlPart` instead.
+* Deleted the deprecated `getNode` predicate from the `CfgNode` class, use `getAstNode` instead. 
+* Deleted the deprecated `explorationLimit` predicate from `DataFlow::Configuration`, use `FlowExploration<explorationLimit>` instead.
+* Deleted many deprecated dataflow configurations based on `DataFlow::Configuration`. 
+* Deleted many deprecated taint-tracking configurations based on `TaintTracking::Configuration`. 
+
+## 1.0.7
+
+No user-facing changes.
+
+## 1.0.6
+
+No user-facing changes.
+
+## 1.0.5
+
+No user-facing changes.
+
+## 1.0.4
+
+No user-facing changes.
+
+## 1.0.3
+
+### Minor Analysis Improvements
+
+* Element references with blocks, such as `foo[:bar] { |x| puts x}`, are now parsed correctly.
+* The `CleartextSources.qll` library, used by `rb/clear-text-logging-sensitive-data` and `rb/clear-text-logging-sensitive-data`, has been updated to consider heuristics for additional categories of sensitive data. 
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+No user-facing changes.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+### Minor Analysis Improvements
+
+* Additional heuristics for a new sensitive data classification for private information (e.g. credit card numbers) have been added to the shared `SensitiveDataHeuristics.qll` library. This may result in additional results for queries that use sensitive data such as `rb/sensitive-get-query`.
+
+## 0.9.1
+
+No user-facing changes.
+
+## 0.9.0
+
+### Breaking Changes
+
+* Deleted the deprecated `RegExpPatterns` module from `Regexp.qll`.
+* Deleted the deprecated `security/cwe-020/HostnameRegexpShared.qll` file.
+
+## 0.8.14
+
+No user-facing changes.
+
+## 0.8.13
+
+### Minor Analysis Improvements
+
+* Data flow is now tracked through `ActiveRecord` scopes.
+* Modeled instances of `ActionDispatch::Http::UploadedFile` that can be obtained from element reads of `ActionController::Parameters`, with calls to `original_filename`, `content_type`, and `read` now propagating taint from their receiver. 
+* The second argument, `subquery_name`, of the `ActiveRecord::QueryMethods::from` method, is now recognized as an sql injection sink.
+* Calls to `Typhoeus::Request.new` are now considered as instances of the `Http::Client::Request` concept, with the response body being treated as a remote flow source.
+* New command injection sinks have been added, including `Process.spawn`, `Process.exec`, `Terrapin::CommandLine` and the `open4` gem.
+
+## 0.8.12
+
+No user-facing changes.
+
+## 0.8.11
+
+No user-facing changes.
+
+## 0.8.10
+
+### Minor Analysis Improvements
+
+* Calls to `I18n.translate` as well as Rails helper translate methods now propagate taint from their keyword arguments. The Rails translate methods are also recognized as XSS sanitizers when using keys marked as html safe.
+* Calls to `Arel::Nodes::SqlLiteral.new` are now modeled as instances of the `SqlConstruction` concept, as well as propagating taint from their argument.
+* Additional arguments beyond the first of calls to the  `ActiveRecord` methods `select`, `reselect`, `order`, `reorder`, `joins`, `group`, and `pluck` are now recognized as sql injection sinks. 
+* Calls to several methods of `ActiveRecord::Connection`, such as `ActiveRecord::Connection#exec_query`, are now recognized as SQL executions, including those via subclasses.
+
+## 0.8.9
+
+### Minor Analysis Improvements
+
+* Raw output ERB tags of the form `<%== ... %>` are now recognised as cross-site scripting sinks.
+* The name "certification" is no longer seen as possibly being a certificate, and will therefore no longer be flagged in queries like "clear-text-logging" which look for sensitive data.
+
+## 0.8.8
+
+### Minor Analysis Improvements
+
+* Flow is now tracked through Rails `render` calls, when the argument is a `ViewComponent`. In this case, data flow is tracked into the accompanying `.html.erb` file.
+
+## 0.8.7
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `HTTP`, `CSRF` etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `getAUse` and `getARhs` predicates from `API::Node`, use `getASource` and `getASink` instead.
+* Deleted the deprecated `disablesCertificateValidation` predicate from the `Http` module.
+* Deleted the deprecated `ParamsCall`, `CookiesCall`, and `ActionControllerControllerClass` classes from `ActionController.qll`, use the simarly named classes from `codeql.ruby.frameworks.Rails::Rails` instead.
+* Deleted the deprecated `HtmlSafeCall`, `HtmlEscapeCall`, `RenderCall`, and `RenderToCall` classes from `ActionView.qll`, use the simarly named classes from `codeql.ruby.frameworks.Rails::Rails` instead.
+* Deleted the deprecated `HtmlSafeCall` class from `Rails.qll`.
+* Deleted the deprecated `codeql/ruby/security/BadTagFilterQuery.qll`, `codeql/ruby/security/OverlyLargeRangeQuery.qll`, `codeql/ruby/security/regexp/ExponentialBackTracking.qll`, `codeql/ruby/security/regexp/NfaUtils.qll`, `codeql/ruby/security/regexp/RegexpMatching.qll`, and `codeql/ruby/security/regexp/SuperlinearBackTracking.qll` files.
+* Deleted the deprecated `localSourceStoreStep` predicate from `TypeTracker.qll`, use `flowsToStoreStep` instead.
+* The diagnostic query `rb/diagnostics/successfully-extracted-files`, and therefore the Code Scanning UI measure of scanned Ruby files, now considers any Ruby file seen during extraction, even one with some errors, to be extracted / scanned.
+
+## 0.8.6
+
+### Minor Analysis Improvements
+
+* Parsing of division operators (`/`) at the end of a line has been improved. Before they were wrongly interpreted as the start of a regular expression literal (`/.../`) leading to syntax errors.
+* Parsing of `case` statements that are formatted with the value expression on a different line than the `case` keyword  has been improved and should no longer lead to syntax errors.
+* Ruby now makes use of the shared type tracking library, exposed as `codeql.ruby.typetracking.TypeTracking`. The existing type tracking library, `codeql.ruby.typetracking.TypeTracker`, has consequently been deprecated.
+
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+### Minor Analysis Improvements
+
+* Improved modeling for `ActiveRecord`s `update_all` method
+
+## 0.8.3
+
+No user-facing changes.
+
+## 0.8.2
+
+No user-facing changes.
+
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `isBarrierGuard` predicate from the dataflow library and its uses, use `isBarrier` and the `BarrierGuard` module instead.
+* Deleted the deprecated `isWeak` predicate from the `CryptographicOperation` class.
+* Deleted the deprecated `getStringOrSymbol` and `isStringOrSymbol` predicates from the `ConstantValue` class.
+* Deleted the deprecated `getAPI` from the `IOOrFileMethodCall` class.
+* Deleted the deprecated `codeql.ruby.security.performance` folder, use `codeql.ruby.security.regexp` instead.
+* GraphQL enums are no longer considered remote flow sources.
+
+## 0.8.0
+
+### Major Analysis Improvements
+
+* Improved support for flow through captured variables that properly adheres to inter-procedural control flow.
+
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+No user-facing changes.
+
+## 0.7.3
+
+### Minor Analysis Improvements
+
+* Flow between positional arguments and splat parameters (`*args`) is now tracked more precisely.
+* Flow between splat arguments (`*args`) and positional parameters is now tracked more precisely.
+
+## 0.7.2
+
+No user-facing changes.
+
+## 0.7.1
+
+### New Features
+
+* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`. 
+  Hence it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
+
+### Major Analysis Improvements
+
+* The API graph library (`codeql.ruby.ApiGraphs`) has been significantly improved, with better support for inheritance,
+  and data-flow nodes can now be converted to API nodes by calling `.track()` or `.backtrack()` on the node.
+  API graphs allow for efficient modelling of how a given value is used by the code base, or how values produced by the code base
+  are consumed by a library. See the documentation for `API::Node` for details and examples.
+
+### Minor Analysis Improvements
+
+* Data flow configurations can now include a predicate `neverSkip(Node node)`
+  in order to ensure inclusion of certain nodes in the path explanations. The
+  predicate defaults to the end-points of the additional flow steps provided in
+  the configuration, which means that such steps now always are visible by
+  default in path explanations.
+* The `'QUERY_STRING'` field of a Rack `env` parameter is now recognized as a source of remote user input.
+* Query parameters and cookies from `Rack::Response` objects are recognized as potential sources of remote flow input.
+* Calls to `Rack::Utils.parse_query` now propagate taint.
+
+## 0.7.0
+
+### Deprecated APIs
+
+* The `Configuration` taint flow configuration class from `codeql.ruby.security.InsecureDownloadQuery` has been deprecated. Use the `Flow` module instead.
+
+### Minor Analysis Improvements
+
+* More kinds of rack applications are now recognized.
+* Rack::Response instances are now recognized as potential responses from rack applications.
+* HTTP redirect responses from Rack applications are now recognized as a potential sink for open redirect alerts.
+* Additional sinks for `rb/unsafe-deserialization` have been added. This includes various methods from the `yaml` and `plist` gems, which deserialize YAML and Property List data, respectively.
+
+## 0.6.4
+
+No user-facing changes.
+
+## 0.6.3
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `URL`, `XSS`, etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `getValueText` predicate from the `Expr`, `StringComponent`, and `ExprCfgNode` classes. Use `getConstantValue` instead.
+* Deleted the deprecated `VariableReferencePattern` class, use `ReferencePattern` instead.
+* Deleted all deprecated aliases in `StandardLibrary.qll`, use `codeql.ruby.frameworks.Core` and `codeql.ruby.frameworks.Stdlib` instead.
+* Support for the `sequel` gem has been added. Method calls that execute queries against a database that may be vulnerable to injection attacks will now be recognized.
+* Support for the `mysql2` gem has been added. Method calls that execute queries against an MySQL database that may be vulnerable to injection attacks will now be recognized.
+* Support for the `pg` gem has been added. Method calls that execute queries against a PostgreSQL database that may be vulnerable to injection attacks will now be recognized.
+
+## 0.6.2
+
+### Minor Analysis Improvements
+
+* Support for the `sqlite3` gem has been added. Method calls that execute queries against an SQLite3 database that may be vulnerable to injection attacks will now be recognized.
+
+## 0.6.1
+
+No user-facing changes.
+
+## 0.6.0
+
+### Deprecated APIs
+
+* The recently introduced new data flow and taint tracking APIs have had a
+  number of module and predicate renamings. The old APIs remain in place for
+  now.
+
+### Minor Analysis Improvements
+
+* Control flow graph: the evaluation order of scope expressions and receivers in multiple assignments has been adjusted to match the changes made in Ruby 
+3.1 and 3.2.
+* The clear-text storage (`rb/clear-text-storage-sensitive-data`) and logging (`rb/clear-text-logging-sensitive-data`) queries now use built-in flow through hashes, for improved precision. This may result in both new true positives and less false positives.
+* Accesses of `params` in Sinatra applications are now recognized as HTTP input accesses.
+* Data flow is tracked from Sinatra route handlers to ERB files.
+* Data flow is tracked between basic Sinatra filters (those without URL patterns) and their corresponding route handlers.
+
+### Bug Fixes
+
+* Fixed some accidental predicate visibility in the backwards-compatible wrapper for data flow configurations. In particular `DataFlow::hasFlowPath`, `DataFlow::hasFlow`, `DataFlow::hasFlowTo`, and `DataFlow::hasFlowToExpr` were accidentally exposed in a single version.
+
+## 0.5.6
+
+No user-facing changes.
+
 ## 0.5.5
 
 ### New Features

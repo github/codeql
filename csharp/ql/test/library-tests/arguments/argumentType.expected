@@ -1,44 +1,122 @@
-| arguments.cs:27:15:27:15 | 2 | 0 |
-| arguments.cs:28:12:28:12 | access to local variable x | 0 |
-| arguments.cs:28:19:28:19 | access to local variable x | 2 |
-| arguments.cs:28:26:28:26 | access to local variable x | 1 |
-| arguments.cs:29:27:29:27 | access to local variable x | 0 |
-| arguments.cs:29:34:29:34 | access to local variable x | 2 |
-| arguments.cs:29:41:29:41 | access to local variable x | 1 |
-| arguments.cs:30:30:30:31 | 10 | 0 |
-| arguments.cs:30:37:30:37 | 5 | 0 |
-| arguments.cs:35:12:35:12 | 0 | 0 |
-| arguments.cs:35:15:35:15 | 1 | 0 |
-| arguments.cs:35:18:35:18 | 2 | 0 |
+| arguments.cs:28:15:28:15 | 2 | 0 |
+| arguments.cs:29:12:29:12 | access to local variable x | 0 |
+| arguments.cs:29:19:29:19 | access to local variable x | 2 |
+| arguments.cs:29:26:29:26 | access to local variable x | 1 |
+| arguments.cs:30:27:30:27 | access to local variable x | 0 |
+| arguments.cs:30:34:30:34 | access to local variable x | 2 |
+| arguments.cs:30:41:30:41 | access to local variable x | 1 |
+| arguments.cs:31:30:31:31 | 10 | 0 |
+| arguments.cs:31:37:31:37 | 5 | 0 |
 | arguments.cs:36:12:36:12 | 0 | 0 |
-| arguments.cs:36:15:36:32 | array creation of type Int32[] | 0 |
-| arguments.cs:37:18:37:18 | 1 | 0 |
-| arguments.cs:37:24:37:24 | 0 | 0 |
-| arguments.cs:38:12:38:12 | 0 | 0 |
-| arguments.cs:38:15:38:18 | access to parameter args | 0 |
-| arguments.cs:39:18:39:21 | access to parameter args | 0 |
-| arguments.cs:39:27:39:27 | 0 | 0 |
-| arguments.cs:40:18:40:35 | array creation of type Int32[] | 0 |
-| arguments.cs:40:41:40:41 | 0 | 0 |
-| arguments.cs:45:12:45:32 | array creation of type Object[] | 0 |
-| arguments.cs:45:35:45:38 | null | 0 |
-| arguments.cs:55:21:55:21 | 1 | 0 |
-| arguments.cs:55:24:55:24 | 2 | 0 |
-| arguments.cs:56:10:56:13 | access to property Prop | 0 |
-| arguments.cs:56:16:56:25 | access to indexer | 0 |
-| arguments.cs:56:21:56:21 | 3 | 0 |
-| arguments.cs:56:24:56:24 | 4 | 0 |
-| arguments.cs:56:31:56:31 | 5 | 0 |
-| arguments.cs:56:34:56:34 | 6 | 0 |
-| arguments.cs:59:14:59:14 | 8 | 0 |
-| arguments.cs:59:17:59:17 | 9 | 0 |
-| arguments.cs:60:14:60:15 | 10 | 0 |
-| arguments.cs:60:14:60:15 | 10 | 0 |
-| arguments.cs:60:18:60:19 | 11 | 0 |
-| arguments.cs:60:18:60:19 | 11 | 0 |
-| arguments.cs:61:22:61:23 | 13 | 0 |
-| arguments.cs:61:26:61:27 | 14 | 0 |
-| arguments.cs:62:10:62:13 | access to property Prop | 0 |
-| arguments.cs:62:16:62:27 | access to indexer | 0 |
-| arguments.cs:62:21:62:22 | 15 | 0 |
-| arguments.cs:62:25:62:26 | 16 | 0 |
+| arguments.cs:36:15:36:15 | 1 | 0 |
+| arguments.cs:36:18:36:18 | 2 | 0 |
+| arguments.cs:37:12:37:12 | 0 | 0 |
+| arguments.cs:37:15:37:32 | array creation of type Int32[] | 0 |
+| arguments.cs:38:18:38:18 | 1 | 0 |
+| arguments.cs:38:24:38:24 | 0 | 0 |
+| arguments.cs:39:12:39:12 | 0 | 0 |
+| arguments.cs:39:15:39:18 | access to parameter args | 0 |
+| arguments.cs:40:18:40:21 | access to parameter args | 0 |
+| arguments.cs:40:27:40:27 | 0 | 0 |
+| arguments.cs:41:18:41:35 | array creation of type Int32[] | 0 |
+| arguments.cs:41:41:41:41 | 0 | 0 |
+| arguments.cs:43:12:43:12 | 0 | 0 |
+| arguments.cs:43:15:43:16 | (...) ... | 0 |
+| arguments.cs:43:19:43:20 | (...) ... | 0 |
+| arguments.cs:48:12:48:32 | array creation of type Object[] | 0 |
+| arguments.cs:48:35:48:38 | null | 0 |
+| arguments.cs:58:21:58:21 | 1 | 0 |
+| arguments.cs:58:24:58:24 | 2 | 0 |
+| arguments.cs:59:10:59:13 | access to property Prop | 0 |
+| arguments.cs:59:16:59:25 | access to indexer | 0 |
+| arguments.cs:59:21:59:21 | 3 | 0 |
+| arguments.cs:59:24:59:24 | 4 | 0 |
+| arguments.cs:59:31:59:31 | 5 | 0 |
+| arguments.cs:59:34:59:34 | 6 | 0 |
+| arguments.cs:62:14:62:14 | 8 | 0 |
+| arguments.cs:62:17:62:17 | 9 | 0 |
+| arguments.cs:63:14:63:15 | 10 | 0 |
+| arguments.cs:63:14:63:15 | 10 | 0 |
+| arguments.cs:63:18:63:19 | 11 | 0 |
+| arguments.cs:63:18:63:19 | 11 | 0 |
+| arguments.cs:64:22:64:23 | 13 | 0 |
+| arguments.cs:64:26:64:27 | 14 | 0 |
+| arguments.cs:65:10:65:13 | access to property Prop | 0 |
+| arguments.cs:65:16:65:27 | access to indexer | 0 |
+| arguments.cs:65:21:65:22 | 15 | 0 |
+| arguments.cs:65:25:65:26 | 16 | 0 |
+| arguments.cs:76:12:76:12 | 0 | 0 |
+| arguments.cs:76:15:76:21 | access to array element | 0 |
+| arguments.cs:76:20:76:20 | 0 | 0 |
+| arguments.cs:76:24:76:30 | access to array element | 0 |
+| arguments.cs:76:29:76:29 | 1 | 0 |
+| arguments.cs:77:12:77:12 | 0 | 0 |
+| arguments.cs:77:15:77:42 | array creation of type T[] | 0 |
+| arguments.cs:77:30:77:30 | 0 | 0 |
+| arguments.cs:77:39:77:39 | 1 | 0 |
+| arguments.cs:78:12:78:12 | 0 | 0 |
+| arguments.cs:78:15:78:18 | access to parameter args | 0 |
+| arguments.cs:79:18:79:21 | access to parameter args | 0 |
+| arguments.cs:79:27:79:27 | 0 | 0 |
+| arguments.cs:81:20:81:20 | 0 | 0 |
+| arguments.cs:81:23:81:25 | 1.1 | 0 |
+| arguments.cs:81:28:81:30 | 2.2 | 0 |
+| arguments.cs:82:20:82:20 | 0 | 0 |
+| arguments.cs:82:23:82:47 | array creation of type Double[] | 0 |
+| arguments.cs:84:20:84:20 | 0 | 0 |
+| arguments.cs:84:23:84:23 | (...) ... | 0 |
+| arguments.cs:84:26:84:26 | (...) ... | 0 |
+| arguments.cs:85:20:85:20 | 0 | 0 |
+| arguments.cs:85:23:85:43 | array creation of type Double[] | 0 |
+| arguments.cs:86:20:86:20 | 0 | 0 |
+| arguments.cs:86:23:86:43 | array creation of type Double[] | 0 |
+| arguments.cs:91:12:91:12 | 0 | 0 |
+| arguments.cs:91:15:91:21 | access to indexer | 0 |
+| arguments.cs:91:20:91:20 | 0 | 0 |
+| arguments.cs:91:24:91:30 | access to indexer | 0 |
+| arguments.cs:91:29:91:29 | 1 | 0 |
+| arguments.cs:92:12:92:12 | 0 | 0 |
+| arguments.cs:92:15:92:32 | [...] | 0 |
+| arguments.cs:92:21:92:21 | 0 | 0 |
+| arguments.cs:92:30:92:30 | 1 | 0 |
+| arguments.cs:93:12:93:12 | 0 | 0 |
+| arguments.cs:93:15:93:18 | access to parameter args | 0 |
+| arguments.cs:94:18:94:21 | access to parameter args | 0 |
+| arguments.cs:94:27:94:27 | 0 | 0 |
+| arguments.cs:96:20:96:20 | 0 | 0 |
+| arguments.cs:96:23:96:25 | 1.1 | 0 |
+| arguments.cs:96:28:96:30 | 2.2 | 0 |
+| arguments.cs:97:20:97:20 | 0 | 0 |
+| arguments.cs:97:23:97:32 | [...] | 0 |
+| arguments.cs:99:20:99:20 | 0 | 0 |
+| arguments.cs:99:23:99:23 | (...) ... | 0 |
+| arguments.cs:99:26:99:26 | (...) ... | 0 |
+| arguments.cs:100:20:100:20 | 0 | 0 |
+| arguments.cs:100:23:100:47 | object creation of type List<Double> | 0 |
+| arguments.cs:105:13:105:13 | 0 | 0 |
+| arguments.cs:105:16:105:16 | 1 | 0 |
+| arguments.cs:105:19:105:19 | 2 | 0 |
+| arguments.cs:106:13:106:13 | 0 | 0 |
+| arguments.cs:106:16:106:21 | [...] | 0 |
+| arguments.cs:107:19:107:19 | 1 | 0 |
+| arguments.cs:107:25:107:25 | 0 | 0 |
+| arguments.cs:108:13:108:13 | 0 | 0 |
+| arguments.cs:108:16:108:19 | access to parameter args | 0 |
+| arguments.cs:109:19:109:22 | access to parameter args | 0 |
+| arguments.cs:109:28:109:28 | 0 | 0 |
+| arguments.cs:110:19:110:24 | [...] | 0 |
+| arguments.cs:110:30:110:30 | 0 | 0 |
+| arguments.cs:112:13:112:13 | 0 | 0 |
+| arguments.cs:112:16:112:17 | (...) ... | 0 |
+| arguments.cs:112:20:112:21 | (...) ... | 0 |
+| lambdas.cs:8:12:8:12 | 1 | 0 |
+| lambdas.cs:11:12:11:12 | 2 | 0 |
+| lambdas.cs:11:15:11:15 | 3 | 0 |
+| lambdas.cs:12:12:12:12 | 4 | 0 |
+| lambdas.cs:13:12:13:12 | 5 | 0 |
+| lambdas.cs:13:15:13:15 | 6 | 0 |
+| lambdas.cs:17:12:17:12 | 7 | 0 |
+| lambdas.cs:17:15:17:15 | 8 | 0 |
+| lambdas.cs:17:18:17:18 | 9 | 0 |
+| lambdas.cs:25:16:25:16 | 4 | 0 |
+| lambdas.cs:25:22:25:22 | 5 | 0 |

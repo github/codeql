@@ -1,0 +1,4 @@
+| Test.java:6:5:6:15 | <TypeAccess of ErrorType> |
+| Test.java:6:23:6:39 | <ClassInstanceExpr that calls a missing constructor> |
+| Test.java:6:27:6:37 | <TypeAccess of ErrorType> |
+| Test.java:7:12:7:14 | nsc |

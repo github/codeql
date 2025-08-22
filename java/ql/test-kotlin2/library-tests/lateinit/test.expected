@@ -1,0 +1,8 @@
+| test.kt:4:15:4:26 | println(...) | file://<external>/ConsoleKt.class:0:0:0:0 | println |
+| test.kt:9:9:9:13 | getTest0$private(...) | test.kt:2:5:2:40 | getTest0$private |
+| test.kt:9:9:9:17 | f(...) | test.kt:4:5:4:26 | f |
+| test.kt:10:13:10:23 | get(...) | test.kt:10:13:10:23 | get |
+| test.kt:10:13:10:23 | getTest0$private(...) | test.kt:2:5:2:40 | getTest0$private |
+| test.kt:10:13:10:23 | setTest0$private(...) | test.kt:2:5:2:40 | setTest0$private |
+| test.kt:10:13:10:37 | isInitialized(...) | file://<external>/LateinitKt.class:0:0:0:0 | isInitialized |
+| test.kt:14:9:14:17 | f(...) | test.kt:4:5:4:26 | f |

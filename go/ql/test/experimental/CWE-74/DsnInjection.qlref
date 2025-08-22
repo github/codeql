@@ -1,0 +1,2 @@
+query: experimental/CWE-74/DsnInjection.ql
+postprocess: utils/test/PrettyPrintModels.ql

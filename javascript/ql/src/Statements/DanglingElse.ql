@@ -4,7 +4,9 @@
  * @kind problem
  * @problem.severity warning
  * @id js/misleading-indentation-of-dangling-else
- * @tags readability
+ * @tags quality
+ *       maintainability
+ *       readability
  *       statistical
  *       non-attributable
  *       external/cwe/cwe-483
@@ -17,7 +19,7 @@ import javascript
  * A token that is relevant for this query, that is, an `if`, `else` or `}` token.
  */
 class RelevantToken extends Token {
-  RelevantToken() { exists(string v | v = getValue() | v = "if" or v = "else" or v = "}") }
+  RelevantToken() { exists(string v | v = this.getValue() | v = "if" or v = "else" or v = "}") }
 }
 
 /**

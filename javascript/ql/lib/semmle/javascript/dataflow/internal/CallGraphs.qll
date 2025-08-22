@@ -241,20 +241,25 @@ module CallGraph {
     )
   }
 
-  private predicate shouldTrackObjectWithMethods(DataFlow::SourceNode node) {
+  private DataFlow::FunctionNode getAMethodOnObject(DataFlow::SourceNode node) {
     (
-      (
-        node instanceof DataFlow::ObjectLiteralNode
-        or
-        node instanceof DataFlow::FunctionNode
-      ) and
-      node.getAPropertySource() instanceof DataFlow::FunctionNode
+      result = node.getAPropertySource()
       or
-      exists(node.(DataFlow::ObjectLiteralNode).getPropertyGetter(_))
+      result = node.(DataFlow::ObjectLiteralNode).getPropertyGetter(_)
       or
-      exists(node.(DataFlow::ObjectLiteralNode).getPropertySetter(_))
+      result = node.(DataFlow::ObjectLiteralNode).getPropertySetter(_)
     ) and
-    not node.getTopLevel().isExterns()
+    not node.getTopLevel().isExterns() and
+    // Ignore writes to `this` inside a constructor, since this is already handled by instance method tracking
+    not exists(DataFlow::ClassNode cls |
+      node = cls.getConstructor().getReceiver()
+      or
+      node = cls.(DataFlow::ClassNode).getAPrototypeReference()
+    )
+  }
+
+  private predicate shouldTrackObjectWithMethods(DataFlow::SourceNode node) {
+    exists(getAMethodOnObject(node))
   }
 
   /**
@@ -272,5 +277,46 @@ module CallGraph {
     result = node
     or
     StepSummary::step(getAnAllocationSiteRef(node), result, objectWithMethodsStep())
+  }
+
+  /**
+   * Holds if `function` flows to a property of `host` via non-local data flow.
+   */
+  pragma[nomagic]
+  private predicate complexMethodInstallation(
+    DataFlow::SourceNode host, DataFlow::FunctionNode function
+  ) {
+    not function = getAMethodOnObject(_) and
+    exists(DataFlow::TypeTracker t |
+      getAFunctionReference(function, 0, t) = host.getAPropertySource() and
+      t.start() // require call bit to be false
+    )
+  }
+
+  /**
+   * Holds if `pred` is assumed to flow to `succ` because a method is stored on an object that is assumed
+   * to be the receiver of calls to that method.
+   *
+   * For example, object literal below is assumed to flow to the receiver of the `foo` function:
+   * ```js
+   * let obj = {};
+   * obj.foo = function() {}
+   * ```
+   */
+  cached
+  predicate impliedReceiverStep(DataFlow::SourceNode pred, DataFlow::SourceNode succ) {
+    // To avoid double-recursion, we handle either complex flow for the host object, or for the function, but not both.
+    exists(DataFlow::SourceNode host |
+      // Complex flow for the host object
+      pred = getAnAllocationSiteRef(host) and
+      succ = getAMethodOnObject(host).getReceiver()
+      or
+      // Complex flow for the function
+      exists(DataFlow::FunctionNode function |
+        complexMethodInstallation(host, function) and
+        pred = host and
+        succ = function.getReceiver()
+      )
+    )
   }
 }

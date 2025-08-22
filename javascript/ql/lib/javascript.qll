@@ -47,7 +47,7 @@ import semmle.javascript.NodeJS
 import semmle.javascript.NPM
 import semmle.javascript.Paths
 import semmle.javascript.Promises
-import semmle.javascript.CanonicalNames
+deprecated import semmle.javascript.CanonicalNames
 import semmle.javascript.RangeAnalysis
 import semmle.javascript.Regexp
 import semmle.javascript.Routing
@@ -67,6 +67,7 @@ import semmle.javascript.YAML
 import semmle.javascript.dataflow.DataFlow
 import semmle.javascript.dataflow.TaintTracking
 import semmle.javascript.dataflow.TypeInference
+import semmle.javascript.frameworks.ActionsLib
 import semmle.javascript.frameworks.Angular2
 import semmle.javascript.frameworks.AngularJS
 import semmle.javascript.frameworks.Anser
@@ -80,6 +81,7 @@ import semmle.javascript.frameworks.Classnames
 import semmle.javascript.frameworks.ClassValidator
 import semmle.javascript.frameworks.ClientRequests
 import semmle.javascript.frameworks.ClosureLibrary
+import semmle.javascript.frameworks.CommandLineArguments
 import semmle.javascript.frameworks.CookieLibraries
 import semmle.javascript.frameworks.Credentials
 import semmle.javascript.frameworks.CryptoLibraries
@@ -90,6 +92,7 @@ import semmle.javascript.frameworks.DigitalOcean
 import semmle.javascript.frameworks.DomEvents
 import semmle.javascript.frameworks.Electron
 import semmle.javascript.frameworks.EventEmitter
+import semmle.javascript.frameworks.Execa
 import semmle.javascript.frameworks.Files
 import semmle.javascript.frameworks.Firebase
 import semmle.javascript.frameworks.FormParsers
@@ -133,6 +136,8 @@ import semmle.javascript.frameworks.TrustedTypes
 import semmle.javascript.frameworks.UriLibraries
 import semmle.javascript.frameworks.Vue
 import semmle.javascript.frameworks.Vuex
+import semmle.javascript.frameworks.Webix
+import semmle.javascript.frameworks.WebResponse
 import semmle.javascript.frameworks.WebSocket
 import semmle.javascript.frameworks.XmlParsers
 import semmle.javascript.frameworks.xUnit
@@ -140,3 +145,4 @@ import semmle.javascript.linters.ESLint
 import semmle.javascript.linters.JSLint
 import semmle.javascript.linters.Linting
 import semmle.javascript.security.dataflow.RemoteFlowSources
+import semmle.javascript.frameworks.UnderscoreDotString

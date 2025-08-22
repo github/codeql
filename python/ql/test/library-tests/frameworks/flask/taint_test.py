@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template_string, stream_template_string
 app = Flask(__name__)
 
 @app.route("/test_taint/<name>/<int:number>")  # $routeSetup="/test_taint/<name>/<int:number>"
@@ -215,7 +215,34 @@ def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler route
         gd(), # $ tainted
     )
 
+    # ----------------------------------
+    # non-request related taint-steps
+    # ----------------------------------
 
+    # render_template_string
+    source = TAINTED_STRING
+    ensure_tainted(source) # $ tainted
+    res = render_template_string(source) # $ templateConstruction=source
+    ensure_tainted(res) # $ tainted
+
+    # since template variables are auto-escaped, we don't treat result as tainted
+    # see https://flask.palletsprojects.com/en/2.3.x/api/#flask.render_template_string
+    res = render_template_string("Hello {{ foo }}", foo=TAINTED_STRING) # $ templateConstruction="Hello {{ foo }}"
+    ensure_not_tainted(res)
+
+
+    # stream_template_string
+    source = TAINTED_STRING
+    ensure_tainted(source) # $ tainted
+    res = stream_template_string(source) # $ templateConstruction=source
+    for x in res:
+        ensure_tainted(x) # $ tainted
+
+    # since template variables are auto-escaped, we don't treat result as tainted
+    # see https://flask.palletsprojects.com/en/2.3.x/api/#flask.stream_template_string
+    res = stream_template_string("Hello {{ foo }}", foo=TAINTED_STRING) # $ templateConstruction="Hello {{ foo }}"
+    for x in res:
+        ensure_not_tainted(x)
 
 
 @app.route("/debug/<foo>/<bar>", methods=['GET']) # $routeSetup="/debug/<foo>/<bar>"

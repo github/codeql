@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with Java modules.
  */
+overlay[local?]
+module;
 
 import CompilationUnit
 
@@ -73,10 +75,10 @@ class RequiresDirective extends Directive, @requires {
 
   override string toString() {
     exists(string transitive, string static |
-      (if isTransitive() then transitive = "transitive " else transitive = "") and
-      (if isStatic() then static = "static " else static = "")
+      (if this.isTransitive() then transitive = "transitive " else transitive = "") and
+      (if this.isStatic() then static = "static " else static = "")
     |
-      result = "requires " + transitive + static + getTargetModule() + ";"
+      result = "requires " + transitive + static + this.getTargetModule() + ";"
     )
   }
 }
@@ -111,11 +113,11 @@ class ExportsDirective extends Directive, @exports {
 
   override string toString() {
     exists(string toClause |
-      if isQualified()
-      then toClause = (" to " + concat(getATargetModule().getName(), ", "))
+      if this.isQualified()
+      then toClause = (" to " + concat(this.getATargetModule().getName(), ", "))
       else toClause = ""
     |
-      result = "exports " + getExportedPackage() + toClause + ";"
+      result = "exports " + this.getExportedPackage() + toClause + ";"
     )
   }
 }
@@ -150,11 +152,11 @@ class OpensDirective extends Directive, @opens {
 
   override string toString() {
     exists(string toClause |
-      if isQualified()
-      then toClause = (" to " + concat(getATargetModule().getName(), ", "))
+      if this.isQualified()
+      then toClause = (" to " + concat(this.getATargetModule().getName(), ", "))
       else toClause = ""
     |
-      result = "opens " + getOpenedPackage() + toClause + ";"
+      result = "opens " + this.getOpenedPackage() + toClause + ";"
     )
   }
 }
@@ -170,7 +172,7 @@ class UsesDirective extends Directive, @uses {
    */
   string getServiceInterfaceName() { uses(this, result) }
 
-  override string toString() { result = "uses " + getServiceInterfaceName() + ";" }
+  override string toString() { result = "uses " + this.getServiceInterfaceName() + ";" }
 }
 
 /**
@@ -191,7 +193,7 @@ class ProvidesDirective extends Directive, @provides {
 
   override string toString() {
     result =
-      "provides " + getServiceInterfaceName() + " with " +
-        concat(getServiceImplementationName(), ", ") + ";"
+      "provides " + this.getServiceInterfaceName() + " with " +
+        concat(this.getServiceImplementationName(), ", ") + ";"
   }
 }

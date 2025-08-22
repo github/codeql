@@ -10,26 +10,18 @@ predicate pointsToOrigin(DataFlow::CfgNode pointer, DataFlow::CfgNode origin) {
   origin.getNode() = pointer.getNode().pointsTo().getOrigin()
 }
 
-class PointsToConfiguration extends DataFlow::Configuration {
-  PointsToConfiguration() { this = "PointsToConfiguration" }
+module PointsToConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { pointsToOrigin(_, node) }
 
-  override predicate isSource(DataFlow::Node node) { pointsToOrigin(_, node) }
-
-  override predicate isSink(DataFlow::Node node) { pointsToOrigin(node, _) }
+  predicate isSink(DataFlow::Node node) { pointsToOrigin(node, _) }
 }
 
-predicate hasFlow(DataFlow::Node origin, DataFlow::Node pointer) {
-  exists(PointsToConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink |
-    source.getNode() = origin and
-    sink.getNode() = pointer and
-    config.hasFlowPath(source, sink)
-  )
-}
+module PointsToFlow = DataFlow::Global<PointsToConfig>;
 
 from DataFlow::Node pointer, DataFlow::Node origin
 where
   exists(pointer.getLocation().getFile().getRelativePath()) and
   exists(origin.getLocation().getFile().getRelativePath()) and
   pointsToOrigin(pointer, origin) and
-  not hasFlow(origin, pointer)
+  not PointsToFlow::flow(origin, pointer)
 select origin, pointer

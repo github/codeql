@@ -47,6 +47,7 @@ class UnspecifiedElement(ErrorElement):
     property: string
     index: optional[int]
     error: string
+    children: list["AstNode"] | child | desc("These will be present only in certain downgraded databases.")
 
 class Comment(Locatable):
     text: string
@@ -73,23 +74,36 @@ class AstNode(Locatable):
     pass
 
 @group("type")
+@ql.hideable
 class Type(Element):
     name: string
-    canonical_type: "Type"
+    canonical_type: "Type" | desc("""
+        This is the unique type we get after resolving aliases and desugaring. For example, given
+        ```
+        typealias MyInt = Int
+        ```
+        then `[MyInt?]` has the canonical type `Array<Optional<Int>>`.
+    """)
 
 @group("decl")
 class Decl(AstNode):
     module: "ModuleDecl"
-    members: list["Decl"] | child
+    members: list["Decl"] | child | desc("""
+        Prefer to use more specific methods (such as `EnumDecl.getEnumElement`) rather than relying
+        on the order of members given by `getMember`. In some cases the order of members may not
+        align with expectations, and could change in future releases.
+    """)
 
 @group("expr")
+@ql.hideable
 class Expr(AstNode):
     """The base class for all expressions in Swift."""
     type: optional[Type]
 
 @group("pattern")
+@ql.hideable
 class Pattern(AstNode):
-    pass
+    type: optional[Type]
 
 @group("stmt")
 class Stmt(AstNode):
@@ -99,6 +113,7 @@ class Stmt(AstNode):
 class GenericContext(Element):
     generic_type_params: list["GenericTypeParamDecl"] | child
 
+@qltest.test_with("EnumDecl")
 class EnumCaseDecl(Decl):
     elements: list["EnumElementDecl"]
 
@@ -128,7 +143,7 @@ class PatternBindingDecl(Decl):
 
 class PoundDiagnosticDecl(Decl):
     """ A diagnostic directive, which is either `#error` or `#warning`."""
-    kind: int | desc("""This is 1 for `#error` and 2 for `#warning`.""")
+    kind: int | desc("""This is 1 for `#error` and 2 for `#warning`.""") | ql.internal
     message: "StringLiteralExpr" | child
 
 class PrecedenceGroupDecl(Decl):
@@ -141,7 +156,7 @@ class ValueDecl(Decl):
     interface_type: Type
 
 class AbstractStorageDecl(ValueDecl):
-    accessor_decls: list["AccessorDecl"] | child
+    accessors: list["Accessor"] | child
 
 class VarDecl(AbstractStorageDecl):
     """
@@ -227,16 +242,19 @@ class ParamDecl(VarDecl):
         has a property wrapper.
     """)
 
-class Callable(Element):
-    name: optional[string] | doc("name of this callable")
+class Callable(AstNode):
+    name: optional[string] | doc("name of this callable") | desc("The name includes argument "
+        "labels of the callable, for example `myFunction(arg:)`.")
     self_param: optional[ParamDecl] | child
     params: list[ParamDecl] | child
     body: optional["BraceStmt"] | child | desc("The body is absent within protocol declarations.")
     captures: list["CapturedDecl"] | child
 
-class AbstractFunctionDecl(GenericContext, ValueDecl, Callable):
+@group("decl")
+class Function(GenericContext, ValueDecl, Callable):
     pass
 
+@qltest.test_with("EnumDecl")
 class EnumElementDecl(ValueDecl):
     name: string
     params: list[ParamDecl] | child
@@ -252,18 +270,25 @@ class PrefixOperatorDecl(OperatorDecl):
 
 class TypeDecl(ValueDecl):
     name: string
-    base_types: list[Type]
+    inherited_types: list[Type] | desc("""
+        This only returns the types effectively appearing in the declaration. In particular it
+        will not resolve `TypeAliasDecl`s or consider base types added by extensions.
+    """)
 
 class AbstractTypeParamDecl(TypeDecl):
     pass
 
-class ConstructorDecl(AbstractFunctionDecl):
+@group("decl")
+class Initializer(Function):
     pass
 
-class DestructorDecl(AbstractFunctionDecl):
+@group("decl")
+class Deinitializer(Function):
     pass
 
-class FuncDecl(AbstractFunctionDecl):
+@ql.internal
+@group("decl")
+class AccessorOrNamedFunction(Function):
     pass
 
 class GenericTypeDecl(GenericContext, TypeDecl):
@@ -272,15 +297,16 @@ class GenericTypeDecl(GenericContext, TypeDecl):
 class ModuleDecl(TypeDecl):
     is_builtin_module: predicate | doc("this module is the built-in one")
     is_system_module: predicate | doc("this module is a system one")
-    imported_modules: list["ModuleDecl"]
-    exported_modules: list["ModuleDecl"]
+    imported_modules: set["ModuleDecl"]
+    exported_modules: set["ModuleDecl"]
 
 class SubscriptDecl(AbstractStorageDecl, GenericContext):
     params: list[ParamDecl] | child
     element_type: Type
     element_type: Type
 
-class AccessorDecl(FuncDecl):
+@group("decl")
+class Accessor(AccessorOrNamedFunction):
     is_getter: predicate | doc('this accessor is a getter')
     is_setter: predicate | doc('this accessor is a setter')
     is_will_set: predicate | doc('this accessor is a `willSet`, called before the property is set')
@@ -293,7 +319,8 @@ class AccessorDecl(FuncDecl):
 class AssociatedTypeDecl(AbstractTypeParamDecl):
     pass
 
-class ConcreteFuncDecl(FuncDecl):
+@group("decl")
+class NamedFunction(AccessorOrNamedFunction):
     pass
 
 class ConcreteVarDecl(VarDecl):
@@ -324,7 +351,18 @@ class OpaqueTypeDecl(GenericTypeDecl):
     opaque_generic_params: list["GenericTypeParamType"]
 
 class TypeAliasDecl(GenericTypeDecl):
-    pass
+    """
+    A declaration of a type alias to another type. For example:
+    ```
+    typealias MyInt = Int
+    ```
+    """
+    aliased_type: Type | doc("aliased type on the right-hand side of this type alias declaration") | desc("""
+        For example the aliased type of `MyInt` in the following code is `Int`:
+        ```
+        typealias MyInt = Int
+        ```
+    """)
 
 class ClassDecl(NominalTypeDecl):
     pass
@@ -343,7 +381,7 @@ class Argument(Locatable):
     label: string
     expr: Expr | child
 
-class AbstractClosureExpr(Expr, Callable):
+class ClosureExpr(Expr, Callable):
     pass
 
 class AnyTryExpr(Expr):
@@ -373,6 +411,9 @@ class CapturedDecl(Decl):
 
 class CaptureListExpr(Expr):
     binding_decls: list[PatternBindingDecl] | child
+    variables: list[VarDecl] | child | synth | desc("""
+        These are the variables introduced by this capture in the closure's scope, not the captured ones.
+    """)
     closure_body: "ClosureExpr" | child
 
 class CollectionExpr(Expr):
@@ -438,11 +479,40 @@ class KeyPathApplicationExpr(Expr):
 class KeyPathDotExpr(Expr):
     pass
 
-class KeyPathExpr(Expr):
-    root: optional["TypeRepr"] | child
-    parsed_path: optional[Expr] | child
+class KeyPathComponent(AstNode):
+    """
+    A component of a `KeyPathExpr`.
+    """
+    kind: int | doc("kind of key path component") | desc("""
+        INTERNAL: Do not use.
 
-class LazyInitializerExpr(Expr):
+        This is 3 for properties, 4 for array and dictionary subscripts, 5 for optional forcing
+        (`!`), 6 for optional chaining (`?`), 7 for implicit optional wrapping, 8 for `self`,
+        and 9 for tuple element indexing.
+
+        The following values should not appear: 0 for invalid components, 1 for unresolved
+        properties, 2 for unresolved subscripts, 10 for #keyPath dictionary keys, and 11 for
+        implicit IDE code completion data.
+    """)
+    subscript_arguments : list[Argument] | child | doc(
+        "arguments to an array or dictionary subscript expression")
+    tuple_index : optional[int]
+    decl_ref : optional[ValueDecl] | doc("property or subscript operator")
+    component_type : Type | doc("return type of this component application") | desc("""
+        An optional-chaining component has a non-optional type to feed into the rest of the key
+        path; an optional-wrapping component is inserted if required to produce an optional type
+        as the final output.
+    """)
+
+
+class KeyPathExpr(Expr):
+    """
+    A key-path expression.
+    """
+    root: optional["TypeRepr"] | child
+    components: list[KeyPathComponent] | child
+
+class LazyInitializationExpr(Expr):
     sub_expr: Expr | child
 
 class LiteralExpr(Expr):
@@ -460,7 +530,7 @@ class MakeTemporarilyEscapableExpr(Expr):
 @qltest.skip
 class ObjCSelectorExpr(Expr):
     sub_expr: Expr | child
-    method: AbstractFunctionDecl
+    method: Function
 
 class OneWayExpr(Expr):
     sub_expr: Expr | child
@@ -469,15 +539,28 @@ class OpaqueValueExpr(Expr):
     pass
 
 class OpenExistentialExpr(Expr):
-    sub_expr: Expr | child
-    existential: Expr | child
-    opaque_expr: OpaqueValueExpr | child
+    """ An implicit expression created by the compiler when a method is called on a protocol. For example in
+    ```
+    protocol P {
+      func foo() -> Int
+    }
+    func bar(x: P) -> Int {
+      return x.foo()
+    }
+    `x.foo()` is actually wrapped in an `OpenExistentialExpr` that "opens" `x` replacing it in its subexpression with
+    an `OpaqueValueExpr`.
+    ```
+    """
+    sub_expr: Expr | child | desc("""
+        This wrapped subexpression is where the opaque value and the dynamic type under the protocol type may be used.""")
+    existential: Expr | child | doc("protocol-typed expression opened by this expression")
+    opaque_expr: OpaqueValueExpr | doc("opaque value expression embedded within `getSubExpr()`")
 
 class OptionalEvaluationExpr(Expr):
     sub_expr: Expr | child
 
-class OtherConstructorDeclRefExpr(Expr):
-    constructor_decl: ConstructorDecl
+class OtherInitializerRefExpr(Expr):
+    initializer: Initializer
 
 class PropertyWrapperValuePlaceholderExpr(Expr):
     """
@@ -487,7 +570,7 @@ class PropertyWrapperValuePlaceholderExpr(Expr):
     wrapped_value: optional[Expr]
     placeholder: OpaqueValueExpr
 
-class RebindSelfInConstructorExpr(Expr):
+class RebindSelfInInitializerExpr(Expr):
     sub_expr: Expr | child
     self: VarDecl
 
@@ -539,7 +622,7 @@ class ArrayExpr(CollectionExpr):
 class ArrayToPointerExpr(ImplicitConversionExpr):
     pass
 
-class AutoClosureExpr(AbstractClosureExpr):
+class AutoClosureExpr(ClosureExpr):
     pass
 
 class AwaitExpr(IdentityExpr):
@@ -568,7 +651,7 @@ class CheckedCastExpr(ExplicitCastExpr):
 class ClassMetatypeToObjectExpr(ImplicitConversionExpr):
     pass
 
-class ClosureExpr(AbstractClosureExpr):
+class ExplicitClosureExpr(ClosureExpr):
     pass
 
 class CoerceExpr(ExplicitCastExpr):
@@ -632,8 +715,6 @@ class InjectIntoOptionalExpr(ImplicitConversionExpr):
 
 class InterpolatedStringLiteralExpr(LiteralExpr):
     interpolation_expr: optional[OpaqueValueExpr]
-    interpolation_count_expr: optional[Expr] | child
-    literal_capacity_expr: optional[Expr] | child
     appending_expr: optional[TapExpr] | child
 
 class LinearFunctionExpr(ImplicitConversionExpr):
@@ -736,9 +817,11 @@ class BooleanLiteralExpr(BuiltinLiteralExpr):
 class ConditionalCheckedCastExpr(CheckedCastExpr):
     pass
 
-class ConstructorRefCallExpr(SelfApplyExpr):
+@ql.internal
+class InitializerRefCallExpr(SelfApplyExpr):
     pass
 
+@ql.internal
 class DotSyntaxCallExpr(SelfApplyExpr):
     pass
 
@@ -794,7 +877,7 @@ class IsPattern(Pattern):
     sub_pattern: optional[Pattern] | child
 
 class NamedPattern(Pattern):
-    name: string
+    var_decl: VarDecl
 
 class OptionalSomePattern(Pattern):
     sub_pattern: Pattern | child
@@ -810,6 +893,7 @@ class TypedPattern(Pattern):
     type_repr: optional["TypeRepr"] | child
 
 @group("stmt")
+@qltest.test_with("SwitchStmt")
 class CaseLabelItem(AstNode):
     pattern: Pattern | child
     guard: optional[Expr] | child
@@ -867,16 +951,18 @@ class StmtCondition(AstNode):
     elements: list[ConditionElement] | child
 
 class BraceStmt(Stmt):
+    variables: list[VarDecl] | synth | child | doc("variable declared in the scope of this brace statement")
     elements: list[AstNode] | child
 
 class BreakStmt(Stmt):
     target_name: optional[string]
     target: optional[Stmt]
 
+@qltest.test_with("SwitchStmt")
 class CaseStmt(Stmt):
-    body: Stmt | child
     labels: list[CaseLabelItem] | child
-    variables: list[VarDecl]
+    variables: list[VarDecl] | child
+    body: Stmt | child
 
 class ContinueStmt(Stmt):
     target_name: optional[string]
@@ -908,6 +994,20 @@ class ThrowStmt(Stmt):
 class YieldStmt(Stmt):
     results: list[Expr] | child
 
+@qltest.test_with('SingleValueStmtExpr')
+class ThenStmt(Stmt):
+    """ A statement implicitly wrapping values to be used in branches of if/switch expressions. For example in:
+    ```
+    let rank = switch value {
+        case 0..<0x80: 1
+        case 0x80..<0x0800: 2
+        default: 3
+    }
+    ```
+    the literal expressions `1`, `2` and `3` are wrapped in `ThenStmt`.
+    """
+    result: Expr | child
+
 class DoCatchStmt(LabeledStmt):
     body: Stmt | child
     catches: list[CaseStmt] | child
@@ -916,9 +1016,11 @@ class DoStmt(LabeledStmt):
     body: BraceStmt | child
 
 class ForEachStmt(LabeledStmt):
+    variables: list[VarDecl] | child
     pattern: Pattern | child
-    sequence: Expr | child
     where: optional[Expr] | child
+    iteratorVar: optional[PatternBindingDecl] | child
+    nextCall: optional[Expr] | child
     body: BraceStmt | child
 
 class LabeledConditionalStmt(LabeledStmt):
@@ -1103,11 +1205,59 @@ class OpaqueTypeArchetypeType(ArchetypeType):
     See https://docs.swift.org/swift-book/LanguageGuide/OpaqueTypes.html."""
     declaration: OpaqueTypeDecl
 
-class OpenedArchetypeType(ArchetypeType):
-    pass
-
 class PrimaryArchetypeType(ArchetypeType):
     pass
+
+class LocalArchetypeType(ArchetypeType):
+    pass
+
+class OpenedArchetypeType(LocalArchetypeType):
+    pass
+
+@qltest.test_with("PackType")
+class ElementArchetypeType(LocalArchetypeType):
+    """
+    An archetype type of PackElementType.
+    """
+    pass
+
+@qltest.test_with("PackType")
+class PackArchetypeType(ArchetypeType):
+    """
+    An archetype type of PackType.
+    """
+    pass
+
+class PackType(Type):
+    """
+    An actual type of a pack expression at the instatiation point.
+
+    In the following example, PackType will appear around `makeTuple` call site as `Pack{String, Int}`:
+    ```
+    func makeTuple<each T>(_ t: repeat each T) -> (repeat each T) { ... }
+    makeTuple("A", 2)
+    ```
+
+    More details:
+    https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+    """
+    elements: list[Type]
+
+@qltest.test_with(PackType)
+class PackExpansionType(Type):
+    """
+    A type of PackExpansionExpr, see PackExpansionExpr for more information.
+    """
+    pattern_type: Type
+    count_type: Type
+
+@qltest.test_with(PackType)
+class PackElementType(Type):
+    """
+    A type of PackElementExpr, see PackElementExpr for more information.
+    """
+    pack_type: Type
+
 class UnarySyntaxSugarType(SyntaxSugarType):
     base_type: Type
 
@@ -1151,4 +1301,183 @@ class ParameterizedProtocolType(Type):
     args: list[Type]
 
 class AbiSafeConversionExpr(ImplicitConversionExpr):
+    pass
+
+
+class SingleValueStmtExpr(Expr):
+    """
+    An expression that wraps a statement which produces a single value.
+    """
+    stmt: Stmt | child
+
+class PackExpansionExpr(Expr):
+    """
+    A pack expansion expression.
+
+    In the following example, `repeat each t` on the second line is the pack expansion expression:
+    ```
+    func makeTuple<each T>(_ t: repeat each T) -> (repeat each T) {
+      return (repeat each t)
+    }
+    ```
+
+    More details:
+    https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+    """
+    pattern_expr: Expr | child
+
+@qltest.test_with(PackExpansionExpr)
+class PackElementExpr(Expr):
+    """
+    A pack element expression is a child of PackExpansionExpr.
+
+    In the following example, `each t` on the second line is the pack element expression:
+    ```
+    func makeTuple<each T>(_ t: repeat each T) -> (repeat each T) {
+      return (repeat each t)
+    }
+    ```
+
+    More details:
+    https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+    """
+    sub_expr: Expr | child
+
+@qltest.test_with(PackExpansionExpr)
+class MaterializePackExpr(Expr):
+    """
+    An expression that materializes a pack during expansion. Appears around PackExpansionExpr.
+
+    More details:
+    https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+    """
+    sub_expr: Expr | child
+
+class CopyExpr(Expr):
+    """
+    An expression that forces value to be copied. In the example below, `copy` marks the copy expression:
+
+    ```
+    let y = ...
+    let x = copy y
+    ```
+    """
+    sub_expr: Expr | child
+
+@qltest.test_with(CopyExpr)
+class ConsumeExpr(Expr):
+    """
+    An expression that forces value to be moved. In the example below, `consume` marks the move expression:
+
+    ```
+    let y = ...
+    let x = consume y
+    ```
+    """
+    sub_expr: Expr | child
+
+class BorrowExpr(IdentityExpr):
+    """
+    An expression that marks value as borrowed. In the example below, `_borrow` marks the borrow expression:
+
+    ```
+    let y = ...
+    let x = _borrow y
+    ```
+    """
+    pass
+
+@qltest.test_with('MacroDecl')
+class MacroRole(AstNode):
+    """
+    The role of a macro, for example #freestanding(declaration) or @attached(member).
+    """
+    kind: int | doc("kind of this macro role (declaration, expression, member, etc.)") | ql.internal
+    macro_syntax: int | doc("#freestanding or @attached") | ql.internal
+    conformances: list[Expr] | doc("conformances of this macro role")
+    names: list[string] | doc("names of this macro role")
+
+class MacroDecl(GenericContext, ValueDecl):
+    """
+    A declaration of a macro. Some examples:
+
+    ```
+    @freestanding(declaration)
+    macro A() = #externalMacro(module: "A", type: "A")
+    @freestanding(expression)
+    macro B() = Builtin.B
+    @attached(member)
+    macro C() = C.C
+    ```
+    """
+    name: string | doc("name of this macro")
+    parameters: list[ParamDecl] | doc("parameters of this macro")
+    roles: list[MacroRole] | doc("roles of this macro")
+    pass
+
+class DiscardStmt(Stmt):
+    """
+    A statement that takes a non-copyable value and destructs its members/fields.
+
+    The only valid syntax:
+    ```
+    destruct self
+    ```
+    """
+    sub_expr: Expr | child
+
+
+class ExtractFunctionIsolationExpr(Expr):
+    """
+    An expression that extracts the function isolation of an expression with `@isolated(any)`
+    function type.
+
+    For example:
+    ```
+    func foo(x: @isolated(any) () -> ()) {
+        let isolation = x.isolation
+    }
+    ```
+    """
+    function_expr: Expr | child
+
+
+@qltest.skip
+class CurrentContextIsolationExpr(Expr):
+    """
+    An expression that extracts the actor isolation of the current context, of type `(any Actor)?`.
+    This is synthesized by the type checker and does not have any way to be expressed explicitly in
+    the source.
+    """
+    actor: Expr
+
+
+class ActorIsolationErasureExpr(ImplicitConversionExpr):
+    """
+    A conversion that erases the actor isolation of an expression with `@isolated(any)` function
+    type.
+    """
+
+
+class UnreachableExpr(ImplicitConversionExpr):
+    """
+    A conversion from the uninhabited type to any other type. It's never evaluated.
+    """
+
+
+class UnsafeCastExpr(ImplicitConversionExpr):
+    """
+    A conversion that performs an unsafe bitcast.
+    """
+
+class TypeValueExpr(Expr):
+    type_repr: TypeRepr | child
+
+class IntegerType(Type):
+    value: string
+
+class BuiltinFixedArrayType(BuiltinType):
+    """
+    A builtin type representing N values stored contiguously.
+    """
     pass

@@ -7,7 +7,7 @@
 
 </overview>
 <recommendation>
-<p>You should switch to a more secure encryption algorithm, such as AES (Advanced Encryption Standard) and use a key length which is reasonable for the application for which it is being used.</p>
+<p>You should switch to a more secure encryption algorithm, such as AES (Advanced Encryption Standard) and use a key length which is reasonable for the application for which it is being used. Do not use the ECB encryption mode since it is vulnerable to replay and other attacks.</p>
 
 </recommendation>
 <example>

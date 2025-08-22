@@ -28,9 +28,14 @@ abstract class TranslatedDeclarationEntry extends TranslatedElement, TTranslated
 
   TranslatedDeclarationEntry() { this = TTranslatedDeclarationEntry(entry) }
 
-  final override Function getFunction() {
-    exists(DeclStmt stmt |
-      stmt = entry.getStmt() and
+  final override Declaration getFunction() {
+    exists(DeclStmt stmt | stmt = entry.getStmt() |
+      result = entry.getDeclaration().(StaticInitializedStaticLocalVariable)
+      or
+      result = entry.getDeclaration().(GlobalOrNamespaceVariable)
+      or
+      not entry.getDeclaration() instanceof StaticInitializedStaticLocalVariable and
+      not entry.getDeclaration() instanceof GlobalOrNamespaceVariable and
       result = stmt.getEnclosingFunction()
     )
   }
@@ -40,9 +45,6 @@ abstract class TranslatedDeclarationEntry extends TranslatedElement, TTranslated
   final override string toString() { result = entry.toString() }
 
   final override Locatable getAst() { result = entry.getAst() }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = getAst() }
 }
 
 /**
@@ -55,19 +57,23 @@ abstract class TranslatedLocalVariableDeclaration extends TranslatedVariableInit
    */
   abstract LocalVariable getVariable();
 
-  final override Type getTargetType() { result = getVariableType(getVariable()) }
+  final override TranslatedElement getChild(int id) {
+    result = TranslatedVariableInitialization.super.getChildInternal(id)
+  }
+
+  final override Type getTargetType() { result = getVariableType(this.getVariable()) }
 
   final override TranslatedInitialization getInitialization() {
     result =
-      getTranslatedInitialization(getVariable().getInitializer().getExpr().getFullyConverted())
+      getTranslatedInitialization(this.getVariable().getInitializer().getExpr().getFullyConverted())
   }
 
-  final override Instruction getInitializationSuccessor() {
-    result = getParent().getChildSuccessor(this)
+  final override Instruction getInitializationSuccessor(EdgeKind kind) {
+    result = this.getParent().getChildSuccessor(this, kind)
   }
 
   final override IRVariable getIRVariable() {
-    result = getIRUserVariable(getFunction(), getVariable())
+    result = getIRUserVariable(this.getFunction(), this.getVariable())
   }
 }
 
@@ -118,7 +124,7 @@ class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclaratio
 
   TranslatedStaticLocalVariableDeclarationEntry() { var = entry.getDeclaration() }
 
-  final override TranslatedElement getChild(int id) { id = 0 and result = getInitialization() }
+  final override TranslatedElement getChild(int id) { id = 0 and result = this.getInitialization() }
 
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType type) {
     tag = DynamicInitializationFlagAddressTag() and
@@ -142,40 +148,47 @@ class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclaratio
     type = getBoolType()
   }
 
-  final override Instruction getFirstInstruction() {
-    result = getInstruction(DynamicInitializationFlagAddressTag())
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getInstruction(DynamicInitializationFlagAddressTag()) and
+    kind instanceof GotoEdge
   }
 
-  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+  final override Instruction getALastInstructionInternal() {
+    result = this.getInstruction(DynamicInitializationConditionalBranchTag())
+    or
+    result = this.getInstruction(DynamicInitializationFlagStoreTag())
+  }
+
+  final override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = DynamicInitializationFlagAddressTag() and
     kind instanceof GotoEdge and
-    result = getInstruction(DynamicInitializationFlagLoadTag())
+    result = this.getInstruction(DynamicInitializationFlagLoadTag())
     or
     tag = DynamicInitializationFlagLoadTag() and
     kind instanceof GotoEdge and
-    result = getInstruction(DynamicInitializationConditionalBranchTag())
+    result = this.getInstruction(DynamicInitializationConditionalBranchTag())
     or
     tag = DynamicInitializationConditionalBranchTag() and
     (
       kind instanceof TrueEdge and
-      result = getParent().getChildSuccessor(this)
+      result = this.getParent().getChildSuccessor(this, any(GotoEdge edge))
       or
       kind instanceof FalseEdge and
-      result = getInitialization().getFirstInstruction()
+      result = this.getInitialization().getFirstInstruction(any(GotoEdge edge))
     )
     or
     tag = DynamicInitializationFlagConstantTag() and
     kind instanceof GotoEdge and
-    result = getInstruction(DynamicInitializationFlagStoreTag())
+    result = this.getInstruction(DynamicInitializationFlagStoreTag())
     or
     tag = DynamicInitializationFlagStoreTag() and
-    kind instanceof GotoEdge and
-    result = getParent().getChildSuccessor(this)
+    result = this.getParent().getChildSuccessor(this, kind)
   }
 
-  final override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getInitialization() and
-    result = getInstruction(DynamicInitializationFlagConstantTag())
+  final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    child = this.getInitialization() and
+    result = this.getInstruction(DynamicInitializationFlagConstantTag()) and
+    kind instanceof GotoEdge
   }
 
   final override IRDynamicInitializationFlag getInstructionVariable(InstructionTag tag) {
@@ -191,20 +204,20 @@ class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclaratio
     tag = DynamicInitializationFlagLoadTag() and
     (
       operandTag instanceof AddressOperandTag and
-      result = getInstruction(DynamicInitializationFlagAddressTag())
+      result = this.getInstruction(DynamicInitializationFlagAddressTag())
     )
     or
     tag = DynamicInitializationConditionalBranchTag() and
     operandTag instanceof ConditionOperandTag and
-    result = getInstruction(DynamicInitializationFlagLoadTag())
+    result = this.getInstruction(DynamicInitializationFlagLoadTag())
     or
     tag = DynamicInitializationFlagStoreTag() and
     (
       operandTag instanceof AddressOperandTag and
-      result = getInstruction(DynamicInitializationFlagAddressTag())
+      result = this.getInstruction(DynamicInitializationFlagAddressTag())
       or
       operandTag instanceof StoreValueOperandTag and
-      result = getInstruction(DynamicInitializationFlagConstantTag())
+      result = this.getInstruction(DynamicInitializationFlagConstantTag())
     )
   }
 
@@ -232,12 +245,9 @@ class TranslatedStaticLocalVariableInitialization extends TranslatedElement,
 
   final override Locatable getAst() { result = entry.getAst() }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = getAst() }
-
   final override LocalVariable getVariable() { result = var }
 
-  final override Function getFunction() { result = var.getFunction() }
+  final override Declaration getFunction() { result = var.getFunction() }
 }
 
 TranslatedConditionDecl getTranslatedConditionDecl(ConditionDeclExpr expr) {
@@ -261,10 +271,7 @@ class TranslatedConditionDecl extends TranslatedLocalVariableDeclaration, TTrans
 
   override Locatable getAst() { result = conditionDeclExpr }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = getAst() }
-
-  override Function getFunction() { result = conditionDeclExpr.getEnclosingFunction() }
+  override Declaration getFunction() { result = getEnclosingFunction(conditionDeclExpr) }
 
   override LocalVariable getVariable() { result = conditionDeclExpr.getVariable() }
 }

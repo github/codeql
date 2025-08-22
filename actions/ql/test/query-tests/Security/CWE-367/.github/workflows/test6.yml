@@ -1,0 +1,253 @@
+name: Kickoff custom pipeline
+
+on:
+
+  issue_comment:
+    types: [created]
+
+jobs:
+
+  security-checks:
+
+    name: Carry out security checks
+    if:  >-
+         ${{
+            github.event.issue.pull_request &&
+            contains(github.event.comment.body, '/kickoff') &&
+            contains(github.event.issue.labels.*.name, 'Pipeline Kickoff') &&
+            github.event.comment.user.type != 'Bot' &&
+            github.event.pull_request.author_association != 'FIRST_TIMER' &&
+            github.event.pull_request.author_association != 'FIRST_TIME_CONTRIBUTOR' &&
+            github.event.pull_request.author_association != 'MANNEQUIN' &&
+            github.event.pull_request.author_association != 'NONE'
+          }}
+
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+
+    steps:
+
+    - name: Get PR branch
+      uses: xt0rted/pull-request-comment-branch@d97294d304604fa98a2600a6e2f916a84b596dc7  # v2.0.0
+      id: comment-branch
+
+    - name: Checkout PR branch
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332  # v4
+      with:
+        ref: ${{ steps.comment-branch.outputs.head_ref }}
+
+    - name: Install GH CLI
+      uses: dev-hanz-ops/install-gh-cli-action@8fff9050dae2d81b38f94500d8b74ad1d1d47410  #v0.2.0
+
+    - name: Check comment keywords
+      env:
+        COMMENT_BODY: ${{ github.event.comment.body }}
+        PR_COMMENT_ALLOW_LIST: ${{ secrets.PR_COMMENT_ALLOW_LIST }}
+      run: |
+        function list_subset { local list1="$1"; local list2="$2"; result=0; for item in $list2; do if ! [[ $list1 =~ (^|[[:space:]])"$item"($|[[:space:]]) ]]; then result=1; fi; done; return $result; }
+        full_allowlist="$PR_COMMENT_ALLOW_LIST $(ls models)"
+
+        if `list_subset "echo $full_allowlist" "echo $COMMENT_BODY"` ; then
+          echo "Command keywords allowed. Proceeding!"
+        else
+          echo "Command keywords not allowed. Skipping!"
+          exit 1
+        fi
+
+  docker-environment-creation:
+
+    name: Build and push docker image
+    needs: security-checks
+    if:  >-
+         ${{
+            contains(github.event.comment.body, 'rebuild') &&
+            contains(github.event.issue.labels.*.name, 'Pipeline Kickoff') &&
+            needs.security-checks.result == 'success'
+          }}
+    runs-on: [self-hosted, production]
+
+    permissions:
+      contents: write
+
+    defaults:
+      run:
+        # Run bash like it came from an interactive login, to make it so that
+        # the .bashrc gets loaded.
+        shell: bash -l {0}
+
+    steps:
+
+    - name: Get PR branch
+      uses: xt0rted/pull-request-comment-branch@d97294d304604fa98a2600a6e2f916a84b596dc7  # v2
+      id: comment-branch
+
+    - name: Checkout PR branch
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332  # v4
+      with:
+        ref: ${{ steps.comment-branch.outputs.head_ref }}
+
+    - name: Log into Azure
+      uses: azure/login@a65d910e8af852a8061c627c456678983e180302  # @v2.2.0
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Container registry login
+      run: |
+        echo "Logging into $REGISTRY"
+        az acr login --name ${REGISTRY}
+      env:
+        REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+
+    - name: Prune old images
+      run: |
+        docker system prune -a -f
+
+    - name: Create image
+      run: |
+        model=$(echo "${{ github.event.comment.body }}" | sed 's/.*kickoff //' | sed 's/ .*//')
+        script/build_aml_image -m $model
+
+    - name: Push image
+      run: |
+        model=$(echo "${{ github.event.comment.body }}" | sed 's/.*kickoff //' | sed 's/ .*//')
+        script/push_aml_image -m $model
+
+  kickoff-pipeline:
+
+    name: Kickoff pipeline
+    needs: [security-checks, docker-environment-creation]
+    if:  >-
+         ${{
+            always() &&
+            needs.security-checks.result == 'success' &&
+            needs.docker-environment-creation.result != 'failure' &&
+            needs.docker-environment-creation.result != 'cancelled'
+          }}
+
+    runs-on: [self-hosted, production]
+
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      statuses: write
+
+    defaults:
+      run:
+        # Run bash like it came from an interactive login, to make it so that
+        # the .bashrc gets loaded.
+        shell: bash -l {0}
+
+    steps:
+
+    - name: Get PR branch
+      uses: xt0rted/pull-request-comment-branch@d97294d304604fa98a2600a6e2f916a84b596dc7  # v2
+      id: comment-branch
+
+    - name: Set latest commit status as pending
+      uses: myrotvorets/set-commit-status-action@3730c0a348a2ace3c110851bed53331bc6406e9f  # v2.0.1
+      with:
+        sha: ${{ steps.comment-branch.outputs.head_sha }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        status: pending
+
+    - name: Checkout PR branch
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ steps.comment-branch.outputs.head_ref }}
+
+    - name: Get pipeline info from comment
+      id: pipeline-info
+      run: |
+        model=$(echo "${{ github.event.comment.body }}" | sed 's/.*kickoff //' | sed 's/ .*//') && \
+        scheduling=$(echo "${{ github.event.comment.body }}" | grep schedule | wc -l) && \
+        echo "mdl=$model" >> $GITHUB_OUTPUT
+        if [[ $scheduling == 1 ]]; then
+          echo "schedule=True" >> $GITHUB_OUTPUT
+        else
+          echo "schedule=False" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Get email of actor
+      id: email
+      run: |
+        email="${{ github.actor }}@github.com"
+        echo "email=$email" >> $GITHUB_OUTPUT
+
+    - name: Lookup Slack ID
+      id: slack-id
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      run: |
+        slack_id=$(curl -s -H "Authorization: Bearer $SLACK_BOT_TOKEN" "https://slack.com/api/users.lookupByEmail?email=${{ steps.email.outputs.email }}" | jq -r '.user.id')
+        echo "slack-id=$slack_id" >> $GITHUB_OUTPUT
+
+    - name: Submit pipeline kickoff message to slack
+      id: slack-initiate
+      uses: slackapi/slack-github-action@37ebaef184d7626c5f204ab8d3baff4262dd30f0  # v1.27.0
+      with:
+        channel-id: 'C05N5U3HH2M' # platform-health-ml-ops
+        payload: |
+          {
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "<@${{ steps.slack-id.outputs.slack-id }}>'s kickoff of <${{ github.event.issue.html_url }}|${{ steps.pipeline-info.outputs.mdl }}> model is in progress..."
+                }
+              }
+            ]
+          }
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+    - name: Environment setup
+      uses: ./.github/actions/setup-env
+      with:
+        azure_creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Kickoff run
+      if: contains(github.event.comment.body, '/kickoff')
+      env:
+        BOT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: poetry run python trainer.py --model=${{ steps.pipeline-info.outputs.mdl }} --as_pipeline=True --schedule=${{ steps.pipeline-info.outputs.schedule }}
+
+    - name: Set latest commit status as ${{ job.status }}
+      uses: myrotvorets/set-commit-status-action@3730c0a348a2ace3c110851bed53331bc6406e9f  # v2.0.1
+      if: always()
+      with:
+        sha: ${{ steps.comment-branch.outputs.head_sha }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        status: ${{ job.status }}
+
+    - name: Report pipeline's run outcome to slack
+      uses: slackapi/slack-github-action@37ebaef184d7626c5f204ab8d3baff4262dd30f0  # v1.27.0
+      if: always()
+      with:
+        channel-id: 'C05N5U3HH2M' # platform-health-ml-ops
+        payload: |
+          {
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "<@${{ steps.slack-id.outputs.slack-id }}>'s kickoff of <${{ github.event.issue.html_url }}|${{ steps.pipeline-info.outputs.mdl }}> model is complete!\n*Status: ${{ job.status }}*"
+                }
+              }
+            ]
+          }
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+    - name: Prune docker images
+      run: docker system prune --all --force

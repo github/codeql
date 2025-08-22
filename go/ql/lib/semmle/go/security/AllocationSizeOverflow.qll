@@ -13,48 +13,41 @@ import go
 module AllocationSizeOverflow {
   import AllocationSizeOverflowCustomizations::AllocationSizeOverflow
 
-  /**
-   * A taint-tracking configuration for identifying `len(...)` calls whose argument may be large.
-   */
-  class FindLargeLensConfiguration extends TaintTracking2::Configuration {
-    FindLargeLensConfiguration() { this = "AllocationSizeOverflow::FindLargeLens" }
+  private module FindLargeLensConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node nd) { nd instanceof Source }
 
-    override predicate isSource(DataFlow::Node nd) { nd instanceof Source }
+    predicate isSink(DataFlow::Node nd) { nd = Builtin::len().getACall().getArgument(0) }
 
-    override predicate isSink(DataFlow::Node nd) { nd = Builtin::len().getACall().getArgument(0) }
-
-    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof SanitizerGuard
-    }
-
-    override predicate isSanitizer(DataFlow::Node nd) { nd instanceof Sanitizer }
+    predicate isBarrier(DataFlow::Node nd) { nd instanceof Sanitizer }
   }
 
+  /**
+   * Tracks taint flow to find `len(...)` calls whose argument may be large.
+   */
+  private module FindLargeLensFlow = TaintTracking::Global<FindLargeLensConfig>;
+
   private DataFlow::CallNode getALargeLenCall() {
-    exists(FindLargeLensConfiguration config, DataFlow::Node lenArg | config.hasFlow(_, lenArg) |
+    exists(DataFlow::Node lenArg | FindLargeLensFlow::flow(_, lenArg) |
       result.getArgument(0) = lenArg
     )
   }
 
   /**
-   * A taint-tracking configuration for identifying allocation-size overflows.
+   * Holds if `nd` is at a position where overflow might occur, and its result is used to compute
+   * allocation size `allocsz`.
    */
-  class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "AllocationSizeOverflow" }
+  predicate isSinkWithAllocationSize(DataFlow::Node nd, DataFlow::Node allocsz) {
+    nd.(Sink).getAllocationSize() = allocsz
+  }
 
-    override predicate isSource(DataFlow::Node nd) { nd instanceof Source }
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    /**
-     * Holds if `nd` is at a position where overflow might occur, and its result is used to compute
-     * allocation size `allocsz`.
-     */
-    predicate isSinkWithAllocationSize(DataFlow::Node nd, DataFlow::Node allocsz) {
-      nd.(Sink).getAllocationSize() = allocsz
-    }
+    predicate isSink(DataFlow::Node sink) { isSinkWithAllocationSize(sink, _) }
 
-    override predicate isSink(DataFlow::Node nd) { isSinkWithAllocationSize(nd, _) }
+    predicate isBarrier(DataFlow::Node nd) { nd instanceof Sanitizer }
 
-    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
       additionalStep(pred, succ)
       or
       exists(DataFlow::CallNode c |
@@ -64,10 +57,18 @@ module AllocationSizeOverflow {
       )
     }
 
-    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof SanitizerGuard
-    }
+    predicate observeDiffInformedIncrementalMode() { any() }
 
-    override predicate isSanitizer(DataFlow::Node nd) { nd instanceof Sanitizer }
+    Location getASelectedSinkLocation(DataFlow::Node sink) {
+      result = sink.getLocation()
+      or
+      exists(DataFlow::Node allocsz |
+        isSinkWithAllocationSize(sink, allocsz) and
+        result = allocsz.getLocation()
+      )
+    }
   }
+
+  /** Tracks taint flow to find allocation-size overflows. */
+  module Flow = TaintTracking::Global<Config>;
 }

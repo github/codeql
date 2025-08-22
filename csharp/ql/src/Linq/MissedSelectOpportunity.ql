@@ -6,7 +6,9 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/linq/missed-select
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
  *       language-features
  */
 
@@ -20,7 +22,7 @@ predicate oversized(LocalVariableDeclStmt s) {
   )
 }
 
-from ForeachStmt fes, LocalVariableDeclStmt s
+from ForeachStmtGenericEnumerable fes, LocalVariableDeclStmt s
 where
   missedSelectOpportunity(fes, s) and
   not oversized(s)

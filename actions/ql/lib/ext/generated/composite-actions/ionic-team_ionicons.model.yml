@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["ionic-team/ionicons", "*", "input.paths", "code-injection", "generated"]
+     - ["ionic-team/ionicons", "*", "input.output", "code-injection", "generated"]
+     - ["ionic-team/ionicons", "*", "input.totalShards", "code-injection", "generated"]
+     - ["ionic-team/ionicons", "*", "input.shard", "code-injection", "generated"]
+     - ["ionic-team/ionicons", "*", "input.folder", "code-injection", "generated"]
+     - ["ionic-team/ionicons", "*", "input.tag", "code-injection", "generated"]
+     - ["ionic-team/ionicons", "*", "input.version", "code-injection", "generated"]
+     - ["ionic-team/ionicons", "*", "input.filename", "code-injection", "generated"]
+     - ["ionic-team/ionicons", "*", "input.path", "code-injection", "generated"]

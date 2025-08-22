@@ -12,17 +12,15 @@
  */
 
 import go
-import semmle.go.security.OpenUrlRedirect::OpenUrlRedirect
+import semmle.go.security.OpenUrlRedirect
 import semmle.go.security.SafeUrlFlow
-import DataFlow::PathGraph
+import OpenUrlRedirect::Flow::PathGraph
 
-from
-  Configuration cfg, SafeUrlFlow::Configuration scfg, DataFlow::PathNode source,
-  DataFlow::PathNode sink
+from OpenUrlRedirect::Flow::PathNode source, OpenUrlRedirect::Flow::PathNode sink
 where
-  cfg.hasFlowPath(source, sink) and
+  OpenUrlRedirect::Flow::flowPath(source, sink) and
   // this excludes flow from safe parts of request URLs, for example the full URL when the
   // doing a redirect from `http://<path>` to `https://<path>`
-  not scfg.hasFlow(_, sink.getNode())
-select sink.getNode(), source, sink, "Untrusted URL redirection depends on a $@.", source.getNode(),
-  "user-provided value"
+  not SafeUrlFlow::Flow::flow(_, sink.getNode())
+select sink.getNode(), source, sink, "This path to an untrusted URL redirection depends on a $@.",
+  source.getNode(), "user-provided value"

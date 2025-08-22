@@ -36,12 +36,12 @@ public class GsonServlet extends HttpServlet {
     @Override
     // BAD: allow class name to be controlled by remote source
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String json = req.getParameter("json");
+        String json = req.getParameter("json"); // $ Source
         String clazz = req.getParameter("class");
 
         try {
             Gson gson = new Gson();
-            Object obj = gson.fromJson(json, Class.forName(clazz)); // $unsafeDeserialization
+            Object obj = gson.fromJson(json, Class.forName(clazz)); // $ Alert
         } catch (ClassNotFoundException cne) {
             throw new IOException(cne.getMessage());
         }
@@ -50,14 +50,14 @@ public class GsonServlet extends HttpServlet {
     @Override
     // BAD: allow class name to be controlled by remote source even with a type adapter factory
     public void doHead(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String json = req.getParameter("json");
+        String json = req.getParameter("json"); // $ Source
         String clazz = req.getParameter("class");
 
         try {
             RuntimeTypeAdapterFactory<User> runtimeTypeAdapterFactory = RuntimeTypeAdapterFactory
             .of(User.class, "type");
             Gson gson = new GsonBuilder().registerTypeAdapterFactory(runtimeTypeAdapterFactory).create();
-            Object obj = gson.fromJson(json, Class.forName(clazz)); // $unsafeDeserialization
+            Object obj = gson.fromJson(json, Class.forName(clazz)); // $ Alert
         } catch (ClassNotFoundException cne) {
             throw new IOException(cne.getMessage());
         }

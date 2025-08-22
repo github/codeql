@@ -94,4 +94,46 @@ void single_field_test_typedef(A_typedef a)
     sink(a2.i); //$ ast,ir
 }
 
+namespace TestAdditionalCallTargets {
+
+    using TakesIntReturnsVoid = void(*)(int);
+    template<TakesIntReturnsVoid F>
+    void call_template_argument(int);
+
+    void call_sink(int x) {
+        sink(x); // $ ir
+    }
+
+    void test_additional_call_targets() {
+        int x = user_input();
+        call_template_argument<call_sink>(x);
+    }
+
+}
+
+void post_update_to_phi_input(bool b)
+{
+  A a;
+  if(b) {
+    a.i = user_input();
+  }
+  sink(a.i); // $ ast,ir
+}
+
+void write_to_param(int* p) {
+    *p = user_input();
+}
+
+void alias_with_fields(bool b) {
+    A a;
+    int* q;
+    if(b) {
+        q = &a.i;
+    } else {
+        q = nullptr;
+    }
+    write_to_param(q);
+    sink(a.i); // $ MISSING: ast,ir
+}
+
 } // namespace Simple

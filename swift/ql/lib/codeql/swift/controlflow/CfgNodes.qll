@@ -3,60 +3,9 @@
 private import swift
 private import BasicBlocks
 private import ControlFlowGraph
-private import internal.ControlFlowGraphImpl
+private import internal.ControlFlowGraphImpl as Impl
 private import internal.ControlFlowElements
 private import internal.Splitting
-
-/** An entry node for a given scope. */
-class EntryNode extends ControlFlowNode, TEntryNode {
-  private CfgScope scope;
-
-  EntryNode() { this = TEntryNode(scope) }
-
-  final override EntryBasicBlock getBasicBlock() { result = ControlFlowNode.super.getBasicBlock() }
-
-  final override Location getLocation() { result = scope.getLocation() }
-
-  final override string toString() { result = "enter " + scope }
-}
-
-/** An exit node for a given scope, annotated with the type of exit. */
-class AnnotatedExitNode extends ControlFlowNode, TAnnotatedExitNode {
-  private CfgScope scope;
-  private boolean normal;
-
-  AnnotatedExitNode() { this = TAnnotatedExitNode(scope, normal) }
-
-  /** Holds if this node represent a normal exit. */
-  final predicate isNormal() { normal = true }
-
-  final override AnnotatedExitBasicBlock getBasicBlock() {
-    result = ControlFlowNode.super.getBasicBlock()
-  }
-
-  final override Location getLocation() { result = scope.getLocation() }
-
-  final override string toString() {
-    exists(string s |
-      normal = true and s = "normal"
-      or
-      normal = false and s = "abnormal"
-    |
-      result = "exit " + scope + " (" + s + ")"
-    )
-  }
-}
-
-/** An exit node for a given scope. */
-class ExitNode extends ControlFlowNode, TExitNode {
-  private CfgScope scope;
-
-  ExitNode() { this = TExitNode(scope) }
-
-  final override Location getLocation() { result = scope.getLocation() }
-
-  final override string toString() { result = "exit " + scope }
-}
 
 /**
  * A node for an AST node.
@@ -65,46 +14,28 @@ class ExitNode extends ControlFlowNode, TExitNode {
  * (dead) code or not important for control flow, and multiple when there are different
  * splits for the AST node.
  */
-class CfgNode extends ControlFlowNode, TElementNode {
-  private Splits splits;
-  ControlFlowElement n;
-
-  CfgNode() { this = TElementNode(_, n, splits) }
-
-  final override ControlFlowElement getNode() { result = n }
-
-  override Location getLocation() { result = n.getLocation() }
-
-  final override string toString() {
-    exists(string s | s = n.toString() |
-      result = "[" + this.getSplitsString() + "] " + s
-      or
-      not exists(this.getSplitsString()) and result = s
-    )
-  }
-
-  /** Gets a comma-separated list of strings for each split in this node, if any. */
-  final string getSplitsString() {
-    result = splits.toString() and
-    result != ""
-  }
+class CfgNode extends ControlFlowNode instanceof Impl::AstCfgNode {
+  final override ControlFlowElement getNode() { result = this.getAstNode() }
 
   /** Gets a split for this control flow node, if any. */
-  final Split getASplit() { result = splits.getASplit() }
+  final Split getASplit() { result = super.getASplit() }
+
+  /** Gets a comma-separated list of strings for each split in this node, if any. */
+  final string getSplitsString() { result = super.getSplitsString() }
 
   /** Gets the AST representation of this control flow node, if any. */
   Expr getAst() {
-    result = n.asAstNode()
+    result = this.getNode().asAstNode()
     or
-    result = n.(PropertyGetterElement).getRef()
+    result = this.getNode().(PropertyGetterElement).getRef()
     or
-    result = n.(PropertySetterElement).getAssignExpr()
+    result = this.getNode().(PropertySetterElement).getAssignExpr()
     or
-    result = n.(PropertyObserverElement).getAssignExpr()
+    result = this.getNode().(PropertyObserverElement).getAssignExpr()
     or
-    result = n.(ClosureElement).getAst()
+    result = this.getNode().(ClosureElement).getAst()
     or
-    result = n.(KeyPathElement).getAst()
+    result = this.getNode().(KeyPathElement).getAst()
   }
 }
 
@@ -118,20 +49,34 @@ class ExprCfgNode extends CfgNode {
   Expr getExpr() { result = e }
 }
 
+/** A control-flow node that wraps a pattern. */
+class PatternCfgNode extends CfgNode {
+  Pattern p;
+
+  PatternCfgNode() { p = this.getNode().asAstNode() }
+
+  /** Gets the underlying pattern. */
+  Pattern getPattern() { result = p }
+}
+
 /** A control-flow node that wraps a property getter. */
 class PropertyGetterCfgNode extends CfgNode {
-  override PropertyGetterElement n;
+  PropertyGetterElement n;
+
+  PropertyGetterCfgNode() { n = this.getAstNode() }
 
   Expr getRef() { result = n.getRef() }
 
   CfgNode getBase() { result.getAst() = n.getBase() }
 
-  AccessorDecl getAccessorDecl() { result = n.getAccessorDecl() }
+  Accessor getAccessor() { result = n.getAccessor() }
 }
 
 /** A control-flow node that wraps a property setter. */
 class PropertySetterCfgNode extends CfgNode {
-  override PropertySetterElement n;
+  PropertySetterElement n;
+
+  PropertySetterCfgNode() { n = this.getAstNode() }
 
   AssignExpr getAssignExpr() { result = n.getAssignExpr() }
 
@@ -139,11 +84,13 @@ class PropertySetterCfgNode extends CfgNode {
 
   CfgNode getSource() { result.getAst() = n.getAssignExpr().getSource() }
 
-  AccessorDecl getAccessorDecl() { result = n.getAccessorDecl() }
+  Accessor getAccessor() { result = n.getAccessor() }
 }
 
 class PropertyObserverCfgNode extends CfgNode {
-  override PropertyObserverElement n;
+  PropertyObserverElement n;
+
+  PropertyObserverCfgNode() { n = this.getAstNode() }
 
   AssignExpr getAssignExpr() { result = n.getAssignExpr() }
 
@@ -151,7 +98,7 @@ class PropertyObserverCfgNode extends CfgNode {
 
   CfgNode getSource() { result.getAst() = n.getAssignExpr().getSource() }
 
-  AccessorDecl getAccessorDecl() { result = n.getObserver() }
+  Accessor getAccessor() { result = n.getObserver() }
 }
 
 class ApplyExprCfgNode extends ExprCfgNode {
@@ -161,11 +108,39 @@ class ApplyExprCfgNode extends ExprCfgNode {
 
   CfgNode getQualifier() { result.getAst() = e.getQualifier() }
 
-  AbstractFunctionDecl getStaticTarget() { result = e.getStaticTarget() }
+  Callable getStaticTarget() { result = e.getStaticTarget() }
 
-  Expr getFunction() { result = e.getFunction() }
+  CfgNode getFunction() { result.getAst() = e.getFunction() }
 }
 
 class CallExprCfgNode extends ApplyExprCfgNode {
   override CallExpr e;
 }
+
+/** A control-flow node that wraps a key-path application. */
+class KeyPathApplicationExprCfgNode extends ExprCfgNode {
+  override KeyPathApplicationExpr e;
+
+  /**
+   * Gets the control-flow node that wraps the key-path of
+   * this control-flow element.
+   */
+  CfgNode getKeyPath() { result.getAst() = e.getKeyPath() }
+
+  /**
+   * Gets the control-flow node that wraps the base of
+   * this control-flow element.
+   */
+  CfgNode getBase() { result.getAst() = e.getBase() }
+}
+
+/** A control-flow node that wraps a key-path expression. */
+class KeyPathExprCfgNode extends ExprCfgNode {
+  override KeyPathExpr e;
+}
+
+class EntryNode = Impl::EntryNode;
+
+class ExitNode = Impl::ExitNode;
+
+class AnnotatedExitNode = Impl::AnnotatedExitNode;

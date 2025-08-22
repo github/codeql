@@ -24,7 +24,7 @@ class ClassPointerType extends @derivedtype {
 
   Class getBaseType() { derivedtypes(this, _, _, result) }
 
-  string toString() { result = getBaseType().toString() + "*" }
+  string toString() { result = this.getBaseType().toString() + "*" }
 }
 
 class DefinedMemberFunction extends @function {

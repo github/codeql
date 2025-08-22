@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["docker-practice/actions-setup-docker", "*", "input.docker_version", "command-injection", "manual"]
+      - ["docker-practice/actions-setup-docker", "*", "input.docker_channel", "command-injection", "manual"]
+      - ["docker-practice/actions-setup-docker", "*", "input.docker_daemon_json", "command-injection", "manual"]

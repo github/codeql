@@ -1,0 +1,2 @@
+class TagsController < AlternativeRootController
+end

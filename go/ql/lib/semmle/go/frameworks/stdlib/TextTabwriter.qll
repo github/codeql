@@ -4,6 +4,7 @@
 
 import go
 
+// These models are not implemented using Models-as-Data because they represent reverse flow.
 /** Provides models of commonly used functions in the `text/tabwriter` package. */
 module TextTabwriter {
   private class FunctionModels extends TaintTracking::FunctionModel {
@@ -12,7 +13,7 @@ module TextTabwriter {
 
     FunctionModels() {
       // signature: func NewWriter(output io.Writer, minwidth int, tabwidth int, padding int, padchar byte, flags uint) *Writer
-      hasQualifiedName("text/tabwriter", "NewWriter") and
+      this.hasQualifiedName("text/tabwriter", "NewWriter") and
       (inp.isResult() and outp.isParameter(0))
     }
 
@@ -27,9 +28,9 @@ module TextTabwriter {
 
     MethodModels() {
       // signature: func (*Writer) Init(output io.Writer, minwidth int, tabwidth int, padding int, padchar byte, flags uint) *Writer
-      hasQualifiedName("text/tabwriter", "Writer", "Init") and
+      this.hasQualifiedName("text/tabwriter", "Writer", "Init") and
       (
-        (inp.isReceiver() or inp.isResult()) and
+        inp.isResult() and
         outp.isParameter(0)
       )
     }

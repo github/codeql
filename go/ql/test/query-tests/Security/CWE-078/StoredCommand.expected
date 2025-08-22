@@ -1,8 +1,15 @@
-edges
-| StoredCommand.go:11:2:11:27 | ... := ...[0] | StoredCommand.go:14:22:14:28 | cmdName |
-nodes
-| StoredCommand.go:11:2:11:27 | ... := ...[0] | semmle.label | ... := ...[0] |
-| StoredCommand.go:14:22:14:28 | cmdName | semmle.label | cmdName |
-subpaths
 #select
 | StoredCommand.go:14:22:14:28 | cmdName | StoredCommand.go:11:2:11:27 | ... := ...[0] | StoredCommand.go:14:22:14:28 | cmdName | This command depends on a $@. | StoredCommand.go:11:2:11:27 | ... := ...[0] | stored value |
+edges
+| StoredCommand.go:11:2:11:27 | ... := ...[0] | StoredCommand.go:13:2:13:5 | rows | provenance | Src:MaD:2  |
+| StoredCommand.go:13:2:13:5 | rows | StoredCommand.go:13:12:13:19 | &... | provenance | FunctionModel |
+| StoredCommand.go:13:12:13:19 | &... | StoredCommand.go:14:22:14:28 | cmdName | provenance | Sink:MaD:1 |
+models
+| 1 | Sink: os/exec; ; false; Command; ; ; Argument[0]; command-injection; manual |
+| 2 | Source: database/sql; DB; true; Query; ; ; ReturnValue[0]; database; manual |
+nodes
+| StoredCommand.go:11:2:11:27 | ... := ...[0] | semmle.label | ... := ...[0] |
+| StoredCommand.go:13:2:13:5 | rows | semmle.label | rows |
+| StoredCommand.go:13:12:13:19 | &... | semmle.label | &... |
+| StoredCommand.go:14:22:14:28 | cmdName | semmle.label | cmdName |
+subpaths

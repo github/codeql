@@ -9,8 +9,8 @@
     }
 }(this, function () {
     function create() {
-        return function (name) {
-            /f*g/.test(name); // NOT OK
+        return function (name) { // $ Source[js/polynomial-redos]
+            /f*g/.test(name); // $ Alert[js/polynomial-redos]
         }
     }
     return create()

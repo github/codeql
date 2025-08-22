@@ -1,4 +1,4 @@
 import javascript
 
 from Import imprt
-select imprt, imprt.getImportedPath().getValue(), imprt.getImportedModule()
+select imprt, imprt.getImportedPathString(), imprt.getImportedModule()

@@ -9,7 +9,7 @@
  */
 
 private import csharp
-private import Telemetry.ExternalApi
+private import semmle.code.csharp.telemetry.ExternalApi
 
 from Call c, ExternalApi api
 where

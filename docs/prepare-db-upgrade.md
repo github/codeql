@@ -37,7 +37,7 @@ The `compatibility` field takes one of four values:
 
  * **breaking**: the step is unsafe and will prevent certain queries from working.
 
-The `some_relation.rel` line(s) are the actions required to perform the database upgrade. Do a diff on the the new vs old `.dbscheme` file to get an idea of what they have to achieve. Sometimes you won't need any upgrade commands – this happens when the dbscheme has changed in "cosmetic" ways, for example by adding/removing comments or changing union type relationships, but still retains the same on-disk format for all tables; the purpose of the upgrade script is then to document the fact that it's safe to replace the old dbscheme with the new one.
+The `some_relation.rel` line(s) are the actions required to perform the database upgrade. Do a diff on the new vs old `.dbscheme` file to get an idea of what they have to achieve. Sometimes you won't need any upgrade commands – this happens when the dbscheme has changed in "cosmetic" ways, for example by adding/removing comments or changing union type relationships, but still retains the same on-disk format for all tables; the purpose of the upgrade script is then to document the fact that it's safe to replace the old dbscheme with the new one.
 
 Ideally, your downgrade script will perfectly revert the changes applied by the upgrade script, such that applying the upgrade and then the downgrade will result in the same database you started with.
 
@@ -59,14 +59,16 @@ extended.rel: reorder input.rel (int id, string name, int parent) id name parent
 // QLL library, and will run in the context of the *old* dbscheme.
 relationname.rel: run relationname.qlo
 
-// Create relationname.rel by running the query predicate 'predicatename' in
-// relationname.qlo and writing the query results as a .rel file. This command
+// Create relation1.rel by running the query predicate 'predicate1' in upgrade.qlo
+// and writing the query results as a .rel file, and running 'predicate2' in
+// upgrade.qlo and writing the query results as a .rel file. This command
 // expects the upgrade relation to be a query predicate, which has the advantage
 // of allowing multiple upgrade relations to appear in the same .ql file as
-// multiple query predicates. The query file should be named relationname.ql and
+// multiple query predicates. The query file should be named upgrade.ql and
 // should be placed in the upgrade directory. It should avoid using the default
 // QLL library, and will run in the context of the *old* dbscheme.
-relationname.rel: run relationname.qlo predicatename
+relation1.rel: run upgrade.qlo predicate1
+relation2.rel: run upgrade.qlo predicate2
 ```
 
 ### Testing your scripts
@@ -142,3 +144,7 @@ cp ql/lib/<mylang>.dbscheme ql/lib/upgrades/454f1e15151422355049dc4f1f0486a03bae
 ```
 
 4. Put a copy of the `.dbscheme` from `main` in that directory and create an `upgrade.properties` file that performs the downgrade (as described above).
+
+### Debugging your scripts
+
+Database upgrade/downgrade may fail for several reasons. To find out the exact issue it is recommended to rerun the `codeql test run` commands from above in a verbose mode, e.g. `codeql test run -vvvv ...`.

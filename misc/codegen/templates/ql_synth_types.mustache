@@ -1,0 +1,94 @@
+/**
+ * INTERNAL: Do not use.
+ * This module defines the IPA layer on top of raw DB entities, and the conversions between the two
+ * layers.
+ */
+
+private import {{import_prefix}}.SynthConstructors
+private import {{import_prefix}}.Raw
+
+module Synth {
+  /**
+   * INTERNAL: Do not use.
+   * The synthesized type of all elements.
+   */
+  cached newtype T{{root}} =
+    {{#final_classes}}
+    {{^first}}
+    or
+    {{/first}}
+    /**
+     * INTERNAL: Do not use.
+     */
+    T{{name}}({{#params}}{{^first}}, {{/first}}{{type}} {{param}}{{/params}}){{#has_params}} { construct{{name}}({{#params}}{{^first}}, {{/first}}{{param}}{{/params}}) }{{/has_params}}
+    {{/final_classes}}
+
+  {{#non_final_classes}}
+  {{^root}}
+  /**
+   * INTERNAL: Do not use.
+   */
+  class T{{name}} = {{#derived}}{{^first}} or {{/first}}T{{name}}{{/derived}};
+  {{/root}}
+  {{/non_final_classes}}
+
+  {{#final_classes}}
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `T{{name}}`, if possible.
+   */
+  T{{name}} convert{{name}}FromRaw(Raw::Element e) {
+    {{^is_fresh_synth}}
+    result = T{{name}}(e)
+    {{/is_fresh_synth}}
+    {{#is_fresh_synth}}
+    none()
+    {{/is_fresh_synth}}
+  }
+  {{/final_classes}}
+
+  {{#non_final_classes}}
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `T{{name}}`, if possible.
+   */
+  T{{name}} convert{{name}}FromRaw(Raw::Element e) {
+    {{#derived}}
+    {{^first}}
+    or
+    {{/first}}
+    result = convert{{name}}FromRaw(e)
+    {{/derived}}
+  }
+  {{/non_final_classes}}
+
+  {{#final_classes}}
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `T{{name}}` to a raw DB element, if possible.
+   */
+  Raw::Element convert{{name}}ToRaw(T{{name}} e) {
+    {{^is_fresh_synth}}
+    e = T{{name}}(result)
+    {{/is_fresh_synth}}
+    {{#is_fresh_synth}}
+    none()
+    {{/is_fresh_synth}}
+  }
+  {{/final_classes}}
+
+  {{#non_final_classes}}
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `T{{name}}` to a raw DB element, if possible.
+   */
+  Raw::Element convert{{name}}ToRaw(T{{name}} e) {
+    {{#derived}}
+    {{^first}}
+    or
+    {{/first}}
+    result = convert{{name}}ToRaw(e)
+    {{/derived}}
+  }
+  {{/non_final_classes}}
+}

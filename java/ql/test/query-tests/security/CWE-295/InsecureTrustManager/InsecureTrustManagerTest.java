@@ -120,8 +120,8 @@ public class InsecureTrustManagerTest {
 	private static void directInsecureTrustManagerCall()
 			throws NoSuchAlgorithmException, KeyManagementException {
 		SSLContext context = SSLContext.getInstance("TLS");
-		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
-		context.init(null, trustManager, null); // $ hasValueFlow
+		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()}; // $ Source
+		context.init(null, trustManager, null); // $ Alert
 	}
 
 	private static void namedVariableFlagDirectInsecureTrustManagerCall()
@@ -144,8 +144,8 @@ public class InsecureTrustManagerTest {
 			throws NoSuchAlgorithmException, KeyManagementException {
 		if (SOME_NAME_THAT_IS_NOT_A_FLAG_NAME) {
 			SSLContext context = SSLContext.getInstance("TLS");
-			TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
-			context.init(null, trustManager, null); // $ hasValueFlow
+			TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()}; // $ Source
+			context.init(null, trustManager, null); // $ Alert
 		}
 	}
 
@@ -176,8 +176,8 @@ public class InsecureTrustManagerTest {
 			throws NoSuchAlgorithmException, KeyManagementException {
 		if (Boolean.parseBoolean(System.getProperty("SOME_NAME_THAT_IS_NOT_A_FLAG_NAME"))) {
 			SSLContext context = SSLContext.getInstance("TLS");
-			TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
-			context.init(null, trustManager, null); // $ hasValueFlow
+			TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()}; // $ Source
+			context.init(null, trustManager, null); // $ Alert
 		}
 	}
 
@@ -208,8 +208,8 @@ public class InsecureTrustManagerTest {
 			throws NoSuchAlgorithmException, KeyManagementException {
 		if (is42TheAnswerForEverything()) {
 			SSLContext context = SSLContext.getInstance("TLS");
-			TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
-			context.init(null, trustManager, null); // $ hasValueFlow
+			TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()}; // $ Source
+			context.init(null, trustManager, null); // $ Alert
 		}
 	}
 
@@ -225,8 +225,8 @@ public class InsecureTrustManagerTest {
 		String schemaFromHttpRequest = "HTTPS";
 		if (schemaFromHttpRequest.equalsIgnoreCase("https")) {
 			SSLContext context = SSLContext.getInstance("TLS");
-			TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
-			context.init(null, trustManager, null); // $ hasValueFlow
+			TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()}; // $ Source
+			context.init(null, trustManager, null); // $ Alert
 		}
 	}
 
@@ -243,8 +243,8 @@ public class InsecureTrustManagerTest {
 		String schemaFromHttpRequest = "HTTPS";
 		if (!schemaFromHttpRequest.equalsIgnoreCase("https")) {
 			SSLContext context = SSLContext.getInstance("TLS");
-			TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
-			context.init(null, trustManager, null); // $ hasValueFlow
+			TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()}; // $ Source
+			context.init(null, trustManager, null); // $ Alert
 		}
 	}
 
@@ -263,8 +263,8 @@ public class InsecureTrustManagerTest {
 		}
 
 		SSLContext context = SSLContext.getInstance("TLS");
-		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
-		context.init(null, trustManager, null); // $ hasValueFlow
+		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()}; // $ Source
+		context.init(null, trustManager, null); // $ Alert
 
 	}
 
@@ -275,8 +275,8 @@ public class InsecureTrustManagerTest {
 		}
 
 		SSLContext context = SSLContext.getInstance("TLS");
-		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
-		context.init(null, trustManager, null); // $ hasValueFlow
+		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()}; // $ Source
+		context.init(null, trustManager, null); // $ Alert
 
 	}
 
@@ -287,8 +287,8 @@ public class InsecureTrustManagerTest {
 		}
 
 		SSLContext context = SSLContext.getInstance("TLS");
-		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
-		context.init(null, trustManager, null); // $ hasValueFlow
+		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()}; // $ Source
+		context.init(null, trustManager, null); // $ Alert
 
 	}
 
@@ -299,8 +299,8 @@ public class InsecureTrustManagerTest {
 		}
 
 		SSLContext context = SSLContext.getInstance("TLS");
-		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
-		context.init(null, trustManager, null); // $ hasValueFlow
+		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()}; // $ Source
+		context.init(null, trustManager, null); // $ Alert
 
 	}
 
@@ -311,8 +311,8 @@ public class InsecureTrustManagerTest {
 		}
 
 		SSLContext context = SSLContext.getInstance("TLS");
-		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
-		context.init(null, trustManager, null); // $ hasValueFlow
+		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()}; // $ Source
+		context.init(null, trustManager, null); // $ Alert
 
 	}
 
@@ -323,8 +323,8 @@ public class InsecureTrustManagerTest {
 		}
 
 		SSLContext context = SSLContext.getInstance("TLS");
-		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
-		context.init(null, trustManager, null); // $ hasValueFlow
+		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()}; // $ Source
+		context.init(null, trustManager, null); // $ Alert
 	}
 
 	private static void isEqualsIgnoreCaseNOTGuardingDirectInsecureTrustManagerCall()
@@ -335,8 +335,8 @@ public class InsecureTrustManagerTest {
 		}
 
 		SSLContext context = SSLContext.getInstance("TLS");
-		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
-		context.init(null, trustManager, null); // $ hasValueFlow
+		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()}; // $ Source
+		context.init(null, trustManager, null); // $ Alert
 
 	}
 
@@ -348,15 +348,15 @@ public class InsecureTrustManagerTest {
 		}
 
 		SSLContext context = SSLContext.getInstance("TLS");
-		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
-		context.init(null, trustManager, null); // $ hasValueFlow
+		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()}; // $ Source
+		context.init(null, trustManager, null); // $ Alert
 
 	}
 
 	private static void disableTrustManager()
 			throws NoSuchAlgorithmException, KeyManagementException {
 		SSLContext context = SSLContext.getInstance("TLS");
-		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()};
-		context.init(null, trustManager, null); // $ hasValueFlow
+		TrustManager[] trustManager = new TrustManager[] {new InsecureTrustManager()}; // $ Source
+		context.init(null, trustManager, null); // $ Alert
 	}
 }

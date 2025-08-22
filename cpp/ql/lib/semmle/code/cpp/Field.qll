@@ -5,6 +5,30 @@
 import semmle.code.cpp.Variable
 import semmle.code.cpp.Enum
 
+private predicate hasAFieldWithOffset(Class c, Field f, int offset) {
+  // Base case: `f` is a field in `c`.
+  f = c.getAField() and
+  offset = f.getByteOffset() and
+  not f.getUnspecifiedType().(Class).hasDefinition()
+  or
+  // Otherwise, we find the struct that is a field of `c` which then has
+  // the field `f` as a member.
+  exists(Field g |
+    g = c.getAField() and
+    // Find the field with the largest offset that's less than or equal to
+    // offset. That's the struct we need to search recursively.
+    g =
+      max(Field cand, int candOffset |
+        cand = c.getAField() and
+        candOffset = cand.getByteOffset() and
+        offset >= candOffset
+      |
+        cand order by candOffset
+      ) and
+    hasAFieldWithOffset(g.getUnspecifiedType(), f, offset - g.getByteOffset())
+  )
+}
+
 /**
  * A C structure member or C++ non-static member variable. For example the
  * member variable `m` in the following code (but not `s`):
@@ -39,7 +63,8 @@ class Field extends MemberVariable {
    * complete most-derived object.
    */
   int getAByteOffsetIn(Class mostDerivedClass) {
-    result = mostDerivedClass.getABaseClassByteOffset(getDeclaringType()) + getByteOffset()
+    result =
+      mostDerivedClass.getABaseClassByteOffset(this.getDeclaringType()) + this.getByteOffset()
   }
 
   /**
@@ -75,6 +100,27 @@ class Field extends MemberVariable {
         rank[result + 1](int index | cls.getCanonicalMember(index).(Field).isInitializable())
     )
   }
+
+  /**
+   * Gets the offset (in bytes) of this field starting at `c`.
+   *
+   * For example, consider:
+   * ```cpp
+   * struct S1 {
+   *   int a;
+   *   void* b;
+   * };
+   *
+   * struct S2 {
+   *   S1 s1;
+   *   char c;
+   * };
+   * ```
+   * If `f` represents the field `s1` and `c` represents the class `S2` then
+   * `f.getOffsetInClass(S2) = 0` holds. Likewise, if `f` represents the
+   * field `a`, then `f.getOffsetInClass(c) = 0` holds.
+   */
+  int getOffsetInClass(Class c) { hasAFieldWithOffset(c, this, result) }
 }
 
 /**
@@ -116,10 +162,10 @@ class BitField extends Field {
   int getBitOffset() { fieldoffsets(underlyingElement(this), _, result) }
 
   /** Holds if this bitfield is anonymous. */
-  predicate isAnonymous() { hasName("(unnamed bitfield)") }
+  predicate isAnonymous() { this.hasName("(unnamed bitfield)") }
 
   override predicate isInitializable() {
     // Anonymous bitfields are not initializable.
-    not isAnonymous()
+    not this.isAnonymous()
   }
 }

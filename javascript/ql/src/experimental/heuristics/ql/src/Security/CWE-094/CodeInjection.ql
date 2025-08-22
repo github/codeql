@@ -17,10 +17,10 @@
 
 import javascript
 import semmle.javascript.security.dataflow.CodeInjectionQuery
-import DataFlow::PathGraph
+import CodeInjectionFlow::PathGraph
 import semmle.javascript.heuristics.AdditionalSources
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink) and source.getNode() instanceof HeuristicSource
+from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink
+where CodeInjectionFlow::flowPath(source, sink) and source.getNode() instanceof HeuristicSource
 select sink.getNode(), source, sink, sink.getNode().(Sink).getMessagePrefix() + " depends on a $@.",
   source.getNode(), "user-provided value"

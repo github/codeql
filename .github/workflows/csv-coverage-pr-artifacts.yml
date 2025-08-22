@@ -10,6 +10,7 @@ on:
       - "*/ql/src/**/*.qll"
       - "*/ql/lib/**/*.ql"
       - "*/ql/lib/**/*.qll"
+      - "*/ql/lib/ext/**/*.yml"
       - "misc/scripts/library-coverage/*.py"
       # input data files
       - "*/documentation/library-coverage/cwe-sink.csv"
@@ -17,6 +18,10 @@ on:
     branches:
       - main
       - "rc/*"
+
+permissions:
+  contents: read
+  pull-requests: read
 
 jobs:
   generate:
@@ -30,11 +35,11 @@ jobs:
           GITHUB_CONTEXT: ${{ toJSON(github.event) }}
         run: echo "$GITHUB_CONTEXT"
       - name: Clone self (github/codeql) - MERGE
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: merge
       - name: Clone self (github/codeql) - BASE
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
           path: base
@@ -66,21 +71,21 @@ jobs:
         run: |
           python base/misc/scripts/library-coverage/compare-folders.py out_base out_merge comparison.md
       - name: Upload CSV package list
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: csv-framework-coverage-merge
           path: |
             out_merge/framework-coverage-*.csv
             out_merge/framework-coverage-*.rst
       - name: Upload CSV package list
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: csv-framework-coverage-base
           path: |
             out_base/framework-coverage-*.csv
             out_base/framework-coverage-*.rst
       - name: Upload comparison results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: comparison
           path: |
@@ -88,9 +93,32 @@ jobs:
       - name: Save PR number
         run: |
           mkdir -p pr
-          echo ${{ github.event.pull_request.number }} > pr/NR
+          echo ${PR_NUMBER} > pr/NR
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
       - name: Upload PR number
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pr
           path: pr/
+      - name: Save comment ID (if it exists)
+        run: |
+          # Find the latest comment starting with COMMENT_PREFIX
+          COMMENT_PREFIX=":warning: The head of this PR and the base branch were compared for differences in the framework coverage reports."
+          COMMENT_ID=$(gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" --paginate | jq --arg prefix "${COMMENT_PREFIX}" 'map(select(.body|startswith($prefix)) | .id) | max // empty')
+          if [[ -z ${COMMENT_ID} ]]
+          then
+            echo "Comment not found. Not uploading 'comment/ID' artifact."
+          else
+            mkdir -p comment
+            echo ${COMMENT_ID} > comment/ID
+          fi
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+      - name: Upload comment ID (if it exists)
+        uses: actions/upload-artifact@v4
+        with:
+          name: comment
+          path: comment/
+          if-no-files-found: ignore

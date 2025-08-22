@@ -1,0 +1,24 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["io", "", False, "Copy", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["io", "", False, "CopyBuffer", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["io", "", False, "CopyN", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["io", "", False, "LimitReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io", "", False, "NewSectionReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io", "", False, "NopCloser", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io", "", False, "ReadAll", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["io", "", False, "ReadAtLeast", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["io", "", False, "ReadFull", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["io", "", False, "TeeReader", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["io", "", False, "TeeReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io", "", False, "WriteString", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["io", "Reader", True, "Read", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["io", "ReaderAt", True, "ReadAt", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["io", "ReaderFrom", True, "ReadFrom", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["io", "StringWriter", True, "WriteString", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["io", "Writer", True, "Write", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["io", "WriterAt", True, "WriteAt", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["io", "WriterTo", True, "WriteTo", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]

@@ -1,7 +1,11 @@
+overlay[local]
+module;
+
 private import TreeSitter
 private import Variable
 private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.AST
+private import codeql.ruby.ast.internal.Scope
 
 predicate isIdentifierMethodCall(Ruby::Identifier g) { vcall(g) and not access(g, _) }
 
@@ -43,11 +47,16 @@ class MethodCallSynth extends MethodCallImpl, TMethodCallSynth {
 
   final override AstNode getReceiverImpl() { synthChild(this, 0, result) }
 
-  final override AstNode getArgumentImpl(int n) { synthChild(this, n + 1, result) and n >= 0 }
+  final override AstNode getArgumentImpl(int n) {
+    synthChild(this, n + 1, result) and
+    n in [0 .. this.getNumberOfArgumentsImpl() - 1]
+  }
 
   final override int getNumberOfArgumentsImpl() { this = TMethodCallSynth(_, _, _, _, result) }
 
-  final override Block getBlockImpl() { synthChild(this, -2, result) }
+  final override Block getBlockImpl() {
+    synthChild(this, this.getNumberOfArgumentsImpl() + 1, result)
+  }
 }
 
 class IdentifierMethodCall extends MethodCallImpl, TIdentifierMethodCall {
@@ -107,7 +116,7 @@ class ElementReferenceImpl extends MethodCallImpl, TElementReference {
 
   final override string getMethodNameImpl() { result = "[]" }
 
-  final override Block getBlockImpl() { none() }
+  final override Block getBlockImpl() { toGenerated(result) = g.getBlock() }
 }
 
 abstract class SuperCallImpl extends MethodCallImpl, TSuperCall { }
@@ -116,14 +125,21 @@ private Ruby::AstNode getSuperParent(Ruby::Super sup) {
   result = sup
   or
   result = getSuperParent(sup).getParent() and
-  not result instanceof Ruby::Method
+  not result instanceof Ruby::Method and
+  not result instanceof Ruby::SingletonMethod
 }
 
 private string getSuperMethodName(Ruby::Super sup) {
-  exists(Ruby::Method meth |
-    meth = getSuperParent(sup).getParent() and
+  exists(Ruby::AstNode meth | meth = getSuperParent(sup).getParent() |
     result = any(Method c | toGenerated(c) = meth).getName()
+    or
+    result = any(SingletonMethod c | toGenerated(c) = meth).getName()
   )
+}
+
+private Ruby::Identifier getParameter(Ruby::Method m, int pos, Ruby::AstNode param) {
+  scopeDefinesParameterVariable(m, _, result, pos) and
+  param = m.getParameters().getChild(pos)
 }
 
 class TokenSuperCall extends SuperCallImpl, TTokenSuperCall {
@@ -131,13 +147,51 @@ class TokenSuperCall extends SuperCallImpl, TTokenSuperCall {
 
   TokenSuperCall() { this = TTokenSuperCall(g) }
 
+  Ruby::Method getEnclosingMethod() { result = scopeOf(toGenerated(this)).getEnclosingMethod() }
+
+  int getNumberOfImplicitArguments() {
+    exists(Ruby::Method encl |
+      encl = this.getEnclosingMethod() and
+      result = count(getParameter(encl, _, _))
+    )
+  }
+
+  /**
+   * Gets the local variable defined by parameter `param` which is used as an
+   * implicit argument at position `pos`.
+   *
+   * For example, in
+   *
+   * ```ruby
+   * class Sup
+   *     def m(x)
+   *     end
+   * end
+   *
+   * class Sub < Sup
+   *    def m(x)
+   *        super
+   *    end
+   * end
+   * ```
+   *
+   * `x` is an implicit argument at position 0 of the `super` call in `Sub#m`.
+   */
+  pragma[nomagic]
+  LocalVariableReal getImplicitArgument(int pos, Ruby::AstNode param) {
+    exists(Ruby::Method encl |
+      encl = this.getEnclosingMethod() and
+      toGenerated(result.getDefiningAccessImpl()) = getParameter(encl, pos, param)
+    )
+  }
+
   final override string getMethodNameImpl() { result = getSuperMethodName(g) }
 
   final override Expr getReceiverImpl() { none() }
 
-  final override Expr getArgumentImpl(int n) { none() }
+  final override Expr getArgumentImpl(int n) { synthChild(this, n, result) }
 
-  final override int getNumberOfArgumentsImpl() { result = 0 }
+  final override int getNumberOfArgumentsImpl() { result = this.getNumberOfImplicitArguments() }
 
   final override Block getBlockImpl() { none() }
 }

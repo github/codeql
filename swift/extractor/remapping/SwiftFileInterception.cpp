@@ -8,12 +8,14 @@
 #include <mutex>
 #include <optional>
 #include <cassert>
+#include <cstdarg>
 #include <iostream>
 
 #include <picosha2.h>
 
 #include "swift/extractor/infra/file/PathHash.h"
 #include "swift/extractor/infra/file/Path.h"
+#include "swift/logging/SwiftAssert.h"
 
 #ifdef __APPLE__
 // path is hardcoded as otherwise redirection could break when setting DYLD_FALLBACK_LIBRARY_PATH
@@ -27,14 +29,22 @@
 namespace fs = std::filesystem;
 
 namespace {
+
+namespace {
+codeql::Logger& logger() {
+  static codeql::Logger ret{"open_interception"};
+  return ret;
+}
+}  // namespace
+
 namespace original {
 
 void* openLibC() {
   if (auto ret = dlopen(SHARED_LIBC, RTLD_LAZY)) {
     return ret;
   }
-  std::cerr << "Unable to dlopen " SHARED_LIBC "!\n";
-  std::abort();
+  LOG_CRITICAL("Unable to dlopen " SHARED_LIBC "!");
+  abort();
 }
 
 void* libc() {
@@ -71,8 +81,12 @@ bool mayBeRedirected(const char* path, int flags = O_RDONLY) {
 std::optional<std::string> hashFile(const fs::path& path) {
   auto fd = original::open(path.c_str(), O_RDONLY | O_CLOEXEC);
   if (fd < 0) {
-    auto ec = std::make_error_code(static_cast<std::errc>(errno));
-    std::cerr << "unable to open " << path << " for reading (" << ec.message() << ")\n";
+    if (errno == ENOENT) {
+      LOG_DEBUG("ignoring non-existing module {}", path);
+    } else {
+      LOG_ERROR("unable to open {} for hashing ({})", path,
+                std::make_error_code(static_cast<std::errc>(errno)));
+    }
     return std::nullopt;
   }
   auto hasher = picosha2::hash256_one_by_one();
@@ -101,8 +115,7 @@ class FileInterceptor {
   }
 
   int open(const char* path, int flags, mode_t mode = 0) const {
-    fs::path fsPath{path};
-    assert((flags & O_ACCMODE) == O_RDONLY);
+    CODEQL_ASSERT((flags & O_ACCMODE) == O_RDONLY, "We should only be intercepting file reads");
     // try to use the hash map first
     errno = 0;
     if (auto hashed = hashPath(path)) {
@@ -114,15 +127,15 @@ class FileInterceptor {
   }
 
   fs::path redirect(const fs::path& target) const {
-    assert(mayBeRedirected(target.c_str()));
+    CODEQL_ASSERT(mayBeRedirected(target.c_str()), "Trying to redirect {} which is unsupported",
+                  target);
     auto redirected = redirectedPath(target);
     fs::create_directories(redirected.parent_path());
     if (auto hashed = hashPath(target)) {
       std::error_code ec;
       fs::create_symlink(*hashed, redirected, ec);
-      if (ec) {
-        std::cerr << "Cannot remap file " << *hashed << " -> " << redirected << ": " << ec.message()
-                  << "\n";
+      if (ec && ec.value() != ENOENT) {
+        LOG_WARNING("Cannot remap file {} -> {} ({})", *hashed, redirected, ec);
       }
       return *hashed;
     }
@@ -149,7 +162,7 @@ class FileInterceptor {
 };
 
 std::optional<std::string> getHashOfRealFile(const fs::path& path) {
-  static std::unordered_map<fs::path, std::string> cache;
+  static std::unordered_map<fs::path, std::string, codeql::PathHash> cache;
   auto resolved = resolvePath(path);
   if (auto found = cache.find(resolved); found != cache.end()) {
     return found->second;

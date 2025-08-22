@@ -16,35 +16,31 @@ import go
 module RequestForgery {
   import RequestForgeryCustomizations::RequestForgery
 
-  /**
-   * A taint-tracking configuration for reasoning about request forgery.
-   */
-  class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "RequestForgery" }
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    predicate isBarrierOut(DataFlow::Node node) { node instanceof SanitizerEdge }
+
+    predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
       // propagate to a URL when its host is assigned to
       exists(Write w, Field f, SsaWithFields v | f.hasQualifiedName("net/url", "URL", "Host") |
         w.writesField(v.getAUse(), f, pred) and succ = v.getAUse()
       )
     }
 
-    override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node) or
-      node instanceof Sanitizer
-    }
+    predicate observeDiffInformedIncrementalMode() { any() }
 
-    override predicate isSanitizerOut(DataFlow::Node node) {
-      super.isSanitizerOut(node) or
-      node instanceof SanitizerEdge
-    }
-
-    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      super.isSanitizerGuard(guard) or guard instanceof SanitizerGuard
+    Location getASelectedSinkLocation(DataFlow::Node sink) {
+      result = sink.getLocation()
+      or
+      result = sink.(Sink).getARequest().getLocation()
     }
   }
+
+  /** Tracks taint flow from untrusted data to request forgery attack vectors. */
+  module Flow = TaintTracking::Global<Config>;
 }

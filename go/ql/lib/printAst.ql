@@ -12,15 +12,15 @@ import semmle.go.PrintAst
 import ideContextual
 
 /**
- * The source file to generate an AST from.
+ * Gets the source file to generate an AST from.
  */
 external string selectedSourceFile();
 
 /**
- * Hook to customize the functions printed by this query.
+ * A hook to customize the functions printed by this query.
  */
 class Cfg extends PrintAstConfiguration {
-  override predicate shouldPrintFunction(FuncDecl func) { shouldPrintFile(func.getFile()) }
+  override predicate shouldPrintFunction(FuncDecl func) { this.shouldPrintFile(func.getFile()) }
 
   override predicate shouldPrintFile(File file) {
     file = getFileBySourceArchiveName(selectedSourceFile())

@@ -1,56 +1,48 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
-class TaintFlowConf extends TaintTracking::Configuration {
-  TaintFlowConf() { this = "qltest:frameworks:guava-taint" }
+module TaintFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) { n.asExpr().(MethodCall).getMethod().hasName("taint") }
 
-  override predicate isSource(DataFlow::Node n) {
-    n.asExpr().(MethodAccess).getMethod().hasName("taint")
-  }
-
-  override predicate isSink(DataFlow::Node n) {
-    exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
+  predicate isSink(DataFlow::Node n) {
+    exists(MethodCall ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
   }
 }
 
-class ValueFlowConf extends DataFlow::Configuration {
-  ValueFlowConf() { this = "qltest:frameworks:guava-value" }
+module TaintFlow = TaintTracking::Global<TaintFlowConfig>;
 
-  override predicate isSource(DataFlow::Node n) {
-    n.asExpr().(MethodAccess).getMethod().hasName("taint")
+module ValueFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) { n.asExpr().(MethodCall).getMethod().hasName("taint") }
+
+  predicate isSink(DataFlow::Node n) {
+    exists(MethodCall ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
   }
-
-  override predicate isSink(DataFlow::Node n) {
-    exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
-  }
-
-  override int fieldFlowBranchLimit() { result = 100 }
 }
 
-class HasFlowTest extends InlineExpectationsTest {
-  HasFlowTest() { this = "HasFlowTest" }
+module ValueFlow = DataFlow::Global<ValueFlowConfig>;
 
-  override string getARelevantTag() { result = ["numTaintFlow", "numValueFlow"] }
+module HasFlowTest implements TestSig {
+  string getARelevantTag() { result = ["numTaintFlow", "numValueFlow"] }
 
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "numTaintFlow" and
-    exists(DataFlow::Node src, DataFlow::Node sink, TaintFlowConf tconf, int num |
-      tconf.hasFlow(src, sink)
-    |
-      not any(ValueFlowConf vconf).hasFlow(src, sink) and
+    exists(DataFlow::Node src, DataFlow::Node sink, int num | TaintFlow::flow(src, sink) |
+      not ValueFlow::flow(src, sink) and
       value = num.toString() and
       sink.getLocation() = location and
       element = sink.toString() and
-      num = strictcount(DataFlow::Node src2 | tconf.hasFlow(src2, sink))
+      num = strictcount(DataFlow::Node src2 | TaintFlow::flow(src2, sink))
     )
     or
     tag = "numValueFlow" and
-    exists(DataFlow::Node sink, ValueFlowConf vconf, int num | vconf.hasFlowTo(sink) |
+    exists(DataFlow::Node sink, int num | ValueFlow::flowTo(sink) |
       value = num.toString() and
       sink.getLocation() = location and
       element = sink.toString() and
-      num = strictcount(DataFlow::Node src2 | vconf.hasFlow(src2, sink))
+      num = strictcount(DataFlow::Node src2 | ValueFlow::flow(src2, sink))
     )
   }
 }
+
+import MakeTest<HasFlowTest>

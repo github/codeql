@@ -148,119 +148,81 @@ class HashCons extends HCBase {
 
   /** Gets the kind of the HC. This can be useful for debugging. */
   string getKind() {
-    if this instanceof HC_IntLiteral
-    then result = "IntLiteral"
-    else
-      if this instanceof HC_EnumConstantAccess
-      then result = "EnumConstantAccess"
-      else
-        if this instanceof HC_FloatLiteral
-        then result = "FloatLiteral"
-        else
-          if this instanceof HC_StringLiteral
-          then result = "StringLiteral"
-          else
-            if this instanceof HC_Nullptr
-            then result = "Nullptr"
-            else
-              if this instanceof HC_Variable
-              then result = "Variable"
-              else
-                if this instanceof HC_FieldAccess
-                then result = "FieldAccess"
-                else
-                  if this instanceof HC_Deref
-                  then result = "Deref"
-                  else
-                    if this instanceof HC_ThisExpr
-                    then result = "ThisExpr"
-                    else
-                      if this instanceof HC_Conversion
-                      then result = "Conversion"
-                      else
-                        if this instanceof HC_BinaryOp
-                        then result = "BinaryOp"
-                        else
-                          if this instanceof HC_UnaryOp
-                          then result = "UnaryOp"
-                          else
-                            if this instanceof HC_ArrayAccess
-                            then result = "ArrayAccess"
-                            else
-                              if this instanceof HC_Unanalyzable
-                              then result = "Unanalyzable"
-                              else
-                                if this instanceof HC_NonmemberFunctionCall
-                                then result = "NonmemberFunctionCall"
-                                else
-                                  if this instanceof HC_MemberFunctionCall
-                                  then result = "MemberFunctionCall"
-                                  else
-                                    if this instanceof HC_NewExpr
-                                    then result = "NewExpr"
-                                    else
-                                      if this instanceof HC_NewArrayExpr
-                                      then result = "NewArrayExpr"
-                                      else
-                                        if this instanceof HC_SizeofType
-                                        then result = "SizeofTypeOperator"
-                                        else
-                                          if this instanceof HC_SizeofExpr
-                                          then result = "SizeofExprOperator"
-                                          else
-                                            if this instanceof HC_AlignofType
-                                            then result = "AlignofTypeOperator"
-                                            else
-                                              if this instanceof HC_AlignofExpr
-                                              then result = "AlignofExprOperator"
-                                              else
-                                                if this instanceof HC_UuidofOperator
-                                                then result = "UuidofOperator"
-                                                else
-                                                  if this instanceof HC_TypeidType
-                                                  then result = "TypeidType"
-                                                  else
-                                                    if this instanceof HC_TypeidExpr
-                                                    then result = "TypeidExpr"
-                                                    else
-                                                      if this instanceof HC_ArrayAggregateLiteral
-                                                      then result = "ArrayAggregateLiteral"
-                                                      else
-                                                        if this instanceof HC_ClassAggregateLiteral
-                                                        then result = "ClassAggregateLiteral"
-                                                        else
-                                                          if this instanceof HC_DeleteExpr
-                                                          then result = "DeleteExpr"
-                                                          else
-                                                            if this instanceof HC_DeleteArrayExpr
-                                                            then result = "DeleteArrayExpr"
-                                                            else
-                                                              if this instanceof HC_ThrowExpr
-                                                              then result = "ThrowExpr"
-                                                              else
-                                                                if this instanceof HC_ReThrowExpr
-                                                                then result = "ReThrowExpr"
-                                                                else
-                                                                  if this instanceof HC_ExprCall
-                                                                  then result = "ExprCall"
-                                                                  else
-                                                                    if
-                                                                      this instanceof
-                                                                        HC_ConditionalExpr
-                                                                    then result = "ConditionalExpr"
-                                                                    else
-                                                                      if
-                                                                        this instanceof
-                                                                          HC_NoExceptExpr
-                                                                      then result = "NoExceptExpr"
-                                                                      else
-                                                                        if
-                                                                          this instanceof
-                                                                            HC_AllocatorArgZero
-                                                                        then
-                                                                          result =
-                                                                            "AllocatorArgZero"
-                                                                        else result = "error"
+    result = this.getKind0()
+    or
+    not exists(this.getKind0()) and result = "error"
+  }
+
+  private string getKind0() {
+    this instanceof HC_IntLiteral and result = "IntLiteral"
+    or
+    this instanceof HC_EnumConstantAccess and result = "EnumConstantAccess"
+    or
+    this instanceof HC_FloatLiteral and result = "FloatLiteral"
+    or
+    this instanceof HC_StringLiteral and result = "StringLiteral"
+    or
+    this instanceof HC_Nullptr and result = "Nullptr"
+    or
+    this instanceof HC_Variable and result = "Variable"
+    or
+    this instanceof HC_FieldAccess and result = "FieldAccess"
+    or
+    this instanceof HC_Deref and result = "Deref"
+    or
+    this instanceof HC_ThisExpr and result = "ThisExpr"
+    or
+    this instanceof HC_Conversion and result = "Conversion"
+    or
+    this instanceof HC_BinaryOp and result = "BinaryOp"
+    or
+    this instanceof HC_UnaryOp and result = "UnaryOp"
+    or
+    this instanceof HC_ArrayAccess and result = "ArrayAccess"
+    or
+    this instanceof HC_Unanalyzable and result = "Unanalyzable"
+    or
+    this instanceof HC_NonmemberFunctionCall and result = "NonmemberFunctionCall"
+    or
+    this instanceof HC_MemberFunctionCall and result = "MemberFunctionCall"
+    or
+    this instanceof HC_NewExpr and result = "NewExpr"
+    or
+    this instanceof HC_NewArrayExpr and result = "NewArrayExpr"
+    or
+    this instanceof HC_SizeofType and result = "SizeofTypeOperator"
+    or
+    this instanceof HC_SizeofExpr and result = "SizeofExprOperator"
+    or
+    this instanceof HC_AlignofType and result = "AlignofTypeOperator"
+    or
+    this instanceof HC_AlignofExpr and result = "AlignofExprOperator"
+    or
+    this instanceof HC_UuidofOperator and result = "UuidofOperator"
+    or
+    this instanceof HC_TypeidType and result = "TypeidType"
+    or
+    this instanceof HC_TypeidExpr and result = "TypeidExpr"
+    or
+    this instanceof HC_ArrayAggregateLiteral and result = "ArrayAggregateLiteral"
+    or
+    this instanceof HC_ClassAggregateLiteral and result = "ClassAggregateLiteral"
+    or
+    this instanceof HC_DeleteExpr and result = "DeleteExpr"
+    or
+    this instanceof HC_DeleteArrayExpr and result = "DeleteArrayExpr"
+    or
+    this instanceof HC_ThrowExpr and result = "ThrowExpr"
+    or
+    this instanceof HC_ReThrowExpr and result = "ReThrowExpr"
+    or
+    this instanceof HC_ExprCall and result = "ExprCall"
+    or
+    this instanceof HC_ConditionalExpr and result = "ConditionalExpr"
+    or
+    this instanceof HC_NoExceptExpr and result = "NoExceptExpr"
+    or
+    this instanceof HC_AllocatorArgZero and result = "AllocatorArgZero"
   }
 
   /**
@@ -282,10 +244,10 @@ class HashCons extends HCBase {
   }
 
   /** Gets a textual representation of this element. */
-  string toString() { result = exampleExpr().toString() }
+  string toString() { result = this.exampleExpr().toString() }
 
   /** Gets the primary location of this element. */
-  Location getLocation() { result = exampleExpr().getLocation() }
+  Location getLocation() { result = this.exampleExpr().getLocation() }
 }
 
 /**
@@ -372,7 +334,8 @@ private predicate analyzablePointerFieldAccess(PointerFieldAccess access) {
 private predicate mk_PointerFieldAccess(HashCons qualifier, Field target, PointerFieldAccess access) {
   analyzablePointerFieldAccess(access) and
   target = access.getTarget() and
-  qualifier = hashCons(access.getQualifier().getFullyConverted())
+  qualifier = hashCons(access.getQualifier().getFullyConverted()) and
+  not access instanceof ImplicitThisFieldAccess
 }
 
 private predicate analyzableImplicitThisFieldAccess(ImplicitThisFieldAccess access) {
@@ -741,7 +704,7 @@ private predicate mk_FieldCons(
   analyzableClassAggregateLiteral(cal) and
   cal.getUnspecifiedType() = c and
   exists(Expr e |
-    e = cal.getFieldExpr(f).getFullyConverted() and
+    e = cal.getAFieldExpr(f).getFullyConverted() and
     f.getInitializationOrder() = i and
     (
       hc = hashCons(e) and
@@ -757,9 +720,9 @@ private predicate mk_FieldCons(
 private predicate analyzableClassAggregateLiteral(ClassAggregateLiteral cal) {
   forall(int i | exists(cal.getChild(i)) |
     strictcount(cal.getChild(i).getFullyConverted()) = 1 and
-    strictcount(Field f | cal.getChild(i) = cal.getFieldExpr(f)) = 1 and
+    strictcount(Field f | cal.getChild(i) = cal.getAFieldExpr(f)) = 1 and
     strictcount(Field f, int j |
-      cal.getFieldExpr(f) = cal.getChild(i) and j = f.getInitializationOrder()
+      cal.getAFieldExpr(f) = cal.getChild(i) and j = f.getInitializationOrder()
     ) = 1
   )
 }

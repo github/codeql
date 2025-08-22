@@ -4,6 +4,7 @@
  * @description The total number of lines of C/C++ code across all files, including system headers, libraries, and auto-generated files. This is a useful metric of the size of a database. For all files that were seen during the build, this query counts the lines of code, excluding whitespace or comments.
  * @kind metric
  * @tags summary
+ *       telemetry
  */
 
 import cpp

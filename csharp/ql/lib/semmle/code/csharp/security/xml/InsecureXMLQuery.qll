@@ -5,6 +5,19 @@
 import csharp
 private import semmle.code.csharp.commons.TargetFramework
 
+pragma[nomagic]
+private float getAssemblyVersion(Assembly a) {
+  result = a.getVersion().regexpCapture("([0-9]+\\.[0-9]+).*", 1).toFloat() and
+  // This method is only accurate when we're looking at versions before 4.0.
+  result < 4.0
+}
+
+pragma[nomagic]
+private Version getTargetFrameworkVersion(TargetFrameworkAttribute tfa) {
+  tfa.isNetFramework() and
+  result = tfa.getFrameworkVersion()
+}
+
 /**
  * Holds if the type `t` is in an assembly that has been compiled against a .NET framework version
  * before the given version.
@@ -14,21 +27,16 @@ private predicate isNetFrameworkBefore(Type t, string version) {
   // For assemblies compiled against framework versions before 4 the TargetFrameworkAttribute
   // will not be present. In this case, we can revert back to the assembly version, which may not
   // contain full minor version information.
-  exists(string assemblyVersion |
-    assemblyVersion =
-      t.getALocation().(Assembly).getVersion().regexpCapture("([0-9]+\\.[0-9]+).*", 1)
-  |
-    assemblyVersion.toFloat() < version.toFloat() and
-    // This method is only accurate when we're looking at versions before 4.0.
-    assemblyVersion.toFloat() < 4.0
+  exists(float assemblyVersion |
+    assemblyVersion = getAssemblyVersion(t.getALocation()) and
+    assemblyVersion < version.toFloat()
   )
   or
   // For 4.0 and above the TargetFrameworkAttribute should be present to provide detailed version
   // information.
   exists(TargetFrameworkAttribute tfa |
     tfa.hasElement(t) and
-    tfa.isNetFramework() and
-    tfa.getFrameworkVersion().isEarlierThan(version)
+    getTargetFrameworkVersion(tfa).isEarlierThan(version)
   )
 }
 
@@ -47,7 +55,7 @@ abstract class InsecureXmlProcessing extends Call {
  */
 private predicate isSafeXmlResolver(Expr e) {
   e instanceof NullLiteral or
-  e.getType().(RefType).hasQualifiedName("System.Xml", "XmlSecureResolver")
+  e.getType().(RefType).hasFullyQualifiedName("System.Xml", "XmlSecureResolver")
 }
 
 /**
@@ -94,7 +102,7 @@ module XmlSettings {
    * Holds if the given object creation constructs `XmlReaderSettings` with an insecure resolver.
    */
   predicate insecureResolverSettings(ObjectCreation creation, Expr evidence, string reason) {
-    creation.getObjectType().hasQualifiedName("System.Xml", "XmlReaderSettings") and
+    creation.getObjectType().hasFullyQualifiedName("System.Xml", "XmlReaderSettings") and
     (
       // one unsafe assignment to XmlResolver
       exists(Expr xmlResolverVal | xmlResolverVal = getAValueForProp(creation, "XmlResolver") |
@@ -114,7 +122,7 @@ module XmlSettings {
    * Holds if the given object creation constructs `XmlReaderSettings` with DTD processing enabled.
    */
   predicate dtdEnabledSettings(ObjectCreation creation, Expr evidence, string reason) {
-    creation.getObjectType().hasQualifiedName("System.Xml", "XmlReaderSettings") and
+    creation.getObjectType().hasFullyQualifiedName("System.Xml", "XmlReaderSettings") and
     (
       exists(Expr dtdVal | dtdVal = getAValueForProp(creation, "DtdProcessing") |
         not isSafeDtdSetting(dtdVal) and evidence = dtdVal
@@ -142,11 +150,9 @@ module XmlSettings {
 
 /** Provides predicates related to `System.Xml.XmlReader`. */
 module XmlReader {
-  private import semmle.code.csharp.dataflow.DataFlow2
-
   private class InsecureXmlReaderCreate extends InsecureXmlProcessing, MethodCall {
     InsecureXmlReaderCreate() {
-      this.getTarget().hasQualifiedName("System.Xml.XmlReader", "Create")
+      this.getTarget().hasFullyQualifiedName("System.Xml.XmlReader", "Create")
     }
 
     /**
@@ -154,7 +160,11 @@ module XmlReader {
      */
     Expr getSettings() {
       result = this.getAnArgument() and
-      result.getType().(RefType).getABaseType*().hasQualifiedName("System.Xml", "XmlReaderSettings")
+      result
+          .getType()
+          .(RefType)
+          .getABaseType*()
+          .hasFullyQualifiedName("System.Xml", "XmlReaderSettings")
     }
 
     override predicate isUnsafe(string reason) {
@@ -169,29 +179,27 @@ module XmlReader {
       reason = "DTD processing is enabled by default in versions < 4.0" and
       evidence = this and
       not exists(this.getSettings()) and
-      isNetFrameworkBefore(this.(MethodCall).getTarget().getDeclaringType(), "4.0")
+      isNetFrameworkBefore(this.getTarget().getDeclaringType(), "4.0")
       or
       // bad settings flow here
-      exists(SettingsDataFlowConfig flow, ObjectCreation settings |
-        flow.hasFlow(DataFlow::exprNode(settings), DataFlow::exprNode(this.getSettings())) and
+      exists(ObjectCreation settings |
+        SettingsDataFlow::flow(DataFlow::exprNode(settings), DataFlow::exprNode(this.getSettings())) and
         XmlSettings::dtdEnabledSettings(settings, evidence, reason)
       )
     }
 
     private predicate insecureResolver(string reason, Expr evidence) {
       // bad settings flow here
-      exists(SettingsDataFlowConfig flow, ObjectCreation settings |
-        flow.hasFlow(DataFlow::exprNode(settings), DataFlow::exprNode(this.getSettings())) and
+      exists(ObjectCreation settings |
+        SettingsDataFlow::flow(DataFlow::exprNode(settings), DataFlow::exprNode(this.getSettings())) and
         XmlSettings::insecureResolverSettings(settings, evidence, reason)
       )
       // default is secure
     }
   }
 
-  private class SettingsDataFlowConfig extends DataFlow2::Configuration {
-    SettingsDataFlowConfig() { this = "SettingsDataFlowConfig" }
-
-    override predicate isSource(DataFlow::Node source) {
+  private module SettingsDataFlowConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
       // flow from places where we construct an XmlReaderSettings
       source
           .asExpr()
@@ -199,19 +207,23 @@ module XmlReader {
           .getType()
           .(RefType)
           .getABaseType*()
-          .hasQualifiedName("System.Xml", "XmlReaderSettings")
+          .hasFullyQualifiedName("System.Xml", "XmlReaderSettings")
     }
 
-    override predicate isSink(DataFlow::Node sink) {
+    predicate isSink(DataFlow::Node sink) {
       sink.asExpr() = any(InsecureXmlReaderCreate create).getSettings()
     }
   }
+
+  private module SettingsDataFlow = DataFlow::Global<SettingsDataFlowConfig>;
 }
 
 /** Provides predicates related to `System.Xml.XmlTextReader`. */
 module XmlTextReader {
   private class InsecureXmlTextReader extends InsecureXmlProcessing, ObjectCreation {
-    InsecureXmlTextReader() { this.getObjectType().hasQualifiedName("System.Xml", "XmlTextReader") }
+    InsecureXmlTextReader() {
+      this.getObjectType().hasFullyQualifiedName("System.Xml", "XmlTextReader")
+    }
 
     override predicate isUnsafe(string reason) {
       not exists(Expr xmlResolverVal |
@@ -246,8 +258,8 @@ module XmlDocument {
    */
   class InsecureXmlDocument extends InsecureXmlProcessing, MethodCall {
     InsecureXmlDocument() {
-      this.getTarget().hasQualifiedName("System.Xml", "XmlDocument", "Load") or
-      this.getTarget().hasQualifiedName("System.Xml", "XmlDocument", "LoadXml")
+      this.getTarget().hasFullyQualifiedName("System.Xml", "XmlDocument", "Load") or
+      this.getTarget().hasFullyQualifiedName("System.Xml", "XmlDocument", "LoadXml")
     }
 
     override predicate isUnsafe(string reason) {

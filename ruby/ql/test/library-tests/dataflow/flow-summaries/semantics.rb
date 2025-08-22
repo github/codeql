@@ -33,7 +33,7 @@ def m5(x, y, z)
 end
 
 def m6
-    sink s6(foo: source "a", bar: source "b") # $ MISSING: hasValueFlow=a
+    sink s6(foo: (source "a"), bar: (source "b")) # $ hasValueFlow=a
 end
 
 def m7(x)
@@ -103,11 +103,11 @@ def m14(w, x, y, z)
     sink z # $ hasValueFlow=a
 end
 
-def  m15
+def m15
     a = source "a"
     b = source "b"
-    sink s15(**a) # $ SPURIOUS: hasTaintFlow=a MISSING: hasValueFlow=a
-    sink s15(0, 1, foo: b, **a) # $ SPURIOUS: hasTaintFlow=a MISSING: hasValueFlow=a
+    sink s15(foo: a, bar: b)[:foo] # $ hasValueFlow=a
+    sink s15(foo: a, bar: b)[:bar] # $ hasValueFlow=b
 end
 
 def m16
@@ -121,19 +121,20 @@ def m16
     sink s16(b: b, **h) # $ hasValueFlow=a hasValueFlow=b
 end
 
-def m17(h, x)
+def m17
     a = source "a"
-    s17(a, **h, foo: x)
-    sink h # $ hasValueFlow=a
-    sink x
+    b = source "b"
+    sink s17(a, b) # $ hasTaintFlow=a $ hasTaintFlow=b
+    sink s17(a, b)[0] # $ hasValueFlow=a
+    sink s17(a, b)[1] # $ hasValueFlow=b
 end
 
-def m18(x)
+def m18
     a = source "a"
-    s18(a, **h, foo: x)
-    sink h
-    sink h[:foo] # $ MISSING: hasValueFlow=a
-    sink x # $ MISSING: hasValueFlow=a
+    b = source "b"
+    arr = [a, b]
+    sink s18(*arr) # $ hasValueFlow=a $ hasValueFlow=b
+    sink s18(a) # $ hasValueFlow=a
 end
 
 def m19(i)
@@ -269,7 +270,7 @@ def m32(h, i)
     h[1] = source("d")
     h[i] = source("e")
     
-    sink s32(h) # $ hasValueFlow=b hasValueFlow=e
+    sink s32(h) # $ hasValueFlow=b $ hasValueFlow=e $ SPURIOUS: hasValueFlow=a
 end
 
 def m33(h, i)
@@ -294,7 +295,7 @@ end
 
 def m36(h, i)
     x = s36(source("a"))
-    sink x[:foo]
+    sink x[:foo] # $ SPURIOUS: hasValueFlow=a
     sink x["foo"] # $ hasValueFlow=a
     sink x[:bar]
     sink x[i] # $ hasValueFlow=a

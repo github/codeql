@@ -9,7 +9,7 @@ private predicate is_an_object(@py_object obj) {
   /* CFG nodes for numeric literals, all of which have a @py_cobject for the value of that literal */
   obj instanceof ControlFlowNode and
   not obj.(ControlFlowNode).getNode() instanceof IntegerLiteral and
-  not obj.(ControlFlowNode).getNode() instanceof StrConst
+  not obj.(ControlFlowNode).getNode() instanceof StringLiteral
   or
   obj instanceof Builtin
 }

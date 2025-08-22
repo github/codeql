@@ -165,7 +165,7 @@ methods.cs:
 #   70|             -1: [TypeAccess] access to type Console
 #   70|               0: [TypeMention] Console
 #   70|             0: [StringLiteralUtf16] "F(double)"
-#   73|     9: [Method] F<>
+#   73|     11: [Method] F`1
 #   73|       -1: [TypeMention] Void
 #-----|       1: (Type parameters)
 #   73|         0: [TypeParameter] T
@@ -252,7 +252,7 @@ methods.cs:
 #  107|           0: [DelegateCall] delegate call
 #  107|             -1: [ParameterAccess] access to parameter f
 #  107|             0: [ParameterAccess] access to parameter s
-#  110|     6: [ExtensionMethod] Slice<>
+#  110|     7: [ExtensionMethod] Slice`1
 #  110|       -1: [TypeMention] T[]
 #  110|         1: [TypeMention] T
 #-----|       1: (Type parameters)
@@ -444,7 +444,7 @@ methods.cs:
 #  171|           0: [AddExpr] ... + ...
 #  171|             0: [ParameterAccess] access to parameter left
 #  171|             1: [ParameterAccess] access to parameter right
-#  174|     5: [ExtensionMethod] SkipTwo<>
+#  174|     6: [ExtensionMethod] SkipTwo`1
 #  174|       -1: [TypeMention] IEnumerable<T>
 #  174|         1: [TypeMention] T
 #-----|       1: (Type parameters)
@@ -474,7 +474,7 @@ methods.cs:
 #  181|           0: [MethodCall] call to method SkipTwo<Int32>
 #  181|             -1: [ParameterAccess] access to parameter list
 #  181|             0: [ParameterAccess] access to parameter i
-#  185|   9: [Class] TestCollidingMethods<>
+#  185|   9: [Class] TestCollidingMethods`1
 #-----|     1: (Type parameters)
 #  185|       0: [TypeParameter] T
 #  187|     5: [Method] M

@@ -5,7 +5,8 @@
  * @problem.severity error
  * @precision high
  * @id cs/equals-on-unrelated-types
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  */
 

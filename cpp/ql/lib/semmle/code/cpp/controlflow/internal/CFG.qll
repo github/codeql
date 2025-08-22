@@ -332,21 +332,12 @@ private Node getControlOrderChildSparse(Node n, int i) {
   n = any(ConditionDeclExpr cd | i = 0 and result = cd.getInitializingExpr())
   or
   n =
-    any(DeleteExpr del |
+    any(DeleteOrDeleteArrayExpr del |
       i = 0 and result = del.getExpr()
       or
       i = 1 and result = del.getDestructorCall()
       or
-      i = 2 and result = del.getAllocatorCall()
-    )
-  or
-  n =
-    any(DeleteArrayExpr del |
-      i = 0 and result = del.getExpr()
-      or
-      i = 1 and result = del.getDestructorCall()
-      or
-      i = 2 and result = del.getAllocatorCall()
+      i = 2 and result = del.getDeallocatorCall()
     )
   or
   n =
@@ -646,8 +637,10 @@ private predicate straightLineSparse(Node scope, int i, Node ni, Spec spec) {
     any(RangeBasedForStmt for |
       i = -1 and ni = for and spec.isAt()
       or
+      i = 0 and ni = for.getInitialization() and spec.isAround()
+      or
       exists(DeclStmt s | s.getADeclaration() = for.getRangeVariable() |
-        i = 0 and ni = s and spec.isAround()
+        i = 1 and ni = s and spec.isAround()
       )
       or
       exists(DeclStmt s |
@@ -658,22 +651,22 @@ private predicate straightLineSparse(Node scope, int i, Node ni, Spec spec) {
         // DeclStmt in that case.
         exists(s.getADeclaration())
       |
-        i = 1 and ni = s and spec.isAround()
+        i = 2 and ni = s and spec.isAround()
       )
       or
-      i = 2 and ni = for.getCondition() and spec.isBefore()
+      i = 3 and ni = for.getCondition() and spec.isBefore()
       or
-      i = 3 and /* BARRIER */ ni = for and spec.isBarrier()
+      i = 4 and /* BARRIER */ ni = for and spec.isBarrier()
       or
       exists(DeclStmt declStmt | declStmt.getADeclaration() = for.getVariable() |
-        i = 4 and ni = declStmt and spec.isAfter()
+        i = 5 and ni = declStmt and spec.isAfter()
       )
       or
-      i = 5 and ni = for.getStmt() and spec.isAround()
+      i = 6 and ni = for.getStmt() and spec.isAround()
       or
-      i = 6 and ni = for.getUpdate() and spec.isAround()
+      i = 7 and ni = for.getUpdate() and spec.isAround()
       or
-      i = 7 and ni = for.getCondition() and spec.isBefore()
+      i = 8 and ni = for.getCondition() and spec.isBefore()
     )
   or
   scope =
@@ -880,6 +873,25 @@ private predicate subEdge(Pos p1, Node n1, Node n2, Pos p2) {
     p2.nodeBeforeDestructors(n2, s)
     or
     p1.nodeAfterDestructors(n1, s) and
+    p2.nodeAfter(n2, s)
+  )
+  or
+  // NotConstevalIfStmt -> { then, else } ->
+  exists(ConstevalIfStmt s |
+    p1.nodeAt(n1, s) and
+    p2.nodeBefore(n2, s.getThen())
+    or
+    p1.nodeAt(n1, s) and
+    p2.nodeBefore(n2, s.getElse())
+    or
+    p1.nodeAt(n1, s) and
+    not exists(s.getElse()) and
+    p2.nodeAfter(n2, s)
+    or
+    p1.nodeAfter(n1, s.getThen()) and
+    p2.nodeAfter(n2, s)
+    or
+    p1.nodeAfter(n1, s.getElse()) and
     p2.nodeAfter(n2, s)
   )
   or
@@ -1385,9 +1397,6 @@ private module Cached {
     conditionalSuccessor(n1, _, n2)
   }
 
-  /** DEPRECATED: Alias for qlCfgSuccessor */
-  deprecated predicate qlCFGSuccessor = qlCfgSuccessor/2;
-
   /**
    * Holds if `n2` is a control-flow node such that the control-flow
    * edge `(n1, n2)` may be taken when `n1` is an expression that is true.
@@ -1398,9 +1407,6 @@ private module Cached {
     not conditionalSuccessor(n1, false, n2)
   }
 
-  /** DEPRECATED: Alias for qlCfgTrueSuccessor */
-  deprecated predicate qlCFGTrueSuccessor = qlCfgTrueSuccessor/2;
-
   /**
    * Holds if `n2` is a control-flow node such that the control-flow
    * edge `(n1, n2)` may be taken when `n1` is an expression that is false.
@@ -1410,7 +1416,4 @@ private module Cached {
     conditionalSuccessor(n1, false, n2) and
     not conditionalSuccessor(n1, true, n2)
   }
-
-  /** DEPRECATED: Alias for qlCfgFalseSuccessor */
-  deprecated predicate qlCFGFalseSuccessor = qlCfgFalseSuccessor/2;
 }

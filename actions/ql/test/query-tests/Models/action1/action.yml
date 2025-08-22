@@ -1,0 +1,51 @@
+name: 'Hello World'
+description: 'Greet someone'
+inputs:
+  who-to-greet:  # id of input
+    description: 'Who to greet'
+    required: true
+    default: 'World'
+outputs:
+  reflected:
+    description: "Reflected input"
+    value: ${{ steps.reflector.outputs.reflected }}
+  tainted:
+    description: "Reflected input"
+    value: ${{ steps.source.outputs.tainted}}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Secure Set Greeting
+      run: echo "Hello $INPUT_WHO_TO_GREET."
+      shell: bash
+      env:
+        INPUT_WHO_TO_GREET: ${{ inputs.who-to-greet }}
+    - name: Remove foo
+      id: replace
+      uses: mad9000/actions-find-and-replace-string@3
+      with:
+        source: ${{ inputs.who-to-greet }}
+        find: 'foo'
+        replace: ''
+    - id: sink 
+      run: echo ${{ steps.replace.outputs.value }}
+      shell: bash
+    - name: Vulnerable Set Greeting
+      run: echo "Hello ${{ inputs.who-to-greet }}."
+      shell: bash
+    - id: reflector 
+      run: echo "reflected=$(echo $INPUT_WHO_TO_GREET)" >> $GITHUB_OUTPUT
+      shell: bash
+      env:
+        INPUT_WHO_TO_GREET: ${{ inputs.who-to-greet }}
+    - id: changed-files
+      uses: tj-actions/changed-files@v40
+    - id: source
+      run: echo "tainted=$(echo $TAINTED)" >> $GITHUB_OUTPUT
+      shell: bash
+      env:
+        TAINTED: ${{ steps.changed-files.outputs.all_changed_files }}
+
+
+

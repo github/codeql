@@ -1,4 +1,6 @@
 using System;
+using System.Data.SqlClient;
+using System.Diagnostics;
 
 namespace System.Web.UI.WebControls
 {
@@ -33,6 +35,23 @@ namespace Test
             startInfoProps.Arguments = userInput;
             startInfoProps.WorkingDirectory = userInput;
             Process.Start(startInfoProps);
+        }
+
+        public void StoredCommandInjection()
+        {
+            using (SqlConnection connection = new SqlConnection(""))
+            {
+                connection.Open();
+                SqlCommand customerCommand = new SqlCommand("SELECT * FROM customers", connection);
+                SqlDataReader customerReader = customerCommand.ExecuteReader();
+
+                while (customerReader.Read())
+                {
+                    // BAD: Read from database, and use it to directly execute a command
+                    Process.Start("foo.exe", "/c " + customerReader.GetString(1));
+                }
+                customerReader.Close();
+            }
         }
     }
 }

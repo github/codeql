@@ -3,8 +3,8 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["groovy.util", "Eval", False, "me", "(String)", "", "Argument[0]", "groovy", "manual"]
-      - ["groovy.util", "Eval", False, "me", "(String,Object,String)", "", "Argument[2]", "groovy", "manual"]
-      - ["groovy.util", "Eval", False, "x", "(Object,String)", "", "Argument[1]", "groovy", "manual"]
-      - ["groovy.util", "Eval", False, "xy", "(Object,Object,String)", "", "Argument[2]", "groovy", "manual"]
-      - ["groovy.util", "Eval", False, "xyz", "(Object,Object,Object,String)", "", "Argument[3]", "groovy", "manual"]
+      - ["groovy.util", "Eval", False, "me", "(String)", "", "Argument[0]", "groovy-injection", "manual"]
+      - ["groovy.util", "Eval", False, "me", "(String,Object,String)", "", "Argument[2]", "groovy-injection", "manual"]
+      - ["groovy.util", "Eval", False, "x", "(Object,String)", "", "Argument[1]", "groovy-injection", "manual"]
+      - ["groovy.util", "Eval", False, "xy", "(Object,Object,String)", "", "Argument[2]", "groovy-injection", "manual"]
+      - ["groovy.util", "Eval", False, "xyz", "(Object,Object,Object,String)", "", "Argument[3]", "groovy-injection", "manual"]

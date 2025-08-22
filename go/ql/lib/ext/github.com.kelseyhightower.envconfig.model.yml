@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["github.com/kelseyhightower/envconfig", "", False, "CheckDisallowed", "", "", "Argument[1]", "environment", "manual"]
+      - ["github.com/kelseyhightower/envconfig", "", False, "MustProcess", "", "", "Argument[1]", "environment", "manual"]
+      - ["github.com/kelseyhightower/envconfig", "", False, "Process", "", "", "Argument[1]", "environment", "manual"]
+      - ["github.com/kelseyhightower/envconfig", "", False, "Usage", "", "", "Argument[1]", "environment", "manual"]
+      - ["github.com/kelseyhightower/envconfig", "", False, "Usagef", "", "", "Argument[1]", "environment", "manual"]
+      - ["github.com/kelseyhightower/envconfig", "", False, "Usaget", "", "", "Argument[1]", "environment", "manual"]

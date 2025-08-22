@@ -11,9 +11,7 @@
 | h.h:2:7:2:8 | CA | 1 CA::operator= |
 | h.h:2:7:2:8 | CA | 2 CA::operator= |
 | h.h:5:11:5:12 | CB<TB> | <none> |
-| h.h:5:11:5:12 | CB<double> | 0 CA::CB<double>::operator= |
-| h.h:5:11:5:12 | CB<double> | 1 CA::CB<double>::operator= |
-| h.h:5:11:5:12 | CB<float> | 0 CA::CB<float>::operator= |
-| h.h:5:11:5:12 | CB<float> | 1 CA::CB<float>::operator= |
+| h.h:5:11:5:12 | CB<double> | <none> |
+| h.h:5:11:5:12 | CB<float> | <none> |
 | h.h:5:11:5:12 | CB<int> | 0 CA::CB<int>::operator= |
 | h.h:5:11:5:12 | CB<int> | 1 CA::CB<int>::operator= |

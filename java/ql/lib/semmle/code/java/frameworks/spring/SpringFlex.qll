@@ -2,6 +2,8 @@
  * Provides classes and predicates for the Spring BlazeDS integration. BlazeDS allows Java applications to integrate with
  * Apache Flex applications, which are ultimately deployed as Adobe Flash applications.
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.frameworks.spring.SpringBean
@@ -56,11 +58,6 @@ class SpringRemotingDestinationClass extends Class {
    * Gets the XML configuration of the remoting destination, if it was configured in XML.
    */
   SpringRemotingDestination getRemotingDestinationXml() { this = result.getSpringBean().getClass() }
-
-  /** DEPRECATED: Alias for getRemotingDestinationXml */
-  deprecated SpringRemotingDestination getRemotingDestinationXML() {
-    result = this.getRemotingDestinationXml()
-  }
 
   /**
    * Holds if the class is operating on an "include" or "exclude" basis.

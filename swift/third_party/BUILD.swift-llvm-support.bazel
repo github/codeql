@@ -1,0 +1,47 @@
+cc_library(
+    name = "swift-llvm-support-static",
+    srcs = glob(
+        [
+            "*.a",
+        ],
+    ),
+    hdrs = glob([
+        "include/**/*",
+        "stdlib/**/*",
+    ]),
+    includes = [
+        "include",
+        "stdlib/public/SwiftShims",
+    ],
+    deps = [
+        "@zstd",
+    ],
+)
+
+cc_library(
+    name = "swift-llvm-support",
+    srcs = glob(
+        [
+            "*.so",
+            "*.dylib",
+        ],
+        allow_empty = True,  # Either *.so or *.dylib will be empty
+    ),
+    linkopts = [
+        "-lm",
+        "-lz",
+    ] + select({
+        "@platforms//os:linux": [
+            "-luuid",
+            "-lrt",
+            "-lpthread",
+            "-ldl",
+        ],
+        "@platforms//os:macos": [
+            "-L/usr/lib/swift",
+        ],
+        "//conditions:default": [],
+    }),
+    visibility = ["//visibility:public"],
+    deps = [":swift-llvm-support-static"],
+)

@@ -39,7 +39,7 @@ predicate allocCallOrIndirect(Expr e) {
       allocCallOrIndirect(rtn.getExpr())
       or
       // return variable assigned with alloc
-      exists(Variable v |
+      exists(StackVariable v |
         v = rtn.getExpr().(VariableAccess).getTarget() and
         allocCallOrIndirect(v.getAnAssignedValue()) and
         not assignedToFieldOrGlobal(v, _)
@@ -144,7 +144,7 @@ class AllocReachability extends StackVariableReachabilityExt {
   override predicate isBarrier(
     ControlFlowNode source, ControlFlowNode node, ControlFlowNode next, StackVariable v
   ) {
-    isSource(source, v) and
+    this.isSource(source, v) and
     next = node.getASuccessor() and
     // the memory (stored in any variable `v0`) allocated at `source` is freed or
     // assigned to a global at node, or NULL checked on the edge node -> next.

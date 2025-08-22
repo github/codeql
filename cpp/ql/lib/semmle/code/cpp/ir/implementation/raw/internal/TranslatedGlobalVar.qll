@@ -1,4 +1,5 @@
 import semmle.code.cpp.ir.implementation.raw.internal.TranslatedElement
+private import TranslatedExpr
 private import cpp
 private import semmle.code.cpp.ir.implementation.IRType
 private import semmle.code.cpp.ir.implementation.Opcode
@@ -8,22 +9,27 @@ private import TranslatedInitialization
 private import InstructionTag
 private import semmle.code.cpp.ir.internal.IRUtilities
 
-class TranslatedGlobalOrNamespaceVarInit extends TranslatedRootElement,
-  TTranslatedGlobalOrNamespaceVarInit, InitializationContext
+class TranslatedStaticStorageDurationVarInit extends TranslatedRootElement,
+  TTranslatedStaticStorageDurationVarInit, InitializationContext
 {
-  GlobalOrNamespaceVariable var;
+  Variable var;
 
-  TranslatedGlobalOrNamespaceVarInit() { this = TTranslatedGlobalOrNamespaceVarInit(var) }
+  TranslatedStaticStorageDurationVarInit() { this = TTranslatedStaticStorageDurationVarInit(var) }
 
   override string toString() { result = var.toString() }
 
-  final override GlobalOrNamespaceVariable getAst() { result = var }
+  final override Variable getAst() { result = var }
 
   final override Declaration getFunction() { result = var }
 
-  final Location getLocation() { result = var.getLocation() }
+  override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getInstruction(EnterFunctionTag()) and
+    kind instanceof GotoEdge
+  }
 
-  override Instruction getFirstInstruction() { result = this.getInstruction(EnterFunctionTag()) }
+  override Instruction getALastInstructionInternal() {
+    result = this.getInstruction(ExitFunctionTag())
+  }
 
   override TranslatedElement getChild(int n) {
     n = 1 and
@@ -56,7 +62,7 @@ class TranslatedGlobalOrNamespaceVarInit extends TranslatedRootElement,
     type = getVoidType()
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+  override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     kind instanceof GotoEdge and
     (
       tag = EnterFunctionTag() and
@@ -64,10 +70,13 @@ class TranslatedGlobalOrNamespaceVarInit extends TranslatedRootElement,
       or
       tag = AliasedDefinitionTag() and
       result = this.getInstruction(InitializerVariableAddressTag())
-      or
-      tag = InitializerVariableAddressTag() and
-      result = this.getChild(1).getFirstInstruction()
-      or
+    )
+    or
+    tag = InitializerVariableAddressTag() and
+    result = this.getChild(1).getFirstInstruction(kind)
+    or
+    kind instanceof GotoEdge and
+    (
       tag = ReturnTag() and
       result = this.getInstruction(AliasedUseTag())
       or
@@ -76,9 +85,10 @@ class TranslatedGlobalOrNamespaceVarInit extends TranslatedRootElement,
     )
   }
 
-  override Instruction getChildSuccessor(TranslatedElement child) {
+  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
     child = this.getChild(1) and
-    result = this.getInstruction(ReturnTag())
+    result = this.getInstruction(ReturnTag()) and
+    kind instanceof GotoEdge
   }
 
   final override CppType getInstructionMemoryOperandType(
@@ -111,11 +121,13 @@ class TranslatedGlobalOrNamespaceVarInit extends TranslatedRootElement,
       (
         varUsed instanceof GlobalOrNamespaceVariable
         or
+        varUsed instanceof StaticLocalVariable
+        or
         varUsed instanceof MemberVariable and not varUsed instanceof Field
       ) and
       exists(VariableAccess access |
         access.getTarget() = varUsed and
-        access.getEnclosingVariable() = var
+        getEnclosingVariable(access) = var
       )
       or
       var = varUsed
@@ -128,6 +140,4 @@ class TranslatedGlobalOrNamespaceVarInit extends TranslatedRootElement,
   }
 }
 
-TranslatedGlobalOrNamespaceVarInit getTranslatedVarInit(GlobalOrNamespaceVariable var) {
-  result.getAst() = var
-}
+TranslatedStaticStorageDurationVarInit getTranslatedVarInit(Variable var) { result.getAst() = var }

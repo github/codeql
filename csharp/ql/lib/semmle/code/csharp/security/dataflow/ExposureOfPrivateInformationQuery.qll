@@ -3,7 +3,8 @@
  */
 
 import csharp
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.security.dataflow.flowsinks.ExternalLocationSink
 private import semmle.code.csharp.security.PrivateData
 
@@ -15,7 +16,7 @@ abstract class Source extends DataFlow::ExprNode { }
 /**
  * A data flow sink for private information flowing unencrypted to an external location.
  */
-abstract class Sink extends DataFlow::ExprNode { }
+abstract class Sink extends ApiSinkExprNode { }
 
 /**
  * A sanitizer for private information flowing unencrypted to an external location.
@@ -25,15 +26,20 @@ abstract class Sanitizer extends DataFlow::ExprNode { }
 /**
  * A taint-tracking configuration for private information flowing unencrypted to an external location.
  */
-class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "ExposureOfPrivateInformation" }
+private module ExposureOfPrivateInformationConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
+
+/**
+ * A taint-tracking module for private information flowing unencrypted to an external location.
+ */
+module ExposureOfPrivateInformation = TaintTracking::Global<ExposureOfPrivateInformationConfig>;
 
 private class PrivateDataSource extends Source {
   PrivateDataSource() { this.getExpr() instanceof PrivateDataExpr }

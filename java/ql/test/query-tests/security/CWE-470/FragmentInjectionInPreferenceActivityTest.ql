@@ -1,13 +1,11 @@
 import java
 import semmle.code.java.security.FragmentInjection
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
-class FragmentInjectionInPreferenceActivityTest extends InlineExpectationsTest {
-  FragmentInjectionInPreferenceActivityTest() { this = "FragmentInjectionInPreferenceActivityTest" }
+module FragmentInjectionInPreferenceActivityTest implements TestSig {
+  string getARelevantTag() { result = "hasPreferenceFragmentInjection" }
 
-  override string getARelevantTag() { result = "hasPreferenceFragmentInjection" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasPreferenceFragmentInjection" and
     exists(IsValidFragmentMethod isValidFragment | isValidFragment.isUnsafe() |
       isValidFragment.getLocation() = location and
@@ -16,3 +14,5 @@ class FragmentInjectionInPreferenceActivityTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<FragmentInjectionInPreferenceActivityTest>

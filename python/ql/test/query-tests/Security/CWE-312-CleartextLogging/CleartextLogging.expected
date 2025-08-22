@@ -1,28 +1,70 @@
 edges
-| test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:20:48:20:55 | ControlFlowNode for password |
-| test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:22:58:22:65 | ControlFlowNode for password |
-| test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:23:58:23:65 | ControlFlowNode for password |
-| test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:27:40:27:47 | ControlFlowNode for password |
-| test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:30:58:30:65 | ControlFlowNode for password |
-| test.py:44:9:44:25 | ControlFlowNode for Attribute() | test.py:45:11:45:11 | ControlFlowNode for x |
-| test.py:70:14:73:5 | ControlFlowNode for Dict | test.py:74:11:74:31 | ControlFlowNode for Subscript |
-| test.py:72:21:72:37 | ControlFlowNode for Attribute | test.py:70:14:73:5 | ControlFlowNode for Dict |
+| test.py:19:5:19:12 | ControlFlowNode for password | test.py:20:48:20:55 | ControlFlowNode for password | provenance |  |
+| test.py:19:5:19:12 | ControlFlowNode for password | test.py:22:58:22:65 | ControlFlowNode for password | provenance |  |
+| test.py:19:5:19:12 | ControlFlowNode for password | test.py:23:58:23:65 | ControlFlowNode for password | provenance |  |
+| test.py:19:5:19:12 | ControlFlowNode for password | test.py:27:40:27:47 | ControlFlowNode for password | provenance |  |
+| test.py:19:5:19:12 | ControlFlowNode for password | test.py:30:58:30:65 | ControlFlowNode for password | provenance |  |
+| test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:19:5:19:12 | ControlFlowNode for password | provenance |  |
+| test.py:44:5:44:5 | ControlFlowNode for x | test.py:45:11:45:11 | ControlFlowNode for x | provenance |  |
+| test.py:44:9:44:25 | ControlFlowNode for Attribute() | test.py:44:5:44:5 | ControlFlowNode for x | provenance |  |
+| test.py:48:14:48:35 | ControlFlowNode for social_security_number | test.py:49:15:49:36 | ControlFlowNode for social_security_number | provenance |  |
+| test.py:48:38:48:40 | ControlFlowNode for ssn | test.py:50:15:50:17 | ControlFlowNode for ssn | provenance |  |
+| test.py:48:54:48:63 | ControlFlowNode for passportNo | test.py:52:15:52:24 | ControlFlowNode for passportNo | provenance |  |
+| test.py:54:34:54:45 | ControlFlowNode for home_address | test.py:57:15:57:26 | ControlFlowNode for home_address | provenance |  |
+| test.py:59:14:59:26 | ControlFlowNode for user_latitude | test.py:60:15:60:27 | ControlFlowNode for user_latitude | provenance |  |
+| test.py:59:29:59:42 | ControlFlowNode for user_longitude | test.py:61:15:61:28 | ControlFlowNode for user_longitude | provenance |  |
+| test.py:63:14:63:26 | ControlFlowNode for mobile_number | test.py:64:15:64:27 | ControlFlowNode for mobile_number | provenance |  |
+| test.py:63:29:63:35 | ControlFlowNode for phoneNo | test.py:65:15:65:21 | ControlFlowNode for phoneNo | provenance |  |
+| test.py:67:14:67:23 | ControlFlowNode for creditcard | test.py:68:15:68:24 | ControlFlowNode for creditcard | provenance |  |
+| test.py:67:26:67:35 | ControlFlowNode for debit_card | test.py:69:15:69:24 | ControlFlowNode for debit_card | provenance |  |
+| test.py:67:38:67:48 | ControlFlowNode for bank_number | test.py:70:15:70:25 | ControlFlowNode for bank_number | provenance |  |
+| test.py:67:76:67:78 | ControlFlowNode for ccn | test.py:73:15:73:17 | ControlFlowNode for ccn | provenance |  |
+| test.py:67:81:67:88 | ControlFlowNode for user_ccn | test.py:74:15:74:22 | ControlFlowNode for user_ccn | provenance |  |
+| test.py:101:5:101:10 | ControlFlowNode for config | test.py:105:11:105:31 | ControlFlowNode for Subscript | provenance |  |
+| test.py:103:21:103:37 | ControlFlowNode for Attribute | test.py:101:5:101:10 | ControlFlowNode for config | provenance |  |
 nodes
+| test.py:19:5:19:12 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
 | test.py:19:16:19:29 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
 | test.py:20:48:20:55 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
 | test.py:22:58:22:65 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
 | test.py:23:58:23:65 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
 | test.py:27:40:27:47 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
 | test.py:30:58:30:65 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
-| test.py:34:30:34:39 | ControlFlowNode for get_cert() | semmle.label | ControlFlowNode for get_cert() |
 | test.py:37:11:37:24 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
 | test.py:39:22:39:35 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
 | test.py:40:22:40:35 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
+| test.py:44:5:44:5 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | test.py:44:9:44:25 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | test.py:45:11:45:11 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| test.py:70:14:73:5 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
-| test.py:72:21:72:37 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| test.py:74:11:74:31 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:48:14:48:35 | ControlFlowNode for social_security_number | semmle.label | ControlFlowNode for social_security_number |
+| test.py:48:38:48:40 | ControlFlowNode for ssn | semmle.label | ControlFlowNode for ssn |
+| test.py:48:54:48:63 | ControlFlowNode for passportNo | semmle.label | ControlFlowNode for passportNo |
+| test.py:49:15:49:36 | ControlFlowNode for social_security_number | semmle.label | ControlFlowNode for social_security_number |
+| test.py:50:15:50:17 | ControlFlowNode for ssn | semmle.label | ControlFlowNode for ssn |
+| test.py:52:15:52:24 | ControlFlowNode for passportNo | semmle.label | ControlFlowNode for passportNo |
+| test.py:54:34:54:45 | ControlFlowNode for home_address | semmle.label | ControlFlowNode for home_address |
+| test.py:57:15:57:26 | ControlFlowNode for home_address | semmle.label | ControlFlowNode for home_address |
+| test.py:59:14:59:26 | ControlFlowNode for user_latitude | semmle.label | ControlFlowNode for user_latitude |
+| test.py:59:29:59:42 | ControlFlowNode for user_longitude | semmle.label | ControlFlowNode for user_longitude |
+| test.py:60:15:60:27 | ControlFlowNode for user_latitude | semmle.label | ControlFlowNode for user_latitude |
+| test.py:61:15:61:28 | ControlFlowNode for user_longitude | semmle.label | ControlFlowNode for user_longitude |
+| test.py:63:14:63:26 | ControlFlowNode for mobile_number | semmle.label | ControlFlowNode for mobile_number |
+| test.py:63:29:63:35 | ControlFlowNode for phoneNo | semmle.label | ControlFlowNode for phoneNo |
+| test.py:64:15:64:27 | ControlFlowNode for mobile_number | semmle.label | ControlFlowNode for mobile_number |
+| test.py:65:15:65:21 | ControlFlowNode for phoneNo | semmle.label | ControlFlowNode for phoneNo |
+| test.py:67:14:67:23 | ControlFlowNode for creditcard | semmle.label | ControlFlowNode for creditcard |
+| test.py:67:26:67:35 | ControlFlowNode for debit_card | semmle.label | ControlFlowNode for debit_card |
+| test.py:67:38:67:48 | ControlFlowNode for bank_number | semmle.label | ControlFlowNode for bank_number |
+| test.py:67:76:67:78 | ControlFlowNode for ccn | semmle.label | ControlFlowNode for ccn |
+| test.py:67:81:67:88 | ControlFlowNode for user_ccn | semmle.label | ControlFlowNode for user_ccn |
+| test.py:68:15:68:24 | ControlFlowNode for creditcard | semmle.label | ControlFlowNode for creditcard |
+| test.py:69:15:69:24 | ControlFlowNode for debit_card | semmle.label | ControlFlowNode for debit_card |
+| test.py:70:15:70:25 | ControlFlowNode for bank_number | semmle.label | ControlFlowNode for bank_number |
+| test.py:73:15:73:17 | ControlFlowNode for ccn | semmle.label | ControlFlowNode for ccn |
+| test.py:74:15:74:22 | ControlFlowNode for user_ccn | semmle.label | ControlFlowNode for user_ccn |
+| test.py:101:5:101:10 | ControlFlowNode for config | semmle.label | ControlFlowNode for config |
+| test.py:103:21:103:37 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:105:11:105:31 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 subpaths
 #select
 | test.py:20:48:20:55 | ControlFlowNode for password | test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:20:48:20:55 | ControlFlowNode for password | This expression logs $@ as clear text. | test.py:19:16:19:29 | ControlFlowNode for get_password() | sensitive data (password) |
@@ -30,9 +72,21 @@ subpaths
 | test.py:23:58:23:65 | ControlFlowNode for password | test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:23:58:23:65 | ControlFlowNode for password | This expression logs $@ as clear text. | test.py:19:16:19:29 | ControlFlowNode for get_password() | sensitive data (password) |
 | test.py:27:40:27:47 | ControlFlowNode for password | test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:27:40:27:47 | ControlFlowNode for password | This expression logs $@ as clear text. | test.py:19:16:19:29 | ControlFlowNode for get_password() | sensitive data (password) |
 | test.py:30:58:30:65 | ControlFlowNode for password | test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:30:58:30:65 | ControlFlowNode for password | This expression logs $@ as clear text. | test.py:19:16:19:29 | ControlFlowNode for get_password() | sensitive data (password) |
-| test.py:34:30:34:39 | ControlFlowNode for get_cert() | test.py:34:30:34:39 | ControlFlowNode for get_cert() | test.py:34:30:34:39 | ControlFlowNode for get_cert() | This expression logs $@ as clear text. | test.py:34:30:34:39 | ControlFlowNode for get_cert() | sensitive data (certificate) |
 | test.py:37:11:37:24 | ControlFlowNode for get_password() | test.py:37:11:37:24 | ControlFlowNode for get_password() | test.py:37:11:37:24 | ControlFlowNode for get_password() | This expression logs $@ as clear text. | test.py:37:11:37:24 | ControlFlowNode for get_password() | sensitive data (password) |
 | test.py:39:22:39:35 | ControlFlowNode for get_password() | test.py:39:22:39:35 | ControlFlowNode for get_password() | test.py:39:22:39:35 | ControlFlowNode for get_password() | This expression logs $@ as clear text. | test.py:39:22:39:35 | ControlFlowNode for get_password() | sensitive data (password) |
 | test.py:40:22:40:35 | ControlFlowNode for get_password() | test.py:40:22:40:35 | ControlFlowNode for get_password() | test.py:40:22:40:35 | ControlFlowNode for get_password() | This expression logs $@ as clear text. | test.py:40:22:40:35 | ControlFlowNode for get_password() | sensitive data (password) |
 | test.py:45:11:45:11 | ControlFlowNode for x | test.py:44:9:44:25 | ControlFlowNode for Attribute() | test.py:45:11:45:11 | ControlFlowNode for x | This expression logs $@ as clear text. | test.py:44:9:44:25 | ControlFlowNode for Attribute() | sensitive data (password) |
-| test.py:74:11:74:31 | ControlFlowNode for Subscript | test.py:72:21:72:37 | ControlFlowNode for Attribute | test.py:74:11:74:31 | ControlFlowNode for Subscript | This expression logs $@ as clear text. | test.py:72:21:72:37 | ControlFlowNode for Attribute | sensitive data (password) |
+| test.py:49:15:49:36 | ControlFlowNode for social_security_number | test.py:48:14:48:35 | ControlFlowNode for social_security_number | test.py:49:15:49:36 | ControlFlowNode for social_security_number | This expression logs $@ as clear text. | test.py:48:14:48:35 | ControlFlowNode for social_security_number | sensitive data (private) |
+| test.py:50:15:50:17 | ControlFlowNode for ssn | test.py:48:38:48:40 | ControlFlowNode for ssn | test.py:50:15:50:17 | ControlFlowNode for ssn | This expression logs $@ as clear text. | test.py:48:38:48:40 | ControlFlowNode for ssn | sensitive data (private) |
+| test.py:52:15:52:24 | ControlFlowNode for passportNo | test.py:48:54:48:63 | ControlFlowNode for passportNo | test.py:52:15:52:24 | ControlFlowNode for passportNo | This expression logs $@ as clear text. | test.py:48:54:48:63 | ControlFlowNode for passportNo | sensitive data (private) |
+| test.py:57:15:57:26 | ControlFlowNode for home_address | test.py:54:34:54:45 | ControlFlowNode for home_address | test.py:57:15:57:26 | ControlFlowNode for home_address | This expression logs $@ as clear text. | test.py:54:34:54:45 | ControlFlowNode for home_address | sensitive data (private) |
+| test.py:60:15:60:27 | ControlFlowNode for user_latitude | test.py:59:14:59:26 | ControlFlowNode for user_latitude | test.py:60:15:60:27 | ControlFlowNode for user_latitude | This expression logs $@ as clear text. | test.py:59:14:59:26 | ControlFlowNode for user_latitude | sensitive data (private) |
+| test.py:61:15:61:28 | ControlFlowNode for user_longitude | test.py:59:29:59:42 | ControlFlowNode for user_longitude | test.py:61:15:61:28 | ControlFlowNode for user_longitude | This expression logs $@ as clear text. | test.py:59:29:59:42 | ControlFlowNode for user_longitude | sensitive data (private) |
+| test.py:64:15:64:27 | ControlFlowNode for mobile_number | test.py:63:14:63:26 | ControlFlowNode for mobile_number | test.py:64:15:64:27 | ControlFlowNode for mobile_number | This expression logs $@ as clear text. | test.py:63:14:63:26 | ControlFlowNode for mobile_number | sensitive data (private) |
+| test.py:65:15:65:21 | ControlFlowNode for phoneNo | test.py:63:29:63:35 | ControlFlowNode for phoneNo | test.py:65:15:65:21 | ControlFlowNode for phoneNo | This expression logs $@ as clear text. | test.py:63:29:63:35 | ControlFlowNode for phoneNo | sensitive data (private) |
+| test.py:68:15:68:24 | ControlFlowNode for creditcard | test.py:67:14:67:23 | ControlFlowNode for creditcard | test.py:68:15:68:24 | ControlFlowNode for creditcard | This expression logs $@ as clear text. | test.py:67:14:67:23 | ControlFlowNode for creditcard | sensitive data (private) |
+| test.py:69:15:69:24 | ControlFlowNode for debit_card | test.py:67:26:67:35 | ControlFlowNode for debit_card | test.py:69:15:69:24 | ControlFlowNode for debit_card | This expression logs $@ as clear text. | test.py:67:26:67:35 | ControlFlowNode for debit_card | sensitive data (private) |
+| test.py:70:15:70:25 | ControlFlowNode for bank_number | test.py:67:38:67:48 | ControlFlowNode for bank_number | test.py:70:15:70:25 | ControlFlowNode for bank_number | This expression logs $@ as clear text. | test.py:67:38:67:48 | ControlFlowNode for bank_number | sensitive data (private) |
+| test.py:73:15:73:17 | ControlFlowNode for ccn | test.py:67:76:67:78 | ControlFlowNode for ccn | test.py:73:15:73:17 | ControlFlowNode for ccn | This expression logs $@ as clear text. | test.py:67:76:67:78 | ControlFlowNode for ccn | sensitive data (private) |
+| test.py:74:15:74:22 | ControlFlowNode for user_ccn | test.py:67:81:67:88 | ControlFlowNode for user_ccn | test.py:74:15:74:22 | ControlFlowNode for user_ccn | This expression logs $@ as clear text. | test.py:67:81:67:88 | ControlFlowNode for user_ccn | sensitive data (private) |
+| test.py:105:11:105:31 | ControlFlowNode for Subscript | test.py:103:21:103:37 | ControlFlowNode for Attribute | test.py:105:11:105:31 | ControlFlowNode for Subscript | This expression logs $@ as clear text. | test.py:103:21:103:37 | ControlFlowNode for Attribute | sensitive data (password) |

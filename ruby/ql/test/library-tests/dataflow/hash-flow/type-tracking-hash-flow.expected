@@ -1,39 +1,22 @@
-| hash_flow.rb:65:21:65:40 | # $ hasValueFlow=3.3 | Missing result:hasValueFlow=3.3 |
-| hash_flow.rb:66:21:66:49 | # $ SPURIOUS hasValueFlow=3.3 | Missing result:hasValueFlow=3.3 |
-| hash_flow.rb:114:10:114:17 | ...[...] | Unexpected result: hasValueFlow=7.2 |
+| hash_flow.rb:65:21:65:40 | # $ hasValueFlow=3.3 | Missing result: hasValueFlow=3.3 |
+| hash_flow.rb:66:21:66:49 | # $ SPURIOUS hasValueFlow=3.3 | Missing result: hasValueFlow=3.3 |
 | hash_flow.rb:117:10:117:17 | ...[...] | Unexpected result: hasValueFlow=7.1 |
-| hash_flow.rb:117:10:117:17 | ...[...] | Unexpected result: hasValueFlow=7.2 |
 | hash_flow.rb:119:10:119:17 | ...[...] | Unexpected result: hasValueFlow=7.1 |
-| hash_flow.rb:152:16:152:36 | # $ hasValueFlow=10.1 | Missing result:hasValueFlow=10.1 |
+| hash_flow.rb:152:16:152:36 | # $ hasValueFlow=10.1 | Missing result: hasValueFlow=10.1 |
 | hash_flow.rb:163:10:163:17 | ...[...] | Unexpected result: hasValueFlow=9.1 |
 | hash_flow.rb:187:10:187:17 | ...[...] | Unexpected result: hasValueFlow=12.1 |
-| hash_flow.rb:219:27:219:47 | # $ hasValueFlow=14.2 | Missing result:hasValueFlow=14.2 |
+| hash_flow.rb:219:27:219:47 | # $ hasValueFlow=14.2 | Missing result: hasValueFlow=14.2 |
 | hash_flow.rb:291:10:291:14 | ...[...] | Unexpected result: hasValueFlow=19.1 |
 | hash_flow.rb:294:10:294:14 | ...[...] | Unexpected result: hasValueFlow=19.3 |
-| hash_flow.rb:453:22:453:42 | # $ hasValueFlow=27.3 | Missing result:hasValueFlow=27.3 |
-| hash_flow.rb:455:22:455:42 | # $ hasValueFlow=27.4 | Missing result:hasValueFlow=27.4 |
-| hash_flow.rb:467:16:467:36 | # $ hasValueFlow=28.1 | Missing result:hasValueFlow=28.1 |
-| hash_flow.rb:513:22:513:42 | # $ hasValueFlow=31.1 | Missing result:hasValueFlow=31.1 |
+| hash_flow.rb:467:16:467:36 | # $ hasValueFlow=28.1 | Missing result: hasValueFlow=28.1 |
 | hash_flow.rb:515:10:515:20 | ( ... ) | Unexpected result: hasValueFlow=31.3 |
-| hash_flow.rb:515:22:515:42 | # $ hasValueFlow=31.2 | Missing result:hasValueFlow=31.2 |
-| hash_flow.rb:559:17:559:57 | # $ hasValueFlow=34.1 $ hasValueFlow=34.2 | Missing result:hasValueFlow=34.1 |
-| hash_flow.rb:559:17:559:57 | # $ hasValueFlow=34.1 $ hasValueFlow=34.2 | Missing result:hasValueFlow=34.2 |
-| hash_flow.rb:571:18:571:38 | # $ hasValueFlow=35.1 | Missing result:hasValueFlow=35.1 |
-| hash_flow.rb:591:20:591:60 | # $ hasValueFlow=36.1 $ hasValueFlow=36.2 | Missing result:hasValueFlow=36.1 |
-| hash_flow.rb:591:20:591:60 | # $ hasValueFlow=36.1 $ hasValueFlow=36.2 | Missing result:hasValueFlow=36.2 |
-| hash_flow.rb:670:14:670:18 | value | Unexpected result: hasValueFlow=41.3 |
+| hash_flow.rb:559:17:559:57 | # $ hasValueFlow=34.1 $ hasValueFlow=34.2 | Missing result: hasValueFlow=34.1 |
+| hash_flow.rb:559:17:559:57 | # $ hasValueFlow=34.1 $ hasValueFlow=34.2 | Missing result: hasValueFlow=34.2 |
+| hash_flow.rb:571:18:571:38 | # $ hasValueFlow=35.1 | Missing result: hasValueFlow=35.1 |
+| hash_flow.rb:591:20:591:60 | # $ hasValueFlow=36.1 $ hasValueFlow=36.2 | Missing result: hasValueFlow=36.1 |
+| hash_flow.rb:591:20:591:60 | # $ hasValueFlow=36.1 $ hasValueFlow=36.2 | Missing result: hasValueFlow=36.2 |
 | hash_flow.rb:673:10:673:19 | ( ... ) | Unexpected result: hasValueFlow=41.1 |
-| hash_flow.rb:704:22:704:42 | # $ hasValueFlow=42.3 | Missing result:hasValueFlow=42.3 |
-| hash_flow.rb:706:22:706:42 | # $ hasValueFlow=42.4 | Missing result:hasValueFlow=42.4 |
 | hash_flow.rb:776:10:776:14 | ...[...] | Unexpected result: hasValueFlow=46.1 |
 | hash_flow.rb:779:10:779:14 | ...[...] | Unexpected result: hasValueFlow=46.3 |
 | hash_flow.rb:781:10:781:17 | ...[...] | Unexpected result: hasValueFlow=46.1 |
 | hash_flow.rb:784:10:784:17 | ...[...] | Unexpected result: hasValueFlow=46.3 |
-| hash_flow.rb:841:22:841:42 | # $ hasValueFlow=48.3 | Missing result:hasValueFlow=48.3 |
-| hash_flow.rb:843:22:843:42 | # $ hasValueFlow=48.4 | Missing result:hasValueFlow=48.4 |
-| hash_flow.rb:903:22:903:42 | # $ hasValueFlow=50.3 | Missing result:hasValueFlow=50.3 |
-| hash_flow.rb:905:22:905:42 | # $ hasValueFlow=50.4 | Missing result:hasValueFlow=50.4 |
-| hash_flow.rb:933:22:933:42 | # $ hasValueFlow=51.3 | Missing result:hasValueFlow=51.3 |
-| hash_flow.rb:935:22:935:42 | # $ hasValueFlow=51.4 | Missing result:hasValueFlow=51.4 |
-| hash_flow.rb:963:22:963:42 | # $ hasValueFlow=52.3 | Missing result:hasValueFlow=52.3 |
-| hash_flow.rb:965:22:965:42 | # $ hasValueFlow=52.4 | Missing result:hasValueFlow=52.4 |

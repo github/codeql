@@ -1,2 +1,14 @@
-failures
+models
+| 1 | Summary: android.widget; EditText; true; getText; ; ; Argument[this]; ReturnValue; taint; manual |
+| 2 | Summary: java.lang; CharSequence; true; toString; ; ; Argument[this]; ReturnValue; taint; manual |
+edges
+| TestWidget.java:12:14:12:21 | source(...) : EditText | TestWidget.java:12:14:12:31 | getText(...) : Editable | provenance | MaD:1 |
+| TestWidget.java:12:14:12:31 | getText(...) : Editable | TestWidget.java:12:14:12:42 | toString(...) | provenance | AdditionalTaintStep |
+| TestWidget.java:12:14:12:31 | getText(...) : Editable | TestWidget.java:12:14:12:42 | toString(...) | provenance | MaD:2 |
+nodes
+| TestWidget.java:12:14:12:21 | source(...) : EditText | semmle.label | source(...) : EditText |
+| TestWidget.java:12:14:12:31 | getText(...) : Editable | semmle.label | getText(...) : Editable |
+| TestWidget.java:12:14:12:42 | toString(...) | semmle.label | toString(...) |
+subpaths
+testFailures
 valueOf

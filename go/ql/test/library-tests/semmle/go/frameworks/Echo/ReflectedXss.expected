@@ -1,80 +1,130 @@
-edges
-| test.go:13:11:13:32 | call to Param | test.go:14:16:14:20 | param |
-| test.go:19:11:19:27 | call to ParamValues | test.go:20:16:20:20 | param |
-| test.go:25:11:25:37 | call to QueryParam | test.go:26:16:26:20 | param |
-| test.go:31:11:31:27 | call to QueryParams | test.go:32:16:32:20 | param |
-| test.go:37:10:37:26 | call to QueryString | test.go:38:16:38:19 | qstr |
-| test.go:43:9:43:34 | call to FormValue | test.go:44:16:44:18 | val |
-| test.go:49:2:49:30 | ... := ...[0] | test.go:50:16:50:37 | index expression |
-| test.go:55:2:55:46 | ... := ...[0] | test.go:59:20:59:25 | buffer |
-| test.go:64:2:64:31 | ... := ...[0] | test.go:65:16:65:41 | index expression |
-| test.go:70:2:70:31 | ... := ...[0] | test.go:75:20:75:25 | buffer |
-| test.go:80:2:80:32 | ... := ...[0] | test.go:81:16:81:24 | selection of Value |
-| test.go:86:13:86:25 | call to Cookies | test.go:87:16:87:31 | selection of Value |
-| test.go:97:11:97:15 | &... | test.go:98:16:98:21 | selection of s |
-| test.go:111:21:111:42 | call to Param | test.go:112:16:112:42 | type assertion |
-| test.go:122:11:122:32 | call to Param | test.go:123:16:123:20 | param |
-| test.go:128:11:128:32 | call to Param | test.go:129:20:129:32 | type conversion |
-| test.go:134:11:134:32 | call to Param | test.go:135:29:135:41 | type conversion |
-| test.go:146:11:146:32 | call to Param | test.go:148:31:148:36 | reader |
-| test.go:162:11:162:32 | call to Param | test.go:163:23:163:35 | type conversion |
-nodes
-| test.go:13:11:13:32 | call to Param | semmle.label | call to Param |
-| test.go:14:16:14:20 | param | semmle.label | param |
-| test.go:19:11:19:27 | call to ParamValues | semmle.label | call to ParamValues |
-| test.go:20:16:20:20 | param | semmle.label | param |
-| test.go:25:11:25:37 | call to QueryParam | semmle.label | call to QueryParam |
-| test.go:26:16:26:20 | param | semmle.label | param |
-| test.go:31:11:31:27 | call to QueryParams | semmle.label | call to QueryParams |
-| test.go:32:16:32:20 | param | semmle.label | param |
-| test.go:37:10:37:26 | call to QueryString | semmle.label | call to QueryString |
-| test.go:38:16:38:19 | qstr | semmle.label | qstr |
-| test.go:43:9:43:34 | call to FormValue | semmle.label | call to FormValue |
-| test.go:44:16:44:18 | val | semmle.label | val |
-| test.go:49:2:49:30 | ... := ...[0] | semmle.label | ... := ...[0] |
-| test.go:50:16:50:37 | index expression | semmle.label | index expression |
-| test.go:55:2:55:46 | ... := ...[0] | semmle.label | ... := ...[0] |
-| test.go:59:20:59:25 | buffer | semmle.label | buffer |
-| test.go:64:2:64:31 | ... := ...[0] | semmle.label | ... := ...[0] |
-| test.go:65:16:65:41 | index expression | semmle.label | index expression |
-| test.go:70:2:70:31 | ... := ...[0] | semmle.label | ... := ...[0] |
-| test.go:75:20:75:25 | buffer | semmle.label | buffer |
-| test.go:80:2:80:32 | ... := ...[0] | semmle.label | ... := ...[0] |
-| test.go:81:16:81:24 | selection of Value | semmle.label | selection of Value |
-| test.go:86:13:86:25 | call to Cookies | semmle.label | call to Cookies |
-| test.go:87:16:87:31 | selection of Value | semmle.label | selection of Value |
-| test.go:97:11:97:15 | &... | semmle.label | &... |
-| test.go:98:16:98:21 | selection of s | semmle.label | selection of s |
-| test.go:111:21:111:42 | call to Param | semmle.label | call to Param |
-| test.go:112:16:112:42 | type assertion | semmle.label | type assertion |
-| test.go:122:11:122:32 | call to Param | semmle.label | call to Param |
-| test.go:123:16:123:20 | param | semmle.label | param |
-| test.go:128:11:128:32 | call to Param | semmle.label | call to Param |
-| test.go:129:20:129:32 | type conversion | semmle.label | type conversion |
-| test.go:134:11:134:32 | call to Param | semmle.label | call to Param |
-| test.go:135:29:135:41 | type conversion | semmle.label | type conversion |
-| test.go:146:11:146:32 | call to Param | semmle.label | call to Param |
-| test.go:148:31:148:36 | reader | semmle.label | reader |
-| test.go:162:11:162:32 | call to Param | semmle.label | call to Param |
-| test.go:163:23:163:35 | type conversion | semmle.label | type conversion |
-subpaths
 #select
-| test.go:14:16:14:20 | param | test.go:13:11:13:32 | call to Param | test.go:14:16:14:20 | param | Cross-site scripting vulnerability due to $@. | test.go:13:11:13:32 | call to Param | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:20:16:20:20 | param | test.go:19:11:19:27 | call to ParamValues | test.go:20:16:20:20 | param | Cross-site scripting vulnerability due to $@. | test.go:19:11:19:27 | call to ParamValues | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:26:16:26:20 | param | test.go:25:11:25:37 | call to QueryParam | test.go:26:16:26:20 | param | Cross-site scripting vulnerability due to $@. | test.go:25:11:25:37 | call to QueryParam | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:32:16:32:20 | param | test.go:31:11:31:27 | call to QueryParams | test.go:32:16:32:20 | param | Cross-site scripting vulnerability due to $@. | test.go:31:11:31:27 | call to QueryParams | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:38:16:38:19 | qstr | test.go:37:10:37:26 | call to QueryString | test.go:38:16:38:19 | qstr | Cross-site scripting vulnerability due to $@. | test.go:37:10:37:26 | call to QueryString | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:44:16:44:18 | val | test.go:43:9:43:34 | call to FormValue | test.go:44:16:44:18 | val | Cross-site scripting vulnerability due to $@. | test.go:43:9:43:34 | call to FormValue | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:50:16:50:37 | index expression | test.go:49:2:49:30 | ... := ...[0] | test.go:50:16:50:37 | index expression | Cross-site scripting vulnerability due to $@. | test.go:49:2:49:30 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:59:20:59:25 | buffer | test.go:55:2:55:46 | ... := ...[0] | test.go:59:20:59:25 | buffer | Cross-site scripting vulnerability due to $@. | test.go:55:2:55:46 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:65:16:65:41 | index expression | test.go:64:2:64:31 | ... := ...[0] | test.go:65:16:65:41 | index expression | Cross-site scripting vulnerability due to $@. | test.go:64:2:64:31 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:75:20:75:25 | buffer | test.go:70:2:70:31 | ... := ...[0] | test.go:75:20:75:25 | buffer | Cross-site scripting vulnerability due to $@. | test.go:70:2:70:31 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:81:16:81:24 | selection of Value | test.go:80:2:80:32 | ... := ...[0] | test.go:81:16:81:24 | selection of Value | Cross-site scripting vulnerability due to $@. | test.go:80:2:80:32 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:87:16:87:31 | selection of Value | test.go:86:13:86:25 | call to Cookies | test.go:87:16:87:31 | selection of Value | Cross-site scripting vulnerability due to $@. | test.go:86:13:86:25 | call to Cookies | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:98:16:98:21 | selection of s | test.go:97:11:97:15 | &... | test.go:98:16:98:21 | selection of s | Cross-site scripting vulnerability due to $@. | test.go:97:11:97:15 | &... | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:112:16:112:42 | type assertion | test.go:111:21:111:42 | call to Param | test.go:112:16:112:42 | type assertion | Cross-site scripting vulnerability due to $@. | test.go:111:21:111:42 | call to Param | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:123:16:123:20 | param | test.go:122:11:122:32 | call to Param | test.go:123:16:123:20 | param | Cross-site scripting vulnerability due to $@. | test.go:122:11:122:32 | call to Param | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:129:20:129:32 | type conversion | test.go:128:11:128:32 | call to Param | test.go:129:20:129:32 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:128:11:128:32 | call to Param | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:135:29:135:41 | type conversion | test.go:134:11:134:32 | call to Param | test.go:135:29:135:41 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:134:11:134:32 | call to Param | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:148:31:148:36 | reader | test.go:146:11:146:32 | call to Param | test.go:148:31:148:36 | reader | Cross-site scripting vulnerability due to $@. | test.go:146:11:146:32 | call to Param | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:163:23:163:35 | type conversion | test.go:162:11:162:32 | call to Param | test.go:163:23:163:35 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:162:11:162:32 | call to Param | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:16:16:16:20 | param | test.go:15:11:15:32 | call to Param | test.go:16:16:16:20 | param | Cross-site scripting vulnerability due to $@. | test.go:15:11:15:32 | call to Param | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:22:16:22:20 | param | test.go:21:11:21:27 | call to ParamValues | test.go:22:16:22:20 | param | Cross-site scripting vulnerability due to $@. | test.go:21:11:21:27 | call to ParamValues | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:28:16:28:20 | param | test.go:27:11:27:37 | call to QueryParam | test.go:28:16:28:20 | param | Cross-site scripting vulnerability due to $@. | test.go:27:11:27:37 | call to QueryParam | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:34:16:34:20 | param | test.go:33:11:33:27 | call to QueryParams | test.go:34:16:34:20 | param | Cross-site scripting vulnerability due to $@. | test.go:33:11:33:27 | call to QueryParams | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:40:16:40:19 | qstr | test.go:39:10:39:26 | call to QueryString | test.go:40:16:40:19 | qstr | Cross-site scripting vulnerability due to $@. | test.go:39:10:39:26 | call to QueryString | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:46:16:46:18 | val | test.go:45:9:45:34 | call to FormValue | test.go:46:16:46:18 | val | Cross-site scripting vulnerability due to $@. | test.go:45:9:45:34 | call to FormValue | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:52:16:52:37 | index expression | test.go:51:2:51:30 | ... := ...[0] | test.go:52:16:52:37 | index expression | Cross-site scripting vulnerability due to $@. | test.go:51:2:51:30 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:61:20:61:25 | buffer | test.go:57:2:57:46 | ... := ...[0] | test.go:61:20:61:25 | buffer | Cross-site scripting vulnerability due to $@. | test.go:57:2:57:46 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:67:16:67:41 | index expression | test.go:66:2:66:31 | ... := ...[0] | test.go:67:16:67:41 | index expression | Cross-site scripting vulnerability due to $@. | test.go:66:2:66:31 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:77:20:77:25 | buffer | test.go:72:2:72:31 | ... := ...[0] | test.go:77:20:77:25 | buffer | Cross-site scripting vulnerability due to $@. | test.go:72:2:72:31 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:83:16:83:24 | selection of Value | test.go:82:2:82:32 | ... := ...[0] | test.go:83:16:83:24 | selection of Value | Cross-site scripting vulnerability due to $@. | test.go:82:2:82:32 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:89:16:89:31 | selection of Value | test.go:88:13:88:25 | call to Cookies | test.go:89:16:89:31 | selection of Value | Cross-site scripting vulnerability due to $@. | test.go:88:13:88:25 | call to Cookies | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:100:16:100:21 | selection of s | test.go:99:11:99:15 | &... | test.go:100:16:100:21 | selection of s | Cross-site scripting vulnerability due to $@. | test.go:99:11:99:15 | &... | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:114:16:114:42 | type assertion | test.go:113:21:113:42 | call to Param | test.go:114:16:114:42 | type assertion | Cross-site scripting vulnerability due to $@. | test.go:113:21:113:42 | call to Param | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:125:16:125:20 | param | test.go:124:11:124:32 | call to Param | test.go:125:16:125:20 | param | Cross-site scripting vulnerability due to $@. | test.go:124:11:124:32 | call to Param | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:131:20:131:32 | type conversion | test.go:130:11:130:32 | call to Param | test.go:131:20:131:32 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:130:11:130:32 | call to Param | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:137:29:137:41 | type conversion | test.go:136:11:136:32 | call to Param | test.go:137:29:137:41 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:136:11:136:32 | call to Param | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:150:31:150:36 | reader | test.go:148:11:148:32 | call to Param | test.go:150:31:150:36 | reader | Cross-site scripting vulnerability due to $@. | test.go:148:11:148:32 | call to Param | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:165:23:165:35 | type conversion | test.go:164:11:164:32 | call to Param | test.go:165:23:165:35 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:164:11:164:32 | call to Param | user-provided value | test.go:0:0:0:0 | test.go |  |
+edges
+| test.go:15:11:15:32 | call to Param | test.go:16:16:16:20 | param | provenance | Src:MaD:8  |
+| test.go:21:11:21:27 | call to ParamValues | test.go:22:16:22:20 | param | provenance | Src:MaD:9  |
+| test.go:27:11:27:37 | call to QueryParam | test.go:28:16:28:20 | param | provenance | Src:MaD:10  |
+| test.go:33:11:33:27 | call to QueryParams | test.go:34:16:34:20 | param | provenance | Src:MaD:11  |
+| test.go:39:10:39:26 | call to QueryString | test.go:40:16:40:19 | qstr | provenance | Src:MaD:12  |
+| test.go:45:9:45:34 | call to FormValue | test.go:46:16:46:18 | val | provenance | Src:MaD:6  |
+| test.go:51:2:51:30 | ... := ...[0] | test.go:52:16:52:37 | index expression | provenance | Src:MaD:5  |
+| test.go:57:2:57:46 | ... := ...[0] | test.go:58:13:58:22 | fileHeader | provenance | Src:MaD:4  |
+| test.go:58:2:58:29 | ... := ...[0] | test.go:60:2:60:5 | file | provenance |  |
+| test.go:58:13:58:22 | fileHeader | test.go:58:2:58:29 | ... := ...[0] | provenance | MaD:17 |
+| test.go:59:2:59:7 | definition of buffer | test.go:61:20:61:25 | buffer | provenance |  |
+| test.go:60:2:60:5 | file | test.go:59:2:59:7 | definition of buffer | provenance | MaD:15 |
+| test.go:60:2:60:5 | file | test.go:59:2:59:7 | definition of buffer | provenance | MaD:16 |
+| test.go:60:2:60:5 | file | test.go:59:2:59:7 | definition of buffer | provenance | MaD:18 |
+| test.go:66:2:66:31 | ... := ...[0] | test.go:67:16:67:41 | index expression | provenance | Src:MaD:7  |
+| test.go:72:2:72:31 | ... := ...[0] | test.go:74:13:74:22 | fileHeader | provenance | Src:MaD:7  |
+| test.go:74:2:74:29 | ... := ...[0] | test.go:76:2:76:5 | file | provenance |  |
+| test.go:74:13:74:22 | fileHeader | test.go:74:2:74:29 | ... := ...[0] | provenance | MaD:17 |
+| test.go:75:2:75:7 | definition of buffer | test.go:77:20:77:25 | buffer | provenance |  |
+| test.go:76:2:76:5 | file | test.go:75:2:75:7 | definition of buffer | provenance | MaD:15 |
+| test.go:76:2:76:5 | file | test.go:75:2:75:7 | definition of buffer | provenance | MaD:16 |
+| test.go:76:2:76:5 | file | test.go:75:2:75:7 | definition of buffer | provenance | MaD:18 |
+| test.go:82:2:82:32 | ... := ...[0] | test.go:83:16:83:24 | selection of Value | provenance | Src:MaD:2  |
+| test.go:88:13:88:25 | call to Cookies | test.go:89:16:89:31 | selection of Value | provenance | Src:MaD:3  |
+| test.go:99:11:99:15 | &... | test.go:100:16:100:21 | selection of s | provenance | Src:MaD:1  |
+| test.go:112:17:112:19 | definition of ctx | test.go:114:16:114:18 | ctx | provenance |  |
+| test.go:113:21:113:42 | call to Param | test.go:112:17:112:19 | definition of ctx | provenance | Src:MaD:8 MaD:14 |
+| test.go:114:16:114:18 | ctx | test.go:114:16:114:33 | call to Get | provenance | MaD:13 |
+| test.go:114:16:114:33 | call to Get | test.go:114:16:114:42 | type assertion | provenance |  |
+| test.go:124:11:124:32 | call to Param | test.go:125:16:125:20 | param | provenance | Src:MaD:8  |
+| test.go:130:11:130:32 | call to Param | test.go:131:20:131:32 | type conversion | provenance | Src:MaD:8  |
+| test.go:136:11:136:32 | call to Param | test.go:137:29:137:41 | type conversion | provenance | Src:MaD:8  |
+| test.go:148:11:148:32 | call to Param | test.go:149:30:149:34 | param | provenance | Src:MaD:8  |
+| test.go:149:12:149:35 | call to NewReader | test.go:150:31:150:36 | reader | provenance |  |
+| test.go:149:30:149:34 | param | test.go:149:12:149:35 | call to NewReader | provenance | MaD:19 |
+| test.go:164:11:164:32 | call to Param | test.go:165:23:165:35 | type conversion | provenance | Src:MaD:8  |
+models
+| 1 | Source: github.com/labstack/echo; Context; true; Bind; ; ; Argument[0]; remote; manual |
+| 2 | Source: github.com/labstack/echo; Context; true; Cookie; ; ; ReturnValue[0]; remote; manual |
+| 3 | Source: github.com/labstack/echo; Context; true; Cookies; ; ; ReturnValue[0]; remote; manual |
+| 4 | Source: github.com/labstack/echo; Context; true; FormFile; ; ; ReturnValue[0]; remote; manual |
+| 5 | Source: github.com/labstack/echo; Context; true; FormParams; ; ; ReturnValue[0]; remote; manual |
+| 6 | Source: github.com/labstack/echo; Context; true; FormValue; ; ; ReturnValue[0]; remote; manual |
+| 7 | Source: github.com/labstack/echo; Context; true; MultipartForm; ; ; ReturnValue[0]; remote; manual |
+| 8 | Source: github.com/labstack/echo; Context; true; Param; ; ; ReturnValue[0]; remote; manual |
+| 9 | Source: github.com/labstack/echo; Context; true; ParamValues; ; ; ReturnValue[0]; remote; manual |
+| 10 | Source: github.com/labstack/echo; Context; true; QueryParam; ; ; ReturnValue[0]; remote; manual |
+| 11 | Source: github.com/labstack/echo; Context; true; QueryParams; ; ; ReturnValue[0]; remote; manual |
+| 12 | Source: github.com/labstack/echo; Context; true; QueryString; ; ; ReturnValue[0]; remote; manual |
+| 13 | Summary: github.com/labstack/echo; Context; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
+| 14 | Summary: github.com/labstack/echo; Context; true; Set; ; ; Argument[1]; Argument[receiver]; taint; manual |
+| 15 | Summary: io/fs; File; true; Read; ; ; Argument[receiver]; Argument[0]; taint; manual |
+| 16 | Summary: io; Reader; true; Read; ; ; Argument[receiver]; Argument[0]; taint; manual |
+| 17 | Summary: mime/multipart; FileHeader; true; Open; ; ; Argument[receiver]; ReturnValue[0]; taint; manual |
+| 18 | Summary: os; File; true; Read; ; ; Argument[receiver]; Argument[0]; taint; manual |
+| 19 | Summary: strings; ; false; NewReader; ; ; Argument[0]; ReturnValue; taint; manual |
+nodes
+| test.go:15:11:15:32 | call to Param | semmle.label | call to Param |
+| test.go:16:16:16:20 | param | semmle.label | param |
+| test.go:21:11:21:27 | call to ParamValues | semmle.label | call to ParamValues |
+| test.go:22:16:22:20 | param | semmle.label | param |
+| test.go:27:11:27:37 | call to QueryParam | semmle.label | call to QueryParam |
+| test.go:28:16:28:20 | param | semmle.label | param |
+| test.go:33:11:33:27 | call to QueryParams | semmle.label | call to QueryParams |
+| test.go:34:16:34:20 | param | semmle.label | param |
+| test.go:39:10:39:26 | call to QueryString | semmle.label | call to QueryString |
+| test.go:40:16:40:19 | qstr | semmle.label | qstr |
+| test.go:45:9:45:34 | call to FormValue | semmle.label | call to FormValue |
+| test.go:46:16:46:18 | val | semmle.label | val |
+| test.go:51:2:51:30 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:52:16:52:37 | index expression | semmle.label | index expression |
+| test.go:57:2:57:46 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:58:2:58:29 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:58:13:58:22 | fileHeader | semmle.label | fileHeader |
+| test.go:59:2:59:7 | definition of buffer | semmle.label | definition of buffer |
+| test.go:60:2:60:5 | file | semmle.label | file |
+| test.go:61:20:61:25 | buffer | semmle.label | buffer |
+| test.go:66:2:66:31 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:67:16:67:41 | index expression | semmle.label | index expression |
+| test.go:72:2:72:31 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:74:2:74:29 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:74:13:74:22 | fileHeader | semmle.label | fileHeader |
+| test.go:75:2:75:7 | definition of buffer | semmle.label | definition of buffer |
+| test.go:76:2:76:5 | file | semmle.label | file |
+| test.go:77:20:77:25 | buffer | semmle.label | buffer |
+| test.go:82:2:82:32 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:83:16:83:24 | selection of Value | semmle.label | selection of Value |
+| test.go:88:13:88:25 | call to Cookies | semmle.label | call to Cookies |
+| test.go:89:16:89:31 | selection of Value | semmle.label | selection of Value |
+| test.go:99:11:99:15 | &... | semmle.label | &... |
+| test.go:100:16:100:21 | selection of s | semmle.label | selection of s |
+| test.go:112:17:112:19 | definition of ctx | semmle.label | definition of ctx |
+| test.go:113:21:113:42 | call to Param | semmle.label | call to Param |
+| test.go:114:16:114:18 | ctx | semmle.label | ctx |
+| test.go:114:16:114:33 | call to Get | semmle.label | call to Get |
+| test.go:114:16:114:42 | type assertion | semmle.label | type assertion |
+| test.go:124:11:124:32 | call to Param | semmle.label | call to Param |
+| test.go:125:16:125:20 | param | semmle.label | param |
+| test.go:130:11:130:32 | call to Param | semmle.label | call to Param |
+| test.go:131:20:131:32 | type conversion | semmle.label | type conversion |
+| test.go:136:11:136:32 | call to Param | semmle.label | call to Param |
+| test.go:137:29:137:41 | type conversion | semmle.label | type conversion |
+| test.go:148:11:148:32 | call to Param | semmle.label | call to Param |
+| test.go:149:12:149:35 | call to NewReader | semmle.label | call to NewReader |
+| test.go:149:30:149:34 | param | semmle.label | param |
+| test.go:150:31:150:36 | reader | semmle.label | reader |
+| test.go:164:11:164:32 | call to Param | semmle.label | call to Param |
+| test.go:165:23:165:35 | type conversion | semmle.label | type conversion |
+subpaths

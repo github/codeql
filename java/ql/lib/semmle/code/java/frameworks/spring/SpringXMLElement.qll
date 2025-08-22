@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 import semmle.code.java.frameworks.spring.SpringBeanFile
 import semmle.code.java.frameworks.spring.SpringBean
@@ -37,6 +40,3 @@ class SpringXmlElement extends XmlElement {
 
   string getContentString() { result = this.allCharactersString() }
 }
-
-/** DEPRECATED: Alias for SpringXmlElement */
-deprecated class SpringXMLElement = SpringXmlElement;

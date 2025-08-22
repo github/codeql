@@ -17,14 +17,17 @@ on:
 env:
   CARGO_TERM_COLOR: always
 
+permissions:
+  contents: read
+
 jobs:
   qltest:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@main
         with:
           languages: javascript # does not matter
       - uses: ./.github/actions/os-version
@@ -37,7 +40,7 @@ jobs:
             ql/target
           key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-qltest-cargo-${{ hashFiles('ql/rust-toolchain.toml', 'ql/**/Cargo.lock') }}
       - name: Check formatting
-        run: cd ql; cargo fmt --all -- --check
+        run: cd ql; cargo fmt -- --check
       - name: Build extractor
         run: |
           cd ql;
@@ -46,30 +49,30 @@ jobs:
       - name: Cache compilation cache
         id: query-cache
         uses: ./.github/actions/cache-query-compilation
-        with: 
+        with:
           key: ql-for-ql-tests
       - name: Run QL tests
         run: |
-          "${CODEQL}" test run --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --search-path "${{ github.workspace }}/ql/extractor-pack" --consistency-queries ql/ql/consistency-queries --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}" ql/ql/test
+          "${CODEQL}" test run --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --search-path "${{ github.workspace }}" --consistency-queries ql/ql/consistency-queries --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}" ql/ql/test
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
 
-  other-os: 
+  other-os:
     strategy:
       matrix:
         os: [macos-latest, windows-latest]
     needs: [qltest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
-      - name: Install GNU tar 
+      - uses: actions/checkout@v4
+      - name: Install GNU tar
         if: runner.os == 'macOS'
         run: |
           brew install gnu-tar
           echo "/usr/local/opt/gnu-tar/libexec/gnubin" >> $GITHUB_PATH
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@main
         with:
           languages: javascript # does not matter
       - uses: ./.github/actions/os-version
@@ -97,7 +100,7 @@ jobs:
       - name: Run a single QL tests - Unix
         if: runner.os != 'Windows'
         run: |
-          "${CODEQL}" test run --check-databases --search-path "${{ github.workspace }}/ql/extractor-pack" ql/ql/test/queries/style/DeadCode/DeadCode.qlref
+          "${CODEQL}" test run --check-databases --search-path "${{ github.workspace }}" ql/ql/test/queries/style/DeadCode/DeadCode.qlref
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
       - name: Run a single QL tests - Windows
@@ -105,5 +108,4 @@ jobs:
         shell: pwsh
         run: |
           $Env:PATH += ";$(dirname ${{ steps.find-codeql.outputs.codeql-path }})"
-          codeql test run --check-databases --search-path "${{ github.workspace }}/ql/extractor-pack" ql/ql/test/queries/style/DeadCode/DeadCode.qlref
-      
+          codeql test run --check-databases --search-path "${{ github.workspace }}" ql/ql/test/queries/style/DeadCode/DeadCode.qlref

@@ -44,22 +44,37 @@ query predicate reducerToStateStep = Redux::reducerToStateStep/2;
 
 query Redux::StoreCreation storeCreation() { any() }
 
-class BasicTaint extends TaintTracking::Configuration {
-  BasicTaint() { this = "BasicTaint" }
+module TestConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node.(DataFlow::CallNode).getCalleeName() = "source" }
 
-  override predicate isSource(DataFlow::Node node) {
-    node.(DataFlow::CallNode).getCalleeName() = "source"
-  }
-
-  override predicate isSink(DataFlow::Node node) {
+  predicate isSink(DataFlow::Node node) {
     node = any(DataFlow::CallNode call | call.getCalleeName() = "sink").getAnArgument()
   }
 }
 
+module TestFlow = TaintTracking::Global<TestConfig>;
+
+deprecated class LegacyConfig extends TaintTracking::Configuration {
+  LegacyConfig() { this = "LegacyConfig" }
+
+  override predicate isSource(DataFlow::Node source) { TestConfig::isSource(source) }
+
+  override predicate isSink(DataFlow::Node sink) { TestConfig::isSink(sink) }
+}
+
+deprecated import utils.test.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
+
 query predicate taintFlow(DataFlow::Node source, DataFlow::Node sink) {
-  any(BasicTaint cfg).hasFlow(source, sink)
+  TestFlow::flow(source, sink)
 }
 
 query DataFlow::SourceNode reactComponentRef(ReactComponent component) {
   result = component.getAComponentCreatorReference()
 }
+
+query predicate ambiguousAccessPath(API::Node node, string path) {
+  count(string accessPath | Redux::Internal::getRootStateAccessPath(accessPath) = node) > 1 and
+  Redux::Internal::getRootStateAccessPath(path) = node
+}
+
+query predicate getRootStateAccessPath = Redux::Internal::getRootStateAccessPath/1;

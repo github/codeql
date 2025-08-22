@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 import semmle.code.java.controlflow.UnreachableBlocks
 
@@ -23,12 +26,12 @@ class ExcludeDebuggingProfilingLogging extends ExcludedConstantField {
           "log"
         ]
     |
-      getName().regexpMatch(".*(?i)" + validFieldName + ".*")
+      this.getName().regexpMatch(".*(?i)" + validFieldName + ".*")
     ) and
     // Boolean type
     (
-      getType().hasName("boolean") or
-      getType().(BoxedType).hasQualifiedName("java.lang", "Boolean")
+      this.getType().hasName("boolean") or
+      this.getType().(BoxedType).hasQualifiedName("java.lang", "Boolean")
     )
   }
 }

@@ -11,8 +11,7 @@ CmakeInfo = provider(
         "includes": "",
         "quote_includes": "",
         "stripped_includes": "",
-        "imported_static_libs": "",
-        "imported_dynamic_libs": "",
+        "imported_libs": "",
         "copts": "",
         "linkopts": "",
         "force_cxx_compilation": "",
@@ -23,7 +22,13 @@ CmakeInfo = provider(
 )
 
 def _cmake_name(label):
-    return ("%s_%s_%s" % (label.workspace_name, label.package, label.name)).replace("/", "_")
+    # strip away the bzlmod module version for now
+    workspace_name, _, _ = label.workspace_name.partition("~")
+    ret = ("%s_%s_%s" % (workspace_name, label.package, label.name)).replace("/", "_")
+    internal_transition_suffix = "_INTERNAL_TRANSITION"
+    if ret.endswith(internal_transition_suffix):
+        ret = ret[:-len(internal_transition_suffix)]
+    return ret
 
 def _cmake_file(file):
     if not file.is_source:
@@ -41,10 +46,8 @@ def _file_kind(file):
         return "src"
     if ext in ("h", "hh", "hpp", "def", "inc"):
         return "hdr"
-    if ext == "a":
-        return "static_lib"
-    if ext in ("so", "dylib"):
-        return "dynamic_lib"
+    if ext in ("a", "so", "dylib"):
+        return "lib"
     return None
 
 def _get_includes(includes):
@@ -52,17 +55,25 @@ def _get_includes(includes):
     return [_cmake_path(i) for i in includes.to_list() if "/_virtual_includes/" not in i]
 
 def _cmake_aspect_impl(target, ctx):
-    if not ctx.rule.kind.startswith("cc_"):
+    if not ctx.rule.kind.startswith(("cc_", "_cc_add_features")):
         return [CmakeInfo(name = None, transitive_deps = depset())]
+
+    # TODO: remove cc_binary_add_features once we remove it from internal repo
+    if ctx.rule.kind in ("cc_binary_add_features", "_cc_add_features_binary", "_cc_add_features_test"):
+        dep = ctx.rule.attr.dep[0][CmakeInfo]
+        return [CmakeInfo(
+            name = None,
+            transitive_deps = depset([dep], transitive = [dep.transitive_deps]),
+        )]
 
     name = _cmake_name(ctx.label)
 
     is_macos = "darwin" in ctx.var["TARGET_CPU"]
 
-    is_binary = ctx.rule.kind == "cc_binary"
+    is_binary = ctx.rule.kind in ("cc_binary", "cc_test")
     force_cxx_compilation = "force_cxx_compilation" in ctx.rule.attr.features
     attr = ctx.rule.attr
-    srcs = attr.srcs + getattr(attr, "hdrs", []) + getattr(attr, "textual_hdrs", [])
+    srcs = getattr(attr, "srcs", []) + getattr(attr, "hdrs", []) + getattr(attr, "textual_hdrs", [])
     srcs = [f for src in srcs for f in src.files.to_list()]
     inputs = [f for f in srcs if not f.is_source or f.path.startswith("external/")]
     by_kind = {}
@@ -70,8 +81,7 @@ def _cmake_aspect_impl(target, ctx):
         by_kind.setdefault(_file_kind(f), []).append(_cmake_file(f))
     hdrs = by_kind.get("hdr", [])
     srcs = by_kind.get("src", [])
-    static_libs = by_kind.get("static_lib", [])
-    dynamic_libs = by_kind.get("dynamic_lib", [])
+    libs = by_kind.get("lib", [])
     if not srcs and is_binary:
         empty = ctx.actions.declare_file(name + "_empty.cpp")
         ctx.actions.write(empty, "")
@@ -82,10 +92,10 @@ def _cmake_aspect_impl(target, ctx):
     cxx_compilation = force_cxx_compilation or any([not src.endswith(".c") for src in srcs])
 
     copts = ctx.fragments.cpp.copts + (ctx.fragments.cpp.cxxopts if cxx_compilation else ctx.fragments.cpp.conlyopts)
-    copts += [ctx.expand_make_variables("copts", o, {}) for o in ctx.rule.attr.copts]
+    copts += [ctx.expand_make_variables("copts", o, {}) for o in getattr(ctx.rule.attr, "copts", [])]
 
     linkopts = ctx.fragments.cpp.linkopts
-    linkopts += [ctx.expand_make_variables("linkopts", o, {}) for o in ctx.rule.attr.linkopts]
+    linkopts += [ctx.expand_make_variables("linkopts", o, {}) for o in getattr(ctx.rule.attr, "linkopts", [])]
 
     compilation_ctx = target[CcInfo].compilation_context
     system_includes = _get_includes(compilation_ctx.system_includes)
@@ -112,7 +122,6 @@ def _cmake_aspect_impl(target, ctx):
                 prefix,  # source
                 "${BAZEL_EXEC_ROOT}/%s/%s" % (ctx.var["BINDIR"], prefix),  # generated
             ]
-
     deps = [dep[CmakeInfo] for dep in deps if CmakeInfo in dep]
 
     # by the book this should be done with depsets, but so far the performance implication is negligible
@@ -134,12 +143,15 @@ def _cmake_aspect_impl(target, ctx):
             system_includes = system_includes,
             quote_includes = quote_includes,
             stripped_includes = stripped_includes,
-            imported_static_libs = static_libs,
-            imported_dynamic_libs = dynamic_libs,
+            imported_libs = libs,
             copts = copts,
             linkopts = linkopts,
             defines = compilation_ctx.defines.to_list(),
-            local_defines = compilation_ctx.local_defines.to_list(),
+            local_defines = [
+                d
+                for d in compilation_ctx.local_defines.to_list()
+                if not d.startswith("BAZEL_CURRENT_REPOSITORY")
+            ],
             force_cxx_compilation = force_cxx_compilation,
             transitive_deps = depset(deps, transitive = [dep.transitive_deps for dep in deps]),
         ),
@@ -147,7 +159,7 @@ def _cmake_aspect_impl(target, ctx):
 
 cmake_aspect = aspect(
     implementation = _cmake_aspect_impl,
-    attr_aspects = ["deps"],
+    attr_aspects = ["deps", "dep"],
     fragments = ["cpp"],
 )
 
@@ -156,21 +168,11 @@ def _map_cmake_info(info, is_windows):
     commands = [
         "add_%s(%s)" % (info.kind, args),
     ]
-    if info.imported_static_libs and info.imported_dynamic_libs:
-        commands += [
-            "if(BUILD_SHARED_LIBS)",
-            "  target_link_libraries(%s %s %s)" %
-            (info.name, info.modifier or "PUBLIC", " ".join(info.imported_dynamic_libs)),
-            "else()",
-            "  target_link_libraries(%s %s %s)" %
-            (info.name, info.modifier or "PUBLIC", " ".join(info.imported_static_libs)),
-            "endif()",
-        ]
-    elif info.imported_static_libs or info.imported_dynamic_libs:
-        commands += [
+    if info.imported_libs:
+        commands.append(
             "target_link_libraries(%s %s %s)" %
-            (info.name, info.modifier or "PUBLIC", " ".join(info.imported_dynamic_lib + info.imported_static_libs)),
-        ]
+            (info.name, info.modifier or "PUBLIC", " ".join(info.imported_libs)),
+        )
     if info.deps:
         libs = {}
         if info.modifier == "INTERFACE":
@@ -179,51 +181,51 @@ def _map_cmake_info(info, is_windows):
             for lib in info.deps:
                 libs.setdefault(lib.modifier, []).append(lib.name)
         for modifier, names in libs.items():
-            commands += [
+            commands.append(
                 "target_link_libraries(%s %s %s)" % (info.name, modifier or "PUBLIC", " ".join(names)),
-            ]
+            )
     if info.includes:
-        commands += [
+        commands.append(
             "target_include_directories(%s %s %s)" % (info.name, info.modifier or "PUBLIC", " ".join(info.includes)),
-        ]
+        )
     if info.system_includes:
-        commands += [
+        commands.append(
             "target_include_directories(%s SYSTEM %s %s)" % (info.name, info.modifier or "PUBLIC", " ".join(info.system_includes)),
-        ]
+        )
     if info.quote_includes:
         if is_windows:
-            commands += [
+            commands.append(
                 "target_include_directories(%s %s %s)" % (info.name, info.modifier or "PUBLIC", " ".join(info.quote_includes)),
-            ]
+            )
         else:
-            commands += [
+            commands.append(
                 "target_compile_options(%s %s %s)" % (info.name, info.modifier or "PUBLIC", " ".join(["-iquote%s" % i for i in info.quote_includes])),
-            ]
+            )
     if info.copts and info.modifier != "INTERFACE":
-        commands += [
+        commands.append(
             "target_compile_options(%s PRIVATE %s)" % (info.name, " ".join(info.copts)),
-        ]
+        )
     if info.linkopts:
-        commands += [
+        commands.append(
             "target_link_options(%s %s %s)" % (info.name, info.modifier or "PUBLIC", " ".join(info.linkopts)),
-        ]
+        )
     if info.force_cxx_compilation and any([f.endswith(".c") for f in info.srcs]):
-        commands += [
+        commands.append(
             "set_source_files_properties(%s PROPERTIES LANGUAGE CXX)" % " ".join([f for f in info.srcs if f.endswith(".c")]),
-        ]
+        )
     if info.defines:
-        commands += [
+        commands.append(
             "target_compile_definitions(%s %s %s)" % (info.name, info.modifier or "PUBLIC", " ".join(info.defines)),
-        ]
+        )
     if info.local_defines:
-        commands += [
+        commands.append(
             "target_compile_definitions(%s %s %s)" % (info.name, info.modifier or "PRIVATE", " ".join(info.local_defines)),
-        ]
+        )
     return commands
 
 GeneratedCmakeFiles = provider(
     fields = {
-        "files": "",
+        "targets": "",
     },
 )
 
@@ -232,7 +234,11 @@ def _generate_cmake_impl(ctx):
     inputs = []
 
     infos = {}
-    for dep in ctx.attr.targets:
+    targets = list(ctx.attr.targets)
+    for include in ctx.attr.includes:
+        targets += include[GeneratedCmakeFiles].targets.to_list()
+
+    for dep in targets:
         for info in [dep[CmakeInfo]] + dep[CmakeInfo].transitive_deps.to_list():
             if info.name != None:
                 inputs += info.inputs
@@ -244,11 +250,6 @@ def _generate_cmake_impl(ctx):
         commands += _map_cmake_info(info, is_windows)
         commands.append("")
 
-    for include in ctx.attr.includes:
-        for file in include[GeneratedCmakeFiles].files.to_list():
-            inputs.append(file)
-            commands.append("include(${BAZEL_EXEC_ROOT}/%s)" % file.path)
-
     # we want to use a run or run_shell action to register a bunch of files like inputs, but we cannot write all
     # in a shell command as we would hit the command size limit. So we first write the file and then copy it with
     # the dummy inputs
@@ -259,7 +260,7 @@ def _generate_cmake_impl(ctx):
 
     return [
         DefaultInfo(files = depset([output])),
-        GeneratedCmakeFiles(files = depset([output])),
+        GeneratedCmakeFiles(targets = depset(ctx.attr.targets)),
     ]
 
 generate_cmake = rule(

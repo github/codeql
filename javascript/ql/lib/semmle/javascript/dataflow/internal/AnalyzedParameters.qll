@@ -24,21 +24,21 @@ class AnalyzedParameter extends AnalyzedValueNode {
 
   override AbstractValue getALocalValue() {
     exists(DataFlow::AnalyzedNode pred |
-      getFunction().argumentPassing(astNode, pred.asExpr()) and
+      this.getFunction().argumentPassing(astNode, pred.asExpr()) and
       result = pred.getALocalValue()
     )
     or
-    not getFunction().mayReceiveArgument(astNode) and
+    not this.getFunction().mayReceiveArgument(astNode) and
     result = TAbstractUndefined()
     or
     result = astNode.getDefault().analyze().getALocalValue()
   }
 
   override predicate hasAdditionalIncompleteness(DataFlow::Incompleteness cause) {
-    getFunction().isIncomplete(cause)
+    this.getFunction().isIncomplete(cause)
     or
-    not getFunction().argumentPassing(astNode, _) and
-    getFunction().mayReceiveArgument(astNode) and
+    not this.getFunction().argumentPassing(astNode, _) and
+    this.getFunction().mayReceiveArgument(astNode) and
     cause = "call"
   }
 }

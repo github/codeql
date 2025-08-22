@@ -16,6 +16,7 @@ import cpp
 from ExprInVoidContext op
 where
   not op.isUnevaluated() and
+  not inMacroExpansion(op) and
   (
     op instanceof EQExpr
     or

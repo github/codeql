@@ -1,0 +1,5 @@
+| file://:0:0:0:0 | C | test.cpp:4:8:4:8 | C<T> |
+| file://:0:0:0:0 | C | test.cpp:4:8:4:8 | C<T> |
+| test.cpp:5:5:5:5 | (unnamed deduction guide) | test.cpp:4:8:4:8 | C<T> |
+| test.cpp:6:5:6:5 | (unnamed deduction guide) | test.cpp:4:8:4:8 | C<T> |
+| test.cpp:12:1:12:1 | C | test.cpp:4:8:4:8 | C<T> |

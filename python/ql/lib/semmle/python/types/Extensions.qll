@@ -14,7 +14,6 @@ import python
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.PointsToContext
 private import semmle.python.objects.TObject
-private import semmle.python.web.HttpConstants
 /* Make ObjectInternal visible to save extra imports in user code */
 import semmle.python.objects.ObjectInternal
 
@@ -49,30 +48,6 @@ class RangeIterationVariableFact extends PointsToExtension {
     value = TUnknownInstance(ObjectInternal::builtin("int")) and
     origin = this and
     context.appliesTo(this)
-  }
-}
-
-/* bottle module route constants */
-deprecated class BottleRoutePointToExtension extends PointsToExtension {
-  string name;
-
-  BottleRoutePointToExtension() {
-    exists(DefinitionNode defn |
-      defn.getScope().(Module).getName() = "bottle" and
-      this = defn.getValue() and
-      name = defn.(NameNode).getId()
-    |
-      name = "route" or
-      name = httpVerbLower()
-    )
-  }
-
-  override predicate pointsTo(Context context, ObjectInternal value, ControlFlowNode origin) {
-    context.isImport() and
-    exists(CfgOrigin orig |
-      Module::named("bottle").attr("Bottle").(ClassObjectInternal).attribute(name, value, orig) and
-      origin = orig.asCfgNodeOrHere(this)
-    )
   }
 }
 

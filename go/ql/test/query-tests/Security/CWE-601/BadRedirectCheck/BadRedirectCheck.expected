@@ -1,21 +1,36 @@
+#select
+| BadRedirectCheck.go:4:23:4:37 | ...==... | BadRedirectCheck.go:3:18:3:22 | argument corresponding to redir | main.go:11:25:11:45 | call to sanitizeUrl | This is a check that $@, which flows into a $@, has a leading slash, but not that it does not have '/' or '\\' in its second position. | BadRedirectCheck.go:3:18:3:22 | argument corresponding to redir | this value | main.go:11:25:11:45 | call to sanitizeUrl | redirect |
+| BadRedirectCheck.go:4:23:4:37 | ...==... | main.go:10:18:10:25 | argument corresponding to redirect | main.go:11:25:11:45 | call to sanitizeUrl | This is a check that $@, which flows into a $@, has a leading slash, but not that it does not have '/' or '\\' in its second position. | main.go:10:18:10:25 | argument corresponding to redirect | this value | main.go:11:25:11:45 | call to sanitizeUrl | redirect |
+| cves.go:11:26:11:38 | ...==... | cves.go:14:23:14:25 | argument corresponding to url | cves.go:16:26:16:28 | url | This is a check that $@, which flows into a $@, has a leading slash, but not that it does not have '/' or '\\' in its second position. | cves.go:14:23:14:25 | argument corresponding to url | this value | cves.go:16:26:16:28 | url | redirect |
+| cves.go:34:6:34:37 | call to HasPrefix | cves.go:33:14:33:34 | call to Get | cves.go:37:25:37:32 | redirect | This is a check that $@, which flows into a $@, has a leading slash, but not that it does not have '/' or '\\' in its second position. | cves.go:33:14:33:34 | call to Get | this value | cves.go:37:25:37:32 | redirect | redirect |
+| cves.go:42:6:42:37 | call to HasPrefix | cves.go:41:14:41:34 | call to Get | cves.go:45:25:45:32 | redirect | This is a check that $@, which flows into a $@, has a leading slash, but not that it does not have '/' or '\\' in its second position. | cves.go:41:14:41:34 | call to Get | this value | cves.go:45:25:45:32 | redirect | redirect |
+| main.go:25:7:25:38 | call to HasPrefix | main.go:32:24:32:26 | argument corresponding to url | main.go:34:26:34:28 | url | This is a check that $@, which flows into a $@, has a leading slash, but not that it does not have '/' or '\\' in its second position. | main.go:32:24:32:26 | argument corresponding to url | this value | main.go:34:26:34:28 | url | redirect |
+| main.go:69:5:69:22 | ...!=... | main.go:68:17:68:24 | argument corresponding to redirect | main.go:77:25:77:39 | call to getTarget1 | This is a check that $@, which flows into a $@, has a leading slash, but not that it does not have '/' or '\\' in its second position. | main.go:68:17:68:24 | argument corresponding to redirect | this value | main.go:77:25:77:39 | call to getTarget1 | redirect |
+| main.go:69:5:69:22 | ...!=... | main.go:76:19:76:21 | argument corresponding to url | main.go:77:25:77:39 | call to getTarget1 | This is a check that $@, which flows into a $@, has a leading slash, but not that it does not have '/' or '\\' in its second position. | main.go:76:19:76:21 | argument corresponding to url | this value | main.go:77:25:77:39 | call to getTarget1 | redirect |
+| main.go:83:5:83:20 | ...!=... | main.go:87:9:87:14 | selection of Path | main.go:91:25:91:39 | call to getTarget2 | This is a check that $@, which flows into a $@, has a leading slash, but not that it does not have '/' or '\\' in its second position. | main.go:87:9:87:14 | selection of Path | this value | main.go:91:25:91:39 | call to getTarget2 | redirect |
 edges
-| BadRedirectCheck.go:3:18:3:22 | argument corresponding to redir | BadRedirectCheck.go:5:10:5:14 | redir |
-| BadRedirectCheck.go:3:18:3:22 | definition of redir | BadRedirectCheck.go:5:10:5:14 | redir |
-| BadRedirectCheck.go:5:10:5:14 | redir | main.go:11:25:11:45 | call to sanitizeUrl |
-| cves.go:14:23:14:25 | argument corresponding to url | cves.go:16:26:16:28 | url |
-| cves.go:33:14:33:34 | call to Get | cves.go:37:25:37:32 | redirect |
-| cves.go:41:14:41:34 | call to Get | cves.go:45:25:45:32 | redirect |
-| main.go:10:18:10:25 | argument corresponding to redirect | main.go:11:37:11:44 | redirect |
-| main.go:11:37:11:44 | redirect | BadRedirectCheck.go:3:18:3:22 | definition of redir |
-| main.go:11:37:11:44 | redirect | main.go:11:25:11:45 | call to sanitizeUrl |
-| main.go:32:24:32:26 | argument corresponding to url | main.go:34:26:34:28 | url |
-| main.go:68:17:68:24 | argument corresponding to redirect | main.go:73:9:73:28 | call to Clean |
-| main.go:68:17:68:24 | definition of redirect | main.go:73:9:73:28 | call to Clean |
-| main.go:73:9:73:28 | call to Clean | main.go:77:25:77:39 | call to getTarget1 |
-| main.go:76:19:76:21 | argument corresponding to url | main.go:77:36:77:38 | url |
-| main.go:77:36:77:38 | url | main.go:68:17:68:24 | definition of redirect |
-| main.go:77:36:77:38 | url | main.go:77:25:77:39 | call to getTarget1 |
-| main.go:87:9:87:14 | selection of Path | main.go:91:25:91:39 | call to getTarget2 |
+| BadRedirectCheck.go:3:18:3:22 | argument corresponding to redir | BadRedirectCheck.go:5:10:5:14 | redir | provenance |  |
+| BadRedirectCheck.go:3:18:3:22 | definition of redir | BadRedirectCheck.go:5:10:5:14 | redir | provenance |  |
+| BadRedirectCheck.go:5:10:5:14 | redir | main.go:11:25:11:45 | call to sanitizeUrl | provenance | Sink:MaD:1 |
+| cves.go:14:23:14:25 | argument corresponding to url | cves.go:16:26:16:28 | url | provenance | Sink:MaD:1 |
+| cves.go:33:14:33:34 | call to Get | cves.go:37:25:37:32 | redirect | provenance | Sink:MaD:1 |
+| cves.go:41:14:41:34 | call to Get | cves.go:45:25:45:32 | redirect | provenance | Sink:MaD:1 |
+| main.go:10:18:10:25 | argument corresponding to redirect | main.go:11:37:11:44 | redirect | provenance |  |
+| main.go:11:37:11:44 | redirect | BadRedirectCheck.go:3:18:3:22 | definition of redir | provenance |  |
+| main.go:11:37:11:44 | redirect | main.go:11:25:11:45 | call to sanitizeUrl | provenance | Sink:MaD:1 |
+| main.go:32:24:32:26 | argument corresponding to url | main.go:34:26:34:28 | url | provenance | Sink:MaD:1 |
+| main.go:68:17:68:24 | argument corresponding to redirect | main.go:73:20:73:27 | redirect | provenance |  |
+| main.go:68:17:68:24 | definition of redirect | main.go:73:20:73:27 | redirect | provenance |  |
+| main.go:73:9:73:28 | call to Clean | main.go:77:25:77:39 | call to getTarget1 | provenance | Sink:MaD:1 |
+| main.go:73:20:73:27 | redirect | main.go:73:9:73:28 | call to Clean | provenance | MaD:2 |
+| main.go:73:20:73:27 | redirect | main.go:73:9:73:28 | call to Clean | provenance | MaD:2 |
+| main.go:76:19:76:21 | argument corresponding to url | main.go:77:36:77:38 | url | provenance |  |
+| main.go:77:36:77:38 | url | main.go:68:17:68:24 | definition of redirect | provenance |  |
+| main.go:77:36:77:38 | url | main.go:77:25:77:39 | call to getTarget1 | provenance | MaD:2 Sink:MaD:1 |
+| main.go:87:9:87:14 | selection of Path | main.go:91:25:91:39 | call to getTarget2 | provenance | Sink:MaD:1 |
+models
+| 1 | Sink: net/http; ; false; Redirect; ; ; Argument[2]; url-redirection[0]; manual |
+| 2 | Summary: path; ; false; Clean; ; ; Argument[0]; ReturnValue; taint; manual |
 nodes
 | BadRedirectCheck.go:3:18:3:22 | argument corresponding to redir | semmle.label | argument corresponding to redir |
 | BadRedirectCheck.go:3:18:3:22 | definition of redir | semmle.label | definition of redir |
@@ -36,6 +51,8 @@ nodes
 | main.go:68:17:68:24 | definition of redirect | semmle.label | definition of redirect |
 | main.go:73:9:73:28 | call to Clean | semmle.label | call to Clean |
 | main.go:73:9:73:28 | call to Clean | semmle.label | call to Clean |
+| main.go:73:20:73:27 | redirect | semmle.label | redirect |
+| main.go:73:20:73:27 | redirect | semmle.label | redirect |
 | main.go:76:19:76:21 | argument corresponding to url | semmle.label | argument corresponding to url |
 | main.go:77:25:77:39 | call to getTarget1 | semmle.label | call to getTarget1 |
 | main.go:77:36:77:38 | url | semmle.label | url |
@@ -44,13 +61,3 @@ nodes
 subpaths
 | main.go:11:37:11:44 | redirect | BadRedirectCheck.go:3:18:3:22 | definition of redir | BadRedirectCheck.go:5:10:5:14 | redir | main.go:11:25:11:45 | call to sanitizeUrl |
 | main.go:77:36:77:38 | url | main.go:68:17:68:24 | definition of redirect | main.go:73:9:73:28 | call to Clean | main.go:77:25:77:39 | call to getTarget1 |
-#select
-| BadRedirectCheck.go:4:23:4:37 | ...==... | BadRedirectCheck.go:3:18:3:22 | argument corresponding to redir | main.go:11:25:11:45 | call to sanitizeUrl | This is a check that $@, which flows into a $@, has a leading slash, but not that it does not have '/' or '\\' in its second position. | BadRedirectCheck.go:3:18:3:22 | argument corresponding to redir | this value | main.go:11:25:11:45 | call to sanitizeUrl | redirect |
-| BadRedirectCheck.go:4:23:4:37 | ...==... | main.go:10:18:10:25 | argument corresponding to redirect | main.go:11:25:11:45 | call to sanitizeUrl | This is a check that $@, which flows into a $@, has a leading slash, but not that it does not have '/' or '\\' in its second position. | main.go:10:18:10:25 | argument corresponding to redirect | this value | main.go:11:25:11:45 | call to sanitizeUrl | redirect |
-| cves.go:11:26:11:38 | ...==... | cves.go:14:23:14:25 | argument corresponding to url | cves.go:16:26:16:28 | url | This is a check that $@, which flows into a $@, has a leading slash, but not that it does not have '/' or '\\' in its second position. | cves.go:14:23:14:25 | argument corresponding to url | this value | cves.go:16:26:16:28 | url | redirect |
-| cves.go:34:6:34:37 | call to HasPrefix | cves.go:33:14:33:34 | call to Get | cves.go:37:25:37:32 | redirect | This is a check that $@, which flows into a $@, has a leading slash, but not that it does not have '/' or '\\' in its second position. | cves.go:33:14:33:34 | call to Get | this value | cves.go:37:25:37:32 | redirect | redirect |
-| cves.go:42:6:42:37 | call to HasPrefix | cves.go:41:14:41:34 | call to Get | cves.go:45:25:45:32 | redirect | This is a check that $@, which flows into a $@, has a leading slash, but not that it does not have '/' or '\\' in its second position. | cves.go:41:14:41:34 | call to Get | this value | cves.go:45:25:45:32 | redirect | redirect |
-| main.go:25:7:25:38 | call to HasPrefix | main.go:32:24:32:26 | argument corresponding to url | main.go:34:26:34:28 | url | This is a check that $@, which flows into a $@, has a leading slash, but not that it does not have '/' or '\\' in its second position. | main.go:32:24:32:26 | argument corresponding to url | this value | main.go:34:26:34:28 | url | redirect |
-| main.go:69:5:69:22 | ...!=... | main.go:68:17:68:24 | argument corresponding to redirect | main.go:77:25:77:39 | call to getTarget1 | This is a check that $@, which flows into a $@, has a leading slash, but not that it does not have '/' or '\\' in its second position. | main.go:68:17:68:24 | argument corresponding to redirect | this value | main.go:77:25:77:39 | call to getTarget1 | redirect |
-| main.go:69:5:69:22 | ...!=... | main.go:76:19:76:21 | argument corresponding to url | main.go:77:25:77:39 | call to getTarget1 | This is a check that $@, which flows into a $@, has a leading slash, but not that it does not have '/' or '\\' in its second position. | main.go:76:19:76:21 | argument corresponding to url | this value | main.go:77:25:77:39 | call to getTarget1 | redirect |
-| main.go:83:5:83:20 | ...!=... | main.go:87:9:87:14 | selection of Path | main.go:91:25:91:39 | call to getTarget2 | This is a check that $@, which flows into a $@, has a leading slash, but not that it does not have '/' or '\\' in its second position. | main.go:87:9:87:14 | selection of Path | this value | main.go:91:25:91:39 | call to getTarget2 | redirect |

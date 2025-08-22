@@ -116,7 +116,7 @@ namespace My.Qltest
         {
             var a = new object[] { new object() };
             var b = Reverse(a);
-            Sink(b); // No flow
+            Sink(b); // Flow
             Sink(b[0]); // Flow
         }
 
@@ -149,9 +149,9 @@ namespace My.Qltest
 
         static T Apply<S, T>(Func<S, T> f, S s) => throw null;
 
-        static S[] Map<S, T>(S[] elements, Func<S, T> f) => throw null;
+        static T[] Map<S, T>(S[] elements, Func<S, T> f) => throw null;
 
-        static void Apply2<S>(Action<S> f, S s1, S s2) => throw null;
+        static void Apply2(Action<object> f, D d1, D d2) => throw null;
 
         static void Parse(string s, out int i) => throw null;
 
@@ -185,33 +185,167 @@ namespace My.Qltest
         void M1()
         {
             var o = new object();
-            Sink(GeneratedFlow(o));
+            Sink(GeneratedFlow(o)); // no flow because the modelled method exists in source code
         }
 
         void M2()
         {
             var o1 = new object();
-            Sink(GeneratedFlowArgs(o1, null));
+            Sink(GeneratedFlowArgs(o1, null)); // no flow because the modelled method exists in source code
 
             var o2 = new object();
-            Sink(GeneratedFlowArgs(null, o2));
+            Sink(GeneratedFlowArgs(null, o2)); // no flow because the modelled method exists in source code
         }
 
         void M3()
         {
             var o1 = new object();
-            Sink(MixedFlowArgs(o1, null));
+            Sink(Library.MixedFlowArgs(o1, null));
 
             var o2 = new object();
-            Sink(MixedFlowArgs(null, o2));
+            Sink(Library.MixedFlowArgs(null, o2));
+        }
+
+        void M4()
+        {
+            var o1 = new object();
+            Sink(Library.GeneratedFlowWithGeneratedNeutral(o1));
+
+            var o2 = new object();
+            Sink(Library.GeneratedFlowWithManualNeutral(o2)); // no flow because the modelled method has a manual neutral summary model
         }
 
         object GeneratedFlow(object o) => throw null;
 
         object GeneratedFlowArgs(object o1, object o2) => throw null;
 
-        object MixedFlowArgs(object o1, object o2) => throw null;
+        static void Sink(object o) { }
+    }
+
+    public interface HI { }
+
+    public class HC : HI { }
+
+    public static class HE
+    {
+        public static object ExtensionMethod(this HI h) => throw null;
+    }
+
+    public class H
+    {
+        void M1()
+        {
+            var h = new HC();
+            var o = h.ExtensionMethod();
+            Sink(o);
+        }
 
         static void Sink(object o) { }
     }
+
+    [System.Runtime.CompilerServices.InlineArray(10)]
+    public struct MyInlineArray
+    {
+        private object myInlineArrayElements;
+    }
+
+    public class I
+    {
+        void M1(MyInlineArray a)
+        {
+            a[0] = new object();
+            var b = GetFirst(a);
+            Sink(b);
+        }
+
+        object GetFirst(MyInlineArray arr) => throw null;
+
+        static void Sink(object o) { }
+    }
+
+    public class J
+    {
+        public virtual object Prop1 { get; }
+
+        public virtual void SetProp1(object o) => throw null;
+
+        public virtual object Prop2 { get; }
+
+        public virtual void SetProp2(object o) => throw null;
+
+        void M1()
+        {
+            var j = new object();
+            SetProp1(j);
+            // flow as there is a manual summary.
+            Sink(this.Prop1);
+        }
+
+        void M2()
+        {
+            var j = new object();
+            SetProp2(j);
+            // no flow as there is only a generated summary and source code is available.
+            Sink(this.Prop2);
+        }
+
+        static void Sink(object o) { }
+    }
+
+    // Test synthetic fields
+    public class K
+    {
+
+        public object MyField;
+
+        public void SetMySyntheticField(object o) => throw null;
+
+        public object GetMySyntheticField() => throw null;
+
+        public void SetMyNestedSyntheticField(object o) => throw null;
+
+        public object GetMyNestedSyntheticField() => throw null;
+
+        public void SetMyFieldOnSyntheticField(object o) => throw null;
+
+        public object GetMyFieldOnSyntheticField() => throw null;
+
+        public void M1()
+        {
+            var o = new object();
+            SetMySyntheticField(o);
+            Sink(GetMySyntheticField());
+        }
+
+        public void M2()
+        {
+            var o = new object();
+            SetMyNestedSyntheticField(o);
+            Sink(GetMyNestedSyntheticField());
+        }
+
+        public void M3()
+        {
+            var o = new object();
+            SetMyFieldOnSyntheticField(o);
+            Sink(GetMyFieldOnSyntheticField());
+        }
+
+        static void Sink(object o) { }
+    }
+
+    // Test content data flow provenance.
+    public class L
+    {
+        public void M1()
+        {
+            var l = new Library();
+            var o = new object();
+            l.SetValue(o);
+            Sink(l.GetValue());
+        }
+
+        static void Sink(object o) { }
+    }
+
 }

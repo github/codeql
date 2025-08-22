@@ -1,0 +1,282 @@
+models
+edges
+| Constructors.cs:5:24:5:25 | [post] this access : C_no_ctor [field s1] : Object | Constructors.cs:9:27:9:41 | object creation of type C_no_ctor : C_no_ctor [field s1] : Object | provenance |  |
+| Constructors.cs:5:29:5:45 | call to method Source<Object> : Object | Constructors.cs:5:24:5:25 | [post] this access : C_no_ctor [field s1] : Object | provenance |  |
+| Constructors.cs:9:23:9:23 | access to local variable c : C_no_ctor [field s1] : Object | Constructors.cs:10:13:10:13 | access to local variable c : C_no_ctor [field s1] : Object | provenance |  |
+| Constructors.cs:9:27:9:41 | object creation of type C_no_ctor : C_no_ctor [field s1] : Object | Constructors.cs:9:23:9:23 | access to local variable c : C_no_ctor [field s1] : Object | provenance |  |
+| Constructors.cs:10:13:10:13 | access to local variable c : C_no_ctor [field s1] : Object | Constructors.cs:13:21:13:22 | this : C_no_ctor [field s1] : Object | provenance |  |
+| Constructors.cs:13:21:13:22 | this : C_no_ctor [field s1] : Object | Constructors.cs:15:18:15:19 | this access : C_no_ctor [field s1] : Object | provenance |  |
+| Constructors.cs:15:18:15:19 | this access : C_no_ctor [field s1] : Object | Constructors.cs:15:18:15:19 | access to field s1 | provenance |  |
+| Constructors.cs:21:24:21:25 | [post] this access : C_with_ctor [field s1] : Object | Constructors.cs:29:16:29:26 | this [Return] : C_with_ctor [field s1] : Object | provenance |  |
+| Constructors.cs:21:29:21:45 | call to method Source<Object> : Object | Constructors.cs:21:24:21:25 | [post] this access : C_with_ctor [field s1] : Object | provenance |  |
+| Constructors.cs:25:25:25:25 | access to local variable c : C_with_ctor [field s1] : Object | Constructors.cs:26:13:26:13 | access to local variable c : C_with_ctor [field s1] : Object | provenance |  |
+| Constructors.cs:25:29:25:45 | object creation of type C_with_ctor : C_with_ctor [field s1] : Object | Constructors.cs:25:25:25:25 | access to local variable c : C_with_ctor [field s1] : Object | provenance |  |
+| Constructors.cs:26:13:26:13 | access to local variable c : C_with_ctor [field s1] : Object | Constructors.cs:31:21:31:22 | this : C_with_ctor [field s1] : Object | provenance |  |
+| Constructors.cs:29:16:29:26 | this [Return] : C_with_ctor [field s1] : Object | Constructors.cs:25:29:25:45 | object creation of type C_with_ctor : C_with_ctor [field s1] : Object | provenance |  |
+| Constructors.cs:31:21:31:22 | this : C_with_ctor [field s1] : Object | Constructors.cs:33:18:33:19 | this access : C_with_ctor [field s1] : Object | provenance |  |
+| Constructors.cs:33:18:33:19 | this access : C_with_ctor [field s1] : Object | Constructors.cs:33:18:33:19 | access to field s1 | provenance |  |
+| Constructors.cs:41:26:41:26 | o : Object | Constructors.cs:41:38:41:38 | access to parameter o : Object | provenance |  |
+| Constructors.cs:41:32:41:34 | [post] this access : C1 [field Obj] : Object | Constructors.cs:41:16:41:17 | this [Return] : C1 [field Obj] : Object | provenance |  |
+| Constructors.cs:41:38:41:38 | access to parameter o : Object | Constructors.cs:41:32:41:34 | [post] this access : C1 [field Obj] : Object | provenance |  |
+| Constructors.cs:44:28:44:35 | o21param : Object | Constructors.cs:46:23:46:27 | this access : C2 [parameter o21param] : Object | provenance |  |
+| Constructors.cs:44:28:44:35 | o21param : Object | Constructors.cs:46:31:46:38 | access to parameter o21param : Object | provenance |  |
+| Constructors.cs:44:45:44:52 | o22param : Object | Constructors.cs:44:18:44:19 | this [Return] : C2 [parameter o22param] : Object | provenance |  |
+| Constructors.cs:46:23:46:27 | [post] this access : C2 [field Obj21] : Object | Constructors.cs:44:18:44:19 | this [Return] : C2 [field Obj21] : Object | provenance |  |
+| Constructors.cs:46:23:46:27 | this access : C2 [parameter o21param] : Object | Constructors.cs:46:31:46:38 | access to parameter o21param : Object | provenance |  |
+| Constructors.cs:46:31:46:38 | access to parameter o21param : Object | Constructors.cs:46:23:46:27 | [post] this access : C2 [field Obj21] : Object | provenance |  |
+| Constructors.cs:48:32:48:39 | this : C2 [parameter o22param] : Object | Constructors.cs:48:32:48:39 | access to parameter o22param : Object | provenance |  |
+| Constructors.cs:50:32:50:36 | this : C2 [field Obj21] : Object | Constructors.cs:50:32:50:36 | this access : C2 [field Obj21] : Object | provenance |  |
+| Constructors.cs:50:32:50:36 | this access : C2 [field Obj21] : Object | Constructors.cs:50:32:50:36 | access to field Obj21 : Object | provenance |  |
+| Constructors.cs:52:35:52:35 | o : Object | Constructors.cs:54:13:54:20 | access to parameter o22param : Object | provenance |  |
+| Constructors.cs:54:13:54:20 | access to parameter o22param : Object | Constructors.cs:52:21:52:26 | this [Return] : C2 [parameter o22param] : Object | provenance |  |
+| Constructors.cs:57:54:57:55 | o2 : Object | Constructors.cs:59:13:59:14 | access to parameter o1 : Object | provenance |  |
+| Constructors.cs:62:41:62:41 | o : Object | Constructors.cs:64:37:64:37 | access to parameter o : Object | provenance |  |
+| Constructors.cs:64:27:64:34 | access to parameter o22param : Object | Constructors.cs:62:21:62:32 | this [Return] : C2 [parameter o22param] : Object | provenance |  |
+| Constructors.cs:64:37:64:37 | access to parameter o : Object | Constructors.cs:57:54:57:55 | o2 : Object | provenance |  |
+| Constructors.cs:64:37:64:37 | access to parameter o : Object | Constructors.cs:64:27:64:34 | access to parameter o22param : Object | provenance |  |
+| Constructors.cs:70:13:70:13 | access to local variable o : Object | Constructors.cs:71:25:71:25 | access to local variable o : Object | provenance |  |
+| Constructors.cs:70:17:70:33 | call to method Source<Object> : Object | Constructors.cs:70:13:70:13 | access to local variable o : Object | provenance |  |
+| Constructors.cs:71:13:71:14 | access to local variable c1 : C1 [field Obj] : Object | Constructors.cs:72:14:72:15 | access to local variable c1 : C1 [field Obj] : Object | provenance |  |
+| Constructors.cs:71:18:71:26 | object creation of type C1 : C1 [field Obj] : Object | Constructors.cs:71:13:71:14 | access to local variable c1 : C1 [field Obj] : Object | provenance |  |
+| Constructors.cs:71:25:71:25 | access to local variable o : Object | Constructors.cs:41:26:41:26 | o : Object | provenance |  |
+| Constructors.cs:71:25:71:25 | access to local variable o : Object | Constructors.cs:71:18:71:26 | object creation of type C1 : C1 [field Obj] : Object | provenance |  |
+| Constructors.cs:72:14:72:15 | access to local variable c1 : C1 [field Obj] : Object | Constructors.cs:72:14:72:19 | access to field Obj | provenance |  |
+| Constructors.cs:77:13:77:15 | access to local variable o21 : Object | Constructors.cs:79:25:79:27 | access to local variable o21 : Object | provenance |  |
+| Constructors.cs:77:19:77:35 | call to method Source<Object> : Object | Constructors.cs:77:13:77:15 | access to local variable o21 : Object | provenance |  |
+| Constructors.cs:78:13:78:15 | access to local variable o22 : Object | Constructors.cs:79:30:79:32 | access to local variable o22 : Object | provenance |  |
+| Constructors.cs:78:19:78:35 | call to method Source<Object> : Object | Constructors.cs:78:13:78:15 | access to local variable o22 : Object | provenance |  |
+| Constructors.cs:79:13:79:14 | access to local variable c2 : C2 [field Obj21] : Object | Constructors.cs:80:14:80:15 | access to local variable c2 : C2 [field Obj21] : Object | provenance |  |
+| Constructors.cs:79:13:79:14 | access to local variable c2 : C2 [field Obj21] : Object | Constructors.cs:82:14:82:15 | access to local variable c2 : C2 [field Obj21] : Object | provenance |  |
+| Constructors.cs:79:13:79:14 | access to local variable c2 : C2 [parameter o22param] : Object | Constructors.cs:81:14:81:15 | access to local variable c2 : C2 [parameter o22param] : Object | provenance |  |
+| Constructors.cs:79:18:79:33 | object creation of type C2 : C2 [field Obj21] : Object | Constructors.cs:79:13:79:14 | access to local variable c2 : C2 [field Obj21] : Object | provenance |  |
+| Constructors.cs:79:18:79:33 | object creation of type C2 : C2 [parameter o22param] : Object | Constructors.cs:79:13:79:14 | access to local variable c2 : C2 [parameter o22param] : Object | provenance |  |
+| Constructors.cs:79:25:79:27 | access to local variable o21 : Object | Constructors.cs:44:28:44:35 | o21param : Object | provenance |  |
+| Constructors.cs:79:25:79:27 | access to local variable o21 : Object | Constructors.cs:79:18:79:33 | object creation of type C2 : C2 [field Obj21] : Object | provenance |  |
+| Constructors.cs:79:30:79:32 | access to local variable o22 : Object | Constructors.cs:44:45:44:52 | o22param : Object | provenance |  |
+| Constructors.cs:79:30:79:32 | access to local variable o22 : Object | Constructors.cs:79:18:79:33 | object creation of type C2 : C2 [parameter o22param] : Object | provenance |  |
+| Constructors.cs:80:14:80:15 | access to local variable c2 : C2 [field Obj21] : Object | Constructors.cs:80:14:80:21 | access to field Obj21 | provenance |  |
+| Constructors.cs:81:14:81:15 | access to local variable c2 : C2 [parameter o22param] : Object | Constructors.cs:48:32:48:39 | this : C2 [parameter o22param] : Object | provenance |  |
+| Constructors.cs:81:14:81:15 | access to local variable c2 : C2 [parameter o22param] : Object | Constructors.cs:81:14:81:21 | access to property Obj22 | provenance |  |
+| Constructors.cs:82:14:82:15 | access to local variable c2 : C2 [field Obj21] : Object | Constructors.cs:50:32:50:36 | this : C2 [field Obj21] : Object | provenance |  |
+| Constructors.cs:82:14:82:15 | access to local variable c2 : C2 [field Obj21] : Object | Constructors.cs:82:14:82:21 | access to property Obj23 | provenance |  |
+| Constructors.cs:91:13:91:17 | access to local variable taint : Object | Constructors.cs:92:19:92:23 | access to local variable taint : Object | provenance |  |
+| Constructors.cs:91:21:91:37 | call to method Source<Object> : Object | Constructors.cs:91:13:91:17 | access to local variable taint : Object | provenance |  |
+| Constructors.cs:92:9:92:10 | [post] access to local variable c2 : C2 [parameter o22param] : Object | Constructors.cs:93:14:93:15 | access to local variable c2 : C2 [parameter o22param] : Object | provenance |  |
+| Constructors.cs:92:19:92:23 | access to local variable taint : Object | Constructors.cs:52:35:52:35 | o : Object | provenance |  |
+| Constructors.cs:92:19:92:23 | access to local variable taint : Object | Constructors.cs:92:9:92:10 | [post] access to local variable c2 : C2 [parameter o22param] : Object | provenance |  |
+| Constructors.cs:93:14:93:15 | access to local variable c2 : C2 [parameter o22param] : Object | Constructors.cs:48:32:48:39 | this : C2 [parameter o22param] : Object | provenance |  |
+| Constructors.cs:93:14:93:15 | access to local variable c2 : C2 [parameter o22param] : Object | Constructors.cs:93:14:93:21 | access to property Obj22 | provenance |  |
+| Constructors.cs:99:13:99:17 | access to local variable taint : Object | Constructors.cs:100:25:100:29 | access to local variable taint : Object | provenance |  |
+| Constructors.cs:99:21:99:37 | call to method Source<Object> : Object | Constructors.cs:99:13:99:17 | access to local variable taint : Object | provenance |  |
+| Constructors.cs:100:9:100:10 | [post] access to local variable c2 : C2 [parameter o22param] : Object | Constructors.cs:101:14:101:15 | access to local variable c2 : C2 [parameter o22param] : Object | provenance |  |
+| Constructors.cs:100:25:100:29 | access to local variable taint : Object | Constructors.cs:62:41:62:41 | o : Object | provenance |  |
+| Constructors.cs:100:25:100:29 | access to local variable taint : Object | Constructors.cs:100:9:100:10 | [post] access to local variable c2 : C2 [parameter o22param] : Object | provenance |  |
+| Constructors.cs:101:14:101:15 | access to local variable c2 : C2 [parameter o22param] : Object | Constructors.cs:48:32:48:39 | this : C2 [parameter o22param] : Object | provenance |  |
+| Constructors.cs:101:14:101:15 | access to local variable c2 : C2 [parameter o22param] : Object | Constructors.cs:101:14:101:21 | access to property Obj22 | provenance |  |
+| Constructors.cs:104:28:104:35 | o31param : Object | Constructors.cs:104:18:104:19 | this [Return] : C3 [parameter o31param] : Object | provenance |  |
+| Constructors.cs:106:32:106:39 | this : C3 [parameter o31param] : Object | Constructors.cs:106:32:106:39 | access to parameter o31param : Object | provenance |  |
+| Constructors.cs:111:13:111:15 | access to local variable o31 : Object | Constructors.cs:112:25:112:27 | access to local variable o31 : Object | provenance |  |
+| Constructors.cs:111:19:111:35 | call to method Source<Object> : Object | Constructors.cs:111:13:111:15 | access to local variable o31 : Object | provenance |  |
+| Constructors.cs:112:13:112:14 | access to local variable c3 : C3 [parameter o31param] : Object | Constructors.cs:113:14:113:15 | access to local variable c3 : C3 [parameter o31param] : Object | provenance |  |
+| Constructors.cs:112:18:112:28 | object creation of type C3 : C3 [parameter o31param] : Object | Constructors.cs:112:13:112:14 | access to local variable c3 : C3 [parameter o31param] : Object | provenance |  |
+| Constructors.cs:112:25:112:27 | access to local variable o31 : Object | Constructors.cs:104:28:104:35 | o31param : Object | provenance |  |
+| Constructors.cs:112:25:112:27 | access to local variable o31 : Object | Constructors.cs:112:18:112:28 | object creation of type C3 : C3 [parameter o31param] : Object | provenance |  |
+| Constructors.cs:113:14:113:15 | access to local variable c3 : C3 [parameter o31param] : Object | Constructors.cs:106:32:106:39 | this : C3 [parameter o31param] : Object | provenance |  |
+| Constructors.cs:113:14:113:15 | access to local variable c3 : C3 [parameter o31param] : Object | Constructors.cs:113:14:113:21 | access to property Obj31 | provenance |  |
+| Constructors.cs:121:26:121:28 | oc1 : Object | Constructors.cs:123:20:123:22 | access to parameter oc1 : Object | provenance |  |
+| Constructors.cs:121:38:121:40 | oc2 : Object | Constructors.cs:124:20:124:22 | access to parameter oc2 : Object | provenance |  |
+| Constructors.cs:123:13:123:16 | [post] this access : C4 [property Obj1] : Object | Constructors.cs:121:16:121:17 | this [Return] : C4 [property Obj1] : Object | provenance |  |
+| Constructors.cs:123:20:123:22 | access to parameter oc1 : Object | Constructors.cs:123:13:123:16 | [post] this access : C4 [property Obj1] : Object | provenance |  |
+| Constructors.cs:124:13:124:16 | [post] this access : C4 [property Obj2] : Object | Constructors.cs:121:16:121:17 | this [Return] : C4 [property Obj2] : Object | provenance |  |
+| Constructors.cs:124:20:124:22 | access to parameter oc2 : Object | Constructors.cs:124:13:124:16 | [post] this access : C4 [property Obj2] : Object | provenance |  |
+| Constructors.cs:130:13:130:14 | access to local variable o1 : Object | Constructors.cs:132:25:132:26 | access to local variable o1 : Object | provenance |  |
+| Constructors.cs:130:18:130:34 | call to method Source<Object> : Object | Constructors.cs:130:13:130:14 | access to local variable o1 : Object | provenance |  |
+| Constructors.cs:131:13:131:14 | access to local variable o2 : Object | Constructors.cs:132:29:132:30 | access to local variable o2 : Object | provenance |  |
+| Constructors.cs:131:18:131:34 | call to method Source<Object> : Object | Constructors.cs:131:13:131:14 | access to local variable o2 : Object | provenance |  |
+| Constructors.cs:132:13:132:14 | access to local variable c4 : C4 [property Obj1] : Object | Constructors.cs:133:14:133:15 | access to local variable c4 : C4 [property Obj1] : Object | provenance |  |
+| Constructors.cs:132:13:132:14 | access to local variable c4 : C4 [property Obj2] : Object | Constructors.cs:134:14:134:15 | access to local variable c4 : C4 [property Obj2] : Object | provenance |  |
+| Constructors.cs:132:18:132:31 | object creation of type C4 : C4 [property Obj1] : Object | Constructors.cs:132:13:132:14 | access to local variable c4 : C4 [property Obj1] : Object | provenance |  |
+| Constructors.cs:132:18:132:31 | object creation of type C4 : C4 [property Obj2] : Object | Constructors.cs:132:13:132:14 | access to local variable c4 : C4 [property Obj2] : Object | provenance |  |
+| Constructors.cs:132:25:132:26 | access to local variable o1 : Object | Constructors.cs:121:26:121:28 | oc1 : Object | provenance |  |
+| Constructors.cs:132:25:132:26 | access to local variable o1 : Object | Constructors.cs:132:18:132:31 | object creation of type C4 : C4 [property Obj1] : Object | provenance |  |
+| Constructors.cs:132:29:132:30 | access to local variable o2 : Object | Constructors.cs:121:38:121:40 | oc2 : Object | provenance |  |
+| Constructors.cs:132:29:132:30 | access to local variable o2 : Object | Constructors.cs:132:18:132:31 | object creation of type C4 : C4 [property Obj2] : Object | provenance |  |
+| Constructors.cs:133:14:133:15 | access to local variable c4 : C4 [property Obj1] : Object | Constructors.cs:133:14:133:20 | access to property Obj1 | provenance |  |
+| Constructors.cs:134:14:134:15 | access to local variable c4 : C4 [property Obj2] : Object | Constructors.cs:134:14:134:20 | access to property Obj2 | provenance |  |
+| Constructors.cs:137:29:137:32 | Obj1 : Object | Constructors.cs:137:19:137:20 | this [Return] : R1 [property Obj1] : Object | provenance |  |
+| Constructors.cs:137:42:137:45 | Obj2 : Object | Constructors.cs:137:19:137:20 | this [Return] : R1 [property Obj2] : Object | provenance |  |
+| Constructors.cs:141:13:141:14 | access to local variable o1 : Object | Constructors.cs:143:25:143:26 | access to local variable o1 : Object | provenance |  |
+| Constructors.cs:141:18:141:34 | call to method Source<Object> : Object | Constructors.cs:141:13:141:14 | access to local variable o1 : Object | provenance |  |
+| Constructors.cs:142:13:142:14 | access to local variable o2 : Object | Constructors.cs:143:29:143:30 | access to local variable o2 : Object | provenance |  |
+| Constructors.cs:142:18:142:35 | call to method Source<Object> : Object | Constructors.cs:142:13:142:14 | access to local variable o2 : Object | provenance |  |
+| Constructors.cs:143:13:143:14 | access to local variable r1 : R1 [property Obj1] : Object | Constructors.cs:144:14:144:15 | access to local variable r1 : R1 [property Obj1] : Object | provenance |  |
+| Constructors.cs:143:13:143:14 | access to local variable r1 : R1 [property Obj2] : Object | Constructors.cs:145:14:145:15 | access to local variable r1 : R1 [property Obj2] : Object | provenance |  |
+| Constructors.cs:143:18:143:31 | object creation of type R1 : R1 [property Obj1] : Object | Constructors.cs:143:13:143:14 | access to local variable r1 : R1 [property Obj1] : Object | provenance |  |
+| Constructors.cs:143:18:143:31 | object creation of type R1 : R1 [property Obj2] : Object | Constructors.cs:143:13:143:14 | access to local variable r1 : R1 [property Obj2] : Object | provenance |  |
+| Constructors.cs:143:25:143:26 | access to local variable o1 : Object | Constructors.cs:137:29:137:32 | Obj1 : Object | provenance |  |
+| Constructors.cs:143:25:143:26 | access to local variable o1 : Object | Constructors.cs:143:18:143:31 | object creation of type R1 : R1 [property Obj1] : Object | provenance |  |
+| Constructors.cs:143:29:143:30 | access to local variable o2 : Object | Constructors.cs:137:42:137:45 | Obj2 : Object | provenance |  |
+| Constructors.cs:143:29:143:30 | access to local variable o2 : Object | Constructors.cs:143:18:143:31 | object creation of type R1 : R1 [property Obj2] : Object | provenance |  |
+| Constructors.cs:144:14:144:15 | access to local variable r1 : R1 [property Obj1] : Object | Constructors.cs:144:14:144:20 | access to property Obj1 | provenance |  |
+| Constructors.cs:145:14:145:15 | access to local variable r1 : R1 [property Obj2] : Object | Constructors.cs:145:14:145:20 | access to property Obj2 | provenance |  |
+nodes
+| Constructors.cs:5:24:5:25 | [post] this access : C_no_ctor [field s1] : Object | semmle.label | [post] this access : C_no_ctor [field s1] : Object |
+| Constructors.cs:5:29:5:45 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Constructors.cs:9:23:9:23 | access to local variable c : C_no_ctor [field s1] : Object | semmle.label | access to local variable c : C_no_ctor [field s1] : Object |
+| Constructors.cs:9:27:9:41 | object creation of type C_no_ctor : C_no_ctor [field s1] : Object | semmle.label | object creation of type C_no_ctor : C_no_ctor [field s1] : Object |
+| Constructors.cs:10:13:10:13 | access to local variable c : C_no_ctor [field s1] : Object | semmle.label | access to local variable c : C_no_ctor [field s1] : Object |
+| Constructors.cs:13:21:13:22 | this : C_no_ctor [field s1] : Object | semmle.label | this : C_no_ctor [field s1] : Object |
+| Constructors.cs:15:18:15:19 | access to field s1 | semmle.label | access to field s1 |
+| Constructors.cs:15:18:15:19 | this access : C_no_ctor [field s1] : Object | semmle.label | this access : C_no_ctor [field s1] : Object |
+| Constructors.cs:21:24:21:25 | [post] this access : C_with_ctor [field s1] : Object | semmle.label | [post] this access : C_with_ctor [field s1] : Object |
+| Constructors.cs:21:29:21:45 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Constructors.cs:25:25:25:25 | access to local variable c : C_with_ctor [field s1] : Object | semmle.label | access to local variable c : C_with_ctor [field s1] : Object |
+| Constructors.cs:25:29:25:45 | object creation of type C_with_ctor : C_with_ctor [field s1] : Object | semmle.label | object creation of type C_with_ctor : C_with_ctor [field s1] : Object |
+| Constructors.cs:26:13:26:13 | access to local variable c : C_with_ctor [field s1] : Object | semmle.label | access to local variable c : C_with_ctor [field s1] : Object |
+| Constructors.cs:29:16:29:26 | this [Return] : C_with_ctor [field s1] : Object | semmle.label | this [Return] : C_with_ctor [field s1] : Object |
+| Constructors.cs:31:21:31:22 | this : C_with_ctor [field s1] : Object | semmle.label | this : C_with_ctor [field s1] : Object |
+| Constructors.cs:33:18:33:19 | access to field s1 | semmle.label | access to field s1 |
+| Constructors.cs:33:18:33:19 | this access : C_with_ctor [field s1] : Object | semmle.label | this access : C_with_ctor [field s1] : Object |
+| Constructors.cs:41:16:41:17 | this [Return] : C1 [field Obj] : Object | semmle.label | this [Return] : C1 [field Obj] : Object |
+| Constructors.cs:41:26:41:26 | o : Object | semmle.label | o : Object |
+| Constructors.cs:41:32:41:34 | [post] this access : C1 [field Obj] : Object | semmle.label | [post] this access : C1 [field Obj] : Object |
+| Constructors.cs:41:38:41:38 | access to parameter o : Object | semmle.label | access to parameter o : Object |
+| Constructors.cs:44:18:44:19 | this [Return] : C2 [field Obj21] : Object | semmle.label | this [Return] : C2 [field Obj21] : Object |
+| Constructors.cs:44:18:44:19 | this [Return] : C2 [parameter o22param] : Object | semmle.label | this [Return] : C2 [parameter o22param] : Object |
+| Constructors.cs:44:28:44:35 | o21param : Object | semmle.label | o21param : Object |
+| Constructors.cs:44:45:44:52 | o22param : Object | semmle.label | o22param : Object |
+| Constructors.cs:46:23:46:27 | [post] this access : C2 [field Obj21] : Object | semmle.label | [post] this access : C2 [field Obj21] : Object |
+| Constructors.cs:46:23:46:27 | this access : C2 [parameter o21param] : Object | semmle.label | this access : C2 [parameter o21param] : Object |
+| Constructors.cs:46:31:46:38 | access to parameter o21param : Object | semmle.label | access to parameter o21param : Object |
+| Constructors.cs:48:32:48:39 | access to parameter o22param : Object | semmle.label | access to parameter o22param : Object |
+| Constructors.cs:48:32:48:39 | this : C2 [parameter o22param] : Object | semmle.label | this : C2 [parameter o22param] : Object |
+| Constructors.cs:50:32:50:36 | access to field Obj21 : Object | semmle.label | access to field Obj21 : Object |
+| Constructors.cs:50:32:50:36 | this : C2 [field Obj21] : Object | semmle.label | this : C2 [field Obj21] : Object |
+| Constructors.cs:50:32:50:36 | this access : C2 [field Obj21] : Object | semmle.label | this access : C2 [field Obj21] : Object |
+| Constructors.cs:52:21:52:26 | this [Return] : C2 [parameter o22param] : Object | semmle.label | this [Return] : C2 [parameter o22param] : Object |
+| Constructors.cs:52:35:52:35 | o : Object | semmle.label | o : Object |
+| Constructors.cs:54:13:54:20 | access to parameter o22param : Object | semmle.label | access to parameter o22param : Object |
+| Constructors.cs:57:54:57:55 | o2 : Object | semmle.label | o2 : Object |
+| Constructors.cs:59:13:59:14 | access to parameter o1 : Object | semmle.label | access to parameter o1 : Object |
+| Constructors.cs:62:21:62:32 | this [Return] : C2 [parameter o22param] : Object | semmle.label | this [Return] : C2 [parameter o22param] : Object |
+| Constructors.cs:62:41:62:41 | o : Object | semmle.label | o : Object |
+| Constructors.cs:64:27:64:34 | access to parameter o22param : Object | semmle.label | access to parameter o22param : Object |
+| Constructors.cs:64:37:64:37 | access to parameter o : Object | semmle.label | access to parameter o : Object |
+| Constructors.cs:70:13:70:13 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| Constructors.cs:70:17:70:33 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Constructors.cs:71:13:71:14 | access to local variable c1 : C1 [field Obj] : Object | semmle.label | access to local variable c1 : C1 [field Obj] : Object |
+| Constructors.cs:71:18:71:26 | object creation of type C1 : C1 [field Obj] : Object | semmle.label | object creation of type C1 : C1 [field Obj] : Object |
+| Constructors.cs:71:25:71:25 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| Constructors.cs:72:14:72:15 | access to local variable c1 : C1 [field Obj] : Object | semmle.label | access to local variable c1 : C1 [field Obj] : Object |
+| Constructors.cs:72:14:72:19 | access to field Obj | semmle.label | access to field Obj |
+| Constructors.cs:77:13:77:15 | access to local variable o21 : Object | semmle.label | access to local variable o21 : Object |
+| Constructors.cs:77:19:77:35 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Constructors.cs:78:13:78:15 | access to local variable o22 : Object | semmle.label | access to local variable o22 : Object |
+| Constructors.cs:78:19:78:35 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Constructors.cs:79:13:79:14 | access to local variable c2 : C2 [field Obj21] : Object | semmle.label | access to local variable c2 : C2 [field Obj21] : Object |
+| Constructors.cs:79:13:79:14 | access to local variable c2 : C2 [parameter o22param] : Object | semmle.label | access to local variable c2 : C2 [parameter o22param] : Object |
+| Constructors.cs:79:18:79:33 | object creation of type C2 : C2 [field Obj21] : Object | semmle.label | object creation of type C2 : C2 [field Obj21] : Object |
+| Constructors.cs:79:18:79:33 | object creation of type C2 : C2 [parameter o22param] : Object | semmle.label | object creation of type C2 : C2 [parameter o22param] : Object |
+| Constructors.cs:79:25:79:27 | access to local variable o21 : Object | semmle.label | access to local variable o21 : Object |
+| Constructors.cs:79:30:79:32 | access to local variable o22 : Object | semmle.label | access to local variable o22 : Object |
+| Constructors.cs:80:14:80:15 | access to local variable c2 : C2 [field Obj21] : Object | semmle.label | access to local variable c2 : C2 [field Obj21] : Object |
+| Constructors.cs:80:14:80:21 | access to field Obj21 | semmle.label | access to field Obj21 |
+| Constructors.cs:81:14:81:15 | access to local variable c2 : C2 [parameter o22param] : Object | semmle.label | access to local variable c2 : C2 [parameter o22param] : Object |
+| Constructors.cs:81:14:81:21 | access to property Obj22 | semmle.label | access to property Obj22 |
+| Constructors.cs:82:14:82:15 | access to local variable c2 : C2 [field Obj21] : Object | semmle.label | access to local variable c2 : C2 [field Obj21] : Object |
+| Constructors.cs:82:14:82:21 | access to property Obj23 | semmle.label | access to property Obj23 |
+| Constructors.cs:91:13:91:17 | access to local variable taint : Object | semmle.label | access to local variable taint : Object |
+| Constructors.cs:91:21:91:37 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Constructors.cs:92:9:92:10 | [post] access to local variable c2 : C2 [parameter o22param] : Object | semmle.label | [post] access to local variable c2 : C2 [parameter o22param] : Object |
+| Constructors.cs:92:19:92:23 | access to local variable taint : Object | semmle.label | access to local variable taint : Object |
+| Constructors.cs:93:14:93:15 | access to local variable c2 : C2 [parameter o22param] : Object | semmle.label | access to local variable c2 : C2 [parameter o22param] : Object |
+| Constructors.cs:93:14:93:21 | access to property Obj22 | semmle.label | access to property Obj22 |
+| Constructors.cs:99:13:99:17 | access to local variable taint : Object | semmle.label | access to local variable taint : Object |
+| Constructors.cs:99:21:99:37 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Constructors.cs:100:9:100:10 | [post] access to local variable c2 : C2 [parameter o22param] : Object | semmle.label | [post] access to local variable c2 : C2 [parameter o22param] : Object |
+| Constructors.cs:100:25:100:29 | access to local variable taint : Object | semmle.label | access to local variable taint : Object |
+| Constructors.cs:101:14:101:15 | access to local variable c2 : C2 [parameter o22param] : Object | semmle.label | access to local variable c2 : C2 [parameter o22param] : Object |
+| Constructors.cs:101:14:101:21 | access to property Obj22 | semmle.label | access to property Obj22 |
+| Constructors.cs:104:18:104:19 | this [Return] : C3 [parameter o31param] : Object | semmle.label | this [Return] : C3 [parameter o31param] : Object |
+| Constructors.cs:104:28:104:35 | o31param : Object | semmle.label | o31param : Object |
+| Constructors.cs:106:32:106:39 | access to parameter o31param : Object | semmle.label | access to parameter o31param : Object |
+| Constructors.cs:106:32:106:39 | this : C3 [parameter o31param] : Object | semmle.label | this : C3 [parameter o31param] : Object |
+| Constructors.cs:111:13:111:15 | access to local variable o31 : Object | semmle.label | access to local variable o31 : Object |
+| Constructors.cs:111:19:111:35 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Constructors.cs:112:13:112:14 | access to local variable c3 : C3 [parameter o31param] : Object | semmle.label | access to local variable c3 : C3 [parameter o31param] : Object |
+| Constructors.cs:112:18:112:28 | object creation of type C3 : C3 [parameter o31param] : Object | semmle.label | object creation of type C3 : C3 [parameter o31param] : Object |
+| Constructors.cs:112:25:112:27 | access to local variable o31 : Object | semmle.label | access to local variable o31 : Object |
+| Constructors.cs:113:14:113:15 | access to local variable c3 : C3 [parameter o31param] : Object | semmle.label | access to local variable c3 : C3 [parameter o31param] : Object |
+| Constructors.cs:113:14:113:21 | access to property Obj31 | semmle.label | access to property Obj31 |
+| Constructors.cs:121:16:121:17 | this [Return] : C4 [property Obj1] : Object | semmle.label | this [Return] : C4 [property Obj1] : Object |
+| Constructors.cs:121:16:121:17 | this [Return] : C4 [property Obj2] : Object | semmle.label | this [Return] : C4 [property Obj2] : Object |
+| Constructors.cs:121:26:121:28 | oc1 : Object | semmle.label | oc1 : Object |
+| Constructors.cs:121:38:121:40 | oc2 : Object | semmle.label | oc2 : Object |
+| Constructors.cs:123:13:123:16 | [post] this access : C4 [property Obj1] : Object | semmle.label | [post] this access : C4 [property Obj1] : Object |
+| Constructors.cs:123:20:123:22 | access to parameter oc1 : Object | semmle.label | access to parameter oc1 : Object |
+| Constructors.cs:124:13:124:16 | [post] this access : C4 [property Obj2] : Object | semmle.label | [post] this access : C4 [property Obj2] : Object |
+| Constructors.cs:124:20:124:22 | access to parameter oc2 : Object | semmle.label | access to parameter oc2 : Object |
+| Constructors.cs:130:13:130:14 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
+| Constructors.cs:130:18:130:34 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Constructors.cs:131:13:131:14 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
+| Constructors.cs:131:18:131:34 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Constructors.cs:132:13:132:14 | access to local variable c4 : C4 [property Obj1] : Object | semmle.label | access to local variable c4 : C4 [property Obj1] : Object |
+| Constructors.cs:132:13:132:14 | access to local variable c4 : C4 [property Obj2] : Object | semmle.label | access to local variable c4 : C4 [property Obj2] : Object |
+| Constructors.cs:132:18:132:31 | object creation of type C4 : C4 [property Obj1] : Object | semmle.label | object creation of type C4 : C4 [property Obj1] : Object |
+| Constructors.cs:132:18:132:31 | object creation of type C4 : C4 [property Obj2] : Object | semmle.label | object creation of type C4 : C4 [property Obj2] : Object |
+| Constructors.cs:132:25:132:26 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
+| Constructors.cs:132:29:132:30 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
+| Constructors.cs:133:14:133:15 | access to local variable c4 : C4 [property Obj1] : Object | semmle.label | access to local variable c4 : C4 [property Obj1] : Object |
+| Constructors.cs:133:14:133:20 | access to property Obj1 | semmle.label | access to property Obj1 |
+| Constructors.cs:134:14:134:15 | access to local variable c4 : C4 [property Obj2] : Object | semmle.label | access to local variable c4 : C4 [property Obj2] : Object |
+| Constructors.cs:134:14:134:20 | access to property Obj2 | semmle.label | access to property Obj2 |
+| Constructors.cs:137:19:137:20 | this [Return] : R1 [property Obj1] : Object | semmle.label | this [Return] : R1 [property Obj1] : Object |
+| Constructors.cs:137:19:137:20 | this [Return] : R1 [property Obj2] : Object | semmle.label | this [Return] : R1 [property Obj2] : Object |
+| Constructors.cs:137:29:137:32 | Obj1 : Object | semmle.label | Obj1 : Object |
+| Constructors.cs:137:42:137:45 | Obj2 : Object | semmle.label | Obj2 : Object |
+| Constructors.cs:141:13:141:14 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
+| Constructors.cs:141:18:141:34 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Constructors.cs:142:13:142:14 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
+| Constructors.cs:142:18:142:35 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Constructors.cs:143:13:143:14 | access to local variable r1 : R1 [property Obj1] : Object | semmle.label | access to local variable r1 : R1 [property Obj1] : Object |
+| Constructors.cs:143:13:143:14 | access to local variable r1 : R1 [property Obj2] : Object | semmle.label | access to local variable r1 : R1 [property Obj2] : Object |
+| Constructors.cs:143:18:143:31 | object creation of type R1 : R1 [property Obj1] : Object | semmle.label | object creation of type R1 : R1 [property Obj1] : Object |
+| Constructors.cs:143:18:143:31 | object creation of type R1 : R1 [property Obj2] : Object | semmle.label | object creation of type R1 : R1 [property Obj2] : Object |
+| Constructors.cs:143:25:143:26 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
+| Constructors.cs:143:29:143:30 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
+| Constructors.cs:144:14:144:15 | access to local variable r1 : R1 [property Obj1] : Object | semmle.label | access to local variable r1 : R1 [property Obj1] : Object |
+| Constructors.cs:144:14:144:20 | access to property Obj1 | semmle.label | access to property Obj1 |
+| Constructors.cs:145:14:145:15 | access to local variable r1 : R1 [property Obj2] : Object | semmle.label | access to local variable r1 : R1 [property Obj2] : Object |
+| Constructors.cs:145:14:145:20 | access to property Obj2 | semmle.label | access to property Obj2 |
+subpaths
+| Constructors.cs:64:37:64:37 | access to parameter o : Object | Constructors.cs:57:54:57:55 | o2 : Object | Constructors.cs:59:13:59:14 | access to parameter o1 : Object | Constructors.cs:64:27:64:34 | access to parameter o22param : Object |
+| Constructors.cs:71:25:71:25 | access to local variable o : Object | Constructors.cs:41:26:41:26 | o : Object | Constructors.cs:41:16:41:17 | this [Return] : C1 [field Obj] : Object | Constructors.cs:71:18:71:26 | object creation of type C1 : C1 [field Obj] : Object |
+| Constructors.cs:79:25:79:27 | access to local variable o21 : Object | Constructors.cs:44:28:44:35 | o21param : Object | Constructors.cs:44:18:44:19 | this [Return] : C2 [field Obj21] : Object | Constructors.cs:79:18:79:33 | object creation of type C2 : C2 [field Obj21] : Object |
+| Constructors.cs:79:30:79:32 | access to local variable o22 : Object | Constructors.cs:44:45:44:52 | o22param : Object | Constructors.cs:44:18:44:19 | this [Return] : C2 [parameter o22param] : Object | Constructors.cs:79:18:79:33 | object creation of type C2 : C2 [parameter o22param] : Object |
+| Constructors.cs:81:14:81:15 | access to local variable c2 : C2 [parameter o22param] : Object | Constructors.cs:48:32:48:39 | this : C2 [parameter o22param] : Object | Constructors.cs:48:32:48:39 | access to parameter o22param : Object | Constructors.cs:81:14:81:21 | access to property Obj22 |
+| Constructors.cs:82:14:82:15 | access to local variable c2 : C2 [field Obj21] : Object | Constructors.cs:50:32:50:36 | this : C2 [field Obj21] : Object | Constructors.cs:50:32:50:36 | access to field Obj21 : Object | Constructors.cs:82:14:82:21 | access to property Obj23 |
+| Constructors.cs:92:19:92:23 | access to local variable taint : Object | Constructors.cs:52:35:52:35 | o : Object | Constructors.cs:52:21:52:26 | this [Return] : C2 [parameter o22param] : Object | Constructors.cs:92:9:92:10 | [post] access to local variable c2 : C2 [parameter o22param] : Object |
+| Constructors.cs:93:14:93:15 | access to local variable c2 : C2 [parameter o22param] : Object | Constructors.cs:48:32:48:39 | this : C2 [parameter o22param] : Object | Constructors.cs:48:32:48:39 | access to parameter o22param : Object | Constructors.cs:93:14:93:21 | access to property Obj22 |
+| Constructors.cs:100:25:100:29 | access to local variable taint : Object | Constructors.cs:62:41:62:41 | o : Object | Constructors.cs:62:21:62:32 | this [Return] : C2 [parameter o22param] : Object | Constructors.cs:100:9:100:10 | [post] access to local variable c2 : C2 [parameter o22param] : Object |
+| Constructors.cs:101:14:101:15 | access to local variable c2 : C2 [parameter o22param] : Object | Constructors.cs:48:32:48:39 | this : C2 [parameter o22param] : Object | Constructors.cs:48:32:48:39 | access to parameter o22param : Object | Constructors.cs:101:14:101:21 | access to property Obj22 |
+| Constructors.cs:112:25:112:27 | access to local variable o31 : Object | Constructors.cs:104:28:104:35 | o31param : Object | Constructors.cs:104:18:104:19 | this [Return] : C3 [parameter o31param] : Object | Constructors.cs:112:18:112:28 | object creation of type C3 : C3 [parameter o31param] : Object |
+| Constructors.cs:113:14:113:15 | access to local variable c3 : C3 [parameter o31param] : Object | Constructors.cs:106:32:106:39 | this : C3 [parameter o31param] : Object | Constructors.cs:106:32:106:39 | access to parameter o31param : Object | Constructors.cs:113:14:113:21 | access to property Obj31 |
+| Constructors.cs:132:25:132:26 | access to local variable o1 : Object | Constructors.cs:121:26:121:28 | oc1 : Object | Constructors.cs:121:16:121:17 | this [Return] : C4 [property Obj1] : Object | Constructors.cs:132:18:132:31 | object creation of type C4 : C4 [property Obj1] : Object |
+| Constructors.cs:132:29:132:30 | access to local variable o2 : Object | Constructors.cs:121:38:121:40 | oc2 : Object | Constructors.cs:121:16:121:17 | this [Return] : C4 [property Obj2] : Object | Constructors.cs:132:18:132:31 | object creation of type C4 : C4 [property Obj2] : Object |
+| Constructors.cs:143:25:143:26 | access to local variable o1 : Object | Constructors.cs:137:29:137:32 | Obj1 : Object | Constructors.cs:137:19:137:20 | this [Return] : R1 [property Obj1] : Object | Constructors.cs:143:18:143:31 | object creation of type R1 : R1 [property Obj1] : Object |
+| Constructors.cs:143:29:143:30 | access to local variable o2 : Object | Constructors.cs:137:42:137:45 | Obj2 : Object | Constructors.cs:137:19:137:20 | this [Return] : R1 [property Obj2] : Object | Constructors.cs:143:18:143:31 | object creation of type R1 : R1 [property Obj2] : Object |
+testFailures
+#select
+| Constructors.cs:15:18:15:19 | access to field s1 | Constructors.cs:5:29:5:45 | call to method Source<Object> : Object | Constructors.cs:15:18:15:19 | access to field s1 | $@ | Constructors.cs:5:29:5:45 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Constructors.cs:33:18:33:19 | access to field s1 | Constructors.cs:21:29:21:45 | call to method Source<Object> : Object | Constructors.cs:33:18:33:19 | access to field s1 | $@ | Constructors.cs:21:29:21:45 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Constructors.cs:72:14:72:19 | access to field Obj | Constructors.cs:70:17:70:33 | call to method Source<Object> : Object | Constructors.cs:72:14:72:19 | access to field Obj | $@ | Constructors.cs:70:17:70:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Constructors.cs:80:14:80:21 | access to field Obj21 | Constructors.cs:77:19:77:35 | call to method Source<Object> : Object | Constructors.cs:80:14:80:21 | access to field Obj21 | $@ | Constructors.cs:77:19:77:35 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Constructors.cs:81:14:81:21 | access to property Obj22 | Constructors.cs:78:19:78:35 | call to method Source<Object> : Object | Constructors.cs:81:14:81:21 | access to property Obj22 | $@ | Constructors.cs:78:19:78:35 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Constructors.cs:82:14:82:21 | access to property Obj23 | Constructors.cs:77:19:77:35 | call to method Source<Object> : Object | Constructors.cs:82:14:82:21 | access to property Obj23 | $@ | Constructors.cs:77:19:77:35 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Constructors.cs:93:14:93:21 | access to property Obj22 | Constructors.cs:91:21:91:37 | call to method Source<Object> : Object | Constructors.cs:93:14:93:21 | access to property Obj22 | $@ | Constructors.cs:91:21:91:37 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Constructors.cs:101:14:101:21 | access to property Obj22 | Constructors.cs:99:21:99:37 | call to method Source<Object> : Object | Constructors.cs:101:14:101:21 | access to property Obj22 | $@ | Constructors.cs:99:21:99:37 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Constructors.cs:113:14:113:21 | access to property Obj31 | Constructors.cs:111:19:111:35 | call to method Source<Object> : Object | Constructors.cs:113:14:113:21 | access to property Obj31 | $@ | Constructors.cs:111:19:111:35 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Constructors.cs:133:14:133:20 | access to property Obj1 | Constructors.cs:130:18:130:34 | call to method Source<Object> : Object | Constructors.cs:133:14:133:20 | access to property Obj1 | $@ | Constructors.cs:130:18:130:34 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Constructors.cs:134:14:134:20 | access to property Obj2 | Constructors.cs:131:18:131:34 | call to method Source<Object> : Object | Constructors.cs:134:14:134:20 | access to property Obj2 | $@ | Constructors.cs:131:18:131:34 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Constructors.cs:144:14:144:20 | access to property Obj1 | Constructors.cs:141:18:141:34 | call to method Source<Object> : Object | Constructors.cs:144:14:144:20 | access to property Obj1 | $@ | Constructors.cs:141:18:141:34 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Constructors.cs:145:14:145:20 | access to property Obj2 | Constructors.cs:142:18:142:35 | call to method Source<Object> : Object | Constructors.cs:145:14:145:20 | access to property Obj2 | $@ | Constructors.cs:142:18:142:35 | call to method Source<Object> : Object | call to method Source<Object> : Object |

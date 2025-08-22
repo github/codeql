@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.security.auth.spi", "LoginModule", True, "initialize", "(Subject,CallbackHandler,Map,Map)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.security.auth.spi", "LoginModule", True, "initialize", "(Subject,CallbackHandler,Map,Map)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.security.auth.spi", "LoginModule", True, "initialize", "(Subject,CallbackHandler,Map,Map)", "", "Argument[2].Element", "Argument[this]", "taint", "df-generated"]
+      - ["javax.security.auth.spi", "LoginModule", True, "initialize", "(Subject,CallbackHandler,Map,Map)", "", "Argument[3].Element", "Argument[this]", "taint", "df-generated"]

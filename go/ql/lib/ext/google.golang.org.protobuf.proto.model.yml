@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["google.golang.org/protobuf/proto", "", False, "Clone", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["google.golang.org/protobuf/proto", "", False, "Marshal", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["google.golang.org/protobuf/proto", "", False, "Merge", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["google.golang.org/protobuf/proto", "", False, "Unmarshal", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["google.golang.org/protobuf/proto", "MarshalOptions", True, "Marshal", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["google.golang.org/protobuf/proto", "MarshalOptions", True, "MarshalAppend", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["google.golang.org/protobuf/proto", "MarshalOptions", True, "MarshalAppend", "", "", "Argument[1]", "ReturnValue[0]", "taint", "manual"]
+      - ["google.golang.org/protobuf/proto", "UnmarshalOptions", True, "Unmarshal", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]

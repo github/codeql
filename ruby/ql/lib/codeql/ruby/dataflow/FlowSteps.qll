@@ -2,10 +2,8 @@
  * Provides classes representing various flow steps for taint tracking.
  */
 
+private import codeql.util.Unit
 private import codeql.ruby.DataFlow
-private import internal.DataFlowPrivate as DFPrivate
-
-private class Unit = DFPrivate::Unit;
 
 /**
  * A module importing the frameworks that implement additional flow steps,

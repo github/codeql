@@ -4,7 +4,7 @@ class GuardedStringTest
 {
     void Fn(bool b)
     {
-        string s = b ? null : "";
+        string s = b ? null : ""; // $ Source[cs/dereferenced-value-may-be-null]
 
         if (!string.IsNullOrEmpty(s))
         {
@@ -32,7 +32,7 @@ class GuardedStringTest
             Console.WriteLine(s.Length); // GOOD
 
         if (s?.Length != 0)
-            Console.WriteLine(s.Length); // BAD (maybe)
+            Console.WriteLine(s.Length); // $ Alert[cs/dereferenced-value-may-be-null]
         else
             Console.WriteLine(s.Length); // GOOD
     }

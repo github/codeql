@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSourceModel
+    data:
+      - ["tzkhan/pr-update-action", "*", "output.headMatch", "branch", "manual"]

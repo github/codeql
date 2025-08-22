@@ -11,25 +11,23 @@
  */
 
 import java
-import ThreadResourceAbuse
+deprecated import ThreadResourceAbuse
 import semmle.code.java.dataflow.FlowSources
-import DataFlow::PathGraph
+deprecated import ThreadResourceAbuseFlow::PathGraph
 
 /** Taint configuration of uncontrolled thread resource consumption. */
-class ThreadResourceAbuse extends TaintTracking::Configuration {
-  ThreadResourceAbuse() { this = "ThreadResourceAbuse" }
+deprecated module ThreadResourceAbuseConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSink(DataFlow::Node sink) { sink instanceof PauseThreadSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof PauseThreadSink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    any(AdditionalValueStep r).step(pred, succ)
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    any(ThreadResourceAbuseAdditionalTaintStep c).step(pred, succ)
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     exists(
-      MethodAccess ma // Math.min(sleepTime, MAX_INTERVAL)
+      MethodCall ma // Math.min(sleepTime, MAX_INTERVAL)
     |
       ma.getMethod().hasQualifiedName("java.lang", "Math", "min") and
       node.asExpr() = ma.getAnArgument()
@@ -39,8 +37,16 @@ class ThreadResourceAbuse extends TaintTracking::Configuration {
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, ThreadResourceAbuse conf
-where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink,
-  "Vulnerability of uncontrolled resource consumption due to $@.", source.getNode(),
-  "user-provided value"
+deprecated module ThreadResourceAbuseFlow = TaintTracking::Global<ThreadResourceAbuseConfig>;
+
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, ThreadResourceAbuseFlow::PathNode source,
+  ThreadResourceAbuseFlow::PathNode sink, string message1, DataFlow::Node sourceNode,
+  string message2
+) {
+  ThreadResourceAbuseFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "Vulnerability of uncontrolled resource consumption due to $@." and
+  sourceNode = source.getNode() and
+  message2 = "user-provided value"
+}

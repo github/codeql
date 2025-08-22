@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.http.client", "HttpClient", True, "execute", "(HttpUriRequest,HttpContext)", "", "Argument[0]", "request-forgery", "ai-manual"]
+      - ["org.apache.http.client", "HttpClient", True, "execute", "(HttpUriRequest,ResponseHandler,HttpContext)", "", "Argument[0]", "request-forgery", "ai-manual"]
+      - ["org.apache.http.client", "HttpClient", True, "execute", "(HttpUriRequest)", "", "Argument[0]", "request-forgery", "ai-manual"]

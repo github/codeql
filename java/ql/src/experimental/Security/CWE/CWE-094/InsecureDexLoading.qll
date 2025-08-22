@@ -1,21 +1,22 @@
+deprecated module;
+
 import java
+import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 
 /**
  * A taint-tracking configuration detecting unsafe use of a
  * `DexClassLoader` by an Android app.
  */
-class InsecureDexConfiguration extends TaintTracking::Configuration {
-  InsecureDexConfiguration() { this = "Insecure Dex File Load" }
+module InsecureDexConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof InsecureDexSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof InsecureDexSource }
+  predicate isSink(DataFlow::Node sink) { sink instanceof InsecureDexSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof InsecureDexSink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    flowStep(pred, succ)
-  }
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) { flowStep(pred, succ) }
 }
+
+module InsecureDexFlow = TaintTracking::Global<InsecureDexConfig>;
 
 /** A data flow source for insecure Dex class loading vulnerabilities. */
 abstract class InsecureDexSource extends DataFlow::Node { }
@@ -25,7 +26,7 @@ abstract class InsecureDexSink extends DataFlow::Node { }
 
 private predicate flowStep(DataFlow::Node pred, DataFlow::Node succ) {
   // propagate from a `java.io.File` via the `File.getAbsolutePath` call.
-  exists(MethodAccess m |
+  exists(MethodCall m |
     m.getMethod().getDeclaringType() instanceof TypeFile and
     m.getMethod().hasName("getAbsolutePath") and
     m.getQualifier() = pred.asExpr() and
@@ -33,7 +34,7 @@ private predicate flowStep(DataFlow::Node pred, DataFlow::Node succ) {
   )
   or
   // propagate from a `java.io.File` via the `File.toString` call.
-  exists(MethodAccess m |
+  exists(MethodCall m |
     m.getMethod().getDeclaringType() instanceof TypeFile and
     m.getMethod().hasName("toString") and
     m.getQualifier() = pred.asExpr() and

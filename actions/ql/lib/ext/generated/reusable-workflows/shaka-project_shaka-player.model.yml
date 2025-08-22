@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["shaka-project/shaka-player/.github/workflows/selenium-lab-tests.yaml", "*", "input.ignore_test_status", "code-injection", "generated"]
+     - ["shaka-project/shaka-player/.github/workflows/selenium-lab-tests.yaml", "*", "input.test_filter", "code-injection", "generated"]
+     - ["shaka-project/shaka-player/.github/workflows/selenium-lab-tests.yaml", "*", "input.browser_filter", "code-injection", "generated"]
+     - ["shaka-project/shaka-player/.github/workflows/selenium-lab-tests.yaml", "*", "input.pr", "code-injection", "generated"]

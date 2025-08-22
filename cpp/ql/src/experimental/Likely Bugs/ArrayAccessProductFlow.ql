@@ -10,15 +10,15 @@
  */
 
 import cpp
-import experimental.semmle.code.cpp.dataflow.ProductFlow
-import experimental.semmle.code.cpp.semantic.analysis.RangeAnalysis
-import experimental.semmle.code.cpp.rangeanalysis.Bound
-import experimental.semmle.code.cpp.semantic.SemanticExprSpecific
+import semmle.code.cpp.ir.dataflow.internal.ProductFlow
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysis
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.Bound
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.models.interfaces.Allocation
 import semmle.code.cpp.ir.IRConfiguration
-import DataFlow::PathGraph
+import ArraySizeFlow::PathGraph1
 
 // temporary - custom allocator for ffmpeg
 class AvBufferAlloc extends AllocationFunction {
@@ -39,14 +39,12 @@ predicate bounded(Instruction i, Bound b, int delta, boolean upper) {
   semBounded(getSemanticExpr(i), b, delta, upper, _)
 }
 
-class ArraySizeConfiguration extends ProductFlow::Configuration {
-  ArraySizeConfiguration() { this = "ArraySizeConfiguration" }
-
-  override predicate isSourcePair(DataFlow::Node source1, DataFlow::Node source2) {
+module ArraySizeConfig implements ProductFlow::ConfigSig {
+  predicate isSourcePair(DataFlow::Node source1, DataFlow::Node source2) {
     source1.asConvertedExpr().(AllocationExpr).getSizeExpr() = source2.asConvertedExpr()
   }
 
-  override predicate isSinkPair(DataFlow::Node sink1, DataFlow::Node sink2) {
+  predicate isSinkPair(DataFlow::Node sink1, DataFlow::Node sink2) {
     exists(PointerAddInstruction pai, int delta |
       isSinkPair1(sink1, sink2, pai, delta) and
       (
@@ -63,6 +61,8 @@ class ArraySizeConfiguration extends ProductFlow::Configuration {
   }
 }
 
+module ArraySizeFlow = ProductFlow::Global<ArraySizeConfig>;
+
 pragma[nomagic]
 predicate isSinkPair1(
   DataFlow::Node sink1, DataFlow::Node sink2, PointerAddInstruction pai, int delta
@@ -76,9 +76,9 @@ predicate isSinkPair1(
 }
 
 from
-  ArraySizeConfiguration conf, DataFlow::PathNode source1, DataFlow2::PathNode source2,
-  DataFlow::PathNode sink1, DataFlow2::PathNode sink2
-where conf.hasFlowPath(source1, source2, sink1, sink2)
+  ArraySizeFlow::PathNode1 source1, ArraySizeFlow::PathNode2 source2,
+  ArraySizeFlow::PathNode1 sink1, ArraySizeFlow::PathNode2 sink2
+where ArraySizeFlow::flowPath(source1, source2, sink1, sink2)
 // TODO: pull delta out and display it
 select sink1.getNode(), source1, sink1, "Off-by one error allocated at $@ bounded by $@.", source1,
   source1.toString(), sink2, sink2.toString()

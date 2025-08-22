@@ -4,8 +4,7 @@
   <example>
     <p>Consider this regular expression:</p>
     <sample language="ruby">
-      /^_(__|.)+_$/
-    </sample>
+/^_(__|.)+_$/</sample>
     <p>
       Its sub-expression <code>"(__|.)+?"</code> can match the string
       <code>"__"</code> either by the first alternative <code>"__"</code> to the
@@ -21,8 +20,7 @@
       repetition:
     </p>
     <sample language="ruby">
-      /^_(__|[^_])+_$/
-    </sample>
+/^_(__|[^_])+_$/</sample>
   </example>
   <include src="ReDoSReferences.inc.qhelp"/>
 </qhelp>

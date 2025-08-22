@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["hyperledger/aries-cloudagent-python", "*", "input.TEST_SCOPE", "code-injection", "generated"]

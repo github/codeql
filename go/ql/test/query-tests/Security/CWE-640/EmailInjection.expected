@@ -1,35 +1,3 @@
-edges
-| EmailBad.go:9:10:9:17 | selection of Header | EmailBad.go:12:56:12:67 | type conversion |
-| main.go:29:21:29:31 | call to Referer | main.go:31:57:31:78 | type conversion |
-| main.go:37:21:37:31 | call to Referer | main.go:40:3:40:7 | definition of write |
-| main.go:46:21:46:31 | call to Referer | main.go:52:46:52:59 | untrustedInput |
-| main.go:46:21:46:31 | call to Referer | main.go:53:52:53:65 | untrustedInput |
-| main.go:58:21:58:31 | call to Referer | main.go:63:16:63:22 | content |
-| main.go:68:21:68:31 | call to Referer | main.go:76:50:76:56 | content |
-| main.go:68:21:68:31 | call to Referer | main.go:76:59:76:65 | content |
-| main.go:68:21:68:31 | call to Referer | main.go:77:16:77:22 | content |
-| main.go:82:21:82:31 | call to Referer | main.go:89:37:89:50 | untrustedInput |
-| main.go:82:21:82:31 | call to Referer | main.go:93:16:93:23 | content2 |
-nodes
-| EmailBad.go:9:10:9:17 | selection of Header | semmle.label | selection of Header |
-| EmailBad.go:12:56:12:67 | type conversion | semmle.label | type conversion |
-| main.go:29:21:29:31 | call to Referer | semmle.label | call to Referer |
-| main.go:31:57:31:78 | type conversion | semmle.label | type conversion |
-| main.go:37:21:37:31 | call to Referer | semmle.label | call to Referer |
-| main.go:40:3:40:7 | definition of write | semmle.label | definition of write |
-| main.go:46:21:46:31 | call to Referer | semmle.label | call to Referer |
-| main.go:52:46:52:59 | untrustedInput | semmle.label | untrustedInput |
-| main.go:53:52:53:65 | untrustedInput | semmle.label | untrustedInput |
-| main.go:58:21:58:31 | call to Referer | semmle.label | call to Referer |
-| main.go:63:16:63:22 | content | semmle.label | content |
-| main.go:68:21:68:31 | call to Referer | semmle.label | call to Referer |
-| main.go:76:50:76:56 | content | semmle.label | content |
-| main.go:76:59:76:65 | content | semmle.label | content |
-| main.go:77:16:77:22 | content | semmle.label | content |
-| main.go:82:21:82:31 | call to Referer | semmle.label | call to Referer |
-| main.go:89:37:89:50 | untrustedInput | semmle.label | untrustedInput |
-| main.go:93:16:93:23 | content2 | semmle.label | content2 |
-subpaths
 #select
 | EmailBad.go:12:56:12:67 | type conversion | EmailBad.go:9:10:9:17 | selection of Header | EmailBad.go:12:56:12:67 | type conversion | Email content may contain $@. | EmailBad.go:9:10:9:17 | selection of Header | untrusted input |
 | main.go:31:57:31:78 | type conversion | main.go:29:21:29:31 | call to Referer | main.go:31:57:31:78 | type conversion | Email content may contain $@. | main.go:29:21:29:31 | call to Referer | untrusted input |
@@ -42,3 +10,57 @@ subpaths
 | main.go:77:16:77:22 | content | main.go:68:21:68:31 | call to Referer | main.go:77:16:77:22 | content | Email content may contain $@. | main.go:68:21:68:31 | call to Referer | untrusted input |
 | main.go:89:37:89:50 | untrustedInput | main.go:82:21:82:31 | call to Referer | main.go:89:37:89:50 | untrustedInput | Email content may contain $@. | main.go:82:21:82:31 | call to Referer | untrusted input |
 | main.go:93:16:93:23 | content2 | main.go:82:21:82:31 | call to Referer | main.go:93:16:93:23 | content2 | Email content may contain $@. | main.go:82:21:82:31 | call to Referer | untrusted input |
+edges
+| EmailBad.go:9:10:9:17 | selection of Header | EmailBad.go:9:10:9:29 | call to Get | provenance | Src:MaD:1 MaD:5 |
+| EmailBad.go:9:10:9:29 | call to Get | EmailBad.go:12:56:12:67 | type conversion | provenance |  |
+| main.go:29:21:29:31 | call to Referer | main.go:31:57:31:78 | type conversion | provenance | Src:MaD:2  |
+| main.go:37:21:37:31 | call to Referer | main.go:41:25:41:38 | untrustedInput | provenance | Src:MaD:2  |
+| main.go:41:25:41:38 | untrustedInput | main.go:40:3:40:7 | definition of write | provenance | MaD:4 |
+| main.go:46:21:46:31 | call to Referer | main.go:52:46:52:59 | untrustedInput | provenance | Src:MaD:2  |
+| main.go:46:21:46:31 | call to Referer | main.go:53:52:53:65 | untrustedInput | provenance | Src:MaD:2  |
+| main.go:58:21:58:31 | call to Referer | main.go:60:47:60:60 | untrustedInput | provenance | Src:MaD:2  |
+| main.go:60:14:60:61 | call to NewContent | main.go:63:16:63:22 | content | provenance |  |
+| main.go:60:47:60:60 | untrustedInput | main.go:60:14:60:61 | call to NewContent | provenance | MaD:3 |
+| main.go:68:21:68:31 | call to Referer | main.go:74:47:74:60 | untrustedInput | provenance | Src:MaD:2  |
+| main.go:74:14:74:61 | call to NewContent | main.go:76:50:76:56 | content | provenance |  |
+| main.go:74:14:74:61 | call to NewContent | main.go:76:59:76:65 | content | provenance |  |
+| main.go:74:14:74:61 | call to NewContent | main.go:77:16:77:22 | content | provenance |  |
+| main.go:74:47:74:60 | untrustedInput | main.go:74:14:74:61 | call to NewContent | provenance | MaD:3 |
+| main.go:82:21:82:31 | call to Referer | main.go:89:37:89:50 | untrustedInput | provenance | Src:MaD:2  |
+| main.go:82:21:82:31 | call to Referer | main.go:91:48:91:61 | untrustedInput | provenance | Src:MaD:2  |
+| main.go:91:15:91:62 | call to NewContent | main.go:93:16:93:23 | content2 | provenance |  |
+| main.go:91:48:91:61 | untrustedInput | main.go:91:15:91:62 | call to NewContent | provenance | MaD:3 |
+models
+| 1 | Source: net/http; Request; true; Header; ; ; ; remote; manual |
+| 2 | Source: net/http; Request; true; Referer; ; ; ReturnValue; remote; manual |
+| 3 | Summary: github.com/sendgrid/sendgrid-go/helpers/mail; ; false; NewContent; ; ; Argument[1]; ReturnValue; taint; manual |
+| 4 | Summary: io; ; false; WriteString; ; ; Argument[1]; Argument[0]; taint; manual |
+| 5 | Summary: net/http; Header; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
+nodes
+| EmailBad.go:9:10:9:17 | selection of Header | semmle.label | selection of Header |
+| EmailBad.go:9:10:9:29 | call to Get | semmle.label | call to Get |
+| EmailBad.go:12:56:12:67 | type conversion | semmle.label | type conversion |
+| main.go:29:21:29:31 | call to Referer | semmle.label | call to Referer |
+| main.go:31:57:31:78 | type conversion | semmle.label | type conversion |
+| main.go:37:21:37:31 | call to Referer | semmle.label | call to Referer |
+| main.go:40:3:40:7 | definition of write | semmle.label | definition of write |
+| main.go:41:25:41:38 | untrustedInput | semmle.label | untrustedInput |
+| main.go:46:21:46:31 | call to Referer | semmle.label | call to Referer |
+| main.go:52:46:52:59 | untrustedInput | semmle.label | untrustedInput |
+| main.go:53:52:53:65 | untrustedInput | semmle.label | untrustedInput |
+| main.go:58:21:58:31 | call to Referer | semmle.label | call to Referer |
+| main.go:60:14:60:61 | call to NewContent | semmle.label | call to NewContent |
+| main.go:60:47:60:60 | untrustedInput | semmle.label | untrustedInput |
+| main.go:63:16:63:22 | content | semmle.label | content |
+| main.go:68:21:68:31 | call to Referer | semmle.label | call to Referer |
+| main.go:74:14:74:61 | call to NewContent | semmle.label | call to NewContent |
+| main.go:74:47:74:60 | untrustedInput | semmle.label | untrustedInput |
+| main.go:76:50:76:56 | content | semmle.label | content |
+| main.go:76:59:76:65 | content | semmle.label | content |
+| main.go:77:16:77:22 | content | semmle.label | content |
+| main.go:82:21:82:31 | call to Referer | semmle.label | call to Referer |
+| main.go:89:37:89:50 | untrustedInput | semmle.label | untrustedInput |
+| main.go:91:15:91:62 | call to NewContent | semmle.label | call to NewContent |
+| main.go:91:48:91:61 | untrustedInput | semmle.label | untrustedInput |
+| main.go:93:16:93:23 | content2 | semmle.label | content2 |
+subpaths

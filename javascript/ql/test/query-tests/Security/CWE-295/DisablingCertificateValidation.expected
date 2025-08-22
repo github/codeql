@@ -9,3 +9,4 @@
 | tst.js:45:2:45:28 | rejectU ... !!false | Disabling certificate validation is strongly discouraged. |
 | tst.js:48:2:48:26 | rejectU ... : !true | Disabling certificate validation is strongly discouraged. |
 | tst.js:74:9:74:33 | rejectU ... : false | Disabling certificate validation is strongly discouraged. |
+| tst.js:80:5:80:29 | rejectU ... : false | Disabling certificate validation is strongly discouraged. |

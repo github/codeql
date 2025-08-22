@@ -1,0 +1,2 @@
+query: experimental/Security/CWE/CWE-470/LoadClassNoSignatureCheck.ql
+postprocess: utils/test/PrettyPrintModels.ql

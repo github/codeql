@@ -724,16 +724,19 @@ class GenericTypeInstantiationExpr extends Expr {
  * ```go
  * a[1:3]
  * a[1:3:5]
+ * a[1:]
+ * a[:3]
+ * a[:]
  * ```
  */
 class SliceExpr extends @sliceexpr, Expr {
   /** Gets the base of this slice expression. */
   Expr getBase() { result = this.getChildExpr(0) }
 
-  /** Gets the lower bound of this slice expression. */
+  /** Gets the lower bound of this slice expression, if any. */
   Expr getLow() { result = this.getChildExpr(1) }
 
-  /** Gets the upper bound of this slice expression. */
+  /** Gets the upper bound of this slice expression, if any. */
   Expr getHigh() { result = this.getChildExpr(2) }
 
   /** Gets the maximum of this slice expression, if any. */
@@ -751,13 +754,19 @@ class SliceExpr extends @sliceexpr, Expr {
  *
  * ```go
  * x.(T)
+ * x.(type)
  * ```
  */
 class TypeAssertExpr extends @typeassertexpr, Expr {
   /** Gets the base expression whose type is being asserted. */
   Expr getExpr() { result = this.getChildExpr(0) }
 
-  /** Gets the expression representing the asserted type. */
+  /**
+   * Gets the expression representing the asserted type.
+   *
+   * Note that this is not defined when the type assertion is of the form
+   * `x.(type)`, as found in type switches.
+   */
   Expr getTypeExpr() { result = this.getChildExpr(1) }
 
   override predicate mayHaveOwnSideEffects() { any() }
@@ -857,6 +866,24 @@ class CallExpr extends CallOrConversionExpr {
   /** Gets the number of argument expressions of this call. */
   int getNumArgument() { result = count(this.getAnArgument()) }
 
+  /** Holds if this call has implicit variadic arguments. */
+  predicate hasImplicitVarargs() {
+    this.getCalleeType().isVariadic() and
+    not this.hasEllipsis()
+  }
+
+  /**
+   * Gets an argument with an ellipsis after it which is passed to a varargs
+   * parameter, as in `f(x...)`.
+   *
+   * Note that if the varargs parameter is `...T` then the type of the argument
+   * must be assignable to the slice type `[]T`.
+   */
+  Expr getExplicitVarargsArgument() {
+    this.hasEllipsis() and
+    result = this.getArgument(this.getNumArgument() - 1)
+  }
+
   /**
    * Gets the name of the invoked function, method or variable if it can be
    * determined syntactically.
@@ -872,6 +899,15 @@ class CallExpr extends CallOrConversionExpr {
       result = callee.(SelectorExpr).getSelector().getName()
     )
   }
+
+  /**
+   * Gets the signature type of the invoked function.
+   *
+   * Note that it avoids calling `getTarget()` so that it works even when that
+   * predicate isn't defined, for example when calling a variable with function
+   * type.
+   */
+  SignatureType getCalleeType() { result = this.getCalleeExpr().getType() }
 
   /** Gets the declared target of this call. */
   Function getTarget() { this.getCalleeExpr() = result.getAReference() }
@@ -2062,6 +2098,7 @@ class LabelName extends Name {
  * may be identified as such, so not all type expressions can be determined by
  * a bottom-up analysis. In such cases, `isTypeExprTopDown` below is useful.
  */
+pragma[nomagic]
 private predicate isTypeExprBottomUp(Expr e) {
   e instanceof TypeName
   or
@@ -2100,6 +2137,7 @@ private predicate isTypeExprBottomUp(Expr e) {
  * it may be the latter and so this predicate does not consider the expression to be
  * a type expression.
  */
+pragma[nomagic]
 private predicate isTypeExprTopDown(Expr e) {
   e = any(CompositeLit cl).getTypeExpr()
   or

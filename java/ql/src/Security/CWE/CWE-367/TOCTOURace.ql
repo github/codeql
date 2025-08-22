@@ -28,7 +28,7 @@ predicate commonSynchronization(Expr e1, Expr e2, Variable monitor) {
 /**
  * Holds if `m` is a call to a synchronized method on `receiver`.
  */
-predicate synchCallOn(MethodAccess m, Variable receiver) {
+predicate synchCallOn(MethodCall m, Variable receiver) {
   m.getCallee() instanceof SynchronizedCallable and
   m.getQualifier() = receiver.getAnAccess()
 }
@@ -54,30 +54,34 @@ class PossiblyConcurrentCallable extends Callable {
   }
 }
 
+private VarAccess getANonInitializationAccess(Field f) {
+  result = f.getAnAccess() and
+  exists(Callable c | c = result.getEnclosingCallable() |
+    not (
+      c = f.getDeclaringType().getACallable() and
+      (c instanceof Constructor or c instanceof InitializerMethod)
+    )
+  )
+}
+
 /**
  * Holds if all accesses to `v` (outside of initializers) are locked in the same way.
  */
 predicate alwaysLocked(Field f) {
   exists(Variable lock |
-    forex(VarAccess access |
-      access = f.getAnAccess() and not access.getEnclosingCallable() instanceof InitializerMethod
-    |
+    forex(VarAccess access | access = getANonInitializationAccess(f) |
       locallySynchronizedOn(access, _, lock)
     )
   )
   or
   exists(RefType thisType |
-    forex(VarAccess access |
-      access = f.getAnAccess() and not access.getEnclosingCallable() instanceof InitializerMethod
-    |
+    forex(VarAccess access | access = getANonInitializationAccess(f) |
       locallySynchronizedOnThis(access, thisType)
     )
   )
   or
   exists(RefType classType |
-    forex(VarAccess access |
-      access = f.getAnAccess() and not access.getEnclosingCallable() instanceof InitializerMethod
-    |
+    forex(VarAccess access | access = getANonInitializationAccess(f) |
       locallySynchronizedOnClass(access, classType)
     )
   )
@@ -98,7 +102,7 @@ predicate probablyNeverEscapes(LocalVariableDecl v) {
 }
 
 // Loop conditions tend to be uninteresting, so are not included.
-from IfStmt check, MethodAccess call1, MethodAccess call2, Variable r
+from IfStmt check, MethodCall call1, MethodCall call2, Variable r
 where
   check.getCondition().getAChildExpr*() = call1 and
   // This can happen if there are loops, etc.

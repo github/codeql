@@ -6,7 +6,9 @@
  * @kind problem
  * @problem.severity warning
  * @id js/trivial-conditional
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  *       external/cwe/cwe-570
  *       external/cwe/cwe-571
  * @precision very-high
@@ -38,6 +40,8 @@ VarDef getSingleDef(Variable v) {
 predicate isSymbolicConstant(Variable v) {
   exists(VarDef vd | vd = getSingleDef(v) |
     vd.(VariableDeclarator).getDeclStmt() instanceof ConstDeclStmt
+    or
+    vd.(VariableDeclarator).getDeclStmt() instanceof UsingDeclStmt
     or
     isConstant(vd.getSource())
   )

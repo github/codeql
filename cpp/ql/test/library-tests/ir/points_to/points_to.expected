@@ -1,0 +1,1 @@
+ERROR: getAllocation() cannot be resolved for type SimpleSSA::MemoryLocation (points_to.ql:31,42-55)

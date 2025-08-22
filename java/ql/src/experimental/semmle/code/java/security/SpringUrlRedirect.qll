@@ -1,4 +1,4 @@
-/** Provides classes and predicates related to Spring URL redirect. */
+deprecated module;
 
 private import java
 private import semmle.code.java.dataflow.FlowSources
@@ -22,7 +22,7 @@ class RedirectBuilderExpr extends AddExpr {
  *
  * E.g: `StringBuilder.append("redirect:")`
  */
-class RedirectAppendCall extends MethodAccess {
+class RedirectAppendCall extends MethodCall {
   RedirectAppendCall() {
     this.getMethod().hasName("append") and
     this.getMethod().getDeclaringType() instanceof StringBuildingType and
@@ -52,14 +52,14 @@ private class SpringViewUrlRedirectSink extends SpringUrlRedirectSink {
       any(SpringRequestMappingMethod sqmm).polyCalls*(this.getEnclosingCallable())
     )
     or
-    exists(MethodAccess ma, RedirectAppendCall rac |
-      DataFlow2::localExprFlow(rac.getQualifier(), ma.getQualifier()) and
+    exists(MethodCall ma, RedirectAppendCall rac |
+      DataFlow::localExprFlow(rac.getQualifier(), ma.getQualifier()) and
       ma.getMethod().hasName("append") and
       ma.getArgument(0) = this.asExpr() and
       any(SpringRequestMappingMethod sqmm).polyCalls*(this.getEnclosingCallable())
     )
     or
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().hasName("setUrl") and
       ma.getMethod()
           .getDeclaringType()
@@ -98,7 +98,7 @@ private class SpringResponseEntityUrlRedirectSink extends SpringUrlRedirectSink 
     or
     // Find `ResponseEntity.status(...).headers(taintHeaders).build()` or
     // `ResponseEntity.status(...).location(URI.create(taintURL)).build()` sinks
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod()
           .getDeclaringType()
           .hasQualifiedName("org.springframework.http", "ResponseEntity$HeadersBuilder<BodyBuilder>") and
@@ -108,16 +108,16 @@ private class SpringResponseEntityUrlRedirectSink extends SpringUrlRedirectSink 
   }
 }
 
-private class HttpHeadersMethodAccess extends MethodAccess {
-  HttpHeadersMethodAccess() { this.getMethod().getDeclaringType() instanceof SpringHttpHeaders }
+private class HttpHeadersMethodCall extends MethodCall {
+  HttpHeadersMethodCall() { this.getMethod().getDeclaringType() instanceof SpringHttpHeaders }
 }
 
-private class HttpHeadersAddSetMethodAccess extends HttpHeadersMethodAccess {
-  HttpHeadersAddSetMethodAccess() { this.getMethod().getName() in ["add", "set"] }
+private class HttpHeadersAddSetMethodCall extends HttpHeadersMethodCall {
+  HttpHeadersAddSetMethodCall() { this.getMethod().getName() in ["add", "set"] }
 }
 
-private class HttpHeadersSetLocationMethodAccess extends HttpHeadersMethodAccess {
-  HttpHeadersSetLocationMethodAccess() { this.getMethod().hasName("setLocation") }
+private class HttpHeadersSetLocationMethodCall extends HttpHeadersMethodCall {
+  HttpHeadersSetLocationMethodCall() { this.getMethod().hasName("setLocation") }
 }
 
 /**
@@ -125,7 +125,7 @@ private class HttpHeadersSetLocationMethodAccess extends HttpHeadersMethodAccess
  * a `HttpHeaders` instance qualifier, i.e. `httpHeaders.setLocation(tainted)`.
  */
 predicate springUrlRedirectTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-  exists(HttpHeadersSetLocationMethodAccess ma |
+  exists(HttpHeadersSetLocationMethodCall ma |
     fromNode.asExpr() = ma.getArgument(0) and
     toNode.asExpr() = ma.getQualifier()
   )
@@ -137,7 +137,7 @@ predicate springUrlRedirectTaintStep(DataFlow::Node fromNode, DataFlow::Node toN
  * E.g: `httpHeaders.add("X-Some-Header", taintedUrlString)`
  */
 predicate nonLocationHeaderSanitizer(DataFlow::Node node) {
-  exists(HttpHeadersAddSetMethodAccess ma, Argument firstArg | node.asExpr() = ma.getArgument(1) |
+  exists(HttpHeadersAddSetMethodCall ma, Argument firstArg | node.asExpr() = ma.getArgument(1) |
     firstArg = ma.getArgument(0) and
     not firstArg.(CompileTimeConstantExpr).getStringValue() = "Location"
   )

@@ -13,9 +13,9 @@
 
 import java
 import semmle.code.java.security.UnsafeDeserializationQuery
-import DataFlow::PathGraph
+import UnsafeDeserializationFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, UnsafeDeserializationConfig conf
-where conf.hasFlowPath(source, sink)
-select sink.getNode().(UnsafeDeserializationSink).getMethodAccess(), source, sink,
+from UnsafeDeserializationFlow::PathNode source, UnsafeDeserializationFlow::PathNode sink
+where UnsafeDeserializationFlow::flowPath(source, sink)
+select sink.getNode().(UnsafeDeserializationSink).getMethodCall(), source, sink,
   "Unsafe deserialization depends on a $@.", source.getNode(), "user-provided value"

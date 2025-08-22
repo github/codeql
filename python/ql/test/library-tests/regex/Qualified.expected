@@ -1,9 +1,15 @@
 | (?!not-this)^[A-Z_]+$ | 13 | 20 | false | true |
+| (?-imsx:a+) | 8 | 10 | false | true |
 | (?:(?:\n\r?)\|^)( *)\\S | 7 | 9 | true | false |
 | (?:(?:\n\r?)\|^)( *)\\S | 14 | 16 | true | true |
 | (?:[^%]\|^)?%\\((\\w*)\\)[a-z] | 0 | 11 | true | false |
 | (?:[^%]\|^)?%\\((\\w*)\\)[a-z] | 15 | 18 | true | true |
+| (?Li)a+ | 5 | 7 | false | true |
 | (?P<name>[\\w]+)\| | 9 | 14 | false | true |
+| (?a-imsx:a+) | 9 | 11 | false | true |
+| (?aimsx)a+ | 8 | 10 | false | true |
+| (?aimsx:a+) | 8 | 10 | false | true |
+| (?ui)a+ | 5 | 7 | false | true |
 | \\A[+-]?\\d+ | 2 | 7 | true | false |
 | \\A[+-]?\\d+ | 7 | 10 | false | true |
 | \\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*) | 10 | 15 | true | true |

@@ -1,9 +1,9 @@
 .. _annotations-in-java:
 
-Annotations in Java
-===================
+Annotations in Java and Kotlin
+==============================
 
-CodeQL databases of Java projects contain information about all annotations attached to program elements.
+CodeQL databases of Java/Kotlin projects contain information about all annotations attached to program elements.
 
 About working with annotations
 ------------------------------
@@ -15,7 +15,7 @@ Annotations are represented by these CodeQL classes:
 -  The class ``AnnotationElement`` represents an annotation element, that is, a member of an annotation type.
 -  The class ``Annotation`` represents an annotation such as ``@Override``; annotation values can be accessed through member predicate ``getValue``.
 
-For example, the Java standard library defines an annotation ``SuppressWarnings`` that instructs the compiler not to emit certain kinds of warnings:
+For example, the Java/Kotlin standard library defines an annotation ``SuppressWarnings`` that instructs the compiler not to emit certain kinds of warnings:
 
 .. code-block:: java
 
@@ -101,9 +101,9 @@ As a first step, let's write a query that finds all ``@Override`` annotations. A
    where ann.getType().hasQualifiedName("java.lang", "Override")
    select ann
 
-As always, it is a good idea to try this query on a CodeQL database for a Java project to make sure it actually produces some results. On the earlier example, it should find the annotation on ``Sub1.m``. Next, we encapsulate the concept of an ``@Override`` annotation as a CodeQL class:
+As always, it is a good idea to try this query on a CodeQL database for a Java/Kotlin project to make sure it actually produces some results. On the earlier example, it should find the annotation on ``Sub1.m``. Next, we encapsulate the concept of an ``@Override`` annotation as a CodeQL class:
 
-::
+.. code-block:: ql
 
    class OverrideAnnotation extends Annotation {
        OverrideAnnotation() {
@@ -185,7 +185,7 @@ For more information about the class ``Call``, see ":doc:`Navigating the call gr
 Improvements
 ~~~~~~~~~~~~
 
-The Java standard library provides another annotation type ``java.lang.SupressWarnings`` that can be used to suppress certain categories of warnings. In particular, it can be used to turn off warnings about calls to deprecated methods. Therefore, it makes sense to improve our query to ignore calls to deprecated methods from inside methods that are marked with ``@SuppressWarnings("deprecation")``.
+The Java/Kotlin standard library provides another annotation type ``java.lang.SupressWarnings`` that can be used to suppress certain categories of warnings. In particular, it can be used to turn off warnings about calls to deprecated methods. Therefore, it makes sense to improve our query to ignore calls to deprecated methods from inside methods that are marked with ``@SuppressWarnings("deprecation")``.
 
 For instance, consider this slightly updated example:
 
@@ -213,11 +213,11 @@ To do so, we first introduce a class for representing all ``@SuppressWarnings`` 
    class SuppressDeprecationWarningAnnotation extends Annotation {
        SuppressDeprecationWarningAnnotation() {
            this.getType().hasQualifiedName("java.lang", "SuppressWarnings") and
-           this.getAValue().(Literal).getLiteral().regexpMatch(".*deprecation.*")
+           this.getAStringArrayValue("value").regexpMatch(".*deprecation.*")
        }
    }
 
-Here, we use ``getAValue()`` to retrieve any annotation value: in fact, annotation type ``SuppressWarnings`` only has a single annotation element, so every ``@SuppressWarnings`` annotation only has a single annotation value. Then, we ensure that it is a literal, obtain its string value using ``getLiteral``, and check whether it contains the string ``deprecation`` using a regular expression match.
+Here, we use ``getAStringArrayValue("value")`` to retrieve any of the suppressed warnings: ``@SuppressWarnings`` defines the warnings to suppress using the annotation element named ``value`` of type ``String[]``, and ``getAStringArrayValue`` retrieves all of the array values; the CodeQL class ``Annotation`` also has similar convenience predicates for the other possible annotation element types. Afterwards we check whether one of the values is the string ``deprecation`` using a regular expression match.
 
 For real-world use, this check would have to be generalized a bit: for example, the OpenJDK Java compiler allows ``@SuppressWarnings("all")`` annotations to suppress all warnings. We may also want to make sure that ``deprecation`` is matched as an entire word, and not as part of another word, by changing the regular expression to ``".*\\bdeprecation\\b.*"``.
 

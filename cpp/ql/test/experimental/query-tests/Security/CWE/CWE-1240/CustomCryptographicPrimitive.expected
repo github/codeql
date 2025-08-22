@@ -1,0 +1,4 @@
+| tests_crypto.cpp:11:6:11:18 | encryptString | This function, "encryptString", may be a custom implementation of a cryptographic primitive. |
+| tests_crypto.cpp:30:6:30:14 | MyEncrypt | This function, "MyEncrypt", may be a custom implementation of a cryptographic primitive. |
+| tests_crypto.cpp:51:6:51:16 | mix_columns | This function, "mix_columns", may be a custom implementation of a cryptographic primitive. |
+| tests_crypto.cpp:83:6:83:18 | init_aes_sbox | This function, "init_aes_sbox", may be a custom implementation of a cryptographic primitive. |

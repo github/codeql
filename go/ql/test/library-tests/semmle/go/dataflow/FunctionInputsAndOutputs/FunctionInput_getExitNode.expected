@@ -4,6 +4,7 @@
 | parameter 0 | reset.go:8:1:16:1 | function declaration | reset.go:8:27:8:27 | definition of r |
 | parameter 0 | tst2.go:8:1:12:1 | function declaration | tst2.go:8:12:8:15 | definition of data |
 | parameter 0 | tst.go:8:1:11:1 | function declaration | tst.go:8:12:8:17 | definition of reader |
+| parameter 0 | tst.go:13:1:13:25 | function declaration | tst.go:13:12:13:13 | initialization of xs |
 | parameter 0 | tst.go:15:1:19:1 | function declaration | tst.go:15:12:15:12 | definition of x |
 | parameter 1 | main.go:5:1:11:1 | function declaration | main.go:5:20:5:20 | definition of x |
 | parameter 1 | main.go:13:1:20:1 | function declaration | main.go:13:21:13:21 | definition of x |

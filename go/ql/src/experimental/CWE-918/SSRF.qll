@@ -10,39 +10,38 @@ import go
  * (SSRF) vulnerabilities.
  */
 module ServerSideRequestForgery {
-  private import semmle.go.frameworks.Gin
   private import validator
   private import semmle.go.security.UrlConcatenation
   private import semmle.go.dataflow.barrierguardutil.RegexpCheck
   private import semmle.go.dataflow.Properties
 
-  /**
-   * A taint-tracking configuration for reasoning about request forgery.
-   */
-  class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "SSRF" }
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       // propagate to a URL when its host is assigned to
       exists(Write w, Field f, SsaWithFields v | f.hasQualifiedName("net/url", "URL", "Host") |
-        w.writesField(v.getAUse(), f, pred) and succ = v.getAUse()
+        w.writesField(v.getAUse(), f, node1) and node2 = v.getAUse()
       )
     }
 
-    override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node) or
-      node instanceof Sanitizer
-    }
+    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-    override predicate isSanitizerOut(DataFlow::Node node) {
-      super.isSanitizerOut(node) or
-      node instanceof SanitizerEdge
+    predicate isBarrierOut(DataFlow::Node node) { node instanceof SanitizerEdge }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
+
+    Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+    Location getASelectedSinkLocation(DataFlow::Node sink) {
+      result = sink.(Sink).getARequest().getLocation()
     }
   }
+
+  /** Tracks taint flow for reasoning about request forgery vulnerabilities. */
+  module Flow = TaintTracking::Global<Config>;
 
   /** A data flow source for request forgery vulnerabilities. */
   abstract class Source extends DataFlow::Node { }
@@ -66,9 +65,14 @@ module ServerSideRequestForgery {
   abstract class SanitizerEdge extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `ActiveThreatModelSource` or `Source` instead.
+   */
+  deprecated class UntrustedFlowAsSource = ThreatModelFlowAsSource;
+
+  /**
    * An user controlled input, considered as a flow source for request forgery.
    */
-  class UntrustedFlowAsSource extends Source instanceof UntrustedFlowSource { }
+  private class ThreatModelFlowAsSource extends Source instanceof ActiveThreatModelSource { }
 
   /**
    * The URL of an HTTP request, viewed as a sink for request forgery.
@@ -132,7 +136,7 @@ module ServerSideRequestForgery {
   }
 
   /**
-   * If the tainted variable is a boolean or has numeric type is not possible to exploit a SSRF
+   * A value which has boolean or numeric type, considered as a sanitizer for SSRF.
    */
   class NumSanitizer extends Sanitizer {
     NumSanitizer() {
@@ -142,8 +146,8 @@ module ServerSideRequestForgery {
   }
 
   /**
-   * When we receive a body from a request, we can use certain tags on our struct's fields to hint
-   * the binding function to run some validations for that field. If these binding functions returns
+   * A body received from a request, where certain tags on our struct's fields have been used to hint
+   * to the binding function to run some validations for that field. If these binding functions returns
    * no error, then we consider these fields safe for SSRF.
    */
   class BodySanitizer extends Sanitizer instanceof CheckedAlphanumericStructFieldRead { }

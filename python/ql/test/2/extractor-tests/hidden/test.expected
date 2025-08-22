@@ -1,0 +1,6 @@
+| .hidden/inner/test.py |
+| .hidden/module.py |
+| folder/module.py |
+| package |
+| package/__init__.py |
+| package/module.py |

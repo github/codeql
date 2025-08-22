@@ -40,7 +40,7 @@ class ImmutableField extends Field {
     this.getType() instanceof ImmutableType and
     // The field is only assigned to in a constructor or static initializer of the type it is declared in.
     forall(FieldAccess fw, AnyAssignment ae |
-      fw.getField().getSourceDeclaration() = this and
+      fw.getField() = this and
       fw = ae.getDest()
     |
       ae.getEnclosingCallable().getDeclaringType() = this.getDeclaringType() and

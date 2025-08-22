@@ -1,7 +1,9 @@
+deprecated module;
+
 import csharp
 import semmle.code.csharp.frameworks.system.Net
 import semmle.code.csharp.frameworks.System
-import semmle.code.csharp.security.dataflow.flowsources.Remote
+import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 import semmle.code.csharp.security.Sanitizers
 
 //If this leaves experimental this should probably go in semmle.code.csharp.frameworks.system.Net
@@ -40,18 +42,28 @@ abstract class Sanitizer extends DataFlow::ExprNode { }
 /**
  * A taint-tracking configuration for uncontrolled data in path expression vulnerabilities.
  */
-class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "TaintedWebClientLib" }
+private module TaintedWebClientConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 }
 
-/** A source of remote user input. */
-class RemoteSource extends Source instanceof RemoteFlowSource { }
+/**
+ * A taint-tracking module for uncontrolled data in path expression vulnerabilities.
+ */
+module TaintedWebClient = TaintTracking::Global<TaintedWebClientConfig>;
+
+/**
+ * DEPRECATED: Use `ThreatModelSource` instead.
+ *
+ * A source of remote user input.
+ */
+deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
+
+/** A source supported by the current threat model. */
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /**
  * A path argument to a `WebClient` method call that has an address argument.

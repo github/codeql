@@ -17,8 +17,13 @@ module ActiveResource {
   /**
    * An ActiveResource model class. This is any (transitive) subclass of ActiveResource.
    */
-  private API::Node modelApiNode() {
-    result = API::getTopLevelMember("ActiveResource").getMember("Base").getASubclass+()
+  pragma[nomagic]
+  private API::Node activeResourceBaseClass() {
+    result = API::getTopLevelMember("ActiveResource").getMember("Base")
+  }
+
+  private DataFlow::ClassNode activeResourceClass() {
+    result = activeResourceBaseClass().getADescendentModule()
   }
 
   /**
@@ -29,16 +34,8 @@ module ActiveResource {
    * end
    * ```
    */
-  class ModelClass extends ClassDeclaration {
-    API::Node model;
-
-    ModelClass() {
-      model = modelApiNode() and
-      this.getSuperclassExpr() = model.getAValueReachableFromSource().asExpr().getExpr()
-    }
-
-    /** Gets the API node for this model */
-    API::Node getModelApiNode() { result = model }
+  class ModelClassNode extends DataFlow::ClassNode {
+    ModelClassNode() { this = activeResourceClass() }
 
     /** Gets a call to `site=`, which sets the base URL for this model. */
     SiteAssignCall getASiteAssignment() { result.getModelClass() = this }
@@ -47,6 +44,25 @@ module ActiveResource {
     predicate disablesCertificateValidation(SiteAssignCall c) {
       c = this.getASiteAssignment() and
       c.disablesCertificateValidation()
+    }
+
+    /** Gets a method call on this class that returns an instance of the class. */
+    private DataFlow::CallNode getAChainedCall() {
+      result.(FindCall).getModelClass() = this
+      or
+      result.(CreateCall).getModelClass() = this
+      or
+      result.(CustomHttpCall).getModelClass() = this
+      or
+      result.(CollectionCall).getCollection().getModelClass() = this and
+      result.getMethodName() = ["first", "last"]
+    }
+
+    /** Gets an API node referring to an instance of this class. */
+    API::Node getAnInstanceReference() {
+      result = this.trackInstance()
+      or
+      result = this.getAChainedCall().track()
     }
   }
 
@@ -61,25 +77,20 @@ module ActiveResource {
    * ```
    */
   class ModelClassMethodCall extends DataFlow::CallNode {
-    API::Node model;
+    private ModelClassNode cls;
 
-    ModelClassMethodCall() {
-      model = modelApiNode() and
-      this = classMethodCall(model, _)
-    }
+    ModelClassMethodCall() { this = cls.trackModule().getAMethodCall(_) }
 
     /** Gets the model class for this call. */
-    ModelClass getModelClass() { result.getModelApiNode() = model }
+    ModelClassNode getModelClass() { result = cls }
   }
 
   /**
    * A call to `site=` on an ActiveResource model class.
    * This sets the base URL for all HTTP requests made by this class.
    */
-  private class SiteAssignCall extends DataFlow::CallNode {
-    API::Node model;
-
-    SiteAssignCall() { model = modelApiNode() and this = classMethodCall(model, "site=") }
+  private class SiteAssignCall extends ModelClassMethodCall {
+    SiteAssignCall() { this.getMethodName() = "site=" }
 
     /**
      * Gets a node that contributes to the URLs used for HTTP requests by the parent
@@ -87,12 +98,10 @@ module ActiveResource {
      */
     DataFlow::Node getAUrlPart() { result = this.getArgument(0) }
 
-    /** Gets the model class for this call. */
-    ModelClass getModelClass() { result.getModelApiNode() = model }
-
     /** Holds if this site value specifies HTTP rather than HTTPS. */
     predicate disablesCertificateValidation() {
       this.getAUrlPart()
+          // TODO: We should not need all this just to get the string value
           .asExpr()
           .(ExprNodes::AssignExprCfgNode)
           .getRhs()
@@ -140,87 +149,43 @@ module ActiveResource {
   }
 
   /**
-   * An ActiveResource model object.
-   */
-  class ModelInstance extends DataFlow::Node {
-    ModelClass cls;
-
-    ModelInstance() {
-      exists(API::Node model | model = modelApiNode() |
-        this = model.getInstance().getAValueReachableFromSource() and
-        cls.getModelApiNode() = model
-      )
-      or
-      exists(FindCall call | call.flowsTo(this) | cls = call.getModelClass())
-      or
-      exists(CreateCall call | call.flowsTo(this) | cls = call.getModelClass())
-      or
-      exists(CustomHttpCall call | call.flowsTo(this) | cls = call.getModelClass())
-      or
-      exists(CollectionCall call |
-        call.getMethodName() = ["first", "last"] and
-        call.flowsTo(this)
-      |
-        cls = call.getCollection().getModelClass()
-      )
-    }
-
-    /** Gets the model class for this instance. */
-    ModelClass getModelClass() { result = cls }
-  }
-
-  /**
    * A call to a method on an ActiveResource model object.
    */
   class ModelInstanceMethodCall extends DataFlow::CallNode {
-    ModelInstance i;
+    private ModelClassNode cls;
 
-    ModelInstanceMethodCall() { this.getReceiver() = i }
-
-    /** Gets the model instance for this call. */
-    ModelInstance getInstance() { result = i }
+    ModelInstanceMethodCall() { this = cls.getAnInstanceReference().getAMethodCall(_) }
 
     /** Gets the model class for this call. */
-    ModelClass getModelClass() { result = i.getModelClass() }
+    ModelClassNode getModelClass() { result = cls }
   }
 
   /**
-   * A collection of ActiveResource model objects.
+   * A call that returns a collection of ActiveResource model objects.
    */
-  class Collection extends DataFlow::Node {
-    ModelClassMethodCall classMethodCall;
-
-    Collection() {
-      classMethodCall.flowsTo(this) and
-      (
-        classMethodCall.getMethodName() = "all"
-        or
-        classMethodCall.getMethodName() = "find" and
-        classMethodCall.getArgument(0).asExpr().getConstantValue().isStringlikeValue("all")
-      )
+  class CollectionSource extends ModelClassMethodCall {
+    CollectionSource() {
+      this.getMethodName() = "all"
+      or
+      this.getArgument(0).asExpr().getConstantValue().isStringlikeValue("all")
     }
-
-    /** Gets the model class for this collection. */
-    ModelClass getModelClass() { result = classMethodCall.getModelClass() }
   }
 
   /**
    * A method call on a collection.
    */
   class CollectionCall extends DataFlow::CallNode {
-    CollectionCall() { this.getReceiver() instanceof Collection }
+    private CollectionSource collection;
+
+    CollectionCall() { this = collection.track().getAMethodCall(_) }
 
     /** Gets the collection for this call. */
-    Collection getCollection() { result = this.getReceiver() }
+    CollectionSource getCollection() { result = collection }
   }
 
-  private class ModelClassMethodCallAsHttpRequest extends Http::Client::Request::Range,
-    ModelClassMethodCall
+  private class ModelClassMethodCallAsHttpRequest extends Http::Client::Request::Range instanceof ModelClassMethodCall
   {
-    ModelClass cls;
-
     ModelClassMethodCallAsHttpRequest() {
-      this.getModelClass() = cls and
       this.getMethodName() = ["all", "build", "create", "create!", "find", "first", "last"]
     }
 
@@ -229,23 +194,21 @@ module ActiveResource {
     override predicate disablesCertificateValidation(
       DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
     ) {
-      cls.disablesCertificateValidation(disablingNode) and
+      super.getModelClass().disablesCertificateValidation(disablingNode) and
       // TODO: highlight real argument origin
       argumentOrigin = disablingNode
     }
 
-    override DataFlow::Node getAUrlPart() { result = cls.getASiteAssignment().getAUrlPart() }
+    override DataFlow::Node getAUrlPart() {
+      result = super.getModelClass().getASiteAssignment().getAUrlPart()
+    }
 
     override DataFlow::Node getResponseBody() { result = this }
   }
 
-  private class ModelInstanceMethodCallAsHttpRequest extends Http::Client::Request::Range,
-    ModelInstanceMethodCall
+  private class ModelInstanceMethodCallAsHttpRequest extends Http::Client::Request::Range instanceof ModelInstanceMethodCall
   {
-    ModelClass cls;
-
     ModelInstanceMethodCallAsHttpRequest() {
-      this.getModelClass() = cls and
       this.getMethodName() =
         [
           "exists?", "reload", "save", "save!", "destroy", "delete", "get", "patch", "post", "put",
@@ -258,42 +221,15 @@ module ActiveResource {
     override predicate disablesCertificateValidation(
       DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
     ) {
-      cls.disablesCertificateValidation(disablingNode) and
+      super.getModelClass().disablesCertificateValidation(disablingNode) and
       // TODO: highlight real argument origin
       argumentOrigin = disablingNode
     }
 
-    override DataFlow::Node getAUrlPart() { result = cls.getASiteAssignment().getAUrlPart() }
+    override DataFlow::Node getAUrlPart() {
+      result = super.getModelClass().getASiteAssignment().getAUrlPart()
+    }
 
     override DataFlow::Node getResponseBody() { result = this }
-  }
-
-  /**
-   * A call to a class method.
-   *
-   * TODO: is this general enough to be useful elsewhere?
-   *
-   * Examples:
-   * ```rb
-   * class A
-   *   def self.m; end
-   *
-   *   m # call
-   * end
-   *
-   * A.m # call
-   * ```
-   */
-  private DataFlow::CallNode classMethodCall(API::Node classNode, string methodName) {
-    // A.m
-    result = classNode.getAMethodCall(methodName)
-    or
-    // class A
-    //   A.m
-    //  end
-    result.getReceiver().asExpr() instanceof ExprNodes::SelfVariableAccessCfgNode and
-    result.asExpr().getExpr().getEnclosingModule().(ClassDeclaration).getSuperclassExpr() =
-      classNode.getAValueReachableFromSource().asExpr().getExpr() and
-    result.getMethodName() = methodName
   }
 }

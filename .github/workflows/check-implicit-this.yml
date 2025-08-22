@@ -1,0 +1,32 @@
+name: "Check implicit this warnings"
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "**qlpack.yml"
+    branches:
+      - main
+      - "rc/*"
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check that implicit this warnings is enabled for all packs
+        shell: bash
+        run: |
+          EXIT_CODE=0
+          packs="$(find . -iname 'qlpack.yml')"
+          for pack_file in ${packs}; do
+            option="$(yq '.warnOnImplicitThis' ${pack_file})"
+            if [ "${option}" != "true" ]; then
+              echo "::error file=${pack_file}::warnOnImplicitThis property must be set to 'true' for pack ${pack_file}"
+              EXIT_CODE=1
+            fi
+          done
+          exit "${EXIT_CODE}"

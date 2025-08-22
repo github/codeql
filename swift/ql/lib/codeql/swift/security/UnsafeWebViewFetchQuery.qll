@@ -13,23 +13,28 @@ import codeql.swift.security.UnsafeWebViewFetchExtensions
  * A taint configuration from taint sources to sinks (and `baseURL` arguments)
  * for this query.
  */
-class UnsafeWebViewFetchConfig extends TaintTracking::Configuration {
-  UnsafeWebViewFetchConfig() { this = "UnsafeWebViewFetchConfig" }
+module UnsafeWebViewFetchConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node node) { node instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node node) {
+  predicate isSink(DataFlow::Node node) {
     exists(UnsafeWebViewFetchSink sink |
       node = sink or
       node.asExpr() = sink.getBaseUrl()
     )
   }
 
-  override predicate isSanitizer(DataFlow::Node sanitizer) {
-    sanitizer instanceof UnsafeWebViewFetchSanitizer
+  predicate isBarrier(DataFlow::Node barrier) { barrier instanceof UnsafeWebViewFetchBarrier }
+
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    any(UnsafeWebViewFetchAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    any(UnsafeWebViewFetchAdditionalTaintStep s).step(nodeFrom, nodeTo)
+  predicate observeDiffInformedIncrementalMode() {
+    none() // can't override location accurately because of secondary use in select.
   }
 }
+
+/**
+ * Detect taint flow of taint sources to sinks (and `baseURL` arguments) for this query.
+ */
+module UnsafeWebViewFetchFlow = TaintTracking::Global<UnsafeWebViewFetchConfig>;

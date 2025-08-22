@@ -1,13 +1,11 @@
 import java
 import semmle.code.java.security.AndroidWebViewCertificateValidationQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
-class WebViewTest extends InlineExpectationsTest {
-  WebViewTest() { this = "WebViewTest" }
+module WebViewTest implements TestSig {
+  string getARelevantTag() { result = "hasResult" }
 
-  override string getARelevantTag() { result = "hasResult" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(OnReceivedSslErrorMethod m |
       trustsAllCerts(m) and
       location = m.getLocation() and
@@ -17,3 +15,5 @@ class WebViewTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<WebViewTest>

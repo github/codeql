@@ -24,11 +24,11 @@ private ControlFlowElement getANonExactScopeChild(ControlFlowScope scope) {
 
 pragma[noinline]
 private ControlFlow::BasicBlock getABasicBlockInScope(ControlFlowScope scope, boolean exactScope) {
-  result.getANode().getElement() = getANonExactScopeChild(scope) and
+  result.getANode().getAstNode() = getANonExactScopeChild(scope) and
   exactScope = false
   or
   scope.isExact() and
-  result.getANode().getElement() = scope and
+  result.getANode().getAstNode() = scope and
   exactScope = true
 }
 
@@ -199,7 +199,7 @@ abstract class ControlFlowReachabilityConfiguration extends string {
     exists(ControlFlow::BasicBlock bb, boolean isSuccessor, int i, int j |
       this.reachesBasicBlockDefinitionBase(e, def, isSuccessor, cfn, i, bb) and
       cfnDef = bb.getNode(j) and
-      def.getAControlFlowNode() = cfnDef
+      def.getExpr().getAControlFlowNode() = cfnDef
     |
       isSuccessor = true and j >= i
       or
@@ -208,7 +208,7 @@ abstract class ControlFlowReachabilityConfiguration extends string {
     or
     exists(ControlFlow::BasicBlock bb |
       this.reachesBasicBlockDefinitionRec(e, def, _, cfn, bb) and
-      def.getAControlFlowNode() = cfnDef and
+      def.getExpr().getAControlFlowNode() = cfnDef and
       cfnDef = bb.getANode()
     )
   }

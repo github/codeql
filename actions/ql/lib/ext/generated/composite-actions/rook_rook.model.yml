@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["rook/rook", "*", "input.use-tmate", "code-injection", "generated"]
+     - ["rook/rook", "*", "input.kubernetes-version", "code-injection", "generated"]
+     - ["rook/rook", "*", "input.additional-namespace", "code-injection", "generated"]
+     - ["rook/rook", "*", "input.name", "code-injection", "generated"]

@@ -1,55 +1,26 @@
-/*
- * ====================================================================
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- * ====================================================================
- *
- * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
- * information on the Apache Software Foundation, please see
- * <http://www.apache.org/>.
- *
- */
+// Generated automatically from org.apache.hc.core5.net.URIAuthority for testing purposes
 
 package org.apache.hc.core5.net;
 
-public final class URIAuthority {
-    public String getUserInfo() {
-      return null;
-    }
+import java.io.Serializable;
+import org.apache.hc.core5.net.Host;
+import org.apache.hc.core5.net.NamedEndpoint;
 
-    public String getHostName() {
-      return null;
-    }
-
-    public int getPort() {
-      return 0;
-    }
-
-    public String toString() {
-      return null;
-    }
-
-    public boolean equals(final Object obj) {
-      return false;
-    }
-
-    public int hashCode() {
-      return 0;
-    }
-
+public class URIAuthority implements NamedEndpoint, Serializable
+{
+    protected URIAuthority() {}
+    public String getHostName(){ return null; }
+    public String getUserInfo(){ return null; }
+    public String toString(){ return null; }
+    public URIAuthority(Host p0){}
+    public URIAuthority(NamedEndpoint p0){}
+    public URIAuthority(String p0){}
+    public URIAuthority(String p0, Host p1){}
+    public URIAuthority(String p0, NamedEndpoint p1){}
+    public URIAuthority(String p0, String p1, int p2){}
+    public URIAuthority(String p0, int p1){}
+    public boolean equals(Object p0){ return false; }
+    public int getPort(){ return 0; }
+    public int hashCode(){ return 0; }
+    public static URIAuthority create(String p0){ return null; }
 }

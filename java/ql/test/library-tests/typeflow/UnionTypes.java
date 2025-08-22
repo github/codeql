@@ -44,6 +44,10 @@ public class UnionTypes {
     if (x instanceof Inter) {
       x.hashCode();
     }
+    var hashCode = switch (x) {
+      case Inter i -> x.hashCode();
+      default -> 0;
+    };
   }
 
   void m3(Object d) {

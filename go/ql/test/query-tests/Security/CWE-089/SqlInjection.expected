@@ -1,112 +1,259 @@
+#select
+| SqlInjection.go:12:11:12:11 | q | SqlInjection.go:11:3:11:9 | selection of URL | SqlInjection.go:12:11:12:11 | q | This query depends on a $@. | SqlInjection.go:11:3:11:9 | selection of URL | user-provided value |
+| issue48.go:22:11:22:12 | q3 | issue48.go:17:25:17:32 | selection of Body | issue48.go:22:11:22:12 | q3 | This query depends on a $@. | issue48.go:17:25:17:32 | selection of Body | user-provided value |
+| issue48.go:32:11:32:12 | q4 | issue48.go:27:26:27:33 | selection of Body | issue48.go:32:11:32:12 | q4 | This query depends on a $@. | issue48.go:27:26:27:33 | selection of Body | user-provided value |
+| issue48.go:41:11:41:12 | q5 | issue48.go:37:24:37:30 | selection of URL | issue48.go:41:11:41:12 | q5 | This query depends on a $@. | issue48.go:37:24:37:30 | selection of URL | user-provided value |
+| main.go:11:11:11:28 | index expression | main.go:11:11:11:16 | selection of Form | main.go:11:11:11:28 | index expression | This query depends on a $@. | main.go:11:11:11:16 | selection of Form | user-provided value |
+| main.go:15:11:15:84 | call to Sprintf | main.go:15:63:15:67 | selection of URL | main.go:15:11:15:84 | call to Sprintf | This query depends on a $@. | main.go:15:63:15:67 | selection of URL | user-provided value |
+| main.go:16:11:16:85 | call to Sprintf | main.go:16:63:16:70 | selection of Header | main.go:16:11:16:85 | call to Sprintf | This query depends on a $@. | main.go:16:63:16:70 | selection of Header | user-provided value |
+| main.go:35:11:35:11 | q | main.go:30:13:30:19 | selection of URL | main.go:35:11:35:11 | q | This query depends on a $@. | main.go:30:13:30:19 | selection of URL | user-provided value |
+| main.go:44:11:44:11 | q | main.go:40:25:40:31 | selection of URL | main.go:44:11:44:11 | q | This query depends on a $@. | main.go:40:25:40:31 | selection of URL | user-provided value |
+| main.go:53:11:53:11 | q | main.go:49:28:49:34 | selection of URL | main.go:53:11:53:11 | q | This query depends on a $@. | main.go:49:28:49:34 | selection of URL | user-provided value |
+| main.go:62:11:62:11 | q | main.go:58:28:58:34 | selection of URL | main.go:62:11:62:11 | q | This query depends on a $@. | main.go:58:28:58:34 | selection of URL | user-provided value |
+| mongoDB.go:57:22:57:29 | pipeline | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:57:22:57:29 | pipeline | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
+| mongoDB.go:61:27:61:32 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:61:27:61:32 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
+| mongoDB.go:63:23:63:28 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:63:23:63:28 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
+| mongoDB.go:64:22:64:27 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:64:22:64:27 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
+| mongoDB.go:66:32:66:37 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:66:32:66:37 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
+| mongoDB.go:69:17:69:22 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:69:17:69:22 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
+| mongoDB.go:70:20:70:25 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:70:20:70:25 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
+| mongoDB.go:71:29:71:34 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:71:29:71:34 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
+| mongoDB.go:72:30:72:35 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:72:30:72:35 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
+| mongoDB.go:73:29:73:34 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:73:29:73:34 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
+| mongoDB.go:78:23:78:28 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:78:23:78:28 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
+| mongoDB.go:79:23:79:28 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:79:23:79:28 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
+| mongoDB.go:80:22:80:27 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:80:22:80:27 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
+| mongoDB.go:81:18:81:25 | pipeline | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:81:18:81:25 | pipeline | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
 edges
-| SqlInjection.go:11:3:11:9 | selection of URL | SqlInjection.go:12:11:12:11 | q |
-| issue48.go:17:25:17:32 | selection of Body | issue48.go:22:11:22:12 | q3 |
-| issue48.go:27:26:27:33 | selection of Body | issue48.go:32:11:32:12 | q4 |
-| issue48.go:37:17:37:50 | type conversion | issue48.go:41:11:41:12 | q5 |
-| issue48.go:37:24:37:30 | selection of URL | issue48.go:37:17:37:50 | type conversion |
-| main.go:10:11:10:16 | selection of Form | main.go:10:11:10:28 | index expression |
-| main.go:14:63:14:67 | selection of URL | main.go:14:11:14:84 | call to Sprintf |
-| main.go:15:63:15:70 | selection of Header | main.go:15:11:15:85 | call to Sprintf |
-| main.go:27:17:30:2 | &... [pointer, Category] | main.go:33:3:33:13 | RequestData [pointer, Category] |
-| main.go:27:18:30:2 | struct literal [Category] | main.go:27:17:30:2 | &... [pointer, Category] |
-| main.go:29:13:29:19 | selection of URL | main.go:29:13:29:39 | index expression |
-| main.go:29:13:29:39 | index expression | main.go:27:18:30:2 | struct literal [Category] |
-| main.go:33:3:33:13 | RequestData [pointer, Category] | main.go:33:3:33:13 | implicit dereference [Category] |
-| main.go:33:3:33:13 | implicit dereference [Category] | main.go:33:3:33:22 | selection of Category |
-| main.go:33:3:33:22 | selection of Category | main.go:34:11:34:11 | q |
-| main.go:38:2:38:12 | definition of RequestData [pointer, Category] | main.go:39:2:39:12 | RequestData [pointer, Category] |
-| main.go:38:2:38:12 | definition of RequestData [pointer, Category] | main.go:42:3:42:13 | RequestData [pointer, Category] |
-| main.go:39:2:39:12 | RequestData [pointer, Category] | main.go:39:2:39:12 | implicit dereference [Category] |
-| main.go:39:2:39:12 | implicit dereference [Category] | main.go:38:2:38:12 | definition of RequestData [pointer, Category] |
-| main.go:39:25:39:31 | selection of URL | main.go:39:25:39:51 | index expression |
-| main.go:39:25:39:51 | index expression | main.go:39:2:39:12 | implicit dereference [Category] |
-| main.go:42:3:42:13 | RequestData [pointer, Category] | main.go:42:3:42:13 | implicit dereference [Category] |
-| main.go:42:3:42:13 | implicit dereference [Category] | main.go:42:3:42:22 | selection of Category |
-| main.go:42:3:42:22 | selection of Category | main.go:43:11:43:11 | q |
-| main.go:47:2:47:12 | definition of RequestData [pointer, Category] | main.go:48:4:48:14 | RequestData [pointer, Category] |
-| main.go:47:2:47:12 | definition of RequestData [pointer, Category] | main.go:51:3:51:13 | RequestData [pointer, Category] |
-| main.go:48:3:48:14 | star expression [Category] | main.go:47:2:47:12 | definition of RequestData [pointer, Category] |
-| main.go:48:4:48:14 | RequestData [pointer, Category] | main.go:48:3:48:14 | star expression [Category] |
-| main.go:48:28:48:34 | selection of URL | main.go:48:28:48:54 | index expression |
-| main.go:48:28:48:54 | index expression | main.go:48:3:48:14 | star expression [Category] |
-| main.go:51:3:51:13 | RequestData [pointer, Category] | main.go:51:3:51:13 | implicit dereference [Category] |
-| main.go:51:3:51:13 | implicit dereference [Category] | main.go:51:3:51:22 | selection of Category |
-| main.go:51:3:51:22 | selection of Category | main.go:52:11:52:11 | q |
-| main.go:56:2:56:12 | definition of RequestData [pointer, Category] | main.go:57:4:57:14 | RequestData [pointer, Category] |
-| main.go:56:2:56:12 | definition of RequestData [pointer, Category] | main.go:60:5:60:15 | RequestData [pointer, Category] |
-| main.go:57:3:57:14 | star expression [Category] | main.go:56:2:56:12 | definition of RequestData [pointer, Category] |
-| main.go:57:4:57:14 | RequestData [pointer, Category] | main.go:57:3:57:14 | star expression [Category] |
-| main.go:57:28:57:34 | selection of URL | main.go:57:28:57:54 | index expression |
-| main.go:57:28:57:54 | index expression | main.go:57:3:57:14 | star expression [Category] |
-| main.go:60:3:60:25 | selection of Category | main.go:61:11:61:11 | q |
-| main.go:60:4:60:15 | star expression [Category] | main.go:60:3:60:25 | selection of Category |
-| main.go:60:5:60:15 | RequestData [pointer, Category] | main.go:60:4:60:15 | star expression [Category] |
-| mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:57:22:57:29 | pipeline |
-| mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:61:27:61:32 | filter |
-| mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:63:23:63:28 | filter |
-| mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:64:22:64:27 | filter |
-| mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:66:32:66:37 | filter |
-| mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:69:17:69:22 | filter |
-| mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:70:20:70:25 | filter |
-| mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:71:29:71:34 | filter |
-| mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:72:30:72:35 | filter |
-| mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:73:29:73:34 | filter |
-| mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:78:23:78:28 | filter |
-| mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:79:23:79:28 | filter |
-| mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:80:22:80:27 | filter |
-| mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:81:18:81:25 | pipeline |
+| SqlInjection.go:10:7:11:30 | []type{args} [array] | SqlInjection.go:10:7:11:30 | call to Sprintf | provenance | MaD:23 |
+| SqlInjection.go:10:7:11:30 | call to Sprintf | SqlInjection.go:12:11:12:11 | q | provenance | Sink:MaD:1 |
+| SqlInjection.go:11:3:11:9 | selection of URL | SqlInjection.go:11:3:11:17 | call to Query | provenance | Src:MaD:21 MaD:26 |
+| SqlInjection.go:11:3:11:17 | call to Query | SqlInjection.go:11:3:11:29 | index expression | provenance |  |
+| SqlInjection.go:11:3:11:29 | index expression | SqlInjection.go:10:7:11:30 | []type{args} [array] | provenance |  |
+| SqlInjection.go:11:3:11:29 | index expression | SqlInjection.go:10:7:11:30 | call to Sprintf | provenance | FunctionModel |
+| issue48.go:17:2:17:33 | ... := ...[0] | issue48.go:18:17:18:17 | b | provenance |  |
+| issue48.go:17:25:17:32 | selection of Body | issue48.go:17:2:17:33 | ... := ...[0] | provenance | Src:MaD:17 MaD:24 |
+| issue48.go:18:17:18:17 | b | issue48.go:18:20:18:39 | &... | provenance | MaD:22 |
+| issue48.go:18:20:18:39 | &... | issue48.go:21:3:21:33 | index expression | provenance |  |
+| issue48.go:20:8:21:34 | []type{args} [array] | issue48.go:20:8:21:34 | call to Sprintf | provenance | MaD:23 |
+| issue48.go:20:8:21:34 | call to Sprintf | issue48.go:22:11:22:12 | q3 | provenance | Sink:MaD:1 |
+| issue48.go:21:3:21:33 | index expression | issue48.go:20:8:21:34 | []type{args} [array] | provenance |  |
+| issue48.go:21:3:21:33 | index expression | issue48.go:20:8:21:34 | call to Sprintf | provenance | FunctionModel |
+| issue48.go:27:2:27:34 | ... := ...[0] | issue48.go:28:17:28:18 | b2 | provenance |  |
+| issue48.go:27:26:27:33 | selection of Body | issue48.go:27:2:27:34 | ... := ...[0] | provenance | Src:MaD:17 MaD:24 |
+| issue48.go:28:17:28:18 | b2 | issue48.go:28:21:28:41 | &... | provenance | MaD:22 |
+| issue48.go:28:21:28:41 | &... | issue48.go:31:3:31:31 | selection of Category | provenance |  |
+| issue48.go:30:8:31:32 | []type{args} [array] | issue48.go:30:8:31:32 | call to Sprintf | provenance | MaD:23 |
+| issue48.go:30:8:31:32 | call to Sprintf | issue48.go:32:11:32:12 | q4 | provenance | Sink:MaD:1 |
+| issue48.go:31:3:31:31 | selection of Category | issue48.go:30:8:31:32 | []type{args} [array] | provenance |  |
+| issue48.go:31:3:31:31 | selection of Category | issue48.go:30:8:31:32 | call to Sprintf | provenance | FunctionModel |
+| issue48.go:37:17:37:50 | type conversion | issue48.go:37:53:37:73 | &... | provenance | MaD:22 |
+| issue48.go:37:24:37:30 | selection of URL | issue48.go:37:24:37:38 | call to Query | provenance | Src:MaD:21 MaD:26 |
+| issue48.go:37:24:37:38 | call to Query | issue48.go:37:17:37:50 | type conversion | provenance |  |
+| issue48.go:37:53:37:73 | &... | issue48.go:40:3:40:31 | selection of Category | provenance |  |
+| issue48.go:39:8:40:32 | []type{args} [array] | issue48.go:39:8:40:32 | call to Sprintf | provenance | MaD:23 |
+| issue48.go:39:8:40:32 | call to Sprintf | issue48.go:41:11:41:12 | q5 | provenance | Sink:MaD:1 |
+| issue48.go:40:3:40:31 | selection of Category | issue48.go:39:8:40:32 | []type{args} [array] | provenance |  |
+| issue48.go:40:3:40:31 | selection of Category | issue48.go:39:8:40:32 | call to Sprintf | provenance | FunctionModel |
+| main.go:11:11:11:16 | selection of Form | main.go:11:11:11:28 | index expression | provenance | Src:MaD:18 Sink:MaD:1 |
+| main.go:15:11:15:84 | []type{args} [array] | main.go:15:11:15:84 | call to Sprintf | provenance | MaD:23 Sink:MaD:2 |
+| main.go:15:63:15:67 | selection of URL | main.go:15:63:15:75 | call to Query | provenance | Src:MaD:21 MaD:26 |
+| main.go:15:63:15:75 | call to Query | main.go:15:63:15:83 | index expression | provenance |  |
+| main.go:15:63:15:83 | index expression | main.go:15:11:15:84 | []type{args} [array] | provenance |  |
+| main.go:15:63:15:83 | index expression | main.go:15:11:15:84 | call to Sprintf | provenance | FunctionModel Sink:MaD:2 |
+| main.go:16:11:16:85 | []type{args} [array] | main.go:16:11:16:85 | call to Sprintf | provenance | MaD:23 Sink:MaD:2 |
+| main.go:16:63:16:70 | selection of Header | main.go:16:63:16:84 | call to Get | provenance | Src:MaD:19 MaD:25 |
+| main.go:16:63:16:84 | call to Get | main.go:16:11:16:85 | []type{args} [array] | provenance |  |
+| main.go:16:63:16:84 | call to Get | main.go:16:11:16:85 | call to Sprintf | provenance | FunctionModel Sink:MaD:2 |
+| main.go:28:17:31:2 | &... [pointer, Category] | main.go:34:3:34:13 | RequestData [pointer, Category] | provenance |  |
+| main.go:28:18:31:2 | struct literal [Category] | main.go:28:17:31:2 | &... [pointer, Category] | provenance |  |
+| main.go:30:13:30:19 | selection of URL | main.go:30:13:30:27 | call to Query | provenance | Src:MaD:21 MaD:26 |
+| main.go:30:13:30:27 | call to Query | main.go:30:13:30:39 | index expression | provenance |  |
+| main.go:30:13:30:39 | index expression | main.go:28:18:31:2 | struct literal [Category] | provenance |  |
+| main.go:33:7:34:23 | []type{args} [array] | main.go:33:7:34:23 | call to Sprintf | provenance | MaD:23 |
+| main.go:33:7:34:23 | call to Sprintf | main.go:35:11:35:11 | q | provenance | Sink:MaD:1 |
+| main.go:34:3:34:13 | RequestData [pointer, Category] | main.go:34:3:34:13 | implicit dereference [Category] | provenance |  |
+| main.go:34:3:34:13 | implicit dereference [Category] | main.go:34:3:34:22 | selection of Category | provenance |  |
+| main.go:34:3:34:22 | selection of Category | main.go:33:7:34:23 | []type{args} [array] | provenance |  |
+| main.go:34:3:34:22 | selection of Category | main.go:33:7:34:23 | call to Sprintf | provenance | FunctionModel |
+| main.go:39:2:39:12 | definition of RequestData [pointer, Category] | main.go:40:2:40:12 | RequestData [pointer, Category] | provenance |  |
+| main.go:39:2:39:12 | definition of RequestData [pointer, Category] | main.go:43:3:43:13 | RequestData [pointer, Category] | provenance |  |
+| main.go:40:2:40:12 | RequestData [pointer, Category] | main.go:40:2:40:12 | implicit dereference [Category] | provenance |  |
+| main.go:40:2:40:12 | implicit dereference [Category] | main.go:39:2:39:12 | definition of RequestData [pointer, Category] | provenance |  |
+| main.go:40:25:40:31 | selection of URL | main.go:40:25:40:39 | call to Query | provenance | Src:MaD:21 MaD:26 |
+| main.go:40:25:40:39 | call to Query | main.go:40:25:40:51 | index expression | provenance |  |
+| main.go:40:25:40:51 | index expression | main.go:40:2:40:12 | implicit dereference [Category] | provenance |  |
+| main.go:42:7:43:23 | []type{args} [array] | main.go:42:7:43:23 | call to Sprintf | provenance | MaD:23 |
+| main.go:42:7:43:23 | call to Sprintf | main.go:44:11:44:11 | q | provenance | Sink:MaD:1 |
+| main.go:43:3:43:13 | RequestData [pointer, Category] | main.go:43:3:43:13 | implicit dereference [Category] | provenance |  |
+| main.go:43:3:43:13 | implicit dereference [Category] | main.go:43:3:43:22 | selection of Category | provenance |  |
+| main.go:43:3:43:22 | selection of Category | main.go:42:7:43:23 | []type{args} [array] | provenance |  |
+| main.go:43:3:43:22 | selection of Category | main.go:42:7:43:23 | call to Sprintf | provenance | FunctionModel |
+| main.go:48:2:48:12 | definition of RequestData [pointer, Category] | main.go:49:4:49:14 | RequestData [pointer, Category] | provenance |  |
+| main.go:48:2:48:12 | definition of RequestData [pointer, Category] | main.go:52:3:52:13 | RequestData [pointer, Category] | provenance |  |
+| main.go:49:3:49:14 | star expression [Category] | main.go:48:2:48:12 | definition of RequestData [pointer, Category] | provenance |  |
+| main.go:49:4:49:14 | RequestData [pointer, Category] | main.go:49:3:49:14 | star expression [Category] | provenance |  |
+| main.go:49:28:49:34 | selection of URL | main.go:49:28:49:42 | call to Query | provenance | Src:MaD:21 MaD:26 |
+| main.go:49:28:49:42 | call to Query | main.go:49:28:49:54 | index expression | provenance |  |
+| main.go:49:28:49:54 | index expression | main.go:49:3:49:14 | star expression [Category] | provenance |  |
+| main.go:51:7:52:23 | []type{args} [array] | main.go:51:7:52:23 | call to Sprintf | provenance | MaD:23 |
+| main.go:51:7:52:23 | call to Sprintf | main.go:53:11:53:11 | q | provenance | Sink:MaD:1 |
+| main.go:52:3:52:13 | RequestData [pointer, Category] | main.go:52:3:52:13 | implicit dereference [Category] | provenance |  |
+| main.go:52:3:52:13 | implicit dereference [Category] | main.go:52:3:52:22 | selection of Category | provenance |  |
+| main.go:52:3:52:22 | selection of Category | main.go:51:7:52:23 | []type{args} [array] | provenance |  |
+| main.go:52:3:52:22 | selection of Category | main.go:51:7:52:23 | call to Sprintf | provenance | FunctionModel |
+| main.go:57:2:57:12 | definition of RequestData [pointer, Category] | main.go:58:4:58:14 | RequestData [pointer, Category] | provenance |  |
+| main.go:57:2:57:12 | definition of RequestData [pointer, Category] | main.go:61:5:61:15 | RequestData [pointer, Category] | provenance |  |
+| main.go:58:3:58:14 | star expression [Category] | main.go:57:2:57:12 | definition of RequestData [pointer, Category] | provenance |  |
+| main.go:58:4:58:14 | RequestData [pointer, Category] | main.go:58:3:58:14 | star expression [Category] | provenance |  |
+| main.go:58:28:58:34 | selection of URL | main.go:58:28:58:42 | call to Query | provenance | Src:MaD:21 MaD:26 |
+| main.go:58:28:58:42 | call to Query | main.go:58:28:58:54 | index expression | provenance |  |
+| main.go:58:28:58:54 | index expression | main.go:58:3:58:14 | star expression [Category] | provenance |  |
+| main.go:60:7:61:26 | []type{args} [array] | main.go:60:7:61:26 | call to Sprintf | provenance | MaD:23 |
+| main.go:60:7:61:26 | call to Sprintf | main.go:62:11:62:11 | q | provenance | Sink:MaD:1 |
+| main.go:61:3:61:25 | selection of Category | main.go:60:7:61:26 | []type{args} [array] | provenance |  |
+| main.go:61:3:61:25 | selection of Category | main.go:60:7:61:26 | call to Sprintf | provenance | FunctionModel |
+| main.go:61:4:61:15 | star expression [Category] | main.go:61:3:61:25 | selection of Category | provenance |  |
+| main.go:61:5:61:15 | RequestData [pointer, Category] | main.go:61:4:61:15 | star expression [Category] | provenance |  |
+| mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:42:28:42:41 | untrustedInput | provenance | Src:MaD:20  |
+| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:50:34:50:39 | filter | provenance |  |
+| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:61:27:61:32 | filter | provenance | Sink:MaD:4 |
+| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:63:23:63:28 | filter | provenance | Sink:MaD:5 |
+| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:64:22:64:27 | filter | provenance | Sink:MaD:6 |
+| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:66:32:66:37 | filter | provenance | Sink:MaD:7 |
+| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:69:17:69:22 | filter | provenance | Sink:MaD:8 |
+| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:70:20:70:25 | filter | provenance | Sink:MaD:9 |
+| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:71:29:71:34 | filter | provenance | Sink:MaD:10 |
+| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:72:30:72:35 | filter | provenance | Sink:MaD:11 |
+| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:73:29:73:34 | filter | provenance | Sink:MaD:12 |
+| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:78:23:78:28 | filter | provenance | Sink:MaD:13 |
+| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:79:23:79:28 | filter | provenance | Sink:MaD:14 |
+| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:80:22:80:27 | filter | provenance | Sink:MaD:15 |
+| mongoDB.go:42:28:42:41 | untrustedInput | mongoDB.go:42:19:42:42 | struct literal | provenance | Config |
+| mongoDB.go:50:23:50:40 | struct literal | mongoDB.go:57:22:57:29 | pipeline | provenance | Sink:MaD:3 |
+| mongoDB.go:50:23:50:40 | struct literal | mongoDB.go:81:18:81:25 | pipeline | provenance | Sink:MaD:16 |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:50:23:50:40 | struct literal | provenance | Config |
+models
+| 1 | Sink: database/sql; DB; true; Query; ; ; Argument[0]; sql-injection; manual |
+| 2 | Sink: database/sql; Tx; true; Query; ; ; Argument[0]; sql-injection; manual |
+| 3 | Sink: go.mongodb.org/mongo-driver/mongo; Collection; true; Aggregate; ; ; Argument[1]; nosql-injection; manual |
+| 4 | Sink: go.mongodb.org/mongo-driver/mongo; Collection; true; CountDocuments; ; ; Argument[1]; nosql-injection; manual |
+| 5 | Sink: go.mongodb.org/mongo-driver/mongo; Collection; true; DeleteMany; ; ; Argument[1]; nosql-injection; manual |
+| 6 | Sink: go.mongodb.org/mongo-driver/mongo; Collection; true; DeleteOne; ; ; Argument[1]; nosql-injection; manual |
+| 7 | Sink: go.mongodb.org/mongo-driver/mongo; Collection; true; Distinct; ; ; Argument[2]; nosql-injection; manual |
+| 8 | Sink: go.mongodb.org/mongo-driver/mongo; Collection; true; Find; ; ; Argument[1]; nosql-injection; manual |
+| 9 | Sink: go.mongodb.org/mongo-driver/mongo; Collection; true; FindOne; ; ; Argument[1]; nosql-injection; manual |
+| 10 | Sink: go.mongodb.org/mongo-driver/mongo; Collection; true; FindOneAndDelete; ; ; Argument[1]; nosql-injection; manual |
+| 11 | Sink: go.mongodb.org/mongo-driver/mongo; Collection; true; FindOneAndReplace; ; ; Argument[1]; nosql-injection; manual |
+| 12 | Sink: go.mongodb.org/mongo-driver/mongo; Collection; true; FindOneAndUpdate; ; ; Argument[1]; nosql-injection; manual |
+| 13 | Sink: go.mongodb.org/mongo-driver/mongo; Collection; true; ReplaceOne; ; ; Argument[1]; nosql-injection; manual |
+| 14 | Sink: go.mongodb.org/mongo-driver/mongo; Collection; true; UpdateMany; ; ; Argument[1]; nosql-injection; manual |
+| 15 | Sink: go.mongodb.org/mongo-driver/mongo; Collection; true; UpdateOne; ; ; Argument[1]; nosql-injection; manual |
+| 16 | Sink: go.mongodb.org/mongo-driver/mongo; Collection; true; Watch; ; ; Argument[1]; nosql-injection; manual |
+| 17 | Source: net/http; Request; true; Body; ; ; ; remote; manual |
+| 18 | Source: net/http; Request; true; Form; ; ; ; remote; manual |
+| 19 | Source: net/http; Request; true; Header; ; ; ; remote; manual |
+| 20 | Source: net/http; Request; true; Referer; ; ; ReturnValue; remote; manual |
+| 21 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
+| 22 | Summary: encoding/json; ; false; Unmarshal; ; ; Argument[0]; Argument[1]; taint; manual |
+| 23 | Summary: fmt; ; false; Sprintf; ; ; Argument[1].ArrayElement; ReturnValue; taint; manual |
+| 24 | Summary: io/ioutil; ; false; ReadAll; ; ; Argument[0]; ReturnValue[0]; taint; manual |
+| 25 | Summary: net/http; Header; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
+| 26 | Summary: net/url; URL; true; Query; ; ; Argument[receiver]; ReturnValue; taint; manual |
 nodes
+| SqlInjection.go:10:7:11:30 | []type{args} [array] | semmle.label | []type{args} [array] |
+| SqlInjection.go:10:7:11:30 | call to Sprintf | semmle.label | call to Sprintf |
 | SqlInjection.go:11:3:11:9 | selection of URL | semmle.label | selection of URL |
+| SqlInjection.go:11:3:11:17 | call to Query | semmle.label | call to Query |
+| SqlInjection.go:11:3:11:29 | index expression | semmle.label | index expression |
 | SqlInjection.go:12:11:12:11 | q | semmle.label | q |
+| issue48.go:17:2:17:33 | ... := ...[0] | semmle.label | ... := ...[0] |
 | issue48.go:17:25:17:32 | selection of Body | semmle.label | selection of Body |
+| issue48.go:18:17:18:17 | b | semmle.label | b |
+| issue48.go:18:20:18:39 | &... | semmle.label | &... |
+| issue48.go:20:8:21:34 | []type{args} [array] | semmle.label | []type{args} [array] |
+| issue48.go:20:8:21:34 | call to Sprintf | semmle.label | call to Sprintf |
+| issue48.go:21:3:21:33 | index expression | semmle.label | index expression |
 | issue48.go:22:11:22:12 | q3 | semmle.label | q3 |
+| issue48.go:27:2:27:34 | ... := ...[0] | semmle.label | ... := ...[0] |
 | issue48.go:27:26:27:33 | selection of Body | semmle.label | selection of Body |
+| issue48.go:28:17:28:18 | b2 | semmle.label | b2 |
+| issue48.go:28:21:28:41 | &... | semmle.label | &... |
+| issue48.go:30:8:31:32 | []type{args} [array] | semmle.label | []type{args} [array] |
+| issue48.go:30:8:31:32 | call to Sprintf | semmle.label | call to Sprintf |
+| issue48.go:31:3:31:31 | selection of Category | semmle.label | selection of Category |
 | issue48.go:32:11:32:12 | q4 | semmle.label | q4 |
 | issue48.go:37:17:37:50 | type conversion | semmle.label | type conversion |
 | issue48.go:37:24:37:30 | selection of URL | semmle.label | selection of URL |
+| issue48.go:37:24:37:38 | call to Query | semmle.label | call to Query |
+| issue48.go:37:53:37:73 | &... | semmle.label | &... |
+| issue48.go:39:8:40:32 | []type{args} [array] | semmle.label | []type{args} [array] |
+| issue48.go:39:8:40:32 | call to Sprintf | semmle.label | call to Sprintf |
+| issue48.go:40:3:40:31 | selection of Category | semmle.label | selection of Category |
 | issue48.go:41:11:41:12 | q5 | semmle.label | q5 |
-| main.go:10:11:10:16 | selection of Form | semmle.label | selection of Form |
-| main.go:10:11:10:28 | index expression | semmle.label | index expression |
-| main.go:14:11:14:84 | call to Sprintf | semmle.label | call to Sprintf |
-| main.go:14:63:14:67 | selection of URL | semmle.label | selection of URL |
-| main.go:15:11:15:85 | call to Sprintf | semmle.label | call to Sprintf |
-| main.go:15:63:15:70 | selection of Header | semmle.label | selection of Header |
-| main.go:27:17:30:2 | &... [pointer, Category] | semmle.label | &... [pointer, Category] |
-| main.go:27:18:30:2 | struct literal [Category] | semmle.label | struct literal [Category] |
-| main.go:29:13:29:19 | selection of URL | semmle.label | selection of URL |
-| main.go:29:13:29:39 | index expression | semmle.label | index expression |
-| main.go:33:3:33:13 | RequestData [pointer, Category] | semmle.label | RequestData [pointer, Category] |
-| main.go:33:3:33:13 | implicit dereference [Category] | semmle.label | implicit dereference [Category] |
-| main.go:33:3:33:22 | selection of Category | semmle.label | selection of Category |
-| main.go:34:11:34:11 | q | semmle.label | q |
-| main.go:38:2:38:12 | definition of RequestData [pointer, Category] | semmle.label | definition of RequestData [pointer, Category] |
-| main.go:39:2:39:12 | RequestData [pointer, Category] | semmle.label | RequestData [pointer, Category] |
-| main.go:39:2:39:12 | implicit dereference [Category] | semmle.label | implicit dereference [Category] |
-| main.go:39:25:39:31 | selection of URL | semmle.label | selection of URL |
-| main.go:39:25:39:51 | index expression | semmle.label | index expression |
-| main.go:42:3:42:13 | RequestData [pointer, Category] | semmle.label | RequestData [pointer, Category] |
-| main.go:42:3:42:13 | implicit dereference [Category] | semmle.label | implicit dereference [Category] |
-| main.go:42:3:42:22 | selection of Category | semmle.label | selection of Category |
-| main.go:43:11:43:11 | q | semmle.label | q |
-| main.go:47:2:47:12 | definition of RequestData [pointer, Category] | semmle.label | definition of RequestData [pointer, Category] |
-| main.go:48:3:48:14 | star expression [Category] | semmle.label | star expression [Category] |
-| main.go:48:4:48:14 | RequestData [pointer, Category] | semmle.label | RequestData [pointer, Category] |
-| main.go:48:28:48:34 | selection of URL | semmle.label | selection of URL |
-| main.go:48:28:48:54 | index expression | semmle.label | index expression |
-| main.go:51:3:51:13 | RequestData [pointer, Category] | semmle.label | RequestData [pointer, Category] |
-| main.go:51:3:51:13 | implicit dereference [Category] | semmle.label | implicit dereference [Category] |
-| main.go:51:3:51:22 | selection of Category | semmle.label | selection of Category |
-| main.go:52:11:52:11 | q | semmle.label | q |
-| main.go:56:2:56:12 | definition of RequestData [pointer, Category] | semmle.label | definition of RequestData [pointer, Category] |
-| main.go:57:3:57:14 | star expression [Category] | semmle.label | star expression [Category] |
-| main.go:57:4:57:14 | RequestData [pointer, Category] | semmle.label | RequestData [pointer, Category] |
-| main.go:57:28:57:34 | selection of URL | semmle.label | selection of URL |
-| main.go:57:28:57:54 | index expression | semmle.label | index expression |
-| main.go:60:3:60:25 | selection of Category | semmle.label | selection of Category |
-| main.go:60:4:60:15 | star expression [Category] | semmle.label | star expression [Category] |
-| main.go:60:5:60:15 | RequestData [pointer, Category] | semmle.label | RequestData [pointer, Category] |
-| main.go:61:11:61:11 | q | semmle.label | q |
+| main.go:11:11:11:16 | selection of Form | semmle.label | selection of Form |
+| main.go:11:11:11:28 | index expression | semmle.label | index expression |
+| main.go:15:11:15:84 | []type{args} [array] | semmle.label | []type{args} [array] |
+| main.go:15:11:15:84 | call to Sprintf | semmle.label | call to Sprintf |
+| main.go:15:63:15:67 | selection of URL | semmle.label | selection of URL |
+| main.go:15:63:15:75 | call to Query | semmle.label | call to Query |
+| main.go:15:63:15:83 | index expression | semmle.label | index expression |
+| main.go:16:11:16:85 | []type{args} [array] | semmle.label | []type{args} [array] |
+| main.go:16:11:16:85 | call to Sprintf | semmle.label | call to Sprintf |
+| main.go:16:63:16:70 | selection of Header | semmle.label | selection of Header |
+| main.go:16:63:16:84 | call to Get | semmle.label | call to Get |
+| main.go:28:17:31:2 | &... [pointer, Category] | semmle.label | &... [pointer, Category] |
+| main.go:28:18:31:2 | struct literal [Category] | semmle.label | struct literal [Category] |
+| main.go:30:13:30:19 | selection of URL | semmle.label | selection of URL |
+| main.go:30:13:30:27 | call to Query | semmle.label | call to Query |
+| main.go:30:13:30:39 | index expression | semmle.label | index expression |
+| main.go:33:7:34:23 | []type{args} [array] | semmle.label | []type{args} [array] |
+| main.go:33:7:34:23 | call to Sprintf | semmle.label | call to Sprintf |
+| main.go:34:3:34:13 | RequestData [pointer, Category] | semmle.label | RequestData [pointer, Category] |
+| main.go:34:3:34:13 | implicit dereference [Category] | semmle.label | implicit dereference [Category] |
+| main.go:34:3:34:22 | selection of Category | semmle.label | selection of Category |
+| main.go:35:11:35:11 | q | semmle.label | q |
+| main.go:39:2:39:12 | definition of RequestData [pointer, Category] | semmle.label | definition of RequestData [pointer, Category] |
+| main.go:40:2:40:12 | RequestData [pointer, Category] | semmle.label | RequestData [pointer, Category] |
+| main.go:40:2:40:12 | implicit dereference [Category] | semmle.label | implicit dereference [Category] |
+| main.go:40:25:40:31 | selection of URL | semmle.label | selection of URL |
+| main.go:40:25:40:39 | call to Query | semmle.label | call to Query |
+| main.go:40:25:40:51 | index expression | semmle.label | index expression |
+| main.go:42:7:43:23 | []type{args} [array] | semmle.label | []type{args} [array] |
+| main.go:42:7:43:23 | call to Sprintf | semmle.label | call to Sprintf |
+| main.go:43:3:43:13 | RequestData [pointer, Category] | semmle.label | RequestData [pointer, Category] |
+| main.go:43:3:43:13 | implicit dereference [Category] | semmle.label | implicit dereference [Category] |
+| main.go:43:3:43:22 | selection of Category | semmle.label | selection of Category |
+| main.go:44:11:44:11 | q | semmle.label | q |
+| main.go:48:2:48:12 | definition of RequestData [pointer, Category] | semmle.label | definition of RequestData [pointer, Category] |
+| main.go:49:3:49:14 | star expression [Category] | semmle.label | star expression [Category] |
+| main.go:49:4:49:14 | RequestData [pointer, Category] | semmle.label | RequestData [pointer, Category] |
+| main.go:49:28:49:34 | selection of URL | semmle.label | selection of URL |
+| main.go:49:28:49:42 | call to Query | semmle.label | call to Query |
+| main.go:49:28:49:54 | index expression | semmle.label | index expression |
+| main.go:51:7:52:23 | []type{args} [array] | semmle.label | []type{args} [array] |
+| main.go:51:7:52:23 | call to Sprintf | semmle.label | call to Sprintf |
+| main.go:52:3:52:13 | RequestData [pointer, Category] | semmle.label | RequestData [pointer, Category] |
+| main.go:52:3:52:13 | implicit dereference [Category] | semmle.label | implicit dereference [Category] |
+| main.go:52:3:52:22 | selection of Category | semmle.label | selection of Category |
+| main.go:53:11:53:11 | q | semmle.label | q |
+| main.go:57:2:57:12 | definition of RequestData [pointer, Category] | semmle.label | definition of RequestData [pointer, Category] |
+| main.go:58:3:58:14 | star expression [Category] | semmle.label | star expression [Category] |
+| main.go:58:4:58:14 | RequestData [pointer, Category] | semmle.label | RequestData [pointer, Category] |
+| main.go:58:28:58:34 | selection of URL | semmle.label | selection of URL |
+| main.go:58:28:58:42 | call to Query | semmle.label | call to Query |
+| main.go:58:28:58:54 | index expression | semmle.label | index expression |
+| main.go:60:7:61:26 | []type{args} [array] | semmle.label | []type{args} [array] |
+| main.go:60:7:61:26 | call to Sprintf | semmle.label | call to Sprintf |
+| main.go:61:3:61:25 | selection of Category | semmle.label | selection of Category |
+| main.go:61:4:61:15 | star expression [Category] | semmle.label | star expression [Category] |
+| main.go:61:5:61:15 | RequestData [pointer, Category] | semmle.label | RequestData [pointer, Category] |
+| main.go:62:11:62:11 | q | semmle.label | q |
 | mongoDB.go:40:20:40:30 | call to Referer | semmle.label | call to Referer |
+| mongoDB.go:42:19:42:42 | struct literal | semmle.label | struct literal |
+| mongoDB.go:42:28:42:41 | untrustedInput | semmle.label | untrustedInput |
+| mongoDB.go:50:23:50:40 | struct literal | semmle.label | struct literal |
+| mongoDB.go:50:34:50:39 | filter | semmle.label | filter |
 | mongoDB.go:57:22:57:29 | pipeline | semmle.label | pipeline |
 | mongoDB.go:61:27:61:32 | filter | semmle.label | filter |
 | mongoDB.go:63:23:63:28 | filter | semmle.label | filter |
@@ -122,29 +269,3 @@ nodes
 | mongoDB.go:80:22:80:27 | filter | semmle.label | filter |
 | mongoDB.go:81:18:81:25 | pipeline | semmle.label | pipeline |
 subpaths
-#select
-| SqlInjection.go:12:11:12:11 | q | SqlInjection.go:11:3:11:9 | selection of URL | SqlInjection.go:12:11:12:11 | q | This query depends on a $@. | SqlInjection.go:11:3:11:9 | selection of URL | user-provided value |
-| issue48.go:22:11:22:12 | q3 | issue48.go:17:25:17:32 | selection of Body | issue48.go:22:11:22:12 | q3 | This query depends on a $@. | issue48.go:17:25:17:32 | selection of Body | user-provided value |
-| issue48.go:32:11:32:12 | q4 | issue48.go:27:26:27:33 | selection of Body | issue48.go:32:11:32:12 | q4 | This query depends on a $@. | issue48.go:27:26:27:33 | selection of Body | user-provided value |
-| issue48.go:41:11:41:12 | q5 | issue48.go:37:24:37:30 | selection of URL | issue48.go:41:11:41:12 | q5 | This query depends on a $@. | issue48.go:37:24:37:30 | selection of URL | user-provided value |
-| main.go:10:11:10:28 | index expression | main.go:10:11:10:16 | selection of Form | main.go:10:11:10:28 | index expression | This query depends on a $@. | main.go:10:11:10:16 | selection of Form | user-provided value |
-| main.go:14:11:14:84 | call to Sprintf | main.go:14:63:14:67 | selection of URL | main.go:14:11:14:84 | call to Sprintf | This query depends on a $@. | main.go:14:63:14:67 | selection of URL | user-provided value |
-| main.go:15:11:15:85 | call to Sprintf | main.go:15:63:15:70 | selection of Header | main.go:15:11:15:85 | call to Sprintf | This query depends on a $@. | main.go:15:63:15:70 | selection of Header | user-provided value |
-| main.go:34:11:34:11 | q | main.go:29:13:29:19 | selection of URL | main.go:34:11:34:11 | q | This query depends on a $@. | main.go:29:13:29:19 | selection of URL | user-provided value |
-| main.go:43:11:43:11 | q | main.go:39:25:39:31 | selection of URL | main.go:43:11:43:11 | q | This query depends on a $@. | main.go:39:25:39:31 | selection of URL | user-provided value |
-| main.go:52:11:52:11 | q | main.go:48:28:48:34 | selection of URL | main.go:52:11:52:11 | q | This query depends on a $@. | main.go:48:28:48:34 | selection of URL | user-provided value |
-| main.go:61:11:61:11 | q | main.go:57:28:57:34 | selection of URL | main.go:61:11:61:11 | q | This query depends on a $@. | main.go:57:28:57:34 | selection of URL | user-provided value |
-| mongoDB.go:57:22:57:29 | pipeline | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:57:22:57:29 | pipeline | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
-| mongoDB.go:61:27:61:32 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:61:27:61:32 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
-| mongoDB.go:63:23:63:28 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:63:23:63:28 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
-| mongoDB.go:64:22:64:27 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:64:22:64:27 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
-| mongoDB.go:66:32:66:37 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:66:32:66:37 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
-| mongoDB.go:69:17:69:22 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:69:17:69:22 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
-| mongoDB.go:70:20:70:25 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:70:20:70:25 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
-| mongoDB.go:71:29:71:34 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:71:29:71:34 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
-| mongoDB.go:72:30:72:35 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:72:30:72:35 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
-| mongoDB.go:73:29:73:34 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:73:29:73:34 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
-| mongoDB.go:78:23:78:28 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:78:23:78:28 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
-| mongoDB.go:79:23:79:28 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:79:23:79:28 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
-| mongoDB.go:80:22:80:27 | filter | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:80:22:80:27 | filter | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |
-| mongoDB.go:81:18:81:25 | pipeline | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:81:18:81:25 | pipeline | This query depends on a $@. | mongoDB.go:40:20:40:30 | call to Referer | user-provided value |

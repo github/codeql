@@ -1,0 +1,28 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["fmt", "", False, "Print", "", "", "Argument[0]", "log-injection", "manual"]
+      - ["fmt", "", False, "Printf",  "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["fmt", "", False, "Println", "", "", "Argument[0]", "log-injection", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["fmt", "GoStringer", True, "GoString", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["fmt", "ScanState", True, "Read", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["fmt", "ScanState", True, "Token", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["fmt", "State", True, "Write", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["fmt", "Stringer", True, "String", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["fmt", "", False, "Append", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["fmt", "", False, "Append", "", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "manual"]
+      - ["fmt", "", False, "Appendf", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["fmt", "", False, "Appendf", "", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+      - ["fmt", "", False, "Appendf", "", "", "Argument[2].ArrayElement", "ReturnValue", "taint", "manual"]
+      - ["fmt", "", False, "Appendln", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["fmt", "", False, "Appendln", "", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "manual"]
+      - ["fmt", "", False, "Sprint", "", "", "Argument[0].ArrayElement", "ReturnValue", "taint", "manual"]
+      - ["fmt", "", False, "Sprintf", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["fmt", "", False, "Sprintf", "", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "manual"]
+      - ["fmt", "", False, "Sprintln", "", "", "Argument[0].ArrayElement", "ReturnValue", "taint", "manual"]

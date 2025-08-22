@@ -17,7 +17,7 @@ func TaintTracking_ClevergoTechClevergoV052() {
 		{
 			fromString598 := source().(string)
 			intoString631 := clevergo.CleanPath(fromString598)
-			sink(intoString631) // $ taintSink
+			sink(intoString631) // $ hasTaintFlow="intoString631"
 		}
 	}
 	// Taint-tracking through method calls.
@@ -30,13 +30,13 @@ func TaintTracking_ClevergoTechClevergoV052() {
 					fromString165 := source().(string)
 					var mediumObjCQL clevergo.Application
 					intoURL150, _ := mediumObjCQL.RouteURL(fromString165, "")
-					sink(intoURL150) // $ taintSink
+					sink(intoURL150) // $ hasTaintFlow="intoURL150"
 				}
 				{
 					fromString340 := source().(string)
 					var mediumObjCQL clevergo.Application
 					intoURL471, _ := mediumObjCQL.RouteURL("", fromString340)
-					sink(intoURL471) // $ taintSink
+					sink(intoURL471) // $ hasTaintFlow="intoURL471"
 				}
 			}
 		}
@@ -46,7 +46,7 @@ func TaintTracking_ClevergoTechClevergoV052() {
 			{
 				fromContext290 := source().(clevergo.Context)
 				intoContext758 := fromContext290.Context()
-				sink(intoContext758) // $ taintSink
+				sink(intoContext758) // $ hasTaintFlow="intoContext758"
 			}
 		}
 		// Taint-tracking through method calls on clevergo.tech/clevergo.Params.
@@ -55,7 +55,7 @@ func TaintTracking_ClevergoTechClevergoV052() {
 			{
 				fromParams396 := source().(clevergo.Params)
 				intoString707 := fromParams396.String("")
-				sink(intoString707) // $ taintSink untrustedFlowSource
+				sink(intoString707) // $ hasTaintFlow="intoString707" remoteFlowSource
 			}
 		}
 	}
@@ -69,7 +69,7 @@ func TaintTracking_ClevergoTechClevergoV052() {
 				var intoInterface718 interface{}
 				var mediumObjCQL clevergo.Decoder
 				mediumObjCQL.Decode(fromRequest912, intoInterface718)
-				sink(intoInterface718) // $ taintSink untrustedFlowSource
+				sink(intoInterface718) // $ hasTaintFlow="intoInterface718" remoteFlowSource
 			}
 		}
 		// Taint-tracking through method calls on clevergo.tech/clevergo.Renderer interface.
@@ -80,7 +80,7 @@ func TaintTracking_ClevergoTechClevergoV052() {
 				var intoWriter633 io.Writer
 				var mediumObjCQL clevergo.Renderer
 				mediumObjCQL.Render(intoWriter633, "", fromInterface972, nil)
-				sink(intoWriter633) // $ taintSink
+				sink(intoWriter633) // $ hasTaintFlow="intoWriter633"
 			}
 		}
 	}

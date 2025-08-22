@@ -60,4 +60,6 @@ Element exprEnclosingElement(Expr e) {
       )
     else result = de.getDeclaration()
   )
+  or
+  result.(Stmt).getAnImplicitDestructorCall() = e
 }

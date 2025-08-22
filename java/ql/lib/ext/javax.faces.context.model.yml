@@ -14,5 +14,7 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["javax.faces.context", "ResponseStream", True, "write", "", "", "Argument[0]", "xss", "manual"]
-      - ["javax.faces.context", "ResponseWriter", True, "write", "", "", "Argument[0]", "xss", "manual"]
+      - ["javax.faces.context", "ExternalContext", True, "getResource", "(String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["javax.faces.context", "ExternalContext", True, "getResourceAsStream", "(String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["javax.faces.context", "ResponseStream", True, "write", "", "", "Argument[0]", "html-injection", "manual"]
+      - ["javax.faces.context", "ResponseWriter", True, "write", "", "", "Argument[0]", "html-injection", "manual"]

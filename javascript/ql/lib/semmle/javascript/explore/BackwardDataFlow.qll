@@ -12,10 +12,11 @@
  * Backward exploration in particular does not scale on non-trivial code bases and hence is of limited
  * usefulness as it stands.
  */
+deprecated module;
 
 import javascript
 
-private class BackwardExploringConfiguration extends DataFlow::Configuration {
+deprecated private class BackwardExploringConfiguration extends DataFlow::Configuration {
   BackwardExploringConfiguration() { this = any(DataFlow::Configuration cfg) }
 
   override predicate isSource(DataFlow::Node node) { any() }
@@ -23,7 +24,7 @@ private class BackwardExploringConfiguration extends DataFlow::Configuration {
   override predicate isSource(DataFlow::Node node, DataFlow::FlowLabel lbl) { any() }
 
   override predicate hasFlow(DataFlow::Node source, DataFlow::Node sink) {
-    exists(DataFlow::PathNode src, DataFlow::PathNode snk | hasFlowPath(src, snk) |
+    exists(DataFlow::PathNode src, DataFlow::PathNode snk | this.hasFlowPath(src, snk) |
       source = src.getNode() and
       sink = snk.getNode()
     )

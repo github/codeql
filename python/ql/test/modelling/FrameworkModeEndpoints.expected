@@ -1,0 +1,22 @@
+| MyPackage/Foo.py:1:1:1:9 | Class C1 | MyPackage | Foo.C1 |  |  | false | Foo.py |  | Class |
+| MyPackage/Foo.py:2:5:2:17 | Function m1 | MyPackage | Foo.C1 | m1 | (self) | true | Foo.py | source | InstanceMethod |
+| MyPackage/Foo.py:5:5:5:20 | Function m2 | MyPackage | Foo.C1 | m2 | (self,x) | true | Foo.py | source | InstanceMethod |
+| MyPackage/Foo.py:9:5:9:14 | Function m3 | MyPackage | Foo.C1 | m3 | (x) | true | Foo.py | summary | StaticMethod |
+| MyPackage/Foo.py:13:5:13:19 | Function m4 | MyPackage | Foo.C1 | m4 | (cls,x) | true | Foo.py | summary | ClassMethod |
+| MyPackage/Foo.py:16:1:16:13 | Class C2 | MyPackage | Foo.C2 |  |  | false | Foo.py |  | Class |
+| MyPackage/Foo.py:17:5:17:17 | Function m1 | MyPackage | Foo.C2 | m1 | (self) | false | Foo.py |  | InstanceMethod |
+| MyPackage/Foo.py:20:5:20:27 | Function c2only_m1 | MyPackage | Foo.C2 | c2only_m1 | (self,x) | false | Foo.py |  | InstanceMethod |
+| MyPackage/Foo.py:23:1:23:9 | Class C3 | MyPackage | Foo.C3 |  |  | false | Foo.py |  | Class |
+| MyPackage/Foo.py:24:5:24:26 | Function get_C2_instance | MyPackage | Foo.C3 | get_C2_instance | () | false | Foo.py |  | InstanceMethod |
+| MyPackage/Foo.py:31:1:31:38 | Function top_level_function | MyPackage | Foo | top_level_function | (x,y,z:) | false | Foo.py |  | Function |
+| MyPackage/Foo.py:34:1:34:42 | Function func_with_fancy_args | MyPackage | Foo | func_with_fancy_args | () | false | Foo.py |  | Function |
+| MyPackage/ModuleWithAll.py:2:1:2:10 | Class Foo | MyPackage | ModuleWithAll.Foo |  |  | false | ModuleWithAll.py |  | Class |
+| MyPackage/ModuleWithAll.py:3:1:3:10 | Class Bar | MyPackage | ModuleWithAll.Bar |  |  | false | ModuleWithAll.py |  | Class |
+| NotPackage/not_in_pacakge_lib.py:1:1:1:34 | Function not_in_pacakge_lib_func | NotPackage |  | not_in_pacakge_lib_func | (x,y) | false | not_in_pacakge_lib.py |  | Function |
+| NotPackage/not_in_pacakge_lib.py:1:1:1:34 | Function not_in_pacakge_lib_func | NotPackage | not_in_pacakge_lib | not_in_pacakge_lib_func | (x,y) | false | not_in_pacakge_lib.py |  | Function |
+| NotPackage/not_in_pacakge_lib.py:1:1:1:34 | Function not_in_pacakge_lib_func | not_in_pacakge_lib |  | not_in_pacakge_lib_func | (x,y) | false | not_in_pacakge_lib.py |  | Function |
+| NotPackage/not_in_pacakge_lib.py:1:1:1:34 | Function not_in_pacakge_lib_func | not_in_pacakge_lib | not_in_pacakge_lib | not_in_pacakge_lib_func | (x,y) | false | not_in_pacakge_lib.py |  | Function |
+| NotPackage/not_in_package_script.py:5:1:5:37 | Function not_in_package_script_func | NotPackage | not_in_package_script | not_in_package_script_func | (x,y) | false | not_in_package_script.py |  | Function |
+| NotPackage/possibly_lib.py:4:1:4:28 | Function possibly_lib_func | NotPackage | possibly_lib | possibly_lib_func | (x,y) | false | possibly_lib.py |  | Function |
+| TopLevel.py:3:1:3:38 | Function top_level_function | TopLevel |  | top_level_function | (x,y,z:) | false | TopLevel.py |  | Function |
+| not-valid-package/not_in_pacakge_lib_copy.py:1:1:1:34 | Function not_in_pacakge_lib_func | not_in_pacakge_lib_copy |  | not_in_pacakge_lib_func | (x,y) | false | not_in_pacakge_lib_copy.py |  | Function |

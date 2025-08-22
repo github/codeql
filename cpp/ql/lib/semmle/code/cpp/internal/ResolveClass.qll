@@ -3,7 +3,7 @@ import semmle.code.cpp.Type
 /** For upgraded databases without mangled name info. */
 pragma[noinline]
 private string getTopLevelClassName(@usertype c) {
-  not mangled_name(_, _) and
+  not mangled_name(_, _, _) and
   isClass(c) and
   usertypes(c, result, _) and
   not namespacembrs(_, c) and // not in a namespace
@@ -17,7 +17,7 @@ private string getTopLevelClassName(@usertype c) {
  */
 pragma[noinline]
 private predicate existsCompleteWithName(string name, @usertype d) {
-  not mangled_name(_, _) and
+  not mangled_name(_, _, _) and
   is_complete(d) and
   name = getTopLevelClassName(d) and
   onlyOneCompleteClassExistsWithName(name)
@@ -26,7 +26,7 @@ private predicate existsCompleteWithName(string name, @usertype d) {
 /** For upgraded databases without mangled name info. */
 pragma[noinline]
 private predicate onlyOneCompleteClassExistsWithName(string name) {
-  not mangled_name(_, _) and
+  not mangled_name(_, _, _) and
   strictcount(@usertype c | is_complete(c) and getTopLevelClassName(c) = name) = 1
 }
 
@@ -36,7 +36,7 @@ private predicate onlyOneCompleteClassExistsWithName(string name) {
  */
 pragma[noinline]
 private predicate existsIncompleteWithName(string name, @usertype c) {
-  not mangled_name(_, _) and
+  not mangled_name(_, _, _) and
   not is_complete(c) and
   name = getTopLevelClassName(c)
 }
@@ -47,7 +47,7 @@ private predicate existsIncompleteWithName(string name, @usertype c) {
  * with the same name.
  */
 private predicate oldHasCompleteTwin(@usertype c, @usertype d) {
-  not mangled_name(_, _) and
+  not mangled_name(_, _, _) and
   exists(string name |
     existsIncompleteWithName(name, c) and
     existsCompleteWithName(name, d)
@@ -57,7 +57,7 @@ private predicate oldHasCompleteTwin(@usertype c, @usertype d) {
 pragma[noinline]
 private @mangledname getClassMangledName(@usertype c) {
   isClass(c) and
-  mangled_name(c, result)
+  mangled_name(c, result, _)
 }
 
 /** Holds if `d` is a unique complete class named `name`. */
@@ -114,15 +114,7 @@ private module Cached {
    * Holds if `t` is a struct, class, union, or template.
    */
   cached
-  predicate isClass(@usertype t) {
-    usertypes(t, _, 1) or
-    usertypes(t, _, 2) or
-    usertypes(t, _, 3) or
-    usertypes(t, _, 6) or
-    usertypes(t, _, 10) or
-    usertypes(t, _, 11) or
-    usertypes(t, _, 12)
-  }
+  predicate isClass(@usertype t) { usertypes(t, _, [1, 2, 3, 15, 16, 17]) }
 
   cached
   predicate isType(@type t) {

@@ -1,4 +1,6 @@
 /** Provides classes and predicates related to the class `PendingIntent`. */
+overlay[local?]
+module;
 
 import java
 
@@ -8,7 +10,7 @@ class PendingIntent extends Class {
 }
 
 /** A call to a method that creates a `PendingIntent`. */
-class PendingIntentCreation extends MethodAccess {
+class PendingIntentCreation extends MethodCall {
   PendingIntentCreation() {
     exists(Method m |
       this.getMethod() = m and

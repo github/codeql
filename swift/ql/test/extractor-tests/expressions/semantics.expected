@@ -80,3 +80,5 @@
 | expressions.swift:161:9:161:9 | ^(_:_:) | OrdinarySemantics |
 | expressions.swift:162:9:162:9 | <<(_:_:) | OrdinarySemantics |
 | expressions.swift:163:9:163:9 | >>(_:_:) | OrdinarySemantics |
+| expressions.swift:186:23:186:23 | t | OrdinarySemantics |
+| expressions.swift:189:9:189:9 | makeTuple(_:) | OrdinarySemantics |

@@ -1,7 +1,10 @@
 /** Provides a module for constructing optional versions of types. */
+overlay[local?]
+module;
 
 /** A type with `toString`. */
 private signature class TypeWithToString {
+  bindingset[this]
   string toString();
 }
 

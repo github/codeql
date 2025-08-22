@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["nethermindeth/nethermind/.github/workflows/run-a-single-node-from-branch.yml", "*", "input.custom_run_id", "code-injection", "generated"]
+     - ["nethermindeth/nethermind/.github/workflows/run-a-single-node-from-branch.yml", "*", "input.non_validator_mode", "code-injection", "generated"]
+     - ["nethermindeth/nethermind/.github/workflows/run-a-single-node-from-branch.yml", "*", "input.additional_optimism_options", "code-injection", "generated"]
+     - ["nethermindeth/nethermind/.github/workflows/run-a-single-node-from-branch.yml", "*", "input.network", "code-injection", "generated"]
+     - ["nethermindeth/nethermind/.github/workflows/run-a-single-node-from-branch.yml", "*", "input.additional_options", "code-injection", "generated"]
+     - ["nethermindeth/nethermind/.github/workflows/run-a-single-node-from-branch.yml", "*", "input.cl_client", "code-injection", "generated"]

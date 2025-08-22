@@ -1,0 +1,3 @@
+| test.py:1:1:1:23 | Function my_decorator |
+| test.py:5:1:5:18 | Function my_function |
+| test.py:8:1:8:28 | Function unrelated_function |

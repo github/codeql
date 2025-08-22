@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: repositoryDataModel
+    data: []
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: workflowDataModel
+    data: []

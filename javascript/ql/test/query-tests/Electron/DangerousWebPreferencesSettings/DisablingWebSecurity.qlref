@@ -1,1 +1,2 @@
-Electron/DisablingWebSecurity.ql
+query: Electron/DisablingWebSecurity.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

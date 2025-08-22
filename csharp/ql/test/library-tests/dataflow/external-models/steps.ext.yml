@@ -15,6 +15,16 @@ extensions:
       - ["My.Qltest", "C", false, "StepPropertySetter", "(System.Int32)", "", "Argument[0]", "Argument[this].Property[My.Qltest.C.Property]", "value", "manual"]
       - ["My.Qltest", "C", false, "StepElementGetter", "()", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["My.Qltest", "C", false, "StepElementSetter", "(System.Int32)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
-      - ["My.Qltest", "C+Generic<,>", false, "StepGeneric", "(T)", "", "Argument[0]", "ReturnValue", "value", "manual"]
-      - ["My.Qltest", "C+Generic<,>", false, "StepGeneric2<>", "(S)", "", "Argument[0]", "ReturnValue", "value", "manual"]
-      - ["My.Qltest", "C+Base<>", true, "StepOverride", "(T)", "", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["My.Qltest", "C+Generic<T,U>", false, "StepGeneric", "(T)", "", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["My.Qltest", "C+Generic<T,U>", false, "StepGeneric2<S>", "(S)", "", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["My.Qltest", "C+Base<T>", true, "StepOverride", "(T)", "", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["My.Qltest", "Library", false, "StepArgReturnGenerated", "(System.Object)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["My.Qltest", "Library", false, "StepArgReturnGeneratedIgnored", "(System.Object)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+      # "namespace", "type", "name", "signature", "kind", "provenance"
+    data:
+      - ["My.Qltest", "Library", "StepArgReturnGenerated", "(System.Object)", "summary", "df-generated"]
+      - ["My.Qltest", "Library", "StepArgReturnGeneratedIgnored", "(System.Object)", "summary", "manual"]
+

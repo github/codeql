@@ -1,0 +1,13 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
+
+package(default_visibility = ["//ruby:__pkg__"])
+
+pkg_files(
+    name = "dbscheme",
+    srcs = ["ruby.dbscheme"],
+)
+
+pkg_files(
+    name = "dbscheme-stats",
+    srcs = ["ruby.dbscheme.stats"],
+)

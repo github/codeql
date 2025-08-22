@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for identifying methods and constructors called by Spring injection.
  */
+overlay[local?]
+module;
 
 import java
 import SpringComponentScan
@@ -99,9 +101,6 @@ class SpringBeanXmlAutowiredSetterMethod extends Method {
     )
   }
 }
-
-/** DEPRECATED: Alias for SpringBeanXmlAutowiredSetterMethod */
-deprecated class SpringBeanXMLAutowiredSetterMethod = SpringBeanXmlAutowiredSetterMethod;
 
 /**
  * A callable that is annotated with `@Autowired`.

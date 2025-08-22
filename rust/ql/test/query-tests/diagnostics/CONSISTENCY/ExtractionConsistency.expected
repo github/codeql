@@ -1,0 +1,8 @@
+extractionWarning
+| does_not_compile.rs:2:6:2:5 | expected SEMICOLON |
+| does_not_compile.rs:2:9:2:8 | expected SEMICOLON |
+| does_not_compile.rs:2:13:2:12 | expected SEMICOLON |
+| does_not_compile.rs:2:21:2:20 | expected SEMICOLON |
+| does_not_compile.rs:2:26:2:25 | expected SEMICOLON |
+| error.rs:2:5:2:17 | An error! |
+| my_macro.rs:17:9:17:27 | macro expansion failed: could not resolve macro 'myUndefinedMacro' |

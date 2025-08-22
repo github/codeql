@@ -10,9 +10,10 @@ getMethod
 | calls.rb:105:1:113:3 | Module | module_eval | calls.rb:107:5:107:24 | module_eval |
 | calls.rb:105:1:113:3 | Module | prepend | calls.rb:111:5:111:20 | prepend |
 | calls.rb:105:1:113:3 | Module | private | calls.rb:112:5:112:20 | private |
-| calls.rb:115:1:118:3 | Object | add_singleton | calls.rb:367:1:371:3 | add_singleton |
+| calls.rb:115:1:118:3 | Object | add_singleton | calls.rb:374:1:378:3 | add_singleton |
 | calls.rb:115:1:118:3 | Object | call_block | calls.rb:81:1:83:3 | call_block |
 | calls.rb:115:1:118:3 | Object | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:115:1:118:3 | Object | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
 | calls.rb:115:1:118:3 | Object | create | calls.rb:278:1:286:3 | create |
 | calls.rb:115:1:118:3 | Object | foo | calls.rb:1:1:3:3 | foo |
 | calls.rb:115:1:118:3 | Object | foo | calls.rb:85:1:89:3 | foo |
@@ -20,7 +21,7 @@ getMethod
 | calls.rb:115:1:118:3 | Object | indirect | calls.rb:158:1:160:3 | indirect |
 | calls.rb:115:1:118:3 | Object | new | calls.rb:117:5:117:16 | new |
 | calls.rb:115:1:118:3 | Object | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:115:1:118:3 | Object | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
+| calls.rb:115:1:118:3 | Object | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
 | calls.rb:115:1:118:3 | Object | private_on_main | calls.rb:185:1:186:3 | private_on_main |
 | calls.rb:115:1:118:3 | Object | private_on_main | private.rb:51:1:52:3 | private_on_main |
 | calls.rb:120:1:123:3 | Hash | [] | calls.rb:122:5:122:31 | [] |
@@ -33,22 +34,24 @@ getMethod
 | calls.rb:190:1:226:3 | Singletons | call_singleton_g | calls.rb:223:5:225:7 | call_singleton_g |
 | calls.rb:190:1:226:3 | Singletons | instance | calls.rb:210:5:215:7 | instance |
 | calls.rb:310:1:321:3 | SelfNew | instance | calls.rb:311:5:314:7 | instance |
-| calls.rb:325:1:329:3 | C1 | instance | calls.rb:326:5:328:7 | instance |
-| calls.rb:331:1:335:3 | C2 | instance | calls.rb:332:5:334:7 | instance |
-| calls.rb:337:1:341:3 | C3 | instance | calls.rb:338:5:340:7 | instance |
-| calls.rb:377:1:405:3 | SingletonOverride1 | instance1 | calls.rb:402:5:404:7 | instance1 |
-| calls.rb:412:1:426:3 | SingletonOverride2 | instance1 | calls.rb:423:5:425:7 | instance1 |
-| calls.rb:433:1:461:3 | ConditionalInstanceMethods | m1 | calls.rb:435:9:437:11 | m1 |
-| calls.rb:433:1:461:3 | ConditionalInstanceMethods | m2 | calls.rb:440:5:452:7 | m2 |
-| calls.rb:496:1:502:3 | ExtendSingletonMethod | singleton | calls.rb:497:5:499:7 | singleton |
-| calls.rb:525:1:529:3 | ProtectedMethodInModule | foo | calls.rb:526:15:528:7 | foo |
-| calls.rb:531:1:544:3 | ProtectedMethods | bar | calls.rb:534:15:536:7 | bar |
-| calls.rb:531:1:544:3 | ProtectedMethods | baz | calls.rb:538:5:543:7 | baz |
-| calls.rb:550:1:555:3 | ProtectedMethodsSub | baz | calls.rb:551:5:554:7 | baz |
-| calls.rb:618:1:624:3 | Included | bar | calls.rb:622:5:623:7 | bar |
-| calls.rb:618:1:624:3 | Included | foo | calls.rb:619:5:621:7 | foo |
-| calls.rb:626:1:631:3 | IncludesIncluded | bar | calls.rb:628:5:630:7 | bar |
-| calls.rb:641:1:649:3 | CustomNew2 | instance | calls.rb:646:5:648:7 | instance |
+| calls.rb:325:1:333:3 | C1 | instance | calls.rb:326:5:328:7 | instance |
+| calls.rb:325:1:333:3 | C1 | return_self | calls.rb:330:5:332:7 | return_self |
+| calls.rb:335:1:339:3 | C2 | instance | calls.rb:336:5:338:7 | instance |
+| calls.rb:341:1:345:3 | C3 | instance | calls.rb:342:5:344:7 | instance |
+| calls.rb:385:1:413:3 | SingletonOverride1 | instance1 | calls.rb:410:5:412:7 | instance1 |
+| calls.rb:420:1:434:3 | SingletonOverride2 | instance1 | calls.rb:431:5:433:7 | instance1 |
+| calls.rb:441:1:469:3 | ConditionalInstanceMethods | m1 | calls.rb:443:9:445:11 | m1 |
+| calls.rb:441:1:469:3 | ConditionalInstanceMethods | m2 | calls.rb:448:5:460:7 | m2 |
+| calls.rb:504:1:510:3 | ExtendSingletonMethod | singleton | calls.rb:505:5:507:7 | singleton |
+| calls.rb:533:1:537:3 | ProtectedMethodInModule | foo | calls.rb:534:15:536:7 | foo |
+| calls.rb:539:1:552:3 | ProtectedMethods | bar | calls.rb:542:15:544:7 | bar |
+| calls.rb:539:1:552:3 | ProtectedMethods | baz | calls.rb:546:5:551:7 | baz |
+| calls.rb:558:1:563:3 | ProtectedMethodsSub | baz | calls.rb:559:5:562:7 | baz |
+| calls.rb:626:1:632:3 | Included | bar | calls.rb:630:5:631:7 | bar |
+| calls.rb:626:1:632:3 | Included | foo | calls.rb:627:5:629:7 | foo |
+| calls.rb:634:1:639:3 | IncludesIncluded | bar | calls.rb:636:5:638:7 | bar |
+| calls.rb:649:1:657:3 | CustomNew2 | instance | calls.rb:654:5:656:7 | instance |
+| element_reference.rb:1:1:5:3 | ClassWithElementRef | [] | element_reference.rb:2:5:4:7 | [] |
 | hello.rb:1:1:8:3 | EnglishWords | hello | hello.rb:2:5:4:7 | hello |
 | hello.rb:1:1:8:3 | EnglishWords | world | hello.rb:5:5:7:7 | world |
 | hello.rb:11:1:16:3 | Greeting | message | hello.rb:13:5:15:7 | message |
@@ -81,10 +84,11 @@ getMethod
 | private.rb:96:1:102:3 | PrivateOverride2 | m1 | private.rb:97:11:101:5 | m1 |
 lookupMethod
 | calls.rb:21:1:34:3 | M | instance_m | calls.rb:22:5:24:7 | instance_m |
-| calls.rb:43:1:58:3 | C | add_singleton | calls.rb:367:1:371:3 | add_singleton |
+| calls.rb:43:1:58:3 | C | add_singleton | calls.rb:374:1:378:3 | add_singleton |
 | calls.rb:43:1:58:3 | C | baz | calls.rb:51:5:57:7 | baz |
 | calls.rb:43:1:58:3 | C | call_block | calls.rb:81:1:83:3 | call_block |
 | calls.rb:43:1:58:3 | C | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:43:1:58:3 | C | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
 | calls.rb:43:1:58:3 | C | create | calls.rb:278:1:286:3 | create |
 | calls.rb:43:1:58:3 | C | foo | calls.rb:1:1:3:3 | foo |
 | calls.rb:43:1:58:3 | C | foo | calls.rb:85:1:89:3 | foo |
@@ -93,14 +97,15 @@ lookupMethod
 | calls.rb:43:1:58:3 | C | instance_m | calls.rb:22:5:24:7 | instance_m |
 | calls.rb:43:1:58:3 | C | new | calls.rb:117:5:117:16 | new |
 | calls.rb:43:1:58:3 | C | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:43:1:58:3 | C | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
+| calls.rb:43:1:58:3 | C | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
 | calls.rb:43:1:58:3 | C | private_on_main | calls.rb:185:1:186:3 | private_on_main |
 | calls.rb:43:1:58:3 | C | puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:43:1:58:3 | C | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:65:1:69:3 | D | add_singleton | calls.rb:367:1:371:3 | add_singleton |
+| calls.rb:65:1:69:3 | D | add_singleton | calls.rb:374:1:378:3 | add_singleton |
 | calls.rb:65:1:69:3 | D | baz | calls.rb:66:5:68:7 | baz |
 | calls.rb:65:1:69:3 | D | call_block | calls.rb:81:1:83:3 | call_block |
 | calls.rb:65:1:69:3 | D | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:65:1:69:3 | D | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
 | calls.rb:65:1:69:3 | D | create | calls.rb:278:1:286:3 | create |
 | calls.rb:65:1:69:3 | D | foo | calls.rb:1:1:3:3 | foo |
 | calls.rb:65:1:69:3 | D | foo | calls.rb:85:1:89:3 | foo |
@@ -109,7 +114,7 @@ lookupMethod
 | calls.rb:65:1:69:3 | D | instance_m | calls.rb:22:5:24:7 | instance_m |
 | calls.rb:65:1:69:3 | D | new | calls.rb:117:5:117:16 | new |
 | calls.rb:65:1:69:3 | D | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:65:1:69:3 | D | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
+| calls.rb:65:1:69:3 | D | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
 | calls.rb:65:1:69:3 | D | private_on_main | calls.rb:185:1:186:3 | private_on_main |
 | calls.rb:65:1:69:3 | D | puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:65:1:69:3 | D | to_s | calls.rb:172:5:173:7 | to_s |
@@ -118,10 +123,11 @@ lookupMethod
 | calls.rb:91:1:94:3 | Integer | new | calls.rb:117:5:117:16 | new |
 | calls.rb:91:1:94:3 | Integer | puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:91:1:94:3 | Integer | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:96:1:98:3 | String | add_singleton | calls.rb:367:1:371:3 | add_singleton |
+| calls.rb:96:1:98:3 | String | add_singleton | calls.rb:374:1:378:3 | add_singleton |
 | calls.rb:96:1:98:3 | String | call_block | calls.rb:81:1:83:3 | call_block |
 | calls.rb:96:1:98:3 | String | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
 | calls.rb:96:1:98:3 | String | capitalize | calls.rb:97:5:97:23 | capitalize |
+| calls.rb:96:1:98:3 | String | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
 | calls.rb:96:1:98:3 | String | create | calls.rb:278:1:286:3 | create |
 | calls.rb:96:1:98:3 | String | foo | calls.rb:1:1:3:3 | foo |
 | calls.rb:96:1:98:3 | String | foo | calls.rb:85:1:89:3 | foo |
@@ -129,14 +135,15 @@ lookupMethod
 | calls.rb:96:1:98:3 | String | indirect | calls.rb:158:1:160:3 | indirect |
 | calls.rb:96:1:98:3 | String | new | calls.rb:117:5:117:16 | new |
 | calls.rb:96:1:98:3 | String | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:96:1:98:3 | String | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
+| calls.rb:96:1:98:3 | String | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
 | calls.rb:96:1:98:3 | String | private_on_main | calls.rb:185:1:186:3 | private_on_main |
 | calls.rb:96:1:98:3 | String | puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:96:1:98:3 | String | to_s | calls.rb:172:5:173:7 | to_s |
 | calls.rb:100:1:103:3 | Kernel | puts | calls.rb:102:5:102:30 | puts |
-| calls.rb:105:1:113:3 | Module | add_singleton | calls.rb:367:1:371:3 | add_singleton |
+| calls.rb:105:1:113:3 | Module | add_singleton | calls.rb:374:1:378:3 | add_singleton |
 | calls.rb:105:1:113:3 | Module | call_block | calls.rb:81:1:83:3 | call_block |
 | calls.rb:105:1:113:3 | Module | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:105:1:113:3 | Module | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
 | calls.rb:105:1:113:3 | Module | create | calls.rb:278:1:286:3 | create |
 | calls.rb:105:1:113:3 | Module | foo | calls.rb:1:1:3:3 | foo |
 | calls.rb:105:1:113:3 | Module | foo | calls.rb:85:1:89:3 | foo |
@@ -146,15 +153,16 @@ lookupMethod
 | calls.rb:105:1:113:3 | Module | module_eval | calls.rb:107:5:107:24 | module_eval |
 | calls.rb:105:1:113:3 | Module | new | calls.rb:117:5:117:16 | new |
 | calls.rb:105:1:113:3 | Module | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:105:1:113:3 | Module | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
+| calls.rb:105:1:113:3 | Module | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
 | calls.rb:105:1:113:3 | Module | prepend | calls.rb:111:5:111:20 | prepend |
 | calls.rb:105:1:113:3 | Module | private | calls.rb:112:5:112:20 | private |
 | calls.rb:105:1:113:3 | Module | private_on_main | calls.rb:185:1:186:3 | private_on_main |
 | calls.rb:105:1:113:3 | Module | puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:105:1:113:3 | Module | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:115:1:118:3 | Object | add_singleton | calls.rb:367:1:371:3 | add_singleton |
+| calls.rb:115:1:118:3 | Object | add_singleton | calls.rb:374:1:378:3 | add_singleton |
 | calls.rb:115:1:118:3 | Object | call_block | calls.rb:81:1:83:3 | call_block |
 | calls.rb:115:1:118:3 | Object | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:115:1:118:3 | Object | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
 | calls.rb:115:1:118:3 | Object | create | calls.rb:278:1:286:3 | create |
 | calls.rb:115:1:118:3 | Object | foo | calls.rb:1:1:3:3 | foo |
 | calls.rb:115:1:118:3 | Object | foo | calls.rb:85:1:89:3 | foo |
@@ -162,15 +170,16 @@ lookupMethod
 | calls.rb:115:1:118:3 | Object | indirect | calls.rb:158:1:160:3 | indirect |
 | calls.rb:115:1:118:3 | Object | new | calls.rb:117:5:117:16 | new |
 | calls.rb:115:1:118:3 | Object | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:115:1:118:3 | Object | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
+| calls.rb:115:1:118:3 | Object | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
 | calls.rb:115:1:118:3 | Object | private_on_main | calls.rb:185:1:186:3 | private_on_main |
 | calls.rb:115:1:118:3 | Object | private_on_main | private.rb:51:1:52:3 | private_on_main |
 | calls.rb:115:1:118:3 | Object | puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:115:1:118:3 | Object | to_s | calls.rb:172:5:173:7 | to_s |
 | calls.rb:120:1:123:3 | Hash | [] | calls.rb:122:5:122:31 | [] |
-| calls.rb:120:1:123:3 | Hash | add_singleton | calls.rb:367:1:371:3 | add_singleton |
+| calls.rb:120:1:123:3 | Hash | add_singleton | calls.rb:374:1:378:3 | add_singleton |
 | calls.rb:120:1:123:3 | Hash | call_block | calls.rb:81:1:83:3 | call_block |
 | calls.rb:120:1:123:3 | Hash | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:120:1:123:3 | Hash | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
 | calls.rb:120:1:123:3 | Hash | create | calls.rb:278:1:286:3 | create |
 | calls.rb:120:1:123:3 | Hash | foo | calls.rb:1:1:3:3 | foo |
 | calls.rb:120:1:123:3 | Hash | foo | calls.rb:85:1:89:3 | foo |
@@ -178,14 +187,15 @@ lookupMethod
 | calls.rb:120:1:123:3 | Hash | indirect | calls.rb:158:1:160:3 | indirect |
 | calls.rb:120:1:123:3 | Hash | new | calls.rb:117:5:117:16 | new |
 | calls.rb:120:1:123:3 | Hash | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:120:1:123:3 | Hash | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
+| calls.rb:120:1:123:3 | Hash | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
 | calls.rb:120:1:123:3 | Hash | private_on_main | calls.rb:185:1:186:3 | private_on_main |
 | calls.rb:120:1:123:3 | Hash | puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:120:1:123:3 | Hash | to_s | calls.rb:172:5:173:7 | to_s |
 | calls.rb:125:1:138:3 | Array | [] | calls.rb:127:3:127:29 | [] |
-| calls.rb:125:1:138:3 | Array | add_singleton | calls.rb:367:1:371:3 | add_singleton |
+| calls.rb:125:1:138:3 | Array | add_singleton | calls.rb:374:1:378:3 | add_singleton |
 | calls.rb:125:1:138:3 | Array | call_block | calls.rb:81:1:83:3 | call_block |
 | calls.rb:125:1:138:3 | Array | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:125:1:138:3 | Array | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
 | calls.rb:125:1:138:3 | Array | create | calls.rb:278:1:286:3 | create |
 | calls.rb:125:1:138:3 | Array | foo | calls.rb:1:1:3:3 | foo |
 | calls.rb:125:1:138:3 | Array | foo | calls.rb:85:1:89:3 | foo |
@@ -195,13 +205,14 @@ lookupMethod
 | calls.rb:125:1:138:3 | Array | length | calls.rb:129:3:129:17 | length |
 | calls.rb:125:1:138:3 | Array | new | calls.rb:117:5:117:16 | new |
 | calls.rb:125:1:138:3 | Array | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:125:1:138:3 | Array | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
+| calls.rb:125:1:138:3 | Array | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
 | calls.rb:125:1:138:3 | Array | private_on_main | calls.rb:185:1:186:3 | private_on_main |
 | calls.rb:125:1:138:3 | Array | puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:125:1:138:3 | Array | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:165:1:169:3 | S | add_singleton | calls.rb:367:1:371:3 | add_singleton |
+| calls.rb:165:1:169:3 | S | add_singleton | calls.rb:374:1:378:3 | add_singleton |
 | calls.rb:165:1:169:3 | S | call_block | calls.rb:81:1:83:3 | call_block |
 | calls.rb:165:1:169:3 | S | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:165:1:169:3 | S | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
 | calls.rb:165:1:169:3 | S | create | calls.rb:278:1:286:3 | create |
 | calls.rb:165:1:169:3 | S | foo | calls.rb:1:1:3:3 | foo |
 | calls.rb:165:1:169:3 | S | foo | calls.rb:85:1:89:3 | foo |
@@ -209,14 +220,15 @@ lookupMethod
 | calls.rb:165:1:169:3 | S | indirect | calls.rb:158:1:160:3 | indirect |
 | calls.rb:165:1:169:3 | S | new | calls.rb:117:5:117:16 | new |
 | calls.rb:165:1:169:3 | S | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:165:1:169:3 | S | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
+| calls.rb:165:1:169:3 | S | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
 | calls.rb:165:1:169:3 | S | private_on_main | calls.rb:185:1:186:3 | private_on_main |
 | calls.rb:165:1:169:3 | S | puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:165:1:169:3 | S | s_method | calls.rb:166:5:168:7 | s_method |
 | calls.rb:165:1:169:3 | S | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:171:1:174:3 | A | add_singleton | calls.rb:367:1:371:3 | add_singleton |
+| calls.rb:171:1:174:3 | A | add_singleton | calls.rb:374:1:378:3 | add_singleton |
 | calls.rb:171:1:174:3 | A | call_block | calls.rb:81:1:83:3 | call_block |
 | calls.rb:171:1:174:3 | A | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:171:1:174:3 | A | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
 | calls.rb:171:1:174:3 | A | create | calls.rb:278:1:286:3 | create |
 | calls.rb:171:1:174:3 | A | foo | calls.rb:1:1:3:3 | foo |
 | calls.rb:171:1:174:3 | A | foo | calls.rb:85:1:89:3 | foo |
@@ -224,14 +236,15 @@ lookupMethod
 | calls.rb:171:1:174:3 | A | indirect | calls.rb:158:1:160:3 | indirect |
 | calls.rb:171:1:174:3 | A | new | calls.rb:117:5:117:16 | new |
 | calls.rb:171:1:174:3 | A | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:171:1:174:3 | A | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
+| calls.rb:171:1:174:3 | A | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
 | calls.rb:171:1:174:3 | A | private_on_main | calls.rb:185:1:186:3 | private_on_main |
 | calls.rb:171:1:174:3 | A | puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:171:1:174:3 | A | s_method | calls.rb:166:5:168:7 | s_method |
 | calls.rb:171:1:174:3 | A | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:176:1:179:3 | B | add_singleton | calls.rb:367:1:371:3 | add_singleton |
+| calls.rb:176:1:179:3 | B | add_singleton | calls.rb:374:1:378:3 | add_singleton |
 | calls.rb:176:1:179:3 | B | call_block | calls.rb:81:1:83:3 | call_block |
 | calls.rb:176:1:179:3 | B | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:176:1:179:3 | B | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
 | calls.rb:176:1:179:3 | B | create | calls.rb:278:1:286:3 | create |
 | calls.rb:176:1:179:3 | B | foo | calls.rb:1:1:3:3 | foo |
 | calls.rb:176:1:179:3 | B | foo | calls.rb:85:1:89:3 | foo |
@@ -239,15 +252,16 @@ lookupMethod
 | calls.rb:176:1:179:3 | B | indirect | calls.rb:158:1:160:3 | indirect |
 | calls.rb:176:1:179:3 | B | new | calls.rb:117:5:117:16 | new |
 | calls.rb:176:1:179:3 | B | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:176:1:179:3 | B | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
+| calls.rb:176:1:179:3 | B | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
 | calls.rb:176:1:179:3 | B | private_on_main | calls.rb:185:1:186:3 | private_on_main |
 | calls.rb:176:1:179:3 | B | puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:176:1:179:3 | B | s_method | calls.rb:166:5:168:7 | s_method |
 | calls.rb:176:1:179:3 | B | to_s | calls.rb:177:5:178:7 | to_s |
-| calls.rb:190:1:226:3 | Singletons | add_singleton | calls.rb:367:1:371:3 | add_singleton |
+| calls.rb:190:1:226:3 | Singletons | add_singleton | calls.rb:374:1:378:3 | add_singleton |
 | calls.rb:190:1:226:3 | Singletons | call_block | calls.rb:81:1:83:3 | call_block |
 | calls.rb:190:1:226:3 | Singletons | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
 | calls.rb:190:1:226:3 | Singletons | call_singleton_g | calls.rb:223:5:225:7 | call_singleton_g |
+| calls.rb:190:1:226:3 | Singletons | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
 | calls.rb:190:1:226:3 | Singletons | create | calls.rb:278:1:286:3 | create |
 | calls.rb:190:1:226:3 | Singletons | foo | calls.rb:1:1:3:3 | foo |
 | calls.rb:190:1:226:3 | Singletons | foo | calls.rb:85:1:89:3 | foo |
@@ -256,13 +270,14 @@ lookupMethod
 | calls.rb:190:1:226:3 | Singletons | instance | calls.rb:210:5:215:7 | instance |
 | calls.rb:190:1:226:3 | Singletons | new | calls.rb:117:5:117:16 | new |
 | calls.rb:190:1:226:3 | Singletons | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:190:1:226:3 | Singletons | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
+| calls.rb:190:1:226:3 | Singletons | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
 | calls.rb:190:1:226:3 | Singletons | private_on_main | calls.rb:185:1:186:3 | private_on_main |
 | calls.rb:190:1:226:3 | Singletons | puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:190:1:226:3 | Singletons | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:310:1:321:3 | SelfNew | add_singleton | calls.rb:367:1:371:3 | add_singleton |
+| calls.rb:310:1:321:3 | SelfNew | add_singleton | calls.rb:374:1:378:3 | add_singleton |
 | calls.rb:310:1:321:3 | SelfNew | call_block | calls.rb:81:1:83:3 | call_block |
 | calls.rb:310:1:321:3 | SelfNew | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:310:1:321:3 | SelfNew | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
 | calls.rb:310:1:321:3 | SelfNew | create | calls.rb:278:1:286:3 | create |
 | calls.rb:310:1:321:3 | SelfNew | foo | calls.rb:1:1:3:3 | foo |
 | calls.rb:310:1:321:3 | SelfNew | foo | calls.rb:85:1:89:3 | foo |
@@ -271,262 +286,286 @@ lookupMethod
 | calls.rb:310:1:321:3 | SelfNew | instance | calls.rb:311:5:314:7 | instance |
 | calls.rb:310:1:321:3 | SelfNew | new | calls.rb:117:5:117:16 | new |
 | calls.rb:310:1:321:3 | SelfNew | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:310:1:321:3 | SelfNew | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
+| calls.rb:310:1:321:3 | SelfNew | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
 | calls.rb:310:1:321:3 | SelfNew | private_on_main | calls.rb:185:1:186:3 | private_on_main |
 | calls.rb:310:1:321:3 | SelfNew | puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:310:1:321:3 | SelfNew | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:325:1:329:3 | C1 | add_singleton | calls.rb:367:1:371:3 | add_singleton |
-| calls.rb:325:1:329:3 | C1 | call_block | calls.rb:81:1:83:3 | call_block |
-| calls.rb:325:1:329:3 | C1 | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
-| calls.rb:325:1:329:3 | C1 | create | calls.rb:278:1:286:3 | create |
-| calls.rb:325:1:329:3 | C1 | foo | calls.rb:1:1:3:3 | foo |
-| calls.rb:325:1:329:3 | C1 | foo | calls.rb:85:1:89:3 | foo |
-| calls.rb:325:1:329:3 | C1 | funny | calls.rb:140:1:142:3 | funny |
-| calls.rb:325:1:329:3 | C1 | indirect | calls.rb:158:1:160:3 | indirect |
-| calls.rb:325:1:329:3 | C1 | instance | calls.rb:326:5:328:7 | instance |
-| calls.rb:325:1:329:3 | C1 | new | calls.rb:117:5:117:16 | new |
-| calls.rb:325:1:329:3 | C1 | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:325:1:329:3 | C1 | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:325:1:329:3 | C1 | private_on_main | calls.rb:185:1:186:3 | private_on_main |
-| calls.rb:325:1:329:3 | C1 | puts | calls.rb:102:5:102:30 | puts |
-| calls.rb:325:1:329:3 | C1 | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:331:1:335:3 | C2 | add_singleton | calls.rb:367:1:371:3 | add_singleton |
-| calls.rb:331:1:335:3 | C2 | call_block | calls.rb:81:1:83:3 | call_block |
-| calls.rb:331:1:335:3 | C2 | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
-| calls.rb:331:1:335:3 | C2 | create | calls.rb:278:1:286:3 | create |
-| calls.rb:331:1:335:3 | C2 | foo | calls.rb:1:1:3:3 | foo |
-| calls.rb:331:1:335:3 | C2 | foo | calls.rb:85:1:89:3 | foo |
-| calls.rb:331:1:335:3 | C2 | funny | calls.rb:140:1:142:3 | funny |
-| calls.rb:331:1:335:3 | C2 | indirect | calls.rb:158:1:160:3 | indirect |
-| calls.rb:331:1:335:3 | C2 | instance | calls.rb:332:5:334:7 | instance |
-| calls.rb:331:1:335:3 | C2 | new | calls.rb:117:5:117:16 | new |
-| calls.rb:331:1:335:3 | C2 | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:331:1:335:3 | C2 | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:331:1:335:3 | C2 | private_on_main | calls.rb:185:1:186:3 | private_on_main |
-| calls.rb:331:1:335:3 | C2 | puts | calls.rb:102:5:102:30 | puts |
-| calls.rb:331:1:335:3 | C2 | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:337:1:341:3 | C3 | add_singleton | calls.rb:367:1:371:3 | add_singleton |
-| calls.rb:337:1:341:3 | C3 | call_block | calls.rb:81:1:83:3 | call_block |
-| calls.rb:337:1:341:3 | C3 | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
-| calls.rb:337:1:341:3 | C3 | create | calls.rb:278:1:286:3 | create |
-| calls.rb:337:1:341:3 | C3 | foo | calls.rb:1:1:3:3 | foo |
-| calls.rb:337:1:341:3 | C3 | foo | calls.rb:85:1:89:3 | foo |
-| calls.rb:337:1:341:3 | C3 | funny | calls.rb:140:1:142:3 | funny |
-| calls.rb:337:1:341:3 | C3 | indirect | calls.rb:158:1:160:3 | indirect |
-| calls.rb:337:1:341:3 | C3 | instance | calls.rb:338:5:340:7 | instance |
-| calls.rb:337:1:341:3 | C3 | new | calls.rb:117:5:117:16 | new |
-| calls.rb:337:1:341:3 | C3 | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:337:1:341:3 | C3 | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:337:1:341:3 | C3 | private_on_main | calls.rb:185:1:186:3 | private_on_main |
-| calls.rb:337:1:341:3 | C3 | puts | calls.rb:102:5:102:30 | puts |
-| calls.rb:337:1:341:3 | C3 | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:377:1:405:3 | SingletonOverride1 | add_singleton | calls.rb:367:1:371:3 | add_singleton |
-| calls.rb:377:1:405:3 | SingletonOverride1 | call_block | calls.rb:81:1:83:3 | call_block |
-| calls.rb:377:1:405:3 | SingletonOverride1 | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
-| calls.rb:377:1:405:3 | SingletonOverride1 | create | calls.rb:278:1:286:3 | create |
-| calls.rb:377:1:405:3 | SingletonOverride1 | foo | calls.rb:1:1:3:3 | foo |
-| calls.rb:377:1:405:3 | SingletonOverride1 | foo | calls.rb:85:1:89:3 | foo |
-| calls.rb:377:1:405:3 | SingletonOverride1 | funny | calls.rb:140:1:142:3 | funny |
-| calls.rb:377:1:405:3 | SingletonOverride1 | indirect | calls.rb:158:1:160:3 | indirect |
-| calls.rb:377:1:405:3 | SingletonOverride1 | instance1 | calls.rb:402:5:404:7 | instance1 |
-| calls.rb:377:1:405:3 | SingletonOverride1 | new | calls.rb:117:5:117:16 | new |
-| calls.rb:377:1:405:3 | SingletonOverride1 | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:377:1:405:3 | SingletonOverride1 | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:377:1:405:3 | SingletonOverride1 | private_on_main | calls.rb:185:1:186:3 | private_on_main |
-| calls.rb:377:1:405:3 | SingletonOverride1 | puts | calls.rb:102:5:102:30 | puts |
-| calls.rb:377:1:405:3 | SingletonOverride1 | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:412:1:426:3 | SingletonOverride2 | add_singleton | calls.rb:367:1:371:3 | add_singleton |
-| calls.rb:412:1:426:3 | SingletonOverride2 | call_block | calls.rb:81:1:83:3 | call_block |
-| calls.rb:412:1:426:3 | SingletonOverride2 | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
-| calls.rb:412:1:426:3 | SingletonOverride2 | create | calls.rb:278:1:286:3 | create |
-| calls.rb:412:1:426:3 | SingletonOverride2 | foo | calls.rb:1:1:3:3 | foo |
-| calls.rb:412:1:426:3 | SingletonOverride2 | foo | calls.rb:85:1:89:3 | foo |
-| calls.rb:412:1:426:3 | SingletonOverride2 | funny | calls.rb:140:1:142:3 | funny |
-| calls.rb:412:1:426:3 | SingletonOverride2 | indirect | calls.rb:158:1:160:3 | indirect |
-| calls.rb:412:1:426:3 | SingletonOverride2 | instance1 | calls.rb:423:5:425:7 | instance1 |
-| calls.rb:412:1:426:3 | SingletonOverride2 | new | calls.rb:117:5:117:16 | new |
-| calls.rb:412:1:426:3 | SingletonOverride2 | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:412:1:426:3 | SingletonOverride2 | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:412:1:426:3 | SingletonOverride2 | private_on_main | calls.rb:185:1:186:3 | private_on_main |
-| calls.rb:412:1:426:3 | SingletonOverride2 | puts | calls.rb:102:5:102:30 | puts |
-| calls.rb:412:1:426:3 | SingletonOverride2 | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:433:1:461:3 | ConditionalInstanceMethods | add_singleton | calls.rb:367:1:371:3 | add_singleton |
-| calls.rb:433:1:461:3 | ConditionalInstanceMethods | call_block | calls.rb:81:1:83:3 | call_block |
-| calls.rb:433:1:461:3 | ConditionalInstanceMethods | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
-| calls.rb:433:1:461:3 | ConditionalInstanceMethods | create | calls.rb:278:1:286:3 | create |
-| calls.rb:433:1:461:3 | ConditionalInstanceMethods | foo | calls.rb:1:1:3:3 | foo |
-| calls.rb:433:1:461:3 | ConditionalInstanceMethods | foo | calls.rb:85:1:89:3 | foo |
-| calls.rb:433:1:461:3 | ConditionalInstanceMethods | funny | calls.rb:140:1:142:3 | funny |
-| calls.rb:433:1:461:3 | ConditionalInstanceMethods | indirect | calls.rb:158:1:160:3 | indirect |
-| calls.rb:433:1:461:3 | ConditionalInstanceMethods | m1 | calls.rb:435:9:437:11 | m1 |
-| calls.rb:433:1:461:3 | ConditionalInstanceMethods | m2 | calls.rb:440:5:452:7 | m2 |
-| calls.rb:433:1:461:3 | ConditionalInstanceMethods | new | calls.rb:117:5:117:16 | new |
-| calls.rb:433:1:461:3 | ConditionalInstanceMethods | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:433:1:461:3 | ConditionalInstanceMethods | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:433:1:461:3 | ConditionalInstanceMethods | private_on_main | calls.rb:185:1:186:3 | private_on_main |
-| calls.rb:433:1:461:3 | ConditionalInstanceMethods | puts | calls.rb:102:5:102:30 | puts |
-| calls.rb:433:1:461:3 | ConditionalInstanceMethods | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:496:1:502:3 | ExtendSingletonMethod | singleton | calls.rb:497:5:499:7 | singleton |
-| calls.rb:525:1:529:3 | ProtectedMethodInModule | foo | calls.rb:526:15:528:7 | foo |
-| calls.rb:531:1:544:3 | ProtectedMethods | add_singleton | calls.rb:367:1:371:3 | add_singleton |
-| calls.rb:531:1:544:3 | ProtectedMethods | bar | calls.rb:534:15:536:7 | bar |
-| calls.rb:531:1:544:3 | ProtectedMethods | baz | calls.rb:538:5:543:7 | baz |
-| calls.rb:531:1:544:3 | ProtectedMethods | call_block | calls.rb:81:1:83:3 | call_block |
-| calls.rb:531:1:544:3 | ProtectedMethods | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
-| calls.rb:531:1:544:3 | ProtectedMethods | create | calls.rb:278:1:286:3 | create |
-| calls.rb:531:1:544:3 | ProtectedMethods | foo | calls.rb:526:15:528:7 | foo |
-| calls.rb:531:1:544:3 | ProtectedMethods | funny | calls.rb:140:1:142:3 | funny |
-| calls.rb:531:1:544:3 | ProtectedMethods | indirect | calls.rb:158:1:160:3 | indirect |
-| calls.rb:531:1:544:3 | ProtectedMethods | new | calls.rb:117:5:117:16 | new |
-| calls.rb:531:1:544:3 | ProtectedMethods | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:531:1:544:3 | ProtectedMethods | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:531:1:544:3 | ProtectedMethods | private_on_main | calls.rb:185:1:186:3 | private_on_main |
-| calls.rb:531:1:544:3 | ProtectedMethods | puts | calls.rb:102:5:102:30 | puts |
-| calls.rb:531:1:544:3 | ProtectedMethods | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:550:1:555:3 | ProtectedMethodsSub | add_singleton | calls.rb:367:1:371:3 | add_singleton |
-| calls.rb:550:1:555:3 | ProtectedMethodsSub | bar | calls.rb:534:15:536:7 | bar |
-| calls.rb:550:1:555:3 | ProtectedMethodsSub | baz | calls.rb:551:5:554:7 | baz |
-| calls.rb:550:1:555:3 | ProtectedMethodsSub | call_block | calls.rb:81:1:83:3 | call_block |
-| calls.rb:550:1:555:3 | ProtectedMethodsSub | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
-| calls.rb:550:1:555:3 | ProtectedMethodsSub | create | calls.rb:278:1:286:3 | create |
-| calls.rb:550:1:555:3 | ProtectedMethodsSub | foo | calls.rb:526:15:528:7 | foo |
-| calls.rb:550:1:555:3 | ProtectedMethodsSub | funny | calls.rb:140:1:142:3 | funny |
-| calls.rb:550:1:555:3 | ProtectedMethodsSub | indirect | calls.rb:158:1:160:3 | indirect |
-| calls.rb:550:1:555:3 | ProtectedMethodsSub | new | calls.rb:117:5:117:16 | new |
-| calls.rb:550:1:555:3 | ProtectedMethodsSub | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:550:1:555:3 | ProtectedMethodsSub | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:550:1:555:3 | ProtectedMethodsSub | private_on_main | calls.rb:185:1:186:3 | private_on_main |
-| calls.rb:550:1:555:3 | ProtectedMethodsSub | puts | calls.rb:102:5:102:30 | puts |
-| calls.rb:550:1:555:3 | ProtectedMethodsSub | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:564:1:567:3 | SingletonUpCall_Base | add_singleton | calls.rb:367:1:371:3 | add_singleton |
-| calls.rb:564:1:567:3 | SingletonUpCall_Base | call_block | calls.rb:81:1:83:3 | call_block |
-| calls.rb:564:1:567:3 | SingletonUpCall_Base | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
-| calls.rb:564:1:567:3 | SingletonUpCall_Base | create | calls.rb:278:1:286:3 | create |
-| calls.rb:564:1:567:3 | SingletonUpCall_Base | foo | calls.rb:1:1:3:3 | foo |
-| calls.rb:564:1:567:3 | SingletonUpCall_Base | foo | calls.rb:85:1:89:3 | foo |
-| calls.rb:564:1:567:3 | SingletonUpCall_Base | funny | calls.rb:140:1:142:3 | funny |
-| calls.rb:564:1:567:3 | SingletonUpCall_Base | indirect | calls.rb:158:1:160:3 | indirect |
-| calls.rb:564:1:567:3 | SingletonUpCall_Base | new | calls.rb:117:5:117:16 | new |
-| calls.rb:564:1:567:3 | SingletonUpCall_Base | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:564:1:567:3 | SingletonUpCall_Base | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:564:1:567:3 | SingletonUpCall_Base | private_on_main | calls.rb:185:1:186:3 | private_on_main |
-| calls.rb:564:1:567:3 | SingletonUpCall_Base | puts | calls.rb:102:5:102:30 | puts |
-| calls.rb:564:1:567:3 | SingletonUpCall_Base | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:568:1:575:3 | SingletonUpCall_Sub | add_singleton | calls.rb:367:1:371:3 | add_singleton |
-| calls.rb:568:1:575:3 | SingletonUpCall_Sub | call_block | calls.rb:81:1:83:3 | call_block |
-| calls.rb:568:1:575:3 | SingletonUpCall_Sub | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
-| calls.rb:568:1:575:3 | SingletonUpCall_Sub | create | calls.rb:278:1:286:3 | create |
-| calls.rb:568:1:575:3 | SingletonUpCall_Sub | foo | calls.rb:1:1:3:3 | foo |
-| calls.rb:568:1:575:3 | SingletonUpCall_Sub | foo | calls.rb:85:1:89:3 | foo |
-| calls.rb:568:1:575:3 | SingletonUpCall_Sub | funny | calls.rb:140:1:142:3 | funny |
-| calls.rb:568:1:575:3 | SingletonUpCall_Sub | indirect | calls.rb:158:1:160:3 | indirect |
-| calls.rb:568:1:575:3 | SingletonUpCall_Sub | new | calls.rb:117:5:117:16 | new |
-| calls.rb:568:1:575:3 | SingletonUpCall_Sub | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:568:1:575:3 | SingletonUpCall_Sub | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:568:1:575:3 | SingletonUpCall_Sub | private_on_main | calls.rb:185:1:186:3 | private_on_main |
-| calls.rb:568:1:575:3 | SingletonUpCall_Sub | puts | calls.rb:102:5:102:30 | puts |
-| calls.rb:568:1:575:3 | SingletonUpCall_Sub | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:576:1:581:3 | SingletonUpCall_SubSub | add_singleton | calls.rb:367:1:371:3 | add_singleton |
-| calls.rb:576:1:581:3 | SingletonUpCall_SubSub | call_block | calls.rb:81:1:83:3 | call_block |
-| calls.rb:576:1:581:3 | SingletonUpCall_SubSub | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
-| calls.rb:576:1:581:3 | SingletonUpCall_SubSub | create | calls.rb:278:1:286:3 | create |
-| calls.rb:576:1:581:3 | SingletonUpCall_SubSub | foo | calls.rb:1:1:3:3 | foo |
-| calls.rb:576:1:581:3 | SingletonUpCall_SubSub | foo | calls.rb:85:1:89:3 | foo |
-| calls.rb:576:1:581:3 | SingletonUpCall_SubSub | funny | calls.rb:140:1:142:3 | funny |
-| calls.rb:576:1:581:3 | SingletonUpCall_SubSub | indirect | calls.rb:158:1:160:3 | indirect |
-| calls.rb:576:1:581:3 | SingletonUpCall_SubSub | new | calls.rb:117:5:117:16 | new |
-| calls.rb:576:1:581:3 | SingletonUpCall_SubSub | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:576:1:581:3 | SingletonUpCall_SubSub | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:576:1:581:3 | SingletonUpCall_SubSub | private_on_main | calls.rb:185:1:186:3 | private_on_main |
-| calls.rb:576:1:581:3 | SingletonUpCall_SubSub | puts | calls.rb:102:5:102:30 | puts |
-| calls.rb:576:1:581:3 | SingletonUpCall_SubSub | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:583:1:594:3 | SingletonA | add_singleton | calls.rb:367:1:371:3 | add_singleton |
-| calls.rb:583:1:594:3 | SingletonA | call_block | calls.rb:81:1:83:3 | call_block |
-| calls.rb:583:1:594:3 | SingletonA | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
-| calls.rb:583:1:594:3 | SingletonA | create | calls.rb:278:1:286:3 | create |
-| calls.rb:583:1:594:3 | SingletonA | foo | calls.rb:1:1:3:3 | foo |
-| calls.rb:583:1:594:3 | SingletonA | foo | calls.rb:85:1:89:3 | foo |
-| calls.rb:583:1:594:3 | SingletonA | funny | calls.rb:140:1:142:3 | funny |
-| calls.rb:583:1:594:3 | SingletonA | indirect | calls.rb:158:1:160:3 | indirect |
-| calls.rb:583:1:594:3 | SingletonA | new | calls.rb:117:5:117:16 | new |
-| calls.rb:583:1:594:3 | SingletonA | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:583:1:594:3 | SingletonA | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:583:1:594:3 | SingletonA | private_on_main | calls.rb:185:1:186:3 | private_on_main |
-| calls.rb:583:1:594:3 | SingletonA | puts | calls.rb:102:5:102:30 | puts |
-| calls.rb:583:1:594:3 | SingletonA | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:596:1:603:3 | SingletonB | add_singleton | calls.rb:367:1:371:3 | add_singleton |
-| calls.rb:596:1:603:3 | SingletonB | call_block | calls.rb:81:1:83:3 | call_block |
-| calls.rb:596:1:603:3 | SingletonB | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
-| calls.rb:596:1:603:3 | SingletonB | create | calls.rb:278:1:286:3 | create |
-| calls.rb:596:1:603:3 | SingletonB | foo | calls.rb:1:1:3:3 | foo |
-| calls.rb:596:1:603:3 | SingletonB | foo | calls.rb:85:1:89:3 | foo |
-| calls.rb:596:1:603:3 | SingletonB | funny | calls.rb:140:1:142:3 | funny |
-| calls.rb:596:1:603:3 | SingletonB | indirect | calls.rb:158:1:160:3 | indirect |
-| calls.rb:596:1:603:3 | SingletonB | new | calls.rb:117:5:117:16 | new |
-| calls.rb:596:1:603:3 | SingletonB | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:596:1:603:3 | SingletonB | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:596:1:603:3 | SingletonB | private_on_main | calls.rb:185:1:186:3 | private_on_main |
-| calls.rb:596:1:603:3 | SingletonB | puts | calls.rb:102:5:102:30 | puts |
-| calls.rb:596:1:603:3 | SingletonB | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:605:1:612:3 | SingletonC | add_singleton | calls.rb:367:1:371:3 | add_singleton |
-| calls.rb:605:1:612:3 | SingletonC | call_block | calls.rb:81:1:83:3 | call_block |
-| calls.rb:605:1:612:3 | SingletonC | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
-| calls.rb:605:1:612:3 | SingletonC | create | calls.rb:278:1:286:3 | create |
-| calls.rb:605:1:612:3 | SingletonC | foo | calls.rb:1:1:3:3 | foo |
-| calls.rb:605:1:612:3 | SingletonC | foo | calls.rb:85:1:89:3 | foo |
-| calls.rb:605:1:612:3 | SingletonC | funny | calls.rb:140:1:142:3 | funny |
-| calls.rb:605:1:612:3 | SingletonC | indirect | calls.rb:158:1:160:3 | indirect |
-| calls.rb:605:1:612:3 | SingletonC | new | calls.rb:117:5:117:16 | new |
-| calls.rb:605:1:612:3 | SingletonC | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:605:1:612:3 | SingletonC | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:605:1:612:3 | SingletonC | private_on_main | calls.rb:185:1:186:3 | private_on_main |
-| calls.rb:605:1:612:3 | SingletonC | puts | calls.rb:102:5:102:30 | puts |
-| calls.rb:605:1:612:3 | SingletonC | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:618:1:624:3 | Included | bar | calls.rb:622:5:623:7 | bar |
-| calls.rb:618:1:624:3 | Included | foo | calls.rb:619:5:621:7 | foo |
-| calls.rb:626:1:631:3 | IncludesIncluded | add_singleton | calls.rb:367:1:371:3 | add_singleton |
-| calls.rb:626:1:631:3 | IncludesIncluded | bar | calls.rb:628:5:630:7 | bar |
-| calls.rb:626:1:631:3 | IncludesIncluded | call_block | calls.rb:81:1:83:3 | call_block |
-| calls.rb:626:1:631:3 | IncludesIncluded | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
-| calls.rb:626:1:631:3 | IncludesIncluded | create | calls.rb:278:1:286:3 | create |
-| calls.rb:626:1:631:3 | IncludesIncluded | foo | calls.rb:619:5:621:7 | foo |
-| calls.rb:626:1:631:3 | IncludesIncluded | funny | calls.rb:140:1:142:3 | funny |
-| calls.rb:626:1:631:3 | IncludesIncluded | indirect | calls.rb:158:1:160:3 | indirect |
-| calls.rb:626:1:631:3 | IncludesIncluded | new | calls.rb:117:5:117:16 | new |
-| calls.rb:626:1:631:3 | IncludesIncluded | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:626:1:631:3 | IncludesIncluded | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:626:1:631:3 | IncludesIncluded | private_on_main | calls.rb:185:1:186:3 | private_on_main |
-| calls.rb:626:1:631:3 | IncludesIncluded | puts | calls.rb:102:5:102:30 | puts |
-| calls.rb:626:1:631:3 | IncludesIncluded | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:633:1:637:3 | CustomNew1 | add_singleton | calls.rb:367:1:371:3 | add_singleton |
-| calls.rb:633:1:637:3 | CustomNew1 | call_block | calls.rb:81:1:83:3 | call_block |
-| calls.rb:633:1:637:3 | CustomNew1 | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
-| calls.rb:633:1:637:3 | CustomNew1 | create | calls.rb:278:1:286:3 | create |
-| calls.rb:633:1:637:3 | CustomNew1 | foo | calls.rb:1:1:3:3 | foo |
-| calls.rb:633:1:637:3 | CustomNew1 | foo | calls.rb:85:1:89:3 | foo |
-| calls.rb:633:1:637:3 | CustomNew1 | funny | calls.rb:140:1:142:3 | funny |
-| calls.rb:633:1:637:3 | CustomNew1 | indirect | calls.rb:158:1:160:3 | indirect |
-| calls.rb:633:1:637:3 | CustomNew1 | new | calls.rb:117:5:117:16 | new |
-| calls.rb:633:1:637:3 | CustomNew1 | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:633:1:637:3 | CustomNew1 | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:633:1:637:3 | CustomNew1 | private_on_main | calls.rb:185:1:186:3 | private_on_main |
-| calls.rb:633:1:637:3 | CustomNew1 | puts | calls.rb:102:5:102:30 | puts |
-| calls.rb:633:1:637:3 | CustomNew1 | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:641:1:649:3 | CustomNew2 | add_singleton | calls.rb:367:1:371:3 | add_singleton |
-| calls.rb:641:1:649:3 | CustomNew2 | call_block | calls.rb:81:1:83:3 | call_block |
-| calls.rb:641:1:649:3 | CustomNew2 | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
-| calls.rb:641:1:649:3 | CustomNew2 | create | calls.rb:278:1:286:3 | create |
-| calls.rb:641:1:649:3 | CustomNew2 | foo | calls.rb:1:1:3:3 | foo |
-| calls.rb:641:1:649:3 | CustomNew2 | foo | calls.rb:85:1:89:3 | foo |
-| calls.rb:641:1:649:3 | CustomNew2 | funny | calls.rb:140:1:142:3 | funny |
-| calls.rb:641:1:649:3 | CustomNew2 | indirect | calls.rb:158:1:160:3 | indirect |
-| calls.rb:641:1:649:3 | CustomNew2 | instance | calls.rb:646:5:648:7 | instance |
-| calls.rb:641:1:649:3 | CustomNew2 | new | calls.rb:117:5:117:16 | new |
-| calls.rb:641:1:649:3 | CustomNew2 | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:641:1:649:3 | CustomNew2 | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:641:1:649:3 | CustomNew2 | private_on_main | calls.rb:185:1:186:3 | private_on_main |
-| calls.rb:641:1:649:3 | CustomNew2 | puts | calls.rb:102:5:102:30 | puts |
-| calls.rb:641:1:649:3 | CustomNew2 | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:325:1:333:3 | C1 | add_singleton | calls.rb:374:1:378:3 | add_singleton |
+| calls.rb:325:1:333:3 | C1 | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:325:1:333:3 | C1 | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:325:1:333:3 | C1 | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:325:1:333:3 | C1 | create | calls.rb:278:1:286:3 | create |
+| calls.rb:325:1:333:3 | C1 | foo | calls.rb:1:1:3:3 | foo |
+| calls.rb:325:1:333:3 | C1 | foo | calls.rb:85:1:89:3 | foo |
+| calls.rb:325:1:333:3 | C1 | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:325:1:333:3 | C1 | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:325:1:333:3 | C1 | instance | calls.rb:326:5:328:7 | instance |
+| calls.rb:325:1:333:3 | C1 | new | calls.rb:117:5:117:16 | new |
+| calls.rb:325:1:333:3 | C1 | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:325:1:333:3 | C1 | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:325:1:333:3 | C1 | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:325:1:333:3 | C1 | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:325:1:333:3 | C1 | return_self | calls.rb:330:5:332:7 | return_self |
+| calls.rb:325:1:333:3 | C1 | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:335:1:339:3 | C2 | add_singleton | calls.rb:374:1:378:3 | add_singleton |
+| calls.rb:335:1:339:3 | C2 | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:335:1:339:3 | C2 | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:335:1:339:3 | C2 | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:335:1:339:3 | C2 | create | calls.rb:278:1:286:3 | create |
+| calls.rb:335:1:339:3 | C2 | foo | calls.rb:1:1:3:3 | foo |
+| calls.rb:335:1:339:3 | C2 | foo | calls.rb:85:1:89:3 | foo |
+| calls.rb:335:1:339:3 | C2 | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:335:1:339:3 | C2 | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:335:1:339:3 | C2 | instance | calls.rb:336:5:338:7 | instance |
+| calls.rb:335:1:339:3 | C2 | new | calls.rb:117:5:117:16 | new |
+| calls.rb:335:1:339:3 | C2 | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:335:1:339:3 | C2 | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:335:1:339:3 | C2 | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:335:1:339:3 | C2 | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:335:1:339:3 | C2 | return_self | calls.rb:330:5:332:7 | return_self |
+| calls.rb:335:1:339:3 | C2 | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:341:1:345:3 | C3 | add_singleton | calls.rb:374:1:378:3 | add_singleton |
+| calls.rb:341:1:345:3 | C3 | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:341:1:345:3 | C3 | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:341:1:345:3 | C3 | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:341:1:345:3 | C3 | create | calls.rb:278:1:286:3 | create |
+| calls.rb:341:1:345:3 | C3 | foo | calls.rb:1:1:3:3 | foo |
+| calls.rb:341:1:345:3 | C3 | foo | calls.rb:85:1:89:3 | foo |
+| calls.rb:341:1:345:3 | C3 | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:341:1:345:3 | C3 | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:341:1:345:3 | C3 | instance | calls.rb:342:5:344:7 | instance |
+| calls.rb:341:1:345:3 | C3 | new | calls.rb:117:5:117:16 | new |
+| calls.rb:341:1:345:3 | C3 | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:341:1:345:3 | C3 | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:341:1:345:3 | C3 | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:341:1:345:3 | C3 | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:341:1:345:3 | C3 | return_self | calls.rb:330:5:332:7 | return_self |
+| calls.rb:341:1:345:3 | C3 | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:385:1:413:3 | SingletonOverride1 | add_singleton | calls.rb:374:1:378:3 | add_singleton |
+| calls.rb:385:1:413:3 | SingletonOverride1 | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:385:1:413:3 | SingletonOverride1 | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:385:1:413:3 | SingletonOverride1 | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:385:1:413:3 | SingletonOverride1 | create | calls.rb:278:1:286:3 | create |
+| calls.rb:385:1:413:3 | SingletonOverride1 | foo | calls.rb:1:1:3:3 | foo |
+| calls.rb:385:1:413:3 | SingletonOverride1 | foo | calls.rb:85:1:89:3 | foo |
+| calls.rb:385:1:413:3 | SingletonOverride1 | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:385:1:413:3 | SingletonOverride1 | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:385:1:413:3 | SingletonOverride1 | instance1 | calls.rb:410:5:412:7 | instance1 |
+| calls.rb:385:1:413:3 | SingletonOverride1 | new | calls.rb:117:5:117:16 | new |
+| calls.rb:385:1:413:3 | SingletonOverride1 | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:385:1:413:3 | SingletonOverride1 | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:385:1:413:3 | SingletonOverride1 | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:385:1:413:3 | SingletonOverride1 | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:385:1:413:3 | SingletonOverride1 | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:420:1:434:3 | SingletonOverride2 | add_singleton | calls.rb:374:1:378:3 | add_singleton |
+| calls.rb:420:1:434:3 | SingletonOverride2 | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:420:1:434:3 | SingletonOverride2 | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:420:1:434:3 | SingletonOverride2 | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:420:1:434:3 | SingletonOverride2 | create | calls.rb:278:1:286:3 | create |
+| calls.rb:420:1:434:3 | SingletonOverride2 | foo | calls.rb:1:1:3:3 | foo |
+| calls.rb:420:1:434:3 | SingletonOverride2 | foo | calls.rb:85:1:89:3 | foo |
+| calls.rb:420:1:434:3 | SingletonOverride2 | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:420:1:434:3 | SingletonOverride2 | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:420:1:434:3 | SingletonOverride2 | instance1 | calls.rb:431:5:433:7 | instance1 |
+| calls.rb:420:1:434:3 | SingletonOverride2 | new | calls.rb:117:5:117:16 | new |
+| calls.rb:420:1:434:3 | SingletonOverride2 | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:420:1:434:3 | SingletonOverride2 | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:420:1:434:3 | SingletonOverride2 | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:420:1:434:3 | SingletonOverride2 | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:420:1:434:3 | SingletonOverride2 | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:441:1:469:3 | ConditionalInstanceMethods | add_singleton | calls.rb:374:1:378:3 | add_singleton |
+| calls.rb:441:1:469:3 | ConditionalInstanceMethods | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:441:1:469:3 | ConditionalInstanceMethods | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:441:1:469:3 | ConditionalInstanceMethods | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:441:1:469:3 | ConditionalInstanceMethods | create | calls.rb:278:1:286:3 | create |
+| calls.rb:441:1:469:3 | ConditionalInstanceMethods | foo | calls.rb:1:1:3:3 | foo |
+| calls.rb:441:1:469:3 | ConditionalInstanceMethods | foo | calls.rb:85:1:89:3 | foo |
+| calls.rb:441:1:469:3 | ConditionalInstanceMethods | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:441:1:469:3 | ConditionalInstanceMethods | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:441:1:469:3 | ConditionalInstanceMethods | m1 | calls.rb:443:9:445:11 | m1 |
+| calls.rb:441:1:469:3 | ConditionalInstanceMethods | m2 | calls.rb:448:5:460:7 | m2 |
+| calls.rb:441:1:469:3 | ConditionalInstanceMethods | new | calls.rb:117:5:117:16 | new |
+| calls.rb:441:1:469:3 | ConditionalInstanceMethods | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:441:1:469:3 | ConditionalInstanceMethods | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:441:1:469:3 | ConditionalInstanceMethods | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:441:1:469:3 | ConditionalInstanceMethods | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:441:1:469:3 | ConditionalInstanceMethods | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:504:1:510:3 | ExtendSingletonMethod | singleton | calls.rb:505:5:507:7 | singleton |
+| calls.rb:533:1:537:3 | ProtectedMethodInModule | foo | calls.rb:534:15:536:7 | foo |
+| calls.rb:539:1:552:3 | ProtectedMethods | add_singleton | calls.rb:374:1:378:3 | add_singleton |
+| calls.rb:539:1:552:3 | ProtectedMethods | bar | calls.rb:542:15:544:7 | bar |
+| calls.rb:539:1:552:3 | ProtectedMethods | baz | calls.rb:546:5:551:7 | baz |
+| calls.rb:539:1:552:3 | ProtectedMethods | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:539:1:552:3 | ProtectedMethods | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:539:1:552:3 | ProtectedMethods | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:539:1:552:3 | ProtectedMethods | create | calls.rb:278:1:286:3 | create |
+| calls.rb:539:1:552:3 | ProtectedMethods | foo | calls.rb:534:15:536:7 | foo |
+| calls.rb:539:1:552:3 | ProtectedMethods | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:539:1:552:3 | ProtectedMethods | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:539:1:552:3 | ProtectedMethods | new | calls.rb:117:5:117:16 | new |
+| calls.rb:539:1:552:3 | ProtectedMethods | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:539:1:552:3 | ProtectedMethods | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:539:1:552:3 | ProtectedMethods | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:539:1:552:3 | ProtectedMethods | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:539:1:552:3 | ProtectedMethods | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:558:1:563:3 | ProtectedMethodsSub | add_singleton | calls.rb:374:1:378:3 | add_singleton |
+| calls.rb:558:1:563:3 | ProtectedMethodsSub | bar | calls.rb:542:15:544:7 | bar |
+| calls.rb:558:1:563:3 | ProtectedMethodsSub | baz | calls.rb:559:5:562:7 | baz |
+| calls.rb:558:1:563:3 | ProtectedMethodsSub | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:558:1:563:3 | ProtectedMethodsSub | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:558:1:563:3 | ProtectedMethodsSub | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:558:1:563:3 | ProtectedMethodsSub | create | calls.rb:278:1:286:3 | create |
+| calls.rb:558:1:563:3 | ProtectedMethodsSub | foo | calls.rb:534:15:536:7 | foo |
+| calls.rb:558:1:563:3 | ProtectedMethodsSub | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:558:1:563:3 | ProtectedMethodsSub | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:558:1:563:3 | ProtectedMethodsSub | new | calls.rb:117:5:117:16 | new |
+| calls.rb:558:1:563:3 | ProtectedMethodsSub | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:558:1:563:3 | ProtectedMethodsSub | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:558:1:563:3 | ProtectedMethodsSub | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:558:1:563:3 | ProtectedMethodsSub | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:558:1:563:3 | ProtectedMethodsSub | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:572:1:575:3 | SingletonUpCall_Base | add_singleton | calls.rb:374:1:378:3 | add_singleton |
+| calls.rb:572:1:575:3 | SingletonUpCall_Base | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:572:1:575:3 | SingletonUpCall_Base | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:572:1:575:3 | SingletonUpCall_Base | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:572:1:575:3 | SingletonUpCall_Base | create | calls.rb:278:1:286:3 | create |
+| calls.rb:572:1:575:3 | SingletonUpCall_Base | foo | calls.rb:1:1:3:3 | foo |
+| calls.rb:572:1:575:3 | SingletonUpCall_Base | foo | calls.rb:85:1:89:3 | foo |
+| calls.rb:572:1:575:3 | SingletonUpCall_Base | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:572:1:575:3 | SingletonUpCall_Base | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:572:1:575:3 | SingletonUpCall_Base | new | calls.rb:117:5:117:16 | new |
+| calls.rb:572:1:575:3 | SingletonUpCall_Base | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:572:1:575:3 | SingletonUpCall_Base | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:572:1:575:3 | SingletonUpCall_Base | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:572:1:575:3 | SingletonUpCall_Base | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:572:1:575:3 | SingletonUpCall_Base | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:576:1:583:3 | SingletonUpCall_Sub | add_singleton | calls.rb:374:1:378:3 | add_singleton |
+| calls.rb:576:1:583:3 | SingletonUpCall_Sub | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:576:1:583:3 | SingletonUpCall_Sub | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:576:1:583:3 | SingletonUpCall_Sub | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:576:1:583:3 | SingletonUpCall_Sub | create | calls.rb:278:1:286:3 | create |
+| calls.rb:576:1:583:3 | SingletonUpCall_Sub | foo | calls.rb:1:1:3:3 | foo |
+| calls.rb:576:1:583:3 | SingletonUpCall_Sub | foo | calls.rb:85:1:89:3 | foo |
+| calls.rb:576:1:583:3 | SingletonUpCall_Sub | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:576:1:583:3 | SingletonUpCall_Sub | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:576:1:583:3 | SingletonUpCall_Sub | new | calls.rb:117:5:117:16 | new |
+| calls.rb:576:1:583:3 | SingletonUpCall_Sub | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:576:1:583:3 | SingletonUpCall_Sub | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:576:1:583:3 | SingletonUpCall_Sub | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:576:1:583:3 | SingletonUpCall_Sub | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:576:1:583:3 | SingletonUpCall_Sub | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:584:1:589:3 | SingletonUpCall_SubSub | add_singleton | calls.rb:374:1:378:3 | add_singleton |
+| calls.rb:584:1:589:3 | SingletonUpCall_SubSub | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:584:1:589:3 | SingletonUpCall_SubSub | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:584:1:589:3 | SingletonUpCall_SubSub | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:584:1:589:3 | SingletonUpCall_SubSub | create | calls.rb:278:1:286:3 | create |
+| calls.rb:584:1:589:3 | SingletonUpCall_SubSub | foo | calls.rb:1:1:3:3 | foo |
+| calls.rb:584:1:589:3 | SingletonUpCall_SubSub | foo | calls.rb:85:1:89:3 | foo |
+| calls.rb:584:1:589:3 | SingletonUpCall_SubSub | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:584:1:589:3 | SingletonUpCall_SubSub | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:584:1:589:3 | SingletonUpCall_SubSub | new | calls.rb:117:5:117:16 | new |
+| calls.rb:584:1:589:3 | SingletonUpCall_SubSub | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:584:1:589:3 | SingletonUpCall_SubSub | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:584:1:589:3 | SingletonUpCall_SubSub | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:584:1:589:3 | SingletonUpCall_SubSub | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:584:1:589:3 | SingletonUpCall_SubSub | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:591:1:602:3 | SingletonA | add_singleton | calls.rb:374:1:378:3 | add_singleton |
+| calls.rb:591:1:602:3 | SingletonA | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:591:1:602:3 | SingletonA | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:591:1:602:3 | SingletonA | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:591:1:602:3 | SingletonA | create | calls.rb:278:1:286:3 | create |
+| calls.rb:591:1:602:3 | SingletonA | foo | calls.rb:1:1:3:3 | foo |
+| calls.rb:591:1:602:3 | SingletonA | foo | calls.rb:85:1:89:3 | foo |
+| calls.rb:591:1:602:3 | SingletonA | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:591:1:602:3 | SingletonA | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:591:1:602:3 | SingletonA | new | calls.rb:117:5:117:16 | new |
+| calls.rb:591:1:602:3 | SingletonA | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:591:1:602:3 | SingletonA | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:591:1:602:3 | SingletonA | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:591:1:602:3 | SingletonA | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:591:1:602:3 | SingletonA | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:604:1:611:3 | SingletonB | add_singleton | calls.rb:374:1:378:3 | add_singleton |
+| calls.rb:604:1:611:3 | SingletonB | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:604:1:611:3 | SingletonB | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:604:1:611:3 | SingletonB | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:604:1:611:3 | SingletonB | create | calls.rb:278:1:286:3 | create |
+| calls.rb:604:1:611:3 | SingletonB | foo | calls.rb:1:1:3:3 | foo |
+| calls.rb:604:1:611:3 | SingletonB | foo | calls.rb:85:1:89:3 | foo |
+| calls.rb:604:1:611:3 | SingletonB | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:604:1:611:3 | SingletonB | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:604:1:611:3 | SingletonB | new | calls.rb:117:5:117:16 | new |
+| calls.rb:604:1:611:3 | SingletonB | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:604:1:611:3 | SingletonB | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:604:1:611:3 | SingletonB | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:604:1:611:3 | SingletonB | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:604:1:611:3 | SingletonB | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:613:1:620:3 | SingletonC | add_singleton | calls.rb:374:1:378:3 | add_singleton |
+| calls.rb:613:1:620:3 | SingletonC | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:613:1:620:3 | SingletonC | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:613:1:620:3 | SingletonC | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:613:1:620:3 | SingletonC | create | calls.rb:278:1:286:3 | create |
+| calls.rb:613:1:620:3 | SingletonC | foo | calls.rb:1:1:3:3 | foo |
+| calls.rb:613:1:620:3 | SingletonC | foo | calls.rb:85:1:89:3 | foo |
+| calls.rb:613:1:620:3 | SingletonC | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:613:1:620:3 | SingletonC | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:613:1:620:3 | SingletonC | new | calls.rb:117:5:117:16 | new |
+| calls.rb:613:1:620:3 | SingletonC | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:613:1:620:3 | SingletonC | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:613:1:620:3 | SingletonC | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:613:1:620:3 | SingletonC | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:613:1:620:3 | SingletonC | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:626:1:632:3 | Included | bar | calls.rb:630:5:631:7 | bar |
+| calls.rb:626:1:632:3 | Included | foo | calls.rb:627:5:629:7 | foo |
+| calls.rb:634:1:639:3 | IncludesIncluded | add_singleton | calls.rb:374:1:378:3 | add_singleton |
+| calls.rb:634:1:639:3 | IncludesIncluded | bar | calls.rb:636:5:638:7 | bar |
+| calls.rb:634:1:639:3 | IncludesIncluded | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:634:1:639:3 | IncludesIncluded | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:634:1:639:3 | IncludesIncluded | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:634:1:639:3 | IncludesIncluded | create | calls.rb:278:1:286:3 | create |
+| calls.rb:634:1:639:3 | IncludesIncluded | foo | calls.rb:627:5:629:7 | foo |
+| calls.rb:634:1:639:3 | IncludesIncluded | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:634:1:639:3 | IncludesIncluded | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:634:1:639:3 | IncludesIncluded | new | calls.rb:117:5:117:16 | new |
+| calls.rb:634:1:639:3 | IncludesIncluded | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:634:1:639:3 | IncludesIncluded | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:634:1:639:3 | IncludesIncluded | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:634:1:639:3 | IncludesIncluded | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:634:1:639:3 | IncludesIncluded | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:641:1:645:3 | CustomNew1 | add_singleton | calls.rb:374:1:378:3 | add_singleton |
+| calls.rb:641:1:645:3 | CustomNew1 | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:641:1:645:3 | CustomNew1 | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:641:1:645:3 | CustomNew1 | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:641:1:645:3 | CustomNew1 | create | calls.rb:278:1:286:3 | create |
+| calls.rb:641:1:645:3 | CustomNew1 | foo | calls.rb:1:1:3:3 | foo |
+| calls.rb:641:1:645:3 | CustomNew1 | foo | calls.rb:85:1:89:3 | foo |
+| calls.rb:641:1:645:3 | CustomNew1 | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:641:1:645:3 | CustomNew1 | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:641:1:645:3 | CustomNew1 | new | calls.rb:117:5:117:16 | new |
+| calls.rb:641:1:645:3 | CustomNew1 | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:641:1:645:3 | CustomNew1 | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:641:1:645:3 | CustomNew1 | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:641:1:645:3 | CustomNew1 | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:641:1:645:3 | CustomNew1 | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:649:1:657:3 | CustomNew2 | add_singleton | calls.rb:374:1:378:3 | add_singleton |
+| calls.rb:649:1:657:3 | CustomNew2 | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:649:1:657:3 | CustomNew2 | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:649:1:657:3 | CustomNew2 | capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:649:1:657:3 | CustomNew2 | create | calls.rb:278:1:286:3 | create |
+| calls.rb:649:1:657:3 | CustomNew2 | foo | calls.rb:1:1:3:3 | foo |
+| calls.rb:649:1:657:3 | CustomNew2 | foo | calls.rb:85:1:89:3 | foo |
+| calls.rb:649:1:657:3 | CustomNew2 | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:649:1:657:3 | CustomNew2 | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:649:1:657:3 | CustomNew2 | instance | calls.rb:654:5:656:7 | instance |
+| calls.rb:649:1:657:3 | CustomNew2 | new | calls.rb:117:5:117:16 | new |
+| calls.rb:649:1:657:3 | CustomNew2 | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:649:1:657:3 | CustomNew2 | pattern_dispatch | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:649:1:657:3 | CustomNew2 | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:649:1:657:3 | CustomNew2 | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:649:1:657:3 | CustomNew2 | to_s | calls.rb:172:5:173:7 | to_s |
+| element_reference.rb:1:1:5:3 | ClassWithElementRef | [] | element_reference.rb:2:5:4:7 | [] |
+| element_reference.rb:1:1:5:3 | ClassWithElementRef | new | calls.rb:117:5:117:16 | new |
+| element_reference.rb:1:1:5:3 | ClassWithElementRef | puts | calls.rb:102:5:102:30 | puts |
+| element_reference.rb:1:1:5:3 | ClassWithElementRef | to_s | calls.rb:172:5:173:7 | to_s |
 | file://:0:0:0:0 | Class | include | calls.rb:108:5:110:7 | include |
 | file://:0:0:0:0 | Class | module_eval | calls.rb:107:5:107:24 | module_eval |
 | file://:0:0:0:0 | Class | new | calls.rb:117:5:117:16 | new |
@@ -660,6 +699,15 @@ lookupMethod
 | unresolved_subclass.rb:11:1:12:3 | UnresolvedNamespace::A | new | calls.rb:117:5:117:16 | new |
 | unresolved_subclass.rb:11:1:12:3 | UnresolvedNamespace::A | puts | calls.rb:102:5:102:30 | puts |
 | unresolved_subclass.rb:11:1:12:3 | UnresolvedNamespace::A | to_s | calls.rb:172:5:173:7 | to_s |
+| unresolved_subclass.rb:14:1:15:3 | UnresolvedNamespace::X1::X2::X3::Subclass1 | new | calls.rb:117:5:117:16 | new |
+| unresolved_subclass.rb:14:1:15:3 | UnresolvedNamespace::X1::X2::X3::Subclass1 | puts | calls.rb:102:5:102:30 | puts |
+| unresolved_subclass.rb:14:1:15:3 | UnresolvedNamespace::X1::X2::X3::Subclass1 | to_s | calls.rb:172:5:173:7 | to_s |
+| unresolved_subclass.rb:17:1:18:3 | UnresolvedNamespace::X1::X2::X3::Subclass2 | new | calls.rb:117:5:117:16 | new |
+| unresolved_subclass.rb:17:1:18:3 | UnresolvedNamespace::X1::X2::X3::Subclass2 | puts | calls.rb:102:5:102:30 | puts |
+| unresolved_subclass.rb:17:1:18:3 | UnresolvedNamespace::X1::X2::X3::Subclass2 | to_s | calls.rb:172:5:173:7 | to_s |
+| unresolved_subclass.rb:21:1:22:3 | UnresolvedNamespace::X1::X2::X3::A | new | calls.rb:117:5:117:16 | new |
+| unresolved_subclass.rb:21:1:22:3 | UnresolvedNamespace::X1::X2::X3::A | puts | calls.rb:102:5:102:30 | puts |
+| unresolved_subclass.rb:21:1:22:3 | UnresolvedNamespace::X1::X2::X3::A | to_s | calls.rb:172:5:173:7 | to_s |
 enclosingMethod
 | calls.rb:2:5:2:14 | call to puts | calls.rb:1:1:3:3 | foo |
 | calls.rb:2:5:2:14 | self | calls.rb:1:1:3:3 | foo |
@@ -855,176 +903,194 @@ enclosingMethod
 | calls.rb:327:9:327:26 | self | calls.rb:326:5:328:7 | instance |
 | calls.rb:327:14:327:26 | "C1#instance" | calls.rb:326:5:328:7 | instance |
 | calls.rb:327:15:327:25 | C1#instance | calls.rb:326:5:328:7 | instance |
-| calls.rb:333:9:333:26 | call to puts | calls.rb:332:5:334:7 | instance |
-| calls.rb:333:9:333:26 | self | calls.rb:332:5:334:7 | instance |
-| calls.rb:333:14:333:26 | "C2#instance" | calls.rb:332:5:334:7 | instance |
-| calls.rb:333:15:333:25 | C2#instance | calls.rb:332:5:334:7 | instance |
-| calls.rb:339:9:339:26 | call to puts | calls.rb:338:5:340:7 | instance |
-| calls.rb:339:9:339:26 | self | calls.rb:338:5:340:7 | instance |
-| calls.rb:339:14:339:26 | "C3#instance" | calls.rb:338:5:340:7 | instance |
-| calls.rb:339:15:339:25 | C3#instance | calls.rb:338:5:340:7 | instance |
-| calls.rb:343:22:343:22 | x | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:343:22:343:22 | x | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:344:5:352:7 | case ... | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:344:10:344:10 | x | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:345:5:346:18 | when ... | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:345:10:345:11 | C3 | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:345:12:346:18 | then ... | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:346:9:346:9 | x | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:346:9:346:18 | call to instance | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:347:5:348:18 | when ... | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:347:10:347:11 | C2 | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:347:12:348:18 | then ... | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:348:9:348:9 | x | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:348:9:348:18 | call to instance | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:349:5:350:18 | when ... | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:349:10:349:11 | C1 | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:349:12:350:18 | then ... | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:350:9:350:9 | x | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:350:9:350:18 | call to instance | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:351:5:351:8 | else ... | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:354:5:358:7 | case ... | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:354:10:354:10 | x | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:355:9:355:29 | in ... then ... | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:355:12:355:13 | C3 | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:355:15:355:29 | then ... | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:355:20:355:20 | x | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:355:20:355:29 | call to instance | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:356:9:356:36 | in ... then ... | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:356:12:356:13 | C2 | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:356:12:356:19 | ... => ... | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:356:18:356:19 | c2 | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:356:21:356:36 | then ... | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:356:26:356:27 | c2 | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:356:26:356:36 | call to instance | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:357:9:357:36 | in ... then ... | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:357:12:357:13 | C1 | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:357:12:357:19 | ... => ... | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:357:18:357:19 | c1 | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:357:21:357:36 | then ... | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:357:26:357:27 | c1 | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:357:26:357:36 | call to instance | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:367:19:367:19 | x | calls.rb:367:1:371:3 | add_singleton |
-| calls.rb:367:19:367:19 | x | calls.rb:367:1:371:3 | add_singleton |
-| calls.rb:368:5:370:7 | instance | calls.rb:367:1:371:3 | add_singleton |
-| calls.rb:368:9:368:9 | x | calls.rb:367:1:371:3 | add_singleton |
-| calls.rb:369:9:369:28 | call to puts | calls.rb:368:5:370:7 | instance |
-| calls.rb:369:9:369:28 | self | calls.rb:368:5:370:7 | instance |
-| calls.rb:369:14:369:28 | "instance_on x" | calls.rb:368:5:370:7 | instance |
-| calls.rb:369:15:369:27 | instance_on x | calls.rb:368:5:370:7 | instance |
-| calls.rb:380:13:380:48 | call to puts | calls.rb:379:9:381:11 | singleton1 |
-| calls.rb:380:13:380:48 | self | calls.rb:379:9:381:11 | singleton1 |
-| calls.rb:380:18:380:48 | "SingletonOverride1#singleton1" | calls.rb:379:9:381:11 | singleton1 |
-| calls.rb:380:19:380:47 | SingletonOverride1#singleton1 | calls.rb:379:9:381:11 | singleton1 |
-| calls.rb:384:13:384:22 | call to singleton1 | calls.rb:383:9:385:11 | call_singleton1 |
-| calls.rb:384:13:384:22 | self | calls.rb:383:9:385:11 | call_singleton1 |
-| calls.rb:388:13:388:16 | self | calls.rb:387:9:389:11 | factory |
-| calls.rb:388:13:388:20 | call to new | calls.rb:387:9:389:11 | factory |
-| calls.rb:388:13:388:30 | call to instance1 | calls.rb:387:9:389:11 | factory |
-| calls.rb:393:9:393:44 | call to puts | calls.rb:392:5:394:7 | singleton2 |
-| calls.rb:393:9:393:44 | self | calls.rb:392:5:394:7 | singleton2 |
-| calls.rb:393:14:393:44 | "SingletonOverride1#singleton2" | calls.rb:392:5:394:7 | singleton2 |
-| calls.rb:393:15:393:43 | SingletonOverride1#singleton2 | calls.rb:392:5:394:7 | singleton2 |
-| calls.rb:397:9:397:18 | call to singleton2 | calls.rb:396:5:398:7 | call_singleton2 |
-| calls.rb:397:9:397:18 | self | calls.rb:396:5:398:7 | call_singleton2 |
-| calls.rb:403:9:403:43 | call to puts | calls.rb:402:5:404:7 | instance1 |
-| calls.rb:403:9:403:43 | self | calls.rb:402:5:404:7 | instance1 |
-| calls.rb:403:14:403:43 | "SingletonOverride1#instance1" | calls.rb:402:5:404:7 | instance1 |
-| calls.rb:403:15:403:42 | SingletonOverride1#instance1 | calls.rb:402:5:404:7 | instance1 |
-| calls.rb:415:13:415:48 | call to puts | calls.rb:414:9:416:11 | singleton1 |
-| calls.rb:415:13:415:48 | self | calls.rb:414:9:416:11 | singleton1 |
-| calls.rb:415:18:415:48 | "SingletonOverride2#singleton1" | calls.rb:414:9:416:11 | singleton1 |
-| calls.rb:415:19:415:47 | SingletonOverride2#singleton1 | calls.rb:414:9:416:11 | singleton1 |
-| calls.rb:420:9:420:44 | call to puts | calls.rb:419:5:421:7 | singleton2 |
-| calls.rb:420:9:420:44 | self | calls.rb:419:5:421:7 | singleton2 |
-| calls.rb:420:14:420:44 | "SingletonOverride2#singleton2" | calls.rb:419:5:421:7 | singleton2 |
-| calls.rb:420:15:420:43 | SingletonOverride2#singleton2 | calls.rb:419:5:421:7 | singleton2 |
-| calls.rb:424:9:424:43 | call to puts | calls.rb:423:5:425:7 | instance1 |
-| calls.rb:424:9:424:43 | self | calls.rb:423:5:425:7 | instance1 |
-| calls.rb:424:14:424:43 | "SingletonOverride2#instance1" | calls.rb:423:5:425:7 | instance1 |
-| calls.rb:424:15:424:42 | SingletonOverride2#instance1 | calls.rb:423:5:425:7 | instance1 |
-| calls.rb:436:13:436:48 | call to puts | calls.rb:435:9:437:11 | m1 |
-| calls.rb:436:13:436:48 | self | calls.rb:435:9:437:11 | m1 |
-| calls.rb:436:18:436:48 | "ConditionalInstanceMethods#m1" | calls.rb:435:9:437:11 | m1 |
-| calls.rb:436:19:436:47 | ConditionalInstanceMethods#m1 | calls.rb:435:9:437:11 | m1 |
-| calls.rb:441:9:441:44 | call to puts | calls.rb:440:5:452:7 | m2 |
-| calls.rb:441:9:441:44 | self | calls.rb:440:5:452:7 | m2 |
-| calls.rb:441:14:441:44 | "ConditionalInstanceMethods#m2" | calls.rb:440:5:452:7 | m2 |
-| calls.rb:441:15:441:43 | ConditionalInstanceMethods#m2 | calls.rb:440:5:452:7 | m2 |
-| calls.rb:443:9:449:11 | m3 | calls.rb:440:5:452:7 | m2 |
-| calls.rb:444:13:444:48 | call to puts | calls.rb:443:9:449:11 | m3 |
-| calls.rb:444:13:444:48 | self | calls.rb:443:9:449:11 | m3 |
-| calls.rb:444:18:444:48 | "ConditionalInstanceMethods#m3" | calls.rb:443:9:449:11 | m3 |
-| calls.rb:444:19:444:47 | ConditionalInstanceMethods#m3 | calls.rb:443:9:449:11 | m3 |
-| calls.rb:446:13:448:15 | m4 | calls.rb:443:9:449:11 | m3 |
-| calls.rb:447:17:447:52 | call to puts | calls.rb:446:13:448:15 | m4 |
-| calls.rb:447:17:447:52 | self | calls.rb:446:13:448:15 | m4 |
-| calls.rb:447:22:447:52 | "ConditionalInstanceMethods#m4" | calls.rb:446:13:448:15 | m4 |
-| calls.rb:447:23:447:51 | ConditionalInstanceMethods#m4 | calls.rb:446:13:448:15 | m4 |
-| calls.rb:451:9:451:10 | call to m3 | calls.rb:440:5:452:7 | m2 |
-| calls.rb:451:9:451:10 | self | calls.rb:440:5:452:7 | m2 |
-| calls.rb:457:17:457:40 | call to puts | calls.rb:456:13:458:15 | m5 |
-| calls.rb:457:17:457:40 | self | calls.rb:456:13:458:15 | m5 |
-| calls.rb:457:22:457:40 | "AnonymousClass#m5" | calls.rb:456:13:458:15 | m5 |
-| calls.rb:457:23:457:39 | AnonymousClass#m5 | calls.rb:456:13:458:15 | m5 |
-| calls.rb:473:13:473:22 | call to puts | calls.rb:472:9:474:11 | foo |
-| calls.rb:473:13:473:22 | self | calls.rb:472:9:474:11 | foo |
-| calls.rb:473:18:473:22 | "foo" | calls.rb:472:9:474:11 | foo |
-| calls.rb:473:19:473:21 | foo | calls.rb:472:9:474:11 | foo |
-| calls.rb:479:13:479:22 | call to puts | calls.rb:478:9:480:11 | bar |
-| calls.rb:479:13:479:22 | self | calls.rb:478:9:480:11 | bar |
-| calls.rb:479:18:479:22 | "bar" | calls.rb:478:9:480:11 | bar |
-| calls.rb:479:19:479:21 | bar | calls.rb:478:9:480:11 | bar |
-| calls.rb:498:9:498:46 | call to puts | calls.rb:497:5:499:7 | singleton |
-| calls.rb:498:9:498:46 | self | calls.rb:497:5:499:7 | singleton |
-| calls.rb:498:14:498:46 | "ExtendSingletonMethod#singleton" | calls.rb:497:5:499:7 | singleton |
-| calls.rb:498:15:498:45 | ExtendSingletonMethod#singleton | calls.rb:497:5:499:7 | singleton |
-| calls.rb:527:9:527:42 | call to puts | calls.rb:526:15:528:7 | foo |
-| calls.rb:527:9:527:42 | self | calls.rb:526:15:528:7 | foo |
-| calls.rb:527:14:527:42 | "ProtectedMethodInModule#foo" | calls.rb:526:15:528:7 | foo |
-| calls.rb:527:15:527:41 | ProtectedMethodInModule#foo | calls.rb:526:15:528:7 | foo |
-| calls.rb:535:9:535:35 | call to puts | calls.rb:534:15:536:7 | bar |
-| calls.rb:535:9:535:35 | self | calls.rb:534:15:536:7 | bar |
-| calls.rb:535:14:535:35 | "ProtectedMethods#bar" | calls.rb:534:15:536:7 | bar |
-| calls.rb:535:15:535:34 | ProtectedMethods#bar | calls.rb:534:15:536:7 | bar |
-| calls.rb:539:9:539:11 | call to foo | calls.rb:538:5:543:7 | baz |
-| calls.rb:539:9:539:11 | self | calls.rb:538:5:543:7 | baz |
-| calls.rb:540:9:540:11 | call to bar | calls.rb:538:5:543:7 | baz |
-| calls.rb:540:9:540:11 | self | calls.rb:538:5:543:7 | baz |
-| calls.rb:541:9:541:24 | ProtectedMethods | calls.rb:538:5:543:7 | baz |
-| calls.rb:541:9:541:28 | call to new | calls.rb:538:5:543:7 | baz |
-| calls.rb:541:9:541:32 | call to foo | calls.rb:538:5:543:7 | baz |
-| calls.rb:542:9:542:24 | ProtectedMethods | calls.rb:538:5:543:7 | baz |
-| calls.rb:542:9:542:28 | call to new | calls.rb:538:5:543:7 | baz |
-| calls.rb:542:9:542:32 | call to bar | calls.rb:538:5:543:7 | baz |
-| calls.rb:552:9:552:11 | call to foo | calls.rb:551:5:554:7 | baz |
-| calls.rb:552:9:552:11 | self | calls.rb:551:5:554:7 | baz |
-| calls.rb:553:9:553:27 | ProtectedMethodsSub | calls.rb:551:5:554:7 | baz |
-| calls.rb:553:9:553:31 | call to new | calls.rb:551:5:554:7 | baz |
-| calls.rb:553:9:553:35 | call to foo | calls.rb:551:5:554:7 | baz |
-| calls.rb:572:9:572:17 | call to singleton | calls.rb:571:5:574:7 | mid_method |
-| calls.rb:572:9:572:17 | self | calls.rb:571:5:574:7 | mid_method |
-| calls.rb:573:9:573:18 | call to singleton2 | calls.rb:571:5:574:7 | mid_method |
-| calls.rb:573:9:573:18 | self | calls.rb:571:5:574:7 | mid_method |
-| calls.rb:588:9:588:18 | call to singleton1 | calls.rb:587:5:589:7 | call_singleton1 |
-| calls.rb:588:9:588:18 | self | calls.rb:587:5:589:7 | call_singleton1 |
-| calls.rb:592:9:592:23 | call to call_singleton1 | calls.rb:591:5:593:7 | call_call_singleton1 |
-| calls.rb:592:9:592:23 | self | calls.rb:591:5:593:7 | call_call_singleton1 |
-| calls.rb:601:9:601:18 | call to singleton1 | calls.rb:600:5:602:7 | call_singleton1 |
-| calls.rb:601:9:601:18 | self | calls.rb:600:5:602:7 | call_singleton1 |
-| calls.rb:610:9:610:18 | call to singleton1 | calls.rb:609:5:611:7 | call_singleton1 |
-| calls.rb:610:9:610:18 | self | calls.rb:609:5:611:7 | call_singleton1 |
-| calls.rb:620:9:620:12 | self | calls.rb:619:5:621:7 | foo |
-| calls.rb:620:9:620:16 | call to bar | calls.rb:619:5:621:7 | foo |
-| calls.rb:629:9:629:13 | super call to bar | calls.rb:628:5:630:7 | bar |
-| calls.rb:635:9:635:10 | C1 | calls.rb:634:5:636:7 | new |
-| calls.rb:635:9:635:14 | call to new | calls.rb:634:5:636:7 | new |
-| calls.rb:643:9:643:12 | self | calls.rb:642:5:644:7 | new |
-| calls.rb:643:9:643:21 | call to allocate | calls.rb:642:5:644:7 | new |
-| calls.rb:647:9:647:34 | call to puts | calls.rb:646:5:648:7 | instance |
-| calls.rb:647:9:647:34 | self | calls.rb:646:5:648:7 | instance |
-| calls.rb:647:14:647:34 | "CustomNew2#instance" | calls.rb:646:5:648:7 | instance |
-| calls.rb:647:15:647:33 | CustomNew2#instance | calls.rb:646:5:648:7 | instance |
+| calls.rb:331:9:331:12 | self | calls.rb:330:5:332:7 | return_self |
+| calls.rb:337:9:337:26 | call to puts | calls.rb:336:5:338:7 | instance |
+| calls.rb:337:9:337:26 | self | calls.rb:336:5:338:7 | instance |
+| calls.rb:337:14:337:26 | "C2#instance" | calls.rb:336:5:338:7 | instance |
+| calls.rb:337:15:337:25 | C2#instance | calls.rb:336:5:338:7 | instance |
+| calls.rb:343:9:343:26 | call to puts | calls.rb:342:5:344:7 | instance |
+| calls.rb:343:9:343:26 | self | calls.rb:342:5:344:7 | instance |
+| calls.rb:343:14:343:26 | "C3#instance" | calls.rb:342:5:344:7 | instance |
+| calls.rb:343:15:343:25 | C3#instance | calls.rb:342:5:344:7 | instance |
+| calls.rb:347:22:347:22 | x | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:347:22:347:22 | x | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:348:5:356:7 | case ... | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:348:10:348:10 | x | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:349:5:350:18 | when ... | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:349:10:349:11 | C3 | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:349:12:350:18 | then ... | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:350:9:350:9 | x | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:350:9:350:18 | call to instance | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:351:5:352:18 | when ... | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:351:10:351:11 | C2 | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:351:12:352:18 | then ... | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:352:9:352:9 | x | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:352:9:352:18 | call to instance | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:353:5:354:18 | when ... | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:353:10:353:11 | C1 | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:353:12:354:18 | then ... | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:354:9:354:9 | x | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:354:9:354:18 | call to instance | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:355:5:355:8 | else ... | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:358:5:362:7 | case ... | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:358:10:358:10 | x | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:359:9:359:29 | in ... then ... | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:359:12:359:13 | C3 | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:359:15:359:29 | then ... | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:359:20:359:20 | x | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:359:20:359:29 | call to instance | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:360:9:360:36 | in ... then ... | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:360:12:360:13 | C2 | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:360:12:360:19 | ... => ... | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:360:18:360:19 | c2 | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:360:21:360:36 | then ... | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:360:26:360:27 | c2 | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:360:26:360:36 | call to instance | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:361:9:361:36 | in ... then ... | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:361:12:361:13 | C1 | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:361:12:361:19 | ... => ... | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:361:18:361:19 | c1 | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:361:21:361:36 | then ... | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:361:26:361:27 | c1 | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:361:26:361:36 | call to instance | calls.rb:347:1:363:3 | pattern_dispatch |
+| calls.rb:374:19:374:19 | x | calls.rb:374:1:378:3 | add_singleton |
+| calls.rb:374:19:374:19 | x | calls.rb:374:1:378:3 | add_singleton |
+| calls.rb:375:5:377:7 | instance | calls.rb:374:1:378:3 | add_singleton |
+| calls.rb:375:9:375:9 | x | calls.rb:374:1:378:3 | add_singleton |
+| calls.rb:376:9:376:28 | call to puts | calls.rb:375:5:377:7 | instance |
+| calls.rb:376:9:376:28 | self | calls.rb:375:5:377:7 | instance |
+| calls.rb:376:14:376:28 | "instance_on x" | calls.rb:375:5:377:7 | instance |
+| calls.rb:376:15:376:27 | instance_on x | calls.rb:375:5:377:7 | instance |
+| calls.rb:388:13:388:48 | call to puts | calls.rb:387:9:389:11 | singleton1 |
+| calls.rb:388:13:388:48 | self | calls.rb:387:9:389:11 | singleton1 |
+| calls.rb:388:18:388:48 | "SingletonOverride1#singleton1" | calls.rb:387:9:389:11 | singleton1 |
+| calls.rb:388:19:388:47 | SingletonOverride1#singleton1 | calls.rb:387:9:389:11 | singleton1 |
+| calls.rb:392:13:392:22 | call to singleton1 | calls.rb:391:9:393:11 | call_singleton1 |
+| calls.rb:392:13:392:22 | self | calls.rb:391:9:393:11 | call_singleton1 |
+| calls.rb:396:13:396:16 | self | calls.rb:395:9:397:11 | factory |
+| calls.rb:396:13:396:20 | call to new | calls.rb:395:9:397:11 | factory |
+| calls.rb:396:13:396:30 | call to instance1 | calls.rb:395:9:397:11 | factory |
+| calls.rb:401:9:401:44 | call to puts | calls.rb:400:5:402:7 | singleton2 |
+| calls.rb:401:9:401:44 | self | calls.rb:400:5:402:7 | singleton2 |
+| calls.rb:401:14:401:44 | "SingletonOverride1#singleton2" | calls.rb:400:5:402:7 | singleton2 |
+| calls.rb:401:15:401:43 | SingletonOverride1#singleton2 | calls.rb:400:5:402:7 | singleton2 |
+| calls.rb:405:9:405:18 | call to singleton2 | calls.rb:404:5:406:7 | call_singleton2 |
+| calls.rb:405:9:405:18 | self | calls.rb:404:5:406:7 | call_singleton2 |
+| calls.rb:411:9:411:43 | call to puts | calls.rb:410:5:412:7 | instance1 |
+| calls.rb:411:9:411:43 | self | calls.rb:410:5:412:7 | instance1 |
+| calls.rb:411:14:411:43 | "SingletonOverride1#instance1" | calls.rb:410:5:412:7 | instance1 |
+| calls.rb:411:15:411:42 | SingletonOverride1#instance1 | calls.rb:410:5:412:7 | instance1 |
+| calls.rb:423:13:423:48 | call to puts | calls.rb:422:9:424:11 | singleton1 |
+| calls.rb:423:13:423:48 | self | calls.rb:422:9:424:11 | singleton1 |
+| calls.rb:423:18:423:48 | "SingletonOverride2#singleton1" | calls.rb:422:9:424:11 | singleton1 |
+| calls.rb:423:19:423:47 | SingletonOverride2#singleton1 | calls.rb:422:9:424:11 | singleton1 |
+| calls.rb:428:9:428:44 | call to puts | calls.rb:427:5:429:7 | singleton2 |
+| calls.rb:428:9:428:44 | self | calls.rb:427:5:429:7 | singleton2 |
+| calls.rb:428:14:428:44 | "SingletonOverride2#singleton2" | calls.rb:427:5:429:7 | singleton2 |
+| calls.rb:428:15:428:43 | SingletonOverride2#singleton2 | calls.rb:427:5:429:7 | singleton2 |
+| calls.rb:432:9:432:43 | call to puts | calls.rb:431:5:433:7 | instance1 |
+| calls.rb:432:9:432:43 | self | calls.rb:431:5:433:7 | instance1 |
+| calls.rb:432:14:432:43 | "SingletonOverride2#instance1" | calls.rb:431:5:433:7 | instance1 |
+| calls.rb:432:15:432:42 | SingletonOverride2#instance1 | calls.rb:431:5:433:7 | instance1 |
+| calls.rb:444:13:444:48 | call to puts | calls.rb:443:9:445:11 | m1 |
+| calls.rb:444:13:444:48 | self | calls.rb:443:9:445:11 | m1 |
+| calls.rb:444:18:444:48 | "ConditionalInstanceMethods#m1" | calls.rb:443:9:445:11 | m1 |
+| calls.rb:444:19:444:47 | ConditionalInstanceMethods#m1 | calls.rb:443:9:445:11 | m1 |
+| calls.rb:449:9:449:44 | call to puts | calls.rb:448:5:460:7 | m2 |
+| calls.rb:449:9:449:44 | self | calls.rb:448:5:460:7 | m2 |
+| calls.rb:449:14:449:44 | "ConditionalInstanceMethods#m2" | calls.rb:448:5:460:7 | m2 |
+| calls.rb:449:15:449:43 | ConditionalInstanceMethods#m2 | calls.rb:448:5:460:7 | m2 |
+| calls.rb:451:9:457:11 | m3 | calls.rb:448:5:460:7 | m2 |
+| calls.rb:452:13:452:48 | call to puts | calls.rb:451:9:457:11 | m3 |
+| calls.rb:452:13:452:48 | self | calls.rb:451:9:457:11 | m3 |
+| calls.rb:452:18:452:48 | "ConditionalInstanceMethods#m3" | calls.rb:451:9:457:11 | m3 |
+| calls.rb:452:19:452:47 | ConditionalInstanceMethods#m3 | calls.rb:451:9:457:11 | m3 |
+| calls.rb:454:13:456:15 | m4 | calls.rb:451:9:457:11 | m3 |
+| calls.rb:455:17:455:52 | call to puts | calls.rb:454:13:456:15 | m4 |
+| calls.rb:455:17:455:52 | self | calls.rb:454:13:456:15 | m4 |
+| calls.rb:455:22:455:52 | "ConditionalInstanceMethods#m4" | calls.rb:454:13:456:15 | m4 |
+| calls.rb:455:23:455:51 | ConditionalInstanceMethods#m4 | calls.rb:454:13:456:15 | m4 |
+| calls.rb:459:9:459:10 | call to m3 | calls.rb:448:5:460:7 | m2 |
+| calls.rb:459:9:459:10 | self | calls.rb:448:5:460:7 | m2 |
+| calls.rb:465:17:465:40 | call to puts | calls.rb:464:13:466:15 | m5 |
+| calls.rb:465:17:465:40 | self | calls.rb:464:13:466:15 | m5 |
+| calls.rb:465:22:465:40 | "AnonymousClass#m5" | calls.rb:464:13:466:15 | m5 |
+| calls.rb:465:23:465:39 | AnonymousClass#m5 | calls.rb:464:13:466:15 | m5 |
+| calls.rb:481:13:481:22 | call to puts | calls.rb:480:9:482:11 | foo |
+| calls.rb:481:13:481:22 | self | calls.rb:480:9:482:11 | foo |
+| calls.rb:481:18:481:22 | "foo" | calls.rb:480:9:482:11 | foo |
+| calls.rb:481:19:481:21 | foo | calls.rb:480:9:482:11 | foo |
+| calls.rb:487:13:487:22 | call to puts | calls.rb:486:9:488:11 | bar |
+| calls.rb:487:13:487:22 | self | calls.rb:486:9:488:11 | bar |
+| calls.rb:487:18:487:22 | "bar" | calls.rb:486:9:488:11 | bar |
+| calls.rb:487:19:487:21 | bar | calls.rb:486:9:488:11 | bar |
+| calls.rb:506:9:506:46 | call to puts | calls.rb:505:5:507:7 | singleton |
+| calls.rb:506:9:506:46 | self | calls.rb:505:5:507:7 | singleton |
+| calls.rb:506:14:506:46 | "ExtendSingletonMethod#singleton" | calls.rb:505:5:507:7 | singleton |
+| calls.rb:506:15:506:45 | ExtendSingletonMethod#singleton | calls.rb:505:5:507:7 | singleton |
+| calls.rb:535:9:535:42 | call to puts | calls.rb:534:15:536:7 | foo |
+| calls.rb:535:9:535:42 | self | calls.rb:534:15:536:7 | foo |
+| calls.rb:535:14:535:42 | "ProtectedMethodInModule#foo" | calls.rb:534:15:536:7 | foo |
+| calls.rb:535:15:535:41 | ProtectedMethodInModule#foo | calls.rb:534:15:536:7 | foo |
+| calls.rb:543:9:543:35 | call to puts | calls.rb:542:15:544:7 | bar |
+| calls.rb:543:9:543:35 | self | calls.rb:542:15:544:7 | bar |
+| calls.rb:543:14:543:35 | "ProtectedMethods#bar" | calls.rb:542:15:544:7 | bar |
+| calls.rb:543:15:543:34 | ProtectedMethods#bar | calls.rb:542:15:544:7 | bar |
+| calls.rb:547:9:547:11 | call to foo | calls.rb:546:5:551:7 | baz |
+| calls.rb:547:9:547:11 | self | calls.rb:546:5:551:7 | baz |
+| calls.rb:548:9:548:11 | call to bar | calls.rb:546:5:551:7 | baz |
+| calls.rb:548:9:548:11 | self | calls.rb:546:5:551:7 | baz |
+| calls.rb:549:9:549:24 | ProtectedMethods | calls.rb:546:5:551:7 | baz |
+| calls.rb:549:9:549:28 | call to new | calls.rb:546:5:551:7 | baz |
+| calls.rb:549:9:549:32 | call to foo | calls.rb:546:5:551:7 | baz |
+| calls.rb:550:9:550:24 | ProtectedMethods | calls.rb:546:5:551:7 | baz |
+| calls.rb:550:9:550:28 | call to new | calls.rb:546:5:551:7 | baz |
+| calls.rb:550:9:550:32 | call to bar | calls.rb:546:5:551:7 | baz |
+| calls.rb:560:9:560:11 | call to foo | calls.rb:559:5:562:7 | baz |
+| calls.rb:560:9:560:11 | self | calls.rb:559:5:562:7 | baz |
+| calls.rb:561:9:561:27 | ProtectedMethodsSub | calls.rb:559:5:562:7 | baz |
+| calls.rb:561:9:561:31 | call to new | calls.rb:559:5:562:7 | baz |
+| calls.rb:561:9:561:35 | call to foo | calls.rb:559:5:562:7 | baz |
+| calls.rb:580:9:580:17 | call to singleton | calls.rb:579:5:582:7 | mid_method |
+| calls.rb:580:9:580:17 | self | calls.rb:579:5:582:7 | mid_method |
+| calls.rb:581:9:581:18 | call to singleton2 | calls.rb:579:5:582:7 | mid_method |
+| calls.rb:581:9:581:18 | self | calls.rb:579:5:582:7 | mid_method |
+| calls.rb:596:9:596:18 | call to singleton1 | calls.rb:595:5:597:7 | call_singleton1 |
+| calls.rb:596:9:596:18 | self | calls.rb:595:5:597:7 | call_singleton1 |
+| calls.rb:600:9:600:23 | call to call_singleton1 | calls.rb:599:5:601:7 | call_call_singleton1 |
+| calls.rb:600:9:600:23 | self | calls.rb:599:5:601:7 | call_call_singleton1 |
+| calls.rb:609:9:609:18 | call to singleton1 | calls.rb:608:5:610:7 | call_singleton1 |
+| calls.rb:609:9:609:18 | self | calls.rb:608:5:610:7 | call_singleton1 |
+| calls.rb:618:9:618:18 | call to singleton1 | calls.rb:617:5:619:7 | call_singleton1 |
+| calls.rb:618:9:618:18 | self | calls.rb:617:5:619:7 | call_singleton1 |
+| calls.rb:628:9:628:12 | self | calls.rb:627:5:629:7 | foo |
+| calls.rb:628:9:628:16 | call to bar | calls.rb:627:5:629:7 | foo |
+| calls.rb:637:9:637:13 | super call to bar | calls.rb:636:5:638:7 | bar |
+| calls.rb:643:9:643:10 | C1 | calls.rb:642:5:644:7 | new |
+| calls.rb:643:9:643:14 | call to new | calls.rb:642:5:644:7 | new |
+| calls.rb:651:9:651:12 | self | calls.rb:650:5:652:7 | new |
+| calls.rb:651:9:651:21 | call to allocate | calls.rb:650:5:652:7 | new |
+| calls.rb:655:9:655:34 | call to puts | calls.rb:654:5:656:7 | instance |
+| calls.rb:655:9:655:34 | self | calls.rb:654:5:656:7 | instance |
+| calls.rb:655:14:655:34 | "CustomNew2#instance" | calls.rb:654:5:656:7 | instance |
+| calls.rb:655:15:655:33 | CustomNew2#instance | calls.rb:654:5:656:7 | instance |
+| calls.rb:661:23:661:23 | x | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:661:23:661:23 | x | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:662:5:662:11 | Array | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:662:5:662:11 | [...] | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:662:5:662:11 | call to [] | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:662:5:664:7 | call to each | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:662:6:662:6 | 0 | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:662:8:662:8 | 1 | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:662:10:662:10 | 2 | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:662:18:664:7 | do ... end | calls.rb:661:1:665:3 | capture_parameter |
+| calls.rb:663:9:663:9 | x | calls.rb:661:1:665:3 | capture_parameter |
+| element_reference.rb:2:12:2:12 | x | element_reference.rb:2:5:4:7 | [] |
+| element_reference.rb:2:12:2:12 | x | element_reference.rb:2:5:4:7 | [] |
+| element_reference.rb:3:9:3:19 | yield ... | element_reference.rb:2:5:4:7 | [] |
+| element_reference.rb:3:15:3:15 | x | element_reference.rb:2:5:4:7 | [] |
+| element_reference.rb:3:15:3:19 | ... + ... | element_reference.rb:2:5:4:7 | [] |
+| element_reference.rb:3:19:3:19 | 1 | element_reference.rb:2:5:4:7 | [] |
 | hello.rb:3:9:3:22 | return | hello.rb:2:5:4:7 | hello |
 | hello.rb:3:16:3:22 | "hello" | hello.rb:2:5:4:7 | hello |
 | hello.rb:3:17:3:21 | hello | hello.rb:2:5:4:7 | hello |

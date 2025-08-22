@@ -10,9 +10,10 @@
  */
 
 import java
-import ThreadResourceAbuse
+deprecated import ThreadResourceAbuse
+import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
-import DataFlow::PathGraph
+deprecated import ThreadResourceAbuseFlow::PathGraph
 
 /** The `getInitParameter` method of servlet or JSF. */
 class GetInitParameter extends Method {
@@ -31,7 +32,7 @@ class GetInitParameter extends Method {
 }
 
 /** An access to the `getInitParameter` method. */
-class GetInitParameterAccess extends MethodAccess {
+class GetInitParameterAccess extends MethodCall {
   GetInitParameterAccess() { this.getMethod() instanceof GetInitParameter }
 }
 
@@ -41,20 +42,18 @@ class InitParameterInput extends LocalUserInput {
 }
 
 /** Taint configuration of uncontrolled thread resource consumption from local user input. */
-class ThreadResourceAbuse extends TaintTracking::Configuration {
-  ThreadResourceAbuse() { this = "ThreadResourceAbuse" }
+deprecated module ThreadResourceAbuseConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
+  predicate isSink(DataFlow::Node sink) { sink instanceof PauseThreadSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof PauseThreadSink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     any(AdditionalValueStep r).step(pred, succ)
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     exists(
-      MethodAccess ma // Math.min(sleepTime, MAX_INTERVAL)
+      MethodCall ma // Math.min(sleepTime, MAX_INTERVAL)
     |
       ma.getMethod().hasQualifiedName("java.lang", "Math", "min") and
       node.asExpr() = ma.getAnArgument()
@@ -64,7 +63,16 @@ class ThreadResourceAbuse extends TaintTracking::Configuration {
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, ThreadResourceAbuse conf
-where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Possible uncontrolled resource consumption due to $@.",
-  source.getNode(), "local user-provided value"
+deprecated module ThreadResourceAbuseFlow = TaintTracking::Global<ThreadResourceAbuseConfig>;
+
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, ThreadResourceAbuseFlow::PathNode source,
+  ThreadResourceAbuseFlow::PathNode sink, string message1, DataFlow::Node sourceNode,
+  string message2
+) {
+  ThreadResourceAbuseFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "Possible uncontrolled resource consumption due to $@." and
+  sourceNode = source.getNode() and
+  message2 = "local user-provided value"
+}

@@ -226,6 +226,8 @@ variableAccess
 | ssa.rb:21:5:21:5 | x | ssa.rb:18:8:18:8 | x | ssa.rb:18:1:23:3 | m1 |
 | ssa.rb:25:8:25:15 | elements | ssa.rb:25:8:25:15 | elements | ssa.rb:25:1:30:3 | m2 |
 | ssa.rb:26:7:26:10 | elem | ssa.rb:26:7:26:10 | elem | ssa.rb:25:1:30:3 | m2 |
+| ssa.rb:26:7:26:10 | elem | ssa.rb:26:7:26:10 | elem | ssa.rb:25:1:30:3 | m2 |
+| ssa.rb:26:7:26:10 | elem | ssa.rb:26:7:26:10 | elem | ssa.rb:25:1:30:3 | m2 |
 | ssa.rb:26:15:26:22 | elements | ssa.rb:25:8:25:15 | elements | ssa.rb:25:1:30:3 | m2 |
 | ssa.rb:27:5:27:13 | self | ssa.rb:25:1:30:3 | self | ssa.rb:25:1:30:3 | m2 |
 | ssa.rb:27:10:27:13 | elem | ssa.rb:26:7:26:10 | elem | ssa.rb:25:1:30:3 | m2 |
@@ -332,12 +334,12 @@ explicitWrite
 | scopes.rb:13:4:13:4 | a | scopes.rb:13:4:13:32 | ... = ... |
 | scopes.rb:13:7:13:7 | b | scopes.rb:13:4:13:32 | ... = ... |
 | scopes.rb:13:7:13:7 | b | scopes.rb:13:7:13:7 | ... = ... |
-| scopes.rb:13:10:13:15 | __synth__0__1 | scopes.rb:13:10:13:15 | ... = ... |
+| scopes.rb:13:10:13:15 | __synth__2__1 | scopes.rb:13:10:13:15 | ... = ... |
 | scopes.rb:13:11:13:11 | c | scopes.rb:13:4:13:32 | ... = ... |
 | scopes.rb:13:11:13:11 | c | scopes.rb:13:11:13:11 | ... = ... |
 | scopes.rb:13:14:13:14 | d | scopes.rb:13:4:13:32 | ... = ... |
 | scopes.rb:13:14:13:14 | d | scopes.rb:13:14:13:14 | ... = ... |
-| scopes.rb:13:19:13:32 | __synth__0 | scopes.rb:13:19:13:32 | ... = ... |
+| scopes.rb:13:19:13:32 | __synth__3 | scopes.rb:13:19:13:32 | ... = ... |
 | scopes.rb:21:1:21:7 | $global | scopes.rb:21:1:21:12 | ... = ... |
 | scopes.rb:24:1:24:6 | script | scopes.rb:24:1:24:11 | ... = ... |
 | scopes.rb:27:1:27:1 | x | scopes.rb:27:1:27:5 | ... = ... |
@@ -354,6 +356,7 @@ explicitWrite
 | ssa.rb:21:5:21:5 | x | ssa.rb:21:5:21:10 | ... -= ... |
 | ssa.rb:21:5:21:5 | x | ssa.rb:21:5:21:10 | ... = ... |
 | ssa.rb:26:7:26:10 | elem | ssa.rb:26:3:28:5 | ... = ... |
+| ssa.rb:26:7:26:10 | elem | ssa.rb:26:7:26:10 | ... = ... |
 | ssa.rb:40:3:40:4 | m3 | ssa.rb:40:3:40:9 | ... = ... |
 | ssa.rb:45:3:45:3 | x | ssa.rb:45:3:45:7 | ... = ... |
 | ssa.rb:49:14:49:14 | y | ssa.rb:49:14:49:19 | ... = ... |
@@ -525,11 +528,11 @@ readAccess
 | scopes.rb:11:4:11:4 | a |
 | scopes.rb:12:4:12:9 | self |
 | scopes.rb:12:9:12:9 | a |
-| scopes.rb:13:4:13:4 | __synth__0 |
-| scopes.rb:13:7:13:7 | __synth__0 |
-| scopes.rb:13:10:13:15 | __synth__0 |
-| scopes.rb:13:11:13:11 | __synth__0__1 |
-| scopes.rb:13:14:13:14 | __synth__0__1 |
+| scopes.rb:13:4:13:4 | __synth__3 |
+| scopes.rb:13:7:13:7 | __synth__3 |
+| scopes.rb:13:10:13:15 | __synth__3 |
+| scopes.rb:13:11:13:11 | __synth__2__1 |
+| scopes.rb:13:14:13:14 | __synth__2__1 |
 | scopes.rb:14:4:14:9 | self |
 | scopes.rb:14:9:14:9 | a |
 | scopes.rb:15:4:15:9 | self |
@@ -567,6 +570,7 @@ readAccess
 | ssa.rb:20:10:20:10 | x |
 | ssa.rb:21:5:21:5 | x |
 | ssa.rb:26:3:28:5 | __synth__0__1 |
+| ssa.rb:26:7:26:10 | elem |
 | ssa.rb:26:15:26:22 | elements |
 | ssa.rb:27:5:27:13 | self |
 | ssa.rb:27:10:27:13 | elem |
@@ -616,3 +620,44 @@ readAccess
 | ssa.rb:100:10:100:11 | b4 |
 | ssa.rb:101:5:101:10 | self |
 | ssa.rb:101:10:101:10 | x |
+captureAccess
+| instance_variables.rb:28:3:28:4 | self |
+| instance_variables.rb:32:12:32:13 | self |
+| nested_scopes.rb:18:29:18:34 | self |
+| nested_scopes.rb:18:34:18:34 | a |
+| parameters.rb:3:4:3:9 | self |
+| parameters.rb:4:4:4:9 | self |
+| parameters.rb:17:5:17:28 | self |
+| parameters.rb:54:19:54:19 | x |
+| parameters.rb:55:4:55:9 | self |
+| parameters.rb:55:9:55:9 | x |
+| parameters.rb:56:4:56:9 | self |
+| scopes.rb:3:4:3:9 | self |
+| scopes.rb:3:9:3:9 | self |
+| scopes.rb:5:4:5:9 | self |
+| scopes.rb:10:4:10:9 | self |
+| scopes.rb:10:9:10:9 | a |
+| scopes.rb:11:4:11:4 | a |
+| scopes.rb:11:4:11:4 | a |
+| scopes.rb:12:4:12:9 | self |
+| scopes.rb:12:9:12:9 | a |
+| scopes.rb:13:4:13:4 | a |
+| scopes.rb:14:4:14:9 | self |
+| scopes.rb:14:9:14:9 | a |
+| scopes.rb:15:4:15:9 | self |
+| scopes.rb:16:4:16:9 | self |
+| scopes.rb:17:4:17:9 | self |
+| ssa.rb:26:7:26:10 | elem |
+| ssa.rb:27:5:27:13 | self |
+| ssa.rb:27:10:27:13 | elem |
+| ssa.rb:34:5:34:10 | self |
+| ssa.rb:67:5:67:10 | self |
+| ssa.rb:68:5:68:17 | self |
+| ssa.rb:68:10:68:17 | captured |
+| ssa.rb:69:5:69:12 | captured |
+| ssa.rb:69:5:69:12 | captured |
+| ssa.rb:77:6:77:23 | self |
+| ssa.rb:77:15:77:22 | captured |
+| ssa.rb:84:6:86:8 | self |
+| ssa.rb:85:10:85:22 | self |
+| ssa.rb:85:15:85:22 | captured |

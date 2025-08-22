@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["getporter/porter/.github/workflows/build_pipelinesrelease_template.yml", "*", "input.registry", "code-injection", "generated"]

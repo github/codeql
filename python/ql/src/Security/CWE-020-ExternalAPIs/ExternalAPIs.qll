@@ -33,9 +33,6 @@ class SafeExternalApi extends Unit {
   DataFlowPrivate::DataFlowCallable getSafeCallable() { none() }
 }
 
-/** DEPRECATED: Alias for SafeExternalApi */
-deprecated class SafeExternalAPI = SafeExternalApi;
-
 /** The default set of "safe" external APIs. */
 private class DefaultSafeExternalApi extends SafeExternalApi {
   override DataFlow::CallCfgNode getSafeCall() {
@@ -160,43 +157,36 @@ class ExternalApiDataNode extends DataFlow::Node {
   ExternalApiDataNode() {
     exists(InterestingExternalApiCall call | this = call.getArgument(_)) and
     // Not already modeled as a taint step
-    not TaintTrackingPrivate::defaultAdditionalTaintStep(this, _) and
+    not TaintTrackingPrivate::defaultAdditionalTaintStep(this, _, _) and
     // for `list.append(x)`, we have a additional taint step from x -> [post] list.
     // Since we have modeled this explicitly, I don't see any cases where we would want to report this.
     not exists(DataFlow::PostUpdateNode post |
       post.getPreUpdateNode() = this and
-      TaintTrackingPrivate::defaultAdditionalTaintStep(_, post)
+      TaintTrackingPrivate::defaultAdditionalTaintStep(_, post, _)
     )
   }
 }
 
-/** DEPRECATED: Alias for ExternalApiDataNode */
-deprecated class ExternalAPIDataNode = ExternalApiDataNode;
+private module UntrustedDataToExternalApiConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-/** A configuration for tracking flow from `RemoteFlowSource`s to `ExternalApiDataNode`s. */
-class UntrustedDataToExternalApiConfig extends TaintTracking::Configuration {
-  UntrustedDataToExternalApiConfig() { this = "UntrustedDataToExternalAPIConfig" }
+  predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
-}
-
-/** DEPRECATED: Alias for UntrustedDataToExternalApiConfig */
-deprecated class UntrustedDataToExternalAPIConfig = UntrustedDataToExternalApiConfig;
-
-/** A node representing untrusted data being passed to an external API. */
-class UntrustedExternalApiDataNode extends ExternalApiDataNode {
-  UntrustedExternalApiDataNode() { any(UntrustedDataToExternalApiConfig c).hasFlow(_, this) }
-
-  /** Gets a source of untrusted data which is passed to this external API data node. */
-  DataFlow::Node getAnUntrustedSource() {
-    any(UntrustedDataToExternalApiConfig c).hasFlow(result, this)
+  predicate observeDiffInformedIncrementalMode() {
+    none() // Not used for PR analysis
   }
 }
 
-/** DEPRECATED: Alias for UntrustedExternalApiDataNode */
-deprecated class UntrustedExternalAPIDataNode = UntrustedExternalApiDataNode;
+/** Global taint-tracking from `RemoteFlowSource`s to `ExternalApiDataNode`s. */
+module UntrustedDataToExternalApiFlow = TaintTracking::Global<UntrustedDataToExternalApiConfig>;
+
+/** A node representing untrusted data being passed to an external API. */
+class UntrustedExternalApiDataNode extends ExternalApiDataNode {
+  UntrustedExternalApiDataNode() { UntrustedDataToExternalApiFlow::flow(_, this) }
+
+  /** Gets a source of untrusted data which is passed to this external API data node. */
+  DataFlow::Node getAnUntrustedSource() { UntrustedDataToExternalApiFlow::flow(result, this) }
+}
 
 /** An external API which is used with untrusted data. */
 private newtype TExternalApi =
@@ -224,12 +214,9 @@ class ExternalApiUsedWithUntrustedData extends MkExternalApi {
 
   /** Gets the number of untrusted sources used with this external API. */
   int getNumberOfUntrustedSources() {
-    result = count(getUntrustedDataNode().getAnUntrustedSource())
+    result = count(this.getUntrustedDataNode().getAnUntrustedSource())
   }
 
   /** Gets a textual representation of this element. */
   string toString() { result = repr + " [" + apos + "]" }
 }
-
-/** DEPRECATED: Alias for ExternalApiUsedWithUntrustedData */
-deprecated class ExternalAPIUsedWithUntrustedData = ExternalApiUsedWithUntrustedData;

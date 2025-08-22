@@ -1,2 +1,2 @@
-| test.py:17:1:17:44 | Attribute() | Missing named argument for string format. Format $@ requires 'name', but it is omitted. | test.py:4:17:4:31 | Str | "{name!r}, {0}" |
-| test.py:18:1:18:45 | format() | Missing named argument for string format. Format $@ requires 'name', but it is omitted. | test.py:9:17:9:31 | Str | "{name!r}, {0}" |
+| test.py:17:1:17:44 | Attribute() | Missing named argument for string format. Format $@ requires 'name', but it is omitted. | test.py:4:17:4:31 | StringLiteral | "{name!r}, {0}" |
+| test.py:18:1:18:45 | format() | Missing named argument for string format. Format $@ requires 'name', but it is omitted. | test.py:9:17:9:31 | StringLiteral | "{name!r}, {0}" |

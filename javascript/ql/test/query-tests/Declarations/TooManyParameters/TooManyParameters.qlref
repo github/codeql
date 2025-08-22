@@ -1,1 +1,2 @@
-Declarations/TooManyParameters.ql
+query: Declarations/TooManyParameters.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

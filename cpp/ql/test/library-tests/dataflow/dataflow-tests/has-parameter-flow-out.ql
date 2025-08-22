@@ -1,16 +1,14 @@
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import cpp
 
 module AstTest {
   private import semmle.code.cpp.dataflow.DataFlow::DataFlow
   private import semmle.code.cpp.dataflow.internal.DataFlowPrivate
 
-  class AstParameterDefTest extends InlineExpectationsTest {
-    AstParameterDefTest() { this = "AstParameterDefTest" }
+  module AstParameterDefTest implements TestSig {
+    string getARelevantTag() { result = "ast-def" }
 
-    override string getARelevantTag() { result = "ast-def" }
-
-    override predicate hasActualResult(Location location, string element, string tag, string value) {
+    predicate hasActualResult(Location location, string element, string tag, string value) {
       exists(Function f, Parameter p, RefParameterFinalValueNode n |
         p.isNamed() and
         n.getParameter() = p and
@@ -26,28 +24,27 @@ module AstTest {
 
 module IRTest {
   private import semmle.code.cpp.ir.dataflow.DataFlow
-  private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 
   private string stars(int k) {
-    k = [0 .. max(FinalParameterNode n | | n.getIndirectionIndex())] and
+    k = [0 .. max(DataFlow::Node n, int i | n.isFinalValueOfParameter(_, i) | i)] and
     (if k = 0 then result = "" else result = "*" + stars(k - 1))
   }
 
-  class IRParameterDefTest extends InlineExpectationsTest {
-    IRParameterDefTest() { this = "IRParameterDefTest" }
+  module IRParameterDefTest implements TestSig {
+    string getARelevantTag() { result = "ir-def" }
 
-    override string getARelevantTag() { result = "ir-def" }
-
-    override predicate hasActualResult(Location location, string element, string tag, string value) {
-      exists(Function f, Parameter p, FinalParameterNode n |
+    predicate hasActualResult(Location location, string element, string tag, string value) {
+      exists(Function f, Parameter p, DataFlow::Node n, int i |
         p.isNamed() and
-        n.getParameter() = p and
+        n.isFinalValueOfParameter(p, i) and
         n.getFunction() = f and
         location = f.getLocation() and
         element = p.toString() and
         tag = "ir-def" and
-        value = stars(n.getIndirectionIndex()) + p.getName()
+        value = stars(i) + p.getName()
       )
     }
   }
 }
+
+import MakeTest<MergeTests<AstTest::AstParameterDefTest, IRTest::IRParameterDefTest>>

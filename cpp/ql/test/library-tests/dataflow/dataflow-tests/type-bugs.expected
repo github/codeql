@@ -1,3 +1,54 @@
-failures
 astTypeBugs
 irTypeBugs
+| ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | [summary param] *0 in iterator |
+| ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | [summary param] this in iterator |
+| ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | [summary] read: Argument[*0].Element in iterator |
+| ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | [summary] read: Argument[*0].Element[****] in iterator |
+| ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | [summary] read: Argument[*0].Element[***] in iterator |
+| ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | [summary] read: Argument[*0].Element[**] in iterator |
+| ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | [summary] read: Argument[*0].Element[*] in iterator |
+| ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | [summary] to write: Argument[this] in iterator |
+| ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | [summary] to write: Argument[this].Element in iterator |
+| ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | [summary] to write: Argument[this].Element[****] in iterator |
+| ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | [summary] to write: Argument[this].Element[***] in iterator |
+| ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | [summary] to write: Argument[this].Element[**] in iterator |
+| ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | ../../../include/iterator.h:21:3:21:10 | [summary] to write: Argument[this].Element[*] in iterator |
+| ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | [summary param] *0 in iterator |
+| ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | [summary param] this in iterator |
+| ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | [summary] read: Argument[*0].Element in iterator |
+| ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | [summary] read: Argument[*0].Element[****] in iterator |
+| ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | [summary] read: Argument[*0].Element[***] in iterator |
+| ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | [summary] read: Argument[*0].Element[**] in iterator |
+| ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | [summary] read: Argument[*0].Element[*] in iterator |
+| ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | [summary] to write: Argument[this] in iterator |
+| ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | [summary] to write: Argument[this].Element in iterator |
+| ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | [summary] to write: Argument[this].Element[****] in iterator |
+| ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | [summary] to write: Argument[this].Element[***] in iterator |
+| ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | [summary] to write: Argument[this].Element[**] in iterator |
+| ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | ../../../include/iterator.h:22:3:22:10 | [summary] to write: Argument[this].Element[*] in iterator |
+| ../../../include/iterator.h:30:18:30:26 | ../../../include/iterator.h:30:18:30:26 | ../../../include/iterator.h:30:18:30:26 | [summary param] this in operator* |
+| ../../../include/iterator.h:30:18:30:26 | ../../../include/iterator.h:30:18:30:26 | ../../../include/iterator.h:30:18:30:26 | [summary] read: Argument[this].Element in operator* |
+| ../../../include/iterator.h:30:18:30:26 | ../../../include/iterator.h:30:18:30:26 | ../../../include/iterator.h:30:18:30:26 | [summary] read: Argument[this].Element[*] in operator* |
+| ../../../include/iterator.h:30:18:30:26 | ../../../include/iterator.h:30:18:30:26 | ../../../include/iterator.h:30:18:30:26 | [summary] to write: ReturnValue[**] in operator* |
+| ../../../include/iterator.h:30:18:30:26 | ../../../include/iterator.h:30:18:30:26 | ../../../include/iterator.h:30:18:30:26 | [summary] to write: ReturnValue[*] in operator* |
+| ../../../include/iterator.h:31:16:31:25 | ../../../include/iterator.h:31:16:31:25 | ../../../include/iterator.h:31:16:31:25 | [summary param] this in operator-> |
+| ../../../include/iterator.h:31:16:31:25 | ../../../include/iterator.h:31:16:31:25 | ../../../include/iterator.h:31:16:31:25 | [summary] read: Argument[this].Element in operator-> |
+| ../../../include/iterator.h:31:16:31:25 | ../../../include/iterator.h:31:16:31:25 | ../../../include/iterator.h:31:16:31:25 | [summary] read: Argument[this].Element[*] in operator-> |
+| ../../../include/iterator.h:31:16:31:25 | ../../../include/iterator.h:31:16:31:25 | ../../../include/iterator.h:31:16:31:25 | [summary] to write: ReturnValue[**] in operator-> |
+| ../../../include/iterator.h:31:16:31:25 | ../../../include/iterator.h:31:16:31:25 | ../../../include/iterator.h:31:16:31:25 | [summary] to write: ReturnValue[*] in operator-> |
+incorrectBaseType
+| clang.cpp:22:8:22:20 | *& ... | Expected 'Node.getType()' to be int, but it was int * |
+| clang.cpp:23:17:23:29 | *& ... | Expected 'Node.getType()' to be int, but it was int * |
+| flowOut.cpp:50:14:50:15 | *& ... | Expected 'Node.getType()' to be int, but it was int * |
+| flowOut.cpp:84:9:84:10 | *& ... | Expected 'Node.getType()' to be int, but it was int * |
+| flowOut.cpp:101:13:101:14 | *& ... | Expected 'Node.getType()' to be int, but it was int * |
+| self_parameter_flow.cpp:8:8:8:9 | *& ... | Expected 'Node.getType()' to be unsigned char, but it was unsigned char * |
+| test.cpp:67:28:67:37 | call to move | Expected 'Node.getType()' to be const int, but it was int * |
+| test.cpp:531:39:531:40 | *& ... | Expected 'Node.getType()' to be int, but it was const int * |
+| test.cpp:615:13:615:21 | *& ... | Expected 'Node.getType()' to be int, but it was void |
+| test.cpp:704:22:704:25 | *& ... | Expected 'Node.getType()' to be int, but it was int * |
+| test.cpp:715:24:715:25 | *& ... | Expected 'Node.getType()' to be unsigned char, but it was unsigned char * |
+| test.cpp:848:23:848:25 | rpx | Expected 'Node.getType()' to be int, but it was int * |
+| test.cpp:854:10:854:36 | * ... | Expected 'Node.getType()' to be const int, but it was int |
+| test.cpp:867:10:867:30 | * ... | Expected 'Node.getType()' to be const int, but it was int |
+| test.cpp:1098:52:1098:53 | *& ... | Expected 'Node.getType()' to be char, but it was char * |

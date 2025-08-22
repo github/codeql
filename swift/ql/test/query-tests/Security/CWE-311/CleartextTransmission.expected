@@ -1,58 +1,135 @@
 edges
-| testAlamofire.swift:150:45:150:45 | password :  | testAlamofire.swift:150:13:150:45 | ... .+(_:_:) ... |
-| testAlamofire.swift:152:51:152:51 | password :  | testAlamofire.swift:152:19:152:51 | ... .+(_:_:) ... |
-| testAlamofire.swift:154:38:154:38 | email :  | testAlamofire.swift:154:14:154:46 | ... .+(_:_:) ... |
-| testSend.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  |
-| testSend.swift:33:14:33:32 | call to Data.init(_:) :  | testSend.swift:37:19:37:19 | data2 |
-| testSend.swift:33:19:33:19 | passwordPlain :  | testSend.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  |
-| testSend.swift:33:19:33:19 | passwordPlain :  | testSend.swift:33:14:33:32 | call to Data.init(_:) :  |
-| testSend.swift:41:10:41:18 | data :  | testSend.swift:41:45:41:45 | data :  |
-| testSend.swift:45:13:45:13 | password :  | testSend.swift:52:27:52:27 | str1 |
-| testSend.swift:46:13:46:13 | password :  | testSend.swift:53:27:53:27 | str2 |
-| testSend.swift:47:13:47:25 | call to pad(_:) :  | testSend.swift:54:27:54:27 | str3 |
-| testSend.swift:47:17:47:17 | password :  | testSend.swift:41:10:41:18 | data :  |
-| testSend.swift:47:17:47:17 | password :  | testSend.swift:47:13:47:25 | call to pad(_:) :  |
-| testURL.swift:13:54:13:54 | passwd :  | testURL.swift:13:22:13:54 | ... .+(_:_:) ... |
-| testURL.swift:16:55:16:55 | credit_card_no :  | testURL.swift:16:22:16:55 | ... .+(_:_:) ... |
+| file://:0:0:0:0 | self | file://:0:0:0:0 | .value | provenance | Config |
+| testAlamofire.swift:150:45:150:45 | password | testAlamofire.swift:150:13:150:45 | ... .+(_:_:) ... | provenance |  |
+| testAlamofire.swift:152:51:152:51 | password | testAlamofire.swift:152:19:152:51 | ... .+(_:_:) ... | provenance |  |
+| testAlamofire.swift:154:38:154:38 | email | testAlamofire.swift:154:14:154:46 | ... .+(_:_:) ... | provenance |  |
+| testSend.swift:33:14:33:32 | call to Data.init(_:) | testSend.swift:37:19:37:19 | data2 | provenance |  |
+| testSend.swift:33:19:33:19 | passwordPlain | testSend.swift:33:14:33:32 | call to Data.init(_:) | provenance |  |
+| testSend.swift:41:10:41:18 | data | testSend.swift:41:45:41:45 | data | provenance |  |
+| testSend.swift:58:13:58:13 | password | testSend.swift:65:27:65:27 | str1 | provenance |  |
+| testSend.swift:59:13:59:13 | password | testSend.swift:66:27:66:27 | str2 | provenance |  |
+| testSend.swift:60:13:60:25 | call to pad(_:) | testSend.swift:67:27:67:27 | str3 | provenance |  |
+| testSend.swift:60:17:60:17 | password | testSend.swift:41:10:41:18 | data | provenance |  |
+| testSend.swift:60:17:60:17 | password | testSend.swift:60:13:60:25 | call to pad(_:) | provenance |  |
+| testSend.swift:86:7:86:7 | self | file://:0:0:0:0 | self | provenance |  |
+| testSend.swift:94:27:94:30 | .password | testSend.swift:86:7:86:7 | self | provenance |  |
+| testSend.swift:94:27:94:30 | .password | testSend.swift:94:27:94:39 | .value | provenance | Config |
+| testURL.swift:39:50:39:50 | passwd | testURL.swift:39:18:39:50 | ... .+(_:_:) ... | provenance |  |
+| testURL.swift:41:51:41:51 | account_no | testURL.swift:41:18:41:51 | ... .+(_:_:) ... | provenance |  |
+| testURL.swift:42:51:42:51 | credit_card_no | testURL.swift:42:18:42:51 | ... .+(_:_:) ... | provenance |  |
+| testURL.swift:50:51:50:51 | e_mail | testURL.swift:50:18:50:51 | ... .+(_:_:) ... | provenance |  |
+| testURL.swift:52:53:52:53 | a_homeaddr_z | testURL.swift:52:18:52:53 | ... .+(_:_:) ... | provenance |  |
+| testURL.swift:54:51:54:51 | resident_ID | testURL.swift:54:18:54:51 | ... .+(_:_:) ... | provenance |  |
+| testURL.swift:73:52:73:67 | call to get_secret_key() | testURL.swift:73:18:73:67 | ... .+(_:_:) ... | provenance |  |
+| testURL.swift:75:53:75:69 | call to get_cert_string() | testURL.swift:75:18:75:69 | ... .+(_:_:) ... | provenance |  |
+| testURL.swift:96:51:96:51 | certificate | testURL.swift:96:18:96:18 | "..." | provenance |  |
+| testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | testURL.swift:105:19:105:53 | call to String.init(data:encoding:) | provenance | AdditionalTaintStep |
+| testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | testURL.swift:105:32:105:32 | data | provenance |  |
+| testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | testURL.swift:106:20:106:20 | "..." | provenance | AdditionalTaintStep |
+| testURL.swift:105:6:105:10 | let ...? [some:0] | testURL.swift:105:10:105:10 | string | provenance |  |
+| testURL.swift:105:10:105:10 | string | testURL.swift:106:20:106:20 | "..." | provenance |  |
+| testURL.swift:105:19:105:53 | call to String.init(data:encoding:) | testURL.swift:105:19:105:53 | call to String.init(data:encoding:) [some:0] | provenance |  |
+| testURL.swift:105:19:105:53 | call to String.init(data:encoding:) | testURL.swift:106:20:106:20 | "..." | provenance |  |
+| testURL.swift:105:19:105:53 | call to String.init(data:encoding:) [some:0] | testURL.swift:105:6:105:10 | let ...? [some:0] | provenance |  |
+| testURL.swift:105:32:105:32 | data | testURL.swift:105:19:105:53 | call to String.init(data:encoding:) [some:0] | provenance |  |
+| testURL.swift:116:52:116:52 | email | testURL.swift:116:18:116:18 | "..." | provenance |  |
+| testURL.swift:123:52:123:52 | phone_number | testURL.swift:123:18:123:18 | "..." | provenance |  |
+| testURL.swift:132:39:132:39 | account_no | testURL.swift:132:18:132:18 | "..." | provenance |  |
 nodes
-| file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | semmle.label | [summary] to write: return (return) in Data.init(_:) :  |
+| file://:0:0:0:0 | .value | semmle.label | .value |
+| file://:0:0:0:0 | self | semmle.label | self |
 | testAlamofire.swift:150:13:150:45 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
-| testAlamofire.swift:150:45:150:45 | password :  | semmle.label | password :  |
+| testAlamofire.swift:150:45:150:45 | password | semmle.label | password |
 | testAlamofire.swift:152:19:152:51 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
-| testAlamofire.swift:152:51:152:51 | password :  | semmle.label | password :  |
+| testAlamofire.swift:152:51:152:51 | password | semmle.label | password |
 | testAlamofire.swift:154:14:154:46 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
-| testAlamofire.swift:154:38:154:38 | email :  | semmle.label | email :  |
-| testSend.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | semmle.label | [summary param] 0 in Data.init(_:) :  |
+| testAlamofire.swift:154:38:154:38 | email | semmle.label | email |
 | testSend.swift:29:19:29:19 | passwordPlain | semmle.label | passwordPlain |
-| testSend.swift:33:14:33:32 | call to Data.init(_:) :  | semmle.label | call to Data.init(_:) :  |
-| testSend.swift:33:19:33:19 | passwordPlain :  | semmle.label | passwordPlain :  |
+| testSend.swift:33:14:33:32 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
+| testSend.swift:33:19:33:19 | passwordPlain | semmle.label | passwordPlain |
 | testSend.swift:37:19:37:19 | data2 | semmle.label | data2 |
-| testSend.swift:41:10:41:18 | data :  | semmle.label | data :  |
-| testSend.swift:41:45:41:45 | data :  | semmle.label | data :  |
-| testSend.swift:45:13:45:13 | password :  | semmle.label | password :  |
-| testSend.swift:46:13:46:13 | password :  | semmle.label | password :  |
-| testSend.swift:47:13:47:25 | call to pad(_:) :  | semmle.label | call to pad(_:) :  |
-| testSend.swift:47:17:47:17 | password :  | semmle.label | password :  |
-| testSend.swift:52:27:52:27 | str1 | semmle.label | str1 |
-| testSend.swift:53:27:53:27 | str2 | semmle.label | str2 |
-| testSend.swift:54:27:54:27 | str3 | semmle.label | str3 |
-| testURL.swift:13:22:13:54 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
-| testURL.swift:13:54:13:54 | passwd :  | semmle.label | passwd :  |
-| testURL.swift:16:22:16:55 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
-| testURL.swift:16:55:16:55 | credit_card_no :  | semmle.label | credit_card_no :  |
-| testURL.swift:20:22:20:22 | passwd | semmle.label | passwd |
+| testSend.swift:41:10:41:18 | data | semmle.label | data |
+| testSend.swift:41:45:41:45 | data | semmle.label | data |
+| testSend.swift:58:13:58:13 | password | semmle.label | password |
+| testSend.swift:59:13:59:13 | password | semmle.label | password |
+| testSend.swift:60:13:60:25 | call to pad(_:) | semmle.label | call to pad(_:) |
+| testSend.swift:60:17:60:17 | password | semmle.label | password |
+| testSend.swift:65:27:65:27 | str1 | semmle.label | str1 |
+| testSend.swift:66:27:66:27 | str2 | semmle.label | str2 |
+| testSend.swift:67:27:67:27 | str3 | semmle.label | str3 |
+| testSend.swift:71:27:71:27 | license_key | semmle.label | license_key |
+| testSend.swift:72:27:72:30 | .mobileNumber | semmle.label | .mobileNumber |
+| testSend.swift:76:27:76:30 | .Telephone | semmle.label | .Telephone |
+| testSend.swift:77:27:77:30 | .birth_day | semmle.label | .birth_day |
+| testSend.swift:78:27:78:30 | .CarePlanID | semmle.label | .CarePlanID |
+| testSend.swift:79:27:79:30 | .BankCardNo | semmle.label | .BankCardNo |
+| testSend.swift:80:27:80:30 | .MyCreditRating | semmle.label | .MyCreditRating |
+| testSend.swift:86:7:86:7 | self | semmle.label | self |
+| testSend.swift:94:27:94:30 | .password | semmle.label | .password |
+| testSend.swift:94:27:94:39 | .value | semmle.label | .value |
+| testURL.swift:39:18:39:50 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
+| testURL.swift:39:50:39:50 | passwd | semmle.label | passwd |
+| testURL.swift:41:18:41:51 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
+| testURL.swift:41:51:41:51 | account_no | semmle.label | account_no |
+| testURL.swift:42:18:42:51 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
+| testURL.swift:42:51:42:51 | credit_card_no | semmle.label | credit_card_no |
+| testURL.swift:46:22:46:22 | passwd | semmle.label | passwd |
+| testURL.swift:50:18:50:51 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
+| testURL.swift:50:51:50:51 | e_mail | semmle.label | e_mail |
+| testURL.swift:52:18:52:53 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
+| testURL.swift:52:53:52:53 | a_homeaddr_z | semmle.label | a_homeaddr_z |
+| testURL.swift:54:18:54:51 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
+| testURL.swift:54:51:54:51 | resident_ID | semmle.label | resident_ID |
+| testURL.swift:73:18:73:67 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
+| testURL.swift:73:52:73:67 | call to get_secret_key() | semmle.label | call to get_secret_key() |
+| testURL.swift:75:18:75:69 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
+| testURL.swift:75:53:75:69 | call to get_cert_string() | semmle.label | call to get_cert_string() |
+| testURL.swift:96:18:96:18 | "..." | semmle.label | "..." |
+| testURL.swift:96:51:96:51 | certificate | semmle.label | certificate |
+| testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | semmle.label | call to SecKeyCopyExternalRepresentation(_:_:) |
+| testURL.swift:105:6:105:10 | let ...? [some:0] | semmle.label | let ...? [some:0] |
+| testURL.swift:105:10:105:10 | string | semmle.label | string |
+| testURL.swift:105:19:105:53 | call to String.init(data:encoding:) | semmle.label | call to String.init(data:encoding:) |
+| testURL.swift:105:19:105:53 | call to String.init(data:encoding:) [some:0] | semmle.label | call to String.init(data:encoding:) [some:0] |
+| testURL.swift:105:32:105:32 | data | semmle.label | data |
+| testURL.swift:106:20:106:20 | "..." | semmle.label | "..." |
+| testURL.swift:116:18:116:18 | "..." | semmle.label | "..." |
+| testURL.swift:116:52:116:52 | email | semmle.label | email |
+| testURL.swift:123:18:123:18 | "..." | semmle.label | "..." |
+| testURL.swift:123:52:123:52 | phone_number | semmle.label | phone_number |
+| testURL.swift:132:18:132:18 | "..." | semmle.label | "..." |
+| testURL.swift:132:39:132:39 | account_no | semmle.label | account_no |
 subpaths
-| testSend.swift:33:19:33:19 | passwordPlain :  | testSend.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | testSend.swift:33:14:33:32 | call to Data.init(_:) :  |
-| testSend.swift:47:17:47:17 | password :  | testSend.swift:41:10:41:18 | data :  | testSend.swift:41:45:41:45 | data :  | testSend.swift:47:13:47:25 | call to pad(_:) :  |
+| testSend.swift:60:17:60:17 | password | testSend.swift:41:10:41:18 | data | testSend.swift:41:45:41:45 | data | testSend.swift:60:13:60:25 | call to pad(_:) |
+| testSend.swift:94:27:94:30 | .password | testSend.swift:86:7:86:7 | self | file://:0:0:0:0 | .value | testSend.swift:94:27:94:39 | .value |
 #select
-| testAlamofire.swift:150:13:150:45 | ... .+(_:_:) ... | testAlamofire.swift:150:45:150:45 | password :  | testAlamofire.swift:150:13:150:45 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testAlamofire.swift:150:45:150:45 | password :  | password |
-| testAlamofire.swift:152:19:152:51 | ... .+(_:_:) ... | testAlamofire.swift:152:51:152:51 | password :  | testAlamofire.swift:152:19:152:51 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testAlamofire.swift:152:51:152:51 | password :  | password |
-| testAlamofire.swift:154:14:154:46 | ... .+(_:_:) ... | testAlamofire.swift:154:38:154:38 | email :  | testAlamofire.swift:154:14:154:46 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testAlamofire.swift:154:38:154:38 | email :  | email |
+| testAlamofire.swift:150:13:150:45 | ... .+(_:_:) ... | testAlamofire.swift:150:45:150:45 | password | testAlamofire.swift:150:13:150:45 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testAlamofire.swift:150:45:150:45 | password | password |
+| testAlamofire.swift:152:19:152:51 | ... .+(_:_:) ... | testAlamofire.swift:152:51:152:51 | password | testAlamofire.swift:152:19:152:51 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testAlamofire.swift:152:51:152:51 | password | password |
+| testAlamofire.swift:154:14:154:46 | ... .+(_:_:) ... | testAlamofire.swift:154:38:154:38 | email | testAlamofire.swift:154:14:154:46 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testAlamofire.swift:154:38:154:38 | email | email |
 | testSend.swift:29:19:29:19 | passwordPlain | testSend.swift:29:19:29:19 | passwordPlain | testSend.swift:29:19:29:19 | passwordPlain | This operation transmits 'passwordPlain', which may contain unencrypted sensitive data from $@. | testSend.swift:29:19:29:19 | passwordPlain | passwordPlain |
-| testSend.swift:37:19:37:19 | data2 | testSend.swift:33:19:33:19 | passwordPlain :  | testSend.swift:37:19:37:19 | data2 | This operation transmits 'data2', which may contain unencrypted sensitive data from $@. | testSend.swift:33:19:33:19 | passwordPlain :  | passwordPlain |
-| testSend.swift:52:27:52:27 | str1 | testSend.swift:45:13:45:13 | password :  | testSend.swift:52:27:52:27 | str1 | This operation transmits 'str1', which may contain unencrypted sensitive data from $@. | testSend.swift:45:13:45:13 | password :  | password |
-| testSend.swift:53:27:53:27 | str2 | testSend.swift:46:13:46:13 | password :  | testSend.swift:53:27:53:27 | str2 | This operation transmits 'str2', which may contain unencrypted sensitive data from $@. | testSend.swift:46:13:46:13 | password :  | password |
-| testSend.swift:54:27:54:27 | str3 | testSend.swift:47:17:47:17 | password :  | testSend.swift:54:27:54:27 | str3 | This operation transmits 'str3', which may contain unencrypted sensitive data from $@. | testSend.swift:47:17:47:17 | password :  | password |
-| testURL.swift:13:22:13:54 | ... .+(_:_:) ... | testURL.swift:13:54:13:54 | passwd :  | testURL.swift:13:22:13:54 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testURL.swift:13:54:13:54 | passwd :  | passwd |
-| testURL.swift:16:22:16:55 | ... .+(_:_:) ... | testURL.swift:16:55:16:55 | credit_card_no :  | testURL.swift:16:22:16:55 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testURL.swift:16:55:16:55 | credit_card_no :  | credit_card_no |
-| testURL.swift:20:22:20:22 | passwd | testURL.swift:20:22:20:22 | passwd | testURL.swift:20:22:20:22 | passwd | This operation transmits 'passwd', which may contain unencrypted sensitive data from $@. | testURL.swift:20:22:20:22 | passwd | passwd |
+| testSend.swift:37:19:37:19 | data2 | testSend.swift:33:19:33:19 | passwordPlain | testSend.swift:37:19:37:19 | data2 | This operation transmits 'data2', which may contain unencrypted sensitive data from $@. | testSend.swift:33:19:33:19 | passwordPlain | passwordPlain |
+| testSend.swift:65:27:65:27 | str1 | testSend.swift:58:13:58:13 | password | testSend.swift:65:27:65:27 | str1 | This operation transmits 'str1', which may contain unencrypted sensitive data from $@. | testSend.swift:58:13:58:13 | password | password |
+| testSend.swift:66:27:66:27 | str2 | testSend.swift:59:13:59:13 | password | testSend.swift:66:27:66:27 | str2 | This operation transmits 'str2', which may contain unencrypted sensitive data from $@. | testSend.swift:59:13:59:13 | password | password |
+| testSend.swift:67:27:67:27 | str3 | testSend.swift:60:17:60:17 | password | testSend.swift:67:27:67:27 | str3 | This operation transmits 'str3', which may contain unencrypted sensitive data from $@. | testSend.swift:60:17:60:17 | password | password |
+| testSend.swift:71:27:71:27 | license_key | testSend.swift:71:27:71:27 | license_key | testSend.swift:71:27:71:27 | license_key | This operation transmits 'license_key', which may contain unencrypted sensitive data from $@. | testSend.swift:71:27:71:27 | license_key | license_key |
+| testSend.swift:72:27:72:30 | .mobileNumber | testSend.swift:72:27:72:30 | .mobileNumber | testSend.swift:72:27:72:30 | .mobileNumber | This operation transmits '.mobileNumber', which may contain unencrypted sensitive data from $@. | testSend.swift:72:27:72:30 | .mobileNumber | .mobileNumber |
+| testSend.swift:76:27:76:30 | .Telephone | testSend.swift:76:27:76:30 | .Telephone | testSend.swift:76:27:76:30 | .Telephone | This operation transmits '.Telephone', which may contain unencrypted sensitive data from $@. | testSend.swift:76:27:76:30 | .Telephone | .Telephone |
+| testSend.swift:77:27:77:30 | .birth_day | testSend.swift:77:27:77:30 | .birth_day | testSend.swift:77:27:77:30 | .birth_day | This operation transmits '.birth_day', which may contain unencrypted sensitive data from $@. | testSend.swift:77:27:77:30 | .birth_day | .birth_day |
+| testSend.swift:78:27:78:30 | .CarePlanID | testSend.swift:78:27:78:30 | .CarePlanID | testSend.swift:78:27:78:30 | .CarePlanID | This operation transmits '.CarePlanID', which may contain unencrypted sensitive data from $@. | testSend.swift:78:27:78:30 | .CarePlanID | .CarePlanID |
+| testSend.swift:79:27:79:30 | .BankCardNo | testSend.swift:79:27:79:30 | .BankCardNo | testSend.swift:79:27:79:30 | .BankCardNo | This operation transmits '.BankCardNo', which may contain unencrypted sensitive data from $@. | testSend.swift:79:27:79:30 | .BankCardNo | .BankCardNo |
+| testSend.swift:80:27:80:30 | .MyCreditRating | testSend.swift:80:27:80:30 | .MyCreditRating | testSend.swift:80:27:80:30 | .MyCreditRating | This operation transmits '.MyCreditRating', which may contain unencrypted sensitive data from $@. | testSend.swift:80:27:80:30 | .MyCreditRating | .MyCreditRating |
+| testSend.swift:94:27:94:39 | .value | testSend.swift:94:27:94:30 | .password | testSend.swift:94:27:94:39 | .value | This operation transmits '.value', which may contain unencrypted sensitive data from $@. | testSend.swift:94:27:94:30 | .password | .password |
+| testURL.swift:39:18:39:50 | ... .+(_:_:) ... | testURL.swift:39:50:39:50 | passwd | testURL.swift:39:18:39:50 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testURL.swift:39:50:39:50 | passwd | passwd |
+| testURL.swift:41:18:41:51 | ... .+(_:_:) ... | testURL.swift:41:51:41:51 | account_no | testURL.swift:41:18:41:51 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testURL.swift:41:51:41:51 | account_no | account_no |
+| testURL.swift:42:18:42:51 | ... .+(_:_:) ... | testURL.swift:42:51:42:51 | credit_card_no | testURL.swift:42:18:42:51 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testURL.swift:42:51:42:51 | credit_card_no | credit_card_no |
+| testURL.swift:46:22:46:22 | passwd | testURL.swift:46:22:46:22 | passwd | testURL.swift:46:22:46:22 | passwd | This operation transmits 'passwd', which may contain unencrypted sensitive data from $@. | testURL.swift:46:22:46:22 | passwd | passwd |
+| testURL.swift:50:18:50:51 | ... .+(_:_:) ... | testURL.swift:50:51:50:51 | e_mail | testURL.swift:50:18:50:51 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testURL.swift:50:51:50:51 | e_mail | e_mail |
+| testURL.swift:52:18:52:53 | ... .+(_:_:) ... | testURL.swift:52:53:52:53 | a_homeaddr_z | testURL.swift:52:18:52:53 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testURL.swift:52:53:52:53 | a_homeaddr_z | a_homeaddr_z |
+| testURL.swift:54:18:54:51 | ... .+(_:_:) ... | testURL.swift:54:51:54:51 | resident_ID | testURL.swift:54:18:54:51 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testURL.swift:54:51:54:51 | resident_ID | resident_ID |
+| testURL.swift:73:18:73:67 | ... .+(_:_:) ... | testURL.swift:73:52:73:67 | call to get_secret_key() | testURL.swift:73:18:73:67 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testURL.swift:73:52:73:67 | call to get_secret_key() | call to get_secret_key() |
+| testURL.swift:75:18:75:69 | ... .+(_:_:) ... | testURL.swift:75:53:75:69 | call to get_cert_string() | testURL.swift:75:18:75:69 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testURL.swift:75:53:75:69 | call to get_cert_string() | call to get_cert_string() |
+| testURL.swift:96:18:96:18 | "..." | testURL.swift:96:51:96:51 | certificate | testURL.swift:96:18:96:18 | "..." | This operation transmits '"..."', which may contain unencrypted sensitive data from $@. | testURL.swift:96:51:96:51 | certificate | certificate |
+| testURL.swift:106:20:106:20 | "..." | testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | testURL.swift:106:20:106:20 | "..." | This operation transmits '"..."', which may contain unencrypted sensitive data from $@. | testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | call to SecKeyCopyExternalRepresentation(_:_:) |
+| testURL.swift:116:18:116:18 | "..." | testURL.swift:116:52:116:52 | email | testURL.swift:116:18:116:18 | "..." | This operation transmits '"..."', which may contain unencrypted sensitive data from $@. | testURL.swift:116:52:116:52 | email | email |
+| testURL.swift:123:18:123:18 | "..." | testURL.swift:123:52:123:52 | phone_number | testURL.swift:123:18:123:18 | "..." | This operation transmits '"..."', which may contain unencrypted sensitive data from $@. | testURL.swift:123:52:123:52 | phone_number | phone_number |
+| testURL.swift:132:18:132:18 | "..." | testURL.swift:132:39:132:39 | account_no | testURL.swift:132:18:132:18 | "..." | This operation transmits '"..."', which may contain unencrypted sensitive data from $@. | testURL.swift:132:39:132:39 | account_no | account_no |

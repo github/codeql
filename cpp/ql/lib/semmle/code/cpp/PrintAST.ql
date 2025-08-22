@@ -9,13 +9,13 @@ import cpp
 import PrintAST
 
 /**
- * Temporarily tweak this class or make a copy to control which functions are
+ * Temporarily tweak this class or make a copy to control which declarations are
  * printed.
  */
 class Cfg extends PrintAstConfiguration {
   /**
    * TWEAK THIS PREDICATE AS NEEDED.
-   * Holds if the AST for `func` should be printed.
+   * Holds if the AST for `decl` should be printed.
    */
-  override predicate shouldPrintFunction(Function func) { any() }
+  override predicate shouldPrintDeclaration(Declaration decl) { any() }
 }

@@ -17,6 +17,27 @@ module XssThroughDom {
   abstract class Source extends Shared::Source { }
 
   /**
+   * A barrier guard for XSS through the DOM.
+   */
+  abstract class BarrierGuard extends DataFlow::Node {
+    /**
+     * Holds if this node acts as a barrier for data flow, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e) { none() }
+
+    /** DEPRECATED. Use `blocksExpr` instead. */
+    deprecated predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+  }
+
+  /** A subclass of `BarrierGuard` that is used for backward compatibility with the old data flow library. */
+  deprecated final private class BarrierGuardLegacy extends TaintTracking::SanitizerGuardNode instanceof BarrierGuard
+  {
+    override predicate sanitizes(boolean outcome, Expr e) {
+      BarrierGuard.super.sanitizes(outcome, e)
+    }
+  }
+
+  /**
    * Gets an attribute name that could store user-controlled data.
    *
    * Attributes such as "id", "href", and "src" are often used as input to HTML.
@@ -87,9 +108,6 @@ module XssThroughDom {
     override string getPropertyName() { result = prop }
   }
 
-  /** DEPRECATED: Alias for JQueryDomPropertySource */
-  deprecated class JQueryDOMPropertySource = JQueryDomPropertySource;
-
   /**
    * A source for text from the DOM from a `d3` method call.
    */
@@ -136,9 +154,6 @@ module XssThroughDom {
 
     override string getPropertyName() { result = prop }
   }
-
-  /** DEPRECATED: Alias for DomTextSource */
-  deprecated class DOMTextSource = DomTextSource;
 
   /** The `files` property of an `<input />` element */
   class FilesSource extends Source {
@@ -217,6 +232,15 @@ module XssThroughDom {
         )
       }
     }
+
+    /**
+     * An object containing input values from an Angular form, accessed through an `NgForm` object.
+     */
+    class AngularFormSource extends Source {
+      AngularFormSource() {
+        this = API::Node::ofType("@angular/forms", "NgForm").getMember("value").asSource()
+      }
+    }
   }
 
   /**
@@ -244,6 +268,18 @@ module XssThroughDom {
   class SelectionSource extends Source {
     SelectionSource() {
       this = getSelectionCall(DataFlow::TypeTracker::end()).getAMethodCall("toString")
+    }
+  }
+
+  /**
+   * A source of DOM input originating from an Angular two-way data binding.
+   */
+  private class AngularNgModelSource extends Source {
+    AngularNgModelSource() {
+      exists(Angular2::ComponentClass component, string fieldName |
+        fieldName = component.getATemplateElement().getAttributeByName("[(ngModel)]").getValue() and
+        this = component.getFieldInputNode(fieldName)
+      )
     }
   }
 }

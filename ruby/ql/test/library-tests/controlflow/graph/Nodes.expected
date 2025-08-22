@@ -26,6 +26,9 @@ callsWithNoArguments
 | cfg.rb:62:7:62:12 | * ... |
 | cfg.rb:62:17:62:27 | * ... |
 | cfg.rb:90:1:93:3 | call to each |
+| cfg.rb:90:5:90:5 | [false] ! ... |
+| cfg.rb:90:5:90:5 | [true] ! ... |
+| cfg.rb:90:5:90:5 | defined? ... |
 | cfg.rb:98:10:98:15 | ** ... |
 | cfg.rb:98:30:98:35 | ** ... |
 | cfg.rb:138:17:138:23 | * ... |
@@ -219,15 +222,15 @@ positionalArguments
 | desugar.rb:6:3:6:13 | call to count= | desugar.rb:6:17:6:17 | ... = ... |
 | desugar.rb:10:3:10:10 | call to []= | desugar.rb:10:9:10:9 | 0 |
 | desugar.rb:10:3:10:10 | call to []= | desugar.rb:10:14:10:14 | ... = ... |
-| desugar.rb:14:3:14:13 | call to count= | desugar.rb:14:15:14:16 | __synth__1 |
+| desugar.rb:14:3:14:13 | call to count= | desugar.rb:14:3:14:13 | __synth__1 |
 | desugar.rb:14:15:14:16 | ... + ... | desugar.rb:14:18:14:18 | 1 |
 | desugar.rb:18:3:18:28 | call to [] | desugar.rb:18:9:18:9 | __synth__1 |
 | desugar.rb:18:3:18:28 | call to [] | desugar.rb:18:12:18:16 | __synth__2 |
 | desugar.rb:18:3:18:28 | call to [] | desugar.rb:18:19:18:27 | __synth__3 |
+| desugar.rb:18:3:18:28 | call to []= | desugar.rb:18:3:18:28 | __synth__4 |
 | desugar.rb:18:3:18:28 | call to []= | desugar.rb:18:9:18:9 | __synth__1 |
 | desugar.rb:18:3:18:28 | call to []= | desugar.rb:18:12:18:16 | __synth__2 |
 | desugar.rb:18:3:18:28 | call to []= | desugar.rb:18:19:18:27 | __synth__3 |
-| desugar.rb:18:3:18:28 | call to []= | desugar.rb:18:30:18:31 | __synth__4 |
 | desugar.rb:18:19:18:27 | ... + ... | desugar.rb:18:27:18:27 | 3 |
 | desugar.rb:18:30:18:31 | ... + ... | desugar.rb:18:33:18:33 | 1 |
 | desugar.rb:22:3:22:3 | call to [] | desugar.rb:22:3:22:3 | 0 |
@@ -364,6 +367,9 @@ positionalArguments
 | raise.rb:160:5:162:7 | call to bar | raise.rb:160:9:162:7 | -> { ... } |
 | raise.rb:161:7:161:14 | call to raise | raise.rb:161:13:161:14 | "" |
 | raise.rb:168:5:168:12 | call to raise | raise.rb:168:11:168:12 | "" |
+| raise.rb:174:8:174:23 | [false] ... \|\| ... | raise.rb:174:14:174:23 | ... == ... |
+| raise.rb:174:8:174:23 | [true] ... \|\| ... | raise.rb:174:14:174:23 | ... == ... |
+| raise.rb:174:14:174:23 | ... == ... | raise.rb:174:20:174:23 | true |
 keywordArguments
 | cfg.html.erb:6:9:6:58 | call to stylesheet_link_tag | media | cfg.html.erb:6:54:6:58 | "all" |
 | cfg.html.erb:12:11:12:33 | call to link_to | id | cfg.html.erb:12:31:12:33 | "a" |

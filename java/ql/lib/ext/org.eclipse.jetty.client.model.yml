@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.eclipse.jetty.client", "HttpClient", True, "GET", "(String)", "", "Argument[0]", "request-forgery", "ai-manual"]
+      - ["org.eclipse.jetty.client", "HttpClient", True, "newRequest", "(String)", "", "Argument[0]", "request-forgery", "ai-manual"]

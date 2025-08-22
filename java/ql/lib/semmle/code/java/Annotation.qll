@@ -8,6 +8,8 @@
  * Each annotation type has zero or more annotation elements that contain a
  * name and possibly a value.
  */
+overlay[local?]
+module;
 
 import Element
 import Expr
@@ -45,20 +47,6 @@ class Annotation extends @annotation, Expr {
   AnnotationElement getAnnotationElement(string name) {
     result = this.getType().getAnnotationElement(name)
   }
-
-  /**
-   * DEPRECATED: Getting the value of _any_ annotation element is error-prone because
-   * it could lead to selecting the value of the wrong element by accident (for example
-   * when an annotation type is extended in the future). Prefer the predicate `getValue(string)`
-   * and explicitly specify the element name. Use `getValue(_)` if it is really desired to
-   * get the value of any element.
-   *
-   * Gets a value of an annotation element. This includes default values in case
-   * no explicit value is specified. For elements with an array value type this
-   * might have an `ArrayInit` as result. To properly handle array values, prefer
-   * the predicate `getAnArrayValue`.
-   */
-  deprecated Expr getAValue() { filteredAnnotValue(this, _, result) }
 
   /**
    * Gets the value of the annotation element with the specified `name`.
@@ -156,11 +144,6 @@ class Annotation extends @annotation, Expr {
    * elements of that array. Otherwise, the result will be the single expression used as value.
    */
   Expr getAnArrayValue(string name) { result = this.getArrayValue(name, _) }
-
-  /**
-   * DEPRECATED: Predicate has been renamed to `getAnArrayValue`
-   */
-  deprecated Expr getAValue(string name) { result = this.getAnArrayValue(name) }
 
   /**
    * Gets a value of the annotation element with the specified `name`, which must be declared as an enum
@@ -274,7 +257,7 @@ class Annotatable extends Element {
    */
   predicate hasAnnotation(string package, string name) {
     exists(AnnotationType at | at = this.getAnAnnotation().getType() |
-      at.nestedName() = name and at.getPackage().getName() = package
+      at.getNestedName() = name and at.getPackage().getName() = package
     )
   }
 

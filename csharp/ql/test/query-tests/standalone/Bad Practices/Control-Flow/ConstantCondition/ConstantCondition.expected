@@ -1,0 +1,2 @@
+| ConstantCondition.cs:15:13:15:26 | ... is ... | Condition always evaluates to 'false'. |
+| ConstantCondition.cs:15:24:15:26 | access to type Int32 | Pattern never matches. |

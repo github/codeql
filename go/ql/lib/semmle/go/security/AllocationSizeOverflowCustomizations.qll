@@ -25,13 +25,6 @@ module AllocationSizeOverflow {
   }
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A guard node that prevents allocation-size overflow.
-   */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
-
-  /**
    * A sanitizer node that prevents allocation-size overflow.
    */
   abstract class Sanitizer extends DataFlow::Node { }
@@ -164,7 +157,7 @@ module AllocationSizeOverflow {
     t instanceof BasicType and
     not t instanceof StringType
     or
-    isSmallType(t.(NamedType).getUnderlyingType())
+    isSmallType(t.(DefinedType).getUnderlyingType())
     or
     isSmallType(t.(PointerType).getBaseType())
     or

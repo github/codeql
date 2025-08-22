@@ -4,7 +4,7 @@
  * @kind problem
  * @problem.severity warning
  * @security-severity 9.3
- * @precision medium
+ * @precision high
  * @id cpp/unsafe-strncat
  * @tags reliability
  *       correctness
@@ -48,11 +48,11 @@ predicate case1(FunctionCall fc, Expr sizeArg, VariableAccess destArg) {
  * Holds if `fc` is a call to `strncat` with size argument `sizeArg` and destination
  * argument `destArg`, and `sizeArg` computes the value `sizeof (dest) - strlen (dest)`.
  */
-predicate case2(FunctionCall fc, Expr sizeArg, VariableAccess destArg) {
-  interestingCallWithArgs(fc, sizeArg, destArg) and
+predicate case2(FunctionCall fc, Expr sizeArg, Expr destArg) {
+  interestingCallWithArgs(fc, pragma[only_bind_into](sizeArg), pragma[only_bind_into](destArg)) and
   exists(SubExpr sub, int n |
     // The destination buffer is an array of size n
-    destArg.getUnspecifiedType().(ArrayType).getSize() = n and
+    pragma[only_bind_out](destArg.getUnspecifiedType().(ArrayType).getSize()) = n and
     // The size argument is equivalent to a subtraction
     globalValueNumber(sizeArg).getAnExpr() = sub and
     // ... where the left side of the subtraction is the constant n

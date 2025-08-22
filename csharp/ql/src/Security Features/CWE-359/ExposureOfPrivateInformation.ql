@@ -13,10 +13,10 @@
 
 import csharp
 import semmle.code.csharp.security.dataflow.ExposureOfPrivateInformationQuery
-import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
+import ExposureOfPrivateInformation::PathGraph
 
-from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
+from ExposureOfPrivateInformation::PathNode source, ExposureOfPrivateInformation::PathNode sink
+where ExposureOfPrivateInformation::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "Private data returned by $@ is written to an external location.", source.getNode(),
   source.getNode().toString()

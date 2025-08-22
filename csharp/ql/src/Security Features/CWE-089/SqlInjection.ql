@@ -13,17 +13,12 @@
 
 import csharp
 import semmle.code.csharp.security.dataflow.SqlInjectionQuery
-import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
-import semmle.code.csharp.security.dataflow.flowsources.Remote
-import semmle.code.csharp.security.dataflow.flowsources.Local
+import SqlInjection::PathGraph
+import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 
-string getSourceType(DataFlow::Node node) {
-  result = node.(RemoteFlowSource).getSourceType()
-  or
-  result = node.(LocalFlowSource).getSourceType()
-}
+string getSourceType(DataFlow::Node node) { result = node.(SourceNode).getSourceType() }
 
-from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
+from SqlInjection::PathNode source, SqlInjection::PathNode sink
+where SqlInjection::flowPath(source, sink)
 select sink.getNode(), source, sink, "This query depends on $@.", source,
   ("this " + getSourceType(source.getNode()))

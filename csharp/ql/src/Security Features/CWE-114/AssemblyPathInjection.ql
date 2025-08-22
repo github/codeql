@@ -13,28 +13,23 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.flowsources.Remote
+import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 import semmle.code.csharp.commons.Util
-import DataFlow::PathGraph
+import AssemblyPathInjection::PathGraph
 
 /**
  * A taint-tracking configuration for untrusted user input used to load a DLL.
  */
-class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "DLLInjection" }
+module AssemblyPathInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource or
-    source.asExpr() = any(MainMethod main).getParameter(0).getAnAccess()
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc, string name, int arg |
       mc.getTarget().getName().matches(name) and
       mc.getTarget()
           .getDeclaringType()
           .getABaseType*()
-          .hasQualifiedName("System.Reflection", "Assembly") and
+          .hasFullyQualifiedName("System.Reflection", "Assembly") and
       mc.getArgument(arg) = sink.asExpr()
     |
       name = "LoadFrom" and arg = 0 and mc.getNumberOfArguments() = [1 .. 2]
@@ -46,9 +41,16 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
       name = "UnsafeLoadFrom" and arg = 0
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
-from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
+/**
+ * A taint-tracking module for untrusted user input used to load a DLL.
+ */
+module AssemblyPathInjection = TaintTracking::Global<AssemblyPathInjectionConfig>;
+
+from AssemblyPathInjection::PathNode source, AssemblyPathInjection::PathNode sink
+where AssemblyPathInjection::flowPath(source, sink)
 select sink.getNode(), source, sink, "This assembly path depends on a $@.", source,
   "user-provided value"

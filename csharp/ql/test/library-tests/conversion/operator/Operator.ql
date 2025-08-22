@@ -13,5 +13,6 @@ where
 
   s2 != "FormatParam" and
   s2 != "StringOrCharArray" and
-  s2 != "EventSourceActivity"
+  s2 != "EventSourceActivity" and
+  s2 != "EventSourcePrimitive"
 select s1, s2 order by s1, s2

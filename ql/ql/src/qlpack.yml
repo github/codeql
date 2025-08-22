@@ -1,6 +1,8 @@
 name: codeql/ql
-version: 0.0.0
-groups: [ql, queries]
+version: 1.0.0-dev
+groups:
+  - ql
+  - queries
 dbscheme: ql.dbscheme
 suites: codeql-suites
 defaultSuiteFile: codeql-suites/ql-code-scanning.qls
@@ -8,3 +10,5 @@ extractor: ql
 dependencies:
   codeql/typos: ${workspace}
   codeql/util: ${workspace}
+  codeql/yaml: ${workspace}
+warnOnImplicitThis: true

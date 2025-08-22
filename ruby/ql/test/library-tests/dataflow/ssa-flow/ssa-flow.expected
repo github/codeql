@@ -1,20 +1,14 @@
-failures
+models
 edges
-| ssa_flow.rb:12:9:12:9 | [post] a [element 0] :  | ssa_flow.rb:16:10:16:10 | a [element 0] :  |
-| ssa_flow.rb:12:9:12:9 | [post] a [element 0] :  | ssa_flow.rb:16:10:16:10 | a [element 0] :  |
-| ssa_flow.rb:12:16:12:23 | call to taint :  | ssa_flow.rb:12:9:12:9 | [post] a [element 0] :  |
-| ssa_flow.rb:12:16:12:23 | call to taint :  | ssa_flow.rb:12:9:12:9 | [post] a [element 0] :  |
-| ssa_flow.rb:16:10:16:10 | a [element 0] :  | ssa_flow.rb:16:10:16:13 | ...[...] |
-| ssa_flow.rb:16:10:16:10 | a [element 0] :  | ssa_flow.rb:16:10:16:13 | ...[...] |
+| ssa_flow.rb:12:9:12:9 | [post] a : [collection] [element 0] | ssa_flow.rb:16:10:16:10 | a : [collection] [element 0] | provenance |  |
+| ssa_flow.rb:12:16:12:23 | call to taint | ssa_flow.rb:12:9:12:9 | [post] a : [collection] [element 0] | provenance |  |
+| ssa_flow.rb:16:10:16:10 | a : [collection] [element 0] | ssa_flow.rb:16:10:16:13 | ...[...] | provenance |  |
 nodes
-| ssa_flow.rb:12:9:12:9 | [post] a [element 0] :  | semmle.label | [post] a [element 0] :  |
-| ssa_flow.rb:12:9:12:9 | [post] a [element 0] :  | semmle.label | [post] a [element 0] :  |
-| ssa_flow.rb:12:16:12:23 | call to taint :  | semmle.label | call to taint :  |
-| ssa_flow.rb:12:16:12:23 | call to taint :  | semmle.label | call to taint :  |
-| ssa_flow.rb:16:10:16:10 | a [element 0] :  | semmle.label | a [element 0] :  |
-| ssa_flow.rb:16:10:16:10 | a [element 0] :  | semmle.label | a [element 0] :  |
-| ssa_flow.rb:16:10:16:13 | ...[...] | semmle.label | ...[...] |
+| ssa_flow.rb:12:9:12:9 | [post] a : [collection] [element 0] | semmle.label | [post] a : [collection] [element 0] |
+| ssa_flow.rb:12:16:12:23 | call to taint | semmle.label | call to taint |
+| ssa_flow.rb:16:10:16:10 | a : [collection] [element 0] | semmle.label | a : [collection] [element 0] |
 | ssa_flow.rb:16:10:16:13 | ...[...] | semmle.label | ...[...] |
 subpaths
+testFailures
 #select
-| ssa_flow.rb:16:10:16:13 | ...[...] | ssa_flow.rb:12:16:12:23 | call to taint :  | ssa_flow.rb:16:10:16:13 | ...[...] | $@ | ssa_flow.rb:12:16:12:23 | call to taint :  | call to taint :  |
+| ssa_flow.rb:16:10:16:13 | ...[...] | ssa_flow.rb:12:16:12:23 | call to taint | ssa_flow.rb:16:10:16:13 | ...[...] | $@ | ssa_flow.rb:12:16:12:23 | call to taint | call to taint |

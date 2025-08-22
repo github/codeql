@@ -1,11 +1,11 @@
+using System.Collections.Immutable;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Populators;
 using Semmle.Extraction.Kinds;
-using System.Collections.Generic;
-using System.Linq;
-using System.Collections.Immutable;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -13,9 +13,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     {
         private VariableDeclaration(IExpressionInfo info) : base(info) { }
 
-        public static VariableDeclaration Create(Context cx, ISymbol symbol, AnnotatedTypeSymbol? type, TypeSyntax? optionalSyntax, Extraction.Entities.Location exprLocation, bool isVar, IExpressionParentEntity parent, int child)
+        public static VariableDeclaration Create(Context cx, ISymbol symbol, AnnotatedTypeSymbol? type, TypeSyntax? optionalSyntax, Location exprLocation, bool isVar, IExpressionParentEntity parent, int child)
         {
-            var ret = new VariableDeclaration(new ExpressionInfo(cx, type, exprLocation, ExprKind.LOCAL_VAR_DECL, parent, child, false, null));
+            var ret = new VariableDeclaration(new ExpressionInfo(cx, type, exprLocation, ExprKind.LOCAL_VAR_DECL, parent, child, isCompilerGenerated: false, null));
             cx.Try(null, null, () =>
             {
                 var l = LocalVariable.Create(cx, symbol);
@@ -52,7 +52,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         public static Expression CreateParenthesized(Context cx, DeclarationExpressionSyntax node, ParenthesizedVariableDesignationSyntax designation, IExpressionParentEntity parent, int child, INamedTypeSymbol? t)
         {
             var type = t is null ? (AnnotatedTypeSymbol?)null : new AnnotatedTypeSymbol(t, t.NullableAnnotation);
-            var tuple = new Expression(new ExpressionInfo(cx, type, cx.CreateLocation(node.GetLocation()), ExprKind.TUPLE, parent, child, false, null));
+            var tuple = new Expression(new ExpressionInfo(cx, type, cx.CreateLocation(node.GetLocation()), ExprKind.TUPLE, parent, child, isCompilerGenerated: false, null));
 
             cx.Try(null, null, () =>
             {
@@ -68,7 +68,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         public static Expression CreateParenthesized(Context cx, VarPatternSyntax varPattern, ParenthesizedVariableDesignationSyntax designation, IExpressionParentEntity parent, int child)
         {
             var tuple = new Expression(
-                new ExpressionInfo(cx, null, cx.CreateLocation(varPattern.GetLocation()), ExprKind.TUPLE, parent, child, false, null),
+                new ExpressionInfo(cx, null, cx.CreateLocation(varPattern.GetLocation()), ExprKind.TUPLE, parent, child, isCompilerGenerated: false, null),
                 shouldPopulate: false);
 
             var elementTypes = new List<ITypeSymbol?>();
@@ -148,7 +148,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             Create(cx, node, node.Designation, parent, child, cx.GetTypeInfo(node).Type.DisambiguateType() as INamedTypeSymbol);
 
         public static VariableDeclaration Create(Context cx, CSharpSyntaxNode c, AnnotatedTypeSymbol? type, IExpressionParentEntity parent, int child) =>
-            new VariableDeclaration(new ExpressionInfo(cx, type, cx.CreateLocation(c.FixedLocation()), ExprKind.LOCAL_VAR_DECL, parent, child, false, null));
+            new VariableDeclaration(new ExpressionInfo(cx, type, cx.CreateLocation(c.FixedLocation()), ExprKind.LOCAL_VAR_DECL, parent, child, isCompilerGenerated: false, null));
 
         public static VariableDeclaration Create(Context cx, CatchDeclarationSyntax d, bool isVar, IExpressionParentEntity parent, int child)
         {
@@ -179,7 +179,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     Create(cx, d.Initializer.Value, ret, 0);
 
                     // Create an access
-                    var access = new Expression(new ExpressionInfo(cx, type, localVar.Location, ExprKind.LOCAL_VARIABLE_ACCESS, ret, 1, false, null));
+                    var access = new Expression(new ExpressionInfo(cx, type, localVar.Location, ExprKind.LOCAL_VARIABLE_ACCESS, ret, 1, isCompilerGenerated: false, null));
                     cx.TrapWriter.Writer.expr_access(access, localVar);
                 }
 

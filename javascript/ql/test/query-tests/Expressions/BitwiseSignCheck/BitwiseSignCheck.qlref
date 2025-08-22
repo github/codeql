@@ -1,1 +1,2 @@
-Expressions/BitwiseSignCheck.ql
+query: Expressions/BitwiseSignCheck.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

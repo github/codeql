@@ -1,0 +1,22 @@
+on:
+  workflow_dispatch:
+    inputs:
+      git_ref:
+        description: ref
+        type: string
+  workflow_call:
+    inputs:
+      git_ref:
+        type: string
+jobs:
+  run:
+    permissions:
+      id-token: write
+      statuses: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+        with:
+          ref: ${{ inputs.git_ref }}
+      - run: |
+          ./cmd

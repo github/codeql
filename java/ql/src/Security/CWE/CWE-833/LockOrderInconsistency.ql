@@ -19,8 +19,8 @@ class LockVariable extends Variable {
   }
 
   /** An access to method `lock` on this variable. */
-  MethodAccess getLockAction() {
-    exists(MethodAccess ma | ma.getQualifier() = this.getAnAccess() |
+  MethodCall getLockAction() {
+    exists(MethodCall ma | ma.getQualifier() = this.getAnAccess() |
       ma.getMethod().hasName("lock") and
       result = ma
     )
@@ -35,7 +35,7 @@ class Synched extends Top {
     exists(Method m | m.isSynchronized() and not m.isStatic() |
       m = this
       or
-      exists(MethodAccess ma, VarAccess qual | ma = this and qual = ma.getQualifier() |
+      exists(MethodCall ma, VarAccess qual | ma = this and qual = ma.getQualifier() |
         ma.getMethod() = m
       )
     )
@@ -47,7 +47,7 @@ class Synched extends Top {
     or
     result = this.(SynchronizedStmt).getAChild+()
     or
-    exists(MethodAccess ma | ma = result |
+    exists(MethodCall ma | ma = result |
       ma.getEnclosingStmt().getEnclosingStmt*() = this or ma.getEnclosingCallable() = this
     )
   }
@@ -65,7 +65,7 @@ class Synched extends Top {
    */
   RefType getLockType() {
     result = this.(Method).getDeclaringType().getSourceDeclaration() or
-    result = this.(MethodAccess).getMethod().getDeclaringType().getSourceDeclaration()
+    result = this.(MethodCall).getMethod().getDeclaringType().getSourceDeclaration()
   }
 }
 
@@ -74,14 +74,14 @@ class Synched extends Top {
  * and then on another variable in `second`, but elsewhere, the lock order is reversed
  * by first obtaining a lock on the latter variable in `otherFirst`.
  */
-predicate badReentrantLockOrder(MethodAccess first, MethodAccess second, MethodAccess otherFirst) {
-  exists(LockVariable v1, LockVariable v2, MethodAccess otherSecond |
+predicate badReentrantLockOrder(MethodCall first, MethodCall second, MethodCall otherFirst) {
+  exists(LockVariable v1, LockVariable v2, MethodCall otherSecond |
     first = v1.getLockAction() and
     otherSecond = v1.getLockAction() and
     second = v2.getLockAction() and
     otherFirst = v2.getLockAction() and
-    first.(ControlFlowNode).getASuccessor+() = second and
-    otherFirst.(ControlFlowNode).getASuccessor+() = otherSecond
+    first.getControlFlowNode().getASuccessor+() = second.getControlFlowNode() and
+    otherFirst.getControlFlowNode().getASuccessor+() = otherSecond.getControlFlowNode()
   |
     v1 != v2
   )
@@ -113,7 +113,7 @@ predicate badSynchronizedStmtLockOrder(Expr outerExpr, Expr innerExpr, Expr othe
  * The method access `ma` to method `m` is qualified by an access to variable `vQual`
  * and has an access to variable `vArg` as the argument at index `i`.
  */
-predicate qualifiedMethodAccess(MethodAccess ma, Method m, Variable vQual, int i, Variable vArg) {
+predicate qualifiedMethodCall(MethodCall ma, Method m, Variable vQual, int i, Variable vArg) {
   ma.getMethod() = m and
   ma.getQualifier().(VarAccess).getVariable() = vQual and
   ma.getArgument(i).(VarAccess).getVariable() = vArg
@@ -123,7 +123,7 @@ predicate qualifiedMethodAccess(MethodAccess ma, Method m, Variable vQual, int i
  * Holds if the specified method accesses occur on different branches of the same conditional statement
  * inside an unsynchronized method.
  */
-predicate inDifferentBranches(MethodAccess ma1, MethodAccess ma2) {
+predicate inDifferentBranches(MethodCall ma1, MethodCall ma2) {
   exists(IfStmt cond |
     ma1.getEnclosingStmt() = cond.getThen().getAChild*() and
     ma2.getEnclosingStmt() = cond.getElse().getAChild*() and
@@ -132,7 +132,7 @@ predicate inDifferentBranches(MethodAccess ma1, MethodAccess ma2) {
 }
 
 /** The method access `ma` occurs in method `runnable`, which is an implementation of `Runnable.run()`. */
-predicate inRunnable(MethodAccess ma, Method runnable) {
+predicate inRunnable(MethodCall ma, Method runnable) {
   runnable.getName() = "run" and
   runnable.getDeclaringType().getAStrictAncestor().hasQualifiedName("java.lang", "Runnable") and
   ma.getEnclosingCallable() = runnable
@@ -142,7 +142,7 @@ predicate inRunnable(MethodAccess ma, Method runnable) {
  * Holds if the specified method accesses occur in different `Runnable.run()` methods,
  * indicating that they may be invoked by different threads.
  */
-predicate inDifferentRunnables(MethodAccess ma1, MethodAccess ma2) {
+predicate inDifferentRunnables(MethodCall ma1, MethodCall ma2) {
   exists(Method runnable1, Method runnable2 |
     inRunnable(ma1, runnable1) and
     inRunnable(ma2, runnable2) and
@@ -155,18 +155,16 @@ predicate inDifferentRunnables(MethodAccess ma1, MethodAccess ma2) {
  * in statement `inner` that is qualified by one of the parameters of `outer`, and there is
  * another access to `outer` that may cause locking to be performed in a different order.
  */
-predicate badMethodAccessLockOrder(
-  MethodAccess outerAccess, MethodAccess innerAccess, MethodAccess other
-) {
+predicate badMethodCallLockOrder(MethodCall outerAccess, MethodCall innerAccess, MethodCall other) {
   exists(Synched outer, Synched inner |
     inner = innerAccess and
     inner = outer.getInnerSynch() and
     inner.getLockType() = outer.getLockType() and
     exists(Parameter p, int i | outer.(Method).getAParameter() = p and p.getPosition() = i |
-      inner.(MethodAccess).getQualifier().(VarAccess).getVariable() = p and
-      exists(MethodAccess ma1, MethodAccess ma2, Variable v1, Variable v2 |
-        qualifiedMethodAccess(ma1, outer, v1, i, v2) and
-        qualifiedMethodAccess(ma2, outer, v2, i, v1) and
+      inner.(MethodCall).getQualifier().(VarAccess).getVariable() = p and
+      exists(MethodCall ma1, MethodCall ma2, Variable v1, Variable v2 |
+        qualifiedMethodCall(ma1, outer, v1, i, v2) and
+        qualifiedMethodCall(ma2, outer, v2, i, v1) and
         v1 != v2 and
         (
           inDifferentBranches(ma1, ma2) or
@@ -183,7 +181,7 @@ from Expr first, Expr second, Expr other
 where
   badReentrantLockOrder(first, second, other) or
   badSynchronizedStmtLockOrder(first, second, other) or
-  badMethodAccessLockOrder(first, second, other)
+  badMethodCallLockOrder(first, second, other)
 select first,
   "Synchronization here and $@ may be performed in reverse order starting $@ and result in deadlock.",
   second, "here", other, "here"

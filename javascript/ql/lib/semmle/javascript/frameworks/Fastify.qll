@@ -1,12 +1,12 @@
 /**
- * Provides classes for working with [Fastify](https://www.fastify.io/) applications.
+ * Provides classes for working with [Fastify](https://www.fastify.dev/) applications.
  */
 
 import javascript
 import semmle.javascript.frameworks.HTTP
 
 /**
- * Provides classes for working with [Fastify](https://www.fastify.io/) applications.
+ * Provides classes for working with [Fastify](https://www.fastify.dev/) applications.
  */
 module Fastify {
   /**
@@ -138,7 +138,8 @@ module Fastify {
 
     RouteSetup() {
       this = server(server).getAMethodCall(methodName) and
-      methodName = ["route", "get", "head", "post", "put", "delete", "options", "patch"]
+      methodName =
+        ["route", "get", "head", "post", "put", "delete", "options", "patch", "addHook", "all"]
     }
 
     override DataFlow::SourceNode getARouteHandler() {
@@ -154,12 +155,6 @@ module Fastify {
 
     override DataFlow::SourceNode getServer() { result = server }
 
-    /**
-     * DEPRECATED: Use `getARouteHandlerNode` instead.
-     * Gets an argument that represents a route handler being registered.
-     */
-    deprecated DataFlow::Node getARouteHandlerExpr() { result = this.getARouteHandlerNode() }
-
     /**  Gets an argument that represents a route handler being registered. */
     DataFlow::Node getARouteHandlerNode() {
       if methodName = "route"
@@ -170,11 +165,17 @@ module Fastify {
 
   private class ShorthandRoutingTreeSetup extends Routing::RouteSetup::MethodCall instanceof RouteSetup
   {
-    ShorthandRoutingTreeSetup() { not this.getMethodName() = "route" }
+    ShorthandRoutingTreeSetup() { not this.getMethodName() = ["route", "addHook"] }
 
     override string getRelativePath() { result = this.getArgument(0).getStringValue() }
 
     override Http::RequestMethodName getHttpMethod() { result = this.getMethodName().toUpperCase() }
+  }
+
+  private class AddHookRouteSetup extends Routing::RouteSetup::MethodCall instanceof RouteSetup {
+    AddHookRouteSetup() { this.getMethodName() = "addHook" }
+
+    override predicate isMiddlewareSetup() { any() }
   }
 
   /** Gets the name of the `n`th handler function that can be installed a route setup, in order of execution. */
@@ -328,7 +329,11 @@ module Fastify {
     ResponseSendArgument() {
       this = rh.getAResponseSource().ref().getAMethodCall("send").getArgument(0)
       or
-      this = rh.(DataFlow::FunctionNode).getAReturn()
+      exists(RouteSetup setup |
+        rh = setup.getARouteHandler() and
+        this = rh.(DataFlow::FunctionNode).getAReturn() and
+        setup.getMethodName() != "addHook"
+      )
     }
 
     override RouteHandler getRouteHandler() { result = rh }

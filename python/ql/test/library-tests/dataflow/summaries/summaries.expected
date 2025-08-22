@@ -1,0 +1,114 @@
+edges
+| summaries.py:32:1:32:7 | ControlFlowNode for tainted | summaries.py:33:6:33:12 | ControlFlowNode for tainted | provenance |  |
+| summaries.py:32:11:32:26 | ControlFlowNode for identity() | summaries.py:32:1:32:7 | ControlFlowNode for tainted | provenance |  |
+| summaries.py:32:20:32:25 | ControlFlowNode for SOURCE | summaries.py:32:11:32:26 | ControlFlowNode for identity() | provenance | identity |
+| summaries.py:36:1:36:14 | ControlFlowNode for tainted_lambda | summaries.py:37:6:37:19 | ControlFlowNode for tainted_lambda | provenance |  |
+| summaries.py:36:18:36:54 | ControlFlowNode for apply_lambda() | summaries.py:36:1:36:14 | ControlFlowNode for tainted_lambda | provenance |  |
+| summaries.py:36:38:36:38 | ControlFlowNode for x | summaries.py:36:41:36:45 | ControlFlowNode for BinaryExpr | provenance |  |
+| summaries.py:36:48:36:53 | ControlFlowNode for SOURCE | summaries.py:36:18:36:54 | ControlFlowNode for apply_lambda() | provenance | apply_lambda |
+| summaries.py:36:48:36:53 | ControlFlowNode for SOURCE | summaries.py:36:38:36:38 | ControlFlowNode for x | provenance | apply_lambda |
+| summaries.py:44:1:44:12 | ControlFlowNode for tainted_list | summaries.py:45:6:45:20 | ControlFlowNode for Subscript | provenance |  |
+| summaries.py:44:1:44:12 | ControlFlowNode for tainted_list [List element] | summaries.py:45:6:45:17 | ControlFlowNode for tainted_list [List element] | provenance |  |
+| summaries.py:44:16:44:33 | ControlFlowNode for reversed() | summaries.py:44:1:44:12 | ControlFlowNode for tainted_list | provenance |  |
+| summaries.py:44:16:44:33 | ControlFlowNode for reversed() [List element] | summaries.py:44:1:44:12 | ControlFlowNode for tainted_list [List element] | provenance |  |
+| summaries.py:44:25:44:32 | ControlFlowNode for List | summaries.py:44:16:44:33 | ControlFlowNode for reversed() | provenance | builtins.reversed |
+| summaries.py:44:25:44:32 | ControlFlowNode for List [List element] | summaries.py:44:16:44:33 | ControlFlowNode for reversed() [List element] | provenance | builtins.reversed |
+| summaries.py:44:26:44:31 | ControlFlowNode for SOURCE | summaries.py:44:25:44:32 | ControlFlowNode for List | provenance |  |
+| summaries.py:44:26:44:31 | ControlFlowNode for SOURCE | summaries.py:44:25:44:32 | ControlFlowNode for List [List element] | provenance |  |
+| summaries.py:45:6:45:17 | ControlFlowNode for tainted_list [List element] | summaries.py:45:6:45:20 | ControlFlowNode for Subscript | provenance |  |
+| summaries.py:48:15:48:15 | ControlFlowNode for x | summaries.py:49:12:49:18 | ControlFlowNode for BinaryExpr | provenance |  |
+| summaries.py:51:1:51:14 | ControlFlowNode for tainted_mapped [List element] | summaries.py:52:6:52:19 | ControlFlowNode for tainted_mapped [List element] | provenance |  |
+| summaries.py:51:18:51:46 | ControlFlowNode for list_map() [List element] | summaries.py:51:1:51:14 | ControlFlowNode for tainted_mapped [List element] | provenance |  |
+| summaries.py:51:38:51:45 | ControlFlowNode for List [List element] | summaries.py:48:15:48:15 | ControlFlowNode for x | provenance | list_map |
+| summaries.py:51:38:51:45 | ControlFlowNode for List [List element] | summaries.py:51:18:51:46 | ControlFlowNode for list_map() [List element] | provenance | list_map |
+| summaries.py:51:39:51:44 | ControlFlowNode for SOURCE | summaries.py:51:38:51:45 | ControlFlowNode for List [List element] | provenance |  |
+| summaries.py:52:6:52:19 | ControlFlowNode for tainted_mapped [List element] | summaries.py:52:6:52:22 | ControlFlowNode for Subscript | provenance |  |
+| summaries.py:54:23:54:23 | ControlFlowNode for x | summaries.py:55:12:55:12 | ControlFlowNode for x | provenance |  |
+| summaries.py:57:1:57:23 | ControlFlowNode for tainted_mapped_explicit [List element] | summaries.py:58:6:58:28 | ControlFlowNode for tainted_mapped_explicit [List element] | provenance |  |
+| summaries.py:57:27:57:63 | ControlFlowNode for list_map() [List element] | summaries.py:57:1:57:23 | ControlFlowNode for tainted_mapped_explicit [List element] | provenance |  |
+| summaries.py:57:55:57:62 | ControlFlowNode for List [List element] | summaries.py:54:23:54:23 | ControlFlowNode for x | provenance | list_map |
+| summaries.py:57:55:57:62 | ControlFlowNode for List [List element] | summaries.py:57:27:57:63 | ControlFlowNode for list_map() [List element] | provenance | list_map |
+| summaries.py:57:56:57:61 | ControlFlowNode for SOURCE | summaries.py:57:55:57:62 | ControlFlowNode for List [List element] | provenance |  |
+| summaries.py:58:6:58:28 | ControlFlowNode for tainted_mapped_explicit [List element] | summaries.py:58:6:58:31 | ControlFlowNode for Subscript | provenance |  |
+| summaries.py:60:1:60:22 | ControlFlowNode for tainted_mapped_summary [List element] | summaries.py:61:6:61:27 | ControlFlowNode for tainted_mapped_summary [List element] | provenance |  |
+| summaries.py:60:26:60:53 | ControlFlowNode for list_map() [List element] | summaries.py:60:1:60:22 | ControlFlowNode for tainted_mapped_summary [List element] | provenance |  |
+| summaries.py:60:45:60:52 | ControlFlowNode for List [List element] | summaries.py:60:26:60:53 | ControlFlowNode for list_map() [List element] | provenance | list_map |
+| summaries.py:60:46:60:51 | ControlFlowNode for SOURCE | summaries.py:60:45:60:52 | ControlFlowNode for List [List element] | provenance |  |
+| summaries.py:61:6:61:27 | ControlFlowNode for tainted_mapped_summary [List element] | summaries.py:61:6:61:30 | ControlFlowNode for Subscript | provenance |  |
+| summaries.py:63:1:63:12 | ControlFlowNode for tainted_list [List element] | summaries.py:64:6:64:17 | ControlFlowNode for tainted_list [List element] | provenance |  |
+| summaries.py:63:16:63:41 | ControlFlowNode for append_to_list() [List element] | summaries.py:63:1:63:12 | ControlFlowNode for tainted_list [List element] | provenance |  |
+| summaries.py:63:35:63:40 | ControlFlowNode for SOURCE | summaries.py:63:16:63:41 | ControlFlowNode for append_to_list() [List element] | provenance | append_to_list |
+| summaries.py:64:6:64:17 | ControlFlowNode for tainted_list [List element] | summaries.py:64:6:64:20 | ControlFlowNode for Subscript | provenance |  |
+| summaries.py:67:1:67:18 | ControlFlowNode for tainted_resultlist | summaries.py:68:6:68:26 | ControlFlowNode for Subscript | provenance |  |
+| summaries.py:67:1:67:18 | ControlFlowNode for tainted_resultlist [List element] | summaries.py:68:6:68:23 | ControlFlowNode for tainted_resultlist [List element] | provenance |  |
+| summaries.py:67:22:67:39 | ControlFlowNode for json_loads() [List element] | summaries.py:67:1:67:18 | ControlFlowNode for tainted_resultlist [List element] | provenance |  |
+| summaries.py:67:33:67:38 | ControlFlowNode for SOURCE | summaries.py:67:1:67:18 | ControlFlowNode for tainted_resultlist | provenance | Decoding-JSON |
+| summaries.py:67:33:67:38 | ControlFlowNode for SOURCE | summaries.py:67:22:67:39 | ControlFlowNode for json_loads() [List element] | provenance | json.loads |
+| summaries.py:68:6:68:23 | ControlFlowNode for tainted_resultlist [List element] | summaries.py:68:6:68:26 | ControlFlowNode for Subscript | provenance |  |
+nodes
+| summaries.py:32:1:32:7 | ControlFlowNode for tainted | semmle.label | ControlFlowNode for tainted |
+| summaries.py:32:11:32:26 | ControlFlowNode for identity() | semmle.label | ControlFlowNode for identity() |
+| summaries.py:32:20:32:25 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| summaries.py:33:6:33:12 | ControlFlowNode for tainted | semmle.label | ControlFlowNode for tainted |
+| summaries.py:36:1:36:14 | ControlFlowNode for tainted_lambda | semmle.label | ControlFlowNode for tainted_lambda |
+| summaries.py:36:18:36:54 | ControlFlowNode for apply_lambda() | semmle.label | ControlFlowNode for apply_lambda() |
+| summaries.py:36:38:36:38 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| summaries.py:36:41:36:45 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| summaries.py:36:48:36:53 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| summaries.py:37:6:37:19 | ControlFlowNode for tainted_lambda | semmle.label | ControlFlowNode for tainted_lambda |
+| summaries.py:44:1:44:12 | ControlFlowNode for tainted_list | semmle.label | ControlFlowNode for tainted_list |
+| summaries.py:44:1:44:12 | ControlFlowNode for tainted_list [List element] | semmle.label | ControlFlowNode for tainted_list [List element] |
+| summaries.py:44:16:44:33 | ControlFlowNode for reversed() | semmle.label | ControlFlowNode for reversed() |
+| summaries.py:44:16:44:33 | ControlFlowNode for reversed() [List element] | semmle.label | ControlFlowNode for reversed() [List element] |
+| summaries.py:44:25:44:32 | ControlFlowNode for List | semmle.label | ControlFlowNode for List |
+| summaries.py:44:25:44:32 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
+| summaries.py:44:26:44:31 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| summaries.py:45:6:45:17 | ControlFlowNode for tainted_list [List element] | semmle.label | ControlFlowNode for tainted_list [List element] |
+| summaries.py:45:6:45:20 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| summaries.py:48:15:48:15 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| summaries.py:49:12:49:18 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| summaries.py:51:1:51:14 | ControlFlowNode for tainted_mapped [List element] | semmle.label | ControlFlowNode for tainted_mapped [List element] |
+| summaries.py:51:18:51:46 | ControlFlowNode for list_map() [List element] | semmle.label | ControlFlowNode for list_map() [List element] |
+| summaries.py:51:38:51:45 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
+| summaries.py:51:39:51:44 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| summaries.py:52:6:52:19 | ControlFlowNode for tainted_mapped [List element] | semmle.label | ControlFlowNode for tainted_mapped [List element] |
+| summaries.py:52:6:52:22 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| summaries.py:54:23:54:23 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| summaries.py:55:12:55:12 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| summaries.py:57:1:57:23 | ControlFlowNode for tainted_mapped_explicit [List element] | semmle.label | ControlFlowNode for tainted_mapped_explicit [List element] |
+| summaries.py:57:27:57:63 | ControlFlowNode for list_map() [List element] | semmle.label | ControlFlowNode for list_map() [List element] |
+| summaries.py:57:55:57:62 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
+| summaries.py:57:56:57:61 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| summaries.py:58:6:58:28 | ControlFlowNode for tainted_mapped_explicit [List element] | semmle.label | ControlFlowNode for tainted_mapped_explicit [List element] |
+| summaries.py:58:6:58:31 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| summaries.py:60:1:60:22 | ControlFlowNode for tainted_mapped_summary [List element] | semmle.label | ControlFlowNode for tainted_mapped_summary [List element] |
+| summaries.py:60:26:60:53 | ControlFlowNode for list_map() [List element] | semmle.label | ControlFlowNode for list_map() [List element] |
+| summaries.py:60:45:60:52 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
+| summaries.py:60:46:60:51 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| summaries.py:61:6:61:27 | ControlFlowNode for tainted_mapped_summary [List element] | semmle.label | ControlFlowNode for tainted_mapped_summary [List element] |
+| summaries.py:61:6:61:30 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| summaries.py:63:1:63:12 | ControlFlowNode for tainted_list [List element] | semmle.label | ControlFlowNode for tainted_list [List element] |
+| summaries.py:63:16:63:41 | ControlFlowNode for append_to_list() [List element] | semmle.label | ControlFlowNode for append_to_list() [List element] |
+| summaries.py:63:35:63:40 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| summaries.py:64:6:64:17 | ControlFlowNode for tainted_list [List element] | semmle.label | ControlFlowNode for tainted_list [List element] |
+| summaries.py:64:6:64:20 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| summaries.py:67:1:67:18 | ControlFlowNode for tainted_resultlist | semmle.label | ControlFlowNode for tainted_resultlist |
+| summaries.py:67:1:67:18 | ControlFlowNode for tainted_resultlist [List element] | semmle.label | ControlFlowNode for tainted_resultlist [List element] |
+| summaries.py:67:22:67:39 | ControlFlowNode for json_loads() [List element] | semmle.label | ControlFlowNode for json_loads() [List element] |
+| summaries.py:67:33:67:38 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| summaries.py:68:6:68:23 | ControlFlowNode for tainted_resultlist [List element] | semmle.label | ControlFlowNode for tainted_resultlist [List element] |
+| summaries.py:68:6:68:26 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+subpaths
+| summaries.py:36:48:36:53 | ControlFlowNode for SOURCE | summaries.py:36:38:36:38 | ControlFlowNode for x | summaries.py:36:41:36:45 | ControlFlowNode for BinaryExpr | summaries.py:36:18:36:54 | ControlFlowNode for apply_lambda() |
+| summaries.py:51:38:51:45 | ControlFlowNode for List [List element] | summaries.py:48:15:48:15 | ControlFlowNode for x | summaries.py:49:12:49:18 | ControlFlowNode for BinaryExpr | summaries.py:51:18:51:46 | ControlFlowNode for list_map() [List element] |
+| summaries.py:57:55:57:62 | ControlFlowNode for List [List element] | summaries.py:54:23:54:23 | ControlFlowNode for x | summaries.py:55:12:55:12 | ControlFlowNode for x | summaries.py:57:27:57:63 | ControlFlowNode for list_map() [List element] |
+invalidSpecComponent
+#select
+| summaries.py:33:6:33:12 | ControlFlowNode for tainted | summaries.py:32:20:32:25 | ControlFlowNode for SOURCE | summaries.py:33:6:33:12 | ControlFlowNode for tainted | $@ | summaries.py:32:20:32:25 | ControlFlowNode for SOURCE | ControlFlowNode for SOURCE |
+| summaries.py:37:6:37:19 | ControlFlowNode for tainted_lambda | summaries.py:36:48:36:53 | ControlFlowNode for SOURCE | summaries.py:37:6:37:19 | ControlFlowNode for tainted_lambda | $@ | summaries.py:36:48:36:53 | ControlFlowNode for SOURCE | ControlFlowNode for SOURCE |
+| summaries.py:45:6:45:20 | ControlFlowNode for Subscript | summaries.py:44:26:44:31 | ControlFlowNode for SOURCE | summaries.py:45:6:45:20 | ControlFlowNode for Subscript | $@ | summaries.py:44:26:44:31 | ControlFlowNode for SOURCE | ControlFlowNode for SOURCE |
+| summaries.py:52:6:52:22 | ControlFlowNode for Subscript | summaries.py:51:39:51:44 | ControlFlowNode for SOURCE | summaries.py:52:6:52:22 | ControlFlowNode for Subscript | $@ | summaries.py:51:39:51:44 | ControlFlowNode for SOURCE | ControlFlowNode for SOURCE |
+| summaries.py:58:6:58:31 | ControlFlowNode for Subscript | summaries.py:57:56:57:61 | ControlFlowNode for SOURCE | summaries.py:58:6:58:31 | ControlFlowNode for Subscript | $@ | summaries.py:57:56:57:61 | ControlFlowNode for SOURCE | ControlFlowNode for SOURCE |
+| summaries.py:61:6:61:30 | ControlFlowNode for Subscript | summaries.py:60:46:60:51 | ControlFlowNode for SOURCE | summaries.py:61:6:61:30 | ControlFlowNode for Subscript | $@ | summaries.py:60:46:60:51 | ControlFlowNode for SOURCE | ControlFlowNode for SOURCE |
+| summaries.py:64:6:64:20 | ControlFlowNode for Subscript | summaries.py:63:35:63:40 | ControlFlowNode for SOURCE | summaries.py:64:6:64:20 | ControlFlowNode for Subscript | $@ | summaries.py:63:35:63:40 | ControlFlowNode for SOURCE | ControlFlowNode for SOURCE |
+| summaries.py:68:6:68:26 | ControlFlowNode for Subscript | summaries.py:67:33:67:38 | ControlFlowNode for SOURCE | summaries.py:68:6:68:26 | ControlFlowNode for Subscript | $@ | summaries.py:67:33:67:38 | ControlFlowNode for SOURCE | ControlFlowNode for SOURCE |

@@ -3,9 +3,9 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["javax.ws.rs.core", "Response", True, "seeOther", "", "", "Argument[0]", "url-redirect", "manual"]
-      - ["javax.ws.rs.core", "Response", True, "temporaryRedirect", "", "", "Argument[0]", "url-redirect", "manual"]
-      - ["javax.ws.rs.core", "ResponseBuilder", False, "header", "", "", "Argument[1]", "header-splitting", "manual"]
+      - ["javax.ws.rs.core", "Response", True, "seeOther", "", "", "Argument[0]", "url-redirection", "manual"]
+      - ["javax.ws.rs.core", "Response", True, "temporaryRedirect", "", "", "Argument[0]", "url-redirection", "manual"]
+      - ["javax.ws.rs.core", "ResponseBuilder", False, "header", "", "", "Argument[1]", "response-splitting", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel

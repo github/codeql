@@ -3,6 +3,9 @@ private import DataFlowUtil
 private import DataFlowImplCommon
 private import ContainerFlow
 private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.go.dataflow.FlowSummary as FlowSummary
+private import semmle.go.dataflow.ExternalFlow
+private import codeql.util.Unit
 import DataFlowNodes::Private
 
 private newtype TReturnKind =
@@ -99,10 +102,14 @@ private Field getASparselyUsedChannelTypedField() {
  * global or static variable.
  */
 predicate jumpStep(Node n1, Node n2) {
-  exists(ValueEntity v, Write w |
+  exists(ValueEntity v |
     not v instanceof SsaSourceVariable and
     not v instanceof Field and
-    w.writes(v, n1) and
+    (
+      any(Write w).writes(v, n1)
+      or
+      n1.(DataFlow::PostUpdateNode).getPreUpdateNode() = v.getARead()
+    ) and
     n2 = v.getARead()
   )
   or
@@ -127,7 +134,8 @@ predicate jumpStep(Node n1, Node n2) {
     n2 = recvRead
   )
   or
-  FlowSummaryImpl::Private::Steps::summaryJumpStep(n1, n2)
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(n1.(FlowSummaryNode).getSummaryNode(),
+    n2.(FlowSummaryNode).getSummaryNode())
 }
 
 /**
@@ -135,25 +143,28 @@ predicate jumpStep(Node n1, Node n2) {
  * Thus, `node2` references an object with a content `x` that contains the
  * value of `node1`.
  */
-predicate storeStep(Node node1, Content c, Node node2) {
-  // a write `(*p).f = rhs` is modeled as two store steps: `rhs` is flows into field `f` of `(*p)`,
-  // which in turn flows into the pointer content of `p`
-  exists(Write w, Field f, DataFlow::Node base, DataFlow::Node rhs | w.writesField(base, f, rhs) |
-    node1 = rhs and
-    node2.(PostUpdateNode).getPreUpdateNode() = base and
-    c = any(DataFlow::FieldContent fc | fc.getField() = f)
+predicate storeStep(Node node1, ContentSet cs, Node node2) {
+  exists(Content c | cs.asOneContent() = c |
+    // a write `(*p).f = rhs` is modeled as two store steps: `rhs` is flows into field `f` of `(*p)`,
+    // which in turn flows into the pointer content of `p`
+    exists(Write w, Field f, DataFlow::Node base, DataFlow::Node rhs | w.writesField(base, f, rhs) |
+      node1 = rhs and
+      node2.(PostUpdateNode).getPreUpdateNode() = base and
+      c = any(DataFlow::FieldContent fc | fc.getField() = f)
+      or
+      node1 = base and
+      node2.(PostUpdateNode).getPreUpdateNode() = node1.(PointerDereferenceNode).getOperand() and
+      c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
+    )
     or
-    node1 = base and
-    node2.(PostUpdateNode).getPreUpdateNode() = node1.(PointerDereferenceNode).getOperand() and
+    node1 = node2.(AddressOperationNode).getOperand() and
     c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
+    or
+    containerStoreStep(node1, node2, c)
   )
   or
-  node1 = node2.(AddressOperationNode).getOperand() and
-  c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
-  or
-  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
-  or
-  containerStoreStep(node1, node2, c)
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), cs,
+    node2.(FlowSummaryNode).getSummaryNode())
 }
 
 /**
@@ -161,25 +172,32 @@ predicate storeStep(Node node1, Content c, Node node2) {
  * Thus, `node1` references an object with a content `c` whose value ends up in
  * `node2`.
  */
-predicate readStep(Node node1, Content c, Node node2) {
-  node1 = node2.(PointerDereferenceNode).getOperand() and
-  c = any(DataFlow::PointerContent pc | pc.getPointerType() = node1.getType())
-  or
-  exists(FieldReadNode read |
-    node2 = read and
-    node1 = read.getBase() and
-    c = any(DataFlow::FieldContent fc | fc.getField() = read.getField())
+predicate readStep(Node node1, ContentSet cs, Node node2) {
+  exists(Content c | cs.asOneContent() = c |
+    node1 = node2.(PointerDereferenceNode).getOperand() and
+    c = any(DataFlow::PointerContent pc | pc.getPointerType() = node1.getType())
+    or
+    exists(FieldReadNode read |
+      node2 = read and
+      node1 = read.getBase() and
+      c = any(DataFlow::FieldContent fc | fc.getField() = read.getField())
+    )
+    or
+    containerReadStep(node1, node2, c)
   )
   or
-  FlowSummaryImpl::Private::Steps::summaryReadStep(node1, c, node2)
+  FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), cs,
+    node2.(FlowSummaryNode).getSummaryNode())
   or
-  containerReadStep(node1, node2, c)
+  any(ImplicitFieldReadNode ifrn).shouldImplicitlyReadAllFields(node1) and
+  cs.isUniversalContent() and
+  node1 = node2
 }
 
 /**
  * Holds if values stored inside content `c` are cleared at node `n`.
  */
-predicate clearsContent(Node n, Content c) {
+predicate clearsContent(Node n, ContentSet c) {
   // Because our post-update nodes are shared between multiple pre-update
   // nodes, attempting to clear content causes summary stores into arg in
   // particular to malfunction.
@@ -195,22 +213,22 @@ predicate clearsContent(Node n, Content c) {
  * at node `n`.
  */
 predicate expectsContent(Node n, ContentSet c) {
-  FlowSummaryImpl::Private::Steps::summaryExpectsContent(n, c)
+  FlowSummaryImpl::Private::Steps::summaryExpectsContent(n.(FlowSummaryNode).getSummaryNode(), c)
 }
+
+predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
+
+predicate localMustFlowStep(Node node1, Node node2) { none() }
 
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(Node n) { result = TTodoDataFlowType() and exists(n) }
-
-/** Gets a string representation of a type returned by `getNodeType()`. */
-string ppReprType(DataFlowType t) { none() }
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
-  any() // stub implementation
+  t1 = TTodoDataFlowType() and t2 = TTodoDataFlowType() // stub implementation
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -221,46 +239,88 @@ class CastNode extends ExprNode {
   override ConversionExpr expr;
 }
 
+/**
+ * Holds if `n` should never be skipped over in the `PathGraph` and in path
+ * explanations.
+ */
+predicate neverSkipInPathGraph(Node n) {
+  exists(DataFlow::FunctionModel fm | fm.getAnInputNode(_) = n or fm.getAnOutputNode(_) = n)
+  or
+  exists(TaintTracking::FunctionModel fm | fm.getAnInputNode(_) = n or fm.getAnOutputNode(_) = n)
+}
+
 class DataFlowExpr = Expr;
 
-private newtype TDataFlowType =
-  TTodoDataFlowType() or
-  TTodoDataFlowType2() // Add a dummy value to prevent bad functionality-induced joins arising from a type of size 1.
+private newtype TDataFlowType = TTodoDataFlowType()
 
 class DataFlowType extends TDataFlowType {
   /** Gets a textual representation of this element. */
   string toString() { result = "" }
 }
 
-class DataFlowLocation = Location;
-
 private newtype TDataFlowCallable =
   TCallable(Callable c) or
-  TFileScope(File f)
+  TFileScope(File f) or
+  TExternalFileScope() or
+  TSummarizedCallable(FlowSummary::SummarizedCallable c)
 
 class DataFlowCallable extends TDataFlowCallable {
+  /**
+   * Gets the `Callable` corresponding to this `DataFlowCallable`, if any.
+   */
   Callable asCallable() { this = TCallable(result) }
 
+  /**
+   * Gets the `File` whose root scope corresponds to this `DataFlowCallable`, if any.
+   */
   File asFileScope() { this = TFileScope(result) }
 
-  FuncDef getFuncDef() { result = this.asCallable().getFuncDef() }
+  /**
+   * Holds if this `DataFlowCallable` is an external file scope.
+   */
+  predicate isExternalFileScope() { this = TExternalFileScope() }
 
-  Function asFunction() { result = this.asCallable().asFunction() }
+  /**
+   * Gets the `SummarizedCallable` corresponding to this `DataFlowCallable`, if any.
+   */
+  FlowSummary::SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
 
-  FuncLit asFuncLit() { result = this.asCallable().asFuncLit() }
+  /**
+   * Gets the type of this callable.
+   *
+   * If this is a `File` root scope, this has no value.
+   */
+  SignatureType getType() { result = [this.asCallable(), this.asSummarizedCallable()].getType() }
 
-  SignatureType getType() { result = this.asCallable().getType() }
-
+  /**
+   * Gets a string representation of this callable.
+   */
   string toString() {
     result = this.asCallable().toString() or
-    result = "File scope: " + this.asFileScope().toString()
+    result = "File scope: " + this.asFileScope().toString() or
+    result = "Summary: " + this.asSummarizedCallable().toString()
   }
 
-  predicate hasLocationInfo(
+  /** Gets the location of this callable. */
+  Location getLocation() {
+    result = this.asCallable().getLocation() or
+    result = this.asFileScope().getLocation() or
+    result = this.asSummarizedCallable().getLocation()
+  }
+
+  /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
+   * Holds if this callable is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   */
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this.asCallable().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
-    this.asFileScope().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
@@ -280,10 +340,14 @@ class DataFlowCall extends Expr {
 
   /** Gets the enclosing callable of this call. */
   DataFlowCallable getEnclosingCallable() {
+    // NB. At present calls cannot occur inside summarized callables-- this will change if we implement advanced lambda support.
     result.asCallable().getFuncDef() = this.getEnclosingFunction()
     or
     not exists(this.getEnclosingFunction()) and result.asFileScope() = this.getFile()
   }
+
+  /** Gets the location of this call. */
+  Location getLocation() { result = super.getLocation() }
 }
 
 /** Holds if `e` is an expression that always has the same Boolean value `val`. */
@@ -322,14 +386,18 @@ private ControlFlow::ConditionGuardNode getAFalsifiedGuard(DataFlowCall call) {
   )
 }
 
-/**
- * Holds if the node `n` is unreachable when the call context is `call`.
- */
-predicate isUnreachableInCall(Node n, DataFlowCall call) {
-  getAFalsifiedGuard(call).dominates(n.getBasicBlock())
+class NodeRegion instanceof BasicBlock {
+  string toString() { result = "NodeRegion" }
+
+  predicate contains(Node n) { n.getBasicBlock() = this }
 }
 
-int accessPathLimit() { result = 5 }
+/**
+ * Holds if the nodes in `nr` are unreachable when the call context is `call`.
+ */
+predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) {
+  getAFalsifiedGuard(call).dominates(nr)
+}
 
 /**
  * Holds if access paths with `c` at their head always should be tracked at high
@@ -337,15 +405,6 @@ int accessPathLimit() { result = 5 }
  */
 predicate forceHighPrecision(Content c) {
   c instanceof ArrayContent or c instanceof CollectionContent
-}
-
-/** The unit type. */
-private newtype TUnit = TMkUnit()
-
-/** The trivial type with a single element. */
-class Unit extends TUnit {
-  /** Gets a textual representation of this element. */
-  string toString() { result = "unit" }
 }
 
 /**
@@ -360,7 +419,7 @@ Node getArgument(CallNode c, int i) {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { none() }
+predicate nodeIsHidden(Node n) { n instanceof FlowSummaryNode }
 
 class LambdaCallKind = Unit;
 
@@ -373,6 +432,12 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { no
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
 
+predicate knownSourceModel(Node source, string model) { sourceNode(source, _, model) }
+
+predicate knownSinkModel(Node sink, string model) { sinkNode(sink, _, model) }
+
+class DataFlowSecondLevelScope = Unit;
+
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a
  * side-effect, resulting in a summary from `p` to itself.
@@ -381,7 +446,10 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  * by default as a heuristic.
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
-  FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+  exists(DataFlowCallable c, int pos |
+    p.isParameterOf(c, pos) and
+    FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asSummarizedCallable(), pos)
+  )
 }
 
 /** An approximated `Content`. */
@@ -390,12 +458,3 @@ class ContentApprox = Unit;
 /** Gets an approximated value for content `c`. */
 pragma[inline]
 ContentApprox getContentApprox(Content c) { any() }
-
-/**
- * Gets an additional term that is added to the `join` and `branch` computations to reflect
- * an additional forward or backwards branching factor that is not taken into account
- * when calculating the (virtual) dispatch cost.
- *
- * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
- */
-int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }

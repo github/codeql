@@ -1,1 +1,2 @@
-Electron/AllowRunningInsecureContent.ql
+query: Electron/AllowRunningInsecureContent.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,94 +1,85 @@
-| copy.cpp:5:5:5:5 | C |  | defaulted |
-| copy.cpp:6:8:6:16 | operator= |  | defaulted |
-| copy.cpp:9:9:9:9 | Sub1 |  |  |
-| copy.cpp:9:9:9:9 | Sub1 |  |  |
-| copy.cpp:9:9:9:9 | Sub1 | deleted |  |
-| copy.cpp:9:9:9:9 | operator= |  |  |
-| copy.cpp:9:9:9:9 | operator= |  |  |
-| copy.cpp:13:9:13:9 | Sub2 |  |  |
-| copy.cpp:13:9:13:9 | Sub2 |  |  |
-| copy.cpp:13:9:13:9 | Sub2 | deleted |  |
-| copy.cpp:13:9:13:9 | operator= |  |  |
-| copy.cpp:13:9:13:9 | operator= |  |  |
-| copy.cpp:17:9:17:9 | HasMember |  |  |
-| copy.cpp:17:9:17:9 | HasMember |  |  |
-| copy.cpp:17:9:17:9 | HasMember | deleted |  |
-| copy.cpp:17:9:17:9 | operator= |  |  |
-| copy.cpp:17:9:17:9 | operator= |  |  |
-| copy.cpp:25:5:25:5 | C | deleted |  |
-| copy.cpp:26:8:26:16 | operator= | deleted |  |
-| copy.cpp:29:9:29:9 | Sub | deleted |  |
-| copy.cpp:29:9:29:9 | Sub | deleted |  |
-| copy.cpp:29:9:29:9 | operator= | deleted |  |
-| copy.cpp:37:5:37:5 | C |  | defaulted |
-| copy.cpp:38:8:38:16 | operator= |  | defaulted |
-| copy.cpp:41:9:41:9 | operator= |  |  |
-| copy.cpp:46:5:46:7 | Sub | deleted | defaulted |
-| copy.cpp:49:9:49:9 | HasPointer |  |  |
-| copy.cpp:49:9:49:9 | operator= |  |  |
-| copy.cpp:49:9:49:9 | operator= |  |  |
-| copy.cpp:54:9:54:9 | HasArray | deleted |  |
-| copy.cpp:54:9:54:9 | HasArray | deleted |  |
-| copy.cpp:54:9:54:9 | operator= |  |  |
-| copy.cpp:54:9:54:9 | operator= |  |  |
-| copy.cpp:59:9:59:9 | HasArray2D | deleted |  |
-| copy.cpp:59:9:59:9 | HasArray2D | deleted |  |
-| copy.cpp:59:9:59:9 | operator= |  |  |
-| copy.cpp:59:9:59:9 | operator= |  |  |
-| copy.cpp:67:9:67:9 | Wrapper |  |  |
-| copy.cpp:67:9:67:9 | Wrapper |  |  |
-| copy.cpp:67:9:67:9 | Wrapper | deleted |  |
-| copy.cpp:67:9:67:9 | Wrapper | deleted |  |
-| copy.cpp:67:9:67:9 | operator= |  |  |
-| copy.cpp:67:9:67:9 | operator= |  |  |
-| copy.cpp:67:9:67:9 | operator= | deleted |  |
-| copy.cpp:71:9:71:9 | operator= |  |  |
-| copy.cpp:71:9:71:9 | operator= |  |  |
-| copy.cpp:72:9:72:9 | NotCopyable |  |  |
-| copy.cpp:72:9:72:9 | NotCopyable | deleted |  |
-| copy.cpp:72:9:72:9 | NotCopyable | deleted |  |
-| copy.cpp:72:9:72:9 | operator= | deleted |  |
-| copy.cpp:76:9:76:9 | CopyableComposition |  |  |
-| copy.cpp:76:9:76:9 | operator= |  |  |
-| copy.cpp:76:9:76:9 | operator= |  |  |
-| copy.cpp:80:9:80:9 | NotCopyableComposition |  |  |
-| copy.cpp:80:9:80:9 | NotCopyableComposition | deleted |  |
-| copy.cpp:80:9:80:9 | NotCopyableComposition | deleted |  |
-| copy.cpp:80:9:80:9 | operator= | deleted |  |
-| copy.cpp:84:9:84:9 | CopyableInheritance |  |  |
-| copy.cpp:84:9:84:9 | operator= |  |  |
-| copy.cpp:84:9:84:9 | operator= |  |  |
-| copy.cpp:86:9:86:9 | NotCopyableInheritance |  |  |
-| copy.cpp:86:9:86:9 | NotCopyableInheritance | deleted |  |
-| copy.cpp:86:9:86:9 | NotCopyableInheritance | deleted |  |
-| copy.cpp:86:9:86:9 | operator= | deleted |  |
-| copy.cpp:90:9:90:9 | operator= |  |  |
-| copy.cpp:90:9:90:9 | operator= |  |  |
-| copy.cpp:91:11:91:11 | operator= |  |  |
-| copy.cpp:91:11:91:11 | operator= |  |  |
-| copy.cpp:95:9:95:9 | operator= |  |  |
-| copy.cpp:95:9:95:9 | operator= |  |  |
-| copy.cpp:100:9:100:9 | Derived |  |  |
-| copy.cpp:100:9:100:9 | operator= |  |  |
-| copy.cpp:100:9:100:9 | operator= |  |  |
-| copy.cpp:106:9:106:9 | MoveCtor | deleted |  |
-| copy.cpp:106:9:106:9 | operator= | deleted |  |
-| copy.cpp:108:5:108:12 | MoveCtor |  |  |
-| copy.cpp:111:9:111:9 | MoveAssign |  |  |
-| copy.cpp:111:9:111:9 | MoveAssign | deleted |  |
-| copy.cpp:111:9:111:9 | operator= | deleted |  |
-| copy.cpp:113:17:113:25 | operator= |  |  |
-| copy.cpp:120:9:120:9 | OnlyCtor | deleted |  |
-| copy.cpp:120:9:120:9 | operator= | deleted |  |
-| copy.cpp:126:11:126:19 | operator= |  |  |
-| copy.cpp:128:5:128:8 | Base |  |  |
-| copy.cpp:131:9:131:9 | OnlyAssign | deleted |  |
-| copy.cpp:131:9:131:9 | OnlyAssign | deleted |  |
-| copy.cpp:131:9:131:9 | operator= |  |  |
-| copy.cpp:131:9:131:9 | operator= |  |  |
-| copy.cpp:137:9:137:9 | operator= |  |  |
-| copy.cpp:139:5:139:11 | Wrapper |  |  |
-| copy.cpp:143:5:143:5 | Wrapper |  |  |
-| copy.cpp:143:5:143:11 | Wrapper |  |  |
-| file://:0:0:0:0 | operator= |  |  |
-| file://:0:0:0:0 | operator= |  |  |
+| copy.cpp:5:5:5:5 | C | void protected_cc::C::C(protected_cc::C const&) |  | defaulted |
+| copy.cpp:6:8:6:16 | operator= | protected_cc::C& protected_cc::C::operator=(protected_cc::C const&) |  | defaulted |
+| copy.cpp:9:9:9:9 | Sub1 | void protected_cc::Sub1::Sub1() | deleted |  |
+| copy.cpp:9:9:9:9 | Sub1 | void protected_cc::Sub1::Sub1(protected_cc::Sub1 const&) |  |  |
+| copy.cpp:9:9:9:9 | Sub1 | void protected_cc::Sub1::Sub1(protected_cc::Sub1&&) |  |  |
+| copy.cpp:9:9:9:9 | operator= | protected_cc::Sub1& protected_cc::Sub1::operator=(protected_cc::Sub1 const&) |  |  |
+| copy.cpp:9:9:9:9 | operator= | protected_cc::Sub1& protected_cc::Sub1::operator=(protected_cc::Sub1&&) |  |  |
+| copy.cpp:13:9:13:9 | Sub2 | void protected_cc::Sub2::Sub2() | deleted |  |
+| copy.cpp:13:9:13:9 | Sub2 | void protected_cc::Sub2::Sub2(protected_cc::Sub2 const&) |  |  |
+| copy.cpp:13:9:13:9 | Sub2 | void protected_cc::Sub2::Sub2(protected_cc::Sub2&&) |  |  |
+| copy.cpp:13:9:13:9 | operator= | protected_cc::Sub2& protected_cc::Sub2::operator=(protected_cc::Sub2 const&) |  |  |
+| copy.cpp:13:9:13:9 | operator= | protected_cc::Sub2& protected_cc::Sub2::operator=(protected_cc::Sub2&&) |  |  |
+| copy.cpp:17:9:17:9 | HasMember | void protected_cc::HasMember::HasMember() | deleted |  |
+| copy.cpp:17:9:17:9 | HasMember | void protected_cc::HasMember::HasMember(protected_cc::HasMember const&) | deleted |  |
+| copy.cpp:17:9:17:9 | operator= | protected_cc::HasMember& protected_cc::HasMember::operator=(protected_cc::HasMember const&) |  |  |
+| copy.cpp:17:9:17:9 | operator= | protected_cc::HasMember& protected_cc::HasMember::operator=(protected_cc::HasMember&&) |  |  |
+| copy.cpp:25:5:25:5 | C | void deleted_cc::C::C(deleted_cc::C const&) | deleted |  |
+| copy.cpp:26:8:26:16 | operator= | deleted_cc::C& deleted_cc::C::operator=(deleted_cc::C const&) | deleted |  |
+| copy.cpp:29:9:29:9 | Sub | void deleted_cc::Sub::Sub() | deleted |  |
+| copy.cpp:29:9:29:9 | Sub | void deleted_cc::Sub::Sub(deleted_cc::Sub const&) | deleted |  |
+| copy.cpp:29:9:29:9 | operator= | deleted_cc::Sub& deleted_cc::Sub::operator=(deleted_cc::Sub const&) | deleted |  |
+| copy.cpp:37:5:37:5 | C | void private_cc::C::C(private_cc::C&) |  | defaulted |
+| copy.cpp:38:8:38:16 | operator= | private_cc::C& private_cc::C::operator=(private_cc::C const&) |  | defaulted |
+| copy.cpp:41:9:41:9 | operator= | private_cc::Sub& private_cc::Sub::operator=(private_cc::Sub const&) |  |  |
+| copy.cpp:46:5:46:7 | Sub | void private_cc::Sub::Sub(private_cc::Sub&) | deleted | defaulted |
+| copy.cpp:49:9:49:9 | HasPointer | void private_cc::HasPointer::HasPointer() |  |  |
+| copy.cpp:49:9:49:9 | operator= | private_cc::HasPointer& private_cc::HasPointer::operator=(private_cc::HasPointer const&) |  |  |
+| copy.cpp:49:9:49:9 | operator= | private_cc::HasPointer& private_cc::HasPointer::operator=(private_cc::HasPointer&&) |  |  |
+| copy.cpp:54:9:54:9 | HasArray | void private_cc::HasArray::HasArray() | deleted |  |
+| copy.cpp:54:9:54:9 | HasArray | void private_cc::HasArray::HasArray(private_cc::HasArray&) | deleted |  |
+| copy.cpp:54:9:54:9 | operator= | private_cc::HasArray& private_cc::HasArray::operator=(private_cc::HasArray const&) |  |  |
+| copy.cpp:54:9:54:9 | operator= | private_cc::HasArray& private_cc::HasArray::operator=(private_cc::HasArray&&) |  |  |
+| copy.cpp:59:9:59:9 | HasArray2D | void private_cc::HasArray2D::HasArray2D() | deleted |  |
+| copy.cpp:59:9:59:9 | HasArray2D | void private_cc::HasArray2D::HasArray2D(private_cc::HasArray2D&) | deleted |  |
+| copy.cpp:59:9:59:9 | operator= | private_cc::HasArray2D& private_cc::HasArray2D::operator=(private_cc::HasArray2D const&) |  |  |
+| copy.cpp:59:9:59:9 | operator= | private_cc::HasArray2D& private_cc::HasArray2D::operator=(private_cc::HasArray2D&&) |  |  |
+| copy.cpp:71:9:71:9 | operator= | container::Copyable& container::Copyable::operator=(container::Copyable const&) |  |  |
+| copy.cpp:71:9:71:9 | operator= | container::Copyable& container::Copyable::operator=(container::Copyable&&) |  |  |
+| copy.cpp:72:9:72:9 | NotCopyable | void container::NotCopyable::NotCopyable() | deleted |  |
+| copy.cpp:72:9:72:9 | NotCopyable | void container::NotCopyable::NotCopyable(container::NotCopyable const&) | deleted |  |
+| copy.cpp:72:9:72:9 | NotCopyable | void container::NotCopyable::NotCopyable(container::NotCopyable&&) |  |  |
+| copy.cpp:72:9:72:9 | operator= | container::NotCopyable& container::NotCopyable::operator=(container::NotCopyable const&) | deleted |  |
+| copy.cpp:76:9:76:9 | CopyableComposition | void container::CopyableComposition::CopyableComposition() |  |  |
+| copy.cpp:76:9:76:9 | operator= | container::CopyableComposition& container::CopyableComposition::operator=(container::CopyableComposition const&) |  |  |
+| copy.cpp:76:9:76:9 | operator= | container::CopyableComposition& container::CopyableComposition::operator=(container::CopyableComposition&&) |  |  |
+| copy.cpp:80:9:80:9 | NotCopyableComposition | void container::NotCopyableComposition::NotCopyableComposition() | deleted |  |
+| copy.cpp:80:9:80:9 | NotCopyableComposition | void container::NotCopyableComposition::NotCopyableComposition(container::NotCopyableComposition const&) | deleted |  |
+| copy.cpp:80:9:80:9 | NotCopyableComposition | void container::NotCopyableComposition::NotCopyableComposition(container::NotCopyableComposition&&) |  |  |
+| copy.cpp:80:9:80:9 | operator= | container::NotCopyableComposition& container::NotCopyableComposition::operator=(container::NotCopyableComposition const&) | deleted |  |
+| copy.cpp:84:9:84:9 | CopyableInheritance | void container::CopyableInheritance::CopyableInheritance() |  |  |
+| copy.cpp:84:9:84:9 | operator= | container::CopyableInheritance& container::CopyableInheritance::operator=(container::CopyableInheritance const&) |  |  |
+| copy.cpp:84:9:84:9 | operator= | container::CopyableInheritance& container::CopyableInheritance::operator=(container::CopyableInheritance&&) |  |  |
+| copy.cpp:86:9:86:9 | NotCopyableInheritance | void container::NotCopyableInheritance::NotCopyableInheritance() | deleted |  |
+| copy.cpp:86:9:86:9 | NotCopyableInheritance | void container::NotCopyableInheritance::NotCopyableInheritance(container::NotCopyableInheritance const&) | deleted |  |
+| copy.cpp:86:9:86:9 | NotCopyableInheritance | void container::NotCopyableInheritance::NotCopyableInheritance(container::NotCopyableInheritance&&) |  |  |
+| copy.cpp:86:9:86:9 | operator= | container::NotCopyableInheritance& container::NotCopyableInheritance::operator=(container::NotCopyableInheritance const&) | deleted |  |
+| copy.cpp:90:9:90:9 | operator= | typedefs::A& typedefs::A::operator=(typedefs::A const&) |  |  |
+| copy.cpp:90:9:90:9 | operator= | typedefs::A& typedefs::A::operator=(typedefs::A&&) |  |  |
+| copy.cpp:91:11:91:11 | operator= | typedefs::A::B& typedefs::A::B::operator=(typedefs::A::B const private&) |  |  |
+| copy.cpp:91:11:91:11 | operator= | typedefs::A::B& typedefs::A::B::operator=(typedefs::A::B&&) |  |  |
+| copy.cpp:95:9:95:9 | operator= | typedefs::C& typedefs::C::operator=(typedefs::C const&) |  |  |
+| copy.cpp:95:9:95:9 | operator= | typedefs::C& typedefs::C::operator=(typedefs::C&&) |  |  |
+| copy.cpp:100:9:100:9 | Derived | void typedefs::Derived::Derived() |  |  |
+| copy.cpp:100:9:100:9 | operator= | typedefs::Derived& typedefs::Derived::operator=(typedefs::Derived const&) |  |  |
+| copy.cpp:100:9:100:9 | operator= | typedefs::Derived& typedefs::Derived::operator=(typedefs::Derived&&) |  |  |
+| copy.cpp:106:9:106:9 | MoveCtor | void moves::MoveCtor::MoveCtor(moves::MoveCtor const&) | deleted |  |
+| copy.cpp:106:9:106:9 | operator= | moves::MoveCtor& moves::MoveCtor::operator=(moves::MoveCtor const&) | deleted |  |
+| copy.cpp:108:5:108:12 | MoveCtor | void moves::MoveCtor::MoveCtor(moves::MoveCtor&&) |  |  |
+| copy.cpp:111:9:111:9 | MoveAssign | void moves::MoveAssign::MoveAssign() |  |  |
+| copy.cpp:111:9:111:9 | MoveAssign | void moves::MoveAssign::MoveAssign(moves::MoveAssign const&) | deleted |  |
+| copy.cpp:111:9:111:9 | operator= | moves::MoveAssign& moves::MoveAssign::operator=(moves::MoveAssign const&) | deleted |  |
+| copy.cpp:113:17:113:25 | operator= | moves::MoveAssign& moves::MoveAssign::operator=(moves::MoveAssign&&) |  |  |
+| copy.cpp:120:9:120:9 | OnlyCtor | void difference::OnlyCtor::OnlyCtor() | deleted |  |
+| copy.cpp:120:9:120:9 | operator= | difference::OnlyCtor& difference::OnlyCtor::operator=(difference::OnlyCtor const&) | deleted |  |
+| copy.cpp:126:11:126:19 | operator= | difference::Base& difference::Base::operator=(difference::Base const&) |  |  |
+| copy.cpp:128:5:128:8 | Base | void difference::Base::Base(difference::Base const&) |  |  |
+| copy.cpp:131:9:131:9 | OnlyAssign | void difference::OnlyAssign::OnlyAssign() | deleted |  |
+| copy.cpp:131:9:131:9 | OnlyAssign | void difference::OnlyAssign::OnlyAssign(difference::OnlyAssign const&) | deleted |  |
+| copy.cpp:131:9:131:9 | operator= | difference::OnlyAssign& difference::OnlyAssign::operator=(difference::OnlyAssign const&) |  |  |
+| copy.cpp:131:9:131:9 | operator= | difference::OnlyAssign& difference::OnlyAssign::operator=(difference::OnlyAssign&&) |  |  |
+| copy.cpp:139:5:139:11 | Wrapper | void instantiated_explicit_ctor::Wrapper<T>::Wrapper(instantiated_explicit_ctor::Wrapper<T>&) |  |  |
+| copy.cpp:143:5:143:5 | Wrapper | void instantiated_explicit_ctor::Wrapper<int>::Wrapper() |  |  |
+| copy.cpp:143:5:143:11 | Wrapper | void instantiated_explicit_ctor::Wrapper<T>::Wrapper() |  |  |
+| file://:0:0:0:0 | operator= | __va_list_tag& __va_list_tag::operator=(__va_list_tag const&) |  |  |
+| file://:0:0:0:0 | operator= | __va_list_tag& __va_list_tag::operator=(__va_list_tag&&) |  |  |

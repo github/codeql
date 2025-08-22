@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      - ["<rustls::client::client_conn::connection::ClientConnection>::new", "ReturnValue.Field[core::result::Result::Ok(0)]", "remote", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["<futures_rustls::TlsConnector>::connect", "Argument[1]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+      - ["<futures_rustls::client::TlsStream as futures_io::if_std::AsyncRead>::poll_read", "Argument[self].Reference", "Argument[1].Reference", "taint", "manual"]
+      - ["<rustls::conn::ConnectionCommon>::reader", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<rustls::conn::connection::Reader as std::io::Read>::read", "Argument[self]", "Argument[0].Reference", "taint", "manual"]

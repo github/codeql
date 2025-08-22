@@ -1,0 +1,26 @@
+edges
+| taint_step_test.py:5:5:5:8 | ControlFlowNode for path | taint_step_test.py:19:43:19:46 | ControlFlowNode for path | provenance |  |
+| taint_step_test.py:5:12:5:35 | ControlFlowNode for Attribute() | taint_step_test.py:5:5:5:8 | ControlFlowNode for path | provenance |  |
+| taint_step_test.py:6:5:6:8 | ControlFlowNode for file | taint_step_test.py:19:48:19:51 | ControlFlowNode for file | provenance |  |
+| taint_step_test.py:6:12:6:35 | ControlFlowNode for Attribute() | taint_step_test.py:6:5:6:8 | ControlFlowNode for file | provenance |  |
+| taint_step_test.py:11:18:11:21 | ControlFlowNode for path | taint_step_test.py:12:9:12:16 | ControlFlowNode for filepath | provenance |  |
+| taint_step_test.py:11:18:11:21 | ControlFlowNode for path | taint_step_test.py:12:9:12:16 | ControlFlowNode for filepath | provenance | AdditionalTaintStep |
+| taint_step_test.py:11:24:11:27 | ControlFlowNode for file | taint_step_test.py:12:9:12:16 | ControlFlowNode for filepath | provenance | AdditionalTaintStep |
+| taint_step_test.py:12:9:12:16 | ControlFlowNode for filepath | taint_step_test.py:13:19:13:26 | ControlFlowNode for filepath | provenance |  |
+| taint_step_test.py:19:43:19:46 | ControlFlowNode for path | taint_step_test.py:11:18:11:21 | ControlFlowNode for path | provenance | AdditionalTaintStep |
+| taint_step_test.py:19:48:19:51 | ControlFlowNode for file | taint_step_test.py:11:24:11:27 | ControlFlowNode for file | provenance | AdditionalTaintStep |
+nodes
+| taint_step_test.py:5:5:5:8 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
+| taint_step_test.py:5:12:5:35 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| taint_step_test.py:6:5:6:8 | ControlFlowNode for file | semmle.label | ControlFlowNode for file |
+| taint_step_test.py:6:12:6:35 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| taint_step_test.py:11:18:11:21 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
+| taint_step_test.py:11:24:11:27 | ControlFlowNode for file | semmle.label | ControlFlowNode for file |
+| taint_step_test.py:12:9:12:16 | ControlFlowNode for filepath | semmle.label | ControlFlowNode for filepath |
+| taint_step_test.py:13:19:13:26 | ControlFlowNode for filepath | semmle.label | ControlFlowNode for filepath |
+| taint_step_test.py:19:43:19:46 | ControlFlowNode for path | semmle.label | ControlFlowNode for path |
+| taint_step_test.py:19:48:19:51 | ControlFlowNode for file | semmle.label | ControlFlowNode for file |
+subpaths
+#select
+| taint_step_test.py:13:19:13:26 | ControlFlowNode for filepath | taint_step_test.py:5:12:5:35 | ControlFlowNode for Attribute() | taint_step_test.py:13:19:13:26 | ControlFlowNode for filepath | This path depends on a $@. | taint_step_test.py:5:12:5:35 | ControlFlowNode for Attribute() | user-provided value |
+| taint_step_test.py:13:19:13:26 | ControlFlowNode for filepath | taint_step_test.py:6:12:6:35 | ControlFlowNode for Attribute() | taint_step_test.py:13:19:13:26 | ControlFlowNode for filepath | This path depends on a $@. | taint_step_test.py:6:12:6:35 | ControlFlowNode for Attribute() | user-provided value |

@@ -1,4 +1,6 @@
 /** Definitions for the web view certificate validation query */
+overlay[local?]
+module;
 
 import java
 
@@ -15,7 +17,7 @@ class OnReceivedSslErrorMethod extends Method {
 }
 
 /** A call to `SslErrorHandler.proceed` */
-private class SslProceedCall extends MethodAccess {
+private class SslProceedCall extends MethodCall {
   SslProceedCall() {
     this.getMethod().hasQualifiedName("android.webkit", "SslErrorHandler", "proceed")
   }
@@ -24,6 +26,6 @@ private class SslProceedCall extends MethodAccess {
 /** Holds if `m` trusts all certificates by calling `SslErrorHandler.proceed` unconditionally. */
 predicate trustsAllCerts(OnReceivedSslErrorMethod m) {
   exists(SslProceedCall pr | pr.getQualifier().(VarAccess).getVariable() = m.handlerArg() |
-    pr.getBasicBlock().bbPostDominates(m.getBody().getBasicBlock())
+    pr.getBasicBlock().postDominates(m.getBody().getBasicBlock())
   )
 }

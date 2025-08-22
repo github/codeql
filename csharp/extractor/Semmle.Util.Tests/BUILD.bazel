@@ -1,0 +1,17 @@
+load(
+    "//misc/bazel:csharp.bzl",
+    "codeql_xunit_test",
+)
+
+codeql_xunit_test(
+    # short name as we run into long path limitations on Windows
+    name = "ut",
+    srcs = glob([
+        "*.cs",
+    ]),
+    deps = [
+        "//csharp/extractor/Semmle.Util",
+        "@paket.main//microsoft.net.test.sdk",
+        "@paket.main//newtonsoft.json",
+    ],
+)

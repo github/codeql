@@ -92,7 +92,7 @@ class AccessPath extends TAccessPath {
    * Gets an expression in `bb` represented by this access path.
    */
   cached
-  Expr getAnInstanceIn(BasicBlock bb) {
+  Expr getAnInstanceIn(ReachableBasicBlock bb) {
     Stages::DataFlowStage::ref() and
     exists(SsaVariable var |
       this = MkSsaRoot(var) and
@@ -120,7 +120,7 @@ class AccessPath extends TAccessPath {
   /**
    * Gets an expression represented by this access path.
    */
-  Expr getAnInstance() { result = getAnInstanceIn(_) }
+  Expr getAnInstance() { result = this.getAnInstanceIn(_) }
 
   /**
    * Gets a textual representation of this access path.

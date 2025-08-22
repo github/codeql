@@ -1,0 +1,12 @@
+| NonPublicClass.cs:9:9:9:31 | call to method WriteLine | System | Console | WriteLine | (System.String) | true | System.Console | 9.0.0.0 | neutral | source |
+| PublicClass.cs:9:9:9:30 | call to method WriteLine | System | Console | WriteLine | (System.String) | true | System.Console | 9.0.0.0 | neutral | source |
+| PublicClass.cs:14:9:14:30 | call to method WriteLine | System | Console | WriteLine | (System.String) | true | System.Console | 9.0.0.0 | neutral | source |
+| PublicClass.cs:19:9:19:51 | call to method WriteLine | System | Console | WriteLine | (System.String) | true | System.Console | 9.0.0.0 | neutral | source |
+| PublicClass.cs:19:33:19:50 | call to method ReadLine | System | Console | ReadLine | () | true | System.Console | 9.0.0.0 | neutral | source |
+| PublicClass.cs:19:33:19:50 | call to method ReadLine | System | Console | ReadLine | () | true | System.Console | 9.0.0.0 | source | source |
+| PublicClass.cs:24:9:24:46 | call to method Write | System | Console | Write | (System.Object) | true | System.Console | 9.0.0.0 | neutral | source |
+| PublicClass.cs:30:9:30:30 | call to method WriteLine | System | Console | WriteLine | (System.String) | true | System.Console | 9.0.0.0 | neutral | source |
+| PublicGenericClass.cs:9:9:9:30 | call to method WriteLine | System | Console | WriteLine | (System.Object) | true | System.Console | 9.0.0.0 | neutral | source |
+| PublicGenericClass.cs:14:9:14:30 | call to method WriteLine | System | Console | WriteLine | (System.Object) | true | System.Console | 9.0.0.0 | neutral | source |
+| PublicGenericInterface.cs:13:9:13:30 | call to method WriteLine | System | Console | WriteLine | (System.String) | true | System.Console | 9.0.0.0 | neutral | source |
+| PublicInterface.cs:13:9:13:30 | call to method WriteLine | System | Console | WriteLine | (System.String) | true | System.Console | 9.0.0.0 | neutral | source |

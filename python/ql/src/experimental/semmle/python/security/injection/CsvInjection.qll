@@ -8,17 +8,17 @@ import semmle.python.dataflow.new.RemoteFlowSources
 /**
  * A taint-tracking configuration for tracking untrusted user input used in file read.
  */
-class CsvInjectionFlowConfig extends TaintTracking::Configuration {
-  CsvInjectionFlowConfig() { this = "CsvInjectionFlowConfig" }
+private module CsvInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSink(DataFlow::Node sink) { sink = any(CsvWriter cw).getAnInput() }
 
-  override predicate isSink(DataFlow::Node sink) { sink = any(CsvWriter cw).getAnInput() }
-
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node = DataFlow::BarrierGuard<startsWithCheck/3>::getABarrierNode() or
-    node instanceof StringConstCompareBarrier
+    node instanceof ConstCompareBarrier
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 private predicate startsWithCheck(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {
@@ -29,3 +29,6 @@ private predicate startsWithCheck(DataFlow::GuardNode g, ControlFlowNode node, b
     branch = true
   )
 }
+
+/** Global taint-tracking for detecting "CSV injection" vulnerabilities. */
+module CsvInjectionFlow = TaintTracking::Global<CsvInjectionConfig>;

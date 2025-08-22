@@ -1,0 +1,32 @@
+| test.swift:79:26:79:48 | <script.*?>.*?<\\/script> | This regular expression does not match script end tags like </script >. |
+| test.swift:83:27:83:54 | (?is)<script.*?>.*?<\\/script> | This regular expression does not match script end tags like </script >. |
+| test.swift:86:27:86:49 | <script.*?>.*?<\\/script> | This regular expression does not match script end tags like </script >. |
+| test.swift:90:50:90:72 | <script.*?>.*?<\\/script> | This regular expression does not match script end tags like </script >. |
+| test.swift:113:26:113:35 | <!--.*--!?> | This regular expression does not match comments containing newlines. |
+| test.swift:117:26:117:58 | <script.*?>(.\|\\s)*?<\\/script[^>]*> | This regular expression matches <script></script>, but not <script \\n></script> |
+| test.swift:121:26:121:56 | <script[^>]*?>.*?<\\/script[^>]*> | This regular expression matches <script>...</script>, but not <script >...\\n</script> |
+| test.swift:125:26:125:63 | <script(\\s\|\\w\|=\|")*?>.*?<\\/script[^>]*> | This regular expression does not match script tags where the attribute uses single-quotes. |
+| test.swift:129:28:129:70 | (?is)<script(\\s\|\\w\|=\|')*?>.*?<\\/script[^>]*> | This regular expression does not match script tags where the attribute uses double-quotes. |
+| test.swift:132:28:132:65 | <script(\\s\|\\w\|=\|')*?>.*?<\\/script[^>]*> | This regular expression does not match script tags where the attribute uses double-quotes. |
+| test.swift:136:50:136:87 | <script(\\s\|\\w\|=\|')*?>.*?<\\/script[^>]*> | This regular expression does not match script tags where the attribute uses double-quotes. |
+| test.swift:140:28:140:74 | (?is)<script( \|\\n\|\\w\|=\|'\|")*?>.*?<\\/script[^>]*> | This regular expression does not match script tags where tabs are used between attributes. |
+| test.swift:143:28:143:69 | <script( \|\\n\|\\w\|=\|'\|")*?>.*?<\\/script[^>]*> | This regular expression does not match script tags where tabs are used between attributes. |
+| test.swift:147:50:147:91 | <script( \|\\n\|\\w\|=\|'\|")*?>.*?<\\/script[^>]*> | This regular expression does not match script tags where tabs are used between attributes. |
+| test.swift:151:28:151:59 | (?s)<script.*?>.*?<\\/script[^>]*> | This regular expression does not match upper case <SCRIPT> tags. |
+| test.swift:154:28:154:55 | <script.*?>.*?<\\/script[^>]*> | This regular expression does not match upper case <SCRIPT> tags. |
+| test.swift:157:50:157:77 | <script.*?>.*?<\\/script[^>]*> | This regular expression does not match upper case <SCRIPT> tags. |
+| test.swift:161:28:161:77 | (?s)<(script\|SCRIPT).*?>.*?<\\/(script\|SCRIPT)[^>]*> | This regular expression does not match mixed case <sCrIpT> tags. |
+| test.swift:164:28:164:73 | <(script\|SCRIPT).*?>.*?<\\/(script\|SCRIPT)[^>]*> | This regular expression does not match mixed case <sCrIpT> tags. |
+| test.swift:167:50:167:95 | <(script\|SCRIPT).*?>.*?<\\/(script\|SCRIPT)[^>]*> | This regular expression does not match mixed case <sCrIpT> tags. |
+| test.swift:171:28:171:64 | (?i)<script[^>]*?>[\\s\\S]*?<\\/script.*> | This regular expression does not match script end tags like </script\\t\\n bar>. |
+| test.swift:174:28:174:60 | <script[^>]*?>[\\s\\S]*?<\\/script.*> | This regular expression does not match script end tags like </script\\t\\n bar>. |
+| test.swift:177:50:177:82 | <script[^>]*?>[\\s\\S]*?<\\/script.*> | This regular expression does not match script end tags like </script\\t\\n bar>. |
+| test.swift:191:27:191:68 | <(?:!--([\\S\|\\s]*?)-->)\|([^\\/\\s>]+)[\\S\\s]*?> | Comments ending with --> are matched differently from comments ending with --!>. The first is matched with capture group 1 and comments ending with --!> are matched with capture group 2. |
+| test.swift:194:50:194:91 | <(?:!--([\\S\|\\s]*?)-->)\|([^\\/\\s>]+)[\\S\\s]*?> | Comments ending with --> are matched differently from comments ending with --!>. The first is matched with capture group 1 and comments ending with --!> are matched with capture group 2. |
+| test.swift:198:27:198:167 | <(?:(?:\\/([^>]+)>)\|(?:!--([\\S\|\\s]*?)-->)\|(?:([^\\/\\s>]+)((?:\\s+[\\w\\-:.]+(?:\\s*=\\s*?(?:(?:"[^"]*")\|(?:'[^']*')\|[^\\s"'\\/>]+))?)*)[\\S\\s]*?(\\/?)>)) | Comments ending with --> are matched differently from comments ending with --!>. The first is matched with capture group 2 and comments ending with --!> are matched with capture group 3, 4. |
+| test.swift:201:50:201:190 | <(?:(?:\\/([^>]+)>)\|(?:!--([\\S\|\\s]*?)-->)\|(?:([^\\/\\s>]+)((?:\\s+[\\w\\-:.]+(?:\\s*=\\s*?(?:(?:"[^"]*")\|(?:'[^']*')\|[^\\s"'\\/>]+))?)*)[\\S\\s]*?(\\/?)>)) | Comments ending with --> are matched differently from comments ending with --!>. The first is matched with capture group 2 and comments ending with --!> are matched with capture group 3, 4. |
+| test.swift:205:51:205:84 | <script\\b[^>]*>([\\s\\S]*?)<\\/script> | This regular expression does not match script end tags like </script >. |
+| test.swift:209:51:209:104 | (<[a-z\\/!$]("[^"]*"\|'[^']*'\|[^'">])*>\|<!(--.*?--\\s*)+>) | Comments ending with --> are matched differently from comments ending with --!>. The first is matched with capture group 3 and comments ending with --!> are matched with capture group 1. |
+| test.swift:213:51:213:293 | <(?:(?:!--([\\w\\W]*?)-->)\|(?:!\\[CDATA\\[([\\w\\W]*?)\\]\\]>)\|(?:!DOCTYPE([\\w\\W]*?)>)\|(?:\\?([^\\s\\/<>]+) ?([\\w\\W]*?)[?/]>)\|(?:\\/([A-Za-z][A-Za-z0-9\\-_\\:\\.]*)>)\|(?:([A-Za-z][A-Za-z0-9\\-_\\:\\.]*)((?:\\s+[^"'>]+(?:(?:"[^"]*")\|(?:'[^']*')\|[^>]*))*\|\\/\|\\s+)>)) | This regular expression only parses --> (capture group 1) and not --!> as an HTML comment end tag. |
+| test.swift:217:51:217:77 | <!--([\\w\\W]*?)-->\|<([^>]*?)> | Comments ending with --> are matched differently from comments ending with --!>. The first is matched with capture group 1 and comments ending with --!> are matched with capture group 2. |
+| test.swift:225:51:225:52 | --> | This regular expression only parses --> and not --!> as a HTML comment end tag. |

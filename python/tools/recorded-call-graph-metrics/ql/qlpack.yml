@@ -3,3 +3,4 @@ version: 0.0.1
 extractor: python
 dependencies:
   codeql/python-all: '*'
+warnOnImplicitThis: true

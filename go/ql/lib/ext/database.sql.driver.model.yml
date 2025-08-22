@@ -1,0 +1,28 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["database/sql/driver", "Queryer", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["database/sql/driver", "QueryerContext", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["database/sql/driver", "Stmt", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["database/sql/driver", "StmtQueryContext", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["database/sql/driver", "Execer", True, "Exec", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql/driver", "ExecerContext", True, "ExecContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql/driver", "Conn", True, "Prepare", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql/driver", "ConnPrepareContext", True, "PrepareContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql/driver", "Queryer", True, "Query", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql/driver", "QueryerContext", True, "QueryContext", "", "", "Argument[1]", "sql-injection", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["database/sql/driver", "Conn", True, "Prepare", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["database/sql/driver", "ConnPrepareContext", True, "PrepareContext", "", "", "Argument[1]", "ReturnValue[0]", "taint", "manual"]
+      - ["database/sql/driver", "Rows", True, "Next", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["database/sql/driver", "ValueConverter", True, "ConvertValue", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["database/sql/driver", "Valuer", True, "Value", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]

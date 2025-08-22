@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", False, "BinaryFormatter", "(System.Runtime.Serialization.ISurrogateSelector,System.Runtime.Serialization.StreamingContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", False, "BinaryFormatter", "(System.Runtime.Serialization.ISurrogateSelector,System.Runtime.Serialization.StreamingContext)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", "Deserialize", "(System.IO.Stream)", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.Formatters.Binary", "BinaryFormatter", "Serialize", "(System.IO.Stream,System.Object)", "summary", "df-generated"]

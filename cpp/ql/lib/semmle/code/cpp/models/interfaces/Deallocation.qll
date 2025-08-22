@@ -35,13 +35,20 @@ abstract class DeallocationFunction extends Function {
 }
 
 /**
+ * Holds if an external deallocation model exists for the given parameters.
+ */
+extensible predicate deallocationFunctionModel(
+  string namespace, string type, boolean subtypes, string name, string freedArg
+);
+
+/**
  * An `operator delete` or `operator delete[]` function that may be associated
  * with `delete` or `delete[]` expressions.  Note that `delete` and `delete[]`
  * are not function calls, but these functions may also be called directly.
  */
 class OperatorDeleteDeallocationFunction extends DeallocationFunction {
   OperatorDeleteDeallocationFunction() {
-    hasGlobalName([
+    this.hasGlobalName([
         "operator delete", // operator delete(pointer, ...)
         "operator delete[]" // operator delete[](pointer, ...)
       ])

@@ -1,0 +1,4 @@
+| Test.java:0:0:0:0 | 1 javac errors |
+| Test.java:4:13:4:30 | Unable to extract method reference Unavailable.f()::g with no owner type |
+| Test.java:4:13:4:30 | Unknown or erroneous type for expression of kind MemberReference |
+| Test.java:4:13:4:30 | Unknown or erroneous type for expression of kind TypeAccess |

@@ -11,7 +11,7 @@
 
 import java
 
-from MethodAccess call, Method add
+from MethodCall call, Method add
 where
   call.getMethod().overrides*(add) and
   add.hasName("add") and

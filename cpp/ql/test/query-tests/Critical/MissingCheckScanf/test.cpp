@@ -48,7 +48,7 @@ int main()
 		int i = 0;
 
 		scanf("%d", &i);
-		use(i); // BAD. Design choice: already initialized variables shouldn't make a difference.
+		use(i); // GOOD. Design choice: already initialized variables are fine.
 	}
 
 	{
@@ -261,7 +261,7 @@ int main()
 		i = 0;
 
 		scanf("%d", &i);
-		use(i); // BAD
+		use(i); // GOOD
 	}
 
 	{
@@ -269,7 +269,7 @@ int main()
 
 		set_by_ref(i);
 		scanf("%d", &i);
-		use(i); // BAD
+		use(i); // GOOD [FALSE POSITIVE]
 	}
 
 	{
@@ -277,7 +277,7 @@ int main()
 
 		set_by_ptr(&i);
 		scanf("%d", &i);
-		use(i); // BAD
+		use(i); // GOOD [FALSE POSITIVE]
 	}
 
 	{
@@ -299,7 +299,7 @@ int main()
 		int *ptr_i = &i;
 
 		scanf("%d", &i);
-		use(*ptr_i); // BAD: may not have written `i`
+		use(*ptr_i); // BAD [NOT DETECTED]: may not have written `i`
 	}
 
 	{
@@ -307,7 +307,7 @@ int main()
 		int *ptr_i = &i;
 
 		scanf("%d", ptr_i);
-		use(i); // BAD: may not have written `*ptr_i`
+		use(i); // BAD [NOT DETECTED]: may not have written `*ptr_i`
 	}
 
 	{
@@ -427,5 +427,153 @@ void scan_and_write() {
 void scan_and_static_variable() {
 	static int i;
 	scanf("%d", &i);
-	use(i);  // GOOD [FALSE POSITIVE]: static variables are always 0-initialized
+	use(i);  // GOOD: static variables are always 0-initialized
+}
+
+void bad_check() {
+	{
+		int i = 0;
+		if (scanf("%d", &i) != 0) {
+			return;
+		}
+		use(i);  // GOOD [FALSE POSITIVE]: Technically no security issue, but code is incorrect.
+	}
+	{
+		int i = 0;
+		int r = scanf("%d", &i);
+		if (!r) {
+			return;
+		}
+		use(i);  // GOOD [FALSE POSITIVE]: Technically no security issue, but code is incorrect.
+	}
+}
+
+#define EOF (-1)
+
+void disjunct_boolean_condition(const char* modifier_data) {
+	long value;
+	auto rc = sscanf(modifier_data, "%lx", &value);
+
+	if((rc == EOF) || (rc == 0)) {
+		return;
+	}
+	use(value); // GOOD
+}
+
+void check_for_negative_test() {
+	int res;
+	int value;
+
+	res = scanf("%d", &value); // GOOD
+	if(res == 0) {
+		return;
+	}
+	if (res < 0) {
+		return;
+	}
+	use(value);
+}
+
+void multiple_checks() {
+	{
+		int i;
+		int res = scanf("%d", &i);
+
+		if (res >= 0) {
+			if (res != 0) {
+				use(i); // GOOD: checks return value [FALSE POSITIVE]
+			}
+		}
+	}
+
+	{
+		int i;
+		int res = scanf("%d", &i);
+
+		if (res < 0) return;
+		if (res != 0) {
+			use(i); // GOOD: checks return value [FALSE POSITIVE]
+		}
+	}
+
+	{
+		int i;
+		int res = scanf("%d", &i);
+
+		if (res >= 1) {
+			if (res != 0) {
+				use(i); // GOOD: checks return value
+			}
+		}
+	}
+
+	{
+		int i;
+		int res = scanf("%d", &i);
+
+		if (res == 1) {
+			if (res != 0) {
+				use(i); // GOOD: checks return value
+			}
+		}
+	}
+}
+
+void switch_cases(const char *data) {
+	float a, b, c;
+
+	switch (sscanf(data, "%f %f %f", &a, &b, &c)) {
+		case 2:
+			use(a); // GOOD
+			use(b); // GOOD
+			break;
+		case 3:
+			use(a); // GOOD
+			use(b); // GOOD
+			use(c); // GOOD
+			break;
+		default:
+			break;
+	}
+
+	float d, e, f;
+
+	switch (sscanf(data, "%f %f %f", &d, &e, &f)) {
+		case 2:
+			use(d); // GOOD
+			use(e); // GOOD
+			use(f); // BAD
+			break;
+		case 3:
+			use(d); // GOOD
+			use(e); // GOOD
+			use(f); // GOOD
+			break;
+		default:
+			break;
+	}
+}
+
+void test_scanf_compared_right_away() {
+  int i;
+  bool success = scanf("%d", &i) == 1;
+  if(success) {
+    use(i); // GOOD
+  }
+}
+
+void test_scanf_compared_in_conjunct_right(bool b) {
+  int i;
+  bool success = b && scanf("%d", &i) == 1;
+  if(success) {
+    use(i); // GOOD
+  }
+}
+
+void test_scanf_compared_in_conjunct_left(bool b) {
+  int i;
+  bool success = scanf("%d", &i) == 1 && b;
+  if(success) {
+    use(i); // GOOD
+  }
 }

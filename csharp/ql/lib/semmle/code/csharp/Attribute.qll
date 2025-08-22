@@ -62,7 +62,15 @@ private string getAttributeName(Attribute a) {
  */
 class Attribute extends TopLevelExprParent, @attribute {
   /** Gets the type of this attribute. */
-  Class getType() { attributes(this, _, getTypeRef(result), _) }
+  Class getType() {
+    attributes(this, _, result, _)
+    or
+    not attributes(this, _, any(Type t), _) and
+    attributes(this, _, getTypeRef(result), _)
+  }
+
+  /** Gets the namespace containing the attribute type declaration. */
+  Namespace getNamespace() { result = this.getType().getNamespace() }
 
   /** Gets the element that this attribute is attached to. */
   Attributable getTarget() { attributes(this, _, _, result) }

@@ -13,7 +13,6 @@
 import codeql.ruby.AST
 import codeql.ruby.Concepts
 import codeql.ruby.DataFlow
-import DataFlow::PathGraph
 import codeql.ruby.ApiGraphs
 
 bindingset[p]
@@ -47,22 +46,37 @@ class PermissivePermissionsExpr extends Expr {
   }
 }
 
-class PermissivePermissionsConfig extends DataFlow::Configuration {
-  PermissivePermissionsConfig() { this = "PermissivePermissionsConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
+private module PermissivePermissionsConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source.asExpr().getExpr() instanceof PermissivePermissionsExpr
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(FileSystemPermissionModification mod | mod.getAPermissionNode() = sink)
+  additional predicate sinkDef(DataFlow::Node sink, FileSystemPermissionModification mod) {
+    mod.getAPermissionNode() = sink
+  }
+
+  predicate isSink(DataFlow::Node sink) { sinkDef(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(FileSystemPermissionModification mod |
+      sinkDef(sink, mod) and
+      result = mod.getLocation()
+    )
   }
 }
 
+private module PermissivePermissionsFlow = DataFlow::Global<PermissivePermissionsConfig>;
+
+import PermissivePermissionsFlow::PathGraph
+
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, PermissivePermissionsConfig conf,
+  PermissivePermissionsFlow::PathNode source, PermissivePermissionsFlow::PathNode sink,
   FileSystemPermissionModification mod
-where conf.hasFlowPath(source, sink) and mod.getAPermissionNode() = sink.getNode()
+where
+  PermissivePermissionsFlow::flowPath(source, sink) and
+  PermissivePermissionsConfig::sinkDef(sink.getNode(), mod)
 select source.getNode(), source, sink,
   "This overly permissive mask used in $@ allows read or write access to others.", mod,
   mod.toString()

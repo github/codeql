@@ -1,8 +1,12 @@
 /**
  * Definitions related to `java.net.*`.
  */
+overlay[local?]
+module;
 
 import semmle.code.java.Type
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.FlowSteps
 
 /** The type `java.net.URLConnection`. */
 class TypeUrlConnection extends RefType {
@@ -24,6 +28,16 @@ class TypeUrl extends RefType {
   TypeUrl() { this.hasQualifiedName("java.net", "URL") }
 }
 
+/** Specifies that if a `URL` is tainted, then so are its synthetic fields. */
+private class UrlFieldsInheritTaint extends DataFlow::SyntheticFieldContent, TaintInheritingContent {
+  UrlFieldsInheritTaint() { this.getField().matches("java.net.URL.%") }
+}
+
+/** The type `java.net.URLDecoder`. */
+class TypeUrlDecoder extends RefType {
+  TypeUrlDecoder() { this.hasQualifiedName("java.net", "URLDecoder") }
+}
+
 /** The type `java.net.URI`. */
 class TypeUri extends RefType {
   TypeUri() { this.hasQualifiedName("java.net", "URI") }
@@ -37,9 +51,6 @@ class UrlConnectionGetInputStreamMethod extends Method {
     this.hasNoParameters()
   }
 }
-
-/** DEPRECATED: Alias for UrlConnectionGetInputStreamMethod */
-deprecated class URLConnectionGetInputStreamMethod = UrlConnectionGetInputStreamMethod;
 
 /** The method `java.net.Socket::getInputStream`. */
 class SocketGetInputStreamMethod extends Method {
@@ -157,6 +168,14 @@ class UrlOpenConnectionMethod extends Method {
   UrlOpenConnectionMethod() {
     this.getDeclaringType() instanceof TypeUrl and
     this.getName() = "openConnection"
+  }
+}
+
+/** The method `java.net.URLDecoder::decode`. */
+class UrlDecodeMethod extends Method {
+  UrlDecodeMethod() {
+    this.getDeclaringType() instanceof TypeUrlDecoder and
+    this.getName() = "decode"
   }
 }
 

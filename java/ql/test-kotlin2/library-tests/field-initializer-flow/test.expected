@@ -1,0 +1,3 @@
+isFinalField
+| test.kt:3:3:3:18 | x |
+#select

@@ -1,34 +1,37 @@
-failures
+models
+| 1 | Summary: JSON!; Method[generate,fast_generate,pretty_generate,dump,unparse,fast_unparse]; Argument[0]; ReturnValue; taint |
+| 2 | Summary: JSON!; Method[parse,parse!,load,restore]; Argument[0]; ReturnValue; taint |
 edges
-| json.rb:1:17:1:26 | call to source :  | json.rb:1:6:1:27 | call to parse |
-| json.rb:2:18:2:27 | call to source :  | json.rb:2:6:2:28 | call to parse! |
-| json.rb:3:16:3:25 | call to source :  | json.rb:3:6:3:26 | call to load |
-| json.rb:4:19:4:28 | call to source :  | json.rb:4:6:4:29 | call to restore |
-| json.rb:6:20:6:29 | call to source :  | json.rb:6:6:6:30 | call to generate |
-| json.rb:7:25:7:34 | call to source :  | json.rb:7:6:7:35 | call to fast_generate |
-| json.rb:8:27:8:36 | call to source :  | json.rb:8:6:8:37 | call to pretty_generate |
-| json.rb:9:16:9:25 | call to source :  | json.rb:9:6:9:26 | call to dump |
-| json.rb:10:19:10:28 | call to source :  | json.rb:10:6:10:29 | call to unparse |
-| json.rb:11:24:11:33 | call to source :  | json.rb:11:6:11:34 | call to fast_unparse |
+| json.rb:1:17:1:26 | call to source | json.rb:1:6:1:27 | call to parse | provenance | MaD:2 |
+| json.rb:2:18:2:27 | call to source | json.rb:2:6:2:28 | call to parse! | provenance | MaD:2 |
+| json.rb:3:16:3:25 | call to source | json.rb:3:6:3:26 | call to load | provenance | MaD:2 |
+| json.rb:4:19:4:28 | call to source | json.rb:4:6:4:29 | call to restore | provenance | MaD:2 |
+| json.rb:6:20:6:29 | call to source | json.rb:6:6:6:30 | call to generate | provenance | MaD:1 |
+| json.rb:7:25:7:34 | call to source | json.rb:7:6:7:35 | call to fast_generate | provenance | MaD:1 |
+| json.rb:8:27:8:36 | call to source | json.rb:8:6:8:37 | call to pretty_generate | provenance | MaD:1 |
+| json.rb:9:16:9:25 | call to source | json.rb:9:6:9:26 | call to dump | provenance | MaD:1 |
+| json.rb:10:19:10:28 | call to source | json.rb:10:6:10:29 | call to unparse | provenance | MaD:1 |
+| json.rb:11:24:11:33 | call to source | json.rb:11:6:11:34 | call to fast_unparse | provenance | MaD:1 |
 nodes
 | json.rb:1:6:1:27 | call to parse | semmle.label | call to parse |
-| json.rb:1:17:1:26 | call to source :  | semmle.label | call to source :  |
+| json.rb:1:17:1:26 | call to source | semmle.label | call to source |
 | json.rb:2:6:2:28 | call to parse! | semmle.label | call to parse! |
-| json.rb:2:18:2:27 | call to source :  | semmle.label | call to source :  |
+| json.rb:2:18:2:27 | call to source | semmle.label | call to source |
 | json.rb:3:6:3:26 | call to load | semmle.label | call to load |
-| json.rb:3:16:3:25 | call to source :  | semmle.label | call to source :  |
+| json.rb:3:16:3:25 | call to source | semmle.label | call to source |
 | json.rb:4:6:4:29 | call to restore | semmle.label | call to restore |
-| json.rb:4:19:4:28 | call to source :  | semmle.label | call to source :  |
+| json.rb:4:19:4:28 | call to source | semmle.label | call to source |
 | json.rb:6:6:6:30 | call to generate | semmle.label | call to generate |
-| json.rb:6:20:6:29 | call to source :  | semmle.label | call to source :  |
+| json.rb:6:20:6:29 | call to source | semmle.label | call to source |
 | json.rb:7:6:7:35 | call to fast_generate | semmle.label | call to fast_generate |
-| json.rb:7:25:7:34 | call to source :  | semmle.label | call to source :  |
+| json.rb:7:25:7:34 | call to source | semmle.label | call to source |
 | json.rb:8:6:8:37 | call to pretty_generate | semmle.label | call to pretty_generate |
-| json.rb:8:27:8:36 | call to source :  | semmle.label | call to source :  |
+| json.rb:8:27:8:36 | call to source | semmle.label | call to source |
 | json.rb:9:6:9:26 | call to dump | semmle.label | call to dump |
-| json.rb:9:16:9:25 | call to source :  | semmle.label | call to source :  |
+| json.rb:9:16:9:25 | call to source | semmle.label | call to source |
 | json.rb:10:6:10:29 | call to unparse | semmle.label | call to unparse |
-| json.rb:10:19:10:28 | call to source :  | semmle.label | call to source :  |
+| json.rb:10:19:10:28 | call to source | semmle.label | call to source |
 | json.rb:11:6:11:34 | call to fast_unparse | semmle.label | call to fast_unparse |
-| json.rb:11:24:11:33 | call to source :  | semmle.label | call to source :  |
+| json.rb:11:24:11:33 | call to source | semmle.label | call to source |
 subpaths
+testFailures

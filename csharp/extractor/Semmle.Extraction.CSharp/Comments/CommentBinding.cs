@@ -9,5 +9,5 @@ namespace Semmle.Extraction.CSharp
         Best,       // The most likely element associated with a comment
         Before,     // The element before the comment
         After       // The element after the comment
-    };
+    }
 }

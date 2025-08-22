@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["leptos-rs/leptos/.github/workflows/run-cargo-make-task.yml", "*", "input.directory", "code-injection", "generated"]
+     - ["leptos-rs/leptos/.github/workflows/run-cargo-make-task.yml", "*", "input.cargo_make_task", "code-injection", "generated"]
+     - ["leptos-rs/leptos/.github/workflows/get-changed-examples-matrix.yml", "*", "input.example_changed", "code-injection", "generated"]

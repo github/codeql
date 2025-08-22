@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Semmle.Extraction.CSharp.DependencyFetching;
 using Semmle.Util;
 using Semmle.Util.Logging;
 
@@ -12,7 +13,6 @@ namespace Semmle.Extraction.CSharp.Standalone
 {
     public static class Extractor
     {
-
         private static IEnumerable<Action> GetResolvedReferencesStandalone(IEnumerable<string> referencePaths, BlockingCollection<MetadataReference> references)
         {
             return referencePaths.Select<string, Action>(path => () =>
@@ -24,56 +24,48 @@ namespace Semmle.Extraction.CSharp.Standalone
 
         private static void AnalyseStandalone(
             StandaloneAnalyser analyser,
-            IEnumerable<string> sources,
-            IEnumerable<string> referencePaths,
+            ExtractionInput extractionInput,
             CommonOptions options,
             IProgressMonitor progressMonitor,
             Stopwatch stopwatch)
         {
-            CSharp.Extractor.Analyse(stopwatch, analyser, options,
-                references => GetResolvedReferencesStandalone(referencePaths, references),
-                (analyser, syntaxTrees) => CSharp.Extractor.ReadSyntaxTrees(sources, analyser, null, null, syntaxTrees),
-                (syntaxTrees, references) => CSharpCompilation.Create("csharp.dll", syntaxTrees, references),
-                (compilation, options) => analyser.Initialize(compilation, options),
-                () => { },
-                _ => { },
-                () =>
-                {
-                    foreach (var type in analyser.MissingNamespaces)
-                    {
-                        progressMonitor.MissingNamespace(type);
-                    }
+            var output = FileUtils.CreateTemporaryFile(".dll", out var shouldCleanUpContainingFolder);
 
-                    foreach (var type in analyser.MissingTypes)
-                    {
-                        progressMonitor.MissingType(type);
-                    }
-
-                    progressMonitor.MissingSummary(analyser.MissingTypes.Count(), analyser.MissingNamespaces.Count());
-                });
-        }
-
-        private static void ExtractStandalone(
-            IEnumerable<string> sources,
-            IEnumerable<string> referencePaths,
-            IProgressMonitor pm,
-            ILogger logger,
-            CommonOptions options)
-        {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
-            var pathTransformer = new PathTransformer(canonicalPathCache);
-
-            using var analyser = new StandaloneAnalyser(pm, logger, false, pathTransformer);
             try
             {
-                AnalyseStandalone(analyser, sources, referencePaths, options, pm, stopwatch);
+                CSharp.Extractor.Analyse(stopwatch, analyser, options,
+                    references => GetResolvedReferencesStandalone(extractionInput.References, references),
+                    (analyser, syntaxTrees) => CSharp.Extractor.ReadSyntaxTrees(extractionInput.Sources, analyser, null, null, syntaxTrees),
+                    (syntaxTrees, references) => CSharpCompilation.Create(
+                        output.Name, syntaxTrees, references, new CSharpCompilationOptions(OutputKind.ConsoleApplication, allowUnsafe: true)
+                        ),
+                    (compilation, options) => analyser.Initialize(output.FullName, extractionInput.CompilationInfos, compilation, options),
+                    () =>
+                    {
+                        foreach (var type in analyser.ExtractionContext!.MissingNamespaces)
+                        {
+                            progressMonitor.MissingNamespace(type);
+                        }
+
+                        foreach (var type in analyser.ExtractionContext!.MissingTypes)
+                        {
+                            progressMonitor.MissingType(type);
+                        }
+
+                        progressMonitor.MissingSummary(analyser.ExtractionContext!.MissingTypes.Count(), analyser.ExtractionContext!.MissingNamespaces.Count());
+                    });
             }
-            catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
+            finally
             {
-                analyser.Logger.Log(Severity.Error, "  Unhandled exception: {0}", ex);
+                try
+                {
+                    if (shouldCleanUpContainingFolder)
+                    {
+                        FileUtils.TryDelete(output.FullName);
+                    }
+                }
+                catch
+                { }
             }
         }
 
@@ -88,60 +80,81 @@ namespace Semmle.Extraction.CSharp.Standalone
 
             public void Analysed(int item, int total, string source, string output, TimeSpan time, AnalysisAction action)
             {
-                logger.Log(Severity.Info, "[{0}/{1}] {2} ({3})", item, total, source,
-                    action == AnalysisAction.Extracted
-                        ? time.ToString()
-                        : action == AnalysisAction.Excluded
-                            ? "excluded"
-                            : "up to date");
+                var extra = action switch
+                {
+                    AnalysisAction.Extracted => time.ToString(),
+                    AnalysisAction.Excluded => "excluded",
+                    AnalysisAction.UpToDate => "up to date",
+                    _ => "unknown action"
+                };
+                logger.LogDebug($"[{item}/{total}] {source} ({extra})");
+            }
+
+            public void Started(int item, int total, string source)
+            {
+                logger.LogDebug($"[{item}/{total}] {source} (processing started)");
             }
 
             public void MissingType(string type)
             {
-                logger.Log(Severity.Debug, "Missing type {0}", type);
+                logger.LogDebug($"Missing type {type}");
             }
 
             public void MissingNamespace(string @namespace)
             {
-                logger.Log(Severity.Info, "Missing namespace {0}", @namespace);
+                logger.LogInfo($"Missing namespace {@namespace}");
             }
 
             public void MissingSummary(int missingTypes, int missingNamespaces)
             {
-                logger.Log(Severity.Info, "Failed to resolve {0} types in {1} namespaces", missingTypes, missingNamespaces);
+                if (missingTypes > 0 || missingNamespaces > 0)
+                {
+                    logger.LogInfo($"Failed to resolve {missingTypes} types in {missingNamespaces} namespaces");
+                }
             }
         }
 
+        public record ExtractionInput(IEnumerable<string> Sources, IEnumerable<string> References, IEnumerable<(string, string)> CompilationInfos);
+
         public static ExitCode Run(Options options)
         {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
+            var overallStopwatch = new Stopwatch();
+            overallStopwatch.Start();
 
-            using var logger = new ConsoleLogger(options.Verbosity);
-            logger.Log(Severity.Info, "Running C# standalone extractor");
-            using var a = new Analysis(logger, options);
-            var sourceFileCount = a.Extraction.Sources.Count;
+            using var logger = new ConsoleLogger(options.Verbosity, logThreadId: true);
+            logger.Log(Severity.Info, "Extracting C# with build-mode set to 'none'");
+            using var dependencyManager = new DependencyManager(options.SrcDir, logger);
 
-            if (sourceFileCount == 0)
+            if (!dependencyManager.NonGeneratedSourcesFiles.Any())
             {
                 logger.Log(Severity.Error, "No source files found");
                 return ExitCode.Errors;
             }
 
-            if (!options.SkipExtraction)
-            {
-                using var fileLogger = CSharp.Extractor.MakeLogger(options.Verbosity, false);
+            using var fileLogger = CSharp.Extractor.MakeLogger(options.Verbosity, false);
 
-                logger.Log(Severity.Info, "");
-                logger.Log(Severity.Info, "Extracting...");
-                ExtractStandalone(
-                    a.Extraction.Sources,
-                    a.References,
-                    new ExtractionProgress(logger),
-                    fileLogger,
-                    options);
-                logger.Log(Severity.Info, $"Extraction completed in {stopwatch.Elapsed}");
+            logger.Log(Severity.Info, "");
+            logger.Log(Severity.Info, "Extracting...");
+
+            var analyzerStopwatch = new Stopwatch();
+            analyzerStopwatch.Start();
+
+            var canonicalPathCache = CanonicalPathCache.Create(fileLogger, 1000);
+            var pathTransformer = new PathTransformer(canonicalPathCache);
+
+            var progressMonitor = new ExtractionProgress(logger);
+            using var analyser = new StandaloneAnalyser(progressMonitor, fileLogger, pathTransformer, canonicalPathCache, false);
+            try
+            {
+                var extractionInput = new ExtractionInput(dependencyManager.AllSourceFiles, dependencyManager.ReferenceFiles, dependencyManager.CompilationInfos);
+                AnalyseStandalone(analyser, extractionInput, options, progressMonitor, analyzerStopwatch);
             }
+            catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
+            {
+                fileLogger.LogError($"  Unhandled exception: {ex}");
+            }
+
+            logger.Log(Severity.Info, $"Extraction completed in {overallStopwatch.Elapsed}");
 
             return ExitCode.Ok;
         }

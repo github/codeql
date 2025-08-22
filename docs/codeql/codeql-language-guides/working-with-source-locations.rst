@@ -3,7 +3,7 @@
 Working with source locations
 =============================
 
-You can use the location of entities within Java code to look for potential errors. Locations allow you to deduce the presence, or absence, of white space which, in some cases, may indicate a problem.
+You can use the location of entities within Java/Kotlin code to look for potential errors. Locations allow you to deduce the presence, or absence, of white space which, in some cases, may indicate a problem.
 
 About source locations
 ----------------------
@@ -175,7 +175,7 @@ Now we can extend our query to discard results where the outer and the inner exp
        wsinner > wsouter
    select outer, "Whitespace around nested operators contradicts precedence."
 
-Notice that we again use ``getOp``, this time to determine whether two binary expressions have the same operator. Running our improved query now finds the Java standard library bug described in the Overview. It also flags up the following suspicious code in `Hadoop HBase <https://hbase.apache.org/>`__:
+Notice that we again use ``getOp``, this time to determine whether two binary expressions have the same operator. Running our improved query now finds the Java/Kotlin standard library bug described in the Overview. It also flags up the following suspicious code in `Hadoop HBase <https://hbase.apache.org/>`__:
 
 .. code-block:: java
 

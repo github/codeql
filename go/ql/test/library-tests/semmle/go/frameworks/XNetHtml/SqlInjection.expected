@@ -1,0 +1,14 @@
+#select
+| test.go:57:11:57:41 | call to EscapeString | test.go:56:2:56:42 | ... := ...[0] | test.go:57:11:57:41 | call to EscapeString | This query depends on a $@. | test.go:56:2:56:42 | ... := ...[0] | user-provided value |
+edges
+| test.go:56:2:56:42 | ... := ...[0] | test.go:57:29:57:40 | selection of Value | provenance | Src:MaD:2  |
+| test.go:57:29:57:40 | selection of Value | test.go:57:11:57:41 | call to EscapeString | provenance | MaD:3 Sink:MaD:1 |
+models
+| 1 | Sink: database/sql; DB; true; Query; ; ; Argument[0]; sql-injection; manual |
+| 2 | Source: net/http; Request; true; Cookie; ; ; ReturnValue[0]; remote; manual |
+| 3 | Summary: golang.org/x/net/html; ; false; EscapeString; ; ; Argument[0]; ReturnValue; taint; manual |
+nodes
+| test.go:56:2:56:42 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:57:11:57:41 | call to EscapeString | semmle.label | call to EscapeString |
+| test.go:57:29:57:40 | selection of Value | semmle.label | selection of Value |
+subpaths

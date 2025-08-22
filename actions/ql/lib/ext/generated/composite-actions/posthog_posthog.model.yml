@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["posthog/posthog", "*", "input.group", "code-injection", "generated"]
+     - ["posthog/posthog", "*", "input.concurrency", "code-injection", "generated"]

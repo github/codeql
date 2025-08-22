@@ -1,5 +1,5 @@
 import java
-import TopJdkApis
+import Metrics.Summaries.TopJdkApis
 
 from string apiName, string message
 where
@@ -11,7 +11,7 @@ where
   // top jdk api names for which there isn't a manual model
   exists(TopJdkApi topApi |
     not topApi.hasManualMadModel() and
-    hasApiName(topApi.asCallable(), apiName) and
+    hasApiName(topApi, apiName) and
     message = "no manual model"
   )
 select apiName, message order by apiName

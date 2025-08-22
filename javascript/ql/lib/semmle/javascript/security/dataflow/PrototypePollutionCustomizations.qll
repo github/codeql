@@ -6,11 +6,15 @@
 
 import javascript
 import semmle.javascript.security.TaintedObject
-import semmle.javascript.dependencies.Dependencies
 import semmle.javascript.dependencies.SemVer
 
 module PrototypePollution {
+  import semmle.javascript.security.CommonFlowState
+
   /**
+   * DEPRECATED. This flow label is no longer in use, and there is no corresponding flow state, as
+   * the query instead relies on implicit reads at the sinks.
+   *
    * A label for wrappers around tainted objects, that is, objects that are
    * not completely user-controlled, but contain a user-controlled object.
    *
@@ -24,12 +28,12 @@ module PrototypePollution {
    * }
    * ```
    */
-  abstract class TaintedObjectWrapper extends DataFlow::FlowLabel {
+  abstract deprecated class TaintedObjectWrapper extends DataFlow::FlowLabel {
     TaintedObjectWrapper() { this = "tainted-object-wrapper" }
   }
 
-  /** Companion module to the `TaintedObjectWrapper` class. */
-  module TaintedObjectWrapper {
+  /** DEPRECATED. Use `FlowState::taintedObjectWrapper()` instead. */
+  deprecated module TaintedObjectWrapper {
     /** Gets the instance of the `TaintedObjectWrapper` label. */
     TaintedObjectWrapper label() { any() }
   }
@@ -41,7 +45,10 @@ module PrototypePollution {
     /**
      * Gets the type of data coming from this source.
      */
-    abstract DataFlow::FlowLabel getAFlowLabel();
+    FlowState getAFlowState() { result.isTaintedObject() }
+
+    /** DEPRECATED. Use `getAFlowState()` instead. */
+    deprecated DataFlow::FlowLabel getAFlowLabel() { result = this.getAFlowState().toFlowLabel() }
   }
 
   /**
@@ -51,7 +58,10 @@ module PrototypePollution {
     /**
      * Gets the type of data that can taint this sink.
      */
-    abstract DataFlow::FlowLabel getAFlowLabel();
+    FlowState getAFlowState() { result.isTaintedObject() }
+
+    /** DEPRECATED. Use `getAFlowState()` instead. */
+    deprecated DataFlow::FlowLabel getAFlowLabel() { result = this.getAFlowState().toFlowLabel() }
 
     /**
      * Holds if `moduleName` is the name of the module that defines this sink,
@@ -69,14 +79,14 @@ module PrototypePollution {
    * in order to be flagged for prototype pollution.
    */
   private class RemoteFlowAsSource extends Source instanceof RemoteFlowSource {
-    override DataFlow::FlowLabel getAFlowLabel() { result.isTaint() }
+    override FlowState getAFlowState() { result.isTaint() }
   }
 
   /**
    * A source of user-controlled objects.
    */
   private class TaintedObjectSource extends Source instanceof TaintedObject::Source {
-    override DataFlow::FlowLabel getAFlowLabel() { result = TaintedObject::label() }
+    override FlowState getAFlowState() { result.isTaintedObject() }
   }
 
   class DeepExtendSink extends Sink {
@@ -97,12 +107,6 @@ module PrototypePollution {
           location = call.asExpr()
         )
       )
-    }
-
-    override DataFlow::FlowLabel getAFlowLabel() {
-      result = TaintedObject::label()
-      or
-      result = TaintedObjectWrapper::label()
     }
 
     override predicate dependencyInfo(string moduleName_, Locatable loc) {
@@ -171,5 +175,9 @@ module PrototypePollution {
     call.isDeep() and
     call = AngularJS::angular().getAMemberCall("merge") and
     id = "angular"
+    or
+    call.isDeep() and
+    call = Webix::webix().getMember(["extend", "copy"]).getACall() and
+    id = "webix"
   }
 }

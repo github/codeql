@@ -19,13 +19,13 @@
 | a_simple.py:35 | ControlFlowNode for UnaryExpr | runtime | bool False | builtin-class bool |
 | a_simple.py:35 | ControlFlowNode for UnaryExpr | runtime | bool True | builtin-class bool |
 | a_simple.py:35 | ControlFlowNode for args | runtime | instance of tuple | builtin-class tuple |
-| a_simple.py:36 | ControlFlowNode for Str | runtime | 'x' | builtin-class str |
+| a_simple.py:36 | ControlFlowNode for StringLiteral | runtime | 'x' | builtin-class str |
 | a_simple.py:36 | ControlFlowNode for UnaryExpr | runtime | bool False | builtin-class bool |
 | a_simple.py:36 | ControlFlowNode for UnaryExpr | runtime | bool True | builtin-class bool |
 | a_simple.py:36 | ControlFlowNode for kwargs | runtime | instance of dict | builtin-class dict |
 | a_simple.py:38 | ControlFlowNode for FunctionExpr | import | Function multi_assign_and_packing | builtin-class function |
-| a_simple.py:38 | ControlFlowNode for Str | import | 'b' | builtin-class str |
-| a_simple.py:38 | ControlFlowNode for Str | import | 'c' | builtin-class str |
+| a_simple.py:38 | ControlFlowNode for StringLiteral | import | 'b' | builtin-class str |
+| a_simple.py:38 | ControlFlowNode for StringLiteral | import | 'c' | builtin-class str |
 | a_simple.py:39 | ControlFlowNode for IntegerLiteral | runtime | int 1 | builtin-class int |
 | a_simple.py:39 | ControlFlowNode for IntegerLiteral | runtime | int 2 | builtin-class int |
 | a_simple.py:39 | ControlFlowNode for IntegerLiteral | runtime | int 3 | builtin-class int |
@@ -176,7 +176,7 @@
 | b_condition.py:105 | ControlFlowNode for a | runtime | instance of tuple | builtin-class tuple |
 | b_condition.py:106 | ControlFlowNode for Exception | runtime | builtin-class Exception | builtin-class type |
 | b_condition.py:106 | ControlFlowNode for Exception() | runtime | Exception() | builtin-class Exception |
-| b_condition.py:107 | ControlFlowNode for Str | runtime | 'Hello' | builtin-class str |
+| b_condition.py:107 | ControlFlowNode for StringLiteral | runtime | 'Hello' | builtin-class str |
 | b_condition.py:109 | ControlFlowNode for FunctionExpr | import | Function method_check | builtin-class function |
 | e_temporal.py:2 | ControlFlowNode for ImportExpr | import | Module sys | builtin-class module |
 | e_temporal.py:4 | ControlFlowNode for FunctionExpr | import | Function f | builtin-class function |
@@ -246,8 +246,8 @@
 | g_class_init.py:36 | ControlFlowNode for self | runtime | self instance of D | class D |
 | g_class_init.py:36 | ControlFlowNode for super | runtime | builtin-class super | builtin-class type |
 | g_class_init.py:36 | ControlFlowNode for super() | runtime | super(class D, self instance of D) | builtin-class super |
-| g_class_init.py:42 | ControlFlowNode for Str | import | 'v2' | builtin-class str |
-| g_class_init.py:43 | ControlFlowNode for Str | import | 'v3' | builtin-class str |
+| g_class_init.py:42 | ControlFlowNode for StringLiteral | import | 'v2' | builtin-class str |
+| g_class_init.py:43 | ControlFlowNode for StringLiteral | import | 'v3' | builtin-class str |
 | g_class_init.py:45 | ControlFlowNode for ClassExpr | import | class E | builtin-class type |
 | g_class_init.py:45 | ControlFlowNode for object | import | builtin-class object | builtin-class type |
 | g_class_init.py:46 | ControlFlowNode for FunctionExpr | import | Function E.__init__ | builtin-class function |
@@ -263,11 +263,11 @@
 | h_classes.py:1 | ControlFlowNode for ImportExpr | import | Module sys | builtin-class module |
 | h_classes.py:3 | ControlFlowNode for ClassExpr | import | class C | builtin-class type |
 | h_classes.py:3 | ControlFlowNode for object | import | builtin-class object | builtin-class type |
-| h_classes.py:5 | ControlFlowNode for Str | import | 'C_x' | builtin-class str |
+| h_classes.py:5 | ControlFlowNode for StringLiteral | import | 'C_x' | builtin-class str |
 | h_classes.py:7 | ControlFlowNode for FunctionExpr | import | Function C.__init__ | builtin-class function |
-| h_classes.py:8 | ControlFlowNode for Str | code/h_classes.py:10 from import | 'c_y' | builtin-class str |
-| h_classes.py:8 | ControlFlowNode for Str | code/h_classes.py:15 from runtime | 'c_y' | builtin-class str |
-| h_classes.py:8 | ControlFlowNode for Str | runtime | 'c_y' | builtin-class str |
+| h_classes.py:8 | ControlFlowNode for StringLiteral | code/h_classes.py:10 from import | 'c_y' | builtin-class str |
+| h_classes.py:8 | ControlFlowNode for StringLiteral | code/h_classes.py:15 from runtime | 'c_y' | builtin-class str |
+| h_classes.py:8 | ControlFlowNode for StringLiteral | runtime | 'c_y' | builtin-class str |
 | h_classes.py:8 | ControlFlowNode for self | runtime | self instance of C | class C |
 | h_classes.py:10 | ControlFlowNode for C | import | class C | builtin-class type |
 | h_classes.py:10 | ControlFlowNode for C() | import | C() | class C |
@@ -333,7 +333,7 @@
 | h_classes.py:52 | ControlFlowNode for FunctionExpr | import | Function D.n | builtin-class function |
 | h_classes.py:55 | ControlFlowNode for int | import | builtin-class int | builtin-class type |
 | h_classes.py:55 | ControlFlowNode for int() | import | int() | builtin-class int |
-| h_classes.py:56 | ControlFlowNode for Str | import | '' | builtin-class str |
+| h_classes.py:56 | ControlFlowNode for StringLiteral | import | '' | builtin-class str |
 | h_classes.py:56 | ControlFlowNode for type | import | builtin-class type | builtin-class type |
 | h_classes.py:56 | ControlFlowNode for type() | import | builtin-class str | builtin-class type |
 | h_classes.py:56 | ControlFlowNode for type()() | import | type()() | builtin-class str |
@@ -341,7 +341,7 @@
 | h_classes.py:57 | ControlFlowNode for list() | import | list() | builtin-class list |
 | h_classes.py:58 | ControlFlowNode for dict | import | builtin-class dict | builtin-class type |
 | h_classes.py:58 | ControlFlowNode for dict() | import | dict() | builtin-class dict |
-| h_classes.py:59 | ControlFlowNode for Str | import | 'hi' | builtin-class str |
+| h_classes.py:59 | ControlFlowNode for StringLiteral | import | 'hi' | builtin-class str |
 | h_classes.py:59 | ControlFlowNode for bool | import | builtin-class bool | builtin-class type |
 | h_classes.py:59 | ControlFlowNode for bool() | import | bool True | builtin-class bool |
 | h_classes.py:60 | ControlFlowNode for IntegerLiteral | import | int 0 | builtin-class int |
@@ -373,11 +373,9 @@
 | i_imports.py:30 | ControlFlowNode for _io | import | Module _io | builtin-class module |
 | i_imports.py:31 | ControlFlowNode for Attribute | import | builtin-class _io.BytesIO | builtin-class type |
 | i_imports.py:31 | ControlFlowNode for _io | import | Module _io | builtin-class module |
-| i_imports.py:33 | ControlFlowNode for ImportExpr | import | Module io | builtin-class module |
-| i_imports.py:34 | ControlFlowNode for Attribute | import | builtin-class _io.StringIO | builtin-class type |
-| i_imports.py:34 | ControlFlowNode for io | import | Module io | builtin-class module |
-| i_imports.py:35 | ControlFlowNode for Attribute | import | builtin-class _io.BytesIO | builtin-class type |
-| i_imports.py:35 | ControlFlowNode for io | import | Module io | builtin-class module |
+| i_imports.py:33 | ControlFlowNode for ImportExpr | import | Missing module io | builtin-class module |
+| i_imports.py:34 | ControlFlowNode for io | import | Missing module io | builtin-class module |
+| i_imports.py:35 | ControlFlowNode for io | import | Missing module io | builtin-class module |
 | i_imports.py:37 | ControlFlowNode for ImportExpr | import | Package code | builtin-class module |
 | i_imports.py:38 | ControlFlowNode for Attribute | import | Function f2 | builtin-class function |
 | i_imports.py:38 | ControlFlowNode for Attribute | import | Module code.n_nesting | builtin-class module |
@@ -409,8 +407,8 @@
 | k_getsetattr.py:6 | ControlFlowNode for FunctionExpr | import | Function C.meth1 | builtin-class function |
 | k_getsetattr.py:7 | ControlFlowNode for IntegerLiteral | code/k_getsetattr.py:15 from runtime | int 0 | builtin-class int |
 | k_getsetattr.py:7 | ControlFlowNode for IntegerLiteral | runtime | int 0 | builtin-class int |
-| k_getsetattr.py:7 | ControlFlowNode for Str | code/k_getsetattr.py:15 from runtime | 'a' | builtin-class str |
-| k_getsetattr.py:7 | ControlFlowNode for Str | runtime | 'a' | builtin-class str |
+| k_getsetattr.py:7 | ControlFlowNode for StringLiteral | code/k_getsetattr.py:15 from runtime | 'a' | builtin-class str |
+| k_getsetattr.py:7 | ControlFlowNode for StringLiteral | runtime | 'a' | builtin-class str |
 | k_getsetattr.py:7 | ControlFlowNode for self | code/k_getsetattr.py:15 from runtime | self instance of C | class C |
 | k_getsetattr.py:7 | ControlFlowNode for self | runtime | self instance of C | class C |
 | k_getsetattr.py:7 | ControlFlowNode for setattr | code/k_getsetattr.py:15 from runtime | Builtin-function setattr | builtin-class builtin_function_or_method |
@@ -419,24 +417,24 @@
 | k_getsetattr.py:7 | ControlFlowNode for setattr() | runtime | None | builtin-class NoneType |
 | k_getsetattr.py:8 | ControlFlowNode for IntegerLiteral | code/k_getsetattr.py:15 from runtime | int 1 | builtin-class int |
 | k_getsetattr.py:8 | ControlFlowNode for IntegerLiteral | runtime | int 1 | builtin-class int |
-| k_getsetattr.py:8 | ControlFlowNode for Str | code/k_getsetattr.py:15 from runtime | 'b' | builtin-class str |
-| k_getsetattr.py:8 | ControlFlowNode for Str | runtime | 'b' | builtin-class str |
+| k_getsetattr.py:8 | ControlFlowNode for StringLiteral | code/k_getsetattr.py:15 from runtime | 'b' | builtin-class str |
+| k_getsetattr.py:8 | ControlFlowNode for StringLiteral | runtime | 'b' | builtin-class str |
 | k_getsetattr.py:8 | ControlFlowNode for self | code/k_getsetattr.py:15 from runtime | self instance of C | class C |
 | k_getsetattr.py:8 | ControlFlowNode for self | runtime | self instance of C | class C |
 | k_getsetattr.py:8 | ControlFlowNode for setattr | code/k_getsetattr.py:15 from runtime | Builtin-function setattr | builtin-class builtin_function_or_method |
 | k_getsetattr.py:8 | ControlFlowNode for setattr | runtime | Builtin-function setattr | builtin-class builtin_function_or_method |
 | k_getsetattr.py:8 | ControlFlowNode for setattr() | code/k_getsetattr.py:15 from runtime | None | builtin-class NoneType |
 | k_getsetattr.py:8 | ControlFlowNode for setattr() | runtime | None | builtin-class NoneType |
-| k_getsetattr.py:9 | ControlFlowNode for Str | code/k_getsetattr.py:15 from runtime | 'a' | builtin-class str |
-| k_getsetattr.py:9 | ControlFlowNode for Str | runtime | 'a' | builtin-class str |
+| k_getsetattr.py:9 | ControlFlowNode for StringLiteral | code/k_getsetattr.py:15 from runtime | 'a' | builtin-class str |
+| k_getsetattr.py:9 | ControlFlowNode for StringLiteral | runtime | 'a' | builtin-class str |
 | k_getsetattr.py:9 | ControlFlowNode for getattr | code/k_getsetattr.py:15 from runtime | Builtin-function getattr | builtin-class builtin_function_or_method |
 | k_getsetattr.py:9 | ControlFlowNode for getattr | runtime | Builtin-function getattr | builtin-class builtin_function_or_method |
 | k_getsetattr.py:9 | ControlFlowNode for getattr() | code/k_getsetattr.py:15 from runtime | int 0 | builtin-class int |
 | k_getsetattr.py:9 | ControlFlowNode for getattr() | runtime | int 0 | builtin-class int |
 | k_getsetattr.py:9 | ControlFlowNode for self | code/k_getsetattr.py:15 from runtime | self instance of C | class C |
 | k_getsetattr.py:9 | ControlFlowNode for self | runtime | self instance of C | class C |
-| k_getsetattr.py:10 | ControlFlowNode for Str | code/k_getsetattr.py:15 from runtime | 'c' | builtin-class str |
-| k_getsetattr.py:10 | ControlFlowNode for Str | runtime | 'c' | builtin-class str |
+| k_getsetattr.py:10 | ControlFlowNode for StringLiteral | code/k_getsetattr.py:15 from runtime | 'c' | builtin-class str |
+| k_getsetattr.py:10 | ControlFlowNode for StringLiteral | runtime | 'c' | builtin-class str |
 | k_getsetattr.py:10 | ControlFlowNode for getattr | code/k_getsetattr.py:15 from runtime | Builtin-function getattr | builtin-class builtin_function_or_method |
 | k_getsetattr.py:10 | ControlFlowNode for getattr | runtime | Builtin-function getattr | builtin-class builtin_function_or_method |
 | k_getsetattr.py:10 | ControlFlowNode for getattr() | code/k_getsetattr.py:15 from runtime | int 2 | builtin-class int |
@@ -444,27 +442,27 @@
 | k_getsetattr.py:10 | ControlFlowNode for self | runtime | self instance of C | class C |
 | k_getsetattr.py:12 | ControlFlowNode for FunctionExpr | import | Function C.meth2 | builtin-class function |
 | k_getsetattr.py:13 | ControlFlowNode for FloatLiteral | runtime | float 7.0 | builtin-class float |
-| k_getsetattr.py:13 | ControlFlowNode for Str | runtime | 'a' | builtin-class str |
+| k_getsetattr.py:13 | ControlFlowNode for StringLiteral | runtime | 'a' | builtin-class str |
 | k_getsetattr.py:13 | ControlFlowNode for self | runtime | self instance of C | class C |
 | k_getsetattr.py:13 | ControlFlowNode for setattr | runtime | Builtin-function setattr | builtin-class builtin_function_or_method |
 | k_getsetattr.py:13 | ControlFlowNode for setattr() | runtime | None | builtin-class NoneType |
 | k_getsetattr.py:14 | ControlFlowNode for IntegerLiteral | runtime | int 2 | builtin-class int |
-| k_getsetattr.py:14 | ControlFlowNode for Str | runtime | 'c' | builtin-class str |
+| k_getsetattr.py:14 | ControlFlowNode for StringLiteral | runtime | 'c' | builtin-class str |
 | k_getsetattr.py:14 | ControlFlowNode for self | runtime | self instance of C | class C |
 | k_getsetattr.py:14 | ControlFlowNode for setattr | runtime | Builtin-function setattr | builtin-class builtin_function_or_method |
 | k_getsetattr.py:14 | ControlFlowNode for setattr() | runtime | None | builtin-class NoneType |
 | k_getsetattr.py:15 | ControlFlowNode for Attribute | runtime | Method(Function C.meth1, self instance of C) | builtin-class method |
 | k_getsetattr.py:15 | ControlFlowNode for Attribute() | runtime | None | builtin-class NoneType |
 | k_getsetattr.py:15 | ControlFlowNode for self | runtime | self instance of C | class C |
-| k_getsetattr.py:16 | ControlFlowNode for Str | runtime | 'a' | builtin-class str |
+| k_getsetattr.py:16 | ControlFlowNode for StringLiteral | runtime | 'a' | builtin-class str |
 | k_getsetattr.py:16 | ControlFlowNode for getattr | runtime | Builtin-function getattr | builtin-class builtin_function_or_method |
 | k_getsetattr.py:16 | ControlFlowNode for getattr() | runtime | int 0 | builtin-class int |
 | k_getsetattr.py:16 | ControlFlowNode for self | runtime | self instance of C | class C |
-| k_getsetattr.py:17 | ControlFlowNode for Str | runtime | 'b' | builtin-class str |
+| k_getsetattr.py:17 | ControlFlowNode for StringLiteral | runtime | 'b' | builtin-class str |
 | k_getsetattr.py:17 | ControlFlowNode for getattr | runtime | Builtin-function getattr | builtin-class builtin_function_or_method |
 | k_getsetattr.py:17 | ControlFlowNode for getattr() | runtime | int 1 | builtin-class int |
 | k_getsetattr.py:17 | ControlFlowNode for self | runtime | self instance of C | class C |
-| k_getsetattr.py:18 | ControlFlowNode for Str | runtime | 'c' | builtin-class str |
+| k_getsetattr.py:18 | ControlFlowNode for StringLiteral | runtime | 'c' | builtin-class str |
 | k_getsetattr.py:18 | ControlFlowNode for getattr | runtime | Builtin-function getattr | builtin-class builtin_function_or_method |
 | k_getsetattr.py:18 | ControlFlowNode for getattr() | runtime | int 2 | builtin-class int |
 | k_getsetattr.py:18 | ControlFlowNode for self | runtime | self instance of C | class C |
@@ -492,8 +490,8 @@
 | l_calls.py:4 | ControlFlowNode for Attribute | runtime | Method(builtin method append, List) | builtin-class method |
 | l_calls.py:4 | ControlFlowNode for Attribute() | code/l_calls.py:9 from import | None | builtin-class NoneType |
 | l_calls.py:4 | ControlFlowNode for Attribute() | runtime | None | builtin-class NoneType |
-| l_calls.py:4 | ControlFlowNode for Str | code/l_calls.py:9 from import | 'x' | builtin-class str |
-| l_calls.py:4 | ControlFlowNode for Str | runtime | 'x' | builtin-class str |
+| l_calls.py:4 | ControlFlowNode for StringLiteral | code/l_calls.py:9 from import | 'x' | builtin-class str |
+| l_calls.py:4 | ControlFlowNode for StringLiteral | runtime | 'x' | builtin-class str |
 | l_calls.py:4 | ControlFlowNode for x | code/l_calls.py:9 from import | List | builtin-class list |
 | l_calls.py:4 | ControlFlowNode for x | runtime | List | builtin-class list |
 | l_calls.py:6 | ControlFlowNode for FunctionExpr | import | Function bar | builtin-class function |
@@ -558,9 +556,9 @@
 | l_calls.py:39 | ControlFlowNode for IntegerLiteral | import | int 3 | builtin-class int |
 | l_calls.py:39 | ControlFlowNode for IntegerLiteral | import | int 4 | builtin-class int |
 | l_calls.py:39 | ControlFlowNode for IntegerLiteral | import | int 5 | builtin-class int |
-| l_calls.py:41 | ControlFlowNode for Str | import | 'a' | builtin-class str |
-| l_calls.py:41 | ControlFlowNode for Str | import | 'b' | builtin-class str |
-| l_calls.py:41 | ControlFlowNode for Str | import | 'c' | builtin-class str |
+| l_calls.py:41 | ControlFlowNode for StringLiteral | import | 'a' | builtin-class str |
+| l_calls.py:41 | ControlFlowNode for StringLiteral | import | 'b' | builtin-class str |
+| l_calls.py:41 | ControlFlowNode for StringLiteral | import | 'c' | builtin-class str |
 | l_calls.py:41 | ControlFlowNode for Tuple | import | ('a', 'b', 'c', ) | builtin-class tuple |
 | l_calls.py:42 | ControlFlowNode for f | import | Function f | builtin-class function |
 | l_calls.py:42 | ControlFlowNode for f() | import | ('a', 'b', 'c', ) | builtin-class tuple |
@@ -596,7 +594,7 @@
 | l_calls.py:63 | ControlFlowNode for Attribute | import | builtin method get | builtin-class method_descriptor |
 | l_calls.py:63 | ControlFlowNode for Dict | import | Dict | builtin-class dict |
 | l_calls.py:63 | ControlFlowNode for IntegerLiteral | import | int 5 | builtin-class int |
-| l_calls.py:63 | ControlFlowNode for Str | import | 'foo' | builtin-class str |
+| l_calls.py:63 | ControlFlowNode for StringLiteral | import | 'foo' | builtin-class str |
 | l_calls.py:63 | ControlFlowNode for dict | import | builtin-class dict | builtin-class type |
 | l_calls.py:64 | ControlFlowNode for a | import | builtin method bit_length | builtin-class method_descriptor |
 | l_calls.py:64 | ControlFlowNode for b | import | instance of int | builtin-class int |
@@ -633,7 +631,7 @@
 | n_nesting.py:10 | ControlFlowNode for FunctionExpr | runtime | Function foo.inner | builtin-class function |
 | n_nesting.py:13 | ControlFlowNode for FunctionExpr | runtime | Function foo.inner | builtin-class function |
 | n_nesting.py:15 | ControlFlowNode for Dict | runtime | Dict | builtin-class dict |
-| n_nesting.py:16 | ControlFlowNode for Str | runtime | 'inner' | builtin-class str |
+| n_nesting.py:16 | ControlFlowNode for StringLiteral | runtime | 'inner' | builtin-class str |
 | n_nesting.py:16 | ControlFlowNode for inner | runtime | Function foo.inner | builtin-class function |
 | n_nesting.py:18 | ControlFlowNode for attrs | runtime | Dict | builtin-class dict |
 | n_nesting.py:22 | ControlFlowNode for FunctionExpr | import | Function f1 | builtin-class function |
@@ -678,8 +676,8 @@
 | n_nesting.py:32 | ControlFlowNode for ClassExpr | import | class D | builtin-class type |
 | n_nesting.py:34 | ControlFlowNode for IntegerLiteral | import | int 1 | builtin-class int |
 | p_decorators.py:3 | ControlFlowNode for FunctionExpr | import | Function simple | builtin-class function |
-| p_decorators.py:4 | ControlFlowNode for Str | code/p_decorators.py:7 from import | 'Hello' | builtin-class str |
-| p_decorators.py:4 | ControlFlowNode for Str | runtime | 'Hello' | builtin-class str |
+| p_decorators.py:4 | ControlFlowNode for StringLiteral | code/p_decorators.py:7 from import | 'Hello' | builtin-class str |
+| p_decorators.py:4 | ControlFlowNode for StringLiteral | runtime | 'Hello' | builtin-class str |
 | p_decorators.py:4 | ControlFlowNode for func | code/p_decorators.py:7 from import | Function foo | builtin-class function |
 | p_decorators.py:5 | ControlFlowNode for func | code/p_decorators.py:7 from import | Function foo | builtin-class function |
 | p_decorators.py:7 | ControlFlowNode for simple | import | Function simple | builtin-class function |
@@ -692,7 +690,7 @@
 | p_decorators.py:14 | ControlFlowNode for func | code/p_decorators.py:17 from import | Function bar | builtin-class function |
 | p_decorators.py:15 | ControlFlowNode for annotate | code/p_decorators.py:17 from import | Function complex.annotate | builtin-class function |
 | p_decorators.py:15 | ControlFlowNode for annotate | runtime | Function complex.annotate | builtin-class function |
-| p_decorators.py:17 | ControlFlowNode for Str | import | 'Hi' | builtin-class str |
+| p_decorators.py:17 | ControlFlowNode for StringLiteral | import | 'Hi' | builtin-class str |
 | p_decorators.py:17 | ControlFlowNode for complex | import | Function complex | builtin-class function |
 | p_decorators.py:17 | ControlFlowNode for complex() | import | Function complex.annotate | builtin-class function |
 | p_decorators.py:17 | ControlFlowNode for complex()() | import | Function bar | builtin-class function |
@@ -887,7 +885,7 @@
 | r_regressions.py:52 | ControlFlowNode for fail | runtime | Function fail | builtin-class function |
 | r_regressions.py:52 | ControlFlowNode for fail() | runtime | None | builtin-class NoneType |
 | r_regressions.py:58 | ControlFlowNode for FunctionExpr | import | Function method_decorator | builtin-class function |
-| r_regressions.py:58 | ControlFlowNode for Str | import | '' | builtin-class str |
+| r_regressions.py:58 | ControlFlowNode for StringLiteral | import | '' | builtin-class str |
 | r_regressions.py:61 | ControlFlowNode for FunctionExpr | code/r_regressions.py:85 from import | Function method_decorator._dec | builtin-class function |
 | r_regressions.py:61 | ControlFlowNode for FunctionExpr | runtime | Function method_decorator._dec | builtin-class function |
 | r_regressions.py:62 | ControlFlowNode for isinstance | code/r_regressions.py:85 from import | Builtin-function isinstance | builtin-class builtin_function_or_method |
@@ -907,7 +905,7 @@
 | r_regressions.py:80 | ControlFlowNode for FunctionExpr | import | Function deco | builtin-class function |
 | r_regressions.py:81 | ControlFlowNode for FunctionExpr | runtime | Function deco._wrapper | builtin-class function |
 | r_regressions.py:83 | ControlFlowNode for _wrapper | runtime | Function deco._wrapper | builtin-class function |
-| r_regressions.py:85 | ControlFlowNode for Str | import | 'method' | builtin-class str |
+| r_regressions.py:85 | ControlFlowNode for StringLiteral | import | 'method' | builtin-class str |
 | r_regressions.py:85 | ControlFlowNode for deco | import | Function deco | builtin-class function |
 | r_regressions.py:85 | ControlFlowNode for method_decorator | import | Function method_decorator | builtin-class function |
 | r_regressions.py:85 | ControlFlowNode for method_decorator() | import | Function method_decorator._dec | builtin-class function |
@@ -915,8 +913,8 @@
 | r_regressions.py:86 | ControlFlowNode for ClassExpr | import | class TestFirst | builtin-class type |
 | r_regressions.py:86 | ControlFlowNode for object | import | builtin-class object | builtin-class type |
 | r_regressions.py:87 | ControlFlowNode for FunctionExpr | import | Function TestFirst.method | builtin-class function |
-| r_regressions.py:88 | ControlFlowNode for Str | code/r_regressions.py:90 from import | 'hello world' | builtin-class str |
-| r_regressions.py:88 | ControlFlowNode for Str | runtime | 'hello world' | builtin-class str |
+| r_regressions.py:88 | ControlFlowNode for StringLiteral | code/r_regressions.py:90 from import | 'hello world' | builtin-class str |
+| r_regressions.py:88 | ControlFlowNode for StringLiteral | runtime | 'hello world' | builtin-class str |
 | r_regressions.py:90 | ControlFlowNode for Attribute | import | Method(Function TestFirst.method, TestFirst()) | builtin-class method |
 | r_regressions.py:90 | ControlFlowNode for Attribute() | import | 'hello world' | builtin-class str |
 | r_regressions.py:90 | ControlFlowNode for TestFirst | import | class TestFirst | builtin-class type |
@@ -926,7 +924,7 @@
 | r_regressions.py:95 | ControlFlowNode for sys | import | Module sys | builtin-class module |
 | r_regressions.py:97 | ControlFlowNode for Compare | import | bool False | builtin-class bool |
 | r_regressions.py:97 | ControlFlowNode for Compare | import | bool True | builtin-class bool |
-| r_regressions.py:97 | ControlFlowNode for Str | import | 'time' | builtin-class str |
+| r_regressions.py:97 | ControlFlowNode for StringLiteral | import | 'time' | builtin-class str |
 | r_regressions.py:97 | ControlFlowNode for _names | import | (..., ...) | builtin-class tuple |
 | r_regressions.py:98 | ControlFlowNode for ImportExpr | import | Module time | builtin-class module |
 | r_regressions.py:100 | ControlFlowNode for C | import | class C | builtin-class type |

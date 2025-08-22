@@ -12,7 +12,7 @@
 
 <p>Use <code>String.count</code> when working with a <code>String</code>. Use <code>NSString.length</code> when working with an <code>NSString</code>. Do not mix values for lengths and offsets between the two types as they are not compatible measures.</p>
 
-<p>If you need to convert between <code>Range</code> and <code>NSRange</code>, do so directly using the appropriate constructor. Do not attempt to use incompatible length and offset values to accomplish conversion.</p>
+<p>If you need to convert between <code>Range</code> and <code>NSRange</code>, do so directly using the appropriate initializer. Do not attempt to use incompatible length and offset values to accomplish conversion.</p>
 
 </recommendation>
 <example>

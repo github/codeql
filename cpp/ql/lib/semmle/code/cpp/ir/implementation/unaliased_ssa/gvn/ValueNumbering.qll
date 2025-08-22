@@ -7,24 +7,26 @@ private import internal.ValueNumberingImports
 class ValueNumber extends TValueNumber {
   final string toString() { result = "GVN" }
 
-  final string getDebugString() { result = strictconcat(getAnInstruction().getResultId(), ", ") }
+  final string getDebugString() {
+    result = strictconcat(this.getAnInstruction().getResultId(), ", ")
+  }
 
   final Language::Location getLocation() {
     if
       exists(Instruction i |
-        i = getAnInstruction() and not i.getLocation() instanceof Language::UnknownLocation
+        i = this.getAnInstruction() and not i.getLocation() instanceof Language::UnknownLocation
       )
     then
       result =
         min(Language::Location l |
-          l = getAnInstruction().getLocation() and not l instanceof Language::UnknownLocation
+          l = this.getAnInstruction().getLocation() and not l instanceof Language::UnknownLocation
         |
           l
           order by
             l.getFile().getAbsolutePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
             l.getEndColumn()
         )
-    else result instanceof Language::UnknownDefaultLocation
+    else result instanceof Language::UnknownLocation
   }
 
   /**
@@ -40,7 +42,7 @@ class ValueNumber extends TValueNumber {
   final Instruction getExampleInstruction() {
     result =
       min(Instruction instr |
-        instr = getAnInstruction()
+        instr = this.getAnInstruction()
       |
         instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
       )
@@ -49,6 +51,7 @@ class ValueNumber extends TValueNumber {
   /**
    * Gets an `Operand` whose definition is exact and has this value number.
    */
+  pragma[nomagic]
   final Operand getAUse() { this = valueNumber(result.getDef()) }
 
   final string getKind() {

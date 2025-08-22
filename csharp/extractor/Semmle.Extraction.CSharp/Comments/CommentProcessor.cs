@@ -1,8 +1,8 @@
-using Microsoft.CodeAnalysis;
-using Semmle.Extraction.CSharp.Entities;
-using Semmle.Util;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.CodeAnalysis;
+using Semmle.Util;
+using Semmle.Extraction.CSharp.Entities;
 
 namespace Semmle.Extraction.CSharp
 {
@@ -19,10 +19,10 @@ namespace Semmle.Extraction.CSharp
         }
 
         // Comments sorted by location.
-        private readonly SortedDictionary<Location, CommentLine> comments = new SortedDictionary<Location, CommentLine>(new LocationComparer());
+        private readonly SortedDictionary<Microsoft.CodeAnalysis.Location, CommentLine> comments = new SortedDictionary<Microsoft.CodeAnalysis.Location, CommentLine>(new LocationComparer());
 
         // Program elements sorted by location.
-        private readonly SortedDictionary<Location, Label> elements = new SortedDictionary<Location, Label>(new LocationComparer());
+        private readonly SortedDictionary<Microsoft.CodeAnalysis.Location, Label> elements = new SortedDictionary<Microsoft.CodeAnalysis.Location, Label>(new LocationComparer());
 
         private readonly Dictionary<Label, Key> duplicationGuardKeys = new Dictionary<Label, Key>();
 
@@ -33,9 +33,9 @@ namespace Semmle.Extraction.CSharp
             return null;
         }
 
-        private class LocationComparer : IComparer<Location>
+        private class LocationComparer : IComparer<Microsoft.CodeAnalysis.Location>
         {
-            public int Compare(Location? l1, Location? l2) => CommentProcessor.Compare(l1, l2);
+            public int Compare(Microsoft.CodeAnalysis.Location? l1, Microsoft.CodeAnalysis.Location? l2) => CommentProcessor.Compare(l1, l2);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Semmle.Extraction.CSharp
         /// <param name="l1">First location</param>
         /// <param name="l2">Second location</param>
         /// <returns>&lt;0 if l1 before l2, &gt;0 if l1 after l2, else 0.</returns>
-        private static int Compare(Location? l1, Location? l2)
+        private static int Compare(Microsoft.CodeAnalysis.Location? l1, Microsoft.CodeAnalysis.Location? l2)
         {
             if (object.ReferenceEquals(l1, l2))
                 return 0;
@@ -68,7 +68,7 @@ namespace Semmle.Extraction.CSharp
         /// <param name="elementLabel">The label of the element in the trap file.</param>
         /// <param name="duplicationGuardKey">The duplication guard key of the element, if any.</param>
         /// <param name="loc">The location of the element.</param>
-        public void AddElement(Label elementLabel, Key? duplicationGuardKey, Location? loc)
+        public void AddElement(Label elementLabel, Key? duplicationGuardKey, Microsoft.CodeAnalysis.Location? loc)
         {
             if (loc is not null && loc.IsInSource)
                 elements[loc] = elementLabel;
@@ -78,7 +78,7 @@ namespace Semmle.Extraction.CSharp
 
         // Ensure that commentBlock and element refer to the same file
         // which can happen when processing multiple files.
-        private static void EnsureSameFile(Comments.CommentBlock commentBlock, ref KeyValuePair<Location, Label>? element)
+        private static void EnsureSameFile(Comments.CommentBlock commentBlock, ref KeyValuePair<Microsoft.CodeAnalysis.Location, Label>? element)
         {
             if (element is not null && element.Value.Key.SourceTree != commentBlock.Location.SourceTree)
                 element = null;
@@ -96,9 +96,9 @@ namespace Semmle.Extraction.CSharp
         /// <param name="callback">Output binding information.</param>
         private void GenerateBindings(
             Comments.CommentBlock commentBlock,
-            KeyValuePair<Location, Label>? previousElement,
-            KeyValuePair<Location, Label>? nextElement,
-            KeyValuePair<Location, Label>? parentElement,
+            KeyValuePair<Microsoft.CodeAnalysis.Location, Label>? previousElement,
+            KeyValuePair<Microsoft.CodeAnalysis.Location, Label>? nextElement,
+            KeyValuePair<Microsoft.CodeAnalysis.Location, Label>? parentElement,
             CommentBindingCallback callback
             )
         {
@@ -125,7 +125,7 @@ namespace Semmle.Extraction.CSharp
             }
 
             // Heuristic to decide which is the "best" element associated with the comment.
-            KeyValuePair<Location, Label>? bestElement;
+            KeyValuePair<Microsoft.CodeAnalysis.Location, Label>? bestElement;
 
             if (previousElement is not null && previousElement.Value.Key.EndLine() == commentBlock.Location.StartLine())
             {
@@ -180,14 +180,14 @@ namespace Semmle.Extraction.CSharp
         private class ElementStack
         {
             // Invariant: the top of the stack must be contained by items below it.
-            private readonly Stack<KeyValuePair<Location, Label>> elementStack = new Stack<KeyValuePair<Location, Label>>();
+            private readonly Stack<KeyValuePair<Microsoft.CodeAnalysis.Location, Label>> elementStack = new();
 
             /// <summary>
             /// Add a new element to the stack.
             /// </summary>
             /// The stack is maintained.
             /// <param name="value">The new element to push.</param>
-            public void Push(KeyValuePair<Location, Label> value)
+            public void Push(KeyValuePair<Microsoft.CodeAnalysis.Location, Label> value)
             {
                 // Maintain the invariant by popping existing elements
                 while (elementStack.Count > 0 && !elementStack.Peek().Key.Contains(value.Key))
@@ -201,7 +201,7 @@ namespace Semmle.Extraction.CSharp
             /// </summary>
             /// <param name="l">The location of the comment.</param>
             /// <returns>An element completely containing l, or null if none found.</returns>
-            public KeyValuePair<Location, Label>? FindParent(Location l) =>
+            public KeyValuePair<Microsoft.CodeAnalysis.Location, Label>? FindParent(Microsoft.CodeAnalysis.Location l) =>
                 elementStack.Where(v => v.Key.Contains(l)).FirstOrNull();
 
             /// <summary>
@@ -209,7 +209,7 @@ namespace Semmle.Extraction.CSharp
             /// </summary>
             /// <param name="l">The location of the comment.</param>
             /// <returns>The element before l, or null.</returns>
-            public KeyValuePair<Location, Label>? FindBefore(Location l)
+            public KeyValuePair<Microsoft.CodeAnalysis.Location, Label>? FindBefore(Microsoft.CodeAnalysis.Location l)
             {
                 return elementStack
                     .Where(v => v.Key.SourceSpan.End < l.SourceSpan.Start)
@@ -222,7 +222,7 @@ namespace Semmle.Extraction.CSharp
             /// <param name="comment">The location of the comment.</param>
             /// <param name="next">The next element.</param>
             /// <returns>The next element.</returns>
-            public KeyValuePair<Location, Label>? FindAfter(Location comment, KeyValuePair<Location, Label>? next)
+            public KeyValuePair<Microsoft.CodeAnalysis.Location, Label>? FindAfter(Microsoft.CodeAnalysis.Location comment, KeyValuePair<Microsoft.CodeAnalysis.Location, Label>? next)
             {
                 var p = FindParent(comment);
                 return next.HasValue && p.HasValue && p.Value.Key.Before(next.Value.Key) ? null : next;
@@ -233,7 +233,7 @@ namespace Semmle.Extraction.CSharp
         private void GenerateBindings(
             Comments.CommentBlock block,
             ElementStack elementStack,
-            KeyValuePair<Location, Label>? nextElement,
+            KeyValuePair<Microsoft.CodeAnalysis.Location, Label>? nextElement,
             CommentBindingCallback cb
             )
         {
@@ -259,8 +259,8 @@ namespace Semmle.Extraction.CSharp
         /// <param name="cb">Where to send the results.</param>
         /// <returns>true if there are more comments to process, false otherwise.</returns>
         private bool GenerateBindings(
-            IEnumerator<KeyValuePair<Location, CommentLine>> commentEnumerator,
-            KeyValuePair<Location, Label>? nextElement,
+            IEnumerator<KeyValuePair<Microsoft.CodeAnalysis.Location, CommentLine>> commentEnumerator,
+            KeyValuePair<Microsoft.CodeAnalysis.Location, Label>? nextElement,
             ElementStack elementStack,
             CommentBindingCallback cb
             )
@@ -319,8 +319,8 @@ namespace Semmle.Extraction.CSharp
 
             var elementStack = new ElementStack();
 
-            using IEnumerator<KeyValuePair<Location, Label>> elementEnumerator = elements.GetEnumerator();
-            using IEnumerator<KeyValuePair<Location, CommentLine>> commentEnumerator = comments.GetEnumerator();
+            using IEnumerator<KeyValuePair<Microsoft.CodeAnalysis.Location, Label>> elementEnumerator = elements.GetEnumerator();
+            using IEnumerator<KeyValuePair<Microsoft.CodeAnalysis.Location, CommentLine>> commentEnumerator = comments.GetEnumerator();
             if (!commentEnumerator.MoveNext())
             {
                 // There are no comments to process.

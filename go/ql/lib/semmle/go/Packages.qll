@@ -14,16 +14,32 @@ class Package extends @package {
   /** Gets the path of this package. */
   string getPath() {
     exists(string fullPath | packages(this, _, fullPath, _) |
-      result = fullPath.regexpReplaceAll("^.*/vendor/", "")
+      result = fullPath.regexpReplaceAll("^.*\\bvendor/", "")
     )
+  }
+
+  /**
+   * Gets the path of this package with the major version suffix (like "/v2")
+   * removed.
+   */
+  string getPathWithoutMajorVersionSuffix() {
+    result = this.getPath().regexpReplaceAll(majorVersionSuffixRegex(), "")
   }
 
   /** Gets the scope of this package. */
   PackageScope getScope() { packages(this, _, _, result) }
 
   /** Gets a textual representation of this element. */
-  string toString() { result = "package " + getPath() }
+  string toString() { result = "package " + this.getPath() }
 }
+
+/**
+ * Gets a regex that matches major version suffixes.
+ *
+ * For example, this will match "/v2" followed by the end of the string or a "/"
+ * (but it won't include the end of the string or the "/" in the match).
+ */
+string majorVersionSuffixRegex() { result = "[./]v\\d+(?=$|/)" }
 
 /**
  * Gets an import path that identifies a package in module `mod` with the given path,

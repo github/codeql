@@ -12,24 +12,49 @@ import CommandInjectionCustomizations::CommandInjection
 import IndirectCommandArgument
 
 /**
+ * Holds if `sink` is a data flow sink for command-injection vulnerabilities, and
+ * the alert should be placed at the node `highlight`.
+ */
+predicate isSinkWithHighlight(DataFlow::Node sink, DataFlow::Node highlight) {
+  sink instanceof Sink and highlight = sink
+  or
+  isIndirectCommandArgument(sink, highlight)
+}
+
+/**
  * A taint-tracking configuration for reasoning about command-injection vulnerabilities.
  */
-class Configuration extends TaintTracking::Configuration {
+module CommandInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { isSinkWithHighlight(sink, _) }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(DataFlow::Node node |
+      isSinkWithHighlight(sink, node) and
+      result = node.getLocation()
+    )
+  }
+}
+
+/**
+ * Taint-tracking for reasoning about command-injection vulnerabilities.
+ */
+module CommandInjectionFlow = TaintTracking::Global<CommandInjectionConfig>;
+
+/**
+ * DEPRECATED. Use the `CommandInjectionFlow` module instead.
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "CommandInjection" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  override predicate isSource(DataFlow::Node source) { CommandInjectionConfig::isSource(source) }
 
-  /**
-   * Holds if `sink` is a data flow sink for command-injection vulnerabilities, and
-   * the alert should be placed at the node `highlight`.
-   */
-  predicate isSinkWithHighlight(DataFlow::Node sink, DataFlow::Node highlight) {
-    sink instanceof Sink and highlight = sink
-    or
-    isIndirectCommandArgument(sink, highlight)
-  }
+  override predicate isSink(DataFlow::Node sink) { CommandInjectionConfig::isSink(sink) }
 
-  override predicate isSink(DataFlow::Node sink) { isSinkWithHighlight(sink, _) }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+  override predicate isSanitizer(DataFlow::Node node) { CommandInjectionConfig::isBarrier(node) }
 }

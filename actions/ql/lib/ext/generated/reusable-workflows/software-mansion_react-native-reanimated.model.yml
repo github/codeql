@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["software-mansion/react-native-reanimated/.github/workflows/build-npm-package-action.yml", "*", "input.option", "code-injection", "generated"]

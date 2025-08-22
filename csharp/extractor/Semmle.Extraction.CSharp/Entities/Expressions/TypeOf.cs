@@ -1,6 +1,6 @@
-using Microsoft.CodeAnalysis.CSharp.Syntax; // lgtm[cs/similar-file]
+using System.IO; // lgtm[cs/similar-file]
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
-using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             TypeAccess.Create(Context, Syntax.Type, this, TypeAccessIndex);
         }
 
-        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, Microsoft.CodeAnalysis.ITypeSymbol type, Extraction.Entities.Location location)
+        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, Microsoft.CodeAnalysis.ITypeSymbol type, Location location)
         {
             var info = new ExpressionInfo(
                 cx,
@@ -26,7 +26,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 ExprKind.TYPEOF,
                 parent,
                 childIndex,
-                true,
+                isCompilerGenerated: true,
                 null);
 
             var ret = new Expression(info);

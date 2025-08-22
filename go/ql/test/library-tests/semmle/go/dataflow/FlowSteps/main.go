@@ -56,3 +56,12 @@ func testch() {
 	ch <- true
 	<-ch
 }
+
+func testMinMax() (int, int) {
+	x := 1
+	y := 2
+	z := 3
+	a := min(x, y, z)
+	b := max(x, y, z)
+	return a, b
+}

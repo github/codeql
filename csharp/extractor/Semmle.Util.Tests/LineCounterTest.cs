@@ -1,5 +1,4 @@
 using Xunit;
-
 using Semmle.Util;
 
 namespace SemmleTests

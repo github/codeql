@@ -1,33 +1,20 @@
 import go
-import TestUtilities.InlineExpectationsTest
+import semmle.go.dataflow.ExternalFlow
+import ModelValidation
+import utils.test.InlineFlowTest
 
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "test-configuration" }
-
-  override predicate isSource(DataFlow::Node source) {
-    source =
-      any(DataFlow::CallNode c | c.getCalleeName() in ["getTaintedByteArray", "getTaintedPatch"])
-          .getResult(0)
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(Function fn | fn.hasQualifiedName(_, ["getTaintedByteArray", "getTaintedPatch"]) |
+      source = fn.getACall().getResult()
+    )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink =
-      any(DataFlow::CallNode c | c.getCalleeName() in ["sinkByteArray", "sinkPatch"]).getArgument(0)
-  }
-}
-
-class TaintFlowTest extends InlineExpectationsTest {
-  TaintFlowTest() { this = "TaintFlowTest" }
-
-  override string getARelevantTag() { result = "taintflow" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    tag = "taintflow" and
-    exists(DataFlow::Node sink | any(Configuration c).hasFlow(_, sink) |
-      element = sink.toString() and
-      value = "" and
-      sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn())
+  predicate isSink(DataFlow::Node sink) {
+    exists(Function fn | fn.hasQualifiedName(_, ["sinkByteArray", "sinkPatch"]) |
+      sink = fn.getACall().getAnArgument()
     )
   }
 }
+
+import TaintFlowTest<Config>

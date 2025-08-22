@@ -1,2 +1,2 @@
-| run_under: $CODEQL_EXTRACTOR_SWIFT_ROOT/tools/$CODEQL_PLATFORM/extractor -sdk $CODEQL_EXTRACTOR_SWIFT_ROOT/qltest/$CODEQL_PLATFORM/sdk -c -primary-file filtered_in.swift |
-| run_under: $CODEQL_EXTRACTOR_SWIFT_ROOT/tools/$CODEQL_PLATFORM/extractor -sdk $CODEQL_EXTRACTOR_SWIFT_ROOT/qltest/$CODEQL_PLATFORM/sdk -c -primary-file unfiltered.swift |
+| run_under: $CODEQL_EXTRACTOR_SWIFT_ROOT/tools/$CODEQL_PLATFORM/extractor -resource-dir $CODEQL_EXTRACTOR_SWIFT_ROOT/resource-dir/$CODEQL_PLATFORM -c -primary-file filtered_in.swift |
+| run_under: $CODEQL_EXTRACTOR_SWIFT_ROOT/tools/$CODEQL_PLATFORM/extractor -resource-dir $CODEQL_EXTRACTOR_SWIFT_ROOT/resource-dir/$CODEQL_PLATFORM -c -primary-file unfiltered.swift |

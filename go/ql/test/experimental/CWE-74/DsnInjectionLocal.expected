@@ -1,0 +1,44 @@
+#select
+| Dsn.go:29:29:29:33 | dbDSN | Dsn.go:26:11:26:17 | selection of Args | Dsn.go:29:29:29:33 | dbDSN | This query depends on a $@. | Dsn.go:26:11:26:17 | selection of Args | user-provided value |
+| Dsn.go:68:29:68:33 | dbDSN | Dsn.go:63:19:63:25 | selection of Args | Dsn.go:68:29:68:33 | dbDSN | This query depends on a $@. | Dsn.go:63:19:63:25 | selection of Args | user-provided value |
+edges
+| Dsn.go:26:11:26:17 | selection of Args | Dsn.go:28:102:28:109 | index expression | provenance | Src:MaD:1  |
+| Dsn.go:28:11:28:110 | []type{args} [array] | Dsn.go:28:11:28:110 | call to Sprintf | provenance | MaD:2 |
+| Dsn.go:28:11:28:110 | call to Sprintf | Dsn.go:29:29:29:33 | dbDSN | provenance |  |
+| Dsn.go:28:102:28:109 | index expression | Dsn.go:28:11:28:110 | []type{args} [array] | provenance |  |
+| Dsn.go:28:102:28:109 | index expression | Dsn.go:28:11:28:110 | call to Sprintf | provenance | FunctionModel |
+| Dsn.go:62:2:62:4 | definition of cfg [pointer] | Dsn.go:63:9:63:11 | cfg [pointer] | provenance |  |
+| Dsn.go:62:2:62:4 | definition of cfg [pointer] | Dsn.go:67:102:67:104 | cfg [pointer] | provenance |  |
+| Dsn.go:63:9:63:11 | cfg [pointer] | Dsn.go:63:9:63:11 | implicit dereference | provenance |  |
+| Dsn.go:63:9:63:11 | implicit dereference | Dsn.go:62:2:62:4 | definition of cfg [pointer] | provenance |  |
+| Dsn.go:63:9:63:11 | implicit dereference | Dsn.go:67:102:67:108 | selection of dsn | provenance |  |
+| Dsn.go:63:19:63:25 | selection of Args | Dsn.go:63:19:63:29 | slice expression | provenance | Src:MaD:1  |
+| Dsn.go:63:19:63:29 | slice expression | Dsn.go:63:9:63:11 | implicit dereference | provenance | FunctionModel |
+| Dsn.go:67:11:67:109 | []type{args} [array] | Dsn.go:67:11:67:109 | call to Sprintf | provenance | MaD:2 |
+| Dsn.go:67:11:67:109 | call to Sprintf | Dsn.go:68:29:68:33 | dbDSN | provenance |  |
+| Dsn.go:67:102:67:104 | cfg [pointer] | Dsn.go:67:102:67:104 | implicit dereference | provenance |  |
+| Dsn.go:67:102:67:104 | implicit dereference | Dsn.go:63:9:63:11 | implicit dereference | provenance |  |
+| Dsn.go:67:102:67:104 | implicit dereference | Dsn.go:67:102:67:108 | selection of dsn | provenance |  |
+| Dsn.go:67:102:67:108 | selection of dsn | Dsn.go:67:11:67:109 | []type{args} [array] | provenance |  |
+| Dsn.go:67:102:67:108 | selection of dsn | Dsn.go:67:11:67:109 | call to Sprintf | provenance | FunctionModel |
+models
+| 1 | Source: os; ; false; Args; ; ; ; commandargs; manual |
+| 2 | Summary: fmt; ; false; Sprintf; ; ; Argument[1].ArrayElement; ReturnValue; taint; manual |
+nodes
+| Dsn.go:26:11:26:17 | selection of Args | semmle.label | selection of Args |
+| Dsn.go:28:11:28:110 | []type{args} [array] | semmle.label | []type{args} [array] |
+| Dsn.go:28:11:28:110 | call to Sprintf | semmle.label | call to Sprintf |
+| Dsn.go:28:102:28:109 | index expression | semmle.label | index expression |
+| Dsn.go:29:29:29:33 | dbDSN | semmle.label | dbDSN |
+| Dsn.go:62:2:62:4 | definition of cfg [pointer] | semmle.label | definition of cfg [pointer] |
+| Dsn.go:63:9:63:11 | cfg [pointer] | semmle.label | cfg [pointer] |
+| Dsn.go:63:9:63:11 | implicit dereference | semmle.label | implicit dereference |
+| Dsn.go:63:19:63:25 | selection of Args | semmle.label | selection of Args |
+| Dsn.go:63:19:63:29 | slice expression | semmle.label | slice expression |
+| Dsn.go:67:11:67:109 | []type{args} [array] | semmle.label | []type{args} [array] |
+| Dsn.go:67:11:67:109 | call to Sprintf | semmle.label | call to Sprintf |
+| Dsn.go:67:102:67:104 | cfg [pointer] | semmle.label | cfg [pointer] |
+| Dsn.go:67:102:67:104 | implicit dereference | semmle.label | implicit dereference |
+| Dsn.go:67:102:67:108 | selection of dsn | semmle.label | selection of dsn |
+| Dsn.go:68:29:68:33 | dbDSN | semmle.label | dbDSN |
+subpaths

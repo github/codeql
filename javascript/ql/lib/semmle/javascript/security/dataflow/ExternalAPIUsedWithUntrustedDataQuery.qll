@@ -10,15 +10,53 @@
 import javascript
 import ExternalAPIUsedWithUntrustedDataCustomizations::ExternalApiUsedWithUntrustedData
 
-/** Flow label for objects from which a tainted value is reachable. */
-private class ObjectWrapperFlowLabel extends DataFlow::FlowLabel {
+/**
+ * A taint tracking configuration for untrusted data flowing to an external API.
+ */
+module ExternalAPIUsedWithUntrustedDataConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate isBarrierIn(DataFlow::Node node) {
+    // Block flow from the location to its properties, as the relevant properties (hash and search) are taint sources of their own.
+    // The location source is only used for propagating through API calls like `new URL(location)` and into external APIs where
+    // the whole location object escapes.
+    node = DOM::locationRef().getAPropertyRead()
+  }
+
+  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet contents) {
+    // Also report values that escape while inside a property
+    isSink(node) and contents = DataFlow::ContentSet::anyProperty()
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // Not used for PR analysis
+  }
+}
+
+/**
+ * Taint tracking for untrusted data flowing to an external API.
+ */
+module ExternalAPIUsedWithUntrustedDataFlow =
+  TaintTracking::Global<ExternalAPIUsedWithUntrustedDataConfig>;
+
+/**
+ * Flow label for objects from which a tainted value is reachable.
+ *
+ * Only used by the legacy data-flow configuration, as the new data flow configuration
+ * uses `allowImplicitRead` to achieve this instead.
+ */
+deprecated private class ObjectWrapperFlowLabel extends DataFlow::FlowLabel {
   ObjectWrapperFlowLabel() { this = "object-wrapper" }
 }
 
 /**
- * A taint tracking configuration for untrusted data flowing to an external API.
+ * DEPRECATED. Use the `ExternalAPIUsedWithUntrustedDataFlow` module instead.
  */
-class Configuration extends TaintTracking::Configuration {
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "ExternalAPIUsedWithUntrustedData" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -46,34 +84,24 @@ class Configuration extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
+  override predicate isSanitizerIn(DataFlow::Node node) {
     // Block flow from the location to its properties, as the relevant properties (hash and search) are taint sources of their own.
     // The location source is only used for propagating through API calls like `new URL(location)` and into external APIs where
     // the whole location object escapes.
-    exists(DataFlow::PropRead read |
-      read = DOM::locationRef().getAPropertyRead() and
-      pred = read.getBase() and
-      succ = read
-    )
+    node = DOM::locationRef().getAPropertyRead()
   }
 }
 
 /** A node representing data being passed to an external API. */
 class ExternalApiDataNode extends DataFlow::Node instanceof Sink { }
 
-/** DEPRECATED: Alias for ExternalApiDataNode */
-deprecated class ExternalAPIDataNode = ExternalApiDataNode;
-
 /** A node representing untrusted data being passed to an external API. */
 class UntrustedExternalApiDataNode extends ExternalApiDataNode {
-  UntrustedExternalApiDataNode() { any(Configuration c).hasFlow(_, this) }
+  UntrustedExternalApiDataNode() { ExternalAPIUsedWithUntrustedDataFlow::flow(_, this) }
 
   /** Gets a source of untrusted data which is passed to this external API data node. */
-  DataFlow::Node getAnUntrustedSource() { any(Configuration c).hasFlow(result, this) }
+  DataFlow::Node getAnUntrustedSource() { ExternalAPIUsedWithUntrustedDataFlow::flow(result, this) }
 }
-
-/** DEPRECATED: Alias for UntrustedExternalApiDataNode */
-deprecated class UntrustedExternalAPIDataNode = UntrustedExternalApiDataNode;
 
 /**
  * Name of an external API sink, boxed in a newtype for consistency with other languages.
@@ -82,7 +110,7 @@ private newtype TExternalApi =
   /** An external API sink with `name`. */
   MkExternalApiNode(string name) {
     exists(Sink sink |
-      any(Configuration c).hasFlow(_, sink) and
+      ExternalAPIUsedWithUntrustedDataFlow::flow(_, sink) and
       name = sink.getApiName()
     )
   }
@@ -96,12 +124,9 @@ class ExternalApiUsedWithUntrustedData extends TExternalApi {
 
   /** Gets the number of untrusted sources used with this external API. */
   int getNumberOfUntrustedSources() {
-    result = count(getUntrustedDataNode().getAnUntrustedSource())
+    result = count(this.getUntrustedDataNode().getAnUntrustedSource())
   }
 
   /** Gets a textual representation of this element. */
   string toString() { this = MkExternalApiNode(result) }
 }
-
-/** DEPRECATED: Alias for ExternalApiUsedWithUntrustedData */
-deprecated class ExternalAPIUsedWithUntrustedData = ExternalApiUsedWithUntrustedData;

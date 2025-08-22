@@ -10,7 +10,7 @@ private import codeql.swift.elements.expr.PrefixUnaryExpr
  * ~a
  * ```
  */
-class BitwiseOperation extends Expr {
+final class BitwiseOperation extends Expr {
   BitwiseOperation() {
     this instanceof BinaryBitwiseOperation or
     this instanceof UnaryBitwiseOperation
@@ -33,7 +33,7 @@ class BitwiseOperation extends Expr {
  * a .^ b
  * ```
  */
-class BinaryBitwiseOperation extends BinaryExpr {
+final class BinaryBitwiseOperation extends BinaryExpr {
   BinaryBitwiseOperation() {
     this instanceof AndBitwiseExpr or
     this instanceof OrBitwiseExpr or
@@ -52,7 +52,7 @@ class BinaryBitwiseOperation extends BinaryExpr {
  * a & b
  * ```
  */
-class AndBitwiseExpr extends BinaryExpr {
+final class AndBitwiseExpr extends BinaryExpr {
   AndBitwiseExpr() { this.getStaticTarget().getName() = "&(_:_:)" }
 }
 
@@ -62,7 +62,7 @@ class AndBitwiseExpr extends BinaryExpr {
  * a | b
  * ```
  */
-class OrBitwiseExpr extends BinaryExpr {
+final class OrBitwiseExpr extends BinaryExpr {
   OrBitwiseExpr() { this.getStaticTarget().getName() = "|(_:_:)" }
 }
 
@@ -72,7 +72,7 @@ class OrBitwiseExpr extends BinaryExpr {
  * a ^ b
  * ```
  */
-class XorBitwiseExpr extends BinaryExpr {
+final class XorBitwiseExpr extends BinaryExpr {
   XorBitwiseExpr() { this.getStaticTarget().getName() = "^(_:_:)" }
 }
 
@@ -82,7 +82,7 @@ class XorBitwiseExpr extends BinaryExpr {
  * a .& b
  * ```
  */
-class PointwiseAndExpr extends BinaryExpr {
+final class PointwiseAndExpr extends BinaryExpr {
   PointwiseAndExpr() { this.getOperator().getName() = ".&(_:_:)" }
 }
 
@@ -92,7 +92,7 @@ class PointwiseAndExpr extends BinaryExpr {
  * a .| b
  * ```
  */
-class PointwiseOrExpr extends BinaryExpr {
+final class PointwiseOrExpr extends BinaryExpr {
   PointwiseOrExpr() { this.getOperator().getName() = ".|(_:_:)" }
 }
 
@@ -102,7 +102,7 @@ class PointwiseOrExpr extends BinaryExpr {
  * a .^ b
  * ```
  */
-class PointwiseXorExpr extends BinaryExpr {
+final class PointwiseXorExpr extends BinaryExpr {
   PointwiseXorExpr() { this.getOperator().getName() = ".^(_:_:)" }
 }
 
@@ -113,7 +113,7 @@ class PointwiseXorExpr extends BinaryExpr {
  * a &<<
  * ```
  */
-class ShiftLeftBitwiseExpr extends BinaryExpr {
+final class ShiftLeftBitwiseExpr extends BinaryExpr {
   ShiftLeftBitwiseExpr() { this.getStaticTarget().getName() = ["<<(_:_:)", "&<<(_:_:)"] }
 }
 
@@ -124,7 +124,7 @@ class ShiftLeftBitwiseExpr extends BinaryExpr {
  * a &>>
  * ```
  */
-class ShiftRightBitwiseExpr extends BinaryExpr {
+final class ShiftRightBitwiseExpr extends BinaryExpr {
   ShiftRightBitwiseExpr() { this.getStaticTarget().getName() = [">>(_:_:)", "&>>(_:_:)"] }
 }
 
@@ -134,7 +134,7 @@ class ShiftRightBitwiseExpr extends BinaryExpr {
  * ~a
  * ```
  */
-class UnaryBitwiseOperation extends PrefixUnaryExpr instanceof NotBitwiseExpr { }
+final class UnaryBitwiseOperation extends PrefixUnaryExpr instanceof NotBitwiseExpr { }
 
 /**
  * A bitwise NOT expression.
@@ -142,6 +142,6 @@ class UnaryBitwiseOperation extends PrefixUnaryExpr instanceof NotBitwiseExpr { 
  * ~a
  * ```
  */
-class NotBitwiseExpr extends PrefixUnaryExpr {
+final class NotBitwiseExpr extends PrefixUnaryExpr {
   NotBitwiseExpr() { this.getStaticTarget().getName() = "~(_:)" }
 }

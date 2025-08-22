@@ -1,12 +1,21 @@
-edges
-| EndToEnd.go:58:18:58:25 | selection of Params | EndToEnd.go:58:18:58:47 | call to Get |
-| EndToEnd.go:64:26:64:33 | selection of Params | EndToEnd.go:64:26:64:55 | call to Get |
-nodes
-| EndToEnd.go:58:18:58:25 | selection of Params | semmle.label | selection of Params |
-| EndToEnd.go:58:18:58:47 | call to Get | semmle.label | call to Get |
-| EndToEnd.go:64:26:64:33 | selection of Params | semmle.label | selection of Params |
-| EndToEnd.go:64:26:64:55 | call to Get | semmle.label | call to Get |
-subpaths
 #select
 | EndToEnd.go:58:18:58:47 | call to Get | EndToEnd.go:58:18:58:25 | selection of Params | EndToEnd.go:58:18:58:47 | call to Get | This path depends on a $@. | EndToEnd.go:58:18:58:25 | selection of Params | user-provided value |
 | EndToEnd.go:64:26:64:55 | call to Get | EndToEnd.go:64:26:64:33 | selection of Params | EndToEnd.go:64:26:64:55 | call to Get | This path depends on a $@. | EndToEnd.go:64:26:64:33 | selection of Params | user-provided value |
+edges
+| EndToEnd.go:58:18:58:25 | selection of Params | EndToEnd.go:58:18:58:30 | selection of Form | provenance | Src:MaD:3  |
+| EndToEnd.go:58:18:58:30 | selection of Form | EndToEnd.go:58:18:58:47 | call to Get | provenance | MaD:4 Sink:MaD:2 |
+| EndToEnd.go:64:26:64:33 | selection of Params | EndToEnd.go:64:26:64:38 | selection of Form | provenance | Src:MaD:3  |
+| EndToEnd.go:64:26:64:38 | selection of Form | EndToEnd.go:64:26:64:55 | call to Get | provenance | MaD:4 Sink:MaD:1 |
+models
+| 1 | Sink: group:revel; Controller; true; RenderFileName; ; ; Argument[0]; path-injection; manual |
+| 2 | Sink: os; ; false; Open; ; ; Argument[0]; path-injection; manual |
+| 3 | Source: group:revel; Controller; true; Params; ; ; ; remote; manual |
+| 4 | Summary: net/url; Values; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
+nodes
+| EndToEnd.go:58:18:58:25 | selection of Params | semmle.label | selection of Params |
+| EndToEnd.go:58:18:58:30 | selection of Form | semmle.label | selection of Form |
+| EndToEnd.go:58:18:58:47 | call to Get | semmle.label | call to Get |
+| EndToEnd.go:64:26:64:33 | selection of Params | semmle.label | selection of Params |
+| EndToEnd.go:64:26:64:38 | selection of Form | semmle.label | selection of Form |
+| EndToEnd.go:64:26:64:55 | call to Get | semmle.label | call to Get |
+subpaths

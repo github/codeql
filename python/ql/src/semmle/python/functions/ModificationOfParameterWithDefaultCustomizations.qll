@@ -75,7 +75,11 @@ module ModificationOfParameterWithDefault {
   class MutableDefaultValue extends Source {
     boolean nonEmpty;
 
-    MutableDefaultValue() { nonEmpty = mutableDefaultValue(this.asCfgNode().(NameNode).getNode()) }
+    MutableDefaultValue() {
+      nonEmpty = mutableDefaultValue(this.asCfgNode().(NameNode).getNode()) and
+      // Ignore sources inside the standard library. These are unlikely to be true positives.
+      exists(this.getLocation().getFile().getRelativePath())
+    }
 
     override boolean isNonEmpty() { result = nonEmpty }
   }

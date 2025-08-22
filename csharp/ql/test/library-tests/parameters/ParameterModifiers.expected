@@ -1,0 +1,21 @@
+parameterModifier
+| ParameterModifiers.cs:6:27:6:28 | p1 | 0 |
+| ParameterModifiers.cs:7:30:7:31 | p2 | 5 |
+| ParameterModifiers.cs:9:31:9:32 | p3 | 2 |
+| ParameterModifiers.cs:14:31:14:32 | p4 | 1 |
+| ParameterModifiers.cs:16:36:16:37 | p5 | 3 |
+| ParameterModifiers.cs:18:40:18:41 | p6 | 6 |
+| ParameterModifiers.cs:20:47:20:48 | p7 | 3 |
+parameterIsValue
+| ParameterModifiers.cs:6:27:6:28 | p1 |
+parameterIsIn
+| ParameterModifiers.cs:7:30:7:31 | p2 |
+parameterIsOut
+| ParameterModifiers.cs:9:31:9:32 | p3 |
+parameterIsRef
+| ParameterModifiers.cs:14:31:14:32 | p4 |
+parameterIsParams
+| ParameterModifiers.cs:16:36:16:37 | p5 |
+| ParameterModifiers.cs:20:47:20:48 | p7 |
+parameterIsReadonlyRef
+| ParameterModifiers.cs:18:40:18:41 | p6 |

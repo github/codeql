@@ -8,6 +8,7 @@
  * @tags security
  *       maintainability
  *       frameworks/asp.net
+ *       external/cwe/cwe-348
  */
 
 import csharp
@@ -15,6 +16,6 @@ import semmle.code.csharp.frameworks.system.web.Http
 
 from IndexerAccess ia
 where
-  ia.getTarget().getDeclaringType().hasQualifiedName("System.Web", "HttpRequest") and
+  ia.getTarget().getDeclaringType().hasFullyQualifiedName("System.Web", "HttpRequest") and
   not isServerVariable(ia.getIndex(0))
 select ia, "Ambiguous access to variable."

@@ -13,9 +13,9 @@
 
 import csharp
 import semmle.code.csharp.security.dataflow.LDAPInjectionQuery
-import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
+import LdapInjection::PathGraph
 
-from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
+from LdapInjection::PathNode source, LdapInjection::PathNode sink
+where LdapInjection::flowPath(source, sink)
 select sink.getNode(), source, sink, "This LDAP query depends on a $@.", source.getNode(),
   "user-provided value"

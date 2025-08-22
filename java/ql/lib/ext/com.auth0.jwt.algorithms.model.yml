@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.auth0.jwt.algorithms", "Algorithm", False, "HMAC256", "(String)", "", "Argument[0]", "credentials-key", "manual"]
+      - ["com.auth0.jwt.algorithms", "Algorithm", False, "HMAC256", "(byte[])", "", "Argument[0]", "credentials-key", "manual"]
+      - ["com.auth0.jwt.algorithms", "Algorithm", False, "HMAC384", "(String)", "", "Argument[0]", "credentials-key", "manual"]
+      - ["com.auth0.jwt.algorithms", "Algorithm", False, "HMAC384", "(byte[])", "", "Argument[0]", "credentials-key", "manual"]
+      - ["com.auth0.jwt.algorithms", "Algorithm", False, "HMAC512", "(String)", "", "Argument[0]", "credentials-key", "manual"]
+      - ["com.auth0.jwt.algorithms", "Algorithm", False, "HMAC512", "(byte[])", "", "Argument[0]", "credentials-key", "manual"]

@@ -1,55 +1,30 @@
 edges
-| JsonpController.java:33:32:33:68 | getParameter(...) : String | JsonpController.java:37:16:37:24 | resultStr |
-| JsonpController.java:36:21:36:54 | ... + ... : String | JsonpController.java:37:16:37:24 | resultStr |
-| JsonpController.java:44:32:44:68 | getParameter(...) : String | JsonpController.java:46:16:46:24 | resultStr |
-| JsonpController.java:45:21:45:80 | ... + ... : String | JsonpController.java:46:16:46:24 | resultStr |
-| JsonpController.java:53:32:53:68 | getParameter(...) : String | JsonpController.java:56:16:56:24 | resultStr |
-| JsonpController.java:55:21:55:55 | ... + ... : String | JsonpController.java:56:16:56:24 | resultStr |
-| JsonpController.java:63:32:63:68 | getParameter(...) : String | JsonpController.java:66:16:66:24 | resultStr |
-| JsonpController.java:65:21:65:54 | ... + ... : String | JsonpController.java:66:16:66:24 | resultStr |
-| JsonpController.java:73:32:73:68 | getParameter(...) : String | JsonpController.java:80:20:80:28 | resultStr |
-| JsonpController.java:79:21:79:54 | ... + ... : String | JsonpController.java:80:20:80:28 | resultStr |
-| JsonpController.java:87:32:87:68 | getParameter(...) : String | JsonpController.java:94:20:94:28 | resultStr |
-| JsonpController.java:93:21:93:54 | ... + ... : String | JsonpController.java:94:20:94:28 | resultStr |
-| JsonpController.java:101:32:101:68 | getParameter(...) : String | JsonpController.java:105:16:105:24 | resultStr |
-| JsonpController.java:104:21:104:54 | ... + ... : String | JsonpController.java:105:16:105:24 | resultStr |
-| JsonpController.java:115:21:115:54 | ... + ... : String | JsonpController.java:116:16:116:24 | resultStr |
-| JsonpController.java:130:21:130:54 | ... + ... : String | JsonpController.java:131:16:131:24 | resultStr |
+| JsonpController.java:33:32:33:68 | getParameter(...) : String | JsonpController.java:37:16:37:24 | resultStr | provenance | Src:MaD:2  |
+| JsonpController.java:44:32:44:68 | getParameter(...) : String | JsonpController.java:46:16:46:24 | resultStr | provenance | Src:MaD:2  |
+| JsonpController.java:53:32:53:68 | getParameter(...) : String | JsonpController.java:56:16:56:24 | resultStr | provenance | Src:MaD:2  |
+| JsonpController.java:63:32:63:68 | getParameter(...) : String | JsonpController.java:66:16:66:24 | resultStr | provenance | Src:MaD:2  |
+| JsonpController.java:73:32:73:68 | getParameter(...) : String | JsonpController.java:80:20:80:28 | resultStr | provenance | Src:MaD:2 Sink:MaD:1 |
+| JsonpController.java:87:32:87:68 | getParameter(...) : String | JsonpController.java:94:20:94:28 | resultStr | provenance | Src:MaD:2 Sink:MaD:1 |
+| JsonpController.java:101:32:101:68 | getParameter(...) : String | JsonpController.java:105:16:105:24 | resultStr | provenance | Src:MaD:2  |
+models
+| 1 | Sink: java.io; PrintWriter; false; println; ; ; Argument[0]; file-content-store; manual |
+| 2 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
 nodes
 | JsonpController.java:33:32:33:68 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| JsonpController.java:36:21:36:54 | ... + ... : String | semmle.label | ... + ... : String |
-| JsonpController.java:37:16:37:24 | resultStr | semmle.label | resultStr |
 | JsonpController.java:37:16:37:24 | resultStr | semmle.label | resultStr |
 | JsonpController.java:44:32:44:68 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| JsonpController.java:45:21:45:80 | ... + ... : String | semmle.label | ... + ... : String |
-| JsonpController.java:46:16:46:24 | resultStr | semmle.label | resultStr |
 | JsonpController.java:46:16:46:24 | resultStr | semmle.label | resultStr |
 | JsonpController.java:53:32:53:68 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| JsonpController.java:55:21:55:55 | ... + ... : String | semmle.label | ... + ... : String |
-| JsonpController.java:56:16:56:24 | resultStr | semmle.label | resultStr |
 | JsonpController.java:56:16:56:24 | resultStr | semmle.label | resultStr |
 | JsonpController.java:63:32:63:68 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| JsonpController.java:65:21:65:54 | ... + ... : String | semmle.label | ... + ... : String |
-| JsonpController.java:66:16:66:24 | resultStr | semmle.label | resultStr |
 | JsonpController.java:66:16:66:24 | resultStr | semmle.label | resultStr |
 | JsonpController.java:73:32:73:68 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| JsonpController.java:79:21:79:54 | ... + ... : String | semmle.label | ... + ... : String |
-| JsonpController.java:80:20:80:28 | resultStr | semmle.label | resultStr |
 | JsonpController.java:80:20:80:28 | resultStr | semmle.label | resultStr |
 | JsonpController.java:87:32:87:68 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| JsonpController.java:93:21:93:54 | ... + ... : String | semmle.label | ... + ... : String |
-| JsonpController.java:94:20:94:28 | resultStr | semmle.label | resultStr |
 | JsonpController.java:94:20:94:28 | resultStr | semmle.label | resultStr |
 | JsonpController.java:101:32:101:68 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| JsonpController.java:104:21:104:54 | ... + ... : String | semmle.label | ... + ... : String |
 | JsonpController.java:105:16:105:24 | resultStr | semmle.label | resultStr |
-| JsonpController.java:105:16:105:24 | resultStr | semmle.label | resultStr |
-| JsonpController.java:115:21:115:54 | ... + ... : String | semmle.label | ... + ... : String |
-| JsonpController.java:116:16:116:24 | resultStr | semmle.label | resultStr |
-| JsonpController.java:130:21:130:54 | ... + ... : String | semmle.label | ... + ... : String |
-| JsonpController.java:131:16:131:24 | resultStr | semmle.label | resultStr |
-subpaths
-#select
+problems
 | JsonpController.java:37:16:37:24 | resultStr | JsonpController.java:33:32:33:68 | getParameter(...) : String | JsonpController.java:37:16:37:24 | resultStr | Jsonp response might include code from $@. | JsonpController.java:33:32:33:68 | getParameter(...) | this user input |
 | JsonpController.java:46:16:46:24 | resultStr | JsonpController.java:44:32:44:68 | getParameter(...) : String | JsonpController.java:46:16:46:24 | resultStr | Jsonp response might include code from $@. | JsonpController.java:44:32:44:68 | getParameter(...) | this user input |
 | JsonpController.java:56:16:56:24 | resultStr | JsonpController.java:53:32:53:68 | getParameter(...) : String | JsonpController.java:56:16:56:24 | resultStr | Jsonp response might include code from $@. | JsonpController.java:53:32:53:68 | getParameter(...) | this user input |
@@ -57,3 +32,4 @@ subpaths
 | JsonpController.java:80:20:80:28 | resultStr | JsonpController.java:73:32:73:68 | getParameter(...) : String | JsonpController.java:80:20:80:28 | resultStr | Jsonp response might include code from $@. | JsonpController.java:73:32:73:68 | getParameter(...) | this user input |
 | JsonpController.java:94:20:94:28 | resultStr | JsonpController.java:87:32:87:68 | getParameter(...) : String | JsonpController.java:94:20:94:28 | resultStr | Jsonp response might include code from $@. | JsonpController.java:87:32:87:68 | getParameter(...) | this user input |
 | JsonpController.java:105:16:105:24 | resultStr | JsonpController.java:101:32:101:68 | getParameter(...) : String | JsonpController.java:105:16:105:24 | resultStr | Jsonp response might include code from $@. | JsonpController.java:101:32:101:68 | getParameter(...) | this user input |
+subpaths

@@ -13,9 +13,9 @@
 
 import csharp
 import semmle.code.csharp.security.dataflow.LogForgingQuery
-import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
+import LogForging::PathGraph
 
-from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
+from LogForging::PathNode source, LogForging::PathNode sink
+where LogForging::flowPath(source, sink)
 select sink.getNode(), source, sink, "This log entry depends on a $@.", source.getNode(),
   "user-provided value"

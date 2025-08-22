@@ -4,36 +4,42 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.DataFlow2
 import HardcodedCredentials
 
 /**
  * A data-flow configuration that tracks hardcoded expressions flowing to a parameter whose name suggests
  * it may be a credential, excluding those which flow on to other such insecure usage sites.
  */
-class HardcodedCredentialSourceCallConfiguration extends DataFlow::Configuration {
-  HardcodedCredentialSourceCallConfiguration() {
-    this = "HardcodedCredentialSourceCallConfiguration"
-  }
+module HardcodedCredentialSourceCallConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) { n.asExpr() instanceof HardcodedExpr }
 
-  override predicate isSource(DataFlow::Node n) { n.asExpr() instanceof HardcodedExpr }
+  predicate isSink(DataFlow::Node n) { n.asExpr() instanceof FinalCredentialsSourceSink }
 
-  override predicate isSink(DataFlow::Node n) { n.asExpr() instanceof FinalCredentialsSourceSink }
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
+
+/**
+ * Tracks hardcoded expressions flowing to a parameter whose name suggests
+ * it may be a credential, excluding those which flow on to other such insecure usage sites.
+ */
+module HardcodedCredentialSourceCallFlow = DataFlow::Global<HardcodedCredentialSourceCallConfig>;
 
 /**
  * A data-flow configuration that tracks flow from an argument whose corresponding parameter name suggests
  * a credential, to an argument to a sensitive call.
  */
-class HardcodedCredentialSourceCallConfiguration2 extends DataFlow2::Configuration {
-  HardcodedCredentialSourceCallConfiguration2() {
-    this = "HardcodedCredentialSourceCallConfiguration2"
-  }
+module HardcodedCredentialParameterSourceCallConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) { n.asExpr() instanceof CredentialsSourceSink }
 
-  override predicate isSource(DataFlow::Node n) { n.asExpr() instanceof CredentialsSourceSink }
-
-  override predicate isSink(DataFlow::Node n) { n.asExpr() instanceof CredentialsSink }
+  predicate isSink(DataFlow::Node n) { n.asExpr() instanceof CredentialsSink }
 }
+
+/**
+ * Tracks flow from an argument whose corresponding parameter name suggests
+ * a credential, to an argument to a sensitive call.
+ */
+module HardcodedCredentialParameterSourceCallFlow =
+  DataFlow::Global<HardcodedCredentialParameterSourceCallConfig>;
 
 /**
  * An argument to a call, where the parameter name corresponding
@@ -42,10 +48,9 @@ class HardcodedCredentialSourceCallConfiguration2 extends DataFlow2::Configurati
  */
 class FinalCredentialsSourceSink extends CredentialsSourceSink {
   FinalCredentialsSourceSink() {
-    not exists(HardcodedCredentialSourceCallConfiguration2 conf, CredentialsSink other |
-      this != other
-    |
-      conf.hasFlow(DataFlow::exprNode(this), DataFlow::exprNode(other))
+    not exists(CredentialsSink other | this != other |
+      HardcodedCredentialParameterSourceCallFlow::flow(DataFlow::exprNode(this),
+        DataFlow::exprNode(other))
     )
   }
 }

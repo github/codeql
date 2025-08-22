@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 	"strings"
 )
@@ -101,4 +102,10 @@ func io2() {
 		r.WriteTo(os.Stdout)
 	}
 
+}
+
+func utiltest() {
+	reader := strings.NewReader("some string")
+	buf, _ := ioutil.ReadAll(reader)
+	os.Stdout.Write(buf)
 }

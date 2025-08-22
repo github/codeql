@@ -1,0 +1,70 @@
+{
+  "markdownMessage": "Java analysis used build tool Gradle to pick a JDK version and/or to recommend external dependencies.",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/using-build-tool-advice",
+    "name": "Java analysis used build tool Gradle to pick a JDK version and/or to recommend external dependencies"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Java analysis used the system default JDK.",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/jdk-system-default",
+    "name": "Java analysis used the system default JDK"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Java analysis with build-mode 'none' completed.",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/complete",
+    "name": "Java analysis with build-mode 'none' completed"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Java was extracted with build-mode set to 'none'. This means that all Java source in the working directory will be scanned, with build tools such as Maven and Gradle only contributing information about external dependencies.",
+  "severity": "note",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/mode-active",
+    "name": "Java was extracted with build-mode set to 'none'"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Reading the dependency graph from build files provided 1 classpath entries",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/depgraph-provided-by-gradle",
+    "name": "Java analysis extracted precise dependency graph information from tool Gradle"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}

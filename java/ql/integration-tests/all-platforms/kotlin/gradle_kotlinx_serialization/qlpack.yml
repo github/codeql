@@ -1,5 +1,0 @@
-name: integrationtest-gradle-kotlinx-serialization
-dependencies:
-  codeql/java-all: '*'
-  codeql/java-tests: '*'
-  codeql/java-queries: '*'

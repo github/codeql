@@ -3,17 +3,10 @@
  * `com.google.common.base.Preconditions` and
  * `org.apache.commons.lang3.Validate`.
  */
+overlay[local?]
+module;
 
 import java
-
-/**
- * DEPRECATED: Use `conditionCheckMethodArgument` instead.
- * Holds if `m` is a non-overridable method that checks that its first argument
- * is equal to `checkTrue` and throws otherwise.
- */
-deprecated predicate conditionCheckMethod(Method m, boolean checkTrue) {
-  conditionCheckMethodArgument(m, 0, checkTrue)
-}
 
 /**
  * Holds if `m` is a non-overridable method that checks that its zero-indexed `argument`
@@ -26,7 +19,7 @@ predicate conditionCheckMethodArgument(Method m, int argument, boolean checkTrue
   or
   condtionCheckMethodTestingFramework(m, argument, checkTrue)
   or
-  exists(Parameter p, MethodAccess ma, int argIndex, boolean ct, Expr arg |
+  exists(Parameter p, MethodCall ma, int argIndex, boolean ct, Expr arg |
     p = m.getParameter(argument) and
     not m.isOverridable() and
     m.getBody().getStmt(0).(ExprStmt).getExpr() = ma and
@@ -106,18 +99,9 @@ private predicate condtionCheckMethodTestingFramework(Method m, int argument, bo
 }
 
 /**
- * DEPRECATED: Use `conditionCheckArgument` instead.
- * Holds if `ma` is an access to a non-overridable method that checks that its
- * first argument is equal to `checkTrue` and throws otherwise.
- */
-deprecated predicate conditionCheck(MethodAccess ma, boolean checkTrue) {
-  conditionCheckArgument(ma, 0, checkTrue)
-}
-
-/**
  * Holds if `ma` is an access to a non-overridable method that checks that its
  * zero-indexed `argument` is equal to `checkTrue` and throws otherwise.
  */
-predicate conditionCheckArgument(MethodAccess ma, int argument, boolean checkTrue) {
+predicate conditionCheckArgument(MethodCall ma, int argument, boolean checkTrue) {
   conditionCheckMethodArgument(ma.getMethod().getSourceDeclaration(), argument, checkTrue)
 }

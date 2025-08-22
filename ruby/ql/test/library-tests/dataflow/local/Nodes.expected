@@ -4,7 +4,6 @@ ret
 | local_dataflow.rb:12:3:12:5 | call to p |
 | local_dataflow.rb:16:3:16:10 | break |
 | local_dataflow.rb:20:3:20:25 | if ... |
-| local_dataflow.rb:20:17:20:21 | break |
 | local_dataflow.rb:32:14:32:21 | "method" |
 | local_dataflow.rb:36:6:36:13 | return |
 | local_dataflow.rb:38:3:38:13 | "reachable" |
@@ -24,1010 +23,1504 @@ ret
 | local_dataflow.rb:132:3:149:5 | if ... |
 arg
 | UseUseExplosion.rb:20:13:20:17 | @prop | UseUseExplosion.rb:20:13:20:23 | ... > ... | self |
+| UseUseExplosion.rb:20:13:20:23 | synthetic splat argument | UseUseExplosion.rb:20:13:20:23 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:21:20:23 | 100 | UseUseExplosion.rb:20:13:20:23 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:35:20:39 | @prop | UseUseExplosion.rb:20:35:20:44 | ... > ... | self |
+| UseUseExplosion.rb:20:35:20:44 | synthetic splat argument | UseUseExplosion.rb:20:35:20:44 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:43:20:44 | 99 | UseUseExplosion.rb:20:35:20:44 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:56:20:60 | @prop | UseUseExplosion.rb:20:56:20:65 | ... > ... | self |
+| UseUseExplosion.rb:20:56:20:65 | synthetic splat argument | UseUseExplosion.rb:20:56:20:65 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:64:20:65 | 98 | UseUseExplosion.rb:20:56:20:65 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:77:20:81 | @prop | UseUseExplosion.rb:20:77:20:86 | ... > ... | self |
+| UseUseExplosion.rb:20:77:20:86 | synthetic splat argument | UseUseExplosion.rb:20:77:20:86 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:85:20:86 | 97 | UseUseExplosion.rb:20:77:20:86 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:98:20:102 | @prop | UseUseExplosion.rb:20:98:20:107 | ... > ... | self |
+| UseUseExplosion.rb:20:98:20:107 | synthetic splat argument | UseUseExplosion.rb:20:98:20:107 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:106:20:107 | 96 | UseUseExplosion.rb:20:98:20:107 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:119:20:123 | @prop | UseUseExplosion.rb:20:119:20:128 | ... > ... | self |
+| UseUseExplosion.rb:20:119:20:128 | synthetic splat argument | UseUseExplosion.rb:20:119:20:128 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:127:20:128 | 95 | UseUseExplosion.rb:20:119:20:128 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:140:20:144 | @prop | UseUseExplosion.rb:20:140:20:149 | ... > ... | self |
+| UseUseExplosion.rb:20:140:20:149 | synthetic splat argument | UseUseExplosion.rb:20:140:20:149 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:148:20:149 | 94 | UseUseExplosion.rb:20:140:20:149 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:161:20:165 | @prop | UseUseExplosion.rb:20:161:20:170 | ... > ... | self |
+| UseUseExplosion.rb:20:161:20:170 | synthetic splat argument | UseUseExplosion.rb:20:161:20:170 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:169:20:170 | 93 | UseUseExplosion.rb:20:161:20:170 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:182:20:186 | @prop | UseUseExplosion.rb:20:182:20:191 | ... > ... | self |
+| UseUseExplosion.rb:20:182:20:191 | synthetic splat argument | UseUseExplosion.rb:20:182:20:191 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:190:20:191 | 92 | UseUseExplosion.rb:20:182:20:191 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:203:20:207 | @prop | UseUseExplosion.rb:20:203:20:212 | ... > ... | self |
+| UseUseExplosion.rb:20:203:20:212 | synthetic splat argument | UseUseExplosion.rb:20:203:20:212 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:211:20:212 | 91 | UseUseExplosion.rb:20:203:20:212 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:224:20:228 | @prop | UseUseExplosion.rb:20:224:20:233 | ... > ... | self |
+| UseUseExplosion.rb:20:224:20:233 | synthetic splat argument | UseUseExplosion.rb:20:224:20:233 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:232:20:233 | 90 | UseUseExplosion.rb:20:224:20:233 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:245:20:249 | @prop | UseUseExplosion.rb:20:245:20:254 | ... > ... | self |
+| UseUseExplosion.rb:20:245:20:254 | synthetic splat argument | UseUseExplosion.rb:20:245:20:254 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:253:20:254 | 89 | UseUseExplosion.rb:20:245:20:254 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:266:20:270 | @prop | UseUseExplosion.rb:20:266:20:275 | ... > ... | self |
+| UseUseExplosion.rb:20:266:20:275 | synthetic splat argument | UseUseExplosion.rb:20:266:20:275 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:274:20:275 | 88 | UseUseExplosion.rb:20:266:20:275 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:287:20:291 | @prop | UseUseExplosion.rb:20:287:20:296 | ... > ... | self |
+| UseUseExplosion.rb:20:287:20:296 | synthetic splat argument | UseUseExplosion.rb:20:287:20:296 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:295:20:296 | 87 | UseUseExplosion.rb:20:287:20:296 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:308:20:312 | @prop | UseUseExplosion.rb:20:308:20:317 | ... > ... | self |
+| UseUseExplosion.rb:20:308:20:317 | synthetic splat argument | UseUseExplosion.rb:20:308:20:317 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:316:20:317 | 86 | UseUseExplosion.rb:20:308:20:317 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:329:20:333 | @prop | UseUseExplosion.rb:20:329:20:338 | ... > ... | self |
+| UseUseExplosion.rb:20:329:20:338 | synthetic splat argument | UseUseExplosion.rb:20:329:20:338 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:337:20:338 | 85 | UseUseExplosion.rb:20:329:20:338 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:350:20:354 | @prop | UseUseExplosion.rb:20:350:20:359 | ... > ... | self |
+| UseUseExplosion.rb:20:350:20:359 | synthetic splat argument | UseUseExplosion.rb:20:350:20:359 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:358:20:359 | 84 | UseUseExplosion.rb:20:350:20:359 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:371:20:375 | @prop | UseUseExplosion.rb:20:371:20:380 | ... > ... | self |
+| UseUseExplosion.rb:20:371:20:380 | synthetic splat argument | UseUseExplosion.rb:20:371:20:380 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:379:20:380 | 83 | UseUseExplosion.rb:20:371:20:380 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:392:20:396 | @prop | UseUseExplosion.rb:20:392:20:401 | ... > ... | self |
+| UseUseExplosion.rb:20:392:20:401 | synthetic splat argument | UseUseExplosion.rb:20:392:20:401 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:400:20:401 | 82 | UseUseExplosion.rb:20:392:20:401 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:413:20:417 | @prop | UseUseExplosion.rb:20:413:20:422 | ... > ... | self |
+| UseUseExplosion.rb:20:413:20:422 | synthetic splat argument | UseUseExplosion.rb:20:413:20:422 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:421:20:422 | 81 | UseUseExplosion.rb:20:413:20:422 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:434:20:438 | @prop | UseUseExplosion.rb:20:434:20:443 | ... > ... | self |
+| UseUseExplosion.rb:20:434:20:443 | synthetic splat argument | UseUseExplosion.rb:20:434:20:443 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:442:20:443 | 80 | UseUseExplosion.rb:20:434:20:443 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:455:20:459 | @prop | UseUseExplosion.rb:20:455:20:464 | ... > ... | self |
+| UseUseExplosion.rb:20:455:20:464 | synthetic splat argument | UseUseExplosion.rb:20:455:20:464 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:463:20:464 | 79 | UseUseExplosion.rb:20:455:20:464 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:476:20:480 | @prop | UseUseExplosion.rb:20:476:20:485 | ... > ... | self |
+| UseUseExplosion.rb:20:476:20:485 | synthetic splat argument | UseUseExplosion.rb:20:476:20:485 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:484:20:485 | 78 | UseUseExplosion.rb:20:476:20:485 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:497:20:501 | @prop | UseUseExplosion.rb:20:497:20:506 | ... > ... | self |
+| UseUseExplosion.rb:20:497:20:506 | synthetic splat argument | UseUseExplosion.rb:20:497:20:506 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:505:20:506 | 77 | UseUseExplosion.rb:20:497:20:506 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:518:20:522 | @prop | UseUseExplosion.rb:20:518:20:527 | ... > ... | self |
+| UseUseExplosion.rb:20:518:20:527 | synthetic splat argument | UseUseExplosion.rb:20:518:20:527 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:526:20:527 | 76 | UseUseExplosion.rb:20:518:20:527 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:539:20:543 | @prop | UseUseExplosion.rb:20:539:20:548 | ... > ... | self |
+| UseUseExplosion.rb:20:539:20:548 | synthetic splat argument | UseUseExplosion.rb:20:539:20:548 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:547:20:548 | 75 | UseUseExplosion.rb:20:539:20:548 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:560:20:564 | @prop | UseUseExplosion.rb:20:560:20:569 | ... > ... | self |
+| UseUseExplosion.rb:20:560:20:569 | synthetic splat argument | UseUseExplosion.rb:20:560:20:569 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:568:20:569 | 74 | UseUseExplosion.rb:20:560:20:569 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:581:20:585 | @prop | UseUseExplosion.rb:20:581:20:590 | ... > ... | self |
+| UseUseExplosion.rb:20:581:20:590 | synthetic splat argument | UseUseExplosion.rb:20:581:20:590 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:589:20:590 | 73 | UseUseExplosion.rb:20:581:20:590 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:602:20:606 | @prop | UseUseExplosion.rb:20:602:20:611 | ... > ... | self |
+| UseUseExplosion.rb:20:602:20:611 | synthetic splat argument | UseUseExplosion.rb:20:602:20:611 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:610:20:611 | 72 | UseUseExplosion.rb:20:602:20:611 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:623:20:627 | @prop | UseUseExplosion.rb:20:623:20:632 | ... > ... | self |
+| UseUseExplosion.rb:20:623:20:632 | synthetic splat argument | UseUseExplosion.rb:20:623:20:632 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:631:20:632 | 71 | UseUseExplosion.rb:20:623:20:632 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:644:20:648 | @prop | UseUseExplosion.rb:20:644:20:653 | ... > ... | self |
+| UseUseExplosion.rb:20:644:20:653 | synthetic splat argument | UseUseExplosion.rb:20:644:20:653 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:652:20:653 | 70 | UseUseExplosion.rb:20:644:20:653 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:665:20:669 | @prop | UseUseExplosion.rb:20:665:20:674 | ... > ... | self |
+| UseUseExplosion.rb:20:665:20:674 | synthetic splat argument | UseUseExplosion.rb:20:665:20:674 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:673:20:674 | 69 | UseUseExplosion.rb:20:665:20:674 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:686:20:690 | @prop | UseUseExplosion.rb:20:686:20:695 | ... > ... | self |
+| UseUseExplosion.rb:20:686:20:695 | synthetic splat argument | UseUseExplosion.rb:20:686:20:695 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:694:20:695 | 68 | UseUseExplosion.rb:20:686:20:695 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:707:20:711 | @prop | UseUseExplosion.rb:20:707:20:716 | ... > ... | self |
+| UseUseExplosion.rb:20:707:20:716 | synthetic splat argument | UseUseExplosion.rb:20:707:20:716 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:715:20:716 | 67 | UseUseExplosion.rb:20:707:20:716 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:728:20:732 | @prop | UseUseExplosion.rb:20:728:20:737 | ... > ... | self |
+| UseUseExplosion.rb:20:728:20:737 | synthetic splat argument | UseUseExplosion.rb:20:728:20:737 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:736:20:737 | 66 | UseUseExplosion.rb:20:728:20:737 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:749:20:753 | @prop | UseUseExplosion.rb:20:749:20:758 | ... > ... | self |
+| UseUseExplosion.rb:20:749:20:758 | synthetic splat argument | UseUseExplosion.rb:20:749:20:758 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:757:20:758 | 65 | UseUseExplosion.rb:20:749:20:758 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:770:20:774 | @prop | UseUseExplosion.rb:20:770:20:779 | ... > ... | self |
+| UseUseExplosion.rb:20:770:20:779 | synthetic splat argument | UseUseExplosion.rb:20:770:20:779 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:778:20:779 | 64 | UseUseExplosion.rb:20:770:20:779 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:791:20:795 | @prop | UseUseExplosion.rb:20:791:20:800 | ... > ... | self |
+| UseUseExplosion.rb:20:791:20:800 | synthetic splat argument | UseUseExplosion.rb:20:791:20:800 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:799:20:800 | 63 | UseUseExplosion.rb:20:791:20:800 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:812:20:816 | @prop | UseUseExplosion.rb:20:812:20:821 | ... > ... | self |
+| UseUseExplosion.rb:20:812:20:821 | synthetic splat argument | UseUseExplosion.rb:20:812:20:821 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:820:20:821 | 62 | UseUseExplosion.rb:20:812:20:821 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:833:20:837 | @prop | UseUseExplosion.rb:20:833:20:842 | ... > ... | self |
+| UseUseExplosion.rb:20:833:20:842 | synthetic splat argument | UseUseExplosion.rb:20:833:20:842 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:841:20:842 | 61 | UseUseExplosion.rb:20:833:20:842 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:854:20:858 | @prop | UseUseExplosion.rb:20:854:20:863 | ... > ... | self |
+| UseUseExplosion.rb:20:854:20:863 | synthetic splat argument | UseUseExplosion.rb:20:854:20:863 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:862:20:863 | 60 | UseUseExplosion.rb:20:854:20:863 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:875:20:879 | @prop | UseUseExplosion.rb:20:875:20:884 | ... > ... | self |
+| UseUseExplosion.rb:20:875:20:884 | synthetic splat argument | UseUseExplosion.rb:20:875:20:884 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:883:20:884 | 59 | UseUseExplosion.rb:20:875:20:884 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:896:20:900 | @prop | UseUseExplosion.rb:20:896:20:905 | ... > ... | self |
+| UseUseExplosion.rb:20:896:20:905 | synthetic splat argument | UseUseExplosion.rb:20:896:20:905 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:904:20:905 | 58 | UseUseExplosion.rb:20:896:20:905 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:917:20:921 | @prop | UseUseExplosion.rb:20:917:20:926 | ... > ... | self |
+| UseUseExplosion.rb:20:917:20:926 | synthetic splat argument | UseUseExplosion.rb:20:917:20:926 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:925:20:926 | 57 | UseUseExplosion.rb:20:917:20:926 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:938:20:942 | @prop | UseUseExplosion.rb:20:938:20:947 | ... > ... | self |
+| UseUseExplosion.rb:20:938:20:947 | synthetic splat argument | UseUseExplosion.rb:20:938:20:947 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:946:20:947 | 56 | UseUseExplosion.rb:20:938:20:947 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:959:20:963 | @prop | UseUseExplosion.rb:20:959:20:968 | ... > ... | self |
+| UseUseExplosion.rb:20:959:20:968 | synthetic splat argument | UseUseExplosion.rb:20:959:20:968 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:967:20:968 | 55 | UseUseExplosion.rb:20:959:20:968 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:980:20:984 | @prop | UseUseExplosion.rb:20:980:20:989 | ... > ... | self |
+| UseUseExplosion.rb:20:980:20:989 | synthetic splat argument | UseUseExplosion.rb:20:980:20:989 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:988:20:989 | 54 | UseUseExplosion.rb:20:980:20:989 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1001:20:1005 | @prop | UseUseExplosion.rb:20:1001:20:1010 | ... > ... | self |
+| UseUseExplosion.rb:20:1001:20:1010 | synthetic splat argument | UseUseExplosion.rb:20:1001:20:1010 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1009:20:1010 | 53 | UseUseExplosion.rb:20:1001:20:1010 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1022:20:1026 | @prop | UseUseExplosion.rb:20:1022:20:1031 | ... > ... | self |
+| UseUseExplosion.rb:20:1022:20:1031 | synthetic splat argument | UseUseExplosion.rb:20:1022:20:1031 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1030:20:1031 | 52 | UseUseExplosion.rb:20:1022:20:1031 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1043:20:1047 | @prop | UseUseExplosion.rb:20:1043:20:1052 | ... > ... | self |
+| UseUseExplosion.rb:20:1043:20:1052 | synthetic splat argument | UseUseExplosion.rb:20:1043:20:1052 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1051:20:1052 | 51 | UseUseExplosion.rb:20:1043:20:1052 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1064:20:1068 | @prop | UseUseExplosion.rb:20:1064:20:1073 | ... > ... | self |
+| UseUseExplosion.rb:20:1064:20:1073 | synthetic splat argument | UseUseExplosion.rb:20:1064:20:1073 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1072:20:1073 | 50 | UseUseExplosion.rb:20:1064:20:1073 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1085:20:1089 | @prop | UseUseExplosion.rb:20:1085:20:1094 | ... > ... | self |
+| UseUseExplosion.rb:20:1085:20:1094 | synthetic splat argument | UseUseExplosion.rb:20:1085:20:1094 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1093:20:1094 | 49 | UseUseExplosion.rb:20:1085:20:1094 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1106:20:1110 | @prop | UseUseExplosion.rb:20:1106:20:1115 | ... > ... | self |
+| UseUseExplosion.rb:20:1106:20:1115 | synthetic splat argument | UseUseExplosion.rb:20:1106:20:1115 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1114:20:1115 | 48 | UseUseExplosion.rb:20:1106:20:1115 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1127:20:1131 | @prop | UseUseExplosion.rb:20:1127:20:1136 | ... > ... | self |
+| UseUseExplosion.rb:20:1127:20:1136 | synthetic splat argument | UseUseExplosion.rb:20:1127:20:1136 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1135:20:1136 | 47 | UseUseExplosion.rb:20:1127:20:1136 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1148:20:1152 | @prop | UseUseExplosion.rb:20:1148:20:1157 | ... > ... | self |
+| UseUseExplosion.rb:20:1148:20:1157 | synthetic splat argument | UseUseExplosion.rb:20:1148:20:1157 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1156:20:1157 | 46 | UseUseExplosion.rb:20:1148:20:1157 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1169:20:1173 | @prop | UseUseExplosion.rb:20:1169:20:1178 | ... > ... | self |
+| UseUseExplosion.rb:20:1169:20:1178 | synthetic splat argument | UseUseExplosion.rb:20:1169:20:1178 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1177:20:1178 | 45 | UseUseExplosion.rb:20:1169:20:1178 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1190:20:1194 | @prop | UseUseExplosion.rb:20:1190:20:1199 | ... > ... | self |
+| UseUseExplosion.rb:20:1190:20:1199 | synthetic splat argument | UseUseExplosion.rb:20:1190:20:1199 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1198:20:1199 | 44 | UseUseExplosion.rb:20:1190:20:1199 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1211:20:1215 | @prop | UseUseExplosion.rb:20:1211:20:1220 | ... > ... | self |
+| UseUseExplosion.rb:20:1211:20:1220 | synthetic splat argument | UseUseExplosion.rb:20:1211:20:1220 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1219:20:1220 | 43 | UseUseExplosion.rb:20:1211:20:1220 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1232:20:1236 | @prop | UseUseExplosion.rb:20:1232:20:1241 | ... > ... | self |
+| UseUseExplosion.rb:20:1232:20:1241 | synthetic splat argument | UseUseExplosion.rb:20:1232:20:1241 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1240:20:1241 | 42 | UseUseExplosion.rb:20:1232:20:1241 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1253:20:1257 | @prop | UseUseExplosion.rb:20:1253:20:1262 | ... > ... | self |
+| UseUseExplosion.rb:20:1253:20:1262 | synthetic splat argument | UseUseExplosion.rb:20:1253:20:1262 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1261:20:1262 | 41 | UseUseExplosion.rb:20:1253:20:1262 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1274:20:1278 | @prop | UseUseExplosion.rb:20:1274:20:1283 | ... > ... | self |
+| UseUseExplosion.rb:20:1274:20:1283 | synthetic splat argument | UseUseExplosion.rb:20:1274:20:1283 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1282:20:1283 | 40 | UseUseExplosion.rb:20:1274:20:1283 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1295:20:1299 | @prop | UseUseExplosion.rb:20:1295:20:1304 | ... > ... | self |
+| UseUseExplosion.rb:20:1295:20:1304 | synthetic splat argument | UseUseExplosion.rb:20:1295:20:1304 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1303:20:1304 | 39 | UseUseExplosion.rb:20:1295:20:1304 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1316:20:1320 | @prop | UseUseExplosion.rb:20:1316:20:1325 | ... > ... | self |
+| UseUseExplosion.rb:20:1316:20:1325 | synthetic splat argument | UseUseExplosion.rb:20:1316:20:1325 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1324:20:1325 | 38 | UseUseExplosion.rb:20:1316:20:1325 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1337:20:1341 | @prop | UseUseExplosion.rb:20:1337:20:1346 | ... > ... | self |
+| UseUseExplosion.rb:20:1337:20:1346 | synthetic splat argument | UseUseExplosion.rb:20:1337:20:1346 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1345:20:1346 | 37 | UseUseExplosion.rb:20:1337:20:1346 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1358:20:1362 | @prop | UseUseExplosion.rb:20:1358:20:1367 | ... > ... | self |
+| UseUseExplosion.rb:20:1358:20:1367 | synthetic splat argument | UseUseExplosion.rb:20:1358:20:1367 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1366:20:1367 | 36 | UseUseExplosion.rb:20:1358:20:1367 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1379:20:1383 | @prop | UseUseExplosion.rb:20:1379:20:1388 | ... > ... | self |
+| UseUseExplosion.rb:20:1379:20:1388 | synthetic splat argument | UseUseExplosion.rb:20:1379:20:1388 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1387:20:1388 | 35 | UseUseExplosion.rb:20:1379:20:1388 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1400:20:1404 | @prop | UseUseExplosion.rb:20:1400:20:1409 | ... > ... | self |
+| UseUseExplosion.rb:20:1400:20:1409 | synthetic splat argument | UseUseExplosion.rb:20:1400:20:1409 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1408:20:1409 | 34 | UseUseExplosion.rb:20:1400:20:1409 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1421:20:1425 | @prop | UseUseExplosion.rb:20:1421:20:1430 | ... > ... | self |
+| UseUseExplosion.rb:20:1421:20:1430 | synthetic splat argument | UseUseExplosion.rb:20:1421:20:1430 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1429:20:1430 | 33 | UseUseExplosion.rb:20:1421:20:1430 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1442:20:1446 | @prop | UseUseExplosion.rb:20:1442:20:1451 | ... > ... | self |
+| UseUseExplosion.rb:20:1442:20:1451 | synthetic splat argument | UseUseExplosion.rb:20:1442:20:1451 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1450:20:1451 | 32 | UseUseExplosion.rb:20:1442:20:1451 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1463:20:1467 | @prop | UseUseExplosion.rb:20:1463:20:1472 | ... > ... | self |
+| UseUseExplosion.rb:20:1463:20:1472 | synthetic splat argument | UseUseExplosion.rb:20:1463:20:1472 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1471:20:1472 | 31 | UseUseExplosion.rb:20:1463:20:1472 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1484:20:1488 | @prop | UseUseExplosion.rb:20:1484:20:1493 | ... > ... | self |
+| UseUseExplosion.rb:20:1484:20:1493 | synthetic splat argument | UseUseExplosion.rb:20:1484:20:1493 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1492:20:1493 | 30 | UseUseExplosion.rb:20:1484:20:1493 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1505:20:1509 | @prop | UseUseExplosion.rb:20:1505:20:1514 | ... > ... | self |
+| UseUseExplosion.rb:20:1505:20:1514 | synthetic splat argument | UseUseExplosion.rb:20:1505:20:1514 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1513:20:1514 | 29 | UseUseExplosion.rb:20:1505:20:1514 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1526:20:1530 | @prop | UseUseExplosion.rb:20:1526:20:1535 | ... > ... | self |
+| UseUseExplosion.rb:20:1526:20:1535 | synthetic splat argument | UseUseExplosion.rb:20:1526:20:1535 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1534:20:1535 | 28 | UseUseExplosion.rb:20:1526:20:1535 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1547:20:1551 | @prop | UseUseExplosion.rb:20:1547:20:1556 | ... > ... | self |
+| UseUseExplosion.rb:20:1547:20:1556 | synthetic splat argument | UseUseExplosion.rb:20:1547:20:1556 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1555:20:1556 | 27 | UseUseExplosion.rb:20:1547:20:1556 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1568:20:1572 | @prop | UseUseExplosion.rb:20:1568:20:1577 | ... > ... | self |
+| UseUseExplosion.rb:20:1568:20:1577 | synthetic splat argument | UseUseExplosion.rb:20:1568:20:1577 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1576:20:1577 | 26 | UseUseExplosion.rb:20:1568:20:1577 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1589:20:1593 | @prop | UseUseExplosion.rb:20:1589:20:1598 | ... > ... | self |
+| UseUseExplosion.rb:20:1589:20:1598 | synthetic splat argument | UseUseExplosion.rb:20:1589:20:1598 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1597:20:1598 | 25 | UseUseExplosion.rb:20:1589:20:1598 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1610:20:1614 | @prop | UseUseExplosion.rb:20:1610:20:1619 | ... > ... | self |
+| UseUseExplosion.rb:20:1610:20:1619 | synthetic splat argument | UseUseExplosion.rb:20:1610:20:1619 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1618:20:1619 | 24 | UseUseExplosion.rb:20:1610:20:1619 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1631:20:1635 | @prop | UseUseExplosion.rb:20:1631:20:1640 | ... > ... | self |
+| UseUseExplosion.rb:20:1631:20:1640 | synthetic splat argument | UseUseExplosion.rb:20:1631:20:1640 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1639:20:1640 | 23 | UseUseExplosion.rb:20:1631:20:1640 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1652:20:1656 | @prop | UseUseExplosion.rb:20:1652:20:1661 | ... > ... | self |
+| UseUseExplosion.rb:20:1652:20:1661 | synthetic splat argument | UseUseExplosion.rb:20:1652:20:1661 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1660:20:1661 | 22 | UseUseExplosion.rb:20:1652:20:1661 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1673:20:1677 | @prop | UseUseExplosion.rb:20:1673:20:1682 | ... > ... | self |
+| UseUseExplosion.rb:20:1673:20:1682 | synthetic splat argument | UseUseExplosion.rb:20:1673:20:1682 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1681:20:1682 | 21 | UseUseExplosion.rb:20:1673:20:1682 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1694:20:1698 | @prop | UseUseExplosion.rb:20:1694:20:1703 | ... > ... | self |
+| UseUseExplosion.rb:20:1694:20:1703 | synthetic splat argument | UseUseExplosion.rb:20:1694:20:1703 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1702:20:1703 | 20 | UseUseExplosion.rb:20:1694:20:1703 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1715:20:1719 | @prop | UseUseExplosion.rb:20:1715:20:1724 | ... > ... | self |
+| UseUseExplosion.rb:20:1715:20:1724 | synthetic splat argument | UseUseExplosion.rb:20:1715:20:1724 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1723:20:1724 | 19 | UseUseExplosion.rb:20:1715:20:1724 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1736:20:1740 | @prop | UseUseExplosion.rb:20:1736:20:1745 | ... > ... | self |
+| UseUseExplosion.rb:20:1736:20:1745 | synthetic splat argument | UseUseExplosion.rb:20:1736:20:1745 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1744:20:1745 | 18 | UseUseExplosion.rb:20:1736:20:1745 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1757:20:1761 | @prop | UseUseExplosion.rb:20:1757:20:1766 | ... > ... | self |
+| UseUseExplosion.rb:20:1757:20:1766 | synthetic splat argument | UseUseExplosion.rb:20:1757:20:1766 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1765:20:1766 | 17 | UseUseExplosion.rb:20:1757:20:1766 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1778:20:1782 | @prop | UseUseExplosion.rb:20:1778:20:1787 | ... > ... | self |
+| UseUseExplosion.rb:20:1778:20:1787 | synthetic splat argument | UseUseExplosion.rb:20:1778:20:1787 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1786:20:1787 | 16 | UseUseExplosion.rb:20:1778:20:1787 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1799:20:1803 | @prop | UseUseExplosion.rb:20:1799:20:1808 | ... > ... | self |
+| UseUseExplosion.rb:20:1799:20:1808 | synthetic splat argument | UseUseExplosion.rb:20:1799:20:1808 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1807:20:1808 | 15 | UseUseExplosion.rb:20:1799:20:1808 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1820:20:1824 | @prop | UseUseExplosion.rb:20:1820:20:1829 | ... > ... | self |
+| UseUseExplosion.rb:20:1820:20:1829 | synthetic splat argument | UseUseExplosion.rb:20:1820:20:1829 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1828:20:1829 | 14 | UseUseExplosion.rb:20:1820:20:1829 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1841:20:1845 | @prop | UseUseExplosion.rb:20:1841:20:1850 | ... > ... | self |
+| UseUseExplosion.rb:20:1841:20:1850 | synthetic splat argument | UseUseExplosion.rb:20:1841:20:1850 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1849:20:1850 | 13 | UseUseExplosion.rb:20:1841:20:1850 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1862:20:1866 | @prop | UseUseExplosion.rb:20:1862:20:1871 | ... > ... | self |
+| UseUseExplosion.rb:20:1862:20:1871 | synthetic splat argument | UseUseExplosion.rb:20:1862:20:1871 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1870:20:1871 | 12 | UseUseExplosion.rb:20:1862:20:1871 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1883:20:1887 | @prop | UseUseExplosion.rb:20:1883:20:1892 | ... > ... | self |
+| UseUseExplosion.rb:20:1883:20:1892 | synthetic splat argument | UseUseExplosion.rb:20:1883:20:1892 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1891:20:1892 | 11 | UseUseExplosion.rb:20:1883:20:1892 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1904:20:1908 | @prop | UseUseExplosion.rb:20:1904:20:1913 | ... > ... | self |
+| UseUseExplosion.rb:20:1904:20:1913 | synthetic splat argument | UseUseExplosion.rb:20:1904:20:1913 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1912:20:1913 | 10 | UseUseExplosion.rb:20:1904:20:1913 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1925:20:1929 | @prop | UseUseExplosion.rb:20:1925:20:1933 | ... > ... | self |
+| UseUseExplosion.rb:20:1925:20:1933 | synthetic splat argument | UseUseExplosion.rb:20:1925:20:1933 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1933:20:1933 | 9 | UseUseExplosion.rb:20:1925:20:1933 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1945:20:1949 | @prop | UseUseExplosion.rb:20:1945:20:1953 | ... > ... | self |
+| UseUseExplosion.rb:20:1945:20:1953 | synthetic splat argument | UseUseExplosion.rb:20:1945:20:1953 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1953:20:1953 | 8 | UseUseExplosion.rb:20:1945:20:1953 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1965:20:1969 | @prop | UseUseExplosion.rb:20:1965:20:1973 | ... > ... | self |
+| UseUseExplosion.rb:20:1965:20:1973 | synthetic splat argument | UseUseExplosion.rb:20:1965:20:1973 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1973:20:1973 | 7 | UseUseExplosion.rb:20:1965:20:1973 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:1985:20:1989 | @prop | UseUseExplosion.rb:20:1985:20:1993 | ... > ... | self |
+| UseUseExplosion.rb:20:1985:20:1993 | synthetic splat argument | UseUseExplosion.rb:20:1985:20:1993 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:1993:20:1993 | 6 | UseUseExplosion.rb:20:1985:20:1993 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:2005:20:2009 | @prop | UseUseExplosion.rb:20:2005:20:2013 | ... > ... | self |
+| UseUseExplosion.rb:20:2005:20:2013 | synthetic splat argument | UseUseExplosion.rb:20:2005:20:2013 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:2013:20:2013 | 5 | UseUseExplosion.rb:20:2005:20:2013 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:2025:20:2029 | @prop | UseUseExplosion.rb:20:2025:20:2033 | ... > ... | self |
+| UseUseExplosion.rb:20:2025:20:2033 | synthetic splat argument | UseUseExplosion.rb:20:2025:20:2033 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:2033:20:2033 | 4 | UseUseExplosion.rb:20:2025:20:2033 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:2045:20:2049 | @prop | UseUseExplosion.rb:20:2045:20:2053 | ... > ... | self |
+| UseUseExplosion.rb:20:2045:20:2053 | synthetic splat argument | UseUseExplosion.rb:20:2045:20:2053 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:2053:20:2053 | 3 | UseUseExplosion.rb:20:2045:20:2053 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:2065:20:2069 | @prop | UseUseExplosion.rb:20:2065:20:2073 | ... > ... | self |
+| UseUseExplosion.rb:20:2065:20:2073 | synthetic splat argument | UseUseExplosion.rb:20:2065:20:2073 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:2073:20:2073 | 2 | UseUseExplosion.rb:20:2065:20:2073 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:2085:20:2089 | @prop | UseUseExplosion.rb:20:2085:20:2093 | ... > ... | self |
+| UseUseExplosion.rb:20:2085:20:2093 | synthetic splat argument | UseUseExplosion.rb:20:2085:20:2093 | ... > ... | synthetic * |
 | UseUseExplosion.rb:20:2093:20:2093 | 1 | UseUseExplosion.rb:20:2085:20:2093 | ... > ... | position 0 |
 | UseUseExplosion.rb:20:2107:20:2112 | self | UseUseExplosion.rb:20:2107:20:2112 | call to use | self |
+| UseUseExplosion.rb:20:2107:20:2112 | synthetic splat argument | UseUseExplosion.rb:20:2107:20:2112 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2111:20:2111 | x | UseUseExplosion.rb:20:2107:20:2112 | call to use | position 0 |
 | UseUseExplosion.rb:20:2123:20:2128 | self | UseUseExplosion.rb:20:2123:20:2128 | call to use | self |
+| UseUseExplosion.rb:20:2123:20:2128 | synthetic splat argument | UseUseExplosion.rb:20:2123:20:2128 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2127:20:2127 | x | UseUseExplosion.rb:20:2123:20:2128 | call to use | position 0 |
 | UseUseExplosion.rb:20:2139:20:2144 | self | UseUseExplosion.rb:20:2139:20:2144 | call to use | self |
+| UseUseExplosion.rb:20:2139:20:2144 | synthetic splat argument | UseUseExplosion.rb:20:2139:20:2144 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2143:20:2143 | x | UseUseExplosion.rb:20:2139:20:2144 | call to use | position 0 |
 | UseUseExplosion.rb:20:2155:20:2160 | self | UseUseExplosion.rb:20:2155:20:2160 | call to use | self |
+| UseUseExplosion.rb:20:2155:20:2160 | synthetic splat argument | UseUseExplosion.rb:20:2155:20:2160 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2159:20:2159 | x | UseUseExplosion.rb:20:2155:20:2160 | call to use | position 0 |
 | UseUseExplosion.rb:20:2171:20:2176 | self | UseUseExplosion.rb:20:2171:20:2176 | call to use | self |
+| UseUseExplosion.rb:20:2171:20:2176 | synthetic splat argument | UseUseExplosion.rb:20:2171:20:2176 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2175:20:2175 | x | UseUseExplosion.rb:20:2171:20:2176 | call to use | position 0 |
 | UseUseExplosion.rb:20:2187:20:2192 | self | UseUseExplosion.rb:20:2187:20:2192 | call to use | self |
+| UseUseExplosion.rb:20:2187:20:2192 | synthetic splat argument | UseUseExplosion.rb:20:2187:20:2192 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2191:20:2191 | x | UseUseExplosion.rb:20:2187:20:2192 | call to use | position 0 |
 | UseUseExplosion.rb:20:2203:20:2208 | self | UseUseExplosion.rb:20:2203:20:2208 | call to use | self |
+| UseUseExplosion.rb:20:2203:20:2208 | synthetic splat argument | UseUseExplosion.rb:20:2203:20:2208 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2207:20:2207 | x | UseUseExplosion.rb:20:2203:20:2208 | call to use | position 0 |
 | UseUseExplosion.rb:20:2219:20:2224 | self | UseUseExplosion.rb:20:2219:20:2224 | call to use | self |
+| UseUseExplosion.rb:20:2219:20:2224 | synthetic splat argument | UseUseExplosion.rb:20:2219:20:2224 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2223:20:2223 | x | UseUseExplosion.rb:20:2219:20:2224 | call to use | position 0 |
 | UseUseExplosion.rb:20:2235:20:2240 | self | UseUseExplosion.rb:20:2235:20:2240 | call to use | self |
+| UseUseExplosion.rb:20:2235:20:2240 | synthetic splat argument | UseUseExplosion.rb:20:2235:20:2240 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2239:20:2239 | x | UseUseExplosion.rb:20:2235:20:2240 | call to use | position 0 |
 | UseUseExplosion.rb:20:2251:20:2256 | self | UseUseExplosion.rb:20:2251:20:2256 | call to use | self |
+| UseUseExplosion.rb:20:2251:20:2256 | synthetic splat argument | UseUseExplosion.rb:20:2251:20:2256 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2255:20:2255 | x | UseUseExplosion.rb:20:2251:20:2256 | call to use | position 0 |
 | UseUseExplosion.rb:20:2267:20:2272 | self | UseUseExplosion.rb:20:2267:20:2272 | call to use | self |
+| UseUseExplosion.rb:20:2267:20:2272 | synthetic splat argument | UseUseExplosion.rb:20:2267:20:2272 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2271:20:2271 | x | UseUseExplosion.rb:20:2267:20:2272 | call to use | position 0 |
 | UseUseExplosion.rb:20:2283:20:2288 | self | UseUseExplosion.rb:20:2283:20:2288 | call to use | self |
+| UseUseExplosion.rb:20:2283:20:2288 | synthetic splat argument | UseUseExplosion.rb:20:2283:20:2288 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2287:20:2287 | x | UseUseExplosion.rb:20:2283:20:2288 | call to use | position 0 |
 | UseUseExplosion.rb:20:2299:20:2304 | self | UseUseExplosion.rb:20:2299:20:2304 | call to use | self |
+| UseUseExplosion.rb:20:2299:20:2304 | synthetic splat argument | UseUseExplosion.rb:20:2299:20:2304 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2303:20:2303 | x | UseUseExplosion.rb:20:2299:20:2304 | call to use | position 0 |
 | UseUseExplosion.rb:20:2315:20:2320 | self | UseUseExplosion.rb:20:2315:20:2320 | call to use | self |
+| UseUseExplosion.rb:20:2315:20:2320 | synthetic splat argument | UseUseExplosion.rb:20:2315:20:2320 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2319:20:2319 | x | UseUseExplosion.rb:20:2315:20:2320 | call to use | position 0 |
 | UseUseExplosion.rb:20:2331:20:2336 | self | UseUseExplosion.rb:20:2331:20:2336 | call to use | self |
+| UseUseExplosion.rb:20:2331:20:2336 | synthetic splat argument | UseUseExplosion.rb:20:2331:20:2336 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2335:20:2335 | x | UseUseExplosion.rb:20:2331:20:2336 | call to use | position 0 |
 | UseUseExplosion.rb:20:2347:20:2352 | self | UseUseExplosion.rb:20:2347:20:2352 | call to use | self |
+| UseUseExplosion.rb:20:2347:20:2352 | synthetic splat argument | UseUseExplosion.rb:20:2347:20:2352 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2351:20:2351 | x | UseUseExplosion.rb:20:2347:20:2352 | call to use | position 0 |
 | UseUseExplosion.rb:20:2363:20:2368 | self | UseUseExplosion.rb:20:2363:20:2368 | call to use | self |
+| UseUseExplosion.rb:20:2363:20:2368 | synthetic splat argument | UseUseExplosion.rb:20:2363:20:2368 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2367:20:2367 | x | UseUseExplosion.rb:20:2363:20:2368 | call to use | position 0 |
 | UseUseExplosion.rb:20:2379:20:2384 | self | UseUseExplosion.rb:20:2379:20:2384 | call to use | self |
+| UseUseExplosion.rb:20:2379:20:2384 | synthetic splat argument | UseUseExplosion.rb:20:2379:20:2384 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2383:20:2383 | x | UseUseExplosion.rb:20:2379:20:2384 | call to use | position 0 |
 | UseUseExplosion.rb:20:2395:20:2400 | self | UseUseExplosion.rb:20:2395:20:2400 | call to use | self |
+| UseUseExplosion.rb:20:2395:20:2400 | synthetic splat argument | UseUseExplosion.rb:20:2395:20:2400 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2399:20:2399 | x | UseUseExplosion.rb:20:2395:20:2400 | call to use | position 0 |
 | UseUseExplosion.rb:20:2411:20:2416 | self | UseUseExplosion.rb:20:2411:20:2416 | call to use | self |
+| UseUseExplosion.rb:20:2411:20:2416 | synthetic splat argument | UseUseExplosion.rb:20:2411:20:2416 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2415:20:2415 | x | UseUseExplosion.rb:20:2411:20:2416 | call to use | position 0 |
 | UseUseExplosion.rb:20:2427:20:2432 | self | UseUseExplosion.rb:20:2427:20:2432 | call to use | self |
+| UseUseExplosion.rb:20:2427:20:2432 | synthetic splat argument | UseUseExplosion.rb:20:2427:20:2432 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2431:20:2431 | x | UseUseExplosion.rb:20:2427:20:2432 | call to use | position 0 |
 | UseUseExplosion.rb:20:2443:20:2448 | self | UseUseExplosion.rb:20:2443:20:2448 | call to use | self |
+| UseUseExplosion.rb:20:2443:20:2448 | synthetic splat argument | UseUseExplosion.rb:20:2443:20:2448 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2447:20:2447 | x | UseUseExplosion.rb:20:2443:20:2448 | call to use | position 0 |
 | UseUseExplosion.rb:20:2459:20:2464 | self | UseUseExplosion.rb:20:2459:20:2464 | call to use | self |
+| UseUseExplosion.rb:20:2459:20:2464 | synthetic splat argument | UseUseExplosion.rb:20:2459:20:2464 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2463:20:2463 | x | UseUseExplosion.rb:20:2459:20:2464 | call to use | position 0 |
 | UseUseExplosion.rb:20:2475:20:2480 | self | UseUseExplosion.rb:20:2475:20:2480 | call to use | self |
+| UseUseExplosion.rb:20:2475:20:2480 | synthetic splat argument | UseUseExplosion.rb:20:2475:20:2480 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2479:20:2479 | x | UseUseExplosion.rb:20:2475:20:2480 | call to use | position 0 |
 | UseUseExplosion.rb:20:2491:20:2496 | self | UseUseExplosion.rb:20:2491:20:2496 | call to use | self |
+| UseUseExplosion.rb:20:2491:20:2496 | synthetic splat argument | UseUseExplosion.rb:20:2491:20:2496 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2495:20:2495 | x | UseUseExplosion.rb:20:2491:20:2496 | call to use | position 0 |
 | UseUseExplosion.rb:20:2507:20:2512 | self | UseUseExplosion.rb:20:2507:20:2512 | call to use | self |
+| UseUseExplosion.rb:20:2507:20:2512 | synthetic splat argument | UseUseExplosion.rb:20:2507:20:2512 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2511:20:2511 | x | UseUseExplosion.rb:20:2507:20:2512 | call to use | position 0 |
 | UseUseExplosion.rb:20:2523:20:2528 | self | UseUseExplosion.rb:20:2523:20:2528 | call to use | self |
+| UseUseExplosion.rb:20:2523:20:2528 | synthetic splat argument | UseUseExplosion.rb:20:2523:20:2528 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2527:20:2527 | x | UseUseExplosion.rb:20:2523:20:2528 | call to use | position 0 |
 | UseUseExplosion.rb:20:2539:20:2544 | self | UseUseExplosion.rb:20:2539:20:2544 | call to use | self |
+| UseUseExplosion.rb:20:2539:20:2544 | synthetic splat argument | UseUseExplosion.rb:20:2539:20:2544 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2543:20:2543 | x | UseUseExplosion.rb:20:2539:20:2544 | call to use | position 0 |
 | UseUseExplosion.rb:20:2555:20:2560 | self | UseUseExplosion.rb:20:2555:20:2560 | call to use | self |
+| UseUseExplosion.rb:20:2555:20:2560 | synthetic splat argument | UseUseExplosion.rb:20:2555:20:2560 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2559:20:2559 | x | UseUseExplosion.rb:20:2555:20:2560 | call to use | position 0 |
 | UseUseExplosion.rb:20:2571:20:2576 | self | UseUseExplosion.rb:20:2571:20:2576 | call to use | self |
+| UseUseExplosion.rb:20:2571:20:2576 | synthetic splat argument | UseUseExplosion.rb:20:2571:20:2576 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2575:20:2575 | x | UseUseExplosion.rb:20:2571:20:2576 | call to use | position 0 |
 | UseUseExplosion.rb:20:2587:20:2592 | self | UseUseExplosion.rb:20:2587:20:2592 | call to use | self |
+| UseUseExplosion.rb:20:2587:20:2592 | synthetic splat argument | UseUseExplosion.rb:20:2587:20:2592 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2591:20:2591 | x | UseUseExplosion.rb:20:2587:20:2592 | call to use | position 0 |
 | UseUseExplosion.rb:20:2603:20:2608 | self | UseUseExplosion.rb:20:2603:20:2608 | call to use | self |
+| UseUseExplosion.rb:20:2603:20:2608 | synthetic splat argument | UseUseExplosion.rb:20:2603:20:2608 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2607:20:2607 | x | UseUseExplosion.rb:20:2603:20:2608 | call to use | position 0 |
 | UseUseExplosion.rb:20:2619:20:2624 | self | UseUseExplosion.rb:20:2619:20:2624 | call to use | self |
+| UseUseExplosion.rb:20:2619:20:2624 | synthetic splat argument | UseUseExplosion.rb:20:2619:20:2624 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2623:20:2623 | x | UseUseExplosion.rb:20:2619:20:2624 | call to use | position 0 |
 | UseUseExplosion.rb:20:2635:20:2640 | self | UseUseExplosion.rb:20:2635:20:2640 | call to use | self |
+| UseUseExplosion.rb:20:2635:20:2640 | synthetic splat argument | UseUseExplosion.rb:20:2635:20:2640 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2639:20:2639 | x | UseUseExplosion.rb:20:2635:20:2640 | call to use | position 0 |
 | UseUseExplosion.rb:20:2651:20:2656 | self | UseUseExplosion.rb:20:2651:20:2656 | call to use | self |
+| UseUseExplosion.rb:20:2651:20:2656 | synthetic splat argument | UseUseExplosion.rb:20:2651:20:2656 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2655:20:2655 | x | UseUseExplosion.rb:20:2651:20:2656 | call to use | position 0 |
 | UseUseExplosion.rb:20:2667:20:2672 | self | UseUseExplosion.rb:20:2667:20:2672 | call to use | self |
+| UseUseExplosion.rb:20:2667:20:2672 | synthetic splat argument | UseUseExplosion.rb:20:2667:20:2672 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2671:20:2671 | x | UseUseExplosion.rb:20:2667:20:2672 | call to use | position 0 |
 | UseUseExplosion.rb:20:2683:20:2688 | self | UseUseExplosion.rb:20:2683:20:2688 | call to use | self |
+| UseUseExplosion.rb:20:2683:20:2688 | synthetic splat argument | UseUseExplosion.rb:20:2683:20:2688 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2687:20:2687 | x | UseUseExplosion.rb:20:2683:20:2688 | call to use | position 0 |
 | UseUseExplosion.rb:20:2699:20:2704 | self | UseUseExplosion.rb:20:2699:20:2704 | call to use | self |
+| UseUseExplosion.rb:20:2699:20:2704 | synthetic splat argument | UseUseExplosion.rb:20:2699:20:2704 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2703:20:2703 | x | UseUseExplosion.rb:20:2699:20:2704 | call to use | position 0 |
 | UseUseExplosion.rb:20:2715:20:2720 | self | UseUseExplosion.rb:20:2715:20:2720 | call to use | self |
+| UseUseExplosion.rb:20:2715:20:2720 | synthetic splat argument | UseUseExplosion.rb:20:2715:20:2720 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2719:20:2719 | x | UseUseExplosion.rb:20:2715:20:2720 | call to use | position 0 |
 | UseUseExplosion.rb:20:2731:20:2736 | self | UseUseExplosion.rb:20:2731:20:2736 | call to use | self |
+| UseUseExplosion.rb:20:2731:20:2736 | synthetic splat argument | UseUseExplosion.rb:20:2731:20:2736 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2735:20:2735 | x | UseUseExplosion.rb:20:2731:20:2736 | call to use | position 0 |
 | UseUseExplosion.rb:20:2747:20:2752 | self | UseUseExplosion.rb:20:2747:20:2752 | call to use | self |
+| UseUseExplosion.rb:20:2747:20:2752 | synthetic splat argument | UseUseExplosion.rb:20:2747:20:2752 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2751:20:2751 | x | UseUseExplosion.rb:20:2747:20:2752 | call to use | position 0 |
 | UseUseExplosion.rb:20:2763:20:2768 | self | UseUseExplosion.rb:20:2763:20:2768 | call to use | self |
+| UseUseExplosion.rb:20:2763:20:2768 | synthetic splat argument | UseUseExplosion.rb:20:2763:20:2768 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2767:20:2767 | x | UseUseExplosion.rb:20:2763:20:2768 | call to use | position 0 |
 | UseUseExplosion.rb:20:2779:20:2784 | self | UseUseExplosion.rb:20:2779:20:2784 | call to use | self |
+| UseUseExplosion.rb:20:2779:20:2784 | synthetic splat argument | UseUseExplosion.rb:20:2779:20:2784 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2783:20:2783 | x | UseUseExplosion.rb:20:2779:20:2784 | call to use | position 0 |
 | UseUseExplosion.rb:20:2795:20:2800 | self | UseUseExplosion.rb:20:2795:20:2800 | call to use | self |
+| UseUseExplosion.rb:20:2795:20:2800 | synthetic splat argument | UseUseExplosion.rb:20:2795:20:2800 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2799:20:2799 | x | UseUseExplosion.rb:20:2795:20:2800 | call to use | position 0 |
 | UseUseExplosion.rb:20:2811:20:2816 | self | UseUseExplosion.rb:20:2811:20:2816 | call to use | self |
+| UseUseExplosion.rb:20:2811:20:2816 | synthetic splat argument | UseUseExplosion.rb:20:2811:20:2816 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2815:20:2815 | x | UseUseExplosion.rb:20:2811:20:2816 | call to use | position 0 |
 | UseUseExplosion.rb:20:2827:20:2832 | self | UseUseExplosion.rb:20:2827:20:2832 | call to use | self |
+| UseUseExplosion.rb:20:2827:20:2832 | synthetic splat argument | UseUseExplosion.rb:20:2827:20:2832 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2831:20:2831 | x | UseUseExplosion.rb:20:2827:20:2832 | call to use | position 0 |
 | UseUseExplosion.rb:20:2843:20:2848 | self | UseUseExplosion.rb:20:2843:20:2848 | call to use | self |
+| UseUseExplosion.rb:20:2843:20:2848 | synthetic splat argument | UseUseExplosion.rb:20:2843:20:2848 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2847:20:2847 | x | UseUseExplosion.rb:20:2843:20:2848 | call to use | position 0 |
 | UseUseExplosion.rb:20:2859:20:2864 | self | UseUseExplosion.rb:20:2859:20:2864 | call to use | self |
+| UseUseExplosion.rb:20:2859:20:2864 | synthetic splat argument | UseUseExplosion.rb:20:2859:20:2864 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2863:20:2863 | x | UseUseExplosion.rb:20:2859:20:2864 | call to use | position 0 |
 | UseUseExplosion.rb:20:2875:20:2880 | self | UseUseExplosion.rb:20:2875:20:2880 | call to use | self |
+| UseUseExplosion.rb:20:2875:20:2880 | synthetic splat argument | UseUseExplosion.rb:20:2875:20:2880 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2879:20:2879 | x | UseUseExplosion.rb:20:2875:20:2880 | call to use | position 0 |
 | UseUseExplosion.rb:20:2891:20:2896 | self | UseUseExplosion.rb:20:2891:20:2896 | call to use | self |
+| UseUseExplosion.rb:20:2891:20:2896 | synthetic splat argument | UseUseExplosion.rb:20:2891:20:2896 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2895:20:2895 | x | UseUseExplosion.rb:20:2891:20:2896 | call to use | position 0 |
 | UseUseExplosion.rb:20:2907:20:2912 | self | UseUseExplosion.rb:20:2907:20:2912 | call to use | self |
+| UseUseExplosion.rb:20:2907:20:2912 | synthetic splat argument | UseUseExplosion.rb:20:2907:20:2912 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2911:20:2911 | x | UseUseExplosion.rb:20:2907:20:2912 | call to use | position 0 |
 | UseUseExplosion.rb:20:2923:20:2928 | self | UseUseExplosion.rb:20:2923:20:2928 | call to use | self |
+| UseUseExplosion.rb:20:2923:20:2928 | synthetic splat argument | UseUseExplosion.rb:20:2923:20:2928 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2927:20:2927 | x | UseUseExplosion.rb:20:2923:20:2928 | call to use | position 0 |
 | UseUseExplosion.rb:20:2939:20:2944 | self | UseUseExplosion.rb:20:2939:20:2944 | call to use | self |
+| UseUseExplosion.rb:20:2939:20:2944 | synthetic splat argument | UseUseExplosion.rb:20:2939:20:2944 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2943:20:2943 | x | UseUseExplosion.rb:20:2939:20:2944 | call to use | position 0 |
 | UseUseExplosion.rb:20:2955:20:2960 | self | UseUseExplosion.rb:20:2955:20:2960 | call to use | self |
+| UseUseExplosion.rb:20:2955:20:2960 | synthetic splat argument | UseUseExplosion.rb:20:2955:20:2960 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2959:20:2959 | x | UseUseExplosion.rb:20:2955:20:2960 | call to use | position 0 |
 | UseUseExplosion.rb:20:2971:20:2976 | self | UseUseExplosion.rb:20:2971:20:2976 | call to use | self |
+| UseUseExplosion.rb:20:2971:20:2976 | synthetic splat argument | UseUseExplosion.rb:20:2971:20:2976 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2975:20:2975 | x | UseUseExplosion.rb:20:2971:20:2976 | call to use | position 0 |
 | UseUseExplosion.rb:20:2987:20:2992 | self | UseUseExplosion.rb:20:2987:20:2992 | call to use | self |
+| UseUseExplosion.rb:20:2987:20:2992 | synthetic splat argument | UseUseExplosion.rb:20:2987:20:2992 | call to use | synthetic * |
 | UseUseExplosion.rb:20:2991:20:2991 | x | UseUseExplosion.rb:20:2987:20:2992 | call to use | position 0 |
 | UseUseExplosion.rb:20:3003:20:3008 | self | UseUseExplosion.rb:20:3003:20:3008 | call to use | self |
+| UseUseExplosion.rb:20:3003:20:3008 | synthetic splat argument | UseUseExplosion.rb:20:3003:20:3008 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3007:20:3007 | x | UseUseExplosion.rb:20:3003:20:3008 | call to use | position 0 |
 | UseUseExplosion.rb:20:3019:20:3024 | self | UseUseExplosion.rb:20:3019:20:3024 | call to use | self |
+| UseUseExplosion.rb:20:3019:20:3024 | synthetic splat argument | UseUseExplosion.rb:20:3019:20:3024 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3023:20:3023 | x | UseUseExplosion.rb:20:3019:20:3024 | call to use | position 0 |
 | UseUseExplosion.rb:20:3035:20:3040 | self | UseUseExplosion.rb:20:3035:20:3040 | call to use | self |
+| UseUseExplosion.rb:20:3035:20:3040 | synthetic splat argument | UseUseExplosion.rb:20:3035:20:3040 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3039:20:3039 | x | UseUseExplosion.rb:20:3035:20:3040 | call to use | position 0 |
 | UseUseExplosion.rb:20:3051:20:3056 | self | UseUseExplosion.rb:20:3051:20:3056 | call to use | self |
+| UseUseExplosion.rb:20:3051:20:3056 | synthetic splat argument | UseUseExplosion.rb:20:3051:20:3056 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3055:20:3055 | x | UseUseExplosion.rb:20:3051:20:3056 | call to use | position 0 |
 | UseUseExplosion.rb:20:3067:20:3072 | self | UseUseExplosion.rb:20:3067:20:3072 | call to use | self |
+| UseUseExplosion.rb:20:3067:20:3072 | synthetic splat argument | UseUseExplosion.rb:20:3067:20:3072 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3071:20:3071 | x | UseUseExplosion.rb:20:3067:20:3072 | call to use | position 0 |
 | UseUseExplosion.rb:20:3083:20:3088 | self | UseUseExplosion.rb:20:3083:20:3088 | call to use | self |
+| UseUseExplosion.rb:20:3083:20:3088 | synthetic splat argument | UseUseExplosion.rb:20:3083:20:3088 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3087:20:3087 | x | UseUseExplosion.rb:20:3083:20:3088 | call to use | position 0 |
 | UseUseExplosion.rb:20:3099:20:3104 | self | UseUseExplosion.rb:20:3099:20:3104 | call to use | self |
+| UseUseExplosion.rb:20:3099:20:3104 | synthetic splat argument | UseUseExplosion.rb:20:3099:20:3104 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3103:20:3103 | x | UseUseExplosion.rb:20:3099:20:3104 | call to use | position 0 |
 | UseUseExplosion.rb:20:3115:20:3120 | self | UseUseExplosion.rb:20:3115:20:3120 | call to use | self |
+| UseUseExplosion.rb:20:3115:20:3120 | synthetic splat argument | UseUseExplosion.rb:20:3115:20:3120 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3119:20:3119 | x | UseUseExplosion.rb:20:3115:20:3120 | call to use | position 0 |
 | UseUseExplosion.rb:20:3131:20:3136 | self | UseUseExplosion.rb:20:3131:20:3136 | call to use | self |
+| UseUseExplosion.rb:20:3131:20:3136 | synthetic splat argument | UseUseExplosion.rb:20:3131:20:3136 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3135:20:3135 | x | UseUseExplosion.rb:20:3131:20:3136 | call to use | position 0 |
 | UseUseExplosion.rb:20:3147:20:3152 | self | UseUseExplosion.rb:20:3147:20:3152 | call to use | self |
+| UseUseExplosion.rb:20:3147:20:3152 | synthetic splat argument | UseUseExplosion.rb:20:3147:20:3152 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3151:20:3151 | x | UseUseExplosion.rb:20:3147:20:3152 | call to use | position 0 |
 | UseUseExplosion.rb:20:3163:20:3168 | self | UseUseExplosion.rb:20:3163:20:3168 | call to use | self |
+| UseUseExplosion.rb:20:3163:20:3168 | synthetic splat argument | UseUseExplosion.rb:20:3163:20:3168 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3167:20:3167 | x | UseUseExplosion.rb:20:3163:20:3168 | call to use | position 0 |
 | UseUseExplosion.rb:20:3179:20:3184 | self | UseUseExplosion.rb:20:3179:20:3184 | call to use | self |
+| UseUseExplosion.rb:20:3179:20:3184 | synthetic splat argument | UseUseExplosion.rb:20:3179:20:3184 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3183:20:3183 | x | UseUseExplosion.rb:20:3179:20:3184 | call to use | position 0 |
 | UseUseExplosion.rb:20:3195:20:3200 | self | UseUseExplosion.rb:20:3195:20:3200 | call to use | self |
+| UseUseExplosion.rb:20:3195:20:3200 | synthetic splat argument | UseUseExplosion.rb:20:3195:20:3200 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3199:20:3199 | x | UseUseExplosion.rb:20:3195:20:3200 | call to use | position 0 |
 | UseUseExplosion.rb:20:3211:20:3216 | self | UseUseExplosion.rb:20:3211:20:3216 | call to use | self |
+| UseUseExplosion.rb:20:3211:20:3216 | synthetic splat argument | UseUseExplosion.rb:20:3211:20:3216 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3215:20:3215 | x | UseUseExplosion.rb:20:3211:20:3216 | call to use | position 0 |
 | UseUseExplosion.rb:20:3227:20:3232 | self | UseUseExplosion.rb:20:3227:20:3232 | call to use | self |
+| UseUseExplosion.rb:20:3227:20:3232 | synthetic splat argument | UseUseExplosion.rb:20:3227:20:3232 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3231:20:3231 | x | UseUseExplosion.rb:20:3227:20:3232 | call to use | position 0 |
 | UseUseExplosion.rb:20:3243:20:3248 | self | UseUseExplosion.rb:20:3243:20:3248 | call to use | self |
+| UseUseExplosion.rb:20:3243:20:3248 | synthetic splat argument | UseUseExplosion.rb:20:3243:20:3248 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3247:20:3247 | x | UseUseExplosion.rb:20:3243:20:3248 | call to use | position 0 |
 | UseUseExplosion.rb:20:3259:20:3264 | self | UseUseExplosion.rb:20:3259:20:3264 | call to use | self |
+| UseUseExplosion.rb:20:3259:20:3264 | synthetic splat argument | UseUseExplosion.rb:20:3259:20:3264 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3263:20:3263 | x | UseUseExplosion.rb:20:3259:20:3264 | call to use | position 0 |
 | UseUseExplosion.rb:20:3275:20:3280 | self | UseUseExplosion.rb:20:3275:20:3280 | call to use | self |
+| UseUseExplosion.rb:20:3275:20:3280 | synthetic splat argument | UseUseExplosion.rb:20:3275:20:3280 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3279:20:3279 | x | UseUseExplosion.rb:20:3275:20:3280 | call to use | position 0 |
 | UseUseExplosion.rb:20:3291:20:3296 | self | UseUseExplosion.rb:20:3291:20:3296 | call to use | self |
+| UseUseExplosion.rb:20:3291:20:3296 | synthetic splat argument | UseUseExplosion.rb:20:3291:20:3296 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3295:20:3295 | x | UseUseExplosion.rb:20:3291:20:3296 | call to use | position 0 |
 | UseUseExplosion.rb:20:3307:20:3312 | self | UseUseExplosion.rb:20:3307:20:3312 | call to use | self |
+| UseUseExplosion.rb:20:3307:20:3312 | synthetic splat argument | UseUseExplosion.rb:20:3307:20:3312 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3311:20:3311 | x | UseUseExplosion.rb:20:3307:20:3312 | call to use | position 0 |
 | UseUseExplosion.rb:20:3323:20:3328 | self | UseUseExplosion.rb:20:3323:20:3328 | call to use | self |
+| UseUseExplosion.rb:20:3323:20:3328 | synthetic splat argument | UseUseExplosion.rb:20:3323:20:3328 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3327:20:3327 | x | UseUseExplosion.rb:20:3323:20:3328 | call to use | position 0 |
 | UseUseExplosion.rb:20:3339:20:3344 | self | UseUseExplosion.rb:20:3339:20:3344 | call to use | self |
+| UseUseExplosion.rb:20:3339:20:3344 | synthetic splat argument | UseUseExplosion.rb:20:3339:20:3344 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3343:20:3343 | x | UseUseExplosion.rb:20:3339:20:3344 | call to use | position 0 |
 | UseUseExplosion.rb:20:3355:20:3360 | self | UseUseExplosion.rb:20:3355:20:3360 | call to use | self |
+| UseUseExplosion.rb:20:3355:20:3360 | synthetic splat argument | UseUseExplosion.rb:20:3355:20:3360 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3359:20:3359 | x | UseUseExplosion.rb:20:3355:20:3360 | call to use | position 0 |
 | UseUseExplosion.rb:20:3371:20:3376 | self | UseUseExplosion.rb:20:3371:20:3376 | call to use | self |
+| UseUseExplosion.rb:20:3371:20:3376 | synthetic splat argument | UseUseExplosion.rb:20:3371:20:3376 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3375:20:3375 | x | UseUseExplosion.rb:20:3371:20:3376 | call to use | position 0 |
 | UseUseExplosion.rb:20:3387:20:3392 | self | UseUseExplosion.rb:20:3387:20:3392 | call to use | self |
+| UseUseExplosion.rb:20:3387:20:3392 | synthetic splat argument | UseUseExplosion.rb:20:3387:20:3392 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3391:20:3391 | x | UseUseExplosion.rb:20:3387:20:3392 | call to use | position 0 |
 | UseUseExplosion.rb:20:3403:20:3408 | self | UseUseExplosion.rb:20:3403:20:3408 | call to use | self |
+| UseUseExplosion.rb:20:3403:20:3408 | synthetic splat argument | UseUseExplosion.rb:20:3403:20:3408 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3407:20:3407 | x | UseUseExplosion.rb:20:3403:20:3408 | call to use | position 0 |
 | UseUseExplosion.rb:20:3419:20:3424 | self | UseUseExplosion.rb:20:3419:20:3424 | call to use | self |
+| UseUseExplosion.rb:20:3419:20:3424 | synthetic splat argument | UseUseExplosion.rb:20:3419:20:3424 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3423:20:3423 | x | UseUseExplosion.rb:20:3419:20:3424 | call to use | position 0 |
 | UseUseExplosion.rb:20:3435:20:3440 | self | UseUseExplosion.rb:20:3435:20:3440 | call to use | self |
+| UseUseExplosion.rb:20:3435:20:3440 | synthetic splat argument | UseUseExplosion.rb:20:3435:20:3440 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3439:20:3439 | x | UseUseExplosion.rb:20:3435:20:3440 | call to use | position 0 |
 | UseUseExplosion.rb:20:3451:20:3456 | self | UseUseExplosion.rb:20:3451:20:3456 | call to use | self |
+| UseUseExplosion.rb:20:3451:20:3456 | synthetic splat argument | UseUseExplosion.rb:20:3451:20:3456 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3455:20:3455 | x | UseUseExplosion.rb:20:3451:20:3456 | call to use | position 0 |
 | UseUseExplosion.rb:20:3467:20:3472 | self | UseUseExplosion.rb:20:3467:20:3472 | call to use | self |
+| UseUseExplosion.rb:20:3467:20:3472 | synthetic splat argument | UseUseExplosion.rb:20:3467:20:3472 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3471:20:3471 | x | UseUseExplosion.rb:20:3467:20:3472 | call to use | position 0 |
 | UseUseExplosion.rb:20:3483:20:3488 | self | UseUseExplosion.rb:20:3483:20:3488 | call to use | self |
+| UseUseExplosion.rb:20:3483:20:3488 | synthetic splat argument | UseUseExplosion.rb:20:3483:20:3488 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3487:20:3487 | x | UseUseExplosion.rb:20:3483:20:3488 | call to use | position 0 |
 | UseUseExplosion.rb:20:3499:20:3504 | self | UseUseExplosion.rb:20:3499:20:3504 | call to use | self |
+| UseUseExplosion.rb:20:3499:20:3504 | synthetic splat argument | UseUseExplosion.rb:20:3499:20:3504 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3503:20:3503 | x | UseUseExplosion.rb:20:3499:20:3504 | call to use | position 0 |
 | UseUseExplosion.rb:20:3515:20:3520 | self | UseUseExplosion.rb:20:3515:20:3520 | call to use | self |
+| UseUseExplosion.rb:20:3515:20:3520 | synthetic splat argument | UseUseExplosion.rb:20:3515:20:3520 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3519:20:3519 | x | UseUseExplosion.rb:20:3515:20:3520 | call to use | position 0 |
 | UseUseExplosion.rb:20:3531:20:3536 | self | UseUseExplosion.rb:20:3531:20:3536 | call to use | self |
+| UseUseExplosion.rb:20:3531:20:3536 | synthetic splat argument | UseUseExplosion.rb:20:3531:20:3536 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3535:20:3535 | x | UseUseExplosion.rb:20:3531:20:3536 | call to use | position 0 |
 | UseUseExplosion.rb:20:3547:20:3552 | self | UseUseExplosion.rb:20:3547:20:3552 | call to use | self |
+| UseUseExplosion.rb:20:3547:20:3552 | synthetic splat argument | UseUseExplosion.rb:20:3547:20:3552 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3551:20:3551 | x | UseUseExplosion.rb:20:3547:20:3552 | call to use | position 0 |
 | UseUseExplosion.rb:20:3563:20:3568 | self | UseUseExplosion.rb:20:3563:20:3568 | call to use | self |
+| UseUseExplosion.rb:20:3563:20:3568 | synthetic splat argument | UseUseExplosion.rb:20:3563:20:3568 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3567:20:3567 | x | UseUseExplosion.rb:20:3563:20:3568 | call to use | position 0 |
 | UseUseExplosion.rb:20:3579:20:3584 | self | UseUseExplosion.rb:20:3579:20:3584 | call to use | self |
+| UseUseExplosion.rb:20:3579:20:3584 | synthetic splat argument | UseUseExplosion.rb:20:3579:20:3584 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3583:20:3583 | x | UseUseExplosion.rb:20:3579:20:3584 | call to use | position 0 |
 | UseUseExplosion.rb:20:3595:20:3600 | self | UseUseExplosion.rb:20:3595:20:3600 | call to use | self |
+| UseUseExplosion.rb:20:3595:20:3600 | synthetic splat argument | UseUseExplosion.rb:20:3595:20:3600 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3599:20:3599 | x | UseUseExplosion.rb:20:3595:20:3600 | call to use | position 0 |
 | UseUseExplosion.rb:20:3611:20:3616 | self | UseUseExplosion.rb:20:3611:20:3616 | call to use | self |
+| UseUseExplosion.rb:20:3611:20:3616 | synthetic splat argument | UseUseExplosion.rb:20:3611:20:3616 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3615:20:3615 | x | UseUseExplosion.rb:20:3611:20:3616 | call to use | position 0 |
 | UseUseExplosion.rb:20:3627:20:3632 | self | UseUseExplosion.rb:20:3627:20:3632 | call to use | self |
+| UseUseExplosion.rb:20:3627:20:3632 | synthetic splat argument | UseUseExplosion.rb:20:3627:20:3632 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3631:20:3631 | x | UseUseExplosion.rb:20:3627:20:3632 | call to use | position 0 |
 | UseUseExplosion.rb:20:3643:20:3648 | self | UseUseExplosion.rb:20:3643:20:3648 | call to use | self |
+| UseUseExplosion.rb:20:3643:20:3648 | synthetic splat argument | UseUseExplosion.rb:20:3643:20:3648 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3647:20:3647 | x | UseUseExplosion.rb:20:3643:20:3648 | call to use | position 0 |
 | UseUseExplosion.rb:20:3659:20:3664 | self | UseUseExplosion.rb:20:3659:20:3664 | call to use | self |
+| UseUseExplosion.rb:20:3659:20:3664 | synthetic splat argument | UseUseExplosion.rb:20:3659:20:3664 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3663:20:3663 | x | UseUseExplosion.rb:20:3659:20:3664 | call to use | position 0 |
 | UseUseExplosion.rb:20:3675:20:3680 | self | UseUseExplosion.rb:20:3675:20:3680 | call to use | self |
+| UseUseExplosion.rb:20:3675:20:3680 | synthetic splat argument | UseUseExplosion.rb:20:3675:20:3680 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3679:20:3679 | x | UseUseExplosion.rb:20:3675:20:3680 | call to use | position 0 |
 | UseUseExplosion.rb:20:3691:20:3696 | self | UseUseExplosion.rb:20:3691:20:3696 | call to use | self |
+| UseUseExplosion.rb:20:3691:20:3696 | synthetic splat argument | UseUseExplosion.rb:20:3691:20:3696 | call to use | synthetic * |
 | UseUseExplosion.rb:20:3695:20:3695 | x | UseUseExplosion.rb:20:3691:20:3696 | call to use | position 0 |
 | UseUseExplosion.rb:21:13:21:17 | @prop | UseUseExplosion.rb:21:13:21:23 | ... > ... | self |
+| UseUseExplosion.rb:21:13:21:23 | synthetic splat argument | UseUseExplosion.rb:21:13:21:23 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:21:21:23 | 100 | UseUseExplosion.rb:21:13:21:23 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:35:21:39 | @prop | UseUseExplosion.rb:21:35:21:44 | ... > ... | self |
+| UseUseExplosion.rb:21:35:21:44 | synthetic splat argument | UseUseExplosion.rb:21:35:21:44 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:43:21:44 | 99 | UseUseExplosion.rb:21:35:21:44 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:56:21:60 | @prop | UseUseExplosion.rb:21:56:21:65 | ... > ... | self |
+| UseUseExplosion.rb:21:56:21:65 | synthetic splat argument | UseUseExplosion.rb:21:56:21:65 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:64:21:65 | 98 | UseUseExplosion.rb:21:56:21:65 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:77:21:81 | @prop | UseUseExplosion.rb:21:77:21:86 | ... > ... | self |
+| UseUseExplosion.rb:21:77:21:86 | synthetic splat argument | UseUseExplosion.rb:21:77:21:86 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:85:21:86 | 97 | UseUseExplosion.rb:21:77:21:86 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:98:21:102 | @prop | UseUseExplosion.rb:21:98:21:107 | ... > ... | self |
+| UseUseExplosion.rb:21:98:21:107 | synthetic splat argument | UseUseExplosion.rb:21:98:21:107 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:106:21:107 | 96 | UseUseExplosion.rb:21:98:21:107 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:119:21:123 | @prop | UseUseExplosion.rb:21:119:21:128 | ... > ... | self |
+| UseUseExplosion.rb:21:119:21:128 | synthetic splat argument | UseUseExplosion.rb:21:119:21:128 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:127:21:128 | 95 | UseUseExplosion.rb:21:119:21:128 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:140:21:144 | @prop | UseUseExplosion.rb:21:140:21:149 | ... > ... | self |
+| UseUseExplosion.rb:21:140:21:149 | synthetic splat argument | UseUseExplosion.rb:21:140:21:149 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:148:21:149 | 94 | UseUseExplosion.rb:21:140:21:149 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:161:21:165 | @prop | UseUseExplosion.rb:21:161:21:170 | ... > ... | self |
+| UseUseExplosion.rb:21:161:21:170 | synthetic splat argument | UseUseExplosion.rb:21:161:21:170 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:169:21:170 | 93 | UseUseExplosion.rb:21:161:21:170 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:182:21:186 | @prop | UseUseExplosion.rb:21:182:21:191 | ... > ... | self |
+| UseUseExplosion.rb:21:182:21:191 | synthetic splat argument | UseUseExplosion.rb:21:182:21:191 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:190:21:191 | 92 | UseUseExplosion.rb:21:182:21:191 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:203:21:207 | @prop | UseUseExplosion.rb:21:203:21:212 | ... > ... | self |
+| UseUseExplosion.rb:21:203:21:212 | synthetic splat argument | UseUseExplosion.rb:21:203:21:212 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:211:21:212 | 91 | UseUseExplosion.rb:21:203:21:212 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:224:21:228 | @prop | UseUseExplosion.rb:21:224:21:233 | ... > ... | self |
+| UseUseExplosion.rb:21:224:21:233 | synthetic splat argument | UseUseExplosion.rb:21:224:21:233 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:232:21:233 | 90 | UseUseExplosion.rb:21:224:21:233 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:245:21:249 | @prop | UseUseExplosion.rb:21:245:21:254 | ... > ... | self |
+| UseUseExplosion.rb:21:245:21:254 | synthetic splat argument | UseUseExplosion.rb:21:245:21:254 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:253:21:254 | 89 | UseUseExplosion.rb:21:245:21:254 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:266:21:270 | @prop | UseUseExplosion.rb:21:266:21:275 | ... > ... | self |
+| UseUseExplosion.rb:21:266:21:275 | synthetic splat argument | UseUseExplosion.rb:21:266:21:275 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:274:21:275 | 88 | UseUseExplosion.rb:21:266:21:275 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:287:21:291 | @prop | UseUseExplosion.rb:21:287:21:296 | ... > ... | self |
+| UseUseExplosion.rb:21:287:21:296 | synthetic splat argument | UseUseExplosion.rb:21:287:21:296 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:295:21:296 | 87 | UseUseExplosion.rb:21:287:21:296 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:308:21:312 | @prop | UseUseExplosion.rb:21:308:21:317 | ... > ... | self |
+| UseUseExplosion.rb:21:308:21:317 | synthetic splat argument | UseUseExplosion.rb:21:308:21:317 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:316:21:317 | 86 | UseUseExplosion.rb:21:308:21:317 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:329:21:333 | @prop | UseUseExplosion.rb:21:329:21:338 | ... > ... | self |
+| UseUseExplosion.rb:21:329:21:338 | synthetic splat argument | UseUseExplosion.rb:21:329:21:338 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:337:21:338 | 85 | UseUseExplosion.rb:21:329:21:338 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:350:21:354 | @prop | UseUseExplosion.rb:21:350:21:359 | ... > ... | self |
+| UseUseExplosion.rb:21:350:21:359 | synthetic splat argument | UseUseExplosion.rb:21:350:21:359 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:358:21:359 | 84 | UseUseExplosion.rb:21:350:21:359 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:371:21:375 | @prop | UseUseExplosion.rb:21:371:21:380 | ... > ... | self |
+| UseUseExplosion.rb:21:371:21:380 | synthetic splat argument | UseUseExplosion.rb:21:371:21:380 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:379:21:380 | 83 | UseUseExplosion.rb:21:371:21:380 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:392:21:396 | @prop | UseUseExplosion.rb:21:392:21:401 | ... > ... | self |
+| UseUseExplosion.rb:21:392:21:401 | synthetic splat argument | UseUseExplosion.rb:21:392:21:401 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:400:21:401 | 82 | UseUseExplosion.rb:21:392:21:401 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:413:21:417 | @prop | UseUseExplosion.rb:21:413:21:422 | ... > ... | self |
+| UseUseExplosion.rb:21:413:21:422 | synthetic splat argument | UseUseExplosion.rb:21:413:21:422 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:421:21:422 | 81 | UseUseExplosion.rb:21:413:21:422 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:434:21:438 | @prop | UseUseExplosion.rb:21:434:21:443 | ... > ... | self |
+| UseUseExplosion.rb:21:434:21:443 | synthetic splat argument | UseUseExplosion.rb:21:434:21:443 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:442:21:443 | 80 | UseUseExplosion.rb:21:434:21:443 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:455:21:459 | @prop | UseUseExplosion.rb:21:455:21:464 | ... > ... | self |
+| UseUseExplosion.rb:21:455:21:464 | synthetic splat argument | UseUseExplosion.rb:21:455:21:464 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:463:21:464 | 79 | UseUseExplosion.rb:21:455:21:464 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:476:21:480 | @prop | UseUseExplosion.rb:21:476:21:485 | ... > ... | self |
+| UseUseExplosion.rb:21:476:21:485 | synthetic splat argument | UseUseExplosion.rb:21:476:21:485 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:484:21:485 | 78 | UseUseExplosion.rb:21:476:21:485 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:497:21:501 | @prop | UseUseExplosion.rb:21:497:21:506 | ... > ... | self |
+| UseUseExplosion.rb:21:497:21:506 | synthetic splat argument | UseUseExplosion.rb:21:497:21:506 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:505:21:506 | 77 | UseUseExplosion.rb:21:497:21:506 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:518:21:522 | @prop | UseUseExplosion.rb:21:518:21:527 | ... > ... | self |
+| UseUseExplosion.rb:21:518:21:527 | synthetic splat argument | UseUseExplosion.rb:21:518:21:527 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:526:21:527 | 76 | UseUseExplosion.rb:21:518:21:527 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:539:21:543 | @prop | UseUseExplosion.rb:21:539:21:548 | ... > ... | self |
+| UseUseExplosion.rb:21:539:21:548 | synthetic splat argument | UseUseExplosion.rb:21:539:21:548 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:547:21:548 | 75 | UseUseExplosion.rb:21:539:21:548 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:560:21:564 | @prop | UseUseExplosion.rb:21:560:21:569 | ... > ... | self |
+| UseUseExplosion.rb:21:560:21:569 | synthetic splat argument | UseUseExplosion.rb:21:560:21:569 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:568:21:569 | 74 | UseUseExplosion.rb:21:560:21:569 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:581:21:585 | @prop | UseUseExplosion.rb:21:581:21:590 | ... > ... | self |
+| UseUseExplosion.rb:21:581:21:590 | synthetic splat argument | UseUseExplosion.rb:21:581:21:590 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:589:21:590 | 73 | UseUseExplosion.rb:21:581:21:590 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:602:21:606 | @prop | UseUseExplosion.rb:21:602:21:611 | ... > ... | self |
+| UseUseExplosion.rb:21:602:21:611 | synthetic splat argument | UseUseExplosion.rb:21:602:21:611 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:610:21:611 | 72 | UseUseExplosion.rb:21:602:21:611 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:623:21:627 | @prop | UseUseExplosion.rb:21:623:21:632 | ... > ... | self |
+| UseUseExplosion.rb:21:623:21:632 | synthetic splat argument | UseUseExplosion.rb:21:623:21:632 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:631:21:632 | 71 | UseUseExplosion.rb:21:623:21:632 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:644:21:648 | @prop | UseUseExplosion.rb:21:644:21:653 | ... > ... | self |
+| UseUseExplosion.rb:21:644:21:653 | synthetic splat argument | UseUseExplosion.rb:21:644:21:653 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:652:21:653 | 70 | UseUseExplosion.rb:21:644:21:653 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:665:21:669 | @prop | UseUseExplosion.rb:21:665:21:674 | ... > ... | self |
+| UseUseExplosion.rb:21:665:21:674 | synthetic splat argument | UseUseExplosion.rb:21:665:21:674 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:673:21:674 | 69 | UseUseExplosion.rb:21:665:21:674 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:686:21:690 | @prop | UseUseExplosion.rb:21:686:21:695 | ... > ... | self |
+| UseUseExplosion.rb:21:686:21:695 | synthetic splat argument | UseUseExplosion.rb:21:686:21:695 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:694:21:695 | 68 | UseUseExplosion.rb:21:686:21:695 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:707:21:711 | @prop | UseUseExplosion.rb:21:707:21:716 | ... > ... | self |
+| UseUseExplosion.rb:21:707:21:716 | synthetic splat argument | UseUseExplosion.rb:21:707:21:716 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:715:21:716 | 67 | UseUseExplosion.rb:21:707:21:716 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:728:21:732 | @prop | UseUseExplosion.rb:21:728:21:737 | ... > ... | self |
+| UseUseExplosion.rb:21:728:21:737 | synthetic splat argument | UseUseExplosion.rb:21:728:21:737 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:736:21:737 | 66 | UseUseExplosion.rb:21:728:21:737 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:749:21:753 | @prop | UseUseExplosion.rb:21:749:21:758 | ... > ... | self |
+| UseUseExplosion.rb:21:749:21:758 | synthetic splat argument | UseUseExplosion.rb:21:749:21:758 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:757:21:758 | 65 | UseUseExplosion.rb:21:749:21:758 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:770:21:774 | @prop | UseUseExplosion.rb:21:770:21:779 | ... > ... | self |
+| UseUseExplosion.rb:21:770:21:779 | synthetic splat argument | UseUseExplosion.rb:21:770:21:779 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:778:21:779 | 64 | UseUseExplosion.rb:21:770:21:779 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:791:21:795 | @prop | UseUseExplosion.rb:21:791:21:800 | ... > ... | self |
+| UseUseExplosion.rb:21:791:21:800 | synthetic splat argument | UseUseExplosion.rb:21:791:21:800 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:799:21:800 | 63 | UseUseExplosion.rb:21:791:21:800 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:812:21:816 | @prop | UseUseExplosion.rb:21:812:21:821 | ... > ... | self |
+| UseUseExplosion.rb:21:812:21:821 | synthetic splat argument | UseUseExplosion.rb:21:812:21:821 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:820:21:821 | 62 | UseUseExplosion.rb:21:812:21:821 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:833:21:837 | @prop | UseUseExplosion.rb:21:833:21:842 | ... > ... | self |
+| UseUseExplosion.rb:21:833:21:842 | synthetic splat argument | UseUseExplosion.rb:21:833:21:842 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:841:21:842 | 61 | UseUseExplosion.rb:21:833:21:842 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:854:21:858 | @prop | UseUseExplosion.rb:21:854:21:863 | ... > ... | self |
+| UseUseExplosion.rb:21:854:21:863 | synthetic splat argument | UseUseExplosion.rb:21:854:21:863 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:862:21:863 | 60 | UseUseExplosion.rb:21:854:21:863 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:875:21:879 | @prop | UseUseExplosion.rb:21:875:21:884 | ... > ... | self |
+| UseUseExplosion.rb:21:875:21:884 | synthetic splat argument | UseUseExplosion.rb:21:875:21:884 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:883:21:884 | 59 | UseUseExplosion.rb:21:875:21:884 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:896:21:900 | @prop | UseUseExplosion.rb:21:896:21:905 | ... > ... | self |
+| UseUseExplosion.rb:21:896:21:905 | synthetic splat argument | UseUseExplosion.rb:21:896:21:905 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:904:21:905 | 58 | UseUseExplosion.rb:21:896:21:905 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:917:21:921 | @prop | UseUseExplosion.rb:21:917:21:926 | ... > ... | self |
+| UseUseExplosion.rb:21:917:21:926 | synthetic splat argument | UseUseExplosion.rb:21:917:21:926 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:925:21:926 | 57 | UseUseExplosion.rb:21:917:21:926 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:938:21:942 | @prop | UseUseExplosion.rb:21:938:21:947 | ... > ... | self |
+| UseUseExplosion.rb:21:938:21:947 | synthetic splat argument | UseUseExplosion.rb:21:938:21:947 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:946:21:947 | 56 | UseUseExplosion.rb:21:938:21:947 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:959:21:963 | @prop | UseUseExplosion.rb:21:959:21:968 | ... > ... | self |
+| UseUseExplosion.rb:21:959:21:968 | synthetic splat argument | UseUseExplosion.rb:21:959:21:968 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:967:21:968 | 55 | UseUseExplosion.rb:21:959:21:968 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:980:21:984 | @prop | UseUseExplosion.rb:21:980:21:989 | ... > ... | self |
+| UseUseExplosion.rb:21:980:21:989 | synthetic splat argument | UseUseExplosion.rb:21:980:21:989 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:988:21:989 | 54 | UseUseExplosion.rb:21:980:21:989 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1001:21:1005 | @prop | UseUseExplosion.rb:21:1001:21:1010 | ... > ... | self |
+| UseUseExplosion.rb:21:1001:21:1010 | synthetic splat argument | UseUseExplosion.rb:21:1001:21:1010 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1009:21:1010 | 53 | UseUseExplosion.rb:21:1001:21:1010 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1022:21:1026 | @prop | UseUseExplosion.rb:21:1022:21:1031 | ... > ... | self |
+| UseUseExplosion.rb:21:1022:21:1031 | synthetic splat argument | UseUseExplosion.rb:21:1022:21:1031 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1030:21:1031 | 52 | UseUseExplosion.rb:21:1022:21:1031 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1043:21:1047 | @prop | UseUseExplosion.rb:21:1043:21:1052 | ... > ... | self |
+| UseUseExplosion.rb:21:1043:21:1052 | synthetic splat argument | UseUseExplosion.rb:21:1043:21:1052 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1051:21:1052 | 51 | UseUseExplosion.rb:21:1043:21:1052 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1064:21:1068 | @prop | UseUseExplosion.rb:21:1064:21:1073 | ... > ... | self |
+| UseUseExplosion.rb:21:1064:21:1073 | synthetic splat argument | UseUseExplosion.rb:21:1064:21:1073 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1072:21:1073 | 50 | UseUseExplosion.rb:21:1064:21:1073 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1085:21:1089 | @prop | UseUseExplosion.rb:21:1085:21:1094 | ... > ... | self |
+| UseUseExplosion.rb:21:1085:21:1094 | synthetic splat argument | UseUseExplosion.rb:21:1085:21:1094 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1093:21:1094 | 49 | UseUseExplosion.rb:21:1085:21:1094 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1106:21:1110 | @prop | UseUseExplosion.rb:21:1106:21:1115 | ... > ... | self |
+| UseUseExplosion.rb:21:1106:21:1115 | synthetic splat argument | UseUseExplosion.rb:21:1106:21:1115 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1114:21:1115 | 48 | UseUseExplosion.rb:21:1106:21:1115 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1127:21:1131 | @prop | UseUseExplosion.rb:21:1127:21:1136 | ... > ... | self |
+| UseUseExplosion.rb:21:1127:21:1136 | synthetic splat argument | UseUseExplosion.rb:21:1127:21:1136 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1135:21:1136 | 47 | UseUseExplosion.rb:21:1127:21:1136 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1148:21:1152 | @prop | UseUseExplosion.rb:21:1148:21:1157 | ... > ... | self |
+| UseUseExplosion.rb:21:1148:21:1157 | synthetic splat argument | UseUseExplosion.rb:21:1148:21:1157 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1156:21:1157 | 46 | UseUseExplosion.rb:21:1148:21:1157 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1169:21:1173 | @prop | UseUseExplosion.rb:21:1169:21:1178 | ... > ... | self |
+| UseUseExplosion.rb:21:1169:21:1178 | synthetic splat argument | UseUseExplosion.rb:21:1169:21:1178 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1177:21:1178 | 45 | UseUseExplosion.rb:21:1169:21:1178 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1190:21:1194 | @prop | UseUseExplosion.rb:21:1190:21:1199 | ... > ... | self |
+| UseUseExplosion.rb:21:1190:21:1199 | synthetic splat argument | UseUseExplosion.rb:21:1190:21:1199 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1198:21:1199 | 44 | UseUseExplosion.rb:21:1190:21:1199 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1211:21:1215 | @prop | UseUseExplosion.rb:21:1211:21:1220 | ... > ... | self |
+| UseUseExplosion.rb:21:1211:21:1220 | synthetic splat argument | UseUseExplosion.rb:21:1211:21:1220 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1219:21:1220 | 43 | UseUseExplosion.rb:21:1211:21:1220 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1232:21:1236 | @prop | UseUseExplosion.rb:21:1232:21:1241 | ... > ... | self |
+| UseUseExplosion.rb:21:1232:21:1241 | synthetic splat argument | UseUseExplosion.rb:21:1232:21:1241 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1240:21:1241 | 42 | UseUseExplosion.rb:21:1232:21:1241 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1253:21:1257 | @prop | UseUseExplosion.rb:21:1253:21:1262 | ... > ... | self |
+| UseUseExplosion.rb:21:1253:21:1262 | synthetic splat argument | UseUseExplosion.rb:21:1253:21:1262 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1261:21:1262 | 41 | UseUseExplosion.rb:21:1253:21:1262 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1274:21:1278 | @prop | UseUseExplosion.rb:21:1274:21:1283 | ... > ... | self |
+| UseUseExplosion.rb:21:1274:21:1283 | synthetic splat argument | UseUseExplosion.rb:21:1274:21:1283 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1282:21:1283 | 40 | UseUseExplosion.rb:21:1274:21:1283 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1295:21:1299 | @prop | UseUseExplosion.rb:21:1295:21:1304 | ... > ... | self |
+| UseUseExplosion.rb:21:1295:21:1304 | synthetic splat argument | UseUseExplosion.rb:21:1295:21:1304 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1303:21:1304 | 39 | UseUseExplosion.rb:21:1295:21:1304 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1316:21:1320 | @prop | UseUseExplosion.rb:21:1316:21:1325 | ... > ... | self |
+| UseUseExplosion.rb:21:1316:21:1325 | synthetic splat argument | UseUseExplosion.rb:21:1316:21:1325 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1324:21:1325 | 38 | UseUseExplosion.rb:21:1316:21:1325 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1337:21:1341 | @prop | UseUseExplosion.rb:21:1337:21:1346 | ... > ... | self |
+| UseUseExplosion.rb:21:1337:21:1346 | synthetic splat argument | UseUseExplosion.rb:21:1337:21:1346 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1345:21:1346 | 37 | UseUseExplosion.rb:21:1337:21:1346 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1358:21:1362 | @prop | UseUseExplosion.rb:21:1358:21:1367 | ... > ... | self |
+| UseUseExplosion.rb:21:1358:21:1367 | synthetic splat argument | UseUseExplosion.rb:21:1358:21:1367 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1366:21:1367 | 36 | UseUseExplosion.rb:21:1358:21:1367 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1379:21:1383 | @prop | UseUseExplosion.rb:21:1379:21:1388 | ... > ... | self |
+| UseUseExplosion.rb:21:1379:21:1388 | synthetic splat argument | UseUseExplosion.rb:21:1379:21:1388 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1387:21:1388 | 35 | UseUseExplosion.rb:21:1379:21:1388 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1400:21:1404 | @prop | UseUseExplosion.rb:21:1400:21:1409 | ... > ... | self |
+| UseUseExplosion.rb:21:1400:21:1409 | synthetic splat argument | UseUseExplosion.rb:21:1400:21:1409 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1408:21:1409 | 34 | UseUseExplosion.rb:21:1400:21:1409 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1421:21:1425 | @prop | UseUseExplosion.rb:21:1421:21:1430 | ... > ... | self |
+| UseUseExplosion.rb:21:1421:21:1430 | synthetic splat argument | UseUseExplosion.rb:21:1421:21:1430 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1429:21:1430 | 33 | UseUseExplosion.rb:21:1421:21:1430 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1442:21:1446 | @prop | UseUseExplosion.rb:21:1442:21:1451 | ... > ... | self |
+| UseUseExplosion.rb:21:1442:21:1451 | synthetic splat argument | UseUseExplosion.rb:21:1442:21:1451 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1450:21:1451 | 32 | UseUseExplosion.rb:21:1442:21:1451 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1463:21:1467 | @prop | UseUseExplosion.rb:21:1463:21:1472 | ... > ... | self |
+| UseUseExplosion.rb:21:1463:21:1472 | synthetic splat argument | UseUseExplosion.rb:21:1463:21:1472 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1471:21:1472 | 31 | UseUseExplosion.rb:21:1463:21:1472 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1484:21:1488 | @prop | UseUseExplosion.rb:21:1484:21:1493 | ... > ... | self |
+| UseUseExplosion.rb:21:1484:21:1493 | synthetic splat argument | UseUseExplosion.rb:21:1484:21:1493 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1492:21:1493 | 30 | UseUseExplosion.rb:21:1484:21:1493 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1505:21:1509 | @prop | UseUseExplosion.rb:21:1505:21:1514 | ... > ... | self |
+| UseUseExplosion.rb:21:1505:21:1514 | synthetic splat argument | UseUseExplosion.rb:21:1505:21:1514 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1513:21:1514 | 29 | UseUseExplosion.rb:21:1505:21:1514 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1526:21:1530 | @prop | UseUseExplosion.rb:21:1526:21:1535 | ... > ... | self |
+| UseUseExplosion.rb:21:1526:21:1535 | synthetic splat argument | UseUseExplosion.rb:21:1526:21:1535 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1534:21:1535 | 28 | UseUseExplosion.rb:21:1526:21:1535 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1547:21:1551 | @prop | UseUseExplosion.rb:21:1547:21:1556 | ... > ... | self |
+| UseUseExplosion.rb:21:1547:21:1556 | synthetic splat argument | UseUseExplosion.rb:21:1547:21:1556 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1555:21:1556 | 27 | UseUseExplosion.rb:21:1547:21:1556 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1568:21:1572 | @prop | UseUseExplosion.rb:21:1568:21:1577 | ... > ... | self |
+| UseUseExplosion.rb:21:1568:21:1577 | synthetic splat argument | UseUseExplosion.rb:21:1568:21:1577 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1576:21:1577 | 26 | UseUseExplosion.rb:21:1568:21:1577 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1589:21:1593 | @prop | UseUseExplosion.rb:21:1589:21:1598 | ... > ... | self |
+| UseUseExplosion.rb:21:1589:21:1598 | synthetic splat argument | UseUseExplosion.rb:21:1589:21:1598 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1597:21:1598 | 25 | UseUseExplosion.rb:21:1589:21:1598 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1610:21:1614 | @prop | UseUseExplosion.rb:21:1610:21:1619 | ... > ... | self |
+| UseUseExplosion.rb:21:1610:21:1619 | synthetic splat argument | UseUseExplosion.rb:21:1610:21:1619 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1618:21:1619 | 24 | UseUseExplosion.rb:21:1610:21:1619 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1631:21:1635 | @prop | UseUseExplosion.rb:21:1631:21:1640 | ... > ... | self |
+| UseUseExplosion.rb:21:1631:21:1640 | synthetic splat argument | UseUseExplosion.rb:21:1631:21:1640 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1639:21:1640 | 23 | UseUseExplosion.rb:21:1631:21:1640 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1652:21:1656 | @prop | UseUseExplosion.rb:21:1652:21:1661 | ... > ... | self |
+| UseUseExplosion.rb:21:1652:21:1661 | synthetic splat argument | UseUseExplosion.rb:21:1652:21:1661 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1660:21:1661 | 22 | UseUseExplosion.rb:21:1652:21:1661 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1673:21:1677 | @prop | UseUseExplosion.rb:21:1673:21:1682 | ... > ... | self |
+| UseUseExplosion.rb:21:1673:21:1682 | synthetic splat argument | UseUseExplosion.rb:21:1673:21:1682 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1681:21:1682 | 21 | UseUseExplosion.rb:21:1673:21:1682 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1694:21:1698 | @prop | UseUseExplosion.rb:21:1694:21:1703 | ... > ... | self |
+| UseUseExplosion.rb:21:1694:21:1703 | synthetic splat argument | UseUseExplosion.rb:21:1694:21:1703 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1702:21:1703 | 20 | UseUseExplosion.rb:21:1694:21:1703 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1715:21:1719 | @prop | UseUseExplosion.rb:21:1715:21:1724 | ... > ... | self |
+| UseUseExplosion.rb:21:1715:21:1724 | synthetic splat argument | UseUseExplosion.rb:21:1715:21:1724 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1723:21:1724 | 19 | UseUseExplosion.rb:21:1715:21:1724 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1736:21:1740 | @prop | UseUseExplosion.rb:21:1736:21:1745 | ... > ... | self |
+| UseUseExplosion.rb:21:1736:21:1745 | synthetic splat argument | UseUseExplosion.rb:21:1736:21:1745 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1744:21:1745 | 18 | UseUseExplosion.rb:21:1736:21:1745 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1757:21:1761 | @prop | UseUseExplosion.rb:21:1757:21:1766 | ... > ... | self |
+| UseUseExplosion.rb:21:1757:21:1766 | synthetic splat argument | UseUseExplosion.rb:21:1757:21:1766 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1765:21:1766 | 17 | UseUseExplosion.rb:21:1757:21:1766 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1778:21:1782 | @prop | UseUseExplosion.rb:21:1778:21:1787 | ... > ... | self |
+| UseUseExplosion.rb:21:1778:21:1787 | synthetic splat argument | UseUseExplosion.rb:21:1778:21:1787 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1786:21:1787 | 16 | UseUseExplosion.rb:21:1778:21:1787 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1799:21:1803 | @prop | UseUseExplosion.rb:21:1799:21:1808 | ... > ... | self |
+| UseUseExplosion.rb:21:1799:21:1808 | synthetic splat argument | UseUseExplosion.rb:21:1799:21:1808 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1807:21:1808 | 15 | UseUseExplosion.rb:21:1799:21:1808 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1820:21:1824 | @prop | UseUseExplosion.rb:21:1820:21:1829 | ... > ... | self |
+| UseUseExplosion.rb:21:1820:21:1829 | synthetic splat argument | UseUseExplosion.rb:21:1820:21:1829 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1828:21:1829 | 14 | UseUseExplosion.rb:21:1820:21:1829 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1841:21:1845 | @prop | UseUseExplosion.rb:21:1841:21:1850 | ... > ... | self |
+| UseUseExplosion.rb:21:1841:21:1850 | synthetic splat argument | UseUseExplosion.rb:21:1841:21:1850 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1849:21:1850 | 13 | UseUseExplosion.rb:21:1841:21:1850 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1862:21:1866 | @prop | UseUseExplosion.rb:21:1862:21:1871 | ... > ... | self |
+| UseUseExplosion.rb:21:1862:21:1871 | synthetic splat argument | UseUseExplosion.rb:21:1862:21:1871 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1870:21:1871 | 12 | UseUseExplosion.rb:21:1862:21:1871 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1883:21:1887 | @prop | UseUseExplosion.rb:21:1883:21:1892 | ... > ... | self |
+| UseUseExplosion.rb:21:1883:21:1892 | synthetic splat argument | UseUseExplosion.rb:21:1883:21:1892 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1891:21:1892 | 11 | UseUseExplosion.rb:21:1883:21:1892 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1904:21:1908 | @prop | UseUseExplosion.rb:21:1904:21:1913 | ... > ... | self |
+| UseUseExplosion.rb:21:1904:21:1913 | synthetic splat argument | UseUseExplosion.rb:21:1904:21:1913 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1912:21:1913 | 10 | UseUseExplosion.rb:21:1904:21:1913 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1925:21:1929 | @prop | UseUseExplosion.rb:21:1925:21:1933 | ... > ... | self |
+| UseUseExplosion.rb:21:1925:21:1933 | synthetic splat argument | UseUseExplosion.rb:21:1925:21:1933 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1933:21:1933 | 9 | UseUseExplosion.rb:21:1925:21:1933 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1945:21:1949 | @prop | UseUseExplosion.rb:21:1945:21:1953 | ... > ... | self |
+| UseUseExplosion.rb:21:1945:21:1953 | synthetic splat argument | UseUseExplosion.rb:21:1945:21:1953 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1953:21:1953 | 8 | UseUseExplosion.rb:21:1945:21:1953 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1965:21:1969 | @prop | UseUseExplosion.rb:21:1965:21:1973 | ... > ... | self |
+| UseUseExplosion.rb:21:1965:21:1973 | synthetic splat argument | UseUseExplosion.rb:21:1965:21:1973 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1973:21:1973 | 7 | UseUseExplosion.rb:21:1965:21:1973 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:1985:21:1989 | @prop | UseUseExplosion.rb:21:1985:21:1993 | ... > ... | self |
+| UseUseExplosion.rb:21:1985:21:1993 | synthetic splat argument | UseUseExplosion.rb:21:1985:21:1993 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:1993:21:1993 | 6 | UseUseExplosion.rb:21:1985:21:1993 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:2005:21:2009 | @prop | UseUseExplosion.rb:21:2005:21:2013 | ... > ... | self |
+| UseUseExplosion.rb:21:2005:21:2013 | synthetic splat argument | UseUseExplosion.rb:21:2005:21:2013 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:2013:21:2013 | 5 | UseUseExplosion.rb:21:2005:21:2013 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:2025:21:2029 | @prop | UseUseExplosion.rb:21:2025:21:2033 | ... > ... | self |
+| UseUseExplosion.rb:21:2025:21:2033 | synthetic splat argument | UseUseExplosion.rb:21:2025:21:2033 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:2033:21:2033 | 4 | UseUseExplosion.rb:21:2025:21:2033 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:2045:21:2049 | @prop | UseUseExplosion.rb:21:2045:21:2053 | ... > ... | self |
+| UseUseExplosion.rb:21:2045:21:2053 | synthetic splat argument | UseUseExplosion.rb:21:2045:21:2053 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:2053:21:2053 | 3 | UseUseExplosion.rb:21:2045:21:2053 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:2065:21:2069 | @prop | UseUseExplosion.rb:21:2065:21:2073 | ... > ... | self |
+| UseUseExplosion.rb:21:2065:21:2073 | synthetic splat argument | UseUseExplosion.rb:21:2065:21:2073 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:2073:21:2073 | 2 | UseUseExplosion.rb:21:2065:21:2073 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:2085:21:2089 | @prop | UseUseExplosion.rb:21:2085:21:2093 | ... > ... | self |
+| UseUseExplosion.rb:21:2085:21:2093 | synthetic splat argument | UseUseExplosion.rb:21:2085:21:2093 | ... > ... | synthetic * |
 | UseUseExplosion.rb:21:2093:21:2093 | 1 | UseUseExplosion.rb:21:2085:21:2093 | ... > ... | position 0 |
 | UseUseExplosion.rb:21:2107:21:2112 | self | UseUseExplosion.rb:21:2107:21:2112 | call to use | self |
+| UseUseExplosion.rb:21:2107:21:2112 | synthetic splat argument | UseUseExplosion.rb:21:2107:21:2112 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2111:21:2111 | x | UseUseExplosion.rb:21:2107:21:2112 | call to use | position 0 |
 | UseUseExplosion.rb:21:2123:21:2128 | self | UseUseExplosion.rb:21:2123:21:2128 | call to use | self |
+| UseUseExplosion.rb:21:2123:21:2128 | synthetic splat argument | UseUseExplosion.rb:21:2123:21:2128 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2127:21:2127 | x | UseUseExplosion.rb:21:2123:21:2128 | call to use | position 0 |
 | UseUseExplosion.rb:21:2139:21:2144 | self | UseUseExplosion.rb:21:2139:21:2144 | call to use | self |
+| UseUseExplosion.rb:21:2139:21:2144 | synthetic splat argument | UseUseExplosion.rb:21:2139:21:2144 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2143:21:2143 | x | UseUseExplosion.rb:21:2139:21:2144 | call to use | position 0 |
 | UseUseExplosion.rb:21:2155:21:2160 | self | UseUseExplosion.rb:21:2155:21:2160 | call to use | self |
+| UseUseExplosion.rb:21:2155:21:2160 | synthetic splat argument | UseUseExplosion.rb:21:2155:21:2160 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2159:21:2159 | x | UseUseExplosion.rb:21:2155:21:2160 | call to use | position 0 |
 | UseUseExplosion.rb:21:2171:21:2176 | self | UseUseExplosion.rb:21:2171:21:2176 | call to use | self |
+| UseUseExplosion.rb:21:2171:21:2176 | synthetic splat argument | UseUseExplosion.rb:21:2171:21:2176 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2175:21:2175 | x | UseUseExplosion.rb:21:2171:21:2176 | call to use | position 0 |
 | UseUseExplosion.rb:21:2187:21:2192 | self | UseUseExplosion.rb:21:2187:21:2192 | call to use | self |
+| UseUseExplosion.rb:21:2187:21:2192 | synthetic splat argument | UseUseExplosion.rb:21:2187:21:2192 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2191:21:2191 | x | UseUseExplosion.rb:21:2187:21:2192 | call to use | position 0 |
 | UseUseExplosion.rb:21:2203:21:2208 | self | UseUseExplosion.rb:21:2203:21:2208 | call to use | self |
+| UseUseExplosion.rb:21:2203:21:2208 | synthetic splat argument | UseUseExplosion.rb:21:2203:21:2208 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2207:21:2207 | x | UseUseExplosion.rb:21:2203:21:2208 | call to use | position 0 |
 | UseUseExplosion.rb:21:2219:21:2224 | self | UseUseExplosion.rb:21:2219:21:2224 | call to use | self |
+| UseUseExplosion.rb:21:2219:21:2224 | synthetic splat argument | UseUseExplosion.rb:21:2219:21:2224 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2223:21:2223 | x | UseUseExplosion.rb:21:2219:21:2224 | call to use | position 0 |
 | UseUseExplosion.rb:21:2235:21:2240 | self | UseUseExplosion.rb:21:2235:21:2240 | call to use | self |
+| UseUseExplosion.rb:21:2235:21:2240 | synthetic splat argument | UseUseExplosion.rb:21:2235:21:2240 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2239:21:2239 | x | UseUseExplosion.rb:21:2235:21:2240 | call to use | position 0 |
 | UseUseExplosion.rb:21:2251:21:2256 | self | UseUseExplosion.rb:21:2251:21:2256 | call to use | self |
+| UseUseExplosion.rb:21:2251:21:2256 | synthetic splat argument | UseUseExplosion.rb:21:2251:21:2256 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2255:21:2255 | x | UseUseExplosion.rb:21:2251:21:2256 | call to use | position 0 |
 | UseUseExplosion.rb:21:2267:21:2272 | self | UseUseExplosion.rb:21:2267:21:2272 | call to use | self |
+| UseUseExplosion.rb:21:2267:21:2272 | synthetic splat argument | UseUseExplosion.rb:21:2267:21:2272 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2271:21:2271 | x | UseUseExplosion.rb:21:2267:21:2272 | call to use | position 0 |
 | UseUseExplosion.rb:21:2283:21:2288 | self | UseUseExplosion.rb:21:2283:21:2288 | call to use | self |
+| UseUseExplosion.rb:21:2283:21:2288 | synthetic splat argument | UseUseExplosion.rb:21:2283:21:2288 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2287:21:2287 | x | UseUseExplosion.rb:21:2283:21:2288 | call to use | position 0 |
 | UseUseExplosion.rb:21:2299:21:2304 | self | UseUseExplosion.rb:21:2299:21:2304 | call to use | self |
+| UseUseExplosion.rb:21:2299:21:2304 | synthetic splat argument | UseUseExplosion.rb:21:2299:21:2304 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2303:21:2303 | x | UseUseExplosion.rb:21:2299:21:2304 | call to use | position 0 |
 | UseUseExplosion.rb:21:2315:21:2320 | self | UseUseExplosion.rb:21:2315:21:2320 | call to use | self |
+| UseUseExplosion.rb:21:2315:21:2320 | synthetic splat argument | UseUseExplosion.rb:21:2315:21:2320 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2319:21:2319 | x | UseUseExplosion.rb:21:2315:21:2320 | call to use | position 0 |
 | UseUseExplosion.rb:21:2331:21:2336 | self | UseUseExplosion.rb:21:2331:21:2336 | call to use | self |
+| UseUseExplosion.rb:21:2331:21:2336 | synthetic splat argument | UseUseExplosion.rb:21:2331:21:2336 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2335:21:2335 | x | UseUseExplosion.rb:21:2331:21:2336 | call to use | position 0 |
 | UseUseExplosion.rb:21:2347:21:2352 | self | UseUseExplosion.rb:21:2347:21:2352 | call to use | self |
+| UseUseExplosion.rb:21:2347:21:2352 | synthetic splat argument | UseUseExplosion.rb:21:2347:21:2352 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2351:21:2351 | x | UseUseExplosion.rb:21:2347:21:2352 | call to use | position 0 |
 | UseUseExplosion.rb:21:2363:21:2368 | self | UseUseExplosion.rb:21:2363:21:2368 | call to use | self |
+| UseUseExplosion.rb:21:2363:21:2368 | synthetic splat argument | UseUseExplosion.rb:21:2363:21:2368 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2367:21:2367 | x | UseUseExplosion.rb:21:2363:21:2368 | call to use | position 0 |
 | UseUseExplosion.rb:21:2379:21:2384 | self | UseUseExplosion.rb:21:2379:21:2384 | call to use | self |
+| UseUseExplosion.rb:21:2379:21:2384 | synthetic splat argument | UseUseExplosion.rb:21:2379:21:2384 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2383:21:2383 | x | UseUseExplosion.rb:21:2379:21:2384 | call to use | position 0 |
 | UseUseExplosion.rb:21:2395:21:2400 | self | UseUseExplosion.rb:21:2395:21:2400 | call to use | self |
+| UseUseExplosion.rb:21:2395:21:2400 | synthetic splat argument | UseUseExplosion.rb:21:2395:21:2400 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2399:21:2399 | x | UseUseExplosion.rb:21:2395:21:2400 | call to use | position 0 |
 | UseUseExplosion.rb:21:2411:21:2416 | self | UseUseExplosion.rb:21:2411:21:2416 | call to use | self |
+| UseUseExplosion.rb:21:2411:21:2416 | synthetic splat argument | UseUseExplosion.rb:21:2411:21:2416 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2415:21:2415 | x | UseUseExplosion.rb:21:2411:21:2416 | call to use | position 0 |
 | UseUseExplosion.rb:21:2427:21:2432 | self | UseUseExplosion.rb:21:2427:21:2432 | call to use | self |
+| UseUseExplosion.rb:21:2427:21:2432 | synthetic splat argument | UseUseExplosion.rb:21:2427:21:2432 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2431:21:2431 | x | UseUseExplosion.rb:21:2427:21:2432 | call to use | position 0 |
 | UseUseExplosion.rb:21:2443:21:2448 | self | UseUseExplosion.rb:21:2443:21:2448 | call to use | self |
+| UseUseExplosion.rb:21:2443:21:2448 | synthetic splat argument | UseUseExplosion.rb:21:2443:21:2448 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2447:21:2447 | x | UseUseExplosion.rb:21:2443:21:2448 | call to use | position 0 |
 | UseUseExplosion.rb:21:2459:21:2464 | self | UseUseExplosion.rb:21:2459:21:2464 | call to use | self |
+| UseUseExplosion.rb:21:2459:21:2464 | synthetic splat argument | UseUseExplosion.rb:21:2459:21:2464 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2463:21:2463 | x | UseUseExplosion.rb:21:2459:21:2464 | call to use | position 0 |
 | UseUseExplosion.rb:21:2475:21:2480 | self | UseUseExplosion.rb:21:2475:21:2480 | call to use | self |
+| UseUseExplosion.rb:21:2475:21:2480 | synthetic splat argument | UseUseExplosion.rb:21:2475:21:2480 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2479:21:2479 | x | UseUseExplosion.rb:21:2475:21:2480 | call to use | position 0 |
 | UseUseExplosion.rb:21:2491:21:2496 | self | UseUseExplosion.rb:21:2491:21:2496 | call to use | self |
+| UseUseExplosion.rb:21:2491:21:2496 | synthetic splat argument | UseUseExplosion.rb:21:2491:21:2496 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2495:21:2495 | x | UseUseExplosion.rb:21:2491:21:2496 | call to use | position 0 |
 | UseUseExplosion.rb:21:2507:21:2512 | self | UseUseExplosion.rb:21:2507:21:2512 | call to use | self |
+| UseUseExplosion.rb:21:2507:21:2512 | synthetic splat argument | UseUseExplosion.rb:21:2507:21:2512 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2511:21:2511 | x | UseUseExplosion.rb:21:2507:21:2512 | call to use | position 0 |
 | UseUseExplosion.rb:21:2523:21:2528 | self | UseUseExplosion.rb:21:2523:21:2528 | call to use | self |
+| UseUseExplosion.rb:21:2523:21:2528 | synthetic splat argument | UseUseExplosion.rb:21:2523:21:2528 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2527:21:2527 | x | UseUseExplosion.rb:21:2523:21:2528 | call to use | position 0 |
 | UseUseExplosion.rb:21:2539:21:2544 | self | UseUseExplosion.rb:21:2539:21:2544 | call to use | self |
+| UseUseExplosion.rb:21:2539:21:2544 | synthetic splat argument | UseUseExplosion.rb:21:2539:21:2544 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2543:21:2543 | x | UseUseExplosion.rb:21:2539:21:2544 | call to use | position 0 |
 | UseUseExplosion.rb:21:2555:21:2560 | self | UseUseExplosion.rb:21:2555:21:2560 | call to use | self |
+| UseUseExplosion.rb:21:2555:21:2560 | synthetic splat argument | UseUseExplosion.rb:21:2555:21:2560 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2559:21:2559 | x | UseUseExplosion.rb:21:2555:21:2560 | call to use | position 0 |
 | UseUseExplosion.rb:21:2571:21:2576 | self | UseUseExplosion.rb:21:2571:21:2576 | call to use | self |
+| UseUseExplosion.rb:21:2571:21:2576 | synthetic splat argument | UseUseExplosion.rb:21:2571:21:2576 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2575:21:2575 | x | UseUseExplosion.rb:21:2571:21:2576 | call to use | position 0 |
 | UseUseExplosion.rb:21:2587:21:2592 | self | UseUseExplosion.rb:21:2587:21:2592 | call to use | self |
+| UseUseExplosion.rb:21:2587:21:2592 | synthetic splat argument | UseUseExplosion.rb:21:2587:21:2592 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2591:21:2591 | x | UseUseExplosion.rb:21:2587:21:2592 | call to use | position 0 |
 | UseUseExplosion.rb:21:2603:21:2608 | self | UseUseExplosion.rb:21:2603:21:2608 | call to use | self |
+| UseUseExplosion.rb:21:2603:21:2608 | synthetic splat argument | UseUseExplosion.rb:21:2603:21:2608 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2607:21:2607 | x | UseUseExplosion.rb:21:2603:21:2608 | call to use | position 0 |
 | UseUseExplosion.rb:21:2619:21:2624 | self | UseUseExplosion.rb:21:2619:21:2624 | call to use | self |
+| UseUseExplosion.rb:21:2619:21:2624 | synthetic splat argument | UseUseExplosion.rb:21:2619:21:2624 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2623:21:2623 | x | UseUseExplosion.rb:21:2619:21:2624 | call to use | position 0 |
 | UseUseExplosion.rb:21:2635:21:2640 | self | UseUseExplosion.rb:21:2635:21:2640 | call to use | self |
+| UseUseExplosion.rb:21:2635:21:2640 | synthetic splat argument | UseUseExplosion.rb:21:2635:21:2640 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2639:21:2639 | x | UseUseExplosion.rb:21:2635:21:2640 | call to use | position 0 |
 | UseUseExplosion.rb:21:2651:21:2656 | self | UseUseExplosion.rb:21:2651:21:2656 | call to use | self |
+| UseUseExplosion.rb:21:2651:21:2656 | synthetic splat argument | UseUseExplosion.rb:21:2651:21:2656 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2655:21:2655 | x | UseUseExplosion.rb:21:2651:21:2656 | call to use | position 0 |
 | UseUseExplosion.rb:21:2667:21:2672 | self | UseUseExplosion.rb:21:2667:21:2672 | call to use | self |
+| UseUseExplosion.rb:21:2667:21:2672 | synthetic splat argument | UseUseExplosion.rb:21:2667:21:2672 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2671:21:2671 | x | UseUseExplosion.rb:21:2667:21:2672 | call to use | position 0 |
 | UseUseExplosion.rb:21:2683:21:2688 | self | UseUseExplosion.rb:21:2683:21:2688 | call to use | self |
+| UseUseExplosion.rb:21:2683:21:2688 | synthetic splat argument | UseUseExplosion.rb:21:2683:21:2688 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2687:21:2687 | x | UseUseExplosion.rb:21:2683:21:2688 | call to use | position 0 |
 | UseUseExplosion.rb:21:2699:21:2704 | self | UseUseExplosion.rb:21:2699:21:2704 | call to use | self |
+| UseUseExplosion.rb:21:2699:21:2704 | synthetic splat argument | UseUseExplosion.rb:21:2699:21:2704 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2703:21:2703 | x | UseUseExplosion.rb:21:2699:21:2704 | call to use | position 0 |
 | UseUseExplosion.rb:21:2715:21:2720 | self | UseUseExplosion.rb:21:2715:21:2720 | call to use | self |
+| UseUseExplosion.rb:21:2715:21:2720 | synthetic splat argument | UseUseExplosion.rb:21:2715:21:2720 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2719:21:2719 | x | UseUseExplosion.rb:21:2715:21:2720 | call to use | position 0 |
 | UseUseExplosion.rb:21:2731:21:2736 | self | UseUseExplosion.rb:21:2731:21:2736 | call to use | self |
+| UseUseExplosion.rb:21:2731:21:2736 | synthetic splat argument | UseUseExplosion.rb:21:2731:21:2736 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2735:21:2735 | x | UseUseExplosion.rb:21:2731:21:2736 | call to use | position 0 |
 | UseUseExplosion.rb:21:2747:21:2752 | self | UseUseExplosion.rb:21:2747:21:2752 | call to use | self |
+| UseUseExplosion.rb:21:2747:21:2752 | synthetic splat argument | UseUseExplosion.rb:21:2747:21:2752 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2751:21:2751 | x | UseUseExplosion.rb:21:2747:21:2752 | call to use | position 0 |
 | UseUseExplosion.rb:21:2763:21:2768 | self | UseUseExplosion.rb:21:2763:21:2768 | call to use | self |
+| UseUseExplosion.rb:21:2763:21:2768 | synthetic splat argument | UseUseExplosion.rb:21:2763:21:2768 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2767:21:2767 | x | UseUseExplosion.rb:21:2763:21:2768 | call to use | position 0 |
 | UseUseExplosion.rb:21:2779:21:2784 | self | UseUseExplosion.rb:21:2779:21:2784 | call to use | self |
+| UseUseExplosion.rb:21:2779:21:2784 | synthetic splat argument | UseUseExplosion.rb:21:2779:21:2784 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2783:21:2783 | x | UseUseExplosion.rb:21:2779:21:2784 | call to use | position 0 |
 | UseUseExplosion.rb:21:2795:21:2800 | self | UseUseExplosion.rb:21:2795:21:2800 | call to use | self |
+| UseUseExplosion.rb:21:2795:21:2800 | synthetic splat argument | UseUseExplosion.rb:21:2795:21:2800 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2799:21:2799 | x | UseUseExplosion.rb:21:2795:21:2800 | call to use | position 0 |
 | UseUseExplosion.rb:21:2811:21:2816 | self | UseUseExplosion.rb:21:2811:21:2816 | call to use | self |
+| UseUseExplosion.rb:21:2811:21:2816 | synthetic splat argument | UseUseExplosion.rb:21:2811:21:2816 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2815:21:2815 | x | UseUseExplosion.rb:21:2811:21:2816 | call to use | position 0 |
 | UseUseExplosion.rb:21:2827:21:2832 | self | UseUseExplosion.rb:21:2827:21:2832 | call to use | self |
+| UseUseExplosion.rb:21:2827:21:2832 | synthetic splat argument | UseUseExplosion.rb:21:2827:21:2832 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2831:21:2831 | x | UseUseExplosion.rb:21:2827:21:2832 | call to use | position 0 |
 | UseUseExplosion.rb:21:2843:21:2848 | self | UseUseExplosion.rb:21:2843:21:2848 | call to use | self |
+| UseUseExplosion.rb:21:2843:21:2848 | synthetic splat argument | UseUseExplosion.rb:21:2843:21:2848 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2847:21:2847 | x | UseUseExplosion.rb:21:2843:21:2848 | call to use | position 0 |
 | UseUseExplosion.rb:21:2859:21:2864 | self | UseUseExplosion.rb:21:2859:21:2864 | call to use | self |
+| UseUseExplosion.rb:21:2859:21:2864 | synthetic splat argument | UseUseExplosion.rb:21:2859:21:2864 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2863:21:2863 | x | UseUseExplosion.rb:21:2859:21:2864 | call to use | position 0 |
 | UseUseExplosion.rb:21:2875:21:2880 | self | UseUseExplosion.rb:21:2875:21:2880 | call to use | self |
+| UseUseExplosion.rb:21:2875:21:2880 | synthetic splat argument | UseUseExplosion.rb:21:2875:21:2880 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2879:21:2879 | x | UseUseExplosion.rb:21:2875:21:2880 | call to use | position 0 |
 | UseUseExplosion.rb:21:2891:21:2896 | self | UseUseExplosion.rb:21:2891:21:2896 | call to use | self |
+| UseUseExplosion.rb:21:2891:21:2896 | synthetic splat argument | UseUseExplosion.rb:21:2891:21:2896 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2895:21:2895 | x | UseUseExplosion.rb:21:2891:21:2896 | call to use | position 0 |
 | UseUseExplosion.rb:21:2907:21:2912 | self | UseUseExplosion.rb:21:2907:21:2912 | call to use | self |
+| UseUseExplosion.rb:21:2907:21:2912 | synthetic splat argument | UseUseExplosion.rb:21:2907:21:2912 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2911:21:2911 | x | UseUseExplosion.rb:21:2907:21:2912 | call to use | position 0 |
 | UseUseExplosion.rb:21:2923:21:2928 | self | UseUseExplosion.rb:21:2923:21:2928 | call to use | self |
+| UseUseExplosion.rb:21:2923:21:2928 | synthetic splat argument | UseUseExplosion.rb:21:2923:21:2928 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2927:21:2927 | x | UseUseExplosion.rb:21:2923:21:2928 | call to use | position 0 |
 | UseUseExplosion.rb:21:2939:21:2944 | self | UseUseExplosion.rb:21:2939:21:2944 | call to use | self |
+| UseUseExplosion.rb:21:2939:21:2944 | synthetic splat argument | UseUseExplosion.rb:21:2939:21:2944 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2943:21:2943 | x | UseUseExplosion.rb:21:2939:21:2944 | call to use | position 0 |
 | UseUseExplosion.rb:21:2955:21:2960 | self | UseUseExplosion.rb:21:2955:21:2960 | call to use | self |
+| UseUseExplosion.rb:21:2955:21:2960 | synthetic splat argument | UseUseExplosion.rb:21:2955:21:2960 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2959:21:2959 | x | UseUseExplosion.rb:21:2955:21:2960 | call to use | position 0 |
 | UseUseExplosion.rb:21:2971:21:2976 | self | UseUseExplosion.rb:21:2971:21:2976 | call to use | self |
+| UseUseExplosion.rb:21:2971:21:2976 | synthetic splat argument | UseUseExplosion.rb:21:2971:21:2976 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2975:21:2975 | x | UseUseExplosion.rb:21:2971:21:2976 | call to use | position 0 |
 | UseUseExplosion.rb:21:2987:21:2992 | self | UseUseExplosion.rb:21:2987:21:2992 | call to use | self |
+| UseUseExplosion.rb:21:2987:21:2992 | synthetic splat argument | UseUseExplosion.rb:21:2987:21:2992 | call to use | synthetic * |
 | UseUseExplosion.rb:21:2991:21:2991 | x | UseUseExplosion.rb:21:2987:21:2992 | call to use | position 0 |
 | UseUseExplosion.rb:21:3003:21:3008 | self | UseUseExplosion.rb:21:3003:21:3008 | call to use | self |
+| UseUseExplosion.rb:21:3003:21:3008 | synthetic splat argument | UseUseExplosion.rb:21:3003:21:3008 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3007:21:3007 | x | UseUseExplosion.rb:21:3003:21:3008 | call to use | position 0 |
 | UseUseExplosion.rb:21:3019:21:3024 | self | UseUseExplosion.rb:21:3019:21:3024 | call to use | self |
+| UseUseExplosion.rb:21:3019:21:3024 | synthetic splat argument | UseUseExplosion.rb:21:3019:21:3024 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3023:21:3023 | x | UseUseExplosion.rb:21:3019:21:3024 | call to use | position 0 |
 | UseUseExplosion.rb:21:3035:21:3040 | self | UseUseExplosion.rb:21:3035:21:3040 | call to use | self |
+| UseUseExplosion.rb:21:3035:21:3040 | synthetic splat argument | UseUseExplosion.rb:21:3035:21:3040 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3039:21:3039 | x | UseUseExplosion.rb:21:3035:21:3040 | call to use | position 0 |
 | UseUseExplosion.rb:21:3051:21:3056 | self | UseUseExplosion.rb:21:3051:21:3056 | call to use | self |
+| UseUseExplosion.rb:21:3051:21:3056 | synthetic splat argument | UseUseExplosion.rb:21:3051:21:3056 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3055:21:3055 | x | UseUseExplosion.rb:21:3051:21:3056 | call to use | position 0 |
 | UseUseExplosion.rb:21:3067:21:3072 | self | UseUseExplosion.rb:21:3067:21:3072 | call to use | self |
+| UseUseExplosion.rb:21:3067:21:3072 | synthetic splat argument | UseUseExplosion.rb:21:3067:21:3072 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3071:21:3071 | x | UseUseExplosion.rb:21:3067:21:3072 | call to use | position 0 |
 | UseUseExplosion.rb:21:3083:21:3088 | self | UseUseExplosion.rb:21:3083:21:3088 | call to use | self |
+| UseUseExplosion.rb:21:3083:21:3088 | synthetic splat argument | UseUseExplosion.rb:21:3083:21:3088 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3087:21:3087 | x | UseUseExplosion.rb:21:3083:21:3088 | call to use | position 0 |
 | UseUseExplosion.rb:21:3099:21:3104 | self | UseUseExplosion.rb:21:3099:21:3104 | call to use | self |
+| UseUseExplosion.rb:21:3099:21:3104 | synthetic splat argument | UseUseExplosion.rb:21:3099:21:3104 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3103:21:3103 | x | UseUseExplosion.rb:21:3099:21:3104 | call to use | position 0 |
 | UseUseExplosion.rb:21:3115:21:3120 | self | UseUseExplosion.rb:21:3115:21:3120 | call to use | self |
+| UseUseExplosion.rb:21:3115:21:3120 | synthetic splat argument | UseUseExplosion.rb:21:3115:21:3120 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3119:21:3119 | x | UseUseExplosion.rb:21:3115:21:3120 | call to use | position 0 |
 | UseUseExplosion.rb:21:3131:21:3136 | self | UseUseExplosion.rb:21:3131:21:3136 | call to use | self |
+| UseUseExplosion.rb:21:3131:21:3136 | synthetic splat argument | UseUseExplosion.rb:21:3131:21:3136 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3135:21:3135 | x | UseUseExplosion.rb:21:3131:21:3136 | call to use | position 0 |
 | UseUseExplosion.rb:21:3147:21:3152 | self | UseUseExplosion.rb:21:3147:21:3152 | call to use | self |
+| UseUseExplosion.rb:21:3147:21:3152 | synthetic splat argument | UseUseExplosion.rb:21:3147:21:3152 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3151:21:3151 | x | UseUseExplosion.rb:21:3147:21:3152 | call to use | position 0 |
 | UseUseExplosion.rb:21:3163:21:3168 | self | UseUseExplosion.rb:21:3163:21:3168 | call to use | self |
+| UseUseExplosion.rb:21:3163:21:3168 | synthetic splat argument | UseUseExplosion.rb:21:3163:21:3168 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3167:21:3167 | x | UseUseExplosion.rb:21:3163:21:3168 | call to use | position 0 |
 | UseUseExplosion.rb:21:3179:21:3184 | self | UseUseExplosion.rb:21:3179:21:3184 | call to use | self |
+| UseUseExplosion.rb:21:3179:21:3184 | synthetic splat argument | UseUseExplosion.rb:21:3179:21:3184 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3183:21:3183 | x | UseUseExplosion.rb:21:3179:21:3184 | call to use | position 0 |
 | UseUseExplosion.rb:21:3195:21:3200 | self | UseUseExplosion.rb:21:3195:21:3200 | call to use | self |
+| UseUseExplosion.rb:21:3195:21:3200 | synthetic splat argument | UseUseExplosion.rb:21:3195:21:3200 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3199:21:3199 | x | UseUseExplosion.rb:21:3195:21:3200 | call to use | position 0 |
 | UseUseExplosion.rb:21:3211:21:3216 | self | UseUseExplosion.rb:21:3211:21:3216 | call to use | self |
+| UseUseExplosion.rb:21:3211:21:3216 | synthetic splat argument | UseUseExplosion.rb:21:3211:21:3216 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3215:21:3215 | x | UseUseExplosion.rb:21:3211:21:3216 | call to use | position 0 |
 | UseUseExplosion.rb:21:3227:21:3232 | self | UseUseExplosion.rb:21:3227:21:3232 | call to use | self |
+| UseUseExplosion.rb:21:3227:21:3232 | synthetic splat argument | UseUseExplosion.rb:21:3227:21:3232 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3231:21:3231 | x | UseUseExplosion.rb:21:3227:21:3232 | call to use | position 0 |
 | UseUseExplosion.rb:21:3243:21:3248 | self | UseUseExplosion.rb:21:3243:21:3248 | call to use | self |
+| UseUseExplosion.rb:21:3243:21:3248 | synthetic splat argument | UseUseExplosion.rb:21:3243:21:3248 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3247:21:3247 | x | UseUseExplosion.rb:21:3243:21:3248 | call to use | position 0 |
 | UseUseExplosion.rb:21:3259:21:3264 | self | UseUseExplosion.rb:21:3259:21:3264 | call to use | self |
+| UseUseExplosion.rb:21:3259:21:3264 | synthetic splat argument | UseUseExplosion.rb:21:3259:21:3264 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3263:21:3263 | x | UseUseExplosion.rb:21:3259:21:3264 | call to use | position 0 |
 | UseUseExplosion.rb:21:3275:21:3280 | self | UseUseExplosion.rb:21:3275:21:3280 | call to use | self |
+| UseUseExplosion.rb:21:3275:21:3280 | synthetic splat argument | UseUseExplosion.rb:21:3275:21:3280 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3279:21:3279 | x | UseUseExplosion.rb:21:3275:21:3280 | call to use | position 0 |
 | UseUseExplosion.rb:21:3291:21:3296 | self | UseUseExplosion.rb:21:3291:21:3296 | call to use | self |
+| UseUseExplosion.rb:21:3291:21:3296 | synthetic splat argument | UseUseExplosion.rb:21:3291:21:3296 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3295:21:3295 | x | UseUseExplosion.rb:21:3291:21:3296 | call to use | position 0 |
 | UseUseExplosion.rb:21:3307:21:3312 | self | UseUseExplosion.rb:21:3307:21:3312 | call to use | self |
+| UseUseExplosion.rb:21:3307:21:3312 | synthetic splat argument | UseUseExplosion.rb:21:3307:21:3312 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3311:21:3311 | x | UseUseExplosion.rb:21:3307:21:3312 | call to use | position 0 |
 | UseUseExplosion.rb:21:3323:21:3328 | self | UseUseExplosion.rb:21:3323:21:3328 | call to use | self |
+| UseUseExplosion.rb:21:3323:21:3328 | synthetic splat argument | UseUseExplosion.rb:21:3323:21:3328 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3327:21:3327 | x | UseUseExplosion.rb:21:3323:21:3328 | call to use | position 0 |
 | UseUseExplosion.rb:21:3339:21:3344 | self | UseUseExplosion.rb:21:3339:21:3344 | call to use | self |
+| UseUseExplosion.rb:21:3339:21:3344 | synthetic splat argument | UseUseExplosion.rb:21:3339:21:3344 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3343:21:3343 | x | UseUseExplosion.rb:21:3339:21:3344 | call to use | position 0 |
 | UseUseExplosion.rb:21:3355:21:3360 | self | UseUseExplosion.rb:21:3355:21:3360 | call to use | self |
+| UseUseExplosion.rb:21:3355:21:3360 | synthetic splat argument | UseUseExplosion.rb:21:3355:21:3360 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3359:21:3359 | x | UseUseExplosion.rb:21:3355:21:3360 | call to use | position 0 |
 | UseUseExplosion.rb:21:3371:21:3376 | self | UseUseExplosion.rb:21:3371:21:3376 | call to use | self |
+| UseUseExplosion.rb:21:3371:21:3376 | synthetic splat argument | UseUseExplosion.rb:21:3371:21:3376 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3375:21:3375 | x | UseUseExplosion.rb:21:3371:21:3376 | call to use | position 0 |
 | UseUseExplosion.rb:21:3387:21:3392 | self | UseUseExplosion.rb:21:3387:21:3392 | call to use | self |
+| UseUseExplosion.rb:21:3387:21:3392 | synthetic splat argument | UseUseExplosion.rb:21:3387:21:3392 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3391:21:3391 | x | UseUseExplosion.rb:21:3387:21:3392 | call to use | position 0 |
 | UseUseExplosion.rb:21:3403:21:3408 | self | UseUseExplosion.rb:21:3403:21:3408 | call to use | self |
+| UseUseExplosion.rb:21:3403:21:3408 | synthetic splat argument | UseUseExplosion.rb:21:3403:21:3408 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3407:21:3407 | x | UseUseExplosion.rb:21:3403:21:3408 | call to use | position 0 |
 | UseUseExplosion.rb:21:3419:21:3424 | self | UseUseExplosion.rb:21:3419:21:3424 | call to use | self |
+| UseUseExplosion.rb:21:3419:21:3424 | synthetic splat argument | UseUseExplosion.rb:21:3419:21:3424 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3423:21:3423 | x | UseUseExplosion.rb:21:3419:21:3424 | call to use | position 0 |
 | UseUseExplosion.rb:21:3435:21:3440 | self | UseUseExplosion.rb:21:3435:21:3440 | call to use | self |
+| UseUseExplosion.rb:21:3435:21:3440 | synthetic splat argument | UseUseExplosion.rb:21:3435:21:3440 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3439:21:3439 | x | UseUseExplosion.rb:21:3435:21:3440 | call to use | position 0 |
 | UseUseExplosion.rb:21:3451:21:3456 | self | UseUseExplosion.rb:21:3451:21:3456 | call to use | self |
+| UseUseExplosion.rb:21:3451:21:3456 | synthetic splat argument | UseUseExplosion.rb:21:3451:21:3456 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3455:21:3455 | x | UseUseExplosion.rb:21:3451:21:3456 | call to use | position 0 |
 | UseUseExplosion.rb:21:3467:21:3472 | self | UseUseExplosion.rb:21:3467:21:3472 | call to use | self |
+| UseUseExplosion.rb:21:3467:21:3472 | synthetic splat argument | UseUseExplosion.rb:21:3467:21:3472 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3471:21:3471 | x | UseUseExplosion.rb:21:3467:21:3472 | call to use | position 0 |
 | UseUseExplosion.rb:21:3483:21:3488 | self | UseUseExplosion.rb:21:3483:21:3488 | call to use | self |
+| UseUseExplosion.rb:21:3483:21:3488 | synthetic splat argument | UseUseExplosion.rb:21:3483:21:3488 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3487:21:3487 | x | UseUseExplosion.rb:21:3483:21:3488 | call to use | position 0 |
 | UseUseExplosion.rb:21:3499:21:3504 | self | UseUseExplosion.rb:21:3499:21:3504 | call to use | self |
+| UseUseExplosion.rb:21:3499:21:3504 | synthetic splat argument | UseUseExplosion.rb:21:3499:21:3504 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3503:21:3503 | x | UseUseExplosion.rb:21:3499:21:3504 | call to use | position 0 |
 | UseUseExplosion.rb:21:3515:21:3520 | self | UseUseExplosion.rb:21:3515:21:3520 | call to use | self |
+| UseUseExplosion.rb:21:3515:21:3520 | synthetic splat argument | UseUseExplosion.rb:21:3515:21:3520 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3519:21:3519 | x | UseUseExplosion.rb:21:3515:21:3520 | call to use | position 0 |
 | UseUseExplosion.rb:21:3531:21:3536 | self | UseUseExplosion.rb:21:3531:21:3536 | call to use | self |
+| UseUseExplosion.rb:21:3531:21:3536 | synthetic splat argument | UseUseExplosion.rb:21:3531:21:3536 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3535:21:3535 | x | UseUseExplosion.rb:21:3531:21:3536 | call to use | position 0 |
 | UseUseExplosion.rb:21:3547:21:3552 | self | UseUseExplosion.rb:21:3547:21:3552 | call to use | self |
+| UseUseExplosion.rb:21:3547:21:3552 | synthetic splat argument | UseUseExplosion.rb:21:3547:21:3552 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3551:21:3551 | x | UseUseExplosion.rb:21:3547:21:3552 | call to use | position 0 |
 | UseUseExplosion.rb:21:3563:21:3568 | self | UseUseExplosion.rb:21:3563:21:3568 | call to use | self |
+| UseUseExplosion.rb:21:3563:21:3568 | synthetic splat argument | UseUseExplosion.rb:21:3563:21:3568 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3567:21:3567 | x | UseUseExplosion.rb:21:3563:21:3568 | call to use | position 0 |
 | UseUseExplosion.rb:21:3579:21:3584 | self | UseUseExplosion.rb:21:3579:21:3584 | call to use | self |
+| UseUseExplosion.rb:21:3579:21:3584 | synthetic splat argument | UseUseExplosion.rb:21:3579:21:3584 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3583:21:3583 | x | UseUseExplosion.rb:21:3579:21:3584 | call to use | position 0 |
 | UseUseExplosion.rb:21:3595:21:3600 | self | UseUseExplosion.rb:21:3595:21:3600 | call to use | self |
+| UseUseExplosion.rb:21:3595:21:3600 | synthetic splat argument | UseUseExplosion.rb:21:3595:21:3600 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3599:21:3599 | x | UseUseExplosion.rb:21:3595:21:3600 | call to use | position 0 |
 | UseUseExplosion.rb:21:3611:21:3616 | self | UseUseExplosion.rb:21:3611:21:3616 | call to use | self |
+| UseUseExplosion.rb:21:3611:21:3616 | synthetic splat argument | UseUseExplosion.rb:21:3611:21:3616 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3615:21:3615 | x | UseUseExplosion.rb:21:3611:21:3616 | call to use | position 0 |
 | UseUseExplosion.rb:21:3627:21:3632 | self | UseUseExplosion.rb:21:3627:21:3632 | call to use | self |
+| UseUseExplosion.rb:21:3627:21:3632 | synthetic splat argument | UseUseExplosion.rb:21:3627:21:3632 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3631:21:3631 | x | UseUseExplosion.rb:21:3627:21:3632 | call to use | position 0 |
 | UseUseExplosion.rb:21:3643:21:3648 | self | UseUseExplosion.rb:21:3643:21:3648 | call to use | self |
+| UseUseExplosion.rb:21:3643:21:3648 | synthetic splat argument | UseUseExplosion.rb:21:3643:21:3648 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3647:21:3647 | x | UseUseExplosion.rb:21:3643:21:3648 | call to use | position 0 |
 | UseUseExplosion.rb:21:3659:21:3664 | self | UseUseExplosion.rb:21:3659:21:3664 | call to use | self |
+| UseUseExplosion.rb:21:3659:21:3664 | synthetic splat argument | UseUseExplosion.rb:21:3659:21:3664 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3663:21:3663 | x | UseUseExplosion.rb:21:3659:21:3664 | call to use | position 0 |
 | UseUseExplosion.rb:21:3675:21:3680 | self | UseUseExplosion.rb:21:3675:21:3680 | call to use | self |
+| UseUseExplosion.rb:21:3675:21:3680 | synthetic splat argument | UseUseExplosion.rb:21:3675:21:3680 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3679:21:3679 | x | UseUseExplosion.rb:21:3675:21:3680 | call to use | position 0 |
 | UseUseExplosion.rb:21:3691:21:3696 | self | UseUseExplosion.rb:21:3691:21:3696 | call to use | self |
+| UseUseExplosion.rb:21:3691:21:3696 | synthetic splat argument | UseUseExplosion.rb:21:3691:21:3696 | call to use | synthetic * |
 | UseUseExplosion.rb:21:3695:21:3695 | x | UseUseExplosion.rb:21:3691:21:3696 | call to use | position 0 |
 | local_dataflow.rb:3:8:3:10 | self | local_dataflow.rb:3:8:3:10 | call to p | self |
+| local_dataflow.rb:3:8:3:10 | synthetic splat argument | local_dataflow.rb:3:8:3:10 | call to p | synthetic * |
 | local_dataflow.rb:3:10:3:10 | a | local_dataflow.rb:3:8:3:10 | call to p | position 0 |
 | local_dataflow.rb:6:8:6:8 | a | local_dataflow.rb:6:10:6:11 | ... + ... | self |
+| local_dataflow.rb:6:10:6:11 | synthetic splat argument | local_dataflow.rb:6:10:6:11 | ... + ... | synthetic * |
 | local_dataflow.rb:6:13:6:13 | b | local_dataflow.rb:6:10:6:11 | ... + ... | position 0 |
 | local_dataflow.rb:9:9:9:15 | Array | local_dataflow.rb:9:9:9:15 | call to [] | self |
+| local_dataflow.rb:9:9:9:15 | synthetic splat argument | local_dataflow.rb:9:9:9:15 | call to [] | synthetic * |
 | local_dataflow.rb:9:10:9:10 | 1 | local_dataflow.rb:9:9:9:15 | call to [] | position 0 |
 | local_dataflow.rb:9:12:9:12 | 2 | local_dataflow.rb:9:9:9:15 | call to [] | position 1 |
 | local_dataflow.rb:9:14:9:14 | 3 | local_dataflow.rb:9:9:9:15 | call to [] | position 2 |
 | local_dataflow.rb:10:5:13:3 | { ... } | local_dataflow.rb:10:5:13:3 | call to each | block |
+| local_dataflow.rb:10:9:10:9 | defined? ... | local_dataflow.rb:10:9:10:9 | [false] ! ... | self |
+| local_dataflow.rb:10:9:10:9 | defined? ... | local_dataflow.rb:10:9:10:9 | [true] ! ... | self |
+| local_dataflow.rb:10:9:10:9 | x | local_dataflow.rb:10:9:10:9 | defined? ... | self |
 | local_dataflow.rb:10:14:10:18 | array | local_dataflow.rb:10:5:13:3 | call to each | self |
 | local_dataflow.rb:11:1:11:2 | self | local_dataflow.rb:11:1:11:2 | call to do | self |
 | local_dataflow.rb:12:3:12:5 | self | local_dataflow.rb:12:3:12:5 | call to p | self |
+| local_dataflow.rb:12:3:12:5 | synthetic splat argument | local_dataflow.rb:12:3:12:5 | call to p | synthetic * |
 | local_dataflow.rb:12:5:12:5 | x | local_dataflow.rb:12:3:12:5 | call to p | position 0 |
 | local_dataflow.rb:15:1:17:3 | { ... } | local_dataflow.rb:15:1:17:3 | call to each | block |
+| local_dataflow.rb:15:5:15:5 | defined? ... | local_dataflow.rb:15:5:15:5 | [false] ! ... | self |
+| local_dataflow.rb:15:5:15:5 | defined? ... | local_dataflow.rb:15:5:15:5 | [true] ! ... | self |
+| local_dataflow.rb:15:5:15:5 | x | local_dataflow.rb:15:5:15:5 | defined? ... | self |
 | local_dataflow.rb:15:10:15:14 | array | local_dataflow.rb:15:1:17:3 | call to each | self |
 | local_dataflow.rb:19:1:21:3 | { ... } | local_dataflow.rb:19:1:21:3 | call to each | block |
+| local_dataflow.rb:19:5:19:5 | defined? ... | local_dataflow.rb:19:5:19:5 | [false] ! ... | self |
+| local_dataflow.rb:19:5:19:5 | defined? ... | local_dataflow.rb:19:5:19:5 | [true] ! ... | self |
+| local_dataflow.rb:19:5:19:5 | x | local_dataflow.rb:19:5:19:5 | defined? ... | self |
 | local_dataflow.rb:19:10:19:14 | array | local_dataflow.rb:19:1:21:3 | call to each | self |
 | local_dataflow.rb:20:6:20:6 | x | local_dataflow.rb:20:6:20:10 | ... > ... | self |
+| local_dataflow.rb:20:6:20:10 | synthetic splat argument | local_dataflow.rb:20:6:20:10 | ... > ... | synthetic * |
 | local_dataflow.rb:20:10:20:10 | 1 | local_dataflow.rb:20:6:20:10 | ... > ... | position 0 |
 | local_dataflow.rb:35:6:35:6 | x | local_dataflow.rb:35:6:35:11 | ... == ... | self |
+| local_dataflow.rb:35:6:35:11 | synthetic splat argument | local_dataflow.rb:35:6:35:11 | ... == ... | synthetic * |
 | local_dataflow.rb:35:11:35:11 | 4 | local_dataflow.rb:35:6:35:11 | ... == ... | position 0 |
 | local_dataflow.rb:42:6:42:6 | x | local_dataflow.rb:42:6:42:11 | ... == ... | self |
+| local_dataflow.rb:42:6:42:11 | synthetic splat argument | local_dataflow.rb:42:6:42:11 | ... == ... | synthetic * |
 | local_dataflow.rb:42:11:42:11 | 4 | local_dataflow.rb:42:6:42:11 | ... == ... | position 0 |
 | local_dataflow.rb:49:1:53:3 | self | local_dataflow.rb:49:1:53:3 | call to m | self |
 | local_dataflow.rb:49:3:53:3 | do ... end | local_dataflow.rb:49:1:53:3 | call to m | block |
 | local_dataflow.rb:50:18:50:18 | x | local_dataflow.rb:50:18:50:22 | ... < ... | self |
+| local_dataflow.rb:50:18:50:22 | synthetic splat argument | local_dataflow.rb:50:18:50:22 | ... < ... | synthetic * |
 | local_dataflow.rb:50:22:50:22 | 4 | local_dataflow.rb:50:18:50:22 | ... < ... | position 0 |
 | local_dataflow.rb:51:20:51:20 | x | local_dataflow.rb:51:20:51:24 | ... < ... | self |
+| local_dataflow.rb:51:20:51:24 | synthetic splat argument | local_dataflow.rb:51:20:51:24 | ... < ... | synthetic * |
 | local_dataflow.rb:51:24:51:24 | 9 | local_dataflow.rb:51:20:51:24 | ... < ... | position 0 |
 | local_dataflow.rb:55:1:55:14 | self | local_dataflow.rb:55:1:55:14 | call to foo | self |
+| local_dataflow.rb:55:1:55:14 | synthetic splat argument | local_dataflow.rb:55:1:55:14 | call to foo | synthetic * |
 | local_dataflow.rb:55:5:55:13 | Array | local_dataflow.rb:55:5:55:13 | call to [] | self |
 | local_dataflow.rb:55:5:55:13 | call to [] | local_dataflow.rb:55:1:55:14 | call to foo | position 0 |
+| local_dataflow.rb:55:5:55:13 | synthetic splat argument | local_dataflow.rb:55:5:55:13 | call to [] | synthetic * |
 | local_dataflow.rb:55:6:55:6 | 1 | local_dataflow.rb:55:5:55:13 | call to [] | position 0 |
 | local_dataflow.rb:55:9:55:9 | 2 | local_dataflow.rb:55:5:55:13 | call to [] | position 1 |
 | local_dataflow.rb:55:12:55:12 | 3 | local_dataflow.rb:55:5:55:13 | call to [] | position 2 |
 | local_dataflow.rb:78:12:78:20 | self | local_dataflow.rb:78:12:78:20 | call to source | self |
+| local_dataflow.rb:78:12:78:20 | synthetic splat argument | local_dataflow.rb:78:12:78:20 | call to source | synthetic * |
 | local_dataflow.rb:78:19:78:19 | 1 | local_dataflow.rb:78:12:78:20 | call to source | position 0 |
 | local_dataflow.rb:79:20:79:26 | self | local_dataflow.rb:79:20:79:26 | call to sink | self |
+| local_dataflow.rb:79:20:79:26 | synthetic splat argument | local_dataflow.rb:79:20:79:26 | call to sink | synthetic * |
 | local_dataflow.rb:79:25:79:25 | b | local_dataflow.rb:79:20:79:26 | call to sink | position 0 |
 | local_dataflow.rb:80:13:80:13 | a | local_dataflow.rb:80:13:80:17 | ... > ... | self |
+| local_dataflow.rb:80:13:80:17 | synthetic splat argument | local_dataflow.rb:80:13:80:17 | ... > ... | synthetic * |
 | local_dataflow.rb:80:17:80:17 | 0 | local_dataflow.rb:80:13:80:17 | ... > ... | position 0 |
 | local_dataflow.rb:80:24:80:30 | self | local_dataflow.rb:80:24:80:30 | call to sink | self |
+| local_dataflow.rb:80:24:80:30 | synthetic splat argument | local_dataflow.rb:80:24:80:30 | call to sink | synthetic * |
 | local_dataflow.rb:80:29:80:29 | a | local_dataflow.rb:80:24:80:30 | call to sink | position 0 |
 | local_dataflow.rb:81:25:84:14 | Array | local_dataflow.rb:81:25:84:14 | call to [] | self |
+| local_dataflow.rb:81:25:84:14 | synthetic splat argument | local_dataflow.rb:81:25:84:14 | call to [] | synthetic * |
 | local_dataflow.rb:82:7:82:13 | call to sink | local_dataflow.rb:81:25:84:14 | call to [] | position 0 |
 | local_dataflow.rb:82:7:82:13 | self | local_dataflow.rb:82:7:82:13 | call to sink | self |
+| local_dataflow.rb:82:7:82:13 | synthetic splat argument | local_dataflow.rb:82:7:82:13 | call to sink | synthetic * |
 | local_dataflow.rb:82:12:82:12 | c | local_dataflow.rb:82:7:82:13 | call to sink | position 0 |
 | local_dataflow.rb:83:7:83:13 | call to sink | local_dataflow.rb:81:25:84:14 | call to [] | position 1 |
 | local_dataflow.rb:83:7:83:13 | self | local_dataflow.rb:83:7:83:13 | call to sink | self |
+| local_dataflow.rb:83:7:83:13 | synthetic splat argument | local_dataflow.rb:83:7:83:13 | call to sink | synthetic * |
 | local_dataflow.rb:83:12:83:12 | d | local_dataflow.rb:83:7:83:13 | call to sink | position 0 |
 | local_dataflow.rb:84:7:84:13 | call to sink | local_dataflow.rb:81:25:84:14 | call to [] | position 2 |
 | local_dataflow.rb:84:7:84:13 | self | local_dataflow.rb:84:7:84:13 | call to sink | self |
+| local_dataflow.rb:84:7:84:13 | synthetic splat argument | local_dataflow.rb:84:7:84:13 | call to sink | synthetic * |
 | local_dataflow.rb:84:12:84:12 | e | local_dataflow.rb:84:7:84:13 | call to sink | position 0 |
 | local_dataflow.rb:85:22:85:28 | self | local_dataflow.rb:85:22:85:28 | call to sink | self |
+| local_dataflow.rb:85:22:85:28 | synthetic splat argument | local_dataflow.rb:85:22:85:28 | call to sink | synthetic * |
 | local_dataflow.rb:85:27:85:27 | f | local_dataflow.rb:85:22:85:28 | call to sink | position 0 |
 | local_dataflow.rb:86:28:86:34 | self | local_dataflow.rb:86:28:86:34 | call to sink | self |
+| local_dataflow.rb:86:28:86:34 | synthetic splat argument | local_dataflow.rb:86:28:86:34 | call to sink | synthetic * |
 | local_dataflow.rb:86:33:86:33 | g | local_dataflow.rb:86:28:86:34 | call to sink | position 0 |
 | local_dataflow.rb:87:20:87:26 | self | local_dataflow.rb:87:20:87:26 | call to sink | self |
+| local_dataflow.rb:87:20:87:26 | synthetic splat argument | local_dataflow.rb:87:20:87:26 | call to sink | synthetic * |
 | local_dataflow.rb:87:25:87:25 | x | local_dataflow.rb:87:20:87:26 | call to sink | position 0 |
 | local_dataflow.rb:89:3:89:9 | self | local_dataflow.rb:89:3:89:9 | call to sink | self |
+| local_dataflow.rb:89:3:89:9 | synthetic splat argument | local_dataflow.rb:89:3:89:9 | call to sink | synthetic * |
 | local_dataflow.rb:89:8:89:8 | z | local_dataflow.rb:89:3:89:9 | call to sink | position 0 |
 | local_dataflow.rb:93:7:93:15 | call to source | local_dataflow.rb:93:7:93:28 | ... \|\| ... | self |
 | local_dataflow.rb:93:7:93:15 | self | local_dataflow.rb:93:7:93:15 | call to source | self |
+| local_dataflow.rb:93:7:93:15 | synthetic splat argument | local_dataflow.rb:93:7:93:15 | call to source | synthetic * |
+| local_dataflow.rb:93:7:93:28 | synthetic splat argument | local_dataflow.rb:93:7:93:28 | ... \|\| ... | synthetic * |
 | local_dataflow.rb:93:14:93:14 | 1 | local_dataflow.rb:93:7:93:15 | call to source | position 0 |
 | local_dataflow.rb:93:20:93:28 | call to source | local_dataflow.rb:93:7:93:28 | ... \|\| ... | position 0 |
 | local_dataflow.rb:93:20:93:28 | self | local_dataflow.rb:93:20:93:28 | call to source | self |
+| local_dataflow.rb:93:20:93:28 | synthetic splat argument | local_dataflow.rb:93:20:93:28 | call to source | synthetic * |
 | local_dataflow.rb:93:27:93:27 | 2 | local_dataflow.rb:93:20:93:28 | call to source | position 0 |
 | local_dataflow.rb:94:3:94:9 | self | local_dataflow.rb:94:3:94:9 | call to sink | self |
+| local_dataflow.rb:94:3:94:9 | synthetic splat argument | local_dataflow.rb:94:3:94:9 | call to sink | synthetic * |
 | local_dataflow.rb:94:8:94:8 | a | local_dataflow.rb:94:3:94:9 | call to sink | position 0 |
 | local_dataflow.rb:95:8:95:16 | call to source | local_dataflow.rb:95:8:95:29 | ... or ... | self |
 | local_dataflow.rb:95:8:95:16 | self | local_dataflow.rb:95:8:95:16 | call to source | self |
+| local_dataflow.rb:95:8:95:16 | synthetic splat argument | local_dataflow.rb:95:8:95:16 | call to source | synthetic * |
+| local_dataflow.rb:95:8:95:29 | synthetic splat argument | local_dataflow.rb:95:8:95:29 | ... or ... | synthetic * |
 | local_dataflow.rb:95:15:95:15 | 1 | local_dataflow.rb:95:8:95:16 | call to source | position 0 |
 | local_dataflow.rb:95:21:95:29 | call to source | local_dataflow.rb:95:8:95:29 | ... or ... | position 0 |
 | local_dataflow.rb:95:21:95:29 | self | local_dataflow.rb:95:21:95:29 | call to source | self |
+| local_dataflow.rb:95:21:95:29 | synthetic splat argument | local_dataflow.rb:95:21:95:29 | call to source | synthetic * |
 | local_dataflow.rb:95:28:95:28 | 2 | local_dataflow.rb:95:21:95:29 | call to source | position 0 |
 | local_dataflow.rb:96:3:96:9 | self | local_dataflow.rb:96:3:96:9 | call to sink | self |
+| local_dataflow.rb:96:3:96:9 | synthetic splat argument | local_dataflow.rb:96:3:96:9 | call to sink | synthetic * |
 | local_dataflow.rb:96:8:96:8 | b | local_dataflow.rb:96:3:96:9 | call to sink | position 0 |
 | local_dataflow.rb:98:7:98:15 | call to source | local_dataflow.rb:98:7:98:28 | ... && ... | self |
 | local_dataflow.rb:98:7:98:15 | self | local_dataflow.rb:98:7:98:15 | call to source | self |
+| local_dataflow.rb:98:7:98:15 | synthetic splat argument | local_dataflow.rb:98:7:98:15 | call to source | synthetic * |
+| local_dataflow.rb:98:7:98:28 | synthetic splat argument | local_dataflow.rb:98:7:98:28 | ... && ... | synthetic * |
 | local_dataflow.rb:98:14:98:14 | 1 | local_dataflow.rb:98:7:98:15 | call to source | position 0 |
 | local_dataflow.rb:98:20:98:28 | call to source | local_dataflow.rb:98:7:98:28 | ... && ... | position 0 |
 | local_dataflow.rb:98:20:98:28 | self | local_dataflow.rb:98:20:98:28 | call to source | self |
+| local_dataflow.rb:98:20:98:28 | synthetic splat argument | local_dataflow.rb:98:20:98:28 | call to source | synthetic * |
 | local_dataflow.rb:98:27:98:27 | 2 | local_dataflow.rb:98:20:98:28 | call to source | position 0 |
 | local_dataflow.rb:99:3:99:9 | self | local_dataflow.rb:99:3:99:9 | call to sink | self |
+| local_dataflow.rb:99:3:99:9 | synthetic splat argument | local_dataflow.rb:99:3:99:9 | call to sink | synthetic * |
 | local_dataflow.rb:99:8:99:8 | a | local_dataflow.rb:99:3:99:9 | call to sink | position 0 |
 | local_dataflow.rb:100:8:100:16 | call to source | local_dataflow.rb:100:8:100:30 | ... and ... | self |
 | local_dataflow.rb:100:8:100:16 | self | local_dataflow.rb:100:8:100:16 | call to source | self |
+| local_dataflow.rb:100:8:100:16 | synthetic splat argument | local_dataflow.rb:100:8:100:16 | call to source | synthetic * |
+| local_dataflow.rb:100:8:100:30 | synthetic splat argument | local_dataflow.rb:100:8:100:30 | ... and ... | synthetic * |
 | local_dataflow.rb:100:15:100:15 | 1 | local_dataflow.rb:100:8:100:16 | call to source | position 0 |
 | local_dataflow.rb:100:22:100:30 | call to source | local_dataflow.rb:100:8:100:30 | ... and ... | position 0 |
 | local_dataflow.rb:100:22:100:30 | self | local_dataflow.rb:100:22:100:30 | call to source | self |
+| local_dataflow.rb:100:22:100:30 | synthetic splat argument | local_dataflow.rb:100:22:100:30 | call to source | synthetic * |
 | local_dataflow.rb:100:29:100:29 | 2 | local_dataflow.rb:100:22:100:30 | call to source | position 0 |
 | local_dataflow.rb:101:3:101:9 | self | local_dataflow.rb:101:3:101:9 | call to sink | self |
+| local_dataflow.rb:101:3:101:9 | synthetic splat argument | local_dataflow.rb:101:3:101:9 | call to sink | synthetic * |
 | local_dataflow.rb:101:8:101:8 | b | local_dataflow.rb:101:3:101:9 | call to sink | position 0 |
 | local_dataflow.rb:103:7:103:15 | self | local_dataflow.rb:103:7:103:15 | call to source | self |
+| local_dataflow.rb:103:7:103:15 | synthetic splat argument | local_dataflow.rb:103:7:103:15 | call to source | synthetic * |
 | local_dataflow.rb:103:14:103:14 | 5 | local_dataflow.rb:103:7:103:15 | call to source | position 0 |
 | local_dataflow.rb:104:3:104:3 | a | local_dataflow.rb:104:5:104:7 | ... \|\| ... | self |
+| local_dataflow.rb:104:5:104:7 | synthetic splat argument | local_dataflow.rb:104:5:104:7 | ... \|\| ... | synthetic * |
 | local_dataflow.rb:104:9:104:17 | call to source | local_dataflow.rb:104:5:104:7 | ... \|\| ... | position 0 |
 | local_dataflow.rb:104:9:104:17 | self | local_dataflow.rb:104:9:104:17 | call to source | self |
+| local_dataflow.rb:104:9:104:17 | synthetic splat argument | local_dataflow.rb:104:9:104:17 | call to source | synthetic * |
 | local_dataflow.rb:104:16:104:16 | 6 | local_dataflow.rb:104:9:104:17 | call to source | position 0 |
 | local_dataflow.rb:105:3:105:9 | self | local_dataflow.rb:105:3:105:9 | call to sink | self |
+| local_dataflow.rb:105:3:105:9 | synthetic splat argument | local_dataflow.rb:105:3:105:9 | call to sink | synthetic * |
 | local_dataflow.rb:105:8:105:8 | a | local_dataflow.rb:105:3:105:9 | call to sink | position 0 |
 | local_dataflow.rb:106:7:106:15 | self | local_dataflow.rb:106:7:106:15 | call to source | self |
+| local_dataflow.rb:106:7:106:15 | synthetic splat argument | local_dataflow.rb:106:7:106:15 | call to source | synthetic * |
 | local_dataflow.rb:106:14:106:14 | 7 | local_dataflow.rb:106:7:106:15 | call to source | position 0 |
 | local_dataflow.rb:107:3:107:3 | b | local_dataflow.rb:107:5:107:7 | ... && ... | self |
+| local_dataflow.rb:107:5:107:7 | synthetic splat argument | local_dataflow.rb:107:5:107:7 | ... && ... | synthetic * |
 | local_dataflow.rb:107:9:107:17 | call to source | local_dataflow.rb:107:5:107:7 | ... && ... | position 0 |
 | local_dataflow.rb:107:9:107:17 | self | local_dataflow.rb:107:9:107:17 | call to source | self |
+| local_dataflow.rb:107:9:107:17 | synthetic splat argument | local_dataflow.rb:107:9:107:17 | call to source | synthetic * |
 | local_dataflow.rb:107:16:107:16 | 8 | local_dataflow.rb:107:9:107:17 | call to source | position 0 |
 | local_dataflow.rb:108:3:108:9 | self | local_dataflow.rb:108:3:108:9 | call to sink | self |
+| local_dataflow.rb:108:3:108:9 | synthetic splat argument | local_dataflow.rb:108:3:108:9 | call to sink | synthetic * |
 | local_dataflow.rb:108:8:108:8 | b | local_dataflow.rb:108:3:108:9 | call to sink | position 0 |
 | local_dataflow.rb:112:3:112:21 | self | local_dataflow.rb:112:3:112:21 | call to sink | self |
+| local_dataflow.rb:112:3:112:21 | synthetic splat argument | local_dataflow.rb:112:3:112:21 | call to sink | synthetic * |
 | local_dataflow.rb:112:8:112:16 | call to source | local_dataflow.rb:112:8:112:20 | call to dup | self |
 | local_dataflow.rb:112:8:112:16 | self | local_dataflow.rb:112:8:112:16 | call to source | self |
+| local_dataflow.rb:112:8:112:16 | synthetic splat argument | local_dataflow.rb:112:8:112:16 | call to source | synthetic * |
 | local_dataflow.rb:112:8:112:20 | call to dup | local_dataflow.rb:112:3:112:21 | call to sink | position 0 |
 | local_dataflow.rb:112:15:112:15 | 1 | local_dataflow.rb:112:8:112:16 | call to source | position 0 |
 | local_dataflow.rb:113:3:113:25 | self | local_dataflow.rb:113:3:113:25 | call to sink | self |
+| local_dataflow.rb:113:3:113:25 | synthetic splat argument | local_dataflow.rb:113:3:113:25 | call to sink | synthetic * |
 | local_dataflow.rb:113:8:113:16 | call to source | local_dataflow.rb:113:8:113:20 | call to dup | self |
 | local_dataflow.rb:113:8:113:16 | self | local_dataflow.rb:113:8:113:16 | call to source | self |
+| local_dataflow.rb:113:8:113:16 | synthetic splat argument | local_dataflow.rb:113:8:113:16 | call to source | synthetic * |
 | local_dataflow.rb:113:8:113:20 | call to dup | local_dataflow.rb:113:8:113:24 | call to dup | self |
 | local_dataflow.rb:113:8:113:24 | call to dup | local_dataflow.rb:113:3:113:25 | call to sink | position 0 |
 | local_dataflow.rb:113:15:113:15 | 1 | local_dataflow.rb:113:8:113:16 | call to source | position 0 |
 | local_dataflow.rb:117:3:117:24 | self | local_dataflow.rb:117:3:117:24 | call to sink | self |
+| local_dataflow.rb:117:3:117:24 | synthetic splat argument | local_dataflow.rb:117:3:117:24 | call to sink | synthetic * |
 | local_dataflow.rb:117:8:117:16 | call to source | local_dataflow.rb:117:8:117:23 | call to tap | self |
 | local_dataflow.rb:117:8:117:16 | self | local_dataflow.rb:117:8:117:16 | call to source | self |
+| local_dataflow.rb:117:8:117:16 | synthetic splat argument | local_dataflow.rb:117:8:117:16 | call to source | synthetic * |
 | local_dataflow.rb:117:8:117:23 | call to tap | local_dataflow.rb:117:3:117:24 | call to sink | position 0 |
 | local_dataflow.rb:117:15:117:15 | 1 | local_dataflow.rb:117:8:117:16 | call to source | position 0 |
 | local_dataflow.rb:117:22:117:23 | { ... } | local_dataflow.rb:117:8:117:23 | call to tap | block |
 | local_dataflow.rb:118:3:118:11 | call to source | local_dataflow.rb:118:3:118:31 | call to tap | self |
 | local_dataflow.rb:118:3:118:11 | self | local_dataflow.rb:118:3:118:11 | call to source | self |
+| local_dataflow.rb:118:3:118:11 | synthetic splat argument | local_dataflow.rb:118:3:118:11 | call to source | synthetic * |
 | local_dataflow.rb:118:10:118:10 | 1 | local_dataflow.rb:118:3:118:11 | call to source | position 0 |
 | local_dataflow.rb:118:17:118:31 | { ... } | local_dataflow.rb:118:3:118:31 | call to tap | block |
 | local_dataflow.rb:118:23:118:29 | self | local_dataflow.rb:118:23:118:29 | call to sink | self |
+| local_dataflow.rb:118:23:118:29 | synthetic splat argument | local_dataflow.rb:118:23:118:29 | call to sink | synthetic * |
 | local_dataflow.rb:118:28:118:28 | x | local_dataflow.rb:118:23:118:29 | call to sink | position 0 |
 | local_dataflow.rb:119:3:119:31 | self | local_dataflow.rb:119:3:119:31 | call to sink | self |
+| local_dataflow.rb:119:3:119:31 | synthetic splat argument | local_dataflow.rb:119:3:119:31 | call to sink | synthetic * |
 | local_dataflow.rb:119:8:119:16 | call to source | local_dataflow.rb:119:8:119:23 | call to tap | self |
 | local_dataflow.rb:119:8:119:16 | self | local_dataflow.rb:119:8:119:16 | call to source | self |
+| local_dataflow.rb:119:8:119:16 | synthetic splat argument | local_dataflow.rb:119:8:119:16 | call to source | synthetic * |
 | local_dataflow.rb:119:8:119:23 | call to tap | local_dataflow.rb:119:8:119:30 | call to tap | self |
 | local_dataflow.rb:119:8:119:30 | call to tap | local_dataflow.rb:119:3:119:31 | call to sink | position 0 |
 | local_dataflow.rb:119:15:119:15 | 1 | local_dataflow.rb:119:8:119:16 | call to source | position 0 |
 | local_dataflow.rb:119:22:119:23 | { ... } | local_dataflow.rb:119:8:119:23 | call to tap | block |
 | local_dataflow.rb:119:29:119:30 | { ... } | local_dataflow.rb:119:8:119:30 | call to tap | block |
 | local_dataflow.rb:123:3:123:50 | self | local_dataflow.rb:123:3:123:50 | call to sink | self |
+| local_dataflow.rb:123:3:123:50 | synthetic splat argument | local_dataflow.rb:123:3:123:50 | call to sink | synthetic * |
 | local_dataflow.rb:123:8:123:16 | call to source | local_dataflow.rb:123:8:123:20 | call to dup | self |
 | local_dataflow.rb:123:8:123:16 | self | local_dataflow.rb:123:8:123:16 | call to source | self |
+| local_dataflow.rb:123:8:123:16 | synthetic splat argument | local_dataflow.rb:123:8:123:16 | call to source | synthetic * |
 | local_dataflow.rb:123:8:123:20 | call to dup | local_dataflow.rb:123:8:123:45 | call to tap | self |
 | local_dataflow.rb:123:8:123:45 | call to tap | local_dataflow.rb:123:8:123:49 | call to dup | self |
 | local_dataflow.rb:123:8:123:49 | call to dup | local_dataflow.rb:123:3:123:50 | call to sink | position 0 |
 | local_dataflow.rb:123:15:123:15 | 1 | local_dataflow.rb:123:8:123:16 | call to source | position 0 |
 | local_dataflow.rb:123:26:123:45 | { ... } | local_dataflow.rb:123:8:123:45 | call to tap | block |
 | local_dataflow.rb:123:32:123:43 | self | local_dataflow.rb:123:32:123:43 | call to puts | self |
+| local_dataflow.rb:123:32:123:43 | synthetic splat argument | local_dataflow.rb:123:32:123:43 | call to puts | synthetic * |
 | local_dataflow.rb:123:37:123:43 | "hello" | local_dataflow.rb:123:32:123:43 | call to puts | position 0 |
 | local_dataflow.rb:127:3:127:8 | self | local_dataflow.rb:127:3:127:8 | call to rand | self |
 | local_dataflow.rb:132:6:132:11 | self | local_dataflow.rb:132:6:132:11 | call to use | self |
+| local_dataflow.rb:132:6:132:11 | synthetic splat argument | local_dataflow.rb:132:6:132:11 | call to use | synthetic * |
 | local_dataflow.rb:132:10:132:10 | x | local_dataflow.rb:132:6:132:11 | call to use | position 0 |
 | local_dataflow.rb:133:8:133:13 | call to use | local_dataflow.rb:133:8:133:23 | [false] ... \|\| ... | self |
 | local_dataflow.rb:133:8:133:13 | call to use | local_dataflow.rb:133:8:133:23 | [true] ... \|\| ... | self |
 | local_dataflow.rb:133:8:133:13 | self | local_dataflow.rb:133:8:133:13 | call to use | self |
+| local_dataflow.rb:133:8:133:13 | synthetic splat argument | local_dataflow.rb:133:8:133:13 | call to use | synthetic * |
+| local_dataflow.rb:133:8:133:23 | synthetic splat argument | local_dataflow.rb:133:8:133:23 | [false] ... \|\| ... | synthetic * |
+| local_dataflow.rb:133:8:133:23 | synthetic splat argument | local_dataflow.rb:133:8:133:23 | [true] ... \|\| ... | synthetic * |
 | local_dataflow.rb:133:12:133:12 | x | local_dataflow.rb:133:8:133:13 | call to use | position 0 |
 | local_dataflow.rb:133:18:133:23 | call to use | local_dataflow.rb:133:8:133:23 | [false] ... \|\| ... | position 0 |
 | local_dataflow.rb:133:18:133:23 | call to use | local_dataflow.rb:133:8:133:23 | [true] ... \|\| ... | position 0 |
 | local_dataflow.rb:133:18:133:23 | self | local_dataflow.rb:133:18:133:23 | call to use | self |
+| local_dataflow.rb:133:18:133:23 | synthetic splat argument | local_dataflow.rb:133:18:133:23 | call to use | synthetic * |
 | local_dataflow.rb:133:22:133:22 | x | local_dataflow.rb:133:18:133:23 | call to use | position 0 |
 | local_dataflow.rb:134:7:134:12 | self | local_dataflow.rb:134:7:134:12 | call to use | self |
+| local_dataflow.rb:134:7:134:12 | synthetic splat argument | local_dataflow.rb:134:7:134:12 | call to use | synthetic * |
 | local_dataflow.rb:134:11:134:11 | x | local_dataflow.rb:134:7:134:12 | call to use | position 0 |
 | local_dataflow.rb:136:7:136:12 | self | local_dataflow.rb:136:7:136:12 | call to use | self |
+| local_dataflow.rb:136:7:136:12 | synthetic splat argument | local_dataflow.rb:136:7:136:12 | call to use | synthetic * |
 | local_dataflow.rb:136:11:136:11 | x | local_dataflow.rb:136:7:136:12 | call to use | position 0 |
 | local_dataflow.rb:137:10:137:15 | call to use | local_dataflow.rb:137:10:137:26 | [false] ... && ... | self |
 | local_dataflow.rb:137:10:137:15 | call to use | local_dataflow.rb:137:10:137:26 | [true] ... && ... | self |
 | local_dataflow.rb:137:10:137:15 | self | local_dataflow.rb:137:10:137:15 | call to use | self |
+| local_dataflow.rb:137:10:137:15 | synthetic splat argument | local_dataflow.rb:137:10:137:15 | call to use | synthetic * |
+| local_dataflow.rb:137:10:137:26 | synthetic splat argument | local_dataflow.rb:137:10:137:26 | [false] ... && ... | synthetic * |
+| local_dataflow.rb:137:10:137:26 | synthetic splat argument | local_dataflow.rb:137:10:137:26 | [true] ... && ... | synthetic * |
 | local_dataflow.rb:137:14:137:14 | x | local_dataflow.rb:137:10:137:15 | call to use | position 0 |
 | local_dataflow.rb:137:20:137:26 | [false] ! ... | local_dataflow.rb:137:10:137:26 | [false] ... && ... | position 0 |
 | local_dataflow.rb:137:20:137:26 | [true] ! ... | local_dataflow.rb:137:10:137:26 | [true] ... && ... | position 0 |
 | local_dataflow.rb:137:21:137:26 | call to use | local_dataflow.rb:137:20:137:26 | [false] ! ... | self |
 | local_dataflow.rb:137:21:137:26 | call to use | local_dataflow.rb:137:20:137:26 | [true] ! ... | self |
 | local_dataflow.rb:137:21:137:26 | self | local_dataflow.rb:137:21:137:26 | call to use | self |
+| local_dataflow.rb:137:21:137:26 | synthetic splat argument | local_dataflow.rb:137:21:137:26 | call to use | synthetic * |
 | local_dataflow.rb:137:25:137:25 | x | local_dataflow.rb:137:21:137:26 | call to use | position 0 |
 | local_dataflow.rb:141:8:141:14 | [false] ! ... | local_dataflow.rb:141:8:141:37 | [false] ... \|\| ... | self |
 | local_dataflow.rb:141:8:141:14 | [false] ! ... | local_dataflow.rb:141:8:141:37 | [true] ... \|\| ... | self |
 | local_dataflow.rb:141:8:141:14 | [true] ! ... | local_dataflow.rb:141:8:141:37 | [true] ... \|\| ... | self |
+| local_dataflow.rb:141:8:141:37 | synthetic splat argument | local_dataflow.rb:141:8:141:37 | [false] ... \|\| ... | synthetic * |
+| local_dataflow.rb:141:8:141:37 | synthetic splat argument | local_dataflow.rb:141:8:141:37 | [true] ... \|\| ... | synthetic * |
 | local_dataflow.rb:141:9:141:14 | call to use | local_dataflow.rb:141:8:141:14 | [false] ! ... | self |
 | local_dataflow.rb:141:9:141:14 | call to use | local_dataflow.rb:141:8:141:14 | [true] ! ... | self |
 | local_dataflow.rb:141:9:141:14 | self | local_dataflow.rb:141:9:141:14 | call to use | self |
+| local_dataflow.rb:141:9:141:14 | synthetic splat argument | local_dataflow.rb:141:9:141:14 | call to use | synthetic * |
 | local_dataflow.rb:141:13:141:13 | x | local_dataflow.rb:141:9:141:14 | call to use | position 0 |
 | local_dataflow.rb:141:19:141:37 | [false] ( ... ) | local_dataflow.rb:141:8:141:37 | [false] ... \|\| ... | position 0 |
 | local_dataflow.rb:141:19:141:37 | [true] ( ... ) | local_dataflow.rb:141:8:141:37 | [true] ... \|\| ... | position 0 |
 | local_dataflow.rb:141:20:141:25 | call to use | local_dataflow.rb:141:20:141:36 | [false] ... && ... | self |
 | local_dataflow.rb:141:20:141:25 | call to use | local_dataflow.rb:141:20:141:36 | [true] ... && ... | self |
 | local_dataflow.rb:141:20:141:25 | self | local_dataflow.rb:141:20:141:25 | call to use | self |
+| local_dataflow.rb:141:20:141:25 | synthetic splat argument | local_dataflow.rb:141:20:141:25 | call to use | synthetic * |
+| local_dataflow.rb:141:20:141:36 | synthetic splat argument | local_dataflow.rb:141:20:141:36 | [false] ... && ... | synthetic * |
+| local_dataflow.rb:141:20:141:36 | synthetic splat argument | local_dataflow.rb:141:20:141:36 | [true] ... && ... | synthetic * |
 | local_dataflow.rb:141:24:141:24 | x | local_dataflow.rb:141:20:141:25 | call to use | position 0 |
 | local_dataflow.rb:141:30:141:36 | [false] ! ... | local_dataflow.rb:141:20:141:36 | [false] ... && ... | position 0 |
 | local_dataflow.rb:141:30:141:36 | [true] ! ... | local_dataflow.rb:141:20:141:36 | [true] ... && ... | position 0 |
 | local_dataflow.rb:141:31:141:36 | call to use | local_dataflow.rb:141:30:141:36 | [false] ! ... | self |
 | local_dataflow.rb:141:31:141:36 | call to use | local_dataflow.rb:141:30:141:36 | [true] ! ... | self |
 | local_dataflow.rb:141:31:141:36 | self | local_dataflow.rb:141:31:141:36 | call to use | self |
+| local_dataflow.rb:141:31:141:36 | synthetic splat argument | local_dataflow.rb:141:31:141:36 | call to use | synthetic * |
 | local_dataflow.rb:141:35:141:35 | x | local_dataflow.rb:141:31:141:36 | call to use | position 0 |
 | local_dataflow.rb:143:11:143:16 | call to use | local_dataflow.rb:143:11:143:26 | [false] ... \|\| ... | self |
 | local_dataflow.rb:143:11:143:16 | call to use | local_dataflow.rb:143:11:143:26 | [true] ... \|\| ... | self |
 | local_dataflow.rb:143:11:143:16 | self | local_dataflow.rb:143:11:143:16 | call to use | self |
+| local_dataflow.rb:143:11:143:16 | synthetic splat argument | local_dataflow.rb:143:11:143:16 | call to use | synthetic * |
+| local_dataflow.rb:143:11:143:26 | synthetic splat argument | local_dataflow.rb:143:11:143:26 | [false] ... \|\| ... | synthetic * |
+| local_dataflow.rb:143:11:143:26 | synthetic splat argument | local_dataflow.rb:143:11:143:26 | [true] ... \|\| ... | synthetic * |
 | local_dataflow.rb:143:15:143:15 | x | local_dataflow.rb:143:11:143:16 | call to use | position 0 |
 | local_dataflow.rb:143:21:143:26 | call to use | local_dataflow.rb:143:11:143:26 | [false] ... \|\| ... | position 0 |
 | local_dataflow.rb:143:21:143:26 | call to use | local_dataflow.rb:143:11:143:26 | [true] ... \|\| ... | position 0 |
 | local_dataflow.rb:143:21:143:26 | self | local_dataflow.rb:143:21:143:26 | call to use | self |
+| local_dataflow.rb:143:21:143:26 | synthetic splat argument | local_dataflow.rb:143:21:143:26 | call to use | synthetic * |
 | local_dataflow.rb:143:25:143:25 | x | local_dataflow.rb:143:21:143:26 | call to use | position 0 |
 | local_dataflow.rb:144:11:144:16 | self | local_dataflow.rb:144:11:144:16 | call to use | self |
+| local_dataflow.rb:144:11:144:16 | synthetic splat argument | local_dataflow.rb:144:11:144:16 | call to use | synthetic * |
 | local_dataflow.rb:144:15:144:15 | x | local_dataflow.rb:144:11:144:16 | call to use | position 0 |
 | local_dataflow.rb:147:5:147:10 | self | local_dataflow.rb:147:5:147:10 | call to use | self |
+| local_dataflow.rb:147:5:147:10 | synthetic splat argument | local_dataflow.rb:147:5:147:10 | call to use | synthetic * |
 | local_dataflow.rb:147:9:147:9 | x | local_dataflow.rb:147:5:147:10 | call to use | position 0 |
 | local_dataflow.rb:148:5:148:10 | self | local_dataflow.rb:148:5:148:10 | call to use | self |
+| local_dataflow.rb:148:5:148:10 | synthetic splat argument | local_dataflow.rb:148:5:148:10 | call to use | synthetic * |
 | local_dataflow.rb:148:9:148:9 | x | local_dataflow.rb:148:5:148:10 | call to use | position 0 |

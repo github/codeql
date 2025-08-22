@@ -4,21 +4,23 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-import DataFlow::PathGraph
+import codeql.dataflow.test.ProvenancePathGraph
+import semmle.code.java.dataflow.ExternalFlow
+import ShowProvenance<interpretModelForTest/2, Flow::PathNode, Flow::PathGraph>
 
-class Conf extends DataFlow::Configuration {
-  Conf() { this = "CallSensitiveFlowConf" }
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ClassInstanceExpr }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ClassInstanceExpr }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+  predicate isSink(DataFlow::Node sink) {
+    exists(MethodCall ma |
       ma.getMethod().hasName("sink") and
       ma.getAnArgument() = sink.asExpr()
     )
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, Conf conf
-where conf.hasFlowPath(source, sink)
+module Flow = DataFlow::Global<Config>;
+
+from Flow::PathNode source, Flow::PathNode sink
+where Flow::flowPath(source, sink)
 select source, source, sink, "$@", sink, sink.toString()

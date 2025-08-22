@@ -1,4 +1,6 @@
 /** Provides classes and predicates for working with Java Server Faces annotations. */
+overlay[local?]
+module;
 
 import default
 
@@ -6,12 +8,14 @@ import default
  * A Java Server Faces `ManagedBean` annotation on a class.
  */
 class FacesManagedBeanAnnotation extends Annotation {
-  FacesManagedBeanAnnotation() { getType().hasQualifiedName("javax.faces.bean", "ManagedBean") }
+  FacesManagedBeanAnnotation() {
+    this.getType().hasQualifiedName("javax.faces.bean", "ManagedBean")
+  }
 
   /**
    * Gets the `Class` of the managed bean.
    */
-  Class getManagedBeanClass() { result = getAnnotatedElement() }
+  Class getManagedBeanClass() { result = this.getAnnotatedElement() }
 }
 
 /**
@@ -21,11 +25,11 @@ class FacesManagedBeanAnnotation extends Annotation {
  */
 class FacesComponentAnnotation extends Annotation {
   FacesComponentAnnotation() {
-    getType().hasQualifiedName("javax.faces.component", "FacesComponent")
+    this.getType().hasQualifiedName("javax.faces.component", "FacesComponent")
   }
 
   /**
    * Gets the `Class` of the FacesComponent, if this annotation is valid.
    */
-  Class getFacesComponentClass() { result = getAnnotatedElement() }
+  Class getFacesComponentClass() { result = this.getAnnotatedElement() }
 }

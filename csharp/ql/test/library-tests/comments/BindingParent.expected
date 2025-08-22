@@ -1,3 +1,4 @@
+| comments1.cs:1:16:1:46 | // ... | trivia.cs:17:5:29:5 | {...} | A mapped single-line comment |
 | comments1.cs:36:5:38:41 | /* ... */ | comments1.cs:34:7:34:9 | Foo |  |
 | comments1.cs:39:13:40:51 | // ... | comments1.cs:34:7:34:9 | Foo | as this line |
 | comments1.cs:42:15:42:36 | // ... | comments1.cs:34:7:34:9 | Foo | These are different |
@@ -44,7 +45,7 @@
 | comments2.cs:106:5:106:8 | // ... | comments2.cs:11:7:11:8 | C2 | E |
 | comments2.cs:107:23:108:26 | // ... | comments2.cs:11:7:11:8 | C2 | E |
 | comments2.cs:118:5:118:21 | // ... | comments2.cs:11:7:11:8 | C2 | GenericClass<> |
-| comments2.cs:121:17:121:20 | // ... | comments2.cs:119:11:119:25 | GenericClass<> | f |
+| comments2.cs:121:17:121:20 | // ... | comments2.cs:119:11:119:25 | GenericClass`1 | f |
 | comments2.cs:124:5:124:16 | // ... | comments2.cs:11:7:11:8 | C2 | GenericFn |
 | comments2.cs:127:20:127:23 | // ... | comments2.cs:126:5:129:5 | {...} | x |
 | trivia.cs:25:14:25:38 | // ... | trivia.cs:17:5:29:5 | {...} | numbering not affected |

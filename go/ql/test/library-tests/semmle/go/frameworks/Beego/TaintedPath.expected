@@ -1,18 +1,40 @@
-edges
-| test.go:209:15:209:26 | call to Data | test.go:210:18:210:26 | untrusted |
-| test.go:209:15:209:26 | call to Data | test.go:211:10:211:18 | untrusted |
-| test.go:209:15:209:26 | call to Data | test.go:212:35:212:43 | untrusted |
-| test.go:318:17:318:37 | selection of RequestBody | test.go:320:35:320:43 | untrusted |
-nodes
-| test.go:209:15:209:26 | call to Data | semmle.label | call to Data |
-| test.go:210:18:210:26 | untrusted | semmle.label | untrusted |
-| test.go:211:10:211:18 | untrusted | semmle.label | untrusted |
-| test.go:212:35:212:43 | untrusted | semmle.label | untrusted |
-| test.go:318:17:318:37 | selection of RequestBody | semmle.label | selection of RequestBody |
-| test.go:320:35:320:43 | untrusted | semmle.label | untrusted |
-subpaths
 #select
-| test.go:210:18:210:26 | untrusted | test.go:209:15:209:26 | call to Data | test.go:210:18:210:26 | untrusted | This path depends on a $@. | test.go:209:15:209:26 | call to Data | user-provided value |
-| test.go:211:10:211:18 | untrusted | test.go:209:15:209:26 | call to Data | test.go:211:10:211:18 | untrusted | This path depends on a $@. | test.go:209:15:209:26 | call to Data | user-provided value |
-| test.go:212:35:212:43 | untrusted | test.go:209:15:209:26 | call to Data | test.go:212:35:212:43 | untrusted | This path depends on a $@. | test.go:209:15:209:26 | call to Data | user-provided value |
-| test.go:320:35:320:43 | untrusted | test.go:318:17:318:37 | selection of RequestBody | test.go:320:35:320:43 | untrusted | This path depends on a $@. | test.go:318:17:318:37 | selection of RequestBody | user-provided value |
+| test.go:216:18:216:26 | untrusted | test.go:215:15:215:26 | call to Data | test.go:216:18:216:26 | untrusted | This path depends on a $@. | test.go:215:15:215:26 | call to Data | user-provided value |
+| test.go:217:10:217:18 | untrusted | test.go:215:15:215:26 | call to Data | test.go:217:10:217:18 | untrusted | This path depends on a $@. | test.go:215:15:215:26 | call to Data | user-provided value |
+| test.go:218:35:218:43 | untrusted | test.go:215:15:215:26 | call to Data | test.go:218:35:218:43 | untrusted | This path depends on a $@. | test.go:215:15:215:26 | call to Data | user-provided value |
+| test.go:326:35:326:43 | untrusted | test.go:324:17:324:37 | selection of RequestBody | test.go:326:35:326:43 | untrusted | This path depends on a $@. | test.go:324:17:324:37 | selection of RequestBody | user-provided value |
+| test.go:334:23:334:31 | untrusted | test.go:332:15:332:26 | call to Data | test.go:334:23:334:31 | untrusted | This path depends on a $@. | test.go:332:15:332:26 | call to Data | user-provided value |
+| test.go:342:53:342:61 | untrusted | test.go:340:15:340:26 | call to Data | test.go:342:53:342:61 | untrusted | This path depends on a $@. | test.go:340:15:340:26 | call to Data | user-provided value |
+| test.go:344:23:344:31 | untrusted | test.go:340:15:340:26 | call to Data | test.go:344:23:344:31 | untrusted | This path depends on a $@. | test.go:340:15:340:26 | call to Data | user-provided value |
+edges
+| test.go:215:15:215:26 | call to Data | test.go:216:18:216:26 | untrusted | provenance | Src:MaD:6 Sink:MaD:2 |
+| test.go:215:15:215:26 | call to Data | test.go:217:10:217:18 | untrusted | provenance | Src:MaD:6 Sink:MaD:5 |
+| test.go:215:15:215:26 | call to Data | test.go:218:35:218:43 | untrusted | provenance | Src:MaD:6 Sink:MaD:3 |
+| test.go:324:17:324:37 | selection of RequestBody | test.go:324:40:324:43 | &... | provenance | Src:MaD:7 MaD:8 |
+| test.go:324:40:324:43 | &... | test.go:326:35:326:43 | untrusted | provenance | Sink:MaD:3 |
+| test.go:332:15:332:26 | call to Data | test.go:334:23:334:31 | untrusted | provenance | Src:MaD:6 Sink:MaD:1 |
+| test.go:340:15:340:26 | call to Data | test.go:342:53:342:61 | untrusted | provenance | Src:MaD:6 Sink:MaD:4 |
+| test.go:340:15:340:26 | call to Data | test.go:344:23:344:31 | untrusted | provenance | Src:MaD:6 Sink:MaD:1 |
+models
+| 1 | Sink: group:beego-context; BeegoOutput; true; Download; ; ; Argument[0]; path-injection; manual |
+| 2 | Sink: group:beego; ; false; Walk; ; ; Argument[1]; path-injection; manual |
+| 3 | Sink: group:beego; Controller; true; SaveToFile; ; ; Argument[1]; path-injection; manual |
+| 4 | Sink: group:beego; Controller; true; SaveToFileWithBuffer; ; ; Argument[1]; path-injection; manual |
+| 5 | Sink: group:beego; FileSystem; true; Open; ; ; Argument[0]; path-injection; manual |
+| 6 | Source: group:beego-context; BeegoInput; true; Data; ; ; ReturnValue[0]; remote; manual |
+| 7 | Source: group:beego-context; BeegoInput; true; RequestBody; ; ; ; remote; manual |
+| 8 | Summary: encoding/json; ; false; Unmarshal; ; ; Argument[0]; Argument[1]; taint; manual |
+nodes
+| test.go:215:15:215:26 | call to Data | semmle.label | call to Data |
+| test.go:216:18:216:26 | untrusted | semmle.label | untrusted |
+| test.go:217:10:217:18 | untrusted | semmle.label | untrusted |
+| test.go:218:35:218:43 | untrusted | semmle.label | untrusted |
+| test.go:324:17:324:37 | selection of RequestBody | semmle.label | selection of RequestBody |
+| test.go:324:40:324:43 | &... | semmle.label | &... |
+| test.go:326:35:326:43 | untrusted | semmle.label | untrusted |
+| test.go:332:15:332:26 | call to Data | semmle.label | call to Data |
+| test.go:334:23:334:31 | untrusted | semmle.label | untrusted |
+| test.go:340:15:340:26 | call to Data | semmle.label | call to Data |
+| test.go:342:53:342:61 | untrusted | semmle.label | untrusted |
+| test.go:344:23:344:31 | untrusted | semmle.label | untrusted |
+subpaths

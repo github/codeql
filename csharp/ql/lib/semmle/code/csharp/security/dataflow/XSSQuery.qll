@@ -6,9 +6,7 @@
 import csharp
 private import XSSSinks
 private import semmle.code.csharp.security.Sanitizers
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
-private import semmle.code.csharp.dataflow.DataFlow2
-private import semmle.code.csharp.dataflow.TaintTracking2
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 
 /**
  * Holds if there is tainted flow from `source` to `sink` that may lead to a
@@ -18,12 +16,10 @@ private import semmle.code.csharp.dataflow.TaintTracking2
  */
 predicate xssFlow(XssNode source, XssNode sink, string message) {
   // standard taint-tracking
-  exists(
-    TaintTrackingConfiguration c, DataFlow2::PathNode sourceNode, DataFlow2::PathNode sinkNode
-  |
+  exists(XssTracking::PathNode sourceNode, XssTracking::PathNode sinkNode |
     sourceNode = source.asDataFlowNode() and
     sinkNode = sink.asDataFlowNode() and
-    c.hasFlowPath(sourceNode, sinkNode) and
+    XssTracking::flowPath(sourceNode, sinkNode) and
     message =
       "is written to HTML or JavaScript" +
         any(string explanation |
@@ -44,19 +40,23 @@ predicate xssFlow(XssNode source, XssNode sink, string message) {
  */
 module PathGraph {
   /** Holds if `(pred,succ)` is an edge in the graph of data flow path explanations. */
-  query predicate edges(XssNode pred, XssNode succ) {
-    exists(DataFlow2::PathNode a, DataFlow2::PathNode b | DataFlow2::PathGraph::edges(a, b) |
+  query predicate edges(XssNode pred, XssNode succ, string key, string val) {
+    exists(XssTracking::PathNode a, XssTracking::PathNode b |
+      XssTracking::PathGraph::edges(a, b, key, val)
+    |
       pred.asDataFlowNode() = a and
       succ.asDataFlowNode() = b
     )
     or
     xssFlow(pred, succ, _) and
-    pred instanceof XssAspNode
+    pred instanceof XssAspNode and
+    key = "provenance" and
+    val = ""
   }
 
   /** Holds if `n` is a node in the graph of data flow path explanations. */
   query predicate nodes(XssNode n, string key, string val) {
-    DataFlow2::PathGraph::nodes(n.asDataFlowNode(), key, val)
+    XssTracking::PathGraph::nodes(n.asDataFlowNode(), key, val)
     or
     xssFlow(n, n, _) and
     key = "semmle.label" and
@@ -69,13 +69,13 @@ module PathGraph {
    * `ret -> out` is summarized as the edge `arg -> out`.
    */
   query predicate subpaths(XssNode arg, XssNode par, XssNode ret, XssNode out) {
-    DataFlow2::PathGraph::subpaths(arg.asDataFlowNode(), par.asDataFlowNode(), ret.asDataFlowNode(),
-      out.asDataFlowNode())
+    XssTracking::PathGraph::subpaths(arg.asDataFlowNode(), par.asDataFlowNode(),
+      ret.asDataFlowNode(), out.asDataFlowNode())
   }
 }
 
 private newtype TXssNode =
-  TXssDataFlowNode(DataFlow2::PathNode node) or
+  TXssDataFlowNode(XssTracking::PathNode node) or
   TXssAspNode(AspInlineMember m)
 
 /**
@@ -90,21 +90,25 @@ class XssNode extends TXssNode {
   /** Gets the location of this node. */
   Location getLocation() { none() }
 
-  /** Gets the data flow node corresponding to this node, if any. */
-  DataFlow2::PathNode asDataFlowNode() { result = this.(XssDataFlowNode).getDataFlowNode() }
+  /**
+   * Gets the data flow node corresponding to this node, if any.
+   */
+  XssTracking::PathNode asDataFlowNode() { result = this.(XssDataFlowNode).getDataFlowNode() }
 
   /** Gets the ASP inline code element corresponding to this node, if any. */
   AspInlineMember asAspInlineMember() { result = this.(XssAspNode).getAspInlineMember() }
 }
 
-/** A data flow node, viewed as an XSS flow node. */
+/**
+ * A data flow node, viewed as an XSS flow node.
+ */
 class XssDataFlowNode extends TXssDataFlowNode, XssNode {
-  DataFlow2::PathNode node;
+  XssTracking::PathNode node;
 
   XssDataFlowNode() { this = TXssDataFlowNode(node) }
 
   /** Gets the data flow node corresponding to this node. */
-  DataFlow2::PathNode getDataFlowNode() { result = node }
+  XssTracking::PathNode getDataFlowNode() { result = node }
 
   override string toString() { result = node.toString() }
 
@@ -138,18 +142,28 @@ abstract class Sanitizer extends DataFlow::ExprNode { }
 /**
  * A taint-tracking configuration for cross-site scripting (XSS) vulnerabilities.
  */
-class TaintTrackingConfiguration extends TaintTracking2::Configuration {
-  TaintTrackingConfiguration() { this = "XSSDataFlowConfiguration" }
+module XssTrackingConfig implements DataFlow::ConfigSig {
+  /**
+   * Holds if `source` is a relevant data flow source.
+   */
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  /**
+   * Holds if `sink` is a relevant data flow sink.
+   */
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+  /**
+   * Holds if data flow through `node` is prohibited. This completely removes
+   * `node` from the data flow graph.
+   */
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 }
 
-/** A source of remote user input. */
-private class RemoteSource extends Source instanceof RemoteFlowSource { }
+module XssTracking = TaintTracking::Global<XssTrackingConfig>;
+
+/** A source supported by the current threat model. */
+private class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
 

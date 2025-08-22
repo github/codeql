@@ -1,0 +1,1 @@
+| A.java:4:19:4:29 | someFun(...) | OC$C.class:0:0:0:0 | someFun | OC$C.class:0:0:0:0 | C<D1,D2,E1,E2> | OC.class:0:0:0:0 | OC<F1,F2> |

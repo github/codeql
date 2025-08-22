@@ -44,10 +44,10 @@ module ControlFlow {
     Node getAPredecessor() { this = result.getASuccessor() }
 
     /** Holds if this is a node with more than one successor. */
-    predicate isBranch() { strictcount(getASuccessor()) > 1 }
+    predicate isBranch() { strictcount(this.getASuccessor()) > 1 }
 
     /** Holds if this is a node with more than one predecessor. */
-    predicate isJoin() { strictcount(getAPredecessor()) > 1 }
+    predicate isJoin() { strictcount(this.getAPredecessor()) > 1 }
 
     /** Holds if this is the first control-flow node in `subtree`. */
     predicate isFirstNodeOf(AstNode subtree) { CFG::firstNode(subtree, this) }
@@ -77,23 +77,31 @@ module ControlFlow {
     Root getRoot() { none() }
 
     /** Gets the file to which this node belongs. */
-    File getFile() { hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
+    File getFile() { result = this.getLocation().getFile() }
 
     /**
      * Gets a textual representation of this control flow node.
      */
     string toString() { result = "control-flow node" }
 
+    /** Gets the source location for this element. */
+    Location getLocation() { none() }
+
     /**
+     * DEPRECATED: Use `getLocation()` instead.
+     *
      * Holds if this element is at the specified location.
      * The location spans column `startcolumn` of line `startline` to
      * column `endcolumn` of line `endline` in file `filepath`.
      * For more information, see
      * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
-    predicate hasLocationInfo(
+    deprecated predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
+      this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      or
+      not exists(this.getLocation()) and
       filepath = "" and
       startline = 0 and
       startcolumn = 0 and
@@ -166,7 +174,7 @@ module ControlFlow {
      * Holds if this node sets any field or element of `base` to `rhs`.
      */
     predicate writesComponent(DataFlow::Node base, DataFlow::Node rhs) {
-      writesElement(base, _, rhs) or writesField(base, _, rhs)
+      this.writesElement(base, _, rhs) or this.writesField(base, _, rhs)
     }
   }
 
@@ -183,37 +191,37 @@ module ControlFlow {
     private predicate ensuresAux(Expr expr, boolean b) {
       expr = cond and b = outcome
       or
-      expr = any(ParenExpr par | ensuresAux(par, b)).getExpr()
+      expr = any(ParenExpr par | this.ensuresAux(par, b)).getExpr()
       or
-      expr = any(NotExpr ne | ensuresAux(ne, b.booleanNot())).getOperand()
+      expr = any(NotExpr ne | this.ensuresAux(ne, b.booleanNot())).getOperand()
       or
-      expr = any(LandExpr land | ensuresAux(land, true)).getAnOperand() and
+      expr = any(LandExpr land | this.ensuresAux(land, true)).getAnOperand() and
       b = true
       or
-      expr = any(LorExpr lor | ensuresAux(lor, false)).getAnOperand() and
+      expr = any(LorExpr lor | this.ensuresAux(lor, false)).getAnOperand() and
       b = false
     }
 
     /** Holds if this guard ensures that the result of `nd` is `b`. */
     predicate ensures(DataFlow::Node nd, boolean b) {
-      ensuresAux(any(Expr e | nd = DataFlow::exprNode(e)), b)
+      this.ensuresAux(any(Expr e | nd = DataFlow::exprNode(e)), b)
     }
 
     /** Holds if this guard ensures that `lesser <= greater + bias` holds. */
     predicate ensuresLeq(DataFlow::Node lesser, DataFlow::Node greater, int bias) {
       exists(DataFlow::RelationalComparisonNode rel, boolean b |
-        ensures(rel, b) and
+        this.ensures(rel, b) and
         rel.leq(b, lesser, greater, bias)
       )
       or
-      ensuresEq(lesser, greater) and
+      this.ensuresEq(lesser, greater) and
       bias = 0
     }
 
     /** Holds if this guard ensures that `i = j` holds. */
     predicate ensuresEq(DataFlow::Node i, DataFlow::Node j) {
       exists(DataFlow::EqualityTestNode eq, boolean b |
-        ensures(eq, b) and
+        this.ensures(eq, b) and
         eq.eq(b, i, j)
       )
     }
@@ -221,7 +229,7 @@ module ControlFlow {
     /** Holds if this guard ensures that `i != j` holds. */
     predicate ensuresNeq(DataFlow::Node i, DataFlow::Node j) {
       exists(DataFlow::EqualityTestNode eq, boolean b |
-        ensures(eq, b.booleanNot()) and
+        this.ensures(eq, b.booleanNot()) and
         eq.eq(b, i, j)
       )
     }
@@ -232,7 +240,7 @@ module ControlFlow {
      */
     predicate dominates(ReachableBasicBlock bb) {
       this = bb.getANode() or
-      dominates(bb.getImmediateDominator())
+      this.dominates(bb.getImmediateDominator())
     }
 
     /**
@@ -244,13 +252,7 @@ module ControlFlow {
 
     override string toString() { result = cond + " is " + outcome }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      cond.hasLocationInfo(filepath, _, _, startline, startcolumn) and
-      endline = startline and
-      endcolumn = startcolumn
-    }
+    override Location getLocation() { result = cond.getLocation() }
   }
 
   /**

@@ -3,34 +3,27 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>The <code>__iter__</code> method of an iterator should return self.
-This is important so that iterators can be used as sequences in any context
-that expect a sequence. To do so requires that  <code>__iter__</code> is
-idempotent on iterators.</p>
-
-<p>
-Note that sequences and mapping should return a new iterator, it is just the returned
-iterator that must obey this constraint.
+<p>Iterator classes (classes defining a <code>__next__</code> method) should have an <code>__iter__</code> method that returns the iterator itself.
+This ensures that the object is also an iterable; and behaves as expected when used anywhere an iterator or iterable is expected, such as in <code>for</code> loops.
 </p>
+
+
 
 </overview>
 <recommendation>
-<p>Make the <code>__iter__</code> return self unless the class should not be an iterator, 
-in which case rename the <code>next</code> (Python 2) or <code>__next__</code> (Python 3) 
-to something else.</p>
+<p>Ensure that the <code>__iter__</code> method returns <code>self</code>, or is otherwise equivalent as an iterator to <code>self</code>.</p>
 
 </recommendation>
 <example>
-<p>In this example the <code>Counter</code> class's <code>__iter__</code> method does not 
-return self (or even an iterator). This will cause the program to fail when anyone attempts 
-to use the iterator in a <code>for</code> loop or <code>in</code> statement.</p>
-<sample src="IterReturnsNonSelf.py" />
+<p>In the following example, the <code>MyRange</code> class's <code>__iter__</code> method does not return <code>self</code>. 
+This would lead to unexpected results when used with a <code>for</code> loop or <code>in</code> statement.</p>
+<sample src="examples/IterReturnsNonSelf.py" />
 
 </example>
 <references>
 
-  <li>Python Language Reference: <a href="http://docs.python.org/2.7/reference/datamodel.html#object.__iter__">object.__iter__</a>.</li>
-  <li>Python Standard Library: <a href="http://docs.python.org/2/library/stdtypes.html#typeiter">Iterators</a>.</li>
+  <li>Python Language Reference: <a href="http://docs.python.org/3/reference/datamodel.html#object.__iter__">object.__iter__</a>.</li>
+  <li>Python Standard Library: <a href="http://docs.python.org/3/library/stdtypes.html#typeiter">Iterators</a>.</li>
 
 
 </references>

@@ -39,7 +39,7 @@ module TarSlip {
       this = API::moduleImport("tarfile").getMember("open").getACall() and
       // If argument refers to a string object, then it's a hardcoded path and
       // this tarfile is safe.
-      not this.(DataFlow::CallCfgNode).getArg(0).getALocalSource().asExpr() instanceof StrConst and
+      not this.(DataFlow::CallCfgNode).getArg(0).getALocalSource().asExpr() instanceof StringLiteral and
       // Ignore opens within the tarfile module itself
       not this.getLocation().getFile().getBaseName() = "tarfile.py"
     }
@@ -56,21 +56,47 @@ module TarSlip {
   }
 
   /**
+   * Holds if `call` has an unsafe extraction filter, either by default (as the default is unsafe),
+   * or by being set to an explicitly unsafe value, such as `"fully_trusted"`, or `None`.
+   */
+  private predicate hasUnsafeFilter(API::CallNode call) {
+    call =
+      API::moduleImport("tarfile")
+          .getMember("open")
+          .getReturn()
+          .getMember(["extract", "extractall"])
+          .getACall() and
+    (
+      exists(Expr filterValue |
+        filterValue = call.getParameter(4, "filter").getAValueReachingSink().asExpr() and
+        (
+          filterValue.(StringLiteral).getText() = "fully_trusted"
+          or
+          filterValue instanceof None
+        )
+      )
+      or
+      not exists(call.getParameter(4, "filter"))
+    )
+  }
+
+  /**
    * A sink capturing method calls to `extractall`.
    *
-   * For a call to `file.extractall` without arguments, `file` is considered a sink.
+   * For a call to `file.extractall`, `file` is considered a sink if
+   * there is no `members` argument and the extraction filter is unsafe.
    */
   class ExtractAllSink extends Sink {
     ExtractAllSink() {
-      exists(DataFlow::CallCfgNode call |
+      exists(API::CallNode call |
         call =
           API::moduleImport("tarfile")
               .getMember("open")
               .getReturn()
               .getMember("extractall")
               .getACall() and
-        not exists(call.getArg(_)) and
-        not exists(call.getArgByName(_)) and
+        hasUnsafeFilter(call) and
+        not exists(call.getParameter(2, "members")) and
         this = call.(DataFlow::MethodCallNode).getObject()
       )
     }
@@ -84,7 +110,8 @@ module TarSlip {
       exists(DataFlow::CallCfgNode call |
         call =
           API::moduleImport("tarfile").getMember("open").getReturn().getMember("extract").getACall() and
-        this = call.getArg(0)
+        this = call.getArg(0) and
+        hasUnsafeFilter(call)
       )
     }
   }
@@ -99,7 +126,8 @@ module TarSlip {
               .getReturn()
               .getMember("extractall")
               .getACall() and
-        this in [call.getArg(0), call.getArgByName("members")]
+        this in [call.getArg(0), call.getArgByName("members")] and
+        hasUnsafeFilter(call)
       )
     }
   }

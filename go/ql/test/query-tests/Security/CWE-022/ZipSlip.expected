@@ -1,27 +1,41 @@
-edges
-| UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join |
-| UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname |
-| UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name |
-| UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname | UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate |
-| UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name | UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate |
-| ZipSlip.go:11:2:15:2 | range statement[1] | ZipSlip.go:14:20:14:20 | p |
-| tarslip.go:15:2:15:30 | ... := ...[0] | tarslip.go:16:14:16:34 | call to Dir |
-| tst.go:23:2:43:2 | range statement[1] | tst.go:29:20:29:23 | path |
-nodes
-| UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | semmle.label | definition of candidate |
-| UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | semmle.label | call to Join |
-| UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | semmle.label | ... := ...[0] |
-| UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname | semmle.label | selection of Linkname |
-| UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name | semmle.label | selection of Name |
-| ZipSlip.go:11:2:15:2 | range statement[1] | semmle.label | range statement[1] |
-| ZipSlip.go:14:20:14:20 | p | semmle.label | p |
-| tarslip.go:15:2:15:30 | ... := ...[0] | semmle.label | ... := ...[0] |
-| tarslip.go:16:14:16:34 | call to Dir | semmle.label | call to Dir |
-| tst.go:23:2:43:2 | range statement[1] | semmle.label | range statement[1] |
-| tst.go:29:20:29:23 | path | semmle.label | path |
-subpaths
 #select
 | UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | Unsanitized archive entry, which may contain '..', is used in a $@. | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | file system operation |
 | ZipSlip.go:11:2:15:2 | range statement[1] | ZipSlip.go:11:2:15:2 | range statement[1] | ZipSlip.go:14:20:14:20 | p | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlip.go:14:20:14:20 | p | file system operation |
 | tarslip.go:15:2:15:30 | ... := ...[0] | tarslip.go:15:2:15:30 | ... := ...[0] | tarslip.go:16:14:16:34 | call to Dir | Unsanitized archive entry, which may contain '..', is used in a $@. | tarslip.go:16:14:16:34 | call to Dir | file system operation |
 | tst.go:23:2:43:2 | range statement[1] | tst.go:23:2:43:2 | range statement[1] | tst.go:29:20:29:23 | path | Unsanitized archive entry, which may contain '..', is used in a $@. | tst.go:29:20:29:23 | path | file system operation |
+edges
+| UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | UnsafeUnzipSymlinkGood.go:61:53:61:61 | candidate | provenance |  |
+| UnsafeUnzipSymlinkGood.go:61:53:61:61 | candidate | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | provenance | FunctionModel Sink:MaD:3 |
+| UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname | provenance |  |
+| UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name | provenance |  |
+| UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname | UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | provenance |  |
+| UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name | UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | provenance |  |
+| ZipSlip.go:11:2:15:2 | range statement[1] | ZipSlip.go:12:24:12:29 | selection of Name | provenance |  |
+| ZipSlip.go:12:3:12:30 | ... := ...[0] | ZipSlip.go:14:20:14:20 | p | provenance | Sink:MaD:1 |
+| ZipSlip.go:12:24:12:29 | selection of Name | ZipSlip.go:12:3:12:30 | ... := ...[0] | provenance | MaD:4 |
+| tarslip.go:15:2:15:30 | ... := ...[0] | tarslip.go:16:23:16:33 | selection of Name | provenance |  |
+| tarslip.go:16:23:16:33 | selection of Name | tarslip.go:16:14:16:34 | call to Dir | provenance | MaD:5 Sink:MaD:2 |
+| tst.go:23:2:43:2 | range statement[1] | tst.go:29:20:29:23 | path | provenance | Sink:MaD:1 |
+models
+| 1 | Sink: io/ioutil; ; false; WriteFile; ; ; Argument[0]; path-injection; manual |
+| 2 | Sink: os; ; false; MkdirAll; ; ; Argument[0]; path-injection; manual |
+| 3 | Sink: os; ; false; Readlink; ; ; Argument[0]; path-injection; manual |
+| 4 | Summary: path/filepath; ; false; Abs; ; ; Argument[0]; ReturnValue[0]; taint; manual |
+| 5 | Summary: path; ; false; Dir; ; ; Argument[0]; ReturnValue; taint; manual |
+nodes
+| UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | semmle.label | definition of candidate |
+| UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | semmle.label | call to Join |
+| UnsafeUnzipSymlinkGood.go:61:53:61:61 | candidate | semmle.label | candidate |
+| UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | semmle.label | ... := ...[0] |
+| UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname | semmle.label | selection of Linkname |
+| UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name | semmle.label | selection of Name |
+| ZipSlip.go:11:2:15:2 | range statement[1] | semmle.label | range statement[1] |
+| ZipSlip.go:12:3:12:30 | ... := ...[0] | semmle.label | ... := ...[0] |
+| ZipSlip.go:12:24:12:29 | selection of Name | semmle.label | selection of Name |
+| ZipSlip.go:14:20:14:20 | p | semmle.label | p |
+| tarslip.go:15:2:15:30 | ... := ...[0] | semmle.label | ... := ...[0] |
+| tarslip.go:16:14:16:34 | call to Dir | semmle.label | call to Dir |
+| tarslip.go:16:23:16:33 | selection of Name | semmle.label | selection of Name |
+| tst.go:23:2:43:2 | range statement[1] | semmle.label | range statement[1] |
+| tst.go:29:20:29:23 | path | semmle.label | path |
+subpaths

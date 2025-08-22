@@ -1,0 +1,2 @@
+| Local module | code-invalid-package-name/cmd.py:0:0:0:0 | Module cmd | referenced in local file called | test_ok.py |
+| Local module | code-invalid-package-name/unique_name.py:0:0:0:0 | Module unique_name | referenced in local file called | unique_name_use.py |

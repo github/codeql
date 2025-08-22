@@ -1,11 +1,15 @@
+#select
+| Test.cs:15:25:15:80 | ... + ... | Test.cs:8:27:8:49 | access to property QueryString : NameValueCollection | Test.cs:15:25:15:80 | ... + ... | This XML element depends on a $@. | Test.cs:8:27:8:49 | access to property QueryString | user-provided value |
 edges
-| Test.cs:8:27:8:49 | access to property QueryString : NameValueCollection | Test.cs:8:27:8:65 | access to indexer : String |
-| Test.cs:8:27:8:49 | access to property QueryString : NameValueCollection | Test.cs:15:25:15:80 | ... + ... |
-| Test.cs:8:27:8:65 | access to indexer : String | Test.cs:15:25:15:80 | ... + ... |
+| Test.cs:8:12:8:23 | access to local variable employeeName : String | Test.cs:15:25:15:80 | ... + ... | provenance |  |
+| Test.cs:8:27:8:49 | access to property QueryString : NameValueCollection | Test.cs:8:12:8:23 | access to local variable employeeName : String | provenance |  |
+| Test.cs:8:27:8:49 | access to property QueryString : NameValueCollection | Test.cs:8:27:8:65 | access to indexer : String | provenance | MaD:1 |
+| Test.cs:8:27:8:65 | access to indexer : String | Test.cs:8:12:8:23 | access to local variable employeeName : String | provenance |  |
+models
+| 1 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
 nodes
+| Test.cs:8:12:8:23 | access to local variable employeeName : String | semmle.label | access to local variable employeeName : String |
 | Test.cs:8:27:8:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | Test.cs:8:27:8:65 | access to indexer : String | semmle.label | access to indexer : String |
 | Test.cs:15:25:15:80 | ... + ... | semmle.label | ... + ... |
 subpaths
-#select
-| Test.cs:15:25:15:80 | ... + ... | Test.cs:8:27:8:49 | access to property QueryString : NameValueCollection | Test.cs:15:25:15:80 | ... + ... | This XML element depends on a $@. | Test.cs:8:27:8:49 | access to property QueryString | user-provided value |

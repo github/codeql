@@ -2,14 +2,12 @@
 // right values for `getARelevantTag`. We want to alert on this,
 // so it gets fixed!
 import python
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
-class MissingRelevantTag extends InlineExpectationsTest {
-  MissingRelevantTag() { this = "MissingRelevantTag" }
+module MissingRelevantTag implements TestSig {
+  string getARelevantTag() { none() }
 
-  override string getARelevantTag() { none() }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(Name name | name.getId() = "foo" |
       location = name.getLocation() and
       element = name.toString() and
@@ -18,3 +16,5 @@ class MissingRelevantTag extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<MissingRelevantTag>

@@ -1,6 +1,6 @@
-using Microsoft.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -29,6 +29,10 @@ namespace Semmle.Extraction.CSharp.Entities
             props = props.Where(p => SymbolEqualityComparer.Default.Equals(symbol, p.GetMethod) || SymbolEqualityComparer.Default.Equals(symbol, p.SetMethod));
             return props.SingleOrDefault();
         }
+
+        public override bool NeedsPopulation =>
+            base.NeedsPopulation &&
+            !Symbol.IsPartialDefinition; // Accessors always have an implementing declaration as well.
 
         public override void Populate(TextWriter trapFile)
         {

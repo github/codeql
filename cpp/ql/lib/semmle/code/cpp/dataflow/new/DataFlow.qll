@@ -26,6 +26,8 @@ import cpp
  * global (inter-procedural) data flow analyses.
  */
 module DataFlow {
-  import semmle.code.cpp.ir.dataflow.internal.DataFlow
-  import semmle.code.cpp.ir.dataflow.internal.DataFlowImpl1
+  private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplSpecific
+  private import codeql.dataflow.DataFlow
+  import DataFlowMake<Location, CppDataFlow>
+  import Public
 }

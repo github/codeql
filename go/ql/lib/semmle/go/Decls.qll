@@ -212,10 +212,7 @@ class MethodDecl extends FuncDecl {
    *
    * is `Rectangle`.
    */
-  NamedType getReceiverBaseType() {
-    result = this.getReceiverType() or
-    result = this.getReceiverType().(PointerType).getBaseType()
-  }
+  DefinedType getReceiverBaseType() { result = lookThroughPointerType(this.getReceiverType()) }
 
   /**
    * Gets the receiver variable of this method.
@@ -384,9 +381,19 @@ class TypeSpec extends @typespec, Spec, TypeParamDeclParent {
   string getName() { result = this.getNameExpr().getName() }
 
   /**
-   * Gets the expression denoting the underlying type to which the newly declared type is bound.
+   * Gets the declared type of this specifier.
+   *
+   * Note that for alias types this will give the underlying type.
+   */
+  Type getDeclaredType() { result = this.getNameExpr().getType() }
+
+  /**
+   * Gets the expression denoting the underlying type to which the declared type is bound.
    */
   Expr getTypeExpr() { result = this.getChildExpr(1) }
+
+  /** Gets the underlying type to which the declared type is bound. */
+  Type getRhsType() { result = this.getTypeExpr().getType() }
 
   override string toString() { result = "type declaration specifier" }
 
@@ -464,6 +471,7 @@ class FieldBase extends @field, ExprParent {
  * Examples:
  *
  * ```go
+ * io.Reader
  * Name string `json:"name"`
  * x, y int
  * ```
@@ -472,8 +480,9 @@ class FieldBase extends @field, ExprParent {
  *
  * ```go
  * struct {
- *   Name string `json:"name"`
- *   x, y int
+ *   io.Reader // embedded field
+ *   Name string `json:"name"` // field with tag
+ *   x, y int // declares two fields with the same type
  * }
  * ```
  */
@@ -485,11 +494,23 @@ class FieldDecl extends FieldBase, Documentable, ExprParent {
   /**
    * Gets the expression representing the name of the `i`th field declared in this declaration
    * (0-based).
+   *
+   * This is not defined for embedded fields.
    */
   Expr getNameExpr(int i) {
     i >= 0 and
     result = this.getChildExpr(i + 1)
   }
+
+  /**
+   * Gets the `i`th field declared in this declaration (0-based).
+   *
+   * This is not defined for embedded fields.
+   */
+  Field getField(int i) { this.getNameExpr(i).(Ident).declares(result) }
+
+  /** Holds if this field declaration declares an embedded type. */
+  predicate isEmbedded() { not exists(this.getNameExpr(_)) }
 
   /** Gets the tag expression of this field declaration, if any. */
   Expr getTag() { result = this.getChildExpr(-1) }
@@ -649,18 +670,28 @@ class ReceiverDecl extends FieldBase, Documentable, ExprParent {
  * Examples:
  *
  * ```go
+ * int
+ * string
  * error
  * r io.Reader
+ * output string
+ * err error
  * x, y int
  * ```
  *
  * as in the following code:
  *
  * ```go
- * func f(error) { return nil }
- * func g(r io.Reader) { return nil }
- * func h(x, y int) { return }
+ * func f1() int { return 0 }
+ * func f2(input string) (string, error) { return "", nil }
+ * func f3(a int) (r io.Reader) { return nil }
+ * func f4(input string) (output string, err error) { return}
+ * func f5(e error) (x, y int) { return }
  * ```
+ *
+ * Note: `x, y int` is a single `ResultVariableDecl` even though it declares
+ * two different result variables. Use the member predicate `getTypeExpr()` to
+ * get `int`, `getNameExpr(0)` to get `x` and `getNameExpr(1)` to get `y`.
  */
 class ResultVariableDecl extends ParameterOrResultDecl {
   ResultVariableDecl() { rawIndex < 0 }

@@ -5,14 +5,16 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/linq/missed-where
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
  *       language-features
  */
 
 import csharp
 import Linq.Helpers
 
-from ForeachStmt fes, IfStmt is
+from ForeachStmtGenericEnumerable fes, IfStmt is
 where
   missedWhereOpportunity(fes, is) and
   not missedAllOpportunity(fes)

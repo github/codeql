@@ -1,5 +1,6 @@
 import javascript
 import semmle.javascript.dataflow.InferredTypes
+deprecated import utils.test.ConsistencyChecking
 
 DataFlow::CallNode getACall(string name) {
   result.getCalleeName() = name
@@ -7,53 +8,56 @@ DataFlow::CallNode getACall(string name) {
   result.getCalleeNode().getALocalSource() = DataFlow::globalVarRef(name)
 }
 
-class Sink extends DataFlow::Node {
-  Sink() { this = getACall("sink").getAnArgument() }
-}
+module TestConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node = getACall("source") }
 
-/**
- * A node that shouldn't be taintable according to the type inference,
- * as it claims to be neither an object nor a string.
- */
-class UntaintableNode extends DataFlow::Node {
-  UntaintableNode() {
-    not analyze().getAType() = TTObject() and
-    not analyze().getAType() = TTString()
+  predicate isSink(DataFlow::Node node) { node = getACall("sink").getAnArgument() }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node.(DataFlow::InvokeNode).getCalleeName().matches("sanitizer_%") or
+    node = DataFlow::MakeBarrierGuard<BasicSanitizerGuard>::getABarrierNode() or
+    node = TaintTracking::AdHocWhitelistCheckSanitizer::getABarrierNode()
   }
 }
 
-class BasicConfig extends TaintTracking::Configuration {
-  BasicConfig() { this = "BasicConfig" }
+module TestFlow = TaintTracking::Global<TestConfig>;
 
-  override predicate isSource(DataFlow::Node node) { node = getACall("source") }
+deprecated class LegacyConfig extends TaintTracking::Configuration {
+  LegacyConfig() { this = "LegacyConfig" }
 
-  override predicate isSink(DataFlow::Node node) {
-    node instanceof Sink
-    or
-    node instanceof UntaintableNode
-  }
+  override predicate isSource(DataFlow::Node node) { TestConfig::isSource(node) }
+
+  override predicate isSink(DataFlow::Node node) { TestConfig::isSink(node) }
 
   override predicate isSanitizer(DataFlow::Node node) {
     node.(DataFlow::InvokeNode).getCalleeName().matches("sanitizer_%")
   }
 
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode node) {
-    node instanceof BasicSanitizerGuard
+    node instanceof BasicSanitizerGuardLegacy or
+    node instanceof TaintTracking::AdHocWhitelistCheckSanitizer
   }
 }
 
-class BasicSanitizerGuard extends TaintTracking::SanitizerGuardNode, DataFlow::CallNode {
+deprecated import utils.test.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
+
+class BasicSanitizerGuard extends DataFlow::CallNode {
   BasicSanitizerGuard() { this = getACall("isSafe") }
 
-  override predicate sanitizes(boolean outcome, Expr e) {
-    outcome = true and e = getArgument(0).asExpr()
+  predicate blocksExpr(boolean outcome, Expr e) {
+    outcome = true and e = this.getArgument(0).asExpr()
   }
 }
 
-query predicate typeInferenceMismatch(DataFlow::Node source, UntaintableNode sink) {
-  any(BasicConfig cfg).hasFlow(source, sink)
+deprecated class BasicSanitizerGuardLegacy extends TaintTracking::SanitizerGuardNode instanceof BasicSanitizerGuard
+{
+  override predicate sanitizes(boolean outcome, Expr e) { super.blocksExpr(outcome, e) }
 }
 
-from BasicConfig cfg, DataFlow::Node src, Sink sink
-where cfg.hasFlow(src, sink)
-select src, sink
+query predicate flow = TestFlow::flow/2;
+
+deprecated class Consistency extends ConsistencyConfiguration {
+  Consistency() { this = "Consistency" }
+
+  override DataFlow::Node getAnAlert() { TestFlow::flowTo(result) }
+}

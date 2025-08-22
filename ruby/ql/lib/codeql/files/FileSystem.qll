@@ -1,4 +1,6 @@
 /** Provides classes for working with files and folders. */
+overlay[local]
+module;
 
 private import codeql.Locations
 private import codeql.util.FileSystem
@@ -27,8 +29,7 @@ private module Impl = Make<Input>;
 
 class Container = Impl::Container;
 
-/** A folder. */
-class Folder extends Container, Impl::Folder { }
+class Folder = Impl::Folder;
 
 /** A file. */
 class File extends Container, Impl::File {

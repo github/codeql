@@ -89,7 +89,7 @@ def use_of_builtins():
 def imported_builtins():
     import builtins #$ use=moduleImport("builtins")
     def open(f):
-        return builtins.open(f) #$ MISSING: use=moduleImport("builtins").getMember("open").getReturn()
+        return builtins.open(f) #$ use=moduleImport("builtins").getMember("open").getReturn()
 
 def redefine_print():
     def my_print(x):

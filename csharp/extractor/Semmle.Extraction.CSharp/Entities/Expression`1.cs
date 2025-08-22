@@ -1,6 +1,6 @@
+using System.IO;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -20,7 +20,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <code>expressions</code> and <code>expr_location</code> are populated by the constructor
         /// (should not fail), so even if expression-type specific population fails (e.g., in
         /// standalone extraction), the expression created via
-        /// <see cref="Expression.Create(Context, ExpressionSyntax, IEntity, int, ITypeSymbol)"/> will
+        /// <see cref="Expression.Create"/> will
         /// still be valid.
         /// </summary>
         protected abstract void PopulateExpression(TextWriter trapFile);

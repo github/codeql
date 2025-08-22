@@ -13,7 +13,30 @@ import FileAccessToHttpCustomizations::FileAccessToHttp
 /**
  * A taint tracking configuration for file data in outbound network requests.
  */
-class Configuration extends TaintTracking::Configuration {
+module FileAccessToHttpConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet contents) {
+    isSink(node) and
+    contents = DataFlow::ContentSet::anyProperty()
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+}
+
+/**
+ * Taint tracking for file data in outbound network requests.
+ */
+module FileAccessToHttpFlow = TaintTracking::Global<FileAccessToHttpConfig>;
+
+/**
+ * DEPRECATED. Use the `FileAccessToHttpFlow` module instead.
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "FileAccessToHttp" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }

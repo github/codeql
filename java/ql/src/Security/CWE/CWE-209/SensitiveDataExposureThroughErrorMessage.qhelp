@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The error message at the top of a stack trace can include
+information such as server-side file names and SQL code that the
+application relies on, allowing an attacker to fine-tune a subsequent
+injection attack.</p>
+</overview>
+
+<recommendation>
+<p>Send the user a more generic error message that reveals less information.
+Either suppress the error message entirely, or log it only on the server.</p>
+</recommendation>
+
+<example>
+<p>In the following example, an exception is handled in two different
+ways. In the first version, labeled BAD, the exception is sent back to
+the remote user using the <code>getMessage()</code> method. As such,
+the user is able to see a detailed error message, which may contain
+sensitive information. In the second version, the error message is
+logged only on the server. That way, the developers can still access
+and use the error log, but remote users will not see the
+information.</p>
+
+<sample src="SensitiveDataExposureThroughErrorMessage.java" />
+</example>
+
+<references>
+<li>OWASP: <a href="https://owasp.org/www-community/Improper_Error_Handling">Improper Error Handling</a>.</li>
+
+<li>CERT Java Coding Standard:
+<a href="https://www.securecoding.cert.org/confluence/display/java/ERR01-J.+Do+not+allow+exceptions+to+expose+sensitive+information">ERR01-J.
+Do not allow exceptions to expose sensitive information</a>.</li>
+
+</references>
+</qhelp>

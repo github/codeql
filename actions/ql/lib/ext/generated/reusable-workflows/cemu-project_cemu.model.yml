@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["cemu-project/cemu/.github/workflows/build.yml", "*", "input.experimentalversion", "code-injection", "generated"]

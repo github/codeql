@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["text/scanner", "Scanner", True, "Init", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["text/scanner", "Scanner", True, "Init", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["text/scanner", "Scanner", True, "TokenText", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]

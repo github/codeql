@@ -3,5 +3,5 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.mvel2.templates", "TemplateRuntime", False, "eval", "", "", "Argument[0]", "mvel", "manual"]
-      - ["org.mvel2.templates", "TemplateRuntime", False, "execute", "", "", "Argument[0]", "mvel", "manual"]
+      - ["org.mvel2.templates", "TemplateRuntime", False, "eval", "", "", "Argument[0]", "mvel-injection", "manual"]
+      - ["org.mvel2.templates", "TemplateRuntime", False, "execute", "", "", "Argument[0]", "mvel-injection", "manual"]

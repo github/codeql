@@ -119,10 +119,10 @@ class XUnitAnnotation extends Expr {
   Expr getAttribute(int i) { result = this.(BracketedListOfExpressions).getElement(i) }
 
   /** Gets an attribute of this annotation. */
-  Expr getAnAttribute() { result = getAttribute(_) }
+  Expr getAnAttribute() { result = this.getAttribute(_) }
 
   /** Gets the number of attributes of this annotation. */
-  int getNumAttribute() { result = strictcount(getAnAttribute()) }
+  int getNumAttribute() { result = strictcount(this.getAnAttribute()) }
 
   /**
    * Holds if this element is at the specified location.
@@ -136,8 +136,8 @@ class XUnitAnnotation extends Expr {
   ) {
     // extend location to cover brackets
     exists(Location l1, Location l2 |
-      l1 = getFirstToken().getLocation() and
-      l2 = getLastToken().getLocation()
+      l1 = this.getFirstToken().getLocation() and
+      l2 = this.getLastToken().getLocation()
     |
       filepath = l1.getFile().getAbsolutePath() and
       startline = l1.getStartLine() and
@@ -176,10 +176,10 @@ class XUnitAttribute extends Expr {
   Expr getParameter(int i) { result = this.(CallExpr).getArgument(i) }
 
   /** Gets a parameter of this attribute. */
-  Expr getAParameter() { result = getParameter(_) }
+  Expr getAParameter() { result = this.getParameter(_) }
 
   /** Gets the number of parameters of this attribute. */
-  int getNumParameter() { result = count(getAParameter()) }
+  int getNumParameter() { result = count(this.getAParameter()) }
 }
 
 /**
@@ -205,26 +205,26 @@ private class XUnitAnnotatedFunction extends Function {
  * An xUnit.js `Fixture` annotation.
  */
 class XUnitFixtureAnnotation extends XUnitAnnotation {
-  XUnitFixtureAnnotation() { getAnAttribute().accessesGlobal("Fixture") }
+  XUnitFixtureAnnotation() { this.getAnAttribute().accessesGlobal("Fixture") }
 }
 
 /**
  * An xUnit.js fixture.
  */
 class XUnitFixture extends XUnitAnnotatedFunction {
-  XUnitFixture() { getAnAnnotation() instanceof XUnitFixtureAnnotation }
+  XUnitFixture() { this.getAnAnnotation() instanceof XUnitFixtureAnnotation }
 }
 
 /**
  * An xUnit.js `Fact` annotation.
  */
 class XUnitFactAnnotation extends XUnitAnnotation {
-  XUnitFactAnnotation() { getAnAttribute().accessesGlobal("Fact") }
+  XUnitFactAnnotation() { this.getAnAttribute().accessesGlobal("Fact") }
 }
 
 /**
  * An xUnit.js fact.
  */
 class XUnitFact extends XUnitAnnotatedFunction {
-  XUnitFact() { getAnAnnotation() instanceof XUnitFactAnnotation }
+  XUnitFact() { this.getAnAnnotation() instanceof XUnitFactAnnotation }
 }

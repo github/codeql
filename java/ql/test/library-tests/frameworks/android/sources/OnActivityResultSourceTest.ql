@@ -1,15 +1,13 @@
 import java
 import semmle.code.java.dataflow.FlowSources
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 
-class EnableLegacy extends EnableLegacyConfiguration {
-  EnableLegacy() { exists(this) }
+module SourceValueFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src instanceof ActiveThreatModelSource }
+
+  predicate isSink(DataFlow::Node sink) { DefaultFlowConfig::isSink(sink) }
+
+  int fieldFlowBranchLimit() { result = DefaultFlowConfig::fieldFlowBranchLimit() }
 }
 
-class SourceValueFlowConf extends DefaultValueFlowConf {
-  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
-}
-
-class SourceInlineFlowTest extends InlineFlowTest {
-  override DataFlow::Configuration getTaintFlowConfig() { none() }
-}
+import ValueFlowTest<SourceValueFlowConfig>

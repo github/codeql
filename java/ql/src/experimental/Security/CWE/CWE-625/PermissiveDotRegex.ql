@@ -8,16 +8,22 @@
  * @id java/permissive-dot-regex
  * @tags security
  *       experimental
- *       external/cwe-625
- *       external/cwe-863
+ *       external/cwe/cwe-625
+ *       external/cwe/cwe-863
  */
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import DataFlow::PathGraph
-import PermissiveDotRegexQuery
+deprecated import MatchRegexFlow::PathGraph
+deprecated import PermissiveDotRegexQuery
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, MatchRegexConfiguration conf
-where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Potentially authentication bypass due to $@.",
-  source.getNode(), "user-provided value"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, MatchRegexFlow::PathNode source, MatchRegexFlow::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
+  MatchRegexFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "Potentially authentication bypass due to $@." and
+  sourceNode = source.getNode() and
+  message2 = "user-provided value"
+}

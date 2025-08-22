@@ -1,0 +1,67 @@
+typeModel
+| (aliases).Alias1 | (aliases) | Member[Alias1] |
+| (aliases).Alias1 | (aliases) | Member[Alias2] |
+| (aliases).Alias1 | (aliases) | Member[Alias3].Member[x] |
+| (aliases).Alias1 | (aliases) | Member[Alias4].Member[x].Member[x] |
+| (aliases).Alias1 | (aliases) | Member[AliasedClass] |
+| (aliases).Alias1.prototype | (aliases).Alias1 | Instance |
+| (aliases).Alias1.prototype | (aliases).Alias1.prototype.foo | ReturnValue |
+| (aliases).Alias1.prototype.foo | (aliases).Alias1.prototype | Member[foo] |
+| (long-access-path).a.shortcut.d | (long-access-path) | Member[a].Member[b].Member[c].Member[d] |
+| (long-access-path).a.shortcut.d | (long-access-path) | Member[a].Member[shortcut].Member[d] |
+| (long-access-path).a.shortcut.d.e | (long-access-path).a.shortcut.d | Member[e] |
+| (reexport).func | (reexport) | Member[func] |
+| (return-this).FluentInterface | (return-this) | Member[FluentInterface] |
+| (return-this).FluentInterface.prototype | (return-this).FluentInterface | Instance |
+| (return-this).FluentInterface.prototype | (return-this).FluentInterface.prototype.bar | ReturnValue |
+| (return-this).FluentInterface.prototype | (return-this).FluentInterface.prototype.baz | ReturnValue |
+| (return-this).FluentInterface.prototype | (return-this).FluentInterface.prototype.foo | ReturnValue |
+| (return-this).FluentInterface.prototype.bar | (return-this).FluentInterface.prototype | Member[bar] |
+| (return-this).FluentInterface.prototype.baz | (return-this).FluentInterface.prototype | Member[baz] |
+| (return-this).FluentInterface.prototype.foo | (return-this).FluentInterface.prototype | Member[foo] |
+| (return-this).FluentInterface.prototype.notFluent | (return-this).FluentInterface.prototype | Member[notFluent] |
+| (return-this).FluentInterface.prototype.notFluent2 | (return-this).FluentInterface.prototype | Member[notFluent2] |
+| (root-function).PublicClass | (root-function) | Member[PublicClass] |
+| (root-function).PublicClass.prototype | (root-function) | ReturnValue |
+| (root-function).PublicClass.prototype | (root-function).PublicClass | Instance |
+| (root-function).PublicClass.prototype.method | (root-function).PublicClass.prototype | Member[method] |
+| (semi-internal-class).PublicClass | (semi-internal-class) | Member[PublicClass] |
+| (semi-internal-class).PublicClass.prototype | (semi-internal-class).PublicClass | Instance |
+| (semi-internal-class).PublicClass.prototype | (semi-internal-class).SemiInternalClass.prototype.method | ReturnValue |
+| (semi-internal-class).PublicClass.prototype | (semi-internal-class).getAnonymous~expr2 | ReturnValue |
+| (semi-internal-class).PublicClass.prototype.publicMethod | (semi-internal-class).PublicClass.prototype | Member[publicMethod] |
+| (semi-internal-class).SemiInternalClass.prototype | (semi-internal-class).get | ReturnValue |
+| (semi-internal-class).SemiInternalClass.prototype.method | (semi-internal-class).SemiInternalClass.prototype | Member[method] |
+| (semi-internal-class).get | (semi-internal-class) | Member[get] |
+| (semi-internal-class).getAnonymous | (semi-internal-class) | Member[getAnonymous] |
+| (semi-internal-class).getAnonymous~expr1 | (semi-internal-class).getAnonymous | ReturnValue |
+| (semi-internal-class).getAnonymous~expr2 | (semi-internal-class).getAnonymous~expr1 | Member[method] |
+| (subclass).A | (subclass) | Member[A] |
+| (subclass).A.prototype | (subclass).A | Instance |
+| (subclass).A.prototype | (subclass).B.prototype |  |
+| (subclass).A.prototype | (subclass).ExposedMidSubClass.prototype~expr1 |  |
+| (subclass).A.prototype.a | (subclass).A.prototype | Member[a] |
+| (subclass).B | (subclass) | Member[B] |
+| (subclass).B.prototype | (subclass).B | Instance |
+| (subclass).B.prototype | (subclass).C.prototype |  |
+| (subclass).B.prototype.b | (subclass).B.prototype | Member[b] |
+| (subclass).C | (subclass) | Member[C] |
+| (subclass).C.prototype | (subclass).C | Instance |
+| (subclass).C.prototype.c | (subclass).C.prototype | Member[c] |
+| (subclass).D | (subclass) | Member[D] |
+| (subclass).D.prototype | (subclass).D | Instance |
+| (subclass).D.prototype.d | (subclass).D.prototype | Member[d] |
+| (subclass).ExposedMidSubClass | (subclass) | Member[ExposedMidSubClass] |
+| (subclass).ExposedMidSubClass.prototype | (subclass).ExposedMidSubClass | Instance |
+| (subclass).ExposedMidSubClass.prototype.m | (subclass).ExposedMidSubClass.prototype | Member[m] |
+| (subclass).ExposedMidSubClass.prototype~expr1 | (subclass).ExposedMidSubClass.prototype |  |
+| upstream-lib | (reexport) | Member[lib] |
+| upstream-lib | (reexport).func | ReturnValue |
+| upstream-lib.Type | (subclass).D.prototype |  |
+| upstream-lib.XYZ | (reexport) | Member[x].Member[y].Member[z] |
+| upstream-lib.XYZ | (reexport) | Member[xy].Member[z] |
+summaryModel
+| (aliases).Alias1.prototype |  |  | Member[foo].ReturnValue | type |
+| (return-this).FluentInterface.prototype |  |  | Member[bar].ReturnValue | type |
+| (return-this).FluentInterface.prototype |  |  | Member[baz].ReturnValue | type |
+| (return-this).FluentInterface.prototype |  |  | Member[foo].ReturnValue | type |

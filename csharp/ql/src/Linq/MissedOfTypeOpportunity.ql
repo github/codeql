@@ -6,14 +6,16 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/linq/missed-oftype
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
  *       language-features
  */
 
 import csharp
 import Linq.Helpers
 
-from ForeachStmt fes, LocalVariableDeclStmt s
+from ForeachStmtEnumerable fes, LocalVariableDeclStmt s
 where missedOfTypeOpportunity(fes, s)
 select fes,
   "This foreach loop immediately uses 'as' to $@ - consider using '.OfType(...)' instead.", s,

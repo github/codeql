@@ -1,4 +1,4 @@
 import python
 
-from StrConst s
+from StringLiteral s
 select s.getLocation(), s.getPrefix(), s.getText()

@@ -1,9 +1,11 @@
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -21,6 +23,40 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             return !SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition) ||
                 symbol.ContainingType is not null && ConstructedOrParentIsConstructed(symbol.ContainingType);
+        }
+
+
+        /// <summary>
+        /// A hashset containing the C# contextual keywords that could be confused with types (and typing).
+        ///
+        /// For the list of all contextual keywords, see
+        /// https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/#contextual-keywords
+        /// </summary>
+        private readonly HashSet<string> ContextualKeywordTypes = [
+            "dynamic",
+            "nint",
+            "nuint",
+            "var"
+            ];
+
+        /// <summary>
+        /// Returns true in case we suspect this is a broken type.
+        /// </summary>
+        /// <param name="symbol">Type symbol</param>
+        private bool IsBrokenType(ITypeSymbol symbol)
+        {
+            if (!Context.ExtractionContext.IsStandalone ||
+                !symbol.FromSource() ||
+                symbol.IsAnonymousType)
+            {
+                return false;
+            }
+
+            // (1) public class { ... } is a broken type as it doesn't have a name.
+            // (2) public class var { ... } is an allowed type, but it overrides the `var` keyword for all uses.
+            //     The same goes for other contextual keywords that could be used as type names.
+            //     It is probably a better heuristic to treat these as broken types.
+            return string.IsNullOrEmpty(symbol.Name) || ContextualKeywordTypes.Contains(symbol.Name);
         }
 
         public Kinds.TypeKind GetTypeKind(Context cx, bool constructUnderlyingTupleType)
@@ -46,13 +82,22 @@ namespace Semmle.Extraction.CSharp.Entities
                     if (Symbol.IsBoundNullable())
                         return Kinds.TypeKind.NULLABLE;
 
+                    if (IsBrokenType(Symbol))
+                        return Kinds.TypeKind.UNKNOWN;
+
                     switch (Symbol.TypeKind)
                     {
                         case TypeKind.Class: return Kinds.TypeKind.CLASS;
                         case TypeKind.Struct:
-                            return ((INamedTypeSymbol)Symbol).IsTupleType && !constructUnderlyingTupleType
-                                ? Kinds.TypeKind.TUPLE
-                                : Kinds.TypeKind.STRUCT;
+                            {
+                                if (((INamedTypeSymbol)Symbol).IsTupleType && !constructUnderlyingTupleType)
+                                {
+                                    return Kinds.TypeKind.TUPLE;
+                                }
+                                return Symbol.IsInlineArray()
+                                    ? Kinds.TypeKind.INLINE_ARRAY
+                                    : Kinds.TypeKind.STRUCT;
+                            }
                         case TypeKind.Interface: return Kinds.TypeKind.INTERFACE;
                         case TypeKind.Array: return Kinds.TypeKind.ARRAY;
                         case TypeKind.Enum: return Kinds.TypeKind.ENUM;
@@ -69,7 +114,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected void PopulateType(TextWriter trapFile, bool constructUnderlyingTupleType = false)
         {
-            PopulateMetadataHandle(trapFile);
             PopulateAttributes();
 
             trapFile.Write("types(");
@@ -82,8 +126,15 @@ namespace Semmle.Extraction.CSharp.Entities
 
             var baseTypes = GetBaseTypeDeclarations();
 
+            var hasExpandingCycle = GenericsRecursionGraph.HasExpandingCycle(Symbol);
+            if (hasExpandingCycle)
+            {
+                Context.ExtractionError("Found recursive generic inheritance hierarchy. Base class of type is not extracted", Symbol.ToDisplayString(), Context.CreateLocation(ReportingLocation), severity: Semmle.Util.Logging.Severity.Warning);
+            }
+
             // Visit base types
-            if (Symbol.GetNonObjectBaseType(Context) is INamedTypeSymbol @base)
+            if (!hasExpandingCycle
+                && Symbol.GetNonObjectBaseType(Context) is INamedTypeSymbol @base)
             {
                 var bts = GetBaseTypeDeclarations(baseTypes, @base);
 
@@ -211,7 +262,7 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         /// <summary>
-        /// Called to extract all members and nested types.
+        /// Called to extract members and nested types.
         /// This is called on each member of a namespace,
         /// in either source code or an assembly.
         /// </summary>
@@ -222,7 +273,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 Context.BindComments(this, l);
             }
 
-            foreach (var member in Symbol.GetMembers())
+            foreach (var member in Symbol.GetMembers().ExtractionCandidates())
             {
                 switch (member.Kind)
                 {
@@ -241,41 +292,44 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         public void PopulateGenerics()
         {
-            if (Symbol is null || !NeedsPopulation || !Context.ExtractGenerics(this))
-                return;
-
-            var members = new List<ISymbol>();
-
-            foreach (var member in Symbol.GetMembers())
-                members.Add(member);
-            foreach (var member in Symbol.GetTypeMembers())
-                members.Add(member);
-
-            // Mono extractor puts all BASE interface members as members of the current interface.
-
-            if (Symbol.TypeKind == TypeKind.Interface)
+            Context.PopulateLater(() =>
             {
-                foreach (var baseInterface in Symbol.Interfaces)
+                if (Symbol is null || !NeedsPopulation || !Context.ExtractGenerics(this))
+                    return;
+
+                var members = new List<ISymbol>();
+
+                foreach (var member in Symbol.GetMembers().ExtractionCandidates())
+                    members.Add(member);
+                foreach (var member in Symbol.GetTypeMembers().ExtractionCandidates())
+                    members.Add(member);
+
+                // Mono extractor puts all BASE interface members as members of the current interface.
+
+                if (Symbol.TypeKind == TypeKind.Interface)
                 {
-                    foreach (var member in baseInterface.GetMembers())
-                        members.Add(member);
-                    foreach (var member in baseInterface.GetTypeMembers())
-                        members.Add(member);
+                    foreach (var baseInterface in Symbol.Interfaces.ExtractionCandidates())
+                    {
+                        foreach (var member in baseInterface.GetMembers())
+                            members.Add(member);
+                        foreach (var member in baseInterface.GetTypeMembers())
+                            members.Add(member);
+                    }
                 }
-            }
 
-            foreach (var member in members)
-            {
-                Context.CreateEntity(member);
-            }
+                foreach (var member in members)
+                {
+                    Context.CreateEntity(member);
+                }
 
-            if (Symbol.BaseType is not null)
-                Create(Context, Symbol.BaseType).PopulateGenerics();
+                if (Symbol.BaseType is not null)
+                    Create(Context, Symbol.BaseType).PopulateGenerics();
 
-            foreach (var i in Symbol.Interfaces)
-            {
-                Create(Context, i).PopulateGenerics();
-            }
+                foreach (var i in Symbol.Interfaces.ExtractionCandidates())
+                {
+                    Create(Context, i).PopulateGenerics();
+                }
+            }, preserveDuplicationKey: false);
         }
 
         public void ExtractRecursive(TextWriter trapFile, IEntity parent)
@@ -347,6 +401,197 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         public override int GetHashCode() => SymbolEqualityComparer.Default.GetHashCode(Symbol);
+
+        /// <summary>
+        /// Class to detect recursive generic inheritance hierarchies.
+        ///
+        /// Details can be found in https://www.ecma-international.org/wp-content/uploads/ECMA-335_6th_edition_june_2012.pdf Chapter II.9.2 Generics and recursive inheritance graphs
+        /// The dotnet runtime already implements this check as a runtime validation: https://github.com/dotnet/runtime/blob/e48e88d0fe9c2e494c0e6fd0c7c1fb54e7ddbdb1/src/coreclr/vm/generics.cpp#L748
+        /// </summary>
+        private class GenericsRecursionGraph
+        {
+            private static readonly ConcurrentDictionary<INamedTypeSymbol, bool> resultCache = new(SymbolEqualityComparer.Default);
+
+            /// <summary>
+            /// Checks whether the given type has a recursive generic inheritance hierarchy. The result is cached.
+            /// </summary>
+            public static bool HasExpandingCycle(ITypeSymbol start)
+            {
+                if (start.OriginalDefinition is not INamedTypeSymbol namedTypeDefinition ||
+                    !namedTypeDefinition.IsGenericType)
+                {
+                    return false;
+                }
+
+                return resultCache.GetOrAdd(namedTypeDefinition, nt => new GenericsRecursionGraph(nt).HasExpandingCycle());
+            }
+
+            private readonly INamedTypeSymbol startSymbol;
+            private readonly HashSet<INamedTypeSymbol> instantiationClosure = new(SymbolEqualityComparer.Default);
+            private readonly Dictionary<ITypeParameterSymbol, List<(ITypeParameterSymbol To, bool IsExpanding)>> edges = new(SymbolEqualityComparer.Default);
+
+            private GenericsRecursionGraph(INamedTypeSymbol startSymbol)
+            {
+                this.startSymbol = startSymbol;
+
+                ComputeInstantiationClosure();
+                ComputeGraphEdges();
+            }
+
+            private void ComputeGraphEdges()
+            {
+                foreach (var reference in instantiationClosure)
+                {
+                    var definition = reference.OriginalDefinition;
+                    if (SymbolEqualityComparer.Default.Equals(reference, definition))
+                    {
+                        // It's a definition, so no edges
+                        continue;
+                    }
+
+                    for (var i = 0; i < reference.TypeArguments.Length; i++)
+                    {
+                        var target = definition.TypeParameters[i];
+                        if (reference.TypeArguments[i] is ITypeParameterSymbol source)
+                        {
+                            // non-expanding
+                            edges.AddAnother(source, (target, false));
+                        }
+                        else if (reference.TypeArguments[i] is INamedTypeSymbol namedType)
+                        {
+                            // expanding
+                            var sources = GetAllNestedTypeParameters(namedType);
+                            foreach (var s in sources)
+                            {
+                                edges.AddAnother(s, (target, true));
+                            }
+                        }
+                    }
+                }
+            }
+
+            private static List<ITypeParameterSymbol> GetAllNestedTypeParameters(INamedTypeSymbol symbol)
+            {
+                var res = new List<ITypeParameterSymbol>();
+
+                void AddTypeParameters(INamedTypeSymbol symbol)
+                {
+                    foreach (var typeArgument in symbol.TypeArguments)
+                    {
+                        if (typeArgument is ITypeParameterSymbol typeParameter)
+                        {
+                            res.Add(typeParameter);
+                        }
+                        else if (typeArgument is INamedTypeSymbol namedType)
+                        {
+                            AddTypeParameters(namedType);
+                        }
+                    }
+                }
+
+                AddTypeParameters(symbol);
+
+                return res;
+            }
+
+            private void ComputeInstantiationClosure()
+            {
+                var workQueue = new Queue<INamedTypeSymbol>();
+                workQueue.Enqueue(startSymbol);
+
+                while (workQueue.Count > 0)
+                {
+                    var current = workQueue.Dequeue();
+                    if (instantiationClosure.Contains(current) ||
+                        !current.IsGenericType)
+                    {
+                        continue;
+                    }
+
+                    instantiationClosure.Add(current);
+
+                    if (SymbolEqualityComparer.Default.Equals(current, current.OriginalDefinition))
+                    {
+                        // Definition, so enqueue all base types and interfaces
+                        if (current.BaseType != null)
+                        {
+                            workQueue.Enqueue(current.BaseType);
+                        }
+
+                        foreach (var i in current.Interfaces)
+                        {
+                            workQueue.Enqueue(i);
+                        }
+                    }
+                    else
+                    {
+                        // Reference, so enqueue all type arguments and their original definitions:
+                        foreach (var namedTypeArgument in current.TypeArguments.OfType<INamedTypeSymbol>())
+                        {
+                            workQueue.Enqueue(namedTypeArgument);
+                            workQueue.Enqueue(namedTypeArgument.OriginalDefinition);
+                        }
+                    }
+                }
+            }
+
+            private bool HasExpandingCycle()
+            {
+                return startSymbol.TypeParameters.Any(HasExpandingCycle);
+            }
+
+            private bool HasExpandingCycle(ITypeParameterSymbol start)
+            {
+                var visited = new HashSet<ITypeParameterSymbol>(SymbolEqualityComparer.Default);
+                var path = new List<ITypeParameterSymbol>();
+                var hasExpandingCycle = HasExpandingCycle(start, visited, path, hasSeenExpandingEdge: false);
+                return hasExpandingCycle;
+            }
+
+            private List<(ITypeParameterSymbol To, bool IsExpanding)> GetOutgoingEdges(ITypeParameterSymbol typeParameter)
+            {
+                return edges.TryGetValue(typeParameter, out var outgoingEdges)
+                    ? outgoingEdges
+                    : new List<(ITypeParameterSymbol, bool)>();
+            }
+
+            /// <summary>
+            /// A modified cycle detection algorithm based on DFS.
+            /// </summary>
+            /// <param name="current">The current node that is being visited</param>
+            /// <param name="visited">The nodes that have already been visited by any path.</param>
+            /// <param name="currentPath">The nodes already visited on the current path.</param>
+            /// <param name="hasSeenExpandingEdge">Whether an expanding edge was already seen in this path. We're looking for a cycle that has at least one expanding edge.</param>
+            /// <returns></returns>
+            private bool HasExpandingCycle(ITypeParameterSymbol current, HashSet<ITypeParameterSymbol> visited, List<ITypeParameterSymbol> currentPath, bool hasSeenExpandingEdge)
+            {
+                if (currentPath.Count > 0 && SymbolEqualityComparer.Default.Equals(current, currentPath[0]))
+                {
+                    return hasSeenExpandingEdge;
+                }
+
+                if (visited.Contains(current))
+                {
+                    return false;
+                }
+
+                visited.Add(current);
+                currentPath.Add(current);
+
+                var outgoingEdges = GetOutgoingEdges(current);
+
+                foreach (var outgoingEdge in outgoingEdges)
+                {
+                    if (HasExpandingCycle(outgoingEdge.To, visited, currentPath, hasSeenExpandingEdge: hasSeenExpandingEdge || outgoingEdge.IsExpanding))
+                    {
+                        return true;
+                    }
+                }
+
+                currentPath.RemoveAt(currentPath.Count - 1);
+                return false;
+            }
+        }
     }
 
     internal abstract class Type<T> : Type where T : ITypeSymbol

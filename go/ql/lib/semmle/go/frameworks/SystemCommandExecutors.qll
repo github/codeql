@@ -5,6 +5,21 @@
 
 import go
 
+private class DefaultSystemCommandExecution extends SystemCommandExecution::Range,
+  DataFlow::CallNode
+{
+  DataFlow::ArgumentNode commandName;
+
+  DefaultSystemCommandExecution() {
+    sinkNode(commandName, "command-injection") and
+    this = commandName.getCall()
+  }
+
+  override DataFlow::Node getCommandName() {
+    result = commandName.getACorrespondingSyntacticArgument()
+  }
+}
+
 /**
  * An indirect system-command execution via an argument argument passed to a command interpreter
  * such as a shell, `sudo`, or a programming-language interpreter.
@@ -14,96 +29,31 @@ private class ShellOrSudoExecution extends SystemCommandExecution::Range, DataFl
 
   ShellOrSudoExecution() {
     this instanceof SystemCommandExecution and
-    shellCommand = this.getAnArgument().getAPredecessor*() and
-    not hasSafeSubcommand(shellCommand.getStringValue(), this.getAnArgument().getStringValue())
+    shellCommand = this.getASyntacticArgument().getAPredecessor*() and
+    not hasSafeSubcommand(shellCommand.getStringValue(),
+      this.getASyntacticArgument().getStringValue())
   }
 
-  override DataFlow::Node getCommandName() { result = this.getAnArgument() }
+  override DataFlow::Node getCommandName() { result = this.getASyntacticArgument() }
 
   override predicate doubleDashIsSanitizing() {
     shellCommand.getStringValue().matches("%" + ["git", "rsync"])
   }
 }
 
-private class SystemCommandExecutors extends SystemCommandExecution::Range, DataFlow::CallNode {
-  int cmdArg;
-
-  SystemCommandExecutors() {
-    exists(string pkg, string name | this.getTarget().hasQualifiedName(pkg, name) |
-      pkg = "os" and name = "StartProcess" and cmdArg = 0
-      or
-      // assume that if a `Cmd` is instantiated it will be run
-      pkg = "os/exec" and name = "Command" and cmdArg = 0
-      or
-      pkg = "os/exec" and name = "CommandContext" and cmdArg = 1
-      or
-      // NOTE: syscall.ForkExec exists only on unix.
-      // NOTE: syscall.CreateProcess and syscall.CreateProcessAsUser exist only on windows.
-      pkg = "syscall" and
-      name = ["Exec", "ForkExec", "StartProcess", "CreateProcess"] and
-      cmdArg = 0
-      or
-      pkg = "syscall" and
-      name = "CreateProcessAsUser" and
-      cmdArg = 1
-    )
-  }
-
-  override DataFlow::Node getCommandName() { result = this.getArgument(cmdArg) }
-}
-
 /**
- * A call to the `Command` function, or `Call` or `Command` methods on a `Session` object
- * from the [go-sh](https://github.com/codeskyblue/go-sh) package, viewed as a
- * system-command execution.
- */
-private class GoShCommandExecution extends SystemCommandExecution::Range, DataFlow::CallNode {
-  GoShCommandExecution() {
-    exists(string packagePath | packagePath = package("github.com/codeskyblue/go-sh", "") |
-      // Catch method calls on the `Session` object:
-      exists(Method method |
-        method.hasQualifiedName(packagePath, "Session", "Call")
-        or
-        method.hasQualifiedName(packagePath, "Session", "Command")
-        or
-        method.hasQualifiedName(packagePath, "Session", "Exec")
-      |
-        this = method.getACall()
-      )
-      or
-      // Catch calls to the `Command` function:
-      this.getTarget().hasQualifiedName(packagePath, "Command")
-    )
-  }
-
-  override DataFlow::Node getCommandName() { result = this.getArgument(0) }
-}
-
-/**
+ * DEPRECATED
+ *
  * Provides classes for working with the
  * [golang.org/x/crypto/ssh](https://pkg.go.dev/golang.org/x/crypto/ssh) package.
  */
-module CryptoSsh {
-  /** Gets the package path `golang.org/x/crypto/ssh`. */
-  string packagePath() { result = package("golang.org/x/crypto", "ssh") }
-
+deprecated module CryptoSsh {
   /**
-   * A call to a method on a `Session` object from the [ssh](golang.org/x/crypto/ssh)
-   * package, viewed as a system-command execution.
+   * DEPRECATED: Use `package("golang.org/x/crypto", "ssh")` instead.
+   *
+   * Gets the package path `golang.org/x/crypto/ssh`.
    */
-  private class SshCommandExecution extends SystemCommandExecution::Range, DataFlow::CallNode {
-    SshCommandExecution() {
-      // Catch method calls on the `Session` object:
-      exists(Method method, string methodName |
-        methodName = ["CombinedOutput", "Output", "Run", "Start"]
-      |
-        method.hasQualifiedName(packagePath(), "Session", methodName) and
-        this = method.getACall()
-      )
-    }
-
-    override DataFlow::Node getCommandName() { result = this.getArgument(0) }
-  }
+  deprecated string packagePath() { result = package("golang.org/x/crypto", "ssh") }
 }
 
 /**

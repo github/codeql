@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["werf/werf/.github/workflows/_test_unit.yml", "*", "input.excludePackages", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_unit.yml", "*", "input.packages", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_unit.yml", "*", "input.coverage", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_integration_regular.yml", "*", "input.excludePackages", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_integration_regular.yml", "*", "input.packages", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_integration_regular.yml", "*", "input.coverage", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_integration_per-k8s-version.yml", "*", "input.coverage", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_integration_per-k8s-version-and-container-registry.yml", "*", "input.coverage", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_integration_per-container-registry.yml", "*", "input.coverage", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_e2e_regular.yml", "*", "input.excludePackages", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_e2e_regular.yml", "*", "input.scope", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_e2e_regular.yml", "*", "input.packages", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_e2e_regular.yml", "*", "input.coverage", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_e2e_per-k8s-version.yml", "*", "input.excludePackages", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_e2e_per-k8s-version.yml", "*", "input.scope", "code-injection", "generated"]
+     - ["werf/werf/.github/workflows/_test_e2e_per-k8s-version.yml", "*", "input.packages", "code-injection", "generated"]

@@ -13,22 +13,7 @@ Exercise: Apache Struts
 Setup
 =====
 
-For this example you should download:
-
-- `CodeQL for Visual Studio Code <https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/>`__
-- `Apache Struts database <https://downloads.lgtm.com/snapshots/java/apache/struts/apache-struts-7fd1622-CVE-2018-11776.zip>`__
-
-.. note::
-
-   For this example, we will be analyzing `Apache Struts <https://github.com/apache/struts>`__.
-
-   You can also query the project in `the query console <https://lgtm.com/query/project:1878521151/lang:java/>`__ on LGTM.com.
-
-   .. insert database-note.rst to explain differences between database available to download and the version available in the query console.
-
-   .. include:: ../slide-snippets/database-note.rst
-
-   .. resume slides
+For this example you need to set up `CodeQL for Visual Studio Code <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/installing-codeql-for-vs-code>`__ and download the CodeQL database for `Apache Struts <https://github.com/apache/struts>`__ from GitHub.
 
 Unsafe deserialization in Struts
 ================================
@@ -45,7 +30,7 @@ which is intended to populate the ``target`` object with data from the reader, u
 RCE in Apache Struts
 ====================
 
-- Vulnerable code looked like this (`original <https://lgtm.com/projects/g/apache/struts/snapshot/b434c23f95e0f9d5bde789bfa07f8fc1d5a8951d/files/plugins/rest/src/main/java/org/apache/struts2/rest/handler/XStreamHandler.java?sort=name&dir=ASC&mode=heatmap#L45>`__):
+- Vulnerable code looked like this:
 
    .. code-block:: java
    
@@ -71,7 +56,7 @@ Finding the RCE yourself
 
    **Hint**: Use ``Method.getDeclaringType()`` and ``Type.getASupertype()``
 
-#. Implement a ``DataFlow::Configuration``, defining the source as the first parameter of a ``toObject`` method, and the sink as an instance of ``UnsafeDeserializationSink``.
+#. Implement a ``DataFlow::ConfigSig``, defining the source as the first parameter of a ``toObject`` method, and the sink as an instance of ``UnsafeDeserializationSink``.
 
    **Hint**: Use ``Node::asParameter()``
 
@@ -114,13 +99,13 @@ Model answer, step 3
     * Configuration that tracks the flow of taint from the first parameter of
     * `ContentTypeHandler.toObject` to an instance of unsafe deserialization.
     */
-   class StrutsUnsafeDeserializationConfig extends Configuration {
-     StrutsUnsafeDeserializationConfig() { this = "StrutsUnsafeDeserializationConfig" }
-     override predicate isSource(Node source) {
+   module StrutsUnsafeDeserializationConfig implements ConfigSig {
+     predicate isSource(Node source) {
        source.asParameter() = any(ContentTypeHandlerDeserialization des).getParameter(0)
      }
-     override predicate isSink(Node sink) { sink instanceof UnsafeDeserializationSink }
+     predicate isSink(Node sink) { sink instanceof UnsafeDeserializationSink }
    }
+   module StrutsUnsafeDeserializationFlow = Global<StrutsUnsafeDeserializationConfig>;
 
 Model answer, step 4
 ====================
@@ -129,9 +114,8 @@ Model answer, step 4
 
    import PathGraph
    ...
-   from PathNode source, PathNode sink, StrutsUnsafeDeserializationConfig conf
-   where conf.hasFlowPath(source, sink)
-     and sink.getNode() instanceof UnsafeDeserializationSink
-   select sink.getNode().(UnsafeDeserializationSink).getMethodAccess(), source, sink, "Unsafe    deserialization of $@.", source, "user input"
+   from PathNode source, PathNode sink
+   where StrutsUnsafeDeserializationFlow::flowPath(source, sink)
+   select sink.getNode().(UnsafeDeserializationSink).getMethodAccess(), source, sink, "Unsafe deserialization of $@.", source, "user input"
 
 More full-featured version: https://github.com/github/securitylab/tree/main/CodeQL_Queries/java/Apache_Struts_CVE-2017-9805

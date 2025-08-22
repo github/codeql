@@ -29,5 +29,11 @@ class BarsController < ApplicationController
   def make_safe_html
     str = params[:user_name]
     str.html_safe
+
+    translate("welcome", name: params[:user_name]).html_safe # NOT OK - translate preserves taint
+    t("welcome", name: params[:user_name]).html_safe # NOT OK - t is an alias of translate
+    t("welcome_html", name: params[:user_name]).html_safe # OK - t escapes html when key ends in _html
+    I18n.t("welcome_html", name: params[:user_name]).html_safe # NOT OK - I18n.t does not escape html
+    I18n.translate("welcome_html", name: params[:user_name]).html_safe # NOT OK - alias
   end
 end

@@ -1,1 +1,2 @@
-Security/CWE-312/CleartextStorage.ql
+query: Security/CWE-312/CleartextStorage.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

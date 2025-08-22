@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sinkModel
+    data:
+      - ["rimraf", "Member[sync,native,manual,windows,moveRemove,posix].Argument[0]", "path-injection"]
+      - ["rimraf", "Member[rimrafSync,nativeSync,manualSync,windowsSync,moveRemoveSync,posixSync].Argument[0]", "path-injection"]
+      - ["rimraf", "Member[native,manual,windows,moveRemove,posix].Member[sync].Argument[0]", "path-injection"]

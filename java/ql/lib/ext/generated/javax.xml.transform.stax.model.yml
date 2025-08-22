@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.xml.transform.stax", "StAXResult", True, "StAXResult", "(XMLEventWriter)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.stax.StAXResult.xmlEventWriter]", "value", "dfc-generated"]
+      - ["javax.xml.transform.stax", "StAXResult", True, "StAXResult", "(XMLStreamWriter)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.stax.StAXResult.xmlStreamWriter]", "value", "dfc-generated"]
+      - ["javax.xml.transform.stax", "StAXResult", True, "getXMLEventWriter", "()", "", "Argument[this].SyntheticField[javax.xml.transform.stax.StAXResult.xmlEventWriter]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.transform.stax", "StAXResult", True, "getXMLStreamWriter", "()", "", "Argument[this].SyntheticField[javax.xml.transform.stax.StAXResult.xmlStreamWriter]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.transform.stax", "StAXSource", True, "StAXSource", "(XMLEventReader)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.stax.StAXSource.xmlEventReader]", "value", "dfc-generated"]
+      - ["javax.xml.transform.stax", "StAXSource", True, "StAXSource", "(XMLStreamReader)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.stax.StAXSource.xmlStreamReader]", "value", "dfc-generated"]
+      - ["javax.xml.transform.stax", "StAXSource", True, "getXMLEventReader", "()", "", "Argument[this].SyntheticField[javax.xml.transform.stax.StAXSource.xmlEventReader]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.transform.stax", "StAXSource", True, "getXMLStreamReader", "()", "", "Argument[this].SyntheticField[javax.xml.transform.stax.StAXSource.xmlStreamReader]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.xml.transform.stax", "StAXResult", "getSystemId", "()", "summary", "df-generated"]
+      - ["javax.xml.transform.stax", "StAXResult", "setSystemId", "(String)", "summary", "df-generated"]
+      - ["javax.xml.transform.stax", "StAXSource", "isEmpty", "()", "summary", "df-generated"]

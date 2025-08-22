@@ -17,5 +17,6 @@ from ExtractionError error
 where
   error instanceof ExtractionUnknownError or
   exists(error.getFile().getRelativePath())
-select error, "Extraction failed in " + error.getFile() + " with error " + error.getErrorMessage(),
-  error.getSeverity()
+select error,
+  "Extraction failed in " + error.getFile() + " with error " +
+    error.getErrorMessage().replaceAll("$", "$$"), error.getSeverity()

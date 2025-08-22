@@ -1,31 +1,33 @@
 edges
-| NFEAndroidDoS.java:13:24:13:34 | getIntent(...) : Intent | NFEAndroidDoS.java:13:24:13:61 | getStringExtra(...) : Object |
-| NFEAndroidDoS.java:13:24:13:61 | getStringExtra(...) : Object | NFEAndroidDoS.java:14:21:14:51 | parseDouble(...) |
-| NFEAndroidDoS.java:22:21:22:31 | getIntent(...) : Intent | NFEAndroidDoS.java:22:21:22:55 | getStringExtra(...) : Object |
-| NFEAndroidDoS.java:22:21:22:55 | getStringExtra(...) : Object | NFEAndroidDoS.java:23:15:23:40 | parseInt(...) |
-| NFEAndroidDoS.java:25:22:25:32 | getIntent(...) : Intent | NFEAndroidDoS.java:25:22:25:57 | getStringExtra(...) : Object |
-| NFEAndroidDoS.java:25:22:25:57 | getStringExtra(...) : Object | NFEAndroidDoS.java:26:16:26:42 | parseInt(...) |
-| NFEAndroidDoS.java:43:24:43:34 | getIntent(...) : Intent | NFEAndroidDoS.java:43:24:43:61 | getStringExtra(...) : Object |
-| NFEAndroidDoS.java:43:24:43:61 | getStringExtra(...) : Object | NFEAndroidDoS.java:44:21:44:43 | new Double(...) |
-| NFEAndroidDoS.java:43:24:43:61 | getStringExtra(...) : Object | NFEAndroidDoS.java:47:21:47:47 | valueOf(...) |
+| NFEAndroidDoS.java:13:24:13:34 | getIntent(...) : Intent | NFEAndroidDoS.java:13:24:13:61 | getStringExtra(...) : String | provenance | MaD:1 |
+| NFEAndroidDoS.java:13:24:13:61 | getStringExtra(...) : String | NFEAndroidDoS.java:14:21:14:51 | parseDouble(...) | provenance | TaintPreservingCallable |
+| NFEAndroidDoS.java:22:21:22:31 | getIntent(...) : Intent | NFEAndroidDoS.java:22:21:22:55 | getStringExtra(...) : String | provenance | MaD:1 |
+| NFEAndroidDoS.java:22:21:22:55 | getStringExtra(...) : String | NFEAndroidDoS.java:23:15:23:40 | parseInt(...) | provenance | TaintPreservingCallable |
+| NFEAndroidDoS.java:25:22:25:32 | getIntent(...) : Intent | NFEAndroidDoS.java:25:22:25:57 | getStringExtra(...) : String | provenance | MaD:1 |
+| NFEAndroidDoS.java:25:22:25:57 | getStringExtra(...) : String | NFEAndroidDoS.java:26:16:26:42 | parseInt(...) | provenance | TaintPreservingCallable |
+| NFEAndroidDoS.java:43:24:43:34 | getIntent(...) : Intent | NFEAndroidDoS.java:43:24:43:61 | getStringExtra(...) : String | provenance | MaD:1 |
+| NFEAndroidDoS.java:43:24:43:61 | getStringExtra(...) : String | NFEAndroidDoS.java:44:21:44:43 | new Double(...) | provenance | TaintPreservingCallable |
+| NFEAndroidDoS.java:43:24:43:61 | getStringExtra(...) : String | NFEAndroidDoS.java:47:21:47:47 | valueOf(...) | provenance | TaintPreservingCallable |
+models
+| 1 | Summary: android.content; Intent; true; getStringExtra; (String); ; Argument[this].SyntheticField[android.content.Intent.extras].MapValue; ReturnValue; value; manual |
 nodes
 | NFEAndroidDoS.java:13:24:13:34 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
-| NFEAndroidDoS.java:13:24:13:61 | getStringExtra(...) : Object | semmle.label | getStringExtra(...) : Object |
+| NFEAndroidDoS.java:13:24:13:61 | getStringExtra(...) : String | semmle.label | getStringExtra(...) : String |
 | NFEAndroidDoS.java:14:21:14:51 | parseDouble(...) | semmle.label | parseDouble(...) |
 | NFEAndroidDoS.java:22:21:22:31 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
-| NFEAndroidDoS.java:22:21:22:55 | getStringExtra(...) : Object | semmle.label | getStringExtra(...) : Object |
+| NFEAndroidDoS.java:22:21:22:55 | getStringExtra(...) : String | semmle.label | getStringExtra(...) : String |
 | NFEAndroidDoS.java:23:15:23:40 | parseInt(...) | semmle.label | parseInt(...) |
 | NFEAndroidDoS.java:25:22:25:32 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
-| NFEAndroidDoS.java:25:22:25:57 | getStringExtra(...) : Object | semmle.label | getStringExtra(...) : Object |
+| NFEAndroidDoS.java:25:22:25:57 | getStringExtra(...) : String | semmle.label | getStringExtra(...) : String |
 | NFEAndroidDoS.java:26:16:26:42 | parseInt(...) | semmle.label | parseInt(...) |
 | NFEAndroidDoS.java:43:24:43:34 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
-| NFEAndroidDoS.java:43:24:43:61 | getStringExtra(...) : Object | semmle.label | getStringExtra(...) : Object |
+| NFEAndroidDoS.java:43:24:43:61 | getStringExtra(...) : String | semmle.label | getStringExtra(...) : String |
 | NFEAndroidDoS.java:44:21:44:43 | new Double(...) | semmle.label | new Double(...) |
 | NFEAndroidDoS.java:47:21:47:47 | valueOf(...) | semmle.label | valueOf(...) |
-subpaths
-#select
+problems
 | NFEAndroidDoS.java:14:21:14:51 | parseDouble(...) | NFEAndroidDoS.java:13:24:13:34 | getIntent(...) : Intent | NFEAndroidDoS.java:14:21:14:51 | parseDouble(...) | Uncaught NumberFormatException in an exported Android component due to $@. | NFEAndroidDoS.java:13:24:13:34 | getIntent(...) | user-provided value |
 | NFEAndroidDoS.java:23:15:23:40 | parseInt(...) | NFEAndroidDoS.java:22:21:22:31 | getIntent(...) : Intent | NFEAndroidDoS.java:23:15:23:40 | parseInt(...) | Uncaught NumberFormatException in an exported Android component due to $@. | NFEAndroidDoS.java:22:21:22:31 | getIntent(...) | user-provided value |
 | NFEAndroidDoS.java:26:16:26:42 | parseInt(...) | NFEAndroidDoS.java:25:22:25:32 | getIntent(...) : Intent | NFEAndroidDoS.java:26:16:26:42 | parseInt(...) | Uncaught NumberFormatException in an exported Android component due to $@. | NFEAndroidDoS.java:25:22:25:32 | getIntent(...) | user-provided value |
 | NFEAndroidDoS.java:44:21:44:43 | new Double(...) | NFEAndroidDoS.java:43:24:43:34 | getIntent(...) : Intent | NFEAndroidDoS.java:44:21:44:43 | new Double(...) | Uncaught NumberFormatException in an exported Android component due to $@. | NFEAndroidDoS.java:43:24:43:34 | getIntent(...) | user-provided value |
 | NFEAndroidDoS.java:47:21:47:47 | valueOf(...) | NFEAndroidDoS.java:43:24:43:34 | getIntent(...) : Intent | NFEAndroidDoS.java:47:21:47:47 | valueOf(...) | Uncaught NumberFormatException in an exported Android component due to $@. | NFEAndroidDoS.java:43:24:43:34 | getIntent(...) | user-provided value |
+subpaths

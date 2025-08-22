@@ -1,64 +1,64 @@
 edges
-| tainted_format_string.rb:4:12:4:17 | call to params :  | tainted_format_string.rb:4:12:4:26 | ...[...] |
-| tainted_format_string.rb:5:19:5:24 | call to params :  | tainted_format_string.rb:5:19:5:33 | ...[...] |
-| tainted_format_string.rb:10:23:10:28 | call to params :  | tainted_format_string.rb:10:23:10:37 | ...[...] |
-| tainted_format_string.rb:11:30:11:35 | call to params :  | tainted_format_string.rb:11:30:11:44 | ...[...] |
-| tainted_format_string.rb:18:23:18:28 | call to params :  | tainted_format_string.rb:18:23:18:37 | ...[...] |
-| tainted_format_string.rb:19:30:19:35 | call to params :  | tainted_format_string.rb:19:30:19:44 | ...[...] |
-| tainted_format_string.rb:21:27:21:32 | call to params :  | tainted_format_string.rb:21:27:21:41 | ...[...] |
-| tainted_format_string.rb:22:20:22:25 | call to params :  | tainted_format_string.rb:22:20:22:34 | ...[...] |
-| tainted_format_string.rb:28:19:28:24 | call to params :  | tainted_format_string.rb:28:19:28:33 | ...[...] |
-| tainted_format_string.rb:33:32:33:37 | call to params :  | tainted_format_string.rb:33:32:33:46 | ...[...] :  |
-| tainted_format_string.rb:33:32:33:46 | ...[...] :  | tainted_format_string.rb:33:12:33:46 | ... + ... |
-| tainted_format_string.rb:36:30:36:35 | call to params :  | tainted_format_string.rb:36:30:36:44 | ...[...] :  |
-| tainted_format_string.rb:36:30:36:44 | ...[...] :  | tainted_format_string.rb:36:12:36:46 | "A log message: #{...}" |
-| tainted_format_string.rb:39:22:39:27 | call to params :  | tainted_format_string.rb:39:22:39:36 | ...[...] :  |
-| tainted_format_string.rb:39:22:39:36 | ...[...] :  | tainted_format_string.rb:39:5:39:45 | "A log message #{...} %{foo}" |
-| tainted_format_string.rb:42:22:42:27 | call to params :  | tainted_format_string.rb:42:22:42:36 | ...[...] :  |
-| tainted_format_string.rb:42:22:42:36 | ...[...] :  | tainted_format_string.rb:42:5:42:43 | "A log message #{...} %08x" |
+| tainted_format_string.rb:4:12:4:17 | call to params | tainted_format_string.rb:4:12:4:26 | ...[...] | provenance |  |
+| tainted_format_string.rb:5:19:5:24 | call to params | tainted_format_string.rb:5:19:5:33 | ...[...] | provenance |  |
+| tainted_format_string.rb:10:23:10:28 | call to params | tainted_format_string.rb:10:23:10:37 | ...[...] | provenance |  |
+| tainted_format_string.rb:11:30:11:35 | call to params | tainted_format_string.rb:11:30:11:44 | ...[...] | provenance |  |
+| tainted_format_string.rb:18:23:18:28 | call to params | tainted_format_string.rb:18:23:18:37 | ...[...] | provenance |  |
+| tainted_format_string.rb:19:30:19:35 | call to params | tainted_format_string.rb:19:30:19:44 | ...[...] | provenance |  |
+| tainted_format_string.rb:21:27:21:32 | call to params | tainted_format_string.rb:21:27:21:41 | ...[...] | provenance |  |
+| tainted_format_string.rb:22:20:22:25 | call to params | tainted_format_string.rb:22:20:22:34 | ...[...] | provenance |  |
+| tainted_format_string.rb:28:19:28:24 | call to params | tainted_format_string.rb:28:19:28:33 | ...[...] | provenance |  |
+| tainted_format_string.rb:33:32:33:37 | call to params | tainted_format_string.rb:33:32:33:46 | ...[...] | provenance |  |
+| tainted_format_string.rb:33:32:33:46 | ...[...] | tainted_format_string.rb:33:12:33:46 | ... + ... | provenance |  |
+| tainted_format_string.rb:36:30:36:35 | call to params | tainted_format_string.rb:36:30:36:44 | ...[...] | provenance |  |
+| tainted_format_string.rb:36:30:36:44 | ...[...] | tainted_format_string.rb:36:12:36:46 | "A log message: #{...}" | provenance | AdditionalTaintStep |
+| tainted_format_string.rb:39:22:39:27 | call to params | tainted_format_string.rb:39:22:39:36 | ...[...] | provenance |  |
+| tainted_format_string.rb:39:22:39:36 | ...[...] | tainted_format_string.rb:39:5:39:45 | "A log message #{...} %{foo}" | provenance | AdditionalTaintStep |
+| tainted_format_string.rb:42:22:42:27 | call to params | tainted_format_string.rb:42:22:42:36 | ...[...] | provenance |  |
+| tainted_format_string.rb:42:22:42:36 | ...[...] | tainted_format_string.rb:42:5:42:43 | "A log message #{...} %08x" | provenance | AdditionalTaintStep |
 nodes
-| tainted_format_string.rb:4:12:4:17 | call to params :  | semmle.label | call to params :  |
+| tainted_format_string.rb:4:12:4:17 | call to params | semmle.label | call to params |
 | tainted_format_string.rb:4:12:4:26 | ...[...] | semmle.label | ...[...] |
-| tainted_format_string.rb:5:19:5:24 | call to params :  | semmle.label | call to params :  |
+| tainted_format_string.rb:5:19:5:24 | call to params | semmle.label | call to params |
 | tainted_format_string.rb:5:19:5:33 | ...[...] | semmle.label | ...[...] |
-| tainted_format_string.rb:10:23:10:28 | call to params :  | semmle.label | call to params :  |
+| tainted_format_string.rb:10:23:10:28 | call to params | semmle.label | call to params |
 | tainted_format_string.rb:10:23:10:37 | ...[...] | semmle.label | ...[...] |
-| tainted_format_string.rb:11:30:11:35 | call to params :  | semmle.label | call to params :  |
+| tainted_format_string.rb:11:30:11:35 | call to params | semmle.label | call to params |
 | tainted_format_string.rb:11:30:11:44 | ...[...] | semmle.label | ...[...] |
-| tainted_format_string.rb:18:23:18:28 | call to params :  | semmle.label | call to params :  |
+| tainted_format_string.rb:18:23:18:28 | call to params | semmle.label | call to params |
 | tainted_format_string.rb:18:23:18:37 | ...[...] | semmle.label | ...[...] |
-| tainted_format_string.rb:19:30:19:35 | call to params :  | semmle.label | call to params :  |
+| tainted_format_string.rb:19:30:19:35 | call to params | semmle.label | call to params |
 | tainted_format_string.rb:19:30:19:44 | ...[...] | semmle.label | ...[...] |
-| tainted_format_string.rb:21:27:21:32 | call to params :  | semmle.label | call to params :  |
+| tainted_format_string.rb:21:27:21:32 | call to params | semmle.label | call to params |
 | tainted_format_string.rb:21:27:21:41 | ...[...] | semmle.label | ...[...] |
-| tainted_format_string.rb:22:20:22:25 | call to params :  | semmle.label | call to params :  |
+| tainted_format_string.rb:22:20:22:25 | call to params | semmle.label | call to params |
 | tainted_format_string.rb:22:20:22:34 | ...[...] | semmle.label | ...[...] |
-| tainted_format_string.rb:28:19:28:24 | call to params :  | semmle.label | call to params :  |
+| tainted_format_string.rb:28:19:28:24 | call to params | semmle.label | call to params |
 | tainted_format_string.rb:28:19:28:33 | ...[...] | semmle.label | ...[...] |
 | tainted_format_string.rb:33:12:33:46 | ... + ... | semmle.label | ... + ... |
-| tainted_format_string.rb:33:32:33:37 | call to params :  | semmle.label | call to params :  |
-| tainted_format_string.rb:33:32:33:46 | ...[...] :  | semmle.label | ...[...] :  |
+| tainted_format_string.rb:33:32:33:37 | call to params | semmle.label | call to params |
+| tainted_format_string.rb:33:32:33:46 | ...[...] | semmle.label | ...[...] |
 | tainted_format_string.rb:36:12:36:46 | "A log message: #{...}" | semmle.label | "A log message: #{...}" |
-| tainted_format_string.rb:36:30:36:35 | call to params :  | semmle.label | call to params :  |
-| tainted_format_string.rb:36:30:36:44 | ...[...] :  | semmle.label | ...[...] :  |
+| tainted_format_string.rb:36:30:36:35 | call to params | semmle.label | call to params |
+| tainted_format_string.rb:36:30:36:44 | ...[...] | semmle.label | ...[...] |
 | tainted_format_string.rb:39:5:39:45 | "A log message #{...} %{foo}" | semmle.label | "A log message #{...} %{foo}" |
-| tainted_format_string.rb:39:22:39:27 | call to params :  | semmle.label | call to params :  |
-| tainted_format_string.rb:39:22:39:36 | ...[...] :  | semmle.label | ...[...] :  |
+| tainted_format_string.rb:39:22:39:27 | call to params | semmle.label | call to params |
+| tainted_format_string.rb:39:22:39:36 | ...[...] | semmle.label | ...[...] |
 | tainted_format_string.rb:42:5:42:43 | "A log message #{...} %08x" | semmle.label | "A log message #{...} %08x" |
-| tainted_format_string.rb:42:22:42:27 | call to params :  | semmle.label | call to params :  |
-| tainted_format_string.rb:42:22:42:36 | ...[...] :  | semmle.label | ...[...] :  |
+| tainted_format_string.rb:42:22:42:27 | call to params | semmle.label | call to params |
+| tainted_format_string.rb:42:22:42:36 | ...[...] | semmle.label | ...[...] |
 subpaths
 #select
-| tainted_format_string.rb:4:12:4:26 | ...[...] | tainted_format_string.rb:4:12:4:17 | call to params :  | tainted_format_string.rb:4:12:4:26 | ...[...] | Format string depends on a $@. | tainted_format_string.rb:4:12:4:17 | call to params | user-provided value |
-| tainted_format_string.rb:5:19:5:33 | ...[...] | tainted_format_string.rb:5:19:5:24 | call to params :  | tainted_format_string.rb:5:19:5:33 | ...[...] | Format string depends on a $@. | tainted_format_string.rb:5:19:5:24 | call to params | user-provided value |
-| tainted_format_string.rb:10:23:10:37 | ...[...] | tainted_format_string.rb:10:23:10:28 | call to params :  | tainted_format_string.rb:10:23:10:37 | ...[...] | Format string depends on a $@. | tainted_format_string.rb:10:23:10:28 | call to params | user-provided value |
-| tainted_format_string.rb:11:30:11:44 | ...[...] | tainted_format_string.rb:11:30:11:35 | call to params :  | tainted_format_string.rb:11:30:11:44 | ...[...] | Format string depends on a $@. | tainted_format_string.rb:11:30:11:35 | call to params | user-provided value |
-| tainted_format_string.rb:18:23:18:37 | ...[...] | tainted_format_string.rb:18:23:18:28 | call to params :  | tainted_format_string.rb:18:23:18:37 | ...[...] | Format string depends on a $@. | tainted_format_string.rb:18:23:18:28 | call to params | user-provided value |
-| tainted_format_string.rb:19:30:19:44 | ...[...] | tainted_format_string.rb:19:30:19:35 | call to params :  | tainted_format_string.rb:19:30:19:44 | ...[...] | Format string depends on a $@. | tainted_format_string.rb:19:30:19:35 | call to params | user-provided value |
-| tainted_format_string.rb:21:27:21:41 | ...[...] | tainted_format_string.rb:21:27:21:32 | call to params :  | tainted_format_string.rb:21:27:21:41 | ...[...] | Format string depends on a $@. | tainted_format_string.rb:21:27:21:32 | call to params | user-provided value |
-| tainted_format_string.rb:22:20:22:34 | ...[...] | tainted_format_string.rb:22:20:22:25 | call to params :  | tainted_format_string.rb:22:20:22:34 | ...[...] | Format string depends on a $@. | tainted_format_string.rb:22:20:22:25 | call to params | user-provided value |
-| tainted_format_string.rb:28:19:28:33 | ...[...] | tainted_format_string.rb:28:19:28:24 | call to params :  | tainted_format_string.rb:28:19:28:33 | ...[...] | Format string depends on a $@. | tainted_format_string.rb:28:19:28:24 | call to params | user-provided value |
-| tainted_format_string.rb:33:12:33:46 | ... + ... | tainted_format_string.rb:33:32:33:37 | call to params :  | tainted_format_string.rb:33:12:33:46 | ... + ... | Format string depends on a $@. | tainted_format_string.rb:33:32:33:37 | call to params | user-provided value |
-| tainted_format_string.rb:36:12:36:46 | "A log message: #{...}" | tainted_format_string.rb:36:30:36:35 | call to params :  | tainted_format_string.rb:36:12:36:46 | "A log message: #{...}" | Format string depends on a $@. | tainted_format_string.rb:36:30:36:35 | call to params | user-provided value |
-| tainted_format_string.rb:39:5:39:45 | "A log message #{...} %{foo}" | tainted_format_string.rb:39:22:39:27 | call to params :  | tainted_format_string.rb:39:5:39:45 | "A log message #{...} %{foo}" | Format string depends on a $@. | tainted_format_string.rb:39:22:39:27 | call to params | user-provided value |
-| tainted_format_string.rb:42:5:42:43 | "A log message #{...} %08x" | tainted_format_string.rb:42:22:42:27 | call to params :  | tainted_format_string.rb:42:5:42:43 | "A log message #{...} %08x" | Format string depends on a $@. | tainted_format_string.rb:42:22:42:27 | call to params | user-provided value |
+| tainted_format_string.rb:4:12:4:26 | ...[...] | tainted_format_string.rb:4:12:4:17 | call to params | tainted_format_string.rb:4:12:4:26 | ...[...] | Format string depends on a $@. | tainted_format_string.rb:4:12:4:17 | call to params | user-provided value |
+| tainted_format_string.rb:5:19:5:33 | ...[...] | tainted_format_string.rb:5:19:5:24 | call to params | tainted_format_string.rb:5:19:5:33 | ...[...] | Format string depends on a $@. | tainted_format_string.rb:5:19:5:24 | call to params | user-provided value |
+| tainted_format_string.rb:10:23:10:37 | ...[...] | tainted_format_string.rb:10:23:10:28 | call to params | tainted_format_string.rb:10:23:10:37 | ...[...] | Format string depends on a $@. | tainted_format_string.rb:10:23:10:28 | call to params | user-provided value |
+| tainted_format_string.rb:11:30:11:44 | ...[...] | tainted_format_string.rb:11:30:11:35 | call to params | tainted_format_string.rb:11:30:11:44 | ...[...] | Format string depends on a $@. | tainted_format_string.rb:11:30:11:35 | call to params | user-provided value |
+| tainted_format_string.rb:18:23:18:37 | ...[...] | tainted_format_string.rb:18:23:18:28 | call to params | tainted_format_string.rb:18:23:18:37 | ...[...] | Format string depends on a $@. | tainted_format_string.rb:18:23:18:28 | call to params | user-provided value |
+| tainted_format_string.rb:19:30:19:44 | ...[...] | tainted_format_string.rb:19:30:19:35 | call to params | tainted_format_string.rb:19:30:19:44 | ...[...] | Format string depends on a $@. | tainted_format_string.rb:19:30:19:35 | call to params | user-provided value |
+| tainted_format_string.rb:21:27:21:41 | ...[...] | tainted_format_string.rb:21:27:21:32 | call to params | tainted_format_string.rb:21:27:21:41 | ...[...] | Format string depends on a $@. | tainted_format_string.rb:21:27:21:32 | call to params | user-provided value |
+| tainted_format_string.rb:22:20:22:34 | ...[...] | tainted_format_string.rb:22:20:22:25 | call to params | tainted_format_string.rb:22:20:22:34 | ...[...] | Format string depends on a $@. | tainted_format_string.rb:22:20:22:25 | call to params | user-provided value |
+| tainted_format_string.rb:28:19:28:33 | ...[...] | tainted_format_string.rb:28:19:28:24 | call to params | tainted_format_string.rb:28:19:28:33 | ...[...] | Format string depends on a $@. | tainted_format_string.rb:28:19:28:24 | call to params | user-provided value |
+| tainted_format_string.rb:33:12:33:46 | ... + ... | tainted_format_string.rb:33:32:33:37 | call to params | tainted_format_string.rb:33:12:33:46 | ... + ... | Format string depends on a $@. | tainted_format_string.rb:33:32:33:37 | call to params | user-provided value |
+| tainted_format_string.rb:36:12:36:46 | "A log message: #{...}" | tainted_format_string.rb:36:30:36:35 | call to params | tainted_format_string.rb:36:12:36:46 | "A log message: #{...}" | Format string depends on a $@. | tainted_format_string.rb:36:30:36:35 | call to params | user-provided value |
+| tainted_format_string.rb:39:5:39:45 | "A log message #{...} %{foo}" | tainted_format_string.rb:39:22:39:27 | call to params | tainted_format_string.rb:39:5:39:45 | "A log message #{...} %{foo}" | Format string depends on a $@. | tainted_format_string.rb:39:22:39:27 | call to params | user-provided value |
+| tainted_format_string.rb:42:5:42:43 | "A log message #{...} %08x" | tainted_format_string.rb:42:22:42:27 | call to params | tainted_format_string.rb:42:5:42:43 | "A log message #{...} %08x" | Format string depends on a $@. | tainted_format_string.rb:42:22:42:27 | call to params | user-provided value |

@@ -108,28 +108,29 @@ private predicate hasMemberCompatibleWithInterfaceMember(ValueOrRefType t, Virtu
  */
 pragma[nomagic]
 private Virtualizable getACompatibleInterfaceMember(Virtualizable m) {
-  result = getACompatibleInterfaceMemberAux(m) and
-  (
+  exists(ValueOrRefType declType | result = getACompatibleInterfaceMemberAux(m, declType) |
     // If there is both an implicit and an explicit compatible member
     // in the same type, then the explicit implementation must be used
-    not result = getACompatibleExplicitInterfaceMember(_, m.getDeclaringType())
+    not result = getACompatibleExplicitInterfaceMember(_, declType)
     or
-    result = getACompatibleExplicitInterfaceMember(m, m.getDeclaringType())
+    result = getACompatibleExplicitInterfaceMember(m, declType)
   )
 }
 
 pragma[nomagic]
 private Virtualizable getACompatibleExplicitInterfaceMember(Virtualizable m, ValueOrRefType declType) {
-  result = getACompatibleInterfaceMemberAux(m) and
-  declType = m.getDeclaringType() and
+  result = getACompatibleInterfaceMemberAux(m, declType) and
   m.implementsExplicitInterface()
 }
 
 pragma[nomagic]
-private Virtualizable getACompatibleInterfaceMemberAux(Virtualizable m) {
-  result = getACompatibleInterfaceAccessor(m) or
-  result = getACompatibleInterfaceIndexer(m) or
-  result = getACompatibleRelevantInterfaceMember(m)
+private Virtualizable getACompatibleInterfaceMemberAux(Virtualizable m, ValueOrRefType declType) {
+  (
+    result = getACompatibleInterfaceAccessor(m) or
+    result = getACompatibleInterfaceIndexer(m) or
+    result = getACompatibleRelevantInterfaceMember(m)
+  ) and
+  declType = m.getDeclaringType()
 }
 
 /**
@@ -182,13 +183,16 @@ ValueOrRefType getAPossibleImplementor(Interface i) {
   not result instanceof Interface
 }
 
+pragma[nomagic]
+private Type getParameterType(Parameterizable p, int i) { result = p.getParameter(i).getType() }
+
 private Indexer getACompatibleInterfaceIndexer0(Indexer i, int j) {
   result = getACompatibleInterfaceIndexerCandidate(i) and
   convIdentity(i.getType(), result.getType()) and
   j = -1
   or
   result = getACompatibleInterfaceIndexer0(i, j - 1) and
-  convIdentity(i.getParameter(j).getType(), result.getParameter(j).getType())
+  convIdentity(getParameterType(i, j), getParameterType(result, j))
 }
 
 /**

@@ -1,113 +1,175 @@
 edges
-| StringLengthConflation2.swift:35:36:35:38 | .count :  | StringLengthConflation2.swift:35:36:35:46 | ... .-(_:_:) ... |
-| StringLengthConflation2.swift:37:34:37:36 | .count :  | StringLengthConflation2.swift:37:34:37:44 | ... .-(_:_:) ... |
-| StringLengthConflation.swift:36:30:36:37 | len :  | StringLengthConflation.swift:36:93:36:93 | len |
-| StringLengthConflation.swift:60:47:60:50 | .length :  | StringLengthConflation.swift:60:47:60:59 | ... ./(_:_:) ... |
-| StringLengthConflation.swift:66:33:66:36 | .length :  | StringLengthConflation.swift:66:33:66:45 | ... ./(_:_:) ... |
-| StringLengthConflation.swift:72:33:72:35 | .count :  | StringLengthConflation.swift:36:30:36:37 | len :  |
-| StringLengthConflation.swift:96:28:96:31 | .length :  | StringLengthConflation.swift:96:28:96:40 | ... .-(_:_:) ... |
-| StringLengthConflation.swift:100:27:100:30 | .length :  | StringLengthConflation.swift:100:27:100:39 | ... .-(_:_:) ... |
-| StringLengthConflation.swift:104:25:104:28 | .length :  | StringLengthConflation.swift:104:25:104:37 | ... .-(_:_:) ... |
-| StringLengthConflation.swift:108:25:108:28 | .length :  | StringLengthConflation.swift:108:25:108:37 | ... .-(_:_:) ... |
-| StringLengthConflation.swift:114:23:114:26 | .length :  | StringLengthConflation.swift:114:23:114:35 | ... .-(_:_:) ... |
-| StringLengthConflation.swift:120:22:120:25 | .length :  | StringLengthConflation.swift:120:22:120:34 | ... .-(_:_:) ... |
-| StringLengthConflation.swift:125:34:125:36 | .count :  | StringLengthConflation.swift:125:34:125:44 | ... .-(_:_:) ... |
-| StringLengthConflation.swift:126:36:126:38 | .count :  | StringLengthConflation.swift:126:36:126:46 | ... .-(_:_:) ... |
-| StringLengthConflation.swift:131:36:131:38 | .count :  | StringLengthConflation.swift:131:36:131:46 | ... .-(_:_:) ... |
-| StringLengthConflation.swift:132:38:132:40 | .count :  | StringLengthConflation.swift:132:38:132:48 | ... .-(_:_:) ... |
-| StringLengthConflation.swift:137:34:137:36 | .count :  | StringLengthConflation.swift:137:34:137:44 | ... .-(_:_:) ... |
-| StringLengthConflation.swift:138:36:138:38 | .count :  | StringLengthConflation.swift:138:36:138:46 | ... .-(_:_:) ... |
-| StringLengthConflation.swift:144:28:144:30 | .count :  | StringLengthConflation.swift:144:28:144:38 | ... .-(_:_:) ... |
-| file://:0:0:0:0 | .length :  | StringLengthConflation.swift:53:43:53:46 | .length |
-| file://:0:0:0:0 | .length :  | StringLengthConflation.swift:60:47:60:50 | .length :  |
-| file://:0:0:0:0 | .length :  | StringLengthConflation.swift:66:33:66:36 | .length :  |
-| file://:0:0:0:0 | .length :  | StringLengthConflation.swift:96:28:96:31 | .length :  |
-| file://:0:0:0:0 | .length :  | StringLengthConflation.swift:100:27:100:30 | .length :  |
-| file://:0:0:0:0 | .length :  | StringLengthConflation.swift:104:25:104:28 | .length :  |
-| file://:0:0:0:0 | .length :  | StringLengthConflation.swift:108:25:108:28 | .length :  |
-| file://:0:0:0:0 | .length :  | StringLengthConflation.swift:114:23:114:26 | .length :  |
-| file://:0:0:0:0 | .length :  | StringLengthConflation.swift:120:22:120:25 | .length :  |
+| StringLengthConflation2.swift:35:36:35:38 | .count | StringLengthConflation2.swift:35:36:35:46 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation2.swift:37:34:37:36 | .count | StringLengthConflation2.swift:37:34:37:44 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:60:47:60:50 | .length | StringLengthConflation.swift:60:47:60:59 | ... ./(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:66:33:66:36 | .length | StringLengthConflation.swift:66:33:66:45 | ... ./(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:96:28:96:31 | .length | StringLengthConflation.swift:96:28:96:40 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:100:27:100:30 | .length | StringLengthConflation.swift:100:27:100:39 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:104:25:104:28 | .length | StringLengthConflation.swift:104:25:104:37 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:108:25:108:28 | .length | StringLengthConflation.swift:108:25:108:37 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:114:23:114:26 | .length | StringLengthConflation.swift:114:23:114:35 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:120:22:120:25 | .length | StringLengthConflation.swift:120:22:120:34 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:125:34:125:36 | .count | StringLengthConflation.swift:125:34:125:44 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:126:36:126:38 | .count | StringLengthConflation.swift:126:36:126:46 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:131:36:131:38 | .count | StringLengthConflation.swift:131:36:131:46 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:132:38:132:40 | .count | StringLengthConflation.swift:132:38:132:48 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:137:34:137:36 | .count | StringLengthConflation.swift:137:34:137:44 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:138:36:138:38 | .count | StringLengthConflation.swift:138:36:138:46 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:144:28:144:30 | .count | StringLengthConflation.swift:144:28:144:38 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:168:29:168:36 | .count | StringLengthConflation.swift:168:29:168:44 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:169:29:169:37 | .count | StringLengthConflation.swift:169:29:169:45 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:170:29:170:46 | .count | StringLengthConflation.swift:170:29:170:54 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:171:29:171:32 | .length | StringLengthConflation.swift:171:29:171:41 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:172:29:172:33 | .length | StringLengthConflation.swift:172:29:172:42 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:173:35:173:37 | .count | StringLengthConflation.swift:173:35:173:45 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:174:35:174:42 | .count | StringLengthConflation.swift:174:35:174:50 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:175:35:175:43 | .count | StringLengthConflation.swift:175:35:175:51 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:177:35:177:38 | .length | StringLengthConflation.swift:177:35:177:47 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:178:35:178:39 | .length | StringLengthConflation.swift:178:35:178:48 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:179:37:179:39 | .count | StringLengthConflation.swift:179:37:179:47 | ... .-(_:_:) ... | provenance |  |
+| StringLengthConflation.swift:181:37:181:39 | .count | StringLengthConflation.swift:181:37:181:47 | ... .-(_:_:) ... | provenance |  |
+| file://:0:0:0:0 | .length | StringLengthConflation.swift:53:43:53:46 | .length | provenance |  |
+| file://:0:0:0:0 | .length | StringLengthConflation.swift:60:47:60:50 | .length | provenance |  |
+| file://:0:0:0:0 | .length | StringLengthConflation.swift:66:33:66:36 | .length | provenance |  |
+| file://:0:0:0:0 | .length | StringLengthConflation.swift:96:28:96:31 | .length | provenance |  |
+| file://:0:0:0:0 | .length | StringLengthConflation.swift:100:27:100:30 | .length | provenance |  |
+| file://:0:0:0:0 | .length | StringLengthConflation.swift:104:25:104:28 | .length | provenance |  |
+| file://:0:0:0:0 | .length | StringLengthConflation.swift:108:25:108:28 | .length | provenance |  |
+| file://:0:0:0:0 | .length | StringLengthConflation.swift:114:23:114:26 | .length | provenance |  |
+| file://:0:0:0:0 | .length | StringLengthConflation.swift:120:22:120:25 | .length | provenance |  |
+| file://:0:0:0:0 | .length | StringLengthConflation.swift:171:29:171:32 | .length | provenance |  |
+| file://:0:0:0:0 | .length | StringLengthConflation.swift:172:29:172:33 | .length | provenance |  |
+| file://:0:0:0:0 | .length | StringLengthConflation.swift:177:35:177:38 | .length | provenance |  |
+| file://:0:0:0:0 | .length | StringLengthConflation.swift:178:35:178:39 | .length | provenance |  |
 nodes
-| StringLengthConflation2.swift:35:36:35:38 | .count :  | semmle.label | .count :  |
+| StringLengthConflation2.swift:35:36:35:38 | .count | semmle.label | .count |
 | StringLengthConflation2.swift:35:36:35:46 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
-| StringLengthConflation2.swift:37:34:37:36 | .count :  | semmle.label | .count :  |
+| StringLengthConflation2.swift:37:34:37:36 | .count | semmle.label | .count |
 | StringLengthConflation2.swift:37:34:37:44 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
-| StringLengthConflation.swift:36:30:36:37 | len :  | semmle.label | len :  |
-| StringLengthConflation.swift:36:93:36:93 | len | semmle.label | len |
 | StringLengthConflation.swift:53:43:53:46 | .length | semmle.label | .length |
 | StringLengthConflation.swift:54:43:54:50 | .count | semmle.label | .count |
 | StringLengthConflation.swift:55:43:55:51 | .count | semmle.label | .count |
 | StringLengthConflation.swift:56:43:56:60 | .count | semmle.label | .count |
-| StringLengthConflation.swift:60:47:60:50 | .length :  | semmle.label | .length :  |
+| StringLengthConflation.swift:60:47:60:50 | .length | semmle.label | .length |
 | StringLengthConflation.swift:60:47:60:59 | ... ./(_:_:) ... | semmle.label | ... ./(_:_:) ... |
-| StringLengthConflation.swift:66:33:66:36 | .length :  | semmle.label | .length :  |
+| StringLengthConflation.swift:66:33:66:36 | .length | semmle.label | .length |
 | StringLengthConflation.swift:66:33:66:45 | ... ./(_:_:) ... | semmle.label | ... ./(_:_:) ... |
 | StringLengthConflation.swift:72:33:72:35 | .count | semmle.label | .count |
-| StringLengthConflation.swift:72:33:72:35 | .count :  | semmle.label | .count :  |
 | StringLengthConflation.swift:78:47:78:49 | .count | semmle.label | .count |
 | StringLengthConflation.swift:79:47:79:54 | .count | semmle.label | .count |
 | StringLengthConflation.swift:81:47:81:64 | .count | semmle.label | .count |
-| StringLengthConflation.swift:96:28:96:31 | .length :  | semmle.label | .length :  |
+| StringLengthConflation.swift:96:28:96:31 | .length | semmle.label | .length |
 | StringLengthConflation.swift:96:28:96:40 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
-| StringLengthConflation.swift:100:27:100:30 | .length :  | semmle.label | .length :  |
+| StringLengthConflation.swift:100:27:100:30 | .length | semmle.label | .length |
 | StringLengthConflation.swift:100:27:100:39 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
-| StringLengthConflation.swift:104:25:104:28 | .length :  | semmle.label | .length :  |
+| StringLengthConflation.swift:104:25:104:28 | .length | semmle.label | .length |
 | StringLengthConflation.swift:104:25:104:37 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
-| StringLengthConflation.swift:108:25:108:28 | .length :  | semmle.label | .length :  |
+| StringLengthConflation.swift:108:25:108:28 | .length | semmle.label | .length |
 | StringLengthConflation.swift:108:25:108:37 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
-| StringLengthConflation.swift:114:23:114:26 | .length :  | semmle.label | .length :  |
+| StringLengthConflation.swift:114:23:114:26 | .length | semmle.label | .length |
 | StringLengthConflation.swift:114:23:114:35 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
-| StringLengthConflation.swift:120:22:120:25 | .length :  | semmle.label | .length :  |
+| StringLengthConflation.swift:120:22:120:25 | .length | semmle.label | .length |
 | StringLengthConflation.swift:120:22:120:34 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
-| StringLengthConflation.swift:125:34:125:36 | .count :  | semmle.label | .count :  |
+| StringLengthConflation.swift:125:34:125:36 | .count | semmle.label | .count |
 | StringLengthConflation.swift:125:34:125:44 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
-| StringLengthConflation.swift:126:36:126:38 | .count :  | semmle.label | .count :  |
+| StringLengthConflation.swift:126:36:126:38 | .count | semmle.label | .count |
 | StringLengthConflation.swift:126:36:126:46 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
-| StringLengthConflation.swift:131:36:131:38 | .count :  | semmle.label | .count :  |
+| StringLengthConflation.swift:131:36:131:38 | .count | semmle.label | .count |
 | StringLengthConflation.swift:131:36:131:46 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
-| StringLengthConflation.swift:132:38:132:40 | .count :  | semmle.label | .count :  |
+| StringLengthConflation.swift:132:38:132:40 | .count | semmle.label | .count |
 | StringLengthConflation.swift:132:38:132:48 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
-| StringLengthConflation.swift:137:34:137:36 | .count :  | semmle.label | .count :  |
+| StringLengthConflation.swift:137:34:137:36 | .count | semmle.label | .count |
 | StringLengthConflation.swift:137:34:137:44 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
-| StringLengthConflation.swift:138:36:138:38 | .count :  | semmle.label | .count :  |
+| StringLengthConflation.swift:138:36:138:38 | .count | semmle.label | .count |
 | StringLengthConflation.swift:138:36:138:46 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
-| StringLengthConflation.swift:144:28:144:30 | .count :  | semmle.label | .count :  |
+| StringLengthConflation.swift:144:28:144:30 | .count | semmle.label | .count |
 | StringLengthConflation.swift:144:28:144:38 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
-| file://:0:0:0:0 | .length :  | semmle.label | .length :  |
+| StringLengthConflation.swift:151:45:151:53 | .count | semmle.label | .count |
+| StringLengthConflation.swift:156:45:156:52 | .count | semmle.label | .count |
+| StringLengthConflation.swift:161:45:161:53 | .count | semmle.label | .count |
+| StringLengthConflation.swift:168:29:168:36 | .count | semmle.label | .count |
+| StringLengthConflation.swift:168:29:168:44 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
+| StringLengthConflation.swift:169:29:169:37 | .count | semmle.label | .count |
+| StringLengthConflation.swift:169:29:169:45 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
+| StringLengthConflation.swift:170:29:170:46 | .count | semmle.label | .count |
+| StringLengthConflation.swift:170:29:170:54 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
+| StringLengthConflation.swift:171:29:171:32 | .length | semmle.label | .length |
+| StringLengthConflation.swift:171:29:171:41 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
+| StringLengthConflation.swift:172:29:172:33 | .length | semmle.label | .length |
+| StringLengthConflation.swift:172:29:172:42 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
+| StringLengthConflation.swift:173:35:173:37 | .count | semmle.label | .count |
+| StringLengthConflation.swift:173:35:173:45 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
+| StringLengthConflation.swift:174:35:174:42 | .count | semmle.label | .count |
+| StringLengthConflation.swift:174:35:174:50 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
+| StringLengthConflation.swift:175:35:175:43 | .count | semmle.label | .count |
+| StringLengthConflation.swift:175:35:175:51 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
+| StringLengthConflation.swift:177:35:177:38 | .length | semmle.label | .length |
+| StringLengthConflation.swift:177:35:177:47 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
+| StringLengthConflation.swift:178:35:178:39 | .length | semmle.label | .length |
+| StringLengthConflation.swift:178:35:178:48 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
+| StringLengthConflation.swift:179:37:179:39 | .count | semmle.label | .count |
+| StringLengthConflation.swift:179:37:179:47 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
+| StringLengthConflation.swift:181:37:181:39 | .count | semmle.label | .count |
+| StringLengthConflation.swift:181:37:181:47 | ... .-(_:_:) ... | semmle.label | ... .-(_:_:) ... |
+| StringLengthConflation.swift:190:28:190:28 | .count | semmle.label | .count |
+| StringLengthConflation.swift:191:28:191:33 | .count | semmle.label | .count |
+| StringLengthConflation.swift:193:28:193:43 | .count | semmle.label | .count |
+| file://:0:0:0:0 | .length | semmle.label | .length |
 subpaths
 #select
-| StringLengthConflation2.swift:35:36:35:46 | ... .-(_:_:) ... | StringLengthConflation2.swift:35:36:35:38 | .count :  | StringLengthConflation2.swift:35:36:35:46 | ... .-(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
-| StringLengthConflation2.swift:37:34:37:44 | ... .-(_:_:) ... | StringLengthConflation2.swift:37:34:37:36 | .count :  | StringLengthConflation2.swift:37:34:37:44 | ... .-(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
-| StringLengthConflation.swift:36:93:36:93 | len | StringLengthConflation.swift:72:33:72:35 | .count :  | StringLengthConflation.swift:36:93:36:93 | len | This String length is used in an NSString, but it may not be equivalent. |
+| StringLengthConflation2.swift:35:36:35:46 | ... .-(_:_:) ... | StringLengthConflation2.swift:35:36:35:38 | .count | StringLengthConflation2.swift:35:36:35:46 | ... .-(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
+| StringLengthConflation2.swift:37:34:37:44 | ... .-(_:_:) ... | StringLengthConflation2.swift:37:34:37:36 | .count | StringLengthConflation2.swift:37:34:37:44 | ... .-(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
 | StringLengthConflation.swift:53:43:53:46 | .length | StringLengthConflation.swift:53:43:53:46 | .length | StringLengthConflation.swift:53:43:53:46 | .length | This NSString length is used in a String, but it may not be equivalent. |
-| StringLengthConflation.swift:53:43:53:46 | .length | file://:0:0:0:0 | .length :  | StringLengthConflation.swift:53:43:53:46 | .length | This NSString length is used in a String, but it may not be equivalent. |
-| StringLengthConflation.swift:54:43:54:50 | .count | StringLengthConflation.swift:54:43:54:50 | .count | StringLengthConflation.swift:54:43:54:50 | .count | This String.utf8 length is used in a String, but it may not be equivalent. |
-| StringLengthConflation.swift:55:43:55:51 | .count | StringLengthConflation.swift:55:43:55:51 | .count | StringLengthConflation.swift:55:43:55:51 | .count | This String.utf16 length is used in a String, but it may not be equivalent. |
-| StringLengthConflation.swift:56:43:56:60 | .count | StringLengthConflation.swift:56:43:56:60 | .count | StringLengthConflation.swift:56:43:56:60 | .count | This String.unicodeScalars length is used in a String, but it may not be equivalent. |
-| StringLengthConflation.swift:60:47:60:59 | ... ./(_:_:) ... | StringLengthConflation.swift:60:47:60:50 | .length :  | StringLengthConflation.swift:60:47:60:59 | ... ./(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
-| StringLengthConflation.swift:60:47:60:59 | ... ./(_:_:) ... | file://:0:0:0:0 | .length :  | StringLengthConflation.swift:60:47:60:59 | ... ./(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
-| StringLengthConflation.swift:66:33:66:45 | ... ./(_:_:) ... | StringLengthConflation.swift:66:33:66:36 | .length :  | StringLengthConflation.swift:66:33:66:45 | ... ./(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
-| StringLengthConflation.swift:66:33:66:45 | ... ./(_:_:) ... | file://:0:0:0:0 | .length :  | StringLengthConflation.swift:66:33:66:45 | ... ./(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:53:43:53:46 | .length | file://:0:0:0:0 | .length | StringLengthConflation.swift:53:43:53:46 | .length | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:54:43:54:50 | .count | StringLengthConflation.swift:54:43:54:50 | .count | StringLengthConflation.swift:54:43:54:50 | .count | This String.UTF8View length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:55:43:55:51 | .count | StringLengthConflation.swift:55:43:55:51 | .count | StringLengthConflation.swift:55:43:55:51 | .count | This String.UTF16View length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:56:43:56:60 | .count | StringLengthConflation.swift:56:43:56:60 | .count | StringLengthConflation.swift:56:43:56:60 | .count | This String.UnicodeScalarView length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:60:47:60:59 | ... ./(_:_:) ... | StringLengthConflation.swift:60:47:60:50 | .length | StringLengthConflation.swift:60:47:60:59 | ... ./(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:60:47:60:59 | ... ./(_:_:) ... | file://:0:0:0:0 | .length | StringLengthConflation.swift:60:47:60:59 | ... ./(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:66:33:66:45 | ... ./(_:_:) ... | StringLengthConflation.swift:66:33:66:36 | .length | StringLengthConflation.swift:66:33:66:45 | ... ./(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:66:33:66:45 | ... ./(_:_:) ... | file://:0:0:0:0 | .length | StringLengthConflation.swift:66:33:66:45 | ... ./(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
 | StringLengthConflation.swift:72:33:72:35 | .count | StringLengthConflation.swift:72:33:72:35 | .count | StringLengthConflation.swift:72:33:72:35 | .count | This String length is used in an NSString, but it may not be equivalent. |
 | StringLengthConflation.swift:78:47:78:49 | .count | StringLengthConflation.swift:78:47:78:49 | .count | StringLengthConflation.swift:78:47:78:49 | .count | This String length is used in an NSString, but it may not be equivalent. |
-| StringLengthConflation.swift:79:47:79:54 | .count | StringLengthConflation.swift:79:47:79:54 | .count | StringLengthConflation.swift:79:47:79:54 | .count | This String.utf8 length is used in an NSString, but it may not be equivalent. |
-| StringLengthConflation.swift:81:47:81:64 | .count | StringLengthConflation.swift:81:47:81:64 | .count | StringLengthConflation.swift:81:47:81:64 | .count | This String.unicodeScalars length is used in an NSString, but it may not be equivalent. |
-| StringLengthConflation.swift:96:28:96:40 | ... .-(_:_:) ... | StringLengthConflation.swift:96:28:96:31 | .length :  | StringLengthConflation.swift:96:28:96:40 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
-| StringLengthConflation.swift:96:28:96:40 | ... .-(_:_:) ... | file://:0:0:0:0 | .length :  | StringLengthConflation.swift:96:28:96:40 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
-| StringLengthConflation.swift:100:27:100:39 | ... .-(_:_:) ... | StringLengthConflation.swift:100:27:100:30 | .length :  | StringLengthConflation.swift:100:27:100:39 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
-| StringLengthConflation.swift:100:27:100:39 | ... .-(_:_:) ... | file://:0:0:0:0 | .length :  | StringLengthConflation.swift:100:27:100:39 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
-| StringLengthConflation.swift:104:25:104:37 | ... .-(_:_:) ... | StringLengthConflation.swift:104:25:104:28 | .length :  | StringLengthConflation.swift:104:25:104:37 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
-| StringLengthConflation.swift:104:25:104:37 | ... .-(_:_:) ... | file://:0:0:0:0 | .length :  | StringLengthConflation.swift:104:25:104:37 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
-| StringLengthConflation.swift:108:25:108:37 | ... .-(_:_:) ... | StringLengthConflation.swift:108:25:108:28 | .length :  | StringLengthConflation.swift:108:25:108:37 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
-| StringLengthConflation.swift:108:25:108:37 | ... .-(_:_:) ... | file://:0:0:0:0 | .length :  | StringLengthConflation.swift:108:25:108:37 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
-| StringLengthConflation.swift:114:23:114:35 | ... .-(_:_:) ... | StringLengthConflation.swift:114:23:114:26 | .length :  | StringLengthConflation.swift:114:23:114:35 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
-| StringLengthConflation.swift:114:23:114:35 | ... .-(_:_:) ... | file://:0:0:0:0 | .length :  | StringLengthConflation.swift:114:23:114:35 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
-| StringLengthConflation.swift:120:22:120:34 | ... .-(_:_:) ... | StringLengthConflation.swift:120:22:120:25 | .length :  | StringLengthConflation.swift:120:22:120:34 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
-| StringLengthConflation.swift:120:22:120:34 | ... .-(_:_:) ... | file://:0:0:0:0 | .length :  | StringLengthConflation.swift:120:22:120:34 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
-| StringLengthConflation.swift:125:34:125:44 | ... .-(_:_:) ... | StringLengthConflation.swift:125:34:125:36 | .count :  | StringLengthConflation.swift:125:34:125:44 | ... .-(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
-| StringLengthConflation.swift:126:36:126:46 | ... .-(_:_:) ... | StringLengthConflation.swift:126:36:126:38 | .count :  | StringLengthConflation.swift:126:36:126:46 | ... .-(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
-| StringLengthConflation.swift:131:36:131:46 | ... .-(_:_:) ... | StringLengthConflation.swift:131:36:131:38 | .count :  | StringLengthConflation.swift:131:36:131:46 | ... .-(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
-| StringLengthConflation.swift:132:38:132:48 | ... .-(_:_:) ... | StringLengthConflation.swift:132:38:132:40 | .count :  | StringLengthConflation.swift:132:38:132:48 | ... .-(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
-| StringLengthConflation.swift:137:34:137:44 | ... .-(_:_:) ... | StringLengthConflation.swift:137:34:137:36 | .count :  | StringLengthConflation.swift:137:34:137:44 | ... .-(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
-| StringLengthConflation.swift:138:36:138:46 | ... .-(_:_:) ... | StringLengthConflation.swift:138:36:138:38 | .count :  | StringLengthConflation.swift:138:36:138:46 | ... .-(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
-| StringLengthConflation.swift:144:28:144:38 | ... .-(_:_:) ... | StringLengthConflation.swift:144:28:144:30 | .count :  | StringLengthConflation.swift:144:28:144:38 | ... .-(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
+| StringLengthConflation.swift:79:47:79:54 | .count | StringLengthConflation.swift:79:47:79:54 | .count | StringLengthConflation.swift:79:47:79:54 | .count | This String.UTF8View length is used in an NSString, but it may not be equivalent. |
+| StringLengthConflation.swift:81:47:81:64 | .count | StringLengthConflation.swift:81:47:81:64 | .count | StringLengthConflation.swift:81:47:81:64 | .count | This String.UnicodeScalarView length is used in an NSString, but it may not be equivalent. |
+| StringLengthConflation.swift:96:28:96:40 | ... .-(_:_:) ... | StringLengthConflation.swift:96:28:96:31 | .length | StringLengthConflation.swift:96:28:96:40 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:96:28:96:40 | ... .-(_:_:) ... | file://:0:0:0:0 | .length | StringLengthConflation.swift:96:28:96:40 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:100:27:100:39 | ... .-(_:_:) ... | StringLengthConflation.swift:100:27:100:30 | .length | StringLengthConflation.swift:100:27:100:39 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:100:27:100:39 | ... .-(_:_:) ... | file://:0:0:0:0 | .length | StringLengthConflation.swift:100:27:100:39 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:104:25:104:37 | ... .-(_:_:) ... | StringLengthConflation.swift:104:25:104:28 | .length | StringLengthConflation.swift:104:25:104:37 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:104:25:104:37 | ... .-(_:_:) ... | file://:0:0:0:0 | .length | StringLengthConflation.swift:104:25:104:37 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:108:25:108:37 | ... .-(_:_:) ... | StringLengthConflation.swift:108:25:108:28 | .length | StringLengthConflation.swift:108:25:108:37 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:108:25:108:37 | ... .-(_:_:) ... | file://:0:0:0:0 | .length | StringLengthConflation.swift:108:25:108:37 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:114:23:114:35 | ... .-(_:_:) ... | StringLengthConflation.swift:114:23:114:26 | .length | StringLengthConflation.swift:114:23:114:35 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:114:23:114:35 | ... .-(_:_:) ... | file://:0:0:0:0 | .length | StringLengthConflation.swift:114:23:114:35 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:120:22:120:34 | ... .-(_:_:) ... | StringLengthConflation.swift:120:22:120:25 | .length | StringLengthConflation.swift:120:22:120:34 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:120:22:120:34 | ... .-(_:_:) ... | file://:0:0:0:0 | .length | StringLengthConflation.swift:120:22:120:34 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:125:34:125:44 | ... .-(_:_:) ... | StringLengthConflation.swift:125:34:125:36 | .count | StringLengthConflation.swift:125:34:125:44 | ... .-(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
+| StringLengthConflation.swift:126:36:126:46 | ... .-(_:_:) ... | StringLengthConflation.swift:126:36:126:38 | .count | StringLengthConflation.swift:126:36:126:46 | ... .-(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
+| StringLengthConflation.swift:131:36:131:46 | ... .-(_:_:) ... | StringLengthConflation.swift:131:36:131:38 | .count | StringLengthConflation.swift:131:36:131:46 | ... .-(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
+| StringLengthConflation.swift:132:38:132:48 | ... .-(_:_:) ... | StringLengthConflation.swift:132:38:132:40 | .count | StringLengthConflation.swift:132:38:132:48 | ... .-(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
+| StringLengthConflation.swift:137:34:137:44 | ... .-(_:_:) ... | StringLengthConflation.swift:137:34:137:36 | .count | StringLengthConflation.swift:137:34:137:44 | ... .-(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
+| StringLengthConflation.swift:138:36:138:46 | ... .-(_:_:) ... | StringLengthConflation.swift:138:36:138:38 | .count | StringLengthConflation.swift:138:36:138:46 | ... .-(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
+| StringLengthConflation.swift:144:28:144:38 | ... .-(_:_:) ... | StringLengthConflation.swift:144:28:144:30 | .count | StringLengthConflation.swift:144:28:144:38 | ... .-(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |
+| StringLengthConflation.swift:151:45:151:53 | .count | StringLengthConflation.swift:151:45:151:53 | .count | StringLengthConflation.swift:151:45:151:53 | .count | This String.UnicodeScalarView length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:156:45:156:52 | .count | StringLengthConflation.swift:156:45:156:52 | .count | StringLengthConflation.swift:156:45:156:52 | .count | This String.UTF8View length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:161:45:161:53 | .count | StringLengthConflation.swift:161:45:161:53 | .count | StringLengthConflation.swift:161:45:161:53 | .count | This String.UTF16View length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:168:29:168:44 | ... .-(_:_:) ... | StringLengthConflation.swift:168:29:168:36 | .count | StringLengthConflation.swift:168:29:168:44 | ... .-(_:_:) ... | This String.UTF8View length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:169:29:169:45 | ... .-(_:_:) ... | StringLengthConflation.swift:169:29:169:37 | .count | StringLengthConflation.swift:169:29:169:45 | ... .-(_:_:) ... | This String.UTF16View length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:170:29:170:54 | ... .-(_:_:) ... | StringLengthConflation.swift:170:29:170:46 | .count | StringLengthConflation.swift:170:29:170:54 | ... .-(_:_:) ... | This String.UnicodeScalarView length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:171:29:171:41 | ... .-(_:_:) ... | StringLengthConflation.swift:171:29:171:32 | .length | StringLengthConflation.swift:171:29:171:41 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:171:29:171:41 | ... .-(_:_:) ... | file://:0:0:0:0 | .length | StringLengthConflation.swift:171:29:171:41 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:172:29:172:42 | ... .-(_:_:) ... | StringLengthConflation.swift:172:29:172:33 | .length | StringLengthConflation.swift:172:29:172:42 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:172:29:172:42 | ... .-(_:_:) ... | file://:0:0:0:0 | .length | StringLengthConflation.swift:172:29:172:42 | ... .-(_:_:) ... | This NSString length is used in a String, but it may not be equivalent. |
+| StringLengthConflation.swift:173:35:173:45 | ... .-(_:_:) ... | StringLengthConflation.swift:173:35:173:37 | .count | StringLengthConflation.swift:173:35:173:45 | ... .-(_:_:) ... | This String length is used in a String.UnicodeScalarView, but it may not be equivalent. |
+| StringLengthConflation.swift:174:35:174:50 | ... .-(_:_:) ... | StringLengthConflation.swift:174:35:174:42 | .count | StringLengthConflation.swift:174:35:174:50 | ... .-(_:_:) ... | This String.UTF8View length is used in a String.UnicodeScalarView, but it may not be equivalent. |
+| StringLengthConflation.swift:175:35:175:51 | ... .-(_:_:) ... | StringLengthConflation.swift:175:35:175:43 | .count | StringLengthConflation.swift:175:35:175:51 | ... .-(_:_:) ... | This String.UTF16View length is used in a String.UnicodeScalarView, but it may not be equivalent. |
+| StringLengthConflation.swift:177:35:177:47 | ... .-(_:_:) ... | StringLengthConflation.swift:177:35:177:38 | .length | StringLengthConflation.swift:177:35:177:47 | ... .-(_:_:) ... | This NSString length is used in a String.UnicodeScalarView, but it may not be equivalent. |
+| StringLengthConflation.swift:177:35:177:47 | ... .-(_:_:) ... | file://:0:0:0:0 | .length | StringLengthConflation.swift:177:35:177:47 | ... .-(_:_:) ... | This NSString length is used in a String.UnicodeScalarView, but it may not be equivalent. |
+| StringLengthConflation.swift:178:35:178:48 | ... .-(_:_:) ... | StringLengthConflation.swift:178:35:178:39 | .length | StringLengthConflation.swift:178:35:178:48 | ... .-(_:_:) ... | This NSString length is used in a String.UnicodeScalarView, but it may not be equivalent. |
+| StringLengthConflation.swift:178:35:178:48 | ... .-(_:_:) ... | file://:0:0:0:0 | .length | StringLengthConflation.swift:178:35:178:48 | ... .-(_:_:) ... | This NSString length is used in a String.UnicodeScalarView, but it may not be equivalent. |
+| StringLengthConflation.swift:179:37:179:47 | ... .-(_:_:) ... | StringLengthConflation.swift:179:37:179:39 | .count | StringLengthConflation.swift:179:37:179:47 | ... .-(_:_:) ... | This String length is used in a String.UTF8View, but it may not be equivalent. |
+| StringLengthConflation.swift:181:37:181:47 | ... .-(_:_:) ... | StringLengthConflation.swift:181:37:181:39 | .count | StringLengthConflation.swift:181:37:181:47 | ... .-(_:_:) ... | This String length is used in a String.UTF16View, but it may not be equivalent. |
+| StringLengthConflation.swift:190:28:190:28 | .count | StringLengthConflation.swift:190:28:190:28 | .count | StringLengthConflation.swift:190:28:190:28 | .count | This String length is used in an NSString, but it may not be equivalent. |
+| StringLengthConflation.swift:191:28:191:33 | .count | StringLengthConflation.swift:191:28:191:33 | .count | StringLengthConflation.swift:191:28:191:33 | .count | This String.UTF8View length is used in an NSString, but it may not be equivalent. |
+| StringLengthConflation.swift:193:28:193:43 | .count | StringLengthConflation.swift:193:28:193:43 | .count | StringLengthConflation.swift:193:28:193:43 | .count | This String.UnicodeScalarView length is used in an NSString, but it may not be equivalent. |

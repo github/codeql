@@ -116,6 +116,18 @@ func test9(x interface{}) {
 	case float32:
 		test5(true)
 		test5(false)
+	default:
+		_ = y
+	}
+
+	switch y := x; y.(type) {
+	case error, string:
+		fmt.Println(y)
+	case float32:
+		test5(true)
+		test5(false)
+	default:
+		_ = y
 	}
 
 	switch y := x; y.(type) {

@@ -26,7 +26,7 @@ private predicate cannotBeExtended(RefType t) {
   not exists(RefType sub | sub != t | sub.getAnAncestor() = t)
 }
 
-from MethodAccess m, Constructor c, Class clazz
+from MethodCall m, Constructor c, Class clazz
 where
   m.getMethod().getDeclaringType().hasQualifiedName("java.lang", "Thread") and
   m.getMethod().getName() = "start" and

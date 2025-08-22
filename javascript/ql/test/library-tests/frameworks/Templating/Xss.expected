@@ -50,6 +50,9 @@ nodes
 | app.js:66:18:66:34 | req.query.rawHtml |
 | app.js:66:18:66:34 | req.query.rawHtml |
 | app.js:66:18:66:34 | req.query.rawHtml |
+| app.js:73:18:73:30 | req.query.foo |
+| app.js:73:18:73:30 | req.query.foo |
+| app.js:73:18:73:30 | req.query.foo |
 | projectA/src/index.js:6:38:6:53 | req.query.taintA |
 | projectA/src/index.js:6:38:6:53 | req.query.taintA |
 | projectA/src/index.js:6:38:6:53 | req.query.taintA |
@@ -144,6 +147,11 @@ nodes
 | views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
 | views/angularjs_sinks.ejs:4:13:4:19 | rawHtml |
 | views/angularjs_sinks.ejs:4:13:4:19 | rawHtml |
+| views/dot_sinks.html.dot:3:9:3:22 | {{! tainted }} |
+| views/dot_sinks.html.dot:3:9:3:22 | {{! tainted }} |
+| views/dot_sinks.html.dot:3:9:3:22 | {{! tainted }} |
+| views/dot_sinks.html.dot:3:13:3:19 | tainted |
+| views/dot_sinks.html.dot:3:13:3:19 | tainted |
 | views/ejs_include1.ejs:1:1:1:10 | <%- foo %> |
 | views/ejs_include1.ejs:1:1:1:10 | <%- foo %> |
 | views/ejs_include1.ejs:1:1:1:10 | <%- foo %> |
@@ -367,6 +375,10 @@ edges
 | app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_sinks.ejs:4:13:4:19 | rawHtml |
 | app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_sinks.ejs:4:13:4:19 | rawHtml |
 | app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_sinks.ejs:4:13:4:19 | rawHtml |
+| app.js:73:18:73:30 | req.query.foo | views/dot_sinks.html.dot:3:13:3:19 | tainted |
+| app.js:73:18:73:30 | req.query.foo | views/dot_sinks.html.dot:3:13:3:19 | tainted |
+| app.js:73:18:73:30 | req.query.foo | views/dot_sinks.html.dot:3:13:3:19 | tainted |
+| app.js:73:18:73:30 | req.query.foo | views/dot_sinks.html.dot:3:13:3:19 | tainted |
 | projectA/src/index.js:6:38:6:53 | req.query.taintA | projectA/views/main.ejs:5:5:5:23 | taintedInMiddleware |
 | projectA/src/index.js:6:38:6:53 | req.query.taintA | projectA/views/main.ejs:5:5:5:23 | taintedInMiddleware |
 | projectA/src/index.js:6:38:6:53 | req.query.taintA | projectA/views/main.ejs:5:5:5:23 | taintedInMiddleware |
@@ -463,6 +475,10 @@ edges
 | views/angularjs_sinks.ejs:4:13:4:19 | rawHtml | views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
 | views/angularjs_sinks.ejs:4:13:4:19 | rawHtml | views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
 | views/angularjs_sinks.ejs:4:13:4:19 | rawHtml | views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/dot_sinks.html.dot:3:13:3:19 | tainted | views/dot_sinks.html.dot:3:9:3:22 | {{! tainted }} |
+| views/dot_sinks.html.dot:3:13:3:19 | tainted | views/dot_sinks.html.dot:3:9:3:22 | {{! tainted }} |
+| views/dot_sinks.html.dot:3:13:3:19 | tainted | views/dot_sinks.html.dot:3:9:3:22 | {{! tainted }} |
+| views/dot_sinks.html.dot:3:13:3:19 | tainted | views/dot_sinks.html.dot:3:9:3:22 | {{! tainted }} |
 | views/ejs_include1.ejs:1:5:1:7 | foo | views/ejs_include1.ejs:1:1:1:10 | <%- foo %> |
 | views/ejs_include1.ejs:1:5:1:7 | foo | views/ejs_include1.ejs:1:1:1:10 | <%- foo %> |
 | views/ejs_include1.ejs:1:5:1:7 | foo | views/ejs_include1.ejs:1:1:1:10 | <%- foo %> |
@@ -553,6 +569,7 @@ edges
 | projectB/views/subfolder/other.ejs:3:1:3:12 | <%- sinkB %> | projectB/src/index.js:43:16:43:30 | req.query.sinkB | projectB/views/subfolder/other.ejs:3:1:3:12 | <%- sinkB %> | Cross-site scripting vulnerability due to $@. | projectB/src/index.js:43:16:43:30 | req.query.sinkB | user-provided value |
 | views/angularjs_include.ejs:3:5:3:18 | <%- rawHtml %> | app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_include.ejs:3:5:3:18 | <%- rawHtml %> | Cross-site scripting vulnerability due to $@. | app.js:66:18:66:34 | req.query.rawHtml | user-provided value |
 | views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> | app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> | Cross-site scripting vulnerability due to $@. | app.js:66:18:66:34 | req.query.rawHtml | user-provided value |
+| views/dot_sinks.html.dot:3:9:3:22 | {{! tainted }} | app.js:73:18:73:30 | req.query.foo | views/dot_sinks.html.dot:3:9:3:22 | {{! tainted }} | Cross-site scripting vulnerability due to $@. | app.js:73:18:73:30 | req.query.foo | user-provided value |
 | views/ejs_include1.ejs:1:1:1:10 | <%- foo %> | app.js:8:18:8:34 | req.query.rawHtml | views/ejs_include1.ejs:1:1:1:10 | <%- foo %> | Cross-site scripting vulnerability due to $@. | app.js:8:18:8:34 | req.query.rawHtml | user-provided value |
 | views/ejs_include2.ejs:1:1:1:14 | <%- rawHtml %> | app.js:8:18:8:34 | req.query.rawHtml | views/ejs_include2.ejs:1:1:1:14 | <%- rawHtml %> | Cross-site scripting vulnerability due to $@. | app.js:8:18:8:34 | req.query.rawHtml | user-provided value |
 | views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> | app.js:8:18:8:34 | req.query.rawHtml | views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> | Cross-site scripting vulnerability due to $@. | app.js:8:18:8:34 | req.query.rawHtml | user-provided value |

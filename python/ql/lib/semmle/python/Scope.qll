@@ -1,4 +1,16 @@
 import python
+private import semmle.python.dataflow.new.internal.ImportResolution
+
+/**
+ * Gets a name exported by module `m`, that is the names that will be added to a namespace by 'from this-module import *'.
+ *
+ * This aims to be the same as m.getAnExport(), but without using the points-to machinery.
+ */
+private string getAModuleExport(Module m) {
+  py_exports(m, result)
+  or
+  ImportResolution::module_export(m, result, _)
+}
 
 /**
  * A Scope. A scope is the lexical extent over which all identifiers with the same name refer to the same variable.
@@ -36,7 +48,7 @@ class Scope extends Scope_ {
   string getName() { py_strs(result, this, 0) }
 
   /** Gets the docstring for this scope */
-  StrConst getDocString() { result = this.getStmt(0).(ExprStmt).getValue() }
+  StringLiteral getDocString() { result = this.getStmt(0).(ExprStmt).getValue() }
 
   /** Gets the entry point into this Scope's control flow graph */
   ControlFlowNode getEntryNode() { py_scope_flow(result, this, -1) }
@@ -73,10 +85,11 @@ class Scope extends Scope_ {
       this instanceof Module
       or
       exists(Module m | m = this.getEnclosingScope() and m.isPublic() |
-        /* If the module has an __all__, is this in it */
-        not exists(m.getAnExport())
+        // The module is implicitly exported
+        not exists(getAModuleExport(m))
         or
-        m.getAnExport() = this.getName()
+        // The module is explicitly exported
+        getAModuleExport(m) = this.getName()
       )
       or
       exists(Class c | c = this.getEnclosingScope() |

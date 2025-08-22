@@ -127,29 +127,6 @@ private module Fiber {
   }
 
   /**
-   * Models HTTP redirects.
-   */
-  private class Redirect extends Http::Redirect::Range, DataFlow::CallNode {
-    string package;
-    DataFlow::Node urlNode;
-
-    Redirect() {
-      // HTTP redirect models for package: github.com/gofiber/fiber@v1.14.6
-      package = fiberPackagePath() and
-      // Receiver type: Ctx
-      (
-        // signature: func (*Ctx) Redirect(location string, status ...int)
-        this = any(Method m | m.hasQualifiedName(package, "Ctx", "Redirect")).getACall() and
-        urlNode = this.getArgument(0)
-      )
-    }
-
-    override DataFlow::Node getUrl() { result = urlNode }
-
-    override Http::ResponseWriter getResponseWriter() { result.getANode() = this.getReceiver() }
-  }
-
-  /**
    * Models HTTP header writers.
    * The write is done with a call where you can set both the key and the value of the header.
    */
@@ -187,7 +164,7 @@ private module Fiber {
           // signature: func (*Ctx) Append(field string, values ...string)
           methodName = "Append" and
           headerNameNode = headerSetterCall.getArgument(0) and
-          headerValueNode = headerSetterCall.getArgument(any(int i | i >= 1))
+          headerValueNode = headerSetterCall.getSyntacticArgument(any(int i | i >= 1))
           or
           // signature: func (*Ctx) Set(key string, val string)
           methodName = "Set" and
@@ -274,7 +251,7 @@ private module Fiber {
           or
           // signature: func (*Ctx) Send(bodies ...interface{})
           methodName = "Send" and
-          bodyNode = bodySetterCall.getArgument(_)
+          bodyNode = bodySetterCall.getASyntacticArgument()
           or
           // signature: func (*Ctx) SendBytes(body []byte)
           methodName = "SendBytes" and
@@ -290,17 +267,17 @@ private module Fiber {
           or
           // signature: func (*Ctx) Write(bodies ...interface{})
           methodName = "Write" and
-          bodyNode = bodySetterCall.getArgument(_)
+          bodyNode = bodySetterCall.getASyntacticArgument()
         )
       )
     )
   }
 
   /**
-   * Provides models of untrusted flow sources.
+   * Provides models of remote flow sources.
    */
-  private class UntrustedFlowSources extends UntrustedFlowSource::Range {
-    UntrustedFlowSources() {
+  private class RemoteFlowSources extends RemoteFlowSource::Range {
+    RemoteFlowSources() {
       // Methods on types of package: github.com/gofiber/fiber@v1.14.6
       exists(string receiverName, string methodName, Method mtd, FunctionOutput out |
         this = out.getExitNode(mtd.getACall()) and

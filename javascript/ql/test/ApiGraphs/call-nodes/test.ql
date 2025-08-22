@@ -3,9 +3,9 @@ import javascript
 class FooCall extends API::CallNode {
   FooCall() { this = API::moduleImport("mylibrary").getMember("foo").getACall() }
 
-  DataFlow::Node getFirst() { result = getParameter(0).getMember("value").asSink() }
+  DataFlow::Node getFirst() { result = this.getParameter(0).getMember("value").asSink() }
 
-  DataFlow::Node getSecond() { result = getParameter(1).getMember("value").asSink() }
+  DataFlow::Node getSecond() { result = this.getParameter(1).getMember("value").asSink() }
 }
 
 query predicate values(FooCall call, int first, int second) {

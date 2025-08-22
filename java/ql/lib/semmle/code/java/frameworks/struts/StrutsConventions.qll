@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 import semmle.code.java.frameworks.struts.StrutsAnnotations
 import semmle.code.java.frameworks.struts.StrutsXML
@@ -6,7 +9,7 @@ import semmle.code.xml.MavenPom
 /**
  * A Maven dependency on the Struts 2 convention plugin.
  */
-library class Struts2ConventionDependency extends Dependency {
+class Struts2ConventionDependency extends Dependency {
   Struts2ConventionDependency() {
     this.getGroup().getValue() = "org.apache.struts" and
     this.getArtifact().getValue() = "struts2-convention-plugin"
@@ -76,9 +79,6 @@ StrutsXmlFile getRootXmlFile(RefType refType) {
     result = strutsFolder.getAStrutsRootFile()
   )
 }
-
-/** DEPRECATED: Alias for getRootXmlFile */
-deprecated StrutsXMLFile getRootXMLFile(RefType refType) { result = getRootXmlFile(refType) }
 
 /**
  * Gets the suffix used for automatically identifying actions when using the convention plugin.

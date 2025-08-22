@@ -9,20 +9,18 @@
  */
 
 import javascript
-import DataFlow
-import DataFlow::PathGraph
 
 /**
  * A call to a function that may introduce HTML meta-characters by
  * replacing `%3C` or `\u003C` with `<`.
  */
-class DecodingCall extends CallNode {
+class DecodingCall extends DataFlow::CallNode {
   string kind;
-  Node input;
+  DataFlow::Node input;
 
   DecodingCall() {
-    getCalleeName().matches("decodeURI%") and
-    input = getArgument(0) and
+    this.getCalleeName().matches("decodeURI%") and
+    input = this.getArgument(0) and
     kind = "URI decoding"
     or
     input = this.(JsonParserCall).getInput() and
@@ -33,20 +31,24 @@ class DecodingCall extends CallNode {
   string getKind() { result = kind }
 
   /** Gets the input being decoded. */
-  Node getInput() { result = input }
+  DataFlow::Node getInput() { result = input }
 }
 
-class DecodingAfterSanitization extends TaintTracking::Configuration {
-  DecodingAfterSanitization() { this = "DecodingAfterSanitization" }
+module DecodingAfterSanitizationConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node instanceof HtmlSanitizerCall }
 
-  override predicate isSource(Node node) { node instanceof HtmlSanitizerCall }
-
-  override predicate isSink(Node node) { node = any(DecodingCall c).getInput() }
+  predicate isSink(DataFlow::Node node) { node = any(DecodingCall c).getInput() }
 }
 
-from DecodingAfterSanitization cfg, PathNode source, PathNode sink, DecodingCall decoder
+module DecodingAfterSanitizationFlow = TaintTracking::Global<DecodingAfterSanitizationConfig>;
+
+import DecodingAfterSanitizationFlow::PathGraph
+
+from
+  DecodingAfterSanitizationFlow::PathNode source, DecodingAfterSanitizationFlow::PathNode sink,
+  DecodingCall decoder
 where
-  cfg.hasFlowPath(source, sink) and
+  DecodingAfterSanitizationFlow::flowPath(source, sink) and
   decoder.getInput() = sink.getNode()
-select sink.getNode(), source, sink, decoder.getKind() + " invalidates .", source.getNode(),
-  "this HTML sanitization performed"
+select sink.getNode(), source, sink, decoder.getKind() + " invalidates $@.", source.getNode(),
+  "this HTML sanitization"

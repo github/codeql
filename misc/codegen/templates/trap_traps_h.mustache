@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <string>
+#include <binlog/binlog.hpp>
 
 #include "{{trap_library_dir}}/TrapLabel.h"
 #include "{{trap_library_dir}}/TrapTagTraits.h"
@@ -22,11 +23,12 @@ struct {{name}}Trap {
 
   template <typename F>
   void forEachLabel(F f) {
-    {{#fields}}
-    {{#is_label}}
-    f("{{field_name}}", -1, {{field_name}});
-    {{/is_label}}
-    {{/fields}}
+    {{>cpp_for_each_label_body}}
+  }
+
+  template <typename F>
+  void forEachLabel(F f) const {
+    {{>cpp_for_each_label_body}}
   }
 };
 
@@ -43,3 +45,7 @@ struct ToBindingTrapFunctor<{{type}}> {
 {{/id}}
 {{/traps}}
 }
+
+{{#traps}}
+BINLOG_ADAPT_STRUCT(codeql::{{name}}Trap{{#fields}}, {{field_name}}{{/fields}});
+{{/traps}}

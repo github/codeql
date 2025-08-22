@@ -1,5 +1,6 @@
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.Taint
+import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
 
@@ -8,12 +9,12 @@ import semmle.code.cpp.models.interfaces.SideEffect
  * guaranteed to be side-effect free.
  */
 private class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction,
-  SideEffectFunction
+  SideEffectFunction, DataFlowFunction
 {
   PureStrFunction() {
     this.hasGlobalOrStdOrBslName([
         atoi(), "strcasestr", "strchnul", "strchr", "strchrnul", "strstr", "strpbrk", "strrchr",
-        "strspn", strtol(), strrev(), strcmp(), strlwr(), strupr()
+        "strspn", strrev(), strcmp(), strlwr(), strupr()
       ])
   }
 
@@ -25,23 +26,48 @@ private class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunctio
     this.getParameter(bufParam).getUnspecifiedType() instanceof PointerType
   }
 
+  /** Holds if `i` is a locale parameter that does not carry taint. */
+  private predicate isLocaleParameter(ParameterIndex i) {
+    this.getName().matches("%\\_l") and i + 1 = this.getNumberOfParameters()
+  }
+
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // For these functions we add taint flow according to the following rules:
+    // 1. If the parameter is of a pointer type then there is taint from the
+    // indirection of the parameter. Otherwise, there is taint from the
+    // parameter.
+    // 2. If the return value is of a pointer type then there is taint to the
+    // indirection of the return. Otherwise, there is taint to the return.
     exists(ParameterIndex i |
-      (
-        input.isParameter(i) and
-        exists(this.getParameter(i))
-        or
-        input.isParameterDeref(i) and
-        this.getParameter(i).getUnspecifiedType() instanceof PointerType
-      ) and
+      exists(this.getParameter(i)) and
       // Functions that end with _l also take a locale argument (always as the last argument),
       // and we don't want taint from those arguments.
-      (not this.getName().matches("%\\_l") or exists(this.getParameter(i + 1)))
+      not this.isLocaleParameter(i)
+    |
+      if this.getParameter(i).getUnspecifiedType() instanceof PointerType
+      then input.isParameterDeref(i)
+      else input.isParameter(i)
     ) and
     (
-      output.isReturnValueDeref() and
-      this.getUnspecifiedType() instanceof PointerType
-      or
+      if this.getUnspecifiedType() instanceof PointerType
+      then output.isReturnValueDeref()
+      else output.isReturnValue()
+    )
+    or
+    // If there is taint flow from *input to *output then there is also taint
+    // flow from input to output.
+    this.hasTaintFlow(input.getIndirectionInput(), output.getIndirectionOutput()) and
+    // No need to add taint flow if we already have data flow.
+    not this.hasDataFlow(input, output)
+  }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    exists(int i |
+      input.isParameter(i) and
+      not this.isLocaleParameter(i) and
+      // These functions always return the same pointer as they are given
+      this.hasGlobalOrStdOrBslName([strrev(), strlwr(), strupr()]) and
+      this.getParameter(i).getUnspecifiedType() instanceof PointerType and
       output.isReturnValue()
     )
   }
@@ -69,8 +95,6 @@ private class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunctio
 }
 
 private string atoi() { result = ["atof", "atoi", "atol", "atoll"] }
-
-private string strtol() { result = ["strtod", "strtof", "strtol", "strtoll", "strtoq", "strtoul"] }
 
 private string strlwr() {
   result = ["_strlwr", "_wcslwr", "_mbslwr", "_strlwr_l", "_wcslwr_l", "_mbslwr_l"]

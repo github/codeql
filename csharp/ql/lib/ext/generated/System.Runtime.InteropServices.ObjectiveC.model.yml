@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Runtime.InteropServices.ObjectiveC", "ObjectiveCMarshal", "CreateReferenceTrackingHandle", "(System.Object,System.Span<System.IntPtr>)", "summary", "df-generated"]
+      - ["System.Runtime.InteropServices.ObjectiveC", "ObjectiveCMarshal", "Initialize", "(System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal+UnhandledExceptionPropagationHandler)", "summary", "df-generated"]
+      - ["System.Runtime.InteropServices.ObjectiveC", "ObjectiveCMarshal", "SetMessageSendCallback", "(System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal+MessageSendFunction,System.IntPtr)", "summary", "df-generated"]
+      - ["System.Runtime.InteropServices.ObjectiveC", "ObjectiveCMarshal", "SetMessageSendPendingException", "(System.Exception)", "summary", "df-generated"]

@@ -127,11 +127,28 @@ getModuleLevelSelf
 getAnImmediateReference
 | file://:0:0:0:0 | Array | tst.rb:59:15:59:21 | Array |
 | file://:0:0:0:0 | Hash | tst.rb:60:14:60:45 | Hash |
+| tst.rb:1:1:6:3 | C1 | tst.rb:1:1:6:3 | self (C1) |
 | tst.rb:1:1:6:3 | C1 | tst.rb:8:12:8:13 | C1 |
+| tst.rb:8:1:11:3 | C2 | tst.rb:8:1:11:3 | self (C2) |
 | tst.rb:8:1:11:3 | C2 | tst.rb:27:12:27:13 | C2 |
+| tst.rb:13:1:18:3 | Mixin | tst.rb:13:1:18:3 | self (Mixin) |
+| tst.rb:13:1:18:3 | Mixin | tst.rb:16:5:17:7 | self in m1s |
 | tst.rb:13:1:18:3 | Mixin | tst.rb:28:13:28:17 | Mixin |
+| tst.rb:20:1:25:3 | Mixin2 | tst.rb:20:1:25:3 | self (Mixin2) |
+| tst.rb:20:1:25:3 | Mixin2 | tst.rb:23:5:24:7 | self in m2s |
 | tst.rb:20:1:25:3 | Mixin2 | tst.rb:29:13:29:18 | Mixin2 |
+| tst.rb:27:1:35:3 | C3 | tst.rb:27:1:35:3 | self (C3) |
+| tst.rb:27:1:35:3 | C3 | tst.rb:32:9:33:11 | self in c3_self1 |
+| tst.rb:27:1:35:3 | C3 | tst.rb:37:1:38:3 | self in c3_self2 |
 | tst.rb:27:1:35:3 | C3 | tst.rb:37:5:37:6 | C3 |
+| tst.rb:40:1:47:3 | N1 | tst.rb:40:1:47:3 | self (N1) |
+| tst.rb:41:5:42:7 | N1::XY1 | tst.rb:41:5:42:7 | self (XY1) |
+| tst.rb:43:5:46:7 | N1::N2 | tst.rb:43:5:46:7 | self (N2) |
+| tst.rb:44:9:45:11 | N1::N2::XY2 | tst.rb:44:9:45:11 | self (XY2) |
+| tst.rb:49:1:51:3 | N2 | tst.rb:49:1:51:3 | self (N2) |
+| tst.rb:49:1:51:3 | N2 | tst.rb:52:1:55:3 | self (N2) |
+| tst.rb:53:5:54:7 | N2::XY3 | tst.rb:53:5:54:7 | self (XY3) |
+| tst.rb:57:1:62:3 | Nodes | tst.rb:57:1:62:3 | self (Nodes) |
 getOwnInstanceMethod
 | tst.rb:1:1:6:3 | C1 | c1 | tst.rb:2:5:5:7 | c1 |
 | tst.rb:8:1:11:3 | C2 | c2 | tst.rb:9:5:10:7 | c2 |

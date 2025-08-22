@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Extracting Compressed files with any compression algorithm like gzip can cause to denial of service attacks.</p>
+<p>Attackers can compress a huge file which created by repeated similiar byte and convert it to a small compressed file.</p>
+
+</overview>
+<recommendation>
+
+<p>When you want to decompress a user-provided compressed file you must be careful about the decompression ratio or read these files within a loop byte by byte to be able to manage the decompressed size in each cycle of the loop.</p>
+
+</recommendation>
+<example>
+
+<p>
+JsZip: check uncompressedSize Object Field before extraction.
+</p>
+<sample src="jszip_good.js"/>
+
+<p>
+nodejs Zlib: use <a href="https://nodejs.org/dist/latest-v18.x/docs/api/zlib.html#class-options">maxOutputLength option</a> which it'll limit the buffer read size
+</p>
+<sample src="zlib_good.js" />
+
+<p>
+node-tar: use <a href="https://github.com/isaacs/node-tar/blob/8c5af15e43a769fd24aa7f1c84d93e54824d19d2/lib/list.js#L90">maxReadSize option</a> which it'll limit the buffer read size
+</p>
+<sample src="node-tar_good.js" />
+
+</example>
+<references>
+
+<li>
+<a href="https://github.com/advisories/GHSA-8225-6cvr-8pqp">CVE-2017-16129</a>
+</li>
+<li>
+<a href="https://www.bamsoftware.com/hacks/zipbomb/">A great research to gain more impact by this kind of attacks</a>
+</li>
+
+</references>
+</qhelp>

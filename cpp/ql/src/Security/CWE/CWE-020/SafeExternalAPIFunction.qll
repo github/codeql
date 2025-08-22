@@ -10,9 +10,6 @@ private import semmle.code.cpp.models.interfaces.SideEffect
  */
 abstract class SafeExternalApiFunction extends Function { }
 
-/** DEPRECATED: Alias for SafeExternalApiFunction */
-deprecated class SafeExternalAPIFunction = SafeExternalApiFunction;
-
 /** The default set of "safe" external APIs. */
 private class DefaultSafeExternalApiFunction extends SafeExternalApiFunction {
   DefaultSafeExternalApiFunction() {

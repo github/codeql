@@ -1,0 +1,28 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["syscall", "", False, "Exec", "", "", "Argument[0]", "command-injection", "manual"]
+      - ["syscall", "", False, "ForkExec", "", "", "Argument[0]", "command-injection", "manual"]
+      - ["syscall", "", False, "StartProcess", "", "", "Argument[0]", "command-injection", "manual"]
+      - ["syscall", "", False, "CreateProcess", "", "", "Argument[0]", "command-injection", "manual"]
+      - ["syscall", "", False, "CreateProcessAsUser", "", "", "Argument[1]", "command-injection", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["syscall", "", False, "BytePtrFromString", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["syscall", "", False, "ByteSliceFromString", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["syscall", "", False, "StringBytePtr", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["syscall", "", False, "StringByteSlice", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["syscall", "", False, "StringSlicePtr", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["syscall", "Conn", True, "SyscallConn", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["syscall", "RawConn", True, "Read", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["syscall", "RawConn", True, "Write", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["syscall", "", False, "Environ", "", "", "ReturnValue", "environment", "manual"]
+      - ["syscall", "", False, "Getenv", "", "", "ReturnValue[0]", "environment", "manual"]

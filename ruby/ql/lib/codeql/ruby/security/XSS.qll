@@ -35,13 +35,6 @@ private module Shared {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for "server-side cross-site scripting" vulnerabilities.
-   */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
-
   private class ErbOutputMethodCallArgumentNode extends DataFlow::Node {
     private MethodCall call;
 
@@ -53,6 +46,18 @@ private module Shared {
     }
 
     MethodCall getCall() { result = call }
+  }
+
+  /**
+   * A value interpolated using a raw erb output directive, which does not perform HTML escaping.
+   * ```erb
+   * <%== sink %>
+   * ```
+   */
+  class ErbRawOutputDirective extends Sink {
+    ErbRawOutputDirective() {
+      exists(ErbOutputDirective d | d.isRaw() | this.asExpr().getExpr() = d.getTerminalStmt())
+    }
   }
 
   /**
@@ -244,8 +249,18 @@ private module Shared {
     isFlowFromHelperMethod(node1, node2)
   }
 
-  /** DEPRECATED: Alias for isAdditionalXssFlowStep */
-  deprecated predicate isAdditionalXSSFlowStep = isAdditionalXssFlowStep/2;
+  private predicate htmlSafeGuard(CfgNodes::AstCfgNode guard, CfgNode testedNode, boolean branch) {
+    exists(DataFlow::CallNode html_safe_call | html_safe_call.getMethodName() = "html_safe?" |
+      guard = html_safe_call.asExpr() and
+      testedNode = html_safe_call.getReceiver().asExpr() and
+      branch = true
+    )
+  }
+
+  /** A guard that calls `.html_safe?` to check whether the string is already HTML-safe. */
+  private class HtmlSafeGuard extends Sanitizer {
+    HtmlSafeGuard() { this = DataFlow::BarrierGuard<htmlSafeGuard/3>::getABarrierNode() }
+  }
 }
 
 /**
@@ -264,19 +279,9 @@ module ReflectedXss {
   class Sanitizer = Shared::Sanitizer;
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for stored XSS vulnerabilities.
-   */
-  deprecated class SanitizerGuard = Shared::SanitizerGuard;
-
-  /**
    * An additional step that is preserves dataflow in the context of reflected XSS.
    */
   predicate isAdditionalXssTaintStep = Shared::isAdditionalXssFlowStep/2;
-
-  /** DEPRECATED: Alias for isAdditionalXssTaintStep */
-  deprecated predicate isAdditionalXSSTaintStep = isAdditionalXssTaintStep/2;
 
   /**
    * A HTTP request input, considered as a flow source.
@@ -286,15 +291,18 @@ module ReflectedXss {
   }
 }
 
-/** DEPRECATED: Alias for ReflectedXss */
-deprecated module ReflectedXSS = ReflectedXss;
-
 private module OrmTracking {
   /**
    * A data flow configuration to track flow from finder calls to field accesses.
    */
   private module Config implements DataFlow::ConfigSig {
-    predicate isSource(DataFlow::Node source) { source instanceof OrmInstantiation }
+    predicate isSource(DataFlow::Node source) {
+      // We currently only use ORM instances that come from a call site, so restrict the sources
+      // to calls. This works around a performance issue that would arise from using 'self' as a source
+      // in ActiveRecord models. Over time, library models should stop relying on OrmInstantiation and instead
+      // use API graphs or type-tracking the same way we track other types.
+      source instanceof OrmInstantiation and source instanceof DataFlow::CallNode
+    }
 
     // Select any call receiver and narrow down later
     predicate isSink(DataFlow::Node sink) { sink = any(DataFlow::CallNode c).getReceiver() }
@@ -302,6 +310,10 @@ private module OrmTracking {
     predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       Shared::isAdditionalXssFlowStep(node1, node2)
     }
+
+    predicate isBarrierIn(DataFlow::Node node) { node instanceof DataFlow::SelfParameterNode }
+
+    int accessPathLimit() { result = 1 }
   }
 
   import DataFlow::Global<Config>
@@ -319,25 +331,17 @@ module StoredXss {
   class Sanitizer = Shared::Sanitizer;
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for stored XSS vulnerabilities.
-   */
-  deprecated class SanitizerGuard = Shared::SanitizerGuard;
-
-  /**
    * An additional step that preserves dataflow in the context of stored XSS.
    */
   predicate isAdditionalXssTaintStep = Shared::isAdditionalXssFlowStep/2;
-
-  /** DEPRECATED: Alias for isAdditionalXssTaintStep */
-  deprecated predicate isAdditionalXSSTaintStep = isAdditionalXssTaintStep/2;
 
   private class OrmFieldAsSource extends Source instanceof DataFlow::CallNode {
     OrmFieldAsSource() {
       exists(DataFlow::CallNode subSrc |
         OrmTracking::flow(subSrc, this.getReceiver()) and
-        subSrc.(OrmInstantiation).methodCallMayAccessField(this.getMethodName())
+        subSrc.(OrmInstantiation).methodCallMayAccessField(this.getMethodName()) and
+        this.getNumberOfArguments() = 0 and
+        not exists(this.getBlock())
       )
     }
   }
@@ -346,6 +350,3 @@ module StoredXss {
   private class FileSystemReadAccessAsSource extends Source instanceof FileSystemReadAccess { }
   // TODO: Consider `FileNameSource` flowing to script tag `src` attributes and similar
 }
-
-/** DEPRECATED: Alias for StoredXss */
-deprecated module StoredXSS = StoredXss;

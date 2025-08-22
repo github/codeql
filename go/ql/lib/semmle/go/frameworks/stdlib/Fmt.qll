@@ -4,32 +4,41 @@
 
 import go
 
+// Some TaintTracking::FunctionModel subclasses remain because varargs functions don't work with Models-as-Data sumamries yet.
 /** Provides models of commonly used functions in the `fmt` package. */
 module Fmt {
-  /** The `Sprint` or `Append` functions or one of their variants. */
-  class AppenderOrSprinter extends TaintTracking::FunctionModel {
-    AppenderOrSprinter() { this.hasQualifiedName("fmt", ["Append", "Sprint"] + ["", "f", "ln"]) }
+  /**
+   * DEPRECATED: Use AppenderOrSprinterFunc instead.
+   *
+   * The `Sprint` or `Append` functions or one of their variants.
+   */
+  deprecated class AppenderOrSprinter extends TaintTracking::FunctionModel {
+    AppenderOrSprinter() {
+      this.hasQualifiedName("fmt",
+        ["Append", "Appendf", "Appendln", "Sprint", "Sprintf", "Sprintln"])
+    }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(_) and outp.isResult()
     }
   }
 
+  /** The `Sprint` or `Append` functions or one of their variants. */
+  class AppenderOrSprinterFunc extends Function {
+    AppenderOrSprinterFunc() {
+      this.hasQualifiedName("fmt",
+        ["Append", "Appendf", "Appendln", "Sprint", "Sprintf", "Sprintln"])
+    }
+  }
+
   /** The `Sprint` function or one of its variants. */
-  class Sprinter extends AppenderOrSprinter {
-    Sprinter() { this.getName().matches("Sprint%") }
+  class Sprinter extends AppenderOrSprinterFunc {
+    Sprinter() { this.getName() = ["Sprint", "Sprintf", "Sprintln"] }
   }
 
   /** The `Print` function or one of its variants. */
   class Printer extends Function {
     Printer() { this.hasQualifiedName("fmt", ["Print", "Printf", "Println"]) }
-  }
-
-  /** A call to `Print` or similar. */
-  private class PrintCall extends LoggerCall::Range, DataFlow::CallNode {
-    PrintCall() { this.getTarget() instanceof Printer }
-
-    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
   }
 
   /** The `Fprint` function or one of its variants. */
@@ -65,8 +74,6 @@ module Fmt {
     }
 
     override int getFormatStringIndex() { result = argOffset }
-
-    override int getFirstFormattedParameterIndex() { result = argOffset + 1 }
   }
 
   /** The `Sscan` function or one of its variants. */
@@ -96,6 +103,15 @@ module Fmt {
   /** The `Scan` function or one of its variants, all of which read from `os.Stdin`. */
   class Scanner extends Function {
     Scanner() { this.hasQualifiedName("fmt", ["Scan", "Scanf", "Scanln"]) }
+  }
+
+  private class ScannerSource extends SourceNode {
+    ScannerSource() {
+      // All of the arguments which are sources are varargs.
+      this.asExpr() = any(Scanner s).getACall().getAnImplicitVarargsArgument().asExpr()
+    }
+
+    override string getThreatModel() { result = "stdin" }
   }
 
   /**
@@ -132,37 +148,6 @@ module Fmt {
       // signature: func Fscanln(r io.Reader, a ...interface{}) (n int, err error)
       this.hasQualifiedName("fmt", "Fscanln") and
       (inp.isParameter(0) and outp.isParameter(any(int i | i >= 1)))
-    }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      input = inp and output = outp
-    }
-  }
-
-  private class MethodModels extends TaintTracking::FunctionModel, Method {
-    FunctionInput inp;
-    FunctionOutput outp;
-
-    MethodModels() {
-      // signature: func (GoStringer) GoString() string
-      this.implements("fmt", "GoStringer", "GoString") and
-      (inp.isReceiver() and outp.isResult())
-      or
-      // signature: func (ScanState) Read(buf []byte) (n int, err error)
-      this.implements("fmt", "ScanState", "Read") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
-      // signature: func (Stringer) String() string
-      this.implements("fmt", "Stringer", "String") and
-      (inp.isReceiver() and outp.isResult())
-      or
-      // signature: func (ScanState) Token(skipSpace bool, f func(rune) bool) (token []byte, err error)
-      this.implements("fmt", "ScanState", "Token") and
-      (inp.isReceiver() and outp.isResult(0))
-      or
-      // signature: func (State) Write(b []byte) (n int, err error)
-      this.implements("fmt", "State", "Write") and
-      (inp.isParameter(0) and outp.isReceiver())
     }
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

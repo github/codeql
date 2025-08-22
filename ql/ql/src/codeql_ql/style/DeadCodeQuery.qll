@@ -39,6 +39,10 @@ private AstNode queryPredicate() {
   result = queryPredicate().getAChild()
 }
 
+private AstNode discardPredicate() {
+  result.(Predicate).getAnAnnotation() instanceof OverlayDiscardEntity
+}
+
 AstNode hackyShouldBeTreatedAsAlive() {
   // Stages from the shared DataFlow impl are copy-pasted, so predicates that are dead in one stage are not dead in another.
   result = any(Module mod | mod.getName().matches("Stage%")).getAMember().(ClasslessPredicate) and
@@ -58,7 +62,7 @@ AstNode hackyShouldBeTreatedAsAlive() {
  */
 private AstNode alive() {
   //
-  // The 4 base cases.
+  // The 6 base cases.
   //
   // 1) everything that can be imported.
   result = publicApi()
@@ -73,7 +77,11 @@ private AstNode alive() {
   // 4) Things that aren't really alive, but that this query treats as live.
   result = hackyShouldBeTreatedAsAlive()
   or
-  result instanceof TopLevel // toplevel is always alive.
+  // 5) discard predicates
+  result = discardPredicate()
+  or
+  // 6) toplevel is always alive.
+  result instanceof TopLevel
   or
   // recursive cases
   result = aliveStep(alive())
@@ -186,6 +194,16 @@ private AstNode aliveStep(AstNode prev) {
   result = prev.(Module).getImplements(_)
   or
   result = prev.(PredicateExpr).getQualifier()
+  or
+  // a module argument is live if the constructed module is
+  result = prev.(ModuleExpr).getArgument(_)
+  or
+  // a type declaration is live if a reference to it is live
+  result = prev.(TypeExpr).getResolvedType().getDeclaration()
+  or
+  // a module member that implements a signature member is live if the module is
+  prev.(Module).getAMember() = result and
+  result.(Declaration).implements(_)
 }
 
 private AstNode deprecated() {

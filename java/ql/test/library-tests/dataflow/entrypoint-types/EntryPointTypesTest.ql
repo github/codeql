@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.dataflow.FlowSources
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 class TestRemoteFlowSource extends RemoteFlowSource {
   TestRemoteFlowSource() { this.asParameter().hasName("source") }
@@ -8,27 +8,27 @@ class TestRemoteFlowSource extends RemoteFlowSource {
   override string getSourceType() { result = "test" }
 }
 
-class TaintFlowConf extends TaintTracking::Configuration {
-  TaintFlowConf() { this = "qltest:dataflow:entrypoint-types-taint" }
+module TaintFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) { n instanceof ActiveThreatModelSource }
 
-  override predicate isSource(DataFlow::Node n) { n instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node n) {
-    exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
+  predicate isSink(DataFlow::Node n) {
+    exists(MethodCall ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
   }
 }
 
-class HasFlowTest extends InlineExpectationsTest {
-  HasFlowTest() { this = "HasFlowTest" }
+module TaintFlow = TaintTracking::Global<TaintFlowConfig>;
 
-  override string getARelevantTag() { result = ["hasTaintFlow"] }
+module HasFlowTest implements TestSig {
+  string getARelevantTag() { result = "hasTaintFlow" }
 
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasTaintFlow" and
-    exists(DataFlow::Node sink, TaintFlowConf conf | conf.hasFlowTo(sink) |
+    exists(DataFlow::Node sink | TaintFlow::flowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""
     )
   }
 }
+
+import MakeTest<HasFlowTest>

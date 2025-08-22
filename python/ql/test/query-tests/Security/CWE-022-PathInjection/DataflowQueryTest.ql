@@ -1,3 +1,4 @@
 import python
-import experimental.dataflow.TestUtil.DataflowQueryTest
+import utils.test.dataflow.DataflowQueryTest
 import semmle.python.security.dataflow.PathInjectionQuery
+import FromTaintTrackingStateConfig<PathInjectionConfig>

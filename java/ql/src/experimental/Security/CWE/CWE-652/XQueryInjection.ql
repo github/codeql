@@ -13,18 +13,16 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import XQueryInjectionLib
-import DataFlow::PathGraph
+deprecated import XQueryInjectionLib
+deprecated import XQueryInjectionFlow::PathGraph
 
 /**
  * A taint-tracking configuration tracing flow from remote sources, through an XQuery parser, to its eventual execution.
  */
-class XQueryInjectionConfig extends TaintTracking::Configuration {
-  XQueryInjectionConfig() { this = "XQueryInjectionConfig" }
+deprecated module XQueryInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(XQueryPreparedExecuteCall xpec).getPreparedExpression() or
     sink.asExpr() = any(XQueryExecuteCall xec).getExecuteQueryArgument() or
     sink.asExpr() = any(XQueryExecuteCommandCall xecc).getExecuteCommandArgument()
@@ -33,12 +31,23 @@ class XQueryInjectionConfig extends TaintTracking::Configuration {
   /**
    * Holds if taint from the input `pred` to a `prepareExpression` call flows to the returned prepared expression `succ`.
    */
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(XQueryParserCall parser | pred.asExpr() = parser.getInput() and succ.asExpr() = parser)
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, XQueryInjectionConfig conf
-where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "XQuery query might include code from $@.", source.getNode(),
-  "this user input"
+/**
+ * Taint-tracking flow from remote sources, through an XQuery parser, to its eventual execution.
+ */
+deprecated module XQueryInjectionFlow = TaintTracking::Global<XQueryInjectionConfig>;
+
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, XQueryInjectionFlow::PathNode source, XQueryInjectionFlow::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
+  XQueryInjectionFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "XQuery query might include code from $@." and
+  sourceNode = source.getNode() and
+  message2 = "this user input"
+}

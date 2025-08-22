@@ -22,6 +22,120 @@
                 "command": "${config:python.pythonPath}",
             },
             "problemMatcher": []
+        },
+        {
+            "label": "Accept .expected changes from CI",
+            "type": "process",
+            // Non-Windows OS will usually have Python 3 already installed at /usr/bin/python3.
+            "command": "python3",
+            "args": [
+                "misc/scripts/accept-expected-changes-from-ci.py"
+            ],
+            "group": "build",
+            "windows": {
+                // On Windows, use whatever Python interpreter is configured for this workspace. The default is
+                // just `python`, so if Python is already on the path, this will find it.
+                "command": "${config:python.pythonPath}",
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Create query change note",
+            "type": "process",
+            "command": "python3",
+            "args": [
+                "misc/scripts/create-change-note.py",
+                "${input:language}",
+                "src",
+                "${input:name}",
+                "${input:categoryQuery}"
+            ],
+            "options": {
+                "env": {
+                    "EDITOR": "code -r",
+                }
+            },
+            "presentation": {
+                "reveal": "never",
+                "close": true
+            },
+            "problemMatcher": []
+        },
+                {
+            "label": "Create library change note",
+            "type": "process",
+            "command": "python3",
+            "args": [
+                "misc/scripts/create-change-note.py",
+                "${input:language}",
+                "lib",
+                "${input:name}",
+                "${input:categoryLibrary}"
+            ],
+            "options": {
+                "env": {
+                    "EDITOR": "code -r"
+                }
+            },
+            "presentation": {
+                "reveal": "never",
+                "close": true
+            },
+            "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "type": "pickString",
+            "id": "language",
+            "description": "Language",
+            "options":
+            [
+                "actions",
+                "go",
+                "java",
+                "javascript",
+                "cpp",
+                "csharp",
+                "python",
+                "ruby",
+                "rust",
+                "swift",
+            ]
+        },
+        {
+            "type": "promptString",
+            "id": "name",
+            "description": "Short name (kebab-case)"
+        },
+        {
+            "type": "pickString",
+            "id": "categoryQuery",
+            "description": "Category (query change)",
+            "options":
+            [
+                "breaking",
+                "deprecated",
+                "newQuery",
+                "queryMetadata",
+                "majorAnalysis",
+                "minorAnalysis",
+                "fix",
+            ]
+        },
+                {
+            "type": "pickString",
+            "id": "categoryLibrary",
+            "description": "Category (library change)",
+            "options":
+            [
+                "breaking",
+                "deprecated",
+                "feature",
+                "majorAnalysis",
+                "minorAnalysis",
+                "fix",
+            ]
         }
     ]
 }

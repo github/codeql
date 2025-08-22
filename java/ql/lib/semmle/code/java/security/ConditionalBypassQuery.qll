@@ -11,7 +11,7 @@ import semmle.code.java.controlflow.Guards
 /**
  * Holds if `ma` is controlled by the condition expression `e`.
  */
-predicate conditionControlsMethod(MethodAccess ma, Expr e) {
+predicate conditionControlsMethod(MethodCall ma, Expr e) {
   exists(ConditionBlock cb, SensitiveExecutionMethod m, boolean cond |
     ma.getMethod() = m and
     cb.controls(ma.getBasicBlock(), cond) and
@@ -28,7 +28,7 @@ predicate conditionControlsMethod(MethodAccess ma, Expr e) {
  * `endsWith` method of the `java.lang.String` class.
  */
 private predicate endsWithStep(DataFlow::Node node1, DataFlow::Node node2) {
-  exists(MethodAccess ma |
+  exists(MethodCall ma |
     ma.getMethod().getDeclaringType() instanceof TypeString and
     ma.getMethod().getName() = "endsWith" and
     ma.getQualifier() = node1.asExpr() and
@@ -39,14 +39,26 @@ private predicate endsWithStep(DataFlow::Node node1, DataFlow::Node node2) {
 /**
  * A taint tracking configuration for untrusted data flowing to sensitive conditions.
  */
-class ConditionalBypassFlowConfig extends TaintTracking::Configuration {
-  ConditionalBypassFlowConfig() { this = "ConditionalBypassFlowConfig" }
+module ConditionalBypassFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSink(DataFlow::Node sink) { conditionControlsMethod(_, sink.asExpr()) }
 
-  override predicate isSink(DataFlow::Node sink) { conditionControlsMethod(_, sink.asExpr()) }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     endsWithStep(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(MethodCall m, Expr e | result = [m, e].getLocation() |
+      conditionControlsMethod(m, e) and
+      sink.asExpr() = e
+    )
+  }
 }
+
+/**
+ * Taint tracking flow for untrusted data flowing to sensitive conditions.
+ */
+module ConditionalBypassFlow = TaintTracking::Global<ConditionalBypassFlowConfig>;

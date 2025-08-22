@@ -3,14 +3,8 @@ extensions:
       pack: codeql/java-all
       extensible: experimentalSourceModel
     data:
-      - ["javax.servlet.http", "HttpServletRequest", True, "getServletPath", "", "", "ReturnValue", "remote", "manual", "unsafe-url-forward"]
-  - addsTo:
-      pack: codeql/java-all
-      extensible: experimentalSourceModel
-    data:
       - ["javax.servlet.http", "HttpServletRequest", False, "getPathInfo", "()", "", "ReturnValue", "uri-path", "manual", "permissive-dot-regex-query"]
       - ["javax.servlet.http", "HttpServletRequest", False, "getPathTranslated", "()", "", "ReturnValue", "uri-path", "manual", "permissive-dot-regex-query"]
       - ["javax.servlet.http", "HttpServletRequest", False, "getRequestURI", "()", "", "ReturnValue", "uri-path", "manual", "permissive-dot-regex-query"]
       - ["javax.servlet.http", "HttpServletRequest", False, "getRequestURL", "()", "", "ReturnValue", "uri-path", "manual", "permissive-dot-regex-query"]
       - ["javax.servlet.http", "HttpServletRequest", False, "getServletPath", "()", "", "ReturnValue", "uri-path", "manual", "permissive-dot-regex-query"]
-

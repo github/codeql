@@ -7,18 +7,15 @@ private import codeql.swift.dataflow.ExternalFlow
 /** A data flow sink for predicate injection vulnerabilities. */
 abstract class PredicateInjectionSink extends DataFlow::Node { }
 
-/** A sanitizer for predicate injection vulnerabilities. */
-abstract class PredicateInjectionSanitizer extends DataFlow::Node { }
+/** A barrier for predicate injection vulnerabilities. */
+abstract class PredicateInjectionBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
- *
- * Extend this class to add additional taint steps that should apply to paths related to
- * predicate injection vulnerabilities.
+ * A unit class for adding additional flow steps.
  */
-class PredicateInjectionAdditionalTaintStep extends Unit {
+class PredicateInjectionAdditionalFlowStep extends Unit {
   /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
+   * Holds if the step from `node1` to `node2` should be considered a flow
    * step for paths related to predicate injection vulnerabilities.
    */
   abstract predicate step(DataFlow::Node n1, DataFlow::Node n2);
@@ -40,5 +37,16 @@ private class PredicateInjectionSinkCsv extends SinkModelCsv {
         ";NSPredicate;true;init(format:_:);;;Argument[0];predicate-injection",
         ";NSPredicate;true;init(fromMetadataQueryString:);;;Argument[0];predicate-injection"
       ]
+  }
+}
+
+/**
+ * A barrier for predicate injection vulnerabilities vulnerabilities.
+ */
+private class PredicateInjectionDefaultBarrier extends PredicateInjectionBarrier {
+  PredicateInjectionDefaultBarrier() {
+    // any numeric type
+    this.asExpr().getType().getUnderlyingType().getABaseType*().getName() =
+      ["Numeric", "SignedInteger", "UnsignedInteger"]
   }
 }

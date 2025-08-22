@@ -1,6 +1,7 @@
 /**
  * Provides classes and predicates for working with the Java Server Faces (JSF).
  */
+deprecated module;
 
 import java
 

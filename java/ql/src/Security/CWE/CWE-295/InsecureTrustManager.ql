@@ -13,10 +13,10 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.security.InsecureTrustManagerQuery
-import DataFlow::PathGraph
+import InsecureTrustManagerFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink
-where any(InsecureTrustManagerConfiguration cfg).hasFlowPath(source, sink)
+from InsecureTrustManagerFlow::PathNode source, InsecureTrustManagerFlow::PathNode sink
+where InsecureTrustManagerFlow::flowPath(source, sink)
 select sink, source, sink, "This uses $@, which is defined in $@ and trusts any certificate.",
   source, "TrustManager",
-  source.getNode().asExpr().(ClassInstanceExpr).getConstructedType() as type, type.nestedName()
+  source.getNode().asExpr().(ClassInstanceExpr).getConstructedType() as type, type.getNestedName()

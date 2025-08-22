@@ -2,7 +2,7 @@
     var getF = function(){}
     var f = getF();
     (function () {
-        f();
+        f(); // $ Alert
     });
 });
 

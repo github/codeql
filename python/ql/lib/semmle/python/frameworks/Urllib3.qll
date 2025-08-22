@@ -9,15 +9,18 @@
 private import python
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides models for the `urllib3` PyPI package.
  *
  * See
  * - https://pypi.org/project/urllib3/
  * - https://urllib3.readthedocs.io/en/stable/reference/
  */
-private module Urllib3 {
+module Urllib3 {
   /**
    * Provides models for the `urllib3.request.RequestMethods` class and subclasses, such
    * as the `urllib3.PoolManager` class
@@ -30,7 +33,7 @@ private module Urllib3 {
    */
   module PoolManager {
     /** Gets a reference to the `urllib3.PoolManager` class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       result =
         API::moduleImport("urllib3")
             .getMember(["PoolManager", "ProxyManager", "HTTPConnectionPool", "HTTPSConnectionPool"])
@@ -40,6 +43,8 @@ private module Urllib3 {
             .getMember("request")
             .getMember("RequestMethods")
             .getASubclass+()
+      or
+      result = ModelOutput::getATypeNode("urllib3.PoolManager~Subclass").getASubclass*()
     }
 
     /**
@@ -49,7 +54,7 @@ private module Urllib3 {
      * - https://urllib3.readthedocs.io/en/stable/reference/urllib3.request.html#urllib3.request.RequestMethods
      * - https://urllib3.readthedocs.io/en/stable/reference/urllib3.connectionpool.html#urllib3.HTTPConnectionPool.urlopen
      */
-    private class RequestCall extends Http::Client::Request::Range, API::CallNode {
+    private class RequestCall extends Http::Client::Request::Range instanceof API::CallNode {
       RequestCall() {
         this =
           classRef()
@@ -58,7 +63,9 @@ private module Urllib3 {
               .getACall()
       }
 
-      override DataFlow::Node getAUrlPart() { result in [this.getArg(1), this.getArgByName("url")] }
+      override DataFlow::Node getAUrlPart() {
+        result in [super.getArg(1), super.getArgByName("url")]
+      }
 
       override string getFramework() { result = "urllib3.PoolManager" }
 
@@ -73,7 +80,7 @@ private module Urllib3 {
           // see https://urllib3.readthedocs.io/en/stable/user-guide.html?highlight=cert_reqs#certificate-verification
           disablingNode = constructor.getKeywordParameter("cert_reqs").asSink() and
           argumentOrigin = constructor.getKeywordParameter("cert_reqs").getAValueReachingSink() and
-          argumentOrigin.asExpr().(StrConst).getText() = "CERT_NONE"
+          argumentOrigin.asExpr().(StringLiteral).getText() = "CERT_NONE"
           or
           // assert_hostname
           // see https://urllib3.readthedocs.io/en/stable/reference/urllib3.connectionpool.html?highlight=assert_hostname#urllib3.HTTPSConnectionPool

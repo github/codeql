@@ -12,5 +12,5 @@ class UnknownCall extends Call {
 }
 
 query predicate edges(ControlFlow::Node n1, ControlFlow::Node n2) {
-  not n1.getElement().fromLibrary() and n2 = n1.getASuccessor()
+  not n1.getAstNode().fromLibrary() and n2 = n1.getASuccessor()
 }

@@ -143,7 +143,53 @@ func test(s: String) {
     let nmstr8 = NSMutableString(string: s)
     nmstr8.insert("*", at: s.count - 1) // BAD: String length used in NSString
     print("insert '\(nmstr7)' / '\(nmstr8)'")
+
+    // --- inspired by real world cases ---
+
+    let scalars = s.unicodeScalars
+    let _ = s.index(s.startIndex, offsetBy: s.count) // GOOD
+    let _ = s.index(s.startIndex, offsetBy: scalars.count) // BAD
+    let _ = scalars.index(scalars.startIndex, offsetBy: scalars.count) // GOOD
+    let _ = scalars.index(scalars.startIndex, offsetBy: s.count) // BAD [NOT DETECTED]
+
+    let s_utf8 = s.utf8
+    let _ = s.index(s.startIndex, offsetBy: s_utf8.count) // BAD
+    let _ = s_utf8.index(s_utf8.startIndex, offsetBy: s_utf8.count) // GOOD
+    let _ = s_utf8.index(s_utf8.startIndex, offsetBy: s.count) // BAD [NOT DETECTED]
+
+    let s_utf16 = s.utf16
+    let _ = s.index(s.startIndex, offsetBy: s_utf16.count) // BAD
+    let _ = s_utf16.index(s_utf16.startIndex, offsetBy: scalars.count) // GOOD
+    let _ = s_utf16.index(s_utf16.startIndex, offsetBy: s.count) // BAD [NOT DETECTED]
+
+    // --- methods provided by Sequence, Collection etc ---
+
+    let _ = String(s.prefix(s.count - 10)) // GOOD
+    let _ = String(s.prefix(s.utf8.count - 10)) // BAD
+    let _ = String(s.prefix(s.utf16.count - 10)) // BAD
+    let _ = String(s.prefix(s.unicodeScalars.count - 10)) // BAD
+    let _ = String(s.prefix(ns.length - 10)) // BAD
+    let _ = String(s.prefix(nms.length - 10)) // BAD
+    let _ = String(scalars.prefix(s.count - 10)) // BAD
+    let _ = String(scalars.prefix(s.utf8.count - 10)) // BAD
+    let _ = String(scalars.prefix(s.utf16.count - 10)) // BAD
+    let _ = String(scalars.prefix(s.unicodeScalars.count - 10)) // GOOD
+    let _ = String(scalars.prefix(ns.length - 10)) // BAD
+    let _ = String(scalars.prefix(nms.length - 10)) // BAD
+    let _ = String(s.utf8.dropFirst(s.count - 10)) // BAD
+    let _ = String(s.utf8.dropFirst(s.utf8.count - 10)) // GOOD
+    let _ = String(s.utf16.dropLast(s.count - 10)) // BAD
+    let _ = String(s.utf16.dropLast(s.utf16.count - 10)) // GOOD
 }
 
 // `begin :thumbsup: end`, with thumbs up emoji and skin tone modifier
 test(s: "begin \u{0001F44D}\u{0001F3FF} end")
+
+extension String {
+    func newStringMethod() {
+        _ = NSMakeRange(0, count) // BAD
+        _ = NSMakeRange(0, utf8.count) // BAD
+        _ = NSMakeRange(0, utf16.count) // GOOD (`String.UTF16View` and `NSString` lengths are equivalent)
+        _ = NSMakeRange(0, unicodeScalars.count) // BAD
+    }
+}

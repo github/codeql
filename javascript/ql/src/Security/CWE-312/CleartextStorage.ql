@@ -15,9 +15,9 @@
 
 import javascript
 import semmle.javascript.security.dataflow.CleartextStorageQuery
-import DataFlow::PathGraph
+import ClearTextStorageFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from ClearTextStorageFlow::PathNode source, ClearTextStorageFlow::PathNode sink
+where ClearTextStorageFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This stores sensitive data returned by $@ as clear text.",
   source.getNode(), source.getNode().(Source).describe()

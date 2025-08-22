@@ -1,23 +1,29 @@
 edges
-| csv_bad.py:0:0:0:0 | ModuleVariableNode for csv_bad.request | csv_bad.py:16:16:16:22 | ControlFlowNode for request |
-| csv_bad.py:0:0:0:0 | ModuleVariableNode for csv_bad.request | csv_bad.py:24:16:24:22 | ControlFlowNode for request |
-| csv_bad.py:9:19:9:25 | ControlFlowNode for ImportMember | csv_bad.py:9:19:9:25 | GSSA Variable request |
-| csv_bad.py:9:19:9:25 | GSSA Variable request | csv_bad.py:0:0:0:0 | ModuleVariableNode for csv_bad.request |
-| csv_bad.py:16:16:16:22 | ControlFlowNode for request | csv_bad.py:16:16:16:27 | ControlFlowNode for Attribute |
-| csv_bad.py:16:16:16:27 | ControlFlowNode for Attribute | csv_bad.py:18:24:18:31 | ControlFlowNode for csv_data |
-| csv_bad.py:16:16:16:27 | ControlFlowNode for Attribute | csv_bad.py:19:25:19:32 | ControlFlowNode for csv_data |
-| csv_bad.py:24:16:24:22 | ControlFlowNode for request | csv_bad.py:24:16:24:27 | ControlFlowNode for Attribute |
-| csv_bad.py:24:16:24:27 | ControlFlowNode for Attribute | csv_bad.py:25:46:25:53 | ControlFlowNode for csv_data |
+| csv_bad.py:9:19:9:25 | ControlFlowNode for ImportMember | csv_bad.py:9:19:9:25 | ControlFlowNode for request | provenance |  |
+| csv_bad.py:9:19:9:25 | ControlFlowNode for request | csv_bad.py:16:16:16:22 | ControlFlowNode for request | provenance |  |
+| csv_bad.py:9:19:9:25 | ControlFlowNode for request | csv_bad.py:24:16:24:22 | ControlFlowNode for request | provenance |  |
+| csv_bad.py:16:5:16:12 | ControlFlowNode for csv_data | csv_bad.py:18:24:18:31 | ControlFlowNode for csv_data | provenance |  |
+| csv_bad.py:16:5:16:12 | ControlFlowNode for csv_data | csv_bad.py:19:25:19:32 | ControlFlowNode for csv_data | provenance |  |
+| csv_bad.py:16:16:16:22 | ControlFlowNode for request | csv_bad.py:16:16:16:27 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| csv_bad.py:16:16:16:27 | ControlFlowNode for Attribute | csv_bad.py:16:16:16:38 | ControlFlowNode for Attribute() | provenance | dict.get |
+| csv_bad.py:16:16:16:38 | ControlFlowNode for Attribute() | csv_bad.py:16:5:16:12 | ControlFlowNode for csv_data | provenance |  |
+| csv_bad.py:24:5:24:12 | ControlFlowNode for csv_data | csv_bad.py:25:46:25:53 | ControlFlowNode for csv_data | provenance |  |
+| csv_bad.py:24:16:24:22 | ControlFlowNode for request | csv_bad.py:24:16:24:27 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| csv_bad.py:24:16:24:27 | ControlFlowNode for Attribute | csv_bad.py:24:16:24:38 | ControlFlowNode for Attribute() | provenance | dict.get |
+| csv_bad.py:24:16:24:38 | ControlFlowNode for Attribute() | csv_bad.py:24:5:24:12 | ControlFlowNode for csv_data | provenance |  |
 nodes
-| csv_bad.py:0:0:0:0 | ModuleVariableNode for csv_bad.request | semmle.label | ModuleVariableNode for csv_bad.request |
 | csv_bad.py:9:19:9:25 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
-| csv_bad.py:9:19:9:25 | GSSA Variable request | semmle.label | GSSA Variable request |
+| csv_bad.py:9:19:9:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| csv_bad.py:16:5:16:12 | ControlFlowNode for csv_data | semmle.label | ControlFlowNode for csv_data |
 | csv_bad.py:16:16:16:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | csv_bad.py:16:16:16:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| csv_bad.py:16:16:16:38 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | csv_bad.py:18:24:18:31 | ControlFlowNode for csv_data | semmle.label | ControlFlowNode for csv_data |
 | csv_bad.py:19:25:19:32 | ControlFlowNode for csv_data | semmle.label | ControlFlowNode for csv_data |
+| csv_bad.py:24:5:24:12 | ControlFlowNode for csv_data | semmle.label | ControlFlowNode for csv_data |
 | csv_bad.py:24:16:24:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | csv_bad.py:24:16:24:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| csv_bad.py:24:16:24:38 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | csv_bad.py:25:46:25:53 | ControlFlowNode for csv_data | semmle.label | ControlFlowNode for csv_data |
 subpaths
 #select

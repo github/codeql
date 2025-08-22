@@ -26,7 +26,7 @@ Expr getAnAccessByDynamicCall(Method m) {
   exists(MethodCall mc, Method target |
     target = mc.getTarget() and
     target.hasName("InvokeMember") and
-    target.getDeclaringType().hasQualifiedName("System", "Type") and
+    target.getDeclaringType().hasFullyQualifiedName("System", "Type") and
     mc.getArgument(0).(StringLiteral).getValue() = m.getName() and
     mc.getArgument(3).getType().(RefType).hasMethod(m) and
     result = mc
@@ -42,7 +42,7 @@ Expr getAMethodAccess(Method m) {
 
 predicate potentiallyAccessedByForEach(Method m) {
   m.hasName("GetEnumerator") and
-  m.getDeclaringType().getABaseType+().hasQualifiedName("System.Collections", "IEnumerable")
+  m.getDeclaringType().getABaseType+().hasFullyQualifiedName("System.Collections", "IEnumerable")
   or
   foreach_stmt_desugar(_, m, 1)
 }

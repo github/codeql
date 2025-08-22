@@ -1,11 +1,11 @@
-| test.c:2:8:2:10 | declaration of 1st parameter |
-| test.c:2:13:2:15 | declaration of 2nd parameter |
-| test.c:2:18:2:20 | declaration of 3rd parameter |
-| test.c:2:23:2:25 | declaration of 4th parameter |
-| test.c:3:8:3:10 | declaration of y1 as anonymous 1st parameter |
-| test.c:3:13:3:15 | declaration of y2 as anonymous 2nd parameter |
-| test.c:3:18:3:20 | declaration of y3 as anonymous 3rd parameter |
-| test.c:3:23:3:25 | declaration of y4 as anonymous 4th parameter |
+| test.c:2:8:2:10 | declaration of (unnamed parameter 0) |
+| test.c:2:13:2:15 | declaration of (unnamed parameter 1) |
+| test.c:2:18:2:20 | declaration of (unnamed parameter 2) |
+| test.c:2:23:2:25 | declaration of (unnamed parameter 3) |
+| test.c:3:8:3:10 | declaration of y1 as (unnamed parameter 0) |
+| test.c:3:13:3:15 | declaration of y2 as (unnamed parameter 1) |
+| test.c:3:18:3:20 | declaration of y3 as (unnamed parameter 2) |
+| test.c:3:23:3:25 | declaration of y4 as (unnamed parameter 3) |
 | test.c:4:12:4:13 | declaration of x1 |
 | test.c:4:20:4:21 | declaration of x2 |
 | test.c:4:28:4:29 | declaration of x3 |

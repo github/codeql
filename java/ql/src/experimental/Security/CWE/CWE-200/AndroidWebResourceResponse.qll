@@ -1,4 +1,5 @@
 /** Provides Android methods relating to web resource response. */
+deprecated module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow
@@ -6,6 +7,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.frameworks.android.WebView
 
+overlay[local?]
 private class ActivateModels extends ActiveExperimentalModels {
   ActivateModels() { this = "android-web-resource-response" }
 }
@@ -33,8 +35,8 @@ class ShouldInterceptRequestMethod extends Method {
 }
 
 /** A method call to `WebView.setWebViewClient`. */
-class SetWebViewClientMethodAccess extends MethodAccess {
-  SetWebViewClientMethodAccess() {
+class SetWebViewClientMethodCall extends MethodCall {
+  SetWebViewClientMethodCall() {
     this.getMethod().hasName("setWebViewClient") and
     this.getMethod().getDeclaringType().getASupertype*() instanceof TypeWebView
   }
@@ -55,14 +57,18 @@ class WebResourceResponseSink extends DataFlow::Node {
 }
 
 /**
- * A value step from the URL argument of `WebView::loadUrl` to the URL parameter of
+ * A taint step from the URL argument of `WebView::loadUrl` to the URL/WebResourceRequest parameter of
  * `WebViewClient::shouldInterceptRequest`.
+ *
+ * TODO: This ought to be a value step when it is targeting the URL parameter,
+ * and it ought to check the parameter type in both cases to ensure that we only
+ * hit the overloads we intend to.
  */
-private class FetchUrlStep extends AdditionalValueStep {
+private class FetchUrlStep extends AdditionalTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(
       // webview.loadUrl(url) -> webview.setWebViewClient(new WebViewClient() { shouldInterceptRequest(view, url) });
-      MethodAccess lma, ShouldInterceptRequestMethod im, SetWebViewClientMethodAccess sma
+      MethodCall lma, ShouldInterceptRequestMethod im, SetWebViewClientMethodCall sma
     |
       sma.getArgument(0).getType() = im.getDeclaringType().getASupertype*() and
       lma.getMethod() instanceof WebViewLoadUrlMethod and

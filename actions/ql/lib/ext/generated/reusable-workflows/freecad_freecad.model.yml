@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["freecad/freecad/.github/workflows/sub_wrapup.yml", "*", "input.previousSteps", "code-injection", "generated"]

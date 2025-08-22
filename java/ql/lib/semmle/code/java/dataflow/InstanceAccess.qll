@@ -2,6 +2,8 @@
  * Provides classes and predicates for reasoning about explicit and implicit
  * instance accesses.
  */
+overlay[local?]
+module;
 
 import java
 
@@ -58,9 +60,7 @@ private predicate implicitEnclosingThisCopy(ConstructorCall cc, RefType t1, RefT
 private predicate enclosingInstanceAccess(ExprParent e, RefType t) {
   e.(InstanceAccess).isEnclosingInstanceAccess(t)
   or
-  exists(MethodAccess ma |
-    ma.isEnclosingMethodAccess(t) and ma = e and not exists(ma.getQualifier())
-  )
+  exists(MethodCall ma | ma.isEnclosingMethodCall(t) and ma = e and not exists(ma.getQualifier()))
   or
   exists(FieldAccess fa | fa.isEnclosingFieldAccess(t) and fa = e and not exists(fa.getQualifier()))
   or
@@ -95,7 +95,7 @@ private newtype TInstanceAccessExt =
     or
     c instanceof SuperConstructorInvocationStmt
     or
-    c.(MethodAccess).isOwnMethodAccess() and not exists(c.getQualifier())
+    c.(MethodCall).isOwnMethodCall() and not exists(c.getQualifier())
   } or
   TThisEnclosingInstanceCapture(ConstructorCall cc) { implicitSetEnclosingInstanceToThis(cc) } or
   TEnclosingInstanceAccess(ExprParent e, RefType t) {
@@ -113,7 +113,7 @@ private newtype TInstanceAccessExt =
  * - Implicit field qualifier: The implicit access associated with an
  *   unqualified `FieldAccess` to a non-static field.
  * - Implicit method qualifier: The implicit access associated with an
- *   unqualified `MethodAccess` to a non-static method.
+ *   unqualified `MethodCall` to a non-static method.
  * - Implicit this constructor argument: The implicit argument of the value of
  *   `this` to a constructor call of the form `this()` or `super()`.
  * - Implicit enclosing instance capture: The implicit capture of the value of
@@ -132,28 +132,28 @@ class InstanceAccessExt extends TInstanceAccessExt {
       result = enc.getQualifier().toString() + "(" + enc.getType() + ")enclosing"
     )
     or
-    isOwnInstanceAccess() and result = "this"
+    this.isOwnInstanceAccess() and result = "this"
   }
 
   private string ppKind() {
-    isExplicit(_) and result = " <" + getAssociatedExprOrStmt().toString() + ">"
+    this.isExplicit(_) and result = " <" + this.getAssociatedExprOrStmt().toString() + ">"
     or
-    isImplicitFieldQualifier(_) and result = " <.field>"
+    this.isImplicitFieldQualifier(_) and result = " <.field>"
     or
-    isImplicitMethodQualifier(_) and result = " <.method>"
+    this.isImplicitMethodQualifier(_) and result = " <.method>"
     or
-    isImplicitThisConstructorArgument(_) and result = " <constr(this)>"
+    this.isImplicitThisConstructorArgument(_) and result = " <constr(this)>"
     or
-    isImplicitEnclosingInstanceCapture(_) and result = " <.new>"
+    this.isImplicitEnclosingInstanceCapture(_) and result = " <.new>"
     or
-    isImplicitEnclosingInstanceQualifier(_) and result = "."
+    this.isImplicitEnclosingInstanceQualifier(_) and result = "."
   }
 
   /** Gets a textual representation of this element. */
-  string toString() { result = ppBase() + ppKind() }
+  string toString() { result = this.ppBase() + this.ppKind() }
 
   /** Gets the source location for this element. */
-  Location getLocation() { result = getAssociatedExprOrStmt().getLocation() }
+  Location getLocation() { result = this.getAssociatedExprOrStmt().getLocation() }
 
   private ExprParent getAssociatedExprOrStmt() {
     this = TExplicitInstanceAccess(result) or
@@ -166,8 +166,8 @@ class InstanceAccessExt extends TInstanceAccessExt {
 
   /** Gets the callable in which this instance access occurs. */
   Callable getEnclosingCallable() {
-    result = getAssociatedExprOrStmt().(Expr).getEnclosingCallable() or
-    result = getAssociatedExprOrStmt().(Stmt).getEnclosingCallable()
+    result = this.getAssociatedExprOrStmt().(Expr).getEnclosingCallable() or
+    result = this.getAssociatedExprOrStmt().(Stmt).getEnclosingCallable()
   }
 
   /** Holds if this is the explicit instance access `ia`. */
@@ -180,7 +180,7 @@ class InstanceAccessExt extends TInstanceAccessExt {
   }
 
   /** Holds if this is the implicit qualifier of `ma`. */
-  predicate isImplicitMethodQualifier(MethodAccess ma) {
+  predicate isImplicitMethodQualifier(MethodCall ma) {
     this = TThisArgument(ma) or
     this = TEnclosingInstanceAccess(ma, _)
   }
@@ -206,7 +206,7 @@ class InstanceAccessExt extends TInstanceAccessExt {
   }
 
   /** Holds if this is an access to an object's own instance. */
-  predicate isOwnInstanceAccess() { not isEnclosingInstanceAccess(_) }
+  predicate isOwnInstanceAccess() { not this.isEnclosingInstanceAccess(_) }
 
   /** Holds if this is an access to an enclosing instance. */
   predicate isEnclosingInstanceAccess(RefType t) {
@@ -221,20 +221,22 @@ class InstanceAccessExt extends TInstanceAccessExt {
 
   /** Gets the type of this instance access. */
   RefType getType() {
-    isEnclosingInstanceAccess(result)
+    this.isEnclosingInstanceAccess(result)
     or
-    isOwnInstanceAccess() and result = getEnclosingCallable().getDeclaringType()
+    this.isOwnInstanceAccess() and result = this.getEnclosingCallable().getDeclaringType()
   }
 
   /** Gets the control flow node associated with this instance access. */
   ControlFlowNode getCfgNode() {
-    exists(ExprParent e | e = getAssociatedExprOrStmt() |
-      e instanceof Call and result = e
+    exists(ExprParent e | e = this.getAssociatedExprOrStmt() |
+      result.asCall() = e
       or
-      e instanceof InstanceAccess and result = e
+      e.(InstanceAccess).getControlFlowNode() = result
       or
       exists(FieldAccess fa | fa = e |
-        if fa instanceof RValue then fa = result else result.(AssignExpr).getDest() = fa
+        if fa instanceof VarRead
+        then fa.getControlFlowNode() = result
+        else result.asExpr().(AssignExpr).getDest() = fa
       )
     )
   }
@@ -244,14 +246,14 @@ class InstanceAccessExt extends TInstanceAccessExt {
  * An access to an object's own instance.
  */
 class OwnInstanceAccess extends InstanceAccessExt {
-  OwnInstanceAccess() { isOwnInstanceAccess() }
+  OwnInstanceAccess() { this.isOwnInstanceAccess() }
 }
 
 /**
  * An access to an enclosing instance.
  */
 class EnclosingInstanceAccess extends InstanceAccessExt {
-  EnclosingInstanceAccess() { isEnclosingInstanceAccess(_) }
+  EnclosingInstanceAccess() { this.isEnclosingInstanceAccess(_) }
 
   /** Gets the implicit qualifier of this in the desugared representation. */
   InstanceAccessExt getQualifier() {

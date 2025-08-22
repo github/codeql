@@ -1,0 +1,86 @@
+broken
+#select
+| inArray | Object[] |
+| inArrayComparable | Comparable<? super Object[]> |
+| inArrayComparableAny | Comparable<? super Object[]> |
+| inArrayComparableFinal | Comparable<? super Object[]> |
+| inArrayList | List<? extends Object[]> |
+| inArrayListAny | List<Object[]> |
+| inArrayListFinal | List<? extends Object[]> |
+| inInArray | Object[] |
+| inInArrayComparable | Comparable<? super Object[]> |
+| inInArrayComparableAny | Comparable<? super Object[]> |
+| inInArrayComparableFinal | Comparable<? super Object[]> |
+| inInArrayList | List<? extends Object[]> |
+| inInArrayListAny | List<? extends Object[]> |
+| inInArrayListFinal | List<? extends Object[]> |
+| inInvarArray | Object[] |
+| inInvarArrayComparable | Comparable<? super Object[]> |
+| inInvarArrayComparableAny | Comparable<? super Object[]> |
+| inInvarArrayComparableFinal | Comparable<? super Object[]> |
+| inInvarArrayList | List<? extends Object[]> |
+| inInvarArrayListAny | List<? extends Object[]> |
+| inInvarArrayListFinal | List<? extends Object[]> |
+| inOutArray | Object[] |
+| inOutArrayComparable | Comparable<? super Object[]> |
+| inOutArrayComparableAny | Comparable<? super Object[]> |
+| inOutArrayComparableFinal | Comparable<? super Object[]> |
+| inOutArrayList | List<? extends Object[]> |
+| inOutArrayListAny | List<? extends Object[]> |
+| inOutArrayListFinal | List<? extends Object[]> |
+| invarArray | CharSequence[] |
+| invarArrayComparable | Comparable<? super CharSequence[]> |
+| invarArrayComparableAny | Comparable<? super Object[]> |
+| invarArrayComparableFinal | Comparable<? super String[]> |
+| invarArrayList | List<CharSequence[]> |
+| invarArrayListAny | List<Object[]> |
+| invarArrayListFinal | List<String[]> |
+| invarInArray | Object[][] |
+| invarInArrayComparable | Comparable<? super Object[][]> |
+| invarInArrayComparableAny | Comparable<? super Object[][]> |
+| invarInArrayComparableFinal | Comparable<? super Object[][]> |
+| invarInArrayList | List<Object[][]> |
+| invarInArrayListAny | List<Object[][]> |
+| invarInArrayListFinal | List<Object[][]> |
+| invarInvarArray | CharSequence[][] |
+| invarInvarArrayComparable | Comparable<? super CharSequence[][]> |
+| invarInvarArrayComparableAny | Comparable<? super Object[][]> |
+| invarInvarArrayComparableFinal | Comparable<? super String[][]> |
+| invarInvarArrayList | List<CharSequence[][]> |
+| invarInvarArrayListAny | List<Object[][]> |
+| invarInvarArrayListFinal | List<String[][]> |
+| invarOutArray | CharSequence[][] |
+| invarOutArrayComparable | Comparable<? super CharSequence[][]> |
+| invarOutArrayComparableAny | Comparable<? super Object[][]> |
+| invarOutArrayComparableFinal | Comparable<? super String[][]> |
+| invarOutArrayList | List<CharSequence[][]> |
+| invarOutArrayListAny | List<Object[][]> |
+| invarOutArrayListFinal | List<String[][]> |
+| outArray | CharSequence[] |
+| outArrayComparable | Comparable<? super CharSequence[]> |
+| outArrayComparableAny | Comparable<? super Object[]> |
+| outArrayComparableFinal | Comparable<? super String[]> |
+| outArrayList | List<? extends CharSequence[]> |
+| outArrayListAny | List<? extends Object[]> |
+| outArrayListFinal | List<String[]> |
+| outInArray | Object[][] |
+| outInArrayComparable | Comparable<? super Object[][]> |
+| outInArrayComparableAny | Comparable<? super Object[][]> |
+| outInArrayComparableFinal | Comparable<? super Object[][]> |
+| outInArrayList | List<? extends Object[][]> |
+| outInArrayListAny | List<Object[][]> |
+| outInArrayListFinal | List<? extends Object[][]> |
+| outInvarArray | CharSequence[][] |
+| outInvarArrayComparable | Comparable<? super CharSequence[][]> |
+| outInvarArrayComparableAny | Comparable<? super Object[][]> |
+| outInvarArrayComparableFinal | Comparable<? super String[][]> |
+| outInvarArrayList | List<CharSequence[][]> |
+| outInvarArrayListAny | List<Object[][]> |
+| outInvarArrayListFinal | List<String[][]> |
+| outOutArray | CharSequence[][] |
+| outOutArrayComparable | Comparable<? super CharSequence[][]> |
+| outOutArrayComparableAny | Comparable<? super Object[][]> |
+| outOutArrayComparableFinal | Comparable<? super String[][]> |
+| outOutArrayList | List<? extends CharSequence[][]> |
+| outOutArrayListAny | List<? extends Object[][]> |
+| outOutArrayListFinal | List<String[][]> |

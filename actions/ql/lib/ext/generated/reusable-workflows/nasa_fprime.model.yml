@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["nasa/fprime/.github/workflows/reusable-project-builder.yml", "*", "input.target_platform", "code-injection", "generated"]
+     - ["nasa/fprime/.github/workflows/reusable-project-builder.yml", "*", "input.fprime_location", "code-injection", "generated"]
+     - ["nasa/fprime/.github/workflows/reusable-get-pr-branch.yml", "*", "input.default_target_ref", "code-injection", "generated"]
+     - ["nasa/fprime/.github/workflows/reusable-get-pr-branch.yml", "*", "input.target_repository", "code-injection", "generated"]

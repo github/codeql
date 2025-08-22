@@ -1,0 +1,120 @@
+edges
+| xslt.py:3:26:3:32 | ControlFlowNode for ImportMember | xslt.py:3:26:3:32 | ControlFlowNode for request | provenance |  |
+| xslt.py:3:26:3:32 | ControlFlowNode for request | xslt.py:10:17:10:23 | ControlFlowNode for request | provenance |  |
+| xslt.py:10:5:10:13 | ControlFlowNode for xsltQuery | xslt.py:11:27:11:35 | ControlFlowNode for xsltQuery | provenance |  |
+| xslt.py:10:17:10:23 | ControlFlowNode for request | xslt.py:10:17:10:28 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| xslt.py:10:17:10:28 | ControlFlowNode for Attribute | xslt.py:10:17:10:43 | ControlFlowNode for Attribute() | provenance | dict.get |
+| xslt.py:10:17:10:43 | ControlFlowNode for Attribute() | xslt.py:10:5:10:13 | ControlFlowNode for xsltQuery | provenance |  |
+| xslt.py:11:5:11:13 | ControlFlowNode for xslt_root | xslt.py:14:29:14:37 | ControlFlowNode for xslt_root | provenance |  |
+| xslt.py:11:17:11:36 | ControlFlowNode for Attribute() | xslt.py:11:5:11:13 | ControlFlowNode for xslt_root | provenance |  |
+| xslt.py:11:27:11:35 | ControlFlowNode for xsltQuery | xslt.py:11:17:11:36 | ControlFlowNode for Attribute() | provenance | Config |
+| xslt.py:11:27:11:35 | ControlFlowNode for xsltQuery | xslt.py:11:17:11:36 | ControlFlowNode for Attribute() | provenance | Decoding-XML |
+| xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | xsltInjection.py:3:26:3:32 | ControlFlowNode for request | provenance |  |
+| xsltInjection.py:3:26:3:32 | ControlFlowNode for request | xsltInjection.py:10:17:10:23 | ControlFlowNode for request | provenance |  |
+| xsltInjection.py:3:26:3:32 | ControlFlowNode for request | xsltInjection.py:17:17:17:23 | ControlFlowNode for request | provenance |  |
+| xsltInjection.py:3:26:3:32 | ControlFlowNode for request | xsltInjection.py:26:17:26:23 | ControlFlowNode for request | provenance |  |
+| xsltInjection.py:3:26:3:32 | ControlFlowNode for request | xsltInjection.py:35:17:35:23 | ControlFlowNode for request | provenance |  |
+| xsltInjection.py:3:26:3:32 | ControlFlowNode for request | xsltInjection.py:44:17:44:23 | ControlFlowNode for request | provenance |  |
+| xsltInjection.py:10:5:10:13 | ControlFlowNode for xsltQuery | xsltInjection.py:11:27:11:35 | ControlFlowNode for xsltQuery | provenance |  |
+| xsltInjection.py:10:17:10:23 | ControlFlowNode for request | xsltInjection.py:10:17:10:28 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| xsltInjection.py:10:17:10:28 | ControlFlowNode for Attribute | xsltInjection.py:10:17:10:43 | ControlFlowNode for Attribute() | provenance | dict.get |
+| xsltInjection.py:10:17:10:43 | ControlFlowNode for Attribute() | xsltInjection.py:10:5:10:13 | ControlFlowNode for xsltQuery | provenance |  |
+| xsltInjection.py:11:5:11:13 | ControlFlowNode for xslt_root | xsltInjection.py:12:28:12:36 | ControlFlowNode for xslt_root | provenance |  |
+| xsltInjection.py:11:17:11:36 | ControlFlowNode for Attribute() | xsltInjection.py:11:5:11:13 | ControlFlowNode for xslt_root | provenance |  |
+| xsltInjection.py:11:27:11:35 | ControlFlowNode for xsltQuery | xsltInjection.py:11:17:11:36 | ControlFlowNode for Attribute() | provenance | Config |
+| xsltInjection.py:11:27:11:35 | ControlFlowNode for xsltQuery | xsltInjection.py:11:17:11:36 | ControlFlowNode for Attribute() | provenance | Decoding-XML |
+| xsltInjection.py:17:5:17:13 | ControlFlowNode for xsltQuery | xsltInjection.py:18:27:18:35 | ControlFlowNode for xsltQuery | provenance |  |
+| xsltInjection.py:17:17:17:23 | ControlFlowNode for request | xsltInjection.py:17:17:17:28 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| xsltInjection.py:17:17:17:28 | ControlFlowNode for Attribute | xsltInjection.py:17:17:17:43 | ControlFlowNode for Attribute() | provenance | dict.get |
+| xsltInjection.py:17:17:17:43 | ControlFlowNode for Attribute() | xsltInjection.py:17:5:17:13 | ControlFlowNode for xsltQuery | provenance |  |
+| xsltInjection.py:18:5:18:13 | ControlFlowNode for xslt_root | xsltInjection.py:21:29:21:37 | ControlFlowNode for xslt_root | provenance |  |
+| xsltInjection.py:18:17:18:36 | ControlFlowNode for Attribute() | xsltInjection.py:18:5:18:13 | ControlFlowNode for xslt_root | provenance |  |
+| xsltInjection.py:18:27:18:35 | ControlFlowNode for xsltQuery | xsltInjection.py:18:17:18:36 | ControlFlowNode for Attribute() | provenance | Config |
+| xsltInjection.py:18:27:18:35 | ControlFlowNode for xsltQuery | xsltInjection.py:18:17:18:36 | ControlFlowNode for Attribute() | provenance | Decoding-XML |
+| xsltInjection.py:26:5:26:13 | ControlFlowNode for xsltQuery | xsltInjection.py:27:27:27:35 | ControlFlowNode for xsltQuery | provenance |  |
+| xsltInjection.py:26:17:26:23 | ControlFlowNode for request | xsltInjection.py:26:17:26:28 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| xsltInjection.py:26:17:26:28 | ControlFlowNode for Attribute | xsltInjection.py:26:17:26:43 | ControlFlowNode for Attribute() | provenance | dict.get |
+| xsltInjection.py:26:17:26:43 | ControlFlowNode for Attribute() | xsltInjection.py:26:5:26:13 | ControlFlowNode for xsltQuery | provenance |  |
+| xsltInjection.py:27:5:27:13 | ControlFlowNode for xslt_root | xsltInjection.py:31:24:31:32 | ControlFlowNode for xslt_root | provenance |  |
+| xsltInjection.py:27:17:27:36 | ControlFlowNode for Attribute() | xsltInjection.py:27:5:27:13 | ControlFlowNode for xslt_root | provenance |  |
+| xsltInjection.py:27:27:27:35 | ControlFlowNode for xsltQuery | xsltInjection.py:27:17:27:36 | ControlFlowNode for Attribute() | provenance | Config |
+| xsltInjection.py:27:27:27:35 | ControlFlowNode for xsltQuery | xsltInjection.py:27:17:27:36 | ControlFlowNode for Attribute() | provenance | Decoding-XML |
+| xsltInjection.py:35:5:35:13 | ControlFlowNode for xsltQuery | xsltInjection.py:36:34:36:42 | ControlFlowNode for xsltQuery | provenance |  |
+| xsltInjection.py:35:17:35:23 | ControlFlowNode for request | xsltInjection.py:35:17:35:28 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| xsltInjection.py:35:17:35:28 | ControlFlowNode for Attribute | xsltInjection.py:35:17:35:43 | ControlFlowNode for Attribute() | provenance | dict.get |
+| xsltInjection.py:35:17:35:43 | ControlFlowNode for Attribute() | xsltInjection.py:35:5:35:13 | ControlFlowNode for xsltQuery | provenance |  |
+| xsltInjection.py:36:5:36:13 | ControlFlowNode for xslt_root | xsltInjection.py:40:24:40:32 | ControlFlowNode for xslt_root | provenance |  |
+| xsltInjection.py:36:17:36:43 | ControlFlowNode for Attribute() | xsltInjection.py:36:5:36:13 | ControlFlowNode for xslt_root | provenance |  |
+| xsltInjection.py:36:34:36:42 | ControlFlowNode for xsltQuery | xsltInjection.py:36:17:36:43 | ControlFlowNode for Attribute() | provenance | Config |
+| xsltInjection.py:36:34:36:42 | ControlFlowNode for xsltQuery | xsltInjection.py:36:17:36:43 | ControlFlowNode for Attribute() | provenance | Decoding-XML |
+| xsltInjection.py:44:5:44:13 | ControlFlowNode for xsltQuery | xsltInjection.py:45:5:45:15 | ControlFlowNode for xsltStrings | provenance |  |
+| xsltInjection.py:44:17:44:23 | ControlFlowNode for request | xsltInjection.py:44:17:44:28 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| xsltInjection.py:44:17:44:28 | ControlFlowNode for Attribute | xsltInjection.py:44:17:44:43 | ControlFlowNode for Attribute() | provenance | dict.get |
+| xsltInjection.py:44:17:44:43 | ControlFlowNode for Attribute() | xsltInjection.py:44:5:44:13 | ControlFlowNode for xsltQuery | provenance |  |
+| xsltInjection.py:45:5:45:15 | ControlFlowNode for xsltStrings | xsltInjection.py:46:38:46:48 | ControlFlowNode for xsltStrings | provenance |  |
+| xsltInjection.py:46:5:46:13 | ControlFlowNode for xslt_root | xsltInjection.py:50:24:50:32 | ControlFlowNode for xslt_root | provenance |  |
+| xsltInjection.py:46:17:46:49 | ControlFlowNode for Attribute() | xsltInjection.py:46:5:46:13 | ControlFlowNode for xslt_root | provenance |  |
+| xsltInjection.py:46:38:46:48 | ControlFlowNode for xsltStrings | xsltInjection.py:46:17:46:49 | ControlFlowNode for Attribute() | provenance | Config |
+| xsltInjection.py:46:38:46:48 | ControlFlowNode for xsltStrings | xsltInjection.py:46:17:46:49 | ControlFlowNode for Attribute() | provenance | Decoding-XML |
+nodes
+| xslt.py:3:26:3:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| xslt.py:3:26:3:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| xslt.py:10:5:10:13 | ControlFlowNode for xsltQuery | semmle.label | ControlFlowNode for xsltQuery |
+| xslt.py:10:17:10:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| xslt.py:10:17:10:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| xslt.py:10:17:10:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| xslt.py:11:5:11:13 | ControlFlowNode for xslt_root | semmle.label | ControlFlowNode for xslt_root |
+| xslt.py:11:17:11:36 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| xslt.py:11:27:11:35 | ControlFlowNode for xsltQuery | semmle.label | ControlFlowNode for xsltQuery |
+| xslt.py:14:29:14:37 | ControlFlowNode for xslt_root | semmle.label | ControlFlowNode for xslt_root |
+| xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| xsltInjection.py:3:26:3:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| xsltInjection.py:10:5:10:13 | ControlFlowNode for xsltQuery | semmle.label | ControlFlowNode for xsltQuery |
+| xsltInjection.py:10:17:10:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| xsltInjection.py:10:17:10:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| xsltInjection.py:10:17:10:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| xsltInjection.py:11:5:11:13 | ControlFlowNode for xslt_root | semmle.label | ControlFlowNode for xslt_root |
+| xsltInjection.py:11:17:11:36 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| xsltInjection.py:11:27:11:35 | ControlFlowNode for xsltQuery | semmle.label | ControlFlowNode for xsltQuery |
+| xsltInjection.py:12:28:12:36 | ControlFlowNode for xslt_root | semmle.label | ControlFlowNode for xslt_root |
+| xsltInjection.py:17:5:17:13 | ControlFlowNode for xsltQuery | semmle.label | ControlFlowNode for xsltQuery |
+| xsltInjection.py:17:17:17:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| xsltInjection.py:17:17:17:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| xsltInjection.py:17:17:17:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| xsltInjection.py:18:5:18:13 | ControlFlowNode for xslt_root | semmle.label | ControlFlowNode for xslt_root |
+| xsltInjection.py:18:17:18:36 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| xsltInjection.py:18:27:18:35 | ControlFlowNode for xsltQuery | semmle.label | ControlFlowNode for xsltQuery |
+| xsltInjection.py:21:29:21:37 | ControlFlowNode for xslt_root | semmle.label | ControlFlowNode for xslt_root |
+| xsltInjection.py:26:5:26:13 | ControlFlowNode for xsltQuery | semmle.label | ControlFlowNode for xsltQuery |
+| xsltInjection.py:26:17:26:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| xsltInjection.py:26:17:26:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| xsltInjection.py:26:17:26:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| xsltInjection.py:27:5:27:13 | ControlFlowNode for xslt_root | semmle.label | ControlFlowNode for xslt_root |
+| xsltInjection.py:27:17:27:36 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| xsltInjection.py:27:27:27:35 | ControlFlowNode for xsltQuery | semmle.label | ControlFlowNode for xsltQuery |
+| xsltInjection.py:31:24:31:32 | ControlFlowNode for xslt_root | semmle.label | ControlFlowNode for xslt_root |
+| xsltInjection.py:35:5:35:13 | ControlFlowNode for xsltQuery | semmle.label | ControlFlowNode for xsltQuery |
+| xsltInjection.py:35:17:35:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| xsltInjection.py:35:17:35:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| xsltInjection.py:35:17:35:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| xsltInjection.py:36:5:36:13 | ControlFlowNode for xslt_root | semmle.label | ControlFlowNode for xslt_root |
+| xsltInjection.py:36:17:36:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| xsltInjection.py:36:34:36:42 | ControlFlowNode for xsltQuery | semmle.label | ControlFlowNode for xsltQuery |
+| xsltInjection.py:40:24:40:32 | ControlFlowNode for xslt_root | semmle.label | ControlFlowNode for xslt_root |
+| xsltInjection.py:44:5:44:13 | ControlFlowNode for xsltQuery | semmle.label | ControlFlowNode for xsltQuery |
+| xsltInjection.py:44:17:44:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| xsltInjection.py:44:17:44:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| xsltInjection.py:44:17:44:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| xsltInjection.py:45:5:45:15 | ControlFlowNode for xsltStrings | semmle.label | ControlFlowNode for xsltStrings |
+| xsltInjection.py:46:5:46:13 | ControlFlowNode for xslt_root | semmle.label | ControlFlowNode for xslt_root |
+| xsltInjection.py:46:17:46:49 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| xsltInjection.py:46:38:46:48 | ControlFlowNode for xsltStrings | semmle.label | ControlFlowNode for xsltStrings |
+| xsltInjection.py:50:24:50:32 | ControlFlowNode for xslt_root | semmle.label | ControlFlowNode for xslt_root |
+subpaths
+#select
+| xslt.py:14:29:14:37 | ControlFlowNode for xslt_root | xslt.py:3:26:3:32 | ControlFlowNode for ImportMember | xslt.py:14:29:14:37 | ControlFlowNode for xslt_root | This XSLT query depends on $@. | xslt.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
+| xsltInjection.py:12:28:12:36 | ControlFlowNode for xslt_root | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | xsltInjection.py:12:28:12:36 | ControlFlowNode for xslt_root | This XSLT query depends on $@. | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
+| xsltInjection.py:21:29:21:37 | ControlFlowNode for xslt_root | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | xsltInjection.py:21:29:21:37 | ControlFlowNode for xslt_root | This XSLT query depends on $@. | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
+| xsltInjection.py:31:24:31:32 | ControlFlowNode for xslt_root | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | xsltInjection.py:31:24:31:32 | ControlFlowNode for xslt_root | This XSLT query depends on $@. | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
+| xsltInjection.py:40:24:40:32 | ControlFlowNode for xslt_root | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | xsltInjection.py:40:24:40:32 | ControlFlowNode for xslt_root | This XSLT query depends on $@. | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
+| xsltInjection.py:50:24:50:32 | ControlFlowNode for xslt_root | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | xsltInjection.py:50:24:50:32 | ControlFlowNode for xslt_root | This XSLT query depends on $@. | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |

@@ -1,0 +1,44 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", False, "CreateFromFile", "(Microsoft.Win32.SafeHandles.SafeFileHandle,System.String,System.Int64,System.IO.MemoryMappedFiles.MemoryMappedFileAccess,System.IO.HandleInheritability,System.Boolean)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", False, "CreateFromFile", "(System.IO.FileStream,System.String,System.Int64,System.IO.MemoryMappedFiles.MemoryMappedFileAccess,System.IO.HandleInheritability,System.Boolean)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", False, "get_SafeMemoryMappedFileHandle", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedViewAccessor", False, "get_SafeMemoryMappedViewHandle", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedViewStream", False, "get_SafeMemoryMappedViewHandle", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", "CreateFromFile", "(System.String)", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", "CreateFromFile", "(System.String,System.IO.FileMode)", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", "CreateFromFile", "(System.String,System.IO.FileMode,System.String)", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", "CreateFromFile", "(System.String,System.IO.FileMode,System.String,System.Int64)", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", "CreateFromFile", "(System.String,System.IO.FileMode,System.String,System.Int64,System.IO.MemoryMappedFiles.MemoryMappedFileAccess)", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", "CreateNew", "(System.String,System.Int64)", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", "CreateNew", "(System.String,System.Int64,System.IO.MemoryMappedFiles.MemoryMappedFileAccess)", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", "CreateNew", "(System.String,System.Int64,System.IO.MemoryMappedFiles.MemoryMappedFileAccess,System.IO.MemoryMappedFiles.MemoryMappedFileOptions,System.IO.HandleInheritability)", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", "CreateOrOpen", "(System.String,System.Int64)", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", "CreateOrOpen", "(System.String,System.Int64,System.IO.MemoryMappedFiles.MemoryMappedFileAccess)", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", "CreateOrOpen", "(System.String,System.Int64,System.IO.MemoryMappedFiles.MemoryMappedFileAccess,System.IO.MemoryMappedFiles.MemoryMappedFileOptions,System.IO.HandleInheritability)", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", "CreateViewAccessor", "()", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", "CreateViewAccessor", "(System.Int64,System.Int64)", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", "CreateViewAccessor", "(System.Int64,System.Int64,System.IO.MemoryMappedFiles.MemoryMappedFileAccess)", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", "CreateViewStream", "()", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", "CreateViewStream", "(System.Int64,System.Int64)", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", "CreateViewStream", "(System.Int64,System.Int64,System.IO.MemoryMappedFiles.MemoryMappedFileAccess)", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", "Dispose", "()", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", "Dispose", "(System.Boolean)", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", "OpenExisting", "(System.String)", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", "OpenExisting", "(System.String,System.IO.MemoryMappedFiles.MemoryMappedFileRights)", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedFile", "OpenExisting", "(System.String,System.IO.MemoryMappedFiles.MemoryMappedFileRights,System.IO.HandleInheritability)", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedViewAccessor", "Dispose", "(System.Boolean)", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedViewAccessor", "Flush", "()", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedViewAccessor", "get_PointerOffset", "()", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedViewStream", "Dispose", "(System.Boolean)", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedViewStream", "Flush", "()", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedViewStream", "SetLength", "(System.Int64)", "summary", "df-generated"]
+      - ["System.IO.MemoryMappedFiles", "MemoryMappedViewStream", "get_PointerOffset", "()", "summary", "df-generated"]

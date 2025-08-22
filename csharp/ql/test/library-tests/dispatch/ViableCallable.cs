@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 public delegate void EventHandler<T>();
 
@@ -144,10 +145,20 @@ public class ViableCallable
         d.M3(0);
         d.M3(0, 0.0);
 
+        // Viable callables: C8.M5(), C9.M5()
+        d = Mock<C8>();
+        d.M5();
+        d.M5(0);
+        d.M5(0, 0.0);
+
         // Viable callables: {C8,C9,C10}.M3()
         dyn.M3();
         dyn.M3(0);
         dyn.M3(0, 0.0);
+        // Viable callables: {C8,C9,C10}.M5()
+        dyn.M5();
+        dyn.M5(0);
+        dyn.M5(0, 0.0);
         // Viable callables: {C8,C9,C10}.{get_Prop1(),set_Prop1()}
         dyn.Prop1 = dyn.Prop1;
         // Viable callables: {C2,C3,C6,C7,C8,C9,C10}.{get_Item(),set_Item()}
@@ -313,6 +324,7 @@ public class C8
     public static void M2<T>(T[] x) { }
     public void M3(params double[] x) { }
     public void M4(byte b, IEnumerable<string> s) { }
+    public void M5(params IEnumerable<double> x) { }
     public virtual string Prop1 { get; set; }
     public static string Prop2 { get; set; }
     public string Prop3 { get; set; }
@@ -324,6 +336,7 @@ public class C9<T> : C8
 {
     public override void M(IEnumerable<C1<string[], bool>> x) { }
     public void M3(params T[] x) { }
+    public void M5(params IEnumerable<T> s) { }
     public override string Prop1 { get; set; }
     public string Prop3 { get; set; }
     public override string this[int x] { get { throw new Exception(); } set { throw new Exception(); } }
@@ -333,6 +346,7 @@ public class C9<T> : C8
 public class C10
 {
     public void M3(params double[] x) { }
+    public void M5(params IEnumerable<double> x) { }
     public static C10 operator +(C10 x, C10 y) { return x; }
     public bool Prop1 { get; set; }
     public static string Prop3 { get; set; }
@@ -573,5 +587,137 @@ public class C20 : I3<C20>
 
         // Viable callables: I3<C20>.M13()
         c.M13();
+    }
+}
+
+public class C21
+{
+    public interface I
+    {
+        void M();
+    }
+
+    public class A1 : I
+    {
+        public void M() { }
+    }
+
+    public ref struct A2 : I
+    {
+        public void M() { }
+    }
+
+    public void Run1<T>(T t) where T : I
+    {
+        // Viable callable: A1.M()
+        t.M();
+    }
+
+    public void Run2<T>(T t) where T : I, allows ref struct
+    {
+        // Viable callable: {A1, A2}.M()
+        t.M();
+    }
+}
+
+public class C22
+{
+    public interface I<T>
+    {
+        void M(List<T> l);
+        void M(T[] arr);
+        void M(IEnumerable<T> l);
+        void M(ReadOnlySpan<T> s);
+    }
+
+    public class TestOverloadResolution1<T> : I<T>
+    {
+        public void M(List<T> l) { }
+
+        public void M(T[] arr) { }
+
+        public void M(IEnumerable<T> l) { }
+
+        public void M(ReadOnlySpan<T> s) { }
+    }
+
+    public class TestOverloadResolution2<T> : I<T>
+    {
+        public void M(List<T> l) { }
+
+        public void M(T[] arr) { }
+
+        [OverloadResolutionPriority(1)]
+        public void M(IEnumerable<T> l) { }
+
+        [OverloadResolutionPriority(2)]
+        public void M(ReadOnlySpan<T> s) { }
+    }
+
+    public void Run1(TestOverloadResolution1<int> tor)
+    {
+        var a = new int[0];
+        // Viable callable: C22+TestOverloadResolution1<System.Int32>.M(Int32[])
+        tor.M(a);
+
+        // Viable callable: C22+TestOverloadResolution1<System.Int32>.M(List<int>)
+        var l = new List<int>();
+        tor.M(l);
+    }
+
+    public void Run2(TestOverloadResolution2<int> tor)
+    {
+        var a = new int[0];
+        // Viable callable: C22+TestOverloadResolution2<System.Int32>.M(ReadOnlySpan<int>)
+        tor.M(a);
+
+        var l = new List<int>();
+        // Viable callable: C22+TestOverloadResolution2<System.Int32>.M(IEnumerable<int>)
+        tor.M(l);
+    }
+
+    public void Run3(I<int> tor)
+    {
+        var a = new int[0];
+        // Viable callables: {C22+TestOverloadResolution1<System.Int32>, C22+TestOverloadResolution2<System.Int32>}.M(Int32[])
+        tor.M(a);
+
+        var l = new List<int>();
+        // Viable callables: {C22+TestOverloadResolution1<System.Int32>, C22+TestOverloadResolution2<System.Int32>}.M(List<int>)
+        tor.M(l);
+    }
+}
+
+public class C23
+{
+    public partial class Partial1
+    {
+        public partial object Property { get; set; }
+
+        public partial object this[int index] { get; set; }
+    }
+
+    public partial class Partial1
+    {
+        public partial object Property { get { return null; } set { } }
+
+        public partial object this[int index] { get { return null; } set { } }
+    }
+
+    public void Run1(Partial1 p)
+    {
+        object o;
+
+        // Viable callable: Partial1.set_Property
+        p.Property = new object();
+
+        // Viable callable: Partial1.get_Property
+        o = p.Property;
+
+        // Viable callable: Partial1.set_Item(int, object)
+        p[0] = new object();
+
+        // Viable callable: Partial1.get_Item(int)
+        o = p[0];
     }
 }

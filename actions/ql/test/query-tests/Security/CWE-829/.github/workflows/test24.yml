@@ -1,0 +1,20 @@
+on: [ workflow_dispatch, pull_request ]
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Fetch base and head on PR
+        if: ${{ github.event.pull_request.base.sha }}
+        run: |
+          git fetch origin master ${{ github.event.pull_request.base.sha }}
+          git fetch origin master ${{ github.event.pull_request.head.sha }}
+
+      - name: Check that Pull Request includes updating the Version
+        run: |
+          git show ${{ github.event.pull_request.base.sha }}:src/mplfinance/_version.py > scripts/tv0.py
+          git show ${{ github.sha }}:src/mplfinance/_version.py > scripts/tv1.py
+          python scripts/version_update_check.py tv0 tv1

@@ -1,0 +1,24 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
+load("@rules_pkg//pkg:pkg.bzl", "pkg_zip")
+
+_strip_prefix = "usr/lib/swift"
+
+pkg_files(
+    name = "resource-dir-files",
+    srcs = glob(
+        ["usr/lib/swift/**/*"],
+    ),
+    strip_prefix = _strip_prefix,
+    visibility = ["//visibility:public"],
+)
+
+pkg_zip(
+    name = "resource-dir-macos",
+    srcs = [":resource-dir-files"],
+)
+
+alias(
+    name = "swift_toolchain_macos",
+    actual = ":resource-dir-macos",
+    visibility = ["//visibility:public"],
+)

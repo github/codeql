@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import codeql.ruby.AST
 private import internal.AST
 private import internal.Constant
@@ -6,6 +9,7 @@ private import internal.Variable
 private import internal.TreeSitter
 
 /** A constant value. */
+overlay[global]
 class ConstantValue extends TConstantValue {
   /** Gets a textual representation of this constant value. */
   final string toString() { this.hasValueWithType(result, _) }
@@ -80,12 +84,6 @@ class ConstantValue extends TConstantValue {
   /** Holds if this is the regexp value `/s/flags` . */
   predicate isRegExpWithFlags(string s, string flags) { this = TRegExp(s, flags) }
 
-  /** DEPRECATED: Use `getStringlikeValue` instead. */
-  deprecated string getStringOrSymbol() { result = this.getStringlikeValue() }
-
-  /** DEPRECATED: Use `isStringlikeValue` instead. */
-  deprecated predicate isStringOrSymbol(string s) { s = this.getStringlikeValue() }
-
   /** Gets the string/symbol/regexp value, if any. */
   string getStringlikeValue() { result = [this.getString(), this.getSymbol(), this.getRegExp()] }
 
@@ -140,6 +138,7 @@ class ConstantValue extends TConstantValue {
 }
 
 /** Provides different sub classes of `ConstantValue`. */
+overlay[global]
 module ConstantValue {
   /** A constant integer value. */
   class ConstantIntegerValue extends ConstantValue, TInt { }
@@ -235,55 +234,6 @@ class ConstantAccess extends Expr, TConstantAccess {
   }
 }
 
-private class TokenConstantAccess extends ConstantAccess, TTokenConstantAccess {
-  private Ruby::Constant g;
-
-  TokenConstantAccess() { this = TTokenConstantAccess(g) }
-
-  final override string getName() { result = g.getValue() }
-}
-
-private class ScopeResolutionConstantAccess extends ConstantAccess, TScopeResolutionConstantAccess {
-  private Ruby::ScopeResolution g;
-  private Ruby::Constant constant;
-
-  ScopeResolutionConstantAccess() { this = TScopeResolutionConstantAccess(g, constant) }
-
-  final override string getName() { result = constant.getValue() }
-
-  final override Expr getScopeExpr() { toGenerated(result) = g.getScope() }
-
-  final override predicate hasGlobalScope() { not exists(g.getScope()) }
-}
-
-private class ConstantReadAccessSynth extends ConstantAccess, TConstantReadAccessSynth {
-  private string value;
-
-  ConstantReadAccessSynth() { this = TConstantReadAccessSynth(_, _, value) }
-
-  final override string getName() {
-    if this.hasGlobalScope() then result = value.suffix(2) else result = value
-  }
-
-  final override Expr getScopeExpr() { synthChild(this, 0, result) }
-
-  final override predicate hasGlobalScope() { value.matches("::%") }
-}
-
-private class ConstantWriteAccessSynth extends ConstantAccess, TConstantWriteAccessSynth {
-  private string value;
-
-  ConstantWriteAccessSynth() { this = TConstantWriteAccessSynth(_, _, value) }
-
-  final override string getName() {
-    if this.hasGlobalScope() then result = value.suffix(2) else result = value
-  }
-
-  final override Expr getScopeExpr() { synthChild(this, 0, result) }
-
-  final override predicate hasGlobalScope() { value.matches("::%") }
-}
-
 /**
  * A use (read) of a constant.
  *
@@ -323,15 +273,18 @@ class ConstantReadAccess extends ConstantAccess {
    *
    * the value being read at `M::CONST` is `"const"`.
    */
+  overlay[global]
   Expr getValue() { result = getConstantReadAccessValue(this) }
 
   /**
    * Gets a fully qualified name for this constant read, based on the context in
    * which it occurs.
    */
+  overlay[global]
   string getAQualifiedName() { result = resolveConstant(this) }
 
   /** Gets the module that this read access resolves to, if any. */
+  overlay[global]
   Module getModule() { result = resolveConstantReadAccess(this) }
 
   final override string getAPrimaryQlClass() { result = "ConstantReadAccess" }
@@ -397,6 +350,7 @@ class ConstantWriteAccess extends ConstantAccess {
    * constants up the namespace chain, the fully qualified name of a nested
    * constant can be ambiguous from just statically looking at the AST.
    */
+  overlay[global]
   string getAQualifiedName() { result = resolveConstantWrite(this) }
 }
 

@@ -3,10 +3,10 @@ extensions:
       pack: codeql/csharp-all
       extensible: sinkModel
     data:
-      - ["System.Web", "HttpResponse", False, "BinaryWrite", "", "", "Argument[0]", "html", "manual"]
-      - ["System.Web", "HttpResponse", False, "TransmitFile", "", "", "Argument[0]", "html", "manual"]
-      - ["System.Web", "HttpResponse", False, "Write", "", "", "Argument[0]", "html", "manual"]
-      - ["System.Web", "HttpResponse", False, "WriteFile", "", "", "Argument[0]", "html", "manual"]
+      - ["System.Web", "HttpResponse", False, "BinaryWrite", "", "", "Argument[0]", "html-injection", "manual"]
+      - ["System.Web", "HttpResponse", False, "TransmitFile", "", "", "Argument[0]", "html-injection", "manual"]
+      - ["System.Web", "HttpResponse", False, "Write", "", "", "Argument[0]", "html-injection", "manual"]
+      - ["System.Web", "HttpResponse", False, "WriteFile", "", "", "Argument[0]", "html-injection", "manual"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: summaryModel
@@ -22,6 +22,7 @@ extensions:
       - ["System.Web", "HttpUtility", False, "HtmlEncode", "(System.String,System.IO.TextWriter)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["System.Web", "HttpUtility", False, "JavaScriptStringEncode", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["System.Web", "HttpUtility", False, "JavaScriptStringEncode", "(System.String,System.Boolean)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["System.Web", "HttpUtility", False, "ParseQueryString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["System.Web", "HttpUtility", False, "UrlEncode", "(System.Byte[])", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["System.Web", "HttpUtility", False, "UrlEncode", "(System.Byte[],System.Int32,System.Int32)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["System.Web", "HttpUtility", False, "UrlEncode", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]

@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with Java imports.
  */
+overlay[local?]
+module;
 
 import semmle.code.Location
 import CompilationUnit
@@ -27,7 +29,9 @@ class ImportType extends Import {
   /** Gets the imported type. */
   ClassOrInterface getImportedType() { imports(this, result, _, _) }
 
-  override string toString() { result = "import " + this.getImportedType().toString() }
+  override string toString() {
+    result = "import " + pragma[only_bind_out](this.getImportedType()).toString()
+  }
 
   override string getAPrimaryQlClass() { result = "ImportType" }
 }
@@ -49,7 +53,9 @@ class ImportOnDemandFromType extends Import {
   /** Gets an imported type. */
   NestedType getAnImport() { result.getEnclosingType() = this.getTypeHoldingImport() }
 
-  override string toString() { result = "import " + this.getTypeHoldingImport().toString() + ".*" }
+  override string toString() {
+    result = "import " + pragma[only_bind_out](this.getTypeHoldingImport()).toString() + ".*"
+  }
 
   override string getAPrimaryQlClass() { result = "ImportOnDemandFromType" }
 }
@@ -71,7 +77,7 @@ class ImportOnDemandFromPackage extends Import {
 
   /** Gets a printable representation of this import declaration. */
   override string toString() {
-    result = "import " + this.getPackageHoldingImport().toString() + ".*"
+    result = "import " + pragma[only_bind_out](this.getPackageHoldingImport()).toString() + ".*"
   }
 
   override string getAPrimaryQlClass() { result = "ImportOnDemandFromPackage" }
@@ -100,7 +106,7 @@ class ImportStaticOnDemand extends Import {
 
   /** Gets a printable representation of this import declaration. */
   override string toString() {
-    result = "import static " + this.getTypeHoldingImport().toString() + ".*"
+    result = "import static " + pragma[only_bind_out](this.getTypeHoldingImport()).toString() + ".*"
   }
 
   override string getAPrimaryQlClass() { result = "ImportStaticOnDemand" }
@@ -141,7 +147,9 @@ class ImportStaticTypeMember extends Import {
 
   /** Gets a printable representation of this import declaration. */
   override string toString() {
-    result = "import static " + this.getTypeHoldingImport().toString() + "." + this.getName()
+    result =
+      "import static " + pragma[only_bind_out](this.getTypeHoldingImport()).toString() + "." +
+        this.getName()
   }
 
   override string getAPrimaryQlClass() { result = "ImportStaticTypeMember" }

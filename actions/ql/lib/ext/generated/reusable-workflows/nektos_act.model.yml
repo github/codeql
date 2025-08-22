@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["nektos/act/pkg/runner/testdata/workflow_call_inputs/workflow_call_inputs.yml", "*", "input.with_default", "code-injection", "generated"]
+     - ["nektos/act/pkg/runner/testdata/workflow_call_inputs/workflow_call_inputs.yml", "*", "input.required", "code-injection", "generated"]
+     - ["nektos/act/pkg/runner/testdata/.github/workflows/local-reusable-workflow.yml", "*", "input.string_required", "code-injection", "generated"]
+     - ["nektos/act/pkg/runner/testdata/.github/workflows/local-reusable-workflow.yml", "*", "input.number_optional", "code-injection", "generated"]
+     - ["nektos/act/pkg/runner/testdata/.github/workflows/local-reusable-workflow.yml", "*", "input.number_required", "code-injection", "generated"]
+     - ["nektos/act/pkg/runner/testdata/.github/workflows/local-reusable-workflow.yml", "*", "input.bool_optional", "code-injection", "generated"]
+     - ["nektos/act/pkg/runner/testdata/.github/workflows/local-reusable-workflow.yml", "*", "input.bool_required", "code-injection", "generated"]
+     - ["nektos/act/pkg/runner/testdata/.github/workflows/local-reusable-workflow.yml", "*", "input.string_optional", "code-injection", "generated"]

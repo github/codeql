@@ -4,9 +4,9 @@
  * @kind problem
  * @problem.severity warning
  * @id go/unexpected-nil-value
- * @tags reliability
- *       correctness
- *       logic
+ * @tags quality
+ *       reliability
+ *       error-handling
  * @precision high
  */
 
@@ -16,7 +16,8 @@ import go
 string packagePath() { result = package("github.com/pkg/errors", "") }
 
 /**
- * An equality test which guarantees that an expression is always `nil`.
+ * Holds if `g` is an equality test which guarantees that the expression `e` is
+ * either `nil` or not `nil`, depending on `outcome`.
  */
 predicate nilTestGuard(DataFlow::Node g, Expr e, boolean outcome) {
   exists(DataFlow::EqualityTestNode eq, DataFlow::Node otherNode |

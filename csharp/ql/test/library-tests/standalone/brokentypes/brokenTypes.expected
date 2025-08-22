@@ -1,0 +1,36 @@
+| BrokenTypes.cs:2:14:2:13 | call to constructor Object | object | ObjectType |
+| BrokenTypes.cs:5:14:5:16 | call to constructor Object | object | ObjectType |
+| BrokenTypes.cs:7:14:7:14 | call to constructor Object | object | ObjectType |
+| BrokenTypes.cs:13:14:13:20 | call to constructor Object | object | ObjectType |
+| BrokenTypes.cs:17:11:17:12 | access to local variable x1 | C | Class |
+| BrokenTypes.cs:17:11:17:22 | C x1 = ... | C | Class |
+| BrokenTypes.cs:17:16:17:22 | object creation of type C | C | Class |
+| BrokenTypes.cs:18:16:18:17 | access to local variable y1 | string | StringType |
+| BrokenTypes.cs:18:16:18:27 | String y1 = ... | string | StringType |
+| BrokenTypes.cs:18:21:18:22 | access to local variable x1 | C | Class |
+| BrokenTypes.cs:18:21:18:27 | access to property Prop | string | StringType |
+| BrokenTypes.cs:20:13:20:14 | access to local variable x2 | var | UnknownType |
+| BrokenTypes.cs:20:13:20:24 | var x2 = ... | var | UnknownType |
+| BrokenTypes.cs:20:18:20:24 | (...) ... | var | UnknownType |
+| BrokenTypes.cs:20:18:20:24 | object creation of type C | C | Class |
+| BrokenTypes.cs:21:13:21:14 | access to local variable y2 | var | UnknownType |
+| BrokenTypes.cs:21:13:21:24 | var y2 = ... | var | UnknownType |
+| BrokenTypes.cs:21:18:21:19 | access to local variable x2 | var | UnknownType |
+| BrokenTypes.cs:21:18:21:24 | (...) ... | var | UnknownType |
+| BrokenTypes.cs:21:18:21:24 | access to property (unknown) |  | UnknownType |
+| BrokenTypes.cs:23:12:23:13 | access to local variable x3 | <unknown type> | UnknownType |
+| BrokenTypes.cs:23:12:23:24 | <unknown type> x3 = ... | <unknown type> | UnknownType |
+| BrokenTypes.cs:23:17:23:24 | object creation of type <unknown type> | <unknown type> | UnknownType |
+| BrokenTypes.cs:24:13:24:14 | access to local variable y3 | var | UnknownType |
+| BrokenTypes.cs:24:13:24:24 | var y3 = ... | var | UnknownType |
+| BrokenTypes.cs:24:18:24:19 | access to local variable x3 | <unknown type> | UnknownType |
+| BrokenTypes.cs:24:18:24:24 | (...) ... | var | UnknownType |
+| BrokenTypes.cs:24:18:24:24 | access to property (unknown) |  | UnknownType |
+| BrokenTypes.cs:26:16:26:16 | access to local variable s | string | StringType |
+| BrokenTypes.cs:26:16:26:36 | String s = ... | string | StringType |
+| BrokenTypes.cs:26:20:26:21 | access to local variable x1 | C | Class |
+| BrokenTypes.cs:26:20:26:26 | access to property Prop | string | StringType |
+| BrokenTypes.cs:26:20:26:36 | (...) ... | string | StringType |
+| BrokenTypes.cs:26:20:26:36 | ... + ... |  | UnknownType |
+| BrokenTypes.cs:26:30:26:31 | access to local variable x3 | <unknown type> | UnknownType |
+| BrokenTypes.cs:26:30:26:36 | access to property (unknown) |  | UnknownType |

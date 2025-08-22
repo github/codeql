@@ -2,26 +2,14 @@ load("//swift:rules.bzl", "swift_cc_library")
 
 swift_cc_library(
     name = "file",
-    srcs = glob(["*.cpp"]),
-    hdrs = glob(["*.h"]) + [":path_hash_workaround"],
-    visibility = ["//swift:__subpackages__"],
-)
-
-genrule(
-    name = "path_hash_workaround",
-    srcs = [
-        "PathHash.h.workaround",
-        "PathHash.h.fixed",
-    ],
-    outs = ["PathHash.h"],
-    # see if https://cplusplus.github.io/LWG/issue3657 is fixed with the current compiler or not
-    # if fixed, PathHash.h.workaround will not compile
-    cmd = "\n".join([
-        "if clang -c -x c++ -std=c++17 -Wno-pragma-once-outside-header \\",
-        "    $(rootpath PathHash.h.workaround) -o /dev/null &> /dev/null; then",
-        "  cp $(rootpath PathHash.h.workaround) $@",
-        "else",
-        "  cp $(rootpath PathHash.h.fixed) $@",
-        "fi",
+    srcs = glob([
+        "*.cpp",
+        "FsLogger.h",
     ]),
+    hdrs = glob(
+        ["*.h"],
+        exclude = ["FsLogger.h"],
+    ),
+    visibility = ["//swift:__subpackages__"],
+    deps = ["//swift/logging"],
 )

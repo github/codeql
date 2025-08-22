@@ -1,133 +1,120 @@
 edges
-| UnsafeJsEval.swift:69:2:73:5 | [summary param] 0 in WKUserScript.init(source:injectionTime:forMainFrameOnly:) :  | file://:0:0:0:0 | [summary] to write: return (return) in WKUserScript.init(source:injectionTime:forMainFrameOnly:) :  |
-| UnsafeJsEval.swift:75:2:80:5 | [summary param] 0 in WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) :  |
-| UnsafeJsEval.swift:124:21:124:42 | string :  | UnsafeJsEval.swift:124:70:124:70 | string :  |
-| UnsafeJsEval.swift:144:5:144:29 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  |
-| UnsafeJsEval.swift:165:10:165:37 | try ... :  | UnsafeJsEval.swift:201:21:201:35 | call to getRemoteData() :  |
-| UnsafeJsEval.swift:165:14:165:37 | call to String.init(contentsOf:) :  | UnsafeJsEval.swift:165:10:165:37 | try ... :  |
-| UnsafeJsEval.swift:201:21:201:35 | call to getRemoteData() :  | UnsafeJsEval.swift:205:7:205:7 | remoteString :  |
-| UnsafeJsEval.swift:201:21:201:35 | call to getRemoteData() :  | UnsafeJsEval.swift:208:7:208:39 | ... .+(_:_:) ... :  |
-| UnsafeJsEval.swift:201:21:201:35 | call to getRemoteData() :  | UnsafeJsEval.swift:211:24:211:37 | .utf8 :  |
-| UnsafeJsEval.swift:204:7:204:66 | try! ... :  | UnsafeJsEval.swift:265:13:265:13 | string :  |
-| UnsafeJsEval.swift:204:7:204:66 | try! ... :  | UnsafeJsEval.swift:268:13:268:13 | string :  |
-| UnsafeJsEval.swift:204:7:204:66 | try! ... :  | UnsafeJsEval.swift:276:13:276:13 | string :  |
-| UnsafeJsEval.swift:204:7:204:66 | try! ... :  | UnsafeJsEval.swift:279:13:279:13 | string :  |
-| UnsafeJsEval.swift:204:7:204:66 | try! ... :  | UnsafeJsEval.swift:285:13:285:13 | string :  |
-| UnsafeJsEval.swift:204:7:204:66 | try! ... :  | UnsafeJsEval.swift:299:13:299:13 | string :  |
-| UnsafeJsEval.swift:204:12:204:66 | call to String.init(contentsOf:) :  | UnsafeJsEval.swift:204:7:204:66 | try! ... :  |
-| UnsafeJsEval.swift:205:7:205:7 | remoteString :  | UnsafeJsEval.swift:265:13:265:13 | string :  |
-| UnsafeJsEval.swift:205:7:205:7 | remoteString :  | UnsafeJsEval.swift:268:13:268:13 | string :  |
-| UnsafeJsEval.swift:205:7:205:7 | remoteString :  | UnsafeJsEval.swift:276:13:276:13 | string :  |
-| UnsafeJsEval.swift:205:7:205:7 | remoteString :  | UnsafeJsEval.swift:279:13:279:13 | string :  |
-| UnsafeJsEval.swift:205:7:205:7 | remoteString :  | UnsafeJsEval.swift:285:13:285:13 | string :  |
-| UnsafeJsEval.swift:205:7:205:7 | remoteString :  | UnsafeJsEval.swift:299:13:299:13 | string :  |
-| UnsafeJsEval.swift:208:7:208:39 | ... .+(_:_:) ... :  | UnsafeJsEval.swift:265:13:265:13 | string :  |
-| UnsafeJsEval.swift:208:7:208:39 | ... .+(_:_:) ... :  | UnsafeJsEval.swift:268:13:268:13 | string :  |
-| UnsafeJsEval.swift:208:7:208:39 | ... .+(_:_:) ... :  | UnsafeJsEval.swift:276:13:276:13 | string :  |
-| UnsafeJsEval.swift:208:7:208:39 | ... .+(_:_:) ... :  | UnsafeJsEval.swift:279:13:279:13 | string :  |
-| UnsafeJsEval.swift:208:7:208:39 | ... .+(_:_:) ... :  | UnsafeJsEval.swift:285:13:285:13 | string :  |
-| UnsafeJsEval.swift:208:7:208:39 | ... .+(_:_:) ... :  | UnsafeJsEval.swift:299:13:299:13 | string :  |
-| UnsafeJsEval.swift:211:19:211:41 | call to Data.init(_:) :  | UnsafeJsEval.swift:214:24:214:24 | remoteData :  |
-| UnsafeJsEval.swift:211:24:211:37 | .utf8 :  | UnsafeJsEval.swift:144:5:144:29 | [summary param] 0 in Data.init(_:) :  |
-| UnsafeJsEval.swift:211:24:211:37 | .utf8 :  | UnsafeJsEval.swift:211:19:211:41 | call to Data.init(_:) :  |
-| UnsafeJsEval.swift:214:7:214:49 | call to String.init(decoding:as:) :  | UnsafeJsEval.swift:265:13:265:13 | string :  |
-| UnsafeJsEval.swift:214:7:214:49 | call to String.init(decoding:as:) :  | UnsafeJsEval.swift:268:13:268:13 | string :  |
-| UnsafeJsEval.swift:214:7:214:49 | call to String.init(decoding:as:) :  | UnsafeJsEval.swift:276:13:276:13 | string :  |
-| UnsafeJsEval.swift:214:7:214:49 | call to String.init(decoding:as:) :  | UnsafeJsEval.swift:279:13:279:13 | string :  |
-| UnsafeJsEval.swift:214:7:214:49 | call to String.init(decoding:as:) :  | UnsafeJsEval.swift:285:13:285:13 | string :  |
-| UnsafeJsEval.swift:214:7:214:49 | call to String.init(decoding:as:) :  | UnsafeJsEval.swift:299:13:299:13 | string :  |
-| UnsafeJsEval.swift:214:24:214:24 | remoteData :  | UnsafeJsEval.swift:214:7:214:49 | call to String.init(decoding:as:) :  |
-| UnsafeJsEval.swift:214:24:214:24 | remoteData :  | file://:0:0:0:0 | [summary param] 0 in String.init(decoding:as:) :  |
-| UnsafeJsEval.swift:265:13:265:13 | string :  | UnsafeJsEval.swift:266:43:266:43 | string :  |
-| UnsafeJsEval.swift:266:43:266:43 | string :  | UnsafeJsEval.swift:69:2:73:5 | [summary param] 0 in WKUserScript.init(source:injectionTime:forMainFrameOnly:) :  |
-| UnsafeJsEval.swift:266:43:266:43 | string :  | UnsafeJsEval.swift:266:22:266:107 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) |
-| UnsafeJsEval.swift:268:13:268:13 | string :  | UnsafeJsEval.swift:269:43:269:43 | string :  |
-| UnsafeJsEval.swift:269:43:269:43 | string :  | UnsafeJsEval.swift:75:2:80:5 | [summary param] 0 in WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) :  |
-| UnsafeJsEval.swift:269:43:269:43 | string :  | UnsafeJsEval.swift:269:22:269:124 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) |
-| UnsafeJsEval.swift:276:13:276:13 | string :  | UnsafeJsEval.swift:277:26:277:26 | string |
-| UnsafeJsEval.swift:279:13:279:13 | string :  | UnsafeJsEval.swift:280:26:280:26 | string |
-| UnsafeJsEval.swift:285:13:285:13 | string :  | UnsafeJsEval.swift:286:3:286:10 | .utf16 :  |
-| UnsafeJsEval.swift:286:3:286:10 | .utf16 :  | UnsafeJsEval.swift:286:51:286:51 | stringBytes :  |
-| UnsafeJsEval.swift:286:51:286:51 | stringBytes :  | UnsafeJsEval.swift:287:31:287:97 | call to JSStringCreateWithCharacters(_:_:) :  |
-| UnsafeJsEval.swift:286:51:286:51 | stringBytes :  | UnsafeJsEval.swift:291:17:291:17 | jsstr |
-| UnsafeJsEval.swift:287:16:287:98 | call to JSStringRetain(_:) :  | UnsafeJsEval.swift:291:17:291:17 | jsstr |
-| UnsafeJsEval.swift:287:31:287:97 | call to JSStringCreateWithCharacters(_:_:) :  | UnsafeJsEval.swift:124:21:124:42 | string :  |
-| UnsafeJsEval.swift:287:31:287:97 | call to JSStringCreateWithCharacters(_:_:) :  | UnsafeJsEval.swift:287:16:287:98 | call to JSStringRetain(_:) :  |
-| UnsafeJsEval.swift:287:31:287:97 | call to JSStringCreateWithCharacters(_:_:) :  | UnsafeJsEval.swift:291:17:291:17 | jsstr |
-| UnsafeJsEval.swift:299:13:299:13 | string :  | UnsafeJsEval.swift:300:3:300:10 | .utf8CString :  |
-| UnsafeJsEval.swift:300:3:300:10 | .utf8CString :  | UnsafeJsEval.swift:300:48:300:48 | stringBytes :  |
-| UnsafeJsEval.swift:300:48:300:48 | stringBytes :  | UnsafeJsEval.swift:301:31:301:84 | call to JSStringCreateWithUTF8CString(_:) :  |
-| UnsafeJsEval.swift:300:48:300:48 | stringBytes :  | UnsafeJsEval.swift:305:17:305:17 | jsstr |
-| UnsafeJsEval.swift:301:16:301:85 | call to JSStringRetain(_:) :  | UnsafeJsEval.swift:305:17:305:17 | jsstr |
-| UnsafeJsEval.swift:301:31:301:84 | call to JSStringCreateWithUTF8CString(_:) :  | UnsafeJsEval.swift:124:21:124:42 | string :  |
-| UnsafeJsEval.swift:301:31:301:84 | call to JSStringCreateWithUTF8CString(_:) :  | UnsafeJsEval.swift:301:16:301:85 | call to JSStringRetain(_:) :  |
-| UnsafeJsEval.swift:301:31:301:84 | call to JSStringCreateWithUTF8CString(_:) :  | UnsafeJsEval.swift:305:17:305:17 | jsstr |
-| UnsafeJsEval.swift:318:24:318:87 | call to String.init(contentsOf:) :  | UnsafeJsEval.swift:320:44:320:74 | ... .+(_:_:) ... |
-| file://:0:0:0:0 | [summary param] 0 in String.init(decoding:as:) :  | file://:0:0:0:0 | [summary] to write: return (return) in String.init(decoding:as:) :  |
+| UnsafeJsEval.swift:204:7:204:66 | try! ... | UnsafeJsEval.swift:265:13:265:13 | string | provenance |  |
+| UnsafeJsEval.swift:204:7:204:66 | try! ... | UnsafeJsEval.swift:268:13:268:13 | string | provenance |  |
+| UnsafeJsEval.swift:204:7:204:66 | try! ... | UnsafeJsEval.swift:276:13:276:13 | string | provenance |  |
+| UnsafeJsEval.swift:204:7:204:66 | try! ... | UnsafeJsEval.swift:279:13:279:13 | string | provenance |  |
+| UnsafeJsEval.swift:204:7:204:66 | try! ... | UnsafeJsEval.swift:285:13:285:13 | string | provenance |  |
+| UnsafeJsEval.swift:204:7:204:66 | try! ... | UnsafeJsEval.swift:299:13:299:13 | string | provenance |  |
+| UnsafeJsEval.swift:204:12:204:66 | call to String.init(contentsOf:) | UnsafeJsEval.swift:204:7:204:66 | try! ... | provenance |  |
+| UnsafeJsEval.swift:205:7:205:35 | try! ... | UnsafeJsEval.swift:265:13:265:13 | string | provenance |  |
+| UnsafeJsEval.swift:205:7:205:35 | try! ... | UnsafeJsEval.swift:268:13:268:13 | string | provenance |  |
+| UnsafeJsEval.swift:205:7:205:35 | try! ... | UnsafeJsEval.swift:276:13:276:13 | string | provenance |  |
+| UnsafeJsEval.swift:205:7:205:35 | try! ... | UnsafeJsEval.swift:279:13:279:13 | string | provenance |  |
+| UnsafeJsEval.swift:205:7:205:35 | try! ... | UnsafeJsEval.swift:285:13:285:13 | string | provenance |  |
+| UnsafeJsEval.swift:205:7:205:35 | try! ... | UnsafeJsEval.swift:299:13:299:13 | string | provenance |  |
+| UnsafeJsEval.swift:205:12:205:35 | call to String.init(contentsOf:) | UnsafeJsEval.swift:205:7:205:35 | try! ... | provenance |  |
+| UnsafeJsEval.swift:208:7:208:58 | ... .+(_:_:) ... | UnsafeJsEval.swift:265:13:265:13 | string | provenance |  |
+| UnsafeJsEval.swift:208:7:208:58 | ... .+(_:_:) ... | UnsafeJsEval.swift:268:13:268:13 | string | provenance |  |
+| UnsafeJsEval.swift:208:7:208:58 | ... .+(_:_:) ... | UnsafeJsEval.swift:276:13:276:13 | string | provenance |  |
+| UnsafeJsEval.swift:208:7:208:58 | ... .+(_:_:) ... | UnsafeJsEval.swift:279:13:279:13 | string | provenance |  |
+| UnsafeJsEval.swift:208:7:208:58 | ... .+(_:_:) ... | UnsafeJsEval.swift:285:13:285:13 | string | provenance |  |
+| UnsafeJsEval.swift:208:7:208:58 | ... .+(_:_:) ... | UnsafeJsEval.swift:299:13:299:13 | string | provenance |  |
+| UnsafeJsEval.swift:208:30:208:53 | call to String.init(contentsOf:) | UnsafeJsEval.swift:208:7:208:58 | ... .+(_:_:) ... | provenance |  |
+| UnsafeJsEval.swift:211:19:211:60 | call to Data.init(_:) | UnsafeJsEval.swift:214:24:214:24 | remoteData | provenance |  |
+| UnsafeJsEval.swift:211:24:211:56 | .utf8 | UnsafeJsEval.swift:211:19:211:60 | call to Data.init(_:) | provenance |  |
+| UnsafeJsEval.swift:211:30:211:53 | call to String.init(contentsOf:) | UnsafeJsEval.swift:211:24:211:56 | .utf8 | provenance |  |
+| UnsafeJsEval.swift:214:7:214:49 | call to String.init(decoding:as:) | UnsafeJsEval.swift:265:13:265:13 | string | provenance |  |
+| UnsafeJsEval.swift:214:7:214:49 | call to String.init(decoding:as:) | UnsafeJsEval.swift:268:13:268:13 | string | provenance |  |
+| UnsafeJsEval.swift:214:7:214:49 | call to String.init(decoding:as:) | UnsafeJsEval.swift:276:13:276:13 | string | provenance |  |
+| UnsafeJsEval.swift:214:7:214:49 | call to String.init(decoding:as:) | UnsafeJsEval.swift:279:13:279:13 | string | provenance |  |
+| UnsafeJsEval.swift:214:7:214:49 | call to String.init(decoding:as:) | UnsafeJsEval.swift:285:13:285:13 | string | provenance |  |
+| UnsafeJsEval.swift:214:7:214:49 | call to String.init(decoding:as:) | UnsafeJsEval.swift:299:13:299:13 | string | provenance |  |
+| UnsafeJsEval.swift:214:24:214:24 | remoteData | UnsafeJsEval.swift:214:7:214:49 | call to String.init(decoding:as:) | provenance |  |
+| UnsafeJsEval.swift:265:13:265:13 | string | UnsafeJsEval.swift:266:43:266:43 | string | provenance |  |
+| UnsafeJsEval.swift:266:43:266:43 | string | UnsafeJsEval.swift:266:22:266:107 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) | provenance |  |
+| UnsafeJsEval.swift:268:13:268:13 | string | UnsafeJsEval.swift:269:43:269:43 | string | provenance |  |
+| UnsafeJsEval.swift:269:43:269:43 | string | UnsafeJsEval.swift:269:22:269:124 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) | provenance |  |
+| UnsafeJsEval.swift:276:13:276:13 | string | UnsafeJsEval.swift:277:26:277:26 | string | provenance |  |
+| UnsafeJsEval.swift:279:13:279:13 | string | UnsafeJsEval.swift:280:26:280:26 | string | provenance |  |
+| UnsafeJsEval.swift:285:13:285:13 | string | UnsafeJsEval.swift:286:3:286:10 | .utf16 | provenance |  |
+| UnsafeJsEval.swift:286:3:286:10 | .utf16 | UnsafeJsEval.swift:286:51:286:51 | stringBytes [Collection element] | provenance |  |
+| UnsafeJsEval.swift:286:51:286:51 | stringBytes [Collection element] | UnsafeJsEval.swift:287:60:287:60 | stringBytes [Collection element] | provenance |  |
+| UnsafeJsEval.swift:287:16:287:98 | call to JSStringRetain(_:) | UnsafeJsEval.swift:291:17:291:17 | jsstr | provenance |  |
+| UnsafeJsEval.swift:287:31:287:97 | call to JSStringCreateWithCharacters(_:_:) | UnsafeJsEval.swift:287:16:287:98 | call to JSStringRetain(_:) | provenance |  |
+| UnsafeJsEval.swift:287:60:287:60 | stringBytes [Collection element] | UnsafeJsEval.swift:287:60:287:72 | .baseAddress | provenance | Config |
+| UnsafeJsEval.swift:287:60:287:72 | .baseAddress | UnsafeJsEval.swift:287:31:287:97 | call to JSStringCreateWithCharacters(_:_:) | provenance |  |
+| UnsafeJsEval.swift:299:13:299:13 | string | UnsafeJsEval.swift:300:3:300:10 | .utf8CString | provenance |  |
+| UnsafeJsEval.swift:300:3:300:10 | .utf8CString | UnsafeJsEval.swift:300:48:300:48 | stringBytes [Collection element] | provenance |  |
+| UnsafeJsEval.swift:300:48:300:48 | stringBytes [Collection element] | UnsafeJsEval.swift:301:61:301:61 | stringBytes [Collection element] | provenance |  |
+| UnsafeJsEval.swift:301:16:301:85 | call to JSStringRetain(_:) | UnsafeJsEval.swift:305:17:305:17 | jsstr | provenance |  |
+| UnsafeJsEval.swift:301:31:301:84 | call to JSStringCreateWithUTF8CString(_:) | UnsafeJsEval.swift:301:16:301:85 | call to JSStringRetain(_:) | provenance |  |
+| UnsafeJsEval.swift:301:61:301:61 | stringBytes [Collection element] | UnsafeJsEval.swift:301:61:301:73 | .baseAddress | provenance | Config |
+| UnsafeJsEval.swift:301:61:301:73 | .baseAddress | UnsafeJsEval.swift:301:31:301:84 | call to JSStringCreateWithUTF8CString(_:) | provenance |  |
+| UnsafeJsEval.swift:318:24:318:87 | call to String.init(contentsOf:) | UnsafeJsEval.swift:320:44:320:74 | ... .+(_:_:) ... | provenance |  |
 nodes
-| UnsafeJsEval.swift:69:2:73:5 | [summary param] 0 in WKUserScript.init(source:injectionTime:forMainFrameOnly:) :  | semmle.label | [summary param] 0 in WKUserScript.init(source:injectionTime:forMainFrameOnly:) :  |
-| UnsafeJsEval.swift:75:2:80:5 | [summary param] 0 in WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) :  | semmle.label | [summary param] 0 in WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) :  |
-| UnsafeJsEval.swift:124:21:124:42 | string :  | semmle.label | string :  |
-| UnsafeJsEval.swift:124:70:124:70 | string :  | semmle.label | string :  |
-| UnsafeJsEval.swift:144:5:144:29 | [summary param] 0 in Data.init(_:) :  | semmle.label | [summary param] 0 in Data.init(_:) :  |
-| UnsafeJsEval.swift:165:10:165:37 | try ... :  | semmle.label | try ... :  |
-| UnsafeJsEval.swift:165:14:165:37 | call to String.init(contentsOf:) :  | semmle.label | call to String.init(contentsOf:) :  |
-| UnsafeJsEval.swift:201:21:201:35 | call to getRemoteData() :  | semmle.label | call to getRemoteData() :  |
-| UnsafeJsEval.swift:204:7:204:66 | try! ... :  | semmle.label | try! ... :  |
-| UnsafeJsEval.swift:204:12:204:66 | call to String.init(contentsOf:) :  | semmle.label | call to String.init(contentsOf:) :  |
-| UnsafeJsEval.swift:205:7:205:7 | remoteString :  | semmle.label | remoteString :  |
-| UnsafeJsEval.swift:208:7:208:39 | ... .+(_:_:) ... :  | semmle.label | ... .+(_:_:) ... :  |
-| UnsafeJsEval.swift:211:19:211:41 | call to Data.init(_:) :  | semmle.label | call to Data.init(_:) :  |
-| UnsafeJsEval.swift:211:24:211:37 | .utf8 :  | semmle.label | .utf8 :  |
-| UnsafeJsEval.swift:214:7:214:49 | call to String.init(decoding:as:) :  | semmle.label | call to String.init(decoding:as:) :  |
-| UnsafeJsEval.swift:214:24:214:24 | remoteData :  | semmle.label | remoteData :  |
-| UnsafeJsEval.swift:265:13:265:13 | string :  | semmle.label | string :  |
+| UnsafeJsEval.swift:204:7:204:66 | try! ... | semmle.label | try! ... |
+| UnsafeJsEval.swift:204:12:204:66 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
+| UnsafeJsEval.swift:205:7:205:35 | try! ... | semmle.label | try! ... |
+| UnsafeJsEval.swift:205:12:205:35 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
+| UnsafeJsEval.swift:208:7:208:58 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
+| UnsafeJsEval.swift:208:30:208:53 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
+| UnsafeJsEval.swift:211:19:211:60 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
+| UnsafeJsEval.swift:211:24:211:56 | .utf8 | semmle.label | .utf8 |
+| UnsafeJsEval.swift:211:30:211:53 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
+| UnsafeJsEval.swift:214:7:214:49 | call to String.init(decoding:as:) | semmle.label | call to String.init(decoding:as:) |
+| UnsafeJsEval.swift:214:24:214:24 | remoteData | semmle.label | remoteData |
+| UnsafeJsEval.swift:265:13:265:13 | string | semmle.label | string |
 | UnsafeJsEval.swift:266:22:266:107 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) | semmle.label | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) |
-| UnsafeJsEval.swift:266:43:266:43 | string :  | semmle.label | string :  |
-| UnsafeJsEval.swift:268:13:268:13 | string :  | semmle.label | string :  |
+| UnsafeJsEval.swift:266:43:266:43 | string | semmle.label | string |
+| UnsafeJsEval.swift:268:13:268:13 | string | semmle.label | string |
 | UnsafeJsEval.swift:269:22:269:124 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) | semmle.label | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) |
-| UnsafeJsEval.swift:269:43:269:43 | string :  | semmle.label | string :  |
-| UnsafeJsEval.swift:276:13:276:13 | string :  | semmle.label | string :  |
+| UnsafeJsEval.swift:269:43:269:43 | string | semmle.label | string |
+| UnsafeJsEval.swift:276:13:276:13 | string | semmle.label | string |
 | UnsafeJsEval.swift:277:26:277:26 | string | semmle.label | string |
-| UnsafeJsEval.swift:279:13:279:13 | string :  | semmle.label | string :  |
+| UnsafeJsEval.swift:279:13:279:13 | string | semmle.label | string |
 | UnsafeJsEval.swift:280:26:280:26 | string | semmle.label | string |
-| UnsafeJsEval.swift:285:13:285:13 | string :  | semmle.label | string :  |
-| UnsafeJsEval.swift:286:3:286:10 | .utf16 :  | semmle.label | .utf16 :  |
-| UnsafeJsEval.swift:286:51:286:51 | stringBytes :  | semmle.label | stringBytes :  |
-| UnsafeJsEval.swift:287:16:287:98 | call to JSStringRetain(_:) :  | semmle.label | call to JSStringRetain(_:) :  |
-| UnsafeJsEval.swift:287:31:287:97 | call to JSStringCreateWithCharacters(_:_:) :  | semmle.label | call to JSStringCreateWithCharacters(_:_:) :  |
+| UnsafeJsEval.swift:285:13:285:13 | string | semmle.label | string |
+| UnsafeJsEval.swift:286:3:286:10 | .utf16 | semmle.label | .utf16 |
+| UnsafeJsEval.swift:286:51:286:51 | stringBytes [Collection element] | semmle.label | stringBytes [Collection element] |
+| UnsafeJsEval.swift:287:16:287:98 | call to JSStringRetain(_:) | semmle.label | call to JSStringRetain(_:) |
+| UnsafeJsEval.swift:287:31:287:97 | call to JSStringCreateWithCharacters(_:_:) | semmle.label | call to JSStringCreateWithCharacters(_:_:) |
+| UnsafeJsEval.swift:287:60:287:60 | stringBytes [Collection element] | semmle.label | stringBytes [Collection element] |
+| UnsafeJsEval.swift:287:60:287:72 | .baseAddress | semmle.label | .baseAddress |
 | UnsafeJsEval.swift:291:17:291:17 | jsstr | semmle.label | jsstr |
-| UnsafeJsEval.swift:299:13:299:13 | string :  | semmle.label | string :  |
-| UnsafeJsEval.swift:300:3:300:10 | .utf8CString :  | semmle.label | .utf8CString :  |
-| UnsafeJsEval.swift:300:48:300:48 | stringBytes :  | semmle.label | stringBytes :  |
-| UnsafeJsEval.swift:301:16:301:85 | call to JSStringRetain(_:) :  | semmle.label | call to JSStringRetain(_:) :  |
-| UnsafeJsEval.swift:301:31:301:84 | call to JSStringCreateWithUTF8CString(_:) :  | semmle.label | call to JSStringCreateWithUTF8CString(_:) :  |
+| UnsafeJsEval.swift:299:13:299:13 | string | semmle.label | string |
+| UnsafeJsEval.swift:300:3:300:10 | .utf8CString | semmle.label | .utf8CString |
+| UnsafeJsEval.swift:300:48:300:48 | stringBytes [Collection element] | semmle.label | stringBytes [Collection element] |
+| UnsafeJsEval.swift:301:16:301:85 | call to JSStringRetain(_:) | semmle.label | call to JSStringRetain(_:) |
+| UnsafeJsEval.swift:301:31:301:84 | call to JSStringCreateWithUTF8CString(_:) | semmle.label | call to JSStringCreateWithUTF8CString(_:) |
+| UnsafeJsEval.swift:301:61:301:61 | stringBytes [Collection element] | semmle.label | stringBytes [Collection element] |
+| UnsafeJsEval.swift:301:61:301:73 | .baseAddress | semmle.label | .baseAddress |
 | UnsafeJsEval.swift:305:17:305:17 | jsstr | semmle.label | jsstr |
-| UnsafeJsEval.swift:318:24:318:87 | call to String.init(contentsOf:) :  | semmle.label | call to String.init(contentsOf:) :  |
+| UnsafeJsEval.swift:318:24:318:87 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
 | UnsafeJsEval.swift:320:44:320:74 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
-| file://:0:0:0:0 | [summary param] 0 in String.init(decoding:as:) :  | semmle.label | [summary param] 0 in String.init(decoding:as:) :  |
-| file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | semmle.label | [summary] to write: return (return) in Data.init(_:) :  |
-| file://:0:0:0:0 | [summary] to write: return (return) in String.init(decoding:as:) :  | semmle.label | [summary] to write: return (return) in String.init(decoding:as:) :  |
-| file://:0:0:0:0 | [summary] to write: return (return) in WKUserScript.init(source:injectionTime:forMainFrameOnly:) :  | semmle.label | [summary] to write: return (return) in WKUserScript.init(source:injectionTime:forMainFrameOnly:) :  |
-| file://:0:0:0:0 | [summary] to write: return (return) in WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) :  | semmle.label | [summary] to write: return (return) in WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) :  |
 subpaths
-| UnsafeJsEval.swift:211:24:211:37 | .utf8 :  | UnsafeJsEval.swift:144:5:144:29 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | UnsafeJsEval.swift:211:19:211:41 | call to Data.init(_:) :  |
-| UnsafeJsEval.swift:214:24:214:24 | remoteData :  | file://:0:0:0:0 | [summary param] 0 in String.init(decoding:as:) :  | file://:0:0:0:0 | [summary] to write: return (return) in String.init(decoding:as:) :  | UnsafeJsEval.swift:214:7:214:49 | call to String.init(decoding:as:) :  |
-| UnsafeJsEval.swift:266:43:266:43 | string :  | UnsafeJsEval.swift:69:2:73:5 | [summary param] 0 in WKUserScript.init(source:injectionTime:forMainFrameOnly:) :  | file://:0:0:0:0 | [summary] to write: return (return) in WKUserScript.init(source:injectionTime:forMainFrameOnly:) :  | UnsafeJsEval.swift:266:22:266:107 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) |
-| UnsafeJsEval.swift:269:43:269:43 | string :  | UnsafeJsEval.swift:75:2:80:5 | [summary param] 0 in WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) :  | file://:0:0:0:0 | [summary] to write: return (return) in WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) :  | UnsafeJsEval.swift:269:22:269:124 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) |
-| UnsafeJsEval.swift:287:31:287:97 | call to JSStringCreateWithCharacters(_:_:) :  | UnsafeJsEval.swift:124:21:124:42 | string :  | UnsafeJsEval.swift:124:70:124:70 | string :  | UnsafeJsEval.swift:287:16:287:98 | call to JSStringRetain(_:) :  |
-| UnsafeJsEval.swift:301:31:301:84 | call to JSStringCreateWithUTF8CString(_:) :  | UnsafeJsEval.swift:124:21:124:42 | string :  | UnsafeJsEval.swift:124:70:124:70 | string :  | UnsafeJsEval.swift:301:16:301:85 | call to JSStringRetain(_:) :  |
 #select
-| UnsafeJsEval.swift:266:22:266:107 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) | UnsafeJsEval.swift:165:14:165:37 | call to String.init(contentsOf:) :  | UnsafeJsEval.swift:266:22:266:107 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) | Evaluation of uncontrolled JavaScript from a remote source. |
-| UnsafeJsEval.swift:266:22:266:107 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) | UnsafeJsEval.swift:204:12:204:66 | call to String.init(contentsOf:) :  | UnsafeJsEval.swift:266:22:266:107 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) | Evaluation of uncontrolled JavaScript from a remote source. |
-| UnsafeJsEval.swift:269:22:269:124 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) | UnsafeJsEval.swift:165:14:165:37 | call to String.init(contentsOf:) :  | UnsafeJsEval.swift:269:22:269:124 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) | Evaluation of uncontrolled JavaScript from a remote source. |
-| UnsafeJsEval.swift:269:22:269:124 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) | UnsafeJsEval.swift:204:12:204:66 | call to String.init(contentsOf:) :  | UnsafeJsEval.swift:269:22:269:124 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) | Evaluation of uncontrolled JavaScript from a remote source. |
-| UnsafeJsEval.swift:277:26:277:26 | string | UnsafeJsEval.swift:165:14:165:37 | call to String.init(contentsOf:) :  | UnsafeJsEval.swift:277:26:277:26 | string | Evaluation of uncontrolled JavaScript from a remote source. |
-| UnsafeJsEval.swift:277:26:277:26 | string | UnsafeJsEval.swift:204:12:204:66 | call to String.init(contentsOf:) :  | UnsafeJsEval.swift:277:26:277:26 | string | Evaluation of uncontrolled JavaScript from a remote source. |
-| UnsafeJsEval.swift:280:26:280:26 | string | UnsafeJsEval.swift:165:14:165:37 | call to String.init(contentsOf:) :  | UnsafeJsEval.swift:280:26:280:26 | string | Evaluation of uncontrolled JavaScript from a remote source. |
-| UnsafeJsEval.swift:280:26:280:26 | string | UnsafeJsEval.swift:204:12:204:66 | call to String.init(contentsOf:) :  | UnsafeJsEval.swift:280:26:280:26 | string | Evaluation of uncontrolled JavaScript from a remote source. |
-| UnsafeJsEval.swift:291:17:291:17 | jsstr | UnsafeJsEval.swift:165:14:165:37 | call to String.init(contentsOf:) :  | UnsafeJsEval.swift:291:17:291:17 | jsstr | Evaluation of uncontrolled JavaScript from a remote source. |
-| UnsafeJsEval.swift:291:17:291:17 | jsstr | UnsafeJsEval.swift:204:12:204:66 | call to String.init(contentsOf:) :  | UnsafeJsEval.swift:291:17:291:17 | jsstr | Evaluation of uncontrolled JavaScript from a remote source. |
-| UnsafeJsEval.swift:305:17:305:17 | jsstr | UnsafeJsEval.swift:165:14:165:37 | call to String.init(contentsOf:) :  | UnsafeJsEval.swift:305:17:305:17 | jsstr | Evaluation of uncontrolled JavaScript from a remote source. |
-| UnsafeJsEval.swift:305:17:305:17 | jsstr | UnsafeJsEval.swift:204:12:204:66 | call to String.init(contentsOf:) :  | UnsafeJsEval.swift:305:17:305:17 | jsstr | Evaluation of uncontrolled JavaScript from a remote source. |
-| UnsafeJsEval.swift:320:44:320:74 | ... .+(_:_:) ... | UnsafeJsEval.swift:318:24:318:87 | call to String.init(contentsOf:) :  | UnsafeJsEval.swift:320:44:320:74 | ... .+(_:_:) ... | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:266:22:266:107 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) | UnsafeJsEval.swift:204:12:204:66 | call to String.init(contentsOf:) | UnsafeJsEval.swift:266:22:266:107 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:266:22:266:107 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) | UnsafeJsEval.swift:205:12:205:35 | call to String.init(contentsOf:) | UnsafeJsEval.swift:266:22:266:107 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:266:22:266:107 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) | UnsafeJsEval.swift:208:30:208:53 | call to String.init(contentsOf:) | UnsafeJsEval.swift:266:22:266:107 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:266:22:266:107 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) | UnsafeJsEval.swift:211:30:211:53 | call to String.init(contentsOf:) | UnsafeJsEval.swift:266:22:266:107 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:) | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:269:22:269:124 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) | UnsafeJsEval.swift:204:12:204:66 | call to String.init(contentsOf:) | UnsafeJsEval.swift:269:22:269:124 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:269:22:269:124 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) | UnsafeJsEval.swift:205:12:205:35 | call to String.init(contentsOf:) | UnsafeJsEval.swift:269:22:269:124 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:269:22:269:124 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) | UnsafeJsEval.swift:208:30:208:53 | call to String.init(contentsOf:) | UnsafeJsEval.swift:269:22:269:124 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:269:22:269:124 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) | UnsafeJsEval.swift:211:30:211:53 | call to String.init(contentsOf:) | UnsafeJsEval.swift:269:22:269:124 | call to WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:277:26:277:26 | string | UnsafeJsEval.swift:204:12:204:66 | call to String.init(contentsOf:) | UnsafeJsEval.swift:277:26:277:26 | string | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:277:26:277:26 | string | UnsafeJsEval.swift:205:12:205:35 | call to String.init(contentsOf:) | UnsafeJsEval.swift:277:26:277:26 | string | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:277:26:277:26 | string | UnsafeJsEval.swift:208:30:208:53 | call to String.init(contentsOf:) | UnsafeJsEval.swift:277:26:277:26 | string | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:277:26:277:26 | string | UnsafeJsEval.swift:211:30:211:53 | call to String.init(contentsOf:) | UnsafeJsEval.swift:277:26:277:26 | string | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:280:26:280:26 | string | UnsafeJsEval.swift:204:12:204:66 | call to String.init(contentsOf:) | UnsafeJsEval.swift:280:26:280:26 | string | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:280:26:280:26 | string | UnsafeJsEval.swift:205:12:205:35 | call to String.init(contentsOf:) | UnsafeJsEval.swift:280:26:280:26 | string | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:280:26:280:26 | string | UnsafeJsEval.swift:208:30:208:53 | call to String.init(contentsOf:) | UnsafeJsEval.swift:280:26:280:26 | string | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:280:26:280:26 | string | UnsafeJsEval.swift:211:30:211:53 | call to String.init(contentsOf:) | UnsafeJsEval.swift:280:26:280:26 | string | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:291:17:291:17 | jsstr | UnsafeJsEval.swift:204:12:204:66 | call to String.init(contentsOf:) | UnsafeJsEval.swift:291:17:291:17 | jsstr | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:291:17:291:17 | jsstr | UnsafeJsEval.swift:205:12:205:35 | call to String.init(contentsOf:) | UnsafeJsEval.swift:291:17:291:17 | jsstr | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:291:17:291:17 | jsstr | UnsafeJsEval.swift:208:30:208:53 | call to String.init(contentsOf:) | UnsafeJsEval.swift:291:17:291:17 | jsstr | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:291:17:291:17 | jsstr | UnsafeJsEval.swift:211:30:211:53 | call to String.init(contentsOf:) | UnsafeJsEval.swift:291:17:291:17 | jsstr | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:305:17:305:17 | jsstr | UnsafeJsEval.swift:204:12:204:66 | call to String.init(contentsOf:) | UnsafeJsEval.swift:305:17:305:17 | jsstr | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:305:17:305:17 | jsstr | UnsafeJsEval.swift:205:12:205:35 | call to String.init(contentsOf:) | UnsafeJsEval.swift:305:17:305:17 | jsstr | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:305:17:305:17 | jsstr | UnsafeJsEval.swift:208:30:208:53 | call to String.init(contentsOf:) | UnsafeJsEval.swift:305:17:305:17 | jsstr | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:305:17:305:17 | jsstr | UnsafeJsEval.swift:211:30:211:53 | call to String.init(contentsOf:) | UnsafeJsEval.swift:305:17:305:17 | jsstr | Evaluation of uncontrolled JavaScript from a remote source. |
+| UnsafeJsEval.swift:320:44:320:74 | ... .+(_:_:) ... | UnsafeJsEval.swift:318:24:318:87 | call to String.init(contentsOf:) | UnsafeJsEval.swift:320:44:320:74 | ... .+(_:_:) ... | Evaluation of uncontrolled JavaScript from a remote source. |

@@ -4,10 +4,12 @@
  */
 
 import csharp
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.system.DirectoryServices
 private import semmle.code.csharp.frameworks.system.directoryservices.Protocols
 private import semmle.code.csharp.security.Sanitizers
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 /**
  * A data flow source for unvalidated user input that is used to construct LDAP queries.
@@ -17,7 +19,7 @@ abstract class Source extends DataFlow::Node { }
 /**
  * A data flow sink for unvalidated user input that is used to construct LDAP queries.
  */
-abstract class Sink extends DataFlow::ExprNode { }
+abstract class Sink extends ApiSinkExprNode { }
 
 /**
  * A sanitizer for unvalidated user input that is used to construct LDAP queries.
@@ -27,18 +29,45 @@ abstract class Sanitizer extends DataFlow::ExprNode { }
 /**
  * A taint-tracking configuration for unvalidated user input that is used to construct LDAP queries.
  */
-class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "LDAPInjection" }
+module LdapInjectionConfig implements DataFlow::ConfigSig {
+  /**
+   * Holds if `source` is a relevant data flow source.
+   */
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  /**
+   * Holds if `sink` is a relevant data flow sink.
+   */
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+  /**
+   * Holds if data flow through `node` is prohibited. This completely removes
+   * `node` from the data flow graph.
+   */
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
-/** A source of remote user input. */
-class RemoteSource extends Source instanceof RemoteFlowSource { }
+/**
+ * A taint-tracking configuration for unvalidated user input that is used to construct LDAP queries.
+ */
+module LdapInjection = TaintTracking::Global<LdapInjectionConfig>;
+
+/**
+ * DEPRECATED: Use `ThreadModelSource` instead.
+ *
+ * A source of remote user input.
+ */
+deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
+
+/** A source supported by the current threat model. */
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
+
+/** LDAP sinks defined through Models as Data. */
+private class ExternalLdapExprSink extends Sink {
+  ExternalLdapExprSink() { sinkNode(this, "ldap-injection") }
+}
 
 /**
  * An argument that sets the `Path` property of a `DirectoryEntry` object that is a sink for LDAP
@@ -120,9 +149,6 @@ class LdapEncodeSanitizer extends Sanitizer {
     this.getExpr().(MethodCall).getTarget().getName().regexpMatch("(?i)LDAP.*Encode.*")
   }
 }
-
-/** DEPRECATED: Alias for LdapEncodeSanitizer */
-deprecated class LDAPEncodeSanitizer = LdapEncodeSanitizer;
 
 private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
 

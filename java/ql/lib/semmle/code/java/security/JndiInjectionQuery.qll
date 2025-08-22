@@ -5,36 +5,37 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.frameworks.Jndi
 import semmle.code.java.frameworks.SpringLdap
 import semmle.code.java.security.JndiInjection
+private import semmle.code.java.security.Sanitizers
 
 /**
  * A taint-tracking configuration for unvalidated user input that is used in JNDI lookup.
  */
-class JndiInjectionFlowConfig extends TaintTracking::Configuration {
-  JndiInjectionFlowConfig() { this = "JndiInjectionFlowConfig" }
+module JndiInjectionFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSink(DataFlow::Node sink) { sink instanceof JndiInjectionSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof JndiInjectionSink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or
-    node.getType() instanceof BoxedType or
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof SimpleTypeSanitizer or
     node instanceof JndiInjectionSanitizer
   }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(JndiInjectionAdditionalTaintStep c).step(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
+
+/** Tracks flow of unvalidated user input that is used in JNDI lookup */
+module JndiInjectionFlow = TaintTracking::Global<JndiInjectionFlowConfig>;
 
 /**
  * A method that does a JNDI lookup when it receives a `SearchControls` argument with `setReturningObjFlag` = `true`
  */
 private class UnsafeSearchControlsSink extends JndiInjectionSink {
   UnsafeSearchControlsSink() {
-    exists(UnsafeSearchControlsConf conf, MethodAccess ma |
-      conf.hasFlowTo(DataFlow::exprNode(ma.getAnArgument()))
-    |
+    exists(MethodCall ma | UnsafeSearchControlsFlow::flowToExpr(ma.getAnArgument()) |
       this.asExpr() = ma.getArgument(0)
     )
   }
@@ -44,20 +45,20 @@ private class UnsafeSearchControlsSink extends JndiInjectionSink {
  * Find flows between a `SearchControls` object with `setReturningObjFlag` = `true`
  * and an argument of an `LdapOperations.search` or `DirContext.search` call.
  */
-private class UnsafeSearchControlsConf extends DataFlow2::Configuration {
-  UnsafeSearchControlsConf() { this = "UnsafeSearchControlsConf" }
+private module UnsafeSearchControlsConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof UnsafeSearchControls }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof UnsafeSearchControls }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeSearchControlsArgument }
+  predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeSearchControlsArgument }
 }
+
+private module UnsafeSearchControlsFlow = DataFlow::Global<UnsafeSearchControlsConfig>;
 
 /**
  * An argument of type `SearchControls` of an `LdapOperations.search` or `DirContext.search` call.
  */
 private class UnsafeSearchControlsArgument extends DataFlow::ExprNode {
   UnsafeSearchControlsArgument() {
-    exists(MethodAccess ma, Method m |
+    exists(MethodCall ma, Method m |
       ma.getMethod() = m and
       ma.getAnArgument() = this.asExpr() and
       this.asExpr().getType() instanceof TypeSearchControls and
@@ -74,7 +75,7 @@ private class UnsafeSearchControlsArgument extends DataFlow::ExprNode {
  */
 private class UnsafeSearchControls extends DataFlow::ExprNode {
   UnsafeSearchControls() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof SetReturningObjFlagMethod and
       ma.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = true and
       this.asExpr() = ma.getQualifier()

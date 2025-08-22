@@ -12,10 +12,17 @@
  */
 
 import java
-import JakartaExpressionInjectionLib
-import DataFlow::PathGraph
+deprecated import JakartaExpressionInjectionLib
+deprecated import JakartaExpressionInjectionFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, JakartaExpressionInjectionConfig conf
-where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Jakarta Expression Language injection from $@.",
-  source.getNode(), "this user input"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, JakartaExpressionInjectionFlow::PathNode source,
+  JakartaExpressionInjectionFlow::PathNode sink, string message1, DataFlow::Node sourceNode,
+  string message2
+) {
+  JakartaExpressionInjectionFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "Jakarta Expression Language injection from $@." and
+  sourceNode = source.getNode() and
+  message2 = "this user input"
+}

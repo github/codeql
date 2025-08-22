@@ -1,9 +1,9 @@
-﻿using Microsoft.Build.Construction;
-using Microsoft.Build.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
+using Microsoft.Build.Construction;
+using Microsoft.Build.Exceptions;
 using Semmle.Util.Logging;
 
 namespace Semmle.Autobuild.Shared
@@ -73,7 +73,7 @@ namespace Semmle.Autobuild.Shared
                     return;
                 }
 
-                builder.Log(Severity.Info, $"Unable to read solution file {path}.");
+                builder.Logger.LogInfo($"Unable to read solution file {path}.");
                 includedProjects = Array.Empty<Project<TAutobuildOptions>>();
                 return;
             }

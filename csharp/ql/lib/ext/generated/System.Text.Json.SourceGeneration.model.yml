@@ -1,0 +1,28 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Text.Json.SourceGeneration", "SourceGenerationOptionsSpec", False, "GetEffectivePropertyNamingPolicy", "()", "", "Argument[this].Property[System.Text.Json.SourceGeneration.SourceGenerationOptionsSpec.PropertyNamingPolicy]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Text.Json.SourceGeneration", "ContextGenerationSpec", "op_Equality", "(System.Text.Json.SourceGeneration.ContextGenerationSpec,System.Text.Json.SourceGeneration.ContextGenerationSpec)", "summary", "df-generated"]
+      - ["System.Text.Json.SourceGeneration", "ContextGenerationSpec", "op_Inequality", "(System.Text.Json.SourceGeneration.ContextGenerationSpec,System.Text.Json.SourceGeneration.ContextGenerationSpec)", "summary", "df-generated"]
+      - ["System.Text.Json.SourceGeneration", "JsonSourceGenerator", "Execute", "(Microsoft.CodeAnalysis.GeneratorExecutionContext)", "summary", "df-generated"]
+      - ["System.Text.Json.SourceGeneration", "JsonSourceGenerator", "Initialize", "(Microsoft.CodeAnalysis.GeneratorInitializationContext)", "summary", "df-generated"]
+      - ["System.Text.Json.SourceGeneration", "JsonSourceGenerator", "Initialize", "(Microsoft.CodeAnalysis.IncrementalGeneratorInitializationContext)", "summary", "df-generated"]
+      - ["System.Text.Json.SourceGeneration", "ParameterGenerationSpec", "op_Equality", "(System.Text.Json.SourceGeneration.ParameterGenerationSpec,System.Text.Json.SourceGeneration.ParameterGenerationSpec)", "summary", "df-generated"]
+      - ["System.Text.Json.SourceGeneration", "ParameterGenerationSpec", "op_Inequality", "(System.Text.Json.SourceGeneration.ParameterGenerationSpec,System.Text.Json.SourceGeneration.ParameterGenerationSpec)", "summary", "df-generated"]
+      - ["System.Text.Json.SourceGeneration", "PropertyGenerationSpec", "ShouldIncludePropertyForFastPath", "(System.Text.Json.SourceGeneration.ContextGenerationSpec)", "summary", "df-generated"]
+      - ["System.Text.Json.SourceGeneration", "PropertyGenerationSpec", "op_Equality", "(System.Text.Json.SourceGeneration.PropertyGenerationSpec,System.Text.Json.SourceGeneration.PropertyGenerationSpec)", "summary", "df-generated"]
+      - ["System.Text.Json.SourceGeneration", "PropertyGenerationSpec", "op_Inequality", "(System.Text.Json.SourceGeneration.PropertyGenerationSpec,System.Text.Json.SourceGeneration.PropertyGenerationSpec)", "summary", "df-generated"]
+      - ["System.Text.Json.SourceGeneration", "PropertyInitializerGenerationSpec", "op_Equality", "(System.Text.Json.SourceGeneration.PropertyInitializerGenerationSpec,System.Text.Json.SourceGeneration.PropertyInitializerGenerationSpec)", "summary", "df-generated"]
+      - ["System.Text.Json.SourceGeneration", "PropertyInitializerGenerationSpec", "op_Inequality", "(System.Text.Json.SourceGeneration.PropertyInitializerGenerationSpec,System.Text.Json.SourceGeneration.PropertyInitializerGenerationSpec)", "summary", "df-generated"]
+      - ["System.Text.Json.SourceGeneration", "SourceGenerationOptionsSpec", "op_Equality", "(System.Text.Json.SourceGeneration.SourceGenerationOptionsSpec,System.Text.Json.SourceGeneration.SourceGenerationOptionsSpec)", "summary", "df-generated"]
+      - ["System.Text.Json.SourceGeneration", "SourceGenerationOptionsSpec", "op_Inequality", "(System.Text.Json.SourceGeneration.SourceGenerationOptionsSpec,System.Text.Json.SourceGeneration.SourceGenerationOptionsSpec)", "summary", "df-generated"]
+      - ["System.Text.Json.SourceGeneration", "TypeGenerationSpec", "IsFastPathSupported", "()", "summary", "df-generated"]
+      - ["System.Text.Json.SourceGeneration", "TypeGenerationSpec", "op_Equality", "(System.Text.Json.SourceGeneration.TypeGenerationSpec,System.Text.Json.SourceGeneration.TypeGenerationSpec)", "summary", "df-generated"]
+      - ["System.Text.Json.SourceGeneration", "TypeGenerationSpec", "op_Inequality", "(System.Text.Json.SourceGeneration.TypeGenerationSpec,System.Text.Json.SourceGeneration.TypeGenerationSpec)", "summary", "df-generated"]

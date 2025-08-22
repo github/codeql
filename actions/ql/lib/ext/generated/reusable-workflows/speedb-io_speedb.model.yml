@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["speedb-io/speedb/.github/workflows/build_ubuntu_arm.yml", "*", "input.verSion", "code-injection", "generated"]
+     - ["speedb-io/speedb/.github/workflows/build_macos_ARM.yml", "*", "input.verSion", "code-injection", "generated"]

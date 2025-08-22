@@ -1,0 +1,36 @@
+edges
+| JwtNoVerifier.java:44:28:44:55 | getParameter(...) : String | JwtNoVerifier.java:45:39:45:47 | JwtToken1 : String | provenance | Src:MaD:1  |
+| JwtNoVerifier.java:45:39:45:47 | JwtToken1 : String | JwtNoVerifier.java:89:38:89:55 | token : String | provenance |  |
+| JwtNoVerifier.java:58:28:58:62 | (...)... : String | JwtNoVerifier.java:59:32:59:40 | JwtToken3 : String | provenance |  |
+| JwtNoVerifier.java:58:37:58:62 | getCredentials(...) : Object | JwtNoVerifier.java:58:28:58:62 | (...)... : String | provenance | Src:MaD:2  |
+| JwtNoVerifier.java:59:32:59:40 | JwtToken3 : String | JwtNoVerifier.java:89:38:89:55 | token : String | provenance |  |
+| JwtNoVerifier.java:89:38:89:55 | token : String | JwtNoVerifier.java:90:37:90:41 | token : String | provenance |  |
+| JwtNoVerifier.java:90:26:90:42 | decode(...) : DecodedJWT | JwtNoVerifier.java:91:28:91:30 | jwt : DecodedJWT | provenance |  |
+| JwtNoVerifier.java:90:37:90:41 | token : String | JwtNoVerifier.java:90:26:90:42 | decode(...) : DecodedJWT | provenance | Config |
+| JwtNoVerifier.java:91:16:91:31 | of(...) : Optional [<element>] : DecodedJWT | JwtNoVerifier.java:91:37:91:40 | item : DecodedJWT | provenance | MaD:3 |
+| JwtNoVerifier.java:91:28:91:30 | jwt : DecodedJWT | JwtNoVerifier.java:91:16:91:31 | of(...) : Optional [<element>] : DecodedJWT | provenance | MaD:4 |
+| JwtNoVerifier.java:91:37:91:40 | item : DecodedJWT | JwtNoVerifier.java:91:45:91:48 | item : DecodedJWT | provenance |  |
+| JwtNoVerifier.java:91:45:91:48 | item : DecodedJWT | JwtNoVerifier.java:91:45:91:69 | getClaim(...) | provenance | Config |
+models
+| 1 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+| 2 | Source: org.apache.shiro.authc; AuthenticationToken; true; getCredentials; (); ; ReturnValue; remote; manual |
+| 3 | Summary: java.util; Optional; false; map; ; ; Argument[this].Element; Argument[0].Parameter[0]; value; manual |
+| 4 | Summary: java.util; Optional; false; of; ; ; Argument[0]; ReturnValue.Element; value; manual |
+nodes
+| JwtNoVerifier.java:44:28:44:55 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| JwtNoVerifier.java:45:39:45:47 | JwtToken1 : String | semmle.label | JwtToken1 : String |
+| JwtNoVerifier.java:58:28:58:62 | (...)... : String | semmle.label | (...)... : String |
+| JwtNoVerifier.java:58:37:58:62 | getCredentials(...) : Object | semmle.label | getCredentials(...) : Object |
+| JwtNoVerifier.java:59:32:59:40 | JwtToken3 : String | semmle.label | JwtToken3 : String |
+| JwtNoVerifier.java:89:38:89:55 | token : String | semmle.label | token : String |
+| JwtNoVerifier.java:90:26:90:42 | decode(...) : DecodedJWT | semmle.label | decode(...) : DecodedJWT |
+| JwtNoVerifier.java:90:37:90:41 | token : String | semmle.label | token : String |
+| JwtNoVerifier.java:91:16:91:31 | of(...) : Optional [<element>] : DecodedJWT | semmle.label | of(...) : Optional [<element>] : DecodedJWT |
+| JwtNoVerifier.java:91:28:91:30 | jwt : DecodedJWT | semmle.label | jwt : DecodedJWT |
+| JwtNoVerifier.java:91:37:91:40 | item : DecodedJWT | semmle.label | item : DecodedJWT |
+| JwtNoVerifier.java:91:45:91:48 | item : DecodedJWT | semmle.label | item : DecodedJWT |
+| JwtNoVerifier.java:91:45:91:69 | getClaim(...) | semmle.label | getClaim(...) |
+problems
+| JwtNoVerifier.java:91:45:91:69 | getClaim(...) | JwtNoVerifier.java:44:28:44:55 | getParameter(...) : String | JwtNoVerifier.java:91:45:91:69 | getClaim(...) | This parses a $@, but the signature is not verified. | JwtNoVerifier.java:44:28:44:55 | getParameter(...) | JWT |
+| JwtNoVerifier.java:91:45:91:69 | getClaim(...) | JwtNoVerifier.java:58:37:58:62 | getCredentials(...) : Object | JwtNoVerifier.java:91:45:91:69 | getClaim(...) | This parses a $@, but the signature is not verified. | JwtNoVerifier.java:58:37:58:62 | getCredentials(...) | JWT |
+subpaths

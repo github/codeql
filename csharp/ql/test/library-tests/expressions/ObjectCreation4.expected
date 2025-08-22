@@ -1,2 +1,2 @@
-| expressions.cs:387:23:387:48 | object creation of type Point | expressions.cs:387:33:387:48 | { ..., ... } | expressions.cs:387:35:387:39 | ... = ... | expressions.cs:387:42:387:46 | ... = ... |
-| expressions.cs:390:22:390:49 | object creation of type Point | expressions.cs:390:34:390:49 | { ..., ... } | expressions.cs:390:36:390:40 | ... = ... | expressions.cs:390:43:390:47 | ... = ... |
+| expressions.cs:388:23:388:48 | object creation of type Point | expressions.cs:388:33:388:48 | { ..., ... } | expressions.cs:388:35:388:39 | ... = ... | expressions.cs:388:42:388:46 | ... = ... |
+| expressions.cs:391:22:391:49 | object creation of type Point | expressions.cs:391:34:391:49 | { ..., ... } | expressions.cs:391:36:391:40 | ... = ... | expressions.cs:391:43:391:47 | ... = ... |

@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 import semmle.code.java.deadcode.DeadCode
 import semmle.code.java.deadcode.frameworks.CamelEntryPoints
@@ -7,6 +10,7 @@ import semmle.code.java.deadcode.StrutsEntryPoints
 import semmle.code.java.deadcode.TestEntryPoints
 import semmle.code.java.deadcode.WebEntryPoints
 import semmle.code.java.frameworks.javaee.JavaServerFaces
+import semmle.code.java.frameworks.javaee.Persistence
 import semmle.code.java.frameworks.JAXB
 import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.JMX
@@ -94,7 +98,7 @@ abstract class ReflectivelyConstructedClass extends EntryPoint, Class {
 /**
  * Classes that are deserialized by Jackson are reflectively constructed.
  */
-library class JacksonReflectivelyConstructedClass extends ReflectivelyConstructedClass instanceof JacksonDeserializableType
+class JacksonReflectivelyConstructedClass extends ReflectivelyConstructedClass instanceof JacksonDeserializableType
 {
   override Callable getALiveCallable() {
     // Constructors may be called by Jackson, if they are a no-arg, they have a suitable annotation,
@@ -135,14 +139,10 @@ class JaxAnnotationReflectivelyConstructedClass extends ReflectivelyConstructedC
   }
 }
 
-/** DEPRECATED: Alias for JaxAnnotationReflectivelyConstructedClass */
-deprecated class JAXAnnotationReflectivelyConstructedClass =
-  JaxAnnotationReflectivelyConstructedClass;
-
 class DeserializedClass extends ReflectivelyConstructedClass {
   DeserializedClass() {
     exists(CastingExpr cast, ReadObjectMethod readObject |
-      cast.getExpr().(MethodAccess).getMethod() = readObject
+      cast.getExpr().(MethodCall).getMethod() = readObject
     |
       hasDescendant(cast.getType(), this)
     )
@@ -164,7 +164,7 @@ class NewInstanceCall extends EntryPoint, NewInstance {
 /**
  * A call to either `Class.getMethod(...)` or `Class.getDeclaredMethod(...)`.
  */
-class ReflectiveMethodAccessEntryPoint extends EntryPoint, ReflectiveMethodAccess {
+class ReflectiveGetMethodCallEntryPoint extends EntryPoint, ReflectiveGetMethodCall {
   override Method getALiveCallable() {
     result = this.inferAccessedMethod() and
     // The `getMethod(...)` call must be used in a live context.
@@ -321,9 +321,6 @@ class EjbHome extends Interface, EntryPoint {
   override Callable getALiveCallable() { result = this.getACallable() }
 }
 
-/** DEPRECATED: Alias for EjbHome */
-deprecated class EJBHome = EjbHome;
-
 /**
  * Entry point for EJB object interfaces.
  */
@@ -332,9 +329,6 @@ class EjbObject extends Interface, EntryPoint {
 
   override Callable getALiveCallable() { result = this.getACallable() }
 }
-
-/** DEPRECATED: Alias for EjbObject */
-deprecated class EJBObject = EjbObject;
 
 class GsonDeserializationEntryPoint extends ReflectivelyConstructedClass {
   GsonDeserializationEntryPoint() {
@@ -357,9 +351,6 @@ class JaxbDeserializationEntryPoint extends ReflectivelyConstructedClass {
     )
   }
 }
-
-/** DEPRECATED: Alias for JaxbDeserializationEntryPoint */
-deprecated class JAXBDeserializationEntryPoint = JaxbDeserializationEntryPoint;
 
 /**
  * A `javax.annotation` for a method that is called after or before dependency injection on a type.
@@ -408,7 +399,7 @@ class PersistencePropertyMethod extends CallableEntryPoint {
       this = e.getACallable() and
       (
         e.getAccessType() = "property" or
-        this.hasAnnotation("javax.persistence", "Access")
+        this.hasAnnotation(getAPersistencePackageName(), "Access")
       ) and
       (
         this.getName().matches("get%") or
@@ -455,9 +446,6 @@ class ArbitraryXmlEntryPoint extends ReflectivelyConstructedClass {
     result = this.getAConstructor()
   }
 }
-
-/** DEPRECATED: Alias for ArbitraryXmlEntryPoint */
-deprecated class ArbitraryXMLEntryPoint = ArbitraryXmlEntryPoint;
 
 /** A Selenium PageObject, created by a call to PageFactory.initElements(..). */
 class SeleniumPageObjectEntryPoint extends ReflectivelyConstructedClass instanceof SeleniumPageObject

@@ -231,7 +231,7 @@
 | declarations.swift:132:5:132:15 | willSet |  |
 | declarations.swift:134:5:134:5 | self |  |
 | declarations.swift:134:5:134:14 | didSet |  |
-| declarations.swift:138:1:142:1 | extension |  |
+| declarations.swift:138:1:142:1 | extension of Int |  |
 | declarations.swift:139:3:141:3 | id() |  |
 | declarations.swift:139:8:139:8 | self |  |
 | declarations.swift:144:1:144:7 | { ... } |  |
@@ -264,13 +264,36 @@
 | declarations.swift:155:1:155:28 | { ... } |  |
 | declarations.swift:155:5:155:5 | d |  |
 | declarations.swift:157:1:180:1 | ifConfig() |  |
-| declarations.swift:158:3:166:3 | #if ... |  |
-| declarations.swift:168:3:171:3 | #if ... |  |
-| declarations.swift:173:3:179:3 | #if ... |  |
 | declarations.swift:182:1:182:10 | B |  |
 | declarations.swift:182:7:182:7 | B.deinit() |  |
 | declarations.swift:182:7:182:7 | B.init() |  |
 | declarations.swift:182:7:182:7 | self |  |
 | declarations.swift:182:7:182:7 | self |  |
-| declarations.swift:183:1:183:15 | A |  |
-| declarations.swift:184:1:184:18 | C |  |
+| declarations.swift:183:1:183:15 | A | getAliasedType:B |
+| declarations.swift:184:1:184:18 | C | getAliasedType:Int? |
+| declarations.swift:186:1:194:1 | S |  |
+| declarations.swift:186:7:186:7 | S.deinit() |  |
+| declarations.swift:186:7:186:7 | S.init() |  |
+| declarations.swift:186:7:186:7 | self |  |
+| declarations.swift:186:7:186:7 | self |  |
+| declarations.swift:187:3:187:13 | var ... = ... |  |
+| declarations.swift:187:7:187:7 | _modify |  |
+| declarations.swift:187:7:187:7 | bf1 |  |
+| declarations.swift:187:7:187:7 | get |  |
+| declarations.swift:187:7:187:7 | self |  |
+| declarations.swift:187:7:187:7 | self |  |
+| declarations.swift:187:7:187:7 | self |  |
+| declarations.swift:187:7:187:7 | set |  |
+| declarations.swift:187:7:187:7 | value |  |
+| declarations.swift:188:3:193:3 | captureThis() |  |
+| declarations.swift:188:8:188:8 | self |  |
+| declarations.swift:189:5:189:13 | var ... = ... |  |
+| declarations.swift:189:9:189:9 | x |  |
+| declarations.swift:190:5:192:5 | var ... = ... |  |
+| declarations.swift:190:9:190:9 | f |  |
+| declarations.swift:190:16:190:16 | self |  |
+| declarations.swift:190:16:190:16 | var ... = ... |  |
+| declarations.swift:190:22:190:22 | var ... = ... |  |
+| declarations.swift:190:22:190:22 | x |  |
+| declarations.swift:191:7:191:7 | self |  |
+| declarations.swift:191:18:191:18 | x |  |

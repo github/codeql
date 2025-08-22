@@ -27,11 +27,17 @@ class PrintAstConfiguration extends TPrintAstConfiguration {
 }
 
 private predicate shouldPrint(Element e, Location l) {
-  exists(PrintAstConfiguration config | config.shouldPrint(e, l))
+  exists(PrintAstConfiguration config | config.shouldPrint(e, l)) and
+  not e.(Stmt).isCompilerGenerated()
 }
 
 private predicate isImplicitExpression(ControlFlowElement element) {
-  element.(Expr).isImplicit() and not exists(element.getAChild())
+  // Include compiler generated cast expressions and `ToString` calls if
+  // they wrap actual source expressions.
+  element.(Expr).stripImplicit().isImplicit() and
+  not element instanceof CastExpr and
+  not element.(OperatorCall).getTarget() instanceof ImplicitConversionOperator and
+  not element instanceof ElementInitializer
 }
 
 private predicate isFilteredCompilerGenerated(Declaration d) {
@@ -107,10 +113,10 @@ private ValueOrRefType getAnInterestingBaseType(ValueOrRefType type) {
 
 private predicate isInterestingBaseType(ValueOrRefType type, ValueOrRefType base) {
   not base instanceof ObjectType and
-  not base.hasQualifiedName("System", "ValueType") and
-  not base.hasQualifiedName("System", "Delegate") and
-  not base.hasQualifiedName("System", "MulticastDelegate") and
-  not base.hasQualifiedName("System", "Enum") and
+  not base.hasFullyQualifiedName("System", "ValueType") and
+  not base.hasFullyQualifiedName("System", "Delegate") and
+  not base.hasFullyQualifiedName("System", "MulticastDelegate") and
+  not base.hasFullyQualifiedName("System", "Enum") and
   exists(TypeMention tm | tm.getTarget() = type and tm.getType() = base)
 }
 
@@ -290,18 +296,6 @@ class ControlFlowElementNode extends ElementNode {
     controlFlowElement = element and
     // Removing implicit expressions
     not isImplicitExpression(element) and
-    // Removing extra nodes that are generated for an `AssignOperation`
-    not exists(AssignOperation ao |
-      ao.hasExpandedAssignment() and
-      (
-        ao.getExpandedAssignment() = controlFlowElement or
-        ao.getExpandedAssignment().getRValue() = controlFlowElement or
-        ao.getExpandedAssignment().getRValue().(BinaryOperation).getLeftOperand() =
-          controlFlowElement.getParent*() or
-        ao.getExpandedAssignment().getRValue().(OperatorCall).getChild(0) =
-          controlFlowElement.getParent*()
-      )
-    ) and
     not isNotNeeded(element.getParent+()) and
     // LambdaExpr is both a Callable and a ControlFlowElement,
     // print it with the more specific CallableNode
@@ -428,7 +422,7 @@ final class DeclarationWithAccessorsNode extends ElementNode {
     result.(ParametersNode).getParameterizable() = declaration
     or
     childIndex = 2 and
-    result.(ElementNode).getElement() = declaration.(Property).getInitializer().getParent()
+    result.(ElementNode).getElement() = declaration.(Property).getInitializer()
     or
     result.(ElementNode).getElement() =
       rank[childIndex - 2](Element a, string file, int line, int column, string name |
@@ -461,12 +455,7 @@ final class FieldNode extends ElementNode {
     result.(AttributesNode).getAttributable() = field
     or
     childIndex = 1 and
-    field.hasInitializer() and
-    (
-      if field.getDeclaringType() instanceof Enum
-      then result.(ElementNode).getElement() = field.getInitializer()
-      else result.(ElementNode).getElement() = field.getInitializer().getParent()
-    )
+    result.(ElementNode).getElement() = field.getInitializer()
   }
 }
 

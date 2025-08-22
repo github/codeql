@@ -36,14 +36,14 @@ jobs:
       - run: echo "${PR_NUMBER}" > pr_number.txt
         env:
           PR_NUMBER: ${{ github.event.number }}
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          name: comment
+          name: comment-pr-number
           path: pr_number.txt
           if-no-files-found: error
           retention-days: 1
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 2
           persist-credentials: false
@@ -77,10 +77,10 @@ jobs:
           done < "${RUNNER_TEMP}/paths.txt" >> comment_body.txt
           exit "${EXIT_CODE}"
 
-      - if: always()
-        uses: actions/upload-artifact@v3
+      - if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
         with:
-          name: comment
+          name: comment-body
           path: comment_body.txt
           if-no-files-found: error
           retention-days: 1
@@ -94,9 +94,9 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.number }}
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          name: comment
+          name: comment-id
           path: comment_id.txt
           if-no-files-found: error
           retention-days: 1

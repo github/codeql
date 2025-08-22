@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["zentered/issue-forms-body-parser", "*", "input.body", "output.data", "taint", "manual"]

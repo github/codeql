@@ -4,6 +4,7 @@
 
 private import codeql.regex.nfa.NfaUtils as NfaUtils
 private import codeql.regex.RegexTreeView
+private import semmle.javascript.frameworks.Bundling
 
 /** An implementation that parses a regular expression into a tree of `RegExpTerm`s. */
 module RegExpTreeView implements RegexTreeViewSig {
@@ -42,7 +43,11 @@ module RegExpTreeView implements RegexTreeViewSig {
    *
    * For javascript we make the pragmatic performance optimization to ignore minified files.
    */
-  predicate isExcluded(RegExpParent parent) { parent.(Expr).getTopLevel().isMinified() }
+  predicate isExcluded(RegExpParent parent) {
+    parent.(Expr).getTopLevel().isMinified()
+    or
+    isBundle(parent.(Expr).getTopLevel())
+  }
 
   /**
    * Holds if `root` has the `i` flag for case-insensitive matching.

@@ -13,14 +13,14 @@ import meta.MetaMetrics
 
 /** An call site that is relevant for analysis quality. */
 class RelevantInvoke extends InvokeNode {
-  RelevantInvoke() { not getFile() instanceof IgnoredFile }
+  RelevantInvoke() { not this.getFile() instanceof IgnoredFile }
 }
 
 /** An call site that is relevant for analysis quality. */
 class RelevantFunction extends Function {
   RelevantFunction() {
-    not getFile() instanceof IgnoredFile and
-    hasBody() // ignore abstract or ambient functions
+    not this.getFile() instanceof IgnoredFile and
+    this.hasBody() // ignore abstract or ambient functions
   }
 }
 

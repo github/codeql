@@ -1,1 +1,2 @@
-Declarations/ClobberingVarInit.ql
+query: Declarations/ClobberingVarInit.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

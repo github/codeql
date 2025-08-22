@@ -3,11 +3,11 @@
  */
 
 import csharp
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
-private import semmle.code.csharp.security.dataflow.flowsources.Local
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.system.codedom.Compiler
 private import semmle.code.csharp.security.Sanitizers
-private import semmle.code.csharp.dataflow.ExternalFlow
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 /**
  * A data flow source for user input treated as code vulnerabilities.
@@ -17,7 +17,7 @@ abstract class Source extends DataFlow::Node { }
 /**
  * A data flow sink for user input treated as code vulnerabilities.
  */
-abstract class Sink extends DataFlow::ExprNode { }
+abstract class Sink extends ApiSinkExprNode { }
 
 /**
  * A sanitizer for user input treated as code vulnerabilities.
@@ -27,21 +27,37 @@ abstract class Sanitizer extends DataFlow::ExprNode { }
 /**
  * A taint-tracking configuration for user input treated as code vulnerabilities.
  */
-class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "CodeInjection" }
+private module CodeInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
-/** A source of remote user input. */
-class RemoteSource extends Source instanceof RemoteFlowSource { }
+/**
+ * A taint-tracking module for user input treated as code vulnerabilities.
+ */
+module CodeInjection = TaintTracking::Global<CodeInjectionConfig>;
 
-/** A source of local user input. */
-class LocalSource extends Source instanceof LocalFlowSource { }
+/**
+ * DEPRECATED: Use `ThreatModelSource` instead.
+ *
+ * A source of remote user input.
+ */
+deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
+
+/**
+ * DEPRECATED: Use `ThreatModelSource` instead.
+ *
+ * A source of local user input.
+ */
+deprecated class LocalSource extends DataFlow::Node instanceof LocalFlowSource { }
+
+/** A source supported by the current threat model. */
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
 
@@ -71,7 +87,9 @@ class CompileAssemblyFromSourceSink extends Sink {
  */
 class RoslynCSharpScriptSink extends Sink {
   RoslynCSharpScriptSink() {
-    exists(Class c | c.hasQualifiedName("Microsoft.CodeAnalysis.CSharp.Scripting", "CSharpScript") |
+    exists(Class c |
+      c.hasFullyQualifiedName("Microsoft.CodeAnalysis.CSharp.Scripting", "CSharpScript")
+    |
       this.getExpr() = c.getAMethod().getACall().getArgumentForName("code")
     )
   }
@@ -79,5 +97,5 @@ class RoslynCSharpScriptSink extends Sink {
 
 /** Code injection sinks defined through CSV models. */
 private class ExternalCodeInjectionExprSink extends Sink {
-  ExternalCodeInjectionExprSink() { sinkNode(this, "code") }
+  ExternalCodeInjectionExprSink() { sinkNode(this, "code-injection") }
 }

@@ -183,8 +183,8 @@ Exercise 1
 
    from Person p
    where
-   not p.isDeceased() and
-   p = relativeOf("King Basil")
+     not p.isDeceased() and
+     p = relativeOf("King Basil")
    select p
 
 Exercise 2
@@ -197,14 +197,14 @@ Exercise 2
    Person relativeOf(Person p) { parentOf*(result) = parentOf*(p) }
 
    predicate hasCriminalRecord(Person p) {
-   p = "Hester" or
-   p = "Hugh" or
-   p = "Charlie"
+     p = "Hester" or
+     p = "Hugh" or
+     p = "Charlie"
    }
 
    from Person p
    where
-   not p.isDeceased() and
-   p = relativeOf("King Basil") and
-   not hasCriminalRecord(p)
+     not p.isDeceased() and
+     p = relativeOf("King Basil") and
+     not hasCriminalRecord(p)
    select p

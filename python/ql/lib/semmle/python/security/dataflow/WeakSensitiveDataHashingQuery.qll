@@ -23,27 +23,22 @@ private import semmle.python.dataflow.new.SensitiveDataSources
 module NormalHashFunction {
   import WeakSensitiveDataHashingCustomizations::NormalHashFunction
 
-  /**
-   * A taint-tracking configuration for detecting use of a broken or weak
-   * cryptographic hashing algorithm on sensitive data.
-   */
-  class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "NormalHashFunction" }
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-    override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node)
-      or
-      node instanceof Sanitizer
-    }
-
-    override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       sensitiveDataExtraStepForCalls(node1, node2)
     }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
+
+  /** Global taint-tracking for detecting "use of a broken or weak cryptographic hashing algorithm on sensitive data" vulnerabilities. */
+  module Flow = TaintTracking::Global<Config>;
 }
 
 /**
@@ -57,27 +52,49 @@ module ComputationallyExpensiveHashFunction {
   import WeakSensitiveDataHashingCustomizations::ComputationallyExpensiveHashFunction
 
   /**
-   * A taint-tracking configuration for detecting use of a broken or weak
-   * cryptographic hashing algorithm on passwords.
-   *
    * Passwords has stricter requirements on the hashing algorithm used (must be
    * computationally expensive to prevent brute-force attacks).
    */
-  class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "ComputationallyExpensiveHashFunction" }
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-    override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node)
-      or
-      node instanceof Sanitizer
-    }
-
-    override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       sensitiveDataExtraStepForCalls(node1, node2)
     }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
+
+  /** Global taint-tracking for detecting "use of a broken or weak cryptographic hashing algorithm on passwords" vulnerabilities. */
+  module Flow = TaintTracking::Global<Config>;
+}
+
+/**
+ * Global taint-tracking for detecting both variants of "use of a broken or weak
+ * cryptographic hashing algorithm on sensitive data" vulnerabilities.
+ *
+ * See convenience predicates `normalHashFunctionFlowPath` and
+ * `computationallyExpensiveHashFunctionFlowPath`.
+ */
+module WeakSensitiveDataHashingFlow =
+  DataFlow::MergePathGraph<NormalHashFunction::Flow::PathNode,
+    ComputationallyExpensiveHashFunction::Flow::PathNode, NormalHashFunction::Flow::PathGraph,
+    ComputationallyExpensiveHashFunction::Flow::PathGraph>;
+
+/** Holds if data can flow from `source` to `sink` with `NormalHashFunction::Flow`. */
+predicate normalHashFunctionFlowPath(
+  WeakSensitiveDataHashingFlow::PathNode source, WeakSensitiveDataHashingFlow::PathNode sink
+) {
+  NormalHashFunction::Flow::flowPath(source.asPathNode1(), sink.asPathNode1())
+}
+
+/** Holds if data can flow from `source` to `sink` with `ComputationallyExpensiveHashFunction::Flow`. */
+predicate computationallyExpensiveHashFunctionFlowPath(
+  WeakSensitiveDataHashingFlow::PathNode source, WeakSensitiveDataHashingFlow::PathNode sink
+) {
+  ComputationallyExpensiveHashFunction::Flow::flowPath(source.asPathNode2(), sink.asPathNode2())
 }

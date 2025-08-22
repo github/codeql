@@ -11,9 +11,9 @@
 import java
 import semmle.code.java.dataflow.SSA
 
-class SsaConvertibleReadAccess extends RValue {
+class SsaConvertibleReadAccess extends VarRead {
   SsaConvertibleReadAccess() {
-    this.getEnclosingCallable().getBody().getBasicBlock().getABBSuccessor*() = this.getBasicBlock() and
+    this.getEnclosingCallable().getBody().getBasicBlock().getASuccessor*() = this.getBasicBlock() and
     (
       not exists(this.getQualifier())
       or

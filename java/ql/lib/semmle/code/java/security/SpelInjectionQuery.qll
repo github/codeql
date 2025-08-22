@@ -10,27 +10,28 @@ private import semmle.code.java.security.SpelInjection
  * A taint-tracking configuration for unsafe user input
  * that is used to construct and evaluate a SpEL expression.
  */
-class SpelInjectionConfig extends TaintTracking::Configuration {
-  SpelInjectionConfig() { this = "SpelInjectionConfig" }
+module SpelInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSink(DataFlow::Node sink) { sink instanceof SpelExpressionEvaluationSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof SpelExpressionEvaluationSink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(SpelExpressionInjectionAdditionalTaintStep c).step(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
+
+/** Tracks flow of unsafe user input that is used to construct and evaluate a SpEL expression. */
+module SpelInjectionFlow = TaintTracking::Global<SpelInjectionConfig>;
 
 /** Default sink for SpEL injection vulnerabilities. */
 private class DefaultSpelExpressionEvaluationSink extends SpelExpressionEvaluationSink {
   DefaultSpelExpressionEvaluationSink() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof ExpressionEvaluationMethod and
       ma.getQualifier() = this.asExpr() and
-      not exists(SafeEvaluationContextFlowConfig config |
-        config.hasFlowTo(DataFlow::exprNode(ma.getArgument(0)))
-      )
+      not SafeEvaluationContextFlow::flowToExpr(ma.getArgument(0))
     )
   }
 }
@@ -38,20 +39,20 @@ private class DefaultSpelExpressionEvaluationSink extends SpelExpressionEvaluati
 /**
  * A configuration for safe evaluation context that may be used in expression evaluation.
  */
-private class SafeEvaluationContextFlowConfig extends DataFlow2::Configuration {
-  SafeEvaluationContextFlowConfig() { this = "SpelInjection::SafeEvaluationContextFlowConfig" }
+private module SafeEvaluationContextFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof SafeContextSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof SafeContextSource }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+  predicate isSink(DataFlow::Node sink) {
+    exists(MethodCall ma |
       ma.getMethod() instanceof ExpressionEvaluationMethod and
       ma.getArgument(0) = sink.asExpr()
     )
   }
 
-  override int fieldFlowBranchLimit() { result = 0 }
+  int fieldFlowBranchLimit() { result = 0 }
 }
+
+private module SafeEvaluationContextFlow = DataFlow::Global<SafeEvaluationContextFlowConfig>;
 
 /**
  * A `ContextSource` that is safe from SpEL injection.
@@ -78,7 +79,7 @@ private predicate isSimpleEvaluationContextConstructorCall(Expr expr) {
  * for instance, `SimpleEvaluationContext.forReadWriteDataBinding().build()`.
  */
 private predicate isSimpleEvaluationContextBuilderCall(Expr expr) {
-  exists(MethodAccess ma, Method m | ma.getMethod() = m |
+  exists(MethodCall ma, Method m | ma.getMethod() = m |
     m.getDeclaringType() instanceof SimpleEvaluationContextBuilder and
     m.hasName("build") and
     ma = expr

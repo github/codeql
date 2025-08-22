@@ -1,0 +1,21 @@
+{
+  "location": {
+    "endColumn": 5,
+    "endLine": 1,
+    "file": "bad.js",
+    "startColumn": 5,
+    "startLine": 1
+  },
+  "markdownMessage": "A parse error occurred: `Unexpected token`. Check the syntax of the file. If the file is invalid, correct the error or [exclude](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/customizing-code-scanning) the file from analysis.",
+  "severity": "warning",
+  "source": {
+    "extractorName": "javascript",
+    "id": "js/parse-error",
+    "name": "Could not process some files due to syntax errors"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}

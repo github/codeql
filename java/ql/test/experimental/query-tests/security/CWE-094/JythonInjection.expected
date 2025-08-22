@@ -1,9 +1,12 @@
 edges
-| JythonInjection.java:28:23:28:50 | getParameter(...) : String | JythonInjection.java:36:30:36:33 | code |
-| JythonInjection.java:53:23:53:50 | getParameter(...) : String | JythonInjection.java:58:44:58:47 | code |
-| JythonInjection.java:73:23:73:50 | getParameter(...) : String | JythonInjection.java:81:35:81:38 | code |
-| JythonInjection.java:97:23:97:50 | getParameter(...) : String | JythonInjection.java:106:61:106:64 | code : String |
-| JythonInjection.java:106:61:106:64 | code : String | JythonInjection.java:106:61:106:75 | getBytes(...) |
+| JythonInjection.java:28:23:28:50 | getParameter(...) : String | JythonInjection.java:36:30:36:33 | code | provenance | Src:MaD:1  |
+| JythonInjection.java:53:23:53:50 | getParameter(...) : String | JythonInjection.java:58:44:58:47 | code | provenance | Src:MaD:1  |
+| JythonInjection.java:73:23:73:50 | getParameter(...) : String | JythonInjection.java:81:35:81:38 | code | provenance | Src:MaD:1  |
+| JythonInjection.java:97:23:97:50 | getParameter(...) : String | JythonInjection.java:106:61:106:64 | code : String | provenance | Src:MaD:1  |
+| JythonInjection.java:106:61:106:64 | code : String | JythonInjection.java:106:61:106:75 | getBytes(...) | provenance | MaD:2 |
+models
+| 1 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+| 2 | Summary: java.lang; String; false; getBytes; ; ; Argument[this]; ReturnValue; taint; manual |
 nodes
 | JythonInjection.java:28:23:28:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | JythonInjection.java:36:30:36:33 | code | semmle.label | code |
@@ -15,10 +18,10 @@ nodes
 | JythonInjection.java:106:61:106:64 | code : String | semmle.label | code : String |
 | JythonInjection.java:106:61:106:75 | getBytes(...) | semmle.label | getBytes(...) |
 | JythonInjection.java:131:40:131:63 | getInputStream(...) | semmle.label | getInputStream(...) |
-subpaths
-#select
+problems
 | JythonInjection.java:36:13:36:34 | exec(...) | JythonInjection.java:28:23:28:50 | getParameter(...) : String | JythonInjection.java:36:30:36:33 | code | Jython evaluate $@. | JythonInjection.java:28:23:28:50 | getParameter(...) | user input |
 | JythonInjection.java:58:27:58:48 | eval(...) | JythonInjection.java:53:23:53:50 | getParameter(...) : String | JythonInjection.java:58:44:58:47 | code | Jython evaluate $@. | JythonInjection.java:53:23:53:50 | getParameter(...) | user input |
 | JythonInjection.java:81:13:81:39 | runsource(...) | JythonInjection.java:73:23:73:50 | getParameter(...) : String | JythonInjection.java:81:35:81:38 | code | Jython evaluate $@. | JythonInjection.java:73:23:73:50 | getParameter(...) | user input |
 | JythonInjection.java:106:29:106:134 | makeCode(...) | JythonInjection.java:97:23:97:50 | getParameter(...) : String | JythonInjection.java:106:61:106:75 | getBytes(...) | Jython evaluate $@. | JythonInjection.java:97:23:97:50 | getParameter(...) | user input |
 | JythonInjection.java:131:29:131:109 | compile(...) | JythonInjection.java:131:40:131:63 | getInputStream(...) | JythonInjection.java:131:40:131:63 | getInputStream(...) | Jython evaluate $@. | JythonInjection.java:131:40:131:63 | getInputStream(...) | user input |
+subpaths

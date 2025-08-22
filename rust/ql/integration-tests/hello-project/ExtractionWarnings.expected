@@ -1,0 +1,1 @@
+| src/directory_module/not_loaded.rs:1:1:1:1 | semantic analyzer unavailable (not included as a module) | Extraction warning in src/directory_module/not_loaded.rs with message semantic analyzer unavailable (not included as a module) | 1 |

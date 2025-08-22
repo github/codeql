@@ -1,9 +1,10 @@
-failures
+models
 edges
-| mailer.rb:3:10:3:15 | call to params :  | mailer.rb:3:10:3:21 | ...[...] |
+| mailer.rb:3:10:3:15 | call to params | mailer.rb:3:10:3:21 | ...[...] | provenance |  |
 nodes
-| mailer.rb:3:10:3:15 | call to params :  | semmle.label | call to params :  |
+| mailer.rb:3:10:3:15 | call to params | semmle.label | call to params |
 | mailer.rb:3:10:3:21 | ...[...] | semmle.label | ...[...] |
 subpaths
+testFailures
 #select
-| mailer.rb:3:10:3:21 | ...[...] | mailer.rb:3:10:3:15 | call to params :  | mailer.rb:3:10:3:21 | ...[...] | $@ | mailer.rb:3:10:3:15 | call to params :  | call to params :  |
+| mailer.rb:3:10:3:21 | ...[...] | mailer.rb:3:10:3:15 | call to params | mailer.rb:3:10:3:21 | ...[...] | $@ | mailer.rb:3:10:3:15 | call to params | call to params |

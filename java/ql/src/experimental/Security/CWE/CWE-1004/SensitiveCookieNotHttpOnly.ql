@@ -24,8 +24,7 @@ import java
 import semmle.code.java.dataflow.FlowSteps
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.TaintTracking2
-import DataFlow::PathGraph
+import MissingHttpOnlyFlow::PathGraph
 
 /** Gets a regular expression for matching common names of sensitive cookies. */
 string getSensitiveCookieNameRegex() { result = "(?i).*(auth|session|token|key|credential).*" }
@@ -51,8 +50,8 @@ class SensitiveCookieNameExpr extends Expr {
 }
 
 /** A method call that sets a `Set-Cookie` header. */
-class SetCookieMethodAccess extends MethodAccess {
-  SetCookieMethodAccess() {
+class SetCookieMethodCall extends MethodCall {
+  SetCookieMethodCall() {
     (
       this.getMethod() instanceof ResponseAddHeaderMethod or
       this.getMethod() instanceof ResponseSetHeaderMethod
@@ -63,19 +62,19 @@ class SetCookieMethodAccess extends MethodAccess {
 
 /**
  * A taint configuration tracking flow from the text `httponly` to argument 1 of
- * `SetCookieMethodAccess`.
+ * `SetCookieMethodCall`.
  */
-class MatchesHttpOnlyConfiguration extends TaintTracking2::Configuration {
-  MatchesHttpOnlyConfiguration() { this = "MatchesHttpOnlyConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
+module MatchesHttpOnlyConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source.asExpr().(CompileTimeConstantExpr).getStringValue().toLowerCase().matches("%httponly%")
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(SetCookieMethodAccess ma).getArgument(1)
+  predicate isSink(DataFlow::Node sink) {
+    sink.asExpr() = any(SetCookieMethodCall ma).getArgument(1)
   }
 }
+
+module MatchesHttpOnlyFlow = TaintTracking::Global<MatchesHttpOnlyConfig>;
 
 /** A class descended from `javax.servlet.http.Cookie`. */
 class CookieClass extends RefType {
@@ -91,26 +90,26 @@ predicate mayBeBooleanTrue(Expr expr) {
 }
 
 /** Holds if the method call may set the `HttpOnly` flag. */
-predicate setsCookieHttpOnly(MethodAccess ma) {
+predicate setsCookieHttpOnly(MethodCall ma) {
   ma.getMethod().getName() = "setHttpOnly" and
   // any use of setHttpOnly(x) where x isn't false is probably safe
   mayBeBooleanTrue(ma.getArgument(0))
 }
 
 /** Holds if `ma` removes a cookie. */
-predicate removesCookie(MethodAccess ma) {
+predicate removesCookie(MethodCall ma) {
   ma.getMethod().getName() = "setMaxAge" and
   ma.getArgument(0).(IntegerLiteral).getIntValue() = 0
 }
 
 /**
- * Holds if the MethodAccess `ma` is a test method call indicated by:
+ * Holds if the MethodCall `ma` is a test method call indicated by:
  *    a) in a test directory such as `src/test/java`
  *    b) in a test package whose name has the word `test`
  *    c) in a test class whose name has the word `test`
  *    d) in a test class implementing a test framework such as JUnit or TestNG
  */
-predicate isTestMethod(MethodAccess ma) {
+predicate isTestMethod(MethodCall ma) {
   exists(Method m |
     m = ma.getEnclosingCallable() and
     (
@@ -126,19 +125,19 @@ predicate isTestMethod(MethodAccess ma) {
  * A taint configuration tracking flow of a method that sets the `HttpOnly` flag,
  * or one that removes a cookie, to a `ServletResponse.addCookie` call.
  */
-class SetHttpOnlyOrRemovesCookieConfiguration extends TaintTracking2::Configuration {
-  SetHttpOnlyOrRemovesCookieConfiguration() { this = "SetHttpOnlyOrRemovesCookieConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
+module SetHttpOnlyOrRemovesCookieConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source.asExpr() =
-      any(MethodAccess ma | setsCookieHttpOnly(ma) or removesCookie(ma)).getQualifier()
+      any(MethodCall ma | setsCookieHttpOnly(ma) or removesCookie(ma)).getQualifier()
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink.asExpr() =
-      any(MethodAccess ma | ma.getMethod() instanceof ResponseAddCookieMethod).getArgument(0)
+      any(MethodCall ma | ma.getMethod() instanceof ResponseAddCookieMethod).getArgument(0)
   }
 }
+
+module SetHttpOnlyOrRemovesCookieFlow = TaintTracking::Global<SetHttpOnlyOrRemovesCookieConfig>;
 
 /**
  * A cookie that is added to an HTTP response and which doesn't have `httpOnly` set, used as a sink
@@ -146,15 +145,15 @@ class SetHttpOnlyOrRemovesCookieConfiguration extends TaintTracking2::Configurat
  */
 class CookieResponseSink extends DataFlow::ExprNode {
   CookieResponseSink() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       (
         ma.getMethod() instanceof ResponseAddCookieMethod and
         this.getExpr() = ma.getArgument(0) and
-        not exists(SetHttpOnlyOrRemovesCookieConfiguration cc | cc.hasFlowTo(this))
+        not SetHttpOnlyOrRemovesCookieFlow::flowTo(this)
         or
-        ma instanceof SetCookieMethodAccess and
+        ma instanceof SetCookieMethodCall and
         this.getExpr() = ma.getArgument(1) and
-        not exists(MatchesHttpOnlyConfiguration cc | cc.hasFlowTo(this)) // response.addHeader("Set-Cookie", "token=" +authId + ";HttpOnly;Secure")
+        not MatchesHttpOnlyFlow::flowTo(this) // response.addHeader("Set-Cookie", "token=" +authId + ";HttpOnly;Secure")
       ) and
       not isTestMethod(ma) // Test class or method
     )
@@ -181,21 +180,17 @@ predicate setsHttpOnlyInNewCookie(ClassInstanceExpr cie) {
  * A taint configuration tracking flow from a sensitive cookie without the `HttpOnly` flag
  * set to its HTTP response.
  */
-class MissingHttpOnlyConfiguration extends TaintTracking::Configuration {
-  MissingHttpOnlyConfiguration() { this = "MissingHttpOnlyConfiguration" }
+module MissingHttpOnlyConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof SensitiveCookieNameExpr }
 
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof SensitiveCookieNameExpr
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof CookieResponseSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof CookieResponseSink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     // JAX-RS's `new NewCookie("session-access-key", accessKey, "/", null, null, 0, true, true)` and similar
     setsHttpOnlyInNewCookie(node.asExpr())
   }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(
       ConstructorCall cc // new Cookie(...)
     |
@@ -205,7 +200,7 @@ class MissingHttpOnlyConfiguration extends TaintTracking::Configuration {
     )
     or
     exists(
-      MethodAccess ma // cookie.toString()
+      MethodCall ma // cookie.toString()
     |
       ma.getMethod().getName() = "toString" and
       ma.getQualifier().getType() instanceof CookieClass and
@@ -215,7 +210,15 @@ class MissingHttpOnlyConfiguration extends TaintTracking::Configuration {
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, MissingHttpOnlyConfiguration c
-where c.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ doesn't have the HttpOnly flag set.", source.getNode(),
-  "This sensitive cookie"
+module MissingHttpOnlyFlow = TaintTracking::Global<MissingHttpOnlyConfig>;
+
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, MissingHttpOnlyFlow::PathNode source, MissingHttpOnlyFlow::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
+  MissingHttpOnlyFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "$@ doesn't have the HttpOnly flag set." and
+  sourceNode = source.getNode() and
+  message2 = "This sensitive cookie"
+}

@@ -16,11 +16,21 @@ import semmle.code.csharp.frameworks.system.Web
 import semmle.code.csharp.frameworks.system.web.Helpers
 import semmle.code.csharp.frameworks.system.web.Mvc
 
+private Method getAValidatingMethod() {
+  result = any(AntiForgeryClass a).getValidateMethod()
+  or
+  result.calls(getAValidatingMethod())
+}
+
 /** An `AuthorizationFilter` that calls the `AntiForgery.Validate` method. */
 class AntiForgeryAuthorizationFilter extends AuthorizationFilter {
-  AntiForgeryAuthorizationFilter() {
-    getOnAuthorizationMethod().calls*(any(AntiForgeryClass a).getValidateMethod())
-  }
+  AntiForgeryAuthorizationFilter() { this.getOnAuthorizationMethod() = getAValidatingMethod() }
+}
+
+private Method getAStartedMethod() {
+  result = any(WebApplication wa).getApplication_StartMethod()
+  or
+  getAStartedMethod().calls(result)
 }
 
 /**
@@ -34,9 +44,7 @@ predicate hasGlobalAntiForgeryFilter() {
     // The filter is an antiforgery filter
     addGlobalFilter.getArgumentForName("filter").getType() instanceof AntiForgeryAuthorizationFilter and
     // The filter is added by the Application_Start() method
-    any(WebApplication wa)
-        .getApplication_StartMethod()
-        .calls*(addGlobalFilter.getEnclosingCallable())
+    getAStartedMethod() = addGlobalFilter.getEnclosingCallable()
   )
 }
 

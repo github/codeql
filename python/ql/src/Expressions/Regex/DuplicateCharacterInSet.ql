@@ -2,7 +2,8 @@
  * @name Duplication in regular expression character class
  * @description Duplicate characters in a class have no effect and may indicate an error in the regular expression.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       maintainability
  *       readability
  * @problem.severity warning
  * @sub-severity low
@@ -13,7 +14,7 @@
 import python
 import semmle.python.regex
 
-predicate duplicate_char_in_class(Regex r, string char) {
+predicate duplicate_char_in_class(RegExp r, string char) {
   exists(int i, int j, int x, int y, int start, int end |
     i != x and
     j != y and
@@ -36,7 +37,7 @@ predicate duplicate_char_in_class(Regex r, string char) {
   )
 }
 
-from Regex r, string char
+from RegExp r, string char
 where duplicate_char_in_class(r, char)
 select r,
   "This regular expression includes duplicate character '" + char + "' in a set of characters."

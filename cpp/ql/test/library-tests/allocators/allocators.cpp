@@ -1,7 +1,12 @@
-// semmle-extractor-options: -std=c++17
+// semmle-extractor-options: -std=c++20
 typedef unsigned long size_t;
 namespace std {
   enum class align_val_t : size_t {};
+
+  struct destroying_delete_t {
+    explicit destroying_delete_t() = default;
+  };
+  inline constexpr destroying_delete_t destroying_delete{};
 }
 
 void* operator new(size_t, float);
@@ -37,6 +42,11 @@ struct SizedDealloc {
   void operator delete[](void*, size_t);
 };
 
+struct DestroyingDealloc {
+  void* operator new(size_t);
+  void operator delete(DestroyingDealloc*, std::destroying_delete_t);
+};
+
 struct alignas(128) Overaligned {
   char a[256];
 };
@@ -59,6 +69,7 @@ void OperatorDelete() {
   delete static_cast<int*>(nullptr);  // No destructor
   delete static_cast<String*>(nullptr);  // Non-virtual destructor, with size.
   delete static_cast<SizedDealloc*>(nullptr);  // No destructor, with size.
+  delete static_cast<DestroyingDealloc*>(nullptr);  // No destructor, with destroying delete.
   delete static_cast<Overaligned*>(nullptr);  // No destructor, with size and alignment.
   delete static_cast<PolymorphicBase*>(nullptr);  // Virtual destructor
   delete static_cast<const String*>(nullptr);  // Pointer to const
@@ -103,11 +114,20 @@ struct alignas(128) FailedInitOveraligned {
   void operator delete[](void*, std::align_val_t, float);  // Aligned placement
 };
 
+struct alignas(128) FailedInitDestroyingDelete {
+  FailedInitDestroyingDelete();
+  ~FailedInitDestroyingDelete();
+
+  void* operator new(size_t);  // Non-placement
+  void operator delete(FailedInitDestroyingDelete*, std::destroying_delete_t);  // Destroying delete
+};
+
 void TestFailedInit(int n) {
   new FailedInit();
   new FailedInit[n];
   new(1.0f) FailedInitOveraligned();
   new(1.0f) FailedInitOveraligned[10];
+  new FailedInitDestroyingDelete();
 }
 
 // --- non-allocating placement new ---

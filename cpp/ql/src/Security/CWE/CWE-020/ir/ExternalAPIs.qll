@@ -16,9 +16,6 @@ class UntrustedExternalApiDataNode extends ExternalApiDataNode {
   DataFlow::Node getAnUntrustedSource() { UntrustedDataToExternalApiFlow::flow(result, this) }
 }
 
-/** DEPRECATED: Alias for UntrustedExternalApiDataNode */
-deprecated class UntrustedExternalAPIDataNode = UntrustedExternalApiDataNode;
-
 /** An external API which is used with untrusted data. */
 private newtype TExternalApi =
   /** An untrusted API method `m` where untrusted data is passed at `index`. */
@@ -38,7 +35,7 @@ class ExternalApiUsedWithUntrustedData extends TExternalApi {
 
   /** Gets the number of untrusted sources used with this external API. */
   int getNumberOfUntrustedSources() {
-    result = strictcount(getUntrustedDataNode().getAnUntrustedSource())
+    result = strictcount(this.getUntrustedDataNode().getAnUntrustedSource())
   }
 
   /** Gets a textual representation of this element. */
@@ -51,6 +48,3 @@ class ExternalApiUsedWithUntrustedData extends TExternalApi {
     )
   }
 }
-
-/** DEPRECATED: Alias for ExternalApiUsedWithUntrustedData */
-deprecated class ExternalAPIUsedWithUntrustedData = ExternalApiUsedWithUntrustedData;

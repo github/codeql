@@ -32,7 +32,7 @@ module Puppeteer {
     or
     result = [browser(), context()].getMember("newPage").getReturn().getPromised()
     or
-    result = [browser(), context()].getMember("pages").getReturn().getPromised().getUnknownMember()
+    result = [browser(), context()].getMember("pages").getReturn().getPromised().getArrayElement()
     or
     result = target().getMember("page").getReturn().getPromised()
   }
@@ -45,7 +45,7 @@ module Puppeteer {
     or
     result = [page(), browser()].getMember("target").getReturn()
     or
-    result = context().getMember("targets").getReturn().getUnknownMember()
+    result = context().getMember("targets").getReturn().getArrayElement()
     or
     result = target().getMember("opener").getReturn()
   }
@@ -58,7 +58,7 @@ module Puppeteer {
     or
     result = [page(), target()].getMember("browserContext").getReturn()
     or
-    result = browser().getMember("browserContexts").getReturn().getUnknownMember()
+    result = browser().getMember("browserContexts").getReturn().getArrayElement()
     or
     result = browser().getMember("createIncognitoBrowserContext").getReturn().getPromised()
     or
@@ -71,7 +71,7 @@ module Puppeteer {
   private class PuppeteerGotoCall extends ClientRequest::Range, API::InvokeNode {
     PuppeteerGotoCall() { this = page().getMember("goto").getACall() }
 
-    override DataFlow::Node getUrl() { result = getArgument(0) }
+    override DataFlow::Node getUrl() { result = this.getArgument(0) }
 
     override DataFlow::Node getHost() { none() }
 
@@ -86,7 +86,7 @@ module Puppeteer {
       this = page().getMember(["addStyleTag", "addScriptTag"]).getACall()
     }
 
-    override DataFlow::Node getUrl() { result = getParameter(0).getMember("url").asSink() }
+    override DataFlow::Node getUrl() { result = this.getParameter(0).getMember("url").asSink() }
 
     override DataFlow::Node getHost() { none() }
 

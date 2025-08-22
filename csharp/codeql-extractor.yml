@@ -1,9 +1,15 @@
 name: "csharp"
+aliases:
+  - "c#"
 display_name: "C#"
 version: 1.22.1
 column_kind: "utf16"
 extra_env_vars:
   DOTNET_GENERATE_ASPNET_CERTIFICATE: "false"
+build_modes:
+  - autobuild
+  - manual
+  - none
 github_api_languages:
   - C#
 scc_languages:
@@ -28,8 +34,10 @@ options:
         type: string
         pattern: "^(none|gzip|brotli)$"
   buildless:
-    title: Whether to use buildless (standalone) extraction.
+    title: DEPRECATED - Whether to use buildless (standalone) extraction.
     description: >
+      DEPRECATED: Use `--build-mode none` instead.
+
       A value indicating, which type of extraction the autobuilder should perform.
       If 'true', then the standalone extractor will be used, otherwise tracing extraction
       will be performed.
@@ -39,10 +47,27 @@ options:
       the code (for example if it uses inaccessible dependencies).
     type: string
     pattern: "^(false|true)$"
-  cil:
-    title: Whether to enable CIL extraction.
+  logging:
+    title: Options pertaining to logging.
+    type: object
+    properties:
+      verbosity:
+        title: Extractor logging verbosity level.
+        description: >
+          Controls the level of verbosity of the extractor.
+          The supported levels are (in order of increasing verbosity):
+            - off
+            - errors
+            - warnings
+            - info or progress
+            - debug or progress+
+            - trace or progress++
+            - progress+++
+        type: string
+        pattern: "^(off|errors|warnings|(info|progress)|(debug|progress\\+)|(trace|progress\\+\\+)|progress\\+\\+\\+)$"
+  binlog:
+    title: Binlog
     description: >
-      A value indicating, whether CIL extraction should be enabled.
-      The default is 'true'.
-    type: string
-    pattern: "^(false|true)$"
+      [EXPERIMENTAL] The value is a path to the MsBuild binary log file that should be extracted.
+      This option only works when `--build-mode none` is also specified.
+    type: array

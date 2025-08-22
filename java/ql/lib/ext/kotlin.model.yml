@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["kotlin", "StandardKt", False, "apply", "", "", "Argument[0]", "Argument[1].Parameter[0]", "value", "manual"]
+      - ["kotlin", "StandardKt", False, "apply", "", "", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["kotlin", "StandardKt", False, "with", "", "", "Argument[0]", "Argument[1].Parameter[0]", "value", "manual"]
+      - ["kotlin", "StandardKt", False, "with", "", "", "Argument[1].ReturnValue", "ReturnValue", "value", "manual"]

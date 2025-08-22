@@ -1,9 +1,0 @@
-| file://:0:0:0:0 | Foo | 0 | file://:0:0:0:0 | Swift |
-| file://:0:0:0:0 | Foo | 1 | file://:0:0:0:0 | _StringProcessing |
-| file://:0:0:0:0 | Foo | 2 | file://:0:0:0:0 | _Concurrency |
-| file://:0:0:0:0 | Foo | 3 | file://:0:0:0:0 | SwiftOnoneSupport |
-| file://:0:0:0:0 | __ObjC | 0 | file://:0:0:0:0 | Swift |
-| file://:0:0:0:0 | default_module_name | 0 | file://:0:0:0:0 | Swift |
-| file://:0:0:0:0 | default_module_name | 1 | file://:0:0:0:0 | _StringProcessing |
-| file://:0:0:0:0 | default_module_name | 2 | file://:0:0:0:0 | _Concurrency |
-| file://:0:0:0:0 | default_module_name | 3 | file://:0:0:0:0 | SwiftOnoneSupport |

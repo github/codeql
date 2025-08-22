@@ -12,12 +12,13 @@
  *       external/cwe/cwe-506
  */
 
-import codeql.ruby.security.HardcodedDataInterpretedAsCodeQuery
-import codeql.ruby.DataFlow
-import DataFlow::PathGraph
+private import codeql.ruby.security.HardcodedDataInterpretedAsCodeQuery
+import HardcodedDataInterpretedAsCodeFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from
+  HardcodedDataInterpretedAsCodeFlow::PathNode source,
+  HardcodedDataInterpretedAsCodeFlow::PathNode sink
+where HardcodedDataInterpretedAsCodeFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "$@ is interpreted as " + sink.getNode().(Sink).getKind() + ".", source.getNode(),
   "Hard-coded data"

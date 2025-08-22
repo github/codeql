@@ -48,7 +48,7 @@ private predicate synchronizedCallable(Callable c) {
   c.isSynchronized()
   or
   c.isPrivate() and
-  forall(MethodAccess parent | parent.getCallee() = c |
+  forall(MethodCall parent | parent.getCallee() = c |
     synchronizedThisAccess(parent, c.getDeclaringType())
   )
 }
@@ -60,7 +60,7 @@ private predicate synchronizedCallable(Callable c) {
  * example, if the method call is `MyClass.wait()`, then the predicate
  * holds if there is an enclosing synchronization on `MyClass.this`.
  */
-private predicate synchronizedThisAccess(MethodAccess ma, Type thisType) {
+private predicate synchronizedThisAccess(MethodCall ma, Type thisType) {
   // Are we inside a synchronized method?
   exists(Callable c |
     c = ma.getEnclosingCallable() and
@@ -90,11 +90,11 @@ predicate synchronizedVarAccess(VarAccess x) {
 }
 
 /**
- * This predicate holds if the `MethodAccess` is a qualified call,
+ * This predicate holds if the `MethodCall` is a qualified call,
  * such as `this.wait()`, and it is not inside a synchronized statement
  * or method.
  */
-private predicate unsynchronizedExplicitThisAccess(MethodAccess ma) {
+private predicate unsynchronizedExplicitThisAccess(MethodCall ma) {
   exists(ThisAccess x |
     x = ma.getQualifier() and
     not synchronizedThisAccess(ma, x.getType())
@@ -102,27 +102,27 @@ private predicate unsynchronizedExplicitThisAccess(MethodAccess ma) {
 }
 
 /**
- * Holds if the `MethodAccess` is an unqualified call,
+ * Holds if the `MethodCall` is an unqualified call,
  * such as `wait()`, and it is not inside a synchronized statement
  * or method.
  */
-private predicate unsynchronizedImplicitThisAccess(MethodAccess ma) {
+private predicate unsynchronizedImplicitThisAccess(MethodCall ma) {
   not ma.hasQualifier() and
   not synchronizedThisAccess(ma, ma.getEnclosingCallable().getDeclaringType())
 }
 
 /**
- * Holds if the `MethodAccess` is on a variable,
+ * Holds if the `MethodCall` is on a variable,
  * such as `x.wait()`, and it is not inside a synchronized statement.
  */
-private predicate unsynchronizedVarAccess(MethodAccess ma) {
+private predicate unsynchronizedVarAccess(MethodCall ma) {
   exists(VarAccess x |
     x = ma.getQualifier() and
     not synchronizedVarAccess(x)
   )
 }
 
-from MethodAccess ma, Method m
+from MethodCall ma, Method m
 where
   m = ma.getMethod() and
   m instanceof MethodRequiresSynch and

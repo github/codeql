@@ -1,34 +1,3 @@
-edges
-| AllocationSizeOverflow.go:6:2:6:33 | ... := ...[0] | AllocationSizeOverflow.go:10:10:10:22 | call to len |
-| tst2.go:9:2:9:37 | ... := ...[0] | tst2.go:10:22:10:30 | call to len |
-| tst2.go:14:2:14:29 | ... := ...[0] | tst2.go:15:22:15:30 | call to len |
-| tst3.go:6:2:6:31 | ... := ...[0] | tst3.go:7:22:7:34 | call to len |
-| tst3.go:6:2:6:31 | ... := ...[0] | tst3.go:24:16:24:28 | call to len |
-| tst3.go:6:2:6:31 | ... := ...[0] | tst3.go:32:16:32:28 | call to len |
-| tst.go:14:2:14:30 | ... = ...[0] | tst.go:15:22:15:34 | call to len |
-| tst.go:20:2:20:31 | ... = ...[0] | tst.go:21:22:21:34 | call to len |
-| tst.go:26:2:26:31 | ... = ...[0] | tst.go:27:26:27:38 | call to len |
-| tst.go:34:2:34:30 | ... = ...[0] | tst.go:35:22:35:34 | call to len |
-nodes
-| AllocationSizeOverflow.go:6:2:6:33 | ... := ...[0] | semmle.label | ... := ...[0] |
-| AllocationSizeOverflow.go:10:10:10:22 | call to len | semmle.label | call to len |
-| tst2.go:9:2:9:37 | ... := ...[0] | semmle.label | ... := ...[0] |
-| tst2.go:10:22:10:30 | call to len | semmle.label | call to len |
-| tst2.go:14:2:14:29 | ... := ...[0] | semmle.label | ... := ...[0] |
-| tst2.go:15:22:15:30 | call to len | semmle.label | call to len |
-| tst3.go:6:2:6:31 | ... := ...[0] | semmle.label | ... := ...[0] |
-| tst3.go:7:22:7:34 | call to len | semmle.label | call to len |
-| tst3.go:24:16:24:28 | call to len | semmle.label | call to len |
-| tst3.go:32:16:32:28 | call to len | semmle.label | call to len |
-| tst.go:14:2:14:30 | ... = ...[0] | semmle.label | ... = ...[0] |
-| tst.go:15:22:15:34 | call to len | semmle.label | call to len |
-| tst.go:20:2:20:31 | ... = ...[0] | semmle.label | ... = ...[0] |
-| tst.go:21:22:21:34 | call to len | semmle.label | call to len |
-| tst.go:26:2:26:31 | ... = ...[0] | semmle.label | ... = ...[0] |
-| tst.go:27:26:27:38 | call to len | semmle.label | call to len |
-| tst.go:34:2:34:30 | ... = ...[0] | semmle.label | ... = ...[0] |
-| tst.go:35:22:35:34 | call to len | semmle.label | call to len |
-subpaths
 #select
 | AllocationSizeOverflow.go:10:10:10:22 | call to len | AllocationSizeOverflow.go:6:2:6:33 | ... := ...[0] | AllocationSizeOverflow.go:10:10:10:22 | call to len | This operation, which is used in an $@, involves a $@ and might overflow. | AllocationSizeOverflow.go:11:25:11:28 | size | allocation | AllocationSizeOverflow.go:6:2:6:33 | ... := ...[0] | potentially large value |
 | tst2.go:10:22:10:30 | call to len | tst2.go:9:2:9:37 | ... := ...[0] | tst2.go:10:22:10:30 | call to len | This operation, which is used in an $@, involves a $@ and might overflow. | tst2.go:10:22:10:32 | ...+... | allocation | tst2.go:9:2:9:37 | ... := ...[0] | potentially large value |
@@ -40,3 +9,56 @@ subpaths
 | tst.go:21:22:21:34 | call to len | tst.go:20:2:20:31 | ... = ...[0] | tst.go:21:22:21:34 | call to len | This operation, which is used in an $@, involves a $@ and might overflow. | tst.go:21:22:21:36 | ...+... | allocation | tst.go:20:2:20:31 | ... = ...[0] | potentially large value |
 | tst.go:27:26:27:38 | call to len | tst.go:26:2:26:31 | ... = ...[0] | tst.go:27:26:27:38 | call to len | This operation, which is used in an $@, involves a $@ and might overflow. | tst.go:27:26:27:40 | ...+... | allocation | tst.go:26:2:26:31 | ... = ...[0] | potentially large value |
 | tst.go:35:22:35:34 | call to len | tst.go:34:2:34:30 | ... = ...[0] | tst.go:35:22:35:34 | call to len | This operation, which is used in an $@, involves a $@ and might overflow. | tst.go:35:22:35:36 | ...+... | allocation | tst.go:34:2:34:30 | ... = ...[0] | potentially large value |
+edges
+| AllocationSizeOverflow.go:6:2:6:33 | ... := ...[0] | AllocationSizeOverflow.go:10:14:10:21 | jsonData | provenance |  |
+| AllocationSizeOverflow.go:10:14:10:21 | jsonData | AllocationSizeOverflow.go:10:10:10:22 | call to len | provenance | Config |
+| tst2.go:9:2:9:37 | ... := ...[0] | tst2.go:10:26:10:29 | data | provenance | Src:MaD:1  |
+| tst2.go:10:26:10:29 | data | tst2.go:10:22:10:30 | call to len | provenance | Config |
+| tst2.go:14:2:14:29 | ... := ...[0] | tst2.go:15:26:15:29 | data | provenance |  |
+| tst2.go:15:26:15:29 | data | tst2.go:15:22:15:30 | call to len | provenance | Config |
+| tst3.go:6:2:6:31 | ... := ...[0] | tst3.go:7:26:7:33 | jsonData | provenance |  |
+| tst3.go:6:2:6:31 | ... := ...[0] | tst3.go:24:20:24:27 | jsonData | provenance |  |
+| tst3.go:6:2:6:31 | ... := ...[0] | tst3.go:32:20:32:27 | jsonData | provenance |  |
+| tst3.go:7:26:7:33 | jsonData | tst3.go:7:22:7:34 | call to len | provenance | Config |
+| tst3.go:24:20:24:27 | jsonData | tst3.go:24:16:24:28 | call to len | provenance | Config |
+| tst3.go:32:20:32:27 | jsonData | tst3.go:32:16:32:28 | call to len | provenance | Config |
+| tst.go:14:2:14:30 | ... = ...[0] | tst.go:15:26:15:33 | jsonData | provenance |  |
+| tst.go:15:26:15:33 | jsonData | tst.go:15:22:15:34 | call to len | provenance | Config |
+| tst.go:20:2:20:31 | ... = ...[0] | tst.go:21:26:21:33 | jsonData | provenance |  |
+| tst.go:21:26:21:33 | jsonData | tst.go:21:22:21:34 | call to len | provenance | Config |
+| tst.go:26:2:26:31 | ... = ...[0] | tst.go:27:30:27:37 | jsonData | provenance |  |
+| tst.go:27:30:27:37 | jsonData | tst.go:27:26:27:38 | call to len | provenance | Config |
+| tst.go:34:2:34:30 | ... = ...[0] | tst.go:35:26:35:33 | jsonData | provenance |  |
+| tst.go:35:26:35:33 | jsonData | tst.go:35:22:35:34 | call to len | provenance | Config |
+models
+| 1 | Source: io/ioutil; ; false; ReadFile; ; ; ReturnValue[0]; file; manual |
+nodes
+| AllocationSizeOverflow.go:6:2:6:33 | ... := ...[0] | semmle.label | ... := ...[0] |
+| AllocationSizeOverflow.go:10:10:10:22 | call to len | semmle.label | call to len |
+| AllocationSizeOverflow.go:10:14:10:21 | jsonData | semmle.label | jsonData |
+| tst2.go:9:2:9:37 | ... := ...[0] | semmle.label | ... := ...[0] |
+| tst2.go:10:22:10:30 | call to len | semmle.label | call to len |
+| tst2.go:10:26:10:29 | data | semmle.label | data |
+| tst2.go:14:2:14:29 | ... := ...[0] | semmle.label | ... := ...[0] |
+| tst2.go:15:22:15:30 | call to len | semmle.label | call to len |
+| tst2.go:15:26:15:29 | data | semmle.label | data |
+| tst3.go:6:2:6:31 | ... := ...[0] | semmle.label | ... := ...[0] |
+| tst3.go:7:22:7:34 | call to len | semmle.label | call to len |
+| tst3.go:7:26:7:33 | jsonData | semmle.label | jsonData |
+| tst3.go:24:16:24:28 | call to len | semmle.label | call to len |
+| tst3.go:24:20:24:27 | jsonData | semmle.label | jsonData |
+| tst3.go:32:16:32:28 | call to len | semmle.label | call to len |
+| tst3.go:32:20:32:27 | jsonData | semmle.label | jsonData |
+| tst.go:14:2:14:30 | ... = ...[0] | semmle.label | ... = ...[0] |
+| tst.go:15:22:15:34 | call to len | semmle.label | call to len |
+| tst.go:15:26:15:33 | jsonData | semmle.label | jsonData |
+| tst.go:20:2:20:31 | ... = ...[0] | semmle.label | ... = ...[0] |
+| tst.go:21:22:21:34 | call to len | semmle.label | call to len |
+| tst.go:21:26:21:33 | jsonData | semmle.label | jsonData |
+| tst.go:26:2:26:31 | ... = ...[0] | semmle.label | ... = ...[0] |
+| tst.go:27:26:27:38 | call to len | semmle.label | call to len |
+| tst.go:27:30:27:37 | jsonData | semmle.label | jsonData |
+| tst.go:34:2:34:30 | ... = ...[0] | semmle.label | ... = ...[0] |
+| tst.go:35:22:35:34 | call to len | semmle.label | call to len |
+| tst.go:35:26:35:33 | jsonData | semmle.label | jsonData |
+subpaths

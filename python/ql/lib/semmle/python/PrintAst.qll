@@ -7,7 +7,8 @@
  */
 
 import python
-import semmle.python.RegexTreeView
+import semmle.python.regexp.RegexTreeView
+import semmle.python.Yaml
 
 private newtype TPrintAstConfiguration = MkPrintAstConfiguration()
 
@@ -53,7 +54,9 @@ private newtype TPrintAstNode =
     shouldPrint(list.getAnItem(), _) and
     not list = any(Module mod).getBody() and
     not forall(AstNode child | child = list.getAnItem() | isNotNeeded(child))
-  }
+  } or
+  TYamlNode(YamlNode node) or
+  TYamlMappingNode(YamlMapping mapping, int i) { exists(mapping.getKeyNode(i)) }
 
 /**
  * A node in the output tree.
@@ -420,13 +423,13 @@ class ParameterNode extends AstElementNode {
 }
 
 /**
- * A print node for a `StrConst`.
+ * A print node for a `StringLiteral`.
  *
  * The string has a child, if the child is used as a regular expression,
  * which is the root of the regular expression.
  */
-class StrConstNode extends AstElementNode {
-  override StrConst element;
+class StringLiteralNode extends AstElementNode {
+  override StringLiteral element;
 }
 
 /**
@@ -596,7 +599,7 @@ private module PrettyPrinting {
       or
       result = "class " + a.(Class).getName()
       or
-      result = a.(StrConst).getText()
+      result = a.(StringLiteral).getText()
       or
       result = "yield " + a.(Yield).getValue()
       or
@@ -630,6 +633,80 @@ private module PrettyPrinting {
       or
       a instanceof Pass and result = "pass"
     )
+  }
+}
+
+/**
+ * Classes for printing YAML AST.
+ */
+module PrintYaml {
+  /**
+   * A print node representing a YAML value in a .yml file.
+   */
+  class YamlNodeNode extends PrintAstNode, TYamlNode {
+    YamlNode node;
+
+    YamlNodeNode() { this = TYamlNode(node) }
+
+    override string toString() {
+      result = "[" + concat(node.getAPrimaryQlClass(), ",") + "] " + node.toString()
+    }
+
+    override Location getLocation() { result = node.getLocation() }
+
+    /**
+     * Gets the `YAMLNode` represented by this node.
+     */
+    final YamlNode getValue() { result = node }
+
+    override PrintAstNode getChild(int childIndex) {
+      exists(YamlNode child | result.(YamlNodeNode).getValue() = child |
+        child = node.getChildNode(childIndex)
+      )
+    }
+  }
+
+  /**
+   * A print node representing a `YAMLMapping`.
+   *
+   * Each child of this node aggregates the key and value of a mapping.
+   */
+  class YamlMappingNode extends YamlNodeNode {
+    override YamlMapping node;
+
+    override PrintAstNode getChild(int childIndex) {
+      exists(YamlMappingMapNode map | map = result | map.maps(node, childIndex))
+    }
+  }
+
+  /**
+   * A print node representing the `i`th mapping in `mapping`.
+   */
+  class YamlMappingMapNode extends PrintAstNode, TYamlMappingNode {
+    YamlMapping mapping;
+    int i;
+
+    YamlMappingMapNode() { this = TYamlMappingNode(mapping, i) }
+
+    override string toString() {
+      result = "(Mapping " + i + ")" and not exists(mapping.getKeyNode(i).(YamlScalar).getValue())
+      or
+      result = "(Mapping " + i + ") " + mapping.getKeyNode(i).(YamlScalar).getValue() + ":"
+    }
+
+    /**
+     * Holds if this print node represents the `index`th mapping of `m`.
+     */
+    predicate maps(YamlMapping m, int index) {
+      m = mapping and
+      index = i
+    }
+
+    override PrintAstNode getChild(int childIndex) {
+      childIndex = 0 and result.(YamlNodeNode).getValue() = mapping.getKeyNode(i)
+      or
+      childIndex = 1 and result.(YamlNodeNode).getValue() = mapping.getValueNode(i)
+    }
   }
 }
 

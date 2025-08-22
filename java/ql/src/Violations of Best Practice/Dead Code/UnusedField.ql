@@ -19,7 +19,7 @@ where
   not (f.isPublic() or f.isProtected()) and
   f.fromSource() and
   not f.getDeclaringType() instanceof EnumType and
-  not exists(VarAccess va | va.getVariable().(Field).getSourceDeclaration() = f) and
+  not exists(VarAccess va | va.getVariable() = f) and
   // Exclude results in generated classes.
   not f.getDeclaringType() instanceof GeneratedClass and
   // Exclude fields that may be reflectively read (this includes standard serialization).

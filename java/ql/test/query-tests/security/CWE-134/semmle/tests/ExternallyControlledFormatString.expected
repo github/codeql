@@ -1,12 +1,33 @@
+#select
+| Test.java:19:19:19:30 | userProperty | Test.java:17:27:17:60 | getProperty(...) : String | Test.java:19:19:19:30 | userProperty | Format string depends on a $@. | Test.java:17:27:17:60 | getProperty(...) | user-provided value |
+| Test.java:21:23:21:34 | userProperty | Test.java:17:27:17:60 | getProperty(...) : String | Test.java:21:23:21:34 | userProperty | Format string depends on a $@. | Test.java:17:27:17:60 | getProperty(...) | user-provided value |
+| Test.java:23:23:23:34 | userProperty | Test.java:17:27:17:60 | getProperty(...) : String | Test.java:23:23:23:34 | userProperty | Format string depends on a $@. | Test.java:17:27:17:60 | getProperty(...) | user-provided value |
+| Test.java:25:28:25:39 | userProperty | Test.java:17:27:17:60 | getProperty(...) : String | Test.java:25:28:25:39 | userProperty | Format string depends on a $@. | Test.java:17:27:17:60 | getProperty(...) | user-provided value |
+| Test.java:27:44:27:55 | userProperty | Test.java:17:27:17:60 | getProperty(...) : String | Test.java:27:44:27:55 | userProperty | Format string depends on a $@. | Test.java:17:27:17:60 | getProperty(...) | user-provided value |
+| Test.java:39:25:39:30 | format | Test.java:33:30:33:74 | getParameter(...) : String | Test.java:39:25:39:30 | format | Format string depends on a $@. | Test.java:33:30:33:74 | getParameter(...) | user-provided value |
 edges
-| Test.java:33:30:33:74 | getParameter(...) : String | Test.java:34:20:34:32 | userParameter : String |
-| Test.java:34:20:34:32 | userParameter : String | Test.java:37:31:37:43 | format : String |
-| Test.java:37:31:37:43 | format : String | Test.java:39:25:39:30 | format |
+| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:19:19:19:30 | userProperty | provenance | Src:MaD:3  |
+| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:21:23:21:34 | userProperty | provenance | Src:MaD:3 Sink:MaD:1 |
+| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:23:23:23:34 | userProperty | provenance | Src:MaD:3 Sink:MaD:2 |
+| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:25:28:25:39 | userProperty | provenance | Src:MaD:3  |
+| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:27:44:27:55 | userProperty | provenance | Src:MaD:3  |
+| Test.java:33:30:33:74 | getParameter(...) : String | Test.java:34:20:34:32 | userParameter : String | provenance | Src:MaD:4  |
+| Test.java:34:20:34:32 | userParameter : String | Test.java:37:31:37:43 | format : String | provenance |  |
+| Test.java:37:31:37:43 | format : String | Test.java:39:25:39:30 | format | provenance | Sink:MaD:1 |
+models
+| 1 | Sink: java.io; PrintStream; true; format; (String,Object[]); ; Argument[0..1]; file-content-store; manual |
+| 2 | Sink: java.io; PrintStream; true; printf; (String,Object[]); ; Argument[0..1]; file-content-store; manual |
+| 3 | Source: java.lang; System; false; getProperty; ; ; ReturnValue; environment; manual |
+| 4 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
 nodes
+| Test.java:17:27:17:60 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:19:19:19:30 | userProperty | semmle.label | userProperty |
+| Test.java:21:23:21:34 | userProperty | semmle.label | userProperty |
+| Test.java:23:23:23:34 | userProperty | semmle.label | userProperty |
+| Test.java:25:28:25:39 | userProperty | semmle.label | userProperty |
+| Test.java:27:44:27:55 | userProperty | semmle.label | userProperty |
 | Test.java:33:30:33:74 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | Test.java:34:20:34:32 | userParameter : String | semmle.label | userParameter : String |
 | Test.java:37:31:37:43 | format : String | semmle.label | format : String |
 | Test.java:39:25:39:30 | format | semmle.label | format |
 subpaths
-#select
-| Test.java:39:25:39:30 | format | Test.java:33:30:33:74 | getParameter(...) : String | Test.java:39:25:39:30 | format | Format string depends on a $@. | Test.java:33:30:33:74 | getParameter(...) | user-provided value |

@@ -29,10 +29,11 @@ so it is important that they cannot be controlled by an attacker.
 </p>
 
 <p>
-The first example creates the default configuration file with the usual "default" Unix permissions, <code>0666</code>. This makes the 
+The first example creates the default configuration file with the usual "default" Unix permissions, <code>0666</code>. This makes the
 file world-writable, so that an attacker could write in their own configuration that would be read by the program. The second example uses
 more restrictive permissions: a combination of the standard Unix constants <code>S_IWUSR</code> and <code>S_IRUSR</code> which means that
-only the current user will have read and write access to the file.
+only the current user will have read and write access to the file. The third example shows another way to create a file with more restrictive
+permissions if a <code>FILE *</code> stream pointer is required rather than a file descriptor.
 </p>
 
 <sample src="DoNotCreateWorldWritable.c" />

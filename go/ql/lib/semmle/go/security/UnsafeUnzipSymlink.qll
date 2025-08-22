@@ -13,54 +13,44 @@ import go
 module UnsafeUnzipSymlink {
   import UnsafeUnzipSymlinkCustomizations::UnsafeUnzipSymlink
 
-  /**
-   * Taint-flow configuration tracking archive header fields flowing to a `path/filepath.EvalSymlinks` call.
-   */
-  class EvalSymlinksConfiguration extends TaintTracking2::Configuration {
-    EvalSymlinksConfiguration() { this = "Archive header field symlinks resolved" }
+  // Archive header field symlinks resolved
+  private module EvalSymlinksConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof FilenameWithSymlinks }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof FilenameWithSymlinks }
+    predicate isSink(DataFlow::Node sink) { sink instanceof EvalSymlinksSink }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof EvalSymlinksSink }
-
-    override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node) or
-      node instanceof EvalSymlinksInvalidator
-    }
-
-    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof EvalSymlinksInvalidatorGuard
-    }
+    predicate isBarrier(DataFlow::Node node) { node instanceof EvalSymlinksInvalidator }
   }
+
+  /**
+   * Tracks taint flow from archive header fields to
+   * `path/filepath.EvalSymlinks` calls.
+   */
+  private module EvalSymlinksFlow = TaintTracking::Global<EvalSymlinksConfig>;
 
   /**
    * Holds if `node` is an archive header field read that flows to a `path/filepath.EvalSymlinks` call.
    */
   private predicate symlinksEvald(DataFlow::Node node) {
-    exists(EvalSymlinksConfiguration c | c.hasFlow(getASimilarReadNode(node), _))
+    EvalSymlinksFlow::flow(getASimilarReadNode(node), _)
   }
 
-  /**
-   * Taint-flow configuration tracking archive header fields flowing to an `os.Symlink` call,
-   * which never flow to a `path/filepath.EvalSymlinks` call.
-   */
-  class SymlinkConfiguration extends TaintTracking::Configuration {
-    SymlinkConfiguration() { this = "Unsafe unzipping of symlinks" }
-
-    override predicate isSource(DataFlow::Node source) {
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
       source instanceof FilenameWithSymlinks and
       not symlinksEvald(source)
     }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof SymlinkSink }
+    predicate isSink(DataFlow::Node sink) { sink instanceof SymlinkSink }
 
-    override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node) or
-      node instanceof SymlinkSanitizer
-    }
+    predicate isBarrier(DataFlow::Node node) { node instanceof SymlinkSanitizer }
 
-    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof SymlinkSanitizerGuard
-    }
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
+
+  /**
+   * Tracks taint flow from archive header fields to an `os.Symlink` call,
+   * which never flow to a `path/filepath.EvalSymlinks` call.
+   */
+  module Flow = TaintTracking::Global<Config>;
 }

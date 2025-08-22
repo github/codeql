@@ -105,15 +105,25 @@ module Sinatra {
    * Gets the template file referred to by `erbCall`.
    * This works on the AST level to avoid non-monotonic reecursion in `ErbLocalsHashSyntheticGlobal`.
    */
+  pragma[nomagic]
   private ErbFile getTemplateFile(MethodCall erbCall) {
     erbCall.getMethodName() = "erb" and
     result.getTemplateName() = erbCall.getArgument(0).getConstantValue().getStringlikeValue() and
     result.getRelativePath().matches("%views/%")
   }
 
+  pragma[nomagic]
+  private predicate erbCallAtLocation(MethodCall erbCall, ErbFile erbFile, Location l) {
+    erbCall.getMethodName() = "erb" and
+    erbFile = getTemplateFile(erbCall) and
+    l = erbCall.getLocation()
+  }
+
   /**
    * Like `Location.toString`, but displays the relative path rather than the full path.
    */
+  bindingset[loc]
+  pragma[inline_late]
   private string locationRelativePathToString(Location loc) {
     result =
       loc.getFile().getRelativePath() + "@" + loc.getStartLine() + ":" + loc.getStartColumn() + ":" +
@@ -121,18 +131,19 @@ module Sinatra {
   }
 
   /**
-   *  A synthetic global representing the hash of local variables passed to an ERB template.
+   * A synthetic global representing the hash of local variables passed to an ERB template.
    */
-  class ErbLocalsHashSyntheticGlobal extends SummaryComponent::SyntheticGlobal {
+  class ErbLocalsHashSyntheticGlobal extends string {
     private string id;
     private MethodCall erbCall;
     private ErbFile erbFile;
 
     ErbLocalsHashSyntheticGlobal() {
-      this = "SinatraErbLocalsHash(" + id + ")" and
-      id = erbFile.getRelativePath() + "," + locationRelativePathToString(erbCall.getLocation()) and
-      erbCall.getMethodName() = "erb" and
-      erbFile = getTemplateFile(erbCall)
+      exists(Location l |
+        erbCallAtLocation(erbCall, erbFile, l) and
+        id = erbFile.getRelativePath() + "," + locationRelativePathToString(l) and
+        this = "SinatraErbLocalsHash(" + id + ")"
+      )
     }
 
     /**
@@ -161,11 +172,17 @@ module Sinatra {
 
     override MethodCall getACall() { result = any(ErbCall c).asExpr().getExpr() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[locals:]" and
       output = "SyntheticGlobal[" + any(ErbLocalsHashSyntheticGlobal global) + "]" and
       preservesValue = true
     }
+  }
+
+  bindingset[local]
+  pragma[inline_late]
+  private predicate isPairKey(string local) {
+    local = any(Pair p).getKey().getConstantValue().getStringlikeValue()
   }
 
   /**
@@ -181,7 +198,7 @@ module Sinatra {
     ErbLocalsAccessSummary() {
       this = "sinatra_erb_locals_access()" + global.getId() + "#" + local and
       local = any(MethodCall c | c.getLocation().getFile() = global.getErbFile()).getMethodName() and
-      local = any(Pair p).getKey().getConstantValue().getStringlikeValue()
+      isPairKey(local)
     }
 
     override MethodCall getACall() {
@@ -190,7 +207,7 @@ module Sinatra {
       result.getReceiver() instanceof SelfVariableReadAccess
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "SyntheticGlobal[" + global + "].Element[:" + local + "]" and
       output = "ReturnValue" and
       preservesValue = true
@@ -262,39 +279,23 @@ module Sinatra {
         filter.getApp() = route.getApp() and
         // the filter applies to all routes
         not filter.hasPattern() and
-        selfPostUpdate(pred, filter.getApp(), filter.getBody().asExpr().getExpr()) and
-        blockCapturedSelfParameterNode(succ, route.getBody().asExpr().getExpr())
+        blockPostSelf(pred, filter.getBody()) and
+        blockSelf(succ, route.getBody().asExpr().getExpr())
       )
     }
   }
 
-  /**
-   * Holds if `n` is a post-update node for the `self` parameter of `app` in block `b`.
-   *
-   * In this example, `n` is the post-update node for `@foo = 1`.
-   * ```rb
-   * class MyApp < Sinatra::Base
-   *   before do
-   *     @foo = 1
-   *   end
-   * end
-   * ```
-   */
-  private predicate selfPostUpdate(DataFlow::PostUpdateNode n, App app, Block b) {
-    n.getPreUpdateNode().asExpr().getExpr() =
-      any(SelfVariableAccess self |
-        pragma[only_bind_into](b) = self.getEnclosingCallable() and
-        self.getVariable().getDeclaringScope() = app.getADeclaration()
-      )
+  /** Holds if `n` is a post-update node referencing `self` in the block `b`. */
+  private predicate blockPostSelf(DataFlow::PostUpdateNode n, DataFlow::BlockNode b) {
+    exists(SelfVariableAccessCfgNode self |
+      n.getPreUpdateNode().asExpr() = self and
+      self.getScope() = b.asExpr().getAstNode()
+    )
   }
 
-  /**
-   * Holds if `n` is a node representing the `self` parameter captured by block `b`.
-   */
-  private predicate blockCapturedSelfParameterNode(DataFlow::Node n, Block b) {
-    exists(Ssa::CapturedSelfDefinition d |
-      n.(DataFlowPrivate::SsaDefinitionExtNode).getDefinitionExt() = d and
-      d.getBasicBlock().getScope() = b
-    )
+  /** Holds if `n` is a node referencing `self` in the block `b`. */
+  private predicate blockSelf(DataFlow::VariableAccessNode self, Block b) {
+    self.getExprNode().getBasicBlock().getScope() = b and
+    self.asVariableAccessAstNode().getVariable() instanceof SelfVariable
   }
 }

@@ -45,7 +45,9 @@ class IRFunction extends IRFunctionBase {
    * Gets the block containing the entry point of this function.
    */
   pragma[noinline]
-  final IRBlock getEntryBlock() { result.getFirstInstruction() = getEnterFunctionInstruction() }
+  final IRBlock getEntryBlock() {
+    result.getFirstInstruction() = this.getEnterFunctionInstruction()
+  }
 
   /**
    * Gets all instructions in this function.
@@ -56,4 +58,12 @@ class IRFunction extends IRFunctionBase {
    * Gets all blocks in this function.
    */
   final IRBlock getABlock() { result.getEnclosingIRFunction() = this }
+
+  /**
+   * Holds if this function may have incomplete def-use information.
+   *
+   * Def-use information may be omitted for a function when it is too expensive
+   * to compute.
+   */
+  final predicate hasIncompleteSsa() { Construction::hasIncompleteSsa(this) }
 }

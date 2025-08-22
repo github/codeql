@@ -2,10 +2,14 @@
  * Provides classes for performing local (intra-procedural) and
  * global (inter-procedural) data flow analyses.
  */
+overlay[local?]
+module;
 
 import java
 
 module DataFlow {
-  import semmle.code.java.dataflow.internal.DataFlow
-  import semmle.code.java.dataflow.internal.DataFlowImpl1
+  private import semmle.code.java.dataflow.internal.DataFlowImplSpecific
+  private import codeql.dataflow.DataFlow
+  import DataFlowMake<Location, JavaDataFlow>
+  import Public
 }

@@ -36,11 +36,18 @@ class Property:
     first: bool = False
     is_optional: bool = False
     is_predicate: bool = False
-    prev_child: Optional[str] = None
+    is_unordered: bool = False
     qltest_skip: bool = False
     description: List[str] = field(default_factory=list)
     doc: Optional[str] = None
     doc_plural: Optional[str] = None
+    synth: bool = False
+    type_is_hideable: bool = False
+    type_is_codegen_class: bool = False
+    type_is_self: bool = False
+    internal: bool = False
+    cfg: bool = False
+    is_child: bool = False
 
     def __post_init__(self):
         if self.tableparams:
@@ -49,17 +56,17 @@ class Property:
 
     @property
     def getter(self):
-        return f"get{self.singular}" if not self.is_predicate else self.singular
+        if self.is_predicate:
+            return self.singular
+        if self.is_unordered:
+            return self.indefinite_getter
+        return f"get{self.singular}"
 
     @property
     def indefinite_getter(self):
         if self.plural:
             article = "An" if self.singular[0] in "AEIO" else "A"
             return f"get{article}{self.singular}"
-
-    @property
-    def type_is_class(self):
-        return bool(self.type) and self.type[0].isupper()
 
     @property
     def is_repeated(self):
@@ -70,12 +77,18 @@ class Property:
         return not (self.is_optional or self.is_repeated or self.is_predicate)
 
     @property
-    def is_child(self):
-        return self.prev_child is not None
+    def is_indexed(self) -> bool:
+        return self.is_repeated and not self.is_unordered
 
     @property
-    def has_description(self) -> bool:
-        return bool(self.description)
+    def type_alias(self) -> Optional[str]:
+        return self.type + "Alias" if self.type_is_self else self.type
+
+
+@dataclass
+class Child:
+    property: Property
+    prev: str = ""
 
 
 @dataclass
@@ -89,30 +102,44 @@ class Base:
 
 @dataclass
 class Class:
-    template: ClassVar = 'ql_class'
+    template: ClassVar = "ql_class"
 
     name: str
     bases: List[Base] = field(default_factory=list)
+    bases_impl: List[Base] = field(default_factory=list)
     final: bool = False
     properties: List[Property] = field(default_factory=list)
+    all_children: List[Child] = field(default_factory=list)
     dir: pathlib.Path = pathlib.Path()
     imports: List[str] = field(default_factory=list)
     import_prefix: Optional[str] = None
-    qltest_skip: bool = False
-    qltest_collapse_hierarchy: bool = False
-    qltest_uncollapse_hierarchy: bool = False
-    ql_internal: bool = False
-    ipa: bool = False
+    internal: bool = False
     doc: List[str] = field(default_factory=list)
+    hideable: bool = False
+    cfg: bool = False
 
     def __post_init__(self):
-        self.bases = [Base(str(b), str(prev)) for b, prev in zip(self.bases, itertools.chain([""], self.bases))]
+        def get_bases(bases):
+            return [
+                Base(str(b), str(prev))
+                for b, prev in zip(bases, itertools.chain([""], bases))
+            ]
+
+        self.bases = get_bases(self.bases)
+        self.bases_impl = get_bases(self.bases_impl)
         if self.properties:
             self.properties[0].first = True
+            for prop in self.properties:
+                if prop.type == self.name:
+                    prop.type_is_self = True
 
     @property
     def root(self) -> bool:
         return not self.bases
+
+    @property
+    def needs_self_alias(self) -> bool:
+        return self.root or any(p.type_is_self for p in self.properties)
 
     @property
     def path(self) -> pathlib.Path:
@@ -124,19 +151,15 @@ class Class:
 
     @property
     def has_children(self) -> bool:
-        return any(p.is_child for p in self.properties)
+        return bool(self.all_children)
 
     @property
     def last_base(self) -> str:
         return self.bases[-1].base if self.bases else ""
 
-    @property
-    def has_doc(self) -> bool:
-        return bool(self.doc) or self.ql_internal
-
 
 @dataclass
-class IpaUnderlyingAccessor:
+class SynthUnderlyingAccessor:
     argument: str
     type: str
     constructorparams: List[Param]
@@ -149,35 +172,55 @@ class IpaUnderlyingAccessor:
 
 @dataclass
 class Stub:
-    template: ClassVar = 'ql_stub'
+    template: ClassVar = "ql_stub"
 
     name: str
     base_import: str
     import_prefix: str
-    ipa_accessors: List[IpaUnderlyingAccessor] = field(default_factory=list)
+    synth_accessors: List[SynthUnderlyingAccessor] = field(default_factory=list)
+    doc: List[str] = field(default_factory=list)
 
     @property
-    def has_ipa_accessors(self) -> bool:
-        return bool(self.ipa_accessors)
+    def has_synth_accessors(self) -> bool:
+        return bool(self.synth_accessors)
+
+    @property
+    def has_qldoc(self) -> bool:
+        return bool(self.doc)
+
+
+@dataclass
+class ClassPublic:
+    template: ClassVar = "ql_class_public"
+
+    name: str
+    imports: List[str] = field(default_factory=list)
+    internal: bool = False
+    doc: List[str] = field(default_factory=list)
+
+    @property
+    def has_qldoc(self) -> bool:
+        return bool(self.doc) or self.internal
 
 
 @dataclass
 class DbClasses:
-    template: ClassVar = 'ql_db'
+    template: ClassVar = "ql_db"
 
     classes: List[Class] = field(default_factory=list)
+    imports: List[str] = field(default_factory=list)
 
 
 @dataclass
 class ImportList:
-    template: ClassVar = 'ql_imports'
+    template: ClassVar = "ql_imports"
 
     imports: List[str] = field(default_factory=list)
 
 
 @dataclass
 class GetParentImplementation:
-    template: ClassVar = 'ql_parent'
+    template: ClassVar = "ql_parent"
 
     classes: List[Class] = field(default_factory=list)
     imports: List[str] = field(default_factory=list)
@@ -188,7 +231,7 @@ class PropertyForTest:
     getter: str
     is_total: bool = True
     type: Optional[str] = None
-    is_repeated: bool = False
+    is_indexed: bool = False
 
 
 @dataclass
@@ -199,22 +242,15 @@ class TesterBase:
 
 @dataclass
 class ClassTester(TesterBase):
-    template: ClassVar = 'ql_test_class'
+    template: ClassVar = "ql_test_class"
 
     properties: List[PropertyForTest] = field(default_factory=list)
     show_ql_class: bool = False
 
 
 @dataclass
-class PropertyTester(TesterBase):
-    template: ClassVar = 'ql_test_property'
-
-    property: PropertyForTest
-
-
-@dataclass
 class MissingTestInstructions:
-    template: ClassVar = 'ql_test_missing'
+    template: ClassVar = "ql_test_missing"
 
 
 class Synth:
@@ -234,8 +270,8 @@ class Synth:
     @dataclass
     class FinalClass(Class):
         is_final: ClassVar = True
-        is_derived_ipa: ClassVar = False
-        is_fresh_ipa: ClassVar = False
+        is_derived_synth: ClassVar = False
+        is_fresh_synth: ClassVar = False
         is_db: ClassVar = False
 
         params: List["Synth.Param"] = field(default_factory=list)
@@ -245,37 +281,39 @@ class Synth:
                 self.params[0].first = True
 
         @property
-        def is_ipa(self):
-            return self.is_fresh_ipa or self.is_derived_ipa
+        def is_synth(self):
+            return self.is_fresh_synth or self.is_derived_synth
 
         @property
         def has_params(self) -> bool:
             return bool(self.params)
 
     @dataclass
-    class FinalClassIpa(FinalClass):
+    class FinalClassSynth(FinalClass):
         pass
 
     @dataclass
-    class FinalClassDerivedIpa(FinalClassIpa):
-        is_derived_ipa: ClassVar = True
+    class FinalClassDerivedSynth(FinalClassSynth):
+        is_derived_synth: ClassVar = True
 
     @dataclass
-    class FinalClassFreshIpa(FinalClassIpa):
-        is_fresh_ipa: ClassVar = True
+    class FinalClassFreshSynth(FinalClassSynth):
+        is_fresh_synth: ClassVar = True
 
     @dataclass
     class FinalClassDb(FinalClass):
         is_db: ClassVar = True
 
-        subtracted_ipa_types: List["Synth.Class"] = field(default_factory=list)
+        subtracted_synth_types: List["Synth.Class"] = field(default_factory=list)
 
         def subtract_type(self, type: str):
-            self.subtracted_ipa_types.append(Synth.Class(type, first=not self.subtracted_ipa_types))
+            self.subtracted_synth_types.append(
+                Synth.Class(type, first=not self.subtracted_synth_types)
+            )
 
         @property
-        def has_subtracted_ipa_types(self) -> bool:
-            return bool(self.subtracted_ipa_types)
+        def has_subtracted_synth_types(self) -> bool:
+            return bool(self.subtracted_synth_types)
 
         @property
         def db_id(self) -> str:
@@ -293,7 +331,7 @@ class Synth:
 
     @dataclass
     class Types:
-        template: ClassVar = "ql_ipa_types"
+        template: ClassVar = "ql_synth_types"
 
         root: str
         import_prefix: str
@@ -306,7 +344,22 @@ class Synth:
 
     @dataclass
     class ConstructorStub:
-        template: ClassVar = "ql_ipa_constructor_stub"
+        template: ClassVar = "ql_synth_constructor_stub"
 
         cls: "Synth.FinalClass"
         import_prefix: str
+
+
+@dataclass
+class CfgClass:
+    name: str
+    bases: List[Base] = field(default_factory=list)
+    properties: List[Property] = field(default_factory=list)
+    doc: List[str] = field(default_factory=list)
+
+
+@dataclass
+class CfgClasses:
+    template: ClassVar = "ql_cfg_nodes"
+    include_file_import: Optional[str] = None
+    classes: List[CfgClass] = field(default_factory=list)

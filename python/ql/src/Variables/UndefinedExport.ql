@@ -3,8 +3,9 @@
  * @description Including an undefined attribute in `__all__` causes an exception when
  *              the module is imported using '*'
  * @kind problem
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  * @problem.severity error
  * @sub-severity low
  * @precision high
@@ -14,7 +15,7 @@
 import python
 
 /** Whether name is declared in the __all__ list of this module */
-predicate declaredInAll(Module m, StrConst name) {
+predicate declaredInAll(Module m, StringLiteral name) {
   exists(Assign a, GlobalVariable all |
     a.defines(all) and
     a.getScope() = m and
@@ -70,7 +71,7 @@ predicate contains_unknown_import_star(ModuleValue m) {
   )
 }
 
-from ModuleValue m, StrConst name, string exported_name
+from ModuleValue m, StringLiteral name, string exported_name
 where
   declaredInAll(m.getScope(), name) and
   exported_name = name.getText() and

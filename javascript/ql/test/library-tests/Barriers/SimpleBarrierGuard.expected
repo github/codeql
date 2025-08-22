@@ -1,3 +1,5 @@
-| tst.js:4:10:4:10 | x | tst.js:2:13:2:20 | SOURCE() |
-| tst.js:9:14:9:14 | x | tst.js:2:13:2:20 | SOURCE() |
-| tst.js:12:10:12:10 | x | tst.js:2:13:2:20 | SOURCE() |
+legacyDataFlowDifference
+flow
+| tst.js:2:13:2:20 | SOURCE() | tst.js:4:10:4:10 | x |
+| tst.js:2:13:2:20 | SOURCE() | tst.js:9:14:9:14 | x |
+| tst.js:2:13:2:20 | SOURCE() | tst.js:12:10:12:10 | x |

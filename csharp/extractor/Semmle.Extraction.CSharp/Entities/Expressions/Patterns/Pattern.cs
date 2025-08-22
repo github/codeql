@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -28,20 +28,20 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 case DeclarationPatternSyntax declPattern:
                     // Creates a single local variable declaration.
                     {
-                        if (declPattern.Designation is VariableDesignationSyntax designation)
+                        switch (declPattern.Designation)
                         {
-                            if (cx.GetModel(syntax).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
-                            {
-                                var type = symbol.GetAnnotatedType();
-                                return VariableDeclaration.Create(cx, symbol, type, declPattern.Type, cx.CreateLocation(syntax.GetLocation()), false, parent, child);
-                            }
-                            if (designation is DiscardDesignationSyntax)
-                            {
+                            case SingleVariableDesignationSyntax singleDesignation:
+                                if (cx.GetModel(syntax).GetDeclaredSymbol(singleDesignation) is ILocalSymbol symbol)
+                                {
+                                    var type = symbol.GetAnnotatedType();
+                                    return VariableDeclaration.Create(cx, symbol, type, declPattern.Type, cx.CreateLocation(syntax.GetLocation()), false, parent, child);
+                                }
+                                throw new InternalError(singleDesignation, "Unable to get the declared symbol of the declaration pattern designation.");
+                            case DiscardDesignationSyntax _:
                                 return Expressions.TypeAccess.Create(cx, declPattern.Type, parent, child);
-                            }
-                            throw new InternalError(designation, "Designation pattern not handled");
+                            default:
+                                throw new InternalError($"declaration pattern designation of type {declPattern.Designation.GetType()} is unhandled");
                         }
-                        throw new InternalError(declPattern, "Declaration pattern not handled");
                     }
 
                 case RecursivePatternSyntax recPattern:
@@ -59,7 +59,6 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                             if (cx.GetModel(syntax).GetDeclaredSymbol(varDesignation) is ILocalSymbol symbol)
                             {
                                 var type = symbol.GetAnnotatedType();
-
                                 return VariableDeclaration.Create(cx, symbol, type, null, cx.CreateLocation(syntax.GetLocation()), true, parent, child);
                             }
 

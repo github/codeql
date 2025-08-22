@@ -13,10 +13,10 @@
 
 import csharp
 import semmle.code.csharp.security.dataflow.MissingXMLValidationQuery
-import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
+import MissingXmlValidation::PathGraph
 
-from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
+from MissingXmlValidation::PathNode source, MissingXmlValidation::PathNode sink
+where MissingXmlValidation::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "This XML processing depends on a $@ without validation because " +
     sink.getNode().(Sink).getReason(), source.getNode(), "user-provided value"

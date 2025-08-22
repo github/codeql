@@ -548,12 +548,9 @@ DataFlowType getNodeType(Node n)
 ```
 and every `Node` should have a type.
 
-One also needs to define the string representation of a `DataFlowType`:
-```ql
-string ppReprType(DataFlowType t)
-```
-The `ppReprType` predicate is used for printing a type in the labels of
-`PathNode`s, this can be defined as `none()` if type pruning is not used.
+One also needs to define the string representation of a `DataFlowType`.
+The `DataFlowType.toString` predicate is used for printing a type in the labels of
+`PathNode`s, this should be defined as `result = ""` if type pruning is not used.
 
 Finally, one must define `CastNode` as a subclass of `Node` as those nodes
 where types should be checked. Usually this will be things like explicit casts.
@@ -588,18 +585,17 @@ However, joining the virtual dispatch relation with itself in this way is
 usually way too big to be feasible. Instead, the relation above should only be
 defined for those values of `call` for which the set of resulting dispatch
 targets might be reduced. To do this, define the set of `call`s that might for
-some reason benefit from a call context as the following predicate (the `c`
-column should be `call.getEnclosingCallable()`):
+some reason benefit from a call context as the following predicate:
 ```ql
-predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c)
+predicate mayBenefitFromCallContext(DataFlowCall call)
 ```
 And then define `DataFlowCallable viableImplInCallContext(DataFlowCall call,
 DataFlowCall ctx)` as sketched above, but restricted to
-`mayBenefitFromCallContext(call, _)`.
+`mayBenefitFromCallContext(call)`.
 
 The shared implementation will then compare counts of virtual dispatch targets
 using `viableCallable` and `viableImplInCallContext` for each `call` in
-`mayBenefitFromCallContext(call, _)` and track call contexts during flow
+`mayBenefitFromCallContext(call)` and track call contexts during flow
 calculation when differences in these counts show an improved precision in
 further calls.
 
@@ -618,10 +614,29 @@ impact on performance for large databases.
 
 ### Hidden nodes
 
-Certain synthetic nodes can be hidden to exclude them from occurring in path
-explanations. This is done through the following predicate:
+Certain synthetic nodes are hidden by default to prevent them from occurring in
+path explanations. Which nodes are included in this is determined by the
+following predicate:
+
 ```ql
 predicate nodeIsHidden(Node n)
+```
+
+To include these nodes in path explanations, add the following to a
+configuration:
+
+```ql
+predicate includeHiddenNodes() { any() }
+```
+
+### Show more nodes in path explanations
+
+Path explanations skip over most nodes and only show the important nodes in a
+path. To ensure that particular nodes are shown, define the following predicate
+in a configuration:
+
+```ql
+predicate neverSkip(Node n)
 ```
 
 ### Unreachable nodes

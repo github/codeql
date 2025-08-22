@@ -18,6 +18,6 @@ where
   iteration = inner.getAnIterationVariable() and
   iteration = outer.getAnIterationVariable() and
   inner.getEnclosingStmt+() = outer and
-  inner.getBasicBlock().getABBSuccessor+() = outer.getCondition().getBasicBlock()
+  inner.getBasicBlock().getASuccessor+() = outer.getCondition().getBasicBlock()
 select inner.getCondition(), "Nested for statement uses loop variable $@ of enclosing $@.",
   iteration, iteration.getName(), outer, "for statement"

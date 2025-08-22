@@ -185,7 +185,7 @@ private predicate switchMatching(SwitchStmt switch, CaseStmt c, AstNode ast) {
   (
     c.getALabel() = ast
     or
-    isSubPattern+(c.getALabel().getPattern(), ast)
+    ast.(Pattern).getImmediateEnclosingPattern+() = c.getALabel().getPattern()
   )
 }
 
@@ -216,25 +216,8 @@ predicate catchMatchingPattern(DoCatchStmt s, CaseStmt c, Pattern pattern) {
   exists(CaseLabelItem cli | catchMatching(s, c, cli) |
     cli.getPattern() = pattern
     or
-    isSubPattern+(cli.getPattern(), pattern)
+    pattern.getImmediateEnclosingPattern+() = cli.getPattern()
   )
-}
-
-/** Holds if `sub` is a subpattern of `p`. */
-private predicate isSubPattern(Pattern p, Pattern sub) {
-  sub = p.(BindingPattern).getSubPattern().getFullyUnresolved()
-  or
-  sub = p.(EnumElementPattern).getSubPattern().getFullyUnresolved()
-  or
-  sub = p.(IsPattern).getSubPattern().getFullyUnresolved()
-  or
-  sub = p.(OptionalSomePattern).getFullyUnresolved()
-  or
-  sub = p.(ParenPattern).getResolveStep()
-  or
-  sub = p.(TuplePattern).getAnElement().getFullyUnresolved()
-  or
-  sub = p.(TypedPattern).getSubPattern().getFullyUnresolved()
 }
 
 /** Gets the value of `e` if it is a constant value, disregarding conversions. */
@@ -259,8 +242,6 @@ private string getPatternValue(Pattern p) {
 /** Holds if `p` always matches. */
 private predicate isIrrefutableMatch(Pattern p) {
   (p instanceof NamedPattern or p instanceof AnyPattern)
-  or
-  isIrrefutableMatch(p.(BindingPattern).getSubPattern().getFullyUnresolved())
   or
   isIrrefutableMatch(p.(TypedPattern).getSubPattern().getFullyUnresolved())
   or
@@ -328,7 +309,7 @@ private predicate mayHaveThrowCompletion(ControlFlowElement n) {
   isThrowingType(n.asAstNode().(ApplyExpr).getFunction().getType())
   or
   // Getters are the only accessor declarators that may throw.
-  exists(AccessorDecl accessor | isThrowingType(accessor.getInterfaceType()) |
+  exists(Accessor accessor | isThrowingType(accessor.getInterfaceType()) |
     isPropertyGetterElement(n, accessor, _)
   )
 }

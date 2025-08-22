@@ -16,6 +16,10 @@ To guard against untrusted URL redirection, it is advisable to avoid putting use
 directly into a redirect URL. Instead, maintain a list of authorized
 redirects on the server; then choose from that list based on the user input provided.
 </p>
+<p>
+If this is not possible, then the user input should be validated in some other way,
+for example, by verifying that the target URL does not include an explicit host name.
+</p>
 </recommendation>
 
 <example>
@@ -27,16 +31,56 @@ without validating the input, which facilitates phishing attacks:
 <sample src="examples/redirect_bad.py"/>
 
 <p>
-One way to remedy the problem is to validate the user input against a known fixed string
-before doing the redirection:
+If you know the set of valid redirect targets, you can maintain a list of them on the server
+and check that the user input is in that list:
 </p>
 
 <sample src="examples/redirect_good.py"/>
+
+<p>
+Often this is not possible, so an alternative is to check that the target URL does not
+specify an explicit host name. For example, you can use the <code>urlparse</code> function
+from the Python standard library to parse the URL and check that the <code>netloc</code>
+attribute is empty.
+</p>
+
+<p>
+Note, however, that some cases are not handled as we desire out-of-the-box by <code>urlparse</code>, so we need to adjust two things, as shown in the example below:
+</p>
+
+<ul>
+  <li>
+    Many browsers accept backslash characters (<code>\</code>) as equivalent
+    to forward slash characters (<code>/</code>) in URLs, but the <code>urlparse</code> function
+    does not.
+  </li>
+  <li>
+    Mistyped URLs such as <code>https:/example.com</code> or <code>https:///example.com</code> are parsed as having an empty <code>netloc</code> attribute, while browsers will still redirect to the correct site.
+  </li>
+</ul>
+
+
+<sample src="examples/redirect_good2.py"/>
+
+<p>
+For Django application, you can use the function <code>url_has_allowed_host_and_scheme</code>
+to check that a URL is safe to redirect to, as shown in the following example:
+</p>
+
+<sample src="examples/redirect_good3.py"/>
+
+<p>
+Note that <code>url_has_allowed_host_and_scheme</code> handles backslashes correctly, so no
+additional processing is required.
+</p>
+
 </example>
 
 <references>
 <li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">
   XSS Unvalidated Redirects and Forwards Cheat Sheet</a>.</li>
+<li>Python standard library: <a href="https://docs.python.org/3/library/urllib.parse.html">
+  urllib.parse</a>.</li>
 </references>
 
 </qhelp>

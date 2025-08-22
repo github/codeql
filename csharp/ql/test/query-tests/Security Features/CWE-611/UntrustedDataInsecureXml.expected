@@ -1,8 +1,11 @@
+#select
+| Test.cs:11:50:11:84 | access to indexer | Test.cs:11:50:11:72 | access to property QueryString : NameValueCollection | Test.cs:11:50:11:84 | access to indexer | This insecure XML processing depends on a $@ (DTD processing is enabled with an insecure resolver). | Test.cs:11:50:11:72 | access to property QueryString | user-provided value |
 edges
-| Test.cs:11:50:11:72 | access to property QueryString : NameValueCollection | Test.cs:11:50:11:84 | access to indexer |
+| Test.cs:11:50:11:72 | access to property QueryString : NameValueCollection | Test.cs:11:50:11:84 | access to indexer | provenance |  |
+| Test.cs:11:50:11:72 | access to property QueryString : NameValueCollection | Test.cs:11:50:11:84 | access to indexer | provenance | MaD:1 |
+models
+| 1 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
 nodes
 | Test.cs:11:50:11:72 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | Test.cs:11:50:11:84 | access to indexer | semmle.label | access to indexer |
 subpaths
-#select
-| Test.cs:11:50:11:84 | access to indexer | Test.cs:11:50:11:72 | access to property QueryString : NameValueCollection | Test.cs:11:50:11:84 | access to indexer | This insecure XML processing depends on a $@ (DTD processing is enabled with an insecure resolver). | Test.cs:11:50:11:72 | access to property QueryString | user-provided value |

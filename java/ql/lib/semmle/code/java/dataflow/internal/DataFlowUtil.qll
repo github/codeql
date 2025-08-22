@@ -1,6 +1,8 @@
 /**
  * Basic definitions for use in the data flow library.
  */
+overlay[local?]
+module;
 
 private import java
 private import DataFlowPrivate
@@ -10,17 +12,19 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
 private import semmle.code.java.dataflow.InstanceAccess
+private import semmle.code.java.dataflow.internal.SsaImpl as SsaImpl
 private import FlowSummaryImpl as FlowSummaryImpl
 private import TaintTrackingUtil as TaintTrackingUtil
 private import DataFlowNodes
 import DataFlowNodes::Public
-import semmle.code.Unit
 
 /** Holds if `n` is an access to an unqualified `this` at `cfgnode`. */
 private predicate thisAccess(Node n, ControlFlowNode cfgnode) {
-  n.(InstanceParameterNode).getCallable().getBody() = cfgnode
+  n.(InstanceParameterNode).getCallable().getBody() = cfgnode.asStmt()
   or
-  exists(InstanceAccess ia | ia = n.asExpr() and ia = cfgnode and ia.isOwnInstanceAccess())
+  exists(InstanceAccess ia |
+    ia = n.asExpr() and ia.getControlFlowNode() = cfgnode and ia.isOwnInstanceAccess()
+  )
   or
   n.(ImplicitInstanceAccess).getInstanceAccess().(OwnInstanceAccess).getCfgNode() = cfgnode
 }
@@ -38,14 +42,14 @@ private module ThisFlow {
 
   private int lastRank(BasicBlock b) { result = max(int rankix | thisRank(_, b, rankix)) }
 
-  private predicate blockPrecedesThisAccess(BasicBlock b) { thisAccess(_, b.getABBSuccessor*(), _) }
+  private predicate blockPrecedesThisAccess(BasicBlock b) { thisAccess(_, b.getASuccessor*(), _) }
 
   private predicate thisAccessBlockReaches(BasicBlock b1, BasicBlock b2) {
-    thisAccess(_, b1, _) and b2 = b1.getABBSuccessor()
+    thisAccess(_, b1, _) and b2 = b1.getASuccessor()
     or
     exists(BasicBlock mid |
       thisAccessBlockReaches(b1, mid) and
-      b2 = mid.getABBSuccessor() and
+      b2 = mid.getASuccessor() and
       not thisAccess(_, mid, _) and
       blockPrecedesThisAccess(b2)
     )
@@ -75,6 +79,7 @@ private module ThisFlow {
  * Holds if data can flow from `node1` to `node2` in zero or more
  * local (intra-procedural) steps.
  */
+overlay[caller?]
 pragma[inline]
 predicate localFlow(Node node1, Node node2) { node1 = node2 or localFlowStepPlus(node1, node2) }
 
@@ -84,6 +89,7 @@ private predicate localFlowStepPlus(Node node1, Node node2) = fastTC(localFlowSt
  * Holds if data can flow from `e1` to `e2` in zero or more
  * local (intra-procedural) steps.
  */
+overlay[caller?]
 pragma[inline]
 predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
 
@@ -100,6 +106,10 @@ predicate hasNonlocalValue(FieldRead fr) {
   )
 }
 
+private predicate capturedVariableRead(Node n) {
+  n.asExpr().(VarRead).getVariable() instanceof CapturedVariable
+}
+
 cached
 private module Cached {
   /**
@@ -107,9 +117,9 @@ private module Cached {
    */
   cached
   predicate localFlowStep(Node node1, Node node2) {
-    simpleLocalFlowStep0(node1, node2)
+    simpleLocalFlowStep0(node1, node2, _)
     or
-    adjacentUseUse(node1.asExpr(), node2.asExpr())
+    SsaFlow::localFlowStep(_, node1, node2, _)
     or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
@@ -123,68 +133,120 @@ private module Cached {
    * data flow. It may have less flow than the `localFlowStep` predicate.
    */
   cached
-  predicate simpleLocalFlowStep(Node node1, Node node2) {
-    simpleLocalFlowStep0(node1, node2)
+  predicate simpleLocalFlowStep(Node node1, Node node2, string model) {
+    simpleLocalFlowStep0(node1, node2, model)
+    or
+    exists(boolean isUseStep |
+      SsaFlow::localFlowStep(_, node1, node2, isUseStep) and
+      not capturedVariableRead(node2) and
+      model = ""
+    |
+      isUseStep = false
+      or
+      isUseStep = true and
+      not exists(FieldRead fr |
+        hasNonlocalValue(fr) and fr.getField().isStatic() and fr = node1.asExpr()
+      ) and
+      not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(node1, _)
+    )
     or
     any(AdditionalValueStep a).step(node1, node2) and
     pragma[only_bind_out](node1.getEnclosingCallable()) =
       pragma[only_bind_out](node2.getEnclosingCallable()) and
+    model = "AdditionalValueStep" and
     // prevent recursive call
     (any(AdditionalValueStep a).step(_, _) implies any())
   }
 }
 
-import Cached
-
-private predicate simpleLocalFlowStep0(Node node1, Node node2) {
-  TaintTrackingUtil::forceCachingInSameStage() and
-  // Variable flow steps through adjacent def-use and use-use pairs.
-  exists(SsaExplicitUpdate upd |
-    upd.getDefiningExpr().(VariableAssign).getSource() = node1.asExpr() or
-    upd.getDefiningExpr().(AssignOp) = node1.asExpr()
-  |
-    node2.asExpr() = upd.getAFirstUse()
+/**
+ * Holds if the value of `node2` is given by `node1`.
+ */
+predicate localMustFlowStep(Node node1, Node node2) {
+  exists(Callable c | node1.(InstanceParameterNode).getCallable() = c |
+    exists(InstanceAccess ia |
+      ia = node2.asExpr() and ia.getEnclosingCallable() = c and ia.isOwnInstanceAccess()
+    )
+    or
+    c =
+      node2.(ImplicitInstanceAccess).getInstanceAccess().(OwnInstanceAccess).getEnclosingCallable()
   )
   or
-  exists(SsaImplicitInit init |
-    init.isParameterDefinition(node1.asParameter()) and
-    node2.asExpr() = init.getAFirstUse()
-  )
-  or
-  adjacentUseUse(node1.asExpr(), node2.asExpr()) and
-  not exists(FieldRead fr |
-    hasNonlocalValue(fr) and fr.getField().isStatic() and fr = node1.asExpr()
-  ) and
-  not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(node1, _)
-  or
-  ThisFlow::adjacentThisRefs(node1, node2)
-  or
-  adjacentUseUse(node1.(PostUpdateNode).getPreUpdateNode().asExpr(), node2.asExpr())
-  or
-  ThisFlow::adjacentThisRefs(node1.(PostUpdateNode).getPreUpdateNode(), node2)
+  SsaFlow::localMustFlowStep(node1, node2)
   or
   node2.asExpr().(CastingExpr).getExpr() = node1.asExpr()
   or
-  node2.asExpr().(ChooseExpr).getAResultExpr() = node1.asExpr()
-  or
   node2.asExpr().(AssignExpr).getSource() = node1.asExpr()
   or
-  node2.asExpr().(ArrayCreationExpr).getInit() = node1.asExpr()
+  FlowSummaryImpl::Private::Steps::summaryLocalMustFlowStep(node1.(FlowSummaryNode).getSummaryNode(),
+    node2.(FlowSummaryNode).getSummaryNode())
+}
+
+import Cached
+
+/**
+ * Holds if there is a data flow step from `e1` to `e2` that only steps from
+ * child to parent in the AST.
+ */
+predicate simpleAstFlowStep(Expr e1, Expr e2) {
+  e2.(CastingExpr).getExpr() = e1
   or
-  node2.asExpr() = any(StmtExpr stmtExpr | node1.asExpr() = stmtExpr.getResultExpr())
+  e2.(ChooseExpr).getAResultExpr() = e1
   or
-  node2.asExpr() = any(NotNullExpr nne | node1.asExpr() = nne.getExpr())
+  e2.(AssignExpr).getSource() = e1
   or
-  node2.asExpr().(WhenExpr).getBranch(_).getAResult() = node1.asExpr()
+  e2.(ArrayCreationExpr).getInit() = e1
   or
-  exists(MethodAccess ma, ValuePreservingMethod m, int argNo |
+  e2 = any(StmtExpr stmtExpr | e1 = stmtExpr.getResultExpr())
+  or
+  e2 = any(NotNullExpr nne | e1 = nne.getExpr())
+  or
+  e2.(WhenExpr).getBranch(_).getAResult() = e1
+  or
+  // In the following three cases only record patterns need this flow edge, leading from the bound instanceof
+  // or switch tested expression to a record pattern that will read its fields. Simple binding patterns are
+  // handled via VariableAssign.getSource instead.
+  // We only consider patterns that declare any identifiers
+  exists(SwitchExpr se, RecordPatternExpr recordPattern | recordPattern = e2 |
+    e1 = se.getExpr() and
+    recordPattern = se.getACase().(PatternCase).getAPattern() and
+    recordPattern.declaresAnyIdentifiers()
+  )
+  or
+  exists(SwitchStmt ss, RecordPatternExpr recordPattern | recordPattern = e2 |
+    e1 = ss.getExpr() and
+    recordPattern = ss.getACase().(PatternCase).getAPattern() and
+    recordPattern.declaresAnyIdentifiers()
+  )
+  or
+  exists(InstanceOfExpr ioe | e1 = ioe.getExpr() and e2 = ioe.getPattern().asRecordPattern())
+}
+
+private predicate simpleLocalFlowStep0(Node node1, Node node2, string model) {
+  (
+    TaintTrackingUtil::forceCachingInSameStage() and
+    ThisFlow::adjacentThisRefs(node1, node2)
+    or
+    ThisFlow::adjacentThisRefs(node1.(PostUpdateNode).getPreUpdateNode(), node2)
+    or
+    simpleAstFlowStep(node1.asExpr(), node2.asExpr())
+    or
+    captureValueStep(node1, node2)
+  ) and
+  model = ""
+  or
+  exists(MethodCall ma, ValuePreservingMethod m, int argNo |
     ma.getCallee().getSourceDeclaration() = m and m.returnsValue(argNo)
   |
     node2.asExpr() = ma and
-    node1.(ArgumentNode).argumentOf(any(DataFlowCall c | c.asCall() = ma), argNo)
+    node1.(ArgumentNode).argumentOf(any(DataFlowCall c | c.asCall() = ma), argNo) and
+    model = "ValuePreservingMethod"
   )
   or
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(node1, node2, true)
+  cloneStep(node1, node2) and model = "CloneStep"
+  or
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(node1.(FlowSummaryNode).getSummaryNode(),
+    node2.(FlowSummaryNode).getSummaryNode(), true, model)
 }
 
 /**
@@ -256,6 +318,19 @@ class MapValueContent extends Content, TMapValueContent {
   override string toString() { result = "<map.value>" }
 }
 
+/** A captured variable. */
+class CapturedVariableContent extends Content, TCapturedVariableContent {
+  CapturedVariable v;
+
+  CapturedVariableContent() { this = TCapturedVariableContent(v) }
+
+  CapturedVariable getVariable() { result = v }
+
+  override DataFlowType getType() { result = getErasedRepr(v.(Variable).getType()) }
+
+  override string toString() { result = v.toString() }
+}
+
 /** A reference through a synthetic instance field. */
 class SyntheticFieldContent extends Content, TSyntheticFieldContent {
   SyntheticField s;
@@ -315,37 +390,7 @@ signature predicate guardChecksSig(Guard g, Expr e, boolean branch);
 module BarrierGuard<guardChecksSig/3 guardChecks> {
   /** Gets a node that is safely guarded by the given guard check. */
   Node getABarrierNode() {
-    exists(Guard g, SsaVariable v, boolean branch, RValue use |
-      guardChecks(g, v.getAUse(), branch) and
-      use = v.getAUse() and
-      g.controls(use.getBasicBlock(), branch) and
-      result.asExpr() = use
-    )
-  }
-}
-
-/**
- * DEPRECATED: Use `BarrierGuard` module instead.
- *
- * A guard that validates some expression.
- *
- * To use this in a configuration, extend the class and provide a
- * characteristic predicate precisely specifying the guard, and override
- * `checks` to specify what is being validated and in which branch.
- *
- * It is important that all extending classes in scope are disjoint.
- */
-deprecated class BarrierGuard extends Guard {
-  /** Holds if this guard validates `e` upon evaluating to `branch`. */
-  abstract predicate checks(Expr e, boolean branch);
-
-  /** Gets a node guarded by this guard. */
-  final Node getAGuardedNode() {
-    exists(SsaVariable v, boolean branch, RValue use |
-      this.checks(v.getAUse(), branch) and
-      use = v.getAUse() and
-      this.controls(use.getBasicBlock(), branch) and
-      result.asExpr() = use
-    )
+    SsaFlow::asNode(result) =
+      SsaImpl::DataFlowIntegration::BarrierGuard<guardChecks/3>::getABarrierNode()
   }
 }

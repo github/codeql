@@ -31,7 +31,7 @@ where
   exists(Method original | adapter = original.getDeclaringType() | m.getName() = original.getName()) and
   not exists(Method overridden | adapter = overridden.getDeclaringType() | m.overrides(overridden)) and
   // The method is not used for any other purpose.
-  not exists(MethodAccess ma | ma.getMethod() = m)
+  not exists(MethodCall ma | ma.getMethod() = m)
 select m,
   "Method " + m.getName() + " attempts to override a method in " + adapter.getName() +
     ", but does not have the same argument types. " + m.getName() +

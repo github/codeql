@@ -11,19 +11,21 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import PolynomialReDoSCustomizations::PolynomialReDoS
 
-/**
- * A taint-tracking configuration for detecting "polynomial regular expression denial of service (ReDoS)" vulnerabilities.
- */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "PolynomialReDoS" }
+private module PolynomialReDoSConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+  predicate observeDiffInformedIncrementalMode() { any() }
 
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof SanitizerGuard
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getHighlight().getLocation()
+    or
+    result = sink.(Sink).getABacktrackingTerm().getLocation()
   }
 }
+
+/** Global taint-tracking for detecting "polynomial regular expression denial of service (ReDoS)" vulnerabilities. */
+module PolynomialReDoSFlow = TaintTracking::Global<PolynomialReDoSConfig>;

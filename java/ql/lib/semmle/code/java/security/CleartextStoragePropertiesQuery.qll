@@ -7,7 +7,7 @@ import semmle.code.java.security.CleartextStorageQuery
 
 private class PropertiesCleartextStorageSink extends CleartextStorageSink {
   PropertiesCleartextStorageSink() {
-    exists(MethodAccess m |
+    exists(MethodCall m |
       m.getMethod() instanceof PropertiesSetPropertyMethod and this.asExpr() = m.getArgument(1)
     )
   }
@@ -19,23 +19,23 @@ class Properties extends Storable, ClassInstanceExpr {
 
   /** Gets an input, for example `input` in `props.setProperty("password", input);`. */
   override Expr getAnInput() {
-    exists(PropertiesFlowConfig conf, DataFlow::Node n |
+    exists(DataFlow::Node n |
       propertiesInput(n, result) and
-      conf.hasFlow(DataFlow::exprNode(this), n)
+      PropertiesFlow::flow(DataFlow::exprNode(this), n)
     )
   }
 
   /** Gets a store, for example `props.store(outputStream, "...")`. */
   override Expr getAStore() {
-    exists(PropertiesFlowConfig conf, DataFlow::Node n |
+    exists(DataFlow::Node n |
       propertiesStore(n, result) and
-      conf.hasFlow(DataFlow::exprNode(this), n)
+      PropertiesFlow::flow(DataFlow::exprNode(this), n)
     )
   }
 }
 
 private predicate propertiesInput(DataFlow::Node prop, Expr input) {
-  exists(MethodAccess m |
+  exists(MethodCall m |
     m.getMethod() instanceof PropertiesSetPropertyMethod and
     input = m.getArgument(1) and
     prop.asExpr() = m.getQualifier()
@@ -43,20 +43,20 @@ private predicate propertiesInput(DataFlow::Node prop, Expr input) {
 }
 
 private predicate propertiesStore(DataFlow::Node prop, Expr store) {
-  exists(MethodAccess m |
+  exists(MethodCall m |
     m.getMethod() instanceof PropertiesStoreMethod and
     store = m and
     prop.asExpr() = m.getQualifier()
   )
 }
 
-private class PropertiesFlowConfig extends DataFlow::Configuration {
-  PropertiesFlowConfig() { this = "PropertiesFlowConfig" }
+private module PropertiesFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof Properties }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof Properties }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     propertiesInput(sink, _) or
     propertiesStore(sink, _)
   }
 }
+
+private module PropertiesFlow = DataFlow::Global<PropertiesFlowConfig>;

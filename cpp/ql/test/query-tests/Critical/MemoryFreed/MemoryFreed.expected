@@ -26,6 +26,106 @@
 | test.cpp:128:15:128:16 | v4 |
 | test.cpp:185:10:185:12 | cpy |
 | test.cpp:199:10:199:12 | cpy |
+| test.cpp:213:7:213:7 | a |
+| test.cpp:219:7:219:7 | a |
+| test.cpp:228:14:228:18 | data1 |
+| test.cpp:236:14:236:18 | data1 |
+| test.cpp:237:14:237:18 | data2 |
+| test_free.cpp:11:10:11:10 | a |
+| test_free.cpp:14:10:14:10 | a |
+| test_free.cpp:16:10:16:10 | a |
+| test_free.cpp:18:18:18:18 | a |
+| test_free.cpp:23:10:23:10 | a |
+| test_free.cpp:25:10:25:10 | a |
+| test_free.cpp:26:10:26:10 | b |
+| test_free.cpp:30:10:30:10 | a |
+| test_free.cpp:31:27:31:27 | a |
+| test_free.cpp:35:10:35:10 | a |
+| test_free.cpp:37:27:37:27 | a |
+| test_free.cpp:42:27:42:27 | a |
+| test_free.cpp:44:27:44:27 | a |
+| test_free.cpp:46:10:46:10 | a |
+| test_free.cpp:50:27:50:27 | a |
+| test_free.cpp:51:10:51:10 | a |
+| test_free.cpp:55:27:55:27 | a |
+| test_free.cpp:57:10:57:10 | a |
+| test_free.cpp:61:10:61:10 | a |
+| test_free.cpp:63:10:63:10 | b |
+| test_free.cpp:69:10:69:10 | a |
+| test_free.cpp:72:14:72:14 | a |
+| test_free.cpp:83:12:83:12 | a |
+| test_free.cpp:85:12:85:12 | a |
+| test_free.cpp:90:10:90:10 | a |
+| test_free.cpp:95:10:95:10 | a |
+| test_free.cpp:101:10:101:10 | a |
+| test_free.cpp:102:23:102:23 | a |
+| test_free.cpp:103:10:103:10 | a |
+| test_free.cpp:104:10:104:10 | b |
+| test_free.cpp:107:23:107:23 | a |
+| test_free.cpp:112:14:112:14 | a |
+| test_free.cpp:114:10:114:10 | b |
+| test_free.cpp:118:23:118:23 | a |
+| test_free.cpp:119:17:119:17 | b |
+| test_free.cpp:121:14:121:14 | a |
+| test_free.cpp:126:10:126:11 | * ... |
+| test_free.cpp:128:10:128:11 | * ... |
+| test_free.cpp:129:10:129:11 | * ... |
+| test_free.cpp:131:10:131:13 | access to array |
+| test_free.cpp:132:10:132:13 | access to array |
+| test_free.cpp:143:27:143:30 | data |
+| test_free.cpp:145:14:145:22 | * ... |
+| test_free.cpp:148:10:148:17 | list_ptr |
+| test_free.cpp:152:27:152:27 | a |
+| test_free.cpp:154:10:154:10 | a |
+| test_free.cpp:159:14:159:15 | * ... |
+| test_free.cpp:162:10:162:10 | a |
+| test_free.cpp:167:23:167:23 | a |
+| test_free.cpp:173:10:173:10 | a |
+| test_free.cpp:181:10:181:10 | a |
+| test_free.cpp:183:10:183:10 | a |
+| test_free.cpp:185:10:185:10 | a |
+| test_free.cpp:188:10:188:10 | a |
+| test_free.cpp:193:20:193:20 | a |
+| test_free.cpp:199:20:199:20 | a |
+| test_free.cpp:205:10:205:10 | a |
+| test_free.cpp:207:10:207:10 | a |
+| test_free.cpp:209:10:209:10 | a |
+| test_free.cpp:213:10:213:10 | a |
+| test_free.cpp:216:10:216:10 | a |
+| test_free.cpp:220:10:220:10 | a |
+| test_free.cpp:227:24:227:45 | memory_descriptor_list |
+| test_free.cpp:228:16:228:37 | memory_descriptor_list |
+| test_free.cpp:233:14:233:15 | * ... |
+| test_free.cpp:239:14:239:15 | * ... |
+| test_free.cpp:245:10:245:11 | * ... |
+| test_free.cpp:252:7:252:7 | p |
+| test_free.cpp:255:10:255:10 | p |
+| test_free.cpp:260:9:260:9 | p |
+| test_free.cpp:263:12:263:12 | p |
+| test_free.cpp:269:7:269:11 | ... = ... |
+| test_free.cpp:277:11:277:13 | buf |
+| test_free.cpp:282:10:282:12 | buf |
+| test_free.cpp:288:8:288:10 | buf |
+| test_free.cpp:293:8:293:10 | buf |
+| test_free.cpp:301:12:301:14 | buf |
+| test_free.cpp:302:12:302:14 | buf |
+| test_free.cpp:313:16:313:16 | a |
+| test_free.cpp:319:16:319:16 | a |
+| test_free.cpp:322:12:322:12 | a |
+| test_free.cpp:331:12:331:12 | a |
+| test_free.cpp:335:12:335:12 | a |
+| test_free.cpp:343:26:343:28 | ptr |
+| test_free.cpp:344:26:344:28 | ptr |
+| test_free.cpp:345:26:345:28 | ptr |
+| test_free.cpp:346:26:346:28 | ptr |
+| test_free.cpp:356:19:356:19 | a |
+| test_free.cpp:357:19:357:19 | a |
+| test_free.cpp:370:10:370:10 | a |
+| test_free.cpp:373:10:373:10 | e |
+| test_free.cpp:382:10:382:10 | i |
+| test_free.cpp:383:10:383:10 | s |
+| test_free.cpp:395:14:395:19 | buffer |
+| test_free.cpp:424:10:424:16 | buffer2 |
 | virtual.cpp:18:10:18:10 | a |
 | virtual.cpp:19:10:19:10 | c |
 | virtual.cpp:38:10:38:10 | b |

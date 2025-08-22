@@ -1,14 +1,9 @@
-# github.com/github/depstubber v0.0.0-20200916130315-f3217697abd4
-## explicit
 # github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
 ## explicit
 github.com/golang/glog
 # github.com/sirupsen/logrus v1.7.0
 ## explicit
 github.com/sirupsen/logrus
-# golang.org/x/sys v0.0.0-20191026070338-33540a1f6037
-golang.org/x/sys/unix
-golang.org/x/sys/windows
 # k8s.io/klog v1.0.0
 ## explicit
 k8s.io/klog

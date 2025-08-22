@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["appflowy-io/appflowy", "*", "input.test_path", "code-injection", "generated"]
+     - ["appflowy-io/appflowy", "*", "input.flutter_profile", "code-injection", "generated"]

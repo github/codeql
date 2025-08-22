@@ -44,6 +44,23 @@ newtype TValueNumber =
   TUniqueValueNumber(IRFunction irFunc, Instruction instr) { uniqueValueNumber(instr, irFunc) }
 
 /**
+ * A `ConvertInstruction` which converts data of type `T` to data of type `U`
+ * where `T` and `U` only differ in specifiers. For example, if `T` is `int`
+ * and `U` is `const T` this is a conversion from a non-const integer to a
+ * const integer.
+ *
+ * Generally, the value number of a converted value is different from the value
+ * number of an unconverted value, but conversions which only modify specifiers
+ * leave the resulting value bitwise identical to the old value.
+ */
+class TypePreservingConvertInstruction extends ConvertInstruction {
+  TypePreservingConvertInstruction() {
+    pragma[only_bind_out](this.getResultType().getUnspecifiedType()) =
+      pragma[only_bind_out](this.getUnary().getResultType().getUnspecifiedType())
+  }
+}
+
+/**
  * A `CopyInstruction` whose source operand's value is congruent to the definition of that source
  * operand.
  * For example:
@@ -159,26 +176,54 @@ private predicate fieldAddressValueNumber(
   tvalueNumber(instr.getObjectAddress()) = objectAddress
 }
 
+pragma[nomagic]
+private predicate binaryValueNumber0(
+  BinaryInstruction instr, IRFunction irFunc, Opcode opcode, boolean isLeft,
+  TValueNumber valueNumber
+) {
+  not instr instanceof PointerArithmeticInstruction and
+  instr.getEnclosingIRFunction() = irFunc and
+  instr.getOpcode() = opcode and
+  (
+    isLeft = true and
+    tvalueNumber(instr.getLeft()) = valueNumber
+    or
+    isLeft = false and
+    tvalueNumber(instr.getRight()) = valueNumber
+  )
+}
+
 private predicate binaryValueNumber(
   BinaryInstruction instr, IRFunction irFunc, Opcode opcode, TValueNumber leftOperand,
   TValueNumber rightOperand
 ) {
+  binaryValueNumber0(instr, irFunc, opcode, true, leftOperand) and
+  binaryValueNumber0(instr, irFunc, opcode, false, rightOperand)
+}
+
+pragma[nomagic]
+private predicate pointerArithmeticValueNumber0(
+  PointerArithmeticInstruction instr, IRFunction irFunc, Opcode opcode, int elementSize,
+  boolean isLeft, TValueNumber valueNumber
+) {
   instr.getEnclosingIRFunction() = irFunc and
-  not instr instanceof PointerArithmeticInstruction and
   instr.getOpcode() = opcode and
-  tvalueNumber(instr.getLeft()) = leftOperand and
-  tvalueNumber(instr.getRight()) = rightOperand
+  instr.getElementSize() = elementSize and
+  (
+    isLeft = true and
+    tvalueNumber(instr.getLeft()) = valueNumber
+    or
+    isLeft = false and
+    tvalueNumber(instr.getRight()) = valueNumber
+  )
 }
 
 private predicate pointerArithmeticValueNumber(
   PointerArithmeticInstruction instr, IRFunction irFunc, Opcode opcode, int elementSize,
   TValueNumber leftOperand, TValueNumber rightOperand
 ) {
-  instr.getEnclosingIRFunction() = irFunc and
-  instr.getOpcode() = opcode and
-  instr.getElementSize() = elementSize and
-  tvalueNumber(instr.getLeft()) = leftOperand and
-  tvalueNumber(instr.getRight()) = rightOperand
+  pointerArithmeticValueNumber0(instr, irFunc, opcode, elementSize, true, leftOperand) and
+  pointerArithmeticValueNumber0(instr, irFunc, opcode, elementSize, false, rightOperand)
 }
 
 private predicate unaryValueNumber(
@@ -188,6 +233,7 @@ private predicate unaryValueNumber(
   not instr instanceof InheritanceConversionInstruction and
   not instr instanceof CopyInstruction and
   not instr instanceof FieldAddressInstruction and
+  not instr instanceof TypePreservingConvertInstruction and
   instr.getOpcode() = opcode and
   tvalueNumber(instr.getUnary()) = operand
 }
@@ -203,14 +249,28 @@ private predicate inheritanceConversionValueNumber(
   unique( | | instr.getDerivedClass()) = derivedClass
 }
 
+pragma[nomagic]
+private predicate loadTotalOverlapValueNumber0(
+  LoadTotalOverlapInstruction instr, IRFunction irFunc, IRType type, TValueNumber valueNumber,
+  boolean isAddress
+) {
+  instr.getEnclosingIRFunction() = irFunc and
+  instr.getResultIRType() = type and
+  (
+    isAddress = true and
+    tvalueNumberOfOperand(instr.getSourceAddressOperand()) = valueNumber
+    or
+    isAddress = false and
+    tvalueNumber(instr.getSourceValueOperand().getAnyDef()) = valueNumber
+  )
+}
+
 private predicate loadTotalOverlapValueNumber(
   LoadTotalOverlapInstruction instr, IRFunction irFunc, IRType type, TValueNumber memOperand,
   TValueNumber operand
 ) {
-  instr.getEnclosingIRFunction() = irFunc and
-  tvalueNumber(instr.getAnOperand().(MemoryOperand).getAnyDef()) = memOperand and
-  tvalueNumberOfOperand(instr.getAnOperand().(AddressOperand)) = operand and
-  instr.getResultIRType() = type
+  loadTotalOverlapValueNumber0(instr, irFunc, type, operand, true) and
+  loadTotalOverlapValueNumber0(instr, irFunc, type, memOperand, false)
 }
 
 /**
@@ -309,6 +369,10 @@ private TValueNumber nonUniqueValueNumber(Instruction instr) {
       or
       // The value number of a copy is just the value number of its source value.
       result = tvalueNumber(instr.(CongruentCopyInstruction).getSourceValue())
+      or
+      // The value number of a type-preserving conversion is just the value
+      // number of the unconverted value.
+      result = tvalueNumber(instr.(TypePreservingConvertInstruction).getUnary())
     )
   )
 }

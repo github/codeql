@@ -1,0 +1,2 @@
+query: experimental/Security/CWE/CWE-078/CommandInjectionRuntimeExecLocal.ql
+postprocess: utils/test/PrettyPrintModels.ql

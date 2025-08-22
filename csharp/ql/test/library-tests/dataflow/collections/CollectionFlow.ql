@@ -3,23 +3,21 @@
  */
 
 import csharp
-import DataFlow::PathGraph
+import utils.test.ProvenancePathGraph::ShowProvenance<ArrayFlow::PathNode, ArrayFlow::PathGraph>
 
-class Conf extends DataFlow::Configuration {
-  Conf() { this = "ArrayFlowConf" }
+module ArrayFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ObjectCreation }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ObjectCreation }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc |
       mc.getTarget().hasUndecoratedName("Sink") and
       mc.getAnArgument() = sink.asExpr()
     )
   }
-
-  override int fieldFlowBranchLimit() { result = 100 }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, Conf conf
-where conf.hasFlowPath(source, sink)
+module ArrayFlow = DataFlow::Global<ArrayFlowConfig>;
+
+from ArrayFlow::PathNode source, ArrayFlow::PathNode sink
+where ArrayFlow::flowPath(source, sink)
 select source, source, sink, "$@", sink, sink.toString()

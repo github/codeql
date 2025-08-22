@@ -1,18 +1,17 @@
+deprecated module;
+
 import java
-import DataFlow
-import JsonStringLib
-import semmle.code.java.security.XSS
-import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.DataFlow3
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.frameworks.spring.SpringController
+private import JsonStringLib
+private import semmle.code.java.security.XSS
+private import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.FlowSources
 
 /**
  * A method that is called to handle an HTTP GET request.
  */
 abstract class RequestGetMethod extends Method {
   RequestGetMethod() {
-    not exists(MethodAccess ma |
+    not exists(MethodCall ma |
       // Exclude apparent GET handlers that read a request entity, because this likely indicates this is not in fact a GET handler.
       // This is particularly a problem with Spring handlers, which can sometimes neglect to specify a request method.
       // Even if it is in fact a GET handler, such a request method will be unusable in the context `<script src="...">`,
@@ -80,39 +79,39 @@ class JsonpBuilderExpr extends AddExpr {
   Expr getJsonExpr() { result = this.getLeftOperand().(AddExpr).getRightOperand() }
 }
 
-/** A data flow configuration tracing flow from remote sources to jsonp function name. */
-class RemoteFlowConfig extends DataFlow2::Configuration {
-  RemoteFlowConfig() { this = "RemoteFlowConfig" }
+/** A data flow configuration tracing flow from threat model sources to jsonp function name. */
+module ThreatModelFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src instanceof ActiveThreatModelSource }
 
-  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(JsonpBuilderExpr jhe | jhe.getFunctionName() = sink.asExpr())
   }
 }
 
+module ThreatModelFlow = DataFlow::Global<ThreatModelFlowConfig>;
+
 /** A data flow configuration tracing flow from json data into the argument `json` of JSONP-like string `someFunctionName + "(" + json + ")"`. */
-class JsonDataFlowConfig extends DataFlow2::Configuration {
-  JsonDataFlowConfig() { this = "JsonDataFlowConfig" }
+module JsonDataFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src instanceof JsonStringSource }
 
-  override predicate isSource(DataFlow::Node src) { src instanceof JsonStringSource }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(JsonpBuilderExpr jhe | jhe.getJsonExpr() = sink.asExpr())
   }
 }
 
-/** Taint-tracking configuration tracing flow from probable jsonp data with a user-controlled function name to an outgoing HTTP entity. */
-class JsonpInjectionFlowConfig extends TaintTracking::Configuration {
-  JsonpInjectionFlowConfig() { this = "JsonpInjectionFlowConfig" }
+module JsonDataFlow = DataFlow::Global<JsonDataFlowConfig>;
 
-  override predicate isSource(DataFlow::Node src) {
-    exists(JsonpBuilderExpr jhe, JsonDataFlowConfig jdfc, RemoteFlowConfig rfc |
+/** Taint-tracking configuration tracing flow from probable jsonp data with a user-controlled function name to an outgoing HTTP entity. */
+module JsonpInjectionFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) {
+    exists(JsonpBuilderExpr jhe |
       jhe = src.asExpr() and
-      jdfc.hasFlowTo(DataFlow::exprNode(jhe.getJsonExpr())) and
-      rfc.hasFlowTo(DataFlow::exprNode(jhe.getFunctionName()))
+      JsonDataFlow::flowTo(DataFlow::exprNode(jhe.getJsonExpr())) and
+      ThreatModelFlow::flowTo(DataFlow::exprNode(jhe.getFunctionName()))
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof XssSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof XssSink }
 }
+
+module JsonpInjectionFlow = TaintTracking::Global<JsonpInjectionFlowConfig>;

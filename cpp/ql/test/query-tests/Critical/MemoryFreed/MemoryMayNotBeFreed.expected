@@ -1,0 +1,2 @@
+| test_free.cpp:36:22:36:35 | ... = ... | This memory allocation may not be released at $@. | test_free.cpp:38:1:38:1 | return ... | this exit point |
+| test_free.cpp:267:12:267:17 | call to malloc | This memory allocation may not be released at $@. | test_free.cpp:270:1:270:1 | return ... | this exit point |

@@ -1,0 +1,54 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["java.security.cert", "X509CertSelector", False, "setSubjectPublicKey", "(byte[])", "", "Argument[0]", "credentials-key", "hq-generated"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.security.cert", "X509Certificate", True, "getIssuerX500Principal", "()", "", "Argument[this]", "ReturnValue", "taint", "df-manual"]
+      - ["java.security.cert", "X509Certificate", True, "getSubjectX500Principal", "()", "", "Argument[this]", "ReturnValue", "taint", "df-manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.security.cert", "CertificateFactory", "CertificateFactory", "(CertificateFactorySpi,Provider,String)", "summary", "df-manual"]
+      - ["java.security.cert", "CertificateFactory", "generateCertificate", "(InputStream)", "summary", "df-manual"]
+      - ["java.security.cert", "CertificateFactory", "generateCertificates", "(InputStream)", "summary", "df-manual"]
+      - ["java.security.cert", "CertificateFactory", "generateCertPath", "", "summary", "df-manual"] 
+      - ["java.security.cert", "CertificateFactory", "generateCRL", "(InputStream)", "summary", "df-manual"]
+      - ["java.security.cert", "CertificateFactory", "generateCRLs", "(InputStream)", "summary", "df-manual"]
+      - ["java.security.cert", "CertificateFactory", "getCertPathEncodings", "()", "summary", "df-manual"]
+      - ["java.security.cert", "CertificateFactory", "getInstance", "", "summary", "df-manual"]
+      - ["java.security.cert", "CertificateFactory", "getProvider", "()", "summary", "df-manual"]
+      - ["java.security.cert", "CertificateFactory", "getType", "()", "summary", "df-manual"]
+      - ["java.security.cert", "CertStore", "CertStore", "(CertStoreSpi,Provider,String,CertStoreParameters)", "summary", "df-manual"]
+      - ["java.security.cert", "CertStore", "getCertificates", "(CertSelector)", "summary", "df-manual"]
+      - ["java.security.cert", "CertStore", "getCertStoreCertificates", "()", "summary", "df-manual"]
+      - ["java.security.cert", "CertStore", "getCRLs", "(CRLSelector)", "summary", "df-manual"]
+      - ["java.security.cert", "CertStore", "getDefaultType", "()", "summary", "df-manual"]
+      - ["java.security.cert", "CertStore", "getInstance", "", "summary", "df-manual"]
+      - ["java.security.cert", "CertStore", "getProvider", "()", "summary", "df-manual"]
+      - ["java.security.cert", "CertStore", "getType", "()", "summary", "df-manual"]
+      - ["java.security.cert", "PKIXParameters", "PKIXParameters", "", "summary", "df-manual"]
+      - ["java.security.cert", "PKIXParameters", "addCertPathChecker", "(PKIXCertPathChecker)", "summary", "df-manual"]
+      - ["java.security.cert", "PKIXParameters", "addCertStore", "(CertStore)", "summary", "df-manual"]
+      - ["java.security.cert", "PKIXParameters", "getCertPathCheckers", "()", "summary", "df-manual"]
+      - ["java.security.cert", "PKIXParameters", "getCertStores", "()", "summary", "df-manual"]
+      - ["java.security.cert", "PKIXParameters", "getDate", "()", "summary", "df-manual"]
+      - ["java.security.cert", "PKIXParameters", "getInitialPolicies", "()", "summary", "df-manual"]
+      - ["java.security.cert", "PKIXParameters", "getPolicyQualifiersRejected", "()", "summary", "df-manual"]
+      - ["java.security.cert", "PKIXParameters", "getSigProvider", "()", "summary", "df-manual"]
+      - ["java.security.cert", "PKIXParameters", "getTargetCertConstraints", "()", "summary", "df-manual"]
+      - ["java.security.cert", "PKIXParameters", "getTrustAnchors", "()", "summary", "df-manual"]
+      - ["java.security.cert", "PKIXParameters", "setAnyPolicyInhibited", "(boolean)", "summary", "df-manual"]
+      - ["java.security.cert", "PKIXParameters", "setCertPathCheckers", "(List)", "summary", "df-manual"]
+      - ["java.security.cert", "PKIXParameters", "setCertStores", "(List)", "summary", "df-manual"]
+      - ["java.security.cert", "PKIXParameters", "setDate", "(Date)", "summary", "df-manual"]
+      - ["java.security.cert", "PKIXParameters", "setSigProvider", "(String)", "summary", "df-manual"]
+      - ["java.security.cert", "PKIXParameters", "setTargetConstraints", "(CertSelector)", "summary", "df-manual"]
+      - ["java.security.cert", "PKIXParameters", "setTrustAnchors", "(Set)", "summary", "df-manual"]

@@ -1,6 +1,8 @@
 /**
  * Provdides a module to calculate constant integer and boolean values.
  */
+overlay[local?]
+module;
 
 import java
 
@@ -17,7 +19,6 @@ signature int getIntValSig(Expr e);
  */
 module CalculateConstants<getBoolValSig/1 getBoolVal, getIntValSig/1 getIntVal> {
   /** Gets the value of a constant boolean expression. */
-  pragma[assume_small_delta]
   boolean calculateBooleanValue(Expr e) {
     // No casts relevant to booleans.
     // `!` is the only unary operator that evaluates to a boolean.
@@ -99,7 +100,6 @@ module CalculateConstants<getBoolValSig/1 getBoolVal, getIntValSig/1 getIntVal> 
   }
 
   /** Gets the value of a constant integer expression. */
-  pragma[assume_small_delta]
   int calculateIntValue(Expr e) {
     exists(IntegralType t | e.getType() = t | t.getName().toLowerCase() != "long") and
     (

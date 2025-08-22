@@ -1,18 +1,18 @@
-function f(x, y) { // NOT OK
+function f(x, y) { // $ Alert
   return y;
 }
 
-function g(x, y) { // OK
+function g(x, y) {
   return y + arguments[0];
 }
 
-function h(x) { // OK
+function h(x) {
   function inner() {
     x = 1;
   }
 }
 
-// OK
+
 /**
  * @param {*} x the first argument, deliberately unused
  * @param {*} y the second argument
@@ -21,16 +21,15 @@ function K(x, y) {
     return y;
 }
 
-// NOT OK
 /**
  * @param {*} x the first argument
  * @param {*} y the second argument
  */
-function K(x, y) {
+function K(x, y) { // $ Alert
     return y;
 }
 
-// OK
+
 /**
  * @abstract
  * @param {*} x the first argument

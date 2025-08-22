@@ -1,38 +1,46 @@
 edges
-| SpringUrlRedirect.java:17:30:17:47 | redirectUrl : String | SpringUrlRedirect.java:19:19:19:29 | redirectUrl |
-| SpringUrlRedirect.java:24:24:24:41 | redirectUrl : String | SpringUrlRedirect.java:25:36:25:46 | redirectUrl |
-| SpringUrlRedirect.java:30:30:30:47 | redirectUrl : String | SpringUrlRedirect.java:31:44:31:54 | redirectUrl |
-| SpringUrlRedirect.java:36:30:36:47 | redirectUrl : String | SpringUrlRedirect.java:37:47:37:57 | redirectUrl |
-| SpringUrlRedirect.java:41:24:41:41 | redirectUrl : String | SpringUrlRedirect.java:44:29:44:39 | redirectUrl |
-| SpringUrlRedirect.java:49:24:49:41 | redirectUrl : String | SpringUrlRedirect.java:52:30:52:40 | redirectUrl |
-| SpringUrlRedirect.java:57:24:57:41 | redirectUrl : String | SpringUrlRedirect.java:58:55:58:65 | redirectUrl : String |
-| SpringUrlRedirect.java:58:30:58:66 | new ..[] { .. } [[]] : String | SpringUrlRedirect.java:58:30:58:66 | format(...) |
-| SpringUrlRedirect.java:58:55:58:65 | redirectUrl : String | SpringUrlRedirect.java:58:30:58:66 | new ..[] { .. } [[]] : String |
-| SpringUrlRedirect.java:62:24:62:41 | redirectUrl : String | SpringUrlRedirect.java:63:44:63:68 | ... + ... : String |
-| SpringUrlRedirect.java:63:44:63:68 | ... + ... : String | SpringUrlRedirect.java:63:30:63:76 | format(...) |
-| SpringUrlRedirect.java:89:38:89:55 | redirectUrl : String | SpringUrlRedirect.java:91:38:91:48 | redirectUrl : String |
-| SpringUrlRedirect.java:91:38:91:48 | redirectUrl : String | SpringUrlRedirect.java:91:27:91:49 | create(...) |
-| SpringUrlRedirect.java:96:39:96:56 | redirectUrl : String | SpringUrlRedirect.java:98:44:98:54 | redirectUrl : String |
-| SpringUrlRedirect.java:98:33:98:55 | create(...) : URI | SpringUrlRedirect.java:100:37:100:47 | httpHeaders |
-| SpringUrlRedirect.java:98:44:98:54 | redirectUrl : String | SpringUrlRedirect.java:98:33:98:55 | create(...) : URI |
-| SpringUrlRedirect.java:104:39:104:56 | redirectUrl : String | SpringUrlRedirect.java:106:37:106:47 | redirectUrl : String |
-| SpringUrlRedirect.java:106:9:106:19 | httpHeaders [post update] : HttpHeaders | SpringUrlRedirect.java:108:68:108:78 | httpHeaders |
-| SpringUrlRedirect.java:106:9:106:19 | httpHeaders [post update] [<map.value>, <element>] : String | SpringUrlRedirect.java:108:68:108:78 | httpHeaders |
-| SpringUrlRedirect.java:106:37:106:47 | redirectUrl : String | SpringUrlRedirect.java:106:9:106:19 | httpHeaders [post update] : HttpHeaders |
-| SpringUrlRedirect.java:106:37:106:47 | redirectUrl : String | SpringUrlRedirect.java:106:9:106:19 | httpHeaders [post update] [<map.value>, <element>] : String |
-| SpringUrlRedirect.java:112:39:112:56 | redirectUrl : String | SpringUrlRedirect.java:114:37:114:47 | redirectUrl : String |
-| SpringUrlRedirect.java:114:9:114:19 | httpHeaders [post update] : HttpHeaders | SpringUrlRedirect.java:116:37:116:47 | httpHeaders |
-| SpringUrlRedirect.java:114:9:114:19 | httpHeaders [post update] [<map.value>, <element>] : String | SpringUrlRedirect.java:116:37:116:47 | httpHeaders |
-| SpringUrlRedirect.java:114:37:114:47 | redirectUrl : String | SpringUrlRedirect.java:114:9:114:19 | httpHeaders [post update] : HttpHeaders |
-| SpringUrlRedirect.java:114:37:114:47 | redirectUrl : String | SpringUrlRedirect.java:114:9:114:19 | httpHeaders [post update] [<map.value>, <element>] : String |
-| SpringUrlRedirect.java:120:33:120:50 | redirectUrl : String | SpringUrlRedirect.java:122:37:122:47 | redirectUrl : String |
-| SpringUrlRedirect.java:122:9:122:19 | httpHeaders [post update] : HttpHeaders | SpringUrlRedirect.java:124:49:124:59 | httpHeaders |
-| SpringUrlRedirect.java:122:9:122:19 | httpHeaders [post update] [<map.value>, <element>] : String | SpringUrlRedirect.java:124:49:124:59 | httpHeaders |
-| SpringUrlRedirect.java:122:37:122:47 | redirectUrl : String | SpringUrlRedirect.java:122:9:122:19 | httpHeaders [post update] : HttpHeaders |
-| SpringUrlRedirect.java:122:37:122:47 | redirectUrl : String | SpringUrlRedirect.java:122:9:122:19 | httpHeaders [post update] [<map.value>, <element>] : String |
-| SpringUrlRedirect.java:128:33:128:50 | redirectUrl : String | SpringUrlRedirect.java:130:44:130:54 | redirectUrl : String |
-| SpringUrlRedirect.java:130:33:130:55 | create(...) : URI | SpringUrlRedirect.java:132:49:132:59 | httpHeaders |
-| SpringUrlRedirect.java:130:44:130:54 | redirectUrl : String | SpringUrlRedirect.java:130:33:130:55 | create(...) : URI |
+| SpringUrlRedirect.java:17:30:17:47 | redirectUrl : String | SpringUrlRedirect.java:19:19:19:29 | redirectUrl | provenance |  |
+| SpringUrlRedirect.java:24:24:24:41 | redirectUrl : String | SpringUrlRedirect.java:25:36:25:46 | redirectUrl | provenance |  |
+| SpringUrlRedirect.java:30:30:30:47 | redirectUrl : String | SpringUrlRedirect.java:31:44:31:54 | redirectUrl | provenance |  |
+| SpringUrlRedirect.java:36:30:36:47 | redirectUrl : String | SpringUrlRedirect.java:37:47:37:57 | redirectUrl | provenance |  |
+| SpringUrlRedirect.java:41:24:41:41 | redirectUrl : String | SpringUrlRedirect.java:44:29:44:39 | redirectUrl | provenance |  |
+| SpringUrlRedirect.java:49:24:49:41 | redirectUrl : String | SpringUrlRedirect.java:52:30:52:40 | redirectUrl | provenance |  |
+| SpringUrlRedirect.java:57:24:57:41 | redirectUrl : String | SpringUrlRedirect.java:58:55:58:65 | redirectUrl : String | provenance |  |
+| SpringUrlRedirect.java:58:30:58:66 | new ..[] { .. } : Object[] [[]] : String | SpringUrlRedirect.java:58:30:58:66 | format(...) | provenance | MaD:2 |
+| SpringUrlRedirect.java:58:55:58:65 | redirectUrl : String | SpringUrlRedirect.java:58:30:58:66 | new ..[] { .. } : Object[] [[]] : String | provenance |  |
+| SpringUrlRedirect.java:62:24:62:41 | redirectUrl : String | SpringUrlRedirect.java:63:44:63:68 | ... + ... : String | provenance |  |
+| SpringUrlRedirect.java:63:44:63:68 | ... + ... : String | SpringUrlRedirect.java:63:30:63:76 | format(...) | provenance | MaD:1 |
+| SpringUrlRedirect.java:89:38:89:55 | redirectUrl : String | SpringUrlRedirect.java:91:38:91:48 | redirectUrl : String | provenance |  |
+| SpringUrlRedirect.java:91:38:91:48 | redirectUrl : String | SpringUrlRedirect.java:91:27:91:49 | create(...) | provenance | MaD:3 |
+| SpringUrlRedirect.java:96:39:96:56 | redirectUrl : String | SpringUrlRedirect.java:98:44:98:54 | redirectUrl : String | provenance |  |
+| SpringUrlRedirect.java:98:9:98:19 | httpHeaders : HttpHeaders | SpringUrlRedirect.java:100:37:100:47 | httpHeaders | provenance |  |
+| SpringUrlRedirect.java:98:33:98:55 | create(...) : URI | SpringUrlRedirect.java:98:9:98:19 | httpHeaders : HttpHeaders | provenance | Config |
+| SpringUrlRedirect.java:98:44:98:54 | redirectUrl : String | SpringUrlRedirect.java:98:33:98:55 | create(...) : URI | provenance | MaD:3 |
+| SpringUrlRedirect.java:104:39:104:56 | redirectUrl : String | SpringUrlRedirect.java:106:37:106:47 | redirectUrl : String | provenance |  |
+| SpringUrlRedirect.java:106:9:106:19 | httpHeaders [post update] : HttpHeaders | SpringUrlRedirect.java:108:68:108:78 | httpHeaders | provenance |  |
+| SpringUrlRedirect.java:106:9:106:19 | httpHeaders [post update] : HttpHeaders [<map.value>, <element>] : String | SpringUrlRedirect.java:108:68:108:78 | httpHeaders | provenance |  |
+| SpringUrlRedirect.java:106:37:106:47 | redirectUrl : String | SpringUrlRedirect.java:106:9:106:19 | httpHeaders [post update] : HttpHeaders | provenance | MaD:4 |
+| SpringUrlRedirect.java:106:37:106:47 | redirectUrl : String | SpringUrlRedirect.java:106:9:106:19 | httpHeaders [post update] : HttpHeaders [<map.value>, <element>] : String | provenance | MaD:5 |
+| SpringUrlRedirect.java:112:39:112:56 | redirectUrl : String | SpringUrlRedirect.java:114:37:114:47 | redirectUrl : String | provenance |  |
+| SpringUrlRedirect.java:114:9:114:19 | httpHeaders [post update] : HttpHeaders | SpringUrlRedirect.java:116:37:116:47 | httpHeaders | provenance |  |
+| SpringUrlRedirect.java:114:9:114:19 | httpHeaders [post update] : HttpHeaders [<map.value>, <element>] : String | SpringUrlRedirect.java:116:37:116:47 | httpHeaders | provenance |  |
+| SpringUrlRedirect.java:114:37:114:47 | redirectUrl : String | SpringUrlRedirect.java:114:9:114:19 | httpHeaders [post update] : HttpHeaders | provenance | MaD:4 |
+| SpringUrlRedirect.java:114:37:114:47 | redirectUrl : String | SpringUrlRedirect.java:114:9:114:19 | httpHeaders [post update] : HttpHeaders [<map.value>, <element>] : String | provenance | MaD:5 |
+| SpringUrlRedirect.java:120:33:120:50 | redirectUrl : String | SpringUrlRedirect.java:122:37:122:47 | redirectUrl : String | provenance |  |
+| SpringUrlRedirect.java:122:9:122:19 | httpHeaders [post update] : HttpHeaders | SpringUrlRedirect.java:124:49:124:59 | httpHeaders | provenance |  |
+| SpringUrlRedirect.java:122:9:122:19 | httpHeaders [post update] : HttpHeaders [<map.value>, <element>] : String | SpringUrlRedirect.java:124:49:124:59 | httpHeaders | provenance |  |
+| SpringUrlRedirect.java:122:37:122:47 | redirectUrl : String | SpringUrlRedirect.java:122:9:122:19 | httpHeaders [post update] : HttpHeaders | provenance | MaD:4 |
+| SpringUrlRedirect.java:122:37:122:47 | redirectUrl : String | SpringUrlRedirect.java:122:9:122:19 | httpHeaders [post update] : HttpHeaders [<map.value>, <element>] : String | provenance | MaD:5 |
+| SpringUrlRedirect.java:128:33:128:50 | redirectUrl : String | SpringUrlRedirect.java:130:44:130:54 | redirectUrl : String | provenance |  |
+| SpringUrlRedirect.java:130:9:130:19 | httpHeaders : HttpHeaders | SpringUrlRedirect.java:132:49:132:59 | httpHeaders | provenance |  |
+| SpringUrlRedirect.java:130:33:130:55 | create(...) : URI | SpringUrlRedirect.java:130:9:130:19 | httpHeaders : HttpHeaders | provenance | Config |
+| SpringUrlRedirect.java:130:44:130:54 | redirectUrl : String | SpringUrlRedirect.java:130:33:130:55 | create(...) : URI | provenance | MaD:3 |
+models
+| 1 | Summary: java.lang; String; false; format; (String,Object[]); ; Argument[0]; ReturnValue; taint; manual |
+| 2 | Summary: java.lang; String; false; format; (String,Object[]); ; Argument[1].ArrayElement; ReturnValue; taint; manual |
+| 3 | Summary: java.net; URI; false; create; ; ; Argument[0]; ReturnValue; taint; manual |
+| 4 | Summary: org.springframework.http; HttpHeaders; true; add; (String,String); ; Argument[0..1]; Argument[this]; taint; manual |
+| 5 | Summary: org.springframework.util; MultiValueMap; true; add; ; ; Argument[1]; Argument[this].MapValue.Element; value; manual |
 nodes
 | SpringUrlRedirect.java:17:30:17:47 | redirectUrl : String | semmle.label | redirectUrl : String |
 | SpringUrlRedirect.java:19:19:19:29 | redirectUrl | semmle.label | redirectUrl |
@@ -48,7 +56,7 @@ nodes
 | SpringUrlRedirect.java:52:30:52:40 | redirectUrl | semmle.label | redirectUrl |
 | SpringUrlRedirect.java:57:24:57:41 | redirectUrl : String | semmle.label | redirectUrl : String |
 | SpringUrlRedirect.java:58:30:58:66 | format(...) | semmle.label | format(...) |
-| SpringUrlRedirect.java:58:30:58:66 | new ..[] { .. } [[]] : String | semmle.label | new ..[] { .. } [[]] : String |
+| SpringUrlRedirect.java:58:30:58:66 | new ..[] { .. } : Object[] [[]] : String | semmle.label | new ..[] { .. } : Object[] [[]] : String |
 | SpringUrlRedirect.java:58:55:58:65 | redirectUrl : String | semmle.label | redirectUrl : String |
 | SpringUrlRedirect.java:62:24:62:41 | redirectUrl : String | semmle.label | redirectUrl : String |
 | SpringUrlRedirect.java:63:30:63:76 | format(...) | semmle.label | format(...) |
@@ -57,30 +65,31 @@ nodes
 | SpringUrlRedirect.java:91:27:91:49 | create(...) | semmle.label | create(...) |
 | SpringUrlRedirect.java:91:38:91:48 | redirectUrl : String | semmle.label | redirectUrl : String |
 | SpringUrlRedirect.java:96:39:96:56 | redirectUrl : String | semmle.label | redirectUrl : String |
+| SpringUrlRedirect.java:98:9:98:19 | httpHeaders : HttpHeaders | semmle.label | httpHeaders : HttpHeaders |
 | SpringUrlRedirect.java:98:33:98:55 | create(...) : URI | semmle.label | create(...) : URI |
 | SpringUrlRedirect.java:98:44:98:54 | redirectUrl : String | semmle.label | redirectUrl : String |
 | SpringUrlRedirect.java:100:37:100:47 | httpHeaders | semmle.label | httpHeaders |
 | SpringUrlRedirect.java:104:39:104:56 | redirectUrl : String | semmle.label | redirectUrl : String |
 | SpringUrlRedirect.java:106:9:106:19 | httpHeaders [post update] : HttpHeaders | semmle.label | httpHeaders [post update] : HttpHeaders |
-| SpringUrlRedirect.java:106:9:106:19 | httpHeaders [post update] [<map.value>, <element>] : String | semmle.label | httpHeaders [post update] [<map.value>, <element>] : String |
+| SpringUrlRedirect.java:106:9:106:19 | httpHeaders [post update] : HttpHeaders [<map.value>, <element>] : String | semmle.label | httpHeaders [post update] : HttpHeaders [<map.value>, <element>] : String |
 | SpringUrlRedirect.java:106:37:106:47 | redirectUrl : String | semmle.label | redirectUrl : String |
 | SpringUrlRedirect.java:108:68:108:78 | httpHeaders | semmle.label | httpHeaders |
 | SpringUrlRedirect.java:112:39:112:56 | redirectUrl : String | semmle.label | redirectUrl : String |
 | SpringUrlRedirect.java:114:9:114:19 | httpHeaders [post update] : HttpHeaders | semmle.label | httpHeaders [post update] : HttpHeaders |
-| SpringUrlRedirect.java:114:9:114:19 | httpHeaders [post update] [<map.value>, <element>] : String | semmle.label | httpHeaders [post update] [<map.value>, <element>] : String |
+| SpringUrlRedirect.java:114:9:114:19 | httpHeaders [post update] : HttpHeaders [<map.value>, <element>] : String | semmle.label | httpHeaders [post update] : HttpHeaders [<map.value>, <element>] : String |
 | SpringUrlRedirect.java:114:37:114:47 | redirectUrl : String | semmle.label | redirectUrl : String |
 | SpringUrlRedirect.java:116:37:116:47 | httpHeaders | semmle.label | httpHeaders |
 | SpringUrlRedirect.java:120:33:120:50 | redirectUrl : String | semmle.label | redirectUrl : String |
 | SpringUrlRedirect.java:122:9:122:19 | httpHeaders [post update] : HttpHeaders | semmle.label | httpHeaders [post update] : HttpHeaders |
-| SpringUrlRedirect.java:122:9:122:19 | httpHeaders [post update] [<map.value>, <element>] : String | semmle.label | httpHeaders [post update] [<map.value>, <element>] : String |
+| SpringUrlRedirect.java:122:9:122:19 | httpHeaders [post update] : HttpHeaders [<map.value>, <element>] : String | semmle.label | httpHeaders [post update] : HttpHeaders [<map.value>, <element>] : String |
 | SpringUrlRedirect.java:122:37:122:47 | redirectUrl : String | semmle.label | redirectUrl : String |
 | SpringUrlRedirect.java:124:49:124:59 | httpHeaders | semmle.label | httpHeaders |
 | SpringUrlRedirect.java:128:33:128:50 | redirectUrl : String | semmle.label | redirectUrl : String |
+| SpringUrlRedirect.java:130:9:130:19 | httpHeaders : HttpHeaders | semmle.label | httpHeaders : HttpHeaders |
 | SpringUrlRedirect.java:130:33:130:55 | create(...) : URI | semmle.label | create(...) : URI |
 | SpringUrlRedirect.java:130:44:130:54 | redirectUrl : String | semmle.label | redirectUrl : String |
 | SpringUrlRedirect.java:132:49:132:59 | httpHeaders | semmle.label | httpHeaders |
-subpaths
-#select
+problems
 | SpringUrlRedirect.java:19:19:19:29 | redirectUrl | SpringUrlRedirect.java:17:30:17:47 | redirectUrl : String | SpringUrlRedirect.java:19:19:19:29 | redirectUrl | Potentially untrusted URL redirection due to $@. | SpringUrlRedirect.java:17:30:17:47 | redirectUrl | user-provided value |
 | SpringUrlRedirect.java:25:36:25:46 | redirectUrl | SpringUrlRedirect.java:24:24:24:41 | redirectUrl : String | SpringUrlRedirect.java:25:36:25:46 | redirectUrl | Potentially untrusted URL redirection due to $@. | SpringUrlRedirect.java:24:24:24:41 | redirectUrl | user-provided value |
 | SpringUrlRedirect.java:31:44:31:54 | redirectUrl | SpringUrlRedirect.java:30:30:30:47 | redirectUrl : String | SpringUrlRedirect.java:31:44:31:54 | redirectUrl | Potentially untrusted URL redirection due to $@. | SpringUrlRedirect.java:30:30:30:47 | redirectUrl | user-provided value |
@@ -95,3 +104,4 @@ subpaths
 | SpringUrlRedirect.java:116:37:116:47 | httpHeaders | SpringUrlRedirect.java:112:39:112:56 | redirectUrl : String | SpringUrlRedirect.java:116:37:116:47 | httpHeaders | Potentially untrusted URL redirection due to $@. | SpringUrlRedirect.java:112:39:112:56 | redirectUrl | user-provided value |
 | SpringUrlRedirect.java:124:49:124:59 | httpHeaders | SpringUrlRedirect.java:120:33:120:50 | redirectUrl : String | SpringUrlRedirect.java:124:49:124:59 | httpHeaders | Potentially untrusted URL redirection due to $@. | SpringUrlRedirect.java:120:33:120:50 | redirectUrl | user-provided value |
 | SpringUrlRedirect.java:132:49:132:59 | httpHeaders | SpringUrlRedirect.java:128:33:128:50 | redirectUrl : String | SpringUrlRedirect.java:132:49:132:59 | httpHeaders | Potentially untrusted URL redirection due to $@. | SpringUrlRedirect.java:128:33:128:50 | redirectUrl | user-provided value |
+subpaths

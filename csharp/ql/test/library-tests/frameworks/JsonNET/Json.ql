@@ -1,17 +1,15 @@
 import csharp
 
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "Json.NET test" }
+module TaintConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src.asExpr().(StringLiteral).getValue() = "tainted" }
 
-  override predicate isSource(DataFlow::Node src) {
-    src.asExpr().(StringLiteral).getValue() = "tainted"
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodCall c | c.getArgument(0) = sink.asExpr() and c.getTarget().getName() = "Sink")
   }
 }
 
-from Configuration c, DataFlow::Node source, DataFlow::Node sink
-where c.hasFlow(source, sink)
+module Taint = TaintTracking::Global<TaintConfig>;
+
+from DataFlow::Node source, DataFlow::Node sink
+where Taint::flow(source, sink)
 select source, sink

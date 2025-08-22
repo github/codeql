@@ -1,12 +1,10 @@
 import semmle.code.xml.XML
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
-class XmlTest extends InlineExpectationsTest {
-  XmlTest() { this = "XmlTest" }
+module XmlTest implements TestSig {
+  string getARelevantTag() { result = "hasXmlResult" }
 
-  override string getARelevantTag() { result = "hasXmlResult" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasXmlResult" and
     exists(XmlAttribute a |
       a.getLocation() = location and
@@ -15,3 +13,5 @@ class XmlTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<XmlTest>

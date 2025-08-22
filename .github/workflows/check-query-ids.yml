@@ -11,11 +11,14 @@ on:
       - "rc/*"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   check:
     name: Check query IDs
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Check for duplicate query IDs
         run: python3 misc/scripts/check-query-ids.py

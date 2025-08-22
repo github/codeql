@@ -7,17 +7,20 @@ on:
         description: "github/codeql repo SHA used for looking up the CSV models"
         required: false
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Clone self (github/codeql)
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: script
       - name: Clone self (github/codeql) for analysis
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: codeqlModels
           ref: ${{ github.event.inputs.qlModelShaOverride || github.ref }}
@@ -31,12 +34,12 @@ jobs:
         run: |
           python script/misc/scripts/library-coverage/generate-report.py ci codeqlModels script
       - name: Upload CSV package list
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: framework-coverage-csv
           path: framework-coverage-*.csv
       - name: Upload RST package list
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: framework-coverage-rst
           path: framework-coverage-*.rst

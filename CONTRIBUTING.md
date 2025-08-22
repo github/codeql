@@ -4,6 +4,8 @@ We welcome contributions to our CodeQL libraries and queries. Got an idea for a 
 
 There is lots of useful documentation to help you write queries, ranging from information about query file structure to tutorials for specific target languages. For more information on the documentation available, see [CodeQL queries](https://codeql.github.com/docs/writing-codeql-queries/codeql-queries) on [codeql.github.com](https://codeql.github.com).
 
+Note that the CodeQL for Visual Studio Code documentation has been migrated to https://docs.github.com/en/code-security/codeql-for-vs-code/, but you can still contribute to it via a different repository. For more information, see [Contributing to GitHub Docs documentation](https://docs.github.com/en/contributing)."
+
 ## Change notes
 
 Any nontrivial user-visible change to a query pack or library pack should have a change note. For details on how to add a change note for your change, see [this guide](docs/change-notes.md).
@@ -14,14 +16,16 @@ If you have an idea for a query that you would like to share with other CodeQL u
 
 1. **Directory structure**
 
-    There are six language-specific query directories in this repository:
+    There are eight language-specific query directories in this repository:
 
       * C/C++: `cpp/ql/src`
       * C#: `csharp/ql/src`
-      * Java: `java/ql/src`
+      * Go: `go/ql/src`
+      * Java/Kotlin: `java/ql/src`
       * JavaScript: `javascript/ql/src`
       * Python: `python/ql/src`
       * Ruby: `ruby/ql/src`
+      * Swift: `swift/ql/src`
 
     Each language-specific directory contains further subdirectories that group queries based on their `@tags` or purpose.
     - Experimental queries and libraries are stored in the `experimental` subdirectory within each language-specific directory in the [CodeQL repository](https://github.com/github/codeql). For example, experimental Java queries and libraries are stored in `java/ql/src/experimental` and any corresponding tests in `java/ql/test/experimental`.
@@ -41,7 +45,7 @@ If you have an idea for a query that you would like to share with other CodeQL u
 
 3. **Formatting**
 
-    - The queries and libraries must be autoformatted, for example using the "Format Document" command in [CodeQL for Visual Studio Code](https://codeql.github.com/docs/codeql-for-visual-studio-code/about-codeql-for-visual-studio-code).
+    - The queries and libraries must be autoformatted, for example using the "Format Document" command in [CodeQL for Visual Studio Code](https://docs.github.com/en/code-security/codeql-for-vs-code/).
 
     If you prefer, you can either:
     1. install the [pre-commit framework](https://pre-commit.com/) and install the configured hooks on this repo via `pre-commit install`, or

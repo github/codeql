@@ -8,7 +8,7 @@ from Field f, Class c
 where
   f.getName() = "Black" and
   f.getDeclaringType() = c and
-  c.hasQualifiedName("Fields", "Color") and
+  c.hasFullyQualifiedName("Fields", "Color") and
   f.getType() = c and
   f.isStatic() and
   f.isPublic() and

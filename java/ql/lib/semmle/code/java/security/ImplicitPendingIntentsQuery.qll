@@ -1,4 +1,6 @@
 /** Provides taint tracking configurations to be used in queries related to implicit `PendingIntent`s. */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.dataflow.TaintTracking
@@ -10,45 +12,47 @@ import semmle.code.java.security.ImplicitPendingIntents
  * A taint tracking configuration for implicit `PendingIntent`s
  * being wrapped in another implicit `Intent` that gets started.
  */
-class ImplicitPendingIntentStartConf extends TaintTracking::Configuration {
-  ImplicitPendingIntentStartConf() { this = "ImplicitPendingIntentStartConf" }
+module ImplicitPendingIntentStartConfig implements DataFlow::StateConfigSig {
+  class FlowState = PendingIntentState;
 
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
-    source.(ImplicitPendingIntentSource).hasState(state)
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    source instanceof ImplicitPendingIntentSource and state instanceof NoState
   }
 
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
-    sink.(ImplicitPendingIntentSink).hasState(state)
+  predicate isSink(DataFlow::Node sink, FlowState state) {
+    sink instanceof ImplicitPendingIntentSink and state instanceof MutablePendingIntent
   }
 
-  override predicate isSanitizer(DataFlow::Node sanitizer) {
-    sanitizer instanceof ExplicitIntentSanitizer
-  }
+  predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof ExplicitIntentSanitizer }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(ImplicitPendingIntentAdditionalTaintStep c).step(node1, node2)
   }
 
-  override predicate isAdditionalTaintStep(
-    DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
-    DataFlow::FlowState state2
+  predicate isAdditionalFlowStep(
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    any(ImplicitPendingIntentAdditionalTaintStep c).step(node1, state1, node2, state2)
+    any(ImplicitPendingIntentAdditionalTaintStep c).mutablePendingIntentCreation(node1, node2) and
+    state1 instanceof NoState and
+    state2 instanceof MutablePendingIntent
   }
 
-  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
-    super.allowImplicitRead(node, c)
-    or
-    this.isSink(node, _) and
+  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
+    isSink(node, _) and
     allowIntentExtrasImplicitRead(node, c)
     or
-    this.isAdditionalTaintStep(node, _) and
+    isAdditionalFlowStep(node, _) and
     c.(DataFlow::FieldContent).getType() instanceof PendingIntent
     or
     // Allow implicit reads of Intent arrays for steps like getActivities
     // or sinks like startActivities
-    (this.isSink(node, _) or this.isAdditionalFlowStep(node, _, _, _)) and
+    (isSink(node, _) or isAdditionalFlowStep(node, _, _, _)) and
     node.getType().(Array).getElementType() instanceof TypeIntent and
     c instanceof DataFlow::ArrayContent
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
+
+module ImplicitPendingIntentStartFlow =
+  TaintTracking::GlobalWithState<ImplicitPendingIntentStartConfig>;

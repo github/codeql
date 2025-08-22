@@ -4,7 +4,8 @@
  */
 
 import codeql.ruby.AST
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
+import DefaultFlowTest
 import PathGraph
 private import codeql.ruby.dataflow.FlowSummary
 
@@ -15,7 +16,7 @@ abstract private class Summary extends SimpleSummarizedCallable {
   bindingset[this]
   Summary() { any() }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     this.propagates(input, output) and preservesValue = true
   }
 
@@ -202,24 +203,24 @@ private class S16 extends Summary {
 }
 
 /**
- * `Argument[hash-splat]` (output) 1
+ * `Argument[splat]` (input) 1
  */
 private class S17 extends Summary {
   S17() { this = "s17" }
 
   override predicate propagates(string input, string output) {
-    input = "Argument[0]" and output = "Argument[hash-splat]"
+    input = "Argument[splat]" and output = "ReturnValue"
   }
 }
 
 /**
- * `Argument[hash-splat]` (output) 2
+ * `Argument[splat]` (input) 2
  */
 private class S18 extends Summary {
   S18() { this = "s18" }
 
   override predicate propagates(string input, string output) {
-    input = "Argument[0]" and output = "Argument[hash-splat].Element[:foo]"
+    input = "Argument[splat].Element[any]" and output = "ReturnValue"
   }
 }
 

@@ -6,6 +6,9 @@ pull_request_triggers:
   - "**/glide.yaml"
   - "**/Gopkg.toml"
 column_kind: "utf8"
+build_modes:
+  - autobuild
+  - manual
 github_api_languages:
   - Go
 scc_languages:
@@ -16,3 +19,18 @@ file_types:
     extensions:
       - .go
 legacy_qltest_extraction: true
+options:
+  extract_tests:
+    title: Whether to include Go test files in the CodeQL database.
+    description: >
+      A value indicating whether Go test files should be included in the CodeQL database.
+      The default is 'false'.
+    type: string
+    pattern: "^(false|true)$"
+  extract_vendor_dirs:
+    title: Whether to include Go vendor directories in the CodeQL database.
+    description: >
+      A value indicating whether Go vendor directories should be included in the CodeQL database.
+      The default is 'false'.
+    type: string
+    pattern: "^(false|true)$"

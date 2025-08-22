@@ -18,7 +18,7 @@ In the following insecure example, <code>NSPredicate</code> is built directly fr
 </p>
 <sample src="PredicateInjectionBad.swift" />
 <p>
-A better way to do this is to use the <code>arguments</code> parameter of <code>NSPredicate</code>'s constructor. This prevents attackers from altering the meaning of the predicate, even if they control the externally obtained data, as seen in the following secure example:
+A better way to do this is to use the <code>arguments</code> parameter of <code>NSPredicate</code>'s initializer. This prevents attackers from altering the meaning of the predicate, even if they control the externally obtained data, as seen in the following secure example:
 </p>
 <sample src="PredicateInjectionGood.swift" />
 </example>

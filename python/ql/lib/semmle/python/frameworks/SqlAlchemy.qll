@@ -13,6 +13,7 @@ private import semmle.python.Concepts
 // This import is done like this to avoid importing the deprecated top-level things that
 // would pollute the namespace
 private import semmle.python.frameworks.PEP249::PEP249 as PEP249
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * INTERNAL: Do not use.
@@ -34,10 +35,12 @@ module SqlAlchemy {
    */
   module Engine {
     /** Gets a reference to a SQLAlchemy Engine class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       result = API::moduleImport("sqlalchemy").getMember("engine").getMember("Engine")
       or
       result = API::moduleImport("sqlalchemy").getMember("future").getMember("Engine")
+      or
+      result = ModelOutput::getATypeNode("sqlalchemy.engine.Engine~Subclass").getASubclass*()
     }
 
     /**
@@ -87,7 +90,7 @@ module SqlAlchemy {
    */
   module Connection {
     /** Gets a reference to a SQLAlchemy Connection class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       result =
         API::moduleImport("sqlalchemy")
             .getMember("engine")
@@ -95,6 +98,8 @@ module SqlAlchemy {
             .getMember("Connection")
       or
       result = API::moduleImport("sqlalchemy").getMember("future").getMember("Connection")
+      or
+      result = ModelOutput::getATypeNode("sqlalchemy.engine.Connection~Subclass").getASubclass*()
     }
 
     /**
@@ -108,15 +113,25 @@ module SqlAlchemy {
      */
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
+    /**
+     * join-ordering helper for ConnectionConstruction char-pred -- without this would
+     * start with _all_ `CallCfgNode` and join those with `MethodCallNode` .. which is
+     * silly
+     */
+    pragma[noinline]
+    private DataFlow::MethodCallNode connectionConstruction_helper() {
+      result.calls(Engine::instance(), ["begin", "connect"])
+      or
+      result.calls(instance(), ["connect", "execution_options"])
+    }
+
     private class ConnectionConstruction extends InstanceSource, DataFlow::CallCfgNode {
       ConnectionConstruction() {
-        this = classRef().getACall()
+        // without the `pragma[only_bind_out]` we would start with joining
+        // `API::Node.getACall` with `CallCfgNode` which is not optimal
+        this = pragma[only_bind_out](classRef()).getACall()
         or
-        this.(DataFlow::MethodCallNode).calls(Engine::instance(), ["begin", "connect"])
-        or
-        this.(DataFlow::MethodCallNode).calls(instance(), "connect")
-        or
-        this.(DataFlow::MethodCallNode).calls(instance(), "execution_options")
+        this = connectionConstruction_helper()
       }
     }
 
@@ -169,9 +184,6 @@ module SqlAlchemy {
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
   }
 
-  /** DEPRECATED: Alias for DBApiConnection */
-  deprecated module DBAPIConnection = DBApiConnection;
-
   /**
    * Provides models for the `sqlalchemy.orm.Session` class
    *
@@ -181,8 +193,10 @@ module SqlAlchemy {
    */
   module Session {
     /** Gets a reference to the `sqlalchemy.orm.Session` class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       result = API::moduleImport("sqlalchemy").getMember("orm").getMember("Session")
+      or
+      result = ModelOutput::getATypeNode("sqlalchemy.orm.Session~Subclass").getASubclass*()
     }
 
     /**

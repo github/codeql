@@ -1,0 +1,55 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      # path-injection
+      - ["net/http", "", False, "ServeFile", "", "", "Argument[2]", "path-injection", "manual"]
+      # url-redirection
+      - ["net/http", "", False, "Redirect", "", "", "Argument[2]", "url-redirection[0]", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["net/http", "", False, "CanonicalHeaderKey", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["net/http", "", False, "Error", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["net/http", "", False, "MaxBytesReader", "", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+      - ["net/http", "", False, "NewRequest", "", "", "Argument[1]", "ReturnValue[0]", "taint", "manual"]
+      - ["net/http", "", False, "NewRequestWithContext", "", "", "Argument[2]", "ReturnValue[0]", "taint", "manual"]
+      - ["net/http", "", False, "ReadRequest", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["net/http", "", False, "ReadResponse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["net/http", "", False, "SetCookie", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["net/http", "Header", True, "Add", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"]
+      - ["net/http", "Header", True, "Clone", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["net/http", "Header", True, "Get", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["net/http", "Header", True, "Set", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"]
+      - ["net/http", "Header", True, "Values", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["net/http", "Header", True, "Write", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["net/http", "Header", True, "WriteSubset", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["net/http", "Hijacker", True, "Hijack", "", "", "Argument[receiver]", "ReturnValue[0..1]", "taint", "manual"]
+      - ["net/http", "Request", True, "AddCookie", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["net/http", "Request", True, "Clone", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["net/http", "Request", True, "Write", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["net/http", "Request", True, "WriteProxy", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["net/http", "Response", True, "Write", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
+      - ["net/http", "Transport", True, "Clone", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["net/http", "Request", True, "Cookie", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["net/http", "Request", True, "Cookies", "", "", "ReturnValue.ArrayElement", "remote", "manual"]
+      - ["net/http", "Request", True, "FormFile", "", "", "ReturnValue[0..1]", "remote", "manual"]
+      - ["net/http", "Request", True, "FormValue", "", "", "ReturnValue", "remote", "manual"]
+      - ["net/http", "Request", True, "MultipartReader", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["net/http", "Request", True, "PostFormValue", "", "", "ReturnValue", "remote", "manual"]
+      - ["net/http", "Request", True, "Referer", "", "", "ReturnValue", "remote", "manual"]
+      - ["net/http", "Request", True, "UserAgent", "", "", "ReturnValue", "remote", "manual"]
+      - ["net/http", "Request", True, "Body", "", "", "", "remote", "manual"]
+      - ["net/http", "Request", True, "GetBody", "", "", "", "remote", "manual"]
+      - ["net/http", "Request", True, "Form", "", "", "", "remote", "manual"]
+      - ["net/http", "Request", True, "PostForm", "", "", "", "remote", "manual"]
+      - ["net/http", "Request", True, "MultipartForm", "", "", "", "remote", "manual"]
+      - ["net/http", "Request", True, "Header", "", "", "", "remote", "manual"]
+      - ["net/http", "Request", True, "Trailer", "", "", "", "remote", "manual"]
+      - ["net/http", "Request", True, "URL", "", "", "", "remote", "manual"]

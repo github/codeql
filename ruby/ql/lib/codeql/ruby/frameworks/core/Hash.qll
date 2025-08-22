@@ -31,10 +31,10 @@ module Hash {
 
     final override MethodCall getACallSimple() { result = getAStaticHashCall("[]") }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       // we make use of the special `hash-splat` argument kind, which contains all keyword
       // arguments wrapped in an implicit hash, as well as explicit hash splat arguments
-      input = "Argument[hash-splat].WithElement[any]" and
+      input = "Argument[hash-splat]" and
       output = "ReturnValue" and
       preservesValue = true
     }
@@ -62,7 +62,7 @@ module Hash {
       result.getNumberOfArguments() = 1
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       (
         // Hash[{symbol: x}]
         input = "Argument[0].WithElement[any]" and
@@ -102,7 +102,7 @@ module Hash {
       exists(result.getArgument(i))
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       // Hash[:symbol, x]
       input = "Argument[" + i + "]" and
       output = "ReturnValue.Element[" + key.serialize() + "]" and
@@ -115,7 +115,7 @@ module Hash {
 
     override MethodCall getACallSimple() { result = getAStaticHashCall("try_convert") }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[0].WithElement[any]" and
       output = "ReturnValue" and
       preservesValue = true
@@ -130,7 +130,7 @@ module Hash {
 
     final override MethodCall getACallSimple() { result = mc }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[1]" and
       output = "ReturnValue" and
       preservesValue = true
@@ -145,8 +145,8 @@ module Hash {
       this = "store(" + key.serialize() + ")"
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      super.propagatesFlowExt(input, output, preservesValue)
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      super.propagatesFlow(input, output, preservesValue)
       or
       input = "Argument[1]" and
       output = "Argument[self].Element[" + key.serialize() + "]" and
@@ -164,8 +164,8 @@ module Hash {
       this = "store"
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      super.propagatesFlowExt(input, output, preservesValue)
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      super.propagatesFlow(input, output, preservesValue)
       or
       input = "Argument[1]" and
       output = "Argument[self].Element[?]" and
@@ -192,21 +192,23 @@ module Hash {
       key = DataFlow::Content::getKnownElementIndex(mc.getArgument(0))
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[self].Element[" + key.serialize() + "]" and
       output = "ReturnValue.Element[1]" and
       preservesValue = true
     }
   }
 
-  private class AssocUnknownSummary extends AssocSummary {
-    AssocUnknownSummary() {
-      this = "assoc" and
-      mc.getNumberOfArguments() = 1 and
-      not exists(DataFlow::Content::getKnownElementIndex(mc.getArgument(0)))
+  private class AssocUnknownSummary extends SummarizedCallable {
+    AssocUnknownSummary() { this = "assoc-unknown-arg" }
+
+    override MethodCall getACallSimple() {
+      result.getMethodName() = "assoc" and
+      result.getNumberOfArguments() = 1 and
+      not exists(DataFlow::Content::getKnownElementIndex(result.getArgument(0)))
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[self].Element[any].WithoutElement[any]" and
       output = "ReturnValue.Element[1]" and
       preservesValue = true
@@ -216,7 +218,7 @@ module Hash {
   private class EachPairSummary extends SimpleSummarizedCallable {
     EachPairSummary() { this = "each_pair" }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       (
         input = "Argument[self].Element[any]" and
         output = "Argument[block].Parameter[1]"
@@ -231,7 +233,7 @@ module Hash {
   private class EachValueSummary extends SimpleSummarizedCallable {
     EachValueSummary() { this = "each_value" }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       (
         input = "Argument[self].Element[any]" and
         output = "Argument[block].Parameter[0]"
@@ -262,7 +264,7 @@ module Hash {
 
     final override MethodCall getACallSimple() { result = mc }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input =
         "Argument[self]" +
           concat(int i, string s |
@@ -288,7 +290,7 @@ abstract private class FetchValuesSummary extends SummarizedCallable {
 
   final override MethodCall getACallSimple() { result = mc }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     (
       input = "Argument[self].WithElement[?]" and
       output = "ReturnValue"
@@ -312,8 +314,8 @@ private class FetchValuesKnownSummary extends FetchValuesSummary {
     this = "fetch_values(" + key.serialize() + ")"
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-    super.propagatesFlowExt(input, output, preservesValue)
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    super.propagatesFlow(input, output, preservesValue)
     or
     input = "Argument[self].Element[" + key.serialize() + "]" and
     output = "ReturnValue.Element[?]" and
@@ -327,8 +329,8 @@ private class FetchValuesUnknownSummary extends FetchValuesSummary {
     this = "fetch_values(?)"
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-    super.propagatesFlowExt(input, output, preservesValue)
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    super.propagatesFlow(input, output, preservesValue)
     or
     input = "Argument[self].Element[any]" and
     output = "ReturnValue.Element[?]" and
@@ -343,7 +345,7 @@ private class MergeSummary extends SimpleSummarizedCallable {
     this = ["merge", "deep_merge"]
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     (
       input = "Argument[self,any].WithElement[any]" and
       output = "ReturnValue"
@@ -362,7 +364,7 @@ private class MergeBangSummary extends SimpleSummarizedCallable {
     this = ["merge!", "deep_merge!", "update"]
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     (
       input = "Argument[self,any].WithElement[any]" and
       output = ["ReturnValue", "Argument[self]"]
@@ -377,7 +379,7 @@ private class MergeBangSummary extends SimpleSummarizedCallable {
 private class RassocSummary extends SimpleSummarizedCallable {
   RassocSummary() { this = "rassoc" }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     input = "Argument[self].Element[any].WithoutElement[any]" and
     output = "ReturnValue.Element[1]" and
     preservesValue = true
@@ -402,7 +404,7 @@ private class SliceKnownSummary extends SliceSummary {
     not key.isInt(_) // covered in `Array.qll`
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     input = "Argument[self].WithElement[" + key.serialize() + "]" and
     output = "ReturnValue" and
     preservesValue = true
@@ -415,7 +417,7 @@ private class SliceUnknownSummary extends SliceSummary {
     this = "slice(?)"
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     input = "Argument[self].WithoutElement[0..!].WithElement[any]" and
     output = "ReturnValue" and
     preservesValue = true
@@ -425,7 +427,7 @@ private class SliceUnknownSummary extends SliceSummary {
 private class ToASummary extends SimpleSummarizedCallable {
   ToASummary() { this = "to_a" }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     input = "Argument[self].WithoutElement[0..!].Element[any]" and
     output = "ReturnValue.Element[?].Element[1]" and
     preservesValue = true
@@ -435,7 +437,7 @@ private class ToASummary extends SimpleSummarizedCallable {
 private class ToHWithoutBlockSummary extends SimpleSummarizedCallable {
   ToHWithoutBlockSummary() { this = ["to_h", "to_hash"] and not exists(mc.getBlock()) }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     input = "Argument[self].WithElement[any]" and
     output = "ReturnValue" and
     preservesValue = true
@@ -445,7 +447,7 @@ private class ToHWithoutBlockSummary extends SimpleSummarizedCallable {
 private class ToHWithBlockSummary extends SimpleSummarizedCallable {
   ToHWithBlockSummary() { this = "to_h" and exists(mc.getBlock()) }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     (
       input = "Argument[self].Element[any]" and
       output = "Argument[block].Parameter[1]"
@@ -460,7 +462,7 @@ private class ToHWithBlockSummary extends SimpleSummarizedCallable {
 private class TransformKeysSummary extends SimpleSummarizedCallable {
   TransformKeysSummary() { this = "transform_keys" }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     input = "Argument[self].Element[any]" and
     output = "ReturnValue.Element[?]" and
     preservesValue = true
@@ -470,7 +472,7 @@ private class TransformKeysSummary extends SimpleSummarizedCallable {
 private class TransformKeysBangSummary extends SimpleSummarizedCallable {
   TransformKeysBangSummary() { this = "transform_keys!" }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     (
       input = "Argument[self].Element[any]" and
       output = "Argument[self].Element[?]"
@@ -482,7 +484,7 @@ private class TransformKeysBangSummary extends SimpleSummarizedCallable {
 private class TransformValuesSummary extends SimpleSummarizedCallable {
   TransformValuesSummary() { this = "transform_values" }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     (
       input = "Argument[self].Element[any]" and
       output = "Argument[block].Parameter[0]"
@@ -497,7 +499,7 @@ private class TransformValuesSummary extends SimpleSummarizedCallable {
 private class TransformValuesBangSummary extends SimpleSummarizedCallable {
   TransformValuesBangSummary() { this = "transform_values!" }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     (
       input = "Argument[self].Element[any]" and
       output = "Argument[block].Parameter[0]"
@@ -515,9 +517,21 @@ private class TransformValuesBangSummary extends SimpleSummarizedCallable {
 private class ValuesSummary extends SimpleSummarizedCallable {
   ValuesSummary() { this = "values" }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     input = "Argument[self].Element[any]" and
     output = "ReturnValue.Element[?]" and
     preservesValue = true
+  }
+}
+
+// We don't (yet) track data flow through hash keys, but this is still useful in cases where a
+// whole hash(like) object is tainted, such as `ActionController#params`.
+private class KeysSummary extends SimpleSummarizedCallable {
+  KeysSummary() { this = "keys" }
+
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    input = "Argument[self]" and
+    output = "ReturnValue.Element[?]" and
+    preservesValue = false
   }
 }

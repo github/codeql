@@ -1,4 +1,6 @@
 /** Provides classes and predicates for working with JavaServer Faces renderer. */
+overlay[local?]
+module;
 
 import java
 

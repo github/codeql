@@ -7,7 +7,7 @@ private import codeql.ruby.ApiGraphs
 private import codeql.ruby.Concepts
 
 /**
- * Provides modeling for the `Open3` library.
+ * Provides modeling for the `Open3` and `Open4` libraries.
  */
 module Open3 {
   /**
@@ -28,6 +28,36 @@ module Open3 {
       // These Open3 methods invoke a subshell if you provide a single string as argument
       super.getNumberOfArguments() = 1 and
       arg = this.getAnArgument()
+    }
+  }
+
+  /**
+   * A system command executed via one of the `Open4` methods.
+   * These methods take the same argument forms as `Kernel.system`.
+   * See `KernelSystemCall` for details.
+   */
+  class Open4Call extends SystemCommandExecution::Range instanceof DataFlow::CallNode {
+    Open4Call() {
+      this =
+        API::getTopLevelMember("Open4").getAMethodCall(["open4", "popen4", "spawn", "popen4ext"])
+    }
+
+    override DataFlow::Node getAnArgument() {
+      // `popen4ext` takes an optional boolean as its first argument, but it is unlikely that we will be
+      // tracking flow into a boolean value so it doesn't seem worth modeling that special case here.
+      result = super.getArgument(_)
+    }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) {
+      super.getNumberOfArguments() = 1 and
+      arg = this.getAnArgument()
+      or
+      // ```rb
+      // Open4.popen4ext(true, "some cmd")
+      // ```
+      super.getNumberOfArguments() = 2 and
+      super.getArgument(0).getConstantValue().isBoolean(_) and
+      arg = super.getArgument(1)
     }
   }
 

@@ -1,15 +1,14 @@
 import java
 import semmle.code.java.dataflow.DataFlow
-import DataFlow
 
-class Conf extends Configuration {
-  Conf() { this = "qqconf" }
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) { n.asExpr().(MethodCall).getMethod().hasName("source") }
 
-  override predicate isSource(Node n) { n.asExpr().(MethodAccess).getMethod().hasName("source") }
-
-  override predicate isSink(Node n) { any() }
+  predicate isSink(DataFlow::Node n) { any() }
 }
 
-from Conf c, Node sink
-where c.hasFlow(_, sink)
+module Flow = DataFlow::Global<Config>;
+
+from DataFlow::Node sink
+where Flow::flowTo(sink)
 select sink

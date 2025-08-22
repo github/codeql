@@ -13,43 +13,9 @@
 
 import java
 import semmle.code.java.frameworks.Servlets
-import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.security.InsecureCookieQuery
 
-predicate isSafeSecureCookieSetting(Expr e) {
-  e.(CompileTimeConstantExpr).getBooleanValue() = true
-  or
-  exists(Method isSecure |
-    isSecure.getName() = "isSecure" and
-    isSecure.getDeclaringType().getASourceSupertype*() instanceof ServletRequest
-  |
-    e.(MethodAccess).getMethod() = isSecure
-  )
-}
-
-module SecureCookieConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    exists(MethodAccess ma, Method m | ma.getMethod() = m |
-      m.getDeclaringType() instanceof TypeCookie and
-      m.getName() = "setSecure" and
-      source.asExpr() = ma.getQualifier() and
-      forex(DataFlow::Node argSource |
-        DataFlow::localFlow(argSource, DataFlow::exprNode(ma.getArgument(0))) and
-        not DataFlow::localFlowStep(_, argSource)
-      |
-        isSafeSecureCookieSetting(argSource.asExpr())
-      )
-    )
-  }
-
-  predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() =
-      any(MethodAccess add | add.getMethod() instanceof ResponseAddCookieMethod).getArgument(0)
-  }
-}
-
-module SecureCookieFlow = DataFlow::Global<SecureCookieConfig>;
-
-from MethodAccess add
+from MethodCall add
 where
   add.getMethod() instanceof ResponseAddCookieMethod and
   not SecureCookieFlow::flowToExpr(add.getArgument(0))

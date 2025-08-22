@@ -4,6 +4,7 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.security.SensitiveActions
+private import semmle.code.java.dataflow.FlowSinks
 
 /**
  * Gets regular expression for matching names of Android variables that indicate the value being held contains sensitive information.
@@ -20,7 +21,7 @@ private class SensitiveInfoExpr extends Expr {
 }
 
 private predicate maybeNullArg(Expr ex) {
-  exists(DataFlow::Node src, DataFlow::Node sink, MethodAccess ma |
+  exists(DataFlow::Node src, DataFlow::Node sink, MethodCall ma |
     ex = ma.getAnArgument() and
     sink.asExpr() = ex and
     src.asExpr() instanceof NullLiteral
@@ -30,7 +31,7 @@ private predicate maybeNullArg(Expr ex) {
 }
 
 private predicate maybeEmptyArrayArg(Expr ex) {
-  exists(DataFlow::Node src, DataFlow::Node sink, MethodAccess ma |
+  exists(DataFlow::Node src, DataFlow::Node sink, MethodCall ma |
     ex = ma.getAnArgument() and
     sink.asExpr() = ex and
     src.asExpr().(ArrayCreationExpr).getFirstDimensionSize() = 0
@@ -43,7 +44,7 @@ private predicate maybeEmptyArrayArg(Expr ex) {
  * Holds if a `sendBroadcast` call doesn't specify receiver permission.
  */
 private predicate isSensitiveBroadcastSink(DataFlow::Node sendBroadcastCallArg) {
-  exists(MethodAccess ma, string name | ma.getMethod().hasName(name) |
+  exists(MethodCall ma, string name | ma.getMethod().hasName(name) |
     ma.getMethod().getDeclaringType().getASourceSupertype*() instanceof TypeContext and
     sendBroadcastCallArg.asExpr() = ma.getAnArgument() and
     (
@@ -105,7 +106,7 @@ private predicate isSensitiveBroadcastSink(DataFlow::Node sendBroadcastCallArg) 
  * Holds if `arg` is an argument in a use of a `startActivity` or `startService` method that sends an Intent to another application.
  */
 private predicate isStartActivityOrServiceSink(DataFlow::Node arg) {
-  exists(MethodAccess ma, string name | ma.getMethod().hasName(name) |
+  exists(MethodCall ma, string name | ma.getMethod().hasName(name) |
     arg.asExpr() = ma.getArgument(0) and
     ma.getMethod().getDeclaringType().getASourceSupertype*() instanceof TypeContext and
     // startActivity(Intent intent)
@@ -122,43 +123,23 @@ private predicate isStartActivityOrServiceSink(DataFlow::Node arg) {
 }
 
 /**
- * DEPRECATED: Use `SensitiveCommunicationFlow` instead.
- *
- * Taint configuration tracking flow from variables containing sensitive information to broadcast Intents.
+ * A sensitive communication sink node.
  */
-deprecated class SensitiveCommunicationConfig extends TaintTracking::Configuration {
-  SensitiveCommunicationConfig() { this = "Sensitive Communication Configuration" }
-
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof SensitiveInfoExpr
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    isSensitiveBroadcastSink(sink)
+private class SensitiveCommunicationSink extends ApiSinkNode {
+  SensitiveCommunicationSink() {
+    isSensitiveBroadcastSink(this)
     or
-    isStartActivityOrServiceSink(sink)
-  }
-
-  /**
-   * Holds if broadcast doesn't specify receiving package name of the 3rd party app
-   */
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof ExplicitIntentSanitizer }
-
-  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
-    super.allowImplicitRead(node, c)
-    or
-    this.isSink(node)
+    isStartActivityOrServiceSink(this)
   }
 }
 
-private module SensitiveCommunicationConfig implements DataFlow::ConfigSig {
+/**
+ * Taint configuration tracking flow from variables containing sensitive information to broadcast Intents.
+ */
+module SensitiveCommunicationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr() instanceof SensitiveInfoExpr }
 
-  predicate isSink(DataFlow::Node sink) {
-    isSensitiveBroadcastSink(sink)
-    or
-    isStartActivityOrServiceSink(sink)
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof SensitiveCommunicationSink }
 
   /**
    * Holds if broadcast doesn't specify receiving package name of the 3rd party app
@@ -168,6 +149,8 @@ private module SensitiveCommunicationConfig implements DataFlow::ConfigSig {
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     isSink(node) and exists(c)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

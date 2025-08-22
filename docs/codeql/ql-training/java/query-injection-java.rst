@@ -9,22 +9,7 @@ CodeQL for Java
 Setup
 =====
 
-For this example you should download:
-
-- `CodeQL for Visual Studio Code <https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/>`__
-- `VIVO Vitro database <http://downloads.lgtm.com/snapshots/java/vivo-project/Vitro/vivo-project_Vitro_java-srcVersion_47ae42c01954432c3c3b92d5d163551ce367f510-dist_odasa-lgtm-2019-04-23-7ceff95-linux64.zip>`__
-
-.. note::
-
-   For this example, we will be analyzing `VIVO Vitro <https://github.com/vivo-project/Vitro>`__.
-
-   You can also query the project in `the query console <https://lgtm.com/query/project:14040005/lang:java/>`__ on LGTM.com.
-   
-   .. insert database-note.rst to explain differences between database available to download and the version available in the query console.
-
-   .. include:: ../slide-snippets/database-note.rst
-
-   .. resume slides
+For this example you need to set up `CodeQL for Visual Studio Code <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/installing-codeql-for-vs-code>`__ and download the CodeQL database for `VIVO Vitro <https://github.com/vivo-project/Vitro>`__ from GitHub.
 
 SQL injection
 =============

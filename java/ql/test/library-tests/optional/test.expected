@@ -1,0 +1,263 @@
+models
+| 1 | Summary: generatedtest; Test; false; getStreamElement; ; ; Argument[0].Element; ReturnValue; value; manual |
+| 2 | Summary: java.util; Optional; false; filter; ; ; Argument[this].Element; Argument[0].Parameter[0]; value; manual |
+| 3 | Summary: java.util; Optional; false; filter; ; ; Argument[this].Element; ReturnValue.Element; value; manual |
+| 4 | Summary: java.util; Optional; false; flatMap; ; ; Argument[this].Element; Argument[0].Parameter[0]; value; manual |
+| 5 | Summary: java.util; Optional; false; get; ; ; Argument[this].Element; ReturnValue; value; manual |
+| 6 | Summary: java.util; Optional; false; ifPresent; ; ; Argument[this].Element; Argument[0].Parameter[0]; value; manual |
+| 7 | Summary: java.util; Optional; false; ifPresentOrElse; ; ; Argument[this].Element; Argument[0].Parameter[0]; value; manual |
+| 8 | Summary: java.util; Optional; false; map; ; ; Argument[this].Element; Argument[0].Parameter[0]; value; manual |
+| 9 | Summary: java.util; Optional; false; of; ; ; Argument[0]; ReturnValue.Element; value; manual |
+| 10 | Summary: java.util; Optional; false; ofNullable; ; ; Argument[0]; ReturnValue.Element; value; manual |
+| 11 | Summary: java.util; Optional; false; or; ; ; Argument[0].ReturnValue; ReturnValue; value; manual |
+| 12 | Summary: java.util; Optional; false; or; ; ; Argument[this].Element; ReturnValue.Element; value; manual |
+| 13 | Summary: java.util; Optional; false; orElse; ; ; Argument[0]; ReturnValue; value; manual |
+| 14 | Summary: java.util; Optional; false; orElse; ; ; Argument[this].Element; ReturnValue; value; manual |
+| 15 | Summary: java.util; Optional; false; orElseGet; ; ; Argument[0].ReturnValue; ReturnValue; value; manual |
+| 16 | Summary: java.util; Optional; false; orElseGet; ; ; Argument[this].Element; ReturnValue; value; manual |
+| 17 | Summary: java.util; Optional; false; orElseThrow; ; ; Argument[this].Element; ReturnValue; value; manual |
+| 18 | Summary: java.util; Optional; false; stream; ; ; Argument[this].Element; ReturnValue.Element; value; manual |
+edges
+| FunctionalTest.java:12:30:12:50 | of(...) : Optional [<element>] : String | FunctionalTest.java:13:9:13:9 | o : Optional [<element>] : String | provenance |  |
+| FunctionalTest.java:12:30:12:50 | of(...) : Optional [<element>] : String | FunctionalTest.java:16:9:16:9 | o : Optional [<element>] : String | provenance |  |
+| FunctionalTest.java:12:30:12:50 | of(...) : Optional [<element>] : String | FunctionalTest.java:21:9:21:9 | o : Optional [<element>] : String | provenance |  |
+| FunctionalTest.java:12:30:12:50 | of(...) : Optional [<element>] : String | FunctionalTest.java:27:9:27:9 | o : Optional [<element>] : String | provenance |  |
+| FunctionalTest.java:12:30:12:50 | of(...) : Optional [<element>] : String | FunctionalTest.java:33:9:33:9 | o : Optional [<element>] : String | provenance |  |
+| FunctionalTest.java:12:30:12:50 | of(...) : Optional [<element>] : String | FunctionalTest.java:39:9:39:9 | o : Optional [<element>] : String | provenance |  |
+| FunctionalTest.java:12:30:12:50 | of(...) : Optional [<element>] : String | FunctionalTest.java:48:15:48:21 | Optional<String> o : Optional [<element>] : String | provenance |  |
+| FunctionalTest.java:12:30:12:50 | of(...) : Optional [<element>] : String | FunctionalTest.java:52:9:52:9 | o : Optional [<element>] : String | provenance |  |
+| FunctionalTest.java:12:42:12:49 | source(...) : String | FunctionalTest.java:12:30:12:50 | of(...) : Optional [<element>] : String | provenance | MaD:9 |
+| FunctionalTest.java:13:9:13:9 | o : Optional [<element>] : String | FunctionalTest.java:13:21:13:21 | v : String | provenance | MaD:6 |
+| FunctionalTest.java:13:21:13:21 | v : String | FunctionalTest.java:14:18:14:18 | v | provenance |  |
+| FunctionalTest.java:16:9:16:9 | o : Optional [<element>] : String | FunctionalTest.java:16:27:16:27 | v : String | provenance | MaD:7 |
+| FunctionalTest.java:16:27:16:27 | v : String | FunctionalTest.java:17:18:17:18 | v | provenance |  |
+| FunctionalTest.java:21:9:21:9 | o : Optional [<element>] : String | FunctionalTest.java:21:9:24:10 | map(...) : Optional [<element>] : String | provenance | MaD:8 |
+| FunctionalTest.java:21:9:21:9 | o : Optional [<element>] : String | FunctionalTest.java:21:15:21:15 | v : String | provenance | MaD:8 |
+| FunctionalTest.java:21:9:24:10 | map(...) : Optional [<element>] : String | FunctionalTest.java:24:22:24:22 | v : String | provenance | MaD:6 |
+| FunctionalTest.java:21:15:21:15 | v : String | FunctionalTest.java:22:18:22:18 | v | provenance |  |
+| FunctionalTest.java:21:15:21:15 | v : String | FunctionalTest.java:23:20:23:20 | v : String | provenance |  |
+| FunctionalTest.java:24:22:24:22 | v : String | FunctionalTest.java:25:18:25:18 | v | provenance |  |
+| FunctionalTest.java:27:9:27:9 | o : Optional [<element>] : String | FunctionalTest.java:27:9:30:10 | flatMap(...) : Optional [<element>] : String | provenance | MaD:4 |
+| FunctionalTest.java:27:9:27:9 | o : Optional [<element>] : String | FunctionalTest.java:27:19:27:19 | v : String | provenance | MaD:4 |
+| FunctionalTest.java:27:9:30:10 | flatMap(...) : Optional [<element>] : String | FunctionalTest.java:30:22:30:22 | v : String | provenance | MaD:6 |
+| FunctionalTest.java:27:19:27:19 | v : String | FunctionalTest.java:28:18:28:18 | v | provenance |  |
+| FunctionalTest.java:27:19:27:19 | v : String | FunctionalTest.java:29:32:29:32 | v : String | provenance |  |
+| FunctionalTest.java:29:32:29:32 | v : String | FunctionalTest.java:29:20:29:33 | of(...) : Optional [<element>] : String | provenance | MaD:9 |
+| FunctionalTest.java:30:22:30:22 | v : String | FunctionalTest.java:31:18:31:18 | v | provenance |  |
+| FunctionalTest.java:33:9:33:9 | o : Optional [<element>] : String | FunctionalTest.java:33:19:33:19 | v : String | provenance | MaD:4 |
+| FunctionalTest.java:33:19:33:19 | v : String | FunctionalTest.java:34:18:34:18 | v | provenance |  |
+| FunctionalTest.java:39:9:39:9 | o : Optional [<element>] : String | FunctionalTest.java:39:9:42:10 | filter(...) : Optional [<element>] : String | provenance | MaD:3 |
+| FunctionalTest.java:39:9:39:9 | o : Optional [<element>] : String | FunctionalTest.java:39:18:39:18 | v : String | provenance | MaD:2 |
+| FunctionalTest.java:39:9:42:10 | filter(...) : Optional [<element>] : String | FunctionalTest.java:42:22:42:22 | v : String | provenance | MaD:6 |
+| FunctionalTest.java:39:18:39:18 | v : String | FunctionalTest.java:40:18:40:18 | v | provenance |  |
+| FunctionalTest.java:42:22:42:22 | v : String | FunctionalTest.java:43:18:43:18 | v | provenance |  |
+| FunctionalTest.java:45:9:48:22 | or(...) : Optional [<element>] : String | FunctionalTest.java:48:34:48:34 | v : String | provenance | MaD:6 |
+| FunctionalTest.java:48:15:48:21 | ...->... : new Supplier<Optional<? extends String>>(...) { ... } [Optional<String> o, <element>] : String | FunctionalTest.java:45:9:48:22 | or(...) : Optional [<element>] : String | provenance | MaD:11 |
+| FunctionalTest.java:48:15:48:21 | ...->... : new Supplier<Optional<? extends String>>(...) { ... } [Optional<String> o, <element>] : String | FunctionalTest.java:45:9:48:22 | or(...) : Optional [<element>] : String | provenance | heuristic-callback |
+| FunctionalTest.java:48:15:48:21 | ...->... : new Supplier<Optional<? extends String>>(...) { ... } [Optional<String> o, <element>] : String | FunctionalTest.java:48:15:48:21 | parameter this : new Supplier<Optional<? extends String>>(...) { ... } [Optional<String> o, <element>] : String | provenance | MaD:11 |
+| FunctionalTest.java:48:15:48:21 | ...->... : new Supplier<Optional<? extends String>>(...) { ... } [Optional<String> o, <element>] : String | FunctionalTest.java:48:15:48:21 | parameter this : new Supplier<Optional<? extends String>>(...) { ... } [Optional<String> o, <element>] : String | provenance | heuristic-callback |
+| FunctionalTest.java:48:15:48:21 | Optional<String> o : Optional [<element>] : String | FunctionalTest.java:48:15:48:21 | ...->... : new Supplier<Optional<? extends String>>(...) { ... } [Optional<String> o, <element>] : String | provenance |  |
+| FunctionalTest.java:48:15:48:21 | parameter this : new Supplier<Optional<? extends String>>(...) { ... } [Optional<String> o, <element>] : String | FunctionalTest.java:48:21:48:21 | this : new Supplier<Optional<? extends String>>(...) { ... } [Optional<String> o, <element>] : String | provenance |  |
+| FunctionalTest.java:48:21:48:21 | this : new Supplier<Optional<? extends String>>(...) { ... } [Optional<String> o, <element>] : String | FunctionalTest.java:48:21:48:21 | o : Optional [<element>] : String | provenance |  |
+| FunctionalTest.java:48:34:48:34 | v : String | FunctionalTest.java:49:18:49:18 | v | provenance |  |
+| FunctionalTest.java:52:9:52:9 | o : Optional [<element>] : String | FunctionalTest.java:52:9:52:24 | or(...) : Optional [<element>] : String | provenance | MaD:12 |
+| FunctionalTest.java:52:9:52:24 | or(...) : Optional [<element>] : String | FunctionalTest.java:52:36:52:36 | v : String | provenance | MaD:6 |
+| FunctionalTest.java:52:36:52:36 | v : String | FunctionalTest.java:53:18:53:18 | v | provenance |  |
+| FunctionalTest.java:55:24:55:53 | orElseGet(...) : String | FunctionalTest.java:56:14:56:18 | value | provenance |  |
+| FunctionalTest.java:55:45:55:52 | source(...) : String | FunctionalTest.java:55:24:55:53 | orElseGet(...) : String | provenance | MaD:15 |
+| Test.java:9:20:9:45 | container : Optional [<element>] : Object | Test.java:9:57:9:65 | container : Optional [<element>] : Object | provenance |  |
+| Test.java:9:57:9:65 | container : Optional [<element>] : Object | Test.java:9:57:9:71 | get(...) : Object | provenance | MaD:5 |
+| Test.java:11:34:11:47 | element : Object | Test.java:11:71:11:77 | element : Object | provenance |  |
+| Test.java:11:71:11:77 | element : Object | Test.java:11:59:11:78 | of(...) : Optional [<element>] : Object | provenance | MaD:9 |
+| Test.java:20:26:20:49 | newWithElement(...) : Optional [<element>] : Object | Test.java:21:10:21:11 | in : Optional [<element>] : Object | provenance |  |
+| Test.java:20:41:20:48 | source(...) : Object | Test.java:11:34:11:47 | element : Object | provenance |  |
+| Test.java:20:41:20:48 | source(...) : Object | Test.java:20:26:20:49 | newWithElement(...) : Optional [<element>] : Object | provenance | MaD:9 |
+| Test.java:21:10:21:11 | in : Optional [<element>] : Object | Test.java:21:10:21:24 | filter(...) : Optional [<element>] : Object | provenance | MaD:3 |
+| Test.java:21:10:21:24 | filter(...) : Optional [<element>] : Object | Test.java:22:20:22:22 | out : Optional [<element>] : Object | provenance |  |
+| Test.java:22:20:22:22 | out : Optional [<element>] : Object | Test.java:9:20:9:45 | container : Optional [<element>] : Object | provenance |  |
+| Test.java:22:20:22:22 | out : Optional [<element>] : Object | Test.java:22:9:22:23 | getElement(...) | provenance | MaD:5 |
+| Test.java:27:26:27:49 | newWithElement(...) : Optional [<element>] : Object | Test.java:28:10:28:11 | in : Optional [<element>] : Object | provenance |  |
+| Test.java:27:41:27:48 | source(...) : Object | Test.java:11:34:11:47 | element : Object | provenance |  |
+| Test.java:27:41:27:48 | source(...) : Object | Test.java:27:26:27:49 | newWithElement(...) : Optional [<element>] : Object | provenance | MaD:9 |
+| Test.java:28:10:28:11 | in : Optional [<element>] : Object | Test.java:28:10:28:17 | get(...) : Object | provenance | MaD:5 |
+| Test.java:28:10:28:17 | get(...) : Object | Test.java:29:9:29:11 | out | provenance |  |
+| Test.java:34:16:34:31 | (...)... : Object | Test.java:35:22:35:23 | in : Object | provenance |  |
+| Test.java:34:24:34:31 | source(...) : Object | Test.java:34:16:34:31 | (...)... : Object | provenance |  |
+| Test.java:35:10:35:24 | of(...) : Optional [<element>] : Object | Test.java:36:20:36:22 | out : Optional [<element>] : Object | provenance |  |
+| Test.java:35:22:35:23 | in : Object | Test.java:35:10:35:24 | of(...) : Optional [<element>] : Object | provenance | MaD:9 |
+| Test.java:36:20:36:22 | out : Optional [<element>] : Object | Test.java:9:20:9:45 | container : Optional [<element>] : Object | provenance |  |
+| Test.java:36:20:36:22 | out : Optional [<element>] : Object | Test.java:36:9:36:23 | getElement(...) | provenance | MaD:5 |
+| Test.java:41:16:41:31 | (...)... : Object | Test.java:42:30:42:31 | in : Object | provenance |  |
+| Test.java:41:24:41:31 | source(...) : Object | Test.java:41:16:41:31 | (...)... : Object | provenance |  |
+| Test.java:42:10:42:32 | ofNullable(...) : Optional [<element>] : Object | Test.java:43:20:43:22 | out : Optional [<element>] : Object | provenance |  |
+| Test.java:42:30:42:31 | in : Object | Test.java:42:10:42:32 | ofNullable(...) : Optional [<element>] : Object | provenance | MaD:10 |
+| Test.java:43:20:43:22 | out : Optional [<element>] : Object | Test.java:9:20:9:45 | container : Optional [<element>] : Object | provenance |  |
+| Test.java:43:20:43:22 | out : Optional [<element>] : Object | Test.java:43:9:43:23 | getElement(...) | provenance | MaD:5 |
+| Test.java:48:26:48:49 | newWithElement(...) : Optional [<element>] : Object | Test.java:49:10:49:11 | in : Optional [<element>] : Object | provenance |  |
+| Test.java:48:41:48:48 | source(...) : Object | Test.java:11:34:11:47 | element : Object | provenance |  |
+| Test.java:48:41:48:48 | source(...) : Object | Test.java:48:26:48:49 | newWithElement(...) : Optional [<element>] : Object | provenance | MaD:9 |
+| Test.java:49:10:49:11 | in : Optional [<element>] : Object | Test.java:49:10:49:20 | or(...) : Optional [<element>] : Object | provenance | MaD:12 |
+| Test.java:49:10:49:20 | or(...) : Optional [<element>] : Object | Test.java:50:20:50:22 | out : Optional [<element>] : Object | provenance |  |
+| Test.java:50:20:50:22 | out : Optional [<element>] : Object | Test.java:9:20:9:45 | container : Optional [<element>] : Object | provenance |  |
+| Test.java:50:20:50:22 | out : Optional [<element>] : Object | Test.java:50:9:50:23 | getElement(...) | provenance | MaD:5 |
+| Test.java:55:16:55:31 | (...)... : Object | Test.java:57:26:57:27 | in : Object | provenance |  |
+| Test.java:55:24:55:31 | source(...) : Object | Test.java:55:16:55:31 | (...)... : Object | provenance |  |
+| Test.java:57:10:57:28 | orElse(...) : Object | Test.java:58:9:58:11 | out | provenance |  |
+| Test.java:57:26:57:27 | in : Object | Test.java:57:10:57:28 | orElse(...) : Object | provenance | MaD:13 |
+| Test.java:63:26:63:49 | newWithElement(...) : Optional [<element>] : Object | Test.java:64:10:64:11 | in : Optional [<element>] : Object | provenance |  |
+| Test.java:63:41:63:48 | source(...) : Object | Test.java:11:34:11:47 | element : Object | provenance |  |
+| Test.java:63:41:63:48 | source(...) : Object | Test.java:63:26:63:49 | newWithElement(...) : Optional [<element>] : Object | provenance | MaD:9 |
+| Test.java:64:10:64:11 | in : Optional [<element>] : Object | Test.java:64:10:64:24 | orElse(...) : Object | provenance | MaD:14 |
+| Test.java:64:10:64:24 | orElse(...) : Object | Test.java:65:9:65:11 | out | provenance |  |
+| Test.java:70:26:70:49 | newWithElement(...) : Optional [<element>] : Object | Test.java:71:10:71:11 | in : Optional [<element>] : Object | provenance |  |
+| Test.java:70:41:70:48 | source(...) : Object | Test.java:11:34:11:47 | element : Object | provenance |  |
+| Test.java:70:41:70:48 | source(...) : Object | Test.java:70:26:70:49 | newWithElement(...) : Optional [<element>] : Object | provenance | MaD:9 |
+| Test.java:71:10:71:11 | in : Optional [<element>] : Object | Test.java:71:10:71:27 | orElseGet(...) : Object | provenance | MaD:16 |
+| Test.java:71:10:71:27 | orElseGet(...) : Object | Test.java:72:9:72:11 | out | provenance |  |
+| Test.java:77:26:77:49 | newWithElement(...) : Optional [<element>] : Object | Test.java:78:10:78:11 | in : Optional [<element>] : Object | provenance |  |
+| Test.java:77:41:77:48 | source(...) : Object | Test.java:11:34:11:47 | element : Object | provenance |  |
+| Test.java:77:41:77:48 | source(...) : Object | Test.java:77:26:77:49 | newWithElement(...) : Optional [<element>] : Object | provenance | MaD:9 |
+| Test.java:78:10:78:11 | in : Optional [<element>] : Object | Test.java:78:10:78:29 | orElseThrow(...) : Object | provenance | MaD:17 |
+| Test.java:78:10:78:29 | orElseThrow(...) : Object | Test.java:79:9:79:11 | out | provenance |  |
+| Test.java:84:26:84:49 | newWithElement(...) : Optional [<element>] : Object | Test.java:85:10:85:11 | in : Optional [<element>] : Object | provenance |  |
+| Test.java:84:41:84:48 | source(...) : Object | Test.java:11:34:11:47 | element : Object | provenance |  |
+| Test.java:84:41:84:48 | source(...) : Object | Test.java:84:26:84:49 | newWithElement(...) : Optional [<element>] : Object | provenance | MaD:9 |
+| Test.java:85:10:85:11 | in : Optional [<element>] : Object | Test.java:85:10:85:25 | orElseThrow(...) : Object | provenance | MaD:17 |
+| Test.java:85:10:85:25 | orElseThrow(...) : Object | Test.java:86:9:86:11 | out | provenance |  |
+| Test.java:91:26:91:49 | newWithElement(...) : Optional [<element>] : Object | Test.java:92:10:92:11 | in : Optional [<element>] : Object | provenance |  |
+| Test.java:91:41:91:48 | source(...) : Object | Test.java:11:34:11:47 | element : Object | provenance |  |
+| Test.java:91:41:91:48 | source(...) : Object | Test.java:91:26:91:49 | newWithElement(...) : Optional [<element>] : Object | provenance | MaD:9 |
+| Test.java:92:10:92:11 | in : Optional [<element>] : Object | Test.java:92:10:92:20 | stream(...) : Stream [<element>] : Object | provenance | MaD:18 |
+| Test.java:92:10:92:20 | stream(...) : Stream [<element>] : Object | Test.java:93:26:93:28 | out : Stream [<element>] : Object | provenance |  |
+| Test.java:93:26:93:28 | out : Stream [<element>] : Object | Test.java:93:9:93:29 | getStreamElement(...) | provenance | MaD:1 |
+nodes
+| FunctionalTest.java:12:30:12:50 | of(...) : Optional [<element>] : String | semmle.label | of(...) : Optional [<element>] : String |
+| FunctionalTest.java:12:42:12:49 | source(...) : String | semmle.label | source(...) : String |
+| FunctionalTest.java:13:9:13:9 | o : Optional [<element>] : String | semmle.label | o : Optional [<element>] : String |
+| FunctionalTest.java:13:21:13:21 | v : String | semmle.label | v : String |
+| FunctionalTest.java:14:18:14:18 | v | semmle.label | v |
+| FunctionalTest.java:16:9:16:9 | o : Optional [<element>] : String | semmle.label | o : Optional [<element>] : String |
+| FunctionalTest.java:16:27:16:27 | v : String | semmle.label | v : String |
+| FunctionalTest.java:17:18:17:18 | v | semmle.label | v |
+| FunctionalTest.java:21:9:21:9 | o : Optional [<element>] : String | semmle.label | o : Optional [<element>] : String |
+| FunctionalTest.java:21:9:24:10 | map(...) : Optional [<element>] : String | semmle.label | map(...) : Optional [<element>] : String |
+| FunctionalTest.java:21:15:21:15 | v : String | semmle.label | v : String |
+| FunctionalTest.java:22:18:22:18 | v | semmle.label | v |
+| FunctionalTest.java:23:20:23:20 | v : String | semmle.label | v : String |
+| FunctionalTest.java:24:22:24:22 | v : String | semmle.label | v : String |
+| FunctionalTest.java:25:18:25:18 | v | semmle.label | v |
+| FunctionalTest.java:27:9:27:9 | o : Optional [<element>] : String | semmle.label | o : Optional [<element>] : String |
+| FunctionalTest.java:27:9:30:10 | flatMap(...) : Optional [<element>] : String | semmle.label | flatMap(...) : Optional [<element>] : String |
+| FunctionalTest.java:27:19:27:19 | v : String | semmle.label | v : String |
+| FunctionalTest.java:28:18:28:18 | v | semmle.label | v |
+| FunctionalTest.java:29:20:29:33 | of(...) : Optional [<element>] : String | semmle.label | of(...) : Optional [<element>] : String |
+| FunctionalTest.java:29:32:29:32 | v : String | semmle.label | v : String |
+| FunctionalTest.java:30:22:30:22 | v : String | semmle.label | v : String |
+| FunctionalTest.java:31:18:31:18 | v | semmle.label | v |
+| FunctionalTest.java:33:9:33:9 | o : Optional [<element>] : String | semmle.label | o : Optional [<element>] : String |
+| FunctionalTest.java:33:19:33:19 | v : String | semmle.label | v : String |
+| FunctionalTest.java:34:18:34:18 | v | semmle.label | v |
+| FunctionalTest.java:39:9:39:9 | o : Optional [<element>] : String | semmle.label | o : Optional [<element>] : String |
+| FunctionalTest.java:39:9:42:10 | filter(...) : Optional [<element>] : String | semmle.label | filter(...) : Optional [<element>] : String |
+| FunctionalTest.java:39:18:39:18 | v : String | semmle.label | v : String |
+| FunctionalTest.java:40:18:40:18 | v | semmle.label | v |
+| FunctionalTest.java:42:22:42:22 | v : String | semmle.label | v : String |
+| FunctionalTest.java:43:18:43:18 | v | semmle.label | v |
+| FunctionalTest.java:45:9:48:22 | or(...) : Optional [<element>] : String | semmle.label | or(...) : Optional [<element>] : String |
+| FunctionalTest.java:48:15:48:21 | ...->... : new Supplier<Optional<? extends String>>(...) { ... } [Optional<String> o, <element>] : String | semmle.label | ...->... : new Supplier<Optional<? extends String>>(...) { ... } [Optional<String> o, <element>] : String |
+| FunctionalTest.java:48:15:48:21 | Optional<String> o : Optional [<element>] : String | semmle.label | Optional<String> o : Optional [<element>] : String |
+| FunctionalTest.java:48:15:48:21 | parameter this : new Supplier<Optional<? extends String>>(...) { ... } [Optional<String> o, <element>] : String | semmle.label | parameter this : new Supplier<Optional<? extends String>>(...) { ... } [Optional<String> o, <element>] : String |
+| FunctionalTest.java:48:21:48:21 | o : Optional [<element>] : String | semmle.label | o : Optional [<element>] : String |
+| FunctionalTest.java:48:21:48:21 | this : new Supplier<Optional<? extends String>>(...) { ... } [Optional<String> o, <element>] : String | semmle.label | this : new Supplier<Optional<? extends String>>(...) { ... } [Optional<String> o, <element>] : String |
+| FunctionalTest.java:48:34:48:34 | v : String | semmle.label | v : String |
+| FunctionalTest.java:49:18:49:18 | v | semmle.label | v |
+| FunctionalTest.java:52:9:52:9 | o : Optional [<element>] : String | semmle.label | o : Optional [<element>] : String |
+| FunctionalTest.java:52:9:52:24 | or(...) : Optional [<element>] : String | semmle.label | or(...) : Optional [<element>] : String |
+| FunctionalTest.java:52:36:52:36 | v : String | semmle.label | v : String |
+| FunctionalTest.java:53:18:53:18 | v | semmle.label | v |
+| FunctionalTest.java:55:24:55:53 | orElseGet(...) : String | semmle.label | orElseGet(...) : String |
+| FunctionalTest.java:55:45:55:52 | source(...) : String | semmle.label | source(...) : String |
+| FunctionalTest.java:56:14:56:18 | value | semmle.label | value |
+| Test.java:9:20:9:45 | container : Optional [<element>] : Object | semmle.label | container : Optional [<element>] : Object |
+| Test.java:9:57:9:65 | container : Optional [<element>] : Object | semmle.label | container : Optional [<element>] : Object |
+| Test.java:9:57:9:71 | get(...) : Object | semmle.label | get(...) : Object |
+| Test.java:11:34:11:47 | element : Object | semmle.label | element : Object |
+| Test.java:11:59:11:78 | of(...) : Optional [<element>] : Object | semmle.label | of(...) : Optional [<element>] : Object |
+| Test.java:11:71:11:77 | element : Object | semmle.label | element : Object |
+| Test.java:20:26:20:49 | newWithElement(...) : Optional [<element>] : Object | semmle.label | newWithElement(...) : Optional [<element>] : Object |
+| Test.java:20:41:20:48 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:21:10:21:11 | in : Optional [<element>] : Object | semmle.label | in : Optional [<element>] : Object |
+| Test.java:21:10:21:24 | filter(...) : Optional [<element>] : Object | semmle.label | filter(...) : Optional [<element>] : Object |
+| Test.java:22:9:22:23 | getElement(...) | semmle.label | getElement(...) |
+| Test.java:22:20:22:22 | out : Optional [<element>] : Object | semmle.label | out : Optional [<element>] : Object |
+| Test.java:27:26:27:49 | newWithElement(...) : Optional [<element>] : Object | semmle.label | newWithElement(...) : Optional [<element>] : Object |
+| Test.java:27:41:27:48 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:28:10:28:11 | in : Optional [<element>] : Object | semmle.label | in : Optional [<element>] : Object |
+| Test.java:28:10:28:17 | get(...) : Object | semmle.label | get(...) : Object |
+| Test.java:29:9:29:11 | out | semmle.label | out |
+| Test.java:34:16:34:31 | (...)... : Object | semmle.label | (...)... : Object |
+| Test.java:34:24:34:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:35:10:35:24 | of(...) : Optional [<element>] : Object | semmle.label | of(...) : Optional [<element>] : Object |
+| Test.java:35:22:35:23 | in : Object | semmle.label | in : Object |
+| Test.java:36:9:36:23 | getElement(...) | semmle.label | getElement(...) |
+| Test.java:36:20:36:22 | out : Optional [<element>] : Object | semmle.label | out : Optional [<element>] : Object |
+| Test.java:41:16:41:31 | (...)... : Object | semmle.label | (...)... : Object |
+| Test.java:41:24:41:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:42:10:42:32 | ofNullable(...) : Optional [<element>] : Object | semmle.label | ofNullable(...) : Optional [<element>] : Object |
+| Test.java:42:30:42:31 | in : Object | semmle.label | in : Object |
+| Test.java:43:9:43:23 | getElement(...) | semmle.label | getElement(...) |
+| Test.java:43:20:43:22 | out : Optional [<element>] : Object | semmle.label | out : Optional [<element>] : Object |
+| Test.java:48:26:48:49 | newWithElement(...) : Optional [<element>] : Object | semmle.label | newWithElement(...) : Optional [<element>] : Object |
+| Test.java:48:41:48:48 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:49:10:49:11 | in : Optional [<element>] : Object | semmle.label | in : Optional [<element>] : Object |
+| Test.java:49:10:49:20 | or(...) : Optional [<element>] : Object | semmle.label | or(...) : Optional [<element>] : Object |
+| Test.java:50:9:50:23 | getElement(...) | semmle.label | getElement(...) |
+| Test.java:50:20:50:22 | out : Optional [<element>] : Object | semmle.label | out : Optional [<element>] : Object |
+| Test.java:55:16:55:31 | (...)... : Object | semmle.label | (...)... : Object |
+| Test.java:55:24:55:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:57:10:57:28 | orElse(...) : Object | semmle.label | orElse(...) : Object |
+| Test.java:57:26:57:27 | in : Object | semmle.label | in : Object |
+| Test.java:58:9:58:11 | out | semmle.label | out |
+| Test.java:63:26:63:49 | newWithElement(...) : Optional [<element>] : Object | semmle.label | newWithElement(...) : Optional [<element>] : Object |
+| Test.java:63:41:63:48 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:64:10:64:11 | in : Optional [<element>] : Object | semmle.label | in : Optional [<element>] : Object |
+| Test.java:64:10:64:24 | orElse(...) : Object | semmle.label | orElse(...) : Object |
+| Test.java:65:9:65:11 | out | semmle.label | out |
+| Test.java:70:26:70:49 | newWithElement(...) : Optional [<element>] : Object | semmle.label | newWithElement(...) : Optional [<element>] : Object |
+| Test.java:70:41:70:48 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:71:10:71:11 | in : Optional [<element>] : Object | semmle.label | in : Optional [<element>] : Object |
+| Test.java:71:10:71:27 | orElseGet(...) : Object | semmle.label | orElseGet(...) : Object |
+| Test.java:72:9:72:11 | out | semmle.label | out |
+| Test.java:77:26:77:49 | newWithElement(...) : Optional [<element>] : Object | semmle.label | newWithElement(...) : Optional [<element>] : Object |
+| Test.java:77:41:77:48 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:78:10:78:11 | in : Optional [<element>] : Object | semmle.label | in : Optional [<element>] : Object |
+| Test.java:78:10:78:29 | orElseThrow(...) : Object | semmle.label | orElseThrow(...) : Object |
+| Test.java:79:9:79:11 | out | semmle.label | out |
+| Test.java:84:26:84:49 | newWithElement(...) : Optional [<element>] : Object | semmle.label | newWithElement(...) : Optional [<element>] : Object |
+| Test.java:84:41:84:48 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:85:10:85:11 | in : Optional [<element>] : Object | semmle.label | in : Optional [<element>] : Object |
+| Test.java:85:10:85:25 | orElseThrow(...) : Object | semmle.label | orElseThrow(...) : Object |
+| Test.java:86:9:86:11 | out | semmle.label | out |
+| Test.java:91:26:91:49 | newWithElement(...) : Optional [<element>] : Object | semmle.label | newWithElement(...) : Optional [<element>] : Object |
+| Test.java:91:41:91:48 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:92:10:92:11 | in : Optional [<element>] : Object | semmle.label | in : Optional [<element>] : Object |
+| Test.java:92:10:92:20 | stream(...) : Stream [<element>] : Object | semmle.label | stream(...) : Stream [<element>] : Object |
+| Test.java:93:9:93:29 | getStreamElement(...) | semmle.label | getStreamElement(...) |
+| Test.java:93:26:93:28 | out : Stream [<element>] : Object | semmle.label | out : Stream [<element>] : Object |
+subpaths
+| FunctionalTest.java:21:9:21:9 | o : Optional [<element>] : String | FunctionalTest.java:21:15:21:15 | v : String | FunctionalTest.java:23:20:23:20 | v : String | FunctionalTest.java:21:9:24:10 | map(...) : Optional [<element>] : String |
+| FunctionalTest.java:27:9:27:9 | o : Optional [<element>] : String | FunctionalTest.java:27:19:27:19 | v : String | FunctionalTest.java:29:20:29:33 | of(...) : Optional [<element>] : String | FunctionalTest.java:27:9:30:10 | flatMap(...) : Optional [<element>] : String |
+| FunctionalTest.java:48:15:48:21 | ...->... : new Supplier<Optional<? extends String>>(...) { ... } [Optional<String> o, <element>] : String | FunctionalTest.java:48:15:48:21 | parameter this : new Supplier<Optional<? extends String>>(...) { ... } [Optional<String> o, <element>] : String | FunctionalTest.java:48:21:48:21 | o : Optional [<element>] : String | FunctionalTest.java:45:9:48:22 | or(...) : Optional [<element>] : String |
+| Test.java:20:41:20:48 | source(...) : Object | Test.java:11:34:11:47 | element : Object | Test.java:11:59:11:78 | of(...) : Optional [<element>] : Object | Test.java:20:26:20:49 | newWithElement(...) : Optional [<element>] : Object |
+| Test.java:22:20:22:22 | out : Optional [<element>] : Object | Test.java:9:20:9:45 | container : Optional [<element>] : Object | Test.java:9:57:9:71 | get(...) : Object | Test.java:22:9:22:23 | getElement(...) |
+| Test.java:27:41:27:48 | source(...) : Object | Test.java:11:34:11:47 | element : Object | Test.java:11:59:11:78 | of(...) : Optional [<element>] : Object | Test.java:27:26:27:49 | newWithElement(...) : Optional [<element>] : Object |
+| Test.java:36:20:36:22 | out : Optional [<element>] : Object | Test.java:9:20:9:45 | container : Optional [<element>] : Object | Test.java:9:57:9:71 | get(...) : Object | Test.java:36:9:36:23 | getElement(...) |
+| Test.java:43:20:43:22 | out : Optional [<element>] : Object | Test.java:9:20:9:45 | container : Optional [<element>] : Object | Test.java:9:57:9:71 | get(...) : Object | Test.java:43:9:43:23 | getElement(...) |
+| Test.java:48:41:48:48 | source(...) : Object | Test.java:11:34:11:47 | element : Object | Test.java:11:59:11:78 | of(...) : Optional [<element>] : Object | Test.java:48:26:48:49 | newWithElement(...) : Optional [<element>] : Object |
+| Test.java:50:20:50:22 | out : Optional [<element>] : Object | Test.java:9:20:9:45 | container : Optional [<element>] : Object | Test.java:9:57:9:71 | get(...) : Object | Test.java:50:9:50:23 | getElement(...) |
+| Test.java:63:41:63:48 | source(...) : Object | Test.java:11:34:11:47 | element : Object | Test.java:11:59:11:78 | of(...) : Optional [<element>] : Object | Test.java:63:26:63:49 | newWithElement(...) : Optional [<element>] : Object |
+| Test.java:70:41:70:48 | source(...) : Object | Test.java:11:34:11:47 | element : Object | Test.java:11:59:11:78 | of(...) : Optional [<element>] : Object | Test.java:70:26:70:49 | newWithElement(...) : Optional [<element>] : Object |
+| Test.java:77:41:77:48 | source(...) : Object | Test.java:11:34:11:47 | element : Object | Test.java:11:59:11:78 | of(...) : Optional [<element>] : Object | Test.java:77:26:77:49 | newWithElement(...) : Optional [<element>] : Object |
+| Test.java:84:41:84:48 | source(...) : Object | Test.java:11:34:11:47 | element : Object | Test.java:11:59:11:78 | of(...) : Optional [<element>] : Object | Test.java:84:26:84:49 | newWithElement(...) : Optional [<element>] : Object |
+| Test.java:91:41:91:48 | source(...) : Object | Test.java:11:34:11:47 | element : Object | Test.java:11:59:11:78 | of(...) : Optional [<element>] : Object | Test.java:91:26:91:49 | newWithElement(...) : Optional [<element>] : Object |
+testFailures

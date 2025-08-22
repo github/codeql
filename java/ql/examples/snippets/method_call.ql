@@ -8,7 +8,7 @@
 
 import java
 
-from MethodAccess call, Method method
+from MethodCall call, Method method
 where
   call.getMethod() = method and
   method.hasName("methodName") and

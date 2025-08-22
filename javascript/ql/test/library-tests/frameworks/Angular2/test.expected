@@ -1,3 +1,4 @@
+legacyDataFlowDifference
 pipeRef
 | source.component.html:3:22:3:32 | unknownPipe |
 | source.component.html:4:22:4:32 | unknownPipe |
@@ -24,13 +25,24 @@ pipeClassRef
 taintFlow
 | inline.component.ts:15:22:15:29 | source() | sink.component.ts:28:48:28:57 | this.sink7 |
 | inline.component.ts:15:22:15:29 | source() | sink.component.ts:30:48:30:57 | this.sink9 |
-| source.component.ts:14:22:14:29 | source() | TestPipe.ts:6:31:6:35 | value |
-| source.component.ts:14:22:14:29 | source() | sink.component.ts:22:48:22:57 | this.sink1 |
-| source.component.ts:14:22:14:29 | source() | sink.component.ts:25:48:25:57 | this.sink4 |
-| source.component.ts:14:22:14:29 | source() | sink.component.ts:26:48:26:57 | this.sink5 |
-| source.component.ts:14:22:14:29 | source() | sink.component.ts:27:48:27:57 | this.sink6 |
-| source.component.ts:14:22:14:29 | source() | sink.component.ts:29:48:29:57 | this.sink8 |
-| source.component.ts:14:22:14:29 | source() | source.component.ts:20:48:20:48 | x |
-| source.component.ts:15:33:15:40 | source() | sink.component.ts:22:48:22:57 | this.sink1 |
+| source.component.ts:15:22:15:29 | source() | TestPipe.ts:6:31:6:35 | value |
+| source.component.ts:15:22:15:29 | source() | sink.component.ts:22:48:22:57 | this.sink1 |
+| source.component.ts:15:22:15:29 | source() | sink.component.ts:25:48:25:57 | this.sink4 |
+| source.component.ts:15:22:15:29 | source() | sink.component.ts:26:48:26:57 | this.sink5 |
+| source.component.ts:15:22:15:29 | source() | sink.component.ts:27:48:27:57 | this.sink6 |
+| source.component.ts:15:22:15:29 | source() | sink.component.ts:29:48:29:57 | this.sink8 |
+| source.component.ts:15:22:15:29 | source() | source.component.ts:21:48:21:48 | x |
+| source.component.ts:15:22:15:29 | source() | source.component.ts:22:51:22:51 | x |
+| source.component.ts:16:33:16:40 | source() | sink.component.ts:22:48:22:57 | this.sink1 |
 testAttrSourceLocation
 | inline.component.ts:8:43:8:60 | [testAttr]=taint | inline.component.ts:8:55:8:59 | <toplevel> |
+threatModelSource
+| sink.component.ts:22:48:22:57 | this.sink1 | view-component-input |
+| sink.component.ts:23:48:23:57 | this.sink2 | view-component-input |
+| sink.component.ts:24:48:24:57 | this.sink3 | view-component-input |
+| sink.component.ts:25:48:25:57 | this.sink4 | view-component-input |
+| sink.component.ts:26:48:26:57 | this.sink5 | view-component-input |
+| sink.component.ts:27:48:27:57 | this.sink6 | view-component-input |
+| sink.component.ts:28:48:28:57 | this.sink7 | view-component-input |
+| sink.component.ts:29:48:29:57 | this.sink8 | view-component-input |
+| sink.component.ts:30:48:30:57 | this.sink9 | view-component-input |

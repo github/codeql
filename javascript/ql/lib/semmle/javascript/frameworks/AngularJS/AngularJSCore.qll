@@ -32,7 +32,7 @@ pragma[nomagic]
 private predicate isAngularTopLevel(TopLevel tl) {
   exists(Import imprt |
     imprt.getTopLevel() = tl and
-    imprt.getImportedPath().getValue() = "angular"
+    imprt.getImportedPathString() = "angular"
   )
   or
   exists(GlobalVarAccess global |
@@ -507,7 +507,7 @@ class DirectiveTargetName extends string {
    * `:` and `_` count as component delimiters.
    */
   string getRawComponent(int i) {
-    result = toLowerCase().regexpFind("(?<=^|[-:_])[a-zA-Z0-9]+(?=$|[-:_])", i, _)
+    result = this.toLowerCase().regexpFind("(?<=^|[-:_])[a-zA-Z0-9]+(?=$|[-:_])", i, _)
   }
 
   /**
@@ -550,20 +550,25 @@ class DirectiveTargetName extends string {
  *
  * See https://docs.angularjs.org/api/ng/service/$location for details.
  */
-private class LocationFlowSource extends RemoteFlowSource instanceof DataFlow::MethodCallNode {
+private class LocationFlowSource extends ClientSideRemoteFlowSource instanceof DataFlow::MethodCallNode
+{
+  private ClientSideRemoteFlowKind kind;
+
   LocationFlowSource() {
     exists(ServiceReference service, string m, int n |
       service.getName() = "$location" and
       this = service.getAMethodCall(m) and
       n = super.getNumArgument()
     |
-      m = "search" and n < 2
+      m = "search" and n < 2 and kind.isQuery()
       or
-      m = "hash" and n = 0
+      m = "hash" and n = 0 and kind.isFragment()
     )
   }
 
   override string getSourceType() { result = "$location" }
+
+  override ClientSideRemoteFlowKind getKind() { result = kind }
 }
 
 /**
@@ -616,27 +621,6 @@ private class JQLiteObject extends JQuery::ObjectSource::Range {
       this = element.getAReference()
     )
   }
-}
-
-/**
- * DEPRECATED: Use `AngularJSCallNode` instead.
- * A call to an AngularJS function.
- *
- * Used for exposing behavior that is similar to the behavior of other libraries.
- */
-deprecated class AngularJSCall extends CallExpr {
-  AngularJSCallNode node;
-
-  AngularJSCall() { this.flow() = node }
-
-  /** Holds if `e` is an argument that this call interprets as HTML. */
-  deprecated predicate interpretsArgumentAsHtml(Expr e) { node.interpretsArgumentAsHtml(e.flow()) }
-
-  /** Holds if `e` is an argument that this call stores globally, e.g. in a cookie. */
-  deprecated predicate storesArgumentGlobally(Expr e) { node.storesArgumentGlobally(e.flow()) }
-
-  /** Holds if `e` is an argument that this call interprets as code. */
-  deprecated predicate interpretsArgumentAsCode(Expr e) { node.interpretsArgumentAsCode(e.flow()) }
 }
 
 /**

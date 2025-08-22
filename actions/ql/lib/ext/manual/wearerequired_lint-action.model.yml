@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["wearerequired/lint-action", "*", "input.git_name", "command-injection", "manual"]
+      - ["wearerequired/lint-action", "*", "input.git_email", "command-injection", "manual"]
+      - ["wearerequired/lint-action", "*", "input.commit_message", "command-injection", "manual"]

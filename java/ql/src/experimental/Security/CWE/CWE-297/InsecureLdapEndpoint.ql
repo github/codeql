@@ -67,7 +67,7 @@ predicate isBooleanTrue(Expr expr) {
   or
   expr.(BooleanLiteral).getBooleanValue() = true // true
   or
-  exists(MethodAccess ma |
+  exists(MethodCall ma |
     expr = ma and
     ma.getMethod() instanceof ToStringMethod and
     ma.getQualifier().(FieldAccess).getField().hasName("TRUE") and
@@ -80,22 +80,22 @@ predicate isBooleanTrue(Expr expr) {
 }
 
 /** Holds if `ma` is in a test class or method. */
-predicate isTestMethod(MethodAccess ma) {
+predicate isTestMethod(MethodCall ma) {
   ma.getEnclosingCallable() instanceof TestMethod or
   ma.getEnclosingCallable().getDeclaringType() instanceof TestClass or
   ma.getEnclosingCallable().getDeclaringType().getPackage().getName().matches("%test%") or
   ma.getEnclosingCallable().getDeclaringType().getName().toLowerCase().matches("%test%")
 }
 
-/** Holds if `MethodAccess` ma disables SSL endpoint check. */
-predicate isInsecureSslEndpoint(MethodAccess ma) {
+/** Holds if `MethodCall` ma disables SSL endpoint check. */
+predicate isInsecureSslEndpoint(MethodCall ma) {
   (
     ma.getMethod() instanceof SetSystemPropertyMethod and
     isPropertyDisableLdapEndpointId(ma.getArgument(0)) and
     isBooleanTrue(ma.getArgument(1)) //com.sun.jndi.ldap.object.disableEndpointIdentification=true
     or
     ma.getMethod() instanceof SetSystemPropertiesMethod and
-    exists(MethodAccess ma2 |
+    exists(MethodCall ma2 |
       ma2.getMethod() instanceof SetPropertyMethod and
       isPropertyDisableLdapEndpointId(ma2.getArgument(0)) and
       isBooleanTrue(ma2.getArgument(1)) and //com.sun.jndi.ldap.object.disableEndpointIdentification=true
@@ -104,8 +104,8 @@ predicate isInsecureSslEndpoint(MethodAccess ma) {
   )
 }
 
-from MethodAccess ma
-where
+deprecated query predicate problems(MethodCall ma, string message) {
   isInsecureSslEndpoint(ma) and
-  not isTestMethod(ma)
-select ma, "LDAPS configuration allows insecure endpoint identification."
+  not isTestMethod(ma) and
+  message = "LDAPS configuration allows insecure endpoint identification."
+}

@@ -1,8 +1,17 @@
+#select
+| EndToEnd.go:94:20:94:49 | call to Get | EndToEnd.go:94:20:94:27 | selection of Params | EndToEnd.go:94:20:94:49 | call to Get | This path to an untrusted URL redirection depends on a $@. | EndToEnd.go:94:20:94:27 | selection of Params | user-provided value |
 edges
-| EndToEnd.go:94:20:94:27 | selection of Params | EndToEnd.go:94:20:94:49 | call to Get |
+| EndToEnd.go:94:20:94:27 | implicit dereference | EndToEnd.go:94:20:94:27 | selection of Params | provenance | Config |
+| EndToEnd.go:94:20:94:27 | implicit dereference | EndToEnd.go:94:20:94:32 | selection of Form | provenance | Config |
+| EndToEnd.go:94:20:94:27 | selection of Params | EndToEnd.go:94:20:94:27 | implicit dereference | provenance | Src:MaD:2 Config |
+| EndToEnd.go:94:20:94:27 | selection of Params | EndToEnd.go:94:20:94:32 | selection of Form | provenance | Src:MaD:2 Config |
+| EndToEnd.go:94:20:94:32 | selection of Form | EndToEnd.go:94:20:94:49 | call to Get | provenance | Config Sink:MaD:1 |
+models
+| 1 | Sink: group:revel; Controller; true; Redirect; ; ; Argument[0]; url-redirection; manual |
+| 2 | Source: group:revel; Controller; true; Params; ; ; ; remote; manual |
 nodes
+| EndToEnd.go:94:20:94:27 | implicit dereference | semmle.label | implicit dereference |
 | EndToEnd.go:94:20:94:27 | selection of Params | semmle.label | selection of Params |
+| EndToEnd.go:94:20:94:32 | selection of Form | semmle.label | selection of Form |
 | EndToEnd.go:94:20:94:49 | call to Get | semmle.label | call to Get |
 subpaths
-#select
-| EndToEnd.go:94:20:94:49 | call to Get | EndToEnd.go:94:20:94:27 | selection of Params | EndToEnd.go:94:20:94:49 | call to Get | Untrusted URL redirection depends on a $@. | EndToEnd.go:94:20:94:27 | selection of Params | user-provided value |

@@ -11,10 +11,9 @@ cached
 private module Cached {
   /** A data flow source of remote user input. */
   cached
-  abstract class RemoteFlowSource extends DataFlow::Node {
-    /** Gets a human-readable string that describes the type of this remote flow source. */
+  abstract class RemoteFlowSource extends ThreatModelSource::Range {
     cached
-    abstract string getSourceType();
+    override string getThreatModel() { result = "remote" }
 
     /**
      * Holds if this can be a user-controlled object, such as a JSON object parsed from user-controlled data.
@@ -25,12 +24,18 @@ private module Cached {
 
   /**
    * A source of remote input in a web browser environment.
+   *
+   * Note that this does not include `view-component-input` sources even if that threat model has been enabled by the user.
+   * Consider using the predicate `ThreatModelSource#isClientSideSource()` to check for a broader class of client-side sources.
    */
   cached
   abstract class ClientSideRemoteFlowSource extends RemoteFlowSource {
     /** Gets a string indicating what part of the browser environment this was derived from. */
     cached
     abstract ClientSideRemoteFlowKind getKind();
+
+    cached
+    final override predicate isClientSideSource() { any() }
   }
 }
 
@@ -40,7 +45,9 @@ import Cached
  * A type of remote flow source that is specific to the browser environment.
  */
 class ClientSideRemoteFlowKind extends string {
-  ClientSideRemoteFlowKind() { this = ["query", "fragment", "path", "url", "name"] }
+  ClientSideRemoteFlowKind() {
+    this = ["query", "fragment", "path", "url", "name", "message-event"]
+  }
 
   /**
    * Holds if this is the `query` kind, describing sources derived from the query parameters of the browser URL,
@@ -77,6 +84,12 @@ class ClientSideRemoteFlowKind extends string {
 
   /** Holds if this is the `name` kind, describing sources derived from the window name, such as `window.name`. */
   predicate isWindowName() { this = "name" }
+
+  /**
+   * Holds if this is the `message-event` kind, describing sources derived from cross-window message passing,
+   * such as `event` in `window.onmessage = event => {...}`.
+   */
+  predicate isMessageEvent() { this = "message-event" }
 }
 
 /**

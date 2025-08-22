@@ -1,13 +1,18 @@
 /** Provides classes and predicates to reason about cleartext storage vulnerabilities. */
 
 import java
-private import semmle.code.java.dataflow.DataFlow4
 private import semmle.code.java.dataflow.TaintTracking
-private import semmle.code.java.dataflow.TaintTracking2
 private import semmle.code.java.security.SensitiveActions
 
 /** A sink representing persistent storage that saves data in clear text. */
-abstract class CleartextStorageSink extends DataFlow::Node { }
+abstract class CleartextStorageSink extends DataFlow::Node {
+  /**
+   * Gets a location that will be selected in the diff-informed query where
+   * this sink is found. If this has no results for any sink, that's taken to
+   * mean the query is not diff-informed.
+   */
+  Location getASelectedLocation() { none() }
+}
 
 /** A sanitizer for flows tracking sensitive data being stored in persistent storage. */
 abstract class CleartextStorageSanitizer extends DataFlow::Node { }
@@ -21,9 +26,7 @@ class CleartextStorageAdditionalTaintStep extends Unit {
 class SensitiveSource extends Expr instanceof SensitiveExpr {
   /** Holds if this source flows to the `sink`. */
   predicate flowsTo(Expr sink) {
-    exists(SensitiveSourceFlowConfig conf |
-      conf.hasFlow(DataFlow::exprNode(this), DataFlow::exprNode(sink))
-    )
+    SensitiveSourceFlow::flow(DataFlow::exprNode(this), DataFlow::exprNode(sink))
   }
 }
 
@@ -40,27 +43,36 @@ abstract class Storable extends Call {
   abstract Expr getAStore();
 }
 
-private class SensitiveSourceFlowConfig extends TaintTracking2::Configuration {
-  SensitiveSourceFlowConfig() { this = "SensitiveSourceFlowConfig" }
+private module SensitiveSourceFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SensitiveExpr }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SensitiveExpr }
+  predicate isSink(DataFlow::Node sink) { sink instanceof CleartextStorageSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof CleartextStorageSink }
+  predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof CleartextStorageSanitizer }
 
-  override predicate isSanitizer(DataFlow::Node sanitizer) {
-    sanitizer instanceof CleartextStorageSanitizer
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+  predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     any(CleartextStorageAdditionalTaintStep c).step(n1, n2)
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // This configuration is used by several queries. A query can opt in to
+    // diff-informed mode by implementing `getASelectedLocation` on its sinks,
+    // indicating that it has considered which sinks are selected.
+    exists(CleartextStorageSink sink | exists(sink.getASelectedLocation()))
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(CleartextStorageSink).getASelectedLocation()
+  }
 }
+
+private module SensitiveSourceFlow = TaintTracking::Global<SensitiveSourceFlowConfig>;
 
 private class DefaultCleartextStorageSanitizer extends CleartextStorageSanitizer {
   DefaultCleartextStorageSanitizer() {
     this.getType() instanceof NumericType or
     this.getType() instanceof BooleanType or
-    exists(EncryptedValueFlowConfig conf | conf.hasFlow(_, this))
+    EncryptedValueFlow::flowTo(this)
   }
 }
 
@@ -69,19 +81,17 @@ private class DefaultCleartextStorageSanitizer extends CleartextStorageSanitizer
  * encryption (reversible and non-reversible) from both JDK and third parties, this class simply
  * checks method name to take a best guess to reduce false positives.
  */
-private class EncryptedSensitiveMethodAccess extends MethodAccess {
-  EncryptedSensitiveMethodAccess() {
+private class EncryptedSensitiveMethodCall extends MethodCall {
+  EncryptedSensitiveMethodCall() {
     this.getMethod().getName().toLowerCase().matches(["%encrypt%", "%hash%", "%digest%"])
   }
 }
 
 /** Flow configuration for encryption methods flowing to inputs of persistent storage. */
-private class EncryptedValueFlowConfig extends DataFlow4::Configuration {
-  EncryptedValueFlowConfig() { this = "EncryptedValueFlowConfig" }
+private module EncryptedValueFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof EncryptedSensitiveMethodCall }
 
-  override predicate isSource(DataFlow::Node src) {
-    src.asExpr() instanceof EncryptedSensitiveMethodAccess
-  }
-
-  override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof SensitiveExpr }
+  predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof SensitiveExpr }
 }
+
+private module EncryptedValueFlow = DataFlow::Global<EncryptedValueFlowConfig>;

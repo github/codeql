@@ -1,4 +1,6 @@
 /** Provides classes and predicates for working with the GWT framework. */
+overlay[local?]
+module;
 
 import java
 import GwtXml
@@ -99,9 +101,6 @@ class JsniComment extends Javadoc {
   Method getImplementedMethod() { jsniComment(this, result) }
 }
 
-/** DEPRECATED: Alias for JsniComment */
-deprecated class JSNIComment = JsniComment;
-
 /**
  * A JavaScript Native Interface (JSNI) method.
  */
@@ -111,6 +110,3 @@ class JsniMethod extends Method {
   /** Gets the comment containing the JavaScript code for this method. */
   JsniComment getImplementation() { jsniComment(result, this) }
 }
-
-/** DEPRECATED: Alias for JsniMethod */
-deprecated class JSNIMethod = JsniMethod;

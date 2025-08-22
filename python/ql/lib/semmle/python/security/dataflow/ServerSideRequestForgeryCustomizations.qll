@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
+private import semmle.python.ApiGraphs
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -44,16 +45,14 @@ module ServerSideRequestForgery {
   abstract class FullUrlControlSanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for "Server-side request forgery" vulnerabilities.
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
    */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
 
   /**
-   * A source of remote user input, considered as a flow source.
+   * An active threat-model source, considered as a flow source.
    */
-  class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /** The URL of an HTTP request, considered as a sink. */
   class HttpRequestUrlAsSink extends Sink {
@@ -78,9 +77,12 @@ module ServerSideRequestForgery {
   }
 
   /**
-   * A comparison with a constant string, considered as a sanitizer-guard.
+   * A comparison with a constant, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsSanitizerGuard extends Sanitizer, StringConstCompareBarrier { }
+  class ConstCompareAsSanitizerGuard extends Sanitizer, ConstCompareBarrier { }
+
+  /** DEPRECATED: Use ConstCompareAsSanitizerGuard instead. */
+  deprecated class StringConstCompareAsSanitizerGuard = ConstCompareAsSanitizerGuard;
 
   /**
    * A string construction (concat, format, f-string) where the left side is not
@@ -95,7 +97,9 @@ module ServerSideRequestForgery {
       exists(BinaryExprNode add |
         add.getOp() instanceof Add and
         add.getRight() = this.asCfgNode() and
-        not add.getLeft().getNode().(StrConst).getText().toLowerCase() in ["http://", "https://"]
+        not add.getLeft().getNode().(StringLiteral).getText().toLowerCase() in [
+            "http://", "https://"
+          ]
       )
       or
       // % formatting
@@ -104,7 +108,7 @@ module ServerSideRequestForgery {
         fmt.getRight() = this.asCfgNode() and
         // detecting %-formatting is not super easy, so we simplify it to only handle
         // when there is a **single** substitution going on.
-        not fmt.getLeft().getNode().(StrConst).getText().regexpMatch("^(?i)https?://%s[^%]*$")
+        not fmt.getLeft().getNode().(StringLiteral).getText().regexpMatch("^(?i)https?://%s[^%]*$")
       )
       or
       // arguments to a format call
@@ -113,9 +117,9 @@ module ServerSideRequestForgery {
       |
         call.getMethodName() = "format" and
         (
-          if call.getObject().asExpr().(StrConst).getText().regexpMatch(httpPrefixRe)
+          if call.getObject().asExpr().(StringLiteral).getText().regexpMatch(httpPrefixRe)
           then
-            exists(string text | text = call.getObject().asExpr().(StrConst).getText() |
+            exists(string text | text = call.getObject().asExpr().(StringLiteral).getText() |
               // `http://{}...`
               exists(text.regexpCapture(httpPrefixRe, 1)) and
               this in [call.getArg(any(int i | i >= 1)), call.getArgByName(_)]
@@ -136,10 +140,40 @@ module ServerSideRequestForgery {
       or
       // f-string
       exists(Fstring fstring |
-        if fstring.getValue(0).(StrConst).getText().toLowerCase() in ["http://", "https://"]
+        if fstring.getValue(0).(StringLiteral).getText().toLowerCase() in ["http://", "https://"]
         then fstring.getValue(any(int i | i >= 2)) = this.asExpr()
         else fstring.getValue(any(int i | i >= 1)) = this.asExpr()
       )
     }
+  }
+
+  /** A validation that a string does not contain certain characters, considered as a sanitizer. */
+  private class StringRestrictionSanitizerGuard extends Sanitizer {
+    StringRestrictionSanitizerGuard() {
+      this = DataFlow::BarrierGuard<stringRestriction/3>::getABarrierNode()
+    }
+  }
+
+  private predicate stringRestriction(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {
+    exists(DataFlow::MethodCallNode call, DataFlow::Node strNode |
+      call.asCfgNode() = g and strNode.asCfgNode() = node
+    |
+      branch = true and
+      call.calls(strNode,
+        ["isalnum", "isalpha", "isdecimal", "isdigit", "isidentifier", "isnumeric", "isspace"])
+      or
+      branch = true and
+      call = API::moduleImport("re").getMember(["match", "fullmatch"]).getACall() and
+      strNode = [call.getArg(1), call.getArgByName("string")]
+      or
+      branch = true and
+      call =
+        API::moduleImport("re")
+            .getMember("compile")
+            .getReturn()
+            .getMember(["match", "fullmatch"])
+            .getACall() and
+      strNode = [call.getArg(0), call.getArgByName("string")]
+    )
   }
 }

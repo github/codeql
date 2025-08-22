@@ -1,0 +1,25 @@
+extensions:
+- addsTo:
+    pack: codeql/java-all
+    extensible: summaryModel
+  data:
+    - ["io.netty.handler.codec.http.websocketx", "CloseWebSocketFrame", True, "CloseWebSocketFrame", "(boolean,int,ByteBuf)", "", "Argument[2]", "Argument[this]", "taint", "manual"]
+    - ["io.netty.handler.codec.http.websocketx", "CloseWebSocketFrame", True, "CloseWebSocketFrame", "(boolean,int,int,String)", "", "Argument[3]", "Argument[this]", "taint", "manual"]
+    - ["io.netty.handler.codec.http.websocketx", "CloseWebSocketFrame", True, "CloseWebSocketFrame", "(int,String)", "", "Argument[1]", "Argument[this]", "taint", "manual"]
+    - ["io.netty.handler.codec.http.websocketx", "CloseWebSocketFrame", True, "CloseWebSocketFrame", "(WebSocketCloseStatus,String)", "", "Argument[1]", "Argument[this]", "taint", "manual"]
+    - ["io.netty.handler.codec.http.websocketx", "CloseWebSocketFrame", True, "reasonText", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http.websocketx", "BinaryWebSocketFrame", True, "BinaryWebSocketFrame", "(boolean,int,ByteBuf)", "", "Argument[2]", "Argument[this]", "taint", "manual"]
+    - ["io.netty.handler.codec.http.websocketx", "BinaryWebSocketFrame", True, "BinaryWebSocketFrame", "(ByteBuf)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+    - ["io.netty.handler.codec.http.websocketx", "ContinuationWebSocketFrame", True, "ContinuationWebSocketFrame", "(boolean,int,ByteBuf)", "", "Argument[2]", "Argument[this]", "taint", "manual"]
+    - ["io.netty.handler.codec.http.websocketx", "ContinuationWebSocketFrame", True, "ContinuationWebSocketFrame", "(boolean,int,String)", "", "Argument[2]", "Argument[this]", "taint", "manual"]
+    - ["io.netty.handler.codec.http.websocketx", "ContinuationWebSocketFrame", True, "ContinuationWebSocketFrame", "(ByteBuf)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+    - ["io.netty.handler.codec.http.websocketx", "ContinuationWebSocketFrame", True, "text", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http.websocketx", "PingWebSocketFrame", True, "PingWebSocketFrame", "(boolean,int,ByteBuf)", "", "Argument[2]", "Argument[this]", "taint", "manual"]
+    - ["io.netty.handler.codec.http.websocketx", "PingWebSocketFrame", True, "PingWebSocketFrame", "(ByteBuf)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+    - ["io.netty.handler.codec.http.websocketx", "PongWebSocketFrame", True, "PongWebSocketFrame", "(boolean,int,ByteBuf)", "", "Argument[2]", "Argument[this]", "taint", "manual"]
+    - ["io.netty.handler.codec.http.websocketx", "PongWebSocketFrame", True, "PongWebSocketFrame", "(ByteBuf)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+    - ["io.netty.handler.codec.http.websocketx", "TextWebSocketFrame", True, "TextWebSocketFrame", "(boolean,int,ByteBuf)", "", "Argument[2]", "Argument[this]", "taint", "manual"]
+    - ["io.netty.handler.codec.http.websocketx", "TextWebSocketFrame", True, "TextWebSocketFrame", "(boolean,int,String)", "", "Argument[2]", "Argument[this]", "taint", "manual"]
+    - ["io.netty.handler.codec.http.websocketx", "TextWebSocketFrame", True, "TextWebSocketFrame", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+    - ["io.netty.handler.codec.http.websocketx", "TextWebSocketFrame", True, "TextWebSocketFrame", "(ByteBuf)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+    - ["io.netty.handler.codec.http.websocketx", "TextWebSocketFrame", True, "text", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]

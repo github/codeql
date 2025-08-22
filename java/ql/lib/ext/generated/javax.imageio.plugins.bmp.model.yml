@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.imageio.plugins.bmp", "BMPImageWriteParam", True, "BMPImageWriteParam", "(Locale)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.imageio.plugins.bmp", "BMPImageWriteParam", "isTopDown", "()", "summary", "df-generated"]
+      - ["javax.imageio.plugins.bmp", "BMPImageWriteParam", "setTopDown", "(boolean)", "summary", "df-generated"]

@@ -1,3 +1,2 @@
-| Sources;NewSources;false;WrapConsoleReadKey;();;ReturnValue;local;generated |
-| Sources;NewSources;false;WrapConsoleReadLine;();;ReturnValue;local;generated |
-| Sources;NewSources;false;WrapConsoleReadLineAndProcees;(System.String);;ReturnValue;local;generated |
+unexpectedModel
+expectedModel

@@ -56,3 +56,16 @@ func f3() {
   @WrapperWithProjected var w3 = 3
   @WrapperWithProjectedAndInit var w4 = 4
 }
+
+enum E {
+  case value(Int, Int)
+}
+
+switch E.value(42, 0) {
+  case .value(let case_variable, 0):
+    _ = case_variable
+  case .value(0, let unused_case_variable):
+    break
+  default:
+    break
+}

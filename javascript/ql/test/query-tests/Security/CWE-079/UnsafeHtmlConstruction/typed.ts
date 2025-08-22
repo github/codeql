@@ -1,11 +1,11 @@
-export function basicHtmlConstruction(s: string) {
-    const html = "<span>" + s + "</span>"; // NOT OK
+export function basicHtmlConstruction(s: string) { // $ Source
+    const html = "<span>" + s + "</span>"; // $ Alert
     document.body.innerHTML = html;
 }
 
 export function insertIntoCreatedDocument(s: string) {
     const newDoc = document.implementation.createHTMLDocument("");
-    newDoc.body.innerHTML = "<span>" + s + "</span>"; // OK - inserted into document disconnected from the main DOM. [INCONSISTENCY]
+    newDoc.body.innerHTML = "<span>" + s + "</span>"; // OK - inserted into document disconnected from the main DOM.
 }
 
 export function id(s: string) {
@@ -14,7 +14,6 @@ export function id(s: string) {
 
 export function notVulnerable() {
     const s = id("x");
-    const html = "<span>" + s + "</span>"; // OK
+    const html = "<span>" + s + "</span>";
     document.body.innerHTML = html;
 }
- 

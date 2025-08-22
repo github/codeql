@@ -250,9 +250,6 @@ private module JsonFile {
     }
   }
 
-  /** DEPRECATED: Alias for JsonFileReader */
-  deprecated class JSONFileReader = JsonFileReader;
-
   /**
    * A writer for JSON files.
    */
@@ -267,9 +264,6 @@ private module JsonFile {
 
     override DataFlow::Node getADataNode() { result = this.getArgument(1) }
   }
-
-  /** DEPRECATED: Alias for JsonFileWriter */
-  deprecated class JSONFileWriter = JsonFileWriter;
 }
 
 /**
@@ -432,17 +426,4 @@ class Chokidar extends FileNameProducer, FileSystemAccess, API::CallNode {
       result = onCall.getCallback(1).getParameter(pathIndex)
     )
   }
-}
-
-/**
- * A call to the [`mkdirp`](https://www.npmjs.com/package/mkdirp) library.
- */
-private class Mkdirp extends FileSystemAccess, API::CallNode {
-  Mkdirp() {
-    this = API::moduleImport("mkdirp").getACall()
-    or
-    this = API::moduleImport("mkdirp").getMember("sync").getACall()
-  }
-
-  override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
 }

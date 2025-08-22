@@ -1,0 +1,9 @@
+| preprocblock23.cpp:4:1:4:19 | #include "header.h" | preprocblock23.cpp:0:0:22:0 | preprocblock23.cpp |
+| preprocblock23.cpp:9:2:9:20 | #include "header.h" | preprocblock23.cpp:8:0:17:0 | #elifdef GREEN |
+| preprocblock23.cpp:14:3:14:21 | #include "header.h" | preprocblock23.cpp:13:0:14:0 | #elifndef BLUE |
+| preprocblock23.cpp:17:2:17:20 | #include "header.h" | preprocblock23.cpp:8:0:17:0 | #elifdef GREEN |
+| preprocblock.cpp:3:1:3:19 | #include "header.h" | preprocblock.cpp:0:0:25:0 | preprocblock.cpp |
+| preprocblock.cpp:8:2:8:20 | #include "header.h" | preprocblock.cpp:7:0:20:0 | #elif defined GREEN |
+| preprocblock.cpp:11:3:11:21 | #include "header.h" | preprocblock.cpp:10:0:11:0 | #ifndef BLUE |
+| preprocblock.cpp:17:3:17:21 | #include "header.h" | preprocblock.cpp:16:0:17:0 | #else |
+| preprocblock.cpp:20:2:20:20 | #include "header.h" | preprocblock.cpp:7:0:20:0 | #elif defined GREEN |

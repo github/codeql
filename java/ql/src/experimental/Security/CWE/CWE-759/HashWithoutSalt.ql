@@ -12,7 +12,7 @@
 
 import java
 import semmle.code.java.dataflow.TaintTracking
-import DataFlow::PathGraph
+import HashWithoutSaltFlow::PathGraph
 
 /**
  * Gets a regular expression for matching common names of variables
@@ -54,8 +54,8 @@ class MDUpdateMethod extends Method {
 }
 
 /** The hashing method that could taint the input. */
-class MDHashMethodAccess extends MethodAccess {
-  MDHashMethodAccess() {
+class MDHashMethodCall extends MethodCall {
+  MDHashMethodCall() {
     (
       this.getMethod() instanceof MDDigestMethod or
       this.getMethod() instanceof MDUpdateMethod
@@ -65,13 +65,13 @@ class MDHashMethodAccess extends MethodAccess {
 }
 
 /**
- * Holds if `MethodAccess` ma is a method access of `MDHashMethodAccess` or
- * invokes a method access of `MDHashMethodAccess` directly or indirectly.
+ * Holds if `MethodCall` ma is a method access of `MDHashMethodCall` or
+ * invokes a method access of `MDHashMethodCall` directly or indirectly.
  */
-predicate isHashAccess(MethodAccess ma) {
-  ma instanceof MDHashMethodAccess
+predicate isHashAccess(MethodCall ma) {
+  ma instanceof MDHashMethodCall
   or
-  exists(MethodAccess mca |
+  exists(MethodCall mca |
     ma.getMethod().calls(mca.getMethod()) and
     isHashAccess(mca) and
     DataFlow::localExprFlow(ma.getMethod().getAParameter().getAnAccess(), mca.getAnArgument())
@@ -82,9 +82,9 @@ predicate isHashAccess(MethodAccess ma) {
  * Holds if there is a second method access that satisfies `isHashAccess` whose qualifier or argument
  * is the same as the method call `ma` that satisfies `isHashAccess`.
  */
-predicate hasAnotherHashCall(MethodAccess ma) {
+predicate hasAnotherHashCall(MethodCall ma) {
   isHashAccess(ma) and
-  exists(MethodAccess ma2, VarAccess va |
+  exists(MethodCall ma2, VarAccess va |
     ma2 != ma and
     isHashAccess(ma2) and
     not va.getVariable().getType() instanceof PrimitiveType and
@@ -105,29 +105,27 @@ predicate hasAnotherHashCall(MethodAccess ma) {
 }
 
 /**
- * Holds if `MethodAccess` ma is part of a call graph that satisfies `isHashAccess`
+ * Holds if `MethodCall` ma is part of a call graph that satisfies `isHashAccess`
  * but is not at the top of the call hierarchy.
  */
-predicate hasHashAncestor(MethodAccess ma) {
-  exists(MethodAccess mpa |
+predicate hasHashAncestor(MethodCall ma) {
+  exists(MethodCall mpa |
     mpa.getMethod().calls(ma.getMethod()) and
     isHashAccess(mpa) and
     DataFlow::localExprFlow(mpa.getMethod().getAParameter().getAnAccess(), ma.getAnArgument())
   )
 }
 
-/** Holds if `MethodAccess` ma is a hashing call without a sibling node making another hashing call. */
-predicate isSingleHashMethodCall(MethodAccess ma) {
-  isHashAccess(ma) and not hasAnotherHashCall(ma)
-}
+/** Holds if `MethodCall` ma is a hashing call without a sibling node making another hashing call. */
+predicate isSingleHashMethodCall(MethodCall ma) { isHashAccess(ma) and not hasAnotherHashCall(ma) }
 
-/** Holds if `MethodAccess` ma is a single hashing call that is not invoked by a wrapper method. */
-predicate isSink(MethodAccess ma) { isSingleHashMethodCall(ma) and not hasHashAncestor(ma) }
+/** Holds if `MethodCall` ma is a single hashing call that is not invoked by a wrapper method. */
+predicate isSink(MethodCall ma) { isSingleHashMethodCall(ma) and not hasHashAncestor(ma) }
 
 /** Sink of hashing calls. */
 class HashWithoutSaltSink extends DataFlow::ExprNode {
   HashWithoutSaltSink() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       this.asExpr() = ma.getAnArgument() and
       isSink(ma)
     )
@@ -138,12 +136,10 @@ class HashWithoutSaltSink extends DataFlow::ExprNode {
  * Taint configuration tracking flow from an expression whose name suggests it holds password data
  * to a method call that generates a hash without a salt.
  */
-class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
-  HashWithoutSaltConfiguration() { this = "HashWithoutSaltConfiguration" }
+module HashWithoutSaltConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof PasswordVarExpr }
 
-  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof PasswordVarExpr }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof HashWithoutSaltSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof HashWithoutSaltSink }
 
   /**
    * Holds if a password is concatenated with a salt then hashed together through the call `System.arraycopy(password.getBytes(), ...)`, for example,
@@ -152,8 +148,8 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
    *  `byte[] messageDigest = md.digest(allBytes);`
    * Or the password is concatenated with a salt as a string.
    */
-  override predicate isSanitizer(DataFlow::Node node) {
-    exists(MethodAccess ma |
+  predicate isBarrier(DataFlow::Node node) {
+    exists(MethodCall ma |
       ma.getMethod().getDeclaringType().hasQualifiedName("java.lang", "System") and
       ma.getMethod().hasName("arraycopy") and
       ma.getArgument(0) = node.asExpr()
@@ -163,19 +159,29 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
     or
     exists(ConditionalExpr ce | ce.getAChildExpr() = node.asExpr()) // useSalt?password+":"+salt:password
     or
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().getDeclaringType().hasQualifiedName("java.lang", "StringBuilder") and
       ma.getMethod().hasName("append") and
       ma.getArgument(0) = node.asExpr() // stringBuilder.append(password).append(salt)
     )
     or
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getQualifier().(VarAccess).getVariable().getType() instanceof Interface and
       ma.getAnArgument() = node.asExpr() // Method access of interface type variables requires runtime determination thus not handled
     )
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, HashWithoutSaltConfiguration cc
-where cc.hasFlowPath(source, sink)
-select sink, source, sink, "$@ is hashed without a salt.", source, "The password"
+module HashWithoutSaltFlow = TaintTracking::Global<HashWithoutSaltConfig>;
+
+deprecated query predicate problems(
+  HashWithoutSaltFlow::PathNode sink, HashWithoutSaltFlow::PathNode source,
+  HashWithoutSaltFlow::PathNode sink0, string message1, HashWithoutSaltFlow::PathNode source0,
+  string message2
+) {
+  HashWithoutSaltFlow::flowPath(source, sink) and
+  sink = sink0 and
+  source = source0 and
+  message1 = "$@ is hashed without a salt." and
+  message2 = "The password"
+}

@@ -7,6 +7,11 @@
 
 import javascript
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
+private import semmle.javascript.dataflow.internal.StepSummary
+private import semmle.javascript.dataflow.internal.sharedlib.SummaryTypeTracker as SummaryTypeTracker
+private import semmle.javascript.dataflow.internal.Contents::Private as ContentPrivate
+private import semmle.javascript.DynamicPropertyAccess
 private import internal.CachedStages
 
 /**
@@ -153,12 +158,6 @@ module API {
      */
     DataFlow::SourceNode asSource() { Impl::use(this, result) }
 
-    /** DEPRECATED. This predicate has been renamed to `asSource`. */
-    deprecated DataFlow::SourceNode getAnImmediateUse() { result = this.asSource() }
-
-    /** DEPRECATED. This predicate has been renamed to `getAValueReachableFromSource`. */
-    deprecated DataFlow::Node getAUse() { result = this.getAValueReachableFromSource() }
-
     /**
      * Gets a call to the function represented by this API component.
      */
@@ -212,12 +211,6 @@ module API {
      */
     DataFlow::Node getAValueReachingSink() { result = Impl::trackDefNode(this.asSink()) }
 
-    /** DEPRECATED. This predicate has been renamed to `asSink`. */
-    deprecated DataFlow::Node getARhs() { result = this.asSink() }
-
-    /** DEPRECATED. This predicate has been renamed to `getAValueReachingSink`. */
-    deprecated DataFlow::Node getAValueReachingRhs() { result = this.getAValueReachingSink() }
-
     /**
      * Gets a node representing member `m` of this API component.
      *
@@ -231,14 +224,52 @@ module API {
     }
 
     /**
-     * Gets a node representing a member of this API component where the name of the member is
-     * not known statically.
+     * DEPRECATED. Use either `getArrayElement()` or `getAMember()` instead.
+     */
+    deprecated Node getUnknownMember() { result = this.getArrayElement() }
+
+    /**
+     * Gets an array element of unknown index.
      */
     cached
-    Node getUnknownMember() {
+    Node getUnknownArrayElement() {
       Stages::ApiStage::ref() and
-      result = this.getASuccessor(Label::unknownMember())
+      result = this.getASuccessor(Label::content(ContentPrivate::MkArrayElementUnknown()))
     }
+
+    cached
+    private Node getContentRaw(DataFlow::Content content) {
+      Stages::ApiStage::ref() and
+      result = this.getASuccessor(Label::content(content))
+    }
+
+    /**
+     * Gets a representative for the `content` of this value.
+     *
+     * When possible, it is preferrable to use one of the specialized variants of this predicate, such as `getMember`.
+     */
+    pragma[inline]
+    Node getContent(DataFlow::Content content) {
+      result = this.getContentRaw(content)
+      or
+      result = this.getMember(content.asPropertyName())
+    }
+
+    /**
+     * Gets a representative for the `contents` of this value.
+     */
+    bindingset[contents]
+    pragma[inline_late]
+    private Node getContents(DataFlow::ContentSet contents) {
+      // We always use getAStoreContent when generating content edges, and we always use getAReadContent when querying the graph.
+      result = this.getContent(contents.getAReadContent())
+    }
+
+    /**
+     * Gets a node representing an arbitrary array element in the array represented by this node.
+     */
+    cached
+    Node getArrayElement() { result = this.getContents(DataFlow::ContentSet::arrayElement()) }
 
     /**
      * Gets a node representing a member of this API component where the name of the member may
@@ -249,19 +280,27 @@ module API {
       Stages::ApiStage::ref() and
       result = this.getMember(_)
       or
-      result = this.getUnknownMember()
+      result = this.getUnknownArrayElement()
     }
 
     /**
-     * Gets a node representing an instance of this API component, that is, an object whose
-     * constructor is the function represented by this node.
+     * Gets a node representing an instance of the class represented by this node.
+     * This includes instances of subclasses.
      *
-     * For example, if this node represents a use of some class `A`, then there might be a node
-     * representing instances of `A`, typically corresponding to expressions `new A()` at the
-     * source level.
+     * For example:
+     * ```js
+     * import { C } from "foo";
      *
-     * This predicate may have multiple results when there are multiple constructor calls invoking this API component.
-     * Consider using `getAnInstantiation()` if there is a need to distinguish between individual constructor calls.
+     * new C(); // API::moduleImport("foo").getMember("C").getInstance()
+     *
+     * class D extends C {
+     *   m() {
+     *     this; // API::moduleImport("foo").getMember("C").getInstance()
+     *  }
+     * }
+     *
+     * new D(); // API::moduleImport("foo").getMember("C").getInstance()
+     * ```
      */
     cached
     Node getInstance() {
@@ -279,6 +318,11 @@ module API {
     Node getParameter(int i) {
       Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::parameter(i))
+      or
+      exists(int spreadIndex, string arrayProp |
+        result = this.getASuccessor(Label::spreadArgument(spreadIndex)).getMember(arrayProp) and
+        i = spreadIndex + arrayProp.toInt()
+      )
     }
 
     /**
@@ -345,6 +389,46 @@ module API {
     Node getPromisedError() {
       Stages::ApiStage::ref() and
       result = this.getASuccessor(Label::promisedError())
+    }
+
+    /**
+     * Gets a node representing a function that is a wrapper around the function represented by this node.
+     *
+     * Concretely, a function that forwards all its parameters to a call to `f` and returns the result of that call
+     * is considered a wrapper around `f`.
+     *
+     * Examples:
+     * ```js
+     * function f(x) {
+     *   return g(x); // f = g.getForwardingFunction()
+     * }
+     *
+     * function doExec(x) {
+     *   console.log(x);
+     *   return exec(x); // doExec = exec.getForwardingFunction()
+     * }
+     *
+     * function doEither(x, y) {
+     *   if (x > y) {
+     *     return foo(x, y); // doEither = foo.getForwardingFunction()
+     *   } else {
+     *     return bar(x, y); // doEither = bar.getForwardingFunction()
+     *   }
+     * }
+     *
+     * function wrapWithLogging(f) {
+     *   return (x) => {
+     *     console.log(x);
+     *     return f(x); // f.getForwardingFunction() = anonymous arrow function
+     *   }
+     * }
+     * wrapWithLogging(g); // g.getForwardingFunction() = wrapWithLogging(g)
+     * ```
+     */
+    cached
+    Node getForwardingFunction() {
+      Stages::ApiStage::ref() and
+      result = this.getASuccessor(Label::forwardingFunction())
     }
 
     /**
@@ -451,6 +535,7 @@ module API {
      * In other words, the value of a use of `that` may flow into the right-hand side of a
      * definition of this node.
      */
+    pragma[inline]
     predicate refersTo(Node that) { this.asSink() = that.getAValueReachableFromSource() }
 
     /**
@@ -464,16 +549,25 @@ module API {
     }
 
     /**
+     * Gets the location of this API node, if it corresponds to a program element with a source location.
+     */
+    final Location getLocation() { result = this.getInducingNode().getLocation() }
+
+    /**
+     * DEPRECATED: Use `getLocation().hasLocationInfo()` instead.
+     *
      * Holds if this node is located in file `path` between line `startline`, column `startcol`,
      * and line `endline`, column `endcol`.
      *
      * For nodes that do not have a meaningful location, `path` is the empty string and all other
      * parameters are zero.
      */
-    predicate hasLocationInfo(string path, int startline, int startcol, int endline, int endcol) {
-      this.getInducingNode().hasLocationInfo(path, startline, startcol, endline, endcol)
+    deprecated predicate hasLocationInfo(
+      string path, int startline, int startcol, int endline, int endcol
+    ) {
+      this.getLocation().hasLocationInfo(path, startline, startcol, endline, endcol)
       or
-      not exists(this.getInducingNode()) and
+      not exists(this.getLocation()) and
       path = "" and
       startline = 0 and
       startcol = 0 and
@@ -555,16 +649,21 @@ module API {
     /** Gets a node corresponding to an import of module `m` without taking into account types from models. */
     Node getAModuleImportRaw(string m) {
       result = Impl::MkModuleImport(m) or
-      result = Impl::MkModuleImport(m).(Node).getMember("default")
+      result = Impl::MkModuleImport(m).(Node).getMember("default") or
+      result = Impl::MkTypeUse(m, "")
     }
 
     /** Gets a node whose type has the given qualified name, not including types from models. */
     Node getANodeOfTypeRaw(string moduleName, string exportedName) {
+      exportedName != "" and
       result = Impl::MkTypeUse(moduleName, exportedName).(Node).getInstance()
       or
       exportedName = "" and
       result = getAModuleImportRaw(moduleName)
     }
+
+    /** Gets a sink node that represents instances of `cls`. */
+    Node getClassInstance(DataFlow::ClassNode cls) { result = Impl::MkClassInstance(cls) }
   }
 
   /**
@@ -581,12 +680,6 @@ module API {
     bindingset[this]
     EntryPoint() { any() }
 
-    /** DEPRECATED. This predicate has been renamed to `getASource`. */
-    deprecated DataFlow::SourceNode getAUse() { none() }
-
-    /** DEPRECATED. This predicate has been renamed to `getASink`. */
-    deprecated DataFlow::SourceNode getARhs() { none() }
-
     /** Gets a data-flow node where a value enters the current codebase through this entry-point. */
     DataFlow::SourceNode getASource() { none() }
 
@@ -595,9 +688,6 @@ module API {
 
     /** Gets an API-node for this entry point. */
     API::Node getANode() { result = root().getASuccessor(Label::entryPoint(this)) }
-
-    /** DEPRECATED. Use `getANode()` instead. */
-    deprecated API::Node getNode() { result = this.getANode() }
   }
 
   /**
@@ -661,29 +751,29 @@ module API {
       MkModuleImport(string m) {
         imports(_, m)
         or
-        any(TypeAnnotation n).hasQualifiedName(m, _)
-        or
-        any(Type t).hasUnderlyingType(m, _)
+        any(TypeAnnotation n).hasUnderlyingType(m, _)
       } or
-      MkClassInstance(DataFlow::ClassNode cls) {
-        hasSemantics(cls) and
-        (
-          cls = trackDefNode(_)
-          or
-          cls.getAnInstanceReference() = trackDefNode(_)
-        )
-      } or
+      MkClassInstance(DataFlow::ClassNode cls) { needsDefNode(cls) } or
       MkDef(DataFlow::Node nd) { rhs(_, _, nd) } or
       MkUse(DataFlow::Node nd) { use(_, _, nd) } or
       /** A use of a TypeScript type. */
       MkTypeUse(string moduleName, string exportName) {
-        any(TypeAnnotation n).hasQualifiedName(moduleName, exportName)
-        or
-        any(Type t).hasUnderlyingType(moduleName, exportName)
+        any(TypeAnnotation n).hasUnderlyingType(moduleName, exportName)
       } or
       MkSyntheticCallbackArg(DataFlow::Node src, int bound, DataFlow::InvokeNode nd) {
         trackUseNode(src, true, bound, "").flowsTo(nd.getCalleeNode())
       }
+
+    private predicate needsDefNode(DataFlow::ClassNode cls) {
+      hasSemantics(cls) and
+      (
+        cls = trackDefNode(_)
+        or
+        cls.getAnInstanceReference() = trackDefNode(_)
+        or
+        needsDefNode(cls.getADirectSubClass())
+      )
+    }
 
     class TDef = MkModuleDef or TNonModuleDef;
 
@@ -738,6 +828,18 @@ module API {
             rhs = m.getAnExportedValue(prop)
           )
           or
+          // In general, turn store steps into member steps for def-nodes
+          exists(string prop |
+            PreCallGraphStep::storeStep(rhs, pred, prop) and
+            lbl = Label::member(prop) and
+            not DataFlow::PseudoProperties::isPseudoProperty(prop)
+          )
+          or
+          exists(DataFlow::ContentSet contents |
+            SummaryTypeTracker::basicStoreStep(rhs, pred.getALocalUse(), contents) and
+            lbl = Label::content(contents.getAStoreContent())
+          )
+          or
           exists(DataFlow::FunctionNode fn |
             fn = pred and
             lbl = Label::return()
@@ -746,10 +848,10 @@ module API {
           )
           or
           lbl = Label::promised() and
-          PromiseFlow::storeStep(rhs, pred, Promises::valueProp())
+          SharedTypeTrackingStep::storeStep(rhs, pred, Promises::valueProp())
           or
           lbl = Label::promisedError() and
-          PromiseFlow::storeStep(rhs, pred, Promises::errorProp())
+          SharedTypeTrackingStep::storeStep(rhs, pred, Promises::errorProp())
           or
           // The return-value of a getter G counts as a definition of property G
           // (Ordinary methods and properties are handled as PropWrite nodes)
@@ -760,6 +862,23 @@ module API {
               pred.(DataFlow::ClassNode)
                   .getStaticMember(name, DataFlow::MemberKind::getter())
                   .getAReturn()
+          )
+          or
+          // Handle rest parameters escaping into external code. For example:
+          //
+          //   function foo(...rest) {
+          //     externalFunc(rest);
+          //   }
+          //
+          // Here, 'rest' reaches a def-node at the call to externalFunc, so we need to ensure
+          // the arguments passed to 'foo' are stored in the 'rest' array.
+          exists(Function fun, DataFlow::InvokeNode invoke, int argIndex, Parameter rest |
+            fun.getRestParameter() = rest and
+            rest.flow() = pred and
+            invoke.getACallee() = fun and
+            invoke.getArgument(argIndex) = rhs and
+            argIndex >= rest.getIndex() and
+            lbl = Label::member((argIndex - rest.getIndex()).toString())
           )
         )
         or
@@ -787,6 +906,11 @@ module API {
           lbl = Label::parameter(i)
           or
           i = -1 and lbl = Label::receiver()
+        )
+        or
+        exists(int i |
+          spreadArgumentPassing(base, i, rhs) and
+          lbl = Label::spreadArgument(i)
         )
         or
         exists(DataFlow::SourceNode src, DataFlow::PropWrite pw |
@@ -832,6 +956,29 @@ module API {
       )
     }
 
+    pragma[nomagic]
+    private int firstSpreadIndex(InvokeExpr expr) {
+      result = min(int i | expr.getArgument(i) instanceof SpreadElement)
+    }
+
+    pragma[nomagic]
+    private InvokeExpr getAnInvocationWithSpread(DataFlow::SourceNode node, int i) {
+      result = node.getAnInvocation().asExpr() and
+      i = firstSpreadIndex(result)
+    }
+
+    private predicate spreadArgumentPassing(TApiNode base, int i, DataFlow::Node spreadArray) {
+      exists(
+        DataFlow::Node use, DataFlow::SourceNode pred, int bound, InvokeExpr invoke, int spreadPos
+      |
+        use(base, use) and
+        pred = trackUseNode(use, _, bound, "") and
+        invoke = getAnInvocationWithSpread(pred, spreadPos) and
+        spreadArray = invoke.getArgument(spreadPos).(SpreadElement).getOperand().flow() and
+        i = bound + spreadPos
+      )
+    }
+
     /**
      * Holds if `rhs` is the right-hand side of a definition of node `nd`.
      */
@@ -859,13 +1006,24 @@ module API {
         propDesc = ""
       )
       or
-      PromiseFlow::loadStep(pred.getALocalUse(), ref, Promises::valueProp()) and
+      SharedTypeTrackingStep::loadStep(pred.getALocalUse(), ref, Promises::valueProp()) and
       lbl = Label::promised() and
       (propDesc = Promises::valueProp() or propDesc = "")
       or
-      PromiseFlow::loadStep(pred.getALocalUse(), ref, Promises::errorProp()) and
+      SharedTypeTrackingStep::loadStep(pred.getALocalUse(), ref, Promises::errorProp()) and
       lbl = Label::promisedError() and
       (propDesc = Promises::errorProp() or propDesc = "")
+    }
+
+    pragma[nomagic]
+    private DataFlow::ClassNode getALocalSubclass(DataFlow::SourceNode node) {
+      result.getASuperClassNode().getALocalSource() = node
+    }
+
+    bindingset[node]
+    pragma[inline_late]
+    private DataFlow::ClassNode getALocalSubclassFwd(DataFlow::SourceNode node) {
+      result = getALocalSubclass(node)
     }
 
     /**
@@ -892,7 +1050,6 @@ module API {
           (base instanceof TNonModuleDef or base instanceof TUse)
         )
         or
-        // invocations
         exists(DataFlow::SourceNode src, DataFlow::SourceNode pred |
           use(base, src) and pred = trackUseNode(src)
         |
@@ -901,6 +1058,30 @@ module API {
           or
           lbl = Label::return() and
           ref = pred.getAnInvocation()
+          or
+          lbl = Label::forwardingFunction() and
+          DataFlow::functionForwardingStep(pred.getALocalUse(), ref)
+          or
+          exists(DataFlow::ClassNode cls |
+            lbl = Label::instance() and
+            cls = getALocalSubclassFwd(pred).getADirectSubClass*()
+          |
+            ref = cls.getAReceiverNode()
+            or
+            ref = cls.getAClassReference().getAnInstantiation()
+          )
+          or
+          exists(string prop |
+            PreCallGraphStep::loadStep(pred.getALocalUse(), ref, prop) and
+            lbl = Label::member(prop) and
+            // avoid generating member edges like "$arrayElement$"
+            not DataFlow::PseudoProperties::isPseudoProperty(prop)
+          )
+          or
+          exists(DataFlow::ContentSet contents |
+            SummaryTypeTracker::basicLoadStep(pred.getALocalUse(), ref, contents) and
+            lbl = Label::content(contents.getAStoreContent())
+          )
         )
         or
         exists(DataFlow::Node def, DataFlow::FunctionNode fn |
@@ -1053,7 +1234,7 @@ module API {
       exists(DataFlow::ClassNode cls | nd = MkClassInstance(cls) |
         ref = cls.getAReceiverNode()
         or
-        ref = cls.(DataFlow::ClassNode::FunctionStyleClass).getAPrototypeReference()
+        ref = cls.(DataFlow::ClassNode).getAPrototypeReference()
       )
       or
       nd = MkUse(ref)
@@ -1117,8 +1298,6 @@ module API {
       or
       t = useStep(nd, promisified, boundArgs, prop, result)
     }
-
-    private import semmle.javascript.dataflow.internal.StepSummary
 
     /**
      * Holds if `nd`, which is a use of an API-graph node, flows in zero or more potentially
@@ -1252,7 +1431,7 @@ module API {
         succ = MkDef(rhs)
         or
         exists(DataFlow::ClassNode cls |
-          cls.getAnInstanceReference() = rhs and
+          cls.getAnInstanceReference().flowsTo(rhs) and
           succ = MkClassInstance(cls)
         )
       )
@@ -1377,8 +1556,21 @@ module API {
     bindingset[result]
     LabelMember member(string m) { result.getProperty() = m }
 
-    /** Gets the `member` edge label for the unknown member. */
-    LabelUnknownMember unknownMember() { any() }
+    /** Gets the `content` edge label for content `c`. */
+    LabelContent content(ContentPrivate::Content c) { result.getContent() = c }
+
+    /**
+     * Gets the edge label for an unknown member.
+     *
+     * Currently this is represented the same way as an unknown array element, but this may
+     * change in the future.
+     */
+    ApiLabel unknownMember() { result = arrayElement() }
+
+    /**
+     * Gets the edge label for an unknown array element.
+     */
+    LabelContent arrayElement() { result.getContent().isUnknownArrayElement() }
 
     /**
      * Gets a property name referred to by the given dynamic property access,
@@ -1401,6 +1593,11 @@ module API {
       result = unique(string s | s = getAnIndirectPropName(ref))
     }
 
+    pragma[nomagic]
+    private predicate isEnumeratedPropName(DataFlow::Node node) {
+      node.getAPredecessor*() instanceof EnumeratedPropName
+    }
+
     /** Gets the `member` edge label for the given property reference. */
     ApiLabel memberFromRef(DataFlow::PropRef pr) {
       exists(string pn | pn = pr.getPropertyName() or pn = getIndirectPropName(pr) |
@@ -1412,7 +1609,9 @@ module API {
       or
       not exists(pr.getPropertyName()) and
       not exists(getIndirectPropName(pr)) and
-      result = unknownMember()
+      // Avoid assignments in an extend-like pattern
+      not isEnumeratedPropName(pr.getPropertyNameExpr().flow()) and
+      result = arrayElement()
     }
 
     /** Gets the `instance` edge label. */
@@ -1428,14 +1627,20 @@ module API {
     /** Gets the edge label for the receiver. */
     LabelReceiver receiver() { any() }
 
+    /** Gets the edge label for a spread argument passed at index `i`. */
+    LabelSpreadArgument spreadArgument(int i) { result.getIndex() = i }
+
     /** Gets the `return` edge label. */
     LabelReturn return() { any() }
 
+    /** Gets the label representing a function wrapper that forwards to an underlying function. */
+    LabelForwardingFunction forwardingFunction() { any() }
+
     /** Gets the `promised` edge label connecting a promise to its contained value. */
-    LabelPromised promised() { any() }
+    LabelContent promised() { result.getContent() = ContentPrivate::MkPromiseValue() }
 
     /** Gets the `promisedError` edge label connecting a promise to its rejected value. */
-    LabelPromisedError promisedError() { any() }
+    LabelContent promisedError() { result.getContent() = ContentPrivate::MkPromiseError() }
 
     /** Gets the label for an edge leading from a value `D` to any class that has `D` as a decorator. */
     LabelDecoratedClass decoratedClass() { any() }
@@ -1458,16 +1663,12 @@ module API {
           exists(Impl::MkModuleImport(mod))
         } or
         MkLabelInstance() or
-        MkLabelMember(string prop) {
-          exports(_, prop, _) or
-          exists(any(DataFlow::ClassNode c).getInstanceMethod(prop)) or
-          prop = "exports" or
-          prop = any(CanonicalName c).getName() or
-          prop = any(DataFlow::PropRef p).getPropertyName() or
-          exists(Impl::MkTypeUse(_, prop)) or
-          exists(any(Module m).getAnExportedValue(prop))
+        MkLabelContent(DataFlow::Content content) or
+        MkLabelMember(string name) {
+          name instanceof PropertyName
+          or
+          exists(Impl::MkTypeUse(_, name))
         } or
-        MkLabelUnknownMember() or
         MkLabelParameter(int i) {
           i =
             [0 .. max(int args |
@@ -1478,11 +1679,11 @@ module API {
         } or
         MkLabelReceiver() or
         MkLabelReturn() or
-        MkLabelPromised() or
-        MkLabelPromisedError() or
+        MkLabelSpreadArgument(int index) { index = [0 .. 10] } or
         MkLabelDecoratedClass() or
         MkLabelDecoratedMember() or
         MkLabelDecoratedParameter() or
+        MkLabelForwardingFunction() or
         MkLabelEntryPoint(API::EntryPoint e)
 
       /** A label for an entry-point. */
@@ -1498,13 +1699,13 @@ module API {
       }
 
       /** A label that gets a promised value. */
-      class LabelPromised extends ApiLabel, MkLabelPromised {
-        override string toString() { result = "getPromised()" }
+      deprecated class LabelPromised extends ApiLabel {
+        LabelPromised() { this = MkLabelContent(ContentPrivate::MkPromiseValue()) }
       }
 
       /** A label that gets a rejected promise. */
-      class LabelPromisedError extends ApiLabel, MkLabelPromisedError {
-        override string toString() { result = "getPromisedError()" }
+      deprecated class LabelPromisedError extends ApiLabel {
+        LabelPromisedError() { this = MkLabelContent(ContentPrivate::MkPromiseError()) }
       }
 
       /** A label that gets the return value of a function. */
@@ -1530,9 +1731,39 @@ module API {
         override string toString() { result = "getInstance()" }
       }
 
+      /** A label for a content. */
+      class LabelContent extends ApiLabel, MkLabelContent {
+        private DataFlow::Content content;
+
+        LabelContent() {
+          this = MkLabelContent(content) and
+          // Property names are represented by LabelMember to ensure additional property
+          // names from PreCallGraph step are included, as well as those from MkTypeUse.
+          not content instanceof ContentPrivate::MkPropertyContent
+        }
+
+        /** Gets the content associated with this label. */
+        DataFlow::Content getContent() { result = content }
+
+        private string specialisedToString() {
+          content instanceof ContentPrivate::MkPromiseValue and result = "getPromised()"
+          or
+          content instanceof ContentPrivate::MkPromiseError and result = "getPromisedError()"
+          or
+          content instanceof ContentPrivate::MkArrayElementUnknown and result = "getArrayElement()"
+        }
+
+        override string toString() {
+          result = this.specialisedToString()
+          or
+          not exists(this.specialisedToString()) and
+          result = "getContent(" + content + ")"
+        }
+      }
+
       /** A label for the member named `prop`. */
       class LabelMember extends ApiLabel, MkLabelMember {
-        string prop;
+        private string prop;
 
         LabelMember() { this = MkLabelMember(prop) }
 
@@ -1543,10 +1774,8 @@ module API {
       }
 
       /** A label for a member with an unknown name. */
-      class LabelUnknownMember extends ApiLabel, MkLabelUnknownMember {
-        LabelUnknownMember() { this = MkLabelUnknownMember() }
-
-        override string toString() { result = "getUnknownMember()" }
+      deprecated class LabelUnknownMember extends LabelContent {
+        LabelUnknownMember() { this.getContent().isUnknownArrayElement() }
       }
 
       /** A label for parameter `i`. */
@@ -1564,6 +1793,26 @@ module API {
       /** A label for the receiver of call, that is, the value passed as `this`. */
       class LabelReceiver extends ApiLabel, MkLabelReceiver {
         override string toString() { result = "getReceiver()" }
+      }
+
+      /** A label representing an array passed as a spread argument at a given index. */
+      class LabelSpreadArgument extends ApiLabel, MkLabelSpreadArgument {
+        private int index;
+
+        LabelSpreadArgument() { this = MkLabelSpreadArgument(index) }
+
+        /** Gets the argument index at which the spread argument appears. */
+        int getIndex() { result = index }
+
+        override string toString() {
+          // Note: This refers to the internal edge that has no corresponding method on API::Node
+          result = "getSpreadArgument(" + index + ")"
+        }
+      }
+
+      /** A label for a function that is a wrapper around another function. */
+      class LabelForwardingFunction extends ApiLabel, MkLabelForwardingFunction {
+        override string toString() { result = "getForwardingFunction()" }
       }
 
       /** A label for a class decorated by the current value. */
@@ -1589,6 +1838,7 @@ private predicate exports(string m, DataFlow::Node rhs) {
   exists(Module mod | mod = importableModule(m) |
     rhs = mod.(AmdModule).getDefine().getModuleExpr().flow()
     or
+    not mod.(ES2015Module).hasBothNamedAndDefaultExports() and
     exports(m, "default", rhs)
     or
     exists(ExportAssignDeclaration assgn | assgn.getTopLevel() = mod |
@@ -1602,6 +1852,7 @@ private predicate exports(string m, DataFlow::Node rhs) {
 /** Holds if module `m` exports `rhs` under the name `prop`. */
 private predicate exports(string m, string prop, DataFlow::Node rhs) {
   exists(ExportDeclaration exp | exp.getEnclosingModule() = importableModule(m) |
+    not exp.isTypeOnly() and
     rhs = exp.getSourceNode(prop)
     or
     exists(Variable v |

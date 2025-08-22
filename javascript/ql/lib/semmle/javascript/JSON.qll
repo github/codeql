@@ -3,6 +3,7 @@
  */
 
 import javascript
+private import semmle.javascript.internal.Locations
 
 /**
  * A JSON-encoded value, which may be a primitive value, an array or an object.
@@ -20,8 +21,6 @@ import javascript
  * ```
  */
 class JsonValue extends @json_value, Locatable {
-  override Location getLocation() { json_locations(this, result) }
-
   /** Gets the parent value to which this value belongs, if any. */
   JsonValue getParent() { json(this, _, result, _, _) }
 
@@ -29,17 +28,12 @@ class JsonValue extends @json_value, Locatable {
   JsonValue getChild(int i) { json(result, _, this, i, _) }
 
   /** Holds if this JSON value is the top level element in its enclosing file. */
-  predicate isTopLevel() { not exists(getParent()) }
+  predicate isTopLevel() { not exists(this.getParent()) }
 
   override string toString() { json(this, _, _, _, result) }
 
   /** Gets the JSON file containing this value. */
-  File getJsonFile() {
-    exists(Location loc |
-      json_locations(this, loc) and
-      result = loc.getFile()
-    )
-  }
+  File getJsonFile() { result = getLocatableLocation(this).getFile() }
 
   /** If this is an object, gets the value of property `name`. */
   JsonValue getPropValue(string name) { json_properties(this, name, result) }
@@ -60,9 +54,6 @@ class JsonValue extends @json_value, Locatable {
 
   override string getAPrimaryQlClass() { result = "JsonValue" }
 }
-
-/** DEPRECATED: Alias for JsonValue */
-deprecated class JSONValue = JsonValue;
 
 /**
  * A JSON-encoded primitive value.
@@ -85,9 +76,6 @@ abstract class JsonPrimitiveValue extends JsonValue {
   string getRawValue() { json_literals(_, result, this) }
 }
 
-/** DEPRECATED: Alias for JsonPrimitiveValue */
-deprecated class JSONPrimitiveValue = JsonPrimitiveValue;
-
 /**
  * A JSON-encoded null value.
  *
@@ -100,9 +88,6 @@ deprecated class JSONPrimitiveValue = JsonPrimitiveValue;
 class JsonNull extends @json_null, JsonPrimitiveValue {
   override string getAPrimaryQlClass() { result = "JsonNull" }
 }
-
-/** DEPRECATED: Alias for JsonNull */
-deprecated class JSONNull = JsonNull;
 
 /**
  * A JSON-encoded Boolean value.
@@ -118,9 +103,6 @@ class JsonBoolean extends @json_boolean, JsonPrimitiveValue {
   override string getAPrimaryQlClass() { result = "JsonBoolean" }
 }
 
-/** DEPRECATED: Alias for JsonBoolean */
-deprecated class JSONBoolean = JsonBoolean;
-
 /**
  * A JSON-encoded number.
  *
@@ -135,9 +117,6 @@ class JsonNumber extends @json_number, JsonPrimitiveValue {
   override string getAPrimaryQlClass() { result = "JsonNumber" }
 }
 
-/** DEPRECATED: Alias for JsonNumber */
-deprecated class JSONNumber = JsonNumber;
-
 /**
  * A JSON-encoded string value.
  *
@@ -150,9 +129,6 @@ deprecated class JSONNumber = JsonNumber;
 class JsonString extends @json_string, JsonPrimitiveValue {
   override string getAPrimaryQlClass() { result = "JsonString" }
 }
-
-/** DEPRECATED: Alias for JsonString */
-deprecated class JSONString = JsonString;
 
 /**
  * A JSON-encoded array.
@@ -167,11 +143,8 @@ class JsonArray extends @json_array, JsonValue {
   override string getAPrimaryQlClass() { result = "JsonArray" }
 
   /** Gets the string value of the `i`th element of this array. */
-  string getElementStringValue(int i) { result = getElementValue(i).getStringValue() }
+  string getElementStringValue(int i) { result = this.getElementValue(i).getStringValue() }
 }
-
-/** DEPRECATED: Alias for JsonArray */
-deprecated class JSONArray = JsonArray;
 
 /**
  * A JSON-encoded object.
@@ -186,20 +159,12 @@ class JsonObject extends @json_object, JsonValue {
   override string getAPrimaryQlClass() { result = "JsonObject" }
 
   /** Gets the string value of property `name` of this object. */
-  string getPropStringValue(string name) { result = getPropValue(name).getStringValue() }
+  string getPropStringValue(string name) { result = this.getPropValue(name).getStringValue() }
 }
-
-/** DEPRECATED: Alias for JsonObject */
-deprecated class JSONObject = JsonObject;
 
 /**
  * An error reported by the JSON parser.
  */
 class JsonParseError extends @json_parse_error, Error {
-  override Location getLocation() { json_locations(this, result) }
-
   override string getMessage() { json_errors(this, result) }
 }
-
-/** DEPRECATED: Alias for JsonParseError */
-deprecated class JSONParseError = JsonParseError;

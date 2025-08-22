@@ -5,11 +5,6 @@
 import csharp
 private import semmle.code.csharp.frameworks.system.security.cryptography.SymmetricAlgorithm
 
-/** Array of type Byte */
-deprecated class ByteArray extends ArrayType {
-  ByteArray() { getElementType() instanceof ByteType }
-}
-
 /** Abstract class for all sources of keys */
 abstract class KeySource extends DataFlow::Node { }
 
@@ -31,7 +26,7 @@ abstract class KeySanitizer extends DataFlow::ExprNode { }
  */
 class SymmetricEncryptionKeyPropertySink extends SymmetricEncryptionKeySink {
   SymmetricEncryptionKeyPropertySink() {
-    exists(SymmetricAlgorithm ag | asExpr() = ag.getKeyProperty().getAnAssignedValue())
+    exists(SymmetricAlgorithm ag | this.asExpr() = ag.getKeyProperty().getAnAssignedValue())
   }
 
   override string getDescription() { result = "Key property assignment" }
@@ -43,7 +38,7 @@ class SymmetricEncryptionKeyPropertySink extends SymmetricEncryptionKeySink {
 class SymmetricEncryptionCreateEncryptorSink extends SymmetricEncryptionKeySink {
   SymmetricEncryptionCreateEncryptorSink() {
     exists(SymmetricAlgorithm ag, MethodCall mc | mc = ag.getASymmetricEncryptor() |
-      asExpr() = mc.getArgumentForName("rgbKey")
+      this.asExpr() = mc.getArgumentForName("rgbKey")
     )
   }
 
@@ -56,7 +51,7 @@ class SymmetricEncryptionCreateEncryptorSink extends SymmetricEncryptionKeySink 
 class SymmetricEncryptionCreateDecryptorSink extends SymmetricEncryptionKeySink {
   SymmetricEncryptionCreateDecryptorSink() {
     exists(SymmetricAlgorithm ag, MethodCall mc | mc = ag.getASymmetricDecryptor() |
-      asExpr() = mc.getArgumentForName("rgbKey")
+      this.asExpr() = mc.getArgumentForName("rgbKey")
     )
   }
 
@@ -66,15 +61,20 @@ class SymmetricEncryptionCreateDecryptorSink extends SymmetricEncryptionKeySink 
 /**
  * Symmetric Key Data Flow configuration.
  */
-class SymmetricKeyTaintTrackingConfiguration extends TaintTracking::Configuration {
-  SymmetricKeyTaintTrackingConfiguration() { this = "SymmetricKeyTaintTracking" }
-
+private module SymmetricKeyConfig implements DataFlow::ConfigSig {
   /** Holds if the node is a key source. */
-  override predicate isSource(DataFlow::Node src) { src instanceof KeySource }
+  predicate isSource(DataFlow::Node src) { src instanceof KeySource }
 
   /** Holds if the node is a symmetric encryption key sink. */
-  override predicate isSink(DataFlow::Node sink) { sink instanceof SymmetricEncryptionKeySink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof SymmetricEncryptionKeySink }
 
   /** Holds if the node is a key sanitizer. */
-  override predicate isSanitizer(DataFlow::Node sanitizer) { sanitizer instanceof KeySanitizer }
+  predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof KeySanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
+
+/**
+ * Symmetric Key Data Flow configuration.
+ */
+module SymmetricKey = TaintTracking::Global<SymmetricKeyConfig>;

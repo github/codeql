@@ -1,4 +1,7 @@
 class UsersController < ActionController::Base
+  CONSTANT = "constant"
+  CONSTANT_WITH_FREEZE = "constant-with-freeze".freeze
+
   def create
     file = params[:file]
     open(file) # BAD
@@ -30,6 +33,16 @@ class UsersController < ActionController::Base
 
     IO.write(File.join("foo", "bar.txt"), "bar") # GOOD
 
+    IO.read(CONSTANT) # GOOD
+
+    IO.read(CONSTANT + file) # GOOD
+
+    IO.read(CONSTANT_WITH_FREEZE) # GOOD
+
+    IO.read(CONSTANT_WITH_FREEZE + file) # GOOD
+    
+    open.where(external: false) # GOOD - an open method is called withoout arguments
+    
     open(file) # BAD - sanity check to verify that file was not mistakenly marked as sanitized
   end
 end

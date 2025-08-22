@@ -1,24 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
-		<AssemblyName>Semmle.Extraction.CSharp</AssemblyName>
-		<RootNamespace>Semmle.Extraction.CSharp</RootNamespace>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
-		<RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
-		<Nullable>enable</Nullable>
-	</PropertyGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\Semmle.Extraction.CIL\Semmle.Extraction.CIL.csproj" />
-		<ProjectReference Include="..\Semmle.Extraction\Semmle.Extraction.csproj" />
+		<ProjectReference Include="..\Semmle.Extraction.CSharp.Util\Semmle.Extraction.CSharp.Util.csproj" />
 		<ProjectReference Include="..\Semmle.Util\Semmle.Util.csproj" />
 	</ItemGroup>
-	<ItemGroup>
-		<Folder Include="Properties\" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0" />
-		<PackageReference Include="Microsoft.Build" Version="17.3.2" />
-	</ItemGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

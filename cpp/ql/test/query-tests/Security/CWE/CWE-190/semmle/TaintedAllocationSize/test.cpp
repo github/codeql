@@ -40,10 +40,10 @@ int main(int argc, char **argv) {
 	int tainted = atoi(argv[1]);
 
 	MyStruct *arr1 = (MyStruct *)malloc(sizeof(MyStruct)); // GOOD
-	MyStruct *arr2 = (MyStruct *)malloc(tainted); // DUBIOUS (not multiplied by anything)
+	MyStruct *arr2 = (MyStruct *)malloc(tainted); // BAD
 	MyStruct *arr3 = (MyStruct *)malloc(tainted * sizeof(MyStruct)); // BAD
 	MyStruct *arr4 = (MyStruct *)malloc(getTainted() * sizeof(MyStruct)); // BAD [NOT DETECTED]
-	MyStruct *arr5 = (MyStruct *)malloc(sizeof(MyStruct) + tainted); // DUBIOUS (not multiplied by anything)
+	MyStruct *arr5 = (MyStruct *)malloc(sizeof(MyStruct) + tainted); // BAD
 
 	int size = tainted * 8;
 	char *chars1 = (char *)malloc(size); // BAD
@@ -177,6 +177,36 @@ void more_bounded_tests() {
 		if ((100 > size) && (0 < size))
 		{
 			malloc(size * sizeof(int)); // GOOD
+		}
+	}
+
+	{
+		int size = atoi(getenv("USER"));
+		int size2 = size % 100;
+		malloc(size2 * sizeof(int)); // GOOD
+	}
+
+	{
+		int size = atoi(getenv("USER"));
+
+		if (size % 100)
+		{
+			malloc(size * sizeof(int)); // BAD
+		}
+	}
+
+	{
+		int size = atoi(getenv("USER"));
+		int size2 = size & 7; // Pick the first three bits of size
+		malloc(size2 * sizeof(int)); // GOOD
+	}
+
+	{
+		int size = atoi(getenv("USER"));
+
+		if (size & 7)
+		{
+			malloc(size * sizeof(int)); // BAD
 		}
 	}
 

@@ -9,16 +9,16 @@
  * Theorem 3 from the paper describes the basic idea.
  *
  * The following explains the idea using variables and predicate names that are used in the implementation:
- * We consider a pair of repetitions, which we will call `pivot` and `succ`.
+ * We consider a pair of repetitions, which we will call `pivot` and `pumpEnd`.
  *
  * We create a product automaton of 3-tuples of states (see `StateTuple`).
  * There exists a transition `(a,b,c) -> (d,e,f)` in the product automaton
  * iff there exists three transitions in the NFA `a->d, b->e, c->f` where those three
  * transitions all match a shared character `char`. (see `getAThreewayIntersect`)
  *
- * We start a search in the product automaton at `(pivot, pivot, succ)`,
+ * We start a search in the product automaton at `(pivot, pivot, pumpEnd)`,
  * and search for a series of transitions (a `Trace`), such that we end
- * at `(pivot, succ, succ)` (see `isReachableFromStartTuple`).
+ * at `(pivot, pumpEnd, pumpEnd)` (see `isReachableFromStartTuple`).
  *
  * For example, consider the regular expression `/^\d*5\w*$/`.
  * The search will start at the tuple `(\d*, \d*, \w*)` and search
@@ -34,6 +34,8 @@
  * It has the same suffix detection issue as the `js/redos` query, which can cause false positives.
  * It also doesn't find all transitions in the product automaton, which can cause false negatives.
  */
+overlay[local?]
+module;
 
 private import NfaUtils as NfaUtils
 private import codeql.regex.RegexTreeView
@@ -52,7 +54,7 @@ module Make<RegexTreeViewSig TreeImpl> {
 
   private newtype TStateTuple =
     MkStateTuple(State q1, State q2, State q3) {
-      // starts at (pivot, pivot, succ)
+      // starts at (pivot, pivot, pumpEnd)
       isStartLoops(q1, q3) and q1 = q2
       or
       step(_, _, _, _, q1, q2, q3) and FeasibleTuple::isFeasibleTuple(q1, q2, q3)
@@ -64,7 +66,7 @@ module Make<RegexTreeViewSig TreeImpl> {
    *
    * We lazily only construct those states that we are actually
    * going to need.
-   * Either a start state `(pivot, pivot, succ)`, or a state
+   * Either a start state `(pivot, pivot, pumpEnd)`, or a state
    * where there exists a transition from an already existing state.
    *
    * The exponential variant of this query (`js/redos`) uses an optimization
@@ -99,6 +101,7 @@ module Make<RegexTreeViewSig TreeImpl> {
     /**
      * Holds if the tuple `(r1, r2, r3)` might be on path from a start-state to an end-state in the product automaton.
      */
+    overlay[caller?]
     pragma[inline]
     predicate isFeasibleTuple(State r1, State r2, State r3) {
       // The first element is either inside a repetition (or the start state itself)
@@ -108,9 +111,9 @@ module Make<RegexTreeViewSig TreeImpl> {
       // The states are reachable in the NFA in the order r1 -> r2 -> r3
       delta+(r1) = r2 and
       delta+(r2) = r3 and
-      // The first element can reach a beginning (the "pivot" state in a `(pivot, succ)` pair).
+      // The first element can reach a beginning (the "pivot" state in a `(pivot, pumpEnd)` pair).
       canReachABeginning(r1) and
-      // The last element can reach a target (the "succ" state in a `(pivot, succ)` pair).
+      // The last element can reach a target (the "pumpEnd" state in a `(pivot, pumpEnd)` pair).
       canReachATarget(r3)
     }
 
@@ -132,7 +135,7 @@ module Make<RegexTreeViewSig TreeImpl> {
 
     /**
      * Holds if there exists a path in the NFA from `s` to a "pivot" state
-     * (from a `(pivot, succ)` pair that starts the search).
+     * (from a `(pivot, pumpEnd)` pair that starts the search).
      */
     pragma[noinline]
     private predicate canReachABeginning(State s) {
@@ -140,25 +143,25 @@ module Make<RegexTreeViewSig TreeImpl> {
     }
 
     /**
-     * Holds if there exists a path in the NFA from `s` to a "succ" state
-     * (from a `(pivot, succ)` pair that starts the search).
+     * Holds if there exists a path in the NFA from `s` to a "pumpEnd" state
+     * (from a `(pivot, pumpEnd)` pair that starts the search).
      */
     pragma[noinline]
     private predicate canReachATarget(State s) {
-      delta+(s) = any(State succ | isStartLoops(_, succ))
+      delta+(s) = any(State pumpEnd | isStartLoops(_, pumpEnd))
     }
   }
 
   /**
-   * Holds if `pivot` and `succ` are a pair of loops that could be the beginning of a quadratic blowup.
+   * Holds if `pivot` and `pumpEnd` are a pair of loops that could be the beginning of a quadratic blowup.
    *
-   * There is a slight implementation difference compared to the paper: this predicate requires that `pivot != succ`.
-   * The case where `pivot = succ` causes exponential backtracking and is handled by the `js/redos` query.
+   * There is a slight implementation difference compared to the paper: this predicate requires that `pivot != pumpEnd`.
+   * The case where `pivot = pumpEnd` causes exponential backtracking and is handled by the `js/redos` query.
    */
-  predicate isStartLoops(State pivot, State succ) {
-    pivot != succ and
-    succ.getRepr() instanceof InfiniteRepetitionQuantifier and
-    delta+(pivot) = succ and
+  predicate isStartLoops(State pivot, State pumpEnd) {
+    pivot != pumpEnd and
+    pumpEnd.getRepr() instanceof InfiniteRepetitionQuantifier and
+    delta+(pivot) = pumpEnd and
     (
       pivot.getRepr() instanceof InfiniteRepetitionQuantifier
       or
@@ -296,7 +299,7 @@ module Make<RegexTreeViewSig TreeImpl> {
 
   /**
    * Holds if `tuple` is an end state in our search.
-   * That means there exists a pair of loops `(pivot, succ)` such that `tuple = (pivot, succ, succ)`.
+   * That means there exists a pair of loops `(pivot, pumpEnd)` such that `tuple = (pivot, pumpEnd, pumpEnd)`.
    */
   predicate isEndTuple(StateTuple tuple) { tuple = getAnEndTuple(_, _) }
 
@@ -311,45 +314,45 @@ module Make<RegexTreeViewSig TreeImpl> {
     shortestDistances(isEndTuple/1, tupleDeltaBackwards/2)(end, r, result)
 
   /**
-   * Holds if there exists a pair of repetitions `(pivot, succ)` in the regular expression such that:
-   * `tuple` is reachable from `(pivot, pivot, succ)` in the product automaton,
-   * and there is a distance of `dist` from `tuple` to the nearest end-tuple `(pivot, succ, succ)`,
+   * Holds if there exists a pair of repetitions `(pivot, pumpEnd)` in the regular expression such that:
+   * `tuple` is reachable from `(pivot, pivot, pumpEnd)` in the product automaton,
+   * and there is a distance of `dist` from `tuple` to the nearest end-tuple `(pivot, pumpEnd, pumpEnd)`,
    * and a path from a start-state to `tuple` follows the transitions in `trace`.
    */
   private predicate isReachableFromStartTuple(
-    State pivot, State succ, StateTuple tuple, Trace trace, int dist
+    State pivot, State pumpEnd, StateTuple tuple, Trace trace, int dist
   ) {
     exists(InputSymbol s1, InputSymbol s2, InputSymbol s3, Trace v |
-      isReachableFromStartTuple(pivot, succ, v, s1, s2, s3, tuple, dist) and
+      isReachableFromStartTuple(pivot, pumpEnd, v, s1, s2, s3, tuple, dist) and
       trace = Step(s1, s2, s3, v)
     )
   }
 
   private predicate isReachableFromStartTuple(
-    State pivot, State succ, Trace trace, InputSymbol s1, InputSymbol s2, InputSymbol s3,
+    State pivot, State pumpEnd, Trace trace, InputSymbol s1, InputSymbol s2, InputSymbol s3,
     StateTuple tuple, int dist
   ) {
     // base case.
-    isStartLoops(pivot, succ) and
-    step(MkStateTuple(pivot, pivot, succ), s1, s2, s3, tuple) and
+    isStartLoops(pivot, pumpEnd) and
+    step(MkStateTuple(pivot, pivot, pumpEnd), s1, s2, s3, tuple) and
     tuple = MkStateTuple(_, _, _) and
     trace = Nil() and
-    dist = distBackFromEnd(tuple, MkStateTuple(pivot, succ, succ))
+    dist = distBackFromEnd(tuple, MkStateTuple(pivot, pumpEnd, pumpEnd))
     or
     // recursive case
     exists(StateTuple p |
-      isReachableFromStartTuple(pivot, succ, p, trace, dist + 1) and
-      dist = distBackFromEnd(tuple, MkStateTuple(pivot, succ, succ)) and
+      isReachableFromStartTuple(pivot, pumpEnd, p, trace, dist + 1) and
+      dist = distBackFromEnd(tuple, MkStateTuple(pivot, pumpEnd, pumpEnd)) and
       step(p, s1, s2, s3, tuple)
     )
   }
 
   /**
-   * Gets the tuple `(pivot, succ, succ)` from the product automaton.
+   * Gets the tuple `(pivot, pumpEnd, pumpEnd)` from the product automaton.
    */
-  StateTuple getAnEndTuple(State pivot, State succ) {
-    isStartLoops(pivot, succ) and
-    result = MkStateTuple(pivot, succ, succ)
+  StateTuple getAnEndTuple(State pivot, State pumpEnd) {
+    isStartLoops(pivot, pumpEnd) and
+    result = MkStateTuple(pivot, pumpEnd, pumpEnd)
   }
 
   /** An implementation of a chain containing chars for use by `Concretizer`. */
@@ -360,14 +363,22 @@ module Make<RegexTreeViewSig TreeImpl> {
 
     /** Holds if `n` is used in `isPumpable`. */
     predicate isARelevantEnd(CharNode n) {
-      exists(State pivot, State succ |
-        isReachableFromStartTuple(pivot, succ, getAnEndTuple(pivot, succ), n, _)
+      exists(State pivot, State pumpEnd |
+        isReachableFromStartTuple(pivot, pumpEnd, getAnEndTuple(pivot, pumpEnd), n, _)
+      )
+    }
+
+    private string getCharInternal(CharNode t) {
+      exists(InputSymbol s1, InputSymbol s2, InputSymbol s3 | t = Step(s1, s2, s3, _) |
+        result = getAThreewayIntersect(s1, s2, s3)
       )
     }
 
     string getChar(CharNode t) {
-      exists(InputSymbol s1, InputSymbol s2, InputSymbol s3 | t = Step(s1, s2, s3, _) |
-        result = getAThreewayIntersect(s1, s2, s3)
+      result = getCharInternal(t) and
+      not (
+        // skip the upper-case char if we have the lower-case version.
+        result.toLowerCase() != result and result.toLowerCase() = getCharInternal(t)
       )
     }
   }
@@ -375,8 +386,8 @@ module Make<RegexTreeViewSig TreeImpl> {
   /**
    * Holds if matching repetitions of `pump` can:
    * 1) Transition from `pivot` back to `pivot`.
-   * 2) Transition from `pivot` to `succ`.
-   * 3) Transition from `succ` to `succ`.
+   * 2) Transition from `pivot` to `pumpEnd`.
+   * 3) Transition from `pumpEnd` to `pumpEnd`.
    *
    * From theorem 3 in the paper linked in the top of this file we can therefore conclude that
    * the regular expression has polynomial backtracking - if a rejecting suffix exists.
@@ -384,10 +395,10 @@ module Make<RegexTreeViewSig TreeImpl> {
    * This predicate is used by `SuperLinearReDoSConfiguration`, and the final results are
    * available in the `hasReDoSResult` predicate.
    */
-  predicate isPumpable(State pivot, State succ, string pump) {
+  predicate isPumpable(State pivot, State pumpEnd, string pump) {
     exists(StateTuple q, Trace t |
-      isReachableFromStartTuple(pivot, succ, q, t, _) and
-      q = getAnEndTuple(pivot, succ) and
+      isReachableFromStartTuple(pivot, pumpEnd, q, t, _) and
+      q = getAnEndTuple(pivot, pumpEnd) and
       pump = Concretizer<CharTreeImpl>::concretize(t)
     )
   }
@@ -418,11 +429,13 @@ module Make<RegexTreeViewSig TreeImpl> {
         "' can start matching anywhere after the start of the preceeding " + prev
   }
 
+  final private class FinalInfiniteRepetitionQuantifier = InfiniteRepetitionQuantifier;
+
   /**
    * A term that may cause a regular expression engine to perform a
    * polynomial number of match attempts, relative to the input length.
    */
-  class PolynomialBackTrackingTerm instanceof InfiniteRepetitionQuantifier {
+  class PolynomialBackTrackingTerm extends FinalInfiniteRepetitionQuantifier {
     string reason;
     string pump;
     string prefixMsg;
@@ -439,8 +452,8 @@ module Make<RegexTreeViewSig TreeImpl> {
      * Holds if all non-empty successors to the polynomial backtracking term matches the end of the line.
      */
     predicate isAtEndLine() {
-      forall(RegExpTerm succ | super.getSuccessor+() = succ and not matchesEpsilon(succ) |
-        succ instanceof RegExpDollar
+      forall(RegExpTerm pumpEnd | super.getSuccessor+() = pumpEnd and not matchesEpsilon(pumpEnd) |
+        pumpEnd instanceof RegExpDollar
       )
     }
 
@@ -463,18 +476,5 @@ module Make<RegexTreeViewSig TreeImpl> {
      * Gets the reason for the number of match attempts.
      */
     string getReason() { result = reason }
-
-    /** Gets a string representation of this term. */
-    string toString() { result = super.toString() }
-
-    /** Gets the outermost term of this regular expression. */
-    RegExpTerm getRootTerm() { result = super.getRootTerm() }
-
-    /** Holds if this term has the specific location. */
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
   }
 }

@@ -24,7 +24,7 @@ module Gem {
 
     GemSpec() {
       this.getExtension() = "gemspec" and
-      specCall = API::root().getMember("Gem").getMember("Specification").getMethod("new") and
+      specCall = API::getTopLevelMember("Gem").getMember("Specification").getMethod("new") and
       specCall.getLocation().getFile() = this
     }
 
@@ -42,7 +42,7 @@ module Gem {
               .getBlock()
               .getParameter(0)
               .getMethod(name + "=")
-              .getParameter(0)
+              .getArgument(0)
               .asSink()
               .asExpr()
               .getExpr()
@@ -57,36 +57,43 @@ module Gem {
     }
 
     /** Gets the name of the gem */
-    string getName() { result = getSpecProperty("name").getConstantValue().getString() }
+    string getName() {
+      result = this.getSpecProperty("name").getConstantValue().getString() or
+      result = specCall.getArgument(0).getAValueReachingSink().getConstantValue().getString()
+    }
 
     /** Gets a path that is loaded when the gem is required */
     private string getARequirePath() {
-      result = getSpecProperty(["require_paths", "require_path"]).getConstantValue().getString()
+      result =
+        this.getSpecProperty(["require_paths", "require_path"]).getConstantValue().getString()
       or
-      not exists(getSpecProperty(["require_paths", "require_path"]).getConstantValue().getString()) and
+      not exists(
+        this.getSpecProperty(["require_paths", "require_path"]).getConstantValue().getString()
+      ) and
       result = "lib" // the default is "lib"
     }
 
     /** Gets a file that could be loaded when the gem is required. */
     private File getAPossiblyRequiredFile() {
-      result = File.super.getParentContainer().getFolder(getARequirePath()).getAChildContainer*()
+      result =
+        File.super.getParentContainer().getFolder(this.getARequirePath()).getAChildContainer*()
     }
 
     /** Gets a class/module that is exported by this gem. */
     private ModuleBase getAPublicModule() {
-      result.(Toplevel).getLocation().getFile() = getAPossiblyRequiredFile()
+      result.(Toplevel).getLocation().getFile() = this.getAPossiblyRequiredFile()
       or
-      result = getAPublicModule().getAModule()
+      result = this.getAPublicModule().getAModule()
       or
-      result = getAPublicModule().getAClass()
+      result = this.getAPublicModule().getAClass()
       or
-      result = getAPublicModule().getStmt(_).(SingletonClass)
+      result = this.getAPublicModule().getStmt(_).(SingletonClass)
     }
 
     /** Gets a parameter from an exported method, which is an input to this gem. */
     DataFlow::ParameterNode getAnInputParameter() {
       exists(MethodBase method |
-        method = getAPublicModule().getAMethod() and
+        method = this.getAPublicModule().getAMethod() and
         result.getParameter() = method.getAParameter()
       |
         method.isPublic()

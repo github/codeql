@@ -205,3 +205,64 @@ void deep_member_field_arrow_different_fields(S2 *ps2) {
   taint_a_ptr(&ps2->s.m1);
   sink(ps2->s.m2);
 }
+
+
+namespace GlobalFieldFlow {
+  S global_s;
+  S2 global_s2;
+
+  void set_field() {
+    global_s.m1 = user_input();
+  }
+
+  void read_field() {
+    sink(global_s.m1); // $ ir MISSING: ast
+  }
+
+  void set_nested_field() {
+    global_s2.s.m1 = user_input();
+  }
+
+  void read_nested_field() {
+    sink(global_s2.s.m1); // $ ir MISSING: ast
+  }
+
+  S* global_s_ptr;
+  S2* global_s2_ptr;
+
+  void set_field_ptr() {
+    global_s_ptr->m1 = user_input();
+  }
+
+  void read_field_ptr() {
+    sink(global_s_ptr->m1); // $ ir MISSING: ast
+  }
+
+  void set_nested_field_ptr() {
+    global_s2_ptr->s.m1 = user_input();
+  }
+
+  void read_nested_field_ptr() {
+    sink(global_s2_ptr->s.m1); // $ ir MISSING: ast
+  }
+
+  S_with_pointer global_s_with_pointer;
+
+  void set_field_indirect() {
+    *global_s_with_pointer.data = user_input();
+  }
+
+  void read_field_indirect() {
+    sink(*global_s_with_pointer.data); // $ ir MISSING: ast
+  }
+
+  S_with_array global_s_with_array;
+
+  void set_field_array() {
+    *global_s_with_array.data = user_input();
+  }
+
+  void read_field_array() {
+    sink(*global_s_with_array.data); // $ ir MISSING: ast
+  }
+}

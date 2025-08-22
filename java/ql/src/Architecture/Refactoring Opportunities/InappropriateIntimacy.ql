@@ -24,7 +24,7 @@ predicate remoteVarAccess(RefType source, RefType target, VarAccess va) {
   source != target
 }
 
-predicate remoteFunAccess(RefType source, RefType target, MethodAccess fc) {
+predicate remoteFunAccess(RefType source, RefType target, MethodCall fc) {
   fc.getEnclosingCallable().getDeclaringType() = source and
   fc.getMethod().getDeclaringType() = target and
   source != target
@@ -41,7 +41,7 @@ predicate variableDependencyCount(RefType source, RefType target, int res) {
 
 predicate functionDependencyCount(RefType source, RefType target, int res) {
   candidateTypePair(source, target) and
-  res = count(MethodAccess fc | remoteFunAccess(source, target, fc))
+  res = count(MethodCall fc | remoteFunAccess(source, target, fc))
 }
 
 predicate dependencyCount(RefType source, RefType target, int res) {

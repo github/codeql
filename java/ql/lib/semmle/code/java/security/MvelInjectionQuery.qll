@@ -9,18 +9,19 @@ import semmle.code.java.security.MvelInjection
  * A taint-tracking configuration for unsafe user input
  * that is used to construct and evaluate a MVEL expression.
  */
-class MvelInjectionFlowConfig extends TaintTracking::Configuration {
-  MvelInjectionFlowConfig() { this = "MvelInjectionFlowConfig" }
+module MvelInjectionFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSink(DataFlow::Node sink) { sink instanceof MvelEvaluationSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof MvelEvaluationSink }
+  predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof MvelInjectionSanitizer }
 
-  override predicate isSanitizer(DataFlow::Node sanitizer) {
-    sanitizer instanceof MvelInjectionSanitizer
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(MvelInjectionAdditionalTaintStep c).step(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
+
+/** Tracks flow of unsafe user input that is used to construct and evaluate a MVEL expression. */
+module MvelInjectionFlow = TaintTracking::Global<MvelInjectionFlowConfig>;

@@ -6,8 +6,9 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/non-static-nested-class
- * @tags efficiency
+ * @tags quality
  *       maintainability
+ *       readability
  */
 
 import java
@@ -74,7 +75,7 @@ RefType enclosingInstanceAccess(Expr expr) {
       not inherits(enclosing, fa.getVariable())
     )
     or
-    exists(MethodAccess ma | ma = expr |
+    exists(MethodCall ma | ma = expr |
       result = ma.getMethod().getDeclaringType() and
       not exists(ma.getQualifier()) and
       not ma.getMethod().isStatic() and

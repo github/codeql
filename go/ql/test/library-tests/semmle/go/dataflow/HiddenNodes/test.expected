@@ -1,0 +1,15 @@
+models
+| 1 | Summary: archive/tar; ; false; FileInfoHeader; ; ; Argument[0]; ReturnValue[0]; taint; manual |
+edges
+| test.go:14:8:14:15 | call to source | test.go:15:34:15:35 | fi | provenance |  |
+| test.go:15:2:15:44 | ... := ...[0] | test.go:16:7:16:12 | header | provenance |  |
+| test.go:15:34:15:35 | fi | test.go:15:2:15:44 | ... := ...[0] | provenance | MaD:1 |
+nodes
+| test.go:14:8:14:15 | call to source | semmle.label | call to source |
+| test.go:15:2:15:44 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:15:34:15:35 | fi | semmle.label | fi |
+| test.go:16:7:16:12 | header | semmle.label | header |
+subpaths
+invalidModelRow
+#select
+| test.go:14:8:14:15 | call to source | test.go:14:8:14:15 | call to source | test.go:16:7:16:12 | header | Path |

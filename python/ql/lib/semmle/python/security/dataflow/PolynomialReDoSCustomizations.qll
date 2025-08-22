@@ -6,12 +6,11 @@
 
 private import python
 private import semmle.python.dataflow.new.DataFlow
-private import semmle.python.dataflow.new.DataFlow2
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
-private import semmle.python.RegexTreeView::RegexTreeView as TreeView
+private import semmle.python.regexp.RegexTreeView::RegexTreeView as TreeView
 private import semmle.python.ApiGraphs
 private import semmle.python.regex
 
@@ -36,6 +35,11 @@ module PolynomialReDoS {
     /** Gets the regex that is being executed by this node. */
     abstract RegExpTerm getRegExp();
 
+    /** Gets a term within the regexp that may perform polynomial back-tracking. */
+    final PolynomialBackTrackingTerm getABacktrackingTerm() {
+      result.getRootTerm() = this.getRegExp()
+    }
+
     /**
      * Gets the node to highlight in the alert message.
      */
@@ -48,16 +52,14 @@ module PolynomialReDoS {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for "polynomial regular expression denial of service (ReDoS)" vulnerabilities.
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
    */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
 
   /**
-   * A source of remote user input, considered as a flow source.
+   * An active threat-model source, considered as a flow source.
    */
-  class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /**
    * A regex execution, considered as a flow sink.
@@ -78,7 +80,10 @@ module PolynomialReDoS {
   }
 
   /**
-   * A comparison with a constant string, considered as a sanitizer-guard.
+   * A comparison with a constant, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsSanitizerGuard extends Sanitizer, StringConstCompareBarrier { }
+  class ConstCompareAsSanitizerGuard extends Sanitizer, ConstCompareBarrier { }
+
+  /** DEPRECATED: Use ConstCompareAsSanitizerGuard instead. */
+  deprecated class StringConstCompareAsSanitizerGuard = ConstCompareAsSanitizerGuard;
 }

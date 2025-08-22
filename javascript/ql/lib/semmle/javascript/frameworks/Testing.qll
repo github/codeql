@@ -37,9 +37,6 @@ class BddTest extends Test, @call_expr {
   }
 }
 
-/** DEPRECATED: Alias for BddTest */
-deprecated class BDDTest = BddTest;
-
 /**
  * Gets the test file for `f` with stem extension `stemExt`, where `stemExt` is "test" or "spec".
  * That is, a file named `<base>.<stemExt>.<ext>` in the
@@ -66,7 +63,7 @@ class JestTest extends Test, @call_expr {
       exists(call.getArgument(0).getStringValue()) and
       exists(call.getArgument(1).flow().getAFunctionValue(0))
     ) and
-    getFile() = getTestFile(any(File f), "test")
+    this.getFile() = getTestFile(any(File f), "test")
   }
 }
 

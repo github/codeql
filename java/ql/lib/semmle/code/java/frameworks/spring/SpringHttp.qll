@@ -2,6 +2,8 @@
  * Provides classes for working with Spring classes and interfaces from
  * `org.springframework.http`.
  */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow
@@ -152,26 +154,42 @@ private string getSpringConstantContentType(FieldAccess e) {
   )
 }
 
+private string getContentTypeString(Expr e) {
+  result = e.(CompileTimeConstantExpr).getStringValue() or
+  result = getSpringConstantContentType(e)
+}
+
+pragma[nomagic]
+private predicate contentTypeString(string s) { s = getContentTypeString(_) }
+
+pragma[nomagic]
+private predicate isXssVulnerableContentTypeString(string s) {
+  contentTypeString(s) and XSS::isXssVulnerableContentType(s)
+}
+
+pragma[nomagic]
+private predicate isXssSafeContentTypeString(string s) {
+  contentTypeString(s) and XSS::isXssSafeContentType(s)
+}
+
 private predicate isXssVulnerableContentTypeExpr(Expr e) {
-  XSS::isXssVulnerableContentType(e.(CompileTimeConstantExpr).getStringValue()) or
-  XSS::isXssVulnerableContentType(getSpringConstantContentType(e))
+  isXssVulnerableContentTypeString(getContentTypeString(e))
 }
 
 private predicate isXssSafeContentTypeExpr(Expr e) {
-  XSS::isXssSafeContentType(e.(CompileTimeConstantExpr).getStringValue()) or
-  XSS::isXssSafeContentType(getSpringConstantContentType(e))
+  isXssSafeContentTypeString(getContentTypeString(e))
 }
 
 private DataFlow::Node getABodyBuilderWithExplicitContentType(Expr contentType) {
   result.asExpr() =
-    any(MethodAccess ma |
+    any(MethodCall ma |
       ma.getCallee()
           .hasQualifiedName("org.springframework.http", "ResponseEntity$BodyBuilder", "contentType") and
       contentType = ma.getArgument(0)
     )
   or
   result.asExpr() =
-    any(MethodAccess ma |
+    any(MethodCall ma |
       ma.getQualifier() = getABodyBuilderWithExplicitContentType(contentType).asExpr() and
       ma.getType()
           .(RefType)
@@ -192,7 +210,7 @@ private DataFlow::Node getAVulnerableBodyBuilder() {
 private class SanitizedBodyCall extends XSS::XssSanitizer {
   SanitizedBodyCall() {
     this.asExpr() =
-      any(MethodAccess ma |
+      any(MethodCall ma |
         ma.getQualifier() = getASanitizedBodyBuilder().asExpr() and
         ma.getCallee().hasName("body")
       ).getArgument(0)
@@ -210,7 +228,7 @@ private class SanitizedBodyCall extends XSS::XssSanitizer {
 private class ExplicitlyVulnerableBodyArgument extends XSS::XssSinkBarrier {
   ExplicitlyVulnerableBodyArgument() {
     this.asExpr() =
-      any(MethodAccess ma |
+      any(MethodCall ma |
         ma.getQualifier() = getAVulnerableBodyBuilder().asExpr() and
         ma.getCallee().hasName("body")
       ).getArgument(0)

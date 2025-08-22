@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Runtime", "DependentHandle", False, "get_TargetAndDependent", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Runtime", "AmbiguousImplementationException", "AmbiguousImplementationException", "(System.String)", "summary", "df-generated"]
+      - ["System.Runtime", "AmbiguousImplementationException", "AmbiguousImplementationException", "(System.String,System.Exception)", "summary", "df-generated"]
+      - ["System.Runtime", "AssemblyTargetedPatchBandAttribute", "AssemblyTargetedPatchBandAttribute", "(System.String)", "summary", "df-generated"]
+      - ["System.Runtime", "AssemblyTargetedPatchBandAttribute", "get_TargetedPatchBand", "()", "summary", "df-generated"]
+      - ["System.Runtime", "ControlledExecution", "Run", "(System.Action,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Runtime", "DependentHandle", "DependentHandle", "(System.Object,System.Object)", "summary", "df-generated"]
+      - ["System.Runtime", "DependentHandle", "Dispose", "()", "summary", "df-generated"]
+      - ["System.Runtime", "DependentHandle", "get_IsAllocated", "()", "summary", "df-generated"]
+      - ["System.Runtime", "GCSettings", "get_IsServerGC", "()", "summary", "df-generated"]
+      - ["System.Runtime", "JitInfo", "GetCompilationTime", "(System.Boolean)", "summary", "df-generated"]
+      - ["System.Runtime", "JitInfo", "GetCompiledILBytes", "(System.Boolean)", "summary", "df-generated"]
+      - ["System.Runtime", "JitInfo", "GetCompiledMethodCount", "(System.Boolean)", "summary", "df-generated"]
+      - ["System.Runtime", "MemoryFailPoint", "Dispose", "()", "summary", "df-generated"]
+      - ["System.Runtime", "MemoryFailPoint", "MemoryFailPoint", "(System.Int32)", "summary", "df-generated"]
+      - ["System.Runtime", "ProfileOptimization", "SetProfileRoot", "(System.String)", "summary", "df-generated"]
+      - ["System.Runtime", "ProfileOptimization", "StartProfile", "(System.String)", "summary", "df-generated"]
+      - ["System.Runtime", "TargetedPatchingOptOutAttribute", "TargetedPatchingOptOutAttribute", "(System.String)", "summary", "df-generated"]
+      - ["System.Runtime", "TargetedPatchingOptOutAttribute", "get_Reason", "()", "summary", "df-generated"]

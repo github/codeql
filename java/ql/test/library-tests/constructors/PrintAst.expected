@@ -28,13 +28,13 @@ constructors/A.java:
 #   15|       0: [StringLiteral] "instance string"
 #   17|     8: [BlockStmt] { ... }
 #   18|       0: [ExprStmt] <Expr>;
-#   18|         0: [MethodAccess] println(...)
+#   18|         0: [MethodCall] println(...)
 #   18|           -1: [VarAccess] System.out
 #   18|             -1: [TypeAccess] System
 #   18|           0: [StringLiteral] "<obinit>"
 #   21|     9: [BlockStmt] { ... }
 #   22|       0: [ExprStmt] <Expr>;
-#   22|         0: [MethodAccess] println(...)
+#   22|         0: [MethodCall] println(...)
 #   22|           -1: [VarAccess] System.out
 #   22|             -1: [TypeAccess] System
 #   22|           0: [StringLiteral] "<clinit>"

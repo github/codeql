@@ -1,7 +1,7 @@
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.Kinds;
 using System;
 using System.IO;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => Syntax.GetLocation();
 
-        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, Microsoft.CodeAnalysis.ITypeSymbol type, object? value, Action<Expression, int> createChild, Extraction.Entities.Location location)
+        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, Microsoft.CodeAnalysis.ITypeSymbol type, object? value, Action<Expression, int> createChild, Location location)
         {
             var info = new ExpressionInfo(
                 cx,
@@ -41,7 +41,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 ExprKind.CAST,
                 parent,
                 childIndex,
-                true,
+                isCompilerGenerated: true,
                 ValueAsString(value));
 
             var ret = new Expression(info);

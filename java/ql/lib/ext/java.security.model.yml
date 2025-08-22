@@ -1,0 +1,38 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["java.security", "KeyStore", False, "getKey", "(String,char[])", "", "Argument[1]", "credentials-password", "hq-generated"]
+      - ["java.security", "KeyStore", False, "load", "(InputStream,char[])", "", "Argument[1]", "credentials-password", "hq-generated"]
+      - ["java.security", "KeyStore", False, "setKeyEntry", "(String,Key,char[],Certificate[])", "", "Argument[2]", "credentials-password", "hq-generated"]
+      - ["java.security", "KeyStore", False, "setKeyEntry", "(String,byte[],Certificate[])", "", "Argument[1]", "credentials-key", "hq-generated"]
+      - ["java.security", "KeyStore", False, "store", "(OutputStream,char[])", "", "Argument[1]", "credentials-password", "hq-generated"]
+      - ["java.security", "KeyStore$PasswordProtection", False, "PasswordProtection", "(char[])", "", "Argument[0]", "credentials-password", "hq-generated"]
+      - ["java.security", "KeyStore$PasswordProtection", False, "PasswordProtection", "(char[],String,AlgorithmParameterSpec)", "", "Argument[0]", "credentials-password", "hq-generated"]
+      - ["java.security", "KeyStoreSpi", True, "engineGetKey", "(String,char[])", "", "Argument[1]", "credentials-password", "hq-generated"]
+      - ["java.security", "KeyStoreSpi", True, "engineLoad", "(InputStream,char[])", "", "Argument[1]", "credentials-password", "hq-generated"]
+      - ["java.security", "KeyStoreSpi", True, "engineSetKeyEntry", "(String,Key,char[],Certificate[])", "", "Argument[2]", "credentials-password", "hq-generated"]
+      - ["java.security", "KeyStoreSpi", True, "engineStore", "(OutputStream,char[])", "", "Argument[1]", "credentials-password", "hq-generated"]
+      - ["java.security", "KeyStoreSpi", True, "engineSetKeyEntry", "(String,byte[],Certificate[])", "", "Argument[1]", "credentials-key", "hq-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.security", "CodeSource", False, "CodeSource", "(URL,Certificate[])", "", "Argument[0]", "Argument[this]", "taint", "df-manual"]
+      - ["java.security", "CodeSource", False, "CodeSource", "(URL,Certificate[])", "", "Argument[1].ArrayElement", "Argument[this].SyntheticField[java.security.CodeSource.certificates].ArrayElement", "value", "df-manual"]
+      - ["java.security", "CodeSource", False, "CodeSource", "(URL,CodeSigner[])", "", "Argument[0]", "Argument[this]", "taint", "df-manual"]
+      - ["java.security", "CodeSource", False, "CodeSource", "(URL,CodeSigner[])", "", "Argument[1].ArrayElement", "Argument[this].SyntheticField[java.security.CodeSource.codeSigners].ArrayElement", "value", "df-manual"]
+      - ["java.security", "CodeSource", False, "getCertificates", "()", "", "Argument[this].SyntheticField[java.security.CodeSource.certificates].ArrayElement", "ReturnValue.ArrayElement", "value", "df-manual"]
+      - ["java.security", "CodeSource", False, "getCodeSigners", "()", "", "Argument[this].SyntheticField[java.security.CodeSource.codeSigners].ArrayElement", "ReturnValue.ArrayElement", "value", "df-manual"]
+      - ["java.security", "CodeSource", False, "getLocation", "()", "", "Argument[this]", "ReturnValue", "taint", "df-manual"]
+      - ["java.security", "Permission", True, "Permission", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-manual"]
+      - ["java.security", "Permission", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.security", "MessageDigest", "digest", "()", "summary", "df-manual"]
+      - ["java.security", "MessageDigest", "digest", "(byte[])", "summary", "df-manual"]
+      - ["java.security", "MessageDigest", "digest", "(byte[],int,int)", "summary", "df-manual"]

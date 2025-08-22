@@ -11,8 +11,8 @@
 | ExactCallable.cs:52:17:52:33 | call to method M | M | ImplBeta |
 | ExactCallable.cs:55:17:55:34 | call to method InterfaceFactory | InterfaceFactory | MainClass |
 | ExactCallable.cs:58:17:58:24 | call to method M | M | ImplAlpha |
-| ExactCallable.cs:61:17:61:24 | call to method M | M | Tests<> |
-| ExactCallable.cs:64:17:64:19 | call to method M | M | Tests<> |
+| ExactCallable.cs:61:17:61:24 | call to method M | M | Tests`1 |
+| ExactCallable.cs:64:17:64:19 | call to method M | M | Tests`1 |
 | ExactCallable.cs:67:17:67:20 | call to method M2 | M2 | ImplAlpha |
 | ExactCallable.cs:70:17:70:20 | call to method M3 | M3 | ImplAlpha |
 | ExactCallable.cs:73:17:73:124 | call to method InvokeMember | M | ImplAlpha |
@@ -23,5 +23,5 @@
 | ExactCallable.cs:94:17:94:155 | call to method Invoke | UnqualifiedM | MainClass |
 | ExactCallable.cs:98:17:98:120 | call to method InvokeMember | MethodWithOut | MainClass |
 | ExactCallable.cs:101:17:101:121 | call to method InvokeMember | MethodWithOut2 | MainClass |
-| ExactCallable.cs:104:17:104:23 | call to method M | M | Tests<> |
+| ExactCallable.cs:104:17:104:23 | call to method M | M | Tests`1 |
 | ExactCallable.cs:107:17:107:28 | call to method M | M | ImplBeta |

@@ -11,12 +11,16 @@ import semmle.code.java.dataflow.FlowSources
  * that is used to validate against path traversal, but is insufficient
  * and remains vulnerable to Partial Path Traversal.
  */
-class PartialPathTraversalFromRemoteConfig extends TaintTracking::Configuration {
-  PartialPathTraversalFromRemoteConfig() { this = "PartialPathTraversalFromRemoteConfig" }
+module PartialPathTraversalFromRemoteConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node instanceof ActiveThreatModelSource }
 
-  override predicate isSource(DataFlow::Node node) { node instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node node) {
-    any(PartialPathTraversalMethodAccess ma).getQualifier() = node.asExpr()
+  predicate isSink(DataFlow::Node node) {
+    any(PartialPathTraversalMethodCall ma).getQualifier() = node.asExpr()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
+
+/** Tracks flow of unsafe user input that is used to validate against path traversal, but is insufficient and remains vulnerable to Partial Path Traversal. */
+module PartialPathTraversalFromRemoteFlow =
+  TaintTracking::Global<PartialPathTraversalFromRemoteConfig>;

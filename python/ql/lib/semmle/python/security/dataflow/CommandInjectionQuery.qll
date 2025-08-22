@@ -14,16 +14,15 @@ import CommandInjectionCustomizations::CommandInjection
 /**
  * A taint-tracking configuration for detecting "command injection" vulnerabilities.
  */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "CommandInjection" }
+module CommandInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof SanitizerGuard
-  }
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
+
+/** Global taint-tracking for detecting "command injection" vulnerabilities. */
+module CommandInjectionFlow = TaintTracking::Global<CommandInjectionConfig>;

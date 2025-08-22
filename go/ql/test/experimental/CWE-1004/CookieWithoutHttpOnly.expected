@@ -1,401 +1,471 @@
 edges
-| CookieWithoutHttpOnly.go:12:10:12:18 | "session" | CookieWithoutHttpOnly.go:15:20:15:21 | &... |
-| CookieWithoutHttpOnly.go:12:10:12:18 | "session" | CookieWithoutHttpOnly.go:15:20:15:21 | &... |
-| CookieWithoutHttpOnly.go:12:10:12:18 | "session" | CookieWithoutHttpOnly.go:15:21:15:21 | c |
-| CookieWithoutHttpOnly.go:15:20:15:21 | &... | CookieWithoutHttpOnly.go:15:20:15:21 | &... |
-| CookieWithoutHttpOnly.go:15:20:15:21 | &... | CookieWithoutHttpOnly.go:15:20:15:21 | &... |
-| CookieWithoutHttpOnly.go:15:20:15:21 | &... | CookieWithoutHttpOnly.go:15:21:15:21 | c |
-| CookieWithoutHttpOnly.go:15:20:15:21 | &... [pointer] | CookieWithoutHttpOnly.go:15:20:15:21 | &... |
-| CookieWithoutHttpOnly.go:15:20:15:21 | &... [pointer] | CookieWithoutHttpOnly.go:15:20:15:21 | &... |
-| CookieWithoutHttpOnly.go:15:20:15:21 | &... [pointer] | CookieWithoutHttpOnly.go:15:21:15:21 | c |
-| CookieWithoutHttpOnly.go:15:21:15:21 | c | CookieWithoutHttpOnly.go:15:20:15:21 | &... [pointer] |
-| CookieWithoutHttpOnly.go:20:13:20:21 | "session" | CookieWithoutHttpOnly.go:24:20:24:21 | &... |
-| CookieWithoutHttpOnly.go:20:13:20:21 | "session" | CookieWithoutHttpOnly.go:24:20:24:21 | &... |
-| CookieWithoutHttpOnly.go:20:13:20:21 | "session" | CookieWithoutHttpOnly.go:24:21:24:21 | c |
-| CookieWithoutHttpOnly.go:22:13:22:17 | false | CookieWithoutHttpOnly.go:24:20:24:21 | &... |
-| CookieWithoutHttpOnly.go:22:13:22:17 | false | CookieWithoutHttpOnly.go:24:20:24:21 | &... |
-| CookieWithoutHttpOnly.go:22:13:22:17 | false | CookieWithoutHttpOnly.go:24:21:24:21 | c |
-| CookieWithoutHttpOnly.go:24:20:24:21 | &... | CookieWithoutHttpOnly.go:24:20:24:21 | &... |
-| CookieWithoutHttpOnly.go:24:20:24:21 | &... | CookieWithoutHttpOnly.go:24:20:24:21 | &... |
-| CookieWithoutHttpOnly.go:24:20:24:21 | &... | CookieWithoutHttpOnly.go:24:20:24:21 | &... |
-| CookieWithoutHttpOnly.go:24:20:24:21 | &... | CookieWithoutHttpOnly.go:24:20:24:21 | &... |
-| CookieWithoutHttpOnly.go:24:20:24:21 | &... | CookieWithoutHttpOnly.go:24:21:24:21 | c |
-| CookieWithoutHttpOnly.go:24:20:24:21 | &... | CookieWithoutHttpOnly.go:24:21:24:21 | c |
-| CookieWithoutHttpOnly.go:24:20:24:21 | &... [pointer] | CookieWithoutHttpOnly.go:24:20:24:21 | &... |
-| CookieWithoutHttpOnly.go:24:20:24:21 | &... [pointer] | CookieWithoutHttpOnly.go:24:20:24:21 | &... |
-| CookieWithoutHttpOnly.go:24:20:24:21 | &... [pointer] | CookieWithoutHttpOnly.go:24:20:24:21 | &... |
-| CookieWithoutHttpOnly.go:24:20:24:21 | &... [pointer] | CookieWithoutHttpOnly.go:24:20:24:21 | &... |
-| CookieWithoutHttpOnly.go:24:20:24:21 | &... [pointer] | CookieWithoutHttpOnly.go:24:21:24:21 | c |
-| CookieWithoutHttpOnly.go:24:20:24:21 | &... [pointer] | CookieWithoutHttpOnly.go:24:21:24:21 | c |
-| CookieWithoutHttpOnly.go:24:21:24:21 | c | CookieWithoutHttpOnly.go:24:20:24:21 | &... [pointer] |
-| CookieWithoutHttpOnly.go:24:21:24:21 | c | CookieWithoutHttpOnly.go:24:20:24:21 | &... [pointer] |
-| CookieWithoutHttpOnly.go:29:13:29:21 | "session" | CookieWithoutHttpOnly.go:33:20:33:21 | &... |
-| CookieWithoutHttpOnly.go:29:13:29:21 | "session" | CookieWithoutHttpOnly.go:33:20:33:21 | &... |
-| CookieWithoutHttpOnly.go:29:13:29:21 | "session" | CookieWithoutHttpOnly.go:33:21:33:21 | c |
-| CookieWithoutHttpOnly.go:31:13:31:16 | true | CookieWithoutHttpOnly.go:33:20:33:21 | &... |
-| CookieWithoutHttpOnly.go:31:13:31:16 | true | CookieWithoutHttpOnly.go:33:20:33:21 | &... |
-| CookieWithoutHttpOnly.go:31:13:31:16 | true | CookieWithoutHttpOnly.go:33:21:33:21 | c |
-| CookieWithoutHttpOnly.go:33:20:33:21 | &... | CookieWithoutHttpOnly.go:33:20:33:21 | &... |
-| CookieWithoutHttpOnly.go:33:20:33:21 | &... | CookieWithoutHttpOnly.go:33:20:33:21 | &... |
-| CookieWithoutHttpOnly.go:33:20:33:21 | &... | CookieWithoutHttpOnly.go:33:20:33:21 | &... |
-| CookieWithoutHttpOnly.go:33:20:33:21 | &... | CookieWithoutHttpOnly.go:33:20:33:21 | &... |
-| CookieWithoutHttpOnly.go:33:20:33:21 | &... | CookieWithoutHttpOnly.go:33:21:33:21 | c |
-| CookieWithoutHttpOnly.go:33:20:33:21 | &... | CookieWithoutHttpOnly.go:33:21:33:21 | c |
-| CookieWithoutHttpOnly.go:33:20:33:21 | &... [pointer] | CookieWithoutHttpOnly.go:33:20:33:21 | &... |
-| CookieWithoutHttpOnly.go:33:20:33:21 | &... [pointer] | CookieWithoutHttpOnly.go:33:20:33:21 | &... |
-| CookieWithoutHttpOnly.go:33:20:33:21 | &... [pointer] | CookieWithoutHttpOnly.go:33:20:33:21 | &... |
-| CookieWithoutHttpOnly.go:33:20:33:21 | &... [pointer] | CookieWithoutHttpOnly.go:33:20:33:21 | &... |
-| CookieWithoutHttpOnly.go:33:20:33:21 | &... [pointer] | CookieWithoutHttpOnly.go:33:21:33:21 | c |
-| CookieWithoutHttpOnly.go:33:20:33:21 | &... [pointer] | CookieWithoutHttpOnly.go:33:21:33:21 | c |
-| CookieWithoutHttpOnly.go:33:21:33:21 | c | CookieWithoutHttpOnly.go:33:20:33:21 | &... [pointer] |
-| CookieWithoutHttpOnly.go:33:21:33:21 | c | CookieWithoutHttpOnly.go:33:20:33:21 | &... [pointer] |
-| CookieWithoutHttpOnly.go:38:10:38:18 | "session" | CookieWithoutHttpOnly.go:42:20:42:21 | &... |
-| CookieWithoutHttpOnly.go:38:10:38:18 | "session" | CookieWithoutHttpOnly.go:42:20:42:21 | &... |
-| CookieWithoutHttpOnly.go:38:10:38:18 | "session" | CookieWithoutHttpOnly.go:42:21:42:21 | c |
-| CookieWithoutHttpOnly.go:41:15:41:18 | true | CookieWithoutHttpOnly.go:42:20:42:21 | &... |
-| CookieWithoutHttpOnly.go:41:15:41:18 | true | CookieWithoutHttpOnly.go:42:20:42:21 | &... |
-| CookieWithoutHttpOnly.go:41:15:41:18 | true | CookieWithoutHttpOnly.go:42:21:42:21 | c |
-| CookieWithoutHttpOnly.go:42:20:42:21 | &... | CookieWithoutHttpOnly.go:42:20:42:21 | &... |
-| CookieWithoutHttpOnly.go:42:20:42:21 | &... | CookieWithoutHttpOnly.go:42:20:42:21 | &... |
-| CookieWithoutHttpOnly.go:42:20:42:21 | &... | CookieWithoutHttpOnly.go:42:20:42:21 | &... |
-| CookieWithoutHttpOnly.go:42:20:42:21 | &... | CookieWithoutHttpOnly.go:42:20:42:21 | &... |
-| CookieWithoutHttpOnly.go:42:20:42:21 | &... | CookieWithoutHttpOnly.go:42:21:42:21 | c |
-| CookieWithoutHttpOnly.go:42:20:42:21 | &... | CookieWithoutHttpOnly.go:42:21:42:21 | c |
-| CookieWithoutHttpOnly.go:42:20:42:21 | &... [pointer] | CookieWithoutHttpOnly.go:42:20:42:21 | &... |
-| CookieWithoutHttpOnly.go:42:20:42:21 | &... [pointer] | CookieWithoutHttpOnly.go:42:20:42:21 | &... |
-| CookieWithoutHttpOnly.go:42:20:42:21 | &... [pointer] | CookieWithoutHttpOnly.go:42:20:42:21 | &... |
-| CookieWithoutHttpOnly.go:42:20:42:21 | &... [pointer] | CookieWithoutHttpOnly.go:42:20:42:21 | &... |
-| CookieWithoutHttpOnly.go:42:20:42:21 | &... [pointer] | CookieWithoutHttpOnly.go:42:21:42:21 | c |
-| CookieWithoutHttpOnly.go:42:20:42:21 | &... [pointer] | CookieWithoutHttpOnly.go:42:21:42:21 | c |
-| CookieWithoutHttpOnly.go:42:21:42:21 | c | CookieWithoutHttpOnly.go:42:20:42:21 | &... [pointer] |
-| CookieWithoutHttpOnly.go:42:21:42:21 | c | CookieWithoutHttpOnly.go:42:20:42:21 | &... [pointer] |
-| CookieWithoutHttpOnly.go:47:10:47:18 | "session" | CookieWithoutHttpOnly.go:51:20:51:21 | &... |
-| CookieWithoutHttpOnly.go:47:10:47:18 | "session" | CookieWithoutHttpOnly.go:51:20:51:21 | &... |
-| CookieWithoutHttpOnly.go:47:10:47:18 | "session" | CookieWithoutHttpOnly.go:51:21:51:21 | c |
-| CookieWithoutHttpOnly.go:50:15:50:19 | false | CookieWithoutHttpOnly.go:51:20:51:21 | &... |
-| CookieWithoutHttpOnly.go:50:15:50:19 | false | CookieWithoutHttpOnly.go:51:20:51:21 | &... |
-| CookieWithoutHttpOnly.go:50:15:50:19 | false | CookieWithoutHttpOnly.go:51:21:51:21 | c |
-| CookieWithoutHttpOnly.go:51:20:51:21 | &... | CookieWithoutHttpOnly.go:51:20:51:21 | &... |
-| CookieWithoutHttpOnly.go:51:20:51:21 | &... | CookieWithoutHttpOnly.go:51:20:51:21 | &... |
-| CookieWithoutHttpOnly.go:51:20:51:21 | &... | CookieWithoutHttpOnly.go:51:20:51:21 | &... |
-| CookieWithoutHttpOnly.go:51:20:51:21 | &... | CookieWithoutHttpOnly.go:51:20:51:21 | &... |
-| CookieWithoutHttpOnly.go:51:20:51:21 | &... | CookieWithoutHttpOnly.go:51:21:51:21 | c |
-| CookieWithoutHttpOnly.go:51:20:51:21 | &... | CookieWithoutHttpOnly.go:51:21:51:21 | c |
-| CookieWithoutHttpOnly.go:51:20:51:21 | &... [pointer] | CookieWithoutHttpOnly.go:51:20:51:21 | &... |
-| CookieWithoutHttpOnly.go:51:20:51:21 | &... [pointer] | CookieWithoutHttpOnly.go:51:20:51:21 | &... |
-| CookieWithoutHttpOnly.go:51:20:51:21 | &... [pointer] | CookieWithoutHttpOnly.go:51:20:51:21 | &... |
-| CookieWithoutHttpOnly.go:51:20:51:21 | &... [pointer] | CookieWithoutHttpOnly.go:51:20:51:21 | &... |
-| CookieWithoutHttpOnly.go:51:20:51:21 | &... [pointer] | CookieWithoutHttpOnly.go:51:21:51:21 | c |
-| CookieWithoutHttpOnly.go:51:20:51:21 | &... [pointer] | CookieWithoutHttpOnly.go:51:21:51:21 | c |
-| CookieWithoutHttpOnly.go:51:21:51:21 | c | CookieWithoutHttpOnly.go:51:20:51:21 | &... [pointer] |
-| CookieWithoutHttpOnly.go:51:21:51:21 | c | CookieWithoutHttpOnly.go:51:20:51:21 | &... [pointer] |
-| CookieWithoutHttpOnly.go:55:2:55:4 | definition of val | CookieWithoutHttpOnly.go:61:20:61:21 | &... |
-| CookieWithoutHttpOnly.go:55:2:55:4 | definition of val | CookieWithoutHttpOnly.go:61:20:61:21 | &... |
-| CookieWithoutHttpOnly.go:55:2:55:4 | definition of val | CookieWithoutHttpOnly.go:61:21:61:21 | c |
-| CookieWithoutHttpOnly.go:55:9:55:13 | false | CookieWithoutHttpOnly.go:61:20:61:21 | &... |
-| CookieWithoutHttpOnly.go:55:9:55:13 | false | CookieWithoutHttpOnly.go:61:20:61:21 | &... |
-| CookieWithoutHttpOnly.go:55:9:55:13 | false | CookieWithoutHttpOnly.go:61:21:61:21 | c |
-| CookieWithoutHttpOnly.go:57:13:57:21 | "session" | CookieWithoutHttpOnly.go:61:20:61:21 | &... |
-| CookieWithoutHttpOnly.go:57:13:57:21 | "session" | CookieWithoutHttpOnly.go:61:20:61:21 | &... |
-| CookieWithoutHttpOnly.go:57:13:57:21 | "session" | CookieWithoutHttpOnly.go:61:21:61:21 | c |
-| CookieWithoutHttpOnly.go:59:13:59:15 | val | CookieWithoutHttpOnly.go:61:20:61:21 | &... |
-| CookieWithoutHttpOnly.go:59:13:59:15 | val | CookieWithoutHttpOnly.go:61:20:61:21 | &... |
-| CookieWithoutHttpOnly.go:59:13:59:15 | val | CookieWithoutHttpOnly.go:61:21:61:21 | c |
-| CookieWithoutHttpOnly.go:61:20:61:21 | &... | CookieWithoutHttpOnly.go:61:20:61:21 | &... |
-| CookieWithoutHttpOnly.go:61:20:61:21 | &... | CookieWithoutHttpOnly.go:61:20:61:21 | &... |
-| CookieWithoutHttpOnly.go:61:20:61:21 | &... | CookieWithoutHttpOnly.go:61:20:61:21 | &... |
-| CookieWithoutHttpOnly.go:61:20:61:21 | &... | CookieWithoutHttpOnly.go:61:20:61:21 | &... |
-| CookieWithoutHttpOnly.go:61:20:61:21 | &... | CookieWithoutHttpOnly.go:61:21:61:21 | c |
-| CookieWithoutHttpOnly.go:61:20:61:21 | &... | CookieWithoutHttpOnly.go:61:21:61:21 | c |
-| CookieWithoutHttpOnly.go:61:20:61:21 | &... [pointer] | CookieWithoutHttpOnly.go:61:20:61:21 | &... |
-| CookieWithoutHttpOnly.go:61:20:61:21 | &... [pointer] | CookieWithoutHttpOnly.go:61:20:61:21 | &... |
-| CookieWithoutHttpOnly.go:61:20:61:21 | &... [pointer] | CookieWithoutHttpOnly.go:61:20:61:21 | &... |
-| CookieWithoutHttpOnly.go:61:20:61:21 | &... [pointer] | CookieWithoutHttpOnly.go:61:20:61:21 | &... |
-| CookieWithoutHttpOnly.go:61:20:61:21 | &... [pointer] | CookieWithoutHttpOnly.go:61:21:61:21 | c |
-| CookieWithoutHttpOnly.go:61:20:61:21 | &... [pointer] | CookieWithoutHttpOnly.go:61:21:61:21 | c |
-| CookieWithoutHttpOnly.go:61:21:61:21 | c | CookieWithoutHttpOnly.go:61:20:61:21 | &... [pointer] |
-| CookieWithoutHttpOnly.go:61:21:61:21 | c | CookieWithoutHttpOnly.go:61:20:61:21 | &... [pointer] |
-| CookieWithoutHttpOnly.go:65:2:65:4 | definition of val | CookieWithoutHttpOnly.go:71:20:71:21 | &... |
-| CookieWithoutHttpOnly.go:65:2:65:4 | definition of val | CookieWithoutHttpOnly.go:71:20:71:21 | &... |
-| CookieWithoutHttpOnly.go:65:2:65:4 | definition of val | CookieWithoutHttpOnly.go:71:21:71:21 | c |
-| CookieWithoutHttpOnly.go:65:9:65:12 | true | CookieWithoutHttpOnly.go:71:20:71:21 | &... |
-| CookieWithoutHttpOnly.go:65:9:65:12 | true | CookieWithoutHttpOnly.go:71:20:71:21 | &... |
-| CookieWithoutHttpOnly.go:65:9:65:12 | true | CookieWithoutHttpOnly.go:71:21:71:21 | c |
-| CookieWithoutHttpOnly.go:67:13:67:21 | "session" | CookieWithoutHttpOnly.go:71:20:71:21 | &... |
-| CookieWithoutHttpOnly.go:67:13:67:21 | "session" | CookieWithoutHttpOnly.go:71:20:71:21 | &... |
-| CookieWithoutHttpOnly.go:67:13:67:21 | "session" | CookieWithoutHttpOnly.go:71:21:71:21 | c |
-| CookieWithoutHttpOnly.go:69:13:69:15 | val | CookieWithoutHttpOnly.go:71:20:71:21 | &... |
-| CookieWithoutHttpOnly.go:69:13:69:15 | val | CookieWithoutHttpOnly.go:71:20:71:21 | &... |
-| CookieWithoutHttpOnly.go:69:13:69:15 | val | CookieWithoutHttpOnly.go:71:21:71:21 | c |
-| CookieWithoutHttpOnly.go:71:20:71:21 | &... | CookieWithoutHttpOnly.go:71:20:71:21 | &... |
-| CookieWithoutHttpOnly.go:71:20:71:21 | &... | CookieWithoutHttpOnly.go:71:20:71:21 | &... |
-| CookieWithoutHttpOnly.go:71:20:71:21 | &... | CookieWithoutHttpOnly.go:71:20:71:21 | &... |
-| CookieWithoutHttpOnly.go:71:20:71:21 | &... | CookieWithoutHttpOnly.go:71:20:71:21 | &... |
-| CookieWithoutHttpOnly.go:71:20:71:21 | &... | CookieWithoutHttpOnly.go:71:21:71:21 | c |
-| CookieWithoutHttpOnly.go:71:20:71:21 | &... | CookieWithoutHttpOnly.go:71:21:71:21 | c |
-| CookieWithoutHttpOnly.go:71:20:71:21 | &... [pointer] | CookieWithoutHttpOnly.go:71:20:71:21 | &... |
-| CookieWithoutHttpOnly.go:71:20:71:21 | &... [pointer] | CookieWithoutHttpOnly.go:71:20:71:21 | &... |
-| CookieWithoutHttpOnly.go:71:20:71:21 | &... [pointer] | CookieWithoutHttpOnly.go:71:20:71:21 | &... |
-| CookieWithoutHttpOnly.go:71:20:71:21 | &... [pointer] | CookieWithoutHttpOnly.go:71:20:71:21 | &... |
-| CookieWithoutHttpOnly.go:71:20:71:21 | &... [pointer] | CookieWithoutHttpOnly.go:71:21:71:21 | c |
-| CookieWithoutHttpOnly.go:71:20:71:21 | &... [pointer] | CookieWithoutHttpOnly.go:71:21:71:21 | c |
-| CookieWithoutHttpOnly.go:71:21:71:21 | c | CookieWithoutHttpOnly.go:71:20:71:21 | &... [pointer] |
-| CookieWithoutHttpOnly.go:71:21:71:21 | c | CookieWithoutHttpOnly.go:71:20:71:21 | &... [pointer] |
-| CookieWithoutHttpOnly.go:75:2:75:4 | definition of val | CookieWithoutHttpOnly.go:81:20:81:21 | &... |
-| CookieWithoutHttpOnly.go:75:2:75:4 | definition of val | CookieWithoutHttpOnly.go:81:20:81:21 | &... |
-| CookieWithoutHttpOnly.go:75:2:75:4 | definition of val | CookieWithoutHttpOnly.go:81:21:81:21 | c |
-| CookieWithoutHttpOnly.go:75:9:75:12 | true | CookieWithoutHttpOnly.go:81:20:81:21 | &... |
-| CookieWithoutHttpOnly.go:75:9:75:12 | true | CookieWithoutHttpOnly.go:81:20:81:21 | &... |
-| CookieWithoutHttpOnly.go:75:9:75:12 | true | CookieWithoutHttpOnly.go:81:21:81:21 | c |
-| CookieWithoutHttpOnly.go:77:10:77:18 | "session" | CookieWithoutHttpOnly.go:81:20:81:21 | &... |
-| CookieWithoutHttpOnly.go:77:10:77:18 | "session" | CookieWithoutHttpOnly.go:81:20:81:21 | &... |
-| CookieWithoutHttpOnly.go:77:10:77:18 | "session" | CookieWithoutHttpOnly.go:81:21:81:21 | c |
-| CookieWithoutHttpOnly.go:80:15:80:17 | val | CookieWithoutHttpOnly.go:81:20:81:21 | &... |
-| CookieWithoutHttpOnly.go:80:15:80:17 | val | CookieWithoutHttpOnly.go:81:20:81:21 | &... |
-| CookieWithoutHttpOnly.go:80:15:80:17 | val | CookieWithoutHttpOnly.go:81:21:81:21 | c |
-| CookieWithoutHttpOnly.go:81:20:81:21 | &... | CookieWithoutHttpOnly.go:81:20:81:21 | &... |
-| CookieWithoutHttpOnly.go:81:20:81:21 | &... | CookieWithoutHttpOnly.go:81:20:81:21 | &... |
-| CookieWithoutHttpOnly.go:81:20:81:21 | &... | CookieWithoutHttpOnly.go:81:20:81:21 | &... |
-| CookieWithoutHttpOnly.go:81:20:81:21 | &... | CookieWithoutHttpOnly.go:81:20:81:21 | &... |
-| CookieWithoutHttpOnly.go:81:20:81:21 | &... | CookieWithoutHttpOnly.go:81:21:81:21 | c |
-| CookieWithoutHttpOnly.go:81:20:81:21 | &... | CookieWithoutHttpOnly.go:81:21:81:21 | c |
-| CookieWithoutHttpOnly.go:81:20:81:21 | &... [pointer] | CookieWithoutHttpOnly.go:81:20:81:21 | &... |
-| CookieWithoutHttpOnly.go:81:20:81:21 | &... [pointer] | CookieWithoutHttpOnly.go:81:20:81:21 | &... |
-| CookieWithoutHttpOnly.go:81:20:81:21 | &... [pointer] | CookieWithoutHttpOnly.go:81:20:81:21 | &... |
-| CookieWithoutHttpOnly.go:81:20:81:21 | &... [pointer] | CookieWithoutHttpOnly.go:81:20:81:21 | &... |
-| CookieWithoutHttpOnly.go:81:20:81:21 | &... [pointer] | CookieWithoutHttpOnly.go:81:21:81:21 | c |
-| CookieWithoutHttpOnly.go:81:20:81:21 | &... [pointer] | CookieWithoutHttpOnly.go:81:21:81:21 | c |
-| CookieWithoutHttpOnly.go:81:21:81:21 | c | CookieWithoutHttpOnly.go:81:20:81:21 | &... [pointer] |
-| CookieWithoutHttpOnly.go:81:21:81:21 | c | CookieWithoutHttpOnly.go:81:20:81:21 | &... [pointer] |
-| CookieWithoutHttpOnly.go:85:2:85:4 | definition of val | CookieWithoutHttpOnly.go:91:20:91:21 | &... |
-| CookieWithoutHttpOnly.go:85:2:85:4 | definition of val | CookieWithoutHttpOnly.go:91:20:91:21 | &... |
-| CookieWithoutHttpOnly.go:85:2:85:4 | definition of val | CookieWithoutHttpOnly.go:91:21:91:21 | c |
-| CookieWithoutHttpOnly.go:85:9:85:13 | false | CookieWithoutHttpOnly.go:91:20:91:21 | &... |
-| CookieWithoutHttpOnly.go:85:9:85:13 | false | CookieWithoutHttpOnly.go:91:20:91:21 | &... |
-| CookieWithoutHttpOnly.go:85:9:85:13 | false | CookieWithoutHttpOnly.go:91:21:91:21 | c |
-| CookieWithoutHttpOnly.go:87:10:87:18 | "session" | CookieWithoutHttpOnly.go:91:20:91:21 | &... |
-| CookieWithoutHttpOnly.go:87:10:87:18 | "session" | CookieWithoutHttpOnly.go:91:20:91:21 | &... |
-| CookieWithoutHttpOnly.go:87:10:87:18 | "session" | CookieWithoutHttpOnly.go:91:21:91:21 | c |
-| CookieWithoutHttpOnly.go:90:15:90:17 | val | CookieWithoutHttpOnly.go:91:20:91:21 | &... |
-| CookieWithoutHttpOnly.go:90:15:90:17 | val | CookieWithoutHttpOnly.go:91:20:91:21 | &... |
-| CookieWithoutHttpOnly.go:90:15:90:17 | val | CookieWithoutHttpOnly.go:91:21:91:21 | c |
-| CookieWithoutHttpOnly.go:91:20:91:21 | &... | CookieWithoutHttpOnly.go:91:20:91:21 | &... |
-| CookieWithoutHttpOnly.go:91:20:91:21 | &... | CookieWithoutHttpOnly.go:91:20:91:21 | &... |
-| CookieWithoutHttpOnly.go:91:20:91:21 | &... | CookieWithoutHttpOnly.go:91:20:91:21 | &... |
-| CookieWithoutHttpOnly.go:91:20:91:21 | &... | CookieWithoutHttpOnly.go:91:20:91:21 | &... |
-| CookieWithoutHttpOnly.go:91:20:91:21 | &... | CookieWithoutHttpOnly.go:91:21:91:21 | c |
-| CookieWithoutHttpOnly.go:91:20:91:21 | &... | CookieWithoutHttpOnly.go:91:21:91:21 | c |
-| CookieWithoutHttpOnly.go:91:20:91:21 | &... [pointer] | CookieWithoutHttpOnly.go:91:20:91:21 | &... |
-| CookieWithoutHttpOnly.go:91:20:91:21 | &... [pointer] | CookieWithoutHttpOnly.go:91:20:91:21 | &... |
-| CookieWithoutHttpOnly.go:91:20:91:21 | &... [pointer] | CookieWithoutHttpOnly.go:91:20:91:21 | &... |
-| CookieWithoutHttpOnly.go:91:20:91:21 | &... [pointer] | CookieWithoutHttpOnly.go:91:20:91:21 | &... |
-| CookieWithoutHttpOnly.go:91:20:91:21 | &... [pointer] | CookieWithoutHttpOnly.go:91:21:91:21 | c |
-| CookieWithoutHttpOnly.go:91:20:91:21 | &... [pointer] | CookieWithoutHttpOnly.go:91:21:91:21 | c |
-| CookieWithoutHttpOnly.go:91:21:91:21 | c | CookieWithoutHttpOnly.go:91:20:91:21 | &... [pointer] |
-| CookieWithoutHttpOnly.go:91:21:91:21 | c | CookieWithoutHttpOnly.go:91:20:91:21 | &... [pointer] |
-| CookieWithoutHttpOnly.go:99:15:99:19 | false | CookieWithoutHttpOnly.go:100:20:100:21 | &... |
-| CookieWithoutHttpOnly.go:99:15:99:19 | false | CookieWithoutHttpOnly.go:100:20:100:21 | &... |
-| CookieWithoutHttpOnly.go:99:15:99:19 | false | CookieWithoutHttpOnly.go:100:21:100:21 | c |
-| CookieWithoutHttpOnly.go:100:20:100:21 | &... | CookieWithoutHttpOnly.go:100:20:100:21 | &... |
-| CookieWithoutHttpOnly.go:100:20:100:21 | &... | CookieWithoutHttpOnly.go:100:20:100:21 | &... |
-| CookieWithoutHttpOnly.go:100:20:100:21 | &... | CookieWithoutHttpOnly.go:100:21:100:21 | c |
-| CookieWithoutHttpOnly.go:100:20:100:21 | &... [pointer] | CookieWithoutHttpOnly.go:100:20:100:21 | &... |
-| CookieWithoutHttpOnly.go:100:20:100:21 | &... [pointer] | CookieWithoutHttpOnly.go:100:20:100:21 | &... |
-| CookieWithoutHttpOnly.go:100:20:100:21 | &... [pointer] | CookieWithoutHttpOnly.go:100:21:100:21 | c |
-| CookieWithoutHttpOnly.go:100:21:100:21 | c | CookieWithoutHttpOnly.go:100:20:100:21 | &... [pointer] |
-| CookieWithoutHttpOnly.go:104:10:104:18 | "session" | CookieWithoutHttpOnly.go:110:20:110:21 | &... |
-| CookieWithoutHttpOnly.go:104:10:104:18 | "session" | CookieWithoutHttpOnly.go:110:20:110:21 | &... |
-| CookieWithoutHttpOnly.go:104:10:104:18 | "session" | CookieWithoutHttpOnly.go:110:21:110:21 | c |
-| CookieWithoutHttpOnly.go:109:15:109:19 | false | CookieWithoutHttpOnly.go:110:20:110:21 | &... |
-| CookieWithoutHttpOnly.go:109:15:109:19 | false | CookieWithoutHttpOnly.go:110:20:110:21 | &... |
-| CookieWithoutHttpOnly.go:109:15:109:19 | false | CookieWithoutHttpOnly.go:110:21:110:21 | c |
-| CookieWithoutHttpOnly.go:110:20:110:21 | &... | CookieWithoutHttpOnly.go:110:20:110:21 | &... |
-| CookieWithoutHttpOnly.go:110:20:110:21 | &... | CookieWithoutHttpOnly.go:110:20:110:21 | &... |
-| CookieWithoutHttpOnly.go:110:20:110:21 | &... | CookieWithoutHttpOnly.go:110:20:110:21 | &... |
-| CookieWithoutHttpOnly.go:110:20:110:21 | &... | CookieWithoutHttpOnly.go:110:20:110:21 | &... |
-| CookieWithoutHttpOnly.go:110:20:110:21 | &... | CookieWithoutHttpOnly.go:110:21:110:21 | c |
-| CookieWithoutHttpOnly.go:110:20:110:21 | &... | CookieWithoutHttpOnly.go:110:21:110:21 | c |
-| CookieWithoutHttpOnly.go:110:20:110:21 | &... [pointer] | CookieWithoutHttpOnly.go:110:20:110:21 | &... |
-| CookieWithoutHttpOnly.go:110:20:110:21 | &... [pointer] | CookieWithoutHttpOnly.go:110:20:110:21 | &... |
-| CookieWithoutHttpOnly.go:110:20:110:21 | &... [pointer] | CookieWithoutHttpOnly.go:110:20:110:21 | &... |
-| CookieWithoutHttpOnly.go:110:20:110:21 | &... [pointer] | CookieWithoutHttpOnly.go:110:20:110:21 | &... |
-| CookieWithoutHttpOnly.go:110:20:110:21 | &... [pointer] | CookieWithoutHttpOnly.go:110:21:110:21 | c |
-| CookieWithoutHttpOnly.go:110:20:110:21 | &... [pointer] | CookieWithoutHttpOnly.go:110:21:110:21 | c |
-| CookieWithoutHttpOnly.go:110:21:110:21 | c | CookieWithoutHttpOnly.go:110:20:110:21 | &... [pointer] |
-| CookieWithoutHttpOnly.go:110:21:110:21 | c | CookieWithoutHttpOnly.go:110:20:110:21 | &... [pointer] |
-| CookieWithoutHttpOnly.go:114:13:114:24 | "login_name" | CookieWithoutHttpOnly.go:120:20:120:21 | &... |
-| CookieWithoutHttpOnly.go:114:13:114:24 | "login_name" | CookieWithoutHttpOnly.go:120:20:120:21 | &... |
-| CookieWithoutHttpOnly.go:114:13:114:24 | "login_name" | CookieWithoutHttpOnly.go:120:21:120:21 | c |
-| CookieWithoutHttpOnly.go:116:10:116:16 | session | CookieWithoutHttpOnly.go:120:20:120:21 | &... |
-| CookieWithoutHttpOnly.go:116:10:116:16 | session | CookieWithoutHttpOnly.go:120:20:120:21 | &... |
-| CookieWithoutHttpOnly.go:116:10:116:16 | session | CookieWithoutHttpOnly.go:120:21:120:21 | c |
-| CookieWithoutHttpOnly.go:119:15:119:19 | false | CookieWithoutHttpOnly.go:120:20:120:21 | &... |
-| CookieWithoutHttpOnly.go:119:15:119:19 | false | CookieWithoutHttpOnly.go:120:20:120:21 | &... |
-| CookieWithoutHttpOnly.go:119:15:119:19 | false | CookieWithoutHttpOnly.go:120:21:120:21 | c |
-| CookieWithoutHttpOnly.go:120:20:120:21 | &... | CookieWithoutHttpOnly.go:120:20:120:21 | &... |
-| CookieWithoutHttpOnly.go:120:20:120:21 | &... | CookieWithoutHttpOnly.go:120:20:120:21 | &... |
-| CookieWithoutHttpOnly.go:120:20:120:21 | &... | CookieWithoutHttpOnly.go:120:20:120:21 | &... |
-| CookieWithoutHttpOnly.go:120:20:120:21 | &... | CookieWithoutHttpOnly.go:120:20:120:21 | &... |
-| CookieWithoutHttpOnly.go:120:20:120:21 | &... | CookieWithoutHttpOnly.go:120:21:120:21 | c |
-| CookieWithoutHttpOnly.go:120:20:120:21 | &... | CookieWithoutHttpOnly.go:120:21:120:21 | c |
-| CookieWithoutHttpOnly.go:120:20:120:21 | &... [pointer] | CookieWithoutHttpOnly.go:120:20:120:21 | &... |
-| CookieWithoutHttpOnly.go:120:20:120:21 | &... [pointer] | CookieWithoutHttpOnly.go:120:20:120:21 | &... |
-| CookieWithoutHttpOnly.go:120:20:120:21 | &... [pointer] | CookieWithoutHttpOnly.go:120:20:120:21 | &... |
-| CookieWithoutHttpOnly.go:120:20:120:21 | &... [pointer] | CookieWithoutHttpOnly.go:120:20:120:21 | &... |
-| CookieWithoutHttpOnly.go:120:20:120:21 | &... [pointer] | CookieWithoutHttpOnly.go:120:21:120:21 | c |
-| CookieWithoutHttpOnly.go:120:20:120:21 | &... [pointer] | CookieWithoutHttpOnly.go:120:21:120:21 | c |
-| CookieWithoutHttpOnly.go:120:21:120:21 | c | CookieWithoutHttpOnly.go:120:20:120:21 | &... [pointer] |
-| CookieWithoutHttpOnly.go:120:21:120:21 | c | CookieWithoutHttpOnly.go:120:20:120:21 | &... [pointer] |
-| CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore | CookieWithoutHttpOnly.go:126:16:126:20 | store |
-| CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore | CookieWithoutHttpOnly.go:134:16:134:20 | store |
-| CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore | CookieWithoutHttpOnly.go:146:16:146:20 | store |
-| CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore | CookieWithoutHttpOnly.go:158:16:158:20 | store |
-| CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore | CookieWithoutHttpOnly.go:170:16:170:20 | store |
-| CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore | CookieWithoutHttpOnly.go:183:16:183:20 | store |
-| CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore | CookieWithoutHttpOnly.go:195:16:195:20 | store |
-| CookieWithoutHttpOnly.go:126:16:126:20 | store | CookieWithoutHttpOnly.go:129:2:129:8 | session |
-| CookieWithoutHttpOnly.go:133:2:133:9 | definition of httpOnly | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:133:2:133:9 | definition of httpOnly | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:133:2:133:9 | definition of httpOnly | CookieWithoutHttpOnly.go:142:2:142:8 | session |
-| CookieWithoutHttpOnly.go:133:14:133:18 | false | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:133:14:133:18 | false | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:133:14:133:18 | false | CookieWithoutHttpOnly.go:142:2:142:8 | session |
-| CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:135:2:135:8 | session [pointer] |
-| CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:135:2:135:8 | session [pointer] |
-| CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:137:2:137:8 | session [pointer] |
-| CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:137:2:137:8 | session [pointer] |
-| CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:142:2:142:8 | session |
-| CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:142:2:142:8 | session |
-| CookieWithoutHttpOnly.go:134:16:134:20 | store | CookieWithoutHttpOnly.go:142:2:142:8 | session |
-| CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] |
-| CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] |
-| CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | CookieWithoutHttpOnly.go:142:2:142:8 | session |
-| CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | CookieWithoutHttpOnly.go:142:2:142:8 | session |
-| CookieWithoutHttpOnly.go:135:2:135:8 | session [pointer] | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:135:2:135:8 | session [pointer] | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] |
-| CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] |
-| CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | CookieWithoutHttpOnly.go:142:2:142:8 | session |
-| CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | CookieWithoutHttpOnly.go:142:2:142:8 | session |
-| CookieWithoutHttpOnly.go:137:2:137:8 | session [pointer] | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:137:2:137:8 | session [pointer] | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:137:21:140:2 | struct literal | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:137:21:140:2 | struct literal | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:137:21:140:2 | struct literal | CookieWithoutHttpOnly.go:142:2:142:8 | session |
-| CookieWithoutHttpOnly.go:139:13:139:20 | httpOnly | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:139:13:139:20 | httpOnly | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:139:13:139:20 | httpOnly | CookieWithoutHttpOnly.go:142:2:142:8 | session |
-| CookieWithoutHttpOnly.go:146:2:146:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:147:2:147:8 | session [pointer] |
-| CookieWithoutHttpOnly.go:146:2:146:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:149:2:149:8 | session [pointer] |
-| CookieWithoutHttpOnly.go:146:2:146:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:153:2:153:8 | session |
-| CookieWithoutHttpOnly.go:146:16:146:20 | store | CookieWithoutHttpOnly.go:153:2:153:8 | session |
-| CookieWithoutHttpOnly.go:147:2:147:8 | implicit dereference | CookieWithoutHttpOnly.go:146:2:146:8 | definition of session [pointer] |
-| CookieWithoutHttpOnly.go:147:2:147:8 | implicit dereference | CookieWithoutHttpOnly.go:147:2:147:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:147:2:147:8 | implicit dereference | CookieWithoutHttpOnly.go:149:2:149:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:147:2:147:8 | implicit dereference | CookieWithoutHttpOnly.go:153:2:153:8 | session |
-| CookieWithoutHttpOnly.go:147:2:147:8 | session [pointer] | CookieWithoutHttpOnly.go:147:2:147:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:149:2:149:8 | implicit dereference | CookieWithoutHttpOnly.go:146:2:146:8 | definition of session [pointer] |
-| CookieWithoutHttpOnly.go:149:2:149:8 | implicit dereference | CookieWithoutHttpOnly.go:147:2:147:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:149:2:149:8 | implicit dereference | CookieWithoutHttpOnly.go:149:2:149:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:149:2:149:8 | implicit dereference | CookieWithoutHttpOnly.go:153:2:153:8 | session |
-| CookieWithoutHttpOnly.go:149:2:149:8 | session [pointer] | CookieWithoutHttpOnly.go:149:2:149:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:149:21:151:2 | struct literal | CookieWithoutHttpOnly.go:147:2:147:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:149:21:151:2 | struct literal | CookieWithoutHttpOnly.go:149:2:149:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:149:21:151:2 | struct literal | CookieWithoutHttpOnly.go:153:2:153:8 | session |
-| CookieWithoutHttpOnly.go:157:2:157:9 | definition of httpOnly | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:157:2:157:9 | definition of httpOnly | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:157:2:157:9 | definition of httpOnly | CookieWithoutHttpOnly.go:166:2:166:8 | session |
-| CookieWithoutHttpOnly.go:157:14:157:17 | true | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:157:14:157:17 | true | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:157:14:157:17 | true | CookieWithoutHttpOnly.go:166:2:166:8 | session |
-| CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:159:2:159:8 | session [pointer] |
-| CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:159:2:159:8 | session [pointer] |
-| CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:161:2:161:8 | session [pointer] |
-| CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:161:2:161:8 | session [pointer] |
-| CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:166:2:166:8 | session |
-| CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:166:2:166:8 | session |
-| CookieWithoutHttpOnly.go:158:16:158:20 | store | CookieWithoutHttpOnly.go:166:2:166:8 | session |
-| CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] |
-| CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] |
-| CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | CookieWithoutHttpOnly.go:166:2:166:8 | session |
-| CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | CookieWithoutHttpOnly.go:166:2:166:8 | session |
-| CookieWithoutHttpOnly.go:159:2:159:8 | session [pointer] | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:159:2:159:8 | session [pointer] | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] |
-| CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] |
-| CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | CookieWithoutHttpOnly.go:166:2:166:8 | session |
-| CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | CookieWithoutHttpOnly.go:166:2:166:8 | session |
-| CookieWithoutHttpOnly.go:161:2:161:8 | session [pointer] | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:161:2:161:8 | session [pointer] | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:161:21:164:2 | struct literal | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:161:21:164:2 | struct literal | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:161:21:164:2 | struct literal | CookieWithoutHttpOnly.go:166:2:166:8 | session |
-| CookieWithoutHttpOnly.go:163:13:163:20 | httpOnly | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:163:13:163:20 | httpOnly | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:163:13:163:20 | httpOnly | CookieWithoutHttpOnly.go:166:2:166:8 | session |
-| CookieWithoutHttpOnly.go:169:56:169:63 | argument corresponding to httpOnly | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:169:56:169:63 | argument corresponding to httpOnly | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:169:56:169:63 | argument corresponding to httpOnly | CookieWithoutHttpOnly.go:178:2:178:8 | session |
-| CookieWithoutHttpOnly.go:169:56:169:63 | definition of httpOnly | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:169:56:169:63 | definition of httpOnly | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:169:56:169:63 | definition of httpOnly | CookieWithoutHttpOnly.go:178:2:178:8 | session |
-| CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:171:2:171:8 | session [pointer] |
-| CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:171:2:171:8 | session [pointer] |
-| CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:173:2:173:8 | session [pointer] |
-| CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:173:2:173:8 | session [pointer] |
-| CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:178:2:178:8 | session |
-| CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:178:2:178:8 | session |
-| CookieWithoutHttpOnly.go:170:16:170:20 | store | CookieWithoutHttpOnly.go:178:2:178:8 | session |
-| CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] |
-| CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] |
-| CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | CookieWithoutHttpOnly.go:178:2:178:8 | session |
-| CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | CookieWithoutHttpOnly.go:178:2:178:8 | session |
-| CookieWithoutHttpOnly.go:171:2:171:8 | session [pointer] | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:171:2:171:8 | session [pointer] | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] |
-| CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] |
-| CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | CookieWithoutHttpOnly.go:178:2:178:8 | session |
-| CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | CookieWithoutHttpOnly.go:178:2:178:8 | session |
-| CookieWithoutHttpOnly.go:173:2:173:8 | session [pointer] | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:173:2:173:8 | session [pointer] | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:173:21:176:2 | struct literal | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:173:21:176:2 | struct literal | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:173:21:176:2 | struct literal | CookieWithoutHttpOnly.go:178:2:178:8 | session |
-| CookieWithoutHttpOnly.go:175:13:175:20 | httpOnly | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:175:13:175:20 | httpOnly | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference |
-| CookieWithoutHttpOnly.go:175:13:175:20 | httpOnly | CookieWithoutHttpOnly.go:178:2:178:8 | session |
-| CookieWithoutHttpOnly.go:183:16:183:20 | store | CookieWithoutHttpOnly.go:191:19:191:25 | session |
-| CookieWithoutHttpOnly.go:195:16:195:20 | store | CookieWithoutHttpOnly.go:202:19:202:25 | session |
+| CookieWithoutHttpOnly.go:11:7:14:2 | struct literal | CookieWithoutHttpOnly.go:15:20:15:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:11:7:14:2 | struct literal | CookieWithoutHttpOnly.go:15:20:15:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:11:7:14:2 | struct literal | CookieWithoutHttpOnly.go:15:21:15:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:12:10:12:18 | "session" | CookieWithoutHttpOnly.go:11:7:14:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:15:20:15:21 | &... | CookieWithoutHttpOnly.go:15:21:15:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:15:20:15:21 | &... [pointer] | CookieWithoutHttpOnly.go:15:20:15:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:15:20:15:21 | &... [pointer] | CookieWithoutHttpOnly.go:15:20:15:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:15:20:15:21 | &... [pointer] | CookieWithoutHttpOnly.go:15:21:15:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:15:21:15:21 | c | CookieWithoutHttpOnly.go:15:20:15:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:15:21:15:21 | c | CookieWithoutHttpOnly.go:15:20:15:21 | &... [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:19:7:23:2 | struct literal | CookieWithoutHttpOnly.go:24:20:24:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:19:7:23:2 | struct literal | CookieWithoutHttpOnly.go:24:20:24:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:19:7:23:2 | struct literal | CookieWithoutHttpOnly.go:24:20:24:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:19:7:23:2 | struct literal | CookieWithoutHttpOnly.go:24:20:24:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:19:7:23:2 | struct literal | CookieWithoutHttpOnly.go:24:21:24:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:19:7:23:2 | struct literal | CookieWithoutHttpOnly.go:24:21:24:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:20:13:20:21 | "session" | CookieWithoutHttpOnly.go:19:7:23:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:22:13:22:17 | false | CookieWithoutHttpOnly.go:19:7:23:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:24:20:24:21 | &... | CookieWithoutHttpOnly.go:24:21:24:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:24:20:24:21 | &... | CookieWithoutHttpOnly.go:24:21:24:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:24:20:24:21 | &... [pointer] | CookieWithoutHttpOnly.go:24:20:24:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:24:20:24:21 | &... [pointer] | CookieWithoutHttpOnly.go:24:20:24:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:24:20:24:21 | &... [pointer] | CookieWithoutHttpOnly.go:24:20:24:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:24:20:24:21 | &... [pointer] | CookieWithoutHttpOnly.go:24:20:24:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:24:20:24:21 | &... [pointer] | CookieWithoutHttpOnly.go:24:21:24:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:24:20:24:21 | &... [pointer] | CookieWithoutHttpOnly.go:24:21:24:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:24:21:24:21 | c | CookieWithoutHttpOnly.go:24:20:24:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:24:21:24:21 | c | CookieWithoutHttpOnly.go:24:20:24:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:24:21:24:21 | c | CookieWithoutHttpOnly.go:24:20:24:21 | &... [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:24:21:24:21 | c | CookieWithoutHttpOnly.go:24:20:24:21 | &... [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:28:7:32:2 | struct literal | CookieWithoutHttpOnly.go:33:20:33:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:28:7:32:2 | struct literal | CookieWithoutHttpOnly.go:33:20:33:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:28:7:32:2 | struct literal | CookieWithoutHttpOnly.go:33:20:33:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:28:7:32:2 | struct literal | CookieWithoutHttpOnly.go:33:20:33:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:28:7:32:2 | struct literal | CookieWithoutHttpOnly.go:33:21:33:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:28:7:32:2 | struct literal | CookieWithoutHttpOnly.go:33:21:33:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:29:13:29:21 | "session" | CookieWithoutHttpOnly.go:28:7:32:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:31:13:31:16 | true | CookieWithoutHttpOnly.go:28:7:32:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:33:20:33:21 | &... | CookieWithoutHttpOnly.go:33:21:33:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:33:20:33:21 | &... | CookieWithoutHttpOnly.go:33:21:33:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:33:20:33:21 | &... [pointer] | CookieWithoutHttpOnly.go:33:20:33:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:33:20:33:21 | &... [pointer] | CookieWithoutHttpOnly.go:33:20:33:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:33:20:33:21 | &... [pointer] | CookieWithoutHttpOnly.go:33:20:33:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:33:20:33:21 | &... [pointer] | CookieWithoutHttpOnly.go:33:20:33:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:33:20:33:21 | &... [pointer] | CookieWithoutHttpOnly.go:33:21:33:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:33:20:33:21 | &... [pointer] | CookieWithoutHttpOnly.go:33:21:33:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:33:21:33:21 | c | CookieWithoutHttpOnly.go:33:20:33:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:33:21:33:21 | c | CookieWithoutHttpOnly.go:33:20:33:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:33:21:33:21 | c | CookieWithoutHttpOnly.go:33:20:33:21 | &... [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:33:21:33:21 | c | CookieWithoutHttpOnly.go:33:20:33:21 | &... [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:37:7:40:2 | struct literal | CookieWithoutHttpOnly.go:42:20:42:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:37:7:40:2 | struct literal | CookieWithoutHttpOnly.go:42:20:42:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:37:7:40:2 | struct literal | CookieWithoutHttpOnly.go:42:20:42:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:37:7:40:2 | struct literal | CookieWithoutHttpOnly.go:42:20:42:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:37:7:40:2 | struct literal | CookieWithoutHttpOnly.go:42:21:42:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:37:7:40:2 | struct literal | CookieWithoutHttpOnly.go:42:21:42:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:38:10:38:18 | "session" | CookieWithoutHttpOnly.go:37:7:40:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:41:15:41:18 | true | CookieWithoutHttpOnly.go:37:7:40:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:42:20:42:21 | &... | CookieWithoutHttpOnly.go:42:21:42:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:42:20:42:21 | &... | CookieWithoutHttpOnly.go:42:21:42:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:42:20:42:21 | &... [pointer] | CookieWithoutHttpOnly.go:42:20:42:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:42:20:42:21 | &... [pointer] | CookieWithoutHttpOnly.go:42:20:42:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:42:20:42:21 | &... [pointer] | CookieWithoutHttpOnly.go:42:20:42:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:42:20:42:21 | &... [pointer] | CookieWithoutHttpOnly.go:42:20:42:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:42:20:42:21 | &... [pointer] | CookieWithoutHttpOnly.go:42:21:42:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:42:20:42:21 | &... [pointer] | CookieWithoutHttpOnly.go:42:21:42:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:42:21:42:21 | c | CookieWithoutHttpOnly.go:42:20:42:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:42:21:42:21 | c | CookieWithoutHttpOnly.go:42:20:42:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:42:21:42:21 | c | CookieWithoutHttpOnly.go:42:20:42:21 | &... [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:42:21:42:21 | c | CookieWithoutHttpOnly.go:42:20:42:21 | &... [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:46:7:49:2 | struct literal | CookieWithoutHttpOnly.go:51:20:51:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:46:7:49:2 | struct literal | CookieWithoutHttpOnly.go:51:20:51:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:46:7:49:2 | struct literal | CookieWithoutHttpOnly.go:51:20:51:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:46:7:49:2 | struct literal | CookieWithoutHttpOnly.go:51:20:51:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:46:7:49:2 | struct literal | CookieWithoutHttpOnly.go:51:21:51:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:46:7:49:2 | struct literal | CookieWithoutHttpOnly.go:51:21:51:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:47:10:47:18 | "session" | CookieWithoutHttpOnly.go:46:7:49:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:50:15:50:19 | false | CookieWithoutHttpOnly.go:46:7:49:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:51:20:51:21 | &... | CookieWithoutHttpOnly.go:51:21:51:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:51:20:51:21 | &... | CookieWithoutHttpOnly.go:51:21:51:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:51:20:51:21 | &... [pointer] | CookieWithoutHttpOnly.go:51:20:51:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:51:20:51:21 | &... [pointer] | CookieWithoutHttpOnly.go:51:20:51:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:51:20:51:21 | &... [pointer] | CookieWithoutHttpOnly.go:51:20:51:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:51:20:51:21 | &... [pointer] | CookieWithoutHttpOnly.go:51:20:51:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:51:20:51:21 | &... [pointer] | CookieWithoutHttpOnly.go:51:21:51:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:51:20:51:21 | &... [pointer] | CookieWithoutHttpOnly.go:51:21:51:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:51:21:51:21 | c | CookieWithoutHttpOnly.go:51:20:51:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:51:21:51:21 | c | CookieWithoutHttpOnly.go:51:20:51:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:51:21:51:21 | c | CookieWithoutHttpOnly.go:51:20:51:21 | &... [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:51:21:51:21 | c | CookieWithoutHttpOnly.go:51:20:51:21 | &... [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:55:2:55:4 | definition of val | CookieWithoutHttpOnly.go:59:13:59:15 | val | provenance |  |
+| CookieWithoutHttpOnly.go:55:9:55:13 | false | CookieWithoutHttpOnly.go:59:13:59:15 | val | provenance |  |
+| CookieWithoutHttpOnly.go:56:7:60:2 | struct literal | CookieWithoutHttpOnly.go:61:20:61:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:56:7:60:2 | struct literal | CookieWithoutHttpOnly.go:61:20:61:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:56:7:60:2 | struct literal | CookieWithoutHttpOnly.go:61:20:61:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:56:7:60:2 | struct literal | CookieWithoutHttpOnly.go:61:20:61:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:56:7:60:2 | struct literal | CookieWithoutHttpOnly.go:61:21:61:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:56:7:60:2 | struct literal | CookieWithoutHttpOnly.go:61:21:61:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:57:13:57:21 | "session" | CookieWithoutHttpOnly.go:56:7:60:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:59:13:59:15 | val | CookieWithoutHttpOnly.go:56:7:60:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:61:20:61:21 | &... | CookieWithoutHttpOnly.go:61:21:61:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:61:20:61:21 | &... | CookieWithoutHttpOnly.go:61:21:61:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:61:20:61:21 | &... [pointer] | CookieWithoutHttpOnly.go:61:20:61:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:61:20:61:21 | &... [pointer] | CookieWithoutHttpOnly.go:61:20:61:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:61:20:61:21 | &... [pointer] | CookieWithoutHttpOnly.go:61:20:61:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:61:20:61:21 | &... [pointer] | CookieWithoutHttpOnly.go:61:20:61:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:61:20:61:21 | &... [pointer] | CookieWithoutHttpOnly.go:61:21:61:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:61:20:61:21 | &... [pointer] | CookieWithoutHttpOnly.go:61:21:61:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:61:21:61:21 | c | CookieWithoutHttpOnly.go:61:20:61:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:61:21:61:21 | c | CookieWithoutHttpOnly.go:61:20:61:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:61:21:61:21 | c | CookieWithoutHttpOnly.go:61:20:61:21 | &... [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:61:21:61:21 | c | CookieWithoutHttpOnly.go:61:20:61:21 | &... [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:65:2:65:4 | definition of val | CookieWithoutHttpOnly.go:69:13:69:15 | val | provenance |  |
+| CookieWithoutHttpOnly.go:65:9:65:12 | true | CookieWithoutHttpOnly.go:69:13:69:15 | val | provenance |  |
+| CookieWithoutHttpOnly.go:66:7:70:2 | struct literal | CookieWithoutHttpOnly.go:71:20:71:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:66:7:70:2 | struct literal | CookieWithoutHttpOnly.go:71:20:71:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:66:7:70:2 | struct literal | CookieWithoutHttpOnly.go:71:20:71:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:66:7:70:2 | struct literal | CookieWithoutHttpOnly.go:71:20:71:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:66:7:70:2 | struct literal | CookieWithoutHttpOnly.go:71:21:71:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:66:7:70:2 | struct literal | CookieWithoutHttpOnly.go:71:21:71:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:67:13:67:21 | "session" | CookieWithoutHttpOnly.go:66:7:70:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:69:13:69:15 | val | CookieWithoutHttpOnly.go:66:7:70:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:71:20:71:21 | &... | CookieWithoutHttpOnly.go:71:21:71:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:71:20:71:21 | &... | CookieWithoutHttpOnly.go:71:21:71:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:71:20:71:21 | &... [pointer] | CookieWithoutHttpOnly.go:71:20:71:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:71:20:71:21 | &... [pointer] | CookieWithoutHttpOnly.go:71:20:71:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:71:20:71:21 | &... [pointer] | CookieWithoutHttpOnly.go:71:20:71:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:71:20:71:21 | &... [pointer] | CookieWithoutHttpOnly.go:71:20:71:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:71:20:71:21 | &... [pointer] | CookieWithoutHttpOnly.go:71:21:71:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:71:20:71:21 | &... [pointer] | CookieWithoutHttpOnly.go:71:21:71:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:71:21:71:21 | c | CookieWithoutHttpOnly.go:71:20:71:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:71:21:71:21 | c | CookieWithoutHttpOnly.go:71:20:71:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:71:21:71:21 | c | CookieWithoutHttpOnly.go:71:20:71:21 | &... [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:71:21:71:21 | c | CookieWithoutHttpOnly.go:71:20:71:21 | &... [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:75:2:75:4 | definition of val | CookieWithoutHttpOnly.go:80:15:80:17 | val | provenance |  |
+| CookieWithoutHttpOnly.go:75:9:75:12 | true | CookieWithoutHttpOnly.go:80:15:80:17 | val | provenance |  |
+| CookieWithoutHttpOnly.go:76:7:79:2 | struct literal | CookieWithoutHttpOnly.go:81:20:81:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:76:7:79:2 | struct literal | CookieWithoutHttpOnly.go:81:20:81:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:76:7:79:2 | struct literal | CookieWithoutHttpOnly.go:81:20:81:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:76:7:79:2 | struct literal | CookieWithoutHttpOnly.go:81:20:81:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:76:7:79:2 | struct literal | CookieWithoutHttpOnly.go:81:21:81:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:76:7:79:2 | struct literal | CookieWithoutHttpOnly.go:81:21:81:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:77:10:77:18 | "session" | CookieWithoutHttpOnly.go:76:7:79:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:80:15:80:17 | val | CookieWithoutHttpOnly.go:76:7:79:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:81:20:81:21 | &... | CookieWithoutHttpOnly.go:81:21:81:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:81:20:81:21 | &... | CookieWithoutHttpOnly.go:81:21:81:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:81:20:81:21 | &... [pointer] | CookieWithoutHttpOnly.go:81:20:81:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:81:20:81:21 | &... [pointer] | CookieWithoutHttpOnly.go:81:20:81:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:81:20:81:21 | &... [pointer] | CookieWithoutHttpOnly.go:81:20:81:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:81:20:81:21 | &... [pointer] | CookieWithoutHttpOnly.go:81:20:81:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:81:20:81:21 | &... [pointer] | CookieWithoutHttpOnly.go:81:21:81:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:81:20:81:21 | &... [pointer] | CookieWithoutHttpOnly.go:81:21:81:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:81:21:81:21 | c | CookieWithoutHttpOnly.go:81:20:81:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:81:21:81:21 | c | CookieWithoutHttpOnly.go:81:20:81:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:81:21:81:21 | c | CookieWithoutHttpOnly.go:81:20:81:21 | &... [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:81:21:81:21 | c | CookieWithoutHttpOnly.go:81:20:81:21 | &... [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:85:2:85:4 | definition of val | CookieWithoutHttpOnly.go:90:15:90:17 | val | provenance |  |
+| CookieWithoutHttpOnly.go:85:9:85:13 | false | CookieWithoutHttpOnly.go:90:15:90:17 | val | provenance |  |
+| CookieWithoutHttpOnly.go:86:7:89:2 | struct literal | CookieWithoutHttpOnly.go:91:20:91:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:86:7:89:2 | struct literal | CookieWithoutHttpOnly.go:91:20:91:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:86:7:89:2 | struct literal | CookieWithoutHttpOnly.go:91:20:91:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:86:7:89:2 | struct literal | CookieWithoutHttpOnly.go:91:20:91:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:86:7:89:2 | struct literal | CookieWithoutHttpOnly.go:91:21:91:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:86:7:89:2 | struct literal | CookieWithoutHttpOnly.go:91:21:91:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:87:10:87:18 | "session" | CookieWithoutHttpOnly.go:86:7:89:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:90:15:90:17 | val | CookieWithoutHttpOnly.go:86:7:89:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:91:20:91:21 | &... | CookieWithoutHttpOnly.go:91:21:91:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:91:20:91:21 | &... | CookieWithoutHttpOnly.go:91:21:91:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:91:20:91:21 | &... [pointer] | CookieWithoutHttpOnly.go:91:20:91:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:91:20:91:21 | &... [pointer] | CookieWithoutHttpOnly.go:91:20:91:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:91:20:91:21 | &... [pointer] | CookieWithoutHttpOnly.go:91:20:91:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:91:20:91:21 | &... [pointer] | CookieWithoutHttpOnly.go:91:20:91:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:91:20:91:21 | &... [pointer] | CookieWithoutHttpOnly.go:91:21:91:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:91:20:91:21 | &... [pointer] | CookieWithoutHttpOnly.go:91:21:91:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:91:21:91:21 | c | CookieWithoutHttpOnly.go:91:20:91:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:91:21:91:21 | c | CookieWithoutHttpOnly.go:91:20:91:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:91:21:91:21 | c | CookieWithoutHttpOnly.go:91:20:91:21 | &... [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:91:21:91:21 | c | CookieWithoutHttpOnly.go:91:20:91:21 | &... [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:95:7:98:2 | struct literal | CookieWithoutHttpOnly.go:100:20:100:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:95:7:98:2 | struct literal | CookieWithoutHttpOnly.go:100:20:100:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:95:7:98:2 | struct literal | CookieWithoutHttpOnly.go:100:21:100:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:99:15:99:19 | false | CookieWithoutHttpOnly.go:95:7:98:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:100:20:100:21 | &... | CookieWithoutHttpOnly.go:100:21:100:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:100:20:100:21 | &... [pointer] | CookieWithoutHttpOnly.go:100:20:100:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:100:20:100:21 | &... [pointer] | CookieWithoutHttpOnly.go:100:20:100:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:100:20:100:21 | &... [pointer] | CookieWithoutHttpOnly.go:100:21:100:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:100:21:100:21 | c | CookieWithoutHttpOnly.go:100:20:100:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:100:21:100:21 | c | CookieWithoutHttpOnly.go:100:20:100:21 | &... [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:104:10:104:18 | "session" | CookieWithoutHttpOnly.go:106:10:106:13 | name | provenance |  |
+| CookieWithoutHttpOnly.go:105:7:108:2 | struct literal | CookieWithoutHttpOnly.go:110:20:110:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:105:7:108:2 | struct literal | CookieWithoutHttpOnly.go:110:20:110:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:105:7:108:2 | struct literal | CookieWithoutHttpOnly.go:110:20:110:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:105:7:108:2 | struct literal | CookieWithoutHttpOnly.go:110:20:110:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:105:7:108:2 | struct literal | CookieWithoutHttpOnly.go:110:21:110:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:105:7:108:2 | struct literal | CookieWithoutHttpOnly.go:110:21:110:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:106:10:106:13 | name | CookieWithoutHttpOnly.go:105:7:108:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:109:15:109:19 | false | CookieWithoutHttpOnly.go:105:7:108:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:110:20:110:21 | &... | CookieWithoutHttpOnly.go:110:21:110:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:110:20:110:21 | &... | CookieWithoutHttpOnly.go:110:21:110:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:110:20:110:21 | &... [pointer] | CookieWithoutHttpOnly.go:110:20:110:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:110:20:110:21 | &... [pointer] | CookieWithoutHttpOnly.go:110:20:110:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:110:20:110:21 | &... [pointer] | CookieWithoutHttpOnly.go:110:20:110:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:110:20:110:21 | &... [pointer] | CookieWithoutHttpOnly.go:110:20:110:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:110:20:110:21 | &... [pointer] | CookieWithoutHttpOnly.go:110:21:110:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:110:20:110:21 | &... [pointer] | CookieWithoutHttpOnly.go:110:21:110:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:110:21:110:21 | c | CookieWithoutHttpOnly.go:110:20:110:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:110:21:110:21 | c | CookieWithoutHttpOnly.go:110:20:110:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:110:21:110:21 | c | CookieWithoutHttpOnly.go:110:20:110:21 | &... [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:110:21:110:21 | c | CookieWithoutHttpOnly.go:110:20:110:21 | &... [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:114:13:114:24 | "login_name" | CookieWithoutHttpOnly.go:116:10:116:16 | session | provenance |  |
+| CookieWithoutHttpOnly.go:115:7:118:2 | struct literal | CookieWithoutHttpOnly.go:120:20:120:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:115:7:118:2 | struct literal | CookieWithoutHttpOnly.go:120:20:120:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:115:7:118:2 | struct literal | CookieWithoutHttpOnly.go:120:20:120:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:115:7:118:2 | struct literal | CookieWithoutHttpOnly.go:120:20:120:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:115:7:118:2 | struct literal | CookieWithoutHttpOnly.go:120:21:120:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:115:7:118:2 | struct literal | CookieWithoutHttpOnly.go:120:21:120:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:116:10:116:16 | session | CookieWithoutHttpOnly.go:115:7:118:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:119:15:119:19 | false | CookieWithoutHttpOnly.go:115:7:118:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:120:20:120:21 | &... | CookieWithoutHttpOnly.go:120:21:120:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:120:20:120:21 | &... | CookieWithoutHttpOnly.go:120:21:120:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:120:20:120:21 | &... [pointer] | CookieWithoutHttpOnly.go:120:20:120:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:120:20:120:21 | &... [pointer] | CookieWithoutHttpOnly.go:120:20:120:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:120:20:120:21 | &... [pointer] | CookieWithoutHttpOnly.go:120:20:120:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:120:20:120:21 | &... [pointer] | CookieWithoutHttpOnly.go:120:20:120:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:120:20:120:21 | &... [pointer] | CookieWithoutHttpOnly.go:120:21:120:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:120:20:120:21 | &... [pointer] | CookieWithoutHttpOnly.go:120:21:120:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:120:21:120:21 | c | CookieWithoutHttpOnly.go:120:20:120:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:120:21:120:21 | c | CookieWithoutHttpOnly.go:120:20:120:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:120:21:120:21 | c | CookieWithoutHttpOnly.go:120:20:120:21 | &... [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:120:21:120:21 | c | CookieWithoutHttpOnly.go:120:20:120:21 | &... [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore | CookieWithoutHttpOnly.go:126:16:126:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore | CookieWithoutHttpOnly.go:134:16:134:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore | CookieWithoutHttpOnly.go:146:16:146:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore | CookieWithoutHttpOnly.go:158:16:158:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore | CookieWithoutHttpOnly.go:170:16:170:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore | CookieWithoutHttpOnly.go:183:16:183:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore | CookieWithoutHttpOnly.go:191:2:191:6 | store | provenance |  |
+| CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore | CookieWithoutHttpOnly.go:195:16:195:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore | CookieWithoutHttpOnly.go:202:2:202:6 | store | provenance |  |
+| CookieWithoutHttpOnly.go:126:2:126:43 | ... := ...[0] | CookieWithoutHttpOnly.go:129:2:129:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:126:16:126:20 | store | CookieWithoutHttpOnly.go:126:2:126:43 | ... := ...[0] | provenance | Config |
+| CookieWithoutHttpOnly.go:126:16:126:20 | store | CookieWithoutHttpOnly.go:126:16:126:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:126:16:126:20 | store | CookieWithoutHttpOnly.go:134:16:134:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:126:16:126:20 | store | CookieWithoutHttpOnly.go:146:16:146:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:126:16:126:20 | store | CookieWithoutHttpOnly.go:158:16:158:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:126:16:126:20 | store | CookieWithoutHttpOnly.go:170:16:170:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:126:16:126:20 | store | CookieWithoutHttpOnly.go:183:16:183:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:126:16:126:20 | store | CookieWithoutHttpOnly.go:191:2:191:6 | store | provenance |  |
+| CookieWithoutHttpOnly.go:126:16:126:20 | store | CookieWithoutHttpOnly.go:195:16:195:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:126:16:126:20 | store | CookieWithoutHttpOnly.go:202:2:202:6 | store | provenance |  |
+| CookieWithoutHttpOnly.go:133:2:133:9 | definition of httpOnly | CookieWithoutHttpOnly.go:139:13:139:20 | httpOnly | provenance |  |
+| CookieWithoutHttpOnly.go:133:14:133:18 | false | CookieWithoutHttpOnly.go:139:13:139:20 | httpOnly | provenance |  |
+| CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:135:2:135:8 | session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:135:2:135:8 | session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:137:2:137:8 | session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:137:2:137:8 | session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:142:2:142:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:142:2:142:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:134:2:134:43 | ... := ...[0] | CookieWithoutHttpOnly.go:142:2:142:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:134:16:134:20 | store | CookieWithoutHttpOnly.go:126:16:126:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:134:16:134:20 | store | CookieWithoutHttpOnly.go:134:2:134:43 | ... := ...[0] | provenance | Config |
+| CookieWithoutHttpOnly.go:134:16:134:20 | store | CookieWithoutHttpOnly.go:134:16:134:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:134:16:134:20 | store | CookieWithoutHttpOnly.go:146:16:146:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:134:16:134:20 | store | CookieWithoutHttpOnly.go:158:16:158:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:134:16:134:20 | store | CookieWithoutHttpOnly.go:170:16:170:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:134:16:134:20 | store | CookieWithoutHttpOnly.go:183:16:183:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:134:16:134:20 | store | CookieWithoutHttpOnly.go:191:2:191:6 | store | provenance |  |
+| CookieWithoutHttpOnly.go:134:16:134:20 | store | CookieWithoutHttpOnly.go:195:16:195:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:134:16:134:20 | store | CookieWithoutHttpOnly.go:202:2:202:6 | store | provenance |  |
+| CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | CookieWithoutHttpOnly.go:137:2:137:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | CookieWithoutHttpOnly.go:137:2:137:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | CookieWithoutHttpOnly.go:142:2:142:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | CookieWithoutHttpOnly.go:142:2:142:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:135:2:135:8 | session [pointer] | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:135:2:135:8 | session [pointer] | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | CookieWithoutHttpOnly.go:137:2:137:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | CookieWithoutHttpOnly.go:137:2:137:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | CookieWithoutHttpOnly.go:142:2:142:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | CookieWithoutHttpOnly.go:142:2:142:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:137:2:137:8 | session | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:137:2:137:8 | session | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:137:2:137:8 | session [pointer] | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:137:2:137:8 | session [pointer] | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:137:20:140:2 | &... | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | provenance | Config |
+| CookieWithoutHttpOnly.go:137:20:140:2 | &... | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | provenance | Config |
+| CookieWithoutHttpOnly.go:137:20:140:2 | &... | CookieWithoutHttpOnly.go:137:2:137:8 | session | provenance | Config |
+| CookieWithoutHttpOnly.go:137:20:140:2 | &... | CookieWithoutHttpOnly.go:137:2:137:8 | session | provenance | Config |
+| CookieWithoutHttpOnly.go:137:20:140:2 | &... | CookieWithoutHttpOnly.go:137:21:140:2 | struct literal | provenance |  |
+| CookieWithoutHttpOnly.go:137:21:140:2 | struct literal | CookieWithoutHttpOnly.go:137:20:140:2 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:137:21:140:2 | struct literal | CookieWithoutHttpOnly.go:137:20:140:2 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:139:13:139:20 | httpOnly | CookieWithoutHttpOnly.go:137:21:140:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:146:2:146:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:147:2:147:8 | session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:146:2:146:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:149:2:149:8 | session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:146:2:146:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:153:2:153:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:146:2:146:43 | ... := ...[0] | CookieWithoutHttpOnly.go:153:2:153:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:146:16:146:20 | store | CookieWithoutHttpOnly.go:126:16:126:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:146:16:146:20 | store | CookieWithoutHttpOnly.go:134:16:134:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:146:16:146:20 | store | CookieWithoutHttpOnly.go:146:2:146:43 | ... := ...[0] | provenance | Config |
+| CookieWithoutHttpOnly.go:146:16:146:20 | store | CookieWithoutHttpOnly.go:146:16:146:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:146:16:146:20 | store | CookieWithoutHttpOnly.go:158:16:158:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:146:16:146:20 | store | CookieWithoutHttpOnly.go:170:16:170:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:146:16:146:20 | store | CookieWithoutHttpOnly.go:183:16:183:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:146:16:146:20 | store | CookieWithoutHttpOnly.go:191:2:191:6 | store | provenance |  |
+| CookieWithoutHttpOnly.go:146:16:146:20 | store | CookieWithoutHttpOnly.go:195:16:195:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:146:16:146:20 | store | CookieWithoutHttpOnly.go:202:2:202:6 | store | provenance |  |
+| CookieWithoutHttpOnly.go:147:2:147:8 | implicit dereference | CookieWithoutHttpOnly.go:146:2:146:8 | definition of session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:147:2:147:8 | implicit dereference | CookieWithoutHttpOnly.go:149:2:149:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:147:2:147:8 | implicit dereference | CookieWithoutHttpOnly.go:153:2:153:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:147:2:147:8 | session [pointer] | CookieWithoutHttpOnly.go:147:2:147:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:149:2:149:8 | implicit dereference | CookieWithoutHttpOnly.go:146:2:146:8 | definition of session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:149:2:149:8 | implicit dereference | CookieWithoutHttpOnly.go:147:2:147:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:149:2:149:8 | implicit dereference | CookieWithoutHttpOnly.go:149:2:149:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:149:2:149:8 | implicit dereference | CookieWithoutHttpOnly.go:153:2:153:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:149:2:149:8 | session | CookieWithoutHttpOnly.go:149:2:149:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:149:2:149:8 | session [pointer] | CookieWithoutHttpOnly.go:149:2:149:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:149:20:151:2 | &... | CookieWithoutHttpOnly.go:149:2:149:8 | implicit dereference | provenance | Config |
+| CookieWithoutHttpOnly.go:149:20:151:2 | &... | CookieWithoutHttpOnly.go:149:2:149:8 | session | provenance | Config |
+| CookieWithoutHttpOnly.go:149:21:151:2 | struct literal | CookieWithoutHttpOnly.go:149:20:151:2 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:157:2:157:9 | definition of httpOnly | CookieWithoutHttpOnly.go:163:13:163:20 | httpOnly | provenance |  |
+| CookieWithoutHttpOnly.go:157:14:157:17 | true | CookieWithoutHttpOnly.go:163:13:163:20 | httpOnly | provenance |  |
+| CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:159:2:159:8 | session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:159:2:159:8 | session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:161:2:161:8 | session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:161:2:161:8 | session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:166:2:166:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:166:2:166:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:158:2:158:43 | ... := ...[0] | CookieWithoutHttpOnly.go:166:2:166:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:158:16:158:20 | store | CookieWithoutHttpOnly.go:126:16:126:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:158:16:158:20 | store | CookieWithoutHttpOnly.go:134:16:134:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:158:16:158:20 | store | CookieWithoutHttpOnly.go:146:16:146:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:158:16:158:20 | store | CookieWithoutHttpOnly.go:158:2:158:43 | ... := ...[0] | provenance | Config |
+| CookieWithoutHttpOnly.go:158:16:158:20 | store | CookieWithoutHttpOnly.go:158:16:158:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:158:16:158:20 | store | CookieWithoutHttpOnly.go:170:16:170:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:158:16:158:20 | store | CookieWithoutHttpOnly.go:183:16:183:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:158:16:158:20 | store | CookieWithoutHttpOnly.go:191:2:191:6 | store | provenance |  |
+| CookieWithoutHttpOnly.go:158:16:158:20 | store | CookieWithoutHttpOnly.go:195:16:195:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:158:16:158:20 | store | CookieWithoutHttpOnly.go:202:2:202:6 | store | provenance |  |
+| CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | CookieWithoutHttpOnly.go:161:2:161:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | CookieWithoutHttpOnly.go:161:2:161:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | CookieWithoutHttpOnly.go:166:2:166:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | CookieWithoutHttpOnly.go:166:2:166:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:159:2:159:8 | session [pointer] | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:159:2:159:8 | session [pointer] | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | CookieWithoutHttpOnly.go:161:2:161:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | CookieWithoutHttpOnly.go:161:2:161:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | CookieWithoutHttpOnly.go:166:2:166:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | CookieWithoutHttpOnly.go:166:2:166:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:161:2:161:8 | session | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:161:2:161:8 | session | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:161:2:161:8 | session [pointer] | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:161:2:161:8 | session [pointer] | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:161:20:164:2 | &... | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | provenance | Config |
+| CookieWithoutHttpOnly.go:161:20:164:2 | &... | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | provenance | Config |
+| CookieWithoutHttpOnly.go:161:20:164:2 | &... | CookieWithoutHttpOnly.go:161:2:161:8 | session | provenance | Config |
+| CookieWithoutHttpOnly.go:161:20:164:2 | &... | CookieWithoutHttpOnly.go:161:2:161:8 | session | provenance | Config |
+| CookieWithoutHttpOnly.go:161:20:164:2 | &... | CookieWithoutHttpOnly.go:161:21:164:2 | struct literal | provenance |  |
+| CookieWithoutHttpOnly.go:161:21:164:2 | struct literal | CookieWithoutHttpOnly.go:161:20:164:2 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:161:21:164:2 | struct literal | CookieWithoutHttpOnly.go:161:20:164:2 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:163:13:163:20 | httpOnly | CookieWithoutHttpOnly.go:161:21:164:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:169:56:169:63 | argument corresponding to httpOnly | CookieWithoutHttpOnly.go:175:13:175:20 | httpOnly | provenance |  |
+| CookieWithoutHttpOnly.go:169:56:169:63 | definition of httpOnly | CookieWithoutHttpOnly.go:175:13:175:20 | httpOnly | provenance |  |
+| CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:171:2:171:8 | session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:171:2:171:8 | session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:173:2:173:8 | session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:173:2:173:8 | session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:178:2:178:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:178:2:178:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:170:2:170:43 | ... := ...[0] | CookieWithoutHttpOnly.go:178:2:178:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:170:16:170:20 | store | CookieWithoutHttpOnly.go:126:16:126:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:170:16:170:20 | store | CookieWithoutHttpOnly.go:134:16:134:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:170:16:170:20 | store | CookieWithoutHttpOnly.go:146:16:146:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:170:16:170:20 | store | CookieWithoutHttpOnly.go:158:16:158:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:170:16:170:20 | store | CookieWithoutHttpOnly.go:170:2:170:43 | ... := ...[0] | provenance | Config |
+| CookieWithoutHttpOnly.go:170:16:170:20 | store | CookieWithoutHttpOnly.go:170:16:170:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:170:16:170:20 | store | CookieWithoutHttpOnly.go:183:16:183:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:170:16:170:20 | store | CookieWithoutHttpOnly.go:191:2:191:6 | store | provenance |  |
+| CookieWithoutHttpOnly.go:170:16:170:20 | store | CookieWithoutHttpOnly.go:195:16:195:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:170:16:170:20 | store | CookieWithoutHttpOnly.go:202:2:202:6 | store | provenance |  |
+| CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | CookieWithoutHttpOnly.go:173:2:173:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | CookieWithoutHttpOnly.go:173:2:173:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | CookieWithoutHttpOnly.go:178:2:178:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | CookieWithoutHttpOnly.go:178:2:178:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:171:2:171:8 | session [pointer] | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:171:2:171:8 | session [pointer] | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] | provenance |  |
+| CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | CookieWithoutHttpOnly.go:173:2:173:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | CookieWithoutHttpOnly.go:173:2:173:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | CookieWithoutHttpOnly.go:178:2:178:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | CookieWithoutHttpOnly.go:178:2:178:8 | session | provenance |  |
+| CookieWithoutHttpOnly.go:173:2:173:8 | session | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:173:2:173:8 | session | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:173:2:173:8 | session [pointer] | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:173:2:173:8 | session [pointer] | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | provenance |  |
+| CookieWithoutHttpOnly.go:173:20:176:2 | &... | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | provenance | Config |
+| CookieWithoutHttpOnly.go:173:20:176:2 | &... | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | provenance | Config |
+| CookieWithoutHttpOnly.go:173:20:176:2 | &... | CookieWithoutHttpOnly.go:173:2:173:8 | session | provenance | Config |
+| CookieWithoutHttpOnly.go:173:20:176:2 | &... | CookieWithoutHttpOnly.go:173:2:173:8 | session | provenance | Config |
+| CookieWithoutHttpOnly.go:173:20:176:2 | &... | CookieWithoutHttpOnly.go:173:21:176:2 | struct literal | provenance |  |
+| CookieWithoutHttpOnly.go:173:21:176:2 | struct literal | CookieWithoutHttpOnly.go:173:20:176:2 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:173:21:176:2 | struct literal | CookieWithoutHttpOnly.go:173:20:176:2 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:175:13:175:20 | httpOnly | CookieWithoutHttpOnly.go:173:21:176:2 | struct literal | provenance | Config |
+| CookieWithoutHttpOnly.go:183:2:183:43 | ... := ...[0] | CookieWithoutHttpOnly.go:191:19:191:25 | session | provenance |  |
+| CookieWithoutHttpOnly.go:183:16:183:20 | store | CookieWithoutHttpOnly.go:126:16:126:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:183:16:183:20 | store | CookieWithoutHttpOnly.go:134:16:134:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:183:16:183:20 | store | CookieWithoutHttpOnly.go:146:16:146:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:183:16:183:20 | store | CookieWithoutHttpOnly.go:158:16:158:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:183:16:183:20 | store | CookieWithoutHttpOnly.go:170:16:170:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:183:16:183:20 | store | CookieWithoutHttpOnly.go:183:2:183:43 | ... := ...[0] | provenance | Config |
+| CookieWithoutHttpOnly.go:183:16:183:20 | store | CookieWithoutHttpOnly.go:183:16:183:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:183:16:183:20 | store | CookieWithoutHttpOnly.go:191:2:191:6 | store | provenance |  |
+| CookieWithoutHttpOnly.go:183:16:183:20 | store | CookieWithoutHttpOnly.go:195:16:195:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:183:16:183:20 | store | CookieWithoutHttpOnly.go:202:2:202:6 | store | provenance |  |
+| CookieWithoutHttpOnly.go:191:2:191:6 | store | CookieWithoutHttpOnly.go:126:16:126:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:191:2:191:6 | store | CookieWithoutHttpOnly.go:134:16:134:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:191:2:191:6 | store | CookieWithoutHttpOnly.go:146:16:146:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:191:2:191:6 | store | CookieWithoutHttpOnly.go:158:16:158:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:191:2:191:6 | store | CookieWithoutHttpOnly.go:170:16:170:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:191:2:191:6 | store | CookieWithoutHttpOnly.go:183:16:183:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:191:2:191:6 | store | CookieWithoutHttpOnly.go:191:2:191:6 | store | provenance |  |
+| CookieWithoutHttpOnly.go:191:2:191:6 | store | CookieWithoutHttpOnly.go:195:16:195:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:191:2:191:6 | store | CookieWithoutHttpOnly.go:202:2:202:6 | store | provenance |  |
+| CookieWithoutHttpOnly.go:195:2:195:43 | ... := ...[0] | CookieWithoutHttpOnly.go:202:19:202:25 | session | provenance |  |
+| CookieWithoutHttpOnly.go:195:16:195:20 | store | CookieWithoutHttpOnly.go:126:16:126:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:195:16:195:20 | store | CookieWithoutHttpOnly.go:134:16:134:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:195:16:195:20 | store | CookieWithoutHttpOnly.go:146:16:146:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:195:16:195:20 | store | CookieWithoutHttpOnly.go:158:16:158:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:195:16:195:20 | store | CookieWithoutHttpOnly.go:170:16:170:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:195:16:195:20 | store | CookieWithoutHttpOnly.go:183:16:183:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:195:16:195:20 | store | CookieWithoutHttpOnly.go:191:2:191:6 | store | provenance |  |
+| CookieWithoutHttpOnly.go:195:16:195:20 | store | CookieWithoutHttpOnly.go:195:2:195:43 | ... := ...[0] | provenance | Config |
+| CookieWithoutHttpOnly.go:195:16:195:20 | store | CookieWithoutHttpOnly.go:195:16:195:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:195:16:195:20 | store | CookieWithoutHttpOnly.go:202:2:202:6 | store | provenance |  |
+| CookieWithoutHttpOnly.go:202:2:202:6 | store | CookieWithoutHttpOnly.go:126:16:126:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:202:2:202:6 | store | CookieWithoutHttpOnly.go:134:16:134:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:202:2:202:6 | store | CookieWithoutHttpOnly.go:146:16:146:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:202:2:202:6 | store | CookieWithoutHttpOnly.go:158:16:158:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:202:2:202:6 | store | CookieWithoutHttpOnly.go:170:16:170:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:202:2:202:6 | store | CookieWithoutHttpOnly.go:183:16:183:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:202:2:202:6 | store | CookieWithoutHttpOnly.go:191:2:191:6 | store | provenance |  |
+| CookieWithoutHttpOnly.go:202:2:202:6 | store | CookieWithoutHttpOnly.go:195:16:195:20 | store | provenance |  |
+| CookieWithoutHttpOnly.go:202:2:202:6 | store | CookieWithoutHttpOnly.go:202:2:202:6 | store | provenance |  |
 nodes
+| CookieWithoutHttpOnly.go:11:7:14:2 | struct literal | semmle.label | struct literal |
 | CookieWithoutHttpOnly.go:12:10:12:18 | "session" | semmle.label | "session" |
 | CookieWithoutHttpOnly.go:15:20:15:21 | &... | semmle.label | &... |
 | CookieWithoutHttpOnly.go:15:20:15:21 | &... | semmle.label | &... |
 | CookieWithoutHttpOnly.go:15:20:15:21 | &... [pointer] | semmle.label | &... [pointer] |
 | CookieWithoutHttpOnly.go:15:21:15:21 | c | semmle.label | c |
+| CookieWithoutHttpOnly.go:19:7:23:2 | struct literal | semmle.label | struct literal |
+| CookieWithoutHttpOnly.go:19:7:23:2 | struct literal | semmle.label | struct literal |
 | CookieWithoutHttpOnly.go:20:13:20:21 | "session" | semmle.label | "session" |
 | CookieWithoutHttpOnly.go:22:13:22:17 | false | semmle.label | false |
 | CookieWithoutHttpOnly.go:24:20:24:21 | &... | semmle.label | &... |
@@ -406,6 +476,8 @@ nodes
 | CookieWithoutHttpOnly.go:24:20:24:21 | &... [pointer] | semmle.label | &... [pointer] |
 | CookieWithoutHttpOnly.go:24:21:24:21 | c | semmle.label | c |
 | CookieWithoutHttpOnly.go:24:21:24:21 | c | semmle.label | c |
+| CookieWithoutHttpOnly.go:28:7:32:2 | struct literal | semmle.label | struct literal |
+| CookieWithoutHttpOnly.go:28:7:32:2 | struct literal | semmle.label | struct literal |
 | CookieWithoutHttpOnly.go:29:13:29:21 | "session" | semmle.label | "session" |
 | CookieWithoutHttpOnly.go:31:13:31:16 | true | semmle.label | true |
 | CookieWithoutHttpOnly.go:33:20:33:21 | &... | semmle.label | &... |
@@ -416,6 +488,8 @@ nodes
 | CookieWithoutHttpOnly.go:33:20:33:21 | &... [pointer] | semmle.label | &... [pointer] |
 | CookieWithoutHttpOnly.go:33:21:33:21 | c | semmle.label | c |
 | CookieWithoutHttpOnly.go:33:21:33:21 | c | semmle.label | c |
+| CookieWithoutHttpOnly.go:37:7:40:2 | struct literal | semmle.label | struct literal |
+| CookieWithoutHttpOnly.go:37:7:40:2 | struct literal | semmle.label | struct literal |
 | CookieWithoutHttpOnly.go:38:10:38:18 | "session" | semmle.label | "session" |
 | CookieWithoutHttpOnly.go:41:15:41:18 | true | semmle.label | true |
 | CookieWithoutHttpOnly.go:42:20:42:21 | &... | semmle.label | &... |
@@ -426,6 +500,8 @@ nodes
 | CookieWithoutHttpOnly.go:42:20:42:21 | &... [pointer] | semmle.label | &... [pointer] |
 | CookieWithoutHttpOnly.go:42:21:42:21 | c | semmle.label | c |
 | CookieWithoutHttpOnly.go:42:21:42:21 | c | semmle.label | c |
+| CookieWithoutHttpOnly.go:46:7:49:2 | struct literal | semmle.label | struct literal |
+| CookieWithoutHttpOnly.go:46:7:49:2 | struct literal | semmle.label | struct literal |
 | CookieWithoutHttpOnly.go:47:10:47:18 | "session" | semmle.label | "session" |
 | CookieWithoutHttpOnly.go:50:15:50:19 | false | semmle.label | false |
 | CookieWithoutHttpOnly.go:51:20:51:21 | &... | semmle.label | &... |
@@ -438,6 +514,8 @@ nodes
 | CookieWithoutHttpOnly.go:51:21:51:21 | c | semmle.label | c |
 | CookieWithoutHttpOnly.go:55:2:55:4 | definition of val | semmle.label | definition of val |
 | CookieWithoutHttpOnly.go:55:9:55:13 | false | semmle.label | false |
+| CookieWithoutHttpOnly.go:56:7:60:2 | struct literal | semmle.label | struct literal |
+| CookieWithoutHttpOnly.go:56:7:60:2 | struct literal | semmle.label | struct literal |
 | CookieWithoutHttpOnly.go:57:13:57:21 | "session" | semmle.label | "session" |
 | CookieWithoutHttpOnly.go:59:13:59:15 | val | semmle.label | val |
 | CookieWithoutHttpOnly.go:61:20:61:21 | &... | semmle.label | &... |
@@ -450,6 +528,8 @@ nodes
 | CookieWithoutHttpOnly.go:61:21:61:21 | c | semmle.label | c |
 | CookieWithoutHttpOnly.go:65:2:65:4 | definition of val | semmle.label | definition of val |
 | CookieWithoutHttpOnly.go:65:9:65:12 | true | semmle.label | true |
+| CookieWithoutHttpOnly.go:66:7:70:2 | struct literal | semmle.label | struct literal |
+| CookieWithoutHttpOnly.go:66:7:70:2 | struct literal | semmle.label | struct literal |
 | CookieWithoutHttpOnly.go:67:13:67:21 | "session" | semmle.label | "session" |
 | CookieWithoutHttpOnly.go:69:13:69:15 | val | semmle.label | val |
 | CookieWithoutHttpOnly.go:71:20:71:21 | &... | semmle.label | &... |
@@ -462,6 +542,8 @@ nodes
 | CookieWithoutHttpOnly.go:71:21:71:21 | c | semmle.label | c |
 | CookieWithoutHttpOnly.go:75:2:75:4 | definition of val | semmle.label | definition of val |
 | CookieWithoutHttpOnly.go:75:9:75:12 | true | semmle.label | true |
+| CookieWithoutHttpOnly.go:76:7:79:2 | struct literal | semmle.label | struct literal |
+| CookieWithoutHttpOnly.go:76:7:79:2 | struct literal | semmle.label | struct literal |
 | CookieWithoutHttpOnly.go:77:10:77:18 | "session" | semmle.label | "session" |
 | CookieWithoutHttpOnly.go:80:15:80:17 | val | semmle.label | val |
 | CookieWithoutHttpOnly.go:81:20:81:21 | &... | semmle.label | &... |
@@ -474,6 +556,8 @@ nodes
 | CookieWithoutHttpOnly.go:81:21:81:21 | c | semmle.label | c |
 | CookieWithoutHttpOnly.go:85:2:85:4 | definition of val | semmle.label | definition of val |
 | CookieWithoutHttpOnly.go:85:9:85:13 | false | semmle.label | false |
+| CookieWithoutHttpOnly.go:86:7:89:2 | struct literal | semmle.label | struct literal |
+| CookieWithoutHttpOnly.go:86:7:89:2 | struct literal | semmle.label | struct literal |
 | CookieWithoutHttpOnly.go:87:10:87:18 | "session" | semmle.label | "session" |
 | CookieWithoutHttpOnly.go:90:15:90:17 | val | semmle.label | val |
 | CookieWithoutHttpOnly.go:91:20:91:21 | &... | semmle.label | &... |
@@ -484,12 +568,16 @@ nodes
 | CookieWithoutHttpOnly.go:91:20:91:21 | &... [pointer] | semmle.label | &... [pointer] |
 | CookieWithoutHttpOnly.go:91:21:91:21 | c | semmle.label | c |
 | CookieWithoutHttpOnly.go:91:21:91:21 | c | semmle.label | c |
+| CookieWithoutHttpOnly.go:95:7:98:2 | struct literal | semmle.label | struct literal |
 | CookieWithoutHttpOnly.go:99:15:99:19 | false | semmle.label | false |
 | CookieWithoutHttpOnly.go:100:20:100:21 | &... | semmle.label | &... |
 | CookieWithoutHttpOnly.go:100:20:100:21 | &... | semmle.label | &... |
 | CookieWithoutHttpOnly.go:100:20:100:21 | &... [pointer] | semmle.label | &... [pointer] |
 | CookieWithoutHttpOnly.go:100:21:100:21 | c | semmle.label | c |
 | CookieWithoutHttpOnly.go:104:10:104:18 | "session" | semmle.label | "session" |
+| CookieWithoutHttpOnly.go:105:7:108:2 | struct literal | semmle.label | struct literal |
+| CookieWithoutHttpOnly.go:105:7:108:2 | struct literal | semmle.label | struct literal |
+| CookieWithoutHttpOnly.go:106:10:106:13 | name | semmle.label | name |
 | CookieWithoutHttpOnly.go:109:15:109:19 | false | semmle.label | false |
 | CookieWithoutHttpOnly.go:110:20:110:21 | &... | semmle.label | &... |
 | CookieWithoutHttpOnly.go:110:20:110:21 | &... | semmle.label | &... |
@@ -500,6 +588,8 @@ nodes
 | CookieWithoutHttpOnly.go:110:21:110:21 | c | semmle.label | c |
 | CookieWithoutHttpOnly.go:110:21:110:21 | c | semmle.label | c |
 | CookieWithoutHttpOnly.go:114:13:114:24 | "login_name" | semmle.label | "login_name" |
+| CookieWithoutHttpOnly.go:115:7:118:2 | struct literal | semmle.label | struct literal |
+| CookieWithoutHttpOnly.go:115:7:118:2 | struct literal | semmle.label | struct literal |
 | CookieWithoutHttpOnly.go:116:10:116:16 | session | semmle.label | session |
 | CookieWithoutHttpOnly.go:119:15:119:19 | false | semmle.label | false |
 | CookieWithoutHttpOnly.go:120:20:120:21 | &... | semmle.label | &... |
@@ -511,12 +601,14 @@ nodes
 | CookieWithoutHttpOnly.go:120:21:120:21 | c | semmle.label | c |
 | CookieWithoutHttpOnly.go:120:21:120:21 | c | semmle.label | c |
 | CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore | semmle.label | call to NewCookieStore |
+| CookieWithoutHttpOnly.go:126:2:126:43 | ... := ...[0] | semmle.label | ... := ...[0] |
 | CookieWithoutHttpOnly.go:126:16:126:20 | store | semmle.label | store |
 | CookieWithoutHttpOnly.go:129:2:129:8 | session | semmle.label | session |
 | CookieWithoutHttpOnly.go:133:2:133:9 | definition of httpOnly | semmle.label | definition of httpOnly |
 | CookieWithoutHttpOnly.go:133:14:133:18 | false | semmle.label | false |
 | CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] | semmle.label | definition of session [pointer] |
 | CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] | semmle.label | definition of session [pointer] |
+| CookieWithoutHttpOnly.go:134:2:134:43 | ... := ...[0] | semmle.label | ... := ...[0] |
 | CookieWithoutHttpOnly.go:134:16:134:20 | store | semmle.label | store |
 | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | semmle.label | implicit dereference |
 | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | semmle.label | implicit dereference |
@@ -524,19 +616,27 @@ nodes
 | CookieWithoutHttpOnly.go:135:2:135:8 | session [pointer] | semmle.label | session [pointer] |
 | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | semmle.label | implicit dereference |
 | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | semmle.label | implicit dereference |
+| CookieWithoutHttpOnly.go:137:2:137:8 | session | semmle.label | session |
+| CookieWithoutHttpOnly.go:137:2:137:8 | session | semmle.label | session |
 | CookieWithoutHttpOnly.go:137:2:137:8 | session [pointer] | semmle.label | session [pointer] |
 | CookieWithoutHttpOnly.go:137:2:137:8 | session [pointer] | semmle.label | session [pointer] |
+| CookieWithoutHttpOnly.go:137:20:140:2 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:137:20:140:2 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:137:21:140:2 | struct literal | semmle.label | struct literal |
 | CookieWithoutHttpOnly.go:137:21:140:2 | struct literal | semmle.label | struct literal |
 | CookieWithoutHttpOnly.go:139:13:139:20 | httpOnly | semmle.label | httpOnly |
 | CookieWithoutHttpOnly.go:142:2:142:8 | session | semmle.label | session |
 | CookieWithoutHttpOnly.go:142:2:142:8 | session | semmle.label | session |
 | CookieWithoutHttpOnly.go:142:2:142:8 | session | semmle.label | session |
 | CookieWithoutHttpOnly.go:146:2:146:8 | definition of session [pointer] | semmle.label | definition of session [pointer] |
+| CookieWithoutHttpOnly.go:146:2:146:43 | ... := ...[0] | semmle.label | ... := ...[0] |
 | CookieWithoutHttpOnly.go:146:16:146:20 | store | semmle.label | store |
 | CookieWithoutHttpOnly.go:147:2:147:8 | implicit dereference | semmle.label | implicit dereference |
 | CookieWithoutHttpOnly.go:147:2:147:8 | session [pointer] | semmle.label | session [pointer] |
 | CookieWithoutHttpOnly.go:149:2:149:8 | implicit dereference | semmle.label | implicit dereference |
+| CookieWithoutHttpOnly.go:149:2:149:8 | session | semmle.label | session |
 | CookieWithoutHttpOnly.go:149:2:149:8 | session [pointer] | semmle.label | session [pointer] |
+| CookieWithoutHttpOnly.go:149:20:151:2 | &... | semmle.label | &... |
 | CookieWithoutHttpOnly.go:149:21:151:2 | struct literal | semmle.label | struct literal |
 | CookieWithoutHttpOnly.go:153:2:153:8 | session | semmle.label | session |
 | CookieWithoutHttpOnly.go:153:2:153:8 | session | semmle.label | session |
@@ -544,6 +644,7 @@ nodes
 | CookieWithoutHttpOnly.go:157:14:157:17 | true | semmle.label | true |
 | CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] | semmle.label | definition of session [pointer] |
 | CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] | semmle.label | definition of session [pointer] |
+| CookieWithoutHttpOnly.go:158:2:158:43 | ... := ...[0] | semmle.label | ... := ...[0] |
 | CookieWithoutHttpOnly.go:158:16:158:20 | store | semmle.label | store |
 | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | semmle.label | implicit dereference |
 | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | semmle.label | implicit dereference |
@@ -551,8 +652,13 @@ nodes
 | CookieWithoutHttpOnly.go:159:2:159:8 | session [pointer] | semmle.label | session [pointer] |
 | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | semmle.label | implicit dereference |
 | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | semmle.label | implicit dereference |
+| CookieWithoutHttpOnly.go:161:2:161:8 | session | semmle.label | session |
+| CookieWithoutHttpOnly.go:161:2:161:8 | session | semmle.label | session |
 | CookieWithoutHttpOnly.go:161:2:161:8 | session [pointer] | semmle.label | session [pointer] |
 | CookieWithoutHttpOnly.go:161:2:161:8 | session [pointer] | semmle.label | session [pointer] |
+| CookieWithoutHttpOnly.go:161:20:164:2 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:161:20:164:2 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:161:21:164:2 | struct literal | semmle.label | struct literal |
 | CookieWithoutHttpOnly.go:161:21:164:2 | struct literal | semmle.label | struct literal |
 | CookieWithoutHttpOnly.go:163:13:163:20 | httpOnly | semmle.label | httpOnly |
 | CookieWithoutHttpOnly.go:166:2:166:8 | session | semmle.label | session |
@@ -562,6 +668,7 @@ nodes
 | CookieWithoutHttpOnly.go:169:56:169:63 | definition of httpOnly | semmle.label | definition of httpOnly |
 | CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] | semmle.label | definition of session [pointer] |
 | CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] | semmle.label | definition of session [pointer] |
+| CookieWithoutHttpOnly.go:170:2:170:43 | ... := ...[0] | semmle.label | ... := ...[0] |
 | CookieWithoutHttpOnly.go:170:16:170:20 | store | semmle.label | store |
 | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | semmle.label | implicit dereference |
 | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | semmle.label | implicit dereference |
@@ -569,16 +676,25 @@ nodes
 | CookieWithoutHttpOnly.go:171:2:171:8 | session [pointer] | semmle.label | session [pointer] |
 | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | semmle.label | implicit dereference |
 | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | semmle.label | implicit dereference |
+| CookieWithoutHttpOnly.go:173:2:173:8 | session | semmle.label | session |
+| CookieWithoutHttpOnly.go:173:2:173:8 | session | semmle.label | session |
 | CookieWithoutHttpOnly.go:173:2:173:8 | session [pointer] | semmle.label | session [pointer] |
 | CookieWithoutHttpOnly.go:173:2:173:8 | session [pointer] | semmle.label | session [pointer] |
+| CookieWithoutHttpOnly.go:173:20:176:2 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:173:20:176:2 | &... | semmle.label | &... |
+| CookieWithoutHttpOnly.go:173:21:176:2 | struct literal | semmle.label | struct literal |
 | CookieWithoutHttpOnly.go:173:21:176:2 | struct literal | semmle.label | struct literal |
 | CookieWithoutHttpOnly.go:175:13:175:20 | httpOnly | semmle.label | httpOnly |
 | CookieWithoutHttpOnly.go:178:2:178:8 | session | semmle.label | session |
 | CookieWithoutHttpOnly.go:178:2:178:8 | session | semmle.label | session |
 | CookieWithoutHttpOnly.go:178:2:178:8 | session | semmle.label | session |
+| CookieWithoutHttpOnly.go:183:2:183:43 | ... := ...[0] | semmle.label | ... := ...[0] |
 | CookieWithoutHttpOnly.go:183:16:183:20 | store | semmle.label | store |
+| CookieWithoutHttpOnly.go:191:2:191:6 | store | semmle.label | store |
 | CookieWithoutHttpOnly.go:191:19:191:25 | session | semmle.label | session |
+| CookieWithoutHttpOnly.go:195:2:195:43 | ... := ...[0] | semmle.label | ... := ...[0] |
 | CookieWithoutHttpOnly.go:195:16:195:20 | store | semmle.label | store |
+| CookieWithoutHttpOnly.go:202:2:202:6 | store | semmle.label | store |
 | CookieWithoutHttpOnly.go:202:19:202:25 | session | semmle.label | session |
 | CookieWithoutHttpOnly.go:214:66:214:70 | false | semmle.label | false |
 subpaths

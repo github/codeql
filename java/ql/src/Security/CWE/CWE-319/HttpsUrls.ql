@@ -8,13 +8,14 @@
  * @id java/non-https-url
  * @tags security
  *       external/cwe/cwe-319
+ *       external/cwe/cwe-345
  */
 
 import java
 import semmle.code.java.security.HttpsUrlsQuery
-import DataFlow::PathGraph
+import HttpStringToUrlOpenMethodFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink
-where any(HttpStringToUrlOpenMethodFlowConfig c).hasFlowPath(source, sink)
+from HttpStringToUrlOpenMethodFlow::PathNode source, HttpStringToUrlOpenMethodFlow::PathNode sink
+where HttpStringToUrlOpenMethodFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "URL may have been constructed with HTTP protocol, using $@.",
   source.getNode(), "this HTTP URL"

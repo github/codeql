@@ -1,3 +1,5 @@
+deprecated module;
+
 import java
 import DataFlow
 import semmle.code.java.Reflection
@@ -6,7 +8,7 @@ import semmle.code.java.dataflow.FlowSources
 /**
  * A call to `java.lang.reflect.Method.invoke`.
  */
-class MethodInvokeCall extends MethodAccess {
+class MethodInvokeCall extends MethodCall {
   MethodInvokeCall() { this.getMethod().hasQualifiedName("java.lang.reflect", "Method", "invoke") }
 }
 
@@ -15,7 +17,7 @@ class MethodInvokeCall extends MethodAccess {
  */
 class UnsafeReflectionSink extends DataFlow::ExprNode {
   UnsafeReflectionSink() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       (
         ma.getMethod().hasQualifiedName("java.lang.reflect", "Constructor<>", "newInstance") or
         ma instanceof MethodInvokeCall
@@ -31,7 +33,7 @@ class UnsafeReflectionSink extends DataFlow::ExprNode {
  * and its name contains "resolve", "load", etc.
  */
 predicate looksLikeResolveClassStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-  exists(MethodAccess ma, Method m, Expr arg | m = ma.getMethod() and arg = ma.getAnArgument() |
+  exists(MethodCall ma, Method m, Expr arg | m = ma.getMethod() and arg = ma.getAnArgument() |
     m.getReturnType() instanceof TypeClass and
     m.getName().toLowerCase() = ["resolve", "load", "class", "type"] and
     arg.getType() instanceof TypeString and
@@ -46,7 +48,7 @@ predicate looksLikeResolveClassStep(DataFlow::Node fromNode, DataFlow::Node toNo
  * and its name contains "instantiate" or similar terms.
  */
 predicate looksLikeInstantiateClassStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-  exists(MethodAccess ma, Method m, Expr arg | m = ma.getMethod() and arg = ma.getAnArgument() |
+  exists(MethodCall ma, Method m, Expr arg | m = ma.getMethod() and arg = ma.getAnArgument() |
     m.getReturnType() instanceof TypeObject and
     m.getName().toLowerCase() = ["instantiate", "instance", "create", "make", "getbean"] and
     arg.getType() instanceof TypeClass and

@@ -12,8 +12,9 @@
  */
 
 import java
+import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
-import DataFlow::PathGraph
+import ScriptInjectionFlow::PathGraph
 
 /** A method of ScriptEngine that allows code injection. */
 class ScriptEngineMethod extends Method {
@@ -74,7 +75,7 @@ class RhinoDefineClassMethod extends Method {
  * Holds if `ma` is a call to a `ScriptEngineMethod` and `sink` is an argument that
  * will be executed.
  */
-predicate isScriptArgument(MethodAccess ma, Expr sink) {
+predicate isScriptArgument(MethodCall ma, Expr sink) {
   exists(ScriptEngineMethod m |
     m = ma.getMethod() and
     if m.getDeclaringType().getAnAncestor().hasQualifiedName("javax.script", "ScriptEngineFactory")
@@ -86,14 +87,14 @@ predicate isScriptArgument(MethodAccess ma, Expr sink) {
 /**
  * Holds if a Rhino expression evaluation method is vulnerable to code injection.
  */
-predicate evaluatesRhinoExpression(MethodAccess ma, Expr sink) {
+predicate evaluatesRhinoExpression(MethodCall ma, Expr sink) {
   exists(RhinoEvaluateExpressionMethod m | m = ma.getMethod() |
     (
       if ma.getMethod().getName() = "compileReader"
       then sink = ma.getArgument(0) // The first argument is the input reader
       else sink = ma.getArgument(1) // The second argument is the JavaScript or Java input
     ) and
-    not exists(MethodAccess ca |
+    not exists(MethodCall ca |
       ca.getMethod().hasName(["initSafeStandardObjects", "setClassShutter"]) and // safe mode or `ClassShutter` constraint is enforced
       ma.getQualifier() = ca.getQualifier().(VarAccess).getVariable().getAnAccess()
     )
@@ -103,20 +104,20 @@ predicate evaluatesRhinoExpression(MethodAccess ma, Expr sink) {
 /**
  * Holds if a Rhino expression compilation method is vulnerable to code injection.
  */
-predicate compilesScript(MethodAccess ma, Expr sink) {
+predicate compilesScript(MethodCall ma, Expr sink) {
   exists(RhinoCompileClassMethod m | m = ma.getMethod() | sink = ma.getArgument(0))
 }
 
 /**
  * Holds if a Rhino class loading method is vulnerable to code injection.
  */
-predicate definesRhinoClass(MethodAccess ma, Expr sink) {
+predicate definesRhinoClass(MethodCall ma, Expr sink) {
   exists(RhinoDefineClassMethod m | m = ma.getMethod() | sink = ma.getArgument(1))
 }
 
 /** A script injection sink. */
 class ScriptInjectionSink extends DataFlow::ExprNode {
-  MethodAccess methodAccess;
+  MethodCall methodAccess;
 
   ScriptInjectionSink() {
     isScriptArgument(methodAccess, this.getExpr()) or
@@ -126,22 +127,28 @@ class ScriptInjectionSink extends DataFlow::ExprNode {
   }
 
   /** An access to the method associated with this sink. */
-  MethodAccess getMethodAccess() { result = methodAccess }
+  MethodCall getMethodCall() { result = methodAccess }
 }
 
 /**
- * A taint tracking configuration that tracks flow from `RemoteFlowSource` to an argument
+ * A taint tracking configuration that tracks flow from `ActiveThreatModelSource` to an argument
  * of a method call that executes injected script.
  */
-class ScriptInjectionConfiguration extends TaintTracking::Configuration {
-  ScriptInjectionConfiguration() { this = "ScriptInjectionConfiguration" }
+module ScriptInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof ScriptInjectionSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof ScriptInjectionSink }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, ScriptInjectionConfiguration conf
-where conf.hasFlowPath(source, sink)
-select sink.getNode().(ScriptInjectionSink).getMethodAccess(), source, sink,
-  "Java Script Engine evaluate $@.", source.getNode(), "user input"
+module ScriptInjectionFlow = TaintTracking::Global<ScriptInjectionConfig>;
+
+deprecated query predicate problems(
+  MethodCall sinkCall, ScriptInjectionFlow::PathNode source, ScriptInjectionFlow::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
+  ScriptInjectionFlow::flowPath(source, sink) and
+  sinkCall = sink.getNode().(ScriptInjectionSink).getMethodCall() and
+  message1 = "Java Script Engine evaluate $@." and
+  sourceNode = source.getNode() and
+  message2 = "user input"
+}

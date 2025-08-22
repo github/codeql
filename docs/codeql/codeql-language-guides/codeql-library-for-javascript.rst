@@ -193,7 +193,7 @@ The class `ASTNode <https://codeql.github.com/codeql-standard-libraries/javascri
 .. pull-quote::
 
    Note
-   
+
    These predicates should only be used to perform generic AST traversal. To access children of specific AST node types, the specialized predicates introduced below should be used instead. In particular, queries should not rely on the numeric indices of child nodes relative to their parent nodes: these are considered an implementation detail that may change between versions of the library.
 
 Top-levels
@@ -700,77 +700,43 @@ The data flow graph-based analyses described so far are all intraprocedural: the
 
 We distinguish here between data flow proper, and *taint tracking*: the latter not only considers value-preserving flow (such as from variable definitions to uses), but also cases where one value influences ("taints") another without determining it entirely. For example, in the assignment ``s2 = s1.substring(i)``, the value of ``s1`` influences the value of ``s2``, because ``s2`` is assigned a substring of ``s1``. In general, ``s2`` will not be assigned ``s1`` itself, so there is no data flow from ``s1`` to ``s2``, but ``s1`` still taints ``s2``.
 
-The simplest way of implementing an interprocedural data flow analysis is to extend either class ``DataFlow::TrackedNode`` or ``DataFlow::TrackedExpr``. The former is a subclass of ``DataFlow::Node``, the latter of ``Expr``, and extending them ensures that the newly added values are tracked interprocedurally. You can use the predicate ``flowsTo`` to find out which nodes/expressions the tracked value flows to.
+It is a common pattern that we wish to specify data flow or taint analysis in terms of its *sources* (where flow starts), *sinks* (where it should be tracked), and *barriers* (also called *sanitizers*) where flow is interrupted. Sanitizers they are very common in security analyses: for example, an analysis that tracks the flow of untrusted user input into, say, a SQL query has to keep track of code that validates the input, thereby making it safe to use. Such a validation step is an example of a sanitizer.
 
-For example, suppose that we are developing an analysis to find hard-coded passwords. We might start by writing a simple query that looks for string constants flowing into variables named ``"password"``. To do this, we can extend ``TrackedExpr`` to track all constant strings, ``flowsTo`` to find cases where such a string flows into a (SSA) definition of a password variable:
+A module implementing the signature `DataFlow::ConfigSig` may specify a data flow or taint analysis by implementing the following predicates:
+
+-  ``isSource(DataFlow::Node nd)`` selects all nodes ``nd`` from where flow tracking starts.
+-  ``isSink(DataFlow::Node nd)`` selects all nodes ``nd`` to which the flow is tracked.
+-  ``isBarrier(DataFlow::Node nd)`` selects all nodes ``nd`` that act as a barrier/sanitizer for data flow.
+-  ``isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg)`` allows specifying custom additional flow steps for this analysis.
+
+Such a module can be passed to ``DataFlow::Global<...>``. This will produce a module with a ``flow`` predicate that performs the actual flow tracking, starting at a source and looking for flow to a sink that does not pass through a barrier node.
+
+For example, suppose that we are developing an analysis to find hard-coded passwords. We might write a simple query that looks for string constants flowing into variables named ``"password"``.
 
 .. code-block:: ql
 
    import javascript
 
-   class TrackedStringLiteral extends DataFlow::TrackedNode {
-       TrackedStringLiteral() {
-           this.asExpr() instanceof ConstantString
-       }
+   module PasswordConfig implements DataFlow::ConfigSig {
+       predicate isSource(DataFlow::Node nd) { nd.asExpr() instanceof StringLiteral }
+
+       predicate isSink(DataFlow::Node nd) { passwordVarAssign(_, nd) }
    }
 
-   from TrackedStringLiteral source, DataFlow::Node sink, SsaExplicitDefinition def
-   where source.flowsTo(sink) and sink = DataFlow::ssaDefinitionNode(def) and
-         def.getSourceVariable().getName().toLowerCase() = "password"
-   select sink
+   predicate passwordVarAssign(Variable v, DataFlow::Node nd) {
+       v.getAnAssignedExpr() = nd.asExpr() and
+       v.getName().toLowerCase() = "password"
+   }
 
-Note that ``TrackedNode`` and ``TrackedExpr`` do not restrict the set of "sinks" for the inter-procedural flow analysis, tracking flow into any expression that they might flow to. This can be expensive for large code bases, and is often unnecessary, since usually you are only interested in flow to a particular set of sinks. For example, the above query only looks for flow into assignments to password variables.
+   module PasswordFlow = DataFlow::Global<PasswordConfig>;
 
-This is a particular instance of a general pattern, whereby we want to specify a data flow or taint analysis in terms of its *sources* (where flow starts), *sinks* (where it should be tracked), and *barriers* or *sanitizers* (where flow is interrupted). The example does not include any sanitizers, but they are very common in security analyses: for example, an analysis that tracks the flow of untrusted user input into, say, a SQL query has to keep track of code that validates the input, thereby making it safe to use. Such a validation step is an example of a sanitizer.
-
-The classes ``DataFlow::Configuration`` and ``TaintTracking::Configuration`` allow specifying a data flow or taint analysis, respectively, by overriding the following predicates:
-
--  ``isSource(DataFlow::Node nd)`` selects all nodes ``nd`` from where flow tracking starts.
--  ``isSink(DataFlow::Node nd)`` selects all nodes ``nd`` to which the flow is tracked.
--  ``isBarrier(DataFlow::Node nd)`` selects all nodes ``nd`` that act as a barrier for data flow; ``isSanitizer`` is the corresponding predicate for taint tracking configurations.
--  ``isBarrierEdge(DataFlow::Node src, DataFlow::Node trg)`` is a variant of ``isBarrier(nd)`` that allows specifying barrier *edges* in addition to barrier nodes; again, ``isSanitizerEdge`` is the corresponding predicate for taint tracking;
--  ``isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg)`` allows specifying custom additional flow steps for this analysis; ``isAdditionalTaintStep`` is the corresponding predicate for taint tracking configurations.
-
-Since for technical reasons both ``Configuration`` classes are subtypes of ``string``, you have to choose a unique name for each flow configuration and equate ``this`` with it in the characteristic predicate (as in the example below).
-
-The predicate ``Configuration.hasFlow`` performs the actual flow tracking, starting at a source and looking for flow to a sink that does not pass through a barrier node or edge.
-
-To continue with our above example, we can phrase it as a data flow configuration as follows:
+Now we can rephrase our query to use ``PasswordFlow::flow``:
 
 .. code-block:: ql
 
-   class PasswordTracker extends DataFlow::Configuration {
-       PasswordTracker() {
-           // unique identifier for this configuration
-           this = "PasswordTracker"
-       }
-
-       override predicate isSource(DataFlow::Node nd) {
-           nd.asExpr() instanceof StringLiteral
-       }
-
-       override predicate isSink(DataFlow::Node nd) {
-           passwordVarAssign(_, nd)
-       }
-
-       predicate passwordVarAssign(Variable v, DataFlow::Node nd) {
-           exists (SsaExplicitDefinition def |
-               nd = DataFlow::ssaDefinitionNode(def) and
-               def.getSourceVariable() = v and
-               v.getName().toLowerCase() = "password"
-           )
-       }
-   }
-
-Now we can rephrase our query to use ``Configuration.hasFlow``:
-
-.. code-block:: ql
-
-   from PasswordTracker pt, DataFlow::Node source, DataFlow::Node sink, Variable v
-   where pt.hasFlow(source, sink) and pt.passwordVarAssign(v, sink)
+   from DataFlow::Node source, DataFlow::Node sink, Variable v
+   where PasswordFlow::flow(_, sink) and passwordVarAssign(v, sink)
    select sink, "Password variable " + v + " is assigned a constant string."
-
-Note that while analyses implemented in this way are inter-procedural in that they track flow and taint across function calls and returns, flow through global variables is not tracked. Flow through object properties is only tracked in limited cases, for example through properties of object literals or CommonJS ``module`` and ``exports`` objects.
 
 Syntax errors
 ~~~~~~~~~~~~~
@@ -794,7 +760,7 @@ The ``semmle.javascript.frameworks.AngularJS`` library provides support for work
 HTTP framework libraries
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-The library ``semmle.javacript.frameworks.HTTP`` provides classes modeling common concepts from various HTTP frameworks. 
+The library ``semmle.javacript.frameworks.HTTP`` provides classes modeling common concepts from various HTTP frameworks.
 
 Currently supported frameworks are `Express <https://expressjs.com/>`__, the standard Node.js ``http`` and ``https`` modules, `Connect <https://github.com/senchalabs/connect>`__, `Koa <https://koajs.com>`__, `Hapi <https://hapi.dev/>`__ and `Restify <http://restify.com/>`__.
 

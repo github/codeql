@@ -2,6 +2,8 @@
  * Provides classes and predicates for modeling
  * EJB Programming Restrictions (see EJB 3.0 specification, section 21.1.2).
  */
+overlay[local?]
+module;
 
 import java
 import EJB
@@ -135,7 +137,7 @@ class ForbiddenThisCallable extends ForbiddenCallable {
 ThisAccess forbiddenThisUse(Callable c) {
   result.getEnclosingCallable() = c and
   (
-    exists(MethodAccess ma | ma.getAnArgument() = result) or
+    exists(MethodCall ma | ma.getAnArgument() = result) or
     exists(ReturnStmt rs | rs.getResult() = result)
   )
 }
@@ -317,7 +319,7 @@ class SystemSetInputStreamMethod extends Method {
   SystemSetInputStreamMethod() {
     this.hasName("setIn") and
     this.getNumberOfParameters() = 1 and
-    this.getParameter(0).getType().(RefType).hasQualifiedName("java.io", "InputStream") and
+    this.getParameter(0).getType() instanceof TypeInputStream and
     this.getDeclaringType()
         .getAnAncestor()
         .getSourceDeclaration()

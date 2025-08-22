@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.xml.namespace", "NamespaceContext", True, "getNamespaceURI", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.namespace", "NamespaceContext", True, "getPrefix", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.namespace", "NamespaceContext", True, "getPrefixes", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.namespace", "NamespaceContext", True, "getPrefixes", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.namespace", "QName", True, "QName", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.namespace.QName.localPart]", "value", "dfc-generated"]
+      - ["javax.xml.namespace", "QName", True, "QName", "(String,String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.namespace.QName.namespaceURI]", "value", "dfc-generated"]
+      - ["javax.xml.namespace", "QName", True, "QName", "(String,String)", "", "Argument[1]", "Argument[this].SyntheticField[javax.xml.namespace.QName.localPart]", "value", "dfc-generated"]
+      - ["javax.xml.namespace", "QName", True, "QName", "(String,String,String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.namespace.QName.namespaceURI]", "value", "dfc-generated"]
+      - ["javax.xml.namespace", "QName", True, "QName", "(String,String,String)", "", "Argument[1]", "Argument[this].SyntheticField[javax.xml.namespace.QName.localPart]", "value", "dfc-generated"]
+      - ["javax.xml.namespace", "QName", True, "QName", "(String,String,String)", "", "Argument[2]", "Argument[this].SyntheticField[javax.xml.namespace.QName.prefix]", "value", "dfc-generated"]
+      - ["javax.xml.namespace", "QName", True, "getLocalPart", "()", "", "Argument[this].SyntheticField[javax.xml.namespace.QName.localPart]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.namespace", "QName", True, "getNamespaceURI", "()", "", "Argument[this].SyntheticField[javax.xml.namespace.QName.namespaceURI]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.namespace", "QName", True, "getPrefix", "()", "", "Argument[this].SyntheticField[javax.xml.namespace.QName.prefix]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.namespace", "QName", True, "valueOf", "(String)", "", "Argument[0]", "ReturnValue.SyntheticField[javax.xml.namespace.QName.localPart]", "value", "dfc-generated"]
+      - ["javax.xml.namespace", "QName", True, "valueOf", "(String)", "", "Argument[0]", "ReturnValue.SyntheticField[javax.xml.namespace.QName.namespaceURI]", "taint", "dfc-generated"]

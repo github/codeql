@@ -1,18 +1,20 @@
 edges
-| DisabledRevocationChecking.java:17:5:17:8 | this <.field> [post update] [flag] : Boolean | DisabledRevocationChecking.java:21:5:21:31 | this <.method> [post update] [flag] : Boolean |
-| DisabledRevocationChecking.java:17:12:17:16 | false : Boolean | DisabledRevocationChecking.java:17:5:17:8 | this <.field> [post update] [flag] : Boolean |
-| DisabledRevocationChecking.java:21:5:21:31 | this <.method> [post update] [flag] : Boolean | DisabledRevocationChecking.java:22:5:22:31 | this <.method> [flag] : Boolean |
-| DisabledRevocationChecking.java:22:5:22:31 | this <.method> [flag] : Boolean | DisabledRevocationChecking.java:25:15:25:22 | parameter this [flag] : Boolean |
-| DisabledRevocationChecking.java:25:15:25:22 | parameter this [flag] : Boolean | DisabledRevocationChecking.java:28:33:28:36 | this <.field> [flag] : Boolean |
-| DisabledRevocationChecking.java:28:33:28:36 | this <.field> [flag] : Boolean | DisabledRevocationChecking.java:28:33:28:36 | flag |
+| DisabledRevocationChecking.java:16:15:16:39 | parameter this [Return] : DisabledRevocationChecking [flag] : Boolean | DisabledRevocationChecking.java:21:5:21:31 | this <.method> [post update] : DisabledRevocationChecking [flag] : Boolean | provenance |  |
+| DisabledRevocationChecking.java:17:5:17:8 | this <.field> [post update] : DisabledRevocationChecking [flag] : Boolean | DisabledRevocationChecking.java:16:15:16:39 | parameter this [Return] : DisabledRevocationChecking [flag] : Boolean | provenance |  |
+| DisabledRevocationChecking.java:17:12:17:16 | false : Boolean | DisabledRevocationChecking.java:17:5:17:8 | this <.field> [post update] : DisabledRevocationChecking [flag] : Boolean | provenance |  |
+| DisabledRevocationChecking.java:21:5:21:31 | this <.method> [post update] : DisabledRevocationChecking [flag] : Boolean | DisabledRevocationChecking.java:22:5:22:31 | this <.method> : DisabledRevocationChecking [flag] : Boolean | provenance |  |
+| DisabledRevocationChecking.java:22:5:22:31 | this <.method> : DisabledRevocationChecking [flag] : Boolean | DisabledRevocationChecking.java:25:15:25:22 | parameter this : DisabledRevocationChecking [flag] : Boolean | provenance |  |
+| DisabledRevocationChecking.java:25:15:25:22 | parameter this : DisabledRevocationChecking [flag] : Boolean | DisabledRevocationChecking.java:28:33:28:36 | this <.field> : DisabledRevocationChecking [flag] : Boolean | provenance |  |
+| DisabledRevocationChecking.java:28:33:28:36 | this <.field> : DisabledRevocationChecking [flag] : Boolean | DisabledRevocationChecking.java:28:33:28:36 | flag | provenance |  |
 nodes
-| DisabledRevocationChecking.java:17:5:17:8 | this <.field> [post update] [flag] : Boolean | semmle.label | this <.field> [post update] [flag] : Boolean |
+| DisabledRevocationChecking.java:16:15:16:39 | parameter this [Return] : DisabledRevocationChecking [flag] : Boolean | semmle.label | parameter this [Return] : DisabledRevocationChecking [flag] : Boolean |
+| DisabledRevocationChecking.java:17:5:17:8 | this <.field> [post update] : DisabledRevocationChecking [flag] : Boolean | semmle.label | this <.field> [post update] : DisabledRevocationChecking [flag] : Boolean |
 | DisabledRevocationChecking.java:17:12:17:16 | false : Boolean | semmle.label | false : Boolean |
-| DisabledRevocationChecking.java:21:5:21:31 | this <.method> [post update] [flag] : Boolean | semmle.label | this <.method> [post update] [flag] : Boolean |
-| DisabledRevocationChecking.java:22:5:22:31 | this <.method> [flag] : Boolean | semmle.label | this <.method> [flag] : Boolean |
-| DisabledRevocationChecking.java:25:15:25:22 | parameter this [flag] : Boolean | semmle.label | parameter this [flag] : Boolean |
+| DisabledRevocationChecking.java:21:5:21:31 | this <.method> [post update] : DisabledRevocationChecking [flag] : Boolean | semmle.label | this <.method> [post update] : DisabledRevocationChecking [flag] : Boolean |
+| DisabledRevocationChecking.java:22:5:22:31 | this <.method> : DisabledRevocationChecking [flag] : Boolean | semmle.label | this <.method> : DisabledRevocationChecking [flag] : Boolean |
+| DisabledRevocationChecking.java:25:15:25:22 | parameter this : DisabledRevocationChecking [flag] : Boolean | semmle.label | parameter this : DisabledRevocationChecking [flag] : Boolean |
 | DisabledRevocationChecking.java:28:33:28:36 | flag | semmle.label | flag |
-| DisabledRevocationChecking.java:28:33:28:36 | this <.field> [flag] : Boolean | semmle.label | this <.field> [flag] : Boolean |
-subpaths
-#select
+| DisabledRevocationChecking.java:28:33:28:36 | this <.field> : DisabledRevocationChecking [flag] : Boolean | semmle.label | this <.field> : DisabledRevocationChecking [flag] : Boolean |
+problems
 | DisabledRevocationChecking.java:17:12:17:16 | false | DisabledRevocationChecking.java:17:12:17:16 | false : Boolean | DisabledRevocationChecking.java:28:33:28:36 | flag | This disables revocation checking. |
+subpaths

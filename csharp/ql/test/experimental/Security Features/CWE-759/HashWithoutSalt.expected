@@ -1,20 +1,30 @@
 edges
-| HashWithoutSalt.cs:18:70:18:77 | access to parameter password : String | HashWithoutSalt.cs:20:49:20:56 | access to local variable passBuff |
-| HashWithoutSalt.cs:38:28:38:72 | call to method GetBytes : Byte[] | HashWithoutSalt.cs:39:51:39:59 | access to local variable passBytes |
-| HashWithoutSalt.cs:38:64:38:71 | access to parameter password : String | HashWithoutSalt.cs:38:28:38:72 | call to method GetBytes : Byte[] |
-| HashWithoutSalt.cs:70:28:70:72 | call to method GetBytes : Byte[] | HashWithoutSalt.cs:71:48:71:56 | access to local variable passBytes |
-| HashWithoutSalt.cs:70:64:70:71 | access to parameter password : String | HashWithoutSalt.cs:70:28:70:72 | call to method GetBytes : Byte[] |
+| HashWithoutSalt.cs:18:17:18:24 | access to local variable passBuff : IBuffer | HashWithoutSalt.cs:20:49:20:56 | access to local variable passBuff | provenance |  |
+| HashWithoutSalt.cs:18:28:18:105 | call to method ConvertStringToBinary : IBuffer | HashWithoutSalt.cs:18:17:18:24 | access to local variable passBuff : IBuffer | provenance |  |
+| HashWithoutSalt.cs:18:70:18:77 | access to parameter password : String | HashWithoutSalt.cs:18:28:18:105 | call to method ConvertStringToBinary : IBuffer | provenance | Config |
+| HashWithoutSalt.cs:38:16:38:24 | access to local variable passBytes : Byte[] | HashWithoutSalt.cs:39:51:39:59 | access to local variable passBytes | provenance |  |
+| HashWithoutSalt.cs:38:28:38:72 | call to method GetBytes : Byte[] | HashWithoutSalt.cs:38:16:38:24 | access to local variable passBytes : Byte[] | provenance |  |
+| HashWithoutSalt.cs:38:64:38:71 | access to parameter password : String | HashWithoutSalt.cs:38:28:38:72 | call to method GetBytes : Byte[] | provenance | MaD:1 |
+| HashWithoutSalt.cs:70:16:70:24 | access to local variable passBytes : Byte[] | HashWithoutSalt.cs:71:48:71:56 | access to local variable passBytes | provenance |  |
+| HashWithoutSalt.cs:70:28:70:72 | call to method GetBytes : Byte[] | HashWithoutSalt.cs:70:16:70:24 | access to local variable passBytes : Byte[] | provenance |  |
+| HashWithoutSalt.cs:70:64:70:71 | access to parameter password : String | HashWithoutSalt.cs:70:28:70:72 | call to method GetBytes : Byte[] | provenance | MaD:1 |
+models
+| 1 | Summary: System.Text; Encoding; true; GetBytes; (System.String); ; Argument[0]; ReturnValue; taint; manual |
 nodes
+| HashWithoutSalt.cs:18:17:18:24 | access to local variable passBuff : IBuffer | semmle.label | access to local variable passBuff : IBuffer |
+| HashWithoutSalt.cs:18:28:18:105 | call to method ConvertStringToBinary : IBuffer | semmle.label | call to method ConvertStringToBinary : IBuffer |
 | HashWithoutSalt.cs:18:70:18:77 | access to parameter password : String | semmle.label | access to parameter password : String |
 | HashWithoutSalt.cs:20:49:20:56 | access to local variable passBuff | semmle.label | access to local variable passBuff |
+| HashWithoutSalt.cs:38:16:38:24 | access to local variable passBytes : Byte[] | semmle.label | access to local variable passBytes : Byte[] |
 | HashWithoutSalt.cs:38:28:38:72 | call to method GetBytes : Byte[] | semmle.label | call to method GetBytes : Byte[] |
 | HashWithoutSalt.cs:38:64:38:71 | access to parameter password : String | semmle.label | access to parameter password : String |
 | HashWithoutSalt.cs:39:51:39:59 | access to local variable passBytes | semmle.label | access to local variable passBytes |
+| HashWithoutSalt.cs:70:16:70:24 | access to local variable passBytes : Byte[] | semmle.label | access to local variable passBytes : Byte[] |
 | HashWithoutSalt.cs:70:28:70:72 | call to method GetBytes : Byte[] | semmle.label | call to method GetBytes : Byte[] |
 | HashWithoutSalt.cs:70:64:70:71 | access to parameter password : String | semmle.label | access to parameter password : String |
 | HashWithoutSalt.cs:71:48:71:56 | access to local variable passBytes | semmle.label | access to local variable passBytes |
-subpaths
-#select
+problems
 | HashWithoutSalt.cs:20:49:20:56 | access to local variable passBuff | HashWithoutSalt.cs:18:70:18:77 | access to parameter password : String | HashWithoutSalt.cs:20:49:20:56 | access to local variable passBuff | $@ is hashed without a salt. | HashWithoutSalt.cs:18:70:18:77 | access to parameter password | The password |
 | HashWithoutSalt.cs:39:51:39:59 | access to local variable passBytes | HashWithoutSalt.cs:38:64:38:71 | access to parameter password : String | HashWithoutSalt.cs:39:51:39:59 | access to local variable passBytes | $@ is hashed without a salt. | HashWithoutSalt.cs:38:64:38:71 | access to parameter password | The password |
 | HashWithoutSalt.cs:71:48:71:56 | access to local variable passBytes | HashWithoutSalt.cs:70:64:70:71 | access to parameter password : String | HashWithoutSalt.cs:71:48:71:56 | access to local variable passBytes | $@ is hashed without a salt. | HashWithoutSalt.cs:70:64:70:71 | access to parameter password | The password |
+subpaths

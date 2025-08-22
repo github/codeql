@@ -100,8 +100,13 @@
 | scopes.rb:7:1:7:1 | a |
 | scopes.rb:9:14:9:14 | x |
 | scopes.rb:13:4:13:32 | __synth__0 |
+| scopes.rb:13:4:13:32 | __synth__1 |
+| scopes.rb:13:4:13:32 | __synth__2 |
+| scopes.rb:13:4:13:32 | __synth__3 |
 | scopes.rb:13:7:13:7 | b |
 | scopes.rb:13:10:13:15 | __synth__0__1 |
+| scopes.rb:13:10:13:15 | __synth__1__1 |
+| scopes.rb:13:10:13:15 | __synth__2__1 |
 | scopes.rb:13:11:13:11 | c |
 | scopes.rb:13:14:13:14 | d |
 | scopes.rb:24:1:24:6 | script |

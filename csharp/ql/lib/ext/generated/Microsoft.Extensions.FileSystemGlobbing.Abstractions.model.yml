@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions", "DirectoryInfoBase", True, "EnumerateFileSystemInfos", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions", "DirectoryInfoBase", True, "GetDirectory", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions", "FileInfoWrapper", False, "FileInfoWrapper", "(System.IO.FileInfo)", "", "Argument[0]", "Argument[this].SyntheticField[Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileInfoWrapper._fileInfo]", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions", "FileInfoWrapper", True, "get_FullName", "()", "", "Argument[this].SyntheticField[Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileInfoWrapper._fileInfo].Property[System.IO.FileSystemInfo.FullName]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions", "FileInfoWrapper", True, "get_Name", "()", "", "Argument[this].SyntheticField[Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileInfoWrapper._fileInfo].Property[System.IO.FileInfo.Name]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions", "FileSystemInfoBase", True, "get_FullName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions", "FileSystemInfoBase", True, "get_Name", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions", "FileSystemInfoBase", True, "get_ParentDirectory", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions", "DirectoryInfoBase", "GetFile", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions", "DirectoryInfoWrapper", "DirectoryInfoWrapper", "(System.IO.DirectoryInfo)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Abstractions", "DirectoryInfoWrapper", "GetFile", "(System.String)", "summary", "df-generated"]

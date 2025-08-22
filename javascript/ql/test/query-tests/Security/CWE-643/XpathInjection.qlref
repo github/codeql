@@ -1,1 +1,2 @@
-Security/CWE-643/XpathInjection.ql
+query: Security/CWE-643/XpathInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

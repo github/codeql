@@ -1,0 +1,18 @@
+#select
+| Dsn.go:50:29:50:33 | dbDSN | Dsn.go:47:10:47:30 | call to FormValue | Dsn.go:50:29:50:33 | dbDSN | Data-Source Name is built using $@. | Dsn.go:47:10:47:30 | call to FormValue | untrusted user input |
+edges
+| Dsn.go:47:10:47:30 | call to FormValue | Dsn.go:49:102:49:105 | name | provenance | Src:MaD:1  |
+| Dsn.go:49:11:49:106 | []type{args} [array] | Dsn.go:49:11:49:106 | call to Sprintf | provenance | MaD:2 |
+| Dsn.go:49:11:49:106 | call to Sprintf | Dsn.go:50:29:50:33 | dbDSN | provenance |  |
+| Dsn.go:49:102:49:105 | name | Dsn.go:49:11:49:106 | []type{args} [array] | provenance |  |
+| Dsn.go:49:102:49:105 | name | Dsn.go:49:11:49:106 | call to Sprintf | provenance | FunctionModel |
+models
+| 1 | Source: net/http; Request; true; FormValue; ; ; ReturnValue; remote; manual |
+| 2 | Summary: fmt; ; false; Sprintf; ; ; Argument[1].ArrayElement; ReturnValue; taint; manual |
+nodes
+| Dsn.go:47:10:47:30 | call to FormValue | semmle.label | call to FormValue |
+| Dsn.go:49:11:49:106 | []type{args} [array] | semmle.label | []type{args} [array] |
+| Dsn.go:49:11:49:106 | call to Sprintf | semmle.label | call to Sprintf |
+| Dsn.go:49:102:49:105 | name | semmle.label | name |
+| Dsn.go:50:29:50:33 | dbDSN | semmle.label | dbDSN |
+subpaths

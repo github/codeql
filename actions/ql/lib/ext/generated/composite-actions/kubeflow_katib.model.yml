@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["kubeflow/katib", "*", "input.experiments", "code-injection", "generated"]
+     - ["kubeflow/katib", "*", "input.database-type", "code-injection", "generated"]
+     - ["kubeflow/katib", "*", "input.training-operator", "code-injection", "generated"]
+     - ["kubeflow/katib", "*", "input.katib-ui", "code-injection", "generated"]
+     - ["kubeflow/katib", "*", "input.trial-images", "code-injection", "generated"]

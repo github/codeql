@@ -2,11 +2,22 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.DataFlow3
 import semmle.code.java.security.CleartextStorageQuery
+private import semmle.code.java.dataflow.FlowSinks
+private import semmle.code.java.dataflow.FlowSources
 
 private class CookieCleartextStorageSink extends CleartextStorageSink {
-  CookieCleartextStorageSink() { this.asExpr() = cookieInput(_) }
+  Cookie cookie;
+
+  CookieCleartextStorageSink() { this.asExpr() = cookieInput(cookie) }
+
+  override Location getASelectedLocation() {
+    result = this.getLocation()
+    or
+    result = cookie.getLocation()
+    or
+    result = cookie.getAStore().getLocation()
+  }
 }
 
 /** The instantiation of a cookie, which can act as storage. */
@@ -20,15 +31,15 @@ class Cookie extends Storable, ClassInstanceExpr {
 
   /** Gets a store, for example `response.addCookie(cookie);`. */
   override Expr getAStore() {
-    exists(CookieToStoreFlowConfig conf, DataFlow::Node n |
+    exists(DataFlow::Node n |
       cookieStore(n, result) and
-      conf.hasFlow(DataFlow::exprNode(this), n)
+      CookieToStoreFlow::flow(DataFlow::exprNode(this), n)
     )
   }
 }
 
 private predicate cookieStore(DataFlow::Node cookie, Expr store) {
-  exists(MethodAccess m, Method def |
+  exists(MethodCall m, Method def |
     m.getMethod() = def and
     def.getName() = "addCookie" and
     def.getDeclaringType().hasQualifiedName("javax.servlet.http", "HttpServletResponse") and
@@ -37,12 +48,26 @@ private predicate cookieStore(DataFlow::Node cookie, Expr store) {
   )
 }
 
-private class CookieToStoreFlowConfig extends DataFlow3::Configuration {
-  CookieToStoreFlowConfig() { this = "CookieToStoreFlowConfig" }
-
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof Cookie }
-
-  override predicate isSink(DataFlow::Node sink) { cookieStore(sink, _) }
+/**
+ * A cookie source node.
+ */
+private class CookieSource extends ApiSourceNode {
+  CookieSource() { this.asExpr() instanceof Cookie }
 }
+
+/**
+ * A cookie store sink node.
+ */
+private class CookieStoreSink extends ApiSinkNode {
+  CookieStoreSink() { cookieStore(this, _) }
+}
+
+private module CookieToStoreFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src instanceof CookieSource }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof CookieStoreSink }
+}
+
+private module CookieToStoreFlow = DataFlow::Global<CookieToStoreFlowConfig>;
 
 private Expr cookieInput(Cookie c) { result = c.getArgument(1) }

@@ -3,7 +3,6 @@
  */
 
 import go
-private import semmle.go.dataflow.DataFlowForStringsNewReplacer
 
 /** Provides predicates and classes for working with string operations. */
 module StringOps {
@@ -103,6 +102,13 @@ module StringOps {
       override boolean getPolarity() { result = expr.getPolarity() }
     }
 
+    pragma[noinline]
+    private DataFlow::ElementReadNode getReadOfFirstChar(DataFlow::Node str) {
+      pragma[only_bind_into](result).getIndex().getIntValue() = 0 and
+      str = result.getBase() and
+      str.getType().getUnderlyingType() instanceof StringType
+    }
+
     /**
      * Holds if `eq` is of the form `str[0] == rhs` or `str[0] != rhs`.
      */
@@ -110,12 +116,8 @@ module StringOps {
     private predicate comparesFirstCharacter(
       DataFlow::EqualityTestNode eq, DataFlow::Node str, DataFlow::Node rhs
     ) {
-      exists(DataFlow::ElementReadNode read |
-        eq.hasOperands(globalValueNumber(read).getANode(), rhs) and
-        str = read.getBase() and
-        str.getType().getUnderlyingType() instanceof StringType and
-        read.getIndex().getIntValue() = 0
-      )
+      eq.hasOperands(globalValueNumber(pragma[only_bind_out](getReadOfFirstChar(str))).getANode(),
+        rhs)
     }
 
     /**
@@ -219,24 +221,14 @@ module StringOps {
        * replaced.
        */
       DataFlow::Node getAReplacedArgument() {
-        exists(int n | n % 2 = 0 and result = this.getArgument(n))
+        exists(int n | n % 2 = 0 and result = this.getSyntacticArgument(n))
       }
     }
 
-    /**
-     * A configuration for tracking flow from a call to `strings.NewReplacer` to
-     * the receiver of a call to `strings.Replacer.Replace` or
-     * `strings.Replacer.WriteString`.
-     */
-    private class StringsNewReplacerConfiguration extends DataFlowForStringsNewReplacer::Configuration
-    {
-      StringsNewReplacerConfiguration() { this = "StringsNewReplacerConfiguration" }
+    private module StringsNewReplacerConfig implements DataFlow::ConfigSig {
+      predicate isSource(DataFlow::Node source) { source instanceof StringsNewReplacerCall }
 
-      override predicate isSource(DataFlow::Node source) {
-        source instanceof StringsNewReplacerCall
-      }
-
-      override predicate isSink(DataFlow::Node sink) {
+      predicate isSink(DataFlow::Node sink) {
         exists(DataFlow::MethodCallNode call |
           sink = call.getReceiver() and
           call.getTarget().hasQualifiedName("strings", "Replacer", ["Replace", "WriteString"])
@@ -245,17 +237,20 @@ module StringOps {
     }
 
     /**
+     * Tracks data flow from a call to `strings.NewReplacer` to the receiver of
+     * a call to `strings.Replacer.Replace` or `strings.Replacer.WriteString`.
+     */
+    private module StringsNewReplacerFlow = DataFlow::Global<StringsNewReplacerConfig>;
+
+    /**
      * A call to `strings.Replacer.Replace` or `strings.Replacer.WriteString`.
      */
     private class StringsReplacerReplaceOrWriteString extends Range {
       string replacedString;
 
       StringsReplacerReplaceOrWriteString() {
-        exists(
-          StringsNewReplacerConfiguration config, StringsNewReplacerCall source,
-          DataFlow::Node sink, DataFlow::MethodCallNode call
-        |
-          config.hasFlow(source, sink) and
+        exists(StringsNewReplacerCall source, DataFlow::Node sink, DataFlow::MethodCallNode call |
+          StringsNewReplacerFlow::flow(source, sink) and
           sink = call.getReceiver() and
           replacedString = source.getAReplacedArgument().getStringValue() and
           (
@@ -304,11 +299,6 @@ module StringOps {
        * Gets the parameter index of the format string.
        */
       abstract int getFormatStringIndex();
-
-      /**
-       * Gets the parameter index of the first parameter to be formatted.
-       */
-      abstract int getFirstFormattedParameterIndex();
     }
 
     /**
@@ -336,7 +326,7 @@ module StringOps {
         formatDirective = this.getComponent(n) and
         formatDirective.charAt(0) = "%" and
         formatDirective.charAt(1) != "%" and
-        result = this.getArgument((n / 2) + f.getFirstFormattedParameterIndex())
+        result = this.getImplicitVarargsArgument(n / 2)
       }
     }
   }
@@ -558,20 +548,25 @@ module StringOps {
         else result = "concatenation element"
     }
 
+    /** Gets the location of this element. */
+    Location getLocation() { result = this.asNode().getLocation() }
+
     /**
+     * DEPRECATED: Use `getLocation()` instead.
+     *
      * Holds if this element is at the specified location.
      * The location spans column `startcolumn` of line `startline` to
      * column `endcolumn` of line `endline` in file `filepath`.
      * For more information, see
      * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
-    predicate hasLocationInfo(
+    deprecated predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      this.asNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
       or
       // use dummy location for elements that don't have a corresponding node
-      not exists(this.asNode()) and
+      not exists(this.getLocation()) and
       filepath = "" and
       startline = 0 and
       startcolumn = 0 and
@@ -581,7 +576,7 @@ module StringOps {
   }
 
   /**
-   * One of the operands in a string concatenation.
+   * An operand in a string concatenation.
    *
    * See `ConcatenationElement` for more information.
    */

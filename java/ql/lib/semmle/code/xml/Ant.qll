@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with targets in Apache Ant build files.
  */
+overlay[local?]
+module;
 
 import XML
 
@@ -9,7 +11,7 @@ class AntTarget extends XmlElement {
   AntTarget() { super.getName() = "target" }
 
   /** Gets the name of this Ant target. */
-  override string getName() { result = this.getAttributeValue("name") }
+  string getName() { result = this.getAttributeValue("name") }
 
   /**
    * Gets a string containing the dependencies of this Ant target,

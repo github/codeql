@@ -1,43 +1,144 @@
-edges
-| test.go:10:2:10:42 | ... := ...[0] | test.go:14:15:14:55 | type conversion |
-| test.go:16:24:16:35 | selection of Body | test.go:17:15:17:31 | type conversion |
-| test.go:16:24:16:35 | selection of Body | test.go:28:22:28:25 | node |
-| test.go:19:36:19:47 | selection of Body | test.go:20:15:20:32 | type conversion |
-| test.go:22:33:22:44 | selection of Body | test.go:23:15:23:35 | type conversion |
-| test.go:25:45:25:56 | selection of Body | test.go:26:15:26:36 | type conversion |
-| test.go:30:33:30:44 | selection of Body | test.go:31:15:31:34 | call to Buffered |
-| test.go:30:33:30:44 | selection of Body | test.go:32:15:32:29 | call to Raw |
-| test.go:30:33:30:44 | selection of Body | test.go:34:15:34:19 | value |
-| test.go:30:33:30:44 | selection of Body | test.go:35:15:35:30 | call to Text |
-| test.go:30:33:30:44 | selection of Body | test.go:36:15:36:44 | type conversion |
-nodes
-| test.go:10:2:10:42 | ... := ...[0] | semmle.label | ... := ...[0] |
-| test.go:14:15:14:55 | type conversion | semmle.label | type conversion |
-| test.go:16:24:16:35 | selection of Body | semmle.label | selection of Body |
-| test.go:17:15:17:31 | type conversion | semmle.label | type conversion |
-| test.go:19:36:19:47 | selection of Body | semmle.label | selection of Body |
-| test.go:20:15:20:32 | type conversion | semmle.label | type conversion |
-| test.go:22:33:22:44 | selection of Body | semmle.label | selection of Body |
-| test.go:23:15:23:35 | type conversion | semmle.label | type conversion |
-| test.go:25:45:25:56 | selection of Body | semmle.label | selection of Body |
-| test.go:26:15:26:36 | type conversion | semmle.label | type conversion |
-| test.go:28:22:28:25 | node | semmle.label | node |
-| test.go:30:33:30:44 | selection of Body | semmle.label | selection of Body |
-| test.go:31:15:31:34 | call to Buffered | semmle.label | call to Buffered |
-| test.go:32:15:32:29 | call to Raw | semmle.label | call to Raw |
-| test.go:34:15:34:19 | value | semmle.label | value |
-| test.go:35:15:35:30 | call to Text | semmle.label | call to Text |
-| test.go:36:15:36:44 | type conversion | semmle.label | type conversion |
-subpaths
 #select
-| test.go:14:15:14:55 | type conversion | test.go:10:2:10:42 | ... := ...[0] | test.go:14:15:14:55 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:10:2:10:42 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:17:15:17:31 | type conversion | test.go:16:24:16:35 | selection of Body | test.go:17:15:17:31 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:16:24:16:35 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:20:15:20:32 | type conversion | test.go:19:36:19:47 | selection of Body | test.go:20:15:20:32 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:19:36:19:47 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:23:15:23:35 | type conversion | test.go:22:33:22:44 | selection of Body | test.go:23:15:23:35 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:22:33:22:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:26:15:26:36 | type conversion | test.go:25:45:25:56 | selection of Body | test.go:26:15:26:36 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:25:45:25:56 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:28:22:28:25 | node | test.go:16:24:16:35 | selection of Body | test.go:28:22:28:25 | node | Cross-site scripting vulnerability due to $@. | test.go:16:24:16:35 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:31:15:31:34 | call to Buffered | test.go:30:33:30:44 | selection of Body | test.go:31:15:31:34 | call to Buffered | Cross-site scripting vulnerability due to $@. | test.go:30:33:30:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:32:15:32:29 | call to Raw | test.go:30:33:30:44 | selection of Body | test.go:32:15:32:29 | call to Raw | Cross-site scripting vulnerability due to $@. | test.go:30:33:30:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:34:15:34:19 | value | test.go:30:33:30:44 | selection of Body | test.go:34:15:34:19 | value | Cross-site scripting vulnerability due to $@. | test.go:30:33:30:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:35:15:35:30 | call to Text | test.go:30:33:30:44 | selection of Body | test.go:35:15:35:30 | call to Text | Cross-site scripting vulnerability due to $@. | test.go:30:33:30:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:36:15:36:44 | type conversion | test.go:30:33:30:44 | selection of Body | test.go:36:15:36:44 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:30:33:30:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:15:15:15:49 | type conversion | test.go:12:12:12:22 | selection of URL | test.go:15:15:15:49 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:12:12:12:22 | selection of URL | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:18:15:18:31 | type conversion | test.go:17:24:17:35 | selection of Body | test.go:18:15:18:31 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:17:24:17:35 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:21:15:21:32 | type conversion | test.go:20:36:20:47 | selection of Body | test.go:21:15:21:32 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:20:36:20:47 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:24:15:24:35 | type conversion | test.go:23:33:23:44 | selection of Body | test.go:24:15:24:35 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:23:33:23:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:27:15:27:36 | type conversion | test.go:26:45:26:56 | selection of Body | test.go:27:15:27:36 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:26:45:26:56 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:29:22:29:25 | node | test.go:17:24:17:35 | selection of Body | test.go:29:22:29:25 | node | Cross-site scripting vulnerability due to $@. | test.go:17:24:17:35 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:32:15:32:34 | call to Buffered | test.go:31:33:31:44 | selection of Body | test.go:32:15:32:34 | call to Buffered | Cross-site scripting vulnerability due to $@. | test.go:31:33:31:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:33:15:33:29 | call to Raw | test.go:31:33:31:44 | selection of Body | test.go:33:15:33:29 | call to Raw | Cross-site scripting vulnerability due to $@. | test.go:31:33:31:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:35:15:35:19 | value | test.go:31:33:31:44 | selection of Body | test.go:35:15:35:19 | value | Cross-site scripting vulnerability due to $@. | test.go:31:33:31:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:36:15:36:30 | call to Text | test.go:31:33:31:44 | selection of Body | test.go:36:15:36:30 | call to Text | Cross-site scripting vulnerability due to $@. | test.go:31:33:31:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:37:15:37:44 | type conversion | test.go:31:33:31:44 | selection of Body | test.go:37:15:37:44 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:31:33:31:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:40:15:40:42 | call to Buffered | test.go:39:49:39:60 | selection of Body | test.go:40:15:40:42 | call to Buffered | Cross-site scripting vulnerability due to $@. | test.go:39:49:39:60 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:45:22:45:31 | &... | test.go:43:31:43:42 | selection of Body | test.go:45:22:45:31 | &... | Cross-site scripting vulnerability due to $@. | test.go:43:31:43:42 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:50:22:50:32 | &... | test.go:48:32:48:43 | selection of Body | test.go:50:22:50:32 | &... | Cross-site scripting vulnerability due to $@. | test.go:48:32:48:43 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+edges
+| test.go:12:12:12:22 | selection of URL | test.go:12:12:12:30 | call to Query | provenance | Src:MaD:2 MaD:17 |
+| test.go:12:12:12:30 | call to Query | test.go:12:12:12:44 | call to Get | provenance | MaD:18 |
+| test.go:12:12:12:44 | call to Get | test.go:15:42:15:47 | param1 | provenance |  |
+| test.go:15:22:15:48 | call to UnescapeString | test.go:15:15:15:49 | type conversion | provenance |  |
+| test.go:15:42:15:47 | param1 | test.go:15:22:15:48 | call to UnescapeString | provenance | MaD:9 |
+| test.go:17:2:17:36 | ... := ...[0] | test.go:18:15:18:31 | type conversion | provenance |  |
+| test.go:17:2:17:36 | ... := ...[0] | test.go:29:22:29:25 | node | provenance |  |
+| test.go:17:24:17:35 | selection of Body | test.go:17:2:17:36 | ... := ...[0] | provenance | Src:MaD:1 MaD:5 |
+| test.go:20:2:20:48 | ... := ...[0] | test.go:21:15:21:32 | type conversion | provenance |  |
+| test.go:20:36:20:47 | selection of Body | test.go:20:2:20:48 | ... := ...[0] | provenance | Src:MaD:1 MaD:8 |
+| test.go:23:2:23:50 | ... := ...[0] | test.go:24:15:24:35 | type conversion | provenance |  |
+| test.go:23:33:23:44 | selection of Body | test.go:23:2:23:50 | ... := ...[0] | provenance | Src:MaD:1 MaD:6 |
+| test.go:26:2:26:62 | ... := ...[0] | test.go:27:15:27:36 | type conversion | provenance |  |
+| test.go:26:45:26:56 | selection of Body | test.go:26:2:26:62 | ... := ...[0] | provenance | Src:MaD:1 MaD:7 |
+| test.go:31:15:31:45 | call to NewTokenizer | test.go:32:15:32:23 | tokenizer | provenance |  |
+| test.go:31:15:31:45 | call to NewTokenizer | test.go:33:15:33:23 | tokenizer | provenance |  |
+| test.go:31:15:31:45 | call to NewTokenizer | test.go:34:17:34:25 | tokenizer | provenance |  |
+| test.go:31:15:31:45 | call to NewTokenizer | test.go:36:15:36:23 | tokenizer | provenance |  |
+| test.go:31:15:31:45 | call to NewTokenizer | test.go:37:22:37:30 | tokenizer | provenance |  |
+| test.go:31:33:31:44 | selection of Body | test.go:31:15:31:45 | call to NewTokenizer | provenance | Src:MaD:1 MaD:3 |
+| test.go:32:15:32:23 | tokenizer | test.go:32:15:32:34 | call to Buffered | provenance | MaD:12 |
+| test.go:33:15:33:23 | tokenizer | test.go:33:15:33:29 | call to Raw | provenance | MaD:13 |
+| test.go:34:2:34:35 | ... := ...[1] | test.go:35:15:35:19 | value | provenance |  |
+| test.go:34:17:34:25 | tokenizer | test.go:34:2:34:35 | ... := ...[1] | provenance | MaD:14 |
+| test.go:36:15:36:23 | tokenizer | test.go:36:15:36:30 | call to Text | provenance | MaD:15 |
+| test.go:37:22:37:30 | tokenizer | test.go:37:22:37:38 | call to Token | provenance | MaD:16 |
+| test.go:37:22:37:38 | call to Token | test.go:37:15:37:44 | type conversion | provenance |  |
+| test.go:39:23:39:77 | call to NewTokenizerFragment | test.go:40:15:40:31 | tokenizerFragment | provenance |  |
+| test.go:39:49:39:60 | selection of Body | test.go:39:23:39:77 | call to NewTokenizerFragment | provenance | Src:MaD:1 MaD:4 |
+| test.go:40:15:40:31 | tokenizerFragment | test.go:40:15:40:42 | call to Buffered | provenance | MaD:12 |
+| test.go:42:6:42:14 | definition of cleanNode | test.go:45:22:45:31 | &... | provenance |  |
+| test.go:42:6:42:14 | definition of cleanNode | test.go:45:22:45:31 | &... | provenance |  |
+| test.go:42:6:42:14 | definition of cleanNode | test.go:45:23:45:31 | cleanNode | provenance |  |
+| test.go:43:2:43:43 | ... := ...[0] | test.go:44:24:44:34 | taintedNode | provenance |  |
+| test.go:43:31:43:42 | selection of Body | test.go:43:2:43:43 | ... := ...[0] | provenance | Src:MaD:1 MaD:5 |
+| test.go:44:24:44:34 | taintedNode | test.go:42:6:42:14 | definition of cleanNode | provenance | MaD:10 |
+| test.go:45:22:45:31 | &... | test.go:45:23:45:31 | cleanNode | provenance |  |
+| test.go:45:22:45:31 | &... [pointer] | test.go:45:22:45:31 | &... | provenance |  |
+| test.go:45:22:45:31 | &... [pointer] | test.go:45:22:45:31 | &... | provenance |  |
+| test.go:45:22:45:31 | &... [pointer] | test.go:45:23:45:31 | cleanNode | provenance |  |
+| test.go:45:23:45:31 | cleanNode | test.go:45:22:45:31 | &... | provenance |  |
+| test.go:45:23:45:31 | cleanNode | test.go:45:22:45:31 | &... [pointer] | provenance |  |
+| test.go:47:6:47:15 | definition of cleanNode2 | test.go:50:22:50:32 | &... | provenance |  |
+| test.go:47:6:47:15 | definition of cleanNode2 | test.go:50:22:50:32 | &... | provenance |  |
+| test.go:47:6:47:15 | definition of cleanNode2 | test.go:50:23:50:32 | cleanNode2 | provenance |  |
+| test.go:48:2:48:44 | ... := ...[0] | test.go:49:26:49:37 | taintedNode2 | provenance |  |
+| test.go:48:32:48:43 | selection of Body | test.go:48:2:48:44 | ... := ...[0] | provenance | Src:MaD:1 MaD:5 |
+| test.go:49:26:49:37 | taintedNode2 | test.go:47:6:47:15 | definition of cleanNode2 | provenance | MaD:11 |
+| test.go:50:22:50:32 | &... | test.go:50:23:50:32 | cleanNode2 | provenance |  |
+| test.go:50:22:50:32 | &... [pointer] | test.go:50:22:50:32 | &... | provenance |  |
+| test.go:50:22:50:32 | &... [pointer] | test.go:50:22:50:32 | &... | provenance |  |
+| test.go:50:22:50:32 | &... [pointer] | test.go:50:23:50:32 | cleanNode2 | provenance |  |
+| test.go:50:23:50:32 | cleanNode2 | test.go:50:22:50:32 | &... | provenance |  |
+| test.go:50:23:50:32 | cleanNode2 | test.go:50:22:50:32 | &... [pointer] | provenance |  |
+models
+| 1 | Source: net/http; Request; true; Body; ; ; ; remote; manual |
+| 2 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
+| 3 | Summary: golang.org/x/net/html; ; false; NewTokenizer; ; ; Argument[0]; ReturnValue; taint; manual |
+| 4 | Summary: golang.org/x/net/html; ; false; NewTokenizerFragment; ; ; Argument[0]; ReturnValue; taint; manual |
+| 5 | Summary: golang.org/x/net/html; ; false; Parse; ; ; Argument[0]; ReturnValue[0]; taint; manual |
+| 6 | Summary: golang.org/x/net/html; ; false; ParseFragment; ; ; Argument[0]; ReturnValue[0]; taint; manual |
+| 7 | Summary: golang.org/x/net/html; ; false; ParseFragmentWithOptions; ; ; Argument[0]; ReturnValue[0]; taint; manual |
+| 8 | Summary: golang.org/x/net/html; ; false; ParseWithOptions; ; ; Argument[0]; ReturnValue[0]; taint; manual |
+| 9 | Summary: golang.org/x/net/html; ; false; UnescapeString; ; ; Argument[0]; ReturnValue; taint; manual |
+| 10 | Summary: golang.org/x/net/html; Node; true; AppendChild; ; ; Argument[0]; Argument[receiver]; taint; manual |
+| 11 | Summary: golang.org/x/net/html; Node; true; InsertBefore; ; ; Argument[0]; Argument[receiver]; taint; manual |
+| 12 | Summary: golang.org/x/net/html; Tokenizer; true; Buffered; ; ; Argument[receiver]; ReturnValue; taint; manual |
+| 13 | Summary: golang.org/x/net/html; Tokenizer; true; Raw; ; ; Argument[receiver]; ReturnValue; taint; manual |
+| 14 | Summary: golang.org/x/net/html; Tokenizer; true; TagAttr; ; ; Argument[receiver]; ReturnValue[1]; taint; manual |
+| 15 | Summary: golang.org/x/net/html; Tokenizer; true; Text; ; ; Argument[receiver]; ReturnValue; taint; manual |
+| 16 | Summary: golang.org/x/net/html; Tokenizer; true; Token; ; ; Argument[receiver]; ReturnValue; taint; manual |
+| 17 | Summary: net/url; URL; true; Query; ; ; Argument[receiver]; ReturnValue; taint; manual |
+| 18 | Summary: net/url; Values; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
+nodes
+| test.go:12:12:12:22 | selection of URL | semmle.label | selection of URL |
+| test.go:12:12:12:30 | call to Query | semmle.label | call to Query |
+| test.go:12:12:12:44 | call to Get | semmle.label | call to Get |
+| test.go:15:15:15:49 | type conversion | semmle.label | type conversion |
+| test.go:15:22:15:48 | call to UnescapeString | semmle.label | call to UnescapeString |
+| test.go:15:42:15:47 | param1 | semmle.label | param1 |
+| test.go:17:2:17:36 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:17:24:17:35 | selection of Body | semmle.label | selection of Body |
+| test.go:18:15:18:31 | type conversion | semmle.label | type conversion |
+| test.go:20:2:20:48 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:20:36:20:47 | selection of Body | semmle.label | selection of Body |
+| test.go:21:15:21:32 | type conversion | semmle.label | type conversion |
+| test.go:23:2:23:50 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:23:33:23:44 | selection of Body | semmle.label | selection of Body |
+| test.go:24:15:24:35 | type conversion | semmle.label | type conversion |
+| test.go:26:2:26:62 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:26:45:26:56 | selection of Body | semmle.label | selection of Body |
+| test.go:27:15:27:36 | type conversion | semmle.label | type conversion |
+| test.go:29:22:29:25 | node | semmle.label | node |
+| test.go:31:15:31:45 | call to NewTokenizer | semmle.label | call to NewTokenizer |
+| test.go:31:33:31:44 | selection of Body | semmle.label | selection of Body |
+| test.go:32:15:32:23 | tokenizer | semmle.label | tokenizer |
+| test.go:32:15:32:34 | call to Buffered | semmle.label | call to Buffered |
+| test.go:33:15:33:23 | tokenizer | semmle.label | tokenizer |
+| test.go:33:15:33:29 | call to Raw | semmle.label | call to Raw |
+| test.go:34:2:34:35 | ... := ...[1] | semmle.label | ... := ...[1] |
+| test.go:34:17:34:25 | tokenizer | semmle.label | tokenizer |
+| test.go:35:15:35:19 | value | semmle.label | value |
+| test.go:36:15:36:23 | tokenizer | semmle.label | tokenizer |
+| test.go:36:15:36:30 | call to Text | semmle.label | call to Text |
+| test.go:37:15:37:44 | type conversion | semmle.label | type conversion |
+| test.go:37:22:37:30 | tokenizer | semmle.label | tokenizer |
+| test.go:37:22:37:38 | call to Token | semmle.label | call to Token |
+| test.go:39:23:39:77 | call to NewTokenizerFragment | semmle.label | call to NewTokenizerFragment |
+| test.go:39:49:39:60 | selection of Body | semmle.label | selection of Body |
+| test.go:40:15:40:31 | tokenizerFragment | semmle.label | tokenizerFragment |
+| test.go:40:15:40:42 | call to Buffered | semmle.label | call to Buffered |
+| test.go:42:6:42:14 | definition of cleanNode | semmle.label | definition of cleanNode |
+| test.go:43:2:43:43 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:43:31:43:42 | selection of Body | semmle.label | selection of Body |
+| test.go:44:24:44:34 | taintedNode | semmle.label | taintedNode |
+| test.go:45:22:45:31 | &... | semmle.label | &... |
+| test.go:45:22:45:31 | &... | semmle.label | &... |
+| test.go:45:22:45:31 | &... [pointer] | semmle.label | &... [pointer] |
+| test.go:45:23:45:31 | cleanNode | semmle.label | cleanNode |
+| test.go:47:6:47:15 | definition of cleanNode2 | semmle.label | definition of cleanNode2 |
+| test.go:48:2:48:44 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:48:32:48:43 | selection of Body | semmle.label | selection of Body |
+| test.go:49:26:49:37 | taintedNode2 | semmle.label | taintedNode2 |
+| test.go:50:22:50:32 | &... | semmle.label | &... |
+| test.go:50:22:50:32 | &... | semmle.label | &... |
+| test.go:50:22:50:32 | &... [pointer] | semmle.label | &... [pointer] |
+| test.go:50:23:50:32 | cleanNode2 | semmle.label | cleanNode2 |
+subpaths

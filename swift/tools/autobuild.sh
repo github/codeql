@@ -1,8 +1,9 @@
 #!/bin/bash
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  exec "${CODEQL_EXTRACTOR_SWIFT_ROOT}/tools/${CODEQL_PLATFORM}/xcode-autobuilder"
+  export CODEQL_SWIFT_CARTHAGE_EXEC=`which carthage`
+  export CODEQL_SWIFT_POD_EXEC=`which pod`
+  exec "${CODEQL_EXTRACTOR_SWIFT_ROOT}/tools/${CODEQL_PLATFORM}/swift-autobuilder"
 else
-  echo "Not implemented yet"
-  exit 1
+  exec "${CODEQL_EXTRACTOR_SWIFT_ROOT}/tools/${CODEQL_PLATFORM}/incompatible-os"
 fi

@@ -1,46 +1,143 @@
 edges
-| rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  |
-| rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  | rncryptor.swift:65:73:65:73 | myConstKey |
-| rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  | rncryptor.swift:66:73:66:73 | myConstKey |
-| rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  | rncryptor.swift:67:73:67:73 | myConstKey |
-| rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  | rncryptor.swift:68:73:68:73 | myConstKey |
-| rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  | rncryptor.swift:70:94:70:94 | myConstKey |
-| rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  | rncryptor.swift:71:102:71:102 | myConstKey |
-| rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  | rncryptor.swift:72:94:72:94 | myConstKey |
-| rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  | rncryptor.swift:73:102:73:102 | myConstKey |
-| rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  | rncryptor.swift:75:37:75:37 | myConstKey |
-| rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  | rncryptor.swift:76:37:76:37 | myConstKey |
-| rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  | rncryptor.swift:78:66:78:66 | myConstKey |
-| rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  | rncryptor.swift:79:66:79:66 | myConstKey |
-| rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  | rncryptor.swift:80:94:80:94 | myConstKey |
-| rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  | rncryptor.swift:81:102:81:102 | myConstKey |
-| rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  |
-| rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  |
-| test.swift:76:3:76:3 | this string is constant :  | test.swift:92:18:92:36 | call to getConstantString() :  |
-| test.swift:90:26:90:121 | [...] :  | test.swift:117:22:117:22 | key |
-| test.swift:90:26:90:121 | [...] :  | test.swift:118:22:118:22 | key |
-| test.swift:90:26:90:121 | [...] :  | test.swift:128:26:128:26 | key |
-| test.swift:90:26:90:121 | [...] :  | test.swift:135:25:135:25 | key |
-| test.swift:90:26:90:121 | [...] :  | test.swift:140:25:140:25 | key |
-| test.swift:90:26:90:121 | [...] :  | test.swift:145:26:145:26 | key |
-| test.swift:90:26:90:121 | [...] :  | test.swift:150:26:150:26 | key |
-| test.swift:90:26:90:121 | [...] :  | test.swift:151:26:151:26 | key |
-| test.swift:90:26:90:121 | [...] :  | test.swift:161:24:161:24 | key |
-| test.swift:90:26:90:121 | [...] :  | test.swift:163:24:163:24 | key |
-| test.swift:92:18:92:36 | call to getConstantString() :  | test.swift:108:21:108:21 | keyString |
-| test.swift:92:18:92:36 | call to getConstantString() :  | test.swift:109:21:109:21 | keyString |
-| test.swift:92:18:92:36 | call to getConstantString() :  | test.swift:119:22:119:22 | keyString |
-| test.swift:92:18:92:36 | call to getConstantString() :  | test.swift:120:22:120:22 | keyString |
-| test.swift:92:18:92:36 | call to getConstantString() :  | test.swift:129:26:129:26 | keyString |
-| test.swift:92:18:92:36 | call to getConstantString() :  | test.swift:152:26:152:26 | keyString |
-| test.swift:92:18:92:36 | call to getConstantString() :  | test.swift:153:26:153:26 | keyString |
-| test.swift:92:18:92:36 | call to getConstantString() :  | test.swift:162:24:162:24 | keyString |
-| test.swift:92:18:92:36 | call to getConstantString() :  | test.swift:164:24:164:24 | keyString |
+| SQLite.swift:54:25:54:33 | [...] | SQLite.swift:54:13:54:34 | call to Blob.init(bytes:) | provenance |  |
+| cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:82:10:82:28 | call to getConstantString() | provenance |  |
+| cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:94:18:94:36 | call to getConstantString() | provenance |  |
+| cryptoswift.swift:82:2:82:34 | call to Array<Element>.init(_:) [Collection element] | cryptoswift.swift:93:13:93:30 | call to getConstantArray() [Collection element] | provenance |  |
+| cryptoswift.swift:82:10:82:28 | call to getConstantString() | cryptoswift.swift:82:10:82:30 | .utf8 | provenance |  |
+| cryptoswift.swift:82:10:82:30 | .utf8 | cryptoswift.swift:82:2:82:34 | call to Array<Element>.init(_:) [Collection element] | provenance |  |
+| cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:119:22:119:22 | key | provenance |  |
+| cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:120:22:120:22 | key | provenance |  |
+| cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:130:26:130:26 | key | provenance |  |
+| cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:137:25:137:25 | key | provenance |  |
+| cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:142:25:142:25 | key | provenance |  |
+| cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:147:26:147:26 | key | provenance |  |
+| cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:152:26:152:26 | key | provenance |  |
+| cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:153:26:153:26 | key | provenance |  |
+| cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:163:24:163:24 | key | provenance |  |
+| cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:165:24:165:24 | key | provenance |  |
+| cryptoswift.swift:93:13:93:30 | call to getConstantArray() [Collection element] | cryptoswift.swift:108:21:108:21 | key2 | provenance |  |
+| cryptoswift.swift:93:13:93:30 | call to getConstantArray() [Collection element] | cryptoswift.swift:109:21:109:21 | key2 | provenance |  |
+| cryptoswift.swift:94:18:94:36 | call to getConstantString() | cryptoswift.swift:110:21:110:21 | keyString | provenance |  |
+| cryptoswift.swift:94:18:94:36 | call to getConstantString() | cryptoswift.swift:111:21:111:21 | keyString | provenance |  |
+| cryptoswift.swift:94:18:94:36 | call to getConstantString() | cryptoswift.swift:121:22:121:22 | keyString | provenance |  |
+| cryptoswift.swift:94:18:94:36 | call to getConstantString() | cryptoswift.swift:122:22:122:22 | keyString | provenance |  |
+| cryptoswift.swift:94:18:94:36 | call to getConstantString() | cryptoswift.swift:131:26:131:26 | keyString | provenance |  |
+| cryptoswift.swift:94:18:94:36 | call to getConstantString() | cryptoswift.swift:154:26:154:26 | keyString | provenance |  |
+| cryptoswift.swift:94:18:94:36 | call to getConstantString() | cryptoswift.swift:155:26:155:26 | keyString | provenance |  |
+| cryptoswift.swift:94:18:94:36 | call to getConstantString() | cryptoswift.swift:164:24:164:24 | keyString | provenance |  |
+| cryptoswift.swift:94:18:94:36 | call to getConstantString() | cryptoswift.swift:166:24:166:24 | keyString | provenance |  |
+| file://:0:0:0:0 | [post] self [encryptionKey] | misc.swift:30:7:30:7 | self [Return] [encryptionKey] | provenance |  |
+| file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self | provenance |  |
+| file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [encryptionKey] | provenance |  |
+| grdb.swift:21:20:21:20 | abc123 | grdb.swift:27:23:27:23 | constString | provenance |  |
+| grdb.swift:21:20:21:20 | abc123 | grdb.swift:31:26:31:26 | constString | provenance |  |
+| grdb.swift:22:33:22:50 | [...] | grdb.swift:23:23:23:23 | constArray | provenance |  |
+| grdb.swift:23:18:23:33 | call to Data.init(_:) | grdb.swift:29:23:29:23 | constData | provenance |  |
+| grdb.swift:23:18:23:33 | call to Data.init(_:) | grdb.swift:33:26:33:26 | constData | provenance |  |
+| grdb.swift:23:23:23:23 | constArray | grdb.swift:23:18:23:33 | call to Data.init(_:) | provenance |  |
+| misc.swift:30:7:30:7 | value | file://:0:0:0:0 | value | provenance |  |
+| misc.swift:57:19:57:38 | call to Data.init(_:) | misc.swift:62:41:62:41 | myConstKey | provenance |  |
+| misc.swift:57:19:57:38 | call to Data.init(_:) | misc.swift:66:25:66:25 | myConstKey | provenance |  |
+| misc.swift:57:19:57:38 | call to Data.init(_:) | misc.swift:70:41:70:41 | myConstKey | provenance |  |
+| misc.swift:57:24:57:24 | abcdef123456 | misc.swift:57:19:57:38 | call to Data.init(_:) | provenance |  |
+| misc.swift:66:25:66:25 | myConstKey | misc.swift:30:7:30:7 | value | provenance |  |
+| misc.swift:66:25:66:25 | myConstKey | misc.swift:66:2:66:2 | [post] config | provenance |  |
+| misc.swift:70:41:70:41 | myConstKey | misc.swift:30:7:30:7 | value | provenance |  |
+| misc.swift:70:41:70:41 | myConstKey | misc.swift:70:2:70:18 | [post] getter for .config | provenance |  |
+| misc.swift:73:14:73:20 | k1 | misc.swift:76:26:76:29 | .utf8 | provenance |  |
+| misc.swift:73:28:73:34 | k2 | misc.swift:77:26:77:29 | .utf8 | provenance |  |
+| misc.swift:76:26:76:29 | .utf8 | misc.swift:76:20:76:33 | call to Array<Element>.init(_:) | provenance |  |
+| misc.swift:77:26:77:29 | .utf8 | misc.swift:77:20:77:33 | call to Array<Element>.init(_:) | provenance |  |
+| misc.swift:82:10:82:10 | abc123 | misc.swift:73:14:73:20 | k1 | provenance |  |
+| misc.swift:83:10:83:10 | abc123 | misc.swift:73:14:73:20 | k1 | provenance |  |
+| misc.swift:83:20:83:20 | abc123 | misc.swift:73:28:73:34 | k2 | provenance |  |
+| rncryptor.swift:60:19:60:38 | call to Data.init(_:) | rncryptor.swift:65:73:65:73 | myConstKey | provenance |  |
+| rncryptor.swift:60:19:60:38 | call to Data.init(_:) | rncryptor.swift:66:73:66:73 | myConstKey | provenance |  |
+| rncryptor.swift:60:19:60:38 | call to Data.init(_:) | rncryptor.swift:67:73:67:73 | myConstKey | provenance |  |
+| rncryptor.swift:60:19:60:38 | call to Data.init(_:) | rncryptor.swift:68:73:68:73 | myConstKey | provenance |  |
+| rncryptor.swift:60:19:60:38 | call to Data.init(_:) | rncryptor.swift:70:94:70:94 | myConstKey | provenance |  |
+| rncryptor.swift:60:19:60:38 | call to Data.init(_:) | rncryptor.swift:71:102:71:102 | myConstKey | provenance |  |
+| rncryptor.swift:60:19:60:38 | call to Data.init(_:) | rncryptor.swift:72:94:72:94 | myConstKey | provenance |  |
+| rncryptor.swift:60:19:60:38 | call to Data.init(_:) | rncryptor.swift:73:102:73:102 | myConstKey | provenance |  |
+| rncryptor.swift:60:19:60:38 | call to Data.init(_:) | rncryptor.swift:75:37:75:37 | myConstKey | provenance |  |
+| rncryptor.swift:60:19:60:38 | call to Data.init(_:) | rncryptor.swift:76:37:76:37 | myConstKey | provenance |  |
+| rncryptor.swift:60:19:60:38 | call to Data.init(_:) | rncryptor.swift:78:66:78:66 | myConstKey | provenance |  |
+| rncryptor.swift:60:19:60:38 | call to Data.init(_:) | rncryptor.swift:79:66:79:66 | myConstKey | provenance |  |
+| rncryptor.swift:60:19:60:38 | call to Data.init(_:) | rncryptor.swift:80:94:80:94 | myConstKey | provenance |  |
+| rncryptor.swift:60:19:60:38 | call to Data.init(_:) | rncryptor.swift:81:102:81:102 | myConstKey | provenance |  |
+| rncryptor.swift:60:19:60:38 | call to Data.init(_:) | rncryptor.swift:83:92:83:92 | myConstKey | provenance |  |
+| rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:60:19:60:38 | call to Data.init(_:) | provenance |  |
+| sqlite3_c_api.swift:41:19:41:38 | call to Data.init(_:) | sqlite3_c_api.swift:48:2:48:2 | myConstKey | provenance |  |
+| sqlite3_c_api.swift:41:24:41:24 | abcdef123456 | sqlite3_c_api.swift:41:19:41:38 | call to Data.init(_:) | provenance |  |
+| sqlite3_c_api.swift:48:2:48:2 | myConstKey | sqlite3_c_api.swift:48:31:48:31 | buffer [Collection element] | provenance |  |
+| sqlite3_c_api.swift:48:31:48:31 | buffer [Collection element] | sqlite3_c_api.swift:49:36:49:36 | buffer | provenance |  |
+| sqlite3_c_api.swift:48:31:48:31 | buffer [Collection element] | sqlite3_c_api.swift:50:38:50:38 | buffer | provenance |  |
 nodes
-| file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | semmle.label | [summary] to write: return (return) in Data.init(_:) :  |
-| rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | semmle.label | [summary param] 0 in Data.init(_:) :  |
-| rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  | semmle.label | call to Data.init(_:) :  |
-| rncryptor.swift:60:24:60:24 | abcdef123456 :  | semmle.label | abcdef123456 :  |
+| SQLite.swift:43:13:43:13 | hardcoded_key | semmle.label | hardcoded_key |
+| SQLite.swift:45:23:45:23 | hardcoded_key | semmle.label | hardcoded_key |
+| SQLite.swift:47:15:47:15 | hardcoded_key | semmle.label | hardcoded_key |
+| SQLite.swift:49:79:49:79 | hardcoded_key | semmle.label | hardcoded_key |
+| SQLite.swift:54:13:54:34 | call to Blob.init(bytes:) | semmle.label | call to Blob.init(bytes:) |
+| SQLite.swift:54:25:54:33 | [...] | semmle.label | [...] |
+| cryptoswift.swift:78:2:78:2 | this string is constant | semmle.label | this string is constant |
+| cryptoswift.swift:82:2:82:34 | call to Array<Element>.init(_:) [Collection element] | semmle.label | call to Array<Element>.init(_:) [Collection element] |
+| cryptoswift.swift:82:10:82:28 | call to getConstantString() | semmle.label | call to getConstantString() |
+| cryptoswift.swift:82:10:82:30 | .utf8 | semmle.label | .utf8 |
+| cryptoswift.swift:92:26:92:121 | [...] | semmle.label | [...] |
+| cryptoswift.swift:93:13:93:30 | call to getConstantArray() [Collection element] | semmle.label | call to getConstantArray() [Collection element] |
+| cryptoswift.swift:94:18:94:36 | call to getConstantString() | semmle.label | call to getConstantString() |
+| cryptoswift.swift:108:21:108:21 | key2 | semmle.label | key2 |
+| cryptoswift.swift:109:21:109:21 | key2 | semmle.label | key2 |
+| cryptoswift.swift:110:21:110:21 | keyString | semmle.label | keyString |
+| cryptoswift.swift:111:21:111:21 | keyString | semmle.label | keyString |
+| cryptoswift.swift:119:22:119:22 | key | semmle.label | key |
+| cryptoswift.swift:120:22:120:22 | key | semmle.label | key |
+| cryptoswift.swift:121:22:121:22 | keyString | semmle.label | keyString |
+| cryptoswift.swift:122:22:122:22 | keyString | semmle.label | keyString |
+| cryptoswift.swift:130:26:130:26 | key | semmle.label | key |
+| cryptoswift.swift:131:26:131:26 | keyString | semmle.label | keyString |
+| cryptoswift.swift:137:25:137:25 | key | semmle.label | key |
+| cryptoswift.swift:142:25:142:25 | key | semmle.label | key |
+| cryptoswift.swift:147:26:147:26 | key | semmle.label | key |
+| cryptoswift.swift:152:26:152:26 | key | semmle.label | key |
+| cryptoswift.swift:153:26:153:26 | key | semmle.label | key |
+| cryptoswift.swift:154:26:154:26 | keyString | semmle.label | keyString |
+| cryptoswift.swift:155:26:155:26 | keyString | semmle.label | keyString |
+| cryptoswift.swift:163:24:163:24 | key | semmle.label | key |
+| cryptoswift.swift:164:24:164:24 | keyString | semmle.label | keyString |
+| cryptoswift.swift:165:24:165:24 | key | semmle.label | key |
+| cryptoswift.swift:166:24:166:24 | keyString | semmle.label | keyString |
+| file://:0:0:0:0 | [post] self | semmle.label | [post] self |
+| file://:0:0:0:0 | [post] self [encryptionKey] | semmle.label | [post] self [encryptionKey] |
+| file://:0:0:0:0 | value | semmle.label | value |
+| grdb.swift:21:20:21:20 | abc123 | semmle.label | abc123 |
+| grdb.swift:22:33:22:50 | [...] | semmle.label | [...] |
+| grdb.swift:23:18:23:33 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
+| grdb.swift:23:23:23:23 | constArray | semmle.label | constArray |
+| grdb.swift:27:23:27:23 | constString | semmle.label | constString |
+| grdb.swift:29:23:29:23 | constData | semmle.label | constData |
+| grdb.swift:31:26:31:26 | constString | semmle.label | constString |
+| grdb.swift:33:26:33:26 | constData | semmle.label | constData |
+| misc.swift:30:7:30:7 | self [Return] [encryptionKey] | semmle.label | self [Return] [encryptionKey] |
+| misc.swift:30:7:30:7 | value | semmle.label | value |
+| misc.swift:57:19:57:38 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
+| misc.swift:57:24:57:24 | abcdef123456 | semmle.label | abcdef123456 |
+| misc.swift:62:41:62:41 | myConstKey | semmle.label | myConstKey |
+| misc.swift:66:2:66:2 | [post] config | semmle.label | [post] config |
+| misc.swift:66:25:66:25 | myConstKey | semmle.label | myConstKey |
+| misc.swift:70:2:70:18 | [post] getter for .config | semmle.label | [post] getter for .config |
+| misc.swift:70:41:70:41 | myConstKey | semmle.label | myConstKey |
+| misc.swift:73:14:73:20 | k1 | semmle.label | k1 |
+| misc.swift:73:28:73:34 | k2 | semmle.label | k2 |
+| misc.swift:76:20:76:33 | call to Array<Element>.init(_:) | semmle.label | call to Array<Element>.init(_:) |
+| misc.swift:76:26:76:29 | .utf8 | semmle.label | .utf8 |
+| misc.swift:77:20:77:33 | call to Array<Element>.init(_:) | semmle.label | call to Array<Element>.init(_:) |
+| misc.swift:77:26:77:29 | .utf8 | semmle.label | .utf8 |
+| misc.swift:82:10:82:10 | abc123 | semmle.label | abc123 |
+| misc.swift:83:10:83:10 | abc123 | semmle.label | abc123 |
+| misc.swift:83:20:83:20 | abc123 | semmle.label | abc123 |
+| rncryptor.swift:60:19:60:38 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
+| rncryptor.swift:60:24:60:24 | abcdef123456 | semmle.label | abcdef123456 |
 | rncryptor.swift:65:73:65:73 | myConstKey | semmle.label | myConstKey |
 | rncryptor.swift:66:73:66:73 | myConstKey | semmle.label | myConstKey |
 | rncryptor.swift:67:73:67:73 | myConstKey | semmle.label | myConstKey |
@@ -55,61 +152,68 @@ nodes
 | rncryptor.swift:79:66:79:66 | myConstKey | semmle.label | myConstKey |
 | rncryptor.swift:80:94:80:94 | myConstKey | semmle.label | myConstKey |
 | rncryptor.swift:81:102:81:102 | myConstKey | semmle.label | myConstKey |
-| test.swift:76:3:76:3 | this string is constant :  | semmle.label | this string is constant :  |
-| test.swift:90:26:90:121 | [...] :  | semmle.label | [...] :  |
-| test.swift:92:18:92:36 | call to getConstantString() :  | semmle.label | call to getConstantString() :  |
-| test.swift:108:21:108:21 | keyString | semmle.label | keyString |
-| test.swift:109:21:109:21 | keyString | semmle.label | keyString |
-| test.swift:117:22:117:22 | key | semmle.label | key |
-| test.swift:118:22:118:22 | key | semmle.label | key |
-| test.swift:119:22:119:22 | keyString | semmle.label | keyString |
-| test.swift:120:22:120:22 | keyString | semmle.label | keyString |
-| test.swift:128:26:128:26 | key | semmle.label | key |
-| test.swift:129:26:129:26 | keyString | semmle.label | keyString |
-| test.swift:135:25:135:25 | key | semmle.label | key |
-| test.swift:140:25:140:25 | key | semmle.label | key |
-| test.swift:145:26:145:26 | key | semmle.label | key |
-| test.swift:150:26:150:26 | key | semmle.label | key |
-| test.swift:151:26:151:26 | key | semmle.label | key |
-| test.swift:152:26:152:26 | keyString | semmle.label | keyString |
-| test.swift:153:26:153:26 | keyString | semmle.label | keyString |
-| test.swift:161:24:161:24 | key | semmle.label | key |
-| test.swift:162:24:162:24 | keyString | semmle.label | keyString |
-| test.swift:163:24:163:24 | key | semmle.label | key |
-| test.swift:164:24:164:24 | keyString | semmle.label | keyString |
+| rncryptor.swift:83:92:83:92 | myConstKey | semmle.label | myConstKey |
+| sqlite3_c_api.swift:41:19:41:38 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
+| sqlite3_c_api.swift:41:24:41:24 | abcdef123456 | semmle.label | abcdef123456 |
+| sqlite3_c_api.swift:48:2:48:2 | myConstKey | semmle.label | myConstKey |
+| sqlite3_c_api.swift:48:31:48:31 | buffer [Collection element] | semmle.label | buffer [Collection element] |
+| sqlite3_c_api.swift:49:36:49:36 | buffer | semmle.label | buffer |
+| sqlite3_c_api.swift:50:38:50:38 | buffer | semmle.label | buffer |
 subpaths
-| rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  |
+| misc.swift:66:25:66:25 | myConstKey | misc.swift:30:7:30:7 | value | misc.swift:30:7:30:7 | self [Return] [encryptionKey] | misc.swift:66:2:66:2 | [post] config |
+| misc.swift:70:41:70:41 | myConstKey | misc.swift:30:7:30:7 | value | misc.swift:30:7:30:7 | self [Return] [encryptionKey] | misc.swift:70:2:70:18 | [post] getter for .config |
 #select
-| rncryptor.swift:65:73:65:73 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:65:73:65:73 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 :  | abcdef123456 |
-| rncryptor.swift:66:73:66:73 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:66:73:66:73 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 :  | abcdef123456 |
-| rncryptor.swift:67:73:67:73 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:67:73:67:73 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 :  | abcdef123456 |
-| rncryptor.swift:68:73:68:73 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:68:73:68:73 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 :  | abcdef123456 |
-| rncryptor.swift:70:94:70:94 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:70:94:70:94 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 :  | abcdef123456 |
-| rncryptor.swift:71:102:71:102 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:71:102:71:102 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 :  | abcdef123456 |
-| rncryptor.swift:72:94:72:94 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:72:94:72:94 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 :  | abcdef123456 |
-| rncryptor.swift:73:102:73:102 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:73:102:73:102 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 :  | abcdef123456 |
-| rncryptor.swift:75:37:75:37 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:75:37:75:37 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 :  | abcdef123456 |
-| rncryptor.swift:76:37:76:37 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:76:37:76:37 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 :  | abcdef123456 |
-| rncryptor.swift:78:66:78:66 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:78:66:78:66 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 :  | abcdef123456 |
-| rncryptor.swift:79:66:79:66 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:79:66:79:66 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 :  | abcdef123456 |
-| rncryptor.swift:80:94:80:94 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:80:94:80:94 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 :  | abcdef123456 |
-| rncryptor.swift:81:102:81:102 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:81:102:81:102 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 :  | abcdef123456 |
-| test.swift:108:21:108:21 | keyString | test.swift:76:3:76:3 | this string is constant :  | test.swift:108:21:108:21 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | test.swift:76:3:76:3 | this string is constant :  | this string is constant |
-| test.swift:109:21:109:21 | keyString | test.swift:76:3:76:3 | this string is constant :  | test.swift:109:21:109:21 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | test.swift:76:3:76:3 | this string is constant :  | this string is constant |
-| test.swift:117:22:117:22 | key | test.swift:90:26:90:121 | [...] :  | test.swift:117:22:117:22 | key | The key 'key' has been initialized with hard-coded values from $@. | test.swift:90:26:90:121 | [...] :  | [...] |
-| test.swift:118:22:118:22 | key | test.swift:90:26:90:121 | [...] :  | test.swift:118:22:118:22 | key | The key 'key' has been initialized with hard-coded values from $@. | test.swift:90:26:90:121 | [...] :  | [...] |
-| test.swift:119:22:119:22 | keyString | test.swift:76:3:76:3 | this string is constant :  | test.swift:119:22:119:22 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | test.swift:76:3:76:3 | this string is constant :  | this string is constant |
-| test.swift:120:22:120:22 | keyString | test.swift:76:3:76:3 | this string is constant :  | test.swift:120:22:120:22 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | test.swift:76:3:76:3 | this string is constant :  | this string is constant |
-| test.swift:128:26:128:26 | key | test.swift:90:26:90:121 | [...] :  | test.swift:128:26:128:26 | key | The key 'key' has been initialized with hard-coded values from $@. | test.swift:90:26:90:121 | [...] :  | [...] |
-| test.swift:129:26:129:26 | keyString | test.swift:76:3:76:3 | this string is constant :  | test.swift:129:26:129:26 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | test.swift:76:3:76:3 | this string is constant :  | this string is constant |
-| test.swift:135:25:135:25 | key | test.swift:90:26:90:121 | [...] :  | test.swift:135:25:135:25 | key | The key 'key' has been initialized with hard-coded values from $@. | test.swift:90:26:90:121 | [...] :  | [...] |
-| test.swift:140:25:140:25 | key | test.swift:90:26:90:121 | [...] :  | test.swift:140:25:140:25 | key | The key 'key' has been initialized with hard-coded values from $@. | test.swift:90:26:90:121 | [...] :  | [...] |
-| test.swift:145:26:145:26 | key | test.swift:90:26:90:121 | [...] :  | test.swift:145:26:145:26 | key | The key 'key' has been initialized with hard-coded values from $@. | test.swift:90:26:90:121 | [...] :  | [...] |
-| test.swift:150:26:150:26 | key | test.swift:90:26:90:121 | [...] :  | test.swift:150:26:150:26 | key | The key 'key' has been initialized with hard-coded values from $@. | test.swift:90:26:90:121 | [...] :  | [...] |
-| test.swift:151:26:151:26 | key | test.swift:90:26:90:121 | [...] :  | test.swift:151:26:151:26 | key | The key 'key' has been initialized with hard-coded values from $@. | test.swift:90:26:90:121 | [...] :  | [...] |
-| test.swift:152:26:152:26 | keyString | test.swift:76:3:76:3 | this string is constant :  | test.swift:152:26:152:26 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | test.swift:76:3:76:3 | this string is constant :  | this string is constant |
-| test.swift:153:26:153:26 | keyString | test.swift:76:3:76:3 | this string is constant :  | test.swift:153:26:153:26 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | test.swift:76:3:76:3 | this string is constant :  | this string is constant |
-| test.swift:161:24:161:24 | key | test.swift:90:26:90:121 | [...] :  | test.swift:161:24:161:24 | key | The key 'key' has been initialized with hard-coded values from $@. | test.swift:90:26:90:121 | [...] :  | [...] |
-| test.swift:162:24:162:24 | keyString | test.swift:76:3:76:3 | this string is constant :  | test.swift:162:24:162:24 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | test.swift:76:3:76:3 | this string is constant :  | this string is constant |
-| test.swift:163:24:163:24 | key | test.swift:90:26:90:121 | [...] :  | test.swift:163:24:163:24 | key | The key 'key' has been initialized with hard-coded values from $@. | test.swift:90:26:90:121 | [...] :  | [...] |
-| test.swift:164:24:164:24 | keyString | test.swift:76:3:76:3 | this string is constant :  | test.swift:164:24:164:24 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | test.swift:76:3:76:3 | this string is constant :  | this string is constant |
+| SQLite.swift:43:13:43:13 | hardcoded_key | SQLite.swift:43:13:43:13 | hardcoded_key | SQLite.swift:43:13:43:13 | hardcoded_key | The key 'hardcoded_key' has been initialized with hard-coded values from $@. | SQLite.swift:43:13:43:13 | hardcoded_key | hardcoded_key |
+| SQLite.swift:45:23:45:23 | hardcoded_key | SQLite.swift:45:23:45:23 | hardcoded_key | SQLite.swift:45:23:45:23 | hardcoded_key | The key 'hardcoded_key' has been initialized with hard-coded values from $@. | SQLite.swift:45:23:45:23 | hardcoded_key | hardcoded_key |
+| SQLite.swift:47:15:47:15 | hardcoded_key | SQLite.swift:47:15:47:15 | hardcoded_key | SQLite.swift:47:15:47:15 | hardcoded_key | The key 'hardcoded_key' has been initialized with hard-coded values from $@. | SQLite.swift:47:15:47:15 | hardcoded_key | hardcoded_key |
+| SQLite.swift:49:79:49:79 | hardcoded_key | SQLite.swift:49:79:49:79 | hardcoded_key | SQLite.swift:49:79:49:79 | hardcoded_key | The key 'hardcoded_key' has been initialized with hard-coded values from $@. | SQLite.swift:49:79:49:79 | hardcoded_key | hardcoded_key |
+| SQLite.swift:54:13:54:34 | call to Blob.init(bytes:) | SQLite.swift:54:25:54:33 | [...] | SQLite.swift:54:13:54:34 | call to Blob.init(bytes:) | The key 'call to Blob.init(bytes:)' has been initialized with hard-coded values from $@. | SQLite.swift:54:25:54:33 | [...] | [...] |
+| cryptoswift.swift:108:21:108:21 | key2 | cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:108:21:108:21 | key2 | The key 'key2' has been initialized with hard-coded values from $@. | cryptoswift.swift:78:2:78:2 | this string is constant | this string is constant |
+| cryptoswift.swift:109:21:109:21 | key2 | cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:109:21:109:21 | key2 | The key 'key2' has been initialized with hard-coded values from $@. | cryptoswift.swift:78:2:78:2 | this string is constant | this string is constant |
+| cryptoswift.swift:110:21:110:21 | keyString | cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:110:21:110:21 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:78:2:78:2 | this string is constant | this string is constant |
+| cryptoswift.swift:111:21:111:21 | keyString | cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:111:21:111:21 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:78:2:78:2 | this string is constant | this string is constant |
+| cryptoswift.swift:119:22:119:22 | key | cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:119:22:119:22 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:92:26:92:121 | [...] | [...] |
+| cryptoswift.swift:120:22:120:22 | key | cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:120:22:120:22 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:92:26:92:121 | [...] | [...] |
+| cryptoswift.swift:121:22:121:22 | keyString | cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:121:22:121:22 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:78:2:78:2 | this string is constant | this string is constant |
+| cryptoswift.swift:122:22:122:22 | keyString | cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:122:22:122:22 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:78:2:78:2 | this string is constant | this string is constant |
+| cryptoswift.swift:130:26:130:26 | key | cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:130:26:130:26 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:92:26:92:121 | [...] | [...] |
+| cryptoswift.swift:131:26:131:26 | keyString | cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:131:26:131:26 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:78:2:78:2 | this string is constant | this string is constant |
+| cryptoswift.swift:137:25:137:25 | key | cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:137:25:137:25 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:92:26:92:121 | [...] | [...] |
+| cryptoswift.swift:142:25:142:25 | key | cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:142:25:142:25 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:92:26:92:121 | [...] | [...] |
+| cryptoswift.swift:147:26:147:26 | key | cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:147:26:147:26 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:92:26:92:121 | [...] | [...] |
+| cryptoswift.swift:152:26:152:26 | key | cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:152:26:152:26 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:92:26:92:121 | [...] | [...] |
+| cryptoswift.swift:153:26:153:26 | key | cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:153:26:153:26 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:92:26:92:121 | [...] | [...] |
+| cryptoswift.swift:154:26:154:26 | keyString | cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:154:26:154:26 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:78:2:78:2 | this string is constant | this string is constant |
+| cryptoswift.swift:155:26:155:26 | keyString | cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:155:26:155:26 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:78:2:78:2 | this string is constant | this string is constant |
+| cryptoswift.swift:163:24:163:24 | key | cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:163:24:163:24 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:92:26:92:121 | [...] | [...] |
+| cryptoswift.swift:164:24:164:24 | keyString | cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:164:24:164:24 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:78:2:78:2 | this string is constant | this string is constant |
+| cryptoswift.swift:165:24:165:24 | key | cryptoswift.swift:92:26:92:121 | [...] | cryptoswift.swift:165:24:165:24 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:92:26:92:121 | [...] | [...] |
+| cryptoswift.swift:166:24:166:24 | keyString | cryptoswift.swift:78:2:78:2 | this string is constant | cryptoswift.swift:166:24:166:24 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:78:2:78:2 | this string is constant | this string is constant |
+| file://:0:0:0:0 | [post] self | misc.swift:57:24:57:24 | abcdef123456 | file://:0:0:0:0 | [post] self | The key '[post] self' has been initialized with hard-coded values from $@. | misc.swift:57:24:57:24 | abcdef123456 | abcdef123456 |
+| grdb.swift:27:23:27:23 | constString | grdb.swift:21:20:21:20 | abc123 | grdb.swift:27:23:27:23 | constString | The key 'constString' has been initialized with hard-coded values from $@. | grdb.swift:21:20:21:20 | abc123 | abc123 |
+| grdb.swift:29:23:29:23 | constData | grdb.swift:22:33:22:50 | [...] | grdb.swift:29:23:29:23 | constData | The key 'constData' has been initialized with hard-coded values from $@. | grdb.swift:22:33:22:50 | [...] | [...] |
+| grdb.swift:31:26:31:26 | constString | grdb.swift:21:20:21:20 | abc123 | grdb.swift:31:26:31:26 | constString | The key 'constString' has been initialized with hard-coded values from $@. | grdb.swift:21:20:21:20 | abc123 | abc123 |
+| grdb.swift:33:26:33:26 | constData | grdb.swift:22:33:22:50 | [...] | grdb.swift:33:26:33:26 | constData | The key 'constData' has been initialized with hard-coded values from $@. | grdb.swift:22:33:22:50 | [...] | [...] |
+| misc.swift:62:41:62:41 | myConstKey | misc.swift:57:24:57:24 | abcdef123456 | misc.swift:62:41:62:41 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | misc.swift:57:24:57:24 | abcdef123456 | abcdef123456 |
+| misc.swift:66:2:66:2 | [post] config | misc.swift:57:24:57:24 | abcdef123456 | misc.swift:66:2:66:2 | [post] config | The key '[post] config' has been initialized with hard-coded values from $@. | misc.swift:57:24:57:24 | abcdef123456 | abcdef123456 |
+| misc.swift:70:2:70:18 | [post] getter for .config | misc.swift:57:24:57:24 | abcdef123456 | misc.swift:70:2:70:18 | [post] getter for .config | The key '[post] getter for .config' has been initialized with hard-coded values from $@. | misc.swift:57:24:57:24 | abcdef123456 | abcdef123456 |
+| misc.swift:76:20:76:33 | call to Array<Element>.init(_:) | misc.swift:82:10:82:10 | abc123 | misc.swift:76:20:76:33 | call to Array<Element>.init(_:) | The key 'call to Array<Element>.init(_:)' has been initialized with hard-coded values from $@. | misc.swift:82:10:82:10 | abc123 | abc123 |
+| misc.swift:76:20:76:33 | call to Array<Element>.init(_:) | misc.swift:83:10:83:10 | abc123 | misc.swift:76:20:76:33 | call to Array<Element>.init(_:) | The key 'call to Array<Element>.init(_:)' has been initialized with hard-coded values from $@. | misc.swift:83:10:83:10 | abc123 | abc123 |
+| misc.swift:77:20:77:33 | call to Array<Element>.init(_:) | misc.swift:83:20:83:20 | abc123 | misc.swift:77:20:77:33 | call to Array<Element>.init(_:) | The key 'call to Array<Element>.init(_:)' has been initialized with hard-coded values from $@. | misc.swift:83:20:83:20 | abc123 | abc123 |
+| rncryptor.swift:65:73:65:73 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:65:73:65:73 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:66:73:66:73 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:66:73:66:73 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:67:73:67:73 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:67:73:67:73 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:68:73:68:73 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:68:73:68:73 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:70:94:70:94 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:70:94:70:94 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:71:102:71:102 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:71:102:71:102 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:72:94:72:94 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:72:94:72:94 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:73:102:73:102 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:73:102:73:102 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:75:37:75:37 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:75:37:75:37 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:76:37:76:37 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:76:37:76:37 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:78:66:78:66 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:78:66:78:66 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:79:66:79:66 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:79:66:79:66 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:80:94:80:94 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:80:94:80:94 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:81:102:81:102 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:81:102:81:102 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:83:92:83:92 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:83:92:83:92 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 | abcdef123456 |
+| sqlite3_c_api.swift:49:36:49:36 | buffer | sqlite3_c_api.swift:41:24:41:24 | abcdef123456 | sqlite3_c_api.swift:49:36:49:36 | buffer | The key 'buffer' has been initialized with hard-coded values from $@. | sqlite3_c_api.swift:41:24:41:24 | abcdef123456 | abcdef123456 |
+| sqlite3_c_api.swift:50:38:50:38 | buffer | sqlite3_c_api.swift:41:24:41:24 | abcdef123456 | sqlite3_c_api.swift:50:38:50:38 | buffer | The key 'buffer' has been initialized with hard-coded values from $@. | sqlite3_c_api.swift:41:24:41:24 | abcdef123456 | abcdef123456 |

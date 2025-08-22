@@ -1,3 +1,4 @@
-#include "test.H"
-#include "test.xpm"
-#include "test2.c"
+#include "test.H"    // GOOD
+#include "test.xpm"  // GOOD
+#include "test2.c"   // BAD
+#include "test.def"  // GOOD

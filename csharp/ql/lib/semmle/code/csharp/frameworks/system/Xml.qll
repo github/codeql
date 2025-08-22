@@ -2,7 +2,6 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.System
-private import semmle.code.csharp.dataflow.DataFlow3
 
 /** The `System.Xml` namespace. */
 class SystemXmlNamespace extends Namespace {
@@ -136,7 +135,9 @@ private Expr getBitwiseOrOperand(Expr e) { result = e.(BitwiseOrExpr).getAnOpera
 
 /** A creation of an instance of `System.Xml.XmlReaderSettings`. */
 class XmlReaderSettingsCreation extends ObjectCreation {
-  XmlReaderSettingsCreation() { this.getType() instanceof SystemXmlXmlReaderSettingsClass }
+  private SystemXmlXmlReaderSettingsClass settings;
+
+  XmlReaderSettingsCreation() { settings = this.getType() }
 
   /** Gets a value set on the `ValidationType` property, if any. */
   SystemXmlValidationType getValidationType() {
@@ -152,7 +153,7 @@ class XmlReaderSettingsCreation extends ObjectCreation {
 
   /** Gets a value set for the given property in this local context. */
   private Expr getPropertyValue(Property p) {
-    p = this.getType().(RefType).getAProperty() and
+    p = settings.getAProperty() and
     exists(PropertyCall set, Expr arg |
       set.getTarget() = p.getSetter() and
       DataFlow::localExprFlow(this, set.getQualifier()) and
@@ -162,17 +163,13 @@ class XmlReaderSettingsCreation extends ObjectCreation {
   }
 }
 
-private class SettingsDataFlowConfig extends DataFlow3::Configuration {
-  SettingsDataFlowConfig() { this = "SettingsDataFlowConfig" }
+private module SettingsDataFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof XmlReaderSettingsCreation }
 
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof XmlReaderSettingsCreation
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() instanceof XmlReaderSettingsInstance
-  }
+  predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof XmlReaderSettingsInstance }
 }
+
+private module SettingsDataFlow = DataFlow::Global<SettingsDataFlowConfig>;
 
 /** A call to `XmlReader.Create`. */
 class XmlReaderCreateCall extends MethodCall {
@@ -190,8 +187,6 @@ class XmlReaderSettingsInstance extends Expr {
 
   /** Gets a possible creation point for this instance of `XmlReaderSettings`. */
   XmlReaderSettingsCreation getASettingsCreation() {
-    exists(SettingsDataFlowConfig settingsFlow |
-      settingsFlow.hasFlow(DataFlow::exprNode(result), DataFlow::exprNode(this))
-    )
+    SettingsDataFlow::flow(DataFlow::exprNode(result), DataFlow::exprNode(this))
   }
 }

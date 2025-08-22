@@ -4,10 +4,10 @@
 
 import csharp
 import Common
-import DataFlow::PathGraph
+import utils.test.ProvenancePathGraph::ShowProvenance<Flow::PathNode, Flow::PathGraph>
 
-from Config c, DataFlow::PathNode source, DataFlow::PathNode sink, string s
+from Flow::PathNode source, Flow::PathNode sink, string s
 where
-  c.hasFlowPath(source, sink) and
+  Flow::flowPath(source, sink) and
   s = sink.toString()
 select sink, source, sink, s order by s

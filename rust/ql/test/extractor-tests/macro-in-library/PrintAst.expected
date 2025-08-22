@@ -1,0 +1,63 @@
+lib.rs:
+#    1| [SourceFile] SourceFile
+#    1|   getItem(0): [Module] mod macro_in_library
+#    1|     getName(): [Name] macro_in_library
+#    1|     getVisibility(): [Visibility] Visibility
+macro_in_library.rs:
+#    1| [SourceFile] SourceFile
+#    1|   getItem(0): [MacroCall] 
+#    2|     getAttributeMacroExpansion(): [MacroItems] MacroItems
+#    2|       getItem(0): [Function] fn foo
+#    2|         getParamList(): [ParamList] ParamList
+#    2|         getName(): [Name] foo
+#    2|         getVisibility(): [Visibility] Visibility
+#    2|       getItem(1): [Function] fn foo_new
+#    2|         getParamList(): [ParamList] ParamList
+#    2|         getName(): [Name] foo_new
+#    2|         getVisibility(): [Visibility] Visibility
+#    4|   getItem(1): [Function] fn bar
+#    4|     getParamList(): [ParamList] ParamList
+#    4|     getName(): [Name] bar
+#    4|     getVisibility(): [Visibility] Visibility
+proc_macro.rs:
+#    1| [SourceFile] SourceFile
+#    1|   getItem(0): [Use] use ...::TokenStream
+#    1|     getUseTree(): [UseTree] ...::TokenStream
+#    1|       getPath(): [Path] ...::TokenStream
+#    1|         getQualifier(): [Path] proc_macro
+#    1|           getSegment(): [PathSegment] proc_macro
+#    1|             getIdentifier(): [NameRef] proc_macro
+#    1|         getSegment(): [PathSegment] TokenStream
+#    1|           getIdentifier(): [NameRef] TokenStream
+#    2|   getItem(1): [Use] use ...::quote
+#    2|     getUseTree(): [UseTree] ...::quote
+#    2|       getPath(): [Path] ...::quote
+#    2|         getQualifier(): [Path] quote
+#    2|           getSegment(): [PathSegment] quote
+#    2|             getIdentifier(): [NameRef] quote
+#    2|         getSegment(): [PathSegment] quote
+#    2|           getIdentifier(): [NameRef] quote
+#    4|   getItem(2): [Function] fn add_one
+#    5|     getParamList(): [ParamList] ParamList
+#    5|       getParam(0): [Param] : TokenStream
+#    5|         getTypeRepr(): [PathTypeRepr] TokenStream
+#    5|           getPath(): [Path] TokenStream
+#    5|             getSegment(): [PathSegment] TokenStream
+#    5|               getIdentifier(): [NameRef] TokenStream
+#    5|       getParam(1): [Param] : TokenStream
+#    5|         getTypeRepr(): [PathTypeRepr] TokenStream
+#    5|           getPath(): [Path] TokenStream
+#    5|             getSegment(): [PathSegment] TokenStream
+#    5|               getIdentifier(): [NameRef] TokenStream
+#    4|     getAttr(0): [Attr] Attr
+#    4|       getMeta(): [Meta] Meta
+#    4|         getPath(): [Path] proc_macro_attribute
+#    4|           getSegment(): [PathSegment] proc_macro_attribute
+#    4|             getIdentifier(): [NameRef] proc_macro_attribute
+#    5|     getName(): [Name] add_one
+#    5|     getRetType(): [RetTypeRepr] RetTypeRepr
+#    5|       getTypeRepr(): [PathTypeRepr] TokenStream
+#    5|         getPath(): [Path] TokenStream
+#    5|           getSegment(): [PathSegment] TokenStream
+#    5|             getIdentifier(): [NameRef] TokenStream
+#    5|     getVisibility(): [Visibility] Visibility

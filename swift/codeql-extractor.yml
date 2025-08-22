@@ -1,8 +1,11 @@
 name: "swift"
 display_name: "Swift"
-version: 0.0.1
+version: 0.1.0
 column_kind: "utf8"
 legacy_qltest_extraction: true
+build_modes:
+  - autobuild
+  - manual
 github_api_languages:
   - Swift
 scc_languages:

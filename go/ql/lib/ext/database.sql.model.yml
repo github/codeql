@@ -1,0 +1,58 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["database/sql", "Conn", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["database/sql", "Conn", True, "QueryRowContext", "", "", "ReturnValue", "database", "manual"]
+      - ["database/sql", "DB", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["database/sql", "DB", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["database/sql", "DB", True, "QueryRow", "", "", "ReturnValue", "database", "manual"]
+      - ["database/sql", "DB", True, "QueryRowContext", "", "", "ReturnValue", "database", "manual"]
+      - ["database/sql", "Stmt", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["database/sql", "Stmt", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["database/sql", "Stmt", True, "QueryRow", "", "", "ReturnValue", "database", "manual"]
+      - ["database/sql", "Stmt", True, "QueryRowContext", "", "", "ReturnValue", "database", "manual"]
+      - ["database/sql", "Tx", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["database/sql", "Tx", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["database/sql", "Tx", True, "QueryRow", "", "", "ReturnValue", "database", "manual"]
+      - ["database/sql", "Tx", True, "QueryRowContext", "", "", "ReturnValue", "database", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["database/sql", "Conn", True, "Exec", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "Conn", True, "ExecContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql", "Conn", True, "Prepare", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "Conn", True, "PrepareContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql", "Conn", True, "Query", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "Conn", True, "QueryContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql", "Conn", True, "QueryRow", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "Conn", True, "QueryRowContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql", "DB", True, "Exec", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "DB", True, "ExecContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql", "DB", True, "Prepare", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "DB", True, "PrepareContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql", "DB", True, "Query", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "DB", True, "QueryContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql", "DB", True, "QueryRow", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "DB", True, "QueryRowContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql", "Tx", True, "Exec", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "Tx", True, "ExecContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql", "Tx", True, "Prepare", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "Tx", True, "PrepareContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql", "Tx", True, "Query", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "Tx", True, "QueryContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["database/sql", "Tx", True, "QueryRow", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["database/sql", "Tx", True, "QueryRowContext", "", "", "Argument[1]", "sql-injection", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["database/sql", "", False, "Named", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      - ["database/sql", "Conn", True, "PrepareContext", "", "", "Argument[1]", "ReturnValue[0]", "taint", "manual"]
+      - ["database/sql", "DB", True, "Prepare", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["database/sql", "DB", True, "PrepareContext", "", "", "Argument[1]", "ReturnValue[0]", "taint", "manual"]
+      - ["database/sql", "Scanner", True, "Scan", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["database/sql", "Tx", True, "Prepare", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["database/sql", "Tx", True, "PrepareContext", "", "", "Argument[1]", "ReturnValue[0]", "taint", "manual"]

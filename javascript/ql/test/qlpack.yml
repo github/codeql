@@ -3,7 +3,7 @@ groups: [javascript, test]
 dependencies:
   codeql/javascript-all: ${workspace}
   codeql/javascript-queries: ${workspace}
+  codeql/util: ${workspace}
 extractor: javascript
 tests: .
-dataExtensions:
-  - library-tests/DataExtensions/*.model.yml
+warnOnImplicitThis: true

@@ -1,6 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/go-all
-      extensible: summaryModel
-    data:
-      - ["archive/tar", "", True, "FileInfoHeader", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]

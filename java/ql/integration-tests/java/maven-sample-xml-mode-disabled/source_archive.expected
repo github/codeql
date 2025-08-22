@@ -1,0 +1,5 @@
+src/main/java/com/example/App.java
+src/main/resources/my-app.properties
+src/test/java/com/example/AppTest.java
+target/classes/my-app.properties
+target/maven-archiver/pom.properties

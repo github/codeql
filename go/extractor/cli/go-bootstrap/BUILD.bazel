@@ -1,0 +1,17 @@
+# generated running `bazel run //go/gazelle`, do not edit
+
+load("@rules_go//go:def.bzl", "go_library")
+load("//go:rules.bzl", "codeql_go_binary")
+
+go_library(
+    name = "go-bootstrap_lib",
+    srcs = ["go-bootstrap.go"],
+    importpath = "github.com/github/codeql-go/extractor/cli/go-bootstrap",
+    visibility = ["//visibility:private"],
+)
+
+codeql_go_binary(
+    name = "go-bootstrap",
+    embed = [":go-bootstrap_lib"],
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sourceModel
+    data:
+      - ["react-relay", "Member[useFragment].ReturnValue", "response"]
+      - ["react-relay", "Member[useLazyLoadQuery].ReturnValue", "response"]
+      - ["react-relay", "Member[usePreloadedQuery].ReturnValue", "response"]
+      - ["react-relay", "Member[useClientQuery].ReturnValue", "response"]
+      - ["react-relay", "Member[useRefetchableFragment].ReturnValue.Member[0]", "response"]
+      - ["react-relay", "Member[usePaginationFragment].ReturnValue.Member[data]", "response"]
+      - ["react-relay", "Member[useMutation].ReturnValue.Member[0].Argument[0].Member[onCompleted].Parameter[0]", "response"]
+      - ["react-relay", "Member[useSubscription].Argument[0].Member[onNext].Parameter[0]", "response"]
+      - ["react-relay", "Member[fetchQuery].ReturnValue.Member[subscribe].Argument[0].Member[next].Parameter[0]", "response"]
+      - ["relay-runtime", "Member[readFragment].ReturnValue", "response"]

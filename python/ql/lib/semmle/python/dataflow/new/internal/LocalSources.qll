@@ -11,6 +11,7 @@ import DataFlowPublic
 private import DataFlowPrivate
 private import semmle.python.internal.CachedStages
 private import semmle.python.internal.Awaited
+private import semmle.python.dataflow.new.internal.ImportStar
 
 /**
  * A data flow node that is a source of local flow. This includes things like
@@ -39,6 +40,22 @@ class LocalSourceNode extends Node {
     this instanceof ExprNode and
     not simpleLocalFlowStepForTypetracking(_, this)
     or
+    // For `from foo import *; foo_function()`, we want to let the variables we think
+    // could originate in `foo` (such as `foo_function`) to be available in the API
+    // graph. This requires them to be local sources. They would not be from the code
+    // just above, since the CFG node has flow going into it from its corresponding
+    // `GlobalSsaVariable`. (a different work-around is to change API graphs to not rely
+    // as heavily on LocalSourceNode; I initially tried this, but it relied on a lot of
+    // copy-pasted code, and it requires some non-trivial deprecation for downgrading
+    // the result type of `.asSource()` to DataFlow::Node, so we've opted for this
+    // approach instead).
+    //
+    // Note: This is only needed at the module level -- uses inside functions appear as
+    // LocalSourceNodes as we expect.
+    //
+    // TODO: When rewriting SSA, we should be able to remove this workaround
+    ImportStar::namePossiblyDefinedInImportStar(this.(ExprNode).getNode(), _, any(Module m))
+    or
     // We include all module variable nodes, as these act as stepping stones between writes and
     // reads of global variables. Without them, type tracking based on `LocalSourceNode`s would be
     // unable to track across global variables.
@@ -51,6 +68,12 @@ class LocalSourceNode extends Node {
     // We explicitly include any read of a global variable, as some of these may have local flow going
     // into them.
     this = any(ModuleVariableNode mvn).getARead()
+    or
+    // We include all scope entry definitions, as these act as the local source within the scope they
+    // enter.
+    this instanceof ScopeEntryDefinitionNode
+    or
+    this instanceof ParameterNode
   }
 
   /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
@@ -97,6 +120,11 @@ class LocalSourceNode extends Node {
   CallCfgNode getACall() { Cached::call(this, result) }
 
   /**
+   * Gets a node that has this node as its annotation.
+   */
+  Node getAnAnnotatedInstance() { Cached::annotatedInstance(this, result) }
+
+  /**
    * Gets an awaited value from this node.
    */
   Node getAnAwaited() { Cached::await(this, result) }
@@ -130,7 +158,22 @@ class LocalSourceNode extends Node {
    * See `TypeBackTracker` for more details about how to use this.
    */
   pragma[inline]
-  LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
+  LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t = t2.step(result, this) }
+}
+
+/**
+ * A LocalSourceNode that is not a ModuleVariableNode
+ * This class provides a positive formulation of that in its charpred.
+ *
+ * Aka FutureLocalSourceNode (see FutureWork below), but until the future is here...
+ */
+class LocalSourceNodeNotModuleVariableNode extends LocalSourceNode {
+  cached
+  LocalSourceNodeNotModuleVariableNode() {
+    this instanceof ExprNode
+    or
+    this instanceof ScopeEntryDefinitionNode
+  }
 }
 
 /**
@@ -202,9 +245,9 @@ private module Cached {
    * Helper predicate for `hasLocalSource`. Removes any steps go to module variable reads, as these
    * are already local source nodes in their own right.
    */
-  cached
+  pragma[nomagic]
   private predicate localSourceFlowStep(Node nodeFrom, Node nodeTo) {
-    simpleLocalFlowStep(nodeFrom, nodeTo) and
+    simpleLocalFlowStep(nodeFrom, nodeTo, _) and
     not nodeTo = any(ModuleVariableNode v).getARead()
   }
 
@@ -234,6 +277,17 @@ private module Cached {
     exists(CfgNode n |
       func.flowsTo(n) and
       n = call.getFunction()
+    )
+  }
+
+  cached
+  predicate annotatedInstance(LocalSourceNode node, Node instance) {
+    exists(ExprNode n | node.flowsTo(n) |
+      instance.asCfgNode().getNode() =
+        any(AnnAssign ann | ann.getAnnotation() = n.asExpr()).getTarget()
+      or
+      instance.asCfgNode().getNode() =
+        any(Parameter p | p.getAnnotation() = n.asCfgNode().getNode())
     )
   }
 

@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["io.netty.resolver", "SimpleNameResolver", False, "resolve", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
+      - ["io.netty.resolver", "SimpleNameResolver", False, "resolve", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]

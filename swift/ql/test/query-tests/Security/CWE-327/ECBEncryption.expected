@@ -1,30 +1,30 @@
 edges
-| test.swift:34:9:34:13 | call to ECB.init() :  | test.swift:54:37:54:53 | call to getECBBlockMode() |
-| test.swift:34:9:34:13 | call to ECB.init() :  | test.swift:55:37:55:53 | call to getECBBlockMode() |
-| test.swift:34:9:34:13 | call to ECB.init() :  | test.swift:67:42:67:58 | call to getECBBlockMode() |
-| test.swift:45:12:45:16 | call to ECB.init() :  | test.swift:50:37:50:37 | ecb |
-| test.swift:45:12:45:16 | call to ECB.init() :  | test.swift:51:37:51:37 | ecb |
-| test.swift:45:12:45:16 | call to ECB.init() :  | test.swift:65:42:65:42 | ecb |
+| test.swift:39:9:39:13 | call to ECB.init() | test.swift:60:37:60:53 | call to getECBBlockMode() | provenance |  |
+| test.swift:39:9:39:13 | call to ECB.init() | test.swift:61:37:61:53 | call to getECBBlockMode() | provenance |  |
+| test.swift:39:9:39:13 | call to ECB.init() | test.swift:73:42:73:58 | call to getECBBlockMode() | provenance |  |
+| test.swift:50:12:50:16 | call to ECB.init() | test.swift:56:37:56:37 | ecb | provenance |  |
+| test.swift:50:12:50:16 | call to ECB.init() | test.swift:57:37:57:37 | ecb | provenance |  |
+| test.swift:50:12:50:16 | call to ECB.init() | test.swift:71:42:71:42 | ecb | provenance |  |
 nodes
-| test.swift:34:9:34:13 | call to ECB.init() :  | semmle.label | call to ECB.init() :  |
-| test.swift:45:12:45:16 | call to ECB.init() :  | semmle.label | call to ECB.init() :  |
-| test.swift:50:37:50:37 | ecb | semmle.label | ecb |
-| test.swift:51:37:51:37 | ecb | semmle.label | ecb |
-| test.swift:52:37:52:41 | call to ECB.init() | semmle.label | call to ECB.init() |
-| test.swift:53:37:53:41 | call to ECB.init() | semmle.label | call to ECB.init() |
-| test.swift:54:37:54:53 | call to getECBBlockMode() | semmle.label | call to getECBBlockMode() |
-| test.swift:55:37:55:53 | call to getECBBlockMode() | semmle.label | call to getECBBlockMode() |
-| test.swift:65:42:65:42 | ecb | semmle.label | ecb |
-| test.swift:66:42:66:46 | call to ECB.init() | semmle.label | call to ECB.init() |
-| test.swift:67:42:67:58 | call to getECBBlockMode() | semmle.label | call to getECBBlockMode() |
+| test.swift:39:9:39:13 | call to ECB.init() | semmle.label | call to ECB.init() |
+| test.swift:50:12:50:16 | call to ECB.init() | semmle.label | call to ECB.init() |
+| test.swift:56:37:56:37 | ecb | semmle.label | ecb |
+| test.swift:57:37:57:37 | ecb | semmle.label | ecb |
+| test.swift:58:37:58:41 | call to ECB.init() | semmle.label | call to ECB.init() |
+| test.swift:59:37:59:41 | call to ECB.init() | semmle.label | call to ECB.init() |
+| test.swift:60:37:60:53 | call to getECBBlockMode() | semmle.label | call to getECBBlockMode() |
+| test.swift:61:37:61:53 | call to getECBBlockMode() | semmle.label | call to getECBBlockMode() |
+| test.swift:71:42:71:42 | ecb | semmle.label | ecb |
+| test.swift:72:42:72:46 | call to ECB.init() | semmle.label | call to ECB.init() |
+| test.swift:73:42:73:58 | call to getECBBlockMode() | semmle.label | call to getECBBlockMode() |
 subpaths
 #select
-| test.swift:50:37:50:37 | ecb | test.swift:45:12:45:16 | call to ECB.init() :  | test.swift:50:37:50:37 | ecb | The initialization of the cipher 'ecb' uses the insecure ECB block mode from $@. | test.swift:45:12:45:16 | call to ECB.init() :  | call to ECB.init() |
-| test.swift:51:37:51:37 | ecb | test.swift:45:12:45:16 | call to ECB.init() :  | test.swift:51:37:51:37 | ecb | The initialization of the cipher 'ecb' uses the insecure ECB block mode from $@. | test.swift:45:12:45:16 | call to ECB.init() :  | call to ECB.init() |
-| test.swift:52:37:52:41 | call to ECB.init() | test.swift:52:37:52:41 | call to ECB.init() | test.swift:52:37:52:41 | call to ECB.init() | The initialization of the cipher 'call to ECB.init()' uses the insecure ECB block mode from $@. | test.swift:52:37:52:41 | call to ECB.init() | call to ECB.init() |
-| test.swift:53:37:53:41 | call to ECB.init() | test.swift:53:37:53:41 | call to ECB.init() | test.swift:53:37:53:41 | call to ECB.init() | The initialization of the cipher 'call to ECB.init()' uses the insecure ECB block mode from $@. | test.swift:53:37:53:41 | call to ECB.init() | call to ECB.init() |
-| test.swift:54:37:54:53 | call to getECBBlockMode() | test.swift:34:9:34:13 | call to ECB.init() :  | test.swift:54:37:54:53 | call to getECBBlockMode() | The initialization of the cipher 'call to getECBBlockMode()' uses the insecure ECB block mode from $@. | test.swift:34:9:34:13 | call to ECB.init() :  | call to ECB.init() |
-| test.swift:55:37:55:53 | call to getECBBlockMode() | test.swift:34:9:34:13 | call to ECB.init() :  | test.swift:55:37:55:53 | call to getECBBlockMode() | The initialization of the cipher 'call to getECBBlockMode()' uses the insecure ECB block mode from $@. | test.swift:34:9:34:13 | call to ECB.init() :  | call to ECB.init() |
-| test.swift:65:42:65:42 | ecb | test.swift:45:12:45:16 | call to ECB.init() :  | test.swift:65:42:65:42 | ecb | The initialization of the cipher 'ecb' uses the insecure ECB block mode from $@. | test.swift:45:12:45:16 | call to ECB.init() :  | call to ECB.init() |
-| test.swift:66:42:66:46 | call to ECB.init() | test.swift:66:42:66:46 | call to ECB.init() | test.swift:66:42:66:46 | call to ECB.init() | The initialization of the cipher 'call to ECB.init()' uses the insecure ECB block mode from $@. | test.swift:66:42:66:46 | call to ECB.init() | call to ECB.init() |
-| test.swift:67:42:67:58 | call to getECBBlockMode() | test.swift:34:9:34:13 | call to ECB.init() :  | test.swift:67:42:67:58 | call to getECBBlockMode() | The initialization of the cipher 'call to getECBBlockMode()' uses the insecure ECB block mode from $@. | test.swift:34:9:34:13 | call to ECB.init() :  | call to ECB.init() |
+| test.swift:56:37:56:37 | ecb | test.swift:50:12:50:16 | call to ECB.init() | test.swift:56:37:56:37 | ecb | The initialization of the cipher 'ecb' uses the insecure ECB block mode from $@. | test.swift:50:12:50:16 | call to ECB.init() | call to ECB.init() |
+| test.swift:57:37:57:37 | ecb | test.swift:50:12:50:16 | call to ECB.init() | test.swift:57:37:57:37 | ecb | The initialization of the cipher 'ecb' uses the insecure ECB block mode from $@. | test.swift:50:12:50:16 | call to ECB.init() | call to ECB.init() |
+| test.swift:58:37:58:41 | call to ECB.init() | test.swift:58:37:58:41 | call to ECB.init() | test.swift:58:37:58:41 | call to ECB.init() | The initialization of the cipher 'call to ECB.init()' uses the insecure ECB block mode from $@. | test.swift:58:37:58:41 | call to ECB.init() | call to ECB.init() |
+| test.swift:59:37:59:41 | call to ECB.init() | test.swift:59:37:59:41 | call to ECB.init() | test.swift:59:37:59:41 | call to ECB.init() | The initialization of the cipher 'call to ECB.init()' uses the insecure ECB block mode from $@. | test.swift:59:37:59:41 | call to ECB.init() | call to ECB.init() |
+| test.swift:60:37:60:53 | call to getECBBlockMode() | test.swift:39:9:39:13 | call to ECB.init() | test.swift:60:37:60:53 | call to getECBBlockMode() | The initialization of the cipher 'call to getECBBlockMode()' uses the insecure ECB block mode from $@. | test.swift:39:9:39:13 | call to ECB.init() | call to ECB.init() |
+| test.swift:61:37:61:53 | call to getECBBlockMode() | test.swift:39:9:39:13 | call to ECB.init() | test.swift:61:37:61:53 | call to getECBBlockMode() | The initialization of the cipher 'call to getECBBlockMode()' uses the insecure ECB block mode from $@. | test.swift:39:9:39:13 | call to ECB.init() | call to ECB.init() |
+| test.swift:71:42:71:42 | ecb | test.swift:50:12:50:16 | call to ECB.init() | test.swift:71:42:71:42 | ecb | The initialization of the cipher 'ecb' uses the insecure ECB block mode from $@. | test.swift:50:12:50:16 | call to ECB.init() | call to ECB.init() |
+| test.swift:72:42:72:46 | call to ECB.init() | test.swift:72:42:72:46 | call to ECB.init() | test.swift:72:42:72:46 | call to ECB.init() | The initialization of the cipher 'call to ECB.init()' uses the insecure ECB block mode from $@. | test.swift:72:42:72:46 | call to ECB.init() | call to ECB.init() |
+| test.swift:73:42:73:58 | call to getECBBlockMode() | test.swift:39:9:39:13 | call to ECB.init() | test.swift:73:42:73:58 | call to getECBBlockMode() | The initialization of the cipher 'call to getECBBlockMode()' uses the insecure ECB block mode from $@. | test.swift:39:9:39:13 | call to ECB.init() | call to ECB.init() |

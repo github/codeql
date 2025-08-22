@@ -1,13 +1,16 @@
 using System;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Semmle.Extraction.CSharp.Populators;
-using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Diagnostics;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Semmle.Util;
 using Semmle.Util.Logging;
+using Semmle.Extraction.CSharp.Populators;
+using System.Reflection;
 
 namespace Semmle.Extraction.CSharp
 {
@@ -16,11 +19,11 @@ namespace Semmle.Extraction.CSharp
     /// </summary>
     public class Analyser : IDisposable
     {
-        protected Extraction.Extractor? extractor;
+        public ExtractionContext? ExtractionContext { get; protected set; }
         protected CSharpCompilation? compilation;
         protected CommonOptions? options;
-
-        private readonly object progressMutex = new object();
+        private protected Entities.Compilation? compilationEntity;
+        private IDisposable? compilationTrapFile;
 
         // The bulk of the extraction work, potentially executed in parallel.
         protected readonly List<Action> extractionTasks = new List<Action>();
@@ -36,14 +39,23 @@ namespace Semmle.Extraction.CSharp
 
         public PathTransformer PathTransformer { get; }
 
-        protected Analyser(IProgressMonitor pm, ILogger logger, bool addAssemblyTrapPrefix, PathTransformer pathTransformer)
+        public IPathCache PathCache { get; }
+
+        protected Analyser(
+            IProgressMonitor pm,
+            ILogger logger,
+            PathTransformer pathTransformer,
+            IPathCache pathCache,
+            bool addAssemblyTrapPrefix)
         {
             Logger = logger;
-            this.addAssemblyTrapPrefix = addAssemblyTrapPrefix;
-            Logger.Log(Severity.Info, "EXTRACTION STARTING at {0}", DateTime.Now);
-            stopWatch.Start();
-            progressMonitor = pm;
             PathTransformer = pathTransformer;
+            PathCache = pathCache;
+            this.addAssemblyTrapPrefix = addAssemblyTrapPrefix;
+            this.progressMonitor = pm;
+
+            Logger.LogInfo($"EXTRACTION STARTING at {DateTime.Now}");
+            stopWatch.Start();
         }
 
         /// <summary>
@@ -64,9 +76,6 @@ namespace Semmle.Extraction.CSharp
         {
             foreach (var assembly in compilation.References.OfType<PortableExecutableReference>())
             {
-                // CIL first - it takes longer.
-                if (options.CIL)
-                    extractionTasks.Add(() => DoExtractCIL(assembly));
                 extractionTasks.Add(() => DoAnalyseReferenceAssembly(assembly));
             }
         }
@@ -97,14 +106,14 @@ namespace Semmle.Extraction.CSharp
                     {
                         var reader = new System.Reflection.Metadata.MetadataReader(metadata.Pointer, metadata.Length);
                         var def = reader.GetAssemblyDefinition();
-                        assemblyIdentity = reader.GetString(def.Name) + " " + def.Version;
+                        assemblyIdentity = $"{reader.GetString(def.Name)} {def.Version}";
                     }
-                    extractor.SetAssemblyFile(assemblyIdentity, refPath);
+                    ExtractionContext.SetAssemblyFile(assemblyIdentity, refPath);
 
                 }
                 catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
-                    extractor.Message(new Message("Exception reading reference file", reference.FilePath, null, ex.StackTrace));
+                    ExtractionContext.Message(new Message("Exception reading reference file", reference.FilePath, null, ex.StackTrace));
                 }
             }
         }
@@ -128,6 +137,9 @@ namespace Semmle.Extraction.CSharp
 
                 var skipExtraction = options.Cache && File.Exists(trapWriter.TrapFile);
 
+                var currentTaskId = IncrementTaskCount();
+                ReportProgressTaskStarted(currentTaskId, assemblyPath);
+
                 if (!skipExtraction)
                 {
                     /* Note on parallel builds:
@@ -144,14 +156,9 @@ namespace Semmle.Extraction.CSharp
                      * still be correct.
                      */
 
-                    // compilation.Clone() reduces memory footprint by allowing the symbols
-                    // in c to be garbage collected.
-                    Compilation c = compilation.Clone();
-
-
-                    if (c.GetAssemblyOrModuleSymbol(r) is IAssemblySymbol assembly)
+                    if (compilation.GetAssemblyOrModuleSymbol(r) is IAssemblySymbol assembly)
                     {
-                        var cx = new Context(extractor, c, trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
+                        var cx = new Context(ExtractionContext, compilation, trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
 
                         foreach (var module in assembly.Modules)
                         {
@@ -164,21 +171,12 @@ namespace Semmle.Extraction.CSharp
                     }
                 }
 
-                ReportProgress(assemblyPath, trapWriter.TrapFile, stopwatch.Elapsed, skipExtraction ? AnalysisAction.UpToDate : AnalysisAction.Extracted);
+                ReportProgressTaskDone(currentTaskId, assemblyPath, trapWriter.TrapFile, stopwatch.Elapsed, skipExtraction ? AnalysisAction.UpToDate : AnalysisAction.Extracted);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
-                Logger.Log(Severity.Error, "  Unhandled exception analyzing {0}: {1}", r.FilePath, ex);
+                Logger.LogError($"  Unhandled exception analyzing {r.FilePath}: {ex}");
             }
-        }
-
-        private void DoExtractCIL(PortableExecutableReference r)
-        {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-            CIL.Analyser.ExtractCIL(r.FilePath!, Logger, options, out var trapFile, out var extracted);
-            stopwatch.Stop();
-            ReportProgress(r.FilePath, trapFile, stopwatch.Elapsed, extracted ? AnalysisAction.Extracted : AnalysisAction.UpToDate);
         }
 
         private void DoExtractTree(SyntaxTree tree)
@@ -187,70 +185,109 @@ namespace Semmle.Extraction.CSharp
             {
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
-                var sourcePath = tree.FilePath;
+                var sourcePath = BinaryLogExtractionContext.GetAdjustedPath(ExtractionContext, tree.FilePath) ?? tree.FilePath;
+
                 var transformedSourcePath = PathTransformer.Transform(sourcePath);
 
                 var trapPath = transformedSourcePath.GetTrapPath(Logger, options.TrapCompression);
-                var upToDate = false;
-
-                // compilation.Clone() is used to allow symbols to be garbage collected.
                 using var trapWriter = transformedSourcePath.CreateTrapWriter(Logger, options.TrapCompression, discardDuplicates: false);
 
-                upToDate = options.Fast && FileIsUpToDate(sourcePath, trapWriter.TrapFile);
+                var currentTaskId = IncrementTaskCount();
+                ReportProgressTaskStarted(currentTaskId, sourcePath);
 
-                if (!upToDate)
+                var cx = new Context(ExtractionContext, compilation, trapWriter, new SourceScope(tree), addAssemblyTrapPrefix);
+                // Ensure that the file itself is populated in case the source file is totally empty
+                var root = tree.GetRoot();
+                Entities.File.Create(cx, root.SyntaxTree.FilePath);
+
+                var csNode = (CSharpSyntaxNode)root;
+                var directiveVisitor = new DirectiveVisitor(cx);
+                csNode.Accept(directiveVisitor);
+                foreach (var branch in directiveVisitor.BranchesTaken)
                 {
-                    var cx = new Context(extractor, compilation.Clone(), trapWriter, new SourceScope(tree), addAssemblyTrapPrefix);
-                    // Ensure that the file itself is populated in case the source file is totally empty
-                    var root = tree.GetRoot();
-                    Entities.File.Create(cx, root.SyntaxTree.FilePath);
-
-                    var csNode = (CSharpSyntaxNode)root;
-                    var directiveVisitor = new DirectiveVisitor(cx);
-                    csNode.Accept(directiveVisitor);
-                    foreach (var branch in directiveVisitor.BranchesTaken)
-                    {
-                        cx.TrapStackSuffix.Add(branch);
-                    }
-                    csNode.Accept(new CompilationUnitVisitor(cx));
-                    cx.PopulateAll();
-                    CommentPopulator.ExtractCommentBlocks(cx, cx.CommentGenerator);
-                    cx.PopulateAll();
+                    cx.TrapStackSuffix.Add(branch);
                 }
+                csNode.Accept(new CompilationUnitVisitor(cx));
+                cx.PopulateAll();
+                CommentPopulator.ExtractCommentBlocks(cx, cx.CommentGenerator);
+                cx.PopulateAll();
 
-                ReportProgress(sourcePath, trapPath, stopwatch.Elapsed, upToDate ? AnalysisAction.UpToDate : AnalysisAction.Extracted);
+                ReportProgressTaskDone(currentTaskId, sourcePath, trapPath, stopwatch.Elapsed, AnalysisAction.Extracted);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
-                extractor.Message(new Message($"Unhandled exception processing syntax tree. {ex.Message}", tree.FilePath, null, ex.StackTrace));
+                ExtractionContext.Message(new Message($"Unhandled exception processing syntax tree. {ex.Message}", tree.FilePath, null, ex.StackTrace));
             }
         }
 
-#nullable restore warnings
-
-        private static bool FileIsUpToDate(string src, string dest)
+        private void DoAnalyseCompilation()
         {
-            return File.Exists(dest) &&
-                File.GetLastWriteTime(dest) >= File.GetLastWriteTime(src);
+            try
+            {
+                var assemblyPath = ExtractionContext.OutputPath;
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
+                var currentTaskId = IncrementTaskCount();
+                ReportProgressTaskStarted(currentTaskId, assemblyPath);
+
+                var transformedAssemblyPath = PathTransformer.Transform(assemblyPath);
+                var assembly = compilation.Assembly;
+                var trapWriter = transformedAssemblyPath.CreateTrapWriter(Logger, options.TrapCompression, discardDuplicates: false);
+                compilationTrapFile = trapWriter;  // Dispose later
+                var cx = new Context(ExtractionContext, compilation, trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
+
+                compilationEntity = Entities.Compilation.Create(cx);
+
+                ExtractionContext.CompilationInfos.ForEach(ci => trapWriter.Writer.compilation_info(compilationEntity, ci.key, ci.value));
+
+                ReportProgressTaskDone(currentTaskId, assemblyPath, trapWriter.TrapFile, stopwatch.Elapsed, AnalysisAction.Extracted);
+            }
+            catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
+            {
+                Logger.LogError($"  Unhandled exception analyzing compilation: {ex}");
+            }
         }
 
-        private void AnalyseNamespace(Context cx, INamespaceSymbol ns)
+        public void LogPerformance(Entities.PerformanceMetrics p) => compilationEntity.PopulatePerformance(p);
+
+        public void ExtractAggregatedMessages() => compilationEntity.PopulateAggregatedMessages();
+
+#nullable restore warnings
+
+        /// <summary>
+        /// Extracts compilation-wide entities, such as compilations and compiler diagnostics.
+        /// </summary>
+        public void AnalyseCompilation()
+        {
+            extractionTasks.Add(() => DoAnalyseCompilation());
+        }
+
+        private static void AnalyseNamespace(Context cx, INamespaceSymbol ns)
         {
             foreach (var memberNamespace in ns.GetNamespaceMembers())
             {
                 AnalyseNamespace(cx, memberNamespace);
             }
 
-            foreach (var memberType in ns.GetTypeMembers())
+            foreach (var memberType in ns.GetTypeMembers().ExtractionCandidates())
             {
                 Entities.Type.Create(cx, memberType).ExtractRecursive();
             }
         }
 
-        private void ReportProgress(string src, string output, TimeSpan time, AnalysisAction action)
+        private int IncrementTaskCount()
         {
-            lock (progressMutex)
-                progressMonitor.Analysed(++taskCount, extractionTasks.Count, src, output, time, action);
+            return Interlocked.Increment(ref taskCount);
+        }
+
+        private void ReportProgressTaskStarted(int currentCount, string src)
+        {
+            progressMonitor.Started(currentCount, extractionTasks.Count, src);
+        }
+
+        private void ReportProgressTaskDone(int currentCount, string src, string output, TimeSpan time, AnalysisAction action)
+        {
+            progressMonitor.Analysed(currentCount, extractionTasks.Count, src, output, time, action);
         }
 
         /// <summary>
@@ -267,20 +304,20 @@ namespace Semmle.Extraction.CSharp
         public virtual void Dispose()
         {
             stopWatch.Stop();
-            Logger.Log(Severity.Info, "  Peak working set = {0} MB", Process.GetCurrentProcess().PeakWorkingSet64 / (1024 * 1024));
+            Logger.LogInfo($"  Peak working set = {Process.GetCurrentProcess().PeakWorkingSet64 / (1024 * 1024)} MB");
 
             if (TotalErrors > 0)
-                Logger.Log(Severity.Info, "EXTRACTION FAILED with {0} error{1} in {2}", TotalErrors, TotalErrors == 1 ? "" : "s", stopWatch.Elapsed);
+                Logger.LogInfo($"EXTRACTION FAILED with {TotalErrors} error{(TotalErrors == 1 ? "" : "s")} in {stopWatch.Elapsed}");
             else
-                Logger.Log(Severity.Info, "EXTRACTION SUCCEEDED in {0}", stopWatch.Elapsed);
+                Logger.LogInfo($"EXTRACTION SUCCEEDED in {stopWatch.Elapsed}");
 
-            Logger.Dispose();
+            compilationTrapFile?.Dispose();
         }
 
         /// <summary>
         /// Number of errors encountered during extraction.
         /// </summary>
-        private int ExtractorErrors => extractor?.Errors ?? 0;
+        private int ExtractorErrors => ExtractionContext?.Errors ?? 0;
 
         /// <summary>
         /// Number of errors encountered by the compiler.
@@ -295,11 +332,26 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Logs information about the extractor.
         /// </summary>
-        public void LogExtractorInfo(string extractorVersion)
+        public void LogExtractorInfo()
         {
-            Logger.Log(Severity.Info, "  Extractor: {0}", Environment.GetCommandLineArgs().First());
-            Logger.Log(Severity.Info, "  Extractor version: {0}", extractorVersion);
-            Logger.Log(Severity.Info, "  Current working directory: {0}", Directory.GetCurrentDirectory());
+            Logger.LogInfo($"  Extractor: {Environment.GetCommandLineArgs()[0]}");
+            Logger.LogInfo($"  Extractor version: {Version}");
+            Logger.LogInfo($"  Current working directory: {Directory.GetCurrentDirectory()}");
+        }
+
+        private static string Version
+        {
+            get
+            {
+                // the attribute for the git information are always attached to the entry assembly by our build system
+                var assembly = Assembly.GetEntryAssembly();
+                var versionString = assembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+                if (versionString == null)
+                {
+                    return "unknown (not built from internal bazel workspace)";
+                }
+                return versionString.InformationalVersion;
+            }
         }
     }
 }

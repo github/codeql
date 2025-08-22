@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["crypto/cipher", "AEAD", True, "Open", "", "", "Argument[2]", "Argument[0]", "taint", "manual"]
+      - ["crypto/cipher", "AEAD", True, "Open", "", "", "Argument[2]", "ReturnValue[0]", "taint", "manual"]
+      - ["crypto/cipher", "Block", True, "Decrypt", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]

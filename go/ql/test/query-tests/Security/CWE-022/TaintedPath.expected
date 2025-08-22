@@ -1,15 +1,25 @@
-edges
-| TaintedPath.go:13:18:13:22 | selection of URL | TaintedPath.go:16:29:16:40 | tainted_path |
-| TaintedPath.go:13:18:13:22 | selection of URL | TaintedPath.go:20:28:20:69 | call to Join |
-| tst.go:14:2:14:39 | ... := ...[1] | tst.go:17:41:17:56 | selection of Filename |
-nodes
-| TaintedPath.go:13:18:13:22 | selection of URL | semmle.label | selection of URL |
-| TaintedPath.go:16:29:16:40 | tainted_path | semmle.label | tainted_path |
-| TaintedPath.go:20:28:20:69 | call to Join | semmle.label | call to Join |
-| tst.go:14:2:14:39 | ... := ...[1] | semmle.label | ... := ...[1] |
-| tst.go:17:41:17:56 | selection of Filename | semmle.label | selection of Filename |
-subpaths
 #select
-| TaintedPath.go:16:29:16:40 | tainted_path | TaintedPath.go:13:18:13:22 | selection of URL | TaintedPath.go:16:29:16:40 | tainted_path | This path depends on a $@. | TaintedPath.go:13:18:13:22 | selection of URL | user-provided value |
-| TaintedPath.go:20:28:20:69 | call to Join | TaintedPath.go:13:18:13:22 | selection of URL | TaintedPath.go:20:28:20:69 | call to Join | This path depends on a $@. | TaintedPath.go:13:18:13:22 | selection of URL | user-provided value |
-| tst.go:17:41:17:56 | selection of Filename | tst.go:14:2:14:39 | ... := ...[1] | tst.go:17:41:17:56 | selection of Filename | This path depends on a $@. | tst.go:14:2:14:39 | ... := ...[1] | user-provided value |
+| TaintedPath.go:17:29:17:40 | tainted_path | TaintedPath.go:14:18:14:22 | selection of URL | TaintedPath.go:17:29:17:40 | tainted_path | This path depends on a $@. | TaintedPath.go:14:18:14:22 | selection of URL | user-provided value |
+| TaintedPath.go:21:28:21:69 | call to Join | TaintedPath.go:14:18:14:22 | selection of URL | TaintedPath.go:21:28:21:69 | call to Join | This path depends on a $@. | TaintedPath.go:14:18:14:22 | selection of URL | user-provided value |
+| TaintedPath.go:68:28:68:57 | call to Clean | TaintedPath.go:14:18:14:22 | selection of URL | TaintedPath.go:68:28:68:57 | call to Clean | This path depends on a $@. | TaintedPath.go:14:18:14:22 | selection of URL | user-provided value |
+edges
+| TaintedPath.go:14:18:14:22 | selection of URL | TaintedPath.go:14:18:14:30 | call to Query | provenance | Src:MaD:2 MaD:3 |
+| TaintedPath.go:14:18:14:30 | call to Query | TaintedPath.go:17:29:17:40 | tainted_path | provenance | Sink:MaD:1 |
+| TaintedPath.go:14:18:14:30 | call to Query | TaintedPath.go:21:57:21:68 | tainted_path | provenance |  |
+| TaintedPath.go:14:18:14:30 | call to Query | TaintedPath.go:68:39:68:56 | ...+... | provenance |  |
+| TaintedPath.go:21:57:21:68 | tainted_path | TaintedPath.go:21:28:21:69 | call to Join | provenance | FunctionModel Sink:MaD:1 |
+| TaintedPath.go:68:39:68:56 | ...+... | TaintedPath.go:68:28:68:57 | call to Clean | provenance | MaD:4 Sink:MaD:1 |
+models
+| 1 | Sink: io/ioutil; ; false; ReadFile; ; ; Argument[0]; path-injection; manual |
+| 2 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
+| 3 | Summary: net/url; URL; true; Query; ; ; Argument[receiver]; ReturnValue; taint; manual |
+| 4 | Summary: path; ; false; Clean; ; ; Argument[0]; ReturnValue; taint; manual |
+nodes
+| TaintedPath.go:14:18:14:22 | selection of URL | semmle.label | selection of URL |
+| TaintedPath.go:14:18:14:30 | call to Query | semmle.label | call to Query |
+| TaintedPath.go:17:29:17:40 | tainted_path | semmle.label | tainted_path |
+| TaintedPath.go:21:28:21:69 | call to Join | semmle.label | call to Join |
+| TaintedPath.go:21:57:21:68 | tainted_path | semmle.label | tainted_path |
+| TaintedPath.go:68:28:68:57 | call to Clean | semmle.label | call to Clean |
+| TaintedPath.go:68:39:68:56 | ...+... | semmle.label | ...+... |
+subpaths

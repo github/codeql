@@ -29,35 +29,14 @@ module ReflectedXss {
   }
 
   /**
-   * DEPRECATED: Gets a HeaderDefinition that defines a non-html content-type for `send`.
-   */
-  deprecated Http::HeaderDefinition getANonHtmlHeaderDefinition(Http::ResponseSendArgument send) {
-    exists(Http::RouteHandler h |
-      send.getRouteHandler() = h and
-      result = nonHtmlContentTypeHeader(h)
-    |
-      // The HeaderDefinition affects a response sent at `send`.
-      headerAffects(result, send)
-    )
-  }
-
-  /**
-   * DEPRECATED: Holds if `h` may send a response with a content type other than HTML.
-   */
-  deprecated Http::HeaderDefinition nonHtmlContentTypeHeader(Http::RouteHandler h) {
-    result = h.getAResponseHeader("content-type") and
-    not exists(string tp | result.defines("content-type", tp) | tp.regexpMatch("(?i).*html.*"))
-  }
-
-  /**
    * Gets a HeaderDefinition that defines a XSS safe content-type for `send`.
    */
   Http::HeaderDefinition getAXssSafeHeaderDefinition(Http::ResponseSendArgument send) {
-    exists(Http::RouteHandler h |
-      send.getRouteHandler() = h and
-      result = xssSafeContentTypeHeader(h)
-    |
-      // The HeaderDefinition affects a response sent at `send`.
+    isSafeContentTypeHeader(result) and
+    (
+      result = send.getAnAssociatedHeaderDefinition()
+      or
+      result = send.getRouteHandler().getAResponseHeader("content-type") and
       headerAffects(result, send)
     )
   }
@@ -75,14 +54,20 @@ module ReflectedXss {
       ]
   }
 
-  /**
-   * Holds if `h` may send a response with a content type that is safe for XSS.
-   */
-  Http::HeaderDefinition xssSafeContentTypeHeader(Http::RouteHandler h) {
-    result = h.getAResponseHeader("content-type") and
-    not exists(string tp | result.defines("content-type", tp) |
+  private predicate isSafeContentTypeHeader(Http::HeaderDefinition header) {
+    header.getAHeaderName() = "content-type" and
+    not exists(string tp | header.defines("content-type", tp) |
       tp.toLowerCase().matches(xssUnsafeContentType() + "%")
     )
+  }
+
+  /**
+   * DEPRECATED. Use `getAXssSafeHeaderDefinition` instead.
+   * Holds if `h` may send a response with a content type that is safe for XSS.
+   */
+  deprecated Http::HeaderDefinition xssSafeContentTypeHeader(Http::RouteHandler h) {
+    result = h.getAResponseHeader("content-type") and
+    isSafeContentTypeHeader(result)
   }
 
   /**
@@ -101,6 +86,8 @@ module ReflectedXss {
         dominatingHeader.getBasicBlock().(ReachableBasicBlock).dominates(sender.getBasicBlock())
       )
     )
+    or
+    header = sender.getAnAssociatedHeaderDefinition()
   }
 
   bindingset[headerBlock]

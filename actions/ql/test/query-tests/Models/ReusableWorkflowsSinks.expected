@@ -1,0 +1,24 @@
+edges
+| .github/workflows/calling_workflow.yml:12:5:15:2 | Job: call2 [workflow-output1] | .github/workflows/calling_workflow.yml:35:20:35:62 | needs.call2.outputs.workflow-output1 | provenance |  |
+| .github/workflows/reusable_workflow.yml:6:7:6:17 | input config-path | .github/workflows/reusable_workflow.yml:27:25:27:49 | inputs.config-path | provenance |  |
+| .github/workflows/reusable_workflow.yml:6:7:6:17 | input config-path | .github/workflows/reusable_workflow.yml:29:17:29:41 | inputs.config-path | provenance |  |
+| .github/workflows/reusable_workflow.yml:10:7:14:4 | output Job outputs node [workflow-output1] | .github/workflows/calling_workflow.yml:12:5:15:2 | Job: call2 [workflow-output1] | provenance |  |
+| .github/workflows/reusable_workflow.yml:11:17:11:52 | jobs.job1.outputs.job-output1 | .github/workflows/reusable_workflow.yml:10:7:14:4 | output Job outputs node [workflow-output1] | provenance |  |
+| .github/workflows/reusable_workflow.yml:22:7:24:4 | Job outputs node [job-output1] | .github/workflows/reusable_workflow.yml:11:17:11:52 | jobs.job1.outputs.job-output1 | provenance |  |
+| .github/workflows/reusable_workflow.yml:22:21:22:57 | steps.step1.outputs.step-output | .github/workflows/reusable_workflow.yml:22:7:24:4 | Job outputs node [job-output1] | provenance |  |
+| .github/workflows/reusable_workflow.yml:25:9:31:6 | Run Step: step1 [step-output] | .github/workflows/reusable_workflow.yml:22:21:22:57 | steps.step1.outputs.step-output | provenance |  |
+| .github/workflows/reusable_workflow.yml:27:25:27:49 | inputs.config-path | .github/workflows/reusable_workflow.yml:25:9:31:6 | Run Step: step1 [step-output] | provenance |  |
+nodes
+| .github/workflows/calling_workflow.yml:12:5:15:2 | Job: call2 [workflow-output1] | semmle.label | Job: call2 [workflow-output1] |
+| .github/workflows/calling_workflow.yml:35:20:35:62 | needs.call2.outputs.workflow-output1 | semmle.label | needs.call2.outputs.workflow-output1 |
+| .github/workflows/reusable_workflow.yml:6:7:6:17 | input config-path | semmle.label | input config-path |
+| .github/workflows/reusable_workflow.yml:10:7:14:4 | output Job outputs node [workflow-output1] | semmle.label | output Job outputs node [workflow-output1] |
+| .github/workflows/reusable_workflow.yml:11:17:11:52 | jobs.job1.outputs.job-output1 | semmle.label | jobs.job1.outputs.job-output1 |
+| .github/workflows/reusable_workflow.yml:22:7:24:4 | Job outputs node [job-output1] | semmle.label | Job outputs node [job-output1] |
+| .github/workflows/reusable_workflow.yml:22:21:22:57 | steps.step1.outputs.step-output | semmle.label | steps.step1.outputs.step-output |
+| .github/workflows/reusable_workflow.yml:25:9:31:6 | Run Step: step1 [step-output] | semmle.label | Run Step: step1 [step-output] |
+| .github/workflows/reusable_workflow.yml:27:25:27:49 | inputs.config-path | semmle.label | inputs.config-path |
+| .github/workflows/reusable_workflow.yml:29:17:29:41 | inputs.config-path | semmle.label | inputs.config-path |
+subpaths
+#select
+| .github/workflows/reusable_workflow.yml:29:17:29:41 | inputs.config-path | .github/workflows/reusable_workflow.yml:6:7:6:17 | input config-path | .github/workflows/reusable_workflow.yml:29:17:29:41 | inputs.config-path | Sink |

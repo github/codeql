@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+     <overview>
+          <p>
+               A JSON Web Token (JWT) is used for authenticating and managing users in an application.
+          </p>
+          <p>
+               Only Decoding JWTs without checking if they have a valid signature or not can lead to security vulnerabilities.
+          </p>
+
+     </overview>
+     <recommendation>
+
+          <p>
+               Don't use methods that only decode JWT, Instead use methods that verify the signature of JWT.
+          </p>
+
+     </recommendation>
+     <example>
+
+          <p>
+               In the following code, you can see the proper usage of the most popular JWT libraries.
+          </p>
+          <sample src="Examples/Good.js" />
+
+          <p>
+               In the following code, you can see the improper usage of the most popular JWT libraries.
+          </p>
+          <sample src="Examples/Bad.js" />
+     </example>
+     <references>
+          <li>
+               <a href="https://www.ghostccamm.com/blog/multi_strapi_vulns/#cve-2023-22893-authentication-bypass-for-aws-cognito-login-provider-in-strapi-versions-456">JWT claim has not been verified</a>
+          </li>
+     </references>
+
+</qhelp>

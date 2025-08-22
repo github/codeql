@@ -1,0 +1,17 @@
+ql/actions/ql/src/Security/CWE-077/EnvPathInjectionCritical.ql
+ql/actions/ql/src/Security/CWE-077/EnvVarInjectionCritical.ql
+ql/actions/ql/src/Security/CWE-094/CodeInjectionCritical.ql
+ql/actions/ql/src/Security/CWE-1395/UseOfKnownVulnerableAction.ql
+ql/actions/ql/src/Security/CWE-275/MissingActionsPermissions.ql
+ql/actions/ql/src/Security/CWE-285/ImproperAccessControl.ql
+ql/actions/ql/src/Security/CWE-312/ExcessiveSecretsExposure.ql
+ql/actions/ql/src/Security/CWE-312/SecretsInArtifacts.ql
+ql/actions/ql/src/Security/CWE-312/UnmaskedSecretExposure.ql
+ql/actions/ql/src/Security/CWE-349/CachePoisoningViaCodeInjection.ql
+ql/actions/ql/src/Security/CWE-349/CachePoisoningViaDirectCache.ql
+ql/actions/ql/src/Security/CWE-349/CachePoisoningViaPoisonableStep.ql
+ql/actions/ql/src/Security/CWE-367/UntrustedCheckoutTOCTOUCritical.ql
+ql/actions/ql/src/Security/CWE-367/UntrustedCheckoutTOCTOUHigh.ql
+ql/actions/ql/src/Security/CWE-829/ArtifactPoisoningCritical.ql
+ql/actions/ql/src/Security/CWE-829/UntrustedCheckoutCritical.ql
+ql/actions/ql/src/Security/CWE-829/UntrustedCheckoutHigh.ql

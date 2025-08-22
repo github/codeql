@@ -5,18 +5,11 @@ type
 | file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 ref readonly> | readonly int | DefaultCallingConvention |
 | file://:0:0:0:0 | delegate* default<Int32*,Void*> | Void* | DefaultCallingConvention |
 | file://:0:0:0:0 | delegate* default<Int32> | int | DefaultCallingConvention |
-| file://:0:0:0:0 | delegate* default<IntPtr,Byte ref,PortableTailCallFrame*,Void> | Void | DefaultCallingConvention |
-| file://:0:0:0:0 | delegate* default<Object,Void> | Void | DefaultCallingConvention |
 | file://:0:0:0:0 | delegate* default<T,Int32> | int | DefaultCallingConvention |
 | file://:0:0:0:0 | delegate* default<Void*,Int32*> | int* | DefaultCallingConvention |
-| file://:0:0:0:0 | delegate* default<Void*,Object> | object | DefaultCallingConvention |
 | file://:0:0:0:0 | delegate* stdcall<Int32 ref,Object out,T,Void> | Void | StdCallCallingConvention |
-| file://:0:0:0:0 | delegate* unmanaged<Char*,IntPtr,Void> | Void | UnmanagedCallingConvention |
-| file://:0:0:0:0 | delegate* unmanaged<Int32,PosixSignal,Int32> | int | UnmanagedCallingConvention |
 | file://:0:0:0:0 | delegate* unmanaged<IntPtr,Int32> | int | UnmanagedCallingConvention |
 | file://:0:0:0:0 | delegate* unmanaged<IntPtr,Void> | Void | UnmanagedCallingConvention |
-| file://:0:0:0:0 | delegate* unmanaged<Void*,Byte*,Void> | Void | UnmanagedCallingConvention |
-| file://:0:0:0:0 | delegate* unmanaged<Void*,Void*,Void*,GCConfigurationType,Int64,Void> | Void | UnmanagedCallingConvention |
 | file://:0:0:0:0 | delegate* unmanaged<Void> | Void | UnmanagedCallingConvention |
 unmanagedCallingConvention
 parameter
@@ -28,29 +21,13 @@ parameter
 | file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 ref readonly> | 0 | file://:0:0:0:0 |  | ref int! |
 | file://:0:0:0:0 | delegate* default<Int32 ref,Object out,Int32 ref readonly> | 1 | file://:0:0:0:0 | `1 | out object? |
 | file://:0:0:0:0 | delegate* default<Int32*,Void*> | 0 | file://:0:0:0:0 |  | int*! |
-| file://:0:0:0:0 | delegate* default<IntPtr,Byte ref,PortableTailCallFrame*,Void> | 0 | file://:0:0:0:0 |  | IntPtr! |
-| file://:0:0:0:0 | delegate* default<IntPtr,Byte ref,PortableTailCallFrame*,Void> | 1 | file://:0:0:0:0 | `1 | ref byte! |
-| file://:0:0:0:0 | delegate* default<IntPtr,Byte ref,PortableTailCallFrame*,Void> | 2 | file://:0:0:0:0 | `2 | PortableTailCallFrame*! |
-| file://:0:0:0:0 | delegate* default<Object,Void> | 0 | file://:0:0:0:0 |  | object |
 | file://:0:0:0:0 | delegate* default<T,Int32> | 0 | file://:0:0:0:0 |  | T |
 | file://:0:0:0:0 | delegate* default<Void*,Int32*> | 0 | file://:0:0:0:0 |  | Void*! |
-| file://:0:0:0:0 | delegate* default<Void*,Object> | 0 | file://:0:0:0:0 |  | Void*! |
 | file://:0:0:0:0 | delegate* stdcall<Int32 ref,Object out,T,Void> | 0 | file://:0:0:0:0 |  | ref int! |
 | file://:0:0:0:0 | delegate* stdcall<Int32 ref,Object out,T,Void> | 1 | file://:0:0:0:0 | `1 | out object? |
 | file://:0:0:0:0 | delegate* stdcall<Int32 ref,Object out,T,Void> | 2 | file://:0:0:0:0 | `2 | T |
-| file://:0:0:0:0 | delegate* unmanaged<Char*,IntPtr,Void> | 0 | file://:0:0:0:0 |  | char*! |
-| file://:0:0:0:0 | delegate* unmanaged<Char*,IntPtr,Void> | 1 | file://:0:0:0:0 | `1 | IntPtr! |
-| file://:0:0:0:0 | delegate* unmanaged<Int32,PosixSignal,Int32> | 0 | file://:0:0:0:0 |  | int! |
-| file://:0:0:0:0 | delegate* unmanaged<Int32,PosixSignal,Int32> | 1 | file://:0:0:0:0 | `1 | PosixSignal! |
 | file://:0:0:0:0 | delegate* unmanaged<IntPtr,Int32> | 0 | file://:0:0:0:0 |  | IntPtr! |
 | file://:0:0:0:0 | delegate* unmanaged<IntPtr,Void> | 0 | file://:0:0:0:0 |  | IntPtr! |
-| file://:0:0:0:0 | delegate* unmanaged<Void*,Byte*,Void> | 0 | file://:0:0:0:0 |  | Void*! |
-| file://:0:0:0:0 | delegate* unmanaged<Void*,Byte*,Void> | 1 | file://:0:0:0:0 | `1 | byte*! |
-| file://:0:0:0:0 | delegate* unmanaged<Void*,Void*,Void*,GCConfigurationType,Int64,Void> | 0 | file://:0:0:0:0 |  | Void*! |
-| file://:0:0:0:0 | delegate* unmanaged<Void*,Void*,Void*,GCConfigurationType,Int64,Void> | 1 | file://:0:0:0:0 | `1 | Void*! |
-| file://:0:0:0:0 | delegate* unmanaged<Void*,Void*,Void*,GCConfigurationType,Int64,Void> | 2 | file://:0:0:0:0 | `2 | Void*! |
-| file://:0:0:0:0 | delegate* unmanaged<Void*,Void*,Void*,GCConfigurationType,Int64,Void> | 3 | file://:0:0:0:0 | `3 | GCConfigurationType! |
-| file://:0:0:0:0 | delegate* unmanaged<Void*,Void*,Void*,GCConfigurationType,Int64,Void> | 4 | file://:0:0:0:0 | `4 | long! |
 invocation
 | FunctionPointer.cs:17:21:17:43 | function pointer call |
 | FunctionPointer.cs:23:13:23:44 | function pointer call |

@@ -1,35 +1,33 @@
 import java
 import semmle.code.java.dataflow.FlowSources
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 predicate isTestSink(DataFlow::Node n) {
-  exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
+  exists(MethodCall ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
 }
 
-class RemoteValueConf extends DataFlow::Configuration {
-  RemoteValueConf() { this = "RemoteValueConf" }
+module RemoteValueConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) { n instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node n) { n instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node n) { isTestSink(n) }
+  predicate isSink(DataFlow::Node n) { isTestSink(n) }
 }
 
-class RemoteTaintConf extends TaintTracking::Configuration {
-  RemoteTaintConf() { this = "RemoteTaintConf" }
+module RemoteValueFlow = DataFlow::Global<RemoteValueConfig>;
 
-  override predicate isSource(DataFlow::Node n) { n instanceof RemoteFlowSource }
+module RemoteTaintConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) { n instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node n) { isTestSink(n) }
+  predicate isSink(DataFlow::Node n) { isTestSink(n) }
 }
 
-class RemoteFlowTest extends InlineExpectationsTest {
-  RemoteFlowTest() { this = "RemoteFlowTest" }
+module RemoteTaintFlow = TaintTracking::Global<RemoteTaintConfig>;
 
-  override string getARelevantTag() { result = ["hasRemoteValueFlow", "hasRemoteTaintFlow"] }
+module RemoteFlowTest implements TestSig {
+  string getARelevantTag() { result = ["hasRemoteValueFlow", "hasRemoteTaintFlow"] }
 
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasRemoteValueFlow" and
-    exists(DataFlow::Node sink | any(RemoteValueConf c).hasFlowTo(sink) |
+    exists(DataFlow::Node sink | RemoteValueFlow::flowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""
@@ -37,7 +35,7 @@ class RemoteFlowTest extends InlineExpectationsTest {
     or
     tag = "hasRemoteTaintFlow" and
     exists(DataFlow::Node src, DataFlow::Node sink |
-      any(RemoteTaintConf c).hasFlow(src, sink) and not any(RemoteValueConf c).hasFlow(src, sink)
+      RemoteTaintFlow::flow(src, sink) and not RemoteValueFlow::flow(src, sink)
     |
       sink.getLocation() = location and
       element = sink.toString() and
@@ -45,3 +43,5 @@ class RemoteFlowTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<RemoteFlowTest>

@@ -65,8 +65,8 @@ class DefectResult extends int {
   /** Gets the URL corresponding to the location of this query result. */
   string getURL() {
     result =
-      "file://" + getFile().getAbsolutePath() + ":" + getStartLine() + ":" + getStartColumn() + ":" +
-        getEndLine() + ":" + getEndColumn()
+      "file://" + this.getFile().getAbsolutePath() + ":" + this.getStartLine() + ":" +
+        this.getStartColumn() + ":" + this.getEndLine() + ":" + this.getEndColumn()
   }
 }
 

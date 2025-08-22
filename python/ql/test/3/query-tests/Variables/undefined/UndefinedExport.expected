@@ -1,4 +1,6 @@
-| UndefinedExport.py:3:18:3:20 | Str | The name 'y' is exported by __all__ but is not defined. |
-| UndefinedExport.py:3:23:3:25 | Str | The name 'z' is exported by __all__ but is not defined. |
-| UndefinedExport.py:3:28:3:35 | Str | The name 'module' is exported by __all__ but is not defined. |
-| package/__init__.py:1:23:1:34 | Str | The name 'not_exists' is exported by __all__ but is not defined. |
+| UndefinedExport.py:3:18:3:20 | StringLiteral | The name 'y' is exported by __all__ but is not defined. |
+| UndefinedExport.py:3:23:3:25 | StringLiteral | The name 'z' is exported by __all__ but is not defined. |
+| UndefinedExport.py:3:28:3:35 | StringLiteral | The name 'module' is exported by __all__ but is not defined. |
+| enum_convert.py:8:13:8:19 | StringLiteral | The name 'Maybe' is exported by __all__ but is not defined. |
+| enum_convert.py:8:22:8:32 | StringLiteral | The name 'Maybe_not' is exported by __all__ but is not defined. |
+| package/__init__.py:1:23:1:34 | StringLiteral | The name 'not_exists' is exported by __all__ but is not defined. |

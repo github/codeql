@@ -2397,58 +2397,11 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;UrlPathHelper;false;getOriginatingQueryString;;;Argument[0];ReturnValue;taint;manual"
-			String out = null;
-			HttpServletRequest in = (HttpServletRequest)source();
-			UrlPathHelper instance = null;
-			out = instance.getOriginatingQueryString(in);
-			sink(out); // $hasTaintFlow
-		}
-		{
-			// "org.springframework.web.util;UrlPathHelper;false;getOriginatingRequestUri;;;Argument[0];ReturnValue;taint;manual"
-			String out = null;
-			HttpServletRequest in = (HttpServletRequest)source();
-			UrlPathHelper instance = null;
-			out = instance.getOriginatingRequestUri(in);
-			sink(out); // $hasTaintFlow
-		}
-		{
-			// "org.springframework.web.util;UrlPathHelper;false;getRequestUri;;;Argument[0];ReturnValue;taint;manual"
-			String out = null;
-			HttpServletRequest in = (HttpServletRequest)source();
-			UrlPathHelper instance = null;
-			out = instance.getRequestUri(in);
-			sink(out); // $hasTaintFlow
-		}
-		{
-			// "org.springframework.web.util;UrlPathHelper;false;getResolvedLookupPath;;;Argument[0];ReturnValue;taint;manual"
-			String out = null;
-			ServletRequest in = (ServletRequest)source();
-			out = UrlPathHelper.getResolvedLookupPath(in);
-			sink(out); // $hasTaintFlow
-		}
-		{
-			// "org.springframework.web.util;UrlPathHelper;false;getServletPath;;;Argument[0];ReturnValue;taint;manual"
-			String out = null;
-			HttpServletRequest in = (HttpServletRequest)source();
-			UrlPathHelper instance = null;
-			out = instance.getServletPath(in);
-			sink(out); // $hasTaintFlow
-		}
-		{
 			// "org.springframework.web.util;UrlPathHelper;false;removeSemicolonContent;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			UrlPathHelper instance = null;
 			out = instance.removeSemicolonContent(in);
-			sink(out); // $hasTaintFlow
-		}
-		{
-			// "org.springframework.web.util;UrlPathHelper;false;resolveAndCacheLookupPath;;;Argument[0];ReturnValue;taint;manual"
-			String out = null;
-			HttpServletRequest in = (HttpServletRequest)source();
-			UrlPathHelper instance = null;
-			out = instance.resolveAndCacheLookupPath(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
@@ -2603,22 +2556,6 @@ public class Test {
 			String out = null;
 			UriTemplate in = (UriTemplate)source();
 			out = in.toString();
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "org.springframework.web.util;UrlPathHelper;false;getPathWithinApplication;;;Argument[0];ReturnValue;taint;manual"
-			String out = null;
-			HttpServletRequest in = (HttpServletRequest)source();
-			UrlPathHelper instance = null;
-			out = instance.getPathWithinApplication(in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "org.springframework.web.util;UrlPathHelper;false;getPathWithinServletMapping;;;Argument[0];ReturnValue;taint;manual"
-			String out = null;
-			HttpServletRequest in = (HttpServletRequest)source();
-			UrlPathHelper instance = null;
-			out = instance.getPathWithinServletMapping(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{

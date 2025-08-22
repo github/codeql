@@ -1,14 +1,14 @@
-| csharp6.cs:25:23:25:96 | $"..." | csharp6.cs:25:26:25:36 | nameof(...) |
+| csharp6.cs:25:23:25:96 | $"..." | csharp6.cs:25:25:25:37 | {...} |
 | csharp6.cs:25:23:25:96 | $"..." | csharp6.cs:25:38:25:41 | " is " |
-| csharp6.cs:25:23:25:96 | $"..." | csharp6.cs:25:43:25:45 | access to local variable foo |
+| csharp6.cs:25:23:25:96 | $"..." | csharp6.cs:25:42:25:46 | {...} |
 | csharp6.cs:25:23:25:96 | $"..." | csharp6.cs:25:47:25:52 | ", and " |
-| csharp6.cs:25:23:25:96 | $"..." | csharp6.cs:25:54:25:64 | nameof(...) |
+| csharp6.cs:25:23:25:96 | $"..." | csharp6.cs:25:53:25:65 | {...} |
 | csharp6.cs:25:23:25:96 | $"..." | csharp6.cs:25:66:25:77 | " has length " |
-| csharp6.cs:25:23:25:96 | $"..." | csharp6.cs:25:79:25:94 | ... ?? ... |
-| csharp6.cs:27:16:27:90 | $"..." | csharp6.cs:27:20:27:30 | nameof(...) |
+| csharp6.cs:25:23:25:96 | $"..." | csharp6.cs:25:78:25:95 | {...} |
+| csharp6.cs:27:16:27:90 | $"..." | csharp6.cs:27:19:27:31 | {...} |
 | csharp6.cs:27:16:27:90 | $"..." | csharp6.cs:27:32:27:35 | " is " |
-| csharp6.cs:27:16:27:90 | $"..." | csharp6.cs:27:37:27:39 | access to local variable foo |
+| csharp6.cs:27:16:27:90 | $"..." | csharp6.cs:27:36:27:40 | {...} |
 | csharp6.cs:27:16:27:90 | $"..." | csharp6.cs:27:41:27:46 | ", and " |
-| csharp6.cs:27:16:27:90 | $"..." | csharp6.cs:27:48:27:58 | nameof(...) |
+| csharp6.cs:27:16:27:90 | $"..." | csharp6.cs:27:47:27:59 | {...} |
 | csharp6.cs:27:16:27:90 | $"..." | csharp6.cs:27:60:27:71 | " has length " |
-| csharp6.cs:27:16:27:90 | $"..." | csharp6.cs:27:73:27:88 | ... ?? ... |
+| csharp6.cs:27:16:27:90 | $"..." | csharp6.cs:27:72:27:89 | {...} |

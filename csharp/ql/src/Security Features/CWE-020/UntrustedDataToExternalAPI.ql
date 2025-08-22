@@ -6,19 +6,19 @@
  * @precision low
  * @problem.severity error
  * @security-severity 7.8
- * @tags security external/cwe/cwe-20
+ * @tags security external/cwe/cwe-020
  */
 
 import csharp
 import semmle.code.csharp.commons.QualifiedName
 import semmle.code.csharp.security.dataflow.ExternalAPIsQuery
-import DataFlow::PathGraph
+import RemoteSourceToExternalApi::PathGraph
 
 from
-  UntrustedDataToExternalApiConfig config, DataFlow::PathNode source, DataFlow::PathNode sink,
+  RemoteSourceToExternalApi::PathNode source, RemoteSourceToExternalApi::PathNode sink,
   string qualifier, string name
 where
-  config.hasFlowPath(source, sink) and
+  RemoteSourceToExternalApi::flowPath(source, sink) and
   sink.getNode().(ExternalApiDataNode).hasQualifiedName(qualifier, name)
 select sink, source, sink,
   "Call to " + getQualifiedName(qualifier, name) + " with untrusted data from $@.", source,

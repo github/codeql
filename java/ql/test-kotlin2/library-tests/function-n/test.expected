@@ -1,0 +1,3 @@
+| test.kt:4:5:4:138 | f1 | FunctionN<String> | String |
+| test.kt:5:5:5:134 | f2 | FunctionN<? extends T1> | ? extends T1 |
+| test.kt:6:5:6:110 | f3 | FunctionN<? extends T3> | ? extends T3 |

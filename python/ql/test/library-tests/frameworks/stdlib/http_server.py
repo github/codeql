@@ -30,7 +30,7 @@ def test_cgi_FieldStorage_taint():
         form['key'][0].value, # $ tainted
         form['key'][0].file, # $ tainted
         form['key'][0].filename, # $ tainted
-        [field.value for field in form['key']], # $ MISSING: tainted
+        [field.value for field in form['key']], # $ tainted
 
         # `form.getvalue('key')` will be a list, if multiple fields named "key" are provided
         form.getvalue('key'), # $ tainted
@@ -40,7 +40,7 @@ def test_cgi_FieldStorage_taint():
 
         form.getlist('key'), # $ tainted
         form.getlist('key')[0], # $ tainted
-        [field.value for field in form.getlist('key')], # $ MISSING: tainted
+        [field.value for field in form.getlist('key')], # $ tainted
     )
 
 
@@ -83,7 +83,7 @@ class MyHandler(BaseHTTPRequestHandler):
     def do_GET(self): # $ requestHandler
         # send_response will log a line to stderr
         self.send_response(200)
-        self.send_header("Content-type", "text/plain; charset=utf-8")
+        self.send_header("Content-type", "text/plain; charset=utf-8") # $ headerWriteNameUnsanitized="Content-type" headerWriteValueUnsanitized="text/plain; charset=utf-8"
         self.end_headers()
         self.wfile.write(b"Hello BaseHTTPRequestHandler\n")
         self.wfile.writelines([b"1\n", b"2\n", b"3\n"])

@@ -3,8 +3,8 @@ import java
 /** A class that implements `java.lang.Iterable`. */
 class Iterable extends Class {
   Iterable() {
-    isSourceDeclaration() and
-    getASourceSupertype+().hasQualifiedName("java.lang", "Iterable")
+    this.isSourceDeclaration() and
+    this.getASourceSupertype+().hasQualifiedName("java.lang", "Iterable")
   }
 
   /** The return value of a one-statement `iterator()` method. */

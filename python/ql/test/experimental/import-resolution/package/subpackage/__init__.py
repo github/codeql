@@ -9,6 +9,6 @@ check("imported_attr", imported_attr,  "attr_used_in_subpackage", globals()) #$ 
 
 # Importing an irrelevant attribute from a sibling module binds the name to the module.
 from .submodule import irrelevant_attr
-check("submodule.submodule_attr", submodule.submodule_attr, "submodule_attr", globals()) #$ prints=submodule_attr
+check("submodule.submodule_attr", submodule.submodule_attr, "submodule_attr", globals()) #$ MISSING:prints=submodule_attr
 
 exit(__file__)

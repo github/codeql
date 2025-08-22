@@ -1,125 +1,132 @@
+#select
+| OpenUrlRedirect.go:10:23:10:42 | call to Get | OpenUrlRedirect.go:10:23:10:28 | selection of Form | OpenUrlRedirect.go:10:23:10:42 | call to Get | This path to an untrusted URL redirection depends on a $@. | OpenUrlRedirect.go:10:23:10:28 | selection of Form | user-provided value |
+| stdlib.go:15:30:15:35 | target | stdlib.go:13:13:13:18 | selection of Form | stdlib.go:15:30:15:35 | target | This path to an untrusted URL redirection depends on a $@. | stdlib.go:13:13:13:18 | selection of Form | user-provided value |
+| stdlib.go:24:30:24:35 | target | stdlib.go:22:13:22:18 | selection of Form | stdlib.go:24:30:24:35 | target | This path to an untrusted URL redirection depends on a $@. | stdlib.go:22:13:22:18 | selection of Form | user-provided value |
+| stdlib.go:35:30:35:39 | ...+... | stdlib.go:31:13:31:18 | selection of Form | stdlib.go:35:30:35:39 | ...+... | This path to an untrusted URL redirection depends on a $@. | stdlib.go:31:13:31:18 | selection of Form | user-provided value |
+| stdlib.go:46:23:46:28 | target | stdlib.go:44:13:44:18 | selection of Form | stdlib.go:46:23:46:28 | target | This path to an untrusted URL redirection depends on a $@. | stdlib.go:44:13:44:18 | selection of Form | user-provided value |
+| stdlib.go:67:23:67:40 | ...+... | stdlib.go:64:13:64:18 | selection of Form | stdlib.go:67:23:67:40 | ...+... | This path to an untrusted URL redirection depends on a $@. | stdlib.go:64:13:64:18 | selection of Form | user-provided value |
+| stdlib.go:92:23:92:28 | target | stdlib.go:89:13:89:18 | selection of Form | stdlib.go:92:23:92:28 | target | This path to an untrusted URL redirection depends on a $@. | stdlib.go:89:13:89:18 | selection of Form | user-provided value |
+| stdlib.go:152:23:152:28 | target | stdlib.go:146:13:146:18 | selection of Form | stdlib.go:152:23:152:28 | target | This path to an untrusted URL redirection depends on a $@. | stdlib.go:146:13:146:18 | selection of Form | user-provided value |
+| stdlib.go:184:23:184:28 | target | stdlib.go:182:13:182:33 | call to FormValue | stdlib.go:184:23:184:28 | target | This path to an untrusted URL redirection depends on a $@. | stdlib.go:182:13:182:33 | call to FormValue | user-provided value |
+| stdlib.go:192:23:192:33 | selection of Path | stdlib.go:190:36:190:56 | call to FormValue | stdlib.go:192:23:192:33 | selection of Path | This path to an untrusted URL redirection depends on a $@. | stdlib.go:190:36:190:56 | call to FormValue | user-provided value |
+| stdlib.go:194:23:194:42 | call to EscapedPath | stdlib.go:190:36:190:56 | call to FormValue | stdlib.go:194:23:194:42 | call to EscapedPath | This path to an untrusted URL redirection depends on a $@. | stdlib.go:190:36:190:56 | call to FormValue | user-provided value |
 edges
-| OpenUrlRedirect.go:10:23:10:28 | selection of Form | OpenUrlRedirect.go:10:23:10:42 | call to Get |
-| stdlib.go:13:13:13:18 | selection of Form | stdlib.go:15:30:15:35 | target |
-| stdlib.go:22:13:22:18 | selection of Form | stdlib.go:24:30:24:35 | target |
-| stdlib.go:31:13:31:18 | selection of Form | stdlib.go:35:30:35:39 | ...+... |
-| stdlib.go:44:13:44:18 | selection of Form | stdlib.go:46:23:46:28 | target |
-| stdlib.go:64:13:64:18 | selection of Form | stdlib.go:67:23:67:40 | ...+... |
-| stdlib.go:89:13:89:18 | selection of Form | stdlib.go:92:23:92:28 | target |
-| stdlib.go:107:54:107:54 | definition of r [pointer, URL, pointer] | stdlib.go:112:4:112:4 | r [pointer, URL, pointer] |
-| stdlib.go:107:54:107:54 | definition of r [pointer, URL, pointer] | stdlib.go:112:4:112:4 | r [pointer, URL, pointer] |
-| stdlib.go:107:54:107:54 | definition of r [pointer, URL] | stdlib.go:112:4:112:4 | r [pointer, URL] |
-| stdlib.go:107:54:107:54 | definition of r [pointer, URL] | stdlib.go:112:4:112:4 | r [pointer, URL] |
-| stdlib.go:107:54:107:54 | definition of r [pointer, URL] | stdlib.go:113:24:113:24 | r [pointer, URL] |
-| stdlib.go:107:54:107:54 | definition of r [pointer, URL] | stdlib.go:113:24:113:24 | r [pointer, URL] |
-| stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] | stdlib.go:107:54:107:54 | definition of r [pointer, URL, pointer] |
-| stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] | stdlib.go:107:54:107:54 | definition of r [pointer, URL, pointer] |
-| stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] | stdlib.go:112:4:112:8 | selection of URL [pointer] |
-| stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] | stdlib.go:112:4:112:8 | selection of URL [pointer] |
-| stdlib.go:112:4:112:4 | implicit dereference [URL] | stdlib.go:107:54:107:54 | definition of r [pointer, URL] |
-| stdlib.go:112:4:112:4 | implicit dereference [URL] | stdlib.go:107:54:107:54 | definition of r [pointer, URL] |
-| stdlib.go:112:4:112:4 | implicit dereference [URL] | stdlib.go:112:4:112:8 | selection of URL |
-| stdlib.go:112:4:112:4 | implicit dereference [URL] | stdlib.go:112:4:112:8 | selection of URL |
-| stdlib.go:112:4:112:4 | r [pointer, URL, pointer] | stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] |
-| stdlib.go:112:4:112:4 | r [pointer, URL, pointer] | stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] |
-| stdlib.go:112:4:112:4 | r [pointer, URL] | stdlib.go:112:4:112:4 | implicit dereference [URL] |
-| stdlib.go:112:4:112:4 | r [pointer, URL] | stdlib.go:112:4:112:4 | implicit dereference [URL] |
-| stdlib.go:112:4:112:8 | implicit dereference | stdlib.go:112:4:112:8 | implicit dereference |
-| stdlib.go:112:4:112:8 | implicit dereference | stdlib.go:112:4:112:8 | implicit dereference |
-| stdlib.go:112:4:112:8 | implicit dereference | stdlib.go:112:4:112:8 | selection of URL |
-| stdlib.go:112:4:112:8 | implicit dereference | stdlib.go:112:4:112:8 | selection of URL |
-| stdlib.go:112:4:112:8 | implicit dereference | stdlib.go:112:4:112:8 | selection of URL [pointer] |
-| stdlib.go:112:4:112:8 | implicit dereference | stdlib.go:112:4:112:8 | selection of URL [pointer] |
-| stdlib.go:112:4:112:8 | selection of URL | stdlib.go:112:4:112:4 | implicit dereference [URL] |
-| stdlib.go:112:4:112:8 | selection of URL | stdlib.go:112:4:112:4 | implicit dereference [URL] |
-| stdlib.go:112:4:112:8 | selection of URL | stdlib.go:112:4:112:8 | implicit dereference |
-| stdlib.go:112:4:112:8 | selection of URL | stdlib.go:112:4:112:8 | implicit dereference |
-| stdlib.go:112:4:112:8 | selection of URL | stdlib.go:112:4:112:8 | selection of URL |
-| stdlib.go:112:4:112:8 | selection of URL | stdlib.go:112:4:112:8 | selection of URL |
-| stdlib.go:112:4:112:8 | selection of URL [pointer] | stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] |
-| stdlib.go:112:4:112:8 | selection of URL [pointer] | stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] |
-| stdlib.go:112:4:112:8 | selection of URL [pointer] | stdlib.go:112:4:112:8 | implicit dereference |
-| stdlib.go:112:4:112:8 | selection of URL [pointer] | stdlib.go:112:4:112:8 | implicit dereference |
-| stdlib.go:113:24:113:24 | implicit dereference [URL] | stdlib.go:113:24:113:28 | selection of URL |
-| stdlib.go:113:24:113:24 | implicit dereference [URL] | stdlib.go:113:24:113:28 | selection of URL |
-| stdlib.go:113:24:113:24 | r [pointer, URL] | stdlib.go:113:24:113:24 | implicit dereference [URL] |
-| stdlib.go:113:24:113:24 | r [pointer, URL] | stdlib.go:113:24:113:24 | implicit dereference [URL] |
-| stdlib.go:113:24:113:28 | selection of URL | stdlib.go:113:24:113:37 | call to String |
-| stdlib.go:113:24:113:28 | selection of URL | stdlib.go:113:24:113:37 | call to String |
-| stdlib.go:146:13:146:18 | selection of Form | stdlib.go:152:23:152:28 | target |
-| stdlib.go:159:11:159:15 | selection of URL | stdlib.go:162:24:162:35 | call to String |
-| stdlib.go:159:11:159:15 | selection of URL | stdlib.go:162:24:162:35 | call to String |
-| stdlib.go:173:35:173:39 | selection of URL | stdlib.go:173:24:173:52 | ...+... |
-| stdlib.go:173:35:173:39 | selection of URL | stdlib.go:173:24:173:52 | ...+... |
-| stdlib.go:182:13:182:33 | call to FormValue | stdlib.go:184:23:184:28 | target |
-| stdlib.go:190:36:190:56 | call to FormValue | stdlib.go:192:23:192:33 | selection of Path |
-| stdlib.go:190:36:190:56 | call to FormValue | stdlib.go:194:23:194:42 | call to EscapedPath |
+| OpenUrlRedirect.go:10:23:10:28 | selection of Form | OpenUrlRedirect.go:10:23:10:42 | call to Get | provenance | Src:MaD:2 Config Sink:MaD:1 |
+| stdlib.go:13:13:13:18 | selection of Form | stdlib.go:13:13:13:32 | call to Get | provenance | Src:MaD:2 Config |
+| stdlib.go:13:13:13:32 | call to Get | stdlib.go:15:30:15:35 | target | provenance |  |
+| stdlib.go:22:13:22:18 | selection of Form | stdlib.go:22:13:22:32 | call to Get | provenance | Src:MaD:2 Config |
+| stdlib.go:22:13:22:32 | call to Get | stdlib.go:24:30:24:35 | target | provenance |  |
+| stdlib.go:31:13:31:18 | selection of Form | stdlib.go:31:13:31:32 | call to Get | provenance | Src:MaD:2 Config |
+| stdlib.go:31:13:31:32 | call to Get | stdlib.go:35:34:35:39 | target | provenance |  |
+| stdlib.go:35:34:35:39 | target | stdlib.go:35:30:35:39 | ...+... | provenance | Config |
+| stdlib.go:44:13:44:18 | selection of Form | stdlib.go:44:13:44:32 | call to Get | provenance | Src:MaD:2 Config |
+| stdlib.go:44:13:44:32 | call to Get | stdlib.go:46:23:46:28 | target | provenance | Sink:MaD:1 |
+| stdlib.go:64:13:64:18 | selection of Form | stdlib.go:64:13:64:32 | call to Get | provenance | Src:MaD:2 Config |
+| stdlib.go:64:13:64:32 | call to Get | stdlib.go:67:23:67:28 | target | provenance |  |
+| stdlib.go:67:23:67:28 | target | stdlib.go:67:23:67:37 | ...+... | provenance | Config |
+| stdlib.go:67:23:67:37 | ...+... | stdlib.go:67:23:67:40 | ...+... | provenance | Config Sink:MaD:1 |
+| stdlib.go:89:13:89:18 | selection of Form | stdlib.go:89:13:89:32 | call to Get | provenance | Src:MaD:2 Config |
+| stdlib.go:89:13:89:32 | call to Get | stdlib.go:90:3:90:8 | target | provenance |  |
+| stdlib.go:90:3:90:8 | target | stdlib.go:90:3:90:25 | ... += ... | provenance | Config |
+| stdlib.go:90:3:90:25 | ... += ... | stdlib.go:92:23:92:28 | target | provenance | Sink:MaD:1 |
+| stdlib.go:107:54:107:54 | definition of r [pointer, URL, pointer] | stdlib.go:112:4:112:4 | r [pointer, URL, pointer] | provenance |  |
+| stdlib.go:107:54:107:54 | definition of r [pointer, URL] | stdlib.go:112:4:112:4 | r [pointer, URL] | provenance |  |
+| stdlib.go:107:54:107:54 | definition of r [pointer, URL] | stdlib.go:113:24:113:24 | r [pointer, URL] | provenance |  |
+| stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] | stdlib.go:107:54:107:54 | definition of r [pointer, URL, pointer] | provenance |  |
+| stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] | stdlib.go:112:4:112:8 | selection of URL [pointer] | provenance |  |
+| stdlib.go:112:4:112:4 | implicit dereference [URL] | stdlib.go:107:54:107:54 | definition of r [pointer, URL] | provenance |  |
+| stdlib.go:112:4:112:4 | implicit dereference [URL] | stdlib.go:112:4:112:8 | selection of URL | provenance |  |
+| stdlib.go:112:4:112:4 | r [pointer, URL, pointer] | stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] | provenance |  |
+| stdlib.go:112:4:112:4 | r [pointer, URL] | stdlib.go:112:4:112:4 | implicit dereference [URL] | provenance |  |
+| stdlib.go:112:4:112:8 | implicit dereference | stdlib.go:112:4:112:8 | selection of URL | provenance | Config |
+| stdlib.go:112:4:112:8 | implicit dereference | stdlib.go:112:4:112:8 | selection of URL [pointer] | provenance |  |
+| stdlib.go:112:4:112:8 | selection of URL | stdlib.go:112:4:112:4 | implicit dereference [URL] | provenance | Src:MaD:4  |
+| stdlib.go:112:4:112:8 | selection of URL | stdlib.go:112:4:112:8 | implicit dereference | provenance | Src:MaD:4 Config |
+| stdlib.go:112:4:112:8 | selection of URL [pointer] | stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] | provenance |  |
+| stdlib.go:112:4:112:8 | selection of URL [pointer] | stdlib.go:112:4:112:8 | implicit dereference | provenance |  |
+| stdlib.go:113:24:113:24 | implicit dereference [URL] | stdlib.go:113:24:113:28 | selection of URL | provenance |  |
+| stdlib.go:113:24:113:24 | r [pointer, URL] | stdlib.go:113:24:113:24 | implicit dereference [URL] | provenance |  |
+| stdlib.go:113:24:113:28 | selection of URL | stdlib.go:113:24:113:37 | call to String | provenance | Src:MaD:4 Config Sink:MaD:1 |
+| stdlib.go:146:13:146:18 | selection of Form | stdlib.go:146:13:146:32 | call to Get | provenance | Src:MaD:2 Config |
+| stdlib.go:146:13:146:32 | call to Get | stdlib.go:152:23:152:28 | target | provenance | Sink:MaD:1 |
+| stdlib.go:159:10:159:15 | star expression | stdlib.go:159:11:159:15 | selection of URL | provenance | Config |
+| stdlib.go:159:10:159:15 | star expression | stdlib.go:162:24:162:26 | url | provenance |  |
+| stdlib.go:159:11:159:15 | selection of URL | stdlib.go:159:10:159:15 | star expression | provenance | Src:MaD:4 Config |
+| stdlib.go:162:24:162:26 | url | stdlib.go:162:24:162:35 | call to String | provenance | Config Sink:MaD:1 |
+| stdlib.go:173:35:173:39 | selection of URL | stdlib.go:173:35:173:52 | call to RequestURI | provenance | Src:MaD:4 Config |
+| stdlib.go:173:35:173:52 | call to RequestURI | stdlib.go:173:24:173:52 | ...+... | provenance | Config Sink:MaD:1 |
+| stdlib.go:182:13:182:33 | call to FormValue | stdlib.go:184:23:184:28 | target | provenance | Src:MaD:3 Sink:MaD:1 |
+| stdlib.go:190:3:190:8 | definition of target | stdlib.go:192:23:192:28 | target | provenance |  |
+| stdlib.go:190:3:190:8 | definition of target | stdlib.go:194:23:194:28 | target | provenance |  |
+| stdlib.go:190:3:190:57 | ... := ...[0] | stdlib.go:190:3:190:8 | definition of target | provenance |  |
+| stdlib.go:190:36:190:56 | call to FormValue | stdlib.go:190:3:190:57 | ... := ...[0] | provenance | Src:MaD:3 Config |
+| stdlib.go:192:23:192:28 | implicit dereference | stdlib.go:190:3:190:8 | definition of target | provenance | Config |
+| stdlib.go:192:23:192:28 | implicit dereference | stdlib.go:192:23:192:33 | selection of Path | provenance | Config Sink:MaD:1 |
+| stdlib.go:192:23:192:28 | target | stdlib.go:192:23:192:28 | implicit dereference | provenance | Config |
+| stdlib.go:192:23:192:28 | target | stdlib.go:192:23:192:33 | selection of Path | provenance | Config Sink:MaD:1 |
+| stdlib.go:194:23:194:28 | target | stdlib.go:194:23:194:42 | call to EscapedPath | provenance | Config Sink:MaD:1 |
+models
+| 1 | Sink: net/http; ; false; Redirect; ; ; Argument[2]; url-redirection[0]; manual |
+| 2 | Source: net/http; Request; true; Form; ; ; ; remote; manual |
+| 3 | Source: net/http; Request; true; FormValue; ; ; ReturnValue; remote; manual |
+| 4 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
 nodes
 | OpenUrlRedirect.go:10:23:10:28 | selection of Form | semmle.label | selection of Form |
 | OpenUrlRedirect.go:10:23:10:42 | call to Get | semmle.label | call to Get |
 | stdlib.go:13:13:13:18 | selection of Form | semmle.label | selection of Form |
+| stdlib.go:13:13:13:32 | call to Get | semmle.label | call to Get |
 | stdlib.go:15:30:15:35 | target | semmle.label | target |
 | stdlib.go:22:13:22:18 | selection of Form | semmle.label | selection of Form |
+| stdlib.go:22:13:22:32 | call to Get | semmle.label | call to Get |
 | stdlib.go:24:30:24:35 | target | semmle.label | target |
 | stdlib.go:31:13:31:18 | selection of Form | semmle.label | selection of Form |
+| stdlib.go:31:13:31:32 | call to Get | semmle.label | call to Get |
 | stdlib.go:35:30:35:39 | ...+... | semmle.label | ...+... |
+| stdlib.go:35:34:35:39 | target | semmle.label | target |
 | stdlib.go:44:13:44:18 | selection of Form | semmle.label | selection of Form |
+| stdlib.go:44:13:44:32 | call to Get | semmle.label | call to Get |
 | stdlib.go:46:23:46:28 | target | semmle.label | target |
 | stdlib.go:64:13:64:18 | selection of Form | semmle.label | selection of Form |
+| stdlib.go:64:13:64:32 | call to Get | semmle.label | call to Get |
+| stdlib.go:67:23:67:28 | target | semmle.label | target |
+| stdlib.go:67:23:67:37 | ...+... | semmle.label | ...+... |
 | stdlib.go:67:23:67:40 | ...+... | semmle.label | ...+... |
 | stdlib.go:89:13:89:18 | selection of Form | semmle.label | selection of Form |
+| stdlib.go:89:13:89:32 | call to Get | semmle.label | call to Get |
+| stdlib.go:90:3:90:8 | target | semmle.label | target |
+| stdlib.go:90:3:90:25 | ... += ... | semmle.label | ... += ... |
 | stdlib.go:92:23:92:28 | target | semmle.label | target |
 | stdlib.go:107:54:107:54 | definition of r [pointer, URL, pointer] | semmle.label | definition of r [pointer, URL, pointer] |
-| stdlib.go:107:54:107:54 | definition of r [pointer, URL, pointer] | semmle.label | definition of r [pointer, URL, pointer] |
-| stdlib.go:107:54:107:54 | definition of r [pointer, URL] | semmle.label | definition of r [pointer, URL] |
 | stdlib.go:107:54:107:54 | definition of r [pointer, URL] | semmle.label | definition of r [pointer, URL] |
 | stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] | semmle.label | implicit dereference [URL, pointer] |
-| stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] | semmle.label | implicit dereference [URL, pointer] |
-| stdlib.go:112:4:112:4 | implicit dereference [URL] | semmle.label | implicit dereference [URL] |
 | stdlib.go:112:4:112:4 | implicit dereference [URL] | semmle.label | implicit dereference [URL] |
 | stdlib.go:112:4:112:4 | r [pointer, URL, pointer] | semmle.label | r [pointer, URL, pointer] |
-| stdlib.go:112:4:112:4 | r [pointer, URL, pointer] | semmle.label | r [pointer, URL, pointer] |
-| stdlib.go:112:4:112:4 | r [pointer, URL] | semmle.label | r [pointer, URL] |
 | stdlib.go:112:4:112:4 | r [pointer, URL] | semmle.label | r [pointer, URL] |
 | stdlib.go:112:4:112:8 | implicit dereference | semmle.label | implicit dereference |
-| stdlib.go:112:4:112:8 | implicit dereference | semmle.label | implicit dereference |
-| stdlib.go:112:4:112:8 | selection of URL | semmle.label | selection of URL |
 | stdlib.go:112:4:112:8 | selection of URL | semmle.label | selection of URL |
 | stdlib.go:112:4:112:8 | selection of URL [pointer] | semmle.label | selection of URL [pointer] |
-| stdlib.go:112:4:112:8 | selection of URL [pointer] | semmle.label | selection of URL [pointer] |
-| stdlib.go:113:24:113:24 | implicit dereference [URL] | semmle.label | implicit dereference [URL] |
 | stdlib.go:113:24:113:24 | implicit dereference [URL] | semmle.label | implicit dereference [URL] |
 | stdlib.go:113:24:113:24 | r [pointer, URL] | semmle.label | r [pointer, URL] |
-| stdlib.go:113:24:113:24 | r [pointer, URL] | semmle.label | r [pointer, URL] |
 | stdlib.go:113:24:113:28 | selection of URL | semmle.label | selection of URL |
-| stdlib.go:113:24:113:28 | selection of URL | semmle.label | selection of URL |
-| stdlib.go:113:24:113:37 | call to String | semmle.label | call to String |
 | stdlib.go:113:24:113:37 | call to String | semmle.label | call to String |
 | stdlib.go:146:13:146:18 | selection of Form | semmle.label | selection of Form |
+| stdlib.go:146:13:146:32 | call to Get | semmle.label | call to Get |
 | stdlib.go:152:23:152:28 | target | semmle.label | target |
+| stdlib.go:159:10:159:15 | star expression | semmle.label | star expression |
 | stdlib.go:159:11:159:15 | selection of URL | semmle.label | selection of URL |
-| stdlib.go:159:11:159:15 | selection of URL | semmle.label | selection of URL |
-| stdlib.go:162:24:162:35 | call to String | semmle.label | call to String |
+| stdlib.go:162:24:162:26 | url | semmle.label | url |
 | stdlib.go:162:24:162:35 | call to String | semmle.label | call to String |
 | stdlib.go:173:24:173:52 | ...+... | semmle.label | ...+... |
-| stdlib.go:173:24:173:52 | ...+... | semmle.label | ...+... |
 | stdlib.go:173:35:173:39 | selection of URL | semmle.label | selection of URL |
-| stdlib.go:173:35:173:39 | selection of URL | semmle.label | selection of URL |
+| stdlib.go:173:35:173:52 | call to RequestURI | semmle.label | call to RequestURI |
 | stdlib.go:182:13:182:33 | call to FormValue | semmle.label | call to FormValue |
 | stdlib.go:184:23:184:28 | target | semmle.label | target |
+| stdlib.go:190:3:190:8 | definition of target | semmle.label | definition of target |
+| stdlib.go:190:3:190:57 | ... := ...[0] | semmle.label | ... := ...[0] |
 | stdlib.go:190:36:190:56 | call to FormValue | semmle.label | call to FormValue |
+| stdlib.go:192:23:192:28 | implicit dereference | semmle.label | implicit dereference |
+| stdlib.go:192:23:192:28 | target | semmle.label | target |
 | stdlib.go:192:23:192:33 | selection of Path | semmle.label | selection of Path |
+| stdlib.go:194:23:194:28 | target | semmle.label | target |
 | stdlib.go:194:23:194:42 | call to EscapedPath | semmle.label | call to EscapedPath |
 subpaths
-#select
-| OpenUrlRedirect.go:10:23:10:42 | call to Get | OpenUrlRedirect.go:10:23:10:28 | selection of Form | OpenUrlRedirect.go:10:23:10:42 | call to Get | Untrusted URL redirection depends on a $@. | OpenUrlRedirect.go:10:23:10:28 | selection of Form | user-provided value |
-| stdlib.go:15:30:15:35 | target | stdlib.go:13:13:13:18 | selection of Form | stdlib.go:15:30:15:35 | target | Untrusted URL redirection depends on a $@. | stdlib.go:13:13:13:18 | selection of Form | user-provided value |
-| stdlib.go:24:30:24:35 | target | stdlib.go:22:13:22:18 | selection of Form | stdlib.go:24:30:24:35 | target | Untrusted URL redirection depends on a $@. | stdlib.go:22:13:22:18 | selection of Form | user-provided value |
-| stdlib.go:35:30:35:39 | ...+... | stdlib.go:31:13:31:18 | selection of Form | stdlib.go:35:30:35:39 | ...+... | Untrusted URL redirection depends on a $@. | stdlib.go:31:13:31:18 | selection of Form | user-provided value |
-| stdlib.go:46:23:46:28 | target | stdlib.go:44:13:44:18 | selection of Form | stdlib.go:46:23:46:28 | target | Untrusted URL redirection depends on a $@. | stdlib.go:44:13:44:18 | selection of Form | user-provided value |
-| stdlib.go:67:23:67:40 | ...+... | stdlib.go:64:13:64:18 | selection of Form | stdlib.go:67:23:67:40 | ...+... | Untrusted URL redirection depends on a $@. | stdlib.go:64:13:64:18 | selection of Form | user-provided value |
-| stdlib.go:92:23:92:28 | target | stdlib.go:89:13:89:18 | selection of Form | stdlib.go:92:23:92:28 | target | Untrusted URL redirection depends on a $@. | stdlib.go:89:13:89:18 | selection of Form | user-provided value |
-| stdlib.go:152:23:152:28 | target | stdlib.go:146:13:146:18 | selection of Form | stdlib.go:152:23:152:28 | target | Untrusted URL redirection depends on a $@. | stdlib.go:146:13:146:18 | selection of Form | user-provided value |
-| stdlib.go:184:23:184:28 | target | stdlib.go:182:13:182:33 | call to FormValue | stdlib.go:184:23:184:28 | target | Untrusted URL redirection depends on a $@. | stdlib.go:182:13:182:33 | call to FormValue | user-provided value |
-| stdlib.go:192:23:192:33 | selection of Path | stdlib.go:190:36:190:56 | call to FormValue | stdlib.go:192:23:192:33 | selection of Path | Untrusted URL redirection depends on a $@. | stdlib.go:190:36:190:56 | call to FormValue | user-provided value |
-| stdlib.go:194:23:194:42 | call to EscapedPath | stdlib.go:190:36:190:56 | call to FormValue | stdlib.go:194:23:194:42 | call to EscapedPath | Untrusted URL redirection depends on a $@. | stdlib.go:190:36:190:56 | call to FormValue | user-provided value |

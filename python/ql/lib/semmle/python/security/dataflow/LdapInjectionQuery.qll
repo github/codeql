@@ -13,38 +13,33 @@ import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
 import LdapInjectionCustomizations::LdapInjection
 
-/**
- * A taint-tracking configuration for detecting LDAP injection vulnerabilities
- * via the distinguished name (DN) parameter of an LDAP search.
- */
-class DnConfiguration extends TaintTracking::Configuration {
-  DnConfiguration() { this = "LdapDnInjection" }
+private module LdapInjectionDnConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  predicate isSink(DataFlow::Node sink) { sink instanceof DnSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof DnSink }
+  predicate isBarrier(DataFlow::Node node) { node instanceof DnSanitizer }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof DnSanitizer }
-
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof DnSanitizerGuard
-  }
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
-/**
- * A taint-tracking configuration for detecting LDAP injection vulnerabilities
- * via the filter parameter of an LDAP search.
- */
-class FilterConfiguration extends TaintTracking::Configuration {
-  FilterConfiguration() { this = "LdapFilterInjection" }
+/** Global taint-tracking for detecting "LDAP injection via the distinguished name (DN) parameter" vulnerabilities. */
+module LdapInjectionDnFlow = TaintTracking::Global<LdapInjectionDnConfig>;
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+private module LdapInjectionFilterConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof FilterSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof FilterSink }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof FilterSanitizer }
+  predicate isBarrier(DataFlow::Node node) { node instanceof FilterSanitizer }
 
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof FilterSanitizerGuard
-  }
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
+
+/** Global taint-tracking for detecting "LDAP injection via the filter parameter" vulnerabilities. */
+module LdapInjectionFilterFlow = TaintTracking::Global<LdapInjectionFilterConfig>;
+
+/** Global taint-tracking for detecting "LDAP injection" vulnerabilities. */
+module LdapInjectionFlow =
+  DataFlow::MergePathGraph<LdapInjectionDnFlow::PathNode, LdapInjectionFilterFlow::PathNode,
+    LdapInjectionDnFlow::PathGraph, LdapInjectionFilterFlow::PathGraph>;

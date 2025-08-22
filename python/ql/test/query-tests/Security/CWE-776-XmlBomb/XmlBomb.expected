@@ -1,17 +1,13 @@
 edges
-| test.py:0:0:0:0 | ModuleVariableNode for test.request | test.py:19:19:19:25 | ControlFlowNode for request |
-| test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:1:26:1:32 | GSSA Variable request |
-| test.py:1:26:1:32 | GSSA Variable request | test.py:0:0:0:0 | ModuleVariableNode for test.request |
-| test.py:19:19:19:25 | ControlFlowNode for request | test.py:19:19:19:30 | ControlFlowNode for Attribute |
-| test.py:19:19:19:30 | ControlFlowNode for Attribute | test.py:19:19:19:45 | ControlFlowNode for Subscript |
-| test.py:19:19:19:45 | ControlFlowNode for Subscript | test.py:30:34:30:44 | ControlFlowNode for xml_content |
+| test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:1:26:1:32 | ControlFlowNode for request | provenance |  |
+| test.py:1:26:1:32 | ControlFlowNode for request | test.py:19:19:19:25 | ControlFlowNode for request | provenance |  |
+| test.py:19:5:19:15 | ControlFlowNode for xml_content | test.py:30:34:30:44 | ControlFlowNode for xml_content | provenance |  |
+| test.py:19:19:19:25 | ControlFlowNode for request | test.py:19:5:19:15 | ControlFlowNode for xml_content | provenance | AdditionalTaintStep |
 nodes
-| test.py:0:0:0:0 | ModuleVariableNode for test.request | semmle.label | ModuleVariableNode for test.request |
 | test.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
-| test.py:1:26:1:32 | GSSA Variable request | semmle.label | GSSA Variable request |
+| test.py:1:26:1:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test.py:19:5:19:15 | ControlFlowNode for xml_content | semmle.label | ControlFlowNode for xml_content |
 | test.py:19:19:19:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| test.py:19:19:19:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| test.py:19:19:19:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | test.py:30:34:30:44 | ControlFlowNode for xml_content | semmle.label | ControlFlowNode for xml_content |
 subpaths
 #select

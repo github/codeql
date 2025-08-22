@@ -1,12 +1,18 @@
 edges
-| flask_bad.py:13:17:13:54 | ControlFlowNode for Attribute() | flask_bad.py:14:12:14:20 | ControlFlowNode for client_ip |
-| flask_bad.py:20:17:20:54 | ControlFlowNode for Attribute() | flask_bad.py:21:12:21:20 | ControlFlowNode for client_ip |
-| tornado_bad.py:22:25:22:69 | ControlFlowNode for Attribute() | tornado_bad.py:23:16:23:24 | ControlFlowNode for client_ip |
+| flask_bad.py:13:5:13:13 | ControlFlowNode for client_ip | flask_bad.py:14:12:14:20 | ControlFlowNode for client_ip | provenance |  |
+| flask_bad.py:13:17:13:54 | ControlFlowNode for Attribute() | flask_bad.py:13:5:13:13 | ControlFlowNode for client_ip | provenance |  |
+| flask_bad.py:20:5:20:13 | ControlFlowNode for client_ip | flask_bad.py:21:12:21:20 | ControlFlowNode for client_ip | provenance |  |
+| flask_bad.py:20:17:20:54 | ControlFlowNode for Attribute() | flask_bad.py:20:5:20:13 | ControlFlowNode for client_ip | provenance |  |
+| tornado_bad.py:22:13:22:21 | ControlFlowNode for client_ip | tornado_bad.py:23:16:23:24 | ControlFlowNode for client_ip | provenance |  |
+| tornado_bad.py:22:25:22:69 | ControlFlowNode for Attribute() | tornado_bad.py:22:13:22:21 | ControlFlowNode for client_ip | provenance |  |
 nodes
+| flask_bad.py:13:5:13:13 | ControlFlowNode for client_ip | semmle.label | ControlFlowNode for client_ip |
 | flask_bad.py:13:17:13:54 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | flask_bad.py:14:12:14:20 | ControlFlowNode for client_ip | semmle.label | ControlFlowNode for client_ip |
+| flask_bad.py:20:5:20:13 | ControlFlowNode for client_ip | semmle.label | ControlFlowNode for client_ip |
 | flask_bad.py:20:17:20:54 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | flask_bad.py:21:12:21:20 | ControlFlowNode for client_ip | semmle.label | ControlFlowNode for client_ip |
+| tornado_bad.py:22:13:22:21 | ControlFlowNode for client_ip | semmle.label | ControlFlowNode for client_ip |
 | tornado_bad.py:22:25:22:69 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | tornado_bad.py:23:16:23:24 | ControlFlowNode for client_ip | semmle.label | ControlFlowNode for client_ip |
 subpaths

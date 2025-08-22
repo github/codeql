@@ -47,3 +47,7 @@ def subprocess_flag (name):
 
 def intentional(command): 
     os.system("fish -ic " + command) # $result=OK - intentional
+
+import shlex
+def unsafe_shell_sanitized(name): 
+    os.system("ping " + shlex.quote(name)) # $result=OK - sanitized

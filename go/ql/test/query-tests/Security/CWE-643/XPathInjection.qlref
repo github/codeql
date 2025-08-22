@@ -1,1 +1,2 @@
-Security/CWE-643/XPathInjection.ql
+query: Security/CWE-643/XPathInjection.ql
+postprocess: utils/test/PrettyPrintModels.ql

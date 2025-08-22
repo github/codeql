@@ -684,7 +684,8 @@ class TypeidOperator extends Expr, @type_id {
 }
 
 /**
- * A C++11 `sizeof...` expression which determines the size of a template parameter pack.
+ * A C++11 `sizeof...` expression which determines the size of a template
+ * parameter pack.
  *
  * This expression only appears in templates themselves - in any actual
  * instantiations, "sizeof...(x)" will be replaced by its integer value.
@@ -694,13 +695,54 @@ class TypeidOperator extends Expr, @type_id {
  * ```
  */
 class SizeofPackOperator extends Expr, @sizeof_pack {
-  override string toString() { result = "sizeof...(...)" }
-
-  override string getAPrimaryQlClass() { result = "SizeofPackOperator" }
-
   override predicate mayBeImpure() { none() }
 
   override predicate mayBeGloballyImpure() { none() }
+}
+
+/**
+ * A C++11 `sizeof...` expression which determines the size of a template
+ * parameter pack and whose operand is an expression.
+ *
+ * This expression only appears in templates themselves - in any actual
+ * instantiations, "sizeof...(x)" will be replaced by its integer value.
+ * ```
+ * template < typename... T >
+ * int count ( T &&... t ) { return sizeof... ( t ); }
+ * ```
+ */
+class SizeofPackExprOperator extends SizeofPackOperator {
+  SizeofPackExprOperator() { exists(this.getChild(0)) }
+
+  override string getAPrimaryQlClass() { result = "SizeofPackExprOperator" }
+
+  /** Gets the contained expression. */
+  Expr getExprOperand() { result = this.getChild(0) }
+
+  override string toString() { result = "sizeof...(<expr>)" }
+}
+
+/**
+ * A C++11 `sizeof...` expression which determines the size of a template
+ * parameter pack and whose operand is an type name or a template template
+ * parameter.
+ *
+ * This expression only appears in templates themselves - in any actual
+ * instantiations, "sizeof...(x)" will be replaced by its integer value.
+ * ```
+ * template < typename... T >
+ * int count ( T &&... t ) { return sizeof... ( T ); }
+ * ```
+ */
+class SizeofPackTypeOperator extends SizeofPackOperator {
+  SizeofPackTypeOperator() { sizeof_bind(underlyingElement(this), _) }
+
+  override string getAPrimaryQlClass() { result = "SizeofPackTypeOperator" }
+
+  /** Gets the contained type. */
+  Type getTypeOperand() { sizeof_bind(underlyingElement(this), unresolveElement(result)) }
+
+  override string toString() { result = "sizeof...(" + this.getTypeOperand().getName() + ")" }
 }
 
 /**
@@ -789,6 +831,53 @@ class AlignofTypeOperator extends AlignofOperator {
   Type getTypeOperand() { sizeof_bind(underlyingElement(this), unresolveElement(result)) }
 
   override string toString() { result = "alignof(" + this.getTypeOperand().getName() + ")" }
+}
+
+/**
+ * A C++ `__datasizeof` expression (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * The `__datasizeof` expression behaves identically to `sizeof` except
+ * that the result ignores tail padding.
+ */
+class DatasizeofOperator extends Expr, @datasizeof {
+  override int getPrecedence() { result = 16 }
+}
+
+/**
+ * A C++ `__datasizeof` expression whose operand is an expression.
+ */
+class DatasizeofExprOperator extends DatasizeofOperator {
+  DatasizeofExprOperator() { exists(this.getChild(0)) }
+
+  override string getAPrimaryQlClass() { result = "DatasizeofExprOperator" }
+
+  /** Gets the contained expression. */
+  Expr getExprOperand() { result = this.getChild(0) }
+
+  override string toString() { result = "__datasizeof(<expr>)" }
+
+  override predicate mayBeImpure() { this.getExprOperand().mayBeImpure() }
+
+  override predicate mayBeGloballyImpure() { this.getExprOperand().mayBeGloballyImpure() }
+}
+
+/**
+ * A C++ `__datasizeof` expression whose operand is a type name.
+ */
+class DatasizeofTypeOperator extends DatasizeofOperator {
+  DatasizeofTypeOperator() { sizeof_bind(underlyingElement(this), _) }
+
+  override string getAPrimaryQlClass() { result = "DatasizeofTypeOperator" }
+
+  /** Gets the contained type. */
+  Type getTypeOperand() { sizeof_bind(underlyingElement(this), unresolveElement(result)) }
+
+  override string toString() { result = "__datasizeof(" + this.getTypeOperand().getName() + ")" }
+
+  override predicate mayBeImpure() { none() }
+
+  override predicate mayBeGloballyImpure() { none() }
 }
 
 /**

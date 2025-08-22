@@ -16,7 +16,7 @@ module Logrus {
 
   bindingset[result]
   private string getAnEntryUpdatingMethodName() {
-    result.regexpMatch("With(Context|Error|Fields?|Time)")
+    result = ["WithError", "WithField", "WithFields", "WithTime"]
   }
 
   private class LogFunction extends Function {
@@ -28,12 +28,6 @@ module Logrus {
     }
   }
 
-  private class LogCall extends LoggerCall::Range, DataFlow::CallNode {
-    LogCall() { this = any(LogFunction f).getACall() }
-
-    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
-  }
-
   private class StringFormatters extends StringOps::Formatting::Range instanceof LogFunction {
     int argOffset;
 
@@ -43,7 +37,5 @@ module Logrus {
     }
 
     override int getFormatStringIndex() { result = argOffset }
-
-    override int getFirstFormattedParameterIndex() { result = argOffset + 1 }
   }
 }

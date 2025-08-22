@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["microsoft/applicationinsights-java/.github/workflows/reusable-scheduled-job-notification.yml", "*", "input.success", "code-injection", "generated"]

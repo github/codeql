@@ -8,8 +8,8 @@
 | boolops.py | 5 | boolops.py:5:22:5:23 | ControlFlowNode for y1 | ControlFlowNode for z1 | False |
 | boolops.py | 6 | boolops.py:6:22:6:23 | ControlFlowNode for z1 | ControlFlowNode for UnaryExpr | False |
 | boolops.py | 6 | boolops.py:6:22:6:23 | ControlFlowNode for z1 | ControlFlowNode for UnaryExpr | True |
-| boolops.py | 7 | boolops.py:7:8:11:23 | ControlFlowNode for UnaryExpr | ControlFlowNode for Str | False |
-| boolops.py | 7 | boolops.py:7:8:11:23 | ControlFlowNode for UnaryExpr | ControlFlowNode for Str | True |
+| boolops.py | 7 | boolops.py:7:8:11:23 | ControlFlowNode for UnaryExpr | ControlFlowNode for StringLiteral | False |
+| boolops.py | 7 | boolops.py:7:8:11:23 | ControlFlowNode for UnaryExpr | ControlFlowNode for StringLiteral | True |
 | boolops.py | 8 | boolops.py:8:12:8:12 | ControlFlowNode for x | ControlFlowNode for BoolExpr | False |
 | boolops.py | 8 | boolops.py:8:12:8:12 | ControlFlowNode for x | ControlFlowNode for UnaryExpr | True |
 | boolops.py | 9 | boolops.py:9:15:11:22 | ControlFlowNode for UnaryExpr | ControlFlowNode for UnaryExpr | False |
@@ -83,9 +83,9 @@
 | true_false_test.py | 85 | true_false_test.py:85:11:85:16 | ControlFlowNode for cond23 | ControlFlowNode for cond24 | True |
 | true_false_test.py | 85 | true_false_test.py:85:22:85:27 | ControlFlowNode for cond24 | ControlFlowNode for Yield | False |
 | true_false_test.py | 85 | true_false_test.py:85:22:85:27 | ControlFlowNode for cond24 | ControlFlowNode for cond25 | True |
-| true_succ.py | 4 | true_succ.py:4:8:4:15 | ControlFlowNode for filename | ControlFlowNode for Str | False |
+| true_succ.py | 4 | true_succ.py:4:8:4:15 | ControlFlowNode for filename | ControlFlowNode for StringLiteral | False |
 | true_succ.py | 4 | true_succ.py:4:8:4:15 | ControlFlowNode for filename | ControlFlowNode for Try | True |
 | true_succ.py | 13 | true_succ.py:13:16:13:28 | ControlFlowNode for Compare | ControlFlowNode for Function example | False |
-| true_succ.py | 13 | true_succ.py:13:16:13:28 | ControlFlowNode for Compare | ControlFlowNode for Str | False |
+| true_succ.py | 13 | true_succ.py:13:16:13:28 | ControlFlowNode for Compare | ControlFlowNode for StringLiteral | False |
 | true_succ.py | 13 | true_succ.py:13:16:13:28 | ControlFlowNode for Compare | ControlFlowNode for f | True |
 | true_succ.py | 13 | true_succ.py:13:16:13:28 | ControlFlowNode for Compare | ControlFlowNode for f | True |

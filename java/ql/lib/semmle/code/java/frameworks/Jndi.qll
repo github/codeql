@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with the Java JNDI API.
  */
+overlay[local?]
+module;
 
 import java
 
@@ -44,8 +46,12 @@ class MethodLdapNameAddAll extends Method {
   }
 }
 
-/** A method with the name `clone` declared in `javax.naming.ldap.LdapName`. */
-class MethodLdapNameClone extends Method {
+/**
+ * DEPRECATED: No longer needed as clone steps are handled uniformly.
+ *
+ * A method with the name `clone` declared in `javax.naming.ldap.LdapName`.
+ */
+deprecated class MethodLdapNameClone extends Method {
   MethodLdapNameClone() {
     this.getDeclaringType() instanceof TypeLdapName and
     this.hasName("clone")

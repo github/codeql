@@ -73,9 +73,21 @@ codeql::ForEachStmt StmtTranslator::translateForEachStmt(const swift::ForEachStm
   auto entry = dispatcher.createEntry(stmt);
   fillLabeledStmt(stmt, entry);
   entry.body = dispatcher.fetchLabel(stmt.getBody());
-  entry.sequence = dispatcher.fetchLabel(stmt.getParsedSequence());
   entry.pattern = dispatcher.fetchLabel(stmt.getPattern());
+  entry.iteratorVar = dispatcher.fetchOptionalLabel(stmt.getIteratorVar());
   entry.where = dispatcher.fetchOptionalLabel(stmt.getWhere());
+  entry.nextCall = dispatcher.fetchOptionalLabel(stmt.getNextCall());
+  auto add_variable = [&](swift::VarDecl* var) {
+    entry.variables.push_back(dispatcher.fetchLabel(var));
+  };
+  if (auto pattern = stmt.getPattern()) {
+    pattern->forEachVariable(add_variable);
+  }
+  if (auto iteratorVar = stmt.getIteratorVar()) {
+    for (auto i = 0u; i < iteratorVar->getNumPatternEntries(); ++i) {
+      iteratorVar->getPattern(i)->forEachVariable(add_variable);
+    }
+  }
   return entry;
 }
 
@@ -133,11 +145,7 @@ codeql::CaseStmt StmtTranslator::translateCaseStmt(const swift::CaseStmt& stmt) 
   auto entry = dispatcher.createEntry(stmt);
   entry.body = dispatcher.fetchLabel(stmt.getBody());
   entry.labels = dispatcher.fetchRepeatedLabels(stmt.getCaseLabelItems());
-  if (stmt.hasCaseBodyVariables()) {
-    for (auto var : stmt.getCaseBodyVariables()) {
-      entry.variables.push_back(dispatcher.fetchLabel(var));
-    }
-  }
+  entry.variables = dispatcher.fetchRepeatedLabels(stmt.getCaseBodyVariablesOrEmptyArray());
   return entry;
 }
 
@@ -212,6 +220,18 @@ codeql::PoundAssertStmt StmtTranslator::translatePoundAssertStmt(
   auto entry = dispatcher.createEntry(stmt);
   entry.condition = dispatcher.fetchLabel(stmt.getCondition());
   entry.message = stmt.getMessage();
+  return entry;
+}
+
+codeql::DiscardStmt StmtTranslator::translateDiscardStmt(const swift::DiscardStmt& stmt) {
+  auto entry = dispatcher.createEntry(stmt);
+  entry.sub_expr = dispatcher.fetchLabel(stmt.getSubExpr());
+  return entry;
+}
+
+codeql::ThenStmt StmtTranslator::translateThenStmt(const swift::ThenStmt& stmt) {
+  auto entry = dispatcher.createEntry(stmt);
+  entry.result = dispatcher.fetchLabel(stmt.getResult());
   return entry;
 }
 

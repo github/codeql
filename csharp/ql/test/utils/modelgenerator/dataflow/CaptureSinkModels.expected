@@ -1,4 +1,2 @@
-| Sinks;NewSinks;false;WrapFieldResponseWriteFile;();;Argument[this];html;generated |
-| Sinks;NewSinks;false;WrapPropResponseWriteFile;();;Argument[this];html;generated |
-| Sinks;NewSinks;false;WrapResponseWrite;(System.Object);;Argument[0];html;generated |
-| Sinks;NewSinks;false;WrapResponseWriteFile;(System.String);;Argument[0];html;generated |
+unexpectedModel
+expectedModel

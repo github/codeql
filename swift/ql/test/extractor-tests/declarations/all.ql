@@ -1,8 +1,7 @@
 import swift
 
 string describe(Decl decl) {
-  //result = "getAliasedType:" + decl.(TypeAliasDecl).getAliasedType().toString() TODO: not yet implemented
-  none()
+  result = "getAliasedType:" + decl.(TypeAliasDecl).getAliasedType().toString()
 }
 
 from Decl decl

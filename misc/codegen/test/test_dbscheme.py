@@ -14,12 +14,15 @@ def test_dbcolumn_keyword_name(keyword):
     assert dbscheme.Column(keyword, "some_type").name == keyword + "_"
 
 
-@pytest.mark.parametrize("type,binding,lhstype,rhstype", [
-    ("builtin_type", False, "builtin_type", "builtin_type ref"),
-    ("builtin_type", True, "builtin_type", "builtin_type ref"),
-    ("@at_type", False, "int", "@at_type ref"),
-    ("@at_type", True, "unique int", "@at_type"),
-])
+@pytest.mark.parametrize(
+    "type,binding,lhstype,rhstype",
+    [
+        ("builtin_type", False, "builtin_type", "builtin_type ref"),
+        ("builtin_type", True, "builtin_type", "builtin_type ref"),
+        ("@at_type", False, "int", "@at_type ref"),
+        ("@at_type", True, "unique int", "@at_type"),
+    ],
+)
 def test_dbcolumn_types(type, binding, lhstype, rhstype):
     col = dbscheme.Column("foo", type, binding)
     assert col.lhstype == lhstype
@@ -34,7 +37,11 @@ def test_keyset_has_first_id_marked():
 
 
 def test_table_has_first_column_marked():
-    columns = [dbscheme.Column("a", "x"), dbscheme.Column("b", "y", binding=True), dbscheme.Column("c", "z")]
+    columns = [
+        dbscheme.Column("a", "x"),
+        dbscheme.Column("b", "y", binding=True),
+        dbscheme.Column("c", "z"),
+    ]
     expected = deepcopy(columns)
     table = dbscheme.Table("foo", columns)
     expected[0].first = True
@@ -48,5 +55,5 @@ def test_union_has_first_case_marked():
     assert [c.type for c in u.rhs] == rhs
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(pytest.main([__file__] + sys.argv[1:]))

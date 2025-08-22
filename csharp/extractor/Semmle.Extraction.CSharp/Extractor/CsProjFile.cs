@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CSharp
 
             if (directoryName is null)
             {
-                throw new Extraction.InternalError($"Directory of file '{Filename}' is null");
+                throw new InternalError($"Directory of file '{Filename}' is null");
             }
 
             Directory = directoryName;
@@ -100,7 +100,7 @@ namespace Semmle.Extraction.CSharp
 
             // Figure out if it's dotnet core
 
-            var netCoreProjectFile = root.GetAttribute("Sdk") == "Microsoft.NET.Sdk";
+            var netCoreProjectFile = root.GetAttribute("Sdk").StartsWith("Microsoft.NET.Sdk");
 
             if (netCoreProjectFile)
             {
@@ -112,7 +112,7 @@ namespace Semmle.Extraction.CSharp
                     .Where(s => s is not null)
                     ?? Enumerable.Empty<string>();
 
-                var additionalCsFiles = System.IO.Directory.GetFiles(directoryName, "*.cs", SearchOption.AllDirectories);
+                var additionalCsFiles = System.IO.Directory.GetFiles(directoryName, "*.cs", new EnumerationOptions { RecurseSubdirectories = true, MatchCasing = MatchCasing.CaseInsensitive });
 
                 var projectReferences = root
                     .SelectNodes("/Project/ItemGroup/ProjectReference/@Include", mgr)

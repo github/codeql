@@ -1,0 +1,5 @@
+| WebCacheDeceptionBad.go:82:18:82:31 | "/adminusers/" | "/adminusers/" is used as wildcard endpoint. |
+| WebCacheDeceptionFiber.go:15:10:15:17 | "/api/*" | "/api/*" is used as wildcard endpoint. |
+| WebCacheDeceptionFiber.go:20:11:20:18 | "/api/*" | "/api/*" is used as wildcard endpoint. |
+| WebCacheDeceptionGoChi.go:13:8:13:11 | "/*" | "/*" is used as wildcard endpoint. |
+| WebCacheDeceptionHTTPRouter.go:21:13:21:25 | "/test/*test" | "/test/*test" is used as wildcard endpoint. |

@@ -9,6 +9,7 @@ class BadERBController < ActionController::Base
       <h2>Hello %s </h2></body></html>
       " % name
     template = ERB.new(html_text).result(binding) 
+    render inline: html_text
   end
 end
 

@@ -10,10 +10,11 @@
  *
  * NOTE: This library should only be used for debugging and exploration, not in production code.
  */
+deprecated module;
 
 import javascript
 
-private class ForwardExploringConfiguration extends DataFlow::Configuration {
+deprecated private class ForwardExploringConfiguration extends DataFlow::Configuration {
   ForwardExploringConfiguration() { this = any(DataFlow::Configuration cfg) }
 
   override predicate isSink(DataFlow::Node node) { any() }
@@ -21,7 +22,7 @@ private class ForwardExploringConfiguration extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node node, DataFlow::FlowLabel lbl) { any() }
 
   override predicate hasFlow(DataFlow::Node source, DataFlow::Node sink) {
-    exists(DataFlow::PathNode src, DataFlow::PathNode snk | hasFlowPath(src, snk) |
+    exists(DataFlow::PathNode src, DataFlow::PathNode snk | this.hasFlowPath(src, snk) |
       source = src.getNode() and
       sink = snk.getNode()
     )

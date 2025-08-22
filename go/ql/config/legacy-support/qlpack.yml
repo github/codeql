@@ -2,3 +2,4 @@ name: legacy-libraries-go
 version: 0.0.0
 # Note libraryPathDependencies is obsolete and should not be used in new qlpacks.
 libraryPathDependencies: codeql-go
+warnOnImplicitThis: true

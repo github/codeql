@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["shogo82148/actions-setup-perl", "*", "input.working-directory", "env.PERL5LIB", "taint", "manual"]

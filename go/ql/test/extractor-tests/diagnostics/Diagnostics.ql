@@ -44,7 +44,7 @@ class Diagnostic extends @diagnostic {
 }
 
 /**
- * Wraps `Compilation`, removing the `.exe` suffixes from compilation descriptions
+ * A wrapper around a `Compilation`, removing the `.exe` suffixes from compilation descriptions
  * such that this test produces the same results on Windows and non-Windows platforms.
  */
 class PlatformNeutralCompilation extends Compilation {

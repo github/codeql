@@ -102,13 +102,13 @@ private module StandardPoIs {
       t.start() and
       result = cand
       or
-      exists(DataFlow::TypeTracker t2 | result = track(cand, t2).track(t2, t))
+      exists(DataFlow::TypeTracker t2 | result = this.track(cand, t2).track(t2, t))
     }
 
     override predicate is(Node l0, Node l1, string t1) {
       l0 instanceof Http::RouteHandlerCandidate and
       not l0 instanceof Http::RouteHandler and
-      l1 = track(l0, TypeTracker::end()) and
+      l1 = this.track(l0, TypeTracker::end()) and
       (if l1 = l0 then t1 = "ends here" else t1 = "starts/ends here")
     }
   }
@@ -134,44 +134,6 @@ private module StandardPoIs {
   }
 
   /**
-   * A "source" for any active configuration.
-   */
-  class SourcePoI extends PoI {
-    SourcePoI() { this = "SourcePoI" }
-
-    override predicate is(Node l0) {
-      exists(Configuration cfg | cfg.isSource(l0) or cfg.isSource(l0, _))
-    }
-  }
-
-  /**
-   * A "sink" for any active configuration.
-   */
-  class SinkPoI extends PoI {
-    SinkPoI() { this = "SinkPoI" }
-
-    override predicate is(Node l0) {
-      exists(Configuration cfg | cfg.isSink(l0) or cfg.isSink(l0, _))
-    }
-  }
-
-  /**
-   * A "barrier" for any active configuration.
-   */
-  class BarrierPoI extends PoI {
-    BarrierPoI() { this = "BarrierPoI" }
-
-    override predicate is(Node l0) {
-      exists(Configuration cfg |
-        cfg.isBarrier(l0) or
-        cfg.isBarrierEdge(l0, _) or
-        cfg.isBarrierEdge(l0, _, _) or
-        cfg.isLabeledBarrier(l0, _)
-      )
-    }
-  }
-
-  /**
    * Provides groups of often used points of interest.
    */
   module StandardPoIGroups {
@@ -183,16 +145,6 @@ private module StandardPoIs {
         this instanceof UnpromotedRouteSetupPoI or
         this instanceof UnpromotedRouteHandlerPoI or
         this instanceof UnpromotedRouteHandlerWithFlowPoI
-      }
-    }
-
-    /**
-     * A configuration-related point of interest.
-     */
-    class DataFlowConfigurationPoI extends PoI {
-      DataFlowConfigurationPoI() {
-        this instanceof SourcePoI or
-        this instanceof SinkPoI
       }
     }
   }
@@ -266,11 +218,11 @@ abstract class PoI extends string {
    * Gets the message format for the point of interest.
    */
   string getFormat() {
-    is(_) and result = ""
+    this.is(_) and result = ""
     or
-    is(_, _, _) and result = "$@"
+    this.is(_, _, _) and result = "$@"
     or
-    is(_, _, _, _, _) and result = "$@ $@"
+    this.is(_, _, _, _, _) and result = "$@ $@"
   }
 }
 

@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.DotNet.PlatformAbstractions", "HashCodeCombiner", False, "Add<TValue>", "(TValue,System.Collections.Generic.IEqualityComparer<TValue>)", "", "Argument[0]", "Argument[1]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.DotNet.PlatformAbstractions", "HashCodeCombiner", "Add", "(System.Int32)", "summary", "df-generated"]
+      - ["Microsoft.DotNet.PlatformAbstractions", "HashCodeCombiner", "Add", "(System.Object)", "summary", "df-generated"]
+      - ["Microsoft.DotNet.PlatformAbstractions", "HashCodeCombiner", "Add", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.DotNet.PlatformAbstractions", "HashCodeCombiner", "Start", "()", "summary", "df-generated"]
+      - ["Microsoft.DotNet.PlatformAbstractions", "HashCodeCombiner", "get_CombinedHash", "()", "summary", "df-generated"]

@@ -1,0 +1,8 @@
+| UseRegistry.cs:10:36:10:58 | call to method GetValue | windows-registry |
+| UseRegistry.cs:16:36:16:58 | call to method GetValue | windows-registry |
+| UseRegistry.cs:22:36:22:58 | call to method GetValue | windows-registry |
+| UseRegistry.cs:28:36:28:58 | call to method GetValue | windows-registry |
+| UseRegistry.cs:34:36:34:58 | call to method GetValue | windows-registry |
+| UseRegistry.cs:40:36:40:58 | call to method GetValue | windows-registry |
+| UseRegistry.cs:46:35:46:53 | call to method GetValueNames | windows-registry |
+| UseRegistry.cs:52:36:52:55 | call to method GetSubKeyNames | windows-registry |

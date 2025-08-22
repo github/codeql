@@ -4,7 +4,7 @@
  *              and cause a denial of service.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 9.3
+ * @security-severity 7.3
  * @precision high
  * @id cs/uncontrolled-format-string
  * @tags security
@@ -12,32 +12,25 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.flowsources.Remote
-import semmle.code.csharp.security.dataflow.flowsources.Local
+import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 import semmle.code.csharp.frameworks.Format
-import DataFlow::PathGraph
+import FormatString::PathGraph
 
-class FormatStringConfiguration extends TaintTracking::Configuration {
-  FormatStringConfiguration() { this = "FormatStringConfiguration" }
+module FormatStringConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource
-    or
-    source instanceof LocalFlowSource
+  predicate isSink(DataFlow::Node sink) {
+    sink.asExpr() = any(FormatStringParseCall call).getFormatExpr()
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(FormatCall call | call.hasInsertions()).getFormatExpr()
-  }
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
-string getSourceType(DataFlow::Node node) {
-  result = node.(RemoteFlowSource).getSourceType()
-  or
-  result = node.(LocalFlowSource).getSourceType()
-}
+module FormatString = TaintTracking::Global<FormatStringConfig>;
 
-from FormatStringConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+string getSourceType(DataFlow::Node node) { result = node.(SourceNode).getSourceType() }
+
+from FormatString::PathNode source, FormatString::PathNode sink
+where FormatString::flowPath(source, sink)
 select sink.getNode(), source, sink, "This format string depends on $@.", source.getNode(),
   ("this" + getSourceType(source.getNode()))

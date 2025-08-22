@@ -1,7 +1,7 @@
 class Class1 {
   constructor(x) { this.x = x; }
 }
-new Class1(42, 23); // NOT OK: `23` is ignored
+new Class1(42, 23); // $ Alert - `23` is ignored
 
 class Sup {
   constructor(x) { this.x = x; }
@@ -10,12 +10,12 @@ class Sup {
 class Sub extends Sup {
 }
 
-new Sub(42); // OK: synthetic constructor delegates to super constructor
+new Sub(42); // OK - synthetic constructor delegates to super constructor
 
 class Other {}
 
-new Other(42); // NOT OK: `42` is ignored
+new Other(42); // $ Alert - `42` is ignored
 
 var args = [];
-f(...args); // OK
-f(42, ...args); // NOT OK
+f(...args);
+f(42, ...args); // $ Alert

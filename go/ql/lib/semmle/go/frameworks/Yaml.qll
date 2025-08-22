@@ -11,12 +11,8 @@ module Yaml {
   /** Gets a package path for the Yaml package. */
   string packagePath() { result = package("gopkg.in/yaml", "") }
 
-  private class MarshalFunction extends TaintTracking::FunctionModel, MarshalingFunction::Range {
+  private class MarshalFunction extends MarshalingFunction::Range {
     MarshalFunction() { this.hasQualifiedName(packagePath(), "Marshal") }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      input = this.getAnInput() and output = this.getOutput()
-    }
 
     override DataFlow::FunctionInput getAnInput() { result.isParameter(0) }
 
@@ -25,12 +21,8 @@ module Yaml {
     override string getFormat() { result = "yaml" }
   }
 
-  private class UnmarshalFunction extends TaintTracking::FunctionModel, UnmarshalingFunction::Range {
+  private class UnmarshalFunction extends UnmarshalingFunction::Range {
     UnmarshalFunction() { this.hasQualifiedName(packagePath(), ["Unmarshal", "UnmarshalStrict"]) }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      input = this.getAnInput() and output = this.getOutput()
-    }
 
     override DataFlow::FunctionInput getAnInput() { result.isParameter(0) }
 
@@ -39,27 +31,14 @@ module Yaml {
     override string getFormat() { result = "yaml" }
   }
 
+  // These models are not implemented using Models-as-Data because they represent reverse flow.
   private class FunctionModels extends TaintTracking::FunctionModel {
     FunctionInput inp;
     FunctionOutput outp;
 
     FunctionModels() {
-      this.hasQualifiedName(packagePath(), "NewDecoder") and
-      (inp.isParameter(0) and outp.isResult())
-      or
       this.hasQualifiedName(packagePath(), "NewEncoder") and
       (inp.isResult() and outp.isParameter(0))
-      or
-      exists(Method m | this = m |
-        m.hasQualifiedName(packagePath(), ["Decoder", "Node"], "Decode") and
-        (inp.isReceiver() and outp.isParameter(0))
-        or
-        m.hasQualifiedName(packagePath(), ["Encoder", "Node"], "Encode") and
-        (inp.isParameter(0) and outp.isReceiver())
-        or
-        m.hasQualifiedName(packagePath(), "Node", "SetString") and
-        (inp.isParameter(0) and outp.isReceiver())
-      )
     }
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

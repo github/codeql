@@ -1,0 +1,3 @@
+| repeat each T | getName: | repeat each T | getCanonicalType: | repeat each T | getPatternType: | each T | getCountType: | each T |
+| repeat each T | getName: | repeat each T | getCanonicalType: | repeat each \u03c4_0_0 | getPatternType: | each T | getCountType: | each T |
+| repeat each \u03c4_0_0 | getName: | repeat each \u03c4_0_0 | getCanonicalType: | repeat each \u03c4_0_0 | getPatternType: | each \u03c4_0_0 | getCountType: | each \u03c4_0_0 |

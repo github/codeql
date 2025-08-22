@@ -3,12 +3,16 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>This code calculates an allocation size by multiplying a user input
-by a <code>sizeof</code> expression. Since the user input has no
-apparent guard on its magnitude, this multiplication can
-overflow. When an integer multiply overflows in C, the result can wrap
-around and be much smaller than intended. A later attempt to put data
-into the allocated buffer can then overflow.</p>
+
+<p>This code allocates memory using a size value based on user input,
+with no apparent bound on its magnitude being established. This allows
+for arbitrary amounts of memory to be allocated.</p>
+
+<p>If the allocation size is calculated by multiplying user input by a
+<code>sizeof</code> expression, the multiplication can overflow. When
+an integer multiplication overflows in C, the result wraps around and
+can be much smaller than intended. A later attempt to write data into
+the allocated memory can then be out of bounds.</p>
 
 </overview>
 <recommendation>

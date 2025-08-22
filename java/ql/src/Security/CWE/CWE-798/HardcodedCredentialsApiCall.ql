@@ -4,17 +4,16 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 9.8
- * @precision medium
+ * @precision low
  * @id java/hardcoded-credential-api-call
  * @tags security
  *       external/cwe/cwe-798
  */
 
 import semmle.code.java.security.HardcodedCredentialsApiCallQuery
-import DataFlow::PathGraph
+import HardcodedCredentialApiCallFlow::PathGraph
 
-from
-  DataFlow::PathNode source, DataFlow::PathNode sink, HardcodedCredentialApiCallConfiguration conf
-where conf.hasFlowPath(source, sink)
+from HardcodedCredentialApiCallFlow::PathNode source, HardcodedCredentialApiCallFlow::PathNode sink
+where HardcodedCredentialApiCallFlow::flowPath(source, sink)
 select source.getNode(), source, sink, "Hard-coded value flows to $@.", sink.getNode(),
   "sensitive API call"

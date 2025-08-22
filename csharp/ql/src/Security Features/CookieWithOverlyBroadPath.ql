@@ -16,6 +16,6 @@ from Assignment a, PropertyAccess pa
 where
   a.getLValue() = pa and
   pa.getTarget().hasName("Path") and
-  pa.getTarget().getDeclaringType().hasQualifiedName("System.Web", "HttpCookie") and
+  pa.getTarget().getDeclaringType().hasFullyQualifiedName("System.Web", "HttpCookie") and
   a.getRValue().getValue() = "/"
 select a, "Overly broad path for cookie."

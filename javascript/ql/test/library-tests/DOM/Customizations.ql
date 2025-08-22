@@ -1,7 +1,7 @@
 import javascript
 
 class CustomDocument extends DOM::DocumentSource::Range, DataFlow::CallNode {
-  CustomDocument() { getCalleeName() = "customGetDocument" }
+  CustomDocument() { this.getCalleeName() = "customGetDocument" }
 }
 
 query DataFlow::Node test_documentRef() { result = DOM::documentRef() }

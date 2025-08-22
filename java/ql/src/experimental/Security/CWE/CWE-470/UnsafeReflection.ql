@@ -13,49 +13,47 @@
 
 import java
 import DataFlow
-import UnsafeReflectionLib
+deprecated import UnsafeReflectionLib
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.controlflow.Guards
-import DataFlow::PathGraph
+deprecated import UnsafeReflectionFlow::PathGraph
 
 private predicate containsSanitizer(Guard g, Expr e, boolean branch) {
-  g.(MethodAccess).getMethod().hasName("contains") and
-  e = g.(MethodAccess).getArgument(0) and
+  g.(MethodCall).getMethod().hasName("contains") and
+  e = g.(MethodCall).getArgument(0) and
   branch = true
 }
 
 private predicate equalsSanitizer(Guard g, Expr e, boolean branch) {
-  g.(MethodAccess).getMethod().hasName("equals") and
-  e = [g.(MethodAccess).getArgument(0), g.(MethodAccess).getQualifier()] and
+  g.(MethodCall).getMethod().hasName("equals") and
+  e = [g.(MethodCall).getArgument(0), g.(MethodCall).getQualifier()] and
   branch = true
 }
 
-class UnsafeReflectionConfig extends TaintTracking::Configuration {
-  UnsafeReflectionConfig() { this = "UnsafeReflectionConfig" }
+deprecated module UnsafeReflectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeReflectionSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeReflectionSink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     // Argument -> return of Class.forName, ClassLoader.loadClass
-    exists(ReflectiveClassIdentifierMethodAccess rcimac |
+    exists(ReflectiveClassIdentifierMethodCall rcimac |
       rcimac.getArgument(0) = pred.asExpr() and rcimac = succ.asExpr()
     )
     or
     // Qualifier -> return of Class.getDeclaredConstructors/Methods and similar
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       (
-        ma instanceof ReflectiveConstructorsAccess or
-        ma instanceof ReflectiveMethodsAccess
+        ma instanceof ReflectiveGetConstructorsCall or
+        ma instanceof ReflectiveGetMethodsCall
       ) and
       ma.getQualifier() = pred.asExpr() and
       ma = succ.asExpr()
     )
     or
     // Qualifier -> return of Object.getClass
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().hasName("getClass") and
       ma.getMethod().getDeclaringType().hasQualifiedName("java.lang", "Object") and
       ma.getQualifier() = pred.asExpr() and
@@ -75,23 +73,31 @@ class UnsafeReflectionConfig extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node = DataFlow::BarrierGuard<containsSanitizer/3>::getABarrierNode() or
     node = DataFlow::BarrierGuard<equalsSanitizer/3>::getABarrierNode()
   }
 }
 
-private Expr getAMethodArgument(MethodAccess reflectiveCall) {
+deprecated module UnsafeReflectionFlow = TaintTracking::Global<UnsafeReflectionConfig>;
+
+deprecated private Expr getAMethodArgument(MethodCall reflectiveCall) {
   result = reflectiveCall.(NewInstance).getAnArgument()
   or
   result = reflectiveCall.(MethodInvokeCall).getAnArgument()
 }
 
-from
-  DataFlow::PathNode source, DataFlow::PathNode sink, UnsafeReflectionConfig conf,
-  MethodAccess reflectiveCall
-where
-  conf.hasFlowPath(source, sink) and
-  sink.getNode().asExpr() = reflectiveCall.getQualifier() and
-  conf.hasFlowToExpr(getAMethodArgument(reflectiveCall))
-select sink.getNode(), source, sink, "Unsafe reflection of $@.", source.getNode(), "user input"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, UnsafeReflectionFlow::PathNode source,
+  UnsafeReflectionFlow::PathNode sink, string message1, DataFlow::Node sourceNode, string message2
+) {
+  exists(MethodCall reflectiveCall |
+    UnsafeReflectionFlow::flowPath(source, sink) and
+    sinkNode.asExpr() = reflectiveCall.getQualifier() and
+    UnsafeReflectionFlow::flowToExpr(getAMethodArgument(reflectiveCall))
+  ) and
+  sinkNode = sink.getNode() and
+  message1 = "Unsafe reflection of $@." and
+  sourceNode = source.getNode() and
+  message2 = "user input"
+}

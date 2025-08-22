@@ -6,6 +6,8 @@ import go
  * A location as given by a file, a start line, a start column,
  * an end line, and an end column.
  *
+ * This class is restricted to locations created by the extractor.
+ *
  * For more information about locations see [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
  */
 class Location extends @location {
@@ -25,12 +27,12 @@ class Location extends @location {
   int getEndColumn() { locations_default(this, _, _, _, _, result) }
 
   /** Gets the number of lines covered by this location. */
-  int getNumLines() { result = getEndLine() - getStartLine() + 1 }
+  int getNumLines() { result = this.getEndLine() - this.getStartLine() + 1 }
 
   /** Gets a textual representation of this element. */
   string toString() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
-      hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
+      this.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
       result = filepath + "@" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
   }
@@ -45,8 +47,7 @@ class Location extends @location {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    exists(File f |
-      locations_default(this, f, startline, startcolumn, endline, endcolumn) and
+    exists(File f | locations_default(this, f, startline, startcolumn, endline, endcolumn) |
       filepath = f.getAbsolutePath()
     )
   }
@@ -55,13 +56,16 @@ class Location extends @location {
 /** A program element with a location. */
 class Locatable extends @locatable {
   /** Gets the file this program element comes from. */
-  File getFile() { result = getLocation().getFile() }
+  File getFile() { result = this.getLocation().getFile() }
 
   /** Gets this element's location. */
-  Location getLocation() { has_location(this, result) }
+  final Location getLocation() {
+    has_location(this, result) or
+    xmllocations(this, result)
+  }
 
   /** Gets the number of lines covered by this element. */
-  int getNumLines() { result = getLocation().getNumLines() }
+  int getNumLines() { result = this.getLocation().getNumLines() }
 
   /**
    * Holds if this element is at the specified location.
@@ -73,7 +77,7 @@ class Locatable extends @locatable {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
   /** Gets a textual representation of this element. */

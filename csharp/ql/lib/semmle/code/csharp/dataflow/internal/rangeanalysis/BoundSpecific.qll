@@ -12,6 +12,8 @@ class SsaVariable = SU::SsaVariable;
 
 class Expr = CS::ControlFlow::Nodes::ExprNode;
 
+class Location = CS::Location;
+
 class IntegralType = CS::IntegralType;
 
 class ConstantIntegerExpr = CU::ConstantIntegerExpr;

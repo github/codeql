@@ -1,13 +1,41 @@
-| testAlamofire.swift:150:45:150:45 | password | label:password, type:credential |
-| testAlamofire.swift:152:51:152:51 | password | label:password, type:credential |
+| SQLite.swift:119:70:119:70 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:120:50:120:50 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:147:32:147:32 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:148:28:148:28 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:149:31:149:31 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:152:21:152:21 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:153:20:153:20 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:154:23:154:23 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:158:33:158:33 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:159:29:159:29 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:160:32:160:32 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:163:22:163:22 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:164:21:164:21 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:165:24:165:24 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:169:53:169:53 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:170:49:170:49 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:171:52:171:52 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:174:42:174:42 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:175:41:175:41 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:176:44:176:44 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:186:54:186:54 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:189:40:189:40 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:191:41:191:41 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:193:72:193:72 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:197:32:197:32 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| sqlite3_c_api.swift:42:69:42:69 | medicalNotes | label:medicalNotes, type:private information |
+| sqlite3_c_api.swift:43:49:43:49 | medicalNotes | label:medicalNotes, type:private information |
+| sqlite3_c_api.swift:58:36:58:36 | medicalNotes | label:medicalNotes, type:private information |
+| testAlamofire.swift:150:45:150:45 | password | label:password, type:password |
+| testAlamofire.swift:152:51:152:51 | password | label:password, type:password |
 | testAlamofire.swift:154:38:154:38 | email | label:email, type:private information |
 | testAlamofire.swift:159:26:159:26 | email | label:email, type:private information |
 | testAlamofire.swift:171:35:171:35 | email | label:email, type:private information |
 | testAlamofire.swift:177:35:177:35 | email | label:email, type:private information |
-| testAlamofire.swift:187:65:187:65 | password | label:password, type:credential |
-| testAlamofire.swift:195:64:195:64 | password | label:password, type:credential |
-| testAlamofire.swift:205:62:205:62 | password | label:password, type:credential |
-| testAlamofire.swift:213:65:213:65 | password | label:password, type:credential |
+| testAlamofire.swift:187:65:187:65 | password | label:password, type:password |
+| testAlamofire.swift:195:64:195:64 | password | label:password, type:password |
+| testAlamofire.swift:205:62:205:62 | password | label:password, type:password |
+| testAlamofire.swift:213:65:213:65 | password | label:password, type:password |
 | testCoreData2.swift:37:16:37:16 | bankAccountNo | label:bankAccountNo, type:private information |
 | testCoreData2.swift:38:2:38:6 | .myBankAccountNumber | label:myBankAccountNumber, type:private information |
 | testCoreData2.swift:39:2:39:6 | .myBankAccountNumber | label:myBankAccountNumber, type:private information |
@@ -36,81 +64,132 @@
 | testCoreData2.swift:62:30:62:30 | bankAccountNo | label:bankAccountNo, type:private information |
 | testCoreData2.swift:65:3:65:7 | .myBankAccountNumber | label:myBankAccountNumber, type:private information |
 | testCoreData2.swift:65:29:65:29 | bankAccountNo | label:bankAccountNo, type:private information |
-| testCoreData.swift:48:15:48:15 | password | label:password, type:credential |
-| testCoreData.swift:51:24:51:24 | password | label:password, type:credential |
-| testCoreData.swift:58:15:58:15 | password | label:password, type:credential |
-| testCoreData.swift:61:25:61:25 | password | label:password, type:credential |
-| testCoreData.swift:64:16:64:16 | password | label:password, type:credential |
-| testCoreData.swift:77:2:77:25 | call to doSomething(password:) | label:doSomething(password:), type:credential |
-| testCoreData.swift:77:24:77:24 | x | label:password, type:credential |
-| testCoreData.swift:80:10:80:22 | call to getPassword() | label:getPassword(), type:credential |
-| testCoreData.swift:85:15:85:17 | .password | label:password, type:credential |
-| testCoreData.swift:91:10:91:10 | passwd | label:passwd, type:credential |
-| testCoreData.swift:92:10:92:10 | passwd | label:passwd, type:credential |
-| testCoreData.swift:93:10:93:10 | passwd | label:passwd, type:credential |
-| testGRDB.swift:73:57:73:57 | password | label:password, type:credential |
-| testGRDB.swift:76:43:76:43 | password | label:password, type:credential |
-| testGRDB.swift:81:45:81:45 | password | label:password, type:credential |
-| testGRDB.swift:83:45:83:45 | password | label:password, type:credential |
-| testGRDB.swift:85:45:85:45 | password | label:password, type:credential |
-| testGRDB.swift:87:45:87:45 | password | label:password, type:credential |
-| testGRDB.swift:92:38:92:38 | password | label:password, type:credential |
-| testGRDB.swift:95:37:95:37 | password | label:password, type:credential |
-| testGRDB.swift:100:73:100:73 | password | label:password, type:credential |
-| testGRDB.swift:101:73:101:73 | password | label:password, type:credential |
-| testGRDB.swift:107:53:107:53 | password | label:password, type:credential |
-| testGRDB.swift:109:53:109:53 | password | label:password, type:credential |
-| testGRDB.swift:111:52:111:52 | password | label:password, type:credential |
-| testGRDB.swift:116:48:116:48 | password | label:password, type:credential |
-| testGRDB.swift:118:48:118:48 | password | label:password, type:credential |
-| testGRDB.swift:121:45:121:45 | password | label:password, type:credential |
-| testGRDB.swift:123:45:123:45 | password | label:password, type:credential |
-| testGRDB.swift:126:45:126:45 | password | label:password, type:credential |
-| testGRDB.swift:128:45:128:45 | password | label:password, type:credential |
-| testGRDB.swift:131:45:131:45 | password | label:password, type:credential |
-| testGRDB.swift:133:45:133:45 | password | label:password, type:credential |
-| testGRDB.swift:138:69:138:69 | password | label:password, type:credential |
-| testGRDB.swift:140:69:140:69 | password | label:password, type:credential |
-| testGRDB.swift:143:66:143:66 | password | label:password, type:credential |
-| testGRDB.swift:145:66:145:66 | password | label:password, type:credential |
-| testGRDB.swift:148:66:148:66 | password | label:password, type:credential |
-| testGRDB.swift:150:66:150:66 | password | label:password, type:credential |
-| testGRDB.swift:153:66:153:66 | password | label:password, type:credential |
-| testGRDB.swift:155:66:155:66 | password | label:password, type:credential |
-| testGRDB.swift:160:60:160:60 | password | label:password, type:credential |
-| testGRDB.swift:161:51:161:51 | password | label:password, type:credential |
-| testGRDB.swift:164:60:164:60 | password | label:password, type:credential |
-| testGRDB.swift:165:51:165:51 | password | label:password, type:credential |
-| testGRDB.swift:169:57:169:57 | password | label:password, type:credential |
-| testGRDB.swift:170:48:170:48 | password | label:password, type:credential |
-| testGRDB.swift:173:57:173:57 | password | label:password, type:credential |
-| testGRDB.swift:174:48:174:48 | password | label:password, type:credential |
-| testGRDB.swift:178:57:178:57 | password | label:password, type:credential |
-| testGRDB.swift:179:48:179:48 | password | label:password, type:credential |
-| testGRDB.swift:182:57:182:57 | password | label:password, type:credential |
-| testGRDB.swift:183:48:183:48 | password | label:password, type:credential |
-| testGRDB.swift:187:57:187:57 | password | label:password, type:credential |
-| testGRDB.swift:188:48:188:48 | password | label:password, type:credential |
-| testGRDB.swift:191:57:191:57 | password | label:password, type:credential |
-| testGRDB.swift:192:48:192:48 | password | label:password, type:credential |
-| testGRDB.swift:198:30:198:30 | password | label:password, type:credential |
-| testGRDB.swift:201:24:201:24 | password | label:password, type:credential |
-| testGRDB.swift:206:67:206:67 | password | label:password, type:credential |
-| testGRDB.swift:208:81:208:81 | password | label:password, type:credential |
-| testGRDB.swift:210:85:210:85 | password | label:password, type:credential |
-| testGRDB.swift:212:99:212:99 | password | label:password, type:credential |
-| testRealm.swift:34:11:34:11 | myPassword | label:myPassword, type:credential |
-| testRealm.swift:42:11:42:11 | myPassword | label:myPassword, type:credential |
-| testRealm.swift:52:12:52:12 | myPassword | label:myPassword, type:credential |
-| testRealm.swift:59:11:59:11 | myPassword | label:myPassword, type:credential |
-| testSend.swift:29:19:29:19 | passwordPlain | label:passwordPlain, type:credential |
-| testSend.swift:33:19:33:19 | passwordPlain | label:passwordPlain, type:credential |
-| testSend.swift:45:13:45:13 | password | label:password, type:credential |
-| testSend.swift:46:13:46:13 | password | label:password, type:credential |
-| testSend.swift:47:17:47:17 | password | label:password, type:credential |
-| testSend.swift:48:23:48:23 | password | label:password, type:credential |
-| testSend.swift:49:27:49:27 | password | label:password, type:credential |
-| testSend.swift:50:27:50:27 | password | label:password, type:credential |
-| testURL.swift:13:54:13:54 | passwd | label:passwd, type:credential |
-| testURL.swift:16:55:16:55 | credit_card_no | label:credit_card_no, type:private information |
-| testURL.swift:20:22:20:22 | passwd | label:passwd, type:credential |
+| testCoreData2.swift:79:18:79:28 | .bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:80:18:80:28 | .bankAccountNo2 | label:bankAccountNo2, type:private information |
+| testCoreData2.swift:82:18:82:18 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:83:18:83:18 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:84:18:84:18 | bankAccountNo2 | label:bankAccountNo2, type:private information |
+| testCoreData2.swift:85:18:85:18 | bankAccountNo2 | label:bankAccountNo2, type:private information |
+| testCoreData2.swift:87:22:87:32 | .bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:88:22:88:22 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:89:22:89:22 | bankAccountNo2 | label:bankAccountNo2, type:private information |
+| testCoreData2.swift:91:10:91:10 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:95:10:95:10 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:101:10:101:10 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData.swift:48:15:48:15 | password | label:password, type:password |
+| testCoreData.swift:51:24:51:24 | password | label:password, type:password |
+| testCoreData.swift:58:15:58:15 | password | label:password, type:password |
+| testCoreData.swift:61:25:61:25 | password | label:password, type:password |
+| testCoreData.swift:64:16:64:16 | password | label:password, type:password |
+| testCoreData.swift:77:24:77:24 | x | label:password, type:password |
+| testCoreData.swift:80:10:80:22 | call to getPassword() | label:getPassword, type:password |
+| testCoreData.swift:85:15:85:17 | .password | label:password, type:password |
+| testCoreData.swift:91:10:91:10 | passwd | label:passwd, type:password |
+| testCoreData.swift:92:10:92:10 | passwd | label:passwd, type:password |
+| testCoreData.swift:93:10:93:10 | passwd | label:passwd, type:password |
+| testCoreData.swift:128:15:128:33 | call to generateSecretKey() | label:generateSecretKey, type:credential |
+| testCoreData.swift:129:15:129:30 | call to getCertificate() | label:getCertificate, type:credential |
+| testGRDB.swift:73:57:73:57 | password | label:password, type:password |
+| testGRDB.swift:76:43:76:43 | password | label:password, type:password |
+| testGRDB.swift:81:45:81:45 | password | label:password, type:password |
+| testGRDB.swift:83:45:83:45 | password | label:password, type:password |
+| testGRDB.swift:85:45:85:45 | password | label:password, type:password |
+| testGRDB.swift:87:45:87:45 | password | label:password, type:password |
+| testGRDB.swift:92:38:92:38 | password | label:password, type:password |
+| testGRDB.swift:95:37:95:37 | password | label:password, type:password |
+| testGRDB.swift:100:73:100:73 | password | label:password, type:password |
+| testGRDB.swift:101:73:101:73 | password | label:password, type:password |
+| testGRDB.swift:107:53:107:53 | password | label:password, type:password |
+| testGRDB.swift:109:53:109:53 | password | label:password, type:password |
+| testGRDB.swift:111:52:111:52 | password | label:password, type:password |
+| testGRDB.swift:116:48:116:48 | password | label:password, type:password |
+| testGRDB.swift:118:48:118:48 | password | label:password, type:password |
+| testGRDB.swift:121:45:121:45 | password | label:password, type:password |
+| testGRDB.swift:123:45:123:45 | password | label:password, type:password |
+| testGRDB.swift:126:45:126:45 | password | label:password, type:password |
+| testGRDB.swift:128:45:128:45 | password | label:password, type:password |
+| testGRDB.swift:131:45:131:45 | password | label:password, type:password |
+| testGRDB.swift:133:45:133:45 | password | label:password, type:password |
+| testGRDB.swift:138:69:138:69 | password | label:password, type:password |
+| testGRDB.swift:140:69:140:69 | password | label:password, type:password |
+| testGRDB.swift:143:66:143:66 | password | label:password, type:password |
+| testGRDB.swift:145:66:145:66 | password | label:password, type:password |
+| testGRDB.swift:148:66:148:66 | password | label:password, type:password |
+| testGRDB.swift:150:66:150:66 | password | label:password, type:password |
+| testGRDB.swift:153:66:153:66 | password | label:password, type:password |
+| testGRDB.swift:155:66:155:66 | password | label:password, type:password |
+| testGRDB.swift:160:60:160:60 | password | label:password, type:password |
+| testGRDB.swift:161:51:161:51 | password | label:password, type:password |
+| testGRDB.swift:164:60:164:60 | password | label:password, type:password |
+| testGRDB.swift:165:51:165:51 | password | label:password, type:password |
+| testGRDB.swift:169:57:169:57 | password | label:password, type:password |
+| testGRDB.swift:170:48:170:48 | password | label:password, type:password |
+| testGRDB.swift:173:57:173:57 | password | label:password, type:password |
+| testGRDB.swift:174:48:174:48 | password | label:password, type:password |
+| testGRDB.swift:178:57:178:57 | password | label:password, type:password |
+| testGRDB.swift:179:48:179:48 | password | label:password, type:password |
+| testGRDB.swift:182:57:182:57 | password | label:password, type:password |
+| testGRDB.swift:183:48:183:48 | password | label:password, type:password |
+| testGRDB.swift:187:57:187:57 | password | label:password, type:password |
+| testGRDB.swift:188:48:188:48 | password | label:password, type:password |
+| testGRDB.swift:191:57:191:57 | password | label:password, type:password |
+| testGRDB.swift:192:48:192:48 | password | label:password, type:password |
+| testGRDB.swift:198:30:198:30 | password | label:password, type:password |
+| testGRDB.swift:201:24:201:24 | password | label:password, type:password |
+| testGRDB.swift:206:67:206:67 | password | label:password, type:password |
+| testGRDB.swift:208:81:208:81 | password | label:password, type:password |
+| testGRDB.swift:210:85:210:85 | password | label:password, type:password |
+| testGRDB.swift:212:99:212:99 | password | label:password, type:password |
+| testRealm2.swift:18:11:18:11 | myPassword | label:myPassword, type:password |
+| testRealm2.swift:24:11:24:11 | socialSecurityNumber | label:socialSecurityNumber, type:private information |
+| testRealm2.swift:25:11:25:11 | ssn | label:ssn, type:private information |
+| testRealm2.swift:26:18:26:18 | ssn_int | label:ssn_int, type:private information |
+| testRealm2.swift:32:11:32:11 | creditCardNumber | label:creditCardNumber, type:private information |
+| testRealm2.swift:33:11:33:11 | CCN | label:CCN, type:private information |
+| testRealm2.swift:34:18:34:18 | int_ccn | label:int_ccn, type:private information |
+| testRealm.swift:31:20:31:20 | .password | label:password, type:password |
+| testRealm.swift:41:11:41:11 | myPassword | label:myPassword, type:password |
+| testRealm.swift:49:11:49:11 | myPassword | label:myPassword, type:password |
+| testRealm.swift:59:12:59:12 | myPassword | label:myPassword, type:password |
+| testRealm.swift:66:11:66:11 | myPassword | label:myPassword, type:password |
+| testRealm.swift:73:2:73:4 | .password | label:password, type:password |
+| testRealm.swift:73:15:73:15 | myPassword | label:myPassword, type:password |
+| testSend.swift:29:19:29:19 | passwordPlain | label:passwordPlain, type:password |
+| testSend.swift:33:19:33:19 | passwordPlain | label:passwordPlain, type:password |
+| testSend.swift:58:13:58:13 | password | label:password, type:password |
+| testSend.swift:59:13:59:13 | password | label:password, type:password |
+| testSend.swift:60:17:60:17 | password | label:password, type:password |
+| testSend.swift:61:23:61:23 | password | label:password, type:password |
+| testSend.swift:62:27:62:27 | password | label:password, type:password |
+| testSend.swift:63:27:63:27 | password | label:password, type:password |
+| testSend.swift:71:27:71:27 | license_key | label:license_key, type:credential |
+| testSend.swift:72:27:72:30 | .mobileNumber | label:mobileNumber, type:private information |
+| testSend.swift:75:27:75:30 | .passwordFeatureEnabled | label:passwordFeatureEnabled, type:password |
+| testSend.swift:76:27:76:30 | .Telephone | label:Telephone, type:private information |
+| testSend.swift:77:27:77:30 | .birth_day | label:birth_day, type:private information |
+| testSend.swift:78:27:78:30 | .CarePlanID | label:CarePlanID, type:private information |
+| testSend.swift:79:27:79:30 | .BankCardNo | label:BankCardNo, type:private information |
+| testSend.swift:80:27:80:30 | .MyCreditRating | label:MyCreditRating, type:private information |
+| testSend.swift:94:27:94:30 | .password | label:password, type:password |
+| testURL.swift:39:50:39:50 | passwd | label:passwd, type:password |
+| testURL.swift:41:51:41:51 | account_no | label:account_no, type:private information |
+| testURL.swift:42:51:42:51 | credit_card_no | label:credit_card_no, type:private information |
+| testURL.swift:46:22:46:22 | passwd | label:passwd, type:password |
+| testURL.swift:50:51:50:51 | e_mail | label:e_mail, type:private information |
+| testURL.swift:52:53:52:53 | a_homeaddr_z | label:a_homeaddr_z, type:private information |
+| testURL.swift:54:51:54:51 | resident_ID | label:resident_ID, type:private information |
+| testURL.swift:73:52:73:67 | call to get_secret_key() | label:get_secret_key, type:credential |
+| testURL.swift:75:53:75:69 | call to get_cert_string() | label:get_cert_string, type:credential |
+| testURL.swift:96:51:96:51 | certificate | label:certificate, type:credential |
+| testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | label:password, type:password |
+| testURL.swift:116:52:116:52 | email | label:email, type:private information |
+| testURL.swift:117:28:117:28 | email | label:email, type:private information |
+| testURL.swift:118:53:118:53 | secret_key | label:secret_key, type:credential |
+| testURL.swift:119:60:119:60 | email | label:email, type:private information |
+| testURL.swift:123:52:123:52 | phone_number | label:phone_number, type:private information |
+| testURL.swift:124:25:124:25 | phone_number | label:phone_number, type:private information |
+| testURL.swift:125:31:125:31 | phone_number | label:phone_number, type:private information |
+| testURL.swift:126:28:126:28 | phone_number | label:phone_number, type:private information |
+| testURL.swift:127:25:127:25 | phone_number | label:phone_number, type:private information |
+| testURL.swift:131:37:131:37 | account_no | label:account_no, type:private information |
+| testURL.swift:132:39:132:39 | account_no | label:account_no, type:private information |

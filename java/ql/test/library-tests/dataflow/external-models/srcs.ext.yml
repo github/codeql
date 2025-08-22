@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: codeql/java-tests
+      pack: codeql/java-all
       extensible: sourceModel
     data:
       - ["my.qltest", "A", False, "src1", "()", "", "ReturnValue", "qltest", "manual"]

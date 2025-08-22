@@ -107,7 +107,7 @@ class SnprintfSizeExpr extends BufferAccess, FunctionCall {
 }
 
 class MemcmpSizeExpr extends BufferAccess, FunctionCall {
-  MemcmpSizeExpr() { this.getTarget().hasName("Memcmp") }
+  MemcmpSizeExpr() { this.getTarget().hasName("memcmp") }
 
   override Expr getPointer() {
     result = this.getArgument(0) or
@@ -129,24 +129,6 @@ class NetworkFunctionCall extends FunctionCall {
   NetworkFunctionCall() { this.getTarget().hasName(["ntohd", "ntohf", "ntohl", "ntohll", "ntohs"]) }
 }
 
-deprecated class NetworkToBufferSizeConfiguration extends DataFlow::Configuration {
-  NetworkToBufferSizeConfiguration() { this = "NetworkToBufferSizeConfiguration" }
-
-  override predicate isSource(DataFlow::Node node) { node.asExpr() instanceof NetworkFunctionCall }
-
-  override predicate isSink(DataFlow::Node node) {
-    node.asExpr() = any(BufferAccess ba).getAccessedLength()
-  }
-
-  override predicate isBarrier(DataFlow::Node node) {
-    exists(GuardCondition gc, GVN gvn |
-      gc.getAChild*() = gvn.getAnExpr() and
-      globalValueNumber(node.asExpr()) = gvn and
-      gc.controls(node.asExpr().getBasicBlock(), _)
-    )
-  }
-}
-
 private module NetworkToBufferSizeConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node.asExpr() instanceof NetworkFunctionCall }
 
@@ -159,6 +141,8 @@ private module NetworkToBufferSizeConfig implements DataFlow::ConfigSig {
       gc.controls(node.asExpr().getBasicBlock(), _)
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module NetworkToBufferSizeFlow = DataFlow::Global<NetworkToBufferSizeConfig>;

@@ -4,7 +4,7 @@ predicate anotherPredicate(int i) { none() }
 
 predicate yetAnotherPredicate(int i, int y) { none() }
 
-predicate dbTypePredicate(@location l) { none() }
+predicate dbTypePredicate(@location_default l) { none() }
 
 string predicateWithResult(int i) { none() }
 
@@ -12,7 +12,7 @@ class SmallInt extends int {
   SmallInt() { this = [0 .. 10] }
 }
 
-class Location extends @location {
+class Location extends @location_default {
   string toString() { result = "" }
 }
 

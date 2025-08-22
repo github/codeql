@@ -1,10 +1,11 @@
 using System;
+using System.IO;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Entities.Expressions;
 using Semmle.Extraction.Kinds;
-using System.IO;
-using System.Linq;
+using Semmle.Extraction.CSharp.Util;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -20,6 +21,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private Type Type => type.Value;
 
+        protected override IPropertySymbol BodyDeclaringSymbol => Symbol.PartialImplementationPart ?? Symbol;
+
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => BodyDeclaringSymbol.Locations.BestOrDefault();
+
         public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.WriteSubId(Type);
@@ -33,7 +38,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            PopulateMetadataHandle(trapFile);
             PopulateAttributes();
             PopulateModifiers(trapFile);
             BindComments();
@@ -43,13 +47,13 @@ namespace Semmle.Extraction.CSharp.Entities
             var type = Type;
             trapFile.properties(this, Symbol.GetName(), ContainingType!, type.TypeRef, Create(Context, Symbol.OriginalDefinition));
 
-            var getter = Symbol.GetMethod;
-            var setter = Symbol.SetMethod;
+            var getter = BodyDeclaringSymbol.GetMethod;
+            var setter = BodyDeclaringSymbol.SetMethod;
 
-            if (!(getter is null))
+            if (getter is not null)
                 Method.Create(Context, getter);
 
-            if (!(setter is null))
+            if (setter is not null)
                 Method.Create(Context, setter);
 
             var declSyntaxReferences = IsSourceDeclaration ?
@@ -85,9 +89,9 @@ namespace Semmle.Extraction.CSharp.Entities
                     {
                         var loc = Context.CreateLocation(initializer!.GetLocation());
                         var annotatedType = AnnotatedTypeSymbol.CreateNotAnnotated(Symbol.Type);
-                        var simpleAssignExpr = new Expression(new ExpressionInfo(Context, annotatedType, loc, ExprKind.SIMPLE_ASSIGN, this, child++, false, null));
+                        var simpleAssignExpr = new Expression(new ExpressionInfo(Context, annotatedType, loc, ExprKind.SIMPLE_ASSIGN, this, child++, isCompilerGenerated: true, null));
                         Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer.Value, simpleAssignExpr, 0));
-                        var access = new Expression(new ExpressionInfo(Context, annotatedType, Location, ExprKind.PROPERTY_ACCESS, simpleAssignExpr, 1, false, null));
+                        var access = new Expression(new ExpressionInfo(Context, annotatedType, Location, ExprKind.PROPERTY_ACCESS, simpleAssignExpr, 1, isCompilerGenerated: true, null));
                         trapFile.expr_access(access, this);
                         if (!Symbol.IsStatic)
                         {
@@ -110,7 +114,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     .OfType<PropertyDeclarationSyntax>()
                     .Select(s => s.GetLocation())
                     .Concat(Symbol.Locations)
-                    .First();
+                    .Best();
             }
         }
 

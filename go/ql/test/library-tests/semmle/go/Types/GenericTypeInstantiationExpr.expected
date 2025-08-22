@@ -1,3 +1,6 @@
+| aliases.go:32:38:32:57 | generic type instantiation expression | aliases.go:32:38:32:43 | MyType | 0 | aliases.go:32:45:32:56 | MyTypeAliasT |
+| aliases.go:34:23:34:41 | generic type instantiation expression | aliases.go:34:23:34:33 | MyTypeAlias | 0 | aliases.go:34:35:34:40 | string |
+| aliases.go:35:7:35:25 | generic type instantiation expression | aliases.go:35:7:35:17 | MyTypeAlias | 0 | aliases.go:35:19:35:24 | string |
 | generic.go:12:16:12:40 | generic type instantiation expression | generic.go:12:16:12:37 | CircularGenericStruct1 | 0 | generic.go:12:39:12:39 | T |
 | generic.go:16:7:16:31 | generic type instantiation expression | generic.go:16:7:16:28 | CircularGenericStruct1 | 0 | generic.go:16:30:16:30 | T |
 | generic.go:20:14:20:30 | generic type instantiation expression | generic.go:20:14:20:27 | GenericStruct1 | 0 | generic.go:20:29:20:29 | S |
@@ -13,7 +16,7 @@
 | generic.go:60:12:60:28 | generic type instantiation expression | generic.go:60:12:60:22 | GenericMap2 | 0 | generic.go:60:24:60:24 | U |
 | generic.go:60:12:60:28 | generic type instantiation expression | generic.go:60:12:60:22 | GenericMap2 | 1 | generic.go:60:27:60:27 | U |
 | generic.go:61:12:61:28 | generic type instantiation expression | generic.go:61:12:61:25 | GenericChannel | 0 | generic.go:61:27:61:27 | U |
-| generic.go:62:12:62:26 | generic type instantiation expression | generic.go:62:12:62:23 | GenericNamed | 0 | generic.go:62:25:62:25 | U |
+| generic.go:62:12:62:28 | generic type instantiation expression | generic.go:62:12:62:25 | GenericDefined | 0 | generic.go:62:27:62:27 | U |
 | generic.go:70:42:70:64 | generic type instantiation expression | generic.go:70:42:70:57 | GenericInterface | 0 | generic.go:70:59:70:63 | int32 |
 | generic.go:74:41:74:62 | generic type instantiation expression | generic.go:74:41:74:54 | GenericStruct1 | 0 | generic.go:74:56:74:61 | string |
 | generic.go:82:18:82:34 | generic type instantiation expression | generic.go:82:18:82:29 | GenericArray | 0 | generic.go:82:31:82:33 | int |

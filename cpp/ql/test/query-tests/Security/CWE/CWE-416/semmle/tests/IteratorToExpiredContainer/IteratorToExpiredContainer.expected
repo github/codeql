@@ -1,0 +1,6 @@
+| test.cpp:680:30:680:30 | call to operator[] | This object is destroyed at the end of the full-expression. |
+| test.cpp:683:31:683:32 | call to at | This object is destroyed at the end of the full-expression. |
+| test.cpp:702:27:702:27 | call to operator[] | This object is destroyed at the end of the full-expression. |
+| test.cpp:727:23:727:23 | call to operator[] | This object is destroyed at the end of the full-expression. |
+| test.cpp:735:23:735:23 | call to operator[] | This object is destroyed at the end of the full-expression. |
+| test.cpp:857:3:857:17 | pointer to ~PlusPlusReturnByValueIterator output argument | This object is destroyed at the end of the full-expression. |

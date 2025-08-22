@@ -5,7 +5,9 @@
  * @problem.severity warning
  * @id js/ineffective-parameter-type
  * @precision high
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  *       typescript
  */
 
@@ -26,7 +28,7 @@ predicate isCommonPredefinedTypeName(string name) {
  */
 class DefiniteTypeDecl extends TypeDecl {
   DefiniteTypeDecl() {
-    this = any(ImportSpecifier im).getLocal() implies exists(getLocalTypeName().getAnAccess())
+    this = any(ImportSpecifier im).getLocal() implies exists(this.getLocalTypeName().getAnAccess())
   }
 }
 

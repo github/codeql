@@ -1,6 +1,4 @@
 | Test.qll:4:15:4:18 | this | Test.qll:3:7:3:13 | Strings |
-| Test.qll:4:15:4:18 | this | Test.qll:3:7:3:13 | Strings.Strings |
-| Test.qll:4:15:4:18 | this | Test.qll:3:7:3:13 | Strings.extends |
 | Test.qll:4:22:4:76 | Set | file://:0:0:0:0 | string |
 | Test.qll:4:23:4:24 | String | file://:0:0:0:0 | string |
 | Test.qll:4:27:4:29 | String | file://:0:0:0:0 | string |
@@ -13,8 +11,6 @@
 | Test.qll:4:66:4:69 | String | file://:0:0:0:0 | string |
 | Test.qll:4:72:4:75 | String | file://:0:0:0:0 | string |
 | Test.qll:8:14:8:17 | this | Test.qll:7:7:7:12 | Floats |
-| Test.qll:8:14:8:17 | this | Test.qll:7:7:7:12 | Floats.Floats |
-| Test.qll:8:14:8:17 | this | Test.qll:7:7:7:12 | Floats.extends |
 | Test.qll:8:21:8:70 | Set | file://:0:0:0:0 | float |
 | Test.qll:8:22:8:24 | Float | file://:0:0:0:0 | float |
 | Test.qll:8:27:8:29 | Float | file://:0:0:0:0 | float |
@@ -35,14 +31,10 @@
 | Test.qll:13:45:13:49 | AddExpr | file://:0:0:0:0 | float |
 | Test.qll:13:49:13:49 | b | Test.qll:7:7:7:12 | Floats |
 | Test.qll:16:12:16:15 | this | Test.qll:15:7:15:10 | Base |
-| Test.qll:16:12:16:15 | this | Test.qll:15:7:15:10 | Base.Base |
-| Test.qll:16:12:16:15 | this | Test.qll:15:7:15:10 | Base.extends |
 | Test.qll:16:19:16:23 | String | file://:0:0:0:0 | string |
 | Test.qll:18:15:18:20 | result | file://:0:0:0:0 | int |
 | Test.qll:18:24:18:24 | Integer | file://:0:0:0:0 | int |
 | Test.qll:22:11:22:14 | this | Test.qll:21:7:21:9 | Sub |
-| Test.qll:22:11:22:14 | this | Test.qll:21:7:21:9 | Sub.Sub |
-| Test.qll:22:11:22:14 | this | Test.qll:21:7:21:9 | Sub.extends |
 | Test.qll:22:18:22:22 | String | file://:0:0:0:0 | string |
 | Test.qll:24:15:24:20 | result | file://:0:0:0:0 | int |
 | Test.qll:24:24:24:33 | Super | Test.qll:15:7:15:10 | Base |

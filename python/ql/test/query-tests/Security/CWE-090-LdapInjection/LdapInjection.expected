@@ -1,118 +1,110 @@
 edges
-| ldap3_bad.py:0:0:0:0 | ModuleVariableNode for ldap3_bad.request | ldap3_bad.py:13:17:13:23 | ControlFlowNode for request |
-| ldap3_bad.py:0:0:0:0 | ModuleVariableNode for ldap3_bad.request | ldap3_bad.py:13:17:13:23 | ControlFlowNode for request |
-| ldap3_bad.py:0:0:0:0 | ModuleVariableNode for ldap3_bad.request | ldap3_bad.py:14:21:14:27 | ControlFlowNode for request |
-| ldap3_bad.py:0:0:0:0 | ModuleVariableNode for ldap3_bad.request | ldap3_bad.py:30:17:30:23 | ControlFlowNode for request |
-| ldap3_bad.py:0:0:0:0 | ModuleVariableNode for ldap3_bad.request | ldap3_bad.py:30:17:30:23 | ControlFlowNode for request |
-| ldap3_bad.py:0:0:0:0 | ModuleVariableNode for ldap3_bad.request | ldap3_bad.py:31:21:31:27 | ControlFlowNode for request |
-| ldap3_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | ldap3_bad.py:1:19:1:25 | GSSA Variable request |
-| ldap3_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | ldap3_bad.py:1:19:1:25 | GSSA Variable request |
-| ldap3_bad.py:1:19:1:25 | GSSA Variable request | ldap3_bad.py:0:0:0:0 | ModuleVariableNode for ldap3_bad.request |
-| ldap3_bad.py:1:19:1:25 | GSSA Variable request | ldap3_bad.py:0:0:0:0 | ModuleVariableNode for ldap3_bad.request |
-| ldap3_bad.py:13:17:13:23 | ControlFlowNode for request | ldap3_bad.py:13:17:13:28 | ControlFlowNode for Attribute |
-| ldap3_bad.py:13:17:13:23 | ControlFlowNode for request | ldap3_bad.py:14:21:14:32 | ControlFlowNode for Attribute |
-| ldap3_bad.py:13:17:13:28 | ControlFlowNode for Attribute | ldap3_bad.py:13:17:13:34 | ControlFlowNode for Subscript |
-| ldap3_bad.py:13:17:13:34 | ControlFlowNode for Subscript | ldap3_bad.py:21:17:21:18 | ControlFlowNode for dn |
-| ldap3_bad.py:14:21:14:27 | ControlFlowNode for request | ldap3_bad.py:14:21:14:32 | ControlFlowNode for Attribute |
-| ldap3_bad.py:14:21:14:32 | ControlFlowNode for Attribute | ldap3_bad.py:14:21:14:44 | ControlFlowNode for Subscript |
-| ldap3_bad.py:14:21:14:44 | ControlFlowNode for Subscript | ldap3_bad.py:21:21:21:33 | ControlFlowNode for search_filter |
-| ldap3_bad.py:30:17:30:23 | ControlFlowNode for request | ldap3_bad.py:30:17:30:28 | ControlFlowNode for Attribute |
-| ldap3_bad.py:30:17:30:23 | ControlFlowNode for request | ldap3_bad.py:31:21:31:32 | ControlFlowNode for Attribute |
-| ldap3_bad.py:30:17:30:28 | ControlFlowNode for Attribute | ldap3_bad.py:30:17:30:34 | ControlFlowNode for Subscript |
-| ldap3_bad.py:30:17:30:34 | ControlFlowNode for Subscript | ldap3_bad.py:38:9:38:10 | ControlFlowNode for dn |
-| ldap3_bad.py:31:21:31:27 | ControlFlowNode for request | ldap3_bad.py:31:21:31:32 | ControlFlowNode for Attribute |
-| ldap3_bad.py:31:21:31:32 | ControlFlowNode for Attribute | ldap3_bad.py:31:21:31:44 | ControlFlowNode for Subscript |
-| ldap3_bad.py:31:21:31:44 | ControlFlowNode for Subscript | ldap3_bad.py:38:13:38:25 | ControlFlowNode for search_filter |
-| ldap_bad.py:0:0:0:0 | ModuleVariableNode for ldap_bad.request | ldap_bad.py:13:17:13:23 | ControlFlowNode for request |
-| ldap_bad.py:0:0:0:0 | ModuleVariableNode for ldap_bad.request | ldap_bad.py:13:17:13:23 | ControlFlowNode for request |
-| ldap_bad.py:0:0:0:0 | ModuleVariableNode for ldap_bad.request | ldap_bad.py:14:21:14:27 | ControlFlowNode for request |
-| ldap_bad.py:0:0:0:0 | ModuleVariableNode for ldap_bad.request | ldap_bad.py:30:17:30:23 | ControlFlowNode for request |
-| ldap_bad.py:0:0:0:0 | ModuleVariableNode for ldap_bad.request | ldap_bad.py:30:17:30:23 | ControlFlowNode for request |
-| ldap_bad.py:0:0:0:0 | ModuleVariableNode for ldap_bad.request | ldap_bad.py:31:21:31:27 | ControlFlowNode for request |
-| ldap_bad.py:0:0:0:0 | ModuleVariableNode for ldap_bad.request | ldap_bad.py:47:17:47:23 | ControlFlowNode for request |
-| ldap_bad.py:0:0:0:0 | ModuleVariableNode for ldap_bad.request | ldap_bad.py:47:17:47:23 | ControlFlowNode for request |
-| ldap_bad.py:0:0:0:0 | ModuleVariableNode for ldap_bad.request | ldap_bad.py:48:21:48:27 | ControlFlowNode for request |
-| ldap_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | ldap_bad.py:1:19:1:25 | GSSA Variable request |
-| ldap_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | ldap_bad.py:1:19:1:25 | GSSA Variable request |
-| ldap_bad.py:1:19:1:25 | GSSA Variable request | ldap_bad.py:0:0:0:0 | ModuleVariableNode for ldap_bad.request |
-| ldap_bad.py:1:19:1:25 | GSSA Variable request | ldap_bad.py:0:0:0:0 | ModuleVariableNode for ldap_bad.request |
-| ldap_bad.py:13:17:13:23 | ControlFlowNode for request | ldap_bad.py:13:17:13:28 | ControlFlowNode for Attribute |
-| ldap_bad.py:13:17:13:23 | ControlFlowNode for request | ldap_bad.py:14:21:14:32 | ControlFlowNode for Attribute |
-| ldap_bad.py:13:17:13:28 | ControlFlowNode for Attribute | ldap_bad.py:13:17:13:34 | ControlFlowNode for Subscript |
-| ldap_bad.py:13:17:13:34 | ControlFlowNode for Subscript | ldap_bad.py:21:9:21:10 | ControlFlowNode for dn |
-| ldap_bad.py:14:21:14:27 | ControlFlowNode for request | ldap_bad.py:14:21:14:32 | ControlFlowNode for Attribute |
-| ldap_bad.py:14:21:14:32 | ControlFlowNode for Attribute | ldap_bad.py:14:21:14:44 | ControlFlowNode for Subscript |
-| ldap_bad.py:14:21:14:44 | ControlFlowNode for Subscript | ldap_bad.py:21:33:21:45 | ControlFlowNode for search_filter |
-| ldap_bad.py:30:17:30:23 | ControlFlowNode for request | ldap_bad.py:30:17:30:28 | ControlFlowNode for Attribute |
-| ldap_bad.py:30:17:30:23 | ControlFlowNode for request | ldap_bad.py:31:21:31:32 | ControlFlowNode for Attribute |
-| ldap_bad.py:30:17:30:28 | ControlFlowNode for Attribute | ldap_bad.py:30:17:30:34 | ControlFlowNode for Subscript |
-| ldap_bad.py:30:17:30:34 | ControlFlowNode for Subscript | ldap_bad.py:37:9:37:10 | ControlFlowNode for dn |
-| ldap_bad.py:31:21:31:27 | ControlFlowNode for request | ldap_bad.py:31:21:31:32 | ControlFlowNode for Attribute |
-| ldap_bad.py:31:21:31:32 | ControlFlowNode for Attribute | ldap_bad.py:31:21:31:44 | ControlFlowNode for Subscript |
-| ldap_bad.py:31:21:31:44 | ControlFlowNode for Subscript | ldap_bad.py:37:33:37:45 | ControlFlowNode for search_filter |
-| ldap_bad.py:47:17:47:23 | ControlFlowNode for request | ldap_bad.py:47:17:47:28 | ControlFlowNode for Attribute |
-| ldap_bad.py:47:17:47:23 | ControlFlowNode for request | ldap_bad.py:48:21:48:32 | ControlFlowNode for Attribute |
-| ldap_bad.py:47:17:47:28 | ControlFlowNode for Attribute | ldap_bad.py:47:17:47:34 | ControlFlowNode for Subscript |
-| ldap_bad.py:47:17:47:34 | ControlFlowNode for Subscript | ldap_bad.py:55:9:55:10 | ControlFlowNode for dn |
-| ldap_bad.py:48:21:48:27 | ControlFlowNode for request | ldap_bad.py:48:21:48:32 | ControlFlowNode for Attribute |
-| ldap_bad.py:48:21:48:32 | ControlFlowNode for Attribute | ldap_bad.py:48:21:48:44 | ControlFlowNode for Subscript |
-| ldap_bad.py:48:21:48:44 | ControlFlowNode for Subscript | ldap_bad.py:55:43:55:55 | ControlFlowNode for search_filter |
+| ldap3_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | ldap3_bad.py:1:19:1:25 | ControlFlowNode for request | provenance |  |
+| ldap3_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | ldap3_bad.py:1:19:1:25 | ControlFlowNode for request | provenance |  |
+| ldap3_bad.py:1:19:1:25 | ControlFlowNode for request | ldap3_bad.py:13:17:13:23 | ControlFlowNode for request | provenance |  |
+| ldap3_bad.py:1:19:1:25 | ControlFlowNode for request | ldap3_bad.py:13:17:13:23 | ControlFlowNode for request | provenance |  |
+| ldap3_bad.py:1:19:1:25 | ControlFlowNode for request | ldap3_bad.py:14:21:14:27 | ControlFlowNode for request | provenance |  |
+| ldap3_bad.py:1:19:1:25 | ControlFlowNode for request | ldap3_bad.py:30:17:30:23 | ControlFlowNode for request | provenance |  |
+| ldap3_bad.py:1:19:1:25 | ControlFlowNode for request | ldap3_bad.py:30:17:30:23 | ControlFlowNode for request | provenance |  |
+| ldap3_bad.py:1:19:1:25 | ControlFlowNode for request | ldap3_bad.py:31:21:31:27 | ControlFlowNode for request | provenance |  |
+| ldap3_bad.py:13:5:13:13 | ControlFlowNode for unsafe_dc | ldap3_bad.py:16:5:16:6 | ControlFlowNode for dn | provenance |  |
+| ldap3_bad.py:13:17:13:23 | ControlFlowNode for request | ldap3_bad.py:13:5:13:13 | ControlFlowNode for unsafe_dc | provenance | AdditionalTaintStep |
+| ldap3_bad.py:13:17:13:23 | ControlFlowNode for request | ldap3_bad.py:14:5:14:17 | ControlFlowNode for unsafe_filter | provenance | AdditionalTaintStep |
+| ldap3_bad.py:14:5:14:17 | ControlFlowNode for unsafe_filter | ldap3_bad.py:17:5:17:17 | ControlFlowNode for search_filter | provenance |  |
+| ldap3_bad.py:14:21:14:27 | ControlFlowNode for request | ldap3_bad.py:14:5:14:17 | ControlFlowNode for unsafe_filter | provenance | AdditionalTaintStep |
+| ldap3_bad.py:16:5:16:6 | ControlFlowNode for dn | ldap3_bad.py:21:17:21:18 | ControlFlowNode for dn | provenance |  |
+| ldap3_bad.py:17:5:17:17 | ControlFlowNode for search_filter | ldap3_bad.py:21:21:21:33 | ControlFlowNode for search_filter | provenance |  |
+| ldap3_bad.py:30:5:30:13 | ControlFlowNode for unsafe_dc | ldap3_bad.py:33:5:33:6 | ControlFlowNode for dn | provenance |  |
+| ldap3_bad.py:30:17:30:23 | ControlFlowNode for request | ldap3_bad.py:30:5:30:13 | ControlFlowNode for unsafe_dc | provenance | AdditionalTaintStep |
+| ldap3_bad.py:30:17:30:23 | ControlFlowNode for request | ldap3_bad.py:31:5:31:17 | ControlFlowNode for unsafe_filter | provenance | AdditionalTaintStep |
+| ldap3_bad.py:31:5:31:17 | ControlFlowNode for unsafe_filter | ldap3_bad.py:34:5:34:17 | ControlFlowNode for search_filter | provenance |  |
+| ldap3_bad.py:31:21:31:27 | ControlFlowNode for request | ldap3_bad.py:31:5:31:17 | ControlFlowNode for unsafe_filter | provenance | AdditionalTaintStep |
+| ldap3_bad.py:33:5:33:6 | ControlFlowNode for dn | ldap3_bad.py:38:9:38:10 | ControlFlowNode for dn | provenance |  |
+| ldap3_bad.py:34:5:34:17 | ControlFlowNode for search_filter | ldap3_bad.py:38:13:38:25 | ControlFlowNode for search_filter | provenance |  |
+| ldap_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | ldap_bad.py:1:19:1:25 | ControlFlowNode for request | provenance |  |
+| ldap_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | ldap_bad.py:1:19:1:25 | ControlFlowNode for request | provenance |  |
+| ldap_bad.py:1:19:1:25 | ControlFlowNode for request | ldap_bad.py:13:17:13:23 | ControlFlowNode for request | provenance |  |
+| ldap_bad.py:1:19:1:25 | ControlFlowNode for request | ldap_bad.py:13:17:13:23 | ControlFlowNode for request | provenance |  |
+| ldap_bad.py:1:19:1:25 | ControlFlowNode for request | ldap_bad.py:14:21:14:27 | ControlFlowNode for request | provenance |  |
+| ldap_bad.py:1:19:1:25 | ControlFlowNode for request | ldap_bad.py:30:17:30:23 | ControlFlowNode for request | provenance |  |
+| ldap_bad.py:1:19:1:25 | ControlFlowNode for request | ldap_bad.py:30:17:30:23 | ControlFlowNode for request | provenance |  |
+| ldap_bad.py:1:19:1:25 | ControlFlowNode for request | ldap_bad.py:31:21:31:27 | ControlFlowNode for request | provenance |  |
+| ldap_bad.py:1:19:1:25 | ControlFlowNode for request | ldap_bad.py:47:17:47:23 | ControlFlowNode for request | provenance |  |
+| ldap_bad.py:1:19:1:25 | ControlFlowNode for request | ldap_bad.py:47:17:47:23 | ControlFlowNode for request | provenance |  |
+| ldap_bad.py:1:19:1:25 | ControlFlowNode for request | ldap_bad.py:48:21:48:27 | ControlFlowNode for request | provenance |  |
+| ldap_bad.py:13:5:13:13 | ControlFlowNode for unsafe_dc | ldap_bad.py:16:5:16:6 | ControlFlowNode for dn | provenance |  |
+| ldap_bad.py:13:17:13:23 | ControlFlowNode for request | ldap_bad.py:13:5:13:13 | ControlFlowNode for unsafe_dc | provenance | AdditionalTaintStep |
+| ldap_bad.py:13:17:13:23 | ControlFlowNode for request | ldap_bad.py:14:5:14:17 | ControlFlowNode for unsafe_filter | provenance | AdditionalTaintStep |
+| ldap_bad.py:14:5:14:17 | ControlFlowNode for unsafe_filter | ldap_bad.py:17:5:17:17 | ControlFlowNode for search_filter | provenance |  |
+| ldap_bad.py:14:21:14:27 | ControlFlowNode for request | ldap_bad.py:14:5:14:17 | ControlFlowNode for unsafe_filter | provenance | AdditionalTaintStep |
+| ldap_bad.py:16:5:16:6 | ControlFlowNode for dn | ldap_bad.py:21:9:21:10 | ControlFlowNode for dn | provenance |  |
+| ldap_bad.py:17:5:17:17 | ControlFlowNode for search_filter | ldap_bad.py:21:33:21:45 | ControlFlowNode for search_filter | provenance |  |
+| ldap_bad.py:30:5:30:13 | ControlFlowNode for unsafe_dc | ldap_bad.py:33:5:33:6 | ControlFlowNode for dn | provenance |  |
+| ldap_bad.py:30:17:30:23 | ControlFlowNode for request | ldap_bad.py:30:5:30:13 | ControlFlowNode for unsafe_dc | provenance | AdditionalTaintStep |
+| ldap_bad.py:30:17:30:23 | ControlFlowNode for request | ldap_bad.py:31:5:31:17 | ControlFlowNode for unsafe_filter | provenance | AdditionalTaintStep |
+| ldap_bad.py:31:5:31:17 | ControlFlowNode for unsafe_filter | ldap_bad.py:34:5:34:17 | ControlFlowNode for search_filter | provenance |  |
+| ldap_bad.py:31:21:31:27 | ControlFlowNode for request | ldap_bad.py:31:5:31:17 | ControlFlowNode for unsafe_filter | provenance | AdditionalTaintStep |
+| ldap_bad.py:33:5:33:6 | ControlFlowNode for dn | ldap_bad.py:37:9:37:10 | ControlFlowNode for dn | provenance |  |
+| ldap_bad.py:34:5:34:17 | ControlFlowNode for search_filter | ldap_bad.py:37:33:37:45 | ControlFlowNode for search_filter | provenance |  |
+| ldap_bad.py:47:5:47:13 | ControlFlowNode for unsafe_dc | ldap_bad.py:50:5:50:6 | ControlFlowNode for dn | provenance |  |
+| ldap_bad.py:47:17:47:23 | ControlFlowNode for request | ldap_bad.py:47:5:47:13 | ControlFlowNode for unsafe_dc | provenance | AdditionalTaintStep |
+| ldap_bad.py:47:17:47:23 | ControlFlowNode for request | ldap_bad.py:48:5:48:17 | ControlFlowNode for unsafe_filter | provenance | AdditionalTaintStep |
+| ldap_bad.py:48:5:48:17 | ControlFlowNode for unsafe_filter | ldap_bad.py:51:5:51:17 | ControlFlowNode for search_filter | provenance |  |
+| ldap_bad.py:48:21:48:27 | ControlFlowNode for request | ldap_bad.py:48:5:48:17 | ControlFlowNode for unsafe_filter | provenance | AdditionalTaintStep |
+| ldap_bad.py:50:5:50:6 | ControlFlowNode for dn | ldap_bad.py:55:9:55:10 | ControlFlowNode for dn | provenance |  |
+| ldap_bad.py:51:5:51:17 | ControlFlowNode for search_filter | ldap_bad.py:55:43:55:55 | ControlFlowNode for search_filter | provenance |  |
 nodes
-| ldap3_bad.py:0:0:0:0 | ModuleVariableNode for ldap3_bad.request | semmle.label | ModuleVariableNode for ldap3_bad.request |
-| ldap3_bad.py:0:0:0:0 | ModuleVariableNode for ldap3_bad.request | semmle.label | ModuleVariableNode for ldap3_bad.request |
 | ldap3_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | ldap3_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
-| ldap3_bad.py:1:19:1:25 | GSSA Variable request | semmle.label | GSSA Variable request |
-| ldap3_bad.py:1:19:1:25 | GSSA Variable request | semmle.label | GSSA Variable request |
+| ldap3_bad.py:1:19:1:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| ldap3_bad.py:1:19:1:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| ldap3_bad.py:13:5:13:13 | ControlFlowNode for unsafe_dc | semmle.label | ControlFlowNode for unsafe_dc |
 | ldap3_bad.py:13:17:13:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | ldap3_bad.py:13:17:13:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| ldap3_bad.py:13:17:13:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| ldap3_bad.py:13:17:13:34 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| ldap3_bad.py:14:5:14:17 | ControlFlowNode for unsafe_filter | semmle.label | ControlFlowNode for unsafe_filter |
 | ldap3_bad.py:14:21:14:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| ldap3_bad.py:14:21:14:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| ldap3_bad.py:14:21:14:44 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| ldap3_bad.py:16:5:16:6 | ControlFlowNode for dn | semmle.label | ControlFlowNode for dn |
+| ldap3_bad.py:17:5:17:17 | ControlFlowNode for search_filter | semmle.label | ControlFlowNode for search_filter |
 | ldap3_bad.py:21:17:21:18 | ControlFlowNode for dn | semmle.label | ControlFlowNode for dn |
 | ldap3_bad.py:21:21:21:33 | ControlFlowNode for search_filter | semmle.label | ControlFlowNode for search_filter |
+| ldap3_bad.py:30:5:30:13 | ControlFlowNode for unsafe_dc | semmle.label | ControlFlowNode for unsafe_dc |
 | ldap3_bad.py:30:17:30:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | ldap3_bad.py:30:17:30:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| ldap3_bad.py:30:17:30:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| ldap3_bad.py:30:17:30:34 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| ldap3_bad.py:31:5:31:17 | ControlFlowNode for unsafe_filter | semmle.label | ControlFlowNode for unsafe_filter |
 | ldap3_bad.py:31:21:31:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| ldap3_bad.py:31:21:31:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| ldap3_bad.py:31:21:31:44 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| ldap3_bad.py:33:5:33:6 | ControlFlowNode for dn | semmle.label | ControlFlowNode for dn |
+| ldap3_bad.py:34:5:34:17 | ControlFlowNode for search_filter | semmle.label | ControlFlowNode for search_filter |
 | ldap3_bad.py:38:9:38:10 | ControlFlowNode for dn | semmle.label | ControlFlowNode for dn |
 | ldap3_bad.py:38:13:38:25 | ControlFlowNode for search_filter | semmle.label | ControlFlowNode for search_filter |
-| ldap_bad.py:0:0:0:0 | ModuleVariableNode for ldap_bad.request | semmle.label | ModuleVariableNode for ldap_bad.request |
-| ldap_bad.py:0:0:0:0 | ModuleVariableNode for ldap_bad.request | semmle.label | ModuleVariableNode for ldap_bad.request |
 | ldap_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | ldap_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
-| ldap_bad.py:1:19:1:25 | GSSA Variable request | semmle.label | GSSA Variable request |
-| ldap_bad.py:1:19:1:25 | GSSA Variable request | semmle.label | GSSA Variable request |
+| ldap_bad.py:1:19:1:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| ldap_bad.py:1:19:1:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| ldap_bad.py:13:5:13:13 | ControlFlowNode for unsafe_dc | semmle.label | ControlFlowNode for unsafe_dc |
 | ldap_bad.py:13:17:13:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | ldap_bad.py:13:17:13:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| ldap_bad.py:13:17:13:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| ldap_bad.py:13:17:13:34 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| ldap_bad.py:14:5:14:17 | ControlFlowNode for unsafe_filter | semmle.label | ControlFlowNode for unsafe_filter |
 | ldap_bad.py:14:21:14:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| ldap_bad.py:14:21:14:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| ldap_bad.py:14:21:14:44 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| ldap_bad.py:16:5:16:6 | ControlFlowNode for dn | semmle.label | ControlFlowNode for dn |
+| ldap_bad.py:17:5:17:17 | ControlFlowNode for search_filter | semmle.label | ControlFlowNode for search_filter |
 | ldap_bad.py:21:9:21:10 | ControlFlowNode for dn | semmle.label | ControlFlowNode for dn |
 | ldap_bad.py:21:33:21:45 | ControlFlowNode for search_filter | semmle.label | ControlFlowNode for search_filter |
+| ldap_bad.py:30:5:30:13 | ControlFlowNode for unsafe_dc | semmle.label | ControlFlowNode for unsafe_dc |
 | ldap_bad.py:30:17:30:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | ldap_bad.py:30:17:30:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| ldap_bad.py:30:17:30:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| ldap_bad.py:30:17:30:34 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| ldap_bad.py:31:5:31:17 | ControlFlowNode for unsafe_filter | semmle.label | ControlFlowNode for unsafe_filter |
 | ldap_bad.py:31:21:31:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| ldap_bad.py:31:21:31:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| ldap_bad.py:31:21:31:44 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| ldap_bad.py:33:5:33:6 | ControlFlowNode for dn | semmle.label | ControlFlowNode for dn |
+| ldap_bad.py:34:5:34:17 | ControlFlowNode for search_filter | semmle.label | ControlFlowNode for search_filter |
 | ldap_bad.py:37:9:37:10 | ControlFlowNode for dn | semmle.label | ControlFlowNode for dn |
 | ldap_bad.py:37:33:37:45 | ControlFlowNode for search_filter | semmle.label | ControlFlowNode for search_filter |
+| ldap_bad.py:47:5:47:13 | ControlFlowNode for unsafe_dc | semmle.label | ControlFlowNode for unsafe_dc |
 | ldap_bad.py:47:17:47:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | ldap_bad.py:47:17:47:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| ldap_bad.py:47:17:47:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| ldap_bad.py:47:17:47:34 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| ldap_bad.py:48:5:48:17 | ControlFlowNode for unsafe_filter | semmle.label | ControlFlowNode for unsafe_filter |
 | ldap_bad.py:48:21:48:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| ldap_bad.py:48:21:48:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| ldap_bad.py:48:21:48:44 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| ldap_bad.py:50:5:50:6 | ControlFlowNode for dn | semmle.label | ControlFlowNode for dn |
+| ldap_bad.py:51:5:51:17 | ControlFlowNode for search_filter | semmle.label | ControlFlowNode for search_filter |
 | ldap_bad.py:55:9:55:10 | ControlFlowNode for dn | semmle.label | ControlFlowNode for dn |
 | ldap_bad.py:55:43:55:55 | ControlFlowNode for search_filter | semmle.label | ControlFlowNode for search_filter |
 subpaths

@@ -16,8 +16,8 @@ class TypeResolutionAssertion extends TupleTypeExpr, Violation {
 
   TypeResolutionAssertion() {
     exists(InterfaceDeclaration interface, LocalTypeAccess typeAccess |
-      typeAccess = getElementType(0) and
-      expected = getElementType(1).(StringLiteralTypeExpr).getValue() and
+      typeAccess = this.getElementType(0) and
+      expected = this.getElementType(1).(StringLiteralTypeExpr).getValue() and
       typeAccess.getLocalTypeName() = interface.getIdentifier().(TypeDecl).getLocalTypeName() and
       actual = interface.getField("where").getTypeAnnotation().(StringLiteralTypeExpr).getValue() and
       actual != expected

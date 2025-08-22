@@ -64,7 +64,12 @@ class UsingStaticDirective extends UsingDirective, @using_static_directive {
    * Gets the target of this type `using` directive, for example
    * `System.Console` in `using static System.Console`.
    */
-  ValueOrRefType getTarget() { using_static_directives(this, getTypeRef(result)) }
+  ValueOrRefType getTarget() {
+    using_static_directives(this, result)
+    or
+    not using_static_directives(this, any(Type t)) and
+    using_static_directives(this, getTypeRef(result))
+  }
 
   override string toString() { result = "using static ...;" }
 

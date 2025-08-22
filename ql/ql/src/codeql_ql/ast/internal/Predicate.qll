@@ -90,16 +90,28 @@ private module Cached {
     )
   }
 
+  pragma[nomagic]
+  private ClassPredicate getClassPredicate(Class c, string name, int arity) {
+    result = c.getClassPredicate(name) and
+    arity = result.getArity()
+  }
+
+  pragma[nomagic]
+  private predicate resolveSelfClassCalls0(Class c, string name, int arity, MemberCall mc) {
+    mc.getBase() instanceof ThisAccess and
+    c = mc.getEnclosingPredicate().getParent() and
+    name = mc.getMemberName() and
+    arity = mc.getNumberOfArguments()
+  }
+
   /**
    *  Holds if `mc` is a `this.method()` call to a predicate defined in the same class.
    * helps avoid spuriously resolving to predicates in super-classes.
    */
   private predicate resolveSelfClassCalls(MemberCall mc, PredicateOrBuiltin p) {
-    exists(Class c |
-      mc.getBase() instanceof ThisAccess and
-      c = mc.getEnclosingPredicate().getParent() and
-      p = c.getClassPredicate(mc.getMemberName()) and
-      p.getArity() = mc.getNumberOfArguments()
+    exists(Class c, string name, int arity |
+      resolveSelfClassCalls0(c, name, arity, mc) and
+      p = getClassPredicate(c, name, arity)
     )
   }
 

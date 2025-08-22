@@ -26,7 +26,7 @@ fs.createReadStream('archive.zip')
     }
 
     if (!fileName.startsWith(".")) {
-      entry.pipe(fs.createWriteStream(fileName)); // OK.
+      entry.pipe(fs.createWriteStream(fileName));
     }
   });
 
@@ -35,5 +35,5 @@ fs.createReadStream('archive.zip')
   .on('entry', entry => {
     const fileName = path.normalize(entry.path);
 
-    entry.pipe(fs.createWriteStream(path.basename(fileName))); // OK.
+    entry.pipe(fs.createWriteStream(path.basename(fileName)));
   });

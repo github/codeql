@@ -1,6 +1,7 @@
 /**
  * Provides classes for working with MyBatis mapper xml files and their content.
  */
+deprecated module;
 
 import java
 
@@ -13,9 +14,6 @@ class MyBatisMapperXmlFile extends XmlFile {
     this.getAChild().getName() = "mapper"
   }
 }
-
-/** DEPRECATED: Alias for MyBatisMapperXmlFile */
-deprecated class MyBatisMapperXMLFile = MyBatisMapperXmlFile;
 
 /**
  * An XML element in a `MyBatisMapperXMLFile`.
@@ -35,9 +33,6 @@ class MyBatisMapperXmlElement extends XmlElement {
     result.getQualifiedName() = this.getAttribute("namespace").getValue()
   }
 }
-
-/** DEPRECATED: Alias for MyBatisMapperXmlElement */
-deprecated class MyBatisMapperXMLElement = MyBatisMapperXmlElement;
 
 /**
  * An MyBatis Mapper sql operation element.

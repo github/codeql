@@ -1,3 +1,488 @@
+## 5.2.2
+
+No user-facing changes.
+
+## 5.2.1
+
+No user-facing changes.
+
+## 5.2.0
+
+### New Features
+
+* Added a new predicate, `getASuperType()`, to get a direct supertype of this type.
+
+## 5.1.9
+
+No user-facing changes.
+
+## 5.1.8
+
+No user-facing changes.
+
+## 5.1.7
+
+### Minor Analysis Improvements
+
+* The generated Models as Data (MaD) models for .NET 9 Runtime have been updated and are now more precise (due to a recent model generator improvement).
+
+## 5.1.6
+
+No user-facing changes.
+
+## 5.1.5
+
+### Minor Analysis Improvements
+
+* Improved autobuilder logic for detecting whether a project references a SDK (and should be built using `dotnet`).
+
+## 5.1.4
+
+### Minor Analysis Improvements
+
+* The *alignment* and *format* clauses in string interpolation expressions are now extracted. That is, in `$"Hello {name,align:format}"` *name*, *align* and *format* are extracted as children of the string interpolation *insert* `{name,align:format}`.
+* Blazor support can now better recognize when a property being set is specified with a string literal, rather than referenced in a `nameof` expression.
+
+## 5.1.3
+
+### Minor Analysis Improvements
+
+* The models for `System.Uri` have been modified to better model the flow of tainted URIs.
+* Modeled parameter passing between Blazor parent and child components.
+
+## 5.1.2
+
+No user-facing changes.
+
+## 5.1.1
+
+No user-facing changes.
+
+## 5.1.0
+
+### Deprecated APIs
+
+* The predicates `immediatelyControls` and `controls` on the `ConditionBlock`
+  class have been deprecated in favor of the newly added `dominatingEdge`
+  predicate.
+
+### Minor Analysis Improvements
+
+* Full support for C# 13 / .NET 9. All new language features are now supported by the extractor. QL library and data flow support for the new C# 13 language constructs and generated MaD models for the .NET 9 runtime.
+* C# 13: Add generated models for .NET 9.
+* The models for `System.Net.Http.HttpRequestMessage` and `System.UriBuilder` have been modified to better model the flow of tainted URIs.
+* Blazor `[Parameter]` fields bound to a variable from the route specified in the `@page` directive are now modeled as remote flow sources.
+
+## 5.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `getInstanceType` predicate from the `UnboundGenericType` class.
+* Deleted the deprecated `getElement` predicate from the `Node` class in `ControlFlowGraph.qll`, use `getAstNode` instead.
+
+### Minor Analysis Improvements
+
+* C# 13: Added MaD models for some overload implementations using `ReadOnlySpan` parameters (like `String.Format(System.String, System.ReadOnlySpan<System.Object>))`).
+* C# 13: Added support for the overload resolution priority attribute (`OverloadResolutionPriority`). Usages of the attribute and the corresponding priority can be found using the QL class `SystemRuntimeCompilerServicesOverloadResolutionPriorityAttribute`.
+* C# 13: Added support for partial properties and indexers.
+
+## 4.0.2
+
+### Minor Analysis Improvements
+
+* Added extractor support for extracting implicit `ToString` calls in binary `+` expressions and string interpolation expressions.
+* The Razor source generator invocation in `build-mode:none` extraction has been changed to use relative file paths instead of absolute ones.
+* C# 13: Added extractor support and call dispatch logic (data flow) for the (negative) type parameter constraint `allows ref struct`. Added extractor support for the type parameter constraint `notnull`.
+
+## 4.0.1
+
+### Minor Analysis Improvements
+
+* C# 13: Added QL library support for *collection* like type `params` parameters.
+* Added `remote` flow source models for properties of Blazor components annotated with any of the following attributes from `Microsoft.AspNetCore.Components`:
+  - `[SupplyParameterFromForm]`
+  - `[SupplyParameterFromQuery]`
+* Added the constructor and explicit cast operator of `Microsoft.AspNetCore.Components.MarkupString` as an `html-injection` sink. This will help catch cross-site scripting resulting from using `MarkupString`. 
+* Added flow summaries for the `Microsoft.AspNetCore.Mvc.Controller::View` method.
+* The data flow library has been updated to track types in a slightly different way: The type of the tainted data (which may be stored into fields, etc.) is tracked more precisely, while the types of intermediate containers for nested contents is tracked less precisely. This may have a slight effect on false positives for complex flow paths.
+* The C# extractor now supports *basic* extraction of .NET 9 projects. There might be limited support for extraction of code using the new C# 13 language features.
+
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated data flow API that was based on extending a configuration class. See https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries for instructions on migrating your queries to use the new API.
+
+### Minor Analysis Improvements
+
+* Added support for data-flow through member accesses of objects with `dynamic` types.
+* Only extract *public* and *protected* members from reference assemblies. This yields an approximate average speed-up of around 10% for extraction and query execution. Custom MaD rows using `Field`-based summaries may need to be changed to `SyntheticField`-based flows if they reference private fields.
+* Added `Microsoft.AspNetCore.Components.NagivationManager::Uri` as a remote flow source, since this value may contain user-specified values.
+* Added the following URI-parsing methods as summaries, as they may be tainted with user-specified values:
+  - `System.Web.HttpUtility::ParseQueryString`
+  - `Microsoft.AspNetCore.WebUtilities.QueryHelpers::ParseQuery`
+  - `Microsoft.AspNetCore.WebUtilities.QueryHelpers::ParseNullableQuery`
+* Added `js-interop` sinks for the `InvokeAsync` and `InvokeVoidAsync` methods of `Microsoft.JSInterop.IJSRuntime`, which can run arbitrary JavaScript. 
+
+## 3.1.1
+
+### Minor Analysis Improvements
+
+* The Models as Data models for .NET 8 Runtime now include generated models for higher order methods.
+
+## 3.1.0
+
+### Major Analysis Improvements
+
+* The generated .NET 8 runtime models have been updated.
+
+## 3.0.1
+
+No user-facing changes.
+
+## 3.0.0
+
+### Breaking Changes
+
+* C#: Add support for MaD directly on properties and indexers using *attributes*. Using `Attribute.Getter` or `Attribute.Setter` in the model `ext` field applies the model to the getter or setter for properties and indexers. Prior to this change `Attribute` models unintentionally worked for property setters (if the property is decorated with the matching attribute). That is, a model that uses the `Attribute` feature directly on a property for a property setter needs to be changed to `Attribute.Setter`.
+* C#: Remove all CIL tables and related QL library functionality.
+
+### Deprecated APIs
+
+* The class `ThreatModelFlowSource` has been renamed to `ActiveThreatModelSource` to more clearly reflect it only contains the currently active threat model sources. `ThreatModelFlowSource` has been marked as deprecated.
+
+### Minor Analysis Improvements
+
+* `DataFlow::Node` instances are no longer created for library methods and fields that are not callable (either statically or dynamically) or otherwise referred to from source code. This may affect third-party queries that use these nodes to identify library methods or fields that are present in DLL files where those methods or fields are unreferenced. If this presents a problem, consider using `Callable` and other non-dataflow classes to identify such library entities.
+* C#: Add extractor support for attributes on indexers.
+
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted many deprecated taint-tracking configurations based on `TaintTracking::Configuration`. 
+* Deleted many deprecated dataflow configurations based on `DataFlow::Configuration`. 
+* Deleted the deprecated `explorationLimit` predicate from `DataFlow::Configuration`, use `FlowExploration<explorationLimit>` instead.
+
+### Minor Analysis Improvements
+
+* Parameters of public methods in abstract controller-like classes are now considered remote flow sources.
+* The reported location of `partial` methods has been changed from the definition to the implementation part.
+
+## 1.2.0
+
+### New Features
+
+* C# support for `build-mode: none` is now out of beta, and generally available.
+
+## 1.1.0
+
+### Major Analysis Improvements
+
+* Added support for data flow through side-effects on static fields. For example, when a static field containing an array is updated.
+
+### Minor Analysis Improvements
+
+* Added some new `local` source models. Most prominently `System.IO.Path.GetTempPath` and `System.Environment.GetFolderPath`. This might produce more alerts, if the `local` threat model is enabled.
+* The extractor has been changed to not skip source files that have already been seen. This has an impact on source files that are compiled multiple times in the build process. Source files with conditional compilation preprocessor directives (such as `#if`) are now extracted for each set of preprocessor symbols that are used during the build process.
+
+## 1.0.5
+
+No user-facing changes.
+
+## 1.0.4
+
+No user-facing changes.
+
+## 1.0.3
+
+No user-facing changes.
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+No user-facing changes.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+## 0.10.1
+
+No user-facing changes.
+
+## 0.10.0
+
+### Breaking Changes
+
+* Deleted the deprecated `getAssemblyName` predicate from the `Operator` class. Use `getFunctionName` instead.
+* Deleted the deprecated `LShiftOperator`, `RShiftOperator`, `AssignLShiftExpr`, `AssignRShiftExpr`, `LShiftExpr`, and `RShiftExpr` aliases.
+* Deleted the deprecated `getCallableDescription` predicate from the `ExternalApiDataNode` class. Use `hasQualifiedName` instead.
+
+### Minor Analysis Improvements
+
+* Generated .NET Runtime models for properties with both getters and setters have been removed as this is now handled by the data flow library.
+
+## 0.9.1
+
+### Minor Analysis Improvements
+
+* Extracting suppress nullable warning expressions did not work when applied directly to a method call (like `System.Console.Readline()!`). This has been fixed.
+
+## 0.9.0
+
+### Breaking Changes
+
+* The CIL extractor has been deleted and the corresponding extractor option `cil` has been removed. It is no longer possible to do CIL extraction.
+* The QL library C# classes no longer extend their corresponding `DotNet` classes. Furthermore, CIL related data flow functionality has been deleted and all `DotNet` and `CIL` related classes have been deprecated. This effectively means that it no longer has any effect to enable CIL extraction.
+
+### Minor Analysis Improvements
+
+* Added new source models for the `Dapper` package. These models can be enabled by enabling the `database` threat model.
+* Additional models have been added for `System.IO`. These are primarily source models with the `file` threat model, and summaries related to reading from a file or stream.
+* Support for C# 12 / .NET8.
+* Added the `windows-registry` source kind and threat model to represent values which come from the registry on Windows.
+* The models for `System.Net.Http.HttpRequestMessage` have been modified to better model the flow of tainted URIs.
+* The .NET standard libraries APIs for accessing command line arguments and environment variables have been modeled using the `commandargs` and `environment` threat models.
+* The `cs/assembly-path-injection` query has been modified so that it's sources rely on `ThreatModelFlowSource`. In order to restore results from command line arguments, you should enable the `commandargs` threat model.
+* The models for `System.IO.TextReader` have been modified to better model the flow of tainted text from a `TextReader`.
+
+## 0.8.12
+
+No user-facing changes.
+
+## 0.8.11
+
+No user-facing changes.
+
+## 0.8.10
+
+### Major Analysis Improvements
+
+* Improved support for flow through captured variables that properly adheres to inter-procedural control flow.
+* We no longer make use of CodeQL database stats, which may affect join-orders in custom queries. It is therefore recommended to test performance of custom queries after upgrading to this version.
+
+### Minor Analysis Improvements
+
+* C# 12: Add QL library support (`ExperimentalAttribute`) for the experimental attribute.
+* C# 12: Add extractor and QL library support for `ref readonly` parameters.
+* C#: The table `expr_compiler_generated` has been deleted and its content has been added to `compiler_generated`.
+* Data flow via get only properties like `public object Obj { get; }` is now captured by the data flow library.
+
+## 0.8.9
+
+### Minor Analysis Improvements
+
+* C# 12: The QL and data flow library now support primary constructors.
+* Added a new database relation to store key-value pairs corresponding to compilations. The new relation is used in
+buildless mode to surface information related to dependency fetching.
+
+## 0.8.8
+
+### Minor Analysis Improvements
+
+* Added a new database relation to store compiler arguments specified inside `@[...].rsp` file arguments. The arguments
+are returned by `Compilation::getExpandedArgument/1` and `Compilation::getExpandedArguments/0`.
+* C# 12: Added extractor, QL library and data flow support for collection expressions like `[1, y, 4, .. x]`.
+* The C# extractor now accepts an extractor option `logging.verbosity` that specifies the verbosity of the logs. The
+option is added via `codeql database create --language=csharp -Ologging.verbosity=debug ...` or by setting the
+corresponding environment variable `CODEQL_EXTRACTOR_CSHARP_OPTION_LOGGING_VERBOSITY`.
+
+## 0.8.7
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `SSL`, `XML`, `URI`, `SSA` etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `getALocalFlowSucc` predicate and `TaintType` class from the dataflow library.
+* Deleted the deprecated `Newobj` and `Rethrow` classes, use `NewObj` and `ReThrow` instead.
+* Deleted the deprecated `getAFirstRead`, `hasAdjacentReads`, `lastRefBeforeRedef`, and `hasLastInputRef` predicates from the SSA library.
+* Deleted the deprecated `getAReachableRead` predicate from the `AssignableRead` and `VariableRead` classes.
+* Deleted the deprecated `hasQualifiedName` predicate from the `NamedElement` class.
+* C# 12: Add extractor support and QL library support for inline arrays.
+* Fixed a Log forging false positive when logging the value of a nullable simple type. This fix also applies to all other queries that use the simple type sanitizer.
+* The diagnostic query `cs/diagnostics/successfully-extracted-files`, and therefore the Code Scanning UI measure of scanned C# files, now considers any C# file seen during extraction, even one with some errors, to be extracted / scanned.
+* Added a new library `semmle.code.csharp.security.dataflow.flowsources.FlowSources`, which provides a new class `ThreatModelFlowSource`. The `ThreatModelFlowSource` class can be used to include sources which match the current *threat model* configuration.
+* A manual neutral summary model for a callable now blocks all generated summary models for that callable from having any effect.
+* C# 12: Add extractor support for lambda expressions with parameter defaults like `(int x, int y = 1) => ...` and lambda expressions with a `param` parameter like `(params int[] x) => ...)`.
+
+## 0.8.6
+
+### Minor Analysis Improvements
+
+* The `Call::getArgumentForParameter` predicate has been reworked to add support for arguments passed to `params` parameters.
+* The dataflow models for the `System.Text.StringBuilder` class have been reworked. New summaries have been added for `Append` and `AppendLine`. With the changes, we expect queries that use taint tracking to find more results when interpolated strings or `StringBuilder` instances are passed to `Append` or `AppendLine`.
+* Additional support for `Amazon.Lambda` SDK
+
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+No user-facing changes.
+
+## 0.8.3
+
+### Minor Analysis Improvements
+
+* The predicate `UnboundGeneric::getName` now prints the number of type parameters as a `` `N`` suffix, instead of a `<,...,>` suffix. For example, the unbound generic type
+`System.Collections.Generic.IList<T>` is printed as ``IList`1`` instead of `IList<>`.
+* The predicates `hasQualifiedName`, `getQualifiedName`, and `getQualifiedNameWithTypes` have been deprecated, and are instead replaced by `hasFullyQualifiedName`, `getFullyQualifiedName`, and `getFullyQualifiedNameWithTypes`, respectively. The new predicates use the same format for unbound generic types as mentioned above.
+* These changes also affect models-as-data rows that refer to a field or a property belonging to a generic type. For example, instead of writing
+```yml
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+      data:
+        - ["System.Collections.Generic", "Dictionary<TKey,TValue>", False, "Add", "(System.Collections.Generic.KeyValuePair<TKey,TValue>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Key]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key]", "value", "manual"]
+```
+one now writes
+```yml
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+      data:
+        - ["System.Collections.Generic", "Dictionary<TKey,TValue>", False, "Add", "(System.Collections.Generic.KeyValuePair<TKey,TValue>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair`2.Key]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Key]", "value", "manual"]
+```
+* The models-as-data format for types and methods with type parameters has been changed to include the names of the type parameters. For example, instead of writing
+```yml
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+      data:
+        - ["System.Collections.Generic", "IList<>", True, "Insert", "(System.Int32,T)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
+        - ["System.Linq", "Enumerable", False, "Select<,>", "(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,System.Int32,TResult>)", "", "Argument[0].Element", "Argument[1].Parameter[0]", "value", "manual"]
+```
+one now writes
+```yml
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+      data:
+        - ["System.Collections.Generic", "IList<T>", True, "Insert", "(System.Int32,T)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
+        - ["System.Linq", "Enumerable", False, "Select<TSource,TResult>", "(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,System.Int32,TResult>)", "", "Argument[0].Element", "Argument[1].Parameter[0]", "value", "manual"]
+```
+
+## 0.8.2
+
+No user-facing changes.
+
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `isBarrierGuard` predicate from the dataflow library and its uses, use `isBarrier` and the `BarrierGuard` module instead.
+
+## 0.8.0
+
+No user-facing changes.
+
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+### Minor Analysis Improvements
+
+* The `--nostdlib` extractor option for the standalone extractor has been removed.
+
+## 0.7.3
+
+### Minor Analysis Improvements
+
+* The query library for `cs/hardcoded-credentials` now excludes benign properties such as `UserNameClaimType` and `AllowedUserNameCharacters` from `Microsoft.AspNetCore.Identity` options classes.
+
+## 0.7.2
+
+No user-facing changes.
+
+## 0.7.1
+
+### New Features
+
+* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`. 
+  Hence it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
+
+### Minor Analysis Improvements
+
+* Data flow configurations can now include a predicate `neverSkip(Node node)`
+  in order to ensure inclusion of certain nodes in the path explanations. The
+  predicate defaults to the end-points of the additional flow steps provided in
+  the configuration, which means that such steps now always are visible by
+  default in path explanations.
+
+## 0.7.0
+
+### Major Analysis Improvements
+
+* The data flow library now performs type strengthening. This increases precision for all data flow queries by excluding paths that can be inferred to be impossible due to incompatible types.
+
+### Minor Analysis Improvements
+
+* Additional support for `command-injection`, `ldap-injection`, `log-injection`, and `url-redirection` sink kinds for Models as Data.
+
+## 0.6.4
+
+No user-facing changes.
+
+## 0.6.3
+
+### Major Analysis Improvements
+
+* The extractor has been changed to run after the traced compiler call. This allows inspecting compiler generated files, such as the output of source generators. With this change, `.cshtml` files and their generated `.cshtml.g.cs` counterparts are extracted on dotnet 6 and above.
+
+### Minor Analysis Improvements
+
+* C#: Analysis of the `dotnet test` command supplied with a `dll` or `exe` file as argument no longer fails due to the addition of an erroneous `-p:SharedCompilation=false` argument.
+* Deleted the deprecated `WebConfigXML`, `ConfigurationXMLElement`, `LocationXMLElement`, `SystemWebXMLElement`, `SystemWebServerXMLElement`, `CustomErrorsXMLElement`, and `HttpRuntimeXMLElement` classes from `WebConfig.qll`. The non-deprecated names with PascalCased Xml suffixes should be used instead.
+* Deleted the deprecated `Record` class from both `Types.qll` and `Type.qll`.
+* Deleted the deprecated `StructuralComparisonConfiguration` class from `StructuralComparison.qll`, use `sameGvn` instead.
+* Deleted the deprecated `isParameterOf` predicate from the `ParameterNode` class.
+* Deleted the deprecated `SafeExternalAPICallable`, `ExternalAPIDataNode`, `UntrustedDataToExternalAPIConfig`, `UntrustedExternalAPIDataNode`, and `ExternalAPIUsedWithUntrustedData` classes from `ExternalAPIsQuery.qll`. The non-deprecated names with PascalCased Api suffixes should be used instead.
+* Updated the following C# sink kind names. Any custom data extensions that use these sink kinds will need to be updated accordingly in order to continue working.
+  * `code` to `code-injection`
+  * `sql` to `sql-injection`
+  * `html` to `html-injection`
+  * `xss` to `js-injection`
+  * `remote` to `file-content-store`
+
+## 0.6.2
+
+### Minor Analysis Improvements
+
+* The `cs/log-forging`, `cs/cleartext-storage`, and `cs/exposure-of-sensitive-information` queries now correctly handle unsanitized arguments to `ILogger` extension methods.
+* Updated the `neutralModel` extensible predicate to include a `kind` column.
+
+## 0.6.1
+
+No user-facing changes.
+
+## 0.6.0
+
+### Deprecated APIs
+
+* The recently introduced new data flow and taint tracking APIs have had a
+  number of module and predicate renamings. The old APIs remain in place for
+  now.
+
+### Bug Fixes
+
+* Fixed some accidental predicate visibility in the backwards-compatible wrapper for data flow configurations. In particular `DataFlow::hasFlowPath`, `DataFlow::hasFlow`, `DataFlow::hasFlowTo`, and `DataFlow::hasFlowToExpr` were accidentally exposed in a single version.
+
+## 0.5.6
+
+No user-facing changes.
+
 ## 0.5.5
 
 ### New Features

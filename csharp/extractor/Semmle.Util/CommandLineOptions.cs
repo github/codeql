@@ -40,17 +40,14 @@ namespace Semmle.Util
 
     public static class OptionsExtensions
     {
-        private static readonly string[] ExtractorOptions = new[] { "trap_compression", "cil" };
-        private static string? GetExtractorOption(string name) =>
-            Environment.GetEnvironmentVariable($"CODEQL_EXTRACTOR_CSHARP_OPTION_{name.ToUpper()}");
-
+        private static readonly string[] ExtractorOptions = ["trap_compression"];
         private static List<string> GetExtractorOptions()
         {
             var extractorOptions = new List<string>();
 
             foreach (var option in ExtractorOptions)
             {
-                var value = GetExtractorOption(option);
+                var value = EnvironmentVariables.GetExtractorOption(option);
                 if (!string.IsNullOrEmpty(value))
                 {
                     extractorOptions.Add($"--{option}:{value}");

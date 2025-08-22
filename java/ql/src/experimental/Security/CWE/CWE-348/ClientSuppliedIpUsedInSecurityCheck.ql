@@ -12,43 +12,48 @@
  */
 
 import java
-import ClientSuppliedIpUsedInSecurityCheckLib
+import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
-import DataFlow::PathGraph
+import semmle.code.java.security.Sanitizers
+deprecated import ClientSuppliedIpUsedInSecurityCheckLib
+deprecated import ClientSuppliedIpUsedInSecurityCheckFlow::PathGraph
 
 /**
  * Taint-tracking configuration tracing flow from obtaining a client ip from an HTTP header to a sensitive use.
  */
-class ClientSuppliedIpUsedInSecurityCheckConfig extends TaintTracking::Configuration {
-  ClientSuppliedIpUsedInSecurityCheckConfig() { this = "ClientSuppliedIpUsedInSecurityCheckConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
+deprecated module ClientSuppliedIpUsedInSecurityCheckConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source instanceof ClientSuppliedIpUsedInSecurityCheck
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink instanceof ClientSuppliedIpUsedInSecurityCheckSink
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof ClientSuppliedIpUsedInSecurityCheckSink }
 
   /**
    * Splitting a header value by `,` and taking an entry other than the first is sanitizing, because
    * later entries may originate from more-trustworthy intermediate proxies, not the original client.
    */
-  override predicate isSanitizer(DataFlow::Node node) {
-    exists(ArrayAccess aa, MethodAccess ma | aa.getArray() = ma |
+  predicate isBarrier(DataFlow::Node node) {
+    exists(ArrayAccess aa, MethodCall ma | aa.getArray() = ma |
       ma.getQualifier() = node.asExpr() and
       ma.getMethod() instanceof SplitMethod and
       not aa.getIndexExpr().(CompileTimeConstantExpr).getIntValue() = 0
     )
     or
-    node.getType() instanceof PrimitiveType
-    or
-    node.getType() instanceof BoxedType
+    node instanceof SimpleTypeSanitizer
   }
 }
 
-from
-  DataFlow::PathNode source, DataFlow::PathNode sink, ClientSuppliedIpUsedInSecurityCheckConfig conf
-where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "IP address spoofing might include code from $@.",
-  source.getNode(), "this user input"
+deprecated module ClientSuppliedIpUsedInSecurityCheckFlow =
+  TaintTracking::Global<ClientSuppliedIpUsedInSecurityCheckConfig>;
+
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, ClientSuppliedIpUsedInSecurityCheckFlow::PathNode source,
+  ClientSuppliedIpUsedInSecurityCheckFlow::PathNode sink, string message1,
+  DataFlow::Node sourceNode, string message2
+) {
+  ClientSuppliedIpUsedInSecurityCheckFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "IP address spoofing might include code from $@." and
+  sourceNode = source.getNode() and
+  message2 = "this user input"
+}

@@ -1,33 +1,25 @@
 edges
-| re_bad.py:0:0:0:0 | ModuleVariableNode for re_bad.request | re_bad.py:13:22:13:28 | ControlFlowNode for request |
-| re_bad.py:0:0:0:0 | ModuleVariableNode for re_bad.request | re_bad.py:24:22:24:28 | ControlFlowNode for request |
-| re_bad.py:0:0:0:0 | ModuleVariableNode for re_bad.request | re_bad.py:36:22:36:28 | ControlFlowNode for request |
-| re_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | re_bad.py:1:19:1:25 | GSSA Variable request |
-| re_bad.py:1:19:1:25 | GSSA Variable request | re_bad.py:0:0:0:0 | ModuleVariableNode for re_bad.request |
-| re_bad.py:13:22:13:28 | ControlFlowNode for request | re_bad.py:13:22:13:33 | ControlFlowNode for Attribute |
-| re_bad.py:13:22:13:33 | ControlFlowNode for Attribute | re_bad.py:13:22:13:44 | ControlFlowNode for Subscript |
-| re_bad.py:13:22:13:44 | ControlFlowNode for Subscript | re_bad.py:14:15:14:28 | ControlFlowNode for unsafe_pattern |
-| re_bad.py:24:22:24:28 | ControlFlowNode for request | re_bad.py:24:22:24:33 | ControlFlowNode for Attribute |
-| re_bad.py:24:22:24:33 | ControlFlowNode for Attribute | re_bad.py:24:22:24:44 | ControlFlowNode for Subscript |
-| re_bad.py:24:22:24:44 | ControlFlowNode for Subscript | re_bad.py:25:35:25:48 | ControlFlowNode for unsafe_pattern |
-| re_bad.py:36:22:36:28 | ControlFlowNode for request | re_bad.py:36:22:36:33 | ControlFlowNode for Attribute |
-| re_bad.py:36:22:36:33 | ControlFlowNode for Attribute | re_bad.py:36:22:36:44 | ControlFlowNode for Subscript |
-| re_bad.py:36:22:36:44 | ControlFlowNode for Subscript | re_bad.py:37:16:37:29 | ControlFlowNode for unsafe_pattern |
+| re_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | re_bad.py:1:19:1:25 | ControlFlowNode for request | provenance |  |
+| re_bad.py:1:19:1:25 | ControlFlowNode for request | re_bad.py:13:22:13:28 | ControlFlowNode for request | provenance |  |
+| re_bad.py:1:19:1:25 | ControlFlowNode for request | re_bad.py:24:22:24:28 | ControlFlowNode for request | provenance |  |
+| re_bad.py:1:19:1:25 | ControlFlowNode for request | re_bad.py:36:22:36:28 | ControlFlowNode for request | provenance |  |
+| re_bad.py:13:5:13:18 | ControlFlowNode for unsafe_pattern | re_bad.py:14:15:14:28 | ControlFlowNode for unsafe_pattern | provenance |  |
+| re_bad.py:13:22:13:28 | ControlFlowNode for request | re_bad.py:13:5:13:18 | ControlFlowNode for unsafe_pattern | provenance | AdditionalTaintStep |
+| re_bad.py:24:5:24:18 | ControlFlowNode for unsafe_pattern | re_bad.py:25:35:25:48 | ControlFlowNode for unsafe_pattern | provenance |  |
+| re_bad.py:24:22:24:28 | ControlFlowNode for request | re_bad.py:24:5:24:18 | ControlFlowNode for unsafe_pattern | provenance | AdditionalTaintStep |
+| re_bad.py:36:5:36:18 | ControlFlowNode for unsafe_pattern | re_bad.py:37:16:37:29 | ControlFlowNode for unsafe_pattern | provenance |  |
+| re_bad.py:36:22:36:28 | ControlFlowNode for request | re_bad.py:36:5:36:18 | ControlFlowNode for unsafe_pattern | provenance | AdditionalTaintStep |
 nodes
-| re_bad.py:0:0:0:0 | ModuleVariableNode for re_bad.request | semmle.label | ModuleVariableNode for re_bad.request |
 | re_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
-| re_bad.py:1:19:1:25 | GSSA Variable request | semmle.label | GSSA Variable request |
+| re_bad.py:1:19:1:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| re_bad.py:13:5:13:18 | ControlFlowNode for unsafe_pattern | semmle.label | ControlFlowNode for unsafe_pattern |
 | re_bad.py:13:22:13:28 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| re_bad.py:13:22:13:33 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| re_bad.py:13:22:13:44 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | re_bad.py:14:15:14:28 | ControlFlowNode for unsafe_pattern | semmle.label | ControlFlowNode for unsafe_pattern |
+| re_bad.py:24:5:24:18 | ControlFlowNode for unsafe_pattern | semmle.label | ControlFlowNode for unsafe_pattern |
 | re_bad.py:24:22:24:28 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| re_bad.py:24:22:24:33 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| re_bad.py:24:22:24:44 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | re_bad.py:25:35:25:48 | ControlFlowNode for unsafe_pattern | semmle.label | ControlFlowNode for unsafe_pattern |
+| re_bad.py:36:5:36:18 | ControlFlowNode for unsafe_pattern | semmle.label | ControlFlowNode for unsafe_pattern |
 | re_bad.py:36:22:36:28 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| re_bad.py:36:22:36:33 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| re_bad.py:36:22:36:44 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | re_bad.py:37:16:37:29 | ControlFlowNode for unsafe_pattern | semmle.label | ControlFlowNode for unsafe_pattern |
 subpaths
 #select

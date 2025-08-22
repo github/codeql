@@ -8,35 +8,35 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.security.Sanitizers
 import semmle.code.java.security.QueryInjection
 
 /**
  * A taint-tracking configuration for unvalidated user input that is used in SQL queries.
  */
-class QueryInjectionFlowConfig extends TaintTracking::Configuration {
-  QueryInjectionFlowConfig() { this = "SqlInjectionLib::QueryInjectionFlowConfig" }
+module QueryInjectionFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src instanceof ActiveThreatModelSource }
 
-  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
+  predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }
+  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or
-    node.getType() instanceof BoxedType or
-    node.getType() instanceof NumberType
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(AdditionalQueryInjectionTaintStep s).step(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
+
+/** Tracks flow of unvalidated user input that is used in SQL queries. */
+module QueryInjectionFlow = TaintTracking::Global<QueryInjectionFlowConfig>;
 
 /**
  * Implementation of `SqlTainted.ql`. This is extracted to a QLL so that it
  * can be excluded from `SqlConcatenated.ql` to avoid overlapping results.
  */
-predicate queryTaintedBy(
-  QueryInjectionSink query, DataFlow::PathNode source, DataFlow::PathNode sink
+predicate queryIsTaintedBy(
+  QueryInjectionSink query, QueryInjectionFlow::PathNode source, QueryInjectionFlow::PathNode sink
 ) {
-  exists(QueryInjectionFlowConfig conf | conf.hasFlowPath(source, sink) and sink.getNode() = query)
+  QueryInjectionFlow::flowPath(source, sink) and sink.getNode() = query
 }

@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import codeql.ruby.AST
 private import Scope as Scope
 
@@ -11,6 +14,7 @@ private string builtin() {
     ]
 }
 
+overlay[global]
 cached
 private module Cached {
   cached
@@ -21,6 +25,8 @@ private module Cached {
       qName = getAnAssumedGlobalConst()
       or
       qName = namespaceDeclaration(_)
+      or
+      qName = getAnAssumedGlobalNamespacePrefix(_)
     } or
     TUnresolved(Namespace n) { not exists(namespaceDeclaration(n)) }
 
@@ -36,7 +42,12 @@ private module Cached {
       TResolved(container) = resolveConstantReadAccess(n.getScopeExpr()) and
       result = scopeAppend(container, n.getName())
     )
+    or
+    result = getAnAssumedGlobalNamespacePrefix(n)
   }
+
+  cached
+  predicate isBuiltinModule(Module m) { m = TResolved(builtin()) }
 
   cached
   Module getSuperClass(Module cls) {
@@ -208,6 +219,7 @@ private string scopeAppend(string qualifier, string name) {
  * both as a performance optimization (minimize non-linear recursion), and as a way
  * to prevent infinite recursion.
  */
+overlay[global]
 private module ResolveImpl {
   private ModuleBase enclosing(ModuleBase m, int level) {
     result = m and level = 0
@@ -407,9 +419,32 @@ private module ResolveImpl {
    */
   string getAnAssumedGlobalConst() {
     exists(ConstantAccess access |
-      not exists(access.getScopeExpr()) and
       result = access.getName() and
       isToplevel(access)
+    )
+  }
+
+  private ConstantAccess getANamespaceScopeInTopLevel() {
+    result.(Namespace).getEnclosingModule() instanceof Toplevel
+    or
+    result = getANamespaceScopeInTopLevel().getScopeExpr()
+  }
+
+  /**
+   * Gets the syntactical qualified name of the given constant access, which must be a top-level
+   * namespace or scope prefix thereof.
+   *
+   * For example, for `module A::B::C` this gets `A`, `A::B`, and `A::B::C` for the two prefixes
+   * and the module itself, respectively.
+   */
+  string getAnAssumedGlobalNamespacePrefix(ConstantAccess access) {
+    access = getANamespaceScopeInTopLevel() and
+    (
+      not exists(access.getScopeExpr()) and
+      result = access.getName()
+      or
+      result =
+        scopeAppend(getAnAssumedGlobalNamespacePrefix(access.getScopeExpr()), access.getName())
     )
   }
 
@@ -420,6 +455,12 @@ private module ResolveImpl {
     result = [builtin(), getAnAssumedGlobalConst()] and
     name = result and
     container = "Object"
+    or
+    exists(ConstantAccess access |
+      container = getAnAssumedGlobalNamespacePrefix(access.getScopeExpr()) and
+      name = access.getName() and
+      result = getAnAssumedGlobalNamespacePrefix(access)
+    )
   }
 
   pragma[nomagic]
@@ -547,6 +588,7 @@ private ModuleBase enclosingModuleNoBlock(Stmt node) {
   result = enclosingScopesNoBlock(Scope::scopeOfInclSynth(node))
 }
 
+overlay[global]
 private Module getAncestors(Module m) {
   result = m or
   result = getAncestors(m.getAnIncludedModule()) or
@@ -557,6 +599,7 @@ private newtype TMethodOrExpr =
   TMethod(Method m) or
   TExpr(Expr e)
 
+overlay[global]
 private TMethodOrExpr getMethodOrConst(TModule owner, string name) {
   exists(ModuleBase m | m.getModule() = owner |
     result = TMethod(m.getMethod(name))
@@ -565,12 +608,14 @@ private TMethodOrExpr getMethodOrConst(TModule owner, string name) {
   )
 }
 
+overlay[global]
 module ExposedForTestingOnly {
   Method getMethod(TModule owner, string name) { TMethod(result) = getMethodOrConst(owner, name) }
 
   Expr getConst(TModule owner, string name) { TExpr(result) = getMethodOrConst(owner, name) }
 }
 
+overlay[global]
 private TMethodOrExpr lookupMethodOrConst0(Module m, string name) {
   result = lookupMethodOrConst0(m.getAPrependedModule(), name)
   or
@@ -585,6 +630,7 @@ private TMethodOrExpr lookupMethodOrConst0(Module m, string name) {
 
 private AstNode getNode(TMethodOrExpr e) { e = TMethod(result) or e = TExpr(result) }
 
+overlay[global]
 private TMethodOrExpr lookupMethodOrConst(Module m, string name) {
   result = lookupMethodOrConst0(m, name)
   or

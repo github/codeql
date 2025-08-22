@@ -4,6 +4,7 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.Frameworks
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.BarrierGuards
+private import codeql.ruby.frameworks.data.internal.ApiGraphModels
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -13,11 +14,36 @@ private import codeql.ruby.dataflow.BarrierGuards
 module CodeInjection {
   /** Flow states used to distinguish whether an attacker controls the entire string. */
   module FlowState {
-    /** Flow state used for normal tainted data, where an attacker might only control a substring. */
-    DataFlow::FlowState substring() { result = "substring" }
+    private newtype TState =
+      TFull() or
+      TSubString()
 
-    /** Flow state used for data that is entirely controlled by the attacker. */
-    DataFlow::FlowState full() { result = "full" }
+    /** A flow state used to distinguish whether an attacker controls the entire string. */
+    class State extends TState {
+      /**
+       * Gets a string representation of this state.
+       */
+      string toString() { result = this.getStringRepresentation() }
+
+      /**
+       * Gets a canonical string representation of this state.
+       */
+      string getStringRepresentation() {
+        this = TSubString() and result = "substring"
+        or
+        this = TFull() and result = "full"
+      }
+    }
+
+    /**
+     * A flow state used for normal tainted data, where an attacker might only control a substring.
+     */
+    class SubString extends State, TSubString { }
+
+    /**
+     * A flow state used for data that is entirely controlled by the attacker.
+     */
+    class Full extends State, TFull { }
   }
 
   /**
@@ -25,7 +51,9 @@ module CodeInjection {
    */
   abstract class Source extends DataFlow::Node {
     /** Gets a flow state for which this is a source. */
-    DataFlow::FlowState getAFlowState() { result = [FlowState::substring(), FlowState::full()] }
+    FlowState::State getAState() {
+      result instanceof FlowState::SubString or result instanceof FlowState::Full
+    }
   }
 
   /**
@@ -33,7 +61,7 @@ module CodeInjection {
    */
   abstract class Sink extends DataFlow::Node {
     /** Holds if this sink is safe for an attacker that only controls a substring. */
-    DataFlow::FlowState getAFlowState() { result = [FlowState::substring(), FlowState::full()] }
+    FlowState::State getAState() { any() }
   }
 
   /**
@@ -44,15 +72,8 @@ module CodeInjection {
      * Gets a flow state for which this is a sanitizer.
      * Sanitizes all states if the result is empty.
      */
-    DataFlow::FlowState getAFlowState() { none() }
+    FlowState::State getAState() { none() }
   }
-
-  /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for "Code injection" vulnerabilities.
-   */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
    * A source of remote user input, considered as a flow source.
@@ -67,11 +88,10 @@ module CodeInjection {
 
     CodeExecutionAsSink() { this = c.getCode() }
 
-    /** Gets a flow state for which this is a sink. */
-    override DataFlow::FlowState getAFlowState() {
+    override FlowState::State getAState() {
       if c.runsArbitraryCode()
-      then result = [FlowState::substring(), FlowState::full()] // If it runs arbitrary code then it's always vulnerable.
-      else result = FlowState::full() // If it "just" loads something, then it's only vulnerable if the attacker controls the entire string.
+      then any() // If it runs arbitrary code then it's always vulnerable.
+      else result instanceof FlowState::Full // If it "just" loads something, then it's only vulnerable if the attacker controls the entire string.
     }
   }
 
@@ -92,6 +112,10 @@ module CodeInjection {
       )
     }
 
-    override DataFlow::FlowState getAFlowState() { result = FlowState::full() }
+    override FlowState::State getAState() { result instanceof FlowState::Full }
+  }
+
+  private class ExternalCodeInjectionSink extends Sink {
+    ExternalCodeInjectionSink() { this = ModelOutput::getASinkNode("code-injection").asSink() }
   }
 }

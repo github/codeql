@@ -1,20 +1,20 @@
 edges
-| WeakParams.rb:5:28:5:53 | call to request_parameters :  | WeakParams.rb:5:28:5:59 | ...[...] |
-| WeakParams.rb:10:28:10:51 | call to query_parameters :  | WeakParams.rb:10:28:10:57 | ...[...] |
-| WeakParams.rb:15:28:15:39 | call to POST :  | WeakParams.rb:15:28:15:45 | ...[...] |
-| WeakParams.rb:20:28:20:38 | call to GET :  | WeakParams.rb:20:28:20:44 | ...[...] |
+| WeakParams.rb:5:28:5:53 | call to request_parameters | WeakParams.rb:5:28:5:59 | ...[...] | provenance |  |
+| WeakParams.rb:10:28:10:51 | call to query_parameters | WeakParams.rb:10:28:10:57 | ...[...] | provenance |  |
+| WeakParams.rb:15:28:15:39 | call to POST | WeakParams.rb:15:28:15:45 | ...[...] | provenance |  |
+| WeakParams.rb:20:28:20:38 | call to GET | WeakParams.rb:20:28:20:44 | ...[...] | provenance |  |
 nodes
-| WeakParams.rb:5:28:5:53 | call to request_parameters :  | semmle.label | call to request_parameters :  |
+| WeakParams.rb:5:28:5:53 | call to request_parameters | semmle.label | call to request_parameters |
 | WeakParams.rb:5:28:5:59 | ...[...] | semmle.label | ...[...] |
-| WeakParams.rb:10:28:10:51 | call to query_parameters :  | semmle.label | call to query_parameters :  |
+| WeakParams.rb:10:28:10:51 | call to query_parameters | semmle.label | call to query_parameters |
 | WeakParams.rb:10:28:10:57 | ...[...] | semmle.label | ...[...] |
-| WeakParams.rb:15:28:15:39 | call to POST :  | semmle.label | call to POST :  |
+| WeakParams.rb:15:28:15:39 | call to POST | semmle.label | call to POST |
 | WeakParams.rb:15:28:15:45 | ...[...] | semmle.label | ...[...] |
-| WeakParams.rb:20:28:20:38 | call to GET :  | semmle.label | call to GET :  |
+| WeakParams.rb:20:28:20:38 | call to GET | semmle.label | call to GET |
 | WeakParams.rb:20:28:20:44 | ...[...] | semmle.label | ...[...] |
 subpaths
 #select
-| WeakParams.rb:5:28:5:59 | ...[...] | WeakParams.rb:5:28:5:53 | call to request_parameters :  | WeakParams.rb:5:28:5:59 | ...[...] | By exposing all keys in request parameters or by blindy accessing them, unintended parameters could be used and lead to mass-assignment or have other unexpected side-effects. It is safer to follow the 'strong parameters' pattern in Rails, which is outlined here: https://api.rubyonrails.org/classes/ActionController/StrongParameters.html |
-| WeakParams.rb:10:28:10:57 | ...[...] | WeakParams.rb:10:28:10:51 | call to query_parameters :  | WeakParams.rb:10:28:10:57 | ...[...] | By exposing all keys in request parameters or by blindy accessing them, unintended parameters could be used and lead to mass-assignment or have other unexpected side-effects. It is safer to follow the 'strong parameters' pattern in Rails, which is outlined here: https://api.rubyonrails.org/classes/ActionController/StrongParameters.html |
-| WeakParams.rb:15:28:15:45 | ...[...] | WeakParams.rb:15:28:15:39 | call to POST :  | WeakParams.rb:15:28:15:45 | ...[...] | By exposing all keys in request parameters or by blindy accessing them, unintended parameters could be used and lead to mass-assignment or have other unexpected side-effects. It is safer to follow the 'strong parameters' pattern in Rails, which is outlined here: https://api.rubyonrails.org/classes/ActionController/StrongParameters.html |
-| WeakParams.rb:20:28:20:44 | ...[...] | WeakParams.rb:20:28:20:38 | call to GET :  | WeakParams.rb:20:28:20:44 | ...[...] | By exposing all keys in request parameters or by blindy accessing them, unintended parameters could be used and lead to mass-assignment or have other unexpected side-effects. It is safer to follow the 'strong parameters' pattern in Rails, which is outlined here: https://api.rubyonrails.org/classes/ActionController/StrongParameters.html |
+| WeakParams.rb:5:28:5:59 | ...[...] | WeakParams.rb:5:28:5:53 | call to request_parameters | WeakParams.rb:5:28:5:59 | ...[...] | By exposing all keys in request parameters or by blindy accessing them, unintended parameters could be used and lead to mass-assignment or have other unexpected side-effects. It is safer to follow the 'strong parameters' pattern in Rails, which is outlined here: https://api.rubyonrails.org/classes/ActionController/StrongParameters.html |
+| WeakParams.rb:10:28:10:57 | ...[...] | WeakParams.rb:10:28:10:51 | call to query_parameters | WeakParams.rb:10:28:10:57 | ...[...] | By exposing all keys in request parameters or by blindy accessing them, unintended parameters could be used and lead to mass-assignment or have other unexpected side-effects. It is safer to follow the 'strong parameters' pattern in Rails, which is outlined here: https://api.rubyonrails.org/classes/ActionController/StrongParameters.html |
+| WeakParams.rb:15:28:15:45 | ...[...] | WeakParams.rb:15:28:15:39 | call to POST | WeakParams.rb:15:28:15:45 | ...[...] | By exposing all keys in request parameters or by blindy accessing them, unintended parameters could be used and lead to mass-assignment or have other unexpected side-effects. It is safer to follow the 'strong parameters' pattern in Rails, which is outlined here: https://api.rubyonrails.org/classes/ActionController/StrongParameters.html |
+| WeakParams.rb:20:28:20:44 | ...[...] | WeakParams.rb:20:28:20:38 | call to GET | WeakParams.rb:20:28:20:44 | ...[...] | By exposing all keys in request parameters or by blindy accessing them, unintended parameters could be used and lead to mass-assignment or have other unexpected side-effects. It is safer to follow the 'strong parameters' pattern in Rails, which is outlined here: https://api.rubyonrails.org/classes/ActionController/StrongParameters.html |

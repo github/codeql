@@ -1,18 +1,26 @@
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Util;
-using System.Linq;
-using Microsoft.CodeAnalysis.CSharp;
-using Semmle.Extraction.Entities;
-using System.IO;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
     internal class Constructor : Method
     {
+        private readonly List<SyntaxNode> declaringReferenceSyntax;
+
         private Constructor(Context cx, IMethodSymbol init)
-            : base(cx, init) { }
+            : base(cx, init)
+        {
+            declaringReferenceSyntax =
+                Symbol.DeclaringSyntaxReferences
+                    .Select(r => r.GetSyntax())
+                    .ToList();
+        }
 
         public override void Populate(TextWriter trapFile)
         {
@@ -22,6 +30,12 @@ namespace Semmle.Extraction.CSharp.Entities
 
             trapFile.constructors(this, Symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition);
             trapFile.constructor_location(this, Location);
+
+            if (MakeSynthetic)
+            {
+                // Create a synthetic empty body for primary and default constructors.
+                Statements.SyntheticEmptyBlock.Create(Context, this, 0, Location);
+            }
 
             if (Symbol.IsImplicitlyDeclared)
             {
@@ -34,68 +48,79 @@ namespace Semmle.Extraction.CSharp.Entities
         protected override void ExtractInitializers(TextWriter trapFile)
         {
             // Do not extract initializers for constructed types.
-            if (!IsSourceDeclaration)
-                return;
-
-            var syntax = Syntax;
-            var initializer = syntax?.Initializer;
-
-            if (initializer is null)
+            // Extract initializers for constructors with a body, primary constructors
+            // and default constructors for classes and structs declared in source code.
+            if (Block is null && ExpressionBody is null && !MakeSynthetic)
             {
-                if (Symbol.MethodKind is MethodKind.Constructor)
+                return;
+            }
+
+            if (OrdinaryConstructorSyntax?.Initializer is ConstructorInitializerSyntax initializer)
+            {
+                ITypeSymbol initializerType;
+                var initializerInfo = Context.GetSymbolInfo(initializer);
+
+                switch (initializer.Kind())
                 {
-                    var baseType = Symbol.ContainingType.BaseType;
-                    if (baseType is null)
-                    {
-                        if (Symbol.ContainingType.SpecialType != SpecialType.System_Object)
-                        {
-                            Context.ModelError(Symbol, "Unable to resolve base type in implicit constructor initializer");
-                        }
+                    case SyntaxKind.BaseConstructorInitializer:
+                        initializerType = Symbol.ContainingType.BaseType!;
+                        break;
+                    case SyntaxKind.ThisConstructorInitializer:
+                        initializerType = Symbol.ContainingType;
+                        break;
+                    default:
+                        Context.ModelError(initializer, "Unknown initializer");
                         return;
-                    }
-
-                    var baseConstructor = baseType.InstanceConstructors.FirstOrDefault(c => c.Arity is 0);
-
-                    if (baseConstructor is null)
-                    {
-                        Context.ModelError(Symbol, "Unable to resolve implicit constructor initializer call");
-                        return;
-                    }
-
-                    var baseConstructorTarget = Create(Context, baseConstructor);
-                    var info = new ExpressionInfo(Context,
-                        AnnotatedTypeSymbol.CreateNotAnnotated(baseType),
-                        Location,
-                        Kinds.ExprKind.CONSTRUCTOR_INIT,
-                        this,
-                        -1,
-                        isCompilerGenerated: true,
-                        null);
-
-                    trapFile.expr_call(new Expression(info), baseConstructorTarget);
                 }
-                return;
+
+                ExtractSourceInitializer(trapFile, initializerType, (IMethodSymbol?)initializerInfo.Symbol, initializer.ArgumentList, initializer.ThisOrBaseKeyword.GetLocation());
             }
-
-            ITypeSymbol initializerType;
-            var symbolInfo = Context.GetSymbolInfo(initializer);
-
-            switch (initializer.Kind())
+            else if (PrimaryBase is PrimaryConstructorBaseTypeSyntax primaryInitializer)
             {
-                case SyntaxKind.BaseConstructorInitializer:
-                    initializerType = Symbol.ContainingType.BaseType!;
-                    break;
-                case SyntaxKind.ThisConstructorInitializer:
-                    initializerType = Symbol.ContainingType;
-                    break;
-                default:
-                    Context.ModelError(initializer, "Unknown initializer");
-                    return;
-            }
+                var primaryInfo = Context.GetSymbolInfo(primaryInitializer);
+                var primarySymbol = primaryInfo.Symbol;
 
+                ExtractSourceInitializer(trapFile, primarySymbol?.ContainingType, (IMethodSymbol?)primarySymbol, primaryInitializer.ArgumentList, primaryInitializer.GetLocation());
+            }
+            else if (Symbol.MethodKind is MethodKind.Constructor)
+            {
+                var baseType = Symbol.ContainingType.BaseType;
+                if (baseType is null)
+                {
+                    if (Symbol.ContainingType.SpecialType != SpecialType.System_Object)
+                    {
+                        Context.ModelError(Symbol, "Unable to resolve base type in implicit constructor initializer");
+                    }
+                    return;
+                }
+
+                var baseConstructor = baseType.InstanceConstructors.FirstOrDefault(c => c.Arity is 0);
+
+                if (baseConstructor is null)
+                {
+                    Context.ModelError(Symbol, "Unable to resolve implicit constructor initializer call");
+                    return;
+                }
+
+                var baseConstructorTarget = Create(Context, baseConstructor);
+                var info = new ExpressionInfo(Context,
+                    AnnotatedTypeSymbol.CreateNotAnnotated(baseType),
+                    Location,
+                    Kinds.ExprKind.CONSTRUCTOR_INIT,
+                    this,
+                    -1,
+                    isCompilerGenerated: true,
+                    null);
+
+                trapFile.expr_call(new Expression(info), baseConstructorTarget);
+            }
+        }
+
+        private void ExtractSourceInitializer(TextWriter trapFile, ITypeSymbol? type, IMethodSymbol? symbol, ArgumentListSyntax arguments, Microsoft.CodeAnalysis.Location location)
+        {
             var initInfo = new ExpressionInfo(Context,
-                AnnotatedTypeSymbol.CreateNotAnnotated(initializerType),
-                Context.CreateLocation(initializer.ThisOrBaseKeyword.GetLocation()),
+                AnnotatedTypeSymbol.CreateNotAnnotated(type),
+                Context.CreateLocation(location),
                 Kinds.ExprKind.CONSTRUCTOR_INIT,
                 this,
                 -1,
@@ -104,7 +129,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             var init = new Expression(initInfo);
 
-            var target = Constructor.Create(Context, (IMethodSymbol?)symbolInfo.Symbol);
+            var target = Constructor.Create(Context, symbol);
             if (target is null)
             {
                 Context.ModelError(Symbol, "Unable to resolve call");
@@ -113,21 +138,39 @@ namespace Semmle.Extraction.CSharp.Entities
 
             trapFile.expr_call(init, target);
 
-            init.PopulateArguments(trapFile, initializer.ArgumentList, 0);
+            init.PopulateArguments(trapFile, arguments, 0);
         }
 
-        private ConstructorDeclarationSyntax? Syntax
-        {
-            get
-            {
-                return Symbol.DeclaringSyntaxReferences
-                    .Select(r => r.GetSyntax())
-                    .OfType<ConstructorDeclarationSyntax>()
-                    .FirstOrDefault();
-            }
-        }
+        private ConstructorDeclarationSyntax? OrdinaryConstructorSyntax =>
+            declaringReferenceSyntax
+                .OfType<ConstructorDeclarationSyntax>()
+                .FirstOrDefault();
 
-        [return: NotNullIfNotNull("constructor")]
+        private TypeDeclarationSyntax? PrimaryConstructorSyntax =>
+            declaringReferenceSyntax
+                    .OfType<TypeDeclarationSyntax>()
+                    .FirstOrDefault(t => t is ClassDeclarationSyntax or StructDeclarationSyntax or RecordDeclarationSyntax);
+
+        private PrimaryConstructorBaseTypeSyntax? PrimaryBase =>
+            PrimaryConstructorSyntax?
+                .BaseList?
+                .Types
+                .OfType<PrimaryConstructorBaseTypeSyntax>()
+                .FirstOrDefault();
+
+        private bool IsPrimary => PrimaryConstructorSyntax is not null;
+
+        // This is a default constructor in a class or struct declared in source.
+        private bool IsDefault =>
+            Symbol.IsImplicitlyDeclared &&
+            Symbol.ContainingType.FromSource() &&
+            Symbol.ContainingType.TypeKind is TypeKind.Class or TypeKind.Struct &&
+            Symbol.ContainingType.IsSourceDeclaration() &&
+            !Symbol.ContainingType.IsAnonymousType;
+
+        private bool MakeSynthetic => IsPrimary || IsDefault;
+
+        [return: NotNullIfNotNull(nameof(constructor))]
         public static new Constructor? Create(Context cx, IMethodSymbol? constructor)
         {
             if (constructor is null)
@@ -161,19 +204,20 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";constructor");
         }
 
-        private ConstructorDeclarationSyntax? GetSyntax() =>
-            Symbol.DeclaringSyntaxReferences.Select(r => r.GetSyntax()).OfType<ConstructorDeclarationSyntax>().FirstOrDefault();
-
         public override Microsoft.CodeAnalysis.Location? FullLocation => ReportingLocation;
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation
         {
             get
             {
-                var syn = GetSyntax();
-                if (syn is not null)
+                if (OrdinaryConstructorSyntax is not null)
                 {
-                    return syn.Identifier.GetLocation();
+                    return OrdinaryConstructorSyntax.Identifier.GetLocation();
+                }
+
+                if (PrimaryConstructorSyntax is not null)
+                {
+                    return PrimaryConstructorSyntax.Identifier.GetLocation();
                 }
 
                 if (Symbol.IsImplicitlyDeclared)

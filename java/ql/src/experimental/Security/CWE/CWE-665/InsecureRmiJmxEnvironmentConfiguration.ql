@@ -32,12 +32,10 @@ predicate isRmiOrJmxServerCreateMethod(Method method) {
  * `map.put("jmx.remote.rmi.server.credential.types", value)` call
  * to an RMI or JMX initialisation call.
  */
-class SafeFlow extends DataFlow::Configuration {
-  SafeFlow() { this = "MapToPutCredentialstypeConfiguration" }
+module SafeFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { putsCredentialtypesKey(source.asExpr()) }
 
-  override predicate isSource(DataFlow::Node source) { putsCredentialtypesKey(source.asExpr()) }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(Call c |
       isRmiOrJmxServerCreateConstructor(c.getCallee()) or
       isRmiOrJmxServerCreateMethod(c.getCallee())
@@ -71,6 +69,8 @@ class SafeFlow extends DataFlow::Configuration {
   }
 }
 
+module SafeFlow = DataFlow::Global<SafeFlowConfig>;
+
 /** Gets a string describing why the application is vulnerable, depending on if the vulnerability is present due to a) a null environment b) an insecurely set environment map */
 string getRmiResult(Expr e) {
   // We got a Map so we have a source and a sink node
@@ -83,9 +83,10 @@ string getRmiResult(Expr e) {
       "RMI/JMX server initialized with insecure environment $@, which never restricts accepted client objects to 'java.lang.String'. This exposes to deserialization attacks against the RMI authentication method."
 }
 
-from Call c, Expr envArg
-where
+deprecated query predicate problems(Call c, string message1, Expr envArg, string message2) {
   (isRmiOrJmxServerCreateConstructor(c.getCallee()) or isRmiOrJmxServerCreateMethod(c.getCallee())) and
   envArg = c.getArgument(1) and
-  not any(SafeFlow conf).hasFlowToExpr(envArg)
-select c, getRmiResult(envArg), envArg, envArg.toString()
+  not SafeFlow::flowToExpr(envArg) and
+  message1 = getRmiResult(envArg) and
+  message2 = envArg.toString()
+}

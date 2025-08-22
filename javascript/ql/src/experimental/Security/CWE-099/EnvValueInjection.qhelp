@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+	<overview>
+
+		<p>
+			Assigning Value to environment variables from user-controllable data is not safe.
+		</p>
+
+	</overview>
+
+	<recommendation>
+
+		<p>
+			Restrict this operation only to privileged users or only for some not important environment variables.
+		</p>
+
+	</recommendation>
+
+	<example>
+
+		<p>
+			The following example allows unauthorized users to assign a value to a critical environment variable.
+		</p>
+
+		<sample src="examples/Bad_Value_Assignment.js" />
+
+	</example>
+
+	<references>
+		<li><a href="https://huntr.com/bounties/00ec6847-125b-43e9-9658-d3cace1751d6/">Admin account TakeOver in mintplex-labs/anything-llm</a></li>
+	</references>
+
+</qhelp>

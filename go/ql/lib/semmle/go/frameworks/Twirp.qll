@@ -35,83 +35,60 @@ module Twirp {
     }
   }
 
-  /**
-   * A type representing a protobuf message.
-   */
+  /** A type representing a protobuf message. */
   class ProtobufMessageType extends Type {
-    ProtobufMessageType() {
-      exists(TypeEntity te |
-        te.getType() = this and
-        te.getDeclaration().getLocation().getFile() instanceof ProtobufGeneratedFile
-      )
-    }
+    ProtobufMessageType() { this.getLocation().getFile() instanceof ProtobufGeneratedFile }
   }
 
-  /**
-   * An interface type representing a Twirp service.
-   */
+  /** An interface type representing a Twirp service. */
   class ServiceInterfaceType extends InterfaceType {
-    NamedType namedType;
+    DefinedType definedType;
 
     ServiceInterfaceType() {
-      exists(TypeEntity te |
-        te.getType() = namedType and
-        namedType.getUnderlyingType() = this and
-        te.getDeclaration().getLocation().getFile() instanceof ServicesGeneratedFile
-      )
+      definedType.getUnderlyingType() = this and
+      definedType.getLocation().getFile() instanceof ServicesGeneratedFile
     }
 
-    /**
-     * Gets the name of the interface.
-     */
-    override string getName() { result = namedType.getName() }
+    /** Gets the name of the interface. */
+    override string getName() { result = definedType.getName() }
 
-    /**
-     * Gets the named type on top of this interface type.
-     */
-    NamedType getNamedType() { result = namedType }
+    /** DEPRECATED: Use `getDefinedType` instead. */
+    deprecated DefinedType getNamedType() { result = this.getDefinedType() }
+
+    /** Gets the defined type on top of this interface type. */
+    DefinedType getDefinedType() { result = definedType }
   }
 
-  /**
-   * A Twirp client.
-   */
-  class ServiceClientType extends NamedType {
+  /** A Twirp client. */
+  class ServiceClientType extends DefinedType {
     ServiceClientType() {
-      exists(ServiceInterfaceType i, PointerType p, TypeEntity te |
+      exists(ServiceInterfaceType i, PointerType p |
         p.implements(i) and
         this = p.getBaseType() and
         this.getName().regexpMatch("(?i)" + i.getName() + "(protobuf|json)client") and
-        te.getType() = this and
-        te.getDeclaration().getLocation().getFile() instanceof ServicesGeneratedFile
+        this.getLocation().getFile() instanceof ServicesGeneratedFile
       )
     }
   }
 
-  /**
-   * A Twirp server.
-   */
-  class ServiceServerType extends NamedType {
+  /** A Twirp server. */
+  class ServiceServerType extends DefinedType {
     ServiceServerType() {
-      exists(ServiceInterfaceType i, TypeEntity te |
+      exists(ServiceInterfaceType i |
         this.implements(i) and
         this.getName().regexpMatch("(?i)" + i.getName() + "server") and
-        te.getType() = this and
-        te.getDeclaration().getLocation().getFile() instanceof ServicesGeneratedFile
+        this.getLocation().getFile() instanceof ServicesGeneratedFile
       )
     }
   }
 
-  /**
-   * A Twirp function to construct a Client.
-   */
+  /** A Twirp function to construct a Client. */
   class ClientConstructor extends Function {
     ClientConstructor() {
-      exists(ServiceClientType c |
-        this.getName().regexpMatch("(?i)new" + c.getName()) and
-        this.getParameterType(0) instanceof StringType and
-        this.getParameterType(1).getName() = "HTTPClient" and
-        this.getDeclaration().getLocation().getFile() instanceof ServicesGeneratedFile
-      )
+      this.getName().regexpMatch("(?i)new" + any(ServiceClientType c).getName()) and
+      this.getParameterType(0) instanceof StringType and
+      this.getParameterType(1).getName() = "HTTPClient" and
+      this.getLocation().getFile() instanceof ServicesGeneratedFile
     }
   }
 
@@ -122,17 +99,13 @@ module Twirp {
    */
   class ServerConstructor extends Function {
     ServerConstructor() {
-      exists(ServiceServerType c, ServiceInterfaceType i |
-        this.getName().regexpMatch("(?i)new" + c.getName()) and
-        this.getParameterType(0) = i.getNamedType() and
-        this.getDeclaration().getLocation().getFile() instanceof ServicesGeneratedFile
-      )
+      this.getName().regexpMatch("(?i)new" + any(ServiceServerType c).getName()) and
+      this.getParameterType(0) = any(ServiceInterfaceType i).getDefinedType() and
+      this.getLocation().getFile() instanceof ServicesGeneratedFile
     }
   }
 
-  /**
-   * An SSRF sink for the Client constructor.
-   */
+  /** An SSRF sink for the Client constructor. */
   class ClientRequestUrlAsSink extends RequestForgery::Sink {
     ClientRequestUrlAsSink() {
       exists(DataFlow::CallNode call |
@@ -146,27 +119,28 @@ module Twirp {
     override string getKind() { result = "URL" }
   }
 
-  /**
-   * A service handler.
-   */
+  bindingset[m]
+  pragma[inline_late]
+  private predicate implementsServiceType(Method m) {
+    m.implements(any(ServiceInterfaceType i).getDefinedType().getMethod(_))
+  }
+
+  /** A service handler. */
   class ServiceHandler extends Method {
     ServiceHandler() {
-      exists(DataFlow::CallNode call, Type handlerType, ServiceInterfaceType i |
+      exists(DataFlow::CallNode call |
         call.getTarget() instanceof ServerConstructor and
-        call.getArgument(0).getType() = handlerType and
-        this = handlerType.getMethod(_) and
-        this.implements(i.getNamedType().getMethod(_))
+        this = call.getArgument(0).getType().getMethod(_) and
+        implementsServiceType(this)
       )
     }
   }
 
-  /**
-   * A request coming to the service handler.
-   */
-  class Request extends UntrustedFlowSource::Range instanceof DataFlow::ParameterNode {
+  /** A request coming to the service handler. */
+  class Request extends RemoteFlowSource::Range instanceof DataFlow::ParameterNode {
     Request() {
-      exists(Callable c, ServiceHandler handler | c.asFunction() = handler |
-        this.isParameterOf(c, 1) and
+      exists(ServiceHandler handler |
+        this.asParameter().isParameterOf(handler.getFuncDecl(), 1) and
         handler.getParameterType(0).hasQualifiedName("context", "Context") and
         this.getType().(PointerType).getBaseType() instanceof ProtobufMessageType
       )

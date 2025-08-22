@@ -1,6 +1,10 @@
+overlay[local]
+module;
+
 private import codeql.ruby.AST
 private import internal.AST
 private import internal.Call
+private import internal.Literal
 private import internal.TreeSitter
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
 private import codeql.ruby.dataflow.internal.DataFlowImplCommon
@@ -41,7 +45,7 @@ class Call extends Expr instanceof CallImpl {
   final Expr getKeywordArgument(string keyword) {
     exists(Pair p |
       p = this.getAnArgument() and
-      p.getKey().getConstantValue().isSymbol(keyword) and
+      keyword = p.getKey().(SymbolLiteral).(StringlikeLiteralImpl).getStringValue() and
       result = p.getValue()
     )
   }
@@ -52,13 +56,14 @@ class Call extends Expr instanceof CallImpl {
   final int getNumberOfArguments() { result = super.getNumberOfArgumentsImpl() }
 
   /** Gets a potential target of this call, if any. */
+  overlay[global]
   final Callable getATarget() {
     exists(DataFlowCall c |
       this = c.asCall().getExpr() and
       TCfgScope(result) = viableCallableLambda(c, _)
     )
     or
-    result = getTarget(this.getAControlFlowNode())
+    result = getTarget(TNormalCall(this.getAControlFlowNode()))
   }
 
   override AstNode getAChild(string pred) {
@@ -118,6 +123,17 @@ class MethodCall extends Call instanceof MethodCallImpl {
   final Block getBlock() { result = super.getBlockImpl() }
 
   /**
+   * Gets the block argument of this method call, if any.
+   * ```rb
+   * foo(&block)
+   * ```
+   */
+  final BlockArgument getBlockArgument() { result = this.getAnArgument() }
+
+  /** Holds if this method call has a block or block argument. */
+  final predicate hasBlock() { exists(this.getBlock()) or exists(this.getBlockArgument()) }
+
+  /**
    * Holds if the safe navigation operator (`&.`) is used in this call.
    * ```rb
    * foo&.empty?
@@ -142,6 +158,7 @@ class MethodCall extends Call instanceof MethodCallImpl {
  * TODO: When API Graphs is able to resolve calls to methods like `Kernel.send`
  * this class is no longer necessary and should be removed.
  */
+overlay[global]
 class UnknownMethodCall extends MethodCall {
   UnknownMethodCall() { not exists(this.(Call).getATarget()) }
 }

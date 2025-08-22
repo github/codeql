@@ -1,21 +1,16 @@
+#select
+| Test.cs:17:46:17:54 | access to property Text | Test.cs:17:46:17:49 | access to parameter data : TextBox | Test.cs:17:46:17:54 | access to property Text | $@ flows to unsafe deserializer. | Test.cs:17:46:17:49 | access to parameter data : TextBox | User-provided data |
 edges
-| ../../../../resources/stubs/Newtonsoft.Json/13.0.1/Newtonsoft.Json.cs:930:20:930:20 | 4 : Int32 | Test.cs:19:32:19:52 | access to constant Auto : Int32 |
-| Test.cs:9:46:9:49 | access to parameter data : TextBox | Test.cs:9:46:9:54 | access to property Text |
-| Test.cs:17:46:17:49 | access to parameter data : TextBox | Test.cs:17:46:17:54 | access to property Text |
-| Test.cs:19:32:19:52 | access to constant Auto : Int32 | Test.cs:17:57:20:9 | object creation of type JsonSerializerSettings |
-| Test.cs:19:32:19:52 | access to constant Auto : TypeNameHandling | Test.cs:17:57:20:9 | object creation of type JsonSerializerSettings |
-| Test.cs:25:46:25:49 | access to parameter data : TextBox | Test.cs:25:46:25:54 | access to property Text |
+| Test.cs:9:46:9:49 | access to parameter data : TextBox | Test.cs:9:46:9:54 | access to property Text | provenance | MaD:1 |
+| Test.cs:17:46:17:49 | access to parameter data : TextBox | Test.cs:17:46:17:54 | access to property Text | provenance | MaD:1 |
+| Test.cs:25:46:25:49 | access to parameter data : TextBox | Test.cs:25:46:25:54 | access to property Text | provenance | MaD:1 |
+models
+| 1 | Summary: System.Web.UI.WebControls; TextBox; false; get_Text; (); ; Argument[this]; ReturnValue; taint; manual |
 nodes
-| ../../../../resources/stubs/Newtonsoft.Json/13.0.1/Newtonsoft.Json.cs:930:20:930:20 | 4 : Int32 | semmle.label | 4 : Int32 |
 | Test.cs:9:46:9:49 | access to parameter data : TextBox | semmle.label | access to parameter data : TextBox |
 | Test.cs:9:46:9:54 | access to property Text | semmle.label | access to property Text |
 | Test.cs:17:46:17:49 | access to parameter data : TextBox | semmle.label | access to parameter data : TextBox |
 | Test.cs:17:46:17:54 | access to property Text | semmle.label | access to property Text |
-| Test.cs:17:57:20:9 | object creation of type JsonSerializerSettings | semmle.label | object creation of type JsonSerializerSettings |
-| Test.cs:19:32:19:52 | access to constant Auto : Int32 | semmle.label | access to constant Auto : Int32 |
-| Test.cs:19:32:19:52 | access to constant Auto : TypeNameHandling | semmle.label | access to constant Auto : TypeNameHandling |
 | Test.cs:25:46:25:49 | access to parameter data : TextBox | semmle.label | access to parameter data : TextBox |
 | Test.cs:25:46:25:54 | access to property Text | semmle.label | access to property Text |
 subpaths
-#select
-| Test.cs:17:46:17:54 | access to property Text | Test.cs:17:46:17:49 | access to parameter data : TextBox | Test.cs:17:46:17:54 | access to property Text | $@ flows to unsafe deserializer. | Test.cs:17:46:17:49 | access to parameter data : TextBox | User-provided data |

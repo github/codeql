@@ -12,10 +12,17 @@
  */
 
 import java
-import InsecureDexLoading
-import DataFlow::PathGraph
+import semmle.code.java.dataflow.DataFlow
+deprecated import InsecureDexLoading
+deprecated import InsecureDexFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, InsecureDexConfiguration conf
-where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Potential arbitrary code execution due to $@.",
-  source.getNode(), "a value loaded from a world-writable source."
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, InsecureDexFlow::PathNode source, InsecureDexFlow::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
+  InsecureDexFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "Potential arbitrary code execution due to $@." and
+  sourceNode = source.getNode() and
+  message2 = "a value loaded from a world-writable source."
+}

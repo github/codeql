@@ -11,22 +11,16 @@
  */
 
 import csharp
-import DataFlow::PathGraph
 import experimental.code.csharp.Cryptography.NonCryptographicHashes
+import DataFlowFromMethodToHash::PathGraph
 
-class DataFlowFromMethodToHash extends TaintTracking::Configuration {
-  DataFlowFromMethodToHash() { this = "DataFlowFromMethodNameToHashFunction" }
+module DataFlowFromMethodToHashConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { isSuspiciousPropertyName(source.asExpr()) }
 
-  /**
-   * Holds if `source` is a relevant data flow source.
-   */
-  override predicate isSource(DataFlow::Node source) { isSuspiciousPropertyName(source.asExpr()) }
-
-  /**
-   * Holds if `sink` is a relevant data flow sink.
-   */
-  override predicate isSink(DataFlow::Node sink) { isGetHash(sink.asExpr()) }
+  predicate isSink(DataFlow::Node sink) { isGetHash(sink.asExpr()) }
 }
+
+module DataFlowFromMethodToHash = TaintTracking::Global<DataFlowFromMethodToHashConfig>;
 
 predicate isGetHash(Expr arg) {
   exists(MethodCall mc |
@@ -45,11 +39,18 @@ predicate isGetHash(Expr arg) {
 }
 
 predicate isSuspiciousPropertyName(PropertyRead pr) {
-  pr.getTarget().hasQualifiedName("System.Diagnostics", "Process", "ProcessName")
+  pr.getTarget().hasFullyQualifiedName("System.Diagnostics", "Process", "ProcessName")
 }
 
-from DataFlow::PathNode src, DataFlow::PathNode sink, DataFlowFromMethodToHash conf
-where conf.hasFlow(src.getNode(), sink.getNode())
-select src.getNode(), src, sink,
-  "The hash is calculated on $@, may be related to a backdoor. Please review the code for possible malicious intent.",
-  sink.getNode(), "this process name"
+deprecated query predicate problems(
+  DataFlow::Node srcNode, DataFlowFromMethodToHash::PathNode src,
+  DataFlowFromMethodToHash::PathNode sink, string message, DataFlow::Node sinkNode,
+  string sinkMessage
+) {
+  srcNode = src.getNode() and
+  sinkNode = sink.getNode() and
+  DataFlowFromMethodToHash::flow(srcNode, sinkNode) and
+  message =
+    "The hash is calculated on $@, may be related to a backdoor. Please review the code for possible malicious intent." and
+  sinkMessage = "this process name"
+}

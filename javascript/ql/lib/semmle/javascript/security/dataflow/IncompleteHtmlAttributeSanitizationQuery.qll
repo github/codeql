@@ -9,8 +9,9 @@
 
 import javascript
 import IncompleteHtmlAttributeSanitizationCustomizations::IncompleteHtmlAttributeSanitization
+private import IncompleteHtmlAttributeSanitizationCustomizations::IncompleteHtmlAttributeSanitization as IncompleteHtmlAttributeSanitization
 
-private module Label {
+deprecated private module Label {
   class Quote extends DataFlow::FlowLabel {
     Quote() { this = ["\"", "'"] }
   }
@@ -25,7 +26,36 @@ private module Label {
 /**
  * A taint-tracking configuration for reasoning about incomplete HTML sanitization vulnerabilities.
  */
-class Configuration extends TaintTracking::Configuration {
+module IncompleteHtmlAttributeSanitizationConfig implements DataFlow::StateConfigSig {
+  class FlowState = IncompleteHtmlAttributeSanitization::FlowState;
+
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    state = FlowState::character(source.(Source).getAnUnsanitizedCharacter())
+  }
+
+  predicate isSink(DataFlow::Node sink, FlowState state) {
+    state = FlowState::character(sink.(Sink).getADangerousCharacter())
+  }
+
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
+    state = FlowState::character(node.(StringReplaceCall).getAReplacedString())
+  }
+
+  predicate isBarrier(DataFlow::Node n) { n instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+}
+
+/**
+ * Taint-tracking for reasoning about incomplete HTML sanitization vulnerabilities.
+ */
+module IncompleteHtmlAttributeSanitizationFlow =
+  TaintTracking::GlobalWithState<IncompleteHtmlAttributeSanitizationConfig>;
+
+/**
+ * DEPRECATED. Use the `IncompleteHtmlAttributeSanitizationFlow` module instead.
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "IncompleteHtmlAttributeSanitization" }
 
   override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
@@ -45,7 +75,7 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isLabeledBarrier(DataFlow::Node node, DataFlow::FlowLabel lbl) {
     lbl = Label::characterToLabel(node.(StringReplaceCall).getAReplacedString()) or
-    isSanitizer(node)
+    this.isSanitizer(node)
   }
 
   override predicate isSanitizer(DataFlow::Node n) {

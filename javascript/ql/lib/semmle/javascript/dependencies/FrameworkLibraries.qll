@@ -137,13 +137,7 @@ abstract class FrameworkLibraryWithUrlRegex extends FrameworkLibrary {
    * the version number.
    */
   abstract string getAUrlRegex();
-
-  /** DEPRECATED: Alias for getAUrlRegex */
-  deprecated string getAURLRegex() { result = this.getAUrlRegex() }
 }
-
-/** DEPRECATED: Alias for FrameworkLibraryWithUrlRegex */
-deprecated class FrameworkLibraryWithURLRegex = FrameworkLibraryWithUrlRegex;
 
 /**
  * A framework library that is referenced by URLs containing the name
@@ -175,13 +169,7 @@ abstract class FrameworkLibraryWithGenericUrl extends FrameworkLibraryWithUrlReg
           "\\.js"
     )
   }
-
-  /** DEPRECATED: Alias for getAUrlRegex */
-  deprecated override string getAURLRegex() { result = this.getAUrlRegex() }
 }
-
-/** DEPRECATED: Alias for FrameworkLibraryWithGenericUrl */
-deprecated class FrameworkLibraryWithGenericURL = FrameworkLibraryWithGenericUrl;
 
 /**
  * Gets a regular expression identifying suffixes that are commonly appended
@@ -281,9 +269,6 @@ class FrameworkLibraryReferenceWithUrl extends FrameworkLibraryReference {
 
   override predicate info(FrameworkLibrary fl, string v) { matchUrl(this, fl, v) }
 }
-
-/** DEPRECATED: Alias for FrameworkLibraryReferenceWithUrl */
-deprecated class FrameworkLibraryReferenceWithURL = FrameworkLibraryReferenceWithUrl;
 
 /**
  * Holds if the value of `src` attribute `attr` matches the URL pattern of library
@@ -953,9 +938,6 @@ private class ApplicationInsights extends FrameworkLibraryWithUrlRegex {
   ApplicationInsights() { this = "ApplicationInsights" }
 
   override string getAUrlRegex() { result = ".*(?:^|/)ai\\.(" + semverRegex() + ")-build\\d+\\.js" }
-
-  /** DEPRECATED: Alias for getAUrlRegex */
-  deprecated override string getAURLRegex() { result = this.getAUrlRegex() }
 }
 
 /**
@@ -974,9 +956,6 @@ private class TwitterTextClassic extends FrameworkLibraryWithUrlRegex {
   TwitterTextClassic() { this = "twitter-text" }
 
   override string getAUrlRegex() { result = ".*(?:^|/)twitter_text" + variantRegex() + "\\.js" }
-
-  /** DEPRECATED: Alias for getAUrlRegex */
-  deprecated override string getAURLRegex() { result = this.getAUrlRegex() }
 }
 
 /**

@@ -7,7 +7,7 @@ query predicate test() { foo() }
 class Foo extends AstNode {
   predicate bar() { none() }
 
-  predicate baz() { bar() }
+  predicate baz() { this.bar() }
 }
 
 class Sub extends Foo {

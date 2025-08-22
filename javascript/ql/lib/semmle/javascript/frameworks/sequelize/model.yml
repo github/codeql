@@ -1,17 +1,17 @@
 extensions:
-  - addsTo: 
+  - addsTo:
       pack: codeql/javascript-all
       extensible: sinkModel
     data:
       - [sequelize.Sequelize, "Member[query].Argument[0].Member[query]", "sql-injection"]
       - [sequelize.Sequelize, "Member[query].Argument[0]", "sql-injection"]
       - [sequelize.SequelizeStaticAndInstance, "Member[asIs,literal].Argument[0]", "sql-injection"]
-      - [sequelize, "Argument[0..].Member[password]", "credentials[password]"]
-      - [sequelize, "Argument[0..].Member[username]", "credentials[username]"]
-      - [sequelize, "Argument[1]", "credentials[username]"]
-      - [sequelize, "Argument[2]", "credentials[password]"]
+      - [sequelize, "Argument[0..].Member[password]", "credentials-password"]
+      - [sequelize, "Argument[0..].Member[username]", "credentials-username"]
+      - [sequelize, "Argument[1]", "credentials-username"]
+      - [sequelize, "Argument[2]", "credentials-password"]
 
-  - addsTo: 
+  - addsTo:
       pack: codeql/javascript-all
       extensible: typeModel
     data:
@@ -264,7 +264,7 @@ extensions:
       - [sequelize.ThroughOptions, sequelize.AssociationOptionsBelongsToMany, "Member[through]"]
       - [sequelize.Utils, sequelize.SequelizeStaticAndInstance, "Member[Utils]"]
 
-  - addsTo: 
+  - addsTo:
       pack: codeql/javascript-all
       extensible: summaryModel
     data:
@@ -274,7 +274,7 @@ extensions:
       - [sequelize.Model, "", "", "Member[schema,scope,unscoped].ReturnValue", type]
       - [sequelize.Model, "", "", "Member[sync].ReturnValue.Awaited", type]
 
-  - addsTo: 
+  - addsTo:
       pack: codeql/javascript-all
       extensible: typeVariableModel
     data:

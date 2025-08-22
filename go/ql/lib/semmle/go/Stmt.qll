@@ -69,9 +69,9 @@ class BadStmt extends @badstmt, Stmt {
  */
 class DeclStmt extends @declstmt, Stmt, DeclParent {
   /** Gets the declaration in this statement. */
-  Decl getDecl() { result = getDecl(0) }
+  Decl getDecl() { result = this.getDecl(0) }
 
-  override predicate mayHaveSideEffects() { getDecl().mayHaveSideEffects() }
+  override predicate mayHaveSideEffects() { this.getDecl().mayHaveSideEffects() }
 
   override string toString() { result = "declaration statement" }
 
@@ -104,15 +104,15 @@ class EmptyStmt extends @emptystmt, Stmt {
  */
 class LabeledStmt extends @labeledstmt, Stmt {
   /** Gets the identifier representing the label. */
-  Ident getLabelExpr() { result = getChildExpr(0) }
+  Ident getLabelExpr() { result = this.getChildExpr(0) }
 
   /** Gets the label. */
-  string getLabel() { result = getLabelExpr().getName() }
+  string getLabel() { result = this.getLabelExpr().getName() }
 
   /** Gets the statement that is being labeled. */
-  Stmt getStmt() { result = getChildStmt(1) }
+  Stmt getStmt() { result = this.getChildStmt(1) }
 
-  override predicate mayHaveSideEffects() { getStmt().mayHaveSideEffects() }
+  override predicate mayHaveSideEffects() { this.getStmt().mayHaveSideEffects() }
 
   override string toString() { result = "labeled statement" }
 
@@ -133,9 +133,9 @@ class LabeledStmt extends @labeledstmt, Stmt {
  */
 class ExprStmt extends @exprstmt, Stmt {
   /** Gets the expression. */
-  Expr getExpr() { result = getChildExpr(0) }
+  Expr getExpr() { result = this.getChildExpr(0) }
 
-  override predicate mayHaveSideEffects() { getExpr().mayHaveSideEffects() }
+  override predicate mayHaveSideEffects() { this.getExpr().mayHaveSideEffects() }
 
   override string toString() { result = "expression statement" }
 
@@ -153,10 +153,10 @@ class ExprStmt extends @exprstmt, Stmt {
  */
 class SendStmt extends @sendstmt, Stmt {
   /** Gets the expression representing the channel. */
-  Expr getChannel() { result = getChildExpr(0) }
+  Expr getChannel() { result = this.getChildExpr(0) }
 
   /** Gets the expression representing the value being sent. */
-  Expr getValue() { result = getChildExpr(1) }
+  Expr getValue() { result = this.getChildExpr(1) }
 
   override predicate mayHaveSideEffects() { any() }
 
@@ -177,7 +177,7 @@ class SendStmt extends @sendstmt, Stmt {
  */
 class IncDecStmt extends @incdecstmt, Stmt {
   /** Gets the expression being incremented or decremented. */
-  Expr getOperand() { result = getChildExpr(0) }
+  Expr getOperand() { result = this.getChildExpr(0) }
 
   /** Gets the increment or decrement operator. */
   string getOperator() { none() }
@@ -236,42 +236,44 @@ class Assignment extends @assignment, Stmt {
   /** Gets the `i`th left-hand side of this assignment (0-based). */
   Expr getLhs(int i) {
     i >= 0 and
-    result = getChildExpr(-(i + 1))
+    result = this.getChildExpr(-(i + 1))
   }
 
   /** Gets a left-hand side of this assignment. */
-  Expr getAnLhs() { result = getLhs(_) }
+  Expr getAnLhs() { result = this.getLhs(_) }
 
   /** Gets the number of left-hand sides of this assignment. */
-  int getNumLhs() { result = count(getAnLhs()) }
+  int getNumLhs() { result = count(this.getAnLhs()) }
 
   /** Gets the unique left-hand side of this assignment, if there is only one. */
-  Expr getLhs() { getNumLhs() = 1 and result = getLhs(0) }
+  Expr getLhs() { this.getNumLhs() = 1 and result = this.getLhs(0) }
 
   /** Gets the `i`th right-hand side of this assignment (0-based). */
   Expr getRhs(int i) {
     i >= 0 and
-    result = getChildExpr(i + 1)
+    result = this.getChildExpr(i + 1)
   }
 
   /** Gets a right-hand side of this assignment. */
-  Expr getAnRhs() { result = getRhs(_) }
+  Expr getAnRhs() { result = this.getRhs(_) }
 
   /** Gets the number of right-hand sides of this assignment. */
-  int getNumRhs() { result = count(getAnRhs()) }
+  int getNumRhs() { result = count(this.getAnRhs()) }
 
   /** Gets the unique right-hand side of this assignment, if there is only one. */
-  Expr getRhs() { getNumRhs() = 1 and result = getRhs(0) }
+  Expr getRhs() { this.getNumRhs() = 1 and result = this.getRhs(0) }
 
   /** Holds if this assignment assigns `rhs` to `lhs`. */
-  predicate assigns(Expr lhs, Expr rhs) { exists(int i | lhs = getLhs(i) and rhs = getRhs(i)) }
+  predicate assigns(Expr lhs, Expr rhs) {
+    exists(int i | lhs = this.getLhs(i) and rhs = this.getRhs(i))
+  }
 
   /** Gets the assignment operator in this statement. */
   string getOperator() { none() }
 
   override predicate mayHaveSideEffects() { any() }
 
-  override string toString() { result = "... " + getOperator() + " ..." }
+  override string toString() { result = "... " + this.getOperator() + " ..." }
 }
 
 /**
@@ -518,9 +520,9 @@ class AndNotAssignStmt extends @andnotassignstmt, CompoundAssignStmt {
  */
 class GoStmt extends @gostmt, Stmt {
   /** Gets the call. */
-  CallExpr getCall() { result = getChildExpr(0) }
+  CallExpr getCall() { result = this.getChildExpr(0) }
 
-  override predicate mayHaveSideEffects() { getCall().mayHaveSideEffects() }
+  override predicate mayHaveSideEffects() { this.getCall().mayHaveSideEffects() }
 
   override string toString() { result = "go statement" }
 
@@ -538,9 +540,9 @@ class GoStmt extends @gostmt, Stmt {
  */
 class DeferStmt extends @deferstmt, Stmt {
   /** Gets the call being deferred. */
-  CallExpr getCall() { result = getChildExpr(0) }
+  CallExpr getCall() { result = this.getChildExpr(0) }
 
-  override predicate mayHaveSideEffects() { getCall().mayHaveSideEffects() }
+  override predicate mayHaveSideEffects() { this.getCall().mayHaveSideEffects() }
 
   override string toString() { result = "defer statement" }
 
@@ -558,18 +560,18 @@ class DeferStmt extends @deferstmt, Stmt {
  */
 class ReturnStmt extends @returnstmt, Stmt {
   /** Gets the `i`th returned expression (0-based) */
-  Expr getExpr(int i) { result = getChildExpr(i) }
+  Expr getExpr(int i) { result = this.getChildExpr(i) }
 
   /** Gets a returned expression. */
-  Expr getAnExpr() { result = getExpr(_) }
+  Expr getAnExpr() { result = this.getExpr(_) }
 
   /** Gets the number of returned expressions. */
-  int getNumExpr() { result = count(getAnExpr()) }
+  int getNumExpr() { result = count(this.getAnExpr()) }
 
   /** Gets the unique returned expression, if there is only one. */
-  Expr getExpr() { getNumChild() = 1 and result = getExpr(0) }
+  Expr getExpr() { this.getNumChild() = 1 and result = this.getExpr(0) }
 
-  override predicate mayHaveSideEffects() { getAnExpr().mayHaveSideEffects() }
+  override predicate mayHaveSideEffects() { this.getAnExpr().mayHaveSideEffects() }
 
   override string toString() { result = "return statement" }
 
@@ -592,10 +594,10 @@ class ReturnStmt extends @returnstmt, Stmt {
  */
 class BranchStmt extends @branchstmt, Stmt {
   /** Gets the expression denoting the target label of the branch, if any. */
-  Ident getLabelExpr() { result = getChildExpr(0) }
+  Ident getLabelExpr() { result = this.getChildExpr(0) }
 
   /** Gets the target label of the branch, if any. */
-  string getLabel() { result = getLabelExpr().getName() }
+  string getLabel() { result = this.getLabelExpr().getName() }
 }
 
 /**
@@ -674,15 +676,15 @@ class FallthroughStmt extends @fallthroughstmt, BranchStmt {
  */
 class BlockStmt extends @blockstmt, Stmt, ScopeNode {
   /** Gets the `i`th statement in this block (0-based). */
-  Stmt getStmt(int i) { result = getChildStmt(i) }
+  Stmt getStmt(int i) { result = this.getChildStmt(i) }
 
   /** Gets a statement in this block. */
-  Stmt getAStmt() { result = getAChildStmt() }
+  Stmt getAStmt() { result = this.getAChildStmt() }
 
   /** Gets the number of statements in this block. */
-  int getNumStmt() { result = getNumChildStmt() }
+  int getNumStmt() { result = this.getNumChildStmt() }
 
-  override predicate mayHaveSideEffects() { getAStmt().mayHaveSideEffects() }
+  override predicate mayHaveSideEffects() { this.getAStmt().mayHaveSideEffects() }
 
   override string toString() { result = "block statement" }
 
@@ -704,22 +706,22 @@ class BlockStmt extends @blockstmt, Stmt, ScopeNode {
  */
 class IfStmt extends @ifstmt, Stmt, ScopeNode {
   /** Gets the init statement of this `if` statement, if any. */
-  Stmt getInit() { result = getChildStmt(0) }
+  Stmt getInit() { result = this.getChildStmt(0) }
 
   /** Gets the condition of this `if` statement. */
-  Expr getCond() { result = getChildExpr(1) }
+  Expr getCond() { result = this.getChildExpr(1) }
 
   /** Gets the "then" branch of this `if` statement. */
-  BlockStmt getThen() { result = getChildStmt(2) }
+  BlockStmt getThen() { result = this.getChildStmt(2) }
 
   /** Gets the "else" branch of this `if` statement, if any. */
-  Stmt getElse() { result = getChildStmt(3) }
+  Stmt getElse() { result = this.getChildStmt(3) }
 
   override predicate mayHaveSideEffects() {
-    getInit().mayHaveSideEffects() or
-    getCond().mayHaveSideEffects() or
-    getThen().mayHaveSideEffects() or
-    getElse().mayHaveSideEffects()
+    this.getInit().mayHaveSideEffects() or
+    this.getCond().mayHaveSideEffects() or
+    this.getThen().mayHaveSideEffects() or
+    this.getElse().mayHaveSideEffects()
   }
 
   override string toString() { result = "if statement" }
@@ -745,27 +747,49 @@ class IfStmt extends @ifstmt, Stmt, ScopeNode {
  * ```
  */
 class CaseClause extends @caseclause, Stmt, ScopeNode {
-  /** Gets the `i`th expression of this `case` clause (0-based). */
-  Expr getExpr(int i) { result = getChildExpr(-(i + 1)) }
+  /**
+   * Gets the `i`th expression of this `case` clause (0-based).
+   *
+   * Note that the default clause does not have any expressions.
+   */
+  Expr getExpr(int i) { result = this.getChildExpr(-(i + 1)) }
 
-  /** Gets an expression of this `case` clause. */
-  Expr getAnExpr() { result = getAChildExpr() }
+  /**
+   * Gets an expression of this `case` clause, if any.
+   *
+   * Note that the default clause does not have any expressions.
+   */
+  Expr getAnExpr() { result = this.getAChildExpr() }
 
-  /** Gets the number of expressions of this `case` clause. */
-  int getNumExpr() { result = getNumChildExpr() }
+  /**
+   * Gets the number of expressions of this `case` clause.
+   *
+   * Note that the default clause does not have any expressions.
+   */
+  int getNumExpr() { result = this.getNumChildExpr() }
 
   /** Gets the `i`th statement of this `case` clause (0-based). */
-  Stmt getStmt(int i) { result = getChildStmt(i) }
+  Stmt getStmt(int i) { result = this.getChildStmt(i) }
 
   /** Gets a statement of this `case` clause. */
-  Stmt getAStmt() { result = getAChildStmt() }
+  Stmt getAStmt() { result = this.getAChildStmt() }
 
   /** Gets the number of statements of this `case` clause. */
-  int getNumStmt() { result = getNumChildStmt() }
+  int getNumStmt() { result = this.getNumChildStmt() }
+
+  /**
+   * Gets the implicitly declared variable for this `case` clause, if any.
+   *
+   * This exists for case clauses in type switch statements which declare a
+   * variable in the guard.
+   */
+  LocalVariable getImplicitlyDeclaredVariable() {
+    not exists(result.getDeclaration()) and result.getScope().(LocalScope).getNode() = this
+  }
 
   override predicate mayHaveSideEffects() {
-    getAnExpr().mayHaveSideEffects() or
-    getAStmt().mayHaveSideEffects()
+    this.getAnExpr().mayHaveSideEffects() or
+    this.getAStmt().mayHaveSideEffects()
   }
 
   override string toString() { result = "case clause" }
@@ -801,34 +825,38 @@ class CaseClause extends @caseclause, Stmt, ScopeNode {
  */
 class SwitchStmt extends @switchstmt, Stmt, ScopeNode {
   /** Gets the init statement of this `switch` statement, if any. */
-  Stmt getInit() { result = getChildStmt(0) }
+  Stmt getInit() { result = this.getChildStmt(0) }
 
   /** Gets the body of this `switch` statement. */
-  BlockStmt getBody() { result = getChildStmt(2) }
+  BlockStmt getBody() { result = this.getChildStmt(2) }
 
   /** Gets the `i`th case clause of this `switch` statement (0-based). */
-  CaseClause getCase(int i) { result = getBody().getStmt(i) }
+  CaseClause getCase(int i) { result = this.getBody().getStmt(i) }
 
   /** Gets a case clause of this `switch` statement. */
-  CaseClause getACase() { result = getCase(_) }
+  CaseClause getACase() { result = this.getCase(_) }
 
   /** Gets the number of case clauses in this `switch` statement. */
-  int getNumCase() { result = count(getACase()) }
+  int getNumCase() { result = count(this.getACase()) }
 
   /** Gets the `i`th non-default case clause of this `switch` statement (0-based). */
   CaseClause getNonDefaultCase(int i) {
     result =
-      rank[i + 1](CaseClause cc, int j | cc = getCase(j) and exists(cc.getExpr(_)) | cc order by j)
+      rank[i + 1](CaseClause cc, int j |
+        cc = this.getCase(j) and exists(cc.getExpr(_))
+      |
+        cc order by j
+      )
   }
 
   /** Gets a non-default case clause of this `switch` statement. */
-  CaseClause getANonDefaultCase() { result = getNonDefaultCase(_) }
+  CaseClause getANonDefaultCase() { result = this.getNonDefaultCase(_) }
 
   /** Gets the number of non-default case clauses in this `switch` statement. */
-  int getNumNonDefaultCase() { result = count(getANonDefaultCase()) }
+  int getNumNonDefaultCase() { result = count(this.getANonDefaultCase()) }
 
   /** Gets the default case clause of this `switch` statement, if any. */
-  CaseClause getDefault() { result = getACase() and not exists(result.getExpr(_)) }
+  CaseClause getDefault() { result = this.getACase() and not exists(result.getExpr(_)) }
 }
 
 /**
@@ -848,11 +876,11 @@ class SwitchStmt extends @switchstmt, Stmt, ScopeNode {
  */
 class ExpressionSwitchStmt extends @exprswitchstmt, SwitchStmt {
   /** Gets the switch expression of this `switch` statement. */
-  Expr getExpr() { result = getChildExpr(1) }
+  Expr getExpr() { result = this.getChildExpr(1) }
 
   override predicate mayHaveSideEffects() {
-    getInit().mayHaveSideEffects() or
-    getBody().mayHaveSideEffects()
+    this.getInit().mayHaveSideEffects() or
+    this.getBody().mayHaveSideEffects()
   }
 
   override string toString() { result = "expression-switch statement" }
@@ -880,13 +908,15 @@ class ExpressionSwitchStmt extends @exprswitchstmt, SwitchStmt {
  */
 class TypeSwitchStmt extends @typeswitchstmt, SwitchStmt {
   /** Gets the assign statement of this type-switch statement. */
-  SimpleAssignStmt getAssign() { result = getChildStmt(1) }
+  SimpleAssignStmt getAssign() { result = this.getChildStmt(1) }
 
   /** Gets the test statement of this type-switch statement. This is a `SimpleAssignStmt` or `ExprStmt`. */
-  Stmt getTest() { result = getChildStmt(1) }
+  Stmt getTest() { result = this.getChildStmt(1) }
 
   /** Gets the expression whose type is examined by this `switch` statement. */
-  Expr getExpr() { result = getAssign().getRhs() or result = getChildStmt(1).(ExprStmt).getExpr() }
+  Expr getExpr() {
+    result = this.getAssign().getRhs() or result = this.getChildStmt(1).(ExprStmt).getExpr()
+  }
 
   override predicate mayHaveSideEffects() { any() }
 
@@ -920,18 +950,18 @@ class TypeSwitchStmt extends @typeswitchstmt, SwitchStmt {
  */
 class CommClause extends @commclause, Stmt, ScopeNode {
   /** Gets the comm statement of this clause, if any. */
-  Stmt getComm() { result = getChildStmt(0) }
+  Stmt getComm() { result = this.getChildStmt(0) }
 
   /** Gets the `i`th statement of this clause (0-based). */
-  Stmt getStmt(int i) { i >= 0 and result = getChildStmt(i + 1) }
+  Stmt getStmt(int i) { i >= 0 and result = this.getChildStmt(i + 1) }
 
   /** Gets a statement of this clause. */
-  Stmt getAStmt() { result = getStmt(_) }
+  Stmt getAStmt() { result = this.getStmt(_) }
 
   /** Gets the number of statements of this clause. */
-  int getNumStmt() { result = count(getAStmt()) }
+  int getNumStmt() { result = count(this.getAStmt()) }
 
-  override predicate mayHaveSideEffects() { getAStmt().mayHaveSideEffects() }
+  override predicate mayHaveSideEffects() { this.getAStmt().mayHaveSideEffects() }
 
   override string toString() { result = "comm clause" }
 
@@ -956,7 +986,7 @@ class RecvStmt extends Stmt {
   Expr getLhs(int i) { result = this.(Assignment).getLhs(i) }
 
   /** Gets the number of left-hand-side expressions of this receive statement. */
-  int getNumLhs() { result = count(getLhs(_)) }
+  int getNumLhs() { result = count(this.getLhs(_)) }
 
   /** Gets the receive expression of this receive statement. */
   RecvExpr getExpr() {
@@ -991,34 +1021,34 @@ class RecvStmt extends Stmt {
  */
 class SelectStmt extends @selectstmt, Stmt {
   /** Gets the body of this `select` statement. */
-  BlockStmt getBody() { result = getChildStmt(0) }
+  BlockStmt getBody() { result = this.getChildStmt(0) }
 
   /**
    * Gets the `i`th comm clause (that is, `case` or `default` clause) in this `select` statement.
    */
-  CommClause getCommClause(int i) { result = getBody().getStmt(i) }
+  CommClause getCommClause(int i) { result = this.getBody().getStmt(i) }
 
   /**
    * Gets a comm clause in this `select` statement.
    */
-  CommClause getACommClause() { result = getCommClause(_) }
+  CommClause getACommClause() { result = this.getCommClause(_) }
 
   /** Gets the `i`th `case` clause in this `select` statement. */
   CommClause getNonDefaultCommClause(int i) {
     result =
       rank[i + 1](CommClause cc, int j |
-        cc = getCommClause(j) and exists(cc.getComm())
+        cc = this.getCommClause(j) and exists(cc.getComm())
       |
         cc order by j
       )
   }
 
   /** Gets the number of `case` clauses in this `select` statement. */
-  int getNumNonDefaultCommClause() { result = count(getNonDefaultCommClause(_)) }
+  int getNumNonDefaultCommClause() { result = count(this.getNonDefaultCommClause(_)) }
 
   /** Gets the `default` clause in this `select` statement, if any. */
   CommClause getDefaultCommClause() {
-    result = getCommClause(_) and
+    result = this.getCommClause(_) and
     not exists(result.getComm())
   }
 
@@ -1070,21 +1100,21 @@ class LoopStmt extends @loopstmt, Stmt, ScopeNode {
  */
 class ForStmt extends @forstmt, LoopStmt {
   /** Gets the init statement of this `for` statement, if any. */
-  Stmt getInit() { result = getChildStmt(0) }
+  Stmt getInit() { result = this.getChildStmt(0) }
 
   /** Gets the condition of this `for` statement. */
-  Expr getCond() { result = getChildExpr(1) }
+  Expr getCond() { result = this.getChildExpr(1) }
 
   /** Gets the post statement of this `for` statement. */
-  Stmt getPost() { result = getChildStmt(2) }
+  Stmt getPost() { result = this.getChildStmt(2) }
 
-  override BlockStmt getBody() { result = getChildStmt(3) }
+  override BlockStmt getBody() { result = this.getChildStmt(3) }
 
   override predicate mayHaveSideEffects() {
-    getInit().mayHaveSideEffects() or
-    getCond().mayHaveSideEffects() or
-    getPost().mayHaveSideEffects() or
-    getBody().mayHaveSideEffects()
+    this.getInit().mayHaveSideEffects() or
+    this.getCond().mayHaveSideEffects() or
+    this.getPost().mayHaveSideEffects() or
+    this.getBody().mayHaveSideEffects()
   }
 
   override string toString() { result = "for statement" }
@@ -1117,15 +1147,15 @@ class ForStmt extends @forstmt, LoopStmt {
  */
 class RangeStmt extends @rangestmt, LoopStmt {
   /** Gets the expression denoting the key of this `range` statement. */
-  Expr getKey() { result = getChildExpr(0) }
+  Expr getKey() { result = this.getChildExpr(0) }
 
   /** Get the expression denoting the value of this `range` statement. */
-  Expr getValue() { result = getChildExpr(1) }
+  Expr getValue() { result = this.getChildExpr(1) }
 
   /** Gets the domain of this `range` statement. */
-  Expr getDomain() { result = getChildExpr(2) }
+  Expr getDomain() { result = this.getChildExpr(2) }
 
-  override BlockStmt getBody() { result = getChildStmt(3) }
+  override BlockStmt getBody() { result = this.getChildStmt(3) }
 
   override predicate mayHaveSideEffects() { any() }
 

@@ -68,9 +68,9 @@ class RelationalOperation extends ComparisonOperation, @rel_op_expr {
 class GTExpr extends RelationalOperation, @gt_expr {
   override string getOperator() { result = ">" }
 
-  override Expr getGreaterOperand() { result = getLeftOperand() }
+  override Expr getGreaterOperand() { result = this.getLeftOperand() }
 
-  override Expr getLesserOperand() { result = getRightOperand() }
+  override Expr getLesserOperand() { result = this.getRightOperand() }
 
   override string getAPrimaryQlClass() { result = "GTExpr" }
 }
@@ -81,9 +81,9 @@ class GTExpr extends RelationalOperation, @gt_expr {
 class LTExpr extends RelationalOperation, @lt_expr {
   override string getOperator() { result = "<" }
 
-  override Expr getGreaterOperand() { result = getRightOperand() }
+  override Expr getGreaterOperand() { result = this.getRightOperand() }
 
-  override Expr getLesserOperand() { result = getLeftOperand() }
+  override Expr getLesserOperand() { result = this.getLeftOperand() }
 
   override string getAPrimaryQlClass() { result = "LTExpr" }
 }
@@ -94,9 +94,9 @@ class LTExpr extends RelationalOperation, @lt_expr {
 class GEExpr extends RelationalOperation, @ge_expr {
   override string getOperator() { result = ">=" }
 
-  override Expr getGreaterOperand() { result = getLeftOperand() }
+  override Expr getGreaterOperand() { result = this.getLeftOperand() }
 
-  override Expr getLesserOperand() { result = getRightOperand() }
+  override Expr getLesserOperand() { result = this.getRightOperand() }
 
   override string getAPrimaryQlClass() { result = "GEExpr" }
 }
@@ -107,9 +107,9 @@ class GEExpr extends RelationalOperation, @ge_expr {
 class LEExpr extends RelationalOperation, @le_expr {
   override string getOperator() { result = "<=" }
 
-  override Expr getGreaterOperand() { result = getRightOperand() }
+  override Expr getGreaterOperand() { result = this.getRightOperand() }
 
-  override Expr getLesserOperand() { result = getLeftOperand() }
+  override Expr getLesserOperand() { result = this.getLeftOperand() }
 
   override string getAPrimaryQlClass() { result = "LEExpr" }
 }

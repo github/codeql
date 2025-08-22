@@ -18,7 +18,7 @@
 			<p>
 
 				This security check is, however, insufficient since an
-				attacker can craft his cookie values to match those of any user.  To
+				attacker can craft their cookie values to match those of any user.  To
 				prevent this, the server can cryptographically sign the security
 				critical cookie values:
 

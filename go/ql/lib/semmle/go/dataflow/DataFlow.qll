@@ -22,8 +22,10 @@ import go
  * data flow analysis.
  */
 module DataFlow {
-  import semmle.go.dataflow.internal.DataFlow
-  import semmle.go.dataflow.internal.DataFlowImpl1
+  private import semmle.go.dataflow.internal.DataFlowImplSpecific
+  private import codeql.dataflow.DataFlow
+  import DataFlowMake<Location, GoDataFlow>
+  import Public
   import Properties
 }
 

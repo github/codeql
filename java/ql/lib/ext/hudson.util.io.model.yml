@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["hudson.util.io", "ReopenableFileOutputStream", True, "ReopenableFileOutputStream", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["hudson.util.io", "RewindableFileOutputStream", True, "RewindableFileOutputStream", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]

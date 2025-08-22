@@ -100,11 +100,27 @@ predicate hostnameSanitizingPrefixEdge(DataFlow::Node source, DataFlow::Node sin
 /**
  * A check that sanitizes the hostname of a URL.
  */
-class HostnameSanitizerGuard extends TaintTracking::SanitizerGuardNode, StringOps::StartsWith {
-  HostnameSanitizerGuard() { hasHostnameSanitizingSubstring(getSubstring()) }
+class HostnameSanitizerGuard extends StringOps::StartsWith {
+  HostnameSanitizerGuard() { hasHostnameSanitizingSubstring(this.getSubstring()) }
 
-  override predicate sanitizes(boolean outcome, Expr e) {
-    outcome = getPolarity() and
-    e = getBaseString().asExpr()
+  /** DEPRECATED. Use `blocksExpr` instead. */
+  deprecated predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+
+  /** Holds if this node blocks flow through `e`, provided it evaluates to `outcome`. */
+  predicate blocksExpr(boolean outcome, Expr e) {
+    outcome = this.getPolarity() and
+    e = this.getBaseString().asExpr()
   }
 }
+
+deprecated private class HostnameSanitizerGuardLegacy extends TaintTracking::SanitizerGuardNode instanceof HostnameSanitizerGuard
+{
+  override predicate sanitizes(boolean outcome, Expr e) {
+    HostnameSanitizerGuard.super.sanitizes(outcome, e)
+  }
+}
+
+/**
+ * A check that sanitizes the hostname of a URL.
+ */
+module HostnameSanitizerGuard = DataFlow::MakeBarrierGuard<HostnameSanitizerGuard>;

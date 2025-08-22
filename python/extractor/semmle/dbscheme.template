@@ -1,0 +1,422 @@
+/* This is a dummy line to alter the dbscheme, so we can make a database upgrade
+ * without actually changing any of the dbscheme predicates. It contains a date
+ * to allow for such updates in the future as well.
+ *
+ * 2020-07-02
+ *
+ * DO NOT remove this comment carelessly, since it can revert the dbscheme back to a
+ * previously seen state (matching a previously seen SHA), which would make the upgrade
+ * mechanism not work properly.
+ */
+
+/*- DEPRECATED: External defects and metrics -*/
+
+externalDefects(
+  unique int id : @externalDefect,
+  varchar(900) queryPath : string ref,
+  int location : @location ref,
+  varchar(900) message : string ref,
+  float severity : float ref
+);
+
+externalMetrics(
+  unique int id : @externalMetric,
+  varchar(900) queryPath : string ref,
+  int location : @location ref,
+  float value : float ref
+);
+
+/*- External data -*/
+
+/**
+ * External data, loaded from CSV files during snapshot creation. See
+ * [Tutorial: Incorporating external data](https://help.semmle.com/wiki/display/SD/Tutorial%3A+Incorporating+external+data)
+ * for more information.
+ */
+externalData(
+  int id : @externalDataElement,
+  string path : string ref,
+  int column: int ref,
+  string value : string ref
+);
+
+/*- DEPRECATED: Snapshot date -*/
+
+snapshotDate(unique date snapshotDate : date ref);
+
+/*- Source location prefix -*/
+
+/**
+ * The source location of the snapshot.
+ */
+sourceLocationPrefix(string prefix : string ref);
+
+/*- DEPRECATED: Duplicate code -*/
+
+duplicateCode(
+  unique int id : @duplication,
+  string relativePath : string ref,
+  int equivClass : int ref
+);
+
+similarCode(
+  unique int id : @similarity,
+  string relativePath : string ref,
+  int equivClass : int ref
+);
+
+@duplication_or_similarity = @duplication | @similarity
+
+tokens(
+  int id : @duplication_or_similarity ref,
+  int offset : int ref,
+  int beginLine : int ref,
+  int beginColumn : int ref,
+  int endLine : int ref,
+  int endColumn : int ref
+);
+
+/*- DEPRECATED: Version control data -*/
+
+svnentries(
+  unique int id : @svnentry,
+  string revision : string ref,
+  string author : string ref,
+  date revisionDate : date ref,
+  int changeSize : int ref
+)
+
+svnaffectedfiles(
+  int id : @svnentry ref,
+  int file : @file ref,
+  string action : string ref
+)
+
+svnentrymsg(
+  unique int id : @svnentry ref,
+  string message : string ref
+)
+
+svnchurn(
+  int commit : @svnentry ref,
+  int file : @file ref,
+  int addedLines : int ref,
+  int deletedLines : int ref
+)
+
+/*- Lines of code -*/
+
+numlines(
+  int element_id: @sourceline ref,
+  int num_lines: int ref,
+  int num_code: int ref,
+  int num_comment: int ref
+);
+
+/*- Files and folders -*/
+
+/**
+ * The location of an element.
+ * The location spans column `startcolumn` of line `startline` to
+ * column `endcolumn` of line `endline` in file `file`.
+ * For more information, see
+ * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+ */
+locations_default(
+  unique int id: @location_default,
+  int file: @file ref,
+  int beginLine: int ref,
+  int beginColumn: int ref,
+  int endLine: int ref,
+  int endColumn: int ref
+);
+
+files(
+  unique int id: @file,
+  string name: string ref
+);
+
+folders(
+  unique int id: @folder,
+  string name: string ref
+);
+
+@container = @file | @folder
+
+containerparent(
+  int parent: @container ref,
+  unique int child: @container ref
+);
+
+/*- XML Files -*/
+
+xmlEncoding(
+  unique int id: @file ref,
+  string encoding: string ref
+);
+
+xmlDTDs(
+  unique int id: @xmldtd,
+  string root: string ref,
+  string publicId: string ref,
+  string systemId: string ref,
+  int fileid: @file ref
+);
+
+xmlElements(
+  unique int id: @xmlelement,
+  string name: string ref,
+  int parentid: @xmlparent ref,
+  int idx: int ref,
+  int fileid: @file ref
+);
+
+xmlAttrs(
+  unique int id: @xmlattribute,
+  int elementid: @xmlelement ref,
+  string name: string ref,
+  string value: string ref,
+  int idx: int ref,
+  int fileid: @file ref
+);
+
+xmlNs(
+  int id: @xmlnamespace,
+  string prefixName: string ref,
+  string URI: string ref,
+  int fileid: @file ref
+);
+
+xmlHasNs(
+  int elementId: @xmlnamespaceable ref,
+  int nsId: @xmlnamespace ref,
+  int fileid: @file ref
+);
+
+xmlComments(
+  unique int id: @xmlcomment,
+  string text: string ref,
+  int parentid: @xmlparent ref,
+  int fileid: @file ref
+);
+
+xmlChars(
+  unique int id: @xmlcharacters,
+  string text: string ref,
+  int parentid: @xmlparent ref,
+  int idx: int ref,
+  int isCDATA: int ref,
+  int fileid: @file ref
+);
+
+@xmlparent = @file | @xmlelement;
+@xmlnamespaceable = @xmlelement | @xmlattribute;
+
+xmllocations(
+  int xmlElement: @xmllocatable ref,
+  int location: @location_default ref
+);
+
+@xmllocatable = @xmlcharacters | @xmlelement | @xmlcomment | @xmlattribute | @xmldtd | @file | @xmlnamespace;
+
+/*- YAML -*/
+
+#keyset[parent, idx]
+yaml (unique int id: @yaml_node,
+      int kind: int ref,
+      int parent: @yaml_node_parent ref,
+      int idx: int ref,
+      string tag: string ref,
+      string tostring: string ref);
+
+case @yaml_node.kind of
+  0 = @yaml_scalar_node
+| 1 = @yaml_mapping_node
+| 2 = @yaml_sequence_node
+| 3 = @yaml_alias_node
+;
+
+@yaml_collection_node = @yaml_mapping_node | @yaml_sequence_node;
+
+@yaml_node_parent = @yaml_collection_node | @file;
+
+yaml_anchors (unique int node: @yaml_node ref,
+              string anchor: string ref);
+
+yaml_aliases (unique int alias: @yaml_alias_node ref,
+              string target: string ref);
+
+yaml_scalars (unique int scalar: @yaml_scalar_node ref,
+              int style: int ref,
+              string value: string ref);
+
+yaml_errors (unique int id: @yaml_error,
+             string message: string ref);
+
+yaml_locations(unique int locatable: @yaml_locatable ref,
+             int location: @location_default ref);
+
+@yaml_locatable = @yaml_node | @yaml_error;
+
+/*- Python dbscheme -*/
+
+/*
+ * Line metrics
+ */
+py_codelines(int id : @py_scope ref,
+             int count : int ref);
+
+py_commentlines(int id : @py_scope ref,
+                int count : int ref);
+
+py_docstringlines(int id : @py_scope ref,
+                int count : int ref);
+
+py_alllines(int id : @py_scope ref,
+                int count : int ref);
+
+/****************************
+        Python dbscheme
+****************************/
+
+@sourceline = @file | @py_Module | @xmllocatable;
+
+@location = @location_ast | @location_default ;
+
+locations_ast(unique int id: @location_ast,
+          int module: @py_Module ref,
+          int beginLine: int ref,
+          int beginColumn: int ref,
+          int endLine: int ref,
+          int endColumn: int ref);
+
+file_contents(unique int file: @file ref, string contents: string ref);
+
+py_module_path(int module: @py_Module ref, int file: @container ref);
+
+variable(unique int id : @py_variable,
+         int scope : @py_scope ref,
+         varchar(1) name : string ref);
+
+py_line_lengths(unique int id : @py_line,
+                int file: @py_Module ref,
+                int line : int ref,
+                int length : int ref);
+
+py_extracted_version(int module : @py_Module ref,
+                     varchar(1) version : string ref);
+
+$AST_SCHEME$
+
+/* Map relative names to absolute names for imports */
+py_absolute_names(int module : @py_Module ref,
+                  varchar(1) relname : string ref,
+                  varchar(1) absname : string ref);
+
+py_exports(int id : @py_Module ref,
+           varchar(1) name : string ref);
+
+/* Successor information */
+py_successors(int predecessor : @py_flow_node ref,
+              int successor : @py_flow_node ref);
+
+py_true_successors(int predecessor : @py_flow_node ref,
+              int successor : @py_flow_node ref);
+
+py_exception_successors(int predecessor : @py_flow_node ref,
+              int successor : @py_flow_node ref);
+
+py_false_successors(int predecessor : @py_flow_node ref,
+              int successor : @py_flow_node ref);
+
+py_flow_bb_node(unique int flownode : @py_flow_node,
+             int realnode : @py_ast_node ref,
+             int basicblock : @py_flow_node ref,
+             int index : int ref);
+
+py_scope_flow(int flow : @py_flow_node ref,
+              int scope : @py_scope ref,
+              int kind : int ref);
+
+py_idoms(unique int node : @py_flow_node ref,
+         int immediate_dominator : @py_flow_node ref);
+
+py_ssa_phi(int phi : @py_ssa_var ref,
+           int arg: @py_ssa_var ref);
+
+py_ssa_var(unique int id : @py_ssa_var,
+            int var : @py_variable ref);
+
+py_ssa_use(int node: @py_flow_node ref,
+           int var : @py_ssa_var ref);
+
+py_ssa_defn(unique int id : @py_ssa_var ref,
+                  int node: @py_flow_node ref);
+
+@py_base_var = @py_variable | @py_ssa_var;
+
+py_scopes(unique int node : @py_expr_or_stmt ref,
+         int scope : @py_scope ref);
+
+py_scope_location(unique int id : @location ref,
+                   unique int scope : @py_scope ref);
+
+py_flags_versioned(varchar(1) name : string ref,
+                   varchar(1) value : string ref,
+                   varchar(1) version : string ref);
+
+py_syntax_error_versioned(unique int id : @location ref,
+                varchar(1) message : string ref,
+                varchar(1) version : string ref);
+
+py_comments(unique int id : @py_comment,
+           varchar(1) text : string ref,
+           unique int location : @location ref);
+
+/* Type information support */
+
+py_cobjects(unique int obj : @py_cobject);
+
+py_cobjecttypes(unique int obj : @py_cobject ref,
+                int typeof : @py_cobject ref);
+
+py_cobjectnames(unique int obj : @py_cobject ref,
+                varchar(1) name : string ref);
+
+/* Kind should be 0 for introspection, > 0 from source, as follows:
+   1 from C extension source
+ */
+py_cobject_sources(int obj : @py_cobject ref,
+                  int kind : int ref);
+
+py_cmembers_versioned(int object : @py_cobject ref,
+                      varchar(1) name : string ref,
+                      int member : @py_cobject ref,
+                      varchar(1) version : string ref);
+
+py_citems(int object : @py_cobject ref,
+            int index : int ref,
+            int member : @py_cobject ref);
+
+ext_argtype(int funcid : @py_object ref,
+            int arg : int ref,
+            int typeid : @py_object ref);
+
+ext_rettype(int funcid : @py_object ref,
+            int typeid : @py_object ref);
+
+ext_proptype(int propid : @py_object ref,
+             int typeid : @py_object ref);
+
+ext_argreturn(int funcid : @py_object ref,
+              int arg : int ref);
+
+py_special_objects(unique int obj : @py_cobject ref,
+                   unique varchar(1) name : string ref);
+
+py_decorated_object(int object : @py_object ref,
+                    int level: int ref);
+
+@py_object = @py_cobject | @py_flow_node;
+
+@py_source_element = @py_ast_node | @container;

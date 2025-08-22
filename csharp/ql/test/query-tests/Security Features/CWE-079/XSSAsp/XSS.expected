@@ -1,0 +1,96 @@
+#select
+| XSS.cs:27:32:27:51 | call to method ToString | XSS.cs:26:48:26:62 | access to field categoryTextBox : TextBox | XSS.cs:27:32:27:51 | call to method ToString | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:26:48:26:62 | access to field categoryTextBox : TextBox | User-provided value |
+| XSS.cs:28:29:28:48 | call to method ToString | XSS.cs:26:48:26:62 | access to field categoryTextBox : TextBox | XSS.cs:28:29:28:48 | call to method ToString | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:26:48:26:62 | access to field categoryTextBox : TextBox | User-provided value |
+| XSS.cs:29:26:29:45 | call to method ToString | XSS.cs:26:48:26:62 | access to field categoryTextBox : TextBox | XSS.cs:29:26:29:45 | call to method ToString | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:26:48:26:62 | access to field categoryTextBox : TextBox | User-provided value |
+| XSS.cs:39:36:39:39 | access to local variable name | XSS.cs:38:27:38:53 | access to property QueryString : NameValueCollection | XSS.cs:39:36:39:39 | access to local variable name | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:38:27:38:53 | access to property QueryString : NameValueCollection | User-provided value |
+| XSS.cs:60:22:60:25 | access to local variable name | XSS.cs:58:27:58:65 | access to property QueryString : NameValueCollection | XSS.cs:60:22:60:25 | access to local variable name | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:58:27:58:65 | access to property QueryString : NameValueCollection | User-provided value |
+| XSS.cs:77:36:77:39 | access to local variable name | XSS.cs:76:27:76:53 | access to property QueryString : NameValueCollection | XSS.cs:77:36:77:39 | access to local variable name | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:76:27:76:53 | access to property QueryString : NameValueCollection | User-provided value |
+| XSS.cs:80:36:80:40 | access to local variable name2 | XSS.cs:79:28:79:42 | access to property Request : HttpRequestBase | XSS.cs:80:36:80:40 | access to local variable name2 | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:79:28:79:42 | access to property Request : HttpRequestBase | User-provided value |
+| XSS.cs:87:28:87:31 | access to local variable name | XSS.cs:86:27:86:53 | access to property QueryString : NameValueCollection | XSS.cs:87:28:87:31 | access to local variable name | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:86:27:86:53 | access to property QueryString : NameValueCollection | User-provided value |
+| XSS.cs:88:31:88:34 | access to local variable name | XSS.cs:86:27:86:53 | access to property QueryString : NameValueCollection | XSS.cs:88:31:88:34 | access to local variable name | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:86:27:86:53 | access to property QueryString : NameValueCollection | User-provided value |
+| XSS.cs:96:31:96:34 | access to local variable name | XSS.cs:95:27:95:53 | access to property QueryString : NameValueCollection | XSS.cs:96:31:96:34 | access to local variable name | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:95:27:95:53 | access to property QueryString : NameValueCollection | User-provided value |
+| XSS.cs:140:20:140:33 | access to property RawUrl | XSS.cs:140:20:140:33 | access to property RawUrl | XSS.cs:140:20:140:33 | access to property RawUrl | $@ flows to here and is written to HTML or JavaScript. | XSS.cs:140:20:140:33 | access to property RawUrl | User-provided value |
+| script.aspx:12:1:12:14 | <%= ... %> | script.aspx:12:1:12:14 | <%= ... %> | script.aspx:12:1:12:14 | <%= ... %> | $@ flows to here and is a remote source accessed inline in an ASPX page. | script.aspx:12:1:12:14 | <%= ... %> | User-provided value |
+| script.aspx:16:1:16:34 | <%= ... %> | script.aspx:16:1:16:34 | <%= ... %> | script.aspx:16:1:16:34 | <%= ... %> | $@ flows to here and is a remote source accessed inline in an ASPX page. | script.aspx:16:1:16:34 | <%= ... %> | User-provided value |
+| script.aspx:20:1:20:41 | <%= ... %> | script.aspx:20:1:20:41 | <%= ... %> | script.aspx:20:1:20:41 | <%= ... %> | $@ flows to here and is a remote source accessed inline in an ASPX page. | script.aspx:20:1:20:41 | <%= ... %> | User-provided value |
+edges
+| XSS.cs:26:13:26:21 | [post] access to local variable userInput : StringBuilder | XSS.cs:27:32:27:40 | access to local variable userInput : StringBuilder | provenance |  |
+| XSS.cs:26:13:26:21 | [post] access to local variable userInput : StringBuilder | XSS.cs:28:29:28:37 | access to local variable userInput : StringBuilder | provenance |  |
+| XSS.cs:26:13:26:21 | [post] access to local variable userInput : StringBuilder | XSS.cs:29:26:29:34 | access to local variable userInput : StringBuilder | provenance |  |
+| XSS.cs:26:48:26:62 | access to field categoryTextBox : TextBox | XSS.cs:26:48:26:67 | access to property Text : String | provenance | MaD:6 |
+| XSS.cs:26:48:26:67 | access to property Text : String | XSS.cs:26:13:26:21 | [post] access to local variable userInput : StringBuilder | provenance | MaD:4 |
+| XSS.cs:27:32:27:40 | access to local variable userInput : StringBuilder | XSS.cs:27:32:27:51 | call to method ToString | provenance | MaD:5 |
+| XSS.cs:28:29:28:37 | access to local variable userInput : StringBuilder | XSS.cs:28:29:28:48 | call to method ToString | provenance | MaD:5 |
+| XSS.cs:29:26:29:34 | access to local variable userInput : StringBuilder | XSS.cs:29:26:29:45 | call to method ToString | provenance | MaD:5 |
+| XSS.cs:38:20:38:23 | access to local variable name : String | XSS.cs:39:36:39:39 | access to local variable name | provenance | Sink:MaD:2 |
+| XSS.cs:38:27:38:53 | access to property QueryString : NameValueCollection | XSS.cs:38:20:38:23 | access to local variable name : String | provenance |  |
+| XSS.cs:38:27:38:53 | access to property QueryString : NameValueCollection | XSS.cs:38:27:38:61 | access to indexer : String | provenance | MaD:3 |
+| XSS.cs:38:27:38:61 | access to indexer : String | XSS.cs:38:20:38:23 | access to local variable name : String | provenance |  |
+| XSS.cs:58:20:58:23 | access to local variable name : String | XSS.cs:60:22:60:25 | access to local variable name | provenance |  |
+| XSS.cs:58:27:58:65 | access to property QueryString : NameValueCollection | XSS.cs:58:20:58:23 | access to local variable name : String | provenance |  |
+| XSS.cs:58:27:58:65 | access to property QueryString : NameValueCollection | XSS.cs:58:27:58:73 | access to indexer : String | provenance | MaD:3 |
+| XSS.cs:58:27:58:73 | access to indexer : String | XSS.cs:58:20:58:23 | access to local variable name : String | provenance |  |
+| XSS.cs:76:20:76:23 | access to local variable name : String | XSS.cs:77:36:77:39 | access to local variable name | provenance |  |
+| XSS.cs:76:27:76:53 | access to property QueryString : NameValueCollection | XSS.cs:76:20:76:23 | access to local variable name : String | provenance |  |
+| XSS.cs:76:27:76:53 | access to property QueryString : NameValueCollection | XSS.cs:76:27:76:61 | access to indexer : String | provenance | MaD:3 |
+| XSS.cs:76:27:76:61 | access to indexer : String | XSS.cs:76:20:76:23 | access to local variable name : String | provenance |  |
+| XSS.cs:79:20:79:24 | access to local variable name2 : String | XSS.cs:80:36:80:40 | access to local variable name2 | provenance |  |
+| XSS.cs:79:28:79:42 | access to property Request : HttpRequestBase | XSS.cs:79:20:79:24 | access to local variable name2 : String | provenance |  |
+| XSS.cs:86:20:86:23 | access to local variable name : String | XSS.cs:87:28:87:31 | access to local variable name | provenance |  |
+| XSS.cs:86:20:86:23 | access to local variable name : String | XSS.cs:88:31:88:34 | access to local variable name | provenance |  |
+| XSS.cs:86:27:86:53 | access to property QueryString : NameValueCollection | XSS.cs:86:20:86:23 | access to local variable name : String | provenance |  |
+| XSS.cs:86:27:86:53 | access to property QueryString : NameValueCollection | XSS.cs:86:27:86:61 | access to indexer : String | provenance | MaD:3 |
+| XSS.cs:86:27:86:61 | access to indexer : String | XSS.cs:86:20:86:23 | access to local variable name : String | provenance |  |
+| XSS.cs:95:20:95:23 | access to local variable name : String | XSS.cs:96:31:96:34 | access to local variable name | provenance | Sink:MaD:1 |
+| XSS.cs:95:27:95:53 | access to property QueryString : NameValueCollection | XSS.cs:95:20:95:23 | access to local variable name : String | provenance |  |
+| XSS.cs:95:27:95:53 | access to property QueryString : NameValueCollection | XSS.cs:95:27:95:61 | access to indexer : String | provenance | MaD:3 |
+| XSS.cs:95:27:95:61 | access to indexer : String | XSS.cs:95:20:95:23 | access to local variable name : String | provenance |  |
+| script.aspx:12:1:12:14 | <%= ... %> | script.aspx:12:1:12:14 | <%= ... %> | provenance |  |
+| script.aspx:16:1:16:34 | <%= ... %> | script.aspx:16:1:16:34 | <%= ... %> | provenance |  |
+| script.aspx:20:1:20:41 | <%= ... %> | script.aspx:20:1:20:41 | <%= ... %> | provenance |  |
+models
+| 1 | Sink: System.Net.Http; StringContent; false; StringContent; ; ; Argument[0]; js-injection; manual |
+| 2 | Sink: System.Web; HttpResponse; false; Write; ; ; Argument[0]; html-injection; manual |
+| 3 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
+| 4 | Summary: System.Text; StringBuilder; false; AppendFormat; (System.String,System.Object); ; Argument[1]; Argument[this]; taint; manual |
+| 5 | Summary: System.Text; StringBuilder; false; ToString; (); ; Argument[this]; ReturnValue; taint; manual |
+| 6 | Summary: System.Web.UI.WebControls; TextBox; false; get_Text; (); ; Argument[this]; ReturnValue; taint; manual |
+nodes
+| XSS.cs:26:13:26:21 | [post] access to local variable userInput : StringBuilder | semmle.label | [post] access to local variable userInput : StringBuilder |
+| XSS.cs:26:48:26:62 | access to field categoryTextBox : TextBox | semmle.label | access to field categoryTextBox : TextBox |
+| XSS.cs:26:48:26:67 | access to property Text : String | semmle.label | access to property Text : String |
+| XSS.cs:27:32:27:40 | access to local variable userInput : StringBuilder | semmle.label | access to local variable userInput : StringBuilder |
+| XSS.cs:27:32:27:51 | call to method ToString | semmle.label | call to method ToString |
+| XSS.cs:28:29:28:37 | access to local variable userInput : StringBuilder | semmle.label | access to local variable userInput : StringBuilder |
+| XSS.cs:28:29:28:48 | call to method ToString | semmle.label | call to method ToString |
+| XSS.cs:29:26:29:34 | access to local variable userInput : StringBuilder | semmle.label | access to local variable userInput : StringBuilder |
+| XSS.cs:29:26:29:45 | call to method ToString | semmle.label | call to method ToString |
+| XSS.cs:38:20:38:23 | access to local variable name : String | semmle.label | access to local variable name : String |
+| XSS.cs:38:27:38:53 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| XSS.cs:38:27:38:61 | access to indexer : String | semmle.label | access to indexer : String |
+| XSS.cs:39:36:39:39 | access to local variable name | semmle.label | access to local variable name |
+| XSS.cs:58:20:58:23 | access to local variable name : String | semmle.label | access to local variable name : String |
+| XSS.cs:58:27:58:65 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| XSS.cs:58:27:58:73 | access to indexer : String | semmle.label | access to indexer : String |
+| XSS.cs:60:22:60:25 | access to local variable name | semmle.label | access to local variable name |
+| XSS.cs:76:20:76:23 | access to local variable name : String | semmle.label | access to local variable name : String |
+| XSS.cs:76:27:76:53 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| XSS.cs:76:27:76:61 | access to indexer : String | semmle.label | access to indexer : String |
+| XSS.cs:77:36:77:39 | access to local variable name | semmle.label | access to local variable name |
+| XSS.cs:79:20:79:24 | access to local variable name2 : String | semmle.label | access to local variable name2 : String |
+| XSS.cs:79:28:79:42 | access to property Request : HttpRequestBase | semmle.label | access to property Request : HttpRequestBase |
+| XSS.cs:80:36:80:40 | access to local variable name2 | semmle.label | access to local variable name2 |
+| XSS.cs:86:20:86:23 | access to local variable name : String | semmle.label | access to local variable name : String |
+| XSS.cs:86:27:86:53 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| XSS.cs:86:27:86:61 | access to indexer : String | semmle.label | access to indexer : String |
+| XSS.cs:87:28:87:31 | access to local variable name | semmle.label | access to local variable name |
+| XSS.cs:88:31:88:34 | access to local variable name | semmle.label | access to local variable name |
+| XSS.cs:95:20:95:23 | access to local variable name : String | semmle.label | access to local variable name : String |
+| XSS.cs:95:27:95:53 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| XSS.cs:95:27:95:61 | access to indexer : String | semmle.label | access to indexer : String |
+| XSS.cs:96:31:96:34 | access to local variable name | semmle.label | access to local variable name |
+| XSS.cs:140:20:140:33 | access to property RawUrl | semmle.label | access to property RawUrl |
+| script.aspx:12:1:12:14 | <%= ... %> | semmle.label | <%= ... %> |
+| script.aspx:16:1:16:34 | <%= ... %> | semmle.label | <%= ... %> |
+| script.aspx:20:1:20:41 | <%= ... %> | semmle.label | <%= ... %> |
+subpaths

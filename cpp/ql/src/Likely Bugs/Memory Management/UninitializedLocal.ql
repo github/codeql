@@ -2,7 +2,7 @@
  * @name Potentially uninitialized local variable
  * @description Reading from a local variable that has not been assigned to
  *              will typically yield garbage.
- * @kind problem
+ * @kind path-problem
  * @id cpp/uninitialized-local
  * @problem.severity warning
  * @security-severity 7.8
@@ -13,7 +13,9 @@
  */
 
 import cpp
-import semmle.code.cpp.controlflow.StackVariableReachability
+import semmle.code.cpp.ir.IR
+import semmle.code.cpp.ir.dataflow.MustFlow
+import PathGraph
 
 /**
  * Auxiliary predicate: Types that don't require initialization
@@ -33,31 +35,6 @@ predicate allocatedType(Type t) {
   allocatedType(t.getUnspecifiedType())
 }
 
-/**
- * A declaration of a local variable that leaves the
- * variable uninitialized.
- */
-DeclStmt declWithNoInit(LocalVariable v) {
-  result.getADeclaration() = v and
-  not exists(v.getInitializer()) and
-  /* The type of the variable is not stack-allocated. */
-  exists(Type t | t = v.getType() | not allocatedType(t))
-}
-
-class UninitialisedLocalReachability extends StackVariableReachability {
-  UninitialisedLocalReachability() { this = "UninitialisedLocal" }
-
-  override predicate isSource(ControlFlowNode node, StackVariable v) { node = declWithNoInit(v) }
-
-  override predicate isSink(ControlFlowNode node, StackVariable v) { useOfVarActual(v, node) }
-
-  override predicate isBarrier(ControlFlowNode node, StackVariable v) {
-    // only report the _first_ possibly uninitialized use
-    useOfVarActual(v, node) or
-    definitionBarrier(v, node)
-  }
-}
-
 pragma[noinline]
 predicate containsInlineAssembly(Function f) { exists(AsmStmt s | s.getEnclosingFunction() = f) }
 
@@ -72,13 +49,46 @@ VariableAccess commonException() {
   or
   result.getParent() instanceof BuiltInOperation
   or
+  // Ignore any uninitialized use that is explicitly cast to void and
+  // is an expression statement.
+  result.getActualType() instanceof VoidType and
+  result.getParent() instanceof ExprStmt
+  or
   // Finally, exclude functions that contain assembly blocks. It's
   // anyone's guess what happens in those.
   containsInlineAssembly(result.getEnclosingFunction())
+  or
+  exists(Call c | c.getQualifier() = result | c.getTarget().isStatic())
 }
 
-from UninitialisedLocalReachability r, LocalVariable v, VariableAccess va
+predicate isSinkImpl(Instruction sink, VariableAccess va) {
+  exists(LoadInstruction load |
+    va = load.getUnconvertedResultExpression() and
+    not va = commonException() and
+    not va.getTarget().(LocalVariable).getFunction().hasErrors() and
+    sink = load.getSourceValue()
+  )
+}
+
+class MustFlow extends MustFlowConfiguration {
+  MustFlow() { this = "MustFlow" }
+
+  override predicate isSource(Instruction source) {
+    source instanceof UninitializedInstruction and
+    exists(Type t | t = source.getResultType() | not allocatedType(t))
+  }
+
+  override predicate isSink(Operand sink) { isSinkImpl(sink.getDef(), _) }
+
+  override predicate allowInterproceduralFlow() { none() }
+
+  override predicate isBarrier(Instruction instr) { instr instanceof ChiInstruction }
+}
+
+from
+  VariableAccess va, LocalVariable v, MustFlow conf, MustFlowPathNode source, MustFlowPathNode sink
 where
-  r.reaches(_, v, va) and
-  not va = commonException()
-select va, "The variable $@ may not be initialized at this access.", v, v.getName()
+  conf.hasFlowPath(source, sink) and
+  isSinkImpl(sink.getInstruction(), va) and
+  v = va.getTarget()
+select va, source, sink, "The variable $@ may not be initialized at this access.", v, v.getName()

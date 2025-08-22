@@ -19,20 +19,32 @@ private class Diagnostic extends @diagnostic {
   string getMessage() { diagnostics(this, _, _, result, _, _) }
 
   /** Gets the file that this error is associated with, if any. */
-  File getFile() { this.hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
+  File getFile() { result = this.getLocation().getFile() }
 
-  /**
-   * Holds if this element is at the specified location.
-   * The location spans column `startcolumn` of line `startline` to
-   * column `endcolumn` of line `endline` in file `filepath`.
-   * For more information, see
-   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-   */
-  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    exists(Location l | diagnostics(this, _, _, _, _, l) | l.hasLocationInfo(path, sl, sc, el, ec))
-  }
+  /** Gets the location for this error. */
+  Location getLocation() { diagnostics(this, _, _, _, _, result) }
 
   string toString() { result = this.getMessage() }
+}
+
+bindingset[msg]
+private string removeAbsolutePaths(string msg) {
+  exists(string r |
+    // turn both
+    // cannot find package "subdir1/subsubdir1" in any of:\n\t/usr/local/Cellar/go/1.20.5/libexec/src/subdir1/subsubdir1 (from $GOROOT)\n\t/Users/owen-mc/go/src/subdir1/subsubdir1 (from $GOPATH)
+    // and
+    // cannot find package "subdir1/subsubdir1" in any of:\n\tC:\\hostedtoolcache\\windows\\go\\1.20.5\\x64\\src\\subdir1\\subsubdir1 (from $GOROOT)\n\tC:\\Users\\runneradmin\\go\\src\\subdir1\\subsubdir1 (from $GOPATH)
+    // into
+    // cannot find package "subdir1/subsubdir1" in any of:\n\t(absolute path) (from $GOROOT)\n\t(absolute path) (from $GOPATH)
+    r =
+      "(cannot find package [^ ]* in any of:\\n\\t).*( \\(from \\$GOROOT\\)\\n\\t).*( \\(from \\$GOPATH\\))" and
+    if exists(msg.regexpCapture(r, 1))
+    then
+      result =
+        msg.regexpCapture(r, 1) + "(absolute path)" + msg.regexpCapture(r, 2) + "(absolute path)" +
+          msg.regexpCapture(r, 3)
+    else result = msg
+  )
 }
 
 /**
@@ -47,10 +59,11 @@ predicate reportableDiagnostics(Diagnostic d, string msg, int sev) {
     exists(File f | f = d.getFile() |
       exists(f.getAChild()) and
       msg =
-        "Extraction failed in " + d.getFile().getRelativePath() + " with error " + d.getMessage()
+        "Extraction failed in " + f.getRelativePath() + " with error " +
+          removeAbsolutePaths(d.getMessage())
     )
     or
     not exists(d.getFile()) and
-    msg = "Extraction failed with error " + d.getMessage()
+    msg = "Extraction failed with error " + removeAbsolutePaths(d.getMessage())
   )
 }

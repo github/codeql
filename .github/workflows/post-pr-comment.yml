@@ -17,8 +17,11 @@ jobs:
   post_comment:
     runs-on: ubuntu-latest
     steps:
-      - name: Download artifact
-        run: gh run download "${WORKFLOW_RUN_ID}" --repo "${GITHUB_REPOSITORY}" --name "comment"
+      - name: Download artifacts
+        run: |
+          gh run download "${WORKFLOW_RUN_ID}" --repo "${GITHUB_REPOSITORY}" --name "comment-pr-number"
+          gh run download "${WORKFLOW_RUN_ID}" --repo "${GITHUB_REPOSITORY}" --name "comment-body"
+          gh run download "${WORKFLOW_RUN_ID}" --repo "${GITHUB_REPOSITORY}" --name "comment-id"
         env:
           GITHUB_TOKEN: ${{ github.token }}
           WORKFLOW_RUN_ID: ${{ github.event.workflow_run.id }}

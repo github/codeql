@@ -1,31 +1,78 @@
+#select
+| UrlRedirect2.cs:14:31:14:61 | access to indexer | UrlRedirect2.cs:14:31:14:53 | access to property QueryString : NameValueCollection | UrlRedirect2.cs:14:31:14:61 | access to indexer | Untrusted URL redirection due to $@. | UrlRedirect2.cs:14:31:14:53 | access to property QueryString | user-provided value |
+| UrlRedirect.cs:13:31:13:61 | access to indexer | UrlRedirect.cs:13:31:13:53 | access to property QueryString : NameValueCollection | UrlRedirect.cs:13:31:13:61 | access to indexer | Untrusted URL redirection due to $@. | UrlRedirect.cs:13:31:13:53 | access to property QueryString | user-provided value |
+| UrlRedirect.cs:38:44:38:74 | access to indexer | UrlRedirect.cs:38:44:38:66 | access to property QueryString : NameValueCollection | UrlRedirect.cs:38:44:38:74 | access to indexer | Untrusted URL redirection due to $@. | UrlRedirect.cs:38:44:38:66 | access to property QueryString | user-provided value |
+| UrlRedirect.cs:39:47:39:77 | access to indexer | UrlRedirect.cs:39:47:39:69 | access to property QueryString : NameValueCollection | UrlRedirect.cs:39:47:39:77 | access to indexer | Untrusted URL redirection due to $@. | UrlRedirect.cs:39:47:39:69 | access to property QueryString | user-provided value |
+| UrlRedirect.cs:48:29:48:31 | access to local variable url | UrlRedirect.cs:23:22:23:44 | access to property QueryString : NameValueCollection | UrlRedirect.cs:48:29:48:31 | access to local variable url | Untrusted URL redirection due to $@. | UrlRedirect.cs:23:22:23:44 | access to property QueryString | user-provided value |
+| UrlRedirect.cs:64:31:64:52 | $"..." | UrlRedirect.cs:23:22:23:44 | access to property QueryString : NameValueCollection | UrlRedirect.cs:64:31:64:52 | $"..." | Untrusted URL redirection due to $@. | UrlRedirect.cs:23:22:23:44 | access to property QueryString | user-provided value |
+| UrlRedirect.cs:70:31:70:69 | call to method Format | UrlRedirect.cs:23:22:23:44 | access to property QueryString : NameValueCollection | UrlRedirect.cs:70:31:70:69 | call to method Format | Untrusted URL redirection due to $@. | UrlRedirect.cs:23:22:23:44 | access to property QueryString | user-provided value |
+| UrlRedirect.cs:76:31:76:77 | call to method Format | UrlRedirect.cs:23:22:23:44 | access to property QueryString : NameValueCollection | UrlRedirect.cs:76:31:76:77 | call to method Format | Untrusted URL redirection due to $@. | UrlRedirect.cs:23:22:23:44 | access to property QueryString | user-provided value |
+| UrlRedirectCore.cs:16:22:16:26 | access to parameter value | UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:16:22:16:26 | access to parameter value | Untrusted URL redirection due to $@. | UrlRedirectCore.cs:13:44:13:48 | value | user-provided value |
+| UrlRedirectCore.cs:19:44:19:48 | call to operator implicit conversion | UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:19:44:19:48 | call to operator implicit conversion | Untrusted URL redirection due to $@. | UrlRedirectCore.cs:13:44:13:48 | value | user-provided value |
+| UrlRedirectCore.cs:25:46:25:50 | call to operator implicit conversion | UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:25:46:25:50 | call to operator implicit conversion | Untrusted URL redirection due to $@. | UrlRedirectCore.cs:13:44:13:48 | value | user-provided value |
+| UrlRedirectCore.cs:31:66:31:70 | access to parameter value | UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:31:66:31:70 | access to parameter value | Untrusted URL redirection due to $@. | UrlRedirectCore.cs:13:44:13:48 | value | user-provided value |
+| UrlRedirectCore.cs:34:49:34:53 | call to operator implicit conversion | UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:34:49:34:53 | call to operator implicit conversion | Untrusted URL redirection due to $@. | UrlRedirectCore.cs:13:44:13:48 | value | user-provided value |
+| UrlRedirectCore.cs:37:69:37:73 | access to parameter value | UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:37:69:37:73 | access to parameter value | Untrusted URL redirection due to $@. | UrlRedirectCore.cs:13:44:13:48 | value | user-provided value |
+| UrlRedirectCore.cs:40:39:40:53 | ... + ... | UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:40:39:40:53 | ... + ... | Untrusted URL redirection due to $@. | UrlRedirectCore.cs:13:44:13:48 | value | user-provided value |
+| UrlRedirectCore.cs:48:28:48:32 | access to parameter value | UrlRedirectCore.cs:45:51:45:55 | value : String | UrlRedirectCore.cs:48:28:48:32 | access to parameter value | Untrusted URL redirection due to $@. | UrlRedirectCore.cs:45:51:45:55 | value | user-provided value |
+| UrlRedirectCore.cs:53:32:53:45 | object creation of type Uri | UrlRedirectCore.cs:45:51:45:55 | value : String | UrlRedirectCore.cs:53:32:53:45 | object creation of type Uri | Untrusted URL redirection due to $@. | UrlRedirectCore.cs:45:51:45:55 | value | user-provided value |
+| UrlRedirectCore.cs:56:31:56:35 | access to parameter value | UrlRedirectCore.cs:45:51:45:55 | value : String | UrlRedirectCore.cs:56:31:56:35 | access to parameter value | Untrusted URL redirection due to $@. | UrlRedirectCore.cs:45:51:45:55 | value | user-provided value |
 edges
-| UrlRedirect.cs:12:31:12:53 | access to property QueryString : NameValueCollection | UrlRedirect.cs:12:31:12:61 | access to indexer |
-| UrlRedirect.cs:22:22:22:44 | access to property QueryString : NameValueCollection | UrlRedirect.cs:22:22:22:52 | access to indexer : String |
-| UrlRedirect.cs:22:22:22:44 | access to property QueryString : NameValueCollection | UrlRedirect.cs:47:29:47:31 | access to local variable url |
-| UrlRedirect.cs:22:22:22:52 | access to indexer : String | UrlRedirect.cs:47:29:47:31 | access to local variable url |
-| UrlRedirect.cs:37:44:37:66 | access to property QueryString : NameValueCollection | UrlRedirect.cs:37:44:37:74 | access to indexer |
-| UrlRedirect.cs:38:47:38:69 | access to property QueryString : NameValueCollection | UrlRedirect.cs:38:47:38:77 | access to indexer |
-| UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:16:22:16:26 | access to parameter value |
-| UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:19:44:19:48 | call to operator implicit conversion |
-| UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:25:46:25:50 | call to operator implicit conversion |
-| UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:31:66:31:70 | access to parameter value |
-| UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:34:49:34:53 | call to operator implicit conversion |
-| UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:37:69:37:73 | access to parameter value |
-| UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:40:39:40:53 | ... + ... |
-| UrlRedirectCore.cs:45:51:45:55 | value : String | UrlRedirectCore.cs:48:28:48:32 | access to parameter value |
-| UrlRedirectCore.cs:45:51:45:55 | value : String | UrlRedirectCore.cs:53:40:53:44 | access to parameter value : String |
-| UrlRedirectCore.cs:45:51:45:55 | value : String | UrlRedirectCore.cs:56:31:56:35 | access to parameter value |
-| UrlRedirectCore.cs:53:40:53:44 | access to parameter value : String | UrlRedirectCore.cs:53:32:53:45 | object creation of type Uri |
+| UrlRedirect2.cs:14:31:14:53 | access to property QueryString : NameValueCollection | UrlRedirect2.cs:14:31:14:61 | access to indexer | provenance |  |
+| UrlRedirect2.cs:14:31:14:53 | access to property QueryString : NameValueCollection | UrlRedirect2.cs:14:31:14:61 | access to indexer | provenance | MaD:1 |
+| UrlRedirect.cs:13:31:13:53 | access to property QueryString : NameValueCollection | UrlRedirect.cs:13:31:13:61 | access to indexer | provenance |  |
+| UrlRedirect.cs:13:31:13:53 | access to property QueryString : NameValueCollection | UrlRedirect.cs:13:31:13:61 | access to indexer | provenance | MaD:1 |
+| UrlRedirect.cs:23:16:23:18 | access to local variable url : String | UrlRedirect.cs:48:29:48:31 | access to local variable url | provenance |  |
+| UrlRedirect.cs:23:16:23:18 | access to local variable url : String | UrlRedirect.cs:64:31:64:52 | $"..." | provenance |  |
+| UrlRedirect.cs:23:16:23:18 | access to local variable url : String | UrlRedirect.cs:70:66:70:68 | access to local variable url : String | provenance |  |
+| UrlRedirect.cs:23:16:23:18 | access to local variable url : String | UrlRedirect.cs:76:69:76:71 | access to local variable url : String | provenance |  |
+| UrlRedirect.cs:23:16:23:18 | access to local variable url : String | UrlRedirect.cs:76:74:76:76 | access to local variable url : String | provenance |  |
+| UrlRedirect.cs:23:22:23:44 | access to property QueryString : NameValueCollection | UrlRedirect.cs:23:16:23:18 | access to local variable url : String | provenance |  |
+| UrlRedirect.cs:23:22:23:44 | access to property QueryString : NameValueCollection | UrlRedirect.cs:23:22:23:52 | access to indexer : String | provenance | MaD:1 |
+| UrlRedirect.cs:23:22:23:52 | access to indexer : String | UrlRedirect.cs:23:16:23:18 | access to local variable url : String | provenance |  |
+| UrlRedirect.cs:38:44:38:66 | access to property QueryString : NameValueCollection | UrlRedirect.cs:38:44:38:74 | access to indexer | provenance |  |
+| UrlRedirect.cs:38:44:38:66 | access to property QueryString : NameValueCollection | UrlRedirect.cs:38:44:38:74 | access to indexer | provenance | MaD:1 |
+| UrlRedirect.cs:39:47:39:69 | access to property QueryString : NameValueCollection | UrlRedirect.cs:39:47:39:77 | access to indexer | provenance |  |
+| UrlRedirect.cs:39:47:39:69 | access to property QueryString : NameValueCollection | UrlRedirect.cs:39:47:39:77 | access to indexer | provenance | MaD:1 |
+| UrlRedirect.cs:70:66:70:68 | access to local variable url : String | UrlRedirect.cs:70:31:70:69 | call to method Format | provenance | MaD:2 |
+| UrlRedirect.cs:76:69:76:71 | access to local variable url : String | UrlRedirect.cs:76:31:76:77 | call to method Format | provenance | MaD:3 |
+| UrlRedirect.cs:76:74:76:76 | access to local variable url : String | UrlRedirect.cs:76:31:76:77 | call to method Format | provenance | MaD:4 |
+| UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:16:22:16:26 | access to parameter value | provenance |  |
+| UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:19:44:19:48 | call to operator implicit conversion | provenance |  |
+| UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:25:46:25:50 | call to operator implicit conversion | provenance |  |
+| UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:31:66:31:70 | access to parameter value | provenance |  |
+| UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:34:49:34:53 | call to operator implicit conversion | provenance |  |
+| UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:37:69:37:73 | access to parameter value | provenance |  |
+| UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:40:39:40:53 | ... + ... | provenance |  |
+| UrlRedirectCore.cs:45:51:45:55 | value : String | UrlRedirectCore.cs:48:28:48:32 | access to parameter value | provenance |  |
+| UrlRedirectCore.cs:45:51:45:55 | value : String | UrlRedirectCore.cs:53:40:53:44 | access to parameter value : String | provenance |  |
+| UrlRedirectCore.cs:45:51:45:55 | value : String | UrlRedirectCore.cs:56:31:56:35 | access to parameter value | provenance |  |
+| UrlRedirectCore.cs:53:40:53:44 | access to parameter value : String | UrlRedirectCore.cs:53:32:53:45 | object creation of type Uri | provenance | MaD:5 |
+models
+| 1 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
+| 2 | Summary: System; String; false; Format; (System.String,System.Object); ; Argument[1]; ReturnValue; taint; manual |
+| 3 | Summary: System; String; false; Format; (System.String,System.Object,System.Object); ; Argument[1]; ReturnValue; taint; manual |
+| 4 | Summary: System; String; false; Format; (System.String,System.Object,System.Object); ; Argument[2]; ReturnValue; taint; manual |
+| 5 | Summary: System; Uri; false; Uri; (System.String); ; Argument[0]; Argument[this]; taint; manual |
 nodes
-| UrlRedirect.cs:12:31:12:53 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
-| UrlRedirect.cs:12:31:12:61 | access to indexer | semmle.label | access to indexer |
-| UrlRedirect.cs:22:22:22:44 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
-| UrlRedirect.cs:22:22:22:52 | access to indexer : String | semmle.label | access to indexer : String |
-| UrlRedirect.cs:37:44:37:66 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
-| UrlRedirect.cs:37:44:37:74 | access to indexer | semmle.label | access to indexer |
-| UrlRedirect.cs:38:47:38:69 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
-| UrlRedirect.cs:38:47:38:77 | access to indexer | semmle.label | access to indexer |
-| UrlRedirect.cs:47:29:47:31 | access to local variable url | semmle.label | access to local variable url |
+| UrlRedirect2.cs:14:31:14:53 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| UrlRedirect2.cs:14:31:14:61 | access to indexer | semmle.label | access to indexer |
+| UrlRedirect.cs:13:31:13:53 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| UrlRedirect.cs:13:31:13:61 | access to indexer | semmle.label | access to indexer |
+| UrlRedirect.cs:23:16:23:18 | access to local variable url : String | semmle.label | access to local variable url : String |
+| UrlRedirect.cs:23:22:23:44 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| UrlRedirect.cs:23:22:23:52 | access to indexer : String | semmle.label | access to indexer : String |
+| UrlRedirect.cs:38:44:38:66 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| UrlRedirect.cs:38:44:38:74 | access to indexer | semmle.label | access to indexer |
+| UrlRedirect.cs:39:47:39:69 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| UrlRedirect.cs:39:47:39:77 | access to indexer | semmle.label | access to indexer |
+| UrlRedirect.cs:48:29:48:31 | access to local variable url | semmle.label | access to local variable url |
+| UrlRedirect.cs:64:31:64:52 | $"..." | semmle.label | $"..." |
+| UrlRedirect.cs:70:31:70:69 | call to method Format | semmle.label | call to method Format |
+| UrlRedirect.cs:70:66:70:68 | access to local variable url : String | semmle.label | access to local variable url : String |
+| UrlRedirect.cs:76:31:76:77 | call to method Format | semmle.label | call to method Format |
+| UrlRedirect.cs:76:69:76:71 | access to local variable url : String | semmle.label | access to local variable url : String |
+| UrlRedirect.cs:76:74:76:76 | access to local variable url : String | semmle.label | access to local variable url : String |
 | UrlRedirectCore.cs:13:44:13:48 | value : String | semmle.label | value : String |
 | UrlRedirectCore.cs:16:22:16:26 | access to parameter value | semmle.label | access to parameter value |
 | UrlRedirectCore.cs:19:44:19:48 | call to operator implicit conversion | semmle.label | call to operator implicit conversion |
@@ -40,18 +87,3 @@ nodes
 | UrlRedirectCore.cs:53:40:53:44 | access to parameter value : String | semmle.label | access to parameter value : String |
 | UrlRedirectCore.cs:56:31:56:35 | access to parameter value | semmle.label | access to parameter value |
 subpaths
-#select
-| UrlRedirect.cs:12:31:12:61 | access to indexer | UrlRedirect.cs:12:31:12:53 | access to property QueryString : NameValueCollection | UrlRedirect.cs:12:31:12:61 | access to indexer | Untrusted URL redirection due to $@. | UrlRedirect.cs:12:31:12:53 | access to property QueryString | user-provided value |
-| UrlRedirect.cs:37:44:37:74 | access to indexer | UrlRedirect.cs:37:44:37:66 | access to property QueryString : NameValueCollection | UrlRedirect.cs:37:44:37:74 | access to indexer | Untrusted URL redirection due to $@. | UrlRedirect.cs:37:44:37:66 | access to property QueryString | user-provided value |
-| UrlRedirect.cs:38:47:38:77 | access to indexer | UrlRedirect.cs:38:47:38:69 | access to property QueryString : NameValueCollection | UrlRedirect.cs:38:47:38:77 | access to indexer | Untrusted URL redirection due to $@. | UrlRedirect.cs:38:47:38:69 | access to property QueryString | user-provided value |
-| UrlRedirect.cs:47:29:47:31 | access to local variable url | UrlRedirect.cs:22:22:22:44 | access to property QueryString : NameValueCollection | UrlRedirect.cs:47:29:47:31 | access to local variable url | Untrusted URL redirection due to $@. | UrlRedirect.cs:22:22:22:44 | access to property QueryString | user-provided value |
-| UrlRedirectCore.cs:16:22:16:26 | access to parameter value | UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:16:22:16:26 | access to parameter value | Untrusted URL redirection due to $@. | UrlRedirectCore.cs:13:44:13:48 | value | user-provided value |
-| UrlRedirectCore.cs:19:44:19:48 | call to operator implicit conversion | UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:19:44:19:48 | call to operator implicit conversion | Untrusted URL redirection due to $@. | UrlRedirectCore.cs:13:44:13:48 | value | user-provided value |
-| UrlRedirectCore.cs:25:46:25:50 | call to operator implicit conversion | UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:25:46:25:50 | call to operator implicit conversion | Untrusted URL redirection due to $@. | UrlRedirectCore.cs:13:44:13:48 | value | user-provided value |
-| UrlRedirectCore.cs:31:66:31:70 | access to parameter value | UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:31:66:31:70 | access to parameter value | Untrusted URL redirection due to $@. | UrlRedirectCore.cs:13:44:13:48 | value | user-provided value |
-| UrlRedirectCore.cs:34:49:34:53 | call to operator implicit conversion | UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:34:49:34:53 | call to operator implicit conversion | Untrusted URL redirection due to $@. | UrlRedirectCore.cs:13:44:13:48 | value | user-provided value |
-| UrlRedirectCore.cs:37:69:37:73 | access to parameter value | UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:37:69:37:73 | access to parameter value | Untrusted URL redirection due to $@. | UrlRedirectCore.cs:13:44:13:48 | value | user-provided value |
-| UrlRedirectCore.cs:40:39:40:53 | ... + ... | UrlRedirectCore.cs:13:44:13:48 | value : String | UrlRedirectCore.cs:40:39:40:53 | ... + ... | Untrusted URL redirection due to $@. | UrlRedirectCore.cs:13:44:13:48 | value | user-provided value |
-| UrlRedirectCore.cs:48:28:48:32 | access to parameter value | UrlRedirectCore.cs:45:51:45:55 | value : String | UrlRedirectCore.cs:48:28:48:32 | access to parameter value | Untrusted URL redirection due to $@. | UrlRedirectCore.cs:45:51:45:55 | value | user-provided value |
-| UrlRedirectCore.cs:53:32:53:45 | object creation of type Uri | UrlRedirectCore.cs:45:51:45:55 | value : String | UrlRedirectCore.cs:53:32:53:45 | object creation of type Uri | Untrusted URL redirection due to $@. | UrlRedirectCore.cs:45:51:45:55 | value | user-provided value |
-| UrlRedirectCore.cs:56:31:56:35 | access to parameter value | UrlRedirectCore.cs:45:51:45:55 | value : String | UrlRedirectCore.cs:56:31:56:35 | access to parameter value | Untrusted URL redirection due to $@. | UrlRedirectCore.cs:45:51:45:55 | value | user-provided value |

@@ -18,8 +18,6 @@ private import semmle.javascript.internal.CachedStages
  * </pre>
  */
 class JSDoc extends @jsdoc, Locatable {
-  override Location getLocation() { hasLocation(this, result) }
-
   /** Gets the description text of this JSDoc comment. */
   string getDescription() { jsdoc(this, result, _) }
 
@@ -31,11 +29,14 @@ class JSDoc extends @jsdoc, Locatable {
 
   /** Gets a JSDoc tag within this JSDoc comment with the given title. */
   JSDocTag getATagByTitle(string title) {
-    result = getATag() and
+    result = this.getATag() and
     result.getTitle() = title
   }
 
-  override string toString() { result = getComment().toString() }
+  /** Gets the element to which this JSDoc comment is attached */
+  Documentable getDocumentedElement() { result.getDocumentation() = this }
+
+  override string toString() { result = this.getComment().toString() }
 }
 
 /**
@@ -59,7 +60,7 @@ abstract class Documentable extends AstNode {
   /** Gets the JSDoc comment for this element, if any. */
   cached
   JSDoc getDocumentation() {
-    Stages::Ast::ref() and result.getComment().getNextToken() = getFirstToken()
+    Stages::Ast::ref() and result.getComment().getNextToken() = this.getFirstToken()
   }
 }
 
@@ -75,8 +76,6 @@ abstract class Documentable extends AstNode {
  * ```
  */
 class JSDocTypeExprParent extends @jsdoc_type_expr_parent, Locatable {
-  override Location getLocation() { hasLocation(this, result) }
-
   /** Gets the JSDoc comment to which this element belongs. */
   JSDoc getJSDocComment() { none() }
 }
@@ -120,11 +119,11 @@ class JSDocTag extends @jsdoc_tag, JSDocTypeExprParent {
 
   /** Holds if this tag documents a simple name (as opposed to a name path). */
   predicate documentsSimpleName() {
-    exists(string name | name = getName() | not name.matches("%.%"))
+    exists(string name | name = this.getName() | not name.matches("%.%"))
   }
 
   /** Gets the toplevel in which this tag appears. */
-  TopLevel getTopLevel() { result = getParent().getComment().getTopLevel() }
+  TopLevel getTopLevel() { result = this.getParent().getComment().getTopLevel() }
 
   override JSDoc getJSDocComment() { result.getATag() = this }
 }
@@ -139,12 +138,12 @@ class JSDocTag extends @jsdoc_tag, JSDocTypeExprParent {
  * ```
  */
 class JSDocParamTag extends JSDocTag {
-  JSDocParamTag() { getTitle().regexpMatch("param|arg(ument)?") }
+  JSDocParamTag() { this.getTitle().regexpMatch("param|arg(ument)?") }
 
   /** Gets the parameter this tag refers to, if it can be determined. */
   Variable getDocumentedParameter() {
-    exists(Parameterized parm | parm.getDocumentation() = getParent() |
-      result = pragma[only_bind_out](parm).getParameterVariable(getName())
+    exists(Parameterized parm | parm.getDocumentation() = this.getParent() |
+      result = pragma[only_bind_out](parm).getParameterVariable(this.getName())
     )
   }
 }
@@ -182,10 +181,10 @@ class JSDocTypeExpr extends @jsdoc_type_expr, JSDocTypeExprParent, TypeAnnotatio
 
   override string toString() { jsdoc_type_exprs(this, _, _, _, result) }
 
-  override JSDoc getJSDocComment() { result = getParent().getJSDocComment() }
+  override JSDoc getJSDocComment() { result = this.getParent().getJSDocComment() }
 
   override Stmt getEnclosingStmt() {
-    exists(Documentable astNode | astNode.getDocumentation() = getJSDocComment() |
+    exists(Documentable astNode | astNode.getDocumentation() = this.getJSDocComment() |
       result = astNode
       or
       result = astNode.(ExprOrType).getEnclosingStmt()
@@ -194,9 +193,9 @@ class JSDocTypeExpr extends @jsdoc_type_expr, JSDocTypeExprParent, TypeAnnotatio
     )
   }
 
-  override Function getEnclosingFunction() { result = getContainer() }
+  override Function getEnclosingFunction() { result = this.getContainer() }
 
-  override TopLevel getTopLevel() { result = getEnclosingStmt().getTopLevel() }
+  override TopLevel getTopLevel() { result = this.getEnclosingStmt().getTopLevel() }
 }
 
 /**
@@ -265,7 +264,81 @@ class JSDocVoidTypeExpr extends @jsdoc_void_type_expr, JSDocTypeExpr {
 }
 
 /**
- * A type expression referring to a named type.
+ * An identifier in a JSDoc type expression, such as `Object` or `string`.
+ *
+ * Note that qualified names consist of multiple identifier nodes.
+ */
+class JSDocIdentifierTypeExpr extends @jsdoc_identifier_type_expr, JSDocTypeExpr {
+  /**
+   * Gets the name of the identifier.
+   */
+  string getName() { result = this.toString() }
+
+  override predicate isString() { this.getName() = "string" }
+
+  override predicate isStringy() {
+    exists(string name | name = this.getName() |
+      name = "string" or
+      name = "String"
+    )
+  }
+
+  override predicate isNumber() { this.getName() = "number" }
+
+  override predicate isNumbery() {
+    exists(string name | name = this.getName() |
+      name = ["number", "Number", "double", "Double", "int", "integer", "Integer"]
+    )
+  }
+
+  override predicate isBoolean() { this.getName() = "boolean" }
+
+  override predicate isBooleany() {
+    this.getName() = "boolean" or
+    this.getName() = "Boolean" or
+    this.getName() = "bool"
+  }
+
+  override predicate isRawFunction() { this.getName() = "Function" }
+}
+
+private AstNode getAncestorInScope(Documentable doc) {
+  any(JSDocLocalTypeAccess t).getJSDocComment() = doc.getDocumentation() and // restrict to cases where we need this
+  result = doc.getParent()
+  or
+  exists(AstNode mid |
+    mid = getAncestorInScope(doc) and
+    not mid = any(Scope s).getScopeElement() and
+    result = mid.getParent()
+  )
+}
+
+private Scope getScope(Documentable doc) { result.getScopeElement() = getAncestorInScope(doc) }
+
+pragma[nomagic]
+private predicate shouldResolveName(TopLevel top, string name) {
+  exists(JSDocLocalTypeAccess access |
+    access.getName() = name and
+    access.getTopLevel() = top
+  )
+}
+
+private LexicalName getOwnLocal(Scope scope, string name, DeclarationSpace space) {
+  scope = result.getScope() and
+  name = result.getName() and
+  space = result.getDeclarationSpace() and
+  shouldResolveName(scope.getScopeElement().getTopLevel(), name) // restrict size of predicate
+}
+
+private LexicalName resolveLocal(Scope scope, string name, DeclarationSpace space) {
+  result = getOwnLocal(scope, name, space)
+  or
+  result = resolveLocal(scope.getOuterScope(), name, space) and
+  not exists(getOwnLocal(scope, name, space))
+}
+
+/**
+ * An unqualified identifier in a JSDoc type expression.
  *
  * Example:
  *
@@ -274,36 +347,65 @@ class JSDocVoidTypeExpr extends @jsdoc_void_type_expr, JSDocTypeExpr {
  * Object
  * ```
  */
-class JSDocNamedTypeExpr extends @jsdoc_named_type_expr, JSDocTypeExpr {
-  /** Gets the name of the type the expression refers to. */
-  string getName() { result = toString() }
+class JSDocLocalTypeAccess extends JSDocIdentifierTypeExpr {
+  JSDocLocalTypeAccess() { not this = any(JSDocQualifiedTypeAccess a).getNameNode() }
 
-  override predicate isString() { getName() = "string" }
+  /** Gets a variable, type-name, or namespace that this expression may resolve to. */
+  LexicalName getALexicalName() {
+    result =
+      resolveLocal(getScope(this.getJSDocComment().getDocumentedElement()), this.getName(), _)
+  }
+}
 
-  override predicate isStringy() {
-    exists(string name | name = getName() |
-      name = "string" or
-      name = "String"
-    )
+/**
+ * A qualified type name in a JSDoc type expression, such as `X.Y`.
+ */
+class JSDocQualifiedTypeAccess extends @jsdoc_qualified_type_expr, JSDocTypeExpr {
+  /**
+   * Gets the base of this access, such as the `X` in `X.Y`.
+   */
+  JSDocTypeExpr getBase() { result = this.getChild(0) }
+
+  /**
+   * Gets the node naming the member being accessed, such as the `Y` node in `X.Y`.
+   */
+  JSDocIdentifierTypeExpr getNameNode() { result = this.getChild(1) }
+
+  /**
+   * Gets the name being accessed, such as `Y` in `X.Y`.
+   */
+  string getName() { result = this.getNameNode().getName() }
+}
+
+/**
+ * A type expression referring to a named type.
+ *
+ * Example:
+ *
+ * ```
+ * string
+ * Object
+ * Namespace.Type
+ * ```
+ */
+class JSDocNamedTypeExpr extends JSDocTypeExpr {
+  JSDocNamedTypeExpr() {
+    this instanceof JSDocLocalTypeAccess
+    or
+    this instanceof JSDocQualifiedTypeAccess
   }
 
-  override predicate isNumber() { getName() = "number" }
+  /**
+   * Gets the name directly as it appears in this type, including any qualifiers.
+   *
+   * For example, for `X.Y` this gets the string `"X.Y"`.
+   */
+  string getRawName() { result = this.toString() }
 
-  override predicate isNumbery() {
-    exists(string name | name = getName() |
-      name = ["number", "Number", "double", "Double", "int", "integer", "Integer"]
-    )
-  }
-
-  override predicate isBoolean() { getName() = "boolean" }
-
-  override predicate isBooleany() {
-    getName() = "boolean" or
-    getName() = "Boolean" or
-    getName() = "bool"
-  }
-
-  override predicate isRawFunction() { getName() = "Function" }
+  /**
+   * DEPRECATED. Use `getRawName()` instead.
+   */
+  deprecated string getName() { result = this.toString() }
 
   /**
    * Holds if this name consists of the unqualified name `prefix`
@@ -313,51 +415,12 @@ class JSDocNamedTypeExpr extends @jsdoc_named_type_expr, JSDocTypeExpr {
    * - `foo.bar.Baz` has prefix `foo` and suffix `.bar.Baz`.
    * - `Baz` has prefix `Baz` and an empty suffix.
    */
-  predicate hasNameParts(string prefix, string suffix) {
+  deprecated predicate hasNameParts(string prefix, string suffix) {
+    not this = any(JSDocQualifiedTypeAccess a).getBase() and // restrict size of predicate
     exists(string regex, string name | regex = "([^.]+)(.*)" |
-      name = getName() and
+      name = this.getRawName() and
       prefix = name.regexpCapture(regex, 1) and
       suffix = name.regexpCapture(regex, 2)
-    )
-  }
-
-  pragma[noinline]
-  pragma[nomagic]
-  private predicate hasNamePartsAndEnv(string prefix, string suffix, JSDoc::Environment env) {
-    // Force join ordering
-    hasNameParts(prefix, suffix) and
-    env.isContainerInScope(getContainer())
-  }
-
-  /**
-   * Gets the qualified name of this name by resolving its prefix, if any.
-   */
-  cached
-  private string resolvedName() {
-    exists(string prefix, string suffix, JSDoc::Environment env |
-      hasNamePartsAndEnv(prefix, suffix, env) and
-      result = env.resolveAlias(prefix) + suffix
-    )
-  }
-
-  override predicate hasQualifiedName(string globalName) {
-    globalName = resolvedName()
-    or
-    not exists(resolvedName()) and
-    globalName = getName()
-  }
-
-  override DataFlow::ClassNode getClass() {
-    exists(string name |
-      hasQualifiedName(name) and
-      result.hasQualifiedName(name)
-    )
-    or
-    // Handle case where a local variable has a reference to the class,
-    // but the class doesn't have a globally qualified name.
-    exists(string alias, JSDoc::Environment env |
-      hasNamePartsAndEnv(alias, "", env) and
-      result.getAClassReference().flowsTo(env.getNodeFromAlias(alias))
     )
   }
 }
@@ -373,25 +436,21 @@ class JSDocNamedTypeExpr extends @jsdoc_named_type_expr, JSDocTypeExpr {
  */
 class JSDocAppliedTypeExpr extends @jsdoc_applied_type_expr, JSDocTypeExpr {
   /** Gets the head type expression, such as `Array` in `Array<string>`. */
-  JSDocTypeExpr getHead() { result = getChild(-1) }
+  JSDocTypeExpr getHead() { result = this.getChild(-1) }
 
   /**
    * Gets the `i`th argument type of the applied type expression.
    *
    * For example, in `Array<string>`, `string` is the 0th argument type.
    */
-  JSDocTypeExpr getArgument(int i) { i >= 0 and result = getChild(i) }
+  JSDocTypeExpr getArgument(int i) { i >= 0 and result = this.getChild(i) }
 
   /**
    * Gets an argument type of the applied type expression.
    *
    * For example, in `Array<string>`, `string` is the only argument type.
    */
-  JSDocTypeExpr getAnArgument() { result = getArgument(_) }
-
-  override predicate hasQualifiedName(string globalName) { getHead().hasQualifiedName(globalName) }
-
-  override DataFlow::ClassNode getClass() { result = getHead().getClass() }
+  JSDocTypeExpr getAnArgument() { result = this.getArgument(_) }
 }
 
 /**
@@ -405,14 +464,12 @@ class JSDocAppliedTypeExpr extends @jsdoc_applied_type_expr, JSDocTypeExpr {
  */
 class JSDocNullableTypeExpr extends @jsdoc_nullable_type_expr, JSDocTypeExpr {
   /** Gets the argument type expression. */
-  JSDocTypeExpr getTypeExpr() { result = getChild(0) }
+  JSDocTypeExpr getTypeExpr() { result = this.getChild(0) }
 
   /** Holds if the `?` operator of this type expression is written in prefix notation. */
   predicate isPrefix() { jsdoc_prefix_qualifier(this) }
 
-  override JSDocTypeExpr getAnUnderlyingType() { result = getTypeExpr().getAnUnderlyingType() }
-
-  override DataFlow::ClassNode getClass() { result = getTypeExpr().getClass() }
+  override JSDocTypeExpr getAnUnderlyingType() { result = this.getTypeExpr().getAnUnderlyingType() }
 }
 
 /**
@@ -426,14 +483,12 @@ class JSDocNullableTypeExpr extends @jsdoc_nullable_type_expr, JSDocTypeExpr {
  */
 class JSDocNonNullableTypeExpr extends @jsdoc_non_nullable_type_expr, JSDocTypeExpr {
   /** Gets the argument type expression. */
-  JSDocTypeExpr getTypeExpr() { result = getChild(0) }
+  JSDocTypeExpr getTypeExpr() { result = this.getChild(0) }
 
   /** Holds if the `!` operator of this type expression is written in prefix notation. */
   predicate isPrefix() { jsdoc_prefix_qualifier(this) }
 
-  override JSDocTypeExpr getAnUnderlyingType() { result = getTypeExpr().getAnUnderlyingType() }
-
-  override DataFlow::ClassNode getClass() { result = getTypeExpr().getClass() }
+  override JSDocTypeExpr getAnUnderlyingType() { result = this.getTypeExpr().getAnUnderlyingType() }
 }
 
 /**
@@ -450,14 +505,14 @@ class JSDocRecordTypeExpr extends @jsdoc_record_type_expr, JSDocTypeExpr {
   string getFieldName(int i) { jsdoc_record_field_name(this, i, result) }
 
   /** Gets the name of some field of the record type. */
-  string getAFieldName() { result = getFieldName(_) }
+  string getAFieldName() { result = this.getFieldName(_) }
 
   /** Gets the type of the `i`th field of the record type. */
-  JSDocTypeExpr getFieldType(int i) { result = getChild(i) }
+  JSDocTypeExpr getFieldType(int i) { result = this.getChild(i) }
 
   /** Gets the type of the field with the given name. */
   JSDocTypeExpr getFieldTypeByName(string fieldname) {
-    exists(int idx | fieldname = getFieldName(idx) and result = getFieldType(idx))
+    exists(int idx | fieldname = this.getFieldName(idx) and result = this.getFieldType(idx))
   }
 }
 
@@ -472,10 +527,10 @@ class JSDocRecordTypeExpr extends @jsdoc_record_type_expr, JSDocTypeExpr {
  */
 class JSDocArrayTypeExpr extends @jsdoc_array_type_expr, JSDocTypeExpr {
   /** Gets the type of the `i`th element of this array type. */
-  JSDocTypeExpr getElementType(int i) { result = getChild(i) }
+  JSDocTypeExpr getElementType(int i) { result = this.getChild(i) }
 
   /** Gets an element type of this array type. */
-  JSDocTypeExpr getAnElementType() { result = getElementType(_) }
+  JSDocTypeExpr getAnElementType() { result = this.getElementType(_) }
 }
 
 /**
@@ -489,9 +544,11 @@ class JSDocArrayTypeExpr extends @jsdoc_array_type_expr, JSDocTypeExpr {
  */
 class JSDocUnionTypeExpr extends @jsdoc_union_type_expr, JSDocTypeExpr {
   /** Gets one of the type alternatives of this union type. */
-  JSDocTypeExpr getAnAlternative() { result = getChild(_) }
+  JSDocTypeExpr getAnAlternative() { result = this.getChild(_) }
 
-  override JSDocTypeExpr getAnUnderlyingType() { result = getAnAlternative().getAnUnderlyingType() }
+  override JSDocTypeExpr getAnUnderlyingType() {
+    result = this.getAnAlternative().getAnUnderlyingType()
+  }
 }
 
 /**
@@ -505,16 +562,16 @@ class JSDocUnionTypeExpr extends @jsdoc_union_type_expr, JSDocTypeExpr {
  */
 class JSDocFunctionTypeExpr extends @jsdoc_function_type_expr, JSDocTypeExpr {
   /** Gets the result type of this function type. */
-  JSDocTypeExpr getResultType() { result = getChild(-1) }
+  JSDocTypeExpr getResultType() { result = this.getChild(-1) }
 
   /** Gets the receiver type of this function type. */
-  JSDocTypeExpr getReceiverType() { result = getChild(-2) }
+  JSDocTypeExpr getReceiverType() { result = this.getChild(-2) }
 
   /** Gets the `i`th parameter type of this function type. */
-  JSDocTypeExpr getParameterType(int i) { i >= 0 and result = getChild(i) }
+  JSDocTypeExpr getParameterType(int i) { i >= 0 and result = this.getChild(i) }
 
   /** Gets a parameter type of this function type. */
-  JSDocTypeExpr getAParameterType() { result = getParameterType(_) }
+  JSDocTypeExpr getAParameterType() { result = this.getParameterType(_) }
 
   /** Holds if this function type is a constructor type. */
   predicate isConstructorType() { jsdoc_has_new_parameter(this) }
@@ -531,13 +588,11 @@ class JSDocFunctionTypeExpr extends @jsdoc_function_type_expr, JSDocTypeExpr {
  */
 class JSDocOptionalParameterTypeExpr extends @jsdoc_optional_type_expr, JSDocTypeExpr {
   /** Gets the underlying type of this optional type. */
-  JSDocTypeExpr getUnderlyingType() { result = getChild(0) }
+  JSDocTypeExpr getUnderlyingType() { result = this.getChild(0) }
 
   override JSDocTypeExpr getAnUnderlyingType() {
-    result = getUnderlyingType().getAnUnderlyingType()
+    result = this.getUnderlyingType().getAnUnderlyingType()
   }
-
-  override DataFlow::ClassNode getClass() { result = getUnderlyingType().getClass() }
 }
 
 /**
@@ -551,7 +606,7 @@ class JSDocOptionalParameterTypeExpr extends @jsdoc_optional_type_expr, JSDocTyp
  */
 class JSDocRestParameterTypeExpr extends @jsdoc_rest_type_expr, JSDocTypeExpr {
   /** Gets the underlying type of this rest parameter type. */
-  JSDocTypeExpr getUnderlyingType() { result = getChild(0) }
+  JSDocTypeExpr getUnderlyingType() { result = this.getChild(0) }
 }
 
 /**
@@ -572,13 +627,13 @@ module JSDoc {
   /**
    * A statement container which may declare JSDoc name aliases.
    */
-  class Environment extends StmtContainer {
+  deprecated class Environment extends StmtContainer {
     /**
      * Gets the fully qualified name aliased by the given unqualified name
      * within this container.
      */
     string resolveAlias(string alias) {
-      getNodeFromAlias(alias) = AccessPath::getAReferenceOrAssignmentTo(result)
+      this.getNodeFromAlias(alias) = AccessPath::getAReferenceOrAssignmentTo(result)
     }
 
     /**
@@ -614,15 +669,15 @@ module JSDoc {
      * alias and is an ancestor of `container`.
      */
     final predicate isContainerInScope(StmtContainer container) {
-      exists(resolveAlias(_)) and // restrict size of predicate
+      exists(this.resolveAlias(_)) and // restrict size of predicate
       container = this
       or
-      isContainerInScope(container.getEnclosingContainer())
+      this.isContainerInScope(container.getEnclosingContainer())
     }
   }
 
   pragma[noinline]
-  private predicate isTypenamePrefix(string name) {
+  deprecated private predicate isTypenamePrefix(string name) {
     any(JSDocNamedTypeExpr expr).hasNameParts(name, _)
   }
 }

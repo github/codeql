@@ -7,15 +7,17 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.TaintTracking
 import TemplateInjectionCustomizations::TemplateInjection
 
-/**
- * A taint-tracking configuration for detecting Server Side Template Injections vulnerabilities.
- */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "TemplateInjection" }
+private module TemplateInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  override predicate isSink(DataFlow::Node source) { source instanceof Sink }
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
+
+/**
+ * Taint-tracking for detecting Server Side Template Injections vulnerabilities.
+ */
+module TemplateInjectionFlow = TaintTracking::Global<TemplateInjectionConfig>;

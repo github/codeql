@@ -1,5 +1,5 @@
 import csharp
-import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
+import utils.test.ProvenancePathGraph::ShowProvenance<Taint::PathNode, Taint::PathGraph>
 
 class MySink extends DataFlow::ExprNode {
   MySink() {
@@ -14,20 +14,20 @@ class MySink extends DataFlow::ExprNode {
 class MySource extends DataFlow::ParameterNode {
   MySource() {
     exists(Parameter p | p = this.getParameter() |
-      p = any(Class c | c.hasQualifiedName("", "Test")).getAMethod().getAParameter()
+      p = any(Class c | c.hasFullyQualifiedName("", "Test")).getAMethod().getAParameter()
     )
   }
 }
 
-class MyConfig extends TaintTracking::Configuration {
-  MyConfig() { this = "MyConfig" }
+module TaintConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof MySource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof MySource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof MySink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof MySink }
 }
 
-from MyConfig c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
+module Taint = TaintTracking::Global<TaintConfig>;
+
+from Taint::PathNode source, Taint::PathNode sink
+where Taint::flowPath(source, sink)
 select sink.getNode(), source, sink, "$@ flows to here and is used.", source.getNode(),
   "User-provided value"

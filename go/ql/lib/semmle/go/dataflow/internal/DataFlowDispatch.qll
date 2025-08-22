@@ -8,9 +8,9 @@ private import DataFlowPrivate
 private predicate isInterfaceCallReceiver(
   DataFlow::CallNode call, DataFlow::Node recv, InterfaceType tp, string m
 ) {
-  call.getReceiver() = recv and
+  pragma[only_bind_out](call).getReceiver() = recv and
   recv.getType().getUnderlyingType() = tp and
-  m = call.getACalleeIncludingExternals().asFunction().getName()
+  m = pragma[only_bind_out](call).getACalleeIncludingExternals().asFunction().getName()
 }
 
 /** Gets a data-flow node that may flow into the receiver value of `call`, which is an interface value. */
@@ -51,6 +51,12 @@ private predicate isConcreteInterfaceCall(DataFlow::Node call, DataFlow::Node re
   isInterfaceCallReceiver(call, recv, _, m) and isConcreteValue(recv)
 }
 
+private Function getRealOrSummarizedFunction(DataFlowCallable c) {
+  result = c.asCallable().asFunction()
+  or
+  result = c.asSummarizedCallable().asFunction()
+}
+
 /**
  * Gets a function that might be called by `call`, where the receiver of `call` has interface type,
  * but its concrete types can be determined by local reasoning.
@@ -59,7 +65,7 @@ private DataFlowCallable getConcreteTarget(DataFlow::CallNode call) {
   exists(string m | isConcreteInterfaceCall(call, _, m) |
     exists(Type concreteReceiverType |
       concreteReceiverType = getConcreteType(getInterfaceCallReceiverSource(call)) and
-      result.asFunction() = concreteReceiverType.getMethod(m)
+      getRealOrSummarizedFunction(result) = concreteReceiverType.getMethod(m)
     )
   )
 }
@@ -78,7 +84,7 @@ private predicate isInterfaceMethodCall(DataFlow::CallNode call) {
 private DataFlowCallable getRestrictedInterfaceTarget(DataFlow::CallNode call) {
   exists(InterfaceType tp, Type recvtp, string m |
     isInterfaceCallReceiver(call, _, tp, m) and
-    result.asFunction() = recvtp.getMethod(m) and
+    getRealOrSummarizedFunction(result) = recvtp.getMethod(m) and
     recvtp.implements(tp)
   )
 }
@@ -86,28 +92,17 @@ private DataFlowCallable getRestrictedInterfaceTarget(DataFlow::CallNode call) {
 /**
  * Gets a function that might be called by `call`.
  */
-DataFlowCallable viableCallable(CallExpr ma) {
+DataFlowCallable viableCallable(DataFlowCall ma) {
   exists(DataFlow::CallNode call | call.asExpr() = ma |
     if isConcreteInterfaceCall(call, _, _)
     then result = getConcreteTarget(call)
     else
       if isInterfaceMethodCall(call)
       then result = getRestrictedInterfaceTarget(call)
-      else result.asCallable() = call.getACalleeIncludingExternals()
+      else
+        [result.asCallable(), result.asSummarizedCallable()] = call.getACalleeIncludingExternals()
   )
 }
-
-/**
- * Holds if the set of viable implementations that can be called by `call`
- * might be improved by knowing the call context.
- */
-predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable f) { none() }
-
-/**
- * Gets a viable dispatch target of `call` in the context `ctx`. This is
- * restricted to those `call`s for which a context might make a difference.
- */
-DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
 
 private int parameterPosition() {
   result = [-1 .. any(DataFlowCallable c).getType().getNumParameter()]
@@ -126,3 +121,26 @@ class ArgumentPosition extends int {
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
 pragma[inline]
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
+
+private predicate isInterfaceMethod(Method c) {
+  c.getReceiverBaseType().getUnderlyingType() instanceof InterfaceType
+}
+
+/**
+ * Holds if `call` is passing `arg` to param `p` in any circumstance except passing
+ * a receiver parameter to a concrete method.
+ */
+pragma[inline]
+predicate golangSpecificParamArgFilter(
+  DataFlowCall call, DataFlow::ParameterNode p, DataFlow::ArgumentNode arg
+) {
+  // Interface methods calls may be passed strictly to that exact method's model receiver:
+  arg.getPosition() != -1
+  or
+  p instanceof DataFlow::SummarizedParameterNode
+  or
+  not isInterfaceMethod(call.getNode()
+        .(DataFlow::CallNode)
+        .getACalleeWithoutVirtualDispatch()
+        .asFunction())
+}

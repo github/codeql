@@ -1,18 +1,16 @@
 import python
 import semmle.python.dataflow.new.DataFlow
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import semmle.python.ApiGraphs
 
-class ApiUseTest extends InlineExpectationsTest {
-  ApiUseTest() { this = "ApiUseTest" }
-
-  override string getARelevantTag() { result = "use" }
+module ApiUseTest implements TestSig {
+  string getARelevantTag() { result = "use" }
 
   private predicate relevant_node(API::Node a, DataFlow::Node n, Location l) {
     n = a.getAValueReachableFromSource() and l = n.getLocation()
   }
 
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(DataFlow::Node n | relevant_node(_, n, location) |
       tag = "use" and
       // Only report the longest path on this line:
@@ -28,3 +26,5 @@ class ApiUseTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<ApiUseTest>

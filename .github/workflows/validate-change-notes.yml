@@ -15,12 +15,15 @@ on:
       - ".github/workflows/validate-change-notes.yml"
       - ".github/actions/fetch-codeql/action.yml"
 
+permissions:
+  contents: read
+
 jobs:
   check-change-note:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup CodeQL
         uses: ./.github/actions/fetch-codeql
@@ -28,4 +31,4 @@ jobs:
       - name: Fail if there are any errors with existing change notes
 
         run: |
-          codeql pack release --groups cpp,csharp,java,javascript,python,ruby,-examples,-test,-experimental
+          codeql pack release --groups actions,cpp,csharp,go,java,javascript,python,ruby,shared,swift -examples,-test,-experimental

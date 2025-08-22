@@ -10,6 +10,7 @@ private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.Multidict
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
+private import semmle.python.security.dataflow.UrlRedirectCustomizations
 
 /**
  * INTERNAL: Do not use.
@@ -106,6 +107,33 @@ module Yarl {
       YarlUrlMultiDictProxyInstance() {
         this.(DataFlow::AttrRead).getObject() = Yarl::Url::instance() and
         this.(DataFlow::AttrRead).getAttributeName() = "query"
+      }
+    }
+
+    private predicate yarlUrlIsAbsoluteCall(
+      DataFlow::GuardNode g, ControlFlowNode node, boolean branch
+    ) {
+      exists(ClassInstantiation instance, DataFlow::MethodCallNode call |
+        call.calls(instance, "is_absolute") and
+        g = call.asCfgNode() and
+        node = instance.getArg(0).asCfgNode() and
+        branch = false
+      )
+    }
+
+    /**
+     * A call to `yarl.URL.is_absolute`, considered as a sanitizer-guard for URL redirection.
+     *
+     * See https://yarl.aio-libs.org/en/latest/api/#absolute-and-relative-urls.
+     */
+    private class YarlIsAbsoluteUrl extends UrlRedirect::Sanitizer {
+      YarlIsAbsoluteUrl() {
+        this = DataFlow::BarrierGuard<yarlUrlIsAbsoluteCall/3>::getABarrierNode()
+      }
+
+      override predicate sanitizes(UrlRedirect::FlowState state) {
+        // `is_absolute` does not handle backslashes
+        state instanceof UrlRedirect::NoBackslashes
       }
     }
   }

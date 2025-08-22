@@ -1,6 +1,8 @@
 /**
  * Provides classes representing warnings generated during compilation.
  */
+overlay[local?]
+module;
 
 import java
 
@@ -8,6 +10,11 @@ import java
 class Diagnostic extends @diagnostic {
   /** Gets the compilation that generated this diagnostic. */
   Compilation getCompilation() { diagnostic_for(this, result, _, _) }
+
+  /** Gets the compilation information for this diagnostic. */
+  predicate getCompilationInfo(Compilation c, int fileNumber, int diagnosticNumber) {
+    diagnostic_for(this, c, fileNumber, diagnosticNumber)
+  }
 
   /**
    * Gets the program that generated this diagnostic.
@@ -54,3 +61,9 @@ class Diagnostic extends @diagnostic {
   /** Gets a textual representation of this diagnostic. */
   string toString() { result = this.getMessage() }
 }
+
+/**
+ * Holds for extraction information keys that should be skipped from telemetry reports.
+ * This predicate can be extended by other packs to filter out specific telemetry keys.
+ */
+extensible predicate extractorInformationSkipKey(string key);

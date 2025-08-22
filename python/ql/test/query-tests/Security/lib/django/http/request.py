@@ -1,2 +1,0 @@
-class HttpRequest(object):
-    pass

@@ -1,371 +1,764 @@
 edges
-| file://:0:0:0:0 | value :  | file://:0:0:0:0 | [post] self [data] :  |
-| file://:0:0:0:0 | value :  | file://:0:0:0:0 | [post] self [notStoredBankAccountNumber] :  |
-| testCoreData2.swift:23:13:23:13 | value :  | file://:0:0:0:0 | value :  |
-| testCoreData2.swift:37:2:37:2 | [post] obj [myValue] :  | testCoreData2.swift:37:2:37:2 | [post] obj |
-| testCoreData2.swift:37:16:37:16 | bankAccountNo :  | testCoreData2.swift:37:2:37:2 | [post] obj [myValue] :  |
-| testCoreData2.swift:39:2:39:2 | [post] obj [myBankAccountNumber] :  | testCoreData2.swift:39:2:39:2 | [post] obj |
-| testCoreData2.swift:39:28:39:28 | bankAccountNo :  | testCoreData2.swift:39:2:39:2 | [post] obj [myBankAccountNumber] :  |
-| testCoreData2.swift:41:2:41:2 | [post] obj [myBankAccountNumber2] :  | testCoreData2.swift:41:2:41:2 | [post] obj |
-| testCoreData2.swift:41:29:41:29 | bankAccountNo :  | testCoreData2.swift:41:2:41:2 | [post] obj [myBankAccountNumber2] :  |
-| testCoreData2.swift:43:2:43:2 | [post] obj [notStoredBankAccountNumber] :  | testCoreData2.swift:43:2:43:2 | [post] obj |
-| testCoreData2.swift:43:35:43:35 | bankAccountNo :  | testCoreData2.swift:23:13:23:13 | value :  |
-| testCoreData2.swift:43:35:43:35 | bankAccountNo :  | testCoreData2.swift:43:2:43:2 | [post] obj [notStoredBankAccountNumber] :  |
-| testCoreData2.swift:46:2:46:10 | [post] ...? [myValue] :  | testCoreData2.swift:46:2:46:10 | [post] ...? |
-| testCoreData2.swift:46:22:46:22 | bankAccountNo :  | testCoreData2.swift:46:2:46:10 | [post] ...? [myValue] :  |
-| testCoreData2.swift:48:2:48:10 | [post] ...? [myBankAccountNumber] :  | testCoreData2.swift:48:2:48:10 | [post] ...? |
-| testCoreData2.swift:48:34:48:34 | bankAccountNo :  | testCoreData2.swift:48:2:48:10 | [post] ...? [myBankAccountNumber] :  |
-| testCoreData2.swift:50:2:50:10 | [post] ...? [myBankAccountNumber2] :  | testCoreData2.swift:50:2:50:10 | [post] ...? |
-| testCoreData2.swift:50:35:50:35 | bankAccountNo :  | testCoreData2.swift:50:2:50:10 | [post] ...? [myBankAccountNumber2] :  |
-| testCoreData2.swift:52:2:52:10 | [post] ...? [notStoredBankAccountNumber] :  | testCoreData2.swift:52:2:52:10 | [post] ...? |
-| testCoreData2.swift:52:41:52:41 | bankAccountNo :  | testCoreData2.swift:23:13:23:13 | value :  |
-| testCoreData2.swift:52:41:52:41 | bankAccountNo :  | testCoreData2.swift:52:2:52:10 | [post] ...? [notStoredBankAccountNumber] :  |
-| testCoreData2.swift:57:3:57:3 | [post] obj [myBankAccountNumber] :  | testCoreData2.swift:57:3:57:3 | [post] obj |
-| testCoreData2.swift:57:29:57:29 | bankAccountNo :  | testCoreData2.swift:57:3:57:3 | [post] obj [myBankAccountNumber] :  |
-| testCoreData2.swift:60:4:60:4 | [post] obj [myBankAccountNumber] :  | testCoreData2.swift:60:4:60:4 | [post] obj |
-| testCoreData2.swift:60:30:60:30 | bankAccountNo :  | testCoreData2.swift:60:4:60:4 | [post] obj [myBankAccountNumber] :  |
-| testCoreData2.swift:62:4:62:4 | [post] obj [myBankAccountNumber] :  | testCoreData2.swift:62:4:62:4 | [post] obj |
-| testCoreData2.swift:62:30:62:30 | bankAccountNo :  | testCoreData2.swift:62:4:62:4 | [post] obj [myBankAccountNumber] :  |
-| testCoreData2.swift:65:3:65:3 | [post] obj [myBankAccountNumber] :  | testCoreData2.swift:65:3:65:3 | [post] obj |
-| testCoreData2.swift:65:29:65:29 | bankAccountNo :  | testCoreData2.swift:65:3:65:3 | [post] obj [myBankAccountNumber] :  |
-| testCoreData.swift:18:19:18:26 | value :  | testCoreData.swift:19:12:19:12 | value |
-| testCoreData.swift:31:3:31:3 | newValue :  | testCoreData.swift:32:13:32:13 | newValue |
-| testCoreData.swift:61:25:61:25 | password :  | testCoreData.swift:18:19:18:26 | value :  |
-| testCoreData.swift:64:2:64:2 | [post] obj [myValue] :  | testCoreData.swift:64:2:64:2 | [post] obj |
-| testCoreData.swift:64:16:64:16 | password :  | testCoreData.swift:31:3:31:3 | newValue :  |
-| testCoreData.swift:64:16:64:16 | password :  | testCoreData.swift:64:2:64:2 | [post] obj [myValue] :  |
-| testCoreData.swift:77:24:77:24 | x :  | testCoreData.swift:78:15:78:15 | x |
-| testCoreData.swift:80:10:80:22 | call to getPassword() :  | testCoreData.swift:81:15:81:15 | y |
-| testCoreData.swift:91:10:91:10 | passwd :  | testCoreData.swift:95:15:95:15 | x |
-| testCoreData.swift:92:10:92:10 | passwd :  | testCoreData.swift:96:15:96:15 | y |
-| testCoreData.swift:93:10:93:10 | passwd :  | testCoreData.swift:97:15:97:15 | z |
-| testGRDB.swift:73:57:73:57 | password :  | testGRDB.swift:73:56:73:65 | [...] |
-| testGRDB.swift:76:43:76:43 | password :  | testGRDB.swift:76:42:76:51 | [...] |
-| testGRDB.swift:81:45:81:45 | password :  | testGRDB.swift:81:44:81:53 | [...] |
-| testGRDB.swift:83:45:83:45 | password :  | testGRDB.swift:83:44:83:53 | [...] |
-| testGRDB.swift:85:45:85:45 | password :  | testGRDB.swift:85:44:85:53 | [...] |
-| testGRDB.swift:87:45:87:45 | password :  | testGRDB.swift:87:44:87:53 | [...] |
-| testGRDB.swift:92:38:92:38 | password :  | testGRDB.swift:92:37:92:46 | [...] |
-| testGRDB.swift:95:37:95:37 | password :  | testGRDB.swift:95:36:95:45 | [...] |
-| testGRDB.swift:100:73:100:73 | password :  | testGRDB.swift:100:72:100:81 | [...] |
-| testGRDB.swift:101:73:101:73 | password :  | testGRDB.swift:101:72:101:81 | [...] |
-| testGRDB.swift:107:53:107:53 | password :  | testGRDB.swift:107:52:107:61 | [...] |
-| testGRDB.swift:109:53:109:53 | password :  | testGRDB.swift:109:52:109:61 | [...] |
-| testGRDB.swift:111:52:111:52 | password :  | testGRDB.swift:111:51:111:60 | [...] |
-| testGRDB.swift:116:48:116:48 | password :  | testGRDB.swift:116:47:116:56 | [...] |
-| testGRDB.swift:118:48:118:48 | password :  | testGRDB.swift:118:47:118:56 | [...] |
-| testGRDB.swift:121:45:121:45 | password :  | testGRDB.swift:121:44:121:53 | [...] |
-| testGRDB.swift:123:45:123:45 | password :  | testGRDB.swift:123:44:123:53 | [...] |
-| testGRDB.swift:126:45:126:45 | password :  | testGRDB.swift:126:44:126:53 | [...] |
-| testGRDB.swift:128:45:128:45 | password :  | testGRDB.swift:128:44:128:53 | [...] |
-| testGRDB.swift:131:45:131:45 | password :  | testGRDB.swift:131:44:131:53 | [...] |
-| testGRDB.swift:133:45:133:45 | password :  | testGRDB.swift:133:44:133:53 | [...] |
-| testGRDB.swift:138:69:138:69 | password :  | testGRDB.swift:138:68:138:77 | [...] |
-| testGRDB.swift:140:69:140:69 | password :  | testGRDB.swift:140:68:140:77 | [...] |
-| testGRDB.swift:143:66:143:66 | password :  | testGRDB.swift:143:65:143:74 | [...] |
-| testGRDB.swift:145:66:145:66 | password :  | testGRDB.swift:145:65:145:74 | [...] |
-| testGRDB.swift:148:66:148:66 | password :  | testGRDB.swift:148:65:148:74 | [...] |
-| testGRDB.swift:150:66:150:66 | password :  | testGRDB.swift:150:65:150:74 | [...] |
-| testGRDB.swift:153:66:153:66 | password :  | testGRDB.swift:153:65:153:74 | [...] |
-| testGRDB.swift:155:66:155:66 | password :  | testGRDB.swift:155:65:155:74 | [...] |
-| testGRDB.swift:160:60:160:60 | password :  | testGRDB.swift:160:59:160:68 | [...] |
-| testGRDB.swift:161:51:161:51 | password :  | testGRDB.swift:161:50:161:59 | [...] |
-| testGRDB.swift:164:60:164:60 | password :  | testGRDB.swift:164:59:164:68 | [...] |
-| testGRDB.swift:165:51:165:51 | password :  | testGRDB.swift:165:50:165:59 | [...] |
-| testGRDB.swift:169:57:169:57 | password :  | testGRDB.swift:169:56:169:65 | [...] |
-| testGRDB.swift:170:48:170:48 | password :  | testGRDB.swift:170:47:170:56 | [...] |
-| testGRDB.swift:173:57:173:57 | password :  | testGRDB.swift:173:56:173:65 | [...] |
-| testGRDB.swift:174:48:174:48 | password :  | testGRDB.swift:174:47:174:56 | [...] |
-| testGRDB.swift:178:57:178:57 | password :  | testGRDB.swift:178:56:178:65 | [...] |
-| testGRDB.swift:179:48:179:48 | password :  | testGRDB.swift:179:47:179:56 | [...] |
-| testGRDB.swift:182:57:182:57 | password :  | testGRDB.swift:182:56:182:65 | [...] |
-| testGRDB.swift:183:48:183:48 | password :  | testGRDB.swift:183:47:183:56 | [...] |
-| testGRDB.swift:187:57:187:57 | password :  | testGRDB.swift:187:56:187:65 | [...] |
-| testGRDB.swift:188:48:188:48 | password :  | testGRDB.swift:188:47:188:56 | [...] |
-| testGRDB.swift:191:57:191:57 | password :  | testGRDB.swift:191:56:191:65 | [...] |
-| testGRDB.swift:192:48:192:48 | password :  | testGRDB.swift:192:47:192:56 | [...] |
-| testGRDB.swift:198:30:198:30 | password :  | testGRDB.swift:198:29:198:38 | [...] |
-| testGRDB.swift:201:24:201:24 | password :  | testGRDB.swift:201:23:201:32 | [...] |
-| testGRDB.swift:206:67:206:67 | password :  | testGRDB.swift:206:66:206:75 | [...] |
-| testGRDB.swift:208:81:208:81 | password :  | testGRDB.swift:208:80:208:89 | [...] |
-| testGRDB.swift:210:85:210:85 | password :  | testGRDB.swift:210:84:210:93 | [...] |
-| testGRDB.swift:212:99:212:99 | password :  | testGRDB.swift:212:98:212:107 | [...] |
-| testRealm.swift:16:6:16:6 | value :  | file://:0:0:0:0 | value :  |
-| testRealm.swift:34:2:34:2 | [post] a [data] :  | testRealm.swift:34:2:34:2 | [post] a |
-| testRealm.swift:34:11:34:11 | myPassword :  | testRealm.swift:16:6:16:6 | value :  |
-| testRealm.swift:34:11:34:11 | myPassword :  | testRealm.swift:34:2:34:2 | [post] a [data] :  |
-| testRealm.swift:42:2:42:2 | [post] c [data] :  | testRealm.swift:42:2:42:2 | [post] c |
-| testRealm.swift:42:11:42:11 | myPassword :  | testRealm.swift:16:6:16:6 | value :  |
-| testRealm.swift:42:11:42:11 | myPassword :  | testRealm.swift:42:2:42:2 | [post] c [data] :  |
-| testRealm.swift:52:2:52:3 | [post] ...! [data] :  | testRealm.swift:52:2:52:3 | [post] ...! |
-| testRealm.swift:52:12:52:12 | myPassword :  | testRealm.swift:16:6:16:6 | value :  |
-| testRealm.swift:52:12:52:12 | myPassword :  | testRealm.swift:52:2:52:3 | [post] ...! [data] :  |
-| testRealm.swift:59:2:59:2 | [post] g [data] :  | testRealm.swift:59:2:59:2 | [post] g |
-| testRealm.swift:59:11:59:11 | myPassword :  | testRealm.swift:16:6:16:6 | value :  |
-| testRealm.swift:59:11:59:11 | myPassword :  | testRealm.swift:59:2:59:2 | [post] g [data] :  |
+| SQLite.swift:119:70:119:70 | mobilePhoneNumber | SQLite.swift:123:17:123:17 | insertQuery | provenance |  |
+| SQLite.swift:119:70:119:70 | mobilePhoneNumber | SQLite.swift:127:21:127:21 | insertQuery | provenance |  |
+| SQLite.swift:119:70:119:70 | mobilePhoneNumber | SQLite.swift:131:17:131:17 | insertQuery | provenance |  |
+| SQLite.swift:119:70:119:70 | mobilePhoneNumber | SQLite.swift:135:20:135:20 | insertQuery | provenance |  |
+| SQLite.swift:119:70:119:70 | mobilePhoneNumber | SQLite.swift:139:24:139:24 | insertQuery | provenance |  |
+| SQLite.swift:120:50:120:50 | mobilePhoneNumber | SQLite.swift:124:17:124:17 | updateQuery | provenance |  |
+| SQLite.swift:120:50:120:50 | mobilePhoneNumber | SQLite.swift:128:21:128:21 | updateQuery | provenance |  |
+| SQLite.swift:120:50:120:50 | mobilePhoneNumber | SQLite.swift:132:17:132:17 | updateQuery | provenance |  |
+| SQLite.swift:120:50:120:50 | mobilePhoneNumber | SQLite.swift:136:20:136:20 | updateQuery | provenance |  |
+| SQLite.swift:120:50:120:50 | mobilePhoneNumber | SQLite.swift:140:24:140:24 | updateQuery | provenance |  |
+| SQLite.swift:147:32:147:32 | [...] [Collection element] | SQLite.swift:147:32:147:32 | [...] | provenance |  |
+| SQLite.swift:147:32:147:32 | mobilePhoneNumber | SQLite.swift:147:32:147:32 | [...] [Collection element] | provenance |  |
+| SQLite.swift:148:28:148:28 | [...] [Collection element] | SQLite.swift:148:28:148:28 | [...] | provenance |  |
+| SQLite.swift:148:28:148:28 | mobilePhoneNumber | SQLite.swift:148:28:148:28 | [...] [Collection element] | provenance |  |
+| SQLite.swift:149:31:149:31 | [...] [Collection element] | SQLite.swift:149:31:149:31 | [...] | provenance |  |
+| SQLite.swift:149:31:149:31 | mobilePhoneNumber | SQLite.swift:149:31:149:31 | [...] [Collection element] | provenance |  |
+| SQLite.swift:152:21:152:21 | [...] [Collection element] | SQLite.swift:152:21:152:21 | [...] | provenance |  |
+| SQLite.swift:152:21:152:21 | mobilePhoneNumber | SQLite.swift:152:21:152:21 | [...] [Collection element] | provenance |  |
+| SQLite.swift:153:20:153:20 | [...] [Collection element] | SQLite.swift:153:20:153:20 | [...] | provenance |  |
+| SQLite.swift:153:20:153:20 | mobilePhoneNumber | SQLite.swift:153:20:153:20 | [...] [Collection element] | provenance |  |
+| SQLite.swift:154:23:154:23 | [...] [Collection element] | SQLite.swift:154:23:154:23 | [...] | provenance |  |
+| SQLite.swift:154:23:154:23 | mobilePhoneNumber | SQLite.swift:154:23:154:23 | [...] [Collection element] | provenance |  |
+| SQLite.swift:158:33:158:33 | mobilePhoneNumber | SQLite.swift:158:32:158:54 | [...] | provenance |  |
+| SQLite.swift:159:29:159:29 | mobilePhoneNumber | SQLite.swift:159:28:159:50 | [...] | provenance |  |
+| SQLite.swift:160:32:160:32 | mobilePhoneNumber | SQLite.swift:160:31:160:53 | [...] | provenance |  |
+| SQLite.swift:163:22:163:22 | mobilePhoneNumber | SQLite.swift:163:21:163:43 | [...] | provenance |  |
+| SQLite.swift:164:21:164:21 | mobilePhoneNumber | SQLite.swift:164:20:164:42 | [...] | provenance |  |
+| SQLite.swift:165:24:165:24 | mobilePhoneNumber | SQLite.swift:165:23:165:45 | [...] | provenance |  |
+| SQLite.swift:169:43:169:53 | (...) [Tuple element at index 1] | SQLite.swift:169:32:169:70 | [...] | provenance |  |
+| SQLite.swift:169:53:169:53 | mobilePhoneNumber | SQLite.swift:169:43:169:53 | (...) [Tuple element at index 1] | provenance |  |
+| SQLite.swift:170:39:170:49 | (...) [Tuple element at index 1] | SQLite.swift:170:28:170:66 | [...] | provenance |  |
+| SQLite.swift:170:49:170:49 | mobilePhoneNumber | SQLite.swift:170:39:170:49 | (...) [Tuple element at index 1] | provenance |  |
+| SQLite.swift:171:42:171:52 | (...) [Tuple element at index 1] | SQLite.swift:171:31:171:69 | [...] | provenance |  |
+| SQLite.swift:171:52:171:52 | mobilePhoneNumber | SQLite.swift:171:42:171:52 | (...) [Tuple element at index 1] | provenance |  |
+| SQLite.swift:174:32:174:42 | (...) [Tuple element at index 1] | SQLite.swift:174:21:174:59 | [...] | provenance |  |
+| SQLite.swift:174:42:174:42 | mobilePhoneNumber | SQLite.swift:174:32:174:42 | (...) [Tuple element at index 1] | provenance |  |
+| SQLite.swift:175:31:175:41 | (...) [Tuple element at index 1] | SQLite.swift:175:20:175:58 | [...] | provenance |  |
+| SQLite.swift:175:41:175:41 | mobilePhoneNumber | SQLite.swift:175:31:175:41 | (...) [Tuple element at index 1] | provenance |  |
+| SQLite.swift:176:34:176:44 | (...) [Tuple element at index 1] | SQLite.swift:176:23:176:61 | [...] | provenance |  |
+| SQLite.swift:176:44:176:44 | mobilePhoneNumber | SQLite.swift:176:34:176:44 | (...) [Tuple element at index 1] | provenance |  |
+| SQLite.swift:186:40:186:54 | ... <-(_:_:) ... | SQLite.swift:186:40:186:54 | [...] [Collection element] | provenance |  |
+| SQLite.swift:186:40:186:54 | [...] [Collection element] | SQLite.swift:186:40:186:54 | [...] | provenance |  |
+| SQLite.swift:186:54:186:54 | mobilePhoneNumber | SQLite.swift:186:40:186:54 | ... <-(_:_:) ... | provenance |  |
+| SQLite.swift:189:26:189:40 | ... <-(_:_:) ... | SQLite.swift:189:26:189:40 | [...] [Collection element] | provenance |  |
+| SQLite.swift:189:26:189:40 | [...] [Collection element] | SQLite.swift:189:26:189:40 | [...] | provenance |  |
+| SQLite.swift:189:40:189:40 | mobilePhoneNumber | SQLite.swift:189:26:189:40 | ... <-(_:_:) ... | provenance |  |
+| SQLite.swift:191:27:191:41 | ... <-(_:_:) ... | SQLite.swift:191:27:191:41 | [...] [Collection element] | provenance |  |
+| SQLite.swift:191:27:191:41 | [...] [Collection element] | SQLite.swift:191:27:191:41 | [...] | provenance |  |
+| SQLite.swift:191:41:191:41 | mobilePhoneNumber | SQLite.swift:191:27:191:41 | ... <-(_:_:) ... | provenance |  |
+| SQLite.swift:193:26:193:89 | ... <-(_:_:) ... | SQLite.swift:193:26:193:89 | [...] [Collection element] | provenance |  |
+| SQLite.swift:193:26:193:89 | [...] [Collection element] | SQLite.swift:193:26:193:89 | [...] | provenance |  |
+| SQLite.swift:193:40:193:89 | call to replace(_:with:) | SQLite.swift:193:26:193:89 | ... <-(_:_:) ... | provenance |  |
+| SQLite.swift:193:72:193:72 | mobilePhoneNumber | SQLite.swift:193:40:193:89 | call to replace(_:with:) | provenance |  |
+| SQLite.swift:197:16:197:50 | [...] [Collection element, Collection element] | SQLite.swift:199:30:199:30 | badMany | provenance |  |
+| SQLite.swift:197:16:197:50 | [...] [Collection element, Collection element] | SQLite.swift:201:54:201:54 | badMany | provenance |  |
+| SQLite.swift:197:17:197:49 | [...] [Collection element] | SQLite.swift:197:16:197:50 | [...] [Collection element, Collection element] | provenance |  |
+| SQLite.swift:197:18:197:32 | ... <-(_:_:) ... | SQLite.swift:197:17:197:49 | [...] [Collection element] | provenance |  |
+| SQLite.swift:197:32:197:32 | mobilePhoneNumber | SQLite.swift:197:18:197:32 | ... <-(_:_:) ... | provenance |  |
+| file://:0:0:0:0 | [post] self [data, Collection element] | testRealm2.swift:13:6:13:6 | self [Return] [data, Collection element] | provenance |  |
+| file://:0:0:0:0 | [post] self [data] | testRealm2.swift:13:6:13:6 | self [Return] [data] | provenance |  |
+| file://:0:0:0:0 | [post] self [data] | testRealm.swift:27:6:27:6 | self [Return] [data] | provenance |  |
+| file://:0:0:0:0 | [post] self [notStoredBankAccountNumber] | testCoreData2.swift:23:13:23:13 | self [Return] [notStoredBankAccountNumber] | provenance |  |
+| file://:0:0:0:0 | [post] self [password] | testRealm.swift:34:6:34:6 | self [Return] [password] | provenance |  |
+| file://:0:0:0:0 | [post] self [value] | testCoreData2.swift:70:9:70:9 | self [Return] [value] | provenance |  |
+| file://:0:0:0:0 | self | file://:0:0:0:0 | .value | provenance | Config |
+| file://:0:0:0:0 | self | file://:0:0:0:0 | .value2 | provenance | Config |
+| file://:0:0:0:0 | self [value] | file://:0:0:0:0 | .value | provenance |  |
+| file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [data] | provenance |  |
+| file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [data] | provenance |  |
+| file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [notStoredBankAccountNumber] | provenance |  |
+| file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [password] | provenance |  |
+| file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [value] | provenance |  |
+| file://:0:0:0:0 | value [Collection element] | file://:0:0:0:0 | [post] self [data, Collection element] | provenance |  |
+| sqlite3_c_api.swift:42:69:42:69 | medicalNotes | sqlite3_c_api.swift:46:27:46:27 | insertQuery | provenance |  |
+| sqlite3_c_api.swift:43:49:43:49 | medicalNotes | sqlite3_c_api.swift:47:27:47:27 | updateQuery | provenance |  |
+| testCoreData2.swift:23:13:23:13 | value | file://:0:0:0:0 | value | provenance |  |
+| testCoreData2.swift:37:16:37:16 | bankAccountNo | testCoreData2.swift:37:2:37:2 | [post] obj | provenance |  |
+| testCoreData2.swift:39:28:39:28 | bankAccountNo | testCoreData2.swift:39:2:39:2 | [post] obj | provenance |  |
+| testCoreData2.swift:41:29:41:29 | bankAccountNo | testCoreData2.swift:41:2:41:2 | [post] obj | provenance |  |
+| testCoreData2.swift:43:35:43:35 | bankAccountNo | testCoreData2.swift:23:13:23:13 | value | provenance |  |
+| testCoreData2.swift:43:35:43:35 | bankAccountNo | testCoreData2.swift:43:2:43:2 | [post] obj | provenance |  |
+| testCoreData2.swift:46:22:46:22 | bankAccountNo | testCoreData2.swift:46:2:46:10 | [post] ...? | provenance |  |
+| testCoreData2.swift:48:34:48:34 | bankAccountNo | testCoreData2.swift:48:2:48:10 | [post] ...? | provenance |  |
+| testCoreData2.swift:50:35:50:35 | bankAccountNo | testCoreData2.swift:50:2:50:10 | [post] ...? | provenance |  |
+| testCoreData2.swift:52:41:52:41 | bankAccountNo | testCoreData2.swift:23:13:23:13 | value | provenance |  |
+| testCoreData2.swift:52:41:52:41 | bankAccountNo | testCoreData2.swift:52:2:52:10 | [post] ...? | provenance |  |
+| testCoreData2.swift:57:29:57:29 | bankAccountNo | testCoreData2.swift:57:3:57:3 | [post] obj | provenance |  |
+| testCoreData2.swift:60:30:60:30 | bankAccountNo | testCoreData2.swift:60:4:60:4 | [post] obj | provenance |  |
+| testCoreData2.swift:62:30:62:30 | bankAccountNo | testCoreData2.swift:62:4:62:4 | [post] obj | provenance |  |
+| testCoreData2.swift:65:29:65:29 | bankAccountNo | testCoreData2.swift:65:3:65:3 | [post] obj | provenance |  |
+| testCoreData2.swift:70:9:70:9 | self | file://:0:0:0:0 | self | provenance |  |
+| testCoreData2.swift:70:9:70:9 | self [value] | file://:0:0:0:0 | self [value] | provenance |  |
+| testCoreData2.swift:70:9:70:9 | value | file://:0:0:0:0 | value | provenance |  |
+| testCoreData2.swift:71:9:71:9 | self | file://:0:0:0:0 | self | provenance |  |
+| testCoreData2.swift:79:18:79:28 | .bankAccountNo | testCoreData2.swift:79:2:79:2 | [post] dbObj | provenance |  |
+| testCoreData2.swift:80:18:80:28 | ...! | testCoreData2.swift:80:2:80:2 | [post] dbObj | provenance |  |
+| testCoreData2.swift:80:18:80:28 | .bankAccountNo2 | testCoreData2.swift:80:18:80:28 | ...! | provenance |  |
+| testCoreData2.swift:82:18:82:18 | bankAccountNo | testCoreData2.swift:70:9:70:9 | self | provenance |  |
+| testCoreData2.swift:82:18:82:18 | bankAccountNo | testCoreData2.swift:82:18:82:32 | .value | provenance | Config |
+| testCoreData2.swift:82:18:82:32 | .value | testCoreData2.swift:82:2:82:2 | [post] dbObj | provenance |  |
+| testCoreData2.swift:83:18:83:18 | bankAccountNo | testCoreData2.swift:71:9:71:9 | self | provenance |  |
+| testCoreData2.swift:83:18:83:18 | bankAccountNo | testCoreData2.swift:83:18:83:32 | .value2 | provenance | Config |
+| testCoreData2.swift:83:18:83:32 | ...! | testCoreData2.swift:83:2:83:2 | [post] dbObj | provenance |  |
+| testCoreData2.swift:83:18:83:32 | .value2 | testCoreData2.swift:83:18:83:32 | ...! | provenance |  |
+| testCoreData2.swift:84:18:84:18 | ...! | testCoreData2.swift:70:9:70:9 | self | provenance |  |
+| testCoreData2.swift:84:18:84:18 | ...! | testCoreData2.swift:84:18:84:33 | .value | provenance | Config |
+| testCoreData2.swift:84:18:84:18 | bankAccountNo2 | testCoreData2.swift:84:18:84:18 | ...! | provenance |  |
+| testCoreData2.swift:84:18:84:33 | .value | testCoreData2.swift:84:2:84:2 | [post] dbObj | provenance |  |
+| testCoreData2.swift:85:18:85:18 | ...! | testCoreData2.swift:71:9:71:9 | self | provenance |  |
+| testCoreData2.swift:85:18:85:18 | ...! | testCoreData2.swift:85:18:85:33 | .value2 | provenance | Config |
+| testCoreData2.swift:85:18:85:18 | bankAccountNo2 | testCoreData2.swift:85:18:85:18 | ...! | provenance |  |
+| testCoreData2.swift:85:18:85:33 | ...! | testCoreData2.swift:85:2:85:2 | [post] dbObj | provenance |  |
+| testCoreData2.swift:85:18:85:33 | .value2 | testCoreData2.swift:85:18:85:33 | ...! | provenance |  |
+| testCoreData2.swift:87:22:87:32 | .bankAccountNo | testCoreData2.swift:87:2:87:10 | [post] ...? | provenance |  |
+| testCoreData2.swift:88:22:88:22 | bankAccountNo | testCoreData2.swift:70:9:70:9 | self | provenance |  |
+| testCoreData2.swift:88:22:88:22 | bankAccountNo | testCoreData2.swift:88:22:88:36 | .value | provenance | Config |
+| testCoreData2.swift:88:22:88:36 | .value | testCoreData2.swift:88:2:88:10 | [post] ...? | provenance |  |
+| testCoreData2.swift:89:22:89:22 | ...! | testCoreData2.swift:71:9:71:9 | self | provenance |  |
+| testCoreData2.swift:89:22:89:22 | ...! | testCoreData2.swift:89:22:89:37 | .value2 | provenance | Config |
+| testCoreData2.swift:89:22:89:22 | bankAccountNo2 | testCoreData2.swift:89:22:89:22 | ...! | provenance |  |
+| testCoreData2.swift:89:22:89:37 | ...! | testCoreData2.swift:89:2:89:10 | [post] ...? | provenance |  |
+| testCoreData2.swift:89:22:89:37 | .value2 | testCoreData2.swift:89:22:89:37 | ...! | provenance |  |
+| testCoreData2.swift:91:10:91:10 | bankAccountNo | testCoreData2.swift:92:10:92:10 | a | provenance |  |
+| testCoreData2.swift:92:10:92:10 | a | testCoreData2.swift:70:9:70:9 | self | provenance |  |
+| testCoreData2.swift:92:10:92:10 | a | testCoreData2.swift:92:10:92:12 | .value | provenance | Config |
+| testCoreData2.swift:92:10:92:12 | .value | testCoreData2.swift:93:18:93:18 | b | provenance |  |
+| testCoreData2.swift:93:18:93:18 | b | testCoreData2.swift:93:2:93:2 | [post] dbObj | provenance |  |
+| testCoreData2.swift:95:10:95:10 | bankAccountNo | testCoreData2.swift:97:12:97:12 | c | provenance |  |
+| testCoreData2.swift:97:2:97:2 | [post] d [value] | testCoreData2.swift:98:18:98:18 | d [value] | provenance |  |
+| testCoreData2.swift:97:12:97:12 | c | testCoreData2.swift:70:9:70:9 | self | provenance |  |
+| testCoreData2.swift:97:12:97:12 | c | testCoreData2.swift:97:12:97:14 | .value | provenance | Config |
+| testCoreData2.swift:97:12:97:14 | .value | testCoreData2.swift:70:9:70:9 | value | provenance |  |
+| testCoreData2.swift:97:12:97:14 | .value | testCoreData2.swift:97:2:97:2 | [post] d [value] | provenance |  |
+| testCoreData2.swift:98:18:98:18 | d [value] | testCoreData2.swift:70:9:70:9 | self [value] | provenance |  |
+| testCoreData2.swift:98:18:98:18 | d [value] | testCoreData2.swift:98:18:98:20 | .value | provenance |  |
+| testCoreData2.swift:98:18:98:20 | .value | testCoreData2.swift:98:2:98:2 | [post] dbObj | provenance |  |
+| testCoreData2.swift:101:10:101:10 | bankAccountNo | testCoreData2.swift:103:13:103:13 | e | provenance |  |
+| testCoreData2.swift:103:13:103:13 | e | testCoreData2.swift:104:18:104:18 | e | provenance |  |
+| testCoreData2.swift:104:18:104:18 | e | testCoreData2.swift:70:9:70:9 | self | provenance |  |
+| testCoreData2.swift:104:18:104:18 | e | testCoreData2.swift:104:18:104:20 | .value | provenance | Config |
+| testCoreData2.swift:104:18:104:18 | e | testCoreData2.swift:105:18:105:18 | e | provenance |  |
+| testCoreData2.swift:104:18:104:20 | .value | testCoreData2.swift:104:2:104:2 | [post] dbObj | provenance |  |
+| testCoreData2.swift:105:18:105:18 | e | testCoreData2.swift:71:9:71:9 | self | provenance |  |
+| testCoreData2.swift:105:18:105:18 | e | testCoreData2.swift:105:18:105:20 | .value2 | provenance | Config |
+| testCoreData2.swift:105:18:105:20 | ...! | testCoreData2.swift:105:2:105:2 | [post] dbObj | provenance |  |
+| testCoreData2.swift:105:18:105:20 | .value2 | testCoreData2.swift:105:18:105:20 | ...! | provenance |  |
+| testCoreData.swift:18:19:18:26 | value | testCoreData.swift:19:12:19:12 | value | provenance |  |
+| testCoreData.swift:31:3:31:3 | newValue | testCoreData.swift:32:13:32:13 | newValue | provenance |  |
+| testCoreData.swift:61:25:61:25 | password | testCoreData.swift:18:19:18:26 | value | provenance |  |
+| testCoreData.swift:64:16:64:16 | password | testCoreData.swift:31:3:31:3 | newValue | provenance |  |
+| testCoreData.swift:64:16:64:16 | password | testCoreData.swift:64:2:64:2 | [post] obj | provenance |  |
+| testCoreData.swift:77:24:77:24 | x | testCoreData.swift:78:15:78:15 | x | provenance |  |
+| testCoreData.swift:80:10:80:22 | call to getPassword() | testCoreData.swift:81:15:81:15 | y | provenance |  |
+| testCoreData.swift:91:10:91:10 | passwd | testCoreData.swift:95:15:95:15 | x | provenance |  |
+| testCoreData.swift:92:10:92:10 | passwd | testCoreData.swift:96:15:96:15 | y | provenance |  |
+| testCoreData.swift:93:10:93:10 | passwd | testCoreData.swift:97:15:97:15 | z | provenance |  |
+| testGRDB.swift:73:57:73:57 | password | testGRDB.swift:73:56:73:65 | [...] | provenance |  |
+| testGRDB.swift:76:43:76:43 | password | testGRDB.swift:76:42:76:51 | [...] | provenance |  |
+| testGRDB.swift:81:45:81:45 | password | testGRDB.swift:81:44:81:53 | [...] | provenance |  |
+| testGRDB.swift:83:45:83:45 | password | testGRDB.swift:83:44:83:53 | [...] | provenance |  |
+| testGRDB.swift:85:45:85:45 | password | testGRDB.swift:85:44:85:53 | [...] | provenance |  |
+| testGRDB.swift:87:45:87:45 | password | testGRDB.swift:87:44:87:53 | [...] | provenance |  |
+| testGRDB.swift:92:38:92:38 | password | testGRDB.swift:92:37:92:46 | [...] | provenance |  |
+| testGRDB.swift:95:37:95:37 | password | testGRDB.swift:95:36:95:45 | [...] | provenance |  |
+| testGRDB.swift:100:73:100:73 | password | testGRDB.swift:100:72:100:81 | [...] | provenance |  |
+| testGRDB.swift:101:73:101:73 | password | testGRDB.swift:101:72:101:81 | [...] | provenance |  |
+| testGRDB.swift:107:53:107:53 | password | testGRDB.swift:107:52:107:61 | [...] | provenance |  |
+| testGRDB.swift:109:53:109:53 | password | testGRDB.swift:109:52:109:61 | [...] | provenance |  |
+| testGRDB.swift:111:52:111:52 | password | testGRDB.swift:111:51:111:60 | [...] | provenance |  |
+| testGRDB.swift:116:48:116:48 | password | testGRDB.swift:116:47:116:56 | [...] | provenance |  |
+| testGRDB.swift:118:48:118:48 | password | testGRDB.swift:118:47:118:56 | [...] | provenance |  |
+| testGRDB.swift:121:45:121:45 | password | testGRDB.swift:121:44:121:53 | [...] | provenance |  |
+| testGRDB.swift:123:45:123:45 | password | testGRDB.swift:123:44:123:53 | [...] | provenance |  |
+| testGRDB.swift:126:45:126:45 | password | testGRDB.swift:126:44:126:53 | [...] | provenance |  |
+| testGRDB.swift:128:45:128:45 | password | testGRDB.swift:128:44:128:53 | [...] | provenance |  |
+| testGRDB.swift:131:45:131:45 | password | testGRDB.swift:131:44:131:53 | [...] | provenance |  |
+| testGRDB.swift:133:45:133:45 | password | testGRDB.swift:133:44:133:53 | [...] | provenance |  |
+| testGRDB.swift:138:69:138:69 | password | testGRDB.swift:138:68:138:77 | [...] | provenance |  |
+| testGRDB.swift:140:69:140:69 | password | testGRDB.swift:140:68:140:77 | [...] | provenance |  |
+| testGRDB.swift:143:66:143:66 | password | testGRDB.swift:143:65:143:74 | [...] | provenance |  |
+| testGRDB.swift:145:66:145:66 | password | testGRDB.swift:145:65:145:74 | [...] | provenance |  |
+| testGRDB.swift:148:66:148:66 | password | testGRDB.swift:148:65:148:74 | [...] | provenance |  |
+| testGRDB.swift:150:66:150:66 | password | testGRDB.swift:150:65:150:74 | [...] | provenance |  |
+| testGRDB.swift:153:66:153:66 | password | testGRDB.swift:153:65:153:74 | [...] | provenance |  |
+| testGRDB.swift:155:66:155:66 | password | testGRDB.swift:155:65:155:74 | [...] | provenance |  |
+| testGRDB.swift:160:60:160:60 | password | testGRDB.swift:160:59:160:68 | [...] | provenance |  |
+| testGRDB.swift:161:51:161:51 | password | testGRDB.swift:161:50:161:59 | [...] | provenance |  |
+| testGRDB.swift:164:60:164:60 | password | testGRDB.swift:164:59:164:68 | [...] | provenance |  |
+| testGRDB.swift:165:51:165:51 | password | testGRDB.swift:165:50:165:59 | [...] | provenance |  |
+| testGRDB.swift:169:57:169:57 | password | testGRDB.swift:169:56:169:65 | [...] | provenance |  |
+| testGRDB.swift:170:48:170:48 | password | testGRDB.swift:170:47:170:56 | [...] | provenance |  |
+| testGRDB.swift:173:57:173:57 | password | testGRDB.swift:173:56:173:65 | [...] | provenance |  |
+| testGRDB.swift:174:48:174:48 | password | testGRDB.swift:174:47:174:56 | [...] | provenance |  |
+| testGRDB.swift:178:57:178:57 | password | testGRDB.swift:178:56:178:65 | [...] | provenance |  |
+| testGRDB.swift:179:48:179:48 | password | testGRDB.swift:179:47:179:56 | [...] | provenance |  |
+| testGRDB.swift:182:57:182:57 | password | testGRDB.swift:182:56:182:65 | [...] | provenance |  |
+| testGRDB.swift:183:48:183:48 | password | testGRDB.swift:183:47:183:56 | [...] | provenance |  |
+| testGRDB.swift:187:57:187:57 | password | testGRDB.swift:187:56:187:65 | [...] | provenance |  |
+| testGRDB.swift:188:48:188:48 | password | testGRDB.swift:188:47:188:56 | [...] | provenance |  |
+| testGRDB.swift:191:57:191:57 | password | testGRDB.swift:191:56:191:65 | [...] | provenance |  |
+| testGRDB.swift:192:48:192:48 | password | testGRDB.swift:192:47:192:56 | [...] | provenance |  |
+| testGRDB.swift:198:30:198:30 | password | testGRDB.swift:198:29:198:38 | [...] | provenance |  |
+| testGRDB.swift:201:24:201:24 | password | testGRDB.swift:201:23:201:32 | [...] | provenance |  |
+| testGRDB.swift:206:67:206:67 | password | testGRDB.swift:206:66:206:75 | [...] | provenance |  |
+| testGRDB.swift:208:81:208:81 | password | testGRDB.swift:208:80:208:89 | [...] | provenance |  |
+| testGRDB.swift:210:85:210:85 | password | testGRDB.swift:210:84:210:93 | [...] | provenance |  |
+| testGRDB.swift:212:99:212:99 | password | testGRDB.swift:212:98:212:107 | [...] | provenance |  |
+| testRealm2.swift:13:6:13:6 | value | file://:0:0:0:0 | value | provenance |  |
+| testRealm2.swift:13:6:13:6 | value [Collection element] | file://:0:0:0:0 | value [Collection element] | provenance |  |
+| testRealm2.swift:18:11:18:11 | myPassword | testRealm2.swift:13:6:13:6 | value | provenance |  |
+| testRealm2.swift:18:11:18:11 | myPassword | testRealm2.swift:18:2:18:2 | [post] o | provenance |  |
+| testRealm2.swift:24:11:24:11 | socialSecurityNumber | testRealm2.swift:13:6:13:6 | value | provenance |  |
+| testRealm2.swift:24:11:24:11 | socialSecurityNumber | testRealm2.swift:24:2:24:2 | [post] o | provenance |  |
+| testRealm2.swift:25:11:25:11 | ssn | testRealm2.swift:13:6:13:6 | value | provenance |  |
+| testRealm2.swift:25:11:25:11 | ssn | testRealm2.swift:25:2:25:2 | [post] o | provenance |  |
+| testRealm2.swift:26:11:26:25 | call to String.init(_:) | testRealm2.swift:13:6:13:6 | value | provenance |  |
+| testRealm2.swift:26:11:26:25 | call to String.init(_:) | testRealm2.swift:26:2:26:2 | [post] o | provenance |  |
+| testRealm2.swift:26:11:26:25 | call to String.init(_:) [Collection element] | testRealm2.swift:13:6:13:6 | value [Collection element] | provenance |  |
+| testRealm2.swift:26:11:26:25 | call to String.init(_:) [Collection element] | testRealm2.swift:26:2:26:2 | [post] o | provenance |  |
+| testRealm2.swift:26:18:26:18 | ssn_int | testRealm2.swift:26:11:26:25 | call to String.init(_:) | provenance |  |
+| testRealm2.swift:26:18:26:18 | ssn_int | testRealm2.swift:26:11:26:25 | call to String.init(_:) [Collection element] | provenance |  |
+| testRealm2.swift:32:11:32:11 | creditCardNumber | testRealm2.swift:13:6:13:6 | value | provenance |  |
+| testRealm2.swift:32:11:32:11 | creditCardNumber | testRealm2.swift:32:2:32:2 | [post] o | provenance |  |
+| testRealm2.swift:33:11:33:11 | CCN | testRealm2.swift:13:6:13:6 | value | provenance |  |
+| testRealm2.swift:33:11:33:11 | CCN | testRealm2.swift:33:2:33:2 | [post] o | provenance |  |
+| testRealm2.swift:34:11:34:25 | call to String.init(_:) | testRealm2.swift:13:6:13:6 | value | provenance |  |
+| testRealm2.swift:34:11:34:25 | call to String.init(_:) | testRealm2.swift:34:2:34:2 | [post] o | provenance |  |
+| testRealm2.swift:34:11:34:25 | call to String.init(_:) [Collection element] | testRealm2.swift:13:6:13:6 | value [Collection element] | provenance |  |
+| testRealm2.swift:34:11:34:25 | call to String.init(_:) [Collection element] | testRealm2.swift:34:2:34:2 | [post] o | provenance |  |
+| testRealm2.swift:34:18:34:18 | int_ccn | testRealm2.swift:34:11:34:25 | call to String.init(_:) | provenance |  |
+| testRealm2.swift:34:18:34:18 | int_ccn | testRealm2.swift:34:11:34:25 | call to String.init(_:) [Collection element] | provenance |  |
+| testRealm.swift:27:6:27:6 | value | file://:0:0:0:0 | value | provenance |  |
+| testRealm.swift:34:6:34:6 | value | file://:0:0:0:0 | value | provenance |  |
+| testRealm.swift:41:11:41:11 | myPassword | testRealm.swift:27:6:27:6 | value | provenance |  |
+| testRealm.swift:41:11:41:11 | myPassword | testRealm.swift:41:2:41:2 | [post] a | provenance |  |
+| testRealm.swift:49:11:49:11 | myPassword | testRealm.swift:27:6:27:6 | value | provenance |  |
+| testRealm.swift:49:11:49:11 | myPassword | testRealm.swift:49:2:49:2 | [post] c | provenance |  |
+| testRealm.swift:59:12:59:12 | myPassword | testRealm.swift:27:6:27:6 | value | provenance |  |
+| testRealm.swift:59:12:59:12 | myPassword | testRealm.swift:59:2:59:3 | [post] ...! | provenance |  |
+| testRealm.swift:66:11:66:11 | myPassword | testRealm.swift:27:6:27:6 | value | provenance |  |
+| testRealm.swift:66:11:66:11 | myPassword | testRealm.swift:66:2:66:2 | [post] g | provenance |  |
+| testRealm.swift:73:15:73:15 | myPassword | testRealm.swift:34:6:34:6 | value | provenance |  |
+| testRealm.swift:73:15:73:15 | myPassword | testRealm.swift:73:2:73:2 | [post] h | provenance |  |
 nodes
-| file://:0:0:0:0 | [post] self [data] :  | semmle.label | [post] self [data] :  |
-| file://:0:0:0:0 | [post] self [notStoredBankAccountNumber] :  | semmle.label | [post] self [notStoredBankAccountNumber] :  |
-| file://:0:0:0:0 | value :  | semmle.label | value :  |
-| file://:0:0:0:0 | value :  | semmle.label | value :  |
-| testCoreData2.swift:23:13:23:13 | value :  | semmle.label | value :  |
+| SQLite.swift:119:70:119:70 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:120:50:120:50 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:123:17:123:17 | insertQuery | semmle.label | insertQuery |
+| SQLite.swift:124:17:124:17 | updateQuery | semmle.label | updateQuery |
+| SQLite.swift:127:21:127:21 | insertQuery | semmle.label | insertQuery |
+| SQLite.swift:128:21:128:21 | updateQuery | semmle.label | updateQuery |
+| SQLite.swift:131:17:131:17 | insertQuery | semmle.label | insertQuery |
+| SQLite.swift:132:17:132:17 | updateQuery | semmle.label | updateQuery |
+| SQLite.swift:135:20:135:20 | insertQuery | semmle.label | insertQuery |
+| SQLite.swift:136:20:136:20 | updateQuery | semmle.label | updateQuery |
+| SQLite.swift:139:24:139:24 | insertQuery | semmle.label | insertQuery |
+| SQLite.swift:140:24:140:24 | updateQuery | semmle.label | updateQuery |
+| SQLite.swift:147:32:147:32 | [...] | semmle.label | [...] |
+| SQLite.swift:147:32:147:32 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| SQLite.swift:147:32:147:32 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:148:28:148:28 | [...] | semmle.label | [...] |
+| SQLite.swift:148:28:148:28 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| SQLite.swift:148:28:148:28 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:149:31:149:31 | [...] | semmle.label | [...] |
+| SQLite.swift:149:31:149:31 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| SQLite.swift:149:31:149:31 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:152:21:152:21 | [...] | semmle.label | [...] |
+| SQLite.swift:152:21:152:21 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| SQLite.swift:152:21:152:21 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:153:20:153:20 | [...] | semmle.label | [...] |
+| SQLite.swift:153:20:153:20 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| SQLite.swift:153:20:153:20 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:154:23:154:23 | [...] | semmle.label | [...] |
+| SQLite.swift:154:23:154:23 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| SQLite.swift:154:23:154:23 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:158:32:158:54 | [...] | semmle.label | [...] |
+| SQLite.swift:158:33:158:33 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:159:28:159:50 | [...] | semmle.label | [...] |
+| SQLite.swift:159:29:159:29 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:160:31:160:53 | [...] | semmle.label | [...] |
+| SQLite.swift:160:32:160:32 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:163:21:163:43 | [...] | semmle.label | [...] |
+| SQLite.swift:163:22:163:22 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:164:20:164:42 | [...] | semmle.label | [...] |
+| SQLite.swift:164:21:164:21 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:165:23:165:45 | [...] | semmle.label | [...] |
+| SQLite.swift:165:24:165:24 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:169:32:169:70 | [...] | semmle.label | [...] |
+| SQLite.swift:169:43:169:53 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
+| SQLite.swift:169:53:169:53 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:170:28:170:66 | [...] | semmle.label | [...] |
+| SQLite.swift:170:39:170:49 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
+| SQLite.swift:170:49:170:49 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:171:31:171:69 | [...] | semmle.label | [...] |
+| SQLite.swift:171:42:171:52 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
+| SQLite.swift:171:52:171:52 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:174:21:174:59 | [...] | semmle.label | [...] |
+| SQLite.swift:174:32:174:42 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
+| SQLite.swift:174:42:174:42 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:175:20:175:58 | [...] | semmle.label | [...] |
+| SQLite.swift:175:31:175:41 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
+| SQLite.swift:175:41:175:41 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:176:23:176:61 | [...] | semmle.label | [...] |
+| SQLite.swift:176:34:176:44 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
+| SQLite.swift:176:44:176:44 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:186:40:186:54 | ... <-(_:_:) ... | semmle.label | ... <-(_:_:) ... |
+| SQLite.swift:186:40:186:54 | [...] | semmle.label | [...] |
+| SQLite.swift:186:40:186:54 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| SQLite.swift:186:54:186:54 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:189:26:189:40 | ... <-(_:_:) ... | semmle.label | ... <-(_:_:) ... |
+| SQLite.swift:189:26:189:40 | [...] | semmle.label | [...] |
+| SQLite.swift:189:26:189:40 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| SQLite.swift:189:40:189:40 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:191:27:191:41 | ... <-(_:_:) ... | semmle.label | ... <-(_:_:) ... |
+| SQLite.swift:191:27:191:41 | [...] | semmle.label | [...] |
+| SQLite.swift:191:27:191:41 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| SQLite.swift:191:41:191:41 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:193:26:193:89 | ... <-(_:_:) ... | semmle.label | ... <-(_:_:) ... |
+| SQLite.swift:193:26:193:89 | [...] | semmle.label | [...] |
+| SQLite.swift:193:26:193:89 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| SQLite.swift:193:40:193:89 | call to replace(_:with:) | semmle.label | call to replace(_:with:) |
+| SQLite.swift:193:72:193:72 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:197:16:197:50 | [...] [Collection element, Collection element] | semmle.label | [...] [Collection element, Collection element] |
+| SQLite.swift:197:17:197:49 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| SQLite.swift:197:18:197:32 | ... <-(_:_:) ... | semmle.label | ... <-(_:_:) ... |
+| SQLite.swift:197:32:197:32 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:199:30:199:30 | badMany | semmle.label | badMany |
+| SQLite.swift:201:54:201:54 | badMany | semmle.label | badMany |
+| file://:0:0:0:0 | .value | semmle.label | .value |
+| file://:0:0:0:0 | .value | semmle.label | .value |
+| file://:0:0:0:0 | .value2 | semmle.label | .value2 |
+| file://:0:0:0:0 | [post] self [data, Collection element] | semmle.label | [post] self [data, Collection element] |
+| file://:0:0:0:0 | [post] self [data] | semmle.label | [post] self [data] |
+| file://:0:0:0:0 | [post] self [data] | semmle.label | [post] self [data] |
+| file://:0:0:0:0 | [post] self [notStoredBankAccountNumber] | semmle.label | [post] self [notStoredBankAccountNumber] |
+| file://:0:0:0:0 | [post] self [password] | semmle.label | [post] self [password] |
+| file://:0:0:0:0 | [post] self [value] | semmle.label | [post] self [value] |
+| file://:0:0:0:0 | self | semmle.label | self |
+| file://:0:0:0:0 | self | semmle.label | self |
+| file://:0:0:0:0 | self [value] | semmle.label | self [value] |
+| file://:0:0:0:0 | value | semmle.label | value |
+| file://:0:0:0:0 | value | semmle.label | value |
+| file://:0:0:0:0 | value | semmle.label | value |
+| file://:0:0:0:0 | value | semmle.label | value |
+| file://:0:0:0:0 | value | semmle.label | value |
+| file://:0:0:0:0 | value [Collection element] | semmle.label | value [Collection element] |
+| sqlite3_c_api.swift:42:69:42:69 | medicalNotes | semmle.label | medicalNotes |
+| sqlite3_c_api.swift:43:49:43:49 | medicalNotes | semmle.label | medicalNotes |
+| sqlite3_c_api.swift:46:27:46:27 | insertQuery | semmle.label | insertQuery |
+| sqlite3_c_api.swift:47:27:47:27 | updateQuery | semmle.label | updateQuery |
+| sqlite3_c_api.swift:58:36:58:36 | medicalNotes | semmle.label | medicalNotes |
+| testCoreData2.swift:23:13:23:13 | self [Return] [notStoredBankAccountNumber] | semmle.label | self [Return] [notStoredBankAccountNumber] |
+| testCoreData2.swift:23:13:23:13 | value | semmle.label | value |
 | testCoreData2.swift:37:2:37:2 | [post] obj | semmle.label | [post] obj |
-| testCoreData2.swift:37:2:37:2 | [post] obj [myValue] :  | semmle.label | [post] obj [myValue] :  |
-| testCoreData2.swift:37:16:37:16 | bankAccountNo :  | semmle.label | bankAccountNo :  |
+| testCoreData2.swift:37:16:37:16 | bankAccountNo | semmle.label | bankAccountNo |
 | testCoreData2.swift:39:2:39:2 | [post] obj | semmle.label | [post] obj |
-| testCoreData2.swift:39:2:39:2 | [post] obj [myBankAccountNumber] :  | semmle.label | [post] obj [myBankAccountNumber] :  |
-| testCoreData2.swift:39:28:39:28 | bankAccountNo :  | semmle.label | bankAccountNo :  |
+| testCoreData2.swift:39:28:39:28 | bankAccountNo | semmle.label | bankAccountNo |
 | testCoreData2.swift:41:2:41:2 | [post] obj | semmle.label | [post] obj |
-| testCoreData2.swift:41:2:41:2 | [post] obj [myBankAccountNumber2] :  | semmle.label | [post] obj [myBankAccountNumber2] :  |
-| testCoreData2.swift:41:29:41:29 | bankAccountNo :  | semmle.label | bankAccountNo :  |
+| testCoreData2.swift:41:29:41:29 | bankAccountNo | semmle.label | bankAccountNo |
 | testCoreData2.swift:43:2:43:2 | [post] obj | semmle.label | [post] obj |
-| testCoreData2.swift:43:2:43:2 | [post] obj [notStoredBankAccountNumber] :  | semmle.label | [post] obj [notStoredBankAccountNumber] :  |
-| testCoreData2.swift:43:35:43:35 | bankAccountNo :  | semmle.label | bankAccountNo :  |
+| testCoreData2.swift:43:35:43:35 | bankAccountNo | semmle.label | bankAccountNo |
 | testCoreData2.swift:46:2:46:10 | [post] ...? | semmle.label | [post] ...? |
-| testCoreData2.swift:46:2:46:10 | [post] ...? [myValue] :  | semmle.label | [post] ...? [myValue] :  |
-| testCoreData2.swift:46:22:46:22 | bankAccountNo :  | semmle.label | bankAccountNo :  |
+| testCoreData2.swift:46:22:46:22 | bankAccountNo | semmle.label | bankAccountNo |
 | testCoreData2.swift:48:2:48:10 | [post] ...? | semmle.label | [post] ...? |
-| testCoreData2.swift:48:2:48:10 | [post] ...? [myBankAccountNumber] :  | semmle.label | [post] ...? [myBankAccountNumber] :  |
-| testCoreData2.swift:48:34:48:34 | bankAccountNo :  | semmle.label | bankAccountNo :  |
+| testCoreData2.swift:48:34:48:34 | bankAccountNo | semmle.label | bankAccountNo |
 | testCoreData2.swift:50:2:50:10 | [post] ...? | semmle.label | [post] ...? |
-| testCoreData2.swift:50:2:50:10 | [post] ...? [myBankAccountNumber2] :  | semmle.label | [post] ...? [myBankAccountNumber2] :  |
-| testCoreData2.swift:50:35:50:35 | bankAccountNo :  | semmle.label | bankAccountNo :  |
+| testCoreData2.swift:50:35:50:35 | bankAccountNo | semmle.label | bankAccountNo |
 | testCoreData2.swift:52:2:52:10 | [post] ...? | semmle.label | [post] ...? |
-| testCoreData2.swift:52:2:52:10 | [post] ...? [notStoredBankAccountNumber] :  | semmle.label | [post] ...? [notStoredBankAccountNumber] :  |
-| testCoreData2.swift:52:41:52:41 | bankAccountNo :  | semmle.label | bankAccountNo :  |
+| testCoreData2.swift:52:41:52:41 | bankAccountNo | semmle.label | bankAccountNo |
 | testCoreData2.swift:57:3:57:3 | [post] obj | semmle.label | [post] obj |
-| testCoreData2.swift:57:3:57:3 | [post] obj [myBankAccountNumber] :  | semmle.label | [post] obj [myBankAccountNumber] :  |
-| testCoreData2.swift:57:29:57:29 | bankAccountNo :  | semmle.label | bankAccountNo :  |
+| testCoreData2.swift:57:29:57:29 | bankAccountNo | semmle.label | bankAccountNo |
 | testCoreData2.swift:60:4:60:4 | [post] obj | semmle.label | [post] obj |
-| testCoreData2.swift:60:4:60:4 | [post] obj [myBankAccountNumber] :  | semmle.label | [post] obj [myBankAccountNumber] :  |
-| testCoreData2.swift:60:30:60:30 | bankAccountNo :  | semmle.label | bankAccountNo :  |
+| testCoreData2.swift:60:30:60:30 | bankAccountNo | semmle.label | bankAccountNo |
 | testCoreData2.swift:62:4:62:4 | [post] obj | semmle.label | [post] obj |
-| testCoreData2.swift:62:4:62:4 | [post] obj [myBankAccountNumber] :  | semmle.label | [post] obj [myBankAccountNumber] :  |
-| testCoreData2.swift:62:30:62:30 | bankAccountNo :  | semmle.label | bankAccountNo :  |
+| testCoreData2.swift:62:30:62:30 | bankAccountNo | semmle.label | bankAccountNo |
 | testCoreData2.swift:65:3:65:3 | [post] obj | semmle.label | [post] obj |
-| testCoreData2.swift:65:3:65:3 | [post] obj [myBankAccountNumber] :  | semmle.label | [post] obj [myBankAccountNumber] :  |
-| testCoreData2.swift:65:29:65:29 | bankAccountNo :  | semmle.label | bankAccountNo :  |
-| testCoreData.swift:18:19:18:26 | value :  | semmle.label | value :  |
+| testCoreData2.swift:65:29:65:29 | bankAccountNo | semmle.label | bankAccountNo |
+| testCoreData2.swift:70:9:70:9 | self | semmle.label | self |
+| testCoreData2.swift:70:9:70:9 | self [Return] [value] | semmle.label | self [Return] [value] |
+| testCoreData2.swift:70:9:70:9 | self [value] | semmle.label | self [value] |
+| testCoreData2.swift:70:9:70:9 | value | semmle.label | value |
+| testCoreData2.swift:71:9:71:9 | self | semmle.label | self |
+| testCoreData2.swift:79:2:79:2 | [post] dbObj | semmle.label | [post] dbObj |
+| testCoreData2.swift:79:18:79:28 | .bankAccountNo | semmle.label | .bankAccountNo |
+| testCoreData2.swift:80:2:80:2 | [post] dbObj | semmle.label | [post] dbObj |
+| testCoreData2.swift:80:18:80:28 | ...! | semmle.label | ...! |
+| testCoreData2.swift:80:18:80:28 | .bankAccountNo2 | semmle.label | .bankAccountNo2 |
+| testCoreData2.swift:82:2:82:2 | [post] dbObj | semmle.label | [post] dbObj |
+| testCoreData2.swift:82:18:82:18 | bankAccountNo | semmle.label | bankAccountNo |
+| testCoreData2.swift:82:18:82:32 | .value | semmle.label | .value |
+| testCoreData2.swift:83:2:83:2 | [post] dbObj | semmle.label | [post] dbObj |
+| testCoreData2.swift:83:18:83:18 | bankAccountNo | semmle.label | bankAccountNo |
+| testCoreData2.swift:83:18:83:32 | ...! | semmle.label | ...! |
+| testCoreData2.swift:83:18:83:32 | .value2 | semmle.label | .value2 |
+| testCoreData2.swift:84:2:84:2 | [post] dbObj | semmle.label | [post] dbObj |
+| testCoreData2.swift:84:18:84:18 | ...! | semmle.label | ...! |
+| testCoreData2.swift:84:18:84:18 | bankAccountNo2 | semmle.label | bankAccountNo2 |
+| testCoreData2.swift:84:18:84:33 | .value | semmle.label | .value |
+| testCoreData2.swift:85:2:85:2 | [post] dbObj | semmle.label | [post] dbObj |
+| testCoreData2.swift:85:18:85:18 | ...! | semmle.label | ...! |
+| testCoreData2.swift:85:18:85:18 | bankAccountNo2 | semmle.label | bankAccountNo2 |
+| testCoreData2.swift:85:18:85:33 | ...! | semmle.label | ...! |
+| testCoreData2.swift:85:18:85:33 | .value2 | semmle.label | .value2 |
+| testCoreData2.swift:87:2:87:10 | [post] ...? | semmle.label | [post] ...? |
+| testCoreData2.swift:87:22:87:32 | .bankAccountNo | semmle.label | .bankAccountNo |
+| testCoreData2.swift:88:2:88:10 | [post] ...? | semmle.label | [post] ...? |
+| testCoreData2.swift:88:22:88:22 | bankAccountNo | semmle.label | bankAccountNo |
+| testCoreData2.swift:88:22:88:36 | .value | semmle.label | .value |
+| testCoreData2.swift:89:2:89:10 | [post] ...? | semmle.label | [post] ...? |
+| testCoreData2.swift:89:22:89:22 | ...! | semmle.label | ...! |
+| testCoreData2.swift:89:22:89:22 | bankAccountNo2 | semmle.label | bankAccountNo2 |
+| testCoreData2.swift:89:22:89:37 | ...! | semmle.label | ...! |
+| testCoreData2.swift:89:22:89:37 | .value2 | semmle.label | .value2 |
+| testCoreData2.swift:91:10:91:10 | bankAccountNo | semmle.label | bankAccountNo |
+| testCoreData2.swift:92:10:92:10 | a | semmle.label | a |
+| testCoreData2.swift:92:10:92:12 | .value | semmle.label | .value |
+| testCoreData2.swift:93:2:93:2 | [post] dbObj | semmle.label | [post] dbObj |
+| testCoreData2.swift:93:18:93:18 | b | semmle.label | b |
+| testCoreData2.swift:95:10:95:10 | bankAccountNo | semmle.label | bankAccountNo |
+| testCoreData2.swift:97:2:97:2 | [post] d [value] | semmle.label | [post] d [value] |
+| testCoreData2.swift:97:12:97:12 | c | semmle.label | c |
+| testCoreData2.swift:97:12:97:14 | .value | semmle.label | .value |
+| testCoreData2.swift:98:2:98:2 | [post] dbObj | semmle.label | [post] dbObj |
+| testCoreData2.swift:98:18:98:18 | d [value] | semmle.label | d [value] |
+| testCoreData2.swift:98:18:98:20 | .value | semmle.label | .value |
+| testCoreData2.swift:101:10:101:10 | bankAccountNo | semmle.label | bankAccountNo |
+| testCoreData2.swift:103:13:103:13 | e | semmle.label | e |
+| testCoreData2.swift:104:2:104:2 | [post] dbObj | semmle.label | [post] dbObj |
+| testCoreData2.swift:104:18:104:18 | e | semmle.label | e |
+| testCoreData2.swift:104:18:104:20 | .value | semmle.label | .value |
+| testCoreData2.swift:105:2:105:2 | [post] dbObj | semmle.label | [post] dbObj |
+| testCoreData2.swift:105:18:105:18 | e | semmle.label | e |
+| testCoreData2.swift:105:18:105:20 | ...! | semmle.label | ...! |
+| testCoreData2.swift:105:18:105:20 | .value2 | semmle.label | .value2 |
+| testCoreData.swift:18:19:18:26 | value | semmle.label | value |
 | testCoreData.swift:19:12:19:12 | value | semmle.label | value |
-| testCoreData.swift:31:3:31:3 | newValue :  | semmle.label | newValue :  |
+| testCoreData.swift:31:3:31:3 | newValue | semmle.label | newValue |
 | testCoreData.swift:32:13:32:13 | newValue | semmle.label | newValue |
 | testCoreData.swift:48:15:48:15 | password | semmle.label | password |
 | testCoreData.swift:51:24:51:24 | password | semmle.label | password |
 | testCoreData.swift:58:15:58:15 | password | semmle.label | password |
-| testCoreData.swift:61:25:61:25 | password :  | semmle.label | password :  |
+| testCoreData.swift:61:25:61:25 | password | semmle.label | password |
 | testCoreData.swift:64:2:64:2 | [post] obj | semmle.label | [post] obj |
-| testCoreData.swift:64:2:64:2 | [post] obj [myValue] :  | semmle.label | [post] obj [myValue] :  |
-| testCoreData.swift:64:16:64:16 | password :  | semmle.label | password :  |
-| testCoreData.swift:77:24:77:24 | x :  | semmle.label | x :  |
+| testCoreData.swift:64:16:64:16 | password | semmle.label | password |
+| testCoreData.swift:77:24:77:24 | x | semmle.label | x |
 | testCoreData.swift:78:15:78:15 | x | semmle.label | x |
-| testCoreData.swift:80:10:80:22 | call to getPassword() :  | semmle.label | call to getPassword() :  |
+| testCoreData.swift:80:10:80:22 | call to getPassword() | semmle.label | call to getPassword() |
 | testCoreData.swift:81:15:81:15 | y | semmle.label | y |
 | testCoreData.swift:85:15:85:17 | .password | semmle.label | .password |
-| testCoreData.swift:91:10:91:10 | passwd :  | semmle.label | passwd :  |
-| testCoreData.swift:92:10:92:10 | passwd :  | semmle.label | passwd :  |
-| testCoreData.swift:93:10:93:10 | passwd :  | semmle.label | passwd :  |
+| testCoreData.swift:91:10:91:10 | passwd | semmle.label | passwd |
+| testCoreData.swift:92:10:92:10 | passwd | semmle.label | passwd |
+| testCoreData.swift:93:10:93:10 | passwd | semmle.label | passwd |
 | testCoreData.swift:95:15:95:15 | x | semmle.label | x |
 | testCoreData.swift:96:15:96:15 | y | semmle.label | y |
 | testCoreData.swift:97:15:97:15 | z | semmle.label | z |
+| testCoreData.swift:128:15:128:33 | call to generateSecretKey() | semmle.label | call to generateSecretKey() |
+| testCoreData.swift:129:15:129:30 | call to getCertificate() | semmle.label | call to getCertificate() |
 | testGRDB.swift:73:56:73:65 | [...] | semmle.label | [...] |
-| testGRDB.swift:73:57:73:57 | password :  | semmle.label | password :  |
+| testGRDB.swift:73:57:73:57 | password | semmle.label | password |
 | testGRDB.swift:76:42:76:51 | [...] | semmle.label | [...] |
-| testGRDB.swift:76:43:76:43 | password :  | semmle.label | password :  |
+| testGRDB.swift:76:43:76:43 | password | semmle.label | password |
 | testGRDB.swift:81:44:81:53 | [...] | semmle.label | [...] |
-| testGRDB.swift:81:45:81:45 | password :  | semmle.label | password :  |
+| testGRDB.swift:81:45:81:45 | password | semmle.label | password |
 | testGRDB.swift:83:44:83:53 | [...] | semmle.label | [...] |
-| testGRDB.swift:83:45:83:45 | password :  | semmle.label | password :  |
+| testGRDB.swift:83:45:83:45 | password | semmle.label | password |
 | testGRDB.swift:85:44:85:53 | [...] | semmle.label | [...] |
-| testGRDB.swift:85:45:85:45 | password :  | semmle.label | password :  |
+| testGRDB.swift:85:45:85:45 | password | semmle.label | password |
 | testGRDB.swift:87:44:87:53 | [...] | semmle.label | [...] |
-| testGRDB.swift:87:45:87:45 | password :  | semmle.label | password :  |
+| testGRDB.swift:87:45:87:45 | password | semmle.label | password |
 | testGRDB.swift:92:37:92:46 | [...] | semmle.label | [...] |
-| testGRDB.swift:92:38:92:38 | password :  | semmle.label | password :  |
+| testGRDB.swift:92:38:92:38 | password | semmle.label | password |
 | testGRDB.swift:95:36:95:45 | [...] | semmle.label | [...] |
-| testGRDB.swift:95:37:95:37 | password :  | semmle.label | password :  |
+| testGRDB.swift:95:37:95:37 | password | semmle.label | password |
 | testGRDB.swift:100:72:100:81 | [...] | semmle.label | [...] |
-| testGRDB.swift:100:73:100:73 | password :  | semmle.label | password :  |
+| testGRDB.swift:100:73:100:73 | password | semmle.label | password |
 | testGRDB.swift:101:72:101:81 | [...] | semmle.label | [...] |
-| testGRDB.swift:101:73:101:73 | password :  | semmle.label | password :  |
+| testGRDB.swift:101:73:101:73 | password | semmle.label | password |
 | testGRDB.swift:107:52:107:61 | [...] | semmle.label | [...] |
-| testGRDB.swift:107:53:107:53 | password :  | semmle.label | password :  |
+| testGRDB.swift:107:53:107:53 | password | semmle.label | password |
 | testGRDB.swift:109:52:109:61 | [...] | semmle.label | [...] |
-| testGRDB.swift:109:53:109:53 | password :  | semmle.label | password :  |
+| testGRDB.swift:109:53:109:53 | password | semmle.label | password |
 | testGRDB.swift:111:51:111:60 | [...] | semmle.label | [...] |
-| testGRDB.swift:111:52:111:52 | password :  | semmle.label | password :  |
+| testGRDB.swift:111:52:111:52 | password | semmle.label | password |
 | testGRDB.swift:116:47:116:56 | [...] | semmle.label | [...] |
-| testGRDB.swift:116:48:116:48 | password :  | semmle.label | password :  |
+| testGRDB.swift:116:48:116:48 | password | semmle.label | password |
 | testGRDB.swift:118:47:118:56 | [...] | semmle.label | [...] |
-| testGRDB.swift:118:48:118:48 | password :  | semmle.label | password :  |
+| testGRDB.swift:118:48:118:48 | password | semmle.label | password |
 | testGRDB.swift:121:44:121:53 | [...] | semmle.label | [...] |
-| testGRDB.swift:121:45:121:45 | password :  | semmle.label | password :  |
+| testGRDB.swift:121:45:121:45 | password | semmle.label | password |
 | testGRDB.swift:123:44:123:53 | [...] | semmle.label | [...] |
-| testGRDB.swift:123:45:123:45 | password :  | semmle.label | password :  |
+| testGRDB.swift:123:45:123:45 | password | semmle.label | password |
 | testGRDB.swift:126:44:126:53 | [...] | semmle.label | [...] |
-| testGRDB.swift:126:45:126:45 | password :  | semmle.label | password :  |
+| testGRDB.swift:126:45:126:45 | password | semmle.label | password |
 | testGRDB.swift:128:44:128:53 | [...] | semmle.label | [...] |
-| testGRDB.swift:128:45:128:45 | password :  | semmle.label | password :  |
+| testGRDB.swift:128:45:128:45 | password | semmle.label | password |
 | testGRDB.swift:131:44:131:53 | [...] | semmle.label | [...] |
-| testGRDB.swift:131:45:131:45 | password :  | semmle.label | password :  |
+| testGRDB.swift:131:45:131:45 | password | semmle.label | password |
 | testGRDB.swift:133:44:133:53 | [...] | semmle.label | [...] |
-| testGRDB.swift:133:45:133:45 | password :  | semmle.label | password :  |
+| testGRDB.swift:133:45:133:45 | password | semmle.label | password |
 | testGRDB.swift:138:68:138:77 | [...] | semmle.label | [...] |
-| testGRDB.swift:138:69:138:69 | password :  | semmle.label | password :  |
+| testGRDB.swift:138:69:138:69 | password | semmle.label | password |
 | testGRDB.swift:140:68:140:77 | [...] | semmle.label | [...] |
-| testGRDB.swift:140:69:140:69 | password :  | semmle.label | password :  |
+| testGRDB.swift:140:69:140:69 | password | semmle.label | password |
 | testGRDB.swift:143:65:143:74 | [...] | semmle.label | [...] |
-| testGRDB.swift:143:66:143:66 | password :  | semmle.label | password :  |
+| testGRDB.swift:143:66:143:66 | password | semmle.label | password |
 | testGRDB.swift:145:65:145:74 | [...] | semmle.label | [...] |
-| testGRDB.swift:145:66:145:66 | password :  | semmle.label | password :  |
+| testGRDB.swift:145:66:145:66 | password | semmle.label | password |
 | testGRDB.swift:148:65:148:74 | [...] | semmle.label | [...] |
-| testGRDB.swift:148:66:148:66 | password :  | semmle.label | password :  |
+| testGRDB.swift:148:66:148:66 | password | semmle.label | password |
 | testGRDB.swift:150:65:150:74 | [...] | semmle.label | [...] |
-| testGRDB.swift:150:66:150:66 | password :  | semmle.label | password :  |
+| testGRDB.swift:150:66:150:66 | password | semmle.label | password |
 | testGRDB.swift:153:65:153:74 | [...] | semmle.label | [...] |
-| testGRDB.swift:153:66:153:66 | password :  | semmle.label | password :  |
+| testGRDB.swift:153:66:153:66 | password | semmle.label | password |
 | testGRDB.swift:155:65:155:74 | [...] | semmle.label | [...] |
-| testGRDB.swift:155:66:155:66 | password :  | semmle.label | password :  |
+| testGRDB.swift:155:66:155:66 | password | semmle.label | password |
 | testGRDB.swift:160:59:160:68 | [...] | semmle.label | [...] |
-| testGRDB.swift:160:60:160:60 | password :  | semmle.label | password :  |
+| testGRDB.swift:160:60:160:60 | password | semmle.label | password |
 | testGRDB.swift:161:50:161:59 | [...] | semmle.label | [...] |
-| testGRDB.swift:161:51:161:51 | password :  | semmle.label | password :  |
+| testGRDB.swift:161:51:161:51 | password | semmle.label | password |
 | testGRDB.swift:164:59:164:68 | [...] | semmle.label | [...] |
-| testGRDB.swift:164:60:164:60 | password :  | semmle.label | password :  |
+| testGRDB.swift:164:60:164:60 | password | semmle.label | password |
 | testGRDB.swift:165:50:165:59 | [...] | semmle.label | [...] |
-| testGRDB.swift:165:51:165:51 | password :  | semmle.label | password :  |
+| testGRDB.swift:165:51:165:51 | password | semmle.label | password |
 | testGRDB.swift:169:56:169:65 | [...] | semmle.label | [...] |
-| testGRDB.swift:169:57:169:57 | password :  | semmle.label | password :  |
+| testGRDB.swift:169:57:169:57 | password | semmle.label | password |
 | testGRDB.swift:170:47:170:56 | [...] | semmle.label | [...] |
-| testGRDB.swift:170:48:170:48 | password :  | semmle.label | password :  |
+| testGRDB.swift:170:48:170:48 | password | semmle.label | password |
 | testGRDB.swift:173:56:173:65 | [...] | semmle.label | [...] |
-| testGRDB.swift:173:57:173:57 | password :  | semmle.label | password :  |
+| testGRDB.swift:173:57:173:57 | password | semmle.label | password |
 | testGRDB.swift:174:47:174:56 | [...] | semmle.label | [...] |
-| testGRDB.swift:174:48:174:48 | password :  | semmle.label | password :  |
+| testGRDB.swift:174:48:174:48 | password | semmle.label | password |
 | testGRDB.swift:178:56:178:65 | [...] | semmle.label | [...] |
-| testGRDB.swift:178:57:178:57 | password :  | semmle.label | password :  |
+| testGRDB.swift:178:57:178:57 | password | semmle.label | password |
 | testGRDB.swift:179:47:179:56 | [...] | semmle.label | [...] |
-| testGRDB.swift:179:48:179:48 | password :  | semmle.label | password :  |
+| testGRDB.swift:179:48:179:48 | password | semmle.label | password |
 | testGRDB.swift:182:56:182:65 | [...] | semmle.label | [...] |
-| testGRDB.swift:182:57:182:57 | password :  | semmle.label | password :  |
+| testGRDB.swift:182:57:182:57 | password | semmle.label | password |
 | testGRDB.swift:183:47:183:56 | [...] | semmle.label | [...] |
-| testGRDB.swift:183:48:183:48 | password :  | semmle.label | password :  |
+| testGRDB.swift:183:48:183:48 | password | semmle.label | password |
 | testGRDB.swift:187:56:187:65 | [...] | semmle.label | [...] |
-| testGRDB.swift:187:57:187:57 | password :  | semmle.label | password :  |
+| testGRDB.swift:187:57:187:57 | password | semmle.label | password |
 | testGRDB.swift:188:47:188:56 | [...] | semmle.label | [...] |
-| testGRDB.swift:188:48:188:48 | password :  | semmle.label | password :  |
+| testGRDB.swift:188:48:188:48 | password | semmle.label | password |
 | testGRDB.swift:191:56:191:65 | [...] | semmle.label | [...] |
-| testGRDB.swift:191:57:191:57 | password :  | semmle.label | password :  |
+| testGRDB.swift:191:57:191:57 | password | semmle.label | password |
 | testGRDB.swift:192:47:192:56 | [...] | semmle.label | [...] |
-| testGRDB.swift:192:48:192:48 | password :  | semmle.label | password :  |
+| testGRDB.swift:192:48:192:48 | password | semmle.label | password |
 | testGRDB.swift:198:29:198:38 | [...] | semmle.label | [...] |
-| testGRDB.swift:198:30:198:30 | password :  | semmle.label | password :  |
+| testGRDB.swift:198:30:198:30 | password | semmle.label | password |
 | testGRDB.swift:201:23:201:32 | [...] | semmle.label | [...] |
-| testGRDB.swift:201:24:201:24 | password :  | semmle.label | password :  |
+| testGRDB.swift:201:24:201:24 | password | semmle.label | password |
 | testGRDB.swift:206:66:206:75 | [...] | semmle.label | [...] |
-| testGRDB.swift:206:67:206:67 | password :  | semmle.label | password :  |
+| testGRDB.swift:206:67:206:67 | password | semmle.label | password |
 | testGRDB.swift:208:80:208:89 | [...] | semmle.label | [...] |
-| testGRDB.swift:208:81:208:81 | password :  | semmle.label | password :  |
+| testGRDB.swift:208:81:208:81 | password | semmle.label | password |
 | testGRDB.swift:210:84:210:93 | [...] | semmle.label | [...] |
-| testGRDB.swift:210:85:210:85 | password :  | semmle.label | password :  |
+| testGRDB.swift:210:85:210:85 | password | semmle.label | password |
 | testGRDB.swift:212:98:212:107 | [...] | semmle.label | [...] |
-| testGRDB.swift:212:99:212:99 | password :  | semmle.label | password :  |
-| testRealm.swift:16:6:16:6 | value :  | semmle.label | value :  |
-| testRealm.swift:34:2:34:2 | [post] a | semmle.label | [post] a |
-| testRealm.swift:34:2:34:2 | [post] a [data] :  | semmle.label | [post] a [data] :  |
-| testRealm.swift:34:11:34:11 | myPassword :  | semmle.label | myPassword :  |
-| testRealm.swift:42:2:42:2 | [post] c | semmle.label | [post] c |
-| testRealm.swift:42:2:42:2 | [post] c [data] :  | semmle.label | [post] c [data] :  |
-| testRealm.swift:42:11:42:11 | myPassword :  | semmle.label | myPassword :  |
-| testRealm.swift:52:2:52:3 | [post] ...! | semmle.label | [post] ...! |
-| testRealm.swift:52:2:52:3 | [post] ...! [data] :  | semmle.label | [post] ...! [data] :  |
-| testRealm.swift:52:12:52:12 | myPassword :  | semmle.label | myPassword :  |
-| testRealm.swift:59:2:59:2 | [post] g | semmle.label | [post] g |
-| testRealm.swift:59:2:59:2 | [post] g [data] :  | semmle.label | [post] g [data] :  |
-| testRealm.swift:59:11:59:11 | myPassword :  | semmle.label | myPassword :  |
+| testGRDB.swift:212:99:212:99 | password | semmle.label | password |
+| testRealm2.swift:13:6:13:6 | self [Return] [data, Collection element] | semmle.label | self [Return] [data, Collection element] |
+| testRealm2.swift:13:6:13:6 | self [Return] [data] | semmle.label | self [Return] [data] |
+| testRealm2.swift:13:6:13:6 | value | semmle.label | value |
+| testRealm2.swift:13:6:13:6 | value [Collection element] | semmle.label | value [Collection element] |
+| testRealm2.swift:18:2:18:2 | [post] o | semmle.label | [post] o |
+| testRealm2.swift:18:11:18:11 | myPassword | semmle.label | myPassword |
+| testRealm2.swift:24:2:24:2 | [post] o | semmle.label | [post] o |
+| testRealm2.swift:24:11:24:11 | socialSecurityNumber | semmle.label | socialSecurityNumber |
+| testRealm2.swift:25:2:25:2 | [post] o | semmle.label | [post] o |
+| testRealm2.swift:25:11:25:11 | ssn | semmle.label | ssn |
+| testRealm2.swift:26:2:26:2 | [post] o | semmle.label | [post] o |
+| testRealm2.swift:26:11:26:25 | call to String.init(_:) | semmle.label | call to String.init(_:) |
+| testRealm2.swift:26:11:26:25 | call to String.init(_:) [Collection element] | semmle.label | call to String.init(_:) [Collection element] |
+| testRealm2.swift:26:18:26:18 | ssn_int | semmle.label | ssn_int |
+| testRealm2.swift:32:2:32:2 | [post] o | semmle.label | [post] o |
+| testRealm2.swift:32:11:32:11 | creditCardNumber | semmle.label | creditCardNumber |
+| testRealm2.swift:33:2:33:2 | [post] o | semmle.label | [post] o |
+| testRealm2.swift:33:11:33:11 | CCN | semmle.label | CCN |
+| testRealm2.swift:34:2:34:2 | [post] o | semmle.label | [post] o |
+| testRealm2.swift:34:11:34:25 | call to String.init(_:) | semmle.label | call to String.init(_:) |
+| testRealm2.swift:34:11:34:25 | call to String.init(_:) [Collection element] | semmle.label | call to String.init(_:) [Collection element] |
+| testRealm2.swift:34:18:34:18 | int_ccn | semmle.label | int_ccn |
+| testRealm.swift:27:6:27:6 | self [Return] [data] | semmle.label | self [Return] [data] |
+| testRealm.swift:27:6:27:6 | value | semmle.label | value |
+| testRealm.swift:34:6:34:6 | self [Return] [password] | semmle.label | self [Return] [password] |
+| testRealm.swift:34:6:34:6 | value | semmle.label | value |
+| testRealm.swift:41:2:41:2 | [post] a | semmle.label | [post] a |
+| testRealm.swift:41:11:41:11 | myPassword | semmle.label | myPassword |
+| testRealm.swift:49:2:49:2 | [post] c | semmle.label | [post] c |
+| testRealm.swift:49:11:49:11 | myPassword | semmle.label | myPassword |
+| testRealm.swift:59:2:59:3 | [post] ...! | semmle.label | [post] ...! |
+| testRealm.swift:59:12:59:12 | myPassword | semmle.label | myPassword |
+| testRealm.swift:66:2:66:2 | [post] g | semmle.label | [post] g |
+| testRealm.swift:66:11:66:11 | myPassword | semmle.label | myPassword |
+| testRealm.swift:73:2:73:2 | [post] h | semmle.label | [post] h |
+| testRealm.swift:73:15:73:15 | myPassword | semmle.label | myPassword |
 subpaths
-| testCoreData2.swift:43:35:43:35 | bankAccountNo :  | testCoreData2.swift:23:13:23:13 | value :  | file://:0:0:0:0 | [post] self [notStoredBankAccountNumber] :  | testCoreData2.swift:43:2:43:2 | [post] obj [notStoredBankAccountNumber] :  |
-| testCoreData2.swift:52:41:52:41 | bankAccountNo :  | testCoreData2.swift:23:13:23:13 | value :  | file://:0:0:0:0 | [post] self [notStoredBankAccountNumber] :  | testCoreData2.swift:52:2:52:10 | [post] ...? [notStoredBankAccountNumber] :  |
-| testRealm.swift:34:11:34:11 | myPassword :  | testRealm.swift:16:6:16:6 | value :  | file://:0:0:0:0 | [post] self [data] :  | testRealm.swift:34:2:34:2 | [post] a [data] :  |
-| testRealm.swift:42:11:42:11 | myPassword :  | testRealm.swift:16:6:16:6 | value :  | file://:0:0:0:0 | [post] self [data] :  | testRealm.swift:42:2:42:2 | [post] c [data] :  |
-| testRealm.swift:52:12:52:12 | myPassword :  | testRealm.swift:16:6:16:6 | value :  | file://:0:0:0:0 | [post] self [data] :  | testRealm.swift:52:2:52:3 | [post] ...! [data] :  |
-| testRealm.swift:59:11:59:11 | myPassword :  | testRealm.swift:16:6:16:6 | value :  | file://:0:0:0:0 | [post] self [data] :  | testRealm.swift:59:2:59:2 | [post] g [data] :  |
+| testCoreData2.swift:43:35:43:35 | bankAccountNo | testCoreData2.swift:23:13:23:13 | value | testCoreData2.swift:23:13:23:13 | self [Return] [notStoredBankAccountNumber] | testCoreData2.swift:43:2:43:2 | [post] obj |
+| testCoreData2.swift:52:41:52:41 | bankAccountNo | testCoreData2.swift:23:13:23:13 | value | testCoreData2.swift:23:13:23:13 | self [Return] [notStoredBankAccountNumber] | testCoreData2.swift:52:2:52:10 | [post] ...? |
+| testCoreData2.swift:82:18:82:18 | bankAccountNo | testCoreData2.swift:70:9:70:9 | self | file://:0:0:0:0 | .value | testCoreData2.swift:82:18:82:32 | .value |
+| testCoreData2.swift:83:18:83:18 | bankAccountNo | testCoreData2.swift:71:9:71:9 | self | file://:0:0:0:0 | .value2 | testCoreData2.swift:83:18:83:32 | .value2 |
+| testCoreData2.swift:84:18:84:18 | ...! | testCoreData2.swift:70:9:70:9 | self | file://:0:0:0:0 | .value | testCoreData2.swift:84:18:84:33 | .value |
+| testCoreData2.swift:85:18:85:18 | ...! | testCoreData2.swift:71:9:71:9 | self | file://:0:0:0:0 | .value2 | testCoreData2.swift:85:18:85:33 | .value2 |
+| testCoreData2.swift:88:22:88:22 | bankAccountNo | testCoreData2.swift:70:9:70:9 | self | file://:0:0:0:0 | .value | testCoreData2.swift:88:22:88:36 | .value |
+| testCoreData2.swift:89:22:89:22 | ...! | testCoreData2.swift:71:9:71:9 | self | file://:0:0:0:0 | .value2 | testCoreData2.swift:89:22:89:37 | .value2 |
+| testCoreData2.swift:92:10:92:10 | a | testCoreData2.swift:70:9:70:9 | self | file://:0:0:0:0 | .value | testCoreData2.swift:92:10:92:12 | .value |
+| testCoreData2.swift:97:12:97:12 | c | testCoreData2.swift:70:9:70:9 | self | file://:0:0:0:0 | .value | testCoreData2.swift:97:12:97:14 | .value |
+| testCoreData2.swift:97:12:97:14 | .value | testCoreData2.swift:70:9:70:9 | value | testCoreData2.swift:70:9:70:9 | self [Return] [value] | testCoreData2.swift:97:2:97:2 | [post] d [value] |
+| testCoreData2.swift:98:18:98:18 | d [value] | testCoreData2.swift:70:9:70:9 | self [value] | file://:0:0:0:0 | .value | testCoreData2.swift:98:18:98:20 | .value |
+| testCoreData2.swift:104:18:104:18 | e | testCoreData2.swift:70:9:70:9 | self | file://:0:0:0:0 | .value | testCoreData2.swift:104:18:104:20 | .value |
+| testCoreData2.swift:105:18:105:18 | e | testCoreData2.swift:71:9:71:9 | self | file://:0:0:0:0 | .value2 | testCoreData2.swift:105:18:105:20 | .value2 |
+| testRealm2.swift:18:11:18:11 | myPassword | testRealm2.swift:13:6:13:6 | value | testRealm2.swift:13:6:13:6 | self [Return] [data] | testRealm2.swift:18:2:18:2 | [post] o |
+| testRealm2.swift:24:11:24:11 | socialSecurityNumber | testRealm2.swift:13:6:13:6 | value | testRealm2.swift:13:6:13:6 | self [Return] [data] | testRealm2.swift:24:2:24:2 | [post] o |
+| testRealm2.swift:25:11:25:11 | ssn | testRealm2.swift:13:6:13:6 | value | testRealm2.swift:13:6:13:6 | self [Return] [data] | testRealm2.swift:25:2:25:2 | [post] o |
+| testRealm2.swift:26:11:26:25 | call to String.init(_:) | testRealm2.swift:13:6:13:6 | value | testRealm2.swift:13:6:13:6 | self [Return] [data] | testRealm2.swift:26:2:26:2 | [post] o |
+| testRealm2.swift:26:11:26:25 | call to String.init(_:) [Collection element] | testRealm2.swift:13:6:13:6 | value [Collection element] | testRealm2.swift:13:6:13:6 | self [Return] [data, Collection element] | testRealm2.swift:26:2:26:2 | [post] o |
+| testRealm2.swift:32:11:32:11 | creditCardNumber | testRealm2.swift:13:6:13:6 | value | testRealm2.swift:13:6:13:6 | self [Return] [data] | testRealm2.swift:32:2:32:2 | [post] o |
+| testRealm2.swift:33:11:33:11 | CCN | testRealm2.swift:13:6:13:6 | value | testRealm2.swift:13:6:13:6 | self [Return] [data] | testRealm2.swift:33:2:33:2 | [post] o |
+| testRealm2.swift:34:11:34:25 | call to String.init(_:) | testRealm2.swift:13:6:13:6 | value | testRealm2.swift:13:6:13:6 | self [Return] [data] | testRealm2.swift:34:2:34:2 | [post] o |
+| testRealm2.swift:34:11:34:25 | call to String.init(_:) [Collection element] | testRealm2.swift:13:6:13:6 | value [Collection element] | testRealm2.swift:13:6:13:6 | self [Return] [data, Collection element] | testRealm2.swift:34:2:34:2 | [post] o |
+| testRealm.swift:41:11:41:11 | myPassword | testRealm.swift:27:6:27:6 | value | testRealm.swift:27:6:27:6 | self [Return] [data] | testRealm.swift:41:2:41:2 | [post] a |
+| testRealm.swift:49:11:49:11 | myPassword | testRealm.swift:27:6:27:6 | value | testRealm.swift:27:6:27:6 | self [Return] [data] | testRealm.swift:49:2:49:2 | [post] c |
+| testRealm.swift:59:12:59:12 | myPassword | testRealm.swift:27:6:27:6 | value | testRealm.swift:27:6:27:6 | self [Return] [data] | testRealm.swift:59:2:59:3 | [post] ...! |
+| testRealm.swift:66:11:66:11 | myPassword | testRealm.swift:27:6:27:6 | value | testRealm.swift:27:6:27:6 | self [Return] [data] | testRealm.swift:66:2:66:2 | [post] g |
+| testRealm.swift:73:15:73:15 | myPassword | testRealm.swift:34:6:34:6 | value | testRealm.swift:34:6:34:6 | self [Return] [password] | testRealm.swift:73:2:73:2 | [post] h |
 #select
-| testCoreData2.swift:37:2:37:2 | obj | testCoreData2.swift:37:16:37:16 | bankAccountNo :  | testCoreData2.swift:37:2:37:2 | [post] obj | This operation stores '[post] obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:37:16:37:16 | bankAccountNo :  | bankAccountNo |
-| testCoreData2.swift:39:2:39:2 | obj | testCoreData2.swift:39:28:39:28 | bankAccountNo :  | testCoreData2.swift:39:2:39:2 | [post] obj | This operation stores '[post] obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:39:28:39:28 | bankAccountNo :  | bankAccountNo |
-| testCoreData2.swift:41:2:41:2 | obj | testCoreData2.swift:41:29:41:29 | bankAccountNo :  | testCoreData2.swift:41:2:41:2 | [post] obj | This operation stores '[post] obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:41:29:41:29 | bankAccountNo :  | bankAccountNo |
-| testCoreData2.swift:43:2:43:2 | obj | testCoreData2.swift:43:35:43:35 | bankAccountNo :  | testCoreData2.swift:43:2:43:2 | [post] obj | This operation stores '[post] obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:43:35:43:35 | bankAccountNo :  | bankAccountNo |
-| testCoreData2.swift:46:2:46:10 | ...? | testCoreData2.swift:46:22:46:22 | bankAccountNo :  | testCoreData2.swift:46:2:46:10 | [post] ...? | This operation stores '[post] ...?' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:46:22:46:22 | bankAccountNo :  | bankAccountNo |
-| testCoreData2.swift:48:2:48:10 | ...? | testCoreData2.swift:48:34:48:34 | bankAccountNo :  | testCoreData2.swift:48:2:48:10 | [post] ...? | This operation stores '[post] ...?' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:48:34:48:34 | bankAccountNo :  | bankAccountNo |
-| testCoreData2.swift:50:2:50:10 | ...? | testCoreData2.swift:50:35:50:35 | bankAccountNo :  | testCoreData2.swift:50:2:50:10 | [post] ...? | This operation stores '[post] ...?' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:50:35:50:35 | bankAccountNo :  | bankAccountNo |
-| testCoreData2.swift:52:2:52:10 | ...? | testCoreData2.swift:52:41:52:41 | bankAccountNo :  | testCoreData2.swift:52:2:52:10 | [post] ...? | This operation stores '[post] ...?' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:52:41:52:41 | bankAccountNo :  | bankAccountNo |
-| testCoreData2.swift:57:3:57:3 | obj | testCoreData2.swift:57:29:57:29 | bankAccountNo :  | testCoreData2.swift:57:3:57:3 | [post] obj | This operation stores '[post] obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:57:29:57:29 | bankAccountNo :  | bankAccountNo |
-| testCoreData2.swift:60:4:60:4 | obj | testCoreData2.swift:60:30:60:30 | bankAccountNo :  | testCoreData2.swift:60:4:60:4 | [post] obj | This operation stores '[post] obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:60:30:60:30 | bankAccountNo :  | bankAccountNo |
-| testCoreData2.swift:62:4:62:4 | obj | testCoreData2.swift:62:30:62:30 | bankAccountNo :  | testCoreData2.swift:62:4:62:4 | [post] obj | This operation stores '[post] obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:62:30:62:30 | bankAccountNo :  | bankAccountNo |
-| testCoreData2.swift:65:3:65:3 | obj | testCoreData2.swift:65:29:65:29 | bankAccountNo :  | testCoreData2.swift:65:3:65:3 | [post] obj | This operation stores '[post] obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:65:29:65:29 | bankAccountNo :  | bankAccountNo |
-| testCoreData.swift:19:12:19:12 | value | testCoreData.swift:61:25:61:25 | password :  | testCoreData.swift:19:12:19:12 | value | This operation stores 'value' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:61:25:61:25 | password :  | password |
-| testCoreData.swift:32:13:32:13 | newValue | testCoreData.swift:64:16:64:16 | password :  | testCoreData.swift:32:13:32:13 | newValue | This operation stores 'newValue' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:64:16:64:16 | password :  | password |
+| SQLite.swift:123:17:123:17 | insertQuery | SQLite.swift:119:70:119:70 | mobilePhoneNumber | SQLite.swift:123:17:123:17 | insertQuery | This operation stores 'insertQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:119:70:119:70 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:124:17:124:17 | updateQuery | SQLite.swift:120:50:120:50 | mobilePhoneNumber | SQLite.swift:124:17:124:17 | updateQuery | This operation stores 'updateQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:120:50:120:50 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:127:21:127:21 | insertQuery | SQLite.swift:119:70:119:70 | mobilePhoneNumber | SQLite.swift:127:21:127:21 | insertQuery | This operation stores 'insertQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:119:70:119:70 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:128:21:128:21 | updateQuery | SQLite.swift:120:50:120:50 | mobilePhoneNumber | SQLite.swift:128:21:128:21 | updateQuery | This operation stores 'updateQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:120:50:120:50 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:131:17:131:17 | insertQuery | SQLite.swift:119:70:119:70 | mobilePhoneNumber | SQLite.swift:131:17:131:17 | insertQuery | This operation stores 'insertQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:119:70:119:70 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:132:17:132:17 | updateQuery | SQLite.swift:120:50:120:50 | mobilePhoneNumber | SQLite.swift:132:17:132:17 | updateQuery | This operation stores 'updateQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:120:50:120:50 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:135:20:135:20 | insertQuery | SQLite.swift:119:70:119:70 | mobilePhoneNumber | SQLite.swift:135:20:135:20 | insertQuery | This operation stores 'insertQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:119:70:119:70 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:136:20:136:20 | updateQuery | SQLite.swift:120:50:120:50 | mobilePhoneNumber | SQLite.swift:136:20:136:20 | updateQuery | This operation stores 'updateQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:120:50:120:50 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:139:24:139:24 | insertQuery | SQLite.swift:119:70:119:70 | mobilePhoneNumber | SQLite.swift:139:24:139:24 | insertQuery | This operation stores 'insertQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:119:70:119:70 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:140:24:140:24 | updateQuery | SQLite.swift:120:50:120:50 | mobilePhoneNumber | SQLite.swift:140:24:140:24 | updateQuery | This operation stores 'updateQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:120:50:120:50 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:147:32:147:32 | [...] | SQLite.swift:147:32:147:32 | mobilePhoneNumber | SQLite.swift:147:32:147:32 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:147:32:147:32 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:148:28:148:28 | [...] | SQLite.swift:148:28:148:28 | mobilePhoneNumber | SQLite.swift:148:28:148:28 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:148:28:148:28 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:149:31:149:31 | [...] | SQLite.swift:149:31:149:31 | mobilePhoneNumber | SQLite.swift:149:31:149:31 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:149:31:149:31 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:152:21:152:21 | [...] | SQLite.swift:152:21:152:21 | mobilePhoneNumber | SQLite.swift:152:21:152:21 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:152:21:152:21 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:153:20:153:20 | [...] | SQLite.swift:153:20:153:20 | mobilePhoneNumber | SQLite.swift:153:20:153:20 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:153:20:153:20 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:154:23:154:23 | [...] | SQLite.swift:154:23:154:23 | mobilePhoneNumber | SQLite.swift:154:23:154:23 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:154:23:154:23 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:158:32:158:54 | [...] | SQLite.swift:158:33:158:33 | mobilePhoneNumber | SQLite.swift:158:32:158:54 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:158:33:158:33 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:159:28:159:50 | [...] | SQLite.swift:159:29:159:29 | mobilePhoneNumber | SQLite.swift:159:28:159:50 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:159:29:159:29 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:160:31:160:53 | [...] | SQLite.swift:160:32:160:32 | mobilePhoneNumber | SQLite.swift:160:31:160:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:160:32:160:32 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:163:21:163:43 | [...] | SQLite.swift:163:22:163:22 | mobilePhoneNumber | SQLite.swift:163:21:163:43 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:163:22:163:22 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:164:20:164:42 | [...] | SQLite.swift:164:21:164:21 | mobilePhoneNumber | SQLite.swift:164:20:164:42 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:164:21:164:21 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:165:23:165:45 | [...] | SQLite.swift:165:24:165:24 | mobilePhoneNumber | SQLite.swift:165:23:165:45 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:165:24:165:24 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:169:32:169:70 | [...] | SQLite.swift:169:53:169:53 | mobilePhoneNumber | SQLite.swift:169:32:169:70 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:169:53:169:53 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:170:28:170:66 | [...] | SQLite.swift:170:49:170:49 | mobilePhoneNumber | SQLite.swift:170:28:170:66 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:170:49:170:49 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:171:31:171:69 | [...] | SQLite.swift:171:52:171:52 | mobilePhoneNumber | SQLite.swift:171:31:171:69 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:171:52:171:52 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:174:21:174:59 | [...] | SQLite.swift:174:42:174:42 | mobilePhoneNumber | SQLite.swift:174:21:174:59 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:174:42:174:42 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:175:20:175:58 | [...] | SQLite.swift:175:41:175:41 | mobilePhoneNumber | SQLite.swift:175:20:175:58 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:175:41:175:41 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:176:23:176:61 | [...] | SQLite.swift:176:44:176:44 | mobilePhoneNumber | SQLite.swift:176:23:176:61 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:176:44:176:44 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:186:40:186:54 | [...] | SQLite.swift:186:54:186:54 | mobilePhoneNumber | SQLite.swift:186:40:186:54 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:186:54:186:54 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:189:26:189:40 | [...] | SQLite.swift:189:40:189:40 | mobilePhoneNumber | SQLite.swift:189:26:189:40 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:189:40:189:40 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:191:27:191:41 | [...] | SQLite.swift:191:41:191:41 | mobilePhoneNumber | SQLite.swift:191:27:191:41 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:191:41:191:41 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:193:26:193:89 | [...] | SQLite.swift:193:72:193:72 | mobilePhoneNumber | SQLite.swift:193:26:193:89 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:193:72:193:72 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:199:30:199:30 | badMany | SQLite.swift:197:32:197:32 | mobilePhoneNumber | SQLite.swift:199:30:199:30 | badMany | This operation stores 'badMany' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:197:32:197:32 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:201:54:201:54 | badMany | SQLite.swift:197:32:197:32 | mobilePhoneNumber | SQLite.swift:201:54:201:54 | badMany | This operation stores 'badMany' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:197:32:197:32 | mobilePhoneNumber | mobilePhoneNumber |
+| sqlite3_c_api.swift:46:27:46:27 | insertQuery | sqlite3_c_api.swift:42:69:42:69 | medicalNotes | sqlite3_c_api.swift:46:27:46:27 | insertQuery | This operation stores 'insertQuery' in a database. It may contain unencrypted sensitive data from $@. | sqlite3_c_api.swift:42:69:42:69 | medicalNotes | medicalNotes |
+| sqlite3_c_api.swift:47:27:47:27 | updateQuery | sqlite3_c_api.swift:43:49:43:49 | medicalNotes | sqlite3_c_api.swift:47:27:47:27 | updateQuery | This operation stores 'updateQuery' in a database. It may contain unencrypted sensitive data from $@. | sqlite3_c_api.swift:43:49:43:49 | medicalNotes | medicalNotes |
+| sqlite3_c_api.swift:58:36:58:36 | medicalNotes | sqlite3_c_api.swift:58:36:58:36 | medicalNotes | sqlite3_c_api.swift:58:36:58:36 | medicalNotes | This operation stores 'medicalNotes' in a database. It may contain unencrypted sensitive data from $@. | sqlite3_c_api.swift:58:36:58:36 | medicalNotes | medicalNotes |
+| testCoreData2.swift:37:2:37:2 | obj | testCoreData2.swift:37:16:37:16 | bankAccountNo | testCoreData2.swift:37:2:37:2 | [post] obj | This operation stores 'obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:37:16:37:16 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:39:2:39:2 | obj | testCoreData2.swift:39:28:39:28 | bankAccountNo | testCoreData2.swift:39:2:39:2 | [post] obj | This operation stores 'obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:39:28:39:28 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:41:2:41:2 | obj | testCoreData2.swift:41:29:41:29 | bankAccountNo | testCoreData2.swift:41:2:41:2 | [post] obj | This operation stores 'obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:41:29:41:29 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:43:2:43:2 | obj | testCoreData2.swift:43:35:43:35 | bankAccountNo | testCoreData2.swift:43:2:43:2 | [post] obj | This operation stores 'obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:43:35:43:35 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:46:2:46:10 | ...? | testCoreData2.swift:46:22:46:22 | bankAccountNo | testCoreData2.swift:46:2:46:10 | [post] ...? | This operation stores '...?' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:46:22:46:22 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:48:2:48:10 | ...? | testCoreData2.swift:48:34:48:34 | bankAccountNo | testCoreData2.swift:48:2:48:10 | [post] ...? | This operation stores '...?' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:48:34:48:34 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:50:2:50:10 | ...? | testCoreData2.swift:50:35:50:35 | bankAccountNo | testCoreData2.swift:50:2:50:10 | [post] ...? | This operation stores '...?' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:50:35:50:35 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:52:2:52:10 | ...? | testCoreData2.swift:52:41:52:41 | bankAccountNo | testCoreData2.swift:52:2:52:10 | [post] ...? | This operation stores '...?' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:52:41:52:41 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:57:3:57:3 | obj | testCoreData2.swift:57:29:57:29 | bankAccountNo | testCoreData2.swift:57:3:57:3 | [post] obj | This operation stores 'obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:57:29:57:29 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:60:4:60:4 | obj | testCoreData2.swift:60:30:60:30 | bankAccountNo | testCoreData2.swift:60:4:60:4 | [post] obj | This operation stores 'obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:60:30:60:30 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:62:4:62:4 | obj | testCoreData2.swift:62:30:62:30 | bankAccountNo | testCoreData2.swift:62:4:62:4 | [post] obj | This operation stores 'obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:62:30:62:30 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:65:3:65:3 | obj | testCoreData2.swift:65:29:65:29 | bankAccountNo | testCoreData2.swift:65:3:65:3 | [post] obj | This operation stores 'obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:65:29:65:29 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:79:2:79:2 | dbObj | testCoreData2.swift:79:18:79:28 | .bankAccountNo | testCoreData2.swift:79:2:79:2 | [post] dbObj | This operation stores 'dbObj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:79:18:79:28 | .bankAccountNo | .bankAccountNo |
+| testCoreData2.swift:80:2:80:2 | dbObj | testCoreData2.swift:80:18:80:28 | .bankAccountNo2 | testCoreData2.swift:80:2:80:2 | [post] dbObj | This operation stores 'dbObj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:80:18:80:28 | .bankAccountNo2 | .bankAccountNo2 |
+| testCoreData2.swift:82:2:82:2 | dbObj | testCoreData2.swift:82:18:82:18 | bankAccountNo | testCoreData2.swift:82:2:82:2 | [post] dbObj | This operation stores 'dbObj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:82:18:82:18 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:83:2:83:2 | dbObj | testCoreData2.swift:83:18:83:18 | bankAccountNo | testCoreData2.swift:83:2:83:2 | [post] dbObj | This operation stores 'dbObj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:83:18:83:18 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:84:2:84:2 | dbObj | testCoreData2.swift:84:18:84:18 | bankAccountNo2 | testCoreData2.swift:84:2:84:2 | [post] dbObj | This operation stores 'dbObj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:84:18:84:18 | bankAccountNo2 | bankAccountNo2 |
+| testCoreData2.swift:85:2:85:2 | dbObj | testCoreData2.swift:85:18:85:18 | bankAccountNo2 | testCoreData2.swift:85:2:85:2 | [post] dbObj | This operation stores 'dbObj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:85:18:85:18 | bankAccountNo2 | bankAccountNo2 |
+| testCoreData2.swift:87:2:87:10 | ...? | testCoreData2.swift:87:22:87:32 | .bankAccountNo | testCoreData2.swift:87:2:87:10 | [post] ...? | This operation stores '...?' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:87:22:87:32 | .bankAccountNo | .bankAccountNo |
+| testCoreData2.swift:88:2:88:10 | ...? | testCoreData2.swift:88:22:88:22 | bankAccountNo | testCoreData2.swift:88:2:88:10 | [post] ...? | This operation stores '...?' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:88:22:88:22 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:89:2:89:10 | ...? | testCoreData2.swift:89:22:89:22 | bankAccountNo2 | testCoreData2.swift:89:2:89:10 | [post] ...? | This operation stores '...?' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:89:22:89:22 | bankAccountNo2 | bankAccountNo2 |
+| testCoreData2.swift:93:2:93:2 | dbObj | testCoreData2.swift:91:10:91:10 | bankAccountNo | testCoreData2.swift:93:2:93:2 | [post] dbObj | This operation stores 'dbObj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:91:10:91:10 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:98:2:98:2 | dbObj | testCoreData2.swift:95:10:95:10 | bankAccountNo | testCoreData2.swift:98:2:98:2 | [post] dbObj | This operation stores 'dbObj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:95:10:95:10 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:104:2:104:2 | dbObj | testCoreData2.swift:101:10:101:10 | bankAccountNo | testCoreData2.swift:104:2:104:2 | [post] dbObj | This operation stores 'dbObj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:101:10:101:10 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:105:2:105:2 | dbObj | testCoreData2.swift:101:10:101:10 | bankAccountNo | testCoreData2.swift:105:2:105:2 | [post] dbObj | This operation stores 'dbObj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:101:10:101:10 | bankAccountNo | bankAccountNo |
+| testCoreData.swift:19:12:19:12 | value | testCoreData.swift:61:25:61:25 | password | testCoreData.swift:19:12:19:12 | value | This operation stores 'value' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:61:25:61:25 | password | password |
+| testCoreData.swift:32:13:32:13 | newValue | testCoreData.swift:64:16:64:16 | password | testCoreData.swift:32:13:32:13 | newValue | This operation stores 'newValue' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:64:16:64:16 | password | password |
 | testCoreData.swift:48:15:48:15 | password | testCoreData.swift:48:15:48:15 | password | testCoreData.swift:48:15:48:15 | password | This operation stores 'password' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:48:15:48:15 | password | password |
 | testCoreData.swift:51:24:51:24 | password | testCoreData.swift:51:24:51:24 | password | testCoreData.swift:51:24:51:24 | password | This operation stores 'password' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:51:24:51:24 | password | password |
 | testCoreData.swift:58:15:58:15 | password | testCoreData.swift:58:15:58:15 | password | testCoreData.swift:58:15:58:15 | password | This operation stores 'password' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:58:15:58:15 | password | password |
-| testCoreData.swift:64:2:64:2 | obj | testCoreData.swift:64:16:64:16 | password :  | testCoreData.swift:64:2:64:2 | [post] obj | This operation stores '[post] obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:64:16:64:16 | password :  | password |
-| testCoreData.swift:78:15:78:15 | x | testCoreData.swift:77:24:77:24 | x :  | testCoreData.swift:78:15:78:15 | x | This operation stores 'x' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:77:24:77:24 | x :  | x |
-| testCoreData.swift:81:15:81:15 | y | testCoreData.swift:80:10:80:22 | call to getPassword() :  | testCoreData.swift:81:15:81:15 | y | This operation stores 'y' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:80:10:80:22 | call to getPassword() :  | call to getPassword() |
+| testCoreData.swift:64:2:64:2 | obj | testCoreData.swift:64:16:64:16 | password | testCoreData.swift:64:2:64:2 | [post] obj | This operation stores 'obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:64:16:64:16 | password | password |
+| testCoreData.swift:78:15:78:15 | x | testCoreData.swift:77:24:77:24 | x | testCoreData.swift:78:15:78:15 | x | This operation stores 'x' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:77:24:77:24 | x | x |
+| testCoreData.swift:81:15:81:15 | y | testCoreData.swift:80:10:80:22 | call to getPassword() | testCoreData.swift:81:15:81:15 | y | This operation stores 'y' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:80:10:80:22 | call to getPassword() | call to getPassword() |
 | testCoreData.swift:85:15:85:17 | .password | testCoreData.swift:85:15:85:17 | .password | testCoreData.swift:85:15:85:17 | .password | This operation stores '.password' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:85:15:85:17 | .password | .password |
-| testCoreData.swift:95:15:95:15 | x | testCoreData.swift:91:10:91:10 | passwd :  | testCoreData.swift:95:15:95:15 | x | This operation stores 'x' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:91:10:91:10 | passwd :  | passwd |
-| testCoreData.swift:96:15:96:15 | y | testCoreData.swift:92:10:92:10 | passwd :  | testCoreData.swift:96:15:96:15 | y | This operation stores 'y' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:92:10:92:10 | passwd :  | passwd |
-| testCoreData.swift:97:15:97:15 | z | testCoreData.swift:93:10:93:10 | passwd :  | testCoreData.swift:97:15:97:15 | z | This operation stores 'z' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:93:10:93:10 | passwd :  | passwd |
-| testGRDB.swift:73:56:73:65 | [...] | testGRDB.swift:73:57:73:57 | password :  | testGRDB.swift:73:56:73:65 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:73:57:73:57 | password :  | password |
-| testGRDB.swift:76:42:76:51 | [...] | testGRDB.swift:76:43:76:43 | password :  | testGRDB.swift:76:42:76:51 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:76:43:76:43 | password :  | password |
-| testGRDB.swift:81:44:81:53 | [...] | testGRDB.swift:81:45:81:45 | password :  | testGRDB.swift:81:44:81:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:81:45:81:45 | password :  | password |
-| testGRDB.swift:83:44:83:53 | [...] | testGRDB.swift:83:45:83:45 | password :  | testGRDB.swift:83:44:83:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:83:45:83:45 | password :  | password |
-| testGRDB.swift:85:44:85:53 | [...] | testGRDB.swift:85:45:85:45 | password :  | testGRDB.swift:85:44:85:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:85:45:85:45 | password :  | password |
-| testGRDB.swift:87:44:87:53 | [...] | testGRDB.swift:87:45:87:45 | password :  | testGRDB.swift:87:44:87:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:87:45:87:45 | password :  | password |
-| testGRDB.swift:92:37:92:46 | [...] | testGRDB.swift:92:38:92:38 | password :  | testGRDB.swift:92:37:92:46 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:92:38:92:38 | password :  | password |
-| testGRDB.swift:95:36:95:45 | [...] | testGRDB.swift:95:37:95:37 | password :  | testGRDB.swift:95:36:95:45 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:95:37:95:37 | password :  | password |
-| testGRDB.swift:100:72:100:81 | [...] | testGRDB.swift:100:73:100:73 | password :  | testGRDB.swift:100:72:100:81 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:100:73:100:73 | password :  | password |
-| testGRDB.swift:101:72:101:81 | [...] | testGRDB.swift:101:73:101:73 | password :  | testGRDB.swift:101:72:101:81 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:101:73:101:73 | password :  | password |
-| testGRDB.swift:107:52:107:61 | [...] | testGRDB.swift:107:53:107:53 | password :  | testGRDB.swift:107:52:107:61 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:107:53:107:53 | password :  | password |
-| testGRDB.swift:109:52:109:61 | [...] | testGRDB.swift:109:53:109:53 | password :  | testGRDB.swift:109:52:109:61 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:109:53:109:53 | password :  | password |
-| testGRDB.swift:111:51:111:60 | [...] | testGRDB.swift:111:52:111:52 | password :  | testGRDB.swift:111:51:111:60 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:111:52:111:52 | password :  | password |
-| testGRDB.swift:116:47:116:56 | [...] | testGRDB.swift:116:48:116:48 | password :  | testGRDB.swift:116:47:116:56 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:116:48:116:48 | password :  | password |
-| testGRDB.swift:118:47:118:56 | [...] | testGRDB.swift:118:48:118:48 | password :  | testGRDB.swift:118:47:118:56 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:118:48:118:48 | password :  | password |
-| testGRDB.swift:121:44:121:53 | [...] | testGRDB.swift:121:45:121:45 | password :  | testGRDB.swift:121:44:121:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:121:45:121:45 | password :  | password |
-| testGRDB.swift:123:44:123:53 | [...] | testGRDB.swift:123:45:123:45 | password :  | testGRDB.swift:123:44:123:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:123:45:123:45 | password :  | password |
-| testGRDB.swift:126:44:126:53 | [...] | testGRDB.swift:126:45:126:45 | password :  | testGRDB.swift:126:44:126:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:126:45:126:45 | password :  | password |
-| testGRDB.swift:128:44:128:53 | [...] | testGRDB.swift:128:45:128:45 | password :  | testGRDB.swift:128:44:128:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:128:45:128:45 | password :  | password |
-| testGRDB.swift:131:44:131:53 | [...] | testGRDB.swift:131:45:131:45 | password :  | testGRDB.swift:131:44:131:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:131:45:131:45 | password :  | password |
-| testGRDB.swift:133:44:133:53 | [...] | testGRDB.swift:133:45:133:45 | password :  | testGRDB.swift:133:44:133:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:133:45:133:45 | password :  | password |
-| testGRDB.swift:138:68:138:77 | [...] | testGRDB.swift:138:69:138:69 | password :  | testGRDB.swift:138:68:138:77 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:138:69:138:69 | password :  | password |
-| testGRDB.swift:140:68:140:77 | [...] | testGRDB.swift:140:69:140:69 | password :  | testGRDB.swift:140:68:140:77 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:140:69:140:69 | password :  | password |
-| testGRDB.swift:143:65:143:74 | [...] | testGRDB.swift:143:66:143:66 | password :  | testGRDB.swift:143:65:143:74 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:143:66:143:66 | password :  | password |
-| testGRDB.swift:145:65:145:74 | [...] | testGRDB.swift:145:66:145:66 | password :  | testGRDB.swift:145:65:145:74 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:145:66:145:66 | password :  | password |
-| testGRDB.swift:148:65:148:74 | [...] | testGRDB.swift:148:66:148:66 | password :  | testGRDB.swift:148:65:148:74 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:148:66:148:66 | password :  | password |
-| testGRDB.swift:150:65:150:74 | [...] | testGRDB.swift:150:66:150:66 | password :  | testGRDB.swift:150:65:150:74 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:150:66:150:66 | password :  | password |
-| testGRDB.swift:153:65:153:74 | [...] | testGRDB.swift:153:66:153:66 | password :  | testGRDB.swift:153:65:153:74 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:153:66:153:66 | password :  | password |
-| testGRDB.swift:155:65:155:74 | [...] | testGRDB.swift:155:66:155:66 | password :  | testGRDB.swift:155:65:155:74 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:155:66:155:66 | password :  | password |
-| testGRDB.swift:160:59:160:68 | [...] | testGRDB.swift:160:60:160:60 | password :  | testGRDB.swift:160:59:160:68 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:160:60:160:60 | password :  | password |
-| testGRDB.swift:161:50:161:59 | [...] | testGRDB.swift:161:51:161:51 | password :  | testGRDB.swift:161:50:161:59 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:161:51:161:51 | password :  | password |
-| testGRDB.swift:164:59:164:68 | [...] | testGRDB.swift:164:60:164:60 | password :  | testGRDB.swift:164:59:164:68 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:164:60:164:60 | password :  | password |
-| testGRDB.swift:165:50:165:59 | [...] | testGRDB.swift:165:51:165:51 | password :  | testGRDB.swift:165:50:165:59 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:165:51:165:51 | password :  | password |
-| testGRDB.swift:169:56:169:65 | [...] | testGRDB.swift:169:57:169:57 | password :  | testGRDB.swift:169:56:169:65 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:169:57:169:57 | password :  | password |
-| testGRDB.swift:170:47:170:56 | [...] | testGRDB.swift:170:48:170:48 | password :  | testGRDB.swift:170:47:170:56 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:170:48:170:48 | password :  | password |
-| testGRDB.swift:173:56:173:65 | [...] | testGRDB.swift:173:57:173:57 | password :  | testGRDB.swift:173:56:173:65 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:173:57:173:57 | password :  | password |
-| testGRDB.swift:174:47:174:56 | [...] | testGRDB.swift:174:48:174:48 | password :  | testGRDB.swift:174:47:174:56 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:174:48:174:48 | password :  | password |
-| testGRDB.swift:178:56:178:65 | [...] | testGRDB.swift:178:57:178:57 | password :  | testGRDB.swift:178:56:178:65 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:178:57:178:57 | password :  | password |
-| testGRDB.swift:179:47:179:56 | [...] | testGRDB.swift:179:48:179:48 | password :  | testGRDB.swift:179:47:179:56 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:179:48:179:48 | password :  | password |
-| testGRDB.swift:182:56:182:65 | [...] | testGRDB.swift:182:57:182:57 | password :  | testGRDB.swift:182:56:182:65 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:182:57:182:57 | password :  | password |
-| testGRDB.swift:183:47:183:56 | [...] | testGRDB.swift:183:48:183:48 | password :  | testGRDB.swift:183:47:183:56 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:183:48:183:48 | password :  | password |
-| testGRDB.swift:187:56:187:65 | [...] | testGRDB.swift:187:57:187:57 | password :  | testGRDB.swift:187:56:187:65 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:187:57:187:57 | password :  | password |
-| testGRDB.swift:188:47:188:56 | [...] | testGRDB.swift:188:48:188:48 | password :  | testGRDB.swift:188:47:188:56 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:188:48:188:48 | password :  | password |
-| testGRDB.swift:191:56:191:65 | [...] | testGRDB.swift:191:57:191:57 | password :  | testGRDB.swift:191:56:191:65 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:191:57:191:57 | password :  | password |
-| testGRDB.swift:192:47:192:56 | [...] | testGRDB.swift:192:48:192:48 | password :  | testGRDB.swift:192:47:192:56 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:192:48:192:48 | password :  | password |
-| testGRDB.swift:198:29:198:38 | [...] | testGRDB.swift:198:30:198:30 | password :  | testGRDB.swift:198:29:198:38 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:198:30:198:30 | password :  | password |
-| testGRDB.swift:201:23:201:32 | [...] | testGRDB.swift:201:24:201:24 | password :  | testGRDB.swift:201:23:201:32 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:201:24:201:24 | password :  | password |
-| testGRDB.swift:206:66:206:75 | [...] | testGRDB.swift:206:67:206:67 | password :  | testGRDB.swift:206:66:206:75 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:206:67:206:67 | password :  | password |
-| testGRDB.swift:208:80:208:89 | [...] | testGRDB.swift:208:81:208:81 | password :  | testGRDB.swift:208:80:208:89 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:208:81:208:81 | password :  | password |
-| testGRDB.swift:210:84:210:93 | [...] | testGRDB.swift:210:85:210:85 | password :  | testGRDB.swift:210:84:210:93 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:210:85:210:85 | password :  | password |
-| testGRDB.swift:212:98:212:107 | [...] | testGRDB.swift:212:99:212:99 | password :  | testGRDB.swift:212:98:212:107 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:212:99:212:99 | password :  | password |
-| testRealm.swift:34:2:34:2 | a | testRealm.swift:34:11:34:11 | myPassword :  | testRealm.swift:34:2:34:2 | [post] a | This operation stores '[post] a' in a database. It may contain unencrypted sensitive data from $@. | testRealm.swift:34:11:34:11 | myPassword :  | myPassword |
-| testRealm.swift:42:2:42:2 | c | testRealm.swift:42:11:42:11 | myPassword :  | testRealm.swift:42:2:42:2 | [post] c | This operation stores '[post] c' in a database. It may contain unencrypted sensitive data from $@. | testRealm.swift:42:11:42:11 | myPassword :  | myPassword |
-| testRealm.swift:52:2:52:3 | ...! | testRealm.swift:52:12:52:12 | myPassword :  | testRealm.swift:52:2:52:3 | [post] ...! | This operation stores '[post] ...!' in a database. It may contain unencrypted sensitive data from $@. | testRealm.swift:52:12:52:12 | myPassword :  | myPassword |
-| testRealm.swift:59:2:59:2 | g | testRealm.swift:59:11:59:11 | myPassword :  | testRealm.swift:59:2:59:2 | [post] g | This operation stores '[post] g' in a database. It may contain unencrypted sensitive data from $@. | testRealm.swift:59:11:59:11 | myPassword :  | myPassword |
+| testCoreData.swift:95:15:95:15 | x | testCoreData.swift:91:10:91:10 | passwd | testCoreData.swift:95:15:95:15 | x | This operation stores 'x' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:91:10:91:10 | passwd | passwd |
+| testCoreData.swift:96:15:96:15 | y | testCoreData.swift:92:10:92:10 | passwd | testCoreData.swift:96:15:96:15 | y | This operation stores 'y' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:92:10:92:10 | passwd | passwd |
+| testCoreData.swift:97:15:97:15 | z | testCoreData.swift:93:10:93:10 | passwd | testCoreData.swift:97:15:97:15 | z | This operation stores 'z' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:93:10:93:10 | passwd | passwd |
+| testCoreData.swift:128:15:128:33 | call to generateSecretKey() | testCoreData.swift:128:15:128:33 | call to generateSecretKey() | testCoreData.swift:128:15:128:33 | call to generateSecretKey() | This operation stores 'call to generateSecretKey()' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:128:15:128:33 | call to generateSecretKey() | call to generateSecretKey() |
+| testCoreData.swift:129:15:129:30 | call to getCertificate() | testCoreData.swift:129:15:129:30 | call to getCertificate() | testCoreData.swift:129:15:129:30 | call to getCertificate() | This operation stores 'call to getCertificate()' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:129:15:129:30 | call to getCertificate() | call to getCertificate() |
+| testGRDB.swift:73:56:73:65 | [...] | testGRDB.swift:73:57:73:57 | password | testGRDB.swift:73:56:73:65 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:73:57:73:57 | password | password |
+| testGRDB.swift:76:42:76:51 | [...] | testGRDB.swift:76:43:76:43 | password | testGRDB.swift:76:42:76:51 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:76:43:76:43 | password | password |
+| testGRDB.swift:81:44:81:53 | [...] | testGRDB.swift:81:45:81:45 | password | testGRDB.swift:81:44:81:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:81:45:81:45 | password | password |
+| testGRDB.swift:83:44:83:53 | [...] | testGRDB.swift:83:45:83:45 | password | testGRDB.swift:83:44:83:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:83:45:83:45 | password | password |
+| testGRDB.swift:85:44:85:53 | [...] | testGRDB.swift:85:45:85:45 | password | testGRDB.swift:85:44:85:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:85:45:85:45 | password | password |
+| testGRDB.swift:87:44:87:53 | [...] | testGRDB.swift:87:45:87:45 | password | testGRDB.swift:87:44:87:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:87:45:87:45 | password | password |
+| testGRDB.swift:92:37:92:46 | [...] | testGRDB.swift:92:38:92:38 | password | testGRDB.swift:92:37:92:46 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:92:38:92:38 | password | password |
+| testGRDB.swift:95:36:95:45 | [...] | testGRDB.swift:95:37:95:37 | password | testGRDB.swift:95:36:95:45 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:95:37:95:37 | password | password |
+| testGRDB.swift:100:72:100:81 | [...] | testGRDB.swift:100:73:100:73 | password | testGRDB.swift:100:72:100:81 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:100:73:100:73 | password | password |
+| testGRDB.swift:101:72:101:81 | [...] | testGRDB.swift:101:73:101:73 | password | testGRDB.swift:101:72:101:81 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:101:73:101:73 | password | password |
+| testGRDB.swift:107:52:107:61 | [...] | testGRDB.swift:107:53:107:53 | password | testGRDB.swift:107:52:107:61 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:107:53:107:53 | password | password |
+| testGRDB.swift:109:52:109:61 | [...] | testGRDB.swift:109:53:109:53 | password | testGRDB.swift:109:52:109:61 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:109:53:109:53 | password | password |
+| testGRDB.swift:111:51:111:60 | [...] | testGRDB.swift:111:52:111:52 | password | testGRDB.swift:111:51:111:60 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:111:52:111:52 | password | password |
+| testGRDB.swift:116:47:116:56 | [...] | testGRDB.swift:116:48:116:48 | password | testGRDB.swift:116:47:116:56 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:116:48:116:48 | password | password |
+| testGRDB.swift:118:47:118:56 | [...] | testGRDB.swift:118:48:118:48 | password | testGRDB.swift:118:47:118:56 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:118:48:118:48 | password | password |
+| testGRDB.swift:121:44:121:53 | [...] | testGRDB.swift:121:45:121:45 | password | testGRDB.swift:121:44:121:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:121:45:121:45 | password | password |
+| testGRDB.swift:123:44:123:53 | [...] | testGRDB.swift:123:45:123:45 | password | testGRDB.swift:123:44:123:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:123:45:123:45 | password | password |
+| testGRDB.swift:126:44:126:53 | [...] | testGRDB.swift:126:45:126:45 | password | testGRDB.swift:126:44:126:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:126:45:126:45 | password | password |
+| testGRDB.swift:128:44:128:53 | [...] | testGRDB.swift:128:45:128:45 | password | testGRDB.swift:128:44:128:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:128:45:128:45 | password | password |
+| testGRDB.swift:131:44:131:53 | [...] | testGRDB.swift:131:45:131:45 | password | testGRDB.swift:131:44:131:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:131:45:131:45 | password | password |
+| testGRDB.swift:133:44:133:53 | [...] | testGRDB.swift:133:45:133:45 | password | testGRDB.swift:133:44:133:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:133:45:133:45 | password | password |
+| testGRDB.swift:138:68:138:77 | [...] | testGRDB.swift:138:69:138:69 | password | testGRDB.swift:138:68:138:77 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:138:69:138:69 | password | password |
+| testGRDB.swift:140:68:140:77 | [...] | testGRDB.swift:140:69:140:69 | password | testGRDB.swift:140:68:140:77 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:140:69:140:69 | password | password |
+| testGRDB.swift:143:65:143:74 | [...] | testGRDB.swift:143:66:143:66 | password | testGRDB.swift:143:65:143:74 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:143:66:143:66 | password | password |
+| testGRDB.swift:145:65:145:74 | [...] | testGRDB.swift:145:66:145:66 | password | testGRDB.swift:145:65:145:74 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:145:66:145:66 | password | password |
+| testGRDB.swift:148:65:148:74 | [...] | testGRDB.swift:148:66:148:66 | password | testGRDB.swift:148:65:148:74 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:148:66:148:66 | password | password |
+| testGRDB.swift:150:65:150:74 | [...] | testGRDB.swift:150:66:150:66 | password | testGRDB.swift:150:65:150:74 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:150:66:150:66 | password | password |
+| testGRDB.swift:153:65:153:74 | [...] | testGRDB.swift:153:66:153:66 | password | testGRDB.swift:153:65:153:74 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:153:66:153:66 | password | password |
+| testGRDB.swift:155:65:155:74 | [...] | testGRDB.swift:155:66:155:66 | password | testGRDB.swift:155:65:155:74 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:155:66:155:66 | password | password |
+| testGRDB.swift:160:59:160:68 | [...] | testGRDB.swift:160:60:160:60 | password | testGRDB.swift:160:59:160:68 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:160:60:160:60 | password | password |
+| testGRDB.swift:161:50:161:59 | [...] | testGRDB.swift:161:51:161:51 | password | testGRDB.swift:161:50:161:59 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:161:51:161:51 | password | password |
+| testGRDB.swift:164:59:164:68 | [...] | testGRDB.swift:164:60:164:60 | password | testGRDB.swift:164:59:164:68 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:164:60:164:60 | password | password |
+| testGRDB.swift:165:50:165:59 | [...] | testGRDB.swift:165:51:165:51 | password | testGRDB.swift:165:50:165:59 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:165:51:165:51 | password | password |
+| testGRDB.swift:169:56:169:65 | [...] | testGRDB.swift:169:57:169:57 | password | testGRDB.swift:169:56:169:65 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:169:57:169:57 | password | password |
+| testGRDB.swift:170:47:170:56 | [...] | testGRDB.swift:170:48:170:48 | password | testGRDB.swift:170:47:170:56 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:170:48:170:48 | password | password |
+| testGRDB.swift:173:56:173:65 | [...] | testGRDB.swift:173:57:173:57 | password | testGRDB.swift:173:56:173:65 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:173:57:173:57 | password | password |
+| testGRDB.swift:174:47:174:56 | [...] | testGRDB.swift:174:48:174:48 | password | testGRDB.swift:174:47:174:56 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:174:48:174:48 | password | password |
+| testGRDB.swift:178:56:178:65 | [...] | testGRDB.swift:178:57:178:57 | password | testGRDB.swift:178:56:178:65 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:178:57:178:57 | password | password |
+| testGRDB.swift:179:47:179:56 | [...] | testGRDB.swift:179:48:179:48 | password | testGRDB.swift:179:47:179:56 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:179:48:179:48 | password | password |
+| testGRDB.swift:182:56:182:65 | [...] | testGRDB.swift:182:57:182:57 | password | testGRDB.swift:182:56:182:65 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:182:57:182:57 | password | password |
+| testGRDB.swift:183:47:183:56 | [...] | testGRDB.swift:183:48:183:48 | password | testGRDB.swift:183:47:183:56 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:183:48:183:48 | password | password |
+| testGRDB.swift:187:56:187:65 | [...] | testGRDB.swift:187:57:187:57 | password | testGRDB.swift:187:56:187:65 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:187:57:187:57 | password | password |
+| testGRDB.swift:188:47:188:56 | [...] | testGRDB.swift:188:48:188:48 | password | testGRDB.swift:188:47:188:56 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:188:48:188:48 | password | password |
+| testGRDB.swift:191:56:191:65 | [...] | testGRDB.swift:191:57:191:57 | password | testGRDB.swift:191:56:191:65 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:191:57:191:57 | password | password |
+| testGRDB.swift:192:47:192:56 | [...] | testGRDB.swift:192:48:192:48 | password | testGRDB.swift:192:47:192:56 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:192:48:192:48 | password | password |
+| testGRDB.swift:198:29:198:38 | [...] | testGRDB.swift:198:30:198:30 | password | testGRDB.swift:198:29:198:38 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:198:30:198:30 | password | password |
+| testGRDB.swift:201:23:201:32 | [...] | testGRDB.swift:201:24:201:24 | password | testGRDB.swift:201:23:201:32 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:201:24:201:24 | password | password |
+| testGRDB.swift:206:66:206:75 | [...] | testGRDB.swift:206:67:206:67 | password | testGRDB.swift:206:66:206:75 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:206:67:206:67 | password | password |
+| testGRDB.swift:208:80:208:89 | [...] | testGRDB.swift:208:81:208:81 | password | testGRDB.swift:208:80:208:89 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:208:81:208:81 | password | password |
+| testGRDB.swift:210:84:210:93 | [...] | testGRDB.swift:210:85:210:85 | password | testGRDB.swift:210:84:210:93 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:210:85:210:85 | password | password |
+| testGRDB.swift:212:98:212:107 | [...] | testGRDB.swift:212:99:212:99 | password | testGRDB.swift:212:98:212:107 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | testGRDB.swift:212:99:212:99 | password | password |
+| testRealm2.swift:18:2:18:2 | o | testRealm2.swift:18:11:18:11 | myPassword | testRealm2.swift:18:2:18:2 | [post] o | This operation stores 'o' in a database. It may contain unencrypted sensitive data from $@. | testRealm2.swift:18:11:18:11 | myPassword | myPassword |
+| testRealm2.swift:24:2:24:2 | o | testRealm2.swift:24:11:24:11 | socialSecurityNumber | testRealm2.swift:24:2:24:2 | [post] o | This operation stores 'o' in a database. It may contain unencrypted sensitive data from $@. | testRealm2.swift:24:11:24:11 | socialSecurityNumber | socialSecurityNumber |
+| testRealm2.swift:25:2:25:2 | o | testRealm2.swift:25:11:25:11 | ssn | testRealm2.swift:25:2:25:2 | [post] o | This operation stores 'o' in a database. It may contain unencrypted sensitive data from $@. | testRealm2.swift:25:11:25:11 | ssn | ssn |
+| testRealm2.swift:26:2:26:2 | o | testRealm2.swift:26:18:26:18 | ssn_int | testRealm2.swift:26:2:26:2 | [post] o | This operation stores 'o' in a database. It may contain unencrypted sensitive data from $@. | testRealm2.swift:26:18:26:18 | ssn_int | ssn_int |
+| testRealm2.swift:32:2:32:2 | o | testRealm2.swift:32:11:32:11 | creditCardNumber | testRealm2.swift:32:2:32:2 | [post] o | This operation stores 'o' in a database. It may contain unencrypted sensitive data from $@. | testRealm2.swift:32:11:32:11 | creditCardNumber | creditCardNumber |
+| testRealm2.swift:33:2:33:2 | o | testRealm2.swift:33:11:33:11 | CCN | testRealm2.swift:33:2:33:2 | [post] o | This operation stores 'o' in a database. It may contain unencrypted sensitive data from $@. | testRealm2.swift:33:11:33:11 | CCN | CCN |
+| testRealm2.swift:34:2:34:2 | o | testRealm2.swift:34:18:34:18 | int_ccn | testRealm2.swift:34:2:34:2 | [post] o | This operation stores 'o' in a database. It may contain unencrypted sensitive data from $@. | testRealm2.swift:34:18:34:18 | int_ccn | int_ccn |
+| testRealm.swift:41:2:41:2 | a | testRealm.swift:41:11:41:11 | myPassword | testRealm.swift:41:2:41:2 | [post] a | This operation stores 'a' in a database. It may contain unencrypted sensitive data from $@. | testRealm.swift:41:11:41:11 | myPassword | myPassword |
+| testRealm.swift:49:2:49:2 | c | testRealm.swift:49:11:49:11 | myPassword | testRealm.swift:49:2:49:2 | [post] c | This operation stores 'c' in a database. It may contain unencrypted sensitive data from $@. | testRealm.swift:49:11:49:11 | myPassword | myPassword |
+| testRealm.swift:59:2:59:3 | ...! | testRealm.swift:59:12:59:12 | myPassword | testRealm.swift:59:2:59:3 | [post] ...! | This operation stores '...!' in a database. It may contain unencrypted sensitive data from $@. | testRealm.swift:59:12:59:12 | myPassword | myPassword |
+| testRealm.swift:66:2:66:2 | g | testRealm.swift:66:11:66:11 | myPassword | testRealm.swift:66:2:66:2 | [post] g | This operation stores 'g' in a database. It may contain unencrypted sensitive data from $@. | testRealm.swift:66:11:66:11 | myPassword | myPassword |
+| testRealm.swift:73:2:73:2 | h | testRealm.swift:73:15:73:15 | myPassword | testRealm.swift:73:2:73:2 | [post] h | This operation stores 'h' in a database. It may contain unencrypted sensitive data from $@. | testRealm.swift:73:15:73:15 | myPassword | myPassword |

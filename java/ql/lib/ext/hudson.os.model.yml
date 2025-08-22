@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["hudson.os", "WindowsUtil", True, "quoteArgument", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
+      - ["hudson.os", "WindowsUtil", True, "quoteArgument", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]

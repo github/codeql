@@ -1,0 +1,61 @@
+| SemiAnchoredRegex.swift:50:16:50:16 | ^a\|b | Misleading operator precedence. The subexpression '^a' is anchored at the beginning, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:53:16:53:16 | ^a\|b\|c | Misleading operator precedence. The subexpression '^a' is anchored at the beginning, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:59:16:59:16 | ^a\|(b) | Misleading operator precedence. The subexpression '^a' is anchored at the beginning, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:61:16:61:16 | ^(a)\|(b) | Misleading operator precedence. The subexpression '^(a)' is anchored at the beginning, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:63:16:63:16 | a\|b$ | Misleading operator precedence. The subexpression 'b$' is anchored at the end, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:66:16:66:16 | a\|b\|c$ | Misleading operator precedence. The subexpression 'c$' is anchored at the end, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:72:16:72:16 | (a)\|b$ | Misleading operator precedence. The subexpression 'b$' is anchored at the end, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:74:16:74:16 | (a)\|(b)$ | Misleading operator precedence. The subexpression '(b)$' is anchored at the end, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:76:16:76:16 | ^good.com\|better.com | Misleading operator precedence. The subexpression '^good.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:76:16:76:16 | ^good.com\|better.com | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| SemiAnchoredRegex.swift:77:16:77:16 | ^good\\.com\|better\\.com | Misleading operator precedence. The subexpression '^good\\.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:77:16:77:16 | ^good\\.com\|better\\.com | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| SemiAnchoredRegex.swift:78:16:78:16 | ^good\\\\.com\|better\\\\.com | Misleading operator precedence. The subexpression '^good\\\\.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:79:16:79:16 | ^good\\\\\\.com\|better\\\\\\.com | Misleading operator precedence. The subexpression '^good\\\\\\.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:80:16:80:16 | ^good\\\\\\\\.com\|better\\\\\\\\.com | Misleading operator precedence. The subexpression '^good\\\\\\\\.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:82:16:82:16 | ^foo\|bar\|baz$ | Misleading operator precedence. The subexpression '^foo' is anchored at the beginning, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:82:16:82:16 | ^foo\|bar\|baz$ | Misleading operator precedence. The subexpression 'baz$' is anchored at the end, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:89:16:89:16 | (\\.xxx)\|(\\.yyy)\|(\\.zzz)$ | Misleading operator precedence. The subexpression '(\\.zzz)$' is anchored at the end, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:90:16:90:16 | (^left\|right\|center)\\sbottom$ | Misleading operator precedence. The subexpression '^left' is anchored at the beginning, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:91:16:91:16 | \\.xxx\|\\.yyy\|\\.zzz$ | Misleading operator precedence. The subexpression '\\.zzz$' is anchored at the end, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:92:16:92:16 | \\.xxx\|\\.yyy\|\\.zzz$ | Misleading operator precedence. The subexpression '\\.zzz$' is anchored at the end, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:93:16:93:16 | \\.xxx\|\\.yyy\|zzz$ | Misleading operator precedence. The subexpression 'zzz$' is anchored at the end, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:94:16:94:16 | ^([A-Z]\|xxx[XY]$) | Misleading operator precedence. The subexpression 'xxx[XY]$' is anchored at the end, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:95:16:95:16 | ^(xxx yyy zzz)\|(xxx yyy) | Misleading operator precedence. The subexpression '^(xxx yyy zzz)' is anchored at the beginning, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:96:16:96:16 | ^(xxx yyy zzz)\|(xxx yyy)\|(1st( xxx)? yyy)\|xxx\|1st | Misleading operator precedence. The subexpression '^(xxx yyy zzz)' is anchored at the beginning, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:97:16:97:16 | ^(xxx:)\|(yyy:)\|(zzz:) | Misleading operator precedence. The subexpression '^(xxx:)' is anchored at the beginning, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:98:16:98:16 | ^(xxx?:)\|(yyy:zzz\\/) | Misleading operator precedence. The subexpression '^(xxx?:)' is anchored at the beginning, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:99:16:99:16 | ^@media\|@page | Misleading operator precedence. The subexpression '^@media' is anchored at the beginning, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:100:16:100:16 | ^\\s*(xxx?\|yyy\|zzz):\|xxx:yyy | Misleading operator precedence. The subexpression '^\\s*(xxx?\|yyy\|zzz):' is anchored at the beginning, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:101:16:101:16 | ^click\|mouse\|touch | Misleading operator precedence. The subexpression '^click' is anchored at the beginning, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:102:16:102:16 | ^http://good\\.com\|http://better\\.com | Misleading operator precedence. The subexpression '^http://good\\.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:102:16:102:16 | ^http://good\\.com\|http://better\\.com | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| SemiAnchoredRegex.swift:103:16:103:16 | ^https?://good\\.com\|https?://better\\.com | Misleading operator precedence. The subexpression '^https?://good\\.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:103:16:103:16 | ^https?://good\\.com\|https?://better\\.com | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| SemiAnchoredRegex.swift:104:16:104:16 | ^mouse\|touch\|click\|contextmenu\|drop\|dragover\|dragend | Misleading operator precedence. The subexpression '^mouse' is anchored at the beginning, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:105:16:105:16 | ^xxx:\|yyy: | Misleading operator precedence. The subexpression '^xxx:' is anchored at the beginning, but the other parts of this regular expression are not |
+| SemiAnchoredRegex.swift:106:16:106:16 | _xxx\|_yyy\|_zzz$ | Misleading operator precedence. The subexpression '_zzz$' is anchored at the end, but the other parts of this regular expression are not |
+| UnanchoredUrlRegex.swift:62:39:62:39 | https?://good.com | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| UnanchoredUrlRegex.swift:63:39:63:39 | https?://good.com | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| UnanchoredUrlRegex.swift:64:39:64:39 | ^https?://good.com | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| UnanchoredUrlRegex.swift:65:39:65:39 | (^https?://good1.com)\|(^https?://good2.com) | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| UnanchoredUrlRegex.swift:66:39:66:39 | (https?://good.com)\|(^https?://goodie.com) | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| UnanchoredUrlRegex.swift:66:39:66:39 | (https?://good.com)\|(^https?://goodie.com) | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| UnanchoredUrlRegex.swift:68:39:68:39 | https?:\\/\\/good.com | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| UnanchoredUrlRegex.swift:69:39:69:39 | https?://good.com | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| UnanchoredUrlRegex.swift:71:46:71:46 | https?://good.com | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| UnanchoredUrlRegex.swift:78:39:78:39 | https?://good.com | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| UnanchoredUrlRegex.swift:79:39:79:39 | https?://good.com:8080 | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| UnanchoredUrlRegex.swift:82:3:82:3 | https?://good.com | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| UnanchoredUrlRegex.swift:83:3:83:3 | https?:\\/\\/good.com | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| UnanchoredUrlRegex.swift:84:3:84:3 | ^https?://good.com | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| UnanchoredUrlRegex.swift:91:3:91:3 | https?://good.com | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| UnanchoredUrlRegex.swift:101:39:101:39 | https?:\\/\\/good.com\\/([0-9]+) | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| UnanchoredUrlRegex.swift:107:39:107:39 | example\\.com\|whatever | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| test.swift:56:16:56:16 | ^http://example.com | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| test.swift:59:16:59:16 | ^http://test\\.example.com | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| test.swift:69:16:69:16 | ^(.+\\.(?:example-a\|example-b)\\.com)/ | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| test.swift:76:16:76:16 | ^(example.dev\|example.com) | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| test.swift:77:16:77:16 | ^protos?://(localhost\|.+.example.net\|.+.example-a.com\|.+.example-b.com\|.+.example.internal) | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| test.swift:81:16:81:16 | ^(foo.example\\.com\|whatever)$ | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| test.swift:84:16:84:16 | test.example.com | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |

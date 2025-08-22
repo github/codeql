@@ -13,14 +13,24 @@
  */
 
 import java
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.ExternalProcess
+import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.security.CommandLineQuery
-import JSchOSInjection
-import DataFlow::PathGraph
+import InputToArgumentToExecFlow::PathGraph
+private import semmle.code.java.dataflow.ExternalFlow
+
+overlay[local?]
+deprecated private class ActivateModels extends ActiveExperimentalModels {
+  ActivateModels() { this = "jsch-os-injection" }
+}
 
 // This is a clone of query `java/command-line-injection` that also includes experimental sinks.
-from DataFlow::PathNode source, DataFlow::PathNode sink, ArgumentToExec execArg
-where execTainted(source, sink, execArg)
-select execArg, source, sink, "This command line depends on a $@.", source.getNode(),
-  "user-provided value"
+deprecated query predicate problems(
+  Expr execArg, InputToArgumentToExecFlow::PathNode source,
+  InputToArgumentToExecFlow::PathNode sink, string message1, DataFlow::Node sourceNode,
+  string message2
+) {
+  execIsTainted(source, sink, execArg) and
+  message1 = "This command line depends on a $@." and
+  sourceNode = source.getNode() and
+  message2 = "user-provided value"
+}

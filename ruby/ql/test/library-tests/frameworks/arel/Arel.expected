@@ -1,3 +1,14 @@
-failures
+models
+edges
+| arel.rb:2:3:2:3 | x | arel.rb:3:17:3:17 | x | provenance |  |
+| arel.rb:2:7:2:14 | call to source | arel.rb:2:3:2:3 | x | provenance |  |
+| arel.rb:3:17:3:17 | x | arel.rb:3:8:3:18 | call to sql | provenance |  |
+nodes
+| arel.rb:2:3:2:3 | x | semmle.label | x |
+| arel.rb:2:7:2:14 | call to source | semmle.label | call to source |
+| arel.rb:3:8:3:18 | call to sql | semmle.label | call to sql |
+| arel.rb:3:17:3:17 | x | semmle.label | x |
+subpaths
+testFailures
 #select
-| arel.rb:3:8:3:18 | call to sql | arel.rb:2:7:2:14 | call to source :  | arel.rb:3:8:3:18 | call to sql | $@ | arel.rb:2:7:2:14 | call to source :  | call to source :  |
+| arel.rb:3:8:3:18 | call to sql | arel.rb:2:7:2:14 | call to source | arel.rb:3:8:3:18 | call to sql | $@ | arel.rb:2:7:2:14 | call to source | call to source |

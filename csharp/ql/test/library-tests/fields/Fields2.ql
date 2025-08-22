@@ -7,7 +7,7 @@ import csharp
 from Field f
 where
   f.getName() = "Y" and
-  f.getDeclaringType().hasQualifiedName("Fields", "A") and
+  f.getDeclaringType().hasFullyQualifiedName("Fields", "A") and
   f.getType() instanceof IntType and
   not exists(f.getInitializer()) and
   f.isPublic() and

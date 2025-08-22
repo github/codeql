@@ -29,7 +29,7 @@ private import RangeAnalysisUtils
  * The SSA logic comes in two versions: the standard SSA and range-analysis RangeSSA.
  * This class provides the range-analysis SSA logic.
  */
-library class RangeSsa extends SsaHelper {
+class RangeSsa extends SsaHelper {
   RangeSsa() { this = 1 }
 
   /**
@@ -39,9 +39,6 @@ library class RangeSsa extends SsaHelper {
     guard_defn(v.getAnAccess(), _, b, _)
   }
 }
-
-/** DEPRECATED: Alias for RangeSsa */
-deprecated class RangeSSA = RangeSsa;
 
 private predicate guard_defn(VariableAccess v, Expr guard, BasicBlock b, boolean branch) {
   guardCondition(guard, v, branch) and

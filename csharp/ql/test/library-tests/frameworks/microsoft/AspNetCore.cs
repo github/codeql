@@ -56,6 +56,15 @@ public class HomeController5 : HomeController4
     }
 }
 
+// is abstract
+public abstract class HomeController6 : Controller
+{
+    public string Index()
+    {
+        return "This is Home Controller";
+    }
+}
+
 // is not public
 internal class NotHomeController : Controller
 {
@@ -65,17 +74,8 @@ internal class NotHomeController : Controller
     }
 }
 
-// is abstract
-public abstract class NotHomeController2 : Controller
-{
-    public string Index()
-    {
-        return "This is Home Controller";
-    }
-}
-
 // contains generic parameters
-public class NotHomeController3<T> : Controller
+public class NotHomeController2<T> : Controller
 {
     public string Index()
     {
@@ -85,7 +85,7 @@ public class NotHomeController3<T> : Controller
 
 // has [NonController] attribute
 [NonController]
-public class NotHomeController4 : Controller
+public class NotHomeController3 : Controller
 {
     public string Index()
     {
@@ -94,7 +94,7 @@ public class NotHomeController4 : Controller
 }
 
 // derived from a class that has [NonController] attribute
-public class NotController : NotHomeController4
+public class NotController : NotHomeController3
 {
     public string Index()
     {

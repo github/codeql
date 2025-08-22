@@ -12,18 +12,17 @@
  */
 
 import java
-import BeanShellInjection
+deprecated import BeanShellInjection
 import semmle.code.java.dataflow.FlowSources
-import DataFlow::PathGraph
+import semmle.code.java.dataflow.TaintTracking
+deprecated import BeanShellInjectionFlow::PathGraph
 
-class BeanShellInjectionConfig extends TaintTracking::Configuration {
-  BeanShellInjectionConfig() { this = "BeanShellInjectionConfig" }
+deprecated module BeanShellInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSink(DataFlow::Node sink) { sink instanceof BeanShellInjectionSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof BeanShellInjectionSink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node prod, DataFlow::Node succ) {
+  predicate isAdditionalFlowStep(DataFlow::Node prod, DataFlow::Node succ) {
     exists(ClassInstanceExpr cie |
       cie.getConstructedType()
           .hasQualifiedName("org.springframework.scripting.support", "StaticScriptSource") and
@@ -31,7 +30,7 @@ class BeanShellInjectionConfig extends TaintTracking::Configuration {
       cie = succ.asExpr()
     )
     or
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().hasName("setScript") and
       ma.getMethod()
           .getDeclaringType()
@@ -42,7 +41,15 @@ class BeanShellInjectionConfig extends TaintTracking::Configuration {
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, BeanShellInjectionConfig conf
-where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "BeanShell injection from $@.", source.getNode(),
-  "this user input"
+deprecated module BeanShellInjectionFlow = TaintTracking::Global<BeanShellInjectionConfig>;
+
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, BeanShellInjectionFlow::PathNode source,
+  BeanShellInjectionFlow::PathNode sink, string message1, DataFlow::Node sourceNode, string message2
+) {
+  BeanShellInjectionFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "BeanShell injection from $@." and
+  sourceNode = source.getNode() and
+  message2 = "this user input"
+}

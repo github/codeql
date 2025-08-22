@@ -6,9 +6,9 @@ var router = new express.Router();
 var rootRoute = router.route('foobar');
 
 rootRoute.post(function(req, res) {
-    problem(req.body);
+    problem(req.body); // $ Source
 });
 
 function problem(val) {
-    _.chunk(val, 2); // NOT OK!
+    _.chunk(val, 2); // $ Alert
 }

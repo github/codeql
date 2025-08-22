@@ -1,23 +1,20 @@
-nodes
-| tst.js:7:22:7:36 | req.params.data |
-| tst.js:7:22:7:36 | req.params.data |
-| tst.js:7:22:7:36 | req.params.data |
-| tst.js:8:25:8:39 | req.params.data |
-| tst.js:8:25:8:39 | req.params.data |
-| tst.js:8:25:8:39 | req.params.data |
-| tst.js:12:26:12:40 | req.params.data |
-| tst.js:12:26:12:40 | req.params.data |
-| tst.js:12:26:12:40 | req.params.data |
-| tst.js:13:29:13:43 | req.params.data |
-| tst.js:13:29:13:43 | req.params.data |
-| tst.js:13:29:13:43 | req.params.data |
 edges
-| tst.js:7:22:7:36 | req.params.data | tst.js:7:22:7:36 | req.params.data |
-| tst.js:8:25:8:39 | req.params.data | tst.js:8:25:8:39 | req.params.data |
-| tst.js:12:26:12:40 | req.params.data | tst.js:12:26:12:40 | req.params.data |
-| tst.js:13:29:13:43 | req.params.data | tst.js:13:29:13:43 | req.params.data |
+nodes
+| tst.js:13:22:13:36 | req.params.data | semmle.label | req.params.data |
+| tst.js:14:25:14:39 | req.params.data | semmle.label | req.params.data |
+| tst.js:15:26:15:40 | req.params.data | semmle.label | req.params.data |
+| tst.js:16:29:16:43 | req.params.data | semmle.label | req.params.data |
+| tst.js:20:22:20:36 | req.params.data | semmle.label | req.params.data |
+| tst.js:21:22:21:36 | req.params.data | semmle.label | req.params.data |
+| tst.js:24:22:24:36 | req.params.data | semmle.label | req.params.data |
+| tst.js:25:22:25:36 | req.params.data | semmle.label | req.params.data |
+subpaths
 #select
-| tst.js:7:22:7:36 | req.params.data | tst.js:7:22:7:36 | req.params.data | tst.js:7:22:7:36 | req.params.data | Unsafe deserialization depends on a $@. | tst.js:7:22:7:36 | req.params.data | user-provided value |
-| tst.js:8:25:8:39 | req.params.data | tst.js:8:25:8:39 | req.params.data | tst.js:8:25:8:39 | req.params.data | Unsafe deserialization depends on a $@. | tst.js:8:25:8:39 | req.params.data | user-provided value |
-| tst.js:12:26:12:40 | req.params.data | tst.js:12:26:12:40 | req.params.data | tst.js:12:26:12:40 | req.params.data | Unsafe deserialization depends on a $@. | tst.js:12:26:12:40 | req.params.data | user-provided value |
-| tst.js:13:29:13:43 | req.params.data | tst.js:13:29:13:43 | req.params.data | tst.js:13:29:13:43 | req.params.data | Unsafe deserialization depends on a $@. | tst.js:13:29:13:43 | req.params.data | user-provided value |
+| tst.js:13:22:13:36 | req.params.data | tst.js:13:22:13:36 | req.params.data | tst.js:13:22:13:36 | req.params.data | Unsafe deserialization depends on a $@. | tst.js:13:22:13:36 | req.params.data | user-provided value |
+| tst.js:14:25:14:39 | req.params.data | tst.js:14:25:14:39 | req.params.data | tst.js:14:25:14:39 | req.params.data | Unsafe deserialization depends on a $@. | tst.js:14:25:14:39 | req.params.data | user-provided value |
+| tst.js:15:26:15:40 | req.params.data | tst.js:15:26:15:40 | req.params.data | tst.js:15:26:15:40 | req.params.data | Unsafe deserialization depends on a $@. | tst.js:15:26:15:40 | req.params.data | user-provided value |
+| tst.js:16:29:16:43 | req.params.data | tst.js:16:29:16:43 | req.params.data | tst.js:16:29:16:43 | req.params.data | Unsafe deserialization depends on a $@. | tst.js:16:29:16:43 | req.params.data | user-provided value |
+| tst.js:20:22:20:36 | req.params.data | tst.js:20:22:20:36 | req.params.data | tst.js:20:22:20:36 | req.params.data | Unsafe deserialization depends on a $@. | tst.js:20:22:20:36 | req.params.data | user-provided value |
+| tst.js:21:22:21:36 | req.params.data | tst.js:21:22:21:36 | req.params.data | tst.js:21:22:21:36 | req.params.data | Unsafe deserialization depends on a $@. | tst.js:21:22:21:36 | req.params.data | user-provided value |
+| tst.js:24:22:24:36 | req.params.data | tst.js:24:22:24:36 | req.params.data | tst.js:24:22:24:36 | req.params.data | Unsafe deserialization depends on a $@. | tst.js:24:22:24:36 | req.params.data | user-provided value |
+| tst.js:25:22:25:36 | req.params.data | tst.js:25:22:25:36 | req.params.data | tst.js:25:22:25:36 | req.params.data | Unsafe deserialization depends on a $@. | tst.js:25:22:25:36 | req.params.data | user-provided value |

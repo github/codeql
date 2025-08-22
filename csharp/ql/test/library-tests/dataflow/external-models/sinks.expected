@@ -1,8 +1,10 @@
 invalidModelRow
 #select
-| Sinks.cs:8:19:8:22 | access to local variable arg1 | code |
-| Sinks.cs:11:13:11:41 | this access | remote |
-| Sinks.cs:11:30:11:40 | access to local variable argToTagged | remote |
-| Sinks.cs:14:27:14:36 | access to local variable fieldWrite | sql |
-| Sinks.cs:20:20:20:22 | access to local variable res | xss |
-| Sinks.cs:27:20:27:25 | access to local variable resTag | html |
+| Sinks.cs:8:19:8:22 | access to local variable arg1 | code-injection |
+| Sinks.cs:11:13:11:41 | this access | file-content-store |
+| Sinks.cs:11:30:11:40 | access to local variable argToTagged | file-content-store |
+| Sinks.cs:14:27:14:36 | access to local variable fieldWrite | sql-injection |
+| Sinks.cs:17:36:17:48 | access to local variable propertyWrite | sql-injection |
+| Sinks.cs:20:23:20:34 | access to local variable indexerWrite | sql-injection |
+| Sinks.cs:26:20:26:22 | access to local variable res | js-injection |
+| Sinks.cs:33:20:33:25 | access to local variable resTag | html-injection |

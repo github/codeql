@@ -3,6 +3,9 @@
  * global (inter-procedural) data flow analyses.
  */
 module DataFlow {
-  import internal.DataFlow
-  import internal.DataFlowImpl1
+  private import internal.DataFlowImplSpecific
+  private import codeql.dataflow.DataFlow
+  private import codeql.swift.elements.Location
+  import DataFlowMake<Location, SwiftDataFlow>
+  import Public
 }

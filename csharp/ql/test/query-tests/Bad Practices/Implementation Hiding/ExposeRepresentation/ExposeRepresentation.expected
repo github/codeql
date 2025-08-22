@@ -1,2 +1,2 @@
-| ExposeRepresentation.cs:8:21:8:23 | Set | 'Set' exposes the internal representation stored in field 'rarray'. The value may be modified $@. | ExposeRepresentation.cs:16:9:16:9 | ExposeRepresentation.cs:16:9:16:9 | through the variable a |
-| ExposeRepresentationBad.cs:18:22:18:24 | Get | 'Get' exposes the internal representation stored in field 'rarray'. The value may be modified $@. | ExposeRepresentationBad.cs:24:23:24:29 | ExposeRepresentationBad.cs:24:23:24:29 | after this call to Get |
+| ExposeRepresentation.cs:8:21:8:23 | Set | 'Set' exposes the internal representation stored in field 'rarray'. The value may be modified $@. | ExposeRepresentation.cs:16:9:16:9 | access to local variable a | through the variable a |
+| ExposeRepresentationBad.cs:18:22:18:24 | Get | 'Get' exposes the internal representation stored in field 'rarray'. The value may be modified $@. | ExposeRepresentationBad.cs:24:23:24:29 | call to method Get | after this call to Get |

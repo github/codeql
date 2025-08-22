@@ -61,7 +61,7 @@ module SyntacticConstants {
   cached
   class UnaryConstant extends SyntacticConstant, UnaryExpr {
     cached
-    UnaryConstant() { getOperand() instanceof SyntacticConstant }
+    UnaryConstant() { this.getOperand() instanceof SyntacticConstant }
   }
 
   /**
@@ -71,8 +71,8 @@ module SyntacticConstants {
   class BinaryConstant extends SyntacticConstant, BinaryExpr {
     cached
     BinaryConstant() {
-      getLeftOperand() instanceof SyntacticConstant and
-      getRightOperand() instanceof SyntacticConstant
+      this.getLeftOperand() instanceof SyntacticConstant and
+      this.getRightOperand() instanceof SyntacticConstant
     }
   }
 
@@ -83,9 +83,9 @@ module SyntacticConstants {
   class ConditionalConstant extends SyntacticConstant, ConditionalExpr {
     cached
     ConditionalConstant() {
-      getCondition() instanceof SyntacticConstant and
-      getConsequent() instanceof SyntacticConstant and
-      getAlternate() instanceof SyntacticConstant
+      this.getCondition() instanceof SyntacticConstant and
+      this.getConsequent() instanceof SyntacticConstant and
+      this.getAlternate() instanceof SyntacticConstant
     }
   }
 
@@ -125,7 +125,7 @@ module SyntacticConstants {
   cached
   class WrappedConstant extends SyntacticConstant {
     cached
-    WrappedConstant() { getUnderlyingValue() instanceof SyntacticConstant }
+    WrappedConstant() { this.getUnderlyingValue() instanceof SyntacticConstant }
   }
 
   /**
@@ -150,5 +150,5 @@ module SyntacticConstants {
 cached
 class ConstantString extends ConstantExpr {
   cached
-  ConstantString() { exists(getStringValue()) }
+  ConstantString() { exists(this.getStringValue()) }
 }

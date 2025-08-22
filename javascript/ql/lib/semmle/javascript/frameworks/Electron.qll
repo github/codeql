@@ -41,18 +41,19 @@ module Electron {
     BrowserView() { this = DataFlow::moduleMember("electron", "BrowserView").getAnInstantiation() }
   }
 
-  /**
-   * An expression of type `BrowserWindow` or `BrowserView`.
-   */
-  private class BrowserObjectByType extends BrowserObject {
-    BrowserObjectByType() {
-      exists(string tp | tp = "BrowserWindow" or tp = "BrowserView" |
-        this.asExpr().getType().hasUnderlyingType("electron", tp)
-      )
+  private class ElectronEntryPoint extends API::EntryPoint {
+    ElectronEntryPoint() { this = "Electron.Browser" }
+
+    override DataFlow::SourceNode getASource() {
+      result.hasUnderlyingType(["Electron.BrowserWindow", "Electron.BrowserView"])
     }
   }
 
-  private API::Node browserObject() { result.asSource() instanceof NewBrowserObject }
+  private API::Node browserObject() {
+    result.asSource() instanceof NewBrowserObject or
+    result = API::Node::ofType("electron", ["BrowserWindow", "BrowserView"]) or
+    result = any(ElectronEntryPoint e).getANode()
+  }
 
   /**
    * A data flow node whose value may originate from a browser object instantiation.
@@ -133,9 +134,6 @@ module Electron {
       override IpcDispatch getAReturnDispatch() { result.getCalleeName() = "sendSync" }
     }
 
-    /** DEPRECATED: Alias for IpcSendRegistration */
-    deprecated class IPCSendRegistration = IpcSendRegistration;
-
     /**
      * A dispatch of an IPC event.
      * An IPC event is sent from the renderer to the main process.
@@ -171,9 +169,6 @@ module Electron {
         result.getEmitter() instanceof RendererProcess
       }
     }
-
-    /** DEPRECATED: Alias for IpcDispatch */
-    deprecated class IPCDispatch = IpcDispatch;
   }
 
   /**

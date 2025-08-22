@@ -34,13 +34,16 @@ private module Rsa {
    *
    * See https://stuvel.eu/python-rsa-doc/reference.html#rsa.encrypt
    */
-  class RsaEncryptCall extends Cryptography::CryptographicOperation::Range, DataFlow::CallCfgNode {
+  class RsaEncryptCall extends Cryptography::CryptographicOperation::Range instanceof DataFlow::CallCfgNode
+  {
     RsaEncryptCall() { this = API::moduleImport("rsa").getMember("encrypt").getACall() }
+
+    override DataFlow::Node getInitialization() { result = this }
 
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.getName() = "RSA" }
 
     override DataFlow::Node getAnInput() {
-      result in [this.getArg(0), this.getArgByName("message")]
+      result in [super.getArg(0), super.getArgByName("message")]
     }
 
     override Cryptography::BlockMode getBlockMode() { none() }
@@ -51,12 +54,17 @@ private module Rsa {
    *
    * See https://stuvel.eu/python-rsa-doc/reference.html#rsa.decrypt
    */
-  class RsaDecryptCall extends Cryptography::CryptographicOperation::Range, DataFlow::CallCfgNode {
+  class RsaDecryptCall extends Cryptography::CryptographicOperation::Range instanceof DataFlow::CallCfgNode
+  {
     RsaDecryptCall() { this = API::moduleImport("rsa").getMember("decrypt").getACall() }
+
+    override DataFlow::Node getInitialization() { result = this }
 
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.getName() = "RSA" }
 
-    override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("crypto")] }
+    override DataFlow::Node getAnInput() {
+      result in [super.getArg(0), super.getArgByName("crypto")]
+    }
 
     override Cryptography::BlockMode getBlockMode() { none() }
   }
@@ -66,23 +74,26 @@ private module Rsa {
    *
    * See https://stuvel.eu/python-rsa-doc/reference.html#rsa.sign
    */
-  class RsaSignCall extends Cryptography::CryptographicOperation::Range, DataFlow::CallCfgNode {
+  class RsaSignCall extends Cryptography::CryptographicOperation::Range instanceof DataFlow::CallCfgNode
+  {
     RsaSignCall() { this = API::moduleImport("rsa").getMember("sign").getACall() }
+
+    override DataFlow::Node getInitialization() { result = this }
 
     override Cryptography::CryptographicAlgorithm getAlgorithm() {
       // signature part
       result.getName() = "RSA"
       or
       // hashing part
-      exists(StrConst str, DataFlow::Node hashNameArg |
-        hashNameArg in [this.getArg(2), this.getArgByName("hash_method")] and
+      exists(StringLiteral str, DataFlow::Node hashNameArg |
+        hashNameArg in [super.getArg(2), super.getArgByName("hash_method")] and
         DataFlow::exprNode(str) = hashNameArg.getALocalSource() and
         result.matchesName(str.getText())
       )
     }
 
     override DataFlow::Node getAnInput() {
-      result in [this.getArg(0), this.getArgByName("message")]
+      result in [super.getArg(0), super.getArgByName("message")]
     }
 
     override Cryptography::BlockMode getBlockMode() { none() }
@@ -93,8 +104,11 @@ private module Rsa {
    *
    * See https://stuvel.eu/python-rsa-doc/reference.html#rsa.verify
    */
-  class RsaVerifyCall extends Cryptography::CryptographicOperation::Range, DataFlow::CallCfgNode {
+  class RsaVerifyCall extends Cryptography::CryptographicOperation::Range instanceof DataFlow::CallCfgNode
+  {
     RsaVerifyCall() { this = API::moduleImport("rsa").getMember("verify").getACall() }
+
+    override DataFlow::Node getInitialization() { result = this }
 
     override Cryptography::CryptographicAlgorithm getAlgorithm() {
       // note that technically there is also a hashing operation going on but we don't
@@ -103,9 +117,9 @@ private module Rsa {
     }
 
     override DataFlow::Node getAnInput() {
-      result in [this.getArg(0), this.getArgByName("message")]
+      result in [super.getArg(0), super.getArgByName("message")]
       or
-      result in [this.getArg(1), this.getArgByName("signature")]
+      result in [super.getArg(1), super.getArgByName("signature")]
     }
 
     override Cryptography::BlockMode getBlockMode() { none() }
@@ -116,21 +130,22 @@ private module Rsa {
    *
    * See https://stuvel.eu/python-rsa-doc/reference.html#rsa.compute_hash
    */
-  class RsaComputeHashCall extends Cryptography::CryptographicOperation::Range,
-    DataFlow::CallCfgNode
+  class RsaComputeHashCall extends Cryptography::CryptographicOperation::Range instanceof DataFlow::CallCfgNode
   {
     RsaComputeHashCall() { this = API::moduleImport("rsa").getMember("compute_hash").getACall() }
 
+    override DataFlow::Node getInitialization() { result = this }
+
     override Cryptography::CryptographicAlgorithm getAlgorithm() {
-      exists(StrConst str, DataFlow::Node hashNameArg |
-        hashNameArg in [this.getArg(1), this.getArgByName("method_name")] and
+      exists(StringLiteral str, DataFlow::Node hashNameArg |
+        hashNameArg in [super.getArg(1), super.getArgByName("method_name")] and
         DataFlow::exprNode(str) = hashNameArg.getALocalSource() and
         result.matchesName(str.getText())
       )
     }
 
     override DataFlow::Node getAnInput() {
-      result in [this.getArg(0), this.getArgByName("message")]
+      result in [super.getArg(0), super.getArgByName("message")]
     }
 
     override Cryptography::BlockMode getBlockMode() { none() }
@@ -141,13 +156,16 @@ private module Rsa {
    *
    * See https://stuvel.eu/python-rsa-doc/reference.html#rsa.sign_hash
    */
-  class RsaSignHashCall extends Cryptography::CryptographicOperation::Range, DataFlow::CallCfgNode {
+  class RsaSignHashCall extends Cryptography::CryptographicOperation::Range instanceof DataFlow::CallCfgNode
+  {
     RsaSignHashCall() { this = API::moduleImport("rsa").getMember("sign_hash").getACall() }
+
+    override DataFlow::Node getInitialization() { result = this }
 
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.getName() = "RSA" }
 
     override DataFlow::Node getAnInput() {
-      result in [this.getArg(0), this.getArgByName("hash_value")]
+      result in [super.getArg(0), super.getArgByName("hash_value")]
     }
 
     override Cryptography::BlockMode getBlockMode() { none() }

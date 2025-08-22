@@ -23,7 +23,4 @@ class SourceMappingComment extends Comment {
 
   /** Gets the URL of the source map referenced by this comment. */
   string getSourceMappingUrl() { result = url }
-
-  /** DEPRECATED: Alias for getSourceMappingUrl */
-  deprecated string getSourceMappingURL() { result = getSourceMappingUrl() }
 }

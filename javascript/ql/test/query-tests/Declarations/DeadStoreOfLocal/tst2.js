@@ -1,5 +1,5 @@
 function outer(b) {
-    // OK
+
     let addSubdomain = false;
 
     if (x) {
@@ -16,15 +16,14 @@ function outer(b) {
 }
 
 function f(event) {
-    // OK
+
     var message = event.data;
     eme.init().then(() => NativeInfo.processApp('install', message.id));
 }
 
 function g() {
-    // NOT OK
-    let x = 23;
+    let x = 23; // $ Alert
     {
-        x = 42;
+        x = 42; // $ Alert
     }
 }

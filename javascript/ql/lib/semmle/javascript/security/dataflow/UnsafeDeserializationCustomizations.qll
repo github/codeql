@@ -22,28 +22,46 @@ module UnsafeDeserialization {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /** A source of remote user input, considered as a flow source for unsafe deserialization. */
-  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
+  /**
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
+   */
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
+
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
+
+  private API::Node unsafeYamlSchema() {
+    result = API::moduleImport("js-yaml").getMember("DEFAULT_FULL_SCHEMA") // from older versions
+    or
+    result = API::moduleImport("js-yaml-js-types").getMember(["all", "function"])
+    or
+    result = unsafeYamlSchema().getMember("extend").getReturn()
+    or
+    exists(API::CallNode call |
+      call.getAParameter().refersTo(unsafeYamlSchema()) and
+      call.getCalleeName() = "extend" and
+      result = call.getReturn()
+    )
+  }
 
   /**
    * An expression passed to one of the unsafe load functions of the `js-yaml` package.
+   *
+   * `js-yaml` since v4 defaults to being safe, but is unsafe when invoked with a schema
+   * that permits unsafe values.
    */
   class JsYamlUnsafeLoad extends Sink {
     JsYamlUnsafeLoad() {
-      exists(DataFlow::ModuleImportNode mi | mi.getPath() = "js-yaml" |
-        // the first argument to a call to `load` or `loadAll`
-        exists(string n | n = "load" or n = "loadAll" | this = mi.getAMemberCall(n).getArgument(0))
-        or
-        // the first argument to a call to `safeLoad` or `safeLoadAll` where
-        // the schema is specified to be `DEFAULT_FULL_SCHEMA`
-        exists(string n, DataFlow::CallNode c, DataFlow::Node fullSchema |
-          n = "safeLoad" or n = "safeLoadAll"
-        |
-          c = mi.getAMemberCall(n) and
-          this = c.getArgument(0) and
-          fullSchema = c.getOptionArgument(c.getNumArgument() - 1, "schema") and
-          mi.getAPropertyRead("DEFAULT_FULL_SCHEMA").flowsTo(fullSchema)
-        )
+      exists(API::CallNode call |
+        // Note: we include the old 'safeLoad' and 'safeLoadAll' functon because they were also unsafe when invoked with an unsafe schema.
+        call =
+          API::moduleImport("js-yaml")
+              .getMember(["load", "loadAll", "safeLoad", "safeLoadAll"])
+              .getACall() and
+        call.getAParameter().getMember("schema").refersTo(unsafeYamlSchema()) and
+        this = call.getArgument(0)
       )
     }
   }

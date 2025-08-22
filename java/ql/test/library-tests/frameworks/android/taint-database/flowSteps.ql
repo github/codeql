@@ -2,30 +2,29 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.QueryInjection
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
-class Conf extends TaintTracking::Configuration {
-  Conf() { this = "qltest:dataflow:android::flow" }
-
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr().(MethodAccess).getMethod().hasName("taint")
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    source.asExpr().(MethodCall).getMethod().hasName("taint")
   }
 
-  override predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(ReturnStmt r).getResult() }
+  predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(ReturnStmt r).getResult() }
 }
 
-class FlowStepTest extends InlineExpectationsTest {
-  FlowStepTest() { this = "FlowStepTest" }
+module Flow = TaintTracking::Global<Config>;
 
-  override string getARelevantTag() { result = "taintReachesReturn" }
+module FlowStepTest implements TestSig {
+  string getARelevantTag() { result = "taintReachesReturn" }
 
-  override predicate hasActualResult(Location l, string element, string tag, string value) {
+  predicate hasActualResult(Location l, string element, string tag, string value) {
     tag = "taintReachesReturn" and
     value = "" and
-    exists(Conf conf, DataFlow::Node source |
-      conf.hasFlow(source, _) and
+    exists(DataFlow::Node source | Flow::flow(source, _) |
       l = source.getLocation() and
       element = source.toString()
     )
   }
 }
+
+import MakeTest<FlowStepTest>

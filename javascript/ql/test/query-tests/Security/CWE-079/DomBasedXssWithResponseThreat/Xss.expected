@@ -1,0 +1,199 @@
+#select
+| interceptors.js:9:56:9:72 | userGeneratedHtml | interceptors.js:7:6:7:13 | response | interceptors.js:9:56:9:72 | userGeneratedHtml | Cross-site scripting vulnerability due to $@. | interceptors.js:7:6:7:13 | response | user-provided value |
+| test.jsx:27:29:27:32 | data | test.jsx:5:28:5:63 | fetch(" ... ntent") | test.jsx:27:29:27:32 | data | Cross-site scripting vulnerability due to $@. | test.jsx:5:28:5:63 | fetch(" ... ntent") | user-provided value |
+| test.ts:21:57:21:76 | response.description | test.ts:8:9:8:79 | this.#h ... query') | test.ts:21:57:21:76 | response.description | Cross-site scripting vulnerability due to $@. | test.ts:8:9:8:79 | this.#h ... query') | user-provided value |
+| test.ts:24:36:24:90 | `<h2>${ ... o}</p>` | test.ts:8:9:8:79 | this.#h ... query') | test.ts:24:36:24:90 | `<h2>${ ... o}</p>` | Cross-site scripting vulnerability due to $@. | test.ts:8:9:8:79 | this.#h ... query') | user-provided value |
+| test.vue:22:10:22:22 | v-html=data | test.vue:10:32:10:84 | fetch(" ... sts/1") | test.vue:22:10:22:22 | v-html=data | Cross-site scripting vulnerability due to $@. | test.vue:10:32:10:84 | fetch(" ... sts/1") | user-provided value |
+| testReactRelay.tsx:7:43:7:58 | commentData.text | testReactRelay.tsx:5:23:5:52 | useFrag ... entRef) | testReactRelay.tsx:7:43:7:58 | commentData.text | Cross-site scripting vulnerability due to $@. | testReactRelay.tsx:5:23:5:52 | useFrag ... entRef) | user-provided value |
+| testReactRelay.tsx:18:48:18:68 | data.co ... 0].text | testReactRelay.tsx:17:16:17:42 | useLazy ... ry, {}) | testReactRelay.tsx:18:48:18:68 | data.co ... 0].text | Cross-site scripting vulnerability due to $@. | testReactRelay.tsx:17:16:17:42 | useLazy ... ry, {}) | user-provided value |
+| testReactRelay.tsx:28:17:28:67 | usePrel ... r?.name | testReactRelay.tsx:28:17:28:56 | usePrel ... erence) | testReactRelay.tsx:28:17:28:67 | usePrel ... r?.name | Cross-site scripting vulnerability due to $@. | testReactRelay.tsx:28:17:28:56 | usePrel ... erence) | user-provided value |
+| testReactRelay.tsx:38:49:38:52 | data | testReactRelay.tsx:37:16:37:40 | useClie ... ry, {}) | testReactRelay.tsx:38:49:38:52 | data | Cross-site scripting vulnerability due to $@. | testReactRelay.tsx:37:16:37:40 | useClie ... ry, {}) | user-provided value |
+| testReactRelay.tsx:47:46:47:49 | data | testReactRelay.tsx:44:10:44:13 | data | testReactRelay.tsx:47:46:47:49 | data | Cross-site scripting vulnerability due to $@. | testReactRelay.tsx:44:10:44:13 | data | user-provided value |
+| testReactRelay.tsx:71:49:71:52 | data | testReactRelay.tsx:62:5:62:8 | data | testReactRelay.tsx:71:49:71:52 | data | Cross-site scripting vulnerability due to $@. | testReactRelay.tsx:62:5:62:8 | data | user-provided value |
+| testReactRelay.tsx:88:50:88:61 | feedbackText | testReactRelay.tsx:83:17:83:20 | data | testReactRelay.tsx:88:50:88:61 | feedbackText | Cross-site scripting vulnerability due to $@. | testReactRelay.tsx:83:17:83:20 | data | user-provided value |
+| testReactRelay.tsx:113:48:113:58 | fragmentRef | testReactRelay.tsx:100:14:100:16 | res | testReactRelay.tsx:113:48:113:58 | fragmentRef | Cross-site scripting vulnerability due to $@. | testReactRelay.tsx:100:14:100:16 | res | user-provided value |
+| testReactRelay.tsx:127:35:127:43 | data.user | testReactRelay.tsx:124:12:124:15 | data | testReactRelay.tsx:127:35:127:43 | data.user | Cross-site scripting vulnerability due to $@. | testReactRelay.tsx:124:12:124:15 | data | user-provided value |
+| testReactRelay.tsx:137:50:137:53 | data | testReactRelay.tsx:136:16:136:39 | readFra ... y, key) | testReactRelay.tsx:137:50:137:53 | data | Cross-site scripting vulnerability due to $@. | testReactRelay.tsx:136:16:136:39 | readFra ... y, key) | user-provided value |
+| testReactUseQueries.jsx:37:25:37:38 | repoQuery.data | testReactUseQueries.jsx:4:26:4:53 | fetch(' ... e.com') | testReactUseQueries.jsx:37:25:37:38 | repoQuery.data | Cross-site scripting vulnerability due to $@. | testReactUseQueries.jsx:4:26:4:53 | fetch(' ... e.com') | user-provided value |
+| testUseQueries2.vue:40:10:40:23 | v-html=data3 | testUseQueries2.vue:6:28:6:63 | fetch(" ... ntent") | testUseQueries2.vue:40:10:40:23 | v-html=data3 | Cross-site scripting vulnerability due to $@. | testUseQueries2.vue:6:28:6:63 | fetch(" ... ntent") | user-provided value |
+| testUseQueries2.vue:40:10:40:23 | v-html=data3 | testUseQueries2.vue:12:28:12:41 | fetch("${id}") | testUseQueries2.vue:40:10:40:23 | v-html=data3 | Cross-site scripting vulnerability due to $@. | testUseQueries2.vue:12:28:12:41 | fetch("${id}") | user-provided value |
+| testUseQueries.vue:25:10:25:23 | v-html=data2 | testUseQueries.vue:11:36:11:49 | fetch("${id}") | testUseQueries.vue:25:10:25:23 | v-html=data2 | Cross-site scripting vulnerability due to $@. | testUseQueries.vue:11:36:11:49 | fetch("${id}") | user-provided value |
+edges
+| interceptors.js:7:6:7:13 | response | interceptors.js:8:35:8:42 | response | provenance |  |
+| interceptors.js:8:15:8:47 | userGeneratedHtml | interceptors.js:9:56:9:72 | userGeneratedHtml | provenance |  |
+| interceptors.js:8:35:8:42 | response | interceptors.js:8:15:8:47 | userGeneratedHtml | provenance |  |
+| test.jsx:5:11:5:63 | response | test.jsx:6:24:6:31 | response | provenance |  |
+| test.jsx:5:22:5:63 | await f ... ntent") | test.jsx:5:11:5:63 | response | provenance |  |
+| test.jsx:5:28:5:63 | fetch(" ... ntent") | test.jsx:5:22:5:63 | await f ... ntent") | provenance |  |
+| test.jsx:6:11:6:38 | data | test.jsx:7:12:7:15 | data | provenance |  |
+| test.jsx:6:18:6:38 | await r ... .json() | test.jsx:6:11:6:38 | data | provenance |  |
+| test.jsx:6:24:6:31 | response | test.jsx:6:24:6:38 | response.json() | provenance |  |
+| test.jsx:6:24:6:38 | response.json() | test.jsx:6:18:6:38 | await r ... .json() | provenance |  |
+| test.jsx:7:12:7:15 | data | test.jsx:15:13:15:16 | data | provenance |  |
+| test.jsx:15:11:17:5 | data | test.jsx:27:29:27:32 | data | provenance |  |
+| test.jsx:15:13:15:16 | data | test.jsx:15:11:17:5 | data | provenance |  |
+| test.ts:8:9:8:79 | this.#h ... query') | test.ts:20:28:20:35 | response | provenance |  |
+| test.ts:20:28:20:35 | response | test.ts:21:57:21:64 | response | provenance |  |
+| test.ts:20:28:20:35 | response | test.ts:24:43:24:50 | response | provenance |  |
+| test.ts:20:28:20:35 | response | test.ts:24:67:24:74 | response | provenance |  |
+| test.ts:21:57:21:64 | response | test.ts:21:57:21:76 | response.description | provenance |  |
+| test.ts:24:43:24:50 | response | test.ts:24:43:24:55 | response.name | provenance |  |
+| test.ts:24:43:24:55 | response.name | test.ts:24:36:24:90 | `<h2>${ ... o}</p>` | provenance |  |
+| test.ts:24:67:24:74 | response | test.ts:24:67:24:84 | response.owner.bio | provenance |  |
+| test.ts:24:67:24:84 | response.owner.bio | test.ts:24:36:24:90 | `<h2>${ ... o}</p>` | provenance |  |
+| test.vue:7:11:13:6 | data | test.vue:15:21:15:24 | data | provenance |  |
+| test.vue:7:45:7:48 | data | test.vue:7:11:13:6 | data | provenance |  |
+| test.vue:10:15:10:84 | response | test.vue:11:16:11:23 | response | provenance |  |
+| test.vue:10:26:10:84 | await f ... sts/1") | test.vue:10:15:10:84 | response | provenance |  |
+| test.vue:10:32:10:84 | fetch(" ... sts/1") | test.vue:10:26:10:84 | await f ... sts/1") | provenance |  |
+| test.vue:11:16:11:23 | response | test.vue:11:16:11:30 | response.json() | provenance |  |
+| test.vue:11:16:11:30 | response.json() | test.vue:7:45:7:48 | data | provenance |  |
+| test.vue:15:21:15:24 | data | test.vue:22:10:22:22 | v-html=data | provenance |  |
+| testReactRelay.tsx:5:9:5:52 | commentData | testReactRelay.tsx:7:43:7:53 | commentData | provenance |  |
+| testReactRelay.tsx:5:23:5:52 | useFrag ... entRef) | testReactRelay.tsx:5:9:5:52 | commentData | provenance |  |
+| testReactRelay.tsx:7:43:7:53 | commentData | testReactRelay.tsx:7:43:7:58 | commentData.text | provenance |  |
+| testReactRelay.tsx:17:9:17:42 | data | testReactRelay.tsx:18:48:18:51 | data | provenance |  |
+| testReactRelay.tsx:17:16:17:42 | useLazy ... ry, {}) | testReactRelay.tsx:17:9:17:42 | data | provenance |  |
+| testReactRelay.tsx:18:48:18:51 | data | testReactRelay.tsx:18:48:18:68 | data.co ... 0].text | provenance |  |
+| testReactRelay.tsx:28:17:28:56 | usePrel ... erence) | testReactRelay.tsx:28:17:28:67 | usePrel ... r?.name | provenance |  |
+| testReactRelay.tsx:37:9:37:40 | data | testReactRelay.tsx:38:49:38:52 | data | provenance |  |
+| testReactRelay.tsx:37:16:37:40 | useClie ... ry, {}) | testReactRelay.tsx:37:9:37:40 | data | provenance |  |
+| testReactRelay.tsx:44:9:44:70 | data | testReactRelay.tsx:47:46:47:49 | data | provenance |  |
+| testReactRelay.tsx:44:10:44:13 | data | testReactRelay.tsx:44:9:44:70 | data | provenance |  |
+| testReactRelay.tsx:61:9:70:38 | data | testReactRelay.tsx:71:49:71:52 | data | provenance |  |
+| testReactRelay.tsx:62:5:62:8 | data | testReactRelay.tsx:61:9:70:38 | data | provenance |  |
+| testReactRelay.tsx:80:9:80:54 | feedbackText | testReactRelay.tsx:88:50:88:61 | feedbackText | provenance |  |
+| testReactRelay.tsx:80:10:80:21 | feedbackText | testReactRelay.tsx:80:9:80:54 | feedbackText | provenance |  |
+| testReactRelay.tsx:83:17:83:20 | data | testReactRelay.tsx:84:23:84:26 | data | provenance |  |
+| testReactRelay.tsx:84:23:84:26 | data | testReactRelay.tsx:80:10:80:21 | feedbackText | provenance |  |
+| testReactRelay.tsx:95:9:95:50 | fragmentRef | testReactRelay.tsx:113:48:113:58 | fragmentRef | provenance |  |
+| testReactRelay.tsx:95:10:95:20 | fragmentRef | testReactRelay.tsx:95:9:95:50 | fragmentRef | provenance |  |
+| testReactRelay.tsx:100:14:100:16 | res | testReactRelay.tsx:101:22:101:24 | res | provenance |  |
+| testReactRelay.tsx:101:22:101:24 | res | testReactRelay.tsx:95:10:95:20 | fragmentRef | provenance |  |
+| testReactRelay.tsx:124:12:124:15 | data | testReactRelay.tsx:127:35:127:38 | data | provenance |  |
+| testReactRelay.tsx:127:35:127:38 | data | testReactRelay.tsx:127:35:127:43 | data.user | provenance |  |
+| testReactRelay.tsx:136:9:136:39 | data | testReactRelay.tsx:137:50:137:53 | data | provenance |  |
+| testReactRelay.tsx:136:16:136:39 | readFra ... y, key) | testReactRelay.tsx:136:9:136:39 | data | provenance |  |
+| testReactUseQueries.jsx:4:9:4:53 | response | testReactUseQueries.jsx:5:10:5:17 | response | provenance |  |
+| testReactUseQueries.jsx:4:20:4:53 | await f ... e.com') | testReactUseQueries.jsx:4:9:4:53 | response | provenance |  |
+| testReactUseQueries.jsx:4:26:4:53 | fetch(' ... e.com') | testReactUseQueries.jsx:4:20:4:53 | await f ... e.com') | provenance |  |
+| testReactUseQueries.jsx:5:10:5:17 | response | testReactUseQueries.jsx:5:10:5:24 | response.json() | provenance |  |
+| testReactUseQueries.jsx:5:10:5:24 | response.json() | testReactUseQueries.jsx:37:25:37:38 | repoQuery.data | provenance |  |
+| testUseQueries2.vue:6:11:6:63 | response | testUseQueries2.vue:7:24:7:31 | response | provenance |  |
+| testUseQueries2.vue:6:22:6:63 | await f ... ntent") | testUseQueries2.vue:6:11:6:63 | response | provenance |  |
+| testUseQueries2.vue:6:28:6:63 | fetch(" ... ntent") | testUseQueries2.vue:6:22:6:63 | await f ... ntent") | provenance |  |
+| testUseQueries2.vue:7:11:7:38 | data | testUseQueries2.vue:8:12:8:15 | data | provenance |  |
+| testUseQueries2.vue:7:18:7:38 | await r ... .json() | testUseQueries2.vue:7:11:7:38 | data | provenance |  |
+| testUseQueries2.vue:7:24:7:31 | response | testUseQueries2.vue:7:24:7:38 | response.json() | provenance |  |
+| testUseQueries2.vue:7:24:7:38 | response.json() | testUseQueries2.vue:7:18:7:38 | await r ... .json() | provenance |  |
+| testUseQueries2.vue:8:12:8:15 | data | testUseQueries2.vue:33:22:33:36 | results[0].data | provenance |  |
+| testUseQueries2.vue:12:11:12:41 | response | testUseQueries2.vue:13:12:13:19 | response | provenance |  |
+| testUseQueries2.vue:12:22:12:41 | await fetch("${id}") | testUseQueries2.vue:12:11:12:41 | response | provenance |  |
+| testUseQueries2.vue:12:28:12:41 | fetch("${id}") | testUseQueries2.vue:12:22:12:41 | await fetch("${id}") | provenance |  |
+| testUseQueries2.vue:13:12:13:19 | response | testUseQueries2.vue:13:12:13:26 | response.json() | provenance |  |
+| testUseQueries2.vue:13:12:13:26 | response.json() | testUseQueries2.vue:33:22:33:36 | results[0].data | provenance |  |
+| testUseQueries2.vue:33:22:33:36 | results[0].data | testUseQueries2.vue:40:10:40:23 | v-html=data3 | provenance |  |
+| testUseQueries.vue:11:19:11:49 | response | testUseQueries.vue:12:20:12:27 | response | provenance |  |
+| testUseQueries.vue:11:30:11:49 | await fetch("${id}") | testUseQueries.vue:11:19:11:49 | response | provenance |  |
+| testUseQueries.vue:11:36:11:49 | fetch("${id}") | testUseQueries.vue:11:30:11:49 | await fetch("${id}") | provenance |  |
+| testUseQueries.vue:12:20:12:27 | response | testUseQueries.vue:12:20:12:34 | response.json() | provenance |  |
+| testUseQueries.vue:12:20:12:34 | response.json() | testUseQueries.vue:18:22:18:36 | results[0].data | provenance |  |
+| testUseQueries.vue:18:22:18:36 | results[0].data | testUseQueries.vue:25:10:25:23 | v-html=data2 | provenance |  |
+nodes
+| interceptors.js:7:6:7:13 | response | semmle.label | response |
+| interceptors.js:8:15:8:47 | userGeneratedHtml | semmle.label | userGeneratedHtml |
+| interceptors.js:8:35:8:42 | response | semmle.label | response |
+| interceptors.js:9:56:9:72 | userGeneratedHtml | semmle.label | userGeneratedHtml |
+| test.jsx:5:11:5:63 | response | semmle.label | response |
+| test.jsx:5:22:5:63 | await f ... ntent") | semmle.label | await f ... ntent") |
+| test.jsx:5:28:5:63 | fetch(" ... ntent") | semmle.label | fetch(" ... ntent") |
+| test.jsx:6:11:6:38 | data | semmle.label | data |
+| test.jsx:6:18:6:38 | await r ... .json() | semmle.label | await r ... .json() |
+| test.jsx:6:24:6:31 | response | semmle.label | response |
+| test.jsx:6:24:6:38 | response.json() | semmle.label | response.json() |
+| test.jsx:7:12:7:15 | data | semmle.label | data |
+| test.jsx:15:11:17:5 | data | semmle.label | data |
+| test.jsx:15:13:15:16 | data | semmle.label | data |
+| test.jsx:27:29:27:32 | data | semmle.label | data |
+| test.ts:8:9:8:79 | this.#h ... query') | semmle.label | this.#h ... query') |
+| test.ts:20:28:20:35 | response | semmle.label | response |
+| test.ts:21:57:21:64 | response | semmle.label | response |
+| test.ts:21:57:21:76 | response.description | semmle.label | response.description |
+| test.ts:24:36:24:90 | `<h2>${ ... o}</p>` | semmle.label | `<h2>${ ... o}</p>` |
+| test.ts:24:43:24:50 | response | semmle.label | response |
+| test.ts:24:43:24:55 | response.name | semmle.label | response.name |
+| test.ts:24:67:24:74 | response | semmle.label | response |
+| test.ts:24:67:24:84 | response.owner.bio | semmle.label | response.owner.bio |
+| test.vue:7:11:13:6 | data | semmle.label | data |
+| test.vue:7:45:7:48 | data | semmle.label | data |
+| test.vue:10:15:10:84 | response | semmle.label | response |
+| test.vue:10:26:10:84 | await f ... sts/1") | semmle.label | await f ... sts/1") |
+| test.vue:10:32:10:84 | fetch(" ... sts/1") | semmle.label | fetch(" ... sts/1") |
+| test.vue:11:16:11:23 | response | semmle.label | response |
+| test.vue:11:16:11:30 | response.json() | semmle.label | response.json() |
+| test.vue:15:21:15:24 | data | semmle.label | data |
+| test.vue:22:10:22:22 | v-html=data | semmle.label | v-html=data |
+| testReactRelay.tsx:5:9:5:52 | commentData | semmle.label | commentData |
+| testReactRelay.tsx:5:23:5:52 | useFrag ... entRef) | semmle.label | useFrag ... entRef) |
+| testReactRelay.tsx:7:43:7:53 | commentData | semmle.label | commentData |
+| testReactRelay.tsx:7:43:7:58 | commentData.text | semmle.label | commentData.text |
+| testReactRelay.tsx:17:9:17:42 | data | semmle.label | data |
+| testReactRelay.tsx:17:16:17:42 | useLazy ... ry, {}) | semmle.label | useLazy ... ry, {}) |
+| testReactRelay.tsx:18:48:18:51 | data | semmle.label | data |
+| testReactRelay.tsx:18:48:18:68 | data.co ... 0].text | semmle.label | data.co ... 0].text |
+| testReactRelay.tsx:28:17:28:56 | usePrel ... erence) | semmle.label | usePrel ... erence) |
+| testReactRelay.tsx:28:17:28:67 | usePrel ... r?.name | semmle.label | usePrel ... r?.name |
+| testReactRelay.tsx:37:9:37:40 | data | semmle.label | data |
+| testReactRelay.tsx:37:16:37:40 | useClie ... ry, {}) | semmle.label | useClie ... ry, {}) |
+| testReactRelay.tsx:38:49:38:52 | data | semmle.label | data |
+| testReactRelay.tsx:44:9:44:70 | data | semmle.label | data |
+| testReactRelay.tsx:44:10:44:13 | data | semmle.label | data |
+| testReactRelay.tsx:47:46:47:49 | data | semmle.label | data |
+| testReactRelay.tsx:61:9:70:38 | data | semmle.label | data |
+| testReactRelay.tsx:62:5:62:8 | data | semmle.label | data |
+| testReactRelay.tsx:71:49:71:52 | data | semmle.label | data |
+| testReactRelay.tsx:80:9:80:54 | feedbackText | semmle.label | feedbackText |
+| testReactRelay.tsx:80:10:80:21 | feedbackText | semmle.label | feedbackText |
+| testReactRelay.tsx:83:17:83:20 | data | semmle.label | data |
+| testReactRelay.tsx:84:23:84:26 | data | semmle.label | data |
+| testReactRelay.tsx:88:50:88:61 | feedbackText | semmle.label | feedbackText |
+| testReactRelay.tsx:95:9:95:50 | fragmentRef | semmle.label | fragmentRef |
+| testReactRelay.tsx:95:10:95:20 | fragmentRef | semmle.label | fragmentRef |
+| testReactRelay.tsx:100:14:100:16 | res | semmle.label | res |
+| testReactRelay.tsx:101:22:101:24 | res | semmle.label | res |
+| testReactRelay.tsx:113:48:113:58 | fragmentRef | semmle.label | fragmentRef |
+| testReactRelay.tsx:124:12:124:15 | data | semmle.label | data |
+| testReactRelay.tsx:127:35:127:38 | data | semmle.label | data |
+| testReactRelay.tsx:127:35:127:43 | data.user | semmle.label | data.user |
+| testReactRelay.tsx:136:9:136:39 | data | semmle.label | data |
+| testReactRelay.tsx:136:16:136:39 | readFra ... y, key) | semmle.label | readFra ... y, key) |
+| testReactRelay.tsx:137:50:137:53 | data | semmle.label | data |
+| testReactUseQueries.jsx:4:9:4:53 | response | semmle.label | response |
+| testReactUseQueries.jsx:4:20:4:53 | await f ... e.com') | semmle.label | await f ... e.com') |
+| testReactUseQueries.jsx:4:26:4:53 | fetch(' ... e.com') | semmle.label | fetch(' ... e.com') |
+| testReactUseQueries.jsx:5:10:5:17 | response | semmle.label | response |
+| testReactUseQueries.jsx:5:10:5:24 | response.json() | semmle.label | response.json() |
+| testReactUseQueries.jsx:37:25:37:38 | repoQuery.data | semmle.label | repoQuery.data |
+| testUseQueries2.vue:6:11:6:63 | response | semmle.label | response |
+| testUseQueries2.vue:6:22:6:63 | await f ... ntent") | semmle.label | await f ... ntent") |
+| testUseQueries2.vue:6:28:6:63 | fetch(" ... ntent") | semmle.label | fetch(" ... ntent") |
+| testUseQueries2.vue:7:11:7:38 | data | semmle.label | data |
+| testUseQueries2.vue:7:18:7:38 | await r ... .json() | semmle.label | await r ... .json() |
+| testUseQueries2.vue:7:24:7:31 | response | semmle.label | response |
+| testUseQueries2.vue:7:24:7:38 | response.json() | semmle.label | response.json() |
+| testUseQueries2.vue:8:12:8:15 | data | semmle.label | data |
+| testUseQueries2.vue:12:11:12:41 | response | semmle.label | response |
+| testUseQueries2.vue:12:22:12:41 | await fetch("${id}") | semmle.label | await fetch("${id}") |
+| testUseQueries2.vue:12:28:12:41 | fetch("${id}") | semmle.label | fetch("${id}") |
+| testUseQueries2.vue:13:12:13:19 | response | semmle.label | response |
+| testUseQueries2.vue:13:12:13:26 | response.json() | semmle.label | response.json() |
+| testUseQueries2.vue:33:22:33:36 | results[0].data | semmle.label | results[0].data |
+| testUseQueries2.vue:40:10:40:23 | v-html=data3 | semmle.label | v-html=data3 |
+| testUseQueries.vue:11:19:11:49 | response | semmle.label | response |
+| testUseQueries.vue:11:30:11:49 | await fetch("${id}") | semmle.label | await fetch("${id}") |
+| testUseQueries.vue:11:36:11:49 | fetch("${id}") | semmle.label | fetch("${id}") |
+| testUseQueries.vue:12:20:12:27 | response | semmle.label | response |
+| testUseQueries.vue:12:20:12:34 | response.json() | semmle.label | response.json() |
+| testUseQueries.vue:18:22:18:36 | results[0].data | semmle.label | results[0].data |
+| testUseQueries.vue:25:10:25:23 | v-html=data2 | semmle.label | v-html=data2 |
+subpaths

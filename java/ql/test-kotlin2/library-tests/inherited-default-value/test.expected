@@ -1,0 +1,2 @@
+| test.kt:3:3:3:28 | f(...) | test.kt:3:3:3:28 | f | test.kt:1:1:5:1 | A |
+| test.kt:11:16:11:23 | f$default(...) | test.kt:3:3:3:28 | f$default | test.kt:1:1:5:1 | A |

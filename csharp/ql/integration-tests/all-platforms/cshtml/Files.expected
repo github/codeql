@@ -1,0 +1,7 @@
+| Program.cs:0:0:0:0 | Program.cs |
+| Views/Home/Index.cshtml:0:0:0:0 | Views/Home/Index.cshtml |
+| obj/Debug/net9.0/.NETCoreApp,Version=v9.0.AssemblyAttributes.cs:0:0:0:0 | obj/Debug/net9.0/.NETCoreApp,Version=v9.0.AssemblyAttributes.cs |
+| obj/Debug/net9.0/cshtml.AssemblyInfo.cs:0:0:0:0 | obj/Debug/net9.0/cshtml.AssemblyInfo.cs |
+| obj/Debug/net9.0/cshtml.GlobalUsings.g.cs:0:0:0:0 | obj/Debug/net9.0/cshtml.GlobalUsings.g.cs |
+| obj/Debug/net9.0/cshtml.RazorAssemblyInfo.cs:0:0:0:0 | obj/Debug/net9.0/cshtml.RazorAssemblyInfo.cs |
+| obj/Debug/net9.0/generated/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Views_Home_Index_cshtml.g.cs:0:0:0:0 | obj/Debug/net9.0/generated/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Views_Home_Index_cshtml.g.cs |

@@ -34,7 +34,7 @@ class Macro extends PreprocessorDirective, @ppd_define {
    * Gets the name of the macro.  For example, `MAX` in
    * `#define MAX(x,y) (((x)>(y))?(x):(y))`.
    */
-  string getName() { result = this.getHead().splitAt("(", 0) }
+  string getName() { result = this.getHead().regexpCapture("([^(]*+).*", 1) }
 
   /** Holds if the macro has name `name`. */
   predicate hasName(string name) { this.getName() = name }
@@ -154,8 +154,9 @@ class MacroInvocation extends MacroAccess {
    * well.
    */
   Locatable getAnAffectedElement() {
-    inmacroexpansion(unresolveElement(result), underlyingElement(this)) or
-    macrolocationbind(underlyingElement(this), result.getLocation())
+    inmacroexpansion(unresolveElement(result), underlyingElement(this))
+    or
+    macrolocationbind(underlyingElement(this), result.getLocation()) and this != result
   }
 
   /**
@@ -259,7 +260,8 @@ predicate inMacroExpansion(Locatable element) {
   inmacroexpansion(unresolveElement(element), _)
   or
   macroLocation(element.getLocation()) and
-  not topLevelMacroAccess(element)
+  not topLevelMacroAccess(element) and
+  not element.getLocation() instanceof UnknownLocation
 }
 
 /**

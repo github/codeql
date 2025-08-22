@@ -2,6 +2,8 @@
  * Provides classes and predicates for working with JavaEE
  * persistence configuration XML files (`persistence.xml`).
  */
+overlay[local?]
+module;
 
 import java
 
@@ -25,9 +27,6 @@ class PersistenceXmlFile extends XmlFile {
       this.getRoot().getAPersistenceUnitElement().getAPropertiesElement().getAPropertyElement()
   }
 }
-
-/** DEPRECATED: Alias for PersistenceXmlFile */
-deprecated class PersistenceXMLFile = PersistenceXmlFile;
 
 /** The root `persistence` XML element in a `persistence.xml` file. */
 class PersistenceXmlRoot extends XmlElement {

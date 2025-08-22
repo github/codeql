@@ -14,16 +14,23 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.SqlInjectionQuery as SqlInjection
-import semmle.javascript.security.dataflow.NosqlInjectionQuery as NosqlInjection
-import DataFlow::PathGraph
+import semmle.javascript.security.dataflow.SqlInjectionQuery as Sql
+import semmle.javascript.security.dataflow.NosqlInjectionQuery as Nosql
 
-from DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+module Merged =
+  DataFlow::MergePathGraph<Sql::SqlInjectionFlow::PathNode, Nosql::NosqlInjectionFlow::PathNode,
+    Sql::SqlInjectionFlow::PathGraph, Nosql::NosqlInjectionFlow::PathGraph>;
+
+import DataFlow::DeduplicatePathGraph<Merged::PathNode, Merged::PathGraph>
+
+from PathNode source, PathNode sink, string type
 where
-  (
-    cfg instanceof SqlInjection::Configuration or
-    cfg instanceof NosqlInjection::Configuration
-  ) and
-  cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "This query depends on a $@.", source.getNode(),
+  Sql::SqlInjectionFlow::flowPath(source.getAnOriginalPathNode().asPathNode1(),
+    sink.getAnOriginalPathNode().asPathNode1()) and
+  type = "string"
+  or
+  Nosql::NosqlInjectionFlow::flowPath(source.getAnOriginalPathNode().asPathNode2(),
+    sink.getAnOriginalPathNode().asPathNode2()) and
+  type = "object"
+select sink.getNode(), source, sink, "This query " + type + " depends on a $@.", source.getNode(),
   "user-provided value"

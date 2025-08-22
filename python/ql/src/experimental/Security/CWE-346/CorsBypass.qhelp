@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>Cross-origin resource sharing policy may be bypassed due to incorrect checks like the <code>string.startswith</code> call.</p>
+  </overview>
+  <recommendation>
+    <p>Use a more stronger check to test for CORS policy bypass.</p>
+  </recommendation>
+
+  <example>
+    <p>Most Python frameworks provide a mechanism for testing origins and performing CORS checks.
+      For example, consider the code snippet below, <code>origin</code> is compared using a <code>
+      startswith</code> call against a list of whitelisted origins. This check can be bypassed
+      easily by origin like <code>domain.com.baddomain.com</code>
+    </p>
+    <sample src="CorsBad.py" />
+    <p>This can be prevented by comparing the origin in a manner shown below.
+    </p>
+    <sample src="CorsGood.py" />
+
+  </example>
+
+  <references>
+    <li>PortsSwigger : <a href="https://portswigger.net/web-security/cors"></a>Cross-origin resource
+      sharing (CORS)</li>
+    <li>Related CVE: <a href="https://github.com/advisories/GHSA-824x-jcxf-hpfg">CVE-2022-3457</a>.</li>
+  </references>
+</qhelp>

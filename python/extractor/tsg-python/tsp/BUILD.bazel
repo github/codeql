@@ -1,0 +1,40 @@
+load("@rules_rust//cargo:defs.bzl", "cargo_build_script")
+load("@rules_rust//rust:defs.bzl", "rust_library")
+load("//misc/bazel/3rdparty/py_deps:defs.bzl", "aliases", "all_crate_deps")
+
+package(default_visibility = ["//visibility:public"])
+
+# This will run the build script from the root of the workspace, and
+# collect the outputs.
+cargo_build_script(
+    name = "tsp-build",
+    srcs = ["bindings/rust/build.rs"],
+    data = glob([
+        "src/**",
+    ]),
+    deps = all_crate_deps(
+        build = True,
+    ),
+)
+
+rust_library(
+    name = "tsp",
+    srcs = [
+        "bindings/rust/lib.rs",
+    ],
+    aliases = aliases(),
+    compile_data = glob([
+        "src/**",
+        "queries/**",
+    ]) + [
+        "grammar.js",
+    ],
+    proc_macro_deps = all_crate_deps(
+        proc_macro = True,
+    ),
+    deps = [":tsp-build"] + all_crate_deps(
+        normal = True,
+    ),
+)
+
+exports_files(["Cargo.toml"])

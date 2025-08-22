@@ -1,4 +1,0 @@
-htmlFiles
-extractionErrors
-#select
-| test.go:0:0:0:0 | test.go |

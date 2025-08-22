@@ -1,39 +1,40 @@
-test_query14
-| tst.js:9:1:9:3 | h() | Unable to find a callee for this call site. |
-test_query21
-| tst.js:19:4:19:9 | @param | @param tag is missing name. |
-test_query15
-test_query10
-| tst.js:31:1:33:1 | functio ... ++i);\\n} | This function uses i like a local variable. |
+test_query1
+|  | 2 |
+test_query3
+| tst.js:27:1:27:4 | <!-- | Do not use HTML comments. |
 test_query4
 | tst.js:29:1:29:5 | 1 + 2 | This expression should be bracketed to clarify precedence rules. |
-test_query19
-test_query17
-test_query18
-| m.js:1:1:3:0 | <toplevel> | 0 |
+test_query5
+test_query6
+| tst.js:31:1:33:1 | functio ... ++i);\\n} | This function has two parameters that bind the same variable. |
+test_query7
+| tst.js:35:1:35:9 | var j, j; | Variable j is declared both $@ and $@. | tst.js:35:5:35:5 | j | here | tst.js:35:8:35:8 | j | here |
 test_query8
 | tst.js:1:2:1:24 | { x: 23 ... x: 56 } | Property x is defined both $@ and $@. | tst.js:1:4:1:8 | x: 23 | here | tst.js:1:18:1:22 | x: 56 | here |
+test_query9
+| tst.js:3:1:3:15 | function f() {} | tst.js:6:5:6:19 | function f() {} |
+| tst.js:6:5:6:19 | function f() {} | tst.js:3:1:3:15 | function f() {} |
+test_query10
+| tst.js:31:1:33:1 | functio ... ++i);\\n} | This function uses i like a local variable. |
 test_query11
 | tst.js:21:12:21:12 | x | Dead store of local variable. |
 | tst.js:31:12:31:12 | x | Dead store of local variable. |
 | tst.js:31:15:31:15 | y | Dead store of local variable. |
 | tst.js:31:18:31:18 | x | Dead store of local variable. |
+| tst.js:38:7:38:23 | password = "blah" | Dead store of local variable. |
 test_query12
-test_query20
-test_query3
-| tst.js:27:1:27:4 | <!-- | Do not use HTML comments. |
-test_query1
-|  | 0 |
-| tutorials | 0 |
-| tutorials/Introducing the JavaScript libraries | 2 |
+| tst.js:42:3:42:12 | res.send() |
 test_query13
-test_query9
-| tst.js:3:1:3:15 | function f() {} | tst.js:6:5:6:19 | function f() {} |
-| tst.js:6:5:6:19 | function f() {} | tst.js:3:1:3:15 | function f() {} |
-test_query5
+test_query14
+| tst.js:9:1:9:3 | h() | Unable to find a callee for this call site. |
+test_query18
+| m.js:1:1:3:0 | <toplevel> | 0 |
+test_query19
+test_query20
+test_query21
+| tst.js:19:4:19:9 | @param | @param tag is missing name. |
 test_query2
 | tst.js:25:3:25:3 | , | Omitted array elements are bad style. |
-test_query6
-| tst.js:31:1:33:1 | functio ... ++i);\\n} | This function has two parameters that bind the same variable. |
-test_query7
-| tst.js:35:1:35:9 | var j, j; | Variable j is declared both $@ and $@. | tst.js:35:5:35:5 | j | here | tst.js:35:8:35:8 | j | here |
+test_query15
+test_query17
+| tst.js:38:18:38:23 | "blah" | Password variable password is assigned a constant string. |

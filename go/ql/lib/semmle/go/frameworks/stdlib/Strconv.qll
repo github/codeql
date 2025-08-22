@@ -11,6 +11,8 @@ module Strconv {
     Atoi() { this.hasQualifiedName("strconv", "Atoi") }
 
     override int getTargetBitSize() { result = 0 }
+
+    override boolean isSigned() { result = true }
   }
 
   /** The `ParseInt` function. */
@@ -18,6 +20,8 @@ module Strconv {
     ParseInt() { this.hasQualifiedName("strconv", "ParseInt") }
 
     override FunctionInput getTargetBitSizeInput() { result.isParameter(2) }
+
+    override boolean isSigned() { result = true }
   }
 
   /** The `ParseUint` function. */
@@ -25,6 +29,8 @@ module Strconv {
     ParseUint() { this.hasQualifiedName("strconv", "ParseUint") }
 
     override FunctionInput getTargetBitSizeInput() { result.isParameter(2) }
+
+    override boolean isSigned() { result = false }
   }
 
   /**
@@ -33,52 +39,5 @@ module Strconv {
    */
   class IntSize extends DeclaredConstant {
     IntSize() { this.hasQualifiedName("strconv", "IntSize") }
-  }
-
-  private class FunctionModels extends TaintTracking::FunctionModel {
-    FunctionInput inp;
-    FunctionOutput outp;
-
-    FunctionModels() {
-      // signature: func AppendQuote(dst []byte, s string) []byte
-      this.hasQualifiedName("strconv", "AppendQuote") and
-      (inp.isParameter(_) and outp.isResult())
-      or
-      // signature: func AppendQuoteToASCII(dst []byte, s string) []byte
-      this.hasQualifiedName("strconv", "AppendQuoteToASCII") and
-      (inp.isParameter(_) and outp.isResult())
-      or
-      // signature: func AppendQuoteToGraphic(dst []byte, s string) []byte
-      this.hasQualifiedName("strconv", "AppendQuoteToGraphic") and
-      (inp.isParameter(_) and outp.isResult())
-      or
-      // signature: func Quote(s string) string
-      this.hasQualifiedName("strconv", "Quote") and
-      (inp.isParameter(0) and outp.isResult())
-      or
-      // signature: func QuotedPrefix(s string) (string, error)
-      this.hasQualifiedName("strconv", "QuotedPrefix") and
-      (inp.isParameter(0) and outp.isResult(0))
-      or
-      // signature: func QuoteToASCII(s string) string
-      this.hasQualifiedName("strconv", "QuoteToASCII") and
-      (inp.isParameter(0) and outp.isResult())
-      or
-      // signature: func QuoteToGraphic(s string) string
-      this.hasQualifiedName("strconv", "QuoteToGraphic") and
-      (inp.isParameter(0) and outp.isResult())
-      or
-      // signature: func Unquote(s string) (string, error)
-      this.hasQualifiedName("strconv", "Unquote") and
-      (inp.isParameter(0) and outp.isResult(0))
-      or
-      // signature: func UnquoteChar(s string, quote byte) (value rune, multibyte bool, tail string, err error)
-      this.hasQualifiedName("strconv", "UnquoteChar") and
-      (inp.isParameter(0) and outp.isResult(2))
-    }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      input = inp and output = outp
-    }
   }
 }

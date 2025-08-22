@@ -1,21 +1,23 @@
 edges
-| MybatisSqlInjection.java:62:19:62:43 | name : String | MybatisSqlInjection.java:63:35:63:38 | name : String |
-| MybatisSqlInjection.java:63:35:63:38 | name : String | MybatisSqlInjectionService.java:48:19:48:29 | name : String |
-| MybatisSqlInjection.java:67:46:67:70 | name : String | MybatisSqlInjection.java:68:40:68:43 | name : String |
-| MybatisSqlInjection.java:68:40:68:43 | name : String | MybatisSqlInjectionService.java:54:32:54:42 | name : String |
-| MybatisSqlInjection.java:99:20:99:44 | name : String | MybatisSqlInjection.java:100:36:100:39 | name : String |
-| MybatisSqlInjection.java:100:36:100:39 | name : String | MybatisSqlInjectionService.java:80:20:80:30 | name : String |
-| MybatisSqlInjection.java:104:20:104:43 | age : String | MybatisSqlInjection.java:105:36:105:38 | age : String |
-| MybatisSqlInjection.java:105:36:105:38 | age : String | MybatisSqlInjectionService.java:84:20:84:29 | age : String |
-| MybatisSqlInjection.java:109:46:109:70 | name : String | MybatisSqlInjection.java:110:40:110:43 | name : String |
-| MybatisSqlInjection.java:110:40:110:43 | name : String | MybatisSqlInjectionService.java:88:32:88:42 | name : String |
-| MybatisSqlInjectionService.java:48:19:48:29 | name : String | MybatisSqlInjectionService.java:50:23:50:26 | name : String |
-| MybatisSqlInjectionService.java:50:3:50:9 | hashMap [post update] [<map.value>] : String | MybatisSqlInjectionService.java:51:27:51:33 | hashMap |
-| MybatisSqlInjectionService.java:50:23:50:26 | name : String | MybatisSqlInjectionService.java:50:3:50:9 | hashMap [post update] [<map.value>] : String |
-| MybatisSqlInjectionService.java:54:32:54:42 | name : String | MybatisSqlInjectionService.java:55:32:55:35 | name |
-| MybatisSqlInjectionService.java:80:20:80:30 | name : String | MybatisSqlInjectionService.java:81:28:81:31 | name |
-| MybatisSqlInjectionService.java:84:20:84:29 | age : String | MybatisSqlInjectionService.java:85:28:85:30 | age |
-| MybatisSqlInjectionService.java:88:32:88:42 | name : String | MybatisSqlInjectionService.java:89:32:89:35 | name |
+| MybatisSqlInjection.java:62:19:62:43 | name : String | MybatisSqlInjection.java:63:35:63:38 | name : String | provenance |  |
+| MybatisSqlInjection.java:63:35:63:38 | name : String | MybatisSqlInjectionService.java:48:19:48:29 | name : String | provenance |  |
+| MybatisSqlInjection.java:67:46:67:70 | name : String | MybatisSqlInjection.java:68:40:68:43 | name : String | provenance |  |
+| MybatisSqlInjection.java:68:40:68:43 | name : String | MybatisSqlInjectionService.java:54:32:54:42 | name : String | provenance |  |
+| MybatisSqlInjection.java:99:20:99:44 | name : String | MybatisSqlInjection.java:100:36:100:39 | name : String | provenance |  |
+| MybatisSqlInjection.java:100:36:100:39 | name : String | MybatisSqlInjectionService.java:80:20:80:30 | name : String | provenance |  |
+| MybatisSqlInjection.java:104:20:104:43 | age : String | MybatisSqlInjection.java:105:36:105:38 | age : String | provenance |  |
+| MybatisSqlInjection.java:105:36:105:38 | age : String | MybatisSqlInjectionService.java:84:20:84:29 | age : String | provenance |  |
+| MybatisSqlInjection.java:109:46:109:70 | name : String | MybatisSqlInjection.java:110:40:110:43 | name : String | provenance |  |
+| MybatisSqlInjection.java:110:40:110:43 | name : String | MybatisSqlInjectionService.java:88:32:88:42 | name : String | provenance |  |
+| MybatisSqlInjectionService.java:48:19:48:29 | name : String | MybatisSqlInjectionService.java:50:23:50:26 | name : String | provenance |  |
+| MybatisSqlInjectionService.java:50:3:50:9 | hashMap [post update] : HashMap [<map.value>] : String | MybatisSqlInjectionService.java:51:27:51:33 | hashMap | provenance |  |
+| MybatisSqlInjectionService.java:50:23:50:26 | name : String | MybatisSqlInjectionService.java:50:3:50:9 | hashMap [post update] : HashMap [<map.value>] : String | provenance | MaD:1 |
+| MybatisSqlInjectionService.java:54:32:54:42 | name : String | MybatisSqlInjectionService.java:55:32:55:35 | name | provenance |  |
+| MybatisSqlInjectionService.java:80:20:80:30 | name : String | MybatisSqlInjectionService.java:81:28:81:31 | name | provenance |  |
+| MybatisSqlInjectionService.java:84:20:84:29 | age : String | MybatisSqlInjectionService.java:85:28:85:30 | age | provenance |  |
+| MybatisSqlInjectionService.java:88:32:88:42 | name : String | MybatisSqlInjectionService.java:89:32:89:35 | name | provenance |  |
+models
+| 1 | Summary: java.util; Map; true; put; (Object,Object); ; Argument[1]; Argument[this].MapValue; value; manual |
 nodes
 | MybatisSqlInjection.java:62:19:62:43 | name : String | semmle.label | name : String |
 | MybatisSqlInjection.java:63:35:63:38 | name : String | semmle.label | name : String |
@@ -28,7 +30,7 @@ nodes
 | MybatisSqlInjection.java:109:46:109:70 | name : String | semmle.label | name : String |
 | MybatisSqlInjection.java:110:40:110:43 | name : String | semmle.label | name : String |
 | MybatisSqlInjectionService.java:48:19:48:29 | name : String | semmle.label | name : String |
-| MybatisSqlInjectionService.java:50:3:50:9 | hashMap [post update] [<map.value>] : String | semmle.label | hashMap [post update] [<map.value>] : String |
+| MybatisSqlInjectionService.java:50:3:50:9 | hashMap [post update] : HashMap [<map.value>] : String | semmle.label | hashMap [post update] : HashMap [<map.value>] : String |
 | MybatisSqlInjectionService.java:50:23:50:26 | name : String | semmle.label | name : String |
 | MybatisSqlInjectionService.java:51:27:51:33 | hashMap | semmle.label | hashMap |
 | MybatisSqlInjectionService.java:54:32:54:42 | name : String | semmle.label | name : String |
@@ -39,7 +41,7 @@ nodes
 | MybatisSqlInjectionService.java:85:28:85:30 | age | semmle.label | age |
 | MybatisSqlInjectionService.java:88:32:88:42 | name : String | semmle.label | name : String |
 | MybatisSqlInjectionService.java:89:32:89:35 | name | semmle.label | name |
-subpaths
-#select
+problems
 | MybatisSqlInjectionService.java:51:27:51:33 | hashMap | MybatisSqlInjection.java:62:19:62:43 | name : String | MybatisSqlInjectionService.java:51:27:51:33 | hashMap | MyBatis annotation SQL injection might include code from $@ to $@. | MybatisSqlInjection.java:62:19:62:43 | name | this user input | SqlInjectionMapper.java:33:2:33:54 | Select | this SQL operation |
 | MybatisSqlInjectionService.java:55:32:55:35 | name | MybatisSqlInjection.java:67:46:67:70 | name : String | MybatisSqlInjectionService.java:55:32:55:35 | name | MyBatis annotation SQL injection might include code from $@ to $@. | MybatisSqlInjection.java:67:46:67:70 | name | this user input | SqlInjectionMapper.java:36:2:36:72 | Select | this SQL operation |
+subpaths

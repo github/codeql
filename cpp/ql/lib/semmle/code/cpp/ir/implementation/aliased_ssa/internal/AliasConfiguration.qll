@@ -22,7 +22,7 @@ private newtype TAllocation =
 abstract class Allocation extends TAllocation {
   abstract string toString();
 
-  final string getAllocationString() { result = toString() }
+  final string getAllocationString() { result = this.toString() }
 
   abstract Instruction getABaseInstruction();
 
@@ -101,6 +101,8 @@ class IndirectParameterAllocation extends Allocation, TIndirectParameterAllocati
   final override predicate isAlwaysAllocatedOnStack() { none() }
 
   final override predicate alwaysEscapes() { none() }
+
+  final IRAutomaticVariable getIRVariable() { result = var }
 }
 
 class DynamicAllocation extends Allocation, TDynamicAllocation {
@@ -144,3 +146,8 @@ class DynamicAllocation extends Allocation, TDynamicAllocation {
 }
 
 predicate phaseNeedsSoundEscapeAnalysis() { none() }
+
+UnaliasedSsa::Allocation getOldAllocation(VariableAllocation allocation) {
+  UnaliasedSsa::canReuseSsaForVariable(allocation.getIRVariable()) and
+  result = allocation.getIRVariable()
+}

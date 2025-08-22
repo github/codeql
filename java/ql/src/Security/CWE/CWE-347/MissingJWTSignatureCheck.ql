@@ -12,9 +12,9 @@
 
 import java
 import semmle.code.java.security.MissingJWTSignatureCheckQuery
-import DataFlow::PathGraph
+import MissingJwtSignatureCheckFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, MissingJwtSignatureCheckConf conf
-where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "This parses a $@, but the signature is not verified.",
+from MissingJwtSignatureCheckFlow::PathNode source, MissingJwtSignatureCheckFlow::PathNode sink
+where MissingJwtSignatureCheckFlow::flowPath(source, sink)
+select sink.getNode(), source, sink, "This parser sets a $@, but the signature is not verified.",
   source.getNode(), "JWT signing key"

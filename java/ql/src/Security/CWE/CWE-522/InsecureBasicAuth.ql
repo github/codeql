@@ -16,9 +16,9 @@
 
 import java
 import semmle.code.java.security.InsecureBasicAuthQuery
-import DataFlow::PathGraph
+import InsecureBasicAuthFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, BasicAuthFlowConfig config
-where config.hasFlowPath(source, sink)
+from InsecureBasicAuthFlow::PathNode source, InsecureBasicAuthFlow::PathNode sink
+where InsecureBasicAuthFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Insecure basic authentication from a $@.", source.getNode(),
   "HTTP URL"

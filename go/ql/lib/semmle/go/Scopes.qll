@@ -101,14 +101,21 @@ class Entity extends @object {
    * Note that for methods `pkg` is the package path followed by `.` followed
    * by the name of the receiver type, for example `io.Writer`.
    */
+  pragma[nomagic]
   predicate hasQualifiedName(string pkg, string name) {
-    pkg = this.getPackage().getPath() and
+    (
+      pkg = this.getPackage().getPath()
+      or
+      not exists(this.getPackage()) and pkg = ""
+    ) and
     name = this.getName()
   }
 
   /** Gets the qualified name of this entity, if any. */
   string getQualifiedName() {
-    exists(string pkg, string name | this.hasQualifiedName(pkg, name) | result = pkg + "." + name)
+    exists(string pkg, string name | this.hasQualifiedName(pkg, name) |
+      if pkg = "" then result = name else result = pkg + "." + name
+    )
   }
 
   /**
@@ -118,7 +125,14 @@ class Entity extends @object {
    */
   Scope getScope() { objectscopes(this, result) }
 
-  /** Gets the declaring identifier for this entity. */
+  /**
+   * Gets the declaring identifier for this entity, if any.
+   *
+   * Note that type switch statements which declare a new variable in the guard
+   * actually have a new variable (of the right type) implicitly declared at
+   * the beginning of each case clause, and these do not have a syntactic
+   * declaration.
+   */
   Ident getDeclaration() { result.declares(this) }
 
   /** Gets a reference to this entity. */
@@ -130,21 +144,29 @@ class Entity extends @object {
   /** Gets a textual representation of this entity. */
   string toString() { result = this.getName() }
 
+  /** Gets the location of this entity. */
+  Location getLocation() {
+    result = this.getDeclaration().getLocation()
+    or
+    result = any(CaseClause cc | this = cc.getImplicitlyDeclaredVariable()).getLocation()
+  }
+
   /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    // take the location of the declaration if there is one
-    this.getDeclaration().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     or
     // otherwise fall back on dummy location
-    not exists(this.getDeclaration()) and
+    not exists(this.getLocation()) and
     filepath = "" and
     startline = 0 and
     startcolumn = 0 and
@@ -170,17 +192,29 @@ class BuiltinEntity extends Entity, @builtinobject { }
 /** An imported package. */
 class PackageEntity extends Entity, @pkgobject { }
 
-/** A built-in or declared named type. */
+/**
+ * A named type: predeclared types, defined types, type parameters, and type
+ * aliases.
+ */
 class TypeEntity extends Entity, @typeobject { }
 
-/** A declared named type. */
-class DeclaredType extends TypeEntity, DeclaredEntity, @decltypeobject {
+/** The parent of a type parameter type, either a declared type or a declared function. */
+class TypeParamParentEntity extends Entity, @typeparamparentobject { }
+
+/** A named type which has a declaration. */
+class DeclaredTypeEntity extends TypeEntity, DeclaredEntity, TypeParamParentEntity, @decltypeobject {
   /** Gets the declaration specifier declaring this type. */
   TypeSpec getSpec() { result.getNameExpr() = this.getDeclaration() }
 }
 
-/** A built-in named type. */
-class BuiltinType extends TypeEntity, BuiltinEntity, @builtintypeobject { }
+/** DEPRECATED: Use `DeclaredTypeEntity` instead. */
+deprecated class DeclaredType = DeclaredTypeEntity;
+
+/** A built-in type. */
+class BuiltinTypeEntity extends TypeEntity, BuiltinEntity, @builtintypeobject { }
+
+/** DEPRECATED: Use `BuiltinTypeEntity` instead. */
+deprecated class BuiltinType = BuiltinTypeEntity;
 
 /** A built-in or declared constant, variable, field, method or function. */
 class ValueEntity extends Entity, @valueobject {
@@ -358,6 +392,11 @@ class Field extends Variable {
       this = base.getField(f)
     )
   }
+
+  /**
+   * Gets the tag associated with this field, or the empty string if this field has no tag.
+   */
+  string getTag() { declaringType.hasOwnFieldWithTag(_, this.getName(), this.getType(), _, result) }
 }
 
 /**
@@ -440,11 +479,18 @@ class Function extends ValueEntity, @functionobject {
   /** Gets a parameter of this function. */
   Parameter getAParameter() { result = this.getParameter(_) }
 
-  /** Gets the `i`th reslt variable of this function. */
+  /** Gets the `i`th result variable of this function. */
   ResultVariable getResult(int i) { result.isResultOf(this.getFuncDecl(), i) }
 
   /** Gets a result variable of this function. */
   ResultVariable getAResult() { result = this.getResult(_) }
+}
+
+bindingset[m]
+pragma[inline_late]
+private Type implementsIncludingInterfaceMethodsCand(Method m, string mname) {
+  result.implements(m.getReceiverType().getUnderlyingType()) and
+  mname = m.getName()
 }
 
 /**
@@ -480,16 +526,10 @@ class Method extends Function {
    * Gets the receiver base type of this method, that is, either the base type of the receiver type
    * if it is a pointer type, or the receiver type itself if it is not a pointer type.
    */
-  Type getReceiverBaseType() {
-    exists(Type recv | recv = this.getReceiverType() |
-      if recv instanceof PointerType
-      then result = recv.(PointerType).getBaseType()
-      else result = recv
-    )
-  }
+  Type getReceiverBaseType() { result = lookThroughPointerType(this.getReceiverType()) }
 
   /** Holds if this method has name `m` and belongs to the method set of type `tp` or `*tp`. */
-  private predicate isIn(NamedType tp, string m) {
+  private predicate isIn(DefinedType tp, string m) {
     this = tp.getMethod(m) or
     this = tp.getPointerType().getMethod(m)
   }
@@ -503,7 +543,7 @@ class Method extends Function {
    * distinguishes between the method sets of `T` and `*T`, while the former does not.
    */
   override predicate hasQualifiedName(string tp, string m) {
-    exists(NamedType t |
+    exists(DefinedType t |
       this.isIn(t, m) and
       tp = t.getQualifiedName()
     )
@@ -517,8 +557,9 @@ class Method extends Function {
    * `exists(Type t | t.hasQualifiedName(pkg, tp) and meth = t.getMethod(m))`: the latter
    * distinguishes between the method sets of `T` and `*T`, while the former does not.
    */
+  pragma[nomagic]
   predicate hasQualifiedName(string pkg, string tp, string m) {
-    exists(NamedType t |
+    exists(DefinedType t |
       this.isIn(t, m) and
       t.hasQualifiedName(pkg, tp)
     )
@@ -533,12 +574,23 @@ class Method extends Function {
    * implement themselves.
    */
   predicate implements(Method m) {
+    if this.isInterfaceMethod() then this = m else this.implementsIncludingInterfaceMethods(m)
+  }
+
+  /**
+   * Holds if this method implements the method `m`, that is, if `m` is a method
+   * on an interface, and this is a method with the same name on a type that
+   * implements that interface.
+   *
+   * Note that all methods implement themselves, and that unlike the predicate `implements`
+   * this does allow interface methods to implement other interfaces.
+   */
+  predicate implementsIncludingInterfaceMethods(Method m) {
     this = m
     or
-    not this.isInterfaceMethod() and
-    exists(Type t |
-      this = t.getMethod(m.getName()) and
-      t.implements(m.getReceiverType().getUnderlyingType())
+    exists(Type t, string mname |
+      t = implementsIncludingInterfaceMethodsCand(m, mname) and
+      this = t.getMethod(mname)
     )
   }
 
@@ -562,7 +614,7 @@ class PromotedMethod extends Method {
 }
 
 /** A declared function. */
-class DeclaredFunction extends Function, DeclaredEntity, @declfunctionobject {
+class DeclaredFunction extends Function, DeclaredEntity, TypeParamParentEntity, @declfunctionobject {
   override FuncDecl getFuncDecl() { result.getNameExpr() = this.getDeclaration() }
 
   override predicate mayHaveSideEffects() {
@@ -602,7 +654,7 @@ private newtype TCallable =
   TFuncLitCallable(FuncLit l)
 
 /**
- * This is either a `Function` or a `FuncLit`, because of limitations of both
+ * A `Function` or a `FuncLit`. We do it this way because of limitations of both
  * `Function` and `FuncDef`:
  *   - `Function` is an entity, and therefore does not include function literals, and
  *   - `FuncDef` is an AST node, and so is not extracted for functions from external libraries.
@@ -632,16 +684,22 @@ class Callable extends TCallable {
     result = this.asFuncLit().getName()
   }
 
+  /** Gets the location of this callable. */
+  Location getLocation() {
+    result = this.asFunction().getLocation() or result = this.asFuncLit().getLocation()
+  }
+
   /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
    * Holds if this element is at the specified location.
    * The location spans column `sc` of line `sl` to
    * column `ec` of line `el` in file `fp`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
-    this.asFunction().hasLocationInfo(fp, sl, sc, el, ec) or
-    this.asFuncLit().hasLocationInfo(fp, sl, sc, el, ec)
+  deprecated predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
+    this.getLocation().hasLocationInfo(fp, sl, sc, el, ec)
   }
 }
 
@@ -665,6 +723,8 @@ private predicate builtinFunction(
   or
   name = "cap" and pure = true and mayPanic = false and mustPanic = false and variadic = false
   or
+  name = "clear" and pure = false and mayPanic = false and mustPanic = false and variadic = false
+  or
   name = "close" and pure = false and mayPanic = true and mustPanic = false and variadic = false
   or
   name = "complex" and pure = true and mayPanic = true and mustPanic = false and variadic = false
@@ -678,6 +738,10 @@ private predicate builtinFunction(
   name = "len" and pure = true and mayPanic = false and mustPanic = false and variadic = false
   or
   name = "make" and pure = true and mayPanic = true and mustPanic = false and variadic = true
+  or
+  name = "max" and pure = true and mayPanic = false and mustPanic = false and variadic = true
+  or
+  name = "min" and pure = true and mayPanic = false and mustPanic = false and variadic = true
   or
   name = "new" and pure = true and mayPanic = false and mustPanic = false and variadic = false
   or
@@ -696,64 +760,64 @@ private predicate builtinFunction(
 module Builtin {
   // built-in types
   /** Gets the built-in type `bool`. */
-  BuiltinType bool() { result.getName() = "bool" }
+  BuiltinTypeEntity bool() { result.getName() = "bool" }
 
   /** Gets the built-in type `byte`. */
-  BuiltinType byte() { result.getName() = "byte" }
+  BuiltinTypeEntity byte() { result.getName() = "byte" }
 
   /** Gets the built-in type `complex64`. */
-  BuiltinType complex64() { result.getName() = "complex64" }
+  BuiltinTypeEntity complex64() { result.getName() = "complex64" }
 
   /** Gets the built-in type `complex128`. */
-  BuiltinType complex128() { result.getName() = "complex128" }
+  BuiltinTypeEntity complex128() { result.getName() = "complex128" }
 
   /** Gets the built-in type `error`. */
-  BuiltinType error() { result.getName() = "error" }
+  BuiltinTypeEntity error() { result.getName() = "error" }
 
   /** Gets the built-in type `float32`. */
-  BuiltinType float32() { result.getName() = "float32" }
+  BuiltinTypeEntity float32() { result.getName() = "float32" }
 
   /** Gets the built-in type `float64`. */
-  BuiltinType float64() { result.getName() = "float64" }
+  BuiltinTypeEntity float64() { result.getName() = "float64" }
 
   /** Gets the built-in type `int`. */
-  BuiltinType int_() { result.getName() = "int" }
+  BuiltinTypeEntity int_() { result.getName() = "int" }
 
   /** Gets the built-in type `int8`. */
-  BuiltinType int8() { result.getName() = "int8" }
+  BuiltinTypeEntity int8() { result.getName() = "int8" }
 
   /** Gets the built-in type `int16`. */
-  BuiltinType int16() { result.getName() = "int16" }
+  BuiltinTypeEntity int16() { result.getName() = "int16" }
 
   /** Gets the built-in type `int32`. */
-  BuiltinType int32() { result.getName() = "int32" }
+  BuiltinTypeEntity int32() { result.getName() = "int32" }
 
   /** Gets the built-in type `int64`. */
-  BuiltinType int64() { result.getName() = "int64" }
+  BuiltinTypeEntity int64() { result.getName() = "int64" }
 
   /** Gets the built-in type `rune`. */
-  BuiltinType rune() { result.getName() = "rune" }
+  BuiltinTypeEntity rune() { result.getName() = "rune" }
 
   /** Gets the built-in type `string`. */
-  BuiltinType string_() { result.getName() = "string" }
+  BuiltinTypeEntity string_() { result.getName() = "string" }
 
   /** Gets the built-in type `uint`. */
-  BuiltinType uint() { result.getName() = "uint" }
+  BuiltinTypeEntity uint() { result.getName() = "uint" }
 
   /** Gets the built-in type `uint8`. */
-  BuiltinType uint8() { result.getName() = "uint8" }
+  BuiltinTypeEntity uint8() { result.getName() = "uint8" }
 
   /** Gets the built-in type `uint16`. */
-  BuiltinType uint16() { result.getName() = "uint16" }
+  BuiltinTypeEntity uint16() { result.getName() = "uint16" }
 
   /** Gets the built-in type `uint32`. */
-  BuiltinType uint32() { result.getName() = "uint32" }
+  BuiltinTypeEntity uint32() { result.getName() = "uint32" }
 
   /** Gets the built-in type `uint64`. */
-  BuiltinType uint64() { result.getName() = "uint64" }
+  BuiltinTypeEntity uint64() { result.getName() = "uint64" }
 
   /** Gets the built-in type `uintptr`. */
-  BuiltinType uintptr() { result.getName() = "uintptr" }
+  BuiltinTypeEntity uintptr() { result.getName() = "uintptr" }
 
   // built-in constants
   /** Gets the built-in constant `true`. */
@@ -782,6 +846,9 @@ module Builtin {
   /** Gets the built-in function `cap`. */
   BuiltinFunction cap() { result.getName() = "cap" }
 
+  /** Gets the built-in function `clear`. */
+  BuiltinFunction clear() { result.getName() = "clear" }
+
   /** Gets the built-in function `close`. */
   BuiltinFunction close() { result.getName() = "close" }
 
@@ -802,6 +869,12 @@ module Builtin {
 
   /** Gets the built-in function `make`. */
   BuiltinFunction make() { result.getName() = "make" }
+
+  /** Gets the built-in function `max`. */
+  BuiltinFunction max_() { result.getName() = "max" }
+
+  /** Gets the built-in function `min`. */
+  BuiltinFunction min_() { result.getName() = "min" }
 
   /** Gets the built-in function `new`. */
   BuiltinFunction new() { result.getName() = "new" }

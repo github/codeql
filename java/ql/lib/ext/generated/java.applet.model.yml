@@ -1,0 +1,40 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.applet", "Applet", True, "getAppletContext", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.applet", "Applet", True, "getCodeBase", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.applet", "Applet", True, "getDocumentBase", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.applet", "Applet", True, "getLocale", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.applet", "Applet", True, "setStub", "(AppletStub)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.applet", "AppletContext", True, "getApplets", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.applet", "AppletContext", True, "getImage", "(URL)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.applet", "AppletContext", True, "getImage", "(URL)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.applet", "AppletStub", True, "getAppletContext", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.applet", "AppletStub", True, "getCodeBase", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.applet", "AppletStub", True, "getDocumentBase", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.applet", "Applet", "destroy", "()", "summary", "df-generated"]
+      - ["java.applet", "Applet", "getAppletInfo", "()", "summary", "df-generated"]
+      - ["java.applet", "Applet", "getAudioClip", "(URL)", "summary", "df-generated"]
+      - ["java.applet", "Applet", "getAudioClip", "(URL,String)", "summary", "df-generated"]
+      - ["java.applet", "Applet", "getImage", "(URL)", "summary", "df-generated"]
+      - ["java.applet", "Applet", "getImage", "(URL,String)", "summary", "df-generated"]
+      - ["java.applet", "Applet", "getParameter", "(String)", "summary", "df-generated"]
+      - ["java.applet", "Applet", "getParameterInfo", "()", "summary", "df-generated"]
+      - ["java.applet", "Applet", "init", "()", "summary", "df-generated"]
+      - ["java.applet", "Applet", "isActive", "()", "summary", "df-generated"]
+      - ["java.applet", "Applet", "isValidateRoot", "()", "summary", "df-generated"]
+      - ["java.applet", "Applet", "newAudioClip", "(URL)", "summary", "df-generated"]
+      - ["java.applet", "Applet", "play", "(URL)", "summary", "df-generated"]
+      - ["java.applet", "Applet", "play", "(URL,String)", "summary", "df-generated"]
+      - ["java.applet", "Applet", "resize", "(Dimension)", "summary", "df-generated"]
+      - ["java.applet", "Applet", "resize", "(int,int)", "summary", "df-generated"]
+      - ["java.applet", "Applet", "showStatus", "(String)", "summary", "df-generated"]
+      - ["java.applet", "Applet", "start", "()", "summary", "df-generated"]
+      - ["java.applet", "Applet", "stop", "()", "summary", "df-generated"]

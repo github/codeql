@@ -1,7 +1,7 @@
 import go
 
-from StructTypeExpr ste, NamedType named, string name, Type tp
+from StructTypeExpr ste, DefinedType defined, string name, Type tp
 where
-  named.getUnderlyingType() = ste.getType() and
+  defined.getUnderlyingType() = ste.getType() and
   ste.getType().(StructType).hasField(name, tp)
-select named, ste, name, tp.pp()
+select defined, ste, name, tp.pp()

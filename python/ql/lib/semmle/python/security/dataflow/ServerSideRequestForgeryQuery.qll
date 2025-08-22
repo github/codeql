@@ -13,59 +13,68 @@ import semmle.python.Concepts
 import ServerSideRequestForgeryCustomizations::ServerSideRequestForgery
 
 /**
- * A taint-tracking configuration for detecting "Server-side request forgery" vulnerabilities.
- *
  * This configuration has a sanitizer to limit results to cases where attacker has full control of URL.
  * See `PartialServerSideRequestForgery` for a variant without this requirement.
  *
  * You should use the `fullyControlledRequest` to only select results where all
  * URL parts are fully controlled.
  */
-class FullServerSideRequestForgeryConfiguration extends TaintTracking::Configuration {
-  FullServerSideRequestForgeryConfiguration() { this = "FullServerSideRequestForgery" }
+private module FullServerSideRequestForgeryConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node instanceof Sanitizer
     or
     node instanceof FullUrlControlSanitizer
   }
 
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof SanitizerGuard
+  predicate observeDiffInformedIncrementalMode() {
+    // The partial request forgery query depends on `fullyControlledRequest` to reject alerts about
+    // such full-controlled requests, regardless of the associated source.
+    none()
   }
 }
+
+/**
+ * Global taint-tracking for detecting "Full server-side request forgery" vulnerabilities.
+ *
+ * You should use the `fullyControlledRequest` to only select results where all
+ * URL parts are fully controlled.
+ */
+module FullServerSideRequestForgeryFlow = TaintTracking::Global<FullServerSideRequestForgeryConfig>;
 
 /**
  * Holds if all URL parts of `request` is fully user controlled.
  */
 predicate fullyControlledRequest(Http::Client::Request request) {
-  exists(FullServerSideRequestForgeryConfiguration fullConfig |
-    forall(DataFlow::Node urlPart | urlPart = request.getAUrlPart() |
-      fullConfig.hasFlow(_, urlPart)
-    )
+  forall(DataFlow::Node urlPart | urlPart = request.getAUrlPart() |
+    FullServerSideRequestForgeryFlow::flow(_, urlPart)
   )
 }
 
 /**
- * A taint-tracking configuration for detecting "Server-side request forgery" vulnerabilities.
- *
  * This configuration has results, even when the attacker does not have full control over the URL.
  * See `FullServerSideRequestForgeryConfiguration`, and the `fullyControlledRequest` predicate.
  */
-class PartialServerSideRequestForgeryConfiguration extends TaintTracking::Configuration {
-  PartialServerSideRequestForgeryConfiguration() { this = "PartialServerSideRequestForgery" }
+private module PartialServerSideRequestForgeryConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+  predicate observeDiffInformedIncrementalMode() { any() }
 
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof SanitizerGuard
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    // Note: this query does not select the sink itself
+    result = sink.(Sink).getRequest().getLocation()
   }
 }
+
+/**
+ * Global taint-tracking for detecting "partial server-side request forgery" vulnerabilities.
+ */
+module PartialServerSideRequestForgeryFlow =
+  TaintTracking::Global<PartialServerSideRequestForgeryConfig>;

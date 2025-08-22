@@ -4,16 +4,12 @@
 
 import csharp
 import Common
-import DataFlow::PathGraph
+import utils.test.ProvenancePathGraph::ShowProvenance<Taint::PathNode, Taint::PathGraph>
 
-class TTConfig extends TaintTracking::Configuration instanceof Config {
-  override predicate isSource(DataFlow::Node source) { Config.super.isSource(source) }
+module Taint = TaintTracking::Global<FlowConfig>;
 
-  override predicate isSink(DataFlow::Node sink) { Config.super.isSink(sink) }
-}
-
-from TTConfig c, DataFlow::PathNode source, DataFlow::PathNode sink, string s
+from Taint::PathNode source, Taint::PathNode sink, string s
 where
-  c.hasFlowPath(source, sink) and
+  Taint::flowPath(source, sink) and
   s = sink.toString()
 select sink, source, sink, s

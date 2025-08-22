@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Internal", "Console+Error", "Write", "(System.String)", "summary", "df-generated"]
+      - ["Internal", "Console+Error", "WriteLine", "()", "summary", "df-generated"]
+      - ["Internal", "Console", "Write", "(System.String)", "summary", "df-generated"]
+      - ["Internal", "Console", "WriteLine", "()", "summary", "df-generated"]
+      - ["Internal", "Console", "WriteLine", "(System.String)", "summary", "df-generated"]

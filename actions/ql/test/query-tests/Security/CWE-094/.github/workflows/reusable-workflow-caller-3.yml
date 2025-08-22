@@ -1,0 +1,10 @@
+name: Caller
+
+on:
+  pull_request_target:
+
+jobs:
+  test:
+    uses: TestOrg/TestRepo/.github/workflows/reusable-workflow.yml@main
+    with:
+      taint: ${{ github.event.pull_request.title }}

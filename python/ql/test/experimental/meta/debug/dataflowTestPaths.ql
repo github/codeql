@@ -9,17 +9,24 @@
 // 3. if necessary, look at partial paths by (un)commenting appropriate lines
 import python
 import semmle.python.dataflow.new.DataFlow
-import experimental.dataflow.testConfig
-// import DataFlow::PartialPathGraph
-import DataFlow::PathGraph
+import utils.test.dataflow.testConfig
 
-class Conf extends TestConfiguration {
-  override int explorationLimit() { result = 5 }
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { TestConfig::isSource(source) }
+
+  predicate isSink(DataFlow::Node source) { TestConfig::isSink(source) }
 }
 
-// from Conf config, DataFlow::PartialPathNode source, DataFlow::PartialPathNode sink
-// where config.hasPartialFlow(source, sink, _)
-from Conf config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "This node receives taint from $@.", source.getNode(),
+module Flows = DataFlow::Global<Config>;
+
+import Flows::PathGraph
+
+// int explorationLimit() { result = 5 }
+// module FlowsPartial = Flows::FlowExplorationFwd<explorationLimit/0>;
+// import FlowsPartial::PartialPathGraph
+from Flows::PathNode source, Flows::PathNode sink
+where Flows::flowPath(source, sink)
+// from FlowsPartial::PartialPathNode source, FlowsPartial::PartialPathNode sink
+// where FlowsPartial::partialFlow(source, sink, _)
+select sink.getNode(), source, sink, "This node receives flow from $@.", source.getNode(),
   "this source"

@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["auth0/auth0-java", "*", "input.signing-password", "code-injection", "generated"]
+     - ["auth0/auth0-java", "*", "input.signing-key", "code-injection", "generated"]
+     - ["auth0/auth0-java", "*", "input.ossr-password", "code-injection", "generated"]
+     - ["auth0/auth0-java", "*", "input.ossr-username", "code-injection", "generated"]

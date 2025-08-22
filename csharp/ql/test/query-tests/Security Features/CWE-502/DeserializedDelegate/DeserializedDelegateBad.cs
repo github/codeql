@@ -8,7 +8,7 @@ class Bad
     {
         var formatter = new BinaryFormatter();
         // BAD
-        var f = (Func<int>)formatter.Deserialize(fs);
+        var f = (Func<int>)formatter.Deserialize(fs); // $ Alert[cs/deserialized-delegate]
         return f();
     }
 }

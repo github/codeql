@@ -13,23 +13,19 @@ import go
 module XPathInjection {
   import XPathInjectionCustomizations::XPathInjection
 
-  /**
-   * A taint-tracking configuration for reasoning about untrusted user input used in an XPath expression.
-   */
-  class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "XPathInjection" }
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-    override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node) or
-      node instanceof Sanitizer
-    }
-
-    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof SanitizerGuard
-    }
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
+
+  /**
+   * Tracks taint flow for reasoning about untrusted user input used in an
+   * XPath expression.
+   */
+  module Flow = TaintTracking::Global<Config>;
 }

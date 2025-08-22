@@ -12,7 +12,6 @@
  */
 
 import go
-import DataFlow::PathGraph
 import semmle.go.security.InsecureFeatureFlag::InsecureFeatureFlag
 
 /**
@@ -51,16 +50,11 @@ int getASecureTlsVersion() {
  */
 int getATlsVersion() { result = getASecureTlsVersion() or isInsecureTlsVersion(result, _, _) }
 
-/**
- * Flow of TLS versions into a `tls.Config` struct, to the `MinVersion` and `MaxVersion` fields.
- */
-class TlsVersionFlowConfig extends TaintTracking::Configuration {
-  TlsVersionFlowConfig() { this = "TlsVersionFlowConfig" }
-
+module TlsVersionFlowConfig implements DataFlow::ConfigSig {
   /**
    * Holds if `source` is a TLS version source yielding value `val`.
    */
-  predicate intIsSource(DataFlow::Node source, int val) {
+  additional predicate intIsSource(DataFlow::Node source, int val) {
     val = source.getIntValue() and
     val = getATlsVersion() and
     not DataFlow::isReturnedWithError(source)
@@ -69,25 +63,29 @@ class TlsVersionFlowConfig extends TaintTracking::Configuration {
   /**
    * Holds if `fieldWrite` writes `sink` to `base`.`fld`, where `fld` is a TLS version field.
    */
-  predicate isSink(DataFlow::Node sink, Field fld, DataFlow::Node base, Write fieldWrite) {
+  additional predicate isSink(DataFlow::Node sink, Field fld, DataFlow::Node base, Write fieldWrite) {
     fld.hasQualifiedName("crypto/tls", "Config", ["MinVersion", "MaxVersion"]) and
     fieldWrite.writesField(base, fld, sink)
   }
 
-  override predicate isSource(DataFlow::Node source) { intIsSource(source, _) }
+  predicate isSource(DataFlow::Node source) { intIsSource(source, _) }
 
-  override predicate isSink(DataFlow::Node sink) { isSink(sink, _, _, _) }
+  predicate isSink(DataFlow::Node sink) { isSink(sink, _, _, _) }
 }
+
+/**
+ * Tracks taint flow from TLS versions to the `tls.Config.MinVersion` and
+ * `tls.Config.MaxVersion` fields.
+ */
+module TlsVersionFlow = TaintTracking::Global<TlsVersionFlowConfig>;
 
 /**
  * Holds if `config` exhibits a secure TLS version flowing from `source` to `sink`, which flows into `fld`.
  */
-predicate secureTlsVersionFlow(
-  TlsVersionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink, Field fld
-) {
+predicate secureTlsVersionFlow(DataFlow::Node source, DataFlow::Node sink, Field fld) {
   exists(int version |
-    config.hasFlowPath(source, sink) and
-    config.intIsSource(source.getNode(), version) and
+    TlsVersionFlow::flow(source, sink) and
+    TlsVersionFlowConfig::intIsSource(source, version) and
     not isInsecureTlsVersion(version, _, fld.getName())
   )
 }
@@ -95,17 +93,17 @@ predicate secureTlsVersionFlow(
 /**
  * Holds if a secure TLS version reaches `sink`, which flows into `fld`.
  */
-predicate secureTlsVersionFlowsToSink(DataFlow::PathNode sink, Field fld) {
-  secureTlsVersionFlow(_, _, sink, fld)
+predicate secureTlsVersionFlowsToSink(DataFlow::Node sink, Field fld) {
+  secureTlsVersionFlow(_, sink, fld)
 }
 
 /**
  * Holds if a secure TLS version may reach `accessPath`.`fld`
  */
 predicate secureTlsVersionFlowsToField(SsaWithFields accessPath, Field fld) {
-  exists(TlsVersionFlowConfig config, DataFlow::PathNode sink, DataFlow::Node base |
-    secureTlsVersionFlow(config, _, sink, fld) and
-    config.isSink(sink.getNode(), fld, base, _) and
+  exists(DataFlow::Node sink, DataFlow::Node base |
+    secureTlsVersionFlow(_, sink, fld) and
+    TlsVersionFlowConfig::isSink(sink, fld, base, _) and
     accessPath.getAUse() = base
   )
 }
@@ -123,17 +121,18 @@ DataFlow::Node nodeOrDeref(DataFlow::Node node) {
  * to a field of `base`. `message` describes the specific problem found.
  */
 predicate isInsecureTlsVersionFlow(
-  DataFlow::PathNode source, DataFlow::PathNode sink, string message, DataFlow::Node base
+  TlsVersionFlow::PathNode source, TlsVersionFlow::PathNode sink, string message,
+  DataFlow::Node base
 ) {
-  exists(TlsVersionFlowConfig cfg, int version, Field fld |
-    cfg.hasFlowPath(source, sink) and
-    cfg.intIsSource(source.getNode(), version) and
-    cfg.isSink(sink.getNode(), fld, base, _) and
+  exists(int version, Field fld |
+    TlsVersionFlow::flowPath(source, sink) and
+    TlsVersionFlowConfig::intIsSource(source.getNode(), version) and
+    TlsVersionFlowConfig::isSink(sink.getNode(), fld, base, _) and
     isInsecureTlsVersion(version, _, fld.getName()) and
     // Exclude cases where a secure TLS version can also flow to the same
     // sink, or to different sinks that refer to the same base and field,
     // which suggests a configurable security mode.
-    not secureTlsVersionFlowsToSink(sink, fld) and
+    not secureTlsVersionFlowsToSink(sink.getNode(), fld) and
     not exists(SsaWithFields insecureAccessPath, SsaWithFields secureAccessPath |
       nodeOrDeref(insecureAccessPath.getAUse()) = base and
       secureAccessPath = insecureAccessPath.similar()
@@ -151,17 +150,11 @@ predicate isInsecureTlsVersionFlow(
   )
 }
 
-/**
- * Flow of unsecure TLS cipher suites into a `tls.Config` struct,
- * to the `CipherSuites` field.
- */
-class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
-  TlsInsecureCipherSuitesFlowConfig() { this = "TlsInsecureCipherSuitesFlowConfig" }
-
+module TlsInsecureCipherSuitesFlowConfig implements DataFlow::ConfigSig {
   /**
    * Holds if `source` reads an insecure TLS cipher suite named `suiteName`.
    */
-  predicate isSourceValueEntity(DataFlow::Node source, string suiteName) {
+  additional predicate isSourceValueEntity(DataFlow::Node source, string suiteName) {
     exists(DataFlow::ValueEntity val |
       val.hasQualifiedName("crypto/tls", suiteName) and
       suiteName =
@@ -178,7 +171,7 @@ class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
   /**
    * Holds if `source` represents the result of `tls.InsecureCipherSuites()`.
    */
-  predicate isSourceInsecureCipherSuites(DataFlow::Node source) {
+  additional predicate isSourceInsecureCipherSuites(DataFlow::Node source) {
     exists(Function insecureCipherSuites |
       insecureCipherSuites.hasQualifiedName("crypto/tls", "InsecureCipherSuites")
     |
@@ -186,7 +179,7 @@ class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSource(DataFlow::Node source) {
+  predicate isSource(DataFlow::Node source) {
     isSourceInsecureCipherSuites(source)
     or
     isSourceValueEntity(source, _)
@@ -195,41 +188,51 @@ class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
   /**
    * Holds if `fieldWrite` writes `sink` to `base`.`fld`, and `fld` is `tls.Config.CipherSuites`.
    */
-  predicate isSink(DataFlow::Node sink, Field fld, DataFlow::Node base, Write fieldWrite) {
+  additional predicate isSink(DataFlow::Node sink, Field fld, DataFlow::Node base, Write fieldWrite) {
     fld.hasQualifiedName("crypto/tls", "Config", "CipherSuites") and
     fieldWrite.writesField(base, fld, sink)
   }
 
-  override predicate isSink(DataFlow::Node sink) { isSink(sink, _, _, _) }
+  predicate isSink(DataFlow::Node sink) { isSink(sink, _, _, _) }
 
   /**
    * Declare sinks as out-sanitizers in order to avoid producing superfluous paths where a cipher
    * is written to CipherSuites, then the list is further extended with either safe or tainted
    * suites.
    */
-  override predicate isSanitizerOut(DataFlow::Node node) {
-    super.isSanitizerOut(node) or isSink(node)
-  }
+  predicate isBarrierOut(DataFlow::Node node) { isSink(node) }
 }
+
+/**
+ * Tracks taint flow from insecure TLS cipher suites into the `CipherSuites`
+ * field of a `tls.Config` struct.
+ */
+module TlsInsecureCipherSuitesFlow = TaintTracking::Global<TlsInsecureCipherSuitesFlowConfig>;
 
 /**
  * Holds if an insecure TLS cipher suite flows from `source` to `sink`, where `sink`
  * is written to the CipherSuites list of a `tls.Config` instance. `message` describes
  * the exact problem found.
  */
-predicate isInsecureTlsCipherFlow(DataFlow::PathNode source, DataFlow::PathNode sink, string message) {
-  exists(TlsInsecureCipherSuitesFlowConfig cfg | cfg.hasFlowPath(source, sink) |
-    exists(string name | cfg.isSourceValueEntity(source.getNode(), name) |
+predicate isInsecureTlsCipherFlow(
+  TlsInsecureCipherSuitesFlow::PathNode source, TlsInsecureCipherSuitesFlow::PathNode sink,
+  string message
+) {
+  TlsInsecureCipherSuitesFlow::flowPath(source, sink) and
+  (
+    exists(string name |
+      TlsInsecureCipherSuitesFlowConfig::isSourceValueEntity(source.getNode(), name)
+    |
       message = "Use of an insecure cipher suite: " + name + "."
     )
     or
-    cfg.isSourceInsecureCipherSuites(source.getNode()) and
+    TlsInsecureCipherSuitesFlowConfig::isSourceInsecureCipherSuites(source.getNode()) and
     message = "Use of an insecure cipher suite."
   )
 }
 
 /**
- * Flags suggesting support for an old or legacy TLS version.
+ * A flag suggesting support for an old or legacy TLS version.
  *
  * We accept 'intermediate' because it appears to be common for TLS users
  * to define three profiles: modern, intermediate, legacy/old, perhaps based
@@ -259,11 +262,17 @@ FlagKind securityOrTlsVersionFlag() {
   result = any(LegacyTlsVersionFlag f)
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, string message
+module Flow =
+  DataFlow::MergePathGraph<TlsVersionFlow::PathNode, TlsInsecureCipherSuitesFlow::PathNode,
+    TlsVersionFlow::PathGraph, TlsInsecureCipherSuitesFlow::PathGraph>;
+
+import Flow::PathGraph
+
+from Flow::PathNode source, Flow::PathNode sink, string message
 where
   (
-    isInsecureTlsVersionFlow(source, sink, message, _) or
-    isInsecureTlsCipherFlow(source, sink, message)
+    isInsecureTlsVersionFlow(source.asPathNode1(), sink.asPathNode1(), message, _) or
+    isInsecureTlsCipherFlow(source.asPathNode2(), sink.asPathNode2(), message)
   ) and
   // Exclude sources or sinks guarded by a feature or legacy flag
   not [getASecurityFeatureFlagCheck(), getALegacyTlsVersionCheck()]

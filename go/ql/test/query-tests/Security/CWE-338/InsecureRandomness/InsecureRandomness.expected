@@ -1,16 +1,41 @@
+#select
+| InsecureRandomness.go:12:18:12:40 | call to Intn | InsecureRandomness.go:12:18:12:40 | call to Intn | InsecureRandomness.go:12:18:12:40 | call to Intn | A password-related function depends on a $@ generated with a cryptographically weak RNG. | InsecureRandomness.go:12:18:12:40 | call to Intn | random number |
+| sample.go:26:25:26:30 | call to Guid | sample.go:15:49:15:61 | call to Uint32 | sample.go:26:25:26:30 | call to Guid | This cryptographic algorithm depends on a $@ generated with a cryptographically weak RNG. | sample.go:15:49:15:61 | call to Uint32 | random number |
+| sample.go:37:25:37:29 | nonce | sample.go:34:12:34:40 | call to New | sample.go:37:25:37:29 | nonce | This cryptographic algorithm depends on a $@ generated with a cryptographically weak RNG. | sample.go:34:12:34:40 | call to New | random number |
+| sample.go:37:32:37:36 | nonce | sample.go:34:12:34:40 | call to New | sample.go:37:32:37:36 | nonce | This cryptographic algorithm depends on a $@ generated with a cryptographically weak RNG. | sample.go:34:12:34:40 | call to New | random number |
+| sample.go:43:17:43:39 | call to Intn | sample.go:43:17:43:39 | call to Intn | sample.go:43:17:43:39 | call to Intn | A password-related function depends on a $@ generated with a cryptographically weak RNG. | sample.go:43:17:43:39 | call to Intn | random number |
+| sample.go:58:32:58:43 | type conversion | sample.go:55:17:55:42 | call to Intn | sample.go:58:32:58:43 | type conversion | This cryptographic algorithm depends on a $@ generated with a cryptographically weak RNG. | sample.go:55:17:55:42 | call to Intn | random number |
 edges
-| sample.go:15:24:15:63 | type conversion | sample.go:16:9:16:15 | slice expression |
-| sample.go:15:49:15:61 | call to Uint32 | sample.go:15:24:15:63 | type conversion |
-| sample.go:16:9:16:15 | slice expression | sample.go:26:25:26:30 | call to Guid |
-| sample.go:34:12:34:40 | call to New | sample.go:37:25:37:29 | nonce |
-| sample.go:34:12:34:40 | call to New | sample.go:37:32:37:36 | nonce |
+| sample.go:15:10:15:64 | call to Sum256 | sample.go:16:9:16:15 | slice expression | provenance |  |
+| sample.go:15:24:15:63 | type conversion | sample.go:15:10:15:64 | call to Sum256 | provenance | FunctionModel |
+| sample.go:15:31:15:62 | []type{args} [array] | sample.go:15:31:15:62 | call to Sprintf | provenance | MaD:1 |
+| sample.go:15:31:15:62 | call to Sprintf | sample.go:15:24:15:63 | type conversion | provenance |  |
+| sample.go:15:49:15:61 | call to Uint32 | sample.go:15:31:15:62 | []type{args} [array] | provenance |  |
+| sample.go:15:49:15:61 | call to Uint32 | sample.go:15:31:15:62 | call to Sprintf | provenance | FunctionModel |
+| sample.go:16:9:16:15 | slice expression | sample.go:26:25:26:30 | call to Guid | provenance |  |
+| sample.go:33:2:33:6 | definition of nonce | sample.go:37:25:37:29 | nonce | provenance |  |
+| sample.go:33:2:33:6 | definition of nonce | sample.go:37:32:37:36 | nonce | provenance |  |
+| sample.go:34:12:34:40 | call to New | sample.go:35:14:35:19 | random | provenance |  |
+| sample.go:35:14:35:19 | random | sample.go:33:2:33:6 | definition of nonce | provenance | MaD:2 |
+| sample.go:55:17:55:42 | call to Intn | sample.go:56:29:56:38 | randNumber | provenance |  |
+| sample.go:56:11:56:40 | type conversion | sample.go:58:32:58:43 | type conversion | provenance |  |
+| sample.go:56:18:56:39 | index expression | sample.go:56:11:56:40 | type conversion | provenance |  |
+| sample.go:56:29:56:38 | randNumber | sample.go:56:18:56:39 | index expression | provenance | Config |
+models
+| 1 | Summary: fmt; ; false; Sprintf; ; ; Argument[1].ArrayElement; ReturnValue; taint; manual |
+| 2 | Summary: io; ; false; ReadFull; ; ; Argument[0]; Argument[1]; taint; manual |
 nodes
 | InsecureRandomness.go:12:18:12:40 | call to Intn | semmle.label | call to Intn |
+| sample.go:15:10:15:64 | call to Sum256 | semmle.label | call to Sum256 |
 | sample.go:15:24:15:63 | type conversion | semmle.label | type conversion |
+| sample.go:15:31:15:62 | []type{args} [array] | semmle.label | []type{args} [array] |
+| sample.go:15:31:15:62 | call to Sprintf | semmle.label | call to Sprintf |
 | sample.go:15:49:15:61 | call to Uint32 | semmle.label | call to Uint32 |
 | sample.go:16:9:16:15 | slice expression | semmle.label | slice expression |
 | sample.go:26:25:26:30 | call to Guid | semmle.label | call to Guid |
+| sample.go:33:2:33:6 | definition of nonce | semmle.label | definition of nonce |
 | sample.go:34:12:34:40 | call to New | semmle.label | call to New |
+| sample.go:35:14:35:19 | random | semmle.label | random |
 | sample.go:37:25:37:29 | nonce | semmle.label | nonce |
 | sample.go:37:32:37:36 | nonce | semmle.label | nonce |
 | sample.go:43:17:43:39 | call to Intn | semmle.label | call to Intn |
@@ -18,10 +43,9 @@ nodes
 | sample.go:45:17:45:39 | call to Intn | semmle.label | call to Intn |
 | sample.go:46:17:46:39 | call to Intn | semmle.label | call to Intn |
 | sample.go:47:17:47:39 | call to Intn | semmle.label | call to Intn |
+| sample.go:55:17:55:42 | call to Intn | semmle.label | call to Intn |
+| sample.go:56:11:56:40 | type conversion | semmle.label | type conversion |
+| sample.go:56:18:56:39 | index expression | semmle.label | index expression |
+| sample.go:56:29:56:38 | randNumber | semmle.label | randNumber |
+| sample.go:58:32:58:43 | type conversion | semmle.label | type conversion |
 subpaths
-#select
-| InsecureRandomness.go:12:18:12:40 | call to Intn | InsecureRandomness.go:12:18:12:40 | call to Intn | InsecureRandomness.go:12:18:12:40 | call to Intn | A password-related function depends on a $@ generated with a cryptographically weak RNG. | InsecureRandomness.go:12:18:12:40 | call to Intn | random number |
-| sample.go:26:25:26:30 | call to Guid | sample.go:15:49:15:61 | call to Uint32 | sample.go:26:25:26:30 | call to Guid | This cryptographic algorithm depends on a $@ generated with a cryptographically weak RNG. | sample.go:15:49:15:61 | call to Uint32 | random number |
-| sample.go:37:25:37:29 | nonce | sample.go:34:12:34:40 | call to New | sample.go:37:25:37:29 | nonce | This cryptographic algorithm depends on a $@ generated with a cryptographically weak RNG. | sample.go:34:12:34:40 | call to New | random number |
-| sample.go:37:32:37:36 | nonce | sample.go:34:12:34:40 | call to New | sample.go:37:32:37:36 | nonce | This cryptographic algorithm depends on a $@ generated with a cryptographically weak RNG. | sample.go:34:12:34:40 | call to New | random number |
-| sample.go:43:17:43:39 | call to Intn | sample.go:43:17:43:39 | call to Intn | sample.go:43:17:43:39 | call to Intn | A password-related function depends on a $@ generated with a cryptographically weak RNG. | sample.go:43:17:43:39 | call to Intn | random number |

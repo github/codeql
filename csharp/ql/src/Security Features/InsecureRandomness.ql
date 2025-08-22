@@ -14,7 +14,7 @@
 
 import csharp
 import semmle.code.csharp.frameworks.Test
-import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
+import Random::InsecureRandomness::PathGraph
 
 module Random {
   import semmle.code.csharp.security.dataflow.flowsources.Remote
@@ -38,33 +38,38 @@ module Random {
   /**
    * A taint-tracking configuration for insecure randomness in security sensitive context.
    */
-  class TaintTrackingConfiguration extends TaintTracking::Configuration {
-    TaintTrackingConfiguration() { this = "RandomDataFlowConfiguration" }
+  module InsecureRandomnessConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-
-    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
       // succ = array_or_indexer[pred] - use of random numbers in an index
       succ.asExpr().(ElementAccess).getAnIndex() = pred.asExpr()
     }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
+
+  /**
+   * A taint-tracking module for insecure randomness in security sensitive context.
+   */
+  module InsecureRandomness = TaintTracking::Global<InsecureRandomnessConfig>;
 
   /** A source of cryptographically insecure random numbers. */
   class RandomSource extends Source {
     RandomSource() {
       this.getExpr() =
         any(MethodCall mc |
-          mc.getQualifier().getType().(RefType).hasQualifiedName("System", "Random")
+          mc.getQualifier().getType().(RefType).hasFullyQualifiedName("System", "Random")
           or
           // by using `% 87` on a `byte`, `System.Web.Security.Membership.GeneratePassword` has a bias
           mc.getQualifier()
               .getType()
               .(RefType)
-              .hasQualifiedName("System.Web.Security", "Membership") and
+              .hasFullyQualifiedName("System.Web.Security", "Membership") and
           mc.getTarget().hasName("GeneratePassword")
         )
     }
@@ -112,10 +117,8 @@ module Random {
   }
 }
 
-from
-  Random::TaintTrackingConfiguration randomTracking, DataFlow::PathNode source,
-  DataFlow::PathNode sink
-where randomTracking.hasFlowPath(source, sink)
+from Random::InsecureRandomness::PathNode source, Random::InsecureRandomness::PathNode sink
+where Random::InsecureRandomness::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "This uses a cryptographically insecure random number generated at $@ in a security context.",
   source.getNode(), source.getNode().toString()

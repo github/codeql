@@ -14,12 +14,16 @@ on:
       - ".github/workflows/csv-coverage-metrics.yml"
       - ".github/actions/fetch-codeql/action.yml"
 
+permissions:
+  contents: read
+  security-events: write
+
 jobs:
   publish-java:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup CodeQL
         uses: ./.github/actions/fetch-codeql
       - name: Create empty database
@@ -33,7 +37,7 @@ jobs:
         run: |
           DATABASE="${{ runner.temp }}/java-database"
           codeql database analyze --format=sarif-latest --output=metrics-java.sarif -- "$DATABASE" ./java/ql/src/Metrics/Summaries/FrameworkCoverage.ql
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: metrics-java.sarif
           path: metrics-java.sarif
@@ -47,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup CodeQL
         uses: ./.github/actions/fetch-codeql
       - name: Create empty database
@@ -60,7 +64,7 @@ jobs:
         run: |
           DATABASE="${{ runner.temp }}/csharp-database"
           codeql database analyze --format=sarif-latest --output=metrics-csharp.sarif -- "$DATABASE" ./csharp/ql/src/Metrics/Summaries/FrameworkCoverage.ql
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: metrics-csharp.sarif
           path: metrics-csharp.sarif
