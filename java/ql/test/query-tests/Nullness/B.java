@@ -496,4 +496,23 @@ public class B {
     else
       o2.hashCode(); // OK
   }
+
+  public void complexLoopTest(int[] xs, int[] ys) {
+    int len = ys != null ? ys.length : 0;
+    for (int i = 0, j = 0; i < xs.length; i++) {
+      if (j < len && ys[j] == 42) { // OK
+        j++;
+      } else if (j > 0) {
+        ys[0]++; // OK
+      }
+    }
+  }
+
+  public void trackTest(Object o, int n) {
+    boolean isnull = o == null;
+    int c = -1;
+    if (maybe) { }
+    if (c == 100) { return; }
+    o.hashCode(); // NPE - false negative
+  }
 }
