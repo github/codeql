@@ -20,10 +20,7 @@ import java
  */
 predicate isWithinType(Callable c, RefType t) {
   // Either the callable is in the target type, or they share a common enclosing type
-  exists(RefType commonType |
-    (c.getDeclaringType() = commonType or c.getDeclaringType().getEnclosingType*() = commonType) and
-    (t = commonType or t.getEnclosingType*() = commonType)
-  )
+  c.getDeclaringType().getEnclosingType*() = t.getEnclosingType*()
 }
 
 /**
