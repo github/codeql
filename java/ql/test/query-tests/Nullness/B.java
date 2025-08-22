@@ -513,6 +513,6 @@ public class B {
     int c = -1;
     if (maybe) { }
     if (c == 100) { return; }
-    o.hashCode(); // NPE - false negative
+    o.hashCode(); // NPE
   }
 }
