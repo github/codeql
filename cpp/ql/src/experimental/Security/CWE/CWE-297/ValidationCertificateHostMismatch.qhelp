@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Lack of certificate name validation allows any valid certificate to be used. And that can lead to disclosure.</p>
+
+</overview>
+
+<example>
+<p>The following example shows working with and without certificate name verification.</p>
+<sample src="ValidationCertificateHostMismatch.cpp" />
+
+</example>
+<references>
+
+<li>
+  CERT Coding Standard:
+  <a href="https://wiki.sei.cmu.edu/confluence/pages/viewpage.action?pageId=87150715">DRD19. Properly verify server certificate on SSL/TLS - Android - Confluence</a>.
+</li>
+
+</references>
+</qhelp>
