@@ -21,11 +21,11 @@ public class Test {
         
         // Lambda usage
         Runnable lambda = () -> {
-            String lambdaS = Annotated.m; // COMPLIANT
+            String lambdaS = Annotated.m; // $ SPURIOUS: Alert
             String lambdaS1 = Annotated.m1; // COMPLIANT
             String lambdaS2 = Annotated.m2; // COMPLIANT
             
-            int lambdaI = Annotated.f(); // COMPLIANT
+            int lambdaI = Annotated.f(); // $ SPURIOUS: Alert
             int lambdaI2 = Annotated.fPublic(); // COMPLIANT
             int lambdaI3 = Annotated.fProtected(); // COMPLIANT
         };

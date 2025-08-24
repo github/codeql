@@ -93,11 +93,6 @@ where
   // not when the accessing method or any enclosing method is @VisibleForTesting (test-to-test communication)
   not isWithinVisibleForTestingContext(e.getEnclosingCallable()) and
   // not when used in annotation contexts
-  not e.getParent*() instanceof Annotation and
-  // also omit our own ql unit test where it is acceptable
-  not e.getEnclosingCallable()
-      .getFile()
-      .getAbsolutePath()
-      .matches("%java/ql/test/query-tests/%Test.java")
+  not e.getParent*() instanceof Annotation
 select e, "Access of $@ annotated with VisibleForTesting found in production code.", annotated,
   "element"

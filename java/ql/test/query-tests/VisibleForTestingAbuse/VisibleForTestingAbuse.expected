@@ -15,3 +15,5 @@
 | packagetwo/Source.java:20:28:20:47 | new AnnotatedClass(...) | Access of $@ annotated with VisibleForTesting found in production code. | packageone/AnnotatedClass.java:4:14:4:27 | AnnotatedClass | element |
 | packagetwo/Source.java:24:30:24:40 | Annotated.m | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:7:19:7:19 | m | element |
 | packagetwo/Source.java:28:27:28:39 | f(...) | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:16:16:16:16 | f | element |
+| packagetwo/Test.java:24:30:24:40 | Annotated.m | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:7:19:7:19 | m | element |
+| packagetwo/Test.java:28:27:28:39 | f(...) | Access of $@ annotated with VisibleForTesting found in production code. | packagetwo/Annotated.java:16:16:16:16 | f | element |
