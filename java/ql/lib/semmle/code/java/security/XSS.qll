@@ -46,10 +46,10 @@ private class DefaultXssSink extends XssSink {
   DefaultXssSink() {
     sinkNode(this, ["html-injection", "js-injection"])
     or
-    exists(MethodCall ma |
-      ma.getMethod() instanceof WritingMethod and
-      XssVulnerableWriterSourceToWritingMethodFlow::flowToExpr(ma.getQualifier()) and
-      this.asExpr() = ma.getArgument(_)
+    exists(DataFlow::Node n |
+      XssVulnerableWriterSourceToWritingMethodFlow::flowTo(n) and
+      XssVulnerableWriterSourceToWritingMethodFlowSecondaryConfig::getPrimaryOfSecondaryNode(_, n) =
+        this
     )
   }
 }
@@ -75,8 +75,24 @@ private module XssVulnerableWriterSourceToWritingMethodFlowConfig implements Dat
   }
 }
 
+private module XssVulnerableWriterSourceToWritingMethodFlowSecondaryConfig implements
+  DataFlow::SecondaryConfig
+{
+  DataFlow::Node getPrimaryOfSecondaryNode(
+    DataFlow::IsSourceOrSink sourceOrSink, DataFlow::Node sink
+  ) {
+    sourceOrSink instanceof DataFlow::IsSink and
+    exists(MethodCall ma |
+      XssVulnerableWriterSourceToWritingMethodFlowConfig::isSink(sink) and
+      sink.asExpr() = ma.getQualifier() and
+      result.asExpr() = ma.getAnArgument()
+    )
+  }
+}
+
 private module XssVulnerableWriterSourceToWritingMethodFlow =
-  TaintTracking::Global<XssVulnerableWriterSourceToWritingMethodFlowConfig>;
+  TaintTracking::FindSinks<XssVulnerableWriterSourceToWritingMethodFlowConfig,
+    XssVulnerableWriterSourceToWritingMethodFlowSecondaryConfig>;
 
 /** A method that can be used to output data to an output stream or writer. */
 private class WritingMethod extends Method {
