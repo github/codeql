@@ -39,6 +39,20 @@ predicate isWithinVisibleForTestingContext(Callable c) {
   isWithinVisibleForTestingContext(c.getEnclosingCallable())
 }
 
+/**
+ * Holds if `e` is within a test method context, including lambda expressions
+ * within test methods and nested lambdas.
+ */
+private predicate isWithinTest(Expr e) {
+  e.getEnclosingCallable() instanceof LikelyTestMethod
+  or
+  exists(Method lambda, LambdaExpr lambdaExpr |
+    lambda = lambdaExpr.asMethod() and
+    lambda.getEnclosingCallable*() instanceof LikelyTestMethod and
+    e.getEnclosingCallable() = lambda
+  )
+}
+
 from Annotatable annotated, Expr e
 where
   annotated.getAnAnnotation().getType().hasName("VisibleForTesting") and
@@ -89,7 +103,7 @@ where
       )
   ) and
   // not in a test where use is appropriate
-  not e.getEnclosingCallable() instanceof LikelyTestMethod and
+  not isWithinTest(e) and
   // not when the accessing method or any enclosing method is @VisibleForTesting (test-to-test communication)
   not isWithinVisibleForTestingContext(e.getEnclosingCallable()) and
   // not when used in annotation contexts
