@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>Check whether there are internal files in the App that can be read and written by any other App.</p>
+  </overview>
+
+  <recommendation>
+    <p>To share data between different software, you need to set an internal file as globally readable or globally writable so that other applications can read and modify the file. If such files contain sensitive information such as key configuration information and account information, they may be stolen or maliciously tampered with, causing problems such as program failure and service logic modification.</p>
+  </recommendation>
+
+  <example>
+    <p>The following example shows the pattern used by openFileOutput(). In the 'BAD' case, the file can be read and modified by other applications. In the 'GOOD' case, no other application can read and modify the file.</p>
+    <sample src="FileReadWrite.java" />
+  </example>
+
+  <references>
+    <li>
+      Android Developers:
+      <a href="https://developer.android.google.cn/reference/android/content/Context#openFileOutput(java.lang.String,%20int)">openFileOutput</a>
+      <a href="https://developer.android.google.cn/reference/android/content/Context#MODE_PRIVATE">Context.MODE_PRIVATE mode</a>
+      <a href="https://developer.android.google.cn/reference/android/content/Context#MODE_WORLD_READABLE">Context.Android MODE_WORLD_READABLE mode</a>
+      <a href="https://developer.android.google.cn/reference/android/content/Context#MODE_WORLD_WRITEABLE">Context.Android MODE_WORLD_WRITEABLE mode</a>
+    </li>
+  </references>
+</qhelp>
