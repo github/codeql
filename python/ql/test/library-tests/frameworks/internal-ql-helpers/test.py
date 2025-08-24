@@ -36,7 +36,7 @@ MyClass.static() # $ resolved=static
 
 x = MyClass()
 x.base_method()
-x.method1()
-x.cls_method()
-x.static()
-x.method2()
+x.method1() # $ resolved=method1
+x.cls_method() # $ resolved=cls_method
+x.static() # $ resolved=static
+x.method2() # $ resolved=method2

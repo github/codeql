@@ -72,7 +72,7 @@ if True:
 
     class MyCustomHandlerClass:
 
-        async def foo_handler(self, request):  # $ MISSING: requestHandler
+        async def foo_handler(self, request):  # $ requestHandler
             return web.Response(text="MyCustomHandlerClass.foo") # $ HttpResponse
 
     my_custom_handler = MyCustomHandlerClass()
