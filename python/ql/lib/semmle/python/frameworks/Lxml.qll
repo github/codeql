@@ -129,11 +129,6 @@ module Lxml {
             any(True t)
         )
         or
-        kind.isXmlBomb() and
-        this.getKeywordParameter("huge_tree").getAValueReachingSink().asExpr() = any(True t) and
-        not this.getKeywordParameter("resolve_entities").getAValueReachingSink().asExpr() =
-          any(False t)
-        or
         kind.isDtdRetrieval() and
         this.getKeywordParameter("load_dtd").getAValueReachingSink().asExpr() = any(True t) and
         this.getKeywordParameter("no_network").getAValueReachingSink().asExpr() = any(False t)
@@ -305,9 +300,8 @@ module Lxml {
       // note that there is no `resolve_entities` argument, so it's not possible to turn off XXE :O
       kind.isXxe()
       or
-      kind.isXmlBomb() and
-      this.getKeywordParameter("huge_tree").getAValueReachingSink().asExpr() = any(True t)
-      or
+      // libxml2 has built-in protection against XML bombs via entity reference loop detection,
+      // so lxml is not vulnerable to XML bomb attacks.
       kind.isDtdRetrieval() and
       this.getKeywordParameter("load_dtd").getAValueReachingSink().asExpr() = any(True t) and
       this.getKeywordParameter("no_network").getAValueReachingSink().asExpr() = any(False t)
