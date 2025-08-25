@@ -848,6 +848,13 @@ class Field extends Member, ExprParent, @field, Variable {
   override string getAPrimaryQlClass() { result = "Field" }
 }
 
+
+overlay[local]
+private class DiscardableField extends DiscardableReferableLocatable, @field { }
+
+overlay[local]
+private class DiscardableFieldDecl extends DiscardableReferableLocatable, @fielddecl { }
+
 /** An instance field. */
 class InstanceField extends Field {
   InstanceField() { not this.isStatic() }
