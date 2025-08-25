@@ -1283,8 +1283,9 @@ private Type testinferCallExprBaseType(
   CallExprBaseMatchingInput::Access a, string state, CallExprBaseMatchingInput::AccessPosition apos,
   TypePath path
 ) {
-  a.getLocation().getStartLine() = 73 and
-  a.fromSource() and
+  // a.getLocation().getStartLine() = 73 and
+  // a.fromSource() and
+  a = Debug::getRelevantLocatable() and
   result = CallExprBaseMatching::inferAccessType(a, state, apos, path)
 }
 
@@ -2068,9 +2069,14 @@ final class MethodCall extends Call {
 
   pragma[nomagic]
   private predicate isMethodCall0(Type rootType, string name, int arity, string derefChain) {
-    rootType = this.getACandidateReceiverTypeAt(TypePath::nil(), derefChain) and //, mcd.getTypeAt(TypePath::singleton(TRefTypeParameter()))] and
+    rootType = this.getACandidateReceiverTypeRefsAt(TypePath::nil(), derefChain) and //, mcd.getTypeAt(TypePath::singleton(TRefTypeParameter()))] and
     name = this.getMethodName() and
     arity = this.getNumberOfArguments()
+  }
+
+  private predicate testisMethodCall0(Type rootType, string name, int arity, string derefChain) {
+    this.isMethodCall0(rootType, name, arity, derefChain) and
+    this = Debug::getRelevantLocatable()
   }
 
   /**
@@ -2124,7 +2130,7 @@ final class MethodCall extends Call {
     this.receiverImplicitlyBorrowed() and
     result = this.getACandidateReceiverTypeAt(path, derefChain) and
     exists(Type rootType, string name, int arity |
-      this.isMethodCall0(rootType, name, arity, derefChain)
+      this.isMethodCall0(rootType, name, arity, derefChain + ";")
     |
       forall(Impl impl |
         methodCandidateTrait(rootType, this.getTrait(), name, arity, impl)
@@ -2134,15 +2140,15 @@ final class MethodCall extends Call {
       |
         IsInstantiationOf<MethodCallDerefChainRef, IsInstantiationOfInput>::isNotInstantiationOf(MkMethodCallDerefChainRef(this,
             derefChain + ";"), impl, _)
-      )
+      ) and
+      not exists(resolveNonImplMethodCallTarget(rootType, name, arity))
     )
   }
 
   pragma[nomagic]
-  private Type testgetACandidateReceiverTypeAtNoMatch(TypePath path, string derefChain) {
-    result = this.getACandidateReceiverTypeAtNoMatch(path, derefChain) and
-    this.getLocation().getStartLine() = 1286 and
-    this.fromSource()
+  private Type testgetACandidateReceiverTypeAtRef(TypePath path, string derefChain) {
+    result = this.getACandidateReceiverTypeAtRef(path, derefChain) and
+    this = Debug::getRelevantLocatable()
   }
 
   pragma[nomagic]
@@ -2173,17 +2179,25 @@ final class MethodCall extends Call {
   }
 
   pragma[nomagic]
-  private Type testgetACandidateReceiverTypeAtRef(TypePath path, string derefChain) {
-    result = this.getACandidateReceiverTypeAtRef(path, derefChain) and
-    this.getLocation().getStartLine() = 1286 and
-    this.fromSource()
+  private Type testgetACandidateReceiverTypeAtRefNoMatch(TypePath path, string derefChain) {
+    result = this.getACandidateReceiverTypeAtRefNoMatch(path, derefChain) and
+    this = Debug::getRelevantLocatable()
+  }
+
+  pragma[nomagic]
+  private Type testgetACandidateReceiverTypeAtRefNoMatch2(
+    TypePath path, string derefChain, Type rootType, string name, int arity
+  ) {
+    result = this.getACandidateReceiverTypeAtNoMatch(path, derefChain) and
+    this.isMethodCall0(rootType, name, arity, derefChain) and
+    this = Debug::getRelevantLocatable()
   }
 
   pragma[nomagic]
   private Type getACandidateReceiverTypeAtRefNoMatch(TypePath path, string derefChain) {
     result = this.getACandidateReceiverTypeAtNoMatch(path, derefChain) and
     exists(Type rootType, string name, int arity |
-      this.isMethodCall0(rootType, name, arity, derefChain)
+      this.isMethodCall0(rootType, name, arity, derefChain + ";ref")
     |
       forall(Impl impl |
         methodCandidateTrait(rootType, this.getTrait(), name, arity, impl)
@@ -2193,7 +2207,8 @@ final class MethodCall extends Call {
       |
         IsInstantiationOf<MethodCallDerefChainRef, IsInstantiationOfInput>::isNotInstantiationOf(MkMethodCallDerefChainRef(this,
             derefChain + ";ref"), impl, _)
-      )
+      ) and
+      not exists(resolveNonImplMethodCallTarget(rootType, name, arity))
     )
   }
 
@@ -2218,10 +2233,12 @@ final class MethodCall extends Call {
       t0 = this.getACandidateReceiverTypeAtRef(path0, derefChain) and
       derefChainRef = derefChain + ";ref"
     |
-      path.isEmpty() and
-      result = TRefType()
-      or
-      path = TypePath::cons(TRefTypeParameter(), path0) and
+      // path.isEmpty() and
+      // result = TRefType()
+      // or
+      // path = TypePath::cons(TRefTypeParameter(), path0) and
+      // result = t0
+      path = path0 and
       result = t0
     )
   }
@@ -2229,8 +2246,9 @@ final class MethodCall extends Call {
   pragma[nomagic]
   private Type testgetACandidateReceiverTypeRefsAt(TypePath path, string derefChain) {
     result = this.getACandidateReceiverTypeRefsAt(path, derefChain) and
-    this.getLocation().getStartLine() = 1286 and
-    this.fromSource()
+    this = Debug::getRelevantLocatable()
+    // this.getLocation().getStartLine() = 1286 and
+    // this.fromSource()
   }
   // /** An alias for `getCandidateReceiverTypeAt`, needed to implement `HasTypeTreeSig`. */
   // Type getTypeAt(TypePath path) { result = this.getACandidateReceiverTypeRefsAt(path) }
@@ -2521,21 +2539,28 @@ private Function getDynTraitMethod(DynTraitType traitObject, string name, int ar
   result = getMethodSuccessor(traitObject.getTrait(), name, arity)
 }
 
+bindingset[t, name, arity]
+pragma[inline_late]
+private Function resolveNonImplMethodCallTarget(Type t, string name, int arity) {
+  // The type of the receiver is a type parameter and the method comes from a
+  // trait bound on the type parameter.
+  result = getTypeParameterMethod(t, name, arity)
+  or
+  // The type of the receiver is an `impl Trait` type.
+  result = getImplTraitMethod(t, name, arity)
+  or
+  // The type of the receiver is a trait object `dyn Trait` type.
+  result = getDynTraitMethod(t, name, arity)
+}
+
 pragma[nomagic]
 private Function resolveMethodCallTarget(MethodCallDerefChainRef mcd) {
   // The method comes from an `impl` block targeting the type of the receiver.
   result = getMethodFromImpl(mcd)
   or
-  exists(Type rootType, string name, int arity | isMethodCall(mcd, _, rootType, name, arity) |
-    // The type of the receiver is a type parameter and the method comes from a
-    // trait bound on the type parameter.
-    result = getTypeParameterMethod(rootType, name, arity)
-    or
-    // The type of the receiver is an `impl Trait` type.
-    result = getImplTraitMethod(rootType, name, arity)
-    or
-    // The type of the receiver is a trait object `dyn Trait` type.
-    result = getDynTraitMethod(rootType, name, arity)
+  exists(Type rootType, string name, int arity |
+    isMethodCall(mcd, _, rootType, name, arity) and
+    result = resolveNonImplMethodCallTarget(rootType, name, arity)
   )
 }
 
@@ -2853,11 +2878,13 @@ Type inferType(AstNode n) { result = inferType(n, TypePath::nil()) }
 
 /** Provides predicates for debugging the type inference implementation. */
 private module Debug {
-  private Locatable getRelevantLocatable() {
+  Locatable getRelevantLocatable() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-      filepath.matches("%/dereference.rs") and
-      startline = 171
+      filepath.matches("%/crates/wdk-macros/src/lib.rs") and
+      startline = [254 .. 256]
+      // filepath.matches("%/main.rs") and
+      // startline = 708
     )
   }
 

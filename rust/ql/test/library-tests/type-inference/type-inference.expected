@@ -493,7 +493,11 @@ inferType
 | dereference.rs:182:18:182:19 | &S |  | file://:0:0:0:0 | & |
 | dereference.rs:182:18:182:19 | &S | &T | dereference.rs:147:5:147:13 | S |
 | dereference.rs:182:19:182:19 | S |  | dereference.rs:147:5:147:13 | S |
+| dereference.rs:183:13:183:13 | y |  | dereference.rs:147:5:147:13 | S |
+| dereference.rs:183:13:183:13 | y |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:183:17:183:17 | S |  | dereference.rs:147:5:147:13 | S |
+| dereference.rs:183:17:183:23 | S.foo() |  | dereference.rs:147:5:147:13 | S |
+| dereference.rs:183:17:183:23 | S.foo() |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:184:13:184:13 | z |  | dereference.rs:147:5:147:13 | S |
 | dereference.rs:184:13:184:13 | z |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:184:17:184:24 | (...) |  | file://:0:0:0:0 | & |
@@ -6649,6 +6653,9 @@ testFailures
 | dereference.rs:182:13:182:13 | x | Fixed missing result: type=x:S |
 | dereference.rs:182:17:182:26 | ... .foo() | Fixed missing result: target=MyTrait1::foo1 |
 | dereference.rs:182:17:182:26 | ... .foo() | Unexpected result: target=MyTrait1::foo2 |
+| dereference.rs:183:13:183:13 | y | Fixed missing result: type=y:S |
+| dereference.rs:183:17:183:23 | S.foo() | Fixed missing result: target=MyTrait1::foo1 |
+| dereference.rs:183:17:183:23 | S.foo() | Unexpected result: target=MyTrait1::foo2 |
 | dereference.rs:184:13:184:13 | z | Fixed missing result: type=z:i64 |
 | dereference.rs:184:17:184:30 | ... .foo() | Fixed missing result: target=MyTrait1::foo2 |
 | dereference.rs:184:17:184:30 | ... .foo() | Unexpected result: target=MyTrait1::foo1 |
