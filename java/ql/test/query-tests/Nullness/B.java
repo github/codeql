@@ -515,4 +515,46 @@ public class B {
     if (c == 100) { return; }
     o.hashCode(); // NPE
   }
+
+  public void testFinally(int[] xs, int[] ys) {
+    if (xs.length == 0) return;
+    if (ys.length == 0) return;
+    String s1 = null;
+    String s2 = null;
+    for (int x : xs) {
+      try {
+        if (x == 0) { break; }
+        s1 = "1";
+        for (int y : ys) {
+          if (y == 0) { break; }
+          s2 = "2";
+        }
+      } finally {
+      }
+      s1.hashCode(); // OK
+      s2.hashCode(); // NPE
+    }
+    s1.hashCode(); // NPE - false negative, Java CFG lacks proper edge label
+  }
+
+  public void lenCheck(int[] xs, int n, int t) {
+    if (n > 42) return;
+    if (maybe) {}
+    if (n > 0 && (xs == null || xs.length < n)) {
+      return;
+    }
+    if (maybe) {}
+    if (n > 21) return;
+    if (maybe) {}
+    for (int i = 0; i < n; ++i) {
+      xs[i]++; // Spurious NPE - false positive
+    }
+  }
+
+  public void rangetest(int n) {
+    String s = null;
+    if (n < 0 || n > 10) s = "A";
+    if (n > 100) s.hashCode(); // Spurious NPE - false positive
+    if (n == 42) s.hashCode(); // Spurious NPE - false positive
+  }
 }
