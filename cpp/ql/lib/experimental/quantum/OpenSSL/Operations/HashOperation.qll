@@ -7,6 +7,13 @@ private import OpenSSLOperationBase
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 
 /**
+ * A base class for final digest operations.
+ */
+abstract class FinalDigestOperation extends OperationStep {
+  override OperationStepType getStepType() { result = FinalStep() }
+}
+
+/**
  * A call to and EVP digest initializer, such as:
  * - `EVP_DigestInit`
  * - `EVP_DigestInit_ex`
@@ -52,17 +59,10 @@ class EvpDigestUpdateCall extends OperationStep instanceof Call {
 }
 
 /**
- * A base class for final digest operations.
- */
-abstract class EvpFinalDigestOperationStep extends OperationStep {
-  override OperationStepType getStepType() { result = FinalStep() }
-}
-
-/**
  * A call to `EVP_Q_digest`
  * https://docs.openssl.org/3.0/man3/EVP_DigestInit/#synopsis
  */
-class EvpQDigestOperation extends EvpFinalDigestOperationStep instanceof Call {
+class EvpQDigestOperation extends FinalDigestOperation instanceof Call {
   EvpQDigestOperation() { this.getTarget().getName() = "EVP_Q_digest" }
 
   override DataFlow::Node getInput(IOType type) {
@@ -81,7 +81,7 @@ class EvpQDigestOperation extends EvpFinalDigestOperationStep instanceof Call {
   }
 }
 
-class EvpDigestOperation extends EvpFinalDigestOperationStep instanceof Call {
+class EvpDigestOperation extends FinalDigestOperation instanceof Call {
   EvpDigestOperation() { this.getTarget().getName() = "EVP_Digest" }
 
   override DataFlow::Node getInput(IOType type) {
@@ -98,7 +98,7 @@ class EvpDigestOperation extends EvpFinalDigestOperationStep instanceof Call {
 /**
  * A call to EVP_DigestFinal variants
  */
-class EvpDigestFinalCall extends EvpFinalDigestOperationStep instanceof Call {
+class EvpDigestFinalCall extends FinalDigestOperation instanceof Call {
   EvpDigestFinalCall() {
     this.getTarget().getName() in ["EVP_DigestFinal", "EVP_DigestFinal_ex", "EVP_DigestFinalXOF"]
   }
@@ -118,7 +118,7 @@ class EvpDigestFinalCall extends EvpFinalDigestOperationStep instanceof Call {
 /**
  * An openssl digest final hash operation instance
  */
-class EvpDigestFinalOperationInstance extends Crypto::HashOperationInstance instanceof EvpFinalDigestOperationStep
+class OpenSslDigestFinalOperationInstance extends Crypto::HashOperationInstance instanceof FinalDigestOperation
 {
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
     super.getPrimaryAlgorithmValueConsumer() = result
