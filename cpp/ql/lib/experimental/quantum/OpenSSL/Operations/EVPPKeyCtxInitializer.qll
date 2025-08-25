@@ -38,7 +38,9 @@ class EvpNewKeyCtx extends OperationStep instanceof Call {
     type = OsslLibContextIO()
   }
 
-  override DataFlow::Node getOutput(IOType type) { result.asExpr() = this and type = ContextIO() }
+  override DataFlow::Node getOutput(IOType type) {
+    result.asIndirectExpr() = this and type = ContextIO()
+  }
 
   override OperationStepType getStepType() { result = ContextCreationStep() }
 }
@@ -52,13 +54,13 @@ class EvpCtxSetEcParamgenCurveNidInitializer extends OperationStep {
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and type = PrimaryAlgorithmIO()
+    result.asIndirectExpr() = this.getArgument(1) and type = PrimaryAlgorithmIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = InitializerStep() }
@@ -102,7 +104,7 @@ class EvpCtxSetHashInitializer extends OperationStep {
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
     result.asExpr() = this.getArgument(1) and
     type = HashAlgorithmIO() and
@@ -115,7 +117,7 @@ class EvpCtxSetHashInitializer extends OperationStep {
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = InitializerStep() }
@@ -134,13 +136,13 @@ class EvpCtxSetKeySizeInitializer extends OperationStep {
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
     result.asExpr() = this.getArgument(1) and type = KeySizeIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = InitializerStep() }
@@ -150,7 +152,7 @@ class EvpCtxSetMacKeyInitializer extends OperationStep {
   EvpCtxSetMacKeyInitializer() { this.getTarget().getName() = "EVP_PKEY_CTX_set_mac_key" }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
     result.asExpr() = this.getArgument(2) and type = KeySizeIO()
     or
@@ -159,7 +161,7 @@ class EvpCtxSetMacKeyInitializer extends OperationStep {
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = InitializerStep() }
@@ -171,13 +173,13 @@ class EvpCtxSetPaddingInitializer extends OperationStep {
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
     result.asExpr() = this.getArgument(1) and type = PaddingAlgorithmIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = InitializerStep() }
@@ -189,13 +191,13 @@ class EvpCtxSetSaltLengthInitializer extends OperationStep {
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
     result.asExpr() = this.getArgument(1) and type = SaltLengthIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = InitializerStep() }

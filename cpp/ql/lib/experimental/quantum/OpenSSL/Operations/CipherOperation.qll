@@ -15,11 +15,11 @@ abstract class FinalCipherOperationStep extends OperationStep {
  */
 abstract class EvpCipherOperationFinalStep extends FinalCipherOperationStep {
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 }
 
@@ -28,9 +28,9 @@ abstract class EvpCipherOperationFinalStep extends FinalCipherOperationStep {
  */
 abstract class EvpCipherInitializer extends OperationStep {
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and
+    result.asIndirectExpr() = this.getArgument(1) and
     type = PrimaryAlgorithmIO() and
     // Constants that are not equal to zero or
     // non-constants (e.g., variable accesses, which require data-flow to determine the value)
@@ -40,7 +40,7 @@ abstract class EvpCipherInitializer extends OperationStep {
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = InitializerStep() }
@@ -127,13 +127,13 @@ class EvpPkeyEncryptDecryptInit extends OperationStep {
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
     result.asExpr() = this.getArgument(1) and type = OsslParamIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = InitializerStep() }
@@ -161,7 +161,7 @@ class EvpCipherUpdateCall extends OperationStep {
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
     result.asExpr() = this.getArgument(3) and type = PlaintextIO()
   }
@@ -169,7 +169,7 @@ class EvpCipherUpdateCall extends OperationStep {
   override DataFlow::Node getOutput(IOType type) {
     result.asExpr() = this.getArgument(1) and type = CiphertextIO()
     or
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = UpdateStep() }

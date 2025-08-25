@@ -198,8 +198,7 @@ abstract class OperationStep extends Call {
    * If `sink` is `this`, then this holds true.
    */
   predicate flowsToOperationStep(OperationStep sink) {
-    sink = this or
-    OperationStepFlow::flow(this.getAnOutput(), sink.getAnInput())
+    OperationStepFlow::flow(this.getAnOutput(), [sink.getAnInput(), sink.getAnOutput()])
   }
 
   /**
@@ -207,8 +206,7 @@ abstract class OperationStep extends Call {
    * If `source` is `this`, then this holds true.
    */
   predicate flowsFromOperationStep(OperationStep source) {
-    source = this or
-    OperationStepFlow::flow(source.getAnOutput(), this.getAnInput())
+    OperationStepFlow::flow(source.getAnOutput(), [this.getAnInput(), this.getAnOutput()])
   }
 
   /**
@@ -226,11 +224,22 @@ abstract class OperationStep extends Call {
    * the operation allows for multiple inputs (like plaintext for cipher update calls before final).
    */
   OperationStep getDominatingInitializersToStep(IOType type) {
-    result.flowsToOperationStep(this) and
+    //exists(IOType sinkInType |
+    //sinkInType = ContextIO() or sinkInType = type |
+    result.flowsToOperationStep(this) and //, sinkInType)
+    //)
     result.setsValue(type) and
     (
       // Do not consider a 'reset' to occur on updates
-      result.getStepType() = UpdateStep()
+      // but only for resets that are part of the same update/finalize
+      // progression (e.g., an update for an unrelated finalize is ignored)
+      result.getStepType() = UpdateStep() and
+      not exists(OperationStep op |
+        result.flowsToOperationStep(op) and
+        op.flowsToOperationStep(this) and
+        op != this and
+        op.getStepType() = FinalStep()
+      )
       or
       not exists(OperationStep reset |
         result != reset and
@@ -269,20 +278,22 @@ abstract class OperationStep extends Call {
   Crypto::AlgorithmValueConsumer getPrimaryAlgorithmValueConsumer() {
     this instanceof Crypto::AlgorithmValueConsumer and result = this
     or
-    exists(DataFlow::Node src, DataFlow::Node sink, IOType t, OperationStep avcConsumingPred |
-      (t = PrimaryAlgorithmIO() or t = ContextIO() or t = KeyIO()) and
+    exists(
+      DataFlow::Node src, DataFlow::Node sink, IOType srcIntype, OperationStep avcConsumingPred
+    |
+      (srcIntype = ContextIO() or srcIntype = PrimaryAlgorithmIO() or srcIntype = KeyIO()) and
       avcConsumingPred.flowsToOperationStep(this) and
-      src.asExpr() = result and
-      sink = avcConsumingPred.getInput(t) and
+      src.asIndirectExpr() = result and
+      sink = avcConsumingPred.getInput(srcIntype) and
       AvcToOperationStepFlow::flow(src, sink) and
       (
         // Case 1: the avcConsumingPred step is a dominating primary algorithm initialization step
         // or dominating key initialization step
-        (t = PrimaryAlgorithmIO() or t = KeyIO()) and
-        avcConsumingPred = this.getDominatingInitializersToStep(t)
+        (srcIntype = PrimaryAlgorithmIO() or srcIntype = KeyIO()) and
+        avcConsumingPred = this.getDominatingInitializersToStep(srcIntype)
         or
         // Case 2: the pred is a context input
-        t = ContextIO()
+        srcIntype = ContextIO()
       )
     )
   }
@@ -297,7 +308,7 @@ abstract class OperationStep extends Call {
     or
     exists(DataFlow::Node src, DataFlow::Node sink |
       AvcToOperationStepFlow::flow(src, sink) and
-      src.asExpr() = result and
+      src.asIndirectExpr() = result and
       sink = this.getInput(type)
     )
   }
@@ -375,7 +386,7 @@ private class CtxCopyOutArgCall extends CtxPassThroughCall {
 
   CtxCopyOutArgCall() {
     this.getTarget().getName().toLowerCase().matches("%copy%") and
-    n1.asExpr() = this.getAnArgument() and
+    n1.asIndirectExpr() = this.getAnArgument() and
     n1.getType() instanceof CtxType and
     n2.asDefiningArgument() = this.getAnArgument() and
     n2.getType() instanceof CtxType and
@@ -396,13 +407,13 @@ private class CtxCopyReturnCall extends CtxPassThroughCall, CtxPointerExpr {
 
   CtxCopyReturnCall() {
     this.getTarget().getName().toLowerCase().matches("%dup%") and
-    n1.asExpr() = this.getAnArgument() and
+    n1.asIndirectExpr() = this.getAnArgument() and
     n1.getType() instanceof CtxType
   }
 
   override DataFlow::Node getNode1() { result = n1 }
 
-  override DataFlow::Node getNode2() { result.asExpr() = this }
+  override DataFlow::Node getNode2() { result.asIndirectExpr() = this }
 }
 
 // TODO: is this still needed? It appears to be (tests fail without it) but
@@ -422,11 +433,7 @@ private class CtxParamGenCall extends CtxPassThroughCall {
   CtxParamGenCall() {
     this.getTarget().getName() = "EVP_PKEY_paramgen" and
     n1.asExpr() = this.getArgument(0) and
-    (
-      n2.asExpr() = this.getArgument(1)
-      or
-      n2.asDefiningArgument() = this.getArgument(1)
-    )
+    n2.asDefiningArgument() = this.getArgument(1)
   }
 
   override DataFlow::Node getNode1() { result = n1 }
@@ -453,15 +460,28 @@ module OperationStepFlowConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) {
-    exists(CtxClearCall c | c.getAnArgument() = node.asExpr())
+    exists(CtxClearCall c | c.getAnArgument() = [node.asExpr(), node.asIndirectExpr()])
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(CtxPassThroughCall c | c.getNode1() = node1 and c.getNode2() = node2)
     or
-    // Flow out through all outputs from an operation step if more than one output
-    // is defined.
-    exists(OperationStep s | s.getAnInput() = node1 and s.getAnOutput() = node2)
+    // Flow only through context and key inputs and outputs
+    // keys and context generally hold unifying context that link multiple steps
+    exists(OperationStep s, IOType inType, IOType outType |
+      (
+        inType = ContextIO()
+        or
+        inType = KeyIO()
+      ) and
+      (
+        outType = ContextIO()
+        or
+        outType = KeyIO()
+      ) and
+      s.getInput(inType) = node1 and
+      s.getOutput(outType) = node2
+    )
     // TODO: consideration for additional alises defined as follows:
     // if an output from an operation step itself flows from the output of another operation step
     // then the source of that flow's outputs (all of them) are potential aliases
@@ -481,7 +501,7 @@ module AvcToOperationStepFlowConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { exists(OperationStep s | s.getAnInput() = sink) }
 
   predicate isBarrier(DataFlow::Node node) {
-    exists(CtxClearCall c | c.getAnArgument() = node.asExpr())
+    exists(CtxClearCall c | c.getAnArgument() = [node.asExpr(), node.asIndirectExpr()])
   }
 
   /**

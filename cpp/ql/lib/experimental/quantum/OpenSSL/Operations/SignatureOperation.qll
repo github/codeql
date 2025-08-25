@@ -37,36 +37,32 @@ class EvpSignatureDigestInitializer extends OperationStep {
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
     this.getTarget().getName() = "EVP_DigestSignInit_ex" and
-    result.asExpr() = this.getArgument(3) and
+    result.asIndirectExpr() = this.getArgument(3) and
     type = OsslLibContextIO()
     or
-    result.asExpr() = this.getArgument(2) and type = HashAlgorithmIO()
+    result.asIndirectExpr() = this.getArgument(2) and type = HashAlgorithmIO()
     or
     this.getTarget().getName() = "EVP_DigestSignInit" and
-    result.asExpr() = this.getArgument(4) and
+    result.asIndirectExpr() = this.getArgument(4) and
     type = KeyIO()
     or
     this.getTarget().getName() = "EVP_DigestSignInit_ex" and
-    result.asExpr() = this.getArgument(5) and
+    result.asIndirectExpr() = this.getArgument(5) and
     type = KeyIO()
     or
     this.getTarget().getName() = "EVP_DigestSignInit_ex" and
-    result.asExpr() = this.getArgument(6) and
+    result.asIndirectExpr() = this.getArgument(6) and
     type = OsslParamIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
     or
     // EVP_PKEY_CTX
-    result.asExpr() = this.getArgument(1) and type = ContextIO()
-    or
-    this.getTarget().getName() = "EVP_DigestSignInit_ex" and
-    result.asExpr() = this.getArgument(6) and
-    type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(1) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = InitializerStep() }
@@ -79,13 +75,13 @@ class EvpSignInit extends OperationStep {
   EvpSignInit() { this.getTarget().getName() in ["EVP_SignInit", "EVP_SignInit_ex"] }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and type = HashAlgorithmIO()
+    result.asIndirectExpr() = this.getArgument(1) and type = HashAlgorithmIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = InitializerStep() }
@@ -107,22 +103,22 @@ class EvpPkeySignInit extends OperationStep {
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
     this.getTarget().getName() in ["EVP_PKEY_sign_init_ex2", "EVP_PKEY_sign_message_init"] and
-    result.asExpr() = this.getArgument(1) and
+    result.asIndirectExpr() = this.getArgument(1) and
     type = PrimaryAlgorithmIO()
     or
     this.getTarget().getName() = "EVP_PKEY_sign_init_ex" and
-    result.asExpr() = this.getArgument(1) and
+    result.asIndirectExpr() = this.getArgument(1) and
     type = OsslParamIO()
     or
     // Argument 2 (0 based) only exists for EVP_PKEY_sign_init_ex2 and EVP_PKEY_sign_message_init
-    result.asExpr() = this.getArgument(2) and type = OsslParamIO()
+    result.asIndirectExpr() = this.getArgument(2) and type = OsslParamIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = InitializerStep() }
@@ -139,13 +135,13 @@ class EvpSignatureUpdateCall extends OperationStep {
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and type = PlaintextIO()
+    result.asIndirectExpr() = this.getArgument(1) and type = PlaintextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = UpdateStep() }
@@ -158,19 +154,21 @@ class EvpSignFinal extends SignatureFinalOperation {
   EvpSignFinal() { this.getTarget().getName() in ["EVP_SignFinal_ex", "EVP_SignFinal"] }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(3) and type = KeyIO()
+    result.asIndirectExpr() = this.getArgument(3) and type = KeyIO()
     or
     // params above 3 (0-based) only exist for EVP_SignFinal_ex
-    result.asExpr() = this.getArgument(4) and
+    result.asIndirectExpr() = this.getArgument(4) and
     type = OsslLibContextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and type = SignatureIO()
+    result.asDefiningArgument() = this.getArgument(1) and type = SignatureIO()
+    or
+    result.asDefiningArgument() = this.getArgument(2) and type = SignatureSizeIO()
   }
 }
 
@@ -181,15 +179,15 @@ class EvpPkeySign extends SignatureFinalOperation {
   EvpPkeySign() { this.getTarget().getName() = "EVP_PKEY_sign" }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(3) and type = PlaintextIO()
+    result.asIndirectExpr() = this.getArgument(3) and type = PlaintextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and type = SignatureIO()
+    result.asDefiningArgument() = this.getArgument(1) and type = SignatureIO()
   }
 }
 
@@ -201,15 +199,15 @@ class EvpDigestSign extends SignatureOrMacFinalOperation {
   EvpDigestSign() { this.getTarget().getName() = "EVP_DigestSign" }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(3) and type = PlaintextIO()
+    result.asIndirectExpr() = this.getArgument(3) and type = PlaintextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and type = SignatureIO()
+    result.asDefiningArgument() = this.getArgument(1) and type = SignatureIO()
   }
 }
 
@@ -220,13 +218,15 @@ class EvpPkeySignFinal extends SignatureFinalOperation {
   EvpPkeySignFinal() { this.getTarget().getName() = "EVP_PKEY_sign_message_final" }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and type = SignatureIO()
+    result.asDefiningArgument() = this.getArgument(1) and type = SignatureIO()
+    or
+    result.asExpr() = this.getArgument(2) and type = SignatureSizeIO()
   }
 }
 
@@ -238,13 +238,13 @@ class EvpDigestSignFinal extends SignatureOrMacFinalOperation {
   EvpDigestSignFinal() { this.getTarget().getName() = "EVP_DigestSignFinal" }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and type = SignatureIO()
+    result.asDefiningArgument() = this.getArgument(1) and type = SignatureIO()
   }
 
   override OperationStepType getStepType() { result = FinalStep() }
@@ -259,31 +259,31 @@ class EvpDigestVerifyInit extends OperationStep {
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(2) and type = HashAlgorithmIO()
+    result.asIndirectExpr() = this.getArgument(2) and type = HashAlgorithmIO()
     or
     this.getTarget().getName() = "EVP_DigestVerifyInit_ex" and
-    result.asExpr() = this.getArgument(3) and
+    result.asIndirectExpr() = this.getArgument(3) and
     type = OsslLibContextIO()
     or
     this.getTarget().getName() = "EVP_DigestVerifyInit_ex" and
-    result.asExpr() = this.getArgument(5) and
+    result.asIndirectExpr() = this.getArgument(5) and
     type = KeyIO()
     or
     this.getTarget().getName() = "EVP_DigestVerifyInit" and
-    result.asExpr() = this.getArgument(4) and
+    result.asIndirectExpr() = this.getArgument(4) and
     type = KeyIO()
     or
     this.getTarget().getName() = "EVP_DigestVerifyInit_ex" and
-    result.asExpr() = this.getArgument(6) and
+    result.asIndirectExpr() = this.getArgument(6) and
     type = OsslParamIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(1) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = InitializerStep() }
@@ -296,13 +296,13 @@ class EvpDigestVerifyUpdate extends OperationStep {
   EvpDigestVerifyUpdate() { this.getTarget().getName() = "EVP_DigestVerifyUpdate" }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and type = PlaintextIO()
+    result.asIndirectExpr() = this.getArgument(1) and type = PlaintextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = UpdateStep() }
@@ -315,13 +315,13 @@ class EvpDigestVerifyFinal extends SignatureFinalOperation {
   EvpDigestVerifyFinal() { this.getTarget().getName() = "EVP_DigestVerifyFinal" }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and type = SignatureIO()
+    result.asIndirectExpr() = this.getArgument(1) and type = SignatureIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 }
 
@@ -332,15 +332,15 @@ class EvpDigestVerify extends SignatureFinalOperation {
   EvpDigestVerify() { this.getTarget().getName() = "EVP_DigestVerify" }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and type = SignatureIO()
+    result.asIndirectExpr() = this.getArgument(1) and type = SignatureIO()
     or
-    result.asExpr() = this.getArgument(3) and type = PlaintextIO()
+    result.asIndirectExpr() = this.getArgument(3) and type = PlaintextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 }
 
@@ -358,23 +358,23 @@ class EvpVerifyInit extends OperationStep {
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
     this.getTarget().getName() = "EVP_PKEY_verify_init_ex" and
-    result.asExpr() = this.getArgument(1) and
+    result.asIndirectExpr() = this.getArgument(1) and
     type = OsslParamIO()
     or
     this.getTarget().getName() in ["EVP_PKEY_verify_init_ex2", "EVP_PKEY_verify_message_init"] and
-    result.asExpr() = this.getArgument(1) and
+    result.asIndirectExpr() = this.getArgument(1) and
     type = PrimaryAlgorithmIO()
     or
     this.getTarget().getName() in ["EVP_PKEY_verify_init_ex2", "EVP_PKEY_verify_message_init"] and
-    result.asExpr() = this.getArgument(2) and
+    result.asIndirectExpr() = this.getArgument(2) and
     type = OsslParamIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = InitializerStep() }
@@ -388,15 +388,15 @@ class EvpCtxSetSignatureInitializer extends OperationStep {
   EvpCtxSetSignatureInitializer() { this.getTarget().getName() = "EVP_PKEY_CTX_set_signature" }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and type = SignatureIO()
+    result.asIndirectExpr() = this.getArgument(1) and type = SignatureIO()
     or
     result.asExpr() = this.getArgument(2) and type = SignatureSizeIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = InitializerStep() }
@@ -409,15 +409,15 @@ class EvpVerifyMessageUpdate extends OperationStep {
   EvpVerifyMessageUpdate() { this.getTarget().getName() = "EVP_PKEY_verify_message_update" }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and type = PlaintextIO()
+    result.asIndirectExpr() = this.getArgument(1) and type = PlaintextIO()
     or
     result.asExpr() = this.getArgument(2) and type = PlaintextSizeIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = UpdateStep() }
@@ -430,11 +430,11 @@ class EvpVerifyMessageFinal extends SignatureFinalOperation {
   EvpVerifyMessageFinal() { this.getTarget().getName() = "EVP_PKEY_verify_message_final" }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 }
 
@@ -445,19 +445,19 @@ class EvpVerify extends SignatureFinalOperation {
   EvpVerify() { this.getTarget().getName() = "EVP_PKEY_verify" }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and type = SignatureIO()
+    result.asIndirectExpr() = this.getArgument(1) and type = SignatureIO()
     or
     result.asExpr() = this.getArgument(2) and type = SignatureSizeIO()
     or
-    result.asExpr() = this.getArgument(3) and type = PlaintextIO()
+    result.asIndirectExpr() = this.getArgument(3) and type = PlaintextIO()
     or
     result.asExpr() = this.getArgument(4) and type = PlaintextSizeIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 }
 
@@ -469,25 +469,26 @@ class RsaSign extends SignatureFinalOperation {
   RsaSign() { this.getTarget().getName() in ["RSA_sign", "RSA_verify"] }
 
   override DataFlow::Node getInput(IOType type) {
+    // Arg 0 is an NID (so asExpr not asIndirectExpr)
     result.asExpr() = this.getArgument(0) and type = HashAlgorithmIO()
     or
-    result.asExpr() = this.getArgument(1) and type = PlaintextIO()
+    result.asIndirectExpr() = this.getArgument(1) and type = PlaintextIO()
     or
     result.asExpr() = this.getArgument(2) and type = PlaintextSizeIO()
     or
     this.getTarget().getName() = "RSA_verify" and
-    result.asExpr() = this.getArgument(3) and
+    result.asIndirectExpr() = this.getArgument(3) and
     type = SignatureIO()
     or
     this.getTarget().getName() = "RSA_verify" and
-    result.asExpr() = this.getArgument(4) and
+    result.asIndirectExpr() = this.getArgument(4) and
     type = SignatureSizeIO()
     or
-    result.asExpr() = this.getArgument(5) and type = KeyIO()
+    result.asIndirectExpr() = this.getArgument(5) and type = KeyIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
     or
     this.getTarget().getName() = "RSA_sign" and
     result.asDefiningArgument() = this.getArgument(3) and

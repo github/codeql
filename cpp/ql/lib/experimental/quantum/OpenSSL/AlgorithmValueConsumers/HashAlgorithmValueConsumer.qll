@@ -64,7 +64,7 @@ class EvpDigestAlgorithmValueConsumer extends HashAlgorithmValueConsumer {
   DataFlow::Node resultNode;
 
   EvpDigestAlgorithmValueConsumer() {
-    resultNode.asExpr() = this and
+    resultNode.asIndirectExpr() = this and
     (
       this.(Call).getTarget().getName() in [
           "EVP_get_digestbyname", "EVP_get_digestbynid", "EVP_get_digestbyobj"

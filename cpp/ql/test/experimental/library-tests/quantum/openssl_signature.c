@@ -363,10 +363,10 @@ cleanup:
     return ret;
 }
 
-/* =============================================================================
- * LOW-LEVEL RSA API - Algorithm-specific functions (deprecated)
- * =============================================================================
- */
+// /* =============================================================================
+//  * LOW-LEVEL RSA API - Algorithm-specific functions (deprecated)
+//  * =============================================================================
+//  */
 
 /**
  * Sign using low-level RSA_sign API (deprecated, RSA-only)
@@ -375,17 +375,13 @@ cleanup:
 int sign_using_rsa_sign(const unsigned char *message, size_t message_len,
                        unsigned char **signature, size_t *signature_len,
                        RSA *rsa_key, int hash_nid, const EVP_MD *md) {
-    unsigned char digest[EVP_MAX_MD_SIZE];
-    unsigned int digest_len;
     int ret = 0;
-    
-    if (!create_digest(message, message_len, md, digest, &digest_len)) return 0;
     
     *signature_len = RSA_size(rsa_key);
     *signature = OPENSSL_malloc(*signature_len);
     if (!*signature) return 0;
-    
-    if (RSA_sign(hash_nid, digest, digest_len, *signature, 
+
+    if (RSA_sign(hash_nid, message, message_len, *signature,
                  (unsigned int*)signature_len, rsa_key) == 1) {
         ret = 1;
     } else {
@@ -403,19 +399,15 @@ int sign_using_rsa_sign(const unsigned char *message, size_t message_len,
 int verify_using_rsa_verify(const unsigned char *message, size_t message_len,
                            const unsigned char *signature, size_t signature_len,
                            RSA *rsa_key, int hash_nid, const EVP_MD *md) {
-    unsigned char digest[EVP_MAX_MD_SIZE];
-    unsigned int digest_len;
-    
-    if (!create_digest(message, message_len, md, digest, &digest_len)) return 0;
-    
-    return RSA_verify(hash_nid, digest, digest_len, signature, 
+
+    return RSA_verify(hash_nid, message, message_len, signature,
                      (unsigned int)signature_len, rsa_key);
 }
 
-/* =============================================================================
- * LOW-LEVEL DSA API - Algorithm-specific functions (deprecated)
- * =============================================================================
- */
+// /* =============================================================================
+//  * LOW-LEVEL DSA API - Algorithm-specific functions (deprecated)
+//  * =============================================================================
+//  */
 
 /**
  * Sign using low-level DSA_do_sign API (deprecated, DSA-only)

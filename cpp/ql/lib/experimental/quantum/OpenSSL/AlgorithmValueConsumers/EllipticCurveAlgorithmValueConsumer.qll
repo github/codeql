@@ -12,7 +12,7 @@ class EvpEllipticCurveAlgorithmConsumer extends EllipticCurveValueConsumer {
   DataFlow::Node resultNode;
 
   EvpEllipticCurveAlgorithmConsumer() {
-    resultNode.asExpr() = this.(Call) and // in all cases the result is the return
+    resultNode.asIndirectExpr() = this.(Call) and // in all cases the result is the return
     (
       this.(Call).getTarget().getName() in ["EVP_EC_gen", "EC_KEY_new_by_curve_name"] and
       valueArgNode.asExpr() = this.(Call).getArgument(0)

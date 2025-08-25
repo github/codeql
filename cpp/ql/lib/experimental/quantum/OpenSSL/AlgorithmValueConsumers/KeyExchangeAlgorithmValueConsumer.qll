@@ -11,7 +11,7 @@ class EvpKeyExchangeAlgorithmValueConsumer extends KeyExchangeAlgorithmValueCons
   DataFlow::Node resultNode;
 
   EvpKeyExchangeAlgorithmValueConsumer() {
-    resultNode.asExpr() = this and
+    resultNode.asIndirectExpr() = this and
     (
       this.(Call).getTarget().getName() = "EVP_KEYEXCH_fetch" and
       valueArgNode.asExpr() = this.(Call).getArgument(1)

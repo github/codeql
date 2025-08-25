@@ -12,7 +12,7 @@ class EvpCipherAlgorithmValueConsumer extends CipherAlgorithmValueConsumer {
   DataFlow::Node resultNode;
 
   EvpCipherAlgorithmValueConsumer() {
-    resultNode.asExpr() = this and
+    resultNode.asIndirectExpr() = this and
     (
       this.(Call).getTarget().getName() in [
           "EVP_get_cipherbyname", "EVP_get_cipherbyobj", "EVP_get_cipherbynid"

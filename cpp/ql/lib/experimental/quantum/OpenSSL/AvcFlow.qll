@@ -13,7 +13,9 @@ module AvcToCallArgConfig implements DataFlow::ConfigSig {
    * Trace to any call accepting the algorithm.
    * NOTE: users must restrict this set to the operations they are interested in.
    */
-  predicate isSink(DataFlow::Node sink) { exists(Call c | c.getAnArgument() = sink.asExpr()) }
+  predicate isSink(DataFlow::Node sink) {
+    exists(Call c | c.getAnArgument() = [sink.asIndirectExpr(), sink.asExpr()])
+  }
 }
 
 module AvcToCallArgFlow = DataFlow::Global<AvcToCallArgConfig>;
