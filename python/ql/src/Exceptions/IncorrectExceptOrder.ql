@@ -1,5 +1,5 @@
 /**
- * @name Unreachable 'except' block
+ * @name Unreachable `except` block
  * @description Handling general exceptions before specific exceptions means that the specific
  *              handlers are never executed.
  * @kind problem
@@ -23,7 +23,7 @@ predicate builtinException(string name) {
 }
 
 predicate builtinExceptionSubclass(string base, string sub) {
-  typeModel("builtins." + base + "~Subclass", sub, "")
+  typeModel("builtins." + base + "~Subclass", "builtins." + sub, "")
 }
 
 newtype TExceptType =
@@ -48,7 +48,7 @@ class ExceptType extends TExceptType {
   DataFlow::Node getAUse() {
     result = classTracker(this.asClass())
     or
-    result = API::builtin(this.asBuiltinName()).asSource()
+    API::builtin(this.asBuiltinName()).asSource().flowsTo(result)
   }
 
   ExceptType getADirectSuperclass() {
