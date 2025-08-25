@@ -1,0 +1,738 @@
+# process-builtin-exceptions 0.0.1; Python 3.11.0rc2
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - builtins.PendingDeprecationWarning~Subclass
+    - builtins.PendingDeprecationWarning
+    - ''
+  - - builtins.Warning~Subclass
+    - builtins.PendingDeprecationWarning
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.PendingDeprecationWarning
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.PendingDeprecationWarning
+    - ''
+  - - builtins.UnicodeWarning~Subclass
+    - builtins.UnicodeWarning
+    - ''
+  - - builtins.Warning~Subclass
+    - builtins.UnicodeWarning
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.UnicodeWarning
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.UnicodeWarning
+    - ''
+  - - builtins.StopAsyncIteration~Subclass
+    - builtins.StopAsyncIteration
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.StopAsyncIteration
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.StopAsyncIteration
+    - ''
+  - - builtins.KeyboardInterrupt~Subclass
+    - builtins.KeyboardInterrupt
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.KeyboardInterrupt
+    - ''
+  - - builtins.ConnectionError~Subclass
+    - builtins.ConnectionError
+    - ''
+  - - builtins.OSError~Subclass
+    - builtins.ConnectionError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.ConnectionError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.ConnectionError
+    - ''
+  - - builtins.ConnectionResetError~Subclass
+    - builtins.ConnectionResetError
+    - ''
+  - - builtins.ConnectionError~Subclass
+    - builtins.ConnectionResetError
+    - ''
+  - - builtins.OSError~Subclass
+    - builtins.ConnectionResetError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.ConnectionResetError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.ConnectionResetError
+    - ''
+  - - builtins.InterruptedError~Subclass
+    - builtins.InterruptedError
+    - ''
+  - - builtins.OSError~Subclass
+    - builtins.InterruptedError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.InterruptedError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.InterruptedError
+    - ''
+  - - builtins.RuntimeError~Subclass
+    - builtins.RuntimeError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.RuntimeError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.RuntimeError
+    - ''
+  - - builtins.AttributeError~Subclass
+    - builtins.AttributeError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.AttributeError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.AttributeError
+    - ''
+  - - builtins.IndexError~Subclass
+    - builtins.IndexError
+    - ''
+  - - builtins.LookupError~Subclass
+    - builtins.IndexError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.IndexError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.IndexError
+    - ''
+  - - builtins.UnicodeDecodeError~Subclass
+    - builtins.UnicodeDecodeError
+    - ''
+  - - builtins.UnicodeError~Subclass
+    - builtins.UnicodeDecodeError
+    - ''
+  - - builtins.ValueError~Subclass
+    - builtins.UnicodeDecodeError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.UnicodeDecodeError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.UnicodeDecodeError
+    - ''
+  - - builtins.ExceptionGroup~Subclass
+    - builtins.ExceptionGroup
+    - ''
+  - - builtins.BaseExceptionGroup~Subclass
+    - builtins.ExceptionGroup
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.ExceptionGroup
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.ExceptionGroup
+    - ''
+  - - builtins.OverflowError~Subclass
+    - builtins.OverflowError
+    - ''
+  - - builtins.ArithmeticError~Subclass
+    - builtins.OverflowError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.OverflowError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.OverflowError
+    - ''
+  - - builtins.BufferError~Subclass
+    - builtins.BufferError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.BufferError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.BufferError
+    - ''
+  - - builtins.SyntaxWarning~Subclass
+    - builtins.SyntaxWarning
+    - ''
+  - - builtins.Warning~Subclass
+    - builtins.SyntaxWarning
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.SyntaxWarning
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.SyntaxWarning
+    - ''
+  - - builtins.BytesWarning~Subclass
+    - builtins.BytesWarning
+    - ''
+  - - builtins.Warning~Subclass
+    - builtins.BytesWarning
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.BytesWarning
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.BytesWarning
+    - ''
+  - - builtins.StopIteration~Subclass
+    - builtins.StopIteration
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.StopIteration
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.StopIteration
+    - ''
+  - - builtins.ImportError~Subclass
+    - builtins.ImportError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.ImportError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.ImportError
+    - ''
+  - - builtins.ChildProcessError~Subclass
+    - builtins.ChildProcessError
+    - ''
+  - - builtins.OSError~Subclass
+    - builtins.ChildProcessError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.ChildProcessError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.ChildProcessError
+    - ''
+  - - builtins.FileExistsError~Subclass
+    - builtins.FileExistsError
+    - ''
+  - - builtins.OSError~Subclass
+    - builtins.FileExistsError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.FileExistsError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.FileExistsError
+    - ''
+  - - builtins.PermissionError~Subclass
+    - builtins.PermissionError
+    - ''
+  - - builtins.OSError~Subclass
+    - builtins.PermissionError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.PermissionError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.PermissionError
+    - ''
+  - - builtins.RecursionError~Subclass
+    - builtins.RecursionError
+    - ''
+  - - builtins.RuntimeError~Subclass
+    - builtins.RecursionError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.RecursionError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.RecursionError
+    - ''
+  - - builtins.SyntaxError~Subclass
+    - builtins.SyntaxError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.SyntaxError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.SyntaxError
+    - ''
+  - - builtins.KeyError~Subclass
+    - builtins.KeyError
+    - ''
+  - - builtins.LookupError~Subclass
+    - builtins.KeyError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.KeyError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.KeyError
+    - ''
+  - - builtins.UnicodeTranslateError~Subclass
+    - builtins.UnicodeTranslateError
+    - ''
+  - - builtins.UnicodeError~Subclass
+    - builtins.UnicodeTranslateError
+    - ''
+  - - builtins.ValueError~Subclass
+    - builtins.UnicodeTranslateError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.UnicodeTranslateError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.UnicodeTranslateError
+    - ''
+  - - builtins.ZeroDivisionError~Subclass
+    - builtins.ZeroDivisionError
+    - ''
+  - - builtins.ArithmeticError~Subclass
+    - builtins.ZeroDivisionError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.ZeroDivisionError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.ZeroDivisionError
+    - ''
+  - - builtins.Warning~Subclass
+    - builtins.Warning
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.Warning
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.Warning
+    - ''
+  - - builtins.RuntimeWarning~Subclass
+    - builtins.RuntimeWarning
+    - ''
+  - - builtins.Warning~Subclass
+    - builtins.RuntimeWarning
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.RuntimeWarning
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.RuntimeWarning
+    - ''
+  - - builtins.EncodingWarning~Subclass
+    - builtins.EncodingWarning
+    - ''
+  - - builtins.Warning~Subclass
+    - builtins.EncodingWarning
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.EncodingWarning
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.EncodingWarning
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.BaseException
+    - ''
+  - - builtins.GeneratorExit~Subclass
+    - builtins.GeneratorExit
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.GeneratorExit
+    - ''
+  - - builtins.ModuleNotFoundError~Subclass
+    - builtins.ModuleNotFoundError
+    - ''
+  - - builtins.ImportError~Subclass
+    - builtins.ModuleNotFoundError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.ModuleNotFoundError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.ModuleNotFoundError
+    - ''
+  - - builtins.BrokenPipeError~Subclass
+    - builtins.BrokenPipeError
+    - ''
+  - - builtins.ConnectionError~Subclass
+    - builtins.BrokenPipeError
+    - ''
+  - - builtins.OSError~Subclass
+    - builtins.BrokenPipeError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.BrokenPipeError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.BrokenPipeError
+    - ''
+  - - builtins.FileNotFoundError~Subclass
+    - builtins.FileNotFoundError
+    - ''
+  - - builtins.OSError~Subclass
+    - builtins.FileNotFoundError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.FileNotFoundError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.FileNotFoundError
+    - ''
+  - - builtins.ProcessLookupError~Subclass
+    - builtins.ProcessLookupError
+    - ''
+  - - builtins.OSError~Subclass
+    - builtins.ProcessLookupError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.ProcessLookupError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.ProcessLookupError
+    - ''
+  - - builtins.NotImplementedError~Subclass
+    - builtins.NotImplementedError
+    - ''
+  - - builtins.RuntimeError~Subclass
+    - builtins.NotImplementedError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.NotImplementedError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.NotImplementedError
+    - ''
+  - - builtins.IndentationError~Subclass
+    - builtins.IndentationError
+    - ''
+  - - builtins.SyntaxError~Subclass
+    - builtins.IndentationError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.IndentationError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.IndentationError
+    - ''
+  - - builtins.ValueError~Subclass
+    - builtins.ValueError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.ValueError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.ValueError
+    - ''
+  - - builtins.AssertionError~Subclass
+    - builtins.AssertionError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.AssertionError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.AssertionError
+    - ''
+  - - builtins.SystemError~Subclass
+    - builtins.SystemError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.SystemError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.SystemError
+    - ''
+  - - builtins.UserWarning~Subclass
+    - builtins.UserWarning
+    - ''
+  - - builtins.Warning~Subclass
+    - builtins.UserWarning
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.UserWarning
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.UserWarning
+    - ''
+  - - builtins.FutureWarning~Subclass
+    - builtins.FutureWarning
+    - ''
+  - - builtins.Warning~Subclass
+    - builtins.FutureWarning
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.FutureWarning
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.FutureWarning
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.Exception
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.Exception
+    - ''
+  - - builtins.ResourceWarning~Subclass
+    - builtins.ResourceWarning
+    - ''
+  - - builtins.Warning~Subclass
+    - builtins.ResourceWarning
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.ResourceWarning
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.ResourceWarning
+    - ''
+  - - builtins.SystemExit~Subclass
+    - builtins.SystemExit
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.SystemExit
+    - ''
+  - - builtins.OSError~Subclass
+    - builtins.OSError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.OSError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.OSError
+    - ''
+  - - builtins.ConnectionAbortedError~Subclass
+    - builtins.ConnectionAbortedError
+    - ''
+  - - builtins.ConnectionError~Subclass
+    - builtins.ConnectionAbortedError
+    - ''
+  - - builtins.OSError~Subclass
+    - builtins.ConnectionAbortedError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.ConnectionAbortedError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.ConnectionAbortedError
+    - ''
+  - - builtins.IsADirectoryError~Subclass
+    - builtins.IsADirectoryError
+    - ''
+  - - builtins.OSError~Subclass
+    - builtins.IsADirectoryError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.IsADirectoryError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.IsADirectoryError
+    - ''
+  - - builtins.TimeoutError~Subclass
+    - builtins.TimeoutError
+    - ''
+  - - builtins.OSError~Subclass
+    - builtins.TimeoutError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.TimeoutError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.TimeoutError
+    - ''
+  - - builtins.NameError~Subclass
+    - builtins.NameError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.NameError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.NameError
+    - ''
+  - - builtins.TabError~Subclass
+    - builtins.TabError
+    - ''
+  - - builtins.IndentationError~Subclass
+    - builtins.TabError
+    - ''
+  - - builtins.SyntaxError~Subclass
+    - builtins.TabError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.TabError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.TabError
+    - ''
+  - - builtins.UnicodeError~Subclass
+    - builtins.UnicodeError
+    - ''
+  - - builtins.ValueError~Subclass
+    - builtins.UnicodeError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.UnicodeError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.UnicodeError
+    - ''
+  - - builtins.ArithmeticError~Subclass
+    - builtins.ArithmeticError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.ArithmeticError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.ArithmeticError
+    - ''
+  - - builtins.ReferenceError~Subclass
+    - builtins.ReferenceError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.ReferenceError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.ReferenceError
+    - ''
+  - - builtins.DeprecationWarning~Subclass
+    - builtins.DeprecationWarning
+    - ''
+  - - builtins.Warning~Subclass
+    - builtins.DeprecationWarning
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.DeprecationWarning
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.DeprecationWarning
+    - ''
+  - - builtins.ImportWarning~Subclass
+    - builtins.ImportWarning
+    - ''
+  - - builtins.Warning~Subclass
+    - builtins.ImportWarning
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.ImportWarning
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.ImportWarning
+    - ''
+  - - builtins.TypeError~Subclass
+    - builtins.TypeError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.TypeError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.TypeError
+    - ''
+  - - builtins.BaseExceptionGroup~Subclass
+    - builtins.BaseExceptionGroup
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.BaseExceptionGroup
+    - ''
+  - - builtins.BlockingIOError~Subclass
+    - builtins.BlockingIOError
+    - ''
+  - - builtins.OSError~Subclass
+    - builtins.BlockingIOError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.BlockingIOError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.BlockingIOError
+    - ''
+  - - builtins.ConnectionRefusedError~Subclass
+    - builtins.ConnectionRefusedError
+    - ''
+  - - builtins.ConnectionError~Subclass
+    - builtins.ConnectionRefusedError
+    - ''
+  - - builtins.OSError~Subclass
+    - builtins.ConnectionRefusedError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.ConnectionRefusedError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.ConnectionRefusedError
+    - ''
+  - - builtins.NotADirectoryError~Subclass
+    - builtins.NotADirectoryError
+    - ''
+  - - builtins.OSError~Subclass
+    - builtins.NotADirectoryError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.NotADirectoryError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.NotADirectoryError
+    - ''
+  - - builtins.EOFError~Subclass
+    - builtins.EOFError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.EOFError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.EOFError
+    - ''
+  - - builtins.UnboundLocalError~Subclass
+    - builtins.UnboundLocalError
+    - ''
+  - - builtins.NameError~Subclass
+    - builtins.UnboundLocalError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.UnboundLocalError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.UnboundLocalError
+    - ''
+  - - builtins.LookupError~Subclass
+    - builtins.LookupError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.LookupError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.LookupError
+    - ''
+  - - builtins.UnicodeEncodeError~Subclass
+    - builtins.UnicodeEncodeError
+    - ''
+  - - builtins.UnicodeError~Subclass
+    - builtins.UnicodeEncodeError
+    - ''
+  - - builtins.ValueError~Subclass
+    - builtins.UnicodeEncodeError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.UnicodeEncodeError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.UnicodeEncodeError
+    - ''
+  - - builtins.FloatingPointError~Subclass
+    - builtins.FloatingPointError
+    - ''
+  - - builtins.ArithmeticError~Subclass
+    - builtins.FloatingPointError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.FloatingPointError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.FloatingPointError
+    - ''
+  - - builtins.MemoryError~Subclass
+    - builtins.MemoryError
+    - ''
+  - - builtins.Exception~Subclass
+    - builtins.MemoryError
+    - ''
+  - - builtins.BaseException~Subclass
+    - builtins.MemoryError
+    - ''
