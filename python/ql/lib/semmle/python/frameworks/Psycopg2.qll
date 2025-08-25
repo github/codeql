@@ -29,4 +29,17 @@ private module Psycopg2 {
   class Psycopg2 extends PEP249::PEP249ModuleApiNode {
     Psycopg2() { this = API::moduleImport("psycopg2") }
   }
+
+  /** A database connection obtained from a psycopg2 connection pool. */
+  class Psycopg2ConnectionPoolMember extends PEP249::DatabaseConnection {
+    Psycopg2ConnectionPoolMember() {
+      this =
+        any(Psycopg2 p)
+            .getMember("pool")
+            .getMember(["SimpleConnectionPool", "ThreadedConnectionPool", "AbstractConnectionPool"])
+            .getAnInstance()
+            .getMember("getconn")
+            .getReturn()
+    }
+  }
 }
