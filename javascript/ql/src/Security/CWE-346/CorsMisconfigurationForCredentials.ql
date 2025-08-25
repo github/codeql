@@ -1,6 +1,6 @@
 /**
  * @name CORS misconfiguration for credentials transfer
- * @description Misconfiguration of CORS HTTP headers allows for leaks of secret credentials.
+ * @description Misconfiguration of CORS HTTP headers allows for leaks of secret credentials and CSRF attacks.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.5
@@ -18,6 +18,5 @@ import CorsMisconfigurationFlow::PathGraph
 
 from CorsMisconfigurationFlow::PathNode source, CorsMisconfigurationFlow::PathNode sink
 where CorsMisconfigurationFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "$@ leak vulnerability due to a $@.",
-  sink.getNode().(Sink).getCredentialsHeader(), "Credential", source.getNode(),
-  "misconfigured CORS header value"
+select sink.getNode(), source, sink, "CORS misconfiguration due to a $@.", source.getNode(),
+  "permissive or user controlled value"

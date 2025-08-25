@@ -7,7 +7,7 @@ var https = require('https'),
 var server = https.createServer(function () { });
 
 server.on('request', function (req, res) {
-    let user_origin = url.parse(req.url, true).query.origin;
+    let user_origin = url.parse(req.url, true).query.origin; // $ Source
 
     // BAD: CORS too permissive, default value is *
     var app1 = express();
@@ -23,14 +23,14 @@ server.on('request', function (req, res) {
     // BAD: CORS too permissive 
     var app3 = express();
     var corsOption3 = {
-        origin: '*'
+        origin: '*' // $ Alert
     };
     app3.use(cors(corsOption3));
 
     // BAD: CORS is controlled by user
     var app4 = express();
     var corsOption4 = {
-        origin: user_origin
+        origin: user_origin // $ Alert
     };
     app4.use(cors(corsOption4));
 });

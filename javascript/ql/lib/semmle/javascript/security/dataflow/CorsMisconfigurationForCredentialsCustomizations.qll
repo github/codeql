@@ -1,14 +1,14 @@
 /**
  * Provides default sources, sinks and sanitizers for reasoning about
- * CORS misconfiguration for credentials transfer, as well as
- * extension points for adding your own.
+ * CORS misconfiguration for credentials transfer and overly permissive CORS configurations,
+ * as well as extension points for adding your own.
  */
 
 import javascript
 
 module CorsMisconfigurationForCredentials {
   /**
-   * A data flow source for CORS misconfiguration for credentials transfer.
+   * A data flow source for CORS misconfiguration for credentials transfer and overly permissive CORS configurations.
    */
   abstract class Source extends DataFlow::Node { }
 
@@ -68,11 +68,23 @@ module CorsMisconfigurationForCredentials {
   /**
    * A value that is or coerces to the string "null".
    * This is considered a source because the "null" origin is easy to obtain for an attacker.
+   * An overly permissive value for `origin`
    */
-  class NullToStringValue extends Source {
-    NullToStringValue() {
+  class PermissiveCorsOriginValue extends Source {
+    PermissiveCorsOriginValue() {
+      this.mayHaveStringValue("*") or
+      this.mayHaveBooleanValue(true) or
       this.asExpr() instanceof NullLiteral or
-      this.asExpr().mayHaveStringValue("null")
+      this.asExpr().getStringValue() = "null"
     }
+  }
+
+  /**
+   * The value of cors origin configuration.
+   */
+  class CorsOriginSink extends Sink, DataFlow::ValueNode {
+    CorsOriginSink() { this = ModelOutput::getASinkNode("cors-misconfiguration").asSink() }
+
+    override Http::HeaderDefinition getCredentialsHeader() { none() }
   }
 }
