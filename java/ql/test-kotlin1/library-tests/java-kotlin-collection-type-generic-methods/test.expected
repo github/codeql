@@ -16,30 +16,6 @@ methodWithDuplicate
 | AbstractCollection<E> | removeAll | Collection<?> |
 | AbstractCollection<E> | retainAll | Collection<?> |
 | AbstractCollection<E> | toArray | T[] |
-| AbstractCollection<Entry<K,V>> | add | Entry<K,V> |
-| AbstractCollection<Entry<K,V>> | addAll | Collection<? extends Entry<K,V>> |
-| AbstractCollection<Entry<K,V>> | contains | Object |
-| AbstractCollection<Entry<K,V>> | containsAll | Collection<?> |
-| AbstractCollection<Entry<K,V>> | remove | Object |
-| AbstractCollection<Entry<K,V>> | removeAll | Collection<?> |
-| AbstractCollection<Entry<K,V>> | retainAll | Collection<?> |
-| AbstractCollection<Entry<K,V>> | toArray | T[] |
-| AbstractCollection<K> | add | K |
-| AbstractCollection<K> | addAll | Collection<? extends K> |
-| AbstractCollection<K> | contains | Object |
-| AbstractCollection<K> | containsAll | Collection<?> |
-| AbstractCollection<K> | remove | Object |
-| AbstractCollection<K> | removeAll | Collection<?> |
-| AbstractCollection<K> | retainAll | Collection<?> |
-| AbstractCollection<K> | toArray | T[] |
-| AbstractCollection<Runnable> | add | Runnable |
-| AbstractCollection<Runnable> | addAll | Collection<? extends Runnable> |
-| AbstractCollection<Runnable> | contains | Object |
-| AbstractCollection<Runnable> | containsAll | Collection<?> |
-| AbstractCollection<Runnable> | remove | Object |
-| AbstractCollection<Runnable> | removeAll | Collection<?> |
-| AbstractCollection<Runnable> | retainAll | Collection<?> |
-| AbstractCollection<Runnable> | toArray | T[] |
 | AbstractCollection<String> | add | String |
 | AbstractCollection<String> | addAll | Collection<? extends String> |
 | AbstractCollection<String> | contains | Object |
@@ -56,14 +32,6 @@ methodWithDuplicate
 | AbstractCollection<T> | removeAll | Collection<?> |
 | AbstractCollection<T> | retainAll | Collection<?> |
 | AbstractCollection<T> | toArray | T[] |
-| AbstractCollection<V> | add | V |
-| AbstractCollection<V> | addAll | Collection<? extends V> |
-| AbstractCollection<V> | contains | Object |
-| AbstractCollection<V> | containsAll | Collection<?> |
-| AbstractCollection<V> | remove | Object |
-| AbstractCollection<V> | removeAll | Collection<?> |
-| AbstractCollection<V> | retainAll | Collection<?> |
-| AbstractCollection<V> | toArray | T[] |
 | AbstractList | add | E |
 | AbstractList | add | int |
 | AbstractList | addAll | Collection<? extends E> |
@@ -103,14 +71,14 @@ methodWithDuplicate
 | AbstractMap | put | V |
 | AbstractMap | putAll | Map<? extends K,? extends V> |
 | AbstractMap | remove | Object |
-| AbstractMap<Identity,Entry<?>> | containsKey | Object |
-| AbstractMap<Identity,Entry<?>> | containsValue | Object |
-| AbstractMap<Identity,Entry<?>> | equals | Object |
-| AbstractMap<Identity,Entry<?>> | get | Object |
-| AbstractMap<Identity,Entry<?>> | put | Entry<?> |
-| AbstractMap<Identity,Entry<?>> | put | Identity |
-| AbstractMap<Identity,Entry<?>> | putAll | Map<? extends Identity,? extends Entry<?>> |
-| AbstractMap<Identity,Entry<?>> | remove | Object |
+| AbstractMap<Identity,Object> | containsKey | Object |
+| AbstractMap<Identity,Object> | containsValue | Object |
+| AbstractMap<Identity,Object> | equals | Object |
+| AbstractMap<Identity,Object> | get | Object |
+| AbstractMap<Identity,Object> | put | Identity |
+| AbstractMap<Identity,Object> | put | Object |
+| AbstractMap<Identity,Object> | putAll | Map<? extends Identity,? extends Object> |
+| AbstractMap<Identity,Object> | remove | Object |
 | AbstractMap<K,V> | containsKey | Object |
 | AbstractMap<K,V> | containsValue | Object |
 | AbstractMap<K,V> | equals | Object |
@@ -179,17 +147,6 @@ methodWithDuplicate
 | Collection<K> | retainAll | Collection<?> |
 | Collection<K> | toArray | IntFunction<T[]> |
 | Collection<K> | toArray | T[] |
-| Collection<Runnable> | add | Runnable |
-| Collection<Runnable> | addAll | Collection<? extends Runnable> |
-| Collection<Runnable> | contains | Object |
-| Collection<Runnable> | containsAll | Collection<?> |
-| Collection<Runnable> | equals | Object |
-| Collection<Runnable> | remove | Object |
-| Collection<Runnable> | removeAll | Collection<?> |
-| Collection<Runnable> | removeIf | Predicate<? super Runnable> |
-| Collection<Runnable> | retainAll | Collection<?> |
-| Collection<Runnable> | toArray | IntFunction<T[]> |
-| Collection<Runnable> | toArray | T[] |
 | Collection<String> | add | String |
 | Collection<String> | addAll | Collection<? extends String> |
 | Collection<String> | contains | Object |
@@ -332,37 +289,36 @@ methodWithDuplicate
 | Map | replace | K |
 | Map | replace | V |
 | Map | replaceAll | BiFunction<? super K,? super V,? extends V> |
-| Map<Identity,Entry<?>> | compute | BiFunction<? super Identity,? super Entry<?>,? extends Entry<?>> |
-| Map<Identity,Entry<?>> | compute | Identity |
-| Map<Identity,Entry<?>> | computeIfAbsent | Function<? super Identity,? extends Entry<?>> |
-| Map<Identity,Entry<?>> | computeIfAbsent | Identity |
-| Map<Identity,Entry<?>> | computeIfPresent | BiFunction<? super Identity,? super Entry<?>,? extends Entry<?>> |
-| Map<Identity,Entry<?>> | computeIfPresent | Identity |
-| Map<Identity,Entry<?>> | containsKey | Object |
-| Map<Identity,Entry<?>> | containsValue | Object |
-| Map<Identity,Entry<?>> | copyOf | Map<? extends K,? extends V> |
-| Map<Identity,Entry<?>> | entry | K |
-| Map<Identity,Entry<?>> | entry | V |
-| Map<Identity,Entry<?>> | equals | Object |
-| Map<Identity,Entry<?>> | forEach | BiConsumer<? super Identity,? super Entry<?>> |
-| Map<Identity,Entry<?>> | get | Object |
-| Map<Identity,Entry<?>> | getOrDefault | Entry<?> |
-| Map<Identity,Entry<?>> | getOrDefault | Object |
-| Map<Identity,Entry<?>> | merge | BiFunction<? super Entry<?>,? super Entry<?>,? extends Entry<?>> |
-| Map<Identity,Entry<?>> | merge | Entry<?> |
-| Map<Identity,Entry<?>> | merge | Identity |
-| Map<Identity,Entry<?>> | of | K |
-| Map<Identity,Entry<?>> | of | V |
-| Map<Identity,Entry<?>> | ofEntries | Entry<? extends K,? extends V>[] |
-| Map<Identity,Entry<?>> | put | Entry<?> |
-| Map<Identity,Entry<?>> | put | Identity |
-| Map<Identity,Entry<?>> | putAll | Map<? extends Identity,? extends Entry<?>> |
-| Map<Identity,Entry<?>> | putIfAbsent | Entry<?> |
-| Map<Identity,Entry<?>> | putIfAbsent | Identity |
-| Map<Identity,Entry<?>> | remove | Object |
-| Map<Identity,Entry<?>> | replace | Entry<?> |
-| Map<Identity,Entry<?>> | replace | Identity |
-| Map<Identity,Entry<?>> | replaceAll | BiFunction<? super Identity,? super Entry<?>,? extends Entry<?>> |
+| Map<Identity,Object> | compute | BiFunction<? super Identity,? super Object,? extends Object> |
+| Map<Identity,Object> | compute | Identity |
+| Map<Identity,Object> | computeIfAbsent | Function<? super Identity,? extends Object> |
+| Map<Identity,Object> | computeIfAbsent | Identity |
+| Map<Identity,Object> | computeIfPresent | BiFunction<? super Identity,? super Object,? extends Object> |
+| Map<Identity,Object> | computeIfPresent | Identity |
+| Map<Identity,Object> | containsKey | Object |
+| Map<Identity,Object> | containsValue | Object |
+| Map<Identity,Object> | copyOf | Map<? extends K,? extends V> |
+| Map<Identity,Object> | entry | K |
+| Map<Identity,Object> | entry | V |
+| Map<Identity,Object> | equals | Object |
+| Map<Identity,Object> | forEach | BiConsumer<? super Identity,? super Object> |
+| Map<Identity,Object> | get | Object |
+| Map<Identity,Object> | getOrDefault | Object |
+| Map<Identity,Object> | merge | BiFunction<? super Object,? super Object,? extends Object> |
+| Map<Identity,Object> | merge | Identity |
+| Map<Identity,Object> | merge | Object |
+| Map<Identity,Object> | of | K |
+| Map<Identity,Object> | of | V |
+| Map<Identity,Object> | ofEntries | Entry<? extends K,? extends V>[] |
+| Map<Identity,Object> | put | Identity |
+| Map<Identity,Object> | put | Object |
+| Map<Identity,Object> | putAll | Map<? extends Identity,? extends Object> |
+| Map<Identity,Object> | putIfAbsent | Identity |
+| Map<Identity,Object> | putIfAbsent | Object |
+| Map<Identity,Object> | remove | Object |
+| Map<Identity,Object> | replace | Identity |
+| Map<Identity,Object> | replace | Object |
+| Map<Identity,Object> | replaceAll | BiFunction<? super Identity,? super Object,? extends Object> |
 | Map<K,V> | compute | BiFunction<? super K,? super V,? extends V> |
 | Map<K,V> | compute | K |
 | Map<K,V> | computeIfAbsent | Function<? super K,? extends V> |
