@@ -1,0 +1,59 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: untrustedGhCommandDataModel 
+    data:
+      #
+      # PULL REQUESTS
+      #
+      # HEAD_REF=$(gh pr view "${{ github.event.issue.number }}" --json headRefName -q '.headRefName')
+      - ["gh\\s+pr\\b.*\\bview\\b.*\\bheadRefName\\b", "branch,oneline"]
+      # TITLE=$(gh pr view $PR_NUMBER --json title --jq .title)
+      # TITLE=$(gh pr view $PR_NUMBER --json "title")
+      - ["gh\\s+pr\\b.*\\bview\\b.*\\btitle\\b", "title,oneline"]
+      # BODY=$(gh pr view $PR_NUMBER --json body --jq .body)
+      - ["gh\\s+pr\\b.*\\bview\\b.*\\bbody\\b", "text,multiline"]
+      # COMMENTS="$(gh pr view --repo ${{ github.repository }} "$PR_NUMBER" --json "body,comments" -q '.body, .comments[].body')"
+      - ["gh\\s+pr\\b.*\\bview\\b.*\\bcomments\\b", "text,multiline"]
+      # CHANGED_FILES="$(gh pr view --repo ${{ github.repository }} ${{ needs.check-comment.outputs.pull_number }} --json files --jq '.files.[].path')"
+      - ["gh\\s+pr\\b.*\\bview\\b.*\\bfiles\\b", "filename,multiline"]
+      # AUTHOR=$(gh pr view ${ORI_PR} -R ${REPO} --json author -q '.author.login') 
+      - ["gh\\s+pr\\b.*\\bview\\b.*\\bauthor\\b", "username,oneline"]
+      #
+      # ISSUES
+      #
+      # TITLE=$(gh issue view "$ISSUE_NUMBER" --json title --jq '.title')
+      # TITLE=$(gh issue view "$ISSUE_NUMBER" --json title,body)
+      # TITLE=$(gh issue view "$ISSUE_NUMBER" --json "title,body")
+      - ["gh\\s+issue\\b.*\\bview\\b.*\\btitle\\b", "title,oneline"]
+      # BODY=$(gh issue view -R ${GITHUB_REPOSITORY} ${ORIGINAL_ISSUE_NUMBER} --json title,body,assignees --jq .body)
+      - ["gh\\s+issue\\b.*\\bview\\b.*\\bbody\\b", "text,multiline"]
+      # COMMENTS=$(gh issue view "$ISSUE_NUMBER" --json comments --jq '.comments[].body')
+      - ["gh\\s+issue\\b.*\\bview\\b.*\\bcomments\\b", "text,multiline"]
+      #
+      # API
+      #
+      # PR="$(gh api /repos/test/test/pulls/${PR_NUMBER})"
+      #
+      # HEAD_REF=$(gh api -H 'Accept: application/vnd.github+json' /repos/test/test/commits/${{ env.sui_sha }}/pulls --jq '.[].head.ref' | head -n 1)
+      - ["gh\\s+api\\b.*\\b(/)?repos/.*/pulls.*\\b.*\\.head.ref.*", "branch,oneline"]
+      # TITLE=$(gh api /repos/test/test/pulls/${{PR_NUMBER}} --jq ".title")
+      - ["gh\\s+api\\b.*\\b(/)?repos/.*/pulls.*\\b.*\\.title.*", "title,oneline"]
+      # BODY=$(gh api /repos/test/test/pulls/${{PR_NUMBER}} --jq ".body")
+      - ["gh\\s+api\\b.*\\b(/)?repos/.*/pulls.*\\b.*\\.body.*", "text,multiline"]
+      # COMMENTS=$(gh api /repos/test/test/pulls/${PR_NUMBER}/comments --jq '.[].body')
+      - ["gh\\s+api\\b.*\\b(/)?repos/.*/pulls.*/comments\\b.*\\.body.*", "text,multiline"]
+      # CHANGED_FILES=$(gh api /repos/test/test/pulls/${{PR_NUMBER}}/files --jq '.[].filename')
+      - ["gh\\s+api\\b.*\\b(/)?repos/.*/pulls.*/files\\b.*\\.filename.*", "filename,oneline"]
+      # AUTHOR=$(gh api /repos/test/test/pulls/${{PR_NUMBER}} --jq ".user.login")
+      - ["gh\\s+api\\b.*\\b(/)?repos/.*/pulls.*\\b.*\\.user\\.login.*", "username,oneline"]
+      #
+      # ISSUES
+      #
+      # TITLE=$(gh api /repos/test/test/issues/${{PR_NUMBER}} --jq ".title")
+      - ["gh\\s+api\\b.*\\b(/)?repos/.*/issues.*\\b.*\\.title.*", "title,oneline"]
+      # BODY=$(gh api /repos/test/test/issues/${{PR_NUMBER}} --jq ".body")
+      - ["gh\\s+api\\b.*\\b(/)?repos/.*/issues.*\\b.*\\.body.*", "text,multiline"]
+      # COMMENTS=$(gh api /repos/test/test/pulls/${PR_NUMBER}/comments --jq '.[].body')
+      - ["gh\\s+api\\b.*\\b(/)?repos/.*/issues.*/comments\\b.*\\.body.*", "text,multiline"]
+

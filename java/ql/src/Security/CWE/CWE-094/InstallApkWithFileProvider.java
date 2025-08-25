@@ -21,6 +21,7 @@ try (InputStream is = getAssets().open(assetName);
 
 /* Expose temporary file with FileProvider */
 File toInstall = new File(this.getFilesDir(), tempFilename);
+// GOOD: The file is protected by FileProvider
 Uri applicationUri = FileProvider.getUriForFile(this, "com.example.apkprovider", toInstall);
 
 /* Create Intent and set data to APK file. */

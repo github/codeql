@@ -4,8 +4,6 @@ import javascript
 
 /** An error encountered during extraction. */
 abstract class Error extends Locatable {
-  override Location getLocation() { hasLocation(this, result) }
-
   /** Gets the message associated with this error. */
   abstract string getMessage();
 

@@ -5,7 +5,7 @@
  */
 
 import javascript
-import semmle.javascript.dataflow.Configuration
+deprecated import semmle.javascript.dataflow.Configuration
 import semmle.javascript.dataflow.internal.CallGraphs
 private import semmle.javascript.internal.CachedStages
 
@@ -31,19 +31,35 @@ predicate returnExpr(Function f, DataFlow::Node source, DataFlow::Node sink) {
 }
 
 /**
+ * A step from a post-update node to the local sources of the corresponding pre-update node.
+ *
+ * This ensures that `getPostUpdateNode()` can be used in place of `getALocalSource()` when generating
+ * store steps, and the resulting step will work in both data flow analyses.
+ */
+pragma[nomagic]
+private predicate legacyPostUpdateStep(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(DataFlow::Node node |
+    pred = node.getPostUpdateNode() and
+    succ = node.getALocalSource()
+  )
+}
+
+/**
  * Holds if data can flow in one step from `pred` to `succ`,  taking
  * additional steps from the configuration into account.
  */
 pragma[inline]
-predicate localFlowStep(
+deprecated predicate localFlowStep(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration configuration,
   FlowLabel predlbl, FlowLabel succlbl
 ) {
   pred = succ.getAPredecessor() and predlbl = succlbl
   or
-  DataFlow::SharedFlowStep::step(pred, succ) and predlbl = succlbl
+  legacyPostUpdateStep(pred, succ) and predlbl = succlbl
   or
-  DataFlow::SharedFlowStep::step(pred, succ, predlbl, succlbl)
+  DataFlow::LegacyFlowStep::step(pred, succ) and predlbl = succlbl
+  or
+  DataFlow::LegacyFlowStep::step(pred, succ, predlbl, succlbl)
   or
   exists(boolean vp | configuration.isAdditionalFlowStep(pred, succ, vp) |
     vp = true and
@@ -529,9 +545,9 @@ class Boolean extends boolean {
 /**
  * A summary of an inter-procedural data flow path.
  */
-newtype TPathSummary =
+deprecated newtype TPathSummary =
   /** A summary of an inter-procedural data flow path. */
-  MkPathSummary(Boolean hasReturn, Boolean hasCall, FlowLabel start, FlowLabel end)
+  deprecated MkPathSummary(Boolean hasReturn, Boolean hasCall, FlowLabel start, FlowLabel end)
 
 /**
  * A summary of an inter-procedural data flow path.
@@ -544,7 +560,7 @@ newtype TPathSummary =
  * We only want to build properly matched call/return sequences, so if a path has both
  * call steps and return steps, all return steps must precede all call steps.
  */
-class PathSummary extends TPathSummary {
+deprecated class PathSummary extends TPathSummary {
   Boolean hasReturn;
   Boolean hasCall;
   FlowLabel start;
@@ -618,7 +634,7 @@ class PathSummary extends TPathSummary {
   }
 }
 
-module PathSummary {
+deprecated module PathSummary {
   /**
    * Gets a summary describing a path without any calls or returns.
    */

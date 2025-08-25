@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Console, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Console, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     public static class Console
@@ -71,6 +71,7 @@ namespace System
         public static void Write(string format, object arg0, object arg1) => throw null;
         public static void Write(string format, object arg0, object arg1, object arg2) => throw null;
         public static void Write(string format, params object[] arg) => throw null;
+        public static void Write(string format, params System.ReadOnlySpan<object> arg) => throw null;
         public static void Write(uint value) => throw null;
         public static void Write(ulong value) => throw null;
         public static void WriteLine() => throw null;
@@ -89,6 +90,7 @@ namespace System
         public static void WriteLine(string format, object arg0, object arg1) => throw null;
         public static void WriteLine(string format, object arg0, object arg1, object arg2) => throw null;
         public static void WriteLine(string format, params object[] arg) => throw null;
+        public static void WriteLine(string format, params System.ReadOnlySpan<object> arg) => throw null;
         public static void WriteLine(uint value) => throw null;
         public static void WriteLine(ulong value) => throw null;
     }
@@ -119,6 +121,7 @@ namespace System
     }
     public enum ConsoleKey
     {
+        None = 0,
         Backspace = 8,
         Tab = 9,
         Clear = 12,
@@ -279,6 +282,7 @@ namespace System
     [System.Flags]
     public enum ConsoleModifiers
     {
+        None = 0,
         Alt = 1,
         Shift = 2,
         Control = 4,

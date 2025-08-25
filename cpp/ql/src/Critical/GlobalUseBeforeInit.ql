@@ -21,27 +21,47 @@ predicate initFunc(GlobalVariable v, Function f) {
   )
 }
 
+/** Holds if `v` has an initializer in function `f` that dominates `node`. */
+predicate dominatingInitInFunc(GlobalVariable v, Function f, ControlFlowNode node) {
+  exists(VariableAccess initAccess |
+    v.getAnAccess() = initAccess and
+    initAccess.isUsedAsLValue() and
+    initAccess.getEnclosingFunction() = f and
+    dominates(initAccess, node)
+  )
+}
+
+predicate safeAccess(VariableAccess access) {
+  // it is safe if the variable access is part of a `sizeof` expression
+  exists(SizeofExprOperator e | e.getAChild*() = access)
+}
+
 predicate useFunc(GlobalVariable v, Function f) {
   exists(VariableAccess access |
     v.getAnAccess() = access and
     access.isRValue() and
-    access.getEnclosingFunction() = f
-  ) and
-  not initFunc(v, f)
+    access.getEnclosingFunction() = f and
+    not safeAccess(access) and
+    not dominatingInitInFunc(v, f, access)
+  )
 }
 
 predicate uninitialisedBefore(GlobalVariable v, Function f) {
-  f.hasGlobalName("main")
+  f.hasGlobalName("main") and
+  not initialisedAtDeclaration(v) and
+  not isStdlibVariable(v)
   or
   exists(Call call, Function g |
     uninitialisedBefore(v, g) and
     call.getEnclosingFunction() = g and
-    (not functionInitialises(f, v) or locallyUninitialisedAt(v, call)) and
+    (not functionInitialises(g, v) or locallyUninitialisedAt(v, call)) and
     resolvedCall(call, f)
   )
 }
 
 predicate functionInitialises(Function f, GlobalVariable v) {
+  initFunc(v, f)
+  or
   exists(Call call |
     call.getEnclosingFunction() = f and
     initialisedBy(v, call)
@@ -58,7 +78,8 @@ predicate locallyUninitialisedAt(GlobalVariable v, Call call) {
     exists(Call mid |
       locallyUninitialisedAt(v, mid) and not initialisedBy(v, mid) and callPair(mid, call)
     )
-  )
+  ) and
+  not dominatingInitInFunc(v, call.getEnclosingFunction(), call)
 }
 
 predicate initialisedBy(GlobalVariable v, Call call) {
@@ -98,10 +119,15 @@ predicate callReaches(Call call, ControlFlowNode successor) {
   )
 }
 
+/** Holds if `v` has an initializer. */
+predicate initialisedAtDeclaration(GlobalVariable v) { exists(v.getInitializer()) }
+
+/** Holds if `v` is a global variable that does not need to be initialized. */
+predicate isStdlibVariable(GlobalVariable v) { v.hasGlobalName(["stdin", "stdout", "stderr"]) }
+
 from GlobalVariable v, Function f
 where
   uninitialisedBefore(v, f) and
   useFunc(v, f)
-select f,
-  "The variable '" + v.getName() +
-    " is used in this function but may not be initialized when it is called."
+select f, "The variable $@ is used in this function but may not be initialized when it is called.",
+  v, v.getName()

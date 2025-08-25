@@ -9,7 +9,7 @@ extensions:
       - ["org.kohsuke.stapler", "HttpResponses", True, "staticResource", "(URL,long)", "", "Argument[0]", "request-forgery", "manual"]
       - ["org.kohsuke.stapler", "HttpResponses", True, "html", "(String)", "", "Argument[0]", "html-injection", "manual"]
       - ["org.kohsuke.stapler", "HttpResponses", True, "literalHtml", "(String)", "", "Argument[0]", "html-injection", "manual"]
-      - ["org.kohsuke.stapler", "StaplerResponse", True, "forward", "(Object,String,StaplerRequest)", "", "Argument[1]", "request-forgery", "manual"]
+      - ["org.kohsuke.stapler", "StaplerResponse", True, "forward", "(Object,String,StaplerRequest)", "", "Argument[1]", "url-forward", "manual"]
       - ["org.kohsuke.stapler", "StaplerResponse", True, "sendRedirect2", "(String)", "", "Argument[0]", "url-redirection", "manual"]
       - ["org.kohsuke.stapler", "StaplerResponse", True, "sendRedirect", "(int,String)", "", "Argument[1]", "url-redirection", "manual"]
       - ["org.kohsuke.stapler", "StaplerResponse", True, "sendRedirect", "(String)", "", "Argument[0]", "url-redirection", "manual"]

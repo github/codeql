@@ -1,4 +1,4 @@
-import TestUtilities.dataflow.FlowTestCommon
+import utils.test.dataflow.FlowTestCommon
 
 module AstTest {
   private import semmle.code.cpp.dataflow.TaintTracking

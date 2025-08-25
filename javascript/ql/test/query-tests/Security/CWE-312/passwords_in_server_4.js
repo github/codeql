@@ -1,2 +1,2 @@
 require("foo");
-console.log(password);
+console.log(password); // $ Alert[js/clear-text-logging]

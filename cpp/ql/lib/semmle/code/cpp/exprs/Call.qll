@@ -149,6 +149,11 @@ class Call extends Expr, NameQualifiableElement, TCall {
     variableAddressEscapesTreeNonConst(va, this.getQualifier().getFullyConverted()) and
     i = -1
   }
+
+  /** Holds if this expression could be the return value of an implicitly declared function. */
+  predicate mayBeFromImplicitlyDeclaredFunction() {
+    this.getTarget().getADeclarationEntry().isImplicit()
+  }
 }
 
 /**
@@ -499,6 +504,8 @@ class VacuousDestructorCall extends Expr, @vacuous_destructor_call {
  */
 class ConstructorInit extends Expr, @ctorinit {
   override string getAPrimaryQlClass() { result = "ConstructorInit" }
+
+  override string toString() { result = "constructor init" }
 }
 
 /**
@@ -507,6 +514,8 @@ class ConstructorInit extends Expr, @ctorinit {
  */
 class ConstructorBaseInit extends ConstructorInit, ConstructorCall {
   override string getAPrimaryQlClass() { result = "ConstructorBaseInit" }
+
+  override string toString() { result = "call to " + this.getTarget().getName() }
 }
 
 /**

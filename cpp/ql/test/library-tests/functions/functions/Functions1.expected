@@ -1,11 +1,6 @@
-| ODASA-5186.cpp:4:8:4:8 | MyClass | MyClass |  | declaration:ODASA-5186.cpp:4:8:4:8, definition:ODASA-5186.cpp:4:8:4:8 |
-| ODASA-5186.cpp:4:8:4:8 | operator= | operator= | MyClass<int> && (unnamed parameter 0) | declaration:ODASA-5186.cpp:4:8:4:8 |
-| ODASA-5186.cpp:4:8:4:8 | operator= | operator= | const MyClass<int> & (unnamed parameter 0) | declaration:ODASA-5186.cpp:4:8:4:8 |
 | ODASA-5186.cpp:5:8:5:8 | operator== | operator== | const MyClass<int> & other | declaration:ODASA-5186.cpp:5:8:5:8, definition:ODASA-5186.cpp:5:8:5:8 |
 | ODASA-5186.cpp:5:8:5:17 | operator== | operator== | const MyClass<T> & other | declaration:ODASA-5186.cpp:5:8:5:17, definition:ODASA-5186.cpp:5:8:5:17 |
 | ODASA-5186.cpp:8:6:8:9 | test | test |  | TopLevelFunction, declaration:ODASA-5186.cpp:8:6:8:9, definition:ODASA-5186.cpp:8:6:8:9, isTopLevel |
-| ODASA-5186.hpp:2:8:2:8 | operator= | operator= | NEQ_helper<MyClass<int>> && (unnamed parameter 0) | declaration:ODASA-5186.hpp:2:8:2:8 |
-| ODASA-5186.hpp:2:8:2:8 | operator= | operator= | const NEQ_helper<MyClass<int>> & (unnamed parameter 0) | declaration:ODASA-5186.hpp:2:8:2:8 |
 | ODASA-5186.hpp:4:18:4:27 | operator!= | operator!= | const MyClass<int> & x, const MyClass<int> & y | TopLevelFunction, declaration:ODASA-5186.hpp:4:18:4:27, definition:ODASA-5186.hpp:4:18:4:27, isTopLevel |
 | ODASA-5186.hpp:4:18:4:27 | operator!= | operator!= | const T & x, const T & y | TopLevelFunction, declaration:ODASA-5186.hpp:4:18:4:27, definition:ODASA-5186.hpp:4:18:4:27, isTopLevel |
 | functions.cpp:1:6:1:6 | f | f | int a, int b | TopLevelFunction, declaration:functions.cpp:1:6:1:6, definition:functions.cpp:1:6:1:6, isTopLevel |

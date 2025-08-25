@@ -22,9 +22,6 @@ class SalMacro extends Macro {
   }
 }
 
-/** DEPRECATED: Alias for SalMacro */
-deprecated class SALMacro = SalMacro;
-
 pragma[noinline]
 private predicate isTopLevelMacroAccess(MacroAccess ma) { not exists(ma.getParentInvocation()) }
 
@@ -50,9 +47,6 @@ class SalAnnotation extends MacroInvocation {
   }
 }
 
-/** DEPRECATED: Alias for SalAnnotation */
-deprecated class SALAnnotation = SalAnnotation;
-
 /**
  * A SAL macro indicating that the return value of a function should always be
  * checked.
@@ -62,9 +56,6 @@ class SalCheckReturn extends SalAnnotation {
     this.getMacro().(SalMacro).getName() = ["_Check_return_", "_Must_inspect_result_"]
   }
 }
-
-/** DEPRECATED: Alias for SalCheckReturn */
-deprecated class SALCheckReturn = SalCheckReturn;
 
 /**
  * A SAL macro indicating that a pointer variable or return value should not be
@@ -89,9 +80,6 @@ class SalNotNull extends SalAnnotation {
   }
 }
 
-/** DEPRECATED: Alias for SalNotNull */
-deprecated class SALNotNull = SalNotNull;
-
 /**
  * A SAL macro indicating that a value may be `NULL`.
  */
@@ -104,9 +92,6 @@ class SalMaybeNull extends SalAnnotation {
     )
   }
 }
-
-/** DEPRECATED: Alias for SalMaybeNull */
-deprecated class SALMaybeNull = SalMaybeNull;
 
 /**
  * A parameter annotated by one or more SAL annotations.
@@ -123,9 +108,6 @@ class SalParameter extends Parameter {
 
   predicate isInOut() { a.getMacroName().toLowerCase().matches("%\\_inout%") }
 }
-
-/** DEPRECATED: Alias for SalParameter */
-deprecated class SALParameter = SalParameter;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation details
@@ -161,7 +143,7 @@ private predicate annotatesAtPosition(SalPosition pos, DeclarationEntry d, File 
  * A SAL element, that is, a SAL annotation or a declaration entry
  * that may have SAL annotations.
  */
-library class SalElement extends Element {
+class SalElement extends Element {
   SalElement() {
     containsSalAnnotation(this.(DeclarationEntry).getFile()) or
     this instanceof SalAnnotation
@@ -198,9 +180,6 @@ library class SalElement extends Element {
     )
   }
 }
-
-/** DEPRECATED: Alias for SalElement */
-deprecated class SALElement = SalElement;
 
 /** Holds if `file` contains a SAL annotation. */
 pragma[noinline]

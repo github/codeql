@@ -1,6 +1,6 @@
 import java
 import semmle.code.xml.AndroidManifest
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module ContentProviderIncompletePermissionsTest implements TestSig {
   string getARelevantTag() { result = "hasIncompletePermissions" }

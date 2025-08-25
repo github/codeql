@@ -6,13 +6,15 @@
  * @problem.severity recommendation
  * @precision low
  * @id java/garbage-collection
- * @tags reliability
- *       maintainability
+ * @previous-id java/do-not-use-finalizers
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import java
 
-from MethodAccess mc, Method m
+from MethodCall mc, Method m
 where
   (
     m.getDeclaringType().hasQualifiedName("java.lang", "Runtime") or

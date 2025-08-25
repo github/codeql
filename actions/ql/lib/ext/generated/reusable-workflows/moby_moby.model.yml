@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["moby/moby/.github/workflows/.windows.yml", "*", "input.storage", "code-injection", "generated"]
+     - ["moby/moby/.github/workflows/.windows.yml", "*", "input.os", "code-injection", "generated"]

@@ -1,0 +1,11 @@
+| 2 | FormattedValue |  | world | s |
+| 3 | FormattedValue | #06x | one |   |
+| 3 | FormattedValue | ++++ | three | s |
+| 3 | FormattedValue | format | two |   |
+| 4 | FormattedValue |  | cruel |   |
+| 5 | FormattedValue |  | thing | a |
+| 6 | FormattedValue |  | x | r |
+| 8 | FormattedValue |  | BinaryExpr |   |
+| 8 | FormattedValue |  | name |   |
+| 8 | FormattedValue | %A, %B %d, %Y | anniversary |   |
+| 13 | FormattedValue |  | world | s |

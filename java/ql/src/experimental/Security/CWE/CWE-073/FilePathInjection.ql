@@ -9,23 +9,26 @@
  * @id java/file-path-injection
  * @tags security
  *       experimental
- *       external/cwe-073
+ *       external/cwe/cwe-073
  */
 
 import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSources
-import JFinalController
+import semmle.code.java.security.TaintedPathQuery
+deprecated import JFinalController
 import semmle.code.java.security.PathSanitizer
+private import semmle.code.java.security.Sanitizers
 import InjectFilePathFlow::PathGraph
 
-private class ActivateModels extends ActiveExperimentalModels {
+overlay[local?]
+deprecated private class ActivateModels extends ActiveExperimentalModels {
   ActivateModels() { this = "file-path-injection" }
 }
 
 /** A complementary sanitizer that protects against path traversal using path normalization. */
-class PathNormalizeSanitizer extends MethodAccess {
+class PathNormalizeSanitizer extends MethodCall {
   PathNormalizeSanitizer() {
     exists(RefType t |
       t instanceof TypePath or
@@ -48,15 +51,15 @@ class NormalizedPathNode extends DataFlow::Node {
 }
 
 module InjectFilePathConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) {
-    sinkNode(sink, "path-injection") and
+    sink instanceof TaintedPathSink and
     not sink instanceof NormalizedPathNode
   }
 
   predicate isBarrier(DataFlow::Node node) {
-    exists(Type t | t = node.getType() | t instanceof BoxedType or t instanceof PrimitiveType)
+    node instanceof SimpleTypeSanitizer
     or
     node instanceof PathInjectionSanitizer
   }
@@ -64,7 +67,13 @@ module InjectFilePathConfig implements DataFlow::ConfigSig {
 
 module InjectFilePathFlow = TaintTracking::Global<InjectFilePathConfig>;
 
-from InjectFilePathFlow::PathNode source, InjectFilePathFlow::PathNode sink
-where InjectFilePathFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "External control of file name or path due to $@.",
-  source.getNode(), "user-provided value"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, InjectFilePathFlow::PathNode source, InjectFilePathFlow::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
+  InjectFilePathFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "External control of file name or path due to $@." and
+  sourceNode = source.getNode() and
+  message2 = "user-provided value"
+}

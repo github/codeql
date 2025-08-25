@@ -1,1 +1,1 @@
-Security/CWE-300/InsecureDependencyResolution.ql
+query: Security/CWE-300/InsecureDependencyResolution.ql

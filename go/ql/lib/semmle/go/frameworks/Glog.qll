@@ -40,14 +40,4 @@ module Glog {
 
     override int getFormatStringIndex() { result = super.getFirstPrintedArg() }
   }
-
-  private class GlogCall extends LoggerCall::Range, DataFlow::CallNode {
-    GlogFunction callee;
-
-    GlogCall() { this = callee.getACall() }
-
-    override DataFlow::Node getAMessageComponent() {
-      result = this.getSyntacticArgument(any(int i | i >= callee.getFirstPrintedArg()))
-    }
-  }
 }

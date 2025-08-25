@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.UnsafeAndroidAccessQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module UnsafeAndroidAccessTest implements TestSig {
   string getARelevantTag() { result = "hasUnsafeAndroidAccess" }

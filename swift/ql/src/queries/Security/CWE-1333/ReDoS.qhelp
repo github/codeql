@@ -3,7 +3,7 @@
   <include src="ReDoSIntroduction.inc.qhelp" />
   <example>
     <p>Consider the following regular expression:</p>
-    <sample language="swift">
+    <sample language="">
 /^_(__|.)+_$/</sample>
     <p>
       Its sub-expression <code>"(__|.)+"</code> can match the string
@@ -19,7 +19,7 @@
       the ambiguity between the two branches of the alternative inside the
       repetition:
     </p>
-    <sample language="swift">
+    <sample language="">
 /^_(__|[^_])+_$/</sample>
   </example>
   <include src="ReDoSReferences.inc.qhelp"/>

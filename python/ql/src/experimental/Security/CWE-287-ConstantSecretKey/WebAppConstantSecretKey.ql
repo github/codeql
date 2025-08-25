@@ -52,6 +52,8 @@ private module WebAppConstantSecretKeyConfig implements DataFlow::StateConfigSig
     or
     state = Django() and DjangoConstantSecretKeyConfig::isSink(sink)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module WebAppConstantSecretKeyFlow = TaintTracking::GlobalWithState<WebAppConstantSecretKeyConfig>;

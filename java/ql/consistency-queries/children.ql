@@ -37,16 +37,31 @@ predicate gapInChildren(Element e, int i) {
   // For statements may or may not declare a new variable (child 0), or
   // have a condition (child 1).
   not (e instanceof ForStmt and i = [0, 1]) and
-  // TODO: Clarify situation with Kotlin and MethodAccess.
+  // TODO: Clarify situation with Kotlin and MethodCall.
   // -1 can be skipped (type arguments from -2 down, no qualifier at -1,
   // then arguments from 0).
   // Can we also skip arguments, e.g. due to defaults for parameters?
-  not (e instanceof MethodAccess and e.getFile().isKotlinSourceFile()) and
+  not (e instanceof MethodCall and e.getFile().isKotlinSourceFile()) and
   // Kotlin-extracted annotations can have missing children where a default
   // value should be, because kotlinc doesn't load annotation defaults and we
   // want to leave a space for another extractor to fill in the default if it
   // is able.
-  not e instanceof Annotation
+  not e instanceof Annotation and
+  // Pattern case statements legitimately have a TypeAccess (-2) and a pattern (0) but not a rule (-1)
+  not (i = -1 and e instanceof PatternCase and not e.(PatternCase).isRule()) and
+  // Pattern case statements can have a gap at -3 when they have more than one pattern but no guard.
+  not (
+    i = -3 and count(e.(PatternCase).getAPattern()) > 1 and not exists(e.(PatternCase).getGuard())
+  ) and
+  // Pattern case statements may have some missing type accesses, depending on the nature of the direct child
+  not (
+    (i = -2 or i < -4) and
+    e instanceof PatternCase
+  ) and
+  // Instanceof with a record pattern is not expected to have a type access in position 1
+  not (i = 1 and e.(InstanceOfExpr).getPattern() instanceof RecordPatternExpr) and
+  // RecordPatternExpr extracts type-accesses only for its LocalVariableDeclExpr children
+  not (i < 0 and e instanceof RecordPatternExpr)
 }
 
 predicate lateFirstChild(Element e, int i) {

@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Runtime.Caching.Hosting", "IApplicationIdentifier", "GetApplicationId", "()", "summary", "df-generated"]
+      - ["System.Runtime.Caching.Hosting", "IFileChangeNotificationSystem", "StartMonitoring", "(System.String,System.Runtime.Caching.OnChangedCallback,System.Object,System.DateTimeOffset,System.Int64)", "summary", "df-generated"]
+      - ["System.Runtime.Caching.Hosting", "IFileChangeNotificationSystem", "StopMonitoring", "(System.String,System.Object)", "summary", "df-generated"]
+      - ["System.Runtime.Caching.Hosting", "IMemoryCacheManager", "ReleaseCache", "(System.Runtime.Caching.MemoryCache)", "summary", "df-generated"]
+      - ["System.Runtime.Caching.Hosting", "IMemoryCacheManager", "UpdateCacheSize", "(System.Int64,System.Runtime.Caching.MemoryCache)", "summary", "df-generated"]

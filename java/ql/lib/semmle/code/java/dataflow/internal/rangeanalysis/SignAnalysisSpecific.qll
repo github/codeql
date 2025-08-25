@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 /**
  * Provides Java-specific definitions for use in sign analysis.
  */
@@ -6,12 +9,13 @@ module Private {
   import semmle.code.java.dataflow.RangeUtils as RU
   private import semmle.code.java.dataflow.SSA as Ssa
   private import semmle.code.java.controlflow.Guards as G
+  private import SsaReadPositionCommon
   private import Sign
   import Impl
 
   class ConstantIntegerExpr = RU::ConstantIntegerExpr;
 
-  class Guard = G::Guard;
+  class Guard = G::Guards_v2::Guard;
 
   class SsaVariable = Ssa::SsaVariable;
 
@@ -168,7 +172,19 @@ module Private {
 
   predicate ssaRead = RU::ssaRead/2;
 
-  predicate guardControlsSsaRead = RU::guardControlsSsaRead/3;
+  /**
+   * Holds if `guard` controls the position `controlled` with the value `testIsTrue`.
+   */
+  predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
+    guard.controls(controlled.(SsaReadPositionBlock).getBlock(), testIsTrue)
+    or
+    exists(SsaReadPositionPhiInputEdge controlledEdge | controlledEdge = controlled |
+      guard.controls(controlledEdge.getOrigBlock(), testIsTrue) or
+      guard
+          .controlsBranchEdge(controlledEdge.getOrigBlock(), controlledEdge.getPhiBlock(),
+            testIsTrue)
+    )
+  }
 }
 
 private module Impl {
@@ -200,11 +216,11 @@ private module Impl {
    * `Collection`).
    */
   predicate containerSizeAccess(Expr e) {
-    e.(MethodAccess).getMethod() instanceof StringLengthMethod
+    e.(MethodCall).getMethod() instanceof StringLengthMethod
     or
-    e.(MethodAccess).getMethod() instanceof CollectionSizeMethod
+    e.(MethodCall).getMethod() instanceof CollectionSizeMethod
     or
-    e.(MethodAccess).getMethod() instanceof MapSizeMethod
+    e.(MethodCall).getMethod() instanceof MapSizeMethod
   }
 
   /** Holds if `e` is by definition strictly positive. */
@@ -218,7 +234,7 @@ private module Impl {
     // types handled in `specificSubExprSign`.
     e instanceof ArrayAccess and e.getType() instanceof NumericOrCharType
     or
-    e instanceof MethodAccess and e.getType() instanceof NumericOrCharType
+    e instanceof MethodCall and e.getType() instanceof NumericOrCharType
     or
     e instanceof ClassInstanceExpr and e.getType() instanceof NumericOrCharType
   }
@@ -267,7 +283,7 @@ private module Impl {
 
   /** Holds if `f` can have any sign. */
   predicate fieldWithUnknownSign(Field f) {
-    exists(ReflectiveFieldAccess rfa | rfa.inferAccessedField() = f)
+    exists(ReflectiveGetFieldCall rfa | rfa.inferAccessedField() = f)
   }
 
   /** Holds if `f` is accessed in an increment operation. */
@@ -312,7 +328,7 @@ private module Impl {
 
   Field getField(FieldAccess fa) { result = fa.getField() }
 
-  Expr getAnExpression(SsaReadPositionBlock bb) { result = bb.getBlock().getANode() }
+  Expr getAnExpression(SsaReadPositionBlock bb) { result = bb.getBlock().getANode().asExpr() }
 
   Guard getComparisonGuard(ComparisonExpr ce) { result = ce }
 }

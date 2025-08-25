@@ -1,3 +1,4 @@
 private import DataFlowImplSpecific
 private import codeql.dataflow.internal.DataFlowImplCommon
-import MakeImplCommon<GoDataFlow>
+private import semmle.go.Locations
+import MakeImplCommon<Location, GoDataFlow>

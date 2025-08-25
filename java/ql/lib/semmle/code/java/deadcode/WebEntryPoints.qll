@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 import semmle.code.java.deadcode.DeadCode
 import semmle.code.java.frameworks.gwt.GWT
@@ -57,9 +60,6 @@ class GwtEntryPointConstructedClass extends ReflectivelyConstructedClass {
   GwtEntryPointConstructedClass() { this.(GwtEntryPointClass).isLive() }
 }
 
-/** DEPRECATED: Alias for GwtEntryPointConstructedClass */
-deprecated class GWTEntryPointConstructedClass = GwtEntryPointConstructedClass;
-
 /**
  * Servlets referred to from a GWT module config file.
  */
@@ -78,9 +78,6 @@ class GwtServletClass extends ReflectivelyConstructedClass {
     )
   }
 }
-
-/** DEPRECATED: Alias for GwtServletClass */
-deprecated class GWTServletClass = GwtServletClass;
 
 /**
  * Methods that may be called reflectively by the UiHandler framework.

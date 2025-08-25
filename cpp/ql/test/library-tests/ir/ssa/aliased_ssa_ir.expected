@@ -381,7 +381,7 @@ ssa.cpp:
 #-----|   Goto -> Block 1
 
 #   69|   Block 1
-#   69|     m69_1(unknown)    = Phi                : from 0:~m68_4, from 2:~m70_10
+#   69|     m69_1(unknown)    = Phi                : from 0:m68_10, from 2:m70_10
 #   69|     m69_2(char *)     = Phi                : from 0:m68_8, from 2:m70_6
 #   69|     m69_3(int)        = Phi                : from 0:m68_6, from 2:m69_8
 #   69|     r69_4(glval<int>) = VariableAddress[n] : 
@@ -411,9 +411,9 @@ ssa.cpp:
 
 #   71|   Block 3
 #   71|     v71_1(void)  = NoOp                 : 
-#   68|     v68_11(void) = ReturnIndirection[p] : &:r68_9, m68_10
+#   68|     v68_11(void) = ReturnIndirection[p] : &:r68_9, m69_1
 #   68|     v68_12(void) = ReturnVoid           : 
-#   68|     v68_13(void) = AliasedUse           : ~m69_1
+#   68|     v68_13(void) = AliasedUse           : m68_3
 #   68|     v68_14(void) = ExitFunction         : 
 
 #   75| void ScalarPhi(bool)
@@ -2200,3 +2200,65 @@ ssa.cpp:
 #  439|     r439_15(glval<int>) = VariableAddress[#temp439:13] : 
 #  439|     m439_16(int)        = Store[#temp439:13]           : &:r439_15, r439_14
 #-----|   Goto -> Block 1
+
+#  442| void NonEscapingParams(void*, void*)
+#  442|   Block 0
+#  442|     v442_1(void)          = EnterFunction            : 
+#  442|     m442_2(unknown)       = AliasedDefinition        : 
+#  442|     m442_3(unknown)       = InitializeNonLocal       : 
+#  442|     m442_4(unknown)       = Chi                      : total:m442_2, partial:m442_3
+#  442|     r442_5(glval<void *>) = VariableAddress[a]       : 
+#  442|     m442_6(void *)        = InitializeParameter[a]   : &:r442_5
+#  442|     r442_7(void *)        = Load[a]                  : &:r442_5, m442_6
+#  442|     m442_8(unknown)       = InitializeIndirection[a] : &:r442_7
+#  442|     r442_9(glval<void *>) = VariableAddress[b]       : 
+#  442|     m442_10(void *)       = InitializeParameter[b]   : &:r442_9
+#  442|     r442_11(void *)       = Load[b]                  : &:r442_9, m442_10
+#  442|     m442_12(unknown)      = InitializeIndirection[b] : &:r442_11
+#  444|     v444_1(void)          = NoOp                     : 
+#  442|     v442_13(void)         = ReturnIndirection[a]     : &:r442_7, m442_8
+#  442|     v442_14(void)         = ReturnIndirection[b]     : &:r442_11, m442_12
+#  442|     v442_15(void)         = ReturnVoid               : 
+#  442|     v442_16(void)         = AliasedUse               : m442_3
+#  442|     v442_17(void)         = ExitFunction             : 
+
+#  446| void EscapingParams(void*, void*)
+#  446|   Block 0
+#  446|     v446_1(void)           = EnterFunction                : 
+#  446|     m446_2(unknown)        = AliasedDefinition            : 
+#  446|     m446_3(unknown)        = InitializeNonLocal           : 
+#  446|     m446_4(unknown)        = Chi                          : total:m446_2, partial:m446_3
+#  446|     r446_5(glval<void *>)  = VariableAddress[a]           : 
+#  446|     m446_6(void *)         = InitializeParameter[a]       : &:r446_5
+#  446|     r446_7(void *)         = Load[a]                      : &:r446_5, m446_6
+#  446|     m446_8(unknown)        = InitializeIndirection[a]     : &:r446_7
+#  446|     m446_9(unknown)        = Chi                          : total:m446_4, partial:m446_8
+#  446|     r446_10(glval<void *>) = VariableAddress[b]           : 
+#  446|     m446_11(void *)        = InitializeParameter[b]       : &:r446_10
+#  446|     r446_12(void *)        = Load[b]                      : &:r446_10, m446_11
+#  446|     m446_13(unknown)       = InitializeIndirection[b]     : &:r446_12
+#  446|     m446_14(unknown)       = Chi                          : total:m446_9, partial:m446_13
+#  448|     r448_1(glval<unknown>) = FunctionAddress[Escape]      : 
+#  448|     r448_2(glval<void *>)  = VariableAddress[a]           : 
+#  448|     r448_3(void *)         = Load[a]                      : &:r448_2, m446_6
+#  448|     v448_4(void)           = Call[Escape]                 : func:r448_1, 0:r448_3
+#  448|     m448_5(unknown)        = ^CallSideEffect              : ~m446_14
+#  448|     m448_6(unknown)        = Chi                          : total:m446_14, partial:m448_5
+#  448|     v448_7(void)           = ^BufferReadSideEffect[0]     : &:r448_3, ~m448_6
+#  448|     m448_8(unknown)        = ^BufferMayWriteSideEffect[0] : &:r448_3
+#  448|     m448_9(unknown)        = Chi                          : total:m448_6, partial:m448_8
+#  449|     r449_1(glval<unknown>) = FunctionAddress[Escape]      : 
+#  449|     r449_2(glval<void *>)  = VariableAddress[b]           : 
+#  449|     r449_3(void *)         = Load[b]                      : &:r449_2, m446_11
+#  449|     v449_4(void)           = Call[Escape]                 : func:r449_1, 0:r449_3
+#  449|     m449_5(unknown)        = ^CallSideEffect              : ~m448_9
+#  449|     m449_6(unknown)        = Chi                          : total:m448_9, partial:m449_5
+#  449|     v449_7(void)           = ^BufferReadSideEffect[0]     : &:r449_3, ~m449_6
+#  449|     m449_8(unknown)        = ^BufferMayWriteSideEffect[0] : &:r449_3
+#  449|     m449_9(unknown)        = Chi                          : total:m449_6, partial:m449_8
+#  450|     v450_1(void)           = NoOp                         : 
+#  446|     v446_15(void)          = ReturnIndirection[a]         : &:r446_7, ~m449_9
+#  446|     v446_16(void)          = ReturnIndirection[b]         : &:r446_12, ~m449_9
+#  446|     v446_17(void)          = ReturnVoid                   : 
+#  446|     v446_18(void)          = AliasedUse                   : ~m449_9
+#  446|     v446_19(void)          = ExitFunction                 : 

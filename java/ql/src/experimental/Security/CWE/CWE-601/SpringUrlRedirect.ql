@@ -12,21 +12,21 @@
  */
 
 import java
-import experimental.semmle.code.java.security.SpringUrlRedirect
+deprecated import experimental.semmle.code.java.security.SpringUrlRedirect
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.controlflow.Guards
-import SpringUrlRedirectFlow::PathGraph
+deprecated import SpringUrlRedirectFlow::PathGraph
 
 private predicate startsWithSanitizer(Guard g, Expr e, boolean branch) {
-  g.(MethodAccess).getMethod().hasName("startsWith") and
-  g.(MethodAccess).getMethod().getDeclaringType() instanceof TypeString and
-  g.(MethodAccess).getMethod().getNumberOfParameters() = 1 and
-  e = g.(MethodAccess).getQualifier() and
+  g.(MethodCall).getMethod().hasName("startsWith") and
+  g.(MethodCall).getMethod().getDeclaringType() instanceof TypeString and
+  g.(MethodCall).getMethod().getNumberOfParameters() = 1 and
+  e = g.(MethodCall).getQualifier() and
   branch = true
 }
 
-module SpringUrlRedirectFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+deprecated module SpringUrlRedirectFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof SpringUrlRedirectSink }
 
@@ -44,7 +44,7 @@ module SpringUrlRedirectFlowConfig implements DataFlow::ConfigSig {
       not ae instanceof RedirectBuilderExpr
     )
     or
-    exists(MethodAccess ma, int index |
+    exists(MethodCall ma, int index |
       ma.getMethod().hasName("format") and
       ma.getMethod().getDeclaringType() instanceof TypeString and
       ma.getArgument(index) = node.asExpr() and
@@ -60,9 +60,15 @@ module SpringUrlRedirectFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module SpringUrlRedirectFlow = TaintTracking::Global<SpringUrlRedirectFlowConfig>;
+deprecated module SpringUrlRedirectFlow = TaintTracking::Global<SpringUrlRedirectFlowConfig>;
 
-from SpringUrlRedirectFlow::PathNode source, SpringUrlRedirectFlow::PathNode sink
-where SpringUrlRedirectFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "Potentially untrusted URL redirection due to $@.",
-  source.getNode(), "user-provided value"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, SpringUrlRedirectFlow::PathNode source,
+  SpringUrlRedirectFlow::PathNode sink, string message1, DataFlow::Node sourceNode, string message2
+) {
+  SpringUrlRedirectFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "Potentially untrusted URL redirection due to $@." and
+  sourceNode = source.getNode() and
+  message2 = "user-provided value"
+}

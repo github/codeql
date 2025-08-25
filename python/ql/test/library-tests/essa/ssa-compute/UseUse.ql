@@ -1,6 +1,6 @@
 import python
 import semmle.python.essa.SsaCompute
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module UseTest implements TestSig {
   string getARelevantTag() { result in ["use-use", "def-use", "def"] }

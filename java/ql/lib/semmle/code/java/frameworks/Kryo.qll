@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with the Kryo serialization framework.
  */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow
@@ -76,7 +78,7 @@ class KryoReadObjectMethod extends Method {
 /**
  * A call to `Kryo.setRegistrationRequired` that enables white-listing.
  */
-class KryoEnableWhiteListing extends MethodAccess {
+class KryoEnableWhiteListing extends MethodCall {
   KryoEnableWhiteListing() {
     exists(Method m |
       m = this.getMethod() and

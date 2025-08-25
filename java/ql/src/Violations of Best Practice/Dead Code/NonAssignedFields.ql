@@ -27,7 +27,7 @@ predicate isClassOf(ParameterizedClass c, RefType t) {
  * Holds if field `f` is potentially accessed by an `AtomicReferenceFieldUpdater`.
  */
 predicate subjectToAtomicReferenceFieldUpdater(Field f) {
-  exists(Class arfu, Method newUpdater, MethodAccess c |
+  exists(Class arfu, Method newUpdater, MethodCall c |
     arfu.hasQualifiedName("java.util.concurrent.atomic", "AtomicReferenceFieldUpdater") and
     newUpdater = arfu.getAMethod() and
     newUpdater.hasName("newUpdater") and
@@ -42,7 +42,7 @@ predicate subjectToAtomicReferenceFieldUpdater(Field f) {
  * Holds if `f` is ever looked up reflectively.
  */
 predicate lookedUpReflectively(Field f) {
-  exists(MethodAccess getDeclaredField |
+  exists(MethodCall getDeclaredField |
     isClassOf(getDeclaredField.getQualifier().getType(), f.getDeclaringType()) and
     getDeclaredField.getMethod().hasName("getDeclaredField") and
     getDeclaredField.getArgument(0).(StringLiteral).getValue() = f.getName()
@@ -63,15 +63,10 @@ predicate isVMObserver(RefType rt) {
 from Field f, FieldRead fr
 where
   f.fromSource() and
-  fr.getField().getSourceDeclaration() = f and
+  fr.getField() = f and
   not f.getDeclaringType() instanceof EnumType and
-  forall(Assignment ae, Field g | ae.getDest() = g.getAnAccess() and g.getSourceDeclaration() = f |
-    ae.getSource() instanceof NullLiteral
-  ) and
-  not exists(UnaryAssignExpr ua, Field g |
-    ua.getExpr() = g.getAnAccess() and
-    g.getSourceDeclaration() = f
-  ) and
+  forall(Assignment ae | ae.getDest() = f.getAnAccess() | ae.getSource() instanceof NullLiteral) and
+  not exists(UnaryAssignExpr ua | ua.getExpr() = f.getAnAccess()) and
   not f.isFinal() and
   // Exclude fields that may be accessed reflectively.
   not reflectivelyWritten(f) and

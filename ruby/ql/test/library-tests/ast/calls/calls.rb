@@ -4,9 +4,6 @@ foo()
 # call whose name is a scope resolution
 Foo::bar()
 
-# call whose name is a global scope resolution
-::bar()
-
 # call with a receiver, no arguments or block
 123.bar
 

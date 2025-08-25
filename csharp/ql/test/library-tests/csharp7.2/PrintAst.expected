@@ -30,20 +30,16 @@ csharp72.cs:
 #   26|           0: [FieldAccess] access to field s
 #   29|   7: [DelegateType] Del
 #   32| [Struct] ReadonlyStruct
-#   36| [Struct] RefStruct
-#   40| [Struct] ReadonlyRefStruct
+#   36| [RefStruct] RefStruct
+#   40| [RefStruct] ReadonlyRefStruct
 #   44| [Class] NumericLiterals
 #   46|   5: [Field] binaryValue
 #   46|     -1: [TypeMention] int
-#   46|     1: [AssignExpr] ... = ...
-#   46|       0: [FieldAccess] access to field binaryValue
-#   46|       1: [IntLiteral] 85
+#   46|     1: [IntLiteral] 85
 #   49| [Class] PrivateProtected
 #   51|   5: [Field] X
 #   51|     -1: [TypeMention] int
-#   51|     1: [AssignExpr] ... = ...
-#   51|       0: [FieldAccess] access to field X
-#   51|       1: [IntLiteral] 1
+#   51|     1: [IntLiteral] 1
 #   53|   6: [Method] F
 #   53|     -1: [TypeMention] Void
 #   53|     4: [BlockStmt] {...}

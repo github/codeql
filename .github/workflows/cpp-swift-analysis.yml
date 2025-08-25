@@ -1,0 +1,53 @@
+name: "Code scanning - C++"
+
+on:
+  push:
+    branches:
+      - main
+      - 'rc/*'
+  pull_request:
+    branches:
+      - main
+      - 'rc/*'
+    paths:
+      - 'swift/**'
+      - '.github/codeql/**'
+      - '.github/workflows/cpp-swift-analysis.yml'
+  schedule:
+    - cron: '0 9 * * 1'
+
+jobs:
+  CodeQL-Build:
+
+    runs-on: ubuntu-24.04
+
+    permissions:
+      contents: read
+      security-events: write
+      pull-requests: read
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@main
+      # Override language selection by uncommenting this and choosing your languages
+      with:
+        languages: cpp
+        config-file: ./.github/codeql/codeql-config.yml
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y uuid-dev
+
+    - name: "Build Swift extractor using Bazel"
+      run: |
+        bazel clean --expunge
+        bazel run //swift:install --nouse_action_cache --noremote_accept_cached --noremote_upload_local_results --spawn_strategy=local
+        bazel shutdown
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@main

@@ -36,6 +36,7 @@ getModule
 | calls.rb:634:1:639:3 | IncludesIncluded |
 | calls.rb:641:1:645:3 | CustomNew1 |
 | calls.rb:649:1:657:3 | CustomNew2 |
+| element_reference.rb:1:1:5:3 | ClassWithElementRef |
 | file://:0:0:0:0 | BasicObject |
 | file://:0:0:0:0 | Class |
 | file://:0:0:0:0 | Complex |
@@ -113,6 +114,7 @@ getADeclaration
 | calls.rb:105:1:113:3 | Module | calls.rb:105:1:113:3 | Module |
 | calls.rb:115:1:118:3 | Object | calls.rb:1:1:667:52 | calls.rb |
 | calls.rb:115:1:118:3 | Object | calls.rb:115:1:118:3 | Object |
+| calls.rb:115:1:118:3 | Object | element_reference.rb:1:1:13:4 | element_reference.rb |
 | calls.rb:115:1:118:3 | Object | hello.rb:1:1:22:3 | hello.rb |
 | calls.rb:115:1:118:3 | Object | instance_fields.rb:1:1:29:4 | instance_fields.rb |
 | calls.rb:115:1:118:3 | Object | modules.rb:1:1:129:4 | modules.rb |
@@ -153,6 +155,7 @@ getADeclaration
 | calls.rb:634:1:639:3 | IncludesIncluded | calls.rb:634:1:639:3 | IncludesIncluded |
 | calls.rb:641:1:645:3 | CustomNew1 | calls.rb:641:1:645:3 | CustomNew1 |
 | calls.rb:649:1:657:3 | CustomNew2 | calls.rb:649:1:657:3 | CustomNew2 |
+| element_reference.rb:1:1:5:3 | ClassWithElementRef | element_reference.rb:1:1:5:3 | ClassWithElementRef |
 | hello.rb:1:1:8:3 | EnglishWords | hello.rb:1:1:8:3 | EnglishWords |
 | hello.rb:11:1:16:3 | Greeting | hello.rb:11:1:16:3 | Greeting |
 | hello.rb:18:1:22:3 | HelloWorld | hello.rb:18:1:22:3 | HelloWorld |
@@ -238,6 +241,7 @@ getSuperClass
 | calls.rb:634:1:639:3 | IncludesIncluded | calls.rb:115:1:118:3 | Object |
 | calls.rb:641:1:645:3 | CustomNew1 | calls.rb:115:1:118:3 | Object |
 | calls.rb:649:1:657:3 | CustomNew2 | calls.rb:115:1:118:3 | Object |
+| element_reference.rb:1:1:5:3 | ClassWithElementRef | calls.rb:115:1:118:3 | Object |
 | file://:0:0:0:0 | Class | calls.rb:105:1:113:3 | Module |
 | file://:0:0:0:0 | Complex | file://:0:0:0:0 | Numeric |
 | file://:0:0:0:0 | FalseClass | calls.rb:115:1:118:3 | Object |
@@ -389,6 +393,7 @@ resolveConstantReadAccess
 | calls.rb:659:1:659:10 | CustomNew2 | CustomNew2 |
 | calls.rb:662:5:662:11 | Array | Array |
 | calls.rb:667:20:667:21 | C1 | C1 |
+| element_reference.rb:7:5:7:23 | ClassWithElementRef | ClassWithElementRef |
 | hello.rb:12:13:12:24 | EnglishWords | EnglishWords |
 | hello.rb:18:20:18:27 | Greeting | Greeting |
 | instance_fields.rb:4:22:4:31 | A_target | A_target |
@@ -495,6 +500,7 @@ resolveConstantWriteAccess
 | calls.rb:634:1:639:3 | IncludesIncluded | IncludesIncluded |
 | calls.rb:641:1:645:3 | CustomNew1 | CustomNew1 |
 | calls.rb:649:1:657:3 | CustomNew2 | CustomNew2 |
+| element_reference.rb:1:1:5:3 | ClassWithElementRef | ClassWithElementRef |
 | hello.rb:1:1:8:3 | EnglishWords | EnglishWords |
 | hello.rb:11:1:16:3 | Greeting | Greeting |
 | hello.rb:18:1:22:3 | HelloWorld | HelloWorld |
@@ -1611,6 +1617,36 @@ enclosingModule
 | calls.rb:667:2:667:25 | self | calls.rb:1:1:667:52 | calls.rb |
 | calls.rb:667:20:667:21 | C1 | calls.rb:1:1:667:52 | calls.rb |
 | calls.rb:667:20:667:25 | call to new | calls.rb:1:1:667:52 | calls.rb |
+| element_reference.rb:1:1:5:3 | ClassWithElementRef | element_reference.rb:1:1:13:4 | element_reference.rb |
+| element_reference.rb:2:5:4:7 | [] | element_reference.rb:1:1:5:3 | ClassWithElementRef |
+| element_reference.rb:2:12:2:12 | x | element_reference.rb:1:1:5:3 | ClassWithElementRef |
+| element_reference.rb:2:12:2:12 | x | element_reference.rb:1:1:5:3 | ClassWithElementRef |
+| element_reference.rb:3:9:3:19 | yield ... | element_reference.rb:1:1:5:3 | ClassWithElementRef |
+| element_reference.rb:3:15:3:15 | x | element_reference.rb:1:1:5:3 | ClassWithElementRef |
+| element_reference.rb:3:15:3:19 | ... + ... | element_reference.rb:1:1:5:3 | ClassWithElementRef |
+| element_reference.rb:3:19:3:19 | 1 | element_reference.rb:1:1:5:3 | ClassWithElementRef |
+| element_reference.rb:7:1:7:1 | c | element_reference.rb:1:1:13:4 | element_reference.rb |
+| element_reference.rb:7:1:7:27 | ... = ... | element_reference.rb:1:1:13:4 | element_reference.rb |
+| element_reference.rb:7:5:7:23 | ClassWithElementRef | element_reference.rb:1:1:13:4 | element_reference.rb |
+| element_reference.rb:7:5:7:27 | call to new | element_reference.rb:1:1:13:4 | element_reference.rb |
+| element_reference.rb:9:1:9:1 | c | element_reference.rb:1:1:13:4 | element_reference.rb |
+| element_reference.rb:9:1:9:19 | ...[...] | element_reference.rb:1:1:13:4 | element_reference.rb |
+| element_reference.rb:9:3:9:3 | 1 | element_reference.rb:1:1:13:4 | element_reference.rb |
+| element_reference.rb:9:6:9:19 | { ... } | element_reference.rb:1:1:13:4 | element_reference.rb |
+| element_reference.rb:9:9:9:9 | x | element_reference.rb:1:1:13:4 | element_reference.rb |
+| element_reference.rb:9:9:9:9 | x | element_reference.rb:1:1:13:4 | element_reference.rb |
+| element_reference.rb:9:12:9:17 | call to puts | element_reference.rb:1:1:13:4 | element_reference.rb |
+| element_reference.rb:9:12:9:17 | self | element_reference.rb:1:1:13:4 | element_reference.rb |
+| element_reference.rb:9:17:9:17 | x | element_reference.rb:1:1:13:4 | element_reference.rb |
+| element_reference.rb:11:1:11:1 | c | element_reference.rb:1:1:13:4 | element_reference.rb |
+| element_reference.rb:11:1:13:3 | ...[...] | element_reference.rb:1:1:13:4 | element_reference.rb |
+| element_reference.rb:11:3:11:3 | 1 | element_reference.rb:1:1:13:4 | element_reference.rb |
+| element_reference.rb:11:6:13:3 | do ... end | element_reference.rb:1:1:13:4 | element_reference.rb |
+| element_reference.rb:11:10:11:10 | x | element_reference.rb:1:1:13:4 | element_reference.rb |
+| element_reference.rb:11:10:11:10 | x | element_reference.rb:1:1:13:4 | element_reference.rb |
+| element_reference.rb:12:5:12:10 | call to puts | element_reference.rb:1:1:13:4 | element_reference.rb |
+| element_reference.rb:12:5:12:10 | self | element_reference.rb:1:1:13:4 | element_reference.rb |
+| element_reference.rb:12:10:12:10 | x | element_reference.rb:1:1:13:4 | element_reference.rb |
 | hello.rb:1:1:8:3 | EnglishWords | hello.rb:1:1:22:3 | hello.rb |
 | hello.rb:2:5:4:7 | hello | hello.rb:1:1:8:3 | EnglishWords |
 | hello.rb:3:9:3:22 | return | hello.rb:1:1:8:3 | EnglishWords |

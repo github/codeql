@@ -10,6 +10,7 @@
 import semmle.code.cpp.Function
 import FunctionInputsAndOutputs
 import semmle.code.cpp.models.Models
+import PartialFlow
 
 /**
  * A library function for which a taint-tracking library should propagate taint
@@ -23,7 +24,7 @@ import semmle.code.cpp.models.Models
  * altered (for example copying a string with `strncpy`), this is also considered
  * data flow.
  */
-abstract class TaintFunction extends Function {
+abstract class TaintFunction extends PartialFlowFunction {
   /**
    * Holds if data passed into the argument, qualifier, or buffer represented by
    * `input` influences the return value or buffer represented by `output`

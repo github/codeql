@@ -1,3 +1,5 @@
+deprecated module;
+
 import java
 import DataFlow
 import semmle.code.java.frameworks.Networking
@@ -11,7 +13,7 @@ import semmle.code.java.security.QueryInjection
  */
 class ClientSuppliedIpUsedInSecurityCheck extends DataFlow::Node {
   ClientSuppliedIpUsedInSecurityCheck() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().hasName("getHeader") and
       ma.getArgument(0).(CompileTimeConstantExpr).getStringValue().toLowerCase() in [
           "x-forwarded-for", "x-real-ip", "proxy-client-ip", "wl-proxy-client-ip",
@@ -34,7 +36,7 @@ abstract class ClientSuppliedIpUsedInSecurityCheckSink extends DataFlow::Node { 
  */
 private class CompareSink extends ClientSuppliedIpUsedInSecurityCheckSink {
   CompareSink() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().getName() in ["equals", "equalsIgnoreCase"] and
       ma.getMethod().getDeclaringType() instanceof TypeString and
       ma.getMethod().getNumberOfParameters() = 1 and
@@ -49,7 +51,7 @@ private class CompareSink extends ClientSuppliedIpUsedInSecurityCheckSink {
       )
     )
     or
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().getName() in ["contains", "startsWith"] and
       ma.getMethod().getDeclaringType() instanceof TypeString and
       ma.getMethod().getNumberOfParameters() = 1 and
@@ -57,7 +59,7 @@ private class CompareSink extends ClientSuppliedIpUsedInSecurityCheckSink {
       ma.getAnArgument().(CompileTimeConstantExpr).getStringValue().regexpMatch(getIpAddressRegex()) // Matches IP-address-like strings
     )
     or
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().hasName("startsWith") and
       ma.getMethod()
           .getDeclaringType()
@@ -67,7 +69,7 @@ private class CompareSink extends ClientSuppliedIpUsedInSecurityCheckSink {
       ma.getAnArgument().(CompileTimeConstantExpr).getStringValue().regexpMatch(getIpAddressRegex())
     )
     or
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().getName() in ["equals", "equalsIgnoreCase"] and
       ma.getMethod()
           .getDeclaringType()

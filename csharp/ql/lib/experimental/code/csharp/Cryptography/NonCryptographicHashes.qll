@@ -8,7 +8,6 @@
 
 import csharp
 private import DataFlow
-private import semmle.code.csharp.dataflow.TaintTracking2
 
 predicate maybeANonCryptographicHash(
   Callable callable, Variable v, Expr xor, Expr mul, LoopStmt loop
@@ -38,9 +37,6 @@ predicate maybeUsedInFnvFunction(Variable v, Operation xor, Operation mul, LoopS
   loop.getAChild*() = mul.getEnclosingStmt() and
   loop.getAChild*() = xor.getEnclosingStmt()
 }
-
-/** DEPRECATED: Alias for maybeUsedInFnvFunction */
-deprecated predicate maybeUsedInFNVFunction = maybeUsedInFnvFunction/4;
 
 /**
  * Holds if the arguments are used in a way that resembles an Elf-Hash hash function

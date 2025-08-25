@@ -22,7 +22,7 @@ have no source code, so we include a flow summary for it:
 private class ChompSummary extends SimpleSummarizedCallable {
   ChompSummary() { this = "chomp" }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     input = "Argument[self]" and
     output = "ReturnValue" and
     preservesValue = false

@@ -14,6 +14,7 @@
 | cpp.cpp:10:7:10:7 | operator= | Function |
 | cpp.cpp:10:7:10:7 | ~MyClass | Function |
 | cpp.cpp:15:5:15:12 | call to ~MyClass | Expr |
+| cpp.cpp:15:12:15:12 | reuse of m | Expr |
 | cpp.cpp:16:1:16:1 | return ... | Stmt |
 | file://:0:0:0:0 | operator delete | Function |
 | file://:0:0:0:0 | operator new | Function |

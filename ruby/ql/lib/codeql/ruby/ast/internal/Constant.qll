@@ -38,6 +38,7 @@ private import ExprNodes
  * constant value in some cases.
  */
 private module Propagation {
+  overlay[local]
   ExprCfgNode getSource(VariableReadAccessCfgNode read) {
     exists(Ssa::WriteDefinition def |
       def.assigns(result) and
@@ -199,6 +200,7 @@ private module Propagation {
     forex(ExprCfgNode n | n = e.getAControlFlowNode() | isComplex(n, real, imaginary))
   }
 
+  overlay[local]
   private class StringlikeLiteralWithInterpolationCfgNode extends StringlikeLiteralCfgNode {
     StringlikeLiteralWithInterpolationCfgNode() {
       this.getAComponent() =
@@ -208,6 +210,7 @@ private module Propagation {
         )
     }
 
+    overlay[global]
     pragma[nomagic]
     private string getComponentValue(int i) {
       this.getComponent(i) =
@@ -219,17 +222,20 @@ private module Propagation {
     }
 
     language[monotonicAggregates]
+    overlay[global]
     private string getValue() {
       result =
         strictconcat(int i | exists(this.getComponent(i)) | this.getComponentValue(i) order by i)
     }
 
+    overlay[global]
     pragma[nomagic]
     string getSymbolValue() {
       result = this.getValue() and
       this.getExpr() instanceof SymbolLiteral
     }
 
+    overlay[global]
     pragma[nomagic]
     string getStringValue() {
       result = this.getValue() and
@@ -237,6 +243,7 @@ private module Propagation {
       not this.getExpr() instanceof RegExpLiteral
     }
 
+    overlay[global]
     pragma[nomagic]
     string getRegExpValue(string flags) {
       result = this.getValue() and
@@ -423,7 +430,7 @@ private module Cached {
       or
       s = any(StringComponentImpl c).getValue()
     } or
-    TSymbol(string s) { isString(_, s) or isSymbolExpr(_, s) } or
+    TSymbol(string s) { isSymbolExpr(_, s) } or
     TRegExp(string s, string flags) {
       isRegExp(_, s, flags)
       or
@@ -560,8 +567,13 @@ private predicate isArrayExpr(Expr e, ArrayLiteralCfgNode arr) {
   // Note(hmac): I don't think this is necessary, as `getSource` will not return
   // results if the source is a phi node.
   forex(ExprCfgNode n | n = e.getAControlFlowNode() | isArrayConstant(n, arr))
+  or
+  // if `e` is an array, then `e.freeze` is also an array
+  e.(MethodCall).getMethodName() = "freeze" and
+  isArrayExpr(e.(MethodCall).getReceiver(), arr)
 }
 
+overlay[local]
 private class TokenConstantAccess extends ConstantAccess, TTokenConstantAccess {
   private Ruby::Constant g;
 
@@ -573,6 +585,7 @@ private class TokenConstantAccess extends ConstantAccess, TTokenConstantAccess {
 /**
  * A constant access that has a scope resolution qualifier.
  */
+overlay[local]
 class ScopeResolutionConstantAccess extends ConstantAccess, TScopeResolutionConstantAccess {
   private Ruby::ScopeResolution g;
   private Ruby::Constant constant;
@@ -591,6 +604,7 @@ class ScopeResolutionConstantAccess extends ConstantAccess, TScopeResolutionCons
   final override predicate hasGlobalScope() { not exists(g.getScope()) }
 }
 
+overlay[local]
 private class ConstantReadAccessSynth extends ConstantAccess, TConstantReadAccessSynth {
   private string value;
 
@@ -605,6 +619,7 @@ private class ConstantReadAccessSynth extends ConstantAccess, TConstantReadAcces
   final override predicate hasGlobalScope() { value.matches("::%") }
 }
 
+overlay[local]
 private class ConstantWriteAccessSynth extends ConstantAccess, TConstantWriteAccessSynth {
   private string value;
 

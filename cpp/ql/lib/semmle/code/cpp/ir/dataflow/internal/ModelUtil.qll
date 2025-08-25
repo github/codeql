@@ -4,14 +4,15 @@
  */
 
 private import semmle.code.cpp.ir.IR
-private import semmle.code.cpp.ir.dataflow.DataFlow
+private import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs
 private import DataFlowUtil
-private import SsaInternals as Ssa
+private import DataFlowPrivate
+private import SsaImpl as Ssa
 
 /**
  * Gets the instruction that goes into `input` for `call`.
  */
-DataFlow::Node callInput(CallInstruction call, FunctionInput input) {
+Node callInput(CallInstruction call, FunctionInput input) {
   // An argument or qualifier
   exists(int index |
     result.asOperand() = call.getArgumentOperand(index) and
@@ -31,29 +32,38 @@ DataFlow::Node callInput(CallInstruction call, FunctionInput input) {
 }
 
 /**
+ * Gets the node that represents the output of `call` with kind `output` at
+ * indirection index `indirectionIndex`.
+ */
+private Node callOutputWithIndirectionIndex(
+  CallInstruction call, FunctionOutput output, int indirectionIndex
+) {
+  // The return value
+  simpleOutNode(result, call) and
+  output.isReturnValue() and
+  indirectionIndex = 0
+  or
+  // The side effect of a call on the value pointed to by an argument or qualifier
+  exists(int index |
+    result.(IndirectArgumentOutNode).getArgumentIndex() = index and
+    result.(IndirectArgumentOutNode).getIndirectionIndex() = indirectionIndex - 1 and
+    result.(IndirectArgumentOutNode).getCallInstruction() = call and
+    output.isParameterDerefOrQualifierObject(index, indirectionIndex - 1)
+  )
+  or
+  result = getIndirectReturnOutNode(call, indirectionIndex) and
+  output.isReturnValueDeref(indirectionIndex)
+}
+
+/**
  * Gets the instruction that holds the `output` for `call`.
  */
 Node callOutput(CallInstruction call, FunctionOutput output) {
-  // The return value
-  result.asInstruction() = call and
-  output.isReturnValue()
-  or
-  // The side effect of a call on the value pointed to by an argument or qualifier
-  exists(int index, int indirectionIndex |
-    result.(IndirectArgumentOutNode).getArgumentIndex() = index and
-    result.(IndirectArgumentOutNode).getIndirectionIndex() = indirectionIndex and
-    result.(IndirectArgumentOutNode).getCallInstruction() = call and
-    output.isParameterDerefOrQualifierObject(index, indirectionIndex)
-  )
-  or
-  exists(int ind |
-    result = getIndirectReturnOutNode(call, ind) and
-    output.isReturnValueDeref(ind)
-  )
+  result = callOutputWithIndirectionIndex(call, output, _)
 }
 
-DataFlow::Node callInput(CallInstruction call, FunctionInput input, int d) {
-  exists(DataFlow::Node n | n = callInput(call, input) and d > 0 |
+Node callInput(CallInstruction call, FunctionInput input, int d) {
+  exists(Node n | n = callInput(call, input) and d > 0 |
     // An argument or qualifier
     hasOperandAndIndex(result, n.asOperand(), d)
     or
@@ -75,19 +85,15 @@ private IndirectReturnOutNode getIndirectReturnOutNode(CallInstruction call, int
  */
 bindingset[d]
 Node callOutput(CallInstruction call, FunctionOutput output, int d) {
-  exists(DataFlow::Node n | n = callOutput(call, output) and d > 0 |
+  exists(Node n, int indirectionIndex |
+    n = callOutputWithIndirectionIndex(call, output, indirectionIndex) and d > 0
+  |
     // The return value
-    result = getIndirectReturnOutNode(n.asInstruction(), d)
+    result = callOutputWithIndirectionIndex(call, output, indirectionIndex + d)
     or
     // If there isn't an indirect out node for the call with indirection `d` then
     // we conflate this with the underlying `CallInstruction`.
-    not exists(getIndirectReturnOutNode(call, d)) and
-    n.asInstruction() = result.asInstruction()
-    or
-    // The side effect of a call on the value pointed to by an argument or qualifier
-    exists(Operand operand, int indirectionIndex |
-      Ssa::outNodeHasAddressAndIndex(n, operand, indirectionIndex) and
-      Ssa::outNodeHasAddressAndIndex(result, operand, indirectionIndex + d)
-    )
+    not exists(getIndirectReturnOutNode(call, indirectionIndex + d)) and
+    n = result
   )
 }

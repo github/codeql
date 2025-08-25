@@ -1,3 +1,375 @@
+## 2.6.9
+
+### Minor Analysis Improvements
+
+* Improved modeling of command-line argument parsing libraries [arg](https://www.npmjs.com/package/arg), [args](https://www.npmjs.com/package/args), [command-line-args](https://www.npmjs.com/package/command-line-args) and [commander](https://www.npmjs.com/package/commander)
+
+## 2.6.8
+
+### Minor Analysis Improvements
+
+* The regular expressions in `SensitiveDataHeuristics.qll` have been extended to find more instances of sensitive data such as secrets used in authentication, finance and health information, and device data. The heuristics have also been refined to find fewer false positive matches. This will improve results for queries related to sensitive information.
+
+## 2.6.7
+
+### Minor Analysis Improvements
+
+* Enhanced modeling for the `execa` library, adding support for command execution methods `execaCommand`, `execaCommandSync`, `$`, and `$.sync`, as well as file system operations through `inputFile`, `pipeStdout`, `pipeAll`, and `pipeStderr`.
+
+### Bug Fixes
+
+* The JavaScript extractor no longer ignores source files specified in the `tsconfig.json` compiler options `outDir` if doing so would result in excluding all source code.
+
+## 2.6.6
+
+### Minor Analysis Improvements
+
+* Calls to `sinon.match()` are no longer incorrectly identified as regular expression operations.
+* Improved data flow tracking through middleware to handle default value and similar patterns.
+* Added `req._parsedUrl` as a remote input source.
+* Improved taint tracking through calls to `serialize-javascript`.
+* Removed `encodeURI` and `escape` functions from the sanitizer list for request forgery.
+* The JavaScript extractor now skips generated JavaScript files if the original TypeScript files are already present. It also skips any files in the output directory specified in the `compilerOptions` part of the `tsconfig.json` file.
+* Added support for Axios instances in the `axios` module.
+
+## 2.6.5
+
+### Minor Analysis Improvements
+
+* Added taint flow through the `URL` constructor from the `url` package, improving the identification of SSRF vulnerabilities.
+
+## 2.6.4
+
+### Minor Analysis Improvements
+
+* Improved analysis for `ES6 classes` mixed with `function prototypes`, leading to more accurate call graph resolution.
+
+## 2.6.3
+
+### Minor Analysis Improvements
+
+* Enhanced modeling of the [fastify](https://www.npmjs.com/package/fastify) framework to support the `all` route handler method.
+* Improved modeling of the [`shelljs`](https://www.npmjs.com/package/shelljs) and [`async-shelljs`](https://www.npmjs.com/package/async-shelljs) libraries by adding support for the `which`, `cmd`, `asyncExec` and `env`.
+* Added support for the `fastify` `addHook` method.
+
+## 2.6.2
+
+No user-facing changes.
+
+## 2.6.1
+
+### Minor Analysis Improvements
+
+* Data passed to the [NextResponse](https://nextjs.org/docs/app/api-reference/functions/next-response) constructor is now treated as a sink for `js/reflected-xss`.
+* Data received from [NextRequest](https://nextjs.org/docs/app/api-reference/functions/next-request) and [Request](https://developer.mozilla.org/en-US/docs/Web/API/Request) is now treated as a remote user input `source`.
+* Added support for the `make-dir` package.
+* Added support for the `open` package.
+* Added taint propagation for `Uint8Array`, `ArrayBuffer`, `SharedArrayBuffer` and `TextDecoder.decode()`.
+* Improved detection of `WebSocket` and `SockJS` usage.
+* Added data received from `WebSocket` clients as a remote flow source.
+* Added support for additional `mkdirp` methods as sinks in path-injection queries.
+* Added support for additional `rimraf` methods as sinks in path-injection queries.
+
+## 2.6.0
+
+### New Features
+
+* Extraction now supports regular expressions with the `v` flag, using the new operators:
+  - Intersection `&&`
+  - Subtraction `--`
+  - `\q` quoted string 
+
+### Major Analysis Improvements
+
+* Added support for TypeScript 5.8.
+
+### Minor Analysis Improvements
+
+* Added support for additional `fs-extra` methods as sinks in path-injection queries.
+* Added support for the newer version of `Hapi` with the `@hapi/hapi` import and `server` function.
+* Improved modeling of the `node:fs` module: `await`-ed calls to `read` and `readFile` are now supported.
+* Added support for the `@sap/hana-client`, `@sap/hdbext` and `hdb` packages.
+* Enhanced `axios` support with new methods (`postForm`, `putForm`, `patchForm`, `getUri`, `create`) and added support for `interceptors.request` and `interceptors.response`.
+* Improved support for `got` package with `Options`, `paginate()` and `extend()`
+* Added support for the `ApolloServer` class from `@apollo/server` and similar packages. In particular, the incoming data in a GraphQL resolver is now seen as a source of untrusted user input.
+* Improved support for `superagent` to handle the case where the package is directly called as a function, or via the `.del()` or `.agent()` method.
+* Added support for the `underscore.string` package.
+* Added additional flow step for `unescape()` and `escape()`.
+* Added support for the `@tanstack/vue-query` package.
+* Added taint-steps for `unescape()`.
+* Added support for the `@tanstack/angular-query-experimental` package.
+* Improved support for the `@angular/common/http` package, detecting outgoing HTTP requests in more cases.
+* Improved the modeling of the `markdown-table` package to ensure it handles nested arrays properly.
+* Added support for the `react-relay` library.
+
+## 2.5.1
+
+No user-facing changes.
+
+## 2.5.0
+
+### Major Analysis Improvements
+
+* Added support for the `response` threat model kind, which can enabled with [advanced setup](https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models). When enabled, the response data coming back from an outgoing HTTP request is considered a source of taint.
+* Added support for the `useQuery` hook from `@tanstack/react-query`.
+
+### Minor Analysis Improvements
+
+* The `response.download()` function in `express` is now recognized as a sink for path traversal attacks.
+
+## 2.4.1
+
+### Minor Analysis Improvements
+
+* Added support for regular expressions using the `v` flag.
+
+## 2.4.0
+
+### Major Analysis Improvements
+
+* Added new XSS sink where `innerHTML` or `outerHTML` is assigned to with the Angular Renderer2 API, plus modeled this API as a general attribute setter
+
+## 2.3.0
+
+### Deprecated APIs
+
+* Custom data flow queries will need to be migrated in order to use the shared data flow library. Until migrated, such queries will compile with deprecation warnings and run with a
+  deprecated copy of the old data flow library. The deprecation layer will be removed in early 2026, after which any unmigrated queries will stop working.
+  See more information in the [migration guide](https://codeql.github.com/docs/codeql-language-guides/migrating-javascript-dataflow-queries).
+
+### Major Analysis Improvements
+
+* All data flow queries are now using the same underlying data flow library as the other languages analyses, replacing the old one written specifically for JavaScript/TypeScript.
+  This is a significant change and users may consequently observe differences in the alerts generated by the analysis.
+
+### Minor Analysis Improvements
+
+* The sensitive data library has been improved so that `snake_case` style variable names are recognized more reliably. This may result in more sensitive data being identified, and more results from queries that use the sensitive data library.
+
+## 2.2.1
+
+No user-facing changes.
+
+## 2.2.0
+
+### Major Analysis Improvements
+
+* The `js/incomplete-sanitization` query now also checks regular expressions constructed using `new RegExp(..)`. Previously it only checked regular expression literals.
+* Regular expression-based sanitisers implemented with `new RegExp(..)` are now detected in more cases.
+* Regular expression related queries now account for unknown flags.
+
+### Minor Analysis Improvements
+
+* Added taint-steps for `String.prototype.toWellFormed`.
+* Added taint-steps for `Map.groupBy` and `Object.groupBy`.
+* Added taint-steps for `Array.prototype.findLast`.
+* Added taint-steps for `Array.prototype.findLastIndex`.
+
+## 2.1.1
+
+### Minor Analysis Improvements
+
+* Added taint-steps for `Array.prototype.with`.
+* Added taint-steps for `Array.prototype.toSpliced`
+* Added taint-steps for `Array.prototype.toReversed`.
+* Added taint-steps for `Array.prototype.toSorted`.
+* Added support for `String.prototype.matchAll`.
+* Added taint-steps for `Array.prototype.reverse`
+
+## 2.1.0
+
+### New Features
+
+* Added support for custom threat-models, which can be used in most of our taint-tracking queries, see our [documentation](https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models) for more details.
+
+## 2.0.2
+
+No user-facing changes.
+
+## 2.0.1
+
+No user-facing changes.
+
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `isHTMLElement` and `getDOMName` predicates from the JSX library, use `isHtmlElement` and `getDomName` respectively instead.
+* Deleted the deprecated `getPackageJSON` predicate from the `SourceMappingComment` class, use `SourceMappingComment` instead.
+* Deleted many deprecated directives from the `Stmt.qll` file, use the `Directive::` module instead.
+* Deleted the deprecated `YAMLNode`, `YAMLValue`, and `YAMLScalar` classes from the YAML libraries, use `YamlNode`, `YamlValue`, and `YamlScalar` respectively instead.
+* Deleted the deprecated `getARouteHandlerExpr` predicate from `Connect.qll`, use `getARouteHandlerNode` instead.
+* Deleted the deprecated `getGWTVersion` predicate from `GWT.qll`, use `getGwtVersion` instead.
+* Deleted the deprecated `getOwnOptionsObject` predicate from  `Vue.qll`, use `getOwnOptions().getASink()` instead.
+
+### Major Analysis Improvements
+
+* Added support for TypeScript 5.6.
+
+## 1.1.4
+
+No user-facing changes.
+
+## 1.1.3
+
+No user-facing changes.
+
+## 1.1.2
+
+No user-facing changes.
+
+## 1.1.1
+
+No user-facing changes.
+
+## 1.1.0
+
+### Major Analysis Improvements
+
+* Added support for TypeScript 5.5.
+
+### Minor Analysis Improvements
+
+* Enabled type-tracking to follow content through array methods
+* Improved modeling of `Array.prototype.splice` for when it is called with more than two arguments
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+No user-facing changes.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+### Minor Analysis Improvements
+
+* Additional heuristics for a new sensitive data classification for private information (e.g. credit card numbers) have been added to the shared `SensitiveDataHeuristics.qll` library. This may result in additional results for queries that use sensitive data such as `js/clear-text-storage-sensitive-data` and `js/clear-text-logging`.
+
+### Bug Fixes
+
+* Fixed a bug where very large TypeScript files would cause database creation to crash. Large files over 10MB were already excluded from analysis, but the file size check was not applied to TypeScript files.
+
+## 0.9.1
+
+No user-facing changes.
+
+## 0.9.0
+
+### Breaking Changes
+
+* Deleted the deprecated `getInput` predicate from the `CryptographicOperation` class. Use `getAnInput` instead.
+* Deleted the deprecated `RegExpPatterns` module from `Regexp.qll`.
+* Deleted the deprecated `semmle/javascript/security/BadTagFilterQuery.qll`, `semmle/javascript/security/OverlyLargeRangeQuery.qll`, `semmle/javascript/security/regexp/RegexpMatching.qll`, and `Security/CWE-020/HostnameRegexpShared.qll` files.
+
+### Minor Analysis Improvements
+
+* Improved detection of whether a file uses CommonJS module system.
+
+## 0.8.14
+
+No user-facing changes.
+
+## 0.8.13
+
+### Major Analysis Improvements
+
+* Added support for TypeScript 5.4.
+
+## 0.8.12
+
+No user-facing changes.
+
+## 0.8.11
+
+No user-facing changes.
+
+## 0.8.10
+
+No user-facing changes.
+
+## 0.8.9
+
+### Minor Analysis Improvements
+
+* The name "certification" is no longer seen as possibly being a certificate, and will therefore no longer be flagged in queries like "clear-text-logging" which look for sensitive data.
+
+## 0.8.8
+
+No user-facing changes.
+
+## 0.8.7
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `CPU`, `TLD`, `SSA`, `ASM` etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `getMessageSuffix` predicates in `CodeInjectionCustomizations.qll`.
+* Deleted the deprecated `semmle/javascript/security/dataflow/ExternalAPIUsedWithUntrustedData.qll` file.
+* Deleted the deprecated `getANonHtmlHeaderDefinition` and `nonHtmlContentTypeHeader` predicates from `ReflectedXssCustomizations.qll`.
+* Deleted the deprecated `semmle/javascript/security/OverlyLargeRangeQuery.qll`, `semmle/javascript/security/regexp/ExponentialBackTracking.qll`, `semmle/javascript/security/regexp/NfaUtils.qll`, and `semmle/javascript/security/regexp/NfaUtils.qll` files.
+* Deleted the deprecated `Expressions/TypoDatabase.qll` file.
+* The diagnostic query `js/diagnostics/successfully-extracted-files`, and therefore the Code Scanning UI measure of scanned JavaScript and TypeScript files, now considers any JavaScript and TypeScript file seen during extraction, even one with some errors, to be extracted / scanned.
+
+## 0.8.6
+
+No user-facing changes.
+
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+### Minor Analysis Improvements
+
+* Added models for the `sqlite` and `better-sqlite3` npm packages.
+* TypeScript 5.3 is now supported.
+
+## 0.8.3
+
+No user-facing changes.
+
+## 0.8.2
+
+No user-facing changes.
+
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* The contents of `.jsp` files are now extracted, and any `<script>` tags inside these files will be parsed as JavaScript.
+* [Import attributes](https://github.com/tc39/proposal-import-attributes) are now supported in JavaScript code.
+  Note that import attributes are an evolution of an earlier proposal called "import assertions", which were implemented in TypeScript 4.5.
+  The QL library includes new predicates named `getImportAttributes()` that should be used in favor of the now deprecated `getImportAssertion()`;
+  in addition, the `getImportAttributes()` method of the `DynamicImportExpr` has been renamed to `getImportOptions()`. 
+* Deleted the deprecated `getAnImmediateUse`, `getAUse`, `getARhs`, and `getAValueReachingRhs` predicates from the `API::Node` class.
+* Deleted the deprecated `mayReferToParameter` predicate from `DataFlow::Node`.
+* Deleted the deprecated `getStaticMethod` and `getAStaticMethod` predicates from `DataFlow::ClassNode`.
+* Deleted the deprecated `isLibaryFile` predicate from `ClassifyFiles.qll`, use `isLibraryFile` instead.
+* Deleted many library models that were build on the AST. Use the new models that are build on the dataflow library instead.
+* Deleted the deprecated `semmle.javascript.security.performance` folder, use `semmle.javascript.security.regexp` instead.
+* Tagged template literals have been added to `DataFlow::CallNode`. This allows the analysis to find flow into functions called with a tagged template literal, 
+  and the arguments to a tagged template literal are part of the API-graph in `ApiGraphs.qll`.
+
+## 0.8.0
+
+No user-facing changes.
+
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+### Major Analysis Improvements
+
+* Added support for TypeScript 5.2.
+
 ## 0.7.3
 
 No user-facing changes.

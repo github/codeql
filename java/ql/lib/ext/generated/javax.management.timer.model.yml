@@ -1,0 +1,38 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.management.timer", "TimerMBean", True, "getNotificationMessage", "(Integer)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.management.timer", "TimerMBean", True, "getNotificationType", "(Integer)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.management.timer", "TimerMBean", True, "getNotificationUserData", "(Integer)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.management.timer", "TimerNotification", True, "TimerNotification", "(String,Object,long,long,String,Integer)", "", "Argument[4]", "Argument[this]", "taint", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.management.timer", "Timer", "addNotification", "(String,String,Object,Date)", "summary", "df-generated"]
+      - ["javax.management.timer", "Timer", "addNotification", "(String,String,Object,Date,long)", "summary", "df-generated"]
+      - ["javax.management.timer", "Timer", "addNotification", "(String,String,Object,Date,long,long)", "summary", "df-generated"]
+      - ["javax.management.timer", "Timer", "addNotification", "(String,String,Object,Date,long,long,boolean)", "summary", "df-generated"]
+      - ["javax.management.timer", "Timer", "getAllNotificationIDs", "()", "summary", "df-generated"]
+      - ["javax.management.timer", "Timer", "getDate", "(Integer)", "summary", "df-generated"]
+      - ["javax.management.timer", "Timer", "getFixedRate", "(Integer)", "summary", "df-generated"]
+      - ["javax.management.timer", "Timer", "getNbNotifications", "()", "summary", "df-generated"]
+      - ["javax.management.timer", "Timer", "getNbOccurences", "(Integer)", "summary", "df-generated"]
+      - ["javax.management.timer", "Timer", "getNotificationIDs", "(String)", "summary", "df-generated"]
+      - ["javax.management.timer", "Timer", "getPeriod", "(Integer)", "summary", "df-generated"]
+      - ["javax.management.timer", "Timer", "getSendPastNotifications", "()", "summary", "df-generated"]
+      - ["javax.management.timer", "Timer", "isActive", "()", "summary", "df-generated"]
+      - ["javax.management.timer", "Timer", "isEmpty", "()", "summary", "df-generated"]
+      - ["javax.management.timer", "Timer", "postDeregister", "()", "summary", "df-generated"]
+      - ["javax.management.timer", "Timer", "postRegister", "(Boolean)", "summary", "df-generated"]
+      - ["javax.management.timer", "Timer", "preDeregister", "()", "summary", "df-generated"]
+      - ["javax.management.timer", "Timer", "removeAllNotifications", "()", "summary", "df-generated"]
+      - ["javax.management.timer", "Timer", "removeNotification", "(Integer)", "summary", "df-generated"]
+      - ["javax.management.timer", "Timer", "removeNotifications", "(String)", "summary", "df-generated"]
+      - ["javax.management.timer", "Timer", "setSendPastNotifications", "(boolean)", "summary", "df-generated"]
+      - ["javax.management.timer", "Timer", "start", "()", "summary", "df-generated"]
+      - ["javax.management.timer", "Timer", "stop", "()", "summary", "df-generated"]
+      - ["javax.management.timer", "TimerNotification", "getNotificationID", "()", "summary", "df-generated"]

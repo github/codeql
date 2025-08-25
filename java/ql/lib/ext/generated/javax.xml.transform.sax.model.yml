@@ -1,0 +1,37 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.xml.transform.sax", "SAXResult", True, "SAXResult", "(ContentHandler)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.sax.SAXResult.handler]", "value", "dfc-generated"]
+      - ["javax.xml.transform.sax", "SAXResult", True, "getHandler", "()", "", "Argument[this].SyntheticField[javax.xml.transform.sax.SAXResult.handler]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.transform.sax", "SAXResult", True, "getLexicalHandler", "()", "", "Argument[this].SyntheticField[javax.xml.transform.sax.SAXResult.lexhandler]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.transform.sax", "SAXResult", True, "getSystemId", "()", "", "Argument[this].SyntheticField[javax.xml.transform.sax.SAXResult.systemId]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.transform.sax", "SAXResult", True, "setHandler", "(ContentHandler)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.sax.SAXResult.handler]", "value", "dfc-generated"]
+      - ["javax.xml.transform.sax", "SAXResult", True, "setLexicalHandler", "(LexicalHandler)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.sax.SAXResult.lexhandler]", "value", "dfc-generated"]
+      - ["javax.xml.transform.sax", "SAXResult", True, "setSystemId", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.sax.SAXResult.systemId]", "value", "dfc-generated"]
+      - ["javax.xml.transform.sax", "SAXSource", True, "getSystemId", "()", "", "Argument[this].SyntheticField[javax.xml.transform.sax.SAXSource.inputSource].SyntheticField[org.xml.sax.InputSource.systemId]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.transform.sax", "SAXSource", True, "getXMLReader", "()", "", "Argument[this].SyntheticField[javax.xml.transform.sax.SAXSource.reader]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.transform.sax", "SAXSource", True, "setInputSource", "(InputSource)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.transform.sax", "SAXSource", True, "setSystemId", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.sax.SAXSource.inputSource].SyntheticField[org.xml.sax.InputSource.systemId]", "value", "dfc-generated"]
+      - ["javax.xml.transform.sax", "SAXSource", True, "setXMLReader", "(XMLReader)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.sax.SAXSource.reader]", "value", "dfc-generated"]
+      - ["javax.xml.transform.sax", "SAXTransformerFactory", True, "newTemplatesHandler", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.transform.sax", "SAXTransformerFactory", True, "newTransformerHandler", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.transform.sax", "SAXTransformerFactory", True, "newTransformerHandler", "(Source)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.transform.sax", "SAXTransformerFactory", True, "newTransformerHandler", "(Templates)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.transform.sax", "SAXTransformerFactory", True, "newXMLFilter", "(Source)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.transform.sax", "SAXTransformerFactory", True, "newXMLFilter", "(Source)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.transform.sax", "SAXTransformerFactory", True, "newXMLFilter", "(Templates)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.transform.sax", "TemplatesHandler", True, "getSystemId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.transform.sax", "TemplatesHandler", True, "getTemplates", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.transform.sax", "TemplatesHandler", True, "setSystemId", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.transform.sax", "TransformerHandler", True, "getSystemId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.transform.sax", "TransformerHandler", True, "getTransformer", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.transform.sax", "TransformerHandler", True, "setResult", "(Result)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.transform.sax", "TransformerHandler", True, "setSystemId", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.xml.transform.sax", "SAXSource", "isEmpty", "()", "summary", "df-generated"]

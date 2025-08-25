@@ -11,12 +11,12 @@ class WebAppConstantSecretKeySource extends DataFlow::Node {
         env = API::moduleImport("environ").getMember("Env") and
         // has default value
         exists(API::Node param | param = env.getKeywordParameter("SECRET_KEY") |
-          param.asSink().asExpr().getASubExpression*() instanceof StrConst
+          param.asSink().asExpr().getASubExpression*() instanceof StringLiteral
         ) and
         this = env.getReturn().getReturn().asSource()
       )
       or
-      this.asExpr() instanceof StrConst
+      this.asExpr() instanceof StringLiteral
       or
       exists(API::CallNode cn |
         cn =
@@ -25,7 +25,8 @@ class WebAppConstantSecretKeySource extends DataFlow::Node {
             API::moduleImport("os").getMember("environ").getMember("get").getACall()
           ] and
         cn.getNumArgument() = 2 and
-        DataFlow::localFlow(any(DataFlow::Node n | n.asExpr() instanceof StrConst), cn.getArg(1)) and
+        DataFlow::localFlow(any(DataFlow::Node n | n.asExpr() instanceof StringLiteral),
+          cn.getArg(1)) and
         this.asExpr() = cn.asExpr()
       )
     ) and

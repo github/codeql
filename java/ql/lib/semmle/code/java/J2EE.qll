@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with J2EE bean types.
  */
+overlay[local?]
+module;
 
 import Type
 
@@ -25,18 +27,12 @@ class LocalEjbHomeInterface extends Interface {
   }
 }
 
-/** DEPRECATED: Alias for LocalEjbHomeInterface */
-deprecated class LocalEJBHomeInterface = LocalEjbHomeInterface;
-
 /** A remote EJB home interface. */
 class RemoteEjbHomeInterface extends Interface {
   RemoteEjbHomeInterface() {
     exists(Interface i | i.hasQualifiedName("javax.ejb", "EJBHome") | this.hasSupertype+(i))
   }
 }
-
-/** DEPRECATED: Alias for RemoteEjbHomeInterface */
-deprecated class RemoteEJBHomeInterface = RemoteEjbHomeInterface;
 
 /** A local EJB interface. */
 class LocalEjbInterface extends Interface {
@@ -45,18 +41,12 @@ class LocalEjbInterface extends Interface {
   }
 }
 
-/** DEPRECATED: Alias for LocalEjbInterface */
-deprecated class LocalEJBInterface = LocalEjbInterface;
-
 /** A remote EJB interface. */
 class RemoteEjbInterface extends Interface {
   RemoteEjbInterface() {
     exists(Interface i | i.hasQualifiedName("javax.ejb", "EJBObject") | this.hasSupertype+(i))
   }
 }
-
-/** DEPRECATED: Alias for RemoteEjbInterface */
-deprecated class RemoteEJBInterface = RemoteEjbInterface;
 
 /** A message bean. */
 class MessageBean extends Class {

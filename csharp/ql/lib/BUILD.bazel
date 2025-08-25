@@ -1,0 +1,15 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
+
+package(default_visibility = ["//csharp:__pkg__"])
+
+pkg_files(
+    name = "dbscheme",
+    srcs = ["semmlecode.csharp.dbscheme"],
+    prefix = "csharp",
+)
+
+pkg_files(
+    name = "dbscheme-stats",
+    srcs = ["semmlecode.csharp.dbscheme.stats"],
+    prefix = "csharp",
+)

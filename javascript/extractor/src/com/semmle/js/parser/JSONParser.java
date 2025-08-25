@@ -79,7 +79,7 @@ public class JSONParser {
   }
 
   private char peek() {
-    return offset < length ? src.charAt(offset) : (char) -1;
+    return offset < length ? src.charAt(offset) : Character.MAX_VALUE;
   }
 
   private JSONValue readValue() throws ParseError {
@@ -152,9 +152,6 @@ public class JSONParser {
         char c = next();
         switch (c) {
           case '}':
-            if (!needsComma) {
-              raise("Trailing commas are not allowed in JSON.");
-            }
             break out;
           case ',':
             if (!needsComma) {
@@ -205,9 +202,6 @@ public class JSONParser {
         char c = peek();
         switch (c) {
           case ']':
-            if (!needsComma) {
-              raise("Omitted elements are not allowed in JSON.");
-            }
             next();
             break out;
           case ',':
@@ -356,7 +350,7 @@ public class JSONParser {
     char c;
     next();
     next();
-    while ((c = peek()) != '\r' && c != '\n' && c != -1) next();
+    while ((c = peek()) != '\r' && c != '\n' && c != Character.MAX_VALUE) next();
   }
 
   /** Skips the block comment starting at the current position. */
@@ -367,7 +361,7 @@ public class JSONParser {
     next();
     do {
       c = peek();
-      if (c < 0) raise("Unterminated comment.");
+      if (c == Character.MAX_VALUE) raise("Unterminated comment");
       next();
       if (c == '*' && peek() == '/') {
         next();

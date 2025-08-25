@@ -5,7 +5,7 @@ module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ClassInstanceExpr }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().hasName("sink") and
       ma.getAnArgument() = sink.asExpr()
     )

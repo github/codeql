@@ -6,7 +6,7 @@ import semmle.code.java.dataflow.SSA
 /**
  * The kind of bound that is known to hold for some variable.
  */
-library class BoundKind extends string {
+class BoundKind extends string {
   BoundKind() { this = ["=", "!=", ">=", "<="] }
 
   predicate isEqual() { this = "=" }
@@ -30,7 +30,7 @@ predicate uselessTest(ConditionNode s1, BinaryExpr test, boolean testIsTrue) {
     ConditionBlock cb, SsaVariable v, BinaryExpr cond, boolean condIsTrue, int k1, int k2,
     CompileTimeConstantExpr c1, CompileTimeConstantExpr c2
   |
-    s1 = cond and
+    s1.getCondition() = cond and
     cb.getCondition() = cond and
     cond.hasOperands(v.getAUse(), c1) and
     c1.getIntValue() = k1 and

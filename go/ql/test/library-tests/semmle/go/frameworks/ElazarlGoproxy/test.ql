@@ -1,15 +1,16 @@
 import go
-import TestUtilities.InlineExpectationsTest
+import semmle.go.dataflow.ExternalFlow
+import ModelValidation
+import utils.test.InlineExpectationsTest
 
-module UntrustedFlowSourceTest implements TestSig {
-  string getARelevantTag() { result = "untrustedflowsource" }
+module RemoteFlowSourceTest implements TestSig {
+  string getARelevantTag() { result = "remoteflowsource" }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
-    tag = "untrustedflowsource" and
+    tag = "remoteflowsource" and
     value = element and
-    exists(UntrustedFlowSource src | value = "\"" + src.toString() + "\"" |
-      src.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn())
+    exists(RemoteFlowSource src | value = "\"" + src.toString() + "\"" |
+      src.getLocation() = location
     )
   }
 }
@@ -22,8 +23,7 @@ module HeaderWriteTest implements TestSig {
     exists(Http::HeaderWrite hw, string name, string val | element = hw.toString() |
       hw.definesHeader(name, val) and
       value = name + ":" + val and
-      hw.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn())
+      hw.getLocation() = location
     )
   }
 }
@@ -33,8 +33,7 @@ module LoggerTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(LoggerCall log |
-      log.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      log.getLocation() = location and
       element = log.toString() and
       value = log.getAMessageComponent().toString() and
       tag = "logger"
@@ -62,12 +61,10 @@ module TaintFlow implements TestSig {
     value = "" and
     element = "" and
     exists(DataFlow::Node toNode |
-      toNode
-          .hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-            location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      toNode.getLocation() = location and
       Flow::flowTo(toNode)
     )
   }
 }
 
-import MakeTest<MergeTests4<UntrustedFlowSourceTest, HeaderWriteTest, LoggerTest, TaintFlow>>
+import MakeTest<MergeTests4<RemoteFlowSourceTest, HeaderWriteTest, LoggerTest, TaintFlow>>

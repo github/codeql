@@ -45,7 +45,7 @@ class RightShiftOp extends Expr {
   }
 }
 
-private predicate boundedRead(RValue read) {
+private predicate boundedRead(VarRead read) {
   exists(SsaVariable v, ConditionBlock cb, ComparisonExpr comp, boolean testIsTrue |
     read = v.getAUse() and
     cb.controls(read.getBasicBlock(), testIsTrue) and
@@ -57,7 +57,7 @@ private predicate boundedRead(RValue read) {
   )
 }
 
-private predicate castCheck(RValue read) {
+private predicate castCheck(VarRead read) {
   exists(EqualityTest eq, CastExpr cast |
     cast.getExpr() = read and
     eq.hasOperands(cast, read.getVariable().getAnAccess())
@@ -85,7 +85,45 @@ private predicate smallExpr(Expr e) {
  * numeric cast.
  */
 module NumericCastFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node src) { src instanceof ActiveThreatModelSource }
+
+  predicate isSink(DataFlow::Node sink) {
+    sink.asExpr() = any(NumericNarrowingCastExpr cast).getExpr() and
+    sink.asExpr() instanceof VarAccess
+  }
+
+  predicate isBarrier(DataFlow::Node node) {
+    boundedRead(node.asExpr()) or
+    castCheck(node.asExpr()) or
+    node.getType() instanceof SmallType or
+    smallExpr(node.asExpr()) or
+    node.getEnclosingCallable() instanceof HashCodeMethod or
+    exists(RightShiftOp e | e.getShiftedVariable().getAnAccess() = node.asExpr())
+  }
+
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(NumericNarrowingCastExpr cast |
+      cast.getExpr() = sink.asExpr() and
+      result = cast.getLocation()
+    )
+  }
+}
+
+/**
+ * Taint-tracking flow for user input that is used in a numeric cast.
+ */
+module NumericCastFlow = TaintTracking::Global<NumericCastFlowConfig>;
+
+/**
+ * A taint-tracking configuration for reasoning about local user input that is
+ * used in a numeric cast.
+ */
+deprecated module NumericCastLocalFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src instanceof LocalUserInput }
 
   predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(NumericNarrowingCastExpr cast).getExpr() and
@@ -105,31 +143,8 @@ module NumericCastFlowConfig implements DataFlow::ConfigSig {
 }
 
 /**
- * Taint-tracking flow for user input that is used in a numeric cast.
- */
-module NumericCastFlow = TaintTracking::Global<NumericCastFlowConfig>;
-
-/**
- * A taint-tracking configuration for reasoning about local user input that is
- * used in a numeric cast.
- */
-module NumericCastLocalFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof LocalUserInput }
-
-  predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(NumericNarrowingCastExpr cast).getExpr()
-  }
-
-  predicate isBarrier(DataFlow::Node node) {
-    boundedRead(node.asExpr()) or
-    castCheck(node.asExpr()) or
-    node.getType() instanceof SmallType or
-    smallExpr(node.asExpr()) or
-    node.getEnclosingCallable() instanceof HashCodeMethod
-  }
-}
-
-/**
+ * DEPRECATED: Use `NumericCastFlow` instead and configure threat model sources to include `local`.
+ *
  * Taint-tracking flow for local user input that is used in a numeric cast.
  */
-module NumericCastLocalFlow = TaintTracking::Global<NumericCastLocalFlowConfig>;
+deprecated module NumericCastLocalFlow = TaintTracking::Global<NumericCastLocalFlowConfig>;

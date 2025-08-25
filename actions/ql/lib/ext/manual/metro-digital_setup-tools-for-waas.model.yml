@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["metro-digital/setup-tools-for-waas", "*", "input.gcp_sa_key", "env.GCLOUD_PROJECT", "taint", "manual"]

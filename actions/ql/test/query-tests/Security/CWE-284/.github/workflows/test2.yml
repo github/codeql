@@ -1,0 +1,26 @@
+name: test
+
+on:
+  push:
+
+jobs:
+  test1:
+    runs-on: [self-hosted, foo]
+    steps:
+      - run: cmd
+  test2:
+    runs-on:
+      group: my-group
+      labels: [self-hosted, foo]
+    steps:
+      - run: cmd
+  test3:
+    runs-on:
+      - 'self-hosted'
+      - 'foo'
+    steps:
+      - run: cmd
+  test4:
+    runs-on: self-hosted-azure
+    steps:
+      - run: cmd

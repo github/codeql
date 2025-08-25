@@ -1,0 +1,14 @@
+{
+  "markdownMessage": "Go files were found outside of the Go modules corresponding to these `go.mod` files.\n\n`subdir/go.mod`",
+  "severity": "note",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/go-files-outside-go-modules",
+    "name": "Go files were found outside Go modules"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}

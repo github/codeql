@@ -1,10 +1,13 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.IOException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
-import java.io.InputStream;
-import java.net.URL;
-import java.io.File;
-import java.io.FileWriter;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletException;
 import org.apache.commons.io.FileUtils;
 
 class SupportedExternalApis {
@@ -30,4 +33,8 @@ class SupportedExternalApis {
 
 		file.compareTo(file); // supported neutral sink (compareTo)
 	}
+
+    public static void doSendRedirect(HttpServletResponse req) throws ServletException, IOException {
+        req.sendRedirect("myredirect"); // supported sink (sendRedirect)
+    }
 }

@@ -23,6 +23,12 @@ extensions:
       - ["testlib", "Member[ArgPos].Member[MyClass].Subclass.Member[otherSelfTest].Parameter[0]", "test-source"]
       - ["testlib", "Member[ArgPos].Member[MyClass].Subclass.Member[anyParam].Parameter[any]", "test-source"]
       - ["testlib", "Member[ArgPos].Member[MyClass].Subclass.Member[anyNamed].Parameter[any-named]", "test-source"]
+      # test steps through content
+      - ["testlib", "Member[source_dict].DictionaryElement[key].Member[func].ReturnValue", "test-source"]
+      - ["testlib", "Member[source_dict_any].DictionaryElementAny.Member[func].ReturnValue", "test-source"]
+      # TODO: Add support for list/tuples
+      # - ["testlib", "Member[source_list].ListElement.Member[func].ReturnValue", "test-source"]
+      # - ["testlib", "Member[source_tuple].TupleElement[0].Member[func].ReturnValue", "test-source"]
 
   - addsTo:
       pack: codeql/python-all

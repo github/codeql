@@ -13,7 +13,6 @@ public class IOUtils {
   public static byte[] readFully(InputStream input, int length) throws IOException { return null; }
   public static List<String> readLines(InputStream input, String encoding) throws IOException { return null; }
   public static BufferedReader toBufferedReader(Reader reader) { return null; }
-  public static byte[] toByteArray(InputStream input, int size) throws IOException { return null; }
   public static char[] toCharArray(InputStream is, String encoding) throws IOException { return null; }
   public static InputStream toInputStream(String input, String encoding) throws IOException { return null; }
   public static String toString(InputStream input, String encoding) throws IOException { return null; }
@@ -25,6 +24,7 @@ public class IOUtils {
 
   // Both
   public static void writeLines(Collection<?> lines, String lineEnding, Writer writer) throws IOException { }
+  public static byte[] toByteArray(InputStream input, int size) throws IOException { return null; }
 
   // No model
   public static void noSummary(String string) throws IOException { }

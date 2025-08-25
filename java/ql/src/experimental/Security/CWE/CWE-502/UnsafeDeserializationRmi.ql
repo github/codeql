@@ -56,13 +56,11 @@ private module BindingUnsafeRemoteObjectConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma | ma.getArgument(1) = sink.asExpr() |
-      ma.getMethod() instanceof BindMethod
-    )
+    exists(MethodCall ma | ma.getArgument(1) = sink.asExpr() | ma.getMethod() instanceof BindMethod)
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+    exists(MethodCall ma, Method m | m = ma.getMethod() |
       m.getDeclaringType().hasQualifiedName("java.rmi.server", "UnicastRemoteObject") and
       m.hasName("exportObject") and
       not m.getParameterType([2, 4]).(RefType).hasQualifiedName("java.io", "ObjectInputFilter") and
@@ -75,6 +73,11 @@ private module BindingUnsafeRemoteObjectConfig implements DataFlow::ConfigSig {
 private module BindingUnsafeRemoteObjectFlow =
   TaintTracking::Global<BindingUnsafeRemoteObjectConfig>;
 
-from BindingUnsafeRemoteObjectFlow::PathNode source, BindingUnsafeRemoteObjectFlow::PathNode sink
-where BindingUnsafeRemoteObjectFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "Unsafe deserialization in a remote object."
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, BindingUnsafeRemoteObjectFlow::PathNode source,
+  BindingUnsafeRemoteObjectFlow::PathNode sink, string message
+) {
+  BindingUnsafeRemoteObjectFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message = "Unsafe deserialization in a remote object."
+}

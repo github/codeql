@@ -11,6 +11,6 @@ var actions = {
 }
 
 app.get('/perform/:action/:payload', function(req, res) {
-  let action = actions[req.params.action];
-  res.end(action(req.params.payload));
+  let action = actions[req.params.action]; // $ Source
+  res.end(action(req.params.payload)); // $ Alert
 });

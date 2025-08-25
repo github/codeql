@@ -1,0 +1,82 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_filegroup", "pkg_files")
+load("//misc/bazel:pkg.bzl", "codeql_pack", "codeql_pkg_files_overlay")
+
+package(default_visibility = ["//visibility:public"])
+
+alias(
+    name = "dbscheme",
+    actual = "//csharp/ql/lib:dbscheme",
+)
+
+alias(
+    name = "dbscheme-stats",
+    actual = "//csharp/ql/lib:dbscheme-stats",
+)
+
+pkg_files(
+    name = "dbscheme-group",
+    srcs = [
+        ":dbscheme",
+        ":dbscheme-stats",
+    ],
+    strip_prefix = None,
+)
+
+pkg_files(
+    name = "extractor-asp",
+    srcs = [
+        "@semmle_code//extractor-asp:extractor-asp-fat",
+    ],
+    prefix = "tools",
+    renames = {
+        "@semmle_code//extractor-asp:extractor-asp-fat": "extractor-asp.jar",
+    },
+)
+
+pkg_filegroup(
+    name = "db-files",
+    srcs = [
+        ":dbscheme-group",
+        "//csharp/downgrades",
+    ],
+)
+
+pkg_files(
+    name = "extra-files",
+    srcs = [
+        ":codeql-extractor.yml",
+        "//:LICENSE",
+    ],
+)
+
+codeql_pkg_files_overlay(
+    name = "extractor-arch-overlay",
+    srcs = [
+        "//csharp/autobuilder/Semmle.Autobuild.CSharp",
+        "//csharp/extractor/Semmle.Extraction.CSharp.Driver",
+        "//csharp/extractor/Semmle.Extraction.CSharp.Standalone",
+    ],
+)
+
+codeql_pack(
+    name = "csharp",
+    srcs = [
+        ":dbscheme-group",
+        ":extra-files",
+        ":extractor-arch-overlay",
+        ":extractor-asp",
+        "//csharp/downgrades",
+        "//csharp/tools",
+    ],
+)
+
+test_suite(
+    name = "unit-tests",
+    tags = ["csharp"],
+    tests = [
+        "//csharp/autobuilder/Semmle.Autobuild.CSharp.Tests:acst",
+        "//csharp/autobuilder/Semmle.Autobuild.Cpp.Tests:acpt",
+        "//csharp/extractor/Semmle.Extraction.Tests:et",
+        "//csharp/extractor/Semmle.Util.Tests:ut",
+    ],
+)

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<settings>
+    <profiles>
+        <profile>
+            <id>codeql-depgraph-plugin-repo</id>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>codeql-depgraph-plugin-repo</id>
+                    <name>CodeQL Dependency Graph Plugin Repository</name>
+                    <url>file://[dist-root]/java/tools/ferstl-depgraph-dependencies/</url>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
+    <activeProfiles>
+        <activeProfile>codeql-depgraph-plugin-repo</activeProfile>
+    </activeProfiles>
+</settings>

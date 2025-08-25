@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["microcks/microcks/.github/workflows/package-native.yml", "*", "input.image-tag", "code-injection", "generated"]

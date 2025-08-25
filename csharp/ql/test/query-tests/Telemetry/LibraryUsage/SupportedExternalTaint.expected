@@ -1,3 +1,3 @@
-| System.Collections.Generic#List<>.Add(T) | 2 |
-| System.Collections.Generic#Dictionary<,>+KeyCollection.GetEnumerator() | 1 |
-| System.Collections.Generic#Dictionary<,>.get_Keys() | 1 |
+| System.Collections.Generic#List`1.Add(T) | 2 |
+| System.Collections.Generic#Dictionary`2+KeyCollection.GetEnumerator() | 1 |
+| System.Collections.Generic#Dictionary`2.get_Keys() | 1 |

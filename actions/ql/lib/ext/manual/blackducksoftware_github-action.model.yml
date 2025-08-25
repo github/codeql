@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["blackducksoftware/github-action", "*", "input.args", "command-injection", "manual"]
+      - ["blackducksoftware/github-action", "*", "input.blackduck.url", "command-injection", "manual"]
+      - ["blackducksoftware/github-action", "*", "input.blackduck.api.token", "command-injection", "manual"]

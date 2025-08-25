@@ -1,12 +1,12 @@
 | test.cpp:15:8:15:11 | Load: aptr | VNLength(InitializeParameter: count) | 0 | ZeroOffset | 0 |
-| test.cpp:19:8:19:8 | Load: a | VNLength(Chi: ptr) | 0 | ZeroOffset | 0 |
-| test.cpp:21:8:21:8 | Load: a | VNLength(Chi: ptr) | -1 | ZeroOffset | 0 |
-| test.cpp:23:8:23:8 | Load: a | VNLength(Chi: ptr) | 1 | ZeroOffset | 0 |
-| test.cpp:27:8:27:8 | Load: c | VNLength(Chi: ptr) | 0 | ZeroOffset | 0 |
-| test.cpp:28:8:28:24 | Convert: (unsigned char *)... | VNLength(Chi: ptr) | 0 | ZeroOffset | 0 |
-| test.cpp:30:8:30:8 | Load: v | VNLength(Chi: ptr) | 0 | ZeroOffset | 0 |
+| test.cpp:19:8:19:8 | Load: a | VNLength(Load: count) | 0 | ZeroOffset | 0 |
+| test.cpp:21:8:21:8 | Load: a | VNLength(Load: count) | -1 | ZeroOffset | 0 |
+| test.cpp:23:8:23:8 | Load: a | VNLength(Load: count) | 1 | ZeroOffset | 0 |
+| test.cpp:27:8:27:8 | Load: c | VNLength(Load: count) | 0 | ZeroOffset | 0 |
+| test.cpp:28:8:28:24 | Convert: (unsigned char *)... | VNLength(Load: count) | 0 | ZeroOffset | 0 |
+| test.cpp:30:8:30:8 | Load: v | VNLength(Load: count) | 0 | ZeroOffset | 0 |
 | test.cpp:34:8:34:12 | Convert: array to pointer conversion | ZeroLength | 100 | ZeroOffset | 0 |
-| test.cpp:37:10:37:10 | Load: b | VNLength(Chi: ptr) | 0 | ZeroOffset | 0 |
+| test.cpp:37:10:37:10 | Load: b | VNLength(Load: count) | 0 | ZeroOffset | 0 |
 | test.cpp:44:8:44:8 | Load: a | VNLength(InitializeParameter: count) | 0 | ZeroOffset | 2 |
 | test.cpp:53:10:53:10 | Load: a | VNLength(InitializeParameter: count) | 0 | ZeroOffset | 2 |
 | test.cpp:56:10:56:10 | Load: a | VNLength(InitializeParameter: count) | 0 | ZeroOffset | 3 |

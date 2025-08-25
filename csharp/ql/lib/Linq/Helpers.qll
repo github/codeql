@@ -21,12 +21,14 @@ private int numStmts(ForeachStmt fes) {
 }
 
 /** Holds if the type's qualified name is "System.Linq.Enumerable" */
-predicate isEnumerableType(ValueOrRefType t) { t.hasQualifiedName("System.Linq", "Enumerable") }
+predicate isEnumerableType(ValueOrRefType t) {
+  t.hasFullyQualifiedName("System.Linq", "Enumerable")
+}
 
 /** Holds if the type's qualified name starts with "System.Collections.Generic.IEnumerable" */
 predicate isIEnumerableType(ValueOrRefType t) {
   exists(string type |
-    t.hasQualifiedName("System.Collections.Generic", type) and
+    t.hasFullyQualifiedName("System.Collections.Generic", type) and
     type.matches("IEnumerable%")
   )
 }
@@ -159,7 +161,7 @@ class AnyCall extends MethodCall {
     exists(Method m |
       m = this.getTarget().getUnboundDeclaration() and
       isEnumerableType(m.getDeclaringType()) and
-      m.hasName("Any<>")
+      m.hasName("Any`1")
     )
   }
 }
@@ -170,7 +172,7 @@ class CountCall extends MethodCall {
     exists(Method m |
       m = this.getTarget().getUnboundDeclaration() and
       isEnumerableType(m.getDeclaringType()) and
-      m.hasName("Count<>")
+      m.hasName("Count`1")
     )
   }
 }
@@ -186,7 +188,7 @@ class SelectCall extends ExtensionMethodCall {
     exists(Method m |
       m = this.getTarget().getUnboundDeclaration() and
       isEnumerableType(m.getDeclaringType()) and
-      m.hasName("Select<,>")
+      m.hasName("Select`2")
     )
   }
 

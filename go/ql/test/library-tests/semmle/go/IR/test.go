@@ -21,3 +21,14 @@ func testTypeAssert() {
 	got, ok := i.(string)
 	fmt.Printf("%v %v", got, ok)
 }
+
+func f(x, y int)    {}
+func g() (int, int) { return 0, 0 }
+
+func testNestedFunctionCalls() {
+	f(g())
+
+	// Edge case: when we call a function from a variable, `getTarget()` is not defined
+	v := g
+	f(v())
+}

@@ -2,6 +2,8 @@
  * Provides classes and predicates for modeling
  * EJB Programming Restrictions (see EJB 3.0 specification, section 21.1.2).
  */
+overlay[local?]
+module;
 
 import java
 import EJB
@@ -135,7 +137,7 @@ class ForbiddenThisCallable extends ForbiddenCallable {
 ThisAccess forbiddenThisUse(Callable c) {
   result.getEnclosingCallable() = c and
   (
-    exists(MethodAccess ma | ma.getAnArgument() = result) or
+    exists(MethodCall ma | ma.getAnArgument() = result) or
     exists(ReturnStmt rs | rs.getResult() = result)
   )
 }

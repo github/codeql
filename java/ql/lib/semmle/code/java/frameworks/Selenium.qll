@@ -2,6 +2,8 @@
  * Provides classes and predicates for identifying classes reflectively constructed by Selenium using the
  * `PageFactory.initElements(...)` method.
  */
+overlay[local?]
+module;
 
 import default
 import semmle.code.java.Reflection
@@ -16,7 +18,7 @@ class SeleniumPageFactory extends Class {
 /**
  * A call to the Selenium `PageFactory.initElements` method, to construct a page object.
  */
-class SeleniumInitElementsAccess extends MethodAccess {
+class SeleniumInitElementsAccess extends MethodCall {
   SeleniumInitElementsAccess() {
     this.getMethod().getDeclaringType() instanceof SeleniumPageFactory and
     this.getMethod().hasName("initElements")

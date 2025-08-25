@@ -1,7 +1,7 @@
 /** This tests that we are able to detect remote flow sources and sinks. */
 
 import cpp
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import semmle.code.cpp.security.FlowSources
 
 module RemoteFlowSourceTest implements TestSig {

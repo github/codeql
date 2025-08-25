@@ -1,5 +1,5 @@
 import java
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
@@ -26,7 +26,7 @@ module NeutralSinkTest implements TestSig {
     exists(Call call, Callable callable |
       call.getCallee() = callable and
       neutralModel(callable.getDeclaringType().getCompilationUnit().getPackage().getName(),
-        callable.getDeclaringType().getSourceDeclaration().nestedName(), callable.getName(),
+        callable.getDeclaringType().getSourceDeclaration().getNestedName(), callable.getName(),
         [paramsString(callable), ""], "sink", _) and
       call.getLocation() = location and
       element = call.toString() and

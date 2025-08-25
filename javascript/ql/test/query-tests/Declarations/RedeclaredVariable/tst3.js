@@ -6,7 +6,7 @@ function f() {
 
 f();
 
-function f() { // NOT OK
+function f() { // $ Alert
   console.log("first declaration");
 }
 

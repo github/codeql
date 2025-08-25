@@ -3,6 +3,7 @@
  */
 
 private import codeql.dataflow.DataFlow
+private import semmle.go.Locations
 
 module Private {
   import DataFlowPrivate
@@ -13,7 +14,7 @@ module Public {
   import DataFlowUtil
 }
 
-module GoDataFlow implements InputSig {
+module GoDataFlow implements InputSig<Location> {
   import Private
   import Public
 

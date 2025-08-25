@@ -84,6 +84,7 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitGenericFunctionType(const swift::GenericFunctionType* type);
   SwiftMangledName visitGenericTypeParamType(const swift::GenericTypeParamType* type);
   SwiftMangledName visitAnyMetatypeType(const swift::AnyMetatypeType* type);
+  SwiftMangledName visitExistentialMetatypeType(const swift::ExistentialMetatypeType* type);
   SwiftMangledName visitDependentMemberType(const swift::DependentMemberType* type);
   SwiftMangledName visitInOutType(const swift::InOutType* type);
   SwiftMangledName visitExistentialType(const swift::ExistentialType* type);
@@ -94,12 +95,15 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitOpaqueTypeArchetypeType(const swift::OpaqueTypeArchetypeType* type);
   SwiftMangledName visitOpenedArchetypeType(const swift::OpenedArchetypeType* type);
   SwiftMangledName visitProtocolCompositionType(const swift::ProtocolCompositionType* type);
-  SwiftMangledName visitParenType(const swift::ParenType* type);
   SwiftMangledName visitLValueType(const swift::LValueType* type);
   SwiftMangledName visitDynamicSelfType(const swift::DynamicSelfType* type);
   SwiftMangledName visitUnboundGenericType(const swift::UnboundGenericType* type);
   SwiftMangledName visitReferenceStorageType(const swift::ReferenceStorageType* type);
   SwiftMangledName visitParametrizedProtocolType(const swift::ParameterizedProtocolType* type);
+  SwiftMangledName visitPackArchetypeType(const swift::PackArchetypeType* type);
+  SwiftMangledName visitPackType(const swift::PackType* type);
+  SwiftMangledName visitPackElementType(const swift::PackElementType* type);
+  SwiftMangledName visitPackExpansionType(const swift::PackExpansionType* type);
 
  private:
   std::unordered_map<const swift::Decl*, unsigned> preloadedExtensionIndexes;

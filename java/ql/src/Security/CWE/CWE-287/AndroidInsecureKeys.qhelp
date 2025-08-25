@@ -1,0 +1,43 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Biometric authentication, such as fingerprint recognition, can be used alongside cryptographic keys stored in the Android <code>KeyStore</code> to protect sensitive parts of the application. However, 
+when a key generated for this purpose has certain parameters set insecurely, an attacker with physical access can bypass the 
+authentication check using application hooking tools such as Frida.
+</p>
+</overview>
+
+<recommendation>
+<p>
+When generating a key for use with biometric authentication, ensure that the following parameters of <code>KeyGenParameterSpec.Builder</code> are set:
+</p>
+<ul>
+<li><code>setUserAuthenticationRequired</code> should be set to <code>true</code>; otherwise, the key can be used without user authentication.</li>
+<li><code>setInvalidatedByBiometricEnrollment</code> should be set to <code>true</code> (the default); otherwise, an attacker can use the key by enrolling additional biometrics on the device.</li>
+<li><code>setUserAuthenticationValidityDurationSeconds</code>, if used, should be set to <code>-1</code>; otherwise, non-biometric (less secure) credentials can be used to access the key. We recommend using <code>setUserAuthenticationParameters</code> instead to explicitly set both the timeout and the types of credentials that may be used.</li>
+</ul>
+
+</recommendation>
+
+<example>
+<p>The following example demonstrates a key that is configured with secure paramaters:</p>
+<sample src="AndroidInsecureKeysGood.java"/>
+
+<p>In each of the following cases, a parameter is set insecurely:</p>
+<sample src="AndroidInsecureKeysBad.java"/>
+</example>
+
+<references>
+<li>
+WithSecure: <a href="https://labs.withsecure.com/publications/how-secure-is-your-android-keystore-authentication">How Secure is your Android Keystore Authentication?</a>.
+</li>
+<li>
+Android Developers: <a href="https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.Builder">KeyGenParameterSpec.Builder</a>.
+</li>
+
+</references>
+</qhelp>

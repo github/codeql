@@ -1,4 +1,6 @@
 /** Provides definitions for working with uses of Android external storage */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.security.FileReadWrite

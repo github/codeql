@@ -1,1 +1,2 @@
-Security/CWE-078/StoredCommand.ql
+query: Security/CWE-078/StoredCommand.ql
+postprocess: utils/test/PrettyPrintModels.ql

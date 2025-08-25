@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Although this is valid python code, it should not be counted as such.
+
+print("foo")

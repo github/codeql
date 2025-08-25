@@ -1,0 +1,28 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", True, "GenerateCommandLineCommands", "()", "", "Argument[this].Property[Microsoft.NET.Build.Tasks.RunReadyToRunCompiler.Crossgen2Tool].Property[Microsoft.Build.Framework.ITaskItem.ItemSpec]", "ReturnValue", "taint", "dfc-generated"]
+      - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", True, "GenerateFullPathToTool", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", True, "GenerateResponseFileCommands", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", True, "get_ToolName", "()", "", "Argument[this].Property[Microsoft.NET.Build.Tasks.RunReadyToRunCompiler.Crossgen2Tool].Property[Microsoft.Build.Framework.ITaskItem.ItemSpec]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", True, "get_ToolName", "()", "", "Argument[this].Property[Microsoft.NET.Build.Tasks.RunReadyToRunCompiler.CrossgenTool].Property[Microsoft.Build.Framework.ITaskItem.ItemSpec]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.NET.Build.Tasks", "PrepareForReadyToRunCompilation", "ExecuteCore", "()", "summary", "df-generated"]
+      - ["Microsoft.NET.Build.Tasks", "PrepareForReadyToRunCompilation", "get_ReadyToRunAssembliesToReference", "()", "summary", "df-generated"]
+      - ["Microsoft.NET.Build.Tasks", "PrepareForReadyToRunCompilation", "get_ReadyToRunCompileList", "()", "summary", "df-generated"]
+      - ["Microsoft.NET.Build.Tasks", "PrepareForReadyToRunCompilation", "get_ReadyToRunCompositeBuildInput", "()", "summary", "df-generated"]
+      - ["Microsoft.NET.Build.Tasks", "PrepareForReadyToRunCompilation", "get_ReadyToRunCompositeBuildReferences", "()", "summary", "df-generated"]
+      - ["Microsoft.NET.Build.Tasks", "PrepareForReadyToRunCompilation", "get_ReadyToRunFilesToPublish", "()", "summary", "df-generated"]
+      - ["Microsoft.NET.Build.Tasks", "PrepareForReadyToRunCompilation", "get_ReadyToRunSymbolsCompileList", "()", "summary", "df-generated"]
+      - ["Microsoft.NET.Build.Tasks", "ResolveReadyToRunCompilers", "ExecuteCore", "()", "summary", "df-generated"]
+      - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", "ExecuteTool", "(System.String,System.String,System.String)", "summary", "df-generated"]
+      - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", "LogEventsFromTextOutput", "(System.String,Microsoft.Build.Framework.MessageImportance)", "summary", "df-generated"]
+      - ["Microsoft.NET.Build.Tasks", "RunReadyToRunCompiler", "ValidateParameters", "()", "summary", "df-generated"]
+      - ["Microsoft.NET.Build.Tasks", "TaskBase", "Execute", "()", "summary", "df-generated"]
+      - ["Microsoft.NET.Build.Tasks", "TaskBase", "ExecuteCore", "()", "summary", "df-generated"]

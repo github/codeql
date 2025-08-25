@@ -1,4 +1,4 @@
-// semmle-extractor-options: --microsoft --edg --c99
+// semmle-extractor-options: --microsoft -std=c99
 struct AppleCompatible { // Definitions of Apple are exactly the same in b1.c and b2.c
   int apple_x;
 };

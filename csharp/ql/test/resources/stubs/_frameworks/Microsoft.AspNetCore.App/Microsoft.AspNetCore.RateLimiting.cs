@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.RateLimiting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.RateLimiting, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -20,14 +20,17 @@ namespace Microsoft
             public static partial class RateLimiterServiceCollectionExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddRateLimiter(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Action<Microsoft.AspNetCore.RateLimiting.RateLimiterOptions> configureOptions) => throw null;
+                public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddRateLimiter(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;
             }
         }
         namespace RateLimiting
         {
+            [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = false, Inherited = true)]
             public sealed class DisableRateLimitingAttribute : System.Attribute
             {
                 public DisableRateLimitingAttribute() => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = false, Inherited = true)]
             public sealed class EnableRateLimitingAttribute : System.Attribute
             {
                 public EnableRateLimitingAttribute(string policyName) => throw null;

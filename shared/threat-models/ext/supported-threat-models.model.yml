@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/threat-models
+      extensible: threatModelConfiguration
+    data:
+      - ["default", true, -2147483648] # The "default" threat model is included by default

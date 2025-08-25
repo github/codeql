@@ -9,7 +9,7 @@ import codeql.swift.dataflow.TaintTracking
 import codeql.swift.security.ECBEncryptionExtensions
 
 /**
- * A taint configuration from a creation of an ECB mode instance to expressions that use
+ * A data flow configuration from a creation of an ECB mode instance to expressions that use
  * it to initialize a cipher.
  */
 module EcbEncryptionConfig implements DataFlow::ConfigSig {
@@ -22,6 +22,8 @@ module EcbEncryptionConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(EcbEncryptionAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module EcbEncryptionFlow = DataFlow::Global<EcbEncryptionConfig>;

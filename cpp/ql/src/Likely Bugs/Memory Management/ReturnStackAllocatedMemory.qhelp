@@ -5,22 +5,23 @@
 
 
 <overview>
-<p>This rule finds return statements that return pointers to an object allocated on the stack. 
-The lifetime of a stack allocated memory location only lasts until the function returns, and 
-the contents of that memory become undefined after that. Clearly, using a pointer to stack 
+<p>This rule finds return statements that return pointers to an object allocated on the stack.
+The lifetime of a stack allocated memory location only lasts until the function returns, and
+the contents of that memory become undefined after that. Clearly, using a pointer to stack
 memory after the function has already returned will have undefined results. </p>
 
 </overview>
 <recommendation>
-<p>Use the functions of the <tt>malloc</tt> family to dynamically allocate memory on the heap for data that is used across function calls.</p>
+<p>Use the functions of the <tt>malloc</tt> family, or <tt>new</tt>, to dynamically allocate memory on the heap for data that is used across function calls.</p>
 
 </recommendation>
-<example><sample src="ReturnStackAllocatedMemory.cpp" />
+<example>
+<p>The following example allocates an object on the stack and returns a pointer to it. This is incorrect because the object is deallocated
+when the function returns, and the pointer becomes invalid.</p>
+<sample src="ReturnStackAllocatedMemoryBad.cpp" />
 
-
-
-
-
+<p>To fix this, allocate the object on the heap using <tt>new</tt> and return a pointer to the heap-allocated object.</p>
+<sample src="ReturnStackAllocatedMemoryGood.cpp" />
 </example>
 
 <references>

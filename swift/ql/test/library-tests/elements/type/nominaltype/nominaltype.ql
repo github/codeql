@@ -10,11 +10,13 @@ string describe(Type t) {
   result = "getAliasedType:" + t.(TypeAliasType).getAliasedType().toString()
   or
   result = "getABaseType:" + t.getABaseType().toString()
+  or
+  result = "getCanonicalType:" + t.getCanonicalType().toString()
 }
 
 from VarDecl v, Type t
 where
-  v.getLocation().getFile().getBaseName() != "" and
+  exists(v.getLocation().getFile().getRelativePath()) and
   not v.getName() = "self" and
   t = v.getType()
 select v, t.toString(), concat(describe(t), ", ")

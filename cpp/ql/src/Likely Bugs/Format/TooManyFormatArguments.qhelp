@@ -22,10 +22,8 @@ function.
 </example>
 <references>
 
-<li>cplusplus.com: <a href="http://www.tutorialspoint.com/cplusplus/cpp_functions.htm">C++ Functions</a>.</li>
+<li>CERT C Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/FIO47-C.+Use+valid+format+strings">FIO47-C. Use valid format strings</a>.</li>
 <li>Microsoft C Runtime Library Reference: <a href="https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/printf-printf-l-wprintf-wprintf-l">printf, wprintf</a>.</li>
-
-
 
 </references>
 </qhelp>

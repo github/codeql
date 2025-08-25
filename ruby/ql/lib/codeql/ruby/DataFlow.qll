@@ -12,6 +12,6 @@ import codeql.Locations
 module DataFlow {
   private import codeql.ruby.dataflow.internal.DataFlowImplSpecific
   private import codeql.dataflow.DataFlow
-  import DataFlowMake<RubyDataFlow>
-  import codeql.ruby.dataflow.internal.DataFlowImpl1
+  import DataFlowMake<Location, RubyDataFlow>
+  import Public
 }

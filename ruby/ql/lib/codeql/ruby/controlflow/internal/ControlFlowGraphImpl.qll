@@ -2,6 +2,8 @@
  * Provides an implementation for constructing control-flow graphs (CFGs) from
  * abstract syntax trees (ASTs), using the shared library from `codeql.controlflow.Cfg`.
  */
+overlay[local]
+module;
 
 private import codeql.controlflow.Cfg as CfgShared
 private import codeql.ruby.AST
@@ -22,7 +24,6 @@ class AstNode extends Ast::AstNode {
 private module CfgInput implements CfgShared::InputSig<Location> {
   private import ControlFlowGraphImpl as Impl
   private import Completion as Comp
-  private import Splitting as Splitting
   private import codeql.ruby.CFG as Cfg
 
   class AstNode = Impl::AstNode;
@@ -45,10 +46,6 @@ private module CfgInput implements CfgShared::InputSig<Location> {
     scope.(Impl::CfgScopeImpl).exit(last, c)
   }
 
-  class SplitKindBase = Splitting::TSplitKind;
-
-  class Split = Splitting::Split;
-
   class SuccessorType = Cfg::SuccessorType;
 
   SuccessorType getAMatchingSuccessorType(Completion c) { result = c.getAMatchingSuccessorType() }
@@ -65,9 +62,31 @@ private module CfgInput implements CfgShared::InputSig<Location> {
     t instanceof Cfg::SuccessorTypes::RaiseSuccessor or
     t instanceof Cfg::SuccessorTypes::ExitSuccessor
   }
+
+  private predicate id(Ruby::AstNode node1, Ruby::AstNode node2) { node1 = node2 }
+
+  private predicate idOf(Ruby::AstNode node, int id) = equivalenceRelation(id/2)(node, id)
+
+  int idOfAstNode(AstNode node) { idOf(AstInternal::toGeneratedInclSynth(node), result) }
+
+  int idOfCfgScope(CfgScope node) { result = idOfAstNode(node) }
 }
 
-import CfgShared::Make<Location, CfgInput>
+private module CfgSplittingInput implements CfgShared::SplittingInputSig<Location, CfgInput> {
+  private import Splitting as S
+
+  class SplitKindBase = S::TSplitKind;
+
+  class Split = S::Split;
+}
+
+private module ConditionalCompletionSplittingInput implements
+  CfgShared::ConditionalCompletionSplittingInputSig<Location, CfgInput, CfgSplittingInput>
+{
+  import Splitting::ConditionalCompletionSplitting::ConditionalCompletionSplittingInput
+}
+
+import CfgShared::MakeWithSplitting<Location, CfgInput, CfgSplittingInput, ConditionalCompletionSplittingInput>
 
 abstract class CfgScopeImpl extends AstNode {
   abstract predicate entry(AstNode first);
@@ -1413,7 +1432,10 @@ module Trees {
   }
 
   private class StringlikeLiteralTree extends StandardPostOrderTree instanceof StringlikeLiteral {
-    StringlikeLiteralTree() { not this instanceof HereDoc }
+    StringlikeLiteralTree() {
+      not this instanceof HereDoc and
+      not this instanceof AstInternal::TSimpleSymbolLiteralSynth
+    }
 
     final override ControlFlowTree getChildNode(int i) { result = super.getComponent(i) }
   }

@@ -16,7 +16,7 @@ from Assignment a, PropertyAccess pa
 where
   a.getLValue() = pa and
   pa.getTarget().hasName("Domain") and
-  pa.getTarget().getDeclaringType().hasQualifiedName("System.Web", "HttpCookie") and
+  pa.getTarget().getDeclaringType().hasFullyQualifiedName("System.Web", "HttpCookie") and
   (
     a.getRValue().getValue().regexpReplaceAll("[^.]", "").length() < 2 or
     a.getRValue().getValue().matches(".%")

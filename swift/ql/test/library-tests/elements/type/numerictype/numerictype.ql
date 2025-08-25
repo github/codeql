@@ -14,6 +14,6 @@ string describe(Type t) {
 
 from VarDecl v, Type t
 where
-  v.getLocation().getFile().getBaseName() != "" and
+  exists(v.getLocation().getFile().getRelativePath()) and
   t = v.getType()
 select v, t.toString(), concat(describe(t), ", ")

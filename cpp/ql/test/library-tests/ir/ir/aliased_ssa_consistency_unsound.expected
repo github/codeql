@@ -12,7 +12,11 @@ unnecessaryPhiInstruction
 memoryOperandDefinitionIsUnmodeled
 operandAcrossFunctions
 instructionWithoutUniqueBlock
+missingCanonicalLanguageType
+multipleCanonicalLanguageTypes
 containsLoopOfForwardEdges
+missingIRType
+multipleIRTypes
 lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
@@ -23,9 +27,7 @@ invalidOverlap
 nonUniqueEnclosingIRFunction
 fieldAddressOnNonPointer
 thisArgumentIsNonPointer
+| ir.cpp:2546:34:2546:34 | Call: call to operator bool | Call instruction 'Call: call to operator bool' has a `this` argument operand that is not an address, in function '$@'. | ir.cpp:2545:6:2545:23 | void this_inconsistency(bool) | void this_inconsistency(bool) |
 nonUniqueIRVariable
-missingCanonicalLanguageType
-multipleCanonicalLanguageTypes
-missingIRType
-multipleIRTypes
+nonBooleanOperand
 missingCppType

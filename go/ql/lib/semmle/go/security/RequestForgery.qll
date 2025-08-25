@@ -16,40 +16,6 @@ import go
 module RequestForgery {
   import RequestForgeryCustomizations::RequestForgery
 
-  /**
-   * DEPRECATED: Use `Flow` instead.
-   *
-   * A taint-tracking configuration for reasoning about request forgery.
-   */
-  deprecated class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "RequestForgery" }
-
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-      // propagate to a URL when its host is assigned to
-      exists(Write w, Field f, SsaWithFields v | f.hasQualifiedName("net/url", "URL", "Host") |
-        w.writesField(v.getAUse(), f, pred) and succ = v.getAUse()
-      )
-    }
-
-    override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node) or
-      node instanceof Sanitizer
-    }
-
-    override predicate isSanitizerOut(DataFlow::Node node) {
-      super.isSanitizerOut(node) or
-      node instanceof SanitizerEdge
-    }
-
-    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      super.isSanitizerGuard(guard) or guard instanceof SanitizerGuard
-    }
-  }
-
   private module Config implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) { source instanceof Source }
 
@@ -64,6 +30,14 @@ module RequestForgery {
       exists(Write w, Field f, SsaWithFields v | f.hasQualifiedName("net/url", "URL", "Host") |
         w.writesField(v.getAUse(), f, pred) and succ = v.getAUse()
       )
+    }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
+
+    Location getASelectedSinkLocation(DataFlow::Node sink) {
+      result = sink.getLocation()
+      or
+      result = sink.(Sink).getARequest().getLocation()
     }
   }
 

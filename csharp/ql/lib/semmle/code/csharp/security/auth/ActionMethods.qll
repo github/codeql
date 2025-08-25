@@ -89,7 +89,7 @@ private predicate virtualRouteMapping(string virtualRoute, string physicalRoute)
   exists(MethodCall mapPageRouteCall, StringLiteral virtualLit, StringLiteral physicalLit |
     mapPageRouteCall
         .getTarget()
-        .hasQualifiedName("System.Web.Routing", "RouteCollection", "MapPageRoute") and
+        .hasFullyQualifiedName("System.Web.Routing", "RouteCollection", "MapPageRoute") and
     virtualLit = mapPageRouteCall.getArgument(1) and
     physicalLit = mapPageRouteCall.getArgument(2) and
     virtualLit.getValue() = virtualRoute and

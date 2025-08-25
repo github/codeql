@@ -84,7 +84,7 @@ void test_copy_assignment_operator()
 
     swap(z1, z2);
 
-    sink(z2.data1); // $ ir MISSING: ast
+    sink(z2.data1); // $ ir ast
     sink(z1.data1); // $ SPURIOUS: ir ast=81:27 ast=82:16
 }
 

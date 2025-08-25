@@ -1,35 +1,139 @@
-clientSocket
-| browser.js:2:17:2:52 | new Web ... :8080') |
-| browser.js:19:13:19:50 | new Soc ... /echo') |
-| client.js:4:13:4:45 | new Web ... e.org') |
+clientReceive
+| browser-custom.js:10:37:12:2 | functio ... Flow\\n\\t} |
+| browser-custom.js:14:21:16:2 | functio ... Flow\\n\\t} |
+| browser-custom.js:26:19:29:2 | functio ... e();\\n\\t} |
+| browser-custom.js:31:35:33:2 | functio ... Flow\\n\\t} |
+| browser-custom.js:42:53:44:5 | functio ... w\\n    } |
+| browser-custom.js:46:37:48:5 | functio ... w\\n    } |
+| browser-custom.js:57:34:60:5 | functio ... ;\\n    } |
+| browser-custom.js:62:50:64:5 | functio ... w\\n    } |
+| browser-custom.js:68:22:70:1 | functio ... eFlow\\n} |
+| browser.js:8:37:10:2 | functio ... Flow\\n\\t} |
+| browser.js:12:21:14:2 | functio ... Flow\\n\\t} |
+| browser.js:24:19:27:2 | functio ... e();\\n\\t} |
+| browser.js:29:35:31:2 | functio ... Flow\\n\\t} |
+| client-custom.js:10:19:12:2 | functio ... ta);\\n\\t} |
+| client-custom.js:20:38:22:2 | functio ... ta);\\n\\t} |
+| client.js:10:19:12:2 | functio ... ta);\\n\\t} |
 clientSend
+| browser-custom.js:7:3:7:33 | socket. ... wser!') |
+| browser-custom.js:23:3:23:19 | sock.send('test') |
+| browser-custom.js:39:9:39:52 | myWebSo ... wser!') |
+| browser-custom.js:54:9:54:37 | mySockJ ... 'test') |
 | browser.js:5:3:5:33 | socket. ... wser!') |
 | browser.js:21:3:21:19 | sock.send('test') |
+| client-custom.js:7:3:7:28 | ws.send ... ient!') |
+| client-custom.js:17:3:17:47 | myWebSo ... ient!') |
 | client.js:7:3:7:28 | ws.send ... ient!') |
-clientReceive
-| browser.js:8:37:10:2 | functio ... ta);\\n\\t} |
-| browser.js:12:21:14:2 | functio ... ata)\\n\\t} |
-| browser.js:24:19:27:2 | functio ... e();\\n\\t} |
-| browser.js:29:35:31:2 | functio ... ta);\\n\\t} |
-| client.js:10:19:12:2 | functio ... ta);\\n\\t} |
-serverSocket
-| server.js:6:43:6:44 | ws |
-| sockjs.js:8:40:8:43 | conn |
-serverSend
-| server.js:11:3:11:28 | ws.send ... rver!') |
-| sockjs.js:11:9:11:51 | conn.wr ... test))) |
-serverReceive
-| server.js:7:3:9:4 | ws.on(' ... );\\n\\t\\t}) |
-| sockjs.js:9:5:12:6 | conn.on ... \\n    }) |
+clientSocket
+| browser-custom.js:4:17:4:54 | new MyW ... :9080') |
+| browser-custom.js:21:13:21:52 | new MyS ... /echo') |
+| browser.js:2:17:2:52 | new Web ... :8080') |
+| browser.js:19:13:19:50 | new Soc ... /echo') |
+| browser.js:36:36:36:71 | new Web ... :8080') |
+| browser.js:37:33:37:70 | new Soc ... /echo') |
+| client-custom.js:4:13:4:49 | new MyW ... e.org') |
+| client.js:4:13:4:45 | new Web ... e.org') |
+| client.js:16:40:16:72 | new Web ... e.org') |
 flowSteps
+| browser-custom.js:1:10:1:20 | MyWebSocket | browser-custom.js:1:10:1:20 | MyWebSocket |
+| browser-custom.js:1:23:1:30 | MySockJS | browser-custom.js:1:23:1:30 | MySockJS |
+| browser-custom.js:1:33:1:51 | myWebSocketInstance | browser-custom.js:1:33:1:51 | myWebSocketInstance |
+| browser-custom.js:1:54:1:69 | mySockJSInstance | browser-custom.js:1:54:1:69 | mySockJSInstance |
+| browser-custom.js:7:15:7:32 | 'Hi from browser!' | server-custom.js:7:38:7:44 | message |
+| browser-custom.js:7:15:7:32 | 'Hi from browser!' | server-custom.js:17:38:17:44 | message |
+| browser-custom.js:7:15:7:32 | 'Hi from browser!' | server.js:7:38:7:44 | message |
+| browser-custom.js:23:13:23:18 | 'test' | sockjs.js:9:31:9:37 | message |
+| browser-custom.js:39:34:39:51 | 'Hi from browser!' | server-custom.js:7:38:7:44 | message |
+| browser-custom.js:39:34:39:51 | 'Hi from browser!' | server-custom.js:17:38:17:44 | message |
+| browser-custom.js:39:34:39:51 | 'Hi from browser!' | server.js:7:38:7:44 | message |
+| browser-custom.js:54:31:54:36 | 'test' | sockjs.js:9:31:9:37 | message |
+| browser.js:5:15:5:32 | 'Hi from browser!' | server-custom.js:7:38:7:44 | message |
+| browser.js:5:15:5:32 | 'Hi from browser!' | server-custom.js:17:38:17:44 | message |
 | browser.js:5:15:5:32 | 'Hi from browser!' | server.js:7:38:7:44 | message |
 | browser.js:21:13:21:18 | 'test' | sockjs.js:9:31:9:37 | message |
+| client-custom.js:7:11:7:27 | 'Hi from client!' | server-custom.js:7:38:7:44 | message |
+| client-custom.js:7:11:7:27 | 'Hi from client!' | server-custom.js:17:38:17:44 | message |
+| client-custom.js:7:11:7:27 | 'Hi from client!' | server.js:7:38:7:44 | message |
+| client-custom.js:17:30:17:46 | 'Hi from client!' | server-custom.js:7:38:7:44 | message |
+| client-custom.js:17:30:17:46 | 'Hi from client!' | server-custom.js:17:38:17:44 | message |
+| client-custom.js:17:30:17:46 | 'Hi from client!' | server.js:7:38:7:44 | message |
+| client.js:7:11:7:27 | 'Hi from client!' | server-custom.js:7:38:7:44 | message |
+| client.js:7:11:7:27 | 'Hi from client!' | server-custom.js:17:38:17:44 | message |
 | client.js:7:11:7:27 | 'Hi from client!' | server.js:7:38:7:44 | message |
+| client.js:15:32:15:44 | require('ws') | client-custom.js:1:9:1:21 | MyWebSocketWS |
+| client.js:16:40:16:72 | new Web ... e.org') | client-custom.js:1:24:1:44 | myWebSo ... nstance |
+| server-custom.js:11:11:11:27 | 'Hi from server!' | browser-custom.js:11:39:11:48 | event.data |
+| server-custom.js:11:11:11:27 | 'Hi from server!' | browser-custom.js:15:40:15:49 | event.data |
+| server-custom.js:11:11:11:27 | 'Hi from server!' | browser-custom.js:43:45:43:54 | event.data |
+| server-custom.js:11:11:11:27 | 'Hi from server!' | browser-custom.js:47:46:47:55 | event.data |
+| server-custom.js:11:11:11:27 | 'Hi from server!' | browser-custom.js:69:38:69:43 | e.data |
+| server-custom.js:11:11:11:27 | 'Hi from server!' | browser.js:9:39:9:48 | event.data |
+| server-custom.js:11:11:11:27 | 'Hi from server!' | browser.js:13:40:13:49 | event.data |
+| server-custom.js:11:11:11:27 | 'Hi from server!' | client-custom.js:10:37:10:40 | data |
+| server-custom.js:11:11:11:27 | 'Hi from server!' | client-custom.js:20:56:20:59 | data |
+| server-custom.js:11:11:11:27 | 'Hi from server!' | client.js:10:37:10:40 | data |
+| server-custom.js:21:11:21:27 | 'Hi from server!' | browser-custom.js:11:39:11:48 | event.data |
+| server-custom.js:21:11:21:27 | 'Hi from server!' | browser-custom.js:15:40:15:49 | event.data |
+| server-custom.js:21:11:21:27 | 'Hi from server!' | browser-custom.js:43:45:43:54 | event.data |
+| server-custom.js:21:11:21:27 | 'Hi from server!' | browser-custom.js:47:46:47:55 | event.data |
+| server-custom.js:21:11:21:27 | 'Hi from server!' | browser-custom.js:69:38:69:43 | e.data |
+| server-custom.js:21:11:21:27 | 'Hi from server!' | browser.js:9:39:9:48 | event.data |
+| server-custom.js:21:11:21:27 | 'Hi from server!' | browser.js:13:40:13:49 | event.data |
+| server-custom.js:21:11:21:27 | 'Hi from server!' | client-custom.js:10:37:10:40 | data |
+| server-custom.js:21:11:21:27 | 'Hi from server!' | client-custom.js:20:56:20:59 | data |
+| server-custom.js:21:11:21:27 | 'Hi from server!' | client.js:10:37:10:40 | data |
+| server.js:11:11:11:27 | 'Hi from server!' | browser-custom.js:11:39:11:48 | event.data |
+| server.js:11:11:11:27 | 'Hi from server!' | browser-custom.js:15:40:15:49 | event.data |
+| server.js:11:11:11:27 | 'Hi from server!' | browser-custom.js:43:45:43:54 | event.data |
+| server.js:11:11:11:27 | 'Hi from server!' | browser-custom.js:47:46:47:55 | event.data |
+| server.js:11:11:11:27 | 'Hi from server!' | browser-custom.js:69:38:69:43 | e.data |
 | server.js:11:11:11:27 | 'Hi from server!' | browser.js:9:39:9:48 | event.data |
 | server.js:11:11:11:27 | 'Hi from server!' | browser.js:13:40:13:49 | event.data |
+| server.js:11:11:11:27 | 'Hi from server!' | client-custom.js:10:37:10:40 | data |
+| server.js:11:11:11:27 | 'Hi from server!' | client-custom.js:20:56:20:59 | data |
 | server.js:11:11:11:27 | 'Hi from server!' | client.js:10:37:10:40 | data |
+| server.js:15:36:15:55 | require('ws').Server | server-custom.js:1:9:1:25 | MyWebSocketServer |
+| server.js:16:44:16:79 | new Web ... 8080 }) | server-custom.js:1:28:1:52 | myWebSo ... nstance |
+| sockjs.js:11:20:11:50 | JSON.st ... .test)) | browser-custom.js:27:26:27:31 | e.data |
+| sockjs.js:11:20:11:50 | JSON.st ... .test)) | browser-custom.js:32:42:32:51 | event.data |
+| sockjs.js:11:20:11:50 | JSON.st ... .test)) | browser-custom.js:58:32:58:37 | e.data |
+| sockjs.js:11:20:11:50 | JSON.st ... .test)) | browser-custom.js:63:48:63:57 | event.data |
 | sockjs.js:11:20:11:50 | JSON.st ... .test)) | browser.js:25:26:25:31 | e.data |
 | sockjs.js:11:20:11:50 | JSON.st ... .test)) | browser.js:30:42:30:51 | event.data |
 remoteFlow
+| browser-custom.js:11:39:11:48 | event.data |
+| browser-custom.js:15:40:15:49 | event.data |
+| browser-custom.js:27:26:27:31 | e.data |
+| browser-custom.js:32:42:32:51 | event.data |
+| browser-custom.js:43:45:43:54 | event.data |
+| browser-custom.js:47:46:47:55 | event.data |
+| browser-custom.js:58:32:58:37 | e.data |
+| browser-custom.js:63:48:63:57 | event.data |
+| browser-custom.js:69:38:69:43 | e.data |
+| browser.js:9:39:9:48 | event.data |
+| browser.js:13:40:13:49 | event.data |
+| browser.js:25:26:25:31 | e.data |
+| browser.js:30:42:30:51 | event.data |
+| client-custom.js:10:37:10:40 | data |
+| client-custom.js:20:56:20:59 | data |
+| client.js:10:37:10:40 | data |
+| server-custom.js:7:38:7:44 | message |
+| server-custom.js:17:38:17:44 | message |
 | server.js:7:38:7:44 | message |
 | sockjs.js:9:31:9:37 | message |
+serverReceive
+| server-custom.js:7:3:9:4 | ws.on(' ... );\\n\\t\\t}) |
+| server-custom.js:17:3:19:4 | ws.on(' ... );\\n\\t\\t}) |
+| server.js:7:3:9:4 | ws.on(' ... );\\n\\t\\t}) |
+| sockjs.js:9:5:12:6 | conn.on ... \\n    }) |
+serverSend
+| server-custom.js:11:3:11:28 | ws.send ... rver!') |
+| server-custom.js:21:3:21:28 | ws.send ... rver!') |
+| server.js:11:3:11:28 | ws.send ... rver!') |
+| sockjs.js:11:9:11:51 | conn.wr ... test))) |
+serverSocket
+| server-custom.js:6:43:6:44 | ws |
+| server-custom.js:16:65:16:66 | ws |
+| server.js:6:43:6:44 | ws |
+| sockjs.js:8:40:8:43 | conn |

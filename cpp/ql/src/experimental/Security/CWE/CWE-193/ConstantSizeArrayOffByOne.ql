@@ -183,6 +183,20 @@ module ArrayAddressToDerefConfig implements DataFlow::StateConfigSig {
       pointerArithOverflow(pai, _)
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    exists(Variable v | result = v.getLocation() | isSourceImpl(source, v))
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(PointerArithmeticInstruction pai, Instruction deref |
+      result = [pai, deref].getLocation() and
+      isInvalidPointerDerefSink2(sink, deref, _) and
+      isSink(sink, ArrayAddressToDerefConfig::TOverflowArithmetic(pai))
+    )
+  }
 }
 
 module ArrayAddressToDerefFlow = DataFlow::GlobalWithState<ArrayAddressToDerefConfig>;

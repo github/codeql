@@ -6,7 +6,7 @@ predicate isEmptyOrNone(DataFlow::Node arg) { isEmpty(arg) or isNone(arg) }
 
 /** Checks if an empty string `""` flows to `arg` */
 predicate isEmpty(DataFlow::Node arg) {
-  exists(StrConst emptyString |
+  exists(StringLiteral emptyString |
     emptyString.getText() = "" and
     DataFlow::exprNode(emptyString).(DataFlow::LocalSourceNode).flowsTo(arg)
   )

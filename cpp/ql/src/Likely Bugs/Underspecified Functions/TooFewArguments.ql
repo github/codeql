@@ -19,7 +19,10 @@
 
 import cpp
 import TooFewArguments
+import semmle.code.cpp.ConfigurationTestFile
 
 from FunctionCall fc, Function f
-where tooFewArguments(fc, f)
+where
+  tooFewArguments(fc, f) and
+  not fc.getFile() instanceof ConfigurationTestFile // calls in files generated during configuration are likely false positives
 select fc, "This call has fewer arguments than required by $@.", f, f.toString()

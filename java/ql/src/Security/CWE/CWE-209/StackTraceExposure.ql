@@ -20,6 +20,5 @@ import semmle.code.java.security.StackTraceExposureQuery
 from Expr externalExpr, Expr errorInformation
 where
   printsStackExternally(externalExpr, errorInformation) or
-  stringifiedStackFlowsExternally(DataFlow::exprNode(externalExpr), errorInformation) or
-  getMessageFlowsExternally(DataFlow::exprNode(externalExpr), DataFlow::exprNode(errorInformation))
+  stringifiedStackFlowsExternally(DataFlow::exprNode(externalExpr), errorInformation)
 select externalExpr, "$@ can be exposed to an external user.", errorInformation, "Error information"

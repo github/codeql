@@ -1,1 +1,2 @@
-Security/CWE-078/SecondOrderCommandInjection.ql
+query: Security/CWE-078/SecondOrderCommandInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

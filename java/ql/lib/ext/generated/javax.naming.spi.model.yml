@@ -1,0 +1,40 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.naming.spi", "DirStateFactory$Result", True, "Result", "(Object,Attributes)", "", "Argument[0]", "Argument[this].SyntheticField[javax.naming.spi.DirStateFactory$Result.obj]", "value", "dfc-generated"]
+      - ["javax.naming.spi", "DirStateFactory$Result", True, "Result", "(Object,Attributes)", "", "Argument[1]", "Argument[this].SyntheticField[javax.naming.spi.DirStateFactory$Result.attrs]", "value", "dfc-generated"]
+      - ["javax.naming.spi", "DirStateFactory$Result", True, "getAttributes", "()", "", "Argument[this].SyntheticField[javax.naming.spi.DirStateFactory$Result.attrs]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.naming.spi", "DirStateFactory$Result", True, "getObject", "()", "", "Argument[this].SyntheticField[javax.naming.spi.DirStateFactory$Result.obj]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.naming.spi", "DirectoryManager", True, "getContinuationDirContext", "(CannotProceedException)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.naming.spi", "DirectoryManager", True, "getObjectInstance", "(Object,Name,Context,Hashtable,Attributes)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.naming.spi", "DirectoryManager", True, "getStateToBind", "(Object,Name,Context,Hashtable,Attributes)", "", "Argument[0]", "ReturnValue.SyntheticField[javax.naming.spi.DirStateFactory$Result.obj]", "value", "dfc-generated"]
+      - ["javax.naming.spi", "DirectoryManager", True, "getStateToBind", "(Object,Name,Context,Hashtable,Attributes)", "", "Argument[4]", "ReturnValue.SyntheticField[javax.naming.spi.DirStateFactory$Result.attrs]", "value", "dfc-generated"]
+      - ["javax.naming.spi", "InitialContextFactory", True, "getInitialContext", "(Hashtable)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["javax.naming.spi", "NamingManager", True, "getContinuationContext", "(CannotProceedException)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.naming.spi", "NamingManager", True, "getInitialContext", "(Hashtable)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["javax.naming.spi", "NamingManager", True, "getObjectInstance", "(Object,Name,Context,Hashtable)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.naming.spi", "NamingManager", True, "getStateToBind", "(Object,Name,Context,Hashtable)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.naming.spi", "NamingManager", True, "getURLContext", "(String,Hashtable)", "", "Argument[1].Element", "ReturnValue", "taint", "df-generated"]
+      - ["javax.naming.spi", "ObjectFactory", True, "getObjectInstance", "(Object,Name,Context,Hashtable)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.naming.spi", "ObjectFactory", True, "getObjectInstance", "(Object,Name,Context,Hashtable)", "", "Argument[3].Element", "ReturnValue", "taint", "df-generated"]
+      - ["javax.naming.spi", "ResolveResult", True, "ResolveResult", "(Object,Name)", "", "Argument[0]", "Argument[this].SyntheticField[javax.naming.spi.ResolveResult.resolvedObj]", "value", "dfc-generated"]
+      - ["javax.naming.spi", "ResolveResult", True, "ResolveResult", "(Object,String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.naming.spi.ResolveResult.resolvedObj]", "value", "dfc-generated"]
+      - ["javax.naming.spi", "ResolveResult", True, "appendRemainingName", "(Name)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.naming.spi", "ResolveResult", True, "getRemainingName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.naming.spi", "ResolveResult", True, "getResolvedObj", "()", "", "Argument[this].SyntheticField[javax.naming.spi.ResolveResult.resolvedObj]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.naming.spi", "ResolveResult", True, "setRemainingName", "(Name)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.naming.spi", "ResolveResult", True, "setResolvedObj", "(Object)", "", "Argument[0]", "Argument[this].SyntheticField[javax.naming.spi.ResolveResult.resolvedObj]", "value", "dfc-generated"]
+      - ["javax.naming.spi", "Resolver", True, "resolveToClass", "(Name,Class)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.naming.spi", "Resolver", True, "resolveToClass", "(Name,Class)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.naming.spi", "Resolver", True, "resolveToClass", "(String,Class)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.naming.spi", "NamingManager", "hasInitialContextFactoryBuilder", "()", "summary", "df-generated"]
+      - ["javax.naming.spi", "NamingManager", "setInitialContextFactoryBuilder", "(InitialContextFactoryBuilder)", "summary", "df-generated"]
+      - ["javax.naming.spi", "NamingManager", "setObjectFactoryBuilder", "(ObjectFactoryBuilder)", "summary", "df-generated"]
+      - ["javax.naming.spi", "ResolveResult", "appendRemainingComponent", "(String)", "summary", "df-generated"]

@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Extensions.Http.Logging", "LoggingHttpMessageHandler", False, "LoggingHttpMessageHandler", "(Microsoft.Extensions.Logging.ILogger)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Http.Logging", "LoggingHttpMessageHandler", False, "LoggingHttpMessageHandler", "(Microsoft.Extensions.Logging.ILogger,Microsoft.Extensions.Http.HttpClientFactoryOptions)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Http.Logging", "LoggingHttpMessageHandler", False, "LoggingHttpMessageHandler", "(Microsoft.Extensions.Logging.ILogger,Microsoft.Extensions.Http.HttpClientFactoryOptions)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Http.Logging", "LoggingScopeHttpMessageHandler", False, "LoggingScopeHttpMessageHandler", "(Microsoft.Extensions.Logging.ILogger)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Http.Logging", "LoggingScopeHttpMessageHandler", False, "LoggingScopeHttpMessageHandler", "(Microsoft.Extensions.Logging.ILogger,Microsoft.Extensions.Http.HttpClientFactoryOptions)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Http.Logging", "LoggingScopeHttpMessageHandler", False, "LoggingScopeHttpMessageHandler", "(Microsoft.Extensions.Logging.ILogger,Microsoft.Extensions.Http.HttpClientFactoryOptions)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.Http.Logging", "IHttpClientAsyncLogger", "LogRequestFailedAsync", "(System.Object,System.Net.Http.HttpRequestMessage,System.Net.Http.HttpResponseMessage,System.Exception,System.TimeSpan,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Http.Logging", "IHttpClientAsyncLogger", "LogRequestStartAsync", "(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Http.Logging", "IHttpClientAsyncLogger", "LogRequestStopAsync", "(System.Object,System.Net.Http.HttpRequestMessage,System.Net.Http.HttpResponseMessage,System.TimeSpan,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Http.Logging", "IHttpClientLogger", "LogRequestFailed", "(System.Object,System.Net.Http.HttpRequestMessage,System.Net.Http.HttpResponseMessage,System.Exception,System.TimeSpan)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Http.Logging", "IHttpClientLogger", "LogRequestStart", "(System.Net.Http.HttpRequestMessage)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Http.Logging", "IHttpClientLogger", "LogRequestStop", "(System.Object,System.Net.Http.HttpRequestMessage,System.Net.Http.HttpResponseMessage,System.TimeSpan)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Http.Logging", "LoggingHttpMessageHandler", "Send", "(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Http.Logging", "LoggingHttpMessageHandler", "SendAsync", "(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Http.Logging", "LoggingScopeHttpMessageHandler", "Send", "(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Http.Logging", "LoggingScopeHttpMessageHandler", "SendAsync", "(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)", "summary", "df-generated"]

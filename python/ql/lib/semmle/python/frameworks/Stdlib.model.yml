@@ -1,0 +1,189 @@
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sourceModel
+    data:
+      - ['os', 'Member[getenv].ReturnValue', 'environment']
+      - ['os', 'Member[getenvb].ReturnValue', 'environment']
+      - ['os', 'Member[environ]', 'environment']
+      - ['os', 'Member[environb]', 'environment']
+      - ['posix', 'Member[environ]', 'environment']
+
+      - ['sys', 'Member[argv]', 'commandargs']
+      - ['sys', 'Member[orig_argv]', 'commandargs']
+
+      - ['sys', 'Member[stdin]', 'stdin']
+      - ['builtins', 'Member[input].ReturnValue', 'stdin']
+      - ['builtins', 'Member[raw_input].ReturnValue', 'stdin'] # python 2 only
+
+
+      # if no argument is given, the default is to use sys.argv[1:]
+      - ['argparse.ArgumentParser', 'Member[parse_args,parse_known_args].WithArity[0].ReturnValue', 'commandargs']
+
+      - ['os', 'Member[read].ReturnValue', 'file']
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sinkModel
+    data:
+      - ["zipfile.ZipFile","Member[extractall].Argument[0,path:]", "path-injection"]
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: summaryModel
+    data:
+      # See https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser
+      # note: taint flow for attribute lookups on `argparse.ArgumentParser` is handled in QL
+      - ["argparse.ArgumentParser", "Member[_parse_known_args,_read_args_from_files]", "Argument[0,arg_strings:]", "ReturnValue", "taint"]
+      - ["argparse.ArgumentParser", "Member[parse_args,parse_known_args]", "Argument[0,args:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/cgi.html#higher-level-interface
+      - ["cgi.FieldStorage", "Member[getfirst,getlist,getvalue]", "Argument[self]", "ReturnValue", "taint"]
+      # See
+      #  - https://docs.python.org/3/glossary.html#term-mapping 
+      #  - https://docs.python.org/3/library/stdtypes.html#dict.get
+      - ["collections.abc.Mapping", "Member[get]", "Argument[1,default:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/contextlib.html#contextlib.ExitStack
+      - ["contextlib.ExitStack", "Member[enter_context]", "Argument[0,cm:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/copy.html#copy.deepcopy
+      - ["copy", "Member[copy,deepcopy,replace]", "Argument[0,x:]", "ReturnValue", "value"]
+      # See
+      #  - https://docs.python.org/3/library/ctypes.html#ctypes.create_string_buffer
+      #  - https://docs.python.org/3/library/ctypes.html#ctypes.create_unicode_buffer
+      - ["ctypes", "Member[create_string_buffer,create_unicode_buffer]", "Argument[0,init:,init_or_size:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3.11/distutils/apiref.html#distutils.util.change_root
+      - ["distutils", "Member[util].Member[change_root]", "Argument[0,new_root:,1,pathname:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/email.header.html#email.header.Header
+      - ["email.header.Header!", "Subclass.Call", "Argument[0,s:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/email.utils.html#email.utils.parseaddr
+      - ["email", "Member[utils].Member[parseaddr]", "Argument[0,addr:]", "ReturnValue", "taint"]
+      - ["email", "Member[utils].Member[parseaddr]", "Argument[0,addr:]", "ReturnValue.TupleElement[0,1]", "taint"]
+      # See See https://docs.python.org/3/library/fnmatch.html#fnmatch.filter
+      - ["fnmatch", "Member[filter]", "Argument[0,names:].ListElement", "ReturnValue.ListElement", "value"]
+      - ["fnmatch", "Member[filter]", "Argument[0,names:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/getopt.html#getopt.getopt
+      - ["getopt", "Member[getopt]", "Argument[0,args:]", "ReturnValue.TupleElement[1]", "taint"]
+      - ["getopt", "Member[getopt]", "Argument[1,shortopts:,2,longopts:]", "ReturnValue.TupleElement[0].ListElement.TupleElement[0]", "taint"]
+      # See https://docs.python.org/3/library/gettext.html#gettext.gettext
+      - ["gettext", "Member[gettext]", "Argument[0,message:]", "ReturnValue", "taint"]
+      # See 
+      #  - https://docs.python.org/3/library/glob.html#glob.glob
+      #  - https://docs.python.org/3/library/glob.html#glob.iglob
+      - ["glob", "Member[glob,iglob]", "Argument[0,pathname:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/gzip.html#gzip.GzipFile
+      - ["gzip.GzipFile!", "Subclass.Call", "Argument[0,filename:]", "ReturnValue", "taint"]
+      # See
+      #  - https://docs.python.org/3/library/html.html#html.escape
+      #  - https://docs.python.org/3/library/html.html#html.unescape
+      - ["html", "Member[escape,unescape]", "Argument[0,s:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/html.parser.html#html.parser.HTMLParser.feed
+      - ["html.parser.HTMLParser", "Member[feed]", "Argument[0,data:]", "Argument[self]", "taint"]
+      # See https://docs.python.org/3.11/library/imp.html#imp.find_module
+      - ["imp", "Member[find_module]", "Argument[0,name:,1,path:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/logging.html#logging.getLevelName
+      #   specifically the no matching case 
+      - ["logging", "Member[getLevelName]", "Argument[0,level:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/logging.html#logging.LogRecord.getMessage
+      - ["logging.LogRecord", "Member[getMessage]", "Argument[self]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/mimetypes.html#mimetypes.guess_type
+      - ["mimetypes", "Member[guess_type]", "Argument[0,url:]", "ReturnValue", "taint"]
+      # See https://github.com/python/cpython/blob/main/Lib/nturl2path.py
+      #   No user-facing documentation, unfortunately.
+      - ["nturl2path", "Member[pathname2url]", "Argument[0,p:]", "ReturnValue", "taint"]
+      - ["nturl2path", "Member[url2pathname]", "Argument[0,url:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/optparse.html#optparse.OptionParser.parse_args
+      - ["optparse.OptionParser", "Member[parse_args]", "Argument[0,args:,1,values:]", "ReturnValue.TupleElement[0,1]", "taint"]
+      # See https://docs.python.org/3/library/os.html#os.walk
+      - ["os", "Member[walk]", "Argument[0,top:]", "ReturnValue", "taint"]
+      # See https://github.com/python/cpython/blob/3.10/Lib/pathlib.py#L972-L973
+      - ["pathlib.Path", ".Member[__enter__]", "Argument[self]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/os.html#os.PathLike.__fspath__
+      - ["pathlib.PurePath", "Member[__fspath__]", "Argument[self]", "ReturnValue", "taint"]
+      # See
+      #  - https://docs.python.org/3/library/asyncio-queue.html#asyncio.Queue.get
+      #  - https://docs.python.org/3/library/asyncio-queue.html#asyncio.Queue.get_nowait
+      - ["queue.Queue", "Member[get,get_nowait]", "Argument[self].ListElement", "ReturnValue", "value"]
+      - ["queue.Queue", "Member[get,get_nowait]", "Argument[self]", "ReturnValue", "taint"]
+      # See
+      #  - https://docs.python.org/3/library/asyncio-queue.html#asyncio.Queue.put
+      #  - https://docs.python.org/3/library/asyncio-queue.html#asyncio.Queue.put_nowait
+      - ["queue.Queue", "Member[put,put_nowait]", "Argument[0,item:]", "Argument[self].ListElement", "value"]
+      - ["queue.Queue", "Member[put,put_nowait]", "Argument[0,item:]", "Argument[self]", "taint"]
+      # See 
+      #  - https://docs.python.org/3/library/random.html#random.choice
+      #  - https://docs.python.org/3/library/random.html#module-random
+      - ["random", "Member[choice]", "Argument[0,seq:].ListElement", "ReturnValue", "value"]
+      - ["random", "Member[choice]", "Argument[0,seq:].SetElement", "ReturnValue", "value"]
+      - ["random", "Member[choice]", "Argument[0,seq:]", "ReturnValue", "taint"]
+      - ["random.Random", "Member[choice]", "Argument[0,seq:].ListElement", "ReturnValue", "value"]
+      - ["random.Random", "Member[choice]", "Argument[0,seq:].SetElement", "ReturnValue", "value"]
+      - ["random.Random", "Member[choice]", "Argument[0,seq:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/shlex.html#shlex.quote
+      - ["shlex", "Member[quote]", "Argument[0,s:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/shutil.html#shutil.rmtree
+      - ["shutil", "Member[rmtree]", "Argument[0,path:]", "Argument[2,onerror:,onexc:].Parameter[1]", "taint"]
+      # See https://docs.python.org/3/library/shutil.html#shutil.which
+      - ["shutil", "Member[which]", "Argument[0,cmd:,2,path:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/subprocess.html#subprocess.Popen
+      - ["subprocess.Popen!", "Subclass.Call", "Argument[0,args:]", "ReturnValue", "taint"]
+      # See
+      #  - https://docs.python.org/3/library/tarfile.html#tarfile.open
+      #  - https://docs.python.org/3/library/tarfile.html#tarfile.TarFile.open
+      - ["tarfile", "Member[open]", "Argument[0,name:,2,fileobj:]", "ReturnValue", "taint"]
+      - ["tarfile.TarFile", "Member[open]", "Argument[0,name:,2,fileobj:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/tempfile.html#tempfile.mkdtemp
+      - ["tempfile", "Member[mkdtemp]", "Argument[0,suffix:,1,prefix:,2,dir:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/tempfile.html#tempfile.mkstemp
+      - ["tempfile", "Member[mkstemp]", "Argument[0,suffix:,1,prefix:,2,dir:]", "ReturnValue.TupleElement[0,1]", "taint"]
+      # See https://docs.python.org/3/library/textwrap.html#textwrap.dedent
+      - ["textwrap", "Member[dedent]", "Argument[0,text:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/traceback.html#traceback.StackSummary.from_list
+      - ["traceback.StackSummary", "Member[from_list]", "Argument[0,a_list:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/typing.html#typing.cast
+      - ["typing", "Member[cast]", "Argument[1,val:]", "ReturnValue", "value"]
+      # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.parse_qs
+      - ["urllib", "Member[parse].Member[parse_qs]", "Argument[0,qs:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.quote
+      - ["urllib", "Member[parse].Member[quote]", "Argument[0,string:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.quote_plus
+      - ["urllib", "Member[parse].Member[quote_plus]", "Argument[0,string:]", "ReturnValue", "taint"]
+      # See https://epydoc.sourceforge.net/stdlib/urllib-module.html
+      - ["urllib", "Member[parse].Member[splitquery]", "Argument[0,url:]", "ReturnValue.TupleElement[0,1]", "taint"]
+      # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.unquote
+      - ["urllib", "Member[parse].Member[unquote]", "Argument[0,string:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.unquote_plus
+      - ["urllib", "Member[parse].Member[unquote_plus]", "Argument[0,string:]", "ReturnValue", "taint"]
+      # We could consider a more precise source than the first argument, namely tuple or dict content.
+      # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urlencode
+      - ["urllib", "Member[parse].Member[urlencode]", "Argument[0,query:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urljoin
+      - ["urllib", "Member[parse].Member[urljoin]", "Argument[0,base:,1,url:]", "ReturnValue", "taint"]
+      # See the internal documentation
+      #   https://github.com/python/cpython/blob/3.12/Lib/zipfile/_path/__init__.py#L103-L105
+      - ["zipfile.CompleteDirs", "Member[namelist]", "Argument[self]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/zipfile.html#zipfile.ZipFile
+      #   it may be necessary to read the code to understand the taint propagation
+      #   Constructor: https://github.com/python/cpython/blob/3.12/Lib/zipfile/__init__.py#L1266
+      - ["zipfile.ZipFile!", "Subclass.Call", "Argument[0,file:]", "ReturnValue", "taint"]
+      - ["zipfile.ZipFile!", "Subclass.Call", "Argument[0,file:]", "ReturnValue.Attribute[filelist].ListElement.Attribute[filename]", "value"]
+      #   _extract_member: https://github.com/python/cpython/blob/3.12/Lib/zipfile/__init__.py#L1761
+      - ["zipfile.ZipFile", "Member[_extract_member]", "Argument[1,targetpath:]", "ReturnValue", "taint"]
+      #   infolist: https://github.com/python/cpython/blob/3.12/Lib/zipfile/__init__.py#L1498-L1501
+      - ["zipfile.ZipFile", "Member[infolist]", "Argument[self]", "ReturnValue", "taint"]
+      - ["zipfile.ZipFile", "Member[infolist]", "Argument[self].Attribute[filelist]", "ReturnValue", "value"]
+      #   namelist: https://github.com/python/cpython/blob/3.12/Lib/zipfile/__init__.py#L1494-L1496
+      - ["zipfile.ZipFile", "Member[namelist]", "Argument[self]", "ReturnValue", "taint"]
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: neutralModel
+    data: []
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: typeModel
+    data: []
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: typeVariableModel
+    data: []

@@ -7,7 +7,7 @@ import semmle.code.java.security.CleartextStorageQuery
 
 private class PropertiesCleartextStorageSink extends CleartextStorageSink {
   PropertiesCleartextStorageSink() {
-    exists(MethodAccess m |
+    exists(MethodCall m |
       m.getMethod() instanceof PropertiesSetPropertyMethod and this.asExpr() = m.getArgument(1)
     )
   }
@@ -35,7 +35,7 @@ class Properties extends Storable, ClassInstanceExpr {
 }
 
 private predicate propertiesInput(DataFlow::Node prop, Expr input) {
-  exists(MethodAccess m |
+  exists(MethodCall m |
     m.getMethod() instanceof PropertiesSetPropertyMethod and
     input = m.getArgument(1) and
     prop.asExpr() = m.getQualifier()
@@ -43,7 +43,7 @@ private predicate propertiesInput(DataFlow::Node prop, Expr input) {
 }
 
 private predicate propertiesStore(DataFlow::Node prop, Expr store) {
-  exists(MethodAccess m |
+  exists(MethodCall m |
     m.getMethod() instanceof PropertiesStoreMethod and
     store = m and
     prop.asExpr() = m.getQualifier()

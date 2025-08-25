@@ -51,6 +51,8 @@ same
 | StructuralComparison.cs:49:18:49:26 | access to property Prop | StructuralComparison.cs:51:18:51:26 | access to property Prop |
 | StructuralComparison.cs:50:18:50:21 | access to property Prop | StructuralComparison.cs:51:18:51:26 | access to property Prop |
 gvn
+| StructuralComparison.cs:3:14:3:18 | call to constructor Object | (kind:Expr(79)) |
+| StructuralComparison.cs:3:14:3:18 | {...} | (kind:Stmt(1)) |
 | StructuralComparison.cs:5:26:5:26 | access to field x | (kind:Expr(16),true,x) |
 | StructuralComparison.cs:5:26:5:26 | this access | (kind:Expr(12)) |
 | StructuralComparison.cs:5:26:5:30 | ... = ... | ((kind:Expr(16),true,x) :: (0 :: (kind:Expr(63)))) |
@@ -145,6 +147,10 @@ gvn
 | StructuralComparison.cs:28:12:28:12 | this access | (kind:Expr(12),false,Class) |
 | StructuralComparison.cs:28:15:28:15 | access to field x | (kind:Expr(16),true,x) |
 | StructuralComparison.cs:28:15:28:15 | this access | (kind:Expr(12),false,Class) |
+| StructuralComparison.cs:32:14:32:22 | call to constructor Object | (kind:Expr(79)) |
+| StructuralComparison.cs:32:14:32:22 | {...} | (kind:Stmt(1)) |
+| StructuralComparison.cs:38:14:38:25 | call to constructor BaseClass | (kind:Expr(79)) |
+| StructuralComparison.cs:38:14:38:25 | {...} | (kind:Stmt(1)) |
 | StructuralComparison.cs:41:5:45:5 | {...} | ((((kind:Expr(14),false,x3) :: ((kind:Expr(16),true,Field) :: (kind:Expr(83)))) :: (kind:Stmt(22))) :: ((((kind:Expr(14),false,x2) :: ((kind:Expr(16),true,Field) :: (kind:Expr(83)))) :: (kind:Stmt(22))) :: ((((kind:Expr(14),false,x1) :: ((kind:Expr(16),true,Field) :: (kind:Expr(83)))) :: (kind:Stmt(22))) :: (kind:Stmt(1))))) |
 | StructuralComparison.cs:42:9:42:28 | ... ...; | (((kind:Expr(14),false,x1) :: ((kind:Expr(16),true,Field) :: (kind:Expr(83)))) :: (kind:Stmt(22))) |
 | StructuralComparison.cs:42:13:42:14 | access to local variable x1 | (kind:Expr(14),false,x1) |

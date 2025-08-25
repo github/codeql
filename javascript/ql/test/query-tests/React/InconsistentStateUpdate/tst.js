@@ -1,7 +1,7 @@
 class C1 extends React.Component {
   upd8() {
     this.setState({
-      counter: this.state.counter + 1 // NOT OK, but ignored because it is safe in practice
+      counter: this.state.counter + 1 // OK - ignored because it is safe in practice
     });
   }
 }
@@ -9,7 +9,7 @@ class C1 extends React.Component {
 class C2 extends React.Component {
   upd8() {
     this.setState((prevState) => {
-      counter: prevState.counter + 1 // OK
+      counter: prevState.counter + 1
     });
   }
 }
@@ -18,7 +18,7 @@ class C3 extends React.Component {
   upd8() {
     var app = this;
     app.setState({
-      counter: this.state.counter + 1 // NOT OK, but ignored because it is safe in practice
+      counter: this.state.counter + 1 // OK - ignored because it is safe in practice
     });
   }
 }
@@ -26,73 +26,73 @@ class C3 extends React.Component {
 class C4 extends React.Component {
   upd8() {
     this.setState({
-      counter: this.state.foo // NOT OK
-    });
+      counter: this.state.foo
+    }); // $ Alert
   }
 }
 
 class C5 extends React.Component {
   upd8() {
     this.setState({
-        foo: { bar: this.state.foo.bar } // NOT OK
-    });
+        foo: { bar: this.state.foo.bar }
+    }); // $ Alert
   }
 }
 
 class C7 extends React.Component {
     upd8a() {
         this.setState({
-            foo: this.state.foo // NOT OK
-        });
+            foo: this.state.foo
+        }); // $ Alert
     }
 
     upd8b() {
         this.setState({
-            foo: this.state.foo // NOT OK
-        });
+            foo: this.state.foo
+        }); // $ Alert
     }
 }
 
 class C8 extends React.Component {
     upd8a() {
         this.setState({
-            foo: this.state.foo + 1 // NOT OK
-        });
+            foo: this.state.foo + 1
+        }); // $ Alert
     }
 
     upd8b() {
         this.setState({
-            foo: this.state.foo + 1 // NOT OK
-        });
+            foo: this.state.foo + 1
+        }); // $ Alert
     }
 }
 
 class C9 extends React.Component {
     upd8a() {
         this.setState({
-            foo: { bar: this.state.foo.bar } // NOT OK
-        });
+            foo: { bar: this.state.foo.bar }
+        }); // $ Alert
     }
 
     upd8b() {
         this.setState({
-            foo: { bar: this.state.foo.bar } // NOT OK
-        });
+            foo: { bar: this.state.foo.bar }
+        }); // $ Alert
     }
 }
 
 class C10 extends React.Component {
     upd8a() {
         this.setState({
-            foo: this.state.foo, // NOT OK
-            bar: this.state.bar // NOT OK, but ignored because it is safe in practice
-        });
+            foo: this.state.foo,
+            bar: this.state.bar // OK - ignored because it is safe in practice
+        }); // $ Alert
     }
 
     upd8b() {
         this.setState({
-            foo: this.state.foo // NOT OK
-        });
+            foo: this.state.foo
+        }); // $ Alert
     }
 }
 
@@ -100,13 +100,13 @@ class C11 extends React.Component {
     upd8a() {
         var self = this;
         self.setState({
-            foo: self.state.foo // NOT OK
-        });
+            foo: self.state.foo
+        }); // $ Alert
     }
 
     upd8b() {
         this.setState({
-            foo: this.state.foo // NOT OK
-        });
+            foo: this.state.foo
+        }); // $ Alert
     }
 }

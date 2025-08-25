@@ -11,13 +11,6 @@
 import javascript
 import meta.internal.TaintMetrics
 
-string getName(DataFlow::Node node) {
-  result = node.(RemoteFlowSource).getSourceType()
-  or
-  not node instanceof RemoteFlowSource and
-  result = "Taint source"
-}
-
-from DataFlow::Node node
-where node = relevantTaintSource()
-select node, getName(node)
+from ThreatModelSource node
+where node = relevantTaintSource() and node.getThreatModel() = "remote"
+select node, getTaintSourceName(node)

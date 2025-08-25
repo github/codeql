@@ -10,11 +10,18 @@ import SSAUtils
  * The SSA logic comes in two versions: the standard SSA and range-analysis RangeSSA.
  * This class provides the standard SSA logic.
  */
-library class StandardSsa extends SsaHelper {
+class StandardSsa extends SsaHelper {
   StandardSsa() { this = 0 }
 }
 
 /**
+ * NOTE: If possible, prefer the SSA classes exposed by the new dataflow
+ * library:
+ * ```
+ * import semmle.code.cpp.dataflow.new.DataFlow
+ * // use `DataFlow::Ssa::Definition`
+ * ```
+ *
  * A definition of one or more SSA variables, including phi node definitions.
  * An _SSA variable_, as defined in the literature, is effectively the pair of
  * an `SsaDefinition d` and a `StackVariable v`, written `(d, v)` in this

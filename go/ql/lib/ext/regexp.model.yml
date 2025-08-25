@@ -1,6 +1,20 @@
 extensions:
   - addsTo:
       pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["regexp", "", False, "Compile", "", "", "Argument[0]", "regex-use[c]", "manual"]
+      - ["regexp", "", False, "CompilePOSIX", "", "", "Argument[0]", "regex-use[c]", "manual"]
+      - ["regexp", "", False, "MustCompile", "", "", "Argument[0]", "regex-use[c]", "manual"]
+      - ["regexp", "", False, "MustCompilePOSIX", "", "", "Argument[0]", "regex-use[c]", "manual"]
+      - ["regexp", "", False, "Match", "", "", "Argument[0]", "regex-use[1]", "manual"]
+      - ["regexp", "", False, "MatchReader", "", "", "Argument[0]", "regex-use[1]", "manual"]
+      - ["regexp", "", False, "MatchString", "", "", "Argument[0]", "regex-use[1]", "manual"]
+      - ["regexp", "Regexp", True, "Match", "", "", "Argument[receiver]", "regex-use[0]", "manual"]
+      - ["regexp", "Regexp", True, "MatchReader", "", "", "Argument[receiver]", "regex-use[0]", "manual"]
+      - ["regexp", "Regexp", True, "MatchString", "", "", "Argument[receiver]", "regex-use[0]", "manual"]
+  - addsTo:
+      pack: codeql/go-all
       extensible: summaryModel
     data:
       - ["regexp", "", False, "QuoteMeta", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

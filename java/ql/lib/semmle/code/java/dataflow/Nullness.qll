@@ -6,6 +6,8 @@
  * hold, so results guarded by, for example, `assert x != null;` or
  * `if (x == null) { assert false; }` are excluded.
  */
+overlay[local?]
+module;
 
 /*
  * Implementation details:
@@ -100,13 +102,13 @@ predicate dereference(Expr e) {
   or
   exists(SynchronizedStmt synch | synch.getExpr() = e)
   or
-  exists(SwitchStmt switch | switch.getExpr() = e)
+  exists(SwitchStmt switch | switch.getExpr() = e and not switch.hasNullCase())
   or
-  exists(SwitchExpr switch | switch.getExpr() = e)
+  exists(SwitchExpr switch | switch.getExpr() = e and not switch.hasNullCase())
   or
   exists(FieldAccess fa, Field f | fa.getQualifier() = e and fa.getField() = f and not f.isStatic())
   or
-  exists(MethodAccess ma, Method m |
+  exists(MethodCall ma, Method m |
     ma.getQualifier() = e and ma.getMethod() = m and not m.isStatic()
   )
   or
@@ -130,8 +132,8 @@ predicate dereference(Expr e) {
  * The `VarAccess` is included for nicer error reporting.
  */
 private ControlFlowNode varDereference(SsaVariable v, VarAccess va) {
-  dereference(result) and
-  result = sameValue(v, va)
+  dereference(result.asExpr()) and
+  result.asExpr() = sameValue(v, va)
 }
 
 /**
@@ -141,18 +143,16 @@ private ControlFlowNode varDereference(SsaVariable v, VarAccess va) {
 private ControlFlowNode ensureNotNull(SsaVariable v) {
   result = varDereference(v, _)
   or
-  result.(AssertStmt).getExpr() = nullGuard(v, true, false)
+  exists(AssertTrueMethod m | result.asCall() = m.getACheck(directNullGuard(v, true, false)))
   or
-  exists(AssertTrueMethod m | result = m.getACheck(nullGuard(v, true, false)))
+  exists(AssertFalseMethod m | result.asCall() = m.getACheck(directNullGuard(v, false, false)))
   or
-  exists(AssertFalseMethod m | result = m.getACheck(nullGuard(v, false, false)))
+  exists(AssertNotNullMethod m | result.asCall() = m.getACheck(v.getAUse()))
   or
-  exists(AssertNotNullMethod m | result = m.getACheck(v.getAUse()))
-  or
-  exists(AssertThatMethod m, MethodAccess ma |
-    result = m.getACheck(v.getAUse()) and ma.getControlFlowNode() = result
+  exists(AssertThatMethod m, MethodCall ma |
+    result.asCall() = m.getACheck(v.getAUse()) and ma.getControlFlowNode() = result
   |
-    ma.getAnArgument().(MethodAccess).getMethod().getName() = "notNullValue"
+    ma.getAnArgument().(MethodCall).getMethod().getName() = "notNullValue"
   )
 }
 
@@ -195,7 +195,7 @@ private predicate varMaybeNull(SsaVariable v, string msg, Expr reason) {
     not exists(TryStmt try | try.getFinally() = e.getEnclosingStmt().getEnclosingStmt*()) and
     (
       e = any(ConditionalExpr c).getCondition().getAChildExpr*() or
-      not exists(MethodAccess ma | ma.getAnArgument().getAChildExpr*() = e)
+      not exists(MethodCall ma | ma.getAnArgument().getAChildExpr*() = e)
     ) and
     // Don't use a guard as reason if there is a null assignment.
     not v.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = nullExpr()
@@ -250,7 +250,7 @@ private Expr nonEmptyExpr() {
       // ...it is guarded by a condition...
       cond.controls(result.getBasicBlock(), branch) and
       // ...and it isn't modified in the scope of the condition...
-      forall(MethodAccess ma, Method m |
+      forall(MethodCall ma, Method m |
         m = ma.getMethod() and
         ma.getQualifier() = v.getSourceVariable().getAnAccess() and
         cond.controls(ma.getBasicBlock(), branch)
@@ -260,12 +260,12 @@ private Expr nonEmptyExpr() {
       cond.getCondition() = c
     |
       // ...and the condition proves that it is non-empty, either by using the `isEmpty` method...
-      c.(MethodAccess).getMethod().hasName("isEmpty") and
+      c.(MethodCall).getMethod().hasName("isEmpty") and
       branch = false and
-      c.(MethodAccess).getQualifier() = v.getAUse()
+      c.(MethodCall).getQualifier() = v.getAUse()
       or
       // ...or a check on its `size`.
-      exists(MethodAccess size |
+      exists(MethodCall size |
         c = integerGuard(size, branch, 0, false) and
         size.getMethod().hasName("size") and
         size.getQualifier() = v.getAUse()
@@ -279,10 +279,10 @@ private predicate enhancedForEarlyExit(EnhancedForStmt for, ControlFlowNode n1, 
   exists(Expr forExpr |
     n1.getANormalSuccessor() = n2 and
     for.getExpr() = forExpr and
-    forExpr.getAChildExpr*() = n1 and
-    not forExpr.getAChildExpr*() = n2 and
-    n1.getANormalSuccessor() = for.getVariable() and
-    not n2 = for.getVariable()
+    forExpr.getAChildExpr*() = n1.asExpr() and
+    not forExpr.getAChildExpr*() = n2.asExpr() and
+    n1.getANormalSuccessor().asExpr() = for.getVariable() and
+    not n2.asExpr() = for.getVariable()
   )
 }
 
@@ -298,9 +298,9 @@ private predicate impossibleEdge(BasicBlock bb1, BasicBlock bb2) {
 private predicate leavingFinally(BasicBlock bb1, BasicBlock bb2, boolean normaledge) {
   exists(TryStmt try, BlockStmt finally |
     try.getFinally() = finally and
-    bb1.getABBSuccessor() = bb2 and
-    bb1.getEnclosingStmt().getEnclosingStmt*() = finally and
-    not bb2.getEnclosingStmt().getEnclosingStmt*() = finally and
+    bb1.getASuccessor() = bb2 and
+    bb1.getFirstNode().getEnclosingStmt().getEnclosingStmt*() = finally and
+    not bb2.getFirstNode().getEnclosingStmt().getEnclosingStmt*() = finally and
     if bb1.getLastNode().getANormalSuccessor() = bb2.getFirstNode()
     then normaledge = true
     else normaledge = false
@@ -339,11 +339,11 @@ private predicate nullVarStep(
   midssa.isLiveAtEndOfBlock(mid) and
   not ensureNotNull(midssa).getBasicBlock() = mid and
   not assertFail(mid, _) and
-  bb = mid.getABBSuccessor() and
+  bb = mid.getASuccessor() and
   not impossibleEdge(mid, bb) and
-  not exists(boolean branch | nullGuard(midssa, branch, false).hasBranchEdge(mid, bb, branch)) and
+  not nullGuardControlsBranchEdge(midssa, false, mid, bb) and
   not (leavingFinally(mid, bb, true) and midstoredcompletion = true) and
-  if bb.getFirstNode() = any(TryStmt try | | try.getFinally())
+  if bb.getFirstNode().asStmt() = any(TryStmt try | | try.getFinally())
   then
     if bb.getFirstNode() = mid.getLastNode().getANormalSuccessor()
     then storedcompletion = false
@@ -460,7 +460,27 @@ private predicate interestingCond(SsaSourceVariable npecand, ConditionBlock cond
     varMaybeNullInBlock(_, npecand, cond, _) or
     varConditionallyNull(npecand.getAnSsaVariable(), cond, _)
   ) and
-  not cond.getCondition().getAChildExpr*() = npecand.getAnAccess()
+  not cond.getCondition().(Expr).getAChildExpr*() = npecand.getAnAccess()
+}
+
+pragma[nomagic]
+private ConditionBlock ssaIntegerGuard(SsaVariable v, boolean branch, int k, boolean is_k) {
+  result.getCondition() = integerGuard(v.getAUse(), branch, k, is_k)
+}
+
+pragma[nomagic]
+private ConditionBlock ssaIntBoundGuard(SsaVariable v, boolean branch_with_lower_bound_k, int k) {
+  result.getCondition() = intBoundGuard(v.getAUse(), branch_with_lower_bound_k, k)
+}
+
+pragma[nomagic]
+private ConditionBlock ssaEnumConstEquality(SsaVariable v, boolean polarity, EnumConstant c) {
+  result.getCondition() = enumConstEquality(v.getAUse(), polarity, c)
+}
+
+private predicate conditionChecksNull(ConditionBlock cond, SsaVariable v, boolean branchIsNull) {
+  nullGuardControlsBranchEdge(v, true, cond, cond.getTestSuccessor(branchIsNull)) and
+  nullGuardControlsBranchEdge(v, false, cond, cond.getTestSuccessor(branchIsNull.booleanNot()))
 }
 
 /** A pair of correlated conditions for a given NPE candidate. */
@@ -478,32 +498,28 @@ private predicate correlatedConditions(
     )
     or
     exists(SsaVariable v, boolean branch1, boolean branch2 |
-      cond1.getCondition() = nullGuard(v, branch1, true) and
-      cond1.getCondition() = nullGuard(v, branch1.booleanNot(), false) and
-      cond2.getCondition() = nullGuard(v, branch2, true) and
-      cond2.getCondition() = nullGuard(v, branch2.booleanNot(), false) and
-      inverted = branch1.booleanXor(branch2)
-    )
-    or
-    exists(SsaVariable v, RValue rv1, RValue rv2, int k, boolean branch1, boolean branch2 |
-      rv1 = v.getAUse() and
-      rv2 = v.getAUse() and
-      cond1.getCondition() = integerGuard(rv1, branch1, k, true) and
-      cond1.getCondition() = integerGuard(rv1, branch1.booleanNot(), k, false) and
-      cond2.getCondition() = integerGuard(rv2, branch2, k, true) and
-      cond2.getCondition() = integerGuard(rv2, branch2.booleanNot(), k, false) and
+      conditionChecksNull(cond1, v, branch1) and
+      conditionChecksNull(cond2, v, branch2) and
       inverted = branch1.booleanXor(branch2)
     )
     or
     exists(SsaVariable v, int k, boolean branch1, boolean branch2 |
-      cond1.getCondition() = intBoundGuard(v.getAUse(), branch1, k) and
-      cond2.getCondition() = intBoundGuard(v.getAUse(), branch2, k) and
+      cond1 = ssaIntegerGuard(v, branch1, k, true) and
+      cond1 = ssaIntegerGuard(v, branch1.booleanNot(), k, false) and
+      cond2 = ssaIntegerGuard(v, branch2, k, true) and
+      cond2 = ssaIntegerGuard(v, branch2.booleanNot(), k, false) and
+      inverted = branch1.booleanXor(branch2)
+    )
+    or
+    exists(SsaVariable v, int k, boolean branch1, boolean branch2 |
+      cond1 = ssaIntBoundGuard(v, branch1, k) and
+      cond2 = ssaIntBoundGuard(v, branch2, k) and
       inverted = branch1.booleanXor(branch2)
     )
     or
     exists(SsaVariable v, EnumConstant c, boolean pol1, boolean pol2 |
-      cond1.getCondition() = enumConstEquality(v.getAUse(), pol1, c) and
-      cond2.getCondition() = enumConstEquality(v.getAUse(), pol2, c) and
+      cond1 = ssaEnumConstEquality(v, pol1, c) and
+      cond2 = ssaEnumConstEquality(v, pol2, c) and
       inverted = pol1.booleanXor(pol2)
     )
     or
@@ -588,7 +604,7 @@ private predicate trackingVar(
   exists(ConditionBlock cond |
     interestingCond(npecand, cond) and
     varMaybeNullInBlock(_, npecand, cond, _) and
-    cond.getCondition().getAChildExpr*() = trackvar.getAnAccess() and
+    cond.getCondition().(Expr).getAChildExpr*() = trackvar.getAnAccess() and
     trackssa.getSourceVariable() = trackvar and
     trackssa.getDefiningExpr().(VariableAssign).getSource() = init
   |
@@ -609,7 +625,7 @@ private Expr trackingVarGuard(
   SsaVariable trackssa, SsaSourceVariable trackvar, TrackVarKind kind, boolean branch, boolean isA
 ) {
   exists(Expr init | trackingVar(_, trackssa, trackvar, kind, init) |
-    result = basicOrCustomNullGuard(trackvar.getAnAccess(), branch, isA) and
+    result = basicNullGuard(trackvar.getAnAccess(), branch, isA) and
     kind = TrackVarKindNull()
     or
     result = trackvar.getAnAccess() and
@@ -637,7 +653,7 @@ private Expr trackingVarGuard(
       result = integerGuard(trackvar.getAnAccess(), branch, k, isA)
       or
       exists(int k2 |
-        result = integerGuard(trackvar.getAnAccess(), branch.booleanNot(), k2, true) and
+        result = integerGuard(trackvar.getAnAccess(), branch, k2, true) and
         isA = false and
         k2 != k
       )
@@ -820,15 +836,13 @@ predicate alwaysNullDeref(SsaSourceVariable v, VarAccess va) {
       def.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = alwaysNullExpr()
     )
     or
-    exists(boolean branch |
-      nullGuard(ssa, branch, true).directlyControls(bb, branch) and
-      not clearlyNotNull(ssa)
-    )
+    nullGuardControls(ssa, true, bb) and
+    not clearlyNotNull(ssa)
   |
     // Exclude fields as they might not have an accurate ssa representation.
     not v.getVariable() instanceof Field and
     firstVarDereferenceInBlock(bb, ssa, va) and
     ssa.getSourceVariable() = v and
-    not exists(boolean branch | nullGuard(ssa, branch, false).directlyControls(bb, branch))
+    not nullGuardControls(ssa, false, bb)
   )
 }

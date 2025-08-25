@@ -1,0 +1,34 @@
+name: Reusable workflow example
+
+on:
+  workflow_call:
+    inputs:
+      config-path:
+        required: true
+        type: string
+    outputs:
+      workflow-output1:
+        value: ${{ jobs.job1.outputs.job-output1 }}
+      workflow-output2:
+        value: ${{ jobs.job1.outputs.job-output2 }}
+    secrets:
+      token:
+        required: true
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    outputs:
+      job-output1: ${{ steps.step1.outputs.step-output}}
+      job-output2: ${{ steps.step2.outputs.all_changed_files}}
+    steps:
+      - id: step1
+        env:
+          CONFIG_PATH: ${{ inputs.config-path }}
+        run: |
+          echo ${{ inputs.config-path }}
+          echo "::set-output name=step-output::$CONFIG_PATH"
+      - name: Get changed files
+        id: step2
+        uses: tj-actions/changed-files@v40
+

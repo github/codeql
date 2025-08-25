@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["cvc5/cvc5", "*", "input.build-dir", "code-injection", "generated"]
+     - ["cvc5/cvc5", "*", "input.macos-target", "code-injection", "generated"]
+     - ["cvc5/cvc5", "*", "input.check-examples", "code-injection", "generated"]
+     - ["cvc5/cvc5", "*", "input.check-python-bindings", "code-injection", "generated"]
+     - ["cvc5/cvc5", "*", "input.check-install", "code-injection", "generated"]
+     - ["cvc5/cvc5", "*", "input.regressions-exclude", "code-injection", "generated"]
+     - ["cvc5/cvc5", "*", "input.strip-bin", "code-injection", "generated"]
+     - ["cvc5/cvc5", "*", "input.configure-config", "code-injection", "generated"]
+     - ["cvc5/cvc5", "*", "input.configure-env", "code-injection", "generated"]
+     - ["cvc5/cvc5", "*", "input.package-name", "code-injection", "generated"]

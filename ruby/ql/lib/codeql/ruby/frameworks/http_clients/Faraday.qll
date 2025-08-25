@@ -22,7 +22,7 @@ private import codeql.ruby.DataFlow
  * connection.get("/").body
  * ```
  */
-class FaradayHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode {
+class FaradayHttpRequest extends Http::Client::Request::Range instanceof DataFlow::CallNode {
   API::Node requestNode;
   API::Node connectionNode;
   DataFlow::Node connectionUse;
@@ -47,7 +47,7 @@ class FaradayHttpRequest extends Http::Client::Request::Range, DataFlow::CallNod
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
 
   override DataFlow::Node getAUrlPart() {
-    result = this.getArgument(0) or
+    result = super.getArgument(0) or
     result = connectionUse.(DataFlow::CallNode).getArgument(0) or
     result = connectionUse.(DataFlow::CallNode).getKeywordArgument("url")
   }
@@ -98,6 +98,10 @@ private module FaradayDisablesCertificateValidationConfig implements DataFlow::S
 
   predicate isSink(DataFlow::Node sink, FlowState state) {
     sink = any(FaradayHttpRequest req).getCertificateValidationControllingValue(state)
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // Used for a library model
   }
 }
 

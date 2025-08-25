@@ -5,6 +5,8 @@
 Troubleshooting variant analysis
 ================================
 
+.. include:: ../reusables/vs-code-deprecation-note.rst
+
 .. include:: ../reusables/beta-note-mrva.rst
 
 This article explains how to debug problems with variant analysis, that is, analysis run using GitHub Actions

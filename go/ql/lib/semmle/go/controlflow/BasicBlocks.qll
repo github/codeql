@@ -114,18 +114,22 @@ class BasicBlock extends TControlFlowNode {
   /** Gets a textual representation of this basic block. */
   string toString() { result = "basic block" }
 
+  /** Gets the source location for this element. */
+  Location getLocation() { result = this.getFirstNode().getLocation() }
+
   /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
    * Holds if this basic block is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this.getFirstNode().hasLocationInfo(filepath, startline, startcolumn, _, _) and
-    this.getLastNode().hasLocationInfo(_, _, _, endline, endcolumn)
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 

@@ -20,7 +20,7 @@ var myComplicatedPropertyDescriptor = (function(k) {
 })("get");
 Object.defineProperty(Object.prototype, 'foo', myComplicatedPropertyDescriptor);
 
-// OK: getters
+// OK - getters
 (false).should.be.ok;
 (false).should;
 should.prototype.be;

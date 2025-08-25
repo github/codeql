@@ -18,14 +18,17 @@ namespace My.Qltest
             x = TaggedSrcField;
 
             x = SrcTwoArg("", "");
+
+            x = TaggedSrcPropertyGetter;
+            x = this[0];
         }
 
-        [SourceAttribute()]
+        [SourceAttribute]
         void Tagged1(object taggedMethodParam)
         {
         }
 
-        void Tagged2([SourceAttribute()] object taggedSrcParam)
+        void Tagged2([SourceAttribute] object taggedSrcParam)
         {
         }
 
@@ -49,13 +52,19 @@ namespace My.Qltest
 
         void SrcArg(object src) { }
 
-        [SourceAttribute()]
+        [SourceAttribute]
         object TaggedSrcMethod() { return null; }
 
-        [SourceAttribute()]
+        [SourceAttribute]
         object TaggedSrcField;
 
         object SrcTwoArg(string s1, string s2) { return null; }
+
+        [SourceAttribute]
+        object TaggedSrcPropertyGetter { get; }
+
+        [SourceAttribute]
+        object this[int i] => null;
     }
 
     class SourceAttribute : System.Attribute { }

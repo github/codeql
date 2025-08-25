@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.Logging.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.Logging.Abstractions, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace Extensions
@@ -8,6 +8,24 @@ namespace Microsoft
         {
             namespace Abstractions
             {
+                public abstract class BufferedLogRecord
+                {
+                    public virtual System.Diagnostics.ActivitySpanId? ActivitySpanId { get => throw null; }
+                    public virtual System.Diagnostics.ActivityTraceId? ActivityTraceId { get => throw null; }
+                    public virtual System.Collections.Generic.IReadOnlyList<System.Collections.Generic.KeyValuePair<string, object>> Attributes { get => throw null; }
+                    protected BufferedLogRecord() => throw null;
+                    public abstract Microsoft.Extensions.Logging.EventId EventId { get; }
+                    public virtual string Exception { get => throw null; }
+                    public virtual string FormattedMessage { get => throw null; }
+                    public abstract Microsoft.Extensions.Logging.LogLevel LogLevel { get; }
+                    public virtual int? ManagedThreadId { get => throw null; }
+                    public virtual string MessageTemplate { get => throw null; }
+                    public abstract System.DateTimeOffset Timestamp { get; }
+                }
+                public interface IBufferedLogger
+                {
+                    void LogRecords(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Logging.Abstractions.BufferedLogRecord> records);
+                }
                 public struct LogEntry<TState>
                 {
                     public string Category { get => throw null; }
@@ -83,6 +101,10 @@ namespace Microsoft
             public interface ILoggerProvider : System.IDisposable
             {
                 Microsoft.Extensions.Logging.ILogger CreateLogger(string categoryName);
+            }
+            public interface ILoggingBuilder
+            {
+                Microsoft.Extensions.DependencyInjection.IServiceCollection Services { get; }
             }
             public interface ISupportExternalScope
             {
@@ -167,10 +189,14 @@ namespace Microsoft
                 public static System.Func<Microsoft.Extensions.Logging.ILogger, T1, T2, T3, T4, T5, System.IDisposable> DefineScope<T1, T2, T3, T4, T5>(string formatString) => throw null;
                 public static System.Func<Microsoft.Extensions.Logging.ILogger, T1, T2, T3, T4, T5, T6, System.IDisposable> DefineScope<T1, T2, T3, T4, T5, T6>(string formatString) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)64)]
             public sealed class LoggerMessageAttribute : System.Attribute
             {
                 public LoggerMessageAttribute() => throw null;
                 public LoggerMessageAttribute(int eventId, Microsoft.Extensions.Logging.LogLevel level, string message) => throw null;
+                public LoggerMessageAttribute(Microsoft.Extensions.Logging.LogLevel level) => throw null;
+                public LoggerMessageAttribute(Microsoft.Extensions.Logging.LogLevel level, string message) => throw null;
+                public LoggerMessageAttribute(string message) => throw null;
                 public int EventId { get => throw null; set { } }
                 public string EventName { get => throw null; set { } }
                 public Microsoft.Extensions.Logging.LogLevel Level { get => throw null; set { } }

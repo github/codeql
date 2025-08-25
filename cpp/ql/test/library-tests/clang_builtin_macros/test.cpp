@@ -1,7 +1,7 @@
 // For the canonical behaviour, run: clang -E -w test.cpp
 #define __builtin_TRAP __builtin_trap
 #define BAR "bar.h"
-// semmle-extractor-options: --edg --clang --expect_errors
+// semmle-extractor-options: --clang --expect_errors
 #if defined(__has_include)
 static int has_include = 1;
 #else

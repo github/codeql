@@ -176,3 +176,32 @@ class Subclass < MyController
     sink params[:x] # $hasTaintFlow
   end
 end
+
+class UploadedFileTests < MyController
+  def m36
+    sink params[:file].original_filename # $hasTaintFlow
+  end
+
+  def m37
+    sink params.require(:file).content_type # $hasTaintFlow
+  end
+
+  def m38
+    sink params.permit(:file)[:file].headers # $hasTaintFlow
+  end
+
+  def m39
+    sink params[:a].to_unsafe_h[:b][:file].read # $hasTaintFlow
+  end
+
+  def m40(a)
+    params[:file].read(nil,a)
+    sink a # $ hasTaintFlow
+  end
+
+  def m41
+    a = ""
+    params[:file].read(nil,a)
+    sink a # $ hasTaintFlow
+  end
+end

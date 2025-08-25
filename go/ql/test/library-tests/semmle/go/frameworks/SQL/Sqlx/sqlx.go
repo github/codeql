@@ -12,19 +12,19 @@ func main() {
 
 	db := sqlx.DB{}
 	untrusted := getUntrustedString()
-	db.Select(nil, untrusted)
-	db.Get(nil, untrusted)
-	db.MustExec(untrusted)
-	db.Queryx(untrusted)
-	db.NamedExec(untrusted, nil)
-	db.NamedQuery(untrusted, nil)
+	db.Select(nil, untrusted)     // $ querystring=untrusted
+	db.Get(nil, untrusted)        // $ querystring=untrusted
+	db.MustExec(untrusted)        // $ querystring=untrusted
+	db.Queryx(untrusted)          // $ querystring=untrusted
+	db.NamedExec(untrusted, nil)  // $ querystring=untrusted
+	db.NamedQuery(untrusted, nil) // $ querystring=untrusted
 
 	tx := sqlx.Tx{}
-	tx.Select(nil, untrusted)
-	tx.Get(nil, untrusted)
-	tx.MustExec(untrusted)
-	tx.Queryx(untrusted)
-	tx.NamedExec(untrusted, nil)
-	tx.NamedQuery(untrusted, nil)
+	tx.Select(nil, untrusted)     // $ querystring=untrusted
+	tx.Get(nil, untrusted)        // $ querystring=untrusted
+	tx.MustExec(untrusted)        // $ querystring=untrusted
+	tx.Queryx(untrusted)          // $ querystring=untrusted
+	tx.NamedExec(untrusted, nil)  // $ querystring=untrusted
+	tx.NamedQuery(untrusted, nil) // $ querystring=untrusted
 
 }

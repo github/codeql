@@ -10,6 +10,7 @@
 | genericFunctions.go:138:29:138:40 | ShortestPath | 0 | genericFunctions.go:138:42:138:45 | from |
 | genericFunctions.go:138:29:138:40 | ShortestPath | 1 | genericFunctions.go:138:48:138:49 | to |
 | genericFunctions.go:138:29:138:40 | ShortestPath | -1 | genericFunctions.go:138:7:138:7 | g |
+| genericFunctions.go:154:51:154:51 | f | -1 | genericFunctions.go:154:7:154:7 | x |
 | main.go:7:6:7:7 | f1 | 0 | main.go:7:9:7:9 | x |
 | main.go:9:12:9:13 | f2 | 0 | main.go:9:15:9:15 | x |
 | main.go:9:12:9:13 | f2 | 1 | main.go:9:18:9:18 | y |

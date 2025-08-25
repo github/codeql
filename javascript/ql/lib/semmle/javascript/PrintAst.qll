@@ -83,7 +83,8 @@ private newtype TPrintAstNode =
     shouldPrint(term, _) and
     term.isUsedAsRegExp() and
     any(RegExpLiteral lit).getRoot() = term.getRootTerm()
-  }
+  } or
+  TXmlAttributeNode(XmlAttribute attr) { shouldPrint(attr, _) and not isNotNeeded(attr) }
 
 /**
  * A node in the output tree.

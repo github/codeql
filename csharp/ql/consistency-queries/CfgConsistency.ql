@@ -61,8 +61,3 @@ query predicate preBasicBlockConsistency(ControlFlowElement cfe1, ControlFlowEle
   bbIntraSuccInconsistency(cfe1, cfe2) and
   s = "intra succ inconsistency"
 }
-
-query predicate multipleToString(Node n, string s) {
-  s = strictconcat(n.toString(), ",") and
-  strictcount(n.toString()) > 1
-}

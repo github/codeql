@@ -89,12 +89,6 @@ module Connect {
     override DataFlow::Node getServer() { result = server }
 
     /**
-     * DEPRECATED: Use `getARouteHandlerNode` instead.
-     * Gets an argument that represents a route handler being registered.
-     */
-    deprecated Expr getARouteHandlerExpr() { result = this.getARouteHandlerNode().asExpr() }
-
-    /**
      * Gets an argument that represents a route handler being registered.
      */
     DataFlow::Node getARouteHandlerNode() { result = this.getAnArgument() }
@@ -117,8 +111,6 @@ module Connect {
 
     override string getCredentialsKind() { result = kind }
   }
-
-  deprecated class RequestExpr = NodeJSLib::RequestExpr;
 
   class RequestNode = NodeJSLib::RequestNode;
 

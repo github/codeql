@@ -2,6 +2,8 @@
  * Provides classes and predicates for working with Java Serialization in the context of
  * the `com.google.gson` JSON processing framework.
  */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.Serializability
@@ -22,7 +24,7 @@ abstract class GsonDeserializableType extends Type { }
 /** A type whose values are explicitly deserialized in a call to a Gson method. */
 private class ExplicitlyReadGsonDeserializableType extends GsonDeserializableType {
   ExplicitlyReadGsonDeserializableType() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       // A call to a Gson read method...
       ma.getMethod() instanceof GsonReadValueMethod and
       // ...where `this` is used in the final argument, indicating that this type will be deserialized.

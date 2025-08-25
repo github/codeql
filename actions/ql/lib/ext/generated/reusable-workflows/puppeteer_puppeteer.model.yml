@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSourceModel
+    data:
+      - ["puppeteer/puppeteer/.github/workflows/changed-packages.yml", "*", "output.changes", "filename", "manual"]

@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["azerothcore/azerothcore-wotlk", "*", "input.CXX", "code-injection", "generated"]
+     - ["azerothcore/azerothcore-wotlk", "*", "input.CC", "code-injection", "generated"]

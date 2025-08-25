@@ -6,8 +6,9 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/whitespace-contradicts-precedence
- * @tags maintainability
- *       readability
+ * @tags quality
+ *       reliability
+ *       correctness
  *       external/cwe/cwe-783
  */
 

@@ -26,6 +26,8 @@ private module PossibleTimingAttackAgainstHashConfig implements DataFlow::Config
   predicate isSource(DataFlow::Node source) { source instanceof ProduceCryptoCall }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module PossibleTimingAttackAgainstHashFlow =
@@ -38,4 +40,4 @@ from
   PossibleTimingAttackAgainstHashFlow::PathNode sink
 where PossibleTimingAttackAgainstHashFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Possible Timing attack against $@ validation.",
-  source.getNode().(ProduceCryptoCall).getResultType(), "message"
+  source.getNode(), source.getNode().(ProduceCryptoCall).getResultType() + " message"

@@ -5,8 +5,9 @@
  * @kind problem
  * @problem.severity warning
  * @id js/implicit-operand-conversion
- * @tags reliability
- *       readability
+ * @tags quality
+ *       reliability
+ *       correctness
  *       external/cwe/cwe-704
  * @precision very-high
  */

@@ -80,13 +80,44 @@ class AppDelegate: UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?) -> Bool {
-        _ = launchOptions?[.url] // $ source=remote
+        let url = launchOptions?[.url] // $ source=remote
+        sink(arg: url) // $ tainted
         return true
     }
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?) -> Bool {
-        _ = launchOptions?[.url] // $ source=remote
+        let url = launchOptions?[.url] // $ source=remote
+        sink(arg: url) // $ tainted
+
+        let url2 = launchOptions?[.url] as! String // $ source=remote
+        sink(arg: url2) // $ tainted
+
+        if let url3 = launchOptions?[.url] as? String { // $ source=remote
+          sink(arg: url3) // $ tainted
+        }
+
+        if let options = launchOptions {
+          let url4 = options[.url] as! String // $ source=remote
+          sink(arg: url4) // $ tainted
+        }
+
+        switch launchOptions {
+          case .some(let options):
+            let url5 = options[.url] // $ MISSING: source=remote
+            sink(arg: url5) // $ MISSING: tainted
+          case .none:
+            break
+        }
+
+        processLaunchOptions(options: launchOptions)
+
         return true
+    }
+
+    private func processLaunchOptions(options: [UIApplication.LaunchOptionsKey : Any]?) {
+      // (called above)
+      let url = options?[.url] // $ MISSING: source=remote
+      sink(arg: url) // $ MISSING: tainted
     }
 }
 

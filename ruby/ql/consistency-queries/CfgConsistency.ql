@@ -1,4 +1,5 @@
-import codeql.ruby.controlflow.internal.ControlFlowGraphImpl::Consistency
+import codeql.ruby.controlflow.internal.ControlFlowGraphImpl::Consistency as Consistency
+import Consistency
 import codeql.ruby.AST
 import codeql.ruby.CFG
 import codeql.ruby.controlflow.internal.Completion
@@ -20,7 +21,13 @@ query predicate nonPostOrderExpr(Expr e, string cls) {
   )
 }
 
-query predicate multipleToString(CfgNode n, string s) {
-  s = strictconcat(n.toString(), ",") and
-  strictcount(n.toString()) > 1
+query predicate scopeNoFirst(CfgScope scope) {
+  Consistency::scopeNoFirst(scope) and
+  not scope = any(StmtSequence seq | not exists(seq.getAStmt())) and
+  not scope =
+    any(Callable c |
+      not exists(c.getAParameter()) and
+      not c.(BodyStmt).hasEnsure() and
+      not exists(c.(BodyStmt).getARescue())
+    )
 }

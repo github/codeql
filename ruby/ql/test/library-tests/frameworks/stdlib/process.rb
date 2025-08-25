@@ -1,0 +1,5 @@
+Process.spawn("echo foo")
+Process.spawn(["echo", "foo"])
+Process.exec("echo foo")
+Process.exec(["echo", "foo"])
+PTY.spawn("echo foo")

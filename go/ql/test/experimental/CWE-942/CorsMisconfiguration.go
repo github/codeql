@@ -23,13 +23,13 @@ func main() {
 		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 			// BAD: 'null' origin is allowed,
 			// and Access-Control-Allow-Credentials is set to 'true'.
-			w.Header().Set("Access-Control-Allow-Origin", "null")
+			w.Header().Set("Access-Control-Allow-Origin", "null") // $ Alert
 			w.Header().Set("Access-Control-Allow-Credentials", "true")
 		})
 		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 			// BAD: 'null' origin is allowed,
 			// and `Access-Control-Allow-Credentials` is set to 'true':
-			w.Header().Set(HeaderAllowOrigin, Null)
+			w.Header().Set(HeaderAllowOrigin, Null) // $ Alert
 			w.Header().Set("Access-Control-Allow-Credentials", "true")
 		})
 		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
@@ -50,21 +50,21 @@ func main() {
 			// BAD: the `Access-Control-Allow-Origin` header is set using a user-defined value,
 			// and `Access-Control-Allow-Credentials` is set to 'true':
 			origin := req.Header.Get("origin")
-			w.Header().Set(HeaderAllowOrigin, origin)
+			w.Header().Set(HeaderAllowOrigin, origin) // $ Alert
 			w.Header().Set("Access-Control-Allow-Credentials", "true")
 		})
 		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 			// BAD: the `Access-Control-Allow-Origin` header is set using a user-defined value,
 			// and `Access-Control-Allow-Credentials` is set to 'true':
 			origin := req.Header.Get("origin")
-			w.Header().Set("Access-Control-Allow-Origin", origin)
+			w.Header().Set("Access-Control-Allow-Origin", origin) // $ Alert
 			w.Header().Set(HeaderAllowCredentials, "true")
 		})
 		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 			// BAD: the `Access-Control-Allow-Origin` header is set using a user-defined value,
 			// and `Access-Control-Allow-Credentials` is set to 'true':
 			if origin := req.Header.Get("Origin"); origin != "" {
-				w.Header().Set("Access-Control-Allow-Origin", origin)
+				w.Header().Set("Access-Control-Allow-Origin", origin) // $ Alert
 			}
 			w.Header().Set(HeaderAllowCredentials, "true")
 		})
@@ -191,9 +191,9 @@ func main() {
 		// })
 		http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 			// OK-ish: the input origin header is validated against a whitelist.
-			if origin := req.Header.Get("Origin"); cors[origin] {
+			if origin := req.Header.Get("Origin"); cors_map[origin] {
 				w.Header().Set("Access-Control-Allow-Origin", origin)
-			} else if len(origin) > 0 && cors["*"] {
+			} else if len(origin) > 0 && cors_map["*"] {
 				w.Header().Set("Access-Control-Allow-Origin", origin)
 			}
 
@@ -219,7 +219,7 @@ func main() {
 }
 
 var (
-	cors = map[string]bool{"*": true}
+	cors_map = map[string]bool{"*": true}
 )
 
 func GetAllowOrigin() []string {

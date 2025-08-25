@@ -7,7 +7,7 @@
 <%= raw locals[key] %>
 
 <ul>
-<% key = [:display_text, :safe_text] do
+<% [:display_text, :safe_text].each do %>
   <li><%= raw locals[key] %></li>
 <% end %>
 </ul>

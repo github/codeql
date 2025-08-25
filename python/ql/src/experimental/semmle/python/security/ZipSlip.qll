@@ -34,6 +34,8 @@ private module ZipSlipConfig implements DataFlow::ConfigSig {
     ) and
     not sink.getScope().getLocation().getFile().inStdlib()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Global taint-tracking for detecting "zip slip" vulnerabilities. */

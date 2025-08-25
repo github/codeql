@@ -1,6 +1,7 @@
 #pragma once
 
 #include <swift/AST/ASTAllocated.h>
+#include <llvm/ADT/DenseMap.h>  // needed (but not included) by the following header
 #include <swift/AST/AvailabilitySpec.h>
 #include <swift/AST/Expr.h>
 #include <swift/AST/SourceFile.h>
@@ -17,27 +18,25 @@ class TrapDomain;
 
 namespace detail {
 template <typename T>
-concept HasSourceRange = requires(T e) {
-  e.getSourceRange();
-};
+concept HasSourceRange = requires(T e) { e.getSourceRange(); };
 
 template <typename T>
 concept HasStartAndEndLoc = requires(T e) {
   e.getStartLoc();
   e.getEndLoc();
-}
-&&!(HasSourceRange<T>);
+} && !(HasSourceRange<T>);
 
 template <typename T>
-concept HasOneLoc = requires(T e) {
-  e.getLoc();
-}
-&&!(HasSourceRange<T>)&&(!HasStartAndEndLoc<T>);
+concept HasLAndRParenLoc = requires(T e) {
+  e.getLParenLoc();
+  e.getRParenLoc();
+} && !(HasSourceRange<T>)&&!(HasStartAndEndLoc<T>);
 
 template <typename T>
-concept HasOneLocField = requires(T e) {
-  e.Loc;
-};
+concept HasOneLoc = requires(T e) { e.getLoc(); } && !(HasSourceRange<T>)&&(!HasStartAndEndLoc<T>);
+
+template <typename T>
+concept HasOneLocField = requires(T e) { e.Loc; };
 
 swift::SourceRange getSourceRange(const HasSourceRange auto& locatable) {
   return locatable.getSourceRange();
@@ -48,6 +47,13 @@ swift::SourceRange getSourceRange(const HasStartAndEndLoc auto& locatable) {
     return {locatable.getStartLoc(), locatable.getEndLoc()};
   }
   return {locatable.getStartLoc()};
+}
+
+swift::SourceRange getSourceRange(const HasLAndRParenLoc auto& locatable) {
+  if (locatable.getLParenLoc() && locatable.getRParenLoc()) {
+    return {locatable.getLParenLoc(), locatable.getRParenLoc()};
+  }
+  return {locatable.getLParenLoc()};
 }
 
 swift::SourceRange getSourceRange(const HasOneLoc auto& locatable) {
@@ -75,9 +81,7 @@ swift::SourceRange getSourceRange(const llvm::MutableArrayRef<Locatable>& locata
 }  // namespace detail
 
 template <typename E>
-concept IsLocatable = requires(E e) {
-  detail::getSourceRange(e);
-};
+concept IsLocatable = requires(E e) { detail::getSourceRange(e); };
 
 class SwiftLocationExtractor {
  public:

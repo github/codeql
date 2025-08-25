@@ -1,7 +1,7 @@
 import java
 import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.security.XSS
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module JaxRsTest implements TestSig {
   string getARelevantTag() {
@@ -123,7 +123,7 @@ module JaxRsTest implements TestSig {
     )
     or
     tag = "MessageBodyReaderReadFromCall" and
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof MessageBodyReaderReadFrom and
       ma.getLocation() = location and
       element = ma.toString() and
@@ -131,7 +131,7 @@ module JaxRsTest implements TestSig {
     )
     or
     tag = "MessageBodyReaderReadCall" and
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof MessageBodyReaderRead and
       ma.getLocation() = location and
       element = ma.toString() and

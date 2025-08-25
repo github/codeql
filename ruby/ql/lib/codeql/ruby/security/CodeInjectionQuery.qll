@@ -11,38 +11,6 @@ import codeql.ruby.TaintTracking
 import CodeInjectionCustomizations::CodeInjection
 import codeql.ruby.dataflow.BarrierGuards
 
-/**
- * A taint-tracking configuration for detecting "Code injection" vulnerabilities.
- * DEPRECATED: Use `CodeInjectionFlow` instead
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "CodeInjection" }
-
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
-    state = source.(Source).getAFlowState()
-  }
-
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
-    state = sink.(Sink).getAFlowState()
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    node instanceof Sanitizer and not exists(node.(Sanitizer).getAFlowState())
-    or
-    node instanceof StringConstCompareBarrier
-    or
-    node instanceof StringConstArrayInclusionCallBarrier
-  }
-
-  override predicate isSanitizer(DataFlow::Node node, DataFlow::FlowState state) {
-    node.(Sanitizer).getAFlowState() = state
-  }
-
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof SanitizerGuard
-  }
-}
-
 private module Config implements DataFlow::StateConfigSig {
   class FlowState = FlowState::State;
 
@@ -59,6 +27,12 @@ private module Config implements DataFlow::StateConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node, FlowState state) { node.(Sanitizer).getAState() = state }
+
+  predicate isBarrierIn(DataFlow::Node node) { node instanceof Source }
+
+  int fieldFlowBranchLimit() { result = 10 }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

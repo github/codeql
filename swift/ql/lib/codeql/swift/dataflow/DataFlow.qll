@@ -5,6 +5,7 @@
 module DataFlow {
   private import internal.DataFlowImplSpecific
   private import codeql.dataflow.DataFlow
-  import DataFlowMake<SwiftDataFlow>
-  import internal.DataFlowImpl1
+  private import codeql.swift.elements.Location
+  import DataFlowMake<Location, SwiftDataFlow>
+  import Public
 }

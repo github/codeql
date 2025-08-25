@@ -7,8 +7,8 @@
  */
 
 import internal.CaptureModels
-import internal.CaptureSummaryFlowQuery
+import SummaryModels
 
-from DataFlowTargetApi api, string noflow
-where noflow = captureNoFlow(api)
+from DataFlowSummaryTargetApi api, string noflow
+where noflow = captureNeutral(api)
 select noflow order by noflow

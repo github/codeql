@@ -17,6 +17,7 @@
 | test.cpp:49:12:49:12 | Load: x | test.cpp:46:22:46:22 | ValueNumberBound | -1 | true | CompareLT: ... < ... | test.cpp:48:9:48:13 | test.cpp:48:9:48:13 |
 | test.cpp:49:12:49:12 | Load: x | test.cpp:46:29:46:29 | ValueNumberBound | -2 | true | CompareLT: ... < ... | test.cpp:48:9:48:13 | test.cpp:48:9:48:13 |
 | test.cpp:54:12:54:12 | Load: x | test.cpp:46:22:46:22 | ValueNumberBound | -1 | true | CompareLT: ... < ... | test.cpp:52:7:52:11 | test.cpp:52:7:52:11 |
+| test.cpp:54:12:54:12 | Load: x | test.cpp:46:29:46:29 | ValueNumberBound | -2 | true | CompareLT: ... < ... | test.cpp:52:7:52:11 | test.cpp:52:7:52:11 |
 | test.cpp:62:10:62:13 | Load: iter | test.cpp:60:17:60:17 | ValueNumberBound | 0 | false | NoReason | file://:0:0:0:0 | file://:0:0:0:0 |
 | test.cpp:62:10:62:13 | Load: iter | test.cpp:60:17:60:17 | ValueNumberBound | 3 | true | CompareLT: ... < ... | test.cpp:61:32:61:51 | test.cpp:61:32:61:51 |
 | test.cpp:62:10:62:13 | Load: iter | test.cpp:61:39:61:51 | ValueNumberBound | -1 | true | CompareLT: ... < ... | test.cpp:61:32:61:51 | test.cpp:61:32:61:51 |

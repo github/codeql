@@ -6,14 +6,17 @@
  * three-valued domain `{negative, zero, positive}`.
  */
 
-private import RangeAnalysisStage
+private import codeql.rangeanalysis.RangeAnalysis
+private import RangeAnalysisImpl
 private import SignAnalysisSpecific as Specific
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
+private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticLocation
 private import ConstantAnalysis
-private import RangeUtils
 private import Sign
 
-module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
+module SignAnalysis<DeltaSig D> {
+  private import codeql.rangeanalysis.internal.RangeUtils::MakeUtils<SemLocation, Sem, D>
+
   /**
    * An SSA definition for which the analysis can compute the sign.
    *
@@ -36,13 +39,13 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
 
   /** An SSA definition whose sign is determined by the sign of that definitions source expression. */
   private class ExplicitSignDef extends FlowSignDef instanceof SemSsaExplicitUpdate {
-    final override Sign getSign() { result = semExprSign(super.getSourceExpr()) }
+    final override Sign getSign() { result = semExprSign(super.getDefiningExpr()) }
   }
 
   /** An SSA Phi definition, whose sign is the union of the signs of its inputs. */
   private class PhiSignDef extends FlowSignDef instanceof SemSsaPhiNode {
     final override Sign getSign() {
-      exists(SemSsaVariable inp, SemSsaReadPositionPhiInputEdge edge |
+      exists(SemSsaVariable inp, SsaReadPositionPhiInputEdge edge |
         edge.phiInput(this, inp) and
         result = semSsaSign(inp, edge)
       )
@@ -145,7 +148,7 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
       not this instanceof ConstantSignExpr and
       (
         // Only track numeric types.
-        Utils::getTrackedType(this) instanceof SemNumericType
+        Sem::getExprType(this) instanceof SemNumericType
         or
         // Unless the language says to track this expression anyway.
         Specific::trackUnknownNonNumericExpr(this)
@@ -167,11 +170,11 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
     override Sign getSignRestriction() {
       // Propagate via SSA
       // Propagate the sign from the def of `v`, incorporating any inference from guards.
-      result = semSsaSign(v, any(SemSsaReadPositionBlock bb | bb.getAnExpr() = this))
+      result = semSsaSign(v, any(SsaReadPositionBlock bb | bb.getBlock().getAnExpr() = this))
       or
       // No block for this read. Just use the sign of the def.
       // REVIEW: How can this happen?
-      not exists(SemSsaReadPositionBlock bb | bb.getAnExpr() = this) and
+      not exists(SsaReadPositionBlock bb | bb.getBlock().getAnExpr() = this) and
       result = semSsaDefSign(v)
     }
   }
@@ -200,7 +203,7 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
 
   /** An expression of an unsigned type. */
   private class UnsignedExpr extends FlowSignExpr {
-    UnsignedExpr() { Utils::getTrackedType(this) instanceof SemUnsignedIntegerType }
+    UnsignedExpr() { Sem::getExprType(this) instanceof SemUnsignedIntegerType }
 
     override Sign getSignRestriction() {
       result = TPos() or
@@ -273,7 +276,7 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
     override SemUnboxExpr cast;
 
     UnboxSignExpr() {
-      exists(SemType fromType | fromType = Utils::getTrackedType(cast.getOperand()) |
+      exists(SemType fromType | fromType = Sem::getExprType(cast.getOperand()) |
         // Only numeric source types are handled here.
         fromType instanceof SemNumericType
       )
@@ -287,21 +290,21 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
    * to only include bounds for which we might determine a sign.
    */
   private predicate lowerBound(
-    SemExpr lowerbound, SemSsaVariable v, SemSsaReadPosition pos, boolean isStrict
+    SemExpr lowerbound, SemSsaVariable v, SsaReadPosition pos, boolean isStrict
   ) {
     exists(boolean testIsTrue, SemRelationalExpr comp |
       pos.hasReadOfVar(v) and
-      semGuardControlsSsaRead(semGetComparisonGuard(comp), pos, testIsTrue) and
+      guardControlsSsaRead(semGetComparisonGuard(comp), pos, testIsTrue) and
       not unknownSign(lowerbound)
     |
       testIsTrue = true and
       comp.getLesserOperand() = lowerbound and
-      comp.getGreaterOperand() = Utils::semSsaRead(v, D::fromInt(0)) and
+      comp.getGreaterOperand() = ssaRead(v, D::fromInt(0)) and
       (if comp.isStrict() then isStrict = true else isStrict = false)
       or
       testIsTrue = false and
       comp.getGreaterOperand() = lowerbound and
-      comp.getLesserOperand() = Utils::semSsaRead(v, D::fromInt(0)) and
+      comp.getLesserOperand() = ssaRead(v, D::fromInt(0)) and
       (if comp.isStrict() then isStrict = false else isStrict = true)
     )
   }
@@ -311,21 +314,21 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
    * to only include bounds for which we might determine a sign.
    */
   private predicate upperBound(
-    SemExpr upperbound, SemSsaVariable v, SemSsaReadPosition pos, boolean isStrict
+    SemExpr upperbound, SemSsaVariable v, SsaReadPosition pos, boolean isStrict
   ) {
     exists(boolean testIsTrue, SemRelationalExpr comp |
       pos.hasReadOfVar(v) and
-      semGuardControlsSsaRead(semGetComparisonGuard(comp), pos, testIsTrue) and
+      guardControlsSsaRead(semGetComparisonGuard(comp), pos, testIsTrue) and
       not unknownSign(upperbound)
     |
       testIsTrue = true and
       comp.getGreaterOperand() = upperbound and
-      comp.getLesserOperand() = Utils::semSsaRead(v, D::fromInt(0)) and
+      comp.getLesserOperand() = ssaRead(v, D::fromInt(0)) and
       (if comp.isStrict() then isStrict = true else isStrict = false)
       or
       testIsTrue = false and
       comp.getLesserOperand() = upperbound and
-      comp.getGreaterOperand() = Utils::semSsaRead(v, D::fromInt(0)) and
+      comp.getGreaterOperand() = ssaRead(v, D::fromInt(0)) and
       (if comp.isStrict() then isStrict = false else isStrict = true)
     )
   }
@@ -337,11 +340,11 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
    *  - `isEq = true` : `v = eqbound`
    *  - `isEq = false` : `v != eqbound`
    */
-  private predicate eqBound(SemExpr eqbound, SemSsaVariable v, SemSsaReadPosition pos, boolean isEq) {
+  private predicate eqBound(SemExpr eqbound, SemSsaVariable v, SsaReadPosition pos, boolean isEq) {
     exists(SemGuard guard, boolean testIsTrue, boolean polarity, SemExpr e |
       pos.hasReadOfVar(pragma[only_bind_into](v)) and
-      semGuardControlsSsaRead(guard, pragma[only_bind_into](pos), testIsTrue) and
-      e = Utils::semSsaRead(pragma[only_bind_into](v), D::fromInt(0)) and
+      guardControlsSsaRead(guard, pragma[only_bind_into](pos), testIsTrue) and
+      e = ssaRead(pragma[only_bind_into](v), D::fromInt(0)) and
       guard.isEquality(eqbound, e, polarity) and
       isEq = polarity.booleanXor(testIsTrue).booleanNot() and
       not unknownSign(eqbound)
@@ -352,7 +355,7 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
    * Holds if `bound` is a bound for `v` at `pos` that needs to be positive in
    * order for `v` to be positive.
    */
-  private predicate posBound(SemExpr bound, SemSsaVariable v, SemSsaReadPosition pos) {
+  private predicate posBound(SemExpr bound, SemSsaVariable v, SsaReadPosition pos) {
     upperBound(bound, v, pos, _) or
     eqBound(bound, v, pos, true)
   }
@@ -361,7 +364,7 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
    * Holds if `bound` is a bound for `v` at `pos` that needs to be negative in
    * order for `v` to be negative.
    */
-  private predicate negBound(SemExpr bound, SemSsaVariable v, SemSsaReadPosition pos) {
+  private predicate negBound(SemExpr bound, SemSsaVariable v, SsaReadPosition pos) {
     lowerBound(bound, v, pos, _) or
     eqBound(bound, v, pos, true)
   }
@@ -370,24 +373,24 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
    * Holds if `bound` is a bound for `v` at `pos` that can restrict whether `v`
    * can be zero.
    */
-  private predicate zeroBound(SemExpr bound, SemSsaVariable v, SemSsaReadPosition pos) {
+  private predicate zeroBound(SemExpr bound, SemSsaVariable v, SsaReadPosition pos) {
     lowerBound(bound, v, pos, _) or
     upperBound(bound, v, pos, _) or
     eqBound(bound, v, pos, _)
   }
 
   /** Holds if `bound` allows `v` to be positive at `pos`. */
-  private predicate posBoundOk(SemExpr bound, SemSsaVariable v, SemSsaReadPosition pos) {
+  private predicate posBoundOk(SemExpr bound, SemSsaVariable v, SsaReadPosition pos) {
     posBound(bound, v, pos) and TPos() = semExprSign(bound)
   }
 
   /** Holds if `bound` allows `v` to be negative at `pos`. */
-  private predicate negBoundOk(SemExpr bound, SemSsaVariable v, SemSsaReadPosition pos) {
+  private predicate negBoundOk(SemExpr bound, SemSsaVariable v, SsaReadPosition pos) {
     negBound(bound, v, pos) and TNeg() = semExprSign(bound)
   }
 
   /** Holds if `bound` allows `v` to be zero at `pos`. */
-  private predicate zeroBoundOk(SemExpr bound, SemSsaVariable v, SemSsaReadPosition pos) {
+  private predicate zeroBoundOk(SemExpr bound, SemSsaVariable v, SsaReadPosition pos) {
     lowerBound(bound, v, pos, _) and TNeg() = semExprSign(bound)
     or
     lowerBound(bound, v, pos, false) and TZero() = semExprSign(bound)
@@ -405,7 +408,7 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
    * Holds if there is a bound that might restrict whether `v` has the sign `s`
    * at `pos`.
    */
-  private predicate hasGuard(SemSsaVariable v, SemSsaReadPosition pos, Sign s) {
+  private predicate hasGuard(SemSsaVariable v, SsaReadPosition pos, Sign s) {
     s = TPos() and posBound(_, v, pos)
     or
     s = TNeg() and negBound(_, v, pos)
@@ -418,7 +421,7 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
    * might be ruled out by a guard.
    */
   pragma[noinline]
-  private Sign guardedSsaSign(SemSsaVariable v, SemSsaReadPosition pos) {
+  private Sign guardedSsaSign(SemSsaVariable v, SsaReadPosition pos) {
     result = semSsaDefSign(v) and
     pos.hasReadOfVar(v) and
     hasGuard(v, pos, result)
@@ -429,10 +432,82 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
    * can rule it out.
    */
   pragma[noinline]
-  private Sign unguardedSsaSign(SemSsaVariable v, SemSsaReadPosition pos) {
+  private Sign unguardedSsaSign(SemSsaVariable v, SsaReadPosition pos) {
     result = semSsaDefSign(v) and
     pos.hasReadOfVar(v) and
     not hasGuard(v, pos, result)
+  }
+
+  private SemExpr posBoundGetElement(int i, SemSsaVariable v, SsaReadPosition pos) {
+    result =
+      rank[i + 1](SemExpr bound, SemBasicBlock b, int blockOrder, int indexOrder |
+        posBound(bound, v, pos) and
+        b = bound.getBasicBlock() and
+        blockOrder = b.getUniqueId() and
+        bound = b.getInstruction(indexOrder)
+      |
+        bound order by blockOrder, indexOrder
+      )
+  }
+
+  private predicate posBoundOkFromIndex(int i, SemSsaVariable v, SsaReadPosition pos) {
+    i = 0 and
+    posBoundOk(posBoundGetElement(i, v, pos), v, pos)
+    or
+    posBoundOkFromIndex(i - 1, v, pos) and
+    posBoundOk(posBoundGetElement(i, v, pos), v, pos)
+  }
+
+  private predicate posBoundGuardedSsaSignOk(SemSsaVariable v, SsaReadPosition pos) {
+    posBoundOkFromIndex(max(int i | exists(posBoundGetElement(i, v, pos))), v, pos)
+  }
+
+  private SemExpr negBoundGetElement(int i, SemSsaVariable v, SsaReadPosition pos) {
+    result =
+      rank[i + 1](SemExpr bound, SemBasicBlock b, int blockOrder, int indexOrder |
+        negBound(bound, v, pos) and
+        b = bound.getBasicBlock() and
+        blockOrder = b.getUniqueId() and
+        bound = b.getInstruction(indexOrder)
+      |
+        bound order by blockOrder, indexOrder
+      )
+  }
+
+  private predicate negBoundOkFromIndex(int i, SemSsaVariable v, SsaReadPosition pos) {
+    i = 0 and
+    negBoundOk(negBoundGetElement(i, v, pos), v, pos)
+    or
+    negBoundOkFromIndex(i - 1, v, pos) and
+    negBoundOk(negBoundGetElement(i, v, pos), v, pos)
+  }
+
+  private predicate negBoundGuardedSsaSignOk(SemSsaVariable v, SsaReadPosition pos) {
+    negBoundOkFromIndex(max(int i | exists(negBoundGetElement(i, v, pos))), v, pos)
+  }
+
+  private SemExpr zeroBoundGetElement(int i, SemSsaVariable v, SsaReadPosition pos) {
+    result =
+      rank[i + 1](SemExpr bound, SemBasicBlock b, int blockOrder, int indexOrder |
+        zeroBound(bound, v, pos) and
+        b = bound.getBasicBlock() and
+        blockOrder = b.getUniqueId() and
+        bound = b.getInstruction(indexOrder)
+      |
+        bound order by blockOrder, indexOrder
+      )
+  }
+
+  private predicate zeroBoundOkFromIndex(int i, SemSsaVariable v, SsaReadPosition pos) {
+    i = 0 and
+    zeroBoundOk(zeroBoundGetElement(i, v, pos), v, pos)
+    or
+    zeroBoundOkFromIndex(i - 1, v, pos) and
+    zeroBoundOk(zeroBoundGetElement(i, v, pos), v, pos)
+  }
+
+  private predicate zeroBoundGuardedSsaSignOk(SemSsaVariable v, SsaReadPosition pos) {
+    zeroBoundOkFromIndex(max(int i | exists(zeroBoundGetElement(i, v, pos))), v, pos)
   }
 
   /**
@@ -440,19 +515,25 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
    * ruled out the sign but does not.
    * This does not check that the definition of `v` also allows the sign.
    */
-  private Sign guardedSsaSignOk(SemSsaVariable v, SemSsaReadPosition pos) {
+  private Sign guardedSsaSignOk(SemSsaVariable v, SsaReadPosition pos) {
     result = TPos() and
-    forex(SemExpr bound | posBound(bound, v, pos) | posBoundOk(bound, v, pos))
+    // optimised version of
+    // `forex(SemExpr bound | posBound(bound, v, pos) | posBoundOk(bound, v, pos))`
+    posBoundGuardedSsaSignOk(v, pos)
     or
     result = TNeg() and
-    forex(SemExpr bound | negBound(bound, v, pos) | negBoundOk(bound, v, pos))
+    // optimised version of
+    // `forex(SemExpr bound | negBound(bound, v, pos) | negBoundOk(bound, v, pos))`
+    negBoundGuardedSsaSignOk(v, pos)
     or
     result = TZero() and
-    forex(SemExpr bound | zeroBound(bound, v, pos) | zeroBoundOk(bound, v, pos))
+    // optimised version of
+    // `forex(SemExpr bound | zeroBound(bound, v, pos) | zeroBoundOk(bound, v, pos))`
+    zeroBoundGuardedSsaSignOk(v, pos)
   }
 
   /** Gets a possible sign for `v` at `pos`. */
-  private Sign semSsaSign(SemSsaVariable v, SemSsaReadPosition pos) {
+  private Sign semSsaSign(SemSsaVariable v, SsaReadPosition pos) {
     result = unguardedSsaSign(v, pos)
     or
     result = guardedSsaSign(v, pos) and
@@ -468,7 +549,7 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
   Sign semExprSign(SemExpr e) {
     exists(Sign s | s = e.(SignExpr).getSign() |
       if
-        Utils::getTrackedType(e) instanceof SemUnsignedIntegerType and
+        Sem::getExprType(e) instanceof SemUnsignedIntegerType and
         s = TNeg() and
         not Specific::ignoreTypeRestrictions(e)
       then result = TPos()
@@ -507,4 +588,16 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
     not semExprSign(e) = TPos() and
     not semExprSign(e) = TZero()
   }
+
+  /**
+   * Holds if `e` may have positive values. This does not rule out the
+   * possibility for negative values.
+   */
+  predicate semMayBePositive(SemExpr e) { semExprSign(e) = TPos() }
+
+  /**
+   * Holds if `e` may have negative values. This does not rule out the
+   * possibility for positive values.
+   */
+  predicate semMayBeNegative(SemExpr e) { semExprSign(e) = TNeg() }
 }

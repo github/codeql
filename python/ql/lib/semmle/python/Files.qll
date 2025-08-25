@@ -93,7 +93,7 @@ class File extends Container, Impl::File {
       exists(Stmt s | s.getLocation().getFile() = this)
       or
       // The file contains the usual `if __name__ == '__main__':` construction
-      exists(If i, Name name, StrConst main, Cmpop op |
+      exists(If i, Name name, StringLiteral main, Cmpop op |
         i.getScope().(Module).getFile() = this and
         op instanceof Eq and
         i.getTest().(Compare).compares(name, op, main) and
@@ -123,7 +123,7 @@ private predicate occupied_line(File f, int n) {
   exists(Location l | l.getFile() = f |
     l.getStartLine() = n
     or
-    exists(StrConst s | s.getLocation() = l | n in [l.getStartLine() .. l.getEndLine()])
+    exists(StringLiteral s | s.getLocation() = l | n in [l.getStartLine() .. l.getEndLine()])
   )
 }
 

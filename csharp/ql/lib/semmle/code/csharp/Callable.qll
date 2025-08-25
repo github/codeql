@@ -8,7 +8,7 @@ import Stmt
 import Type
 import exprs.Call
 private import commons.QualifiedName
-private import dotnet
+private import commons.Collections
 private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.metrics.Complexity
 private import TypeRef
@@ -21,8 +21,9 @@ private import TypeRef
  * an anonymous function (`AnonymousFunctionExpr`), or a local function
  * (`LocalFunction`).
  */
-class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @callable {
-  override Type getReturnType() { none() }
+class Callable extends Parameterizable, ExprOrStmtParent, @callable {
+  /** Gets the return type of this callable. */
+  Type getReturnType() { none() }
 
   /** Gets the annotated return type of this callable. */
   final AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
@@ -65,7 +66,8 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
     result = this.getExpressionBody()
   }
 
-  override predicate hasBody() { exists(this.getBody()) }
+  /** Holds if this callable has a body or an implementation. */
+  predicate hasBody() { exists(this.getBody()) }
 
   /**
    * Holds if this callable has a non-empty body. That is, either it has
@@ -105,7 +107,10 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    * then both `{ return 0; }` and `{ return 1; }` are statement bodies of
    * `N.C.M()`.
    */
-  final BlockStmt getStatementBody() { result = this.getAChildStmt() }
+  final BlockStmt getStatementBody() {
+    result = getStatementBody(this) and
+    not this.getFile().isStub()
+  }
 
   /**
    * DEPRECATED: Use `getStatementBody` instead.
@@ -143,8 +148,8 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    * then both `0` and `1` are expression bodies of `N.C.M()`.
    */
   final Expr getExpressionBody() {
-    result = this.getAChildExpr() and
-    not result = this.(Constructor).getInitializer()
+    result = getExpressionBody(this) and
+    not this.getFile().isStub()
   }
 
   /** Holds if this callable has an expression body. */
@@ -193,7 +198,8 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
     )
   }
 
-  override predicate canReturn(DotNet::Expr e) {
+  /** Holds if this callable can return expression `e`. */
+  predicate canReturn(Expr e) {
     exists(ReturnStmt ret | ret.getEnclosingCallable() = this | e = ret.getExpr())
     or
     e = this.getExpressionBody() and
@@ -215,8 +221,6 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
 
   /** Gets a `Call` that has this callable as a target. */
   Call getACall() { this = result.getTarget() }
-
-  override Parameter getAParameter() { result = Parameterizable.super.getAParameter() }
 }
 
 /**
@@ -236,7 +240,12 @@ class Method extends Callable, Virtualizable, Attributable, @method {
 
   override ValueOrRefType getDeclaringType() { methods(this, _, result, _, _) }
 
-  override Type getReturnType() { methods(this, _, _, getTypeRef(result), _) }
+  override Type getReturnType() {
+    methods(this, _, _, result, _)
+    or
+    not methods(this, _, _, any(Type t), _) and
+    methods(this, _, _, getTypeRef(result), _)
+  }
 
   override Method getUnboundDeclaration() { methods(this, _, _, _, result) }
 
@@ -265,7 +274,7 @@ class Method extends Callable, Virtualizable, Attributable, @method {
   Type getParamsType() {
     exists(Parameter last | last = this.getParameter(this.getNumberOfParameters() - 1) |
       last.isParams() and
-      result = last.getType().(ArrayType).getElementType()
+      result = last.getType().(ParamsCollectionType).getElementType()
     )
   }
 
@@ -317,7 +326,7 @@ class ExtensionMethod extends Method {
  * }
  * ```
  */
-class Constructor extends DotNet::Constructor, Callable, Member, Attributable, @constructor {
+class Constructor extends Callable, Member, Attributable, @constructor {
   override string getName() { constructors(this, result, _, _) }
 
   override Type getReturnType() {
@@ -399,6 +408,26 @@ class InstanceConstructor extends Constructor {
 }
 
 /**
+ * A primary constructor, for example `public class C(object o)` on line 1 in
+ * ```csharp
+ * public class C(object o) {
+ *  ...
+ * }
+ * ```
+ */
+class PrimaryConstructor extends Constructor {
+  PrimaryConstructor() {
+    // In the extractor we use the constructor location as the location for the
+    // synthesized empty body of the constructor.
+    this.getLocation() = this.getBody().getLocation() and
+    this.getDeclaringType().fromSource() and
+    this.fromSource()
+  }
+
+  override string getAPrimaryQlClass() { result = "PrimaryConstructor" }
+}
+
+/**
  * A destructor, for example `~C() { }` on line 2 in
  *
  * ```csharp
@@ -407,7 +436,7 @@ class InstanceConstructor extends Constructor {
  * }
  * ```
  */
-class Destructor extends DotNet::Destructor, Callable, Member, Attributable, @destructor {
+class Destructor extends Callable, Member, Attributable, @destructor {
   override string getName() { destructors(this, result, _, _) }
 
   override Type getReturnType() {
@@ -435,13 +464,6 @@ class Destructor extends DotNet::Destructor, Callable, Member, Attributable, @de
  * (`BinaryOperator`), or a conversion operator (`ConversionOperator`).
  */
 class Operator extends Callable, Member, Attributable, Overridable, @operator {
-  /**
-   * DEPRECATED: use `getFunctionName()` instead.
-   *
-   * Gets the assembly name of this operator.
-   */
-  deprecated string getAssemblyName() { result = this.getFunctionName() }
-
   override string getName() { operators(this, _, result, _, _, _) }
 
   override string getUndecoratedName() { operators(this, _, result, _, _, _) }
@@ -453,7 +475,12 @@ class Operator extends Callable, Member, Attributable, Overridable, @operator {
 
   override ValueOrRefType getDeclaringType() { operators(this, _, _, result, _, _) }
 
-  override Type getReturnType() { operators(this, _, _, _, getTypeRef(result), _) }
+  override Type getReturnType() {
+    operators(this, _, _, _, result, _)
+    or
+    not operators(this, _, _, _, any(Type t), _) and
+    operators(this, _, _, _, getTypeRef(result), _)
+  }
 
   override Operator getUnboundDeclaration() { operators(this, _, _, _, _, result) }
 
@@ -462,22 +489,35 @@ class Operator extends Callable, Member, Attributable, Overridable, @operator {
   override string toString() { result = Callable.super.toString() }
 
   override Parameter getRawParameter(int i) { result = this.getParameter(i) }
+}
 
-  override predicate hasQualifiedName(string qualifier, string name) {
-    super.hasQualifiedName(qualifier, _) and
-    name = this.getFunctionName()
-  }
-
-  override predicate hasQualifiedName(string namespace, string type, string name) {
-    super.hasQualifiedName(namespace, type, _) and
-    name = this.getFunctionName()
-  }
+pragma[nomagic]
+private ValueOrRefType getARecordBaseType(ValueOrRefType t) {
+  exists(Callable c |
+    c.hasName("<Clone>$") and
+    c.getNumberOfParameters() = 0 and
+    t = c.getDeclaringType() and
+    result = t
+  )
+  or
+  result = getARecordBaseType(t).getABaseType()
 }
 
 /** A clone method on a record. */
-class RecordCloneMethod extends Method, DotNet::RecordCloneCallable {
-  override Constructor getConstructor() {
-    result = DotNet::RecordCloneCallable.super.getConstructor()
+class RecordCloneMethod extends Method {
+  RecordCloneMethod() {
+    this.hasName("<Clone>$") and
+    this.getNumberOfParameters() = 0 and
+    this.getReturnType() = getARecordBaseType(this.getDeclaringType()) and
+    this.isPublic() and
+    not this.isStatic()
+  }
+
+  /** Gets the constructor that this clone method calls. */
+  Constructor getConstructor() {
+    result.getDeclaringType() = this.getDeclaringType() and
+    result.getNumberOfParameters() = 1 and
+    result.getParameter(0).getType() = this.getDeclaringType()
   }
 }
 
@@ -879,9 +919,6 @@ class LeftShiftOperator extends BinaryOperator {
   override string getAPrimaryQlClass() { result = "LeftShiftOperator" }
 }
 
-/** DEPRECATED: Alias for LeftShiftOperator. */
-deprecated class LShiftOperator = LeftShiftOperator;
-
 /**
  * A user-defined right shift operator (`>>`), for example
  *
@@ -896,9 +933,6 @@ class RightShiftOperator extends BinaryOperator {
 
   override string getAPrimaryQlClass() { result = "RightShiftOperator" }
 }
-
-/** DEPRECATED: Alias for RightShiftOperator. */
-deprecated class RShiftOperator = RightShiftOperator;
 
 /**
  * A user-defined unsigned right shift operator (`>>>`), for example
@@ -1102,14 +1136,6 @@ class LocalFunction extends Callable, Modifiable, Attributable, @local_function 
   LocalFunctionStmt getStatement() { result.getLocalFunction() = this.getUnboundDeclaration() }
 
   override Callable getEnclosingCallable() { result = this.getStatement().getEnclosingCallable() }
-
-  override predicate hasQualifiedName(string qualifier, string name) {
-    exists(string cqualifier, string type |
-      this.getEnclosingCallable().hasQualifiedName(cqualifier, type) and
-      qualifier = getQualifiedName(cqualifier, type)
-    ) and
-    name = this.getName()
-  }
 
   override Location getALocation() { result = this.getStatement().getALocation() }
 

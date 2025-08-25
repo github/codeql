@@ -21,7 +21,8 @@ private class HttpOnlyConfig extends WebContextParameter {
   predicate isHttpOnlySet() { this.getParamValueElementValue().toLowerCase() = "false" }
 }
 
-from HttpOnlyConfig config
-where config.isHttpOnlySet()
-select config,
-  "'httpOnly' should be enabled in tomcat config file to help mitigate cross-site scripting (XSS) attacks."
+deprecated query predicate problems(HttpOnlyConfig config, string message) {
+  config.isHttpOnlySet() and
+  message =
+    "'httpOnly' should be enabled in tomcat config file to help mitigate cross-site scripting (XSS) attacks."
+}

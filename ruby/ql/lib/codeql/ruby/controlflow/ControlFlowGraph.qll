@@ -1,4 +1,6 @@
 /** Provides classes representing the control flow graph. */
+overlay[local]
+module;
 
 private import codeql.ruby.AST
 private import codeql.ruby.controlflow.BasicBlocks
@@ -35,13 +37,11 @@ class CfgScope extends Scope instanceof CfgImpl::CfgScopeImpl {
  */
 class CfgNode extends CfgImpl::Node {
   /** Gets the name of the primary QL class for this node. */
+  overlay[global]
   string getAPrimaryQlClass() { none() }
 
   /** Gets the file of this control flow node. */
   final File getFile() { result = this.getLocation().getFile() }
-
-  /** DEPRECATED: Use `getAstNode` instead. */
-  deprecated AstNode getNode() { result = this.getAstNode() }
 
   /** Gets a successor node of a given type, if any. */
   final CfgNode getASuccessor(SuccessorType t) { result = super.getASuccessor(t) }

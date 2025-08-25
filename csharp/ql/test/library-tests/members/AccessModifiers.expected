@@ -1,6 +1,6 @@
 | Members.cs:6:11:6:15 | Class | internal |
 | Members.cs:9:15:9:25 | NestedClass | private |
-| Members.cs:12:20:12:28 | Method<> | private |
+| Members.cs:12:20:12:28 | Method`1 | private |
 | Members.cs:14:20:14:23 | Item | private |
 | Members.cs:14:34:14:36 | get_Item | private |
 | Members.cs:14:55:14:57 | set_Item | private |
@@ -24,7 +24,7 @@
 | Members.cs:32:28:32:32 | remove_Event | private |
 | Members.cs:35:20:35:25 | Class2 | internal |
 | Members.cs:37:23:37:34 | NestedClass2 | private |
-| Members.cs:39:28:39:36 | Method<> | private |
+| Members.cs:39:28:39:36 | Method`1 | private |
 | Members.cs:40:28:40:31 | Item | private |
 | Members.cs:40:42:40:44 | get_Item | private |
 | Members.cs:40:63:40:65 | set_Item | private |

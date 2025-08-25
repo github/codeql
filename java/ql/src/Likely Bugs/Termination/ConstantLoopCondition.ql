@@ -7,7 +7,9 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/constant-loop-condition
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  *       external/cwe/cwe-835
  */
 
@@ -61,7 +63,7 @@ predicate mainLoopCondition(LoopStmt loop, Expr cond) {
     else loopReentry = cond
   |
     last.getEnclosingStmt().getEnclosingStmt*() = loop.getBody() and
-    last.getASuccessor().(Expr).getParent*() = loopReentry
+    last.getASuccessor().asExpr().getParent*() = loopReentry
   )
 }
 
@@ -73,12 +75,12 @@ where
     loopWhileTrue(loop) and loopExitGuard(loop, cond)
   ) and
   // None of the ssa variables in `cond` are updated inside the loop.
-  forex(SsaVariable ssa, RValue use | ssa.getAUse() = use and use.getParent*() = cond |
+  forex(SsaVariable ssa, VarRead use | ssa.getAUse() = use and use.getParent*() = cond |
     not ssa.getCfgNode().getEnclosingStmt().getEnclosingStmt*() = loop or
-    ssa.getCfgNode().(Expr).getParent*() = loop.(ForStmt).getAnInit()
+    ssa.getCfgNode().asExpr().getParent*() = loop.(ForStmt).getAnInit()
   ) and
   // And `cond` does not use method calls, field reads, or array reads.
-  not exists(MethodAccess ma | ma.getParent*() = cond) and
+  not exists(MethodCall ma | ma.getParent*() = cond) and
   not exists(FieldRead fa |
     // Ignore if field is final
     not fa.getField().isFinal() and

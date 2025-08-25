@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import java
 private import semmle.code.java.dataflow.InstanceAccess
 private import semmle.code.java.dataflow.ExternalFlow
@@ -10,6 +13,8 @@ private import FlowSummaryImpl as FlowSummaryImpl
 private import DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.RangeUtils
+private import semmle.code.java.dataflow.SSA
+private import SsaImpl as SsaImpl
 
 /** Gets a string for approximating the name of a field. */
 string approximateFieldContent(FieldContent fc) { result = fc.getField().getName().prefix(1) }
@@ -19,6 +24,41 @@ private predicate deadcode(Expr e) {
     g.(ConstantBooleanExpr).getBooleanValue() = b and
     g.controls(e.getBasicBlock(), b.booleanNot())
   )
+}
+
+module SsaFlow {
+  module Impl = SsaImpl::DataFlowIntegration;
+
+  private predicate ssaDefAssigns(SsaExplicitUpdate def, Expr value) {
+    exists(VariableUpdate upd | upd = def.getDefiningExpr() |
+      value = upd.(VariableAssign).getSource() or
+      value = upd.(AssignOp) or
+      value = upd.(RecordBindingVariableExpr)
+    )
+  }
+
+  Impl::Node asNode(Node n) {
+    n = TSsaNode(result)
+    or
+    result.(Impl::ExprNode).getExpr() = n.asExpr()
+    or
+    result.(Impl::ExprPostUpdateNode).getExpr() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
+    or
+    exists(Parameter p |
+      n = TExplicitParameterNode(p) and
+      result.(Impl::WriteDefSourceNode).getDefinition().(SsaImplicitInit).isParameterDefinition(p)
+    )
+    or
+    ssaDefAssigns(result.(Impl::WriteDefSourceNode).getDefinition(), n.asExpr())
+  }
+
+  predicate localFlowStep(SsaSourceVariable v, Node nodeFrom, Node nodeTo, boolean isUseStep) {
+    Impl::localFlowStep(v, asNode(nodeFrom), asNode(nodeTo), isUseStep)
+  }
+
+  predicate localMustFlowStep(Node nodeFrom, Node nodeTo) {
+    Impl::localMustFlowStep(_, asNode(nodeFrom), asNode(nodeTo))
+  }
 }
 
 cached
@@ -31,6 +71,7 @@ private module Cached {
       not e.getType() instanceof VoidType and
       not e.getParent*() instanceof Annotation
     } or
+    TSsaNode(SsaFlow::Impl::SsaNode node) or
     TExplicitParameterNode(Parameter p) { exists(p.getCallable().getBody()) } or
     TImplicitVarargsArray(Call c) {
       c.getCallee().isVarargs() and
@@ -84,7 +125,7 @@ private module Cached {
 import Cached
 
 private predicate explicitInstanceArgument(Call call, Expr instarg) {
-  call instanceof MethodAccess and
+  call instanceof MethodCall and
   instarg = call.getQualifier() and
   not call.getCallee().isStatic()
 }
@@ -137,6 +178,8 @@ module Public {
       result = this.(FieldValueNode).getField().getType()
       or
       result instanceof TypeObject and this instanceof AdditionalNode
+      or
+      result = this.(SsaNode).getTypeImpl()
     }
 
     /** Gets the callable in which this node occurs. */
@@ -163,7 +206,7 @@ module Public {
      * For more information, see
      * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
-    predicate hasLocationInfo(
+    deprecated predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
       this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
@@ -358,6 +401,20 @@ module Public {
 
 private import Public
 
+class SsaNode extends Node, TSsaNode {
+  private SsaFlow::Impl::SsaNode node;
+
+  SsaNode() { this = TSsaNode(node) }
+
+  BasicBlock getBasicBlock() { result = node.getBasicBlock() }
+
+  Type getTypeImpl() { result = node.getSourceVariable().getType() }
+
+  override Location getLocation() { result = node.getLocation() }
+
+  override string toString() { result = node.toString() }
+}
+
 private class NewExpr extends PostUpdateNode, TExprNode {
   NewExpr() { exists(ClassInstanceExpr cie | this = TExprNode(cie)) }
 
@@ -398,7 +455,8 @@ module Private {
     result.asSummarizedCallable() = n.(FlowSummaryNode).getSummarizedCallable() or
     result.asCallable() = n.(CaptureNode).getSynthesizedCaptureNode().getEnclosingCallable() or
     result.asFieldScope() = n.(FieldValueNode).getField() or
-    result.asCallable() = any(Expr e | n.(AdditionalNode).nodeAt(e, _)).getEnclosingCallable()
+    result.asCallable() = any(Expr e | n.(AdditionalNode).nodeAt(e, _)).getEnclosingCallable() or
+    result.asCallable() = n.(SsaNode).getBasicBlock().getEnclosingCallable()
   }
 
   /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
@@ -463,7 +521,7 @@ module Private {
   /** A data flow node that represents the output of a call. */
   class OutNode extends Node {
     OutNode() {
-      this.asExpr() instanceof MethodAccess
+      this.asExpr() instanceof MethodCall
       or
       this.(FlowSummaryNode).isOut(_)
     }
@@ -491,16 +549,16 @@ module Private {
     override string toString() { result = this.getSummaryNode().toString() }
 
     /** Holds if this summary node is the `i`th argument of `call`. */
-    predicate isArgumentOf(DataFlowCall call, int i) {
-      FlowSummaryImpl::Private::summaryArgumentNode(call, this.getSummaryNode(), i)
+    predicate isArgumentOf(SummaryCall call, int i) {
+      FlowSummaryImpl::Private::summaryArgumentNode(call.getReceiver(), this.getSummaryNode(), i)
     }
 
     /** Holds if this summary node is a return node. */
     predicate isReturn() { FlowSummaryImpl::Private::summaryReturnNode(this.getSummaryNode(), _) }
 
     /** Holds if this summary node is an out node for `call`. */
-    predicate isOut(DataFlowCall call) {
-      FlowSummaryImpl::Private::summaryOutNode(call, this.getSummaryNode(), _)
+    predicate isOut(SummaryCall call) {
+      FlowSummaryImpl::Private::summaryOutNode(call.getReceiver(), this.getSummaryNode(), _)
     }
   }
 

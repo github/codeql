@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with Java Serialization.
  */
+overlay[local?]
+module;
 
 import java
 private import frameworks.jackson.JacksonSerializability
@@ -24,7 +26,7 @@ abstract class DeserializableField extends Field { }
  * A non-`transient` field in a type that (directly or indirectly) implements the `Serializable` interface
  * and may be read or written via serialization.
  */
-library class StandardSerializableField extends SerializableField, DeserializableField {
+class StandardSerializableField extends SerializableField, DeserializableField {
   StandardSerializableField() {
     this.getDeclaringType().getAnAncestor() instanceof TypeSerializable and
     not this.isTransient()

@@ -1,4 +1,6 @@
 /** Provides classes to reason about Groovy code injection attacks. */
+overlay[local?]
+module;
 
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
@@ -51,7 +53,7 @@ private predicate groovyCodeSourceTaintStep(DataFlow::Node fromNode, DataFlow::N
  * a `CompilationUnit` instance by calling `compilationUnit.addSource(..., tainted)`.
  */
 private predicate groovyCompilationUnitTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-  exists(MethodAccess ma, Method m |
+  exists(MethodCall ma, Method m |
     ma.getMethod() = m and
     m.hasName("addSource") and
     m.getDeclaringType() instanceof TypeGroovyCompilationUnit
@@ -84,7 +86,7 @@ private predicate groovySourceUnitTaintStep(DataFlow::Node fromNode, DataFlow::N
     toNode.asExpr() = cie
   )
   or
-  exists(MethodAccess ma, Method m |
+  exists(MethodCall ma, Method m |
     ma.getMethod() = m and
     m.hasName("create") and
     m.getDeclaringType() instanceof TypeGroovySourceUnit

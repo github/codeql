@@ -18,5 +18,5 @@
 | test.py:58:9:58:9 | ControlFlowNode for z | int 5 | test.py:48:9:48:9 | ControlFlowNode for IntegerLiteral |
 | test.py:64:9:64:9 | ControlFlowNode for v | int 20 | test.py:62:13:62:14 | ControlFlowNode for IntegerLiteral |
 | test.py:66:9:66:9 | ControlFlowNode for v | int 10 | test.py:60:13:60:14 | ControlFlowNode for IntegerLiteral |
-| test.py:70:5:70:14 | ControlFlowNode for Str | 'a string' | test.py:70:5:70:14 | ControlFlowNode for Str |
-| test.py:72:9:72:12 | ControlFlowNode for Str | ':)' | test.py:72:9:72:12 | ControlFlowNode for Str |
+| test.py:70:5:70:14 | ControlFlowNode for StringLiteral | 'a string' | test.py:70:5:70:14 | ControlFlowNode for StringLiteral |
+| test.py:72:9:72:12 | ControlFlowNode for StringLiteral | ':)' | test.py:72:9:72:12 | ControlFlowNode for StringLiteral |

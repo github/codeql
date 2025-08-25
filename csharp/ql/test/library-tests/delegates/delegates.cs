@@ -83,4 +83,23 @@ namespace Delegates
 
     }
 
+    unsafe class E
+    {
+        Action<int> Field;
+        Action<int> Property { get; set; }
+        delegate*<int, void> FieldPtr;
+        delegate*<int, void> PropertyPtr { get; set; }
+
+        unsafe void M()
+        {
+            this.Field(0);
+            this.Property(0);
+            Field(0);
+            Property(0);
+            this.FieldPtr(0);
+            this.PropertyPtr(0);
+            FieldPtr(0);
+            PropertyPtr(0);
+        }
+    }
 }

@@ -1,0 +1,11 @@
+
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSourceModel
+    data:
+      # https://github.com/knu/changed-files
+      - ["knu/changed-files", "*", "output.changed_files", "filename", "manual"]
+      - ["knu/changed-files", "*", "output.changed_files_json", "filename", "manual"]
+      - ["knu/changed-files", "*", "output.matched_files", "filename", "manual"]
+      - ["knu/changed-files", "*", "output.matched_files_json", "filename", "manual"]

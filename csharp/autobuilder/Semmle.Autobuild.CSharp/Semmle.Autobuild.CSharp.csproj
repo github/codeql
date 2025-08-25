@@ -1,25 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
-		<AssemblyName>Semmle.Autobuild.CSharp</AssemblyName>
-		<RootNamespace>Semmle.Autobuild.CSharp</RootNamespace>
-		<ApplicationIcon/>
-		<OutputType>Exe</OutputType>
-		<StartupObject/>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
-		<Nullable>enable</Nullable>
-	</PropertyGroup>
-	<ItemGroup>
-		<Folder Include="Properties\" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="Microsoft.Build" Version="17.3.2" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\..\extractor\Semmle.Util\Semmle.Util.csproj" />
-		<ProjectReference Include="..\..\extractor\Semmle.Extraction.CSharp\Semmle.Extraction.CSharp.csproj" />
-		<ProjectReference Include="..\Semmle.Autobuild.Shared\Semmle.Autobuild.Shared.csproj" />
-	</ItemGroup>
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\extractor\Semmle.Util\Semmle.Util.csproj" />
+    <ProjectReference Include="..\..\extractor\Semmle.Extraction.CSharp\Semmle.Extraction.CSharp.csproj" />
+    <ProjectReference Include="..\..\extractor\Semmle.Extraction.CSharp.Standalone\Semmle.Extraction.CSharp.Standalone.csproj" />
+    <ProjectReference Include="..\..\extractor\Semmle.Extraction.CSharp.Driver\Semmle.Extraction.CSharp.Driver.csproj" />
+    <ProjectReference Include="..\..\extractor\Semmle.Extraction.CSharp.DependencyFetching\Semmle.Extraction.CSharp.DependencyFetching.csproj" />
+    <ProjectReference Include="..\Semmle.Autobuild.Shared\Semmle.Autobuild.Shared.csproj" />
+  </ItemGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

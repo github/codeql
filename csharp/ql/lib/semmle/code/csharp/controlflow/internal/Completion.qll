@@ -49,7 +49,10 @@ private newtype TCompletion =
     nestedFinallyCompletion(outer, nestLevel)
   }
 
-pragma[noinline]
+pragma[nomagic]
+private int getAFinallyNestLevel() { result = any(Statements::TryStmtTree t).nestLevel() }
+
+pragma[nomagic]
 private predicate nestedFinallyCompletion(Completion outer, int nestLevel) {
   (
     outer = TReturnCompletion()
@@ -64,7 +67,7 @@ private predicate nestedFinallyCompletion(Completion outer, int nestLevel) {
     or
     outer = TExitCompletion()
   ) and
-  nestLevel = any(Statements::TryStmtTree t).nestLevel()
+  nestLevel = getAFinallyNestLevel()
 }
 
 pragma[noinline]
@@ -290,6 +293,8 @@ private predicate isMatchingConstant(PatternExpr pe, boolean value) {
   value = true
   or
   exists(Type t, Type strippedType |
+    not t instanceof UnknownType and
+    not strippedType instanceof UnknownType and
     typePatternMustHaveMatchingCompletion(pe, t, strippedType) and
     not typePatternCommonSubType(t, strippedType) and
     value = false

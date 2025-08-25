@@ -1,3 +1,7 @@
+overlay[local?]
+module;
+
 private import DataFlowImplSpecific
+private import semmle.code.Location
 private import codeql.dataflow.internal.DataFlowImplCommon
-import MakeImplCommon<JavaDataFlow>
+import MakeImplCommon<Location, JavaDataFlow>

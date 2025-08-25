@@ -1,2 +1,0 @@
-__builtin_foobar(i)i
-__builtin_malloc(i,i,i,f*)f

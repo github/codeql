@@ -1,0 +1,1 @@
+| Type new Customizer<CsrfConfigurer<HttpSecurity>>(...) { ... } uses out-of-scope type variable B. Note the Java extractor is known to sometimes do this; the Kotlin extractor should not. |

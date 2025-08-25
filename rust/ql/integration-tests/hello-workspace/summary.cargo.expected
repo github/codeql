@@ -1,0 +1,16 @@
+| Extraction errors | 0 |
+| Extraction warnings | 0 |
+| Files extracted - total | 4 |
+| Files extracted - with errors | 0 |
+| Files extracted - without errors | 4 |
+| Files extracted - without errors % | 100 |
+| Inconsistencies - AST | 0 |
+| Inconsistencies - CFG | 0 |
+| Inconsistencies - Path resolution | 0 |
+| Inconsistencies - SSA | 0 |
+| Inconsistencies - data flow | 0 |
+| Lines of code extracted | 9 |
+| Lines of user code extracted | 9 |
+| Macro calls - resolved | 2 |
+| Macro calls - total | 2 |
+| Macro calls - unresolved | 0 |

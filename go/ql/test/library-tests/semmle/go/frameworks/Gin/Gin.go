@@ -2,8 +2,11 @@ package main
 
 //go:generate depstubber -vendor github.com/gin-gonic/gin Context
 //go:generate depstubber -vendor github.com/gin-gonic/gin/binding "" YAML
+//go:generate depstubber -vendor  github.com/gin-gonic/gin Context Default
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 )
@@ -15,6 +18,18 @@ type Person struct {
 	Address string `form:"address"`
 }
 
+func FileSystemAccess() {
+	router := gin.Default()
+	router.POST("/FormUploads", func(c *gin.Context) {
+		filepath := c.Query("filepath")                     // $ Source=filepath
+		c.File(filepath)                                    // $ Alert=filepath $ FileSystemAccess=filepath
+		http.ServeFile(c.Writer, c.Request, filepath)       // $ Alert=filepath $ FileSystemAccess=filepath
+		c.FileAttachment(filepath, "file name in response") // $ Alert=filepath $ FileSystemAccess=filepath
+		file, _ := c.FormFile("afile")
+		_ = c.SaveUploadedFile(file, filepath) // $ Alert=filepath $ FileSystemAccess=filepath
+	})
+	_ = router.Run()
+}
 func use(val string) {}
 
 // gin

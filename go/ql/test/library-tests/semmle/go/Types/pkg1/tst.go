@@ -1,5 +1,7 @@
 package pkg1
 
+import "codeql-go-types/pkg2"
+
 type T struct {
 	f int
 	Foo
@@ -54,4 +56,8 @@ func test(t T, t2 T2) {
 
 	// methods of T2
 	// illegal: t2.half()
+}
+
+type NameClash struct {
+	pkg2.NameClash
 }

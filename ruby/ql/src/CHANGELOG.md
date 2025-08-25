@@ -1,3 +1,236 @@
+## 1.4.3
+
+No user-facing changes.
+
+## 1.4.2
+
+No user-facing changes.
+
+## 1.4.1
+
+No user-facing changes.
+
+## 1.4.0
+
+### Query Metadata Changes
+
+* Update query metadata tags for `rb/database-query-in-loop` and `rb/useless-assignment-to-local` to align with the established
+[Query file metadata and alert message style guide](https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md#quality-query-sub-category-tags).
+
+## 1.3.2
+
+No user-facing changes.
+
+## 1.3.1
+
+### Minor Analysis Improvements
+
+* The query `rb/hardcoded-credentials` has been removed from all query suites.
+
+## 1.3.0
+
+### Query Metadata Changes
+
+* The precision of `rb/useless-assignment-to-local` has been adjusted from `medium` to `high`.
+* The tag `external/cwe/cwe-94` has been removed from `rb/server-side-template-injection` and the tag `external/cwe/cwe-094` has been added.
+
+## 1.2.1
+
+No user-facing changes.
+
+## 1.2.0
+
+### Major Analysis Improvements
+
+* The query `rb/useless-assignment-to-local` now comes with query help and has been tweaked to produce fewer false positives.
+* The query `rb/uninitialized-local-variable` now only produces alerts when the variable is the receiver of a method call and should produce very few false positives. It also now comes with a help file.
+
+## 1.1.15
+
+No user-facing changes.
+
+## 1.1.14
+
+No user-facing changes.
+
+## 1.1.13
+
+No user-facing changes.
+
+## 1.1.12
+
+No user-facing changes.
+
+## 1.1.11
+
+No user-facing changes.
+
+## 1.1.10
+
+No user-facing changes.
+
+## 1.1.9
+
+No user-facing changes.
+
+## 1.1.8
+
+No user-facing changes.
+
+## 1.1.7
+
+No user-facing changes.
+
+## 1.1.6
+
+No user-facing changes.
+
+## 1.1.5
+
+### Minor Analysis Improvements
+
+* The `rb/diagnostics/extraction-errors` diagnostic query has been split into `rb/diagnostics/extraction-errors` and `rb/diagnostics/extraction-warnings`, counting extraction errors and warnings respectively.
+
+## 1.1.4
+
+No user-facing changes.
+
+## 1.1.3
+
+No user-facing changes.
+
+## 1.1.2
+
+No user-facing changes.
+
+## 1.1.1
+
+No user-facing changes.
+
+## 1.1.0
+
+### New Queries
+
+* Added a new query, `rb/weak-sensitive-data-hashing`, to detect cases where sensitive data is hashed using a weak cryptographic hashing algorithm.
+
+## 1.0.4
+
+No user-facing changes.
+
+## 1.0.3
+
+No user-facing changes.
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+No user-facing changes.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+## 0.8.16
+
+No user-facing changes.
+
+## 0.8.15
+
+No user-facing changes.
+
+## 0.8.14
+
+### New Queries
+
+* Added a new query, `rb/insecure-mass-assignment`, for finding instances of mass assignment operations accepting arbitrary parameters from remote user input.
+* Added a new query, `rb/csrf-protection-not-enabled`, to detect cases where Cross-Site Request Forgery protection is not enabled in Ruby on Rails controllers.
+
+## 0.8.13
+
+No user-facing changes.
+
+## 0.8.12
+
+No user-facing changes.
+
+## 0.8.11
+
+No user-facing changes.
+
+## 0.8.10
+
+### Minor Analysis Improvements
+
+* Calls to `Object#method`, `Object#public_method` and `Object#singleton_method` with untrusted data are now recognised as sinks for code injection.
+* Added additional request sources for Ruby on Rails.
+
+## 0.8.9
+
+No user-facing changes.
+
+## 0.8.8
+
+### New Queries
+
+* Added a new experimental query, `rb/insecure-randomness`, to detect when application uses random values that are not cryptographically secure.
+
+### Minor Analysis Improvements
+
+* Added new unsafe deserialization sinks for the ox gem.
+* Added an additional unsafe deserialization sink for the oj gem.
+
+## 0.8.7
+
+No user-facing changes.
+
+## 0.8.6
+
+No user-facing changes.
+
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+No user-facing changes.
+
+## 0.8.3
+
+No user-facing changes.
+
+## 0.8.2
+
+No user-facing changes.
+
+## 0.8.1
+
+### New Queries
+
+* Added a new experimental query, `rb/jwt-empty-secret-or-algorithm`, to detect when application uses an empty secret or weak algorithm.
+* Added a new experimental query, `rb/jwt-missing-verification`, to detect when the application does not verify a JWT payload.
+
+## 0.8.0
+
+### Minor Analysis Improvements
+
+* Built-in Ruby queries now use the new DataFlow API.
+
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+### New Queries
+
+* Added a new experimental query, `rb/improper-ldap-auth`, to detect cases where user input is used during LDAP authentication without proper validation or sanitization, potentially leading to authentication bypass.
+
 ## 0.7.3
 
 No user-facing changes.

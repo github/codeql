@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["schemastore/schemastore/src/test/github-workflow/reusable-workflow.yaml", "*", "input.constraints", "code-injection", "generated"]
+     - ["schemastore/schemastore/src/negative_test/github-workflow/reusable-workflow-input-must-declare-type.yaml", "*", "input.constraints", "code-injection", "generated"]

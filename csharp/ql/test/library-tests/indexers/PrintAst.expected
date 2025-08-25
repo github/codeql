@@ -214,24 +214,18 @@ indexers.cs:
 #   81|   3: [Class] Grid
 #   84|     5: [Field] NumRows
 #   84|       -1: [TypeMention] int
-#   84|       1: [AssignExpr] ... = ...
-#   84|         0: [MemberConstantAccess] access to constant NumRows
-#   84|         1: [IntLiteral] 26
+#   84|       1: [IntLiteral] 26
 #   85|     6: [Field] NumCols
 #   85|       -1: [TypeMention] int
-#   85|       1: [AssignExpr] ... = ...
-#   85|         0: [MemberConstantAccess] access to constant NumCols
-#   85|         1: [IntLiteral] 10
+#   85|       1: [IntLiteral] 10
 #   87|     7: [Field] cells
 #   87|       -1: [TypeMention] Int32[,]
 #   87|         1: [TypeMention] int
-#   87|       1: [AssignExpr] ... = ...
-#   87|         0: [FieldAccess] access to field cells
-#   87|         1: [ArrayCreation] array creation of type Int32[,]
-#   87|           -1: [TypeMention] Int32[,]
-#   87|             1: [TypeMention] int
-#   87|           0: [MemberConstantAccess] access to constant NumRows
-#   87|           1: [MemberConstantAccess] access to constant NumCols
+#   87|       1: [ArrayCreation] array creation of type Int32[,]
+#   87|         -1: [TypeMention] Int32[,]
+#   87|           1: [TypeMention] int
+#   87|         0: [MemberConstantAccess] access to constant NumRows
+#   87|         1: [MemberConstantAccess] access to constant NumCols
 #   89|     8: [Indexer] Item
 #   89|       -1: [TypeMention] int
 #-----|       1: (Parameters)

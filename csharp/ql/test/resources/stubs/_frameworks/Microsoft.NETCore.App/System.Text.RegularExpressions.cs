@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Text.RegularExpressions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Text.RegularExpressions, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Text
@@ -43,6 +43,7 @@ namespace System
                 public object SyncRoot { get => throw null; }
                 public System.Text.RegularExpressions.Capture this[int i] { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)192, AllowMultiple = false, Inherited = false)]
             public sealed class GeneratedRegexAttribute : System.Attribute
             {
                 public GeneratedRegexAttribute(string pattern) => throw null;
@@ -166,6 +167,12 @@ namespace System
                 public static System.Text.RegularExpressions.Regex.ValueMatchEnumerator EnumerateMatches(System.ReadOnlySpan<char> input, string pattern) => throw null;
                 public static System.Text.RegularExpressions.Regex.ValueMatchEnumerator EnumerateMatches(System.ReadOnlySpan<char> input, string pattern, System.Text.RegularExpressions.RegexOptions options) => throw null;
                 public static System.Text.RegularExpressions.Regex.ValueMatchEnumerator EnumerateMatches(System.ReadOnlySpan<char> input, string pattern, System.Text.RegularExpressions.RegexOptions options, System.TimeSpan matchTimeout) => throw null;
+                public System.Text.RegularExpressions.Regex.ValueSplitEnumerator EnumerateSplits(System.ReadOnlySpan<char> input) => throw null;
+                public System.Text.RegularExpressions.Regex.ValueSplitEnumerator EnumerateSplits(System.ReadOnlySpan<char> input, int count) => throw null;
+                public System.Text.RegularExpressions.Regex.ValueSplitEnumerator EnumerateSplits(System.ReadOnlySpan<char> input, int count, int startat) => throw null;
+                public static System.Text.RegularExpressions.Regex.ValueSplitEnumerator EnumerateSplits(System.ReadOnlySpan<char> input, string pattern) => throw null;
+                public static System.Text.RegularExpressions.Regex.ValueSplitEnumerator EnumerateSplits(System.ReadOnlySpan<char> input, string pattern, System.Text.RegularExpressions.RegexOptions options) => throw null;
+                public static System.Text.RegularExpressions.Regex.ValueSplitEnumerator EnumerateSplits(System.ReadOnlySpan<char> input, string pattern, System.Text.RegularExpressions.RegexOptions options, System.TimeSpan matchTimeout) => throw null;
                 public static string Escape(string str) => throw null;
                 protected System.Text.RegularExpressions.RegexRunnerFactory factory;
                 public string[] GetGroupNames() => throw null;
@@ -229,6 +236,12 @@ namespace System
                 {
                     public System.Text.RegularExpressions.ValueMatch Current { get => throw null; }
                     public System.Text.RegularExpressions.Regex.ValueMatchEnumerator GetEnumerator() => throw null;
+                    public bool MoveNext() => throw null;
+                }
+                public struct ValueSplitEnumerator
+                {
+                    public System.Range Current { get => throw null; }
+                    public System.Text.RegularExpressions.Regex.ValueSplitEnumerator GetEnumerator() => throw null;
                     public bool MoveNext() => throw null;
                 }
             }
@@ -314,7 +327,7 @@ namespace System
             public abstract class RegexRunner
             {
                 protected void Capture(int capnum, int start, int end) => throw null;
-                protected static bool CharInClass(char ch, string charClass) => throw null;
+                public static bool CharInClass(char ch, string charClass) => throw null;
                 protected static bool CharInSet(char ch, string set, string category) => throw null;
                 protected void CheckTimeout() => throw null;
                 protected void Crawl(int i) => throw null;

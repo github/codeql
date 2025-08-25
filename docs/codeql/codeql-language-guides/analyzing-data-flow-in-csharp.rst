@@ -65,8 +65,7 @@ Local taint tracking extends local data flow by including non-value-preserving f
 
 .. code-block:: csharp
 
-     var temp = x;
-     var y = temp + ", " + temp;
+     var y = "Hello " + x;
 
 If ``x`` is a tainted string then ``y`` is also tainted.
 
@@ -104,7 +103,7 @@ Unfortunately this will only give the expression in the argument, not the values
      and DataFlow::localFlow(DataFlow::exprNode(src), DataFlow::exprNode(call.getArgument(0)))
    select src
 
-Then we can make the source more specific, for example an access to a public parameter. This query finds instances where a public parameter is used to open a file:
+To restrict sources to only an access to a public parameter, rather than arbitrary expressions, we can modify this query as follows:
 
 .. code-block:: ql
 
@@ -117,7 +116,7 @@ Then we can make the source more specific, for example an access to a public par
      and call.getEnclosingCallable().(Member).isPublic()
    select p, "Opening a file from a public method."
 
-This query finds calls to ``String.Format`` where the format string isn't hard-coded:
+The following query finds calls to ``String.Format`` where the format string isn't hard-coded:
 
 .. code-block:: ql
 
@@ -148,7 +147,7 @@ Global data flow tracks data flow throughout the entire program, and is therefor
 Using global data flow
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The global data flow library is used by implementing the signature ``DataFlow::ConfigSig`` and applying the module ``DataFlow::Global<ConfigSig>``:
+We can use the global data flow library by implementing the signature ``DataFlow::ConfigSig`` and applying the module ``DataFlow::Global<ConfigSig>``:
 
 .. code-block:: ql
 
@@ -170,8 +169,8 @@ These predicates are defined in the configuration:
 
 -  ``isSource`` - defines where data may flow from.
 -  ``isSink`` - defines where data may flow to.
--  ``isBarrier`` - optionally, restricts the data flow.
--  ``isAdditionalFlowStep`` - optionally, adds additional flow steps.
+-  ``isBarrier`` - optional, defines where data flow is blocked.
+-  ``isAdditionalFlowStep`` - optional, adds additional flow steps.
 
 The data flow analysis is performed using the predicate ``flow(DataFlow::Node source, DataFlow::Node sink)``:
 
@@ -288,7 +287,7 @@ Exercise 2: Find all hard-coded strings passed to ``System.Uri``, using global d
 
 Exercise 3: Define a class that represents flow sources from ``System.Environment.GetEnvironmentVariable``. (`Answer <#exercise-3>`__)
 
-Exercise 4: Using the answers from 2 and 3, write a query to find all global data flow from ``System.Environment.GetEnvironmentVariable`` to ``System.Uri``. (`Answer <#exercise-4>`__)
+Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flow paths from ``System.Environment.GetEnvironmentVariable`` to ``System.Uri``. (`Answer <#exercise-4>`__)
 
 Extending library data flow
 ---------------------------
@@ -541,7 +540,7 @@ This can be adapted from the ``SystemUriFlow`` class:
 Further reading
 ---------------
 
-- ":ref:`Exploring data flow with path queries <exploring-data-flow-with-path-queries>`"
+- `Exploring data flow with path queries  <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/exploring-data-flow-with-path-queries>`__ in the GitHub documentation.
 
 
 .. include:: ../reusables/csharp-further-reading.rst

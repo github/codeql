@@ -147,3 +147,76 @@ void test5(int x) {
     test3();
   }
 }
+
+void test6(char* p) {
+    if(p) {
+
+    }
+}
+
+void test7(char* p) {
+    if(!p) {
+        
+    }
+}
+
+void test8(short s) {
+    if(s) {
+
+    }
+}
+
+void test9(short s) {
+    if(!s) {
+        
+    }
+}
+
+void test10(int a, int b) {
+    if(!(a < b)) {
+
+    }
+}
+
+void test11(double foo) {
+    if(!(foo >= 1e-6 && foo < 1.0)) {
+
+    }
+}
+
+void test12(int a, int b) {
+  int c = a != b;
+
+  if (!c) {
+
+  }
+}
+
+void test13(int a) {
+  int b = a > 10;
+
+  if (!b) {
+
+  }
+}
+
+void test14(int a, int b) {
+  int c = a > b;
+
+  if (!c) {
+
+  }
+}
+
+# define likely(x) __builtin_expect(!!(x), 1)
+
+void test15(int a, int b)
+{
+	if (likely(a > b)) {
+
+    }
+
+    if (likely(a > 42)) {
+
+    }
+}

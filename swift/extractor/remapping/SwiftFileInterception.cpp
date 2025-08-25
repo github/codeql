@@ -8,6 +8,7 @@
 #include <mutex>
 #include <optional>
 #include <cassert>
+#include <cstdarg>
 #include <iostream>
 
 #include <picosha2.h>

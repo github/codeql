@@ -4,7 +4,7 @@
  *              a cross-site scripting vulnerability.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 6.1
+ * @security-severity 7.8
  * @precision high
  * @id js/xss
  * @tags security
@@ -14,10 +14,10 @@
 
 import javascript
 import semmle.javascript.security.dataflow.DomBasedXssQuery
-import DataFlow::PathGraph
+import DataFlow::DeduplicatePathGraph<DomBasedXssFlow::PathNode, DomBasedXssFlow::PathGraph>
 
-from DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from PathNode source, PathNode sink
+where DomBasedXssFlow::flowPath(source.getAnOriginalPathNode(), sink.getAnOriginalPathNode())
 select sink.getNode(), source, sink,
   sink.getNode().(Sink).getVulnerabilityKind() + " vulnerability due to $@.", source.getNode(),
   "user-provided value"

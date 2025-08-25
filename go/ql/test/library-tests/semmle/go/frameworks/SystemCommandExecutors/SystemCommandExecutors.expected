@@ -1,3 +1,5 @@
+invalidModelRow
+#select
 | SystemCommandExecutors.go:30:3:30:36 | call to StartProcess | SystemCommandExecutors.go:30:19:30:24 | source |
 | SystemCommandExecutors.go:34:3:34:47 | call to StartProcess | SystemCommandExecutors.go:34:19:34:23 | shell |
 | SystemCommandExecutors.go:34:3:34:47 | call to StartProcess | SystemCommandExecutors.go:34:26:34:41 | slice literal |

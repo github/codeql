@@ -1,4 +1,6 @@
 /** Provides classes to reason about Android Intent redirect vulnerabilities. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.controlflow.Guards
@@ -41,14 +43,14 @@ private class DefaultIntentRedirectionSink extends IntentRedirectionSink {
 private class DefaultIntentRedirectionSanitizer extends IntentRedirectionSanitizer {
   DefaultIntentRedirectionSanitizer() {
     this.getType() instanceof TypeIntent and
-    exists(MethodAccess ma, Method m, Guard g, boolean branch |
+    exists(MethodCall ma, Method m, Guard g, boolean branch |
       ma.getMethod() = m and
       m.getDeclaringType() instanceof TypeComponentName and
       m.hasName("getPackageName") and
       g.isEquality(ma, _, branch) and
       g.controls(this.asExpr().getBasicBlock(), branch)
     ) and
-    exists(MethodAccess ma, Method m, Guard g, boolean branch |
+    exists(MethodCall ma, Method m, Guard g, boolean branch |
       ma.getMethod() = m and
       m.getDeclaringType() instanceof TypeComponentName and
       m.hasName("getClassName") and

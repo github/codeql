@@ -1,0 +1,1 @@
+| tests.c:7:18:7:18 | 1 | This format specifier for type 'char *' does not match the argument type 'int'. |

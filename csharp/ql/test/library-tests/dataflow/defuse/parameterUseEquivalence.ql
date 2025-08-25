@@ -1,12 +1,16 @@
 import csharp
+private import semmle.code.csharp.controlflow.internal.PreSsa
 
 /** "Naive" parameter-use implementation. */
 predicate parameterReaches(Parameter p, ControlFlow::Node cfn) {
-  cfn = p.getCallable().getEntryPoint().getASuccessor()
+  cfn = p.getCallable().getEntryPoint().getASuccessor() and
+  p instanceof PreSsa::SimpleLocalScopeVariable
   or
   exists(ControlFlow::Node mid | parameterReaches(p, mid) |
     not mid =
-      any(AssignableDefinition ad | ad.getTarget() = p and ad.isCertain()).getAControlFlowNode() and
+      any(AssignableDefinition ad | ad.getTarget() = p and ad.isCertain())
+          .getExpr()
+          .getAControlFlowNode() and
     cfn = mid.getASuccessor()
   )
 }
@@ -20,7 +24,8 @@ private LocalScopeVariableRead getAReachableUncertainRead(
   AssignableDefinitions::ImplicitParameterDefinition p
 ) {
   exists(Ssa::Definition ssaDef |
-    p = ssaDef.getAnUltimateDefinition().(Ssa::ExplicitDefinition).getADefinition()
+    p.getParameter() =
+      ssaDef.getAnUltimateDefinition().(Ssa::ImplicitParameterDefinition).getParameter()
   |
     result = ssaDef.getARead()
   )

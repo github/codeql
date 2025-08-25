@@ -26,6 +26,13 @@ class TestKt {
                 sink(source) // $ hasTaintFlow
         }
         run {
+            val source = source() as String?
+            if ("/safe/path".equals(source))
+                sink(source) // Safe
+            else
+                sink(source) // $ hasTaintFlow
+        }
+        run {
             val source = source() as URI?
             if (source!!.equals(URI("http://safe/uri")))
                 sink(source) // Safe

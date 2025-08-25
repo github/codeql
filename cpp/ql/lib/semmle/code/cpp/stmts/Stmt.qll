@@ -59,6 +59,28 @@ class Stmt extends StmtParent, @stmt {
     )
   }
 
+  /**
+   * Gets the `n`th compiler-generated destructor call that is performed after this statement, in
+   * order of destruction.
+   *
+   * For instance, in the following code, `getImplicitDestructorCall(0)` for the block will be the
+   * destructor call for `c2`:
+   * ```cpp
+   * {
+   *      MyClass c1;
+   *      MyClass c2;
+   * }
+   * ```
+   */
+  DestructorCall getImplicitDestructorCall(int n) {
+    synthetic_destructor_call(this, max(int i | synthetic_destructor_call(this, i, _)) - n, result)
+  }
+
+  /**
+   * Gets a compiler-generated destructor call that is performed after this statement.
+   */
+  DestructorCall getAnImplicitDestructorCall() { synthetic_destructor_call(this, _, result) }
+
   override Location getLocation() { stmts(underlyingElement(this), _, result) }
 
   override string toString() { none() }
@@ -415,6 +437,154 @@ class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
   }
 }
 
+/**
+ * A C/C++ '(not) consteval if'. For example, the `if consteval` statement
+ * in the following code:
+ * ```cpp
+ * if consteval {
+ *   ...
+ * }
+ * ```
+ */
+class ConstevalIfStmt extends Stmt, @stmt_consteval_or_not_consteval_if {
+  override string getAPrimaryQlClass() { result = "ConstevalIfStmt" }
+
+  override string toString() {
+    if this.isNot() then result = "if ! consteval ..." else result = "if consteval ..."
+  }
+
+  /**
+   * Holds if this is a 'not consteval if' statement.
+   *
+   * For example, this holds for
+   * ```cpp
+   * if ! consteval { return true; }
+   * ```
+   * but not for
+   * ```cpp
+   * if consteval { return true; }
+   * ```
+   */
+  predicate isNot() { this instanceof @stmt_not_consteval_if }
+
+  /**
+   * Gets the 'then' statement of this '(not) consteval if' statement.
+   *
+   * For example, for
+   * ```cpp
+   * if consteval { return true; }
+   * ```
+   * the result is the `BlockStmt` `{ return true; }`.
+   */
+  Stmt getThen() { consteval_if_then(underlyingElement(this), unresolveElement(result)) }
+
+  /**
+   * Gets the 'else' statement of this '(not) constexpr if' statement, if any.
+   *
+   * For example, for
+   * ```cpp
+   * if consteval { return true; } else { return false; }
+   * ```
+   * the result is the `BlockStmt` `{ return false; }`, and for
+   * ```cpp
+   * if consteval { return true; }
+   * ```
+   * there is no result.
+   */
+  Stmt getElse() { consteval_if_else(underlyingElement(this), unresolveElement(result)) }
+
+  /**
+   * Holds if this '(not) constexpr if' statement has an 'else' statement.
+   *
+   * For example, this holds for
+   * ```cpp
+   * if consteval { return true; } else { return false; }
+   * ```
+   * but not for
+   * ```cpp
+   * if consteval { return true; }
+   * ```
+   */
+  predicate hasElse() { exists(this.getElse()) }
+
+  override predicate mayBeImpure() {
+    this.getThen().mayBeImpure() or
+    this.getElse().mayBeImpure()
+  }
+
+  override predicate mayBeGloballyImpure() {
+    this.getThen().mayBeGloballyImpure() or
+    this.getElse().mayBeGloballyImpure()
+  }
+
+  override MacroInvocation getGeneratingMacro() {
+    this.getThen().getGeneratingMacro() = result and
+    (this.hasElse() implies this.getElse().getGeneratingMacro() = result)
+  }
+
+  /**
+   * Gets the statement of this '(not) consteval if' statement evaluated during compile time, if any.
+   *
+   * For example, for
+   * ```cpp
+   * if ! consteval { return true; } else { return false; }
+   * ```
+   * the result is the `BlockStmt` `{ return false; }`, and for
+   * ```cpp
+   * if ! consteval { return true; }
+   * ```
+   * there is no result.
+   */
+  Stmt getCompileTimeEvaluatedBranch() {
+    if this.isNot() then result = this.getElse() else result = this.getThen()
+  }
+
+  /**
+   * Holds if this '(not) constexpr if' statement has a compile time evaluated statement.
+   *
+   * For example, this holds for
+   * ```cpp
+   * if ! consteval { return true; } else { return false; }
+   * ```
+   * but not for
+   * ```cpp
+   * if ! consteval { return true; }
+   * ```
+   */
+  predicate hasCompileTimeEvaluatedBranch() { exists(this.getCompileTimeEvaluatedBranch()) }
+
+  /**
+   * Gets the statement of this '(not) consteval if' statement evaluated during runtime, if any.
+   *
+   * For example, for
+   * ```cpp
+   * if consteval { return true; } else { return false; }
+   * ```
+   * the result is the `BlockStmt` `{ return false; }`, and for
+   * ```cpp
+   * if consteval { return true; }
+   * ```
+   * there is no result.
+   */
+  Stmt getRuntimeEvaluatedBranch() {
+    if this.isNot() then result = this.getThen() else result = this.getElse()
+  }
+
+  /**
+   * Holds if this '(not) constexpr if' statement has a runtime evaluated statement.
+   *
+   * For example, this holds for
+   * ```cpp
+   * if consteval { return true; } else { return false; }
+   * ```
+   * but not for
+   * ```cpp
+   * if consteval { return true; }
+   * ```
+   */
+  predicate hasRuntimeEvaluatedBranch() { exists(this.getRuntimeEvaluatedBranch()) }
+}
+
 private class TLoop = @stmt_while or @stmt_end_test_while or @stmt_range_based_for or @stmt_for;
 
 /**
@@ -672,6 +842,41 @@ private Stmt getEnclosingBreakable(Stmt s) {
 }
 
 /**
+ * A Microsoft C/C++ `__leave` statement.
+ *
+ * For example, the `__leave` statement in the following code:
+ * ```
+ * __try {
+ *   if (err) __leave;
+ *   ...
+ * }
+ * __finally {
+ *
+ * }
+ * ```
+ */
+class LeaveStmt extends JumpStmt, @stmt_leave {
+  override string getAPrimaryQlClass() { result = "LeaveStmt" }
+
+  override string toString() { result = "__leave;" }
+
+  override predicate mayBeImpure() { none() }
+
+  override predicate mayBeGloballyImpure() { none() }
+
+  /**
+   * Gets the `__try` statement that this `__leave` exits.
+   */
+  MicrosoftTryStmt getEnclosingTry() { result = getEnclosingTry(this) }
+}
+
+private MicrosoftTryStmt getEnclosingTry(Stmt s) {
+  if s.getParent().getEnclosingStmt() instanceof MicrosoftTryStmt
+  then result = s.getParent().getEnclosingStmt()
+  else result = getEnclosingTry(s.getParent().getEnclosingStmt())
+}
+
+/**
  * A C/C++ 'label' statement.
  *
  * For example, the `somelabel:` statement in the following code:
@@ -871,6 +1076,26 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
   override string getAPrimaryQlClass() { result = "RangeBasedForStmt" }
 
   /**
+   * Gets the initialization statement of this 'for' statement, if any.
+   *
+   * For example, for
+   * ```
+   * for (int x = y; auto z : ... ) { }
+   * ```
+   * the result is `int x = y;`.
+   *
+   * Does not hold if the initialization statement is missing or an empty statement, as in
+   * ```
+   * for (auto z : ...) { }
+   * ```
+   * or
+   * ```
+   * for (; auto z : ) { }
+   * ```
+   */
+  Stmt getInitialization() { for_initialization(underlyingElement(this), unresolveElement(result)) }
+
+  /**
    * Gets the 'body' statement of this range-based 'for' statement.
    *
    * For example, for
@@ -879,7 +1104,7 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
    * ```
    * the result is the `BlockStmt` `{ y += x; }`.
    */
-  override Stmt getStmt() { result = this.getChild(5) }
+  override Stmt getStmt() { result = this.getChild(6) }
 
   override string toString() { result = "for(...:...) ..." }
 
@@ -892,7 +1117,7 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
    * ```
    * the result is `int x`.
    */
-  LocalVariable getVariable() { result = this.getChild(4).(DeclStmt).getADeclaration() }
+  LocalVariable getVariable() { result = this.getChild(5).(DeclStmt).getADeclaration() }
 
   /**
    * Gets the expression giving the range to iterate over.
@@ -906,7 +1131,7 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
   Expr getRange() { result = this.getRangeVariable().getInitializer().getExpr() }
 
   /** Gets the compiler-generated `__range` variable after desugaring. */
-  LocalVariable getRangeVariable() { result = this.getChild(0).(DeclStmt).getADeclaration() }
+  LocalVariable getRangeVariable() { result = this.getChild(1).(DeclStmt).getADeclaration() }
 
   /**
    * Gets the compiler-generated `__begin != __end` which is the
@@ -914,7 +1139,7 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
    * It will be either an `NEExpr` or a call to a user-defined
    * `operator!=`.
    */
-  override Expr getCondition() { result = this.getChild(2) }
+  override Expr getCondition() { result = this.getChild(3) }
 
   override Expr getControllingExpr() { result = this.getCondition() }
 
@@ -923,7 +1148,7 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
    * `__end`, initializing them to the values they have before entering the
    * desugared loop.
    */
-  DeclStmt getBeginEndDeclaration() { result = this.getChild(1) }
+  DeclStmt getBeginEndDeclaration() { result = this.getChild(2) }
 
   /** Gets the compiler-generated `__begin` variable after desugaring. */
   LocalVariable getBeginVariable() { result = this.getBeginEndDeclaration().getDeclaration(0) }
@@ -937,7 +1162,7 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
    * be either a `PrefixIncrExpr` or a call to a user-defined
    * `operator++`.
    */
-  Expr getUpdate() { result = this.getChild(3) }
+  Expr getUpdate() { result = this.getChild(4) }
 
   /** Gets the compiler-generated `__begin` variable after desugaring. */
   LocalVariable getAnIterationVariable() { result = this.getBeginVariable() }

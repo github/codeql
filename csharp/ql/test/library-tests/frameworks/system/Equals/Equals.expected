@@ -1,7 +1,7 @@
 | Equals.cs:3:7:3:14 | NoEquals | System.Object.Equals(object) | false |
 | Equals.cs:5:7:5:13 | Equals1 | Equals1.Equals(object) | true |
-| Equals.cs:10:16:10:25 | Equals2<> | Equals2<>.Equals(object) | true |
 | Equals.cs:10:16:10:25 | Equals2<Equals3> | Equals2<Equals3>.Equals(object) | true |
+| Equals.cs:10:16:10:25 | Equals2`1 | Equals2`1.Equals(object) | true |
 | Equals.cs:16:7:16:13 | Equals3 | Equals3.Equals(Equals3) | true |
 | Equals.cs:21:8:21:21 | NoEqualsStruct | System.ValueType.Equals(object) | false |
 | Equals.cs:23:8:23:20 | Equals1Struct | Equals1Struct.Equals(object) | true |

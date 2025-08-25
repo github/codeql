@@ -84,7 +84,7 @@ public class JakartaRsFlow {
     sink(Response.noContent().entity(taint())); // $ hasTaintFlow
     sink(ResponseBuilderSource.taint().allow(new HashSet<String>())); // $ hasValueFlow
     sink(ResponseBuilderSource.taint().cacheControl(new CacheControl())); // $ hasValueFlow
-    sink(ResponseBuilderSource.taint().clone()); // $ hasTaintFlow
+    sink(ResponseBuilderSource.taint().clone()); // $ hasValueFlow
     sink(ResponseBuilderSource.taint().contentLocation(new URI(""))); // $ hasValueFlow
     sink(ResponseBuilderSource.taint().cookie()); // $ hasValueFlow
     sink(ResponseBuilderSource.taint().encoding("")); // $ hasValueFlow

@@ -1,3 +1,100 @@
+test_PropWrite
+| classes.ts:3:21:3:20 | constructor() {} |
+| classes.ts:4:3:4:24 | instanc ...  foo(); |
+| classes.ts:8:3:8:39 | constru ... eld) {} |
+| classes.ts:8:15:8:35 | public  ... erField |
+| classes.ts:12:5:12:68 | constru ... + 42; } |
+| classes.ts:12:17:12:37 | public  ... erField |
+| classes.ts:16:5:16:46 | constru ...  {}) {} |
+| classes.ts:16:17:16:37 | public  ... erField |
+| tst.js:2:5:2:8 | x: 4 |
+| tst.js:3:5:5:5 | func: f ... ;\\n    } |
+| tst.js:6:5:8:5 | f() {\\n  ... ;\\n    } |
+| tst.js:11:9:11:8 | constructor() {} |
+| tst.js:12:3:14:3 | static  ... x);\\n  } |
+| tst.js:15:3:17:3 | f(x) {\\n ... x);\\n  } |
+| tst.js:20:1:20:6 | C.prop |
+| tst.js:23:13:23:27 | onClick={click} |
+| tst.js:26:3:26:26 | get x() ... null; } |
+| tst.js:27:3:27:13 | set y(v) {} |
+| tst.js:31:5:31:8 | n: 1 |
+| tst.js:32:5:32:10 | [v]: 2 |
+| tst.js:33:5:33:14 | [vv.pp]: 3 |
+| tst.js:34:5:34:20 | [vvv.ppp.qqq]: 4 |
+| tst.js:37:13:37:15 | "a" |
+| tst.js:37:18:37:20 | "b" |
+| tst.js:37:23:37:25 | "c" |
+| tst.js:38:13:38:15 | "a" |
+| tst.js:38:20:38:22 | "c" |
+| tst.js:39:15:39:17 | "b" |
+| tst.js:39:20:39:22 | "c" |
+| tst.js:40:13:40:15 | "a" |
+| tst.js:40:18:40:20 | "b" |
+| tst.js:41:13:41:15 | "a" |
+| tst.js:41:18:41:24 | ...arr3 |
+| tst.js:41:27:41:29 | "d" |
+test_PropWriteRhs
+| classes.ts:3:21:3:20 | constructor() {} | classes.ts:3:21:3:20 | () {} |
+| classes.ts:4:3:4:24 | instanc ...  foo(); | classes.ts:4:19:4:23 | foo() |
+| classes.ts:8:3:8:39 | constru ... eld) {} | classes.ts:8:3:8:39 | constru ... eld) {} |
+| classes.ts:8:15:8:35 | public  ... erField | classes.ts:8:22:8:35 | parameterField |
+| classes.ts:12:5:12:68 | constru ... + 42; } | classes.ts:12:5:12:68 | constru ... + 42; } |
+| classes.ts:12:17:12:37 | public  ... erField | classes.ts:12:24:12:37 | parameterField |
+| classes.ts:16:5:16:46 | constru ...  {}) {} | classes.ts:16:5:16:46 | constru ...  {}) {} |
+| classes.ts:16:17:16:37 | public  ... erField | classes.ts:16:24:16:37 | parameterField |
+| tst.js:2:5:2:8 | x: 4 | tst.js:2:8:2:8 | 4 |
+| tst.js:3:5:5:5 | func: f ... ;\\n    } | tst.js:3:11:5:5 | functio ... ;\\n    } |
+| tst.js:6:5:8:5 | f() {\\n  ... ;\\n    } | tst.js:6:6:8:5 | () {\\n   ... ;\\n    } |
+| tst.js:11:9:11:8 | constructor() {} | tst.js:11:9:11:8 | () {} |
+| tst.js:12:3:14:3 | static  ... x);\\n  } | tst.js:12:14:14:3 | (x) {\\n  ... x);\\n  } |
+| tst.js:15:3:17:3 | f(x) {\\n ... x);\\n  } | tst.js:15:4:17:3 | (x) {\\n  ... x);\\n  } |
+| tst.js:20:1:20:6 | C.prop | tst.js:20:10:20:11 | 56 |
+| tst.js:23:13:23:27 | onClick={click} | tst.js:23:22:23:26 | click |
+| tst.js:31:5:31:8 | n: 1 | tst.js:31:8:31:8 | 1 |
+| tst.js:32:5:32:10 | [v]: 2 | tst.js:32:10:32:10 | 2 |
+| tst.js:33:5:33:14 | [vv.pp]: 3 | tst.js:33:14:33:14 | 3 |
+| tst.js:34:5:34:20 | [vvv.ppp.qqq]: 4 | tst.js:34:20:34:20 | 4 |
+| tst.js:37:13:37:15 | "a" | tst.js:37:13:37:15 | "a" |
+| tst.js:37:18:37:20 | "b" | tst.js:37:18:37:20 | "b" |
+| tst.js:37:23:37:25 | "c" | tst.js:37:23:37:25 | "c" |
+| tst.js:38:13:38:15 | "a" | tst.js:38:13:38:15 | "a" |
+| tst.js:38:20:38:22 | "c" | tst.js:38:20:38:22 | "c" |
+| tst.js:39:15:39:17 | "b" | tst.js:39:15:39:17 | "b" |
+| tst.js:39:20:39:22 | "c" | tst.js:39:20:39:22 | "c" |
+| tst.js:40:13:40:15 | "a" | tst.js:40:13:40:15 | "a" |
+| tst.js:40:18:40:20 | "b" | tst.js:40:18:40:20 | "b" |
+| tst.js:41:13:41:15 | "a" | tst.js:41:13:41:15 | "a" |
+| tst.js:41:18:41:24 | ...arr3 | tst.js:41:18:41:24 | ...arr3 |
+| tst.js:41:27:41:29 | "d" | tst.js:41:27:41:29 | "d" |
+test_PropWriteBase
+| classes.ts:4:3:4:24 | instanc ...  foo(); | classes.ts:4:3:4:24 | implicit 'this' |
+| classes.ts:8:15:8:35 | public  ... erField | classes.ts:8:15:8:35 | implicit 'this' |
+| classes.ts:12:17:12:37 | public  ... erField | classes.ts:12:17:12:37 | implicit 'this' |
+| classes.ts:16:17:16:37 | public  ... erField | classes.ts:16:17:16:37 | implicit 'this' |
+| tst.js:2:5:2:8 | x: 4 | tst.js:1:11:9:1 | {\\n    x ...     }\\n} |
+| tst.js:3:5:5:5 | func: f ... ;\\n    } | tst.js:1:11:9:1 | {\\n    x ...     }\\n} |
+| tst.js:6:5:8:5 | f() {\\n  ... ;\\n    } | tst.js:1:11:9:1 | {\\n    x ...     }\\n} |
+| tst.js:12:3:14:3 | static  ... x);\\n  } | tst.js:11:1:18:1 | class C ... ;\\n  }\\n} |
+| tst.js:20:1:20:6 | C.prop | tst.js:20:1:20:1 | C |
+| tst.js:23:13:23:27 | onClick={click} | tst.js:23:8:23:57 | <div on ... }</div> |
+| tst.js:26:3:26:26 | get x() ... null; } | tst.js:25:2:28:1 | {\\n  get ... v) {}\\n} |
+| tst.js:27:3:27:13 | set y(v) {} | tst.js:25:2:28:1 | {\\n  get ... v) {}\\n} |
+| tst.js:31:5:31:8 | n: 1 | tst.js:30:2:35:1 | {\\n    n ... q]: 4\\n} |
+| tst.js:32:5:32:10 | [v]: 2 | tst.js:30:2:35:1 | {\\n    n ... q]: 4\\n} |
+| tst.js:33:5:33:14 | [vv.pp]: 3 | tst.js:30:2:35:1 | {\\n    n ... q]: 4\\n} |
+| tst.js:34:5:34:20 | [vvv.ppp.qqq]: 4 | tst.js:30:2:35:1 | {\\n    n ... q]: 4\\n} |
+| tst.js:37:13:37:15 | "a" | tst.js:37:12:37:26 | ["a", "b", "c"] |
+| tst.js:37:18:37:20 | "b" | tst.js:37:12:37:26 | ["a", "b", "c"] |
+| tst.js:37:23:37:25 | "c" | tst.js:37:12:37:26 | ["a", "b", "c"] |
+| tst.js:38:13:38:15 | "a" | tst.js:38:12:38:23 | ["a", , "c"] |
+| tst.js:38:20:38:22 | "c" | tst.js:38:12:38:23 | ["a", , "c"] |
+| tst.js:39:15:39:17 | "b" | tst.js:39:12:39:23 | [, "b", "c"] |
+| tst.js:39:20:39:22 | "c" | tst.js:39:12:39:23 | [, "b", "c"] |
+| tst.js:40:13:40:15 | "a" | tst.js:40:12:40:22 | ["a", "b",] |
+| tst.js:40:18:40:20 | "b" | tst.js:40:12:40:22 | ["a", "b",] |
+| tst.js:41:13:41:15 | "a" | tst.js:41:12:41:30 | ["a", ...arr3, "d"] |
+| tst.js:41:18:41:24 | ...arr3 | tst.js:41:12:41:30 | ["a", ...arr3, "d"] |
+| tst.js:41:27:41:29 | "d" | tst.js:41:12:41:30 | ["a", ...arr3, "d"] |
 test_getAPropertyRead
 | tst.js:1:1:1:0 | this | tst.js:22:15:22:29 | this.someMethod |
 | tst.js:1:1:1:0 | this | tst.js:23:36:23:45 | this.state |
@@ -13,6 +110,106 @@ test_getAPropertyRead
 | tst.js:46:17:46:21 | array | tst.js:47:10:47:10 | x |
 | tst.js:46:17:46:21 | array | tst.js:47:13:47:13 | y |
 | tst.js:46:17:46:21 | array | tst.js:47:16:47:16 | z |
+test_hasPropertyWrite
+| classes.ts:3:21:3:20 | this | instanceField | classes.ts:4:19:4:23 | foo() |
+| classes.ts:8:3:8:2 | this | parameterField | classes.ts:8:22:8:35 | parameterField |
+| classes.ts:12:5:12:4 | this | parameterField | classes.ts:12:24:12:37 | parameterField |
+| classes.ts:16:5:16:4 | this | parameterField | classes.ts:16:24:16:37 | parameterField |
+| tst.js:1:11:9:1 | {\\n    x ...     }\\n} | f | tst.js:6:6:8:5 | () {\\n   ... ;\\n    } |
+| tst.js:1:11:9:1 | {\\n    x ...     }\\n} | func | tst.js:3:11:5:5 | functio ... ;\\n    } |
+| tst.js:1:11:9:1 | {\\n    x ...     }\\n} | x | tst.js:2:8:2:8 | 4 |
+| tst.js:11:1:18:1 | class C ... ;\\n  }\\n} | func | tst.js:12:14:14:3 | (x) {\\n  ... x);\\n  } |
+| tst.js:20:1:20:1 | C | prop | tst.js:20:10:20:11 | 56 |
+| tst.js:23:8:23:57 | <div on ... }</div> | onClick | tst.js:23:22:23:26 | click |
+| tst.js:30:2:35:1 | {\\n    n ... q]: 4\\n} | n | tst.js:31:8:31:8 | 1 |
+test_PropWritePropName
+| classes.ts:3:21:3:20 | constructor() {} | constructor |
+| classes.ts:4:3:4:24 | instanc ...  foo(); | instanceField |
+| classes.ts:8:3:8:39 | constru ... eld) {} | constructor |
+| classes.ts:8:15:8:35 | public  ... erField | parameterField |
+| classes.ts:12:5:12:68 | constru ... + 42; } | constructor |
+| classes.ts:12:17:12:37 | public  ... erField | parameterField |
+| classes.ts:16:5:16:46 | constru ...  {}) {} | constructor |
+| classes.ts:16:17:16:37 | public  ... erField | parameterField |
+| tst.js:2:5:2:8 | x: 4 | x |
+| tst.js:3:5:5:5 | func: f ... ;\\n    } | func |
+| tst.js:6:5:8:5 | f() {\\n  ... ;\\n    } | f |
+| tst.js:11:9:11:8 | constructor() {} | constructor |
+| tst.js:12:3:14:3 | static  ... x);\\n  } | func |
+| tst.js:15:3:17:3 | f(x) {\\n ... x);\\n  } | f |
+| tst.js:20:1:20:6 | C.prop | prop |
+| tst.js:23:13:23:27 | onClick={click} | onClick |
+| tst.js:26:3:26:26 | get x() ... null; } | x |
+| tst.js:27:3:27:13 | set y(v) {} | y |
+| tst.js:31:5:31:8 | n: 1 | n |
+test_getAPropertyRead2
+| tst.js:1:1:1:0 | this | someMethod | tst.js:22:15:22:29 | this.someMethod |
+| tst.js:1:1:1:0 | this | state | tst.js:23:36:23:45 | this.state |
+| tst.js:13:5:13:11 | console | log | tst.js:13:5:13:15 | console.log |
+| tst.js:16:5:16:11 | console | log | tst.js:16:5:16:15 | console.log |
+| tst.js:22:15:22:29 | this.someMethod | bind | tst.js:22:15:22:34 | this.someMethod.bind |
+| tst.js:23:36:23:45 | this.state | name | tst.js:23:36:23:50 | this.state.name |
+| tst.js:33:6:33:7 | vv | pp | tst.js:33:6:33:10 | vv.pp |
+| tst.js:34:6:34:8 | vvv | ppp | tst.js:34:6:34:12 | vvv.ppp |
+| tst.js:34:6:34:12 | vvv.ppp | qqq | tst.js:34:6:34:16 | vvv.ppp.qqq |
+| tst.js:44:3:44:9 | console | log | tst.js:44:3:44:13 | console.log |
+| tst.js:46:17:46:21 | array | 0 | tst.js:47:10:47:10 | x |
+| tst.js:46:17:46:21 | array | 1 | tst.js:47:13:47:13 | y |
+| tst.js:46:17:46:21 | array | 2 | tst.js:47:16:47:16 | z |
+test_getAPropertyWrite
+| classes.ts:3:21:3:20 | this | classes.ts:4:3:4:24 | instanc ...  foo(); |
+| classes.ts:8:3:8:2 | this | classes.ts:8:15:8:35 | public  ... erField |
+| classes.ts:12:5:12:4 | this | classes.ts:12:17:12:37 | public  ... erField |
+| classes.ts:16:5:16:4 | this | classes.ts:16:17:16:37 | public  ... erField |
+| tst.js:1:11:9:1 | {\\n    x ...     }\\n} | tst.js:2:5:2:8 | x: 4 |
+| tst.js:1:11:9:1 | {\\n    x ...     }\\n} | tst.js:3:5:5:5 | func: f ... ;\\n    } |
+| tst.js:1:11:9:1 | {\\n    x ...     }\\n} | tst.js:6:5:8:5 | f() {\\n  ... ;\\n    } |
+| tst.js:11:1:18:1 | class C ... ;\\n  }\\n} | tst.js:12:3:14:3 | static  ... x);\\n  } |
+| tst.js:20:1:20:1 | C | tst.js:20:1:20:6 | C.prop |
+| tst.js:23:8:23:57 | <div on ... }</div> | tst.js:23:13:23:27 | onClick={click} |
+| tst.js:25:2:28:1 | {\\n  get ... v) {}\\n} | tst.js:26:3:26:26 | get x() ... null; } |
+| tst.js:25:2:28:1 | {\\n  get ... v) {}\\n} | tst.js:27:3:27:13 | set y(v) {} |
+| tst.js:30:2:35:1 | {\\n    n ... q]: 4\\n} | tst.js:31:5:31:8 | n: 1 |
+| tst.js:30:2:35:1 | {\\n    n ... q]: 4\\n} | tst.js:32:5:32:10 | [v]: 2 |
+| tst.js:30:2:35:1 | {\\n    n ... q]: 4\\n} | tst.js:33:5:33:14 | [vv.pp]: 3 |
+| tst.js:30:2:35:1 | {\\n    n ... q]: 4\\n} | tst.js:34:5:34:20 | [vvv.ppp.qqq]: 4 |
+| tst.js:37:12:37:26 | ["a", "b", "c"] | tst.js:37:13:37:15 | "a" |
+| tst.js:37:12:37:26 | ["a", "b", "c"] | tst.js:37:18:37:20 | "b" |
+| tst.js:37:12:37:26 | ["a", "b", "c"] | tst.js:37:23:37:25 | "c" |
+| tst.js:38:12:38:23 | ["a", , "c"] | tst.js:38:13:38:15 | "a" |
+| tst.js:38:12:38:23 | ["a", , "c"] | tst.js:38:20:38:22 | "c" |
+| tst.js:39:12:39:23 | [, "b", "c"] | tst.js:39:15:39:17 | "b" |
+| tst.js:39:12:39:23 | [, "b", "c"] | tst.js:39:20:39:22 | "c" |
+| tst.js:40:12:40:22 | ["a", "b",] | tst.js:40:13:40:15 | "a" |
+| tst.js:40:12:40:22 | ["a", "b",] | tst.js:40:18:40:20 | "b" |
+| tst.js:41:12:41:30 | ["a", ...arr3, "d"] | tst.js:41:13:41:15 | "a" |
+| tst.js:41:12:41:30 | ["a", ...arr3, "d"] | tst.js:41:18:41:24 | ...arr3 |
+| tst.js:41:12:41:30 | ["a", ...arr3, "d"] | tst.js:41:27:41:29 | "d" |
+test_getAPropertySource
+| classes.ts:3:21:3:20 | this | instanceField | classes.ts:4:19:4:23 | foo() |
+| classes.ts:8:3:8:2 | this | parameterField | classes.ts:8:22:8:35 | parameterField |
+| classes.ts:12:5:12:4 | this | parameterField | classes.ts:12:24:12:37 | parameterField |
+| classes.ts:12:5:12:4 | this | parameterField | classes.ts:12:41:12:42 | {} |
+| classes.ts:16:5:16:4 | this | parameterField | classes.ts:16:24:16:37 | parameterField |
+| classes.ts:16:5:16:4 | this | parameterField | classes.ts:16:41:16:42 | {} |
+| tst.js:1:11:9:1 | {\\n    x ...     }\\n} | f | tst.js:6:6:8:5 | () {\\n   ... ;\\n    } |
+| tst.js:1:11:9:1 | {\\n    x ...     }\\n} | func | tst.js:3:11:5:5 | functio ... ;\\n    } |
+| tst.js:11:1:18:1 | class C ... ;\\n  }\\n} | func | tst.js:12:14:14:3 | (x) {\\n  ... x);\\n  } |
+| tst.js:23:8:23:57 | <div on ... }</div> | onClick | tst.js:23:22:23:26 | click |
+test_getAPropertyWrite2
+| classes.ts:3:21:3:20 | this | instanceField | classes.ts:4:3:4:24 | instanc ...  foo(); |
+| classes.ts:8:3:8:2 | this | parameterField | classes.ts:8:15:8:35 | public  ... erField |
+| classes.ts:12:5:12:4 | this | parameterField | classes.ts:12:17:12:37 | public  ... erField |
+| classes.ts:16:5:16:4 | this | parameterField | classes.ts:16:17:16:37 | public  ... erField |
+| tst.js:1:11:9:1 | {\\n    x ...     }\\n} | f | tst.js:6:5:8:5 | f() {\\n  ... ;\\n    } |
+| tst.js:1:11:9:1 | {\\n    x ...     }\\n} | func | tst.js:3:5:5:5 | func: f ... ;\\n    } |
+| tst.js:1:11:9:1 | {\\n    x ...     }\\n} | x | tst.js:2:5:2:8 | x: 4 |
+| tst.js:11:1:18:1 | class C ... ;\\n  }\\n} | func | tst.js:12:3:14:3 | static  ... x);\\n  } |
+| tst.js:20:1:20:1 | C | prop | tst.js:20:1:20:6 | C.prop |
+| tst.js:23:8:23:57 | <div on ... }</div> | onClick | tst.js:23:13:23:27 | onClick={click} |
+| tst.js:25:2:28:1 | {\\n  get ... v) {}\\n} | x | tst.js:26:3:26:26 | get x() ... null; } |
+| tst.js:25:2:28:1 | {\\n  get ... v) {}\\n} | y | tst.js:27:3:27:13 | set y(v) {} |
+| tst.js:30:2:35:1 | {\\n    n ... q]: 4\\n} | n | tst.js:31:5:31:8 | n: 1 |
 test_getAPropertyReference
 | classes.ts:3:21:3:20 | this | classes.ts:4:3:4:24 | instanc ...  foo(); |
 | classes.ts:8:3:8:2 | this | classes.ts:8:15:8:35 | public  ... erField |
@@ -56,51 +253,6 @@ test_getAPropertyReference
 | tst.js:46:17:46:21 | array | tst.js:47:10:47:10 | x |
 | tst.js:46:17:46:21 | array | tst.js:47:13:47:13 | y |
 | tst.js:46:17:46:21 | array | tst.js:47:16:47:16 | z |
-test_getAPropertySource
-| classes.ts:3:21:3:20 | this | instanceField | classes.ts:4:19:4:23 | foo() |
-| classes.ts:8:3:8:2 | this | parameterField | classes.ts:8:22:8:35 | parameterField |
-| classes.ts:12:5:12:4 | this | parameterField | classes.ts:12:24:12:37 | parameterField |
-| classes.ts:12:5:12:4 | this | parameterField | classes.ts:12:41:12:42 | {} |
-| classes.ts:16:5:16:4 | this | parameterField | classes.ts:16:24:16:37 | parameterField |
-| classes.ts:16:5:16:4 | this | parameterField | classes.ts:16:41:16:42 | {} |
-| tst.js:1:11:9:1 | {\\n    x ...     }\\n} | f | tst.js:6:6:8:5 | () {\\n   ... ;\\n    } |
-| tst.js:1:11:9:1 | {\\n    x ...     }\\n} | func | tst.js:3:11:5:5 | functio ... ;\\n    } |
-| tst.js:11:1:18:1 | class C ... ;\\n  }\\n} | func | tst.js:12:14:14:3 | (x) {\\n  ... x);\\n  } |
-| tst.js:23:8:23:57 | <div on ... }</div> | onClick | tst.js:23:22:23:26 | click |
-test_PropWritePropName
-| classes.ts:3:21:3:20 | constructor() {} | constructor |
-| classes.ts:4:3:4:24 | instanc ...  foo(); | instanceField |
-| classes.ts:8:3:8:39 | constru ... eld) {} | constructor |
-| classes.ts:8:15:8:35 | public  ... erField | parameterField |
-| classes.ts:12:5:12:68 | constru ... + 42; } | constructor |
-| classes.ts:12:17:12:37 | public  ... erField | parameterField |
-| classes.ts:16:5:16:46 | constru ...  {}) {} | constructor |
-| classes.ts:16:17:16:37 | public  ... erField | parameterField |
-| tst.js:2:5:2:8 | x: 4 | x |
-| tst.js:3:5:5:5 | func: f ... ;\\n    } | func |
-| tst.js:6:5:8:5 | f() {\\n  ... ;\\n    } | f |
-| tst.js:11:9:11:8 | constructor() {} | constructor |
-| tst.js:12:3:14:3 | static  ... x);\\n  } | func |
-| tst.js:15:3:17:3 | f(x) {\\n ... x);\\n  } | f |
-| tst.js:20:1:20:6 | C.prop | prop |
-| tst.js:23:13:23:27 | onClick={click} | onClick |
-| tst.js:26:3:26:26 | get x() ... null; } | x |
-| tst.js:27:3:27:13 | set y(v) {} | y |
-| tst.js:31:5:31:8 | n: 1 | n |
-test_getAPropertyRead2
-| tst.js:1:1:1:0 | this | someMethod | tst.js:22:15:22:29 | this.someMethod |
-| tst.js:1:1:1:0 | this | state | tst.js:23:36:23:45 | this.state |
-| tst.js:13:5:13:11 | console | log | tst.js:13:5:13:15 | console.log |
-| tst.js:16:5:16:11 | console | log | tst.js:16:5:16:15 | console.log |
-| tst.js:22:15:22:29 | this.someMethod | bind | tst.js:22:15:22:34 | this.someMethod.bind |
-| tst.js:23:36:23:45 | this.state | name | tst.js:23:36:23:50 | this.state.name |
-| tst.js:33:6:33:7 | vv | pp | tst.js:33:6:33:10 | vv.pp |
-| tst.js:34:6:34:8 | vvv | ppp | tst.js:34:6:34:12 | vvv.ppp |
-| tst.js:34:6:34:12 | vvv.ppp | qqq | tst.js:34:6:34:16 | vvv.ppp.qqq |
-| tst.js:44:3:44:9 | console | log | tst.js:44:3:44:13 | console.log |
-| tst.js:46:17:46:21 | array | 0 | tst.js:47:10:47:10 | x |
-| tst.js:46:17:46:21 | array | 1 | tst.js:47:13:47:13 | y |
-| tst.js:46:17:46:21 | array | 2 | tst.js:47:16:47:16 | z |
 test_getAPropertyReference2
 | classes.ts:3:21:3:20 | this | instanceField | classes.ts:4:3:4:24 | instanc ...  foo(); |
 | classes.ts:8:3:8:2 | this | parameterField | classes.ts:8:15:8:35 | public  ... erField |
@@ -128,155 +280,3 @@ test_getAPropertyReference2
 | tst.js:46:17:46:21 | array | 0 | tst.js:47:10:47:10 | x |
 | tst.js:46:17:46:21 | array | 1 | tst.js:47:13:47:13 | y |
 | tst.js:46:17:46:21 | array | 2 | tst.js:47:16:47:16 | z |
-test_hasPropertyWrite
-| classes.ts:3:21:3:20 | this | instanceField | classes.ts:4:19:4:23 | foo() |
-| classes.ts:8:3:8:2 | this | parameterField | classes.ts:8:22:8:35 | parameterField |
-| classes.ts:12:5:12:4 | this | parameterField | classes.ts:12:24:12:37 | parameterField |
-| classes.ts:16:5:16:4 | this | parameterField | classes.ts:16:24:16:37 | parameterField |
-| tst.js:1:11:9:1 | {\\n    x ...     }\\n} | f | tst.js:6:6:8:5 | () {\\n   ... ;\\n    } |
-| tst.js:1:11:9:1 | {\\n    x ...     }\\n} | func | tst.js:3:11:5:5 | functio ... ;\\n    } |
-| tst.js:1:11:9:1 | {\\n    x ...     }\\n} | x | tst.js:2:8:2:8 | 4 |
-| tst.js:11:1:18:1 | class C ... ;\\n  }\\n} | func | tst.js:12:14:14:3 | (x) {\\n  ... x);\\n  } |
-| tst.js:20:1:20:1 | C | prop | tst.js:20:10:20:11 | 56 |
-| tst.js:23:8:23:57 | <div on ... }</div> | onClick | tst.js:23:22:23:26 | click |
-| tst.js:30:2:35:1 | {\\n    n ... q]: 4\\n} | n | tst.js:31:8:31:8 | 1 |
-test_PropWriteBase
-| classes.ts:4:3:4:24 | instanc ...  foo(); | classes.ts:3:21:3:20 | this |
-| classes.ts:8:15:8:35 | public  ... erField | classes.ts:8:3:8:2 | this |
-| classes.ts:12:17:12:37 | public  ... erField | classes.ts:12:5:12:4 | this |
-| classes.ts:16:17:16:37 | public  ... erField | classes.ts:16:5:16:4 | this |
-| tst.js:2:5:2:8 | x: 4 | tst.js:1:11:9:1 | {\\n    x ...     }\\n} |
-| tst.js:3:5:5:5 | func: f ... ;\\n    } | tst.js:1:11:9:1 | {\\n    x ...     }\\n} |
-| tst.js:6:5:8:5 | f() {\\n  ... ;\\n    } | tst.js:1:11:9:1 | {\\n    x ...     }\\n} |
-| tst.js:12:3:14:3 | static  ... x);\\n  } | tst.js:11:1:18:1 | class C ... ;\\n  }\\n} |
-| tst.js:20:1:20:6 | C.prop | tst.js:20:1:20:1 | C |
-| tst.js:23:13:23:27 | onClick={click} | tst.js:23:8:23:57 | <div on ... }</div> |
-| tst.js:26:3:26:26 | get x() ... null; } | tst.js:25:2:28:1 | {\\n  get ... v) {}\\n} |
-| tst.js:27:3:27:13 | set y(v) {} | tst.js:25:2:28:1 | {\\n  get ... v) {}\\n} |
-| tst.js:31:5:31:8 | n: 1 | tst.js:30:2:35:1 | {\\n    n ... q]: 4\\n} |
-| tst.js:32:5:32:10 | [v]: 2 | tst.js:30:2:35:1 | {\\n    n ... q]: 4\\n} |
-| tst.js:33:5:33:14 | [vv.pp]: 3 | tst.js:30:2:35:1 | {\\n    n ... q]: 4\\n} |
-| tst.js:34:5:34:20 | [vvv.ppp.qqq]: 4 | tst.js:30:2:35:1 | {\\n    n ... q]: 4\\n} |
-| tst.js:37:13:37:15 | "a" | tst.js:37:12:37:26 | ["a", "b", "c"] |
-| tst.js:37:18:37:20 | "b" | tst.js:37:12:37:26 | ["a", "b", "c"] |
-| tst.js:37:23:37:25 | "c" | tst.js:37:12:37:26 | ["a", "b", "c"] |
-| tst.js:38:13:38:15 | "a" | tst.js:38:12:38:23 | ["a", , "c"] |
-| tst.js:38:20:38:22 | "c" | tst.js:38:12:38:23 | ["a", , "c"] |
-| tst.js:39:15:39:17 | "b" | tst.js:39:12:39:23 | [, "b", "c"] |
-| tst.js:39:20:39:22 | "c" | tst.js:39:12:39:23 | [, "b", "c"] |
-| tst.js:40:13:40:15 | "a" | tst.js:40:12:40:22 | ["a", "b",] |
-| tst.js:40:18:40:20 | "b" | tst.js:40:12:40:22 | ["a", "b",] |
-| tst.js:41:13:41:15 | "a" | tst.js:41:12:41:30 | ["a", ...arr3, "d"] |
-| tst.js:41:18:41:24 | ...arr3 | tst.js:41:12:41:30 | ["a", ...arr3, "d"] |
-| tst.js:41:27:41:29 | "d" | tst.js:41:12:41:30 | ["a", ...arr3, "d"] |
-test_getAPropertyWrite
-| classes.ts:3:21:3:20 | this | classes.ts:4:3:4:24 | instanc ...  foo(); |
-| classes.ts:8:3:8:2 | this | classes.ts:8:15:8:35 | public  ... erField |
-| classes.ts:12:5:12:4 | this | classes.ts:12:17:12:37 | public  ... erField |
-| classes.ts:16:5:16:4 | this | classes.ts:16:17:16:37 | public  ... erField |
-| tst.js:1:11:9:1 | {\\n    x ...     }\\n} | tst.js:2:5:2:8 | x: 4 |
-| tst.js:1:11:9:1 | {\\n    x ...     }\\n} | tst.js:3:5:5:5 | func: f ... ;\\n    } |
-| tst.js:1:11:9:1 | {\\n    x ...     }\\n} | tst.js:6:5:8:5 | f() {\\n  ... ;\\n    } |
-| tst.js:11:1:18:1 | class C ... ;\\n  }\\n} | tst.js:12:3:14:3 | static  ... x);\\n  } |
-| tst.js:20:1:20:1 | C | tst.js:20:1:20:6 | C.prop |
-| tst.js:23:8:23:57 | <div on ... }</div> | tst.js:23:13:23:27 | onClick={click} |
-| tst.js:25:2:28:1 | {\\n  get ... v) {}\\n} | tst.js:26:3:26:26 | get x() ... null; } |
-| tst.js:25:2:28:1 | {\\n  get ... v) {}\\n} | tst.js:27:3:27:13 | set y(v) {} |
-| tst.js:30:2:35:1 | {\\n    n ... q]: 4\\n} | tst.js:31:5:31:8 | n: 1 |
-| tst.js:30:2:35:1 | {\\n    n ... q]: 4\\n} | tst.js:32:5:32:10 | [v]: 2 |
-| tst.js:30:2:35:1 | {\\n    n ... q]: 4\\n} | tst.js:33:5:33:14 | [vv.pp]: 3 |
-| tst.js:30:2:35:1 | {\\n    n ... q]: 4\\n} | tst.js:34:5:34:20 | [vvv.ppp.qqq]: 4 |
-| tst.js:37:12:37:26 | ["a", "b", "c"] | tst.js:37:13:37:15 | "a" |
-| tst.js:37:12:37:26 | ["a", "b", "c"] | tst.js:37:18:37:20 | "b" |
-| tst.js:37:12:37:26 | ["a", "b", "c"] | tst.js:37:23:37:25 | "c" |
-| tst.js:38:12:38:23 | ["a", , "c"] | tst.js:38:13:38:15 | "a" |
-| tst.js:38:12:38:23 | ["a", , "c"] | tst.js:38:20:38:22 | "c" |
-| tst.js:39:12:39:23 | [, "b", "c"] | tst.js:39:15:39:17 | "b" |
-| tst.js:39:12:39:23 | [, "b", "c"] | tst.js:39:20:39:22 | "c" |
-| tst.js:40:12:40:22 | ["a", "b",] | tst.js:40:13:40:15 | "a" |
-| tst.js:40:12:40:22 | ["a", "b",] | tst.js:40:18:40:20 | "b" |
-| tst.js:41:12:41:30 | ["a", ...arr3, "d"] | tst.js:41:13:41:15 | "a" |
-| tst.js:41:12:41:30 | ["a", ...arr3, "d"] | tst.js:41:18:41:24 | ...arr3 |
-| tst.js:41:12:41:30 | ["a", ...arr3, "d"] | tst.js:41:27:41:29 | "d" |
-test_PropWrite
-| classes.ts:3:21:3:20 | constructor() {} |
-| classes.ts:4:3:4:24 | instanc ...  foo(); |
-| classes.ts:8:3:8:39 | constru ... eld) {} |
-| classes.ts:8:15:8:35 | public  ... erField |
-| classes.ts:12:5:12:68 | constru ... + 42; } |
-| classes.ts:12:17:12:37 | public  ... erField |
-| classes.ts:16:5:16:46 | constru ...  {}) {} |
-| classes.ts:16:17:16:37 | public  ... erField |
-| tst.js:2:5:2:8 | x: 4 |
-| tst.js:3:5:5:5 | func: f ... ;\\n    } |
-| tst.js:6:5:8:5 | f() {\\n  ... ;\\n    } |
-| tst.js:11:9:11:8 | constructor() {} |
-| tst.js:12:3:14:3 | static  ... x);\\n  } |
-| tst.js:15:3:17:3 | f(x) {\\n ... x);\\n  } |
-| tst.js:20:1:20:6 | C.prop |
-| tst.js:23:13:23:27 | onClick={click} |
-| tst.js:26:3:26:26 | get x() ... null; } |
-| tst.js:27:3:27:13 | set y(v) {} |
-| tst.js:31:5:31:8 | n: 1 |
-| tst.js:32:5:32:10 | [v]: 2 |
-| tst.js:33:5:33:14 | [vv.pp]: 3 |
-| tst.js:34:5:34:20 | [vvv.ppp.qqq]: 4 |
-| tst.js:37:13:37:15 | "a" |
-| tst.js:37:18:37:20 | "b" |
-| tst.js:37:23:37:25 | "c" |
-| tst.js:38:13:38:15 | "a" |
-| tst.js:38:20:38:22 | "c" |
-| tst.js:39:15:39:17 | "b" |
-| tst.js:39:20:39:22 | "c" |
-| tst.js:40:13:40:15 | "a" |
-| tst.js:40:18:40:20 | "b" |
-| tst.js:41:13:41:15 | "a" |
-| tst.js:41:18:41:24 | ...arr3 |
-| tst.js:41:27:41:29 | "d" |
-test_getAPropertyWrite2
-| classes.ts:3:21:3:20 | this | instanceField | classes.ts:4:3:4:24 | instanc ...  foo(); |
-| classes.ts:8:3:8:2 | this | parameterField | classes.ts:8:15:8:35 | public  ... erField |
-| classes.ts:12:5:12:4 | this | parameterField | classes.ts:12:17:12:37 | public  ... erField |
-| classes.ts:16:5:16:4 | this | parameterField | classes.ts:16:17:16:37 | public  ... erField |
-| tst.js:1:11:9:1 | {\\n    x ...     }\\n} | f | tst.js:6:5:8:5 | f() {\\n  ... ;\\n    } |
-| tst.js:1:11:9:1 | {\\n    x ...     }\\n} | func | tst.js:3:5:5:5 | func: f ... ;\\n    } |
-| tst.js:1:11:9:1 | {\\n    x ...     }\\n} | x | tst.js:2:5:2:8 | x: 4 |
-| tst.js:11:1:18:1 | class C ... ;\\n  }\\n} | func | tst.js:12:3:14:3 | static  ... x);\\n  } |
-| tst.js:20:1:20:1 | C | prop | tst.js:20:1:20:6 | C.prop |
-| tst.js:23:8:23:57 | <div on ... }</div> | onClick | tst.js:23:13:23:27 | onClick={click} |
-| tst.js:25:2:28:1 | {\\n  get ... v) {}\\n} | x | tst.js:26:3:26:26 | get x() ... null; } |
-| tst.js:25:2:28:1 | {\\n  get ... v) {}\\n} | y | tst.js:27:3:27:13 | set y(v) {} |
-| tst.js:30:2:35:1 | {\\n    n ... q]: 4\\n} | n | tst.js:31:5:31:8 | n: 1 |
-test_PropWriteRhs
-| classes.ts:3:21:3:20 | constructor() {} | classes.ts:3:21:3:20 | () {} |
-| classes.ts:4:3:4:24 | instanc ...  foo(); | classes.ts:4:19:4:23 | foo() |
-| classes.ts:8:3:8:39 | constru ... eld) {} | classes.ts:8:3:8:39 | constru ... eld) {} |
-| classes.ts:8:15:8:35 | public  ... erField | classes.ts:8:22:8:35 | parameterField |
-| classes.ts:12:5:12:68 | constru ... + 42; } | classes.ts:12:5:12:68 | constru ... + 42; } |
-| classes.ts:12:17:12:37 | public  ... erField | classes.ts:12:24:12:37 | parameterField |
-| classes.ts:16:5:16:46 | constru ...  {}) {} | classes.ts:16:5:16:46 | constru ...  {}) {} |
-| classes.ts:16:17:16:37 | public  ... erField | classes.ts:16:24:16:37 | parameterField |
-| tst.js:2:5:2:8 | x: 4 | tst.js:2:8:2:8 | 4 |
-| tst.js:3:5:5:5 | func: f ... ;\\n    } | tst.js:3:11:5:5 | functio ... ;\\n    } |
-| tst.js:6:5:8:5 | f() {\\n  ... ;\\n    } | tst.js:6:6:8:5 | () {\\n   ... ;\\n    } |
-| tst.js:11:9:11:8 | constructor() {} | tst.js:11:9:11:8 | () {} |
-| tst.js:12:3:14:3 | static  ... x);\\n  } | tst.js:12:14:14:3 | (x) {\\n  ... x);\\n  } |
-| tst.js:15:3:17:3 | f(x) {\\n ... x);\\n  } | tst.js:15:4:17:3 | (x) {\\n  ... x);\\n  } |
-| tst.js:20:1:20:6 | C.prop | tst.js:20:10:20:11 | 56 |
-| tst.js:23:13:23:27 | onClick={click} | tst.js:23:22:23:26 | click |
-| tst.js:31:5:31:8 | n: 1 | tst.js:31:8:31:8 | 1 |
-| tst.js:32:5:32:10 | [v]: 2 | tst.js:32:10:32:10 | 2 |
-| tst.js:33:5:33:14 | [vv.pp]: 3 | tst.js:33:14:33:14 | 3 |
-| tst.js:34:5:34:20 | [vvv.ppp.qqq]: 4 | tst.js:34:20:34:20 | 4 |
-| tst.js:37:13:37:15 | "a" | tst.js:37:13:37:15 | "a" |
-| tst.js:37:18:37:20 | "b" | tst.js:37:18:37:20 | "b" |
-| tst.js:37:23:37:25 | "c" | tst.js:37:23:37:25 | "c" |
-| tst.js:38:13:38:15 | "a" | tst.js:38:13:38:15 | "a" |
-| tst.js:38:20:38:22 | "c" | tst.js:38:20:38:22 | "c" |
-| tst.js:39:15:39:17 | "b" | tst.js:39:15:39:17 | "b" |
-| tst.js:39:20:39:22 | "c" | tst.js:39:20:39:22 | "c" |
-| tst.js:40:13:40:15 | "a" | tst.js:40:13:40:15 | "a" |
-| tst.js:40:18:40:20 | "b" | tst.js:40:18:40:20 | "b" |
-| tst.js:41:13:41:15 | "a" | tst.js:41:13:41:15 | "a" |
-| tst.js:41:18:41:24 | ...arr3 | tst.js:41:18:41:24 | ...arr3 |
-| tst.js:41:27:41:29 | "d" | tst.js:41:27:41:29 | "d" |

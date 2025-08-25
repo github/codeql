@@ -1,0 +1,120 @@
+edges
+| busybus.js:9:30:9:33 | file | busybus.js:13:23:13:23 | z | provenance |  |
+| busybus.js:9:36:9:39 | info | busybus.js:10:54:10:57 | info | provenance |  |
+| busybus.js:10:19:10:50 | { filen ... eType } | busybus.js:10:19:10:57 | encoding | provenance |  |
+| busybus.js:10:19:10:50 | { filen ... eType } | busybus.js:10:19:10:57 | filename | provenance |  |
+| busybus.js:10:19:10:50 | { filen ... eType } | busybus.js:10:19:10:57 | mimeType | provenance |  |
+| busybus.js:10:19:10:57 | encoding | busybus.js:12:28:12:35 | encoding | provenance |  |
+| busybus.js:10:19:10:57 | filename | busybus.js:12:18:12:25 | filename | provenance |  |
+| busybus.js:10:19:10:57 | mimeType | busybus.js:12:38:12:45 | mimeType | provenance |  |
+| busybus.js:10:54:10:57 | info | busybus.js:10:19:10:50 | { filen ... eType } | provenance |  |
+| busybus.js:13:23:13:23 | z | busybus.js:13:31:13:36 | sink() | provenance |  |
+| busybus.js:15:30:15:33 | data | busybus.js:16:22:16:25 | data | provenance |  |
+| busybus.js:22:25:22:42 | data | busybus.js:23:26:23:29 | data | provenance |  |
+| busybus.js:22:32:22:42 | this.read() | busybus.js:22:25:22:42 | data | provenance |  |
+| busybus.js:27:25:27:28 | name | busybus.js:28:18:28:21 | name | provenance |  |
+| busybus.js:27:31:27:33 | val | busybus.js:28:24:28:26 | val | provenance |  |
+| busybus.js:27:36:27:39 | info | busybus.js:28:29:28:32 | info | provenance |  |
+| dicer.js:12:23:12:26 | part | dicer.js:13:19:13:24 | sink() | provenance |  |
+| dicer.js:14:28:14:33 | header | dicer.js:16:22:16:27 | header | provenance |  |
+| dicer.js:16:22:16:27 | header | dicer.js:16:22:16:30 | header[h] | provenance |  |
+| dicer.js:19:26:19:29 | data | dicer.js:20:18:20:21 | data | provenance |  |
+| formidable.js:7:11:7:25 | [fields, files] | formidable.js:7:11:7:49 | fields | provenance |  |
+| formidable.js:7:11:7:25 | [fields, files] | formidable.js:7:11:7:49 | files | provenance |  |
+| formidable.js:7:11:7:49 | fields | formidable.js:8:10:8:15 | fields | provenance |  |
+| formidable.js:7:11:7:49 | files | formidable.js:8:18:8:22 | files | provenance |  |
+| formidable.js:7:29:7:49 | await f ... se(req) | formidable.js:7:11:7:25 | [fields, files] | provenance |  |
+| formidable.js:7:35:7:49 | form.parse(req) | formidable.js:7:29:7:49 | await f ... se(req) | provenance |  |
+| formidable.js:9:27:9:34 | formname | formidable.js:10:14:10:21 | formname | provenance |  |
+| formidable.js:9:37:9:40 | file | formidable.js:10:24:10:27 | file | provenance |  |
+| formidable.js:12:22:12:29 | formname | formidable.js:13:14:13:21 | formname | provenance |  |
+| formidable.js:12:32:12:35 | file | formidable.js:13:24:13:27 | file | provenance |  |
+| formidable.js:15:23:15:31 | fieldName | formidable.js:16:14:16:22 | fieldName | provenance |  |
+| formidable.js:15:34:15:43 | fieldValue | formidable.js:16:25:16:34 | fieldValue | provenance |  |
+| multiparty.js:8:22:8:25 | part | multiparty.js:9:14:9:17 | part | provenance |  |
+| multiparty.js:8:22:8:25 | part | multiparty.js:10:19:10:24 | sink() | provenance |  |
+| multiparty.js:14:37:14:42 | fields | multiparty.js:15:14:15:19 | fields | provenance |  |
+| multiparty.js:14:45:14:49 | files | multiparty.js:15:22:15:26 | files | provenance |  |
+nodes
+| busybus.js:9:30:9:33 | file | semmle.label | file |
+| busybus.js:9:36:9:39 | info | semmle.label | info |
+| busybus.js:10:19:10:50 | { filen ... eType } | semmle.label | { filen ... eType } |
+| busybus.js:10:19:10:57 | encoding | semmle.label | encoding |
+| busybus.js:10:19:10:57 | filename | semmle.label | filename |
+| busybus.js:10:19:10:57 | mimeType | semmle.label | mimeType |
+| busybus.js:10:54:10:57 | info | semmle.label | info |
+| busybus.js:12:18:12:25 | filename | semmle.label | filename |
+| busybus.js:12:28:12:35 | encoding | semmle.label | encoding |
+| busybus.js:12:38:12:45 | mimeType | semmle.label | mimeType |
+| busybus.js:13:23:13:23 | z | semmle.label | z |
+| busybus.js:13:31:13:36 | sink() | semmle.label | sink() |
+| busybus.js:15:30:15:33 | data | semmle.label | data |
+| busybus.js:16:22:16:25 | data | semmle.label | data |
+| busybus.js:22:25:22:42 | data | semmle.label | data |
+| busybus.js:22:32:22:42 | this.read() | semmle.label | this.read() |
+| busybus.js:23:26:23:29 | data | semmle.label | data |
+| busybus.js:27:25:27:28 | name | semmle.label | name |
+| busybus.js:27:31:27:33 | val | semmle.label | val |
+| busybus.js:27:36:27:39 | info | semmle.label | info |
+| busybus.js:28:18:28:21 | name | semmle.label | name |
+| busybus.js:28:24:28:26 | val | semmle.label | val |
+| busybus.js:28:29:28:32 | info | semmle.label | info |
+| dicer.js:12:23:12:26 | part | semmle.label | part |
+| dicer.js:13:19:13:24 | sink() | semmle.label | sink() |
+| dicer.js:14:28:14:33 | header | semmle.label | header |
+| dicer.js:16:22:16:27 | header | semmle.label | header |
+| dicer.js:16:22:16:30 | header[h] | semmle.label | header[h] |
+| dicer.js:19:26:19:29 | data | semmle.label | data |
+| dicer.js:20:18:20:21 | data | semmle.label | data |
+| formidable.js:7:11:7:25 | [fields, files] | semmle.label | [fields, files] |
+| formidable.js:7:11:7:49 | fields | semmle.label | fields |
+| formidable.js:7:11:7:49 | files | semmle.label | files |
+| formidable.js:7:29:7:49 | await f ... se(req) | semmle.label | await f ... se(req) |
+| formidable.js:7:35:7:49 | form.parse(req) | semmle.label | form.parse(req) |
+| formidable.js:8:10:8:15 | fields | semmle.label | fields |
+| formidable.js:8:18:8:22 | files | semmle.label | files |
+| formidable.js:9:27:9:34 | formname | semmle.label | formname |
+| formidable.js:9:37:9:40 | file | semmle.label | file |
+| formidable.js:10:14:10:21 | formname | semmle.label | formname |
+| formidable.js:10:24:10:27 | file | semmle.label | file |
+| formidable.js:12:22:12:29 | formname | semmle.label | formname |
+| formidable.js:12:32:12:35 | file | semmle.label | file |
+| formidable.js:13:14:13:21 | formname | semmle.label | formname |
+| formidable.js:13:24:13:27 | file | semmle.label | file |
+| formidable.js:15:23:15:31 | fieldName | semmle.label | fieldName |
+| formidable.js:15:34:15:43 | fieldValue | semmle.label | fieldValue |
+| formidable.js:16:14:16:22 | fieldName | semmle.label | fieldName |
+| formidable.js:16:25:16:34 | fieldValue | semmle.label | fieldValue |
+| multiparty.js:8:22:8:25 | part | semmle.label | part |
+| multiparty.js:9:14:9:17 | part | semmle.label | part |
+| multiparty.js:10:19:10:24 | sink() | semmle.label | sink() |
+| multiparty.js:14:37:14:42 | fields | semmle.label | fields |
+| multiparty.js:14:45:14:49 | files | semmle.label | files |
+| multiparty.js:15:14:15:19 | fields | semmle.label | fields |
+| multiparty.js:15:22:15:26 | files | semmle.label | files |
+subpaths
+#select
+| busybus.js:12:18:12:25 | filename | busybus.js:9:36:9:39 | info | busybus.js:12:18:12:25 | filename | This entity depends on a $@. | busybus.js:9:36:9:39 | info | user-provided value |
+| busybus.js:12:28:12:35 | encoding | busybus.js:9:36:9:39 | info | busybus.js:12:28:12:35 | encoding | This entity depends on a $@. | busybus.js:9:36:9:39 | info | user-provided value |
+| busybus.js:12:38:12:45 | mimeType | busybus.js:9:36:9:39 | info | busybus.js:12:38:12:45 | mimeType | This entity depends on a $@. | busybus.js:9:36:9:39 | info | user-provided value |
+| busybus.js:13:31:13:36 | sink() | busybus.js:9:30:9:33 | file | busybus.js:13:31:13:36 | sink() | This entity depends on a $@. | busybus.js:9:30:9:33 | file | user-provided value |
+| busybus.js:16:22:16:25 | data | busybus.js:15:30:15:33 | data | busybus.js:16:22:16:25 | data | This entity depends on a $@. | busybus.js:15:30:15:33 | data | user-provided value |
+| busybus.js:23:26:23:29 | data | busybus.js:22:32:22:42 | this.read() | busybus.js:23:26:23:29 | data | This entity depends on a $@. | busybus.js:22:32:22:42 | this.read() | user-provided value |
+| busybus.js:28:18:28:21 | name | busybus.js:27:25:27:28 | name | busybus.js:28:18:28:21 | name | This entity depends on a $@. | busybus.js:27:25:27:28 | name | user-provided value |
+| busybus.js:28:24:28:26 | val | busybus.js:27:31:27:33 | val | busybus.js:28:24:28:26 | val | This entity depends on a $@. | busybus.js:27:31:27:33 | val | user-provided value |
+| busybus.js:28:29:28:32 | info | busybus.js:27:36:27:39 | info | busybus.js:28:29:28:32 | info | This entity depends on a $@. | busybus.js:27:36:27:39 | info | user-provided value |
+| dicer.js:13:19:13:24 | sink() | dicer.js:12:23:12:26 | part | dicer.js:13:19:13:24 | sink() | This entity depends on a $@. | dicer.js:12:23:12:26 | part | user-provided value |
+| dicer.js:16:22:16:30 | header[h] | dicer.js:14:28:14:33 | header | dicer.js:16:22:16:30 | header[h] | This entity depends on a $@. | dicer.js:14:28:14:33 | header | user-provided value |
+| dicer.js:20:18:20:21 | data | dicer.js:19:26:19:29 | data | dicer.js:20:18:20:21 | data | This entity depends on a $@. | dicer.js:19:26:19:29 | data | user-provided value |
+| formidable.js:8:10:8:15 | fields | formidable.js:7:35:7:49 | form.parse(req) | formidable.js:8:10:8:15 | fields | This entity depends on a $@. | formidable.js:7:35:7:49 | form.parse(req) | user-provided value |
+| formidable.js:8:18:8:22 | files | formidable.js:7:35:7:49 | form.parse(req) | formidable.js:8:18:8:22 | files | This entity depends on a $@. | formidable.js:7:35:7:49 | form.parse(req) | user-provided value |
+| formidable.js:10:14:10:21 | formname | formidable.js:9:27:9:34 | formname | formidable.js:10:14:10:21 | formname | This entity depends on a $@. | formidable.js:9:27:9:34 | formname | user-provided value |
+| formidable.js:10:24:10:27 | file | formidable.js:9:37:9:40 | file | formidable.js:10:24:10:27 | file | This entity depends on a $@. | formidable.js:9:37:9:40 | file | user-provided value |
+| formidable.js:13:14:13:21 | formname | formidable.js:12:22:12:29 | formname | formidable.js:13:14:13:21 | formname | This entity depends on a $@. | formidable.js:12:22:12:29 | formname | user-provided value |
+| formidable.js:13:24:13:27 | file | formidable.js:12:32:12:35 | file | formidable.js:13:24:13:27 | file | This entity depends on a $@. | formidable.js:12:32:12:35 | file | user-provided value |
+| formidable.js:16:14:16:22 | fieldName | formidable.js:15:23:15:31 | fieldName | formidable.js:16:14:16:22 | fieldName | This entity depends on a $@. | formidable.js:15:23:15:31 | fieldName | user-provided value |
+| formidable.js:16:25:16:34 | fieldValue | formidable.js:15:34:15:43 | fieldValue | formidable.js:16:25:16:34 | fieldValue | This entity depends on a $@. | formidable.js:15:34:15:43 | fieldValue | user-provided value |
+| multiparty.js:9:14:9:17 | part | multiparty.js:8:22:8:25 | part | multiparty.js:9:14:9:17 | part | This entity depends on a $@. | multiparty.js:8:22:8:25 | part | user-provided value |
+| multiparty.js:10:19:10:24 | sink() | multiparty.js:8:22:8:25 | part | multiparty.js:10:19:10:24 | sink() | This entity depends on a $@. | multiparty.js:8:22:8:25 | part | user-provided value |
+| multiparty.js:15:14:15:19 | fields | multiparty.js:14:37:14:42 | fields | multiparty.js:15:14:15:19 | fields | This entity depends on a $@. | multiparty.js:14:37:14:42 | fields | user-provided value |
+| multiparty.js:15:22:15:26 | files | multiparty.js:14:45:14:49 | files | multiparty.js:15:22:15:26 | files | This entity depends on a $@. | multiparty.js:14:45:14:49 | files | user-provided value |

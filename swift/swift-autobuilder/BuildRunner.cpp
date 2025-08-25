@@ -8,7 +8,7 @@
 #include "swift/logging/SwiftLogging.h"
 #include "swift/swift-autobuilder/CustomizingBuildLink.h"
 
-constexpr codeql::SwiftDiagnostic buildCommandFailed{
+constexpr codeql::Diagnostic buildCommandFailed{
     .id = "build-command-failed",
     .name = "Detected build command failed",
     .action = "Set up a [manual build command][1] or [check the logs of the autobuild step][2].\n"

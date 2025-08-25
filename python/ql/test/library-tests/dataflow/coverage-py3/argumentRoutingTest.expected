@@ -1,0 +1,4 @@
+| classes.py:54:44:54:107 | Comment #$ arg1="with_length_hint" func=With_length_hint.__length_hint__ | Missing result: arg1="with_length_hint" |
+| classes.py:54:44:54:107 | Comment #$ arg1="with_length_hint" func=With_length_hint.__length_hint__ | Missing result: func=With_length_hint.__length_hint__ |
+| classes.py:71:32:71:77 | Comment #$ arg1="with_index" func=With_index.__index__ | Missing result: arg1="with_index" |
+| classes.py:71:32:71:77 | Comment #$ arg1="with_index" func=With_index.__index__ | Missing result: func=With_index.__index__ |

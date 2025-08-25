@@ -14,5 +14,5 @@ from PublicEndpointFromSource endpoint, boolean supported, string type
 where
   supported = isSupported(endpoint) and
   type = supportedType(endpoint)
-select endpoint, endpoint.getNamespace(), endpoint.getTypeName(), endpoint.getName(),
+select endpoint, endpoint.getNamespace(), endpoint.getTypeName(), endpoint.getEndpointName(),
   endpoint.getParameterTypes(), supported, endpoint.getFile().getBaseName(), type

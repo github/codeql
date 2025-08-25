@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["scitools/iris", "*", "input.version", "code-injection", "generated"]
+     - ["scitools/iris", "*", "input.install_packages", "code-injection", "generated"]
+     - ["scitools/iris", "*", "input.env_name", "code-injection", "generated"]

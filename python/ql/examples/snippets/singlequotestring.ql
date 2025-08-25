@@ -9,6 +9,6 @@
 
 import python
 
-from StrConst s
+from StringLiteral s
 where s.getPrefix().charAt(_) = "'"
 select s

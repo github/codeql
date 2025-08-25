@@ -31,16 +31,3 @@ class RegexpCheckBarrier extends DataFlow::Node {
     this = DataFlow::BarrierGuard<regexpFunctionChecksExpr/3>::getABarrierNode()
   }
 }
-
-/**
- * DEPRECATED: Use `RegexpCheckBarrier` instead.
- *
- * A call to a regexp match function, considered as a barrier guard for sanitizing untrusted URLs.
- *
- * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
- */
-deprecated class RegexpCheck extends DataFlow::BarrierGuard {
-  RegexpCheck() { regexpFunctionChecksExpr(this, _, _) }
-
-  override predicate checks(Expr e, boolean branch) { regexpFunctionChecksExpr(this, e, branch) }
-}

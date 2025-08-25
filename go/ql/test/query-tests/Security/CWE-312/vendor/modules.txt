@@ -9,7 +9,8 @@ github.com/sirupsen/logrus
 k8s.io/klog
 # github.com/golang/protobuf v1.4.2
 ## explicit
-github.com/golang/protobuf
+github.com/golang/protobuf/proto
 # google.golang.org/protobuf v1.23.0
 ## explicit
-google.golang.org/protobuf
+google.golang.org/protobuf/reflect/protoreflect
+google.golang.org/protobuf/runtime/protoimpl

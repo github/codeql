@@ -121,11 +121,11 @@ predicate relOpWithSwapAndNegate(
 }
 
 /**
- * Holds if `cmp` is an equality operation (`==` or `!=`) with  fully-converted
+ * Holds if `cmp` is an equality operation (`==` or `!=`) with fully-converted
  * children `lhs` and `rhs`, and `isEQ` is true if `cmp` is an
  * `==` operation and false if it is an `!=` operation.
  *
- * For example, if `rel` is `x == 5` then
+ * For example, if `cmp` is `x == 5` then
  * `eqOpWithSwap(cmp, x, 5, true)` holds.
  */
 private predicate eqOp(EqualityOperation cmp, Expr lhs, Expr rhs, boolean isEQ) {
@@ -355,13 +355,13 @@ private predicate linearAccessImpl(Expr expr, VariableAccess v, float p, float q
  * `cmpWithLinearBound(guard, v, Greater(), true)` and
  * `cmpWithLinearBound(guard, v, Lesser(),  false)` hold.
  * If `guard` is `4 - v > 5` then
- * `cmpWithLinearBound(guard, v, Lesser(),  false)` and
- * `cmpWithLinearBound(guard, v, Greater(), true)` hold.
+ * `cmpWithLinearBound(guard, v, Lesser(),  true)` and
+ * `cmpWithLinearBound(guard, v, Greater(), false)` hold.
  *
- * A more sophisticated predicate, such as `boundFromGuard`, is needed
- * to compute an actual bound for `v`. This predicate can be used if
- * you just want to check whether a variable is bounded, or to restrict
- * a more expensive analysis to just guards that bound a variable.
+ * If an actual bound for `v` is needed, use `upperBound` or `lowerBound`.
+ * This predicate can be used if you just want to check whether a variable
+ * is bounded, or to restrict a more expensive analysis to just guards that
+ * bound a variable.
  */
 predicate cmpWithLinearBound(
   ComparisonOperation guard, VariableAccess v,

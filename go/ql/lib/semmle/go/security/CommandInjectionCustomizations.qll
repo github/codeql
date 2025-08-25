@@ -5,6 +5,7 @@
  */
 
 import go
+private import semmle.go.dataflow.barrierguardutil.RegexpCheck
 
 /**
  * Provides extension points for customizing the taint tracking configuration for reasoning about
@@ -30,14 +31,12 @@ module CommandInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for command-injection vulnerabilities.
+   * DEPRECATED: Use `ActiveThreatModelSource` or `Source` instead.
    */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
+  deprecated class UntrustedFlowAsSource = ThreatModelFlowAsSource;
 
   /** A source of untrusted data, considered as a taint source for command injection. */
-  class UntrustedFlowAsSource extends Source instanceof UntrustedFlowSource { }
+  private class ThreatModelFlowAsSource extends Source instanceof ActiveThreatModelSource { }
 
   /** A command name, considered as a taint sink for command injection. */
   class CommandNameAsSink extends Sink {
@@ -46,5 +45,27 @@ module CommandInjection {
     CommandNameAsSink() { this = exec.getCommandName() }
 
     override predicate doubleDashIsSanitizing() { exec.doubleDashIsSanitizing() }
+  }
+
+  /**
+   * A call to a regexp match function, considered as a barrier guard for command injection.
+   */
+  class RegexpCheckBarrierAsSanitizer extends Sanitizer instanceof RegexpCheckBarrier { }
+
+  private predicate noDoubleDashPrefixCheck(DataFlow::Node hasPrefixNode, Expr e, boolean branch) {
+    exists(StringOps::HasPrefix hasPrefix | hasPrefix = hasPrefixNode |
+      e = hasPrefix.getBaseString().asExpr() and
+      hasPrefix.getSubstring().asExpr().getStringValue() = "--" and
+      branch = false
+    )
+  }
+
+  /**
+   * A call that confirms that the string does not start with `--`, considered as a barrier guard for command injection.
+   */
+  class NoDoubleDashPrefixSanitizer extends Sanitizer {
+    NoDoubleDashPrefixSanitizer() {
+      this = DataFlow::BarrierGuard<noDoubleDashPrefixCheck/3>::getABarrierNode()
+    }
   }
 }

@@ -34,7 +34,7 @@ namespace Semmle.Extraction.CSharp
             private set;
         }
 
-        private static readonly Dictionary<string, string> knownCompilerNames = new Dictionary<string, string>
+        private static readonly Dictionary<string, string> knownCompilerNames = new()
         {
             { "csc.exe", "Microsoft" },
             { "csc2.exe", "Microsoft" },
@@ -132,19 +132,21 @@ namespace Semmle.Extraction.CSharp
         {
             var ret = SuppressDefaultResponseFile(args) || !File.Exists(responseFile) ?
                 args :
-                new[] { "@" + responseFile }.Concat(args);
+                new[] { $"@{responseFile}" }.Concat(args);
 
             // make sure to never treat warnings as errors in the extractor:
             // our version of Roslyn may report warnings that the actual build
             // doesn't
-            return ret.Concat(new[] { "/warnaserror-" });
+            return ret.Concat(["/warnaserror-"]);
         }
 
         private static bool SuppressDefaultResponseFile(IEnumerable<string> args)
         {
-            return args.Any(arg => new[] { "/noconfig", "-noconfig" }.Contains(arg.ToLowerInvariant()));
+            return args.Any(arg => noConfigFlags.Contains(arg.ToLowerInvariant()));
         }
 
         public IEnumerable<string> ArgsWithResponse { get; } = Enumerable.Empty<string>();
+
+        private static readonly string[] noConfigFlags = ["/noconfig", "-noconfig"];
     }
 }

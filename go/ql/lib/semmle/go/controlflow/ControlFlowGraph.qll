@@ -77,23 +77,31 @@ module ControlFlow {
     Root getRoot() { none() }
 
     /** Gets the file to which this node belongs. */
-    File getFile() { this.hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
+    File getFile() { result = this.getLocation().getFile() }
 
     /**
      * Gets a textual representation of this control flow node.
      */
     string toString() { result = "control-flow node" }
 
+    /** Gets the source location for this element. */
+    Location getLocation() { none() }
+
     /**
+     * DEPRECATED: Use `getLocation()` instead.
+     *
      * Holds if this element is at the specified location.
      * The location spans column `startcolumn` of line `startline` to
      * column `endcolumn` of line `endline` in file `filepath`.
      * For more information, see
      * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
-    predicate hasLocationInfo(
+    deprecated predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
+      this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      or
+      not exists(this.getLocation()) and
       filepath = "" and
       startline = 0 and
       startcolumn = 0 and
@@ -244,13 +252,7 @@ module ControlFlow {
 
     override string toString() { result = cond + " is " + outcome }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      cond.hasLocationInfo(filepath, _, _, startline, startcolumn) and
-      endline = startline and
-      endcolumn = startcolumn
-    }
+    override Location getLocation() { result = cond.getLocation() }
   }
 
   /**

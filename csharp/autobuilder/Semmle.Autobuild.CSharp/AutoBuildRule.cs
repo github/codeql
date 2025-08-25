@@ -1,5 +1,6 @@
 using Semmle.Autobuild.Shared;
 using Semmle.Extraction.CSharp;
+using Semmle.Util;
 
 namespace Semmle.Autobuild.CSharp
 {
@@ -48,11 +49,9 @@ namespace Semmle.Autobuild.CSharp
                 tryCleanExtractorArgsLogs &
                 BuildScript.DeleteFile(Extractor.GetCSharpLogPath());
 
-            /// <summary>
-            /// Execute script `s` and check that the C# extractor has been executed.
-            /// If either fails, attempt to cleanup any artifacts produced by the extractor,
-            /// and exit with code 1, in order to proceed to the next attempt.
-            /// </summary>
+            // Execute script `s` and check that the C# extractor has been executed.
+            // If either fails, attempt to cleanup any artifacts produced by the extractor,
+            // and exit with code 1, in order to proceed to the next attempt.
             BuildScript IntermediateAttempt(BuildScript s) =>
                 (s & this.autobuilder.CheckExtractorRun(false)) |
                 (attemptExtractorCleanup & BuildScript.Failure);

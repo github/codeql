@@ -1,0 +1,3 @@
+# github.com/nonexistent/test v0.0.0-20200203000000-0000000000000
+## explicit
+github.com/nonexistent/test

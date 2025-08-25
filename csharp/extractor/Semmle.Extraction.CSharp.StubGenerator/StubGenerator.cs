@@ -36,7 +36,7 @@ public static class StubGenerator
             references.Add((reference, path));
         });
 
-        logger.Log(Severity.Info, $"Generating stubs for {references.Count} assemblies.");
+        logger.LogInfo($"Generating stubs for {references.Count} assemblies.");
 
         var compilation = CSharpCompilation.Create(
             "stubgenerator.dll",
@@ -50,7 +50,7 @@ public static class StubGenerator
         });
 
         stopWatch.Stop();
-        logger.Log(Severity.Info, $"Stub generation took {stopWatch.Elapsed}.");
+        logger.LogInfo($"Stub generation took {stopWatch.Elapsed}.");
 
         return stubPaths.ToArray();
     }
@@ -68,7 +68,7 @@ public static class StubGenerator
         var stubPath = FileUtils.NestPaths(logger, outputPath, path.Replace(".dll", ".cs"));
         stubPaths.Add(stubPath);
         using var fileStream = new FileStream(stubPath, FileMode.Create, FileAccess.Write);
-        using var writer = new StreamWriter(fileStream, new UTF8Encoding(false));
+        using var writer = new StreamWriter(fileStream, new UTF8Encoding(false)) { NewLine = "\n" };
 
         var visitor = new StubVisitor(writer, relevantSymbol);
 

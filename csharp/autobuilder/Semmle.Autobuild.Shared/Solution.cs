@@ -73,7 +73,7 @@ namespace Semmle.Autobuild.Shared
                     return;
                 }
 
-                builder.Log(Severity.Info, $"Unable to read solution file {path}.");
+                builder.Logger.LogInfo($"Unable to read solution file {path}.");
                 includedProjects = Array.Empty<Project<TAutobuildOptions>>();
                 return;
             }

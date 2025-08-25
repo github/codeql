@@ -2044,3 +2044,57 @@ ssa.cpp:
 #  439|     r439_15(glval<int>) = VariableAddress[#temp439:13] : 
 #  439|     m439_16(int)        = Store[#temp439:13]           : &:r439_15, r439_14
 #-----|   Goto -> Block 1
+
+#  442| void NonEscapingParams(void*, void*)
+#  442|   Block 0
+#  442|     v442_1(void)          = EnterFunction            : 
+#  442|     mu442_2(unknown)      = AliasedDefinition        : 
+#  442|     mu442_3(unknown)      = InitializeNonLocal       : 
+#  442|     r442_4(glval<void *>) = VariableAddress[a]       : 
+#  442|     m442_5(void *)        = InitializeParameter[a]   : &:r442_4
+#  442|     r442_6(void *)        = Load[a]                  : &:r442_4, m442_5
+#  442|     mu442_7(unknown)      = InitializeIndirection[a] : &:r442_6
+#  442|     r442_8(glval<void *>) = VariableAddress[b]       : 
+#  442|     m442_9(void *)        = InitializeParameter[b]   : &:r442_8
+#  442|     r442_10(void *)       = Load[b]                  : &:r442_8, m442_9
+#  442|     mu442_11(unknown)     = InitializeIndirection[b] : &:r442_10
+#  444|     v444_1(void)          = NoOp                     : 
+#  442|     v442_12(void)         = ReturnIndirection[a]     : &:r442_6, ~m?
+#  442|     v442_13(void)         = ReturnIndirection[b]     : &:r442_10, ~m?
+#  442|     v442_14(void)         = ReturnVoid               : 
+#  442|     v442_15(void)         = AliasedUse               : ~m?
+#  442|     v442_16(void)         = ExitFunction             : 
+
+#  446| void EscapingParams(void*, void*)
+#  446|   Block 0
+#  446|     v446_1(void)           = EnterFunction                : 
+#  446|     mu446_2(unknown)       = AliasedDefinition            : 
+#  446|     mu446_3(unknown)       = InitializeNonLocal           : 
+#  446|     r446_4(glval<void *>)  = VariableAddress[a]           : 
+#  446|     m446_5(void *)         = InitializeParameter[a]       : &:r446_4
+#  446|     r446_6(void *)         = Load[a]                      : &:r446_4, m446_5
+#  446|     mu446_7(unknown)       = InitializeIndirection[a]     : &:r446_6
+#  446|     r446_8(glval<void *>)  = VariableAddress[b]           : 
+#  446|     m446_9(void *)         = InitializeParameter[b]       : &:r446_8
+#  446|     r446_10(void *)        = Load[b]                      : &:r446_8, m446_9
+#  446|     mu446_11(unknown)      = InitializeIndirection[b]     : &:r446_10
+#  448|     r448_1(glval<unknown>) = FunctionAddress[Escape]      : 
+#  448|     r448_2(glval<void *>)  = VariableAddress[a]           : 
+#  448|     r448_3(void *)         = Load[a]                      : &:r448_2, m446_5
+#  448|     v448_4(void)           = Call[Escape]                 : func:r448_1, 0:r448_3
+#  448|     mu448_5(unknown)       = ^CallSideEffect              : ~m?
+#  448|     v448_6(void)           = ^BufferReadSideEffect[0]     : &:r448_3, ~m?
+#  448|     mu448_7(unknown)       = ^BufferMayWriteSideEffect[0] : &:r448_3
+#  449|     r449_1(glval<unknown>) = FunctionAddress[Escape]      : 
+#  449|     r449_2(glval<void *>)  = VariableAddress[b]           : 
+#  449|     r449_3(void *)         = Load[b]                      : &:r449_2, m446_9
+#  449|     v449_4(void)           = Call[Escape]                 : func:r449_1, 0:r449_3
+#  449|     mu449_5(unknown)       = ^CallSideEffect              : ~m?
+#  449|     v449_6(void)           = ^BufferReadSideEffect[0]     : &:r449_3, ~m?
+#  449|     mu449_7(unknown)       = ^BufferMayWriteSideEffect[0] : &:r449_3
+#  450|     v450_1(void)           = NoOp                         : 
+#  446|     v446_12(void)          = ReturnIndirection[a]         : &:r446_6, ~m?
+#  446|     v446_13(void)          = ReturnIndirection[b]         : &:r446_10, ~m?
+#  446|     v446_14(void)          = ReturnVoid                   : 
+#  446|     v446_15(void)          = AliasedUse                   : ~m?
+#  446|     v446_16(void)          = ExitFunction                 : 

@@ -11,7 +11,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
 
         private Discard(Context cx, CSharpSyntaxNode syntax, IExpressionParentEntity parent, int child) :
-            base(new ExpressionInfo(cx, cx.GetType(syntax), cx.CreateLocation(syntax.GetLocation()), ExprKind.DISCARD, parent, child, false, null))
+            base(new ExpressionInfo(cx, cx.GetType(syntax), cx.CreateLocation(syntax.GetLocation()), ExprKind.DISCARD, parent, child, isCompilerGenerated: false, null))
         {
         }
 

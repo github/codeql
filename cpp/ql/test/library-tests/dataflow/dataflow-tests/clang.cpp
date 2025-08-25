@@ -1,4 +1,4 @@
-// semmle-extractor-options: --edg --clang
+// semmle-extractor-options: --clang
 
 int source();
 void sink(int); void sink(const int *); void sink(int **); void indirect_sink(...);
@@ -8,7 +8,7 @@ struct twoIntFields {
   int getFirst() { return m1; }
 };
 
-void following_pointers( // $ ast-def=sourceStruct1_ptr
+void following_pointers( // $ ast-def=sourceStruct1_ptr ir-def=*cleanArray1 ir-def=*sourceArray1 ir-def=*sourceStruct1_ptr
     int sourceArray1[],
     int cleanArray1[],
     twoIntFields sourceStruct1,
@@ -51,4 +51,10 @@ void following_pointers( // $ ast-def=sourceStruct1_ptr
   stackArray[0] = source();
   sink(stackArray); // $ ast,ir
   indirect_sink(stackArray); // $ ast ir=50:25 ir=50:35 ir=51:19
+}
+
+void test_bitcast() {
+  unsigned long x = source();
+  double d = __builtin_bit_cast(double, x);
+  sink(d); // $ ir MISSING: ast
 }

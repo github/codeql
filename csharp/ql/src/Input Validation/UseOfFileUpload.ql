@@ -17,5 +17,7 @@ import csharp
 from PropertyAccess pa
 where
   pa.getTarget().hasName("PostedFile") and
-  pa.getTarget().getDeclaringType().hasQualifiedName("System.Web.UI.HtmlControls", "HtmlInputFile")
+  pa.getTarget()
+      .getDeclaringType()
+      .hasFullyQualifiedName("System.Web.UI.HtmlControls", "HtmlInputFile")
 select pa, "Avoid using file upload."

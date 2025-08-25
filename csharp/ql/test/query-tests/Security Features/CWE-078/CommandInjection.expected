@@ -1,55 +1,43 @@
-edges
-| CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:25:32:25:51 | access to property Text : String |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:26:27:26:47 | ... + ... |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:26:50:26:66 | ... + ... |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:28:63:28:71 | access to local variable userInput |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:28:63:28:71 | access to local variable userInput : String |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:28:74:28:82 | access to local variable userInput |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:28:74:28:82 | access to local variable userInput : String |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:32:39:32:47 | access to local variable userInput |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:32:39:32:47 | access to local variable userInput : String |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:33:40:33:48 | access to local variable userInput |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:33:40:33:48 | access to local variable userInput : String |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:34:47:34:55 | access to local variable userInput |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:34:47:34:55 | access to local variable userInput : String |
-| CommandInjection.cs:28:42:28:83 | object creation of type ProcessStartInfo : ProcessStartInfo | CommandInjection.cs:29:27:29:35 | access to local variable startInfo |
-| CommandInjection.cs:28:63:28:71 | access to local variable userInput : String | CommandInjection.cs:28:42:28:83 | object creation of type ProcessStartInfo : ProcessStartInfo |
-| CommandInjection.cs:28:74:28:82 | access to local variable userInput : String | CommandInjection.cs:28:42:28:83 | object creation of type ProcessStartInfo : ProcessStartInfo |
-| CommandInjection.cs:32:13:32:26 | [post] access to local variable startInfoProps : ProcessStartInfo | CommandInjection.cs:35:27:35:40 | access to local variable startInfoProps |
-| CommandInjection.cs:32:39:32:47 | access to local variable userInput : String | CommandInjection.cs:32:13:32:26 | [post] access to local variable startInfoProps : ProcessStartInfo |
-| CommandInjection.cs:33:13:33:26 | [post] access to local variable startInfoProps : ProcessStartInfo | CommandInjection.cs:35:27:35:40 | access to local variable startInfoProps |
-| CommandInjection.cs:33:40:33:48 | access to local variable userInput : String | CommandInjection.cs:33:13:33:26 | [post] access to local variable startInfoProps : ProcessStartInfo |
-| CommandInjection.cs:34:13:34:26 | [post] access to local variable startInfoProps : ProcessStartInfo | CommandInjection.cs:35:27:35:40 | access to local variable startInfoProps |
-| CommandInjection.cs:34:47:34:55 | access to local variable userInput : String | CommandInjection.cs:34:13:34:26 | [post] access to local variable startInfoProps : ProcessStartInfo |
-nodes
-| CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | semmle.label | access to field categoryTextBox : TextBox |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | semmle.label | access to property Text : String |
-| CommandInjection.cs:26:27:26:47 | ... + ... | semmle.label | ... + ... |
-| CommandInjection.cs:26:50:26:66 | ... + ... | semmle.label | ... + ... |
-| CommandInjection.cs:28:42:28:83 | object creation of type ProcessStartInfo : ProcessStartInfo | semmle.label | object creation of type ProcessStartInfo : ProcessStartInfo |
-| CommandInjection.cs:28:63:28:71 | access to local variable userInput | semmle.label | access to local variable userInput |
-| CommandInjection.cs:28:63:28:71 | access to local variable userInput : String | semmle.label | access to local variable userInput : String |
-| CommandInjection.cs:28:74:28:82 | access to local variable userInput | semmle.label | access to local variable userInput |
-| CommandInjection.cs:28:74:28:82 | access to local variable userInput : String | semmle.label | access to local variable userInput : String |
-| CommandInjection.cs:29:27:29:35 | access to local variable startInfo | semmle.label | access to local variable startInfo |
-| CommandInjection.cs:32:13:32:26 | [post] access to local variable startInfoProps : ProcessStartInfo | semmle.label | [post] access to local variable startInfoProps : ProcessStartInfo |
-| CommandInjection.cs:32:39:32:47 | access to local variable userInput | semmle.label | access to local variable userInput |
-| CommandInjection.cs:32:39:32:47 | access to local variable userInput : String | semmle.label | access to local variable userInput : String |
-| CommandInjection.cs:33:13:33:26 | [post] access to local variable startInfoProps : ProcessStartInfo | semmle.label | [post] access to local variable startInfoProps : ProcessStartInfo |
-| CommandInjection.cs:33:40:33:48 | access to local variable userInput | semmle.label | access to local variable userInput |
-| CommandInjection.cs:33:40:33:48 | access to local variable userInput : String | semmle.label | access to local variable userInput : String |
-| CommandInjection.cs:34:13:34:26 | [post] access to local variable startInfoProps : ProcessStartInfo | semmle.label | [post] access to local variable startInfoProps : ProcessStartInfo |
-| CommandInjection.cs:34:47:34:55 | access to local variable userInput | semmle.label | access to local variable userInput |
-| CommandInjection.cs:34:47:34:55 | access to local variable userInput : String | semmle.label | access to local variable userInput : String |
-| CommandInjection.cs:35:27:35:40 | access to local variable startInfoProps | semmle.label | access to local variable startInfoProps |
-subpaths
 #select
-| CommandInjection.cs:26:27:26:47 | ... + ... | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:26:27:26:47 | ... + ... | This command line depends on a $@. | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox | user-provided value |
-| CommandInjection.cs:26:50:26:66 | ... + ... | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:26:50:26:66 | ... + ... | This command line depends on a $@. | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox | user-provided value |
-| CommandInjection.cs:28:63:28:71 | access to local variable userInput | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:28:63:28:71 | access to local variable userInput | This command line depends on a $@. | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox | user-provided value |
-| CommandInjection.cs:28:74:28:82 | access to local variable userInput | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:28:74:28:82 | access to local variable userInput | This command line depends on a $@. | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox | user-provided value |
-| CommandInjection.cs:29:27:29:35 | access to local variable startInfo | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:29:27:29:35 | access to local variable startInfo | This command line depends on a $@. | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox | user-provided value |
-| CommandInjection.cs:32:39:32:47 | access to local variable userInput | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:32:39:32:47 | access to local variable userInput | This command line depends on a $@. | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox | user-provided value |
-| CommandInjection.cs:33:40:33:48 | access to local variable userInput | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:33:40:33:48 | access to local variable userInput | This command line depends on a $@. | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox | user-provided value |
-| CommandInjection.cs:34:47:34:55 | access to local variable userInput | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:34:47:34:55 | access to local variable userInput | This command line depends on a $@. | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox | user-provided value |
-| CommandInjection.cs:35:27:35:40 | access to local variable startInfoProps | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:35:27:35:40 | access to local variable startInfoProps | This command line depends on a $@. | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox | user-provided value |
+| CommandInjection.cs:28:27:28:47 | ... + ... | CommandInjection.cs:27:32:27:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:28:27:28:47 | ... + ... | This command line depends on a $@. | CommandInjection.cs:27:32:27:46 | access to field categoryTextBox | user-provided value |
+| CommandInjection.cs:28:50:28:66 | ... + ... | CommandInjection.cs:27:32:27:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:28:50:28:66 | ... + ... | This command line depends on a $@. | CommandInjection.cs:27:32:27:46 | access to field categoryTextBox | user-provided value |
+| CommandInjection.cs:30:63:30:71 | access to local variable userInput | CommandInjection.cs:27:32:27:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:30:63:30:71 | access to local variable userInput | This command line depends on a $@. | CommandInjection.cs:27:32:27:46 | access to field categoryTextBox | user-provided value |
+| CommandInjection.cs:30:74:30:82 | access to local variable userInput | CommandInjection.cs:27:32:27:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:30:74:30:82 | access to local variable userInput | This command line depends on a $@. | CommandInjection.cs:27:32:27:46 | access to field categoryTextBox | user-provided value |
+| CommandInjection.cs:34:39:34:47 | access to local variable userInput | CommandInjection.cs:27:32:27:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:34:39:34:47 | access to local variable userInput | This command line depends on a $@. | CommandInjection.cs:27:32:27:46 | access to field categoryTextBox | user-provided value |
+| CommandInjection.cs:35:40:35:48 | access to local variable userInput | CommandInjection.cs:27:32:27:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:35:40:35:48 | access to local variable userInput | This command line depends on a $@. | CommandInjection.cs:27:32:27:46 | access to field categoryTextBox | user-provided value |
+| CommandInjection.cs:36:47:36:55 | access to local variable userInput | CommandInjection.cs:27:32:27:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:36:47:36:55 | access to local variable userInput | This command line depends on a $@. | CommandInjection.cs:27:32:27:46 | access to field categoryTextBox | user-provided value |
+| CommandInjection.cs:51:46:51:80 | ... + ... | CommandInjection.cs:46:48:46:78 | call to method ExecuteReader : SqlDataReader | CommandInjection.cs:51:46:51:80 | ... + ... | This command line depends on a $@. | CommandInjection.cs:46:48:46:78 | call to method ExecuteReader | user-provided value |
+edges
+| CommandInjection.cs:27:20:27:28 | access to local variable userInput : String | CommandInjection.cs:28:27:28:47 | ... + ... | provenance |  |
+| CommandInjection.cs:27:20:27:28 | access to local variable userInput : String | CommandInjection.cs:28:50:28:66 | ... + ... | provenance |  |
+| CommandInjection.cs:27:20:27:28 | access to local variable userInput : String | CommandInjection.cs:30:63:30:71 | access to local variable userInput | provenance |  |
+| CommandInjection.cs:27:20:27:28 | access to local variable userInput : String | CommandInjection.cs:30:74:30:82 | access to local variable userInput | provenance |  |
+| CommandInjection.cs:27:20:27:28 | access to local variable userInput : String | CommandInjection.cs:34:39:34:47 | access to local variable userInput | provenance |  |
+| CommandInjection.cs:27:20:27:28 | access to local variable userInput : String | CommandInjection.cs:35:40:35:48 | access to local variable userInput | provenance |  |
+| CommandInjection.cs:27:20:27:28 | access to local variable userInput : String | CommandInjection.cs:36:47:36:55 | access to local variable userInput | provenance |  |
+| CommandInjection.cs:27:32:27:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:27:32:27:51 | access to property Text : String | provenance | MaD:2 |
+| CommandInjection.cs:27:32:27:51 | access to property Text : String | CommandInjection.cs:27:20:27:28 | access to local variable userInput : String | provenance |  |
+| CommandInjection.cs:46:31:46:44 | access to local variable customerReader : SqlDataReader | CommandInjection.cs:51:54:51:67 | access to local variable customerReader : SqlDataReader | provenance |  |
+| CommandInjection.cs:46:48:46:78 | call to method ExecuteReader : SqlDataReader | CommandInjection.cs:46:31:46:44 | access to local variable customerReader : SqlDataReader | provenance |  |
+| CommandInjection.cs:51:54:51:67 | access to local variable customerReader : SqlDataReader | CommandInjection.cs:51:54:51:80 | call to method GetString : String | provenance | MaD:1 |
+| CommandInjection.cs:51:54:51:80 | call to method GetString : String | CommandInjection.cs:51:46:51:80 | ... + ... | provenance |  |
+models
+| 1 | Summary: System.Data; IDataRecord; true; GetString; (System.Int32); ; Argument[this]; ReturnValue; taint; manual |
+| 2 | Summary: System.Web.UI.WebControls; TextBox; false; get_Text; (); ; Argument[this]; ReturnValue; taint; manual |
+nodes
+| CommandInjection.cs:27:20:27:28 | access to local variable userInput : String | semmle.label | access to local variable userInput : String |
+| CommandInjection.cs:27:32:27:46 | access to field categoryTextBox : TextBox | semmle.label | access to field categoryTextBox : TextBox |
+| CommandInjection.cs:27:32:27:51 | access to property Text : String | semmle.label | access to property Text : String |
+| CommandInjection.cs:28:27:28:47 | ... + ... | semmle.label | ... + ... |
+| CommandInjection.cs:28:50:28:66 | ... + ... | semmle.label | ... + ... |
+| CommandInjection.cs:30:63:30:71 | access to local variable userInput | semmle.label | access to local variable userInput |
+| CommandInjection.cs:30:74:30:82 | access to local variable userInput | semmle.label | access to local variable userInput |
+| CommandInjection.cs:34:39:34:47 | access to local variable userInput | semmle.label | access to local variable userInput |
+| CommandInjection.cs:35:40:35:48 | access to local variable userInput | semmle.label | access to local variable userInput |
+| CommandInjection.cs:36:47:36:55 | access to local variable userInput | semmle.label | access to local variable userInput |
+| CommandInjection.cs:46:31:46:44 | access to local variable customerReader : SqlDataReader | semmle.label | access to local variable customerReader : SqlDataReader |
+| CommandInjection.cs:46:48:46:78 | call to method ExecuteReader : SqlDataReader | semmle.label | call to method ExecuteReader : SqlDataReader |
+| CommandInjection.cs:51:46:51:80 | ... + ... | semmle.label | ... + ... |
+| CommandInjection.cs:51:54:51:67 | access to local variable customerReader : SqlDataReader | semmle.label | access to local variable customerReader : SqlDataReader |
+| CommandInjection.cs:51:54:51:80 | call to method GetString : String | semmle.label | call to method GetString : String |
+subpaths

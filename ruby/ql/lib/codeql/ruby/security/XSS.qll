@@ -35,13 +35,6 @@ private module Shared {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for "server-side cross-site scripting" vulnerabilities.
-   */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
-
   private class ErbOutputMethodCallArgumentNode extends DataFlow::Node {
     private MethodCall call;
 
@@ -53,6 +46,18 @@ private module Shared {
     }
 
     MethodCall getCall() { result = call }
+  }
+
+  /**
+   * A value interpolated using a raw erb output directive, which does not perform HTML escaping.
+   * ```erb
+   * <%== sink %>
+   * ```
+   */
+  class ErbRawOutputDirective extends Sink {
+    ErbRawOutputDirective() {
+      exists(ErbOutputDirective d | d.isRaw() | this.asExpr().getExpr() = d.getTerminalStmt())
+    }
   }
 
   /**
@@ -243,6 +248,19 @@ private module Shared {
     or
     isFlowFromHelperMethod(node1, node2)
   }
+
+  private predicate htmlSafeGuard(CfgNodes::AstCfgNode guard, CfgNode testedNode, boolean branch) {
+    exists(DataFlow::CallNode html_safe_call | html_safe_call.getMethodName() = "html_safe?" |
+      guard = html_safe_call.asExpr() and
+      testedNode = html_safe_call.getReceiver().asExpr() and
+      branch = true
+    )
+  }
+
+  /** A guard that calls `.html_safe?` to check whether the string is already HTML-safe. */
+  private class HtmlSafeGuard extends Sanitizer {
+    HtmlSafeGuard() { this = DataFlow::BarrierGuard<htmlSafeGuard/3>::getABarrierNode() }
+  }
 }
 
 /**
@@ -259,13 +277,6 @@ module ReflectedXss {
 
   /** A sanitizer for stored XSS vulnerabilities. */
   class Sanitizer = Shared::Sanitizer;
-
-  /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for stored XSS vulnerabilities.
-   */
-  deprecated class SanitizerGuard = Shared::SanitizerGuard;
 
   /**
    * An additional step that is preserves dataflow in the context of reflected XSS.
@@ -301,6 +312,8 @@ private module OrmTracking {
     }
 
     predicate isBarrierIn(DataFlow::Node node) { node instanceof DataFlow::SelfParameterNode }
+
+    int accessPathLimit() { result = 1 }
   }
 
   import DataFlow::Global<Config>
@@ -318,13 +331,6 @@ module StoredXss {
   class Sanitizer = Shared::Sanitizer;
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for stored XSS vulnerabilities.
-   */
-  deprecated class SanitizerGuard = Shared::SanitizerGuard;
-
-  /**
    * An additional step that preserves dataflow in the context of stored XSS.
    */
   predicate isAdditionalXssTaintStep = Shared::isAdditionalXssFlowStep/2;
@@ -333,7 +339,9 @@ module StoredXss {
     OrmFieldAsSource() {
       exists(DataFlow::CallNode subSrc |
         OrmTracking::flow(subSrc, this.getReceiver()) and
-        subSrc.(OrmInstantiation).methodCallMayAccessField(this.getMethodName())
+        subSrc.(OrmInstantiation).methodCallMayAccessField(this.getMethodName()) and
+        this.getNumberOfArguments() = 0 and
+        not exists(this.getBlock())
       )
     }
   }

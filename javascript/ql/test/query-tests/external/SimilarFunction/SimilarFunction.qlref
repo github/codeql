@@ -1,1 +1,2 @@
-external/SimilarFunction.ql
+query: external/SimilarFunction.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -18,7 +18,12 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public IMethodSymbol SourceDeclaration => Symbol.OriginalDefinition;
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => Symbol.GetSymbolLocation();
+        public override Microsoft.CodeAnalysis.Location ReportingLocation =>
+            IsCompilerGeneratedDelegate()
+                ? Symbol.ContainingType.GetSymbolLocation()
+                : BodyDeclaringSymbol.GetSymbolLocation();
+
+        public override bool NeedsPopulation => base.NeedsPopulation || IsCompilerGeneratedDelegate();
 
         public override void Populate(TextWriter trapFile)
         {
@@ -47,11 +52,18 @@ namespace Semmle.Extraction.CSharp.Entities
             ExtractCompilerGenerated(trapFile);
         }
 
+        private bool IsCompilerGeneratedDelegate() =>
+            // Lambdas with parameter defaults or a `params` parameter are implemented
+            // using compiler generated delegate types.
+            Symbol.MethodKind == MethodKind.DelegateInvoke &&
+            Symbol.ContainingType is INamedTypeSymbol nt &&
+            nt.IsImplicitlyDeclared;
+
         public static new OrdinaryMethod Create(Context cx, IMethodSymbol method)
         {
             if (method.MethodKind == MethodKind.ReducedExtension)
             {
-                cx.Extractor.Logger.Log(Semmle.Util.Logging.Severity.Warning, "Reduced extension method symbols should not be directly extracted.");
+                cx.ExtractionContext.Logger.LogWarning("Reduced extension method symbols should not be directly extracted.");
             }
 
             return OrdinaryMethodFactory.Instance.CreateEntityFromSymbol(cx, method);

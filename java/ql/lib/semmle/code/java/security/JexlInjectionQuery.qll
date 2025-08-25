@@ -39,37 +39,20 @@ private class DefaultJexlInjectionAdditionalTaintStep extends JexlInjectionAddit
 }
 
 /**
- * DEPRECATED: Use `JexlInjectionFlow` instead.
- *
- * A taint-tracking configuration for unsafe user input
- * that is used to construct and evaluate a JEXL expression.
- * It supports both JEXL 2 and 3.
- */
-deprecated class JexlInjectionConfig extends TaintTracking::Configuration {
-  JexlInjectionConfig() { this = "JexlInjectionConfig" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof JexlEvaluationSink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    any(JexlInjectionAdditionalTaintStep c).step(node1, node2)
-  }
-}
-
-/**
  * A taint-tracking configuration for unsafe user input
  * that is used to construct and evaluate a JEXL expression.
  * It supports both JEXL 2 and 3.
  */
 module JexlInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof JexlEvaluationSink }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(JexlInjectionAdditionalTaintStep c).step(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
@@ -83,7 +66,7 @@ module JexlInjectionFlow = TaintTracking::Global<JexlInjectionConfig>;
  * by calling `tainted.createScript(jexlExpr)`.
  */
 private predicate createJexlScriptStep(DataFlow::Node n1, DataFlow::Node n2) {
-  exists(MethodAccess ma, Method m | m = ma.getMethod() and n2.asExpr() = ma |
+  exists(MethodCall ma, Method m | m = ma.getMethod() and n2.asExpr() = ma |
     not isSafeEngine(ma.getQualifier()) and
     m instanceof CreateJexlScriptMethod and
     n1.asExpr() = ma.getArgument(0) and
@@ -96,7 +79,7 @@ private predicate createJexlScriptStep(DataFlow::Node n1, DataFlow::Node n2) {
  * by calling `tainted.createExpression(jexlExpr)`.
  */
 private predicate createJexlExpressionStep(DataFlow::Node n1, DataFlow::Node n2) {
-  exists(MethodAccess ma, Method m | m = ma.getMethod() and n2.asExpr() = ma |
+  exists(MethodCall ma, Method m | m = ma.getMethod() and n2.asExpr() = ma |
     not isSafeEngine(ma.getQualifier()) and
     m instanceof CreateJexlExpressionMethod and
     n1.asExpr() = ma.getAnArgument() and
@@ -109,7 +92,7 @@ private predicate createJexlExpressionStep(DataFlow::Node n1, DataFlow::Node n2)
  * by calling `tainted.createTemplate(jexlExpr)`.
  */
 private predicate createJexlTemplateStep(DataFlow::Node n1, DataFlow::Node n2) {
-  exists(MethodAccess ma, Method m, RefType taintType |
+  exists(MethodCall ma, Method m, RefType taintType |
     m = ma.getMethod() and n2.asExpr() = ma and taintType = n1.asExpr().getType()
   |
     not isSafeEngine(ma.getQualifier()) and
@@ -131,7 +114,7 @@ private module SandboxedJexlFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node instanceof SandboxedJexlSource }
 
   predicate isSink(DataFlow::Node node) {
-    exists(MethodAccess ma, Method m |
+    exists(MethodCall ma, Method m |
       m instanceof CreateJexlScriptMethod or
       m instanceof CreateJexlExpressionMethod or
       m instanceof CreateJexlTemplateMethod
@@ -152,7 +135,7 @@ private module SandboxedJexlFlow = DataFlow::Global<SandboxedJexlFlowConfig>;
  */
 private class SandboxedJexlSource extends DataFlow::ExprNode {
   SandboxedJexlSource() {
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+    exists(MethodCall ma, Method m | m = ma.getMethod() |
       m.getDeclaringType() instanceof JexlBuilder and
       m.hasName(["uberspect", "sandbox"]) and
       m.getReturnType() instanceof JexlBuilder and
@@ -171,7 +154,7 @@ private class SandboxedJexlSource extends DataFlow::ExprNode {
  * Holds if `fromNode` to `toNode` is a dataflow step that creates one of the JEXL engines.
  */
 private predicate createJexlEngineStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-  exists(MethodAccess ma, Method m | m = ma.getMethod() |
+  exists(MethodCall ma, Method m | m = ma.getMethod() |
     (m.getDeclaringType() instanceof JexlBuilder or m.getDeclaringType() instanceof JexlEngine) and
     m.hasName(["create", "createJxltEngine"]) and
     ma.getQualifier() = fromNode.asExpr() and

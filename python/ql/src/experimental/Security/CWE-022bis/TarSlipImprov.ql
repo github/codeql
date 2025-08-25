@@ -109,6 +109,8 @@ private module TarSlipImprovConfig implements DataFlow::ConfigSig {
     nodeFrom = nodeTo.(API::CallNode).getArg(0) and
     nodeFrom = tarfileOpen().getReturn().getAValueReachableFromSource()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Global taint-tracking for detecting more "TarSlip" vulnerabilities. */

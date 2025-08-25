@@ -1,1 +1,1 @@
-| statements_test.py:21:5:21:19 | For | Iteration over $@, of class list, may also iterate over $@. | statements_test.py:20:13:20:33 | ControlFlowNode for List | sequence | statements_test.py:18:13:18:26 | ControlFlowNode for Str | string |
+| statements_test.py:21:5:21:19 | For | Iteration over $@, of class list, may also iterate over $@. | statements_test.py:20:13:20:33 | ControlFlowNode for List | sequence | statements_test.py:18:13:18:26 | ControlFlowNode for StringLiteral | string |

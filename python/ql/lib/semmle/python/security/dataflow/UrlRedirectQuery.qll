@@ -9,34 +9,32 @@
 private import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
-import UrlRedirectCustomizations::UrlRedirect
+import UrlRedirectCustomizations::UrlRedirect as UrlRedirect
 
-/**
- * DEPRECATED: Use `UrlRedirectFlow` module instead.
- *
- * A taint-tracking configuration for detecting "URL redirection" vulnerabilities.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "UrlRedirect" }
+private module UrlRedirectConfig implements DataFlow::StateConfigSig {
+  class FlowState = UrlRedirect::FlowState;
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof SanitizerGuard
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    source instanceof UrlRedirect::Source and state instanceof UrlRedirect::MayContainBackslashes
   }
-}
 
-private module UrlRedirectConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof Source }
+  predicate isSink(DataFlow::Node sink, FlowState state) {
+    sink instanceof UrlRedirect::Sink and
+    exists(state)
+  }
 
-  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
+    node.(UrlRedirect::Sanitizer).sanitizes(state)
+  }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+  predicate isAdditionalFlowStep(
+    DataFlow::Node nodeFrom, FlowState stateFrom, DataFlow::Node nodeTo, FlowState stateTo
+  ) {
+    any(UrlRedirect::AdditionalFlowStep a).step(nodeFrom, stateFrom, nodeTo, stateTo)
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Global taint-tracking for detecting "URL redirection" vulnerabilities. */
-module UrlRedirectFlow = TaintTracking::Global<UrlRedirectConfig>;
+module UrlRedirectFlow = TaintTracking::GlobalWithState<UrlRedirectConfig>;

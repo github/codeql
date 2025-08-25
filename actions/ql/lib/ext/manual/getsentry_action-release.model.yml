@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["getsentry/action-release", "*", "input.version", "output.version", "taint", "manual"]
+      - ["getsentry/action-release", "*", "input.version_prefix", "output.version", "taint", "manual"]

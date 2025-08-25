@@ -1,0 +1,56 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Constructing a regular expression with unsanitized user input can be dangerous.
+A malicious user may be able to modify the meaning of the expression, causing it
+to match unexpected strings and construct large regular expressions by using
+counted repetitions.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Before embedding user input into a regular expression, escape the input string
+using a function such as <a
+href="https://docs.rs/regex/latest/regex/fn.escape.html">regex::escape</a> to
+escape meta-characters that have special meaning.
+</p>
+<p>
+If purposefully supporting user supplied regular expressions, then use <a
+href="https://docs.rs/regex/latest/regex/struct.RegexBuilder.html#method.size_limit">RegexBuilder::size_limit</a>
+to limit the pattern size so that it is no larger than necessary.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example constructs a regular expressions from the user input
+<code>key</code> without escaping it first.
+</p>
+
+<sample src="RegexInjectionBad.rs" />
+
+<p>
+The regular expression is intended to match strings starting with
+<code>"property"</code> such as <code>"property:foo=bar"</code>. However, a
+malicious user might inject the regular expression <code>".*^|key"</code> and
+unexpectedly cause strings such as <code>"key=secret"</code> to match.
+</p>
+<p>
+If user input is used to construct a regular expression, it should be escaped
+first. This ensures that malicious users cannot insert characters that have special
+meanings in regular expressions.
+</p>
+<sample src="RegexInjectionGood.rs" />
+</example>
+
+<references>
+<li>
+  <code>regex</code> crate documentation: <a href="https://docs.rs/regex/latest/regex/index.html#untrusted-patterns">Untrusted patterns</a>.
+</li>
+</references>
+</qhelp>

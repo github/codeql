@@ -132,3 +132,8 @@ extensions:
       - ["android.os", "Parcel", False, "readTypedList", "", "", "Argument[this]", "Argument[0]", "taint", "manual"]
       - ["android.os", "Parcel", False, "readTypedObject", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["android.os", "Parcel", False, "readValue", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["android.os", "ParcelFileDescriptor", False, "open", "", "", "Argument[0]", "path-injection", "manual"]

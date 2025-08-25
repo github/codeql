@@ -19,7 +19,7 @@ import CorsOriginFlow::PathGraph
 /**
  *  Holds if `header` sets `Access-Control-Allow-Credentials` to `true`. This ensures fair chances of exploitability.
  */
-private predicate setsAllowCredentials(MethodAccess header) {
+private predicate setsAllowCredentials(MethodCall header) {
   (
     header.getMethod() instanceof ResponseSetHeaderMethod or
     header.getMethod() instanceof ResponseAddHeaderMethod
@@ -29,7 +29,7 @@ private predicate setsAllowCredentials(MethodAccess header) {
   header.getArgument(1).(CompileTimeConstantExpr).getStringValue().toLowerCase() = "true"
 }
 
-private class CorsProbableCheckAccess extends MethodAccess {
+private class CorsProbableCheckAccess extends MethodCall {
   CorsProbableCheckAccess() {
     this.getMethod().hasName("contains") and
     this.getMethod().getDeclaringType().getASourceSupertype*() instanceof CollectionType
@@ -63,10 +63,10 @@ module CorsSourceReachesCheckConfig implements DataFlow::ConfigSig {
 module CorsSourceReachesCheckFlow = TaintTracking::Global<CorsSourceReachesCheckConfig>;
 
 private module CorsOriginConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess corsHeader, MethodAccess allowCredentialsHeader |
+    exists(MethodCall corsHeader, MethodCall allowCredentialsHeader |
       (
         corsHeader.getMethod() instanceof ResponseSetHeaderMethod or
         corsHeader.getMethod() instanceof ResponseAddHeaderMethod
@@ -81,9 +81,14 @@ private module CorsOriginConfig implements DataFlow::ConfigSig {
 
 private module CorsOriginFlow = TaintTracking::Global<CorsOriginConfig>;
 
-from CorsOriginFlow::PathNode source, CorsOriginFlow::PathNode sink
-where
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, CorsOriginFlow::PathNode source, CorsOriginFlow::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
   CorsOriginFlow::flowPath(source, sink) and
-  not CorsSourceReachesCheckFlow::flow(source.getNode(), _)
-select sink.getNode(), source, sink, "CORS header is being set using user controlled value $@.",
-  source.getNode(), "user-provided value"
+  not CorsSourceReachesCheckFlow::flow(sourceNode, _) and
+  sinkNode = sink.getNode() and
+  message1 = "CORS header is being set using user controlled value $@." and
+  sourceNode = source.getNode() and
+  message2 = "user-provided value"
+}

@@ -1,14 +1,14 @@
 | destructors2.cpp:5:7:5:7 | Class2 | 5 | return ... | 3 | 5 | Class2 |
 | destructors2.cpp:17:9:17:13 | Inner | 17 | return ... | 3 | 17 | Inner |
 | destructors2.cpp:18:9:18:14 | ~Inner | 18 | return ... | 3 | 18 | ~Inner |
-| destructors2.cpp:21:10:21:11 | f2 | 24 | return ... | 16 | 27 | c |
-| destructors2.cpp:21:10:21:11 | f2 | 24 | return ... | 17 | 27 | call to ~Class2 |
-| destructors2.cpp:21:10:21:11 | f2 | 24 | return ... | 18 | 21 | f2 |
+| destructors2.cpp:21:10:21:11 | f2 | 24 | return ... | 9 | 27 | c |
+| destructors2.cpp:21:10:21:11 | f2 | 24 | return ... | 10 | 27 | call to ~Class2 |
+| destructors2.cpp:21:10:21:11 | f2 | 24 | return ... | 20 | 21 | f2 |
 | destructors2.cpp:21:10:21:11 | f2 | 27 | return ... | 12 | 27 | inner |
 | destructors2.cpp:21:10:21:11 | f2 | 27 | return ... | 13 | 27 | call to ~Inner |
-| destructors2.cpp:21:10:21:11 | f2 | 27 | return ... | 16 | 27 | c |
-| destructors2.cpp:21:10:21:11 | f2 | 27 | return ... | 17 | 27 | call to ~Class2 |
-| destructors2.cpp:21:10:21:11 | f2 | 27 | return ... | 18 | 21 | f2 |
+| destructors2.cpp:21:10:21:11 | f2 | 27 | return ... | 14 | 27 | c |
+| destructors2.cpp:21:10:21:11 | f2 | 27 | return ... | 15 | 27 | call to ~Class2 |
+| destructors2.cpp:21:10:21:11 | f2 | 27 | return ... | 20 | 21 | f2 |
 | destructors.cpp:8:6:8:6 | f | 17 | goto ... | 26 | 21 | c31 |
 | destructors.cpp:8:6:8:6 | f | 17 | goto ... | 27 | 21 | call to ~C |
 | destructors.cpp:8:6:8:6 | f | 17 | goto ... | 28 | 26 | c20 |
@@ -19,11 +19,11 @@
 | destructors.cpp:8:6:8:6 | f | 19 | return ... | 35 | 21 | call to ~C |
 | destructors.cpp:8:6:8:6 | f | 19 | return ... | 36 | 26 | c20 |
 | destructors.cpp:8:6:8:6 | f | 19 | return ... | 37 | 26 | call to ~C |
-| destructors.cpp:8:6:8:6 | f | 19 | return ... | 90 | 35 | c10 |
-| destructors.cpp:8:6:8:6 | f | 19 | return ... | 91 | 35 | call to ~C |
-| destructors.cpp:8:6:8:6 | f | 19 | return ... | 92 | 8 | f |
+| destructors.cpp:8:6:8:6 | f | 19 | return ... | 38 | 35 | c10 |
+| destructors.cpp:8:6:8:6 | f | 19 | return ... | 39 | 35 | call to ~C |
+| destructors.cpp:8:6:8:6 | f | 19 | return ... | 94 | 8 | f |
 | destructors.cpp:8:6:8:6 | f | 35 | return ... | 81 | 35 | c11 |
 | destructors.cpp:8:6:8:6 | f | 35 | return ... | 82 | 35 | call to ~C |
-| destructors.cpp:8:6:8:6 | f | 35 | return ... | 90 | 35 | c10 |
-| destructors.cpp:8:6:8:6 | f | 35 | return ... | 91 | 35 | call to ~C |
-| destructors.cpp:8:6:8:6 | f | 35 | return ... | 92 | 8 | f |
+| destructors.cpp:8:6:8:6 | f | 35 | return ... | 83 | 35 | c10 |
+| destructors.cpp:8:6:8:6 | f | 35 | return ... | 84 | 35 | call to ~C |
+| destructors.cpp:8:6:8:6 | f | 35 | return ... | 94 | 8 | f |

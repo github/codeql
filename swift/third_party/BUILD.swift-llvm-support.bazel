@@ -1,12 +1,10 @@
-load("@rules_pkg//:mappings.bzl", "pkg_files", "strip_prefix")
-
 cc_library(
-    name = "swift-llvm-support",
-    srcs = glob([
-        "*.a",
-        "*.so",
-        "*.dylib",
-    ]),
+    name = "swift-llvm-support-static",
+    srcs = glob(
+        [
+            "*.a",
+        ],
+    ),
     hdrs = glob([
         "include/**/*",
         "stdlib/**/*",
@@ -15,6 +13,20 @@ cc_library(
         "include",
         "stdlib/public/SwiftShims",
     ],
+    deps = [
+        "@zstd",
+    ],
+)
+
+cc_library(
+    name = "swift-llvm-support",
+    srcs = glob(
+        [
+            "*.so",
+            "*.dylib",
+        ],
+        allow_empty = True,  # Either *.so or *.dylib will be empty
+    ),
     linkopts = [
         "-lm",
         "-lz",
@@ -31,22 +43,5 @@ cc_library(
         "//conditions:default": [],
     }),
     visibility = ["//visibility:public"],
-)
-
-pkg_files(
-    name = "swift-test-sdk",
-    srcs = glob([
-        "sdk/**/*",
-    ]),
-    strip_prefix = strip_prefix.from_pkg(),
-    visibility = ["//visibility:public"],
-)
-
-pkg_files(
-    name = "swift-resource-dir",
-    srcs = glob([
-        "toolchain/lib/swift/**/*",
-    ]),
-    strip_prefix = "toolchain/lib/swift",
-    visibility = ["//visibility:public"],
+    deps = [":swift-llvm-support-static"],
 )

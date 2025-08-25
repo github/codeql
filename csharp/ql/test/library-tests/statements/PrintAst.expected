@@ -50,653 +50,668 @@ fixed.cs:
 #   19|               0: [IntLiteral] 0
 #   19|         0: [EmptyStmt] ;
 statements.cs:
-#    5| [NamespaceDeclaration] namespace ... { ... }
-#    7|   1: [Class] Class
-#   10|     5: [Method] Main
-#   10|       -1: [TypeMention] Void
-#   11|       4: [BlockStmt] {...}
-#   12|         0: [LabelStmt] block:
-#   13|         1: [BlockStmt] {...}
-#   14|           0: [BlockStmt] {...}
-#   16|           1: [BlockStmt] {...}
-#   17|             0: [BlockStmt] {...}
-#   23|     6: [Method] MainEmpty
-#   23|       -1: [TypeMention] Void
-#   24|       4: [BlockStmt] {...}
-#   25|         0: [LocalVariableDeclStmt] ... ...;
-#   25|           0: [LocalVariableDeclAndInitExpr] Class c = ...
-#   25|             -1: [TypeMention] Class
-#   25|             0: [LocalVariableAccess] access to local variable c
-#   25|             1: [ObjectCreation] object creation of type Class
-#   25|               0: [TypeMention] Class
-#   26|         1: [EmptyStmt] ;
-#   26|         2: [EmptyStmt] ;
-#   26|         3: [EmptyStmt] ;
-#   27|         4: [IfStmt] if (...) ...
-#   27|           0: [BoolLiteral] true
-#   27|           1: [EmptyStmt] ;
-#   30|     7: [Method] MainLocalVarDecl
-#   30|       -1: [TypeMention] Void
-#   31|       4: [BlockStmt] {...}
-#   32|         0: [LocalVariableDeclStmt] ... ...;
-#   32|           0: [LocalVariableDeclExpr] Int32 a
-#   32|             0: [TypeMention] int
-#   33|         1: [LocalVariableDeclStmt] ... ...;
-#   33|           0: [LocalVariableDeclAndInitExpr] Int32 b = ...
-#   33|             -1: [TypeMention] int
-#   33|             0: [LocalVariableAccess] access to local variable b
-#   33|             1: [IntLiteral] 2
-#   33|           1: [LocalVariableDeclAndInitExpr] Int32 c = ...
-#   33|             -1: [TypeMention] int
-#   33|             0: [LocalVariableAccess] access to local variable c
-#   33|             1: [IntLiteral] 3
-#   34|         2: [ExprStmt] ...;
-#   34|           0: [AssignExpr] ... = ...
-#   34|             0: [LocalVariableAccess] access to local variable a
-#   34|             1: [IntLiteral] 1
-#   35|         3: [ExprStmt] ...;
-#   35|           0: [MethodCall] call to method WriteLine
-#   35|             -1: [TypeAccess] access to type Console
-#   35|               0: [TypeMention] Console
-#   35|             0: [AddExpr] ... + ...
-#   35|               0: [AddExpr] ... + ...
-#   35|                 0: [LocalVariableAccess] access to local variable a
-#   35|                 1: [LocalVariableAccess] access to local variable b
-#   35|               1: [LocalVariableAccess] access to local variable c
-#   36|         4: [LocalVariableDeclStmt] ... ...;
-#   36|           0: [LocalVariableDeclAndInitExpr] Int32 x = ...
-#   36|             -1: [TypeMention] int
-#   36|             0: [LocalVariableAccess] access to local variable x
-#   36|             1: [IntLiteral] 45
-#   37|         5: [LocalVariableDeclStmt] ... ...;
-#   37|           0: [LocalVariableDeclAndInitExpr] String y = ...
-#   37|             -1: [TypeMention] string
-#   37|             0: [LocalVariableAccess] access to local variable y
-#   37|             1: [StringLiteralUtf16] "test"
-#   40|     8: [Method] MainLocalConstDecl
-#   40|       -1: [TypeMention] Void
-#   41|       4: [BlockStmt] {...}
-#   42|         0: [LocalConstantDeclStmt] const ... ...;
-#   42|           0: [LocalVariableDeclAndInitExpr] Single pi = ...
-#   42|             -1: [TypeMention] float
-#   42|             0: [LocalVariableAccess] access to local variable pi
-#   42|             1: [FloatLiteral] 3.1415927
-#   43|         1: [LocalConstantDeclStmt] const ... ...;
-#   43|           0: [LocalVariableDeclAndInitExpr] Int32 r = ...
-#   43|             -1: [TypeMention] int
-#   43|             0: [LocalVariableAccess] access to local variable r
-#   43|             1: [AddExpr] ... + ...
-#   43|               0: [IntLiteral] 5
-#   43|               1: [IntLiteral] 20
-#   44|         2: [ExprStmt] ...;
-#   44|           0: [MethodCall] call to method WriteLine
-#   44|             -1: [TypeAccess] access to type Console
-#   44|               0: [TypeMention] Console
-#   44|             0: [MulExpr] ... * ...
-#   44|               0: [MulExpr] ... * ...
-#   44|                 0: [LocalVariableAccess] access to local variable pi
-#   44|                 1: [CastExpr] (...) ...
-#   44|                   1: [LocalVariableAccess] access to local variable r
-#   44|               1: [CastExpr] (...) ...
-#   44|                 1: [LocalVariableAccess] access to local variable r
-#   47|     9: [Method] MainExpr
-#   47|       -1: [TypeMention] Void
-#   48|       4: [BlockStmt] {...}
-#   49|         0: [LocalVariableDeclStmt] ... ...;
-#   49|           0: [LocalVariableDeclExpr] Int32 i
-#   49|             0: [TypeMention] int
-#   50|         1: [ExprStmt] ...;
-#   50|           0: [AssignExpr] ... = ...
-#   50|             0: [LocalVariableAccess] access to local variable i
-#   50|             1: [IntLiteral] 123
-#   51|         2: [ExprStmt] ...;
-#   51|           0: [MethodCall] call to method WriteLine
-#   51|             -1: [TypeAccess] access to type Console
-#   51|               0: [TypeMention] Console
+#    6| [NamespaceDeclaration] namespace ... { ... }
+#    8|   1: [Class] Class
+#   11|     5: [Method] Main
+#   11|       -1: [TypeMention] Void
+#   12|       4: [BlockStmt] {...}
+#   13|         0: [LabelStmt] block:
+#   14|         1: [BlockStmt] {...}
+#   15|           0: [BlockStmt] {...}
+#   17|           1: [BlockStmt] {...}
+#   18|             0: [BlockStmt] {...}
+#   24|     6: [Method] MainEmpty
+#   24|       -1: [TypeMention] Void
+#   25|       4: [BlockStmt] {...}
+#   26|         0: [LocalVariableDeclStmt] ... ...;
+#   26|           0: [LocalVariableDeclAndInitExpr] Class c = ...
+#   26|             -1: [TypeMention] Class
+#   26|             0: [LocalVariableAccess] access to local variable c
+#   26|             1: [ObjectCreation] object creation of type Class
+#   26|               0: [TypeMention] Class
+#   27|         1: [EmptyStmt] ;
+#   27|         2: [EmptyStmt] ;
+#   27|         3: [EmptyStmt] ;
+#   28|         4: [IfStmt] if (...) ...
+#   28|           0: [BoolLiteral] true
+#   28|           1: [EmptyStmt] ;
+#   31|     7: [Method] MainLocalVarDecl
+#   31|       -1: [TypeMention] Void
+#   32|       4: [BlockStmt] {...}
+#   33|         0: [LocalVariableDeclStmt] ... ...;
+#   33|           0: [LocalVariableDeclExpr] Int32 a
+#   33|             0: [TypeMention] int
+#   34|         1: [LocalVariableDeclStmt] ... ...;
+#   34|           0: [LocalVariableDeclAndInitExpr] Int32 b = ...
+#   34|             -1: [TypeMention] int
+#   34|             0: [LocalVariableAccess] access to local variable b
+#   34|             1: [IntLiteral] 2
+#   34|           1: [LocalVariableDeclAndInitExpr] Int32 c = ...
+#   34|             -1: [TypeMention] int
+#   34|             0: [LocalVariableAccess] access to local variable c
+#   34|             1: [IntLiteral] 3
+#   35|         2: [ExprStmt] ...;
+#   35|           0: [AssignExpr] ... = ...
+#   35|             0: [LocalVariableAccess] access to local variable a
+#   35|             1: [IntLiteral] 1
+#   36|         3: [ExprStmt] ...;
+#   36|           0: [MethodCall] call to method WriteLine
+#   36|             -1: [TypeAccess] access to type Console
+#   36|               0: [TypeMention] Console
+#   36|             0: [AddExpr] ... + ...
+#   36|               0: [AddExpr] ... + ...
+#   36|                 0: [LocalVariableAccess] access to local variable a
+#   36|                 1: [LocalVariableAccess] access to local variable b
+#   36|               1: [LocalVariableAccess] access to local variable c
+#   37|         4: [LocalVariableDeclStmt] ... ...;
+#   37|           0: [LocalVariableDeclAndInitExpr] Int32 x = ...
+#   37|             -1: [TypeMention] int
+#   37|             0: [LocalVariableAccess] access to local variable x
+#   37|             1: [IntLiteral] 45
+#   38|         5: [LocalVariableDeclStmt] ... ...;
+#   38|           0: [LocalVariableDeclAndInitExpr] String y = ...
+#   38|             -1: [TypeMention] string
+#   38|             0: [LocalVariableAccess] access to local variable y
+#   38|             1: [StringLiteralUtf16] "test"
+#   41|     8: [Method] MainLocalConstDecl
+#   41|       -1: [TypeMention] Void
+#   42|       4: [BlockStmt] {...}
+#   43|         0: [LocalConstantDeclStmt] const ... ...;
+#   43|           0: [LocalVariableDeclAndInitExpr] Single pi = ...
+#   43|             -1: [TypeMention] float
+#   43|             0: [LocalVariableAccess] access to local variable pi
+#   43|             1: [FloatLiteral] 3.1415927
+#   44|         1: [LocalConstantDeclStmt] const ... ...;
+#   44|           0: [LocalVariableDeclAndInitExpr] Int32 r = ...
+#   44|             -1: [TypeMention] int
+#   44|             0: [LocalVariableAccess] access to local variable r
+#   44|             1: [AddExpr] ... + ...
+#   44|               0: [IntLiteral] 5
+#   44|               1: [IntLiteral] 20
+#   45|         2: [ExprStmt] ...;
+#   45|           0: [MethodCall] call to method WriteLine
+#   45|             -1: [TypeAccess] access to type Console
+#   45|               0: [TypeMention] Console
+#   45|             0: [MulExpr] ... * ...
+#   45|               0: [MulExpr] ... * ...
+#   45|                 0: [LocalVariableAccess] access to local variable pi
+#   45|                 1: [CastExpr] (...) ...
+#   45|                   1: [LocalVariableAccess] access to local variable r
+#   45|               1: [CastExpr] (...) ...
+#   45|                 1: [LocalVariableAccess] access to local variable r
+#   48|     9: [Method] MainExpr
+#   48|       -1: [TypeMention] Void
+#   49|       4: [BlockStmt] {...}
+#   50|         0: [LocalVariableDeclStmt] ... ...;
+#   50|           0: [LocalVariableDeclExpr] Int32 i
+#   50|             0: [TypeMention] int
+#   51|         1: [ExprStmt] ...;
+#   51|           0: [AssignExpr] ... = ...
 #   51|             0: [LocalVariableAccess] access to local variable i
-#   52|         3: [ExprStmt] ...;
-#   52|           0: [PostIncrExpr] ...++
+#   51|             1: [IntLiteral] 123
+#   52|         2: [ExprStmt] ...;
+#   52|           0: [MethodCall] call to method WriteLine
+#   52|             -1: [TypeAccess] access to type Console
+#   52|               0: [TypeMention] Console
 #   52|             0: [LocalVariableAccess] access to local variable i
-#   53|         4: [ExprStmt] ...;
-#   53|           0: [MethodCall] call to method WriteLine
-#   53|             -1: [TypeAccess] access to type Console
-#   53|               0: [TypeMention] Console
+#   53|         3: [ExprStmt] ...;
+#   53|           0: [PostIncrExpr] ...++
 #   53|             0: [LocalVariableAccess] access to local variable i
-#   56|     10: [Method] MainIf
-#   56|       -1: [TypeMention] Void
+#   54|         4: [ExprStmt] ...;
+#   54|           0: [MethodCall] call to method WriteLine
+#   54|             -1: [TypeAccess] access to type Console
+#   54|               0: [TypeMention] Console
+#   54|             0: [LocalVariableAccess] access to local variable i
+#   57|     10: [Method] MainIf
+#   57|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
-#   56|         0: [Parameter] args
-#   56|           -1: [TypeMention] String[]
-#   56|             1: [TypeMention] string
-#   57|       4: [BlockStmt] {...}
-#   58|         0: [IfStmt] if (...) ...
-#   58|           0: [EQExpr] ... == ...
-#   58|             0: [PropertyCall] access to property Length
-#   58|               -1: [ParameterAccess] access to parameter args
-#   58|             1: [IntLiteral] 0
-#   59|           1: [BlockStmt] {...}
-#   60|             0: [ExprStmt] ...;
-#   60|               0: [MethodCall] call to method WriteLine
-#   60|                 -1: [TypeAccess] access to type Console
-#   60|                   0: [TypeMention] Console
-#   60|                 0: [StringLiteralUtf16] "No arguments"
-#   63|           2: [BlockStmt] {...}
-#   64|             0: [ExprStmt] ...;
-#   64|               0: [MethodCall] call to method WriteLine
-#   64|                 -1: [TypeAccess] access to type Console
-#   64|                   0: [TypeMention] Console
-#   64|                 0: [StringLiteralUtf16] "One or more arguments"
-#   68|     11: [Method] MainSwitch
-#   68|       -1: [TypeMention] Void
+#   57|         0: [Parameter] args
+#   57|           -1: [TypeMention] String[]
+#   57|             1: [TypeMention] string
+#   58|       4: [BlockStmt] {...}
+#   59|         0: [IfStmt] if (...) ...
+#   59|           0: [EQExpr] ... == ...
+#   59|             0: [PropertyCall] access to property Length
+#   59|               -1: [ParameterAccess] access to parameter args
+#   59|             1: [IntLiteral] 0
+#   60|           1: [BlockStmt] {...}
+#   61|             0: [ExprStmt] ...;
+#   61|               0: [MethodCall] call to method WriteLine
+#   61|                 -1: [TypeAccess] access to type Console
+#   61|                   0: [TypeMention] Console
+#   61|                 0: [StringLiteralUtf16] "No arguments"
+#   64|           2: [BlockStmt] {...}
+#   65|             0: [ExprStmt] ...;
+#   65|               0: [MethodCall] call to method WriteLine
+#   65|                 -1: [TypeAccess] access to type Console
+#   65|                   0: [TypeMention] Console
+#   65|                 0: [StringLiteralUtf16] "One or more arguments"
+#   69|     11: [Method] MainSwitch
+#   69|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
-#   68|         0: [Parameter] args
-#   68|           -1: [TypeMention] String[]
-#   68|             1: [TypeMention] string
-#   69|       4: [BlockStmt] {...}
-#   70|         0: [LocalVariableDeclStmt] ... ...;
-#   70|           0: [LocalVariableDeclAndInitExpr] Int32 n = ...
-#   70|             -1: [TypeMention] int
-#   70|             0: [LocalVariableAccess] access to local variable n
-#   70|             1: [PropertyCall] access to property Length
-#   70|               -1: [ParameterAccess] access to parameter args
-#   71|         1: [SwitchStmt] switch (...) {...}
-#   71|           0: [LocalVariableAccess] access to local variable n
-#   73|           0: [ConstCase] case ...:
-#   73|             0: [ConstantPatternExpr,IntLiteral] 0
-#   74|           1: [ExprStmt] ...;
-#   74|             0: [MethodCall] call to method WriteLine
-#   74|               -1: [TypeAccess] access to type Console
-#   74|                 0: [TypeMention] Console
-#   74|               0: [StringLiteralUtf16] "No arguments"
-#   75|           2: [BreakStmt] break;
-#   76|           3: [ConstCase] case ...:
-#   76|             0: [ConstantPatternExpr,IntLiteral] 1
-#   77|           4: [ExprStmt] ...;
-#   77|             0: [MethodCall] call to method WriteLine
-#   77|               -1: [TypeAccess] access to type Console
-#   77|                 0: [TypeMention] Console
-#   77|               0: [StringLiteralUtf16] "One argument"
-#   78|           5: [BreakStmt] break;
-#   79|           6: [DefaultCase] default:
-#   80|           7: [ExprStmt] ...;
-#   80|             0: [MethodCall] call to method WriteLine
-#   80|               -1: [TypeAccess] access to type Console
-#   80|                 0: [TypeMention] Console
-#   80|               0: [StringLiteralUtf16] "{0} arguments"
-#   80|               1: [CastExpr] (...) ...
-#   80|                 1: [LocalVariableAccess] access to local variable n
-#   81|           8: [BreakStmt] break;
-#   85|     12: [Method] StringSwitch
-#   85|       -1: [TypeMention] int
+#   69|         0: [Parameter] args
+#   69|           -1: [TypeMention] String[]
+#   69|             1: [TypeMention] string
+#   70|       4: [BlockStmt] {...}
+#   71|         0: [LocalVariableDeclStmt] ... ...;
+#   71|           0: [LocalVariableDeclAndInitExpr] Int32 n = ...
+#   71|             -1: [TypeMention] int
+#   71|             0: [LocalVariableAccess] access to local variable n
+#   71|             1: [PropertyCall] access to property Length
+#   71|               -1: [ParameterAccess] access to parameter args
+#   72|         1: [SwitchStmt] switch (...) {...}
+#   72|           0: [LocalVariableAccess] access to local variable n
+#   74|           0: [ConstCase] case ...:
+#   74|             0: [ConstantPatternExpr,IntLiteral] 0
+#   75|           1: [ExprStmt] ...;
+#   75|             0: [MethodCall] call to method WriteLine
+#   75|               -1: [TypeAccess] access to type Console
+#   75|                 0: [TypeMention] Console
+#   75|               0: [StringLiteralUtf16] "No arguments"
+#   76|           2: [BreakStmt] break;
+#   77|           3: [ConstCase] case ...:
+#   77|             0: [ConstantPatternExpr,IntLiteral] 1
+#   78|           4: [ExprStmt] ...;
+#   78|             0: [MethodCall] call to method WriteLine
+#   78|               -1: [TypeAccess] access to type Console
+#   78|                 0: [TypeMention] Console
+#   78|               0: [StringLiteralUtf16] "One argument"
+#   79|           5: [BreakStmt] break;
+#   80|           6: [DefaultCase] default:
+#   81|           7: [ExprStmt] ...;
+#   81|             0: [MethodCall] call to method WriteLine
+#   81|               -1: [TypeAccess] access to type Console
+#   81|                 0: [TypeMention] Console
+#   81|               0: [StringLiteralUtf16] "{0} arguments"
+#   81|               1: [CastExpr] (...) ...
+#   81|                 1: [LocalVariableAccess] access to local variable n
+#   82|           8: [BreakStmt] break;
+#   86|     12: [Method] StringSwitch
+#   86|       -1: [TypeMention] int
 #-----|       2: (Parameters)
-#   85|         0: [Parameter] foo
-#   85|           -1: [TypeMention] string
-#   86|       4: [BlockStmt] {...}
-#   87|         0: [SwitchStmt] switch (...) {...}
-#   87|           0: [ParameterAccess] access to parameter foo
-#   89|           0: [ConstCase] case ...:
-#   89|             0: [ConstantPatternExpr,StringLiteralUtf16] "black"
-#   90|           1: [ReturnStmt] return ...;
-#   90|             0: [IntLiteral] 0
-#   91|           2: [ConstCase] case ...:
-#   91|             0: [ConstantPatternExpr,StringLiteralUtf16] "red"
-#   92|           3: [ReturnStmt] return ...;
-#   92|             0: [IntLiteral] 1
-#   93|           4: [ConstCase] case ...:
-#   93|             0: [ConstantPatternExpr,StringLiteralUtf16] "green"
-#   94|           5: [ReturnStmt] return ...;
-#   94|             0: [IntLiteral] 2
-#   95|           6: [ConstCase] case ...:
-#   95|             0: [ConstantPatternExpr,StringLiteralUtf16] "yellow"
-#   96|           7: [ReturnStmt] return ...;
-#   96|             0: [IntLiteral] 3
-#   97|           8: [ConstCase] case ...:
-#   97|             0: [ConstantPatternExpr,StringLiteralUtf16] "blue"
-#   98|           9: [ReturnStmt] return ...;
-#   98|             0: [IntLiteral] 4
-#   99|           10: [ConstCase] case ...:
-#   99|             0: [ConstantPatternExpr,StringLiteralUtf16] "magenta"
-#  100|           11: [ReturnStmt] return ...;
-#  100|             0: [IntLiteral] 5
-#  101|           12: [ConstCase] case ...:
-#  101|             0: [ConstantPatternExpr,StringLiteralUtf16] "cyan"
-#  102|           13: [ReturnStmt] return ...;
-#  102|             0: [IntLiteral] 6
-#  103|           14: [ConstCase] case ...:
-#  103|             0: [ConstantPatternExpr,StringLiteralUtf16] "grey"
-#  104|           15: [ConstCase] case ...:
-#  104|             0: [ConstantPatternExpr,StringLiteralUtf16] "white"
-#  105|           16: [ReturnStmt] return ...;
-#  105|             0: [IntLiteral] 7
-#  107|         1: [ReturnStmt] return ...;
-#  107|           0: [IntLiteral] 7
-#  110|     13: [Method] MainWhile
-#  110|       -1: [TypeMention] Void
+#   86|         0: [Parameter] foo
+#   86|           -1: [TypeMention] string
+#   87|       4: [BlockStmt] {...}
+#   88|         0: [SwitchStmt] switch (...) {...}
+#   88|           0: [ParameterAccess] access to parameter foo
+#   90|           0: [ConstCase] case ...:
+#   90|             0: [ConstantPatternExpr,StringLiteralUtf16] "black"
+#   91|           1: [ReturnStmt] return ...;
+#   91|             0: [IntLiteral] 0
+#   92|           2: [ConstCase] case ...:
+#   92|             0: [ConstantPatternExpr,StringLiteralUtf16] "red"
+#   93|           3: [ReturnStmt] return ...;
+#   93|             0: [IntLiteral] 1
+#   94|           4: [ConstCase] case ...:
+#   94|             0: [ConstantPatternExpr,StringLiteralUtf16] "green"
+#   95|           5: [ReturnStmt] return ...;
+#   95|             0: [IntLiteral] 2
+#   96|           6: [ConstCase] case ...:
+#   96|             0: [ConstantPatternExpr,StringLiteralUtf16] "yellow"
+#   97|           7: [ReturnStmt] return ...;
+#   97|             0: [IntLiteral] 3
+#   98|           8: [ConstCase] case ...:
+#   98|             0: [ConstantPatternExpr,StringLiteralUtf16] "blue"
+#   99|           9: [ReturnStmt] return ...;
+#   99|             0: [IntLiteral] 4
+#  100|           10: [ConstCase] case ...:
+#  100|             0: [ConstantPatternExpr,StringLiteralUtf16] "magenta"
+#  101|           11: [ReturnStmt] return ...;
+#  101|             0: [IntLiteral] 5
+#  102|           12: [ConstCase] case ...:
+#  102|             0: [ConstantPatternExpr,StringLiteralUtf16] "cyan"
+#  103|           13: [ReturnStmt] return ...;
+#  103|             0: [IntLiteral] 6
+#  104|           14: [ConstCase] case ...:
+#  104|             0: [ConstantPatternExpr,StringLiteralUtf16] "grey"
+#  105|           15: [ConstCase] case ...:
+#  105|             0: [ConstantPatternExpr,StringLiteralUtf16] "white"
+#  106|           16: [ReturnStmt] return ...;
+#  106|             0: [IntLiteral] 7
+#  108|         1: [ReturnStmt] return ...;
+#  108|           0: [IntLiteral] 7
+#  111|     13: [Method] MainWhile
+#  111|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
-#  110|         0: [Parameter] args
-#  110|           -1: [TypeMention] String[]
-#  110|             1: [TypeMention] string
-#  111|       4: [BlockStmt] {...}
-#  112|         0: [LocalVariableDeclStmt] ... ...;
-#  112|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#  112|             -1: [TypeMention] int
-#  112|             0: [LocalVariableAccess] access to local variable i
-#  112|             1: [IntLiteral] 0
-#  113|         1: [WhileStmt] while (...) ...
-#  113|           0: [LTExpr] ... < ...
+#  111|         0: [Parameter] args
+#  111|           -1: [TypeMention] String[]
+#  111|             1: [TypeMention] string
+#  112|       4: [BlockStmt] {...}
+#  113|         0: [LocalVariableDeclStmt] ... ...;
+#  113|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
+#  113|             -1: [TypeMention] int
 #  113|             0: [LocalVariableAccess] access to local variable i
-#  113|             1: [PropertyCall] access to property Length
-#  113|               -1: [ParameterAccess] access to parameter args
-#  114|           1: [BlockStmt] {...}
-#  115|             0: [ExprStmt] ...;
-#  115|               0: [MethodCall] call to method WriteLine
-#  115|                 -1: [TypeAccess] access to type Console
-#  115|                   0: [TypeMention] Console
-#  115|                 0: [ArrayAccess] access to array element
-#  115|                   -1: [ParameterAccess] access to parameter args
-#  115|                   0: [LocalVariableAccess] access to local variable i
-#  116|             1: [ExprStmt] ...;
-#  116|               0: [PostIncrExpr] ...++
-#  116|                 0: [LocalVariableAccess] access to local variable i
-#  120|     14: [Method] MainDo
-#  120|       -1: [TypeMention] Void
-#  121|       4: [BlockStmt] {...}
-#  122|         0: [LocalVariableDeclStmt] ... ...;
-#  122|           0: [LocalVariableDeclExpr] String s
-#  122|             0: [TypeMention] string
-#  123|         1: [DoStmt] do ... while (...);
-#  127|           0: [NEExpr] ... != ...
-#  127|             0: [LocalVariableAccess] access to local variable s
-#  127|             1: [NullLiteral] null
-#  124|           1: [BlockStmt] {...}
-#  125|             0: [ExprStmt] ...;
-#  125|               0: [AssignExpr] ... = ...
-#  125|                 0: [LocalVariableAccess] access to local variable s
-#  125|                 1: [MethodCall] call to method ReadLine
-#  125|                   -1: [TypeAccess] access to type Console
-#  125|                     0: [TypeMention] Console
-#  126|             1: [IfStmt] if (...) ...
-#  126|               0: [NEExpr] ... != ...
+#  113|             1: [IntLiteral] 0
+#  114|         1: [WhileStmt] while (...) ...
+#  114|           0: [LTExpr] ... < ...
+#  114|             0: [LocalVariableAccess] access to local variable i
+#  114|             1: [PropertyCall] access to property Length
+#  114|               -1: [ParameterAccess] access to parameter args
+#  115|           1: [BlockStmt] {...}
+#  116|             0: [ExprStmt] ...;
+#  116|               0: [MethodCall] call to method WriteLine
+#  116|                 -1: [TypeAccess] access to type Console
+#  116|                   0: [TypeMention] Console
+#  116|                 0: [ArrayAccess] access to array element
+#  116|                   -1: [ParameterAccess] access to parameter args
+#  116|                   0: [LocalVariableAccess] access to local variable i
+#  117|             1: [ExprStmt] ...;
+#  117|               0: [PostIncrExpr] ...++
+#  117|                 0: [LocalVariableAccess] access to local variable i
+#  121|     14: [Method] MainDo
+#  121|       -1: [TypeMention] Void
+#  122|       4: [BlockStmt] {...}
+#  123|         0: [LocalVariableDeclStmt] ... ...;
+#  123|           0: [LocalVariableDeclExpr] String s
+#  123|             0: [TypeMention] string
+#  124|         1: [DoStmt] do ... while (...);
+#  128|           0: [NEExpr] ... != ...
+#  128|             0: [LocalVariableAccess] access to local variable s
+#  128|             1: [NullLiteral] null
+#  125|           1: [BlockStmt] {...}
+#  126|             0: [ExprStmt] ...;
+#  126|               0: [AssignExpr] ... = ...
 #  126|                 0: [LocalVariableAccess] access to local variable s
-#  126|                 1: [NullLiteral] null
-#  126|               1: [ExprStmt] ...;
-#  126|                 0: [MethodCall] call to method WriteLine
+#  126|                 1: [MethodCall] call to method ReadLine
 #  126|                   -1: [TypeAccess] access to type Console
 #  126|                     0: [TypeMention] Console
-#  126|                   0: [LocalVariableAccess] access to local variable s
-#  130|     15: [Method] MainFor
-#  130|       -1: [TypeMention] Void
+#  127|             1: [IfStmt] if (...) ...
+#  127|               0: [NEExpr] ... != ...
+#  127|                 0: [LocalVariableAccess] access to local variable s
+#  127|                 1: [NullLiteral] null
+#  127|               1: [ExprStmt] ...;
+#  127|                 0: [MethodCall] call to method WriteLine
+#  127|                   -1: [TypeAccess] access to type Console
+#  127|                     0: [TypeMention] Console
+#  127|                   0: [LocalVariableAccess] access to local variable s
+#  131|     15: [Method] MainFor
+#  131|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
-#  130|         0: [Parameter] args
-#  130|           -1: [TypeMention] String[]
-#  130|             1: [TypeMention] string
-#  131|       4: [BlockStmt] {...}
-#  132|         0: [ForStmt] for (...;...;...) ...
-#  132|           -1: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#  132|             -1: [TypeMention] int
-#  132|             0: [LocalVariableAccess] access to local variable i
-#  132|             1: [IntLiteral] 0
-#  132|           0: [LTExpr] ... < ...
-#  132|             0: [LocalVariableAccess] access to local variable i
-#  132|             1: [PropertyCall] access to property Length
-#  132|               -1: [ParameterAccess] access to parameter args
-#  132|           1: [PostIncrExpr] ...++
-#  132|             0: [LocalVariableAccess] access to local variable i
-#  133|           2: [BlockStmt] {...}
-#  134|             0: [ExprStmt] ...;
-#  134|               0: [MethodCall] call to method WriteLine
-#  134|                 -1: [TypeAccess] access to type Console
-#  134|                   0: [TypeMention] Console
-#  134|                 0: [ArrayAccess] access to array element
-#  134|                   -1: [ParameterAccess] access to parameter args
-#  134|                   0: [LocalVariableAccess] access to local variable i
-#  138|     16: [Method] MainForeach
-#  138|       -1: [TypeMention] Void
+#  131|         0: [Parameter] args
+#  131|           -1: [TypeMention] String[]
+#  131|             1: [TypeMention] string
+#  132|       4: [BlockStmt] {...}
+#  133|         0: [ForStmt] for (...;...;...) ...
+#  133|           -1: [LocalVariableDeclAndInitExpr] Int32 i = ...
+#  133|             -1: [TypeMention] int
+#  133|             0: [LocalVariableAccess] access to local variable i
+#  133|             1: [IntLiteral] 0
+#  133|           0: [LTExpr] ... < ...
+#  133|             0: [LocalVariableAccess] access to local variable i
+#  133|             1: [PropertyCall] access to property Length
+#  133|               -1: [ParameterAccess] access to parameter args
+#  133|           1: [PostIncrExpr] ...++
+#  133|             0: [LocalVariableAccess] access to local variable i
+#  134|           2: [BlockStmt] {...}
+#  135|             0: [ExprStmt] ...;
+#  135|               0: [MethodCall] call to method WriteLine
+#  135|                 -1: [TypeAccess] access to type Console
+#  135|                   0: [TypeMention] Console
+#  135|                 0: [ArrayAccess] access to array element
+#  135|                   -1: [ParameterAccess] access to parameter args
+#  135|                   0: [LocalVariableAccess] access to local variable i
+#  139|     16: [Method] MainForeach
+#  139|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
-#  138|         0: [Parameter] args
-#  138|           -1: [TypeMention] String[]
-#  138|             1: [TypeMention] string
-#  139|       4: [BlockStmt] {...}
-#  140|         0: [ForeachStmt] foreach (... ... in ...) ...
-#  140|           0: [LocalVariableDeclExpr] String s
-#  140|             0: [TypeMention] string
-#  140|           1: [ParameterAccess] access to parameter args
-#  141|           2: [BlockStmt] {...}
-#  142|             0: [ExprStmt] ...;
-#  142|               0: [MethodCall] call to method WriteLine
-#  142|                 -1: [TypeAccess] access to type Console
-#  142|                   0: [TypeMention] Console
-#  142|                 0: [LocalVariableAccess] access to local variable s
-#  146|     17: [Method] MainBreak
-#  146|       -1: [TypeMention] Void
-#  147|       4: [BlockStmt] {...}
-#  148|         0: [WhileStmt] while (...) ...
-#  148|           0: [BoolLiteral] true
-#  149|           1: [BlockStmt] {...}
-#  150|             0: [LocalVariableDeclStmt] ... ...;
-#  150|               0: [LocalVariableDeclAndInitExpr] String s = ...
-#  150|                 -1: [TypeMention] string
-#  150|                 0: [LocalVariableAccess] access to local variable s
-#  150|                 1: [MethodCall] call to method ReadLine
-#  150|                   -1: [TypeAccess] access to type Console
-#  150|                     0: [TypeMention] Console
-#  151|             1: [IfStmt] if (...) ...
-#  151|               0: [EQExpr] ... == ...
+#  139|         0: [Parameter] args
+#  139|           -1: [TypeMention] String[]
+#  139|             1: [TypeMention] string
+#  140|       4: [BlockStmt] {...}
+#  141|         0: [ForeachStmt] foreach (... ... in ...) ...
+#  141|           0: [LocalVariableDeclExpr] String s
+#  141|             0: [TypeMention] string
+#  141|           1: [ParameterAccess] access to parameter args
+#  142|           2: [BlockStmt] {...}
+#  143|             0: [ExprStmt] ...;
+#  143|               0: [MethodCall] call to method WriteLine
+#  143|                 -1: [TypeAccess] access to type Console
+#  143|                   0: [TypeMention] Console
+#  143|                 0: [LocalVariableAccess] access to local variable s
+#  147|     17: [Method] MainBreak
+#  147|       -1: [TypeMention] Void
+#  148|       4: [BlockStmt] {...}
+#  149|         0: [WhileStmt] while (...) ...
+#  149|           0: [BoolLiteral] true
+#  150|           1: [BlockStmt] {...}
+#  151|             0: [LocalVariableDeclStmt] ... ...;
+#  151|               0: [LocalVariableDeclAndInitExpr] String s = ...
+#  151|                 -1: [TypeMention] string
 #  151|                 0: [LocalVariableAccess] access to local variable s
-#  151|                 1: [NullLiteral] null
-#  151|               1: [BreakStmt] break;
-#  152|             2: [ExprStmt] ...;
-#  152|               0: [MethodCall] call to method WriteLine
-#  152|                 -1: [TypeAccess] access to type Console
-#  152|                   0: [TypeMention] Console
+#  151|                 1: [MethodCall] call to method ReadLine
+#  151|                   -1: [TypeAccess] access to type Console
+#  151|                     0: [TypeMention] Console
+#  152|             1: [IfStmt] if (...) ...
+#  152|               0: [EQExpr] ... == ...
 #  152|                 0: [LocalVariableAccess] access to local variable s
-#  156|     18: [Method] MainContinue
-#  156|       -1: [TypeMention] Void
+#  152|                 1: [NullLiteral] null
+#  152|               1: [BreakStmt] break;
+#  153|             2: [ExprStmt] ...;
+#  153|               0: [MethodCall] call to method WriteLine
+#  153|                 -1: [TypeAccess] access to type Console
+#  153|                   0: [TypeMention] Console
+#  153|                 0: [LocalVariableAccess] access to local variable s
+#  157|     18: [Method] MainContinue
+#  157|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
-#  156|         0: [Parameter] args
-#  156|           -1: [TypeMention] String[]
-#  156|             1: [TypeMention] string
-#  157|       4: [BlockStmt] {...}
-#  158|         0: [ForStmt] for (...;...;...) ...
-#  158|           -1: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#  158|             -1: [TypeMention] int
-#  158|             0: [LocalVariableAccess] access to local variable i
-#  158|             1: [IntLiteral] 0
-#  158|           0: [LTExpr] ... < ...
-#  158|             0: [LocalVariableAccess] access to local variable i
-#  158|             1: [PropertyCall] access to property Length
-#  158|               -1: [ParameterAccess] access to parameter args
-#  158|           1: [PostIncrExpr] ...++
-#  158|             0: [LocalVariableAccess] access to local variable i
-#  159|           2: [BlockStmt] {...}
-#  160|             0: [IfStmt] if (...) ...
-#  160|               0: [MethodCall] call to method StartsWith
-#  160|                 -1: [ArrayAccess] access to array element
-#  160|                   -1: [ParameterAccess] access to parameter args
-#  160|                   0: [LocalVariableAccess] access to local variable i
-#  160|                 0: [StringLiteralUtf16] "/"
-#  160|               1: [ContinueStmt] continue;
-#  161|             1: [ExprStmt] ...;
-#  161|               0: [MethodCall] call to method WriteLine
-#  161|                 -1: [TypeAccess] access to type Console
-#  161|                   0: [TypeMention] Console
-#  161|                 0: [ArrayAccess] access to array element
+#  157|         0: [Parameter] args
+#  157|           -1: [TypeMention] String[]
+#  157|             1: [TypeMention] string
+#  158|       4: [BlockStmt] {...}
+#  159|         0: [ForStmt] for (...;...;...) ...
+#  159|           -1: [LocalVariableDeclAndInitExpr] Int32 i = ...
+#  159|             -1: [TypeMention] int
+#  159|             0: [LocalVariableAccess] access to local variable i
+#  159|             1: [IntLiteral] 0
+#  159|           0: [LTExpr] ... < ...
+#  159|             0: [LocalVariableAccess] access to local variable i
+#  159|             1: [PropertyCall] access to property Length
+#  159|               -1: [ParameterAccess] access to parameter args
+#  159|           1: [PostIncrExpr] ...++
+#  159|             0: [LocalVariableAccess] access to local variable i
+#  160|           2: [BlockStmt] {...}
+#  161|             0: [IfStmt] if (...) ...
+#  161|               0: [MethodCall] call to method StartsWith
+#  161|                 -1: [ArrayAccess] access to array element
 #  161|                   -1: [ParameterAccess] access to parameter args
 #  161|                   0: [LocalVariableAccess] access to local variable i
-#  165|     19: [Method] MainGoto
-#  165|       -1: [TypeMention] Void
+#  161|                 0: [StringLiteralUtf16] "/"
+#  161|               1: [ContinueStmt] continue;
+#  162|             1: [ExprStmt] ...;
+#  162|               0: [MethodCall] call to method WriteLine
+#  162|                 -1: [TypeAccess] access to type Console
+#  162|                   0: [TypeMention] Console
+#  162|                 0: [ArrayAccess] access to array element
+#  162|                   -1: [ParameterAccess] access to parameter args
+#  162|                   0: [LocalVariableAccess] access to local variable i
+#  166|     19: [Method] MainGoto
+#  166|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
-#  165|         0: [Parameter] args
-#  165|           -1: [TypeMention] String[]
-#  165|             1: [TypeMention] string
-#  166|       4: [BlockStmt] {...}
-#  167|         0: [LocalVariableDeclStmt] ... ...;
-#  167|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#  167|             -1: [TypeMention] int
-#  167|             0: [LocalVariableAccess] access to local variable i
-#  167|             1: [IntLiteral] 0
-#  168|         1: [GotoLabelStmt] goto ...;
-#  169|         2: [LabelStmt] loop:
-#  169|         3: [ExprStmt] ...;
-#  169|           0: [MethodCall] call to method WriteLine
-#  169|             -1: [TypeAccess] access to type Console
-#  169|               0: [TypeMention] Console
-#  169|             0: [ArrayAccess] access to array element
-#  169|               -1: [ParameterAccess] access to parameter args
-#  169|               0: [PostIncrExpr] ...++
-#  169|                 0: [LocalVariableAccess] access to local variable i
-#  170|         4: [LabelStmt] check:
-#  170|         5: [IfStmt] if (...) ...
-#  170|           0: [LTExpr] ... < ...
-#  170|             0: [LocalVariableAccess] access to local variable i
-#  170|             1: [PropertyCall] access to property Length
+#  166|         0: [Parameter] args
+#  166|           -1: [TypeMention] String[]
+#  166|             1: [TypeMention] string
+#  167|       4: [BlockStmt] {...}
+#  168|         0: [LocalVariableDeclStmt] ... ...;
+#  168|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
+#  168|             -1: [TypeMention] int
+#  168|             0: [LocalVariableAccess] access to local variable i
+#  168|             1: [IntLiteral] 0
+#  169|         1: [GotoLabelStmt] goto ...;
+#  170|         2: [LabelStmt] loop:
+#  170|         3: [ExprStmt] ...;
+#  170|           0: [MethodCall] call to method WriteLine
+#  170|             -1: [TypeAccess] access to type Console
+#  170|               0: [TypeMention] Console
+#  170|             0: [ArrayAccess] access to array element
 #  170|               -1: [ParameterAccess] access to parameter args
-#  170|           1: [GotoLabelStmt] goto ...;
-#  173|     20: [Method] Add
-#  173|       -1: [TypeMention] int
+#  170|               0: [PostIncrExpr] ...++
+#  170|                 0: [LocalVariableAccess] access to local variable i
+#  171|         4: [LabelStmt] check:
+#  171|         5: [IfStmt] if (...) ...
+#  171|           0: [LTExpr] ... < ...
+#  171|             0: [LocalVariableAccess] access to local variable i
+#  171|             1: [PropertyCall] access to property Length
+#  171|               -1: [ParameterAccess] access to parameter args
+#  171|           1: [GotoLabelStmt] goto ...;
+#  174|     20: [Method] Add
+#  174|       -1: [TypeMention] int
 #-----|       2: (Parameters)
-#  173|         0: [Parameter] a
-#  173|           -1: [TypeMention] int
-#  173|         1: [Parameter] b
-#  173|           -1: [TypeMention] int
-#  174|       4: [BlockStmt] {...}
-#  175|         0: [ReturnStmt] return ...;
-#  175|           0: [AddExpr] ... + ...
-#  175|             0: [ParameterAccess] access to parameter a
-#  175|             1: [ParameterAccess] access to parameter b
-#  177|     21: [Method] MainReturn
-#  177|       -1: [TypeMention] Void
-#  178|       4: [BlockStmt] {...}
-#  179|         0: [ExprStmt] ...;
-#  179|           0: [MethodCall] call to method WriteLine
-#  179|             -1: [TypeAccess] access to type Console
-#  179|               0: [TypeMention] Console
-#  179|             0: [MethodCall] call to method Add
-#  179|               0: [IntLiteral] 1
-#  179|               1: [IntLiteral] 2
-#  180|         1: [ReturnStmt] return ...;
-#  183|     22: [Method] Range
-#  183|       -1: [TypeMention] IEnumerable<int>
-#  183|         1: [TypeMention] int
+#  174|         0: [Parameter] a
+#  174|           -1: [TypeMention] int
+#  174|         1: [Parameter] b
+#  174|           -1: [TypeMention] int
+#  175|       4: [BlockStmt] {...}
+#  176|         0: [ReturnStmt] return ...;
+#  176|           0: [AddExpr] ... + ...
+#  176|             0: [ParameterAccess] access to parameter a
+#  176|             1: [ParameterAccess] access to parameter b
+#  178|     21: [Method] MainReturn
+#  178|       -1: [TypeMention] Void
+#  179|       4: [BlockStmt] {...}
+#  180|         0: [ExprStmt] ...;
+#  180|           0: [MethodCall] call to method WriteLine
+#  180|             -1: [TypeAccess] access to type Console
+#  180|               0: [TypeMention] Console
+#  180|             0: [MethodCall] call to method Add
+#  180|               0: [IntLiteral] 1
+#  180|               1: [IntLiteral] 2
+#  181|         1: [ReturnStmt] return ...;
+#  184|     22: [Method] Range
+#  184|       -1: [TypeMention] IEnumerable<int>
+#  184|         1: [TypeMention] int
 #-----|       2: (Parameters)
-#  183|         0: [Parameter] from
-#  183|           -1: [TypeMention] int
-#  183|         1: [Parameter] to
-#  183|           -1: [TypeMention] int
-#  184|       4: [BlockStmt] {...}
-#  185|         0: [ForStmt] for (...;...;...) ...
-#  185|           -1: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#  185|             -1: [TypeMention] int
-#  185|             0: [LocalVariableAccess] access to local variable i
-#  185|             1: [ParameterAccess] access to parameter from
-#  185|           0: [LTExpr] ... < ...
-#  185|             0: [LocalVariableAccess] access to local variable i
-#  185|             1: [ParameterAccess] access to parameter to
-#  185|           1: [PostIncrExpr] ...++
-#  185|             0: [LocalVariableAccess] access to local variable i
-#  186|           2: [BlockStmt] {...}
-#  187|             0: [YieldReturnStmt] yield return ...;
-#  187|               0: [LocalVariableAccess] access to local variable i
-#  189|         1: [YieldBreakStmt] yield break;
-#  191|     23: [Method] MainYield
-#  191|       -1: [TypeMention] Void
-#  192|       4: [BlockStmt] {...}
-#  193|         0: [ForeachStmt] foreach (... ... in ...) ...
-#  193|           0: [LocalVariableDeclExpr] Int32 x
-#  193|             0: [TypeMention] int
-#  193|           1: [MethodCall] call to method Range
-#  193|             0: [UnaryMinusExpr] -...
-#  193|               0: [IntLiteral] 10
-#  193|             1: [IntLiteral] 10
-#  194|           2: [BlockStmt] {...}
-#  195|             0: [ExprStmt] ...;
-#  195|               0: [MethodCall] call to method WriteLine
-#  195|                 -1: [TypeAccess] access to type Console
-#  195|                   0: [TypeMention] Console
-#  195|                 0: [LocalVariableAccess] access to local variable x
-#  199|     24: [Method] Divide
-#  199|       -1: [TypeMention] double
+#  184|         0: [Parameter] from
+#  184|           -1: [TypeMention] int
+#  184|         1: [Parameter] to
+#  184|           -1: [TypeMention] int
+#  185|       4: [BlockStmt] {...}
+#  186|         0: [ForStmt] for (...;...;...) ...
+#  186|           -1: [LocalVariableDeclAndInitExpr] Int32 i = ...
+#  186|             -1: [TypeMention] int
+#  186|             0: [LocalVariableAccess] access to local variable i
+#  186|             1: [ParameterAccess] access to parameter from
+#  186|           0: [LTExpr] ... < ...
+#  186|             0: [LocalVariableAccess] access to local variable i
+#  186|             1: [ParameterAccess] access to parameter to
+#  186|           1: [PostIncrExpr] ...++
+#  186|             0: [LocalVariableAccess] access to local variable i
+#  187|           2: [BlockStmt] {...}
+#  188|             0: [YieldReturnStmt] yield return ...;
+#  188|               0: [LocalVariableAccess] access to local variable i
+#  190|         1: [YieldBreakStmt] yield break;
+#  192|     23: [Method] MainYield
+#  192|       -1: [TypeMention] Void
+#  193|       4: [BlockStmt] {...}
+#  194|         0: [ForeachStmt] foreach (... ... in ...) ...
+#  194|           0: [LocalVariableDeclExpr] Int32 x
+#  194|             0: [TypeMention] int
+#  194|           1: [MethodCall] call to method Range
+#  194|             0: [UnaryMinusExpr] -...
+#  194|               0: [IntLiteral] 10
+#  194|             1: [IntLiteral] 10
+#  195|           2: [BlockStmt] {...}
+#  196|             0: [ExprStmt] ...;
+#  196|               0: [MethodCall] call to method WriteLine
+#  196|                 -1: [TypeAccess] access to type Console
+#  196|                   0: [TypeMention] Console
+#  196|                 0: [LocalVariableAccess] access to local variable x
+#  200|     24: [Method] Divide
+#  200|       -1: [TypeMention] double
 #-----|       2: (Parameters)
-#  199|         0: [Parameter] x
-#  199|           -1: [TypeMention] double
-#  199|         1: [Parameter] y
-#  199|           -1: [TypeMention] double
-#  200|       4: [BlockStmt] {...}
-#  201|         0: [IfStmt] if (...) ...
-#  201|           0: [EQExpr] ... == ...
-#  201|             0: [ParameterAccess] access to parameter y
-#  201|             1: [CastExpr] (...) ...
-#  201|               1: [IntLiteral] 0
-#  201|           1: [ThrowStmt] throw ...;
-#  201|             0: [ObjectCreation] object creation of type DivideByZeroException
-#  201|               0: [TypeMention] DivideByZeroException
-#  202|         1: [ReturnStmt] return ...;
-#  202|           0: [DivExpr] ... / ...
-#  202|             0: [ParameterAccess] access to parameter x
-#  202|             1: [ParameterAccess] access to parameter y
-#  204|     25: [Method] MainTryThrow
-#  204|       -1: [TypeMention] Void
+#  200|         0: [Parameter] x
+#  200|           -1: [TypeMention] double
+#  200|         1: [Parameter] y
+#  200|           -1: [TypeMention] double
+#  201|       4: [BlockStmt] {...}
+#  202|         0: [IfStmt] if (...) ...
+#  202|           0: [EQExpr] ... == ...
+#  202|             0: [ParameterAccess] access to parameter y
+#  202|             1: [CastExpr] (...) ...
+#  202|               1: [IntLiteral] 0
+#  202|           1: [ThrowStmt] throw ...;
+#  202|             0: [ObjectCreation] object creation of type DivideByZeroException
+#  202|               0: [TypeMention] DivideByZeroException
+#  203|         1: [ReturnStmt] return ...;
+#  203|           0: [DivExpr] ... / ...
+#  203|             0: [ParameterAccess] access to parameter x
+#  203|             1: [ParameterAccess] access to parameter y
+#  205|     25: [Method] MainTryThrow
+#  205|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
-#  204|         0: [Parameter] args
-#  204|           -1: [TypeMention] String[]
-#  204|             1: [TypeMention] string
-#  205|       4: [BlockStmt] {...}
-#  206|         0: [TryStmt] try {...} ...
-#  225|           -1: [BlockStmt] {...}
-#  226|             0: [ExprStmt] ...;
-#  226|               0: [MethodCall] call to method WriteLine
-#  226|                 -1: [TypeAccess] access to type Console
-#  226|                   0: [TypeMention] Console
-#  226|                 0: [StringLiteralUtf16] "Good bye!"
-#  207|           0: [BlockStmt] {...}
-#  208|             0: [IfStmt] if (...) ...
-#  208|               0: [NEExpr] ... != ...
-#  208|                 0: [PropertyCall] access to property Length
-#  208|                   -1: [ParameterAccess] access to parameter args
-#  208|                 1: [IntLiteral] 2
-#  209|               1: [BlockStmt] {...}
-#  210|                 0: [ThrowStmt] throw ...;
-#  210|                   0: [ObjectCreation] object creation of type Exception
-#  210|                     -1: [TypeMention] Exception
-#  210|                     0: [StringLiteralUtf16] "Two numbers required"
-#  212|             1: [LocalVariableDeclStmt] ... ...;
-#  212|               0: [LocalVariableDeclAndInitExpr] Double x = ...
-#  212|                 -1: [TypeMention] double
-#  212|                 0: [LocalVariableAccess] access to local variable x
-#  212|                 1: [MethodCall] call to method Parse
-#  212|                   -1: [TypeAccess] access to type Double
-#  212|                     0: [TypeMention] double
-#  212|                   0: [ArrayAccess] access to array element
-#  212|                     -1: [ParameterAccess] access to parameter args
-#  212|                     0: [IntLiteral] 0
-#  213|             2: [LocalVariableDeclStmt] ... ...;
-#  213|               0: [LocalVariableDeclAndInitExpr] Double y = ...
+#  205|         0: [Parameter] args
+#  205|           -1: [TypeMention] String[]
+#  205|             1: [TypeMention] string
+#  206|       4: [BlockStmt] {...}
+#  207|         0: [TryStmt] try {...} ...
+#  226|           -1: [BlockStmt] {...}
+#  227|             0: [ExprStmt] ...;
+#  227|               0: [MethodCall] call to method WriteLine
+#  227|                 -1: [TypeAccess] access to type Console
+#  227|                   0: [TypeMention] Console
+#  227|                 0: [StringLiteralUtf16] "Good bye!"
+#  208|           0: [BlockStmt] {...}
+#  209|             0: [IfStmt] if (...) ...
+#  209|               0: [NEExpr] ... != ...
+#  209|                 0: [PropertyCall] access to property Length
+#  209|                   -1: [ParameterAccess] access to parameter args
+#  209|                 1: [IntLiteral] 2
+#  210|               1: [BlockStmt] {...}
+#  211|                 0: [ThrowStmt] throw ...;
+#  211|                   0: [ObjectCreation] object creation of type Exception
+#  211|                     -1: [TypeMention] Exception
+#  211|                     0: [StringLiteralUtf16] "Two numbers required"
+#  213|             1: [LocalVariableDeclStmt] ... ...;
+#  213|               0: [LocalVariableDeclAndInitExpr] Double x = ...
 #  213|                 -1: [TypeMention] double
-#  213|                 0: [LocalVariableAccess] access to local variable y
+#  213|                 0: [LocalVariableAccess] access to local variable x
 #  213|                 1: [MethodCall] call to method Parse
 #  213|                   -1: [TypeAccess] access to type Double
 #  213|                     0: [TypeMention] double
 #  213|                   0: [ArrayAccess] access to array element
 #  213|                     -1: [ParameterAccess] access to parameter args
-#  213|                     0: [IntLiteral] 1
-#  214|             3: [ExprStmt] ...;
-#  214|               0: [MethodCall] call to method WriteLine
-#  214|                 -1: [TypeAccess] access to type Console
-#  214|                   0: [TypeMention] Console
-#  214|                 0: [MethodCall] call to method Divide
-#  214|                   0: [LocalVariableAccess] access to local variable x
-#  214|                   1: [LocalVariableAccess] access to local variable y
-#  216|           1: [SpecificCatchClause] catch (...) {...}
-#  216|             0: [LocalVariableDeclExpr] Exception e
-#  216|               0: [TypeMention] Exception
-#  217|             1: [BlockStmt] {...}
-#  218|               0: [ExprStmt] ...;
-#  218|                 0: [MethodCall] call to method WriteLine
-#  218|                   -1: [TypeAccess] access to type Console
-#  218|                     0: [TypeMention] Console
-#  218|                   0: [PropertyCall] access to property Message
-#  218|                     -1: [LocalVariableAccess] access to local variable e
-#  220|           2: [GeneralCatchClause] catch {...}
-#  221|             1: [BlockStmt] {...}
-#  222|               0: [ExprStmt] ...;
-#  222|                 0: [MethodCall] call to method WriteLine
-#  222|                   -1: [TypeAccess] access to type Console
-#  222|                     0: [TypeMention] Console
-#  222|                   0: [StringLiteralUtf16] "Exception"
-#  230|     26: [Method] MainCheckedUnchecked
-#  230|       -1: [TypeMention] Void
-#  231|       4: [BlockStmt] {...}
-#  232|         0: [LocalVariableDeclStmt] ... ...;
-#  232|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
-#  232|             -1: [TypeMention] int
-#  232|             0: [LocalVariableAccess] access to local variable i
-#  232|             1: [MemberConstantAccess] access to constant MaxValue
-#  232|               -1: [TypeAccess] access to type Int32
-#  232|                 0: [TypeMention] int
-#  233|         1: [CheckedStmt] checked {...}
-#  234|           0: [BlockStmt] {...}
-#  235|             0: [ExprStmt] ...;
-#  235|               0: [MethodCall] call to method WriteLine
-#  235|                 -1: [TypeAccess] access to type Console
-#  235|                   0: [TypeMention] Console
-#  235|                 0: [AddExpr] ... + ...
-#  235|                   0: [LocalVariableAccess] access to local variable i
-#  235|                   1: [IntLiteral] 1
-#  237|         2: [UncheckedStmt] unchecked {...}
-#  238|           0: [BlockStmt] {...}
-#  239|             0: [ExprStmt] ...;
-#  239|               0: [MethodCall] call to method WriteLine
-#  239|                 -1: [TypeAccess] access to type Console
-#  239|                   0: [TypeMention] Console
-#  239|                 0: [AddExpr] ... + ...
-#  239|                   0: [LocalVariableAccess] access to local variable i
-#  239|                   1: [IntLiteral] 1
-#  243|     27: [Class] AccountLock
-#  245|       5: [Field] balance
-#  245|         -1: [TypeMention] decimal
-#  246|       6: [Method] Withdraw
-#  246|         -1: [TypeMention] Void
+#  213|                     0: [IntLiteral] 0
+#  214|             2: [LocalVariableDeclStmt] ... ...;
+#  214|               0: [LocalVariableDeclAndInitExpr] Double y = ...
+#  214|                 -1: [TypeMention] double
+#  214|                 0: [LocalVariableAccess] access to local variable y
+#  214|                 1: [MethodCall] call to method Parse
+#  214|                   -1: [TypeAccess] access to type Double
+#  214|                     0: [TypeMention] double
+#  214|                   0: [ArrayAccess] access to array element
+#  214|                     -1: [ParameterAccess] access to parameter args
+#  214|                     0: [IntLiteral] 1
+#  215|             3: [ExprStmt] ...;
+#  215|               0: [MethodCall] call to method WriteLine
+#  215|                 -1: [TypeAccess] access to type Console
+#  215|                   0: [TypeMention] Console
+#  215|                 0: [MethodCall] call to method Divide
+#  215|                   0: [LocalVariableAccess] access to local variable x
+#  215|                   1: [LocalVariableAccess] access to local variable y
+#  217|           1: [SpecificCatchClause] catch (...) {...}
+#  217|             0: [LocalVariableDeclExpr] Exception e
+#  217|               0: [TypeMention] Exception
+#  218|             1: [BlockStmt] {...}
+#  219|               0: [ExprStmt] ...;
+#  219|                 0: [MethodCall] call to method WriteLine
+#  219|                   -1: [TypeAccess] access to type Console
+#  219|                     0: [TypeMention] Console
+#  219|                   0: [PropertyCall] access to property Message
+#  219|                     -1: [LocalVariableAccess] access to local variable e
+#  221|           2: [GeneralCatchClause] catch {...}
+#  222|             1: [BlockStmt] {...}
+#  223|               0: [ExprStmt] ...;
+#  223|                 0: [MethodCall] call to method WriteLine
+#  223|                   -1: [TypeAccess] access to type Console
+#  223|                     0: [TypeMention] Console
+#  223|                   0: [StringLiteralUtf16] "Exception"
+#  231|     26: [Method] MainCheckedUnchecked
+#  231|       -1: [TypeMention] Void
+#  232|       4: [BlockStmt] {...}
+#  233|         0: [LocalVariableDeclStmt] ... ...;
+#  233|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
+#  233|             -1: [TypeMention] int
+#  233|             0: [LocalVariableAccess] access to local variable i
+#  233|             1: [MemberConstantAccess] access to constant MaxValue
+#  233|               -1: [TypeAccess] access to type Int32
+#  233|                 0: [TypeMention] int
+#  234|         1: [CheckedStmt] checked {...}
+#  235|           0: [BlockStmt] {...}
+#  236|             0: [ExprStmt] ...;
+#  236|               0: [MethodCall] call to method WriteLine
+#  236|                 -1: [TypeAccess] access to type Console
+#  236|                   0: [TypeMention] Console
+#  236|                 0: [AddExpr] ... + ...
+#  236|                   0: [LocalVariableAccess] access to local variable i
+#  236|                   1: [IntLiteral] 1
+#  238|         2: [UncheckedStmt] unchecked {...}
+#  239|           0: [BlockStmt] {...}
+#  240|             0: [ExprStmt] ...;
+#  240|               0: [MethodCall] call to method WriteLine
+#  240|                 -1: [TypeAccess] access to type Console
+#  240|                   0: [TypeMention] Console
+#  240|                 0: [AddExpr] ... + ...
+#  240|                   0: [LocalVariableAccess] access to local variable i
+#  240|                   1: [IntLiteral] 1
+#  244|     27: [Class] AccountLock
+#  246|       5: [Field] balance
+#  246|         -1: [TypeMention] decimal
+#  247|       6: [Method] Withdraw
+#  247|         -1: [TypeMention] Void
 #-----|         2: (Parameters)
-#  246|           0: [Parameter] amount
-#  246|             -1: [TypeMention] decimal
-#  247|         4: [BlockStmt] {...}
-#  248|           0: [LockStmt] lock (...) {...}
-#  248|             0: [ThisAccess] this access
-#  249|             1: [BlockStmt] {...}
-#  250|               0: [IfStmt] if (...) ...
-#  250|                 0: [GTExpr] ... > ...
-#  250|                   0: [ParameterAccess] access to parameter amount
-#  250|                   1: [FieldAccess] access to field balance
-#  251|                 1: [BlockStmt] {...}
-#  252|                   0: [ThrowStmt] throw ...;
-#  252|                     0: [ObjectCreation] object creation of type Exception
-#  252|                       -1: [TypeMention] Exception
-#  252|                       0: [StringLiteralUtf16] "Insufficient funds"
-#  254|               1: [ExprStmt] ...;
-#  254|                 0: [AssignSubExpr] ... -= ...
-#  254|                   0: [FieldAccess] access to field balance
-#  254|                   1: [ParameterAccess] access to parameter amount
-#  259|     28: [Method] MainUsing
-#  259|       -1: [TypeMention] Void
-#  260|       4: [BlockStmt] {...}
-#  261|         0: [UsingBlockStmt] using (...) {...}
-#  261|           -1: [LocalVariableDeclAndInitExpr] TextWriter w = ...
-#  261|             -1: [TypeMention] TextWriter
-#  261|             0: [LocalVariableAccess] access to local variable w
-#  261|             1: [MethodCall] call to method CreateText
-#  261|               -1: [TypeAccess] access to type File
-#  261|                 0: [TypeMention] File
-#  261|               0: [StringLiteralUtf16] "test.txt"
-#  262|           1: [BlockStmt] {...}
-#  263|             0: [ExprStmt] ...;
-#  263|               0: [MethodCall] call to method WriteLine
-#  263|                 -1: [LocalVariableAccess] access to local variable w
-#  263|                 0: [StringLiteralUtf16] "Line one"
-#  264|             1: [ExprStmt] ...;
+#  247|           0: [Parameter] amount
+#  247|             -1: [TypeMention] decimal
+#  248|         4: [BlockStmt] {...}
+#  249|           0: [LockStmt] lock (...) {...}
+#  249|             0: [ThisAccess] this access
+#  250|             1: [BlockStmt] {...}
+#  251|               0: [IfStmt] if (...) ...
+#  251|                 0: [GTExpr] ... > ...
+#  251|                   0: [ParameterAccess] access to parameter amount
+#  251|                   1: [FieldAccess] access to field balance
+#  252|                 1: [BlockStmt] {...}
+#  253|                   0: [ThrowStmt] throw ...;
+#  253|                     0: [ObjectCreation] object creation of type Exception
+#  253|                       -1: [TypeMention] Exception
+#  253|                       0: [StringLiteralUtf16] "Insufficient funds"
+#  255|               1: [ExprStmt] ...;
+#  255|                 0: [AssignSubExpr] ... -= ...
+#  255|                   0: [FieldAccess] access to field balance
+#  255|                   1: [ParameterAccess] access to parameter amount
+#  260|     28: [Method] MainUsing
+#  260|       -1: [TypeMention] Void
+#  261|       4: [BlockStmt] {...}
+#  262|         0: [UsingBlockStmt] using (...) {...}
+#  262|           -1: [LocalVariableDeclAndInitExpr] TextWriter w = ...
+#  262|             -1: [TypeMention] TextWriter
+#  262|             0: [LocalVariableAccess] access to local variable w
+#  262|             1: [MethodCall] call to method CreateText
+#  262|               -1: [TypeAccess] access to type File
+#  262|                 0: [TypeMention] File
+#  262|               0: [StringLiteralUtf16] "test.txt"
+#  263|           1: [BlockStmt] {...}
+#  264|             0: [ExprStmt] ...;
 #  264|               0: [MethodCall] call to method WriteLine
 #  264|                 -1: [LocalVariableAccess] access to local variable w
-#  264|                 0: [StringLiteralUtf16] "Line two"
-#  265|             2: [ExprStmt] ...;
+#  264|                 0: [StringLiteralUtf16] "Line one"
+#  265|             1: [ExprStmt] ...;
 #  265|               0: [MethodCall] call to method WriteLine
 #  265|                 -1: [LocalVariableAccess] access to local variable w
-#  265|                 0: [StringLiteralUtf16] "Line three"
-#  267|         1: [UsingBlockStmt] using (...) {...}
-#  267|           0: [MethodCall] call to method CreateText
-#  267|             -1: [TypeAccess] access to type File
-#  267|               0: [TypeMention] File
-#  267|             0: [StringLiteralUtf16] "test.txt"
-#  268|           1: [BlockStmt] {...}
-#  272|     29: [Method] MainLabeled
-#  272|       -1: [TypeMention] Void
-#  273|       4: [BlockStmt] {...}
-#  274|         0: [GotoLabelStmt] goto ...;
-#  275|         1: [LabelStmt] Label:
-#  276|         2: [LocalVariableDeclStmt] ... ...;
-#  276|           0: [LocalVariableDeclAndInitExpr] Int32 x = ...
-#  276|             -1: [TypeMention] int
-#  276|             0: [LocalVariableAccess] access to local variable x
-#  276|             1: [IntLiteral] 23
-#  277|         3: [ExprStmt] ...;
-#  277|           0: [AssignExpr] ... = ...
+#  265|                 0: [StringLiteralUtf16] "Line two"
+#  266|             2: [ExprStmt] ...;
+#  266|               0: [MethodCall] call to method WriteLine
+#  266|                 -1: [LocalVariableAccess] access to local variable w
+#  266|                 0: [StringLiteralUtf16] "Line three"
+#  268|         1: [UsingBlockStmt] using (...) {...}
+#  268|           0: [MethodCall] call to method CreateText
+#  268|             -1: [TypeAccess] access to type File
+#  268|               0: [TypeMention] File
+#  268|             0: [StringLiteralUtf16] "test.txt"
+#  269|           1: [BlockStmt] {...}
+#  273|     29: [Method] MainLabeled
+#  273|       -1: [TypeMention] Void
+#  274|       4: [BlockStmt] {...}
+#  275|         0: [GotoLabelStmt] goto ...;
+#  276|         1: [LabelStmt] Label:
+#  277|         2: [LocalVariableDeclStmt] ... ...;
+#  277|           0: [LocalVariableDeclAndInitExpr] Int32 x = ...
+#  277|             -1: [TypeMention] int
 #  277|             0: [LocalVariableAccess] access to local variable x
-#  277|             1: [IntLiteral] 9
+#  277|             1: [IntLiteral] 23
+#  278|         3: [ExprStmt] ...;
+#  278|           0: [AssignExpr] ... = ...
+#  278|             0: [LocalVariableAccess] access to local variable x
+#  278|             1: [IntLiteral] 9
+#  281|     30: [Field] lockObject
+#  281|       -1: [TypeMention] Lock
+#  281|       1: [ObjectCreation] object creation of type Lock
+#  281|         0: [TypeMention] Lock
+#  283|     31: [Method] LockMethod
+#  283|       -1: [TypeMention] Void
+#  284|       4: [BlockStmt] {...}
+#  285|         0: [LockStmt] lock (...) {...}
+#  285|           0: [FieldAccess] access to field lockObject
+#  286|           1: [BlockStmt] {...}
+#  287|             0: [ExprStmt] ...;
+#  287|               0: [MethodCall] call to method WriteLine
+#  287|                 -1: [TypeAccess] access to type Console
+#  287|                   0: [TypeMention] Console
+#  287|                 0: [StringLiteralUtf16] "Locked"

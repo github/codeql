@@ -40,6 +40,8 @@ module ConstantStateFlowConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { isSinkCall(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
@@ -99,7 +101,7 @@ module PrivateUrlFlowsToAuthCodeUrlCallConfig implements DataFlow::ConfigSig {
     or
     // Propagate across Sprintf and similar calls
     exists(DataFlow::CallNode cn |
-      cn.getACalleeIncludingExternals().asFunction() instanceof Fmt::AppenderOrSprinter
+      cn.getACalleeIncludingExternals().asFunction() instanceof Fmt::AppenderOrSprinterFunc
     |
       pred = cn.getASyntacticArgument() and succ = cn.getResult()
     )
@@ -138,7 +140,9 @@ predicate privateUrlFlowsToAuthCodeUrlCall(DataFlow::CallNode call) {
 
 module FlowToPrintConfig implements DataFlow::ConfigSig {
   additional predicate isSinkCall(DataFlow::Node sink, DataFlow::CallNode call) {
-    exists(LoggerCall logCall | call = logCall | sink = logCall.getAMessageComponent())
+    exists(LoggerCall logCall | call = logCall |
+      sink = logCall.getAValueFormattedMessageComponent()
+    )
   }
 
   predicate isSource(DataFlow::Node source) { source = any(AuthCodeUrl m).getACall().getResult() }

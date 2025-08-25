@@ -4,4 +4,4 @@ export interface TypeA {
   field: TypeB
 }
 
-export let valueA = valueB; // OK: these imports are not cyclic at runtime
+export let valueA = valueB; // OK - these imports are not cyclic at runtime

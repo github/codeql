@@ -1,5 +1,5 @@
-CodeQL query help for Java
-==========================
+CodeQL query help for Java and Kotlin
+=====================================
 
 .. include:: ../reusables/query-help-overview.rst
 

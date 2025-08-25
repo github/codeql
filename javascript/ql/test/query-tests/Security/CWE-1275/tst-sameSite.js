@@ -4,13 +4,13 @@ function esCookies() {
   Cookies.set("authkey", "value", {
     secure: true,
     httpOnly: true,
-    sameSite: "None", // NOT OK
-  });
+    sameSite: "None",
+  }); // $ Alert
 
   Cookies.set("authkey", "value", {
     secure: true,
     httpOnly: true,
-    sameSite: "Strict", // OK
+    sameSite: "Strict",
   });
 }
 
@@ -21,14 +21,14 @@ function browserCookies() {
     expires: 365,
     secure: true,
     httponly: true,
-    samesite: "None", // NOT OK
-  });
+    samesite: "None",
+  }); // $ Alert
 
   cookies.set("authkey", "value", {
     expires: 365,
     secure: true,
     httponly: true,
-    samesite: "Strict", // OK
+    samesite: "Strict",
   });
 }
 
@@ -40,13 +40,13 @@ function cookie() {
     httpOnly: true,
     secure: true,
     sameSite: "None",
-  });
+  }); // $ Alert
 
   var setCookie = cookie.serialize("authkey", "value", {
     maxAge: 9000000000,
     httpOnly: true,
     secure: true,
-    sameSite: true, // OK
+    sameSite: true,
   });
 }
 
@@ -59,14 +59,14 @@ app.get("/a", function (req, res, next) {
     maxAge: 9000000000,
     httpOnly: true,
     secure: true,
-    sameSite: "None", // NOT OK
-  });
+    sameSite: "None",
+  }); // $ Alert
 
   res.cookie("session", "value", {
     maxAge: 9000000000,
     httpOnly: true,
     secure: true,
-    sameSite: "Strict", // OK
+    sameSite: "Strict",
   });
 
   res.end("ok");
@@ -78,8 +78,8 @@ app.use(
     keys: ["key1", "key2"],
     httpOnly: true,
     secure: true,
-    sameSite: "None", // NOT OK
-  })
+    sameSite: "None",
+  }) // $ Alert
 );
 
 app.use(
@@ -88,7 +88,7 @@ app.use(
     keys: ["key1", "key2"],
     httpOnly: true,
     secure: true,
-    sameSite: "Strict", // OK
+    sameSite: "Strict",
   })
 );
 
@@ -101,9 +101,9 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: true,
-      sameSite: "None", // NOT OK
+      sameSite: "None",
     },
-  })
+  }) // $ Alert
 );
 
 app.use(
@@ -113,7 +113,7 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: true,
-      sameSite: "Strict", // OK
+      sameSite: "Strict",
     },
   })
 );
@@ -123,15 +123,15 @@ const http = require("http");
 function test1() {
   const server = http.createServer((req, res) => {
     res.setHeader("Content-Type", "text/html");
-    res.setHeader("Set-Cookie", "authKey=ninja; SameSite=None; Secure"); // NOT OK
-    res.setHeader("Set-Cookie", "authKey=ninja; SameSite=Strict; Secure"); // OK
+    res.setHeader("Set-Cookie", "authKey=ninja; SameSite=None; Secure"); // $ Alert
+    res.setHeader("Set-Cookie", "authKey=ninja; SameSite=Strict; Secure");
     res.writeHead(200, { "Content-Type": "text/plain" });
     res.end("ok");
   });
 }
 
 function documentCookie() {
-  document.cookie = "authKey=ninja; SameSite=None; Secure"; // NOT OK
-  document.cookie = "authKey=ninja; SameSite=Strict; Secure"; // OK
+  document.cookie = "authKey=ninja; SameSite=None; Secure"; // $ Alert
+  document.cookie = "authKey=ninja; SameSite=Strict; Secure";
 }
 

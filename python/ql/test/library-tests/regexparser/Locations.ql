@@ -1,6 +1,6 @@
 import python
 import semmle.python.regexp.RegexTreeView::RegexTreeView
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 private import semmle.python.dataflow.new.internal.PrintNode
 
 module RegexLocationTest implements TestSig {

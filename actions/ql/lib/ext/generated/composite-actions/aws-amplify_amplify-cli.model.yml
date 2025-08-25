@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["aws-amplify/amplify-cli", "*", "input.cli-version", "code-injection", "generated"]

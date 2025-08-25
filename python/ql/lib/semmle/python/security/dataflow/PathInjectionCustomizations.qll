@@ -43,16 +43,14 @@ module PathInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for "path injection" vulnerabilities.
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
    */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
 
   /**
-   * A source of remote user input, considered as a flow source.
+   * An active threat-model source, considered as a flow source.
    */
-  class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /**
    * A file system access, considered as a flow sink.
@@ -78,11 +76,11 @@ module PathInjection {
       // ```
       //
       // The same approach is used in the command injection query.
-      not exists(Module pathlib |
-        pathlib.getName() = "pathlib" and
-        this.getScope().getEnclosingModule() = pathlib and
-        // do allow this call if we're analyzing pathlib.py as part of CPython though
-        not exists(pathlib.getFile().getRelativePath())
+      not exists(Module inStdlib |
+        inStdlib.getName() in ["pathlib", "os"] and
+        this.getScope().getEnclosingModule() = inStdlib and
+        // do allow this call if we're analyzing, say, pathlib.py as part of CPython though
+        not exists(inStdlib.getFile().getRelativePath())
       )
     }
   }
@@ -94,7 +92,10 @@ module PathInjection {
   }
 
   /**
-   * A comparison with a constant string, considered as a sanitizer-guard.
+   * A comparison with a constant, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsSanitizerGuard extends Sanitizer, StringConstCompareBarrier { }
+  class ConstCompareAsSanitizerGuard extends Sanitizer, ConstCompareBarrier { }
+
+  /** DEPRECATED: Use ConstCompareAsSanitizerGuard instead. */
+  deprecated class StringConstCompareAsSanitizerGuard = ConstCompareAsSanitizerGuard;
 }

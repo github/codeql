@@ -1,9 +1,11 @@
 edges
-| Program.cs:15:27:15:38 | ... + ... : Int32 | Program.cs:17:37:17:43 | access to local variable endYear |
-| Program.cs:23:31:23:34 | year : Int32 | Program.cs:26:39:26:42 | access to parameter year |
-| Program.cs:33:18:33:29 | ... - ... : Int32 | Program.cs:23:31:23:34 | year : Int32 |
+| Program.cs:15:17:15:23 | access to local variable endYear : Int32 | Program.cs:17:37:17:43 | access to local variable endYear | provenance |  |
+| Program.cs:15:27:15:38 | ... + ... : Int32 | Program.cs:15:17:15:23 | access to local variable endYear : Int32 | provenance |  |
+| Program.cs:23:31:23:34 | year : Int32 | Program.cs:26:39:26:42 | access to parameter year | provenance |  |
+| Program.cs:33:18:33:29 | ... - ... : Int32 | Program.cs:23:31:23:34 | year : Int32 | provenance |  |
 nodes
 | Program.cs:13:39:13:50 | ... - ... | semmle.label | ... - ... |
+| Program.cs:15:17:15:23 | access to local variable endYear : Int32 | semmle.label | access to local variable endYear : Int32 |
 | Program.cs:15:27:15:38 | ... + ... : Int32 | semmle.label | ... + ... : Int32 |
 | Program.cs:17:37:17:43 | access to local variable endYear | semmle.label | access to local variable endYear |
 | Program.cs:23:31:23:34 | year : Int32 | semmle.label | year : Int32 |

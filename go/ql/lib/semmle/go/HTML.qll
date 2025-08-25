@@ -15,8 +15,6 @@ module HTML {
   class Element extends Locatable, @xmlelement {
     Element() { exists(HtmlFile f | xmlElements(this, _, _, _, f)) }
 
-    override Location getLocation() { xmllocations(this, result) }
-
     /**
      * Gets the name of this HTML element.
      *
@@ -96,8 +94,6 @@ module HTML {
    */
   class Attribute extends Locatable, @xmlattribute {
     Attribute() { xmlAttrs(this, _, _, _, _, any(HtmlFile f)) }
-
-    override Location getLocation() { xmllocations(this, result) }
 
     /**
      * Gets the element to which this attribute belongs.
@@ -180,8 +176,6 @@ module HTML {
      * Holds if this text node is inside a `CDATA` tag.
      */
     predicate isCData() { xmlChars(this, _, _, _, 1, _) }
-
-    override Location getLocation() { xmllocations(this, result) }
   }
 
   /**
@@ -203,7 +197,5 @@ module HTML {
     string getText() { result = this.toString().regexpCapture("(?s)<!--(.*)-->", 1) }
 
     override string toString() { xmlComments(this, result, _, _) }
-
-    override Location getLocation() { xmllocations(this, result) }
   }
 }

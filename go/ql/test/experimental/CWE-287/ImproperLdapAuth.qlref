@@ -1,0 +1,2 @@
+query: experimental/CWE-287/ImproperLdapAuth.ql
+postprocess: utils/test/PrettyPrintModels.ql

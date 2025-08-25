@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Threading, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Threading
@@ -149,6 +149,10 @@ namespace System
             public static uint And(ref uint location1, uint value) => throw null;
             public static ulong And(ref ulong location1, ulong value) => throw null;
             public static double CompareExchange(ref double location1, double value, double comparand) => throw null;
+            public static byte CompareExchange(ref byte location1, byte value, byte comparand) => throw null;
+            public static sbyte CompareExchange(ref sbyte location1, sbyte value, sbyte comparand) => throw null;
+            public static short CompareExchange(ref short location1, short value, short comparand) => throw null;
+            public static ushort CompareExchange(ref ushort location1, ushort value, ushort comparand) => throw null;
             public static int CompareExchange(ref int location1, int value, int comparand) => throw null;
             public static long CompareExchange(ref long location1, long value, long comparand) => throw null;
             public static nint CompareExchange(ref nint location1, nint value, nint comparand) => throw null;
@@ -157,12 +161,16 @@ namespace System
             public static float CompareExchange(ref float location1, float value, float comparand) => throw null;
             public static uint CompareExchange(ref uint location1, uint value, uint comparand) => throw null;
             public static ulong CompareExchange(ref ulong location1, ulong value, ulong comparand) => throw null;
-            public static T CompareExchange<T>(ref T location1, T value, T comparand) where T : class => throw null;
+            public static T CompareExchange<T>(ref T location1, T value, T comparand) => throw null;
             public static int Decrement(ref int location) => throw null;
             public static long Decrement(ref long location) => throw null;
             public static uint Decrement(ref uint location) => throw null;
             public static ulong Decrement(ref ulong location) => throw null;
             public static double Exchange(ref double location1, double value) => throw null;
+            public static byte Exchange(ref byte location1, byte value) => throw null;
+            public static sbyte Exchange(ref sbyte location1, sbyte value) => throw null;
+            public static short Exchange(ref short location1, short value) => throw null;
+            public static ushort Exchange(ref ushort location1, ushort value) => throw null;
             public static int Exchange(ref int location1, int value) => throw null;
             public static long Exchange(ref long location1, long value) => throw null;
             public static nint Exchange(ref nint location1, nint value) => throw null;
@@ -171,7 +179,7 @@ namespace System
             public static float Exchange(ref float location1, float value) => throw null;
             public static uint Exchange(ref uint location1, uint value) => throw null;
             public static ulong Exchange(ref ulong location1, ulong value) => throw null;
-            public static T Exchange<T>(ref T location1, T value) where T : class => throw null;
+            public static T Exchange<T>(ref T location1, T value) => throw null;
             public static int Increment(ref int location) => throw null;
             public static long Increment(ref long location) => throw null;
             public static uint Increment(ref uint location) => throw null;
@@ -182,8 +190,8 @@ namespace System
             public static long Or(ref long location1, long value) => throw null;
             public static uint Or(ref uint location1, uint value) => throw null;
             public static ulong Or(ref ulong location1, ulong value) => throw null;
-            public static long Read(ref long location) => throw null;
-            public static ulong Read(ref ulong location) => throw null;
+            public static long Read(ref readonly long location) => throw null;
+            public static ulong Read(ref readonly ulong location) => throw null;
         }
         public static class LazyInitializer
         {
@@ -417,20 +425,20 @@ namespace System
         }
         public static class Volatile
         {
-            public static bool Read(ref bool location) => throw null;
-            public static byte Read(ref byte location) => throw null;
-            public static double Read(ref double location) => throw null;
-            public static short Read(ref short location) => throw null;
-            public static int Read(ref int location) => throw null;
-            public static long Read(ref long location) => throw null;
-            public static nint Read(ref nint location) => throw null;
-            public static sbyte Read(ref sbyte location) => throw null;
-            public static float Read(ref float location) => throw null;
-            public static ushort Read(ref ushort location) => throw null;
-            public static uint Read(ref uint location) => throw null;
-            public static ulong Read(ref ulong location) => throw null;
-            public static nuint Read(ref nuint location) => throw null;
-            public static T Read<T>(ref T location) where T : class => throw null;
+            public static bool Read(ref readonly bool location) => throw null;
+            public static byte Read(ref readonly byte location) => throw null;
+            public static double Read(ref readonly double location) => throw null;
+            public static short Read(ref readonly short location) => throw null;
+            public static int Read(ref readonly int location) => throw null;
+            public static long Read(ref readonly long location) => throw null;
+            public static nint Read(ref readonly nint location) => throw null;
+            public static sbyte Read(ref readonly sbyte location) => throw null;
+            public static float Read(ref readonly float location) => throw null;
+            public static ushort Read(ref readonly ushort location) => throw null;
+            public static uint Read(ref readonly uint location) => throw null;
+            public static ulong Read(ref readonly ulong location) => throw null;
+            public static nuint Read(ref readonly nuint location) => throw null;
+            public static T Read<T>(ref readonly T location) where T : class => throw null;
             public static void Write(ref bool location, bool value) => throw null;
             public static void Write(ref byte location, byte value) => throw null;
             public static void Write(ref double location, double value) => throw null;

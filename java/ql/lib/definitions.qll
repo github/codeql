@@ -2,6 +2,8 @@
  * Provides classes and predicates related to jump-to-definition links
  * in the code viewer.
  */
+overlay[local?]
+module;
 
 import java
 import IDEContextual
@@ -15,7 +17,7 @@ import IDEContextual
  * the location may be slightly inaccurate and include such whitespace,
  * but it should suffice for the purpose of avoiding overlapping definitions.
  */
-private class LocationOverridingMethodAccess extends MethodAccess {
+private class LocationOverridingMethodCall extends MethodCall {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     exists(MemberRefExpr e | e.getReferencedCallable() = this.getMethod() |
       exists(int elRef, int ecRef | e.hasLocationInfo(path, _, _, elRef, ecRef) |
@@ -152,14 +154,14 @@ private class LocationOverridingImportStaticTypeMember extends ImportStaticTypeM
 }
 
 private Element definition(Element e, string kind) {
-  e.(MethodAccess).getMethod().getSourceDeclaration() = result and
+  e.(MethodCall).getMethod().getSourceDeclaration() = result and
   kind = "M" and
   not result instanceof InitializerMethod
   or
   e.(TypeAccess).getType().(RefType).getSourceDeclaration() = result and kind = "T"
   or
   exists(Variable v | v = e.(VarAccess).getVariable() |
-    result = v.(Field).getSourceDeclaration() or
+    result = v.(Field) or
     result = v.(Parameter).getSourceDeclaration() or
     result = v.(LocalVariableDecl)
   ) and

@@ -6,7 +6,7 @@ import csharp
 
 from DelegateType d
 where
-  d.hasQualifiedName("Delegates", "FooDelegate") and
+  d.hasFullyQualifiedName("Delegates", "FooDelegate") and
   d.getReturnType() instanceof DoubleType and
   d.getParameter(0).hasName("param") and
   d.getParameter(0).isRef() and

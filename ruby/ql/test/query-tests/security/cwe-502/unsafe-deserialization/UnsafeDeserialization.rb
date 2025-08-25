@@ -2,6 +2,7 @@ require "active_job"
 require "base64"
 require "json"
 require "oj"
+require "ox"
 require "yaml"
 
 class UsersController < ActionController::Base
@@ -75,17 +76,85 @@ class UsersController < ActionController::Base
     object = Oj.safe_load json_data
   end
 
+  # BAD - Oj.object_load is always unsafe
+  def route10
+   json_data = params[:key]
+   object = Oj.object_load json_data
+  end
+
+  # BAD - Ox.parse_obj is always unsafe
+  def route11
+   xml_data = params[:key]
+   object = Ox.parse_obj xml_data
+  end
+
+  # BAD - Ox.load with :object mode is always unsafe
+  def route12
+    xml_data = params[:key]
+    object = Ox.load xml_data, mode: :object
+  end
+
+  # GOOD - Ox.load is safe in the default mode (which is :generic) and in any other mode than :object
+  def route13
+    xml_data = params[:key]
+    object1 = Ox.load xml_data
+    object2 = Ox.load xml_data, mode: :limited
+    object3 = Ox.load xml_data, mode: :hash
+    object4 = Ox.load xml_data, mode: :generic
+  end
+
   # BAD - `Hash.from_trusted_xml` will deserialize elements with the
   # `type="yaml"` attribute as YAML.
-  def route10
+  def route14
     xml = params[:key]
     hash = Hash.from_trusted_xml(xml)
   end
 
-  # BAD
-  def route11
+  # BAD before psych version 4.0.0
+  def route15
     yaml_data = params[:key]
     object = Psych.load yaml_data
+    object = Psych.load_file yaml_data
+  end
+
+  # GOOD In psych version 4.0.0 and above
+  def route16
+    yaml_data = params[:key]
+    object = Psych.load yaml_data
+    object = Psych.load_file yaml_data
+  end
+
+  # GOOD
+  def route17
+    yaml_data = params[:key]
+    object = Psych.parse_stream(yaml_data) 
+    object = Psych.parse(yaml_data)
+    object = Psych.parse_file(yaml_data)
+  end
+
+  # BAD
+  def route18
+    yaml_data = params[:key]
+    object = Psych.unsafe_load(yaml_data)
+    object = Psych.unsafe_load_file(yaml_data)
+    object = Psych.load_stream(yaml_data)
+    parse_output = Psych.parse_stream(yaml_data)
+    object = parse_output.to_ruby
+    object = Psych.parse(yaml_data).to_ruby
+    object = Psych.parse_file(yaml_data).to_ruby
+  end
+
+  # BAD
+  def route19
+    plist_data = params[:key]
+    result = Plist.parse_xml(plist_data)
+    result = Plist.parse_xml(plist_data, marshal: true)
+  end
+
+  # GOOD
+  def route20
+    plist_data = params[:key]
+    result = Plist.parse_xml(plist_data, marshal: false)
   end
 
   def stdin

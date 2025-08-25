@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["dawidd6/action-ansible-playbook", "*", "input.playbook", "command-injection", "manual"]
+      - ["dawidd6/action-ansible-playbook", "*", "input.options", "command-injection", "manual"]

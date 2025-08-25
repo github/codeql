@@ -1,6 +1,6 @@
-| tst.js:5:19:5:24 | lenght | 'lenght' may be a typo for 'length'. |
-| tst.js:26:5:26:10 | lenght | 'lenght' may be a typo for 'length'. |
-| tst.js:26:16:26:21 | lenght | 'lenght' may be a typo for 'length'. |
-| tst.js:32:27:32:34 | avalable | 'avalable' may be a typo for 'available'. |
-| tst.js:42:5:42:12 | throught | 'throught' may be a typo for 'through' or 'throughout'. |
-| tst.js:43:5:43:9 | sheat | 'sheat' may be a typo for 'cheat', 'sheath' or 'sheet'. |
+| tst.js:4:19:4:24 | lenght | 'lenght' may be a typo for 'length'. |
+| tst.js:24:5:24:10 | lenght | 'lenght' may be a typo for 'length'. |
+| tst.js:24:16:24:21 | lenght | 'lenght' may be a typo for 'length'. |
+| tst.js:29:27:29:34 | avalable | 'avalable' may be a typo for 'available'. |
+| tst.js:39:5:39:12 | throught | 'throught' may be a typo for 'through' or 'throughout'. |
+| tst.js:40:5:40:9 | sheat | 'sheat' may be a typo for 'cheat', 'sheath' or 'sheet'. |

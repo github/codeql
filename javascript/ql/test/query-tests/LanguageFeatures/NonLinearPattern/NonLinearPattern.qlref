@@ -1,1 +1,2 @@
-LanguageFeatures/NonLinearPattern.ql
+query: LanguageFeatures/NonLinearPattern.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,4 +1,4 @@
-import TestUtilities.dataflow.FlowTestCommon
+import utils.test.dataflow.FlowTestCommon
 
 module TaintModels {
   class SetMemberFunction extends TaintFunction {
@@ -76,6 +76,24 @@ module AstTest {
 module IRTest {
   private import semmle.code.cpp.ir.IR
   private import semmle.code.cpp.ir.dataflow.TaintTracking
+  private import semmle.code.cpp.ir.dataflow.FlowSteps
+
+  /**
+   * Object->field flow when the object is of type
+   * TaintInheritingContentObject and the field is named
+   * flowFromObject
+   */
+  class TaintInheritingContentTest extends TaintInheritingContent, DataFlow::FieldContent {
+    TaintInheritingContentTest() {
+      exists(Struct o, Field f |
+        this.getField() = f and
+        f = o.getAField() and
+        o.hasGlobalName("TaintInheritingContentObject") and
+        f.hasName("flowFromObject") and
+        this.getIndirectionIndex() = 1
+      )
+    }
+  }
 
   /** Common data flow configuration to be used by tests. */
   module TestAllocationConfig implements DataFlow::ConfigSig {
@@ -83,6 +101,8 @@ module IRTest {
       source.asExpr().(FunctionCall).getTarget().getName() = "source"
       or
       source.asIndirectExpr().(FunctionCall).getTarget().getName() = "source"
+      or
+      source.asIndirectExpr().(FunctionCall).getTarget().getName() = "indirect_source"
       or
       source.asParameter().getName().matches("source%")
       or
@@ -96,6 +116,11 @@ module IRTest {
       exists(FunctionCall call |
         call.getTarget().getName() = "sink" and
         [sink.asExpr(), sink.asIndirectExpr()] = call.getAnArgument()
+      )
+      or
+      exists(FunctionCall call |
+        call.getTarget().getName() = "indirect_sink" and
+        sink.asIndirectExpr() = call.getAnArgument()
       )
     }
 

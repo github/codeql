@@ -1,5 +1,5 @@
+load("@rules_python//python:defs.bzl", "py_test")
 load("//swift:rules.bzl", "swift_cc_binary")
-load("//misc/bazel/cmake:cmake.bzl", "generate_cmake")
 
 swift_cc_binary(
     name = "assert-false",
@@ -18,5 +18,5 @@ py_test(
         "diagnostics.expected",
         ":assert-false",
     ],
-    deps = ["//swift/integration-tests:integration_tests"],
+    deps = ["//swift/ql/integration-tests:utils"],
 )

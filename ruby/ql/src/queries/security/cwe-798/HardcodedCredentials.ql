@@ -4,7 +4,7 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 9.8
- * @precision medium
+ * @precision low
  * @id rb/hardcoded-credentials
  * @tags security
  *       external/cwe/cwe-259
@@ -147,6 +147,8 @@ private module HardcodedCredentialsConfig implements DataFlow::ConfigSig {
       binop.getExpr() instanceof AddExpr
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 private module HardcodedCredentialsFlow = DataFlow::Global<HardcodedCredentialsConfig>;

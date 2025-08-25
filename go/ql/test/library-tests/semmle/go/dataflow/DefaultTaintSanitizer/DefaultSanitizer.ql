@@ -4,16 +4,18 @@
  */
 
 import go
+import codeql.dataflow.test.ProvenancePathGraph
+import semmle.go.dataflow.ExternalFlow
 
 module Config implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node n) { n instanceof UntrustedFlowSource }
+  predicate isSource(DataFlow::Node n) { n instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node n) { any(ReturnStmt s).getAnExpr() = n.asExpr() }
 }
 
 module Flow = TaintTracking::Global<Config>;
 
-import Flow::PathGraph
+import ShowProvenance<interpretModelForTest/2, Flow::PathNode, Flow::PathGraph>
 
 from Flow::PathNode source, Flow::PathNode sink
 where Flow::flowPath(source, sink)

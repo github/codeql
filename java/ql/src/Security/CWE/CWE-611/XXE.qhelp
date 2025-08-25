@@ -28,10 +28,9 @@ This improves security but the code will still be at risk of denial of service a
 Protection against denial of service attacks may also be implemented by setting entity expansion limits, which is done
 by default in recent JDK and JRE implementations.
 
-Because there are many different ways to disable external entity retrieval with varying support between different providers,
-in this query we choose to specifically check for the <a href="https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#java">OWASP recommended way</a>
-to disable external entity retrieval for a particular parser. There may be other ways of making a particular parser safe
-which deviate from these guidelines, in which case this query will continue to flag the parser as potentially dangerous.
+We recommend visiting OWASP's <a href="https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#java">XML Entity Prevention Cheat Sheet</a>,
+finding the specific XML parser, and applying the mitigation listed there. Other mitigations might be sufficient in some cases, but manual verification will be needed,
+as the query will continue to flag the parser as potentially dangerous.
 </p>
 </recommendation>
 

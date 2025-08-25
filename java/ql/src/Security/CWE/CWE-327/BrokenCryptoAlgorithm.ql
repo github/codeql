@@ -18,10 +18,11 @@ import InsecureCryptoFlow::PathGraph
 
 from
   InsecureCryptoFlow::PathNode source, InsecureCryptoFlow::PathNode sink, CryptoAlgoSpec spec,
-  BrokenAlgoLiteral algo
+  BrokenAlgoLiteral algo, string reason
 where
   sink.getNode().asExpr() = spec.getAlgoSpec() and
   source.getNode().asExpr() = algo and
+  reason = getInsecureAlgorithmReason(algo.getValue()) and
   InsecureCryptoFlow::flowPath(source, sink)
-select spec, source, sink, "Cryptographic algorithm $@ is weak and should not be used.", algo,
+select spec, source, sink, "Cryptographic algorithm $@ is insecure. " + reason, algo,
   algo.getValue()

@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSourceModel
+    data:
+      # https://github.com/AvraamMavridis/files-changed-action
+      - ["AvraamMavridis/files-changed-action", "*", "output.CHANGED_FILES", "filename", "manual"]
+      - ["AvraamMavridis/files-changed-action", "*", "output.CHANGED_FILES_EXTENSIONS", "filename", "manual"]
+
+

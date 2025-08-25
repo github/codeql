@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -107,6 +109,7 @@ public class MyAttributeUsage
     [return: My3Attribute(6)]
     public static int operator +(MyAttributeUsage a, MyAttributeUsage b) => 0;
 
+    [My3Attribute(15)]
     public int this[int x]
     {
         [My3Attribute(7)]
@@ -119,6 +122,7 @@ public class MyAttributeUsage
     }
 
     private int p;
+    [My3Attribute(16)]
     public int Prop1
     {
         [method: My3Attribute(11)]
@@ -129,4 +133,43 @@ public class MyAttributeUsage
         [param: My3Attribute(14)]
         set { p = value; }
     }
+}
+
+class Class1
+{
+    public class ParamsAttribute : Attribute
+    {
+        public ParamsAttribute(string s1, string s2, params int[] args) { }
+    }
+
+    [Params("a", "b", 1, 2, 3)]
+    public void M1() { }
+
+    [Params(s1: "a", s2: "b", 1, 2, 3)]
+    public void M2() { }
+
+    [Params(args: 1, s2: "b", s1: "a")]
+    public void M3() { }
+
+    [Params(args: new[] { 1 }, s2: "b", s1: "a")]
+    public void M4() { }
+}
+
+[Experimental("MyExperimentalClassId")]
+public class MyExperimentalClass
+{
+    [Experimental("MyExperimentalMethodId")]
+    public void MyExperimentalMethod() { }
+}
+
+public class MyOverloadResolutionClass
+{
+    [OverloadResolutionPriority(-1)]
+    public void M(int[] arr) { }
+
+    [OverloadResolutionPriority(1)]
+    public void M(IEnumerable<int> e) { }
+
+    [OverloadResolutionPriority(2)]
+    public void M(ReadOnlySpan<int> s) { }
 }

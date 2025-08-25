@@ -49,18 +49,18 @@
 | test.py:13:13 | Attribute() | test.py:11:5 | Function add | normal |
 | test.py:13:13 | self | test.py:13:13 | Attribute | normal |
 | test.py:13:25 | item | test.py:13:13 | Attribute() | normal |
-| test.py:15:1 | Class DiGraph | test.py:16:5 | Str | normal |
+| test.py:15:1 | Class DiGraph | test.py:16:5 | StringLiteral | normal |
 | test.py:15:1 | ClassExpr | test.py:0:0 | Module test | exit |
 | test.py:15:1 | ClassExpr | test.py:15:7 | DiGraph | normal |
 | test.py:15:7 | DiGraph | test.py:103:17 | DiGraph | normal |
 | test.py:15:15 | object | test.py:15:1 | ClassExpr | normal |
-| test.py:16:5 | Str | test.py:19:31 | Str | normal |
+| test.py:16:5 | StringLiteral | test.py:19:31 | StringLiteral | normal |
 | test.py:19:5 | Function __init__ | test.py:19:18 | self | normal |
 | test.py:19:5 | FunctionExpr | test.py:19:9 | __init__ | normal |
 | test.py:19:9 | __init__ | test.py:27:5 | FunctionExpr | normal |
 | test.py:19:18 | self | test.py:19:24 | name | normal |
 | test.py:19:24 | name | test.py:20:21 | name | normal |
-| test.py:19:31 | Str | test.py:19:5 | FunctionExpr | normal |
+| test.py:19:31 | StringLiteral | test.py:19:5 | FunctionExpr | normal |
 | test.py:20:9 | Attribute | test.py:21:21 | Dict | normal |
 | test.py:20:9 | self | test.py:20:9 | Attribute | normal |
 | test.py:20:21 | name | test.py:20:9 | self | normal |
@@ -83,8 +83,8 @@
 | test.py:27:5 | FunctionExpr | test.py:27:9 | add_node | normal |
 | test.py:27:9 | add_node | test.py:34:5 | FunctionExpr | normal |
 | test.py:27:18 | self | test.py:27:24 | n | normal |
-| test.py:27:24 | n | test.py:28:9 | Str | normal |
-| test.py:28:9 | Str | test.py:29:12 | n | normal |
+| test.py:27:24 | n | test.py:28:9 | StringLiteral | normal |
+| test.py:28:9 | StringLiteral | test.py:29:12 | n | normal |
 | test.py:29:12 | Compare | test.py:27:5 | Function add_node | false |
 | test.py:29:12 | Compare | test.py:27:5 | Function add_node | normal |
 | test.py:29:12 | Compare | test.py:30:28 | SmallSet | normal |
@@ -119,8 +119,8 @@
 | test.py:34:9 | add_edge | test.py:47:5 | FunctionExpr | normal |
 | test.py:34:18 | self | test.py:34:24 | x | normal |
 | test.py:34:24 | x | test.py:34:27 | y | normal |
-| test.py:34:27 | y | test.py:35:9 | Str | normal |
-| test.py:35:9 | Str | test.py:37:12 | x | normal |
+| test.py:34:27 | y | test.py:35:9 | StringLiteral | normal |
+| test.py:35:9 | StringLiteral | test.py:37:12 | x | normal |
 | test.py:37:12 | Compare | test.py:38:16 | y | normal |
 | test.py:37:12 | Compare | test.py:38:16 | y | true |
 | test.py:37:12 | Compare | test.py:41:13 | self | false |
@@ -183,11 +183,11 @@
 | test.py:48:21 | Attribute | test.py:48:12 | Compare | normal |
 | test.py:48:21 | self | test.py:48:21 | Attribute | normal |
 | test.py:49:13 | Raise | test.py:47:5 | Function remove_node | exit |
-| test.py:49:19 | ValueError | test.py:49:30 | Str | normal |
+| test.py:49:19 | ValueError | test.py:49:30 | StringLiteral | normal |
 | test.py:49:19 | ValueError() | test.py:47:5 | Function remove_node | exit |
 | test.py:49:19 | ValueError() | test.py:49:13 | Raise | normal |
 | test.py:49:30 | BinaryExpr | test.py:49:19 | ValueError() | normal |
-| test.py:49:30 | Str | test.py:49:58 | x | normal |
+| test.py:49:30 | StringLiteral | test.py:49:58 | x | normal |
 | test.py:49:58 | x | test.py:49:30 | BinaryExpr | normal |
 | test.py:50:9 | preds | test.py:51:17 | self | normal |
 | test.py:50:17 | Attribute | test.py:50:27 | x | normal |
@@ -269,8 +269,8 @@
 | test.py:63:23 | self | test.py:63:29 | x | normal |
 | test.py:63:29 | x | test.py:63:32 | y | normal |
 | test.py:63:32 | y | test.py:63:35 | note | normal |
-| test.py:63:35 | note | test.py:64:9 | Str | normal |
-| test.py:64:9 | Str | test.py:66:12 | BoolExpr | normal |
+| test.py:63:35 | note | test.py:64:9 | StringLiteral | normal |
+| test.py:64:9 | StringLiteral | test.py:66:12 | BoolExpr | normal |
 | test.py:66:12 | BoolExpr | test.py:66:12 | x | normal |
 | test.py:66:12 | Compare | test.py:66:34 | y | false |
 | test.py:66:12 | Compare | test.py:66:34 | y | normal |
@@ -290,11 +290,11 @@
 | test.py:66:43 | self | test.py:66:43 | Attribute | normal |
 | test.py:66:53 | x | test.py:66:43 | Subscript | normal |
 | test.py:67:13 | Raise | test.py:63:5 | Function annotate_edge | exit |
-| test.py:67:19 | ValueError | test.py:67:30 | Str | normal |
+| test.py:67:19 | ValueError | test.py:67:30 | StringLiteral | normal |
 | test.py:67:19 | ValueError() | test.py:63:5 | Function annotate_edge | exit |
 | test.py:67:19 | ValueError() | test.py:67:13 | Raise | normal |
 | test.py:67:30 | BinaryExpr | test.py:67:19 | ValueError() | normal |
-| test.py:67:30 | Str | test.py:67:65 | x | normal |
+| test.py:67:30 | StringLiteral | test.py:67:65 | x | normal |
 | test.py:67:65 | Tuple | test.py:67:30 | BinaryExpr | normal |
 | test.py:67:65 | x | test.py:67:68 | y | normal |
 | test.py:67:68 | y | test.py:67:65 | Tuple | normal |
@@ -311,8 +311,8 @@
 | test.py:70:9 | annotate_node | test.py:77:5 | FunctionExpr | normal |
 | test.py:70:23 | self | test.py:70:29 | x | normal |
 | test.py:70:29 | x | test.py:70:32 | note | normal |
-| test.py:70:32 | note | test.py:71:9 | Str | normal |
-| test.py:71:9 | Str | test.py:73:12 | x | normal |
+| test.py:70:32 | note | test.py:71:9 | StringLiteral | normal |
+| test.py:71:9 | StringLiteral | test.py:73:12 | x | normal |
 | test.py:73:12 | Compare | test.py:74:19 | ValueError | normal |
 | test.py:73:12 | Compare | test.py:74:19 | ValueError | true |
 | test.py:73:12 | Compare | test.py:75:36 | note | false |
@@ -321,11 +321,11 @@
 | test.py:73:21 | Attribute | test.py:73:12 | Compare | normal |
 | test.py:73:21 | self | test.py:73:21 | Attribute | normal |
 | test.py:74:13 | Raise | test.py:70:5 | Function annotate_node | exit |
-| test.py:74:19 | ValueError | test.py:74:30 | Str | normal |
+| test.py:74:19 | ValueError | test.py:74:30 | StringLiteral | normal |
 | test.py:74:19 | ValueError() | test.py:70:5 | Function annotate_node | exit |
 | test.py:74:19 | ValueError() | test.py:74:13 | Raise | normal |
 | test.py:74:30 | BinaryExpr | test.py:74:19 | ValueError() | normal |
-| test.py:74:30 | Str | test.py:74:58 | x | normal |
+| test.py:74:30 | StringLiteral | test.py:74:58 | x | normal |
 | test.py:74:58 | x | test.py:74:30 | BinaryExpr | normal |
 | test.py:75:9 | Attribute | test.py:75:31 | x | normal |
 | test.py:75:9 | Subscript | test.py:70:5 | Function annotate_node | exit |
@@ -336,8 +336,8 @@
 | test.py:77:5 | Function nodes | test.py:77:15 | self | normal |
 | test.py:77:5 | FunctionExpr | test.py:77:9 | nodes | normal |
 | test.py:77:9 | nodes | test.py:83:5 | FunctionExpr | normal |
-| test.py:77:15 | self | test.py:78:9 | Str | normal |
-| test.py:78:9 | Str | test.py:80:21 | self | normal |
+| test.py:77:15 | self | test.py:78:9 | StringLiteral | normal |
+| test.py:78:9 | StringLiteral | test.py:80:21 | self | normal |
 | test.py:80:9 | For | test.py:77:5 | Function nodes | normal |
 | test.py:80:9 | For | test.py:80:13 | node | normal |
 | test.py:80:13 | node | test.py:81:19 | node | normal |
@@ -355,8 +355,8 @@
 | test.py:83:5 | Function edges | test.py:83:15 | self | normal |
 | test.py:83:5 | FunctionExpr | test.py:83:9 | edges | normal |
 | test.py:83:9 | edges | test.py:92:5 | FunctionExpr | normal |
-| test.py:83:15 | self | test.py:84:9 | Str | normal |
-| test.py:84:9 | Str | test.py:86:17 | dict | normal |
+| test.py:83:15 | self | test.py:84:9 | StringLiteral | normal |
+| test.py:84:9 | StringLiteral | test.py:86:17 | dict | normal |
 | test.py:86:9 | index | test.py:87:18 | self | normal |
 | test.py:86:17 | dict | test.py:86:41 | enumerate | normal |
 | test.py:86:17 | dict() | test.py:83:5 | Function edges | exit |
@@ -421,8 +421,8 @@
 | test.py:92:5 | Function sources | test.py:92:17 | self | normal |
 | test.py:92:5 | FunctionExpr | test.py:92:9 | sources | normal |
 | test.py:92:9 | sources | test.py:99:5 | FunctionExpr | normal |
-| test.py:92:17 | self | test.py:93:9 | Str | normal |
-| test.py:93:9 | Str | test.py:95:21 | self | normal |
+| test.py:92:17 | self | test.py:93:9 | StringLiteral | normal |
+| test.py:93:9 | StringLiteral | test.py:95:21 | self | normal |
 | test.py:95:9 | For | test.py:92:5 | Function sources | normal |
 | test.py:95:9 | For | test.py:95:13 | Tuple | normal |
 | test.py:95:13 | Tuple | test.py:95:13 | n | normal |
@@ -450,12 +450,12 @@
 | test.py:100:16 | node | test.py:100:24 | self | normal |
 | test.py:100:24 | Attribute | test.py:100:16 | Compare | normal |
 | test.py:100:24 | self | test.py:100:24 | Attribute | normal |
-| test.py:103:1 | Class FlowGraph | test.py:104:5 | Str | normal |
+| test.py:103:1 | Class FlowGraph | test.py:104:5 | StringLiteral | normal |
 | test.py:103:1 | ClassExpr | test.py:0:0 | Module test | exit |
 | test.py:103:1 | ClassExpr | test.py:103:7 | FlowGraph | normal |
 | test.py:103:7 | FlowGraph | test.py:703:15 | object | normal |
 | test.py:103:17 | DiGraph | test.py:103:1 | ClassExpr | normal |
-| test.py:104:5 | Str | test.py:110:5 | FunctionExpr | normal |
+| test.py:104:5 | StringLiteral | test.py:110:5 | FunctionExpr | normal |
 | test.py:110:5 | Function __init__ | test.py:110:18 | self | normal |
 | test.py:110:5 | FunctionExpr | test.py:110:9 | __init__ | normal |
 | test.py:110:9 | __init__ | test.py:118:5 | FunctionExpr | normal |
@@ -507,10 +507,10 @@
 | test.py:119:60 | Compare | test.py:119:26 | attr | normal |
 | test.py:119:60 | Compare | test.py:119:26 | attr | true |
 | test.py:119:60 | Subscript | test.py:119:25 | Function listcomp | exit |
-| test.py:119:60 | Subscript | test.py:119:71 | Str | normal |
+| test.py:119:60 | Subscript | test.py:119:71 | StringLiteral | normal |
 | test.py:119:60 | attr | test.py:119:65 | IntegerLiteral | normal |
 | test.py:119:65 | IntegerLiteral | test.py:119:60 | Subscript | normal |
-| test.py:119:71 | Str | test.py:119:60 | Compare | normal |
+| test.py:119:71 | StringLiteral | test.py:119:60 | Compare | normal |
 | test.py:120:9 | For | test.py:118:5 | Function clear_computed | normal |
 | test.py:120:9 | For | test.py:120:13 | attr | normal |
 | test.py:120:13 | attr | test.py:121:13 | delattr | normal |
@@ -524,34 +524,34 @@
 | test.py:123:5 | FunctionExpr | test.py:123:9 | _require | normal |
 | test.py:123:9 | _require | test.py:129:5 | FunctionExpr | normal |
 | test.py:123:18 | self | test.py:123:24 | what | normal |
-| test.py:123:24 | what | test.py:124:9 | Str | normal |
-| test.py:124:9 | Str | test.py:125:12 | hasattr | normal |
+| test.py:123:24 | what | test.py:124:9 | StringLiteral | normal |
+| test.py:124:9 | StringLiteral | test.py:125:12 | hasattr | normal |
 | test.py:125:12 | hasattr | test.py:125:20 | self | normal |
 | test.py:125:12 | hasattr() | test.py:123:5 | Function _require | exit |
 | test.py:125:12 | hasattr() | test.py:126:13 | Return | normal |
 | test.py:125:12 | hasattr() | test.py:126:13 | Return | true |
 | test.py:125:12 | hasattr() | test.py:127:9 | setattr | false |
 | test.py:125:12 | hasattr() | test.py:127:9 | setattr | normal |
-| test.py:125:20 | self | test.py:125:26 | Str | normal |
+| test.py:125:20 | self | test.py:125:26 | StringLiteral | normal |
 | test.py:125:26 | BinaryExpr | test.py:125:12 | hasattr() | normal |
-| test.py:125:26 | Str | test.py:125:32 | what | normal |
+| test.py:125:26 | StringLiteral | test.py:125:32 | what | normal |
 | test.py:125:32 | what | test.py:125:26 | BinaryExpr | normal |
 | test.py:126:13 | Return | test.py:123:5 | Function _require | normal |
 | test.py:127:9 | setattr | test.py:127:17 | self | normal |
 | test.py:127:9 | setattr() | test.py:123:5 | Function _require | exit |
 | test.py:127:9 | setattr() | test.py:123:5 | Function _require | normal |
-| test.py:127:17 | self | test.py:127:23 | Str | normal |
+| test.py:127:17 | self | test.py:127:23 | StringLiteral | normal |
 | test.py:127:23 | BinaryExpr | test.py:127:35 | getattr | normal |
-| test.py:127:23 | Str | test.py:127:29 | what | normal |
+| test.py:127:23 | StringLiteral | test.py:127:29 | what | normal |
 | test.py:127:29 | what | test.py:127:23 | BinaryExpr | normal |
 | test.py:127:35 | getattr | test.py:127:43 | self | normal |
 | test.py:127:35 | getattr() | test.py:123:5 | Function _require | exit |
 | test.py:127:35 | getattr() | test.py:127:35 | getattr()() | normal |
 | test.py:127:35 | getattr()() | test.py:123:5 | Function _require | exit |
 | test.py:127:35 | getattr()() | test.py:127:9 | setattr() | normal |
-| test.py:127:43 | self | test.py:127:49 | Str | normal |
+| test.py:127:43 | self | test.py:127:49 | StringLiteral | normal |
 | test.py:127:49 | BinaryExpr | test.py:127:35 | getattr() | normal |
-| test.py:127:49 | Str | test.py:127:63 | what | normal |
+| test.py:127:49 | StringLiteral | test.py:127:63 | what | normal |
 | test.py:127:63 | what | test.py:127:49 | BinaryExpr | normal |
 | test.py:129:5 | Function add_deletion | test.py:129:22 | self | normal |
 | test.py:129:5 | FunctionExpr | test.py:129:9 | add_deletion | normal |
@@ -638,11 +638,11 @@
 | test.py:145:5 | FunctionExpr | test.py:145:9 | _compute_depth_first_pre_order | normal |
 | test.py:145:9 | _compute_depth_first_pre_order | test.py:150:5 | FunctionExpr | normal |
 | test.py:145:40 | self | test.py:146:9 | self | normal |
-| test.py:146:9 | Attribute | test.py:146:23 | Str | normal |
+| test.py:146:9 | Attribute | test.py:146:23 | StringLiteral | normal |
 | test.py:146:9 | Attribute() | test.py:145:5 | Function _compute_depth_first_pre_order | exit |
 | test.py:146:9 | Attribute() | test.py:147:34 | self | normal |
 | test.py:146:9 | self | test.py:146:9 | Attribute | normal |
-| test.py:146:23 | Str | test.py:146:9 | Attribute() | normal |
+| test.py:146:23 | StringLiteral | test.py:146:9 | Attribute() | normal |
 | test.py:147:9 | reachable | test.py:148:16 | sorted | normal |
 | test.py:147:21 | .0 | test.py:147:21 | .0 | normal |
 | test.py:147:21 | .0 | test.py:147:21 | For | normal |
@@ -682,11 +682,11 @@
 | test.py:150:5 | FunctionExpr | test.py:150:9 | _compute_reachable | normal |
 | test.py:150:9 | _compute_reachable | test.py:154:5 | FunctionExpr | normal |
 | test.py:150:28 | self | test.py:151:9 | self | normal |
-| test.py:151:9 | Attribute | test.py:151:23 | Str | normal |
+| test.py:151:9 | Attribute | test.py:151:23 | StringLiteral | normal |
 | test.py:151:9 | Attribute() | test.py:150:5 | Function _compute_reachable | exit |
 | test.py:151:9 | Attribute() | test.py:152:16 | frozenset | normal |
 | test.py:151:9 | self | test.py:151:9 | Attribute | normal |
-| test.py:151:23 | Str | test.py:151:9 | Attribute() | normal |
+| test.py:151:23 | StringLiteral | test.py:151:9 | Attribute() | normal |
 | test.py:152:9 | Return | test.py:150:5 | Function _compute_reachable | normal |
 | test.py:152:16 | frozenset | test.py:152:26 | self | normal |
 | test.py:152:16 | frozenset() | test.py:150:5 | Function _compute_reachable | exit |
@@ -697,11 +697,11 @@
 | test.py:154:5 | FunctionExpr | test.py:154:9 | reachable_nodes | normal |
 | test.py:154:9 | reachable_nodes | test.py:158:5 | FunctionExpr | normal |
 | test.py:154:25 | self | test.py:155:9 | self | normal |
-| test.py:155:9 | Attribute | test.py:155:23 | Str | normal |
+| test.py:155:9 | Attribute | test.py:155:23 | StringLiteral | normal |
 | test.py:155:9 | Attribute() | test.py:154:5 | Function reachable_nodes | exit |
 | test.py:155:9 | Attribute() | test.py:156:16 | self | normal |
 | test.py:155:9 | self | test.py:155:9 | Attribute | normal |
-| test.py:155:23 | Str | test.py:155:9 | Attribute() | normal |
+| test.py:155:23 | StringLiteral | test.py:155:9 | Attribute() | normal |
 | test.py:156:9 | Return | test.py:154:5 | Function reachable_nodes | normal |
 | test.py:156:16 | Attribute | test.py:156:9 | Return | normal |
 | test.py:156:16 | self | test.py:156:16 | Attribute | normal |
@@ -709,11 +709,11 @@
 | test.py:158:5 | FunctionExpr | test.py:158:9 | _compute_reversed_depth_first_pre_order | normal |
 | test.py:158:9 | _compute_reversed_depth_first_pre_order | test.py:162:5 | FunctionExpr | normal |
 | test.py:158:49 | self | test.py:159:9 | self | normal |
-| test.py:159:9 | Attribute | test.py:159:23 | Str | normal |
+| test.py:159:9 | Attribute | test.py:159:23 | StringLiteral | normal |
 | test.py:159:9 | Attribute() | test.py:158:5 | Function _compute_reversed_depth_first_pre_order | exit |
 | test.py:159:9 | Attribute() | test.py:160:16 | reversed | normal |
 | test.py:159:9 | self | test.py:159:9 | Attribute | normal |
-| test.py:159:23 | Str | test.py:159:9 | Attribute() | normal |
+| test.py:159:23 | StringLiteral | test.py:159:9 | Attribute() | normal |
 | test.py:160:9 | Return | test.py:158:5 | Function _compute_reversed_depth_first_pre_order | normal |
 | test.py:160:16 | reversed | test.py:160:25 | self | normal |
 | test.py:160:16 | reversed() | test.py:158:5 | Function _compute_reversed_depth_first_pre_order | exit |
@@ -724,16 +724,16 @@
 | test.py:162:5 | FunctionExpr | test.py:162:9 | _compute_bb_depth_first_pre_order | normal |
 | test.py:162:9 | _compute_bb_depth_first_pre_order | test.py:171:5 | FunctionExpr | normal |
 | test.py:162:43 | self | test.py:163:9 | self | normal |
-| test.py:163:9 | Attribute | test.py:163:23 | Str | normal |
+| test.py:163:9 | Attribute | test.py:163:23 | StringLiteral | normal |
 | test.py:163:9 | Attribute() | test.py:162:5 | Function _compute_bb_depth_first_pre_order | exit |
 | test.py:163:9 | Attribute() | test.py:164:9 | self | normal |
 | test.py:163:9 | self | test.py:163:9 | Attribute | normal |
-| test.py:163:23 | Str | test.py:163:9 | Attribute() | normal |
-| test.py:164:9 | Attribute | test.py:164:23 | Str | normal |
+| test.py:163:23 | StringLiteral | test.py:163:9 | Attribute() | normal |
+| test.py:164:9 | Attribute | test.py:164:23 | StringLiteral | normal |
 | test.py:164:9 | Attribute() | test.py:162:5 | Function _compute_bb_depth_first_pre_order | exit |
 | test.py:164:9 | Attribute() | test.py:165:15 | List | normal |
 | test.py:164:9 | self | test.py:164:9 | Attribute | normal |
-| test.py:164:23 | Str | test.py:164:9 | Attribute() | normal |
+| test.py:164:23 | StringLiteral | test.py:164:9 | Attribute() | normal |
 | test.py:165:9 | bbs | test.py:166:18 | self | normal |
 | test.py:165:15 | List | test.py:165:9 | bbs | normal |
 | test.py:166:9 | For | test.py:166:13 | n | normal |
@@ -759,11 +759,11 @@
 | test.py:171:5 | FunctionExpr | test.py:171:9 | _compute_bb_reversed_depth_first_pre_order | normal |
 | test.py:171:9 | _compute_bb_reversed_depth_first_pre_order | test.py:175:5 | FunctionExpr | normal |
 | test.py:171:52 | self | test.py:172:9 | self | normal |
-| test.py:172:9 | Attribute | test.py:172:23 | Str | normal |
+| test.py:172:9 | Attribute | test.py:172:23 | StringLiteral | normal |
 | test.py:172:9 | Attribute() | test.py:171:5 | Function _compute_bb_reversed_depth_first_pre_order | exit |
 | test.py:172:9 | Attribute() | test.py:173:16 | reversed | normal |
 | test.py:172:9 | self | test.py:172:9 | Attribute | normal |
-| test.py:172:23 | Str | test.py:172:9 | Attribute() | normal |
+| test.py:172:23 | StringLiteral | test.py:172:9 | Attribute() | normal |
 | test.py:173:9 | Return | test.py:171:5 | Function _compute_bb_reversed_depth_first_pre_order | normal |
 | test.py:173:16 | reversed | test.py:173:25 | self | normal |
 | test.py:173:16 | reversed() | test.py:171:5 | Function _compute_bb_reversed_depth_first_pre_order | exit |
@@ -773,8 +773,8 @@
 | test.py:175:5 | Function _compute_depth_first_pre_order_labels | test.py:175:47 | self | normal |
 | test.py:175:5 | FunctionExpr | test.py:175:9 | _compute_depth_first_pre_order_labels | normal |
 | test.py:175:9 | _compute_depth_first_pre_order_labels | test.py:196:5 | FunctionExpr | normal |
-| test.py:175:47 | self | test.py:176:9 | Str | normal |
-| test.py:176:9 | Str | test.py:177:18 | Dict | normal |
+| test.py:175:47 | self | test.py:176:9 | StringLiteral | normal |
+| test.py:176:9 | StringLiteral | test.py:177:18 | Dict | normal |
 | test.py:177:9 | orders | test.py:178:17 | IntegerLiteral | normal |
 | test.py:177:18 | Dict | test.py:177:9 | orders | normal |
 | test.py:178:9 | order | test.py:179:28 | self | normal |
@@ -865,19 +865,19 @@
 | test.py:196:5 | FunctionExpr | test.py:196:9 | _compute_idoms | normal |
 | test.py:196:9 | _compute_idoms | test.py:227:5 | FunctionExpr | normal |
 | test.py:196:24 | self | test.py:197:9 | self | normal |
-| test.py:197:9 | Attribute | test.py:197:23 | Str | normal |
+| test.py:197:9 | Attribute | test.py:197:23 | StringLiteral | normal |
 | test.py:197:9 | Attribute() | test.py:196:5 | Function _compute_idoms | exit |
 | test.py:197:9 | Attribute() | test.py:198:17 | Dict | normal |
 | test.py:197:9 | self | test.py:197:9 | Attribute | normal |
-| test.py:197:23 | Str | test.py:197:9 | Attribute() | normal |
+| test.py:197:23 | StringLiteral | test.py:197:9 | Attribute() | normal |
 | test.py:198:9 | idoms | test.py:200:9 | FunctionExpr | normal |
 | test.py:198:17 | Dict | test.py:198:9 | idoms | normal |
 | test.py:200:9 | Function idom_intersection | test.py:200:31 | n1 | normal |
 | test.py:200:9 | FunctionExpr | test.py:200:13 | idom_intersection | normal |
 | test.py:200:13 | idom_intersection | test.py:210:21 | self | normal |
 | test.py:200:31 | n1 | test.py:200:35 | n2 | normal |
-| test.py:200:35 | n2 | test.py:201:13 | Str | normal |
-| test.py:201:13 | Str | test.py:202:22 | self | normal |
+| test.py:200:35 | n2 | test.py:201:13 | StringLiteral | normal |
+| test.py:201:13 | StringLiteral | test.py:202:22 | self | normal |
 | test.py:202:13 | orders | test.py:203:13 | While | normal |
 | test.py:202:22 | Attribute | test.py:202:13 | orders | normal |
 | test.py:202:22 | self | test.py:202:22 | Attribute | normal |
@@ -1014,13 +1014,13 @@
 | test.py:227:5 | Function idoms | test.py:227:15 | self | normal |
 | test.py:227:5 | FunctionExpr | test.py:227:9 | idoms | normal |
 | test.py:227:9 | idoms | test.py:236:5 | FunctionExpr | normal |
-| test.py:227:15 | self | test.py:228:9 | Str | normal |
-| test.py:228:9 | Str | test.py:229:9 | self | normal |
-| test.py:229:9 | Attribute | test.py:229:23 | Str | normal |
+| test.py:227:15 | self | test.py:228:9 | StringLiteral | normal |
+| test.py:228:9 | StringLiteral | test.py:229:9 | self | normal |
+| test.py:229:9 | Attribute | test.py:229:23 | StringLiteral | normal |
 | test.py:229:9 | Attribute() | test.py:227:5 | Function idoms | exit |
 | test.py:229:9 | Attribute() | test.py:230:17 | self | normal |
 | test.py:229:9 | self | test.py:229:9 | Attribute | normal |
-| test.py:229:23 | Str | test.py:229:9 | Attribute() | normal |
+| test.py:229:23 | StringLiteral | test.py:229:9 | Attribute() | normal |
 | test.py:230:9 | idoms | test.py:231:18 | self | normal |
 | test.py:230:17 | Attribute | test.py:230:9 | idoms | normal |
 | test.py:230:17 | self | test.py:230:17 | Attribute | normal |
@@ -1045,8 +1045,8 @@
 | test.py:236:5 | Function _compute_dominance_frontier | test.py:236:37 | self | normal |
 | test.py:236:5 | FunctionExpr | test.py:236:9 | _compute_dominance_frontier | normal |
 | test.py:236:9 | _compute_dominance_frontier | test.py:268:5 | FunctionExpr | normal |
-| test.py:236:37 | self | test.py:237:9 | Str | normal |
-| test.py:237:9 | Str | test.py:240:9 | FunctionExpr | normal |
+| test.py:236:37 | self | test.py:237:9 | StringLiteral | normal |
+| test.py:237:9 | StringLiteral | test.py:240:9 | FunctionExpr | normal |
 | test.py:240:9 | Function dominates | test.py:240:23 | dom | normal |
 | test.py:240:9 | FunctionExpr | test.py:240:13 | dominates | normal |
 | test.py:240:13 | dominates | test.py:248:9 | self | normal |
@@ -1076,11 +1076,11 @@
 | test.py:245:24 | next_node | test.py:245:17 | node | normal |
 | test.py:246:13 | Return | test.py:240:9 | Function dominates | normal |
 | test.py:246:20 | False | test.py:246:13 | Return | normal |
-| test.py:248:9 | Attribute | test.py:248:23 | Str | normal |
+| test.py:248:9 | Attribute | test.py:248:23 | StringLiteral | normal |
 | test.py:248:9 | Attribute() | test.py:236:5 | Function _compute_dominance_frontier | exit |
 | test.py:248:9 | Attribute() | test.py:249:17 | self | normal |
 | test.py:248:9 | self | test.py:248:9 | Attribute | normal |
-| test.py:248:23 | Str | test.py:248:9 | Attribute() | normal |
+| test.py:248:23 | StringLiteral | test.py:248:9 | Attribute() | normal |
 | test.py:249:9 | idoms | test.py:250:30 | Dict | normal |
 | test.py:249:17 | Attribute | test.py:249:9 | idoms | normal |
 | test.py:249:17 | self | test.py:249:17 | Attribute | normal |
@@ -1093,11 +1093,11 @@
 | test.py:252:20 | _reverse_map() | test.py:236:5 | Function _compute_dominance_frontier | exit |
 | test.py:252:20 | _reverse_map() | test.py:252:9 | dom_tree | normal |
 | test.py:252:33 | idoms | test.py:252:20 | _reverse_map() | normal |
-| test.py:253:9 | Attribute | test.py:253:23 | Str | normal |
+| test.py:253:9 | Attribute | test.py:253:23 | StringLiteral | normal |
 | test.py:253:9 | Attribute() | test.py:236:5 | Function _compute_dominance_frontier | exit |
 | test.py:253:9 | Attribute() | test.py:254:21 | self | normal |
 | test.py:253:9 | self | test.py:253:9 | Attribute | normal |
-| test.py:253:23 | Str | test.py:253:9 | Attribute() | normal |
+| test.py:253:23 | StringLiteral | test.py:253:9 | Attribute() | normal |
 | test.py:254:9 | For | test.py:254:13 | node | normal |
 | test.py:254:9 | For | test.py:266:16 | dominance_frontier | normal |
 | test.py:254:13 | node | test.py:255:26 | set | normal |
@@ -1207,18 +1207,18 @@
 | test.py:268:5 | Function _compute_phi_nodes | test.py:268:28 | self | normal |
 | test.py:268:5 | FunctionExpr | test.py:268:9 | _compute_phi_nodes | normal |
 | test.py:268:9 | _compute_phi_nodes | test.py:315:5 | FunctionExpr | normal |
-| test.py:268:28 | self | test.py:269:9 | Str | normal |
-| test.py:269:9 | Str | test.py:273:9 | self | normal |
-| test.py:273:9 | Attribute | test.py:273:23 | Str | normal |
+| test.py:268:28 | self | test.py:269:9 | StringLiteral | normal |
+| test.py:269:9 | StringLiteral | test.py:273:9 | self | normal |
+| test.py:273:9 | Attribute | test.py:273:23 | StringLiteral | normal |
 | test.py:273:9 | Attribute() | test.py:268:5 | Function _compute_phi_nodes | exit |
 | test.py:273:9 | Attribute() | test.py:274:9 | self | normal |
 | test.py:273:9 | self | test.py:273:9 | Attribute | normal |
-| test.py:273:23 | Str | test.py:273:9 | Attribute() | normal |
-| test.py:274:9 | Attribute | test.py:274:23 | Str | normal |
+| test.py:273:23 | StringLiteral | test.py:273:9 | Attribute() | normal |
+| test.py:274:9 | Attribute | test.py:274:23 | StringLiteral | normal |
 | test.py:274:9 | Attribute() | test.py:268:5 | Function _compute_phi_nodes | exit |
 | test.py:274:9 | Attribute() | test.py:275:30 | self | normal |
 | test.py:274:9 | self | test.py:274:9 | Attribute | normal |
-| test.py:274:23 | Str | test.py:274:9 | Attribute() | normal |
+| test.py:274:23 | StringLiteral | test.py:274:9 | Attribute() | normal |
 | test.py:275:9 | dominance_frontier | test.py:276:23 | dict | normal |
 | test.py:275:30 | Attribute | test.py:275:9 | dominance_frontier | normal |
 | test.py:275:30 | self | test.py:275:30 | Attribute | normal |
@@ -1420,28 +1420,28 @@
 | test.py:315:5 | Function _compute_ssa_data | test.py:315:27 | self | normal |
 | test.py:315:5 | FunctionExpr | test.py:315:9 | _compute_ssa_data | normal |
 | test.py:315:9 | _compute_ssa_data | test.py:420:5 | FunctionExpr | normal |
-| test.py:315:27 | self | test.py:316:9 | Str | normal |
-| test.py:316:9 | Str | test.py:318:9 | self | normal |
-| test.py:318:9 | Attribute | test.py:318:23 | Str | normal |
+| test.py:315:27 | self | test.py:316:9 | StringLiteral | normal |
+| test.py:316:9 | StringLiteral | test.py:318:9 | self | normal |
+| test.py:318:9 | Attribute | test.py:318:23 | StringLiteral | normal |
 | test.py:318:9 | Attribute() | test.py:315:5 | Function _compute_ssa_data | exit |
 | test.py:318:9 | Attribute() | test.py:319:9 | self | normal |
 | test.py:318:9 | self | test.py:318:9 | Attribute | normal |
-| test.py:318:23 | Str | test.py:318:9 | Attribute() | normal |
-| test.py:319:9 | Attribute | test.py:319:23 | Str | normal |
+| test.py:318:23 | StringLiteral | test.py:318:9 | Attribute() | normal |
+| test.py:319:9 | Attribute | test.py:319:23 | StringLiteral | normal |
 | test.py:319:9 | Attribute() | test.py:315:5 | Function _compute_ssa_data | exit |
 | test.py:319:9 | Attribute() | test.py:320:9 | self | normal |
 | test.py:319:9 | self | test.py:319:9 | Attribute | normal |
-| test.py:319:23 | Str | test.py:319:9 | Attribute() | normal |
-| test.py:320:9 | Attribute | test.py:320:23 | Str | normal |
+| test.py:319:23 | StringLiteral | test.py:319:9 | Attribute() | normal |
+| test.py:320:9 | Attribute | test.py:320:23 | StringLiteral | normal |
 | test.py:320:9 | Attribute() | test.py:315:5 | Function _compute_ssa_data | exit |
 | test.py:320:9 | Attribute() | test.py:321:9 | self | normal |
 | test.py:320:9 | self | test.py:320:9 | Attribute | normal |
-| test.py:320:23 | Str | test.py:320:9 | Attribute() | normal |
-| test.py:321:9 | Attribute | test.py:321:23 | Str | normal |
+| test.py:320:23 | StringLiteral | test.py:320:9 | Attribute() | normal |
+| test.py:321:9 | Attribute | test.py:321:23 | StringLiteral | normal |
 | test.py:321:9 | Attribute() | test.py:315:5 | Function _compute_ssa_data | exit |
 | test.py:321:9 | Attribute() | test.py:322:21 | self | normal |
 | test.py:321:9 | self | test.py:321:9 | Attribute | normal |
-| test.py:321:23 | Str | test.py:321:9 | Attribute() | normal |
+| test.py:321:23 | StringLiteral | test.py:321:9 | Attribute() | normal |
 | test.py:322:9 | phi_nodes | test.py:323:29 | Dict | normal |
 | test.py:322:21 | Attribute | test.py:322:9 | phi_nodes | normal |
 | test.py:322:21 | self | test.py:322:21 | Attribute | normal |
@@ -1473,8 +1473,8 @@
 | test.py:332:9 | FunctionExpr | test.py:332:13 | make_ssa_var | normal |
 | test.py:332:13 | make_ssa_var | test.py:341:19 | self | normal |
 | test.py:332:26 | variable | test.py:332:36 | node | normal |
-| test.py:332:36 | node | test.py:333:13 | Str | normal |
-| test.py:333:13 | Str | test.py:334:20 | variable | normal |
+| test.py:332:36 | node | test.py:333:13 | StringLiteral | normal |
+| test.py:333:13 | StringLiteral | test.py:334:20 | variable | normal |
 | test.py:334:13 | uid | test.py:335:16 | uid | normal |
 | test.py:334:20 | Tuple | test.py:334:13 | uid | normal |
 | test.py:334:20 | variable | test.py:334:30 | node | normal |
@@ -1873,13 +1873,13 @@
 | test.py:420:5 | Function ssa_variables | test.py:420:23 | self | normal |
 | test.py:420:5 | FunctionExpr | test.py:420:9 | ssa_variables | normal |
 | test.py:420:9 | ssa_variables | test.py:425:5 | FunctionExpr | normal |
-| test.py:420:23 | self | test.py:421:9 | Str | normal |
-| test.py:421:9 | Str | test.py:422:9 | self | normal |
-| test.py:422:9 | Attribute | test.py:422:23 | Str | normal |
+| test.py:420:23 | self | test.py:421:9 | StringLiteral | normal |
+| test.py:421:9 | StringLiteral | test.py:422:9 | self | normal |
+| test.py:422:9 | Attribute | test.py:422:23 | StringLiteral | normal |
 | test.py:422:9 | Attribute() | test.py:420:5 | Function ssa_variables | exit |
 | test.py:422:9 | Attribute() | test.py:423:16 | self | normal |
 | test.py:422:9 | self | test.py:422:9 | Attribute | normal |
-| test.py:422:23 | Str | test.py:422:9 | Attribute() | normal |
+| test.py:422:23 | StringLiteral | test.py:422:9 | Attribute() | normal |
 | test.py:423:9 | Return | test.py:420:5 | Function ssa_variables | normal |
 | test.py:423:16 | Attribute | test.py:423:31 | IntegerLiteral | normal |
 | test.py:423:16 | Subscript | test.py:420:5 | Function ssa_variables | exit |
@@ -1961,13 +1961,13 @@
 | test.py:441:5 | Function ssa_definitions | test.py:441:25 | self | normal |
 | test.py:441:5 | FunctionExpr | test.py:441:9 | ssa_definitions | normal |
 | test.py:441:9 | ssa_definitions | test.py:452:5 | FunctionExpr | normal |
-| test.py:441:25 | self | test.py:442:9 | Str | normal |
-| test.py:442:9 | Str | test.py:443:9 | self | normal |
-| test.py:443:9 | Attribute | test.py:443:23 | Str | normal |
+| test.py:441:25 | self | test.py:442:9 | StringLiteral | normal |
+| test.py:442:9 | StringLiteral | test.py:443:9 | self | normal |
+| test.py:443:9 | Attribute | test.py:443:23 | StringLiteral | normal |
 | test.py:443:9 | Attribute() | test.py:441:5 | Function ssa_definitions | exit |
 | test.py:443:9 | Attribute() | test.py:444:21 | self | normal |
 | test.py:443:9 | self | test.py:443:9 | Attribute | normal |
-| test.py:443:23 | Str | test.py:443:9 | Attribute() | normal |
+| test.py:443:23 | StringLiteral | test.py:443:9 | Attribute() | normal |
 | test.py:444:9 | ssa_defns | test.py:445:26 | _reverse_map | normal |
 | test.py:444:21 | Attribute | test.py:444:36 | IntegerLiteral | normal |
 | test.py:444:21 | Subscript | test.py:441:5 | Function ssa_definitions | exit |
@@ -2018,13 +2018,13 @@
 | test.py:452:5 | FunctionExpr | test.py:452:9 | get_ssa_definition | normal |
 | test.py:452:9 | get_ssa_definition | test.py:458:5 | FunctionExpr | normal |
 | test.py:452:28 | self | test.py:452:34 | var | normal |
-| test.py:452:34 | var | test.py:453:9 | Str | normal |
-| test.py:453:9 | Str | test.py:454:9 | self | normal |
-| test.py:454:9 | Attribute | test.py:454:23 | Str | normal |
+| test.py:452:34 | var | test.py:453:9 | StringLiteral | normal |
+| test.py:453:9 | StringLiteral | test.py:454:9 | self | normal |
+| test.py:454:9 | Attribute | test.py:454:23 | StringLiteral | normal |
 | test.py:454:9 | Attribute() | test.py:452:5 | Function get_ssa_definition | exit |
 | test.py:454:9 | Attribute() | test.py:455:21 | self | normal |
 | test.py:454:9 | self | test.py:454:9 | Attribute | normal |
-| test.py:454:23 | Str | test.py:454:9 | Attribute() | normal |
+| test.py:454:23 | StringLiteral | test.py:454:9 | Attribute() | normal |
 | test.py:455:9 | ssa_defns | test.py:456:16 | ssa_defns | normal |
 | test.py:455:21 | Attribute | test.py:455:36 | IntegerLiteral | normal |
 | test.py:455:21 | Subscript | test.py:452:5 | Function get_ssa_definition | exit |
@@ -2040,13 +2040,13 @@
 | test.py:458:5 | Function ssa_uses | test.py:458:18 | self | normal |
 | test.py:458:5 | FunctionExpr | test.py:458:9 | ssa_uses | normal |
 | test.py:458:9 | ssa_uses | test.py:468:5 | FunctionExpr | normal |
-| test.py:458:18 | self | test.py:459:9 | Str | normal |
-| test.py:459:9 | Str | test.py:460:9 | self | normal |
-| test.py:460:9 | Attribute | test.py:460:23 | Str | normal |
+| test.py:458:18 | self | test.py:459:9 | StringLiteral | normal |
+| test.py:459:9 | StringLiteral | test.py:460:9 | self | normal |
+| test.py:460:9 | Attribute | test.py:460:23 | StringLiteral | normal |
 | test.py:460:9 | Attribute() | test.py:458:5 | Function ssa_uses | exit |
 | test.py:460:9 | Attribute() | test.py:461:20 | self | normal |
 | test.py:460:9 | self | test.py:460:9 | Attribute | normal |
-| test.py:460:23 | Str | test.py:460:9 | Attribute() | normal |
+| test.py:460:23 | StringLiteral | test.py:460:9 | Attribute() | normal |
 | test.py:461:9 | ssa_uses | test.py:462:18 | self | normal |
 | test.py:461:20 | Attribute | test.py:461:35 | IntegerLiteral | normal |
 | test.py:461:20 | Subscript | test.py:458:5 | Function ssa_uses | exit |
@@ -2092,13 +2092,13 @@
 | test.py:468:5 | FunctionExpr | test.py:468:9 | get_ssa_variables_used | normal |
 | test.py:468:9 | get_ssa_variables_used | test.py:474:5 | FunctionExpr | normal |
 | test.py:468:32 | self | test.py:468:38 | node | normal |
-| test.py:468:38 | node | test.py:469:9 | Str | normal |
-| test.py:469:9 | Str | test.py:470:9 | self | normal |
-| test.py:470:9 | Attribute | test.py:470:23 | Str | normal |
+| test.py:468:38 | node | test.py:469:9 | StringLiteral | normal |
+| test.py:469:9 | StringLiteral | test.py:470:9 | self | normal |
+| test.py:470:9 | Attribute | test.py:470:23 | StringLiteral | normal |
 | test.py:470:9 | Attribute() | test.py:468:5 | Function get_ssa_variables_used | exit |
 | test.py:470:9 | Attribute() | test.py:471:20 | self | normal |
 | test.py:470:9 | self | test.py:470:9 | Attribute | normal |
-| test.py:470:23 | Str | test.py:470:9 | Attribute() | normal |
+| test.py:470:23 | StringLiteral | test.py:470:9 | Attribute() | normal |
 | test.py:471:9 | ssa_uses | test.py:472:16 | ssa_uses | normal |
 | test.py:471:20 | Attribute | test.py:471:35 | IntegerLiteral | normal |
 | test.py:471:20 | Subscript | test.py:468:5 | Function get_ssa_variables_used | exit |
@@ -2115,13 +2115,13 @@
 | test.py:474:5 | Function ssa_phis | test.py:474:18 | self | normal |
 | test.py:474:5 | FunctionExpr | test.py:474:9 | ssa_phis | normal |
 | test.py:474:9 | ssa_phis | test.py:487:5 | FunctionExpr | normal |
-| test.py:474:18 | self | test.py:475:9 | Str | normal |
-| test.py:475:9 | Str | test.py:476:9 | self | normal |
-| test.py:476:9 | Attribute | test.py:476:23 | Str | normal |
+| test.py:474:18 | self | test.py:475:9 | StringLiteral | normal |
+| test.py:475:9 | StringLiteral | test.py:476:9 | self | normal |
+| test.py:476:9 | Attribute | test.py:476:23 | StringLiteral | normal |
 | test.py:476:9 | Attribute() | test.py:474:5 | Function ssa_phis | exit |
 | test.py:476:9 | Attribute() | test.py:477:20 | self | normal |
 | test.py:476:9 | self | test.py:476:9 | Attribute | normal |
-| test.py:476:23 | Str | test.py:476:9 | Attribute() | normal |
+| test.py:476:23 | StringLiteral | test.py:476:9 | Attribute() | normal |
 | test.py:477:9 | ssa_phis | test.py:478:20 | self | normal |
 | test.py:477:20 | Attribute | test.py:477:35 | IntegerLiteral | normal |
 | test.py:477:20 | Subscript | test.py:474:5 | Function ssa_phis | exit |
@@ -2194,8 +2194,8 @@
 | test.py:487:5 | Function _compute_bb_heads | test.py:487:27 | self | normal |
 | test.py:487:5 | FunctionExpr | test.py:487:9 | _compute_bb_heads | normal |
 | test.py:487:9 | _compute_bb_heads | test.py:496:5 | FunctionExpr | normal |
-| test.py:487:27 | self | test.py:488:9 | Str | normal |
-| test.py:488:9 | Str | test.py:489:20 | set | normal |
+| test.py:487:27 | self | test.py:488:9 | StringLiteral | normal |
+| test.py:488:9 | StringLiteral | test.py:489:20 | set | normal |
 | test.py:489:9 | bb_heads | test.py:490:21 | self | normal |
 | test.py:489:20 | set | test.py:489:20 | set() | normal |
 | test.py:489:20 | set() | test.py:487:5 | Function _compute_bb_heads | exit |
@@ -2247,13 +2247,13 @@
 | test.py:496:5 | Function _compute_basic_blocks | test.py:496:31 | self | normal |
 | test.py:496:5 | FunctionExpr | test.py:496:9 | _compute_basic_blocks | normal |
 | test.py:496:9 | _compute_basic_blocks | test.py:508:5 | FunctionExpr | normal |
-| test.py:496:31 | self | test.py:497:9 | Str | normal |
-| test.py:497:9 | Str | test.py:498:9 | self | normal |
-| test.py:498:9 | Attribute | test.py:498:23 | Str | normal |
+| test.py:496:31 | self | test.py:497:9 | StringLiteral | normal |
+| test.py:497:9 | StringLiteral | test.py:498:9 | self | normal |
+| test.py:498:9 | Attribute | test.py:498:23 | StringLiteral | normal |
 | test.py:498:9 | Attribute() | test.py:496:5 | Function _compute_basic_blocks | exit |
 | test.py:498:9 | Attribute() | test.py:499:24 | Dict | normal |
 | test.py:498:9 | self | test.py:498:9 | Attribute | normal |
-| test.py:498:23 | Str | test.py:498:9 | Attribute() | normal |
+| test.py:498:23 | StringLiteral | test.py:498:9 | Attribute() | normal |
 | test.py:499:9 | basic_blocks | test.py:500:20 | Dict | normal |
 | test.py:499:24 | Dict | test.py:499:9 | basic_blocks | normal |
 | test.py:500:9 | bb_tails | test.py:501:19 | self | normal |
@@ -2297,11 +2297,11 @@
 | test.py:508:5 | FunctionExpr | test.py:508:9 | get_basic_blocks | normal |
 | test.py:508:9 | get_basic_blocks | test.py:512:5 | FunctionExpr | normal |
 | test.py:508:26 | self | test.py:509:9 | self | normal |
-| test.py:509:9 | Attribute | test.py:509:23 | Str | normal |
+| test.py:509:9 | Attribute | test.py:509:23 | StringLiteral | normal |
 | test.py:509:9 | Attribute() | test.py:508:5 | Function get_basic_blocks | exit |
 | test.py:509:9 | Attribute() | test.py:510:16 | self | normal |
 | test.py:509:9 | self | test.py:509:9 | Attribute | normal |
-| test.py:509:23 | Str | test.py:509:9 | Attribute() | normal |
+| test.py:509:23 | StringLiteral | test.py:509:9 | Attribute() | normal |
 | test.py:510:9 | Return | test.py:508:5 | Function get_basic_blocks | normal |
 | test.py:510:16 | Attribute | test.py:510:9 | Return | normal |
 | test.py:510:16 | self | test.py:510:16 | Attribute | normal |
@@ -2309,11 +2309,11 @@
 | test.py:512:5 | FunctionExpr | test.py:512:9 | _compute_bb_succ | normal |
 | test.py:512:9 | _compute_bb_succ | test.py:519:5 | FunctionExpr | normal |
 | test.py:512:26 | self | test.py:513:9 | self | normal |
-| test.py:513:9 | Attribute | test.py:513:23 | Str | normal |
+| test.py:513:9 | Attribute | test.py:513:23 | StringLiteral | normal |
 | test.py:513:9 | Attribute() | test.py:512:5 | Function _compute_bb_succ | exit |
 | test.py:513:9 | Attribute() | test.py:514:20 | Dict | normal |
 | test.py:513:9 | self | test.py:513:9 | Attribute | normal |
-| test.py:513:23 | Str | test.py:513:9 | Attribute() | normal |
+| test.py:513:23 | StringLiteral | test.py:513:9 | Attribute() | normal |
 | test.py:514:9 | bb_succs | test.py:515:19 | self | normal |
 | test.py:514:20 | Dict | test.py:514:9 | bb_succs | normal |
 | test.py:515:9 | For | test.py:515:13 | bb | normal |
@@ -2340,11 +2340,11 @@
 | test.py:519:5 | FunctionExpr | test.py:519:9 | _compute_bb_pred | normal |
 | test.py:519:9 | _compute_bb_pred | test.py:527:5 | FunctionExpr | normal |
 | test.py:519:26 | self | test.py:520:9 | self | normal |
-| test.py:520:9 | Attribute | test.py:520:23 | Str | normal |
+| test.py:520:9 | Attribute | test.py:520:23 | StringLiteral | normal |
 | test.py:520:9 | Attribute() | test.py:519:5 | Function _compute_bb_pred | exit |
 | test.py:520:9 | Attribute() | test.py:521:20 | Dict | normal |
 | test.py:520:9 | self | test.py:520:9 | Attribute | normal |
-| test.py:520:23 | Str | test.py:520:9 | Attribute() | normal |
+| test.py:520:23 | StringLiteral | test.py:520:9 | Attribute() | normal |
 | test.py:521:9 | bb_preds | test.py:522:19 | self | normal |
 | test.py:521:20 | Dict | test.py:521:9 | bb_preds | normal |
 | test.py:522:9 | For | test.py:522:13 | bb | normal |
@@ -2388,8 +2388,8 @@
 | test.py:527:5 | FunctionExpr | test.py:527:9 | nodes_in_bb | normal |
 | test.py:527:9 | nodes_in_bb | test.py:540:5 | FunctionExpr | normal |
 | test.py:527:21 | self | test.py:527:27 | bb | normal |
-| test.py:527:27 | bb | test.py:528:9 | Str | normal |
-| test.py:528:9 | Str | test.py:529:16 | bb | normal |
+| test.py:527:27 | bb | test.py:528:9 | StringLiteral | normal |
+| test.py:528:9 | StringLiteral | test.py:529:16 | bb | normal |
 | test.py:529:9 | node | test.py:530:9 | While | normal |
 | test.py:529:16 | bb | test.py:529:9 | node | normal |
 | test.py:530:9 | While | test.py:530:15 | True | normal |
@@ -2425,23 +2425,23 @@
 | test.py:540:5 | Function _compute_use_all | test.py:540:26 | self | normal |
 | test.py:540:5 | FunctionExpr | test.py:540:9 | _compute_use_all | normal |
 | test.py:540:9 | _compute_use_all | test.py:586:5 | FunctionExpr | normal |
-| test.py:540:26 | self | test.py:541:9 | Str | normal |
-| test.py:541:9 | Str | test.py:546:9 | self | normal |
-| test.py:546:9 | Attribute | test.py:546:23 | Str | normal |
+| test.py:540:26 | self | test.py:541:9 | StringLiteral | normal |
+| test.py:541:9 | StringLiteral | test.py:546:9 | self | normal |
+| test.py:546:9 | Attribute | test.py:546:23 | StringLiteral | normal |
 | test.py:546:9 | Attribute() | test.py:540:5 | Function _compute_use_all | exit |
 | test.py:546:9 | Attribute() | test.py:547:9 | self | normal |
 | test.py:546:9 | self | test.py:546:9 | Attribute | normal |
-| test.py:546:23 | Str | test.py:546:9 | Attribute() | normal |
-| test.py:547:9 | Attribute | test.py:547:23 | Str | normal |
+| test.py:546:23 | StringLiteral | test.py:546:9 | Attribute() | normal |
+| test.py:547:9 | Attribute | test.py:547:23 | StringLiteral | normal |
 | test.py:547:9 | Attribute() | test.py:540:5 | Function _compute_use_all | exit |
 | test.py:547:9 | Attribute() | test.py:548:9 | self | normal |
 | test.py:547:9 | self | test.py:547:9 | Attribute | normal |
-| test.py:547:23 | Str | test.py:547:9 | Attribute() | normal |
-| test.py:548:9 | Attribute | test.py:548:23 | Str | normal |
+| test.py:547:23 | StringLiteral | test.py:547:9 | Attribute() | normal |
+| test.py:548:9 | Attribute | test.py:548:23 | StringLiteral | normal |
 | test.py:548:9 | Attribute() | test.py:540:5 | Function _compute_use_all | exit |
 | test.py:548:9 | Attribute() | test.py:549:19 | Dict | normal |
 | test.py:548:9 | self | test.py:548:9 | Attribute | normal |
-| test.py:548:23 | Str | test.py:548:9 | Attribute() | normal |
+| test.py:548:23 | StringLiteral | test.py:548:9 | Attribute() | normal |
 | test.py:549:9 | use_all | test.py:551:9 | FunctionExpr | normal |
 | test.py:549:19 | Dict | test.py:549:9 | use_all | normal |
 | test.py:551:9 | Function defined_in_block | test.py:551:30 | bb | normal |
@@ -2634,18 +2634,18 @@
 | test.py:586:5 | Function _compute_liveness | test.py:586:27 | self | normal |
 | test.py:586:5 | FunctionExpr | test.py:586:9 | _compute_liveness | normal |
 | test.py:586:9 | _compute_liveness | test.py:644:5 | FunctionExpr | normal |
-| test.py:586:27 | self | test.py:587:9 | Str | normal |
-| test.py:587:9 | Str | test.py:592:9 | self | normal |
-| test.py:592:9 | Attribute | test.py:592:23 | Str | normal |
+| test.py:586:27 | self | test.py:587:9 | StringLiteral | normal |
+| test.py:587:9 | StringLiteral | test.py:592:9 | self | normal |
+| test.py:592:9 | Attribute | test.py:592:23 | StringLiteral | normal |
 | test.py:592:9 | Attribute() | test.py:586:5 | Function _compute_liveness | exit |
 | test.py:592:9 | Attribute() | test.py:593:9 | self | normal |
 | test.py:592:9 | self | test.py:592:9 | Attribute | normal |
-| test.py:592:23 | Str | test.py:592:9 | Attribute() | normal |
-| test.py:593:9 | Attribute | test.py:593:23 | Str | normal |
+| test.py:592:23 | StringLiteral | test.py:592:9 | Attribute() | normal |
+| test.py:593:9 | Attribute | test.py:593:23 | StringLiteral | normal |
 | test.py:593:9 | Attribute() | test.py:586:5 | Function _compute_liveness | exit |
 | test.py:593:9 | Attribute() | test.py:595:9 | FunctionExpr | normal |
 | test.py:593:9 | self | test.py:593:9 | Attribute | normal |
-| test.py:593:23 | Str | test.py:593:9 | Attribute() | normal |
+| test.py:593:23 | StringLiteral | test.py:593:9 | Attribute() | normal |
 | test.py:595:9 | Function gen_and_kill_for_block | test.py:595:36 | bb | normal |
 | test.py:595:9 | FunctionExpr | test.py:595:13 | gen_and_kill_for_block | normal |
 | test.py:595:13 | gen_and_kill_for_block | test.py:617:9 | FunctionExpr | normal |
@@ -2920,11 +2920,11 @@
 | test.py:644:5 | FunctionExpr | test.py:644:9 | delete_unreachable_nodes | normal |
 | test.py:644:9 | delete_unreachable_nodes | test.py:660:5 | FunctionExpr | normal |
 | test.py:644:34 | self | test.py:645:9 | self | normal |
-| test.py:645:9 | Attribute | test.py:645:23 | Str | normal |
+| test.py:645:9 | Attribute | test.py:645:23 | StringLiteral | normal |
 | test.py:645:9 | Attribute() | test.py:644:5 | Function delete_unreachable_nodes | exit |
 | test.py:645:9 | Attribute() | test.py:646:35 | self | normal |
 | test.py:645:9 | self | test.py:645:9 | Attribute | normal |
-| test.py:645:23 | Str | test.py:645:9 | Attribute() | normal |
+| test.py:645:23 | StringLiteral | test.py:645:9 | Attribute() | normal |
 | test.py:646:9 | unreachable | test.py:647:16 | unreachable | normal |
 | test.py:646:23 | .0 | test.py:646:23 | .0 | normal |
 | test.py:646:23 | .0 | test.py:646:23 | For | normal |
@@ -3019,11 +3019,11 @@
 | test.py:660:9 | dominated_by | test.py:675:5 | FunctionExpr | normal |
 | test.py:660:22 | self | test.py:660:28 | node | normal |
 | test.py:660:28 | node | test.py:661:9 | self | normal |
-| test.py:661:9 | Attribute | test.py:661:23 | Str | normal |
+| test.py:661:9 | Attribute | test.py:661:23 | StringLiteral | normal |
 | test.py:661:9 | Attribute() | test.py:660:5 | Function dominated_by | exit |
 | test.py:661:9 | Attribute() | test.py:662:16 | node | normal |
 | test.py:661:9 | self | test.py:661:9 | Attribute | normal |
-| test.py:661:23 | Str | test.py:661:9 | Attribute() | normal |
+| test.py:661:23 | StringLiteral | test.py:661:9 | Attribute() | normal |
 | test.py:662:9 | Assert | test.py:660:5 | Function dominated_by | exit |
 | test.py:662:9 | Assert | test.py:663:21 | set | normal |
 | test.py:662:16 | Compare | test.py:662:9 | Assert | normal |
@@ -3035,9 +3035,9 @@
 | test.py:662:30 | BinaryExpr | test.py:662:9 | Assert | normal |
 | test.py:662:30 | str | test.py:662:34 | node | normal |
 | test.py:662:30 | str() | test.py:660:5 | Function dominated_by | exit |
-| test.py:662:30 | str() | test.py:662:42 | Str | normal |
+| test.py:662:30 | str() | test.py:662:42 | StringLiteral | normal |
 | test.py:662:34 | node | test.py:662:30 | str() | normal |
-| test.py:662:42 | Str | test.py:662:30 | BinaryExpr | normal |
+| test.py:662:42 | StringLiteral | test.py:662:30 | BinaryExpr | normal |
 | test.py:663:9 | dominated | test.py:664:16 | set | normal |
 | test.py:663:21 | set | test.py:663:26 | node | normal |
 | test.py:663:21 | set() | test.py:660:5 | Function dominated_by | exit |
@@ -3110,11 +3110,11 @@
 | test.py:675:28 | self | test.py:675:34 | pre | normal |
 | test.py:675:34 | pre | test.py:675:39 | post | normal |
 | test.py:675:39 | post | test.py:676:9 | self | normal |
-| test.py:676:9 | Attribute | test.py:676:23 | Str | normal |
+| test.py:676:9 | Attribute | test.py:676:23 | StringLiteral | normal |
 | test.py:676:9 | Attribute() | test.py:675:5 | Function strictly_dominates | exit |
 | test.py:676:9 | Attribute() | test.py:677:9 | While | normal |
 | test.py:676:9 | self | test.py:676:9 | Attribute | normal |
-| test.py:676:23 | Str | test.py:676:9 | Attribute() | normal |
+| test.py:676:23 | StringLiteral | test.py:676:9 | Attribute() | normal |
 | test.py:677:9 | While | test.py:677:15 | post | normal |
 | test.py:677:15 | Compare | test.py:678:20 | self | normal |
 | test.py:677:15 | Compare | test.py:678:20 | self | true |
@@ -3145,13 +3145,13 @@
 | test.py:683:33 | self | test.py:683:39 | pre | normal |
 | test.py:683:39 | pre | test.py:683:44 | post | normal |
 | test.py:683:44 | post | test.py:683:50 | control | normal |
-| test.py:683:50 | control | test.py:684:9 | Str | normal |
-| test.py:684:9 | Str | test.py:686:9 | self | normal |
-| test.py:686:9 | Attribute | test.py:686:23 | Str | normal |
+| test.py:683:50 | control | test.py:684:9 | StringLiteral | normal |
+| test.py:684:9 | StringLiteral | test.py:686:9 | self | normal |
+| test.py:686:9 | Attribute | test.py:686:23 | StringLiteral | normal |
 | test.py:686:9 | Attribute() | test.py:683:5 | Function reaches_while_dominated | exit |
 | test.py:686:9 | Attribute() | test.py:687:30 | self | normal |
 | test.py:686:9 | self | test.py:686:9 | Attribute | normal |
-| test.py:686:23 | Str | test.py:686:9 | Attribute() | normal |
+| test.py:686:23 | StringLiteral | test.py:686:9 | Attribute() | normal |
 | test.py:687:9 | dominance_frontier | test.py:688:18 | pre | normal |
 | test.py:687:30 | Attribute | test.py:687:55 | control | normal |
 | test.py:687:30 | Subscript | test.py:683:5 | Function reaches_while_dominated | exit |
@@ -3214,16 +3214,16 @@
 | test.py:699:35 | node | test.py:699:25 | Subscript | normal |
 | test.py:700:9 | Return | test.py:683:5 | Function reaches_while_dominated | normal |
 | test.py:700:16 | False | test.py:700:9 | Return | normal |
-| test.py:703:1 | Class SSA_Var | test.py:704:5 | Str | normal |
+| test.py:703:1 | Class SSA_Var | test.py:704:5 | StringLiteral | normal |
 | test.py:703:1 | ClassExpr | test.py:0:0 | Module test | exit |
 | test.py:703:1 | ClassExpr | test.py:703:7 | SSA_Var | normal |
 | test.py:703:7 | SSA_Var | test.py:716:1 | FunctionExpr | normal |
 | test.py:703:15 | object | test.py:703:1 | ClassExpr | normal |
-| test.py:704:5 | Str | test.py:706:19 | Str | normal |
+| test.py:704:5 | StringLiteral | test.py:706:19 | StringLiteral | normal |
 | test.py:706:5 | __slots__ | test.py:708:5 | FunctionExpr | normal |
 | test.py:706:17 | List | test.py:706:5 | __slots__ | normal |
-| test.py:706:19 | Str | test.py:706:31 | Str | normal |
-| test.py:706:31 | Str | test.py:706:17 | List | normal |
+| test.py:706:19 | StringLiteral | test.py:706:31 | StringLiteral | normal |
+| test.py:706:31 | StringLiteral | test.py:706:17 | List | normal |
 | test.py:708:5 | Function __init__ | test.py:708:18 | self | normal |
 | test.py:708:5 | FunctionExpr | test.py:708:9 | __init__ | normal |
 | test.py:708:9 | __init__ | test.py:712:5 | FunctionExpr | normal |
@@ -3239,10 +3239,10 @@
 | test.py:712:5 | Function __repr__ | test.py:712:18 | self | normal |
 | test.py:712:5 | FunctionExpr | test.py:712:9 | __repr__ | normal |
 | test.py:712:9 | __repr__ | test.py:703:1 | Class SSA_Var | normal |
-| test.py:712:18 | self | test.py:713:16 | Str | normal |
+| test.py:712:18 | self | test.py:713:16 | StringLiteral | normal |
 | test.py:713:9 | Return | test.py:712:5 | Function __repr__ | normal |
 | test.py:713:16 | BinaryExpr | test.py:713:9 | Return | normal |
-| test.py:713:16 | Str | test.py:713:37 | self | normal |
+| test.py:713:16 | StringLiteral | test.py:713:37 | self | normal |
 | test.py:713:37 | Attribute | test.py:713:37 | Attribute | normal |
 | test.py:713:37 | Attribute | test.py:713:55 | self | normal |
 | test.py:713:37 | Tuple | test.py:713:16 | BinaryExpr | normal |
@@ -3252,8 +3252,8 @@
 | test.py:716:1 | Function _reverse_map | test.py:716:18 | mapping | normal |
 | test.py:716:1 | FunctionExpr | test.py:716:5 | _reverse_map | normal |
 | test.py:716:5 | _reverse_map | test.py:0:0 | Module test | normal |
-| test.py:716:18 | mapping | test.py:717:5 | Str | normal |
-| test.py:717:5 | Str | test.py:718:15 | Dict | normal |
+| test.py:716:18 | mapping | test.py:717:5 | StringLiteral | normal |
+| test.py:717:5 | StringLiteral | test.py:718:15 | Dict | normal |
 | test.py:718:5 | inv_map | test.py:719:17 | mapping | normal |
 | test.py:718:15 | Dict | test.py:718:5 | inv_map | normal |
 | test.py:719:5 | For | test.py:719:9 | Tuple | normal |

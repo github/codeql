@@ -9,40 +9,51 @@
 | Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [Debuggable(...)] | System.Diagnostics.DebuggableAttribute |
 | Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [RuntimeCompatibility(...)] | System.Runtime.CompilerServices.RuntimeCompatibilityAttribute |
 | Assembly1.dll:0:0:0:0 | Assembly1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | Assembly1.dll:0:0:0:0 | [TargetFramework(...)] | System.Runtime.Versioning.TargetFrameworkAttribute |
-| attributes.cs:44:7:44:9 | Foo | attributes.cs:43:2:43:22 | [AttributeUsage(...)] | System.AttributeUsageAttribute |
-| attributes.cs:47:17:47:19 | foo | attributes.cs:46:6:46:16 | [Conditional(...)] | System.Diagnostics.ConditionalAttribute |
-| attributes.cs:52:23:52:23 | x | attributes.cs:52:14:52:16 | [Foo(...)] | Foo |
-| attributes.cs:55:10:55:11 | M1 | attributes.cs:54:6:54:16 | [My(...)] | MyAttribute |
-| attributes.cs:59:10:59:11 | M2 | attributes.cs:57:6:57:16 | [My(...)] | MyAttribute |
-| attributes.cs:59:10:59:11 | M2 | attributes.cs:58:6:58:8 | [My2(...)] | My2Attribute |
-| attributes.cs:78:14:78:14 | X | attributes.cs:77:2:77:5 | [Args(...)] | ArgsAttribute |
-| attributes.cs:82:9:82:18 | SomeMethod | attributes.cs:80:6:80:9 | [Args(...)] | ArgsAttribute |
-| attributes.cs:82:9:82:18 | SomeMethod | attributes.cs:81:14:81:17 | [return: Args(...)] | ArgsAttribute |
-| attributes.cs:98:14:98:24 | Invoke | attributes.cs:97:10:97:21 | [return: My3(...)] | My3Attribute |
-| attributes.cs:98:14:98:24 | My1Delegate | attributes.cs:96:2:96:13 | [My3(...)] | My3Attribute |
-| attributes.cs:102:17:102:27 | Invoke | attributes.cs:100:10:100:21 | [return: My3(...)] | My3Attribute |
-| attributes.cs:102:17:102:27 | My2Delegate | attributes.cs:101:8:101:19 | [My3(...)] | My3Attribute |
-| attributes.cs:108:32:108:32 | + | attributes.cs:106:6:106:17 | [My3(...)] | My3Attribute |
-| attributes.cs:108:32:108:32 | + | attributes.cs:107:14:107:25 | [return: My3(...)] | My3Attribute |
-| attributes.cs:114:9:114:11 | get_Item | attributes.cs:112:10:112:21 | [My3(...)] | My3Attribute |
-| attributes.cs:114:9:114:11 | get_Item | attributes.cs:113:18:113:29 | [return: My3(...)] | My3Attribute |
-| attributes.cs:118:9:118:11 | set_Item | attributes.cs:116:18:116:29 | [My3(...)] | My3Attribute |
-| attributes.cs:118:9:118:11 | value | attributes.cs:117:17:117:28 | [My3(...)] | My3Attribute |
-| attributes.cs:126:9:126:11 | get_Prop1 | attributes.cs:124:18:124:29 | [My3(...)] | My3Attribute |
-| attributes.cs:126:9:126:11 | get_Prop1 | attributes.cs:125:18:125:29 | [return: My3(...)] | My3Attribute |
-| attributes.cs:130:9:130:11 | set_Prop1 | attributes.cs:128:10:128:21 | [My3(...)] | My3Attribute |
-| attributes.cs:130:9:130:11 | value | attributes.cs:129:17:129:28 | [My3(...)] | My3Attribute |
-| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:10:12:10:24 | [assembly: AssemblyTitle(...)] | System.Reflection.AssemblyTitleAttribute |
-| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:11:12:11:30 | [assembly: AssemblyDescription(...)] | System.Reflection.AssemblyDescriptionAttribute |
-| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:12:12:12:32 | [assembly: AssemblyConfiguration(...)] | System.Reflection.AssemblyConfigurationAttribute |
-| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:13:12:13:26 | [assembly: AssemblyCompany(...)] | System.Reflection.AssemblyCompanyAttribute |
-| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:14:12:14:26 | [assembly: AssemblyProduct(...)] | System.Reflection.AssemblyProductAttribute |
-| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:15:12:15:28 | [assembly: AssemblyCopyright(...)] | System.Reflection.AssemblyCopyrightAttribute |
-| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:16:12:16:28 | [assembly: AssemblyTrademark(...)] | System.Reflection.AssemblyTrademarkAttribute |
-| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:17:12:17:26 | [assembly: AssemblyCulture(...)] | System.Reflection.AssemblyCultureAttribute |
-| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:22:12:22:21 | [assembly: ComVisible(...)] | System.Runtime.InteropServices.ComVisibleAttribute |
-| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:25:12:25:15 | [assembly: Guid(...)] | System.Runtime.InteropServices.GuidAttribute |
-| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:37:12:37:26 | [assembly: AssemblyVersion(...)] | System.Reflection.AssemblyVersionAttribute |
-| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:38:12:38:30 | [assembly: AssemblyFileVersion(...)] | System.Reflection.AssemblyFileVersionAttribute |
-| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:40:12:40:15 | [assembly: Args(...)] | ArgsAttribute |
-| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:41:10:41:13 | [module: Args(...)] | ArgsAttribute |
+| attributes.cs:46:7:46:9 | Foo | attributes.cs:45:2:45:22 | [AttributeUsage(...)] | System.AttributeUsageAttribute |
+| attributes.cs:49:17:49:19 | foo | attributes.cs:48:6:48:16 | [Conditional(...)] | System.Diagnostics.ConditionalAttribute |
+| attributes.cs:54:23:54:23 | x | attributes.cs:54:14:54:16 | [Foo(...)] | Foo |
+| attributes.cs:57:10:57:11 | M1 | attributes.cs:56:6:56:16 | [My(...)] | MyAttribute |
+| attributes.cs:61:10:61:11 | M2 | attributes.cs:59:6:59:16 | [My(...)] | MyAttribute |
+| attributes.cs:61:10:61:11 | M2 | attributes.cs:60:6:60:8 | [My2(...)] | My2Attribute |
+| attributes.cs:80:14:80:14 | X | attributes.cs:79:2:79:5 | [Args(...)] | ArgsAttribute |
+| attributes.cs:84:9:84:18 | SomeMethod | attributes.cs:82:6:82:9 | [Args(...)] | ArgsAttribute |
+| attributes.cs:84:9:84:18 | SomeMethod | attributes.cs:83:14:83:17 | [return: Args(...)] | ArgsAttribute |
+| attributes.cs:100:14:100:24 | Invoke | attributes.cs:99:10:99:21 | [return: My3(...)] | My3Attribute |
+| attributes.cs:100:14:100:24 | My1Delegate | attributes.cs:98:2:98:13 | [My3(...)] | My3Attribute |
+| attributes.cs:104:17:104:27 | Invoke | attributes.cs:102:10:102:21 | [return: My3(...)] | My3Attribute |
+| attributes.cs:104:17:104:27 | My2Delegate | attributes.cs:103:8:103:19 | [My3(...)] | My3Attribute |
+| attributes.cs:110:32:110:32 | + | attributes.cs:108:6:108:17 | [My3(...)] | My3Attribute |
+| attributes.cs:110:32:110:32 | + | attributes.cs:109:14:109:25 | [return: My3(...)] | My3Attribute |
+| attributes.cs:113:16:113:19 | Item | attributes.cs:112:6:112:17 | [My3(...)] | My3Attribute |
+| attributes.cs:117:9:117:11 | get_Item | attributes.cs:115:10:115:21 | [My3(...)] | My3Attribute |
+| attributes.cs:117:9:117:11 | get_Item | attributes.cs:116:18:116:29 | [return: My3(...)] | My3Attribute |
+| attributes.cs:121:9:121:11 | set_Item | attributes.cs:119:18:119:29 | [My3(...)] | My3Attribute |
+| attributes.cs:121:9:121:11 | value | attributes.cs:120:17:120:28 | [My3(...)] | My3Attribute |
+| attributes.cs:126:16:126:20 | Prop1 | attributes.cs:125:6:125:17 | [My3(...)] | My3Attribute |
+| attributes.cs:130:9:130:11 | get_Prop1 | attributes.cs:128:18:128:29 | [My3(...)] | My3Attribute |
+| attributes.cs:130:9:130:11 | get_Prop1 | attributes.cs:129:18:129:29 | [return: My3(...)] | My3Attribute |
+| attributes.cs:134:9:134:11 | set_Prop1 | attributes.cs:132:10:132:21 | [My3(...)] | My3Attribute |
+| attributes.cs:134:9:134:11 | value | attributes.cs:133:17:133:28 | [My3(...)] | My3Attribute |
+| attributes.cs:146:17:146:18 | M1 | attributes.cs:145:6:145:11 | [Params(...)] | Class1+ParamsAttribute |
+| attributes.cs:149:17:149:18 | M2 | attributes.cs:148:6:148:11 | [Params(...)] | Class1+ParamsAttribute |
+| attributes.cs:152:17:152:18 | M3 | attributes.cs:151:6:151:11 | [Params(...)] | Class1+ParamsAttribute |
+| attributes.cs:155:17:155:18 | M4 | attributes.cs:154:6:154:11 | [Params(...)] | Class1+ParamsAttribute |
+| attributes.cs:159:14:159:32 | MyExperimentalClass | attributes.cs:158:2:158:13 | [Experimental(...)] | System.Diagnostics.CodeAnalysis.ExperimentalAttribute |
+| attributes.cs:162:17:162:36 | MyExperimentalMethod | attributes.cs:161:6:161:17 | [Experimental(...)] | System.Diagnostics.CodeAnalysis.ExperimentalAttribute |
+| attributes.cs:168:17:168:17 | M | attributes.cs:167:6:167:31 | [OverloadResolutionPriority(...)] | System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute |
+| attributes.cs:171:17:171:17 | M | attributes.cs:170:6:170:31 | [OverloadResolutionPriority(...)] | System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute |
+| attributes.cs:174:17:174:17 | M | attributes.cs:173:6:173:31 | [OverloadResolutionPriority(...)] | System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:12:12:12:24 | [assembly: AssemblyTitle(...)] | System.Reflection.AssemblyTitleAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:13:12:13:30 | [assembly: AssemblyDescription(...)] | System.Reflection.AssemblyDescriptionAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:14:12:14:32 | [assembly: AssemblyConfiguration(...)] | System.Reflection.AssemblyConfigurationAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:15:12:15:26 | [assembly: AssemblyCompany(...)] | System.Reflection.AssemblyCompanyAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:16:12:16:26 | [assembly: AssemblyProduct(...)] | System.Reflection.AssemblyProductAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:17:12:17:28 | [assembly: AssemblyCopyright(...)] | System.Reflection.AssemblyCopyrightAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:18:12:18:28 | [assembly: AssemblyTrademark(...)] | System.Reflection.AssemblyTrademarkAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:19:12:19:26 | [assembly: AssemblyCulture(...)] | System.Reflection.AssemblyCultureAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:24:12:24:21 | [assembly: ComVisible(...)] | System.Runtime.InteropServices.ComVisibleAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:27:12:27:15 | [assembly: Guid(...)] | System.Runtime.InteropServices.GuidAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:39:12:39:26 | [assembly: AssemblyVersion(...)] | System.Reflection.AssemblyVersionAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:40:12:40:30 | [assembly: AssemblyFileVersion(...)] | System.Reflection.AssemblyFileVersionAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:42:12:42:15 | [assembly: Args(...)] | ArgsAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:43:10:43:13 | [module: Args(...)] | ArgsAttribute |

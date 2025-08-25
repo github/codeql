@@ -13,7 +13,33 @@ import ResourceExhaustionCustomizations::ResourceExhaustion
 /**
  * A data flow configuration for resource exhaustion vulnerabilities.
  */
-class Configuration extends TaintTracking::Configuration {
+module ResourceExhaustionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof Sanitizer or
+    node = any(DataFlow::PropRead read | read.getPropertyName() = "length") or
+    node = DataFlow::MakeBarrierGuard<BarrierGuard>::getABarrierNode()
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    isNumericFlowStep(node1, node2)
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+}
+
+/**
+ * Data flow for resource exhaustion vulnerabilities.
+ */
+module ResourceExhaustionFlow = TaintTracking::Global<ResourceExhaustionConfig>;
+
+/**
+ * DEPRECATED. Use the `ResourceExhaustionFlow` module instead.
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "ResourceExhaustion" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -49,10 +75,10 @@ predicate isNumericFlowStep(DataFlow::Node src, DataFlow::Node dst) {
 /**
  * A sanitizer that blocks taint flow if the size of a number is limited.
  */
-class UpperBoundsCheckSanitizerGuard extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
+class UpperBoundsCheckSanitizerGuard extends BarrierGuard, DataFlow::ValueNode {
   override RelationalComparison astNode;
 
-  override predicate sanitizes(boolean outcome, Expr e) {
+  override predicate blocksExpr(boolean outcome, Expr e) {
     true = outcome and
     e = astNode.getLesserOperand()
     or

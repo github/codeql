@@ -30,7 +30,7 @@ class ReferenceEqualityTestOnObject extends ReferenceEqualityTest {
 
 from ReferenceEqualityTestOnObject scw
 where
-  not exists(Variable left, Variable right, MethodAccess equals |
+  not exists(Variable left, Variable right, MethodCall equals |
     left = scw.getLeftOperand().(VarAccess).getVariable() and
     right = scw.getRightOperand().(VarAccess).getVariable() and
     scw.getEnclosingCallable() = equals.getEnclosingCallable() and

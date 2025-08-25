@@ -1,1 +1,2 @@
-Expressions/ImplicitOperandConversion.ql
+query: Expressions/ImplicitOperandConversion.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

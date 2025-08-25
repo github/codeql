@@ -5,8 +5,9 @@
  * @problem.severity warning
  * @precision very-high
  * @id cs/call-to-gc
- * @tags efficiency
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       performance
  */
 
 import csharp
@@ -16,5 +17,5 @@ where
   c.getTarget() = gcCollect and
   gcCollect.hasName("Collect") and
   gcCollect.hasNoParameters() and
-  gcCollect.getDeclaringType().hasQualifiedName("System", "GC")
+  gcCollect.getDeclaringType().hasFullyQualifiedName("System", "GC")
 select c, "Call to 'GC.Collect()'."

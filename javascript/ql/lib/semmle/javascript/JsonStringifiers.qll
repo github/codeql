@@ -27,6 +27,8 @@ class JsonStringifyCall extends DataFlow::CallNode {
     )
     or
     this = Templating::getAPipeCall(["json", "dump"])
+    or
+    this = DataFlow::moduleImport("serialize-javascript").getACall()
   }
 
   /**
@@ -58,9 +60,6 @@ class Json2CsvTaintStep extends TaintTracking::SharedTaintStep {
     )
   }
 }
-
-/** DEPRECATED: Alias for Json2CsvTaintStep */
-deprecated class JSON2CSVTaintStep = Json2CsvTaintStep;
 
 /**
  * A step through the [`prettyjson`](https://www.npmjs.com/package/prettyjson) library.

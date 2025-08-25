@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with Android manifest files.
  */
+overlay[local?]
+module;
 
 import XML
 
@@ -23,6 +25,21 @@ class AndroidManifestXmlFile extends XmlFile {
    * Holds if this Android manifest file is located in a build directory.
    */
   predicate isInBuildDirectory() { this.getFile().getRelativePath().matches("%build%") }
+
+  /**
+   * Holds if this file defines at least one activity, service or contest provider,
+   * and so it corresponds to an android application rather than a library.
+   */
+  predicate definesAndroidApplication() {
+    exists(AndroidComponentXmlElement acxe |
+      this.getManifestElement().getApplicationElement().getAComponentElement() = acxe and
+      (
+        acxe instanceof AndroidActivityXmlElement or
+        acxe instanceof AndroidServiceXmlElement or
+        acxe instanceof AndroidProviderXmlElement
+      )
+    )
+  }
 }
 
 /**

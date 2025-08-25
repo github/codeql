@@ -1,7 +1,7 @@
 import python
 
 /** A string constant that looks like it may be used in string formatting operations. */
-class PossibleAdvancedFormatString extends StrConst {
+class PossibleAdvancedFormatString extends StringLiteral {
   PossibleAdvancedFormatString() { this.getText().matches("%{%}%") }
 
   private predicate field(int start, int end) {

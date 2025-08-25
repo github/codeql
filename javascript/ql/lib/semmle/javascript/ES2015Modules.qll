@@ -2,6 +2,7 @@
 
 import javascript
 private import semmle.javascript.internal.CachedStages
+private import semmle.javascript.internal.paths.PathExprResolver
 
 /**
  * An ECMAScript 2015 module.
@@ -39,6 +40,20 @@ class ES2015Module extends Module {
     // modules are implicitly strict
     any()
   }
+
+  /**
+   * Holds if this module contains both named and `default` exports.
+   *
+   * This is used to determine whether a default-import of the module should be reinterpreted
+   * as a namespace-import, to accommodate the non-standard behavior implemented by some compilers.
+   *
+   * When a module has both named and `default` exports, the non-standard interpretation can lead to
+   * ambiguities, so we only allow the standard interpretation in that case.
+   */
+  predicate hasBothNamedAndDefaultExports() {
+    hasNamedExports(this) and
+    hasDefaultExport(this)
+  }
 }
 
 /**
@@ -65,17 +80,6 @@ private predicate hasDefaultExport(ES2015Module mod) {
 }
 
 /**
- * Holds if `mod` contains both named and `default` exports.
- *
- * This is used to determine whether a default-import of the module should be reinterpreted
- * as a namespace-import, to accommodate the non-standard behavior implemented by some compilers.
- */
-private predicate hasBothNamedAndDefaultExports(ES2015Module mod) {
-  hasNamedExports(mod) and
-  hasDefaultExport(mod)
-}
-
-/**
  * An import declaration.
  *
  * Examples:
@@ -88,17 +92,35 @@ private predicate hasBothNamedAndDefaultExports(ES2015Module mod) {
 class ImportDeclaration extends Stmt, Import, @import_declaration {
   override ES2015Module getEnclosingModule() { result = this.getTopLevel() }
 
-  override PathExpr getImportedPath() { result = this.getChildExpr(-1) }
+  /**
+   * INTERNAL USE ONLY. DO NOT USE.
+   */
+  string getRawImportPath() { result = this.getChildExpr(-1).getStringValue() }
+
+  override Expr getImportedPathExpr() { result = this.getChildExpr(-1) }
 
   /**
-   * Gets the object literal passed as part of the `assert` clause in this import declaration.
+   * Gets the object literal passed as part of the `with` (or `assert`) clause in this import declaration.
    *
    * For example, this gets the `{ type: "json" }` object literal in the following:
    * ```js
+   * import foo from "foo" with { type: "json" };
    * import foo from "foo" assert { type: "json" };
    * ```
    */
-  ObjectExpr getImportAssertion() { result = this.getChildExpr(-10) }
+  ObjectExpr getImportAttributes() { result = this.getChildExpr(-10) }
+
+  /**
+   * DEPRECATED: use `getImportAttributes` instead.
+   * Gets the object literal passed as part of the `with` (or `assert`) clause in this import declaration.
+   *
+   * For example, this gets the `{ type: "json" }` object literal in the following:
+   * ```js
+   * import foo from "foo" with { type: "json" };
+   * import foo from "foo" assert { type: "json" };
+   * ```
+   */
+  deprecated ObjectExpr getImportAssertion() { result = this.getImportAttributes() }
 
   /** Gets the `i`th import specifier of this import declaration. */
   ImportSpecifier getSpecifier(int i) { result = this.getChildExpr(i) }
@@ -118,7 +140,7 @@ class ImportDeclaration extends Stmt, Import, @import_declaration {
       // For compatibility with the non-standard implementation of default imports,
       // treat default imports as namespace imports in cases where it can't cause ambiguity
       // between named exports and the properties of a default-exported object.
-      not hasBothNamedAndDefaultExports(this.getImportedModule()) and
+      not this.getImportedModule().(ES2015Module).hasBothNamedAndDefaultExports() and
       is.getImportedName() = "default"
     )
     or
@@ -133,7 +155,7 @@ class ImportDeclaration extends Stmt, Import, @import_declaration {
 }
 
 /** A literal path expression appearing in an `import` declaration. */
-private class LiteralImportPath extends PathExpr, ConstantString {
+deprecated private class LiteralImportPath extends PathExpr, ConstantString {
   LiteralImportPath() { exists(ImportDeclaration req | this = req.getChildExpr(-1)) }
 
   override string getValue() { result = this.getStringValue() }
@@ -158,6 +180,9 @@ private class LiteralImportPath extends PathExpr, ConstantString {
  * ```
  */
 class ImportSpecifier extends Expr, @import_specifier {
+  /** Gets the import declaration in which this specifier appears. */
+  ImportDeclaration getImportDeclaration() { result.getASpecifier() = this }
+
   /** Gets the imported symbol; undefined for default and namespace import specifiers. */
   Identifier getImported() { result = this.getChildExpr(0) }
 
@@ -322,17 +347,33 @@ abstract class ExportDeclaration extends Stmt, @export_declaration {
   override string getAPrimaryQlClass() { result = "ExportDeclaration" }
 
   /**
-   * Gets the object literal passed as part of the `assert` clause, if this is
+   * Gets the object literal passed as part of the `with` (or `assert`) clause, if this is
    * a re-export declaration.
    *
    * For example, this gets the `{ type: "json" }` expression in each of the following:
    * ```js
-   * export { x } from 'foo' assert { type: "json" };
+   * export { x } from 'foo' with { type: "json" };
+   * export * from 'foo' with { type: "json" };
+   * export * as x from 'foo' with { type: "json" };
    * export * from 'foo' assert { type: "json" };
-   * export * as x from 'foo' assert { type: "json" };
    * ```
    */
-  ObjectExpr getImportAssertion() { result = this.getChildExpr(-10) }
+  ObjectExpr getImportAttributes() { result = this.getChildExpr(-10) }
+
+  /**
+   * DEPRECATED: use `getImportAttributes` instead.
+   * Gets the object literal passed as part of the `with` (or `assert`) clause, if this is
+   * a re-export declaration.
+   *
+   * For example, this gets the `{ type: "json" }` expression in each of the following:
+   * ```js
+   * export { x } from 'foo' with { type: "json" };
+   * export * from 'foo' with { type: "json" };
+   * export * as x from 'foo' with { type: "json" };
+   * export * from 'foo' assert { type: "json" };
+   * ```
+   */
+  deprecated ObjectExpr getImportAssertion() { result = this.getImportAttributes() }
 }
 
 /**
@@ -478,6 +519,9 @@ class ExportNamedDeclaration extends ExportDeclaration, @export_named_declaratio
       or
       exists(ReExportDeclaration red | red = this |
         result = red.getReExportedES2015Module().getAnExport().getSourceNode(spec.getLocalName())
+        or
+        spec instanceof ExportNamespaceSpecifier and
+        result = DataFlow::valueNode(spec)
       )
     )
   }
@@ -490,6 +534,19 @@ class ExportNamedDeclaration extends ExportDeclaration, @export_named_declaratio
 
   /** Gets an export specifier of this declaration. */
   ExportSpecifier getASpecifier() { result = this.getSpecifier(_) }
+}
+
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
+
+private class ExportNamespaceStep extends PreCallGraphStep {
+  override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+    exists(ExportNamedDeclaration exprt, ExportNamespaceSpecifier spec |
+      spec = exprt.getASpecifier() and
+      pred =
+        exprt.(ReExportDeclaration).getReExportedES2015Module().getAnExport().getSourceNode(prop) and
+      succ = DataFlow::valueNode(spec)
+    )
+  }
 }
 
 /**
@@ -677,27 +734,12 @@ abstract class ReExportDeclaration extends ExportDeclaration {
   cached
   Module getReExportedModule() {
     Stages::Imports::ref() and
-    result.getFile() = this.getEnclosingModule().resolve(this.getImportedPath())
-    or
-    result = this.resolveFromTypeRoot()
-  }
-
-  /**
-   * Gets a module in a `node_modules/@types/` folder that matches the imported module name.
-   */
-  private Module resolveFromTypeRoot() {
-    result.getFile() =
-      min(TypeRootFolder typeRoot |
-        |
-        typeRoot.getModuleFile(this.getImportedPath().getStringValue())
-        order by
-          typeRoot.getSearchPriority(this.getFile().getParentContainer())
-      )
+    result.getFile() = ImportPathResolver::resolveExpr(this.getImportedPath())
   }
 }
 
 /** A literal path expression appearing in a re-export declaration. */
-private class LiteralReExportPath extends PathExpr, ConstantString {
+deprecated private class LiteralReExportPath extends PathExpr, ConstantString {
   LiteralReExportPath() { exists(ReExportDeclaration bred | this = bred.getImportedPath()) }
 
   override string getValue() { result = this.getStringValue() }

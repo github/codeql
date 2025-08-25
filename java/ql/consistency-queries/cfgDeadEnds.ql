@@ -1,7 +1,6 @@
 import java
-import semmle.code.java.ControlFlowGraph
 
-predicate shouldBeDeadEnd(ControlFlowNode n) {
+predicate shouldBeDeadEnd(ExprParent n) {
   n instanceof BreakStmt and n.getFile().isKotlinSourceFile() // TODO
   or
   n instanceof Interface // TODO
@@ -44,7 +43,7 @@ predicate shouldBeDeadEnd(ControlFlowNode n) {
   or
   n instanceof WildcardTypeAccess // TODO
   or
-  n instanceof MethodAccess // TODO
+  n instanceof MethodCall // TODO
   or
   n instanceof Method
   or
@@ -55,8 +54,11 @@ predicate shouldBeDeadEnd(ControlFlowNode n) {
   n = any(ConstCase c).getValue(_) // TODO
 }
 
-from ControlFlowNode n, string s
+from ControlFlowNode n, ExprParent astnode, string s
 where
-  // TODO: exists(n.getASuccessor()) and shouldBeDeadEnd(n) and s = "expected dead end"
-  not exists(n.getASuccessor()) and not shouldBeDeadEnd(n) and s = "unexpected dead end"
-select n, n.getPrimaryQlClasses(), s
+  astnode = n.getAstNode() and
+  // TODO: exists(n.getASuccessor()) and shouldBeDeadEnd(n.getAstNode()) and s = "expected dead end"
+  not exists(n.getASuccessor()) and
+  not shouldBeDeadEnd(astnode) and
+  s = "unexpected dead end"
+select n, astnode.getPrimaryQlClasses(), s

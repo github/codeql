@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["fastly/compute-actions", "*", "input.fastly-api-token", "code-injection", "generated"]

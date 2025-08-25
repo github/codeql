@@ -1,0 +1,4 @@
+| alias.cs:10:17:10:18 | M1 | alias.cs:10:31:10:31 | t | (Int32,Object) |
+| alias.cs:16:17:16:18 | M2 | alias.cs:16:31:16:31 | t | (Int32,String) |
+| alias.cs:23:17:23:18 | M3 | alias.cs:23:26:23:26 | p | (Int32,Int32) |
+| alias.cs:29:17:29:18 | M4 | alias.cs:29:31:29:31 | t | (Int32,Object) |

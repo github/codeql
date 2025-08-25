@@ -67,3 +67,9 @@ app.get('/some/non-xss1', function(req, res) {
   res.send(req.params.foo)
   foo(res);
 });
+
+app.get('/some/xss3', function(req, res) {
+  res.header("Content-Type", "text/html");
+  res.send(req.path)
+  foo(res);
+});

@@ -1,13 +1,13 @@
 import java
 import semmle.code.java.security.Mail
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module InsecureJavaMailTest implements TestSig {
   string getARelevantTag() { result = "hasInsecureJavaMail" }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasInsecureJavaMail" and
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getLocation() = location and
       element = ma.toString() and
       value = ""

@@ -1,12 +1,8 @@
 # Swift on CodeQL
 
-## Warning
+## Development
 
-The Swift CodeQL package is an experimental and unsupported work in progress.
-
-##
-
-## Building the Swift extractor
+### Building the Swift extractor
 
 First ensure you have Bazel installed, for example with
 
@@ -17,7 +13,14 @@ brew install bazelisk
 then from the `ql` directory run
 
 ```bash
-bazel run //swift:create-extractor-pack    # --cpu=darwin_x86_64 # Uncomment on Arm-based Macs
+bazel run //swift:install
+```
+
+If you are running on macOS and you encounter errors mentioning `XXX is unavailable: introduced in macOS YY.ZZ`,
+you will need to run this from the root of your `codeql` checkout:
+
+```bash
+echo common --macos_sdk_version=$(sw_vers --productVersion) >> local.bazelrc
 ```
 
 which will install `swift/extractor-pack`.
@@ -29,8 +32,6 @@ Using `codeql ... --search-path=swift/extractor-pack` will then pick up the Swif
 set up the search path
 in [the per-user CodeQL configuration file](https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/specifying-command-options-in-a-codeql-configuration-file#using-a-codeql-configuration-file)
 .
-
-## Development
 
 ### Code generation
 
@@ -112,3 +113,8 @@ In particular for breakpoints to work you might need to setup the following remo
 ### Thread safety
 
 The extractor is single-threaded, and there was no effort to make anything in it thread-safe.
+
+### Updating the swift compiler version
+
+This can only be done with access to the internal repository at the moment. Some (incomplete) instructions are
+found [here](third_party/resources/updating.md).

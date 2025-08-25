@@ -17,9 +17,9 @@ namespace Antlr
             public ANTLRReaderStream(System.IO.TextReader r) => throw null;
             public ANTLRReaderStream(System.IO.TextReader r, int size) => throw null;
             public ANTLRReaderStream(System.IO.TextReader r, int size, int readChunkSize) => throw null;
-            public static int InitialBufferSize;
+            public const int InitialBufferSize = 1024;
             public virtual void Load(System.IO.TextReader r, int size, int readChunkSize) => throw null;
-            public static int ReadBufferSize;
+            public const int ReadBufferSize = 1024;
         }
         public class ANTLRStringStream : Antlr.Runtime.ICharStream, Antlr.Runtime.IIntStream
         {
@@ -83,7 +83,7 @@ namespace Antlr
             protected virtual void DebugLocation(int line, int charPositionInLine) => throw null;
             protected virtual void DebugRecognitionException(Antlr.Runtime.RecognitionException ex) => throw null;
             protected virtual void DebugSemanticPredicate(bool result, string predicate) => throw null;
-            public static int DefaultTokenChannel;
+            public const int DefaultTokenChannel = 0;
             public virtual void DisplayRecognitionError(string[] tokenNames, Antlr.Runtime.RecognitionException e) => throw null;
             public virtual void EmitErrorMessage(string msg) => throw null;
             public virtual void EndResync() => throw null;
@@ -96,17 +96,17 @@ namespace Antlr
             public virtual int GetRuleMemoizationCacheSize() => throw null;
             public virtual string GetTokenErrorDisplay(Antlr.Runtime.IToken t) => throw null;
             public virtual string GrammarFileName { get => throw null; }
-            public static int Hidden;
+            public const int Hidden = 99;
             protected virtual void InitDFAs() => throw null;
-            public static int InitialFollowStackSize;
+            public const int InitialFollowStackSize = 100;
             public virtual object Match(Antlr.Runtime.IIntStream input, int ttype, Antlr.Runtime.BitSet follow) => throw null;
             public virtual void MatchAny(Antlr.Runtime.IIntStream input) => throw null;
             public virtual void Memoize(Antlr.Runtime.IIntStream input, int ruleIndex, int ruleStartIndex) => throw null;
-            public static int MemoRuleFailed;
-            public static int MemoRuleUnknown;
+            public const int MemoRuleFailed = -2;
+            public const int MemoRuleUnknown = -1;
             public virtual bool MismatchIsMissingToken(Antlr.Runtime.IIntStream input, Antlr.Runtime.BitSet follow) => throw null;
             public virtual bool MismatchIsUnwantedToken(Antlr.Runtime.IIntStream input, int ttype) => throw null;
-            public static string NextTokenRuleName;
+            public const string NextTokenRuleName = default;
             public virtual int NumberOfSyntaxErrors { get => throw null; }
             protected void PopFollow() => throw null;
             protected void PushFollow(Antlr.Runtime.BitSet fset) => throw null;
@@ -151,7 +151,7 @@ namespace Antlr
             public override string ToString() => throw null;
             public string ToString(string[] tokenNames) => throw null;
         }
-        public class BufferedTokenStream : Antlr.Runtime.ITokenStream, Antlr.Runtime.IIntStream, Antlr.Runtime.ITokenStreamInformation
+        public class BufferedTokenStream : Antlr.Runtime.IIntStream, Antlr.Runtime.ITokenStream, Antlr.Runtime.ITokenStreamInformation
         {
             protected int _p;
             protected System.Collections.Generic.List<Antlr.Runtime.IToken> _tokens;
@@ -191,7 +191,7 @@ namespace Antlr
         }
         public static class CharStreamConstants
         {
-            public static int EndOfFile;
+            public const int EndOfFile = -1;
         }
         public class CharStreamState
         {
@@ -333,6 +333,7 @@ namespace Antlr
             public string RuleName { get => throw null; }
             public override string ToString() => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)64, AllowMultiple = false, Inherited = true)]
         public sealed class GrammarRuleAttribute : System.Attribute
         {
             public GrammarRuleAttribute(string name) => throw null;
@@ -417,7 +418,7 @@ namespace Antlr
             Antlr.Runtime.IToken LastToken { get; }
             int MaxLookBehind { get; }
         }
-        public class LegacyCommonTokenStream : Antlr.Runtime.ITokenStream, Antlr.Runtime.IIntStream
+        public class LegacyCommonTokenStream : Antlr.Runtime.IIntStream, Antlr.Runtime.ITokenStream
         {
             protected int channel;
             protected System.Collections.Generic.IDictionary<int, int> channelOverrideMap;
@@ -703,8 +704,8 @@ namespace Antlr
         }
         public static class TokenChannels
         {
-            public static int Default;
-            public static int Hidden;
+            public const int Default = 0;
+            public const int Hidden = 99;
         }
         public class TokenRewriteStream : Antlr.Runtime.CommonTokenStream
         {
@@ -712,7 +713,7 @@ namespace Antlr
             public TokenRewriteStream() => throw null;
             public TokenRewriteStream(Antlr.Runtime.ITokenSource tokenSource) => throw null;
             public TokenRewriteStream(Antlr.Runtime.ITokenSource tokenSource, int channel) => throw null;
-            public static string DEFAULT_PROGRAM_NAME;
+            public const string DEFAULT_PROGRAM_NAME = default;
             public virtual void Delete(int index) => throw null;
             public virtual void Delete(int from, int to) => throw null;
             public virtual void Delete(Antlr.Runtime.IToken indexT) => throw null;
@@ -736,8 +737,8 @@ namespace Antlr
             public virtual void InsertBefore(string programName, Antlr.Runtime.IToken t, object text) => throw null;
             public virtual void InsertBefore(string programName, int index, object text) => throw null;
             protected System.Collections.Generic.IDictionary<string, int> lastRewriteTokenIndexes;
-            public static int MIN_TOKEN_INDEX;
-            public static int PROGRAM_INIT_SIZE;
+            public const int MIN_TOKEN_INDEX = 0;
+            public const int PROGRAM_INIT_SIZE = 100;
             protected System.Collections.Generic.IDictionary<string, System.Collections.Generic.IList<Antlr.Runtime.TokenRewriteStream.RewriteOperation>> programs;
             protected virtual System.Collections.Generic.IDictionary<int, Antlr.Runtime.TokenRewriteStream.RewriteOperation> ReduceToSingleOperationPerIndex(System.Collections.Generic.IList<Antlr.Runtime.TokenRewriteStream.RewriteOperation> rewrites) => throw null;
             public virtual void Replace(int index, object text) => throw null;
@@ -771,16 +772,16 @@ namespace Antlr
         }
         public static class Tokens
         {
-            public static Antlr.Runtime.IToken Skip;
+            public static readonly Antlr.Runtime.IToken Skip;
         }
         public static class TokenTypes
         {
-            public static int Down;
-            public static int EndOfFile;
-            public static int EndOfRule;
-            public static int Invalid;
-            public static int Min;
-            public static int Up;
+            public const int Down = 2;
+            public const int EndOfFile = -1;
+            public const int EndOfRule = 1;
+            public const int Invalid = 0;
+            public const int Min = 4;
+            public const int Up = 3;
         }
         namespace Tree
         {
@@ -872,7 +873,7 @@ namespace Antlr
                 protected System.Collections.Generic.IDictionary<object, int> treeToUniqueIDMap;
                 protected int uniqueNodeID;
             }
-            public class BufferedTreeNodeStream : Antlr.Runtime.Tree.ITreeNodeStream, Antlr.Runtime.IIntStream, Antlr.Runtime.ITokenStreamInformation
+            public class BufferedTreeNodeStream : Antlr.Runtime.IIntStream, Antlr.Runtime.ITokenStreamInformation, Antlr.Runtime.Tree.ITreeNodeStream
             {
                 protected virtual void AddNavigationNode(int ttype) => throw null;
                 protected System.Collections.Generic.Stack<int> calls;
@@ -881,7 +882,7 @@ namespace Antlr
                 public BufferedTreeNodeStream(object tree) => throw null;
                 public BufferedTreeNodeStream(Antlr.Runtime.Tree.ITreeAdaptor adaptor, object tree) => throw null;
                 public BufferedTreeNodeStream(Antlr.Runtime.Tree.ITreeAdaptor adaptor, object tree, int initialBufferSize) => throw null;
-                public static int DEFAULT_INITIAL_BUFFER_SIZE;
+                public const int DEFAULT_INITIAL_BUFFER_SIZE = 100;
                 protected object down;
                 protected object eof;
                 protected virtual void FillBuffer() => throw null;
@@ -889,7 +890,7 @@ namespace Antlr
                 public virtual object GetCurrentSymbol() => throw null;
                 protected virtual int GetNodeIndex(object node) => throw null;
                 public virtual int Index { get => throw null; }
-                public static int INITIAL_CALL_STACK_SIZE;
+                public const int INITIAL_CALL_STACK_SIZE = 10;
                 public virtual System.Collections.Generic.IEnumerator<object> Iterator() => throw null;
                 public virtual int LA(int i) => throw null;
                 protected int lastMarker;
@@ -911,7 +912,7 @@ namespace Antlr
                 protected object root;
                 public virtual void Seek(int index) => throw null;
                 public virtual string SourceName { get => throw null; }
-                protected sealed class StreamIterator : System.Collections.Generic.IEnumerator<object>, System.Collections.IEnumerator, System.IDisposable
+                protected sealed class StreamIterator : System.IDisposable, System.Collections.Generic.IEnumerator<object>, System.Collections.IEnumerator
                 {
                     public StreamIterator(Antlr.Runtime.Tree.BufferedTreeNodeStream outer) => throw null;
                     public object Current { get => throw null; }
@@ -971,15 +972,15 @@ namespace Antlr
                 public CommonTreeAdaptor() => throw null;
                 public override Antlr.Runtime.IToken GetToken(object t) => throw null;
             }
-            public class CommonTreeNodeStream : Antlr.Runtime.Misc.LookaheadStream<object>, Antlr.Runtime.Tree.ITreeNodeStream, Antlr.Runtime.IIntStream, Antlr.Runtime.Tree.IPositionTrackingStream
+            public class CommonTreeNodeStream : Antlr.Runtime.Misc.LookaheadStream<object>, Antlr.Runtime.IIntStream, Antlr.Runtime.Tree.IPositionTrackingStream, Antlr.Runtime.Tree.ITreeNodeStream
             {
                 public CommonTreeNodeStream(object tree) => throw null;
                 public CommonTreeNodeStream(Antlr.Runtime.Tree.ITreeAdaptor adaptor, object tree) => throw null;
-                public static int DEFAULT_INITIAL_BUFFER_SIZE;
+                public const int DEFAULT_INITIAL_BUFFER_SIZE = 100;
                 public override object Dequeue() => throw null;
                 public object GetKnownPositionElement(bool allowApproximateLocation) => throw null;
                 public bool HasPositionInformation(object node) => throw null;
-                public static int INITIAL_CALL_STACK_SIZE;
+                public const int INITIAL_CALL_STACK_SIZE = 10;
                 public override bool IsEndOfFile(object o) => throw null;
                 public virtual int LA(int i) => throw null;
                 public override object NextElement() => throw null;
@@ -1195,7 +1196,7 @@ namespace Antlr
                 protected Antlr.Runtime.ITokenStream originalTokenStream;
                 protected virtual void Topdown() => throw null;
             }
-            public class TreeIterator : System.Collections.Generic.IEnumerator<object>, System.Collections.IEnumerator, System.IDisposable
+            public class TreeIterator : System.IDisposable, System.Collections.Generic.IEnumerator<object>, System.Collections.IEnumerator
             {
                 protected Antlr.Runtime.Tree.ITreeAdaptor adaptor;
                 public TreeIterator(Antlr.Runtime.Tree.CommonTree tree) => throw null;
@@ -1216,7 +1217,7 @@ namespace Antlr
             {
                 public TreeParser(Antlr.Runtime.Tree.ITreeNodeStream input) => throw null;
                 public TreeParser(Antlr.Runtime.Tree.ITreeNodeStream input, Antlr.Runtime.RecognizerSharedState state) => throw null;
-                public static int DOWN;
+                public const int DOWN = 2;
                 protected override object GetCurrentInputSymbol(Antlr.Runtime.IIntStream input) => throw null;
                 public override string GetErrorHeader(Antlr.Runtime.RecognitionException e) => throw null;
                 public override string GetErrorMessage(Antlr.Runtime.RecognitionException e, string[] tokenNames) => throw null;
@@ -1230,25 +1231,25 @@ namespace Antlr
                 public override string SourceName { get => throw null; }
                 public virtual void TraceIn(string ruleName, int ruleIndex) => throw null;
                 public virtual void TraceOut(string ruleName, int ruleIndex) => throw null;
-                public static int UP;
+                public const int UP = 3;
             }
             public class TreePatternLexer
             {
-                public static int Arg;
-                public static int Begin;
+                public const int Arg = 4;
+                public const int Begin = 1;
                 protected int c;
-                public static int Colon;
+                public const int Colon = 6;
                 protected virtual void Consume() => throw null;
                 public TreePatternLexer(string pattern) => throw null;
-                public static int Dot;
-                public static int End;
+                public const int Dot = 7;
+                public const int End = 2;
                 public bool error;
-                public static int Id;
+                public const int Id = 3;
                 protected int n;
                 public virtual int NextToken() => throw null;
                 protected int p;
                 protected string pattern;
-                public static int Percent;
+                public const int Percent = 5;
                 public System.Text.StringBuilder sval;
             }
             public class TreePatternParser
@@ -1354,7 +1355,7 @@ namespace Antlr
                 }
             }
         }
-        public class UnbufferedTokenStream : Antlr.Runtime.Misc.LookaheadStream<Antlr.Runtime.IToken>, Antlr.Runtime.ITokenStream, Antlr.Runtime.IIntStream, Antlr.Runtime.ITokenStreamInformation
+        public class UnbufferedTokenStream : Antlr.Runtime.Misc.LookaheadStream<Antlr.Runtime.IToken>, Antlr.Runtime.IIntStream, Antlr.Runtime.ITokenStream, Antlr.Runtime.ITokenStreamInformation
         {
             protected int channel;
             public override void Clear() => throw null;

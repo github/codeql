@@ -1,4 +1,6 @@
 /** Provides a class hierarchy corresponding to a parse tree of regular expressions. */
+overlay[local?]
+module;
 
 private import semmle.code.java.regex.regex as RE // importing under a namescape to avoid naming conflict for `Top`.
 private import codeql.regex.nfa.NfaUtils as NfaUtils
@@ -1160,14 +1162,6 @@ module Impl implements RegexTreeViewSig {
   predicate isIgnoreCase(RegExpTerm root) {
     root.isRootTerm() and
     root.getLiteral().isIgnoreCase()
-  }
-
-  /**
-   * Gets the flags for `root`, or the empty string if `root` has no flags.
-   */
-  additional deprecated string getFlags(RegExpTerm root) {
-    root.isRootTerm() and
-    result = root.getLiteral().getFlags()
   }
 
   /**

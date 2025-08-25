@@ -7,7 +7,7 @@ private import codeql.ruby.ApiGraphs
 private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes::ExprNodes
 private import codeql.ruby.DataFlow
-private import codeql.ruby.typetracking.TypeTracker
+private import codeql.ruby.typetracking.TypeTracking
 private import App as A
 
 /** Contains implementation details for modeling `Rack::Response`. */

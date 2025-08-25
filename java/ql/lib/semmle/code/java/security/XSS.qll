@@ -1,4 +1,6 @@
 /** Provides classes to reason about Cross-site scripting (XSS) vulnerabilities. */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.frameworks.Servlets
@@ -10,9 +12,11 @@ private import semmle.code.java.frameworks.hudson.Hudson
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.dataflow.FlowSinks
 
 /** A sink that represent a method that outputs data without applying contextual output encoding. */
-abstract class XssSink extends DataFlow::Node { }
+abstract class XssSink extends ApiSinkNode { }
 
 /** A sanitizer that neutralizes dangerous characters that can be used to perform a XSS attack. */
 abstract class XssSanitizer extends DataFlow::Node { }
@@ -42,7 +46,7 @@ private class DefaultXssSink extends XssSink {
   DefaultXssSink() {
     sinkNode(this, ["html-injection", "js-injection"])
     or
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof WritingMethod and
       XssVulnerableWriterSourceToWritingMethodFlow::flowToExpr(ma.getQualifier()) and
       this.asExpr() = ma.getArgument(_)
@@ -56,16 +60,16 @@ private class DefaultXssSanitizer extends XssSanitizer {
     this.getType() instanceof NumericType or
     this.getType() instanceof BooleanType or
     // Match `org.springframework.web.util.HtmlUtils.htmlEscape` and possibly other methods like it.
-    this.asExpr().(MethodAccess).getMethod().getName().regexpMatch("(?i)html_?escape.*")
+    this.asExpr().(MethodCall).getMethod().getName().regexpMatch("(?i)html_?escape.*")
   }
 }
 
 /** A configuration that tracks data from a servlet writer to an output method. */
 private module XssVulnerableWriterSourceToWritingMethodFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof XssVulnerableWriterSource }
+  predicate isSource(DataFlow::Node src) { src instanceof XssVulnerableWriterSourceNode }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       sink.asExpr() = ma.getQualifier() and ma.getMethod() instanceof WritingMethod
     )
   }
@@ -88,15 +92,30 @@ private class WritingMethod extends Method {
 }
 
 /** An output stream or writer that writes to a servlet, JSP or JSF response. */
-class XssVulnerableWriterSource extends MethodAccess {
+class XssVulnerableWriterSource extends MethodCall {
   XssVulnerableWriterSource() {
-    this.getMethod() instanceof ServletResponseGetWriterMethod
-    or
-    this.getMethod() instanceof ServletResponseGetOutputStreamMethod
+    (
+      this.getMethod() instanceof ServletResponseGetWriterMethod
+      or
+      this.getMethod() instanceof ServletResponseGetOutputStreamMethod
+    ) and
+    not exists(MethodCall mc, Expr contentType |
+      mc.getMethod() instanceof ResponseSetContentTypeMethod and
+      contentType = mc.getArgument(0)
+      or
+      (
+        mc.getMethod() instanceof ResponseAddHeaderMethod or
+        mc.getMethod() instanceof ResponseSetHeaderMethod
+      ) and
+      mc.getArgument(0).(CompileTimeConstantExpr).getStringValue().toLowerCase() = "content-type" and
+      contentType = mc.getArgument(1)
+    |
+      isXssSafeContentTypeString(contentType.(CompileTimeConstantExpr).getStringValue()) and
+      DataFlow::localExprFlow(mc.getQualifier(), this.getQualifier())
+    )
     or
     exists(Method m | m = this.getMethod() |
-      m.getDeclaringType().getQualifiedName() = "javax.servlet.jsp.JspContext" and
-      m.getName() = "getOut"
+      m.hasQualifiedName("javax.servlet.jsp", "JspContext", "getOut")
     )
     or
     this.getMethod() instanceof FacesGetResponseWriterMethod
@@ -105,15 +124,32 @@ class XssVulnerableWriterSource extends MethodAccess {
   }
 }
 
+pragma[nomagic]
+private predicate isXssSafeContentTypeString(string s) {
+  s = any(CompileTimeConstantExpr cte).getStringValue() and isXssSafeContentType(s)
+}
+
+/**
+ * A xss vulnerable writer source node.
+ */
+class XssVulnerableWriterSourceNode extends ApiSourceNode {
+  XssVulnerableWriterSourceNode() { this.asExpr() instanceof XssVulnerableWriterSource }
+}
+
 /**
  * Holds if `s` is an HTTP Content-Type vulnerable to XSS.
  */
 bindingset[s]
 predicate isXssVulnerableContentType(string s) {
-  s.regexpMatch("(?i)text/(html|xml|xsl|rdf|vtt|cache-manifest).*") or
-  s.regexpMatch("(?i)application/(.*\\+)?xml.*") or
-  s.regexpMatch("(?i)cache-manifest.*") or
-  s.regexpMatch("(?i)image/svg\\+xml.*")
+  s.regexpMatch("(?i)(" +
+      //
+      "text/(html|xml|xsl|rdf|vtt|cache-manifest).*" + "|" +
+      //
+      "application/(.*\\+)?xml.*" + "|" +
+      //
+      "cache-manifest.*" + "|" +
+      //
+      "image/svg\\+xml.*" + ")")
 }
 
 /**

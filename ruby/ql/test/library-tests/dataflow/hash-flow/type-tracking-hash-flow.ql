@@ -3,4 +3,4 @@
 // only that type-tracking cannot follow the flow in your test. If the dataflow
 // test (`hash-flow.ql`) shows no failures, then that may be sufficient
 // (depending on your use case).
-import TestUtilities.InlineTypeTrackingFlowTest
+import utils.test.InlineTypeTrackingFlowTest

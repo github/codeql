@@ -24,7 +24,6 @@ class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
       const swift::ExistentialMetatypeType& type);
   codeql::TypeAliasType translateTypeAliasType(const swift::TypeAliasType& type);
   codeql::DependentMemberType translateDependentMemberType(const swift::DependentMemberType& type);
-  codeql::ParenType translateParenType(const swift::ParenType& type);
   codeql::UnarySyntaxSugarType translateUnarySyntaxSugarType(
       const swift::UnarySyntaxSugarType& type);
   codeql::OptionalType translateOptionalType(const swift::OptionalType& type);
@@ -77,6 +76,13 @@ class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
   codeql::UnresolvedType translateUnresolvedType(const swift::UnresolvedType& type);
   codeql::ParameterizedProtocolType translateParameterizedProtocolType(
       const swift::ParameterizedProtocolType& type);
+  codeql::PackArchetypeType translatePackArchetypeType(const swift::PackArchetypeType& type);
+  codeql::ElementArchetypeType translateElementArchetypeType(
+      const swift::ElementArchetypeType& type);
+  codeql::PackType translatePackType(const swift::PackType& type);
+  codeql::PackElementType translatePackElementType(const swift::PackElementType& type);
+  codeql::PackExpansionType translatePackExpansionType(const swift::PackExpansionType& type);
+  codeql::IntegerType translateIntegerType(const swift::IntegerType& type);
 
  private:
   void fillType(const swift::TypeBase& type, codeql::Type& entry);

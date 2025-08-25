@@ -12,5 +12,5 @@
 
 import semmle.code.java.security.PartialPathTraversal
 
-from PartialPathTraversalMethodAccess ma
+from PartialPathTraversalMethodCall ma
 select ma, "Partial Path Traversal Vulnerability due to insufficient guard against path traversal."

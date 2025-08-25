@@ -12,19 +12,22 @@ private import semmle.code.csharp.frameworks.system.web.ui.WebControls
 private import semmle.code.csharp.frameworks.WCF
 private import semmle.code.csharp.frameworks.microsoft.Owin
 private import semmle.code.csharp.frameworks.microsoft.AspNetCore
-private import semmle.code.csharp.dataflow.ExternalFlow
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 
 /** A data flow source of remote user input. */
-abstract class RemoteFlowSource extends DataFlow::Node {
-  /** Gets a string that describes the type of this remote flow source. */
-  abstract string getSourceType();
+abstract class RemoteFlowSource extends SourceNode {
+  override string getSourceType() { result = "remote flow source" }
+
+  override string getThreatModel() { result = "remote" }
 }
 
 /**
  * A module for importing frameworks that defines remote flow sources.
  */
 private module RemoteFlowSources {
-  private import semmle.code.csharp.frameworks.ServiceStack
+  private import semmle.code.csharp.frameworks.ServiceStack as ServiceStack
+  private import semmle.code.csharp.frameworks.microsoft.aspnetcore.Components as Blazor
 }
 
 /** A data flow source of remote user input (ASP.NET). */
@@ -241,7 +244,7 @@ class AspNetCoreQueryRemoteFlowSource extends AspNetCoreRemoteFlowSource, DataFl
     exists(Call c |
       c.getTarget()
           .getDeclaringType()
-          .hasQualifiedName("Microsoft.AspNetCore.Http", "IQueryCollection") and
+          .hasFullyQualifiedName("Microsoft.AspNetCore.Http", "IQueryCollection") and
       c.getTarget().getName() = "TryGetValue" and
       this.asExpr() = c.getArgumentForName("value")
     )

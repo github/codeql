@@ -136,6 +136,8 @@ void good_new_handles_nullptr() {
     return; // GOOD
 }
 
+// ---
+
 void* operator new(std::size_t count, void*) noexcept;
 void* operator new[](std::size_t count, void*) noexcept;
 
@@ -146,17 +148,45 @@ struct Foo {
   operator bool();
 };
 
+struct Bar {
+  Bar();
+
+  operator bool();
+};
+
 void bad_placement_new_with_exception_handling() {
   char buffer[1024];
-  try { new (buffer) Foo; } // BAD
+
+  try { new (buffer) Foo; } // BAD (placement new should not fail)
   catch (...) {  }
 }
 
 void good_placement_new_with_exception_handling() {
   char buffer[1024];
+
   try { new (buffer) Foo(42); } // GOOD: Foo constructor might throw
   catch (...) {  }
+
+  try { new (buffer) Bar; } // GOOD: Bar constructor might throw
+  catch (...) {  }
 }
+
+template<typename F> F *test_template_platement_new() {
+  char buffer[1024];
+
+  try {
+    return new (buffer) F; // GOOD: `F` constructor might throw (when `F` is `Bar`)
+  } catch (...) {
+    return 0;
+  }
+}
+
+void test_template_platement_new_caller() {
+  test_template_platement_new<Foo>();
+  test_template_platement_new<Bar>();
+}
+
+// ---
 
 int unknown_value_without_exceptions() noexcept;
 
@@ -232,4 +262,55 @@ void *operator new(std::size_t, int n, const std::nothrow_t &);
 void test_operator_new_without_exception_spec() {
   int* p = new(42, std::nothrow) int; // GOOD
   if(p == nullptr) {}
+}
+
+namespace std {
+  void *memset(void *s, int c, size_t n);
+}
+
+// from the qhelp:
+namespace qhelp {
+  // BAD: the allocation will throw an unhandled exception
+  // instead of returning a null pointer.
+  void bad1(std::size_t length) noexcept {
+    int* dest = new int[length];
+    if(!dest) {
+      return;
+    }
+    std::memset(dest, 0, length);
+    // ...
+  }
+
+  // BAD: the allocation won't throw an exception, but
+  // instead return a null pointer.
+  void bad2(std::size_t length) noexcept {
+    try {
+      int* dest = new(std::nothrow) int[length];
+      std::memset(dest, 0, length);
+      // ...
+    } catch(std::bad_alloc&) {
+      // ...
+    }
+  }
+
+  // GOOD: the allocation failure is handled appropriately.
+  void good1(std::size_t length) noexcept {
+    try {
+      int* dest = new int[length];
+      std::memset(dest, 0, length);
+      // ...
+    } catch(std::bad_alloc&) {
+      // ...
+    }
+  }
+
+  // GOOD: the allocation failure is handled appropriately.
+  void good2(std::size_t length) noexcept {
+    int* dest = new(std::nothrow) int[length];
+    if(!dest) {
+      return;
+    }
+    std::memset(dest, 0, length);
+    // ...
+  }
 }

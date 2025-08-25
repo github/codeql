@@ -81,10 +81,10 @@ void test_set()
 	sink(s15); // $ ast,ir
 	s12.swap(s13);
 	s14.swap(s15);
-	sink(s12); // $ SPURIOUS: ast,ir
-	sink(s13); // $ ast,ir
-	sink(s14); // $ ast,ir
-	sink(s15); // $ SPURIOUS: ast,ir
+	sink(s12); // $ SPURIOUS: ast
+	sink(s13); // $ ir
+	sink(s14); // $ ir
+	sink(s15); // $ SPURIOUS: ast
 
 	// merge
 	std::set<char *> s16, s17, s18, s19;
@@ -193,10 +193,10 @@ void test_unordered_set()
 	sink(s15); // $ ast,ir
 	s12.swap(s13);
 	s14.swap(s15);
-	sink(s12); // $ SPURIOUS: ast,ir
-	sink(s13); // $ ast,ir
-	sink(s14); // $ ast,ir
-	sink(s15); // $ SPURIOUS: ast,ir
+	sink(s12); // $ SPURIOUS: ast
+	sink(s13); // $ ir
+	sink(s14); // $ ir
+	sink(s15); // $ SPURIOUS: ast
 
 	// merge
 	std::unordered_set<char *> s16, s17, s18, s19;

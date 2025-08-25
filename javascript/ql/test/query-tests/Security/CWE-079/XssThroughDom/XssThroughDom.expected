@@ -1,278 +1,8 @@
-nodes
-| forms.js:8:23:8:28 | values |
-| forms.js:8:23:8:28 | values |
-| forms.js:9:31:9:36 | values |
-| forms.js:9:31:9:40 | values.foo |
-| forms.js:9:31:9:40 | values.foo |
-| forms.js:11:24:11:29 | values |
-| forms.js:11:24:11:29 | values |
-| forms.js:12:31:12:36 | values |
-| forms.js:12:31:12:40 | values.bar |
-| forms.js:12:31:12:40 | values.bar |
-| forms.js:24:15:24:20 | values |
-| forms.js:24:15:24:20 | values |
-| forms.js:25:23:25:28 | values |
-| forms.js:25:23:25:34 | values.email |
-| forms.js:25:23:25:34 | values.email |
-| forms.js:28:20:28:25 | values |
-| forms.js:28:20:28:25 | values |
-| forms.js:29:23:29:28 | values |
-| forms.js:29:23:29:34 | values.email |
-| forms.js:29:23:29:34 | values.email |
-| forms.js:34:11:34:53 | values |
-| forms.js:34:13:34:18 | values |
-| forms.js:34:13:34:18 | values |
-| forms.js:35:19:35:24 | values |
-| forms.js:35:19:35:30 | values.email |
-| forms.js:35:19:35:30 | values.email |
-| forms.js:44:21:44:26 | values |
-| forms.js:44:21:44:26 | values |
-| forms.js:45:21:45:26 | values |
-| forms.js:45:21:45:33 | values.stooge |
-| forms.js:45:21:45:33 | values.stooge |
-| forms.js:57:19:57:32 | e.target.value |
-| forms.js:57:19:57:32 | e.target.value |
-| forms.js:57:19:57:32 | e.target.value |
-| forms.js:71:21:71:24 | data |
-| forms.js:71:21:71:24 | data |
-| forms.js:72:19:72:22 | data |
-| forms.js:72:19:72:27 | data.name |
-| forms.js:72:19:72:27 | data.name |
-| forms.js:92:17:92:36 | values |
-| forms.js:92:26:92:36 | getValues() |
-| forms.js:92:26:92:36 | getValues() |
-| forms.js:93:25:93:30 | values |
-| forms.js:93:25:93:35 | values.name |
-| forms.js:93:25:93:35 | values.name |
-| forms.js:103:23:103:36 | e.target.value |
-| forms.js:103:23:103:36 | e.target.value |
-| forms.js:103:23:103:36 | e.target.value |
-| forms.js:107:23:107:36 | e.target.value |
-| forms.js:107:23:107:36 | e.target.value |
-| forms.js:107:23:107:36 | e.target.value |
-| xss-through-dom.js:2:16:2:34 | $("textarea").val() |
-| xss-through-dom.js:2:16:2:34 | $("textarea").val() |
-| xss-through-dom.js:2:16:2:34 | $("textarea").val() |
-| xss-through-dom.js:4:16:4:40 | $(".som ... .text() |
-| xss-through-dom.js:4:16:4:40 | $(".som ... .text() |
-| xss-through-dom.js:4:16:4:40 | $(".som ... .text() |
-| xss-through-dom.js:8:16:8:53 | $(".som ... arget") |
-| xss-through-dom.js:8:16:8:53 | $(".som ... arget") |
-| xss-through-dom.js:8:16:8:53 | $(".som ... arget") |
-| xss-through-dom.js:11:3:11:42 | documen ... nerText |
-| xss-through-dom.js:11:3:11:42 | documen ... nerText |
-| xss-through-dom.js:11:3:11:42 | documen ... nerText |
-| xss-through-dom.js:19:3:19:44 | documen ... Content |
-| xss-through-dom.js:19:3:19:44 | documen ... Content |
-| xss-through-dom.js:19:3:19:44 | documen ... Content |
-| xss-through-dom.js:23:3:23:48 | documen ... ].value |
-| xss-through-dom.js:23:3:23:48 | documen ... ].value |
-| xss-through-dom.js:23:3:23:48 | documen ... ].value |
-| xss-through-dom.js:27:3:27:61 | documen ... arget') |
-| xss-through-dom.js:27:3:27:61 | documen ... arget') |
-| xss-through-dom.js:27:3:27:61 | documen ... arget') |
-| xss-through-dom.js:51:30:51:48 | $("textarea").val() |
-| xss-through-dom.js:51:30:51:48 | $("textarea").val() |
-| xss-through-dom.js:51:30:51:48 | $("textarea").val() |
-| xss-through-dom.js:54:31:54:49 | $("textarea").val() |
-| xss-through-dom.js:54:31:54:49 | $("textarea").val() |
-| xss-through-dom.js:54:31:54:49 | $("textarea").val() |
-| xss-through-dom.js:56:30:56:51 | $("inpu ... 0).name |
-| xss-through-dom.js:56:30:56:51 | $("inpu ... 0).name |
-| xss-through-dom.js:56:30:56:51 | $("inpu ... 0).name |
-| xss-through-dom.js:57:30:57:67 | $("inpu ... "name") |
-| xss-through-dom.js:57:30:57:67 | $("inpu ... "name") |
-| xss-through-dom.js:57:30:57:67 | $("inpu ... "name") |
-| xss-through-dom.js:61:30:61:69 | $(docum ... value") |
-| xss-through-dom.js:61:30:61:69 | $(docum ... value") |
-| xss-through-dom.js:61:30:61:69 | $(docum ... value") |
-| xss-through-dom.js:64:30:64:40 | valMethod() |
-| xss-through-dom.js:64:30:64:40 | valMethod() |
-| xss-through-dom.js:64:30:64:40 | valMethod() |
-| xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name |
-| xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name |
-| xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name |
-| xss-through-dom.js:73:9:73:41 | selector |
-| xss-through-dom.js:73:20:73:41 | $("inpu ... 0).name |
-| xss-through-dom.js:73:20:73:41 | $("inpu ... 0).name |
-| xss-through-dom.js:77:4:77:11 | selector |
-| xss-through-dom.js:77:4:77:11 | selector |
-| xss-through-dom.js:79:4:79:34 | documen ... t.value |
-| xss-through-dom.js:79:4:79:34 | documen ... t.value |
-| xss-through-dom.js:79:4:79:34 | documen ... t.value |
-| xss-through-dom.js:81:17:81:43 | $('#foo ... rText') |
-| xss-through-dom.js:81:17:81:43 | $('#foo ... rText') |
-| xss-through-dom.js:81:17:81:43 | $('#foo ... rText') |
-| xss-through-dom.js:84:8:84:30 | text |
-| xss-through-dom.js:84:15:84:30 | $("text").text() |
-| xss-through-dom.js:84:15:84:30 | $("text").text() |
-| xss-through-dom.js:86:16:86:37 | anser.a ... l(text) |
-| xss-through-dom.js:86:16:86:37 | anser.a ... l(text) |
-| xss-through-dom.js:86:33:86:36 | text |
-| xss-through-dom.js:87:16:87:40 | new ans ... s(text) |
-| xss-through-dom.js:87:16:87:40 | new ans ... s(text) |
-| xss-through-dom.js:87:36:87:39 | text |
-| xss-through-dom.js:93:16:93:46 | $("#foo ... ].value |
-| xss-through-dom.js:93:16:93:46 | $("#foo ... ].value |
-| xss-through-dom.js:93:16:93:46 | $("#foo ... ].value |
-| xss-through-dom.js:96:17:96:47 | $("#foo ... ].value |
-| xss-through-dom.js:96:17:96:47 | $("#foo ... ].value |
-| xss-through-dom.js:96:17:96:47 | $("#foo ... ].value |
-| xss-through-dom.js:109:31:109:70 | "<a src ... oo</a>" |
-| xss-through-dom.js:109:31:109:70 | "<a src ... oo</a>" |
-| xss-through-dom.js:109:45:109:55 | this.el.src |
-| xss-through-dom.js:109:45:109:55 | this.el.src |
-| xss-through-dom.js:114:11:114:52 | src |
-| xss-through-dom.js:114:17:114:52 | documen ... k").src |
-| xss-through-dom.js:114:17:114:52 | documen ... k").src |
-| xss-through-dom.js:115:16:115:18 | src |
-| xss-through-dom.js:115:16:115:18 | src |
-| xss-through-dom.js:117:26:117:28 | src |
-| xss-through-dom.js:117:26:117:28 | src |
-| xss-through-dom.js:120:23:120:37 | ev.target.files |
-| xss-through-dom.js:120:23:120:37 | ev.target.files |
-| xss-through-dom.js:120:23:120:40 | ev.target.files[0] |
-| xss-through-dom.js:120:23:120:45 | ev.targ ... 0].name |
-| xss-through-dom.js:120:23:120:45 | ev.targ ... 0].name |
-| xss-through-dom.js:122:33:122:71 | URL.cre ... les[0]) |
-| xss-through-dom.js:122:33:122:71 | URL.cre ... les[0]) |
-| xss-through-dom.js:122:53:122:67 | ev.target.files |
-| xss-through-dom.js:122:53:122:67 | ev.target.files |
-| xss-through-dom.js:122:53:122:70 | ev.target.files[0] |
-| xss-through-dom.js:130:6:130:68 | linkText |
-| xss-through-dom.js:130:17:130:37 | wSelect ... tring() |
-| xss-through-dom.js:130:17:130:37 | wSelect ... tring() |
-| xss-through-dom.js:130:17:130:62 | wSelect ... tring() |
-| xss-through-dom.js:130:17:130:68 | wSelect ... ) \|\| '' |
-| xss-through-dom.js:130:42:130:62 | dSelect ... tring() |
-| xss-through-dom.js:130:42:130:62 | dSelect ... tring() |
-| xss-through-dom.js:131:19:131:26 | linkText |
-| xss-through-dom.js:131:19:131:26 | linkText |
-| xss-through-dom.js:132:16:132:23 | linkText |
-| xss-through-dom.js:132:16:132:23 | linkText |
-| xss-through-dom.js:139:11:139:52 | src |
-| xss-through-dom.js:139:17:139:52 | documen ... k").src |
-| xss-through-dom.js:139:17:139:52 | documen ... k").src |
-| xss-through-dom.js:140:19:140:21 | src |
-| xss-through-dom.js:140:19:140:21 | src |
-| xss-through-dom.js:141:25:141:27 | src |
-| xss-through-dom.js:141:25:141:27 | src |
-| xss-through-dom.js:150:24:150:26 | src |
-| xss-through-dom.js:150:24:150:26 | src |
-| xss-through-dom.js:154:25:154:27 | msg |
-| xss-through-dom.js:155:27:155:29 | msg |
-| xss-through-dom.js:155:27:155:29 | msg |
-| xss-through-dom.js:159:34:159:52 | $("textarea").val() |
-| xss-through-dom.js:159:34:159:52 | $("textarea").val() |
-edges
-| forms.js:8:23:8:28 | values | forms.js:9:31:9:36 | values |
-| forms.js:8:23:8:28 | values | forms.js:9:31:9:36 | values |
-| forms.js:9:31:9:36 | values | forms.js:9:31:9:40 | values.foo |
-| forms.js:9:31:9:36 | values | forms.js:9:31:9:40 | values.foo |
-| forms.js:11:24:11:29 | values | forms.js:12:31:12:36 | values |
-| forms.js:11:24:11:29 | values | forms.js:12:31:12:36 | values |
-| forms.js:12:31:12:36 | values | forms.js:12:31:12:40 | values.bar |
-| forms.js:12:31:12:36 | values | forms.js:12:31:12:40 | values.bar |
-| forms.js:24:15:24:20 | values | forms.js:25:23:25:28 | values |
-| forms.js:24:15:24:20 | values | forms.js:25:23:25:28 | values |
-| forms.js:25:23:25:28 | values | forms.js:25:23:25:34 | values.email |
-| forms.js:25:23:25:28 | values | forms.js:25:23:25:34 | values.email |
-| forms.js:28:20:28:25 | values | forms.js:29:23:29:28 | values |
-| forms.js:28:20:28:25 | values | forms.js:29:23:29:28 | values |
-| forms.js:29:23:29:28 | values | forms.js:29:23:29:34 | values.email |
-| forms.js:29:23:29:28 | values | forms.js:29:23:29:34 | values.email |
-| forms.js:34:11:34:53 | values | forms.js:35:19:35:24 | values |
-| forms.js:34:13:34:18 | values | forms.js:34:11:34:53 | values |
-| forms.js:34:13:34:18 | values | forms.js:34:11:34:53 | values |
-| forms.js:35:19:35:24 | values | forms.js:35:19:35:30 | values.email |
-| forms.js:35:19:35:24 | values | forms.js:35:19:35:30 | values.email |
-| forms.js:44:21:44:26 | values | forms.js:45:21:45:26 | values |
-| forms.js:44:21:44:26 | values | forms.js:45:21:45:26 | values |
-| forms.js:45:21:45:26 | values | forms.js:45:21:45:33 | values.stooge |
-| forms.js:45:21:45:26 | values | forms.js:45:21:45:33 | values.stooge |
-| forms.js:57:19:57:32 | e.target.value | forms.js:57:19:57:32 | e.target.value |
-| forms.js:71:21:71:24 | data | forms.js:72:19:72:22 | data |
-| forms.js:71:21:71:24 | data | forms.js:72:19:72:22 | data |
-| forms.js:72:19:72:22 | data | forms.js:72:19:72:27 | data.name |
-| forms.js:72:19:72:22 | data | forms.js:72:19:72:27 | data.name |
-| forms.js:92:17:92:36 | values | forms.js:93:25:93:30 | values |
-| forms.js:92:26:92:36 | getValues() | forms.js:92:17:92:36 | values |
-| forms.js:92:26:92:36 | getValues() | forms.js:92:17:92:36 | values |
-| forms.js:93:25:93:30 | values | forms.js:93:25:93:35 | values.name |
-| forms.js:93:25:93:30 | values | forms.js:93:25:93:35 | values.name |
-| forms.js:103:23:103:36 | e.target.value | forms.js:103:23:103:36 | e.target.value |
-| forms.js:107:23:107:36 | e.target.value | forms.js:107:23:107:36 | e.target.value |
-| xss-through-dom.js:2:16:2:34 | $("textarea").val() | xss-through-dom.js:2:16:2:34 | $("textarea").val() |
-| xss-through-dom.js:4:16:4:40 | $(".som ... .text() | xss-through-dom.js:4:16:4:40 | $(".som ... .text() |
-| xss-through-dom.js:8:16:8:53 | $(".som ... arget") | xss-through-dom.js:8:16:8:53 | $(".som ... arget") |
-| xss-through-dom.js:11:3:11:42 | documen ... nerText | xss-through-dom.js:11:3:11:42 | documen ... nerText |
-| xss-through-dom.js:19:3:19:44 | documen ... Content | xss-through-dom.js:19:3:19:44 | documen ... Content |
-| xss-through-dom.js:23:3:23:48 | documen ... ].value | xss-through-dom.js:23:3:23:48 | documen ... ].value |
-| xss-through-dom.js:27:3:27:61 | documen ... arget') | xss-through-dom.js:27:3:27:61 | documen ... arget') |
-| xss-through-dom.js:51:30:51:48 | $("textarea").val() | xss-through-dom.js:51:30:51:48 | $("textarea").val() |
-| xss-through-dom.js:54:31:54:49 | $("textarea").val() | xss-through-dom.js:54:31:54:49 | $("textarea").val() |
-| xss-through-dom.js:56:30:56:51 | $("inpu ... 0).name | xss-through-dom.js:56:30:56:51 | $("inpu ... 0).name |
-| xss-through-dom.js:57:30:57:67 | $("inpu ... "name") | xss-through-dom.js:57:30:57:67 | $("inpu ... "name") |
-| xss-through-dom.js:61:30:61:69 | $(docum ... value") | xss-through-dom.js:61:30:61:69 | $(docum ... value") |
-| xss-through-dom.js:64:30:64:40 | valMethod() | xss-through-dom.js:64:30:64:40 | valMethod() |
-| xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name | xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name |
-| xss-through-dom.js:73:9:73:41 | selector | xss-through-dom.js:77:4:77:11 | selector |
-| xss-through-dom.js:73:9:73:41 | selector | xss-through-dom.js:77:4:77:11 | selector |
-| xss-through-dom.js:73:20:73:41 | $("inpu ... 0).name | xss-through-dom.js:73:9:73:41 | selector |
-| xss-through-dom.js:73:20:73:41 | $("inpu ... 0).name | xss-through-dom.js:73:9:73:41 | selector |
-| xss-through-dom.js:79:4:79:34 | documen ... t.value | xss-through-dom.js:79:4:79:34 | documen ... t.value |
-| xss-through-dom.js:81:17:81:43 | $('#foo ... rText') | xss-through-dom.js:81:17:81:43 | $('#foo ... rText') |
-| xss-through-dom.js:84:8:84:30 | text | xss-through-dom.js:86:33:86:36 | text |
-| xss-through-dom.js:84:8:84:30 | text | xss-through-dom.js:87:36:87:39 | text |
-| xss-through-dom.js:84:15:84:30 | $("text").text() | xss-through-dom.js:84:8:84:30 | text |
-| xss-through-dom.js:84:15:84:30 | $("text").text() | xss-through-dom.js:84:8:84:30 | text |
-| xss-through-dom.js:86:33:86:36 | text | xss-through-dom.js:86:16:86:37 | anser.a ... l(text) |
-| xss-through-dom.js:86:33:86:36 | text | xss-through-dom.js:86:16:86:37 | anser.a ... l(text) |
-| xss-through-dom.js:87:36:87:39 | text | xss-through-dom.js:87:16:87:40 | new ans ... s(text) |
-| xss-through-dom.js:87:36:87:39 | text | xss-through-dom.js:87:16:87:40 | new ans ... s(text) |
-| xss-through-dom.js:93:16:93:46 | $("#foo ... ].value | xss-through-dom.js:93:16:93:46 | $("#foo ... ].value |
-| xss-through-dom.js:96:17:96:47 | $("#foo ... ].value | xss-through-dom.js:96:17:96:47 | $("#foo ... ].value |
-| xss-through-dom.js:109:45:109:55 | this.el.src | xss-through-dom.js:109:31:109:70 | "<a src ... oo</a>" |
-| xss-through-dom.js:109:45:109:55 | this.el.src | xss-through-dom.js:109:31:109:70 | "<a src ... oo</a>" |
-| xss-through-dom.js:109:45:109:55 | this.el.src | xss-through-dom.js:109:31:109:70 | "<a src ... oo</a>" |
-| xss-through-dom.js:109:45:109:55 | this.el.src | xss-through-dom.js:109:31:109:70 | "<a src ... oo</a>" |
-| xss-through-dom.js:114:11:114:52 | src | xss-through-dom.js:115:16:115:18 | src |
-| xss-through-dom.js:114:11:114:52 | src | xss-through-dom.js:115:16:115:18 | src |
-| xss-through-dom.js:114:11:114:52 | src | xss-through-dom.js:117:26:117:28 | src |
-| xss-through-dom.js:114:11:114:52 | src | xss-through-dom.js:117:26:117:28 | src |
-| xss-through-dom.js:114:17:114:52 | documen ... k").src | xss-through-dom.js:114:11:114:52 | src |
-| xss-through-dom.js:114:17:114:52 | documen ... k").src | xss-through-dom.js:114:11:114:52 | src |
-| xss-through-dom.js:120:23:120:37 | ev.target.files | xss-through-dom.js:120:23:120:40 | ev.target.files[0] |
-| xss-through-dom.js:120:23:120:37 | ev.target.files | xss-through-dom.js:120:23:120:40 | ev.target.files[0] |
-| xss-through-dom.js:120:23:120:40 | ev.target.files[0] | xss-through-dom.js:120:23:120:45 | ev.targ ... 0].name |
-| xss-through-dom.js:120:23:120:40 | ev.target.files[0] | xss-through-dom.js:120:23:120:45 | ev.targ ... 0].name |
-| xss-through-dom.js:122:53:122:67 | ev.target.files | xss-through-dom.js:122:53:122:70 | ev.target.files[0] |
-| xss-through-dom.js:122:53:122:67 | ev.target.files | xss-through-dom.js:122:53:122:70 | ev.target.files[0] |
-| xss-through-dom.js:122:53:122:70 | ev.target.files[0] | xss-through-dom.js:122:33:122:71 | URL.cre ... les[0]) |
-| xss-through-dom.js:122:53:122:70 | ev.target.files[0] | xss-through-dom.js:122:33:122:71 | URL.cre ... les[0]) |
-| xss-through-dom.js:130:6:130:68 | linkText | xss-through-dom.js:131:19:131:26 | linkText |
-| xss-through-dom.js:130:6:130:68 | linkText | xss-through-dom.js:131:19:131:26 | linkText |
-| xss-through-dom.js:130:6:130:68 | linkText | xss-through-dom.js:132:16:132:23 | linkText |
-| xss-through-dom.js:130:6:130:68 | linkText | xss-through-dom.js:132:16:132:23 | linkText |
-| xss-through-dom.js:130:17:130:37 | wSelect ... tring() | xss-through-dom.js:130:17:130:62 | wSelect ... tring() |
-| xss-through-dom.js:130:17:130:37 | wSelect ... tring() | xss-through-dom.js:130:17:130:62 | wSelect ... tring() |
-| xss-through-dom.js:130:17:130:62 | wSelect ... tring() | xss-through-dom.js:130:17:130:68 | wSelect ... ) \|\| '' |
-| xss-through-dom.js:130:17:130:68 | wSelect ... ) \|\| '' | xss-through-dom.js:130:6:130:68 | linkText |
-| xss-through-dom.js:130:42:130:62 | dSelect ... tring() | xss-through-dom.js:130:17:130:62 | wSelect ... tring() |
-| xss-through-dom.js:130:42:130:62 | dSelect ... tring() | xss-through-dom.js:130:17:130:62 | wSelect ... tring() |
-| xss-through-dom.js:139:11:139:52 | src | xss-through-dom.js:140:19:140:21 | src |
-| xss-through-dom.js:139:11:139:52 | src | xss-through-dom.js:140:19:140:21 | src |
-| xss-through-dom.js:139:11:139:52 | src | xss-through-dom.js:141:25:141:27 | src |
-| xss-through-dom.js:139:11:139:52 | src | xss-through-dom.js:141:25:141:27 | src |
-| xss-through-dom.js:139:11:139:52 | src | xss-through-dom.js:150:24:150:26 | src |
-| xss-through-dom.js:139:11:139:52 | src | xss-through-dom.js:150:24:150:26 | src |
-| xss-through-dom.js:139:17:139:52 | documen ... k").src | xss-through-dom.js:139:11:139:52 | src |
-| xss-through-dom.js:139:17:139:52 | documen ... k").src | xss-through-dom.js:139:11:139:52 | src |
-| xss-through-dom.js:154:25:154:27 | msg | xss-through-dom.js:155:27:155:29 | msg |
-| xss-through-dom.js:154:25:154:27 | msg | xss-through-dom.js:155:27:155:29 | msg |
-| xss-through-dom.js:159:34:159:52 | $("textarea").val() | xss-through-dom.js:154:25:154:27 | msg |
-| xss-through-dom.js:159:34:159:52 | $("textarea").val() | xss-through-dom.js:154:25:154:27 | msg |
 #select
+| angular.ts:16:24:16:41 | event.target.value | angular.ts:16:24:16:41 | event.target.value | angular.ts:16:24:16:41 | event.target.value | $@ is reinterpreted as HTML without escaping meta-characters. | angular.ts:16:24:16:41 | event.target.value | DOM text |
+| angular.ts:20:24:20:35 | target.value | angular.ts:20:24:20:35 | target.value | angular.ts:20:24:20:35 | target.value | $@ is reinterpreted as HTML without escaping meta-characters. | angular.ts:20:24:20:35 | target.value | DOM text |
+| angular.ts:29:24:29:37 | form.value.foo | angular.ts:29:24:29:33 | form.value | angular.ts:29:24:29:37 | form.value.foo | $@ is reinterpreted as HTML without escaping meta-characters. | angular.ts:29:24:29:33 | form.value | DOM text |
+| angular.ts:33:24:33:33 | this.field | angular.ts:12:5:12:23 | field: string = ""; | angular.ts:33:24:33:33 | this.field | $@ is reinterpreted as HTML without escaping meta-characters. | angular.ts:12:5:12:23 | field: string = ""; | DOM text |
 | forms.js:9:31:9:40 | values.foo | forms.js:8:23:8:28 | values | forms.js:9:31:9:40 | values.foo | $@ is reinterpreted as HTML without escaping meta-characters. | forms.js:8:23:8:28 | values | DOM text |
 | forms.js:12:31:12:40 | values.bar | forms.js:11:24:11:29 | values | forms.js:12:31:12:40 | values.bar | $@ is reinterpreted as HTML without escaping meta-characters. | forms.js:11:24:11:29 | values | DOM text |
 | forms.js:25:23:25:34 | values.email | forms.js:24:15:24:20 | values | forms.js:25:23:25:34 | values.email | $@ is reinterpreted as HTML without escaping meta-characters. | forms.js:24:15:24:20 | values | DOM text |
@@ -317,3 +47,136 @@ edges
 | xss-through-dom.js:141:25:141:27 | src | xss-through-dom.js:139:17:139:52 | documen ... k").src | xss-through-dom.js:141:25:141:27 | src | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:139:17:139:52 | documen ... k").src | DOM text |
 | xss-through-dom.js:150:24:150:26 | src | xss-through-dom.js:139:17:139:52 | documen ... k").src | xss-through-dom.js:150:24:150:26 | src | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:139:17:139:52 | documen ... k").src | DOM text |
 | xss-through-dom.js:155:27:155:29 | msg | xss-through-dom.js:159:34:159:52 | $("textarea").val() | xss-through-dom.js:155:27:155:29 | msg | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:159:34:159:52 | $("textarea").val() | DOM text |
+edges
+| angular.ts:12:5:12:23 | field: string = ""; | angular.ts:33:24:33:33 | this.field | provenance |  |
+| angular.ts:29:24:29:33 | form.value | angular.ts:29:24:29:37 | form.value.foo | provenance |  |
+| forms.js:8:23:8:28 | values | forms.js:9:31:9:36 | values | provenance |  |
+| forms.js:9:31:9:36 | values | forms.js:9:31:9:40 | values.foo | provenance |  |
+| forms.js:11:24:11:29 | values | forms.js:12:31:12:36 | values | provenance |  |
+| forms.js:12:31:12:36 | values | forms.js:12:31:12:40 | values.bar | provenance |  |
+| forms.js:24:15:24:20 | values | forms.js:25:23:25:28 | values | provenance |  |
+| forms.js:25:23:25:28 | values | forms.js:25:23:25:34 | values.email | provenance |  |
+| forms.js:28:20:28:25 | values | forms.js:29:23:29:28 | values | provenance |  |
+| forms.js:29:23:29:28 | values | forms.js:29:23:29:34 | values.email | provenance |  |
+| forms.js:34:11:34:53 | values | forms.js:35:19:35:24 | values | provenance |  |
+| forms.js:34:13:34:18 | values | forms.js:34:11:34:53 | values | provenance |  |
+| forms.js:35:19:35:24 | values | forms.js:35:19:35:30 | values.email | provenance |  |
+| forms.js:44:21:44:26 | values | forms.js:45:21:45:26 | values | provenance |  |
+| forms.js:45:21:45:26 | values | forms.js:45:21:45:33 | values.stooge | provenance |  |
+| forms.js:71:21:71:24 | data | forms.js:72:19:72:22 | data | provenance |  |
+| forms.js:72:19:72:22 | data | forms.js:72:19:72:27 | data.name | provenance |  |
+| forms.js:92:17:92:36 | values | forms.js:93:25:93:30 | values | provenance |  |
+| forms.js:92:26:92:36 | getValues() | forms.js:92:17:92:36 | values | provenance |  |
+| forms.js:93:25:93:30 | values | forms.js:93:25:93:35 | values.name | provenance |  |
+| xss-through-dom.js:73:9:73:41 | selector | xss-through-dom.js:77:4:77:11 | selector | provenance |  |
+| xss-through-dom.js:73:20:73:41 | $("inpu ... 0).name | xss-through-dom.js:73:9:73:41 | selector | provenance |  |
+| xss-through-dom.js:84:8:84:30 | text | xss-through-dom.js:86:33:86:36 | text | provenance |  |
+| xss-through-dom.js:84:8:84:30 | text | xss-through-dom.js:87:36:87:39 | text | provenance |  |
+| xss-through-dom.js:84:15:84:30 | $("text").text() | xss-through-dom.js:84:8:84:30 | text | provenance |  |
+| xss-through-dom.js:86:33:86:36 | text | xss-through-dom.js:86:16:86:37 | anser.a ... l(text) | provenance |  |
+| xss-through-dom.js:87:36:87:39 | text | xss-through-dom.js:87:16:87:40 | new ans ... s(text) | provenance |  |
+| xss-through-dom.js:109:45:109:55 | this.el.src | xss-through-dom.js:109:31:109:70 | "<a src ... oo</a>" | provenance |  |
+| xss-through-dom.js:114:11:114:52 | src | xss-through-dom.js:115:16:115:18 | src | provenance |  |
+| xss-through-dom.js:114:11:114:52 | src | xss-through-dom.js:117:26:117:28 | src | provenance |  |
+| xss-through-dom.js:114:17:114:52 | documen ... k").src | xss-through-dom.js:114:11:114:52 | src | provenance |  |
+| xss-through-dom.js:120:23:120:37 | ev.target.files | xss-through-dom.js:120:23:120:45 | ev.targ ... 0].name | provenance |  |
+| xss-through-dom.js:122:53:122:67 | ev.target.files | xss-through-dom.js:122:53:122:70 | ev.target.files[0] | provenance |  |
+| xss-through-dom.js:122:53:122:70 | ev.target.files[0] | xss-through-dom.js:122:33:122:71 | URL.cre ... les[0]) | provenance | Config |
+| xss-through-dom.js:130:6:130:68 | linkText | xss-through-dom.js:131:19:131:26 | linkText | provenance |  |
+| xss-through-dom.js:130:6:130:68 | linkText | xss-through-dom.js:132:16:132:23 | linkText | provenance |  |
+| xss-through-dom.js:130:17:130:37 | wSelect ... tring() | xss-through-dom.js:130:6:130:68 | linkText | provenance |  |
+| xss-through-dom.js:130:42:130:62 | dSelect ... tring() | xss-through-dom.js:130:6:130:68 | linkText | provenance |  |
+| xss-through-dom.js:139:11:139:52 | src | xss-through-dom.js:140:19:140:21 | src | provenance |  |
+| xss-through-dom.js:139:11:139:52 | src | xss-through-dom.js:141:25:141:27 | src | provenance |  |
+| xss-through-dom.js:139:11:139:52 | src | xss-through-dom.js:150:24:150:26 | src | provenance |  |
+| xss-through-dom.js:139:17:139:52 | documen ... k").src | xss-through-dom.js:139:11:139:52 | src | provenance |  |
+| xss-through-dom.js:154:25:154:27 | msg | xss-through-dom.js:155:27:155:29 | msg | provenance |  |
+| xss-through-dom.js:159:34:159:52 | $("textarea").val() | xss-through-dom.js:154:25:154:27 | msg | provenance |  |
+nodes
+| angular.ts:12:5:12:23 | field: string = ""; | semmle.label | field: string = ""; |
+| angular.ts:16:24:16:41 | event.target.value | semmle.label | event.target.value |
+| angular.ts:20:24:20:35 | target.value | semmle.label | target.value |
+| angular.ts:29:24:29:33 | form.value | semmle.label | form.value |
+| angular.ts:29:24:29:37 | form.value.foo | semmle.label | form.value.foo |
+| angular.ts:33:24:33:33 | this.field | semmle.label | this.field |
+| forms.js:8:23:8:28 | values | semmle.label | values |
+| forms.js:9:31:9:36 | values | semmle.label | values |
+| forms.js:9:31:9:40 | values.foo | semmle.label | values.foo |
+| forms.js:11:24:11:29 | values | semmle.label | values |
+| forms.js:12:31:12:36 | values | semmle.label | values |
+| forms.js:12:31:12:40 | values.bar | semmle.label | values.bar |
+| forms.js:24:15:24:20 | values | semmle.label | values |
+| forms.js:25:23:25:28 | values | semmle.label | values |
+| forms.js:25:23:25:34 | values.email | semmle.label | values.email |
+| forms.js:28:20:28:25 | values | semmle.label | values |
+| forms.js:29:23:29:28 | values | semmle.label | values |
+| forms.js:29:23:29:34 | values.email | semmle.label | values.email |
+| forms.js:34:11:34:53 | values | semmle.label | values |
+| forms.js:34:13:34:18 | values | semmle.label | values |
+| forms.js:35:19:35:24 | values | semmle.label | values |
+| forms.js:35:19:35:30 | values.email | semmle.label | values.email |
+| forms.js:44:21:44:26 | values | semmle.label | values |
+| forms.js:45:21:45:26 | values | semmle.label | values |
+| forms.js:45:21:45:33 | values.stooge | semmle.label | values.stooge |
+| forms.js:57:19:57:32 | e.target.value | semmle.label | e.target.value |
+| forms.js:71:21:71:24 | data | semmle.label | data |
+| forms.js:72:19:72:22 | data | semmle.label | data |
+| forms.js:72:19:72:27 | data.name | semmle.label | data.name |
+| forms.js:92:17:92:36 | values | semmle.label | values |
+| forms.js:92:26:92:36 | getValues() | semmle.label | getValues() |
+| forms.js:93:25:93:30 | values | semmle.label | values |
+| forms.js:93:25:93:35 | values.name | semmle.label | values.name |
+| forms.js:103:23:103:36 | e.target.value | semmle.label | e.target.value |
+| forms.js:107:23:107:36 | e.target.value | semmle.label | e.target.value |
+| xss-through-dom.js:2:16:2:34 | $("textarea").val() | semmle.label | $("textarea").val() |
+| xss-through-dom.js:4:16:4:40 | $(".som ... .text() | semmle.label | $(".som ... .text() |
+| xss-through-dom.js:8:16:8:53 | $(".som ... arget") | semmle.label | $(".som ... arget") |
+| xss-through-dom.js:11:3:11:42 | documen ... nerText | semmle.label | documen ... nerText |
+| xss-through-dom.js:19:3:19:44 | documen ... Content | semmle.label | documen ... Content |
+| xss-through-dom.js:23:3:23:48 | documen ... ].value | semmle.label | documen ... ].value |
+| xss-through-dom.js:27:3:27:61 | documen ... arget') | semmle.label | documen ... arget') |
+| xss-through-dom.js:51:30:51:48 | $("textarea").val() | semmle.label | $("textarea").val() |
+| xss-through-dom.js:54:31:54:49 | $("textarea").val() | semmle.label | $("textarea").val() |
+| xss-through-dom.js:56:30:56:51 | $("inpu ... 0).name | semmle.label | $("inpu ... 0).name |
+| xss-through-dom.js:57:30:57:67 | $("inpu ... "name") | semmle.label | $("inpu ... "name") |
+| xss-through-dom.js:61:30:61:69 | $(docum ... value") | semmle.label | $(docum ... value") |
+| xss-through-dom.js:64:30:64:40 | valMethod() | semmle.label | valMethod() |
+| xss-through-dom.js:71:11:71:32 | $("inpu ... 0).name | semmle.label | $("inpu ... 0).name |
+| xss-through-dom.js:73:9:73:41 | selector | semmle.label | selector |
+| xss-through-dom.js:73:20:73:41 | $("inpu ... 0).name | semmle.label | $("inpu ... 0).name |
+| xss-through-dom.js:77:4:77:11 | selector | semmle.label | selector |
+| xss-through-dom.js:79:4:79:34 | documen ... t.value | semmle.label | documen ... t.value |
+| xss-through-dom.js:81:17:81:43 | $('#foo ... rText') | semmle.label | $('#foo ... rText') |
+| xss-through-dom.js:84:8:84:30 | text | semmle.label | text |
+| xss-through-dom.js:84:15:84:30 | $("text").text() | semmle.label | $("text").text() |
+| xss-through-dom.js:86:16:86:37 | anser.a ... l(text) | semmle.label | anser.a ... l(text) |
+| xss-through-dom.js:86:33:86:36 | text | semmle.label | text |
+| xss-through-dom.js:87:16:87:40 | new ans ... s(text) | semmle.label | new ans ... s(text) |
+| xss-through-dom.js:87:36:87:39 | text | semmle.label | text |
+| xss-through-dom.js:93:16:93:46 | $("#foo ... ].value | semmle.label | $("#foo ... ].value |
+| xss-through-dom.js:96:17:96:47 | $("#foo ... ].value | semmle.label | $("#foo ... ].value |
+| xss-through-dom.js:109:31:109:70 | "<a src ... oo</a>" | semmle.label | "<a src ... oo</a>" |
+| xss-through-dom.js:109:45:109:55 | this.el.src | semmle.label | this.el.src |
+| xss-through-dom.js:114:11:114:52 | src | semmle.label | src |
+| xss-through-dom.js:114:17:114:52 | documen ... k").src | semmle.label | documen ... k").src |
+| xss-through-dom.js:115:16:115:18 | src | semmle.label | src |
+| xss-through-dom.js:117:26:117:28 | src | semmle.label | src |
+| xss-through-dom.js:120:23:120:37 | ev.target.files | semmle.label | ev.target.files |
+| xss-through-dom.js:120:23:120:45 | ev.targ ... 0].name | semmle.label | ev.targ ... 0].name |
+| xss-through-dom.js:122:33:122:71 | URL.cre ... les[0]) | semmle.label | URL.cre ... les[0]) |
+| xss-through-dom.js:122:53:122:67 | ev.target.files | semmle.label | ev.target.files |
+| xss-through-dom.js:122:53:122:70 | ev.target.files[0] | semmle.label | ev.target.files[0] |
+| xss-through-dom.js:130:6:130:68 | linkText | semmle.label | linkText |
+| xss-through-dom.js:130:17:130:37 | wSelect ... tring() | semmle.label | wSelect ... tring() |
+| xss-through-dom.js:130:42:130:62 | dSelect ... tring() | semmle.label | dSelect ... tring() |
+| xss-through-dom.js:131:19:131:26 | linkText | semmle.label | linkText |
+| xss-through-dom.js:132:16:132:23 | linkText | semmle.label | linkText |
+| xss-through-dom.js:139:11:139:52 | src | semmle.label | src |
+| xss-through-dom.js:139:17:139:52 | documen ... k").src | semmle.label | documen ... k").src |
+| xss-through-dom.js:140:19:140:21 | src | semmle.label | src |
+| xss-through-dom.js:141:25:141:27 | src | semmle.label | src |
+| xss-through-dom.js:150:24:150:26 | src | semmle.label | src |
+| xss-through-dom.js:154:25:154:27 | msg | semmle.label | msg |
+| xss-through-dom.js:155:27:155:29 | msg | semmle.label | msg |
+| xss-through-dom.js:159:34:159:52 | $("textarea").val() | semmle.label | $("textarea").val() |
+subpaths

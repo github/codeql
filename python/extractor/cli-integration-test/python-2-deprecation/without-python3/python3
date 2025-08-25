@@ -1,0 +1,4 @@
+echo "Attempted to run:"
+echo "  python3 $@"
+echo "Failing instead."
+exit 127

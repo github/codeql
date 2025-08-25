@@ -40,7 +40,7 @@ class Namespace extends NameQualifyingElement, @namespace {
   override Location getLocation() {
     if strictcount(this.getADeclarationEntry()) = 1
     then result = this.getADeclarationEntry().getLocation()
-    else result instanceof UnknownDefaultLocation
+    else result instanceof UnknownLocation
   }
 
   /** Gets the simple name of this namespace. */
@@ -99,6 +99,11 @@ class Namespace extends NameQualifyingElement, @namespace {
 
   /** Gets a file which declares (part of) this namespace. */
   File getAFile() { result = this.getADeclarationEntry().getLocation().getFile() }
+
+  /** Gets an attribute of this namespace. */
+  Attribute getAnAttribute() {
+    namespaceattributes(underlyingElement(this), unresolveElement(result))
+  }
 }
 
 /**
@@ -156,7 +161,7 @@ class NamespaceDeclarationEntry extends Locatable, @namespace_decl {
  * A C++ `using` directive or `using` declaration.
  */
 class UsingEntry extends Locatable, @using {
-  override Location getLocation() { usings(underlyingElement(this), _, result) }
+  override Location getLocation() { usings(underlyingElement(this), _, result, _) }
 }
 
 /**
@@ -166,17 +171,35 @@ class UsingEntry extends Locatable, @using {
  * ```
  */
 class UsingDeclarationEntry extends UsingEntry {
-  UsingDeclarationEntry() {
-    not exists(Namespace n | usings(underlyingElement(this), unresolveElement(n), _))
-  }
+  UsingDeclarationEntry() { usings(underlyingElement(this), _, _, 1) }
 
   /**
    * Gets the declaration that is referenced by this using declaration. For
    * example, `std::string` in `using std::string`.
    */
-  Declaration getDeclaration() { usings(underlyingElement(this), unresolveElement(result), _) }
+  Declaration getDeclaration() { usings(underlyingElement(this), unresolveElement(result), _, _) }
 
-  override string toString() { result = "using " + this.getDeclaration().getDescription() }
+  /**
+   * Gets the member that is referenced by this using declaration, where the member depends on a
+   * type template parameter.
+   *
+   * For example:
+   * ```
+   * template <typename T>
+   * class A {
+   *   using T::m;
+   * };
+   * ```
+   * Here, `getReferencedMember()` yields the member `m` of `T`. Observe that,
+   * as `T` is not instantiated, `m` is represented by a `Literal` and not
+   * a `Declaration`.
+   */
+  Literal getReferencedMember() { usings(underlyingElement(this), unresolveElement(result), _, _) }
+
+  override string toString() {
+    result = "using " + this.getDeclaration().getDescription() or
+    result = "using " + this.getReferencedMember()
+  }
 }
 
 /**
@@ -186,17 +209,34 @@ class UsingDeclarationEntry extends UsingEntry {
  * ```
  */
 class UsingDirectiveEntry extends UsingEntry {
-  UsingDirectiveEntry() {
-    exists(Namespace n | usings(underlyingElement(this), unresolveElement(n), _))
-  }
+  UsingDirectiveEntry() { usings(underlyingElement(this), _, _, 2) }
 
   /**
    * Gets the namespace that is referenced by this using directive. For
    * example, `std` in `using namespace std`.
    */
-  Namespace getNamespace() { usings(underlyingElement(this), unresolveElement(result), _) }
+  Namespace getNamespace() { usings(underlyingElement(this), unresolveElement(result), _, _) }
 
   override string toString() { result = "using namespace " + this.getNamespace().getFriendlyName() }
+}
+
+/**
+ * A C++ `using enum` declaration. For example:
+ * ```
+ * enum class Foo { a, b };
+ * using enum Foo;
+ * ```
+ */
+class UsingEnumDeclarationEntry extends UsingEntry {
+  UsingEnumDeclarationEntry() { usings(underlyingElement(this), _, _, 3) }
+
+  /**
+   * Gets the enumeration that is referenced by this using directive. For
+   * example, `Foo` in `using enum Foo`.
+   */
+  Enum getEnum() { usings(underlyingElement(this), unresolveElement(result), _, _) }
+
+  override string toString() { result = "using enum " + this.getEnum().getQualifiedName() }
 }
 
 /**

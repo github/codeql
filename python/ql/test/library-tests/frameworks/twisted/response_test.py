@@ -51,13 +51,14 @@ class CookieWriting(Resource):
     """Examples of providing values in response that is not in the body
     """
     def render_GET(self, request: Request): # $ requestHandler
-        request.addCookie("key", "value") # $ CookieWrite CookieName="key" CookieValue="value"
-        request.addCookie(k="key", v="value") # $ CookieWrite CookieName="key" CookieValue="value"
+        request.addCookie("key", "value") # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
+        request.addCookie(k="key", v="value") # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
+        request.addCookie("key", "value", secure=True, httponly=True, samesite="strict") # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=true CookieHttpOnly=true CookieSameSite=Strict
         val = "key2=value"
-        request.cookies.append(val) # $ CookieWrite CookieRawHeader=val
+        request.cookies.append(val) # $ CookieWrite CookieRawHeader=val CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
 
         request.responseHeaders.addRawHeader("key", "value")
-        request.setHeader("Set-Cookie", "key3=value3") # $ MISSING: CookieWrite CookieRawHeader="key3=value3"
+        request.setHeader("Set-Cookie", "key3=value3") # $ MISSING: CookieWrite CookieRawHeader="key3=value3" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
 
         return b"" # $ HttpResponse mimetype=text/html responseBody=b""
 

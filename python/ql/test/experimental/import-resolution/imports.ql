@@ -1,5 +1,5 @@
 import python
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.internal.ImportResolution
 

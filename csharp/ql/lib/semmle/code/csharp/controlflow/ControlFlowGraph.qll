@@ -29,13 +29,6 @@ module ControlFlow {
     /** Gets the control flow element that this node corresponds to, if any. */
     final ControlFlowElement getAstNode() { result = super.getAstNode() }
 
-    /**
-     * DEPRECATED: Use `getAstNode` instead.
-     *
-     * Gets the control flow element that this node corresponds to, if any.
-     */
-    deprecated ControlFlowElement getElement() { result = this.getAstNode() }
-
     /** Gets the basic block that this control flow node belongs to. */
     BasicBlock getBasicBlock() { result.getANode() = this }
 

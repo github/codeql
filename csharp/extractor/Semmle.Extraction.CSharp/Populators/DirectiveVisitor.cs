@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CSharp.Populators
     internal class DirectiveVisitor : CSharpSyntaxWalker
     {
         private readonly Context cx;
-        private readonly List<IEntity> branchesTaken = new();
+        private readonly List<IEntity> branchesTaken = [];
 
         /// <summary>
         /// Gets a list of `#if`, `#elif`, and `#else` entities where the branch

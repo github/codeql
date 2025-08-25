@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         /// <summary>
         /// The version number of the .NET Core framework that this assembly targets.
-        /// 
+        ///
         /// This is extracted from the `TargetFrameworkAttribute` of the assembly, e.g.
         /// ```
         /// [assembly:TargetFramework(".NETCoreApp,Version=v7.0")]
@@ -60,11 +60,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 var result = Name;
                 if (Version is not null)
-                    result = string.Format("{0}, Version={1}", result, Version);
+                    result = $"{result}, Version={Version}";
                 if (Culture is not null)
-                    result = string.Format("{0}, Culture={1}", result, Culture);
+                    result = $"{result}, Culture={Culture}";
                 if (PublicKeyToken is not null)
-                    result = string.Format("{0}, PublicKeyToken={1}", result, PublicKeyToken);
+                    result = $"{result}, PublicKeyToken={PublicKeyToken}";
                 return result;
             }
         }
@@ -82,8 +82,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 if (Version is not null)
                 {
                     if (Culture is not null)
-                        yield return string.Format("{0}, Version={1}, Culture={2}", Name, Version, Culture);
-                    yield return string.Format("{0}, Version={1}", Name, Version);
+                        yield return $"{Name}, Version={Version}, Culture={Culture}";
+                    yield return $"{Name}, Version={Version}";
                 }
                 yield return Name;
                 yield return Name.ToLowerInvariant();
@@ -94,7 +94,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             var sections = id.Split(new string[] { ", " }, StringSplitOptions.None);
 
-            Name = sections.First();
+            Name = sections[0];
 
             foreach (var section in sections.Skip(1))
             {
@@ -118,21 +118,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             Culture = culture;
             PublicKeyToken = publicKeyToken;
             NetCoreVersion = netCoreVersion;
-        }
-
-        /// <summary>
-        /// Get AssemblyInfo from a loaded Assembly.
-        /// </summary>
-        /// <param name="assembly">The assembly.</param>
-        /// <returns>Info about the assembly.</returns>
-        public static AssemblyInfo MakeFromAssembly(Assembly assembly)
-        {
-            if (assembly.FullName is null)
-            {
-                throw new InvalidOperationException("Assembly with empty full name is not expected.");
-            }
-
-            return new AssemblyInfo(assembly.FullName, assembly.Location);
         }
 
         /// <summary>
@@ -160,11 +145,22 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                  *  loading the same assembly from different locations.
                  */
                 using var pereader = new System.Reflection.PortableExecutable.PEReader(new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read));
+                if (!pereader.HasMetadata)
+                {
+                    throw new AssemblyLoadException();
+                }
+
                 using var sha1 = SHA1.Create();
                 var metadata = pereader.GetMetadata();
+
                 unsafe
                 {
                     var reader = new MetadataReader(metadata.Pointer, metadata.Length);
+                    if (!reader.IsAssembly)
+                    {
+                        throw new AssemblyLoadException();
+                    }
+
                     var def = reader.GetAssemblyDefinition();
 
                     // This is how you compute the public key token from the full public key.

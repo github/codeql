@@ -66,8 +66,8 @@ public:
     insert_iterator_by_trait operator++(int);
     insert_iterator_by_trait &operator--();
     insert_iterator_by_trait operator--(int);
-    insert_iterator_by_trait operator*();
-    insert_iterator_by_trait operator=(int x);
+    insert_iterator_by_trait& operator*();
+    insert_iterator_by_trait& operator=(int x);
 };
 
 template<>

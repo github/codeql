@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.lang.runtime", "ObjectMethods", True, "bootstrap", "(MethodHandles$Lookup,String,TypeDescriptor,Class,String,MethodHandle[])", "", "Argument[5].ArrayElement", "ReturnValue", "taint", "df-generated"]
+      - ["java.lang.runtime", "SwitchBootstraps", True, "enumSwitch", "(MethodHandles$Lookup,String,MethodType,Object[])", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["java.lang.runtime", "SwitchBootstraps", True, "typeSwitch", "(MethodHandles$Lookup,String,MethodType,Object[])", "", "Argument[3].ArrayElement", "ReturnValue", "taint", "df-generated"]

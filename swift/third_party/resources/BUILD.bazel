@@ -1,0 +1,52 @@
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
+
+_oses = ("linux", "macos")
+
+alias(
+    name = "dir",
+    actual = select({"@platforms//os:" + os: "@swift-resource-dir-%s//file" % os for os in _oses}),
+    target_compatible_with = select({
+        "@platforms//os:windows": ["@platforms//:incompatible"],
+        "//conditions:default": [],
+    }),
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "prebuilt",
+    actual = select({"@platforms//os:" + os: "@swift-prebuilt-%s//:swift-llvm-support" % os for os in _oses}),
+    target_compatible_with = select({
+        "@platforms//os:windows": ["@platforms//:incompatible"],
+        "//conditions:default": [],
+    }),
+    visibility = ["//visibility:public"],
+)
+
+[
+    sh_binary(
+        name = "update-%s-%s" % (what, os),
+        srcs = ["update.sh"],
+        args = [
+            "$(rlocationpath %s)" % source,
+            "$(rlocationpath %s)" % target,
+        ],
+        data = [
+            source,
+            target,
+        ],
+        deps = ["//misc/bazel:sh_runfiles"],
+    )
+    for os in _oses
+    for what, source, target in (
+        (
+            "prebuilt",
+            "@swift-prebuilt-%s-download-only//file" % os,
+            "swift-prebuilt-%s.tar.zst" % os,
+        ),
+        (
+            "dir",
+            "@swift-resource-dir-%s//file" % os,
+            "resource-dir-%s.zip" % os,
+        ),
+    )
+]

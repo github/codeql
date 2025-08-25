@@ -11,14 +11,14 @@ size_t _mbstowcs_l(wchar_t *wcstr,const char *mbstr,size_t count, _locale_t loca
 size_t mbsrtowcs(wchar_t *wcstr,const char *mbstr,size_t count, mbstate_t *mbstate);
 
 
-void badTest1(void *src,  int size) {
+static void badTest1(void *src,  int size) {
     mbstowcs((wchar_t*)src,(char*)src,size); // BAD
     _locale_t locale;
     _mbstowcs_l((wchar_t*)src,(char*)src,size,locale); // BAD
     mbstate_t *mbstate;
     mbsrtowcs((wchar_t*)src,(char*)src,size,mbstate); // BAD
 }
-void goodTest2(){
+static void goodTest2(){
   char src[] = "0123456789ABCDEF";
   wchar_t dst[16];
   int res = mbstowcs(dst, src,16); // GOOD
@@ -29,43 +29,43 @@ void goodTest2(){
   }
   printf("%s\n", dst);
 }
-void badTest2(){
+static void badTest2(){
   char src[] = "0123456789ABCDEF";
   wchar_t dst[16];
   mbstowcs(dst, src,16); // BAD
   printf("%s\n", dst);
 }
-void goodTest3(){
+static void goodTest3(){
   char src[] = "0123456789ABCDEF";
   int size = mbstowcs(NULL, src,NULL);
   wchar_t * dst = (wchar_t*)calloc(size + 1, sizeof(wchar_t));
   mbstowcs(dst, src,size+1); // GOOD
 }
-void badTest3(){
+static void badTest3(){
   char src[] = "0123456789ABCDEF";
   int size = mbstowcs(NULL, src,NULL);
   wchar_t * dst = (wchar_t*)calloc(size + 1, 1);
   mbstowcs(dst, src,size+1); // BAD
 }
-void goodTest4(){
+static void goodTest4(){
   char src[] = "0123456789ABCDEF";
   int size = mbstowcs(NULL, src,NULL);
   wchar_t * dst = (wchar_t*)malloc((size + 1)*sizeof(wchar_t));
   mbstowcs(dst, src,size+1); // GOOD
 }
-void badTest4(){
+static void badTest4(){
   char src[] = "0123456789ABCDEF";
   int size = mbstowcs(NULL, src,NULL);
   wchar_t * dst = (wchar_t*)malloc(size + 1);
   mbstowcs(dst, src,size+1); // BAD
 }
-int goodTest5(void *src){
+static int goodTest5(void *src){
   return mbstowcs(NULL, (char*)src,NULL); // GOOD
 }
-int badTest5 (void *src) {
+static int badTest5 (void *src) {
   return mbstowcs(NULL, (char*)src,3); // BAD
 }
-void goodTest6(void *src){
+static void goodTest6(void *src){
   wchar_t dst[5];
   int size = mbstowcs(NULL, (char*)src,NULL);
   if(size>=sizeof(dst)){
@@ -75,7 +75,7 @@ void goodTest6(void *src){
   mbstowcs(dst, (char*)src,sizeof(dst)); // GOOD
   printf("%s\n", dst);
 }
-void badTest6(void *src){
+static void badTest6(void *src){
   wchar_t dst[5];
   mbstowcs(dst, (char*)src,260); // BAD
   printf("%s\n", dst);

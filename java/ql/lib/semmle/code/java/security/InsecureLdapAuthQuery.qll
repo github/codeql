@@ -16,12 +16,14 @@ module InsecureLdapUrlConfig implements DataFlow::ConfigSig {
 
   /** Method call of `env.put()`. */
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       pred.asExpr() = ma.getArgument(1) and
       isProviderUrlSetter(ma) and
       succ.asExpr() = ma.getQualifier()
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module InsecureLdapUrlFlow = TaintTracking::Global<InsecureLdapUrlConfig>;
@@ -31,13 +33,17 @@ module InsecureLdapUrlFlow = TaintTracking::Global<InsecureLdapUrlConfig>;
  */
 private module BasicAuthConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       isBasicAuthEnv(ma) and
       ma.getQualifier() = src.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()
     )
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof InsecureLdapUrlSink }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // used as secondary flow to InsecureLdapUrlFlow in InsecureLdapAuth.ql
+  }
 }
 
 module BasicAuthFlow = DataFlow::Global<BasicAuthConfig>;
@@ -47,13 +53,17 @@ module BasicAuthFlow = DataFlow::Global<BasicAuthConfig>;
  */
 private module RequiresSslConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       isSslEnv(ma) and
       ma.getQualifier() = src.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()
     )
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof InsecureLdapUrlSink }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // only used negatively in InsecureLdapAuth.ql
+  }
 }
 
 module RequiresSslFlow = DataFlow::Global<RequiresSslConfig>;

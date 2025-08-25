@@ -1,3 +1,5 @@
+deprecated module;
+
 import java
 import FlowUtils
 import semmle.code.java.dataflow.FlowSources
@@ -8,7 +10,7 @@ import semmle.code.java.dataflow.TaintTracking
  * that is used to construct and evaluate an expression.
  */
 module JakartaExpressionInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ExpressionEvaluationSink }
 
@@ -29,7 +31,7 @@ module JakartaExpressionInjectionFlow = TaintTracking::Global<JakartaExpressionI
  */
 private class ExpressionEvaluationSink extends DataFlow::ExprNode {
   ExpressionEvaluationSink() {
-    exists(MethodAccess ma, Method m, Expr taintFrom |
+    exists(MethodCall ma, Method m, Expr taintFrom |
       ma.getMethod() = m and taintFrom = this.asExpr()
     |
       m.getDeclaringType() instanceof ValueExpression and
@@ -64,7 +66,7 @@ private class TaintPropagatingCall extends Call {
   TaintPropagatingCall() {
     taintFromExpr = this.getArgument(1) and
     (
-      exists(Method m | this.(MethodAccess).getMethod() = m |
+      exists(Method m | this.(MethodCall).getMethod() = m |
         m.getDeclaringType() instanceof ExpressionFactory and
         m.hasName(["createValueExpression", "createMethodExpression"]) and
         taintFromExpr.getType() instanceof TypeString

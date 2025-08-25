@@ -1,0 +1,137 @@
+Module: [1, 0] - [21, 0]
+  body: [
+    Expr: [1, 0] - [1, 8]
+      value:
+        Subscript: [1, 0] - [1, 8]
+          value:
+            Name: [1, 0] - [1, 5]
+              variable: Variable('match', None)
+              ctx: Load
+          index:
+            Num: [1, 6] - [1, 7]
+              n: 1
+              text: '1'
+          ctx: Load
+    Assign: [2, 0] - [2, 12]
+      targets: [
+        Subscript: [2, 0] - [2, 8]
+          value:
+            Name: [2, 0] - [2, 5]
+              variable: Variable('match', None)
+              ctx: Load
+          index:
+            Num: [2, 6] - [2, 7]
+              n: 2
+              text: '2'
+          ctx: Store
+      ]
+      value:
+        Num: [2, 11] - [2, 12]
+          n: 3
+          text: '3'
+    Assign: [4, 0] - [4, 13]
+      targets: [
+        Attribute: [4, 0] - [4, 9]
+          value:
+            Name: [4, 0] - [4, 5]
+              variable: Variable('match', None)
+              ctx: Load
+          attr: 'foo'
+          ctx: Store
+      ]
+      value:
+        Num: [4, 12] - [4, 13]
+          n: 4
+          text: '4'
+    Expr: [6, 0] - [6, 7]
+      value:
+        Call: [6, 0] - [6, 7]
+          func:
+            Name: [6, 0] - [6, 5]
+              variable: Variable('match', None)
+              ctx: Load
+          positional_args: []
+          named_args: []
+    AnnAssign: [8, 0] - [8, 15]
+      value: None
+      annotation:
+        Name: [8, 11] - [8, 15]
+          variable: Variable('case', None)
+          ctx: Load
+      target:
+        Subscript: [8, 0] - [8, 8]
+          value:
+            Name: [8, 0] - [8, 5]
+              variable: Variable('match', None)
+              ctx: Load
+          index:
+            Num: [8, 6] - [8, 7]
+              n: 5
+              text: '5'
+          ctx: Store
+    Match: [12, 0] - [14, 12]
+      subject:
+        List: [12, 6] - [12, 9]
+          elts: [
+            Num: [12, 7] - [12, 8]
+              n: 6
+              text: '6'
+          ]
+          ctx: Load
+      cases: [
+        Case: [13, 4] - [14, 12]
+          pattern:
+            MatchLiteralPattern: [13, 9] - [13, 10]
+              literal:
+                Num: [13, 9] - [13, 10]
+                  n: 7
+                  text: '7'
+          guard: None
+          body: [
+            Pass: [14, 8] - [14, 12]
+          ]
+      ]
+    Print: [17, 0] - [17, 19]
+      dest:
+        Num: [17, 9] - [17, 10]
+          n: 8
+          text: '8'
+      values: [
+        Str: [17, 12] - [17, 19]
+          s: 'hello'
+          prefix: '"'
+          implicitly_concatenated_parts: None
+      ]
+      nl: True
+    Expr: [18, 0] - [18, 19]
+      value:
+        Tuple: [18, 0] - [18, 19]
+          elts: [
+            BinOp: [18, 0] - [18, 10]
+              left:
+                Name: [18, 0] - [18, 5]
+                  variable: Variable('pront', None)
+                  ctx: Load
+              op: RShift
+              right:
+                Num: [18, 9] - [18, 10]
+                  n: 9
+                  text: '9'
+            Str: [18, 12] - [18, 19]
+              s: 'world'
+              prefix: '"'
+              implicitly_concatenated_parts: None
+          ]
+          ctx: Load
+    Expr: [20, 0] - [20, 10]
+      value:
+        Await: [20, 0] - [20, 10]
+          value:
+            List: [20, 6] - [20, 10]
+              elts: [
+                Num: [20, 7] - [20, 9]
+                  n: 10
+                  text: '10'
+              ]
+              ctx: Load
+  ]

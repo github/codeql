@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["sun.security.jgss.krb5", "Krb5InitCredential", False, "Krb5InitCredential", "(Krb5NameElement,Credentials,byte[],KerberosPrincipal,KerberosPrincipal,byte[],int,boolean[],Date,Date,Date,Date,InetAddress[])", "", "Argument[5]", "credentials-key", "hq-generated"]
+      - ["sun.security.jgss.krb5", "Krb5InitCredential", False, "Krb5InitCredential", "(Krb5NameElement,byte[],KerberosPrincipal,KerberosPrincipal,byte[],int,boolean[],Date,Date,Date,Date,InetAddress[])", "", "Argument[4]", "credentials-key", "hq-generated"]

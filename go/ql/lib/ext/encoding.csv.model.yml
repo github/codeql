@@ -4,7 +4,7 @@ extensions:
       extensible: summaryModel
     data:
       - ["encoding/csv", "", False, "NewReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["encoding/csv", "Reader", True, "Read", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
-      - ["encoding/csv", "Reader", True, "ReadAll", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
-      - ["encoding/csv", "Writer", True, "Write", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["encoding/csv", "Writer", True, "WriteAll", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["encoding/csv", "Reader", True, "Read", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["encoding/csv", "Reader", True, "ReadAll", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["encoding/csv", "Writer", True, "Write", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["encoding/csv", "Writer", True, "WriteAll", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]

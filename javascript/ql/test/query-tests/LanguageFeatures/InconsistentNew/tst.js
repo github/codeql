@@ -1,4 +1,4 @@
-function Point(x, y) {
+function Point(x, y) { // $ Alert
 	this.x = x;
 	this.y = y;
 }
@@ -48,13 +48,13 @@ function RobustPoint4(x, y) {
 new RobustPoint4(23, 42);
 RobustPoint4(56, 72);
 
-// OK: Error is an external function
+// OK - Error is an external function
 new Error();
 Error();
 
 class C {}
 new C();
-C(); // NOT OK, but flagged by IllegalInvocation
+C(); // OK - flagged by IllegalInvocation
 
 (function() {
 	function A(x) {
@@ -64,5 +64,5 @@ C(); // NOT OK, but flagged by IllegalInvocation
 	A.call({}, 23);
 })();
 
-new Point(42, 23); // NOT OK, but not flagged since line 6 above was already flagged
-Point(56, 72);     // NOT OK, but not flagged since line 7 above was already flagged
+new Point(42, 23); // OK - not flagged since line 6 above was already flagged
+Point(56, 72);     // OK - not flagged since line 7 above was already flagged

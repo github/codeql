@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["cloudflare/wrangler-action", "*", "input.preCommands", "command-injection", "manual"]
+      - ["cloudflare/wrangler-action", "*", "input.postCommands", "command-injection", "manual"]

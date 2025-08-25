@@ -1,0 +1,14 @@
+| CFG scope lacks initial AST node | 0 |
+| Dead end | 0 |
+| Missing CFG child | 0 |
+| Multiple successors of the same type | 0 |
+| Multiple toStrings | 0 |
+| Non-PostOrderTree Expr node | 0 |
+| Non-unique list order | 0 |
+| Non-unique set representation | 0 |
+| Non-unique split kind | 0 |
+| Simple and normal successors | 0 |
+| Splitting invariant 2 | 0 |
+| Splitting invariant 3 | 0 |
+| Splitting invariant 4 | 0 |
+| Splitting invariant 5 | 0 |

@@ -43,8 +43,6 @@ class RegExpParent extends Locatable, @regexpparent { }
  * ```
  */
 class RegExpTerm extends Locatable, @regexpterm {
-  override Location getLocation() { hasLocation(this, result) }
-
   /** Gets the `i`th child term of this term. */
   RegExpTerm getChild(int i) { regexpterm(result, _, this, i, _) }
 
@@ -301,6 +299,51 @@ class RegExpAlt extends RegExpTerm, @regexp_alt {
   override string getAMatchedString() { result = this.getAlternative().getAMatchedString() }
 
   override string getAPrimaryQlClass() { result = "RegExpAlt" }
+}
+
+/**
+ * An intersection term, that is, a term of the form `[[a]&&[ab]]`.
+ *
+ * Example:
+ *
+ * ```
+ * /[[abc]&&[bcd]]/v - which matches 'b' and 'c' only.
+ * ```
+ */
+class RegExpIntersection extends RegExpTerm, @regexp_intersection {
+  /** Gets an intersected term of this term. */
+  RegExpTerm getAnElement() { result = this.getAChild() }
+
+  /** Gets the number of intersected terms of this term. */
+  int getNumIntersectedTerm() { result = this.getNumChild() }
+
+  override predicate isNullable() { this.getAnElement().isNullable() }
+
+  override string getAPrimaryQlClass() { result = "RegExpIntersection" }
+}
+
+/**
+ * A subtraction term, that is, a term of the form `[[a]--[ab]]`.
+ *
+ * Example:
+ *
+ * ```
+ * /[[abc]--[bc]]/v - which matches 'a' only.
+ * ```
+ */
+class RegExpSubtraction extends RegExpTerm, @regexp_subtraction {
+  /** Gets the minuend (left operand) of this subtraction. */
+  RegExpTerm getFirstTerm() { result = this.getChild(0) }
+
+  /** Gets the number of subtractions terms of this term. */
+  int getNumSubtractedTerm() { result = this.getNumChild() - 1 }
+
+  /** Gets a subtrahend (right operand) of this subtraction. */
+  RegExpTerm getASubtractedTerm() { exists(int i | i > 0 and result = this.getChild(i)) }
+
+  override predicate isNullable() { none() }
+
+  override string getAPrimaryQlClass() { result = "RegExpSubtraction" }
 }
 
 /**
@@ -940,7 +983,7 @@ private predicate isMatchObjectProperty(string name) {
 
 /** Holds if `call` is a call to `match` whose result is used in a way that is incompatible with Match objects. */
 private predicate isUsedAsNonMatchObject(DataFlow::MethodCallNode call) {
-  call.getMethodName() = "match" and
+  call.getMethodName() = ["match", "matchAll"] and
   call.getNumArgument() = 1 and
   (
     // Accessing a property that is absent on Match objects
@@ -955,6 +998,8 @@ private predicate isUsedAsNonMatchObject(DataFlow::MethodCallNode call) {
     or
     // Result is obviously unused
     call.asExpr() = any(ExprStmt stmt).getExpr()
+    or
+    call = API::moduleImport("sinon").getMember("match").getACall()
   )
 }
 
@@ -974,7 +1019,7 @@ private predicate isUsedAsNumber(DataFlow::LocalSourceNode value) {
   or
   exists(DataFlow::CallNode call |
     call.getCalleeName() =
-      ["substring", "substr", "slice", "splice", "charAt", "charCodeAt", "codePointAt"] and
+      ["substring", "substr", "slice", "splice", "charAt", "charCodeAt", "codePointAt", "toSpliced"] and
     value.flowsTo(call.getAnArgument())
   )
 }
@@ -998,7 +1043,7 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
         not isNativeStringMethod(func, methodName)
       )
     |
-      methodName = "match" and
+      methodName = ["match", "matchAll"] and
       source = mce.getArgument(0) and
       mce.getNumArgument() = 1 and
       not isUsedAsNonMatchObject(mce)
@@ -1022,29 +1067,6 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
             .flow()
     )
   )
-}
-
-/**
- * Provides utility predicates related to regular expressions.
- */
-deprecated module RegExpPatterns {
-  /**
-   * Gets a pattern that matches common top-level domain names in lower case.
-   * DEPRECATED: use the similarly named predicate from `HostnameRegex` from the `regex` pack instead.
-   */
-  deprecated string getACommonTld() {
-    // according to ranking by http://google.com/search?q=site:.<<TLD>>
-    result = "(?:com|org|edu|gov|uk|net|io)(?![a-z0-9])"
-  }
-
-  /**
-   * Gets a pattern that matches common top-level domain names in lower case.
-   * DEPRECATED: use `getACommonTld` instead
-   */
-  deprecated predicate commonTld = getACommonTld/0;
-
-  /** DEPRECATED: Alias for commonTld */
-  deprecated predicate commonTLD = commonTld/0;
 }
 
 /**
@@ -1167,6 +1189,28 @@ private class StringConcatRegExpPatternSource extends RegExpPatternSource {
   override RegExpTerm getRegExpTerm() { result = this.asExpr().(AddExpr).asRegExp() }
 }
 
+/**
+ * A quoted string escape in a regular expression, using the `\q` syntax.
+ * The only operation supported inside a quoted string is alternation, using `|`.
+ *
+ * Example:
+ *
+ * ```
+ * \q{foo}
+ * \q{a|b|c}
+ * ```
+ */
+class RegExpQuotedString extends RegExpTerm, @regexp_quoted_string {
+  /** Gets the term representing the contents of this quoted string. */
+  RegExpTerm getTerm() { result = this.getAChild() }
+
+  override predicate isNullable() { none() }
+
+  override string getAMatchedString() { result = this.getTerm().getAMatchedString() }
+
+  override string getAPrimaryQlClass() { result = "RegExpQuotedString" }
+}
+
 module RegExp {
   /** Gets the string `"?"` used to represent a regular expression whose flags are unknown. */
   string unknownFlag() { result = "?" }
@@ -1186,6 +1230,10 @@ module RegExp {
   /** Holds if `flags` includes the `s` flag. */
   bindingset[flags]
   predicate isDotAll(string flags) { flags.matches("%s%") }
+
+  /** Holds if `flags` includes the `v` flag. */
+  bindingset[flags]
+  predicate isUnicodeSets(string flags) { flags.matches("%v%") }
 
   /** Holds if `flags` includes the `m` flag or is the unknown flag `?`. */
   bindingset[flags]

@@ -126,7 +126,10 @@ class ControlFlowNode extends @py_flow_node {
   cached
   string toString() {
     Stages::AST::ref() and
-    exists(Scope s | s.getEntryNode() = this | result = "Entry node for " + s.toString())
+    // Since modules can have ambigous names, entry nodes can too, if we do not collate them.
+    exists(Scope s | s.getEntryNode() = this |
+      result = "Entry node for " + concat( | | s.toString(), ",")
+    )
     or
     exists(Scope s | s.getANormalExit() = this | result = "Exit node for " + s.toString())
     or
@@ -547,6 +550,31 @@ class IfExprNode extends ControlFlowNode {
   override IfExp getNode() { result = super.getNode() }
 }
 
+/** A control flow node corresponding to an assignment expression such as `lhs := rhs`. */
+class AssignmentExprNode extends ControlFlowNode {
+  AssignmentExprNode() { toAst(this) instanceof AssignExpr }
+
+  /** Gets the flow node corresponding to the left-hand side of the assignment expression */
+  ControlFlowNode getTarget() {
+    exists(AssignExpr a |
+      this.getNode() = a and
+      a.getTarget() = result.getNode() and
+      result.getBasicBlock().dominates(this.getBasicBlock())
+    )
+  }
+
+  /** Gets the flow node corresponding to the right-hand side of the assignment expression */
+  ControlFlowNode getValue() {
+    exists(AssignExpr a |
+      this.getNode() = a and
+      a.getValue() = result.getNode() and
+      result.getBasicBlock().dominates(this.getBasicBlock())
+    )
+  }
+
+  override AssignExpr getNode() { result = super.getNode() }
+}
+
 /** A control flow node corresponding to a binary expression, such as `x + y` */
 class BinaryExprNode extends ControlFlowNode {
   BinaryExprNode() { toAst(this) instanceof BinaryExpr }
@@ -629,6 +657,8 @@ class DefinitionNode extends ControlFlowNode {
   DefinitionNode() {
     Stages::AST::ref() and
     exists(Assign a | a.getATarget().getAFlowNode() = this)
+    or
+    exists(AssignExpr a | a.getTarget().getAFlowNode() = this)
     or
     exists(AnnAssign a | a.getTarget().getAFlowNode() = this and exists(a.getValue()))
     or
@@ -786,6 +816,9 @@ class IterableNode extends ControlFlowNode {
 private AstNode assigned_value(Expr lhs) {
   /* lhs = result */
   exists(Assign a | a.getATarget() = lhs and result = a.getValue())
+  or
+  /* lhs := result */
+  exists(AssignExpr a | a.getTarget() = lhs and result = a.getValue())
   or
   /* lhs : annotation = result */
   exists(AnnAssign a | a.getTarget() = lhs and result = a.getValue())

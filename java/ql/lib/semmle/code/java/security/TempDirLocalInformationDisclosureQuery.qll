@@ -1,6 +1,7 @@
 /** Provides classes to reason about local information disclosure in a temporary directory. */
 
 import java
+private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.os.OSCheck
 private import semmle.code.java.security.TempDirUtils
@@ -29,7 +30,7 @@ private class MethodFileFileCreation extends MethodFileSystemFileCreation {
 /**
  * A dataflow node that creates a file or directory in the file system.
  */
-abstract private class FileCreationSink extends DataFlow::Node { }
+abstract private class FileCreationSink extends ApiSinkNode { }
 
 /**
  * The qualifier of a call to one of `File`'s file-creating or directory-creating methods,
@@ -37,7 +38,7 @@ abstract private class FileCreationSink extends DataFlow::Node { }
  */
 private class FileFileCreationSink extends FileCreationSink {
   FileFileCreationSink() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof MethodFileSystemFileCreation and
       ma.getQualifier() = this.asExpr()
     )
@@ -50,7 +51,7 @@ private class FileFileCreationSink extends FileCreationSink {
  */
 private class FilesFileCreationSink extends FileCreationSink {
   FilesFileCreationSink() {
-    exists(FilesVulnerableCreationMethodAccess ma | ma.getArgument(0) = this.asExpr())
+    exists(FilesVulnerableCreationMethodCall ma | ma.getArgument(0) = this.asExpr())
   }
 }
 
@@ -58,8 +59,8 @@ private class FilesFileCreationSink extends FileCreationSink {
  * A call to a `Files` method that create files/directories without explicitly
  * setting the newly-created file or directory's permissions.
  */
-private class FilesVulnerableCreationMethodAccess extends MethodAccess {
-  FilesVulnerableCreationMethodAccess() {
+private class FilesVulnerableCreationMethodCall extends MethodCall {
+  FilesVulnerableCreationMethodCall() {
     exists(Method m |
       m = this.getMethod() and
       m.getDeclaringType().hasQualifiedName("java.nio.file", "Files")
@@ -80,8 +81,8 @@ private class FilesVulnerableCreationMethodAccess extends MethodAccess {
  * We can safely assume that any calls to these methods with explicit `PosixFilePermissions.asFileAttribute`
  * contains a certain level of intentionality behind it.
  */
-private class FilesSanitizingCreationMethodAccess extends MethodAccess {
-  FilesSanitizingCreationMethodAccess() {
+private class FilesSanitizingCreationMethodCall extends MethodCall {
+  FilesSanitizingCreationMethodCall() {
     exists(Method m |
       m = this.getMethod() and
       m.getDeclaringType().hasQualifiedName("java.nio.file", "Files")
@@ -98,7 +99,7 @@ private class FilesSanitizingCreationMethodAccess extends MethodAccess {
  */
 private class FileCreateTempFileSink extends FileCreationSink {
   FileCreateTempFileSink() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof MethodFileCreateTempFile and ma.getArgument(2) = this.asExpr()
     )
   }
@@ -138,12 +139,16 @@ module TempDirSystemGetPropertyToCreateConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node sanitizer) {
-    exists(FilesSanitizingCreationMethodAccess sanitisingMethodAccess |
-      sanitizer.asExpr() = sanitisingMethodAccess.getArgument(0)
+    exists(FilesSanitizingCreationMethodCall sanitisingMethodCall |
+      sanitizer.asExpr() = sanitisingMethodCall.getArgument(0)
     )
     or
     sanitizer instanceof WindowsOsSanitizer
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) { none() }
 }
 
 /**
@@ -173,7 +178,7 @@ module TempDirSystemGetPropertyDirectlyToMkdirConfig implements DataFlow::Config
   }
 
   predicate isSink(DataFlow::Node node) {
-    exists(MethodAccess ma | ma.getMethod() instanceof MethodFileDirectoryCreation |
+    exists(MethodCall ma | ma.getMethod() instanceof MethodFileDirectoryCreation |
       ma.getQualifier() = node.asExpr()
     )
   }
@@ -200,9 +205,10 @@ module TempDirSystemGetPropertyDirectlyToMkdir =
 // Begin configuration for tracking single-method calls that are vulnerable.
 //
 /**
- * A `MethodAccess` against a method that creates a temporary file or directory in a shared temporary directory.
+ * A `MethodCall` against a method that creates a temporary file or directory in a shared temporary directory.
  */
-abstract class MethodAccessInsecureFileCreation extends MethodAccess {
+overlay[local?]
+abstract class MethodCallInsecureFileCreation extends MethodCall {
   /**
    * Gets the type of entity created (e.g. `file`, `directory`, ...).
    */
@@ -217,8 +223,9 @@ abstract class MethodAccessInsecureFileCreation extends MethodAccess {
 /**
  * An insecure call to `java.io.File.createTempFile`.
  */
-class MethodAccessInsecureFileCreateTempFile extends MethodAccessInsecureFileCreation {
-  MethodAccessInsecureFileCreateTempFile() {
+overlay[local?]
+class MethodCallInsecureFileCreateTempFile extends MethodCallInsecureFileCreation {
+  MethodCallInsecureFileCreateTempFile() {
     this.getMethod() instanceof MethodFileCreateTempFile and
     (
       // `File.createTempFile(string, string)` always uses the default temporary directory
@@ -245,8 +252,9 @@ class MethodGuavaFilesCreateTempFile extends Method {
 /**
  * A call to the `com.google.common.io.Files.createTempDir` method.
  */
-class MethodAccessInsecureGuavaFilesCreateTempFile extends MethodAccessInsecureFileCreation {
-  MethodAccessInsecureGuavaFilesCreateTempFile() {
+overlay[local?]
+class MethodCallInsecureGuavaFilesCreateTempFile extends MethodCallInsecureFileCreation {
+  MethodCallInsecureGuavaFilesCreateTempFile() {
     this.getMethod() instanceof MethodGuavaFilesCreateTempFile
   }
 

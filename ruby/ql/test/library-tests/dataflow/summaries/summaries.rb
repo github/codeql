@@ -20,7 +20,7 @@ sink(tainted3) # $ hasValueFlow=tainted
 tainted4 = Foo.firstArg(tainted)
 sink(tainted4) # $ hasTaintFlow=tainted
 
-notTainted = Foo.firstArg(nil, tainted))
+notTainted = Foo.firstArg(nil, tainted)
 sink(notTainted)
 
 tainted5 = Foo.secondArg(nil, tainted)
@@ -164,5 +164,19 @@ class FuzzySub < FuzzyLib::Foo
   end
   def self.blah
     self.fuzzyCall(source("tainted")) # $ hasValueFlow=tainted
+  end
+end
+
+class SynthGlobalTest
+  def store
+    @x.someField = source("tainted")
+    @x.saveToDatabase()
+  end
+
+  def read
+    @x = readFromDatabase()
+    sink(@x)
+    sink(@x.someField) # $ hasValueFlow=tainted
+    sink(@x.someOtherField)
   end
 end

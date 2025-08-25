@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Diagnostics.JitTrace", "JitTraceRuntime", "Prepare", "(System.IO.FileInfo,System.Int32,System.Int32)", "summary", "df-generated"]
+      - ["Microsoft.Diagnostics.JitTrace", "JitTraceRuntime", "Prepare", "(System.IO.StreamReader,System.Int32,System.Int32)", "summary", "df-generated"]
+      - ["Microsoft.Diagnostics.JitTrace", "JitTraceRuntime", "Prepare", "(System.String,System.Int32,System.Int32)", "summary", "df-generated"]
+      - ["Microsoft.Diagnostics.JitTrace", "JitTraceRuntime", "add_LogFailure", "(System.Action<System.String>)", "summary", "df-generated"]
+      - ["Microsoft.Diagnostics.JitTrace", "JitTraceRuntime", "remove_LogFailure", "(System.Action<System.String>)", "summary", "df-generated"]

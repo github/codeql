@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/threat-models
+      extensible: threatModelConfiguration
+    data:
+    # Since responses are enabled by default in the shared threat-models configuration,
+    # we need to disable it here to keep existing behavior for the javascript analysis.
+      - ["response", false, -2147483647]

@@ -7,47 +7,35 @@
  * @tags ide-contextual-queries/print-cfg
  */
 
-private import codeql.ruby.controlflow.internal.ControlFlowGraphImpl::TestOutput
-private import codeql.IDEContextual
 private import codeql.Locations
+private import codeql.ruby.controlflow.internal.ControlFlowGraphImpl
 private import codeql.ruby.controlflow.ControlFlowGraph
 
-/**
- * Gets the source file to generate a CFG from.
- */
 external string selectedSourceFile();
 
-external string selectedSourceLine();
+private predicate selectedSourceFileAlias = selectedSourceFile/0;
 
-external string selectedSourceColumn();
+external int selectedSourceLine();
 
-bindingset[file, line, column]
-private CfgScope smallestEnclosingScope(File file, int line, int column) {
-  result =
-    min(Location loc, CfgScope scope |
-      loc = scope.getLocation() and
-      (
-        loc.getStartLine() < line
-        or
-        loc.getStartLine() = line and loc.getStartColumn() <= column
-      ) and
-      (
-        loc.getEndLine() > line
-        or
-        loc.getEndLine() = line and loc.getEndColumn() >= column
-      ) and
-      loc.getFile() = file
-    |
-      scope
-      order by
-        loc.getStartLine() desc, loc.getStartColumn() desc, loc.getEndLine(), loc.getEndColumn()
-    )
-}
+private predicate selectedSourceLineAlias = selectedSourceLine/0;
 
-class MyRelevantNode extends RelevantNode {
-  MyRelevantNode() {
-    this.getScope() =
-      smallestEnclosingScope(getFileBySourceArchiveName(selectedSourceFile()),
-        selectedSourceLine().toInt(), selectedSourceColumn().toInt())
+external int selectedSourceColumn();
+
+private predicate selectedSourceColumnAlias = selectedSourceColumn/0;
+
+module ViewCfgQueryInput implements ViewCfgQueryInputSig<File> {
+  predicate selectedSourceFile = selectedSourceFileAlias/0;
+
+  predicate selectedSourceLine = selectedSourceLineAlias/0;
+
+  predicate selectedSourceColumn = selectedSourceColumnAlias/0;
+
+  predicate cfgScopeSpan(
+    CfgScope scope, File file, int startLine, int startColumn, int endLine, int endColumn
+  ) {
+    file = scope.getFile() and
+    scope.getLocation().hasLocationInfo(_, startLine, startColumn, endLine, endColumn)
   }
 }
+
+import ViewCfgQuery<File, ViewCfgQueryInput>

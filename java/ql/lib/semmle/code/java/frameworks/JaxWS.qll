@@ -2,6 +2,8 @@
  * Definitions relating to JAX-WS (Java/Jakarta API for XML Web Services) and JAX-RS
  * (Java/Jakarta API for RESTful Web Services).
  */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.frameworks.Networking
@@ -148,6 +150,21 @@ private predicate hasPathAnnotation(Annotatable annotatable) {
 }
 
 /**
+ * Holds if the class has or inherits the JaxRs `@Path` annotation.
+ */
+private predicate hasOrInheritsPathAnnotation(Class c) {
+  hasPathAnnotation(c)
+  or
+  // Note that by the JAX-RS spec, JAX-RS annotations on classes and interfaces
+  // are not inherited, but some implementations, like Apache CXF, do inherit
+  // them. I think this only applies if there are no JaxRS annotations on the
+  // class itself, as that is the rule in the JAX-RS spec for method
+  // annotations.
+  hasPathAnnotation(c.getAnAncestor()) and
+  not exists(c.getAnAnnotation().(JaxRSAnnotation))
+}
+
+/**
  * A method which is annotated with one or more JaxRS resource type annotations e.g. `@GET`, `@POST` etc.
  */
 class JaxRsResourceMethod extends Method {
@@ -191,7 +208,7 @@ class JaxRsResourceMethod extends Method {
 class JaxRsResourceClass extends Class {
   JaxRsResourceClass() {
     // A root resource class has a @Path annotation on the class.
-    hasPathAnnotation(this)
+    hasOrInheritsPathAnnotation(this)
     or
     // A sub-resource
     exists(JaxRsResourceClass resourceClass, Method method |
@@ -227,7 +244,7 @@ class JaxRsResourceClass extends Class {
   /**
    * Holds if this class is a "root resource" class
    */
-  predicate isRootResource() { hasPathAnnotation(this) }
+  predicate isRootResource() { hasOrInheritsPathAnnotation(this) }
 
   /**
    * Gets a `Constructor` that may be called by a JaxRS container to construct this class reflectively.
@@ -411,18 +428,33 @@ private class JaxRSXssSink extends XssSink {
     |
       not exists(resourceMethod.getProducesAnnotation())
       or
-      isXssVulnerableContentType(getContentTypeString(resourceMethod
-              .getProducesAnnotation()
-              .getADeclaredContentTypeExpr()))
+      isXssVulnerableContentTypeExpr(resourceMethod
+            .getProducesAnnotation()
+            .getADeclaredContentTypeExpr())
     )
   }
 }
 
-private predicate isXssVulnerableContentTypeExpr(Expr e) {
-  isXssVulnerableContentType(getContentTypeString(e))
+pragma[nomagic]
+private predicate contentTypeString(string s) { s = getContentTypeString(_) }
+
+pragma[nomagic]
+private predicate isXssVulnerableContentTypeString(string s) {
+  contentTypeString(s) and isXssVulnerableContentType(s)
 }
 
-private predicate isXssSafeContentTypeExpr(Expr e) { isXssSafeContentType(getContentTypeString(e)) }
+pragma[nomagic]
+private predicate isXssSafeContentTypeString(string s) {
+  contentTypeString(s) and isXssSafeContentType(s)
+}
+
+private predicate isXssVulnerableContentTypeExpr(Expr e) {
+  isXssVulnerableContentTypeString(getContentTypeString(e))
+}
+
+private predicate isXssSafeContentTypeExpr(Expr e) {
+  isXssSafeContentTypeString(getContentTypeString(e))
+}
 
 /**
  * Gets a builder expression or related type that is configured to use the given `contentType`.
@@ -437,7 +469,7 @@ private predicate isXssSafeContentTypeExpr(Expr e) { isXssSafeContentType(getCon
 private DataFlow::Node getABuilderWithExplicitContentType(Expr contentType) {
   // Base case: ResponseBuilder.type(contentType)
   result.asExpr() =
-    any(MethodAccess ma |
+    any(MethodCall ma |
       ma.getCallee().hasQualifiedName(getAJaxRsPackage("core"), "Response$ResponseBuilder", "type") and
       contentType = ma.getArgument(0)
     )
@@ -451,7 +483,7 @@ private DataFlow::Node getABuilderWithExplicitContentType(Expr contentType) {
   or
   // Base case: Variant[.VariantListBuilder].mediaTypes(...)
   result.asExpr() =
-    any(MethodAccess ma |
+    any(MethodCall ma |
       ma.getCallee()
           .hasQualifiedName(getAJaxRsPackage("core"), ["Variant", "Variant$VariantListBuilder"],
             "mediaTypes") and
@@ -460,7 +492,7 @@ private DataFlow::Node getABuilderWithExplicitContentType(Expr contentType) {
   or
   // Recursive case: propagate through variant list building:
   result.asExpr() =
-    any(MethodAccess ma |
+    any(MethodCall ma |
       (
         ma.getType()
             .(RefType)
@@ -475,14 +507,14 @@ private DataFlow::Node getABuilderWithExplicitContentType(Expr contentType) {
   or
   // Recursive case: propagate through a List.get operation
   result.asExpr() =
-    any(MethodAccess ma |
+    any(MethodCall ma |
       ma.getMethod().hasQualifiedName("java.util", "List<Variant>", "get") and
       ma.getQualifier() = getABuilderWithExplicitContentType(contentType).asExpr()
     )
   or
   // Recursive case: propagate through Response.ResponseBuilder operations, including the `variant(...)` operation.
   result.asExpr() =
-    any(MethodAccess ma |
+    any(MethodCall ma |
       ma.getType().(RefType).hasQualifiedName(getAJaxRsPackage("core"), "Response$ResponseBuilder") and
       [ma.getQualifier(), ma.getArgument(0)] =
         getABuilderWithExplicitContentType(contentType).asExpr()
@@ -518,7 +550,7 @@ private class SanitizedResponseBuilder extends XssSanitizer {
     this = getASanitizedBuilder()
     or
     this.asExpr() =
-      any(MethodAccess ma |
+      any(MethodCall ma |
         ma.getMethod().hasQualifiedName(getAJaxRsPackage("core"), "Response", "ok") and
         (
           // e.g. Response.ok(sanitizeMe, new Variant("application/json", ...))
@@ -542,19 +574,19 @@ private class SanitizedResponseBuilder extends XssSanitizer {
 private class VulnerableEntity extends XssSinkBarrier {
   VulnerableEntity() {
     this.asExpr() =
-      any(MethodAccess ma |
+      any(MethodCall ma |
         (
           // Vulnerable content-type already set:
           ma.getQualifier() = getAVulnerableBuilder().asExpr()
           or
           // Vulnerable content-type set in the future:
-          getAVulnerableBuilder().asExpr().(MethodAccess).getQualifier*() = ma
+          getAVulnerableBuilder().asExpr().(MethodCall).getQualifier*() = ma
         ) and
         ma.getMethod().hasName("entity")
       ).getArgument(0)
     or
     this.asExpr() =
-      any(MethodAccess ma |
+      any(MethodCall ma |
         (
           isXssVulnerableContentTypeExpr(ma.getArgument(1))
           or

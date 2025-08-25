@@ -30,19 +30,6 @@ class CommandInjectionAdditionalFlowStep extends Unit {
 }
 
 /**
- * An additional taint step for command injection vulnerabilities.
- */
-private class CommandInjectionArrayAdditionalFlowStep extends CommandInjectionAdditionalFlowStep {
-  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    // needed until we have proper content flow through arrays.
-    exists(ArrayExpr arr |
-      nodeFrom.asExpr() = arr.getAnElement() and
-      nodeTo.asExpr() = arr
-    )
-  }
-}
-
-/**
  * A sink defined in a CSV model.
  */
 private class DefaultCommandInjectionSink extends CommandInjectionSink {
@@ -76,6 +63,7 @@ private class CommandInjectionSinks extends SinkModelCsv {
 private class CommandInjectionDefaultBarrier extends CommandInjectionBarrier {
   CommandInjectionDefaultBarrier() {
     // any numeric type
-    this.asExpr().getType().getUnderlyingType().getABaseType*().getName() = "Numeric"
+    this.asExpr().getType().getUnderlyingType().getABaseType*().getName() =
+      ["Numeric", "SignedInteger", "UnsignedInteger"]
   }
 }

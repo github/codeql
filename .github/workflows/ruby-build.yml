@@ -7,6 +7,7 @@ on:
       - .github/workflows/ruby-build.yml
       - .github/actions/fetch-codeql/action.yml
       - codeql-workspace.yml
+      - "shared/tree-sitter-extractor/**"
     branches:
       - main
       - "rc/*"
@@ -16,6 +17,7 @@ on:
       - .github/workflows/ruby-build.yml
       - .github/actions/fetch-codeql/action.yml
       - codeql-workspace.yml
+      - "shared/tree-sitter-extractor/**"
     branches:
       - main
       - "rc/*"
@@ -31,6 +33,9 @@ env:
 defaults:
   run:
     working-directory: ruby
+
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -48,9 +53,11 @@ jobs:
         run: |
           brew install gnu-tar
           echo "/usr/local/opt/gnu-tar/libexec/gnubin" >> $GITHUB_PATH
-      - name: Install cargo-cross
-        if: runner.os == 'Linux'
-        run: cargo install cross --version 0.2.5
+      - name: Prepare Windows
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          git config --global core.longpaths true
       - uses: ./.github/actions/os-version
         id: os_version
       - name: Cache entire extractor
@@ -58,8 +65,8 @@ jobs:
         id: cache-extractor
         with:
           path: |
-            ruby/extractor/target/release/codeql-extractor-ruby
-            ruby/extractor/target/release/codeql-extractor-ruby.exe
+            target/release/codeql-extractor-ruby
+            target/release/codeql-extractor-ruby.exe
             ruby/extractor/ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
           key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-ruby-extractor-${{ hashFiles('ruby/extractor/rust-toolchain.toml', 'ruby/extractor/Cargo.lock') }}-${{ hashFiles('shared/tree-sitter-extractor') }}-${{ hashFiles('ruby/extractor/**/*.rs') }}
       - uses: actions/cache@v3
@@ -68,49 +75,42 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-            ruby/target
+            target
           key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-ruby-rust-cargo-${{ hashFiles('ruby/extractor/rust-toolchain.toml', 'ruby/extractor/**/Cargo.lock') }}
       - name: Check formatting
         if: steps.cache-extractor.outputs.cache-hit != 'true'
-        run: cd extractor && cargo fmt --all -- --check
+        run: cd extractor && cargo fmt -- --check
       - name: Build
         if: steps.cache-extractor.outputs.cache-hit != 'true'
         run: cd extractor && cargo build --verbose
       - name: Run tests
         if: steps.cache-extractor.outputs.cache-hit != 'true'
         run: cd extractor && cargo test --verbose
-      # On linux, build the extractor via cross in a centos7 container.
-      # This ensures we don't depend on glibc > 2.17.
-      - name: Release build (linux)
-        if: steps.cache-extractor.outputs.cache-hit != 'true' && runner.os == 'Linux'
-        run: |
-          cd extractor
-          cross build --release
-          mv target/x86_64-unknown-linux-gnu/release/codeql-extractor-ruby target/release/
-      - name: Release build (windows and macos)
-        if: steps.cache-extractor.outputs.cache-hit != 'true' && runner.os != 'Linux'
+      - name: Release build
+        if: steps.cache-extractor.outputs.cache-hit != 'true'
         run: cd extractor && cargo build --release
       - name: Generate dbscheme
         if: ${{ matrix.os == 'ubuntu-latest' && steps.cache-extractor.outputs.cache-hit != 'true'}}
-        run: extractor/target/release/codeql-extractor-ruby generate --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
-      - uses: actions/upload-artifact@v3
+        run: ../target/release/codeql-extractor-ruby generate --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
+      - uses: actions/upload-artifact@v4
         if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
           name: ruby.dbscheme
           path: ruby/ql/lib/ruby.dbscheme
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
           name: TreeSitter.qll
           path: ruby/ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: extractor-${{ matrix.os }}
           path: |
-            ruby/extractor/target/release/codeql-extractor-ruby
-            ruby/extractor/target/release/codeql-extractor-ruby.exe
+            target/release/codeql-extractor-ruby
+            target/release/codeql-extractor-ruby.exe
           retention-days: 1
   compile-queries:
+    if: github.repository_owner == 'github'
     runs-on: ubuntu-latest-xl
     steps:
       - uses: actions/checkout@v4
@@ -119,7 +119,7 @@ jobs:
       - name: Cache compilation cache
         id: query-cache
         uses: ./.github/actions/cache-query-compilation
-        with: 
+        with:
           key: ruby-build
       - name: Build Query Pack
         run: |
@@ -134,31 +134,32 @@ jobs:
           PACK_FOLDER=$(readlink -f "$PACKS"/codeql/ruby-queries/*)
           codeql generate query-help --format=sarifv2.1.0 --output="${PACK_FOLDER}/rules.sarif" ql/src
           (cd ql/src; find queries \( -name '*.qhelp' -o -name '*.rb' -o -name '*.erb' \) -exec bash -c 'mkdir -p "'"${PACK_FOLDER}"'/$(dirname "{}")"' \; -exec cp "{}" "${PACK_FOLDER}/{}" \;)
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: codeql-ruby-queries
           path: |
             ${{ runner.temp }}/query-packs/*
           retention-days: 1
+          include-hidden-files: true
 
   package:
     runs-on: ubuntu-latest
     needs: [build, compile-queries]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: ruby.dbscheme
           path: ruby/ruby
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: extractor-ubuntu-latest
           path: ruby/linux64
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: extractor-windows-latest
           path: ruby/win64
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: extractor-macos-latest
           path: ruby/osx64
@@ -171,12 +172,13 @@ jobs:
           cp win64/codeql-extractor-ruby.exe ruby/tools/win64/extractor.exe
           chmod +x ruby/tools/{linux64,osx64}/extractor
           zip -rq codeql-ruby.zip ruby
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: codeql-ruby-pack
           path: ruby/codeql-ruby.zip
           retention-days: 1
-      - uses: actions/download-artifact@v3
+          include-hidden-files: true
+      - uses: actions/download-artifact@v4
         with:
           name: codeql-ruby-queries
           path: ruby/qlpacks
@@ -188,11 +190,12 @@ jobs:
             ]
           }' > .codeqlmanifest.json
           zip -rq codeql-ruby-bundle.zip .codeqlmanifest.json ruby qlpacks
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: codeql-ruby-bundle
           path: ruby/codeql-ruby-bundle.zip
           retention-days: 1
+          include-hidden-files: true
 
   test:
     defaults:
@@ -211,7 +214,7 @@ jobs:
         uses: ./.github/actions/fetch-codeql
 
       - name: Download Ruby bundle
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: codeql-ruby-bundle
           path: ${{ runner.temp }}
@@ -231,54 +234,3 @@ jobs:
         shell: bash
         run: |
           codeql database analyze --search-path "${{ runner.temp }}/ruby-bundle" --format=sarifv2.1.0 --output=out.sarif ../database ruby-code-scanning.qls
-
-  # This is a copy of the 'test' job that runs in a centos7 container.
-  # This tests that the extractor works correctly on systems with an old glibc.
-  test-centos7:
-    defaults:
-      run:
-        working-directory: ${{ github.workspace }}
-    strategy:
-      fail-fast: false
-    runs-on: ubuntu-latest
-    container:
-      image: centos:centos7
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    needs: [package]
-    steps:
-      - name: Install gh cli
-        run: |
-          yum-config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
-          # fetch-codeql requires unzip and jq
-          # jq is available in epel-release (https://docs.fedoraproject.org/en-US/epel/)
-          yum install -y gh unzip epel-release
-          yum install -y jq
-      - uses: actions/checkout@v3
-      - name: Fetch CodeQL
-        uses: ./.github/actions/fetch-codeql
-
-      # Due to a bug in Actions, we can't use runner.temp in the run blocks here.
-      # https://github.com/actions/runner/issues/2185
-
-      - name: Download Ruby bundle
-        uses: actions/download-artifact@v3
-        with:
-          name: codeql-ruby-bundle
-          path: ${{ runner.temp }}
-      - name: Unzip Ruby bundle
-        shell: bash
-        run: unzip -q -d "$RUNNER_TEMP"/ruby-bundle "$RUNNER_TEMP"/codeql-ruby-bundle.zip
-
-      - name: Run QL test
-        shell: bash
-        run: |
-          codeql test run --search-path "$RUNNER_TEMP"/ruby-bundle --additional-packs "$RUNNER_TEMP"/ruby-bundle ruby/ql/test/library-tests/ast/constants/
-      - name: Create database
-        shell: bash
-        run: |
-          codeql database create --search-path "$RUNNER_TEMP"/ruby-bundle --language ruby --source-root ruby/ql/test/library-tests/ast/constants/ ../database
-      - name: Analyze database
-        shell: bash
-        run: |
-          codeql database analyze --search-path "$RUNNER_TEMP"/ruby-bundle --format=sarifv2.1.0 --output=out.sarif ../database ruby-code-scanning.qls

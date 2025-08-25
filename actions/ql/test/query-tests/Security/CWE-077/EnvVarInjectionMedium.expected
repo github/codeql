@@ -1,0 +1,95 @@
+edges
+| .github/workflows/artifactpoisoning51.yml:13:9:15:6 | Run Step | .github/workflows/artifactpoisoning51.yml:19:14:20:57 | echo "pr_number=$(cat foo/bar)" >> $GITHUB_ENV\n | provenance | Config |
+| .github/workflows/artifactpoisoning52.yml:13:9:15:6 | Run Step | .github/workflows/artifactpoisoning52.yml:19:14:22:40 | echo "PACKAGES_FILE_LIST<<EOF" >> "${GITHUB_ENV}"\ncat foo >> "$GITHUB_ENV"\necho "EOF" >> "${GITHUB_ENV}"\n | provenance | Config |
+| .github/workflows/artifactpoisoning53.yml:13:9:15:6 | Run Step | .github/workflows/artifactpoisoning53.yml:18:14:23:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  cat foo\n  echo EOF\n} >> "$GITHUB_ENV"\n | provenance | Config |
+| .github/workflows/test2.yml:12:9:41:6 | Uses Step | .github/workflows/test2.yml:41:14:43:52 | unzip pr.zip\necho "pr_number=$(cat NR)" >> $GITHUB_ENV\n | provenance | Config |
+| .github/workflows/test3.yml:13:7:20:4 | Uses Step | .github/workflows/test3.yml:20:12:23:77 | echo "PR_NUMBER=$(cat pr_number.txt \| jq -r .)" >> $GITHUB_ENV\necho "PR_HEAD_REPO=$(cat pr_head_repo.txt \| jq -Rr .)" >> $GITHUB_ENV\necho "PR_HEAD_REF=$(cat pr_head_ref.txt \| jq -Rr .)" >> $GITHUB_ENV\n | provenance | Config |
+| .github/workflows/test4.yml:11:19:11:56 | github.event.pull_request.title | .github/workflows/test4.yml:12:14:13:48 | echo "PR_TITLE=$TITLE" >> $GITHUB_ENV\n | provenance | Config |
+| .github/workflows/test4.yml:15:19:15:56 | github.event.pull_request.title | .github/workflows/test4.yml:16:14:17:50 | echo "PR_TITLE=${TITLE}" >> $GITHUB_ENV\n | provenance | Config |
+| .github/workflows/test4.yml:19:19:19:56 | github.event.pull_request.title | .github/workflows/test4.yml:20:14:21:54 | echo PR_TITLE=$(echo $TITLE) >> $GITHUB_ENV\n | provenance | Config |
+| .github/workflows/test4.yml:23:19:23:56 | github.event.pull_request.title | .github/workflows/test4.yml:24:14:27:36 | echo "PR_TITLE<<EOF" >> $GITHUB_ENV\necho "$TITLE" >> $GITHUB_ENV\necho "EOF" >> $GITHUB_ENV\n | provenance | Config |
+| .github/workflows/test4.yml:29:19:29:56 | github.event.pull_request.title | .github/workflows/test4.yml:30:14:33:40 | echo "PACKAGES_FILE_LIST<<EOF" >> "${GITHUB_ENV}"\necho "$TITLE" >> "${GITHUB_ENV}"\necho "EOF" >> "${GITHUB_ENV}"\n | provenance | Config |
+| .github/workflows/test4.yml:35:19:35:56 | github.event.pull_request.title | .github/workflows/test4.yml:36:14:41:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo "$TITLE"\n  echo EOF\n} >> "$GITHUB_ENV"\n | provenance | Config |
+| .github/workflows/test4.yml:43:19:43:56 | github.event.pull_request.title | .github/workflows/test4.yml:44:14:47:14 | cat <<-EOF >> "$GITHUB_ENV"\nFOO=$TITLE\nEOF\n | provenance | Config |
+| .github/workflows/test4.yml:57:27:57:64 | github.event.pull_request.title | .github/workflows/test4.yml:55:14:55:70 | echo "BRANCH=$(echo ${TARGET_BRANCH##*/})" >> $GITHUB_ENV | provenance | Config |
+| .github/workflows/test4.yml:60:19:60:56 | github.event.pull_request.title | .github/workflows/test4.yml:58:14:58:94 | echo ISSUE_KEY=$(echo "${TITLE}" \| grep -oP 'ISPN-(?P<id>[0-9]+)') >> $GITHUB_ENV | provenance | Config |
+| .github/workflows/test5.yml:10:9:30:6 | Uses Step | .github/workflows/test5.yml:33:14:36:62 | echo "PR_NUM=$(cat coverage/pr_num.txt)" >> $GITHUB_ENV\necho "BASE=$(cat coverage/base.txt)" >> $GITHUB_ENV\necho "HEAD=$(cat coverage/head.txt)" >> $GITHUB_ENV\n | provenance | Config |
+| .github/workflows/test6.yml:11:19:11:56 | github.event.pull_request.title | .github/workflows/test6.yml:12:14:14:46 | FOO=${TITLE##*/}\necho PR_TITLE=${FOO} >> $GITHUB_ENV\n | provenance | Config |
+| .github/workflows/test6.yml:16:19:16:56 | github.event.pull_request.title | .github/workflows/test6.yml:17:14:19:44 | FOO=$TITLE+\necho PR_TITLE=$FOO >> $GITHUB_ENV\n | provenance | Config |
+| .github/workflows/test6.yml:21:19:21:56 | github.event.pull_request.title | .github/workflows/test6.yml:22:14:24:52 | venv="$(echo $TITLE)')"\necho "VIRTUAL_ENV=${venv}" >> $GITHUB_ENV\n | provenance | Config |
+| .github/workflows/test7.yml:9:9:16:6 | Uses Step | .github/workflows/test7.yml:16:9:24:35 | Uses Step | provenance | Config |
+| .github/workflows/test8.yml:24:9:30:6 | Uses Step | .github/workflows/test8.yml:31:14:33:41 | foo=$(cat ./artifacts/parent-artifacts/event.txt)\necho "foo=$foo" >> $GITHUB_ENV\n | provenance | Config |
+| .github/workflows/test8.yml:24:9:30:6 | Uses Step | .github/workflows/test8.yml:35:14:36:82 | echo "foo=$(cat ./artifacts/parent-artifacts/event.txt)" >> $GITHUB_ENV\n | provenance | Config |
+| .github/workflows/test8.yml:24:9:30:6 | Uses Step | .github/workflows/test8.yml:38:14:39:79 | echo "foo=$(< /artifacts/parent-artifacts/event.txt)" >> $GITHUB_ENV\n | provenance | Config |
+| .github/workflows/test9.yml:19:9:27:6 | Uses Step | .github/workflows/test9.yml:29:14:41:41 | pr_num=$(jq -r '.pull_request.number' artifacts/event_file/event.json)\nif [ -z "$pr_num" ] \|\| [ "$pr_num" == "null" ]; then\n  pr_num=""\nfi\n\nref=$pr_num\nif [ -z "$ref" ] \|\| [ "$ref" == "null" ]; then\n  ref=${{ github.ref }}\nfi\n\necho "pr_num=$pr_num" >> $GITHUB_ENV\necho "ref=$ref" >> $GITHUB_ENV\n | provenance | Config |
+| .github/workflows/test10.yml:20:9:26:6 | Uses Step | .github/workflows/test10.yml:27:14:27:59 | cat foo/.github/java-config.env >> $GITHUB_ENV | provenance | Config |
+| .github/workflows/test11.yml:15:9:21:6 | Uses Step | .github/workflows/test11.yml:23:14:28:29 | {\n  echo 'RUNTIME_VERSIONS<<EOF'\n  cat runtime-versions.md\n  echo EOF\n} >> "$GITHUB_ENV"\n | provenance | Config |
+| .github/workflows/test12.yml:38:9:46:6 | Uses Step | .github/workflows/test12.yml:48:14:53:29 | {\n  echo 'RUNTIME_VERSIONS<<EOF'\n  cat runtime-versions.md\n  echo EOF\n} >> "$GITHUB_ENV"\n | provenance | Config |
+| .github/workflows/test12.yml:38:9:46:6 | Uses Step | .github/workflows/test12.yml:63:14:68:29 | {\n  echo 'PRERELEASE_REPORT<<EOF'\n  cat prerelease-report.md\n  echo EOF\n} >> "$GITHUB_ENV"\n | provenance | Config |
+| .github/workflows/test12.yml:55:9:61:6 | Uses Step | .github/workflows/test12.yml:63:14:68:29 | {\n  echo 'PRERELEASE_REPORT<<EOF'\n  cat prerelease-report.md\n  echo EOF\n} >> "$GITHUB_ENV"\n | provenance | Config |
+| .github/workflows/test16.yml:10:9:15:6 | Uses Step | .github/workflows/test16.yml:15:14:17:63 | # VULNERABLE\necho "PR_NUMBER=$(cat pr_number.txt)" >> $GITHUB_ENV\n | provenance | Config |
+| .github/workflows/test16.yml:10:9:15:6 | Uses Step | .github/workflows/test16.yml:18:14:20:77 | # VULNERABLE\necho "PR_NUMBER=$(cat pr_number.txt \| tr ',' '\\n')" >> $GITHUB_ENV\n | provenance | Config |
+nodes
+| .github/workflows/artifactpoisoning51.yml:13:9:15:6 | Run Step | semmle.label | Run Step |
+| .github/workflows/artifactpoisoning51.yml:19:14:20:57 | echo "pr_number=$(cat foo/bar)" >> $GITHUB_ENV\n | semmle.label | echo "pr_number=$(cat foo/bar)" >> $GITHUB_ENV\n |
+| .github/workflows/artifactpoisoning52.yml:13:9:15:6 | Run Step | semmle.label | Run Step |
+| .github/workflows/artifactpoisoning52.yml:19:14:22:40 | echo "PACKAGES_FILE_LIST<<EOF" >> "${GITHUB_ENV}"\ncat foo >> "$GITHUB_ENV"\necho "EOF" >> "${GITHUB_ENV}"\n | semmle.label | echo "PACKAGES_FILE_LIST<<EOF" >> "${GITHUB_ENV}"\ncat foo >> "$GITHUB_ENV"\necho "EOF" >> "${GITHUB_ENV}"\n |
+| .github/workflows/artifactpoisoning53.yml:13:9:15:6 | Run Step | semmle.label | Run Step |
+| .github/workflows/artifactpoisoning53.yml:18:14:23:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  cat foo\n  echo EOF\n} >> "$GITHUB_ENV"\n | semmle.label | {\n  echo 'JSON_RESPONSE<<EOF'\n  cat foo\n  echo EOF\n} >> "$GITHUB_ENV"\n |
+| .github/workflows/test2.yml:12:9:41:6 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/test2.yml:41:14:43:52 | unzip pr.zip\necho "pr_number=$(cat NR)" >> $GITHUB_ENV\n | semmle.label | unzip pr.zip\necho "pr_number=$(cat NR)" >> $GITHUB_ENV\n |
+| .github/workflows/test3.yml:13:7:20:4 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/test3.yml:20:12:23:77 | echo "PR_NUMBER=$(cat pr_number.txt \| jq -r .)" >> $GITHUB_ENV\necho "PR_HEAD_REPO=$(cat pr_head_repo.txt \| jq -Rr .)" >> $GITHUB_ENV\necho "PR_HEAD_REF=$(cat pr_head_ref.txt \| jq -Rr .)" >> $GITHUB_ENV\n | semmle.label | echo "PR_NUMBER=$(cat pr_number.txt \| jq -r .)" >> $GITHUB_ENV\necho "PR_HEAD_REPO=$(cat pr_head_repo.txt \| jq -Rr .)" >> $GITHUB_ENV\necho "PR_HEAD_REF=$(cat pr_head_ref.txt \| jq -Rr .)" >> $GITHUB_ENV\n |
+| .github/workflows/test4.yml:11:19:11:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/test4.yml:12:14:13:48 | echo "PR_TITLE=$TITLE" >> $GITHUB_ENV\n | semmle.label | echo "PR_TITLE=$TITLE" >> $GITHUB_ENV\n |
+| .github/workflows/test4.yml:15:19:15:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/test4.yml:16:14:17:50 | echo "PR_TITLE=${TITLE}" >> $GITHUB_ENV\n | semmle.label | echo "PR_TITLE=${TITLE}" >> $GITHUB_ENV\n |
+| .github/workflows/test4.yml:19:19:19:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/test4.yml:20:14:21:54 | echo PR_TITLE=$(echo $TITLE) >> $GITHUB_ENV\n | semmle.label | echo PR_TITLE=$(echo $TITLE) >> $GITHUB_ENV\n |
+| .github/workflows/test4.yml:23:19:23:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/test4.yml:24:14:27:36 | echo "PR_TITLE<<EOF" >> $GITHUB_ENV\necho "$TITLE" >> $GITHUB_ENV\necho "EOF" >> $GITHUB_ENV\n | semmle.label | echo "PR_TITLE<<EOF" >> $GITHUB_ENV\necho "$TITLE" >> $GITHUB_ENV\necho "EOF" >> $GITHUB_ENV\n |
+| .github/workflows/test4.yml:29:19:29:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/test4.yml:30:14:33:40 | echo "PACKAGES_FILE_LIST<<EOF" >> "${GITHUB_ENV}"\necho "$TITLE" >> "${GITHUB_ENV}"\necho "EOF" >> "${GITHUB_ENV}"\n | semmle.label | echo "PACKAGES_FILE_LIST<<EOF" >> "${GITHUB_ENV}"\necho "$TITLE" >> "${GITHUB_ENV}"\necho "EOF" >> "${GITHUB_ENV}"\n |
+| .github/workflows/test4.yml:35:19:35:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/test4.yml:36:14:41:29 | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo "$TITLE"\n  echo EOF\n} >> "$GITHUB_ENV"\n | semmle.label | {\n  echo 'JSON_RESPONSE<<EOF'\n  echo "$TITLE"\n  echo EOF\n} >> "$GITHUB_ENV"\n |
+| .github/workflows/test4.yml:43:19:43:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/test4.yml:44:14:47:14 | cat <<-EOF >> "$GITHUB_ENV"\nFOO=$TITLE\nEOF\n | semmle.label | cat <<-EOF >> "$GITHUB_ENV"\nFOO=$TITLE\nEOF\n |
+| .github/workflows/test4.yml:55:14:55:70 | echo "BRANCH=$(echo ${TARGET_BRANCH##*/})" >> $GITHUB_ENV | semmle.label | echo "BRANCH=$(echo ${TARGET_BRANCH##*/})" >> $GITHUB_ENV |
+| .github/workflows/test4.yml:57:27:57:64 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/test4.yml:58:14:58:94 | echo ISSUE_KEY=$(echo "${TITLE}" \| grep -oP 'ISPN-(?P<id>[0-9]+)') >> $GITHUB_ENV | semmle.label | echo ISSUE_KEY=$(echo "${TITLE}" \| grep -oP 'ISPN-(?P<id>[0-9]+)') >> $GITHUB_ENV |
+| .github/workflows/test4.yml:60:19:60:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/test5.yml:10:9:30:6 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/test5.yml:33:14:36:62 | echo "PR_NUM=$(cat coverage/pr_num.txt)" >> $GITHUB_ENV\necho "BASE=$(cat coverage/base.txt)" >> $GITHUB_ENV\necho "HEAD=$(cat coverage/head.txt)" >> $GITHUB_ENV\n | semmle.label | echo "PR_NUM=$(cat coverage/pr_num.txt)" >> $GITHUB_ENV\necho "BASE=$(cat coverage/base.txt)" >> $GITHUB_ENV\necho "HEAD=$(cat coverage/head.txt)" >> $GITHUB_ENV\n |
+| .github/workflows/test6.yml:11:19:11:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/test6.yml:12:14:14:46 | FOO=${TITLE##*/}\necho PR_TITLE=${FOO} >> $GITHUB_ENV\n | semmle.label | FOO=${TITLE##*/}\necho PR_TITLE=${FOO} >> $GITHUB_ENV\n |
+| .github/workflows/test6.yml:16:19:16:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/test6.yml:17:14:19:44 | FOO=$TITLE+\necho PR_TITLE=$FOO >> $GITHUB_ENV\n | semmle.label | FOO=$TITLE+\necho PR_TITLE=$FOO >> $GITHUB_ENV\n |
+| .github/workflows/test6.yml:21:19:21:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/test6.yml:22:14:24:52 | venv="$(echo $TITLE)')"\necho "VIRTUAL_ENV=${venv}" >> $GITHUB_ENV\n | semmle.label | venv="$(echo $TITLE)')"\necho "VIRTUAL_ENV=${venv}" >> $GITHUB_ENV\n |
+| .github/workflows/test7.yml:9:9:16:6 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/test7.yml:16:9:24:35 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/test8.yml:24:9:30:6 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/test8.yml:31:14:33:41 | foo=$(cat ./artifacts/parent-artifacts/event.txt)\necho "foo=$foo" >> $GITHUB_ENV\n | semmle.label | foo=$(cat ./artifacts/parent-artifacts/event.txt)\necho "foo=$foo" >> $GITHUB_ENV\n |
+| .github/workflows/test8.yml:35:14:36:82 | echo "foo=$(cat ./artifacts/parent-artifacts/event.txt)" >> $GITHUB_ENV\n | semmle.label | echo "foo=$(cat ./artifacts/parent-artifacts/event.txt)" >> $GITHUB_ENV\n |
+| .github/workflows/test8.yml:38:14:39:79 | echo "foo=$(< /artifacts/parent-artifacts/event.txt)" >> $GITHUB_ENV\n | semmle.label | echo "foo=$(< /artifacts/parent-artifacts/event.txt)" >> $GITHUB_ENV\n |
+| .github/workflows/test9.yml:19:9:27:6 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/test9.yml:29:14:41:41 | pr_num=$(jq -r '.pull_request.number' artifacts/event_file/event.json)\nif [ -z "$pr_num" ] \|\| [ "$pr_num" == "null" ]; then\n  pr_num=""\nfi\n\nref=$pr_num\nif [ -z "$ref" ] \|\| [ "$ref" == "null" ]; then\n  ref=${{ github.ref }}\nfi\n\necho "pr_num=$pr_num" >> $GITHUB_ENV\necho "ref=$ref" >> $GITHUB_ENV\n | semmle.label | pr_num=$(jq -r '.pull_request.number' artifacts/event_file/event.json)\nif [ -z "$pr_num" ] \|\| [ "$pr_num" == "null" ]; then\n  pr_num=""\nfi\n\nref=$pr_num\nif [ -z "$ref" ] \|\| [ "$ref" == "null" ]; then\n  ref=${{ github.ref }}\nfi\n\necho "pr_num=$pr_num" >> $GITHUB_ENV\necho "ref=$ref" >> $GITHUB_ENV\n |
+| .github/workflows/test10.yml:20:9:26:6 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/test10.yml:27:14:27:59 | cat foo/.github/java-config.env >> $GITHUB_ENV | semmle.label | cat foo/.github/java-config.env >> $GITHUB_ENV |
+| .github/workflows/test11.yml:15:9:21:6 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/test11.yml:23:14:28:29 | {\n  echo 'RUNTIME_VERSIONS<<EOF'\n  cat runtime-versions.md\n  echo EOF\n} >> "$GITHUB_ENV"\n | semmle.label | {\n  echo 'RUNTIME_VERSIONS<<EOF'\n  cat runtime-versions.md\n  echo EOF\n} >> "$GITHUB_ENV"\n |
+| .github/workflows/test12.yml:38:9:46:6 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/test12.yml:48:14:53:29 | {\n  echo 'RUNTIME_VERSIONS<<EOF'\n  cat runtime-versions.md\n  echo EOF\n} >> "$GITHUB_ENV"\n | semmle.label | {\n  echo 'RUNTIME_VERSIONS<<EOF'\n  cat runtime-versions.md\n  echo EOF\n} >> "$GITHUB_ENV"\n |
+| .github/workflows/test12.yml:55:9:61:6 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/test12.yml:63:14:68:29 | {\n  echo 'PRERELEASE_REPORT<<EOF'\n  cat prerelease-report.md\n  echo EOF\n} >> "$GITHUB_ENV"\n | semmle.label | {\n  echo 'PRERELEASE_REPORT<<EOF'\n  cat prerelease-report.md\n  echo EOF\n} >> "$GITHUB_ENV"\n |
+| .github/workflows/test13.yml:18:14:20:65 | COMMIT_MESSAGE=$(git log --format=%s)\necho "COMMIT_MESSAGE=${COMMIT_MESSAGE}" >> $GITHUB_ENV\n | semmle.label | COMMIT_MESSAGE=$(git log --format=%s)\necho "COMMIT_MESSAGE=${COMMIT_MESSAGE}" >> $GITHUB_ENV\n |
+| .github/workflows/test13.yml:22:14:23:70 | echo "COMMIT_MESSAGE=$(git log --format=%s)" >> $GITHUB_ENV\n | semmle.label | echo "COMMIT_MESSAGE=$(git log --format=%s)" >> $GITHUB_ENV\n |
+| .github/workflows/test14.yml:14:14:15:122 | echo "CHANGED-FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} -- docs/)" >> "$GITHUB_ENV"\n | semmle.label | echo "CHANGED-FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} -- docs/)" >> "$GITHUB_ENV"\n |
+| .github/workflows/test14.yml:24:14:26:57 | FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} -- docs/)\necho "CHANGED-FILES=${FILES}" >> "$GITHUB_ENV"\n | semmle.label | FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} -- docs/)\necho "CHANGED-FILES=${FILES}" >> "$GITHUB_ENV"\n |
+| .github/workflows/test15.yml:11:14:12:98 | echo "BODY=$(jq --raw-output .pull_request.body ${GITHUB_EVENT_PATH})" >> "$GITHUB_ENV"\n | semmle.label | echo "BODY=$(jq --raw-output .pull_request.body ${GITHUB_EVENT_PATH})" >> "$GITHUB_ENV"\n |
+| .github/workflows/test15.yml:18:14:20:48 | PR_BODY=$(jq --raw-output .pull_request.body ${GITHUB_EVENT_PATH})\necho "BODY=$PR_BODY" >> "$GITHUB_ENV"\n | semmle.label | PR_BODY=$(jq --raw-output .pull_request.body ${GITHUB_EVENT_PATH})\necho "BODY=$PR_BODY" >> "$GITHUB_ENV"\n |
+| .github/workflows/test16.yml:10:9:15:6 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/test16.yml:15:14:17:63 | # VULNERABLE\necho "PR_NUMBER=$(cat pr_number.txt)" >> $GITHUB_ENV\n | semmle.label | # VULNERABLE\necho "PR_NUMBER=$(cat pr_number.txt)" >> $GITHUB_ENV\n |
+| .github/workflows/test16.yml:18:14:20:77 | # VULNERABLE\necho "PR_NUMBER=$(cat pr_number.txt \| tr ',' '\\n')" >> $GITHUB_ENV\n | semmle.label | # VULNERABLE\necho "PR_NUMBER=$(cat pr_number.txt \| tr ',' '\\n')" >> $GITHUB_ENV\n |
+subpaths
+#select

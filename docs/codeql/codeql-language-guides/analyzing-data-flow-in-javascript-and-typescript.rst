@@ -16,7 +16,7 @@ For a more general introduction to modeling data flow, see ":ref:`About data flo
 Data flow nodes
 ---------------
 
-Both local and global data flow, as well as taint tracking, work on a representation of the program known as the :ref:`data flow graph <data-flow-graph>`. 
+Both local and global data flow, as well as taint tracking, work on a representation of the program known as the :ref:`data flow graph <data-flow-graph>`.
 Nodes on the data flow flow graph may also correspond to nodes on the abstract syntax tree, but they are not the same.
 While AST nodes belong to class ``ASTNode`` and its subclasses, data flow nodes belong to class ``DataFlow::Node`` and its subclasses:
 
@@ -204,58 +204,45 @@ data flow solver that can check whether there is (global) data flow from a sourc
 Optionally, configurations may specify extra data flow edges to be added to the data flow graph, and may also specify  `barriers`. Barriers are data flow nodes or edges through
 which data should not be tracked for the purposes of this analysis.
 
-To define a configuration, extend the class ``DataFlow::Configuration`` as follows:
+To define a configuration, add a module that implements the signature ``DataFlow::ConfigSig`` and pass it to ``DataFlow::Global`` as follows:
 
 .. code-block:: ql
 
-  class MyDataFlowConfiguration extends DataFlow::Configuration {
-    MyDataFlowConfiguration() { this = "MyDataFlowConfiguration" }
+  module MyAnalysisConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { /* ... */ }
 
-    override predicate isSource(DataFlow::Node source) { /* ... */ }
+    predicate isSink(DataFlow::Node sink) { /* ... */ }
 
-    override predicate isSink(DataFlow::Node sink) { /* ... */ }
-
-    // optional overrides:
-    override predicate isBarrier(DataFlow::Node nd) { /* ... */ }
-    override predicate isBarrierEdge(DataFlow::Node pred, DataFlow::Node succ) { /* ... */ }
-    override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) { /* ... */ }
+    // optional predicates:
+    predicate isBarrier(DataFlow::Node nd) { /* ... */ }
+    predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) { /* ... */ }
   }
 
-The characteristic predicate ``MyDataFlowConfiguration()`` defines the name of the configuration, so ``"MyDataFlowConfiguration"`` should be replaced by a suitable
-name describing your particular analysis configuration.
+  module MyAnalysisFlow = DataFlow::Global<MyAnalysisConfig>
 
-The data flow analysis is performed using the predicate ``hasFlow(source, sink)``:
+The data flow analysis is performed using the predicate ``MyAnalysisFlow::flow(source, sink)``:
 
 .. code-block:: ql
 
-   from MyDataFlowConfiguration dataflow, DataFlow::Node source, DataFlow::Node sink
-   where dataflow.hasFlow(source, sink)
+   from DataFlow::Node source, DataFlow::Node sink
+   where MyAnalysisFlow::flow(source, sink)
    select source, "Data flow from $@ to $@.", source, source.toString(), sink, sink.toString()
 
 Using global taint tracking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Global taint tracking extends global data flow with additional non-value-preserving steps, such as flow through string-manipulating operations. To use it, simply extend
-``TaintTracking::Configuration`` instead of ``DataFlow::Configuration``:
+Global taint tracking extends global data flow with additional non-value-preserving steps, such as flow through string-manipulating operations. To use it, simply
+use ``TaintTracking::Global<...>`` instead of ``DataFlow::Global<...>``:
 
 .. code-block:: ql
 
-  class MyTaintTrackingConfiguration extends TaintTracking::Configuration {
-    MyTaintTrackingConfiguration() { this = "MyTaintTrackingConfiguration" }
-
-    override predicate isSource(DataFlow::Node source) { /* ... */ }
-
-    override predicate isSink(DataFlow::Node sink) { /* ... */ }
+  module MyAnalysisConfig implements DataFlow::ConfigSig {
+    /* ... */
   }
 
-Analogous to ``isAdditionalFlowStep``, there is a predicate ``isAdditionalTaintStep`` that you can override to specify custom flow steps to consider in the analysis.
-Instead of the ``isBarrier`` and ``isBarrierEdge`` predicates, the taint tracking configuration includes ``isSanitizer`` and ``isSanitizerEdge`` predicates that specify
-data flow nodes or edges that act as taint sanitizers and hence stop flow from a source to a sink.
+  module MyAnalysisFlow = TaintTracking::Global<MyAnalysisConfig>
 
-Similar to global data flow, the characteristic predicate ``MyTaintTrackingConfiguration()`` defines the unique name of the configuration, so ``"MyTaintTrackingConfiguration"``
-should be replaced by an appropriate descriptive name.
-
-The taint tracking analysis is again performed using the predicate ``hasFlow(source, sink)``.
+The taint tracking analysis is again performed using the predicate ``MyAnalysisFlow::flow(source, sink)``.
 
 Examples
 ~~~~~~~~
@@ -267,20 +254,20 @@ time using global taint tracking.
 
   import javascript
 
-  class CommandLineFileNameConfiguration extends TaintTracking::Configuration {
-    CommandLineFileNameConfiguration() { this = "CommandLineFileNameConfiguration" }
-
-    override predicate isSource(DataFlow::Node source) {
+  module CommandLineFileNameConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
       DataFlow::globalVarRef("process").getAPropertyRead("argv").getAPropertyRead() = source
     }
 
-    override predicate isSink(DataFlow::Node sink) {
+    predicate isSink(DataFlow::Node sink) {
       DataFlow::moduleMember("fs", "readFile").getACall().getArgument(0) = sink
     }
   }
 
-  from CommandLineFileNameConfiguration cfg, DataFlow::Node source, DataFlow::Node sink
-  where cfg.hasFlow(source, sink)
+  module CommandLineFileNameFlow = TaintTracking::Global<CommandLineFileNameConfig>;
+
+  from DataFlow::Node source, DataFlow::Node sink
+  where CommandLineFileNameFlow::flow(source, sink)
   select source, sink
 
 This query will now find flows that involve inter-procedural steps, like in the following example (where the individual steps have been marked with comments
@@ -325,15 +312,15 @@ with an error if it does not. We could then use that function in ``readFileHelpe
   }
 
 For the purposes of our above analysis, ``checkPath`` is a `sanitizer`: its output is always untainted, even if its input is tainted. To model this
-we can add an override of ``isSanitizer`` to our taint-tracking configuration like this:
+we can add an ``isBarrier`` predicate to our taint-tracking configuration like this:
 
 .. code-block:: ql
 
-  class CommandLineFileNameConfiguration extends TaintTracking::Configuration {
+  module CommandLineFileNameConfig implements DataFlow::ConfigSig {
 
     // ...
 
-    override predicate isSanitizer(DataFlow::Node nd) {
+    predicate isBarrier(DataFlow::Node nd) {
       nd.(DataFlow::CallNode).getCalleeName() = "checkPath"
     }
   }
@@ -359,36 +346,36 @@ Note that ``checkPath`` is now no longer a sanitizer in the sense described abov
 through ``checkPath`` any more. The flow is, however, `guarded` by ``checkPath`` in the sense that the expression ``checkPath(p)`` has to evaluate
 to ``true`` (or, more precisely, to a truthy value) in order for the flow to happen.
 
-Such sanitizer guards can be supported by defining a new subclass of ``TaintTracking::SanitizerGuardNode`` and overriding the predicate
-``isSanitizerGuard`` in the taint-tracking configuration class to add all instances of this class as sanitizer guards to the configuration.
+Such sanitizer guards can be supported by defining a class with a ``blocksExpr`` predicate and using the `DataFlow::MakeBarrierGuard`` module
+to implement the ``isBarrier`` predicate.
 
-For our above example, we would begin by defining a subclass of ``SanitizerGuardNode`` that identifies guards of the form ``checkPath(...)``:
+For our above example, we would begin by defining a subclass of ``DataFlow::CallNode`` that identifies guards of the form ``checkPath(...)``:
 
 .. code-block:: ql
 
-  class CheckPathSanitizerGuard extends TaintTracking::SanitizerGuardNode, DataFlow::CallNode {
+  class CheckPathSanitizerGuard extends DataFlow::CallNode {
     CheckPathSanitizerGuard() { this.getCalleeName() = "checkPath" }
 
-    override predicate sanitizes(boolean outcome, Expr e) {
+    predicate blocksExpr(boolean outcome, Expr e) {
       outcome = true and
-      e = getArgument(0).asExpr()
+      e = this.getArgument(0).asExpr()
     }
   }
 
-The characteristic predicate of this class checks that the sanitizer guard is a call to a function named ``checkPath``. The overriding definition
-of ``sanitizes`` says such a call sanitizes its first argument (that is, ``getArgument(0)``) if it evaluates to ``true`` (or rather, a truthy
+The characteristic predicate of this class checks that the sanitizer guard is a call to a function named ``checkPath``. The definition
+of ``blocksExpr`` says such a call sanitizes its first argument (that is, ``getArgument(0)``) if it evaluates to ``true`` (or rather, a truthy
 value).
 
-Now we can override ``isSanitizerGuard`` to add these sanitizer guards to our configuration:
+Now we can implement ``isBarrier`` to add this sanitizer guard to our configuration:
 
 .. code-block:: ql
 
-  class CommandLineFileNameConfiguration extends TaintTracking::Configuration {
+  module CommandLineFileNameConfig implements DataFlow::ConfigSig {
 
     // ...
 
-    override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode nd) {
-      nd instanceof CheckPathSanitizerGuard
+    predicate isBarrier(DataFlow::Node node) {
+      node = DataFlow::MakeBarrierGuard<CheckPathSanitizerGuard>::getABarrierNode()
     }
   }
 
@@ -399,7 +386,7 @@ reach there if ``checkPath(p)`` evaluates to a truthy value. Consequently, there
 Additional taint steps
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Sometimes the default data flow and taint steps provided by ``DataFlow::Configuration`` and ``TaintTracking::Configuration`` are not sufficient
+Sometimes the default data flow and taint steps provided by the data flow library are not sufficient
 and we need to add additional flow or taint steps to our configuration to make it find the expected flow. For example, this can happen because
 the analyzed program uses a function from an external library whose source code is not available to the analysis, or because it uses a function
 that is too difficult to analyze.
@@ -420,20 +407,20 @@ to resolve any symlinks in the path ``p`` before passing it to ``readFile``:
 Resolving symlinks does not make an unsafe path any safer, so we would still like our query to flag this, but since the standard library does
 not have a model of ``resolve-symlinks`` it will no longer return any results.
 
-We can fix this quite easily by adding an overriding definition of the ``isAdditionalTaintStep`` predicate to our configuration, introducing an
+We can fix this quite easily by adding a definition of the ``isAdditionalFlowStep`` predicate to our configuration, introducing an
 additional taint step from the first argument of ``resolveSymlinks`` to its result:
 
 .. code-block:: ql
 
-  class CommandLineFileNameConfiguration extends TaintTracking::Configuration {
+  module CommandLineFileNameConfig implements DataFlow::ConfigSig {
 
     // ...
 
-    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       exists(DataFlow::CallNode c |
         c = DataFlow::moduleImport("resolve-symlinks").getACall() and
-        pred = c.getArgument(0) and
-        succ = c
+        node1 = c.getArgument(0) and
+        node2 = c
       )
     }
   }
@@ -444,11 +431,11 @@ to wrap it in a new subclass of ``TaintTracking::SharedTaintStep`` like this:
 .. code-block:: ql
 
   class StepThroughResolveSymlinks extends TaintTracking::SharedTaintStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
       exists(DataFlow::CallNode c |
         c = DataFlow::moduleImport("resolve-symlinks").getACall() and
-        pred = c.getArgument(0) and
-        succ = c
+        node1 = c.getArgument(0) and
+        node2 = c
       )
     }
   }
@@ -468,7 +455,7 @@ using global data flow. (`Answer <#exercise-2>`__).
 Exercise 3: Write a class which represents flow sources from the array elements of the result of a call, for example the expression ``myObject.myMethod(myArgument)[myIndex]``.
 Hint: array indices are properties with numeric names; you can use regular expression matching to check this. (`Answer <#exercise-3>`__)
 
-Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flows from array elements of the result of a call to the ``tagName`` argument to the
+Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flow paths from array elements of the result of a call to the ``tagName`` argument to the
 ``createElement`` function. (`Answer <#exercise-4>`__)
 
 Answers
@@ -494,18 +481,18 @@ Exercise 2
 
   import javascript
 
-  class HardCodedTagNameConfiguration extends DataFlow::Configuration {
-    HardCodedTagNameConfiguration() { this = "HardCodedTagNameConfiguration" }
+  module HardCodedTagNameConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source.asExpr() instanceof ConstantString }
 
-    override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof ConstantString }
-
-    override predicate isSink(DataFlow::Node sink) {
+    predicate isSink(DataFlow::Node sink) {
       sink = DataFlow::globalVarRef("document").getAMethodCall("createElement").getArgument(0)
     }
   }
 
-  from HardCodedTagNameConfiguration cfg, DataFlow::Node source, DataFlow::Node sink
-  where cfg.hasFlow(source, sink)
+  module HardCodedTagNameFlow = DataFlow::Global<HardCodedTagNameConfig>;
+
+  from DataFlow::Node source, DataFlow::Node sink
+  where HardCodedTagNameFlow::flow(source, sink)
   select source, sink
 
 Exercise 3
@@ -540,24 +527,24 @@ Exercise 4
     }
   }
 
-  class HardCodedTagNameConfiguration extends DataFlow::Configuration {
-    HardCodedTagNameConfiguration() { this = "HardCodedTagNameConfiguration" }
+  module HardCodedTagNameConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof ArrayEntryCallResult }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof ArrayEntryCallResult }
-
-    override predicate isSink(DataFlow::Node sink) {
+    predicate isSink(DataFlow::Node sink) {
       sink = DataFlow::globalVarRef("document").getAMethodCall("createElement").getArgument(0)
     }
   }
 
-  from HardCodedTagNameConfiguration cfg, DataFlow::Node source, DataFlow::Node sink
-  where cfg.hasFlow(source, sink)
+  module HardCodedTagNameFlow = DataFlow::Global<HardCodedTagNameConfig>;
+
+  from DataFlow::Node source, DataFlow::Node sink
+  where HardCodedTagNameFlow::flow(source, sink)
   select source, sink
 
 Further reading
 ---------------
 
-- ":ref:`Exploring data flow with path queries <exploring-data-flow-with-path-queries>`"
+- `Exploring data flow with path queries  <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/exploring-data-flow-with-path-queries>`__ in the GitHub documentation.
 
 
 .. include:: ../reusables/java-further-reading.rst

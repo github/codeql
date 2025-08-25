@@ -90,6 +90,14 @@ abstract class AllocationFunction extends Function {
 }
 
 /**
+ * Holds if an external allocation model exists for the given parameters.
+ */
+extensible predicate allocationFunctionModel(
+  string namespace, string type, boolean subtypes, string name, string sizeArg, string multArg,
+  string reallocPtrArg, boolean requiresDealloc
+);
+
+/**
  * An `operator new` or `operator new[]` function that may be associated with
  * `new` or `new[]` expressions.  Note that `new` and `new[]` are not function
  * calls, but these functions may also be called directly.

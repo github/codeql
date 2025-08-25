@@ -7,7 +7,7 @@
 // Regression test for ODASA-6054: IntegerOverflowTainted should
 // not report a result if the overflow happens in a macro expansion
 // from a macro that is defined in a system header.
-int main(int argc, char **argv) {
+int main3(int argc, char **argv) {
   char *cmd = argv[0];
   int x = (int)(unsigned char)*cmd;  // BAD: overflow
   int y = CAST(*cmd);  // BAD: overflow in macro expansion (macro is not from a system header)

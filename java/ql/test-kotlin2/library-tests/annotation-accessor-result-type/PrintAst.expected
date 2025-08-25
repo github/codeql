@@ -1,0 +1,21 @@
+test.kt:
+#    0| [CompilationUnit] test
+#    3|   1: [Interface] A
+#-----|     -3: (Annotations)
+#    0|       1: [Annotation] Retention
+#    0|         1: [VarAccess] RetentionPolicy.RUNTIME
+#    0|           -1: [TypeAccess] RetentionPolicy
+#    3|     1: [Method] c1
+#    3|       3: [TypeAccess] Class<?>
+#    3|         0: [WildcardTypeAccess] ? ...
+#    3|     2: [Method] c2
+#    3|       3: [TypeAccess] Class<? extends CharSequence>
+#    3|         0: [WildcardTypeAccess] ? ...
+#    3|           0: [TypeAccess] CharSequence
+#    3|     3: [Method] c3
+#    3|       3: [TypeAccess] Class<String>
+#    3|         0: [TypeAccess] String
+#    3|     4: [Method] c4
+#    3|       3: [TypeAccess] Class<?>[]
+#    3|         0: [TypeAccess] Class<?>
+#    3|           0: [WildcardTypeAccess] ? ...

@@ -1,52 +1,85 @@
-edges
-| Index.cshtml:5:19:5:31 | access to property Query : IQueryCollection | Index.cshtml:14:16:14:22 | call to operator implicit conversion |
-| XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:19:25:19:52 | access to indexer : String |
-| XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:26:30:26:34 | access to local variable sayHi |
-| XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:36:40:36:44 | access to local variable sayHi |
-| XSSAspNet.cs:19:25:19:52 | access to indexer : String | XSSAspNet.cs:26:30:26:34 | access to local variable sayHi |
-| XSSAspNet.cs:19:25:19:52 | access to indexer : String | XSSAspNet.cs:36:40:36:44 | access to local variable sayHi |
-| XSSAspNet.cs:43:28:43:46 | access to property QueryString : NameValueCollection | XSSAspNet.cs:43:28:43:55 | access to indexer |
-| XSSAspNetCore.cs:21:52:21:64 | access to property Query : IQueryCollection | XSSAspNetCore.cs:21:52:21:76 | call to operator implicit conversion |
-| XSSAspNetCore.cs:40:56:40:58 | foo : String | XSSAspNetCore.cs:44:51:44:53 | access to parameter foo |
-| XSSAspNetCore.cs:58:43:58:55 | access to property Query : IQueryCollection | XSSAspNetCore.cs:58:43:58:62 | access to indexer : StringValues |
-| XSSAspNetCore.cs:58:43:58:62 | access to indexer : StringValues | XSSAspNetCore.cs:58:43:58:73 | call to method ToString |
-| XSSAspNetCore.cs:61:44:61:56 | access to property Query : IQueryCollection | XSSAspNetCore.cs:61:44:61:63 | access to indexer : StringValues |
-| XSSAspNetCore.cs:61:44:61:56 | access to property Query : IQueryCollection | XSSAspNetCore.cs:61:44:61:66 | access to indexer |
-| XSSAspNetCore.cs:61:44:61:63 | access to indexer : StringValues | XSSAspNetCore.cs:61:44:61:66 | access to indexer |
-| XSSAspNetCore.cs:72:51:72:65 | access to property Headers : IHeaderDictionary | XSSAspNetCore.cs:72:51:72:72 | call to operator implicit conversion |
-nodes
-| Index.cshtml:5:19:5:31 | access to property Query : IQueryCollection | semmle.label | access to property Query : IQueryCollection |
-| Index.cshtml:14:16:14:22 | call to operator implicit conversion | semmle.label | call to operator implicit conversion |
-| XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
-| XSSAspNet.cs:19:25:19:52 | access to indexer : String | semmle.label | access to indexer : String |
-| XSSAspNet.cs:26:30:26:34 | access to local variable sayHi | semmle.label | access to local variable sayHi |
-| XSSAspNet.cs:36:40:36:44 | access to local variable sayHi | semmle.label | access to local variable sayHi |
-| XSSAspNet.cs:43:28:43:46 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
-| XSSAspNet.cs:43:28:43:55 | access to indexer | semmle.label | access to indexer |
-| XSSAspNetCore.cs:21:52:21:64 | access to property Query : IQueryCollection | semmle.label | access to property Query : IQueryCollection |
-| XSSAspNetCore.cs:21:52:21:76 | call to operator implicit conversion | semmle.label | call to operator implicit conversion |
-| XSSAspNetCore.cs:40:56:40:58 | foo : String | semmle.label | foo : String |
-| XSSAspNetCore.cs:44:51:44:53 | access to parameter foo | semmle.label | access to parameter foo |
-| XSSAspNetCore.cs:51:43:51:67 | access to property Value | semmle.label | access to property Value |
-| XSSAspNetCore.cs:58:43:58:55 | access to property Query : IQueryCollection | semmle.label | access to property Query : IQueryCollection |
-| XSSAspNetCore.cs:58:43:58:62 | access to indexer : StringValues | semmle.label | access to indexer : StringValues |
-| XSSAspNetCore.cs:58:43:58:73 | call to method ToString | semmle.label | call to method ToString |
-| XSSAspNetCore.cs:61:44:61:56 | access to property Query : IQueryCollection | semmle.label | access to property Query : IQueryCollection |
-| XSSAspNetCore.cs:61:44:61:63 | access to indexer : StringValues | semmle.label | access to indexer : StringValues |
-| XSSAspNetCore.cs:61:44:61:66 | access to indexer | semmle.label | access to indexer |
-| XSSAspNetCore.cs:69:43:69:61 | access to property ContentType | semmle.label | access to property ContentType |
-| XSSAspNetCore.cs:72:51:72:65 | access to property Headers : IHeaderDictionary | semmle.label | access to property Headers : IHeaderDictionary |
-| XSSAspNetCore.cs:72:51:72:72 | call to operator implicit conversion | semmle.label | call to operator implicit conversion |
-subpaths
 #select
 | Index.cshtml:14:16:14:22 | call to operator implicit conversion | Index.cshtml:5:19:5:31 | access to property Query : IQueryCollection | Index.cshtml:14:16:14:22 | call to operator implicit conversion | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method. | Index.cshtml:5:19:5:31 | access to property Query : IQueryCollection | User-provided value |
 | XSSAspNet.cs:26:30:26:34 | access to local variable sayHi | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:26:30:26:34 | access to local variable sayHi | $@ flows to here and is written to HTML or JavaScript: System.Web.WebPages.WebPage.WriteLiteral() method. | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | User-provided value |
 | XSSAspNet.cs:36:40:36:44 | access to local variable sayHi | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:36:40:36:44 | access to local variable sayHi | $@ flows to here and is written to HTML or JavaScript: System.Web.WebPages.WebPage.WriteLiteralTo() method. | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | User-provided value |
-| XSSAspNet.cs:43:28:43:55 | access to indexer | XSSAspNet.cs:43:28:43:46 | access to property QueryString : NameValueCollection | XSSAspNet.cs:43:28:43:55 | access to indexer | $@ flows to here and is written to HTML or JavaScript. | XSSAspNet.cs:43:28:43:46 | access to property QueryString : NameValueCollection | User-provided value |
-| XSSAspNetCore.cs:21:52:21:76 | call to operator implicit conversion | XSSAspNetCore.cs:21:52:21:64 | access to property Query : IQueryCollection | XSSAspNetCore.cs:21:52:21:76 | call to operator implicit conversion | $@ flows to here and is written to HTML or JavaScript. | XSSAspNetCore.cs:21:52:21:64 | access to property Query : IQueryCollection | User-provided value |
-| XSSAspNetCore.cs:44:51:44:53 | access to parameter foo | XSSAspNetCore.cs:40:56:40:58 | foo : String | XSSAspNetCore.cs:44:51:44:53 | access to parameter foo | $@ flows to here and is written to HTML or JavaScript. | XSSAspNetCore.cs:40:56:40:58 | foo : String | User-provided value |
-| XSSAspNetCore.cs:51:43:51:67 | access to property Value | XSSAspNetCore.cs:51:43:51:67 | access to property Value | XSSAspNetCore.cs:51:43:51:67 | access to property Value | $@ flows to here and is written to HTML or JavaScript. | XSSAspNetCore.cs:51:43:51:67 | access to property Value | User-provided value |
-| XSSAspNetCore.cs:58:43:58:73 | call to method ToString | XSSAspNetCore.cs:58:43:58:55 | access to property Query : IQueryCollection | XSSAspNetCore.cs:58:43:58:73 | call to method ToString | $@ flows to here and is written to HTML or JavaScript. | XSSAspNetCore.cs:58:43:58:55 | access to property Query : IQueryCollection | User-provided value |
-| XSSAspNetCore.cs:61:44:61:66 | access to indexer | XSSAspNetCore.cs:61:44:61:56 | access to property Query : IQueryCollection | XSSAspNetCore.cs:61:44:61:66 | access to indexer | $@ flows to here and is written to HTML or JavaScript. | XSSAspNetCore.cs:61:44:61:56 | access to property Query : IQueryCollection | User-provided value |
-| XSSAspNetCore.cs:69:43:69:61 | access to property ContentType | XSSAspNetCore.cs:69:43:69:61 | access to property ContentType | XSSAspNetCore.cs:69:43:69:61 | access to property ContentType | $@ flows to here and is written to HTML or JavaScript. | XSSAspNetCore.cs:69:43:69:61 | access to property ContentType | User-provided value |
-| XSSAspNetCore.cs:72:51:72:72 | call to operator implicit conversion | XSSAspNetCore.cs:72:51:72:65 | access to property Headers : IHeaderDictionary | XSSAspNetCore.cs:72:51:72:72 | call to operator implicit conversion | $@ flows to here and is written to HTML or JavaScript. | XSSAspNetCore.cs:72:51:72:65 | access to property Headers : IHeaderDictionary | User-provided value |
+| XSSAspNet.cs:44:28:44:33 | access to local variable sayHi2 | XSSAspNet.cs:43:26:43:44 | access to property QueryString : NameValueCollection | XSSAspNet.cs:44:28:44:33 | access to local variable sayHi2 | $@ flows to here and is written to HTML or JavaScript. | XSSAspNet.cs:43:26:43:44 | access to property QueryString : NameValueCollection | User-provided value |
+| XSSAspNetCore.cs:22:52:22:57 | call to operator implicit conversion | XSSAspNetCore.cs:21:26:21:38 | access to property Query : IQueryCollection | XSSAspNetCore.cs:22:52:22:57 | call to operator implicit conversion | $@ flows to here and is written to HTML or JavaScript. | XSSAspNetCore.cs:21:26:21:38 | access to property Query : IQueryCollection | User-provided value |
+| XSSAspNetCore.cs:45:51:45:53 | access to parameter foo | XSSAspNetCore.cs:41:56:41:58 | foo : String | XSSAspNetCore.cs:45:51:45:53 | access to parameter foo | $@ flows to here and is written to HTML or JavaScript. | XSSAspNetCore.cs:41:56:41:58 | foo : String | User-provided value |
+| XSSAspNetCore.cs:53:43:53:46 | access to local variable req2 | XSSAspNetCore.cs:52:24:52:48 | access to property Value : String | XSSAspNetCore.cs:53:43:53:46 | access to local variable req2 | $@ flows to here and is written to HTML or JavaScript. | XSSAspNetCore.cs:52:24:52:48 | access to property Value : String | User-provided value |
+| XSSAspNetCore.cs:61:43:61:46 | access to local variable req3 | XSSAspNetCore.cs:60:24:60:36 | access to property Query : IQueryCollection | XSSAspNetCore.cs:61:43:61:46 | access to local variable req3 | $@ flows to here and is written to HTML or JavaScript. | XSSAspNetCore.cs:60:24:60:36 | access to property Query : IQueryCollection | User-provided value |
+| XSSAspNetCore.cs:65:44:65:47 | access to local variable req4 | XSSAspNetCore.cs:64:24:64:36 | access to property Query : IQueryCollection | XSSAspNetCore.cs:65:44:65:47 | access to local variable req4 | $@ flows to here and is written to HTML or JavaScript. | XSSAspNetCore.cs:64:24:64:36 | access to property Query : IQueryCollection | User-provided value |
+| XSSAspNetCore.cs:74:43:74:44 | access to local variable ct | XSSAspNetCore.cs:73:22:73:40 | access to property ContentType : String | XSSAspNetCore.cs:74:43:74:44 | access to local variable ct | $@ flows to here and is written to HTML or JavaScript. | XSSAspNetCore.cs:73:22:73:40 | access to property ContentType : String | User-provided value |
+| XSSAspNetCore.cs:78:51:78:56 | call to operator implicit conversion | XSSAspNetCore.cs:77:26:77:40 | access to property Headers : IHeaderDictionary | XSSAspNetCore.cs:78:51:78:56 | call to operator implicit conversion | $@ flows to here and is written to HTML or JavaScript. | XSSAspNetCore.cs:77:26:77:40 | access to property Headers : IHeaderDictionary | User-provided value |
+edges
+| Index.cshtml:5:9:5:15 | access to local variable message : StringValues | Index.cshtml:14:16:14:22 | call to operator implicit conversion | provenance |  |
+| Index.cshtml:5:19:5:31 | access to property Query : IQueryCollection | Index.cshtml:5:9:5:15 | access to local variable message : StringValues | provenance |  |
+| XSSAspNet.cs:19:17:19:21 | access to local variable sayHi : String | XSSAspNet.cs:26:30:26:34 | access to local variable sayHi | provenance |  |
+| XSSAspNet.cs:19:17:19:21 | access to local variable sayHi : String | XSSAspNet.cs:36:40:36:44 | access to local variable sayHi | provenance |  |
+| XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:19:17:19:21 | access to local variable sayHi : String | provenance |  |
+| XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:19:25:19:52 | access to indexer : String | provenance | MaD:3 |
+| XSSAspNet.cs:19:25:19:52 | access to indexer : String | XSSAspNet.cs:19:17:19:21 | access to local variable sayHi : String | provenance |  |
+| XSSAspNet.cs:43:17:43:22 | access to local variable sayHi2 : String | XSSAspNet.cs:44:28:44:33 | access to local variable sayHi2 | provenance |  |
+| XSSAspNet.cs:43:26:43:44 | access to property QueryString : NameValueCollection | XSSAspNet.cs:43:17:43:22 | access to local variable sayHi2 : String | provenance |  |
+| XSSAspNet.cs:43:26:43:44 | access to property QueryString : NameValueCollection | XSSAspNet.cs:43:26:43:53 | access to indexer : String | provenance | MaD:3 |
+| XSSAspNet.cs:43:26:43:53 | access to indexer : String | XSSAspNet.cs:43:17:43:22 | access to local variable sayHi2 : String | provenance |  |
+| XSSAspNetCore.cs:21:17:21:22 | access to local variable source : StringValues | XSSAspNetCore.cs:22:52:22:57 | call to operator implicit conversion | provenance |  |
+| XSSAspNetCore.cs:21:26:21:38 | access to property Query : IQueryCollection | XSSAspNetCore.cs:21:17:21:22 | access to local variable source : StringValues | provenance |  |
+| XSSAspNetCore.cs:41:56:41:58 | foo : String | XSSAspNetCore.cs:45:51:45:53 | access to parameter foo | provenance |  |
+| XSSAspNetCore.cs:52:17:52:20 | access to local variable req2 : String | XSSAspNetCore.cs:53:43:53:46 | access to local variable req2 | provenance |  |
+| XSSAspNetCore.cs:52:24:52:48 | access to property Value : String | XSSAspNetCore.cs:52:17:52:20 | access to local variable req2 : String | provenance |  |
+| XSSAspNetCore.cs:60:17:60:20 | access to local variable req3 : String | XSSAspNetCore.cs:61:43:61:46 | access to local variable req3 | provenance |  |
+| XSSAspNetCore.cs:60:24:60:36 | access to property Query : IQueryCollection | XSSAspNetCore.cs:60:24:60:43 | access to indexer : StringValues | provenance |  |
+| XSSAspNetCore.cs:60:24:60:43 | access to indexer : StringValues | XSSAspNetCore.cs:60:24:60:54 | call to method ToString : String | provenance | MaD:1 |
+| XSSAspNetCore.cs:60:24:60:54 | call to method ToString : String | XSSAspNetCore.cs:60:17:60:20 | access to local variable req3 : String | provenance |  |
+| XSSAspNetCore.cs:64:17:64:20 | access to local variable req4 : String | XSSAspNetCore.cs:65:44:65:47 | access to local variable req4 | provenance |  |
+| XSSAspNetCore.cs:64:24:64:36 | access to property Query : IQueryCollection | XSSAspNetCore.cs:64:17:64:20 | access to local variable req4 : String | provenance |  |
+| XSSAspNetCore.cs:64:24:64:36 | access to property Query : IQueryCollection | XSSAspNetCore.cs:64:24:64:43 | access to indexer : StringValues | provenance |  |
+| XSSAspNetCore.cs:64:24:64:43 | access to indexer : StringValues | XSSAspNetCore.cs:64:17:64:20 | access to local variable req4 : String | provenance |  |
+| XSSAspNetCore.cs:64:24:64:43 | access to indexer : StringValues | XSSAspNetCore.cs:64:24:64:46 | access to indexer : String | provenance | MaD:2 |
+| XSSAspNetCore.cs:64:24:64:46 | access to indexer : String | XSSAspNetCore.cs:64:17:64:20 | access to local variable req4 : String | provenance |  |
+| XSSAspNetCore.cs:73:17:73:18 | access to local variable ct : String | XSSAspNetCore.cs:74:43:74:44 | access to local variable ct | provenance |  |
+| XSSAspNetCore.cs:73:22:73:40 | access to property ContentType : String | XSSAspNetCore.cs:73:17:73:18 | access to local variable ct : String | provenance |  |
+| XSSAspNetCore.cs:77:17:77:22 | access to local variable header : StringValues | XSSAspNetCore.cs:78:51:78:56 | call to operator implicit conversion | provenance |  |
+| XSSAspNetCore.cs:77:26:77:40 | access to property Headers : IHeaderDictionary | XSSAspNetCore.cs:77:17:77:22 | access to local variable header : StringValues | provenance |  |
+models
+| 1 | Summary: Microsoft.Extensions.Primitives; StringValues; false; ToString; (); ; Argument[this]; ReturnValue; taint; manual |
+| 2 | Summary: Microsoft.Extensions.Primitives; StringValues; false; get_Item; (System.Int32); ; Argument[this]; ReturnValue; taint; manual |
+| 3 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
+nodes
+| Index.cshtml:5:9:5:15 | access to local variable message : StringValues | semmle.label | access to local variable message : StringValues |
+| Index.cshtml:5:19:5:31 | access to property Query : IQueryCollection | semmle.label | access to property Query : IQueryCollection |
+| Index.cshtml:14:16:14:22 | call to operator implicit conversion | semmle.label | call to operator implicit conversion |
+| XSSAspNet.cs:19:17:19:21 | access to local variable sayHi : String | semmle.label | access to local variable sayHi : String |
+| XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| XSSAspNet.cs:19:25:19:52 | access to indexer : String | semmle.label | access to indexer : String |
+| XSSAspNet.cs:26:30:26:34 | access to local variable sayHi | semmle.label | access to local variable sayHi |
+| XSSAspNet.cs:36:40:36:44 | access to local variable sayHi | semmle.label | access to local variable sayHi |
+| XSSAspNet.cs:43:17:43:22 | access to local variable sayHi2 : String | semmle.label | access to local variable sayHi2 : String |
+| XSSAspNet.cs:43:26:43:44 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| XSSAspNet.cs:43:26:43:53 | access to indexer : String | semmle.label | access to indexer : String |
+| XSSAspNet.cs:44:28:44:33 | access to local variable sayHi2 | semmle.label | access to local variable sayHi2 |
+| XSSAspNetCore.cs:21:17:21:22 | access to local variable source : StringValues | semmle.label | access to local variable source : StringValues |
+| XSSAspNetCore.cs:21:26:21:38 | access to property Query : IQueryCollection | semmle.label | access to property Query : IQueryCollection |
+| XSSAspNetCore.cs:22:52:22:57 | call to operator implicit conversion | semmle.label | call to operator implicit conversion |
+| XSSAspNetCore.cs:41:56:41:58 | foo : String | semmle.label | foo : String |
+| XSSAspNetCore.cs:45:51:45:53 | access to parameter foo | semmle.label | access to parameter foo |
+| XSSAspNetCore.cs:52:17:52:20 | access to local variable req2 : String | semmle.label | access to local variable req2 : String |
+| XSSAspNetCore.cs:52:24:52:48 | access to property Value : String | semmle.label | access to property Value : String |
+| XSSAspNetCore.cs:53:43:53:46 | access to local variable req2 | semmle.label | access to local variable req2 |
+| XSSAspNetCore.cs:60:17:60:20 | access to local variable req3 : String | semmle.label | access to local variable req3 : String |
+| XSSAspNetCore.cs:60:24:60:36 | access to property Query : IQueryCollection | semmle.label | access to property Query : IQueryCollection |
+| XSSAspNetCore.cs:60:24:60:43 | access to indexer : StringValues | semmle.label | access to indexer : StringValues |
+| XSSAspNetCore.cs:60:24:60:54 | call to method ToString : String | semmle.label | call to method ToString : String |
+| XSSAspNetCore.cs:61:43:61:46 | access to local variable req3 | semmle.label | access to local variable req3 |
+| XSSAspNetCore.cs:64:17:64:20 | access to local variable req4 : String | semmle.label | access to local variable req4 : String |
+| XSSAspNetCore.cs:64:24:64:36 | access to property Query : IQueryCollection | semmle.label | access to property Query : IQueryCollection |
+| XSSAspNetCore.cs:64:24:64:43 | access to indexer : StringValues | semmle.label | access to indexer : StringValues |
+| XSSAspNetCore.cs:64:24:64:46 | access to indexer : String | semmle.label | access to indexer : String |
+| XSSAspNetCore.cs:65:44:65:47 | access to local variable req4 | semmle.label | access to local variable req4 |
+| XSSAspNetCore.cs:73:17:73:18 | access to local variable ct : String | semmle.label | access to local variable ct : String |
+| XSSAspNetCore.cs:73:22:73:40 | access to property ContentType : String | semmle.label | access to property ContentType : String |
+| XSSAspNetCore.cs:74:43:74:44 | access to local variable ct | semmle.label | access to local variable ct |
+| XSSAspNetCore.cs:77:17:77:22 | access to local variable header : StringValues | semmle.label | access to local variable header : StringValues |
+| XSSAspNetCore.cs:77:26:77:40 | access to property Headers : IHeaderDictionary | semmle.label | access to property Headers : IHeaderDictionary |
+| XSSAspNetCore.cs:78:51:78:56 | call to operator implicit conversion | semmle.label | call to operator implicit conversion |
+subpaths

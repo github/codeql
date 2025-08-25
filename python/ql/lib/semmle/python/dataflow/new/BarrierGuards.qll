@@ -3,71 +3,45 @@
 private import python
 private import semmle.python.dataflow.new.DataFlow
 
-private predicate stringConstCompare(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {
+private predicate constCompare(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {
   exists(CompareNode cn | cn = g |
-    exists(StrConst str_const, Cmpop op |
+    exists(ImmutableLiteral const, Cmpop op |
       op = any(Eq eq) and branch = true
       or
       op = any(NotEq ne) and branch = false
     |
-      cn.operands(str_const.getAFlowNode(), op, node)
+      cn.operands(const.getAFlowNode(), op, node)
       or
-      cn.operands(node, op, str_const.getAFlowNode())
+      cn.operands(node, op, const.getAFlowNode())
     )
     or
-    exists(IterableNode str_const_iterable, Cmpop op |
+    exists(NameConstant const, Cmpop op |
+      op = any(Is is_) and branch = true
+      or
+      op = any(IsNot isn) and branch = false
+    |
+      cn.operands(const.getAFlowNode(), op, node)
+      or
+      cn.operands(node, op, const.getAFlowNode())
+    )
+    or
+    exists(IterableNode const_iterable, Cmpop op |
       op = any(In in_) and branch = true
       or
       op = any(NotIn ni) and branch = false
     |
-      forall(ControlFlowNode elem | elem = str_const_iterable.getAnElement() |
-        elem.getNode() instanceof StrConst
+      forall(ControlFlowNode elem | elem = const_iterable.getAnElement() |
+        elem.getNode() instanceof ImmutableLiteral
       ) and
-      cn.operands(node, op, str_const_iterable)
+      cn.operands(node, op, const_iterable)
     )
   )
 }
 
-/** A validation of unknown node by comparing with a constant string value. */
-class StringConstCompareBarrier extends DataFlow::Node {
-  StringConstCompareBarrier() {
-    this = DataFlow::BarrierGuard<stringConstCompare/3>::getABarrierNode()
-  }
+/** A validation of unknown node by comparing with a constant value. */
+class ConstCompareBarrier extends DataFlow::Node {
+  ConstCompareBarrier() { this = DataFlow::BarrierGuard<constCompare/3>::getABarrierNode() }
 }
 
-/**
- * DEPRECATED: Use `StringConstCompareBarrier` instead.
- *
- * A validation of unknown node by comparing with a constant string value.
- */
-deprecated class StringConstCompare extends DataFlow::BarrierGuard, CompareNode {
-  ControlFlowNode checked_node;
-  boolean safe_branch;
-
-  StringConstCompare() {
-    exists(StrConst str_const, Cmpop op |
-      op = any(Eq eq) and safe_branch = true
-      or
-      op = any(NotEq ne) and safe_branch = false
-    |
-      this.operands(str_const.getAFlowNode(), op, checked_node)
-      or
-      this.operands(checked_node, op, str_const.getAFlowNode())
-    )
-    or
-    exists(IterableNode str_const_iterable, Cmpop op |
-      op = any(In in_) and safe_branch = true
-      or
-      op = any(NotIn ni) and safe_branch = false
-    |
-      forall(ControlFlowNode elem | elem = str_const_iterable.getAnElement() |
-        elem.getNode() instanceof StrConst
-      ) and
-      this.operands(checked_node, op, str_const_iterable)
-    )
-  }
-
-  override predicate checks(ControlFlowNode node, boolean branch) {
-    node = checked_node and branch = safe_branch
-  }
-}
+/** DEPRECATED: Use ConstCompareBarrier instead. */
+deprecated class StringConstCompareBarrier = ConstCompareBarrier;

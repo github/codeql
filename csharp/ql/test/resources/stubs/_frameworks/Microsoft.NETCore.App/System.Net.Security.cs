@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Net.Security, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Net
@@ -33,6 +33,7 @@ namespace System
             public delegate System.Security.Cryptography.X509Certificates.X509Certificate LocalCertificateSelectionCallback(object sender, string targetHost, System.Security.Cryptography.X509Certificates.X509CertificateCollection localCertificates, System.Security.Cryptography.X509Certificates.X509Certificate remoteCertificate, string[] acceptableIssuers);
             public sealed class NegotiateAuthentication : System.IDisposable
             {
+                public void ComputeIntegrityCheck(System.ReadOnlySpan<byte> message, System.Buffers.IBufferWriter<byte> signatureWriter) => throw null;
                 public NegotiateAuthentication(System.Net.Security.NegotiateAuthenticationClientOptions clientOptions) => throw null;
                 public NegotiateAuthentication(System.Net.Security.NegotiateAuthenticationServerOptions serverOptions) => throw null;
                 public void Dispose() => throw null;
@@ -50,6 +51,7 @@ namespace System
                 public string TargetName { get => throw null; }
                 public System.Net.Security.NegotiateAuthenticationStatusCode Unwrap(System.ReadOnlySpan<byte> input, System.Buffers.IBufferWriter<byte> outputWriter, out bool wasEncrypted) => throw null;
                 public System.Net.Security.NegotiateAuthenticationStatusCode UnwrapInPlace(System.Span<byte> input, out int unwrappedOffset, out int unwrappedLength, out bool wasEncrypted) => throw null;
+                public bool VerifyIntegrityCheck(System.ReadOnlySpan<byte> message, System.ReadOnlySpan<byte> signature) => throw null;
                 public System.Net.Security.NegotiateAuthenticationStatusCode Wrap(System.ReadOnlySpan<byte> input, System.Buffers.IBufferWriter<byte> outputWriter, bool requestEncryption, out bool isEncrypted) => throw null;
             }
             public class NegotiateAuthenticationClientOptions
@@ -189,10 +191,12 @@ namespace System
             public class SslClientAuthenticationOptions
             {
                 public bool AllowRenegotiation { get => throw null; set { } }
+                public bool AllowTlsResume { get => throw null; set { } }
                 public System.Collections.Generic.List<System.Net.Security.SslApplicationProtocol> ApplicationProtocols { get => throw null; set { } }
                 public System.Security.Cryptography.X509Certificates.X509ChainPolicy CertificateChainPolicy { get => throw null; set { } }
                 public System.Security.Cryptography.X509Certificates.X509RevocationMode CertificateRevocationCheckMode { get => throw null; set { } }
                 public System.Net.Security.CipherSuitesPolicy CipherSuitesPolicy { get => throw null; set { } }
+                public System.Net.Security.SslStreamCertificateContext ClientCertificateContext { get => throw null; set { } }
                 public System.Security.Cryptography.X509Certificates.X509CertificateCollection ClientCertificates { get => throw null; set { } }
                 public SslClientAuthenticationOptions() => throw null;
                 public System.Security.Authentication.SslProtocols EnabledSslProtocols { get => throw null; set { } }
@@ -203,12 +207,14 @@ namespace System
             }
             public struct SslClientHelloInfo
             {
+                public SslClientHelloInfo(string serverName, System.Security.Authentication.SslProtocols sslProtocols) => throw null;
                 public string ServerName { get => throw null; }
                 public System.Security.Authentication.SslProtocols SslProtocols { get => throw null; }
             }
             public class SslServerAuthenticationOptions
             {
                 public bool AllowRenegotiation { get => throw null; set { } }
+                public bool AllowTlsResume { get => throw null; set { } }
                 public System.Collections.Generic.List<System.Net.Security.SslApplicationProtocol> ApplicationProtocols { get => throw null; set { } }
                 public System.Security.Cryptography.X509Certificates.X509ChainPolicy CertificateChainPolicy { get => throw null; set { } }
                 public System.Security.Cryptography.X509Certificates.X509RevocationMode CertificateRevocationCheckMode { get => throw null; set { } }
@@ -306,6 +312,8 @@ namespace System
             {
                 public static System.Net.Security.SslStreamCertificateContext Create(System.Security.Cryptography.X509Certificates.X509Certificate2 target, System.Security.Cryptography.X509Certificates.X509Certificate2Collection additionalCertificates, bool offline) => throw null;
                 public static System.Net.Security.SslStreamCertificateContext Create(System.Security.Cryptography.X509Certificates.X509Certificate2 target, System.Security.Cryptography.X509Certificates.X509Certificate2Collection additionalCertificates, bool offline = default(bool), System.Net.Security.SslCertificateTrust trust = default(System.Net.Security.SslCertificateTrust)) => throw null;
+                public System.Collections.ObjectModel.ReadOnlyCollection<System.Security.Cryptography.X509Certificates.X509Certificate2> IntermediateCertificates { get => throw null; }
+                public System.Security.Cryptography.X509Certificates.X509Certificate2 TargetCertificate { get => throw null; }
             }
             public enum TlsCipherSuite : ushort
             {

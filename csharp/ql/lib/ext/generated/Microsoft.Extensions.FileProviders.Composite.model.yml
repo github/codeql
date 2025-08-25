@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Extensions.FileProviders.Composite", "CompositeDirectoryContents", False, "CompositeDirectoryContents", "(System.Collections.Generic.IList<Microsoft.Extensions.FileProviders.IFileProvider>,System.String)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders.Composite", "CompositeDirectoryContents", False, "CompositeDirectoryContents", "(System.Collections.Generic.IList<Microsoft.Extensions.FileProviders.IFileProvider>,System.String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.FileProviders.Composite", "CompositeDirectoryContents", "get_Exists", "()", "summary", "df-generated"]

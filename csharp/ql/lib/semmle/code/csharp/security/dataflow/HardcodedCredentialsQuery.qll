@@ -9,6 +9,7 @@ private import semmle.code.csharp.frameworks.Moq
 private import semmle.code.csharp.frameworks.system.web.Security
 private import semmle.code.csharp.frameworks.system.security.cryptography.X509Certificates
 private import semmle.code.csharp.frameworks.Test
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
 
 /**
  * A data flow source for hard coded credentials.
@@ -18,7 +19,7 @@ abstract class Source extends DataFlow::ExprNode { }
 /**
  * A data flow sink for hard coded credentials.
  */
-abstract class Sink extends DataFlow::ExprNode {
+abstract class Sink extends ApiSinkExprNode {
   /**
    * Gets a description of this sink, including a placeholder for the sink and a placeholder for
    * the supplementary element.
@@ -36,46 +37,6 @@ abstract class Sink extends DataFlow::ExprNode {
  * A sanitizer for hard coded credentials.
  */
 abstract class Sanitizer extends DataFlow::ExprNode { }
-
-/**
- * DEPRECATED: Use `HardcodedCredentials` instead.
- *
- * A taint-tracking configuration for hard coded credentials.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "HardcodedCredentials" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) {
-    sink instanceof Sink and
-    // Ignore values that are ultimately returned by mocks, as they don't represent "real"
-    // credentials.
-    not any(ReturnedByMockObject mock).getAMemberInitializationValue() = sink.asExpr() and
-    not any(ReturnedByMockObject mock).getAnArgument() = sink.asExpr()
-  }
-
-  override predicate hasFlowPath(DataFlow::PathNode source, DataFlow::PathNode sink) {
-    super.hasFlowPath(source, sink) and
-    // Exclude hard-coded credentials in tests if they only flow to calls to methods with a name
-    // like "Add*" "Create*" or "Update*". The rationale is that hard-coded credentials within
-    // tests that are only used for creating or setting values within tests are unlikely to
-    // represent credentials to some accessible system.
-    not (
-      source.getNode().asExpr().getFile() instanceof TestFile and
-      exists(MethodCall createOrAddCall, string createOrAddMethodName |
-        createOrAddMethodName.matches("Update%") or
-        createOrAddMethodName.matches("Create%") or
-        createOrAddMethodName.matches("Add%")
-      |
-        createOrAddCall.getTarget().hasName(createOrAddMethodName) and
-        createOrAddCall.getAnArgument() = sink.getNode().asExpr()
-      )
-    )
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
 
 /**
  * A taint-tracking configuration for hard coded credentials.

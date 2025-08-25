@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import codeql.ruby.AST
 private import internal.AST
 private import internal.TreeSitter
@@ -92,10 +95,6 @@ class SplatExpr extends UnaryOperation, TSplatExpr {
  * ```
  */
 class HashSplatExpr extends UnaryOperation, THashSplatExpr {
-  private Ruby::HashSplatArgument g;
-
-  HashSplatExpr() { this = THashSplatExpr(g) }
-
   final override string getAPrimaryQlClass() { result = "HashSplatExpr" }
 }
 

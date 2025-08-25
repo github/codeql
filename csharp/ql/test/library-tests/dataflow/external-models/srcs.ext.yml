@@ -17,4 +17,5 @@ extensions:
       - ["My.Qltest", "SourceAttribute", false, "", "", "Attribute", "ReturnValue", "local", "manual"]
       - ["My.Qltest", "SourceAttribute", false, "", "", "Attribute", "Parameter", "local", "manual"]
       - ["My.Qltest", "SourceAttribute", false, "", "", "Attribute", "", "local", "manual"]
+      - ["My.Qltest", "SourceAttribute", false, "", "", "Attribute.Getter", "ReturnValue", "local", "manual"]
       - ["My.Qltest", "A", false, "SrcTwoArg", "(System.String,System.String)", "", "ReturnValue", "local", "manual"]

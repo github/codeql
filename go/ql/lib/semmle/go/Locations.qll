@@ -6,6 +6,8 @@ import go
  * A location as given by a file, a start line, a start column,
  * an end line, and an end column.
  *
+ * This class is restricted to locations created by the extractor.
+ *
  * For more information about locations see [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
  */
 class Location extends @location {
@@ -45,8 +47,7 @@ class Location extends @location {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    exists(File f |
-      locations_default(this, f, startline, startcolumn, endline, endcolumn) and
+    exists(File f | locations_default(this, f, startline, startcolumn, endline, endcolumn) |
       filepath = f.getAbsolutePath()
     )
   }
@@ -58,7 +59,10 @@ class Locatable extends @locatable {
   File getFile() { result = this.getLocation().getFile() }
 
   /** Gets this element's location. */
-  Location getLocation() { has_location(this, result) }
+  final Location getLocation() {
+    has_location(this, result) or
+    xmllocations(this, result)
+  }
 
   /** Gets the number of lines covered by this element. */
   int getNumLines() { result = this.getLocation().getNumLines() }

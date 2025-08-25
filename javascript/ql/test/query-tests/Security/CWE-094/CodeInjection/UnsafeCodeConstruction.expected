@@ -1,127 +1,20 @@
-nodes
-| lib/index.js:1:35:1:38 | data |
-| lib/index.js:1:35:1:38 | data |
-| lib/index.js:2:21:2:24 | data |
-| lib/index.js:2:21:2:24 | data |
-| lib/index.js:5:35:5:38 | name |
-| lib/index.js:5:35:5:38 | name |
-| lib/index.js:6:26:6:29 | name |
-| lib/index.js:6:26:6:29 | name |
-| lib/index.js:13:38:13:41 | data |
-| lib/index.js:13:38:13:41 | data |
-| lib/index.js:14:21:14:24 | data |
-| lib/index.js:14:21:14:24 | data |
-| lib/index.js:19:26:19:29 | data |
-| lib/index.js:19:26:19:29 | data |
-| lib/index.js:22:7:22:10 | data |
-| lib/index.js:22:7:22:10 | data |
-| lib/index.js:41:32:41:35 | opts |
-| lib/index.js:41:32:41:35 | opts |
-| lib/index.js:42:3:42:19 | opts |
-| lib/index.js:42:10:42:13 | opts |
-| lib/index.js:42:10:42:19 | opts \|\| {} |
-| lib/index.js:44:21:44:24 | opts |
-| lib/index.js:44:21:44:32 | opts.varName |
-| lib/index.js:51:21:51:32 | opts.varName |
-| lib/index.js:51:21:51:32 | opts.varName |
-| lib/index.js:51:21:51:32 | opts.varName |
-| lib/index.js:86:15:86:19 | taint |
-| lib/index.js:86:15:86:19 | taint |
-| lib/index.js:87:18:87:22 | taint |
-| lib/index.js:89:36:89:40 | taint |
-| lib/index.js:93:32:93:36 | taint |
-| lib/index.js:98:30:98:34 | taint |
-| lib/index.js:103:21:103:47 | this.op ... dOption |
-| lib/index.js:103:21:103:47 | this.op ... dOption |
-| lib/index.js:104:21:104:47 | this.op ... dOption |
-| lib/index.js:104:21:104:47 | this.op ... dOption |
-| lib/index.js:105:21:105:47 | this.op ... dOption |
-| lib/index.js:105:21:105:47 | this.op ... dOption |
-| lib/index.js:106:21:106:30 | this.taint |
-| lib/index.js:106:21:106:30 | this.taint |
-| lib/index.js:112:17:112:21 | taint |
-| lib/index.js:112:17:112:21 | taint |
-| lib/index.js:113:20:113:24 | taint |
-| lib/index.js:115:38:115:42 | taint |
-| lib/index.js:121:34:121:38 | taint |
-| lib/index.js:129:32:129:36 | taint |
-| lib/index.js:135:23:135:49 | this.op ... dOption |
-| lib/index.js:135:23:135:49 | this.op ... dOption |
-| lib/index.js:136:23:136:49 | this.op ... dOption |
-| lib/index.js:136:23:136:49 | this.op ... dOption |
-| lib/index.js:137:23:137:49 | this.op ... dOption |
-| lib/index.js:137:23:137:49 | this.op ... dOption |
-| lib/index.js:138:23:138:32 | this.taint |
-| lib/index.js:138:23:138:32 | this.taint |
-edges
-| lib/index.js:1:35:1:38 | data | lib/index.js:2:21:2:24 | data |
-| lib/index.js:1:35:1:38 | data | lib/index.js:2:21:2:24 | data |
-| lib/index.js:1:35:1:38 | data | lib/index.js:2:21:2:24 | data |
-| lib/index.js:1:35:1:38 | data | lib/index.js:2:21:2:24 | data |
-| lib/index.js:5:35:5:38 | name | lib/index.js:6:26:6:29 | name |
-| lib/index.js:5:35:5:38 | name | lib/index.js:6:26:6:29 | name |
-| lib/index.js:5:35:5:38 | name | lib/index.js:6:26:6:29 | name |
-| lib/index.js:5:35:5:38 | name | lib/index.js:6:26:6:29 | name |
-| lib/index.js:13:38:13:41 | data | lib/index.js:14:21:14:24 | data |
-| lib/index.js:13:38:13:41 | data | lib/index.js:14:21:14:24 | data |
-| lib/index.js:13:38:13:41 | data | lib/index.js:14:21:14:24 | data |
-| lib/index.js:13:38:13:41 | data | lib/index.js:14:21:14:24 | data |
-| lib/index.js:19:26:19:29 | data | lib/index.js:22:7:22:10 | data |
-| lib/index.js:19:26:19:29 | data | lib/index.js:22:7:22:10 | data |
-| lib/index.js:19:26:19:29 | data | lib/index.js:22:7:22:10 | data |
-| lib/index.js:19:26:19:29 | data | lib/index.js:22:7:22:10 | data |
-| lib/index.js:41:32:41:35 | opts | lib/index.js:42:10:42:13 | opts |
-| lib/index.js:41:32:41:35 | opts | lib/index.js:42:10:42:13 | opts |
-| lib/index.js:42:3:42:19 | opts | lib/index.js:44:21:44:24 | opts |
-| lib/index.js:42:10:42:13 | opts | lib/index.js:42:10:42:19 | opts \|\| {} |
-| lib/index.js:42:10:42:19 | opts \|\| {} | lib/index.js:42:3:42:19 | opts |
-| lib/index.js:44:21:44:24 | opts | lib/index.js:44:21:44:32 | opts.varName |
-| lib/index.js:44:21:44:32 | opts.varName | lib/index.js:51:21:51:32 | opts.varName |
-| lib/index.js:44:21:44:32 | opts.varName | lib/index.js:51:21:51:32 | opts.varName |
-| lib/index.js:44:21:44:32 | opts.varName | lib/index.js:51:21:51:32 | opts.varName |
-| lib/index.js:86:15:86:19 | taint | lib/index.js:87:18:87:22 | taint |
-| lib/index.js:86:15:86:19 | taint | lib/index.js:87:18:87:22 | taint |
-| lib/index.js:86:15:86:19 | taint | lib/index.js:89:36:89:40 | taint |
-| lib/index.js:86:15:86:19 | taint | lib/index.js:89:36:89:40 | taint |
-| lib/index.js:86:15:86:19 | taint | lib/index.js:93:32:93:36 | taint |
-| lib/index.js:86:15:86:19 | taint | lib/index.js:93:32:93:36 | taint |
-| lib/index.js:86:15:86:19 | taint | lib/index.js:98:30:98:34 | taint |
-| lib/index.js:86:15:86:19 | taint | lib/index.js:98:30:98:34 | taint |
-| lib/index.js:87:18:87:22 | taint | lib/index.js:106:21:106:30 | this.taint |
-| lib/index.js:87:18:87:22 | taint | lib/index.js:106:21:106:30 | this.taint |
-| lib/index.js:89:36:89:40 | taint | lib/index.js:103:21:103:47 | this.op ... dOption |
-| lib/index.js:89:36:89:40 | taint | lib/index.js:103:21:103:47 | this.op ... dOption |
-| lib/index.js:93:32:93:36 | taint | lib/index.js:104:21:104:47 | this.op ... dOption |
-| lib/index.js:93:32:93:36 | taint | lib/index.js:104:21:104:47 | this.op ... dOption |
-| lib/index.js:98:30:98:34 | taint | lib/index.js:105:21:105:47 | this.op ... dOption |
-| lib/index.js:98:30:98:34 | taint | lib/index.js:105:21:105:47 | this.op ... dOption |
-| lib/index.js:112:17:112:21 | taint | lib/index.js:113:20:113:24 | taint |
-| lib/index.js:112:17:112:21 | taint | lib/index.js:113:20:113:24 | taint |
-| lib/index.js:112:17:112:21 | taint | lib/index.js:115:38:115:42 | taint |
-| lib/index.js:112:17:112:21 | taint | lib/index.js:115:38:115:42 | taint |
-| lib/index.js:112:17:112:21 | taint | lib/index.js:121:34:121:38 | taint |
-| lib/index.js:112:17:112:21 | taint | lib/index.js:121:34:121:38 | taint |
-| lib/index.js:112:17:112:21 | taint | lib/index.js:129:32:129:36 | taint |
-| lib/index.js:112:17:112:21 | taint | lib/index.js:129:32:129:36 | taint |
-| lib/index.js:113:20:113:24 | taint | lib/index.js:138:23:138:32 | this.taint |
-| lib/index.js:113:20:113:24 | taint | lib/index.js:138:23:138:32 | this.taint |
-| lib/index.js:115:38:115:42 | taint | lib/index.js:135:23:135:49 | this.op ... dOption |
-| lib/index.js:115:38:115:42 | taint | lib/index.js:135:23:135:49 | this.op ... dOption |
-| lib/index.js:121:34:121:38 | taint | lib/index.js:136:23:136:49 | this.op ... dOption |
-| lib/index.js:121:34:121:38 | taint | lib/index.js:136:23:136:49 | this.op ... dOption |
-| lib/index.js:129:32:129:36 | taint | lib/index.js:137:23:137:49 | this.op ... dOption |
-| lib/index.js:129:32:129:36 | taint | lib/index.js:137:23:137:49 | this.op ... dOption |
 #select
 | lib/index.js:2:21:2:24 | data | lib/index.js:1:35:1:38 | data | lib/index.js:2:21:2:24 | data | This string concatenation which depends on $@ is later $@. | lib/index.js:1:35:1:38 | data | library input | lib/index.js:2:15:2:30 | "(" + data + ")" | interpreted as code |
 | lib/index.js:6:26:6:29 | name | lib/index.js:5:35:5:38 | name | lib/index.js:6:26:6:29 | name | This string concatenation which depends on $@ is later $@. | lib/index.js:5:35:5:38 | name | library input | lib/index.js:6:17:6:29 | "obj." + name | interpreted as code |
 | lib/index.js:14:21:14:24 | data | lib/index.js:13:38:13:41 | data | lib/index.js:14:21:14:24 | data | This string concatenation which depends on $@ is later $@. | lib/index.js:13:38:13:41 | data | library input | lib/index.js:14:15:14:30 | "(" + data + ")" | interpreted as code |
 | lib/index.js:22:7:22:10 | data | lib/index.js:19:26:19:29 | data | lib/index.js:22:7:22:10 | data | This string concatenation which depends on $@ is later $@. | lib/index.js:19:26:19:29 | data | library input | lib/index.js:25:24:25:26 | str | interpreted as code |
-| lib/index.js:51:21:51:32 | opts.varName | lib/index.js:41:32:41:35 | opts | lib/index.js:51:21:51:32 | opts.varName | This string concatenation which depends on $@ is later $@. | lib/index.js:41:32:41:35 | opts | library input | lib/index.js:51:10:51:52 | "  var  ... ing();" | interpreted as code |
-| lib/index.js:103:21:103:47 | this.op ... dOption | lib/index.js:86:15:86:19 | taint | lib/index.js:103:21:103:47 | this.op ... dOption | This string concatenation which depends on $@ is later $@. | lib/index.js:86:15:86:19 | taint | library input | lib/index.js:103:10:103:67 | "  var  ... ing();" | interpreted as code |
-| lib/index.js:104:21:104:47 | this.op ... dOption | lib/index.js:86:15:86:19 | taint | lib/index.js:104:21:104:47 | this.op ... dOption | This string concatenation which depends on $@ is later $@. | lib/index.js:86:15:86:19 | taint | library input | lib/index.js:104:10:104:67 | "  var  ... ing();" | interpreted as code |
-| lib/index.js:105:21:105:47 | this.op ... dOption | lib/index.js:86:15:86:19 | taint | lib/index.js:105:21:105:47 | this.op ... dOption | This string concatenation which depends on $@ is later $@. | lib/index.js:86:15:86:19 | taint | library input | lib/index.js:105:10:105:67 | "  var  ... ing();" | interpreted as code |
-| lib/index.js:106:21:106:30 | this.taint | lib/index.js:86:15:86:19 | taint | lib/index.js:106:21:106:30 | this.taint | This string concatenation which depends on $@ is later $@. | lib/index.js:86:15:86:19 | taint | library input | lib/index.js:106:10:106:50 | "  var  ... ing();" | interpreted as code |
-| lib/index.js:135:23:135:49 | this.op ... dOption | lib/index.js:112:17:112:21 | taint | lib/index.js:135:23:135:49 | this.op ... dOption | This string concatenation which depends on $@ is later $@. | lib/index.js:112:17:112:21 | taint | library input | lib/index.js:135:12:135:69 | "  var  ... ing();" | interpreted as code |
-| lib/index.js:136:23:136:49 | this.op ... dOption | lib/index.js:112:17:112:21 | taint | lib/index.js:136:23:136:49 | this.op ... dOption | This string concatenation which depends on $@ is later $@. | lib/index.js:112:17:112:21 | taint | library input | lib/index.js:136:12:136:69 | "  var  ... ing();" | interpreted as code |
-| lib/index.js:137:23:137:49 | this.op ... dOption | lib/index.js:112:17:112:21 | taint | lib/index.js:137:23:137:49 | this.op ... dOption | This string concatenation which depends on $@ is later $@. | lib/index.js:112:17:112:21 | taint | library input | lib/index.js:137:12:137:69 | "  var  ... ing();" | interpreted as code |
-| lib/index.js:138:23:138:32 | this.taint | lib/index.js:112:17:112:21 | taint | lib/index.js:138:23:138:32 | this.taint | This string concatenation which depends on $@ is later $@. | lib/index.js:112:17:112:21 | taint | library input | lib/index.js:138:12:138:52 | "  var  ... ing();" | interpreted as code |
+edges
+| lib/index.js:1:35:1:38 | data | lib/index.js:2:21:2:24 | data | provenance |  |
+| lib/index.js:5:35:5:38 | name | lib/index.js:6:26:6:29 | name | provenance |  |
+| lib/index.js:13:38:13:41 | data | lib/index.js:14:21:14:24 | data | provenance |  |
+| lib/index.js:19:26:19:29 | data | lib/index.js:22:7:22:10 | data | provenance |  |
+nodes
+| lib/index.js:1:35:1:38 | data | semmle.label | data |
+| lib/index.js:2:21:2:24 | data | semmle.label | data |
+| lib/index.js:5:35:5:38 | name | semmle.label | name |
+| lib/index.js:6:26:6:29 | name | semmle.label | name |
+| lib/index.js:13:38:13:41 | data | semmle.label | data |
+| lib/index.js:14:21:14:24 | data | semmle.label | data |
+| lib/index.js:19:26:19:29 | data | semmle.label | data |
+| lib/index.js:22:7:22:10 | data | semmle.label | data |
+subpaths

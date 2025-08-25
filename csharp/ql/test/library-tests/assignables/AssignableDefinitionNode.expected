@@ -1,9 +1,5 @@
 | Assignables.cs:5:9:5:17 | ... = ... | Assignables.cs:5:9:5:17 | ... = ... |
 | Assignables.cs:6:32:6:34 | ... = ... | Assignables.cs:6:32:6:34 | ... = ... |
-| Assignables.cs:9:18:9:18 | i | Assignables.cs:9:23:9:25 | enter get_Item |
-| Assignables.cs:9:18:9:18 | i | Assignables.cs:9:41:9:43 | enter set_Item |
-| Assignables.cs:9:41:9:43 | value | Assignables.cs:9:41:9:43 | enter set_Item |
-| Assignables.cs:11:16:11:24 | parameter | Assignables.cs:11:10:11:10 | enter M |
 | Assignables.cs:13:13:13:24 | Int32 variable = ... | Assignables.cs:13:13:13:24 | Int32 variable = ... |
 | Assignables.cs:14:9:14:28 | ... = ... | Assignables.cs:14:9:14:28 | ... = ... |
 | Assignables.cs:15:9:15:18 | ...-- | Assignables.cs:15:9:15:18 | ...-- |
@@ -14,8 +10,6 @@
 | Assignables.cs:20:9:20:33 | ... = ... | Assignables.cs:20:9:20:33 | ... = ... |
 | Assignables.cs:21:9:21:18 | ...++ | Assignables.cs:21:9:21:18 | ...++ |
 | Assignables.cs:22:22:22:50 | EventHandler callback = ... | Assignables.cs:22:22:22:50 | EventHandler callback = ... |
-| Assignables.cs:22:34:22:39 | sender | Assignables.cs:22:33:22:50 | enter (...) => ... |
-| Assignables.cs:22:42:22:42 | e | Assignables.cs:22:33:22:50 | enter (...) => ... |
 | Assignables.cs:23:9:23:25 | ... += ... | Assignables.cs:23:9:23:25 | ... += ... |
 | Assignables.cs:25:9:25:25 | ... -= ... | Assignables.cs:25:9:25:25 | ... -= ... |
 | Assignables.cs:26:9:26:33 | ... = ... | Assignables.cs:26:9:26:33 | ... = ... |
@@ -27,27 +21,14 @@
 | Assignables.cs:32:37:32:41 | access to field Field | Assignables.cs:32:9:32:42 | call to method RefUncertain2 |
 | Assignables.cs:34:29:34:33 | access to field Field | Assignables.cs:34:9:34:45 | call to method RefCertainOneOf |
 | Assignables.cs:34:40:34:44 | access to field Field | Assignables.cs:34:9:34:45 | call to method RefCertainOneOf |
-| Assignables.cs:37:22:37:22 | o | Assignables.cs:37:10:37:12 | enter Out |
 | Assignables.cs:39:9:39:13 | ... = ... | Assignables.cs:39:9:39:13 | ... = ... |
-| Assignables.cs:42:26:42:26 | x | Assignables.cs:42:10:42:22 | enter RefCertain<> |
-| Assignables.cs:42:35:42:35 | y | Assignables.cs:42:10:42:22 | enter RefCertain<> |
-| Assignables.cs:42:43:42:43 | b | Assignables.cs:42:10:42:22 | enter RefCertain<> |
 | Assignables.cs:45:13:45:17 | ... = ... | Assignables.cs:45:13:45:17 | ... = ... |
-| Assignables.cs:47:31:47:31 | access to parameter y | Assignables.cs:47:13:47:38 | call to method RefCertain<> |
-| Assignables.cs:50:27:50:27 | x | Assignables.cs:50:10:50:21 | enter RefUncertain |
-| Assignables.cs:50:38:50:38 | y | Assignables.cs:50:10:50:21 | enter RefUncertain |
+| Assignables.cs:47:31:47:31 | access to parameter y | Assignables.cs:47:13:47:38 | call to method RefCertain`1 |
 | Assignables.cs:53:13:53:17 | ... = ... | Assignables.cs:53:13:53:17 | ... = ... |
-| Assignables.cs:56:28:56:28 | x | Assignables.cs:56:10:56:22 | enter RefUncertain2 |
-| Assignables.cs:56:39:56:39 | y | Assignables.cs:56:10:56:22 | enter RefUncertain2 |
 | Assignables.cs:59:13:59:17 | ... = ... | Assignables.cs:59:13:59:17 | ... = ... |
 | Assignables.cs:61:33:61:33 | access to parameter y | Assignables.cs:61:13:61:34 | call to method RefUncertain |
-| Assignables.cs:64:34:64:34 | x | Assignables.cs:64:10:64:24 | enter RefCertainOneOf |
-| Assignables.cs:64:45:64:45 | y | Assignables.cs:64:10:64:24 | enter RefCertainOneOf |
 | Assignables.cs:67:13:67:17 | ... = ... | Assignables.cs:67:13:67:17 | ... = ... |
 | Assignables.cs:69:13:69:17 | ... = ... | Assignables.cs:69:13:69:17 | ... = ... |
-| Assignables.cs:72:21:72:21 | x | Assignables.cs:72:10:72:15 | enter NonRef |
-| Assignables.cs:72:32:72:32 | y | Assignables.cs:72:10:72:15 | enter NonRef |
-| Assignables.cs:76:69:76:70 | ss | Assignables.cs:76:10:76:20 | enter LocalNoInit |
 | Assignables.cs:78:22:78:22 | String s | Assignables.cs:78:22:78:22 | String s |
 | Assignables.cs:82:21:82:33 | String temp = ... | Assignables.cs:82:21:82:33 | String temp = ... |
 | Assignables.cs:84:30:84:30 | Exception e | Assignables.cs:84:30:84:30 | [exception: OutOfMemoryException] Exception e |
@@ -73,8 +54,6 @@
 | Assignables.cs:109:14:109:19 | Int32* p = ... | Assignables.cs:109:14:109:19 | Int32* p = ... |
 | Assignables.cs:109:18:109:19 | &... | Assignables.cs:109:18:109:19 | &... |
 | Assignables.cs:110:9:110:14 | ... = ... | Assignables.cs:110:9:110:14 | ... = ... |
-| Assignables.cs:113:25:113:25 | i | Assignables.cs:113:5:113:15 | enter Assignables |
-| Assignables.cs:113:39:113:39 | s | Assignables.cs:113:5:113:15 | enter Assignables |
 | Assignables.cs:113:44:113:48 | ... = ... | Assignables.cs:113:44:113:48 | ... = ... |
 | Assignables.cs:113:51:113:56 | ... = ... | Assignables.cs:113:51:113:56 | ... = ... |
 | Assignables.cs:117:13:117:13 | Int32 i | Assignables.cs:117:13:117:13 | Int32 i |
@@ -84,12 +63,10 @@
 | Assignables.cs:124:13:124:13 | Int32 i | Assignables.cs:124:13:124:13 | Int32 i |
 | Assignables.cs:125:13:125:25 | String s = ... | Assignables.cs:125:13:125:25 | String s = ... |
 | Assignables.cs:126:9:126:30 | ... = ... | Assignables.cs:126:9:126:30 | ... = ... |
-| Assignables.cs:130:31:130:31 | d | Assignables.cs:130:10:130:20 | enter DelegateRef |
 | Assignables.cs:132:13:132:17 | Int32 x = ... | Assignables.cs:132:13:132:17 | Int32 x = ... |
 | Assignables.cs:133:15:133:15 | access to local variable x | Assignables.cs:133:9:133:30 | delegate call |
 | Assignables.cs:133:29:133:29 | String s | Assignables.cs:133:9:133:30 | delegate call |
 | Assignables.cs:138:19:138:50 | MemoryStream x = ... | Assignables.cs:138:19:138:50 | MemoryStream x = ... |
-| Discards.cs:5:30:5:30 | x | Discards.cs:5:19:5:19 | enter f |
 | Discards.cs:7:9:7:17 | ... = ... | Discards.cs:7:9:7:17 | ... = ... |
 | Discards.cs:13:9:13:20 | ... = ... | Discards.cs:13:9:13:20 | ... = ... |
 | Discards.cs:18:9:18:25 | ... = ... | Discards.cs:18:9:18:25 | ... = ... |
@@ -101,10 +78,7 @@
 | Discards.cs:20:9:20:33 | ... = ... | Discards.cs:20:9:20:33 | ... = ... |
 | Discards.cs:20:17:20:17 | Double y | Discards.cs:20:17:20:17 | Double y |
 | Discards.cs:20:32:20:32 | Boolean z | Discards.cs:20:22:20:33 | call to method f |
-| Discards.cs:23:27:23:30 | args | Discards.cs:23:10:23:16 | enter Foreach |
 | Discards.cs:25:22:25:22 | String _ | Discards.cs:25:22:25:22 | String _ |
-| Discards.cs:30:24:30:24 | o | Discards.cs:30:10:30:15 | enter Switch |
-| Finally.cs:5:16:5:16 | b | Finally.cs:5:9:5:9 | enter M |
 | Finally.cs:7:13:7:17 | Int32 i = ... | Finally.cs:7:13:7:17 | Int32 i = ... |
 | Finally.cs:15:13:15:17 | ... = ... | Finally.cs:15:13:15:17 | ... = ... |
 | Finally.cs:15:13:15:17 | ... = ... | Finally.cs:15:13:15:17 | [finally: exception(Exception)] ... = ... |

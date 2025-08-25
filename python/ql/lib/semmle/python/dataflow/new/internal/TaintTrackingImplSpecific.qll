@@ -4,7 +4,8 @@
 
 private import codeql.dataflow.TaintTracking
 private import DataFlowImplSpecific
+private import semmle.python.Files
 
-module PythonTaintTracking implements InputSig<PythonDataFlow> {
+module PythonTaintTracking implements InputSig<Location, PythonDataFlow> {
   import TaintTrackingPrivate
 }

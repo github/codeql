@@ -1,5 +1,10 @@
 <dbstats>
   <typesizes><e>
+  <k>@py_ParamSpec</k><v>100</v></e><e>
+  <k>@py_TypeAlias</k><v>100</v></e><e>
+  <k>@py_TypeVar</k><v>100</v></e><e>
+  <k>@py_TypeVarTuple</k><v>100</v></e><e>
+  <k>@py_type_parameter_list</k><v>100</v></e><e>
 <k>@py_Guard</k><v>100</v></e><e>
 <k>@py_MatchAsPattern</k><v>100</v></e><e>
 <k>@py_MatchOrPattern</k><v>100</v></e><e>
@@ -7543,6 +7548,44 @@
 <e>
 <k>idx</k>
 <v>100</v>
+</e>
+</columnsizes>
+<dependencies/>
+</relation>
+<relation>
+<name>py_type_parameters</name>
+<cardinality>1000</cardinality>
+<columnsizes>
+<e>
+<k>id</k>
+<v>1000</v>
+</e>
+<e>
+<k>kind</k>
+<v>3</v>
+</e>
+<e>
+<k>parent</k>
+<v>1000</v>
+</e>
+<e>
+<k>idx</k>
+<v>100</v>
+</e>
+</columnsizes>
+<dependencies/>
+</relation>
+<relation>
+<name>py_type_parameter_lists</name>
+<cardinality>1000</cardinality>
+<columnsizes>
+<e>
+<k>id</k>
+<v>1000</v>
+</e>
+<e>
+<k>parent</k>
+<v>1000</v>
 </e>
 </columnsizes>
 <dependencies/>

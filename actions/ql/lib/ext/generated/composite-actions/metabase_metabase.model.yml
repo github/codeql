@@ -1,0 +1,17 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["metabase/metabase", "*", "input.organization_name", "code-injection", "generated"]
+     - ["metabase/metabase", "*", "input.github_token", "code-injection", "generated"]
+     - ["metabase/metabase", "*", "input.username", "code-injection", "generated"]
+     - ["metabase/metabase", "*", "input.test-args", "code-injection", "generated"]
+     - ["metabase/metabase", "*", "input.clojure-version", "code-injection", "generated"]
+     - ["metabase/metabase", "*", "input.include-log", "code-injection", "generated"]
+     - ["metabase/metabase", "*", "input.message", "code-injection", "generated"]
+     - ["metabase/metabase", "*", "input.mysql", "code-injection", "generated"]
+     - ["metabase/metabase", "*", "input.postgres", "code-injection", "generated"]
+     - ["metabase/metabase", "*", "input.openldap", "code-injection", "generated"]
+     - ["metabase/metabase", "*", "input.maildev", "code-injection", "generated"]
+     - ["metabase/metabase", "*", "input.edition", "code-injection", "generated"]

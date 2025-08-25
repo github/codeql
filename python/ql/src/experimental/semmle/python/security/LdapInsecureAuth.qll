@@ -18,7 +18,7 @@ string getPrivateHostRegex() {
 }
 
 // "ldap://somethingon.theinternet.com"
-class LdapFullHost extends StrConst {
+class LdapFullHost extends StringLiteral {
   LdapFullHost() {
     exists(string s |
       s = this.getText() and
@@ -29,15 +29,15 @@ class LdapFullHost extends StrConst {
   }
 }
 
-class LdapSchema extends StrConst {
+class LdapSchema extends StringLiteral {
   LdapSchema() { this.getText().regexpMatch(getSchemaRegex()) }
 }
 
-class LdapPrivateHost extends StrConst {
+class LdapPrivateHost extends StringLiteral {
   LdapPrivateHost() { this.getText().regexpMatch(getPrivateHostRegex()) }
 }
 
-predicate concatAndCompareAgainstFullHostRegex(LdapSchema schema, StrConst host) {
+predicate concatAndCompareAgainstFullHostRegex(LdapSchema schema, StringLiteral host) {
   not host instanceof LdapPrivateHost and
   (schema.getText() + host.getText()).regexpMatch(getFullHostRegex())
 }
@@ -101,6 +101,10 @@ private module LdapInsecureAuthConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(LdapBind ldapBind | not ldapBind.useSsl() and sink = ldapBind.getHost())
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node sink) { none() }
 }
 
 /** Global taint-tracking for detecting "LDAP insecure authentications" vulnerabilities. */

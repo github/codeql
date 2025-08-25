@@ -15,7 +15,7 @@ may have unforeseen effects, such as the execution of arbitrary code.
 <p>
 There are many different serialization frameworks.  This query currently
 supports Kryo, XmlDecoder, XStream, SnakeYaml, JYaml, JsonIO, YAMLBeans, HessianBurlap, Castor, Burlap,
-Jackson, Jabsorb, Jodd JSON, Flexjson, Gson and Java IO serialization through
+Jackson, Jabsorb, Jodd JSON, Flexjson, Gson, JMS, and Java IO serialization through
 <code>ObjectInputStream</code>/<code>ObjectOutputStream</code>.
 </p>
 </overview>
@@ -64,13 +64,19 @@ Recommendations specific to particular frameworks supported by this query:
 <p></p>
 <p><b>SnakeYAML</b> - <code>org.yaml:snakeyaml</code></p>
     <ul>
-        <li><b>Secure by Default</b>: No</li>
-        <li><b>Recommendation</b>: Pass an instance of <code>org.yaml.snakeyaml.constructor.SafeConstructor</code> to  <code>org.yaml.snakeyaml.Yaml</code>'s constructor before using it to deserialize untrusted data.</li>
+        <li><b>Secure by Default</b>: As of version 2.0.</li>
+        <li><b>Recommendation</b>: For versions before 2.0, pass an instance of <code>org.yaml.snakeyaml.constructor.SafeConstructor</code> to  <code>org.yaml.snakeyaml.Yaml</code>'s constructor before using it to deserialize untrusted data.</li>
     </ul>
 <p></p>
 <p><b>XML Decoder</b> - <code>Standard Java Library</code></p>
     <ul>
         <li><b>Secure by Default</b>: No</li>
+        <li><b>Recommendation</b>: Do not use with untrusted user input.</li>
+    </ul>
+<p></p>
+<p><b>ObjectMesssage</b> - <code>Java EE/Jakarta EE</code></p>
+    <ul>
+        <li><b>Secure by Default</b>: Depends on the JMS implementation.</li>
         <li><b>Recommendation</b>: Do not use with untrusted user input.</li>
     </ul>
 <p></p>
@@ -115,7 +121,7 @@ Alvaro Muñoz &amp; Christian Schneider, RSAConference 2016:
 </li>
 <li>
 SnakeYaml documentation on deserialization:
-<a href="https://bitbucket.org/snakeyaml/snakeyaml/wiki/Documentation#markdown-header-loading-yaml">SnakeYaml deserialization</a>.
+<a href="https://bitbucket.org/snakeyaml/snakeyaml/wiki/Documentation#markdown-header-loading-yaml">SnakeYaml deserialization</a> (not updated for new behaviour in version 2.0).
 </li>
 <li>
 Hessian deserialization and related gadget chains:
@@ -157,6 +163,10 @@ RCE in Flexjson:
 <li>
 Android Intent deserialization vulnerabilities with GSON parser:
 <a href="https://blog.oversecured.com/Exploiting-memory-corruption-vulnerabilities-on-Android/#insecure-use-of-json-parsers">Insecure use of JSON parsers</a>.
+</li>
+<li>
+Research by Matthias Kaiser:
+<a href="https://www.blackhat.com/docs/us-16/materials/us-16-Kaiser-Pwning-Your-Java-Messaging-With-Deserialization-Vulnerabilities.pdf">Pwning Your Java Messaging With Deserialization Vulnerabilities</a>.
 </li>
 </references>
 

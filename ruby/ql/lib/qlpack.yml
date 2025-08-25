@@ -1,11 +1,12 @@
 name: codeql/ruby-all
-version: 0.7.4-dev
+version: 5.0.3-dev
 groups: ruby
 extractor: ruby
 dbscheme: ruby.dbscheme
 upgrades: upgrades
 library: true
 dependencies:
+  codeql/concepts: ${workspace}
   codeql/controlflow: ${workspace}
   codeql/dataflow: ${workspace}
   codeql/mad: ${workspace}
@@ -15,4 +16,6 @@ dependencies:
   codeql/util: ${workspace}
 dataExtensions:
   - codeql/ruby/frameworks/**/model.yml
+  - codeql/ruby/frameworks/**/*.model.yml
 warnOnImplicitThis: true
+compileForOverlayEval: true

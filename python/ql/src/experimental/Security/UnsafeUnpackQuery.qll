@@ -208,6 +208,10 @@ module UnsafeUnpackConfig implements DataFlow::ConfigSig {
       nodeFrom = mcn.getArg(0)
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node sink) { none() }
 }
 
 /** Global taint-tracking for detecting "UnsafeUnpacking" vulnerabilities. */

@@ -1,13 +1,14 @@
 import go
-import TestUtilities.InlineExpectationsTest
+import semmle.go.dataflow.ExternalFlow
+import ModelValidation
+import utils.test.InlineExpectationsTest
 
 module GoMicroTest implements TestSig {
   string getARelevantTag() { result = ["serverRequest", "clientRequest"] }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(DataFlow::Node node |
-      node.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      node.getLocation() = location and
       (
         node instanceof GoMicro::Request and
         element = node.toString() and

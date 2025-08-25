@@ -1,4 +1,4 @@
-| attributes.cs:10:12:10:24 | [assembly: AssemblyTitle(...)] | attributes.cs:7:1:9:31 | // ... |
-| attributes.cs:22:12:22:21 | [assembly: ComVisible(...)] | attributes.cs:19:1:21:58 | // ... |
-| attributes.cs:25:12:25:15 | [assembly: Guid(...)] | attributes.cs:24:1:24:84 | // ... |
-| attributes.cs:37:12:37:26 | [assembly: AssemblyVersion(...)] | attributes.cs:27:1:36:39 | // ... |
+| attributes.cs:12:12:12:24 | [assembly: AssemblyTitle(...)] | attributes.cs:9:1:11:31 | // ... |
+| attributes.cs:24:12:24:21 | [assembly: ComVisible(...)] | attributes.cs:21:1:23:58 | // ... |
+| attributes.cs:27:12:27:15 | [assembly: Guid(...)] | attributes.cs:26:1:26:84 | // ... |
+| attributes.cs:39:12:39:26 | [assembly: AssemblyVersion(...)] | attributes.cs:29:1:38:39 | // ... |

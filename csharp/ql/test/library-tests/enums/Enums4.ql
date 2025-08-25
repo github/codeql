@@ -4,5 +4,5 @@
 
 import csharp
 
-where forall(Enum e | e.getBaseClass().hasQualifiedName("System", "Enum"))
+where forall(Enum e | e.getBaseClass().hasFullyQualifiedName("System", "Enum"))
 select 1

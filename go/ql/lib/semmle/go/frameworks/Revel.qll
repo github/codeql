@@ -1,5 +1,5 @@
 /**
- * Provides classes for working with untrusted flow sources from the `github.com/revel/revel` package.
+ * Provides classes for working with remote flow sources from the `github.com/revel/revel` package.
  */
 
 import go
@@ -12,15 +12,6 @@ module Revel {
     result = package(["github.com/revel", "github.com/robfig"] + "/revel", "")
   }
 
-  private class ControllerParams extends UntrustedFlowSource::Range, DataFlow::FieldReadNode {
-    ControllerParams() {
-      exists(Field f |
-        this.readsField(_, f) and
-        f.hasQualifiedName(packagePath(), "Controller", "Params")
-      )
-    }
-  }
-
   private class ParamsFixedSanitizer extends TaintTracking::DefaultTaintSanitizer,
     DataFlow::FieldReadNode
   {
@@ -29,43 +20,6 @@ module Revel {
         this.readsField(_, f) and
         f.hasQualifiedName(packagePath(), "Params", "Fixed")
       )
-    }
-  }
-
-  private class RouteMatchParams extends UntrustedFlowSource::Range, DataFlow::FieldReadNode {
-    RouteMatchParams() {
-      exists(Field f |
-        this.readsField(_, f) and
-        f.hasQualifiedName(packagePath(), "RouteMatch", "Params")
-      )
-    }
-  }
-
-  /** An access to an HTTP request field whose value may be controlled by an untrusted user. */
-  private class UserControlledRequestField extends UntrustedFlowSource::Range,
-    DataFlow::FieldReadNode
-  {
-    UserControlledRequestField() {
-      exists(string fieldName |
-        this.getField().hasQualifiedName(packagePath(), "Request", fieldName)
-      |
-        fieldName in [
-            "Header", "ContentType", "AcceptLanguages", "Locale", "URL", "Form", "MultipartForm"
-          ]
-      )
-    }
-  }
-
-  private class UserControlledRequestMethod extends UntrustedFlowSource::Range,
-    DataFlow::MethodCallNode
-  {
-    UserControlledRequestMethod() {
-      this.getTarget()
-          .hasQualifiedName(packagePath(), "Request",
-            [
-              "FormValue", "PostFormValue", "GetQuery", "GetForm", "GetMultipartForm", "GetBody",
-              "Cookie", "GetHttpHeader", "GetRequestURI", "MultipartReader", "Referer", "UserAgent"
-            ])
     }
   }
 
@@ -131,38 +85,6 @@ module Revel {
     override Http::ResponseWriter getResponseWriter() { none() }
 
     override string getAContentType() { result = contentType }
-  }
-
-  /**
-   * The `revel.Controller.RenderFileName` method, which instructs Revel to open a file and return its contents.
-   * We extend FileSystemAccess rather than HTTP::ResponseBody as this will usually mean exposing a user-controlled
-   * file rather than the actual contents being user-controlled.
-   */
-  private class RenderFileNameCall extends FileSystemAccess::Range, DataFlow::CallNode {
-    RenderFileNameCall() {
-      this =
-        any(Method m | m.hasQualifiedName(packagePath(), "Controller", "RenderFileName")).getACall()
-    }
-
-    override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
-  }
-
-  /**
-   * The `revel.Controller.Redirect` method.
-   *
-   * It is currently assumed that a tainted `value` in `Redirect(url, value)`, which calls `Sprintf(url, value)`
-   * internally, cannot lead to an open redirect vulnerability.
-   */
-  private class ControllerRedirectMethod extends Http::Redirect::Range, DataFlow::CallNode {
-    ControllerRedirectMethod() {
-      exists(Method m | m.hasQualifiedName(packagePath(), "Controller", "Redirect") |
-        this = m.getACall()
-      )
-    }
-
-    override DataFlow::Node getUrl() { result = this.getArgument(0) }
-
-    override Http::ResponseWriter getResponseWriter() { none() }
   }
 
   /**

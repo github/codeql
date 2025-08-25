@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["ILCompiler.IBC", "IBCProfileData", False, "IBCProfileData", "(ILCompiler.IBC.MibcConfig,System.Boolean,System.Collections.Generic.IEnumerable<ILCompiler.MethodProfileData>)", "", "Argument[0]", "Argument[this].SyntheticField[ILCompiler.IBC.IBCProfileData._config]", "value", "dfc-generated"]
+      - ["ILCompiler.IBC", "IBCProfileData", True, "get_Config", "()", "", "Argument[this].SyntheticField[ILCompiler.IBC.IBCProfileData._config]", "ReturnValue", "value", "dfc-generated"]
+      - ["ILCompiler.IBC", "MibcConfig", False, "FromKeyValueMap", "(System.Collections.Generic.Dictionary<System.String,System.String>)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["ILCompiler.IBC", "MibcConfig", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["ILCompiler.IBC", "IBCProfileData", "GetMethodBlockCount", "(Internal.TypeSystem.MethodDesc)", "summary", "df-generated"]
+      - ["ILCompiler.IBC", "IBCProfileData", "GetMethodProfileData", "(Internal.TypeSystem.MethodDesc)", "summary", "df-generated"]
+      - ["ILCompiler.IBC", "IBCProfileData", "get_PartialNGen", "()", "summary", "df-generated"]
+      - ["ILCompiler.IBC", "MIbcProfileParser", "OpenMibcAsPEReader", "(System.String)", "summary", "df-generated"]
+      - ["ILCompiler.IBC", "MIbcProfileParser", "ParseMIbcFile", "(Internal.TypeSystem.TypeSystemContext,System.Reflection.PortableExecutable.PEReader,System.Collections.Generic.HashSet<System.String>,System.String,ILCompiler.IBC.MIbcProfileParser+MibcGroupParseRules,System.Collections.Generic.HashSet<System.String>)", "summary", "df-generated"]
+      - ["ILCompiler.IBC", "MIbcProfileParser", "ParseMibcConfig", "(Internal.TypeSystem.TypeSystemContext,System.Reflection.PortableExecutable.PEReader)", "summary", "df-generated"]

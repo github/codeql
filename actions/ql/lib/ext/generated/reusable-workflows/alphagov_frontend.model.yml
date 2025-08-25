@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["alphagov/frontend/.github/workflows/pact-verify.yml", "*", "input.pact_artifact_file_to_verify", "code-injection", "generated"]

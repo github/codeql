@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["balena-os/balena-engine", "*", "input.VERBOSE", "code-injection", "generated"]

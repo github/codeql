@@ -61,18 +61,6 @@ class Declaration extends Locatable, @declaration {
   string getQualifiedName() { result = underlyingElement(this).(Q::Declaration).getQualifiedName() }
 
   /**
-   * DEPRECATED: Prefer `hasGlobalName` or the 2-argument or 3-argument
-   * `hasQualifiedName` predicates. To get the exact same results as this
-   * predicate in all edge cases, use `getQualifiedName()`.
-   *
-   * Holds if this declaration has the fully-qualified name `qualifiedName`.
-   * See `getQualifiedName`.
-   */
-  deprecated predicate hasQualifiedName(string qualifiedName) {
-    this.getQualifiedName() = qualifiedName
-  }
-
-  /**
    * Holds if this declaration has a fully-qualified name with a name-space
    * component of `namespaceQualifier`, a declaring type of `typeQualifier`,
    * and a base name of `baseName`. Template parameters and arguments are
@@ -185,9 +173,6 @@ class Declaration extends Locatable, @declaration {
   /** Holds if the declaration has a definition. */
   predicate hasDefinition() { exists(this.getDefinition()) }
 
-  /** DEPRECATED: Use `hasDefinition` instead. */
-  deprecated predicate isDefined() { this.hasDefinition() }
-
   /** Gets the preferred location of this declaration, if any. */
   override Location getLocation() { none() }
 
@@ -202,7 +187,7 @@ class Declaration extends Locatable, @declaration {
       this instanceof Parameter or
       this instanceof ProxyClass or
       this instanceof LocalVariable or
-      this instanceof TemplateParameter or
+      this instanceof TypeTemplateParameter or
       this.(UserType).isLocal()
     )
   }
@@ -250,7 +235,7 @@ class Declaration extends Locatable, @declaration {
    *
    * `Foo<int, 1> bar;`
    *
-   * Will have `getTemplateArgument())` return `int`, and
+   * Will have `getTemplateArgument(0)` return `int`, and
    * `getTemplateArgument(1)` return `1`.
    */
   final Locatable getTemplateArgument(int index) {
@@ -292,6 +277,10 @@ class Declaration extends Locatable, @declaration {
     function_template_argument(underlyingElement(this), index, unresolveElement(result))
     or
     variable_template_argument(underlyingElement(this), index, unresolveElement(result))
+    or
+    template_template_argument(underlyingElement(this), index, unresolveElement(result))
+    or
+    concept_template_argument(underlyingElement(this), index, unresolveElement(result))
   }
 
   private Expr getTemplateArgumentValue(int index) {
@@ -300,6 +289,10 @@ class Declaration extends Locatable, @declaration {
     function_template_argument_value(underlyingElement(this), index, unresolveElement(result))
     or
     variable_template_argument_value(underlyingElement(this), index, unresolveElement(result))
+    or
+    template_template_argument_value(underlyingElement(this), index, unresolveElement(result))
+    or
+    concept_template_argument_value(underlyingElement(this), index, unresolveElement(result))
   }
 }
 

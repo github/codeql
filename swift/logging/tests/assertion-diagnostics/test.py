@@ -2,7 +2,7 @@ import importlib
 import os
 import subprocess
 # We have to use importlib due to the '-' in the path
-diagnostics_test_utils = importlib.import_module("swift.integration-tests.diagnostics_test_utils")
+diagnostics_test_utils = importlib.import_module("swift.ql.integration-tests.diagnostics_test_utils")
 
 test_dir = "swift/logging/tests/assertion-diagnostics"
 

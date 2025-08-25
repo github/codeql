@@ -1,0 +1,39 @@
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: summaryModel
+    data:
+      - ["foo", "Member[MS_identity]", "Argument[0,x:]", "ReturnValue", "value"]
+      - ["foo", "Member[MS_apply_lambda]", "Argument[1]", "Argument[0].Parameter[0]", "value"]
+      - ["foo", "Member[MS_apply_lambda]", "Argument[0].ReturnValue", "ReturnValue", "value"]
+      - ["foo", "Member[MS_reversed]", "Argument[0].ListElement", "ReturnValue.ListElement", "value"]
+      - ["foo", "Member[MS_reversed]", "Argument[0]", "ReturnValue", "taint"]
+      - ["foo", "Member[MS_list_map]", "Argument[1].ListElement", "Argument[0].Parameter[0]", "value"]
+      - ["foo", "Member[MS_list_map]", "Argument[0].ReturnValue", "ReturnValue.ListElement", "value"]
+      - ["foo", "Member[MS_list_map]", "Argument[1]", "ReturnValue", "taint"]
+      - ["foo", "Member[MS_append_to_list]", "Argument[0].ListElement", "ReturnValue.ListElement", "value"]
+      - ["foo", "Member[MS_append_to_list]", "Argument[1]", "ReturnValue.ListElement", "value"]
+      - ["foo", "Member[MS_append_to_list]", "Argument[0]", "ReturnValue", "taint"]
+      - ["foo", "Member[MS_append_to_list]", "Argument[1]", "ReturnValue", "taint"]
+      - ["foo", "Member[MS_spread]", "Argument[0]", "ReturnValue.TupleElement[0]", "value"]
+      - ["foo", "Member[MS_spread]", "Argument[1]", "ReturnValue.TupleElement[1]", "value"]
+      - ["foo", "Member[MS_spread_all]", "Argument[0]", "ReturnValue.TupleElement[0,1]", "value"]
+      - ["foo.MS_Class!", "Call", "Argument[0, x:]", "ReturnValue.Attribute[config]", "value"]
+      - ["foo.MS_Class_transitive!", "Subclass.Call", "Argument[0, x:]", "ReturnValue.Attribute[config]", "value"]
+      - ["foo.MS_Class_transitive", "Member[instance_method]", "Argument[0]", "ReturnValue", "value"]
+      - ["foo.MS_Class", "Member[instance_method]", "Argument[self]", "ReturnValue.TupleElement[0]", "value"]
+      - ["foo.MS_Class", "Member[instance_method]", "Argument[0]", "ReturnValue.TupleElement[1]", "value"]
+      - ["foo.MS_Class", "Member[explicit_self]", "Argument[self:]", "ReturnValue", "value"]
+      - ["json", "Member[MS_loads]", "Argument[0]", "ReturnValue", "taint"]
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: typeModel
+    data:
+      - ["foo.MS_Class", "foo", "Member[get_instance].ReturnValue"]
+      - ["foo.MS_Class!", "foo", "Member[get_class].ReturnValue"]
+      # Ideally this would be a consequence of the above line
+      - ["foo.MS_Class", "foo", "Member[get_class].ReturnValue.Instance"]
+      - ["foo.MS_Class", "foo.MS_Factory!", "Member[get_instance].ReturnValue"]
+      - ["foo.MS_Class", "foo.MS_Factory", "Member[make].ReturnValue"]
+      - ["foo.MS_Class", "foo.Impl.MS_Class_Impl", ""]

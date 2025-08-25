@@ -1,8 +1,11 @@
 edges
-| UnvalidatedCors.java:21:22:21:48 | getHeader(...) : String | UnvalidatedCors.java:27:67:27:69 | url |
+| UnvalidatedCors.java:21:22:21:48 | getHeader(...) : String | UnvalidatedCors.java:27:67:27:69 | url | provenance | Src:MaD:2 Sink:MaD:1 |
+models
+| 1 | Sink: javax.servlet.http; HttpServletResponse; false; addHeader; ; ; Argument[0..1]; response-splitting; manual |
+| 2 | Source: javax.servlet.http; HttpServletRequest; false; getHeader; (String); ; ReturnValue; remote; manual |
 nodes
 | UnvalidatedCors.java:21:22:21:48 | getHeader(...) : String | semmle.label | getHeader(...) : String |
 | UnvalidatedCors.java:27:67:27:69 | url | semmle.label | url |
-subpaths
-#select
+problems
 | UnvalidatedCors.java:27:67:27:69 | url | UnvalidatedCors.java:21:22:21:48 | getHeader(...) : String | UnvalidatedCors.java:27:67:27:69 | url | CORS header is being set using user controlled value $@. | UnvalidatedCors.java:21:22:21:48 | getHeader(...) | user-provided value |
+subpaths

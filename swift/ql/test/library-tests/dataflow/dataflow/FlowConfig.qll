@@ -9,7 +9,7 @@ import codeql.swift.frameworks.Frameworks
 
 module TestConfiguration implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) {
-    src.asExpr().(CallExpr).getStaticTarget().getName().matches("source%()")
+    src.asExpr().(CallExpr).getStaticTarget().getName().matches("source%")
   }
 
   predicate isSink(DataFlow::Node sink) {

@@ -26,10 +26,20 @@ class PrintAstConfiguration extends TPrintAstConfiguration {
    * By default it checks whether the `AstNode` `e` belongs to `Location` `l`.
    */
   predicate shouldPrint(AstNode e, Location l) { l = e.getLocation() }
+
+  /**
+   * Controls whether the `YamlNode` should be considered for AST printing.
+   * By default it checks whether the `YamlNode` `y` belongs to `Location` `l`.
+   */
+  predicate shouldPrintYaml(YamlNode y, Location l) { l = y.getLocation() }
 }
 
 private predicate shouldPrint(AstNode e, Location l) {
   exists(PrintAstConfiguration config | config.shouldPrint(e, l))
+}
+
+private predicate shouldPrintYaml(YamlNode y, Location l) {
+  exists(PrintAstConfiguration config | config.shouldPrintYaml(y, l))
 }
 
 /** Holds if the given element does not need to be rendered in the AST. */
@@ -55,8 +65,11 @@ private newtype TPrintAstNode =
     not list = any(Module mod).getBody() and
     not forall(AstNode child | child = list.getAnItem() | isNotNeeded(child))
   } or
-  TYamlNode(YamlNode node) or
-  TYamlMappingNode(YamlMapping mapping, int i) { exists(mapping.getKeyNode(i)) }
+  TYamlNode(YamlNode node) { shouldPrintYaml(node, _) } or
+  TYamlMappingNode(YamlMapping mapping, int i) {
+    shouldPrintYaml(mapping, _) and
+    exists(mapping.getKeyNode(i))
+  }
 
 /**
  * A node in the output tree.
@@ -423,13 +436,13 @@ class ParameterNode extends AstElementNode {
 }
 
 /**
- * A print node for a `StrConst`.
+ * A print node for a `StringLiteral`.
  *
  * The string has a child, if the child is used as a regular expression,
  * which is the root of the regular expression.
  */
-class StrConstNode extends AstElementNode {
-  override StrConst element;
+class StringLiteralNode extends AstElementNode {
+  override StringLiteral element;
 }
 
 /**
@@ -599,7 +612,7 @@ private module PrettyPrinting {
       or
       result = "class " + a.(Class).getName()
       or
-      result = a.(StrConst).getText()
+      result = a.(StringLiteral).getText()
       or
       result = "yield " + a.(Yield).getValue()
       or

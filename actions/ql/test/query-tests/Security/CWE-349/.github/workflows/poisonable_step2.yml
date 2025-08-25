@@ -1,0 +1,27 @@
+name: Test
+
+on:
+  # Runs on pull requests targeting the default branch
+  pull_request_target:
+    branches: ["main"]
+
+jobs:
+  build:
+    # Limit permissions of the GITHUB_TOKEN for untrusted code
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+

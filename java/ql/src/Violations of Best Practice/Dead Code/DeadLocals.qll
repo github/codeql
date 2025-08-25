@@ -6,48 +6,38 @@ import java
 import semmle.code.java.dataflow.SSA
 private import semmle.code.java.frameworks.Assertions
 
-private predicate emptyDecl(SsaExplicitUpdate ssa) {
-  exists(LocalVariableDeclExpr decl |
-    decl = ssa.getDefiningExpr() and
-    not exists(decl.getInit()) and
-    not exists(EnhancedForStmt for | for.getVariable() = decl)
-  )
+private predicate emptyDecl(LocalVariableDeclExpr decl) {
+  not exists(decl.getInit()) and
+  not exists(EnhancedForStmt for | for.getVariable() = decl)
+}
+
+/** A dead variable update. */
+predicate deadLocal(VariableUpdate upd) {
+  upd.getDestVar() instanceof LocalScopeVariable and
+  not exists(SsaExplicitUpdate ssa | upd = ssa.getDefiningExpr()) and
+  not emptyDecl(upd) and
+  not readImplicitly(upd, _)
 }
 
 /**
- * A dead SSA variable. Excludes parameters, and phi nodes are never dead, so only includes `VariableUpdate`s.
+ * A dead variable update that is expected to be dead as indicated by an assertion.
  */
-predicate deadLocal(SsaExplicitUpdate ssa) {
-  ssa.getSourceVariable().getVariable() instanceof LocalScopeVariable and
-  not exists(ssa.getAUse()) and
-  not exists(SsaPhiNode phi | phi.getAPhiInput() = ssa) and
-  not exists(SsaImplicitInit init | init.captures(ssa)) and
-  not emptyDecl(ssa) and
-  not readImplicitly(ssa, _)
-}
+predicate expectedDead(VariableUpdate upd) { assertFail(upd.getBasicBlock(), _) }
 
 /**
- * A dead SSA variable that is expected to be dead as indicated by an assertion.
+ * A dead update that is overwritten by a live update.
  */
-predicate expectedDead(SsaExplicitUpdate ssa) {
-  deadLocal(ssa) and
-  assertFail(ssa.getBasicBlock(), _)
-}
-
-/**
- * A dead SSA variable that is overwritten by a live SSA definition.
- */
-predicate overwritten(SsaExplicitUpdate ssa) {
-  deadLocal(ssa) and
-  exists(SsaExplicitUpdate overwrite |
-    overwrite.getSourceVariable() = ssa.getSourceVariable() and
+predicate overwritten(VariableUpdate upd) {
+  deadLocal(upd) and
+  exists(VariableUpdate overwrite |
+    overwrite.getDestVar() = upd.getDestVar() and
     not deadLocal(overwrite) and
-    not overwrite.getDefiningExpr() instanceof LocalVariableDeclExpr and
+    not overwrite instanceof LocalVariableDeclExpr and
     exists(BasicBlock bb1, BasicBlock bb2, int i, int j |
-      bb1.getNode(i) = ssa.getCfgNode() and
-      bb2.getNode(j) = overwrite.getCfgNode()
+      bb1.getNode(i) = upd.getControlFlowNode() and
+      bb2.getNode(j) = overwrite.getControlFlowNode()
     |
-      bb1.getABBSuccessor+() = bb2
+      bb1.getASuccessor+() = bb2
       or
       bb1 = bb2 and i < j
     )
@@ -58,21 +48,21 @@ predicate overwritten(SsaExplicitUpdate ssa) {
  * A local variable with a read access.
  */
 predicate read(LocalScopeVariable v) {
-  exists(VarAccess va | va = v.getAnAccess() | va.isRValue())
+  exists(VarAccess va | va = v.getAnAccess() | va.isVarRead())
   or
   readImplicitly(_, v)
 }
 
-private predicate readImplicitly(SsaExplicitUpdate ssa, LocalScopeVariable v) {
-  v = ssa.getSourceVariable().getVariable() and
-  exists(TryStmt try | try.getAResourceVariable() = ssa.getDefiningExpr().getDestVar())
+predicate readImplicitly(VariableUpdate upd, LocalScopeVariable v) {
+  v = upd.getDestVar() and
+  exists(TryStmt try | try.getAResourceVariable() = upd.getDestVar())
 }
 
 /**
  * A local variable with a write access.
  */
 predicate assigned(LocalScopeVariable v) {
-  exists(VarAccess va | va = v.getAnAccess() | va.isLValue())
+  exists(VarAccess va | va = v.getAnAccess() | va.isVarWrite())
 }
 
 /**
@@ -91,9 +81,7 @@ predicate exprHasNoEffect(Expr e) {
       constructorHasEffect(c)
     )
     or
-    exists(MethodAccess ma, Method m |
-      bad = ma and m = ma.getMethod().getAPossibleImplementation()
-    |
+    exists(MethodCall ma, Method m | bad = ma and m = ma.getMethod().getAPossibleImplementation() |
       methodHasEffect(m) or not m.fromSource()
     )
   )
@@ -107,7 +95,7 @@ private predicate inInitializer(Expr e) {
 private predicate constructorHasEffect(Constructor c) {
   // Only assign fields of the class - do not call methods,
   // create new objects or assign any other variables.
-  exists(MethodAccess ma | ma.getEnclosingCallable() = c)
+  exists(MethodCall ma | ma.getEnclosingCallable() = c)
   or
   exists(ClassInstanceExpr cie | cie.getEnclosingCallable() = c)
   or
@@ -120,7 +108,7 @@ private predicate constructorHasEffect(Constructor c) {
 }
 
 private predicate methodHasEffect(Method m) {
-  exists(MethodAccess ma | ma.getEnclosingCallable() = m) or
+  exists(MethodCall ma | ma.getEnclosingCallable() = m) or
   exists(Assignment a | a.getEnclosingCallable() = m) or
   exists(ClassInstanceExpr cie | cie.getEnclosingCallable() = m) or
   exists(ThrowStmt throw | throw.getEnclosingCallable() = m) or

@@ -1,0 +1,60 @@
+name: Benchmark
+
+on:
+  issue_comment:
+    types: [created]
+
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  FORCE_COLOR: true
+
+jobs:
+  benchmark:
+    if: ${{ github.repository_owner == 'foo' && github.event.issue.pull_request && startsWith(github.event.comment.body, '!bench') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          ref: refs/pull/${{ github.event.issue.number }}/head
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build Packages
+        run: pnpm run build
+
+      - name: Get bench command
+        id: bench-command
+        env:
+          # protects from untrusted user input and command injection
+          COMMENT: ${{ github.event.comment.body }}
+        run: |
+          benchcmd=$(echo "$COMMENT" | grep '!bench' | awk -F ' ' '{print $2}')
+          echo "bench=$benchcmd" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: Run benchmark
+        id: benchmark-pr
+        run: |
+          result=$(pnpm run --silent benchmark ${{ steps.bench-command.outputs.bench }})
+          processed=$(node ./benchmark/ci-helper.js "$result")
+          echo "BENCH_RESULT<<BENCHEOF" >> $GITHUB_OUTPUT
+          echo "### PR Benchmark" >> $GITHUB_OUTPUT
+          echo "$processed" >> $GITHUB_OUTPUT
+          echo "BENCHEOF" >> $GITHUB_OUTPUT
+        shell: bash
+      - run: python2.7 foo.py
+      - run: pip install --no-deps .

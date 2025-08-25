@@ -20,11 +20,11 @@ class YieldMethod extends Method {
   }
 }
 
-class YieldMethodAccess extends MethodAccess {
-  YieldMethodAccess() { this.getMethod() instanceof YieldMethod }
+class YieldMethodCall extends MethodCall {
+  YieldMethodCall() { this.getMethod() instanceof YieldMethod }
 }
 
-from YieldMethodAccess yield
+from YieldMethodCall yield
 where yield.getCompilationUnit().fromSource()
 select yield,
   "Do not use Thread.yield(). It is non-portable and will most likely not have the desired effect."

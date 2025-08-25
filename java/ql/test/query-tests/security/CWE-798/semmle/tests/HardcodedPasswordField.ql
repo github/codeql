@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.HardcodedPasswordField
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module HardcodedPasswordFieldTest implements TestSig {
   string getARelevantTag() { result = "HardcodedPasswordField" }

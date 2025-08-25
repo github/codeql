@@ -4,7 +4,7 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 6.8
- * @precision high
+ * @precision low
  * @id swift/constant-password
  * @tags security
  *       external/cwe/cwe-259

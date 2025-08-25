@@ -1,0 +1,12 @@
+| A.java:2:10:2:15 | method | file://:0:0:0:0 | void |
+| extensions.kt:3:5:3:38 | someClassMethod | file://:0:0:0:0 | void |
+| extensions.kt:6:5:6:41 | anotherClassMethod | file://:0:0:0:0 | void |
+| extensions.kt:9:1:9:36 | someFun | file://:0:0:0:0 | void |
+| extensions.kt:10:1:10:42 | anotherFun | file://:0:0:0:0 | void |
+| extensions.kt:12:1:12:36 | bothFun | file://:0:0:0:0 | void |
+| extensions.kt:13:1:13:39 | bothFun | file://:0:0:0:0 | void |
+| extensions.kt:15:1:15:57 | bothFunDiffTypes | file://:0:0:0:0 | int |
+| extensions.kt:16:1:16:70 | bothFunDiffTypes | file://<external>/String.class:0:0:0:0 | String |
+| extensions.kt:18:1:18:51 | bar | file://<external>/String.class:0:0:0:0 | String |
+| extensions.kt:20:1:32:1 | foo | file://:0:0:0:0 | void |
+| extensions.kt:30:5:30:55 | baz | file://<external>/String.class:0:0:0:0 | String |

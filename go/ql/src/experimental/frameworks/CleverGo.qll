@@ -14,10 +14,10 @@ private module CleverGo {
   }
 
   /**
-   * Provides models of untrusted flow sources.
+   * Provides models of remote flow sources.
    */
-  private class UntrustedSources extends UntrustedFlowSource::Range {
-    UntrustedSources() {
+  private class RemoteSources extends RemoteFlowSource::Range {
+    RemoteSources() {
       // Methods on types of package: clevergo.tech/clevergo@v0.5.2
       exists(string receiverName, string methodName, Method mtd, FunctionOutput out |
         this = out.getExitNode(mtd.getACall()) and
@@ -169,25 +169,6 @@ private module CleverGo {
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
       input = inp and output = out
     }
-  }
-
-  /**
-   * Models HTTP redirects.
-   */
-  private class HttpRedirect extends Http::Redirect::Range, DataFlow::CallNode {
-    DataFlow::Node urlNode;
-
-    HttpRedirect() {
-      // HTTP redirect models for package: clevergo.tech/clevergo@v0.5.2
-      // Receiver type: Context
-      // signature: func (*Context) Redirect(code int, url string) error
-      this = any(Method m | m.hasQualifiedName(packagePath(), "Context", "Redirect")).getACall() and
-      urlNode = this.getArgument(1)
-    }
-
-    override DataFlow::Node getUrl() { result = urlNode }
-
-    override Http::ResponseWriter getResponseWriter() { result.getANode() = this.getReceiver() }
   }
 
   /**

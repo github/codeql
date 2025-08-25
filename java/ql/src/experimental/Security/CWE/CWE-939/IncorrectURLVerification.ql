@@ -46,8 +46,8 @@ class UriGetHostMethod extends Method {
 /**
  * The method access with incorrect string comparison
  */
-class HostVerificationMethodAccess extends MethodAccess {
-  HostVerificationMethodAccess() {
+class HostVerificationMethodCall extends MethodCall {
+  HostVerificationMethodCall() {
     (
       this.getMethod().hasName("endsWith") or
       this.getMethod().hasName("contains") or
@@ -69,11 +69,10 @@ class HostVerificationMethodAccess extends MethodAccess {
       or
       this.getArgument(0).(AddExpr).getLeftOperand().(StringLiteral).getValue().charAt(0) != "." //"."+var2, check string constant "." e.g. String domainName = "example.com";  Uri.parse(url).getHost().endsWith("www."+domainName)
       or
-      exists(MethodAccess ma, Method m, Field f |
+      exists(MethodCall ma, Method m, Field f |
         this.getArgument(0) = ma and
         ma.getMethod() = m and
-        m.hasName("getString") and
-        m.getDeclaringType().getQualifiedName() = "android.content.res.Resources" and
+        m.hasQualifiedName("android.content.res", "Resources", "getString") and
         ma.getArgument(0).(FieldRead).getField() = f and
         f.getDeclaringType() instanceof AndroidRString
       ) //Check resource properties in /res/values/strings.xml in Android mobile applications using res.getString(R.string.key)
@@ -89,6 +88,11 @@ class HostVerificationMethodAccess extends MethodAccess {
   }
 }
 
-from UriGetHostMethod um, MethodAccess uma, HostVerificationMethodAccess hma
-where hma.getQualifier() = uma and uma.getMethod() = um
-select hma, "Method has potentially $@.", hma.getArgument(0), "improper URL verification"
+deprecated query predicate problems(
+  HostVerificationMethodCall hma, string message1, Expr arg, string message2
+) {
+  exists(UriGetHostMethod um, MethodCall uma | hma.getQualifier() = uma and uma.getMethod() = um) and
+  message1 = "Method has potentially $@." and
+  arg = hma.getArgument(0) and
+  message2 = "improper URL verification"
+}

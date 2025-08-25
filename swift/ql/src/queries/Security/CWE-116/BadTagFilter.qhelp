@@ -28,7 +28,7 @@ likely to handle corner cases correctly than a custom implementation.
 The following example attempts to filters out all <code>&lt;script&gt;</code> tags.
 </p>
 
-<sample src="BadTagFilterBad.swift" />
+<sample src="BadTagFilterBad.swift" language="" />
 
 <p>
 The above sanitizer does not filter out all <code>&lt;script&gt;</code> tags.

@@ -23,7 +23,7 @@ private import codeql.ruby.DataFlow
  * MyClass.new("http://example.com")
  * ```
  */
-class HttpartyRequest extends Http::Client::Request::Range, DataFlow::CallNode {
+class HttpartyRequest extends Http::Client::Request::Range instanceof DataFlow::CallNode {
   API::Node requestNode;
 
   HttpartyRequest() {
@@ -33,7 +33,7 @@ class HttpartyRequest extends Http::Client::Request::Range, DataFlow::CallNode {
           .getReturn(["get", "head", "delete", "options", "post", "put", "patch"])
   }
 
-  override DataFlow::Node getAUrlPart() { result = this.getArgument(0) }
+  override DataFlow::Node getAUrlPart() { result = super.getArgument(0) }
 
   override DataFlow::Node getResponseBody() {
     // If HTTParty can recognise the response type, it will parse and return it
@@ -49,7 +49,7 @@ class HttpartyRequest extends Http::Client::Request::Range, DataFlow::CallNode {
 
   /** Gets the value that controls certificate validation, if any. */
   DataFlow::Node getCertificateValidationControllingValue() {
-    result = this.getKeywordArgumentIncludeHashArgument(["verify", "verify_peer"])
+    result = super.getKeywordArgumentIncludeHashArgument(["verify", "verify_peer"])
   }
 
   cached
@@ -69,6 +69,10 @@ private module HttpartyDisablesCertificateValidationConfig implements DataFlow::
 
   predicate isSink(DataFlow::Node sink) {
     sink = any(HttpartyRequest req).getCertificateValidationControllingValue()
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // Used for a library model
   }
 }
 

@@ -1,5 +1,6 @@
 var x = require('x');
 
 module.exports = {
-	data: function() { return { dataA: 42 } }
+	props: ['input'],
+	data: function() { return { dataA: 42 + this.input } }
 }

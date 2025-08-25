@@ -2,10 +2,10 @@
 | Controller.cs:11:62:11:66 | taint | ASP.NET MVC action method parameter |
 | Controller.cs:16:43:16:52 | sampleData | ASP.NET MVC action method parameter |
 | Controller.cs:16:62:16:66 | taint | ASP.NET MVC action method parameter |
-| RemoteFlowSource.cs:36:17:36:23 | access to parameter request | ASP.NET query string |
-| RemoteFlowSource.cs:37:17:37:23 | access to parameter textBox | ASP.NET user input |
-| RemoteFlowSource.cs:40:44:40:53 | sampleData | web service input |
-| RemoteFlowSource.cs:40:63:40:67 | taint | web service input |
-| RemoteFlowSource.cs:46:17:46:23 | access to parameter request | ASP.NET query string |
-| RemoteFlowSource.cs:51:17:51:23 | access to parameter request | ASP.NET query string |
-| RemoteFlowSource.cs:51:17:51:42 | access to property RawUrl | ASP.NET unvalidated request data |
+| RemoteFlowSource.cs:30:17:30:23 | access to parameter request | ASP.NET query string |
+| RemoteFlowSource.cs:31:17:31:23 | access to parameter textBox | ASP.NET user input |
+| RemoteFlowSource.cs:34:44:34:53 | sampleData | web service input |
+| RemoteFlowSource.cs:34:63:34:67 | taint | web service input |
+| RemoteFlowSource.cs:40:17:40:23 | access to parameter request | ASP.NET query string |
+| RemoteFlowSource.cs:45:17:45:23 | access to parameter request | ASP.NET query string |
+| RemoteFlowSource.cs:45:17:45:42 | access to property RawUrl | ASP.NET unvalidated request data |

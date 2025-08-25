@@ -1,0 +1,7 @@
+[package]
+name = "exe"
+version = "0.1.0"
+edition = "2021"  # replaced in test
+
+[dependencies]
+lib = { path = "../lib" }

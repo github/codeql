@@ -114,7 +114,9 @@ configs = [
     utils.LanguageConfig(
         "java", "Java", ".java", query_prefix + "java/ql/src/meta/frameworks/Coverage.ql"),
     utils.LanguageConfig(
-        "csharp", "C#", ".cs", query_prefix + "csharp/ql/src/meta/frameworks/Coverage.ql")
+        "csharp", "C#", ".cs", query_prefix + "csharp/ql/src/meta/frameworks/Coverage.ql"),
+    utils.LanguageConfig(
+        "go", "Go", ".go", query_prefix + "go/ql/src/meta/frameworks/Coverage.ql")
 ]
 
 # The names of input and output files. The placeholder {language} is replaced with the language name.

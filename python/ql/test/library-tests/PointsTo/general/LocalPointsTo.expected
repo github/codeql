@@ -95,10 +95,6 @@
 | 69 | ControlFlowNode for X | class X |
 | 70 | ControlFlowNode for Attribute | deco() |
 | 70 | ControlFlowNode for X | class X |
-| 72 | ControlFlowNode for ImportExpr | Module abc |
-| 72 | ControlFlowNode for ImportMember | Function abstractmethod |
-| 72 | ControlFlowNode for abstractmethod | Function abstractmethod |
-| 73 | ControlFlowNode for abstractmethod | Function abstractmethod |
 | 75 | ControlFlowNode for C | class C |
 | 75 | ControlFlowNode for C() | C() |
 | 75 | ControlFlowNode for type | builtin-class type |

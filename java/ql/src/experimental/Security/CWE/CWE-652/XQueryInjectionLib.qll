@@ -1,7 +1,9 @@
+deprecated module;
+
 import java
 
 /** A call to `XQConnection.prepareExpression`. */
-class XQueryParserCall extends MethodAccess {
+class XQueryParserCall extends MethodCall {
   XQueryParserCall() {
     exists(Method m |
       this.getMethod() = m and
@@ -20,7 +22,7 @@ class XQueryParserCall extends MethodAccess {
 }
 
 /** A call to `XQPreparedExpression.executeQuery`. */
-class XQueryPreparedExecuteCall extends MethodAccess {
+class XQueryPreparedExecuteCall extends MethodCall {
   XQueryPreparedExecuteCall() {
     exists(Method m |
       this.getMethod() = m and
@@ -36,7 +38,7 @@ class XQueryPreparedExecuteCall extends MethodAccess {
 }
 
 /** A call to `XQExpression.executeQuery`. */
-class XQueryExecuteCall extends MethodAccess {
+class XQueryExecuteCall extends MethodCall {
   XQueryExecuteCall() {
     exists(Method m |
       this.getMethod() = m and
@@ -52,7 +54,7 @@ class XQueryExecuteCall extends MethodAccess {
 }
 
 /** A call to `XQExpression.executeCommand`. */
-class XQueryExecuteCommandCall extends MethodAccess {
+class XQueryExecuteCommandCall extends MethodCall {
   XQueryExecuteCommandCall() {
     exists(Method m |
       this.getMethod() = m and

@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["openzeppelin/openzeppelin-contracts-upgradeable", "*", "input.layout", "code-injection", "generated"]
+     - ["openzeppelin/openzeppelin-contracts-upgradeable", "*", "input.out_layout", "code-injection", "generated"]
+     - ["openzeppelin/openzeppelin-contracts-upgradeable", "*", "input.ref_layout", "code-injection", "generated"]
+     - ["openzeppelin/openzeppelin-contracts-upgradeable", "*", "input.buildinfo", "code-injection", "generated"]
+     - ["openzeppelin/openzeppelin-contracts-upgradeable", "*", "input.report", "code-injection", "generated"]
+     - ["openzeppelin/openzeppelin-contracts-upgradeable", "*", "input.out_report", "code-injection", "generated"]
+     - ["openzeppelin/openzeppelin-contracts-upgradeable", "*", "input.ref_report", "code-injection", "generated"]

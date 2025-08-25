@@ -14,7 +14,7 @@ private predicate constantIntegerExpr(SemExpr e, int val) {
   // Copy of another constant
   exists(SemSsaExplicitUpdate v, SemExpr src |
     e = v.getAUse() and
-    src = v.getSourceExpr() and
+    src = v.getDefiningExpr() and
     constantIntegerExpr(src, val)
   )
   or

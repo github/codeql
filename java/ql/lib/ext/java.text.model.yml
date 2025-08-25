@@ -4,6 +4,9 @@ extensions:
       extensible: neutralModel
     data:
       # summary neutrals
+      - ["java.text", "Format", "format", "", "summary", "manual"]        # similar issue as `Object.toString`; depends on the object being passed as the argument
+      - ["java.text", "MessageFormat", "format", "", "summary", "manual"] # similar issue as `Object.toString`; depends on the object being passed as the argument
+
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
       - ["java.text", "DateFormat", "format", "(Date)", "summary", "manual"]                   # taint-numeric

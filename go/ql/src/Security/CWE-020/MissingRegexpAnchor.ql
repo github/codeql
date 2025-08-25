@@ -8,7 +8,7 @@
  * @id go/regex/missing-regexp-anchor
  * @tags correctness
  *       security
- *       external/cwe/cwe-20
+ *       external/cwe/cwe-020
  */
 
 import go
@@ -72,6 +72,10 @@ module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isSourceString(source, _) }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof RegexpPattern }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) { none() }
 }
 
 module Flow = DataFlow::Global<Config>;

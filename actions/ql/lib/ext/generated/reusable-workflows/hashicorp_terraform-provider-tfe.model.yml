@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["hashicorp/terraform-provider-tfe/.github/workflows/jira-issue-sync.yml", "*", "input.issue-extra-fields", "code-injection", "generated"]

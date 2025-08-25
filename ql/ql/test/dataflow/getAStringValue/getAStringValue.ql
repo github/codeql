@@ -1,6 +1,6 @@
 import ql
 import codeql_ql.dataflow.DataFlow
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module GetAStringValueTest implements TestSig {
   string getARelevantTag() { result = "getAStringValue" }

@@ -105,9 +105,23 @@ ConditionDecl.cpp:
 #    3|         getVariableAccess(): [VariableAccess] k
 #    3|             Type = [IntType] int
 #    3|             ValueCategory = prvalue(load)
+#    3|         getInitializingExpr(): [LTExpr] ... < ...
+#    3|             Type = [BoolType] bool
+#    3|             ValueCategory = prvalue
+#    3|           getLesserOperand(): [VariableAccess] j
+#    3|               Type = [IntType] int
+#    3|               ValueCategory = prvalue(load)
+#    3|           getGreaterOperand(): [Literal] 5
+#    3|               Type = [IntType] int
+#    3|               Value = [Literal] 5
+#    3|               ValueCategory = prvalue
 #    3|         getVariableAccess().getFullyConverted(): [CStyleCast] (bool)...
 #    3|             Conversion = [BoolConversion] conversion to bool
 #    3|             Type = [BoolType] bool
+#    3|             ValueCategory = prvalue
+#    3|         getInitializingExpr().getFullyConverted(): [CStyleCast] (int)...
+#    3|             Conversion = [IntegralConversion] integral conversion
+#    3|             Type = [IntType] int
 #    3|             ValueCategory = prvalue
 #    3|       getStmt(): [BlockStmt] { ... }
 #    5|     getStmt(2): [ReturnStmt] return ...
@@ -310,7 +324,7 @@ Conversion3.cpp:
 #    2|               getExpr(): [CStyleCast] (int)...
 #    2|                   Conversion = [IntegralConversion] integral conversion
 #    2|                   Type = [IntType] int
-#    2|                   Value = [CStyleCast] 1
+#    2|                   Value = [CStyleCast] 5
 #    2|                   ValueCategory = prvalue
 #    2|           getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 #    2|               Type = [IntType] int
@@ -412,11 +426,14 @@ DestructorCall.cpp:
 #   12|           getQualifier(): [VariableAccess] c
 #   12|               Type = [PointerType] C *
 #   12|               ValueCategory = prvalue(load)
+#   12|         getExprWithReuse(): [ReuseExpr] reuse of c
+#   12|             Type = [PointerType] C *
+#   12|             ValueCategory = prvalue
 #   13|     getStmt(1): [ExprStmt] ExprStmt
 #   13|       getExpr(): [DeleteExpr] delete
 #   13|           Type = [VoidType] void
 #   13|           ValueCategory = prvalue
-#   13|         getExpr(): [VariableAccess] d
+#   13|         getExprWithReuse(): [VariableAccess] d
 #   13|             Type = [PointerType] D *
 #   13|             ValueCategory = prvalue(load)
 #   14|     getStmt(2): [ReturnStmt] return ...
@@ -763,7 +780,7 @@ StaticMemberAccess.cpp:
 #    7|             ValueCategory = lvalue
 #    7|         getRValue(): [VariableAccess] i
 #    7|             Type = [IntType] int
-#    7|             ValueCategory = prvalue
+#    7|             ValueCategory = prvalue(load)
 #    7|           getQualifier(): [VariableAccess] xref
 #    7|               Type = [LValueReferenceType] X &
 #    7|               ValueCategory = prvalue(load)
@@ -853,6 +870,8 @@ Throw.cpp:
 #    8|               Type = [BoolType] bool
 #    8|               ValueCategory = prvalue
 #   12|       getChild(1): [Handler] <handler>
+#   12|         getParameter(): [Parameter] e
+#   12|             Type = [PointerType] E *
 #   12|         getBlock(): [CatchBlock] { ... }
 #   13|           getStmt(0): [ExprStmt] ExprStmt
 #   13|             getExpr(): [ReThrowExpr] re-throw exception 
@@ -896,7 +915,7 @@ VacuousDestructorCall.cpp:
 #    2| [TemplateFunction,TopLevelFunction] void CallDestructor<T>(T, T*)
 #    2|   <params>: 
 #    2|     getParameter(0): [Parameter] x
-#    2|         Type = [TemplateParameter] T
+#    2|         Type = [TypeTemplateParameter] T
 #    2|     getParameter(1): [Parameter] y
 #    2|         Type = [PointerType] T *
 #    2|   getEntryPoint(): [BlockStmt] { ... }
@@ -908,7 +927,7 @@ VacuousDestructorCall.cpp:
 #    3|             Type = [UnknownType] unknown
 #    3|             ValueCategory = prvalue
 #    3|           getChild(-1): [VariableAccess] x
-#    3|               Type = [TemplateParameter] T
+#    3|               Type = [TypeTemplateParameter] T
 #    3|               ValueCategory = lvalue
 #    4|     getStmt(1): [ExprStmt] ExprStmt
 #    4|       getExpr(): [ExprCall] call to expression
@@ -1298,7 +1317,7 @@ union_etc.cpp:
 #    6|       getExpr(): [AssignExpr] ... = ...
 #    6|           Type = [IntType] int
 #    6|           ValueCategory = lvalue
-#    6|         getLValue(): [PointerFieldAccess] x
+#    6|         getLValue(): [ImplicitThisFieldAccess,PointerFieldAccess] x
 #    6|             Type = [IntType] int
 #    6|             ValueCategory = lvalue
 #    6|           getQualifier(): [ThisExpr] this
@@ -1394,7 +1413,7 @@ union_etc.cpp:
 #   26|                 ValueCategory = lvalue
 #   26|         getRValue(): [AssignExpr] ... = ...
 #   26|             Type = [IntType] int
-#   26|             ValueCategory = prvalue
+#   26|             ValueCategory = prvalue(load)
 #   26|           getLValue(): [ValueFieldAccess] e
 #   26|               Type = [IntType] int
 #   26|               ValueCategory = lvalue
@@ -1406,7 +1425,7 @@ union_etc.cpp:
 #   26|                   ValueCategory = lvalue
 #   26|           getRValue(): [AssignExpr] ... = ...
 #   26|               Type = [IntType] int
-#   26|               ValueCategory = prvalue
+#   26|               ValueCategory = prvalue(load)
 #   26|             getLValue(): [ValueFieldAccess] i
 #   26|                 Type = [IntType] int
 #   26|                 ValueCategory = lvalue
@@ -1488,7 +1507,7 @@ union_etc.cpp:
 #   33|       getExpr(): [AssignExpr] ... = ...
 #   33|           Type = [IntType] int
 #   33|           ValueCategory = lvalue
-#   33|         getLValue(): [PointerFieldAccess] q
+#   33|         getLValue(): [ImplicitThisFieldAccess,PointerFieldAccess] q
 #   33|             Type = [IntType] int
 #   33|             ValueCategory = lvalue
 #   33|           getQualifier(): [ThisExpr] this

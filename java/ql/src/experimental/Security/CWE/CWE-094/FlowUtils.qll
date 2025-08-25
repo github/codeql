@@ -1,3 +1,5 @@
+deprecated module;
+
 import java
 import semmle.code.java.dataflow.FlowSources
 
@@ -6,7 +8,7 @@ import semmle.code.java.dataflow.FlowSources
  * a bean by calling one of its getters.
  */
 predicate hasGetterFlow(DataFlow::Node fromNode, DataFlow::Node toNode) {
-  exists(MethodAccess ma, Method m | ma.getMethod() = m |
+  exists(MethodCall ma, Method m | ma.getMethod() = m |
     m instanceof GetterMethod and
     ma.getQualifier() = fromNode.asExpr() and
     ma = toNode.asExpr()

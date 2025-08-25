@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["huggingface/doc-builder/.github/workflows/upload_pr_documentation.yml", "*", "input.package_name", "code-injection", "generated"]
+     - ["huggingface/doc-builder/.github/workflows/upload_pr_documentation.yml", "*", "input.repo_owner", "code-injection", "generated"]
+     - ["huggingface/doc-builder/.github/workflows/upload_pr_documentation.yml", "*", "input.hub_base_path", "code-injection", "generated"]
+     - ["huggingface/doc-builder/.github/workflows/build_pr_documentation.yml", "*", "input.pr_number", "code-injection", "generated"]
+     - ["huggingface/doc-builder/.github/workflows/build_pr_documentation.yml", "*", "input.commit_sha", "code-injection", "generated"]
+     - ["huggingface/doc-builder/.github/workflows/build_pr_documentation.yml", "*", "input.languages", "code-injection", "generated"]
+     - ["huggingface/doc-builder/.github/workflows/build_pr_documentation.yml", "*", "input.version_tag_suffix", "code-injection", "generated"]
+     - ["huggingface/doc-builder/.github/workflows/build_pr_documentation.yml", "*", "input.additional_args", "code-injection", "generated"]
+     - ["huggingface/doc-builder/.github/workflows/build_pr_documentation.yml", "*", "input.repo_owner", "code-injection", "generated"]

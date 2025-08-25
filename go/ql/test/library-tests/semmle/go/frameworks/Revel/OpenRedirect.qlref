@@ -1,1 +1,2 @@
-Security/CWE-601/OpenUrlRedirect.ql
+query: Security/CWE-601/OpenUrlRedirect.ql
+postprocess: utils/test/PrettyPrintModels.ql

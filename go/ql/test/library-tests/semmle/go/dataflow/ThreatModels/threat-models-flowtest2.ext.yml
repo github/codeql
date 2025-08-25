@@ -1,0 +1,16 @@
+extensions:
+
+  - addsTo:
+      pack: codeql/threat-models
+      extensible: threatModelConfiguration
+    data:
+      - ["database", true, 0]
+
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["github.com/nonexistent/sources", "", False, "ExecuteQuery", "", "", "ReturnValue", "database", "manual"]
+      - ["github.com/nonexistent/sources", "", False, "ReadEnvironment", "", "", "ReturnValue", "environment", "manual"]
+      - ["github.com/nonexistent/sources", "", False, "GetCustom", "", "", "ReturnValue", "custom", "manual"]
+      - ["github.com/nonexistent/sources", "", False, "GetCliArg", "", "", "ReturnValue", "commandargs", "manual"]

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["github.com/hashicorp/go-envparse", "", False, "Parse", "", "", "ReturnValue", "environment", "manual"]

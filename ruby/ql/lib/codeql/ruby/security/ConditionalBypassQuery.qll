@@ -11,29 +11,18 @@ private import codeql.ruby.TaintTracking
 private import codeql.ruby.security.SensitiveActions
 import ConditionalBypassCustomizations::ConditionalBypass
 
-/**
- * A taint tracking configuration for bypass of sensitive action guards.
- * DEPRECATED: Use `ConditionalBypassFlow` instead
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "ConditionalBypass" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node) or
-    node instanceof Sanitizer
-  }
-}
-
 private module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof Source }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getLocation() or result = sink.(Sink).getAction().getLocation()
+  }
 }
 
 /**

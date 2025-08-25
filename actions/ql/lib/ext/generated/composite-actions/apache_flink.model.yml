@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["apache/flink", "*", "input.maven-parameters", "code-injection", "generated"]
+     - ["apache/flink", "*", "input.env", "code-injection", "generated"]
+     - ["apache/flink", "*", "input.target_directory", "code-injection", "generated"]
+     - ["apache/flink", "*", "input.source_directory", "code-injection", "generated"]
+     - ["apache/flink", "*", "input.jdk_version", "code-injection", "generated"]

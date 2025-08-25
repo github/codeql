@@ -7,7 +7,9 @@
  * @problem.severity error
  * @precision very-high
  * @id java/contradictory-type-checks
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  *       logic
  */
 
@@ -40,7 +42,9 @@ predicate contradictoryTypeCheck(Expr e, Variable v, RefType t, RefType sup, Exp
     requiresInstanceOf(e, ssa.getAUse(), t) and
     sup = t.getAnAncestor() and
     instanceOfCheck(cond, ssa.getAUse(), sup) and
-    cond.(Guard).controls(e.getBasicBlock(), false)
+    cond.(Guard).controls(e.getBasicBlock(), false) and
+    not t instanceof ErrorType and
+    not sup instanceof ErrorType
   )
 }
 

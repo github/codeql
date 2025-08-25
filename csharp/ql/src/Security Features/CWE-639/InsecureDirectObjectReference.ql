@@ -8,7 +8,7 @@
  * @precision medium
  * @id cs/web/insecure-direct-object-reference
  * @tags security
- *       external/cwe-639
+ *       external/cwe/cwe-639
  */
 
 import csharp

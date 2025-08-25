@@ -637,8 +637,10 @@ private predicate straightLineSparse(Node scope, int i, Node ni, Spec spec) {
     any(RangeBasedForStmt for |
       i = -1 and ni = for and spec.isAt()
       or
+      i = 0 and ni = for.getInitialization() and spec.isAround()
+      or
       exists(DeclStmt s | s.getADeclaration() = for.getRangeVariable() |
-        i = 0 and ni = s and spec.isAround()
+        i = 1 and ni = s and spec.isAround()
       )
       or
       exists(DeclStmt s |
@@ -649,22 +651,22 @@ private predicate straightLineSparse(Node scope, int i, Node ni, Spec spec) {
         // DeclStmt in that case.
         exists(s.getADeclaration())
       |
-        i = 1 and ni = s and spec.isAround()
+        i = 2 and ni = s and spec.isAround()
       )
       or
-      i = 2 and ni = for.getCondition() and spec.isBefore()
+      i = 3 and ni = for.getCondition() and spec.isBefore()
       or
-      i = 3 and /* BARRIER */ ni = for and spec.isBarrier()
+      i = 4 and /* BARRIER */ ni = for and spec.isBarrier()
       or
       exists(DeclStmt declStmt | declStmt.getADeclaration() = for.getVariable() |
-        i = 4 and ni = declStmt and spec.isAfter()
+        i = 5 and ni = declStmt and spec.isAfter()
       )
       or
-      i = 5 and ni = for.getStmt() and spec.isAround()
+      i = 6 and ni = for.getStmt() and spec.isAround()
       or
-      i = 6 and ni = for.getUpdate() and spec.isAround()
+      i = 7 and ni = for.getUpdate() and spec.isAround()
       or
-      i = 7 and ni = for.getCondition() and spec.isBefore()
+      i = 8 and ni = for.getCondition() and spec.isBefore()
     )
   or
   scope =
@@ -871,6 +873,25 @@ private predicate subEdge(Pos p1, Node n1, Node n2, Pos p2) {
     p2.nodeBeforeDestructors(n2, s)
     or
     p1.nodeAfterDestructors(n1, s) and
+    p2.nodeAfter(n2, s)
+  )
+  or
+  // NotConstevalIfStmt -> { then, else } ->
+  exists(ConstevalIfStmt s |
+    p1.nodeAt(n1, s) and
+    p2.nodeBefore(n2, s.getThen())
+    or
+    p1.nodeAt(n1, s) and
+    p2.nodeBefore(n2, s.getElse())
+    or
+    p1.nodeAt(n1, s) and
+    not exists(s.getElse()) and
+    p2.nodeAfter(n2, s)
+    or
+    p1.nodeAfter(n1, s.getThen()) and
+    p2.nodeAfter(n2, s)
+    or
+    p1.nodeAfter(n1, s.getElse()) and
     p2.nodeAfter(n2, s)
   )
   or

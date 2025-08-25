@@ -1,37 +1,107 @@
-| arguments.cs:27:9:27:16 | call to method f1 | arguments.cs:27:15:27:15 | 2 | y |
-| arguments.cs:28:9:28:27 | call to method f2 | arguments.cs:28:12:28:12 | access to local variable x | x |
-| arguments.cs:28:9:28:27 | call to method f2 | arguments.cs:28:19:28:19 | access to local variable x | y |
-| arguments.cs:28:9:28:27 | call to method f2 | arguments.cs:28:26:28:26 | access to local variable x | z |
-| arguments.cs:29:9:29:42 | object creation of type ArgumentsTest | arguments.cs:29:27:29:27 | access to local variable x | x |
-| arguments.cs:29:9:29:42 | object creation of type ArgumentsTest | arguments.cs:29:34:29:34 | access to local variable x | y |
-| arguments.cs:29:9:29:42 | object creation of type ArgumentsTest | arguments.cs:29:41:29:41 | access to local variable x | z |
-| arguments.cs:30:9:30:38 | object creation of type ArgumentsTest | arguments.cs:30:30:30:31 | 10 | y |
-| arguments.cs:30:9:30:38 | object creation of type ArgumentsTest | arguments.cs:30:37:30:37 | 5 | x |
-| arguments.cs:35:9:35:19 | call to method f3 | arguments.cs:35:12:35:12 | 0 | o |
-| arguments.cs:36:9:36:33 | call to method f3 | arguments.cs:36:12:36:12 | 0 | o |
-| arguments.cs:36:9:36:33 | call to method f3 | arguments.cs:36:15:36:32 | array creation of type Int32[] | args |
-| arguments.cs:37:9:37:25 | call to method f3 | arguments.cs:37:24:37:24 | 0 | o |
-| arguments.cs:38:9:38:19 | call to method f3 | arguments.cs:38:12:38:12 | 0 | o |
-| arguments.cs:38:9:38:19 | call to method f3 | arguments.cs:38:15:38:18 | access to parameter args | args |
-| arguments.cs:39:9:39:28 | call to method f3 | arguments.cs:39:18:39:21 | access to parameter args | args |
-| arguments.cs:39:9:39:28 | call to method f3 | arguments.cs:39:27:39:27 | 0 | o |
-| arguments.cs:40:9:40:42 | call to method f3 | arguments.cs:40:18:40:35 | array creation of type Int32[] | args |
-| arguments.cs:40:9:40:42 | call to method f3 | arguments.cs:40:41:40:41 | 0 | o |
-| arguments.cs:54:9:54:12 | access to property Prop | arguments.cs:54:16:54:16 | 0 | value |
-| arguments.cs:55:9:55:12 | access to property Prop | arguments.cs:55:16:55:25 | access to indexer | value |
-| arguments.cs:55:16:55:25 | access to indexer | arguments.cs:55:21:55:21 | 1 | a |
-| arguments.cs:55:16:55:25 | access to indexer | arguments.cs:55:24:55:24 | 2 | b |
-| arguments.cs:56:10:56:13 | access to property Prop | arguments.cs:56:31:56:31 | 5 | value |
-| arguments.cs:56:16:56:25 | access to indexer | arguments.cs:56:21:56:21 | 3 | a |
-| arguments.cs:56:16:56:25 | access to indexer | arguments.cs:56:24:56:24 | 4 | b |
-| arguments.cs:56:16:56:25 | access to indexer | arguments.cs:56:34:56:34 | 6 | value |
-| arguments.cs:58:9:58:12 | access to property Prop | arguments.cs:58:9:58:17 | ... + ... | value |
-| arguments.cs:59:9:59:18 | access to indexer | arguments.cs:59:14:59:14 | 8 | a |
-| arguments.cs:59:9:59:18 | access to indexer | arguments.cs:59:17:59:17 | 9 | b |
-| arguments.cs:60:9:60:20 | access to indexer | arguments.cs:60:9:60:26 | ... + ... | value |
-| arguments.cs:60:9:60:20 | access to indexer | arguments.cs:60:14:60:15 | 10 | a |
-| arguments.cs:60:9:60:20 | access to indexer | arguments.cs:60:14:60:15 | 10 | a |
-| arguments.cs:60:9:60:20 | access to indexer | arguments.cs:60:18:60:19 | 11 | b |
-| arguments.cs:60:9:60:20 | access to indexer | arguments.cs:60:18:60:19 | 11 | b |
-| arguments.cs:62:16:62:27 | access to indexer | arguments.cs:62:21:62:22 | 15 | a |
-| arguments.cs:62:16:62:27 | access to indexer | arguments.cs:62:25:62:26 | 16 | b |
+| arguments.cs:28:9:28:16 | call to method f1 | arguments.cs:28:15:28:15 | 2 | y |
+| arguments.cs:29:9:29:27 | call to method f2 | arguments.cs:29:12:29:12 | access to local variable x | x |
+| arguments.cs:29:9:29:27 | call to method f2 | arguments.cs:29:19:29:19 | access to local variable x | y |
+| arguments.cs:29:9:29:27 | call to method f2 | arguments.cs:29:26:29:26 | access to local variable x | z |
+| arguments.cs:30:9:30:42 | object creation of type ArgumentsTest | arguments.cs:30:27:30:27 | access to local variable x | x |
+| arguments.cs:30:9:30:42 | object creation of type ArgumentsTest | arguments.cs:30:34:30:34 | access to local variable x | y |
+| arguments.cs:30:9:30:42 | object creation of type ArgumentsTest | arguments.cs:30:41:30:41 | access to local variable x | z |
+| arguments.cs:31:9:31:38 | object creation of type ArgumentsTest | arguments.cs:31:30:31:31 | 10 | y |
+| arguments.cs:31:9:31:38 | object creation of type ArgumentsTest | arguments.cs:31:37:31:37 | 5 | x |
+| arguments.cs:36:9:36:19 | call to method f3 | arguments.cs:36:12:36:12 | 0 | o |
+| arguments.cs:36:9:36:19 | call to method f3 | arguments.cs:36:15:36:15 | 1 | args |
+| arguments.cs:36:9:36:19 | call to method f3 | arguments.cs:36:18:36:18 | 2 | args |
+| arguments.cs:37:9:37:33 | call to method f3 | arguments.cs:37:12:37:12 | 0 | o |
+| arguments.cs:37:9:37:33 | call to method f3 | arguments.cs:37:15:37:32 | array creation of type Int32[] | args |
+| arguments.cs:38:9:38:25 | call to method f3 | arguments.cs:38:18:38:18 | 1 | args |
+| arguments.cs:38:9:38:25 | call to method f3 | arguments.cs:38:24:38:24 | 0 | o |
+| arguments.cs:39:9:39:19 | call to method f3 | arguments.cs:39:12:39:12 | 0 | o |
+| arguments.cs:39:9:39:19 | call to method f3 | arguments.cs:39:15:39:18 | access to parameter args | args |
+| arguments.cs:40:9:40:28 | call to method f3 | arguments.cs:40:18:40:21 | access to parameter args | args |
+| arguments.cs:40:9:40:28 | call to method f3 | arguments.cs:40:27:40:27 | 0 | o |
+| arguments.cs:41:9:41:42 | call to method f3 | arguments.cs:41:18:41:35 | array creation of type Int32[] | args |
+| arguments.cs:41:9:41:42 | call to method f3 | arguments.cs:41:41:41:41 | 0 | o |
+| arguments.cs:43:9:43:21 | call to method f3 | arguments.cs:43:12:43:12 | 0 | o |
+| arguments.cs:43:9:43:21 | call to method f3 | arguments.cs:43:15:43:16 | (...) ... | args |
+| arguments.cs:43:9:43:21 | call to method f3 | arguments.cs:43:19:43:20 | (...) ... | args |
+| arguments.cs:48:9:48:39 | call to method f4 | arguments.cs:48:12:48:32 | array creation of type Object[] | args |
+| arguments.cs:48:9:48:39 | call to method f4 | arguments.cs:48:35:48:38 | null | args |
+| arguments.cs:57:9:57:12 | access to property Prop | arguments.cs:57:16:57:16 | 0 | value |
+| arguments.cs:58:9:58:12 | access to property Prop | arguments.cs:58:16:58:25 | access to indexer | value |
+| arguments.cs:58:16:58:25 | access to indexer | arguments.cs:58:21:58:21 | 1 | a |
+| arguments.cs:58:16:58:25 | access to indexer | arguments.cs:58:24:58:24 | 2 | b |
+| arguments.cs:59:10:59:13 | access to property Prop | arguments.cs:59:31:59:31 | 5 | value |
+| arguments.cs:59:16:59:25 | access to indexer | arguments.cs:59:21:59:21 | 3 | a |
+| arguments.cs:59:16:59:25 | access to indexer | arguments.cs:59:24:59:24 | 4 | b |
+| arguments.cs:59:16:59:25 | access to indexer | arguments.cs:59:34:59:34 | 6 | value |
+| arguments.cs:61:9:61:12 | access to property Prop | arguments.cs:61:9:61:17 | ... + ... | value |
+| arguments.cs:62:9:62:18 | access to indexer | arguments.cs:62:14:62:14 | 8 | a |
+| arguments.cs:62:9:62:18 | access to indexer | arguments.cs:62:17:62:17 | 9 | b |
+| arguments.cs:63:9:63:20 | access to indexer | arguments.cs:63:9:63:26 | ... + ... | value |
+| arguments.cs:63:9:63:20 | access to indexer | arguments.cs:63:14:63:15 | 10 | a |
+| arguments.cs:63:9:63:20 | access to indexer | arguments.cs:63:14:63:15 | 10 | a |
+| arguments.cs:63:9:63:20 | access to indexer | arguments.cs:63:18:63:19 | 11 | b |
+| arguments.cs:63:9:63:20 | access to indexer | arguments.cs:63:18:63:19 | 11 | b |
+| arguments.cs:65:16:65:27 | access to indexer | arguments.cs:65:21:65:22 | 15 | a |
+| arguments.cs:65:16:65:27 | access to indexer | arguments.cs:65:25:65:26 | 16 | b |
+| arguments.cs:76:9:76:31 | call to method f8`1 | arguments.cs:76:12:76:12 | 0 | o |
+| arguments.cs:76:9:76:31 | call to method f8`1 | arguments.cs:76:15:76:21 | access to array element | args |
+| arguments.cs:76:9:76:31 | call to method f8`1 | arguments.cs:76:24:76:30 | access to array element | args |
+| arguments.cs:77:9:77:43 | call to method f8`1 | arguments.cs:77:12:77:12 | 0 | o |
+| arguments.cs:77:9:77:43 | call to method f8`1 | arguments.cs:77:15:77:42 | array creation of type T[] | args |
+| arguments.cs:78:9:78:19 | call to method f8`1 | arguments.cs:78:12:78:12 | 0 | o |
+| arguments.cs:78:9:78:19 | call to method f8`1 | arguments.cs:78:15:78:18 | access to parameter args | args |
+| arguments.cs:79:9:79:28 | call to method f8`1 | arguments.cs:79:18:79:21 | access to parameter args | args |
+| arguments.cs:79:9:79:28 | call to method f8`1 | arguments.cs:79:27:79:27 | 0 | o |
+| arguments.cs:81:9:81:31 | call to method f8<Double> | arguments.cs:81:20:81:20 | 0 | o |
+| arguments.cs:81:9:81:31 | call to method f8<Double> | arguments.cs:81:23:81:25 | 1.1 | args |
+| arguments.cs:81:9:81:31 | call to method f8<Double> | arguments.cs:81:28:81:30 | 2.2 | args |
+| arguments.cs:82:9:82:48 | call to method f8<Double> | arguments.cs:82:20:82:20 | 0 | o |
+| arguments.cs:82:9:82:48 | call to method f8<Double> | arguments.cs:82:23:82:47 | array creation of type Double[] | args |
+| arguments.cs:84:9:84:27 | call to method f8<Double> | arguments.cs:84:20:84:20 | 0 | o |
+| arguments.cs:84:9:84:27 | call to method f8<Double> | arguments.cs:84:23:84:23 | (...) ... | args |
+| arguments.cs:84:9:84:27 | call to method f8<Double> | arguments.cs:84:26:84:26 | (...) ... | args |
+| arguments.cs:85:9:85:44 | call to method f8<Double> | arguments.cs:85:20:85:20 | 0 | o |
+| arguments.cs:85:9:85:44 | call to method f8<Double> | arguments.cs:85:23:85:43 | array creation of type Double[] | args |
+| arguments.cs:86:9:86:44 | call to method f8<Double> | arguments.cs:86:20:86:20 | 0 | o |
+| arguments.cs:86:9:86:44 | call to method f8<Double> | arguments.cs:86:23:86:43 | array creation of type Double[] | args |
+| arguments.cs:91:9:91:31 | call to method f9`1 | arguments.cs:91:12:91:12 | 0 | o |
+| arguments.cs:91:9:91:31 | call to method f9`1 | arguments.cs:91:15:91:21 | access to indexer | args |
+| arguments.cs:91:9:91:31 | call to method f9`1 | arguments.cs:91:24:91:30 | access to indexer | args |
+| arguments.cs:91:15:91:21 | access to indexer | arguments.cs:91:20:91:20 | 0 | index |
+| arguments.cs:91:24:91:30 | access to indexer | arguments.cs:91:29:91:29 | 1 | index |
+| arguments.cs:92:9:92:33 | call to method f9`1 | arguments.cs:92:12:92:12 | 0 | o |
+| arguments.cs:92:9:92:33 | call to method f9`1 | arguments.cs:92:15:92:32 | [...] | args |
+| arguments.cs:92:16:92:22 | access to indexer | arguments.cs:92:21:92:21 | 0 | index |
+| arguments.cs:92:25:92:31 | access to indexer | arguments.cs:92:30:92:30 | 1 | index |
+| arguments.cs:93:9:93:19 | call to method f9`1 | arguments.cs:93:12:93:12 | 0 | o |
+| arguments.cs:93:9:93:19 | call to method f9`1 | arguments.cs:93:15:93:18 | access to parameter args | args |
+| arguments.cs:94:9:94:28 | call to method f9`1 | arguments.cs:94:18:94:21 | access to parameter args | args |
+| arguments.cs:94:9:94:28 | call to method f9`1 | arguments.cs:94:27:94:27 | 0 | o |
+| arguments.cs:96:9:96:31 | call to method f9<Double> | arguments.cs:96:20:96:20 | 0 | o |
+| arguments.cs:96:9:96:31 | call to method f9<Double> | arguments.cs:96:23:96:25 | 1.1 | args |
+| arguments.cs:96:9:96:31 | call to method f9<Double> | arguments.cs:96:28:96:30 | 2.2 | args |
+| arguments.cs:97:9:97:33 | call to method f9<Double> | arguments.cs:97:20:97:20 | 0 | o |
+| arguments.cs:97:9:97:33 | call to method f9<Double> | arguments.cs:97:23:97:32 | [...] | args |
+| arguments.cs:99:9:99:27 | call to method f9<Double> | arguments.cs:99:20:99:20 | 0 | o |
+| arguments.cs:99:9:99:27 | call to method f9<Double> | arguments.cs:99:23:99:23 | (...) ... | args |
+| arguments.cs:99:9:99:27 | call to method f9<Double> | arguments.cs:99:26:99:26 | (...) ... | args |
+| arguments.cs:100:9:100:48 | call to method f9<Double> | arguments.cs:100:20:100:20 | 0 | o |
+| arguments.cs:100:9:100:48 | call to method f9<Double> | arguments.cs:100:23:100:47 | object creation of type List<Double> | args |
+| arguments.cs:100:42:100:42 | call to method Add | arguments.cs:100:42:100:42 | (...) ... | item |
+| arguments.cs:100:45:100:45 | call to method Add | arguments.cs:100:45:100:45 | (...) ... | item |
+| arguments.cs:105:9:105:20 | call to method f10 | arguments.cs:105:13:105:13 | 0 | o |
+| arguments.cs:105:9:105:20 | call to method f10 | arguments.cs:105:16:105:16 | 1 | args |
+| arguments.cs:105:9:105:20 | call to method f10 | arguments.cs:105:19:105:19 | 2 | args |
+| arguments.cs:106:9:106:22 | call to method f10 | arguments.cs:106:13:106:13 | 0 | o |
+| arguments.cs:106:9:106:22 | call to method f10 | arguments.cs:106:16:106:21 | [...] | args |
+| arguments.cs:107:9:107:26 | call to method f10 | arguments.cs:107:19:107:19 | 1 | args |
+| arguments.cs:107:9:107:26 | call to method f10 | arguments.cs:107:25:107:25 | 0 | o |
+| arguments.cs:108:9:108:20 | call to method f10 | arguments.cs:108:13:108:13 | 0 | o |
+| arguments.cs:108:9:108:20 | call to method f10 | arguments.cs:108:16:108:19 | access to parameter args | args |
+| arguments.cs:109:9:109:29 | call to method f10 | arguments.cs:109:19:109:22 | access to parameter args | args |
+| arguments.cs:109:9:109:29 | call to method f10 | arguments.cs:109:28:109:28 | 0 | o |
+| arguments.cs:110:9:110:31 | call to method f10 | arguments.cs:110:19:110:24 | [...] | args |
+| arguments.cs:110:9:110:31 | call to method f10 | arguments.cs:110:30:110:30 | 0 | o |
+| arguments.cs:112:9:112:22 | call to method f10 | arguments.cs:112:13:112:13 | 0 | o |
+| arguments.cs:112:9:112:22 | call to method f10 | arguments.cs:112:16:112:17 | (...) ... | args |
+| arguments.cs:112:9:112:22 | call to method f10 | arguments.cs:112:20:112:21 | (...) ... | args |

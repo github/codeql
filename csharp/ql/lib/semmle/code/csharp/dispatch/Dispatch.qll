@@ -6,6 +6,7 @@
  */
 
 import csharp
+private import semmle.code.csharp.commons.Collections
 private import RuntimeCallable
 
 /** A call. */
@@ -52,7 +53,21 @@ class DispatchCall extends Internal::TDispatchCall {
   }
 
   /** Holds if this call uses reflection. */
-  predicate isReflection() { this instanceof Internal::TDispatchReflectionCall }
+  predicate isReflection() {
+    this instanceof Internal::TDispatchReflectionCall
+    or
+    this instanceof Internal::TDispatchDynamicElementAccess
+    or
+    this instanceof Internal::TDispatchDynamicMemberAccess
+    or
+    this instanceof Internal::TDispatchDynamicMethodCall
+    or
+    this instanceof Internal::TDispatchDynamicOperatorCall
+    or
+    this instanceof Internal::TDispatchDynamicEventAccess
+    or
+    this instanceof Internal::TDispatchDynamicObjectCreation
+  }
 }
 
 /** Internal implementation details. */
@@ -314,12 +329,8 @@ private module Internal {
       1 < strictcount(this.getADynamicTarget().getUnboundDeclaration()) and
       c = this.getCall().getEnclosingCallable().getUnboundDeclaration() and
       (
-        exists(
-          BaseSsa::Definition def, AssignableDefinitions::ImplicitParameterDefinition pdef,
-          Parameter p
-        |
-          pdef = def.getDefinition() and
-          p = pdef.getTarget() and
+        exists(BaseSsa::Definition def, Parameter p |
+          def.isImplicitEntryDefinition(p) and
           this.getSyntheticQualifier() = def.getARead() and
           p.getPosition() = i and
           c.getAParameter() = p and
@@ -846,7 +857,7 @@ private module Internal {
     private predicate hasDynamicArg(int i, Type argumentType) {
       exists(Expr argument |
         argument = this.getArgument(i) and
-        argument.stripImplicitCasts().getType() instanceof DynamicType and
+        argument.stripImplicit().getType() instanceof DynamicType and
         argumentType = getAPossibleType(argument, _)
       )
     }
@@ -1127,7 +1138,7 @@ private module Internal {
         if p.isParams()
         then (
           j >= i and
-          paramType = p.getType().(ArrayType).getElementType()
+          paramType = p.getType().(ParamsCollectionType).getElementType()
         ) else (
           i = j and
           paramType = p.getType()

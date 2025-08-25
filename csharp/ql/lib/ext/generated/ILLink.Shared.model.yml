@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["ILLink.Shared", "DiagnosticString", False, "GetMessage", "(System.String[])", "", "Argument[0].Element", "ReturnValue", "taint", "dfc-generated"]
+      - ["ILLink.Shared", "DiagnosticString", False, "GetMessageFormat", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["ILLink.Shared", "DiagnosticString", False, "GetTitle", "(System.String[])", "", "Argument[0].Element", "ReturnValue", "taint", "dfc-generated"]
+      - ["ILLink.Shared", "DiagnosticString", False, "GetTitleFormat", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["ILLink.Shared", "DiagnosticIdExtensions", "AsString", "(ILLink.Shared.DiagnosticId)", "summary", "df-generated"]
+      - ["ILLink.Shared", "DiagnosticIdExtensions", "GetDiagnosticCategory", "(ILLink.Shared.DiagnosticId)", "summary", "df-generated"]
+      - ["ILLink.Shared", "DiagnosticIdExtensions", "GetDiagnosticSubcategory", "(ILLink.Shared.DiagnosticId)", "summary", "df-generated"]
+      - ["ILLink.Shared", "DiagnosticIdExtensions", "GetHelpUri", "(ILLink.Shared.DiagnosticId)", "summary", "df-generated"]
+      - ["ILLink.Shared", "DiagnosticString", "DiagnosticString", "(ILLink.Shared.DiagnosticId)", "summary", "df-generated"]
+      - ["ILLink.Shared", "DiagnosticString", "DiagnosticString", "(System.String)", "summary", "df-generated"]

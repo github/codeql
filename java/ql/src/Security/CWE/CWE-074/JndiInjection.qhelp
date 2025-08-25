@@ -13,7 +13,7 @@ code execution.</p>
 <recommendation>
 <p>The general recommendation is to avoid passing untrusted data to the <code>InitialContext.lookup
 </code> method. If the name being used to look up the object must be provided by the user, make
-sure that it's not in the form of an absolute URL or that it's the URL pointing to a trused server.
+sure that it's not in the form of an absolute URL or that it's the URL pointing to a trusted server.
 </p>
 </recommendation>
 

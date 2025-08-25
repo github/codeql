@@ -1,17 +1,14 @@
 function distanceFromOrigin(point) {
-    // NOT OK
-    var [x, x] = point;
+    var [x, x] = point; // $ Alert
     return Math.sqrt(x*x + y*y);
 }
 
-// NOT OK
-var { x: x, y: x } = o;
+var { x: x, y: x } = o; // $ Alert
 
-// NOT OK
-var { x, x } = o;
+var { x, x } = o; // $ Alert
 
-// OK
+
 var { x: x, x: y } = o;
 
-// OK
+
 var { p = x, q = x } = o;

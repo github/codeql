@@ -1,11 +1,32 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["java.nio.file", "FileSystems", True, "getFileSystem", "(URI)", "", "Argument[0]", "path-injection", "manual"]
+      - ["java.nio.channels", "AsynchronousFileChannel", True, "open", "(Path,OpenOption[])", "", "Argument[0]", "path-injection", "manual"]
+      - ["java.nio.channels", "AsynchronousFileChannel", True, "open", "(Path,Set,ExecutorService,FileAttribute[])", "", "Argument[0]", "path-injection", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
       extensible: summaryModel
     data:
       - ["java.nio", "ByteBuffer", False, "array", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.nio", "ByteBuffer", False, "get", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-      - ["java.nio", "ByteBuffer", False, "wrap", "(byte[])", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.nio", "ByteBuffer", True, "put", "(ByteBuffer)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["java.nio", "ByteBuffer", True, "put", "(ByteBuffer)", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["java.nio", "ByteBuffer", True, "put", "(byte)", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["java.nio", "ByteBuffer", True, "put", "(byte[])", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["java.nio", "ByteBuffer", True, "put", "(byte[])", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["java.nio", "ByteBuffer", True, "put", "(byte[],int,int)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["java.nio", "ByteBuffer", True, "put", "(byte[],int,int)", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["java.nio", "ByteBuffer", True, "wrap", "(byte[])", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.nio", "ByteBuffer", True, "wrap", "(byte[],int,int)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.nio", "CharBuffer", True, "wrap", "(CharSequence)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.nio", "CharBuffer", True, "wrap", "(CharSequence,int,int)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.nio", "CharBuffer", True, "wrap", "(char[])", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.nio", "CharBuffer", True, "wrap", "(char[],int,int)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+
 
   - addsTo:
       pack: codeql/java-all

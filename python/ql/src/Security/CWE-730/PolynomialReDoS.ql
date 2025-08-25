@@ -23,7 +23,7 @@ from
 where
   PolynomialReDoSFlow::flowPath(source, sink) and
   sinkNode = sink.getNode() and
-  regexp.getRootTerm() = sinkNode.getRegExp()
+  regexp = sinkNode.getABacktrackingTerm()
 //   not (
 //     source.getNode().(Source).getKind() = "url" and
 //     regexp.isAtEndLine()

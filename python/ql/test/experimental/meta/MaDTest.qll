@@ -5,7 +5,7 @@ private import semmle.python.frameworks.data.ModelsAsData
 // need to import Frameworks to get the actual modeling imported
 private import semmle.python.Frameworks
 // this import needs to be public to get the query predicates propagated to the actual test files
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module MadSinkTest implements TestSig {
   string getARelevantTag() {

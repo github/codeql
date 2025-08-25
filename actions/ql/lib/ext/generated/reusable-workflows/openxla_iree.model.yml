@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["openxla/iree/.github/workflows/pkgci_regression_test_nvidiagpu_vulkan.yml", "*", "input.artifact_run_id", "code-injection", "generated"]
+     - ["openxla/iree/.github/workflows/pkgci_regression_test_nvidiagpu_cuda.yml", "*", "input.artifact_run_id", "code-injection", "generated"]
+     - ["openxla/iree/.github/workflows/pkgci_test_tensorflow_cpu.yml", "*", "input.artifact_run_id", "code-injection", "generated"]
+     - ["openxla/iree/.github/workflows/pkgci_regression_test_cpu.yml", "*", "input.artifact_run_id", "code-injection", "generated"]
+     - ["openxla/iree/.github/workflows/pkgci_regression_test_amdgpu_vulkan.yml", "*", "input.artifact_run_id", "code-injection", "generated"]
+     - ["openxla/iree/.github/workflows/pkgci_regression_test_amdgpu_rocm.yml", "*", "input.artifact_run_id", "code-injection", "generated"]
+     - ["openxla/iree/.github/workflows/pkgci_build_packages.yml", "*", "input.package_version", "code-injection", "generated"]

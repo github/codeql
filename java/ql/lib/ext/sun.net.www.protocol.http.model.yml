@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["sun.net.www.protocol.http", "DigestAuthentication", False, "computeDigest", "", "", "Argument[2]", "credentials-password", "hq-generated"]
+      - ["sun.net.www.protocol.http", "DigestAuthentication", False, "encode", "", "", "Argument[1]", "credentials-password", "hq-generated"]
+      - ["sun.net.www.protocol.http", "DigestAuthentication", False, "computeDigest", "", "", "Argument[1]", "credentials-username", "hq-generated"]

@@ -18,7 +18,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         /// The location of the expression.
         /// </summary>
-        Extraction.Entities.Location Location { get; }
+        Location Location { get; }
 
         /// <summary>
         /// The kind of the expression.

@@ -47,7 +47,7 @@ module ConditionalBypass {
 
     SensitiveActionGuardConditional() {
       exists(ConditionBlock cb, BasicBlock controlled |
-        cb.controls(controlled, _) and
+        cb.edgeDominates(controlled, _) and
         controlled.getANode() = action.asExpr() and
         cb.getLastNode() = this.asExpr()
       )

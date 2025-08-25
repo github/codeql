@@ -3,10 +3,10 @@ const tar = require('tar-stream');
 const extract = tar.extract();
 
 extract.on('entry', (header, stream, next) => {
-  const out = fs.createWriteStream(header.name);
+  const out = fs.createWriteStream(header.name); // $ Alert
 
   if (header.linkname) {
-    fs.linkSync(header.linkname, "foo");
+    fs.linkSync(header.linkname, "foo"); // $ Alert
   }
 
   stream.pipe(out);

@@ -1,0 +1,2 @@
+| test_crosstalk.py:8:16:8:18 | ControlFlowNode for f() | bar |
+| test_crosstalk.py:13:16:13:18 | ControlFlowNode for g() | baz |

@@ -25,9 +25,11 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             trapFile.directive_lines(this, kind);
 
-            if (!string.IsNullOrWhiteSpace(Symbol.File.ValueText))
+            var path = Symbol.File.ValueText;
+            if (!string.IsNullOrWhiteSpace(path))
             {
-                var file = File.Create(Context, Symbol.File.ValueText);
+                path = Context.TryAdjustRelativeMappedFilePath(path, Symbol.SyntaxTree.FilePath);
+                var file = File.Create(Context, path);
                 trapFile.directive_line_file(this, file);
             }
         }

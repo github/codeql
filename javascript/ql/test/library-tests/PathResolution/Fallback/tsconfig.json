@@ -1,0 +1,8 @@
+{
+    "include": ["."],
+    "compilerOptions": {
+        "paths": {
+            "@/*": ["./lib1/*", "./lib2/*"],
+        }
+    }
+}

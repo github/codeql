@@ -1,0 +1,8 @@
+| Program | Program.<Main>$ |
+| Program | Program.Program |
+| Resx.Test1.Test2.test | Resx.Test1.Test2.test.Culture |
+| Resx.Test1.Test2.test | Resx.Test1.Test2.test.GetResourceString |
+| Resx.Test1.Test2.test | Resx.Test1.Test2.test.Key123 |
+| Resx.Test1.Test2.test | Resx.Test1.Test2.test.Key456 |
+| Resx.Test1.Test2.test | Resx.Test1.Test2.test.ResourceManager |
+| Resx.Test1.Test2.test | Resx.Test1.Test2.test.s_resourceManager |

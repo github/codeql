@@ -1,1 +1,2 @@
-Security/CWE-598/SensitiveGetQuery.ql
+query: Security/CWE-598/SensitiveGetQuery.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

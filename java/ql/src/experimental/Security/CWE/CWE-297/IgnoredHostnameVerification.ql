@@ -15,7 +15,7 @@ import java
 import semmle.code.java.security.Encryption
 
 /** A `HostnameVerifier.verify()` call that is not wrapped in another `HostnameVerifier`. */
-private class HostnameVerificationCall extends MethodAccess {
+private class HostnameVerificationCall extends MethodCall {
   HostnameVerificationCall() {
     this.getMethod() instanceof HostnameVerifierVerify and
     not this.getCaller() instanceof HostnameVerifierVerify
@@ -25,6 +25,7 @@ private class HostnameVerificationCall extends MethodAccess {
   predicate isIgnored() { this instanceof ValueDiscardingExpr }
 }
 
-from HostnameVerificationCall verification
-where verification.isIgnored()
-select verification, "Ignored result of hostname verification."
+deprecated query predicate problems(HostnameVerificationCall verification, string message) {
+  verification.isIgnored() and
+  message = "Ignored result of hostname verification."
+}

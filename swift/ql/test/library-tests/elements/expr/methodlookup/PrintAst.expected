@@ -43,15 +43,7 @@ methodlookup.swift:
 #   11|     getSelfParam(): [ParamDecl] self
 #   11|         Type = Bar.Type
 #   11|     getBody(): [BraceStmt] { ... }
-#-----|   getMember(3): [PatternBindingDecl] var ... = ...
-#-----|     getPattern(0): [TypedPattern] ... as ...
-#-----|       getSubPattern(): [NamedPattern] unownedExecutor
-#    8|   getMember(4): [Deinitializer] Bar.deinit()
-#    8|       InterfaceType = (Bar) -> () -> ()
-#    8|     getSelfParam(): [ParamDecl] self
-#    8|         Type = Bar
-#    8|     getBody(): [BraceStmt] { ... }
-#-----|   getMember(5): [ConcreteVarDecl] unownedExecutor
+#-----|   getMember(3): [ConcreteVarDecl] unownedExecutor
 #-----|       Type = UnownedSerialExecutor
 #-----|     getAccessor(0): [Accessor] get
 #-----|         InterfaceType = (Bar) -> () -> UnownedSerialExecutor
@@ -68,6 +60,14 @@ methodlookup.swift:
 #-----|                 getFunction(): [DeclRefExpr] buildDefaultActorExecutorRef(_:)
 #-----|                 getArgument(0): [Argument] : self
 #-----|                   getExpr(): [DeclRefExpr] self
+#-----|   getMember(4): [PatternBindingDecl] var ... = ...
+#-----|     getPattern(0): [TypedPattern] ... as ...
+#-----|       getSubPattern(): [NamedPattern] unownedExecutor
+#    8|   getMember(5): [Deinitializer] Bar.deinit()
+#    8|       InterfaceType = (Bar) -> () -> ()
+#    8|     getSelfParam(): [ParamDecl] self
+#    8|         Type = Bar
+#    8|     getBody(): [BraceStmt] { ... }
 #   15| [ClassDecl] Baz
 #   16|   getMember(0): [Initializer] Baz.init()
 #   16|       InterfaceType = (Baz.Type) -> () -> Baz
@@ -187,6 +187,7 @@ methodlookup.swift:
 #   40|                 getBase(): [TypeExpr] Bar.Type
 #   40|                   getTypeRepr(): [TypeRepr] Bar
 #   40|                 getMethodRef(): [DeclRefExpr] staticMethod()
+#   33|         getExpr().getFullyConverted(): [FunctionConversionExpr] (@isolated(any) () async -> ()) ...
 #   33| [NilLiteralExpr] nil
 #   38| [Comment] // Bar.instanceMethod(bar2)() // error: actor-isolated instance method 'instanceMethod()' can not be referenced from a non-isolated context
 #   38| 
@@ -226,7 +227,6 @@ methodlookup.swift:
 #   47|               getFunction(): [MethodLookupExpr] .instanceMethod()
 #   47|                 getBase(): [DeclRefExpr] baz
 #   47|                 getMethodRef(): [DeclRefExpr] instanceMethod()
-#   47|                 getMethodRef().getFullyConverted(): [FunctionConversionExpr] ((Baz) -> @MainActor () -> ()) ...
 #   47|             getElement(2).getFullyConverted(): [AwaitExpr] await ...
 #   48|             getElement(3): [CallExpr] call to { ... }
 #   48|               getFunction(): [CallExpr] call to Baz.instanceMethod()
@@ -263,6 +263,7 @@ methodlookup.swift:
 #   51|                 getMethodRef(): [DeclRefExpr] staticMethod()
 #   51|                 getMethodRef().getFullyConverted(): [FunctionConversionExpr] ((Baz.Type) -> @MainActor () -> ()) ...
 #   51|             getElement(5).getFullyConverted(): [AwaitExpr] await ...
+#   43|         getExpr().getFullyConverted(): [FunctionConversionExpr] (@isolated(any) () async -> ()) ...
 #   43| [NilLiteralExpr] nil
 #   47| [Comment] // DotSyntaxCallExpr
 #   47| 

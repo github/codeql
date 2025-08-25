@@ -13,6 +13,8 @@
  *
  * This creates a route to the `TargetBean` class for messages sent to "direct.start".
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.Reflection
@@ -21,7 +23,7 @@ import semmle.code.java.frameworks.spring.Spring
 /**
  * A method call to a ProcessorDefinition element.
  */
-library class ProcessorDefinitionElement extends MethodAccess {
+class ProcessorDefinitionElement extends MethodCall {
   ProcessorDefinitionElement() {
     this.getMethod()
         .getDeclaringType()
@@ -42,13 +44,7 @@ class CamelJavaDslToDecl extends ProcessorDefinitionElement {
    * Gets the URI specified by this `to` declaration.
    */
   string getUri() { result = this.getArgument(0).(CompileTimeConstantExpr).getStringValue() }
-
-  /** DEPRECATED: Alias for getUri */
-  deprecated string getURI() { result = this.getUri() }
 }
-
-/** DEPRECATED: Alias for CamelJavaDslToDecl */
-deprecated class CamelJavaDSLToDecl = CamelJavaDslToDecl;
 
 /**
  * A declaration of a "bean" target in the Apache Camel Java DSL.
@@ -73,9 +69,6 @@ class CamelJavaDslBeanDecl extends ProcessorDefinitionElement {
       result = this.getArgument(0).getType()
   }
 }
-
-/** DEPRECATED: Alias for CamelJavaDslBeanDecl */
-deprecated class CamelJavaDSLBeanDecl = CamelJavaDslBeanDecl;
 
 /**
  * A declaration of a "beanRef" target in the Apache Camel Java DSL.
@@ -106,15 +99,12 @@ class CamelJavaDslBeanRefDecl extends ProcessorDefinitionElement {
   }
 }
 
-/** DEPRECATED: Alias for CamelJavaDslBeanRefDecl */
-deprecated class CamelJavaDSLBeanRefDecl = CamelJavaDslBeanRefDecl;
-
 /**
  * A "method" Camel expression in the Apache Camel Java DSL.
  *
  * An expression that represents a call to a bean, or particular method on a bean.
  */
-class CamelJavaDslMethodDecl extends MethodAccess {
+class CamelJavaDslMethodDecl extends MethodCall {
   CamelJavaDslMethodDecl() {
     this.getMethod()
         .getDeclaringType()
@@ -140,6 +130,3 @@ class CamelJavaDslMethodDecl extends MethodAccess {
       else result = this.getArgument(0).getType()
   }
 }
-
-/** DEPRECATED: Alias for CamelJavaDslMethodDecl */
-deprecated class CamelJavaDSLMethodDecl = CamelJavaDslMethodDecl;

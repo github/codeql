@@ -1,5 +1,14 @@
 | module | hash_bang/module.py:0:0:0:0 | Module module |
 | module | name_main/module.py:0:0:0:0 | Module module |
+| namespace_package | hash_bang/namespace_package:0:0:0:0 | Package namespace_package |
+| namespace_package | name_main/namespace_package:0:0:0:0 | Package namespace_package |
+| namespace_package | no_py_extension/namespace_package:0:0:0:0 | Package namespace_package |
+| namespace_package.namespace_package_main | hash_bang/namespace_package/namespace_package_main.py:0:0:0:0 | Module namespace_package.namespace_package_main |
+| namespace_package.namespace_package_main | name_main/namespace_package/namespace_package_main.py:0:0:0:0 | Module namespace_package.namespace_package_main |
+| namespace_package.namespace_package_main | no_py_extension/namespace_package/namespace_package_main.py:0:0:0:0 | Module namespace_package.namespace_package_main |
+| namespace_package.namespace_package_module | hash_bang/namespace_package/namespace_package_module.py:0:0:0:0 | Module namespace_package.namespace_package_module |
+| namespace_package.namespace_package_module | name_main/namespace_package/namespace_package_module.py:0:0:0:0 | Module namespace_package.namespace_package_module |
+| namespace_package.namespace_package_module | no_py_extension/namespace_package/namespace_package_module.py:0:0:0:0 | Module namespace_package.namespace_package_module |
 | package | hash_bang/package:0:0:0:0 | Package package |
 | package | name_main/package:0:0:0:0 | Package package |
 | package | no_py_extension/package:0:0:0:0 | Package package |

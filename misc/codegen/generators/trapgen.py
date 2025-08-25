@@ -86,13 +86,18 @@ def generate(opts, renderer):
     for dir, entries in traps.items():
         dir = dir or pathlib.Path()
         relative_gen_dir = pathlib.Path(*[".." for _ in dir.parents])
-        renderer.render(cpp.TrapList(entries, opts.dbscheme, trap_library, relative_gen_dir), out / dir / "TrapEntries")
+        renderer.render(
+            cpp.TrapList(entries, opts.dbscheme, trap_library, relative_gen_dir),
+            out / dir / "TrapEntries",
+        )
 
     tags = []
     for tag in toposort_flatten(tag_graph):
-        tags.append(cpp.Tag(
-            name=get_tag_name(tag),
-            bases=[get_tag_name(b) for b in sorted(tag_graph[tag])],
-            id=tag,
-        ))
+        tags.append(
+            cpp.Tag(
+                name=get_tag_name(tag),
+                bases=[get_tag_name(b) for b in sorted(tag_graph[tag])],
+                id=tag,
+            )
+        )
     renderer.render(cpp.TagList(tags, opts.dbscheme), out / "TrapTags")

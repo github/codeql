@@ -1,4 +1,0 @@
-xmlFiles
-#select
-| app/src/main/java/test/App.java:0:0:0:0 | App |
-| app/src/test/java/test/AppTest.java:0:0:0:0 | AppTest |

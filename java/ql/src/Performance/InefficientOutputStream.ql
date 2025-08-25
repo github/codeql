@@ -6,7 +6,10 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/inefficient-output-stream
- * @tags efficiency
+ * @tags quality
+ *       reliability
+ *       performance
+ *       efficiency
  */
 
 import java
@@ -34,7 +37,7 @@ where
   ) and
   // If that method doesn't call write itself, then we don't have a problem.
   // This is the case is some dummy implementations.
-  exists(MethodAccess ma | ma.getEnclosingCallable() = m | ma.getMethod().getName() = "write")
+  exists(MethodCall ma | ma.getEnclosingCallable() = m | ma.getMethod().getName() = "write")
 select c,
   "This class extends 'java.io.OutputStream' and implements $@, but does not override 'write(byte[],int,int)'.",
   m, m.getName()

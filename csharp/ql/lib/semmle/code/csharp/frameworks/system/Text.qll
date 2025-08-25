@@ -22,7 +22,12 @@ class SystemTextStringBuilderClass extends SystemTextClass {
   SystemTextStringBuilderClass() { this.hasName("StringBuilder") }
 
   /** Gets the `AppendFormat` method. */
-  Method getAppendFormatMethod() { result = this.getAMethod("AppendFormat") }
+  Method getAppendFormatMethod() {
+    exists(string name |
+      name.regexpMatch("AppendFormat(<.*>)?") and
+      result = this.getAMethod(name)
+    )
+  }
 }
 
 /** The `System.Text.Encoding` class. */
@@ -37,4 +42,12 @@ class SystemTextEncodingClass extends SystemTextClass {
 
   /** Gets the `GetChars` method. */
   Method getGetCharsMethod() { result = this.getAMethod("GetChars") }
+}
+
+/** The `System.Text.CompositeFormat` class */
+class SystemTextCompositeFormatClass extends SystemTextClass {
+  SystemTextCompositeFormatClass() { this.hasName("CompositeFormat") }
+
+  /** Gets the `Parse` method. */
+  Method getParseMethod() { result = this.getAMethod("Parse") }
 }

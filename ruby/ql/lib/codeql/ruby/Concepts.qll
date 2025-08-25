@@ -7,10 +7,14 @@
 private import codeql.ruby.AST
 private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
+private import codeql.ruby.dataflow.internal.DataFlowImplSpecific
 private import codeql.ruby.Frameworks
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.Regexp as RE
+private import codeql.concepts.ConceptsShared
+
+private module ConceptsShared = ConceptsMake<Location, RubyDataFlow>;
 
 /**
  * A data-flow node that constructs a SQL statement.
@@ -682,7 +686,7 @@ module Http {
 
   /** Provides classes for modeling HTTP clients. */
   module Client {
-    import codeql.ruby.internal.ConceptsShared::Http::Client as SC
+    import ConceptsShared::Http::Client as SC
 
     /**
      * A method call that makes an outgoing HTTP request.
@@ -693,25 +697,6 @@ module Http {
     class Request extends SC::Request instanceof Request::Range {
       /** Gets a node which returns the body of the response */
       DataFlow::Node getResponseBody() { result = super.getResponseBody() }
-
-      /**
-       * DEPRECATED: Use `getAUrlPart` instead.
-       *
-       * Gets a node that contributes to the URL of the request.
-       * Depending on the framework, a request may have multiple nodes which contribute to the URL.
-       */
-      deprecated DataFlow::Node getURL() { result = Request::Range.super.getAUrlPart() }
-
-      /**
-       * Holds if this request is made using a mode that disables SSL/TLS
-       * certificate validation, where `disablingNode` represents the point at
-       * which the validation was disabled.
-       */
-      deprecated predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
-        Request::Range.super.disablesCertificateValidation(disablingNode, _)
-        or
-        Request::Range.super.disablesCertificateValidation(disablingNode)
-      }
     }
 
     /** Provides a class for modeling new HTTP requests. */
@@ -725,15 +710,6 @@ module Http {
       abstract class Range extends SC::Request::Range {
         /** Gets a node which returns the body of the response */
         abstract DataFlow::Node getResponseBody();
-
-        /**
-         * DEPRECATED: override `disablesCertificateValidation/2` instead.
-         *
-         * Holds if this request is made using a mode that disables SSL/TLS
-         * certificate validation, where `disablingNode` represents the point at
-         * which the validation was disabled.
-         */
-        deprecated predicate disablesCertificateValidation(DataFlow::Node disablingNode) { none() }
       }
     }
 
@@ -747,9 +723,6 @@ module Http {
     }
   }
 }
-
-/** DEPRECATED: Alias for Http */
-deprecated module HTTP = Http;
 
 /**
  * A data flow node that executes an operating system command,
@@ -967,9 +940,6 @@ class CsrfProtectionSetting extends DataFlow::Node instanceof CsrfProtectionSett
   boolean getVerificationSetting() { result = super.getVerificationSetting() }
 }
 
-/** DEPRECATED: Alias for CsrfProtectionSetting */
-deprecated class CSRFProtectionSetting = CsrfProtectionSetting;
-
 /** Provides a class for modeling new CSRF protection setting APIs. */
 module CsrfProtectionSetting {
   /**
@@ -986,9 +956,6 @@ module CsrfProtectionSetting {
     abstract boolean getVerificationSetting();
   }
 }
-
-/** DEPRECATED: Alias for CsrfProtectionSetting */
-deprecated module CSRFProtectionSetting = CsrfProtectionSetting;
 
 /** Provides classes for modeling path-related APIs. */
 module Path {
@@ -1078,7 +1045,7 @@ module Cryptography {
   // modify that part of the shared concept... which means we have to explicitly
   // re-export everything else.
   // Using SC shorthand for "Shared Cryptography"
-  import codeql.ruby.internal.ConceptsShared::Cryptography as SC
+  import ConceptsShared::Cryptography as SC
 
   class CryptographicAlgorithm = SC::CryptographicAlgorithm;
 
@@ -1096,10 +1063,7 @@ module Cryptography {
    * extend `CryptographicOperation::Range` instead.
    */
   class CryptographicOperation extends SC::CryptographicOperation instanceof CryptographicOperation::Range
-  {
-    /** DEPRECATED: Use `getAlgorithm().isWeak() or getBlockMode().isWeak()` instead */
-    deprecated predicate isWeak() { super.isWeak() }
-  }
+  { }
 
   /** Provides classes for modeling new applications of a cryptographic algorithms. */
   module CryptographicOperation {
@@ -1110,10 +1074,7 @@ module Cryptography {
      * Extend this class to model new APIs. If you want to refine existing API models,
      * extend `CryptographicOperation` instead.
      */
-    abstract class Range extends SC::CryptographicOperation::Range {
-      /** DEPRECATED: Use `getAlgorithm().isWeak() or getBlockMode().isWeak()` instead */
-      deprecated predicate isWeak() { this.getAlgorithm().isWeak() or this.getBlockMode().isWeak() }
-    }
+    abstract class Range extends SC::CryptographicOperation::Range { }
   }
 
   class BlockMode = SC::BlockMode;
@@ -1285,5 +1246,94 @@ module LdapBind {
 
     /** Holds if the binding process use SSL. */
     abstract predicate usesSsl();
+  }
+}
+
+/**
+ * A data-flow node that encodes a Jwt token.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `JwtEncoding::Range` instead.
+ */
+class JwtEncoding extends DataFlow::Node instanceof JwtEncoding::Range {
+  /** Gets the argument containing the encoding payload. */
+  DataFlow::Node getPayload() { result = super.getPayload() }
+
+  /** Gets the argument containing the encoding algorithm. */
+  DataFlow::Node getAlgorithm() { result = super.getAlgorithm() }
+
+  /** Gets the argument containing the encoding key. */
+  DataFlow::Node getKey() { result = super.getKey() }
+
+  /** Checks if the payloads gets signed while encoding. */
+  predicate signsPayload() { super.signsPayload() }
+}
+
+/** Provides a class for modeling new Jwt token encoding APIs. */
+module JwtEncoding {
+  /**
+   * A data-flow node that encodes a Jwt token.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `JwtEncoding` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument containing the encoding payload. */
+    abstract DataFlow::Node getPayload();
+
+    /** Gets the argument containing the encoding algorithm. */
+    abstract DataFlow::Node getAlgorithm();
+
+    /** Gets the argument containing the encoding key. */
+    abstract DataFlow::Node getKey();
+
+    /** Checks if the payloads gets signed while encoding. */
+    abstract predicate signsPayload();
+  }
+}
+
+/**
+ * A data-flow node that decodes a Jwt token.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `JwtDecoding::Range` instead.
+ */
+class JwtDecoding extends DataFlow::Node instanceof JwtDecoding::Range {
+  /** Gets the argument containing the encoding payload. */
+  DataFlow::Node getPayload() { result = super.getPayload() }
+
+  /** Gets the argument containing the encoding algorithm. */
+  DataFlow::Node getAlgorithm() { result = super.getAlgorithm() }
+
+  /** Gets the argument containing the encoding key. */
+  DataFlow::Node getOptions() { result = super.getOptions() }
+
+  /** Checks if the signature gets verified while decoding. */
+  predicate verifiesSignature() { super.verifiesSignature() }
+}
+
+/** Provides a class for modeling new Jwt token encoding APIs. */
+module JwtDecoding {
+  /**
+   * A data-flow node that encodes a Jwt token.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `JwtDecoding` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument containing the encoding payload. */
+    abstract DataFlow::Node getPayload();
+
+    /** Gets the argument containing the encoding algorithm. */
+    abstract DataFlow::Node getAlgorithm();
+
+    /** Gets the argument containing the encoding key. */
+    abstract DataFlow::Node getKey();
+
+    /** Gets the argument containing the encoding options. */
+    abstract DataFlow::Node getOptions();
+
+    /** Checks if the signature gets verified while decoding. */
+    abstract predicate verifiesSignature();
   }
 }

@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["tencent/hippy/.github/workflows/reuse_get_workflow_output.yml", "*", "input.workflow_run", "code-injection", "generated"]
+     - ["tencent/hippy/.github/workflows/reuse_classify_commits.yml", "*", "input.pull_request_number", "code-injection", "generated"]
+     - ["tencent/hippy/.github/workflows/reuse_approve_checks_run.yml", "*", "input.pull_request_head_sha", "code-injection", "generated"]
+     - ["tencent/hippy/.github/workflows/reuse_approve_checks_run.yml", "*", "input.pull_request_number", "code-injection", "generated"]
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["tencent/hippy/.github/workflows/reuse_approve_checks_run.yml", "*", "input.pull_request_head_sha", "output.pull_request_head_sha", "taint", "manual"]
+      - ["tencent/hippy/.github/workflows/reuse_approve_checks_run.yml", "*", "input.pull_request_number", "output.pull_request_number", "taint", "manual"]

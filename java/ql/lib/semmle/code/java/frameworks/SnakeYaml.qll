@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with the SnakeYaml serialization framework.
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.dataflow.DataFlow
@@ -53,7 +55,7 @@ private class SafeYaml extends ClassInstanceExpr {
 }
 
 /** A call to a parse method of `Yaml`. */
-private class SnakeYamlParse extends MethodAccess {
+private class SnakeYamlParse extends MethodCall {
   SnakeYamlParse() {
     exists(Method m |
       m.getDeclaringType() instanceof Yaml and

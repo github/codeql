@@ -1,4 +1,6 @@
 /** Provides XML definitions related to the `org.apache.commons` package. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.RangeUtils
@@ -79,7 +81,7 @@ private module SafeDigesterFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeDigester }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       sink.asExpr() = ma.getQualifier() and ma.getMethod().getDeclaringType() instanceof Digester
     )
   }

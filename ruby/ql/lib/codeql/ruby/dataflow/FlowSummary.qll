@@ -2,13 +2,12 @@
 
 import codeql.ruby.AST
 private import codeql.ruby.CFG
-private import codeql.ruby.typetracking.TypeTracker
+private import codeql.ruby.typetracking.TypeTracking
 import codeql.ruby.DataFlow
 private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowDispatch
 private import internal.DataFlowImplCommon as DataFlowImplCommon
 private import internal.DataFlowPrivate
-private import internal.FlowSummaryImplSpecific
 
 // import all instances below
 private module Summaries {
@@ -16,104 +15,13 @@ private module Summaries {
   private import codeql.ruby.frameworks.data.ModelsAsData
 }
 
-class SummaryComponent = Impl::Public::SummaryComponent;
+deprecated class SummaryComponent = Impl::Private::SummaryComponent;
 
-/** Provides predicates for constructing summary components. */
-module SummaryComponent {
-  private import Impl::Public::SummaryComponent as SC
+deprecated module SummaryComponent = Impl::Private::SummaryComponent;
 
-  predicate parameter = SC::parameter/1;
+deprecated class SummaryComponentStack = Impl::Private::SummaryComponentStack;
 
-  predicate argument = SC::argument/1;
-
-  predicate content = SC::content/1;
-
-  predicate withoutContent = SC::withoutContent/1;
-
-  predicate withContent = SC::withContent/1;
-
-  class SyntheticGlobal = SC::SyntheticGlobal;
-
-  /** Gets a summary component that represents a receiver. */
-  SummaryComponent receiver() { result = argument(any(ParameterPosition pos | pos.isSelf())) }
-
-  /** Gets a summary component that represents a block argument. */
-  SummaryComponent block() { result = argument(any(ParameterPosition pos | pos.isBlock())) }
-
-  /** Gets a summary component that represents an element in a collection at an unknown index. */
-  SummaryComponent elementUnknown() {
-    result = SC::content(TSingletonContent(TUnknownElementContent()))
-  }
-
-  /** Gets a summary component that represents an element in a collection at a known index. */
-  SummaryComponent elementKnown(ConstantValue cv) {
-    result = SC::content(TSingletonContent(DataFlow::Content::getElementContent(cv)))
-  }
-
-  /**
-   * Gets a summary component that represents an element in a collection at a specific
-   * known index `cv`, or an unknown index.
-   */
-  SummaryComponent elementKnownOrUnknown(ConstantValue cv) {
-    result = SC::content(TKnownOrUnknownElementContent(TKnownElementContent(cv)))
-    or
-    not exists(TKnownElementContent(cv)) and
-    result = elementUnknown()
-  }
-
-  /**
-   * Gets a summary component that represents an element in a collection at either an unknown
-   * index or known index. This has the same semantics as
-   *
-   * ```ql
-   * elementKnown() or elementUnknown(_)
-   * ```
-   *
-   * but is more efficient, because it is represented by a single value.
-   */
-  SummaryComponent elementAny() { result = SC::content(TAnyElementContent()) }
-
-  /**
-   * Gets a summary component that represents an element in a collection at known
-   * integer index `lower` or above.
-   */
-  SummaryComponent elementLowerBound(int lower) {
-    result = SC::content(TElementLowerBoundContent(lower, false))
-  }
-
-  /**
-   * Gets a summary component that represents an element in a collection at known
-   * integer index `lower` or above, or possibly at an unknown index.
-   */
-  SummaryComponent elementLowerBoundOrUnknown(int lower) {
-    result = SC::content(TElementLowerBoundContent(lower, true))
-  }
-
-  /** Gets a summary component that represents the return value of a call. */
-  SummaryComponent return() { result = SC::return(any(NormalReturnKind rk)) }
-}
-
-class SummaryComponentStack = Impl::Public::SummaryComponentStack;
-
-/** Provides predicates for constructing stacks of summary components. */
-module SummaryComponentStack {
-  private import Impl::Public::SummaryComponentStack as SCS
-
-  predicate singleton = SCS::singleton/1;
-
-  predicate push = SCS::push/2;
-
-  predicate argument = SCS::argument/1;
-
-  /** Gets a singleton stack representing a receiver. */
-  SummaryComponentStack receiver() { result = singleton(SummaryComponent::receiver()) }
-
-  /** Gets a singleton stack representing a block argument. */
-  SummaryComponentStack block() { result = singleton(SummaryComponent::block()) }
-
-  /** Gets a singleton stack representing the return value of a call. */
-  SummaryComponentStack return() { result = singleton(SummaryComponent::return()) }
-}
+deprecated module SummaryComponentStack = Impl::Private::SummaryComponentStack;
 
 /** A callable with a flow summary, identified by a unique string. */
 abstract class SummarizedCallable extends LibraryCallable, Impl::Public::SummarizedCallable {
@@ -121,18 +29,24 @@ abstract class SummarizedCallable extends LibraryCallable, Impl::Public::Summari
   SummarizedCallable() { any() }
 
   /**
-   * Same as
-   *
-   * ```ql
-   * propagatesFlow(
-   *   SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-   * )
-   * ```
-   *
-   * but uses an external (string) representation of the input and output stacks.
+   * DEPRECATED: Use `propagatesFlow` instead.
    */
-  pragma[nomagic]
-  predicate propagatesFlowExt(string input, string output, boolean preservesValue) { none() }
+  deprecated predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    this.propagatesFlow(input, output, preservesValue, _)
+  }
+
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, string model
+  ) {
+    this.propagatesFlow(input, output, preservesValue) and model = ""
+  }
+
+  /**
+   * Holds if data may flow from `input` to `output` through this callable.
+   *
+   * `preservesValue` indicates whether this is a value-preserving step or a taint-step.
+   */
+  predicate propagatesFlow(string input, string output, boolean preservesValue) { none() }
 
   /**
    * Gets the synthesized parameter that results from an input specification
@@ -141,7 +55,7 @@ abstract class SummarizedCallable extends LibraryCallable, Impl::Public::Summari
   DataFlow::ParameterNode getParameter(string s) {
     exists(ParameterPosition pos |
       DataFlowImplCommon::parameterNode(result, TLibraryCallable(this), pos) and
-      s = getParameterPosition(pos)
+      s = Impl::Input::encodeParameterPosition(pos)
     )
   }
 }
@@ -159,7 +73,7 @@ abstract class SimpleSummarizedCallable extends SummarizedCallable {
   final override MethodCall getACallSimple() { result = mc }
 }
 
-class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
+deprecated class RequiredSummaryComponentStack = Impl::Private::RequiredSummaryComponentStack;
 
 /**
  * Provides a set of special flow summaries to ensure that callbacks passed into
@@ -169,7 +83,7 @@ class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStac
  */
 private module LibraryCallbackSummaries {
   private predicate libraryCall(CfgNodes::ExprNodes::CallCfgNode call) {
-    not exists(getTarget(call))
+    not exists(getTarget(TNormalCall(call)))
   }
 
   private DataFlow::LocalSourceNode trackLambdaCreation(TypeTracker t) {
@@ -199,7 +113,9 @@ private module LibraryCallbackSummaries {
       libraryCallHasLambdaArg(result.getAControlFlowNode(), _)
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(
+      string input, string output, boolean preservesValue, string model
+    ) {
       (
         input = "Argument[block]" and
         output = "Argument[block].Parameter[lambda-self]"
@@ -210,7 +126,8 @@ private module LibraryCallbackSummaries {
           output = "Argument[" + i + "].Parameter[lambda-self]"
         )
       ) and
-      preservesValue = true
+      preservesValue = true and
+      model = "heuristic-callback"
     }
   }
 }

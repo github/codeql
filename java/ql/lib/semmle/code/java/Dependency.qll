@@ -1,6 +1,8 @@
 /**
  * Provides utility predicates for representing dependencies between types.
  */
+overlay[local?]
+module;
 
 import Type
 import Generics
@@ -52,7 +54,7 @@ predicate depends(RefType t, RefType dep) {
     or
     // the declaring type of a field accessed in `t`,
     exists(Field f | f.getAnAccess().getEnclosingCallable().getDeclaringType() = t |
-      usesType(f.getSourceDeclaration().getDeclaringType(), dep)
+      usesType(f.getDeclaringType(), dep)
     )
     or
     // the type of a local variable declared in `t`,
@@ -78,6 +80,13 @@ predicate depends(RefType t, RefType dep) {
     // the type accessed in an `instanceof` expression in `t`.
     exists(InstanceOfExpr ioe | t = ioe.getEnclosingCallable().getDeclaringType() |
       usesType(ioe.getCheckedType(), dep)
+      or
+      usesType(ioe.getPattern().getAChildExpr*().getType(), dep)
+    )
+    or
+    // A type accessed in a pattern-switch case statement in `t`.
+    exists(PatternCase pc | t = pc.getEnclosingCallable().getDeclaringType() |
+      usesType(pc.getAPattern().getAChildExpr*().getType(), dep)
     )
   )
 }

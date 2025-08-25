@@ -4,25 +4,89 @@ use crate::node_types::{self, EntryKind, Field, NodeTypeMap, Storage, TypeName};
 use crate::trap;
 use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
+use std::env;
 use std::path::Path;
 
+use tracing_subscriber::EnvFilter;
+use tracing_subscriber::Layer;
+use tracing_subscriber::filter::Filtered;
+use tracing_subscriber::fmt::format::DefaultFields;
+use tracing_subscriber::fmt::format::Format;
+use tracing_subscriber::layer::SubscriberExt;
+use tracing_subscriber::util::SubscriberInitExt;
 use tree_sitter::{Language, Node, Parser, Range, Tree};
 
 pub mod simple;
 
-pub fn populate_file(writer: &mut trap::Writer, absolute_path: &Path) -> trap::Label {
+/// Sets the tracing level based on the environment variables
+/// `RUST_LOG` and `CODEQL_VERBOSITY` (prioritized in that order),
+/// falling back to `warn` if neither is set.
+pub fn set_tracing_level(language: &str) {
+    let verbosity = env::var("CODEQL_VERBOSITY").ok();
+    tracing_subscriber::registry()
+        .with(default_subscriber_with_level(language, &verbosity))
+        .init();
+}
+
+/// Create a `Subscriber` configured with the tracing level based on the environment variables
+/// `RUST_LOG` and `verbosity` (prioritized in that order), falling back to `warn` if neither is set.
+pub fn default_subscriber_with_level(
+    language: &str,
+    verbosity: &Option<String>,
+) -> Filtered<
+    tracing_subscriber::fmt::Layer<
+        tracing_subscriber::Registry,
+        DefaultFields,
+        Format<tracing_subscriber::fmt::format::Full, ()>,
+    >,
+    EnvFilter,
+    tracing_subscriber::Registry,
+> {
+    tracing_subscriber::fmt::layer()
+        .with_target(false)
+        .without_time()
+        .with_level(true)
+        .with_filter(
+            tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(
+                |_| -> tracing_subscriber::EnvFilter {
+                    let verbosity = verbosity
+                        .as_ref()
+                        .map(|v| match v.to_lowercase().as_str() {
+                            "off" | "errors" => "error",
+                            "warnings" => "warn",
+                            "info" | "progress" => "info",
+                            "debug" | "progress+" => "debug",
+                            "trace" | "progress++" | "progress+++" => "trace",
+                            _ => "warn",
+                        })
+                        .unwrap_or_else(|| "warn");
+                    tracing_subscriber::EnvFilter::new(format!(
+                        "{language}_extractor={verbosity},codeql_extractor={verbosity}"
+                    ))
+                },
+            ),
+        )
+}
+pub fn populate_file(
+    writer: &mut trap::Writer,
+    absolute_path: &Path,
+    transformer: Option<&file_paths::PathTransformer>,
+) -> trap::Label {
     let (file_label, fresh) = writer.global_id(&trap::full_id_for_file(
-        &file_paths::normalize_path(absolute_path),
+        &file_paths::normalize_and_transform_path(absolute_path, transformer),
     ));
     if fresh {
         writer.add_tuple(
             "files",
             vec![
                 trap::Arg::Label(file_label),
-                trap::Arg::String(file_paths::normalize_path(absolute_path)),
+                trap::Arg::String(file_paths::normalize_and_transform_path(
+                    absolute_path,
+                    transformer,
+                )),
             ],
         );
-        populate_parent_folders(writer, file_label, absolute_path.parent());
+        populate_parent_folders(writer, file_label, absolute_path.parent(), transformer);
     }
     file_label
 }
@@ -43,13 +107,24 @@ fn populate_empty_file(writer: &mut trap::Writer) -> trap::Label {
 
 pub fn populate_empty_location(writer: &mut trap::Writer) {
     let file_label = populate_empty_file(writer);
-    location(writer, file_label, 0, 0, 0, 0);
+    let loc_label = global_location(
+        writer,
+        trap::Location {
+            file_label,
+            start_line: 0,
+            start_column: 0,
+            end_line: 0,
+            end_column: 0,
+        },
+    );
+    writer.add_tuple("empty_location", vec![trap::Arg::Label(loc_label)]);
 }
 
 pub fn populate_parent_folders(
     writer: &mut trap::Writer,
     child_label: trap::Label,
     path: Option<&Path>,
+    transformer: Option<&file_paths::PathTransformer>,
 ) {
     let mut path = path;
     let mut child_label = child_label;
@@ -57,9 +132,9 @@ pub fn populate_parent_folders(
         match path {
             None => break,
             Some(folder) => {
-                let (folder_label, fresh) = writer.global_id(&trap::full_id_for_folder(
-                    &file_paths::normalize_path(folder),
-                ));
+                let parent = folder.parent();
+                let folder = file_paths::normalize_and_transform_path(folder, transformer);
+                let (folder_label, fresh) = writer.global_id(&trap::full_id_for_folder(&folder));
                 writer.add_tuple(
                     "containerparent",
                     vec![
@@ -70,12 +145,9 @@ pub fn populate_parent_folders(
                 if fresh {
                     writer.add_tuple(
                         "folders",
-                        vec![
-                            trap::Arg::Label(folder_label),
-                            trap::Arg::String(file_paths::normalize_path(folder)),
-                        ],
+                        vec![trap::Arg::Label(folder_label), trap::Arg::String(folder)],
                     );
-                    path = folder.parent();
+                    path = parent;
                     child_label = folder_label;
                 } else {
                     break;
@@ -85,28 +157,46 @@ pub fn populate_parent_folders(
     }
 }
 
-fn location(
-    writer: &mut trap::Writer,
-    file_label: trap::Label,
-    start_line: usize,
-    start_column: usize,
-    end_line: usize,
-    end_column: usize,
-) -> trap::Label {
+/** Get the label for the given location, defining it a global ID if it doesn't exist yet. */
+fn global_location(writer: &mut trap::Writer, location: trap::Location) -> trap::Label {
     let (loc_label, fresh) = writer.global_id(&format!(
         "loc,{{{}}},{},{},{},{}",
-        file_label, start_line, start_column, end_line, end_column
+        location.file_label,
+        location.start_line,
+        location.start_column,
+        location.end_line,
+        location.end_column
     ));
     if fresh {
         writer.add_tuple(
             "locations_default",
             vec![
                 trap::Arg::Label(loc_label),
-                trap::Arg::Label(file_label),
-                trap::Arg::Int(start_line),
-                trap::Arg::Int(start_column),
-                trap::Arg::Int(end_line),
-                trap::Arg::Int(end_column),
+                trap::Arg::Label(location.file_label),
+                trap::Arg::Int(location.start_line),
+                trap::Arg::Int(location.start_column),
+                trap::Arg::Int(location.end_line),
+                trap::Arg::Int(location.end_column),
+            ],
+        );
+    }
+    loc_label
+}
+
+/** Get the label for the given location, creating it as a fresh ID if we haven't seen the location
+ * yet for this file. */
+pub fn location_label(writer: &mut trap::Writer, location: trap::Location) -> trap::Label {
+    let (loc_label, fresh) = writer.location_label(location);
+    if fresh {
+        writer.add_tuple(
+            "locations_default",
+            vec![
+                trap::Arg::Label(loc_label),
+                trap::Arg::Label(location.file_label),
+                trap::Arg::Int(location.start_line),
+                trap::Arg::Int(location.start_column),
+                trap::Arg::Int(location.end_line),
+                trap::Arg::Int(location.end_column),
             ],
         );
     }
@@ -115,16 +205,17 @@ fn location(
 
 /// Extracts the source file at `path`, which is assumed to be canonicalized.
 pub fn extract(
-    language: Language,
+    language: &Language,
     language_prefix: &str,
     schema: &NodeTypeMap,
     diagnostics_writer: &mut diagnostics::LogWriter,
     trap_writer: &mut trap::Writer,
+    transformer: Option<&file_paths::PathTransformer>,
     path: &Path,
     source: &[u8],
     ranges: &[Range],
 ) {
-    let path_str = file_paths::normalize_path(path);
+    let path_str = file_paths::normalize_and_transform_path(path, transformer);
     let span = tracing::span!(
         tracing::Level::TRACE,
         "extract",
@@ -133,14 +224,14 @@ pub fn extract(
 
     let _enter = span.enter();
 
-    tracing::info!("extracting: {}", path_str);
+    tracing::debug!("extracting: {}", path_str);
 
     let mut parser = Parser::new();
     parser.set_language(language).unwrap();
     parser.set_included_ranges(ranges).unwrap();
     let tree = parser.parse(source, None).expect("Failed to parse file");
-    trap_writer.comment(format!("Auto-generated TRAP file for {}", path_str));
-    let file_label = populate_file(trap_writer, path);
+    trap_writer.comment(format!("Auto-generated TRAP file for {path_str}"));
+    let file_label = populate_file(trap_writer, path, transformer);
     let mut visitor = Visitor::new(
         source,
         diagnostics_writer,
@@ -174,10 +265,10 @@ struct Visitor<'a> {
     diagnostics_writer: &'a mut diagnostics::LogWriter,
     /// A trap::Writer to accumulate trap entries
     trap_writer: &'a mut trap::Writer,
-    /// A counter for top-level child nodes
-    toplevel_child_counter: usize,
-    /// Language-specific name of the AST info table
-    ast_node_info_table_name: String,
+    /// Language-specific name of the AST location table
+    ast_node_location_table_name: String,
+    /// Language-specific name of the AST parent table
+    ast_node_parent_table_name: String,
     /// Language-specific name of the tokeninfo table
     tokeninfo_table_name: String,
     /// A lookup table from type name to node types
@@ -207,9 +298,9 @@ impl<'a> Visitor<'a> {
             source,
             diagnostics_writer,
             trap_writer,
-            toplevel_child_counter: 0,
-            ast_node_info_table_name: format!("{}_ast_node_info", language_prefix),
-            tokeninfo_table_name: format!("{}_tokeninfo", language_prefix),
+            ast_node_location_table_name: format!("{language_prefix}_ast_node_location"),
+            ast_node_parent_table_name: format!("{language_prefix}_ast_node_parent"),
+            tokeninfo_table_name: format!("{language_prefix}_tokeninfo"),
             schema,
             stack: Vec::new(),
         }
@@ -245,26 +336,25 @@ impl<'a> Visitor<'a> {
         node: Node,
         status_page: bool,
     ) {
-        let (start_line, start_column, end_line, end_column) = location_for(self, node);
-        let loc = location(
-            self.trap_writer,
-            self.file_label,
-            start_line,
-            start_column,
-            end_line,
-            end_column,
-        );
+        let loc = location_for(self, self.file_label, node);
+        let loc_label = location_label(self.trap_writer, loc);
         let mut mesg = self.diagnostics_writer.new_entry(
             "parse-error",
             "Could not process some files due to syntax errors",
         );
         mesg.severity(diagnostics::Severity::Warning)
-            .location(self.path, start_line, start_column, end_line, end_column)
+            .location(
+                self.path,
+                loc.start_line,
+                loc.start_column,
+                loc.end_line,
+                loc.end_column,
+            )
             .message(message, args);
         if status_page {
             mesg.status_page();
         }
-        self.record_parse_error(loc, &mesg);
+        self.record_parse_error(loc_label, &mesg);
     }
 
     fn enter_node(&mut self, node: Node) -> bool {
@@ -298,15 +388,8 @@ impl<'a> Visitor<'a> {
             return;
         }
         let (id, _, child_nodes) = self.stack.pop().expect("Vistor: empty stack");
-        let (start_line, start_column, end_line, end_column) = location_for(self, node);
-        let loc = location(
-            self.trap_writer,
-            self.file_label,
-            start_line,
-            start_column,
-            end_line,
-            end_column,
-        );
+        let loc = location_for(self, self.file_label, node);
+        let loc_label = location_label(self.trap_writer, loc);
         let table = self
             .schema
             .get(&TypeName {
@@ -315,27 +398,29 @@ impl<'a> Visitor<'a> {
             })
             .unwrap();
         let mut valid = true;
-        let (parent_id, parent_index) = match self.stack.last_mut() {
+        let parent_info = match self.stack.last_mut() {
             Some(p) if !node.is_extra() => {
                 p.1 += 1;
-                (p.0, p.1 - 1)
+                Some((p.0, p.1 - 1))
             }
-            _ => {
-                self.toplevel_child_counter += 1;
-                (self.file_label, self.toplevel_child_counter - 1)
-            }
+            _ => None,
         };
         match &table.kind {
             EntryKind::Token { kind_id, .. } => {
                 self.trap_writer.add_tuple(
-                    &self.ast_node_info_table_name,
-                    vec![
-                        trap::Arg::Label(id),
-                        trap::Arg::Label(parent_id),
-                        trap::Arg::Int(parent_index),
-                        trap::Arg::Label(loc),
-                    ],
+                    &self.ast_node_location_table_name,
+                    vec![trap::Arg::Label(id), trap::Arg::Label(loc_label)],
                 );
+                if let Some((parent_id, parent_index)) = parent_info {
+                    self.trap_writer.add_tuple(
+                        &self.ast_node_parent_table_name,
+                        vec![
+                            trap::Arg::Label(id),
+                            trap::Arg::Label(parent_id),
+                            trap::Arg::Int(parent_index),
+                        ],
+                    );
+                };
                 self.trap_writer.add_tuple(
                     &self.tokeninfo_table_name,
                     vec![
@@ -351,14 +436,19 @@ impl<'a> Visitor<'a> {
             } => {
                 if let Some(args) = self.complex_node(&node, fields, &child_nodes, id) {
                     self.trap_writer.add_tuple(
-                        &self.ast_node_info_table_name,
-                        vec![
-                            trap::Arg::Label(id),
-                            trap::Arg::Label(parent_id),
-                            trap::Arg::Int(parent_index),
-                            trap::Arg::Label(loc),
-                        ],
+                        &self.ast_node_location_table_name,
+                        vec![trap::Arg::Label(id), trap::Arg::Label(loc_label)],
                     );
+                    if let Some((parent_id, parent_index)) = parent_info {
+                        self.trap_writer.add_tuple(
+                            &self.ast_node_parent_table_name,
+                            vec![
+                                trap::Arg::Label(id),
+                                trap::Arg::Label(parent_id),
+                                trap::Arg::Int(parent_index),
+                            ],
+                        );
+                    };
                     let mut all_args = vec![trap::Arg::Label(id)];
                     all_args.extend(args);
                     self.trap_writer.add_tuple(table_name, all_args);
@@ -366,14 +456,20 @@ impl<'a> Visitor<'a> {
             }
             _ => {
                 self.record_parse_error(
-                    loc,
+                    loc_label,
                     self.diagnostics_writer
                         .new_entry(
                             "parse-error",
                             "Could not process some files due to syntax errors",
                         )
                         .severity(diagnostics::Severity::Warning)
-                        .location(self.path, start_line, start_column, end_line, end_column)
+                        .location(
+                            self.path,
+                            loc.start_line,
+                            loc.start_column,
+                            loc.end_line,
+                            loc.end_column,
+                        )
                         .message(
                             "Unknown table type: {}",
                             &[diagnostics::MessageArg::Code(node.kind())],
@@ -501,11 +597,7 @@ impl<'a> Visitor<'a> {
                 }
             }
         }
-        if is_valid {
-            Some(args)
-        } else {
-            None
-        }
+        if is_valid { Some(args) } else { None }
     }
 
     fn type_matches(&self, tp: &TypeName, type_info: &node_types::FieldTypeInfo) -> bool {
@@ -525,7 +617,7 @@ impl<'a> Visitor<'a> {
             }
 
             node_types::FieldTypeInfo::ReservedWordInt(int_mapping) => {
-                return !tp.named && int_mapping.contains_key(&tp.kind)
+                return !tp.named && int_mapping.contains_key(&tp.kind);
             }
         }
         false
@@ -555,7 +647,7 @@ fn sliced_source_arg(source: &[u8], n: Node) -> trap::Arg {
 // Emit a pair of `TrapEntry`s for the provided node, appropriately calibrated.
 // The first is the location and label definition, and the second is the
 // 'Located' entry.
-fn location_for(visitor: &mut Visitor, n: Node) -> (usize, usize, usize, usize) {
+fn location_for(visitor: &mut Visitor, file_label: trap::Label, n: Node) -> trap::Location {
     // Tree-sitter row, column values are 0-based while CodeQL starts
     // counting at 1. In addition Tree-sitter's row and column for the
     // end position are exclusive while CodeQL's end positions are inclusive.
@@ -565,16 +657,16 @@ fn location_for(visitor: &mut Visitor, n: Node) -> (usize, usize, usize, usize) 
     // the end column is 0 (start of a line). In such cases the end position must be
     // set to the end of the previous line.
     let start_line = n.start_position().row + 1;
-    let start_col = n.start_position().column + 1;
+    let start_column = n.start_position().column + 1;
     let mut end_line = n.end_position().row + 1;
-    let mut end_col = n.end_position().column;
-    if start_line > end_line || start_line == end_line && start_col > end_col {
+    let mut end_column = n.end_position().column;
+    if start_line > end_line || start_line == end_line && start_column > end_column {
         // the range is empty, clip it to sensible values
         end_line = start_line;
-        end_col = start_col - 1;
-    } else if end_col == 0 {
+        end_column = start_column - 1;
+    } else if end_column == 0 {
         let source = visitor.source;
-        // end_col = 0 means that we are at the start of a line
+        // end_column = 0 means that we are at the start of a line
         // unfortunately 0 is invalid as column number, therefore
         // we should update the end location to be the end of the
         // previous line
@@ -591,10 +683,10 @@ fn location_for(visitor: &mut Visitor, n: Node) -> (usize, usize, usize, usize) 
                 );
             }
             end_line -= 1;
-            end_col = 1;
+            end_column = 1;
             while index > 0 && source[index - 1] != b'\n' {
                 index -= 1;
-                end_col += 1;
+                end_column += 1;
             }
         } else {
             visitor.diagnostics_writer.write(
@@ -612,7 +704,13 @@ fn location_for(visitor: &mut Visitor, n: Node) -> (usize, usize, usize, usize) 
             );
         }
     }
-    (start_line, start_col, end_line, end_col)
+    trap::Location {
+        file_label,
+        start_line,
+        start_column,
+        end_line,
+        end_column,
+    }
 }
 
 fn traverse(tree: &Tree, visitor: &mut Visitor) {

@@ -6,9 +6,10 @@
  * @problem.severity error
  * @precision high
  * @id cs/unsafe-sync-on-field
- * @tags reliability
- *       correctness
+ * @tags quality
+ *       reliability
  *       concurrency
+ *       correctness
  *       external/cwe/cwe-662
  *       external/cwe/cwe-366
  */
@@ -16,7 +17,7 @@
 import csharp
 
 predicate lockedFieldUpdate(LockStmt lock, Field f, AssignableDefinition def) {
-  lock.getAChild+() = def.getAControlFlowNode().getAstNode() and
+  lock.getAChild+() = def.getExpr() and
   def.getTarget() = f
 }
 

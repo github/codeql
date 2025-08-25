@@ -15,5 +15,5 @@
 import csharp
 
 from ObjectCreation oc
-where oc.getType().(Class).hasQualifiedName("System.Web.UI.HtmlControls", "HtmlInputHidden")
+where oc.getType().(Class).hasFullyQualifiedName("System.Web.UI.HtmlControls", "HtmlInputHidden")
 select oc, "Avoid using 'HTMLInputHidden' fields."

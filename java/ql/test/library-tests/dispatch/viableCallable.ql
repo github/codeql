@@ -1,7 +1,7 @@
 import java
 import semmle.code.java.dispatch.VirtualDispatch
 
-from MethodAccess ma, Method m
+from MethodCall ma, Method m
 where
   ma.getFile().toString().matches("ViableCallable%") and
   ma.getMethod().getSourceDeclaration().fromSource() and

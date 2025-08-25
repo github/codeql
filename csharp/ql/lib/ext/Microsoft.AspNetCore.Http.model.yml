@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.AspNetCore.Http", "PathString", True, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]

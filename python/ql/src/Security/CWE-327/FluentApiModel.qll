@@ -110,6 +110,10 @@ module InsecureContextConfiguration implements DataFlow::StateConfigSig {
       )
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // Too complicated, but might be possible after some refactoring.
+  }
 }
 
 private module InsecureContextFlow = DataFlow::GlobalWithState<InsecureContextConfiguration>;

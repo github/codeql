@@ -13,9 +13,9 @@
 
 import javascript
 import semmle.javascript.security.dataflow.HostHeaderPoisoningInEmailGenerationQuery
-import DataFlow::PathGraph
+import HostHeaderPoisoningFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from HostHeaderPoisoningFlow::PathNode source, HostHeaderPoisoningFlow::PathNode sink
+where HostHeaderPoisoningFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Links in this email can be hijacked by poisoning the $@.",
   source.getNode(), "HTTP host header"

@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 import semmle.code.java.frameworks.spring.SpringXMLElement
 import semmle.code.java.frameworks.spring.SpringBean
@@ -9,7 +12,8 @@ import semmle.code.java.frameworks.spring.SpringValue
 class SpringProperty extends SpringXmlElement {
   SpringProperty() { this.getName() = "property" }
 
-  override string toString() { result = this.getPropertyName() }
+  /** Gets a printable representation of this XML element. */
+  string toString() { result = this.getPropertyName() }
 
   /** Gets the value of the `name` attribute. */
   string getPropertyName() { result = this.getAttributeValue("name") }

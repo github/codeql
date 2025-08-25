@@ -16,24 +16,8 @@ module StoredXss {
   /** A sanitizer for stored XSS vulnerabilities. */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for stored XSS vulnerabilities.
-   */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
-
   /** A shared XSS sanitizer as a sanitizer for stored XSS. */
   private class SharedXssSanitizer extends Sanitizer instanceof SharedXss::Sanitizer { }
-
-  /** A shared XSS sanitizer guard as a sanitizer guard for stored XSS. */
-  deprecated private class SharedXssSanitizerGuard extends SanitizerGuard {
-    SharedXss::SanitizerGuard self;
-
-    SharedXssSanitizerGuard() { this = self }
-
-    override predicate checks(Expr e, boolean b) { self.checks(e, b) }
-  }
 
   /** A database query result, considered as a flow source for stored XSS. */
   private class DatabaseQueryAsSource extends Source {

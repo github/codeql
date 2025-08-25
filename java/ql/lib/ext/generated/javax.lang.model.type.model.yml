@@ -1,0 +1,35 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.lang.model.type", "ArrayType", True, "getComponentType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.lang.model.type", "DeclaredType", True, "getEnclosingType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.lang.model.type", "DeclaredType", True, "getTypeArguments", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.lang.model.type", "ExecutableType", True, "getParameterTypes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.lang.model.type", "ExecutableType", True, "getReceiverType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.lang.model.type", "ExecutableType", True, "getReturnType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.lang.model.type", "ExecutableType", True, "getThrownTypes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.lang.model.type", "ExecutableType", True, "getTypeVariables", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.lang.model.type", "IntersectionType", True, "getBounds", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.lang.model.type", "MirroredTypeException", True, "MirroredTypeException", "(TypeMirror)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.lang.model.type", "MirroredTypeException", True, "getTypeMirror", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.lang.model.type", "MirroredTypesException", True, "MirroredTypesException", "(List)", "", "Argument[0].Element", "Argument[this].SyntheticField[javax.lang.model.type.MirroredTypesException.types].Element", "value", "dfc-generated"]
+      - ["javax.lang.model.type", "MirroredTypesException", True, "getTypeMirrors", "()", "", "Argument[this].SyntheticField[javax.lang.model.type.MirroredTypesException.types]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.lang.model.type", "TypeMirror", True, "accept", "(TypeVisitor,Object)", "", "Argument[this]", "ReturnValue", "taint", "dfc-generated"]
+      - ["javax.lang.model.type", "TypeVariable", True, "getLowerBound", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.lang.model.type", "TypeVariable", True, "getUpperBound", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.lang.model.type", "TypeVisitor", True, "visit", "(TypeMirror)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.lang.model.type", "UnionType", True, "getAlternatives", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.lang.model.type", "UnknownTypeException", True, "UnknownTypeException", "(TypeMirror,Object)", "", "Argument[0]", "Argument[this].SyntheticField[javax.lang.model.type.UnknownTypeException.type]", "value", "dfc-generated"]
+      - ["javax.lang.model.type", "UnknownTypeException", True, "UnknownTypeException", "(TypeMirror,Object)", "", "Argument[1]", "Argument[this].SyntheticField[javax.lang.model.type.UnknownTypeException.parameter]", "value", "dfc-generated"]
+      - ["javax.lang.model.type", "UnknownTypeException", True, "getArgument", "()", "", "Argument[this].SyntheticField[javax.lang.model.type.UnknownTypeException.parameter]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.lang.model.type", "UnknownTypeException", True, "getUnknownType", "()", "", "Argument[this].SyntheticField[javax.lang.model.type.UnknownTypeException.type]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.lang.model.type", "WildcardType", True, "getExtendsBound", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.lang.model.type", "WildcardType", True, "getSuperBound", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.lang.model.type", "TypeKind", "isPrimitive", "()", "summary", "df-generated"]

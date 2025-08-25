@@ -1,1 +1,2 @@
-Security/CWE-116/BadTagFilter.ql
+query: Security/CWE-116/BadTagFilter.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with the UnboundID API.
  */
+overlay[local?]
+module;
 
 import java
 
@@ -62,9 +64,6 @@ class MethodUnboundIdFilterCreateAndFilter extends Method {
   }
 }
 
-/** DEPRECATED: Alias for MethodUnboundIdFilterCreateAndFilter */
-deprecated class MethodUnboundIdFilterCreateANDFilter = MethodUnboundIdFilterCreateAndFilter;
-
 /** A method with the name `createORFilter` declared in `com.unboundid.ldap.sdk.Filter`. */
 class MethodUnboundIdFilterCreateORFilter extends Method {
   MethodUnboundIdFilterCreateORFilter() {
@@ -72,9 +71,6 @@ class MethodUnboundIdFilterCreateORFilter extends Method {
     this.hasName("createORFilter")
   }
 }
-
-/** DEPRECATED: Alias for MethodUnboundIdFilterCreateNOTFilter */
-deprecated class MethodUnboundIdFilterCreateNOTFilter = MethodUnboundIdFilterCreateNotFilter;
 
 /** A method with the name `createNOTFilter` declared in `com.unboundid.ldap.sdk.Filter`. */
 class MethodUnboundIdFilterCreateNotFilter extends Method {

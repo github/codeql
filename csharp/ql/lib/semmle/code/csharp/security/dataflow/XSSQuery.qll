@@ -6,9 +6,7 @@
 import csharp
 private import XSSSinks
 private import semmle.code.csharp.security.Sanitizers
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
-private import semmle.code.csharp.dataflow.DataFlow2
-private import semmle.code.csharp.dataflow.TaintTracking2
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 
 /**
  * Holds if there is tainted flow from `source` to `sink` that may lead to a
@@ -42,14 +40,18 @@ predicate xssFlow(XssNode source, XssNode sink, string message) {
  */
 module PathGraph {
   /** Holds if `(pred,succ)` is an edge in the graph of data flow path explanations. */
-  query predicate edges(XssNode pred, XssNode succ) {
-    exists(XssTracking::PathNode a, XssTracking::PathNode b | XssTracking::PathGraph::edges(a, b) |
+  query predicate edges(XssNode pred, XssNode succ, string key, string val) {
+    exists(XssTracking::PathNode a, XssTracking::PathNode b |
+      XssTracking::PathGraph::edges(a, b, key, val)
+    |
       pred.asDataFlowNode() = a and
       succ.asDataFlowNode() = b
     )
     or
     xssFlow(pred, succ, _) and
-    pred instanceof XssAspNode
+    pred instanceof XssAspNode and
+    key = "provenance" and
+    val = ""
   }
 
   /** Holds if `n` is a node in the graph of data flow path explanations. */
@@ -138,21 +140,6 @@ abstract class Source extends DataFlow::Node { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `XssTracking` instead.
- *
- * A taint-tracking configuration for cross-site scripting (XSS) vulnerabilities.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking2::Configuration {
-  TaintTrackingConfiguration() { this = "XSSDataFlowConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
  * A taint-tracking configuration for cross-site scripting (XSS) vulnerabilities.
  */
 module XssTrackingConfig implements DataFlow::ConfigSig {
@@ -175,8 +162,8 @@ module XssTrackingConfig implements DataFlow::ConfigSig {
 
 module XssTracking = TaintTracking::Global<XssTrackingConfig>;
 
-/** A source of remote user input. */
-private class RemoteSource extends Source instanceof RemoteFlowSource { }
+/** A source supported by the current threat model. */
+private class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
 

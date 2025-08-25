@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["tryghost/action-deploy-theme", "*", "input.theme-name", "command-injection", "manual"]
+      - ["tryghost/action-deploy-theme", "*", "input.exclude", "command-injection", "manual"]

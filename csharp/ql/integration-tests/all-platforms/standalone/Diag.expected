@@ -1,0 +1,11 @@
+extractorMessages
+| 6 |
+compilerDiagnostics
+| 4 |
+extractorMessagesLeachedLimit
+| Program.cs:1:1:1:0 | Stopped logging extractor messages after reaching 5 |
+compilationInfo
+| Compiler diagnostic count for CS0103 | 3.0 |
+| Compiler diagnostic count for CS8019 | 7.0 |
+| Extractor message count for group 'Error' | 8.0 |
+| Extractor message count for group 'Warning' | 1.0 |

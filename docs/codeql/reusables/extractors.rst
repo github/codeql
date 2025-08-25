@@ -4,9 +4,11 @@
 
    * - Language
      - Identifier
-   * - C/C++ 
+   * - GitHub Actions
+     - ``actions``
+   * - C/C++
      - ``cpp``
-   * - C# 
+   * - C#
      - ``csharp``
    * - Go
      - ``go``
@@ -18,5 +20,7 @@
      - ``python``
    * - Ruby
      - ``ruby``
+     - Rust
+     - ``rust``
    * - Swift
      - ``swift``

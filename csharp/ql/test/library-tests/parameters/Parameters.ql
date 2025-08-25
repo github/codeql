@@ -1,7 +1,10 @@
 import csharp
 
 private predicate fromTestLocation(Element e) {
-  e.fromSource() or e.getFile().getStem() = "Parameters"
+  e.fromSource() and
+  e.getFile().getBaseName() = ["Parameters.cs", "LambdaParameters.cs"]
+  or
+  e.getFile().getStem() = "Parameters"
 }
 
 private predicate compilerGeneratedAttribute(Parameterizable container) {

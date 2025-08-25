@@ -9,6 +9,8 @@
  * Classes and interfaces can also be local (`LocalClassOrInterface`, `LocalClass`) or anonymous (`AnonymousClass`).
  * Enumerated types (`EnumType`) and records (`Record`) are special kinds of classes.
  */
+overlay[local?]
+module;
 
 import Member
 import Modifier
@@ -324,7 +326,7 @@ predicate declaresMember(Type t, @member m) {
   or
   constrs(m, _, _, _, t, _)
   or
-  fields(m, _, _, t, _)
+  fields(m, _, _, t)
   or
   enclInReftype(m, t) and
   // Since the type `@member` in the dbscheme includes all `@reftype`s,
@@ -420,6 +422,7 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
    * This does not include itself, unless this type is part of a cycle
    * in the type hierarchy.
    */
+  overlay[caller?]
   RefType getAStrictAncestor() { result = this.getASupertype().getAnAncestor() }
 
   /**
@@ -592,7 +595,7 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
    * to the name of the enclosing type, which might be a nested type as well.
    */
   predicate hasQualifiedName(string package, string type) {
-    this.getPackage().hasName(package) and type = this.nestedName()
+    this.getPackage().hasName(package) and type = this.getNestedName()
   }
 
   /**
@@ -601,7 +604,7 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
   override string getTypeDescriptor() {
     result =
       "L" + this.getPackage().getName().replaceAll(".", "/") + "/" +
-        this.getSourceDeclaration().nestedName() + ";"
+        this.getSourceDeclaration().getNestedName() + ";"
   }
 
   /**
@@ -615,8 +618,8 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
   string getQualifiedName() {
     exists(string pkgName | pkgName = this.getPackage().getName() |
       if pkgName = ""
-      then result = this.nestedName()
-      else result = pkgName + "." + this.nestedName()
+      then result = this.getNestedName()
+      else result = pkgName + "." + this.getNestedName()
     )
   }
 
@@ -627,11 +630,14 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
    * Otherwise the name of the nested type is prefixed with a `$` and appended to
    * the name of the enclosing type, which might be a nested type as well.
    */
-  string nestedName() {
+  string getNestedName() {
     not this instanceof NestedType and result = this.getName()
     or
-    this.(NestedType).getEnclosingType().nestedName() + "$" + this.getName() = result
+    this.(NestedType).getEnclosingType().getNestedName() + "$" + this.getName() = result
   }
+
+  /** DEPRECATED: Alias for `getNestedName`. */
+  deprecated string nestedName() { result = this.getNestedName() }
 
   /**
    * Gets the source declaration of this type.
@@ -665,6 +671,7 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
    *
    * For the definition of the notion of *erasure* see JLS v8, section 4.6 (Type Erasure).
    */
+  overlay[caller?]
   pragma[inline]
   RefType commonSubtype(RefType other) {
     result.getASourceSupertype*() = erase(this) and
@@ -746,6 +753,13 @@ class DataClass extends Class {
  */
 class Record extends Class {
   Record() { isRecord(this) }
+
+  /**
+   * Gets the canonical constructor of this record.
+   */
+  Constructor getCanonicalConstructor() {
+    result = this.getAConstructor() and isCanonicalConstr(result)
+  }
 }
 
 /** An intersection type. */
@@ -1090,6 +1104,24 @@ class PrimitiveType extends Type, @primitive {
   override string getAPrimaryQlClass() { result = "PrimitiveType" }
 }
 
+private int getByteSize(PrimitiveType t) {
+  t.hasName("boolean") and result = 1
+  or
+  t.hasName("byte") and result = 1
+  or
+  t.hasName("char") and result = 2
+  or
+  t.hasName("short") and result = 2
+  or
+  t.hasName("int") and result = 4
+  or
+  t.hasName("float") and result = 4
+  or
+  t.hasName("long") and result = 8
+  or
+  t.hasName("double") and result = 8
+}
+
 /** The type of the `null` literal. */
 class NullType extends Type, @primitive {
   NullType() { this.hasName("<nulltype>") }
@@ -1167,12 +1199,10 @@ class EnumType extends Class {
   EnumType() { isEnumType(this) }
 
   /** Gets the enum constant with the specified name. */
-  EnumConstant getEnumConstant(string name) {
-    fields(result, _, _, this, _) and result.hasName(name)
-  }
+  EnumConstant getEnumConstant(string name) { fields(result, _, _, this) and result.hasName(name) }
 
   /** Gets an enum constant declared in this enum type. */
-  EnumConstant getAnEnumConstant() { fields(result, _, _, this, _) }
+  EnumConstant getAnEnumConstant() { fields(result, _, _, this) }
 
   override predicate isFinal() {
     // JLS 8.9: An enum declaration is implicitly `final` unless it contains
@@ -1231,11 +1261,19 @@ private Type erase(Type t) {
  *
  * For the definition of the notion of *erasure* see JLS v8, section 4.6 (Type Erasure).
  */
-pragma[inline]
+bindingset[t1, t2]
+overlay[caller?]
+pragma[inline_late]
 predicate haveIntersection(RefType t1, RefType t2) {
   exists(RefType e1, RefType e2 | e1 = erase(t1) and e2 = erase(t2) |
-    erasedHaveIntersection(e1, e2)
+    erasedHaveIntersectionFilter(e1, e2)
   )
+}
+
+bindingset[t1, t2]
+pragma[inline_late]
+private predicate erasedHaveIntersectionFilter(RefType t1, RefType t2) {
+  erasedHaveIntersection(t1, t2)
 }
 
 /**
@@ -1281,6 +1319,12 @@ class IntegralType extends Type {
     |
       name = ["byte", "char", "short", "int", "long"]
     )
+  }
+
+  /** Gets the size in bytes of this numeric type. */
+  final int getByteSize() {
+    result = getByteSize(this) or
+    result = getByteSize(this.(BoxedType).getPrimitiveType())
   }
 }
 

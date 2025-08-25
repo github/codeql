@@ -53,6 +53,12 @@ class NSUserAutomatorTask : NSUserScriptTask {
 	var variables: [String: Any]? { get { return nil } set { } }
 }
 
+class FileManager : NSObject {
+	class var `default`: FileManager { get { return 0 as! FileManager } }
+
+	func contentsOfDirectory(atPath path: String) throws -> [String] { [] }
+}
+
 // --- tests ---
 
 func validateCommand(_ command: String) -> String? {
@@ -91,7 +97,7 @@ class MyProcess : Process {
 	var harmlessField: String?
 
 	func setArguments(_ arguments: [String]) {
-		self.arguments = arguments
+		self.arguments = arguments // BAD
 	}
 }
 
@@ -117,6 +123,7 @@ func testCommandInjectionMore(mySafeString: String) {
 
 	let task4 = Process()
 	task4.executableURL = URL(fileURLWithPath: userControlledString) // BAD
+	task4.executableURL = URL(string: userControlledString)! // BAD
 	task4.arguments = ["abc", "def" + userControlledString] // BAD
 	try! task4.run()
 
@@ -126,9 +133,10 @@ func testCommandInjectionMore(mySafeString: String) {
 	try! task5?.run()
 
 	let task6 = MyProcess()
-	task6.executableURL = URL(string: userControlledString)! // BAD [NOT DETECTED]
-	task6.arguments = [userControlledString] // BAD [NOT DETECTED]
-	task6.setArguments([userControlledString]) // BAD [NOT DETECTED]
+	task6.executableURL = URL(fileURLWithPath: userControlledString) // BAD
+	task6.executableURL = URL(string: userControlledString)! // BAD
+	task6.arguments = [userControlledString] // BAD
+	task6.setArguments([userControlledString]) // BAD (flagged inside `setArguments`)
 	task6.harmlessField = userControlledString // GOOD
 	try! task6.run()
 
@@ -158,6 +166,19 @@ func testCommandInjectionMore(mySafeString: String) {
 	let task11 = try! NSUserAutomatorTask(url: URL(string: userControlledString)!) // BAD
 	task11.variables = ["abc": userControlledString] // BAD [NOT DETECTED]
 	task11.execute(withInput: nil)
+
+	let files = try! FileManager.default.contentsOfDirectory(atPath: "some/directory")
+	for file in files {
+		let task12 = Process()
+		task12.launchPath = "/bin/rm" // GOOD
+		task12.arguments = [file] // GOOD (cases like this vary, but our analysis doesn't work well on them)
+		task12.launch()
+		task12.arguments = files // GOOD (similar to previous)
+		task12.launch()
+		task12.arguments = [files[0]] // GOOD (similar to previous)
+		task12.launch()
+	}
+
 }
 
 struct MyClass {

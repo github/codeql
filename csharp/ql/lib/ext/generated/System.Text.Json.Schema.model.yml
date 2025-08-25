@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Text.Json.Schema", "JsonSchemaExporter", "GetJsonSchemaAsNode", "(System.Text.Json.JsonSerializerOptions,System.Type,System.Text.Json.Schema.JsonSchemaExporterOptions)", "summary", "df-generated"]
+      - ["System.Text.Json.Schema", "JsonSchemaExporter", "GetJsonSchemaAsNode", "(System.Text.Json.Serialization.Metadata.JsonTypeInfo,System.Text.Json.Schema.JsonSchemaExporterOptions)", "summary", "df-generated"]
+      - ["System.Text.Json.Schema", "JsonSchemaExporterContext", "get_BaseTypeInfo", "()", "summary", "df-generated"]
+      - ["System.Text.Json.Schema", "JsonSchemaExporterContext", "get_Path", "()", "summary", "df-generated"]
+      - ["System.Text.Json.Schema", "JsonSchemaExporterContext", "get_PropertyInfo", "()", "summary", "df-generated"]
+      - ["System.Text.Json.Schema", "JsonSchemaExporterContext", "get_TypeInfo", "()", "summary", "df-generated"]
+      - ["System.Text.Json.Schema", "JsonSchemaExporterOptions", "get_Default", "()", "summary", "df-generated"]

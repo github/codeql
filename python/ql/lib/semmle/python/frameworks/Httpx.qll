@@ -9,21 +9,24 @@
 private import python
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides models for the `httpx` PyPI package.
  *
  * See
  * - https://pypi.org/project/httpx/
  * - https://www.python-httpx.org/
  */
-private module HttpxModel {
+module HttpxModel {
   /**
    * An outgoing HTTP request, from the `httpx` library.
    *
    * See https://www.python-httpx.org/api/
    */
-  private class RequestCall extends Http::Client::Request::Range, API::CallNode {
+  private class RequestCall extends Http::Client::Request::Range instanceof API::CallNode {
     string methodName;
 
     RequestCall() {
@@ -32,11 +35,11 @@ private module HttpxModel {
     }
 
     override DataFlow::Node getAUrlPart() {
-      result = this.getArgByName("url")
+      result = super.getArgByName("url")
       or
       if methodName in ["request", "stream"]
-      then result = this.getArg(1)
-      else result = this.getArg(0)
+      then result = super.getArg(1)
+      else result = super.getArg(0)
     }
 
     override string getFramework() { result = "httpx" }
@@ -44,8 +47,8 @@ private module HttpxModel {
     override predicate disablesCertificateValidation(
       DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
     ) {
-      disablingNode = this.getKeywordParameter("verify").asSink() and
-      argumentOrigin = this.getKeywordParameter("verify").getAValueReachingSink() and
+      disablingNode = super.getKeywordParameter("verify").asSink() and
+      argumentOrigin = super.getKeywordParameter("verify").getAValueReachingSink() and
       // unlike `requests`, httpx treats `None` as turning off verify (and not as the default)
       argumentOrigin.asExpr().(ImmutableLiteral).booleanValue() = false
       // TODO: Handling of insecure SSLContext passed to verify argument
@@ -59,12 +62,15 @@ private module HttpxModel {
    */
   module Client {
     /** Get a reference to the `httpx.Client` or `httpx.AsyncClient` class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       result = API::moduleImport("httpx").getMember(["Client", "AsyncClient"])
+      or
+      result = ModelOutput::getATypeNode("httpx.Client~Subclass").getASubclass*()
     }
 
     /** A method call on a Client that sends off a request */
-    private class OutgoingRequestCall extends Http::Client::Request::Range, DataFlow::CallCfgNode {
+    private class OutgoingRequestCall extends Http::Client::Request::Range instanceof DataFlow::CallCfgNode
+    {
       string methodName;
 
       OutgoingRequestCall() {
@@ -73,11 +79,11 @@ private module HttpxModel {
       }
 
       override DataFlow::Node getAUrlPart() {
-        result = this.getArgByName("url")
+        result = super.getArgByName("url")
         or
         if methodName in ["request", "stream"]
-        then result = this.getArg(1)
-        else result = this.getArg(0)
+        then result = super.getArg(1)
+        else result = super.getArg(0)
       }
 
       override string getFramework() { result = "httpx.[Async]Client" }

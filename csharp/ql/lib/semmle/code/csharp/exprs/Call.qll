@@ -8,7 +8,6 @@ import Expr
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
 private import semmle.code.csharp.dispatch.Dispatch
-private import dotnet
 
 /**
  * A call. Either a method call (`MethodCall`), a constructor initializer call
@@ -16,7 +15,7 @@ private import dotnet
  * a delegate call (`DelegateCall`), an accessor call (`AccessorCall`), a
  * constructor call (`ObjectCreation`), or a local function call (`LocalFunctionCall`).
  */
-class Call extends DotNet::Call, Expr, @call {
+class Call extends Expr, @call {
   /**
    * Gets the static (compile-time) target of this call. For example, the
    * static target of `x.M()` on line 9 is `A.M` in
@@ -38,13 +37,19 @@ class Call extends DotNet::Call, Expr, @call {
    * Use `getARuntimeTarget()` instead to get a potential run-time target (will
    * include `B.M` in the example above).
    */
-  override Callable getTarget() { none() }
+  Callable getTarget() { none() }
 
-  override Expr getArgument(int i) { result = this.getChild(i) and i >= 0 }
+  /** Gets the `i`th argument to this call, if any. */
+  Expr getArgument(int i) { result = this.getChild(i) and i >= 0 }
 
-  override Expr getRawArgument(int i) { result = this.getArgument(i) }
+  /**
+   * Gets the `i`th "raw" argument to this call, if any.
+   * For instance methods, argument 0 is the qualifier.
+   */
+  Expr getRawArgument(int i) { result = this.getArgument(i) }
 
-  override Expr getAnArgument() { result = this.getArgument(_) }
+  /** Gets an argument to this call. */
+  Expr getAnArgument() { result = this.getArgument(_) }
 
   /** Gets the number of arguments of this call. */
   int getNumberOfArguments() { result = count(this.getAnArgument()) }
@@ -57,60 +62,28 @@ class Call extends DotNet::Call, Expr, @call {
    *
    * This takes into account both positional and named arguments, but does not
    * consider default arguments.
-   *
-   * An argument must always have a type that is convertible to the relevant
-   * parameter type. Therefore, `params` arguments are only taken into account
-   * when they are passed as explicit arrays. For example, in the call to `M1`
-   * on line 5, `o` is not an argument for `M1`'s `args` parameter, while
-   * `new object[] { o }` on line 6 is, in
-   *
-   * ```csharp
-   * class C {
-   *   void M1(params object[] args) { }
-   *
-   *   void M2(object o) {
-   *     M1(o);
-   *     M1(new object[] { o });
-   *   }
-   * }
-   * ```
    */
   cached
-  override Expr getArgumentForParameter(DotNet::Parameter p) {
+  Expr getArgumentForParameter(Parameter p) {
+    // Appears in the positional part of the call
+    result = this.getImplicitArgument(p)
+    or
+    // Appears in the named part of the call
     this.getTarget().getAParameter() = p and
-    (
-      // Appears in the positional part of the call
-      result = this.getImplicitArgument(p.getPosition()) and
-      (
-        p.(Parameter).isParams()
-        implies
-        (
-          isValidExplicitParamsType(p, result.getType()) and
-          not this.hasMultipleParamsArguments()
-        )
-      )
-      or
-      // Appears in the named part of the call
-      result = this.getExplicitArgument(p.getName()) and
-      (p.(Parameter).isParams() implies isValidExplicitParamsType(p, result.getType()))
-    )
-  }
-
-  /**
-   * Holds if this call has multiple arguments for a `params` parameter
-   * of the targeted callable.
-   */
-  private predicate hasMultipleParamsArguments() {
-    exists(Parameter p | p = this.getTarget().getAParameter() |
-      p.isParams() and
-      exists(this.getArgument(any(int i | i > p.getPosition())))
-    )
+    result = this.getExplicitArgument(p.getName())
   }
 
   pragma[noinline]
-  private Expr getImplicitArgument(int pos) {
-    result = this.getArgument(pos) and
-    not exists(result.getExplicitArgumentName())
+  private Expr getImplicitArgument(Parameter p) {
+    this.getTarget().getAParameter() = p and
+    not exists(result.getExplicitArgumentName()) and
+    (
+      p.(Parameter).isParams() and
+      result = this.getArgument(any(int i | i >= p.getPosition()))
+      or
+      not p.(Parameter).isParams() and
+      result = this.getArgument(p.getPosition())
+    )
   }
 
   pragma[nomagic]
@@ -176,7 +149,7 @@ class Call extends DotNet::Call, Expr, @call {
    * - Line 16: There is no static target (delegate call) but the delegate `i => { }`
    *   (line 20) is a run-time target.
    */
-  override Callable getARuntimeTarget() {
+  Callable getARuntimeTarget() {
     exists(DispatchCall dc | dc.getCall() = this | result = dc.getADynamicTarget())
   }
 
@@ -213,13 +186,37 @@ class Call extends DotNet::Call, Expr, @call {
   /**
    * Gets the argument that corresponds to parameter `p` of a potential
    * run-time target of this call.
+   *
+   * This takes into account both positional and named arguments, but does not
+   * consider default arguments.
    */
+  cached
   Expr getRuntimeArgumentForParameter(Parameter p) {
-    exists(Callable c |
-      c = this.getARuntimeTarget() and
-      p = c.getAParameter() and
+    // Appears in the positional part of the call
+    result = this.getImplicitRuntimeArgument(p)
+    or
+    // Appears in the named part of the call
+    this.getARuntimeTarget().getAParameter() = p and
+    result = this.getExplicitRuntimeArgument(p.getName())
+  }
+
+  pragma[noinline]
+  private Expr getImplicitRuntimeArgument(Parameter p) {
+    this.getARuntimeTarget().getAParameter() = p and
+    not exists(result.getExplicitArgumentName()) and
+    (
+      p.isParams() and
+      result = this.getRuntimeArgument(any(int i | i >= p.getPosition()))
+      or
+      not p.isParams() and
       result = this.getRuntimeArgument(p.getPosition())
     )
+  }
+
+  pragma[nomagic]
+  private Expr getExplicitRuntimeArgument(string name) {
+    result = this.getARuntimeArgument() and
+    result.getExplicitArgumentName() = name
   }
 
   /**
@@ -255,28 +252,6 @@ class Call extends DotNet::Call, Expr, @call {
 }
 
 /**
- * Holds if the type `t` is a valid argument type for passing an explicit array
- * to the `params` parameter `p`. For example, the types `object[]` and `string[]`
- * of the arguments on lines 4 and 5, respectively, are valid for the parameter
- * `args` on line 1 in
- *
- * ```csharp
- * void M(params object[] args) { ... }
- *
- * void CallM(object[] os, string[] ss, string s) {
- *   M(os);
- *   M(ss);
- *   M(s);
- * }
- * ```
- */
-pragma[nomagic]
-private predicate isValidExplicitParamsType(Parameter p, Type t) {
-  p.isParams() and
-  t.isImplicitlyConvertibleTo(p.getType())
-}
-
-/**
  * A method call, for example `a.M()` on line 5 in
  *
  * ```csharp
@@ -305,6 +280,10 @@ class MethodCall extends Call, QualifiableExpr, LateBindableExpr, @method_invoca
       or
       result = this.getArgument(i - 1)
     else result = this.getArgument(i)
+  }
+
+  override Expr stripImplicit() {
+    if this.isImplicit() then result = this.getQualifier().stripImplicit() else result = this
   }
 }
 
@@ -553,7 +532,7 @@ class DelegateLikeCall extends Call, DelegateLikeCall_ {
   final override Callable getARuntimeTarget() {
     exists(ExplicitDelegateLikeDataFlowCall call |
       this = call.getCall() and
-      result = viableCallableLambda(call, _).asCallable()
+      result = viableCallableLambda(call, _).asCallable(_)
     )
   }
 

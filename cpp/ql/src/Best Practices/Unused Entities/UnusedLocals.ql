@@ -26,7 +26,7 @@ import cpp
  */
 class TemplateDependentType extends Type {
   TemplateDependentType() {
-    this instanceof TemplateParameter
+    this instanceof TypeTemplateParameter
     or
     exists(TemplateDependentType t |
       this.refersToDirectly(t) and
@@ -57,5 +57,5 @@ where
   not declarationHasSideEffects(v) and
   not exists(AsmStmt s | f = s.getEnclosingFunction()) and
   not v.getAnAttribute().getName() = "unused" and
-  not any(ErrorExpr e).getEnclosingFunction() = f // unextracted expr may use `v`
+  not f.hasErrors() // Unextracted expressions may use `v`
 select v, "Variable " + v.getName() + " is not used."

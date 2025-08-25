@@ -1,0 +1,14 @@
+| Quality.cs:8:9:8:19 | access to property MyProperty5 | Call without target $@. | Quality.cs:8:9:8:19 | access to property MyProperty5 | access to property MyProperty5 |
+| Quality.cs:13:9:13:19 | access to property MyProperty1 | Call without target $@. | Quality.cs:13:9:13:19 | access to property MyProperty1 | access to property MyProperty1 |
+| Quality.cs:14:24:14:34 | access to property MyProperty3 | Call without target $@. | Quality.cs:14:24:14:34 | access to property MyProperty3 | access to property MyProperty3 |
+| Quality.cs:15:24:15:34 | access to property MyProperty3 | Call without target $@. | Quality.cs:15:24:15:34 | access to property MyProperty3 | access to property MyProperty3 |
+| Quality.cs:15:24:15:46 | access to property MyProperty2 | Call without target $@. | Quality.cs:15:24:15:46 | access to property MyProperty2 | access to property MyProperty2 |
+| Quality.cs:19:13:19:23 | access to property MyProperty4 | Call without target $@. | Quality.cs:19:13:19:23 | access to property MyProperty4 | access to property MyProperty4 |
+| Quality.cs:20:13:20:23 | access to property MyProperty6 | Call without target $@. | Quality.cs:20:13:20:23 | access to property MyProperty6 | access to property MyProperty6 |
+| Quality.cs:23:9:23:14 | access to event Event1 | Call without target $@. | Quality.cs:23:9:23:14 | access to event Event1 | access to event Event1 |
+| Quality.cs:23:9:23:30 | delegate call | Call without target $@. | Quality.cs:23:9:23:30 | delegate call | delegate call |
+| Quality.cs:26:19:26:26 | access to indexer | Call without target $@. | Quality.cs:26:19:26:26 | access to indexer | access to indexer |
+| Quality.cs:29:21:29:27 | access to indexer | Call without target $@. | Quality.cs:29:21:29:27 | access to indexer | access to indexer |
+| Quality.cs:32:9:32:21 | access to indexer | Call without target $@. | Quality.cs:32:9:32:21 | access to indexer | access to indexer |
+| Quality.cs:38:16:38:26 | access to property MyProperty2 | Call without target $@. | Quality.cs:38:16:38:26 | access to property MyProperty2 | access to property MyProperty2 |
+| Quality.cs:50:20:50:26 | object creation of type T | Call without target $@. | Quality.cs:50:20:50:26 | object creation of type T | object creation of type T |

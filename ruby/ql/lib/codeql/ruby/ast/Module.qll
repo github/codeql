@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import codeql.ruby.AST
 private import codeql.ruby.CFG
 private import internal.AST
@@ -8,6 +11,7 @@ private import internal.Scope
 /**
  * A representation of a run-time `module` or `class` value.
  */
+overlay[global]
 class Module extends TModule {
   /** Gets a declaration of this module, if any. */
   ModuleBase getADeclaration() { result.getModule() = this }
@@ -173,6 +177,11 @@ class Module extends TModule {
     result.getParentModule() = this and
     result.getOwnModuleName() = name
   }
+
+  /**
+   * Holds if this is a built-in module, e.g. `Object`.
+   */
+  predicate isBuiltin() { isBuiltinModule(this) }
 }
 
 /**
@@ -250,6 +259,7 @@ class ModuleBase extends BodyStmt, Scope, TModuleBase {
   }
 
   /** Gets the representation of the run-time value of this module or class. */
+  overlay[global]
   Module getModule() { none() }
 
   /**
@@ -328,6 +338,7 @@ class Toplevel extends ModuleBase, TToplevel {
     pred = "getBeginBlock" and result = this.getBeginBlock(_)
   }
 
+  overlay[global]
   final override Module getModule() { result = TResolved("Object") }
 
   final override string toString() { result = g.getLocation().getFile().getBaseName() }
@@ -400,6 +411,7 @@ class Namespace extends ModuleBase, ConstantWriteAccess, TNamespace {
    */
   override predicate hasGlobalScope() { none() }
 
+  overlay[global]
   final override Module getModule() {
     result = any(string qName | qName = namespaceDeclaration(this) | TResolved(qName))
     or

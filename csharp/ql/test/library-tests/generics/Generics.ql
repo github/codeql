@@ -2,7 +2,7 @@ import csharp
 import semmle.code.csharp.commons.QualifiedName
 
 query predicate test1(UnboundGenericDelegateType d) {
-  d.hasName("GenericDelegate<>") and
+  d.hasName("GenericDelegate`1") and
   d.getTypeParameter(0).hasName("T") and
   d.getParameter(0).getType().hasName("T")
 }
@@ -13,7 +13,7 @@ query predicate test2(Class c) {
 }
 
 query predicate test3(ConstructedClass c, UnboundGenericClass d) {
-  d.hasName("A<>") and
+  d.hasName("A`1") and
   c.getTypeArgument(0).hasName("X") and
   c.getTypeArgument(0) instanceof TypeParameter and
   c.getUnboundGeneric() = d
@@ -21,7 +21,7 @@ query predicate test3(ConstructedClass c, UnboundGenericClass d) {
 
 query predicate test4(UnboundGenericClass c, string s) {
   c.fromSource() and
-  not c.getName().matches("%<%>") and
+  not c.getName().matches("%`%") and
   s = "Unbound generic class with inconsistent name"
 }
 
@@ -33,7 +33,7 @@ query predicate test5(ConstructedClass c, string s) {
 
 query predicate test6(ConstructedClass at, UnboundGenericClass b, ConstructedClass bt, Field f) {
   at.hasName("A<T>") and
-  b.hasName("B<>") and
+  b.hasName("B`1") and
   bt.hasName("B<X>") and
   at.getTypeArgument(0).hasName("T") and
   at.getTypeArgument(0) instanceof TypeParameter and
@@ -46,8 +46,8 @@ query predicate test6(ConstructedClass at, UnboundGenericClass b, ConstructedCla
 query predicate test7(ConstructedClass aString, ConstructedClass bString) {
   aString.hasName("A<String>") and
   bString.hasName("B<String>") and
-  aString.getUnboundDeclaration().hasName("A<>") and
-  bString.getUnboundDeclaration().hasName("B<>")
+  aString.getUnboundDeclaration().hasName("A`1") and
+  bString.getUnboundDeclaration().hasName("B`1")
 }
 
 query predicate test8(ConstructedClass bString, Method m) {
@@ -105,7 +105,7 @@ query predicate test13(ConstructedClass gridInt, Indexer i) {
 }
 
 query predicate test14(UnboundGenericClass gridInt, Indexer i) {
-  gridInt.hasName("Grid<>") and
+  gridInt.hasName("Grid`1") and
   i.getDeclaringType() = gridInt and
   i.getType() instanceof IntType
 }
@@ -139,7 +139,7 @@ query predicate test17(
 query predicate test18(
   Class c, Method m, Parameter p, int numArgs, string typeName, int numParams, int numTypes
 ) {
-  c.getName().matches("A<%") and
+  c.getName().regexpMatch("A(`[0-9]+|<).*") and
   m = c.getAMethod() and
   p = m.getAParameter() and
   numArgs = count(m.(ConstructedMethod).getATypeArgument()) and
@@ -169,7 +169,7 @@ query predicate test20(UnboundGenericType t, string s) {
  *    }
  */
 query predicate test21(Enum e, Class c) {
-  c.hasName("Param<>") and
+  c.hasName("Param`1") and
   e.hasName("E") and
   e.getDeclaringType() = c
 }
@@ -223,6 +223,7 @@ query predicate test26(ConstructedGeneric cg, string s) {
 }
 
 query predicate test27(ConstructedType ct, UnboundGenericType ugt, UnboundGenericType sourceDecl) {
+  ct.fromSource() and
   ct instanceof NestedType and
   ugt = ct.getUnboundGeneric() and
   sourceDecl = ct.getUnboundDeclaration() and
@@ -231,18 +232,18 @@ query predicate test27(ConstructedType ct, UnboundGenericType ugt, UnboundGeneri
 
 query predicate test28(UnboundGeneric ug, string s) {
   ug.fromSource() and
-  s = ug.getQualifiedNameWithTypes()
+  s = getFullyQualifiedNameWithTypes(ug)
 }
 
 query predicate test29(ConstructedGeneric cg, string s) {
   cg.fromSource() and
-  s = cg.getQualifiedNameWithTypes()
+  s = getFullyQualifiedNameWithTypes(cg)
 }
 
 query predicate test30(Declaration d, string s) {
   d.fromSource() and
   d instanceof @generic and
-  s = d.getQualifiedNameWithTypes() and
+  s = getFullyQualifiedNameWithTypes(d) and
   d != d.getUnboundDeclaration() and
   not d instanceof Generic
 }
@@ -261,23 +262,19 @@ query predicate test32(ConstructedGeneric cg, string s1, string s2) {
 query predicate test33(ConstructedMethod cm, string s1, string s2) {
   cm.fromSource() and
   exists(string namespace, string type, string name |
-    cm.hasQualifiedName(namespace, type, name) and s1 = getQualifiedName(namespace, type, name)
+    cm.hasFullyQualifiedName(namespace, type, name) and s1 = getQualifiedName(namespace, type, name)
   ) and
-  cm.getQualifiedNameWithTypes() = s2
+  getFullyQualifiedNameWithTypes(cm) = s2
 }
 
 query predicate test34(UnboundGeneric ug, string s1, string s2) {
   ug.fromSource() and
-  exists(string qualifier, string name |
-    ug.hasQualifiedName(qualifier, name) and s1 = getQualifiedName(qualifier, name)
-  ) and
-  ug.getQualifiedNameWithTypes() = s2
+  s1 = ug.getFullyQualifiedNameDebug() and
+  s2 = getFullyQualifiedNameWithTypes(ug)
 }
 
 query predicate test35(UnboundGenericMethod gm, string s1, string s2) {
   gm.fromSource() and
-  exists(string namespace, string type, string name |
-    gm.hasQualifiedName(namespace, type, name) and s1 = getQualifiedName(namespace, type, name)
-  ) and
-  gm.getQualifiedNameWithTypes() = s2
+  s1 = gm.getFullyQualifiedNameDebug() and
+  s2 = getFullyQualifiedNameWithTypes(gm)
 }

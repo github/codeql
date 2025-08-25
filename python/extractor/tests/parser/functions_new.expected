@@ -1,0 +1,41 @@
+Module: [1, 0] - [3, 0]
+  body: [
+    Assign: [1, 0] - [1, 42]
+      targets: [
+        Name: [1, 4] - [1, 26]
+          variable: Variable('tuple_typed_list_splat', None)
+          ctx: Store
+      ]
+      value:
+        FunctionExpr: [1, 0] - [1, 42]
+          name: 'tuple_typed_list_splat'
+          args:
+            arguments
+              defaults: []
+              kw_defaults: []
+              annotations: []
+              varargannotation:
+                Starred: [1, 35] - [1, 40]
+                  value:
+                    Name: [1, 36] - [1, 40]
+                      variable: Variable('ARGS', None)
+                      ctx: Load
+                  ctx: Load
+              kwargannotation: None
+              kw_annotations: []
+          returns: None
+          inner_scope:
+            Function: [1, 0] - [1, 42]
+              name: 'tuple_typed_list_splat'
+              type_parameters: []
+              args: []
+              vararg:
+                Name: [1, 28] - [1, 32]
+                  variable: Variable('args', None)
+                  ctx: Param
+              kwonlyargs: []
+              kwarg: None
+              body: [
+                Pass: [2, 4] - [2, 8]
+              ]
+  ]

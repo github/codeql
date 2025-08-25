@@ -8,10 +8,10 @@ namespace ConstantConditionalExpression
 
         public void Foo()
         {
-            int i = (ZERO == 1 - 1) ? 0 : 1; // BAD
-            int j = false ? 0 : 1; // BAD
-            int k = " " == " " ? 0 : 1; // BAD
-            int l = (" "[0] == ' ') ? 0 : 1; // BAD: but not flagged
+            int i = (ZERO == 1 - 1) ? 0 : 1; // $ Alert
+            int j = false ? 0 : 1; // $ Alert
+            int k = " " == " " ? 0 : 1; // $ Alert
+            int l = (" "[0] == ' ') ? 0 : 1; // Missing Alert
             int m = Bar() == 0 ? 0 : 1; // GOOD
         }
 
@@ -21,5 +21,4 @@ namespace ConstantConditionalExpression
         }
 
     }
-
 }

@@ -1,0 +1,340 @@
+models
+| 1 | Summary: com.fasterxml.jackson.core; JsonFactory; false; createParser; ; ; Argument[0]; ReturnValue; taint; manual |
+| 2 | Summary: com.fasterxml.jackson.databind; ObjectMapper; false; createParser; ; ; Argument[0]; ReturnValue; taint; manual |
+| 3 | Summary: com.fasterxml.jackson.databind; ObjectMapper; true; convertValue; ; ; Argument[0]; ReturnValue; taint; manual |
+| 4 | Summary: com.fasterxml.jackson.databind; ObjectMapper; true; valueToTree; ; ; Argument[0].MapValue.Element; ReturnValue; taint; manual |
+| 5 | Summary: com.fasterxml.jackson.databind; ObjectMapper; true; valueToTree; ; ; Argument[0].MapValue; ReturnValue; taint; manual |
+| 6 | Summary: com.fasterxml.jackson.databind; ObjectMapper; true; valueToTree; ; ; Argument[0]; ReturnValue; taint; manual |
+| 7 | Summary: com.fasterxml.jackson.databind; ObjectReader; false; createParser; ; ; Argument[0]; ReturnValue; taint; manual |
+| 8 | Summary: java.util; Map; false; of; ; ; Argument[1]; ReturnValue.MapValue; value; manual |
+edges
+| Test.java:20:25:20:38 | element : Object | Test.java:21:23:21:29 | element : Object | provenance |  |
+| Test.java:21:23:21:29 | element : Object | Test.java:21:10:21:30 | of(...) : Map [<map.value>] : Object | provenance | MaD:8 |
+| Test.java:35:16:35:32 | (...)... : char[] | Test.java:37:32:37:33 | in : char[] | provenance |  |
+| Test.java:35:25:35:32 | source(...) : Object | Test.java:35:16:35:32 | (...)... : char[] | provenance |  |
+| Test.java:37:10:37:40 | createParser(...) : JsonParser | Test.java:38:9:38:11 | out | provenance |  |
+| Test.java:37:32:37:33 | in : char[] | Test.java:37:10:37:40 | createParser(...) : JsonParser | provenance | MaD:1 |
+| Test.java:43:16:43:32 | (...)... : char[] | Test.java:45:32:45:33 | in : char[] | provenance |  |
+| Test.java:43:25:43:32 | source(...) : Object | Test.java:43:16:43:32 | (...)... : char[] | provenance |  |
+| Test.java:45:10:45:34 | createParser(...) : JsonParser | Test.java:46:9:46:11 | out | provenance |  |
+| Test.java:45:32:45:33 | in : char[] | Test.java:45:10:45:34 | createParser(...) : JsonParser | provenance | MaD:1 |
+| Test.java:51:16:51:32 | (...)... : byte[] | Test.java:53:32:53:33 | in : byte[] | provenance |  |
+| Test.java:51:25:51:32 | source(...) : Object | Test.java:51:16:51:32 | (...)... : byte[] | provenance |  |
+| Test.java:53:10:53:40 | createParser(...) : JsonParser | Test.java:54:9:54:11 | out | provenance |  |
+| Test.java:53:32:53:33 | in : byte[] | Test.java:53:10:53:40 | createParser(...) : JsonParser | provenance | MaD:1 |
+| Test.java:59:16:59:32 | (...)... : byte[] | Test.java:61:32:61:33 | in : byte[] | provenance |  |
+| Test.java:59:25:59:32 | source(...) : Object | Test.java:59:16:59:32 | (...)... : byte[] | provenance |  |
+| Test.java:61:10:61:34 | createParser(...) : JsonParser | Test.java:62:9:62:11 | out | provenance |  |
+| Test.java:61:32:61:33 | in : byte[] | Test.java:61:10:61:34 | createParser(...) : JsonParser | provenance | MaD:1 |
+| Test.java:67:13:67:26 | (...)... : URL | Test.java:69:32:69:33 | in : URL | provenance |  |
+| Test.java:67:19:67:26 | source(...) : Object | Test.java:67:13:67:26 | (...)... : URL | provenance |  |
+| Test.java:69:10:69:34 | createParser(...) : JsonParser | Test.java:70:9:70:11 | out | provenance |  |
+| Test.java:69:32:69:33 | in : URL | Test.java:69:10:69:34 | createParser(...) : JsonParser | provenance | MaD:1 |
+| Test.java:75:16:75:32 | (...)... : String | Test.java:77:32:77:33 | in : String | provenance |  |
+| Test.java:75:25:75:32 | source(...) : Object | Test.java:75:16:75:32 | (...)... : String | provenance |  |
+| Test.java:77:10:77:34 | createParser(...) : JsonParser | Test.java:78:9:78:11 | out | provenance |  |
+| Test.java:77:32:77:33 | in : String | Test.java:77:10:77:34 | createParser(...) : JsonParser | provenance | MaD:1 |
+| Test.java:83:16:83:32 | (...)... : Reader | Test.java:85:32:85:33 | in : Reader | provenance |  |
+| Test.java:83:25:83:32 | source(...) : Object | Test.java:83:16:83:32 | (...)... : Reader | provenance |  |
+| Test.java:85:10:85:34 | createParser(...) : JsonParser | Test.java:86:9:86:11 | out | provenance |  |
+| Test.java:85:32:85:33 | in : Reader | Test.java:85:10:85:34 | createParser(...) : JsonParser | provenance | MaD:1 |
+| Test.java:91:21:91:42 | (...)... : InputStream | Test.java:93:32:93:33 | in : InputStream | provenance |  |
+| Test.java:91:35:91:42 | source(...) : Object | Test.java:91:21:91:42 | (...)... : InputStream | provenance |  |
+| Test.java:93:10:93:34 | createParser(...) : JsonParser | Test.java:94:9:94:11 | out | provenance |  |
+| Test.java:93:32:93:33 | in : InputStream | Test.java:93:10:93:34 | createParser(...) : JsonParser | provenance | MaD:1 |
+| Test.java:99:14:99:28 | (...)... : File | Test.java:101:32:101:33 | in : File | provenance |  |
+| Test.java:99:21:99:28 | source(...) : Object | Test.java:99:14:99:28 | (...)... : File | provenance |  |
+| Test.java:101:10:101:34 | createParser(...) : JsonParser | Test.java:102:9:102:11 | out | provenance |  |
+| Test.java:101:32:101:33 | in : File | Test.java:101:10:101:34 | createParser(...) : JsonParser | provenance | MaD:1 |
+| Test.java:107:19:107:38 | (...)... : DataInput | Test.java:109:32:109:33 | in : DataInput | provenance |  |
+| Test.java:107:31:107:38 | source(...) : Object | Test.java:107:19:107:38 | (...)... : DataInput | provenance |  |
+| Test.java:109:10:109:34 | createParser(...) : JsonParser | Test.java:110:9:110:11 | out | provenance |  |
+| Test.java:109:32:109:33 | in : DataInput | Test.java:109:10:109:34 | createParser(...) : JsonParser | provenance | MaD:1 |
+| Test.java:115:16:115:32 | (...)... : char[] | Test.java:117:32:117:33 | in : char[] | provenance |  |
+| Test.java:115:25:115:32 | source(...) : Object | Test.java:115:16:115:32 | (...)... : char[] | provenance |  |
+| Test.java:117:10:117:40 | createParser(...) : JsonParser | Test.java:118:9:118:11 | out | provenance |  |
+| Test.java:117:32:117:33 | in : char[] | Test.java:117:10:117:40 | createParser(...) : JsonParser | provenance | MaD:2 |
+| Test.java:123:16:123:32 | (...)... : char[] | Test.java:125:32:125:33 | in : char[] | provenance |  |
+| Test.java:123:25:123:32 | source(...) : Object | Test.java:123:16:123:32 | (...)... : char[] | provenance |  |
+| Test.java:125:10:125:34 | createParser(...) : JsonParser | Test.java:126:9:126:11 | out | provenance |  |
+| Test.java:125:32:125:33 | in : char[] | Test.java:125:10:125:34 | createParser(...) : JsonParser | provenance | MaD:2 |
+| Test.java:131:16:131:32 | (...)... : byte[] | Test.java:133:32:133:33 | in : byte[] | provenance |  |
+| Test.java:131:25:131:32 | source(...) : Object | Test.java:131:16:131:32 | (...)... : byte[] | provenance |  |
+| Test.java:133:10:133:40 | createParser(...) : JsonParser | Test.java:134:9:134:11 | out | provenance |  |
+| Test.java:133:32:133:33 | in : byte[] | Test.java:133:10:133:40 | createParser(...) : JsonParser | provenance | MaD:2 |
+| Test.java:139:16:139:32 | (...)... : byte[] | Test.java:141:32:141:33 | in : byte[] | provenance |  |
+| Test.java:139:25:139:32 | source(...) : Object | Test.java:139:16:139:32 | (...)... : byte[] | provenance |  |
+| Test.java:141:10:141:34 | createParser(...) : JsonParser | Test.java:142:9:142:11 | out | provenance |  |
+| Test.java:141:32:141:33 | in : byte[] | Test.java:141:10:141:34 | createParser(...) : JsonParser | provenance | MaD:2 |
+| Test.java:147:13:147:26 | (...)... : URL | Test.java:149:32:149:33 | in : URL | provenance |  |
+| Test.java:147:19:147:26 | source(...) : Object | Test.java:147:13:147:26 | (...)... : URL | provenance |  |
+| Test.java:149:10:149:34 | createParser(...) : JsonParser | Test.java:150:9:150:11 | out | provenance |  |
+| Test.java:149:32:149:33 | in : URL | Test.java:149:10:149:34 | createParser(...) : JsonParser | provenance | MaD:2 |
+| Test.java:155:16:155:32 | (...)... : String | Test.java:157:32:157:33 | in : String | provenance |  |
+| Test.java:155:25:155:32 | source(...) : Object | Test.java:155:16:155:32 | (...)... : String | provenance |  |
+| Test.java:157:10:157:34 | createParser(...) : JsonParser | Test.java:158:9:158:11 | out | provenance |  |
+| Test.java:157:32:157:33 | in : String | Test.java:157:10:157:34 | createParser(...) : JsonParser | provenance | MaD:2 |
+| Test.java:163:16:163:32 | (...)... : Reader | Test.java:165:32:165:33 | in : Reader | provenance |  |
+| Test.java:163:25:163:32 | source(...) : Object | Test.java:163:16:163:32 | (...)... : Reader | provenance |  |
+| Test.java:165:10:165:34 | createParser(...) : JsonParser | Test.java:166:9:166:11 | out | provenance |  |
+| Test.java:165:32:165:33 | in : Reader | Test.java:165:10:165:34 | createParser(...) : JsonParser | provenance | MaD:2 |
+| Test.java:171:21:171:42 | (...)... : InputStream | Test.java:173:32:173:33 | in : InputStream | provenance |  |
+| Test.java:171:35:171:42 | source(...) : Object | Test.java:171:21:171:42 | (...)... : InputStream | provenance |  |
+| Test.java:173:10:173:34 | createParser(...) : JsonParser | Test.java:174:9:174:11 | out | provenance |  |
+| Test.java:173:32:173:33 | in : InputStream | Test.java:173:10:173:34 | createParser(...) : JsonParser | provenance | MaD:2 |
+| Test.java:179:14:179:28 | (...)... : File | Test.java:181:32:181:33 | in : File | provenance |  |
+| Test.java:179:21:179:28 | source(...) : Object | Test.java:179:14:179:28 | (...)... : File | provenance |  |
+| Test.java:181:10:181:34 | createParser(...) : JsonParser | Test.java:182:9:182:11 | out | provenance |  |
+| Test.java:181:32:181:33 | in : File | Test.java:181:10:181:34 | createParser(...) : JsonParser | provenance | MaD:2 |
+| Test.java:187:19:187:38 | (...)... : DataInput | Test.java:189:32:189:33 | in : DataInput | provenance |  |
+| Test.java:187:31:187:38 | source(...) : Object | Test.java:187:19:187:38 | (...)... : DataInput | provenance |  |
+| Test.java:189:10:189:34 | createParser(...) : JsonParser | Test.java:190:9:190:11 | out | provenance |  |
+| Test.java:189:32:189:33 | in : DataInput | Test.java:189:10:189:34 | createParser(...) : JsonParser | provenance | MaD:2 |
+| Test.java:195:16:195:32 | (...)... : Object | Test.java:197:32:197:33 | in : Object | provenance |  |
+| Test.java:195:25:195:32 | source(...) : Object | Test.java:195:16:195:32 | (...)... : Object | provenance |  |
+| Test.java:197:10:197:56 | convertValue(...) : Object | Test.java:198:9:198:11 | out | provenance |  |
+| Test.java:197:32:197:33 | in : Object | Test.java:197:10:197:56 | convertValue(...) : Object | provenance | MaD:3 |
+| Test.java:203:16:203:32 | (...)... : Object | Test.java:205:32:205:33 | in : Object | provenance |  |
+| Test.java:203:25:203:32 | source(...) : Object | Test.java:203:16:203:32 | (...)... : Object | provenance |  |
+| Test.java:205:10:205:51 | convertValue(...) : Object | Test.java:206:9:206:11 | out | provenance |  |
+| Test.java:205:32:205:33 | in : Object | Test.java:205:10:205:51 | convertValue(...) : Object | provenance | MaD:3 |
+| Test.java:211:16:211:32 | (...)... : Object | Test.java:213:32:213:33 | in : Object | provenance |  |
+| Test.java:211:25:211:32 | source(...) : Object | Test.java:211:16:211:32 | (...)... : Object | provenance |  |
+| Test.java:213:10:213:48 | convertValue(...) : Object | Test.java:214:9:214:11 | out | provenance |  |
+| Test.java:213:32:213:33 | in : Object | Test.java:213:10:213:48 | convertValue(...) : Object | provenance | MaD:3 |
+| Test.java:219:16:219:32 | (...)... : Object | Test.java:221:31:221:32 | in : Object | provenance |  |
+| Test.java:219:25:219:32 | source(...) : Object | Test.java:219:16:219:32 | (...)... : Object | provenance |  |
+| Test.java:221:10:221:33 | valueToTree(...) : JsonNode | Test.java:222:9:222:11 | out | provenance |  |
+| Test.java:221:31:221:32 | in : Object | Test.java:221:10:221:33 | valueToTree(...) : JsonNode | provenance | MaD:4 |
+| Test.java:221:31:221:32 | in : Object | Test.java:221:10:221:33 | valueToTree(...) : JsonNode | provenance | MaD:5 |
+| Test.java:221:31:221:32 | in : Object | Test.java:221:10:221:33 | valueToTree(...) : JsonNode | provenance | MaD:6 |
+| Test.java:228:16:228:49 | (...)... : Map [<map.value>] : Object | Test.java:230:31:230:32 | in : Map [<map.value>] : Object | provenance |  |
+| Test.java:228:25:228:49 | newWithMapValue(...) : Map [<map.value>] : Object | Test.java:228:16:228:49 | (...)... : Map [<map.value>] : Object | provenance |  |
+| Test.java:228:41:228:48 | source(...) : Object | Test.java:20:25:20:38 | element : Object | provenance |  |
+| Test.java:228:41:228:48 | source(...) : Object | Test.java:228:25:228:49 | newWithMapValue(...) : Map [<map.value>] : Object | provenance | MaD:8 |
+| Test.java:230:10:230:33 | valueToTree(...) : JsonNode | Test.java:231:9:231:11 | out | provenance |  |
+| Test.java:230:31:230:32 | in : Map [<map.value>] : Object | Test.java:230:10:230:33 | valueToTree(...) : JsonNode | provenance | MaD:4 |
+| Test.java:230:31:230:32 | in : Map [<map.value>] : Object | Test.java:230:10:230:33 | valueToTree(...) : JsonNode | provenance | MaD:5 |
+| Test.java:236:16:236:32 | (...)... : char[] | Test.java:238:32:238:33 | in : char[] | provenance |  |
+| Test.java:236:25:236:32 | source(...) : Object | Test.java:236:16:236:32 | (...)... : char[] | provenance |  |
+| Test.java:238:10:238:40 | createParser(...) : JsonParser | Test.java:239:9:239:11 | out | provenance |  |
+| Test.java:238:32:238:33 | in : char[] | Test.java:238:10:238:40 | createParser(...) : JsonParser | provenance | MaD:7 |
+| Test.java:244:16:244:32 | (...)... : char[] | Test.java:246:32:246:33 | in : char[] | provenance |  |
+| Test.java:244:25:244:32 | source(...) : Object | Test.java:244:16:244:32 | (...)... : char[] | provenance |  |
+| Test.java:246:10:246:34 | createParser(...) : JsonParser | Test.java:247:9:247:11 | out | provenance |  |
+| Test.java:246:32:246:33 | in : char[] | Test.java:246:10:246:34 | createParser(...) : JsonParser | provenance | MaD:7 |
+| Test.java:252:16:252:32 | (...)... : byte[] | Test.java:254:32:254:33 | in : byte[] | provenance |  |
+| Test.java:252:25:252:32 | source(...) : Object | Test.java:252:16:252:32 | (...)... : byte[] | provenance |  |
+| Test.java:254:10:254:40 | createParser(...) : JsonParser | Test.java:255:9:255:11 | out | provenance |  |
+| Test.java:254:32:254:33 | in : byte[] | Test.java:254:10:254:40 | createParser(...) : JsonParser | provenance | MaD:7 |
+| Test.java:260:16:260:32 | (...)... : byte[] | Test.java:262:32:262:33 | in : byte[] | provenance |  |
+| Test.java:260:25:260:32 | source(...) : Object | Test.java:260:16:260:32 | (...)... : byte[] | provenance |  |
+| Test.java:262:10:262:34 | createParser(...) : JsonParser | Test.java:263:9:263:11 | out | provenance |  |
+| Test.java:262:32:262:33 | in : byte[] | Test.java:262:10:262:34 | createParser(...) : JsonParser | provenance | MaD:7 |
+| Test.java:268:13:268:26 | (...)... : URL | Test.java:270:32:270:33 | in : URL | provenance |  |
+| Test.java:268:19:268:26 | source(...) : Object | Test.java:268:13:268:26 | (...)... : URL | provenance |  |
+| Test.java:270:10:270:34 | createParser(...) : JsonParser | Test.java:271:9:271:11 | out | provenance |  |
+| Test.java:270:32:270:33 | in : URL | Test.java:270:10:270:34 | createParser(...) : JsonParser | provenance | MaD:7 |
+| Test.java:276:16:276:32 | (...)... : String | Test.java:278:32:278:33 | in : String | provenance |  |
+| Test.java:276:25:276:32 | source(...) : Object | Test.java:276:16:276:32 | (...)... : String | provenance |  |
+| Test.java:278:10:278:34 | createParser(...) : JsonParser | Test.java:279:9:279:11 | out | provenance |  |
+| Test.java:278:32:278:33 | in : String | Test.java:278:10:278:34 | createParser(...) : JsonParser | provenance | MaD:7 |
+| Test.java:284:16:284:32 | (...)... : Reader | Test.java:286:32:286:33 | in : Reader | provenance |  |
+| Test.java:284:25:284:32 | source(...) : Object | Test.java:284:16:284:32 | (...)... : Reader | provenance |  |
+| Test.java:286:10:286:34 | createParser(...) : JsonParser | Test.java:287:9:287:11 | out | provenance |  |
+| Test.java:286:32:286:33 | in : Reader | Test.java:286:10:286:34 | createParser(...) : JsonParser | provenance | MaD:7 |
+| Test.java:292:21:292:42 | (...)... : InputStream | Test.java:294:32:294:33 | in : InputStream | provenance |  |
+| Test.java:292:35:292:42 | source(...) : Object | Test.java:292:21:292:42 | (...)... : InputStream | provenance |  |
+| Test.java:294:10:294:34 | createParser(...) : JsonParser | Test.java:295:9:295:11 | out | provenance |  |
+| Test.java:294:32:294:33 | in : InputStream | Test.java:294:10:294:34 | createParser(...) : JsonParser | provenance | MaD:7 |
+| Test.java:300:14:300:28 | (...)... : File | Test.java:302:32:302:33 | in : File | provenance |  |
+| Test.java:300:21:300:28 | source(...) : Object | Test.java:300:14:300:28 | (...)... : File | provenance |  |
+| Test.java:302:10:302:34 | createParser(...) : JsonParser | Test.java:303:9:303:11 | out | provenance |  |
+| Test.java:302:32:302:33 | in : File | Test.java:302:10:302:34 | createParser(...) : JsonParser | provenance | MaD:7 |
+| Test.java:308:19:308:38 | (...)... : DataInput | Test.java:310:32:310:33 | in : DataInput | provenance |  |
+| Test.java:308:31:308:38 | source(...) : Object | Test.java:308:19:308:38 | (...)... : DataInput | provenance |  |
+| Test.java:310:10:310:34 | createParser(...) : JsonParser | Test.java:311:9:311:11 | out | provenance |  |
+| Test.java:310:32:310:33 | in : DataInput | Test.java:310:10:310:34 | createParser(...) : JsonParser | provenance | MaD:7 |
+nodes
+| Test.java:20:25:20:38 | element : Object | semmle.label | element : Object |
+| Test.java:21:10:21:30 | of(...) : Map [<map.value>] : Object | semmle.label | of(...) : Map [<map.value>] : Object |
+| Test.java:21:23:21:29 | element : Object | semmle.label | element : Object |
+| Test.java:35:16:35:32 | (...)... : char[] | semmle.label | (...)... : char[] |
+| Test.java:35:25:35:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:37:10:37:40 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:37:32:37:33 | in : char[] | semmle.label | in : char[] |
+| Test.java:38:9:38:11 | out | semmle.label | out |
+| Test.java:43:16:43:32 | (...)... : char[] | semmle.label | (...)... : char[] |
+| Test.java:43:25:43:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:45:10:45:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:45:32:45:33 | in : char[] | semmle.label | in : char[] |
+| Test.java:46:9:46:11 | out | semmle.label | out |
+| Test.java:51:16:51:32 | (...)... : byte[] | semmle.label | (...)... : byte[] |
+| Test.java:51:25:51:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:53:10:53:40 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:53:32:53:33 | in : byte[] | semmle.label | in : byte[] |
+| Test.java:54:9:54:11 | out | semmle.label | out |
+| Test.java:59:16:59:32 | (...)... : byte[] | semmle.label | (...)... : byte[] |
+| Test.java:59:25:59:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:61:10:61:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:61:32:61:33 | in : byte[] | semmle.label | in : byte[] |
+| Test.java:62:9:62:11 | out | semmle.label | out |
+| Test.java:67:13:67:26 | (...)... : URL | semmle.label | (...)... : URL |
+| Test.java:67:19:67:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:69:10:69:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:69:32:69:33 | in : URL | semmle.label | in : URL |
+| Test.java:70:9:70:11 | out | semmle.label | out |
+| Test.java:75:16:75:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:75:25:75:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:77:10:77:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:77:32:77:33 | in : String | semmle.label | in : String |
+| Test.java:78:9:78:11 | out | semmle.label | out |
+| Test.java:83:16:83:32 | (...)... : Reader | semmle.label | (...)... : Reader |
+| Test.java:83:25:83:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:85:10:85:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:85:32:85:33 | in : Reader | semmle.label | in : Reader |
+| Test.java:86:9:86:11 | out | semmle.label | out |
+| Test.java:91:21:91:42 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:91:35:91:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:93:10:93:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:93:32:93:33 | in : InputStream | semmle.label | in : InputStream |
+| Test.java:94:9:94:11 | out | semmle.label | out |
+| Test.java:99:14:99:28 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:99:21:99:28 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:101:10:101:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:101:32:101:33 | in : File | semmle.label | in : File |
+| Test.java:102:9:102:11 | out | semmle.label | out |
+| Test.java:107:19:107:38 | (...)... : DataInput | semmle.label | (...)... : DataInput |
+| Test.java:107:31:107:38 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:109:10:109:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:109:32:109:33 | in : DataInput | semmle.label | in : DataInput |
+| Test.java:110:9:110:11 | out | semmle.label | out |
+| Test.java:115:16:115:32 | (...)... : char[] | semmle.label | (...)... : char[] |
+| Test.java:115:25:115:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:117:10:117:40 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:117:32:117:33 | in : char[] | semmle.label | in : char[] |
+| Test.java:118:9:118:11 | out | semmle.label | out |
+| Test.java:123:16:123:32 | (...)... : char[] | semmle.label | (...)... : char[] |
+| Test.java:123:25:123:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:125:10:125:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:125:32:125:33 | in : char[] | semmle.label | in : char[] |
+| Test.java:126:9:126:11 | out | semmle.label | out |
+| Test.java:131:16:131:32 | (...)... : byte[] | semmle.label | (...)... : byte[] |
+| Test.java:131:25:131:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:133:10:133:40 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:133:32:133:33 | in : byte[] | semmle.label | in : byte[] |
+| Test.java:134:9:134:11 | out | semmle.label | out |
+| Test.java:139:16:139:32 | (...)... : byte[] | semmle.label | (...)... : byte[] |
+| Test.java:139:25:139:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:141:10:141:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:141:32:141:33 | in : byte[] | semmle.label | in : byte[] |
+| Test.java:142:9:142:11 | out | semmle.label | out |
+| Test.java:147:13:147:26 | (...)... : URL | semmle.label | (...)... : URL |
+| Test.java:147:19:147:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:149:10:149:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:149:32:149:33 | in : URL | semmle.label | in : URL |
+| Test.java:150:9:150:11 | out | semmle.label | out |
+| Test.java:155:16:155:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:155:25:155:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:157:10:157:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:157:32:157:33 | in : String | semmle.label | in : String |
+| Test.java:158:9:158:11 | out | semmle.label | out |
+| Test.java:163:16:163:32 | (...)... : Reader | semmle.label | (...)... : Reader |
+| Test.java:163:25:163:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:165:10:165:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:165:32:165:33 | in : Reader | semmle.label | in : Reader |
+| Test.java:166:9:166:11 | out | semmle.label | out |
+| Test.java:171:21:171:42 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:171:35:171:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:173:10:173:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:173:32:173:33 | in : InputStream | semmle.label | in : InputStream |
+| Test.java:174:9:174:11 | out | semmle.label | out |
+| Test.java:179:14:179:28 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:179:21:179:28 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:181:10:181:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:181:32:181:33 | in : File | semmle.label | in : File |
+| Test.java:182:9:182:11 | out | semmle.label | out |
+| Test.java:187:19:187:38 | (...)... : DataInput | semmle.label | (...)... : DataInput |
+| Test.java:187:31:187:38 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:189:10:189:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:189:32:189:33 | in : DataInput | semmle.label | in : DataInput |
+| Test.java:190:9:190:11 | out | semmle.label | out |
+| Test.java:195:16:195:32 | (...)... : Object | semmle.label | (...)... : Object |
+| Test.java:195:25:195:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:197:10:197:56 | convertValue(...) : Object | semmle.label | convertValue(...) : Object |
+| Test.java:197:32:197:33 | in : Object | semmle.label | in : Object |
+| Test.java:198:9:198:11 | out | semmle.label | out |
+| Test.java:203:16:203:32 | (...)... : Object | semmle.label | (...)... : Object |
+| Test.java:203:25:203:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:205:10:205:51 | convertValue(...) : Object | semmle.label | convertValue(...) : Object |
+| Test.java:205:32:205:33 | in : Object | semmle.label | in : Object |
+| Test.java:206:9:206:11 | out | semmle.label | out |
+| Test.java:211:16:211:32 | (...)... : Object | semmle.label | (...)... : Object |
+| Test.java:211:25:211:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:213:10:213:48 | convertValue(...) : Object | semmle.label | convertValue(...) : Object |
+| Test.java:213:32:213:33 | in : Object | semmle.label | in : Object |
+| Test.java:214:9:214:11 | out | semmle.label | out |
+| Test.java:219:16:219:32 | (...)... : Object | semmle.label | (...)... : Object |
+| Test.java:219:25:219:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:221:10:221:33 | valueToTree(...) : JsonNode | semmle.label | valueToTree(...) : JsonNode |
+| Test.java:221:31:221:32 | in : Object | semmle.label | in : Object |
+| Test.java:222:9:222:11 | out | semmle.label | out |
+| Test.java:228:16:228:49 | (...)... : Map [<map.value>] : Object | semmle.label | (...)... : Map [<map.value>] : Object |
+| Test.java:228:25:228:49 | newWithMapValue(...) : Map [<map.value>] : Object | semmle.label | newWithMapValue(...) : Map [<map.value>] : Object |
+| Test.java:228:41:228:48 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:230:10:230:33 | valueToTree(...) : JsonNode | semmle.label | valueToTree(...) : JsonNode |
+| Test.java:230:31:230:32 | in : Map [<map.value>] : Object | semmle.label | in : Map [<map.value>] : Object |
+| Test.java:231:9:231:11 | out | semmle.label | out |
+| Test.java:236:16:236:32 | (...)... : char[] | semmle.label | (...)... : char[] |
+| Test.java:236:25:236:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:238:10:238:40 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:238:32:238:33 | in : char[] | semmle.label | in : char[] |
+| Test.java:239:9:239:11 | out | semmle.label | out |
+| Test.java:244:16:244:32 | (...)... : char[] | semmle.label | (...)... : char[] |
+| Test.java:244:25:244:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:246:10:246:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:246:32:246:33 | in : char[] | semmle.label | in : char[] |
+| Test.java:247:9:247:11 | out | semmle.label | out |
+| Test.java:252:16:252:32 | (...)... : byte[] | semmle.label | (...)... : byte[] |
+| Test.java:252:25:252:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:254:10:254:40 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:254:32:254:33 | in : byte[] | semmle.label | in : byte[] |
+| Test.java:255:9:255:11 | out | semmle.label | out |
+| Test.java:260:16:260:32 | (...)... : byte[] | semmle.label | (...)... : byte[] |
+| Test.java:260:25:260:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:262:10:262:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:262:32:262:33 | in : byte[] | semmle.label | in : byte[] |
+| Test.java:263:9:263:11 | out | semmle.label | out |
+| Test.java:268:13:268:26 | (...)... : URL | semmle.label | (...)... : URL |
+| Test.java:268:19:268:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:270:10:270:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:270:32:270:33 | in : URL | semmle.label | in : URL |
+| Test.java:271:9:271:11 | out | semmle.label | out |
+| Test.java:276:16:276:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:276:25:276:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:278:10:278:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:278:32:278:33 | in : String | semmle.label | in : String |
+| Test.java:279:9:279:11 | out | semmle.label | out |
+| Test.java:284:16:284:32 | (...)... : Reader | semmle.label | (...)... : Reader |
+| Test.java:284:25:284:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:286:10:286:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:286:32:286:33 | in : Reader | semmle.label | in : Reader |
+| Test.java:287:9:287:11 | out | semmle.label | out |
+| Test.java:292:21:292:42 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:292:35:292:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:294:10:294:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:294:32:294:33 | in : InputStream | semmle.label | in : InputStream |
+| Test.java:295:9:295:11 | out | semmle.label | out |
+| Test.java:300:14:300:28 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:300:21:300:28 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:302:10:302:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:302:32:302:33 | in : File | semmle.label | in : File |
+| Test.java:303:9:303:11 | out | semmle.label | out |
+| Test.java:308:19:308:38 | (...)... : DataInput | semmle.label | (...)... : DataInput |
+| Test.java:308:31:308:38 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:310:10:310:34 | createParser(...) : JsonParser | semmle.label | createParser(...) : JsonParser |
+| Test.java:310:32:310:33 | in : DataInput | semmle.label | in : DataInput |
+| Test.java:311:9:311:11 | out | semmle.label | out |
+subpaths
+| Test.java:228:41:228:48 | source(...) : Object | Test.java:20:25:20:38 | element : Object | Test.java:21:10:21:30 | of(...) : Map [<map.value>] : Object | Test.java:228:25:228:49 | newWithMapValue(...) : Map [<map.value>] : Object |
+testFailures

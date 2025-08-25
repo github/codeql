@@ -28,10 +28,20 @@
 		</p>
 
 		<p>
-			Subresource integrity checking is commonly recommended when importing a fixed version of
+			Subresource integrity (SRI) checking is commonly recommended when importing a fixed version of
 			a library - for example, from a CDN (content-delivery network). Then, the fixed digest
 			of that version of the library can easily be added to the <code>script</code> element's
 			<code>integrity</code> attribute.
+		</p>
+
+		<p>
+			A dynamic service cannot be easily used with SRI. Nevertheless,
+			it is possible to list multiple acceptable SHA hashes in the <code>integrity</code> attribute,
+			such as those for the content generated for major browers used by your users.
+		</p>
+
+		<p>
+			See the [`CUSTOMIZING.md`](https://github.com/github/codeql/blob/main/javascript/ql/src/Security/CWE-830/CUSTOMIZING.md) file in the source code for this query for information on how to extend the list of hostnames required to use SRI by this query.
 		</p>
 	</overview>
 

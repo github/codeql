@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["sun.jvmstat.perfdata.monitor.protocol.local", "LocalVmManager", False, "LocalVmManager", "(String)", "", "Argument[0]", "credentials-username", "hq-generated"]
+      - ["sun.jvmstat.perfdata.monitor.protocol.local", "PerfDataFile", False, "getFile", "(String,int)", "", "Argument[0]", "credentials-username", "hq-generated"]
+      - ["sun.jvmstat.perfdata.monitor.protocol.local", "PerfDataFile", False, "getTempDirectory", "(String)", "", "Argument[0]", "credentials-username", "hq-generated"]

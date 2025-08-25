@@ -1,4 +1,4 @@
-# CWE coverage for Java
+# CWE coverage for Java and Kotlin
 
 An overview of CWE coverage for Java in the latest release of CodeQL.
 

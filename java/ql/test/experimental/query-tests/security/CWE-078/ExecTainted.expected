@@ -1,12 +1,15 @@
 edges
-| JSchOSInjectionTest.java:14:30:14:60 | getParameter(...) : String | JSchOSInjectionTest.java:27:52:27:68 | ... + ... |
-| JSchOSInjectionTest.java:40:30:40:60 | getParameter(...) : String | JSchOSInjectionTest.java:53:36:53:52 | ... + ... |
+| JSchOSInjectionTest.java:14:30:14:60 | getParameter(...) : String | JSchOSInjectionTest.java:27:52:27:68 | ... + ... | provenance | Src:MaD:2 Sink:MaD:1 |
+| JSchOSInjectionTest.java:40:30:40:60 | getParameter(...) : String | JSchOSInjectionTest.java:53:36:53:52 | ... + ... | provenance | Src:MaD:2 Sink:MaD:1 |
+models
+| 1 | Sink: com.jcraft.jsch; ChannelExec; true; setCommand; ; ; Argument[0]; command-injection; manual |
+| 2 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
 nodes
 | JSchOSInjectionTest.java:14:30:14:60 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | JSchOSInjectionTest.java:27:52:27:68 | ... + ... | semmle.label | ... + ... |
 | JSchOSInjectionTest.java:40:30:40:60 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | JSchOSInjectionTest.java:53:36:53:52 | ... + ... | semmle.label | ... + ... |
-subpaths
-#select
+problems
 | JSchOSInjectionTest.java:27:52:27:68 | ... + ... | JSchOSInjectionTest.java:14:30:14:60 | getParameter(...) : String | JSchOSInjectionTest.java:27:52:27:68 | ... + ... | This command line depends on a $@. | JSchOSInjectionTest.java:14:30:14:60 | getParameter(...) | user-provided value |
 | JSchOSInjectionTest.java:53:36:53:52 | ... + ... | JSchOSInjectionTest.java:40:30:40:60 | getParameter(...) : String | JSchOSInjectionTest.java:53:36:53:52 | ... + ... | This command line depends on a $@. | JSchOSInjectionTest.java:40:30:40:60 | getParameter(...) | user-provided value |
+subpaths

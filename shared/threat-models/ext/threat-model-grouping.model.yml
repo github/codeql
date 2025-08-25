@@ -1,0 +1,32 @@
+extensions:
+
+  - addsTo:
+      pack: codeql/threat-models
+      extensible: threatModelGrouping
+    data:
+      # Default threat model
+      - ["remote", "default"]
+
+      # Remote threat models
+      - ["request", "remote"]
+      - ["response", "remote"]
+
+      # Local threat models
+      - ["database", "local"]
+      - ["commandargs", "local"]
+      - ["environment", "local"]
+      - ["stdin", "local"]
+      - ["file", "local"]
+      - ["windows-registry", "local"]
+
+      # Android threat models
+      - ["android-external-storage-dir", "android"]
+      - ["contentprovider", "android"]
+
+      # Threat models that are not grouped with any other threat models.
+      # (Note that all threat models are a child of "all" implicitly, and we
+      # make it explicit here just to make sure all threat models are listed.)
+      - ["database-access-result", "all"]
+      - ["file-write", "all"]
+      - ["reverse-dns", "all"]
+      - ["view-component-input", "all"]

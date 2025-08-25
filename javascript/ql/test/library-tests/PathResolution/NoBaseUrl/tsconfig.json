@@ -1,0 +1,10 @@
+{
+    "include": ["."],
+    "compilerOptions": {
+        "paths": {
+            "@/*": ["./lib/*"],
+            "@/*.xyz": ["./lib/*"],
+            "@": ["./lib/nostar.ts"]
+        }
+    }
+}

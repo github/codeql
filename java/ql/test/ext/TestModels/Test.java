@@ -110,9 +110,6 @@ public class Test {
             File f2 = (File)source();
             sink(f2.getPath()); // $hasTaintFlow
 
-            File f3 = (File)source();
-            sink(f3.listFiles()); // $hasTaintFlow
-
             StringWriter sw = (StringWriter)source();
             sink(sw.toString()); // $hasTaintFlow
 

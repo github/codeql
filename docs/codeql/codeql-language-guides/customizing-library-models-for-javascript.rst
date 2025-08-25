@@ -1,8 +1,5 @@
 .. _customizing-library-models-for-javascript:
 
-:orphan:
-:nosearch:
-
 Customizing Library Models for JavaScript
 =========================================
 
@@ -29,8 +26,6 @@ The CodeQL library for JavaScript exposes the following extensible predicates:
 - **sinkModel**\(type, path, kind)
 - **typeModel**\(type1, type2, path)
 - **summaryModel**\(type, path, input, output, kind)
-
-See the `CLI documentation for how to load and use data extensions in a CodeQL evaluation run <https://docs.google.com/document/d/14IYCHX8wWuU-HTvJ2gPSdXQKHKYbWCHQKOgn8oLaa80/edit#heading=h.m0v53lpi6w2n>`__ (internal access required).
 
 We'll explain how to use these using a few examples, and provide some reference material at the end of this article.
 
@@ -354,6 +349,48 @@ Note that this flow is already recognized by the CodeQL JS analysis, but for thi
 - The last column, **value**, indicates the kind of flow to add. The value **value** means the input value is unchanged as
   it flows to the output.
 
+
+Example: Modeling properties injected by a middleware function
+--------------------------------------------------------------
+
+In this example, we'll show how to model a hypothetical middleware function that adds a tainted value
+on the incoming request objects:
+
+.. code-block:: js
+
+  const express = require('express')
+  const app = express()
+
+  app.use(require('@example/middleware').injectData())
+
+  app.get('/foo', (req, res) => {
+    req.data; // <-- mark 'req.data' as a taint source
+  });
+
+This can be achieved with the following data extension:
+
+.. code-block:: yaml
+
+  extensions:
+    - addsTo:
+        pack: codeql/javascript-all
+        extensible: sourceModel
+      data:
+        - [
+            "@example/middleware",
+            "Member[injectData].ReturnValue.GuardedRouteHandler.Parameter[0].Member[data]",
+            "remote",
+          ]
+
+- Since we're adding a new taint source, we add a tuple to the **sourceModel** extensible predicate.
+- The first column, **"@example/middleware"**, begins the search at imports of the hypothetical NPM package **@example/middleware**.
+- **Member[injectData]** selects accesses to the **injectData** member.
+- **ReturnValue** selects the return value of the call to **injectData**.
+- **GuardedRouteHandler** interprets the current value as a middleware function and selects all route handlers guarded by that middleware. Since the current value is passd to **app.use()**, the callback subsequently passed to **app.get()** is seen as a guarded route handler.
+- **Parameter[0]** selects the first parameter of the callback (the parameter named **req**).
+- **Member[data]** selects accesses to the **data** property of the **req** object.
+- Finally, the kind **remote** indicates that this is considered a source of remote flow.
+
 Reference material
 ------------------
 
@@ -480,10 +517,9 @@ The following components are supported:
 - **Member[**\ `name`\ **]** selects the property with the given name.
 - **AnyMember** selects any property regardless of name.
 - **ArrayElement** selects an element of an array.
-- **Element** selects an element of an array, iterator, or set object.
 - **MapValue** selects a value of a map object.
 - **Awaited** selects the value of a promise.
-- **Instance** selects instances of a class.
+- **Instance** selects instances of a class, including instances of its subclasses.
 - **Fuzzy** selects all values that are derived from the current value through a combination of the other operations described in this list.
   For example, this can be used to find all values that appear to originate from a particular package. This can be useful for finding method calls
   from a known package, but where the receiver type is not known or is difficult to model.
@@ -499,6 +535,12 @@ Components related to decorators:
 - **DecoratedParameter** selects a parameter that is decorated by the current value.
 - **DecoratedMember** selects a method, field, or accessor that is decorated by the current value.
 
+Additionally there is a component related to middleware functions:
+
+- **GuardedRouteHandler** interprets the current value as a middleware function, and selects any route handler function that comes after it in the routing hierarchy.
+  This can be used to model properties injected onto request and response objects, such as **req.db** after a middleware that injects a database connection.
+  Note that this currently over-approximates the set of route handlers but may be made more accurate in the future.
+
 Additional notes about the syntax of operands:
 
 - Multiple operands may be given to a single component, as a shorthand for the union of the operands. For example, **Member[foo,bar]** matches the union of **Member[foo]** and **Member[bar]**.
@@ -511,7 +553,7 @@ Kinds
 Source kinds
 ~~~~~~~~~~~~
 
-- **remote**: A generic source of remote flow. Most taint-tracking queries will use such a source. Currently this is the only supported source kind.
+See documentation below for :ref:`Threat models <threat-models-javascript>`.
 
 Sink kinds
 ~~~~~~~~~~
@@ -534,3 +576,10 @@ Summary kinds
 
 - **taint**: A summary that propagates taint. This means the output is not necessarily equal to the input, but it was derived from the input in an unrestrictive way. An attacker who controls the input will have significant control over the output as well.
 - **value**: A summary that preserves the value of the input or creates a copy of the input such that all of its object properties are preserved.
+
+.. _threat-models-javascript:
+
+Threat models
+-------------
+
+.. include:: ../reusables/threat-model-description.rst

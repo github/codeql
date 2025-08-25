@@ -3,13 +3,11 @@
  */
 
 import csharp
-import semmle.code.csharp.commons.QualifiedName
 
-from EnumConstant c, string namespace, string name
+from EnumConstant c
 where
   c.getName() = "Green" and
-  c.getDeclaringType().hasQualifiedName("Enums", "LongColor") and
+  c.getDeclaringType().hasFullyQualifiedName("Enums", "LongColor") and
   c.getType() = c.getDeclaringType() and
-  c.getValue() = "1" and
-  c.getDeclaringType().getBaseClass().hasQualifiedName(namespace, name)
-select c, getQualifiedName(namespace, name)
+  c.getValue() = "1"
+select c, c.getDeclaringType().getBaseClass().getFullyQualifiedNameDebug()

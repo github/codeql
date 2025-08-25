@@ -1,0 +1,48 @@
+#select
+| EnumUserKt | EnumUserKt | usesEnum |
+| java.lang.Enum | Enum | clone |
+| java.lang.Enum | Enum | compareTo |
+| java.lang.Enum | Enum | describeConstable |
+| java.lang.Enum | Enum | equals |
+| java.lang.Enum | Enum | finalize |
+| java.lang.Enum | Enum | getDeclaringClass |
+| java.lang.Enum | Enum | hashCode |
+| java.lang.Enum | Enum | name |
+| java.lang.Enum | Enum | ordinal |
+| java.lang.Enum | Enum | toString |
+| java.lang.Enum | Enum | valueOf |
+| java.lang.Enum<?> | Enum<?> | clone |
+| java.lang.Enum<?> | Enum<?> | compareTo |
+| java.lang.Enum<?> | Enum<?> | describeConstable |
+| java.lang.Enum<?> | Enum<?> | equals |
+| java.lang.Enum<?> | Enum<?> | finalize |
+| java.lang.Enum<?> | Enum<?> | getDeclaringClass |
+| java.lang.Enum<?> | Enum<?> | hashCode |
+| java.lang.Enum<?> | Enum<?> | name |
+| java.lang.Enum<?> | Enum<?> | ordinal |
+| java.lang.Enum<?> | Enum<?> | toString |
+| java.lang.Enum<?> | Enum<?> | valueOf |
+| java.lang.Enum<E> | Enum<E> | clone |
+| java.lang.Enum<E> | Enum<E> | compareTo |
+| java.lang.Enum<E> | Enum<E> | describeConstable |
+| java.lang.Enum<E> | Enum<E> | equals |
+| java.lang.Enum<E> | Enum<E> | finalize |
+| java.lang.Enum<E> | Enum<E> | getDeclaringClass |
+| java.lang.Enum<E> | Enum<E> | hashCode |
+| java.lang.Enum<E> | Enum<E> | name |
+| java.lang.Enum<E> | Enum<E> | ordinal |
+| java.lang.Enum<E> | Enum<E> | toString |
+| java.lang.Enum<E> | Enum<E> | valueOf |
+| kotlin.Enum | Enum | clone |
+| kotlin.Enum | Enum | compareTo |
+| kotlin.Enum | Enum | describeConstable |
+| kotlin.Enum | Enum | equals |
+| kotlin.Enum | Enum | getDeclaringClass |
+| kotlin.Enum | Enum | hashCode |
+| kotlin.Enum | Enum | name |
+| kotlin.Enum | Enum | ordinal |
+| kotlin.Enum | Enum | toString |
+enumConstants
+| enumUser.kt:3:16:3:17 | A |
+| enumUser.kt:3:19:3:20 | B |
+| enumUser.kt:3:22:3:22 | C |

@@ -1,0 +1,3 @@
+src/included/action.yml
+src/included/not-an-action.yml
+src/included/unreachable-workflow.yml

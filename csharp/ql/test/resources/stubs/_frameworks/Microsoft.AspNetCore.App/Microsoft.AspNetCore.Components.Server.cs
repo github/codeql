@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Components.Server, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Components.Server, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -17,6 +17,11 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Builder.ComponentEndpointConventionBuilder MapBlazorHub(this Microsoft.AspNetCore.Routing.IEndpointRouteBuilder endpoints, string path) => throw null;
                 public static Microsoft.AspNetCore.Builder.ComponentEndpointConventionBuilder MapBlazorHub(this Microsoft.AspNetCore.Routing.IEndpointRouteBuilder endpoints, System.Action<Microsoft.AspNetCore.Http.Connections.HttpConnectionDispatcherOptions> configureOptions) => throw null;
                 public static Microsoft.AspNetCore.Builder.ComponentEndpointConventionBuilder MapBlazorHub(this Microsoft.AspNetCore.Routing.IEndpointRouteBuilder endpoints, string path, System.Action<Microsoft.AspNetCore.Http.Connections.HttpConnectionDispatcherOptions> configureOptions) => throw null;
+            }
+            public static partial class ServerRazorComponentsEndpointConventionBuilderExtensions
+            {
+                public static Microsoft.AspNetCore.Builder.RazorComponentsEndpointConventionBuilder AddInteractiveServerRenderMode(this Microsoft.AspNetCore.Builder.RazorComponentsEndpointConventionBuilder builder) => throw null;
+                public static Microsoft.AspNetCore.Builder.RazorComponentsEndpointConventionBuilder AddInteractiveServerRenderMode(this Microsoft.AspNetCore.Builder.RazorComponentsEndpointConventionBuilder builder, System.Action<Microsoft.AspNetCore.Components.Server.ServerComponentsEndpointOptions> configure) => throw null;
             }
         }
         namespace Components
@@ -47,12 +52,17 @@ namespace Microsoft
                     }
                     public abstract class CircuitHandler
                     {
+                        public virtual System.Func<Microsoft.AspNetCore.Components.Server.Circuits.CircuitInboundActivityContext, System.Threading.Tasks.Task> CreateInboundActivityHandler(System.Func<Microsoft.AspNetCore.Components.Server.Circuits.CircuitInboundActivityContext, System.Threading.Tasks.Task> next) => throw null;
                         protected CircuitHandler() => throw null;
                         public virtual System.Threading.Tasks.Task OnCircuitClosedAsync(Microsoft.AspNetCore.Components.Server.Circuits.Circuit circuit, System.Threading.CancellationToken cancellationToken) => throw null;
                         public virtual System.Threading.Tasks.Task OnCircuitOpenedAsync(Microsoft.AspNetCore.Components.Server.Circuits.Circuit circuit, System.Threading.CancellationToken cancellationToken) => throw null;
                         public virtual System.Threading.Tasks.Task OnConnectionDownAsync(Microsoft.AspNetCore.Components.Server.Circuits.Circuit circuit, System.Threading.CancellationToken cancellationToken) => throw null;
                         public virtual System.Threading.Tasks.Task OnConnectionUpAsync(Microsoft.AspNetCore.Components.Server.Circuits.Circuit circuit, System.Threading.CancellationToken cancellationToken) => throw null;
                         public virtual int Order { get => throw null; }
+                    }
+                    public sealed class CircuitInboundActivityContext
+                    {
+                        public Microsoft.AspNetCore.Components.Server.Circuits.Circuit Circuit { get => throw null; }
                     }
                 }
                 namespace ProtectedBrowserStorage
@@ -87,11 +97,12 @@ namespace Microsoft
                     protected abstract System.TimeSpan RevalidationInterval { get; }
                     protected abstract System.Threading.Tasks.Task<bool> ValidateAuthenticationStateAsync(Microsoft.AspNetCore.Components.Authorization.AuthenticationState authenticationState, System.Threading.CancellationToken cancellationToken);
                 }
-                public class ServerAuthenticationStateProvider : Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider, Microsoft.AspNetCore.Components.Authorization.IHostEnvironmentAuthenticationStateProvider
+                public class ServerComponentsEndpointOptions
                 {
-                    public ServerAuthenticationStateProvider() => throw null;
-                    public override System.Threading.Tasks.Task<Microsoft.AspNetCore.Components.Authorization.AuthenticationState> GetAuthenticationStateAsync() => throw null;
-                    public void SetAuthenticationState(System.Threading.Tasks.Task<Microsoft.AspNetCore.Components.Authorization.AuthenticationState> authenticationStateTask) => throw null;
+                    public System.Func<Microsoft.AspNetCore.Http.HttpContext, Microsoft.AspNetCore.Http.WebSocketAcceptContext, System.Threading.Tasks.Task> ConfigureWebSocketAcceptContext { get => throw null; set { } }
+                    public string ContentSecurityFrameAncestorsPolicy { get => throw null; set { } }
+                    public ServerComponentsEndpointOptions() => throw null;
+                    public bool DisableWebSocketCompression { get => throw null; set { } }
                 }
             }
         }
@@ -104,9 +115,14 @@ namespace Microsoft
             {
                 public static Microsoft.Extensions.DependencyInjection.IServerSideBlazorBuilder AddServerSideBlazor(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Action<Microsoft.AspNetCore.Components.Server.CircuitOptions> configure = default(System.Action<Microsoft.AspNetCore.Components.Server.CircuitOptions>)) => throw null;
             }
-            public interface IServerSideBlazorBuilder
+            public interface IServerSideBlazorBuilder : Microsoft.Extensions.DependencyInjection.IRazorComponentsBuilder
             {
                 Microsoft.Extensions.DependencyInjection.IServiceCollection Services { get; }
+                Microsoft.Extensions.DependencyInjection.IServiceCollection Microsoft.Extensions.DependencyInjection.IRazorComponentsBuilder.Services { get => throw null; }
+            }
+            public static partial class ServerRazorComponentsBuilderExtensions
+            {
+                public static Microsoft.Extensions.DependencyInjection.IServerSideBlazorBuilder AddInteractiveServerComponents(this Microsoft.Extensions.DependencyInjection.IRazorComponentsBuilder builder, System.Action<Microsoft.AspNetCore.Components.Server.CircuitOptions> configure = default(System.Action<Microsoft.AspNetCore.Components.Server.CircuitOptions>)) => throw null;
             }
             public static partial class ServerSideBlazorBuilderExtensions
             {

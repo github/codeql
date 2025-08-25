@@ -6,7 +6,8 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/unused-reference-type
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       useless-code
  *       external/cwe/cwe-561
  */
@@ -49,6 +50,7 @@ predicate dead(RefType dead) {
   not dead instanceof AnonymousClass and
   // Exclude classes that look like they may be reflectively constructed.
   not dead.getAnAnnotation() instanceof ReflectiveAccessAnnotation and
+  not dead.getAMethod().getAnAnnotation() instanceof ReflectiveAccessAnnotation and
   // Insist all source ancestors are dead as well.
   forall(RefType t | t.fromSource() and t = getASuperTypePlus(dead) | dead(t)) and
   // Exclude compiler generated classes (e.g. declaring type of adapter functions in Kotlin)

@@ -1,0 +1,2 @@
+query: experimental/Security/CWE/CWE-347/Auth0NoVerifier.ql
+postprocess: utils/test/PrettyPrintModels.ql

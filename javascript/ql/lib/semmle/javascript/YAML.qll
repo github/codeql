@@ -9,9 +9,9 @@ import javascript
 private import codeql.yaml.Yaml as LibYaml
 
 private module YamlSig implements LibYaml::InputSig {
-  class LocatableBase extends @yaml_locatable, Locatable {
-    override Location getLocation() { yaml_locations(this, result) }
-  }
+  class Location = DbLocation;
+
+  class LocatableBase extends @yaml_locatable, Locatable { }
 
   import javascript
 
@@ -52,61 +52,5 @@ import LibYaml::Make<YamlSig>
 private class MyYmlNode extends Locatable instanceof YamlNode {
   override string getAPrimaryQlClass() { result = YamlNode.super.getAPrimaryQlClass() }
 
-  override Location getLocation() { result = YamlNode.super.getLocation() }
-
   override string toString() { result = YamlNode.super.toString() }
 }
-
-/** DEPRECATED: Alias for YamlNode */
-deprecated class YAMLNode = YamlNode;
-
-/** DEPRECATED: Alias for YamlValue */
-deprecated class YAMLValue = YamlValue;
-
-/** DEPRECATED: Alias for YamlScalar */
-deprecated class YAMLScalar = YamlScalar;
-
-/** DEPRECATED: Alias for YamlInteger */
-deprecated class YAMLInteger = YamlInteger;
-
-/** DEPRECATED: Alias for YamlFloat */
-deprecated class YAMLFloat = YamlFloat;
-
-/** DEPRECATED: Alias for YamlTimestamp */
-deprecated class YAMLTimestamp = YamlTimestamp;
-
-/** DEPRECATED: Alias for YamlBool */
-deprecated class YAMLBool = YamlBool;
-
-/** DEPRECATED: Alias for YamlNull */
-deprecated class YAMLNull = YamlNull;
-
-/** DEPRECATED: Alias for YamlString */
-deprecated class YAMLString = YamlString;
-
-/** DEPRECATED: Alias for YamlMergeKey */
-deprecated class YAMLMergeKey = YamlMergeKey;
-
-/** DEPRECATED: Alias for YamlInclude */
-deprecated class YAMLInclude = YamlInclude;
-
-/** DEPRECATED: Alias for YamlCollection */
-deprecated class YAMLCollection = YamlCollection;
-
-/** DEPRECATED: Alias for YamlMapping */
-deprecated class YAMLMapping = YamlMapping;
-
-/** DEPRECATED: Alias for YamlSequence */
-deprecated class YAMLSequence = YamlSequence;
-
-/** DEPRECATED: Alias for YamlAliasNode */
-deprecated class YAMLAliasNode = YamlAliasNode;
-
-/** DEPRECATED: Alias for YamlDocument */
-deprecated class YAMLDocument = YamlDocument;
-
-/** DEPRECATED: Alias for YamlParseError */
-deprecated class YAMLParseError = YamlParseError;
-
-/** DEPRECATED: Alias for YamlMappingLikeNode */
-deprecated class YAMLMappingLikeNode = YamlMappingLikeNode;

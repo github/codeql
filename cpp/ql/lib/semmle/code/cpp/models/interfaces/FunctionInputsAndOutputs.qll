@@ -8,7 +8,7 @@ import semmle.code.cpp.Parameter
 
 private newtype TFunctionInput =
   TInParameter(ParameterIndex i) or
-  TInParameterDeref(ParameterIndex i) or
+  TInParameterDeref(ParameterIndex i, int indirectionIndex) { indirectionIndex = [1, 2] } or
   TInQualifierObject() or
   TInQualifierAddress() or
   TInReturnValueDeref()
@@ -22,6 +22,14 @@ private newtype TFunctionInput =
  */
 class FunctionInput extends TFunctionInput {
   abstract string toString();
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Gets the `FunctionInput` that represents the indirection of this input,
+   * if any.
+   */
+  FunctionInput getIndirectionInput() { none() }
 
   /**
    * Holds if this is the input value of the parameter with index `index`.
@@ -226,6 +234,8 @@ class InParameter extends FunctionInput, TInParameter {
   ParameterIndex getIndex() { result = index }
 
   override predicate isParameter(ParameterIndex i) { i = index }
+
+  override FunctionInput getIndirectionInput() { result = TInParameterDeref(index, 1) }
 }
 
 /**
@@ -245,15 +255,22 @@ class InParameter extends FunctionInput, TInParameter {
  */
 class InParameterDeref extends FunctionInput, TInParameterDeref {
   ParameterIndex index;
+  int indirectionIndex;
 
-  InParameterDeref() { this = TInParameterDeref(index) }
+  InParameterDeref() { this = TInParameterDeref(index, indirectionIndex) }
 
   override string toString() { result = "InParameterDeref " + index.toString() }
 
   /** Gets the zero-based index of the parameter. */
   ParameterIndex getIndex() { result = index }
 
-  override predicate isParameterDeref(ParameterIndex i) { i = index }
+  override predicate isParameterDeref(ParameterIndex i, int indirection) {
+    i = index and indirectionIndex = indirection
+  }
+
+  override FunctionInput getIndirectionInput() {
+    result = TInParameterDeref(index, indirectionIndex + 1)
+  }
 }
 
 /**
@@ -272,6 +289,8 @@ class InQualifierObject extends FunctionInput, TInQualifierObject {
   override string toString() { result = "InQualifierObject" }
 
   override predicate isQualifierObject() { any() }
+
+  override FunctionInput getIndirectionInput() { none() }
 }
 
 /**
@@ -290,6 +309,8 @@ class InQualifierAddress extends FunctionInput, TInQualifierAddress {
   override string toString() { result = "InQualifierAddress" }
 
   override predicate isQualifierAddress() { any() }
+
+  override FunctionInput getIndirectionInput() { result = TInQualifierObject() }
 }
 
 /**
@@ -318,13 +339,15 @@ class InReturnValueDeref extends FunctionInput, TInReturnValueDeref {
   override string toString() { result = "InReturnValueDeref" }
 
   override predicate isReturnValueDeref() { any() }
+
+  override FunctionInput getIndirectionInput() { none() }
 }
 
 private newtype TFunctionOutput =
-  TOutParameterDeref(ParameterIndex i) or
+  TOutParameterDeref(ParameterIndex i, int indirectionIndex) { indirectionIndex = [1, 2] } or
   TOutQualifierObject() or
   TOutReturnValue() or
-  TOutReturnValueDeref()
+  TOutReturnValueDeref(int indirections) { indirections = [1, 2] }
 
 /**
  * An output from a function. This can be:
@@ -336,6 +359,14 @@ private newtype TFunctionOutput =
  */
 class FunctionOutput extends TFunctionOutput {
   abstract string toString();
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Gets the `FunctionOutput` that represents the indirection of this output,
+   * if any.
+   */
+  FunctionOutput getIndirectionOutput() { none() }
 
   /**
    * Holds if this is the output value pointed to by a pointer parameter to a function, or the
@@ -498,17 +529,20 @@ class FunctionOutput extends TFunctionOutput {
  */
 class OutParameterDeref extends FunctionOutput, TOutParameterDeref {
   ParameterIndex index;
+  int indirectionIndex;
 
-  OutParameterDeref() { this = TOutParameterDeref(index) }
+  OutParameterDeref() { this = TOutParameterDeref(index, indirectionIndex) }
 
   override string toString() { result = "OutParameterDeref " + index.toString() }
 
   ParameterIndex getIndex() { result = index }
 
-  override predicate isParameterDeref(ParameterIndex i) { i = index }
-
   override predicate isParameterDeref(ParameterIndex i, int ind) {
-    this.isParameterDeref(i) and ind = 1
+    i = index and ind = indirectionIndex
+  }
+
+  override FunctionOutput getIndirectionOutput() {
+    result = TOutParameterDeref(index, indirectionIndex + 1)
   }
 }
 
@@ -528,6 +562,8 @@ class OutQualifierObject extends FunctionOutput, TOutQualifierObject {
   override string toString() { result = "OutQualifierObject" }
 
   override predicate isQualifierObject() { any() }
+
+  override FunctionOutput getIndirectionOutput() { none() }
 }
 
 /**
@@ -550,6 +586,8 @@ class OutReturnValue extends FunctionOutput, TOutReturnValue {
   override string toString() { result = "OutReturnValue" }
 
   override predicate isReturnValue() { any() }
+
+  override FunctionOutput getIndirectionOutput() { result = TOutReturnValueDeref(1) }
 }
 
 /**
@@ -569,7 +607,19 @@ class OutReturnValue extends FunctionOutput, TOutReturnValue {
  *   of `getInt()` is neither a pointer nor a reference.
  */
 class OutReturnValueDeref extends FunctionOutput, TOutReturnValueDeref {
+  int indirectionIndex;
+
+  OutReturnValueDeref() { this = TOutReturnValueDeref(indirectionIndex) }
+
   override string toString() { result = "OutReturnValueDeref" }
 
   override predicate isReturnValueDeref() { any() }
+
+  override predicate isReturnValueDeref(int indirectionIndex_) {
+    indirectionIndex = indirectionIndex_
+  }
+
+  override FunctionOutput getIndirectionOutput() {
+    result = TOutReturnValueDeref(indirectionIndex + 1)
+  }
 }

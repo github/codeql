@@ -446,7 +446,7 @@ The ``pragma[assume_small_delta]`` annotation has no effect and can be safely re
 Language pragmas
 ================
 
-**Available for**: |classes|, |characteristic predicates|, |member predicates|, |non-member predicates|
+**Available for**: |modules|, |classes|, |characteristic predicates|, |member predicates|, |non-member predicates|
 
 ``language[monotonicAggregates]``
 ---------------------------------

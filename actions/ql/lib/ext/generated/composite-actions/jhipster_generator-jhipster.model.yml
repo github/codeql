@@ -1,0 +1,27 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["jhipster/generator-jhipster", "*", "input.generator-path", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "input.application-packaging", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "input.application-environment", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "input.executable", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "input.jdl-entities-sample", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "input.entities-sample", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "input.application-sample", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "input.jdl-sample", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "input.generator-jhipster-branch", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "input.generator-jhipster-repository", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "input.jhipster-bom-directory", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "input.jhipster-bom-branch", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "input.jhipster-bom-repository", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "input.package-with-executable", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "input.generator-jhipster-directory", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "input.application-path", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "input.extra-args", "code-injection", "generated"]
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["jhipster/generator-jhipster", "*", "input.skip-workflow", "output.skip-workflow", "taint", "manual"]

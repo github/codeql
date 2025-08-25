@@ -10,5 +10,5 @@
 | invalid.js:14:35:14:118 | () { cl ... er(); } | The super constructor must be called before using $@. | invalid.js:14:99:14:102 | this | this |
 | invalid.js:15:71:15:95 | () { th ... er(); } | The super constructor must be called before using $@. | invalid.js:15:76:15:79 | this | this |
 | invalid.js:16:35:16:66 | () { if ... .a(); } | The super constructor must be called before using $@. | invalid.js:16:56:16:59 | this | this |
-| invalid.js:26:16:26:19 | () {\\n   ... ;\\n    } | The super constructor must be called before using $@. | invalid.js:27:9:27:12 | this | this |
-| invalid.js:26:16:26:19 | () {\\n   ... ;\\n    } | The super constructor must be called before using $@. | invalid.js:28:9:28:12 | this | this |
+| invalid.js:26:16:26:30 | () { // ... ;\\n    } | The super constructor must be called before using $@. | invalid.js:27:9:27:12 | this | this |
+| invalid.js:26:16:26:30 | () { // ... ;\\n    } | The super constructor must be called before using $@. | invalid.js:28:9:28:12 | this | this |

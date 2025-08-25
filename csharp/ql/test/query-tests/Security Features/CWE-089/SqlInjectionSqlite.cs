@@ -16,12 +16,12 @@ namespace TestSqlite
         public void InjectUntrustedData()
         {
             // BAD: untrusted data is not sanitized.
-            SQLiteCommand cmd = new SQLiteCommand(untrustedData.Text);
+            SQLiteCommand cmd = new SQLiteCommand(untrustedData.Text); // $ Alert[cs/sql-injection]
 
             // BAD: untrusted data is not sanitized.
             using (var connection = new SQLiteConnection(connectionString))
             {
-                cmd = new SQLiteCommand(untrustedData.Text, connection);
+                cmd = new SQLiteCommand(untrustedData.Text, connection); // $ Source[cs/sql-injection] Alert[cs/sql-injection]
             }
 
             SQLiteDataAdapter adapter;
@@ -30,23 +30,23 @@ namespace TestSqlite
             // BAD: untrusted data is not sanitized.
             using (var connection = new SQLiteConnection(connectionString))
             {
-                adapter = new SQLiteDataAdapter(untrustedData.Text, connection);
+                adapter = new SQLiteDataAdapter(untrustedData.Text, connection); // $ Alert[cs/sql-injection]
                 result = new DataSet();
                 adapter.Fill(result);
             }
 
             // BAD: untrusted data is not sanitized.
-            adapter = new SQLiteDataAdapter(untrustedData.Text, connectionString);
+            adapter = new SQLiteDataAdapter(untrustedData.Text, connectionString); // $ Alert[cs/sql-injection]
             result = new DataSet();
             adapter.Fill(result);
 
             // BAD: untrusted data is not sanitized.
-            adapter = new SQLiteDataAdapter(cmd);
+            adapter = new SQLiteDataAdapter(cmd); // $ Alert[cs/sql-injection]
             result = new DataSet();
             adapter.Fill(result);
 
             // BAD: untrusted data as filename is not sanitized.
-            using (FileStream fs = new FileStream(untrustedData.Text, FileMode.Open))
+            using (FileStream fs = new FileStream(untrustedData.Text, FileMode.Open)) // $ Source[cs/sql-injection]
             {
                 using (StreamReader sr = new StreamReader(fs, Encoding.UTF8))
                 {
@@ -58,7 +58,7 @@ namespace TestSqlite
                             continue;
                         using (var connection = new SQLiteConnection(""))
                         {
-                            cmd = new SQLiteCommand(sql, connection);
+                            cmd = new SQLiteCommand(sql, connection); // $ Alert[cs/sql-injection]
                             cmd.ExecuteScalar();
                         }
                     }

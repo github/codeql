@@ -5,20 +5,19 @@
 
 
 <overview>
-<p> The first parameter of a class method, a new method or any metaclass method
-should be called <code>cls</code>. This makes the purpose of the parameter clear to other developers.
+<p> The first parameter of a class method (including certain special methods such as <code>__new__</code>), or a method of a metaclass,
+should be named <code>cls</code>. 
 </p>
 
 </overview>
 <recommendation>
 
-<p>Change the name of the first parameter to <code>cls</code> as recommended by the style guidelines
+<p>Ensure that the first parameter of class methods is named <code>cls</code>, as recommended by the style guidelines
 in PEP 8.</p>
 
 </recommendation>
 <example>
-<p>In the example, the first parameter to <code>make()</code> is <code>klass</code> which should be changed to <code>cls</code>
-for ease of comprehension.
+<p>In the following example, the first parameter of the class method <code>make</code> is named <code>self</code> instead of <code>cls</code>.
 </p>
 
 <sample src="NonCls.py" />
@@ -29,6 +28,7 @@ for ease of comprehension.
 
 <li>Python PEP 8: <a href="http://www.python.org/dev/peps/pep-0008/#function-and-method-arguments">Function and method arguments</a>.</li>
 <li>Python Tutorial: <a href="http://docs.python.org/2/tutorial/classes.html">Classes</a>.</li>
+<li>Python Docs: <a href="https://docs.python.org/3/library/functions.html#classmethod">classmethod</a>.</li>
 
 
 </references>

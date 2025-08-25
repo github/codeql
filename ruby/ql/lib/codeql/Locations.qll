@@ -1,4 +1,6 @@
 /** Provides classes for working with locations. */
+overlay[local]
+module;
 
 import files.FileSystem
 
@@ -64,5 +66,5 @@ class Location extends @location_default {
 
 /** An entity representing an empty location. */
 class EmptyLocation extends Location {
-  EmptyLocation() { this.hasLocationInfo("", 0, 0, 0, 0) }
+  EmptyLocation() { empty_location(this) }
 }

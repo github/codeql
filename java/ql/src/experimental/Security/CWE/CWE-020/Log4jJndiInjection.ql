@@ -19,9 +19,11 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.security.Sanitizers
 import Log4jInjectionFlow::PathGraph
 
-private class ActivateModels extends ActiveExperimentalModels {
+overlay[local?]
+deprecated private class ActivateModels extends ActiveExperimentalModels {
   ActivateModels() { this = "log4j-injection" }
 }
 
@@ -33,17 +35,13 @@ class Log4jInjectionSink extends DataFlow::Node {
 /**
  * A node that sanitizes a message before logging to avoid log injection.
  */
-class Log4jInjectionSanitizer extends DataFlow::Node {
-  Log4jInjectionSanitizer() {
-    this.getType() instanceof BoxedType or this.getType() instanceof PrimitiveType
-  }
-}
+class Log4jInjectionSanitizer extends DataFlow::Node instanceof SimpleTypeSanitizer { }
 
 /**
  * A taint-tracking configuration for tracking untrusted user input used in log entries.
  */
 module Log4jInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof Log4jInjectionSink }
 
@@ -55,7 +53,13 @@ module Log4jInjectionConfig implements DataFlow::ConfigSig {
  */
 module Log4jInjectionFlow = TaintTracking::Global<Log4jInjectionConfig>;
 
-from Log4jInjectionFlow::PathNode source, Log4jInjectionFlow::PathNode sink
-where Log4jInjectionFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "Log4j log entry depends on a $@.", source.getNode(),
-  "user-provided value"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, Log4jInjectionFlow::PathNode source, Log4jInjectionFlow::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
+  Log4jInjectionFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "Log4j log entry depends on a $@." and
+  sourceNode = source.getNode() and
+  message2 = "user-provided value"
+}

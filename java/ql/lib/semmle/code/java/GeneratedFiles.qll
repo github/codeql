@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with the most common types of generated files.
  */
+overlay[local?]
+module;
 
 import Type
 private import semmle.code.java.frameworks.JavaxAnnotations
@@ -44,7 +46,7 @@ abstract class GeneratedFile extends File { }
 /**
  * A file detected as generated based on commonly-used marker comments.
  */
-library class MarkerCommentGeneratedFile extends GeneratedFile {
+class MarkerCommentGeneratedFile extends GeneratedFile {
   MarkerCommentGeneratedFile() { any(GeneratedFileMarker t).getFile() = this }
 }
 

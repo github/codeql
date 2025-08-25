@@ -7,9 +7,9 @@ Test.java:
 #    5|       3: [TypeAccess] NoSuchClass
 #    5|       5: [BlockStmt] { ... }
 #    6|         0: [LocalVariableDeclStmt] var ...;
-#    6|           0: [TypeAccess] NoSuchClass
+#    6|           0: [TypeAccess] <TypeAccess of ErrorType>
 #    6|           1: [LocalVariableDeclExpr] nsc
 #    6|             0: [ClassInstanceExpr] <ClassInstanceExpr that calls a missing constructor>
-#    6|               -3: [TypeAccess] NoSuchClass
+#    6|               -3: [TypeAccess] <TypeAccess of ErrorType>
 #    7|         1: [ReturnStmt] return ...
 #    7|           0: [VarAccess] nsc

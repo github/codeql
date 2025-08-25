@@ -3,9 +3,12 @@
  *
  * Locations represent parts of files and are used to map elements to their source location.
  */
+overlay[local?]
+module;
 
 import FileSystem
 import semmle.code.java.Element
+private import semmle.code.java.Overlay
 private import semmle.code.SMAP
 
 /** Holds if element `e` has name `name`. */
@@ -18,7 +21,7 @@ predicate hasName(Element e, string name) {
   or
   methods(e, name, _, _, _, _)
   or
-  fields(e, name, _, _, _)
+  fields(e, name, _, _)
   or
   packages(e, name)
   or
@@ -34,7 +37,7 @@ predicate hasName(Element e, string name) {
   or
   localvars(e, name, _, _)
   or
-  typeVars(e, name, _, _, _)
+  typeVars(e, name, _, _)
   or
   wildcards(e, name, _)
   or
@@ -218,4 +221,17 @@ private predicate fixedHasLocation(Top l, Location loc, File f) {
     ) and
   not hasSourceLocation(l, _, _) and
   locations_default(loc, f, _, _, _, _)
+}
+
+overlay[local]
+private predicate discardableLocation(string file, @location l) {
+  not isOverlay() and
+  file = getRawFileForLoc(l) and
+  not exists(@file f | hasLocation(f, l))
+}
+
+/** Discard base locations in files fully extracted in the overlay. */
+overlay[discard_entity]
+private predicate discardLocation(@location l) {
+  exists(string file | discardableLocation(file, l) and overlayChangedFiles(file))
 }

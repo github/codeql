@@ -1,18 +1,16 @@
 .. _analyzing-data-flow-in-java:
 
-Analyzing data flow in Java
-===========================
+Analyzing data flow in Java and Kotlin
+======================================
 
-You can use CodeQL to track the flow of data through a Java program to its use. 
-
-.. include:: ../reusables/kotlin-beta-note.rst
+You can use CodeQL to track the flow of data through a Java/Kotlin program to its use.
 
 .. include:: ../reusables/kotlin-java-differences.rst
 
 About this article
 ------------------
 
-This article describes how data flow analysis is implemented in the CodeQL libraries for Java and includes examples to help you write your own data flow queries.
+This article describes how data flow analysis is implemented in the CodeQL libraries for Java/Kotlin and includes examples to help you write your own data flow queries.
 The following sections describe how to use the libraries for local data flow, global data flow, and taint tracking.
 
 For a more general introduction to modeling data flow, see ":ref:`About data flow analysis <about-data-flow-analysis>`."
@@ -27,7 +25,13 @@ Local data flow is data flow within a single method or callable. Local data flow
 Using local data flow
 ~~~~~~~~~~~~~~~~~~~~~
 
-The local data flow library is in the module ``DataFlow``, which defines the class ``Node`` denoting any element that data can flow through. ``Node``\ s are divided into expression nodes (``ExprNode``) and parameter nodes (``ParameterNode``). You can map between data flow nodes and expressions/parameters using the member predicates ``asExpr`` and ``asParameter``:
+To use the data flow library you need the following import:
+
+.. code-block:: ql
+
+   import semmle.code.java.dataflow.DataFlow
+
+The ``DataFlow`` module defines the class ``Node`` denoting any element that data can flow through. ``Node``\ s are divided into expression nodes (``ExprNode``) and parameter nodes (``ParameterNode``). You can map between data flow nodes and expressions/parameters using the member predicates ``asExpr`` and ``asParameter``:
 
 .. code-block:: ql
 
@@ -70,12 +74,18 @@ Local taint tracking extends local data flow by including non-value-preserving f
 
 .. code-block:: java
 
-     String temp = x;
-     String y = temp + ", " + temp;
+     String y = "Hello " + x;
 
 If ``x`` is a tainted string then ``y`` is also tainted.
 
-The local taint tracking library is in the module ``TaintTracking``. Like local data flow, a predicate ``localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo)`` holds if there is an immediate taint propagation edge from the node ``nodeFrom`` to the node ``nodeTo``. You can apply the predicate recursively by using the ``+`` and ``*`` operators, or by using the predefined recursive predicate ``localTaint``, which is equivalent to ``localTaintStep*``.
+
+To use the taint tracking library you need the following import:
+
+.. code-block:: ql
+
+   import semmle.code.java.dataflow.TaintTracking
+
+Like local data flow, a predicate ``localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo)`` holds if there is an immediate taint propagation edge from the node ``nodeFrom`` to the node ``nodeTo``. You can apply the predicate recursively by using the ``+`` and ``*`` operators, or by using the predefined recursive predicate ``localTaint``, which is equivalent to ``localTaintStep*``.
 
 For example, you can find taint propagation from a parameter ``source`` to an expression ``sink`` in zero or more local steps:
 
@@ -86,7 +96,7 @@ For example, you can find taint propagation from a parameter ``source`` to an ex
 Examples
 ~~~~~~~~
 
-This query finds the filename passed to ``new FileReader(..)``.
+This query finds the filename passed to ``new FileReader(..)``:
 
 .. code-block:: ql
 
@@ -112,7 +122,7 @@ Unfortunately, this only gives the expression in the argument, not the values wh
      DataFlow::localFlow(DataFlow::exprNode(src), DataFlow::exprNode(call.getArgument(0)))
    select src
 
-Then we can make the source more specific, for example an access to a public parameter. This query finds where a public parameter is passed to ``new FileReader(..)``:
+To restrict sources to only an access to a public parameter, rather than arbitrary expressions, we can modify this query as follows:
 
 .. code-block:: ql
 
@@ -126,7 +136,7 @@ Then we can make the source more specific, for example an access to a public par
      DataFlow::localFlow(DataFlow::parameterNode(p), DataFlow::exprNode(call.getArgument(0)))
    select p
 
-This query finds calls to formatting functions where the format string is not hard-coded.
+The following query finds calls to formatting functions where the format string is not hard-coded.
 
 .. code-block:: ql
 
@@ -134,7 +144,7 @@ This query finds calls to formatting functions where the format string is not ha
    import semmle.code.java.dataflow.DataFlow
    import semmle.code.java.StringFormat
 
-   from StringFormatMethod format, MethodAccess call, Expr formatString
+   from StringFormatMethod format, MethodCall call, Expr formatString
    where
      call.getMethod() = format and
      call.getArgument(format.getFormatStringIndex()) = formatString and
@@ -158,14 +168,15 @@ Global data flow tracks data flow throughout the entire program, and is therefor
 .. pull-quote:: Note
 
    .. include:: ../reusables/path-problem.rst
-   
+
 Using global data flow
 ~~~~~~~~~~~~~~~~~~~~~~
 
-You use the global data flow library by implementing the signature ``DataFlow::ConfigSig`` and applying the module ``DataFlow::Global<ConfigSig>``:
+We can use the global data flow library by implementing the signature ``DataFlow::ConfigSig`` and applying the module ``DataFlow::Global<ConfigSig>``:
 
 .. code-block:: ql
 
+   import java
    import semmle.code.java.dataflow.DataFlow
 
    module MyFlowConfiguration implements DataFlow::ConfigSig {
@@ -182,10 +193,10 @@ You use the global data flow library by implementing the signature ``DataFlow::C
 
 These predicates are defined in the configuration:
 
--  ``isSource``—defines where data may flow from
--  ``isSink``—defines where data may flow to
--  ``isBarrier``—optional, restricts the data flow
--  ``isAdditionalFlowStep``—optional, adds additional flow steps
+-  ``isSource`` - defines where data may flow from.
+-  ``isSink`` - defines where data may flow to.
+-  ``isBarrier`` - optional, defines where data flow is blocked.
+-  ``isAdditionalFlowStep`` - optional, adds additional flow steps.
 
 The data flow analysis is performed using the predicate ``flow(DataFlow::Node source, DataFlow::Node sink)``:
 
@@ -198,10 +209,11 @@ The data flow analysis is performed using the predicate ``flow(DataFlow::Node so
 Using global taint tracking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Global taint tracking is to global data flow as local taint tracking is to local data flow. That is, global taint tracking extends global data flow with additional non-value-preserving steps. You use the global taint tracking library by applying the module ``TaintTracking::Global<ConfigSig>`` to your configuration instead of ``DataFlow::Global<ConfigSig>``:
+Global taint tracking is to global data flow what local taint tracking is to local data flow. That is, global taint tracking extends global data flow with additional non-value-preserving steps. You use the global taint tracking library by applying the module ``TaintTracking::Global<ConfigSig>`` to your configuration instead of ``DataFlow::Global<ConfigSig>``:
 
 .. code-block:: ql
 
+   import java
    import semmle.code.java.dataflow.TaintTracking
 
    module MyFlowConfiguration implements DataFlow::ConfigSig {
@@ -250,7 +262,7 @@ Exercise 2: Write a query that finds all hard-coded strings used to create a ``j
 
 Exercise 3: Write a class that represents flow sources from ``java.lang.System.getenv(..)``. (`Answer <#exercise-3>`__)
 
-Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flows from ``getenv`` to ``java.net.URL``. (`Answer <#exercise-4>`__)
+Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flow paths from ``getenv`` to ``java.net.URL``. (`Answer <#exercise-4>`__)
 
 Answers
 -------
@@ -260,6 +272,7 @@ Exercise 1
 
 .. code-block:: ql
 
+   import java
    import semmle.code.java.dataflow.DataFlow
 
    from Constructor url, Call call, StringLiteral src
@@ -274,6 +287,7 @@ Exercise 2
 
 .. code-block:: ql
 
+   import java
    import semmle.code.java.dataflow.DataFlow
 
    module LiteralToURLConfig implements DataFlow::ConfigSig {
@@ -302,7 +316,7 @@ Exercise 3
 
    import java
 
-   class GetenvSource extends MethodAccess {
+   class GetenvSource extends MethodCall {
      GetenvSource() {
        exists(Method m | m = this.getMethod() |
          m.hasName("getenv") and
@@ -316,11 +330,12 @@ Exercise 4
 
 .. code-block:: ql
 
+   import java
    import semmle.code.java.dataflow.DataFlow
 
    class GetenvSource extends DataFlow::ExprNode {
      GetenvSource() {
-       exists(Method m | m = this.asExpr().(MethodAccess).getMethod() |
+       exists(Method m | m = this.asExpr().(MethodCall).getMethod() |
          m.hasName("getenv") and
          m.getDeclaringType() instanceof TypeSystem
        )
@@ -349,7 +364,7 @@ Exercise 4
 Further reading
 ---------------
 
-- ":ref:`Exploring data flow with path queries <exploring-data-flow-with-path-queries>`"
+- `Exploring data flow with path queries  <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/exploring-data-flow-with-path-queries>`__ in the GitHub documentation.
 
 
 .. include:: ../reusables/java-further-reading.rst

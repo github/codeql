@@ -114,7 +114,7 @@ private predicate live_at_exit_of_bb(StackVariable v, BasicBlock b) {
 
 /** Common SSA logic for standard SSA and range-analysis SSA. */
 cached
-library class SsaHelper extends int {
+class SsaHelper extends int {
   /* 0 = StandardSSA, 1 = RangeSSA */
   cached
   SsaHelper() { this in [0 .. 1] }

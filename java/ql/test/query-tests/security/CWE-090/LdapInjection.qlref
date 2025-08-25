@@ -1,1 +1,2 @@
-Security/CWE/CWE-090/LdapInjection.ql
+query: Security/CWE/CWE-090/LdapInjection.ql
+postprocess: utils/test/PrettyPrintModels.ql

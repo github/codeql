@@ -1,11 +1,12 @@
 /**
  * Defines configurations and steps for handling regexes
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.DataFlow
-private import semmle.code.java.dataflow.DataFlow2
 private import semmle.code.java.security.SecurityTests
 
 private class ExploitableStringLiteral extends StringLiteral {
@@ -14,12 +15,20 @@ private class ExploitableStringLiteral extends StringLiteral {
 
 /**
  * Holds if `kind` is an external sink kind that is relevant for regex flow.
- * `full` is true if sinks with this kind match against the full string of its input.
- * `strArg` is the index of the argument to methods with this sink kind that contan the string to be matched against,
- * where -1 is the qualifier; or -2 if no such argument exists.
+ * `full` is true if sinks with this kind match against the full string of its
+ * input.
+ * `strArg` is the index of the argument to methods with this sink kind that
+ * contain the string to be matched against, where -1 is the qualifier; or -2
+ * if no such argument exists.
+ *
+ * Note that `regex-use` is deliberately not a possible value for `kind` here,
+ * as it is used for regular expression injection sinks that need to be selected
+ * separately from existing `regex-use[0]` sinks.
+ * TODO: refactor the `regex-use%` sink kind so that the polynomial ReDoS query
+ * can also use the `regex-use` sinks.
  */
 private predicate regexSinkKindInfo(string kind, boolean full, int strArg) {
-  sinkModel(_, _, _, _, _, _, _, kind, _) and
+  sinkModel(_, _, _, _, _, _, _, kind, _, _) and
   exists(string fullStr, string strArgStr |
     (
       full = true and fullStr = "f"
@@ -54,14 +63,14 @@ private class RegexFlowSink extends DataFlow::Node {
 
   /** Gets the string expression that a regex that flows here is matched against, if any. */
   Expr getStringArgument() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       this.asExpr() = argOf(ma, _) and
       result = argOf(ma, strArg)
     )
   }
 }
 
-private Expr argOf(MethodAccess ma, int arg) {
+private Expr argOf(MethodCall ma, int arg) {
   arg = -1 and result = ma.getQualifier()
   or
   result = ma.getArgument(arg)
@@ -83,7 +92,7 @@ class RegexAdditionalFlowStep extends Unit {
 // TODO: This may be able to be done with models-as-data if query-specific flow steps beome supported.
 private class JdkRegexFlowStep extends RegexAdditionalFlowStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(MethodAccess ma, Method m, string package, string type, string name, int arg |
+    exists(MethodCall ma, Method m, string package, string type, string name, int arg |
       ma.getMethod().getSourceDeclaration().overrides*(m) and
       m.hasQualifiedName(package, type, name) and
       node1.asExpr() = argOf(ma, arg) and
@@ -109,7 +118,7 @@ private class JdkRegexFlowStep extends RegexAdditionalFlowStep {
 
 private class GuavaRegexFlowStep extends RegexAdditionalFlowStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(MethodAccess ma, Method m, string package, string type, string name, int arg |
+    exists(MethodCall ma, Method m, string package, string type, string name, int arg |
       ma.getMethod().getSourceDeclaration().overrides*(m) and
       m.hasQualifiedName(package, type, name) and
       node1.asExpr() = argOf(ma, arg) and

@@ -1,0 +1,373 @@
+models
+edges
+| types.rb:1:11:1:11 | x : C1 | types.rb:2:5:2:5 | x : C1 | provenance |  |
+| types.rb:1:11:1:11 | x : C2 | types.rb:2:5:2:5 | x : C2 | provenance |  |
+| types.rb:1:11:1:11 | x : C3 | types.rb:2:5:2:5 | x : C3 | provenance |  |
+| types.rb:20:5:22:7 | self in call_foo : C1 | types.rb:21:13:21:16 | self : C1 | provenance |  |
+| types.rb:20:5:22:7 | self in call_foo : C3 | types.rb:21:13:21:16 | self : C3 | provenance |  |
+| types.rb:21:13:21:16 | self : C1 | types.rb:52:9:52:9 | x : C1 | provenance |  |
+| types.rb:21:13:21:16 | self : C1 | types.rb:52:9:52:9 | x : C1 | provenance |  |
+| types.rb:21:13:21:16 | self : C3 | types.rb:52:9:52:9 | x : C3 | provenance |  |
+| types.rb:24:5:26:7 | self in call_bar : C1 | types.rb:25:13:25:16 | self : C1 | provenance |  |
+| types.rb:24:5:26:7 | self in call_bar : C3 | types.rb:25:13:25:16 | self : C3 | provenance |  |
+| types.rb:25:13:25:16 | self : C1 | types.rb:61:9:61:9 | x : C1 | provenance |  |
+| types.rb:25:13:25:16 | self : C1 | types.rb:61:9:61:9 | x : C1 | provenance |  |
+| types.rb:25:13:25:16 | self : C3 | types.rb:61:9:61:9 | x : C3 | provenance |  |
+| types.rb:31:5:33:7 | self in call_maybe_sink : C1 | types.rb:32:9:32:18 | self : C1 | provenance |  |
+| types.rb:31:5:33:7 | self in call_maybe_sink : C2 | types.rb:32:9:32:18 | self : C2 | provenance |  |
+| types.rb:31:5:33:7 | self in call_maybe_sink : C3 | types.rb:32:9:32:18 | self : C3 | provenance |  |
+| types.rb:32:9:32:18 | self : C1 | types.rb:41:5:43:7 | self in maybe_sink : C2 | provenance |  |
+| types.rb:32:9:32:18 | self : C1 | types.rb:47:5:49:7 | self in maybe_sink : C3 | provenance |  |
+| types.rb:32:9:32:18 | self : C2 | types.rb:41:5:43:7 | self in maybe_sink : C2 | provenance |  |
+| types.rb:32:9:32:18 | self : C3 | types.rb:47:5:49:7 | self in maybe_sink : C3 | provenance |  |
+| types.rb:35:5:37:7 | self in call_call_maybe_sink : C1 | types.rb:36:9:36:23 | self : C1 | provenance |  |
+| types.rb:35:5:37:7 | self in call_call_maybe_sink : C2 | types.rb:36:9:36:23 | self : C2 | provenance |  |
+| types.rb:35:5:37:7 | self in call_call_maybe_sink : C3 | types.rb:36:9:36:23 | self : C3 | provenance |  |
+| types.rb:36:9:36:23 | self : C1 | types.rb:31:5:33:7 | self in call_maybe_sink : C1 | provenance |  |
+| types.rb:36:9:36:23 | self : C2 | types.rb:31:5:33:7 | self in call_maybe_sink : C2 | provenance |  |
+| types.rb:36:9:36:23 | self : C3 | types.rb:31:5:33:7 | self in call_maybe_sink : C3 | provenance |  |
+| types.rb:41:5:43:7 | self in maybe_sink : C2 | types.rb:42:14:42:17 | self | provenance |  |
+| types.rb:47:5:49:7 | self in maybe_sink : C3 | types.rb:48:14:48:17 | self | provenance |  |
+| types.rb:52:9:52:9 | x : C1 | types.rb:55:18:55:18 | x | provenance |  |
+| types.rb:52:9:52:9 | x : C3 | types.rb:55:18:55:18 | x | provenance |  |
+| types.rb:61:9:61:9 | x : C1 | types.rb:63:18:63:19 | c3 : C3 | provenance |  |
+| types.rb:61:9:61:9 | x : C3 | types.rb:63:18:63:19 | c3 : C3 | provenance |  |
+| types.rb:63:18:63:19 | c3 : C3 | types.rb:64:18:64:19 | c3 | provenance |  |
+| types.rb:71:5:71:19 | call to taint : C1 | types.rb:52:9:52:9 | x : C1 | provenance |  |
+| types.rb:71:11:71:18 | call to new : C1 | types.rb:1:11:1:11 | x : C1 | provenance |  |
+| types.rb:71:11:71:18 | call to new : C1 | types.rb:71:5:71:19 | call to taint : C1 | provenance |  |
+| types.rb:73:5:73:19 | call to taint : C3 | types.rb:52:9:52:9 | x : C3 | provenance |  |
+| types.rb:73:11:73:18 | call to new : C3 | types.rb:1:11:1:11 | x : C3 | provenance |  |
+| types.rb:73:11:73:18 | call to new : C3 | types.rb:73:5:73:19 | call to taint : C3 | provenance |  |
+| types.rb:75:1:75:15 | call to taint : C1 | types.rb:20:5:22:7 | self in call_foo : C1 | provenance |  |
+| types.rb:75:7:75:14 | call to new : C1 | types.rb:1:11:1:11 | x : C1 | provenance |  |
+| types.rb:75:7:75:14 | call to new : C1 | types.rb:75:1:75:15 | call to taint : C1 | provenance |  |
+| types.rb:77:1:77:15 | call to taint : C3 | types.rb:20:5:22:7 | self in call_foo : C3 | provenance |  |
+| types.rb:77:7:77:14 | call to new : C3 | types.rb:1:11:1:11 | x : C3 | provenance |  |
+| types.rb:77:7:77:14 | call to new : C3 | types.rb:77:1:77:15 | call to taint : C3 | provenance |  |
+| types.rb:79:5:79:19 | call to taint : C1 | types.rb:61:9:61:9 | x : C1 | provenance |  |
+| types.rb:79:11:79:18 | call to new : C1 | types.rb:1:11:1:11 | x : C1 | provenance |  |
+| types.rb:79:11:79:18 | call to new : C1 | types.rb:79:5:79:19 | call to taint : C1 | provenance |  |
+| types.rb:81:5:81:19 | call to taint : C3 | types.rb:61:9:61:9 | x : C3 | provenance |  |
+| types.rb:81:11:81:18 | call to new : C3 | types.rb:1:11:1:11 | x : C3 | provenance |  |
+| types.rb:81:11:81:18 | call to new : C3 | types.rb:81:5:81:19 | call to taint : C3 | provenance |  |
+| types.rb:83:1:83:15 | call to taint : C1 | types.rb:24:5:26:7 | self in call_bar : C1 | provenance |  |
+| types.rb:83:7:83:14 | call to new : C1 | types.rb:1:11:1:11 | x : C1 | provenance |  |
+| types.rb:83:7:83:14 | call to new : C1 | types.rb:83:1:83:15 | call to taint : C1 | provenance |  |
+| types.rb:85:1:85:16 | call to taint : C3 | types.rb:24:5:26:7 | self in call_bar : C3 | provenance |  |
+| types.rb:85:7:85:15 | call to new : C3 | types.rb:1:11:1:11 | x : C3 | provenance |  |
+| types.rb:85:7:85:15 | call to new : C3 | types.rb:85:1:85:16 | call to taint : C3 | provenance |  |
+| types.rb:87:1:87:16 | call to taint : C1 | types.rb:35:5:37:7 | self in call_call_maybe_sink : C1 | provenance |  |
+| types.rb:87:7:87:15 | call to new : C1 | types.rb:1:11:1:11 | x : C1 | provenance |  |
+| types.rb:87:7:87:15 | call to new : C1 | types.rb:87:1:87:16 | call to taint : C1 | provenance |  |
+| types.rb:88:1:88:16 | call to taint : C2 | types.rb:35:5:37:7 | self in call_call_maybe_sink : C2 | provenance |  |
+| types.rb:88:7:88:15 | call to new : C2 | types.rb:1:11:1:11 | x : C2 | provenance |  |
+| types.rb:88:7:88:15 | call to new : C2 | types.rb:88:1:88:16 | call to taint : C2 | provenance |  |
+| types.rb:89:1:89:16 | call to taint : C3 | types.rb:35:5:37:7 | self in call_call_maybe_sink : C3 | provenance |  |
+| types.rb:89:7:89:15 | call to new : C3 | types.rb:1:11:1:11 | x : C3 | provenance |  |
+| types.rb:89:7:89:15 | call to new : C3 | types.rb:89:1:89:16 | call to taint : C3 | provenance |  |
+nodes
+| types.rb:1:11:1:11 | x : C1 | semmle.label | x : C1 |
+| types.rb:1:11:1:11 | x : C2 | semmle.label | x : C2 |
+| types.rb:1:11:1:11 | x : C3 | semmle.label | x : C3 |
+| types.rb:2:5:2:5 | x : C1 | semmle.label | x : C1 |
+| types.rb:2:5:2:5 | x : C2 | semmle.label | x : C2 |
+| types.rb:2:5:2:5 | x : C3 | semmle.label | x : C3 |
+| types.rb:20:5:22:7 | self in call_foo : C1 | semmle.label | self in call_foo : C1 |
+| types.rb:20:5:22:7 | self in call_foo : C3 | semmle.label | self in call_foo : C3 |
+| types.rb:21:13:21:16 | self : C1 | semmle.label | self : C1 |
+| types.rb:21:13:21:16 | self : C1 | semmle.label | self : C1 |
+| types.rb:21:13:21:16 | self : C3 | semmle.label | self : C3 |
+| types.rb:24:5:26:7 | self in call_bar : C1 | semmle.label | self in call_bar : C1 |
+| types.rb:24:5:26:7 | self in call_bar : C3 | semmle.label | self in call_bar : C3 |
+| types.rb:25:13:25:16 | self : C1 | semmle.label | self : C1 |
+| types.rb:25:13:25:16 | self : C1 | semmle.label | self : C1 |
+| types.rb:25:13:25:16 | self : C3 | semmle.label | self : C3 |
+| types.rb:31:5:33:7 | self in call_maybe_sink : C1 | semmle.label | self in call_maybe_sink : C1 |
+| types.rb:31:5:33:7 | self in call_maybe_sink : C2 | semmle.label | self in call_maybe_sink : C2 |
+| types.rb:31:5:33:7 | self in call_maybe_sink : C3 | semmle.label | self in call_maybe_sink : C3 |
+| types.rb:32:9:32:18 | self : C1 | semmle.label | self : C1 |
+| types.rb:32:9:32:18 | self : C2 | semmle.label | self : C2 |
+| types.rb:32:9:32:18 | self : C3 | semmle.label | self : C3 |
+| types.rb:35:5:37:7 | self in call_call_maybe_sink : C1 | semmle.label | self in call_call_maybe_sink : C1 |
+| types.rb:35:5:37:7 | self in call_call_maybe_sink : C2 | semmle.label | self in call_call_maybe_sink : C2 |
+| types.rb:35:5:37:7 | self in call_call_maybe_sink : C3 | semmle.label | self in call_call_maybe_sink : C3 |
+| types.rb:36:9:36:23 | self : C1 | semmle.label | self : C1 |
+| types.rb:36:9:36:23 | self : C2 | semmle.label | self : C2 |
+| types.rb:36:9:36:23 | self : C3 | semmle.label | self : C3 |
+| types.rb:41:5:43:7 | self in maybe_sink : C2 | semmle.label | self in maybe_sink : C2 |
+| types.rb:42:14:42:17 | self | semmle.label | self |
+| types.rb:47:5:49:7 | self in maybe_sink : C3 | semmle.label | self in maybe_sink : C3 |
+| types.rb:48:14:48:17 | self | semmle.label | self |
+| types.rb:52:9:52:9 | x : C1 | semmle.label | x : C1 |
+| types.rb:52:9:52:9 | x : C3 | semmle.label | x : C3 |
+| types.rb:55:18:55:18 | x | semmle.label | x |
+| types.rb:61:9:61:9 | x : C1 | semmle.label | x : C1 |
+| types.rb:61:9:61:9 | x : C3 | semmle.label | x : C3 |
+| types.rb:63:18:63:19 | c3 : C3 | semmle.label | c3 : C3 |
+| types.rb:64:18:64:19 | c3 | semmle.label | c3 |
+| types.rb:71:5:71:19 | call to taint : C1 | semmle.label | call to taint : C1 |
+| types.rb:71:11:71:18 | call to new : C1 | semmle.label | call to new : C1 |
+| types.rb:73:5:73:19 | call to taint : C3 | semmle.label | call to taint : C3 |
+| types.rb:73:11:73:18 | call to new : C3 | semmle.label | call to new : C3 |
+| types.rb:75:1:75:15 | call to taint : C1 | semmle.label | call to taint : C1 |
+| types.rb:75:7:75:14 | call to new : C1 | semmle.label | call to new : C1 |
+| types.rb:77:1:77:15 | call to taint : C3 | semmle.label | call to taint : C3 |
+| types.rb:77:7:77:14 | call to new : C3 | semmle.label | call to new : C3 |
+| types.rb:79:5:79:19 | call to taint : C1 | semmle.label | call to taint : C1 |
+| types.rb:79:11:79:18 | call to new : C1 | semmle.label | call to new : C1 |
+| types.rb:81:5:81:19 | call to taint : C3 | semmle.label | call to taint : C3 |
+| types.rb:81:11:81:18 | call to new : C3 | semmle.label | call to new : C3 |
+| types.rb:83:1:83:15 | call to taint : C1 | semmle.label | call to taint : C1 |
+| types.rb:83:7:83:14 | call to new : C1 | semmle.label | call to new : C1 |
+| types.rb:85:1:85:16 | call to taint : C3 | semmle.label | call to taint : C3 |
+| types.rb:85:7:85:15 | call to new : C3 | semmle.label | call to new : C3 |
+| types.rb:87:1:87:16 | call to taint : C1 | semmle.label | call to taint : C1 |
+| types.rb:87:7:87:15 | call to new : C1 | semmle.label | call to new : C1 |
+| types.rb:88:1:88:16 | call to taint : C2 | semmle.label | call to taint : C2 |
+| types.rb:88:7:88:15 | call to new : C2 | semmle.label | call to new : C2 |
+| types.rb:89:1:89:16 | call to taint : C3 | semmle.label | call to taint : C3 |
+| types.rb:89:7:89:15 | call to new : C3 | semmle.label | call to new : C3 |
+subpaths
+| types.rb:71:11:71:18 | call to new : C1 | types.rb:1:11:1:11 | x : C1 | types.rb:2:5:2:5 | x : C1 | types.rb:71:5:71:19 | call to taint : C1 |
+| types.rb:73:11:73:18 | call to new : C3 | types.rb:1:11:1:11 | x : C3 | types.rb:2:5:2:5 | x : C3 | types.rb:73:5:73:19 | call to taint : C3 |
+| types.rb:75:7:75:14 | call to new : C1 | types.rb:1:11:1:11 | x : C1 | types.rb:2:5:2:5 | x : C1 | types.rb:75:1:75:15 | call to taint : C1 |
+| types.rb:77:7:77:14 | call to new : C3 | types.rb:1:11:1:11 | x : C3 | types.rb:2:5:2:5 | x : C3 | types.rb:77:1:77:15 | call to taint : C3 |
+| types.rb:79:11:79:18 | call to new : C1 | types.rb:1:11:1:11 | x : C1 | types.rb:2:5:2:5 | x : C1 | types.rb:79:5:79:19 | call to taint : C1 |
+| types.rb:81:11:81:18 | call to new : C3 | types.rb:1:11:1:11 | x : C3 | types.rb:2:5:2:5 | x : C3 | types.rb:81:5:81:19 | call to taint : C3 |
+| types.rb:83:7:83:14 | call to new : C1 | types.rb:1:11:1:11 | x : C1 | types.rb:2:5:2:5 | x : C1 | types.rb:83:1:83:15 | call to taint : C1 |
+| types.rb:85:7:85:15 | call to new : C3 | types.rb:1:11:1:11 | x : C3 | types.rb:2:5:2:5 | x : C3 | types.rb:85:1:85:16 | call to taint : C3 |
+| types.rb:87:7:87:15 | call to new : C1 | types.rb:1:11:1:11 | x : C1 | types.rb:2:5:2:5 | x : C1 | types.rb:87:1:87:16 | call to taint : C1 |
+| types.rb:88:7:88:15 | call to new : C2 | types.rb:1:11:1:11 | x : C2 | types.rb:2:5:2:5 | x : C2 | types.rb:88:1:88:16 | call to taint : C2 |
+| types.rb:89:7:89:15 | call to new : C3 | types.rb:1:11:1:11 | x : C3 | types.rb:2:5:2:5 | x : C3 | types.rb:89:1:89:16 | call to taint : C3 |
+testFailures
+nodeType
+| file://:0:0:0:0 | [summary param] * (position 0) in Array.[] | file://:0:0:0:0 | Array |
+| file://:0:0:0:0 | [summary param] ** in Hash.[] | file://:0:0:0:0 | Hash |
+| file://:0:0:0:0 | [summary param] ** in I18n.translate | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary param] position 0 in & | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary param] position 0 in + | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary param] position 0 in Hash[] | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary param] position 0 in \| | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary param] self in & | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary param] self in * | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary param] self in - | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary param] self in \| | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary param] self in assoc-unknown-arg | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary] read: Argument[0].Element[any] in Hash[] | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary] read: Argument[0].WithElement[0..] in Array() | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary] read: Argument[0].WithElement[any] in Array.new | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary] read: Argument[0].WithElement[any] in Array.try_convert | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary] read: Argument[0].WithElement[any] in Hash.try_convert | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary] read: Argument[0].WithElement[any] in Hash[] | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary] read: Argument[self].WithElement[any] in *(splat) | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary] read: Argument[self].WithElement[any] in **(hash-splat) | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary] read: Argument[self].WithElement[any] in + | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary] read: Argument[self].WithElement[any] in << | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary] to write: Argument[self] in << | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in & | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in * | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in *(splat) | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in + | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in - | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in << | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in Array() | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in Array.new | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in Hash[] | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in \| | file://:0:0:0:0 | [collection] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in assoc-unknown-arg | file://:0:0:0:0 | [collection] |
+| types.rb:1:1:3:3 | &block | file://:0:0:0:0 | Proc |
+| types.rb:1:1:3:3 | self in taint | file://:0:0:0:0 | Object |
+| types.rb:1:1:3:3 | synthetic splat parameter | file://:0:0:0:0 | Array |
+| types.rb:1:1:3:3 | taint | file://:0:0:0:0 | Symbol |
+| types.rb:1:1:89:38 | self (types.rb) | file://:0:0:0:0 | Object |
+| types.rb:1:1:89:38 | self in types.rb | file://:0:0:0:0 | Object |
+| types.rb:5:1:7:3 | &block | file://:0:0:0:0 | Proc |
+| types.rb:5:1:7:3 | self (sink) | file://:0:0:0:0 | Object |
+| types.rb:5:1:7:3 | self in sink | file://:0:0:0:0 | Object |
+| types.rb:5:1:7:3 | sink | file://:0:0:0:0 | Symbol |
+| types.rb:5:1:7:3 | synthetic splat parameter | file://:0:0:0:0 | Array |
+| types.rb:6:5:6:31 | self | file://:0:0:0:0 | Object |
+| types.rb:6:5:6:31 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:6:10:6:31 | "SINK: #{...}" | file://:0:0:0:0 | String |
+| types.rb:12:5:14:7 | &block | file://:0:0:0:0 | Proc |
+| types.rb:12:5:14:7 | initialize | file://:0:0:0:0 | Symbol |
+| types.rb:12:5:14:7 | self (initialize) | types.rb:9:1:38:3 | C1 |
+| types.rb:12:5:14:7 | self in initialize | types.rb:9:1:38:3 | C1 |
+| types.rb:12:5:14:7 | synthetic splat parameter | file://:0:0:0:0 | Array |
+| types.rb:13:9:13:14 | self | types.rb:9:1:38:3 | C1 |
+| types.rb:16:5:18:7 | &block | file://:0:0:0:0 | Proc |
+| types.rb:16:5:18:7 | get_field | file://:0:0:0:0 | Symbol |
+| types.rb:16:5:18:7 | self (get_field) | types.rb:9:1:38:3 | C1 |
+| types.rb:16:5:18:7 | self in get_field | types.rb:9:1:38:3 | C1 |
+| types.rb:17:9:17:14 | self | types.rb:9:1:38:3 | C1 |
+| types.rb:20:5:22:7 | &block | file://:0:0:0:0 | Proc |
+| types.rb:20:5:22:7 | call_foo | file://:0:0:0:0 | Symbol |
+| types.rb:20:5:22:7 | self (call_foo) | types.rb:9:1:38:3 | C1 |
+| types.rb:20:5:22:7 | self in call_foo | types.rb:9:1:38:3 | C1 |
+| types.rb:21:9:21:17 | self | types.rb:9:1:38:3 | C1 |
+| types.rb:21:9:21:17 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:21:13:21:16 | self | types.rb:9:1:38:3 | C1 |
+| types.rb:24:5:26:7 | &block | file://:0:0:0:0 | Proc |
+| types.rb:24:5:26:7 | call_bar | file://:0:0:0:0 | Symbol |
+| types.rb:24:5:26:7 | self (call_bar) | types.rb:9:1:38:3 | C1 |
+| types.rb:24:5:26:7 | self in call_bar | types.rb:9:1:38:3 | C1 |
+| types.rb:25:9:25:17 | self | types.rb:9:1:38:3 | C1 |
+| types.rb:25:9:25:17 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:25:13:25:16 | self | types.rb:9:1:38:3 | C1 |
+| types.rb:28:5:29:7 | &block | file://:0:0:0:0 | Proc |
+| types.rb:28:5:29:7 | maybe_sink | file://:0:0:0:0 | Symbol |
+| types.rb:28:5:29:7 | self in maybe_sink | types.rb:9:1:38:3 | C1 |
+| types.rb:31:5:33:7 | &block | file://:0:0:0:0 | Proc |
+| types.rb:31:5:33:7 | call_maybe_sink | file://:0:0:0:0 | Symbol |
+| types.rb:31:5:33:7 | self (call_maybe_sink) | types.rb:9:1:38:3 | C1 |
+| types.rb:31:5:33:7 | self in call_maybe_sink | types.rb:9:1:38:3 | C1 |
+| types.rb:32:9:32:18 | self | types.rb:9:1:38:3 | C1 |
+| types.rb:35:5:37:7 | &block | file://:0:0:0:0 | Proc |
+| types.rb:35:5:37:7 | call_call_maybe_sink | file://:0:0:0:0 | Symbol |
+| types.rb:35:5:37:7 | self (call_call_maybe_sink) | types.rb:9:1:38:3 | C1 |
+| types.rb:35:5:37:7 | self in call_call_maybe_sink | types.rb:9:1:38:3 | C1 |
+| types.rb:36:9:36:23 | self | types.rb:9:1:38:3 | C1 |
+| types.rb:41:5:43:7 | &block | file://:0:0:0:0 | Proc |
+| types.rb:41:5:43:7 | maybe_sink | file://:0:0:0:0 | Symbol |
+| types.rb:41:5:43:7 | self (maybe_sink) | types.rb:40:1:44:3 | C2 |
+| types.rb:41:5:43:7 | self in maybe_sink | types.rb:40:1:44:3 | C2 |
+| types.rb:42:9:42:17 | self | types.rb:40:1:44:3 | C2 |
+| types.rb:42:9:42:17 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:42:14:42:17 | self | types.rb:40:1:44:3 | C2 |
+| types.rb:47:5:49:7 | &block | file://:0:0:0:0 | Proc |
+| types.rb:47:5:49:7 | maybe_sink | file://:0:0:0:0 | Symbol |
+| types.rb:47:5:49:7 | self (maybe_sink) | types.rb:46:1:50:3 | C3 |
+| types.rb:47:5:49:7 | self in maybe_sink | types.rb:46:1:50:3 | C3 |
+| types.rb:48:9:48:17 | self | types.rb:46:1:50:3 | C3 |
+| types.rb:48:9:48:17 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:48:14:48:17 | self | types.rb:46:1:50:3 | C3 |
+| types.rb:52:1:59:3 | &block | file://:0:0:0:0 | Proc |
+| types.rb:52:1:59:3 | foo | file://:0:0:0:0 | Symbol |
+| types.rb:52:1:59:3 | self (foo) | file://:0:0:0:0 | Object |
+| types.rb:52:1:59:3 | self in foo | file://:0:0:0:0 | Object |
+| types.rb:52:1:59:3 | synthetic splat parameter | file://:0:0:0:0 | Array |
+| types.rb:55:13:55:19 | self | file://:0:0:0:0 | Object |
+| types.rb:55:13:55:19 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:55:18:55:18 | x | types.rb:46:1:50:3 | C3 |
+| types.rb:56:18:56:18 | x | types.rb:46:1:50:3 | C3 |
+| types.rb:56:33:56:39 | self | file://:0:0:0:0 | Object |
+| types.rb:56:33:56:39 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:56:38:56:38 | x | types.rb:40:1:44:3 | C2 |
+| types.rb:61:1:69:3 | &block | file://:0:0:0:0 | Proc |
+| types.rb:61:1:69:3 | bar | file://:0:0:0:0 | Symbol |
+| types.rb:61:1:69:3 | self (bar) | file://:0:0:0:0 | Object |
+| types.rb:61:1:69:3 | self in bar | file://:0:0:0:0 | Object |
+| types.rb:61:1:69:3 | synthetic splat parameter | file://:0:0:0:0 | Array |
+| types.rb:63:18:63:19 | c3 | types.rb:46:1:50:3 | C3 |
+| types.rb:64:13:64:20 | self | file://:0:0:0:0 | Object |
+| types.rb:64:13:64:20 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:64:18:64:19 | c3 | types.rb:46:1:50:3 | C3 |
+| types.rb:65:18:65:19 | c3 | types.rb:46:1:50:3 | C3 |
+| types.rb:65:34:65:41 | self | file://:0:0:0:0 | Object |
+| types.rb:65:34:65:41 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:65:39:65:40 | c3 | types.rb:40:1:44:3 | C2 |
+| types.rb:71:1:71:20 | self | file://:0:0:0:0 | Object |
+| types.rb:71:1:71:20 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:71:5:71:19 | self | file://:0:0:0:0 | Object |
+| types.rb:71:5:71:19 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:71:11:71:18 | call to new | types.rb:9:1:38:3 | C1 |
+| types.rb:71:11:71:18 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:71:18:71:18 | 0 | file://:0:0:0:0 | Integer |
+| types.rb:72:1:72:20 | self | file://:0:0:0:0 | Object |
+| types.rb:72:1:72:20 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:72:5:72:19 | self | file://:0:0:0:0 | Object |
+| types.rb:72:5:72:19 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:72:11:72:18 | call to new | types.rb:40:1:44:3 | C2 |
+| types.rb:72:11:72:18 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:72:18:72:18 | 1 | file://:0:0:0:0 | Integer |
+| types.rb:73:1:73:20 | self | file://:0:0:0:0 | Object |
+| types.rb:73:1:73:20 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:73:5:73:19 | self | file://:0:0:0:0 | Object |
+| types.rb:73:5:73:19 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:73:11:73:18 | call to new | types.rb:46:1:50:3 | C3 |
+| types.rb:73:11:73:18 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:73:18:73:18 | 2 | file://:0:0:0:0 | Integer |
+| types.rb:75:1:75:15 | self | file://:0:0:0:0 | Object |
+| types.rb:75:1:75:15 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:75:7:75:14 | call to new | types.rb:9:1:38:3 | C1 |
+| types.rb:75:7:75:14 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:75:14:75:14 | 3 | file://:0:0:0:0 | Integer |
+| types.rb:76:1:76:15 | self | file://:0:0:0:0 | Object |
+| types.rb:76:1:76:15 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:76:7:76:14 | call to new | types.rb:40:1:44:3 | C2 |
+| types.rb:76:7:76:14 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:76:14:76:14 | 4 | file://:0:0:0:0 | Integer |
+| types.rb:77:1:77:15 | self | file://:0:0:0:0 | Object |
+| types.rb:77:1:77:15 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:77:7:77:14 | call to new | types.rb:46:1:50:3 | C3 |
+| types.rb:77:7:77:14 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:77:14:77:14 | 5 | file://:0:0:0:0 | Integer |
+| types.rb:79:1:79:20 | self | file://:0:0:0:0 | Object |
+| types.rb:79:1:79:20 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:79:5:79:19 | self | file://:0:0:0:0 | Object |
+| types.rb:79:5:79:19 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:79:11:79:18 | call to new | types.rb:9:1:38:3 | C1 |
+| types.rb:79:11:79:18 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:79:18:79:18 | 6 | file://:0:0:0:0 | Integer |
+| types.rb:80:1:80:20 | self | file://:0:0:0:0 | Object |
+| types.rb:80:1:80:20 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:80:5:80:19 | self | file://:0:0:0:0 | Object |
+| types.rb:80:5:80:19 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:80:11:80:18 | call to new | types.rb:40:1:44:3 | C2 |
+| types.rb:80:11:80:18 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:80:18:80:18 | 7 | file://:0:0:0:0 | Integer |
+| types.rb:81:1:81:20 | self | file://:0:0:0:0 | Object |
+| types.rb:81:1:81:20 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:81:5:81:19 | self | file://:0:0:0:0 | Object |
+| types.rb:81:5:81:19 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:81:11:81:18 | call to new | types.rb:46:1:50:3 | C3 |
+| types.rb:81:11:81:18 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:81:18:81:18 | 8 | file://:0:0:0:0 | Integer |
+| types.rb:83:1:83:15 | self | file://:0:0:0:0 | Object |
+| types.rb:83:1:83:15 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:83:7:83:14 | call to new | types.rb:9:1:38:3 | C1 |
+| types.rb:83:7:83:14 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:83:14:83:14 | 9 | file://:0:0:0:0 | Integer |
+| types.rb:84:1:84:16 | self | file://:0:0:0:0 | Object |
+| types.rb:84:1:84:16 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:84:7:84:15 | call to new | types.rb:40:1:44:3 | C2 |
+| types.rb:84:7:84:15 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:84:14:84:15 | 10 | file://:0:0:0:0 | Integer |
+| types.rb:85:1:85:16 | self | file://:0:0:0:0 | Object |
+| types.rb:85:1:85:16 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:85:7:85:15 | call to new | types.rb:46:1:50:3 | C3 |
+| types.rb:85:7:85:15 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:85:14:85:15 | 11 | file://:0:0:0:0 | Integer |
+| types.rb:87:1:87:16 | self | file://:0:0:0:0 | Object |
+| types.rb:87:1:87:16 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:87:7:87:15 | call to new | types.rb:9:1:38:3 | C1 |
+| types.rb:87:7:87:15 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:87:14:87:15 | 12 | file://:0:0:0:0 | Integer |
+| types.rb:88:1:88:16 | self | file://:0:0:0:0 | Object |
+| types.rb:88:1:88:16 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:88:7:88:15 | call to new | types.rb:40:1:44:3 | C2 |
+| types.rb:88:7:88:15 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:88:14:88:15 | 13 | file://:0:0:0:0 | Integer |
+| types.rb:89:1:89:16 | self | file://:0:0:0:0 | Object |
+| types.rb:89:1:89:16 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:89:7:89:15 | call to new | types.rb:46:1:50:3 | C3 |
+| types.rb:89:7:89:15 | synthetic splat argument | file://:0:0:0:0 | Array |
+| types.rb:89:14:89:15 | 14 | file://:0:0:0:0 | Integer |
+#select
+| types.rb:42:14:42:17 | self | types.rb:42:14:42:17 | self | types.rb:42:14:42:17 | self | $@ | types.rb:42:14:42:17 | self | self |
+| types.rb:42:14:42:17 | self | types.rb:87:7:87:15 | call to new : C1 | types.rb:42:14:42:17 | self | $@ | types.rb:87:7:87:15 | call to new : C1 | call to new : C1 |
+| types.rb:42:14:42:17 | self | types.rb:88:7:88:15 | call to new : C2 | types.rb:42:14:42:17 | self | $@ | types.rb:88:7:88:15 | call to new : C2 | call to new : C2 |
+| types.rb:48:14:48:17 | self | types.rb:48:14:48:17 | self | types.rb:48:14:48:17 | self | $@ | types.rb:48:14:48:17 | self | self |
+| types.rb:48:14:48:17 | self | types.rb:87:7:87:15 | call to new : C1 | types.rb:48:14:48:17 | self | $@ | types.rb:87:7:87:15 | call to new : C1 | call to new : C1 |
+| types.rb:48:14:48:17 | self | types.rb:89:7:89:15 | call to new : C3 | types.rb:48:14:48:17 | self | $@ | types.rb:89:7:89:15 | call to new : C3 | call to new : C3 |
+| types.rb:55:18:55:18 | x | types.rb:21:13:21:16 | self : C1 | types.rb:55:18:55:18 | x | $@ | types.rb:21:13:21:16 | self : C1 | self : C1 |
+| types.rb:55:18:55:18 | x | types.rb:71:11:71:18 | call to new : C1 | types.rb:55:18:55:18 | x | $@ | types.rb:71:11:71:18 | call to new : C1 | call to new : C1 |
+| types.rb:55:18:55:18 | x | types.rb:73:11:73:18 | call to new : C3 | types.rb:55:18:55:18 | x | $@ | types.rb:73:11:73:18 | call to new : C3 | call to new : C3 |
+| types.rb:55:18:55:18 | x | types.rb:75:7:75:14 | call to new : C1 | types.rb:55:18:55:18 | x | $@ | types.rb:75:7:75:14 | call to new : C1 | call to new : C1 |
+| types.rb:55:18:55:18 | x | types.rb:77:7:77:14 | call to new : C3 | types.rb:55:18:55:18 | x | $@ | types.rb:77:7:77:14 | call to new : C3 | call to new : C3 |
+| types.rb:64:18:64:19 | c3 | types.rb:25:13:25:16 | self : C1 | types.rb:64:18:64:19 | c3 | $@ | types.rb:25:13:25:16 | self : C1 | self : C1 |
+| types.rb:64:18:64:19 | c3 | types.rb:79:11:79:18 | call to new : C1 | types.rb:64:18:64:19 | c3 | $@ | types.rb:79:11:79:18 | call to new : C1 | call to new : C1 |
+| types.rb:64:18:64:19 | c3 | types.rb:81:11:81:18 | call to new : C3 | types.rb:64:18:64:19 | c3 | $@ | types.rb:81:11:81:18 | call to new : C3 | call to new : C3 |
+| types.rb:64:18:64:19 | c3 | types.rb:83:7:83:14 | call to new : C1 | types.rb:64:18:64:19 | c3 | $@ | types.rb:83:7:83:14 | call to new : C1 | call to new : C1 |
+| types.rb:64:18:64:19 | c3 | types.rb:85:7:85:15 | call to new : C3 | types.rb:64:18:64:19 | c3 | $@ | types.rb:85:7:85:15 | call to new : C3 | call to new : C3 |

@@ -13,7 +13,7 @@ namespace Semmle.Extraction.Tests;
 /// </summary>
 public class StubGeneratorTests
 {
-    // [Fact]
+    [Fact]
     public void StubGeneratorFieldTest()
     {
         // Setup
@@ -36,13 +36,13 @@ public const string MyField2 = default;
         Assert.Equal(expected, stub);
     }
 
-    // [Fact]
+    [Fact]
     public void StubGeneratorMethodTest()
     {
         // Setup
         const string source = @"
 public class MyTest {
-    public int M1(string arg1) { return 0;}
+    public int M1(string arg1) { return 0; }
 }";
 
         // Execute
@@ -56,12 +56,52 @@ public int M1(string arg1) => throw null;
         Assert.Equal(expected, stub);
     }
 
+    [Fact]
+    public void StubGeneratorRefReadonlyParameterTest()
+    {
+        // Setup
+        const string source = @"
+public class MyTest {
+    public int M1(ref readonly Guid guid) { return 0; }
+}";
+
+        // Execute
+        var stub = GenerateStub(source);
+
+        // Verify
+        const string expected = @"public class MyTest {
+public int M1(ref readonly Guid guid) => throw null;
+}
+";
+        Assert.Equal(expected, stub);
+    }
+
+    [Fact]
+    public void StubGeneratorEscapeMethodName()
+    {
+        // Setup
+        const string source = @"
+public class MyTest {
+    public int @default() { return 0; }
+}";
+
+        // Execute
+        var stub = GenerateStub(source);
+
+        // Verify
+        const string expected = @"public class MyTest {
+public int @default() => throw null;
+}
+";
+        Assert.Equal(expected, stub);
+    }
+
     private static string GenerateStub(string source)
     {
         var st = CSharpSyntaxTree.ParseText(source);
         var compilation = CSharpCompilation.Create(null, new[] { st });
         var sb = new StringBuilder();
-        var visitor = new StubVisitor(new StringWriter(sb), new RelevantSymbolStub());
+        var visitor = new StubVisitor(new StringWriter(sb) { NewLine = "\n" }, new RelevantSymbolStub());
         compilation.GlobalNamespace.Accept(visitor);
         return sb.ToString();
     }

@@ -1,1 +1,2 @@
-Security/CWE/CWE-807/TaintedPermissionsCheck.ql
+query: Security/CWE/CWE-807/TaintedPermissionsCheck.ql
+postprocess: utils/test/PrettyPrintModels.ql

@@ -1,0 +1,25 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Timers", "TimersDescriptionAttribute", True, "get_Description", "()", "", "Argument[this].Property[System.ComponentModel.DescriptionAttribute.Description]", "Argument[this].Property[System.ComponentModel.DescriptionAttribute.DescriptionValue]", "taint", "dfc-generated"]
+      - ["System.Timers", "TimersDescriptionAttribute", True, "get_Description", "()", "", "Argument[this].Property[System.ComponentModel.DescriptionAttribute.Description]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Timers", "ElapsedEventArgs", "ElapsedEventArgs", "(System.DateTime)", "summary", "df-generated"]
+      - ["System.Timers", "ElapsedEventArgs", "get_SignalTime", "()", "summary", "df-generated"]
+      - ["System.Timers", "Timer", "BeginInit", "()", "summary", "df-generated"]
+      - ["System.Timers", "Timer", "Close", "()", "summary", "df-generated"]
+      - ["System.Timers", "Timer", "Dispose", "(System.Boolean)", "summary", "df-generated"]
+      - ["System.Timers", "Timer", "EndInit", "()", "summary", "df-generated"]
+      - ["System.Timers", "Timer", "Start", "()", "summary", "df-generated"]
+      - ["System.Timers", "Timer", "Stop", "()", "summary", "df-generated"]
+      - ["System.Timers", "Timer", "Timer", "(System.Double)", "summary", "df-generated"]
+      - ["System.Timers", "Timer", "Timer", "(System.TimeSpan)", "summary", "df-generated"]
+      - ["System.Timers", "Timer", "add_Elapsed", "(System.Timers.ElapsedEventHandler)", "summary", "df-generated"]
+      - ["System.Timers", "Timer", "remove_Elapsed", "(System.Timers.ElapsedEventHandler)", "summary", "df-generated"]
+      - ["System.Timers", "TimersDescriptionAttribute", "TimersDescriptionAttribute", "(System.String)", "summary", "df-generated"]

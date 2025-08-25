@@ -1,0 +1,44 @@
+name: "actions"
+aliases: []
+display_name: "GitHub Actions"
+version: 0.0.1
+column_kind: "utf16"
+unicode_newlines: true
+build_modes:
+  - none
+file_coverage_languages: []
+github_api_languages: []
+scc_languages: []
+file_types:
+  - name: workflow
+    display_name: GitHub Actions workflow files
+    extensions:
+      - .yml
+      - .yaml
+forwarded_extractor_name: javascript
+options:
+  trap:
+    title: TRAP options
+    description: Options about how the extractor handles TRAP files
+    type: object
+    visibility: 3
+    properties:
+      cache:
+        title: TRAP cache options
+        description: Options about how the extractor handles its TRAP cache
+        type: object
+        properties:
+          dir:
+            title: TRAP cache directory
+            description: The directory of the TRAP cache to use
+            type: string
+          bound:
+            title: TRAP cache bound
+            description: A soft limit (in MB) on the size of the TRAP cache
+            type: string
+            pattern: "[0-9]+"
+          write:
+            title: TRAP cache writeable
+            description: Whether to write to the TRAP cache as well as reading it
+            type: string
+            pattern: "(true|TRUE|false|FALSE)"
