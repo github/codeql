@@ -140,9 +140,6 @@ class RootSanitizerMethodCall extends SanitizerMethodCall {
     exists(MethodSystemStringStartsWith sm | this.getTarget() = sm) and
     exists(Expr q, MethodCallGetFullPath mcGetFullPath |
       this.getQualifier() = q and
-      // JB1: Try and detect existentials with non-interelated variables
-      // , AbstractValue v
-      // v.(AbstractValues::BooleanValue).getValue() = true and
       safeCombineGetFullPathSequence(mcGetFullPath, q)
     )
   }
