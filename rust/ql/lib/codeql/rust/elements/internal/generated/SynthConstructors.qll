@@ -32,7 +32,6 @@ import codeql.rust.elements.internal.BoxPatConstructor
 import codeql.rust.elements.internal.BreakExprConstructor
 import codeql.rust.elements.internal.CallExprConstructor
 import codeql.rust.elements.internal.CastExprConstructor
-import codeql.rust.elements.internal.ClosureBinderConstructor
 import codeql.rust.elements.internal.ClosureExprConstructor
 import codeql.rust.elements.internal.CommentConstructor
 import codeql.rust.elements.internal.ConstConstructor
@@ -50,6 +49,7 @@ import codeql.rust.elements.internal.ExternItemListConstructor
 import codeql.rust.elements.internal.ExtractorStepConstructor
 import codeql.rust.elements.internal.FieldExprConstructor
 import codeql.rust.elements.internal.FnPtrTypeReprConstructor
+import codeql.rust.elements.internal.ForBinderConstructor
 import codeql.rust.elements.internal.ForExprConstructor
 import codeql.rust.elements.internal.ForTypeReprConstructor
 import codeql.rust.elements.internal.FormatConstructor

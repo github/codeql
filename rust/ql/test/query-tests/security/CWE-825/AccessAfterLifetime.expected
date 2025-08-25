@@ -197,11 +197,13 @@ edges
 | lifetime.rs:719:26:719:34 | &... | lifetime.rs:718:7:718:8 | r1 | provenance |  |
 | lifetime.rs:730:6:730:7 | r1 | lifetime.rs:734:12:734:13 | r1 | provenance |  |
 | lifetime.rs:730:11:730:25 | e1.test_match() | lifetime.rs:730:6:730:7 | r1 | provenance |  |
-| lifetime.rs:766:2:766:13 | &val | lifetime.rs:766:2:766:13 | ptr | provenance |  |
-| lifetime.rs:766:2:766:13 | ptr | lifetime.rs:767:2:767:13 | ptr | provenance |  |
+| lifetime.rs:766:2:766:11 | &val | lifetime.rs:766:2:766:11 | ptr | provenance |  |
+| lifetime.rs:766:2:766:11 | ptr | lifetime.rs:766:2:766:11 | ptr | provenance |  |
+| lifetime.rs:767:2:767:11 | &val | lifetime.rs:767:2:767:11 | ptr | provenance |  |
+| lifetime.rs:767:2:767:11 | ptr | lifetime.rs:767:2:767:11 | ptr | provenance |  |
 | lifetime.rs:769:6:769:8 | ptr | lifetime.rs:771:12:771:14 | ptr | provenance |  |
-| lifetime.rs:769:12:769:23 | &val | lifetime.rs:769:12:769:23 | ptr | provenance |  |
-| lifetime.rs:769:12:769:23 | ptr | lifetime.rs:769:6:769:8 | ptr | provenance |  |
+| lifetime.rs:769:12:769:21 | &val | lifetime.rs:769:12:769:21 | ptr | provenance |  |
+| lifetime.rs:769:12:769:21 | ptr | lifetime.rs:769:6:769:8 | ptr | provenance |  |
 | lifetime.rs:781:2:781:19 | return ... | lifetime.rs:785:11:785:41 | get_local_for_unsafe_function(...) | provenance |  |
 | lifetime.rs:781:9:781:19 | &my_local10 | lifetime.rs:781:2:781:19 | return ... | provenance |  |
 | lifetime.rs:785:6:785:7 | p1 | lifetime.rs:789:12:789:13 | p1 | provenance |  |
@@ -418,12 +420,15 @@ nodes
 | lifetime.rs:730:6:730:7 | r1 | semmle.label | r1 |
 | lifetime.rs:730:11:730:25 | e1.test_match() | semmle.label | e1.test_match() |
 | lifetime.rs:734:12:734:13 | r1 | semmle.label | r1 |
-| lifetime.rs:766:2:766:13 | &val | semmle.label | &val |
-| lifetime.rs:766:2:766:13 | ptr | semmle.label | ptr |
-| lifetime.rs:767:2:767:13 | ptr | semmle.label | ptr |
+| lifetime.rs:766:2:766:11 | &val | semmle.label | &val |
+| lifetime.rs:766:2:766:11 | ptr | semmle.label | ptr |
+| lifetime.rs:766:2:766:11 | ptr | semmle.label | ptr |
+| lifetime.rs:767:2:767:11 | &val | semmle.label | &val |
+| lifetime.rs:767:2:767:11 | ptr | semmle.label | ptr |
+| lifetime.rs:767:2:767:11 | ptr | semmle.label | ptr |
 | lifetime.rs:769:6:769:8 | ptr | semmle.label | ptr |
-| lifetime.rs:769:12:769:23 | &val | semmle.label | &val |
-| lifetime.rs:769:12:769:23 | ptr | semmle.label | ptr |
+| lifetime.rs:769:12:769:21 | &val | semmle.label | &val |
+| lifetime.rs:769:12:769:21 | ptr | semmle.label | ptr |
 | lifetime.rs:771:12:771:14 | ptr | semmle.label | ptr |
 | lifetime.rs:781:2:781:19 | return ... | semmle.label | return ... |
 | lifetime.rs:781:9:781:19 | &my_local10 | semmle.label | &my_local10 |

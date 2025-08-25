@@ -152,22 +152,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfClosureBinder(
-    ClosureBinder e, int index, string partialPredicateCall
-  ) {
-    exists(int n, int nGenericParamList |
-      n = 0 and
-      nGenericParamList = n + 1 and
-      (
-        none()
-        or
-        index = n and
-        result = e.getGenericParamList() and
-        partialPredicateCall = "GenericParamList()"
-      )
-    )
-  }
-
   private Element getImmediateChildOfExternItemList(
     ExternItemList e, int index, string partialPredicateCall
   ) {
@@ -183,6 +167,20 @@ private module Impl {
         or
         result = e.getExternItem(index - nAttr) and
         partialPredicateCall = "ExternItem(" + (index - nAttr).toString() + ")"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfForBinder(ForBinder e, int index, string partialPredicateCall) {
+    exists(int n, int nGenericParamList |
+      n = 0 and
+      nGenericParamList = n + 1 and
+      (
+        none()
+        or
+        index = n and
+        result = e.getGenericParamList() and
+        partialPredicateCall = "GenericParamList()"
       )
     )
   }
@@ -656,15 +654,18 @@ private module Impl {
   }
 
   private Element getImmediateChildOfTypeBound(TypeBound e, int index, string partialPredicateCall) {
-    exists(int n, int nLifetime, int nTypeRepr, int nUseBoundGenericArgs |
+    exists(int n, int nForBinder, int nLifetime, int nTypeRepr, int nUseBoundGenericArgs |
       n = 0 and
-      nLifetime = n + 1 and
+      nForBinder = n + 1 and
+      nLifetime = nForBinder + 1 and
       nTypeRepr = nLifetime + 1 and
       nUseBoundGenericArgs = nTypeRepr + 1 and
       (
         none()
         or
-        index = n and result = e.getLifetime() and partialPredicateCall = "Lifetime()"
+        index = n and result = e.getForBinder() and partialPredicateCall = "ForBinder()"
+        or
+        index = nForBinder and result = e.getLifetime() and partialPredicateCall = "Lifetime()"
         or
         index = nLifetime and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
         or
@@ -781,22 +782,18 @@ private module Impl {
   }
 
   private Element getImmediateChildOfWherePred(WherePred e, int index, string partialPredicateCall) {
-    exists(int n, int nGenericParamList, int nLifetime, int nTypeRepr, int nTypeBoundList |
+    exists(int n, int nForBinder, int nLifetime, int nTypeRepr, int nTypeBoundList |
       n = 0 and
-      nGenericParamList = n + 1 and
-      nLifetime = nGenericParamList + 1 and
+      nForBinder = n + 1 and
+      nLifetime = nForBinder + 1 and
       nTypeRepr = nLifetime + 1 and
       nTypeBoundList = nTypeRepr + 1 and
       (
         none()
         or
-        index = n and
-        result = e.getGenericParamList() and
-        partialPredicateCall = "GenericParamList()"
+        index = n and result = e.getForBinder() and partialPredicateCall = "ForBinder()"
         or
-        index = nGenericParamList and
-        result = e.getLifetime() and
-        partialPredicateCall = "Lifetime()"
+        index = nForBinder and result = e.getLifetime() and partialPredicateCall = "Lifetime()"
         or
         index = nLifetime and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
         or
@@ -859,27 +856,6 @@ private module Impl {
         none()
         or
         index = n and result = e.getExpr() and partialPredicateCall = "Expr()"
-      )
-    )
-  }
-
-  private Element getImmediateChildOfAsmExpr(AsmExpr e, int index, string partialPredicateCall) {
-    exists(int n, int nAsmPiece, int nAttr, int nTemplate |
-      n = 0 and
-      nAsmPiece = n + 1 + max(int i | i = -1 or exists(e.getAsmPiece(i)) | i) and
-      nAttr = nAsmPiece + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nTemplate = nAttr + 1 + max(int i | i = -1 or exists(e.getTemplate(i)) | i) and
-      (
-        none()
-        or
-        result = e.getAsmPiece(index - n) and
-        partialPredicateCall = "AsmPiece(" + (index - n).toString() + ")"
-        or
-        result = e.getAttr(index - nAsmPiece) and
-        partialPredicateCall = "Attr(" + (index - nAsmPiece).toString() + ")"
-        or
-        result = e.getTemplate(index - nAttr) and
-        partialPredicateCall = "Template(" + (index - nAttr).toString() + ")"
       )
     )
   }
@@ -1116,13 +1092,13 @@ private module Impl {
   private Element getImmediateChildOfClosureExpr(
     ClosureExpr e, int index, string partialPredicateCall
   ) {
-    exists(int n, int nParamList, int nAttr, int nBody, int nClosureBinder, int nRetType |
+    exists(int n, int nParamList, int nAttr, int nBody, int nForBinder, int nRetType |
       n = 0 and
       nParamList = n + 1 and
       nAttr = nParamList + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
       nBody = nAttr + 1 and
-      nClosureBinder = nBody + 1 and
-      nRetType = nClosureBinder + 1 and
+      nForBinder = nBody + 1 and
+      nRetType = nForBinder + 1 and
       (
         none()
         or
@@ -1133,9 +1109,9 @@ private module Impl {
         or
         index = nAttr and result = e.getBody() and partialPredicateCall = "Body()"
         or
-        index = nBody and result = e.getClosureBinder() and partialPredicateCall = "ClosureBinder()"
+        index = nBody and result = e.getForBinder() and partialPredicateCall = "ForBinder()"
         or
-        index = nClosureBinder and result = e.getRetType() and partialPredicateCall = "RetType()"
+        index = nForBinder and result = e.getRetType() and partialPredicateCall = "RetType()"
       )
     )
   }
@@ -1278,20 +1254,16 @@ private module Impl {
   private Element getImmediateChildOfForTypeRepr(
     ForTypeRepr e, int index, string partialPredicateCall
   ) {
-    exists(int n, int nGenericParamList, int nTypeRepr |
+    exists(int n, int nForBinder, int nTypeRepr |
       n = 0 and
-      nGenericParamList = n + 1 and
-      nTypeRepr = nGenericParamList + 1 and
+      nForBinder = n + 1 and
+      nTypeRepr = nForBinder + 1 and
       (
         none()
         or
-        index = n and
-        result = e.getGenericParamList() and
-        partialPredicateCall = "GenericParamList()"
+        index = n and result = e.getForBinder() and partialPredicateCall = "ForBinder()"
         or
-        index = nGenericParamList and
-        result = e.getTypeRepr() and
-        partialPredicateCall = "TypeRepr()"
+        index = nForBinder and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
       )
     )
   }
@@ -1517,17 +1489,17 @@ private module Impl {
   private Element getImmediateChildOfMacroBlockExpr(
     MacroBlockExpr e, int index, string partialPredicateCall
   ) {
-    exists(int n, int nTailExpr, int nStatement |
+    exists(int n, int nStatement, int nTailExpr |
       n = 0 and
-      nTailExpr = n + 1 and
-      nStatement = nTailExpr + 1 + max(int i | i = -1 or exists(e.getStatement(i)) | i) and
+      nStatement = n + 1 + max(int i | i = -1 or exists(e.getStatement(i)) | i) and
+      nTailExpr = nStatement + 1 and
       (
         none()
         or
-        index = n and result = e.getTailExpr() and partialPredicateCall = "TailExpr()"
+        result = e.getStatement(index - n) and
+        partialPredicateCall = "Statement(" + (index - n).toString() + ")"
         or
-        result = e.getStatement(index - nTailExpr) and
-        partialPredicateCall = "Statement(" + (index - nTailExpr).toString() + ")"
+        index = nStatement and result = e.getTailExpr() and partialPredicateCall = "TailExpr()"
       )
     )
   }
@@ -2143,6 +2115,32 @@ private module Impl {
         index = nRepeatOperand and
         result = e.getRepeatLength() and
         partialPredicateCall = "RepeatLength()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfAsmExpr(AsmExpr e, int index, string partialPredicateCall) {
+    exists(int n, int nAttributeMacroExpansion, int nAsmPiece, int nAttr, int nTemplate |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nAsmPiece = nAttributeMacroExpansion + 1 + max(int i | i = -1 or exists(e.getAsmPiece(i)) | i) and
+      nAttr = nAsmPiece + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nTemplate = nAttr + 1 + max(int i | i = -1 or exists(e.getTemplate(i)) | i) and
+      (
+        none()
+        or
+        index = n and
+        result = e.getAttributeMacroExpansion() and
+        partialPredicateCall = "AttributeMacroExpansion()"
+        or
+        result = e.getAsmPiece(index - nAttributeMacroExpansion) and
+        partialPredicateCall = "AsmPiece(" + (index - nAttributeMacroExpansion).toString() + ")"
+        or
+        result = e.getAttr(index - nAsmPiece) and
+        partialPredicateCall = "Attr(" + (index - nAsmPiece).toString() + ")"
+        or
+        result = e.getTemplate(index - nAttr) and
+        partialPredicateCall = "Template(" + (index - nAttr).toString() + ")"
       )
     )
   }
@@ -3067,9 +3065,9 @@ private module Impl {
     or
     result = getImmediateChildOfAttr(e, index, partialAccessor)
     or
-    result = getImmediateChildOfClosureBinder(e, index, partialAccessor)
-    or
     result = getImmediateChildOfExternItemList(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfForBinder(e, index, partialAccessor)
     or
     result = getImmediateChildOfFormatArgsArg(e, index, partialAccessor)
     or
@@ -3152,8 +3150,6 @@ private module Impl {
     result = getImmediateChildOfAsmClobberAbi(e, index, partialAccessor)
     or
     result = getImmediateChildOfAsmConst(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfAsmExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfAsmLabel(e, index, partialAccessor)
     or
@@ -3308,6 +3304,8 @@ private module Impl {
     result = getImmediateChildOfArrayListExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfArrayRepeatExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfAsmExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfBlockExpr(e, index, partialAccessor)
     or
