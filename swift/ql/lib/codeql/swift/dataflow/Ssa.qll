@@ -6,20 +6,9 @@ module Ssa {
   private import codeql.swift.controlflow.ControlFlowGraph
   private import codeql.swift.controlflow.BasicBlocks as BasicBlocks
 
-  private module SsaInput implements SsaImplCommon::InputSig<Location> {
+  private module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlocks::BasicBlock> {
     private import internal.DataFlowPrivate
-    private import codeql.swift.controlflow.ControlFlowGraph as Cfg
     private import codeql.swift.controlflow.CfgNodes
-
-    class BasicBlock = BasicBlocks::BasicBlock;
-
-    class ControlFlowNode = Cfg::ControlFlowNode;
-
-    BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
-      result = bb.getImmediateDominator()
-    }
-
-    BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
     private newtype TSourceVariable =
       TNormalSourceVariable(VarDecl v) or
@@ -61,7 +50,7 @@ module Ssa {
       override EntryNode asKeyPath() { result = enter }
     }
 
-    predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+    predicate variableWrite(BasicBlocks::BasicBlock bb, int i, SourceVariable v, boolean certain) {
       exists(AssignExpr assign |
         bb.getNode(i).getNode().asAstNode() = assign and
         assign.getDest() = v.getAnAccess() and
@@ -99,7 +88,7 @@ module Ssa {
       )
     }
 
-    predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+    predicate variableRead(BasicBlocks::BasicBlock bb, int i, SourceVariable v, boolean certain) {
       exists(DeclRefExpr ref |
         not isLValue(ref) and
         bb.getNode(i).getNode().asAstNode() = ref and
@@ -133,7 +122,7 @@ module Ssa {
   /**
    * INTERNAL: Do not use.
    */
-  module SsaImpl = SsaImplCommon::Make<Location, SsaInput>;
+  module SsaImpl = SsaImplCommon::Make<Location, BasicBlocks::Cfg, SsaInput>;
 
   cached
   class Definition extends SsaImpl::Definition {
@@ -142,7 +131,7 @@ module Ssa {
 
     cached
     ControlFlowNode getARead() {
-      exists(SsaInput::SourceVariable v, SsaInput::BasicBlock bb, int i |
+      exists(SsaInput::SourceVariable v, BasicBlocks::BasicBlock bb, int i |
         SsaImpl::ssaDefReachesRead(v, this, bb, i) and
         SsaInput::variableRead(bb, i, v, true) and
         result = bb.getNode(i)
@@ -151,7 +140,7 @@ module Ssa {
 
     cached
     ControlFlowNode getAFirstRead() {
-      exists(SsaInput::BasicBlock bb, int i |
+      exists(BasicBlocks::BasicBlock bb, int i |
         SsaImpl::firstUse(this, bb, i, true) and
         result = bb.getNode(i)
       )
@@ -160,7 +149,7 @@ module Ssa {
     cached
     predicate adjacentReadPair(ControlFlowNode read1, ControlFlowNode read2) {
       read1 = this.getARead() and
-      exists(SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2 |
+      exists(BasicBlocks::BasicBlock bb1, int i1, BasicBlocks::BasicBlock bb2, int i2 |
         read1 = bb1.getNode(i1) and
         SsaImpl::adjacentUseUse(bb1, i1, bb2, i2, _, true) and
         read2 = bb2.getNode(i2)
@@ -168,7 +157,7 @@ module Ssa {
     }
 
     cached
-    deprecated predicate lastRefRedef(SsaInput::BasicBlock bb, int i, Definition next) {
+    deprecated predicate lastRefRedef(BasicBlocks::BasicBlock bb, int i, Definition next) {
       SsaImpl::lastRefRedef(this, bb, i, next)
     }
   }
@@ -177,7 +166,7 @@ module Ssa {
   class WriteDefinition extends Definition, SsaImpl::WriteDefinition {
     cached
     override Location getLocation() {
-      exists(SsaInput::BasicBlock bb, int i |
+      exists(BasicBlocks::BasicBlock bb, int i |
         this.definesAt(_, bb, i) and
         result = bb.getNode(i).getLocation()
       )
@@ -189,19 +178,19 @@ module Ssa {
      */
     cached
     predicate assigns(CfgNode value) {
-      exists(AssignExpr a, SsaInput::BasicBlock bb, int i |
+      exists(AssignExpr a, BasicBlocks::BasicBlock bb, int i |
         this.definesAt(_, bb, i) and
         a = bb.getNode(i).getNode().asAstNode() and
         value.getNode().asAstNode() = a.getSource()
       )
       or
-      exists(SsaInput::BasicBlock bb, int blockIndex, NamedPattern np |
+      exists(BasicBlocks::BasicBlock bb, int blockIndex, NamedPattern np |
         this.definesAt(_, bb, blockIndex) and
         np = bb.getNode(blockIndex).getNode().asAstNode() and
         value.getNode().asAstNode() = np
       )
       or
-      exists(SsaInput::BasicBlock bb, int blockIndex, ConditionElement ce, Expr init |
+      exists(BasicBlocks::BasicBlock bb, int blockIndex, ConditionElement ce, Expr init |
         this.definesAt(_, bb, blockIndex) and
         ce.getPattern() = bb.getNode(blockIndex).getNode().asAstNode() and
         init = ce.getInitializer() and
@@ -216,14 +205,14 @@ module Ssa {
   class PhiDefinition extends Definition, SsaImpl::PhiNode {
     cached
     override Location getLocation() {
-      exists(SsaInput::BasicBlock bb |
+      exists(BasicBlocks::BasicBlock bb |
         this.definesAt(_, bb, _) and
         result = bb.getLocation()
       )
     }
 
     cached
-    Definition getPhiInput(SsaInput::BasicBlock bb) {
+    Definition getPhiInput(BasicBlocks::BasicBlock bb) {
       SsaImpl::phiHasInputFromBlock(this, result, bb)
     }
 

@@ -899,7 +899,7 @@ module BooleanSplitting {
 
     /** Holds if control flow element `cfe` starts a split of this kind. */
     predicate startsSplit(AstNode cfe) {
-      this.correlatesConditions(any(ConditionBlock cb | cb.getLastElement() = cfe), _, _)
+      this.correlatesConditions(any(ConditionBlock cb | cb.getLastNode() = cfe), _, _)
     }
 
     /**
@@ -941,7 +941,7 @@ module BooleanSplitting {
     /**
      * Holds if condition `cb` is a read of the SSA variable in this split.
      */
-    private predicate defCondition(ConditionBlock cb) { cb.getLastElement() = def.getARead() }
+    private predicate defCondition(ConditionBlock cb) { cb.getLastNode() = def.getARead() }
 
     /**
      * Holds if condition `cb` is a read of the SSA variable in this split,
@@ -950,7 +950,7 @@ module BooleanSplitting {
      */
     private predicate defConditionReachableFromRead(ConditionBlock cb, AssignableRead read) {
       this.defCondition(cb) and
-      read = cb.getLastElement()
+      read = cb.getLastNode()
       or
       exists(AssignableRead mid | this.defConditionReachableFromRead(cb, mid) |
         PreSsa::adjacentReadPairSameVar(read, mid) and
@@ -970,9 +970,9 @@ module BooleanSplitting {
     override predicate correlatesConditions(ConditionBlock cb1, ConditionBlock cb2, boolean inverted) {
       this.firstDefCondition(cb1) and
       exists(AssignableRead read1, AssignableRead read2 |
-        read1 = cb1.getLastElement() and
+        read1 = cb1.getLastNode() and
         PreSsa::adjacentReadPairSameVar+(read1, read2) and
-        read2 = cb2.getLastElement() and
+        read2 = cb2.getLastNode() and
         inverted = false
       )
     }
@@ -1088,7 +1088,7 @@ module BooleanSplitting {
      */
     private predicate appliesToBlock(PreBasicBlock bb, Completion c) {
       this.appliesTo(bb) and
-      exists(AstNode last | last = bb.getLastElement() |
+      exists(AstNode last | last = bb.getLastNode() |
         (succ(last, _, c) or scopeLast(_, last, c)) and
         // Respect the value recorded in this split for all correlated conditions
         forall(boolean inverted | bb = this.getACorrelatedCondition(inverted) |
@@ -1102,7 +1102,7 @@ module BooleanSplitting {
 
     override predicate hasExit(AstNode pred, AstNode succ, Completion c) {
       exists(PreBasicBlock bb | this.appliesToBlock(bb, c) |
-        pred = bb.getLastElement() and
+        pred = bb.getLastNode() and
         succ(pred, succ, c) and
         // Exit this split if we can no longer reach a correlated condition
         not super.getSubKind().canReachCorrelatedCondition(succ)
@@ -1111,7 +1111,7 @@ module BooleanSplitting {
 
     override predicate hasExitScope(CfgScope scope, AstNode last, Completion c) {
       exists(PreBasicBlock bb | this.appliesToBlock(bb, c) |
-        last = bb.getLastElement() and
+        last = bb.getLastNode() and
         scopeLast(scope, last, c)
       )
     }
@@ -1121,7 +1121,7 @@ module BooleanSplitting {
         pred = bb.getAnElement() and
         this.appliesSucc(pred, succ, c) and
         (
-          pred = bb.getLastElement()
+          pred = bb.getLastNode()
           implies
           (
             // We must still be able to reach a correlated condition to stay in this split

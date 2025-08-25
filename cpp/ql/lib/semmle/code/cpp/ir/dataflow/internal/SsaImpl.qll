@@ -891,15 +891,14 @@ private predicate baseSourceVariableIsGlobal(
   )
 }
 
-private module SsaInput implements Ssa::InputSig<Location> {
-  import InputSigCommon
+private module SsaInput implements Ssa::InputSig<Location, IRCfg::BasicBlock> {
   import SourceVariables
 
   /**
    * Holds if the `i`'th write in block `bb` writes to the variable `v`.
    * `certain` is `true` if the write is guaranteed to overwrite the entire variable.
    */
-  predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+  predicate variableWrite(IRCfg::BasicBlock bb, int i, SourceVariable v, boolean certain) {
     DataFlowImplCommon::forceCachingInSameStage() and
     (
       exists(DefImpl def | def.hasIndexInBlock(v, bb, i) |
@@ -917,7 +916,7 @@ private module SsaInput implements Ssa::InputSig<Location> {
    * Holds if the `i`'th read in block `bb` reads to the variable `v`.
    * `certain` is `true` if the read is guaranteed. For C++, this is always the case.
    */
-  predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+  predicate variableRead(IRCfg::BasicBlock bb, int i, SourceVariable v, boolean certain) {
     exists(UseImpl use | use.hasIndexInBlock(bb, i, v) |
       if use.isCertain() then certain = true else certain = false
     )
@@ -965,7 +964,7 @@ class GlobalDef extends Definition {
   GlobalLikeVariable getVariable() { result = impl.getVariable() }
 }
 
-private module SsaImpl = Ssa::Make<Location, SsaInput>;
+private module SsaImpl = Ssa::Make<Location, IRCfg, SsaInput>;
 
 private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationInputSig {
   private import codeql.util.Boolean
@@ -978,7 +977,7 @@ private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationI
       )
     }
 
-    predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { bb.getInstruction(i) = this }
+    predicate hasCfgNode(IRCfg::BasicBlock bb, int i) { bb.getInstruction(i) = this }
   }
 
   Expr getARead(SsaImpl::Definition def) {
@@ -1006,9 +1005,7 @@ private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationI
   class Guard instanceof IRGuards::IRGuardCondition {
     string toString() { result = super.toString() }
 
-    predicate hasValueBranchEdge(
-      SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, GuardValue branch
-    ) {
+    predicate hasValueBranchEdge(IRCfg::BasicBlock bb1, IRCfg::BasicBlock bb2, GuardValue branch) {
       exists(EdgeKind kind |
         super.getBlock() = bb1 and
         kind = getConditionalEdge(branch) and
@@ -1017,13 +1014,13 @@ private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationI
     }
 
     predicate valueControlsBranchEdge(
-      SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, GuardValue branch
+      IRCfg::BasicBlock bb1, IRCfg::BasicBlock bb2, GuardValue branch
     ) {
       this.hasValueBranchEdge(bb1, bb2, branch)
     }
   }
 
-  predicate guardDirectlyControlsBlock(Guard guard, SsaInput::BasicBlock bb, GuardValue branch) {
+  predicate guardDirectlyControlsBlock(Guard guard, IRCfg::BasicBlock bb, GuardValue branch) {
     guard.(IRGuards::IRGuardCondition).controls(bb, branch)
   }
 

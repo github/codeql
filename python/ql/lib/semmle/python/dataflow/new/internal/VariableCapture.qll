@@ -12,7 +12,7 @@ private import codeql.dataflow.VariableCapture as Shared
 // The first is the main implementation, the second is a performance motivated restriction.
 // The restriction is to clear any `CapturedVariableContent` before writing a new one
 // to avoid long access paths (see the link for a nice explanation).
-private module CaptureInput implements Shared::InputSig<Location> {
+private module CaptureInput implements Shared::InputSig<Location, Cfg::BasicBlock> {
   private import python as PY
 
   additional class ExprCfgNode extends ControlFlowNode {
@@ -23,24 +23,7 @@ private module CaptureInput implements Shared::InputSig<Location> {
     predicate isConstructor() { none() }
   }
 
-  class BasicBlock extends PY::BasicBlock {
-    int length() { result = count(int i | exists(this.getNode(i))) }
-
-    Callable getEnclosingCallable() { result = this.getScope() }
-
-    // Note `PY:BasicBlock` does not have a `getLocation`.
-    // (Instead it has a complicated location info logic.)
-    // Using the location of the first node is simple
-    // and we just need a way to identify the basic block
-    // during debugging, so this will be serviceable.
-    Location getLocation() { result = super.getNode(0).getLocation() }
-  }
-
-  class ControlFlowNode = PY::ControlFlowNode;
-
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
-
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
+  Callable basicBlockGetEnclosingCallable(Cfg::BasicBlock bb) { result = bb.getScope() }
 
   class CapturedVariable extends LocalVariable {
     Function f;
@@ -70,7 +53,7 @@ private module CaptureInput implements Shared::InputSig<Location> {
   }
 
   class Expr extends ExprCfgNode {
-    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
+    predicate hasCfgNode(Cfg::BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 
   class VariableWrite extends ControlFlowNode {
@@ -80,7 +63,7 @@ private module CaptureInput implements Shared::InputSig<Location> {
 
     CapturedVariable getVariable() { result = v }
 
-    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
+    predicate hasCfgNode(Cfg::BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 
   class VariableRead extends Expr {
@@ -122,7 +105,7 @@ class CapturedVariable = CaptureInput::CapturedVariable;
 
 class ClosureExpr = CaptureInput::ClosureExpr;
 
-module Flow = Shared::Flow<Location, CaptureInput>;
+module Flow = Shared::Flow<Location, Cfg, CaptureInput>;
 
 private Flow::ClosureNode asClosureNode(Node n) {
   result = n.(SynthCaptureNode).getSynthesizedCaptureNode()
