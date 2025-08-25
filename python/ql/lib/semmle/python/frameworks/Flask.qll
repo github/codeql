@@ -436,7 +436,16 @@ module Flask {
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Request
    */
   private class FlaskRequestSource extends RemoteFlowSource::Range {
-    FlaskRequestSource() { this = request().asSource() }
+    FlaskRequestSource() {
+      // Using `request().asSource()` would result in data-flow paths starting at the import of
+      // `request`, which is not very useful. Instead, we look at all the places this `request`
+      // object can flow, and use only those that are local sources (so we only get the first
+      // instance of `request` in a function), and those that correspond to `Name` nodes (so we
+      // don't get the initial import, which is an `ImportMember`).
+      this = request().getAValueReachableFromSource() and
+      this instanceof DataFlow::LocalSourceNode and
+      this.asExpr() instanceof Name
+    }
 
     override string getSourceType() { result = "flask.request" }
   }
