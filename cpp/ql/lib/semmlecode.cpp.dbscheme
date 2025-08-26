@@ -222,6 +222,19 @@ extractor_version(
     string frontend_version: string ref
 )
 
+pch_uses(
+    int pch: @pch ref,
+    int compilation: @compilation ref,
+    int id: @file ref
+)
+
+#keyset[pch, compilation]
+pch_creations(
+    int pch: @pch,
+    int compilation: @compilation ref,
+    int from: @file ref
+)
+
 /** An element for which line-count information is available. */
 @sourceline = @file | @function | @variable | @enumconstant | @xmllocatable;
 
