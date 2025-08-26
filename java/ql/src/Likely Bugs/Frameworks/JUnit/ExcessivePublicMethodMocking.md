@@ -1,6 +1,6 @@
 ## Overview
 
-Mocking methods of a class is necessary for unit tests to run without overhead caused by expensive I/O operations. However, when a unit test ends up mocking all non-private methods of a class, it may indicate that the test is too complicated, possibly because it is trying to test multiple things at once. Such extensive mocking is likely a signal that the scope of the unit test is reaching beyond a single unit of functionality.
+Mocking methods of a class is necessary for unit tests to run without overhead caused by expensive I/O operations. However, when a unit test ends up mocking all public methods of a class, it may indicate that the test is too complicated, possibly because it is trying to test multiple things at once. Such extensive mocking is likely a signal that the scope of the unit test is reaching beyond a single unit of functionality.
 
 ## Recommendation
 

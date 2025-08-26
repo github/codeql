@@ -1,2 +1,0 @@
-query: Likely Bugs/Frameworks/JUnit/MockingAllNonPrivateMethodsMeansUnitTestIsTooBig.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql

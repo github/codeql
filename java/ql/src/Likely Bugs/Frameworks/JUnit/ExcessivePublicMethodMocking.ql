@@ -1,7 +1,8 @@
 /**
- * @id java/mocking-all-non-private-methods-means-unit-test-is-too-big
- * @name Mocking all non-private methods of a class may indicate the unit test is testing too much
- * @description Mocking all non-private methods provided by a class might indicate the unit test
+ * @id java/excessive-public-method-mocking
+ * @previous-id java/mocking-all-non-private-methods-means-unit-test-is-too-big
+ * @name Mocking all public methods of a class may indicate the unit test is testing too much
+ * @description Mocking all public methods provided by a class might indicate the unit test
  *              aims to test too many things.
  * @kind problem
  * @precision high

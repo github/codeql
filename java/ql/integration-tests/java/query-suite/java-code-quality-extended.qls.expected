@@ -36,8 +36,8 @@ ql/java/ql/src/Likely Bugs/Concurrency/NonSynchronizedOverride.ql
 ql/java/ql/src/Likely Bugs/Concurrency/ScheduledThreadPoolExecutorZeroThread.ql
 ql/java/ql/src/Likely Bugs/Concurrency/SynchOnBoxedType.ql
 ql/java/ql/src/Likely Bugs/Concurrency/SynchSetUnsynchGet.ql
+ql/java/ql/src/Likely Bugs/Frameworks/JUnit/ExcessivePublicMethodMocking.ql
 ql/java/ql/src/Likely Bugs/Frameworks/JUnit/JUnit5MissingNestedAnnotation.ql
-ql/java/ql/src/Likely Bugs/Frameworks/JUnit/MockingAllNonPrivateMethodsMeansUnitTestIsTooBig.ql
 ql/java/ql/src/Likely Bugs/Inheritance/NoNonFinalInConstructor.ql
 ql/java/ql/src/Likely Bugs/Likely Typos/ContainerSizeCmpZero.ql
 ql/java/ql/src/Likely Bugs/Likely Typos/ContradictoryTypeChecks.ql
