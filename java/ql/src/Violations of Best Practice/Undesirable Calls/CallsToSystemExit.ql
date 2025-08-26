@@ -17,6 +17,7 @@ import java
 
 /**
  * A `Method` which, when called, causes the JVM to exit or halt.
+ *
  * Explicitly includes these methods from the java standard library:
  *   - `java.lang.System.exit`
  *   - `java.lang.Runtime.halt`
