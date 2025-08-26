@@ -1,3 +1,4 @@
+use crate::trap;
 use itertools::Itertools;
 use ra_ap_base_db::{EditionedFileId, FileText, RootQueryDb, SourceDatabase};
 use ra_ap_hir::Semantics;
@@ -23,14 +24,45 @@ use std::rc::Rc;
 use tracing::{debug, error, info, trace, warn};
 use triomphe::Arc;
 
+#[derive(Clone, Default)]
+pub struct RustAnalyzerNoSemantics {
+    pub severity: trap::DiagnosticSeverity,
+    pub reason: &'static str,
+}
+
+impl RustAnalyzerNoSemantics {
+    pub fn warning(reason: &'static str) -> Self {
+        RustAnalyzerNoSemantics {
+            severity: trap::DiagnosticSeverity::Warning,
+            reason,
+        }
+    }
+    pub fn info(reason: &'static str) -> Self {
+        RustAnalyzerNoSemantics {
+            severity: trap::DiagnosticSeverity::Info,
+            reason,
+        }
+    }
+}
+
 pub enum RustAnalyzer<'a> {
     WithSemantics {
         vfs: &'a Vfs,
         semantics: &'a Semantics<'a, RootDatabase>,
     },
     WithoutSemantics {
-        reason: &'a str,
+        severity: trap::DiagnosticSeverity,
+        reason: &'static str,
     },
+}
+
+impl From<RustAnalyzerNoSemantics> for RustAnalyzer<'static> {
+    fn from(value: RustAnalyzerNoSemantics) -> Self {
+        RustAnalyzer::WithoutSemantics {
+            severity: value.severity,
+            reason: value.reason,
+        }
+    }
 }
 
 pub struct FileSemanticInformation<'a> {
@@ -42,7 +74,7 @@ pub struct ParseResult<'a> {
     pub ast: SourceFile,
     pub text: Arc<str>,
     pub errors: Vec<SyntaxError>,
-    pub semantics_info: Result<FileSemanticInformation<'a>, &'a str>,
+    pub semantics_info: Result<FileSemanticInformation<'a>, RustAnalyzerNoSemantics>,
 }
 
 impl<'a> RustAnalyzer<'a> {
@@ -52,7 +84,7 @@ impl<'a> RustAnalyzer<'a> {
         load_config: &LoadCargoConfig,
     ) -> Option<(RootDatabase, Vfs)> {
         let progress = |t| trace!("progress: {t}");
-        let manifest = project.manifest_path();
+        let manifest: &ManifestPath = project.manifest_path();
         match load_workspace_at(manifest.as_ref(), config, load_config, &progress) {
             Ok((db, vfs, _macro_server)) => Some((db, vfs)),
             Err(err) => {
@@ -67,16 +99,25 @@ impl<'a> RustAnalyzer<'a> {
     fn get_file_data(
         &self,
         path: &Path,
-    ) -> Result<(&Semantics<'_, RootDatabase>, EditionedFileId, FileText), &str> {
+    ) -> Result<(&Semantics<'_, RootDatabase>, EditionedFileId, FileText), RustAnalyzerNoSemantics>
+    {
         match self {
-            RustAnalyzer::WithoutSemantics { reason } => Err(reason),
+            RustAnalyzer::WithoutSemantics { severity, reason } => Err(RustAnalyzerNoSemantics {
+                severity: *severity,
+                reason,
+            }),
             RustAnalyzer::WithSemantics { vfs, semantics } => {
-                let file_id = path_to_file_id(path, vfs).ok_or("file not found in project")?;
-                let input = std::panic::catch_unwind(|| semantics.db.file_text(file_id))
-                    .or(Err("no text available for the file in the project"))?;
-                let editioned_file_id = semantics
-                    .attach_first_edition(file_id)
-                    .ok_or("failed to determine rust edition")?;
+                let file_id = path_to_file_id(path, vfs).ok_or(
+                    RustAnalyzerNoSemantics::warning("file not found in project"),
+                )?;
+                let input = std::panic::catch_unwind(|| semantics.db.file_text(file_id)).or(
+                    Err(RustAnalyzerNoSemantics::warning(
+                        "no text available for the file in the project",
+                    )),
+                )?;
+                let editioned_file_id = semantics.attach_first_edition(file_id).ok_or(
+                    RustAnalyzerNoSemantics::warning("failed to determine rust edition"),
+                )?;
                 Ok((semantics, editioned_file_id, input))
             }
         }
