@@ -91,15 +91,7 @@ class Addressable(AstNode):
         "One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.") | rust.detach | ql.internal
 
 
-class Resolvable(AstNode):
-    """
-    One of `PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat` or `MethodCallExpr`.
-    """
-    resolved_path: optional[string] | rust.detach | ql.internal
-    resolved_crate_origin: optional[string] | rust.detach | ql.internal
-
-
-class PathAstNode(Resolvable):
+class PathAstNode(AstNode):
     """
     An AST element wrapping a path (`PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat`).
     """
