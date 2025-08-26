@@ -176,11 +176,6 @@ macro_rules! dispatch_to_tracing {
 }
 
 #[derive(Copy, Clone, PartialEq, Eq)]
-pub enum ResolvePaths {
-    Yes,
-    No,
-}
-#[derive(Copy, Clone, PartialEq, Eq)]
 pub enum SourceKind {
     Source,
     Library,
@@ -211,7 +206,6 @@ impl<'a> Translator<'a> {
         label: Label<generated::File>,
         line_index: LineIndex,
         semantic_info: Option<&FileSemanticInformation<'a>>,
-        resolve_paths: ResolvePaths,
         source_kind: SourceKind,
     ) -> Translator<'a> {
         Translator {
@@ -221,7 +215,7 @@ impl<'a> Translator<'a> {
             line_index,
             file_id: semantic_info.map(|i| i.file_id),
             semantics: semantic_info.map(|i| i.semantics),
-            resolve_paths: resolve_paths == ResolvePaths::Yes,
+            resolve_paths: false,
             source_kind,
             macro_context_depth: 0,
             diagnostic_count: 0,

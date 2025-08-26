@@ -1,6 +1,6 @@
 use crate::diagnostics::{ExtractionStep, emit_extraction_diagnostics};
 use crate::rust_analyzer::path_to_file_id;
-use crate::translate::{ResolvePaths, SourceKind};
+use crate::translate::SourceKind;
 use crate::trap::TrapId;
 use anyhow::Context;
 use archive::Archiver;
@@ -54,7 +54,6 @@ impl<'a> Extractor<'a> {
         &mut self,
         rust_analyzer: &RustAnalyzer,
         file: &Path,
-        resolve_paths: ResolvePaths,
         source_kind: SourceKind,
     ) {
         self.archiver.archive(file);
@@ -79,7 +78,6 @@ impl<'a> Extractor<'a> {
             label,
             line_index,
             semantics_info.as_ref().ok(),
-            resolve_paths,
             source_kind,
         );
 
@@ -120,13 +118,11 @@ impl<'a> Extractor<'a> {
         file: &Path,
         semantics: &Semantics<'_, RootDatabase>,
         vfs: &Vfs,
-        resolve_paths: ResolvePaths,
         source_kind: SourceKind,
     ) {
         self.extract(
             &RustAnalyzer::new(vfs, semantics),
             file,
-            resolve_paths,
             source_kind,
         );
     }
@@ -140,7 +136,6 @@ impl<'a> Extractor<'a> {
         self.extract(
             &RustAnalyzer::WithoutSemantics { reason },
             file,
-            ResolvePaths::No,
             source_kind,
         );
     }
@@ -283,16 +278,15 @@ fn main() -> anyhow::Result<()> {
     }
     let cwd = cwd()?;
     let (cargo_config, load_cargo_config) = cfg.to_cargo_config(&cwd);
-    let resolve_paths = ResolvePaths::No;
-    let (library_mode, library_resolve_paths) = if cfg.extract_dependencies_as_source {
-        (SourceKind::Source, resolve_paths)
+    let library_mode = if cfg.extract_dependencies_as_source {
+        SourceKind::Source
     } else {
-        (SourceKind::Library, ResolvePaths::No)
+        SourceKind::Library
     };
-    let (source_mode, source_resolve_paths) = if cfg.force_library_mode {
-        (library_mode, library_resolve_paths)
+    let source_mode = if cfg.force_library_mode {
+        library_mode
     } else {
-        (SourceKind::Source, resolve_paths)
+        SourceKind::Source
     };
     let mut processed_files: HashSet<PathBuf, RandomState> =
         HashSet::from_iter(files.iter().cloned());
@@ -312,7 +306,6 @@ fn main() -> anyhow::Result<()> {
                         file,
                         &semantics,
                         vfs,
-                        source_resolve_paths,
                         source_mode,
                     ),
                     Err(reason) => extractor.extract_without_semantics(file, source_mode, &reason),
@@ -331,7 +324,6 @@ fn main() -> anyhow::Result<()> {
                             file,
                             &semantics,
                             vfs,
-                            library_resolve_paths,
                             library_mode,
                         );
                         extractor.archiver.archive(file);
