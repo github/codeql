@@ -195,7 +195,6 @@ ql/java/ql/src/Violations of Best Practice/legacy/ParameterAssignment.ql
 ql/java/ql/src/Violations of Best Practice/legacy/UnnecessaryCast.ql
 ql/java/ql/src/Violations of Best Practice/legacy/UnnecessaryImport.ql
 ql/java/ql/src/definitions.ql
-ql/java/ql/src/experimental/Security/CWE/CWE-016/InsecureSpringActuatorConfig.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-020/Log4jJndiInjection.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-036/OpenStream.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-073/FilePathInjection.ql
