@@ -514,7 +514,7 @@ impl<'a> Translator<'a> {
                 mcall,
                 &SyntaxError::new(
                     format!(
-                        "macro expansion failed: could not resolve macro '{}'",
+                        "macro expansion failed for '{}'",
                         mcall.path().map(|p| p.to_string()).unwrap_or_default()
                     ),
                     range.unwrap_or_else(|| TextRange::empty(TextSize::from(0))),
