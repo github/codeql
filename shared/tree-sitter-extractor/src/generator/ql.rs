@@ -12,10 +12,10 @@ pub enum TopLevel<'a> {
 impl fmt::Display for TopLevel<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            TopLevel::Import(imp) => write!(f, "{}", imp),
-            TopLevel::Class(cls) => write!(f, "{}", cls),
-            TopLevel::Module(m) => write!(f, "{}", m),
-            TopLevel::Predicate(pred) => write!(f, "{}", pred),
+            TopLevel::Import(imp) => write!(f, "{imp}"),
+            TopLevel::Class(cls) => write!(f, "{cls}"),
+            TopLevel::Module(m) => write!(f, "{m}"),
+            TopLevel::Predicate(pred) => write!(f, "{pred}"),
         }
     }
 }
@@ -30,7 +30,7 @@ impl fmt::Display for Import<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "import {}", &self.module)?;
         if let Some(name) = &self.alias {
-            write!(f, " as {}", name)?;
+            write!(f, " as {name}")?;
         }
         Ok(())
     }
@@ -48,7 +48,7 @@ pub struct Class<'a> {
 impl fmt::Display for Class<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         if let Some(qldoc) = &self.qldoc {
-            write!(f, "/** {} */", qldoc)?;
+            write!(f, "/** {qldoc} */")?;
         }
         if self.is_abstract {
             write!(f, "abstract ")?;
@@ -58,7 +58,7 @@ impl fmt::Display for Class<'_> {
             if index > 0 {
                 write!(f, ", ")?;
             }
-            write!(f, "{}", supertype)?;
+            write!(f, "{supertype}")?;
         }
         writeln!(f, " {{ ")?;
 
@@ -81,7 +81,7 @@ impl fmt::Display for Class<'_> {
         }
 
         for predicate in &self.predicates {
-            writeln!(f, "  {}", predicate)?;
+            writeln!(f, "  {predicate}")?;
         }
 
         write!(f, "}}")?;
@@ -101,7 +101,7 @@ pub struct Module<'a> {
 impl fmt::Display for Module<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         if let Some(qldoc) = &self.qldoc {
-            write!(f, "/** {} */", qldoc)?;
+            write!(f, "/** {qldoc} */")?;
         }
         if let Some(overlay_annotation) = &self.overlay {
             write!(f, "overlay[")?;
@@ -113,7 +113,7 @@ impl fmt::Display for Module<'_> {
         }
         writeln!(f, "module {} {{ ", self.name)?;
         for decl in &self.body {
-            writeln!(f, "  {}", decl)?;
+            writeln!(f, "  {decl}")?;
         }
         write!(f, "}}")?;
         Ok(())
@@ -140,8 +140,8 @@ impl fmt::Display for Type<'_> {
         match self {
             Type::Int => write!(f, "int"),
             Type::String => write!(f, "string"),
-            Type::Normal(name) => write!(f, "{}", name),
-            Type::At(name) => write!(f, "@{}", name),
+            Type::Normal(name) => write!(f, "{name}"),
+            Type::At(name) => write!(f, "@{name}"),
         }
     }
 }
@@ -169,16 +169,16 @@ pub enum Expression<'a> {
 impl fmt::Display for Expression<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Expression::Var(x) => write!(f, "{}", x),
-            Expression::String(s) => write!(f, "\"{}\"", s),
-            Expression::Integer(n) => write!(f, "{}", n),
+            Expression::Var(x) => write!(f, "{x}"),
+            Expression::String(s) => write!(f, "\"{s}\""),
+            Expression::Integer(n) => write!(f, "{n}"),
             Expression::Pred(n, args) => {
-                write!(f, "{}(", n)?;
+                write!(f, "{n}(")?;
                 for (index, arg) in args.iter().enumerate() {
                     if index > 0 {
                         write!(f, ", ")?;
                     }
-                    write!(f, "{}", arg)?;
+                    write!(f, "{arg}")?;
                 }
                 write!(f, ")")
             }
@@ -190,7 +190,7 @@ impl fmt::Display for Expression<'_> {
                         if index > 0 {
                             write!(f, " and ")?;
                         }
-                        write!(f, "({})", conjunct)?;
+                        write!(f, "({conjunct})")?;
                     }
                     Ok(())
                 }
@@ -203,19 +203,19 @@ impl fmt::Display for Expression<'_> {
                         if index > 0 {
                             write!(f, " or ")?;
                         }
-                        write!(f, "({})", disjunct)?;
+                        write!(f, "({disjunct})")?;
                     }
                     Ok(())
                 }
             }
-            Expression::Equals(a, b) => write!(f, "{} = {}", a, b),
+            Expression::Equals(a, b) => write!(f, "{a} = {b}"),
             Expression::Dot(x, member_pred, args) => {
-                write!(f, "{}.{}(", x, member_pred)?;
+                write!(f, "{x}.{member_pred}(")?;
                 for (index, arg) in args.iter().enumerate() {
                     if index > 0 {
                         write!(f, ", ")?;
                     }
-                    write!(f, "{}", arg)?;
+                    write!(f, "{arg}")?;
                 }
                 write!(f, ")")
             }
@@ -226,26 +226,26 @@ impl fmt::Display for Expression<'_> {
                 expr,
                 second_expr,
             } => {
-                write!(f, "{}(", name)?;
+                write!(f, "{name}(")?;
                 if !vars.is_empty() {
                     for (index, var) in vars.iter().enumerate() {
                         if index > 0 {
                             write!(f, ", ")?;
                         }
-                        write!(f, "{}", var)?;
+                        write!(f, "{var}")?;
                     }
                     write!(f, " | ")?;
                 }
                 if let Some(range) = range {
-                    write!(f, "{} | ", range)?;
+                    write!(f, "{range} | ")?;
                 }
-                write!(f, "{}", expr)?;
+                write!(f, "{expr}")?;
                 if let Some(second_expr) = second_expr {
-                    write!(f, ", {}", second_expr)?;
+                    write!(f, ", {second_expr}")?;
                 }
                 write!(f, ")")
             }
-            Expression::Negation(e) => write!(f, "not ({})", e),
+            Expression::Negation(e) => write!(f, "not ({e})"),
         }
     }
 }
@@ -272,7 +272,7 @@ pub struct Predicate<'a> {
 impl fmt::Display for Predicate<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         if let Some(qldoc) = &self.qldoc {
-            write!(f, "/** {} */", qldoc)?;
+            write!(f, "/** {qldoc} */")?;
         }
         if let Some(overlay_annotation) = &self.overlay {
             write!(f, "overlay[")?;
@@ -293,14 +293,14 @@ impl fmt::Display for Predicate<'_> {
         }
         match &self.return_type {
             None => write!(f, "predicate ")?,
-            Some(return_type) => write!(f, "{} ", return_type)?,
+            Some(return_type) => write!(f, "{return_type} ")?,
         }
         write!(f, "{}(", self.name)?;
         for (index, param) in self.formal_parameters.iter().enumerate() {
             if index > 0 {
                 write!(f, ", ")?;
             }
-            write!(f, "{}", param)?;
+            write!(f, "{param}")?;
         }
         write!(f, ") {{ {} }}", self.body)?;
 

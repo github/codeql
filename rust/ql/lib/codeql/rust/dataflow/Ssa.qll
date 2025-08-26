@@ -194,9 +194,16 @@ module Ssa {
         ae.getRhs() = value
       )
       or
-      exists(LetStmtCfgNode ls |
-        ls.getPat().(IdentPatCfgNode).getName() = write and
-        ls.getInitializer() = value
+      exists(IdentPatCfgNode pat | pat.getName() = write |
+        exists(LetStmtCfgNode ls |
+          pat = ls.getPat() and
+          ls.getInitializer() = value
+        )
+        or
+        exists(LetExprCfgNode le |
+          pat = le.getPat() and
+          le.getScrutinee() = value
+        )
       )
     }
 

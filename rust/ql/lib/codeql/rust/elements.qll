@@ -41,7 +41,6 @@ import codeql.rust.elements.CallExpr
 import codeql.rust.elements.CallExprBase
 import codeql.rust.elements.Callable
 import codeql.rust.elements.CastExpr
-import codeql.rust.elements.ClosureBinder
 import codeql.rust.elements.ClosureExpr
 import codeql.rust.elements.Comment
 import codeql.rust.elements.Const
@@ -62,6 +61,7 @@ import codeql.rust.elements.ExternItemList
 import codeql.rust.elements.FieldExpr
 import codeql.rust.elements.FieldList
 import codeql.rust.elements.FnPtrTypeRepr
+import codeql.rust.elements.ForBinder
 import codeql.rust.elements.ForExpr
 import codeql.rust.elements.ForTypeRepr
 import codeql.rust.elements.Format

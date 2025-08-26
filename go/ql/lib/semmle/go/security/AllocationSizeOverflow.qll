@@ -56,6 +56,17 @@ module AllocationSizeOverflow {
         succ = c
       )
     }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
+
+    Location getASelectedSinkLocation(DataFlow::Node sink) {
+      result = sink.getLocation()
+      or
+      exists(DataFlow::Node allocsz |
+        isSinkWithAllocationSize(sink, allocsz) and
+        result = allocsz.getLocation()
+      )
+    }
   }
 
   /** Tracks taint flow to find allocation-size overflows. */

@@ -8,7 +8,7 @@ struct Top {
   virtual void isSink(int x) { }
   virtual int notSource1() { return source(); }
   virtual int notSource2() { return source(); }
-  virtual void notSink(int x) { sink(x); } // $ SPURIOUS: ast,ir=37:19 ast,ir=45:18
+  virtual void notSink(int x) { sink(x); } // $ SPURIOUS: ast=37:19 ast=45:18
 };
 
 // This class has the correct behavior for just the functions ending in 2.
@@ -32,16 +32,16 @@ void VirtualDispatch(Bottom *bottomPtr, Bottom &bottomRef) { // $ ast-def=bottom
   sink(topPtr->isSource2()); // $ ir MISSING: ast
   topPtr->isSink(source()); // causing a MISSING for ast
 
-  sink(topPtr->notSource1()); // $ SPURIOUS: ast,ir
-  sink(topPtr->notSource2()); // $ SPURIOUS: ast,ir
+  sink(topPtr->notSource1()); // $ SPURIOUS: ast
+  sink(topPtr->notSource2()); // $ SPURIOUS: ast
   topPtr->notSink(source()); // causing SPURIOUS for ast,ir
 
   sink(topRef.isSource1()); // $ ir MISSING: ast
   sink(topRef.isSource2()); // $ ir MISSING: ast
   topRef.isSink(source()); // causing a MISSING for ast
 
-  sink(topRef.notSource1()); // $ SPURIOUS: ast,ir
-  sink(topRef.notSource2()); // $ SPURIOUS: ast,ir
+  sink(topRef.notSource1()); // $ SPURIOUS: ast
+  sink(topRef.notSource2()); // $ SPURIOUS: ast
   topRef.notSink(source()); // causing SPURIOUS for ast,ir
 }
 
@@ -126,8 +126,8 @@ namespace virtual_inheritance {
     // get flow from a `Middle` value to the call qualifier.
     Top *topPtr = bottomPtr, &topRef = bottomRef;
 
-    sink(topPtr->isSource()); // $ MISSING: ast,ir
-    sink(topRef.isSource()); // $ MISSING: ast,ir
+    sink(topPtr->isSource()); // $ ir MISSING: ast
+    sink(topRef.isSource()); // $ ir MISSING: ast
   }
 }
 

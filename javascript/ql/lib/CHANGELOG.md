@@ -1,8 +1,24 @@
+## 2.6.9
+
+### Minor Analysis Improvements
+
+* Improved modeling of command-line argument parsing libraries [arg](https://www.npmjs.com/package/arg), [args](https://www.npmjs.com/package/args), [command-line-args](https://www.npmjs.com/package/command-line-args) and [commander](https://www.npmjs.com/package/commander)
+
+## 2.6.8
+
+### Minor Analysis Improvements
+
+* The regular expressions in `SensitiveDataHeuristics.qll` have been extended to find more instances of sensitive data such as secrets used in authentication, finance and health information, and device data. The heuristics have also been refined to find fewer false positive matches. This will improve results for queries related to sensitive information.
+
 ## 2.6.7
 
 ### Minor Analysis Improvements
 
 * Enhanced modeling for the `execa` library, adding support for command execution methods `execaCommand`, `execaCommandSync`, `$`, and `$.sync`, as well as file system operations through `inputFile`, `pipeStdout`, `pipeAll`, and `pipeStderr`.
+
+### Bug Fixes
+
+* The JavaScript extractor no longer ignores source files specified in the `tsconfig.json` compiler options `outDir` if doing so would result in excluding all source code.
 
 ## 2.6.6
 

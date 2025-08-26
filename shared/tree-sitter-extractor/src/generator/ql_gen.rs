@@ -200,7 +200,7 @@ pub fn create_token_class<'a>(token_type: &'a str, tokeninfo: &'a str) -> ql::Cl
 }
 
 // Creates the `ReservedWord` class.
-pub fn create_reserved_word_class(db_name: &str) -> ql::Class {
+pub fn create_reserved_word_class(db_name: &str) -> ql::Class<'_> {
     let class_name = "ReservedWord";
     let get_a_primary_ql_class = create_get_a_primary_ql_class(class_name, true);
     ql::Class {
@@ -237,7 +237,7 @@ fn create_none_predicate<'a>(
 
 /// Creates an overridden `getAPrimaryQlClass` predicate that returns the given
 /// name.
-fn create_get_a_primary_ql_class(class_name: &str, is_final: bool) -> ql::Predicate {
+fn create_get_a_primary_ql_class(class_name: &str, is_final: bool) -> ql::Predicate<'_> {
     ql::Predicate {
         qldoc: Some(String::from(
             "Gets the name of the primary QL class for this element.",
@@ -318,7 +318,7 @@ pub fn create_get_node_file_predicate<'a>(
     }
 }
 
-pub fn create_discardable_ast_node_predicate(ast_node_name: &str) -> ql::Predicate {
+pub fn create_discardable_ast_node_predicate(ast_node_name: &str) -> ql::Predicate<'_> {
     ql::Predicate {
         name: "discardableAstNode",
         qldoc: Some(String::from(
@@ -352,7 +352,7 @@ pub fn create_discardable_ast_node_predicate(ast_node_name: &str) -> ql::Predica
     }
 }
 
-pub fn create_discard_ast_node_predicate(ast_node_name: &str) -> ql::Predicate {
+pub fn create_discard_ast_node_predicate(ast_node_name: &str) -> ql::Predicate<'_> {
     ql::Predicate {
         name: "discardAstNode",
         qldoc: Some(String::from(
@@ -666,7 +666,7 @@ fn create_field_getters<'a>(
         }
     };
     let qldoc = match &field.name {
-        Some(name) => format!("Gets the node corresponding to the field `{}`.", name),
+        Some(name) => format!("Gets the node corresponding to the field `{name}`."),
         None => {
             if formal_parameters.is_empty() {
                 "Gets the child of this node.".to_owned()
@@ -692,8 +692,8 @@ fn create_field_getters<'a>(
 }
 
 /// Converts the given node types into CodeQL classes wrapping the dbscheme.
-pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel> {
-    let mut classes: Vec<ql::TopLevel> = Vec::new();
+pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
+    let mut classes = Vec::new();
     let mut token_kinds = BTreeSet::new();
     for (type_name, node) in nodes {
         if let node_types::EntryKind::Token { .. } = &node.kind {

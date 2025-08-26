@@ -321,30 +321,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A closure binder, specifying lifetime or type parameters for a closure.
-   *
-   * For example:
-   * ```rust
-   * let print_any = for<T: std::fmt::Debug> |x: T| {
-   * //              ^^^^^^^^^^^^^^^^^^^^^^^
-   *     println!("{:?}", x);
-   * };
-   *
-   * print_any(42);
-   * print_any("hello");
-   * ```
-   */
-  class ClosureBinder extends @closure_binder, AstNode {
-    override string toString() { result = "ClosureBinder" }
-
-    /**
-     * Gets the generic parameter list of this closure binder, if it exists.
-     */
-    GenericParamList getGenericParamList() { closure_binder_generic_param_lists(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * The base class for expressions.
    */
   class Expr extends @expr, AstNode { }
@@ -388,6 +364,30 @@ module Raw {
    * ```
    */
   class FieldList extends @field_list, AstNode { }
+
+  /**
+   * INTERNAL: Do not use.
+   * A for binder, specifying lifetime or type parameters for a closure or a type.
+   *
+   * For example:
+   * ```rust
+   * let print_any = for<T: std::fmt::Debug> |x: T| {
+   * //              ^^^^^^^^^^^^^^^^^^^^^^^
+   *     println!("{:?}", x);
+   * };
+   *
+   * print_any(42);
+   * print_any("hello");
+   * ```
+   */
+  class ForBinder extends @for_binder, AstNode {
+    override string toString() { result = "ForBinder" }
+
+    /**
+     * Gets the generic parameter list of this for binder, if it exists.
+     */
+    GenericParamList getGenericParamList() { for_binder_generic_param_lists(this, result) }
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -1204,10 +1204,17 @@ module Raw {
    * ```rust
    * fn foo<T: Debug>(t: T) {}
    * //        ^^^^^
+   * fn bar(value: impl for<'a> From<&'a str>) {}
+   * //                 ^^^^^^^^^^^^^^^^^^^^^
    * ```
    */
   class TypeBound extends @type_bound, AstNode {
     override string toString() { result = "TypeBound" }
+
+    /**
+     * Gets the for binder of this type bound, if it exists.
+     */
+    ForBinder getForBinder() { type_bound_for_binders(this, result) }
 
     /**
      * Holds if this type bound is async.
@@ -1409,15 +1416,17 @@ module Raw {
    * ```rust
    * fn foo<T, U>(t: T, u: U) where T: Debug, U: Clone {}
    * //                             ^^^^^^^^  ^^^^^^^^
+   * fn bar<T>(value: T) where for<'a> T: From<&'a str> {}
+   * //                        ^^^^^^^^^^^^^^^^^^^^^^^^
    * ```
    */
   class WherePred extends @where_pred, AstNode {
     override string toString() { result = "WherePred" }
 
     /**
-     * Gets the generic parameter list of this where pred, if it exists.
+     * Gets the for binder of this where pred, if it exists.
      */
-    GenericParamList getGenericParamList() { where_pred_generic_param_lists(this, result) }
+    ForBinder getForBinder() { where_pred_for_binders(this, result) }
 
     /**
      * Gets the lifetime of this where pred, if it exists.
@@ -1519,35 +1528,6 @@ module Raw {
      * Holds if this asm const is const.
      */
     predicate isConst() { asm_const_is_const(this) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * An inline assembly expression. For example:
-   * ```rust
-   * unsafe {
-   *     #[inline(always)]
-   *     builtin # asm("cmp {0}, {1}", in(reg) a, in(reg) b);
-   * }
-   * ```
-   */
-  class AsmExpr extends @asm_expr, Expr {
-    override string toString() { result = "AsmExpr" }
-
-    /**
-     * Gets the `index`th asm piece of this asm expression (0-based).
-     */
-    AsmPiece getAsmPiece(int index) { asm_expr_asm_pieces(this, index, result) }
-
-    /**
-     * Gets the `index`th attr of this asm expression (0-based).
-     */
-    Attr getAttr(int index) { asm_expr_attrs(this, index, result) }
-
-    /**
-     * Gets the `index`th template of this asm expression (0-based).
-     */
-    Expr getTemplate(int index) { asm_expr_templates(this, index, result) }
   }
 
   /**
@@ -1926,10 +1906,13 @@ module Raw {
    * |x| x + 1;
    * move |x: i32| -> i32 { x + 1 };
    * async |x: i32, y| x + y;
-   *  #[coroutine]
+   * #[coroutine]
    * |x| yield x;
-   *  #[coroutine]
-   *  static |x| yield x;
+   * #[coroutine]
+   * static |x| yield x;
+   * for<T: std::fmt::Debug> |x: T| {
+   *     println!("{:?}", x);
+   * };
    * ```
    */
   class ClosureExpr extends @closure_expr, Expr, Callable {
@@ -1941,9 +1924,9 @@ module Raw {
     Expr getBody() { closure_expr_bodies(this, result) }
 
     /**
-     * Gets the closure binder of this closure expression, if it exists.
+     * Gets the for binder of this closure expression, if it exists.
      */
-    ClosureBinder getClosureBinder() { closure_expr_closure_binders(this, result) }
+    ForBinder getForBinder() { closure_expr_for_binders(this, result) }
 
     /**
      * Holds if this closure expression is async.
@@ -2221,26 +2204,21 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A higher-ranked trait bound.
+   * A function pointer type with a `for` modifier.
    *
    * For example:
    * ```rust
-   * fn foo<T>(value: T)
-   * where
-   *     T: for<'a> Fn(&'a str) -> &'a str
-   * //     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   * {
-   *     // ...
-   * }
+   * type RefOp<X> = for<'a> fn(&'a X) -> &'a X;
+   * //              ^^^^^^^^^^^^^^^^^^^^^^^^^^
    * ```
    */
   class ForTypeRepr extends @for_type_repr, TypeRepr {
     override string toString() { result = "ForTypeRepr" }
 
     /**
-     * Gets the generic parameter list of this for type representation, if it exists.
+     * Gets the for binder of this for type representation, if it exists.
      */
-    GenericParamList getGenericParamList() { for_type_repr_generic_param_lists(this, result) }
+    ForBinder getForBinder() { for_type_repr_for_binders(this, result) }
 
     /**
      * Gets the type representation of this for type representation, if it exists.
@@ -2641,23 +2619,29 @@ module Raw {
    * INTERNAL: Do not use.
    * A sequence of statements generated by a `MacroCall`. For example:
    * ```rust
-   * fn main() {
-   *     println!("Hello, world!"); // This macro expands into a list of statements
+   * macro_rules! my_macro {
+   *     () => {
+   *         let mut x = 40;
+   *         x += 2;
+   *         x
+   *     };
    * }
+   *
+   * my_macro!();  // this macro expands to a sequence of statements (and an expression)
    * ```
    */
   class MacroBlockExpr extends @macro_block_expr, Expr {
     override string toString() { result = "MacroBlockExpr" }
 
     /**
-     * Gets the tail expression of this macro block expression, if it exists.
-     */
-    Expr getTailExpr() { macro_block_expr_tail_exprs(this, result) }
-
-    /**
      * Gets the `index`th statement of this macro block expression (0-based).
      */
     Stmt getStatement(int index) { macro_block_expr_statements(this, index, result) }
+
+    /**
+     * Gets the tail expression of this macro block expression, if it exists.
+     */
+    Expr getTailExpr() { macro_block_expr_tail_exprs(this, result) }
   }
 
   /**
@@ -3590,6 +3574,35 @@ module Raw {
     MacroItems getDeriveMacroExpansion(int index) {
       adt_derive_macro_expansions(this, index, result)
     }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An inline assembly expression. For example:
+   * ```rust
+   * unsafe {
+   *     #[inline(always)]
+   *     builtin # asm("cmp {0}, {1}", in(reg) a, in(reg) b);
+   * }
+   * ```
+   */
+  class AsmExpr extends @asm_expr, Expr, Item {
+    override string toString() { result = "AsmExpr" }
+
+    /**
+     * Gets the `index`th asm piece of this asm expression (0-based).
+     */
+    AsmPiece getAsmPiece(int index) { asm_expr_asm_pieces(this, index, result) }
+
+    /**
+     * Gets the `index`th attr of this asm expression (0-based).
+     */
+    Attr getAttr(int index) { asm_expr_attrs(this, index, result) }
+
+    /**
+     * Gets the `index`th template of this asm expression (0-based).
+     */
+    Expr getTemplate(int index) { asm_expr_templates(this, index, result) }
   }
 
   /**

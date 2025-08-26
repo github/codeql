@@ -301,7 +301,8 @@ private module Cached {
     cached // nothing is actually cached
     module BarrierGuard<guardChecksSig/3 guardChecks> {
       private predicate guardChecksAdjTypes(
-        DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e, boolean branch
+        DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e,
+        DataFlowIntegrationInput::GuardValue branch
       ) {
         guardChecks(g, e, branch)
       }
@@ -320,6 +321,7 @@ private import codeql.rust.dataflow.Ssa
 
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
   private import codeql.rust.dataflow.internal.DataFlowImpl as DataFlowImpl
+  private import codeql.util.Boolean
 
   class Expr extends CfgNodes::AstCfgNode {
     predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }
@@ -348,12 +350,16 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
     )
   }
 
+  class GuardValue = Boolean;
+
   class Guard extends CfgNodes::AstCfgNode {
     /**
      * Holds if the evaluation of this guard to `branch` corresponds to the edge
      * from `bb1` to `bb2`.
      */
-    predicate hasBranchEdge(SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch) {
+    predicate hasValueBranchEdge(
+      SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, GuardValue branch
+    ) {
       exists(Cfg::ConditionalSuccessor s |
         this = bb1.getANode() and
         bb2 = bb1.getASuccessor(s) and
@@ -366,13 +372,15 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
      * branch edge from `bb1` to `bb2`. That is, following the edge from
      * `bb1` to `bb2` implies that this guard evaluated to `branch`.
      */
-    predicate controlsBranchEdge(SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch) {
-      this.hasBranchEdge(bb1, bb2, branch)
+    predicate valueControlsBranchEdge(
+      SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, GuardValue branch
+    ) {
+      this.hasValueBranchEdge(bb1, bb2, branch)
     }
   }
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
-  predicate guardDirectlyControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
+  predicate guardDirectlyControlsBlock(Guard guard, SsaInput::BasicBlock bb, GuardValue branch) {
     exists(ConditionBasicBlock conditionBlock, ConditionalSuccessor s |
       guard = conditionBlock.getLastNode() and
       s.getValue() = branch and

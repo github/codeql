@@ -73,6 +73,25 @@ class EnvPathInjectionFromMaDSink extends EnvPathInjectionSink {
 }
 
 /**
+ * Get the relevant event for a sink in EnvPathInjectionCritical.ql where the source type is "artifact".
+ */
+Event getRelevantArtifactEventInPrivilegedContext(DataFlow::Node sink) {
+  inPrivilegedContext(sink.asExpr(), result) and
+  not exists(ControlCheck check |
+    check.protects(sink.asExpr(), result, ["untrusted-checkout", "artifact-poisoning"])
+  ) and
+  sink instanceof EnvPathInjectionFromFileReadSink
+}
+
+/**
+ * Get the relevant event for a sink in EnvPathInjectionCritical.ql where the source type is not "artifact".
+ */
+Event getRelevantNonArtifactEventInPrivilegedContext(DataFlow::Node sink) {
+  inPrivilegedContext(sink.asExpr(), result) and
+  not exists(ControlCheck check | check.protects(sink.asExpr(), result, "code-injection"))
+}
+
+/**
  * A taint-tracking configuration for unsafe user input
  * that is used to construct and evaluate an environment variable.
  */
@@ -107,6 +126,18 @@ private module EnvPathInjectionConfig implements DataFlow::ConfigSig {
       succ.asExpr() = run.getScript() and
       exists(run.getScript().getAFileReadCommand())
     )
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getLocation()
+    or
+    result = getRelevantArtifactEventInPrivilegedContext(sink).getLocation()
+    or
+    result = getRelevantNonArtifactEventInPrivilegedContext(sink).getLocation()
   }
 }
 

@@ -31,6 +31,16 @@ module FromSensitiveConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node sourceNode) {
+    exists(SensitiveExpr source | result = source.getLocation() | isSourceImpl(sourceNode, source))
+  }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(FileWrite w | result = w.getLocation() | isSinkImpl(sink, w, _))
+  }
 }
 
 module FromSensitiveFlow = TaintTracking::Global<FromSensitiveConfig>;

@@ -38,6 +38,12 @@ module ConnectionStringConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof StringFormatSanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    any(Call call | call.getAnArgument() = sink.asExpr()).getLocation() = result
+  }
 }
 
 /**

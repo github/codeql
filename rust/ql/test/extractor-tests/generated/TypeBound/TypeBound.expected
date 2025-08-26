@@ -1,6 +1,10 @@
 instances
 | gen_type_bound.rs:7:15:7:19 | TypeBound | isAsync: | no | isConst: | no |
+| gen_type_bound.rs:9:24:9:44 | TypeBound | isAsync: | no | isConst: | no |
+getForBinder
+| gen_type_bound.rs:9:24:9:44 | TypeBound | gen_type_bound.rs:9:24:9:30 | for<...> |
 getLifetime
 getTypeRepr
 | gen_type_bound.rs:7:15:7:19 | TypeBound | gen_type_bound.rs:7:15:7:19 | Debug |
+| gen_type_bound.rs:9:24:9:44 | TypeBound | gen_type_bound.rs:9:32:9:44 | From::<...> |
 getUseBoundGenericArgs
