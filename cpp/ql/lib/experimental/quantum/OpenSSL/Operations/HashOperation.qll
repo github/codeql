@@ -47,7 +47,7 @@ class EvpDigestUpdateCall extends OperationStep instanceof Call {
   override DataFlow::Node getInput(IOType type) {
     result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and type = PlaintextIO()
+    result.asIndirectExpr() = this.getArgument(1) and type = PlaintextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
@@ -70,7 +70,7 @@ class EvpQDigestOperation extends FinalDigestOperation instanceof Call {
     or
     result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(3) and type = PlaintextIO()
+    result.asIndirectExpr() = this.getArgument(3) and type = PlaintextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
@@ -87,7 +87,7 @@ class EvpDigestOperation extends FinalDigestOperation instanceof Call {
   override DataFlow::Node getInput(IOType type) {
     result.asIndirectExpr() = this.getArgument(4) and type = PrimaryAlgorithmIO()
     or
-    result.asExpr() = this.getArgument(0) and type = PlaintextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = PlaintextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {

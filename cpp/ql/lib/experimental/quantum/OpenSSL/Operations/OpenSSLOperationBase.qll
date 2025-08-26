@@ -198,7 +198,8 @@ abstract class OperationStep extends Call {
    * If `sink` is `this`, then this holds true.
    */
   predicate flowsToOperationStep(OperationStep sink) {
-    OperationStepFlow::flow(this.getAnOutput(), [sink.getAnInput(), sink.getAnOutput()])
+    sink = this or
+    OperationStepCtxFlow::flow(this.getAnOutput(), [sink.getAnInput(), sink.getAnOutput()])
   }
 
   /**
@@ -206,7 +207,8 @@ abstract class OperationStep extends Call {
    * If `source` is `this`, then this holds true.
    */
   predicate flowsFromOperationStep(OperationStep source) {
-    OperationStepFlow::flow(source.getAnOutput(), [this.getAnInput(), this.getAnOutput()])
+    source = this or
+    OperationStepCtxFlow::flow(source.getAnOutput(), [this.getAnInput(), this.getAnOutput()])
   }
 
   /**
@@ -224,22 +226,17 @@ abstract class OperationStep extends Call {
    * the operation allows for multiple inputs (like plaintext for cipher update calls before final).
    */
   OperationStep getDominatingInitializersToStep(IOType type) {
-    (result.flowsToOperationStep(this) or result = this) and
+    result.flowsToOperationStep(this) and
     result.setsValue(type) and
     (
       // Do not consider a 'reset' to occur on updates
       // but only for resets that are part of the same update/finalize
       // progression (e.g., an update for an unrelated finalize is ignored)
-      result.getStepType() = UpdateStep() and
-      not exists(OperationStep op |
-        result.flowsToOperationStep(op) and
-        op.flowsToOperationStep(this) and
-        op != this and
-        op.getStepType() = FinalStep()
-      )
+      result.getStepType() = UpdateStep()
       or
       not exists(OperationStep reset |
         result != reset and
+        result != this and
         reset.setsValue(type) and
         reset.flowsToOperationStep(this) and
         result.flowsToOperationStep(reset)
@@ -443,7 +440,7 @@ private class CtxParamGenCall extends CtxPassThroughCall {
 /**
  * A flow configuration from any non-final `OperationStep` to any other `OperationStep`.
  */
-module OperationStepFlowConfig implements DataFlow::ConfigSig {
+module OperationStepCtxFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     exists(OperationStep s |
       s.getAnOutput() = source or
@@ -469,7 +466,9 @@ module OperationStepFlowConfig implements DataFlow::ConfigSig {
     or
     // Flow only through context and key inputs and outputs
     // keys and context generally hold unifying context that link multiple steps
+    // Flow only out of finalize operations through key outputs, otherwise stop at final operations
     exists(OperationStep s, IOType inType, IOType outType |
+      (s.getStepType() = FinalStep() implies outType = KeyIO()) and
       (
         inType = ContextIO()
         or
@@ -489,7 +488,7 @@ module OperationStepFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module OperationStepFlow = DataFlow::Global<OperationStepFlowConfig>;
+module OperationStepCtxFlow = DataFlow::Global<OperationStepCtxFlowConfig>;
 
 /**
  * A flow from AVC to the first `OperationStep` the AVC reaches as an input.

@@ -374,7 +374,7 @@ cleanup:
  */
 int sign_using_rsa_sign(const unsigned char *message, size_t message_len,
                        unsigned char **signature, size_t *signature_len,
-                       RSA *rsa_key, int hash_nid, const EVP_MD *md) {
+                       RSA *rsa_key, int hash_nid) {
     int ret = 0;
     
     *signature_len = RSA_size(rsa_key);
@@ -398,7 +398,7 @@ int sign_using_rsa_sign(const unsigned char *message, size_t message_len,
  */
 int verify_using_rsa_verify(const unsigned char *message, size_t message_len,
                            const unsigned char *signature, size_t signature_len,
-                           RSA *rsa_key, int hash_nid, const EVP_MD *md) {
+                           RSA *rsa_key, int hash_nid) {
 
     return RSA_verify(hash_nid, message, message_len, signature,
                      (unsigned int)signature_len, rsa_key);
@@ -564,7 +564,6 @@ int testLowLevelRSASignAndVerify(){
     EVP_PKEY *key = NULL;
     RSA *rsa_key = NULL;
     const unsigned char message[] = "testLowLevelRSASignAndVerify message";
-    const EVP_MD *md = EVP_md5();
     const size_t message_len = strlen((char *)message);
     unsigned char *sig = NULL;
     size_t sig_len = 0;
@@ -593,9 +592,9 @@ int testLowLevelRSASignAndVerify(){
     }
 
     if (sign_using_rsa_sign(message, message_len, &sig, &sig_len, 
-                           rsa_key, NID_sha256, md) &&
+                           rsa_key, NID_sha256) &&
         verify_using_rsa_verify(message, message_len, sig, sig_len, 
-                               rsa_key, NID_sha256, md)) {
+                               rsa_key, NID_sha256)) {
         printf("PASS\n");
     } else {
         printf("FAIL\n");

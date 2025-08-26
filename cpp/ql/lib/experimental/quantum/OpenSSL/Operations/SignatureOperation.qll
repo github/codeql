@@ -176,7 +176,17 @@ class EvpSignFinal extends SignatureFinalOperation {
  * A call to EVP_PKEY_sign.
  */
 class EvpPkeySign extends SignatureFinalOperation {
-  EvpPkeySign() { this.getTarget().getName() = "EVP_PKEY_sign" }
+  EvpPkeySign() {
+    this.getTarget().getName() = "EVP_PKEY_sign" and
+    // Setting signature to NULL is not a final sign step but an
+    // intermediary step used to get the required buffer size.
+    // not tracking these calls.
+    (
+      exists(this.(Call).getArgument(1).getValue())
+      implies
+      this.(Call).getArgument(1).getValue().toInt() != 0
+    )
+  }
 
   override DataFlow::Node getInput(IOType type) {
     result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
@@ -215,7 +225,17 @@ class EvpDigestSign extends SignatureOrMacFinalOperation {
  * A call to EVP_PKEY_sign_message_final.
  */
 class EvpPkeySignFinal extends SignatureFinalOperation {
-  EvpPkeySignFinal() { this.getTarget().getName() = "EVP_PKEY_sign_message_final" }
+  EvpPkeySignFinal() {
+    this.getTarget().getName() = "EVP_PKEY_sign_message_final" and
+    // Setting signature to NULL is not a final sign step but an
+    // intermediary step used to get the required buffer size.
+    // not tracking these calls.
+    (
+      exists(this.(Call).getArgument(1).getValue())
+      implies
+      this.(Call).getArgument(1).getValue().toInt() != 0
+    )
+  }
 
   override DataFlow::Node getInput(IOType type) {
     result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
@@ -235,7 +255,17 @@ class EvpPkeySignFinal extends SignatureFinalOperation {
  * This is a mac or sign operation.
  */
 class EvpDigestSignFinal extends SignatureOrMacFinalOperation {
-  EvpDigestSignFinal() { this.getTarget().getName() = "EVP_DigestSignFinal" }
+  EvpDigestSignFinal() {
+    this.getTarget().getName() = "EVP_DigestSignFinal" and
+    // Setting signature to NULL is not a final sign step but an
+    // intermediary step used to get the required buffer size.
+    // not tracking these calls.
+    (
+      exists(this.(Call).getArgument(1).getValue())
+      implies
+      this.(Call).getArgument(1).getValue().toInt() != 0
+    )
+  }
 
   override DataFlow::Node getInput(IOType type) {
     result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
@@ -529,6 +559,80 @@ class DSADoSignOrVerify extends SignatureFinalOperation {
     result.asIndirectExpr() = this and
     type = SignatureIO()
   }
+}
+
+/**
+ * A Call to `EVP_VerifyInit` or `EVP_VerifyInit_ex`
+ * - int EVP_VerifyInit_ex(EVP_MD_CTX *ctx, const EVP_MD *type, ENGINE *impl);
+ * - int EVP_VerifyInit(EVP_MD_CTX *ctx, const EVP_MD *type);
+ */
+class EVP_VerifyInitCall extends OperationStep {
+  EVP_VerifyInitCall() { this.getTarget().getName() in ["EVP_VerifyInit", "EVP_VerifyInit_ex"] }
+
+  override DataFlow::Node getInput(IOType type) {
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
+    or
+    result.asIndirectExpr() = this.getArgument(1) and type = HashAlgorithmIO()
+  }
+
+  override DataFlow::Node getOutput(IOType type) {
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
+  }
+
+  override OperationStepType getStepType() { result = InitializerStep() }
+}
+
+/**
+ * A call to `EVP_VerifyUpdate`
+ * - int EVP_VerifyUpdate(EVP_MD_CTX *ctx, const void *d, unsigned int cnt);
+ */
+class EVP_VerifyUpdateCall extends OperationStep {
+  EVP_VerifyUpdateCall() { this.getTarget().getName() = "EVP_VerifyUpdate" }
+
+  override DataFlow::Node getInput(IOType type) {
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
+    or
+    result.asIndirectExpr() = this.getArgument(1) and type = PlaintextIO()
+    or
+    result.asIndirectExpr() = this.getArgument(2) and type = PlaintextSizeIO()
+  }
+
+  override DataFlow::Node getOutput(IOType type) {
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
+  }
+
+  override OperationStepType getStepType() { result = UpdateStep() }
+}
+
+/**
+ * A call to `EVP_VerifyFinal` or `EVP_VerifyFinal_ex`
+ * - int EVP_VerifyFinal_ex(EVP_MD_CTX *ctx, const unsigned char *sigbuf,
+ *                       unsigned int siglen, EVP_PKEY *pkey,
+ *                       OSSL_LIB_CTX *libctx, const char *propq);
+ *- int EVP_VerifyFinal(EVP_MD_CTX *ctx, unsigned char *sigbuf, unsigned int siglen,
+ *                    EVP_PKEY *pkey);                       *
+ */
+class EVP_VerifyFinalCall extends SignatureFinalOperation {
+  EVP_VerifyFinalCall() { this.getTarget().getName() in ["EVP_VerifyFinal", "EVP_VerifyFinal_ex"] }
+
+  override DataFlow::Node getInput(IOType type) {
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
+    or
+    result.asIndirectExpr() = this.getArgument(1) and type = SignatureIO()
+    or
+    result.asExpr() = this.getArgument(2) and type = SignatureSizeIO()
+    or
+    result.asIndirectExpr() = this.getArgument(3) and type = KeyIO()
+    or
+    result.asIndirectExpr() = this.getArgument(4) and type = OsslLibContextIO()
+    // TODO: arg 5 propq?
+  }
+
+  override DataFlow::Node getOutput(IOType type) {
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
+  }
+
+  override OperationStepType getStepType() { result = FinalStep() }
 }
 
 /**
