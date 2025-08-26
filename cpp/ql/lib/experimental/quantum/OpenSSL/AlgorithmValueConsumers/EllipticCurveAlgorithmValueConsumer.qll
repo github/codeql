@@ -14,12 +14,17 @@ class EvpEllipticCurveAlgorithmConsumer extends EllipticCurveValueConsumer {
   EvpEllipticCurveAlgorithmConsumer() {
     resultNode.asIndirectExpr() = this.(Call) and // in all cases the result is the return
     (
-      this.(Call).getTarget().getName() in ["EVP_EC_gen", "EC_KEY_new_by_curve_name"] and
+      this.(Call).getTarget().getName() = "EVP_EC_gen" and
+      valueArgNode.asIndirectExpr() = this.(Call).getArgument(0)
+      or
+      this.(Call).getTarget().getName() = "EC_KEY_new_by_curve_name" and
+      // algorithm is an NID (int), use asExpr()
       valueArgNode.asExpr() = this.(Call).getArgument(0)
       or
       this.(Call).getTarget().getName() in [
           "EC_KEY_new_by_curve_name_ex", "EVP_PKEY_CTX_set_ec_paramgen_curve_nid"
         ] and
+      // algorithm is an NID (int), use asExpr
       valueArgNode.asExpr() = this.(Call).getArgument(2)
     )
   }

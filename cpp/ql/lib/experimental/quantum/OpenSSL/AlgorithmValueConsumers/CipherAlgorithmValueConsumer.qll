@@ -14,13 +14,15 @@ class EvpCipherAlgorithmValueConsumer extends CipherAlgorithmValueConsumer {
   EvpCipherAlgorithmValueConsumer() {
     resultNode.asIndirectExpr() = this and
     (
-      this.(Call).getTarget().getName() in [
-          "EVP_get_cipherbyname", "EVP_get_cipherbyobj", "EVP_get_cipherbynid"
-        ] and
+      this.(Call).getTarget().getName() in ["EVP_get_cipherbyname", "EVP_get_cipherbyobj"] and
+      valueArgNode.asIndirectExpr() = this.(Call).getArgument(0)
+      or
+      this.(Call).getTarget().getName() = "EVP_get_cipherbynid" and
+      // algorithm is an NID (int), use asExpr()
       valueArgNode.asExpr() = this.(Call).getArgument(0)
       or
       this.(Call).getTarget().getName() in ["EVP_CIPHER_fetch", "EVP_ASYM_CIPHER_fetch"] and
-      valueArgNode.asExpr() = this.(Call).getArgument(1)
+      valueArgNode.asIndirectExpr() = this.(Call).getArgument(1)
     )
   }
 

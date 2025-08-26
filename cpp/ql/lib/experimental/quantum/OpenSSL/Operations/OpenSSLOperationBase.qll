@@ -224,10 +224,7 @@ abstract class OperationStep extends Call {
    * the operation allows for multiple inputs (like plaintext for cipher update calls before final).
    */
   OperationStep getDominatingInitializersToStep(IOType type) {
-    //exists(IOType sinkInType |
-    //sinkInType = ContextIO() or sinkInType = type |
-    result.flowsToOperationStep(this) and //, sinkInType)
-    //)
+    (result.flowsToOperationStep(this) or result = this) and
     result.setsValue(type) and
     (
       // Do not consider a 'reset' to occur on updates
@@ -432,7 +429,9 @@ private class CtxParamGenCall extends CtxPassThroughCall {
 
   CtxParamGenCall() {
     this.getTarget().getName() = "EVP_PKEY_paramgen" and
-    n1.asExpr() = this.getArgument(0) and
+    //Arg 0 is *ctx
+    n1.asIndirectExpr() = this.getArgument(0) and
+    //Arg 1 is **pkey
     n2.asDefiningArgument() = this.getArgument(1)
   }
 
@@ -464,6 +463,8 @@ module OperationStepFlowConfig implements DataFlow::ConfigSig {
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    node1.(AdditionalFlowInputStep).getOutput() = node2
+    or
     exists(CtxPassThroughCall c | c.getNode1() = node1 and c.getNode2() = node2)
     or
     // Flow only through context and key inputs and outputs

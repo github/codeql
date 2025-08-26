@@ -177,6 +177,10 @@ predicate knownOpenSslAlgorithmOperationCall(Call c, string normalized, string a
     ] and
   normalized = "RSA" and
   algType = "ASYMMETRIC_ENCRYPTION"
+  or
+  c.getTarget().getName() in ["DSA_do_sign", "DSA_do_verify"] and
+  normalized = "DSA" and
+  algType = "SIGNATURE"
 }
 
 /**

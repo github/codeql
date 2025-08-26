@@ -465,8 +465,8 @@ class EvpVerify extends SignatureFinalOperation {
  * A call to `RSA_sign` or `RSA_verify`.
  * https://docs.openssl.org/3.0/man3/RSA_sign/
  */
-class RsaSign extends SignatureFinalOperation {
-  RsaSign() { this.getTarget().getName() in ["RSA_sign", "RSA_verify"] }
+class RsaSignorVerify extends SignatureFinalOperation {
+  RsaSignorVerify() { this.getTarget().getName() in ["RSA_sign", "RSA_verify"] }
 
   override DataFlow::Node getInput(IOType type) {
     // Arg 0 is an NID (so asExpr not asIndirectExpr)
@@ -497,6 +497,37 @@ class RsaSign extends SignatureFinalOperation {
     this.getTarget().getName() = "RSA_sign" and
     type = SignatureSizeIO() and
     result.asDefiningArgument() = this.getArgument(4)
+  }
+}
+
+/**
+ * A call to `DSA_do_sign` or `DSA_do_verify`
+ */
+class DSADoSignOrVerify extends SignatureFinalOperation {
+  DSADoSignOrVerify() { this.getTarget().getName() in ["DSA_do_sign", "DSA_do_verify"] }
+
+  override DataFlow::Node getInput(IOType type) {
+    result.asIndirectExpr() = this.getArgument(0) and type = PlaintextIO()
+    or
+    result.asExpr() = this.getArgument(1) and type = PlaintextSizeIO()
+    or
+    this.getTarget().getName() = "DSA_do_sign" and
+    result.asIndirectExpr() = this.getArgument(2) and
+    type = KeyIO()
+    or
+    this.getTarget().getName() = "DSA_do_verify" and
+    result.asIndirectExpr() = this.getArgument(2) and
+    type = SignatureIO()
+    or
+    this.getTarget().getName() = "DSA_do_verify" and
+    result.asIndirectExpr() = this.getArgument(3) and
+    type = KeyIO()
+  }
+
+  override DataFlow::Node getOutput(IOType type) {
+    this.getTarget().getName() = "DSA_do_sign" and
+    result.asIndirectExpr() = this and
+    type = SignatureIO()
   }
 }
 

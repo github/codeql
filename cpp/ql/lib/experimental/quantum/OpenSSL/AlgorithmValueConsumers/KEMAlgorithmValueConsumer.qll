@@ -14,7 +14,7 @@ class EvpKemAlgorithmValueConsumer extends KemAlgorithmValueConsumer {
     resultNode.asIndirectExpr() = this and
     (
       this.(Call).getTarget().getName() = "EVP_KEM_fetch" and
-      valueArgNode.asExpr() = this.(Call).getArgument(1)
+      valueArgNode.asIndirectExpr() = this.(Call).getArgument(1)
     )
   }
 

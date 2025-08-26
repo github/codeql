@@ -31,10 +31,10 @@ class EvpNewKeyCtx extends OperationStep instanceof Call {
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = keyArg and type = KeyIO()
+    result.asIndirectExpr() = keyArg and type = KeyIO()
     or
     this.getTarget().getName() = "EVP_PKEY_CTX_new_from_pkey" and
-    result.asExpr() = this.getArgument(0) and
+    result.asIndirectExpr() = this.getArgument(0) and
     type = OsslLibContextIO()
   }
 
@@ -201,30 +201,5 @@ class EvpCtxSetSaltLengthInitializer extends OperationStep {
     result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
-  override OperationStepType getStepType() { result = InitializerStep() }
-}
-
-/**
- * A call to `EVP_PKEY_get1_RSA` or `EVP_PKEY_get1_DSA`
- *  - RSA *EVP_PKEY_get1_RSA(EVP_PKEY *pkey);
- *  - DSA *EVP_PKEY_get1_DSA(EVP_PKEY *pkey);
- */
-class EvpPkeyGet1RsaOrDsa extends OperationStep {
-  EvpPkeyGet1RsaOrDsa() { this.getTarget().getName() = ["EVP_PKEY_get1_RSA", "EVP_PKEY_get1_DSA"] }
-
-  override DataFlow::Node getOutput(IOType type) {
-    result.asIndirectExpr() = this and type = KeyIO()
-  }
-
-  override DataFlow::Node getInput(IOType type) {
-    // Key being loaded or created from another location
-    result.asIndirectExpr() = this.getArgument(0) and type = KeyIO()
-  }
-
-  /**
-   * Consider this to be an intialization step. A key is accepted and a different key is produced.
-   * It doesn't create a new context or new key. It isn't quite an initialiation for an operaiton
-   * either.
-   */
   override OperationStepType getStepType() { result = InitializerStep() }
 }
