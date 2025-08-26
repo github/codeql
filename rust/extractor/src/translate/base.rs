@@ -66,83 +66,52 @@ impl Emission<ast::Meta> for Translator<'_> {
 impl Emission<ast::Fn> for Translator<'_> {
     fn post_emit(&mut self, node: &ast::Fn, label: Label<generated::Function>) {
         self.emit_function_has_implementation(node, label);
-        self.extract_canonical_origin(node, label.into());
     }
 }
 
 impl Emission<ast::Struct> for Translator<'_> {
     fn post_emit(&mut self, node: &ast::Struct, label: Label<generated::Struct>) {
         self.emit_derive_expansion(node, label);
-        self.extract_canonical_origin(node, label.into());
     }
 }
 
 impl Emission<ast::Enum> for Translator<'_> {
     fn post_emit(&mut self, node: &ast::Enum, label: Label<generated::Enum>) {
         self.emit_derive_expansion(node, label);
-        self.extract_canonical_origin(node, label.into());
     }
 }
 
 impl Emission<ast::Union> for Translator<'_> {
     fn post_emit(&mut self, node: &ast::Union, label: Label<generated::Union>) {
         self.emit_derive_expansion(node, label);
-        self.extract_canonical_origin(node, label.into());
     }
 }
 
 impl Emission<ast::Trait> for Translator<'_> {
-    fn post_emit(&mut self, node: &ast::Trait, label: Label<generated::Trait>) {
-        self.extract_canonical_origin(node, label.into());
-    }
 }
 
 impl Emission<ast::Module> for Translator<'_> {
-    fn post_emit(&mut self, node: &ast::Module, label: Label<generated::Module>) {
-        self.extract_canonical_origin(node, label.into());
-    }
 }
 
 impl Emission<ast::Variant> for Translator<'_> {
-    fn post_emit(&mut self, node: &ast::Variant, label: Label<generated::Variant>) {
-        self.extract_canonical_origin_of_enum_variant(node, label);
-    }
 }
 
 impl Emission<ast::PathExpr> for Translator<'_> {
-    fn post_emit(&mut self, node: &ast::PathExpr, label: Label<generated::PathExpr>) {
-        self.extract_path_canonical_destination(node, label.into());
-    }
 }
 
 impl Emission<ast::RecordExpr> for Translator<'_> {
-    fn post_emit(&mut self, node: &ast::RecordExpr, label: Label<generated::StructExpr>) {
-        self.extract_path_canonical_destination(node, label.into());
-    }
 }
 
 impl Emission<ast::PathPat> for Translator<'_> {
-    fn post_emit(&mut self, node: &ast::PathPat, label: Label<generated::PathPat>) {
-        self.extract_path_canonical_destination(node, label.into());
-    }
 }
 
 impl Emission<ast::RecordPat> for Translator<'_> {
-    fn post_emit(&mut self, node: &ast::RecordPat, label: Label<generated::StructPat>) {
-        self.extract_path_canonical_destination(node, label.into());
-    }
 }
 
 impl Emission<ast::TupleStructPat> for Translator<'_> {
-    fn post_emit(&mut self, node: &ast::TupleStructPat, label: Label<generated::TupleStructPat>) {
-        self.extract_path_canonical_destination(node, label.into());
-    }
 }
 
 impl Emission<ast::MethodCallExpr> for Translator<'_> {
-    fn post_emit(&mut self, node: &ast::MethodCallExpr, label: Label<generated::MethodCallExpr>) {
-        self.extract_method_canonical_destination(node, label);
-    }
 }
 
 impl Emission<ast::PathSegment> for Translator<'_> {
@@ -676,38 +645,6 @@ impl<'a> Translator<'a> {
         // if we have a Hir entity, it means we have semantics
         let sema = self.semantics.as_ref().unwrap();
         self.origin_from_hir(item.parent_enum(sema.db))
-    }
-
-    pub(crate) fn extract_canonical_origin<T: AddressableAst + HasName>(
-        &mut self,
-        item: &T,
-        label: Label<generated::Addressable>,
-    ) {
-        // TODO: remove method.
-    }
-
-    pub(crate) fn extract_canonical_origin_of_enum_variant(
-        &mut self,
-        item: &ast::Variant,
-        label: Label<generated::Variant>,
-    ) {
-        // TODO: remove method.
-    }
-
-    pub(crate) fn extract_path_canonical_destination(
-        &mut self,
-        item: &impl PathAst,
-        label: Label<generated::Resolvable>,
-    ) {
-        // TODO: remove method.
-    }
-
-    pub(crate) fn extract_method_canonical_destination(
-        &mut self,
-        item: &ast::MethodCallExpr,
-        label: Label<generated::MethodCallExpr>,
-    ) {
-        // TODO: remove method.
     }
 
     pub(crate) fn should_be_excluded(&self, item: &impl ast::HasAttrs) -> bool {
