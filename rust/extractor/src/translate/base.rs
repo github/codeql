@@ -188,7 +188,6 @@ pub struct Translator<'a> {
     line_index: LineIndex,
     file_id: Option<EditionedFileId>,
     pub semantics: Option<&'a Semantics<'a, RootDatabase>>,
-    resolve_paths: bool,
     source_kind: SourceKind,
     pub(crate) macro_context_depth: usize,
     diagnostic_count: usize,
@@ -215,7 +214,6 @@ impl<'a> Translator<'a> {
             line_index,
             file_id: semantic_info.map(|i| i.file_id),
             semantics: semantic_info.map(|i| i.semantics),
-            resolve_paths: false,
             source_kind,
             macro_context_depth: 0,
             diagnostic_count: 0,
@@ -685,22 +683,7 @@ impl<'a> Translator<'a> {
         item: &T,
         label: Label<generated::Addressable>,
     ) {
-        if !self.resolve_paths {
-            return;
-        }
-        (|| {
-            let sema = self.semantics.as_ref()?;
-            let def = T::Hir::try_from_source(item, sema)?;
-            let path = self.canonical_path_from_hir(def)?;
-            let origin = self.origin_from_hir(def);
-            generated::Addressable::emit_crate_origin(label, origin, &mut self.trap.writer);
-            generated::Addressable::emit_extended_canonical_path(
-                label,
-                path,
-                &mut self.trap.writer,
-            );
-            Some(())
-        })();
+        // TODO: remove method.
     }
 
     pub(crate) fn extract_canonical_origin_of_enum_variant(
@@ -708,22 +691,7 @@ impl<'a> Translator<'a> {
         item: &ast::Variant,
         label: Label<generated::Variant>,
     ) {
-        if !self.resolve_paths {
-            return;
-        }
-        (|| {
-            let sema = self.semantics.as_ref()?;
-            let def = sema.to_enum_variant_def(item)?;
-            let path = self.canonical_path_from_enum_variant(def)?;
-            let origin = self.origin_from_enum_variant(def);
-            generated::Addressable::emit_crate_origin(label.into(), origin, &mut self.trap.writer);
-            generated::Addressable::emit_extended_canonical_path(
-                label.into(),
-                path,
-                &mut self.trap.writer,
-            );
-            Some(())
-        })();
+        // TODO: remove method.
     }
 
     pub(crate) fn extract_path_canonical_destination(
@@ -731,22 +699,7 @@ impl<'a> Translator<'a> {
         item: &impl PathAst,
         label: Label<generated::Resolvable>,
     ) {
-        if !self.resolve_paths {
-            return;
-        }
-        (|| {
-            let path = item.path()?;
-            let sema = self.semantics.as_ref()?;
-            let resolution = sema.resolve_path(&path)?;
-            let PathResolution::Def(def) = resolution else {
-                return None;
-            };
-            let origin = self.origin_from_module_def(def)?;
-            let path = self.canonical_path_from_module_def(def)?;
-            generated::Resolvable::emit_resolved_crate_origin(label, origin, &mut self.trap.writer);
-            generated::Resolvable::emit_resolved_path(label, path, &mut self.trap.writer);
-            Some(())
-        })();
+        // TODO: remove method.
     }
 
     pub(crate) fn extract_method_canonical_destination(
@@ -754,25 +707,7 @@ impl<'a> Translator<'a> {
         item: &ast::MethodCallExpr,
         label: Label<generated::MethodCallExpr>,
     ) {
-        if !self.resolve_paths {
-            return;
-        }
-        (|| {
-            let sema = self.semantics.as_ref()?;
-            let resolved = sema.resolve_method_call_fallback(item)?;
-            let (Either::Left(function), _) = resolved else {
-                return None;
-            };
-            let origin = self.origin_from_hir(function);
-            let path = self.canonical_path_from_hir(function)?;
-            generated::Resolvable::emit_resolved_crate_origin(
-                label.into(),
-                origin,
-                &mut self.trap.writer,
-            );
-            generated::Resolvable::emit_resolved_path(label.into(), path, &mut self.trap.writer);
-            Some(())
-        })();
+        // TODO: remove method.
     }
 
     pub(crate) fn should_be_excluded(&self, item: &impl ast::HasAttrs) -> bool {
