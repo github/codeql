@@ -1,6 +1,4 @@
 use crate::trap::{Label, TrapClass};
-use ra_ap_hir::{Enum, Function, HasContainer, Module, Semantics, Struct, Trait, Union};
-use ra_ap_ide_db::RootDatabase;
 use ra_ap_syntax::{AstNode, ast, ast::RangeItem};
 
 pub(crate) trait HasTrapClass: AstNode {

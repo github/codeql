@@ -1,22 +1,17 @@
-use super::mappings::{AddressableAst, AddressableHir, Emission, PathAst};
+use super::mappings::Emission;
 use crate::generated::{self};
 use crate::rust_analyzer::FileSemanticInformation;
 use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
 use crate::trap::{Label, TrapClass};
-use itertools::Either;
-use ra_ap_base_db::{CrateOrigin, EditionedFileId};
+use ra_ap_base_db::EditionedFileId;
 use ra_ap_hir::db::ExpandDatabase;
-use ra_ap_hir::{
-    Adt, Crate, ItemContainer, Module, ModuleDef, PathResolution, Semantics, Type, Variant,
-};
-use ra_ap_hir_def::ModuleId;
-use ra_ap_hir_def::type_ref::Mutability;
+use ra_ap_hir::Semantics;
 use ra_ap_hir_expand::{ExpandResult, ExpandTo, InFile};
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_parser::SyntaxKind;
 use ra_ap_span::TextSize;
-use ra_ap_syntax::ast::{HasAttrs, HasName};
+use ra_ap_syntax::ast::HasAttrs;
 use ra_ap_syntax::{
     AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken, TextRange,
     ast,
