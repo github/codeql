@@ -405,7 +405,7 @@ private module CertainTypeInference {
     inferCertainType(n, path) != t
     or
     // If we infer that `n` has _some_ type at `T1.T2....Tn`, and we also
-    // know that `n` certainly has type `certainType` at `T1.T2...Ti`, `i <=0 < n`,
+    // know that `n` certainly has type `certainType` at `T1.T2...Ti`, `0 <= i < n`,
     // then it must be the case that `T(i+1)` is a type parameter of `certainType`,
     // otherwise there is a conflict.
     //
