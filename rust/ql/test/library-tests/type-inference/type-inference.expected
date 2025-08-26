@@ -2720,7 +2720,6 @@ inferType
 | main.rs:1407:13:1407:19 | &... | &T.&T.&T | file://:0:0:0:0 | & |
 | main.rs:1407:13:1407:19 | &... | &T.&T.&T.&T | main.rs:1403:5:1403:13 | S |
 | main.rs:1407:14:1407:19 | &... |  | file://:0:0:0:0 | & |
-| main.rs:1407:14:1407:19 | &... |  | main.rs:1403:5:1403:13 | S |
 | main.rs:1407:14:1407:19 | &... | &T | file://:0:0:0:0 | & |
 | main.rs:1407:14:1407:19 | &... | &T.&T | file://:0:0:0:0 | & |
 | main.rs:1407:14:1407:19 | &... | &T.&T.&T | main.rs:1403:5:1403:13 | S |
@@ -2740,7 +2739,6 @@ inferType
 | main.rs:1411:13:1411:19 | &... | &T.&T.&T | file://:0:0:0:0 | & |
 | main.rs:1411:13:1411:19 | &... | &T.&T.&T.&T | main.rs:1403:5:1403:13 | S |
 | main.rs:1411:14:1411:19 | &... |  | file://:0:0:0:0 | & |
-| main.rs:1411:14:1411:19 | &... |  | main.rs:1403:5:1403:13 | S |
 | main.rs:1411:14:1411:19 | &... | &T | file://:0:0:0:0 | & |
 | main.rs:1411:14:1411:19 | &... | &T.&T | file://:0:0:0:0 | & |
 | main.rs:1411:14:1411:19 | &... | &T.&T.&T | main.rs:1403:5:1403:13 | S |
@@ -2766,7 +2764,6 @@ inferType
 | main.rs:1419:13:1419:16 | &... | &T.&T.&T | file://:0:0:0:0 | & |
 | main.rs:1419:13:1419:16 | &... | &T.&T.&T.&T | main.rs:1403:5:1403:13 | S |
 | main.rs:1419:14:1419:16 | &... |  | file://:0:0:0:0 | & |
-| main.rs:1419:14:1419:16 | &... |  | main.rs:1403:5:1403:13 | S |
 | main.rs:1419:14:1419:16 | &... | &T | file://:0:0:0:0 | & |
 | main.rs:1419:14:1419:16 | &... | &T.&T | file://:0:0:0:0 | & |
 | main.rs:1419:14:1419:16 | &... | &T.&T.&T | main.rs:1403:5:1403:13 | S |
@@ -2797,7 +2794,6 @@ inferType
 | main.rs:1429:19:1429:24 | &... | &T | {EXTERNAL LOCATION} | bool |
 | main.rs:1429:19:1429:24 | &... | &T | file://:0:0:0:0 | & |
 | main.rs:1429:19:1429:24 | &... | &T.&T | {EXTERNAL LOCATION} | bool |
-| main.rs:1429:20:1429:24 | &true |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1429:20:1429:24 | &true |  | file://:0:0:0:0 | & |
 | main.rs:1429:20:1429:24 | &true | &T | {EXTERNAL LOCATION} | bool |
 | main.rs:1429:21:1429:24 | true |  | {EXTERNAL LOCATION} | bool |
@@ -3729,7 +3725,6 @@ inferType
 | main.rs:1916:9:1916:10 | S1 |  | main.rs:1909:5:1909:14 | S1 |
 | main.rs:1919:41:1921:5 | { ... } |  | main.rs:1919:16:1919:39 | ImplTraitTypeRepr |
 | main.rs:1920:9:1920:20 | { ... } |  | {EXTERNAL LOCATION} | trait Future |
-| main.rs:1920:9:1920:20 | { ... } |  | main.rs:1919:16:1919:39 | ImplTraitTypeRepr |
 | main.rs:1920:9:1920:20 | { ... } | Output | main.rs:1909:5:1909:14 | S1 |
 | main.rs:1920:17:1920:18 | S1 |  | main.rs:1909:5:1909:14 | S1 |
 | main.rs:1929:13:1929:42 | SelfParam |  | {EXTERNAL LOCATION} | Pin |
@@ -4563,7 +4558,6 @@ inferType
 | main.rs:2375:22:2375:34 | map1.values() | V.A | {EXTERNAL LOCATION} | Global |
 | main.rs:2375:22:2375:34 | map1.values() | V.T | file://:0:0:0:0 | & |
 | main.rs:2375:22:2375:34 | map1.values() | V.T.&T | {EXTERNAL LOCATION} | str |
-| main.rs:2376:13:2376:24 | TuplePat |  | {EXTERNAL LOCATION} | Item |
 | main.rs:2376:13:2376:24 | TuplePat |  | file://:0:0:0:0 | (T_2) |
 | main.rs:2376:13:2376:24 | TuplePat | 0(2) | file://:0:0:0:0 | & |
 | main.rs:2376:13:2376:24 | TuplePat | 0(2).&T | {EXTERNAL LOCATION} | i32 |
@@ -4592,7 +4586,6 @@ inferType
 | main.rs:2376:29:2376:39 | map1.iter() | V.A | {EXTERNAL LOCATION} | Global |
 | main.rs:2376:29:2376:39 | map1.iter() | V.T | file://:0:0:0:0 | & |
 | main.rs:2376:29:2376:39 | map1.iter() | V.T.&T | {EXTERNAL LOCATION} | str |
-| main.rs:2377:13:2377:24 | TuplePat |  | {EXTERNAL LOCATION} | Item |
 | main.rs:2377:13:2377:24 | TuplePat |  | file://:0:0:0:0 | (T_2) |
 | main.rs:2377:13:2377:24 | TuplePat | 0(2) | file://:0:0:0:0 | & |
 | main.rs:2377:13:2377:24 | TuplePat | 0(2).&T | {EXTERNAL LOCATION} | i32 |
@@ -5454,7 +5447,6 @@ inferType
 | pattern_matching.rs:264:22:264:33 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | pattern_matching.rs:269:13:269:23 | ref_mut_val |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:269:27:269:30 | 5i32 |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:270:11:270:26 | &mut ref_mut_val |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:270:11:270:26 | &mut ref_mut_val |  | file://:0:0:0:0 | & |
 | pattern_matching.rs:270:11:270:26 | &mut ref_mut_val | &T | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:270:16:270:26 | ref_mut_val |  | {EXTERNAL LOCATION} | i32 |
@@ -5939,9 +5931,7 @@ inferType
 | pattern_matching.rs:510:25:510:40 | &... | &T.[T;...] | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:510:25:510:40 | &... | &T.[T] | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:510:26:510:40 | [...] |  | file://:0:0:0:0 | [] |
-| pattern_matching.rs:510:26:510:40 | [...] |  | file://:0:0:0:0 | [] |
 | pattern_matching.rs:510:26:510:40 | [...] | [T;...] | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:510:26:510:40 | [...] | [T] | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:510:27:510:27 | 1 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:510:30:510:30 | 2 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:510:33:510:33 | 3 |  | {EXTERNAL LOCATION} | i32 |
