@@ -5,7 +5,8 @@
  * @problem.severity warning
  * @precision medium
  * @id cs/wrong-compareto-signature
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       maintainability
  */
 

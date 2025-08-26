@@ -5,7 +5,8 @@
  * @problem.severity recommendation
  * @precision medium
  * @id cs/commented-out-code
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       statistical
  *       non-attributable
  */

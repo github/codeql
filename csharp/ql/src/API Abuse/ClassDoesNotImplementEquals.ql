@@ -7,7 +7,8 @@
  * @problem.severity error
  * @precision medium
  * @id cs/class-missing-equals
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       maintainability
  */
 

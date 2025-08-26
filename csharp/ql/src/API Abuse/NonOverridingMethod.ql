@@ -5,7 +5,8 @@
  * @problem.severity recommendation
  * @precision medium
  * @id cs/nonoverriding-method
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       readability
  *       naming
  */

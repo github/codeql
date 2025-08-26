@@ -5,7 +5,8 @@
  * @problem.severity warning
  * @precision medium
  * @id cs/inconsistent-compareto-and-equals
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       maintainability
  */
 

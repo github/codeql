@@ -5,7 +5,8 @@
  * @kind problem
  * @problem.severity warning
  * @precision medium
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       date-time
  */
 

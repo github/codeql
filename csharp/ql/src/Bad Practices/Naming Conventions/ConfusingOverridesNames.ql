@@ -6,7 +6,8 @@
  * @problem.severity recommendation
  * @precision medium
  * @id cs/confusing-override-name
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       readability
  *       naming
  */

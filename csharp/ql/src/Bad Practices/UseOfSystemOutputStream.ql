@@ -5,7 +5,8 @@
  * @problem.severity recommendation
  * @precision medium
  * @id cs/console-output
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  */
 
 import csharp

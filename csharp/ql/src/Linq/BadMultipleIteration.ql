@@ -5,7 +5,8 @@
  * @problem.severity warning
  * @precision medium
  * @id cs/linq/inconsistent-enumeration
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       maintainability
  *       language-features
  *       external/cwe/cwe-834

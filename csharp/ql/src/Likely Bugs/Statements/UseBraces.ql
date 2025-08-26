@@ -6,7 +6,8 @@
  * @problem.severity warning
  * @precision medium
  * @id cs/misleading-indentation
- * @tags changeability
+ * @tags quality
+ *       changeability
  *       correctness
  *       logic
  */

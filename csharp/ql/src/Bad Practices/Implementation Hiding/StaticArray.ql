@@ -5,7 +5,8 @@
  * @problem.severity recommendation
  * @precision medium
  * @id cs/static-array
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       maintainability
  *       modularity
  *       external/cwe/cwe-582
