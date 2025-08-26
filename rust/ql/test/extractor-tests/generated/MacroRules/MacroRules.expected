@@ -1,7 +1,5 @@
 instances
 | gen_macro_rules.rs:4:5:9:5 | MacroRules |
-getExtendedCanonicalPath
-getCrateOrigin
 getAttributeMacroExpansion
 getAttr
 getName
