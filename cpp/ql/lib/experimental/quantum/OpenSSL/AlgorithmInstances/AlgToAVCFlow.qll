@@ -14,9 +14,13 @@ private import PaddingAlgorithmInstance
  */
 module KnownOpenSslAlgorithmToAlgorithmValueConsumerConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof KnownOpenSslAlgorithmExpr and
+    (
+      source.asExpr() instanceof KnownOpenSslAlgorithmExpr or
+      source.asIndirectExpr() instanceof KnownOpenSslAlgorithmExpr
+    ) and
     // No need to flow direct operations to AVCs
-    not source.asExpr() instanceof OpenSslDirectAlgorithmOperationCall
+    not source.asExpr() instanceof OpenSslDirectAlgorithmOperationCall and
+    not source.asIndirectExpr() instanceof OpenSslDirectAlgorithmOperationCall
   }
 
   predicate isSink(DataFlow::Node sink) {

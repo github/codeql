@@ -31,14 +31,16 @@ class EvpNewKeyCtx extends OperationStep instanceof Call {
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = keyArg and type = KeyIO()
+    result.asIndirectExpr() = keyArg and type = KeyIO()
     or
     this.getTarget().getName() = "EVP_PKEY_CTX_new_from_pkey" and
-    result.asExpr() = this.getArgument(0) and
+    result.asIndirectExpr() = this.getArgument(0) and
     type = OsslLibContextIO()
   }
 
-  override DataFlow::Node getOutput(IOType type) { result.asExpr() = this and type = ContextIO() }
+  override DataFlow::Node getOutput(IOType type) {
+    result.asIndirectExpr() = this and type = ContextIO()
+  }
 
   override OperationStepType getStepType() { result = ContextCreationStep() }
 }
@@ -52,13 +54,13 @@ class EvpCtxSetEcParamgenCurveNidInitializer extends OperationStep {
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and type = PrimaryAlgorithmIO()
+    result.asIndirectExpr() = this.getArgument(1) and type = PrimaryAlgorithmIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = InitializerStep() }
@@ -102,20 +104,20 @@ class EvpCtxSetHashInitializer extends OperationStep {
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and
+    result.asIndirectExpr() = this.getArgument(1) and
     type = HashAlgorithmIO() and
     isOaep = false and
     isMgf1 = false
     or
-    result.asExpr() = this.getArgument(1) and type = HashAlgorithmOaepIO() and isOaep = true
+    result.asIndirectExpr() = this.getArgument(1) and type = HashAlgorithmOaepIO() and isOaep = true
     or
-    result.asExpr() = this.getArgument(1) and type = HashAlgorithmMgf1IO() and isMgf1 = true
+    result.asIndirectExpr() = this.getArgument(1) and type = HashAlgorithmMgf1IO() and isMgf1 = true
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = InitializerStep() }
@@ -134,13 +136,13 @@ class EvpCtxSetKeySizeInitializer extends OperationStep {
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
     result.asExpr() = this.getArgument(1) and type = KeySizeIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = InitializerStep() }
@@ -150,16 +152,16 @@ class EvpCtxSetMacKeyInitializer extends OperationStep {
   EvpCtxSetMacKeyInitializer() { this.getTarget().getName() = "EVP_PKEY_CTX_set_mac_key" }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
     result.asExpr() = this.getArgument(2) and type = KeySizeIO()
     or
     // the raw key that is configured into the output key
-    result.asExpr() = this.getArgument(1) and type = KeyIO()
+    result.asIndirectExpr() = this.getArgument(1) and type = KeyIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = InitializerStep() }
@@ -171,13 +173,14 @@ class EvpCtxSetPaddingInitializer extends OperationStep {
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
+    // The algorithm is an int: use asExpr
     result.asExpr() = this.getArgument(1) and type = PaddingAlgorithmIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = InitializerStep() }
@@ -189,37 +192,14 @@ class EvpCtxSetSaltLengthInitializer extends OperationStep {
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
     result.asExpr() = this.getArgument(1) and type = SaltLengthIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
-  override OperationStepType getStepType() { result = InitializerStep() }
-}
-
-/**
- * A call to `EVP_PKEY_get1_RSA` or `EVP_PKEY_get1_DSA`
- *  - RSA *EVP_PKEY_get1_RSA(EVP_PKEY *pkey);
- *  - DSA *EVP_PKEY_get1_DSA(EVP_PKEY *pkey);
- */
-class EvpPkeyGet1RsaOrDsa extends OperationStep {
-  EvpPkeyGet1RsaOrDsa() { this.getTarget().getName() = ["EVP_PKEY_get1_RSA", "EVP_PKEY_get1_DSA"] }
-
-  override DataFlow::Node getOutput(IOType type) { result.asExpr() = this and type = KeyIO() }
-
-  override DataFlow::Node getInput(IOType type) {
-    // Key being loaded or created from another location
-    result.asExpr() = this.getArgument(0) and type = KeyIO()
-  }
-
-  /**
-   * Consider this to be an intialization step. A key is accepted and a different key is produced.
-   * It doesn't create a new context or new key. It isn't quite an initialiation for an operaiton
-   * either.
-   */
   override OperationStepType getStepType() { result = InitializerStep() }
 }

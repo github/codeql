@@ -13,7 +13,7 @@ class Evp_Q_Digest_Algorithm_Consumer extends HashAlgorithmValueConsumer {
   Evp_Q_Digest_Algorithm_Consumer() { this.(Call).getTarget().getName() = "EVP_Q_digest" }
 
   override Crypto::ConsumerInputDataFlowNode getInputNode() {
-    result.asExpr() = this.(Call).getArgument(1)
+    result.asIndirectExpr() = this.(Call).getArgument(1)
   }
 
   override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
@@ -42,7 +42,7 @@ class EvpPkeySetCtxALgorithmConsumer extends HashAlgorithmValueConsumer {
         "EVP_PKEY_CTX_set_rsa_mgf1_md_name", "EVP_PKEY_CTX_set_rsa_oaep_md_name",
         "EVP_PKEY_CTX_set_dsa_paramgen_md_props"
       ] and
-    valueArgNode.asExpr() = this.(Call).getArgument(1)
+    valueArgNode.asIndirectExpr() = this.(Call).getArgument(1)
   }
 
   override DataFlow::Node getResultNode() { none() }
@@ -64,18 +64,18 @@ class EvpDigestAlgorithmValueConsumer extends HashAlgorithmValueConsumer {
   DataFlow::Node resultNode;
 
   EvpDigestAlgorithmValueConsumer() {
-    resultNode.asExpr() = this and
+    resultNode.asIndirectExpr() = this and
     (
       this.(Call).getTarget().getName() in [
           "EVP_get_digestbyname", "EVP_get_digestbynid", "EVP_get_digestbyobj"
         ] and
-      valueArgNode.asExpr() = this.(Call).getArgument(0)
+      valueArgNode.asIndirectExpr() = this.(Call).getArgument(0)
       or
       this.(Call).getTarget().getName() = "EVP_MD_fetch" and
-      valueArgNode.asExpr() = this.(Call).getArgument(1)
+      valueArgNode.asIndirectExpr() = this.(Call).getArgument(1)
       or
       this.(Call).getTarget().getName() = "EVP_DigestSignInit_ex" and
-      valueArgNode.asExpr() = this.(Call).getArgument(2)
+      valueArgNode.asIndirectExpr() = this.(Call).getArgument(2)
     )
   }
 
@@ -93,6 +93,7 @@ class RsaSignOrVerifyHashAlgorithmValueConsumer extends HashAlgorithmValueConsum
 
   RsaSignOrVerifyHashAlgorithmValueConsumer() {
     this.(Call).getTarget().getName() in ["RSA_sign", "RSA_verify"] and
+    // arg 0 is an int, use asExpr
     valueArgNode.asExpr() = this.(Call).getArgument(0)
   }
 

@@ -13,10 +13,12 @@ class ECKeyGen extends OperationStep instanceof Call {
   ECKeyGen() { this.(Call).getTarget().getName() = "EC_KEY_generate_key" }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.(Call).getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.(Call).getArgument(0) and type = ContextIO()
   }
 
-  override DataFlow::Node getOutput(IOType type) { result.asExpr() = this and type = KeyIO() }
+  override DataFlow::Node getOutput(IOType type) {
+    result.asDefiningArgument() = this and type = KeyIO()
+  }
 
   override OperationStepType getStepType() { result = ContextCreationStep() }
 }
@@ -33,11 +35,11 @@ class EvpKeyGenInitialize extends OperationStep {
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = InitializerStep() }
@@ -57,26 +59,26 @@ class EvpPKeyQKeyGen extends KeyGenFinalOperationStep instanceof Call {
   EvpPKeyQKeyGen() { this.getTarget().getName() = "EVP_PKEY_Q_keygen" }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this and type = KeyIO()
+    result.asDefiningArgument() = this and type = KeyIO()
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
     // When arg 3 is a derived type, it is a curve name, otherwise it is a key size for RSA if provided
     // and arg 2 is the algorithm type
     this.getArgument(3).getType().getUnderlyingType() instanceof DerivedType and
-    result.asExpr() = this.getArgument(3) and
+    result.asIndirectExpr() = this.getArgument(3) and
     type = PrimaryAlgorithmIO()
     or
     not this.getArgument(3).getType().getUnderlyingType() instanceof DerivedType and
-    result.asExpr() = this.getArgument(2) and
+    result.asIndirectExpr() = this.getArgument(2) and
     type = PrimaryAlgorithmIO()
     or
     not this.getArgument(3).getType().getUnderlyingType() instanceof DerivedType and
-    result.asExpr() = this.getArgument(3) and
+    result.asIndirectExpr() = this.getArgument(3) and
     type = KeySizeIO()
   }
 }
@@ -87,7 +89,9 @@ class EvpPKeyQKeyGen extends KeyGenFinalOperationStep instanceof Call {
 class EvpRsaGen extends KeyGenFinalOperationStep instanceof Call {
   EvpRsaGen() { this.getTarget().getName() = "EVP_RSA_gen" }
 
-  override DataFlow::Node getOutput(IOType type) { result.asExpr() = this and type = KeyIO() }
+  override DataFlow::Node getOutput(IOType type) {
+    result.asDefiningArgument() = this and type = KeyIO()
+  }
 
   override DataFlow::Node getInput(IOType type) {
     result.asExpr() = this.getArgument(0) and type = KeySizeIO()
@@ -100,7 +104,9 @@ class EvpRsaGen extends KeyGenFinalOperationStep instanceof Call {
 class RsaGenerateKey extends KeyGenFinalOperationStep instanceof Call {
   RsaGenerateKey() { this.getTarget().getName() = "RSA_generate_key" }
 
-  override DataFlow::Node getOutput(IOType type) { result.asExpr() = this and type = KeyIO() }
+  override DataFlow::Node getOutput(IOType type) {
+    result.asDefiningArgument() = this and type = KeyIO()
+  }
 
   override DataFlow::Node getInput(IOType type) {
     result.asExpr() = this.getArgument(0) and type = KeySizeIO()
@@ -120,7 +126,7 @@ class RsaGenerateKeyEx extends KeyGenFinalOperationStep instanceof Call {
   override DataFlow::Node getInput(IOType type) {
     // arg 0 comes in as a blank RSA key, which we consider a context,
     // on output it is considered a key
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
   }
 }
 
@@ -131,13 +137,13 @@ class EvpPkeyGen extends KeyGenFinalOperationStep instanceof Call {
   EvpPkeyGen() { this.getTarget().getName() in ["EVP_PKEY_generate", "EVP_PKEY_keygen"] }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
     result.asDefiningArgument() = this.getArgument(1) and type = KeyIO()
     or
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 }
 
@@ -150,14 +156,15 @@ class EvpNewMacKey extends KeyGenFinalOperationStep {
 
   override DataFlow::Node getInput(IOType type) {
     // the raw key that is configured into the output key
-    result.asExpr() = this.getArgument(2) and type = KeyIO()
+    result.asIndirectExpr() = this.getArgument(2) and type = KeyIO()
     or
     result.asExpr() = this.getArgument(3) and type = KeySizeIO()
   }
 
-  override DataFlow::Node getOutput(IOType type) { result.asExpr() = this and type = KeyIO() }
+  override DataFlow::Node getOutput(IOType type) {
+    result.asIndirectExpr() = this and type = KeyIO()
+  }
 }
-
 
 /// TODO: https://docs.openssl.org/3.0/man3/EVP_PKEY_new/#synopsis
 /**
