@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision medium
  * @id java/jvm-exit
+ * @previous-id java/jvm-exit-prevents-cleanup-and-reuse
  * @tags quality
  *       reliability
  *       correctness
