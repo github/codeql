@@ -283,11 +283,7 @@ fn main() -> anyhow::Result<()> {
     }
     let cwd = cwd()?;
     let (cargo_config, load_cargo_config) = cfg.to_cargo_config(&cwd);
-    let resolve_paths = if cfg.skip_path_resolution {
-        ResolvePaths::No
-    } else {
-        ResolvePaths::Yes
-    };
+    let resolve_paths = ResolvePaths::No;
     let (library_mode, library_resolve_paths) = if cfg.extract_dependencies_as_source {
         (SourceKind::Source, resolve_paths)
     } else {
