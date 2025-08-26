@@ -374,6 +374,9 @@ private module CertainTypeInference {
     or
     result = inferLiteralType(n, path, true)
     or
+    result = inferAsyncBlockExprRootType(n) and
+    path.isEmpty()
+    or
     infersCertainTypeAt(n, path, result.getATypeParameter())
   }
 
@@ -521,7 +524,7 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
     n2 = be.getStmtList().getTailExpr() and
     if be.isAsync()
     then
-      prefix1 = TypePath::singleton(getFutureOutputTypeParameter()) and
+      prefix1 = TypePath::singleton(getDynFutureOutputTypeParameter()) and
       prefix2.isEmpty()
     else (
       prefix1.isEmpty() and
@@ -941,7 +944,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
         or
         exists(TypePath suffix |
           result = this.resolveRetType(suffix) and
-          path = TypePath::cons(getFutureOutputTypeParameter(), suffix)
+          path = TypePath::cons(getDynFutureOutputTypeParameter(), suffix)
         )
       else result = this.resolveRetType(path)
     }
@@ -1427,8 +1430,9 @@ private Type inferLiteralType(LiteralExpr le, TypePath path, boolean certain) {
   certain = true
 }
 
+// always exists because of the mention in `builtins/mentions.rs`
 pragma[nomagic]
-private TraitType getFutureTraitType() { result.getTrait() instanceof FutureTrait }
+private DynTraitType getFutureTraitType() { result.getTrait() instanceof FutureTrait }
 
 pragma[nomagic]
 private AssociatedTypeTypeParameter getFutureOutputTypeParameter() {
@@ -1436,7 +1440,12 @@ private AssociatedTypeTypeParameter getFutureOutputTypeParameter() {
 }
 
 pragma[nomagic]
-private TraitType inferAsyncBlockExprRootType(AsyncBlockExpr abe) {
+private DynTraitTypeParameter getDynFutureOutputTypeParameter() {
+  result = TDynTraitTypeParameter(any(FutureTrait ft).getOutputType())
+}
+
+pragma[nomagic]
+private DynTraitType inferAsyncBlockExprRootType(AsyncBlockExpr abe) {
   // `typeEquality` handles the non-root case
   exists(abe) and
   result = getFutureTraitType()
@@ -1449,6 +1458,7 @@ final private class AwaitTarget extends Expr {
 }
 
 private module AwaitSatisfiesConstraintInput implements SatisfiesConstraintInputSig<AwaitTarget> {
+  pragma[nomagic]
   predicate relevantConstraint(AwaitTarget term, Type constraint) {
     exists(term) and
     constraint.(TraitType).getTrait() instanceof FutureTrait
@@ -1774,7 +1784,7 @@ private Type inferClosureExprType(AstNode n, TypePath path) {
   exists(ClosureExpr ce |
     n = ce and
     path.isEmpty() and
-    result = TDynTraitType(any(FnOnceTrait t))
+    result = TDynTraitType(any(FnOnceTrait t)) // always exists because of the mention in `builtins/mentions.rs`
     or
     n = ce and
     path = TypePath::singleton(TDynTraitTypeParameter(any(FnOnceTrait t).getTypeParam())) and
@@ -2381,9 +2391,6 @@ private module Cached {
       result = inferTryExprType(n, path)
       or
       result = inferLiteralType(n, path, false)
-      or
-      result = inferAsyncBlockExprRootType(n) and
-      path.isEmpty()
       or
       result = inferAwaitExprType(n, path)
       or

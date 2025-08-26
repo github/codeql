@@ -82,14 +82,22 @@ abstract class Type extends TType {
   pragma[nomagic]
   abstract TupleField getTupleField(int i);
 
-  /** Gets the `i`th type parameter of this type, if any. */
-  abstract TypeParameter getTypeParameter(int i);
+  /**
+   * Gets the `i`th positional type parameter of this type, if any.
+   *
+   * This excludes for example associated type parameters.
+   */
+  abstract TypeParameter getPositionalTypeParameter(int i);
 
   /** Gets the default type for the `i`th type parameter, if any. */
   TypeMention getTypeParameterDefault(int i) { none() }
 
-  /** Gets a type parameter of this type. */
-  final TypeParameter getATypeParameter() { result = this.getTypeParameter(_) }
+  /**
+   * Gets a type parameter of this type.
+   *
+   * This includes both positional and other type parameters, such as associated types.
+   */
+  TypeParameter getATypeParameter() { result = this.getPositionalTypeParameter(_) }
 
   /** Gets a textual representation of this type. */
   abstract string toString();
@@ -108,7 +116,9 @@ class TupleType extends Type, TTuple {
 
   override TupleField getTupleField(int i) { none() }
 
-  override TypeParameter getTypeParameter(int i) { result = TTupleTypeParameter(arity, i) }
+  override TypeParameter getPositionalTypeParameter(int i) {
+    result = TTupleTypeParameter(arity, i)
+  }
 
   /** Gets the arity of this tuple type. */
   int getArity() { result = arity }
@@ -141,7 +151,7 @@ class StructType extends StructOrEnumType, TStruct {
 
   override TupleField getTupleField(int i) { result = struct.getTupleField(i) }
 
-  override TypeParameter getTypeParameter(int i) {
+  override TypeParameter getPositionalTypeParameter(int i) {
     result = TTypeParamTypeParameter(struct.getGenericParamList().getTypeParam(i))
   }
 
@@ -166,7 +176,7 @@ class EnumType extends StructOrEnumType, TEnum {
 
   override TupleField getTupleField(int i) { none() }
 
-  override TypeParameter getTypeParameter(int i) {
+  override TypeParameter getPositionalTypeParameter(int i) {
     result = TTypeParamTypeParameter(enum.getGenericParamList().getTypeParam(i))
   }
 
@@ -192,8 +202,16 @@ class TraitType extends Type, TTrait {
 
   override TupleField getTupleField(int i) { none() }
 
-  override TypeParameter getTypeParameter(int i) {
+  override TypeParameter getPositionalTypeParameter(int i) {
     result = TTypeParamTypeParameter(trait.getGenericParamList().getTypeParam(i))
+  }
+
+  override TypeParameter getATypeParameter() {
+    result = super.getATypeParameter()
+    or
+    result.(AssociatedTypeTypeParameter).getTrait() = trait
+    or
+    result.(SelfTypeParameter).getTrait() = trait
   }
 
   override TypeMention getTypeParameterDefault(int i) {
@@ -218,7 +236,7 @@ class ArrayType extends Type, TArrayType {
 
   override TupleField getTupleField(int i) { none() }
 
-  override TypeParameter getTypeParameter(int i) {
+  override TypeParameter getPositionalTypeParameter(int i) {
     result = TArrayTypeParameter() and
     i = 0
   }
@@ -241,7 +259,7 @@ class RefType extends Type, TRefType {
 
   override TupleField getTupleField(int i) { none() }
 
-  override TypeParameter getTypeParameter(int i) {
+  override TypeParameter getPositionalTypeParameter(int i) {
     result = TRefTypeParameter() and
     i = 0
   }
@@ -274,7 +292,7 @@ class ImplTraitType extends Type, TImplTraitType {
 
   override TupleField getTupleField(int i) { none() }
 
-  override TypeParameter getTypeParameter(int i) {
+  override TypeParameter getPositionalTypeParameter(int i) {
     exists(TypeParam tp |
       implTraitTypeParam(impl, i, tp) and
       result = TImplTraitTypeParameter(impl, tp)
@@ -295,8 +313,17 @@ class DynTraitType extends Type, TDynTraitType {
 
   override TupleField getTupleField(int i) { none() }
 
-  override DynTraitTypeParameter getTypeParameter(int i) {
+  override DynTraitTypeParameter getPositionalTypeParameter(int i) {
     result = TDynTraitTypeParameter(trait.getGenericParamList().getTypeParam(i))
+  }
+
+  override TypeParameter getATypeParameter() {
+    result = super.getATypeParameter()
+    or
+    exists(AstNode n |
+      dynTraitTypeParameter(trait, n) and
+      result = TDynTraitTypeParameter(n)
+    )
   }
 
   Trait getTrait() { result = trait }
@@ -336,7 +363,7 @@ class SliceType extends Type, TSliceType {
 
   override TupleField getTupleField(int i) { none() }
 
-  override TypeParameter getTypeParameter(int i) {
+  override TypeParameter getPositionalTypeParameter(int i) {
     result = TSliceTypeParameter() and
     i = 0
   }
@@ -352,7 +379,7 @@ abstract class TypeParameter extends Type {
 
   override TupleField getTupleField(int i) { none() }
 
-  override TypeParameter getTypeParameter(int i) { none() }
+  override TypeParameter getPositionalTypeParameter(int i) { none() }
 }
 
 private class RawTypeParameter = @type_param or @trait or @type_alias or @impl_trait_type_repr;
@@ -548,7 +575,7 @@ class ImplTraitTypeTypeParameter extends ImplTraitType, TypeParameter {
 
   override TupleField getTupleField(int i) { none() }
 
-  override TypeParameter getTypeParameter(int i) { none() }
+  override TypeParameter getPositionalTypeParameter(int i) { none() }
 }
 
 /**
