@@ -106,14 +106,14 @@ class EvpCtxSetHashInitializer extends OperationStep {
   override DataFlow::Node getInput(IOType type) {
     result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and
+    result.asIndirectExpr() = this.getArgument(1) and
     type = HashAlgorithmIO() and
     isOaep = false and
     isMgf1 = false
     or
-    result.asExpr() = this.getArgument(1) and type = HashAlgorithmOaepIO() and isOaep = true
+    result.asIndirectExpr() = this.getArgument(1) and type = HashAlgorithmOaepIO() and isOaep = true
     or
-    result.asExpr() = this.getArgument(1) and type = HashAlgorithmMgf1IO() and isMgf1 = true
+    result.asIndirectExpr() = this.getArgument(1) and type = HashAlgorithmMgf1IO() and isMgf1 = true
   }
 
   override DataFlow::Node getOutput(IOType type) {
@@ -157,7 +157,7 @@ class EvpCtxSetMacKeyInitializer extends OperationStep {
     result.asExpr() = this.getArgument(2) and type = KeySizeIO()
     or
     // the raw key that is configured into the output key
-    result.asExpr() = this.getArgument(1) and type = KeyIO()
+    result.asIndirectExpr() = this.getArgument(1) and type = KeyIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
@@ -175,6 +175,7 @@ class EvpCtxSetPaddingInitializer extends OperationStep {
   override DataFlow::Node getInput(IOType type) {
     result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
+    // The algorithm is an int: use asExpr
     result.asExpr() = this.getArgument(1) and type = PaddingAlgorithmIO()
   }
 
@@ -211,11 +212,13 @@ class EvpCtxSetSaltLengthInitializer extends OperationStep {
 class EvpPkeyGet1RsaOrDsa extends OperationStep {
   EvpPkeyGet1RsaOrDsa() { this.getTarget().getName() = ["EVP_PKEY_get1_RSA", "EVP_PKEY_get1_DSA"] }
 
-  override DataFlow::Node getOutput(IOType type) { result.asExpr() = this and type = KeyIO() }
+  override DataFlow::Node getOutput(IOType type) {
+    result.asIndirectExpr() = this and type = KeyIO()
+  }
 
   override DataFlow::Node getInput(IOType type) {
     // Key being loaded or created from another location
-    result.asExpr() = this.getArgument(0) and type = KeyIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = KeyIO()
   }
 
   /**
