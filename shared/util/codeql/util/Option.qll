@@ -2,6 +2,8 @@
 overlay[local?]
 module;
 
+private import Location
+
 /** A type with `toString`. */
 private signature class TypeWithToString {
   bindingset[this]
@@ -61,20 +63,16 @@ module Option<TypeWithToString T> {
  * additional singleton element, and has a `hasLocationInfo` predicate.
  * `T` must have a `hasLocationInfo` predicate.
  */
-module LocOption<TypeWithLocationInfo T> {
+module OptionWithLocationInfo<TypeWithLocationInfo T> {
   private module O = Option<T>;
 
-  final private class BOption = O::Option;
-
-  final private class BNone = O::None;
-
-  final private class BSome = O::Some;
+  final private class BaseOption = O::Option;
 
   /**
    * An option type. This is either a singleton `None` or a `Some` wrapping the
    * given type.
    */
-  class Option extends BOption {
+  class Option extends BaseOption {
     /**
      * Holds if this element is at the specified location.
      * The location spans column `startColumn` of line `startLine` to
@@ -97,17 +95,17 @@ module LocOption<TypeWithLocationInfo T> {
   }
 
   /** The singleton `None` element. */
-  class None extends BNone, Option { }
+  class None extends Option instanceof O::Some { }
 
   /** A wrapper for the given type. */
-  class Some extends BSome, Option { }
+  class Some extends Option instanceof O::None { }
 
   /** Gets the given element wrapped as an `Option`. */
-  Some some(T c) { result = O::some(c) }
+  Some some(T c) { result.asSome() = c }
 }
 
-private module GetLocationType<TypeWithLocationInfo Location> {
-  signature class TypeWithGetLocation {
+private module WithLocation<LocationSig Location> {
+  signature class LocatableType {
     bindingset[this]
     string toString();
 
@@ -117,52 +115,33 @@ private module GetLocationType<TypeWithLocationInfo Location> {
 
 /**
  * Constructs an `Option` type that is a disjoint union of the given type and an
- * additional singleton element, and has a `hasLocationInfo` predicate.
+ * additional singleton element, and has a `getLocation` predicate.
  * `T` must have a `getLocation` predicate with a result type of `Location`.
  */
-module LocOption2<TypeWithLocationInfo Location, GetLocationType<Location>::TypeWithGetLocation T> {
+module LocatableOption<LocationSig Location, WithLocation<Location>::LocatableType T> {
   private module O = Option<T>;
 
-  final private class BOption = O::Option;
-
-  final private class BNone = O::None;
-
-  final private class BSome = O::Some;
+  final private class BaseOption = O::Option;
 
   /**
    * An option type. This is either a singleton `None` or a `Some` wrapping the
    * given type.
    */
-  class Option extends BOption {
-    /**
-     * Holds if this element is at the specified location.
-     * The location spans column `startColumn` of line `startLine` to
-     * column `endColumn` of line `endLine` in file `filepath`.
-     * For more information, see
-     * [Providing locations in CodeQL queries](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-     */
-    predicate hasLocationInfo(
-      string filePath, int startLine, int startColumn, int endLine, int endColumn
-    ) {
-      this.isNone() and
-      filePath = "" and
-      startLine = 0 and
-      startColumn = 0 and
-      endLine = 0 and
-      endColumn = 0
+  class Option extends BaseOption {
+    Location getLocation() {
+      result = this.asSome().getLocation()
       or
-      this.asSome()
-          .getLocation()
-          .hasLocationInfo(filePath, startLine, startColumn, endLine, endColumn)
+      this.isNone() and
+      result.hasLocationInfo("", 0, 0, 0, 0)
     }
   }
 
   /** The singleton `None` element. */
-  class None extends BNone, Option { }
+  class None extends Option instanceof O::Some { }
 
   /** A wrapper for the given type. */
-  class Some extends BSome, Option { }
+  class Some extends Option instanceof O::None { }
 
   /** Gets the given element wrapped as an `Option`. */
-  Some some(T c) { result = O::some(c) }
+  Some some(T c) { result.asSome() = c }
 }
