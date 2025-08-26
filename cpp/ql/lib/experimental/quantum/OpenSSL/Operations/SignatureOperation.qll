@@ -533,8 +533,8 @@ class RsaSignorVerify extends SignatureFinalOperation {
 /**
  * A call to `DSA_do_sign` or `DSA_do_verify`
  */
-class DSADoSignOrVerify extends SignatureFinalOperation {
-  DSADoSignOrVerify() { this.getTarget().getName() in ["DSA_do_sign", "DSA_do_verify"] }
+class DsaDoSignOrVerify extends SignatureFinalOperation {
+  DsaDoSignOrVerify() { this.getTarget().getName() in ["DSA_do_sign", "DSA_do_verify"] }
 
   override DataFlow::Node getInput(IOType type) {
     result.asIndirectExpr() = this.getArgument(0) and type = PlaintextIO()
