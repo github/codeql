@@ -2944,8 +2944,8 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
      * ```rust
      * let first = Foo { a: 1, b: 2 };
      * let second = Foo { a: 2, ..first };
-     * Foo { a: 1, b: 2 }[2] = 10;
-     * Foo { .. } = second;
+     * let n = Foo { a: 1, b: 2 }.b;
+     * Foo { a: m, .. } = second;
      * ```
      */
     final class StructExprCfgNode extends CfgNodeFinal, ExprCfgNode {
@@ -3063,8 +3063,9 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
     /**
      * A tuple expression. For example:
      * ```rust
-     * (1, "one");
-     * (2, "two")[0] = 3;
+     * let tuple = (1, "one");
+     * let n = (2, "two").0;
+     * let (a, b) = tuple;
      * ```
      */
     final class TupleExprCfgNode extends CfgNodeFinal, ExprCfgNode {
