@@ -12,7 +12,7 @@ class MyFinallySplitControlFlowNode extends ElementNode {
     exists(Splitting::FinallySplitting::FinallySplitType type |
       type = this.getASplit().(FinallySplit).getType()
     |
-      not type instanceof SuccessorTypes::NormalSuccessor
+      not type instanceof DirectSuccessor
     )
   }
 
