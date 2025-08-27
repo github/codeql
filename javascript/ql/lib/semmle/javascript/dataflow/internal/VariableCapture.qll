@@ -4,7 +4,7 @@ private import semmle.javascript.dataflow.internal.VariableOrThis
 private import codeql.dataflow.VariableCapture
 private import semmle.javascript.dataflow.internal.sharedlib.DataFlowImplCommon as DataFlowImplCommon
 
-module VariableCaptureConfig implements InputSig<js::DbLocation> {
+module VariableCaptureConfig implements InputSig<js::Location> {
   private js::Function getLambdaFromVariable(js::LocalVariable variable) {
     result.getVariable() = variable
     or
@@ -168,7 +168,7 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
 
     string toString() { none() } // Overridden in subclass
 
-    js::DbLocation getLocation() { none() } // Overridden in subclass
+    js::Location getLocation() { none() } // Overridden in subclass
 
     predicate hasCfgNode(BasicBlock bb, int i) { none() } // Overridden in subclass
 
@@ -186,7 +186,7 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
     override string toString() { result = pattern.toString() }
 
     /** Gets the location of this write. */
-    override js::DbLocation getLocation() { result = pattern.getLocation() }
+    override js::Location getLocation() { result = pattern.getLocation() }
 
     override js::DataFlow::Node getSource() {
       // Note: there is not always an expression corresponding to the RHS of the assignment.
@@ -222,7 +222,7 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
 
     override string toString() { result = "[implicit init] " + variable }
 
-    override js::DbLocation getLocation() { result = variable.getLocation() }
+    override js::Location getLocation() { result = variable.getLocation() }
 
     override CapturedVariable getVariable() { result = variable }
 
@@ -242,7 +242,7 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
   predicate entryBlock(BasicBlock bb) { bb instanceof js::EntryBasicBlock }
 }
 
-module VariableCaptureOutput = Flow<js::DbLocation, VariableCaptureConfig>;
+module VariableCaptureOutput = Flow<js::Location, VariableCaptureConfig>;
 
 js::DataFlow::Node getNodeFromClosureNode(VariableCaptureOutput::ClosureNode node) {
   result = TValueNode(node.(VariableCaptureOutput::ExprNode).getExpr())
