@@ -8,7 +8,6 @@ private import codeql.ruby.ast.internal.TreeSitter
 private import codeql.ruby.controlflow.ControlFlowGraph
 private import internal.ControlFlowGraphImpl as CfgImpl
 private import CfgNodes
-private import SuccessorTypes
 private import CfgImpl::BasicBlocks as BasicBlocksImpl
 private import codeql.controlflow.BasicBlock as BB
 

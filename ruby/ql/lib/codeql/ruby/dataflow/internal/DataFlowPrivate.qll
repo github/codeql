@@ -153,7 +153,7 @@ module LocalFlow {
       exprTo = nodeTo.asExpr() and
       n.getReturningNode().getAstNode() instanceof BreakStmt and
       exprTo.getAstNode() instanceof Loop and
-      nodeTo.asExpr().getAPredecessor(any(SuccessorTypes::BreakSuccessor s)) = n.getReturningNode()
+      nodeTo.asExpr().getAPredecessor(any(BreakSuccessor s)) = n.getReturningNode()
     )
     or
     nodeFrom.asExpr() = nodeTo.(ReturningStatementNode).getReturningNode().getReturnedValueNode()
@@ -161,7 +161,7 @@ module LocalFlow {
     nodeTo.asExpr() =
       any(CfgNodes::ExprNodes::ForExprCfgNode for |
         exists(SuccessorType s |
-          not s instanceof SuccessorTypes::BreakSuccessor and
+          not s instanceof BreakSuccessor and
           exists(for.getAPredecessor(s))
         ) and
         nodeFrom.asExpr() = for.getValue()
@@ -2386,8 +2386,7 @@ module TypeInference {
     |
       m = resolveConstantReadAccess(pattern.getExpr()) and
       cb.getLastNode() = pattern and
-      cb.edgeDominates(read.getBasicBlock(),
-        any(SuccessorTypes::MatchingSuccessor match | match.getValue() = true)) and
+      cb.edgeDominates(read.getBasicBlock(), any(MatchingSuccessor match | match.getValue() = true)) and
       caseRead = def.getARead() and
       read = def.getARead() and
       case.getValue() = caseRead
