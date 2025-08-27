@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["Microsoft::WRL", "ComPtr", True, "ComPtr<T>", "(T *)", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["Microsoft::WRL", "ComPtr", True, "ComPtr", "(const ComPtr &)", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["Microsoft::WRL", "ComPtr", True, "ComPtr", "(ComPtr &&)", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["Microsoft::WRL", "ComPtr", True, "As", "", "", "Argument[-1]", "Argument[*0]", "value", "manual"]
+      - ["Microsoft::WRL", "ComPtr", True, "AsIID", "", "", "Argument[-1]", "Argument[*1]", "value", "manual"]
+      - ["Microsoft::WRL", "ComPtr", True, "AsWeak", "", "", "Argument[-1]", "Argument[*0]", "value", "manual"]
+      - ["Microsoft::WRL", "ComPtr", True, "Attach", "", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["Microsoft::WRL", "ComPtr<T>", True, "CopyTo", "(T **)", "", "Argument[-1].Element[@]", "Argument[**@0]", "value", "manual"]
+      - ["Microsoft::WRL", "ComPtr", True, "CopyTo<T>", "(T **)", "", "Argument[-1].Element[@]", "Argument[**@0]", "value", "manual"]
+      - ["Microsoft::WRL", "ComPtr", True, "CopyTo", "(REFIID,void **)", "", "Argument[-1].Element[@]", "Argument[**@1]", "value", "manual"]
+      - ["Microsoft::WRL", "ComPtr", True, "Detach", "", "", "Argument[-1].Element[@]", "ReturnValue[*]", "value", "manual"]
+      - ["Microsoft::WRL", "ComPtr", True, "Get", "", "", "Argument[-1].Element[@]", "ReturnValue[*]", "value", "manual"]
+      - ["Microsoft::WRL", "ComPtr", True, "GetAddressOf", "", "", "Argument[-1].Element[@]", "ReturnValue[**]", "value", "manual"]
+      - ["Microsoft::WRL", "ComPtr", True, "ReleaseAndGetAddressOf", "", "", "Argument[-1].Element[@]", "ReturnValue[**]", "value", "manual"]
+      - ["Microsoft::WRL", "ComPtr", True, "Swap", "", "", "Argument[-1]", "Argument[*0]", "value", "manual"]
+      - ["Microsoft::WRL", "ComPtr", True, "Swap", "", "", "Argument[*0]", "Argument[-1]", "value", "manual"]

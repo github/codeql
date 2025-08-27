@@ -503,6 +503,7 @@
 | Dubious signature "(CURLU *,CURLUPart,const char *,unsigned int)" in summary model. |
 | Dubious signature "(CURLU *,const char *)" in summary model. |
 | Dubious signature "(CURLU *,const char *,char **,OperationConfig *)" in summary model. |
+| Dubious signature "(ComPtr &&)" in summary model. |
 | Dubious signature "(CompoundDictionary *,const PreparedDictionary *)" in summary model. |
 | Dubious signature "(Curl_cfilter *)" in summary model. |
 | Dubious signature "(Curl_cfilter **,Curl_easy *)" in summary model. |
@@ -2130,6 +2131,7 @@
 | Dubious signature "(RAND_POOL *,unsigned char *)" in summary model. |
 | Dubious signature "(RAND_POOL *,unsigned int)" in summary model. |
 | Dubious signature "(RECORD_LAYER *,SSL_CONNECTION *)" in summary model. |
+| Dubious signature "(REFIID,void **)" in summary model. |
 | Dubious signature "(RIO_NOTIFIER *)" in summary model. |
 | Dubious signature "(RIPEMD160_CTX *,const unsigned char *)" in summary model. |
 | Dubious signature "(RIPEMD160_CTX *,const void *,size_t)" in summary model. |
@@ -2431,6 +2433,8 @@
 | Dubious signature "(Strent *)" in summary model. |
 | Dubious signature "(Strtab *,const char *,size_t)" in summary model. |
 | Dubious signature "(Strtab *,size_t *)" in summary model. |
+| Dubious signature "(T *)" in summary model. |
+| Dubious signature "(T **)" in summary model. |
 | Dubious signature "(TLS_FEATURE *)" in summary model. |
 | Dubious signature "(TLS_RL_RECORD *,const unsigned char *)" in summary model. |
 | Dubious signature "(TS_ACCURACY *)" in summary model. |
@@ -3155,6 +3159,7 @@
 | Dubious signature "(const CT_POLICY_EVAL_CTX *)" in summary model. |
 | Dubious signature "(const CURLU *)" in summary model. |
 | Dubious signature "(const CURLU *,CURLUPart,char **,unsigned int)" in summary model. |
+| Dubious signature "(const ComPtr &)" in summary model. |
 | Dubious signature "(const Command *,const size_t,const BlockSplit *,const BlockSplit *,const BlockSplit *,const uint8_t *,size_t,size_t,uint8_t,uint8_t,const ContextType *,HistogramLiteral *,HistogramCommand *,HistogramDistance *)" in summary model. |
 | Dubious signature "(const Curl_easy *,const connectdata *,int)" in summary model. |
 | Dubious signature "(const DH *)" in summary model. |
