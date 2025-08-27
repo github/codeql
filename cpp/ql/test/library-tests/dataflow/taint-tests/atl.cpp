@@ -1347,6 +1347,12 @@ void test_CopyTo()
   Microsoft::WRL::ComPtr<int> p2;
   p1.CopyTo(nullptr, (void**)&raw);
   sink(*raw); // $ ir MISSING: ast
+
+  Microsoft::WRL::ComPtr<int> p3(new int(x));
+
+  int* raw2 = nullptr;
+  p3.CopyTo<int>(&raw2);
+  sink(*raw2); // $ MISSING: ast,ir
 }
 
 void test_Swap()
