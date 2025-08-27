@@ -1352,7 +1352,7 @@ void test_CopyTo()
 
   int* raw2 = nullptr;
   p3.CopyTo<int>(&raw2);
-  sink(*raw2); // $ MISSING: ast,ir
+  sink(*raw2); // $ ir MISSING: ast
 }
 
 void test_Swap()
