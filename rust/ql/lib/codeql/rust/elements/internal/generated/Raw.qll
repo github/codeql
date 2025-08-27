@@ -3265,8 +3265,8 @@ module Raw {
    * ```rust
    * let first = Foo { a: 1, b: 2 };
    * let second = Foo { a: 2, ..first };
-   * Foo { a: 1, b: 2 }[2] = 10;
-   * Foo { .. } = second;
+   * let n = Foo { a: 1, b: 2 }.b;
+   * Foo { a: m, .. } = second;
    * ```
    */
   class StructExpr extends @struct_expr, Expr, PathAstNode {
@@ -4055,63 +4055,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-<<<<<<< HEAD
-=======
-   * A path pattern. For example:
-   * ```rust
-   * match x {
-   *     Foo::Bar => "ok",
-   *     _ => "fail",
-   * }
-   * ```
-   */
-  class PathPat extends @path_pat, Pat, PathAstNode {
-    override string toString() { result = "PathPat" }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A struct expression. For example:
-   * ```rust
-   * let first = Foo { a: 1, b: 2 };
-   * let second = Foo { a: 2, ..first };
-   * let n = Foo { a: 1, b: 2 }.b;
-   * Foo { a: m, .. } = second;
-   * ```
-   */
-  class StructExpr extends @struct_expr, Expr, PathAstNode {
-    override string toString() { result = "StructExpr" }
-
-    /**
-     * Gets the struct expression field list of this struct expression, if it exists.
-     */
-    StructExprFieldList getStructExprFieldList() {
-      struct_expr_struct_expr_field_lists(this, result)
-    }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A struct pattern. For example:
-   * ```rust
-   * match x {
-   *     Foo { a: 1, b: 2 } => "ok",
-   *     Foo { .. } => "fail",
-   * }
-   * ```
-   */
-  class StructPat extends @struct_pat, Pat, PathAstNode {
-    override string toString() { result = "StructPat" }
-
-    /**
-     * Gets the struct pattern field list of this struct pattern, if it exists.
-     */
-    StructPatFieldList getStructPatFieldList() { struct_pat_struct_pat_field_lists(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
->>>>>>> main
    * A Trait. For example:
    * ```
    * trait Frobinizable {
