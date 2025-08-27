@@ -78,3 +78,18 @@ class F {
         super();
     }
 }
+
+class G {
+    private String instance_val;
+
+    {
+        instance_val = "instance";
+    }
+
+    G(String input) {
+        var tmp = input != null ? input : "default";
+        var string = tmp + "_initialized";
+        super();
+        this.instance_val = string;
+    }
+}

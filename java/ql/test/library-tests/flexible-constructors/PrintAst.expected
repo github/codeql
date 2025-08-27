@@ -179,3 +179,35 @@ FlexibleConstructors.java:
 #   77|               0: [VarAccess] a
 #   77|               1: [VarAccess] b
 #   78|         3: [SuperConstructorInvocationStmt] super(...)
+#   82|   9: [Class] G
+#   83|     2: [FieldDeclaration] String instance_val;
+#   83|       -1: [TypeAccess] String
+#   85|     3: [BlockStmt] { ... }
+#   86|       0: [ExprStmt] <Expr>;
+#   86|         0: [AssignExpr] ...=...
+#   86|           0: [VarAccess] instance_val
+#   86|           1: [StringLiteral] "instance"
+#   89|     4: [Constructor] G
+#-----|       4: (Parameters)
+#   89|         0: [Parameter] input
+#   89|           0: [TypeAccess] String
+#   89|       5: [BlockStmt] { ... }
+#   90|         0: [LocalVariableDeclStmt] var ...;
+#   90|           1: [LocalVariableDeclExpr] tmp
+#   90|             0: [ConditionalExpr] ...?...:...
+#   90|               0: [NEExpr] ... != ...
+#   90|                 0: [VarAccess] input
+#   90|                 1: [NullLiteral] null
+#   90|               1: [VarAccess] input
+#   90|               2: [StringLiteral] "default"
+#   91|         1: [LocalVariableDeclStmt] var ...;
+#   91|           1: [LocalVariableDeclExpr] string
+#   91|             0: [AddExpr] ... + ...
+#   91|               0: [VarAccess] tmp
+#   91|               1: [StringLiteral] "_initialized"
+#   92|         2: [SuperConstructorInvocationStmt] super(...)
+#   93|         3: [ExprStmt] <Expr>;
+#   93|           0: [AssignExpr] ...=...
+#   93|             0: [VarAccess] this.instance_val
+#   93|               -1: [ThisAccess] this
+#   93|             1: [VarAccess] string
