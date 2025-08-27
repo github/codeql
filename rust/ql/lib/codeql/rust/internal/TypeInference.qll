@@ -383,6 +383,8 @@ private module CertainTypeInference {
     result = inferRefNodeType(n) and
     path.isEmpty()
     or
+    result = inferLogicalOperationType(n, path)
+    or
     result = inferTupleRootType(n) and
     path.isEmpty()
     or
@@ -440,11 +442,10 @@ private module CertainTypeInference {
 }
 
 private Type inferLogicalOperationType(AstNode n, TypePath path) {
-  exists(Builtins::BuiltinType t, BinaryLogicalOperation be |
+  exists(Builtins::Bool t, BinaryLogicalOperation be |
     n = [be, be.getLhs(), be.getRhs()] and
     path.isEmpty() and
-    result = TStruct(t) and
-    t instanceof Builtins::Bool
+    result = TStruct(t)
   )
 }
 
@@ -2380,8 +2381,6 @@ private module Cached {
     ) and
     (
       result = inferAnnotatedType(n, path)
-      or
-      result = inferLogicalOperationType(n, path)
       or
       result = inferAssignmentOperationType(n, path)
       or
