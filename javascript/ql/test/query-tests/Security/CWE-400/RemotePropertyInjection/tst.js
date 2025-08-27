@@ -17,9 +17,9 @@ app.get('/user/:id', function(req, res) {
 	res.set(headers);
 	myCoolLocalFct[req.query.x](); // OK - flagged by method name injection
 
-	Object.keys(req.body).forEach( // $ MISSING: Source
+	Object.keys(req.body).forEach( // $ Source
 		key => {
-			myObj[key] = 42; // $ MISSING: Alert
+			myObj[key] = 42; // $ Alert
 		}
 	);
 });
