@@ -4,3 +4,4 @@
 | FlexibleConstructors.java:52:9:52:40 | ...=... | FlexibleConstructors.java:53:9:53:16 | super(...) | predecessor of explicit super() |
 | FlexibleConstructors.java:65:15:65:18 | temp | FlexibleConstructors.java:65:9:65:20 | super(...) | predecessor of explicit super() |
 | FlexibleConstructors.java:77:9:77:24 | ...=... | FlexibleConstructors.java:78:9:78:16 | super(...) | predecessor of explicit super() |
+| FlexibleConstructors.java:91:13:91:41 | string | FlexibleConstructors.java:92:9:92:16 | super(...) | predecessor of explicit super() |
