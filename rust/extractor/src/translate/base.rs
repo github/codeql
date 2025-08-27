@@ -82,24 +82,6 @@ impl Emission<ast::Union> for Translator<'_> {
     }
 }
 
-impl Emission<ast::Trait> for Translator<'_> {}
-
-impl Emission<ast::Module> for Translator<'_> {}
-
-impl Emission<ast::Variant> for Translator<'_> {}
-
-impl Emission<ast::PathExpr> for Translator<'_> {}
-
-impl Emission<ast::RecordExpr> for Translator<'_> {}
-
-impl Emission<ast::PathPat> for Translator<'_> {}
-
-impl Emission<ast::RecordPat> for Translator<'_> {}
-
-impl Emission<ast::TupleStructPat> for Translator<'_> {}
-
-impl Emission<ast::MethodCallExpr> for Translator<'_> {}
-
 impl Emission<ast::PathSegment> for Translator<'_> {
     fn post_emit(&mut self, node: &ast::PathSegment, label: Label<generated::PathSegment>) {
         self.extract_types_from_path_segment(node, label);
