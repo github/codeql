@@ -324,13 +324,19 @@ private module CertainTypeInference {
       or
       // A `let` statement with a type annotation is a coercion site and hence
       // is not a certain type equality.
-      exists(LetStmt let | not let.hasTypeRepr() |
-        let.getPat() = n1 and
+      exists(LetStmt let |
+        not let.hasTypeRepr() and
+        // Due to "binding modes" the type of the pattern is not necessarily the
+        // same as the type of the initializer. The pattern being an identifier
+        // pattern is sufficient to ensure that this is not the case.
+        let.getPat().(IdentPat) = n1 and
         let.getInitializer() = n2
       )
       or
       exists(LetExpr let |
-        let.getPat() = n1 and
+        // Similarly as for let statements, we need to rule out binding modes
+        // changing the type.
+        let.getPat().(IdentPat) = n1 and
         let.getScrutinee() = n2
       )
       or
@@ -485,6 +491,11 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
     n1 = n2.(IfExpr).getABranch()
     or
     n1 = n2.(MatchExpr).getAnArm().getExpr()
+    or
+    exists(LetExpr let |
+      n1 = let.getScrutinee() and
+      n2 = let.getPat()
+    )
     or
     exists(MatchExpr me |
       n1 = me.getScrutinee() and

@@ -1,9 +1,0 @@
-nonUniqueCertainType
-| pattern_matching.rs:487:9:487:18 | ref_tuple1 |  |
-| pattern_matching.rs:487:9:487:18 | ref_tuple1 |  |
-| pattern_matching.rs:488:12:488:17 | TuplePat |  |
-| pattern_matching.rs:488:21:488:30 | ref_tuple1 |  |
-| pattern_matching.rs:494:9:494:18 | ref_tuple2 |  |
-| pattern_matching.rs:494:9:494:18 | ref_tuple2 |  |
-| pattern_matching.rs:495:9:495:14 | TuplePat |  |
-| pattern_matching.rs:495:18:495:27 | ref_tuple2 |  |
