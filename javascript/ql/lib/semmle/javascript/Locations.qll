@@ -149,3 +149,8 @@ class Locatable extends @locatable {
    */
   string getAPrimaryQlClass() { result = "???" }
 }
+
+/**
+ * DEPRECATED. Use `Location` instead.
+ */
+deprecated class DbLocation = Location;
