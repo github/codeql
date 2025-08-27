@@ -37,7 +37,7 @@ private module CfgInput implements InputSig<Location> {
   /**
    * Hold if `c` represents simple (normal) evaluation of a statement or an expression.
    */
-  predicate successorTypeIsSimple(SuccessorType t) { t instanceof Cfg::NormalSuccessor }
+  predicate successorTypeIsSimple(SuccessorType t) { t instanceof Cfg::DirectSuccessor }
 
   /** Holds if `t` is an abnormal exit type out of a CFG scope. */
   predicate isAbnormalExitType(SuccessorType t) { none() }
