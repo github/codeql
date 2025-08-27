@@ -1317,14 +1317,14 @@ void test_constructor()
 
   int x = source<int>();
   Microsoft::WRL::ComPtr<int> p1(new int(x));
-  sink(*p1.Get()); // $ MISSING: ast,ir
-  sink(*p1.Detach()); // $ MISSING: ast,ir
+  sink(*p1.Get()); // $ ir MISSING: ast
+  sink(*p1.Detach()); // $ ir MISSING: ast
 
   Microsoft::WRL::ComPtr<int> p2(p1);
-  sink(*p2.Get()); // $ MISSING: ast,ir
+  sink(*p2.Get()); // $ ir MISSING: ast
 
   Microsoft::WRL::ComPtr<int> p3(std::move(p1));
-  sink(*p3.Get()); // $ MISSING: ast,ir
+  sink(*p3.Get()); // $ ir MISSING: ast
 }
 
 void test_As()
@@ -1333,7 +1333,7 @@ void test_As()
   Microsoft::WRL::ComPtr<int> p1(new int(x));
   Microsoft::WRL::ComPtr<int> p2;
   p1.As(&p2);
-  sink(*p2.Get()); // $ MISSING: ast,ir
+  sink(*p2.Get()); // $ ir MISSING: ast
 }
 
 void test_CopyTo()
@@ -1342,11 +1342,11 @@ void test_CopyTo()
   Microsoft::WRL::ComPtr<int> p1(new int(x));
   int *raw = nullptr;
   p1.CopyTo(&raw);
-  sink(*raw); // $ MISSING: ast,ir
+  sink(*raw); // $ ir MISSING: ast
 
   Microsoft::WRL::ComPtr<int> p2;
   p1.CopyTo(nullptr, (void**)&raw);
-  sink(*raw); // $ MISSING: ast,ir
+  sink(*raw); // $ ir MISSING: ast
 }
 
 void test_Swap()
@@ -1355,20 +1355,20 @@ void test_Swap()
   Microsoft::WRL::ComPtr<int> p1(new int(x));
   Microsoft::WRL::ComPtr<int> p2;
   p1.Swap(p2);
-  sink(*p2.Get()); // $ MISSING: ast,ir
-  sink(*p1.Get()); // clean
+  sink(*p2.Get()); // $ ir MISSING: ast
+  sink(*p1.Get()); // $ SPURIOUS: ir
 }
 
 void test_GetAddressOf()
 {
   int x = source<int>();
   Microsoft::WRL::ComPtr<int> p1(new int(x));
-  sink(**p1.GetAddressOf()); // $ MISSING: ast,ir
+  sink(**p1.GetAddressOf()); // $ ir MISSING: ast
  
   const Microsoft::WRL::ComPtr<int> p2(new int(x));
-  sink(**p2.GetAddressOf()); // $ MISSING: ast,ir
+  sink(**p2.GetAddressOf()); // $ ir MISSING: ast
 
   Microsoft::WRL::ComPtr<int> p3(new int(x));
   int **pp = p3.ReleaseAndGetAddressOf();
-  sink(**pp); // $ MISSING: ast,ir
+  sink(**pp); // $ ir MISSING: ast
 }
