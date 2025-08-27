@@ -470,8 +470,11 @@ module FinallySplitting {
    * then the `finally` block must end with a `return` as well (provided that
    * the `finally` block exits normally).
    */
-  class FinallySplitType extends Cfg::SuccessorType {
-    FinallySplitType() { not this instanceof Cfg::SuccessorTypes::ConditionalSuccessor }
+  class FinallySplitType instanceof Cfg::SuccessorType {
+    FinallySplitType() { not this instanceof Cfg::ConditionalSuccessor }
+
+    /** Gets a textual representation of this successor type. */
+    string toString() { result = super.toString() }
 
     /** Holds if this split type matches entry into a `finally` block with completion `c`. */
     predicate isSplitForEntryCompletion(Completion c) {
@@ -479,7 +482,7 @@ module FinallySplitting {
       then
         // If the entry into the `finally` block completes with any normal completion,
         // it simply means normal execution after the `finally` block
-        this instanceof Cfg::SuccessorTypes::NormalSuccessor
+        this instanceof Cfg::DirectSuccessor
       else this = c.getAMatchingSuccessorType()
     }
   }
@@ -533,7 +536,7 @@ module FinallySplitting {
     int getNestLevel() { result = nestLevel }
 
     override string toString() {
-      if type instanceof Cfg::SuccessorTypes::NormalSuccessor
+      if type instanceof Cfg::DirectSuccessor
       then result = ""
       else
         if nestLevel > 0
@@ -617,14 +620,14 @@ module FinallySplitting {
             or
             not c instanceof NormalCompletion
             or
-            type instanceof Cfg::SuccessorTypes::NormalSuccessor
+            type instanceof Cfg::DirectSuccessor
           )
         else (
           // Finally block can exit with completion `c` inherited from try/catch
           // block: must match this split
           inherited = true and
           type = c.getAMatchingSuccessorType() and
-          not type instanceof Cfg::SuccessorTypes::NormalSuccessor
+          not type instanceof Cfg::DirectSuccessor
         )
       )
       or
@@ -657,7 +660,7 @@ module FinallySplitting {
       exists(FinallySplit outer |
         outer.getNestLevel() = super.getNestLevel() - 1 and
         outer.(FinallySplitImpl).exit(pred, c, inherited) and
-        super.getType() instanceof Cfg::SuccessorTypes::NormalSuccessor and
+        super.getType() instanceof Cfg::DirectSuccessor and
         inherited = true
       )
     }

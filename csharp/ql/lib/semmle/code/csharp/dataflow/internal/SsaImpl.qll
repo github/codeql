@@ -818,8 +818,8 @@ private module Cached {
   }
 
   cached
-  predicate implicitEntryDefinition(ControlFlow::ControlFlow::BasicBlock bb, Ssa::SourceVariable v) {
-    exists(ControlFlow::ControlFlow::BasicBlocks::EntryBlock entry, Callable c |
+  predicate implicitEntryDefinition(ControlFlow::BasicBlock bb, Ssa::SourceVariable v) {
+    exists(ControlFlow::BasicBlocks::EntryBlock entry, Callable c |
       c = entry.getCallable() and
       // In case `c` has multiple bodies, we want each body to get its own implicit
       // entry definition. In case `c` doesn't have multiple bodies, the line below
@@ -1045,7 +1045,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
      * from `bb1` to `bb2`.
      */
     predicate hasValueBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue branch) {
-      exists(ControlFlow::SuccessorTypes::ConditionalSuccessor s |
+      exists(ControlFlow::ConditionalSuccessor s |
         this.getAControlFlowNode() = bb1.getLastNode() and
         bb2 = bb1.getASuccessor(s) and
         s.getValue() = branch
@@ -1064,7 +1064,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
   predicate guardDirectlyControlsBlock(Guard guard, ControlFlow::BasicBlock bb, GuardValue branch) {
-    exists(ConditionBlock conditionBlock, ControlFlow::SuccessorTypes::ConditionalSuccessor s |
+    exists(ConditionBlock conditionBlock, ControlFlow::ConditionalSuccessor s |
       guard.getAControlFlowNode() = conditionBlock.getLastNode() and
       s.getValue() = branch and
       conditionBlock.edgeDominates(bb, s)

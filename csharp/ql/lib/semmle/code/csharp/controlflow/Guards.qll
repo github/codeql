@@ -3,7 +3,7 @@
  */
 
 import csharp
-private import ControlFlow::SuccessorTypes
+private import ControlFlow
 private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.commons.ComparisonTest
 private import semmle.code.csharp.commons.StructuralComparison as SC

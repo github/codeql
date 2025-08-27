@@ -3,7 +3,7 @@
  */
 
 import csharp
-private import ControlFlow::SuccessorTypes
+private import ControlFlow
 private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl as CfgImpl
 private import CfgImpl::BasicBlocks as BasicBlocksImpl
 private import codeql.controlflow.BasicBlock as BB
