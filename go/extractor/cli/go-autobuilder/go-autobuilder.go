@@ -273,7 +273,7 @@ func createPathTransformerFile(newdir string) *os.File {
 		log.Fatalf("Failed to chdir into %s: %s\n", newdir, err.Error())
 	}
 
-	// set up SEMMLE_PATH_TRANSFORMER to ensure paths in the source archive and the snapshot
+	// set up CODEQL_PATH_TRANSFORMER to ensure paths in the source archive and the snapshot
 	// match the original source location, not the location we moved it to
 	pt, err := os.CreateTemp("", "path-transformer")
 	if err != nil {
@@ -292,9 +292,9 @@ func writePathTransformerFile(pt *os.File, realSrc, root, newdir string) {
 	if err != nil {
 		log.Fatalf("Unable to close path transformer file: %s.", err.Error())
 	}
-	err = os.Setenv("SEMMLE_PATH_TRANSFORMER", pt.Name())
+	err = os.Setenv("CODEQL_PATH_TRANSFORMER", pt.Name())
 	if err != nil {
-		log.Fatalf("Unable to set SEMMLE_PATH_TRANSFORMER environment variable: %s.\n", err.Error())
+		log.Fatalf("Unable to set CODEQL_PATH_TRANSFORMER environment variable: %s.\n", err.Error())
 	}
 }
 
@@ -501,7 +501,8 @@ func installDependenciesAndBuild() {
 
 	srcdir := getSourceDir()
 
-	// we set `SEMMLE_PATH_TRANSFORMER` ourselves in some cases, so blank it out first for consistency
+	// we set `CODEQL_PATH_TRANSFORMER` ourselves in some cases, so blank it out first for consistency
+	os.Setenv("CODEQL_PATH_TRANSFORMER", "")
 	os.Setenv("SEMMLE_PATH_TRANSFORMER", "")
 
 	// determine how to install dependencies and whether a GOPATH needs to be set up before
