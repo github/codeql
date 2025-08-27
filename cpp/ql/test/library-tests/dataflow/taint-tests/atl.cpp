@@ -1242,3 +1242,133 @@ namespace ATL {
     sink(static_cast<CStrBufT<char>::PXSTR>(b)); // $ ir
   }
 }
+
+namespace Microsoft {
+  namespace WRL {
+  template <typename T>
+  class ComPtr;
+
+  struct GUID;
+
+  typedef GUID IID;
+
+  typedef IID *REFIID;
+
+  class IUnknown;
+
+  class WeakRef;
+
+  template <typename T>
+  class ComPtr
+  {
+  public:
+    using InterfaceType = T;
+
+    ComPtr();
+    ComPtr(const ComPtr &);
+    ComPtr(&&other);
+
+    template <typename U>
+    ComPtr(U *);
+
+    ~ComPtr();
+
+    template <typename U>
+    HRESULT As(ComPtr<U> *p) const;
+
+    HRESULT AsWeak(WeakRef *);
+
+    void Attach(InterfaceType *);
+
+    HRESULT CopyTo(InterfaceType **);
+
+    HRESULT CopyTo(REFIID, void **) const;
+
+    template <typename U>
+    HRESULT CopyTo(U **) const;
+
+    T *Detach();
+
+    T *Get() const;
+
+    T *const *GetAddressOf() const;
+    T **GetAddressOf();
+
+    T **ReleaseAndGetAddressOf();
+
+    unsigned long Reset();
+
+    void Swap(ComPtr &&r);
+
+    void Swap(ComPtr &r);
+  };
+
+  }
+}
+
+namespace std {
+  template<class T> T&& move(T& t) noexcept; // simplified signature
+}
+
+void test_constructor()
+{
+  Microsoft::WRL::ComPtr<int> p0;
+  sink(*p0.Get()); // clean
+
+  int x = source<int>();
+  Microsoft::WRL::ComPtr<int> p1(new int(x));
+  sink(*p1.Get()); // $ MISSING: ast,ir
+  sink(*p1.Detach()); // $ MISSING: ast,ir
+
+  Microsoft::WRL::ComPtr<int> p2(p1);
+  sink(*p2.Get()); // $ MISSING: ast,ir
+
+  Microsoft::WRL::ComPtr<int> p3(std::move(p1));
+  sink(*p3.Get()); // $ MISSING: ast,ir
+}
+
+void test_As()
+{
+  int x = source<int>();
+  Microsoft::WRL::ComPtr<int> p1(new int(x));
+  Microsoft::WRL::ComPtr<int> p2;
+  p1.As(&p2);
+  sink(*p2.Get()); // $ MISSING: ast,ir
+}
+
+void test_CopyTo()
+{
+  int x = source<int>();
+  Microsoft::WRL::ComPtr<int> p1(new int(x));
+  int *raw = nullptr;
+  p1.CopyTo(&raw);
+  sink(*raw); // $ MISSING: ast,ir
+
+  Microsoft::WRL::ComPtr<int> p2;
+  p1.CopyTo(nullptr, (void**)&raw);
+  sink(*raw); // $ MISSING: ast,ir
+}
+
+void test_Swap()
+{
+  int x = source<int>();
+  Microsoft::WRL::ComPtr<int> p1(new int(x));
+  Microsoft::WRL::ComPtr<int> p2;
+  p1.Swap(p2);
+  sink(*p2.Get()); // $ MISSING: ast,ir
+  sink(*p1.Get()); // clean
+}
+
+void test_GetAddressOf()
+{
+  int x = source<int>();
+  Microsoft::WRL::ComPtr<int> p1(new int(x));
+  sink(**p1.GetAddressOf()); // $ MISSING: ast,ir
+ 
+  const Microsoft::WRL::ComPtr<int> p2(new int(x));
+  sink(**p2.GetAddressOf()); // $ MISSING: ast,ir
+
+  Microsoft::WRL::ComPtr<int> p3(new int(x));
+  int **pp = p3.ReleaseAndGetAddressOf();
+  sink(**pp); // $ MISSING: ast,ir
+}
