@@ -4367,6 +4367,8 @@ inferType
 | main.rs:2334:13:2334:13 | i |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2334:18:2334:22 | range |  | {EXTERNAL LOCATION} | Range |
 | main.rs:2334:18:2334:22 | range | Idx | {EXTERNAL LOCATION} | i32 |
+| main.rs:2335:13:2335:22 | range_full |  | {EXTERNAL LOCATION} | RangeFull |
+| main.rs:2335:26:2335:27 | .. |  | {EXTERNAL LOCATION} | RangeFull |
 | main.rs:2336:13:2336:13 | i |  | {EXTERNAL LOCATION} | Item |
 | main.rs:2336:18:2336:48 | &... |  | file://:0:0:0:0 | & |
 | main.rs:2336:19:2336:36 | [...] |  | file://:0:0:0:0 | [] |
@@ -4374,6 +4376,7 @@ inferType
 | main.rs:2336:20:2336:23 | 1i64 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2336:26:2336:29 | 2i64 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2336:32:2336:35 | 3i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:2336:38:2336:47 | range_full |  | {EXTERNAL LOCATION} | RangeFull |
 | main.rs:2338:13:2338:18 | range1 |  | {EXTERNAL LOCATION} | Range |
 | main.rs:2338:13:2338:18 | range1 | Idx | {EXTERNAL LOCATION} | u16 |
 | main.rs:2339:9:2342:9 | ...::Range {...} |  | {EXTERNAL LOCATION} | Range |

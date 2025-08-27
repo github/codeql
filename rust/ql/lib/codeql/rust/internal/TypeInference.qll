@@ -385,6 +385,9 @@ private module CertainTypeInference {
     or
     result = inferLogicalOperationType(n, path)
     or
+    result = inferRangeExprType(n) and
+    path.isEmpty()
+    or
     result = inferTupleRootType(n) and
     path.isEmpty()
     or
@@ -462,6 +465,9 @@ private Struct getRangeType(RangeExpr re) {
   or
   re instanceof RangeToExpr and
   result instanceof RangeToStruct
+  or
+  re instanceof RangeFullExpr and
+  result instanceof RangeFullStruct
   or
   re instanceof RangeFromToExpr and
   result instanceof RangeStruct
@@ -2401,9 +2407,6 @@ private module Cached {
       result = inferLiteralType(n, path, false)
       or
       result = inferAwaitExprType(n, path)
-      or
-      result = inferRangeExprType(n) and
-      path.isEmpty()
       or
       result = inferIndexExprType(n, path)
       or

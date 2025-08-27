@@ -2332,7 +2332,7 @@ mod loops {
         for u in [0u8..10] {} // $ type=u:Range type=u:Idx.u8
         let range = 0..10; // $ type=range:Range type=range:Idx.i32
         for i in range {} // $ type=i:i32
-        let range_full = ..; // $ MISSING: type=range_full:RangeFull
+        let range_full = ..; // $ type=range_full:RangeFull
         for i in &[1i64, 2i64, 3i64][range_full] {} // $ target=index MISSING: type=i:&T.i64
 
         let range1 = // $ type=range1:Range type=range1:Idx.u16
