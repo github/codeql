@@ -83,6 +83,9 @@ predicate isOverloaded(string op, int arity, string path, string method, int bor
     op = "<<=" and path = "core::ops::bit::ShlAssign" and method = "shl_assign" and borrows = 1
     or
     op = ">>=" and path = "core::ops::bit::ShrAssign" and method = "shr_assign" and borrows = 1
+    or
+    // Index operator
+    op = "[]" and path = "core::ops::index::Index" and method = "index" and borrows = 1
   )
 }
 

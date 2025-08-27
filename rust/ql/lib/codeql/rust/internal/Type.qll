@@ -47,6 +47,8 @@ newtype TType =
   TImplTraitType(ImplTraitTypeRepr impl) or
   TDynTraitType(Trait t) { t = any(DynTraitTypeRepr dt).getTrait() } or
   TSliceType() or
+  TNeverType() or
+  TPtrType() or
   TTupleTypeParameter(int arity, int i) { exists(TTuple(arity)) and i in [0 .. arity - 1] } or
   TTypeParamTypeParameter(TypeParam t) or
   TAssociatedTypeTypeParameter(TypeAlias t) { any(TraitItemNode trait).getAnAssocItem() = t } or
@@ -57,7 +59,8 @@ newtype TType =
   } or
   TRefTypeParameter() or
   TSelfTypeParameter(Trait t) or
-  TSliceTypeParameter()
+  TSliceTypeParameter() or
+  TPtrTypeParameter()
 
 private predicate implTraitTypeParam(ImplTraitTypeRepr implTrait, int i, TypeParam tp) {
   implTrait.isInReturnPos() and
@@ -374,6 +377,33 @@ class SliceType extends Type, TSliceType {
   override Location getLocation() { result instanceof EmptyLocation }
 }
 
+class NeverType extends Type, TNeverType {
+  override StructField getStructField(string name) { none() }
+
+  override TupleField getTupleField(int i) { none() }
+
+  override TypeParameter getPositionalTypeParameter(int i) { none() }
+
+  override string toString() { result = "!" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
+class PtrType extends Type, TPtrType {
+  override StructField getStructField(string name) { none() }
+
+  override TupleField getTupleField(int i) { none() }
+
+  override TypeParameter getPositionalTypeParameter(int i) {
+    i = 0 and
+    result = TPtrTypeParameter()
+  }
+
+  override string toString() { result = "*" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
 /** A type parameter. */
 abstract class TypeParameter extends Type {
   override StructField getStructField(string name) { none() }
@@ -525,6 +555,12 @@ class RefTypeParameter extends TypeParameter, TRefTypeParameter {
 /** An implicit slice type parameter. */
 class SliceTypeParameter extends TypeParameter, TSliceTypeParameter {
   override string toString() { result = "[T]" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
+class PtrTypeParameter extends TypeParameter, TPtrTypeParameter {
+  override string toString() { result = "*T" }
 
   override Location getLocation() { result instanceof EmptyLocation }
 }

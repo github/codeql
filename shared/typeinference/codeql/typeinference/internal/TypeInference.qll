@@ -494,6 +494,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
   module Make2<InputSig2 Input2> {
     private import Input2
 
+    final private class FinalTypeMention = TypeMention;
+
+    final class TypeMentionTypeTree extends FinalTypeMention {
+      Type getTypeAt(TypePath path) { result = this.resolveTypeAt(path) }
+    }
+
     /** Gets the type at the empty path of `tm`. */
     bindingset[tm]
     pragma[inline_late]
@@ -502,7 +508,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     }
 
     /** Provides the input to `IsInstantiationOf`. */
-    signature module IsInstantiationOfInputSig<HasTypeTreeSig App> {
+    signature module IsInstantiationOfInputSig<HasTypeTreeSig App, HasTypeTreeSig Constraint> {
       /**
        * Holds if `abs` is a type abstraction, `tm` occurs in the scope of
        * `abs`, and `app` is potentially an application/instantiation of `abs`.
@@ -523,46 +529,45 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * accessing the `bar` method of `foo` potentially instantiates the `impl`
        * block with a type argument for `A`.
        */
-      predicate potentialInstantiationOf(App app, TypeAbstraction abs, TypeMention tm);
+      predicate potentialInstantiationOf(App app, TypeAbstraction abs, Constraint tm);
 
       /**
        * Holds if `constraint` might occur as the third argument of
        * `potentialInstantiationOf`. Defaults to simply projecting the third
        * argument of `potentialInstantiationOf`.
        */
-      default predicate relevantTypeMention(TypeMention tm) { potentialInstantiationOf(_, _, tm) }
+      default predicate relevantTypeMention(Constraint tm) { potentialInstantiationOf(_, _, tm) }
     }
 
     /**
      * Provides functionality for determining if a type is a possible
      * instantiation of a type mention containing type parameters.
      */
-    module IsInstantiationOf<HasTypeTreeSig App, IsInstantiationOfInputSig<App> Input> {
+    module IsInstantiationOf<
+      HasTypeTreeSig App, HasTypeTreeSig Constraint,
+      IsInstantiationOfInputSig<App, Constraint> Input>
+    {
       private import Input
 
       /** Gets the `i`th path in `tm` per some arbitrary order. */
       pragma[nomagic]
-      private TypePath getNthPath(TypeMention tm, int i) {
+      private TypePath getNthPath(Constraint tm, int i) {
         result =
-          rank[i + 1](TypePath path |
-            exists(tm.resolveTypeAt(path)) and relevantTypeMention(tm)
-          |
-            path
-          )
+          rank[i + 1](TypePath path | exists(tm.getTypeAt(path)) and relevantTypeMention(tm) | path)
       }
 
       pragma[nomagic]
       private Type resolveNthTypeAt(
-        App app, TypeAbstraction abs, TypeMention tm, int i, TypePath path
+        App app, TypeAbstraction abs, Constraint tm, int i, TypePath path
       ) {
         potentialInstantiationOf(app, abs, tm) and
         path = getNthPath(tm, i) and
-        result = tm.resolveTypeAt(path)
+        result = tm.getTypeAt(path)
       }
 
       pragma[nomagic]
       private predicate satisfiesConcreteTypesFromIndex(
-        App app, TypeAbstraction abs, TypeMention tm, int i
+        App app, TypeAbstraction abs, Constraint tm, int i
       ) {
         exists(Type t, TypePath path |
           t = resolveNthTypeAt(app, abs, tm, i, path) and
@@ -574,7 +579,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       /** Holds if all the concrete types in `tm` also occur in `app`. */
       pragma[nomagic]
-      private predicate satisfiesConcreteTypes(App app, TypeAbstraction abs, TypeMention tm) {
+      private predicate satisfiesConcreteTypes(App app, TypeAbstraction abs, Constraint tm) {
         satisfiesConcreteTypesFromIndex(app, abs, tm, max(int i | exists(getNthPath(tm, i))))
       }
 
@@ -592,14 +597,14 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * arbitrary order, if any.
        */
       pragma[nomagic]
-      private TypePath getNthTypeParameterPath(TypeMention tm, TypeParameter tp, int i) {
+      private TypePath getNthTypeParameterPath(Constraint tm, TypeParameter tp, int i) {
         result =
-          rank[i + 1](TypePath path | tp = tm.resolveTypeAt(path) and relevantTypeMention(tm) | path)
+          rank[i + 1](TypePath path | tp = tm.getTypeAt(path) and relevantTypeMention(tm) | path)
       }
 
       pragma[nomagic]
       private predicate typeParametersEqualFromIndexBase(
-        App app, TypeAbstraction abs, TypeMention tm, TypeParameter tp, TypePath path
+        App app, TypeAbstraction abs, Constraint tm, TypeParameter tp, TypePath path
       ) {
         path = getNthTypeParameterPath(tm, tp, 0) and
         satisfiesConcreteTypes(app, abs, tm) and
@@ -609,7 +614,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       pragma[nomagic]
       private predicate typeParametersEqualFromIndex(
-        App app, TypeAbstraction abs, TypeMention tm, TypeParameter tp, Type t, int i
+        App app, TypeAbstraction abs, Constraint tm, TypeParameter tp, Type t, int i
       ) {
         exists(TypePath path |
           t = app.getTypeAt(path) and
@@ -623,7 +628,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       private predicate typeParametersEqual(
-        App app, TypeAbstraction abs, TypeMention tm, TypeParameter tp
+        App app, TypeAbstraction abs, Constraint tm, TypeParameter tp
       ) {
         satisfiesConcreteTypes(app, abs, tm) and
         tp = getNthTypeParameter(abs, _) and
@@ -639,7 +644,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       private predicate typeParametersHaveEqualInstantiationFromIndex(
-        App app, TypeAbstraction abs, TypeMention tm, int i
+        App app, TypeAbstraction abs, Constraint tm, int i
       ) {
         exists(TypeParameter tp | tp = getNthTypeParameter(abs, i) |
           typeParametersEqual(app, abs, tm, tp) and
@@ -662,7 +667,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * - `Pair<int, string>` is _not_ an instantiation of `Pair<string, string>`
        */
       pragma[nomagic]
-      predicate isInstantiationOf(App app, TypeAbstraction abs, TypeMention tm) {
+      predicate isInstantiationOf(App app, TypeAbstraction abs, Constraint tm) {
         // We only need to check equality if the concrete types are satisfied.
         satisfiesConcreteTypes(app, abs, tm) and
         // Check if all the places where the same type parameter occurs in `tm`
@@ -684,12 +689,33 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * Holds if `app` is _not_ a possible instantiation of `tm`.
        */
       pragma[nomagic]
-      predicate isNotInstantiationOf(App app, TypeAbstraction abs, TypeMention tm) {
+      predicate isNotInstantiationOf(App app, TypeAbstraction abs, Constraint tm) {
         // `app` and `tm` differ on a concrete type
         exists(Type t, TypePath path |
           t = resolveNthTypeAt(app, abs, tm, _, path) and
           not t = abs.getATypeParameter() and
           not path.isEmpty() and
+          app.getTypeAt(path) != t
+        )
+        // or
+        // // `app` uses inconsistent type parameter instantiations
+        // exists(TypeParameter tp, Type t1, Type t2 |
+        //   potentialInstantiationOf(app, abs, tm) and
+        //   t1 = app.getTypeAt(getNthTypeParameterPath(tm, tp, _)) and
+        //   t2 = app.getTypeAt(getNthTypeParameterPath(tm, tp, _)) and
+        //   t1 != t2
+        // )
+      }
+
+      /**
+       * Holds if `app` is _not_ a possible instantiation of `tm`.
+       */
+      pragma[nomagic]
+      predicate isNotInstantiationOfStrict(App app, TypeAbstraction abs, Constraint tm) {
+        // `app` and `tm` differ on a concrete type
+        exists(Type t, TypePath path |
+          t = resolveNthTypeAt(app, abs, tm, _, path) and
+          not t = abs.getATypeParameter() and
           app.getTypeAt(path) != t
         )
         // or
@@ -722,14 +748,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
       }
 
-      final private class FinalTypeMention = TypeMention;
-
-      final private class TypeMentionTypeTree extends FinalTypeMention {
-        Type getTypeAt(TypePath path) { result = this.resolveTypeAt(path) }
-      }
-
       private module IsInstantiationOfInput implements
-        IsInstantiationOfInputSig<TypeMentionTypeTree>
+        IsInstantiationOfInputSig<TypeMentionTypeTree, TypeMentionTypeTree>
       {
         pragma[nomagic]
         private predicate typeCondition(
@@ -746,7 +766,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         }
 
         predicate potentialInstantiationOf(
-          TypeMentionTypeTree constraint, TypeAbstraction abs, TypeMention condition
+          TypeMentionTypeTree constraint, TypeAbstraction abs, TypeMentionTypeTree condition
         ) {
           exists(Type type |
             typeConstraint(type, constraint) and typeCondition(type, abs, condition)
@@ -770,7 +790,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           conditionSatisfiesConstraint(abs, condition, midConstraint) and
           // NOTE: `midAbs` describe the free type variables in `midCondition`, hence
           // we use that for instantiation check.
-          IsInstantiationOf<TypeMentionTypeTree, IsInstantiationOfInput>::isInstantiationOf(midConstraint,
+          IsInstantiationOf<TypeMentionTypeTree, TypeMentionTypeTree, IsInstantiationOfInput>::isInstantiationOf(midConstraint,
             midAbs, midCondition)
         |
           conditionSatisfiesConstraintTypeAt(midAbs, midCondition, constraint, path, t) and
@@ -934,8 +954,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         relevantConstraint(term, constraint)
       }
 
-      private module IsInstantiationOfInput implements IsInstantiationOfInputSig<HasTypeTree> {
-        predicate potentialInstantiationOf(HasTypeTree tt, TypeAbstraction abs, TypeMention cond) {
+      private module IsInstantiationOfInput implements
+        IsInstantiationOfInputSig<HasTypeTree, TypeMentionTypeTree>
+      {
+        predicate potentialInstantiationOf(
+          HasTypeTree tt, TypeAbstraction abs, TypeMentionTypeTree cond
+        ) {
           exists(Type constraint, Type type |
             hasTypeConstraint(tt, type, constraint) and
             rootTypesSatisfaction(type, constraint, abs, cond, _) and
@@ -944,7 +968,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           )
         }
 
-        predicate relevantTypeMention(TypeMention constraint) {
+        predicate relevantTypeMention(TypeMentionTypeTree constraint) {
           rootTypesSatisfaction(_, _, _, constraint, _)
         }
       }
@@ -970,8 +994,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           // one where the type instantiates the precondition.
           if multipleConstraintImplementations(type, constraint)
           then
-            IsInstantiationOf<HasTypeTree, IsInstantiationOfInput>::isInstantiationOf(tt, abs,
-              condition)
+            IsInstantiationOf<HasTypeTree, TypeMentionTypeTree, IsInstantiationOfInput>::isInstantiationOf(tt,
+              abs, condition)
           else any()
         )
       }

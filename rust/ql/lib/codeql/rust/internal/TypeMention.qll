@@ -12,6 +12,7 @@ abstract class TypeMention extends AstNode {
   abstract Type resolveTypeAt(TypePath path);
 
   /** Gets the type that this node resolves to, if any. */
+  pragma[nomagic]
   final Type resolveType() { result = this.resolveTypeAt(TypePath::nil()) }
 }
 
@@ -327,6 +328,81 @@ class SelfTypeParameterMention extends TypeMention instanceof Name {
   }
 }
 
+pragma[nomagic]
+Type resolveImplSelfType(Impl i, TypePath path) {
+  result = i.getSelfTy().(TypeMention).resolveTypeAt(path)
+}
+
+pragma[nomagic]
+Type resolveImplType(ImplOrTraitItemNode i, TypePath path) {
+  result = resolveImplSelfType(i, path)
+  or
+  result = TSelfTypeParameter(i) and path.isEmpty()
+}
+
+/** Gets the type at `path` of the implicitly typed `self` parameter. */
+pragma[nomagic]
+private Type resolveSelfType(SelfParam self, TypePath path) {
+  exists(ImplOrTraitItemNode i, Function f |
+    f = i.getAnAssocItem() and
+    self = f.getParamList().getSelfParam() and
+    result = resolveImplType(i, path)
+  )
+}
+
+/** Gets the type at `path` of the implicitly typed `self` parameter. */
+pragma[nomagic]
+private Type inferImplicitSelfType(SelfParam self, TypePath path) {
+  exists(TypePath suffix, Type t |
+    t = resolveSelfType(self, suffix) and
+    result = getRefAdjustImplicitSelfType(self, suffix, t, path)
+  )
+}
+
+/**
+ * Gets the type of the implicitly typed `self` parameter, taking into account
+ * whether the parameter is passed by value or by reference.
+ */
+bindingset[self, suffix, t]
+pragma[inline_late]
+private Type getRefAdjustImplicitSelfType(SelfParam self, TypePath suffix, Type t, TypePath path) {
+  not self.hasTypeRepr() and
+  (
+    if self.isRef()
+    then
+      // `fn f(&self, ...)`
+      path.isEmpty() and
+      result = TRefType()
+      or
+      path = TypePath::cons(TRefTypeParameter(), suffix) and
+      result = t
+    else (
+      // `fn f(self, ...)`
+      path = suffix and
+      result = t
+    )
+  )
+}
+
+class SelfParameterImplicitMention extends TypeMention instanceof SelfParam {
+  SelfParameterImplicitMention() { not super.hasTypeRepr() }
+
+  override Type resolveTypeAt(TypePath typePath) { result = inferImplicitSelfType(this, typePath) }
+}
+
+pragma[nomagic]
+TypeMention getSelfParamTypeMention(SelfParam self) {
+  result = self.(SelfParameterImplicitMention)
+  or
+  result = self.getTypeRepr()
+}
+
+// pragma[nomagic]
+// Type resolveSelfParamType(SelfParam self, TypePath path) {
+//   result = getSelfParamTypeMention(self.(SelfParameterImplicitMention).resolveTypeAt(path)
+//   or
+//   result = self.getTypeRepr().(TypeMention).resolveTypeAt(path)
+// }
 class DynTraitTypeReprMention extends TypeMention instanceof DynTraitTypeRepr {
   private DynTraitType dynType;
 
@@ -384,6 +460,22 @@ class DynTypeBoundListMention extends TypeMention instanceof TypeBoundList {
       trait = tp.getTrait() and
       path = TypePath::singleton(tp) and
       result = tp.getTraitTypeParameter()
+    )
+  }
+}
+
+class NeverTypeReprMention extends TypeMention, NeverTypeRepr {
+  override Type resolveTypeAt(TypePath path) { result = TNeverType() and path.isEmpty() }
+}
+
+class PtrTypeReprMention extends TypeMention instanceof PtrTypeRepr {
+  override Type resolveTypeAt(TypePath path) {
+    path.isEmpty() and
+    result = TPtrType()
+    or
+    exists(TypePath suffix |
+      result = super.getTypeRepr().(TypeMention).resolveTypeAt(suffix) and
+      path = TypePath::cons(TPtrTypeParameter(), suffix)
     )
   }
 }

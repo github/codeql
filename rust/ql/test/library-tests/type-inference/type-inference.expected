@@ -2200,6 +2200,7 @@ inferType
 | main.rs:1078:43:1078:82 | MacroExpr |  | main.rs:1075:15:1075:17 | Snd |
 | main.rs:1078:50:1078:81 | "PairNone has no second elemen... |  | file://:0:0:0:0 | & |
 | main.rs:1078:50:1078:81 | "PairNone has no second elemen... | &T | {EXTERNAL LOCATION} | str |
+| main.rs:1078:50:1078:81 | ...::panic_fmt(...) |  | file://:0:0:0:0 | ! |
 | main.rs:1078:50:1078:81 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1078:50:1078:81 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1078:50:1078:81 | MacroExpr |  | main.rs:1075:15:1075:17 | Snd |
@@ -2211,6 +2212,7 @@ inferType
 | main.rs:1079:43:1079:81 | MacroExpr |  | main.rs:1075:15:1075:17 | Snd |
 | main.rs:1079:50:1079:80 | "PairFst has no second element... |  | file://:0:0:0:0 | & |
 | main.rs:1079:50:1079:80 | "PairFst has no second element... | &T | {EXTERNAL LOCATION} | str |
+| main.rs:1079:50:1079:80 | ...::panic_fmt(...) |  | file://:0:0:0:0 | ! |
 | main.rs:1079:50:1079:80 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1079:50:1079:80 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1079:50:1079:80 | MacroExpr |  | main.rs:1075:15:1075:17 | Snd |
