@@ -179,9 +179,8 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
         //       configuration. In that case, the results of this configuration
         //       are typically in the same file as the final alert.
         if
-          Config::observeDiffInformedIncrementalMode() and
-          AlertFiltering::diffInformationAvailable()
-        then AlertFiltering::locationIsInDiff(Config::getASelectedSourceLocation(source))
+          Config::observeDiffInformedIncrementalMode()
+        then AlertFiltering::diffInformationAvailable() implies AlertFiltering::locationIsInDiff(Config::getASelectedSourceLocation(source))
         else (
           // If we are in base-only global evaluation, do not filter out any sources.
           not isEvaluatingInOverlay()
@@ -200,15 +199,18 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
           Config::isSink(sink)
         ) and
         // See the comments in `isFilteredSource` for the reasoning behind the following.
-        if
-          Config::observeDiffInformedIncrementalMode() and
-          AlertFiltering::diffInformationAvailable()
-        then AlertFiltering::locationIsInDiff(Config::getASelectedSinkLocation(sink))
+          if
+          Config::observeDiffInformedIncrementalMode()
+        then AlertFiltering::diffInformationAvailable() implies AlertFiltering::locationIsInDiff(Config::getASelectedSinkLocation(sink))
         else (
+          // If we are in base-only global evaluation, do not filter out any sources.
           not isEvaluatingInOverlay()
           or
+          // If we are in global evaluation with an overlay present, restrict
+          // sources to those visible in the overlay or
           isOverlayNode(sink)
         )
+
       }
 
       private predicate hasFilteredSource() { isFilteredSource(_) }
