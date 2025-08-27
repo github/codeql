@@ -50,12 +50,7 @@ impl<'a> Extractor<'a> {
         }
     }
 
-    fn extract(
-        &mut self,
-        rust_analyzer: &RustAnalyzer,
-        file: &Path,
-        source_kind: SourceKind,
-    ) {
+    fn extract(&mut self, rust_analyzer: &RustAnalyzer, file: &Path, source_kind: SourceKind) {
         self.archiver.archive(file);
         let before_parse = Instant::now();
         let ParseResult {
@@ -118,11 +113,7 @@ impl<'a> Extractor<'a> {
         vfs: &Vfs,
         source_kind: SourceKind,
     ) {
-        self.extract(
-            &RustAnalyzer::new(vfs, semantics),
-            file,
-            source_kind,
-        );
+        self.extract(&RustAnalyzer::new(vfs, semantics), file, source_kind);
     }
 
     pub fn extract_without_semantics(
@@ -131,11 +122,7 @@ impl<'a> Extractor<'a> {
         source_kind: SourceKind,
         err: RustAnalyzerNoSemantics,
     ) {
-        self.extract(
-            &RustAnalyzer::from(err),
-            file,
-            source_kind,
-        );
+        self.extract(&RustAnalyzer::from(err), file, source_kind);
     }
 
     pub fn load_manifest(
@@ -308,12 +295,7 @@ fn main() -> anyhow::Result<()> {
             let semantics = Semantics::new(db);
             for file in files {
                 match extractor.load_source(file, &semantics, vfs) {
-                    Ok(()) => extractor.extract_with_semantics(
-                        file,
-                        &semantics,
-                        vfs,
-                        source_mode,
-                    ),
+                    Ok(()) => extractor.extract_with_semantics(file, &semantics, vfs, source_mode),
                     Err(e) => extractor.extract_without_semantics(file, source_mode, e),
                 };
             }
@@ -326,12 +308,7 @@ fn main() -> anyhow::Result<()> {
                             .source_root(db)
                             .is_library
                     {
-                        extractor.extract_with_semantics(
-                            file,
-                            &semantics,
-                            vfs,
-                            library_mode,
-                        );
+                        extractor.extract_with_semantics(file, &semantics, vfs, library_mode);
                         extractor.archiver.archive(file);
                     }
                 }
