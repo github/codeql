@@ -119,6 +119,7 @@
 | FlexibleConstructors.java:82:7:82:7 | G | 10 |     var tmp = input != null ? input : "default"; |
 | FlexibleConstructors.java:82:7:82:7 | G | 11 |     var string = tmp + "_initialized"; |
 | FlexibleConstructors.java:82:7:82:7 | G | 12 |     super(); |
-| FlexibleConstructors.java:82:7:82:7 | G | 13 |     this.instance_val = string; |
-| FlexibleConstructors.java:82:7:82:7 | G | 14 |   } |
-| FlexibleConstructors.java:82:7:82:7 | G | 15 | } |
+| FlexibleConstructors.java:82:7:82:7 | G | 13 |     <obinit>(); |
+| FlexibleConstructors.java:82:7:82:7 | G | 14 |     this.instance_val = string; |
+| FlexibleConstructors.java:82:7:82:7 | G | 15 |   } |
+| FlexibleConstructors.java:82:7:82:7 | G | 16 | } |
