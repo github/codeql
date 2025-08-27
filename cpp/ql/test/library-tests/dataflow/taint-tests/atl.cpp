@@ -1266,7 +1266,7 @@ namespace Microsoft {
 
     ComPtr();
     ComPtr(const ComPtr &);
-    ComPtr(&&other);
+    ComPtr(ComPtr &&);
 
     template <typename U>
     ComPtr(U *);

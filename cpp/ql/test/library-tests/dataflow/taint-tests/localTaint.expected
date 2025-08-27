@@ -1305,6 +1305,8 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | atl.cpp:1324:9:1324:10 | ref arg p2 | atl.cpp:1328:1:1328:1 | p2 |  |
 | atl.cpp:1324:12:1324:14 | call to Get | atl.cpp:1324:8:1324:16 | * ... | TAINT |
 | atl.cpp:1326:34:1326:42 | call to move | atl.cpp:1326:34:1326:47 | call to ComPtr | TAINT |
+| atl.cpp:1326:34:1326:42 | ref arg call to move | atl.cpp:1326:44:1326:45 | p1 [inner post update] |  |
+| atl.cpp:1326:34:1326:42 | ref arg call to move | atl.cpp:1328:1:1328:1 | p1 |  |
 | atl.cpp:1326:34:1326:47 | call to ComPtr | atl.cpp:1327:9:1327:10 | p3 |  |
 | atl.cpp:1326:34:1326:47 | call to ComPtr | atl.cpp:1328:1:1328:1 | p3 |  |
 | atl.cpp:1326:44:1326:45 | p1 | atl.cpp:1326:34:1326:42 | call to move | TAINT |
