@@ -9,6 +9,9 @@ import semmle.code.cpp.File
  * A precompiled header (PCH) file created during the build process.
  */
 class PchFile extends @pch {
+  /**
+   *  Gets a textual representation of this element.
+   */
   string toString() { result = "PCH for " + this.getHeaderFile() }
 
   /**
