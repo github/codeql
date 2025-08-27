@@ -32,7 +32,7 @@ Therefore, if a method is unable to perform the expected operation then its resp
 </overview>
 <recommendation>
 <p>If the method always raises as exception, then if it is intended to be an abstract method, the <code>@abstractmethod</code> decorator should be used.
-Otherwise, ensure that the method raises an exception of the correct type, or remove the method if the operation dos not need to be supported.
+Otherwise, ensure that the method raises an exception of the correct type, or remove the method if the operation does not need to be supported.
 </p>
 
 </recommendation>
