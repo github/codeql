@@ -7,12 +7,14 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/github/codeql-go/extractor/util"
 )
 
 var pathTransformer *ProjectLayout
 
 func init() {
-	pt := os.Getenv("SEMMLE_PATH_TRANSFORMER")
+	pt := util.Getenv("CODEQL_PATH_TRANSFORMER", "SEMMLE_PATH_TRANSFORMER")
 	if pt != "" {
 		ptf, err := os.Open(pt)
 		if err != nil {
@@ -69,7 +71,7 @@ func srcArchive() (string, error) {
 	return srcArchive, nil
 }
 
-// TransformPath applies the transformations specified by `SEMMLE_PATH_TRANSFORMER` (if any) to the
+// TransformPath applies the transformations specified by `CODEQL_PATH_TRANSFORMER` (if any) to the
 // given path
 func TransformPath(path string) string {
 	if pathTransformer != nil {

@@ -10,6 +10,7 @@ go_library(
     ],
     importpath = "github.com/github/codeql-go/extractor/srcarchive",
     visibility = ["//visibility:public"],
+    deps = ["//go/extractor/util"],
 )
 
 go_test(
