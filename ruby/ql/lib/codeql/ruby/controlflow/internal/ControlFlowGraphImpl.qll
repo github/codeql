@@ -50,17 +50,13 @@ private module CfgInput implements CfgShared::InputSig<Location> {
 
   SuccessorType getAMatchingSuccessorType(Completion c) { result = c.getAMatchingSuccessorType() }
 
-  predicate successorTypeIsSimple(SuccessorType t) {
-    t instanceof Cfg::SuccessorTypes::NormalSuccessor
-  }
+  predicate successorTypeIsSimple(SuccessorType t) { t instanceof Cfg::DirectSuccessor }
 
-  predicate successorTypeIsCondition(SuccessorType t) {
-    t instanceof Cfg::SuccessorTypes::ConditionalSuccessor
-  }
+  predicate successorTypeIsCondition(SuccessorType t) { t instanceof Cfg::ConditionalSuccessor }
 
   predicate isAbnormalExitType(SuccessorType t) {
-    t instanceof Cfg::SuccessorTypes::RaiseSuccessor or
-    t instanceof Cfg::SuccessorTypes::ExitSuccessor
+    t instanceof Cfg::ExceptionSuccessor or
+    t instanceof Cfg::ExitSuccessor
   }
 
   private predicate id(Ruby::AstNode node1, Ruby::AstNode node2) { node1 = node2 }
@@ -1528,21 +1524,3 @@ CfgScope getCfgScope(AstNode n) {
     pragma[only_bind_into](result) = getCfgScopeImpl(n0)
   )
 }
-
-cached
-private module Cached {
-  cached
-  newtype TSuccessorType =
-    TSuccessorSuccessor() or
-    TBooleanSuccessor(boolean b) { b in [false, true] } or
-    TMatchingSuccessor(boolean isMatch) { isMatch in [false, true] } or
-    TReturnSuccessor() or
-    TBreakSuccessor() or
-    TNextSuccessor() or
-    TRedoSuccessor() or
-    TRetrySuccessor() or
-    TRaiseSuccessor() or // TODO: Add exception type?
-    TExitSuccessor()
-}
-
-import Cached

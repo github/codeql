@@ -12,7 +12,6 @@ private import codeql.ruby.ast.internal.Control
 private import codeql.ruby.controlflow.ControlFlowGraph
 private import ControlFlowGraphImpl as CfgImpl
 private import NonReturning
-private import SuccessorTypes
 
 private newtype TCompletion =
   TSimpleCompletion() or
@@ -267,7 +266,7 @@ abstract private class NonNestedNormalCompletion extends NormalCompletion { }
 
 /** A simple (normal) completion. */
 class SimpleCompletion extends NonNestedNormalCompletion, TSimpleCompletion {
-  override NormalSuccessor getAMatchingSuccessorType() { any() }
+  override DirectSuccessor getAMatchingSuccessorType() { any() }
 
   override string toString() { result = "simple" }
 }
@@ -377,7 +376,7 @@ class NextCompletion extends Completion {
     this = TNestedCompletion(_, TNextCompletion(), _)
   }
 
-  override NextSuccessor getAMatchingSuccessorType() { any() }
+  override ContinueSuccessor getAMatchingSuccessorType() { any() }
 
   override string toString() {
     // `NestedCompletion` defines `toString()` for the other case
@@ -431,7 +430,7 @@ class RaiseCompletion extends Completion {
     this = TNestedCompletion(_, TRaiseCompletion(), _)
   }
 
-  override RaiseSuccessor getAMatchingSuccessorType() { any() }
+  override ExceptionSuccessor getAMatchingSuccessorType() { any() }
 
   override string toString() {
     // `NestedCompletion` defines `toString()` for the other case
