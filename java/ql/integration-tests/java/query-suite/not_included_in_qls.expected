@@ -186,7 +186,6 @@ ql/java/ql/src/Violations of Best Practice/Magic Constants/MagicNumbersUseConsta
 ql/java/ql/src/Violations of Best Practice/Magic Constants/MagicStringsUseConstant.ql
 ql/java/ql/src/Violations of Best Practice/Naming Conventions/ConfusingOverridesNames.ql
 ql/java/ql/src/Violations of Best Practice/Naming Conventions/LocalShadowsField.ql
-ql/java/ql/src/Violations of Best Practice/Undesirable Calls/CallsToSystemExit.ql
 ql/java/ql/src/Violations of Best Practice/Undesirable Calls/GarbageCollection.ql
 ql/java/ql/src/Violations of Best Practice/legacy/AutoBoxing.ql
 ql/java/ql/src/Violations of Best Practice/legacy/FinallyMayNotComplete.ql
