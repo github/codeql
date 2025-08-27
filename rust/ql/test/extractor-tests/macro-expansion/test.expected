@@ -51,5 +51,4 @@ unexpanded_macro_calls
 | macro_expansion.rs:56:9:56:31 | concat!... |
 | macro_expansion.rs:63:9:63:32 | include_str!... |
 warnings
-| included/included.rs:1:1:1:1 | semantic analyzer unavailable (not loaded as its own module, probably included by `!include`) |
-| macro_expansion.rs:56:9:56:31 | macro expansion failed: could not resolve macro 'concat' |
+| macro_expansion.rs:56:9:56:31 | macro expansion failed for 'concat' |

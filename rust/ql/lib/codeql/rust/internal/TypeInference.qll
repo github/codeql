@@ -374,6 +374,20 @@ private module CertainTypeInference {
     or
     result = inferLiteralType(n, path, true)
     or
+    result = inferRefNodeType(n) and
+    path.isEmpty()
+    or
+    result = inferTupleRootType(n) and
+    path.isEmpty()
+    or
+    result = inferAsyncBlockExprRootType(n) and
+    path.isEmpty()
+    or
+    result = inferArrayExprType(n) and
+    path.isEmpty()
+    or
+    result = inferCastExprType(n, path)
+    or
     infersCertainTypeAt(n, path, result.getATypeParameter())
   }
 
@@ -405,7 +419,7 @@ private module CertainTypeInference {
     inferCertainType(n, path) != t
     or
     // If we infer that `n` has _some_ type at `T1.T2....Tn`, and we also
-    // know that `n` certainly has type `certainType` at `T1.T2...Ti`, `i <=0 < n`,
+    // know that `n` certainly has type `certainType` at `T1.T2...Ti`, `0 <= i < n`,
     // then it must be the case that `T(i+1)` is a type parameter of `certainType`,
     // otherwise there is a conflict.
     //
@@ -2366,29 +2380,17 @@ private module Cached {
       or
       result = inferStructExprType(n, path)
       or
-      result = inferTupleRootType(n) and
-      path.isEmpty()
-      or
       result = inferPathExprType(n, path)
       or
       result = inferCallExprBaseType(n, path)
       or
       result = inferFieldExprType(n, path)
       or
-      result = inferRefNodeType(n) and
-      path.isEmpty()
-      or
       result = inferTryExprType(n, path)
       or
       result = inferLiteralType(n, path, false)
       or
-      result = inferAsyncBlockExprRootType(n) and
-      path.isEmpty()
-      or
       result = inferAwaitExprType(n, path)
-      or
-      result = inferArrayExprType(n) and
-      path.isEmpty()
       or
       result = inferRangeExprType(n) and
       path.isEmpty()
@@ -2400,8 +2402,6 @@ private module Cached {
       result = inferDynamicCallExprType(n, path)
       or
       result = inferClosureExprType(n, path)
-      or
-      result = inferCastExprType(n, path)
       or
       result = inferStructPatType(n, path)
       or
