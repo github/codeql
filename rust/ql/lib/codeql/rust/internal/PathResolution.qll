@@ -233,7 +233,7 @@ abstract class ItemNode extends Locatable {
     // a trait has access to the associated items of its supertraits
     this =
       any(TraitItemNodeImpl trait |
-        result = trait.resolveABound().getASuccessor(name, kind) and
+        result = trait.resolveABoundCand().getASuccessor(name, kind) and
         kind.isExternalOrBoth() and
         result instanceof AssocItemNode and
         not trait.hasAssocItem(name)
@@ -241,7 +241,7 @@ abstract class ItemNode extends Locatable {
     or
     // items made available by an implementation where `this` is the implementing type
     exists(ItemNode node |
-      this = node.(ImplItemNodeImpl).resolveSelfTy() and
+      this = node.(ImplItemNodeImpl).resolveSelfTyCand() and
       result = node.getASuccessor(name, kind) and
       kind.isExternalOrBoth() and
       result instanceof AssocItemNode
@@ -250,7 +250,7 @@ abstract class ItemNode extends Locatable {
     // trait items with default implementations made available in an implementation
     exists(ImplItemNodeImpl impl, ItemNode trait |
       this = impl and
-      trait = impl.resolveTraitTy() and
+      trait = impl.resolveTraitTyCand() and
       result = trait.getASuccessor(name, kind) and
       result.(AssocItemNode).hasImplementation() and
       kind.isExternalOrBoth() and
@@ -258,14 +258,18 @@ abstract class ItemNode extends Locatable {
     )
     or
     // type parameters have access to the associated items of its bounds
-    result = this.(TypeParamItemNodeImpl).resolveABound().getASuccessor(name, kind).(AssocItemNode) and
+    result =
+      this.(TypeParamItemNodeImpl).resolveABoundCand().getASuccessor(name, kind).(AssocItemNode) and
     kind.isExternalOrBoth()
     or
     result =
-      this.(ImplTraitTypeReprItemNodeImpl).resolveABound().getASuccessor(name, kind).(AssocItemNode) and
+      this.(ImplTraitTypeReprItemNodeImpl)
+          .resolveABoundCand()
+          .getASuccessor(name, kind)
+          .(AssocItemNode) and
     kind.isExternalOrBoth()
     or
-    result = this.(TypeAliasItemNodeImpl).resolveAlias().getASuccessor(name, kind) and
+    result = this.(TypeAliasItemNodeImpl).resolveAliasCand().getASuccessor(name, kind) and
     kind.isExternalOrBoth()
     or
     name = "super" and
@@ -746,7 +750,7 @@ final private class ImplTraitTypeReprItemNode extends TypeItemNode instanceof Im
 
 private class ImplTraitTypeReprItemNodeImpl extends ImplTraitTypeReprItemNode {
   pragma[nomagic]
-  ItemNode resolveABound() { result = resolvePathCand(this.getABoundPath()) }
+  ItemNode resolveABoundCand() { result = resolvePathCand(this.getABoundPath()) }
 }
 
 private class ModuleItemNode extends ModuleLikeNode instanceof Module {
@@ -792,9 +796,9 @@ private class ModuleItemNode extends ModuleLikeNode instanceof Module {
 }
 
 private class ImplItemNodeImpl extends ImplItemNode {
-  TypeItemNode resolveSelfTy() { result = resolvePathCand(this.getSelfPath()) }
+  TypeItemNode resolveSelfTyCand() { result = resolvePathCand(this.getSelfPath()) }
 
-  TraitItemNode resolveTraitTy() { result = resolvePathCand(this.getTraitPath()) }
+  TraitItemNode resolveTraitTyCand() { result = resolvePathCand(this.getTraitPath()) }
 }
 
 private class StructItemNode extends TypeItemNode instanceof Struct {
@@ -889,7 +893,7 @@ final class TraitItemNode extends ImplOrTraitItemNode, TypeItemNode instanceof T
 
 final private class TraitItemNodeImpl extends TraitItemNode {
   pragma[nomagic]
-  ItemNode resolveABound() { result = resolvePathCand(this.getABoundPath()) }
+  ItemNode resolveABoundCand() { result = resolvePathCand(this.getABoundPath()) }
 }
 
 final class TypeAliasItemNode extends TypeItemNode, AssocItemNode instanceof TypeAlias {
@@ -913,7 +917,9 @@ final class TypeAliasItemNode extends TypeItemNode, AssocItemNode instanceof Typ
 
 private class TypeAliasItemNodeImpl extends TypeAliasItemNode instanceof TypeAlias {
   pragma[nomagic]
-  ItemNode resolveAlias() { result = resolvePathCand(super.getTypeRepr().(PathTypeRepr).getPath()) }
+  ItemNode resolveAliasCand() {
+    result = resolvePathCand(super.getTypeRepr().(PathTypeRepr).getPath())
+  }
 }
 
 private class UnionItemNode extends TypeItemNode instanceof Union {
@@ -1053,7 +1059,7 @@ final class TypeParamItemNode extends TypeItemNode instanceof TypeParam {
 final private class TypeParamItemNodeImpl extends TypeParamItemNode instanceof TypeParam {
   /** Gets a where predicate for this type parameter, if any */
   pragma[nomagic]
-  private WherePred getAWherePred() {
+  private WherePred getAWherePredCand() {
     exists(ItemNode declaringItem |
       this = resolvePathCand(getWherePredPath(result)) and
       result = declaringItem.getADescendant() and
@@ -1062,12 +1068,12 @@ final private class TypeParamItemNodeImpl extends TypeParamItemNode instanceof T
   }
 
   pragma[nomagic]
-  TypeBound getTypeBoundAt(int i, int j) {
+  TypeBound getTypeBoundAtCand(int i, int j) {
     exists(TypeBoundList tbl | result = tbl.getBound(j) |
       tbl = super.getTypeBoundList() and i = 0
       or
       exists(WherePred wp |
-        wp = this.getAWherePred() and
+        wp = this.getAWherePredCand() and
         tbl = wp.getTypeBoundList() and
         wp = any(WhereClause wc).getPredicate(i)
       )
@@ -1075,10 +1081,12 @@ final private class TypeParamItemNodeImpl extends TypeParamItemNode instanceof T
   }
 
   pragma[nomagic]
-  Path getABoundPath() { result = this.getTypeBoundAt(_, _).getTypeRepr().(PathTypeRepr).getPath() }
+  Path getABoundPathCand() {
+    result = this.getTypeBoundAtCand(_, _).getTypeRepr().(PathTypeRepr).getPath()
+  }
 
   pragma[nomagic]
-  ItemNode resolveABound() { result = resolvePathCand(this.getABoundPath()) }
+  ItemNode resolveABoundCand() { result = resolvePathCand(this.getABoundPathCand()) }
 }
 
 /** Holds if `item` has the name `name` and is a top-level item inside `f`. */
@@ -1245,7 +1253,10 @@ private predicate crateDependencyEdge(SourceFileItemNode file, string name, Crat
   crateDependency(file, name, dep)
   or
   // As a fallback, give all files access to crates that do not conflict with known dependencies
-  // and declarations.
+  // and declarations. This is in order to workaround incomplete crate dependency information
+  // provided by the extractor, as well as `CrateItemNode.getASourceFile()` being unable to map
+  // a given file to its crate (for example, if the file is `mod` imported inside a macro that the
+  // extractor is unable to expand).
   name = dep.getName() and
   not declaresDirectly(file, TTypeNamespace(), name) and
   not crateDependency(file, name, _)
@@ -1418,7 +1429,7 @@ private ItemNode resolvePathCand0(RelevantPath path, Namespace ns) {
       not any(RelevantPath parent).getQualifier() = path and
       isUnqualifiedSelfPath(path) and
       res instanceof ImplItemNode
-    then result = res.(ImplItemNodeImpl).resolveSelfTy()
+    then result = res.(ImplItemNodeImpl).resolveSelfTyCand()
     else result = res
   )
   or
@@ -1482,6 +1493,9 @@ private predicate pathUsesNamespace(Path p, Namespace n) {
  * Unlike `resolvePath`, this predicate does not attempt to make resolution
  * of qualifiers consistent with resolution of their parents, and should
  * only be used internally within this library.
+ *
+ * Note that the path resolution logic cannot use `resolvePath`, as that would
+ * result in non-monotonic recursion.
  */
 pragma[nomagic]
 private ItemNode resolvePathCand(RelevantPath path) {
@@ -1515,14 +1529,8 @@ ItemNode resolvePath(RelevantPath path) {
   // if `path` is the qualifier of a resolvable `parent`, then we should
   // resolve `path` to something consistent with what `parent` resolves to
   exists(RelevantPath parent |
-    resolvePathCandQualified(path, result, parent, _) = resolvePathParent(path, parent)
+    resolvePathCandQualified(path, result, parent, _) = resolvePath(parent)
   )
-}
-
-pragma[nomagic]
-private ItemNode resolvePathParent(RelevantPath path, RelevantPath parent) {
-  result = resolvePath(parent) and
-  path = parent.getQualifier()
 }
 
 private predicate isUseTreeSubPath(UseTree tree, RelevantPath path) {
