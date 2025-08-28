@@ -6,6 +6,7 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| ir.cpp:2776:25:2776:26 | Constant: (long)... | Instruction 'Constant: (long)...' has no successors in function '$@'. | ir.cpp:2774:6:2774:37 | void test_allocation_with_initializer() | void test_allocation_with_initializer() |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
