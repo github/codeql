@@ -1521,6 +1521,8 @@ module MakeWithSplitting<
     query predicate multipleSuccessors(Node node, SuccessorType t, Node successor) {
       strictcount(getASuccessor(node, t)) > 1 and
       successor = getASuccessor(node, t) and
+      // allow for multiple exception successors
+      not t instanceof ExceptionSuccessor and
       // allow for functions with multiple bodies
       not (t instanceof SimpleSuccessorType and node instanceof EntryNode)
     }
