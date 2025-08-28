@@ -177,6 +177,7 @@ class ElementInitializer extends MethodCall {
  *   }
  * }
  * ```
+ * Introduce a specific spelling error: abbout
  */
 class ObjectCreation extends Call, LateBindableExpr, @object_creation_expr {
   /** Gets the type of the newly created object. */
@@ -258,6 +259,13 @@ class DelegateCreation extends Expr, @delegate_creation_expr {
 
   override string toString() { result = "delegate creation of type " + this.getType().getName() }
 }
+
+/**
+ * A delegate creation.
+ *
+ * Introduce a specific spelling error: abbout
+ */
+class CommentDelegateCreation extends DelegateCreation { }
 
 /**
  * An explicit delegate creation, for example `new D(M)` on line 6 in
