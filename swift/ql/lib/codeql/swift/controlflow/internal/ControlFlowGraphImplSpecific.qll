@@ -57,22 +57,18 @@ module CfgInput implements InputSig<Location> {
    * Hold if `c` represents simple (normal) evaluation of a statement or an
    * expression.
    */
-  predicate successorTypeIsSimple(SuccessorType t) {
-    t instanceof Cfg::SuccessorTypes::NormalSuccessor
-  }
+  predicate successorTypeIsSimple(SuccessorType t) { t instanceof Cfg::DirectSuccessor }
 
   /** Holds if `t` is an abnormal exit type out of a CFG scope. */
-  predicate isAbnormalExitType(SuccessorType t) {
-    t instanceof Cfg::SuccessorTypes::ExceptionSuccessor
-  }
+  predicate isAbnormalExitType(SuccessorType t) { t instanceof Cfg::ExceptionSuccessor }
 
   /** Hold if `t` represents a conditional successor type. */
   predicate successorTypeIsCondition(SuccessorType t) {
-    t instanceof Cfg::SuccessorTypes::BooleanSuccessor or
-    t instanceof Cfg::SuccessorTypes::BreakSuccessor or
-    t instanceof Cfg::SuccessorTypes::ContinueSuccessor or
-    t instanceof Cfg::SuccessorTypes::MatchingSuccessor or
-    t instanceof Cfg::SuccessorTypes::EmptinessSuccessor
+    t instanceof Cfg::BooleanSuccessor or
+    t instanceof Cfg::BreakSuccessor or
+    t instanceof Cfg::ContinueSuccessor or
+    t instanceof Cfg::MatchingSuccessor or
+    t instanceof Cfg::EmptinessSuccessor
   }
 
   /** Holds if `first` is first executed when entering `scope`. */
