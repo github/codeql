@@ -108,8 +108,8 @@ private module Internal {
    */
   cached
   newtype TSsaDefinition =
-    TExplicitDef(ReachableBasicBlock bb, int i, VarDef d, SsaSourceVariable v) {
-      bb.defAt(i, v, d) and
+    TExplicitDef(ReachableBasicBlock bb, int i, VarDef d, SsaSourceVariable v, VarRef lhs) {
+      bb.defAt(i, v, d, lhs) and
       (
         liveAfterDef(bb, i, v) or
         v.isCaptured()
@@ -509,19 +509,22 @@ class SsaDefinition extends TSsaDefinition {
  */
 class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
   override predicate definesAt(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
-    this = TExplicitDef(bb, i, _, v)
+    this = TExplicitDef(bb, i, _, v, _)
   }
 
   /** This SSA definition corresponds to the definition of `v` at `def`. */
-  predicate defines(VarDef def, SsaSourceVariable v) { this = TExplicitDef(_, _, def, v) }
+  predicate defines(VarDef def, SsaSourceVariable v) { this = TExplicitDef(_, _, def, v, _) }
 
   /** Gets the variable definition wrapped by this SSA definition. */
-  VarDef getDef() { this = TExplicitDef(_, _, result, _) }
+  VarDef getDef() { this = TExplicitDef(_, _, result, _, _) }
+
+  /** Gets the variable reference appearing on the left-hand side of this assignment. */
+  VarRef getLhs() { this = TExplicitDef(_, _, _, _, result) }
 
   /** Gets the basic block to which this definition belongs. */
   override ReachableBasicBlock getBasicBlock() { this.definesAt(result, _, _) }
 
-  override SsaSourceVariable getSourceVariable() { this = TExplicitDef(_, _, _, result) }
+  override SsaSourceVariable getSourceVariable() { this = TExplicitDef(_, _, _, result, _) }
 
   override VarDef getAContributingVarDef() { result = this.getDef() }
 
@@ -532,6 +535,8 @@ class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
   }
 
   override string prettyPrintDef() { result = this.getDef().toString() }
+
+  override Location getLocation() { result = this.getLhs().getLocation() }
 
   /**
    * Gets the data flow node representing the incoming value assigned at this definition,
