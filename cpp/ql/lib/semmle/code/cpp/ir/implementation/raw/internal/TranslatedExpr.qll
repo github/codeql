@@ -3884,7 +3884,7 @@ class TranslatedNewExpr extends TranslatedNewOrNewArrayExpr {
   final override Type getTargetType() { result = expr.getAllocatedType().getUnspecifiedType() }
 
   final override TranslatedInitialization getInitialization() {
-    result = getTranslatedInitialization(expr.getInitializer())
+    result = getTranslatedInitialization(expr.getInitializer().getFullyConverted())
   }
 }
 
