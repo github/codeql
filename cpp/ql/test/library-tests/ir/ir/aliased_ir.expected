@@ -20421,7 +20421,10 @@ ir.cpp:
 # 2776|     m2776_6(unknown)        = Chi                           : total:m2775_6, partial:m2776_5
 # 2776|     m2776_7(unknown)        = ^InitializeDynamicAllocation  : &:r2776_4
 # 2776|     r2776_8(long *)         = Convert                       : r2776_4
-# 2776|     m2776_9(long *)         = Store[p2]                     : &:r2776_1, r2776_8
+# 2776|     r2776_9(long)           = Constant[42]                  : 
+# 2776|     m2776_10(long)          = Store[?]                      : &:r2776_8, r2776_9
+# 2776|     m2776_11(unknown)       = Chi                           : total:m2776_7, partial:m2776_10
+# 2776|     m2776_12(long *)        = Store[p2]                     : &:r2776_1, r2776_8
 # 2777|     v2777_1(void)           = NoOp                          : 
 # 2774|     v2774_5(void)           = ReturnVoid                    : 
 # 2774|     v2774_6(void)           = AliasedUse                    : ~m2776_6

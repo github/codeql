@@ -18569,14 +18569,13 @@ ir.cpp:
 # 2776|     mu2776_5(unknown)       = ^CallSideEffect               : ~m?
 # 2776|     mu2776_6(unknown)       = ^InitializeDynamicAllocation  : &:r2776_4
 # 2776|     r2776_7(long *)         = Convert                       : r2776_4
-# 2776|     mu2776_8(long *)        = Store[p2]                     : &:r2776_1, r2776_7
+# 2776|     r2776_8(long)           = Constant[42]                  : 
+# 2776|     mu2776_9(long)          = Store[?]                      : &:r2776_7, r2776_8
+# 2776|     mu2776_10(long *)       = Store[p2]                     : &:r2776_1, r2776_7
 # 2777|     v2777_1(void)           = NoOp                          : 
 # 2774|     v2774_4(void)           = ReturnVoid                    : 
 # 2774|     v2774_5(void)           = AliasedUse                    : ~m?
 # 2774|     v2774_6(void)           = ExitFunction                  : 
-
-# 2776|   Block 1
-# 2776|     r2776_9(long) = Constant[42] : 
 
 ir23.cpp:
 #    1| bool consteval_1()
