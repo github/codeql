@@ -140,7 +140,7 @@ private predicate isNonFallThroughPredecessor(SwitchCase sc, ControlFlowNode pre
 }
 
 private module SuccessorTypes implements SharedGuards::SuccessorTypesSig<SuccessorType> {
-  import SuccessorType
+  import codeql.controlflow.SuccessorType
 }
 
 private module GuardsInput implements SharedGuards::InputSig<Location, ControlFlowNode, BasicBlock> {
