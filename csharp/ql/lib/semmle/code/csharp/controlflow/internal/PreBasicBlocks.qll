@@ -163,8 +163,6 @@ class ConditionBlock extends PreBasicBlock {
 module PreCfg implements BB::CfgSig<Location> {
   class ControlFlowNode = ControlFlowElement;
 
-  class SuccessorType = Cfg::SuccessorType;
-
   class BasicBlock = PreBasicBlock;
 
   class EntryBasicBlock extends BasicBlock {

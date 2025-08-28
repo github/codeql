@@ -79,18 +79,9 @@ private module CfgInput implements CfgShared::InputSig<Location> {
     Impl::scopeLast(scope, last, c)
   }
 
-  class SuccessorType = ST::SuccessorType;
+  private class SuccessorType = ST::SuccessorType;
 
   SuccessorType getAMatchingSuccessorType(Completion c) { result = c.getAMatchingSuccessorType() }
-
-  predicate successorTypeIsSimple(SuccessorType t) { t instanceof ST::DirectSuccessor }
-
-  predicate successorTypeIsCondition(SuccessorType t) { t instanceof ST::ConditionalSuccessor }
-
-  predicate isAbnormalExitType(SuccessorType t) {
-    t instanceof ST::ExceptionSuccessor or
-    t instanceof ST::ExitSuccessor
-  }
 
   int idOfAstNode(AstNode node) { result = node.getId() }
 

@@ -101,13 +101,7 @@ private module Implementation implements CfgShared::InputSig<Location> {
     last(scope.(CompositeAction), e, c)
   }
 
-  predicate successorTypeIsSimple(SuccessorType t) { t instanceof DirectSuccessor }
-
-  predicate successorTypeIsCondition(SuccessorType t) { t instanceof BooleanSuccessor }
-
   SuccessorType getAMatchingSuccessorType(Completion c) { result = c.getAMatchingSuccessorType() }
-
-  predicate isAbnormalExitType(SuccessorType t) { none() }
 
   int idOfAstNode(AstNode node) { none() }
 

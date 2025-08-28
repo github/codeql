@@ -346,8 +346,6 @@ private class EntryBasicBlockAlias = EntryBasicBlock;
 module Cfg implements BB::CfgSig<Location> {
   class ControlFlowNode = ControlFlow::Node;
 
-  class SuccessorType = ControlFlow::SuccessorType;
-
   class BasicBlock = BasicBlockAlias;
 
   class EntryBasicBlock = EntryBasicBlockAlias;

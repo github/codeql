@@ -119,12 +119,8 @@ private class EntryBasicBlockAlias = EntryBasicBlock;
 
 private class ControlFlowNodeAlias = ControlFlowNode;
 
-private class SuccessorTypeAlias = SuccessorType;
-
 module Cfg implements BB::CfgSig<Location> {
   class ControlFlowNode = ControlFlowNodeAlias;
-
-  class SuccessorType = SuccessorTypeAlias;
 
   class BasicBlock = BasicBlockAlias;
 
