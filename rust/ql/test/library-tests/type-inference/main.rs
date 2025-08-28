@@ -121,6 +121,55 @@ mod trait_impl {
     }
 }
 
+mod trait_visibility {
+    // In this test the correct method target depends on which trait is visible.
+
+    mod m {
+        pub trait Foo {
+            // Foo::a_method
+            fn a_method(&self) {
+                println!("foo!");
+            }
+        }
+
+        pub trait Bar {
+            // Bar::a_method
+            fn a_method(&self) {
+                println!("bar!");
+            }
+        }
+
+        pub struct X;
+        impl Foo for X {}
+        impl Bar for X {}
+    }
+
+    use m::X;
+
+    fn main() {
+        let x = X;
+        {
+            use m::Foo;
+            x.a_method(); // $ target=Foo::a_method SPURIOUS: target=Bar::a_method
+        }
+        {
+            use m::Bar;
+            x.a_method(); // $ target=Bar::a_method SPURIOUS: target=Foo::a_method
+        }
+        {
+            use m::Bar as _;
+            x.a_method(); // $ target=Bar::a_method SPURIOUS: target=Foo::a_method
+        }
+        {
+            use m::Bar;
+            use m::Foo;
+            // x.a_method();  // This would be ambiguous
+            Foo::a_method(&x); // $ target=Foo::a_method
+            Bar::a_method(&x); // $ target=Bar::a_method
+        }
+    }
+}
+
 mod method_non_parametric_impl {
     #[derive(Debug)]
     struct MyThing<A> {
