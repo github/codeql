@@ -3,7 +3,6 @@
 private import swift
 private import ControlFlowGraph
 private import internal.ControlFlowGraphImpl as CfgImpl
-private import SuccessorTypes
 private import CfgImpl::BasicBlocks as BasicBlocksImpl
 private import codeql.controlflow.BasicBlock as BB
 
