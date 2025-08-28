@@ -32,5 +32,5 @@ The rule also uses the following logic to determine what an abuse of the annotat
   2. If a package-private member/type is annotated with `@VisibleForTesting`, it's assumed that private access is enough for production code. Therefore the rule alerts when a package-private member/type annotated with `@VisibleForTesting` is used outside its declaring class.
 
 ## References
-- Javadoc: [AssertJ VisibleForTesting](https://javadoc.io/doc/org.assertj/assertj-core/latest/org/assertj/core/util/VisibleForTesting.html).
+- Javadoc: [AssertJ VisibleForTesting](https://javadoc.io/doc/org.assertj/assertj-core/latest/org.assertj.core/org/assertj/core/util/VisibleForTesting.html).
 - Javadoc: [JetBrains VisibleForTesting](https://javadoc.io/doc/org.jetbrains/annotations/22.0.0/org/jetbrains/annotations/VisibleForTesting.html).
