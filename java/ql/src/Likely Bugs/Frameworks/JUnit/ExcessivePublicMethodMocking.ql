@@ -56,7 +56,7 @@ class MockitoMockingMethodCall extends MethodCall {
 }
 
 /*
- * The following from-which-select embodies this pseudocode:
+ * The following from-where-select embodies this pseudocode:
  * - Find a JUnit4TestMethod which:
  *   - for a class that it mocks with a call to `mock`,
  *     - for all methods that the class has, there is a method that this test method mocks.
