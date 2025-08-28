@@ -9,7 +9,7 @@ import Dominance
 private import codeql.controlflow.BasicBlock as BB
 
 private module Input implements BB::InputSig<Location> {
-  import SuccessorType
+  import codeql.controlflow.SuccessorType
 
   /** Hold if `t` represents a conditional successor type. */
   predicate successorTypeIsCondition(SuccessorType t) { none() }
@@ -34,7 +34,7 @@ private module Input implements BB::InputSig<Location> {
     result = getASpecificSuccessor(node, t)
     or
     node.getASuccessor() = result and
-    t instanceof NormalSuccessor and
+    t instanceof DirectSuccessor and
     not result = getASpecificSuccessor(node, _)
   }
 

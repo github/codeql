@@ -143,7 +143,7 @@ private module GuardsInput implements SharedGuards::InputSig<Location> {
   private import java as J
   private import semmle.code.java.dataflow.internal.BaseSSA
   private import semmle.code.java.dataflow.NullGuards as NullGuards
-  import SuccessorType
+  import codeql.controlflow.SuccessorType
 
   class ControlFlowNode = J::ControlFlowNode;
 
