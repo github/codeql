@@ -1,2 +1,2 @@
-query: Likely Bugs/Frameworks/JUnit/ExcessivePublicMethodMocking.ql
+query: Violations of Best Practice/Testing/ExcessivePublicMethodMocking.ql
 postprocess: utils/test/InlineExpectationsTestQuery.ql

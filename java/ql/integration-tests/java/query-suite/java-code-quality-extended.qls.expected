@@ -36,7 +36,6 @@ ql/java/ql/src/Likely Bugs/Concurrency/NonSynchronizedOverride.ql
 ql/java/ql/src/Likely Bugs/Concurrency/ScheduledThreadPoolExecutorZeroThread.ql
 ql/java/ql/src/Likely Bugs/Concurrency/SynchOnBoxedType.ql
 ql/java/ql/src/Likely Bugs/Concurrency/SynchSetUnsynchGet.ql
-ql/java/ql/src/Likely Bugs/Frameworks/JUnit/ExcessivePublicMethodMocking.ql
 ql/java/ql/src/Likely Bugs/Frameworks/JUnit/JUnit5MissingNestedAnnotation.ql
 ql/java/ql/src/Likely Bugs/Inheritance/NoNonFinalInConstructor.ql
 ql/java/ql/src/Likely Bugs/Likely Typos/ContainerSizeCmpZero.ql
@@ -81,6 +80,7 @@ ql/java/ql/src/Violations of Best Practice/Naming Conventions/LocalShadowsFieldC
 ql/java/ql/src/Violations of Best Practice/Naming Conventions/SameNameAsSuper.ql
 ql/java/ql/src/Violations of Best Practice/Records/IgnoredSerializationMembersOfRecordClass.ql
 ql/java/ql/src/Violations of Best Practice/SpecialCharactersInLiterals/NonExplicitControlAndWhitespaceCharsInLiterals.ql
+ql/java/ql/src/Violations of Best Practice/Testing/ExcessivePublicMethodMocking.ql
 ql/java/ql/src/Violations of Best Practice/Undesirable Calls/CallsToStringToString.ql
 ql/java/ql/src/Violations of Best Practice/Undesirable Calls/DefaultToString.ql
 ql/java/ql/src/Violations of Best Practice/Undesirable Calls/DoNotCallFinalize.ql
