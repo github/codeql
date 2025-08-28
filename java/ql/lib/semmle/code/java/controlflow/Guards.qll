@@ -141,6 +141,7 @@ private predicate isNonFallThroughPredecessor(SwitchCase sc, ControlFlowNode pre
 
 private module GuardsInput implements SharedGuards::InputSig<Location> {
   private import java as J
+  private import semmle.code.java.dataflow.internal.BaseSSA
   private import semmle.code.java.dataflow.NullGuards as NullGuards
   import SuccessorType
 
@@ -215,6 +216,12 @@ private module GuardsInput implements SharedGuards::InputSig<Location> {
         this = f.getAnAccess() and
         f.isFinal() and
         f.getInitializer() = NullGuards::baseNotNullExpr()
+      )
+      or
+      exists(CatchClause cc, LocalVariableDeclExpr decl, BaseSsaUpdate v |
+        decl = cc.getVariable() and
+        decl = v.getDefiningExpr() and
+        this = v.getAUse()
       )
     }
   }
@@ -489,12 +496,6 @@ module Guards_v2 = GuardsImpl::Logic<LogicInput_v2>;
 
 /** INTERNAL: Don't use. */
 module Guards_v3 = GuardsImpl::Logic<LogicInput_v3>;
-
-/** INTERNAL: Don't use. */
-predicate implies_v3(Guard g1, boolean b1, Guard g2, boolean b2) {
-  Guards_v3::boolImplies(g1, any(GuardValue v | v.asBooleanValue() = b1), g2,
-    any(GuardValue v | v.asBooleanValue() = b2))
-}
 
 /**
  * A guard. This may be any expression whose value determines subsequent

@@ -2068,13 +2068,7 @@ mod indexers {
     }
 
     fn analyze_slice(slice: &[S]) {
-        // NOTE: `slice` gets the spurious type `[]` because the desugaring of
-        // the index expression adds an implicit borrow. `&slice` has the type
-        // `&&[S]`, but the `index` methods takes a `&[S]`, so Rust adds an
-        // implicit dereference. We cannot currently handle a position that is
-        // both implicitly dereferenced and implicitly borrowed, so the extra
-        // type sneaks in.
-        let x = slice[0].foo(); // $ target=foo type=x:S target=index SPURIOUS: type=slice:[]
+        let x = slice[0].foo(); // $ target=foo type=x:S target=index
     }
 
     pub fn f() {
@@ -2338,6 +2332,8 @@ mod loops {
         for u in [0u8..10] {} // $ type=u:Range type=u:Idx.u8
         let range = 0..10; // $ type=range:Range type=range:Idx.i32
         for i in range {} // $ type=i:i32
+        let range_full = ..; // $ type=range_full:RangeFull
+        for i in &[1i64, 2i64, 3i64][range_full] {} // $ target=index MISSING: type=i:&T.i64
 
         let range1 = // $ type=range1:Range type=range1:Idx.u16
         std::ops::Range {
@@ -2450,6 +2446,7 @@ mod explicit_type_args {
 }
 
 mod tuples {
+    #[derive(Debug, Clone, Copy)]
     struct S1 {}
 
     impl S1 {
@@ -2490,6 +2487,9 @@ mod tuples {
             _ => print!("expected"),
         }
         let x = pair.0; // $ type=x:i32
+
+        let y = &S1::get_pair(); // $ target=get_pair
+        y.0.foo(); // $ target=foo
     }
 }
 
@@ -2521,7 +2521,7 @@ pub mod pattern_matching_experimental {
 }
 
 pub mod exec {
-    // a *greatly* simplified model of `MySqlConnection.execute` in SQLX
+    // a highly simplified model of `MySqlConnection.execute` in SQLx
 
     trait Connection {}
 
@@ -2557,6 +2557,52 @@ pub mod exec {
     }
 }
 
+pub mod path_buf {
+    // a highly simplified model of `PathBuf::canonicalize`
+
+    pub struct Path {}
+
+    impl Path {
+        pub const fn new() -> Path {
+            Path {}
+        }
+
+        pub fn canonicalize(&self) -> Result<PathBuf, ()> {
+            Ok(PathBuf::new()) // $ target=new
+        }
+    }
+
+    pub struct PathBuf {}
+
+    impl PathBuf {
+        pub const fn new() -> PathBuf {
+            PathBuf {}
+        }
+    }
+
+    // `PathBuf` provides `canonicalize` via `Deref`:
+    impl std::ops::Deref for PathBuf {
+        type Target = Path;
+
+        #[inline]
+        fn deref(&self) -> &Path {
+            // (very much not a real implementation)
+            static path: Path = Path::new(); // $ target=new
+            &path
+        }
+    }
+
+    pub fn f() {
+        let path1 = Path::new(); // $ target=new type=path1:Path
+        let path2 = path1.canonicalize(); // $ target=canonicalize
+        let path3 = path2.unwrap(); // $ target=unwrap type=path3:PathBuf
+
+        let pathbuf1 = PathBuf::new(); // $ target=new type=pathbuf1:PathBuf
+        let pathbuf2 = pathbuf1.canonicalize(); // $ MISSING: target=canonicalize
+        let pathbuf3 = pathbuf2.unwrap(); // $ MISSING: target=unwrap type=pathbuf3:PathBuf
+    }
+}
+
 mod closure;
 mod dereference;
 mod dyn_type;
@@ -2589,6 +2635,7 @@ fn main() {
     method_determined_by_argument_type::f(); // $ target=f
     tuples::f(); // $ target=f
     exec::f(); // $ target=f
+    path_buf::f(); // $ target=f
     dereference::test(); // $ target=test
     pattern_matching::test_all_patterns(); // $ target=test_all_patterns
     pattern_matching_experimental::box_patterns(); // $ target=box_patterns

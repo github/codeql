@@ -17,7 +17,7 @@ runs:
       run: |
         CODEQL_PATH=$(gh codeql version --format=json | jq -r .unpackedLocation)
         # The legacy ASP extractor is not in this repo, so take the one from the nightly build
-        mv "$CODEQL_PATH/csharp/tools/extractor-asp.jar" "${{ github.workspace }}/csharp/extractor-pack/tools"
+        mv "$CODEQL_PATH/csharp/tools/extractor-asp.jar" "$GITHUB_WORKSPACE/csharp/extractor-pack/tools"
         # Safe guard against using the bundled extractor
         rm -rf "$CODEQL_PATH/csharp"
       env:

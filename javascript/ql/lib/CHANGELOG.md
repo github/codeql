@@ -1,3 +1,9 @@
+## 2.6.9
+
+### Minor Analysis Improvements
+
+* Improved modeling of command-line argument parsing libraries [arg](https://www.npmjs.com/package/arg), [args](https://www.npmjs.com/package/args), [command-line-args](https://www.npmjs.com/package/command-line-args) and [commander](https://www.npmjs.com/package/commander)
+
 ## 2.6.8
 
 ### Minor Analysis Improvements
