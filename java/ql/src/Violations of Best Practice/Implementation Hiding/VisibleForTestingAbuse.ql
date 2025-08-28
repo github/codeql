@@ -16,7 +16,7 @@ import java
 
 /**
  * Holds if a `Callable` is within the same type hierarchy as `RefType`
- * (including through lambdas, inner classes, and outer classes)
+ * (including through lambdas, inner classes, and outer classes).
  */
 predicate isWithinType(Callable c, RefType t) {
   // Either the callable is in the target type, or they share a common enclosing type
