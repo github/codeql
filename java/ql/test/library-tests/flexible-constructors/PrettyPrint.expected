@@ -1,0 +1,125 @@
+| FlexibleConstructors.java:1:7:1:7 | A | 0 | class A { |
+| FlexibleConstructors.java:1:7:1:7 | A | 1 |   A(String msg) { |
+| FlexibleConstructors.java:1:7:1:7 | A | 2 |     super(); |
+| FlexibleConstructors.java:1:7:1:7 | A | 3 |     System.out.println("A: " + msg); |
+| FlexibleConstructors.java:1:7:1:7 | A | 4 |   } |
+| FlexibleConstructors.java:1:7:1:7 | A | 5 | } |
+| FlexibleConstructors.java:7:7:7:7 | B | 0 | class B { |
+| FlexibleConstructors.java:7:7:7:7 | B | 1 |   B(String input) { |
+| FlexibleConstructors.java:7:7:7:7 | B | 2 |     var msg = input.trim().toUpperCase(); |
+| FlexibleConstructors.java:7:7:7:7 | B | 3 |     super(msg); |
+| FlexibleConstructors.java:7:7:7:7 | B | 4 |   } |
+| FlexibleConstructors.java:7:7:7:7 | B | 5 | } |
+| FlexibleConstructors.java:14:7:14:7 | C | 0 | class C { |
+| FlexibleConstructors.java:14:7:14:7 | C | 1 |   private final int x; |
+| FlexibleConstructors.java:14:7:14:7 | C | 2 |  |
+| FlexibleConstructors.java:14:7:14:7 | C | 3 |   C(int x) { |
+| FlexibleConstructors.java:14:7:14:7 | C | 4 |     if (x < 0) |
+| FlexibleConstructors.java:14:7:14:7 | C | 5 |       throw new IllegalArgumentException(); |
+| FlexibleConstructors.java:14:7:14:7 | C | 6 |     super(); |
+| FlexibleConstructors.java:14:7:14:7 | C | 7 |     this.x = x; |
+| FlexibleConstructors.java:14:7:14:7 | C | 8 |   } |
+| FlexibleConstructors.java:14:7:14:7 | C | 9 | } |
+| FlexibleConstructors.java:24:8:24:8 | R | 0 | final class R { |
+| FlexibleConstructors.java:24:8:24:8 | R | 1 |   public final boolean equals(Object p0) { <missing body> } |
+| FlexibleConstructors.java:24:8:24:8 | R | 2 |  |
+| FlexibleConstructors.java:24:8:24:8 | R | 3 |   public final int hashCode() { <missing body> } |
+| FlexibleConstructors.java:24:8:24:8 | R | 4 |  |
+| FlexibleConstructors.java:24:8:24:8 | R | 5 |   public String name() { <missing body> } |
+| FlexibleConstructors.java:24:8:24:8 | R | 6 |  |
+| FlexibleConstructors.java:24:8:24:8 | R | 7 |   public int score() { <missing body> } |
+| FlexibleConstructors.java:24:8:24:8 | R | 8 |  |
+| FlexibleConstructors.java:24:8:24:8 | R | 9 |   public final String toString() { <missing body> } |
+| FlexibleConstructors.java:24:8:24:8 | R | 10 |  |
+| FlexibleConstructors.java:24:8:24:8 | R | 11 |   R(String name, int score) { |
+| FlexibleConstructors.java:24:8:24:8 | R | 12 |     super(); |
+| FlexibleConstructors.java:24:8:24:8 | R | 13 |     this.name = name; |
+| FlexibleConstructors.java:24:8:24:8 | R | 14 |     this.score = score; |
+| FlexibleConstructors.java:24:8:24:8 | R | 15 |   } |
+| FlexibleConstructors.java:24:8:24:8 | R | 16 |  |
+| FlexibleConstructors.java:24:8:24:8 | R | 17 |   private final String name; |
+| FlexibleConstructors.java:24:8:24:8 | R | 18 |  |
+| FlexibleConstructors.java:24:8:24:8 | R | 19 |   private final int score; |
+| FlexibleConstructors.java:24:8:24:8 | R | 20 |  |
+| FlexibleConstructors.java:24:8:24:8 | R | 21 |   public R(String name) { |
+| FlexibleConstructors.java:24:8:24:8 | R | 22 |     var score = name.length(); |
+| FlexibleConstructors.java:24:8:24:8 | R | 23 |     this(name, score); |
+| FlexibleConstructors.java:24:8:24:8 | R | 24 |   } |
+| FlexibleConstructors.java:24:8:24:8 | R | 25 | } |
+| FlexibleConstructors.java:31:7:31:11 | Outer | 0 | class Outer { |
+| FlexibleConstructors.java:31:7:31:11 | Outer | 1 |   private void <obinit>() { |
+| FlexibleConstructors.java:31:7:31:11 | Outer | 2 |     prefix = "outer"; |
+| FlexibleConstructors.java:31:7:31:11 | Outer | 3 |   } |
+| FlexibleConstructors.java:31:7:31:11 | Outer | 4 |  |
+| FlexibleConstructors.java:31:7:31:11 | Outer | 5 |   Outer() { |
+| FlexibleConstructors.java:31:7:31:11 | Outer | 6 |     super(); |
+| FlexibleConstructors.java:31:7:31:11 | Outer | 7 |     <obinit>(); |
+| FlexibleConstructors.java:31:7:31:11 | Outer | 8 |   } |
+| FlexibleConstructors.java:31:7:31:11 | Outer | 9 |  |
+| FlexibleConstructors.java:31:7:31:11 | Outer | 10 |   private final String prefix; |
+| FlexibleConstructors.java:31:7:31:11 | Outer | 11 |  |
+| FlexibleConstructors.java:31:7:31:11 | Outer | 12 |   class Inner { |
+| FlexibleConstructors.java:31:7:31:11 | Outer | 13 |     private String full; |
+| FlexibleConstructors.java:31:7:31:11 | Outer | 14 |    |
+| FlexibleConstructors.java:31:7:31:11 | Outer | 15 |     Inner(String suffix) { |
+| FlexibleConstructors.java:31:7:31:11 | Outer | 16 |       var combined = prefix + "_" + suffix; |
+| FlexibleConstructors.java:31:7:31:11 | Outer | 17 |       super(); |
+| FlexibleConstructors.java:31:7:31:11 | Outer | 18 |       this.full = combined; |
+| FlexibleConstructors.java:31:7:31:11 | Outer | 19 |     } |
+| FlexibleConstructors.java:31:7:31:11 | Outer | 20 |   } |
+| FlexibleConstructors.java:31:7:31:11 | Outer | 21 | } |
+| FlexibleConstructors.java:45:7:45:7 | D | 0 | class D { |
+| FlexibleConstructors.java:45:7:45:7 | D | 1 |   private final String value; |
+| FlexibleConstructors.java:45:7:45:7 | D | 2 |  |
+| FlexibleConstructors.java:45:7:45:7 | D | 3 |   private final int length; |
+| FlexibleConstructors.java:45:7:45:7 | D | 4 |  |
+| FlexibleConstructors.java:45:7:45:7 | D | 5 |   D(String input) { |
+| FlexibleConstructors.java:45:7:45:7 | D | 6 |     var processed = input.toLowerCase(); |
+| FlexibleConstructors.java:45:7:45:7 | D | 7 |     value = processed; |
+| FlexibleConstructors.java:45:7:45:7 | D | 8 |     this.length = processed.length(); |
+| FlexibleConstructors.java:45:7:45:7 | D | 9 |     super(); |
+| FlexibleConstructors.java:45:7:45:7 | D | 10 |   } |
+| FlexibleConstructors.java:45:7:45:7 | D | 11 | } |
+| FlexibleConstructors.java:57:7:57:7 | E | 0 | class E { |
+| FlexibleConstructors.java:57:7:57:7 | E | 1 |   private boolean isValid; |
+| FlexibleConstructors.java:57:7:57:7 | E | 2 |  |
+| FlexibleConstructors.java:57:7:57:7 | E | 3 |   private String processed; |
+| FlexibleConstructors.java:57:7:57:7 | E | 4 |  |
+| FlexibleConstructors.java:57:7:57:7 | E | 5 |   E(String data) { |
+| FlexibleConstructors.java:57:7:57:7 | E | 6 |     var temp = data != null ? data.trim() : ""; |
+| FlexibleConstructors.java:57:7:57:7 | E | 7 |     this.processed = temp; |
+| FlexibleConstructors.java:57:7:57:7 | E | 8 |     isValid = !temp.isEmpty(); |
+| FlexibleConstructors.java:57:7:57:7 | E | 9 |     super(temp); |
+| FlexibleConstructors.java:57:7:57:7 | E | 10 |   } |
+| FlexibleConstructors.java:57:7:57:7 | E | 11 | } |
+| FlexibleConstructors.java:69:7:69:7 | F | 0 | class F { |
+| FlexibleConstructors.java:69:7:69:7 | F | 1 |   private int x; |
+| FlexibleConstructors.java:69:7:69:7 | F | 2 |  |
+| FlexibleConstructors.java:69:7:69:7 | F | 3 |   private final int y; |
+| FlexibleConstructors.java:69:7:69:7 | F | 4 |  |
+| FlexibleConstructors.java:69:7:69:7 | F | 5 |   private int sum; |
+| FlexibleConstructors.java:69:7:69:7 | F | 6 |  |
+| FlexibleConstructors.java:69:7:69:7 | F | 7 |   F(int a, int b) { |
+| FlexibleConstructors.java:69:7:69:7 | F | 8 |     x = a; |
+| FlexibleConstructors.java:69:7:69:7 | F | 9 |     this.y = b; |
+| FlexibleConstructors.java:69:7:69:7 | F | 10 |     this.sum = a + b; |
+| FlexibleConstructors.java:69:7:69:7 | F | 11 |     super(); |
+| FlexibleConstructors.java:69:7:69:7 | F | 12 |   } |
+| FlexibleConstructors.java:69:7:69:7 | F | 13 | } |
+| FlexibleConstructors.java:82:7:82:7 | G | 0 | class G { |
+| FlexibleConstructors.java:82:7:82:7 | G | 1 |   private void <obinit>() { |
+| FlexibleConstructors.java:82:7:82:7 | G | 2 |     { |
+| FlexibleConstructors.java:82:7:82:7 | G | 3 |       instance_val = "instance"; |
+| FlexibleConstructors.java:82:7:82:7 | G | 4 |     } |
+| FlexibleConstructors.java:82:7:82:7 | G | 5 |   } |
+| FlexibleConstructors.java:82:7:82:7 | G | 6 |  |
+| FlexibleConstructors.java:82:7:82:7 | G | 7 |   private String instance_val; |
+| FlexibleConstructors.java:82:7:82:7 | G | 8 |  |
+| FlexibleConstructors.java:82:7:82:7 | G | 9 |   G(String input) { |
+| FlexibleConstructors.java:82:7:82:7 | G | 10 |     var tmp = input != null ? input : "default"; |
+| FlexibleConstructors.java:82:7:82:7 | G | 11 |     var string = tmp + "_initialized"; |
+| FlexibleConstructors.java:82:7:82:7 | G | 12 |     super(); |
+| FlexibleConstructors.java:82:7:82:7 | G | 13 |     <obinit>(); |
+| FlexibleConstructors.java:82:7:82:7 | G | 14 |     this.instance_val = string; |
+| FlexibleConstructors.java:82:7:82:7 | G | 15 |   } |
+| FlexibleConstructors.java:82:7:82:7 | G | 16 | } |

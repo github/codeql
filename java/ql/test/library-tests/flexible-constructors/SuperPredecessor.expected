@@ -1,0 +1,7 @@
+| FlexibleConstructors.java:10:15:10:17 | msg | FlexibleConstructors.java:10:9:10:19 | super(...) | predecessor of explicit super() |
+| FlexibleConstructors.java:18:13:18:17 | ... < ... | FlexibleConstructors.java:19:9:19:16 | super(...) | predecessor of explicit super() |
+| FlexibleConstructors.java:38:17:38:48 | combined | FlexibleConstructors.java:39:13:39:20 | super(...) | predecessor of explicit super() |
+| FlexibleConstructors.java:52:9:52:40 | ...=... | FlexibleConstructors.java:53:9:53:16 | super(...) | predecessor of explicit super() |
+| FlexibleConstructors.java:65:15:65:18 | temp | FlexibleConstructors.java:65:9:65:20 | super(...) | predecessor of explicit super() |
+| FlexibleConstructors.java:77:9:77:24 | ...=... | FlexibleConstructors.java:78:9:78:16 | super(...) | predecessor of explicit super() |
+| FlexibleConstructors.java:91:13:91:41 | string | FlexibleConstructors.java:92:9:92:16 | super(...) | predecessor of explicit super() |
