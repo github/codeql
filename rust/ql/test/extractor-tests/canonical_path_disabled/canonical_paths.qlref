@@ -1,2 +1,0 @@
-query: extractor-tests/canonical_path/canonical_paths.ql
-postprocess: utils/test/ExternalLocationPostProcessing.ql
