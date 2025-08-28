@@ -1421,41 +1421,41 @@ void test_address_of_deref_operators() {
   Microsoft::WRL::ComPtr<int> p1(new int(x));
   Microsoft::WRL::Details::ComPtrRef<Microsoft::WRL::ComPtr<int>> pp = &p1;
   Microsoft::WRL::ComPtr<int>* qq = *pp;
-  sink(*qq->Get()); // $ MISSING: ast,ir
+  sink(*qq->Get()); // $ ir MISSING: ast
   
   const Microsoft::WRL::ComPtr<int> p2(new int(x));
   Microsoft::WRL::Details::ComPtrRef<const Microsoft::WRL::ComPtr<int>> pp2 = &p2;
   const Microsoft::WRL::ComPtr<int>* qq2 = *pp2;
-  sink(*qq2->Get()); // $ MISSING: ast,ir
+  sink(*qq2->Get()); // $ ir MISSING: ast
 
   S s;
   s.x = source<int>();
   Microsoft::WRL::ComPtr<S> p3(&s);
-  sink(p3->x); // $ MISSING: ast,ir
+  sink(p3->x); // $ ir MISSING: ast
 }
 
 void test_assignments() {
   Microsoft::WRL::ComPtr<int> p1;
   p1 = new int(source<int>());
-  sink(*p1.Get()); // $ MISSING: ast,ir
+  sink(*p1.Get()); // $ ir MISSING: ast
 
   Microsoft::WRL::ComPtr<int> p2;
   p2 = new long(source<long>());
-  sink(*p2.Get()); // $ MISSING: ast,ir
+  sink(*p2.Get()); // $ ir MISSING: ast
 
   Microsoft::WRL::ComPtr<int> p3;
   p3 = p1;
-  sink(*p3.Get()); // $ MISSING: ast,ir
+  sink(*p3.Get()); // $ ir MISSING: ast
 
   Microsoft::WRL::ComPtr<long> p4;
   p4 = p1;
-  sink(*p4.Get()); // $ MISSING: ast,ir
+  sink(*p4.Get()); // $ ir MISSING: ast
 
   Microsoft::WRL::ComPtr<int> p5;
   p5 = std::move(p1);
-  sink(*p5.Get()); // $ MISSING: ast,ir
+  sink(*p5.Get()); // $ ir MISSING: ast
 
   Microsoft::WRL::ComPtr<long> p6;
   p6 = std::move(p1);
-  sink(*p6.Get()); // $ MISSING: ast,ir
+  sink(*p6.Get()); // $ ir MISSING: ast
 }

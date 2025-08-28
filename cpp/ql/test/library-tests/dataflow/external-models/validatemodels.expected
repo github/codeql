@@ -6,12 +6,14 @@
 | Dubious member name "operator LPWSTR" in summary model. |
 | Dubious member name "operator PCXSTR" in summary model. |
 | Dubious member name "operator PXSTR" in summary model. |
+| Dubious member name "operator void**" in summary model. |
 | Dubious member name "operator&" in summary model. |
 | Dubious member name "operator*" in summary model. |
 | Dubious member name "operator+" in summary model. |
 | Dubious member name "operator+=" in summary model. |
 | Dubious member name "operator->" in summary model. |
 | Dubious member name "operator=" in summary model. |
+| Dubious member name "operator=<U>" in summary model. |
 | Dubious member name "operator[]" in summary model. |
 | Dubious signature "(..(*)(..))" in summary model. |
 | Dubious signature "(..(*)(..),..(*)(..),..(*)(..),..(*)(..))" in summary model. |
@@ -2497,6 +2499,7 @@
 | Dubious signature "(TS_VERIFY_CTX *,unsigned char *,long)" in summary model. |
 | Dubious signature "(TXT_DB *,OPENSSL_STRING *)" in summary model. |
 | Dubious signature "(TXT_DB *,int,..(*)(..),OPENSSL_LH_HASHFUNC,OPENSSL_LH_COMPFUNC)" in summary model. |
+| Dubious signature "(U *)" in summary model. |
 | Dubious signature "(UI *)" in summary model. |
 | Dubious signature "(UI *,UI_STRING *,const char *)" in summary model. |
 | Dubious signature "(UI *,UI_STRING *,const char *,int)" in summary model. |
