@@ -95,10 +95,10 @@ module OptionWithLocationInfo<TypeWithLocationInfo T> {
   }
 
   /** The singleton `None` element. */
-  class None extends Option instanceof O::Some { }
+  class None extends Option instanceof O::None { }
 
   /** A wrapper for the given type. */
-  class Some extends Option instanceof O::None { }
+  class Some extends Option instanceof O::Some { }
 
   /** Gets the given element wrapped as an `Option`. */
   Some some(T c) { result.asSome() = c }
@@ -137,10 +137,10 @@ module LocatableOption<LocationSig Location, WithLocation<Location>::LocatableTy
   }
 
   /** The singleton `None` element. */
-  class None extends Option instanceof O::Some { }
+  class None extends Option instanceof O::None { }
 
   /** A wrapper for the given type. */
-  class Some extends Option instanceof O::None { }
+  class Some extends Option instanceof O::Some { }
 
   /** Gets the given element wrapped as an `Option`. */
   Some some(T c) { result.asSome() = c }
