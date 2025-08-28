@@ -1258,6 +1258,24 @@ namespace Microsoft {
 
   class WeakRef;
 
+  namespace Details {
+    template <typename T>
+    class ComPtrRef {
+      public:
+      using InterfaceType = T;
+
+      ComPtrRef(T*);
+
+      InterfaceType* const * GetAddressOf() const;
+      InterfaceType** ReleaseAndGetAddressOf();
+
+      operator InterfaceType**();
+      operator T*();
+      operator void**() const;
+      InterfaceType* operator *();
+    };
+  }
+
   template <typename T>
   class ComPtr
   {
@@ -1301,7 +1319,22 @@ namespace Microsoft {
     void Swap(ComPtr &&r);
 
     void Swap(ComPtr &r);
-  };
+
+    Details::ComPtrRef<ComPtr<T>> operator&();
+    const Details::ComPtrRef<const ComPtr<T>> operator&() const;
+
+    InterfaceType* operator->() const; // return type simplified from Microsoft::WRL::Details::RemoveIUnknown<InterfaceType>*
+
+    ComPtr& operator=(T *);
+    template <typename U>
+    ComPtr& operator=(U *);
+    ComPtr& operator=(const ComPtr &);
+    template<class U>
+    ComPtr& operator=(const ComPtr<U>&);
+    ComPtr& operator=(ComPtr &&);
+    template<class U>
+    ComPtr& operator=(ComPtr<U>&&);
+    };
 
   }
 }
@@ -1331,9 +1364,9 @@ void test_As()
 {
   int x = source<int>();
   Microsoft::WRL::ComPtr<int> p1(new int(x));
-  Microsoft::WRL::ComPtr<int> p2;
-  p1.As(&p2);
-  sink(*p2.Get()); // $ ir MISSING: ast
+  Microsoft::WRL::ComPtr<int>* p2;
+  p1.As(p2);
+  sink(*p2->Get()); // $ ir MISSING: ast
 }
 
 void test_CopyTo()
@@ -1377,4 +1410,52 @@ void test_GetAddressOf()
   Microsoft::WRL::ComPtr<int> p3(new int(x));
   int **pp = p3.ReleaseAndGetAddressOf();
   sink(**pp); // $ ir MISSING: ast
+}
+
+struct S {
+  int x;
+};
+
+void test_address_of_deref_operators() {
+  int x = source<int>();
+  Microsoft::WRL::ComPtr<int> p1(new int(x));
+  Microsoft::WRL::Details::ComPtrRef<Microsoft::WRL::ComPtr<int>> pp = &p1;
+  Microsoft::WRL::ComPtr<int>* qq = *pp;
+  sink(*qq->Get()); // $ MISSING: ast,ir
+  
+  const Microsoft::WRL::ComPtr<int> p2(new int(x));
+  Microsoft::WRL::Details::ComPtrRef<const Microsoft::WRL::ComPtr<int>> pp2 = &p2;
+  const Microsoft::WRL::ComPtr<int>* qq2 = *pp2;
+  sink(*qq2->Get()); // $ MISSING: ast,ir
+
+  S s;
+  s.x = source<int>();
+  Microsoft::WRL::ComPtr<S> p3(&s);
+  sink(p3->x); // $ MISSING: ast,ir
+}
+
+void test_assignments() {
+  Microsoft::WRL::ComPtr<int> p1;
+  p1 = new int(source<int>());
+  sink(*p1.Get()); // $ MISSING: ast,ir
+
+  Microsoft::WRL::ComPtr<int> p2;
+  p2 = new long(source<long>());
+  sink(*p2.Get()); // $ MISSING: ast,ir
+
+  Microsoft::WRL::ComPtr<int> p3;
+  p3 = p1;
+  sink(*p3.Get()); // $ MISSING: ast,ir
+
+  Microsoft::WRL::ComPtr<long> p4;
+  p4 = p1;
+  sink(*p4.Get()); // $ MISSING: ast,ir
+
+  Microsoft::WRL::ComPtr<int> p5;
+  p5 = std::move(p1);
+  sink(*p5.Get()); // $ MISSING: ast,ir
+
+  Microsoft::WRL::ComPtr<long> p6;
+  p6 = std::move(p1);
+  sink(*p6.Get()); // $ MISSING: ast,ir
 }
