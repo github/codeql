@@ -440,11 +440,13 @@ module Flask {
       // Using `request().asSource()` would result in data-flow paths starting at the import of
       // `request`, which is not very useful. Instead, we look at all the places this `request`
       // object can flow, and use only those that are local sources (so we only get the first
-      // instance of `request` in a function), and those that correspond to `Name` nodes (so we
-      // don't get the initial import, which is an `ImportMember`).
+      // instance of `request` in a function), expressions (so we don't get any SSA entry
+      // definitions), and which don't correspond to an `ImportMember` (so we don't get the
+      // `from flask import request` occurrence).
       this = request().getAValueReachableFromSource() and
       this instanceof DataFlow::LocalSourceNode and
-      this.asExpr() instanceof Name
+      this instanceof DataFlow::ExprNode and
+      not this.asExpr() instanceof ImportMember
     }
 
     override string getSourceType() { result = "flask.request" }
