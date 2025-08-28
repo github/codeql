@@ -15,7 +15,7 @@ class PchFile extends @pch {
   string toString() { result = "PCH for " + this.getHeaderFile() }
 
   /**
-   * Gets the header file from with the PCH file was created.
+   * Gets the header file from which the PCH file was created.
    */
   File getHeaderFile() { pch_creations(this, _, result) }
 
