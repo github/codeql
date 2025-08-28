@@ -1,17 +1,17 @@
 edges
 | busybus.js:9:30:9:33 | file | busybus.js:13:23:13:23 | z | provenance |  |
 | busybus.js:9:36:9:39 | info | busybus.js:10:54:10:57 | info | provenance |  |
-| busybus.js:10:19:10:50 | { filen ... eType } | busybus.js:10:19:10:57 | encoding | provenance |  |
-| busybus.js:10:19:10:50 | { filen ... eType } | busybus.js:10:19:10:57 | filename | provenance |  |
-| busybus.js:10:19:10:50 | { filen ... eType } | busybus.js:10:19:10:57 | mimeType | provenance |  |
-| busybus.js:10:19:10:57 | encoding | busybus.js:12:28:12:35 | encoding | provenance |  |
-| busybus.js:10:19:10:57 | filename | busybus.js:12:18:12:25 | filename | provenance |  |
-| busybus.js:10:19:10:57 | mimeType | busybus.js:12:38:12:45 | mimeType | provenance |  |
+| busybus.js:10:19:10:50 | { filen ... eType } | busybus.js:10:21:10:28 | filename | provenance |  |
+| busybus.js:10:19:10:50 | { filen ... eType } | busybus.js:10:31:10:38 | encoding | provenance |  |
+| busybus.js:10:19:10:50 | { filen ... eType } | busybus.js:10:41:10:48 | mimeType | provenance |  |
+| busybus.js:10:21:10:28 | filename | busybus.js:12:18:12:25 | filename | provenance |  |
+| busybus.js:10:31:10:38 | encoding | busybus.js:12:28:12:35 | encoding | provenance |  |
+| busybus.js:10:41:10:48 | mimeType | busybus.js:12:38:12:45 | mimeType | provenance |  |
 | busybus.js:10:54:10:57 | info | busybus.js:10:19:10:50 | { filen ... eType } | provenance |  |
 | busybus.js:13:23:13:23 | z | busybus.js:13:31:13:36 | sink() | provenance |  |
 | busybus.js:15:30:15:33 | data | busybus.js:16:22:16:25 | data | provenance |  |
-| busybus.js:22:25:22:42 | data | busybus.js:23:26:23:29 | data | provenance |  |
-| busybus.js:22:32:22:42 | this.read() | busybus.js:22:25:22:42 | data | provenance |  |
+| busybus.js:22:25:22:28 | data | busybus.js:23:26:23:29 | data | provenance |  |
+| busybus.js:22:32:22:42 | this.read() | busybus.js:22:25:22:28 | data | provenance |  |
 | busybus.js:27:25:27:28 | name | busybus.js:28:18:28:21 | name | provenance |  |
 | busybus.js:27:31:27:33 | val | busybus.js:28:24:28:26 | val | provenance |  |
 | busybus.js:27:36:27:39 | info | busybus.js:28:29:28:32 | info | provenance |  |
@@ -19,10 +19,10 @@ edges
 | dicer.js:14:28:14:33 | header | dicer.js:16:22:16:27 | header | provenance |  |
 | dicer.js:16:22:16:27 | header | dicer.js:16:22:16:30 | header[h] | provenance |  |
 | dicer.js:19:26:19:29 | data | dicer.js:20:18:20:21 | data | provenance |  |
-| formidable.js:7:11:7:25 | [fields, files] | formidable.js:7:11:7:49 | fields | provenance |  |
-| formidable.js:7:11:7:25 | [fields, files] | formidable.js:7:11:7:49 | files | provenance |  |
-| formidable.js:7:11:7:49 | fields | formidable.js:8:10:8:15 | fields | provenance |  |
-| formidable.js:7:11:7:49 | files | formidable.js:8:18:8:22 | files | provenance |  |
+| formidable.js:7:11:7:25 | [fields, files] | formidable.js:7:12:7:17 | fields | provenance |  |
+| formidable.js:7:11:7:25 | [fields, files] | formidable.js:7:20:7:24 | files | provenance |  |
+| formidable.js:7:12:7:17 | fields | formidable.js:8:10:8:15 | fields | provenance |  |
+| formidable.js:7:20:7:24 | files | formidable.js:8:18:8:22 | files | provenance |  |
 | formidable.js:7:29:7:49 | await f ... se(req) | formidable.js:7:11:7:25 | [fields, files] | provenance |  |
 | formidable.js:7:35:7:49 | form.parse(req) | formidable.js:7:29:7:49 | await f ... se(req) | provenance |  |
 | formidable.js:9:27:9:34 | formname | formidable.js:10:14:10:21 | formname | provenance |  |
@@ -39,9 +39,9 @@ nodes
 | busybus.js:9:30:9:33 | file | semmle.label | file |
 | busybus.js:9:36:9:39 | info | semmle.label | info |
 | busybus.js:10:19:10:50 | { filen ... eType } | semmle.label | { filen ... eType } |
-| busybus.js:10:19:10:57 | encoding | semmle.label | encoding |
-| busybus.js:10:19:10:57 | filename | semmle.label | filename |
-| busybus.js:10:19:10:57 | mimeType | semmle.label | mimeType |
+| busybus.js:10:21:10:28 | filename | semmle.label | filename |
+| busybus.js:10:31:10:38 | encoding | semmle.label | encoding |
+| busybus.js:10:41:10:48 | mimeType | semmle.label | mimeType |
 | busybus.js:10:54:10:57 | info | semmle.label | info |
 | busybus.js:12:18:12:25 | filename | semmle.label | filename |
 | busybus.js:12:28:12:35 | encoding | semmle.label | encoding |
@@ -50,7 +50,7 @@ nodes
 | busybus.js:13:31:13:36 | sink() | semmle.label | sink() |
 | busybus.js:15:30:15:33 | data | semmle.label | data |
 | busybus.js:16:22:16:25 | data | semmle.label | data |
-| busybus.js:22:25:22:42 | data | semmle.label | data |
+| busybus.js:22:25:22:28 | data | semmle.label | data |
 | busybus.js:22:32:22:42 | this.read() | semmle.label | this.read() |
 | busybus.js:23:26:23:29 | data | semmle.label | data |
 | busybus.js:27:25:27:28 | name | semmle.label | name |
@@ -67,8 +67,8 @@ nodes
 | dicer.js:19:26:19:29 | data | semmle.label | data |
 | dicer.js:20:18:20:21 | data | semmle.label | data |
 | formidable.js:7:11:7:25 | [fields, files] | semmle.label | [fields, files] |
-| formidable.js:7:11:7:49 | fields | semmle.label | fields |
-| formidable.js:7:11:7:49 | files | semmle.label | files |
+| formidable.js:7:12:7:17 | fields | semmle.label | fields |
+| formidable.js:7:20:7:24 | files | semmle.label | files |
 | formidable.js:7:29:7:49 | await f ... se(req) | semmle.label | await f ... se(req) |
 | formidable.js:7:35:7:49 | form.parse(req) | semmle.label | form.parse(req) |
 | formidable.js:8:10:8:15 | fields | semmle.label | fields |
