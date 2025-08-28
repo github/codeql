@@ -1,6 +1,7 @@
 #![feature(file_buffered)]
 use poem::{error::InternalServerError, handler, http::StatusCode, web::Query, Error, Result};
 use std::{fs, path::Path, path::PathBuf};
+
 //#[handler]
 fn tainted_path_handler_bad(
     Query(file_name): Query<String>, // $ Source=remote1
@@ -46,7 +47,7 @@ fn tainted_path_handler_folder_almost_good1(
 }
 
 //#[handler]
-fn tainted_path_handler_folder_good_simpler(Query(file_path): Query<String>) -> Result<String> {
+fn tainted_path_handler_folder_good_simpler(Query(file_path): Query<String>) -> Result<String> { // $ Source=remote6
     let public_path = "/var/www/public_html";
     let file_path = Path::new(&file_path);
     let file_path = file_path.canonicalize().unwrap();
@@ -54,12 +55,12 @@ fn tainted_path_handler_folder_good_simpler(Query(file_path): Query<String>) -> 
     if !file_path.starts_with(public_path) {
         return Err(Error::from_status(StatusCode::BAD_REQUEST));
     }
-    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink MISSING: path-injection-checked
+    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink MISSING: path-injection-checked SPURIOUS: Alert[rust/path-injection]=remote6
 }
 
 //#[handler]
 fn tainted_path_handler_folder_almost_good1_simpler(
-    Query(file_path): Query<String>, // $ MISSING: Source=remote3
+    Query(file_path): Query<String>, // $ Source=remote3
 ) -> Result<String> {
     let public_path = "/var/www/public_html";
     let file_path = Path::new(&file_path);
@@ -67,7 +68,7 @@ fn tainted_path_handler_folder_almost_good1_simpler(
     if !file_path.starts_with(public_path) {
         return Err(Error::from_status(StatusCode::BAD_REQUEST));
     }
-    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-checked path-injection-sink MISSING: Alert[rust/path-injection]=remote3
+    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-checked path-injection-sink Alert[rust/path-injection]=remote3
 }
 
 //#[handler]
@@ -86,7 +87,7 @@ fn tainted_path_handler_folder_almost_good2(
 
 //#[handler]
 fn tainted_path_handler_folder_almost_good3(
-    Query(file_path): Query<String>, // $ MISSING: Source=remote5
+    Query(file_path): Query<String>, // $ Source=remote5
 ) -> Result<String> {
     let public_path = "/var/www/public_html";
     let file_path = Path::new(&file_path);
@@ -95,7 +96,31 @@ fn tainted_path_handler_folder_almost_good3(
         return Err(Error::from_status(StatusCode::BAD_REQUEST));
     }
     let file_path = file_path.canonicalize().unwrap(); // $ path-injection-checked
-    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink MISSING: Alert[rust/path-injection]=remote5
+    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink Alert[rust/path-injection]=remote5
+}
+
+async fn more_simple_cases() {
+    let path1 = std::env::args().nth(1).unwrap(); // $ Source=arg1
+    let _ = std::fs::File::open(path1.clone()); // $ path-injection-sink Alert[rust/path-injection]=arg1
+
+    let path2 = std::fs::canonicalize(path1.clone()).unwrap();
+    let _ = std::fs::File::open(path2); // $ path-injection-sink Alert[rust/path-injection]=arg1
+
+    let path3 = tokio::fs::canonicalize(path1.clone()).await.unwrap();
+    let _ = tokio::fs::File::open(path3); // $ path-injection-sink Alert[rust/path-injection]=arg1
+
+    let path4 = async_std::fs::canonicalize(path1.clone()).await.unwrap();
+    let _ = async_std::fs::File::open(path4); // $ path-injection-sink Alert[rust/path-injection]=arg1
+
+    let path5 = std::path::Path::new(&path1);
+    let _ = std::fs::File::open(path5); // $ path-injection-sink Alert[rust/path-injection]=arg1
+
+    let path6 = path5.canonicalize().unwrap();
+    let _ = std::fs::File::open(path6); // $ path-injection-sink Alert[rust/path-injection]=arg1
+
+    let harmless = "";
+    let _ = std::fs::copy(path1.clone(), harmless); // $ path-injection-sink Alert[rust/path-injection]=arg1
+    let _ = std::fs::copy(harmless, path1.clone()); // $ path-injection-sink Alert[rust/path-injection]=arg1
 }
 
 fn sinks(path1: &Path, path2: &Path) {
@@ -116,12 +141,47 @@ fn sinks(path1: &Path, path2: &Path) {
     let _ = std::fs::soft_link(path1, path2); // $ path-injection-sink
     let _ = std::fs::symlink_metadata(path1); // $ path-injection-sink
     let _ = std::fs::write(path1, "contents"); // $ path-injection-sink
-    let _ = std::fs::DirBuilder::new().create(path1); // $ path-injection-sink
     let _ = std::fs::File::create(path1); // $ path-injection-sink
     let _ = std::fs::File::create_buffered(path1); // $ path-injection-sink
     let _ = std::fs::File::create_new(path1); // $ path-injection-sink
     let _ = std::fs::File::open(path1); // $ path-injection-sink
     let _ = std::fs::File::open_buffered(path1); // $ path-injection-sink
+    let _ = std::fs::DirBuilder::new().create(path1); // $ path-injection-sink
+    let _ = std::fs::DirBuilder::new().recursive(true).create(path1); // $ path-injection-sink
+    let _ = std::fs::OpenOptions::new().open(path1); // $ path-injection-sink
+
+    let _ = tokio::fs::read(path1); // $ path-injection-sink
+    let _ = tokio::fs::read_to_string(path1); // $ path-injection-sink
+    let _ = tokio::fs::remove_file(path1); // $ path-injection-sink
+    let _ = tokio::fs::DirBuilder::new().create(path1); // $ path-injection-sink
+    let _ = tokio::fs::DirBuilder::new().recursive(true).create(path1); // $ path-injection-sink
+    let _ = tokio::fs::OpenOptions::new().open(path1); // $ path-injection-sink
+
+    let _ = async_std::fs::read(path1); // $ path-injection-sink
+    let _ = async_std::fs::read_to_string(path1); // $ path-injection-sink
+    let _ = async_std::fs::remove_file(path1); // $ path-injection-sink
+    let _ = async_std::fs::DirBuilder::new().create(path1); // $ path-injection-sink
+    let _ = async_std::fs::DirBuilder::new().recursive(true).create(path1); // $ path-injection-sink
+    let _ = async_std::fs::OpenOptions::new().open(path1); // $ path-injection-sink
 }
 
-fn main() {}
+use std::fs::File;
+
+fn my_function(path_str: &str) -> Result<(), std::io::Error> {
+    // somewhat realistic example
+    let path = Path::new(path_str);
+    if path.exists() { // $ path-injection-sink Alert[rust/path-injection]=arg2
+        let mut file1 = File::open(path_str)?; // $ path-injection-sink Alert[rust/path-injection]=arg2
+        // ...
+
+        let mut file2 = File::open(path)?; // $ path-injection-sink Alert[rust/path-injection]=arg2
+        // ...
+    }
+
+    Ok(())
+}
+
+fn main() {
+    let path1 = std::env::args().nth(1).unwrap(); // $ Source=arg2
+    my_function(&path1);
+}

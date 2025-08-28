@@ -9,3 +9,39 @@ extensions:
       - ["<tokio::fs::read_dir::DirEntry>::path", "ReturnValue", "file", "manual"]
       - ["<tokio::fs::read_dir::DirEntry>::file_name", "ReturnValue", "file", "manual"]
       - ["<tokio::fs::file::File>::open", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "file", "manual"]
+      - ["<tokio::fs::open_options::OpenOptions>::open", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "file", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["tokio::fs::copy::copy", "Argument[0,1]", "path-injection", "manual"]
+      - ["tokio::fs::create_dir::create_dir", "Argument[0]", "path-injection", "manual"]
+      - ["tokio::fs::create_dir_all::create_dir_all", "Argument[0]", "path-injection", "manual"]
+      - ["tokio::fs::hard_link::hard_link", "Argument[0,1]", "path-injection", "manual"]
+      - ["tokio::fs::metadata::metadata", "Argument[0]", "path-injection", "manual"]
+      - ["tokio::fs::read::read", "Argument[0]", "path-injection", "manual"]
+      - ["tokio::fs::read_dir::read_dir", "Argument[0]", "path-injection", "manual"]
+      - ["tokio::fs::read_link::read_link", "Argument[0]", "path-injection", "manual"]
+      - ["tokio::fs::read_to_string::read_to_string", "Argument[0]", "path-injection", "manual"]
+      - ["tokio::fs::remove_dir::remove_dir", "Argument[0]", "path-injection", "manual"]
+      - ["tokio::fs::remove_dir_all::remove_dir_all", "Argument[0]", "path-injection", "manual"]
+      - ["tokio::fs::remove_file::remove_file", "Argument[0]", "path-injection", "manual"]
+      - ["tokio::fs::rename::rename", "Argument[0,1]", "path-injection", "manual"]
+      - ["tokio::fs::set_permissions::set_permissions", "Argument[0]", "path-injection", "manual"]
+      - ["tokio::fs::symlink::symlink", "Argument[0,1]", "path-injection", "manual"]
+      - ["tokio::fs::symlink_dir::symlink_dir", "Argument[0,1]", "path-injection", "manual"]
+      - ["tokio::fs::symlink_file::symlink_file", "Argument[0,1]", "path-injection", "manual"]
+      - ["tokio::fs::symlink_metadata::symlink_metadata", "Argument[0]", "path-injection", "manual"]
+      - ["tokio::fs::try_exists::try_exists", "Argument[0]", "path-injection", "manual"]
+      - ["tokio::fs::write::write", "Argument[0]", "path-injection", "manual"]
+      - ["<tokio::fs::dir_builder::DirBuilder>::create", "Argument[0]", "path-injection", "manual"]
+      - ["<tokio::fs::file::File>::create", "Argument[0]", "path-injection", "manual"]
+      - ["<tokio::fs::file::File>::create_new", "Argument[0]", "path-injection", "manual"]
+      - ["<tokio::fs::file::File>::open", "Argument[0]", "path-injection", "manual"]
+      - ["<tokio::fs::open_options::OpenOptions>::open", "Argument[0]", "path-injection", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["tokio::fs::canonicalize::canonicalize", "Argument[0].OptionalStep[normalize-path]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+      - ["tokio::fs::canonicalize::canonicalize", "Argument[0].OptionalBarrier[normalize-path]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
