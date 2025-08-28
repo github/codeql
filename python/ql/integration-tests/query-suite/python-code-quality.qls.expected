@@ -8,7 +8,7 @@ ql/python/ql/src/Classes/InitCallsSubclass/InitCallsSubclassMethod.ql
 ql/python/ql/src/Classes/MissingCallToDel.ql
 ql/python/ql/src/Classes/MissingCallToInit.ql
 ql/python/ql/src/Classes/MutatingDescriptor.ql
-ql/python/ql/src/Classes/SubclassShadowing.ql
+ql/python/ql/src/Classes/SubclassShadowing/SubclassShadowing.ql
 ql/python/ql/src/Classes/SuperclassDelCalledMultipleTimes.ql
 ql/python/ql/src/Classes/SuperclassInitCalledMultipleTimes.ql
 ql/python/ql/src/Classes/WrongNameForArgumentInClassInstantiation.ql
