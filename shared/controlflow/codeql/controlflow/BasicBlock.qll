@@ -9,13 +9,12 @@ overlay[local?]
 module;
 
 private import codeql.util.Location
+private import SuccessorType
 
 /** Provides the language-specific input specification. */
 signature module InputSig<LocationSig Location> {
-  class SuccessorType;
-
   /** Hold if `t` represents a conditional successor type. */
-  predicate successorTypeIsCondition(SuccessorType t);
+  default predicate successorTypeIsCondition(SuccessorType t) { t instanceof ConditionalSuccessor }
 
   /** A delineated part of the AST with its own CFG. */
   class CfgScope;

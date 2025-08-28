@@ -8,6 +8,7 @@ module;
 private import codeql.util.Location
 private import codeql.util.FileSystem
 private import codeql.util.Void
+private import SuccessorType
 
 /** Provides the language-specific input specification. */
 signature module InputSig<LocationSig Location> {
@@ -59,26 +60,11 @@ signature module InputSig<LocationSig Location> {
   /** Holds if `scope` is exited when `last` finishes with completion `c`. */
   predicate scopeLast(CfgScope scope, AstNode last, Completion c);
 
-  /** A type of a control flow successor. */
-  class SuccessorType {
-    /** Gets a textual representation of this successor type. */
-    string toString();
-  }
-
   /** Gets a successor type that matches completion `c`. */
   SuccessorType getAMatchingSuccessorType(Completion c);
 
-  /**
-   * Hold if `t` represents simple (normal) evaluation of a statement or an
-   * expression.
-   */
-  predicate successorTypeIsSimple(SuccessorType t);
-
   /** Hold if `t` represents a conditional successor type. */
-  predicate successorTypeIsCondition(SuccessorType t);
-
-  /** Holds if `t` is an abnormal exit type out of a CFG scope. */
-  predicate isAbnormalExitType(SuccessorType t);
+  default predicate successorTypeIsCondition(SuccessorType t) { t instanceof ConditionalSuccessor }
 
   /**
    * Gets an `id` of `node`. This is used to order the predecessors of a join
@@ -522,7 +508,7 @@ module MakeWithSplitting<
   private predicate succEntrySplits(CfgScope pred, AstNode succ, Splits succSplits, SuccessorType t) {
     exists(int rnk |
       scopeFirst(pred, succ) and
-      successorTypeIsSimple(t) and
+      t instanceof DirectSuccessor and
       succEntrySplitsFromRank(pred, succ, succSplits, rnk)
     |
       rnk = 0 and
@@ -1016,7 +1002,7 @@ module MakeWithSplitting<
       exists(CfgScope scope |
         pred = TAnnotatedExitNode(scope, _) and
         result = TExitNode(scope) and
-        successorTypeIsSimple(t)
+        t instanceof DirectSuccessor
       )
     }
 
@@ -1320,7 +1306,7 @@ module MakeWithSplitting<
       label =
         strictconcat(SuccessorType t, string s |
           succ = getASuccessor(pred, t) and
-          if successorTypeIsSimple(t) then s = "" else s = t.toString()
+          if t instanceof DirectSuccessor then s = "" else s = t.toString()
         |
           s, ", " order by s
         )
@@ -1590,8 +1576,6 @@ module MakeWithSplitting<
     private class NodeAlias = Node;
 
     private module BasicBlockInputSig implements BB::InputSig<Location> {
-      class SuccessorType = Input::SuccessorType;
-
       predicate successorTypeIsCondition = Input::successorTypeIsCondition/1;
 
       class CfgScope = CfgScopeAlias;

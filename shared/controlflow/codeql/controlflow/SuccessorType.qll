@@ -339,3 +339,9 @@ class RetrySuccessor extends JumpSuccessor, TRetrySuccessor {
 class JavaYieldSuccessor extends JumpSuccessor, TJavaYieldSuccessor {
   override string toString() { result = "yield" }
 }
+
+/** Holds if `t` is an abnormal exit type out of a CFG scope. */
+predicate isAbnormalExitType(SuccessorType t) {
+  t instanceof ExceptionSuccessor or
+  t instanceof ExitSuccessor
+}

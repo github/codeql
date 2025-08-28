@@ -46,18 +46,9 @@ private module CfgInput implements CfgShared::InputSig<Location> {
     scope.(Impl::CfgScopeImpl).exit(last, c)
   }
 
-  class SuccessorType = Cfg::SuccessorType;
+  private class SuccessorType = Cfg::SuccessorType;
 
   SuccessorType getAMatchingSuccessorType(Completion c) { result = c.getAMatchingSuccessorType() }
-
-  predicate successorTypeIsSimple(SuccessorType t) { t instanceof Cfg::DirectSuccessor }
-
-  predicate successorTypeIsCondition(SuccessorType t) { t instanceof Cfg::ConditionalSuccessor }
-
-  predicate isAbnormalExitType(SuccessorType t) {
-    t instanceof Cfg::ExceptionSuccessor or
-    t instanceof Cfg::ExitSuccessor
-  }
 
   private predicate id(Ruby::AstNode node1, Ruby::AstNode node2) { node1 = node2 }
 
