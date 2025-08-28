@@ -28,7 +28,7 @@ extensions:
       - ["os", "", False, "ReadDir", "", "", "Argument[0]", "path-injection", "manual"]
       - ["os", "", False, "ReadFile", "", "", "Argument[0]", "path-injection", "manual"]
       - ["os", "", False, "MkdirTemp", "", "", "Argument[0..1]", "path-injection", "manual"]
-      - ["os", "", False, "CreateTemp", "", "", "Argument[0..1]", "path-injection", "manual"]
+      - ["os", "", False, "CreateTemp", "", "", "Argument[0]", "path-injection", "manual"]
       - ["os", "", False, "WriteFile", "", "", "Argument[0]", "path-injection", "manual"]
       # command-injection
       - ["os", "", False, "StartProcess", "", "", "Argument[0]", "command-injection", "manual"]

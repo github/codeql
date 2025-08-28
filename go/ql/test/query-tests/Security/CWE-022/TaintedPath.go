@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
+	"os"
 	"path"
 	"path/filepath"
 	"regexp"
@@ -61,6 +62,11 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	// GOOD: Sanitized by filepath.Clean with a prepended '/' forcing interpretation
 	// as an absolute path, so that Clean will throw away any leading `..` components.
 	data, _ = ioutil.ReadFile(filepath.Clean("/" + tainted_path))
+	w.Write(data)
+
+	// GOOD: Sanitized by filepath.Clean with a prepended os.PathSeparator forcing interpretation
+	// as an absolute path, so that Clean will throw away any leading `..` components.
+	data, _ = ioutil.ReadFile(filepath.Clean(string(os.PathSeparator) + "hardcoded" + tainted_path))
 	w.Write(data)
 
 	// BAD: Sanitized by path.Clean with a prepended '/' forcing interpretation
