@@ -16,6 +16,6 @@ extensions:
       - ["Microsoft::WRL", "ComPtr", True, "Detach", "", "", "Argument[-1].Element[@]", "ReturnValue[*]", "value", "manual"]
       - ["Microsoft::WRL", "ComPtr", True, "Get", "", "", "Argument[-1].Element[@]", "ReturnValue[*]", "value", "manual"]
       - ["Microsoft::WRL", "ComPtr", True, "GetAddressOf", "", "", "Argument[-1].Element[@]", "ReturnValue[**]", "value", "manual"]
-      - ["Microsoft::WRL", "ComPtr", True, "ReleaseAndGetAddressOf", "", "", "Argument[-1].Element[@]", "ReturnValue[**]", "value", "manual"]
+      - ["Microsoft::WRL", "ComPtr", True, "ReleaseAndGetAddressOf", "", "", "Argument[-1].Element[@]", "ReturnValue[**@]", "value", "manual"]
       - ["Microsoft::WRL", "ComPtr", True, "Swap", "", "", "Argument[-1]", "Argument[*0]", "value", "manual"]
       - ["Microsoft::WRL", "ComPtr", True, "Swap", "", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
