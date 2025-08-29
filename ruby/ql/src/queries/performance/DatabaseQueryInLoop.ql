@@ -16,7 +16,6 @@ import codeql.ruby.ast.internal.Constant
 import codeql.ruby.Concepts
 import codeql.ruby.frameworks.ActiveRecord
 private import codeql.ruby.TaintTracking
-private import codeql.ruby.CFG
 private import codeql.ruby.controlflow.internal.Guards as Guards
 
 /** Gets the name of a built-in method that involves a loop operation. */
@@ -42,7 +41,7 @@ class LoopingCall extends DataFlow::CallNode {
 
 /** Holds if `ar` influences a guard that may control the execution of a loop. */
 predicate usedInLoopControlGuard(ActiveRecordInstance ar) {
-  exists(DataFlow::Node insideGuard, CfgNodes::ExprCfgNode guard |
+  exists(DataFlow::Node insideGuard, Cfg::CfgNodes::ExprCfgNode guard |
     // For a guard like `cond && ar`, the whole guard will not be tainted
     // so we need to look at the taint of the individual parts.
     insideGuard.asExpr().getExpr() = guard.getExpr().getAChild*()
@@ -53,12 +52,12 @@ predicate usedInLoopControlGuard(ActiveRecordInstance ar) {
 }
 
 /** Holds if `guard` controls `break` and `break` would break out of a loop. */
-predicate guardForLoopControl(CfgNodes::ExprCfgNode guard, CfgNodes::AstCfgNode break) {
+predicate guardForLoopControl(Cfg::CfgNodes::ExprCfgNode guard, Cfg::CfgNodes::AstCfgNode break) {
   Guards::guardControlsBlock(guard, break.getBasicBlock(), _) and
   (
-    break.(CfgNodes::ExprNodes::MethodCallCfgNode).getMethodName() = "raise"
+    break.(Cfg::CfgNodes::ExprNodes::MethodCallCfgNode).getMethodName() = "raise"
     or
-    break instanceof CfgNodes::ReturningCfgNode
+    break instanceof Cfg::CfgNodes::ReturningCfgNode
   )
 }
 
