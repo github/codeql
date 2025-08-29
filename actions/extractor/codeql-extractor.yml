@@ -8,7 +8,8 @@ build_modes:
   - none
 file_coverage_languages: []
 github_api_languages: []
-scc_languages: []
+scc_languages:
+  - YAML
 file_types:
   - name: workflow
     display_name: GitHub Actions workflow files
