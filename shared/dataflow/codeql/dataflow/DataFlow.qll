@@ -695,7 +695,7 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
    * Constructs a global data flow computation.
    */
   module Global<ConfigSig Config> implements GlobalFlowSig {
-    private module C implements FullStateConfigSig {
+    private module StateConfig implements FullStateConfigSig {
       import DefaultState<Config>
       import Config
 
@@ -706,11 +706,11 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       }
     }
 
-    private module Stage1 = ImplStage1<C>;
+    private module Stage1 = ImplStage1<StateConfig>;
 
     import Stage1::PartialFlow
 
-    private module Flow = Impl<C, Stage1::Stage1NoState>;
+    private module Flow = Impl<StateConfig, Stage1::Stage1NoState>;
 
     import Flow
   }
@@ -719,7 +719,7 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
    * Constructs a global data flow computation using flow state.
    */
   module GlobalWithState<StateConfigSig Config> implements GlobalFlowSig {
-    private module C implements FullStateConfigSig {
+    private module StateConfig implements FullStateConfigSig {
       import Config
 
       predicate accessPathLimit = Config::accessPathLimit/0;
@@ -735,11 +735,11 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       }
     }
 
-    private module Stage1 = ImplStage1<C>;
+    private module Stage1 = ImplStage1<StateConfig>;
 
     import Stage1::PartialFlow
 
-    private module Flow = Impl<C, Stage1::Stage1WithState>;
+    private module Flow = Impl<StateConfig, Stage1::Stage1WithState>;
 
     import Flow
   }
