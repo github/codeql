@@ -6,5 +6,3 @@ multipleCallTargets
 | proc_macro.rs:41:5:41:10 | ...::new(...) |
 | proc_macro.rs:41:5:41:10 | ...::new(...) |
 | proc_macro.rs:44:27:44:30 | ...::to_tokens(...) |
-multiplePathResolutions
-| macro_expansion.rs:1:5:1:14 | proc_macro |
