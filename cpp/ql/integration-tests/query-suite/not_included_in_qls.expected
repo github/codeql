@@ -37,7 +37,6 @@ ql/cpp/ql/src/Critical/MemoryNeverFreed.ql
 ql/cpp/ql/src/Critical/MissingNegativityTest.ql
 ql/cpp/ql/src/Critical/MissingNullTest.ql
 ql/cpp/ql/src/Critical/NotInitialised.ql
-ql/cpp/ql/src/Critical/OverflowCalculated.ql
 ql/cpp/ql/src/Critical/OverflowDestination.ql
 ql/cpp/ql/src/Critical/ReturnStackAllocatedObject.ql
 ql/cpp/ql/src/Critical/ReturnValueIgnored.ql
