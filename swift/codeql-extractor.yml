@@ -6,6 +6,8 @@ legacy_qltest_extraction: true
 build_modes:
   - autobuild
   - manual
+default_queries:
+  - codeql/swift-queries
 github_api_languages:
   - Swift
 scc_languages:

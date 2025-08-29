@@ -9,6 +9,8 @@ column_kind: "utf8"
 build_modes:
   - autobuild
   - manual
+default_queries:
+  - codeql/go-queries
 github_api_languages:
   - Go
 scc_languages:

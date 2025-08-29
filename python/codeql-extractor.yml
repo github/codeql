@@ -4,6 +4,8 @@ version: 1.22.1
 column_kind: utf32
 build_modes:
   - none
+default_queries:
+  - codeql/python-queries
 github_api_languages:
   - Python
 scc_languages:
