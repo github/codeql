@@ -2,6 +2,7 @@
 
 fn test_tuple_expr() -> () {
     // A tuple expression. For example:
-    (1, "one");
-    (2, "two")[0] = 3;
+    let tuple = (1, "one");
+    let n = (2, "two").0;
+    let (a, b) = tuple;
 }

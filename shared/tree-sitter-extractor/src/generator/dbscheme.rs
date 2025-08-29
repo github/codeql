@@ -53,7 +53,7 @@ impl fmt::Display for Case<'_> {
         writeln!(f, "case @{}.{} of", &self.name, &self.column)?;
         let mut sep = " ";
         for (c, tp) in &self.branches {
-            writeln!(f, "{} {} = @{}", sep, c, tp)?;
+            writeln!(f, "{sep} {c} = @{tp}")?;
             sep = "|";
         }
         writeln!(f, ";")
@@ -68,7 +68,7 @@ impl fmt::Display for Table<'_> {
                 if key_index > 0 {
                     write!(f, ", ")?;
                 }
-                write!(f, "{}", key)?;
+                write!(f, "{key}")?;
             }
             writeln!(f, "]")?;
         }
@@ -112,7 +112,7 @@ impl fmt::Display for Union<'_> {
             } else {
                 write!(f, " | ")?;
             }
-            write!(f, "@{}", member)?;
+            write!(f, "@{member}")?;
         }
         Ok(())
     }
@@ -122,9 +122,9 @@ impl fmt::Display for Union<'_> {
 pub fn write(file: &mut dyn std::io::Write, entries: &[Entry]) -> std::io::Result<()> {
     for entry in entries {
         match entry {
-            Entry::Case(case) => write!(file, "{}\n\n", case)?,
-            Entry::Table(table) => write!(file, "{}\n\n", table)?,
-            Entry::Union(union) => write!(file, "{}\n\n", union)?,
+            Entry::Case(case) => write!(file, "{case}\n\n")?,
+            Entry::Table(table) => write!(file, "{table}\n\n")?,
+            Entry::Union(union) => write!(file, "{union}\n\n")?,
         }
     }
 

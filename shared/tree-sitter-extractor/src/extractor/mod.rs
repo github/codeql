@@ -230,7 +230,7 @@ pub fn extract(
     parser.set_language(language).unwrap();
     parser.set_included_ranges(ranges).unwrap();
     let tree = parser.parse(source, None).expect("Failed to parse file");
-    trap_writer.comment(format!("Auto-generated TRAP file for {}", path_str));
+    trap_writer.comment(format!("Auto-generated TRAP file for {path_str}"));
     let file_label = populate_file(trap_writer, path, transformer);
     let mut visitor = Visitor::new(
         source,
@@ -298,9 +298,9 @@ impl<'a> Visitor<'a> {
             source,
             diagnostics_writer,
             trap_writer,
-            ast_node_location_table_name: format!("{}_ast_node_location", language_prefix),
-            ast_node_parent_table_name: format!("{}_ast_node_parent", language_prefix),
-            tokeninfo_table_name: format!("{}_tokeninfo", language_prefix),
+            ast_node_location_table_name: format!("{language_prefix}_ast_node_location"),
+            ast_node_parent_table_name: format!("{language_prefix}_ast_node_parent"),
+            tokeninfo_table_name: format!("{language_prefix}_tokeninfo"),
             schema,
             stack: Vec::new(),
         }

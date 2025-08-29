@@ -545,10 +545,27 @@ mod type_parameter_bounds {
         println!("{:?}", s); // $ type=s:S1
     }
 
+    fn trait_per_where_bound_with_type<T>(x: T)
+    where
+        T: FirstTrait<S1>,
+    {
+        let s = x.method(); // $ target=FirstTrait::method
+        println!("{:?}", s); // $ type=s:S1
+    }
+
     trait Pair<P1 = bool, P2 = i64> {
         fn fst(self) -> P1;
 
         fn snd(self) -> P2;
+    }
+
+    fn trait_per_multiple_where_bounds_with_type<T>(x: T, y: T)
+    where
+        T: FirstTrait<S1>,
+        T: Pair<S1, bool>,
+    {
+        let _ = x.fst(); // $ target=fst type=_:S1
+        let _ = y.method(); // $ target=FirstTrait::method _:S1
     }
 
     fn call_trait_per_bound_with_type_1<T: Pair<S1, S2>>(x: T, y: T) {
@@ -806,7 +823,8 @@ mod associated_type_in_trait {
 mod associated_type_in_supertrait {
     trait Supertrait {
         type Content;
-        fn insert(content: Self::Content);
+        // Supertrait::insert
+        fn insert(&self, content: Self::Content);
     }
 
     trait Subtrait: Supertrait {
@@ -814,11 +832,23 @@ mod associated_type_in_supertrait {
         fn get_content(&self) -> Self::Content;
     }
 
+    // A subtrait declared using a `where` clause.
+    trait Subtrait2
+    where
+        Self: Supertrait,
+    {
+        // Subtrait2::insert_two
+        fn insert_two(&self, c1: Self::Content, c2: Self::Content) {
+            self.insert(c1); // $ target=Supertrait::insert
+            self.insert(c2); // $ target=Supertrait::insert
+        }
+    }
+
     struct MyType<T>(T);
 
     impl<T> Supertrait for MyType<T> {
         type Content = T;
-        fn insert(_content: Self::Content) {
+        fn insert(&self, _content: Self::Content) {
             println!("Inserting content: ");
         }
     }
@@ -832,6 +862,11 @@ mod associated_type_in_supertrait {
 
     fn get_content<T: Subtrait>(item: &T) -> T::Content {
         item.get_content() // $ target=Subtrait::get_content
+    }
+
+    fn insert_three<T: Subtrait2>(item: &T, c1: T::Content, c2: T::Content, c3: T::Content) {
+        item.insert(c1); // $ target=Supertrait::insert
+        item.insert_two(c2, c3); // $ target=Subtrait2::insert_two
     }
 
     fn test() {
@@ -1989,6 +2024,7 @@ mod impl_trait {
         let c = uses_my_trait2(a); // $ type=c:S2 target=uses_my_trait2
         let d = uses_my_trait2(S1); // $ type=d:S2 target=uses_my_trait2
         let e = get_a_my_trait2(S1).get_a(); // $ target=get_a_my_trait2 target=MyTrait::get_a type=e:S1
+
         // For this function the `impl` type does not appear in the root of the return type
         let f = get_a_my_trait3(S1).unwrap().get_a(); // $ target=get_a_my_trait3 target=unwrap target=MyTrait::get_a type=f:S1
         let g = get_a_my_trait4(S1).0.get_a(); // $ target=get_a_my_trait4 target=MyTrait::get_a type=g:S1
@@ -2032,13 +2068,7 @@ mod indexers {
     }
 
     fn analyze_slice(slice: &[S]) {
-        // NOTE: `slice` gets the spurious type `[]` because the desugaring of
-        // the index expression adds an implicit borrow. `&slice` has the type
-        // `&&[S]`, but the `index` methods takes a `&[S]`, so Rust adds an
-        // implicit dereference. We cannot currently handle a position that is
-        // both implicitly dereferenced and implicitly borrowed, so the extra
-        // type sneaks in.
-        let x = slice[0].foo(); // $ target=foo type=x:S target=index SPURIOUS: type=slice:[]
+        let x = slice[0].foo(); // $ target=foo type=x:S target=index
     }
 
     pub fn f() {
@@ -2302,6 +2332,8 @@ mod loops {
         for u in [0u8..10] {} // $ type=u:Range type=u:Idx.u8
         let range = 0..10; // $ type=range:Range type=range:Idx.i32
         for i in range {} // $ type=i:i32
+        let range_full = ..; // $ type=range_full:RangeFull
+        for i in &[1i64, 2i64, 3i64][range_full] {} // $ target=index MISSING: type=i:&T.i64
 
         let range1 = // $ type=range1:Range type=range1:Idx.u16
         std::ops::Range {
@@ -2352,7 +2384,7 @@ mod loops {
         #[rustfmt::skip]
         let _ = while a < 10 // $ target=lt type=a:i64
         {
-            a += 1; // $ type=a:i64 target=add_assign
+            a += 1; // $ type=a:i64 MISSING: target=add_assign
         };
     }
 }
@@ -2414,6 +2446,7 @@ mod explicit_type_args {
 }
 
 mod tuples {
+    #[derive(Debug, Clone, Copy)]
     struct S1 {}
 
     impl S1 {
@@ -2454,6 +2487,9 @@ mod tuples {
             _ => print!("expected"),
         }
         let x = pair.0; // $ type=x:i32
+
+        let y = &S1::get_pair(); // $ target=get_pair
+        y.0.foo(); // $ target=foo
     }
 }
 
@@ -2484,46 +2520,90 @@ pub mod pattern_matching_experimental {
     }
 }
 
-mod closures {
-    struct Row {
-        data: i64,
+pub mod exec {
+    // a highly simplified model of `MySqlConnection.execute` in SQLx
+
+    trait Connection {}
+
+    trait Executor {
+        fn execute1(&self);
+        fn execute2<E>(&self, query: E);
     }
 
-    impl Row {
-        fn get(&self) -> i64 {
-            self.data // $ fieldof=Row
+    impl<T: Connection> Executor for T {
+        fn execute1(&self) {
+            println!("Executor::execute1");
+        }
+
+        fn execute2<E>(&self, _query: E) {
+            println!("Executor::execute2");
         }
     }
 
-    struct Table {
-        rows: Vec<Row>,
-    }
+    struct MySqlConnection {}
 
-    impl Table {
-        fn new() -> Self {
-            Table { rows: Vec::new() } // $ target=new
+    impl Connection for MySqlConnection {}
+
+    pub fn f() {
+        let c = MySqlConnection {}; // $ type=c:MySqlConnection
+
+        c.execute1(); // $ MISSING: target=execute1
+        MySqlConnection::execute1(&c); // $ MISSING: target=execute1
+
+        c.execute2("SELECT * FROM users"); // $ MISSING: target=execute2
+        c.execute2::<&str>("SELECT * FROM users"); // $ MISSING: target=execute2
+        MySqlConnection::execute2(&c, "SELECT * FROM users"); // $ MISSING: target=execute2
+        MySqlConnection::execute2::<&str>(&c, "SELECT * FROM users"); // $ MISSING: target=execute2
+    }
+}
+
+pub mod path_buf {
+    // a highly simplified model of `PathBuf::canonicalize`
+
+    pub struct Path {}
+
+    impl Path {
+        pub const fn new() -> Path {
+            Path {}
         }
 
-        fn count_with(&self, property: impl Fn(Row) -> bool) -> i64 {
-            0 // (not implemented)
+        pub fn canonicalize(&self) -> Result<PathBuf, ()> {
+            Ok(PathBuf::new()) // $ target=new
+        }
+    }
+
+    pub struct PathBuf {}
+
+    impl PathBuf {
+        pub const fn new() -> PathBuf {
+            PathBuf {}
+        }
+    }
+
+    // `PathBuf` provides `canonicalize` via `Deref`:
+    impl std::ops::Deref for PathBuf {
+        type Target = Path;
+
+        #[inline]
+        fn deref(&self) -> &Path {
+            // (very much not a real implementation)
+            static path: Path = Path::new(); // $ target=new
+            &path
         }
     }
 
     pub fn f() {
-        Some(1).map(|x| {
-            let x = x; // $ MISSING: type=x:i32
-            println!("{x}");
-        }); // $ target=map
+        let path1 = Path::new(); // $ target=new type=path1:Path
+        let path2 = path1.canonicalize(); // $ target=canonicalize
+        let path3 = path2.unwrap(); // $ target=unwrap type=path3:PathBuf
 
-        let table = Table::new(); // $ target=new type=table:Table
-        let result = table.count_with(|row| // $ type=result:i64
-            {
-                let v = row.get(); // $ MISSING: target=get type=v:i64
-                v > 0 // $ MISSING: target=gt
-            }); // $ target=count_with
+        let pathbuf1 = PathBuf::new(); // $ target=new type=pathbuf1:PathBuf
+        let pathbuf2 = pathbuf1.canonicalize(); // $ MISSING: target=canonicalize
+        let pathbuf3 = pathbuf2.unwrap(); // $ MISSING: target=unwrap type=pathbuf3:PathBuf
     }
 }
 
+mod closure;
 mod dereference;
 mod dyn_type;
 
@@ -2554,9 +2634,10 @@ fn main() {
     macros::f(); // $ target=f
     method_determined_by_argument_type::f(); // $ target=f
     tuples::f(); // $ target=f
+    exec::f(); // $ target=f
+    path_buf::f(); // $ target=f
     dereference::test(); // $ target=test
     pattern_matching::test_all_patterns(); // $ target=test_all_patterns
     pattern_matching_experimental::box_patterns(); // $ target=box_patterns
-    closures::f(); // $ target=f
     dyn_type::test(); // $ target=test
 }

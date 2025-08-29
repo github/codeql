@@ -18,10 +18,10 @@ final class CfgScope = CfgScopeImpl;
 
 final class AsyncBlockScope extends CfgScopeImpl, AsyncBlockExpr instanceof ExprTrees::AsyncBlockExprTree
 {
-  override predicate scopeFirst(AstNode first) { first(super.getFirstChildNode(), first) }
+  override predicate scopeFirst(AstNode first) { first(super.getFirstChildTree(), first) }
 
   override predicate scopeLast(AstNode last, Completion c) {
-    last(super.getLastChildElement(), last, c)
+    last(super.getLastChildTree(), last, c)
     or
     last(super.getChildNode(_), last, c) and
     not c instanceof NormalCompletion
@@ -48,7 +48,7 @@ final class CallableScope extends CfgScopeImpl, Callable {
   }
 
   override predicate scopeFirst(AstNode first) {
-    first(this.(CallableScopeTree).getFirstChildNode(), first)
+    first(this.(CallableScopeTree).getFirstChildTree(), first)
   }
 
   /** Holds if `scope` is exited when `last` finishes with completion `c`. */

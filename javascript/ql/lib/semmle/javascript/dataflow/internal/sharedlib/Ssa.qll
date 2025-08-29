@@ -50,6 +50,8 @@ module SsaConfig implements InputSig<js::DbLocation> {
 import Make<js::DbLocation, SsaConfig>
 
 module SsaDataflowInput implements DataFlowIntegrationInputSig {
+  private import codeql.util.Boolean
+
   class Expr extends js::ControlFlowNode {
     Expr() { this = any(SsaConfig::SourceVariable v).getAUse() }
 
@@ -71,6 +73,8 @@ module SsaDataflowInput implements DataFlowIntegrationInputSig {
     )
   }
 
+  class GuardValue = Boolean;
+
   class Guard extends js::ControlFlowNode {
     Guard() { this = any(js::ConditionGuardNode g).getTest() }
 
@@ -78,7 +82,7 @@ module SsaDataflowInput implements DataFlowIntegrationInputSig {
      * Holds if the evaluation of this guard to `branch` corresponds to the edge
      * from `bb1` to `bb2`.
      */
-    predicate hasBranchEdge(js::BasicBlock bb1, js::BasicBlock bb2, boolean branch) {
+    predicate hasValueBranchEdge(js::BasicBlock bb1, js::BasicBlock bb2, GuardValue branch) {
       exists(js::ConditionGuardNode g |
         g.getTest() = this and
         bb1 = this.getBasicBlock() and
@@ -92,13 +96,13 @@ module SsaDataflowInput implements DataFlowIntegrationInputSig {
      * branch edge from `bb1` to `bb2`. That is, following the edge from
      * `bb1` to `bb2` implies that this guard evaluated to `branch`.
      */
-    predicate controlsBranchEdge(js::BasicBlock bb1, js::BasicBlock bb2, boolean branch) {
-      this.hasBranchEdge(bb1, bb2, branch)
+    predicate valueControlsBranchEdge(js::BasicBlock bb1, js::BasicBlock bb2, GuardValue branch) {
+      this.hasValueBranchEdge(bb1, bb2, branch)
     }
   }
 
   pragma[inline]
-  predicate guardDirectlyControlsBlock(Guard guard, js::BasicBlock bb, boolean branch) {
+  predicate guardDirectlyControlsBlock(Guard guard, js::BasicBlock bb, GuardValue branch) {
     exists(js::ConditionGuardNode g |
       g.getTest() = guard and
       g.dominates(bb) and

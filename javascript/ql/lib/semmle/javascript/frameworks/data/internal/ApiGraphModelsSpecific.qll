@@ -58,9 +58,11 @@ predicate parseTypeString(string rawType, string package, string qualifiedName) 
 predicate isPackageUsed(string package) {
   package = "global"
   or
-  package = any(JS::Import imp).getImportedPathString()
+  // To simplify which dependencies are needed to construct DataFlow::Node, we don't want to rely on `Import` here.
+  // Just check all string literals.
+  package = any(JS::Expr imp).getStringValue()
   or
-  any(JS::TypeAnnotation t).hasUnderlyingType(package, _)
+  package = any(JS::StringLiteralTypeExpr t).getValue() // Can be used in `import("foo")`
   or
   exists(JS::PackageJson json | json.getPackageName() = package)
 }

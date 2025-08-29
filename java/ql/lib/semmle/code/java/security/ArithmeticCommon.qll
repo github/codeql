@@ -20,16 +20,16 @@ predicate narrowerThanOrEqualTo(ArithExpr exp, NumType numType) {
   exists(CastingExpr cast | cast.getAChildExpr() = exp | numType.widerThanOrEqualTo(cast.getType()))
 }
 
-private Guard sizeGuard(SsaVariable v, boolean branch, boolean upper) {
+private Guard sizeGuard(Expr e, boolean branch, boolean upper) {
   exists(ComparisonExpr comp | comp = result |
-    comp.getLesserOperand() = ssaRead(v, 0) and
+    comp.getLesserOperand() = e and
     (
       branch = true and upper = true
       or
       branch = false and upper = false
     )
     or
-    comp.getGreaterOperand() = ssaRead(v, 0) and
+    comp.getGreaterOperand() = e and
     (
       branch = true and upper = false
       or
@@ -38,7 +38,7 @@ private Guard sizeGuard(SsaVariable v, boolean branch, boolean upper) {
     or
     exists(MethodCall ma |
       ma.getMethod() instanceof MethodAbs and
-      ma.getArgument(0) = ssaRead(v, 0) and
+      ma.getArgument(0) = e and
       (
         comp.getLesserOperand() = ma and branch = true
         or
@@ -49,7 +49,7 @@ private Guard sizeGuard(SsaVariable v, boolean branch, boolean upper) {
     or
     // overflow test
     exists(AddExpr add, VarRead use, Expr pos |
-      use = ssaRead(v, 0) and
+      use = e and
       add.hasOperands(use, pos) and
       positive(use) and
       positive(pos) and
@@ -65,70 +65,38 @@ private Guard sizeGuard(SsaVariable v, boolean branch, boolean upper) {
     )
   )
   or
-  result.isEquality(ssaRead(v, 0), _, branch) and
+  result.isEquality(e, _, branch) and
   (upper = true or upper = false)
-  or
-  exists(MethodCall call, Method m, int ix |
-    call = result and
-    call.getArgument(ix) = ssaRead(v, 0) and
-    call.getMethod().getSourceDeclaration() = m and
-    m = customSizeGuard(ix, branch, upper)
-  )
 }
 
-private Guard derivedSizeGuard(SsaVariable v, boolean branch, boolean upper) {
-  result = sizeGuard(v, branch, upper) or
-  exists(boolean branch0 | implies_v3(result, branch, derivedSizeGuard(v, branch0, upper), branch0))
+private predicate sizeGuardLessThan(Guard g, Expr e, boolean branch) {
+  g = sizeGuard(e, branch, true)
 }
 
-private Method customSizeGuard(int index, boolean retval, boolean upper) {
-  exists(Parameter p, SsaImplicitInit v |
-    result.getReturnType().(PrimitiveType).hasName("boolean") and
-    not result.isOverridable() and
-    p.getCallable() = result and
-    not p.isVarargs() and
-    p.getType() instanceof NumericOrCharType and
-    p.getPosition() = index and
-    v.isParameterDefinition(p) and
-    forex(ReturnStmt ret |
-      ret.getEnclosingCallable() = result and
-      exists(Expr res | res = ret.getResult() |
-        not res.(BooleanLiteral).getBooleanValue() = retval.booleanNot()
-      )
-    |
-      ret.getResult() = derivedSizeGuard(v, retval, upper)
-    )
-  )
+private predicate sizeGuardGreaterThan(Guard g, Expr e, boolean branch) {
+  g = sizeGuard(e, branch, false)
 }
 
 /**
- * Holds if `e` is bounded in a way that is likely to prevent overflow.
+ * Holds if `n` is bounded in a way that is likely to prevent overflow.
  */
-predicate guardedLessThanSomething(Expr e) {
-  exists(SsaVariable v, Guard guard, boolean branch |
-    e = v.getAUse() and
-    guard = sizeGuard(v.getAPhiInputOrPriorDef*(), branch, true) and
-    guard.controls(e.getBasicBlock(), branch)
-  )
+predicate guardedLessThanSomething(DataFlow::Node n) {
+  DataFlow::BarrierGuard<sizeGuardLessThan/3>::getABarrierNode() = n
   or
-  negative(e)
+  negative(n.asExpr())
   or
-  e.(MethodCall).getMethod() instanceof MethodMathMin
+  n.asExpr().(MethodCall).getMethod() instanceof MethodMathMin
 }
 
 /**
  * Holds if `e` is bounded in a way that is likely to prevent underflow.
  */
-predicate guardedGreaterThanSomething(Expr e) {
-  exists(SsaVariable v, Guard guard, boolean branch |
-    e = v.getAUse() and
-    guard = sizeGuard(v.getAPhiInputOrPriorDef*(), branch, false) and
-    guard.controls(e.getBasicBlock(), branch)
-  )
+predicate guardedGreaterThanSomething(DataFlow::Node n) {
+  DataFlow::BarrierGuard<sizeGuardGreaterThan/3>::getABarrierNode() = n
   or
-  positive(e)
+  positive(n.asExpr())
   or
-  e.(MethodCall).getMethod() instanceof MethodMathMax
+  n.asExpr().(MethodCall).getMethod() instanceof MethodMathMax
 }
 
 /** Holds if `e` occurs in a context where it will be upcast to a wider type. */
@@ -182,7 +150,7 @@ private predicate unlikelyNode(DataFlow::Node n) {
 /** Holds if `n` is likely guarded against overflow. */
 predicate overflowBarrier(DataFlow::Node n) {
   n.getType() instanceof BooleanType or
-  guardedLessThanSomething(n.asExpr()) or
+  guardedLessThanSomething(n) or
   unlikelyNode(n) or
   upcastToWiderType(n.asExpr()) or
   overflowIrrelevant(n.asExpr())
@@ -191,7 +159,7 @@ predicate overflowBarrier(DataFlow::Node n) {
 /** Holds if `n` is likely guarded against underflow. */
 predicate underflowBarrier(DataFlow::Node n) {
   n.getType() instanceof BooleanType or
-  guardedGreaterThanSomething(n.asExpr()) or
+  guardedGreaterThanSomething(n) or
   unlikelyNode(n) or
   upcastToWiderType(n.asExpr()) or
   overflowIrrelevant(n.asExpr())
@@ -210,7 +178,6 @@ predicate overflowSink(ArithExpr exp, VarAccess use) {
     exp instanceof PostIncExpr or
     exp instanceof MulExpr
   ) and
-  not guardedLessThanSomething(use) and
   // Exclude widening conversions of tainted values due to binary numeric promotion (JLS 5.6.2)
   // unless there is an enclosing cast down to a narrower type.
   narrowerThanOrEqualTo(exp, use.getType()) and
@@ -230,7 +197,6 @@ predicate underflowSink(ArithExpr exp, VarAccess use) {
     exp instanceof PostDecExpr or
     exp instanceof MulExpr
   ) and
-  not guardedGreaterThanSomething(use) and
   // Exclude widening conversions of tainted values due to binary numeric promotion (JLS 5.6.2)
   // unless there is an enclosing cast down to a narrower type.
   narrowerThanOrEqualTo(exp, use.getType()) and

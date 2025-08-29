@@ -22,15 +22,8 @@ import codeql.actions.security.ControlChecks
 from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink, Event event
 where
   CodeInjectionFlow::flowPath(source, sink) and
-  inPrivilegedContext(sink.getNode().asExpr(), event) and
-  source.getNode().(RemoteFlowSource).getEventName() = event.getName() and
-  not exists(ControlCheck check | check.protects(sink.getNode().asExpr(), event, "code-injection")) and
-  // exclude cases where the sink is a JS script and the expression uses toJson
-  not exists(UsesStep script |
-    script.getCallee() = "actions/github-script" and
-    script.getArgumentExpr("script") = sink.getNode().asExpr() and
-    exists(getAToJsonReferenceExpression(sink.getNode().asExpr().(Expression).getExpression(), _))
-  )
+  event = getRelevantCriticalEventForSink(sink.getNode()) and
+  source.getNode().(RemoteFlowSource).getEventName() = event.getName()
 select sink.getNode(), source, sink,
   "Potential code injection in $@, which may be controlled by an external user ($@).", sink,
   sink.getNode().asExpr().(Expression).getRawExpression(), event, event.getName()

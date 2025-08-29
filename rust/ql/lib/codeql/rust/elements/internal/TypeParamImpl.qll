@@ -12,6 +12,7 @@ private import codeql.rust.elements.internal.generated.TypeParam
  */
 module Impl {
   private import rust
+  private import codeql.rust.internal.PathResolution
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
@@ -26,6 +27,25 @@ module Impl {
   class TypeParam extends Generated::TypeParam {
     /** Gets the position of this type parameter. */
     int getPosition() { this = any(GenericParamList l).getTypeParam(result) }
+
+    /**
+     * Gets the `index`th type bound of this type parameter, if any.
+     *
+     * This includes type bounds directly on this type parameter and bounds from
+     * any `where` clauses for this type parameter.
+     */
+    TypeBound getTypeBound(int index) {
+      result =
+        rank[index + 1](int i, int j | | this.(TypeParamItemNode).getTypeBoundAt(i, j) order by i, j)
+    }
+
+    /**
+     * Gets a type bound of this type parameter.
+     *
+     * This includes type bounds directly on this type parameter and bounds from
+     * any `where` clauses for this type parameter.
+     */
+    TypeBound getATypeBound() { result = this.getTypeBound(_) }
 
     override string toAbbreviatedString() { result = this.getName().getText() }
 

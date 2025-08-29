@@ -482,6 +482,19 @@ pub fn tuple_patterns() {
             println!("Single element tuple: {}", single_elem);
         }
     }
+
+    // Tuple pattern on reference to tuple in `let` expression
+    let ref_tuple1: &(i32, i32) = &(1, 2);
+    if let (n, m) = ref_tuple1 {
+        println!("n: {}", n);
+        println!("m: {}", m);
+    }
+
+    // Tuple pattern on reference to tuple in `let` statement
+    let ref_tuple2: &(i32, i32) = &(1, 2);
+    let (n, m) = ref_tuple2;
+    println!("n: {}", n);
+    println!("m: {}", m);
 }
 
 pub fn parenthesized_patterns() {

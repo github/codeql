@@ -66,7 +66,6 @@ ql/java/ql/src/Frameworks/Spring/XML Configuration Errors/MissingSetters.ql
 ql/java/ql/src/Language Abuse/CastThisToTypeParameter.ql
 ql/java/ql/src/Language Abuse/DubiousDowncastOfThis.ql
 ql/java/ql/src/Language Abuse/DubiousTypeTestOfThis.ql
-ql/java/ql/src/Language Abuse/EmptyStatement.ql
 ql/java/ql/src/Language Abuse/EnumIdentifier.ql
 ql/java/ql/src/Language Abuse/ImplementsAnnotation.ql
 ql/java/ql/src/Language Abuse/MissedTernaryOpportunity.ql
@@ -187,7 +186,6 @@ ql/java/ql/src/Violations of Best Practice/Magic Constants/MagicNumbersUseConsta
 ql/java/ql/src/Violations of Best Practice/Magic Constants/MagicStringsUseConstant.ql
 ql/java/ql/src/Violations of Best Practice/Naming Conventions/ConfusingOverridesNames.ql
 ql/java/ql/src/Violations of Best Practice/Naming Conventions/LocalShadowsField.ql
-ql/java/ql/src/Violations of Best Practice/Undesirable Calls/CallsToSystemExit.ql
 ql/java/ql/src/Violations of Best Practice/Undesirable Calls/GarbageCollection.ql
 ql/java/ql/src/Violations of Best Practice/legacy/AutoBoxing.ql
 ql/java/ql/src/Violations of Best Practice/legacy/FinallyMayNotComplete.ql
@@ -196,7 +194,6 @@ ql/java/ql/src/Violations of Best Practice/legacy/ParameterAssignment.ql
 ql/java/ql/src/Violations of Best Practice/legacy/UnnecessaryCast.ql
 ql/java/ql/src/Violations of Best Practice/legacy/UnnecessaryImport.ql
 ql/java/ql/src/definitions.ql
-ql/java/ql/src/experimental/Security/CWE/CWE-016/InsecureSpringActuatorConfig.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-020/Log4jJndiInjection.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-036/OpenStream.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-073/FilePathInjection.ql

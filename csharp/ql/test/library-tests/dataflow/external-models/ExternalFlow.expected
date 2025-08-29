@@ -104,6 +104,7 @@ edges
 | ExternalFlow.cs:117:17:117:17 | access to local variable a : null [element] : Object | ExternalFlow.cs:118:29:118:29 | access to local variable a : null [element] : Object | provenance |  |
 | ExternalFlow.cs:117:34:117:49 | { ..., ... } : null [element] : Object | ExternalFlow.cs:117:17:117:17 | access to local variable a : null [element] : Object | provenance |  |
 | ExternalFlow.cs:117:36:117:47 | object creation of type Object : Object | ExternalFlow.cs:117:34:117:49 | { ..., ... } : null [element] : Object | provenance |  |
+| ExternalFlow.cs:118:17:118:17 | access to local variable b : null [element] : Object | ExternalFlow.cs:119:18:119:18 | access to local variable b | provenance |  |
 | ExternalFlow.cs:118:17:118:17 | access to local variable b : null [element] : Object | ExternalFlow.cs:120:18:120:18 | access to local variable b : null [element] : Object | provenance |  |
 | ExternalFlow.cs:118:21:118:30 | call to method Reverse : null [element] : Object | ExternalFlow.cs:118:17:118:17 | access to local variable b : null [element] : Object | provenance |  |
 | ExternalFlow.cs:118:29:118:29 | access to local variable a : null [element] : Object | ExternalFlow.cs:118:21:118:30 | call to method Reverse : null [element] : Object | provenance | MaD:7 |
@@ -240,6 +241,7 @@ nodes
 | ExternalFlow.cs:118:17:118:17 | access to local variable b : null [element] : Object | semmle.label | access to local variable b : null [element] : Object |
 | ExternalFlow.cs:118:21:118:30 | call to method Reverse : null [element] : Object | semmle.label | call to method Reverse : null [element] : Object |
 | ExternalFlow.cs:118:29:118:29 | access to local variable a : null [element] : Object | semmle.label | access to local variable a : null [element] : Object |
+| ExternalFlow.cs:119:18:119:18 | access to local variable b | semmle.label | access to local variable b |
 | ExternalFlow.cs:120:18:120:18 | access to local variable b : null [element] : Object | semmle.label | access to local variable b : null [element] : Object |
 | ExternalFlow.cs:120:18:120:21 | access to array element | semmle.label | access to array element |
 | ExternalFlow.cs:205:17:205:18 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
@@ -315,6 +317,7 @@ invalidModelRow
 | ExternalFlow.cs:102:22:102:22 | access to parameter d | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | ExternalFlow.cs:102:22:102:22 | access to parameter d | $@ | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:104:18:104:25 | access to field Field | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | ExternalFlow.cs:104:18:104:25 | access to field Field | $@ | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:112:18:112:25 | access to property MyProp | ExternalFlow.cs:111:24:111:35 | object creation of type Object : Object | ExternalFlow.cs:112:18:112:25 | access to property MyProp | $@ | ExternalFlow.cs:111:24:111:35 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:119:18:119:18 | access to local variable b | ExternalFlow.cs:117:36:117:47 | object creation of type Object : Object | ExternalFlow.cs:119:18:119:18 | access to local variable b | $@ | ExternalFlow.cs:117:36:117:47 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:120:18:120:21 | access to array element | ExternalFlow.cs:117:36:117:47 | object creation of type Object : Object | ExternalFlow.cs:120:18:120:21 | access to array element | $@ | ExternalFlow.cs:117:36:117:47 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:206:18:206:48 | call to method MixedFlowArgs | ExternalFlow.cs:205:22:205:33 | object creation of type Object : Object | ExternalFlow.cs:206:18:206:48 | call to method MixedFlowArgs | $@ | ExternalFlow.cs:205:22:205:33 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:212:18:212:62 | call to method GeneratedFlowWithGeneratedNeutral | ExternalFlow.cs:211:22:211:33 | object creation of type Object : Object | ExternalFlow.cs:212:18:212:62 | call to method GeneratedFlowWithGeneratedNeutral | $@ | ExternalFlow.cs:211:22:211:33 | object creation of type Object : Object | object creation of type Object : Object |

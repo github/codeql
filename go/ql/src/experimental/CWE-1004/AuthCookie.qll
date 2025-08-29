@@ -116,6 +116,12 @@ private module BoolToGinSetCookieTrackingConfig implements DataFlow::ConfigSig {
       )
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // Merged with other flows in CookieWithoutHttpOnly.ql
+  }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
 }
 
 /**

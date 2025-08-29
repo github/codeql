@@ -11,9 +11,9 @@ module SensitiveDataConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof SensitiveData }
 
   predicate isSink(DataFlow::Node sink) {
-    any(CallExpr call | call.getFunction().(PathExpr).getResolvedPath() = "crate::test::sink")
-        .getArgList()
-        .getAnArg() = sink.asExpr().getExpr()
+    any(CallExpr call |
+      call.getFunction().(PathExpr).getPath().getSegment().getIdentifier().getText() = "sink"
+    ).getArgList().getAnArg() = sink.asExpr().getExpr()
   }
 }
 

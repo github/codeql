@@ -1,5 +1,5 @@
 use crate::diagnostics::{ExtractionStep, emit_extraction_diagnostics};
-use crate::rust_analyzer::path_to_file_id;
+use crate::rust_analyzer::{RustAnalyzerNoSemantics, path_to_file_id};
 use crate::translate::{ResolvePaths, SourceKind};
 use crate::trap::TrapId;
 use anyhow::Context;
@@ -87,14 +87,12 @@ impl<'a> Extractor<'a> {
             translator.emit_parse_error(&ast, &err);
         }
         let no_location = (LineCol { line: 0, col: 0 }, LineCol { line: 0, col: 0 });
-        if let Err(reason) = semantics_info {
+        if let Err(RustAnalyzerNoSemantics { severity, reason }) = semantics_info {
             if !reason.is_empty() {
                 let message = format!("semantic analyzer unavailable ({reason})");
-                let full_message = format!(
-                    "{message}: macro expansion, call graph, and type inference will be skipped."
-                );
+                let full_message = format!("{message}: macro expansion will be skipped.");
                 translator.emit_diagnostic(
-                    trap::DiagnosticSeverity::Warning,
+                    severity,
                     "semantics".to_owned(),
                     message,
                     full_message,
@@ -135,10 +133,10 @@ impl<'a> Extractor<'a> {
         &mut self,
         file: &Path,
         source_kind: SourceKind,
-        reason: &str,
+        err: RustAnalyzerNoSemantics,
     ) {
         self.extract(
-            &RustAnalyzer::WithoutSemantics { reason },
+            &RustAnalyzer::from(err),
             file,
             ResolvePaths::No,
             source_kind,
@@ -163,21 +161,25 @@ impl<'a> Extractor<'a> {
         file: &Path,
         semantics: &Semantics<'_, RootDatabase>,
         vfs: &Vfs,
-    ) -> Result<(), String> {
+    ) -> Result<(), RustAnalyzerNoSemantics> {
         let before = Instant::now();
         let Some(id) = path_to_file_id(file, vfs) else {
-            return Err("not included in files loaded from manifest".to_string());
+            return Err(RustAnalyzerNoSemantics::warning(
+                "not included in files loaded from manifest",
+            ));
         };
         match semantics.file_to_module_def(id) {
-            None => return Err("not included as a module".to_string()),
+            None => {
+                return Err(RustAnalyzerNoSemantics::info("not included as a module"));
+            }
             Some(module)
                 if module
                     .as_source_file_id(semantics.db)
                     .is_none_or(|mod_file_id| mod_file_id.file_id(semantics.db) != id) =>
             {
-                return Err(
-                    "not loaded as its own module, probably included by `!include`".to_string(),
-                );
+                return Err(RustAnalyzerNoSemantics::info(
+                    "not loaded as its own module, probably included by `!include`",
+                ));
             }
             _ => {}
         };
@@ -279,7 +281,11 @@ fn main() -> anyhow::Result<()> {
                 continue 'outer;
             }
         }
-        extractor.extract_without_semantics(file, SourceKind::Source, "no manifest found");
+        extractor.extract_without_semantics(
+            file,
+            SourceKind::Source,
+            RustAnalyzerNoSemantics::warning("no manifest found"),
+        );
     }
     let cwd = cwd()?;
     let (cargo_config, load_cargo_config) = cfg.to_cargo_config(&cwd);
@@ -319,7 +325,7 @@ fn main() -> anyhow::Result<()> {
                         source_resolve_paths,
                         source_mode,
                     ),
-                    Err(reason) => extractor.extract_without_semantics(file, source_mode, &reason),
+                    Err(e) => extractor.extract_without_semantics(file, source_mode, e),
                 };
             }
             for (file_id, file) in vfs.iter() {
@@ -347,7 +353,7 @@ fn main() -> anyhow::Result<()> {
                 extractor.extract_without_semantics(
                     file,
                     SourceKind::Source,
-                    "unable to load manifest",
+                    RustAnalyzerNoSemantics::warning("unable to load manifest"),
                 );
             }
         }
@@ -359,7 +365,7 @@ fn main() -> anyhow::Result<()> {
         let entry = entry.context("failed to read builtins directory")?;
         let path = entry.path();
         if path.extension().is_some_and(|ext| ext == "rs") {
-            extractor.extract_without_semantics(&path, SourceKind::Library, "");
+            extractor.extract_without_semantics(&path, SourceKind::Library, Default::default());
         }
     }
 

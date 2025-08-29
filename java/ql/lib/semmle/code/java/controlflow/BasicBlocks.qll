@@ -57,7 +57,7 @@ private module Input implements BB::InputSig<Location> {
    * Holds if `node` represents an exit node to be used when calculating
    * post dominance.
    */
-  predicate nodeIsPostDominanceExit(Node node) { node instanceof ControlFlow::ExitNode }
+  predicate nodeIsPostDominanceExit(Node node) { node instanceof ControlFlow::NormalExitNode }
 }
 
 private module BbImpl = BB::Make<Location, Input>;

@@ -27,7 +27,6 @@
 /BreakExpr/gen_break_expr.rs linguist-generated
 /CallExpr/gen_call_expr.rs linguist-generated
 /CastExpr/gen_cast_expr.rs linguist-generated
-/ClosureBinder/gen_closure_binder.rs linguist-generated
 /ClosureExpr/gen_closure_expr.rs linguist-generated
 /Comment/gen_comment.rs linguist-generated
 /Const/gen_const.rs linguist-generated
@@ -43,6 +42,7 @@
 /ExternItemList/gen_extern_item_list.rs linguist-generated
 /FieldExpr/gen_field_expr.rs linguist-generated
 /FnPtrTypeRepr/gen_fn_ptr_type_repr.rs linguist-generated
+/ForBinder/gen_for_binder.rs linguist-generated
 /ForExpr/gen_for_expr.rs linguist-generated
 /ForTypeRepr/gen_for_type_repr.rs linguist-generated
 /FormatArgsExpr/gen_format.rs linguist-generated

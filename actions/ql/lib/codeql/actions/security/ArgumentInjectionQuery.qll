@@ -1,6 +1,7 @@
 private import actions
 private import codeql.actions.TaintTracking
 private import codeql.actions.dataflow.ExternalFlow
+private import codeql.actions.security.ControlChecks
 import codeql.actions.dataflow.FlowSources
 import codeql.actions.DataFlow
 
@@ -66,6 +67,16 @@ class ArgumentInjectionFromMaDSink extends ArgumentInjectionSink {
 }
 
 /**
+ * Gets the event that is relevant for the given node in the context of argument injection.
+ *
+ * This is used to highlight the event in the query results when an alert is raised.
+ */
+Event getRelevantEventInPrivilegedContext(DataFlow::Node node) {
+  inPrivilegedContext(node.asExpr(), result) and
+  not exists(ControlCheck check | check.protects(node.asExpr(), result, "argument-injection"))
+}
+
+/**
  * A taint-tracking configuration for unsafe user input
  * that is used to construct and evaluate a code script.
  */
@@ -87,6 +98,16 @@ private module ArgumentInjectionConfig implements DataFlow::ConfigSig {
       succ.asExpr() = run.getScript() and
       run.getScript().getAnEnvReachingArgumentInjectionSink(var, _, _)
     )
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getLocation()
+    or
+    result = getRelevantEventInPrivilegedContext(sink).getLocation()
   }
 }
 

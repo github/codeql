@@ -19,10 +19,7 @@ import codeql.actions.security.ControlChecks
 from ArtifactPoisoningFlow::PathNode source, ArtifactPoisoningFlow::PathNode sink, Event event
 where
   ArtifactPoisoningFlow::flowPath(source, sink) and
-  inPrivilegedContext(sink.getNode().asExpr(), event) and
-  not exists(ControlCheck check |
-    check.protects(sink.getNode().asExpr(), event, "artifact-poisoning")
-  )
+  event = getRelevantEventInPrivilegedContext(sink.getNode())
 select sink.getNode(), source, sink,
   "Potential artifact poisoning in $@, which may be controlled by an external user ($@).", sink,
   sink.getNode().toString(), event, event.getName()

@@ -43,3 +43,11 @@ thing.bar
 from package import x
 import package as p
 p.x
+
+def foo(dirname, lines):
+    head, tail = os.path.split(dirname)
+    x = head # `head` is missing jump-to-def target
+    for start, line in enumerate(lines):
+        line = line.strip() # `line` is missing jump-to-def target
+        break
+    return x

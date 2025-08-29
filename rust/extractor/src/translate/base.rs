@@ -514,7 +514,7 @@ impl<'a> Translator<'a> {
                 mcall,
                 &SyntaxError::new(
                     format!(
-                        "macro expansion failed: could not resolve macro '{}'",
+                        "macro expansion failed for '{}'",
                         mcall.path().map(|p| p.to_string()).unwrap_or_default()
                     ),
                     range.unwrap_or_else(|| TextRange::empty(TextSize::from(0))),
@@ -549,9 +549,7 @@ impl<'a> Translator<'a> {
                 .map(|p| format!("[{p}; {size}]"));
         }
         if let Some(it) = ty.as_slice() {
-            return self
-                .canonical_path_from_type(it)
-                .map(|p| format!("[{}]", p));
+            return self.canonical_path_from_type(it).map(|p| format!("[{p}]"));
         }
         if let Some(it) = ty.as_builtin() {
             return Some(it.name().as_str().to_owned());
@@ -651,7 +649,7 @@ impl<'a> Translator<'a> {
         // if we have a Hir entity, it means we have semantics
         let sema = self.semantics.as_ref().unwrap();
         match item.origin(sema.db) {
-            CrateOrigin::Rustc { name } => format!("rustc:{}", name),
+            CrateOrigin::Rustc { name } => format!("rustc:{name}"),
             CrateOrigin::Local { repo, name } => format!(
                 "repo:{}:{}",
                 repo.unwrap_or_default(),
@@ -660,7 +658,7 @@ impl<'a> Translator<'a> {
             CrateOrigin::Library { repo, name } => {
                 format!("repo:{}:{}", repo.unwrap_or_default(), name)
             }
-            CrateOrigin::Lang(it) => format!("lang:{}", it),
+            CrateOrigin::Lang(it) => format!("lang:{it}"),
         }
     }
 
@@ -834,6 +832,38 @@ impl<'a> Translator<'a> {
                 anchor.syntax().children_with_tokens(),
             );
         }
+    }
+
+    pub(crate) fn emit_macro_stmts(
+        &mut self,
+        node: &ast::MacroStmts,
+    ) -> Option<Label<generated::MacroBlockExpr>> {
+        // not generated to work around a bug in rust-analyzer AST generation machinery.
+        // Because an Expr can also be a Stmt (AsmExpr: Expr and AsmExpr: Item: Stmt)
+        // then such an element will be returned by both `expr()` and `statements()`
+        let mut statements = node.statements().collect::<Vec<_>>();
+        let tail_expr = node.expr();
+        if tail_expr
+            .as_ref()
+            .is_some_and(|e| statements.last().is_some_and(|s| s.syntax() == e.syntax()))
+        {
+            // if the expression matched as both the tail_expr and the last of the statements,
+            // only take it as tail_expr
+            statements.pop();
+        }
+        let tail_expr = tail_expr.and_then(|e| self.emit_expr(&e));
+        let statements = statements
+            .iter()
+            .filter_map(|x| self.emit_stmt(x))
+            .collect();
+        let label = self.trap.emit(generated::MacroBlockExpr {
+            id: TrapId::Star,
+            tail_expr,
+            statements,
+        });
+        self.emit_location(label, node);
+        self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
+        Some(label)
     }
 
     fn is_attribute_macro_target(&self, node: &ast::Item) -> bool {

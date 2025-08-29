@@ -20,10 +20,7 @@ import codeql.actions.security.ControlChecks
 from ArgumentInjectionFlow::PathNode source, ArgumentInjectionFlow::PathNode sink, Event event
 where
   ArgumentInjectionFlow::flowPath(source, sink) and
-  inPrivilegedContext(sink.getNode().asExpr(), event) and
-  not exists(ControlCheck check |
-    check.protects(sink.getNode().asExpr(), event, "argument-injection")
-  )
+  event = getRelevantEventInPrivilegedContext(sink.getNode())
 select sink.getNode(), source, sink,
   "Potential argument injection in $@ command, which may be controlled by an external user ($@).",
   sink, sink.getNode().(ArgumentInjectionSink).getCommand(), event, event.getName()

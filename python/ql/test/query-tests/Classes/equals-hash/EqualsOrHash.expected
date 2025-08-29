@@ -1,0 +1,2 @@
+| equalsHash.py:13:1:13:8 | Class C | This class implements $@, but does not implement __eq__. | equalsHash.py:14:5:14:23 | Function __hash__ | __hash__ |
+| equalsHash.py:17:1:17:11 | Class D | This class implements $@, but does not implement __eq__. | equalsHash.py:18:5:18:23 | Function __hash__ | __hash__ |

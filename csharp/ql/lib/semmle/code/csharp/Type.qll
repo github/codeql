@@ -201,7 +201,7 @@ class ValueOrRefType extends Type, Attributable, @value_or_ref_type {
    */
   pragma[inline]
   predicate hasCallable(Callable c) {
-    this.hasMethod(c)
+    this.hasMember(c)
     or
     this.hasMember(c.(Accessor).getDeclaration())
   }

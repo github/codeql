@@ -17,7 +17,7 @@
 
    .NET 5, .NET 6, .NET 7, .NET 8, .NET 9","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
    GitHub Actions,"Not applicable",Not applicable,"``.github/workflows/*.yml``, ``.github/workflows/*.yaml``, ``**/action.yml``, ``**/action.yaml``"
-   Go (aka Golang), "Go up to 1.24", "Go 1.11 or more recent", ``.go``
+   Go (aka Golang), "Go up to 1.25", "Go 1.11 or more recent", ``.go``
    Java,"Java 7 to 24 [6]_","javac (OpenJDK and Oracle JDK),
 
    Eclipse compiler for Java (ECJ) [7]_",``.java``

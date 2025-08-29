@@ -212,6 +212,7 @@ impl Translator<'_> {
             return Some(label);
         }
         let label = match node {
+            ast::Item::AsmExpr(inner) => self.emit_asm_expr(inner).map(Into::into),
             ast::Item::Const(inner) => self.emit_const(inner).map(Into::into),
             ast::Item::Enum(inner) => self.emit_enum(inner).map(Into::into),
             ast::Item::ExternBlock(inner) => self.emit_extern_block(inner).map(Into::into),
@@ -687,21 +688,6 @@ impl Translator<'_> {
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
-    pub(crate) fn emit_closure_binder(
-        &mut self,
-        node: &ast::ClosureBinder,
-    ) -> Option<Label<generated::ClosureBinder>> {
-        let generic_param_list = node
-            .generic_param_list()
-            .and_then(|x| self.emit_generic_param_list(&x));
-        let label = self.trap.emit(generated::ClosureBinder {
-            id: TrapId::Star,
-            generic_param_list,
-        });
-        self.emit_location(label, node);
-        self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
-        Some(label)
-    }
     pub(crate) fn emit_closure_expr(
         &mut self,
         node: &ast::ClosureExpr,
@@ -711,9 +697,7 @@ impl Translator<'_> {
         }
         let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
         let body = node.body().and_then(|x| self.emit_expr(&x));
-        let closure_binder = node
-            .closure_binder()
-            .and_then(|x| self.emit_closure_binder(&x));
+        let for_binder = node.for_binder().and_then(|x| self.emit_for_binder(&x));
         let is_async = node.async_token().is_some();
         let is_const = node.const_token().is_some();
         let is_gen = node.gen_token().is_some();
@@ -725,7 +709,7 @@ impl Translator<'_> {
             id: TrapId::Star,
             attrs,
             body,
-            closure_binder,
+            for_binder,
             is_async,
             is_const,
             is_gen,
@@ -1063,6 +1047,21 @@ impl Translator<'_> {
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
+    pub(crate) fn emit_for_binder(
+        &mut self,
+        node: &ast::ForBinder,
+    ) -> Option<Label<generated::ForBinder>> {
+        let generic_param_list = node
+            .generic_param_list()
+            .and_then(|x| self.emit_generic_param_list(&x));
+        let label = self.trap.emit(generated::ForBinder {
+            id: TrapId::Star,
+            generic_param_list,
+        });
+        self.emit_location(label, node);
+        self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
+        Some(label)
+    }
     pub(crate) fn emit_for_expr(
         &mut self,
         node: &ast::ForExpr,
@@ -1091,13 +1090,11 @@ impl Translator<'_> {
         &mut self,
         node: &ast::ForType,
     ) -> Option<Label<generated::ForTypeRepr>> {
-        let generic_param_list = node
-            .generic_param_list()
-            .and_then(|x| self.emit_generic_param_list(&x));
+        let for_binder = node.for_binder().and_then(|x| self.emit_for_binder(&x));
         let type_repr = node.ty().and_then(|x| self.emit_type(&x));
         let label = self.trap.emit(generated::ForTypeRepr {
             id: TrapId::Star,
-            generic_param_list,
+            for_binder,
             type_repr,
         });
         self.emit_location(label, node);
@@ -1598,24 +1595,6 @@ impl Translator<'_> {
             name,
             token_tree,
             visibility,
-        });
-        self.emit_location(label, node);
-        self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
-        Some(label)
-    }
-    pub(crate) fn emit_macro_stmts(
-        &mut self,
-        node: &ast::MacroStmts,
-    ) -> Option<Label<generated::MacroBlockExpr>> {
-        let tail_expr = node.expr().and_then(|x| self.emit_expr(&x));
-        let statements = node
-            .statements()
-            .filter_map(|x| self.emit_stmt(&x))
-            .collect();
-        let label = self.trap.emit(generated::MacroBlockExpr {
-            id: TrapId::Star,
-            tail_expr,
-            statements,
         });
         self.emit_location(label, node);
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
@@ -2804,6 +2783,7 @@ impl Translator<'_> {
         &mut self,
         node: &ast::TypeBound,
     ) -> Option<Label<generated::TypeBound>> {
+        let for_binder = node.for_binder().and_then(|x| self.emit_for_binder(&x));
         let is_async = node.async_token().is_some();
         let is_const = node.const_token().is_some();
         let lifetime = node.lifetime().and_then(|x| self.emit_lifetime(&x));
@@ -2813,6 +2793,7 @@ impl Translator<'_> {
             .and_then(|x| self.emit_use_bound_generic_args(&x));
         let label = self.trap.emit(generated::TypeBound {
             id: TrapId::Star,
+            for_binder,
             is_async,
             is_const,
             lifetime,
@@ -3057,9 +3038,7 @@ impl Translator<'_> {
         &mut self,
         node: &ast::WherePred,
     ) -> Option<Label<generated::WherePred>> {
-        let generic_param_list = node
-            .generic_param_list()
-            .and_then(|x| self.emit_generic_param_list(&x));
+        let for_binder = node.for_binder().and_then(|x| self.emit_for_binder(&x));
         let lifetime = node.lifetime().and_then(|x| self.emit_lifetime(&x));
         let type_repr = node.ty().and_then(|x| self.emit_type(&x));
         let type_bound_list = node
@@ -3067,7 +3046,7 @@ impl Translator<'_> {
             .and_then(|x| self.emit_type_bound_list(&x));
         let label = self.trap.emit(generated::WherePred {
             id: TrapId::Star,
-            generic_param_list,
+            for_binder,
             lifetime,
             type_repr,
             type_bound_list,

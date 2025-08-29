@@ -5,6 +5,7 @@
 
 private import internal.TypeBoundImpl
 import codeql.rust.elements.AstNode
+import codeql.rust.elements.ForBinder
 import codeql.rust.elements.Lifetime
 import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.UseBoundGenericArgs
@@ -16,6 +17,8 @@ import codeql.rust.elements.UseBoundGenericArgs
  * ```rust
  * fn foo<T: Debug>(t: T) {}
  * //        ^^^^^
+ * fn bar(value: impl for<'a> From<&'a str>) {}
+ * //                 ^^^^^^^^^^^^^^^^^^^^^
  * ```
  */
 final class TypeBound = Impl::TypeBound;

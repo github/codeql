@@ -2771,4 +2771,9 @@ void test_three_way(int a, int b, ThreeWay c, ThreeWay d) {
   auto y = c <=> d;
 }
 
+void test_allocation_with_initializer() {
+    int* p1 = new int(42);
+    long* p2 = new long(42);
+}
+
 // semmle-extractor-options: -std=c++20 --clang

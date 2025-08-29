@@ -14,33 +14,6 @@ private import semmle.code.java.dataflow.Nullness
 abstract class PathInjectionSanitizer extends DataFlow::Node { }
 
 /**
- * Provides a set of nodes validated by a method that uses a validation guard.
- */
-private module ValidationMethod<DataFlow::guardChecksSig/3 validationGuard> {
-  /** Gets a node that is safely guarded by a method that uses the given guard check. */
-  DataFlow::Node getAValidatedNode() {
-    exists(MethodCall ma, int pos, VarRead rv |
-      validationMethod(ma.getMethod(), pos) and
-      ma.getArgument(pos) = rv and
-      adjacentUseUseSameVar(rv, result.asExpr()) and
-      ma.getBasicBlock().dominates(result.asExpr().getBasicBlock())
-    )
-  }
-
-  /**
-   * Holds if `m` validates its `arg`th parameter by using `validationGuard`.
-   */
-  private predicate validationMethod(Method m, int arg) {
-    exists(Guard g, SsaImplicitInit var, ControlFlow::NormalExitNode normexit, boolean branch |
-      validationGuard(g, var.getAUse(), branch) and
-      var.isParameterDefinition(m.getParameter(arg)) and
-      normexit.getEnclosingCallable() = m and
-      g.controls(normexit.getBasicBlock(), branch)
-    )
-  }
-}
-
-/**
  * Holds if `g` is guard that compares a path to a trusted value.
  */
 private predicate exactPathMatchGuard(Guard g, Expr e, boolean branch) {
@@ -68,8 +41,6 @@ private predicate exactPathMatchGuard(Guard g, Expr e, boolean branch) {
 class ExactPathMatchSanitizer extends PathInjectionSanitizer {
   ExactPathMatchSanitizer() {
     this = DataFlow::BarrierGuard<exactPathMatchGuard/3>::getABarrierNode()
-    or
-    this = ValidationMethod<exactPathMatchGuard/3>::getAValidatedNode()
   }
 }
 
@@ -120,8 +91,7 @@ private predicate allowedPrefixGuard(Guard g, Expr e, boolean branch) {
 
 private class AllowedPrefixSanitizer extends PathInjectionSanitizer {
   AllowedPrefixSanitizer() {
-    this = DataFlow::BarrierGuard<allowedPrefixGuard/3>::getABarrierNode() or
-    this = ValidationMethod<allowedPrefixGuard/3>::getAValidatedNode()
+    this = DataFlow::BarrierGuard<allowedPrefixGuard/3>::getABarrierNode()
   }
 }
 
@@ -139,10 +109,7 @@ private predicate dotDotCheckGuard(Guard g, Expr e, boolean branch) {
 }
 
 private class DotDotCheckSanitizer extends PathInjectionSanitizer {
-  DotDotCheckSanitizer() {
-    this = DataFlow::BarrierGuard<dotDotCheckGuard/3>::getABarrierNode() or
-    this = ValidationMethod<dotDotCheckGuard/3>::getAValidatedNode()
-  }
+  DotDotCheckSanitizer() { this = DataFlow::BarrierGuard<dotDotCheckGuard/3>::getABarrierNode() }
 }
 
 private class BlockListGuard extends PathGuard instanceof MethodCall {
@@ -179,10 +146,7 @@ private predicate blockListGuard(Guard g, Expr e, boolean branch) {
 }
 
 private class BlockListSanitizer extends PathInjectionSanitizer {
-  BlockListSanitizer() {
-    this = DataFlow::BarrierGuard<blockListGuard/3>::getABarrierNode() or
-    this = ValidationMethod<blockListGuard/3>::getAValidatedNode()
-  }
+  BlockListSanitizer() { this = DataFlow::BarrierGuard<blockListGuard/3>::getABarrierNode() }
 }
 
 private class ConstantOrRegex extends Expr {
@@ -368,7 +332,6 @@ private class FileConstructorChildArgumentStep extends AdditionalTaintStep {
       n2.asExpr() = constrCall
     |
       not n1 = DataFlow::BarrierGuard<pathTraversalGuard/3>::getABarrierNode() and
-      not n1 = ValidationMethod<pathTraversalGuard/3>::getAValidatedNode() and
       not TaintTracking::localExprTaint(any(PathNormalizeSanitizer p), n1.asExpr())
       or
       DataFlow::localExprFlow(nullExpr(), constrCall.getArgument(0))
@@ -546,7 +509,6 @@ private predicate directoryCharactersGuard(Guard g, Expr e, boolean branch) {
 private class DirectoryCharactersSanitizer extends PathInjectionSanitizer {
   DirectoryCharactersSanitizer() {
     this.asExpr() instanceof ReplaceDirectoryCharactersSanitizer or
-    this = DataFlow::BarrierGuard<directoryCharactersGuard/3>::getABarrierNode() or
-    this = ValidationMethod<directoryCharactersGuard/3>::getAValidatedNode()
+    this = DataFlow::BarrierGuard<directoryCharactersGuard/3>::getABarrierNode()
   }
 }

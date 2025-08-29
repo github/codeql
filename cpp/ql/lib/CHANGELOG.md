@@ -1,3 +1,21 @@
+## 5.4.1
+
+### Minor Analysis Improvements
+
+* The guards libraries (`semmle.code.cpp.controlflow.Guards` and `semmle.code.cpp.controlflow.IRGuards`) have been improved to recognize more guards.
+* Improved dataflow through global variables in the new dataflow library (`semmle.code.cpp.dataflow.new.DataFlow` and `semmle.code.cpp.dataflow.new.TaintTracking`). Queries based on these libraries will produce more results on codebases with many global variables.
+* The global value numbering library (`semmle.code.cpp.valuenumbering.GlobalValueNumbering` and `semmle.code.cpp.ir.ValueNumbering`) has been improved so more expressions are assigned the same value number.
+
+## 5.4.0
+
+### New Features
+
+* Exposed various SSA-related classes (`Definition`, `PhiNode`, `ExplicitDefinition`, `DirectExplicitDefinition`, and `IndirectExplicitDefinition`) which were previously only usable inside the internal dataflow directory.
+
+### Minor Analysis Improvements
+
+* The `cpp/overrun-write` query now recognizes more bound checks and thus produces fewer false positives.
+
 ## 5.3.0
 
 ### Deprecated APIs

@@ -38,7 +38,7 @@ Minor Analysis Improvements
 C/C++
 """""
 
-*   Added flow model for the :code:`SQLite` and :code:`OpenSSL` libraries. This may result in more alerts when running queries on codebases that use these libraries.
+*   Added flow models for the :code:`SQLite` and :code:`OpenSSL` libraries. This may result in more alerts when running queries on codebases that use these libraries.
 
 C#
 ""

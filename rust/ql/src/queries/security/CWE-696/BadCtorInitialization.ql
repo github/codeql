@@ -32,8 +32,7 @@ class CtorAttr extends Attr {
  */
 class StdCall extends Expr {
   StdCall() {
-    this.(CallExpr).getFunction().(PathExpr).getResolvedCrateOrigin() = "lang:std" or
-    this.(MethodCallExpr).getResolvedCrateOrigin() = "lang:std"
+    this.(CallExprBase).getStaticTarget().getCanonicalPath().matches(["std::%", "<std::%"])
   }
 }
 

@@ -19,19 +19,6 @@ module Input implements InputSig<Location, RustDataFlow> {
     /** Gets the associated call. */
     abstract CallExprBase getCall();
 
-    /** Holds if the associated call resolves to `crate, path`. */
-    final predicate callResolvesTo(string crate, string path) {
-      exists(Resolvable r |
-        r = CallExprBaseImpl::getCallResolvable(this.getCall()) and
-        path = r.getResolvedPath()
-      |
-        crate = r.getResolvedCrateOrigin()
-        or
-        not r.hasResolvedCrateOrigin() and
-        crate = ""
-      )
-    }
-
     /** Holds if the associated call resolves to `path`. */
     final predicate callResolvesTo(string path) {
       path = this.getCall().getStaticTarget().(Addressable).getCanonicalPath()

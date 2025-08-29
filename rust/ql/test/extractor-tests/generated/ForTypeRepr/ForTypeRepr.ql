@@ -4,8 +4,8 @@ import TestUtils
 
 query predicate instances(ForTypeRepr x) { toBeTested(x) and not x.isUnknown() }
 
-query predicate getGenericParamList(ForTypeRepr x, GenericParamList getGenericParamList) {
-  toBeTested(x) and not x.isUnknown() and getGenericParamList = x.getGenericParamList()
+query predicate getForBinder(ForTypeRepr x, ForBinder getForBinder) {
+  toBeTested(x) and not x.isUnknown() and getForBinder = x.getForBinder()
 }
 
 query predicate getTypeRepr(ForTypeRepr x, TypeRepr getTypeRepr) {

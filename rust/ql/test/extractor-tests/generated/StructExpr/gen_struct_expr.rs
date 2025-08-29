@@ -4,6 +4,6 @@ fn test_struct_expr() -> () {
     // A struct expression. For example:
     let first = Foo { a: 1, b: 2 };
     let second = Foo { a: 2, ..first };
-    Foo { a: 1, b: 2 }[2] = 10;
-    Foo { .. } = second;
+    let n = Foo { a: 1, b: 2 }.b;
+    Foo { a: m, .. } = second;
 }

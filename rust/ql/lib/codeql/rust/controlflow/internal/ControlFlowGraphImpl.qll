@@ -200,8 +200,7 @@ class TypeReprTree extends LeafTree instanceof TypeRepr { }
 /**
  * Provides `ControlFlowTree`s for expressions.
  *
- * Since expressions construct values, they are modeled in post-order, except for
- * `LetExpr`s.
+ * Since expressions construct values, they are modeled in post-order.
  */
 module ExprTrees {
   class ArrayExprTree extends StandardPostOrderTree, ArrayExpr {
@@ -341,21 +340,15 @@ module ExprTrees {
       child = [super.getCondition(), super.getABranch()]
     }
 
-    private ConditionalCompletion conditionCompletion(Completion c) {
-      if super.getCondition() instanceof LetExpr
-      then result = c.(MatchCompletion)
-      else result = c.(BooleanCompletion)
-    }
-
     override predicate succ(AstNode pred, AstNode succ, Completion c) {
       // Edges from the condition to the branches
       last(super.getCondition(), pred, c) and
       (
-        first(super.getThen(), succ) and this.conditionCompletion(c).succeeded()
+        first(super.getThen(), succ) and c.(ConditionalCompletion).succeeded()
         or
-        first(super.getElse(), succ) and this.conditionCompletion(c).failed()
+        first(super.getElse(), succ) and c.(ConditionalCompletion).failed()
         or
-        not super.hasElse() and succ = this and this.conditionCompletion(c).failed()
+        not super.hasElse() and succ = this and c.(ConditionalCompletion).failed()
       )
       or
       // An edge from the then branch to the last node
@@ -401,10 +394,7 @@ module ExprTrees {
     }
   }
 
-  // `LetExpr` is a pre-order tree such that the pattern itself ends up
-  // dominating successors in the graph in the same way that patterns do in
-  // `match` expressions.
-  class LetExprTree extends StandardPreOrderTree, LetExpr {
+  class LetExprTree extends StandardPostOrderTree, LetExpr {
     override AstNode getChildNode(int i) {
       i = 0 and
       result = this.getScrutinee()
@@ -456,21 +446,15 @@ module ExprTrees {
 
     override predicate first(AstNode node) { first(super.getCondition(), node) }
 
-    private ConditionalCompletion conditionCompletion(Completion c) {
-      if super.getCondition() instanceof LetExpr
-      then result = c.(MatchCompletion)
-      else result = c.(BooleanCompletion)
-    }
-
     override predicate succ(AstNode pred, AstNode succ, Completion c) {
       super.succ(pred, succ, c)
       or
       last(super.getCondition(), pred, c) and
-      this.conditionCompletion(c).succeeded() and
+      c.(ConditionalCompletion).succeeded() and
       first(this.getLoopBody(), succ)
       or
       last(super.getCondition(), pred, c) and
-      this.conditionCompletion(c).failed() and
+      c.(ConditionalCompletion).failed() and
       succ = this
     }
   }
@@ -635,7 +619,7 @@ module PatternTrees {
       (
         StandardPatTree.super.succ(pred, succ, c)
         or
-        pred = this and first(this.getFirstChildNode(), succ) and completionIsValidFor(c, this)
+        pred = this and first(this.getFirstChildTree(), succ) and completionIsValidFor(c, this)
       )
     }
 

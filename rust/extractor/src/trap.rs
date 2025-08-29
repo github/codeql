@@ -16,7 +16,7 @@ pub trait AsTrapKeyPart {
 
 impl AsTrapKeyPart for UntypedLabel {
     fn as_key_part(&self) -> String {
-        format!("{{{}}}", self)
+        format!("{{{self}}}")
     }
 }
 
@@ -127,9 +127,10 @@ pub struct TrapFile {
     compression: Compression,
 }
 
-#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Default)]
 pub enum DiagnosticSeverity {
     Debug = 10,
+    #[default]
     Info = 20,
     Warning = 30,
     Error = 40,

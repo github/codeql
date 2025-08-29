@@ -80,7 +80,7 @@ impl Extractor {
             .iter()
             .map(|file_list| {
                 File::open(file_list)
-                    .unwrap_or_else(|_| panic!("Unable to open file list at {:?}", file_list))
+                    .unwrap_or_else(|_| panic!("Unable to open file list at {file_list:?}"))
             })
             .collect();
 
