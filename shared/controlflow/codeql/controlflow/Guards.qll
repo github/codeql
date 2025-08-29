@@ -51,25 +51,12 @@ overlay[local?]
 module;
 
 private import codeql.controlflow.BasicBlock as BB
-private import codeql.controlflow.SuccessorType as ST
+private import codeql.controlflow.SuccessorType
 private import codeql.util.Boolean
 private import codeql.util.Location
 private import codeql.util.Unit
 
 signature class TypSig;
-
-signature module SuccessorTypesSig {
-  class ExceptionSuccessor extends ST::SuccessorType;
-
-  class ConditionalSuccessor extends ST::SuccessorType {
-    /** Gets the Boolean value of this successor. */
-    boolean getValue();
-  }
-
-  class BooleanSuccessor extends ConditionalSuccessor;
-
-  class NullnessSuccessor extends ConditionalSuccessor;
-}
 
 signature module InputSig<LocationSig Location, TypSig ControlFlowNode, TypSig BasicBlock> {
   /** A control flow node indicating normal termination of a callable. */
@@ -205,13 +192,12 @@ signature module InputSig<LocationSig Location, TypSig ControlFlowNode, TypSig B
 
 /** Provides guards-related predicates and classes. */
 module Make<
-  LocationSig Location, BB::CfgSig<Location> Cfg, SuccessorTypesSig SuccessorTypes,
+  LocationSig Location, BB::CfgSig<Location> Cfg,
   InputSig<Location, Cfg::ControlFlowNode, Cfg::BasicBlock> Input>
 {
   private module Cfg_ = Cfg;
 
   private import Cfg_
-  private import SuccessorTypes
   private import Input
 
   private newtype TAbstractSingleValue =
@@ -320,7 +306,7 @@ module Make<
   }
 
   private predicate exceptionBranchPoint(BasicBlock bb1, BasicBlock normalSucc, BasicBlock excSucc) {
-    exists(ST::SuccessorType norm, ExceptionSuccessor exc |
+    exists(SuccessorType norm, ExceptionSuccessor exc |
       bb1.getASuccessor(norm) = normalSucc and
       bb1.getASuccessor(exc) = excSucc and
       normalSucc != excSucc and
