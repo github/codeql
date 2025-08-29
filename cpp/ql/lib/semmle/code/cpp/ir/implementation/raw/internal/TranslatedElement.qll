@@ -123,13 +123,16 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   //  or
   ignoreExprAndDescendants(getRealParent(expr)) // recursive case
   or
-  // va_start doesn't evaluate its argument, so we don't need to translate it.
+  // va_start does not evaluate its argument, so we do not need to translate it.
   exists(BuiltInVarArgsStart vaStartExpr |
     vaStartExpr.getLastNamedParameter().getFullyConverted() = expr
   )
   or
+  // sizeof does not evaluate its argument, so we do not need to translate it.
+  exists(SizeofExprOperator sizeofExpr | sizeofExpr.getExprOperand().getFullyConverted() = expr)
+  or
   // The children of C11 _Generic expressions are just surface syntax.
-  exists(C11GenericExpr generic | generic.getAChild() = expr)
+  exists(C11GenericExpr generic | generic.getAChild().getFullyConverted() = expr)
   or
   // Do not translate implicit destructor calls for unnamed temporary variables that are
   // conditionally constructed (until we have a mechanism for calling these only when the
