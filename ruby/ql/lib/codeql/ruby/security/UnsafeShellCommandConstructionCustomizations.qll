@@ -111,13 +111,10 @@ module UnsafeShellCommandConstruction {
       isUsedAsShellCommand(call, s) and
       (
         this = call.getReceiver() and
-        not call.getReceiver().asExpr() instanceof Cfg::CfgNodes::ExprNodes::ArrayLiteralCfgNode
+        not call.getReceiver().asExpr() instanceof CfgNodes::ExprNodes::ArrayLiteralCfgNode
         or
         this.asExpr() =
-          call.getReceiver()
-              .asExpr()
-              .(Cfg::CfgNodes::ExprNodes::ArrayLiteralCfgNode)
-              .getAnArgument()
+          call.getReceiver().asExpr().(CfgNodes::ExprNodes::ArrayLiteralCfgNode).getAnArgument()
       )
     }
 
