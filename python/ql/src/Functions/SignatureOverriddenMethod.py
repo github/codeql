@@ -1,9 +1,12 @@
 
-# Base class method
-def runsource(self, source, filename="<input>", symbol="single"):
-    ... # Definition
+class Base:
+    def runsource(self, source, filename="<input>"):
+        ...
     
     
-# Extend base class method
-def runsource(self, source):
-    ... # Definition
+class Sub(Base):
+    def runsource(self, source): # BAD: Does not match the signature of overridden method.
+        ... 
+
+def run(obj: Base):
+    obj.runsource("source", filename="foo.txt")

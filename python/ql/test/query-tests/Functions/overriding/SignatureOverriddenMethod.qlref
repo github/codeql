@@ -1,1 +1,2 @@
-Functions/SignatureOverriddenMethod.ql
+query: Functions/SignatureOverriddenMethod.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
