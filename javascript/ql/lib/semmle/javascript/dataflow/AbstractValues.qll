@@ -37,6 +37,8 @@
  * they represent; additionally, indefinite abstract values record
  * the source of imprecision that caused them to arise.
  */
+overlay[local]
+module;
 
 private import javascript
 private import semmle.javascript.dataflow.internal.AbstractValuesImpl
@@ -97,6 +99,7 @@ class AbstractValue extends TAbstractValue {
    * In all cases, purely local flow tracking is used to find prototype objects, so
    * this predicate cannot be relied on to compute all possible prototype objects.
    */
+  overlay[global]
   DefiniteAbstractValue getAPrototype() {
     exists(AbstractProtoProperty proto |
       proto.getBase() = this and
