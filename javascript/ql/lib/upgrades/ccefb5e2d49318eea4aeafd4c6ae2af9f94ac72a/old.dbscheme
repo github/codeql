@@ -1192,13 +1192,3 @@ configLocations(
 );
 
 @configLocatable = @config | @configName | @configValue;
-
-/*- Database metadata -*/
-databaseMetadata(
-  string metadataKey: string ref,
-  string value: string ref
-);
-
-overlayChangedFiles(
-  string path: string ref
-);
