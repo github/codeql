@@ -9,37 +9,37 @@
 | break_ensure.rb:2:9:2:9 | x | break_ensure.rb:2:13:2:13 | 0 |  |
 | break_ensure.rb:2:9:2:13 | ... < ... | break_ensure.rb:2:3:6:5 | while ... | false |
 | break_ensure.rb:2:9:2:13 | ... < ... | break_ensure.rb:3:8:3:8 | x | true |
-| break_ensure.rb:2:9:2:13 | ... < ... | break_ensure.rb:8:6:8:13 | [ensure: raise] self | raise |
+| break_ensure.rb:2:9:2:13 | ... < ... | break_ensure.rb:8:6:8:13 | [ensure: exception] self | exception |
 | break_ensure.rb:2:13:2:13 | 0 | break_ensure.rb:2:9:2:13 | ... < ... |  |
 | break_ensure.rb:2:14:6:5 | do ... | break_ensure.rb:2:9:2:9 | x |  |
 | break_ensure.rb:3:5:5:7 | if ... | break_ensure.rb:2:14:6:5 | do ... |  |
 | break_ensure.rb:3:8:3:8 | x | break_ensure.rb:3:12:3:12 | 0 |  |
-| break_ensure.rb:3:8:3:12 | ... > ... | break_ensure.rb:2:3:6:5 | while ... | raise |
+| break_ensure.rb:3:8:3:12 | ... > ... | break_ensure.rb:2:3:6:5 | while ... | exception |
 | break_ensure.rb:3:8:3:12 | ... > ... | break_ensure.rb:3:5:5:7 | if ... | false |
 | break_ensure.rb:3:8:3:12 | ... > ... | break_ensure.rb:4:7:4:11 | break | true |
 | break_ensure.rb:3:12:3:12 | 0 | break_ensure.rb:3:8:3:12 | ... > ... |  |
 | break_ensure.rb:4:7:4:11 | break | break_ensure.rb:2:3:6:5 | while ... | break |
-| break_ensure.rb:7:1:10:5 | [ensure: raise] ensure ... | break_ensure.rb:1:1:11:3 | exit m1 (abnormal) | raise |
+| break_ensure.rb:7:1:10:5 | [ensure: exception] ensure ... | break_ensure.rb:1:1:11:3 | exit m1 (abnormal) | exception |
 | break_ensure.rb:7:1:10:5 | ensure ... | break_ensure.rb:1:1:11:3 | exit m1 (normal) |  |
-| break_ensure.rb:8:3:10:5 | [ensure: raise] if ... | break_ensure.rb:7:1:10:5 | [ensure: raise] ensure ... |  |
+| break_ensure.rb:8:3:10:5 | [ensure: exception] if ... | break_ensure.rb:7:1:10:5 | [ensure: exception] ensure ... |  |
 | break_ensure.rb:8:3:10:5 | if ... | break_ensure.rb:7:1:10:5 | ensure ... |  |
-| break_ensure.rb:8:6:8:13 | [ensure: raise] call to elements | break_ensure.rb:8:6:8:18 | [ensure: raise] call to nil? |  |
-| break_ensure.rb:8:6:8:13 | [ensure: raise] self | break_ensure.rb:8:6:8:13 | [ensure: raise] call to elements |  |
+| break_ensure.rb:8:6:8:13 | [ensure: exception] call to elements | break_ensure.rb:8:6:8:18 | [ensure: exception] call to nil? |  |
+| break_ensure.rb:8:6:8:13 | [ensure: exception] self | break_ensure.rb:8:6:8:13 | [ensure: exception] call to elements |  |
 | break_ensure.rb:8:6:8:13 | call to elements | break_ensure.rb:8:6:8:18 | call to nil? |  |
 | break_ensure.rb:8:6:8:13 | self | break_ensure.rb:8:6:8:13 | call to elements |  |
-| break_ensure.rb:8:6:8:18 | [ensure: raise] call to nil? | break_ensure.rb:8:3:10:5 | [ensure: raise] if ... | false |
-| break_ensure.rb:8:6:8:18 | [ensure: raise] call to nil? | break_ensure.rb:9:5:9:23 | [ensure: raise] self | true |
+| break_ensure.rb:8:6:8:18 | [ensure: exception] call to nil? | break_ensure.rb:8:3:10:5 | [ensure: exception] if ... | false |
+| break_ensure.rb:8:6:8:18 | [ensure: exception] call to nil? | break_ensure.rb:9:5:9:23 | [ensure: exception] self | true |
 | break_ensure.rb:8:6:8:18 | call to nil? | break_ensure.rb:8:3:10:5 | if ... | false |
 | break_ensure.rb:8:6:8:18 | call to nil? | break_ensure.rb:9:5:9:23 | self | true |
-| break_ensure.rb:8:20:9:23 | [ensure: raise] then ... | break_ensure.rb:8:3:10:5 | [ensure: raise] if ... |  |
+| break_ensure.rb:8:20:9:23 | [ensure: exception] then ... | break_ensure.rb:8:3:10:5 | [ensure: exception] if ... |  |
 | break_ensure.rb:8:20:9:23 | then ... | break_ensure.rb:8:3:10:5 | if ... |  |
-| break_ensure.rb:9:5:9:23 | [ensure: raise] call to puts | break_ensure.rb:8:20:9:23 | [ensure: raise] then ... |  |
-| break_ensure.rb:9:5:9:23 | [ensure: raise] self | break_ensure.rb:9:11:9:22 | [ensure: raise] elements nil |  |
+| break_ensure.rb:9:5:9:23 | [ensure: exception] call to puts | break_ensure.rb:8:20:9:23 | [ensure: exception] then ... |  |
+| break_ensure.rb:9:5:9:23 | [ensure: exception] self | break_ensure.rb:9:11:9:22 | [ensure: exception] elements nil |  |
 | break_ensure.rb:9:5:9:23 | call to puts | break_ensure.rb:8:20:9:23 | then ... |  |
 | break_ensure.rb:9:5:9:23 | self | break_ensure.rb:9:11:9:22 | elements nil |  |
 | break_ensure.rb:9:10:9:23 | "elements nil" | break_ensure.rb:9:5:9:23 | call to puts |  |
-| break_ensure.rb:9:10:9:23 | [ensure: raise] "elements nil" | break_ensure.rb:9:5:9:23 | [ensure: raise] call to puts |  |
-| break_ensure.rb:9:11:9:22 | [ensure: raise] elements nil | break_ensure.rb:9:10:9:23 | [ensure: raise] "elements nil" |  |
+| break_ensure.rb:9:10:9:23 | [ensure: exception] "elements nil" | break_ensure.rb:9:5:9:23 | [ensure: exception] call to puts |  |
+| break_ensure.rb:9:11:9:22 | [ensure: exception] elements nil | break_ensure.rb:9:10:9:23 | [ensure: exception] "elements nil" |  |
 | break_ensure.rb:9:11:9:22 | elements nil | break_ensure.rb:9:10:9:23 | "elements nil" |  |
 | break_ensure.rb:13:1:25:3 | enter m2 | break_ensure.rb:13:8:13:8 | x |  |
 | break_ensure.rb:13:1:25:3 | exit m2 (normal) | break_ensure.rb:13:1:25:3 | exit m2 |  |
@@ -56,38 +56,38 @@
 | break_ensure.rb:16:10:16:10 | x | break_ensure.rb:16:14:16:14 | 0 |  |
 | break_ensure.rb:16:10:16:14 | ... > ... | break_ensure.rb:16:7:18:9 | if ... | false |
 | break_ensure.rb:16:10:16:14 | ... > ... | break_ensure.rb:17:9:17:13 | break | true |
-| break_ensure.rb:16:10:16:14 | ... > ... | break_ensure.rb:20:10:20:10 | [ensure: raise] y | raise |
+| break_ensure.rb:16:10:16:14 | ... > ... | break_ensure.rb:20:10:20:10 | [ensure: exception] y | exception |
 | break_ensure.rb:16:14:16:14 | 0 | break_ensure.rb:16:10:16:14 | ... > ... |  |
 | break_ensure.rb:17:9:17:13 | break | break_ensure.rb:20:10:20:10 | [ensure: break] y | break |
 | break_ensure.rb:19:5:22:9 | [ensure: break] ensure ... | break_ensure.rb:14:3:24:5 | while ... | break |
-| break_ensure.rb:19:5:22:9 | [ensure: raise] ensure ... | break_ensure.rb:14:3:24:5 | while ... | raise |
+| break_ensure.rb:19:5:22:9 | [ensure: exception] ensure ... | break_ensure.rb:14:3:24:5 | while ... | exception |
 | break_ensure.rb:19:5:22:9 | ensure ... | break_ensure.rb:14:14:24:5 | do ... |  |
 | break_ensure.rb:20:7:22:9 | [ensure: break] if ... | break_ensure.rb:19:5:22:9 | [ensure: break] ensure ... |  |
-| break_ensure.rb:20:7:22:9 | [ensure: raise] if ... | break_ensure.rb:19:5:22:9 | [ensure: raise] ensure ... |  |
+| break_ensure.rb:20:7:22:9 | [ensure: exception] if ... | break_ensure.rb:19:5:22:9 | [ensure: exception] ensure ... |  |
 | break_ensure.rb:20:7:22:9 | if ... | break_ensure.rb:19:5:22:9 | ensure ... |  |
 | break_ensure.rb:20:10:20:10 | [ensure: break] y | break_ensure.rb:20:10:20:15 | [ensure: break] call to nil? |  |
-| break_ensure.rb:20:10:20:10 | [ensure: raise] y | break_ensure.rb:20:10:20:15 | [ensure: raise] call to nil? |  |
+| break_ensure.rb:20:10:20:10 | [ensure: exception] y | break_ensure.rb:20:10:20:15 | [ensure: exception] call to nil? |  |
 | break_ensure.rb:20:10:20:10 | y | break_ensure.rb:20:10:20:15 | call to nil? |  |
 | break_ensure.rb:20:10:20:15 | [ensure: break] call to nil? | break_ensure.rb:20:7:22:9 | [ensure: break] if ... | false |
 | break_ensure.rb:20:10:20:15 | [ensure: break] call to nil? | break_ensure.rb:21:9:21:20 | [ensure: break] self | true |
-| break_ensure.rb:20:10:20:15 | [ensure: raise] call to nil? | break_ensure.rb:20:7:22:9 | [ensure: raise] if ... | false |
-| break_ensure.rb:20:10:20:15 | [ensure: raise] call to nil? | break_ensure.rb:21:9:21:20 | [ensure: raise] self | true |
+| break_ensure.rb:20:10:20:15 | [ensure: exception] call to nil? | break_ensure.rb:20:7:22:9 | [ensure: exception] if ... | false |
+| break_ensure.rb:20:10:20:15 | [ensure: exception] call to nil? | break_ensure.rb:21:9:21:20 | [ensure: exception] self | true |
 | break_ensure.rb:20:10:20:15 | call to nil? | break_ensure.rb:20:7:22:9 | if ... | false |
 | break_ensure.rb:20:10:20:15 | call to nil? | break_ensure.rb:21:9:21:20 | self | true |
 | break_ensure.rb:20:17:21:20 | [ensure: break] then ... | break_ensure.rb:20:7:22:9 | [ensure: break] if ... |  |
-| break_ensure.rb:20:17:21:20 | [ensure: raise] then ... | break_ensure.rb:20:7:22:9 | [ensure: raise] if ... |  |
+| break_ensure.rb:20:17:21:20 | [ensure: exception] then ... | break_ensure.rb:20:7:22:9 | [ensure: exception] if ... |  |
 | break_ensure.rb:20:17:21:20 | then ... | break_ensure.rb:20:7:22:9 | if ... |  |
 | break_ensure.rb:21:9:21:20 | [ensure: break] call to puts | break_ensure.rb:20:17:21:20 | [ensure: break] then ... |  |
 | break_ensure.rb:21:9:21:20 | [ensure: break] self | break_ensure.rb:21:15:21:19 | [ensure: break] y nil |  |
-| break_ensure.rb:21:9:21:20 | [ensure: raise] call to puts | break_ensure.rb:20:17:21:20 | [ensure: raise] then ... |  |
-| break_ensure.rb:21:9:21:20 | [ensure: raise] self | break_ensure.rb:21:15:21:19 | [ensure: raise] y nil |  |
+| break_ensure.rb:21:9:21:20 | [ensure: exception] call to puts | break_ensure.rb:20:17:21:20 | [ensure: exception] then ... |  |
+| break_ensure.rb:21:9:21:20 | [ensure: exception] self | break_ensure.rb:21:15:21:19 | [ensure: exception] y nil |  |
 | break_ensure.rb:21:9:21:20 | call to puts | break_ensure.rb:20:17:21:20 | then ... |  |
 | break_ensure.rb:21:9:21:20 | self | break_ensure.rb:21:15:21:19 | y nil |  |
 | break_ensure.rb:21:14:21:20 | "y nil" | break_ensure.rb:21:9:21:20 | call to puts |  |
 | break_ensure.rb:21:14:21:20 | [ensure: break] "y nil" | break_ensure.rb:21:9:21:20 | [ensure: break] call to puts |  |
-| break_ensure.rb:21:14:21:20 | [ensure: raise] "y nil" | break_ensure.rb:21:9:21:20 | [ensure: raise] call to puts |  |
+| break_ensure.rb:21:14:21:20 | [ensure: exception] "y nil" | break_ensure.rb:21:9:21:20 | [ensure: exception] call to puts |  |
 | break_ensure.rb:21:15:21:19 | [ensure: break] y nil | break_ensure.rb:21:14:21:20 | [ensure: break] "y nil" |  |
-| break_ensure.rb:21:15:21:19 | [ensure: raise] y nil | break_ensure.rb:21:14:21:20 | [ensure: raise] "y nil" |  |
+| break_ensure.rb:21:15:21:19 | [ensure: exception] y nil | break_ensure.rb:21:14:21:20 | [ensure: exception] "y nil" |  |
 | break_ensure.rb:21:15:21:19 | y nil | break_ensure.rb:21:14:21:20 | "y nil" |  |
 | break_ensure.rb:27:1:42:3 | enter m3 | break_ensure.rb:27:8:27:8 | x |  |
 | break_ensure.rb:27:1:42:3 | exit m3 (abnormal) | break_ensure.rb:27:1:42:3 | exit m3 |  |
@@ -99,45 +99,45 @@
 | break_ensure.rb:29:8:29:8 | x | break_ensure.rb:29:8:29:13 | call to nil? |  |
 | break_ensure.rb:29:8:29:13 | call to nil? | break_ensure.rb:29:5:31:7 | if ... | false |
 | break_ensure.rb:29:8:29:13 | call to nil? | break_ensure.rb:30:7:30:12 | return | true |
-| break_ensure.rb:29:8:29:13 | call to nil? | break_ensure.rb:33:11:33:11 | [ensure: raise] y | raise |
+| break_ensure.rb:29:8:29:13 | call to nil? | break_ensure.rb:33:11:33:11 | [ensure: exception] y | exception |
 | break_ensure.rb:30:7:30:12 | return | break_ensure.rb:33:11:33:11 | [ensure: return] y | return |
-| break_ensure.rb:32:3:39:7 | [ensure: raise] ensure ... | break_ensure.rb:27:1:42:3 | exit m3 (abnormal) | raise |
+| break_ensure.rb:32:3:39:7 | [ensure: exception] ensure ... | break_ensure.rb:27:1:42:3 | exit m3 (abnormal) | exception |
 | break_ensure.rb:32:3:39:7 | [ensure: return] ensure ... | break_ensure.rb:27:1:42:3 | exit m3 (normal) | return |
 | break_ensure.rb:32:3:39:7 | ensure ... | break_ensure.rb:41:3:41:13 | self |  |
-| break_ensure.rb:33:5:39:7 | [ensure: raise] while ... | break_ensure.rb:32:3:39:7 | [ensure: raise] ensure ... |  |
+| break_ensure.rb:33:5:39:7 | [ensure: exception] while ... | break_ensure.rb:32:3:39:7 | [ensure: exception] ensure ... |  |
 | break_ensure.rb:33:5:39:7 | [ensure: return] while ... | break_ensure.rb:32:3:39:7 | [ensure: return] ensure ... |  |
 | break_ensure.rb:33:5:39:7 | while ... | break_ensure.rb:32:3:39:7 | ensure ... |  |
-| break_ensure.rb:33:11:33:11 | [ensure: raise] y | break_ensure.rb:33:15:33:15 | [ensure: raise] 0 |  |
+| break_ensure.rb:33:11:33:11 | [ensure: exception] y | break_ensure.rb:33:15:33:15 | [ensure: exception] 0 |  |
 | break_ensure.rb:33:11:33:11 | [ensure: return] y | break_ensure.rb:33:15:33:15 | [ensure: return] 0 |  |
 | break_ensure.rb:33:11:33:11 | y | break_ensure.rb:33:15:33:15 | 0 |  |
 | break_ensure.rb:33:11:33:15 | ... < ... | break_ensure.rb:33:5:39:7 | while ... | false |
 | break_ensure.rb:33:11:33:15 | ... < ... | break_ensure.rb:35:12:35:12 | x | true |
-| break_ensure.rb:33:11:33:15 | [ensure: raise] ... < ... | break_ensure.rb:33:5:39:7 | [ensure: raise] while ... | false |
-| break_ensure.rb:33:11:33:15 | [ensure: raise] ... < ... | break_ensure.rb:35:12:35:12 | [ensure: raise] x | true |
+| break_ensure.rb:33:11:33:15 | [ensure: exception] ... < ... | break_ensure.rb:33:5:39:7 | [ensure: exception] while ... | false |
+| break_ensure.rb:33:11:33:15 | [ensure: exception] ... < ... | break_ensure.rb:35:12:35:12 | [ensure: exception] x | true |
 | break_ensure.rb:33:11:33:15 | [ensure: return] ... < ... | break_ensure.rb:33:5:39:7 | [ensure: return] while ... | false |
 | break_ensure.rb:33:11:33:15 | [ensure: return] ... < ... | break_ensure.rb:35:12:35:12 | [ensure: return] x | true |
 | break_ensure.rb:33:15:33:15 | 0 | break_ensure.rb:33:11:33:15 | ... < ... |  |
-| break_ensure.rb:33:15:33:15 | [ensure: raise] 0 | break_ensure.rb:33:11:33:15 | [ensure: raise] ... < ... |  |
+| break_ensure.rb:33:15:33:15 | [ensure: exception] 0 | break_ensure.rb:33:11:33:15 | [ensure: exception] ... < ... |  |
 | break_ensure.rb:33:15:33:15 | [ensure: return] 0 | break_ensure.rb:33:11:33:15 | [ensure: return] ... < ... |  |
-| break_ensure.rb:33:16:39:7 | [ensure: raise] do ... | break_ensure.rb:33:11:33:11 | [ensure: raise] y |  |
+| break_ensure.rb:33:16:39:7 | [ensure: exception] do ... | break_ensure.rb:33:11:33:11 | [ensure: exception] y |  |
 | break_ensure.rb:33:16:39:7 | [ensure: return] do ... | break_ensure.rb:33:11:33:11 | [ensure: return] y |  |
 | break_ensure.rb:33:16:39:7 | do ... | break_ensure.rb:33:11:33:11 | y |  |
-| break_ensure.rb:35:9:37:11 | [ensure: raise] if ... | break_ensure.rb:33:16:39:7 | [ensure: raise] do ... |  |
+| break_ensure.rb:35:9:37:11 | [ensure: exception] if ... | break_ensure.rb:33:16:39:7 | [ensure: exception] do ... |  |
 | break_ensure.rb:35:9:37:11 | [ensure: return] if ... | break_ensure.rb:33:16:39:7 | [ensure: return] do ... |  |
 | break_ensure.rb:35:9:37:11 | if ... | break_ensure.rb:33:16:39:7 | do ... |  |
-| break_ensure.rb:35:12:35:12 | [ensure: raise] x | break_ensure.rb:35:16:35:16 | [ensure: raise] 0 |  |
+| break_ensure.rb:35:12:35:12 | [ensure: exception] x | break_ensure.rb:35:16:35:16 | [ensure: exception] 0 |  |
 | break_ensure.rb:35:12:35:12 | [ensure: return] x | break_ensure.rb:35:16:35:16 | [ensure: return] 0 |  |
 | break_ensure.rb:35:12:35:12 | x | break_ensure.rb:35:16:35:16 | 0 |  |
 | break_ensure.rb:35:12:35:16 | ... > ... | break_ensure.rb:35:9:37:11 | if ... | false |
 | break_ensure.rb:35:12:35:16 | ... > ... | break_ensure.rb:36:11:36:15 | break | true |
-| break_ensure.rb:35:12:35:16 | [ensure: raise] ... > ... | break_ensure.rb:35:9:37:11 | [ensure: raise] if ... | false |
-| break_ensure.rb:35:12:35:16 | [ensure: raise] ... > ... | break_ensure.rb:36:11:36:15 | [ensure: raise] break | true |
+| break_ensure.rb:35:12:35:16 | [ensure: exception] ... > ... | break_ensure.rb:35:9:37:11 | [ensure: exception] if ... | false |
+| break_ensure.rb:35:12:35:16 | [ensure: exception] ... > ... | break_ensure.rb:36:11:36:15 | [ensure: exception] break | true |
 | break_ensure.rb:35:12:35:16 | [ensure: return] ... > ... | break_ensure.rb:35:9:37:11 | [ensure: return] if ... | false |
 | break_ensure.rb:35:12:35:16 | [ensure: return] ... > ... | break_ensure.rb:36:11:36:15 | [ensure: return] break | true |
 | break_ensure.rb:35:16:35:16 | 0 | break_ensure.rb:35:12:35:16 | ... > ... |  |
-| break_ensure.rb:35:16:35:16 | [ensure: raise] 0 | break_ensure.rb:35:12:35:16 | [ensure: raise] ... > ... |  |
+| break_ensure.rb:35:16:35:16 | [ensure: exception] 0 | break_ensure.rb:35:12:35:16 | [ensure: exception] ... > ... |  |
 | break_ensure.rb:35:16:35:16 | [ensure: return] 0 | break_ensure.rb:35:12:35:16 | [ensure: return] ... > ... |  |
-| break_ensure.rb:36:11:36:15 | [ensure: raise] break | break_ensure.rb:33:5:39:7 | [ensure: raise] while ... | break |
+| break_ensure.rb:36:11:36:15 | [ensure: exception] break | break_ensure.rb:33:5:39:7 | [ensure: exception] while ... | break |
 | break_ensure.rb:36:11:36:15 | [ensure: return] break | break_ensure.rb:33:5:39:7 | [ensure: return] while ... | break |
 | break_ensure.rb:36:11:36:15 | break | break_ensure.rb:33:5:39:7 | while ... | break |
 | break_ensure.rb:41:3:41:13 | call to puts | break_ensure.rb:27:1:42:3 | exit m3 (normal) |  |
@@ -158,27 +158,27 @@
 | break_ensure.rb:47:10:47:10 | x | break_ensure.rb:47:14:47:14 | 1 |  |
 | break_ensure.rb:47:10:47:14 | ... > ... | break_ensure.rb:47:7:49:9 | if ... | false |
 | break_ensure.rb:47:10:47:14 | ... > ... | break_ensure.rb:48:9:48:16 | self | true |
-| break_ensure.rb:47:10:47:14 | ... > ... | break_ensure.rb:51:10:51:10 | [ensure: raise] x | raise |
+| break_ensure.rb:47:10:47:14 | ... > ... | break_ensure.rb:51:10:51:10 | [ensure: exception] x | exception |
 | break_ensure.rb:47:14:47:14 | 1 | break_ensure.rb:47:10:47:14 | ... > ... |  |
-| break_ensure.rb:48:9:48:16 | call to raise | break_ensure.rb:51:10:51:10 | [ensure: raise] x | raise |
+| break_ensure.rb:48:9:48:16 | call to raise | break_ensure.rb:51:10:51:10 | [ensure: exception] x | exception |
 | break_ensure.rb:48:9:48:16 | self | break_ensure.rb:48:15:48:16 | "" |  |
 | break_ensure.rb:48:15:48:16 | "" | break_ensure.rb:48:9:48:16 | call to raise |  |
-| break_ensure.rb:50:5:53:9 | [ensure: raise] ensure ... | break_ensure.rb:45:3:55:5 | while ... | raise |
+| break_ensure.rb:50:5:53:9 | [ensure: exception] ensure ... | break_ensure.rb:45:3:55:5 | while ... | exception |
 | break_ensure.rb:50:5:53:9 | ensure ... | break_ensure.rb:45:14:55:5 | do ... |  |
-| break_ensure.rb:51:7:53:9 | [ensure: raise] if ... | break_ensure.rb:50:5:53:9 | [ensure: raise] ensure ... |  |
+| break_ensure.rb:51:7:53:9 | [ensure: exception] if ... | break_ensure.rb:50:5:53:9 | [ensure: exception] ensure ... |  |
 | break_ensure.rb:51:7:53:9 | if ... | break_ensure.rb:50:5:53:9 | ensure ... |  |
-| break_ensure.rb:51:10:51:10 | [ensure: raise] x | break_ensure.rb:51:14:51:14 | [ensure: raise] 0 |  |
+| break_ensure.rb:51:10:51:10 | [ensure: exception] x | break_ensure.rb:51:14:51:14 | [ensure: exception] 0 |  |
 | break_ensure.rb:51:10:51:10 | x | break_ensure.rb:51:14:51:14 | 0 |  |
 | break_ensure.rb:51:10:51:14 | ... > ... | break_ensure.rb:51:7:53:9 | if ... | false |
 | break_ensure.rb:51:10:51:14 | ... > ... | break_ensure.rb:52:15:52:16 | 10 | true |
-| break_ensure.rb:51:10:51:14 | [ensure: raise] ... > ... | break_ensure.rb:51:7:53:9 | [ensure: raise] if ... | false |
-| break_ensure.rb:51:10:51:14 | [ensure: raise] ... > ... | break_ensure.rb:52:15:52:16 | [ensure: raise] 10 | true |
+| break_ensure.rb:51:10:51:14 | [ensure: exception] ... > ... | break_ensure.rb:51:7:53:9 | [ensure: exception] if ... | false |
+| break_ensure.rb:51:10:51:14 | [ensure: exception] ... > ... | break_ensure.rb:52:15:52:16 | [ensure: exception] 10 | true |
 | break_ensure.rb:51:14:51:14 | 0 | break_ensure.rb:51:10:51:14 | ... > ... |  |
-| break_ensure.rb:51:14:51:14 | [ensure: raise] 0 | break_ensure.rb:51:10:51:14 | [ensure: raise] ... > ... |  |
-| break_ensure.rb:52:9:52:16 | [ensure: raise] break | break_ensure.rb:45:3:55:5 | while ... | break |
+| break_ensure.rb:51:14:51:14 | [ensure: exception] 0 | break_ensure.rb:51:10:51:14 | [ensure: exception] ... > ... |  |
+| break_ensure.rb:52:9:52:16 | [ensure: exception] break | break_ensure.rb:45:3:55:5 | while ... | break |
 | break_ensure.rb:52:9:52:16 | break | break_ensure.rb:45:3:55:5 | while ... | break |
 | break_ensure.rb:52:15:52:16 | 10 | break_ensure.rb:52:9:52:16 | break |  |
-| break_ensure.rb:52:15:52:16 | [ensure: raise] 10 | break_ensure.rb:52:9:52:16 | [ensure: raise] break |  |
+| break_ensure.rb:52:15:52:16 | [ensure: exception] 10 | break_ensure.rb:52:9:52:16 | [ensure: exception] break |  |
 | case.rb:1:1:6:3 | enter if_in_case | case.rb:2:8:2:9 | self |  |
 | case.rb:1:1:6:3 | exit if_in_case (normal) | case.rb:1:1:6:3 | exit if_in_case |  |
 | case.rb:1:1:6:3 | if_in_case | case.rb:8:1:18:3 | case_match |  |
@@ -256,7 +256,7 @@
 | case.rb:21:3:23:5 | case ... | case.rb:20:1:24:3 | exit case_match_no_match (normal) |  |
 | case.rb:21:8:21:12 | value | case.rb:22:5:22:8 | in ... then ... |  |
 | case.rb:22:5:22:8 | in ... then ... | case.rb:22:8:22:8 | 1 |  |
-| case.rb:22:8:22:8 | 1 | case.rb:20:1:24:3 | exit case_match_no_match (abnormal) | raise |
+| case.rb:22:8:22:8 | 1 | case.rb:20:1:24:3 | exit case_match_no_match (abnormal) | exception |
 | case.rb:22:8:22:8 | 1 | case.rb:21:3:23:5 | case ... | match |
 | case.rb:26:1:30:3 | case_match_raise | case.rb:32:1:39:3 | case_match_array |  |
 | case.rb:26:1:30:3 | enter case_match_raise | case.rb:26:22:26:26 | value |  |
@@ -266,12 +266,12 @@
 | case.rb:27:3:29:5 | case ... | case.rb:26:1:30:3 | exit case_match_raise (normal) |  |
 | case.rb:27:8:27:12 | value | case.rb:28:4:28:28 | in ... then ... |  |
 | case.rb:28:4:28:28 | in ... then ... | case.rb:28:7:28:28 | -> { ... } |  |
-| case.rb:28:7:28:28 | -> { ... } | case.rb:26:1:30:3 | exit case_match_raise (abnormal) | raise |
+| case.rb:28:7:28:28 | -> { ... } | case.rb:26:1:30:3 | exit case_match_raise (abnormal) | exception |
 | case.rb:28:7:28:28 | -> { ... } | case.rb:27:3:29:5 | case ... | match |
 | case.rb:28:7:28:28 | enter -> { ... } | case.rb:28:10:28:10 | x |  |
 | case.rb:28:7:28:28 | exit -> { ... } (abnormal) | case.rb:28:7:28:28 | exit -> { ... } |  |
 | case.rb:28:10:28:10 | x | case.rb:28:14:28:25 | self |  |
-| case.rb:28:14:28:25 | call to raise | case.rb:28:7:28:28 | exit -> { ... } (abnormal) | raise |
+| case.rb:28:14:28:25 | call to raise | case.rb:28:7:28:28 | exit -> { ... } (abnormal) | exception |
 | case.rb:28:14:28:25 | self | case.rb:28:21:28:24 | oops |  |
 | case.rb:28:20:28:25 | "oops" | case.rb:28:14:28:25 | call to raise |  |
 | case.rb:28:21:28:24 | oops | case.rb:28:20:28:25 | "oops" |  |
@@ -294,9 +294,9 @@
 | case.rb:36:8:36:12 | [ ..., * ] | case.rb:37:5:37:27 | in ... then ... | no-match |
 | case.rb:36:9:36:9 | x | case.rb:33:3:38:5 | case ... | match |
 | case.rb:37:5:37:27 | in ... then ... | case.rb:37:8:37:10 | Bar |  |
-| case.rb:37:8:37:10 | Bar | case.rb:32:1:39:3 | exit case_match_array (abnormal) | raise |
+| case.rb:37:8:37:10 | Bar | case.rb:32:1:39:3 | exit case_match_array (abnormal) | exception |
 | case.rb:37:8:37:10 | Bar | case.rb:37:8:37:26 | [ ..., * ] | match |
-| case.rb:37:8:37:26 | [ ..., * ] | case.rb:32:1:39:3 | exit case_match_array (abnormal) | raise |
+| case.rb:37:8:37:26 | [ ..., * ] | case.rb:32:1:39:3 | exit case_match_array (abnormal) | exception |
 | case.rb:37:8:37:26 | [ ..., * ] | case.rb:37:12:37:12 | a | false, match, true |
 | case.rb:37:12:37:12 | a | case.rb:37:15:37:15 | b | match |
 | case.rb:37:15:37:15 | b | case.rb:37:19:37:19 | c | match |
@@ -311,12 +311,12 @@
 | case.rb:42:3:44:5 | case ... | case.rb:41:1:45:3 | exit case_match_find (normal) |  |
 | case.rb:42:8:42:12 | value | case.rb:43:5:43:22 | in ... then ... |  |
 | case.rb:43:5:43:22 | in ... then ... | case.rb:43:8:43:21 | [ *,...,* ] |  |
-| case.rb:43:8:43:21 | [ *,...,* ] | case.rb:41:1:45:3 | exit case_match_find (abnormal) | raise |
+| case.rb:43:8:43:21 | [ *,...,* ] | case.rb:41:1:45:3 | exit case_match_find (abnormal) | exception |
 | case.rb:43:8:43:21 | [ *,...,* ] | case.rb:43:10:43:10 | x | false, match, true |
 | case.rb:43:10:43:10 | x | case.rb:43:13:43:13 | 1 |  |
-| case.rb:43:13:43:13 | 1 | case.rb:41:1:45:3 | exit case_match_find (abnormal) | raise |
+| case.rb:43:13:43:13 | 1 | case.rb:41:1:45:3 | exit case_match_find (abnormal) | exception |
 | case.rb:43:13:43:13 | 1 | case.rb:43:16:43:16 | 2 | match |
-| case.rb:43:16:43:16 | 2 | case.rb:41:1:45:3 | exit case_match_find (abnormal) | raise |
+| case.rb:43:16:43:16 | 2 | case.rb:41:1:45:3 | exit case_match_find (abnormal) | exception |
 | case.rb:43:16:43:16 | 2 | case.rb:43:20:43:20 | y | match |
 | case.rb:43:20:43:20 | y | case.rb:42:3:44:5 | case ... |  |
 | case.rb:47:1:53:3 | case_match_hash | case.rb:55:1:61:3 | case_match_variable |  |
@@ -344,9 +344,9 @@
 | case.rb:50:16:50:16 | 1 | case.rb:48:3:52:5 | case ... | match |
 | case.rb:50:16:50:16 | 1 | case.rb:51:5:51:17 | in ... then ... | no-match |
 | case.rb:51:5:51:17 | in ... then ... | case.rb:51:8:51:10 | Bar |  |
-| case.rb:51:8:51:10 | Bar | case.rb:47:1:53:3 | exit case_match_hash (abnormal) | raise |
+| case.rb:51:8:51:10 | Bar | case.rb:47:1:53:3 | exit case_match_hash (abnormal) | exception |
 | case.rb:51:8:51:10 | Bar | case.rb:51:8:51:16 | { ..., ** } | match |
-| case.rb:51:8:51:16 | { ..., ** } | case.rb:47:1:53:3 | exit case_match_hash (abnormal) | raise |
+| case.rb:51:8:51:16 | { ..., ** } | case.rb:47:1:53:3 | exit case_match_hash (abnormal) | exception |
 | case.rb:51:8:51:16 | { ..., ** } | case.rb:48:3:52:5 | case ... | false, match, true |
 | case.rb:55:1:61:3 | case_match_variable | case.rb:63:1:67:3 | case_match_underscore |  |
 | case.rb:55:1:61:3 | enter case_match_variable | case.rb:55:25:55:29 | value |  |
@@ -500,7 +500,7 @@
 | case.rb:91:13:91:14 | "" | case.rb:91:18:91:19 | [ ..., * ] | no-match |
 | case.rb:91:18:91:19 | [ ..., * ] | case.rb:72:3:92:5 | case ... | match |
 | case.rb:91:18:91:19 | [ ..., * ] | case.rb:91:23:91:24 | { ..., ** } | no-match |
-| case.rb:91:23:91:24 | { ..., ** } | case.rb:69:1:93:3 | exit case_match_various (abnormal) | raise |
+| case.rb:91:23:91:24 | { ..., ** } | case.rb:69:1:93:3 | exit case_match_various (abnormal) | exception |
 | case.rb:91:23:91:24 | { ..., ** } | case.rb:72:3:92:5 | case ... | false, match, true |
 | case.rb:95:1:99:3 | case_match_guard_no_else | case.rb:1:1:99:4 | exit case.rb (normal) |  |
 | case.rb:95:1:99:3 | enter case_match_guard_no_else | case.rb:95:30:95:34 | value |  |
@@ -512,7 +512,7 @@
 | case.rb:97:5:97:25 | in ... then ... | case.rb:97:8:97:8 | x |  |
 | case.rb:97:8:97:8 | x | case.rb:97:13:97:13 | x | match |
 | case.rb:97:13:97:13 | x | case.rb:97:18:97:18 | 5 |  |
-| case.rb:97:13:97:18 | ... == ... | case.rb:95:1:99:3 | exit case_match_guard_no_else (abnormal) | raise |
+| case.rb:97:13:97:18 | ... == ... | case.rb:95:1:99:3 | exit case_match_guard_no_else (abnormal) | exception |
 | case.rb:97:13:97:18 | ... == ... | case.rb:97:25:97:25 | 6 | true |
 | case.rb:97:18:97:18 | 5 | case.rb:97:13:97:18 | ... == ... |  |
 | case.rb:97:20:97:25 | then ... | case.rb:96:3:98:5 | case ... |  |
@@ -870,7 +870,7 @@
 | cfg.rb:91:6:91:10 | ... > ... | cfg.rb:91:3:91:24 | if ... | false |
 | cfg.rb:91:6:91:10 | ... > ... | cfg.rb:91:17:91:20 | next | true |
 | cfg.rb:91:10:91:10 | 3 | cfg.rb:91:6:91:10 | ... > ... |  |
-| cfg.rb:91:17:91:20 | next | cfg.rb:90:1:93:3 | exit { ... } (normal) | next |
+| cfg.rb:91:17:91:20 | next | cfg.rb:90:1:93:3 | exit { ... } (normal) | continue |
 | cfg.rb:92:3:92:8 | call to puts | cfg.rb:90:1:93:3 | exit { ... } (normal) |  |
 | cfg.rb:92:3:92:8 | self | cfg.rb:92:8:92:8 | x |  |
 | cfg.rb:92:8:92:8 | x | cfg.rb:92:3:92:8 | call to puts |  |
@@ -1024,7 +1024,7 @@
 | cfg.rb:134:1:134:23 | EmptyModule | cfg.rb:136:1:136:1 | 1 |  |
 | cfg.rb:136:1:136:1 | 1 | cfg.rb:136:3:136:3 | 0 |  |
 | cfg.rb:136:1:136:3 | ... / ... | cfg.rb:136:1:136:29 | ... rescue ... |  |
-| cfg.rb:136:1:136:3 | ... / ... | cfg.rb:136:12:136:29 | self | raise |
+| cfg.rb:136:1:136:3 | ... / ... | cfg.rb:136:12:136:29 | self | exception |
 | cfg.rb:136:1:136:29 | ... rescue ... | cfg.rb:138:17:138:23 | __synth__2 |  |
 | cfg.rb:136:3:136:3 | 0 | cfg.rb:136:1:136:3 | ... / ... |  |
 | cfg.rb:136:12:136:29 | call to puts | cfg.rb:136:1:136:29 | ... rescue ... |  |
@@ -1828,7 +1828,7 @@
 | loops.rb:14:11:14:16 | ... > ... | loops.rb:15:7:15:10 | next | true |
 | loops.rb:14:11:14:16 | ... > ... | loops.rb:16:11:16:11 | x | false |
 | loops.rb:14:15:14:16 | 50 | loops.rb:14:11:14:16 | ... > ... |  |
-| loops.rb:15:7:15:10 | next | loops.rb:9:9:9:9 | x | next |
+| loops.rb:15:7:15:10 | next | loops.rb:9:9:9:9 | x | continue |
 | loops.rb:16:5:17:10 | elsif ... | loops.rb:14:5:17:10 | elsif ... |  |
 | loops.rb:16:11:16:11 | x | loops.rb:16:15:16:16 | 10 |  |
 | loops.rb:16:11:16:16 | ... > ... | loops.rb:16:5:17:10 | elsif ... | false |
@@ -1886,7 +1886,7 @@
 | raise.rb:8:6:8:10 | ... > ... | raise.rb:8:3:10:5 | if ... | false |
 | raise.rb:8:6:8:10 | ... > ... | raise.rb:9:5:9:17 | self | true |
 | raise.rb:8:10:8:10 | 2 | raise.rb:8:6:8:10 | ... > ... |  |
-| raise.rb:9:5:9:17 | call to raise | raise.rb:7:1:12:3 | exit m1 (abnormal) | raise |
+| raise.rb:9:5:9:17 | call to raise | raise.rb:7:1:12:3 | exit m1 (abnormal) | exception |
 | raise.rb:9:5:9:17 | self | raise.rb:9:12:9:16 | x > 2 |  |
 | raise.rb:9:11:9:17 | "x > 2" | raise.rb:9:5:9:17 | call to raise |  |
 | raise.rb:9:12:9:16 | x > 2 | raise.rb:9:11:9:17 | "x > 2" |  |
@@ -1902,11 +1902,11 @@
 | raise.rb:16:5:18:7 | if ... | raise.rb:22:3:22:15 | self |  |
 | raise.rb:16:8:16:8 | b | raise.rb:16:5:18:7 | if ... | false |
 | raise.rb:16:8:16:8 | b | raise.rb:17:7:17:22 | self | true |
-| raise.rb:17:7:17:22 | call to raise | raise.rb:19:10:19:19 | ExceptionA | raise |
+| raise.rb:17:7:17:22 | call to raise | raise.rb:19:10:19:19 | ExceptionA | exception |
 | raise.rb:17:7:17:22 | self | raise.rb:17:13:17:22 | ExceptionA |  |
 | raise.rb:17:13:17:22 | ExceptionA | raise.rb:17:7:17:22 | call to raise |  |
 | raise.rb:19:3:20:18 | rescue ... | raise.rb:22:3:22:15 | self |  |
-| raise.rb:19:10:19:19 | ExceptionA | raise.rb:14:1:23:3 | exit m2 (abnormal) | raise |
+| raise.rb:19:10:19:19 | ExceptionA | raise.rb:14:1:23:3 | exit m2 (abnormal) | exception |
 | raise.rb:19:10:19:19 | ExceptionA | raise.rb:20:5:20:18 | self | match |
 | raise.rb:19:20:20:18 | then ... | raise.rb:19:3:20:18 | rescue ... |  |
 | raise.rb:20:5:20:18 | call to puts | raise.rb:19:20:20:18 | then ... |  |
@@ -1924,7 +1924,7 @@
 | raise.rb:27:5:29:7 | if ... | raise.rb:33:3:33:15 | self |  |
 | raise.rb:27:8:27:8 | b | raise.rb:27:5:29:7 | if ... | false |
 | raise.rb:27:8:27:8 | b | raise.rb:28:7:28:22 | self | true |
-| raise.rb:28:7:28:22 | call to raise | raise.rb:31:5:31:18 | self | raise |
+| raise.rb:28:7:28:22 | call to raise | raise.rb:31:5:31:18 | self | exception |
 | raise.rb:28:7:28:22 | self | raise.rb:28:13:28:22 | ExceptionA |  |
 | raise.rb:28:13:28:22 | ExceptionA | raise.rb:28:7:28:22 | call to raise |  |
 | raise.rb:30:3:31:18 | rescue ... | raise.rb:33:3:33:15 | self |  |
@@ -1944,7 +1944,7 @@
 | raise.rb:38:5:40:7 | if ... | raise.rb:44:3:44:15 | self |  |
 | raise.rb:38:8:38:8 | b | raise.rb:38:5:40:7 | if ... | false |
 | raise.rb:38:8:38:8 | b | raise.rb:39:7:39:22 | self | true |
-| raise.rb:39:7:39:22 | call to raise | raise.rb:41:13:41:13 | e | raise |
+| raise.rb:39:7:39:22 | call to raise | raise.rb:41:13:41:13 | e | exception |
 | raise.rb:39:7:39:22 | self | raise.rb:39:13:39:22 | ExceptionA |  |
 | raise.rb:39:13:39:22 | ExceptionA | raise.rb:39:7:39:22 | call to raise |  |
 | raise.rb:41:3:42:22 | rescue ... | raise.rb:44:3:44:15 | self |  |
@@ -1965,7 +1965,7 @@
 | raise.rb:49:5:51:7 | if ... | raise.rb:54:3:54:15 | self |  |
 | raise.rb:49:8:49:8 | b | raise.rb:49:5:51:7 | if ... | false |
 | raise.rb:49:8:49:8 | b | raise.rb:50:7:50:22 | self | true |
-| raise.rb:50:7:50:22 | call to raise | raise.rb:52:13:52:13 | e | raise |
+| raise.rb:50:7:50:22 | call to raise | raise.rb:52:13:52:13 | e | exception |
 | raise.rb:50:7:50:22 | self | raise.rb:50:13:50:22 | ExceptionA |  |
 | raise.rb:50:13:50:22 | ExceptionA | raise.rb:50:7:50:22 | call to raise |  |
 | raise.rb:52:3:52:13 | rescue ... | raise.rb:54:3:54:15 | self |  |
@@ -1982,13 +1982,13 @@
 | raise.rb:59:5:61:7 | if ... | raise.rb:65:3:65:15 | self |  |
 | raise.rb:59:8:59:8 | b | raise.rb:59:5:61:7 | if ... | false |
 | raise.rb:59:8:59:8 | b | raise.rb:60:7:60:22 | self | true |
-| raise.rb:60:7:60:22 | call to raise | raise.rb:62:10:62:19 | ExceptionA | raise |
+| raise.rb:60:7:60:22 | call to raise | raise.rb:62:10:62:19 | ExceptionA | exception |
 | raise.rb:60:7:60:22 | self | raise.rb:60:13:60:22 | ExceptionA |  |
 | raise.rb:60:13:60:22 | ExceptionA | raise.rb:60:7:60:22 | call to raise |  |
 | raise.rb:62:3:63:22 | rescue ... | raise.rb:65:3:65:15 | self |  |
 | raise.rb:62:10:62:19 | ExceptionA | raise.rb:62:22:62:31 | ExceptionB | no-match |
 | raise.rb:62:10:62:19 | ExceptionA | raise.rb:62:36:62:36 | e | match |
-| raise.rb:62:22:62:31 | ExceptionB | raise.rb:57:1:66:3 | exit m6 (abnormal) | raise |
+| raise.rb:62:22:62:31 | ExceptionB | raise.rb:57:1:66:3 | exit m6 (abnormal) | exception |
 | raise.rb:62:22:62:31 | ExceptionB | raise.rb:62:36:62:36 | e | match |
 | raise.rb:62:36:62:36 | e | raise.rb:63:5:63:22 | self |  |
 | raise.rb:62:37:63:22 | then ... | raise.rb:62:3:63:22 | rescue ... |  |
@@ -2009,9 +2009,9 @@
 | raise.rb:69:6:69:6 | x | raise.rb:69:10:69:10 | 2 |  |
 | raise.rb:69:6:69:10 | ... > ... | raise.rb:70:5:70:17 | self | true |
 | raise.rb:69:6:69:10 | ... > ... | raise.rb:71:9:71:9 | x | false |
-| raise.rb:69:6:69:10 | ... > ... | raise.rb:76:3:76:15 | [ensure: raise] self | raise |
+| raise.rb:69:6:69:10 | ... > ... | raise.rb:76:3:76:15 | [ensure: exception] self | exception |
 | raise.rb:69:10:69:10 | 2 | raise.rb:69:6:69:10 | ... > ... |  |
-| raise.rb:70:5:70:17 | call to raise | raise.rb:76:3:76:15 | [ensure: raise] self | raise |
+| raise.rb:70:5:70:17 | call to raise | raise.rb:76:3:76:15 | [ensure: exception] self | exception |
 | raise.rb:70:5:70:17 | self | raise.rb:70:12:70:16 | x > 2 |  |
 | raise.rb:70:11:70:17 | "x > 2" | raise.rb:70:5:70:17 | call to raise |  |
 | raise.rb:70:12:70:16 | x > 2 | raise.rb:70:11:70:17 | "x > 2" |  |
@@ -2019,29 +2019,29 @@
 | raise.rb:71:9:71:9 | x | raise.rb:71:13:71:13 | 0 |  |
 | raise.rb:71:9:71:13 | ... < ... | raise.rb:71:3:72:18 | elsif ... | false |
 | raise.rb:71:9:71:13 | ... < ... | raise.rb:72:13:72:17 | x < 0 | true |
-| raise.rb:71:9:71:13 | ... < ... | raise.rb:76:3:76:15 | [ensure: raise] self | raise |
+| raise.rb:71:9:71:13 | ... < ... | raise.rb:76:3:76:15 | [ensure: exception] self | exception |
 | raise.rb:71:13:71:13 | 0 | raise.rb:71:9:71:13 | ... < ... |  |
 | raise.rb:72:5:72:18 | return | raise.rb:76:3:76:15 | [ensure: return] self | return |
 | raise.rb:72:12:72:18 | "x < 0" | raise.rb:72:5:72:18 | return |  |
 | raise.rb:72:13:72:17 | x < 0 | raise.rb:72:12:72:18 | "x < 0" |  |
-| raise.rb:74:3:74:20 | call to puts | raise.rb:76:3:76:15 | [ensure: raise] self | raise |
+| raise.rb:74:3:74:20 | call to puts | raise.rb:76:3:76:15 | [ensure: exception] self | exception |
 | raise.rb:74:3:74:20 | call to puts | raise.rb:76:3:76:15 | self |  |
 | raise.rb:74:3:74:20 | self | raise.rb:74:9:74:19 | 0 <= x <= 2 |  |
 | raise.rb:74:8:74:20 | "0 <= x <= 2" | raise.rb:74:3:74:20 | call to puts |  |
 | raise.rb:74:9:74:19 | 0 <= x <= 2 | raise.rb:74:8:74:20 | "0 <= x <= 2" |  |
-| raise.rb:75:1:76:15 | [ensure: raise] ensure ... | raise.rb:68:1:77:3 | exit m7 (abnormal) | raise |
+| raise.rb:75:1:76:15 | [ensure: exception] ensure ... | raise.rb:68:1:77:3 | exit m7 (abnormal) | exception |
 | raise.rb:75:1:76:15 | [ensure: return] ensure ... | raise.rb:68:1:77:3 | exit m7 (normal) | return |
 | raise.rb:75:1:76:15 | ensure ... | raise.rb:68:1:77:3 | exit m7 (normal) |  |
-| raise.rb:76:3:76:15 | [ensure: raise] call to puts | raise.rb:75:1:76:15 | [ensure: raise] ensure ... |  |
-| raise.rb:76:3:76:15 | [ensure: raise] self | raise.rb:76:9:76:14 | [ensure: raise] ensure |  |
+| raise.rb:76:3:76:15 | [ensure: exception] call to puts | raise.rb:75:1:76:15 | [ensure: exception] ensure ... |  |
+| raise.rb:76:3:76:15 | [ensure: exception] self | raise.rb:76:9:76:14 | [ensure: exception] ensure |  |
 | raise.rb:76:3:76:15 | [ensure: return] call to puts | raise.rb:75:1:76:15 | [ensure: return] ensure ... |  |
 | raise.rb:76:3:76:15 | [ensure: return] self | raise.rb:76:9:76:14 | [ensure: return] ensure |  |
 | raise.rb:76:3:76:15 | call to puts | raise.rb:75:1:76:15 | ensure ... |  |
 | raise.rb:76:3:76:15 | self | raise.rb:76:9:76:14 | ensure |  |
 | raise.rb:76:8:76:15 | "ensure" | raise.rb:76:3:76:15 | call to puts |  |
-| raise.rb:76:8:76:15 | [ensure: raise] "ensure" | raise.rb:76:3:76:15 | [ensure: raise] call to puts |  |
+| raise.rb:76:8:76:15 | [ensure: exception] "ensure" | raise.rb:76:3:76:15 | [ensure: exception] call to puts |  |
 | raise.rb:76:8:76:15 | [ensure: return] "ensure" | raise.rb:76:3:76:15 | [ensure: return] call to puts |  |
-| raise.rb:76:9:76:14 | [ensure: raise] ensure | raise.rb:76:8:76:15 | [ensure: raise] "ensure" |  |
+| raise.rb:76:9:76:14 | [ensure: exception] ensure | raise.rb:76:8:76:15 | [ensure: exception] "ensure" |  |
 | raise.rb:76:9:76:14 | [ensure: return] ensure | raise.rb:76:8:76:15 | [ensure: return] "ensure" |  |
 | raise.rb:76:9:76:14 | ensure | raise.rb:76:8:76:15 | "ensure" |  |
 | raise.rb:79:1:92:3 | enter m8 | raise.rb:79:8:79:8 | x |  |
@@ -2057,9 +2057,9 @@
 | raise.rb:82:8:82:8 | x | raise.rb:82:12:82:12 | 2 |  |
 | raise.rb:82:8:82:12 | ... > ... | raise.rb:83:7:83:19 | self | true |
 | raise.rb:82:8:82:12 | ... > ... | raise.rb:84:11:84:11 | x | false |
-| raise.rb:82:8:82:12 | ... > ... | raise.rb:89:5:89:17 | [ensure: raise] self | raise |
+| raise.rb:82:8:82:12 | ... > ... | raise.rb:89:5:89:17 | [ensure: exception] self | exception |
 | raise.rb:82:12:82:12 | 2 | raise.rb:82:8:82:12 | ... > ... |  |
-| raise.rb:83:7:83:19 | call to raise | raise.rb:89:5:89:17 | [ensure: raise] self | raise |
+| raise.rb:83:7:83:19 | call to raise | raise.rb:89:5:89:17 | [ensure: exception] self | exception |
 | raise.rb:83:7:83:19 | self | raise.rb:83:14:83:18 | x > 2 |  |
 | raise.rb:83:13:83:19 | "x > 2" | raise.rb:83:7:83:19 | call to raise |  |
 | raise.rb:83:14:83:18 | x > 2 | raise.rb:83:13:83:19 | "x > 2" |  |
@@ -2067,29 +2067,29 @@
 | raise.rb:84:11:84:11 | x | raise.rb:84:15:84:15 | 0 |  |
 | raise.rb:84:11:84:15 | ... < ... | raise.rb:84:5:85:20 | elsif ... | false |
 | raise.rb:84:11:84:15 | ... < ... | raise.rb:85:15:85:19 | x < 0 | true |
-| raise.rb:84:11:84:15 | ... < ... | raise.rb:89:5:89:17 | [ensure: raise] self | raise |
+| raise.rb:84:11:84:15 | ... < ... | raise.rb:89:5:89:17 | [ensure: exception] self | exception |
 | raise.rb:84:15:84:15 | 0 | raise.rb:84:11:84:15 | ... < ... |  |
 | raise.rb:85:7:85:20 | return | raise.rb:89:5:89:17 | [ensure: return] self | return |
 | raise.rb:85:14:85:20 | "x < 0" | raise.rb:85:7:85:20 | return |  |
 | raise.rb:85:15:85:19 | x < 0 | raise.rb:85:14:85:20 | "x < 0" |  |
-| raise.rb:87:5:87:22 | call to puts | raise.rb:89:5:89:17 | [ensure: raise] self | raise |
+| raise.rb:87:5:87:22 | call to puts | raise.rb:89:5:89:17 | [ensure: exception] self | exception |
 | raise.rb:87:5:87:22 | call to puts | raise.rb:89:5:89:17 | self |  |
 | raise.rb:87:5:87:22 | self | raise.rb:87:11:87:21 | 0 <= x <= 2 |  |
 | raise.rb:87:10:87:22 | "0 <= x <= 2" | raise.rb:87:5:87:22 | call to puts |  |
 | raise.rb:87:11:87:21 | 0 <= x <= 2 | raise.rb:87:10:87:22 | "0 <= x <= 2" |  |
-| raise.rb:88:3:89:17 | [ensure: raise] ensure ... | raise.rb:79:1:92:3 | exit m8 (abnormal) | raise |
+| raise.rb:88:3:89:17 | [ensure: exception] ensure ... | raise.rb:79:1:92:3 | exit m8 (abnormal) | exception |
 | raise.rb:88:3:89:17 | [ensure: return] ensure ... | raise.rb:79:1:92:3 | exit m8 (normal) | return |
 | raise.rb:88:3:89:17 | ensure ... | raise.rb:91:3:91:15 | self |  |
-| raise.rb:89:5:89:17 | [ensure: raise] call to puts | raise.rb:88:3:89:17 | [ensure: raise] ensure ... |  |
-| raise.rb:89:5:89:17 | [ensure: raise] self | raise.rb:89:11:89:16 | [ensure: raise] ensure |  |
+| raise.rb:89:5:89:17 | [ensure: exception] call to puts | raise.rb:88:3:89:17 | [ensure: exception] ensure ... |  |
+| raise.rb:89:5:89:17 | [ensure: exception] self | raise.rb:89:11:89:16 | [ensure: exception] ensure |  |
 | raise.rb:89:5:89:17 | [ensure: return] call to puts | raise.rb:88:3:89:17 | [ensure: return] ensure ... |  |
 | raise.rb:89:5:89:17 | [ensure: return] self | raise.rb:89:11:89:16 | [ensure: return] ensure |  |
 | raise.rb:89:5:89:17 | call to puts | raise.rb:88:3:89:17 | ensure ... |  |
 | raise.rb:89:5:89:17 | self | raise.rb:89:11:89:16 | ensure |  |
 | raise.rb:89:10:89:17 | "ensure" | raise.rb:89:5:89:17 | call to puts |  |
-| raise.rb:89:10:89:17 | [ensure: raise] "ensure" | raise.rb:89:5:89:17 | [ensure: raise] call to puts |  |
+| raise.rb:89:10:89:17 | [ensure: exception] "ensure" | raise.rb:89:5:89:17 | [ensure: exception] call to puts |  |
 | raise.rb:89:10:89:17 | [ensure: return] "ensure" | raise.rb:89:5:89:17 | [ensure: return] call to puts |  |
-| raise.rb:89:11:89:16 | [ensure: raise] ensure | raise.rb:89:10:89:17 | [ensure: raise] "ensure" |  |
+| raise.rb:89:11:89:16 | [ensure: exception] ensure | raise.rb:89:10:89:17 | [ensure: exception] "ensure" |  |
 | raise.rb:89:11:89:16 | [ensure: return] ensure | raise.rb:89:10:89:17 | [ensure: return] "ensure" |  |
 | raise.rb:89:11:89:16 | ensure | raise.rb:89:10:89:17 | "ensure" |  |
 | raise.rb:91:3:91:15 | call to puts | raise.rb:79:1:92:3 | exit m8 (normal) |  |
@@ -2104,7 +2104,7 @@
 | raise.rb:94:11:94:12 | b1 | raise.rb:94:15:94:16 | b2 |  |
 | raise.rb:94:15:94:16 | b2 | raise.rb:95:3:95:17 | self |  |
 | raise.rb:95:3:95:17 | call to puts | raise.rb:97:8:97:8 | x |  |
-| raise.rb:95:3:95:17 | call to puts | raise.rb:115:3:115:22 | [ensure: raise] self | raise |
+| raise.rb:95:3:95:17 | call to puts | raise.rb:115:3:115:22 | [ensure: exception] self | exception |
 | raise.rb:95:3:95:17 | self | raise.rb:95:9:95:16 | Begin m9 |  |
 | raise.rb:95:8:95:17 | "Begin m9" | raise.rb:95:3:95:17 | call to puts |  |
 | raise.rb:95:9:95:16 | Begin m9 | raise.rb:95:8:95:17 | "Begin m9" |  |
@@ -2112,9 +2112,9 @@
 | raise.rb:97:8:97:8 | x | raise.rb:97:12:97:12 | 2 |  |
 | raise.rb:97:8:97:12 | ... > ... | raise.rb:98:7:98:19 | self | true |
 | raise.rb:97:8:97:12 | ... > ... | raise.rb:99:11:99:11 | x | false |
-| raise.rb:97:8:97:12 | ... > ... | raise.rb:104:5:104:23 | [ensure: raise] self | raise |
+| raise.rb:97:8:97:12 | ... > ... | raise.rb:104:5:104:23 | [ensure: exception] self | exception |
 | raise.rb:97:12:97:12 | 2 | raise.rb:97:8:97:12 | ... > ... |  |
-| raise.rb:98:7:98:19 | call to raise | raise.rb:104:5:104:23 | [ensure: raise] self | raise |
+| raise.rb:98:7:98:19 | call to raise | raise.rb:104:5:104:23 | [ensure: exception] self | exception |
 | raise.rb:98:7:98:19 | self | raise.rb:98:14:98:18 | x > 2 |  |
 | raise.rb:98:13:98:19 | "x > 2" | raise.rb:98:7:98:19 | call to raise |  |
 | raise.rb:98:14:98:18 | x > 2 | raise.rb:98:13:98:19 | "x > 2" |  |
@@ -2122,130 +2122,130 @@
 | raise.rb:99:11:99:11 | x | raise.rb:99:15:99:15 | 0 |  |
 | raise.rb:99:11:99:15 | ... < ... | raise.rb:99:5:100:20 | elsif ... | false |
 | raise.rb:99:11:99:15 | ... < ... | raise.rb:100:15:100:19 | x < 0 | true |
-| raise.rb:99:11:99:15 | ... < ... | raise.rb:104:5:104:23 | [ensure: raise] self | raise |
+| raise.rb:99:11:99:15 | ... < ... | raise.rb:104:5:104:23 | [ensure: exception] self | exception |
 | raise.rb:99:15:99:15 | 0 | raise.rb:99:11:99:15 | ... < ... |  |
 | raise.rb:100:7:100:20 | return | raise.rb:104:5:104:23 | [ensure: return] self | return |
 | raise.rb:100:14:100:20 | "x < 0" | raise.rb:100:7:100:20 | return |  |
 | raise.rb:100:15:100:19 | x < 0 | raise.rb:100:14:100:20 | "x < 0" |  |
-| raise.rb:102:5:102:22 | call to puts | raise.rb:104:5:104:23 | [ensure: raise] self | raise |
+| raise.rb:102:5:102:22 | call to puts | raise.rb:104:5:104:23 | [ensure: exception] self | exception |
 | raise.rb:102:5:102:22 | call to puts | raise.rb:104:5:104:23 | self |  |
 | raise.rb:102:5:102:22 | self | raise.rb:102:11:102:21 | 0 <= x <= 2 |  |
 | raise.rb:102:10:102:22 | "0 <= x <= 2" | raise.rb:102:5:102:22 | call to puts |  |
 | raise.rb:102:11:102:21 | 0 <= x <= 2 | raise.rb:102:10:102:22 | "0 <= x <= 2" |  |
-| raise.rb:103:3:111:7 | [ensure: raise] ensure ... | raise.rb:115:3:115:22 | [ensure: raise] self | raise |
+| raise.rb:103:3:111:7 | [ensure: exception] ensure ... | raise.rb:115:3:115:22 | [ensure: exception] self | exception |
 | raise.rb:103:3:111:7 | [ensure: return] ensure ... | raise.rb:115:3:115:22 | [ensure: return] self | return |
 | raise.rb:103:3:111:7 | ensure ... | raise.rb:113:3:113:15 | self |  |
-| raise.rb:104:5:104:23 | [ensure: raise] call to puts | raise.rb:106:10:106:11 | [ensure: raise] b1 |  |
-| raise.rb:104:5:104:23 | [ensure: raise] call to puts | raise.rb:115:3:115:22 | [ensure: raise] self | raise |
-| raise.rb:104:5:104:23 | [ensure: raise] self | raise.rb:104:11:104:22 | [ensure: raise] outer ensure |  |
+| raise.rb:104:5:104:23 | [ensure: exception] call to puts | raise.rb:106:10:106:11 | [ensure: exception] b1 |  |
+| raise.rb:104:5:104:23 | [ensure: exception] call to puts | raise.rb:115:3:115:22 | [ensure: exception] self | exception |
+| raise.rb:104:5:104:23 | [ensure: exception] self | raise.rb:104:11:104:22 | [ensure: exception] outer ensure |  |
 | raise.rb:104:5:104:23 | [ensure: return] call to puts | raise.rb:106:10:106:11 | [ensure: return] b1 |  |
-| raise.rb:104:5:104:23 | [ensure: return] call to puts | raise.rb:115:3:115:22 | [ensure: raise] self | raise |
+| raise.rb:104:5:104:23 | [ensure: return] call to puts | raise.rb:115:3:115:22 | [ensure: exception] self | exception |
 | raise.rb:104:5:104:23 | [ensure: return] self | raise.rb:104:11:104:22 | [ensure: return] outer ensure |  |
 | raise.rb:104:5:104:23 | call to puts | raise.rb:106:10:106:11 | b1 |  |
-| raise.rb:104:5:104:23 | call to puts | raise.rb:115:3:115:22 | [ensure: raise] self | raise |
+| raise.rb:104:5:104:23 | call to puts | raise.rb:115:3:115:22 | [ensure: exception] self | exception |
 | raise.rb:104:5:104:23 | self | raise.rb:104:11:104:22 | outer ensure |  |
 | raise.rb:104:10:104:23 | "outer ensure" | raise.rb:104:5:104:23 | call to puts |  |
-| raise.rb:104:10:104:23 | [ensure: raise] "outer ensure" | raise.rb:104:5:104:23 | [ensure: raise] call to puts |  |
+| raise.rb:104:10:104:23 | [ensure: exception] "outer ensure" | raise.rb:104:5:104:23 | [ensure: exception] call to puts |  |
 | raise.rb:104:10:104:23 | [ensure: return] "outer ensure" | raise.rb:104:5:104:23 | [ensure: return] call to puts |  |
-| raise.rb:104:11:104:22 | [ensure: raise] outer ensure | raise.rb:104:10:104:23 | [ensure: raise] "outer ensure" |  |
+| raise.rb:104:11:104:22 | [ensure: exception] outer ensure | raise.rb:104:10:104:23 | [ensure: exception] "outer ensure" |  |
 | raise.rb:104:11:104:22 | [ensure: return] outer ensure | raise.rb:104:10:104:23 | [ensure: return] "outer ensure" |  |
 | raise.rb:104:11:104:22 | outer ensure | raise.rb:104:10:104:23 | "outer ensure" |  |
-| raise.rb:106:7:108:9 | [ensure: raise] if ... | raise.rb:110:7:110:25 | [ensure: raise] self |  |
+| raise.rb:106:7:108:9 | [ensure: exception] if ... | raise.rb:110:7:110:25 | [ensure: exception] self |  |
 | raise.rb:106:7:108:9 | [ensure: return] if ... | raise.rb:110:7:110:25 | [ensure: return] self |  |
 | raise.rb:106:7:108:9 | if ... | raise.rb:110:7:110:25 | self |  |
-| raise.rb:106:10:106:11 | [ensure: raise] b1 | raise.rb:106:7:108:9 | [ensure: raise] if ... | false |
-| raise.rb:106:10:106:11 | [ensure: raise] b1 | raise.rb:107:9:107:26 | [ensure: raise] self | true |
+| raise.rb:106:10:106:11 | [ensure: exception] b1 | raise.rb:106:7:108:9 | [ensure: exception] if ... | false |
+| raise.rb:106:10:106:11 | [ensure: exception] b1 | raise.rb:107:9:107:26 | [ensure: exception] self | true |
 | raise.rb:106:10:106:11 | [ensure: return] b1 | raise.rb:106:7:108:9 | [ensure: return] if ... | false |
 | raise.rb:106:10:106:11 | [ensure: return] b1 | raise.rb:107:9:107:26 | [ensure: return] self | true |
 | raise.rb:106:10:106:11 | b1 | raise.rb:106:7:108:9 | if ... | false |
 | raise.rb:106:10:106:11 | b1 | raise.rb:107:9:107:26 | self | true |
-| raise.rb:107:9:107:26 | [ensure: raise] call to raise | raise.rb:110:7:110:25 | [ensure: raise, ensure(1): raise] self | raise |
-| raise.rb:107:9:107:26 | [ensure: raise] self | raise.rb:107:16:107:25 | [ensure: raise] b1 is true |  |
-| raise.rb:107:9:107:26 | [ensure: return] call to raise | raise.rb:110:7:110:25 | [ensure: return, ensure(1): raise] self | raise |
+| raise.rb:107:9:107:26 | [ensure: exception] call to raise | raise.rb:110:7:110:25 | [ensure: exception, ensure(1): exception] self | exception |
+| raise.rb:107:9:107:26 | [ensure: exception] self | raise.rb:107:16:107:25 | [ensure: exception] b1 is true |  |
+| raise.rb:107:9:107:26 | [ensure: return] call to raise | raise.rb:110:7:110:25 | [ensure: return, ensure(1): exception] self | exception |
 | raise.rb:107:9:107:26 | [ensure: return] self | raise.rb:107:16:107:25 | [ensure: return] b1 is true |  |
-| raise.rb:107:9:107:26 | call to raise | raise.rb:110:7:110:25 | [ensure(1): raise] self | raise |
+| raise.rb:107:9:107:26 | call to raise | raise.rb:110:7:110:25 | [ensure(1): exception] self | exception |
 | raise.rb:107:9:107:26 | self | raise.rb:107:16:107:25 | b1 is true |  |
 | raise.rb:107:15:107:26 | "b1 is true" | raise.rb:107:9:107:26 | call to raise |  |
-| raise.rb:107:15:107:26 | [ensure: raise] "b1 is true" | raise.rb:107:9:107:26 | [ensure: raise] call to raise |  |
+| raise.rb:107:15:107:26 | [ensure: exception] "b1 is true" | raise.rb:107:9:107:26 | [ensure: exception] call to raise |  |
 | raise.rb:107:15:107:26 | [ensure: return] "b1 is true" | raise.rb:107:9:107:26 | [ensure: return] call to raise |  |
-| raise.rb:107:16:107:25 | [ensure: raise] b1 is true | raise.rb:107:15:107:26 | [ensure: raise] "b1 is true" |  |
+| raise.rb:107:16:107:25 | [ensure: exception] b1 is true | raise.rb:107:15:107:26 | [ensure: exception] "b1 is true" |  |
 | raise.rb:107:16:107:25 | [ensure: return] b1 is true | raise.rb:107:15:107:26 | [ensure: return] "b1 is true" |  |
 | raise.rb:107:16:107:25 | b1 is true | raise.rb:107:15:107:26 | "b1 is true" |  |
-| raise.rb:109:5:110:25 | [ensure(1): raise] ensure ... | raise.rb:115:3:115:22 | [ensure: raise] self | raise |
-| raise.rb:109:5:110:25 | [ensure: raise, ensure(1): raise] ensure ... | raise.rb:115:3:115:22 | [ensure: raise] self | raise |
-| raise.rb:109:5:110:25 | [ensure: raise] ensure ... | raise.rb:103:3:111:7 | [ensure: raise] ensure ... |  |
-| raise.rb:109:5:110:25 | [ensure: return, ensure(1): raise] ensure ... | raise.rb:115:3:115:22 | [ensure: raise] self | raise |
+| raise.rb:109:5:110:25 | [ensure(1): exception] ensure ... | raise.rb:115:3:115:22 | [ensure: exception] self | exception |
+| raise.rb:109:5:110:25 | [ensure: exception, ensure(1): exception] ensure ... | raise.rb:115:3:115:22 | [ensure: exception] self | exception |
+| raise.rb:109:5:110:25 | [ensure: exception] ensure ... | raise.rb:103:3:111:7 | [ensure: exception] ensure ... |  |
+| raise.rb:109:5:110:25 | [ensure: return, ensure(1): exception] ensure ... | raise.rb:115:3:115:22 | [ensure: exception] self | exception |
 | raise.rb:109:5:110:25 | [ensure: return] ensure ... | raise.rb:103:3:111:7 | [ensure: return] ensure ... |  |
 | raise.rb:109:5:110:25 | ensure ... | raise.rb:103:3:111:7 | ensure ... |  |
-| raise.rb:110:7:110:25 | [ensure(1): raise] call to puts | raise.rb:109:5:110:25 | [ensure(1): raise] ensure ... |  |
-| raise.rb:110:7:110:25 | [ensure(1): raise] call to puts | raise.rb:115:3:115:22 | [ensure: raise] self | raise |
-| raise.rb:110:7:110:25 | [ensure(1): raise] self | raise.rb:110:13:110:24 | [ensure(1): raise] inner ensure |  |
-| raise.rb:110:7:110:25 | [ensure: raise, ensure(1): raise] call to puts | raise.rb:109:5:110:25 | [ensure: raise, ensure(1): raise] ensure ... |  |
-| raise.rb:110:7:110:25 | [ensure: raise, ensure(1): raise] call to puts | raise.rb:115:3:115:22 | [ensure: raise] self | raise |
-| raise.rb:110:7:110:25 | [ensure: raise, ensure(1): raise] self | raise.rb:110:13:110:24 | [ensure: raise, ensure(1): raise] inner ensure |  |
-| raise.rb:110:7:110:25 | [ensure: raise] call to puts | raise.rb:109:5:110:25 | [ensure: raise] ensure ... |  |
-| raise.rb:110:7:110:25 | [ensure: raise] call to puts | raise.rb:115:3:115:22 | [ensure: raise] self | raise |
-| raise.rb:110:7:110:25 | [ensure: raise] self | raise.rb:110:13:110:24 | [ensure: raise] inner ensure |  |
-| raise.rb:110:7:110:25 | [ensure: return, ensure(1): raise] call to puts | raise.rb:109:5:110:25 | [ensure: return, ensure(1): raise] ensure ... |  |
-| raise.rb:110:7:110:25 | [ensure: return, ensure(1): raise] call to puts | raise.rb:115:3:115:22 | [ensure: raise] self | raise |
-| raise.rb:110:7:110:25 | [ensure: return, ensure(1): raise] self | raise.rb:110:13:110:24 | [ensure: return, ensure(1): raise] inner ensure |  |
+| raise.rb:110:7:110:25 | [ensure(1): exception] call to puts | raise.rb:109:5:110:25 | [ensure(1): exception] ensure ... |  |
+| raise.rb:110:7:110:25 | [ensure(1): exception] call to puts | raise.rb:115:3:115:22 | [ensure: exception] self | exception |
+| raise.rb:110:7:110:25 | [ensure(1): exception] self | raise.rb:110:13:110:24 | [ensure(1): exception] inner ensure |  |
+| raise.rb:110:7:110:25 | [ensure: exception, ensure(1): exception] call to puts | raise.rb:109:5:110:25 | [ensure: exception, ensure(1): exception] ensure ... |  |
+| raise.rb:110:7:110:25 | [ensure: exception, ensure(1): exception] call to puts | raise.rb:115:3:115:22 | [ensure: exception] self | exception |
+| raise.rb:110:7:110:25 | [ensure: exception, ensure(1): exception] self | raise.rb:110:13:110:24 | [ensure: exception, ensure(1): exception] inner ensure |  |
+| raise.rb:110:7:110:25 | [ensure: exception] call to puts | raise.rb:109:5:110:25 | [ensure: exception] ensure ... |  |
+| raise.rb:110:7:110:25 | [ensure: exception] call to puts | raise.rb:115:3:115:22 | [ensure: exception] self | exception |
+| raise.rb:110:7:110:25 | [ensure: exception] self | raise.rb:110:13:110:24 | [ensure: exception] inner ensure |  |
+| raise.rb:110:7:110:25 | [ensure: return, ensure(1): exception] call to puts | raise.rb:109:5:110:25 | [ensure: return, ensure(1): exception] ensure ... |  |
+| raise.rb:110:7:110:25 | [ensure: return, ensure(1): exception] call to puts | raise.rb:115:3:115:22 | [ensure: exception] self | exception |
+| raise.rb:110:7:110:25 | [ensure: return, ensure(1): exception] self | raise.rb:110:13:110:24 | [ensure: return, ensure(1): exception] inner ensure |  |
 | raise.rb:110:7:110:25 | [ensure: return] call to puts | raise.rb:109:5:110:25 | [ensure: return] ensure ... |  |
-| raise.rb:110:7:110:25 | [ensure: return] call to puts | raise.rb:115:3:115:22 | [ensure: raise] self | raise |
+| raise.rb:110:7:110:25 | [ensure: return] call to puts | raise.rb:115:3:115:22 | [ensure: exception] self | exception |
 | raise.rb:110:7:110:25 | [ensure: return] self | raise.rb:110:13:110:24 | [ensure: return] inner ensure |  |
 | raise.rb:110:7:110:25 | call to puts | raise.rb:109:5:110:25 | ensure ... |  |
-| raise.rb:110:7:110:25 | call to puts | raise.rb:115:3:115:22 | [ensure: raise] self | raise |
+| raise.rb:110:7:110:25 | call to puts | raise.rb:115:3:115:22 | [ensure: exception] self | exception |
 | raise.rb:110:7:110:25 | self | raise.rb:110:13:110:24 | inner ensure |  |
 | raise.rb:110:12:110:25 | "inner ensure" | raise.rb:110:7:110:25 | call to puts |  |
-| raise.rb:110:12:110:25 | [ensure(1): raise] "inner ensure" | raise.rb:110:7:110:25 | [ensure(1): raise] call to puts |  |
-| raise.rb:110:12:110:25 | [ensure: raise, ensure(1): raise] "inner ensure" | raise.rb:110:7:110:25 | [ensure: raise, ensure(1): raise] call to puts |  |
-| raise.rb:110:12:110:25 | [ensure: raise] "inner ensure" | raise.rb:110:7:110:25 | [ensure: raise] call to puts |  |
-| raise.rb:110:12:110:25 | [ensure: return, ensure(1): raise] "inner ensure" | raise.rb:110:7:110:25 | [ensure: return, ensure(1): raise] call to puts |  |
+| raise.rb:110:12:110:25 | [ensure(1): exception] "inner ensure" | raise.rb:110:7:110:25 | [ensure(1): exception] call to puts |  |
+| raise.rb:110:12:110:25 | [ensure: exception, ensure(1): exception] "inner ensure" | raise.rb:110:7:110:25 | [ensure: exception, ensure(1): exception] call to puts |  |
+| raise.rb:110:12:110:25 | [ensure: exception] "inner ensure" | raise.rb:110:7:110:25 | [ensure: exception] call to puts |  |
+| raise.rb:110:12:110:25 | [ensure: return, ensure(1): exception] "inner ensure" | raise.rb:110:7:110:25 | [ensure: return, ensure(1): exception] call to puts |  |
 | raise.rb:110:12:110:25 | [ensure: return] "inner ensure" | raise.rb:110:7:110:25 | [ensure: return] call to puts |  |
-| raise.rb:110:13:110:24 | [ensure(1): raise] inner ensure | raise.rb:110:12:110:25 | [ensure(1): raise] "inner ensure" |  |
-| raise.rb:110:13:110:24 | [ensure: raise, ensure(1): raise] inner ensure | raise.rb:110:12:110:25 | [ensure: raise, ensure(1): raise] "inner ensure" |  |
-| raise.rb:110:13:110:24 | [ensure: raise] inner ensure | raise.rb:110:12:110:25 | [ensure: raise] "inner ensure" |  |
-| raise.rb:110:13:110:24 | [ensure: return, ensure(1): raise] inner ensure | raise.rb:110:12:110:25 | [ensure: return, ensure(1): raise] "inner ensure" |  |
+| raise.rb:110:13:110:24 | [ensure(1): exception] inner ensure | raise.rb:110:12:110:25 | [ensure(1): exception] "inner ensure" |  |
+| raise.rb:110:13:110:24 | [ensure: exception, ensure(1): exception] inner ensure | raise.rb:110:12:110:25 | [ensure: exception, ensure(1): exception] "inner ensure" |  |
+| raise.rb:110:13:110:24 | [ensure: exception] inner ensure | raise.rb:110:12:110:25 | [ensure: exception] "inner ensure" |  |
+| raise.rb:110:13:110:24 | [ensure: return, ensure(1): exception] inner ensure | raise.rb:110:12:110:25 | [ensure: return, ensure(1): exception] "inner ensure" |  |
 | raise.rb:110:13:110:24 | [ensure: return] inner ensure | raise.rb:110:12:110:25 | [ensure: return] "inner ensure" |  |
 | raise.rb:110:13:110:24 | inner ensure | raise.rb:110:12:110:25 | "inner ensure" |  |
-| raise.rb:113:3:113:15 | call to puts | raise.rb:115:3:115:22 | [ensure: raise] self | raise |
+| raise.rb:113:3:113:15 | call to puts | raise.rb:115:3:115:22 | [ensure: exception] self | exception |
 | raise.rb:113:3:113:15 | call to puts | raise.rb:115:3:115:22 | self |  |
 | raise.rb:113:3:113:15 | self | raise.rb:113:9:113:14 | End m9 |  |
 | raise.rb:113:8:113:15 | "End m9" | raise.rb:113:3:113:15 | call to puts |  |
 | raise.rb:113:9:113:14 | End m9 | raise.rb:113:8:113:15 | "End m9" |  |
-| raise.rb:114:1:118:5 | [ensure: raise] ensure ... | raise.rb:94:1:119:3 | exit m9 (abnormal) | raise |
+| raise.rb:114:1:118:5 | [ensure: exception] ensure ... | raise.rb:94:1:119:3 | exit m9 (abnormal) | exception |
 | raise.rb:114:1:118:5 | [ensure: return] ensure ... | raise.rb:94:1:119:3 | exit m9 (normal) | return |
 | raise.rb:114:1:118:5 | ensure ... | raise.rb:94:1:119:3 | exit m9 (normal) |  |
-| raise.rb:115:3:115:22 | [ensure: raise] call to puts | raise.rb:116:6:116:7 | [ensure: raise] b2 |  |
-| raise.rb:115:3:115:22 | [ensure: raise] self | raise.rb:115:9:115:21 | [ensure: raise] method ensure |  |
+| raise.rb:115:3:115:22 | [ensure: exception] call to puts | raise.rb:116:6:116:7 | [ensure: exception] b2 |  |
+| raise.rb:115:3:115:22 | [ensure: exception] self | raise.rb:115:9:115:21 | [ensure: exception] method ensure |  |
 | raise.rb:115:3:115:22 | [ensure: return] call to puts | raise.rb:116:6:116:7 | [ensure: return] b2 |  |
 | raise.rb:115:3:115:22 | [ensure: return] self | raise.rb:115:9:115:21 | [ensure: return] method ensure |  |
 | raise.rb:115:3:115:22 | call to puts | raise.rb:116:6:116:7 | b2 |  |
 | raise.rb:115:3:115:22 | self | raise.rb:115:9:115:21 | method ensure |  |
 | raise.rb:115:8:115:22 | "method ensure" | raise.rb:115:3:115:22 | call to puts |  |
-| raise.rb:115:8:115:22 | [ensure: raise] "method ensure" | raise.rb:115:3:115:22 | [ensure: raise] call to puts |  |
+| raise.rb:115:8:115:22 | [ensure: exception] "method ensure" | raise.rb:115:3:115:22 | [ensure: exception] call to puts |  |
 | raise.rb:115:8:115:22 | [ensure: return] "method ensure" | raise.rb:115:3:115:22 | [ensure: return] call to puts |  |
-| raise.rb:115:9:115:21 | [ensure: raise] method ensure | raise.rb:115:8:115:22 | [ensure: raise] "method ensure" |  |
+| raise.rb:115:9:115:21 | [ensure: exception] method ensure | raise.rb:115:8:115:22 | [ensure: exception] "method ensure" |  |
 | raise.rb:115:9:115:21 | [ensure: return] method ensure | raise.rb:115:8:115:22 | [ensure: return] "method ensure" |  |
 | raise.rb:115:9:115:21 | method ensure | raise.rb:115:8:115:22 | "method ensure" |  |
-| raise.rb:116:3:118:5 | [ensure: raise] if ... | raise.rb:114:1:118:5 | [ensure: raise] ensure ... |  |
+| raise.rb:116:3:118:5 | [ensure: exception] if ... | raise.rb:114:1:118:5 | [ensure: exception] ensure ... |  |
 | raise.rb:116:3:118:5 | [ensure: return] if ... | raise.rb:114:1:118:5 | [ensure: return] ensure ... |  |
 | raise.rb:116:3:118:5 | if ... | raise.rb:114:1:118:5 | ensure ... |  |
-| raise.rb:116:6:116:7 | [ensure: raise] b2 | raise.rb:116:3:118:5 | [ensure: raise] if ... | false |
-| raise.rb:116:6:116:7 | [ensure: raise] b2 | raise.rb:117:5:117:22 | [ensure: raise] self | true |
+| raise.rb:116:6:116:7 | [ensure: exception] b2 | raise.rb:116:3:118:5 | [ensure: exception] if ... | false |
+| raise.rb:116:6:116:7 | [ensure: exception] b2 | raise.rb:117:5:117:22 | [ensure: exception] self | true |
 | raise.rb:116:6:116:7 | [ensure: return] b2 | raise.rb:116:3:118:5 | [ensure: return] if ... | false |
 | raise.rb:116:6:116:7 | [ensure: return] b2 | raise.rb:117:5:117:22 | [ensure: return] self | true |
 | raise.rb:116:6:116:7 | b2 | raise.rb:116:3:118:5 | if ... | false |
 | raise.rb:116:6:116:7 | b2 | raise.rb:117:5:117:22 | self | true |
-| raise.rb:117:5:117:22 | [ensure: raise] call to raise | raise.rb:94:1:119:3 | exit m9 (abnormal) | raise |
-| raise.rb:117:5:117:22 | [ensure: raise] self | raise.rb:117:12:117:21 | [ensure: raise] b2 is true |  |
-| raise.rb:117:5:117:22 | [ensure: return] call to raise | raise.rb:94:1:119:3 | exit m9 (abnormal) | raise |
+| raise.rb:117:5:117:22 | [ensure: exception] call to raise | raise.rb:94:1:119:3 | exit m9 (abnormal) | exception |
+| raise.rb:117:5:117:22 | [ensure: exception] self | raise.rb:117:12:117:21 | [ensure: exception] b2 is true |  |
+| raise.rb:117:5:117:22 | [ensure: return] call to raise | raise.rb:94:1:119:3 | exit m9 (abnormal) | exception |
 | raise.rb:117:5:117:22 | [ensure: return] self | raise.rb:117:12:117:21 | [ensure: return] b2 is true |  |
-| raise.rb:117:5:117:22 | call to raise | raise.rb:94:1:119:3 | exit m9 (abnormal) | raise |
+| raise.rb:117:5:117:22 | call to raise | raise.rb:94:1:119:3 | exit m9 (abnormal) | exception |
 | raise.rb:117:5:117:22 | self | raise.rb:117:12:117:21 | b2 is true |  |
 | raise.rb:117:11:117:22 | "b2 is true" | raise.rb:117:5:117:22 | call to raise |  |
-| raise.rb:117:11:117:22 | [ensure: raise] "b2 is true" | raise.rb:117:5:117:22 | [ensure: raise] call to raise |  |
+| raise.rb:117:11:117:22 | [ensure: exception] "b2 is true" | raise.rb:117:5:117:22 | [ensure: exception] call to raise |  |
 | raise.rb:117:11:117:22 | [ensure: return] "b2 is true" | raise.rb:117:5:117:22 | [ensure: return] call to raise |  |
-| raise.rb:117:12:117:21 | [ensure: raise] b2 is true | raise.rb:117:11:117:22 | [ensure: raise] "b2 is true" |  |
+| raise.rb:117:12:117:21 | [ensure: exception] b2 is true | raise.rb:117:11:117:22 | [ensure: exception] "b2 is true" |  |
 | raise.rb:117:12:117:21 | [ensure: return] b2 is true | raise.rb:117:11:117:22 | [ensure: return] "b2 is true" |  |
 | raise.rb:117:12:117:21 | b2 is true | raise.rb:117:11:117:22 | "b2 is true" |  |
 | raise.rb:121:1:126:3 | enter m10 | raise.rb:121:9:121:9 | p |  |
@@ -2254,7 +2254,7 @@
 | raise.rb:121:1:126:3 | m10 | raise.rb:128:1:140:3 | m11 |  |
 | raise.rb:121:9:121:9 | p | raise.rb:121:14:121:30 | self | false, no-match, true |
 | raise.rb:121:9:121:9 | p | raise.rb:125:3:125:51 | self | match |
-| raise.rb:121:14:121:30 | call to raise | raise.rb:121:1:126:3 | exit m10 (abnormal) | raise |
+| raise.rb:121:14:121:30 | call to raise | raise.rb:121:1:126:3 | exit m10 (abnormal) | exception |
 | raise.rb:121:14:121:30 | self | raise.rb:121:21:121:29 | Exception |  |
 | raise.rb:121:20:121:30 | "Exception" | raise.rb:121:14:121:30 | call to raise |  |
 | raise.rb:121:21:121:29 | Exception | raise.rb:121:20:121:30 | "Exception" |  |
@@ -2271,7 +2271,7 @@
 | raise.rb:130:5:132:7 | if ... | raise.rb:137:5:137:17 | self |  |
 | raise.rb:130:8:130:8 | b | raise.rb:130:5:132:7 | if ... | false |
 | raise.rb:130:8:130:8 | b | raise.rb:131:7:131:22 | self | true |
-| raise.rb:131:7:131:22 | call to raise | raise.rb:133:10:133:19 | ExceptionA | raise |
+| raise.rb:131:7:131:22 | call to raise | raise.rb:133:10:133:19 | ExceptionA | exception |
 | raise.rb:131:7:131:22 | self | raise.rb:131:13:131:22 | ExceptionA |  |
 | raise.rb:131:13:131:22 | ExceptionA | raise.rb:131:7:131:22 | call to raise |  |
 | raise.rb:133:3:133:19 | rescue ... | raise.rb:137:5:137:17 | self |  |
@@ -2279,22 +2279,22 @@
 | raise.rb:133:10:133:19 | ExceptionA | raise.rb:134:10:134:19 | ExceptionB | no-match |
 | raise.rb:134:3:135:21 | rescue ... | raise.rb:137:5:137:17 | self |  |
 | raise.rb:134:10:134:19 | ExceptionB | raise.rb:135:5:135:21 | self | match |
-| raise.rb:134:10:134:19 | ExceptionB | raise.rb:137:5:137:17 | [ensure: raise] self | raise |
+| raise.rb:134:10:134:19 | ExceptionB | raise.rb:137:5:137:17 | [ensure: exception] self | exception |
 | raise.rb:134:20:135:21 | then ... | raise.rb:134:3:135:21 | rescue ... |  |
 | raise.rb:135:5:135:21 | call to puts | raise.rb:134:20:135:21 | then ... |  |
 | raise.rb:135:5:135:21 | self | raise.rb:135:11:135:20 | ExceptionB |  |
 | raise.rb:135:10:135:21 | "ExceptionB" | raise.rb:135:5:135:21 | call to puts |  |
 | raise.rb:135:11:135:20 | ExceptionB | raise.rb:135:10:135:21 | "ExceptionB" |  |
-| raise.rb:136:3:137:17 | [ensure: raise] ensure ... | raise.rb:128:1:140:3 | exit m11 (abnormal) | raise |
+| raise.rb:136:3:137:17 | [ensure: exception] ensure ... | raise.rb:128:1:140:3 | exit m11 (abnormal) | exception |
 | raise.rb:136:3:137:17 | ensure ... | raise.rb:139:3:139:16 | self |  |
-| raise.rb:137:5:137:17 | [ensure: raise] call to puts | raise.rb:136:3:137:17 | [ensure: raise] ensure ... |  |
-| raise.rb:137:5:137:17 | [ensure: raise] self | raise.rb:137:11:137:16 | [ensure: raise] Ensure |  |
+| raise.rb:137:5:137:17 | [ensure: exception] call to puts | raise.rb:136:3:137:17 | [ensure: exception] ensure ... |  |
+| raise.rb:137:5:137:17 | [ensure: exception] self | raise.rb:137:11:137:16 | [ensure: exception] Ensure |  |
 | raise.rb:137:5:137:17 | call to puts | raise.rb:136:3:137:17 | ensure ... |  |
 | raise.rb:137:5:137:17 | self | raise.rb:137:11:137:16 | Ensure |  |
 | raise.rb:137:10:137:17 | "Ensure" | raise.rb:137:5:137:17 | call to puts |  |
-| raise.rb:137:10:137:17 | [ensure: raise] "Ensure" | raise.rb:137:5:137:17 | [ensure: raise] call to puts |  |
+| raise.rb:137:10:137:17 | [ensure: exception] "Ensure" | raise.rb:137:5:137:17 | [ensure: exception] call to puts |  |
 | raise.rb:137:11:137:16 | Ensure | raise.rb:137:10:137:17 | "Ensure" |  |
-| raise.rb:137:11:137:16 | [ensure: raise] Ensure | raise.rb:137:10:137:17 | [ensure: raise] "Ensure" |  |
+| raise.rb:137:11:137:16 | [ensure: exception] Ensure | raise.rb:137:10:137:17 | [ensure: exception] "Ensure" |  |
 | raise.rb:139:3:139:16 | call to puts | raise.rb:128:1:140:3 | exit m11 (normal) |  |
 | raise.rb:139:3:139:16 | self | raise.rb:139:9:139:15 | End m11 |  |
 | raise.rb:139:8:139:16 | "End m11" | raise.rb:139:3:139:16 | call to puts |  |
@@ -2306,13 +2306,13 @@
 | raise.rb:143:3:145:5 | if ... | raise.rb:147:10:147:10 | 3 |  |
 | raise.rb:143:6:143:6 | b | raise.rb:143:3:145:5 | if ... | false |
 | raise.rb:143:6:143:6 | b | raise.rb:144:5:144:12 | self | true |
-| raise.rb:144:5:144:12 | call to raise | raise.rb:147:10:147:10 | [ensure: raise] 3 | raise |
+| raise.rb:144:5:144:12 | call to raise | raise.rb:147:10:147:10 | [ensure: exception] 3 | exception |
 | raise.rb:144:5:144:12 | self | raise.rb:144:11:144:12 | "" |  |
 | raise.rb:144:11:144:12 | "" | raise.rb:144:5:144:12 | call to raise |  |
-| raise.rb:147:3:147:10 | [ensure: raise] return | raise.rb:142:1:148:3 | exit m12 (normal) | return |
+| raise.rb:147:3:147:10 | [ensure: exception] return | raise.rb:142:1:148:3 | exit m12 (normal) | return |
 | raise.rb:147:3:147:10 | return | raise.rb:142:1:148:3 | exit m12 (normal) | return |
 | raise.rb:147:10:147:10 | 3 | raise.rb:147:3:147:10 | return |  |
-| raise.rb:147:10:147:10 | [ensure: raise] 3 | raise.rb:147:3:147:10 | [ensure: raise] return |  |
+| raise.rb:147:10:147:10 | [ensure: exception] 3 | raise.rb:147:3:147:10 | [ensure: exception] return |  |
 | raise.rb:150:1:152:3 | enter m13 | raise.rb:151:1:151:6 | ensure ... |  |
 | raise.rb:150:1:152:3 | exit m13 (normal) | raise.rb:150:1:152:3 | exit m13 |  |
 | raise.rb:150:1:152:3 | m13 | raise.rb:154:1:156:3 | m14 |  |
@@ -2328,7 +2328,7 @@
 | raise.rb:155:16:155:50 | exit { ... } (normal) | raise.rb:155:16:155:50 | exit { ... } |  |
 | raise.rb:155:16:155:50 | { ... } | raise.rb:155:3:155:50 | call to each |  |
 | raise.rb:155:19:155:22 | elem | raise.rb:155:37:155:43 | element |  |
-| raise.rb:155:25:155:32 | call to raise | raise.rb:155:16:155:50 | exit { ... } (abnormal) | raise |
+| raise.rb:155:25:155:32 | call to raise | raise.rb:155:16:155:50 | exit { ... } (abnormal) | exception |
 | raise.rb:155:25:155:32 | self | raise.rb:155:31:155:32 | "" |  |
 | raise.rb:155:25:155:48 | ... if ... | raise.rb:155:16:155:50 | exit { ... } (normal) |  |
 | raise.rb:155:31:155:32 | "" | raise.rb:155:25:155:32 | call to raise |  |
@@ -2350,7 +2350,7 @@
 | raise.rb:160:9:162:7 | exit -> { ... } (abnormal) | raise.rb:160:9:162:7 | exit -> { ... } |  |
 | raise.rb:160:9:162:7 | exit -> { ... } (normal) | raise.rb:160:9:162:7 | exit -> { ... } |  |
 | raise.rb:160:12:160:12 | x | raise.rb:161:23:161:23 | x |  |
-| raise.rb:161:7:161:14 | call to raise | raise.rb:160:9:162:7 | exit -> { ... } (abnormal) | raise |
+| raise.rb:161:7:161:14 | call to raise | raise.rb:160:9:162:7 | exit -> { ... } (abnormal) | exception |
 | raise.rb:161:7:161:14 | self | raise.rb:161:13:161:14 | "" |  |
 | raise.rb:161:7:161:23 | ... unless ... | raise.rb:160:9:162:7 | exit -> { ... } (normal) |  |
 | raise.rb:161:13:161:14 | "" | raise.rb:161:7:161:14 | call to raise |  |
@@ -2361,7 +2361,7 @@
 | raise.rb:167:3:169:5 | exit m (abnormal) | raise.rb:167:3:169:5 | exit m |  |
 | raise.rb:167:3:169:5 | m | raise.rb:172:1:182:3 | m16 |  |
 | raise.rb:167:7:167:10 | self | raise.rb:167:3:169:5 | m |  |
-| raise.rb:168:5:168:12 | call to raise | raise.rb:167:3:169:5 | exit m (abnormal) | raise |
+| raise.rb:168:5:168:12 | call to raise | raise.rb:167:3:169:5 | exit m (abnormal) | exception |
 | raise.rb:168:5:168:12 | self | raise.rb:168:11:168:12 | "" |  |
 | raise.rb:168:11:168:12 | "" | raise.rb:168:5:168:12 | call to raise |  |
 | raise.rb:172:1:182:3 | enter m16 | raise.rb:172:9:172:10 | b1 |  |
@@ -2373,19 +2373,19 @@
 | raise.rb:174:8:174:9 | b1 | raise.rb:174:8:174:23 | [true] ... \|\| ... | true |
 | raise.rb:174:8:174:9 | b1 | raise.rb:174:14:174:15 | b2 | false |
 | raise.rb:174:8:174:23 | [false] ... \|\| ... | raise.rb:177:14:177:14 | 2 | false |
-| raise.rb:174:8:174:23 | [false] ... \|\| ... | raise.rb:179:10:179:19 | ExceptionA | raise |
+| raise.rb:174:8:174:23 | [false] ... \|\| ... | raise.rb:179:10:179:19 | ExceptionA | exception |
 | raise.rb:174:8:174:23 | [true] ... \|\| ... | raise.rb:175:14:175:14 | 1 | true |
-| raise.rb:174:8:174:23 | [true] ... \|\| ... | raise.rb:179:10:179:19 | ExceptionA | raise |
+| raise.rb:174:8:174:23 | [true] ... \|\| ... | raise.rb:179:10:179:19 | ExceptionA | exception |
 | raise.rb:174:14:174:15 | b2 | raise.rb:174:20:174:23 | true |  |
 | raise.rb:174:14:174:23 | ... == ... | raise.rb:174:8:174:23 | [false] ... \|\| ... | false |
 | raise.rb:174:14:174:23 | ... == ... | raise.rb:174:8:174:23 | [true] ... \|\| ... | true |
-| raise.rb:174:14:174:23 | ... == ... | raise.rb:179:10:179:19 | ExceptionA | raise |
+| raise.rb:174:14:174:23 | ... == ... | raise.rb:179:10:179:19 | ExceptionA | exception |
 | raise.rb:174:20:174:23 | true | raise.rb:174:14:174:23 | ... == ... |  |
 | raise.rb:175:7:175:14 | return | raise.rb:172:1:182:3 | exit m16 (normal) | return |
 | raise.rb:175:14:175:14 | 1 | raise.rb:175:7:175:14 | return |  |
 | raise.rb:177:7:177:14 | return | raise.rb:172:1:182:3 | exit m16 (normal) | return |
 | raise.rb:177:14:177:14 | 2 | raise.rb:177:7:177:14 | return |  |
-| raise.rb:179:10:179:19 | ExceptionA | raise.rb:172:1:182:3 | exit m16 (abnormal) | raise |
+| raise.rb:179:10:179:19 | ExceptionA | raise.rb:172:1:182:3 | exit m16 (abnormal) | exception |
 | raise.rb:179:10:179:19 | ExceptionA | raise.rb:180:12:180:12 | 3 | match |
 | raise.rb:180:5:180:12 | return | raise.rb:172:1:182:3 | exit m16 (normal) | return |
 | raise.rb:180:12:180:12 | 3 | raise.rb:180:5:180:12 | return |  |

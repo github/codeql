@@ -1146,10 +1146,10 @@ nodeEnclosing
 | CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:28:10:28:10 | M |
 | CompileTimeOperators.cs:31:9:34:9 | {...} | CompileTimeOperators.cs:28:10:28:10 | M |
 | CompileTimeOperators.cs:32:13:32:21 | goto ...; | CompileTimeOperators.cs:28:10:28:10 | M |
-| CompileTimeOperators.cs:36:9:38:9 | [finally: goto(End)] {...} | CompileTimeOperators.cs:28:10:28:10 | M |
-| CompileTimeOperators.cs:37:13:37:40 | [finally: goto(End)] call to method WriteLine | CompileTimeOperators.cs:28:10:28:10 | M |
-| CompileTimeOperators.cs:37:13:37:41 | [finally: goto(End)] ...; | CompileTimeOperators.cs:28:10:28:10 | M |
-| CompileTimeOperators.cs:37:31:37:39 | [finally: goto(End)] "Finally" | CompileTimeOperators.cs:28:10:28:10 | M |
+| CompileTimeOperators.cs:36:9:38:9 | [finally: goto] {...} | CompileTimeOperators.cs:28:10:28:10 | M |
+| CompileTimeOperators.cs:37:13:37:40 | [finally: goto] call to method WriteLine | CompileTimeOperators.cs:28:10:28:10 | M |
+| CompileTimeOperators.cs:37:13:37:41 | [finally: goto] ...; | CompileTimeOperators.cs:28:10:28:10 | M |
+| CompileTimeOperators.cs:37:31:37:39 | [finally: goto] "Finally" | CompileTimeOperators.cs:28:10:28:10 | M |
 | CompileTimeOperators.cs:40:9:40:11 | End: | CompileTimeOperators.cs:28:10:28:10 | M |
 | CompileTimeOperators.cs:40:14:40:37 | call to method WriteLine | CompileTimeOperators.cs:28:10:28:10 | M |
 | CompileTimeOperators.cs:40:14:40:38 | ...; | CompileTimeOperators.cs:28:10:28:10 | M |
@@ -1899,14 +1899,14 @@ nodeEnclosing
 | Finally.cs:11:13:11:37 | call to method WriteLine | Finally.cs:7:10:7:11 | M1 |
 | Finally.cs:11:13:11:38 | ...; | Finally.cs:7:10:7:11 | M1 |
 | Finally.cs:11:31:11:36 | "Try1" | Finally.cs:7:10:7:11 | M1 |
-| Finally.cs:14:9:16:9 | [finally: exception(Exception)] {...} | Finally.cs:7:10:7:11 | M1 |
+| Finally.cs:14:9:16:9 | [finally: exception] {...} | Finally.cs:7:10:7:11 | M1 |
 | Finally.cs:14:9:16:9 | {...} | Finally.cs:7:10:7:11 | M1 |
-| Finally.cs:15:13:15:40 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:7:10:7:11 | M1 |
+| Finally.cs:15:13:15:40 | [finally: exception] call to method WriteLine | Finally.cs:7:10:7:11 | M1 |
 | Finally.cs:15:13:15:40 | call to method WriteLine | Finally.cs:7:10:7:11 | M1 |
 | Finally.cs:15:13:15:41 | ...; | Finally.cs:7:10:7:11 | M1 |
-| Finally.cs:15:13:15:41 | [finally: exception(Exception)] ...; | Finally.cs:7:10:7:11 | M1 |
+| Finally.cs:15:13:15:41 | [finally: exception] ...; | Finally.cs:7:10:7:11 | M1 |
 | Finally.cs:15:31:15:39 | "Finally" | Finally.cs:7:10:7:11 | M1 |
-| Finally.cs:15:31:15:39 | [finally: exception(Exception)] "Finally" | Finally.cs:7:10:7:11 | M1 |
+| Finally.cs:15:31:15:39 | [finally: exception] "Finally" | Finally.cs:7:10:7:11 | M1 |
 | Finally.cs:19:10:19:11 | enter M2 | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:19:10:19:11 | exit M2 | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:19:10:19:11 | exit M2 (abnormal) | Finally.cs:19:10:19:11 | M2 |
@@ -1931,27 +1931,23 @@ nodeEnclosing
 | Finally.cs:34:17:34:32 | if (...) ... | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:34:21:34:24 | true | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:34:27:34:32 | throw ...; | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:37:13:39:13 | [finally: exception(ArgumentException)] {...} | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:38:17:38:44 | [finally: exception(ArgumentException)] throw ...; | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:38:23:38:43 | [finally: exception(ArgumentException)] object creation of type Exception | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:38:37:38:42 | [finally: exception(ArgumentException)] "Boo!" | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:37:13:39:13 | [finally: exception] {...} | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:38:17:38:44 | [finally: exception] throw ...; | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:38:23:38:43 | [finally: exception] object creation of type Exception | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:38:37:38:42 | [finally: exception] "Boo!" | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:41:9:43:9 | [exception: Exception] catch (...) {...} | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:42:9:43:9 | {...} | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:49:9:51:9 | [finally: exception(Exception)] {...} | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:49:9:51:9 | [finally: exception(IOException)] {...} | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:49:9:51:9 | [finally: exception] {...} | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:49:9:51:9 | [finally: return] {...} | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:49:9:51:9 | {...} | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:50:13:50:40 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:50:13:50:40 | [finally: exception(IOException)] call to method WriteLine | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:50:13:50:40 | [finally: exception] call to method WriteLine | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:50:13:50:40 | [finally: return] call to method WriteLine | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:50:13:50:40 | call to method WriteLine | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:50:13:50:41 | ...; | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:50:13:50:41 | [finally: exception(Exception)] ...; | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:50:13:50:41 | [finally: exception(IOException)] ...; | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:50:13:50:41 | [finally: exception] ...; | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:50:13:50:41 | [finally: return] ...; | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:50:31:50:39 | "Finally" | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:50:31:50:39 | [finally: exception(Exception)] "Finally" | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:50:31:50:39 | [finally: exception(IOException)] "Finally" | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:50:31:50:39 | [finally: exception] "Finally" | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:50:31:50:39 | [finally: return] "Finally" | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:54:10:54:11 | enter M3 | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:54:10:54:11 | exit M3 | Finally.cs:54:10:54:11 | M3 |
@@ -1976,21 +1972,17 @@ nodeEnclosing
 | Finally.cs:65:35:65:51 | [exception: Exception] ... != ... | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:65:48:65:51 | [exception: Exception] null | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:66:9:67:9 | {...} | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:69:9:71:9 | [finally: exception(Exception)] {...} | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:69:9:71:9 | [finally: exception(IOException)] {...} | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:69:9:71:9 | [finally: exception] {...} | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:69:9:71:9 | [finally: return] {...} | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:69:9:71:9 | {...} | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:70:13:70:40 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:70:13:70:40 | [finally: exception(IOException)] call to method WriteLine | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:70:13:70:40 | [finally: exception] call to method WriteLine | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:70:13:70:40 | [finally: return] call to method WriteLine | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:70:13:70:40 | call to method WriteLine | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:70:13:70:41 | ...; | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:70:13:70:41 | [finally: exception(Exception)] ...; | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:70:13:70:41 | [finally: exception(IOException)] ...; | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:70:13:70:41 | [finally: exception] ...; | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:70:13:70:41 | [finally: return] ...; | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:70:31:70:39 | "Finally" | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:70:31:70:39 | [finally: exception(Exception)] "Finally" | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:70:31:70:39 | [finally: exception(IOException)] "Finally" | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:70:31:70:39 | [finally: exception] "Finally" | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:70:31:70:39 | [finally: return] "Finally" | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:74:10:74:11 | enter M4 | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:74:10:74:11 | exit M4 | Finally.cs:74:10:74:11 | M4 |
@@ -2058,37 +2050,37 @@ nodeEnclosing
 | Finally.cs:93:31:93:45 | [finally: continue] object creation of type Exception | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:93:31:93:45 | [finally: return] object creation of type Exception | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:93:31:93:45 | object creation of type Exception | Finally.cs:74:10:74:11 | M4 |
-| Finally.cs:96:17:98:17 | [finally(1): exception(Exception)] {...} | Finally.cs:74:10:74:11 | M4 |
-| Finally.cs:96:17:98:17 | [finally: break, finally(1): exception(Exception)] {...} | Finally.cs:74:10:74:11 | M4 |
+| Finally.cs:96:17:98:17 | [finally(1): exception] {...} | Finally.cs:74:10:74:11 | M4 |
+| Finally.cs:96:17:98:17 | [finally: break, finally(1): exception] {...} | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:96:17:98:17 | [finally: break] {...} | Finally.cs:74:10:74:11 | M4 |
-| Finally.cs:96:17:98:17 | [finally: continue, finally(1): exception(Exception)] {...} | Finally.cs:74:10:74:11 | M4 |
+| Finally.cs:96:17:98:17 | [finally: continue, finally(1): exception] {...} | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:96:17:98:17 | [finally: continue] {...} | Finally.cs:74:10:74:11 | M4 |
-| Finally.cs:96:17:98:17 | [finally: return, finally(1): exception(Exception)] {...} | Finally.cs:74:10:74:11 | M4 |
+| Finally.cs:96:17:98:17 | [finally: return, finally(1): exception] {...} | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:96:17:98:17 | [finally: return] {...} | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:96:17:98:17 | {...} | Finally.cs:74:10:74:11 | M4 |
-| Finally.cs:97:21:97:21 | [finally(1): exception(Exception)] access to local variable i | Finally.cs:74:10:74:11 | M4 |
-| Finally.cs:97:21:97:21 | [finally: break, finally(1): exception(Exception)] access to local variable i | Finally.cs:74:10:74:11 | M4 |
+| Finally.cs:97:21:97:21 | [finally(1): exception] access to local variable i | Finally.cs:74:10:74:11 | M4 |
+| Finally.cs:97:21:97:21 | [finally: break, finally(1): exception] access to local variable i | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:97:21:97:21 | [finally: break] access to local variable i | Finally.cs:74:10:74:11 | M4 |
-| Finally.cs:97:21:97:21 | [finally: continue, finally(1): exception(Exception)] access to local variable i | Finally.cs:74:10:74:11 | M4 |
+| Finally.cs:97:21:97:21 | [finally: continue, finally(1): exception] access to local variable i | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:97:21:97:21 | [finally: continue] access to local variable i | Finally.cs:74:10:74:11 | M4 |
-| Finally.cs:97:21:97:21 | [finally: return, finally(1): exception(Exception)] access to local variable i | Finally.cs:74:10:74:11 | M4 |
+| Finally.cs:97:21:97:21 | [finally: return, finally(1): exception] access to local variable i | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:97:21:97:21 | [finally: return] access to local variable i | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:97:21:97:21 | access to local variable i | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:97:21:97:23 | ...-- | Finally.cs:74:10:74:11 | M4 |
-| Finally.cs:97:21:97:23 | [finally(1): exception(Exception)] ...-- | Finally.cs:74:10:74:11 | M4 |
-| Finally.cs:97:21:97:23 | [finally: break, finally(1): exception(Exception)] ...-- | Finally.cs:74:10:74:11 | M4 |
+| Finally.cs:97:21:97:23 | [finally(1): exception] ...-- | Finally.cs:74:10:74:11 | M4 |
+| Finally.cs:97:21:97:23 | [finally: break, finally(1): exception] ...-- | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:97:21:97:23 | [finally: break] ...-- | Finally.cs:74:10:74:11 | M4 |
-| Finally.cs:97:21:97:23 | [finally: continue, finally(1): exception(Exception)] ...-- | Finally.cs:74:10:74:11 | M4 |
+| Finally.cs:97:21:97:23 | [finally: continue, finally(1): exception] ...-- | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:97:21:97:23 | [finally: continue] ...-- | Finally.cs:74:10:74:11 | M4 |
-| Finally.cs:97:21:97:23 | [finally: return, finally(1): exception(Exception)] ...-- | Finally.cs:74:10:74:11 | M4 |
+| Finally.cs:97:21:97:23 | [finally: return, finally(1): exception] ...-- | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:97:21:97:23 | [finally: return] ...-- | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:97:21:97:24 | ...; | Finally.cs:74:10:74:11 | M4 |
-| Finally.cs:97:21:97:24 | [finally(1): exception(Exception)] ...; | Finally.cs:74:10:74:11 | M4 |
-| Finally.cs:97:21:97:24 | [finally: break, finally(1): exception(Exception)] ...; | Finally.cs:74:10:74:11 | M4 |
+| Finally.cs:97:21:97:24 | [finally(1): exception] ...; | Finally.cs:74:10:74:11 | M4 |
+| Finally.cs:97:21:97:24 | [finally: break, finally(1): exception] ...; | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:97:21:97:24 | [finally: break] ...; | Finally.cs:74:10:74:11 | M4 |
-| Finally.cs:97:21:97:24 | [finally: continue, finally(1): exception(Exception)] ...; | Finally.cs:74:10:74:11 | M4 |
+| Finally.cs:97:21:97:24 | [finally: continue, finally(1): exception] ...; | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:97:21:97:24 | [finally: continue] ...; | Finally.cs:74:10:74:11 | M4 |
-| Finally.cs:97:21:97:24 | [finally: return, finally(1): exception(Exception)] ...; | Finally.cs:74:10:74:11 | M4 |
+| Finally.cs:97:21:97:24 | [finally: return, finally(1): exception] ...; | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:97:21:97:24 | [finally: return] ...; | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:103:10:103:11 | enter M5 | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:103:10:103:11 | exit M5 | Finally.cs:103:10:103:11 | M5 |
@@ -2112,115 +2104,71 @@ nodeEnclosing
 | Finally.cs:109:33:109:33 | 1 | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:110:17:110:49 | throw ...; | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:110:23:110:48 | object creation of type OutOfMemoryException | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:113:9:118:9 | [finally: exception(Exception)] {...} | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:113:9:118:9 | [finally: exception(NullReferenceException)] {...} | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:113:9:118:9 | [finally: exception(OutOfMemoryException)] {...} | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:113:9:118:9 | [finally: exception] {...} | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:113:9:118:9 | [finally: return] {...} | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:113:9:118:9 | {...} | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:13:115:41 | [finally: exception(Exception)] if (...) ... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:13:115:41 | [finally: exception(NullReferenceException)] if (...) ... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:13:115:41 | [finally: exception(OutOfMemoryException)] if (...) ... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:13:115:41 | [finally: exception] if (...) ... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:13:115:41 | [finally: return] if (...) ... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:13:115:41 | if (...) ... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:17:114:36 | [false, finally: exception(Exception)] !... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:17:114:36 | [false, finally: exception(NullReferenceException)] !... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:17:114:36 | [false, finally: exception(OutOfMemoryException)] !... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [false, finally: exception] !... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:17:114:36 | [false, finally: return] !... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:17:114:36 | [false] !... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:17:114:36 | [true, finally: exception(Exception)] !... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:17:114:36 | [true, finally: exception(NullReferenceException)] !... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:17:114:36 | [true, finally: exception(OutOfMemoryException)] !... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [true, finally: exception] !... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:17:114:36 | [true, finally: return] !... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:17:114:36 | [true] !... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:19:114:23 | [finally: exception(Exception)] access to field Field | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:19:114:23 | [finally: exception(Exception)] this access | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:19:114:23 | [finally: exception(NullReferenceException)] access to field Field | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:19:114:23 | [finally: exception(NullReferenceException)] this access | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:19:114:23 | [finally: exception(OutOfMemoryException)] access to field Field | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:19:114:23 | [finally: exception(OutOfMemoryException)] this access | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:19:114:23 | [finally: exception] access to field Field | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:19:114:23 | [finally: exception] this access | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:19:114:23 | [finally: return] access to field Field | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:19:114:23 | [finally: return] this access | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:19:114:23 | access to field Field | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:19:114:23 | this access | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:19:114:30 | [finally: exception(Exception)] access to property Length | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:19:114:30 | [finally: exception(NullReferenceException)] access to property Length | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:19:114:30 | [finally: exception(OutOfMemoryException)] access to property Length | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:19:114:30 | [finally: exception] access to property Length | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:19:114:30 | [finally: return] access to property Length | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:19:114:30 | access to property Length | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:19:114:35 | ... == ... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:19:114:35 | [finally: exception(Exception)] ... == ... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:19:114:35 | [finally: exception(NullReferenceException)] ... == ... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:19:114:35 | [finally: exception(OutOfMemoryException)] ... == ... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:19:114:35 | [finally: exception] ... == ... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:19:114:35 | [finally: return] ... == ... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:35:114:35 | 0 | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:35:114:35 | [finally: exception(Exception)] 0 | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:35:114:35 | [finally: exception(NullReferenceException)] 0 | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:35:114:35 | [finally: exception(OutOfMemoryException)] 0 | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:35:114:35 | [finally: exception] 0 | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:35:114:35 | [finally: return] 0 | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:115:17:115:40 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:115:17:115:40 | [finally: exception(NullReferenceException)] call to method WriteLine | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:115:17:115:40 | [finally: exception(OutOfMemoryException)] call to method WriteLine | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:115:17:115:40 | [finally: exception] call to method WriteLine | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:115:17:115:40 | [finally: return] call to method WriteLine | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:115:17:115:40 | call to method WriteLine | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:115:17:115:41 | ...; | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:115:17:115:41 | [finally: exception(Exception)] ...; | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:115:17:115:41 | [finally: exception(NullReferenceException)] ...; | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:115:17:115:41 | [finally: exception(OutOfMemoryException)] ...; | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:115:17:115:41 | [finally: exception] ...; | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:115:17:115:41 | [finally: return] ...; | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:115:35:115:39 | [finally: exception(Exception)] access to field Field | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:115:35:115:39 | [finally: exception(Exception)] this access | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:115:35:115:39 | [finally: exception(NullReferenceException)] access to field Field | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:115:35:115:39 | [finally: exception(NullReferenceException)] this access | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:115:35:115:39 | [finally: exception(OutOfMemoryException)] access to field Field | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:115:35:115:39 | [finally: exception(OutOfMemoryException)] this access | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:115:35:115:39 | [finally: exception] access to field Field | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:115:35:115:39 | [finally: exception] this access | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:115:35:115:39 | [finally: return] access to field Field | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:115:35:115:39 | [finally: return] this access | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:115:35:115:39 | access to field Field | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:115:35:115:39 | this access | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:116:13:117:37 | [finally: exception(Exception)] if (...) ... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:116:13:117:37 | [finally: exception(NullReferenceException)] if (...) ... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:116:13:117:37 | [finally: exception(OutOfMemoryException)] if (...) ... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:116:13:117:37 | [finally: exception] if (...) ... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:116:13:117:37 | [finally: return] if (...) ... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:116:13:117:37 | if (...) ... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:116:17:116:21 | [finally: exception(Exception)] access to field Field | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:116:17:116:21 | [finally: exception(Exception)] this access | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:116:17:116:21 | [finally: exception(NullReferenceException)] access to field Field | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:116:17:116:21 | [finally: exception(NullReferenceException)] this access | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:116:17:116:21 | [finally: exception(OutOfMemoryException)] access to field Field | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:116:17:116:21 | [finally: exception(OutOfMemoryException)] this access | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:116:17:116:21 | [finally: exception] access to field Field | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:116:17:116:21 | [finally: exception] this access | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:116:17:116:21 | [finally: return] access to field Field | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:116:17:116:21 | [finally: return] this access | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:116:17:116:21 | access to field Field | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:116:17:116:21 | this access | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:116:17:116:28 | [finally: exception(Exception)] access to property Length | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:116:17:116:28 | [finally: exception(NullReferenceException)] access to property Length | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:116:17:116:28 | [finally: exception(OutOfMemoryException)] access to property Length | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:116:17:116:28 | [finally: exception] access to property Length | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:116:17:116:28 | [finally: return] access to property Length | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:116:17:116:28 | access to property Length | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:116:17:116:32 | ... > ... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:116:17:116:32 | [finally: exception(Exception)] ... > ... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:116:17:116:32 | [finally: exception(NullReferenceException)] ... > ... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:116:17:116:32 | [finally: exception(OutOfMemoryException)] ... > ... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:116:17:116:32 | [finally: exception] ... > ... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:116:17:116:32 | [finally: return] ... > ... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:116:32:116:32 | 0 | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:116:32:116:32 | [finally: exception(Exception)] 0 | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:116:32:116:32 | [finally: exception(NullReferenceException)] 0 | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:116:32:116:32 | [finally: exception(OutOfMemoryException)] 0 | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:116:32:116:32 | [finally: exception] 0 | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:116:32:116:32 | [finally: return] 0 | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:117:17:117:36 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:117:17:117:36 | [finally: exception(NullReferenceException)] call to method WriteLine | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:117:17:117:36 | [finally: exception(OutOfMemoryException)] call to method WriteLine | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:117:17:117:36 | [finally: exception] call to method WriteLine | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:117:17:117:36 | [finally: return] call to method WriteLine | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:117:17:117:36 | call to method WriteLine | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:117:17:117:37 | ...; | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:117:17:117:37 | [finally: exception(Exception)] ...; | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:117:17:117:37 | [finally: exception(NullReferenceException)] ...; | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:117:17:117:37 | [finally: exception(OutOfMemoryException)] ...; | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:117:17:117:37 | [finally: exception] ...; | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:117:17:117:37 | [finally: return] ...; | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:117:35:117:35 | 1 | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:117:35:117:35 | [finally: exception(Exception)] 1 | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:117:35:117:35 | [finally: exception(NullReferenceException)] 1 | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:117:35:117:35 | [finally: exception(OutOfMemoryException)] 1 | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:117:35:117:35 | [finally: exception] 1 | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:117:35:117:35 | [finally: return] 1 | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:121:10:121:11 | enter M6 | Finally.cs:121:10:121:11 | M6 |
 | Finally.cs:121:10:121:11 | exit M6 | Finally.cs:121:10:121:11 | M6 |
@@ -2243,14 +2191,14 @@ nodeEnclosing
 | Finally.cs:137:13:137:36 | call to method WriteLine | Finally.cs:133:10:133:11 | M7 |
 | Finally.cs:137:13:137:37 | ...; | Finally.cs:133:10:133:11 | M7 |
 | Finally.cs:137:31:137:35 | "Try" | Finally.cs:133:10:133:11 | M7 |
-| Finally.cs:140:9:143:9 | [finally: exception(Exception)] {...} | Finally.cs:133:10:133:11 | M7 |
+| Finally.cs:140:9:143:9 | [finally: exception] {...} | Finally.cs:133:10:133:11 | M7 |
 | Finally.cs:140:9:143:9 | {...} | Finally.cs:133:10:133:11 | M7 |
-| Finally.cs:141:13:141:44 | [finally: exception(Exception)] throw ...; | Finally.cs:133:10:133:11 | M7 |
+| Finally.cs:141:13:141:44 | [finally: exception] throw ...; | Finally.cs:133:10:133:11 | M7 |
 | Finally.cs:141:13:141:44 | throw ...; | Finally.cs:133:10:133:11 | M7 |
-| Finally.cs:141:19:141:43 | [finally: exception(Exception)] object creation of type ArgumentException | Finally.cs:133:10:133:11 | M7 |
+| Finally.cs:141:19:141:43 | [finally: exception] object creation of type ArgumentException | Finally.cs:133:10:133:11 | M7 |
 | Finally.cs:141:19:141:43 | object creation of type ArgumentException | Finally.cs:133:10:133:11 | M7 |
 | Finally.cs:141:41:141:42 | "" | Finally.cs:133:10:133:11 | M7 |
-| Finally.cs:141:41:141:42 | [finally: exception(Exception)] "" | Finally.cs:133:10:133:11 | M7 |
+| Finally.cs:141:41:141:42 | [finally: exception] "" | Finally.cs:133:10:133:11 | M7 |
 | Finally.cs:147:10:147:11 | enter M8 | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:147:10:147:11 | exit M8 | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:147:10:147:11 | exit M8 (abnormal) | Finally.cs:147:10:147:11 | M8 |
@@ -2264,108 +2212,74 @@ nodeEnclosing
 | Finally.cs:151:25:151:28 | null | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:152:17:152:50 | throw ...; | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:152:23:152:49 | object creation of type ArgumentNullException | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:155:9:169:9 | [finally: exception(ArgumentNullException)] {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:155:9:169:9 | [finally: exception(Exception)] {...} | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:155:9:169:9 | [finally: exception] {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:155:9:169:9 | {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:156:13:168:13 | [finally: exception(ArgumentNullException)] try {...} ... | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:156:13:168:13 | [finally: exception(Exception)] try {...} ... | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:156:13:168:13 | [finally: exception] try {...} ... | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:156:13:168:13 | try {...} ... | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:157:13:160:13 | [finally: exception(ArgumentNullException)] {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:157:13:160:13 | [finally: exception(Exception)] {...} | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:157:13:160:13 | [finally: exception] {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:157:13:160:13 | {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:158:17:159:45 | [finally: exception(ArgumentNullException)] if (...) ... | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:158:17:159:45 | [finally: exception(Exception)] if (...) ... | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:158:17:159:45 | [finally: exception] if (...) ... | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:158:17:159:45 | if (...) ... | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:158:21:158:24 | [finally: exception(ArgumentNullException)] access to parameter args | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:158:21:158:24 | [finally: exception(Exception)] access to parameter args | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:158:21:158:24 | [finally: exception] access to parameter args | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:158:21:158:24 | access to parameter args | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:158:21:158:31 | [finally: exception(ArgumentNullException)] access to property Length | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:158:21:158:31 | [finally: exception(Exception)] access to property Length | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:158:21:158:31 | [finally: exception] access to property Length | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:158:21:158:31 | access to property Length | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:158:21:158:36 | ... == ... | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:158:21:158:36 | [finally: exception(ArgumentNullException)] ... == ... | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:158:21:158:36 | [finally: exception(Exception)] ... == ... | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:158:21:158:36 | [finally: exception] ... == ... | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:158:36:158:36 | 1 | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:158:36:158:36 | [finally: exception(ArgumentNullException)] 1 | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:158:36:158:36 | [finally: exception(Exception)] 1 | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:159:21:159:45 | [finally: exception(ArgumentNullException)] throw ...; | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:159:21:159:45 | [finally: exception(Exception)] throw ...; | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:158:36:158:36 | [finally: exception] 1 | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:159:21:159:45 | [finally: exception] throw ...; | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:159:21:159:45 | throw ...; | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:159:27:159:44 | [finally: exception(ArgumentNullException)] object creation of type Exception | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:159:27:159:44 | [finally: exception(Exception)] object creation of type Exception | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:159:27:159:44 | [finally: exception] object creation of type Exception | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:159:27:159:44 | object creation of type Exception | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:159:41:159:43 | "1" | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:159:41:159:43 | [finally: exception] "1" | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:13:164:13 | [exception: NullReferenceException] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: NullReferenceException] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: Exception] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: NullReferenceException] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:13:164:13 | [finally: exception, exception: Exception] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:13:164:13 | [finally: exception, exception: NullReferenceException] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:30:161:30 | [exception: Exception] Exception e | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:30:161:30 | [exception: NullReferenceException] Exception e | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: Exception] Exception e | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: NullReferenceException] Exception e | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: Exception] Exception e | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: NullReferenceException] Exception e | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:30:161:30 | [finally: exception, exception: Exception] Exception e | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:30:161:30 | [finally: exception, exception: NullReferenceException] Exception e | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:39 | [exception: Exception] access to local variable e | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:39 | [exception: NullReferenceException] access to local variable e | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:39:161:39 | [finally: exception(ArgumentNullException), exception: Exception] access to local variable e | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:39:161:39 | [finally: exception(ArgumentNullException), exception: NullReferenceException] access to local variable e | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:39:161:39 | [finally: exception(Exception), exception: Exception] access to local variable e | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:39:161:39 | [finally: exception(Exception), exception: NullReferenceException] access to local variable e | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:39:161:39 | [finally: exception, exception: Exception] access to local variable e | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:39:161:39 | [finally: exception, exception: NullReferenceException] access to local variable e | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:47 | [exception: Exception] access to property Message | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:47 | [exception: NullReferenceException] access to property Message | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:39:161:47 | [finally: exception(ArgumentNullException), exception: Exception] access to property Message | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:39:161:47 | [finally: exception(ArgumentNullException), exception: NullReferenceException] access to property Message | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:39:161:47 | [finally: exception(Exception), exception: Exception] access to property Message | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:39:161:47 | [finally: exception(Exception), exception: NullReferenceException] access to property Message | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:39:161:47 | [finally: exception, exception: Exception] access to property Message | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:39:161:47 | [finally: exception, exception: NullReferenceException] access to property Message | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:54 | [exception: Exception] ... == ... | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:54 | [exception: NullReferenceException] ... == ... | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: Exception] ... == ... | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:39:161:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] ... == ... | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: Exception] ... == ... | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:39:161:54 | [finally: exception(Exception), exception: NullReferenceException] ... == ... | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:39:161:54 | [finally: exception, exception: Exception] ... == ... | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:39:161:54 | [finally: exception, exception: NullReferenceException] ... == ... | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:52:161:54 | [exception: Exception] "1" | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:52:161:54 | [exception: NullReferenceException] "1" | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:52:161:54 | [finally: exception(ArgumentNullException), exception: Exception] "1" | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:52:161:54 | [finally: exception(ArgumentNullException), exception: NullReferenceException] "1" | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:52:161:54 | [finally: exception(Exception), exception: Exception] "1" | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:52:161:54 | [finally: exception(Exception), exception: NullReferenceException] "1" | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:162:13:164:13 | [finally: exception(ArgumentNullException)] {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:162:13:164:13 | [finally: exception(Exception)] {...} | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:52:161:54 | [finally: exception, exception: Exception] "1" | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:52:161:54 | [finally: exception, exception: NullReferenceException] "1" | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:162:13:164:13 | [finally: exception] {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:162:13:164:13 | {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:163:17:163:42 | [finally: exception(ArgumentNullException)] call to method WriteLine | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:163:17:163:42 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:163:17:163:42 | [finally: exception] call to method WriteLine | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:163:17:163:42 | call to method WriteLine | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:163:17:163:43 | ...; | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:163:17:163:43 | [finally: exception(ArgumentNullException)] ...; | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:163:17:163:43 | [finally: exception(Exception)] ...; | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:163:35:163:38 | [finally: exception(ArgumentNullException)] access to parameter args | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:163:35:163:38 | [finally: exception(Exception)] access to parameter args | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:163:17:163:43 | [finally: exception] ...; | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:163:35:163:38 | [finally: exception] access to parameter args | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:163:35:163:38 | access to parameter args | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:163:35:163:41 | [finally: exception(ArgumentNullException)] access to array element | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:163:35:163:41 | [finally: exception(Exception)] access to array element | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:163:35:163:41 | [finally: exception] access to array element | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:163:35:163:41 | access to array element | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:163:40:163:40 | 0 | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:163:40:163:40 | [finally: exception(ArgumentNullException)] 0 | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:163:40:163:40 | [finally: exception(Exception)] 0 | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:165:13:168:13 | [finally: exception(ArgumentNullException)] catch {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:165:13:168:13 | [finally: exception(Exception)] catch {...} | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:163:40:163:40 | [finally: exception] 0 | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:165:13:168:13 | [finally: exception] catch {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:165:13:168:13 | catch {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:166:13:168:13 | [finally: exception(ArgumentNullException)] {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:166:13:168:13 | [finally: exception(Exception)] {...} | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:166:13:168:13 | [finally: exception] {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:166:13:168:13 | {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:167:17:167:37 | [finally: exception(ArgumentNullException)] call to method WriteLine | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:167:17:167:37 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:167:17:167:37 | [finally: exception] call to method WriteLine | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:167:17:167:37 | call to method WriteLine | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:167:17:167:38 | ...; | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:167:17:167:38 | [finally: exception(ArgumentNullException)] ...; | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:167:17:167:38 | [finally: exception(Exception)] ...; | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:167:17:167:38 | [finally: exception] ...; | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:167:35:167:36 | "" | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:167:35:167:36 | [finally: exception(ArgumentNullException)] "" | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:167:35:167:36 | [finally: exception(Exception)] "" | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:167:35:167:36 | [finally: exception] "" | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:172:11:172:20 | call to constructor Exception | Finally.cs:172:11:172:20 | ExceptionA |
 | Finally.cs:172:11:172:20 | enter ExceptionA | Finally.cs:172:11:172:20 | ExceptionA |
 | Finally.cs:172:11:172:20 | exit ExceptionA | Finally.cs:172:11:172:20 | ExceptionA |
@@ -2393,51 +2307,35 @@ nodeEnclosing
 | Finally.cs:180:21:180:43 | [b1 (line 176): true] throw ...; | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:180:27:180:42 | [b1 (line 176): true] object creation of type ExceptionA | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:183:9:192:9 | [b1 (line 176): false] {...} | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:183:9:192:9 | [finally: exception(Exception), b1 (line 176): true] {...} | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:183:9:192:9 | [finally: exception(ExceptionA), b1 (line 176): true] {...} | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:183:9:192:9 | [finally: exception, b1 (line 176): true] {...} | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:184:13:191:13 | [b1 (line 176): false] try {...} ... | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:184:13:191:13 | [finally: exception(Exception), b1 (line 176): true] try {...} ... | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:184:13:191:13 | [finally: exception(ExceptionA), b1 (line 176): true] try {...} ... | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:184:13:191:13 | [finally: exception, b1 (line 176): true] try {...} ... | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:185:13:187:13 | [b1 (line 176): false] {...} | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:185:13:187:13 | [finally: exception(Exception), b1 (line 176): true] {...} | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:185:13:187:13 | [finally: exception(ExceptionA), b1 (line 176): true] {...} | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:185:13:187:13 | [finally: exception, b1 (line 176): true] {...} | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:186:17:186:47 | [b1 (line 176): false] if (...) ... | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:186:17:186:47 | [finally: exception(Exception), b1 (line 176): true] if (...) ... | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:186:17:186:47 | [finally: exception(ExceptionA), b1 (line 176): true] if (...) ... | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:186:17:186:47 | [finally: exception, b1 (line 176): true] if (...) ... | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:186:21:186:22 | [b1 (line 176): false] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:186:21:186:22 | [finally: exception(Exception), b1 (line 176): true] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:186:21:186:22 | [finally: exception(ExceptionA), b1 (line 176): true] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:186:21:186:22 | [finally: exception, b1 (line 176): true] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:186:25:186:47 | [b1 (line 176): false, b2 (line 176): true] throw ...; | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:186:25:186:47 | [finally: exception(Exception), b1 (line 176): true, b2 (line 176): true] throw ...; | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:186:25:186:47 | [finally: exception(ExceptionA), b1 (line 176): true, b2 (line 176): true] throw ...; | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:186:25:186:47 | [finally: exception, b1 (line 176): true, b2 (line 176): true] throw ...; | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:186:31:186:46 | [b1 (line 176): false, b2 (line 176): true] object creation of type ExceptionB | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:186:31:186:46 | [finally: exception(Exception), b1 (line 176): true, b2 (line 176): true] object creation of type ExceptionB | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:186:31:186:46 | [finally: exception(ExceptionA), b1 (line 176): true, b2 (line 176): true] object creation of type ExceptionB | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:186:31:186:46 | [finally: exception, b1 (line 176): true, b2 (line 176): true] object creation of type ExceptionB | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:188:13:191:13 | [exception: Exception, b1 (line 176): false, b2 (line 176): true] catch (...) {...} | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:188:13:191:13 | [exception: ExceptionB, b1 (line 176): false, b2 (line 176): true] catch (...) {...} | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:188:13:191:13 | [finally: exception(Exception), exception: Exception, b1 (line 176): true, b2 (line 176): true] catch (...) {...} | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:188:13:191:13 | [finally: exception(Exception), exception: ExceptionB, b1 (line 176): true, b2 (line 176): true] catch (...) {...} | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:188:13:191:13 | [finally: exception(ExceptionA), exception: Exception, b1 (line 176): true, b2 (line 176): true] catch (...) {...} | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:188:13:191:13 | [finally: exception(ExceptionA), exception: ExceptionB, b1 (line 176): true, b2 (line 176): true] catch (...) {...} | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:188:13:191:13 | [finally: exception, exception: Exception, b1 (line 176): true, b2 (line 176): true] catch (...) {...} | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:188:13:191:13 | [finally: exception, exception: ExceptionB, b1 (line 176): true, b2 (line 176): true] catch (...) {...} | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:188:38:188:39 | [exception: Exception, b1 (line 176): false, b2 (line 176): true] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:188:38:188:39 | [exception: ExceptionB, b1 (line 176): false, b2 (line 176): true] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:188:38:188:39 | [finally: exception(Exception), exception: Exception, b1 (line 176): true, b2 (line 176): true] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:188:38:188:39 | [finally: exception(Exception), exception: ExceptionB, b1 (line 176): true, b2 (line 176): true] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:188:38:188:39 | [finally: exception(ExceptionA), exception: Exception, b1 (line 176): true, b2 (line 176): true] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:188:38:188:39 | [finally: exception(ExceptionA), exception: ExceptionB, b1 (line 176): true, b2 (line 176): true] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:188:38:188:39 | [finally: exception, exception: Exception, b1 (line 176): true, b2 (line 176): true] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:188:38:188:39 | [finally: exception, exception: ExceptionB, b1 (line 176): true, b2 (line 176): true] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:189:13:191:13 | [b1 (line 176): false] {...} | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:189:13:191:13 | [finally: exception(Exception), b1 (line 176): true] {...} | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:189:13:191:13 | [finally: exception(ExceptionA), b1 (line 176): true] {...} | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:189:13:191:13 | [finally: exception, b1 (line 176): true] {...} | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:190:17:190:47 | [b1 (line 176): false] if (...) ... | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:190:17:190:47 | [finally: exception(Exception), b1 (line 176): true] if (...) ... | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:190:17:190:47 | [finally: exception(ExceptionA), b1 (line 176): true] if (...) ... | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:190:17:190:47 | [finally: exception, b1 (line 176): true] if (...) ... | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:190:21:190:22 | [b1 (line 176): false] access to parameter b1 | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:190:21:190:22 | [finally: exception(Exception), b1 (line 176): true] access to parameter b1 | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:190:21:190:22 | [finally: exception(ExceptionA), b1 (line 176): true] access to parameter b1 | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:190:25:190:47 | [finally: exception(Exception)] throw ...; | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:190:25:190:47 | [finally: exception(ExceptionA)] throw ...; | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:190:31:190:46 | [finally: exception(Exception)] object creation of type ExceptionC | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:190:31:190:46 | [finally: exception(ExceptionA)] object creation of type ExceptionC | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:190:21:190:22 | [finally: exception, b1 (line 176): true] access to parameter b1 | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:190:25:190:47 | [finally: exception] throw ...; | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:190:31:190:46 | [finally: exception] object creation of type ExceptionC | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:195:10:195:12 | enter M10 | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:195:10:195:12 | exit M10 | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:195:10:195:12 | exit M10 (abnormal) | Finally.cs:195:10:195:12 | M10 |
@@ -2449,84 +2347,48 @@ nodeEnclosing
 | Finally.cs:199:17:199:18 | access to parameter b1 | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:199:21:199:43 | throw ...; | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:199:27:199:42 | object creation of type ExceptionA | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:202:9:212:9 | [finally: exception(Exception)] {...} | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:202:9:212:9 | [finally: exception(ExceptionA)] {...} | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:202:9:212:9 | [finally: exception] {...} | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:202:9:212:9 | {...} | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:203:13:210:13 | [finally: exception(Exception)] try {...} ... | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:203:13:210:13 | [finally: exception(ExceptionA)] try {...} ... | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:203:13:210:13 | [finally: exception] try {...} ... | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:203:13:210:13 | try {...} ... | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:204:13:206:13 | [finally: exception(Exception)] {...} | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:204:13:206:13 | [finally: exception(ExceptionA)] {...} | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:204:13:206:13 | [finally: exception] {...} | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:204:13:206:13 | {...} | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:205:17:205:47 | [finally: exception(Exception)] if (...) ... | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:205:17:205:47 | [finally: exception(ExceptionA)] if (...) ... | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:205:17:205:47 | [finally: exception] if (...) ... | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:205:17:205:47 | if (...) ... | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:205:21:205:22 | [finally: exception(Exception)] access to parameter b2 | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:205:21:205:22 | [finally: exception(ExceptionA)] access to parameter b2 | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:205:21:205:22 | [finally: exception] access to parameter b2 | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:205:21:205:22 | access to parameter b2 | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:205:25:205:47 | [finally: exception(Exception)] throw ...; | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:205:25:205:47 | [finally: exception(ExceptionA)] throw ...; | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:205:25:205:47 | [finally: exception] throw ...; | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:205:25:205:47 | throw ...; | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:205:31:205:46 | [finally: exception(Exception)] object creation of type ExceptionB | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:205:31:205:46 | [finally: exception(ExceptionA)] object creation of type ExceptionB | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:205:31:205:46 | [finally: exception] object creation of type ExceptionB | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:205:31:205:46 | object creation of type ExceptionB | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:208:13:210:13 | [finally(1): exception(Exception)] {...} | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:208:13:210:13 | [finally(1): exception(ExceptionB)] {...} | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:208:13:210:13 | [finally: exception(Exception), finally(1): exception(Exception)] {...} | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:208:13:210:13 | [finally: exception(Exception), finally(1): exception(ExceptionB)] {...} | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:208:13:210:13 | [finally: exception(Exception)] {...} | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:208:13:210:13 | [finally: exception(ExceptionA), finally(1): exception(Exception)] {...} | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:208:13:210:13 | [finally: exception(ExceptionA), finally(1): exception(ExceptionB)] {...} | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:208:13:210:13 | [finally: exception(ExceptionA)] {...} | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:208:13:210:13 | [finally(1): exception] {...} | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:208:13:210:13 | [finally: exception, finally(1): exception] {...} | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:208:13:210:13 | [finally: exception] {...} | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:208:13:210:13 | {...} | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:17:209:47 | [finally(1): exception(Exception)] if (...) ... | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:17:209:47 | [finally(1): exception(ExceptionB)] if (...) ... | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:17:209:47 | [finally: exception(Exception), finally(1): exception(Exception)] if (...) ... | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:17:209:47 | [finally: exception(Exception), finally(1): exception(ExceptionB)] if (...) ... | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:17:209:47 | [finally: exception(Exception)] if (...) ... | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:17:209:47 | [finally: exception(ExceptionA), finally(1): exception(Exception)] if (...) ... | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:17:209:47 | [finally: exception(ExceptionA), finally(1): exception(ExceptionB)] if (...) ... | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:17:209:47 | [finally: exception(ExceptionA)] if (...) ... | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:209:17:209:47 | [finally(1): exception] if (...) ... | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:209:17:209:47 | [finally: exception, finally(1): exception] if (...) ... | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:209:17:209:47 | [finally: exception] if (...) ... | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:209:17:209:47 | if (...) ... | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:21:209:22 | [finally(1): exception(Exception)] access to parameter b3 | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:21:209:22 | [finally(1): exception(ExceptionB)] access to parameter b3 | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:21:209:22 | [finally: exception(Exception), finally(1): exception(Exception)] access to parameter b3 | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:21:209:22 | [finally: exception(Exception), finally(1): exception(ExceptionB)] access to parameter b3 | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:21:209:22 | [finally: exception(Exception)] access to parameter b3 | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:21:209:22 | [finally: exception(ExceptionA), finally(1): exception(Exception)] access to parameter b3 | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:21:209:22 | [finally: exception(ExceptionA), finally(1): exception(ExceptionB)] access to parameter b3 | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:21:209:22 | [finally: exception(ExceptionA)] access to parameter b3 | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:209:21:209:22 | [finally(1): exception] access to parameter b3 | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:209:21:209:22 | [finally: exception, finally(1): exception] access to parameter b3 | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:209:21:209:22 | [finally: exception] access to parameter b3 | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:209:21:209:22 | access to parameter b3 | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:25:209:47 | [finally(1): exception(Exception)] throw ...; | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:25:209:47 | [finally(1): exception(ExceptionB)] throw ...; | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:25:209:47 | [finally: exception(Exception), finally(1): exception(Exception)] throw ...; | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:25:209:47 | [finally: exception(Exception), finally(1): exception(ExceptionB)] throw ...; | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:25:209:47 | [finally: exception(Exception)] throw ...; | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:25:209:47 | [finally: exception(ExceptionA), finally(1): exception(Exception)] throw ...; | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:25:209:47 | [finally: exception(ExceptionA), finally(1): exception(ExceptionB)] throw ...; | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:25:209:47 | [finally: exception(ExceptionA)] throw ...; | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:209:25:209:47 | [finally(1): exception] throw ...; | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:209:25:209:47 | [finally: exception, finally(1): exception] throw ...; | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:209:25:209:47 | [finally: exception] throw ...; | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:209:25:209:47 | throw ...; | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:31:209:46 | [finally(1): exception(Exception)] object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:31:209:46 | [finally(1): exception(ExceptionB)] object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:31:209:46 | [finally: exception(Exception), finally(1): exception(Exception)] object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:31:209:46 | [finally: exception(Exception), finally(1): exception(ExceptionB)] object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:31:209:46 | [finally: exception(Exception)] object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:31:209:46 | [finally: exception(ExceptionA), finally(1): exception(Exception)] object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:31:209:46 | [finally: exception(ExceptionA), finally(1): exception(ExceptionB)] object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:31:209:46 | [finally: exception(ExceptionA)] object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:209:31:209:46 | [finally(1): exception] object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:209:31:209:46 | [finally: exception, finally(1): exception] object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:209:31:209:46 | [finally: exception] object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:209:31:209:46 | object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:211:13:211:16 | [finally: exception(Exception)] this access | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:211:13:211:16 | [finally: exception(ExceptionA)] this access | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:211:13:211:16 | [finally: exception] this access | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:211:13:211:16 | this access | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:211:13:211:28 | ... = ... | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:211:13:211:28 | [finally: exception(Exception)] ... = ... | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:211:13:211:28 | [finally: exception(ExceptionA)] ... = ... | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:211:13:211:28 | [finally: exception] ... = ... | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:211:13:211:29 | ...; | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:211:13:211:29 | [finally: exception(Exception)] ...; | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:211:13:211:29 | [finally: exception(ExceptionA)] ...; | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:211:13:211:29 | [finally: exception] ...; | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:211:26:211:28 | "0" | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:211:26:211:28 | [finally: exception(Exception)] "0" | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:211:26:211:28 | [finally: exception(ExceptionA)] "0" | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:211:26:211:28 | [finally: exception] "0" | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:213:9:213:12 | this access | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:213:9:213:24 | ... = ... | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:213:9:213:25 | ...; | Finally.cs:195:10:195:12 | M10 |
@@ -2565,78 +2427,47 @@ nodeEnclosing
 | Finally.cs:239:21:239:22 | access to parameter b1 | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:240:21:240:43 | throw ...; | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:240:27:240:42 | object creation of type ExceptionA | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:243:13:253:13 | [finally: exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:243:13:253:13 | [finally: exception(ExceptionA)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:243:13:253:13 | [finally: exception] {...} | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:243:13:253:13 | {...} | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:244:17:252:17 | [finally: exception(Exception)] try {...} ... | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:244:17:252:17 | [finally: exception(ExceptionA)] try {...} ... | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:244:17:252:17 | [finally: exception] try {...} ... | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:244:17:252:17 | try {...} ... | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:245:17:248:17 | [finally: exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:245:17:248:17 | [finally: exception(ExceptionA)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:245:17:248:17 | [finally: exception] {...} | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:245:17:248:17 | {...} | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:246:21:247:47 | [finally: exception(Exception)] if (...) ... | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:246:21:247:47 | [finally: exception(ExceptionA)] if (...) ... | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:246:21:247:47 | [finally: exception] if (...) ... | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:246:21:247:47 | if (...) ... | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:246:25:246:26 | [finally: exception(Exception)] access to parameter b2 | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:246:25:246:26 | [finally: exception(ExceptionA)] access to parameter b2 | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:246:25:246:26 | [finally: exception] access to parameter b2 | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:246:25:246:26 | access to parameter b2 | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:247:25:247:47 | [finally: exception(Exception)] throw ...; | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:247:25:247:47 | [finally: exception(ExceptionA)] throw ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:247:25:247:47 | [finally: exception] throw ...; | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:247:25:247:47 | throw ...; | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:247:31:247:46 | [finally: exception(Exception)] object creation of type ExceptionA | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:247:31:247:46 | [finally: exception(ExceptionA)] object creation of type ExceptionA | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:247:31:247:46 | [finally: exception] object creation of type ExceptionA | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:247:31:247:46 | object creation of type ExceptionA | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:250:17:252:17 | [finally(1): exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:250:17:252:17 | [finally(1): exception(ExceptionA)] {...} | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:250:17:252:17 | [finally: exception(Exception), finally(1): exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:250:17:252:17 | [finally: exception(Exception), finally(1): exception(ExceptionA)] {...} | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:250:17:252:17 | [finally: exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:250:17:252:17 | [finally: exception(ExceptionA), finally(1): exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:250:17:252:17 | [finally: exception(ExceptionA), finally(1): exception(ExceptionA)] {...} | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:250:17:252:17 | [finally: exception(ExceptionA)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:250:17:252:17 | [finally(1): exception] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:250:17:252:17 | [finally: exception, finally(1): exception] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:250:17:252:17 | [finally: exception] {...} | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:250:17:252:17 | {...} | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:21:251:54 | [finally(1): exception(Exception)] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:21:251:54 | [finally(1): exception(ExceptionA)] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:21:251:54 | [finally: exception(Exception), finally(1): exception(Exception)] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:21:251:54 | [finally: exception(Exception), finally(1): exception(ExceptionA)] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:21:251:54 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:21:251:54 | [finally: exception(ExceptionA), finally(1): exception(Exception)] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:21:251:54 | [finally: exception(ExceptionA), finally(1): exception(ExceptionA)] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:21:251:54 | [finally: exception(ExceptionA)] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:54 | [finally(1): exception] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:54 | [finally: exception, finally(1): exception] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:54 | [finally: exception] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:251:21:251:54 | call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:251:21:251:55 | ...; | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:21:251:55 | [finally(1): exception(Exception)] ...; | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:21:251:55 | [finally(1): exception(ExceptionA)] ...; | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:21:251:55 | [finally: exception(Exception), finally(1): exception(Exception)] ...; | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:21:251:55 | [finally: exception(Exception), finally(1): exception(ExceptionA)] ...; | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:21:251:55 | [finally: exception(Exception)] ...; | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:21:251:55 | [finally: exception(ExceptionA), finally(1): exception(Exception)] ...; | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:21:251:55 | [finally: exception(ExceptionA), finally(1): exception(ExceptionA)] ...; | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:21:251:55 | [finally: exception(ExceptionA)] ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:55 | [finally(1): exception] ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:55 | [finally: exception, finally(1): exception] ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:21:251:55 | [finally: exception] ...; | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:251:39:251:53 | "Inner finally" | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:39:251:53 | [finally(1): exception(Exception)] "Inner finally" | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:39:251:53 | [finally(1): exception(ExceptionA)] "Inner finally" | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:39:251:53 | [finally: exception(Exception), finally(1): exception(Exception)] "Inner finally" | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:39:251:53 | [finally: exception(Exception), finally(1): exception(ExceptionA)] "Inner finally" | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:39:251:53 | [finally: exception(Exception)] "Inner finally" | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:39:251:53 | [finally: exception(ExceptionA), finally(1): exception(Exception)] "Inner finally" | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:39:251:53 | [finally: exception(ExceptionA), finally(1): exception(ExceptionA)] "Inner finally" | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:251:39:251:53 | [finally: exception(ExceptionA)] "Inner finally" | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:39:251:53 | [finally(1): exception] "Inner finally" | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:39:251:53 | [finally: exception, finally(1): exception] "Inner finally" | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:251:39:251:53 | [finally: exception] "Inner finally" | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:254:13:254:44 | call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:254:13:254:45 | ...; | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:254:31:254:43 | "Mid finally" | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:257:9:259:9 | [finally: exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:257:9:259:9 | [finally: exception(ExceptionA)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:257:9:259:9 | [finally: exception] {...} | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:257:9:259:9 | {...} | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:258:13:258:46 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:258:13:258:46 | [finally: exception(ExceptionA)] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:258:13:258:46 | [finally: exception] call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:258:13:258:46 | call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:258:13:258:47 | ...; | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:258:13:258:47 | [finally: exception(Exception)] ...; | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:258:13:258:47 | [finally: exception(ExceptionA)] ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:258:13:258:47 | [finally: exception] ...; | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:258:31:258:45 | "Outer finally" | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:258:31:258:45 | [finally: exception(Exception)] "Outer finally" | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:258:31:258:45 | [finally: exception(ExceptionA)] "Outer finally" | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:258:31:258:45 | [finally: exception] "Outer finally" | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:260:9:260:33 | call to method WriteLine | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:260:9:260:34 | ...; | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:260:27:260:32 | "Done" | Finally.cs:233:10:233:12 | M12 |
@@ -2650,24 +2481,24 @@ nodeEnclosing
 | Finally.cs:267:13:267:34 | call to method WriteLine | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:267:13:267:35 | ...; | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:267:31:267:33 | "1" | Finally.cs:263:10:263:12 | M13 |
-| Finally.cs:270:9:273:9 | [finally: exception(Exception)] {...} | Finally.cs:263:10:263:12 | M13 |
+| Finally.cs:270:9:273:9 | [finally: exception] {...} | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:270:9:273:9 | {...} | Finally.cs:263:10:263:12 | M13 |
-| Finally.cs:271:13:271:34 | [finally: exception(Exception)] call to method WriteLine | Finally.cs:263:10:263:12 | M13 |
+| Finally.cs:271:13:271:34 | [finally: exception] call to method WriteLine | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:271:13:271:34 | call to method WriteLine | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:271:13:271:35 | ...; | Finally.cs:263:10:263:12 | M13 |
-| Finally.cs:271:13:271:35 | [finally: exception(Exception)] ...; | Finally.cs:263:10:263:12 | M13 |
+| Finally.cs:271:13:271:35 | [finally: exception] ...; | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:271:31:271:33 | "3" | Finally.cs:263:10:263:12 | M13 |
-| Finally.cs:271:31:271:33 | [finally: exception(Exception)] "3" | Finally.cs:263:10:263:12 | M13 |
-| Finally.cs:272:13:272:13 | [finally: exception(Exception)] access to parameter i | Finally.cs:263:10:263:12 | M13 |
+| Finally.cs:271:31:271:33 | [finally: exception] "3" | Finally.cs:263:10:263:12 | M13 |
+| Finally.cs:272:13:272:13 | [finally: exception] access to parameter i | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:272:13:272:13 | access to parameter i | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:272:13:272:18 | ... + ... | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:272:13:272:18 | ... = ... | Finally.cs:263:10:263:12 | M13 |
-| Finally.cs:272:13:272:18 | [finally: exception(Exception)] ... + ... | Finally.cs:263:10:263:12 | M13 |
-| Finally.cs:272:13:272:18 | [finally: exception(Exception)] ... = ... | Finally.cs:263:10:263:12 | M13 |
+| Finally.cs:272:13:272:18 | [finally: exception] ... + ... | Finally.cs:263:10:263:12 | M13 |
+| Finally.cs:272:13:272:18 | [finally: exception] ... = ... | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:272:13:272:19 | ...; | Finally.cs:263:10:263:12 | M13 |
-| Finally.cs:272:13:272:19 | [finally: exception(Exception)] ...; | Finally.cs:263:10:263:12 | M13 |
+| Finally.cs:272:13:272:19 | [finally: exception] ...; | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:272:18:272:18 | 3 | Finally.cs:263:10:263:12 | M13 |
-| Finally.cs:272:18:272:18 | [finally: exception(Exception)] 3 | Finally.cs:263:10:263:12 | M13 |
+| Finally.cs:272:18:272:18 | [finally: exception] 3 | Finally.cs:263:10:263:12 | M13 |
 | Foreach.cs:4:7:4:13 | call to constructor Object | Foreach.cs:4:7:4:13 | Foreach |
 | Foreach.cs:4:7:4:13 | enter Foreach | Foreach.cs:4:7:4:13 | Foreach |
 | Foreach.cs:4:7:4:13 | exit Foreach | Foreach.cs:4:7:4:13 | Foreach |
@@ -5296,11 +5127,10 @@ blockEnclosing
 | Finally.cs:3:14:3:20 | enter Finally | Finally.cs:3:14:3:20 | Finally |
 | Finally.cs:7:10:7:11 | enter M1 | Finally.cs:7:10:7:11 | M1 |
 | Finally.cs:7:10:7:11 | exit M1 | Finally.cs:7:10:7:11 | M1 |
-| Finally.cs:14:9:16:9 | [finally: exception(Exception)] {...} | Finally.cs:7:10:7:11 | M1 |
+| Finally.cs:14:9:16:9 | [finally: exception] {...} | Finally.cs:7:10:7:11 | M1 |
 | Finally.cs:14:9:16:9 | {...} | Finally.cs:7:10:7:11 | M1 |
 | Finally.cs:19:10:19:11 | enter M2 | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:19:10:19:11 | exit M2 | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:19:10:19:11 | exit M2 (abnormal) | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:19:10:19:11 | exit M2 (normal) | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:24:13:24:19 | return ...; | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:26:9:29:9 | [exception: Exception] catch (...) {...} | Finally.cs:19:10:19:11 | M2 |
@@ -5311,9 +5141,9 @@ blockEnclosing
 | Finally.cs:34:27:34:32 | throw ...; | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:41:9:43:9 | [exception: Exception] catch (...) {...} | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:42:9:43:9 | {...} | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:49:9:51:9 | [finally: exception] {...} | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:54:10:54:11 | enter M3 | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:54:10:54:11 | exit M3 | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:54:10:54:11 | exit M3 (abnormal) | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:54:10:54:11 | exit M3 (normal) | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:59:13:59:19 | return ...; | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:61:9:64:9 | [exception: Exception] catch (...) {...} | Finally.cs:54:10:54:11 | M3 |
@@ -5322,7 +5152,7 @@ blockEnclosing
 | Finally.cs:65:9:67:9 | [exception: Exception] catch (...) {...} | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:65:26:65:26 | [exception: Exception] Exception e | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:66:9:67:9 | {...} | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:69:9:71:9 | [finally: exception(Exception)] {...} | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:69:9:71:9 | [finally: exception] {...} | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:74:10:74:11 | enter M4 | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:74:10:74:11 | exit M4 | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:74:10:74:11 | exit M4 (abnormal) | Finally.cs:74:10:74:11 | M4 |
@@ -5343,12 +5173,12 @@ blockEnclosing
 | Finally.cs:93:31:93:45 | [finally: continue] object creation of type Exception | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:93:31:93:45 | [finally: return] object creation of type Exception | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:93:31:93:45 | object creation of type Exception | Finally.cs:74:10:74:11 | M4 |
-| Finally.cs:96:17:98:17 | [finally(1): exception(Exception)] {...} | Finally.cs:74:10:74:11 | M4 |
-| Finally.cs:96:17:98:17 | [finally: break, finally(1): exception(Exception)] {...} | Finally.cs:74:10:74:11 | M4 |
+| Finally.cs:96:17:98:17 | [finally(1): exception] {...} | Finally.cs:74:10:74:11 | M4 |
+| Finally.cs:96:17:98:17 | [finally: break, finally(1): exception] {...} | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:96:17:98:17 | [finally: break] {...} | Finally.cs:74:10:74:11 | M4 |
-| Finally.cs:96:17:98:17 | [finally: continue, finally(1): exception(Exception)] {...} | Finally.cs:74:10:74:11 | M4 |
+| Finally.cs:96:17:98:17 | [finally: continue, finally(1): exception] {...} | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:96:17:98:17 | [finally: continue] {...} | Finally.cs:74:10:74:11 | M4 |
-| Finally.cs:96:17:98:17 | [finally: return, finally(1): exception(Exception)] {...} | Finally.cs:74:10:74:11 | M4 |
+| Finally.cs:96:17:98:17 | [finally: return, finally(1): exception] {...} | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:96:17:98:17 | [finally: return] {...} | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:96:17:98:17 | {...} | Finally.cs:74:10:74:11 | M4 |
 | Finally.cs:103:10:103:11 | enter M5 | Finally.cs:103:10:103:11 | M5 |
@@ -5363,38 +5193,27 @@ blockEnclosing
 | Finally.cs:109:33:109:33 | 1 | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:110:17:110:49 | throw ...; | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:110:23:110:48 | object creation of type OutOfMemoryException | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:113:9:118:9 | [finally: exception(Exception)] {...} | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:113:9:118:9 | [finally: exception(NullReferenceException)] {...} | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:113:9:118:9 | [finally: exception] {...} | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:113:9:118:9 | {...} | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:17:114:36 | [false, finally: exception(Exception)] !... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:17:114:36 | [false, finally: exception(NullReferenceException)] !... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:17:114:36 | [false, finally: exception(OutOfMemoryException)] !... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [false, finally: exception] !... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:17:114:36 | [false, finally: return] !... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:17:114:36 | [false] !... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:17:114:36 | [true, finally: exception(Exception)] !... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:17:114:36 | [true, finally: exception(NullReferenceException)] !... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:114:17:114:36 | [true, finally: exception(OutOfMemoryException)] !... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:114:17:114:36 | [true, finally: exception] !... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:17:114:36 | [true, finally: return] !... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:114:17:114:36 | [true] !... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:115:17:115:41 | ...; | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:115:17:115:41 | [finally: exception(Exception)] ...; | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:115:17:115:41 | [finally: exception(NullReferenceException)] ...; | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:115:17:115:41 | [finally: exception(OutOfMemoryException)] ...; | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:115:17:115:41 | [finally: exception] ...; | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:115:17:115:41 | [finally: return] ...; | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:116:13:117:37 | [finally: exception(Exception)] if (...) ... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:116:13:117:37 | [finally: exception(NullReferenceException)] if (...) ... | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:116:13:117:37 | [finally: exception(OutOfMemoryException)] if (...) ... | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:116:13:117:37 | [finally: exception] if (...) ... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:116:13:117:37 | [finally: return] if (...) ... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:116:13:117:37 | if (...) ... | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:117:17:117:37 | ...; | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:117:17:117:37 | [finally: exception(Exception)] ...; | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:117:17:117:37 | [finally: exception(NullReferenceException)] ...; | Finally.cs:103:10:103:11 | M5 |
-| Finally.cs:117:17:117:37 | [finally: exception(OutOfMemoryException)] ...; | Finally.cs:103:10:103:11 | M5 |
+| Finally.cs:117:17:117:37 | [finally: exception] ...; | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:117:17:117:37 | [finally: return] ...; | Finally.cs:103:10:103:11 | M5 |
 | Finally.cs:121:10:121:11 | enter M6 | Finally.cs:121:10:121:11 | M6 |
 | Finally.cs:133:10:133:11 | enter M7 | Finally.cs:133:10:133:11 | M7 |
 | Finally.cs:133:10:133:11 | exit M7 (abnormal) | Finally.cs:133:10:133:11 | M7 |
-| Finally.cs:140:9:143:9 | [finally: exception(Exception)] {...} | Finally.cs:133:10:133:11 | M7 |
+| Finally.cs:140:9:143:9 | [finally: exception] {...} | Finally.cs:133:10:133:11 | M7 |
 | Finally.cs:140:9:143:9 | {...} | Finally.cs:133:10:133:11 | M7 |
 | Finally.cs:147:10:147:11 | enter M8 | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:147:10:147:11 | exit M8 | Finally.cs:147:10:147:11 | M8 |
@@ -5402,34 +5221,25 @@ blockEnclosing
 | Finally.cs:147:10:147:11 | exit M8 (normal) | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:152:17:152:50 | throw ...; | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:152:23:152:49 | object creation of type ArgumentNullException | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:155:9:169:9 | [finally: exception(Exception)] {...} | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:155:9:169:9 | [finally: exception] {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:155:9:169:9 | {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:158:36:158:36 | 1 | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:158:36:158:36 | [finally: exception(ArgumentNullException)] 1 | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:158:36:158:36 | [finally: exception(Exception)] 1 | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:159:21:159:45 | [finally: exception(ArgumentNullException)] throw ...; | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:159:21:159:45 | [finally: exception(Exception)] throw ...; | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:158:36:158:36 | [finally: exception] 1 | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:159:21:159:45 | [finally: exception] throw ...; | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:159:21:159:45 | throw ...; | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:159:41:159:43 | "1" | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:159:41:159:43 | [finally: exception(ArgumentNullException)] "1" | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:159:41:159:43 | [finally: exception(Exception)] "1" | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:159:41:159:43 | [finally: exception] "1" | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:13:164:13 | [exception: NullReferenceException] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: Exception] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:13:164:13 | [finally: exception(ArgumentNullException), exception: NullReferenceException] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: Exception] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:13:164:13 | [finally: exception(Exception), exception: NullReferenceException] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:13:164:13 | [finally: exception, exception: Exception] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:13:164:13 | [finally: exception, exception: NullReferenceException] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:30:161:30 | [exception: Exception] Exception e | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:30:161:30 | [exception: NullReferenceException] Exception e | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: Exception] Exception e | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:30:161:30 | [finally: exception(ArgumentNullException), exception: NullReferenceException] Exception e | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: Exception] Exception e | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:30:161:30 | [finally: exception(Exception), exception: NullReferenceException] Exception e | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:162:13:164:13 | [finally: exception(ArgumentNullException)] {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:162:13:164:13 | [finally: exception(Exception)] {...} | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:30:161:30 | [finally: exception, exception: Exception] Exception e | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:30:161:30 | [finally: exception, exception: NullReferenceException] Exception e | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:162:13:164:13 | [finally: exception] {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:162:13:164:13 | {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:165:13:168:13 | [finally: exception(ArgumentNullException)] catch {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:165:13:168:13 | [finally: exception(Exception)] catch {...} | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:165:13:168:13 | [finally: exception] catch {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:165:13:168:13 | catch {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:172:11:172:20 | enter ExceptionA | Finally.cs:172:11:172:20 | ExceptionA |
 | Finally.cs:173:11:173:20 | enter ExceptionB | Finally.cs:173:11:173:20 | ExceptionB |
@@ -5441,86 +5251,63 @@ blockEnclosing
 | Finally.cs:180:21:180:43 | [b1 (line 176): true] throw ...; | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:180:27:180:42 | [b1 (line 176): true] object creation of type ExceptionA | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:183:9:192:9 | [b1 (line 176): false] {...} | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:183:9:192:9 | [finally: exception(Exception), b1 (line 176): true] {...} | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:183:9:192:9 | [finally: exception, b1 (line 176): true] {...} | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:186:25:186:47 | [b1 (line 176): false, b2 (line 176): true] throw ...; | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:186:25:186:47 | [finally: exception(Exception), b1 (line 176): true, b2 (line 176): true] throw ...; | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:186:25:186:47 | [finally: exception(ExceptionA), b1 (line 176): true, b2 (line 176): true] throw ...; | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:186:25:186:47 | [finally: exception, b1 (line 176): true, b2 (line 176): true] throw ...; | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:186:31:186:46 | [b1 (line 176): false, b2 (line 176): true] object creation of type ExceptionB | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:186:31:186:46 | [finally: exception(Exception), b1 (line 176): true, b2 (line 176): true] object creation of type ExceptionB | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:186:31:186:46 | [finally: exception(ExceptionA), b1 (line 176): true, b2 (line 176): true] object creation of type ExceptionB | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:186:31:186:46 | [finally: exception, b1 (line 176): true, b2 (line 176): true] object creation of type ExceptionB | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:188:13:191:13 | [exception: Exception, b1 (line 176): false, b2 (line 176): true] catch (...) {...} | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:188:13:191:13 | [finally: exception(Exception), exception: Exception, b1 (line 176): true, b2 (line 176): true] catch (...) {...} | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:188:13:191:13 | [finally: exception(ExceptionA), exception: Exception, b1 (line 176): true, b2 (line 176): true] catch (...) {...} | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:188:13:191:13 | [finally: exception, exception: Exception, b1 (line 176): true, b2 (line 176): true] catch (...) {...} | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:188:38:188:39 | [exception: Exception, b1 (line 176): false, b2 (line 176): true] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:188:38:188:39 | [exception: ExceptionB, b1 (line 176): false, b2 (line 176): true] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:188:38:188:39 | [finally: exception(Exception), exception: Exception, b1 (line 176): true, b2 (line 176): true] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:188:38:188:39 | [finally: exception(Exception), exception: ExceptionB, b1 (line 176): true, b2 (line 176): true] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:188:38:188:39 | [finally: exception(ExceptionA), exception: Exception, b1 (line 176): true, b2 (line 176): true] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:188:38:188:39 | [finally: exception(ExceptionA), exception: ExceptionB, b1 (line 176): true, b2 (line 176): true] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:188:38:188:39 | [finally: exception, exception: Exception, b1 (line 176): true, b2 (line 176): true] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:188:38:188:39 | [finally: exception, exception: ExceptionB, b1 (line 176): true, b2 (line 176): true] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:189:13:191:13 | [b1 (line 176): false] {...} | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:189:13:191:13 | [finally: exception(Exception), b1 (line 176): true] {...} | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:189:13:191:13 | [finally: exception(ExceptionA), b1 (line 176): true] {...} | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:190:31:190:46 | [finally: exception(Exception)] object creation of type ExceptionC | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:190:31:190:46 | [finally: exception(ExceptionA)] object creation of type ExceptionC | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:189:13:191:13 | [finally: exception, b1 (line 176): true] {...} | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:190:31:190:46 | [finally: exception] object creation of type ExceptionC | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:195:10:195:12 | enter M10 | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:195:10:195:12 | exit M10 | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:195:10:195:12 | exit M10 (abnormal) | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:199:21:199:43 | throw ...; | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:199:27:199:42 | object creation of type ExceptionA | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:202:9:212:9 | [finally: exception(Exception)] {...} | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:202:9:212:9 | [finally: exception] {...} | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:202:9:212:9 | {...} | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:205:25:205:47 | [finally: exception(Exception)] throw ...; | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:205:25:205:47 | [finally: exception(ExceptionA)] throw ...; | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:205:25:205:47 | [finally: exception] throw ...; | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:205:25:205:47 | throw ...; | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:205:31:205:46 | [finally: exception(Exception)] object creation of type ExceptionB | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:205:31:205:46 | [finally: exception(ExceptionA)] object creation of type ExceptionB | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:205:31:205:46 | [finally: exception] object creation of type ExceptionB | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:205:31:205:46 | object creation of type ExceptionB | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:208:13:210:13 | [finally(1): exception(Exception)] {...} | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:208:13:210:13 | [finally: exception(Exception), finally(1): exception(Exception)] {...} | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:208:13:210:13 | [finally: exception(Exception)] {...} | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:208:13:210:13 | [finally: exception(ExceptionA), finally(1): exception(Exception)] {...} | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:208:13:210:13 | [finally: exception(ExceptionA)] {...} | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:208:13:210:13 | [finally(1): exception] {...} | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:208:13:210:13 | [finally: exception, finally(1): exception] {...} | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:208:13:210:13 | [finally: exception] {...} | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:208:13:210:13 | {...} | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:31:209:46 | [finally(1): exception(Exception)] object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:31:209:46 | [finally(1): exception(ExceptionB)] object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:31:209:46 | [finally: exception(Exception), finally(1): exception(Exception)] object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:31:209:46 | [finally: exception(Exception), finally(1): exception(ExceptionB)] object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:31:209:46 | [finally: exception(Exception)] object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:31:209:46 | [finally: exception(ExceptionA), finally(1): exception(Exception)] object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:31:209:46 | [finally: exception(ExceptionA), finally(1): exception(ExceptionB)] object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:209:31:209:46 | [finally: exception(ExceptionA)] object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:209:31:209:46 | [finally(1): exception] object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:209:31:209:46 | [finally: exception, finally(1): exception] object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:209:31:209:46 | [finally: exception] object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:209:31:209:46 | object creation of type ExceptionC | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:211:13:211:29 | ...; | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:211:13:211:29 | [finally: exception(Exception)] ...; | Finally.cs:195:10:195:12 | M10 |
-| Finally.cs:211:13:211:29 | [finally: exception(ExceptionA)] ...; | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:211:13:211:29 | [finally: exception] ...; | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:216:10:216:12 | enter M11 | Finally.cs:216:10:216:12 | M11 |
 | Finally.cs:222:9:225:9 | catch {...} | Finally.cs:216:10:216:12 | M11 |
 | Finally.cs:227:9:229:9 | {...} | Finally.cs:216:10:216:12 | M11 |
 | Finally.cs:233:10:233:12 | enter M12 | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:233:10:233:12 | exit M12 | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:233:10:233:12 | exit M12 (abnormal) | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:240:21:240:43 | throw ...; | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:240:27:240:42 | object creation of type ExceptionA | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:243:13:253:13 | [finally: exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:243:13:253:13 | [finally: exception] {...} | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:243:13:253:13 | {...} | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:247:25:247:47 | [finally: exception(Exception)] throw ...; | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:247:25:247:47 | [finally: exception(ExceptionA)] throw ...; | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:247:25:247:47 | [finally: exception] throw ...; | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:247:25:247:47 | throw ...; | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:247:31:247:46 | [finally: exception(Exception)] object creation of type ExceptionA | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:247:31:247:46 | [finally: exception(ExceptionA)] object creation of type ExceptionA | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:247:31:247:46 | [finally: exception] object creation of type ExceptionA | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:247:31:247:46 | object creation of type ExceptionA | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:250:17:252:17 | [finally(1): exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:250:17:252:17 | [finally: exception(Exception), finally(1): exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:250:17:252:17 | [finally: exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:250:17:252:17 | [finally: exception(ExceptionA), finally(1): exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:250:17:252:17 | [finally: exception(ExceptionA)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:250:17:252:17 | [finally(1): exception] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:250:17:252:17 | [finally: exception, finally(1): exception] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:250:17:252:17 | [finally: exception] {...} | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:250:17:252:17 | {...} | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:257:9:259:9 | [finally: exception(Exception)] {...} | Finally.cs:233:10:233:12 | M12 |
-| Finally.cs:257:9:259:9 | [finally: exception(ExceptionA)] {...} | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:257:9:259:9 | [finally: exception] {...} | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:257:9:259:9 | {...} | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:263:10:263:12 | enter M13 | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:263:10:263:12 | exit M13 | Finally.cs:263:10:263:12 | M13 |
-| Finally.cs:270:9:273:9 | [finally: exception(Exception)] {...} | Finally.cs:263:10:263:12 | M13 |
+| Finally.cs:270:9:273:9 | [finally: exception] {...} | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:270:9:273:9 | {...} | Finally.cs:263:10:263:12 | M13 |
 | Foreach.cs:4:7:4:13 | enter Foreach | Foreach.cs:4:7:4:13 | Foreach |
 | Foreach.cs:6:10:6:11 | enter M1 | Foreach.cs:6:10:6:11 | M1 |

@@ -8,7 +8,6 @@ private import codeql.ruby.AST as Ast
 private import Completion as Comp
 private import Comp
 private import ControlFlowGraphImpl
-private import SuccessorTypes
 private import codeql.ruby.controlflow.ControlFlowGraph
 
 cached
@@ -123,8 +122,11 @@ module EnsureSplitting {
    * the `ensure` block must end with a `return` as well (provided that
    * the `ensure` block executes normally).
    */
-  class EnsureSplitType extends SuccessorType {
+  class EnsureSplitType instanceof SuccessorType {
     EnsureSplitType() { not this instanceof ConditionalSuccessor }
+
+    /** Gets a textual representation of this successor type. */
+    string toString() { result = super.toString() }
 
     /** Holds if this split type matches entry into an `ensure` block with completion `c`. */
     predicate isSplitForEntryCompletion(Completion c) {
@@ -132,7 +134,7 @@ module EnsureSplitting {
       then
         // If the entry into the `ensure` block completes with any normal completion,
         // it simply means normal execution after the `ensure` block
-        this instanceof NormalSuccessor
+        this instanceof DirectSuccessor
       else this = c.getAMatchingSuccessorType()
     }
   }
@@ -195,7 +197,7 @@ module EnsureSplitting {
     int getNestLevel() { result = nestLevel }
 
     override string toString() {
-      if type instanceof NormalSuccessor
+      if type instanceof DirectSuccessor
       then result = ""
       else
         if nestLevel > 0
@@ -271,14 +273,14 @@ module EnsureSplitting {
             or
             not c instanceof NormalCompletion
             or
-            type instanceof NormalSuccessor
+            type instanceof DirectSuccessor
           )
         else (
           // `ensure` block can exit with inherited completion `c`, which must
           // match this split
           inherited = true and
           type = c.getAMatchingSuccessorType() and
-          not type instanceof NormalSuccessor
+          not type instanceof DirectSuccessor
         )
       )
       or
@@ -308,7 +310,7 @@ module EnsureSplitting {
       exists(EnsureSplitImpl outer |
         outer.(EnsureSplit).getNestLevel() = super.getNestLevel() - 1 and
         outer.exit(pred, c, inherited) and
-        super.getType() instanceof NormalSuccessor and
+        super.getType() instanceof DirectSuccessor and
         inherited = true
       )
     }

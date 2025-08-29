@@ -498,7 +498,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
     predicate hasValueBranchEdge(
       SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, GuardValue branch
     ) {
-      exists(Cfg::SuccessorTypes::ConditionalSuccessor s |
+      exists(Cfg::ConditionalSuccessor s |
         this.getBasicBlock() = bb1 and
         bb2 = bb1.getASuccessor(s) and
         s.getValue() = branch

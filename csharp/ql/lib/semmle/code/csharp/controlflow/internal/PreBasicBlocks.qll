@@ -119,7 +119,7 @@ class ConditionBlock extends PreBasicBlock {
   }
 
   pragma[nomagic]
-  predicate controls(PreBasicBlock controlled, Cfg::SuccessorTypes::ConditionalSuccessor s) {
+  predicate controls(PreBasicBlock controlled, Cfg::ConditionalSuccessor s) {
     exists(PreBasicBlock succ, ConditionalCompletion c | this.immediatelyControls(succ, c) |
       succ.dominates(controlled) and
       s = c.getAMatchingSuccessorType()

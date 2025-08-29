@@ -28,7 +28,7 @@ private module Input implements InputSig<Location, RubyDataFlow> {
     exists(CfgNodes::ExprCfgNode n |
       arg.argumentOf(call, _) and
       n = call.asCall() and
-      arg.asExpr().getASuccessor(any(SuccessorTypes::ConditionalSuccessor c)).getASuccessor*() = n and
+      arg.asExpr().getASuccessor(any(ConditionalSuccessor c)).getASuccessor*() = n and
       n.getASplit() instanceof Split::ConditionalCompletionSplit
     )
   }

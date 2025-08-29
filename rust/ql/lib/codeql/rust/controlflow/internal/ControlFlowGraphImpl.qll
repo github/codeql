@@ -29,18 +29,10 @@ private module CfgInput implements InputSig<Location> {
     Stages::CfgStage::ref()
   }
 
-  class SuccessorType = Cfg::SuccessorType;
+  private class SuccessorType = Cfg::SuccessorType;
 
   /** Gets a successor type that matches completion `c`. */
   SuccessorType getAMatchingSuccessorType(Completion c) { result = c.getAMatchingSuccessorType() }
-
-  /**
-   * Hold if `c` represents simple (normal) evaluation of a statement or an expression.
-   */
-  predicate successorTypeIsSimple(SuccessorType t) { t instanceof Cfg::NormalSuccessor }
-
-  /** Holds if `t` is an abnormal exit type out of a CFG scope. */
-  predicate isAbnormalExitType(SuccessorType t) { none() }
 
   /** Hold if `t` represents a conditional successor type. */
   predicate successorTypeIsCondition(SuccessorType t) { t instanceof Cfg::BooleanSuccessor }
