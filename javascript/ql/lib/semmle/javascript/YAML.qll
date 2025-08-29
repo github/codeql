@@ -9,8 +9,6 @@ import javascript
 private import codeql.yaml.Yaml as LibYaml
 
 private module YamlSig implements LibYaml::InputSig {
-  class Location = DbLocation;
-
   class LocatableBase extends @yaml_locatable, Locatable { }
 
   import javascript

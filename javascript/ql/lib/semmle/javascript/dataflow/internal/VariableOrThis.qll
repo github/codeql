@@ -25,7 +25,7 @@ class LocalVariableOrThis extends TLocalVariableOrThis {
   }
 
   /** Gets the location of a declaration of this variable, or the declaring container if this is `this`. */
-  DbLocation getLocation() {
+  Location getLocation() {
     result = this.asLocalVariable().getLocation()
     or
     result = this.asThisContainer().getLocation()
@@ -95,7 +95,7 @@ abstract class ThisUse instanceof ControlFlowNode {
   string toString() { result = super.toString() }
 
   /** Gets the location of this use of `this`. */
-  DbLocation getLocation() { result = super.getLocation() }
+  Location getLocation() { result = super.getLocation() }
 }
 
 private predicate implicitThisUse(ControlFlowNode node, StmtContainer thisBinder) {

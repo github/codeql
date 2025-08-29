@@ -9,7 +9,7 @@ private import codeql.ssa.Ssa
 private import semmle.javascript.internal.BasicBlockInternal as BasicBlockInternal
 private import semmle.javascript.dataflow.internal.VariableOrThis
 
-module SsaConfig implements InputSig<js::DbLocation> {
+module SsaConfig implements InputSig<js::Location> {
   class ControlFlowNode = js::ControlFlowNode;
 
   class BasicBlock = js::BasicBlock;
@@ -47,7 +47,7 @@ module SsaConfig implements InputSig<js::DbLocation> {
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 }
 
-import Make<js::DbLocation, SsaConfig>
+import Make<js::Location, SsaConfig>
 
 module SsaDataflowInput implements DataFlowIntegrationInputSig {
   private import codeql.util.Boolean

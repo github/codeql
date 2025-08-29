@@ -108,8 +108,8 @@ private module Internal {
    */
   cached
   newtype TSsaDefinition =
-    TExplicitDef(ReachableBasicBlock bb, int i, VarDef d, SsaSourceVariable v) {
-      bb.defAt(i, v, d) and
+    TExplicitDef(ReachableBasicBlock bb, int i, VarDef d, SsaSourceVariable v, VarRef lhs) {
+      bb.defAt(i, v, d, lhs) and
       (
         liveAfterDef(bb, i, v) or
         v.isCaptured()
@@ -412,17 +412,22 @@ class SsaVariable extends TSsaDefinition {
   /** Gets a textual representation of this element. */
   string toString() { result = this.getDefinition().prettyPrintRef() }
 
+  /** Gets the location of this SSA variable. */
+  Location getLocation() { result = this.getDefinition().getLocation() }
+
   /**
+   * DEPRECATED. Use `getLocation().hasLocationInfo()` instead.
+   *
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this.getDefinition().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
@@ -478,23 +483,22 @@ class SsaDefinition extends TSsaDefinition {
   string toString() { result = this.prettyPrintDef() }
 
   /**
+   * DEPRECATED. Use `getLocation().hasLocationInfo()` instead.
+   *
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  abstract predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
-  );
+  ) {
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 
   /** Gets the location of this element. */
-  final Location getLocation() {
-    exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
-      this.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-      result.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    )
-  }
+  Location getLocation() { result = this.getBasicBlock().getLocation() }
 
   /** Gets the function or toplevel to which this definition belongs. */
   StmtContainer getContainer() { result = this.getBasicBlock().getContainer() }
@@ -505,36 +509,34 @@ class SsaDefinition extends TSsaDefinition {
  */
 class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
   override predicate definesAt(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
-    this = TExplicitDef(bb, i, _, v)
+    this = TExplicitDef(bb, i, _, v, _)
   }
 
   /** This SSA definition corresponds to the definition of `v` at `def`. */
-  predicate defines(VarDef def, SsaSourceVariable v) { this = TExplicitDef(_, _, def, v) }
+  predicate defines(VarDef def, SsaSourceVariable v) { this = TExplicitDef(_, _, def, v, _) }
 
   /** Gets the variable definition wrapped by this SSA definition. */
-  VarDef getDef() { this = TExplicitDef(_, _, result, _) }
+  VarDef getDef() { this = TExplicitDef(_, _, result, _, _) }
+
+  /** Gets the variable reference appearing on the left-hand side of this assignment. */
+  VarRef getLhs() { this = TExplicitDef(_, _, _, _, result) }
 
   /** Gets the basic block to which this definition belongs. */
   override ReachableBasicBlock getBasicBlock() { this.definesAt(result, _, _) }
 
-  override SsaSourceVariable getSourceVariable() { this = TExplicitDef(_, _, _, result) }
+  override SsaSourceVariable getSourceVariable() { this = TExplicitDef(_, _, _, result, _) }
 
   override VarDef getAContributingVarDef() { result = this.getDef() }
 
   override string prettyPrintRef() {
-    exists(int l, int c | this.hasLocationInfo(_, l, c, _, _) | result = "def@" + l + ":" + c)
+    exists(int l, int c | this.getLocation().hasLocationInfo(_, l, c, _, _) |
+      result = "def@" + l + ":" + c
+    )
   }
 
   override string prettyPrintDef() { result = this.getDef().toString() }
 
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    exists(Location loc |
-      pragma[only_bind_into](loc) = pragma[only_bind_into](this.getDef()).getLocation() and
-      loc.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    )
-  }
+  override Location getLocation() { result = this.getLhs().getLocation() }
 
   /**
    * Gets the data flow node representing the incoming value assigned at this definition,
@@ -557,19 +559,8 @@ abstract class SsaImplicitDefinition extends SsaDefinition {
   abstract string getKind();
 
   override string prettyPrintRef() {
-    exists(int l, int c | this.hasLocationInfo(_, l, c, _, _) |
+    exists(int l, int c | this.getLocation().hasLocationInfo(_, l, c, _, _) |
       result = this.getKind() + "@" + l + ":" + c
-    )
-  }
-
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    endline = startline and
-    endcolumn = startcolumn and
-    exists(Location loc |
-      pragma[only_bind_into](loc) = pragma[only_bind_into](this.getBasicBlock()).getLocation() and
-      loc.hasLocationInfo(filepath, startline, startcolumn, _, _)
     )
   }
 }
@@ -617,16 +608,6 @@ class SsaVariableCapture extends SsaImplicitDefinition, TCapture {
   override string getKind() { result = "capture" }
 
   override string prettyPrintDef() { result = "capture variable " + this.getSourceVariable() }
-
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    exists(ReachableBasicBlock bb, int i | this.definesAt(bb, i, _) |
-      bb.getNode(i)
-          .getLocation()
-          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    )
-  }
 }
 
 /**
@@ -747,13 +728,7 @@ class SsaRefinementNode extends SsaPseudoDefinition, TRefinement {
       this.getSourceVariable() + " = refine[" + this.getGuard() + "](" + this.ppInputs() + ")"
   }
 
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    this.getGuard()
-        .getLocation()
-        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
+  override Location getLocation() { result = this.getGuard().getLocation() }
 }
 
 module Ssa {

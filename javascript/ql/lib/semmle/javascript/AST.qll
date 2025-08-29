@@ -31,7 +31,7 @@ class AstNode extends @ast_node, NodeInStmtContainer {
 
   /** Gets the first token belonging to this element. */
   Token getFirstToken() {
-    exists(DbLocation l1, DbLocation l2, string filepath, int startline, int startcolumn |
+    exists(Location l1, Location l2, string filepath, int startline, int startcolumn |
       l1 = this.getLocation() and
       l2 = result.getLocation() and
       l1.hasLocationInfo(filepath, startline, startcolumn, _, _) and
@@ -41,7 +41,7 @@ class AstNode extends @ast_node, NodeInStmtContainer {
 
   /** Gets the last token belonging to this element. */
   Token getLastToken() {
-    exists(DbLocation l1, DbLocation l2, string filepath, int endline, int endcolumn |
+    exists(Location l1, Location l2, string filepath, int endline, int endcolumn |
       l1 = this.getLocation() and
       l2 = result.getLocation() and
       l1.hasLocationInfo(filepath, _, _, endline, endcolumn) and

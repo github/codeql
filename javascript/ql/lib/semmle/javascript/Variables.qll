@@ -353,9 +353,9 @@ class LocalVariable extends Variable {
    * If the variable has one or more declarations, the location of the first declaration is used.
    * If the variable has no declaration, the entry point of its declaring container is used.
    */
-  DbLocation getLocation() {
+  Location getLocation() {
     result =
-      min(DbLocation loc |
+      min(Location loc |
         loc = this.getADeclaration().getLocation()
       |
         loc order by loc.getStartLine(), loc.getStartColumn()

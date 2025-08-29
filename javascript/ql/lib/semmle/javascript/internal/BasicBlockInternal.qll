@@ -67,11 +67,12 @@ private module Cached {
   }
 
   cached
-  predicate defAt(BasicBlock bb, int i, Variable v, VarDef d) {
-    exists(VarRef lhs |
+  predicate defAt(BasicBlock bb, int i, Variable v, VarDef d, VarRef lhs) {
+    (
       lhs = d.getTarget().(BindingPattern).getABindingVarRef() and
       v = lhs.getVariable()
-    |
+    ) and
+    (
       lhs = d.getTarget() and
       bbIndex(bb, d, i)
       or
@@ -148,7 +149,10 @@ module Public {
     predicate useAt(int i, Variable v, VarUse u) { useAt(this, i, v, u) }
 
     /** Holds if this basic block defines variable `v` in its `i`th node `d`. */
-    predicate defAt(int i, Variable v, VarDef d) { defAt(this, i, v, d) }
+    predicate defAt(int i, Variable v, VarDef d) { defAt(this, i, v, d, _) }
+
+    /** Holds if this basic block defines variable `v` in its `i`th node `d`, and `lhs` is the corresponding variable reference. */
+    predicate defAt(int i, Variable v, VarDef d, VarRef lhs) { defAt(this, i, v, d, lhs) }
 
     /**
      * Holds if `v` is live at entry to this basic block and `u` is a use of `v`

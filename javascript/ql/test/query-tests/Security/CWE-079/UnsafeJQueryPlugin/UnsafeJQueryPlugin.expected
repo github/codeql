@@ -32,15 +32,15 @@ edges
 | unsafe-jquery-plugin.js:5:5:5:18 | options.target | unsafe-jquery-plugin.js:11:16:11:29 | options.target | provenance | Config |
 | unsafe-jquery-plugin.js:7:17:7:23 | options | unsafe-jquery-plugin.js:7:17:7:30 | options.target | provenance |  |
 | unsafe-jquery-plugin.js:7:17:7:30 | options.target | unsafe-jquery-plugin.js:11:16:11:29 | options.target | provenance | Config |
-| unsafe-jquery-plugin.js:11:7:11:29 | target | unsafe-jquery-plugin.js:22:6:22:11 | target | provenance |  |
-| unsafe-jquery-plugin.js:11:7:11:29 | target | unsafe-jquery-plugin.js:30:6:30:11 | target | provenance |  |
-| unsafe-jquery-plugin.js:11:7:11:29 | target | unsafe-jquery-plugin.js:36:6:36:11 | target | provenance |  |
-| unsafe-jquery-plugin.js:11:7:11:29 | target | unsafe-jquery-plugin.js:40:6:40:11 | target | provenance |  |
-| unsafe-jquery-plugin.js:11:7:11:29 | target | unsafe-jquery-plugin.js:48:6:48:11 | target | provenance |  |
-| unsafe-jquery-plugin.js:11:7:11:29 | target | unsafe-jquery-plugin.js:52:6:52:11 | target | provenance |  |
-| unsafe-jquery-plugin.js:11:7:11:29 | target | unsafe-jquery-plugin.js:60:6:60:11 | target | provenance |  |
+| unsafe-jquery-plugin.js:11:7:11:12 | target | unsafe-jquery-plugin.js:22:6:22:11 | target | provenance |  |
+| unsafe-jquery-plugin.js:11:7:11:12 | target | unsafe-jquery-plugin.js:30:6:30:11 | target | provenance |  |
+| unsafe-jquery-plugin.js:11:7:11:12 | target | unsafe-jquery-plugin.js:36:6:36:11 | target | provenance |  |
+| unsafe-jquery-plugin.js:11:7:11:12 | target | unsafe-jquery-plugin.js:40:6:40:11 | target | provenance |  |
+| unsafe-jquery-plugin.js:11:7:11:12 | target | unsafe-jquery-plugin.js:48:6:48:11 | target | provenance |  |
+| unsafe-jquery-plugin.js:11:7:11:12 | target | unsafe-jquery-plugin.js:52:6:52:11 | target | provenance |  |
+| unsafe-jquery-plugin.js:11:7:11:12 | target | unsafe-jquery-plugin.js:60:6:60:11 | target | provenance |  |
 | unsafe-jquery-plugin.js:11:16:11:22 | options | unsafe-jquery-plugin.js:11:16:11:29 | options.target | provenance |  |
-| unsafe-jquery-plugin.js:11:16:11:29 | options.target | unsafe-jquery-plugin.js:11:7:11:29 | target | provenance |  |
+| unsafe-jquery-plugin.js:11:16:11:29 | options.target | unsafe-jquery-plugin.js:11:7:11:12 | target | provenance |  |
 | unsafe-jquery-plugin.js:65:47:65:53 | options | unsafe-jquery-plugin.js:67:37:67:43 | options | provenance |  |
 | unsafe-jquery-plugin.js:67:3:67:6 | [post update] this [options] | unsafe-jquery-plugin.js:68:7:68:10 | this [options] | provenance |  |
 | unsafe-jquery-plugin.js:67:24:67:44 | $.exten ... ptions) | unsafe-jquery-plugin.js:67:3:67:6 | [post update] this [options] | provenance |  |
@@ -57,18 +57,18 @@ edges
 | unsafe-jquery-plugin.js:86:4:86:7 | [post update] this [o] | unsafe-jquery-plugin.js:87:12:87:15 | this [o] | provenance |  |
 | unsafe-jquery-plugin.js:86:13:86:27 | $.extend({}, o) | unsafe-jquery-plugin.js:86:4:86:7 | [post update] this [o] | provenance |  |
 | unsafe-jquery-plugin.js:86:26:86:26 | o | unsafe-jquery-plugin.js:86:13:86:27 | $.extend({}, o) | provenance |  |
-| unsafe-jquery-plugin.js:87:8:87:24 | t | unsafe-jquery-plugin.js:90:6:90:6 | t | provenance |  |
+| unsafe-jquery-plugin.js:87:8:87:8 | t | unsafe-jquery-plugin.js:90:6:90:6 | t | provenance |  |
 | unsafe-jquery-plugin.js:87:12:87:15 | this [o] | unsafe-jquery-plugin.js:87:12:87:17 | this.o | provenance |  |
-| unsafe-jquery-plugin.js:87:12:87:17 | this.o | unsafe-jquery-plugin.js:87:8:87:24 | t | provenance |  |
+| unsafe-jquery-plugin.js:87:12:87:17 | this.o | unsafe-jquery-plugin.js:87:8:87:8 | t | provenance |  |
 | unsafe-jquery-plugin.js:92:5:92:11 | options | unsafe-jquery-plugin.js:85:14:85:14 | o | provenance |  |
 | unsafe-jquery-plugin.js:101:38:101:44 | options | unsafe-jquery-plugin.js:105:6:105:12 | options | provenance |  |
-| unsafe-jquery-plugin.js:102:3:105:13 | options | unsafe-jquery-plugin.js:107:5:107:11 | options | provenance |  |
-| unsafe-jquery-plugin.js:102:13:105:13 | $.exten ... ptions) | unsafe-jquery-plugin.js:102:3:105:13 | options | provenance |  |
+| unsafe-jquery-plugin.js:102:3:102:9 | options | unsafe-jquery-plugin.js:107:5:107:11 | options | provenance |  |
+| unsafe-jquery-plugin.js:102:13:105:13 | $.exten ... ptions) | unsafe-jquery-plugin.js:102:3:102:9 | options | provenance |  |
 | unsafe-jquery-plugin.js:105:6:105:12 | options | unsafe-jquery-plugin.js:102:13:105:13 | $.exten ... ptions) | provenance |  |
 | unsafe-jquery-plugin.js:107:5:107:11 | options | unsafe-jquery-plugin.js:107:5:107:18 | options.target | provenance |  |
 | unsafe-jquery-plugin.js:114:38:114:44 | options | unsafe-jquery-plugin.js:115:51:115:57 | options | provenance |  |
-| unsafe-jquery-plugin.js:115:3:115:58 | options | unsafe-jquery-plugin.js:117:5:117:11 | options | provenance |  |
-| unsafe-jquery-plugin.js:115:13:115:58 | $.exten ... ptions) | unsafe-jquery-plugin.js:115:3:115:58 | options | provenance |  |
+| unsafe-jquery-plugin.js:115:3:115:9 | options | unsafe-jquery-plugin.js:117:5:117:11 | options | provenance |  |
+| unsafe-jquery-plugin.js:115:13:115:58 | $.exten ... ptions) | unsafe-jquery-plugin.js:115:3:115:9 | options | provenance |  |
 | unsafe-jquery-plugin.js:115:51:115:57 | options | unsafe-jquery-plugin.js:115:13:115:58 | $.exten ... ptions) | provenance |  |
 | unsafe-jquery-plugin.js:117:5:117:11 | options | unsafe-jquery-plugin.js:117:5:117:18 | options.target | provenance |  |
 | unsafe-jquery-plugin.js:121:40:121:46 | options | unsafe-jquery-plugin.js:122:5:122:11 | options | provenance |  |
@@ -90,8 +90,8 @@ edges
 | unsafe-jquery-plugin.js:157:44:157:50 | options | unsafe-jquery-plugin.js:157:44:157:57 | options.target | provenance |  |
 | unsafe-jquery-plugin.js:157:44:157:57 | options.target | unsafe-jquery-plugin.js:157:44:157:59 | options.target.a | provenance |  |
 | unsafe-jquery-plugin.js:160:38:160:44 | options | unsafe-jquery-plugin.js:165:16:165:22 | options | provenance |  |
-| unsafe-jquery-plugin.js:165:7:165:29 | target | unsafe-jquery-plugin.js:170:6:170:11 | target | provenance |  |
-| unsafe-jquery-plugin.js:165:16:165:22 | options | unsafe-jquery-plugin.js:165:7:165:29 | target | provenance |  |
+| unsafe-jquery-plugin.js:165:7:165:12 | target | unsafe-jquery-plugin.js:170:6:170:11 | target | provenance |  |
+| unsafe-jquery-plugin.js:165:16:165:22 | options | unsafe-jquery-plugin.js:165:7:165:12 | target | provenance |  |
 | unsafe-jquery-plugin.js:178:27:178:33 | options | unsafe-jquery-plugin.js:179:5:179:11 | options | provenance |  |
 | unsafe-jquery-plugin.js:179:5:179:11 | options | unsafe-jquery-plugin.js:179:5:179:18 | options.target | provenance |  |
 | unsafe-jquery-plugin.js:185:28:185:34 | options | unsafe-jquery-plugin.js:186:21:186:27 | options | provenance |  |
@@ -105,7 +105,7 @@ nodes
 | unsafe-jquery-plugin.js:5:5:5:18 | options.target | semmle.label | options.target |
 | unsafe-jquery-plugin.js:7:17:7:23 | options | semmle.label | options |
 | unsafe-jquery-plugin.js:7:17:7:30 | options.target | semmle.label | options.target |
-| unsafe-jquery-plugin.js:11:7:11:29 | target | semmle.label | target |
+| unsafe-jquery-plugin.js:11:7:11:12 | target | semmle.label | target |
 | unsafe-jquery-plugin.js:11:16:11:22 | options | semmle.label | options |
 | unsafe-jquery-plugin.js:11:16:11:29 | options.target | semmle.label | options.target |
 | unsafe-jquery-plugin.js:22:6:22:11 | target | semmle.label | target |
@@ -134,19 +134,19 @@ nodes
 | unsafe-jquery-plugin.js:86:4:86:7 | [post update] this [o] | semmle.label | [post update] this [o] |
 | unsafe-jquery-plugin.js:86:13:86:27 | $.extend({}, o) | semmle.label | $.extend({}, o) |
 | unsafe-jquery-plugin.js:86:26:86:26 | o | semmle.label | o |
-| unsafe-jquery-plugin.js:87:8:87:24 | t | semmle.label | t |
+| unsafe-jquery-plugin.js:87:8:87:8 | t | semmle.label | t |
 | unsafe-jquery-plugin.js:87:12:87:15 | this [o] | semmle.label | this [o] |
 | unsafe-jquery-plugin.js:87:12:87:17 | this.o | semmle.label | this.o |
 | unsafe-jquery-plugin.js:90:6:90:6 | t | semmle.label | t |
 | unsafe-jquery-plugin.js:92:5:92:11 | options | semmle.label | options |
 | unsafe-jquery-plugin.js:101:38:101:44 | options | semmle.label | options |
-| unsafe-jquery-plugin.js:102:3:105:13 | options | semmle.label | options |
+| unsafe-jquery-plugin.js:102:3:102:9 | options | semmle.label | options |
 | unsafe-jquery-plugin.js:102:13:105:13 | $.exten ... ptions) | semmle.label | $.exten ... ptions) |
 | unsafe-jquery-plugin.js:105:6:105:12 | options | semmle.label | options |
 | unsafe-jquery-plugin.js:107:5:107:11 | options | semmle.label | options |
 | unsafe-jquery-plugin.js:107:5:107:18 | options.target | semmle.label | options.target |
 | unsafe-jquery-plugin.js:114:38:114:44 | options | semmle.label | options |
-| unsafe-jquery-plugin.js:115:3:115:58 | options | semmle.label | options |
+| unsafe-jquery-plugin.js:115:3:115:9 | options | semmle.label | options |
 | unsafe-jquery-plugin.js:115:13:115:58 | $.exten ... ptions) | semmle.label | $.exten ... ptions) |
 | unsafe-jquery-plugin.js:115:51:115:57 | options | semmle.label | options |
 | unsafe-jquery-plugin.js:117:5:117:11 | options | semmle.label | options |
@@ -172,7 +172,7 @@ nodes
 | unsafe-jquery-plugin.js:157:44:157:57 | options.target | semmle.label | options.target |
 | unsafe-jquery-plugin.js:157:44:157:59 | options.target.a | semmle.label | options.target.a |
 | unsafe-jquery-plugin.js:160:38:160:44 | options | semmle.label | options |
-| unsafe-jquery-plugin.js:165:7:165:29 | target | semmle.label | target |
+| unsafe-jquery-plugin.js:165:7:165:12 | target | semmle.label | target |
 | unsafe-jquery-plugin.js:165:16:165:22 | options | semmle.label | options |
 | unsafe-jquery-plugin.js:170:6:170:11 | target | semmle.label | target |
 | unsafe-jquery-plugin.js:178:27:178:33 | options | semmle.label | options |
