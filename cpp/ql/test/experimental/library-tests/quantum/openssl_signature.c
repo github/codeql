@@ -4,6 +4,9 @@
 #include <openssl/dsa.h>
 #include <openssl/obj_mac.h>
 
+
+
+
 /* =============================================================================
  * UTILITY FUNCTIONS - Common operations shared across signature APIs
  * =============================================================================
@@ -38,16 +41,6 @@ static unsigned char* allocate_signature_buffer(size_t *sig_len, const EVP_PKEY 
     return OPENSSL_malloc(*sig_len);
 }
 
-/**
- * Helper to extract key from EVP_PKEY
- */
-static RSA* get_rsa_from_pkey(EVP_PKEY *pkey) {
-    return EVP_PKEY_get1_RSA(pkey);
-}
-
-static DSA* get_dsa_from_pkey(EVP_PKEY *pkey) {
-    return EVP_PKEY_get1_DSA(pkey);
-}
 
 /* =============================================================================
  * EVP_SIGN/VERIFY API - Legacy high-level API (older, simpler)
@@ -180,8 +173,7 @@ cleanup:
  */
 int sign_using_digestsign_with_ctx(const unsigned char *message, size_t message_len,
                                   unsigned char **signature, size_t *signature_len,
-                                  EVP_PKEY *pkey, const EVP_MD *md, 
-                                  int (*param_setter)(EVP_PKEY_CTX *ctx)) {
+                                  EVP_PKEY *pkey, const EVP_MD *md) {
     EVP_MD_CTX *md_ctx = NULL;
     EVP_PKEY_CTX *pkey_ctx = NULL;
     int ret = 0;
@@ -190,8 +182,7 @@ int sign_using_digestsign_with_ctx(const unsigned char *message, size_t message_
         EVP_DigestSignInit(md_ctx, &pkey_ctx, md, NULL, pkey) != 1) {
         goto cleanup;
     }
-    
-    if (param_setter && param_setter(pkey_ctx) != 1) goto cleanup;
+    EVP_PKEY_CTX_set_rsa_padding(pkey_ctx, RSA_PKCS1_PSS_PADDING);
     
     if (EVP_DigestSignUpdate(md_ctx, message, message_len) != 1 ||
         EVP_DigestSignFinal(md_ctx, NULL, signature_len) != 1) {
@@ -218,8 +209,7 @@ cleanup:
  */
 int verify_using_digestverify_with_ctx(const unsigned char *message, size_t message_len,
                                       const unsigned char *signature, size_t signature_len,
-                                      EVP_PKEY *pkey, const EVP_MD *md,
-                                      int (*param_setter)(EVP_PKEY_CTX *ctx)) {
+                                      EVP_PKEY *pkey, const EVP_MD *md) {
     EVP_MD_CTX *md_ctx = NULL;
     EVP_PKEY_CTX *pkey_ctx = NULL;
     int ret = 0;
@@ -228,9 +218,9 @@ int verify_using_digestverify_with_ctx(const unsigned char *message, size_t mess
         EVP_DigestVerifyInit(md_ctx, &pkey_ctx, md, NULL, pkey) != 1) {
         goto cleanup;
     }
-    
-    if (param_setter && param_setter(pkey_ctx) != 1) goto cleanup;
-    
+
+    EVP_PKEY_CTX_set_rsa_padding(pkey_ctx, RSA_PKCS1_PSS_PADDING);
+
     if (EVP_DigestVerifyUpdate(md_ctx, message, message_len) != 1 ||
         EVP_DigestVerifyFinal(md_ctx, signature, signature_len) != 1) {
         goto cleanup;
@@ -313,7 +303,7 @@ cleanup:
  */
 int sign_using_evp_pkey_sign_message(const unsigned char *message, size_t message_len,
                                      unsigned char **signature, size_t *signature_len,
-                                     EVP_PKEY *pkey, const EVP_MD *md, const char *alg_name) {
+                                     EVP_PKEY *pkey, const char *alg_name) {
     EVP_PKEY_CTX *pkey_ctx = NULL;
     EVP_SIGNATURE *alg = NULL;
     int ret = 0;
@@ -349,7 +339,7 @@ cleanup:
  */
 int verify_using_evp_pkey_verify_message(const unsigned char *message, size_t message_len,
                                         const unsigned char *signature, size_t signature_len,
-                                        EVP_PKEY *pkey, const EVP_MD *md, const char *alg_name) {
+                                        EVP_PKEY *pkey, const char *alg_name) {
     EVP_PKEY_CTX *pkey_ctx = NULL;
     EVP_SIGNATURE *alg = NULL;
     int ret = 0;
@@ -373,10 +363,10 @@ cleanup:
     return ret;
 }
 
-/* =============================================================================
- * LOW-LEVEL RSA API - Algorithm-specific functions (deprecated)
- * =============================================================================
- */
+// /* =============================================================================
+//  * LOW-LEVEL RSA API - Algorithm-specific functions (deprecated)
+//  * =============================================================================
+//  */
 
 /**
  * Sign using low-level RSA_sign API (deprecated, RSA-only)
@@ -384,18 +374,14 @@ cleanup:
  */
 int sign_using_rsa_sign(const unsigned char *message, size_t message_len,
                        unsigned char **signature, size_t *signature_len,
-                       RSA *rsa_key, int hash_nid, const EVP_MD *md) {
-    unsigned char digest[EVP_MAX_MD_SIZE];
-    unsigned int digest_len;
+                       RSA *rsa_key, int hash_nid) {
     int ret = 0;
-    
-    if (!create_digest(message, message_len, md, digest, &digest_len)) return 0;
     
     *signature_len = RSA_size(rsa_key);
     *signature = OPENSSL_malloc(*signature_len);
     if (!*signature) return 0;
-    
-    if (RSA_sign(hash_nid, digest, digest_len, *signature, 
+
+    if (RSA_sign(hash_nid, message, message_len, *signature,
                  (unsigned int*)signature_len, rsa_key) == 1) {
         ret = 1;
     } else {
@@ -412,20 +398,16 @@ int sign_using_rsa_sign(const unsigned char *message, size_t message_len,
  */
 int verify_using_rsa_verify(const unsigned char *message, size_t message_len,
                            const unsigned char *signature, size_t signature_len,
-                           RSA *rsa_key, int hash_nid, const EVP_MD *md) {
-    unsigned char digest[EVP_MAX_MD_SIZE];
-    unsigned int digest_len;
-    
-    if (!create_digest(message, message_len, md, digest, &digest_len)) return 0;
-    
-    return RSA_verify(hash_nid, digest, digest_len, signature, 
+                           RSA *rsa_key, int hash_nid) {
+
+    return RSA_verify(hash_nid, message, message_len, signature,
                      (unsigned int)signature_len, rsa_key);
 }
 
-/* =============================================================================
- * LOW-LEVEL DSA API - Algorithm-specific functions (deprecated)
- * =============================================================================
- */
+// /* =============================================================================
+//  * LOW-LEVEL DSA API - Algorithm-specific functions (deprecated)
+//  * =============================================================================
+//  */
 
 /**
  * Sign using low-level DSA_do_sign API (deprecated, DSA-only)
@@ -514,20 +496,6 @@ cleanup:
  * =============================================================================
  */
 
-/**
- * Set RSA PSS padding mode
- */
-int set_rsa_pss_padding(EVP_PKEY_CTX *ctx) {
-    return EVP_PKEY_CTX_set_rsa_padding(ctx, RSA_PKCS1_PSS_PADDING);
-}
-
-/**
- * No-op parameter setter for default behavior
- */
-int no_parameter_setter(EVP_PKEY_CTX *ctx) {
-    return 1;
-}
-
 /* =============================================================================
  * KEY GENERATION HELPERS
  * =============================================================================
@@ -592,228 +560,289 @@ cleanup:
  * =============================================================================
  */
 
-/**
- * Test all signature APIs with a given key and algorithm
- * Demonstrates the 6 different signature API approaches
- */
-int test_signature_apis(EVP_PKEY *key, const EVP_MD *md, 
-                       int (*param_setter)(EVP_PKEY_CTX *ctx),
-                       const char *algo_name) {
-    const unsigned char message[] = "Test message for OpenSSL signature APIs";
+int testLowLevelRSASignAndVerify(){
+    EVP_PKEY *key = NULL;
+    RSA *rsa_key = NULL;
+    const unsigned char message[] = "testLowLevelRSASignAndVerify message";
+    const size_t message_len = strlen((char *)message);
+    unsigned char *sig = NULL;
+    size_t sig_len = 0;
+    int success = 1;
+    EVP_PKEY_CTX *key_ctx = NULL;
+
+ 
+    key_ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, NULL);
+    if (!key_ctx) return NULL;
+    
+    if (EVP_PKEY_keygen_init(key_ctx) <= 0 ||
+        EVP_PKEY_CTX_set_rsa_keygen_bits(key_ctx, 2048) <= 0 ||
+        EVP_PKEY_keygen(key_ctx, &key) <= 0) {
+        EVP_PKEY_free(key);
+        key = NULL;
+    }
+    
+    EVP_PKEY_CTX_free(key_ctx);
+    if (!key) return 0;
+
+    rsa_key = EVP_PKEY_get1_RSA(key);
+
+    if (!rsa_key) {
+        EVP_PKEY_free(key);
+        success = 0;
+    }
+
+    if (sign_using_rsa_sign(message, message_len, &sig, &sig_len, 
+                           rsa_key, NID_sha256) &&
+        verify_using_rsa_verify(message, message_len, sig, sig_len, 
+                               rsa_key, NID_sha256)) {
+        printf("PASS\n");
+    } else {
+        printf("FAIL\n");
+        success = 0;
+    }
+
+    /* Cleanup */
+    OPENSSL_free(sig);
+    EVP_PKEY_free(key);
+
+    return success;
+}
+
+
+int testLowLevelDSASignAndVerify(){
+    EVP_PKEY *key = NULL;
+    DSA *dsa_key = NULL;
+    const unsigned char message[] = "testLowLevelDSASignAndVerify message";
+    const EVP_MD *md = EVP_sha256();
+    int success = 1;
+
+    EVP_PKEY_CTX *param_ctx = NULL, *key_ctx = NULL;
+    EVP_PKEY *params = NULL;
+
+    const size_t message_len = strlen((char *)message);
+    unsigned char *sig = NULL;
+    size_t sig_len = 0;
+    
+    key = generate_dsa_key();
+    dsa_key = EVP_PKEY_get1_DSA(key);
+
+    if (!dsa_key) {
+        EVP_PKEY_free(key);
+        success = 0;
+    }
+
+    if (sign_using_dsa_sign(message, message_len, &sig, &sig_len, dsa_key, md) &&
+        verify_using_dsa_verify(message, message_len, sig, sig_len, dsa_key, md)) {
+        printf("PASS\n");
+    } else {
+        printf("FAIL\n");
+        success = 0;
+    }
+
+    /* Cleanup */
+    OPENSSL_free(sig);
+    EVP_PKEY_free(key);
+
+    return success;
+}
+
+int testEVP_SignAPI(){
+    EVP_PKEY *key = NULL;
+    const unsigned char message[] = "testEVP_SignAPI message";
+    const EVP_MD *md = EVP_sha224();
+
+    const size_t message_len = strlen((char *)message);
+
+    unsigned char *sig = NULL;
+    size_t sig_len = 0;
+    int success = 1;
+    EVP_PKEY_CTX *key_ctx = NULL;
+
+    key_ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, NULL);
+    if (!key_ctx) return NULL;
+    
+    if (EVP_PKEY_keygen_init(key_ctx) <= 0 ||
+        EVP_PKEY_CTX_set_rsa_keygen_bits(key_ctx, 2048) <= 0 ||
+        EVP_PKEY_keygen(key_ctx, &key) <= 0) {
+        EVP_PKEY_free(key);
+        key = NULL;
+    }
+    
+    EVP_PKEY_CTX_free(key_ctx);
+    if (!key) return 0;
+
+
+       /* Test 1: EVP_Sign API */
+    printf("1. EVP_Sign API: ");
+    if (sign_using_evp_sign(message, message_len, &sig, &sig_len, key, md) &&
+        verify_using_evp_verify(message, message_len, sig, sig_len, key, md)) {
+        printf("PASS\n");
+    } else {
+        printf("FAIL\n");
+        success = 0;
+    }
+    OPENSSL_free(sig);
+    EVP_PKEY_free(key);
+    return success;
+}
+
+
+int testEVP_DigestSignAPI(){
+    EVP_PKEY *key = NULL;
+    const unsigned char message[] = "testEVP_DigestSignAPI message";
+    const EVP_MD *md = EVP_sha224();
+
     const size_t message_len = strlen((char *)message);
     
-    unsigned char *sig1 = NULL, *sig2 = NULL, *sig3 = NULL, 
-                  *sig4 = NULL, *sig6 = NULL;
-    size_t sig_len1 = 0, sig_len2 = 0, sig_len3 = 0, sig_len4 = 0, sig_len6 = 0;
-    
-    unsigned char digest[EVP_MAX_MD_SIZE];
-    unsigned int digest_len;
+    unsigned char *sig = NULL;
+    size_t sig_len = 0;
     int success = 1;
+    EVP_PKEY_CTX *key_ctx = NULL;
+
+    key_ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, NULL);
+    if (!key_ctx) return NULL;
     
-    printf("\nTesting signature APIs with %s:\n", algo_name);
-    
-    /* Test 1: EVP_Sign API */
-    printf("1. EVP_Sign API: ");
-    if (sign_using_evp_sign(message, message_len, &sig1, &sig_len1, key, md) &&
-        verify_using_evp_verify(message, message_len, sig1, sig_len1, key, md)) {
-        printf("PASS\n");
-    } else {
-        printf("FAIL\n");
-        success = 0;
+    if (EVP_PKEY_keygen_init(key_ctx) <= 0 ||
+        EVP_PKEY_CTX_set_rsa_keygen_bits(key_ctx, 2048) <= 0 ||
+        EVP_PKEY_keygen(key_ctx, &key) <= 0) {
+        EVP_PKEY_free(key);
+        key = NULL;
     }
     
+    EVP_PKEY_CTX_free(key_ctx);
+    if (!key) return 0;
+
+
     /* Test 2: EVP_DigestSign API */
     printf("2. EVP_DigestSign API: ");
-    if (sign_using_evp_digestsign(message, message_len, &sig2, &sig_len2, key, md) &&
-        verify_using_evp_digestverify(message, message_len, sig2, sig_len2, key, md)) {
+    if (sign_using_evp_digestsign(message, message_len, &sig, &sig_len, key, md) &&
+        verify_using_evp_digestverify(message, message_len, sig, sig_len, key, md)) {
         printf("PASS\n");
     } else {
         printf("FAIL\n");
         success = 0;
     }
+    OPENSSL_free(sig);
+    EVP_PKEY_free(key);
+    return success;
+}
+
+int testEVP_PKEY_signAPI(){
+    EVP_PKEY *key = NULL;
+    const unsigned char message[] = "testEVP_PKEY_signAPI message";
+    const EVP_MD *md = EVP_sha1();
+
+    const size_t message_len = strlen((char *)message);
     
+    unsigned char *sig = NULL;
+    size_t sig_len = 0;
+    int success = 1;
+
+    EVP_PKEY_CTX *key_ctx = NULL;
+
+    unsigned char digest[EVP_MAX_MD_SIZE];
+    unsigned int digest_len;
+
+    key_ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, NULL);
+    if (!key_ctx) return NULL;
+    
+    if (EVP_PKEY_keygen_init(key_ctx) <= 0 ||
+        EVP_PKEY_CTX_set_rsa_keygen_bits(key_ctx, 2048) <= 0 ||
+        EVP_PKEY_keygen(key_ctx, &key) <= 0) {
+        EVP_PKEY_free(key);
+        key = NULL;
+    }
+    
+    EVP_PKEY_CTX_free(key_ctx);
+    if (!key) return 0;
+
     /* Test 3: EVP_PKEY_sign API (requires pre-hashed input) */
     printf("3. EVP_PKEY_sign API: ");
     if (create_digest(message, message_len, md, digest, &digest_len) &&
-        sign_using_evp_pkey_sign(digest, digest_len, &sig3, &sig_len3, key, md) &&
-        verify_using_evp_pkey_verify(digest, digest_len, sig3, sig_len3, key, md)) {
+        sign_using_evp_pkey_sign(digest, digest_len, &sig, &sig_len, key, md) &&
+        verify_using_evp_pkey_verify(digest, digest_len, sig, sig_len, key, md)) {
         printf("PASS\n");
     } else {
         printf("FAIL\n");
         success = 0;
     }
+
+    OPENSSL_free(sig);
+    EVP_PKEY_free(key);
+    return success;
+}
+
+int testEVP_DigestSign_with_ctx(void) {
+    EVP_PKEY *key = NULL;
+    const unsigned char message[] = "testEVP_DigestSign_with_ctx message";
+    const EVP_MD *md = EVP_sha1();
+
+    const size_t message_len = strlen((char *)message);
+    unsigned char *sig = NULL;
+    size_t sig_len = 0;
+    int success = 1;
+    EVP_PKEY_CTX *key_ctx = NULL;
+
+    key_ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, NULL);
+    if (!key_ctx) return NULL;
     
+    if (EVP_PKEY_keygen_init(key_ctx) <= 0 ||
+        EVP_PKEY_CTX_set_rsa_keygen_bits(key_ctx, 2048) <= 0 ||
+        EVP_PKEY_keygen(key_ctx, &key) <= 0) {
+        EVP_PKEY_free(key);
+        key = NULL;
+    }
+    
+    EVP_PKEY_CTX_free(key_ctx);
+    if (!key) return 0;
+
     /* Test 4: EVP_DigestSign with explicit PKEY_CTX */
     printf("4. EVP_DigestSign with explicit PKEY_CTX: ");
-    if (sign_using_digestsign_with_ctx(message, message_len, &sig4, &sig_len4, 
-                                      key, md, param_setter) &&
-        verify_using_digestverify_with_ctx(message, message_len, sig4, sig_len4, 
-                                          key, md, param_setter)) {
+    if (sign_using_digestsign_with_ctx(message, message_len, &sig, &sig_len, 
+                                      key, md) &&
+        verify_using_digestverify_with_ctx(message, message_len, sig, sig_len, 
+                                          key, md)) {
         printf("PASS\n");
     } else {
         printf("FAIL\n");
         success = 0;
     }
+    OPENSSL_free(sig);
+    EVP_PKEY_free(key);
+    return success;
+}
+
+int testEVP_PKEY_sign_message(void) {
+    EVP_PKEY *key = NULL;
+    const unsigned char message[] = "testEVP_PKEY_sign_message";
+    const size_t message_len = strlen((char *)message);
+    unsigned char *sig = NULL;
+    size_t sig_len = 0;
+    int success = 1;
+    EVP_PKEY_CTX *key_ctx = NULL;
+
+    key_ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, NULL);
+    if (!key_ctx) return NULL;
     
-    /* Test 6: EVP_PKEY_sign_message API */
+    if (EVP_PKEY_keygen_init(key_ctx) <= 0 ||
+        EVP_PKEY_CTX_set_rsa_keygen_bits(key_ctx, 2048) <= 0 ||
+        EVP_PKEY_keygen(key_ctx, &key) <= 0) {
+        EVP_PKEY_free(key);
+        key = NULL;
+    }
+    
+    EVP_PKEY_CTX_free(key_ctx);
+    if (!key) return 0;
+
     printf("6. EVP_PKEY_sign_message API: ");
-    if (sign_using_evp_pkey_sign_message(message, message_len, &sig6, &sig_len6, key, md, algo_name) &&
-        verify_using_evp_pkey_verify_message(message, message_len, sig6, sig_len6, key, md, algo_name)) {
+    if (sign_using_evp_pkey_sign_message(message, message_len, &sig, &sig_len, key, "RSA-SHA256") &&
+        verify_using_evp_pkey_verify_message(message, message_len, sig, sig_len, key, "RSA-SHA256")) {
         printf("PASS\n");
     } else {
         printf("FAIL\n");
         success = 0;
     }
-    
-    /* Cleanup */
-    OPENSSL_free(sig1);
-    OPENSSL_free(sig2);
-    OPENSSL_free(sig3);
-    OPENSSL_free(sig4);
-    OPENSSL_free(sig6);
-    
-    return success;
-}
-
-/**
- * Test RSA-specific signature APIs including low-level RSA functions
- */
-int test_signature_apis_rsa(void) {
-    EVP_PKEY *key = NULL;
-    RSA *rsa_key = NULL;
-    const EVP_MD *md = EVP_sha256();
-    const unsigned char message[] = "Test message for OpenSSL signature APIs";
-    const size_t message_len = strlen((char *)message);
-    unsigned char *sig5 = NULL;
-    size_t sig_len5 = 0;
-    int success = 1;
-    
-    printf("\nGenerating RSA key pair...\n");
-    key = generate_rsa_key();
-    if (!key) return 0;
-    
-    rsa_key = get_rsa_from_pkey(key);
-    if (!rsa_key) {
-        EVP_PKEY_free(key);
-        return 0;
-    }
-    
-    /* Test generic APIs */
-    if (!test_signature_apis(key, md, set_rsa_pss_padding, "RSA-SHA256")) {
-        success = 0;
-    }
-    
-    /* Test 5: Low-level RSA API */
-    printf("5. Low-level RSA API: ");
-    if (sign_using_rsa_sign(message, message_len, &sig5, &sig_len5, 
-                           rsa_key, NID_sha256, md) &&
-        verify_using_rsa_verify(message, message_len, sig5, sig_len5, 
-                               rsa_key, NID_sha256, md)) {
-        printf("PASS\n");
-    } else {
-        printf("FAIL\n");
-        success = 0;
-    }
-    
-    printf("\nRSA API Summary:\n");
-    printf("1. EVP_Sign API: Legacy, simple\n");
-    printf("2. EVP_DigestSign API: Modern, recommended\n");
-    printf("3. EVP_PKEY_sign API: Lower-level, pre-hashed input\n");
-    printf("4. EVP_DigestSign with PKEY_CTX: Fine-grained control\n");
-    printf("5. Low-level RSA API: Deprecated, algorithm-specific\n");
-    printf("6. EVP_PKEY_sign_message API: Streamlined message signing\n");
-    
-    /* Cleanup */
-    OPENSSL_free(sig5);
-    RSA_free(rsa_key);
+    OPENSSL_free(sig);
     EVP_PKEY_free(key);
-    
     return success;
 }
-
-/**
- * Test DSA-specific signature APIs including low-level DSA functions
- */
-int test_signature_apis_dsa(void) {
-    EVP_PKEY *key = NULL;
-    DSA *dsa_key = NULL;
-    const EVP_MD *md = EVP_sha256();
-    const unsigned char message[] = "Test message for OpenSSL signature APIs";
-    const size_t message_len = strlen((char *)message);
-    unsigned char *sig5 = NULL;
-    size_t sig_len5 = 0;
-    int success = 1;
-    
-    printf("\nGenerating DSA key pair...\n");
-    key = generate_dsa_key();
-    if (!key) return 0;
-    
-    dsa_key = get_dsa_from_pkey(key);
-    if (!dsa_key) {
-        EVP_PKEY_free(key);
-        return 0;
-    }
-    
-    /* Test generic APIs */
-    if (!test_signature_apis(key, md, no_parameter_setter, "dsa")) {
-        success = 0;
-    }
-    
-    /* Test 5: Low-level DSA API */
-    printf("5. Low-level DSA API: ");
-    if (sign_using_dsa_sign(message, message_len, &sig5, &sig_len5, dsa_key, md) &&
-        verify_using_dsa_verify(message, message_len, sig5, sig_len5, dsa_key, md)) {
-        printf("PASS\n");
-    } else {
-        printf("FAIL\n");
-        success = 0;
-    }
-    
-    printf("\nDSA API Summary:\n");
-    printf("1. EVP_Sign API: Legacy, simple\n");
-    printf("2. EVP_DigestSign API: Modern, recommended\n");
-    printf("3. EVP_PKEY_sign API: Lower-level, pre-hashed input\n");
-    printf("4. EVP_DigestSign with PKEY_CTX: Fine-grained control\n");
-    printf("5. Low-level DSA API: Deprecated, algorithm-specific\n");
-    printf("6. EVP_PKEY_sign_message API: Streamlined message signing\n");
-    
-    /* Cleanup */
-    OPENSSL_free(sig5);
-    EVP_PKEY_free(key);
-    
-    return success;
-}
-
-/* =============================================================================
- * MAIN FUNCTION - Entry point for testing all signature APIs
- * =============================================================================
- */
-
-// /**
-//  * Main function demonstrating all OpenSSL signature APIs
-//  * Tests both RSA and DSA algorithms with all 6 API approaches
-//  */
-// int main(void) {
-//     /* Initialize OpenSSL */
-//     OpenSSL_add_all_algorithms();
-//     ERR_load_crypto_strings();
-    
-//     printf("=================================================================\n");
-//     printf("OpenSSL Signature API Demonstration\n");
-//     printf("=================================================================\n");
-    
-//     printf("\n-------- TESTING RSA SIGNATURES --------\n");
-//     int rsa_result = test_signature_apis_rsa();
-    
-//     printf("\n-------- TESTING DSA SIGNATURES --------\n");
-//     int dsa_result = test_signature_apis_dsa();
-    
-//     printf("\n=================================================================\n");
-//     if (rsa_result && dsa_result) {
-//         printf("All tests completed successfully.\n");
-//         return 0;
-//     } else {
-//         printf("Some tests failed.\n");
-//         return 1;
-//     }
-// }
