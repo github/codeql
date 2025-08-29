@@ -24,14 +24,14 @@ predicate isWithinType(Callable c, RefType t) {
 }
 
 /**
- * Holds if `e` is within the same package as `t`
+ * Holds if `e` is within the same package as `t`.
  */
 predicate isWithinPackage(Expr e, RefType t) {
   e.getCompilationUnit().getPackage() = t.getPackage()
 }
 
 /**
- * Holds if a callable or any of its enclosing callables is annotated with @VisibleForTesting
+ * Holds if a callable or any of its enclosing callables is annotated with @VisibleForTesting.
  */
 predicate isWithinVisibleForTestingContext(Callable c) {
   c.getAnAnnotation().getType().hasName("VisibleForTesting")
