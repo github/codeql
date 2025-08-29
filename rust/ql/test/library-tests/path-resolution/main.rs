@@ -491,15 +491,15 @@ mod trait_visibility {
         let x = X; // $ item=X
         {
             use m::Foo; // $ item=Foo
-            X::a_method(&x); // $ item=X_Foo::a_method SPURIOUS: item=X_Bar::a_method
+            X::a_method(&x); // $ item=X_Foo::a_method
         }
         {
             use m::Bar; // $ item=Bar
-            X::a_method(&x); // $ item=X_Bar::a_method SPURIOUS: item=X_Foo::a_method
+            X::a_method(&x); // $ item=X_Bar::a_method
         }
         {
             use m::Bar as _; // $ item=Bar
-            X::a_method(&x); // $ item=X_Bar::a_method SPURIOUS: item=X_Foo::a_method
+            X::a_method(&x); // $ item=X_Bar::a_method
         }
     } // trait_visibility::f
 }

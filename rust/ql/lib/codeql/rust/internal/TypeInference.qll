@@ -1891,7 +1891,7 @@ private predicate methodCandidate(Type type, string name, int arity, Impl impl) 
  */
 pragma[nomagic]
 private predicate methodCandidateTrait(Type type, Trait trait, string name, int arity, Impl impl) {
-  trait = resolvePath(impl.(ImplItemNode).getTraitPath()) and
+  trait = impl.(ImplItemNode).resolveTraitTy() and
   methodCandidate(type, name, arity, impl)
 }
 
@@ -1912,7 +1912,12 @@ private module IsInstantiationOfInput implements IsInstantiationOfInputSig<Metho
       methodCandidateTrait(rootType, mc.getTrait(), name, arity, impl)
       or
       not exists(mc.getTrait()) and
-      methodCandidate(rootType, name, arity, impl)
+      methodCandidate(rootType, name, arity, impl) and
+      (
+        traitIsVisible(mc, impl.(ImplItemNode).resolveTraitTy())
+        or
+        not exists(impl.(ImplItemNode).resolveTraitTy())
+      )
     )
   }
 

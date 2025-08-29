@@ -236,16 +236,13 @@ resolvePath
 | main.rs:493:17:493:22 | ...::Foo | main.rs:465:9:467:9 | trait Foo |
 | main.rs:494:13:494:13 | X | main.rs:473:9:473:21 | struct X |
 | main.rs:494:13:494:23 | ...::a_method | main.rs:475:26:478:13 | fn a_method |
-| main.rs:494:13:494:23 | ...::a_method | main.rs:481:26:484:13 | fn a_method |
 | main.rs:497:17:497:17 | m | main.rs:464:5:486:5 | mod m |
 | main.rs:497:17:497:22 | ...::Bar | main.rs:469:9:471:9 | trait Bar |
 | main.rs:498:13:498:13 | X | main.rs:473:9:473:21 | struct X |
-| main.rs:498:13:498:23 | ...::a_method | main.rs:475:26:478:13 | fn a_method |
 | main.rs:498:13:498:23 | ...::a_method | main.rs:481:26:484:13 | fn a_method |
 | main.rs:501:17:501:17 | m | main.rs:464:5:486:5 | mod m |
 | main.rs:501:17:501:22 | ...::Bar | main.rs:469:9:471:9 | trait Bar |
 | main.rs:502:13:502:13 | X | main.rs:473:9:473:21 | struct X |
-| main.rs:502:13:502:23 | ...::a_method | main.rs:475:26:478:13 | fn a_method |
 | main.rs:502:13:502:23 | ...::a_method | main.rs:481:26:484:13 | fn a_method |
 | main.rs:515:10:515:16 | MyTrait | main.rs:508:5:510:5 | trait MyTrait |
 | main.rs:516:9:516:9 | S | main.rs:512:5:512:13 | struct S |

@@ -216,7 +216,7 @@ abstract class ItemNode extends Locatable {
     // items made available through `use` are available to nodes that contain the `use`
     exists(UseItemNode use |
       use = this.getASuccessor(_, _) and
-      result = use.(ItemNode).getASuccessor(name, kind)
+      result = use.getASuccessor(name, kind)
     )
     or
     exists(ExternCrateItemNode ec | result = ec.(ItemNode).getASuccessor(name, kind) |
@@ -1311,6 +1311,7 @@ private predicate declares(ItemNode item, Namespace ns, string name) {
 class RelevantPath extends Path {
   RelevantPath() { not this = any(VariableAccess va).(PathExpr).getPath() }
 
+  /** Holds if this is an unqualified path with the textual value `name`. */
   pragma[nomagic]
   predicate isUnqualified(string name) {
     not exists(this.getQualifier()) and
@@ -1421,6 +1422,12 @@ private ItemNode unqualifiedPathLookup(RelevantPath p, Namespace ns, SuccessorKi
 pragma[nomagic]
 private predicate isUnqualifiedSelfPath(RelevantPath path) { path.isUnqualified("Self") }
 
+/** Holds if the trait `trait` is visible at the element `element`. */
+bindingset[element, trait]
+predicate traitIsVisible(Element element, TraitItemNode trait) {
+  exists(ItemNode encl | encl.getADescendant*() = element and trait = encl.getASuccessor(_, _))
+}
+
 pragma[nomagic]
 private ItemNode resolvePathCand0(RelevantPath path, Namespace ns) {
   exists(ItemNode res |
@@ -1447,13 +1454,35 @@ private ItemNode resolvePathCandQualifier(RelevantPath qualifier, RelevantPath p
 }
 
 pragma[nomagic]
-private ItemNode resolvePathCandQualified(
+private TraitItemNode assocItemImplementsTrait(AssocItemNode assoc) {
+  exists(ImplItemNodeImpl impl |
+    impl.getAnAssocItem() = assoc and
+    result = impl.resolveTraitTyCand()
+  )
+}
+
+pragma[nomagic]
+private ItemNode resolvePathCandQualified0(
   RelevantPath qualifier, ItemNode q, RelevantPath path, Namespace ns
 ) {
   exists(string name, SuccessorKind kind |
     q = resolvePathCandQualifier(qualifier, path, name) and
     result = getASuccessor(q, name, ns, kind) and
     kind.isExternalOrBoth()
+  )
+}
+
+pragma[nomagic]
+private ItemNode resolvePathCandQualified(
+  RelevantPath qualifier, ItemNode q, RelevantPath path, Namespace ns
+) {
+  result = resolvePathCandQualified0(qualifier, q, path, ns) and
+  (
+    // When the result is an associated item of a trait implementation the
+    // implemented trait must be visible.
+    traitIsVisible(path, assocItemImplementsTrait(pragma[only_bind_out](result)))
+    or
+    not exists(ImplItemNode impl | impl.getAnAssocItem() = result and impl.(Impl).hasTrait())
   )
 }
 
@@ -1606,8 +1635,16 @@ private predicate useImportEdge(Use use, string name, ItemNode item, SuccessorKi
         not tree.hasRename() and
         name = item.getName()
         or
-        name = tree.getRename().getName().getText() and
-        name != "_"
+        exists(Rename rename | rename = tree.getRename() |
+          name = rename.getName().getText()
+          or
+          // When the rename doesn't have a name it's an underscore import. This
+          // makes the imported item visible but unnameable. We represent this
+          // by using the name `_` which can never occur in a path.  See also:
+          // https://doc.rust-lang.org/reference/items/use-declarations.html#r-items.use.as-underscore
+          not rename.hasName() and
+          name = "_"
+        )
       )
     )
   )
@@ -1693,7 +1730,7 @@ private module Debug {
     useImportEdge(use, name, item, kind)
   }
 
-  ItemNode debuggetASuccessor(ItemNode i, string name, SuccessorKind kind) {
+  ItemNode debugGetASuccessor(ItemNode i, string name, SuccessorKind kind) {
     i = getRelevantLocatable() and
     result = i.getASuccessor(name, kind)
   }
