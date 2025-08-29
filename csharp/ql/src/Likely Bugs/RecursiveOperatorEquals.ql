@@ -5,7 +5,8 @@
  * @problem.severity error
  * @precision medium
  * @id cs/recursive-operator-equals-call
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       maintainability
  */
 

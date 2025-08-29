@@ -6,7 +6,8 @@
  * @problem.severity recommendation
  * @precision medium
  * @id cs/forms/default-control-name
- * @tags readability
+ * @tags quality
+ *       readability
  *       naming
  */
 

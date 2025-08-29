@@ -5,7 +5,8 @@
  * @problem.severity recommendation
  * @precision medium
  * @id cs/asp/split-control-structure
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       frameworks/asp.net
  */
 

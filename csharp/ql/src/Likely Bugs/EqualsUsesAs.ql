@@ -5,7 +5,8 @@
  * @problem.severity warning
  * @precision medium
  * @id cs/equals-uses-as
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       maintainability
  */
 

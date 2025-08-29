@@ -5,7 +5,8 @@
  * @problem.severity error
  * @precision medium
  * @id cs/invalid-dynamic-call
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       logic
  *       external/cwe/cwe-628

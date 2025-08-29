@@ -5,7 +5,8 @@
  * @problem.severity warning
  * @precision medium
  * @id cs/unsafe-year-construction
- * @tags date-time
+ * @tags quality
+ *       date-time
  *       reliability
  */
 

@@ -6,7 +6,8 @@
  * @problem.severity recommendation
  * @precision medium
  * @id cs/constants-only-interface
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       modularity
  */
 

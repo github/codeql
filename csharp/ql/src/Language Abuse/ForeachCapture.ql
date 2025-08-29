@@ -5,7 +5,8 @@
  * @problem.severity recommendation
  * @precision medium
  * @id cs/captured-foreach-variable
- * @tags portability
+ * @tags quality
+ *       portability
  *       maintainability
  *       language-features
  *       external/cwe/cwe-758

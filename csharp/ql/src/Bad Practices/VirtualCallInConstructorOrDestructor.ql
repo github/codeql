@@ -6,7 +6,8 @@
  * @precision medium
  * @id cs/virtual-call-in-constructor
  * @alternate-ids cs/virtual-call-in-constructor-or-destructor
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       maintainability
  *       modularity
  */

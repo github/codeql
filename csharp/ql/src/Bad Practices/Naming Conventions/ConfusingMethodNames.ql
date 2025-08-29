@@ -5,7 +5,8 @@
  * @problem.severity recommendation
  * @precision medium
  * @id cs/confusing-method-name
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       readability
  *       naming
  */

@@ -6,7 +6,8 @@
  * @problem.severity error
  * @precision medium
  * @id cs/coalesce-of-identical-expressions
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       language-features
  *       external/cwe/cwe-561
  */

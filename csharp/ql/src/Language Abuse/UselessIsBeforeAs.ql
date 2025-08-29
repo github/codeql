@@ -5,7 +5,8 @@
  * @problem.severity recommendation
  * @precision medium
  * @id cs/useless-is-before-as
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       language-features
  *       external/cwe/cwe-561
  */

@@ -5,7 +5,8 @@
  * @problem.severity warning
  * @precision medium
  * @id cs/useless-type-test
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       language-features
  *       external/cwe/cwe-561
  */
