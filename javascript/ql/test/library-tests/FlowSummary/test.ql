@@ -8,7 +8,7 @@ DataFlow::CallNode getACall(string name) {
   result.getCalleeNode().getALocalSource() = DataFlow::globalVarRef(name)
 }
 
-module ConfigArg implements DataFlow::ConfigSig {
+module FlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node = getACall("source") }
 
   predicate isSink(DataFlow::Node node) { node = getACall("sink").getAnArgument() }
@@ -19,7 +19,7 @@ module ConfigArg implements DataFlow::ConfigSig {
   }
 }
 
-module Configuration = DataFlow::Global<ConfigArg>;
+module Flow = DataFlow::Global<FlowConfig>;
 
 class BasicBarrierGuard extends DataFlow::CallNode {
   BasicBarrierGuard() { this = getACall("isSafe") }
@@ -32,5 +32,5 @@ class BasicBarrierGuard extends DataFlow::CallNode {
 deprecated class ConsistencyConfig extends ConsistencyConfiguration {
   ConsistencyConfig() { this = "ConsistencyConfig" }
 
-  override DataFlow::Node getAnAlert() { Configuration::flow(_, result) }
+  override DataFlow::Node getAnAlert() { Flow::flow(_, result) }
 }

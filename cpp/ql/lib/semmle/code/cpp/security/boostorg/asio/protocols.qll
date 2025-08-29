@@ -378,12 +378,12 @@ module BoostorgAsio {
    * Constructs a standard data flow computation for protocol values to the first argument
    * of a context constructor.
    */
-  module SslContextCallGlobal<SslContextCallConfigSig Config> {
-    private module C implements DataFlow::ConfigSig {
-      import Config
+  module SslContextCallGlobal<SslContextCallConfigSig SslConfig> {
+    private module Config implements DataFlow::ConfigSig {
+      import SslConfig
     }
 
-    import DataFlow::Global<C>
+    import DataFlow::Global<Config>
   }
 
   /**

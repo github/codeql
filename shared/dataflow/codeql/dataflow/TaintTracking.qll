@@ -56,7 +56,7 @@ module TaintFlowMake<
   private import MakeImpl<Location, DataFlowLang> as DataFlowInternal
   private import MakeImplStage1<Location, DataFlowLang> as DataFlowInternalStage1
 
-  private module AddTaintDefaults<DataFlowInternal::FullStateConfigSig Config> implements
+  private module MakeAddTaintDefaultsConfig<DataFlowInternal::FullStateConfigSig Config> implements
     DataFlowInternal::FullStateConfigSig
   {
     import Config
@@ -98,15 +98,15 @@ module TaintFlowMake<
       }
     }
 
-    private module C implements DataFlowInternal::FullStateConfigSig {
-      import AddTaintDefaults<Config0>
+    private module AddTaintDefaultsConfig implements DataFlowInternal::FullStateConfigSig {
+      import MakeAddTaintDefaultsConfig<Config0>
     }
 
-    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
+    private module Stage1 = DataFlowInternalStage1::ImplStage1<AddTaintDefaultsConfig>;
 
     import Stage1::PartialFlow
 
-    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1NoState>;
+    private module Flow = DataFlowInternal::Impl<AddTaintDefaultsConfig, Stage1::Stage1NoState>;
 
     import Flow
   }
@@ -132,15 +132,15 @@ module TaintFlowMake<
       }
     }
 
-    private module C implements DataFlowInternal::FullStateConfigSig {
-      import AddTaintDefaults<Config0>
+    private module AddTaintDefaultsConfig implements DataFlowInternal::FullStateConfigSig {
+      import MakeAddTaintDefaultsConfig<Config0>
     }
 
-    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
+    private module Stage1 = DataFlowInternalStage1::ImplStage1<AddTaintDefaultsConfig>;
 
     import Stage1::PartialFlow
 
-    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1WithState>;
+    private module Flow = DataFlowInternal::Impl<AddTaintDefaultsConfig, Stage1::Stage1WithState>;
 
     import Flow
   }
@@ -234,15 +234,15 @@ module TaintFlowMake<
       }
     }
 
-    private module C implements DataFlowInternal::FullStateConfigSig {
-      import AddTaintDefaults<AddSpeculativeTaintSteps<Config0, speculationLimit/0>>
+    private module AddTaintDefaultsConfig implements DataFlowInternal::FullStateConfigSig {
+      import MakeAddTaintDefaultsConfig<AddSpeculativeTaintSteps<Config0, speculationLimit/0>>
     }
 
-    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
+    private module Stage1 = DataFlowInternalStage1::ImplStage1<AddTaintDefaultsConfig>;
 
     import Stage1::PartialFlow
 
-    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1WithState>;
+    private module Flow = DataFlowInternal::Impl<AddTaintDefaultsConfig, Stage1::Stage1WithState>;
 
     import Flow
   }
@@ -272,15 +272,15 @@ module TaintFlowMake<
       }
     }
 
-    private module C implements DataFlowInternal::FullStateConfigSig {
-      import AddTaintDefaults<AddSpeculativeTaintSteps<Config0, speculationLimit/0>>
+    private module AddTaintDefaultsConfig implements DataFlowInternal::FullStateConfigSig {
+      import MakeAddTaintDefaultsConfig<AddSpeculativeTaintSteps<Config0, speculationLimit/0>>
     }
 
-    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
+    private module Stage1 = DataFlowInternalStage1::ImplStage1<AddTaintDefaultsConfig>;
 
     import Stage1::PartialFlow
 
-    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1WithState>;
+    private module Flow = DataFlowInternal::Impl<AddTaintDefaultsConfig, Stage1::Stage1WithState>;
 
     import Flow
   }
