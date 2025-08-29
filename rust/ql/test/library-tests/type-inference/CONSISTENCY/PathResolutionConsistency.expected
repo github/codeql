@@ -1,8 +1,5 @@
 multipleCallTargets
 | dereference.rs:61:15:61:24 | e1.deref() |
-| main.rs:153:13:153:24 | x.a_method() |
-| main.rs:157:13:157:24 | x.a_method() |
-| main.rs:161:13:161:24 | x.a_method() |
 | main.rs:2357:13:2357:31 | ...::from(...) |
 | main.rs:2358:13:2358:31 | ...::from(...) |
 | main.rs:2359:13:2359:31 | ...::from(...) |

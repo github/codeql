@@ -492,17 +492,17 @@ mod trait_visibility {
         {
             // Only the `Foo` trait is visible
             use m::Foo; // $ item=Foo
-            X::a_method(&x); // $ item=X_Foo::a_method SPURIOUS: item=X_Bar::a_method
+            X::a_method(&x); // $ item=X_Foo::a_method
         }
         {
             // Only the `Bar` trait is visible
             use m::Bar; // $ item=Bar
-            X::a_method(&x); // $ item=X_Bar::a_method SPURIOUS: item=X_Foo::a_method
+            X::a_method(&x); // $ item=X_Bar::a_method
         }
         {
             // Only the `Bar` trait is visible (but unnameable)
             use m::Bar as _; // $ item=Bar
-            X::a_method(&x); // $ item=X_Bar::a_method SPURIOUS: item=X_Foo::a_method
+            X::a_method(&x); // $ item=X_Bar::a_method
         }
         {
             // The `Bar` trait is not visible, but we can refer to its method

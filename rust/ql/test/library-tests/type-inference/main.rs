@@ -150,15 +150,15 @@ mod trait_visibility {
         let x = X;
         {
             use m::Foo;
-            x.a_method(); // $ target=Foo::a_method SPURIOUS: target=Bar::a_method
+            x.a_method(); // $ target=Foo::a_method
         }
         {
             use m::Bar;
-            x.a_method(); // $ target=Bar::a_method SPURIOUS: target=Foo::a_method
+            x.a_method(); // $ target=Bar::a_method
         }
         {
             use m::Bar as _;
-            x.a_method(); // $ target=Bar::a_method SPURIOUS: target=Foo::a_method
+            x.a_method(); // $ target=Bar::a_method
         }
         {
             use m::Bar;
