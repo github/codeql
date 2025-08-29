@@ -1,4 +1,4 @@
-import semmle.code.cpp.dataflow.new.DataFlow
+import semmle.code.cpp.dataflow.new.TaintTracking
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 
 /**
@@ -18,4 +18,4 @@ module AvcToCallArgConfig implements DataFlow::ConfigSig {
   }
 }
 
-module AvcToCallArgFlow = DataFlow::Global<AvcToCallArgConfig>;
+module AvcToCallArgFlow = TaintTracking::Global<AvcToCallArgConfig>;

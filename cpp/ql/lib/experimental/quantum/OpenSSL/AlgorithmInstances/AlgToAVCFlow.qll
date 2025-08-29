@@ -50,7 +50,7 @@ module KnownOpenSslAlgorithmToAlgorithmValueConsumerConfig implements DataFlow::
 }
 
 module KnownOpenSslAlgorithmToAlgorithmValueConsumerFlow =
-  DataFlow::Global<KnownOpenSslAlgorithmToAlgorithmValueConsumerConfig>;
+  TaintTracking::Global<KnownOpenSslAlgorithmToAlgorithmValueConsumerConfig>;
 
 module RsaPaddingAlgorithmToPaddingAlgorithmValueConsumerConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
@@ -67,7 +67,7 @@ module RsaPaddingAlgorithmToPaddingAlgorithmValueConsumerConfig implements DataF
 }
 
 module RsaPaddingAlgorithmToPaddingAlgorithmValueConsumerFlow =
-  DataFlow::Global<RsaPaddingAlgorithmToPaddingAlgorithmValueConsumerConfig>;
+  TaintTracking::Global<RsaPaddingAlgorithmToPaddingAlgorithmValueConsumerConfig>;
 
 class OpenSslAlgorithmAdditionalFlowStep extends AdditionalFlowInputStep {
   OpenSslAlgorithmAdditionalFlowStep() { exists(AlgorithmPassthroughCall c | c.getInNode() = this) }

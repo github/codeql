@@ -53,7 +53,7 @@ module ArtifactFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module ArtifactFlow = DataFlow::Global<ArtifactFlowConfig>;
+module ArtifactFlow = TaintTracking::Global<ArtifactFlowConfig>;
 
 /**
  * An artifact output to node input configuration

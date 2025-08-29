@@ -1,6 +1,6 @@
 private import experimental.quantum.Language
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
-import semmle.code.cpp.dataflow.new.DataFlow
+import semmle.code.cpp.dataflow.new.TaintTracking
 // Importing these intializers here to ensure the are part of any model that is
 // using OpenSslOperationBase. This further ensures that initializers are tied to opeartions
 // even if only importing the operation by itself.
@@ -488,7 +488,7 @@ module OperationStepCtxFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module OperationStepCtxFlow = DataFlow::Global<OperationStepCtxFlowConfig>;
+module OperationStepCtxFlow = TaintTracking::Global<OperationStepCtxFlowConfig>;
 
 /**
  * A flow from AVC to the first `OperationStep` the AVC reaches as an input.
@@ -514,7 +514,7 @@ module AvcToOperationStepFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module AvcToOperationStepFlow = DataFlow::Global<AvcToOperationStepFlowConfig>;
+module AvcToOperationStepFlow = TaintTracking::Global<AvcToOperationStepFlowConfig>;
 
 module EncValToInitEncArgConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr().getValue().toInt() in [0, 1] }
@@ -524,7 +524,7 @@ module EncValToInitEncArgConfig implements DataFlow::ConfigSig {
   }
 }
 
-module EncValToInitEncArgFlow = DataFlow::Global<EncValToInitEncArgConfig>;
+module EncValToInitEncArgFlow = TaintTracking::Global<EncValToInitEncArgConfig>;
 
 private Crypto::KeyOperationSubtype intToCipherOperationSubtype(int i) {
   i = 0 and
