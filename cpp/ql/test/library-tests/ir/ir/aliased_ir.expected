@@ -20430,6 +20430,25 @@ ir.cpp:
 # 2774|     v2774_6(void)           = AliasedUse                    : ~m2776_6
 # 2774|     v2774_7(void)           = ExitFunction                  : 
 
+# 2779| void vla_sizeof_test(int, size_t, char)
+# 2779|   Block 0
+# 2779|     v2779_1(void)                 = EnterFunction             : 
+# 2779|     m2779_2(unknown)              = AliasedDefinition         : 
+# 2779|     m2779_3(unknown)              = InitializeNonLocal        : 
+# 2779|     m2779_4(unknown)              = Chi                       : total:m2779_2, partial:m2779_3
+# 2779|     r2779_5(glval<int>)           = VariableAddress[len1]     : 
+# 2779|     m2779_6(int)                  = InitializeParameter[len1] : &:r2779_5
+# 2779|     r2779_7(glval<unsigned long>) = VariableAddress[len2]     : 
+# 2779|     m2779_8(unsigned long)        = InitializeParameter[len2] : &:r2779_7
+# 2779|     r2779_9(glval<char>)          = VariableAddress[len3]     : 
+# 2779|     m2779_10(char)                = InitializeParameter[len3] : &:r2779_9
+# 2781|     r2781_1(glval<char[]>)        = VariableAddress[tmp1]     : 
+# 2781|     m2781_2(char[])               = Uninitialized[tmp1]       : &:r2781_1
+# 2781|     r2781_3(glval<int>)           = VariableAddress[len1]     : 
+# 2781|     r2781_4(int)                  = Load[len1]                : &:r2781_3, m2779_6
+# 2781|     v2781_5(void)                 = NoOp                      : 
+# 2782|     r2782_1(glval<unsigned long>) = VariableAddress[x]        : 
+
 ir23.cpp:
 #    1| bool consteval_1()
 #    1|   Block 0

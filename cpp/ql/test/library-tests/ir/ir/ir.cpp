@@ -2776,4 +2776,18 @@ void test_allocation_with_initializer() {
     long* p2 = new long(42);
 }
 
+void vla_sizeof_test(int len1, size_t len2, char len3)
+{
+  char tmp1[len1];
+  size_t x = sizeof(tmp1);
+  int tmp2[len1][len2];
+  size_t y = sizeof(tmp2);
+  size_t z = sizeof(*tmp2);
+  int tmp3[len1][len2][len3];
+  size_t w = sizeof(tmp3);
+  size_t v = sizeof(*tmp3);
+  size_t u = sizeof(**tmp3);
+  size_t t = sizeof(***tmp3);
+}
+
 // semmle-extractor-options: -std=c++20 --clang
