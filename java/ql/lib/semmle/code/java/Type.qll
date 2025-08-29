@@ -15,6 +15,7 @@ module;
 import Member
 import Modifier
 import JDK
+private import semmle.code.java.Overlay
 
 /**
  * Holds if reference type `t` is an immediate super-type of `sub`.
@@ -996,6 +997,10 @@ class ClassOrInterface extends RefType, @classorinterface {
 
   /** Get the companion object of this class or interface, if any. */
   CompanionObject getCompanionObject() { type_companion_object(this, _, result) }
+}
+
+overlay[local]
+private class DiscardableClassOrInterface extends DiscardableReferableLocatable, @classorinterface {
 }
 
 private string getAPublicObjectMethodSignature() {
