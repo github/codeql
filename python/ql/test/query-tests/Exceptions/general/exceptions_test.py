@@ -61,8 +61,34 @@ try:
     val.attr
 except Exception:
     print (2)
-except AttributeError:
+except AttributeError: # $Alert[py/unreachable-except]
     print (3)
+
+class MyExc(ValueError):
+    pass 
+
+try:
+    pass
+except ValueError:
+    pass 
+except MyExc: # $Alert[py/unreachable-except]
+    pass 
+
+class MyBaseExc(Exception):
+    pass 
+
+class MySubExc(MyBaseExc):
+    pass 
+
+try:
+    pass
+except MyBaseExc:
+    pass 
+except MySubExc: # $Alert[py/unreachable-except]
+    pass 
+except Exception:
+    pass
+
     
 #Catch BaseException
 def catch_base_exception():
