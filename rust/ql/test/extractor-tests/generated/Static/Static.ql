@@ -16,14 +16,6 @@ query predicate instances(
   if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no"
 }
 
-query predicate getExtendedCanonicalPath(Static x, string getExtendedCanonicalPath) {
-  toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
-}
-
-query predicate getCrateOrigin(Static x, string getCrateOrigin) {
-  toBeTested(x) and not x.isUnknown() and getCrateOrigin = x.getCrateOrigin()
-}
-
 query predicate getAttributeMacroExpansion(Static x, MacroItems getAttributeMacroExpansion) {
   toBeTested(x) and
   not x.isUnknown() and

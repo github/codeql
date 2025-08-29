@@ -1,7 +1,5 @@
 instances
 | gen_static.rs:4:5:7:23 | Static | isMut: | no | isStatic: | yes | isUnsafe: | no |
-getExtendedCanonicalPath
-getCrateOrigin
 getAttributeMacroExpansion
 getAttr
 getBody

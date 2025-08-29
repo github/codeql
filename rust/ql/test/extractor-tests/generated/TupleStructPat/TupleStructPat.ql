@@ -4,14 +4,6 @@ import TestUtils
 
 query predicate instances(TupleStructPat x) { toBeTested(x) and not x.isUnknown() }
 
-query predicate getResolvedPath(TupleStructPat x, string getResolvedPath) {
-  toBeTested(x) and not x.isUnknown() and getResolvedPath = x.getResolvedPath()
-}
-
-query predicate getResolvedCrateOrigin(TupleStructPat x, string getResolvedCrateOrigin) {
-  toBeTested(x) and not x.isUnknown() and getResolvedCrateOrigin = x.getResolvedCrateOrigin()
-}
-
 query predicate getPath(TupleStructPat x, Path getPath) {
   toBeTested(x) and not x.isUnknown() and getPath = x.getPath()
 }

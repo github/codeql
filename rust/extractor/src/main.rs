@@ -1,6 +1,6 @@
 use crate::diagnostics::{ExtractionStep, emit_extraction_diagnostics};
 use crate::rust_analyzer::{RustAnalyzerNoSemantics, path_to_file_id};
-use crate::translate::{ResolvePaths, SourceKind};
+use crate::translate::SourceKind;
 use crate::trap::TrapId;
 use anyhow::Context;
 use archive::Archiver;
@@ -50,13 +50,7 @@ impl<'a> Extractor<'a> {
         }
     }
 
-    fn extract(
-        &mut self,
-        rust_analyzer: &RustAnalyzer,
-        file: &Path,
-        resolve_paths: ResolvePaths,
-        source_kind: SourceKind,
-    ) {
+    fn extract(&mut self, rust_analyzer: &RustAnalyzer, file: &Path, source_kind: SourceKind) {
         self.archiver.archive(file);
         let before_parse = Instant::now();
         let ParseResult {
@@ -79,7 +73,6 @@ impl<'a> Extractor<'a> {
             label,
             line_index,
             semantics_info.as_ref().ok(),
-            resolve_paths,
             source_kind,
         );
 
@@ -118,15 +111,9 @@ impl<'a> Extractor<'a> {
         file: &Path,
         semantics: &Semantics<'_, RootDatabase>,
         vfs: &Vfs,
-        resolve_paths: ResolvePaths,
         source_kind: SourceKind,
     ) {
-        self.extract(
-            &RustAnalyzer::new(vfs, semantics),
-            file,
-            resolve_paths,
-            source_kind,
-        );
+        self.extract(&RustAnalyzer::new(vfs, semantics), file, source_kind);
     }
 
     pub fn extract_without_semantics(
@@ -135,12 +122,7 @@ impl<'a> Extractor<'a> {
         source_kind: SourceKind,
         err: RustAnalyzerNoSemantics,
     ) {
-        self.extract(
-            &RustAnalyzer::from(err),
-            file,
-            ResolvePaths::No,
-            source_kind,
-        );
+        self.extract(&RustAnalyzer::from(err), file, source_kind);
     }
 
     pub fn load_manifest(
@@ -289,20 +271,15 @@ fn main() -> anyhow::Result<()> {
     }
     let cwd = cwd()?;
     let (cargo_config, load_cargo_config) = cfg.to_cargo_config(&cwd);
-    let resolve_paths = if cfg.skip_path_resolution {
-        ResolvePaths::No
+    let library_mode = if cfg.extract_dependencies_as_source {
+        SourceKind::Source
     } else {
-        ResolvePaths::Yes
+        SourceKind::Library
     };
-    let (library_mode, library_resolve_paths) = if cfg.extract_dependencies_as_source {
-        (SourceKind::Source, resolve_paths)
+    let source_mode = if cfg.force_library_mode {
+        library_mode
     } else {
-        (SourceKind::Library, ResolvePaths::No)
-    };
-    let (source_mode, source_resolve_paths) = if cfg.force_library_mode {
-        (library_mode, library_resolve_paths)
-    } else {
-        (SourceKind::Source, resolve_paths)
+        SourceKind::Source
     };
     let mut processed_files: HashSet<PathBuf, RandomState> =
         HashSet::from_iter(files.iter().cloned());
@@ -318,13 +295,7 @@ fn main() -> anyhow::Result<()> {
             let semantics = Semantics::new(db);
             for file in files {
                 match extractor.load_source(file, &semantics, vfs) {
-                    Ok(()) => extractor.extract_with_semantics(
-                        file,
-                        &semantics,
-                        vfs,
-                        source_resolve_paths,
-                        source_mode,
-                    ),
+                    Ok(()) => extractor.extract_with_semantics(file, &semantics, vfs, source_mode),
                     Err(e) => extractor.extract_without_semantics(file, source_mode, e),
                 };
             }
@@ -337,13 +308,7 @@ fn main() -> anyhow::Result<()> {
                             .source_root(db)
                             .is_library
                     {
-                        extractor.extract_with_semantics(
-                            file,
-                            &semantics,
-                            vfs,
-                            library_resolve_paths,
-                            library_mode,
-                        );
+                        extractor.extract_with_semantics(file, &semantics, vfs, library_mode);
                         extractor.archiver.archive(file);
                     }
                 }

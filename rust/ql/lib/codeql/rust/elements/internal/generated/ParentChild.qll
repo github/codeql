@@ -1669,6 +1669,18 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfPathPat(PathPat e, int index, string partialPredicateCall) {
+    exists(int n, int nPath |
+      n = 0 and
+      nPath = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getPath() and partialPredicateCall = "Path()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfPathTypeRepr(
     PathTypeRepr e, int index, string partialPredicateCall
   ) {
@@ -1870,6 +1882,23 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfStructExpr(StructExpr e, int index, string partialPredicateCall) {
+    exists(int n, int nPath, int nStructExprFieldList |
+      n = 0 and
+      nPath = n + 1 and
+      nStructExprFieldList = nPath + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getPath() and partialPredicateCall = "Path()"
+        or
+        index = nPath and
+        result = e.getStructExprFieldList() and
+        partialPredicateCall = "StructExprFieldList()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfStructFieldList(
     StructFieldList e, int index, string partialPredicateCall
   ) {
@@ -1881,6 +1910,23 @@ private module Impl {
         or
         result = e.getField(index - n) and
         partialPredicateCall = "Field(" + (index - n).toString() + ")"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfStructPat(StructPat e, int index, string partialPredicateCall) {
+    exists(int n, int nPath, int nStructPatFieldList |
+      n = 0 and
+      nPath = n + 1 and
+      nStructPatFieldList = nPath + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getPath() and partialPredicateCall = "Path()"
+        or
+        index = nPath and
+        result = e.getStructPatFieldList() and
+        partialPredicateCall = "StructPatFieldList()"
       )
     )
   }
@@ -1942,6 +1988,24 @@ private module Impl {
         or
         result = e.getField(index - n) and
         partialPredicateCall = "Field(" + (index - n).toString() + ")"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfTupleStructPat(
+    TupleStructPat e, int index, string partialPredicateCall
+  ) {
+    exists(int n, int nPath, int nField |
+      n = 0 and
+      nPath = n + 1 and
+      nField = nPath + 1 + max(int i | i = -1 or exists(e.getField(i)) | i) and
+      (
+        none()
+        or
+        index = n and result = e.getPath() and partialPredicateCall = "Path()"
+        or
+        result = e.getField(index - nPath) and
+        partialPredicateCall = "Field(" + (index - nPath).toString() + ")"
       )
     )
   }
@@ -2433,52 +2497,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfPathPat(PathPat e, int index, string partialPredicateCall) {
-    exists(int n, int nPath |
-      n = 0 and
-      nPath = n + 1 and
-      (
-        none()
-        or
-        index = n and result = e.getPath() and partialPredicateCall = "Path()"
-      )
-    )
-  }
-
-  private Element getImmediateChildOfStructExpr(StructExpr e, int index, string partialPredicateCall) {
-    exists(int n, int nPath, int nStructExprFieldList |
-      n = 0 and
-      nPath = n + 1 and
-      nStructExprFieldList = nPath + 1 and
-      (
-        none()
-        or
-        index = n and result = e.getPath() and partialPredicateCall = "Path()"
-        or
-        index = nPath and
-        result = e.getStructExprFieldList() and
-        partialPredicateCall = "StructExprFieldList()"
-      )
-    )
-  }
-
-  private Element getImmediateChildOfStructPat(StructPat e, int index, string partialPredicateCall) {
-    exists(int n, int nPath, int nStructPatFieldList |
-      n = 0 and
-      nPath = n + 1 and
-      nStructPatFieldList = nPath + 1 and
-      (
-        none()
-        or
-        index = n and result = e.getPath() and partialPredicateCall = "Path()"
-        or
-        index = nPath and
-        result = e.getStructPatFieldList() and
-        partialPredicateCall = "StructPatFieldList()"
-      )
-    )
-  }
-
   private Element getImmediateChildOfTrait(Trait e, int index, string partialPredicateCall) {
     exists(
       int n, int nAttributeMacroExpansion, int nAssocItemList, int nAttr, int nGenericParamList,
@@ -2564,24 +2582,6 @@ private module Impl {
         index = nVisibility and
         result = e.getWhereClause() and
         partialPredicateCall = "WhereClause()"
-      )
-    )
-  }
-
-  private Element getImmediateChildOfTupleStructPat(
-    TupleStructPat e, int index, string partialPredicateCall
-  ) {
-    exists(int n, int nPath, int nField |
-      n = 0 and
-      nPath = n + 1 and
-      nField = nPath + 1 + max(int i | i = -1 or exists(e.getField(i)) | i) and
-      (
-        none()
-        or
-        index = n and result = e.getPath() and partialPredicateCall = "Path()"
-        or
-        result = e.getField(index - nPath) and
-        partialPredicateCall = "Field(" + (index - nPath).toString() + ")"
       )
     )
   }
@@ -3249,6 +3249,8 @@ private module Impl {
     or
     result = getImmediateChildOfParenTypeRepr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfPathPat(e, index, partialAccessor)
+    or
     result = getImmediateChildOfPathTypeRepr(e, index, partialAccessor)
     or
     result = getImmediateChildOfPrefixExpr(e, index, partialAccessor)
@@ -3275,7 +3277,11 @@ private module Impl {
     or
     result = getImmediateChildOfSliceTypeRepr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfStructExpr(e, index, partialAccessor)
+    or
     result = getImmediateChildOfStructFieldList(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfStructPat(e, index, partialAccessor)
     or
     result = getImmediateChildOfTryExpr(e, index, partialAccessor)
     or
@@ -3284,6 +3290,8 @@ private module Impl {
     result = getImmediateChildOfTupleFieldList(e, index, partialAccessor)
     or
     result = getImmediateChildOfTuplePat(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfTupleStructPat(e, index, partialAccessor)
     or
     result = getImmediateChildOfTupleTypeRepr(e, index, partialAccessor)
     or
@@ -3329,17 +3337,9 @@ private module Impl {
     or
     result = getImmediateChildOfPathExpr(e, index, partialAccessor)
     or
-    result = getImmediateChildOfPathPat(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfStructExpr(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfStructPat(e, index, partialAccessor)
-    or
     result = getImmediateChildOfTrait(e, index, partialAccessor)
     or
     result = getImmediateChildOfTraitAlias(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfTupleStructPat(e, index, partialAccessor)
     or
     result = getImmediateChildOfUse(e, index, partialAccessor)
     or

@@ -1,7 +1,5 @@
 instances
 | gen_enum.rs:4:5:7:34 | enum E |
-getExtendedCanonicalPath
-getCrateOrigin
 getAttributeMacroExpansion
 getDeriveMacroExpansion
 getAttr

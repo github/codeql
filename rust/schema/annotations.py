@@ -252,7 +252,7 @@ class _:
     attrs: drop
 
 
-@annotate(MethodCallExpr, replace_bases={Expr: CallExprBase}, add_bases=(Resolvable,), cfg=True)
+@annotate(MethodCallExpr, replace_bases={Expr: CallExprBase}, cfg=True)
 class _:
     """
     A method call expression. For example:

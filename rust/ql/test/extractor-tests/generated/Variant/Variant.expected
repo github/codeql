@@ -2,8 +2,6 @@ instances
 | gen_variant.rs:7:14:7:14 | A |
 | gen_variant.rs:7:17:7:22 | B |
 | gen_variant.rs:7:25:7:36 | C |
-getExtendedCanonicalPath
-getCrateOrigin
 getAttr
 getDiscriminant
 getFieldList

@@ -1,7 +1,5 @@
 instances
 | gen_trait_alias.rs:7:5:7:26 | TraitAlias |
-getExtendedCanonicalPath
-getCrateOrigin
 getAttributeMacroExpansion
 getAttr
 getGenericParamList

@@ -139,7 +139,6 @@ import codeql.rust.elements.RefExpr
 import codeql.rust.elements.RefPat
 import codeql.rust.elements.RefTypeRepr
 import codeql.rust.elements.Rename
-import codeql.rust.elements.Resolvable
 import codeql.rust.elements.RestPat
 import codeql.rust.elements.RetTypeRepr
 import codeql.rust.elements.ReturnExpr

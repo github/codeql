@@ -4,8 +4,8 @@
  */
 
 private import internal.PathAstNodeImpl
+import codeql.rust.elements.AstNode
 import codeql.rust.elements.Path
-import codeql.rust.elements.Resolvable
 
 /**
  * An AST element wrapping a path (`PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat`).

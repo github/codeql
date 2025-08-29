@@ -1,8 +1,6 @@
 instances
 | gen_type_alias.rs:4:5:5:26 | type Point | isDefault: | no |
 | gen_type_alias.rs:8:9:8:20 | type Output | isDefault: | no |
-getExtendedCanonicalPath
-getCrateOrigin
 getAttributeMacroExpansion
 getAttr
 getGenericParamList

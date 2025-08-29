@@ -69,7 +69,6 @@ pub struct Config {
     pub build_script_command: Vec<String>,
     pub extra_includes: Vec<PathBuf>,
     pub proc_macro_server: Option<PathBuf>,
-    pub skip_path_resolution: bool,
     pub extract_dependencies_as_source: bool,
     pub force_library_mode: bool, // for testing purposes
 }

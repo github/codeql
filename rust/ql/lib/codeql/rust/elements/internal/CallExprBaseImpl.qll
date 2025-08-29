@@ -5,7 +5,6 @@
  */
 
 private import codeql.rust.elements.internal.generated.CallExprBase
-private import codeql.rust.elements.Resolvable
 
 /**
  * INTERNAL: This module contains the customizable definition of `CallExprBase` and should not
@@ -14,13 +13,6 @@ private import codeql.rust.elements.Resolvable
 module Impl {
   private import rust
   private import codeql.rust.internal.TypeInference as TypeInference
-
-  pragma[nomagic]
-  Resolvable getCallResolvable(CallExprBase call) {
-    result = call.(MethodCallExpr)
-    or
-    result = call.(CallExpr).getFunction().(PathExpr)
-  }
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
