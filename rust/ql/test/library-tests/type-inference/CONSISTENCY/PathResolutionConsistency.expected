@@ -1,8 +1,14 @@
 multipleCallTargets
-| dereference.rs:61:15:61:24 | e1.deref() |
-| main.rs:2308:13:2308:31 | ...::from(...) |
-| main.rs:2309:13:2309:31 | ...::from(...) |
-| main.rs:2310:13:2310:31 | ...::from(...) |
-| main.rs:2316:13:2316:31 | ...::from(...) |
-| main.rs:2317:13:2317:31 | ...::from(...) |
-| main.rs:2318:13:2318:31 | ...::from(...) |
+| dereference.rs:69:15:69:24 | e1.deref() |
+| dereference.rs:182:17:182:26 | ... .foo() |
+| dereference.rs:183:17:183:23 | S.foo() |
+| dereference.rs:184:17:184:30 | ... .foo() |
+| dereference.rs:186:17:186:25 | S.bar(...) |
+| dereference.rs:187:17:187:29 | S.bar(...) |
+| main.rs:1754:13:1754:63 | ... .partial_cmp(...) |
+| main.rs:2323:13:2323:31 | ...::from(...) |
+| main.rs:2324:13:2324:31 | ...::from(...) |
+| main.rs:2325:13:2325:31 | ...::from(...) |
+| main.rs:2331:13:2331:31 | ...::from(...) |
+| main.rs:2332:13:2332:31 | ...::from(...) |
+| main.rs:2333:13:2333:31 | ...::from(...) |

@@ -99,6 +99,11 @@ private module Input1 implements InputSig1<Location> {
         id1 = 0 and
         id2 = 2
         or
+        tp0 instanceof PtrTypeParameter and
+        kind = 0 and
+        id1 = 0 and
+        id2 = 3
+        or
         kind = 1 and
         id1 = 0 and
         id2 =
@@ -266,7 +271,7 @@ private module CertainTypeInference {
 
   pragma[nomagic]
   private Type getCallExprType(
-    CallExpr ce, Path p, CallExprBaseMatchingInput::FunctionDecl f, TypePath tp
+    CallExpr ce, Path p, MethodCallExprMatchingInput::FunctionDecl f, TypePath tp
   ) {
     callResolvesTo(ce, p, f) and
     result = f.getReturnType(tp)
@@ -304,7 +309,7 @@ private module CertainTypeInference {
         // instantiation from the path. For instance, for `fn bar<A>(a: A) -> A`
         // and the path `bar<i64>`, we must resolve `A` to `i64`.
         result =
-          ce.(CallExprBaseMatchingInput::Access)
+          ce.(CallExprMatchingInput::Access)
               .getTypeArgument(TTypeParamTypeArgumentPosition(tp), suffix)
       )
       or
@@ -602,50 +607,15 @@ private Type inferTypeEquality(AstNode n, TypePath path) {
   )
 }
 
-/**
- * Gets the type of the implicitly typed `self` parameter, taking into account
- * whether the parameter is passed by value or by reference.
- */
-bindingset[self, suffix, t]
-pragma[inline_late]
-private Type getRefAdjustImplicitSelfType(SelfParam self, TypePath suffix, Type t, TypePath path) {
-  not self.hasTypeRepr() and
-  (
-    if self.isRef()
-    then
-      // `fn f(&self, ...)`
-      path.isEmpty() and
-      result = TRefType()
-      or
-      path = TypePath::cons(TRefTypeParameter(), suffix) and
-      result = t
-    else (
-      // `fn f(self, ...)`
-      path = suffix and
-      result = t
-    )
-  )
-}
-
-pragma[nomagic]
-private Type resolveImplSelfType(Impl i, TypePath path) {
-  result = i.getSelfTy().(TypeMention).resolveTypeAt(path)
-}
-
-/** Gets the type at `path` of the implicitly typed `self` parameter. */
-pragma[nomagic]
-private Type inferImplicitSelfType(SelfParam self, TypePath path) {
-  exists(ImplOrTraitItemNode i, Function f, TypePath suffix, Type t |
-    f = i.getAnAssocItem() and
-    self = f.getParamList().getSelfParam() and
-    result = getRefAdjustImplicitSelfType(self, suffix, t, path)
-  |
-    t = resolveImplSelfType(i, suffix)
-    or
-    t = TSelfTypeParameter(i) and suffix.isEmpty()
-  )
-}
-
+// // todo
+// // /** Gets the type at `path` of the implicitly typed `self` parameter. */
+// pragma[nomagic]
+// private Type resolveImplType(ImplOrTraitItemNode i, TypePath path) {
+//   result = resolveImplSelfType(i, path)
+//   or
+//   result = TSelfTypeParameter(i) and path.isEmpty()
+// }
+// todo
 /**
  * A matching configuration for resolving types of struct expressions
  * like `Foo { bar = baz }`.
@@ -800,10 +770,10 @@ private Type getTypeQualifier(CallExpr ce, TypePath path) {
 }
 
 /**
- * A matching configuration for resolving types of call expressions
- * like `foo::bar(baz)` and `foo.bar(baz)`.
+ * A matching configuration for resolving types of method call expressions
+ * like `foo.bar(baz)`.
  */
-private module CallExprBaseMatchingInput implements MatchingInputSig {
+private module MethodCallExprMatchingInput implements MatchingWithStateInputSig {
   private predicate paramPos(ParamList pl, Param p, int pos) { p = pl.getParam(pos) }
 
   private newtype TDeclarationPosition =
@@ -840,6 +810,492 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
       or
       dpos.isReturn() and
       result = this.getReturnType(path)
+    }
+
+    private Type testgetDeclaredType(DeclarationPosition dpos, TypePath path) {
+      result = this.getDeclaredType(dpos, path) and
+      this.getLocation().getStartLine() = 11 and
+      this.fromSource()
+    }
+  }
+
+  additional class FunctionDecl extends Declaration, Function {
+    override TypeParameter getTypeParameter(TypeParameterPosition ppos) {
+      typeParamMatchPosition(this.getGenericParamList().getATypeParam(), result, ppos)
+      or
+      exists(ImplOrTraitItemNode i | this = i.getAnAssocItem() |
+        typeParamMatchPosition(i.getTypeParam(_), result, ppos)
+        or
+        ppos.isImplicit() and result = TSelfTypeParameter(i)
+        or
+        ppos.isImplicit() and
+        result.(AssociatedTypeTypeParameter).getTrait() = i
+      )
+      or
+      ppos.isImplicit() and
+      this = result.(ImplTraitTypeTypeParameter).getFunction()
+    }
+
+    override Type getParameterType(DeclarationPosition dpos, TypePath path) {
+      exists(Param p, int i |
+        paramPos(this.getParamList(), p, i) and
+        i = dpos.asPosition() and
+        result = p.getTypeRepr().(TypeMention).resolveTypeAt(path)
+      )
+      or
+      dpos.isSelf() and
+      exists(SelfParam self |
+        self = pragma[only_bind_into](this.getParamList().getSelfParam()) and
+        result = getSelfParamTypeMention(self).resolveTypeAt(path)
+      )
+      or
+      //
+      // For associated functions, we may also need to match type arguments against
+      // the `Self` type. For example, in
+      //
+      // ```rust
+      // struct Foo<T>(T);
+      //
+      // impl<T : Default> Foo<T> {
+      //   fn default() -> Self {
+      //     Foo(Default::default())
+      //   }
+      // }
+      //
+      // Foo::<i32>::default();
+      // ```
+      //
+      // we need to match `i32` against the type parameter `T` of the `impl` block.
+      //todo: share code with `resolveSelfType`
+      exists(ImplOrTraitItemNode i |
+        this = i.getAnAssocItem() and
+        dpos.isSelf() and
+        not this.getParamList().hasSelfParam() and
+        result = resolveImplType(i, path)
+      )
+    }
+
+    private Type resolveRetType(TypePath path) {
+      result = this.getRetType().getTypeRepr().(TypeMention).resolveTypeAt(path)
+    }
+
+    override Type getReturnType(TypePath path) {
+      if this.isAsync()
+      then
+        path.isEmpty() and
+        result = getFutureTraitType()
+        or
+        exists(TypePath suffix |
+          result = this.resolveRetType(suffix) and
+          path = TypePath::cons(getFutureOutputTypeParameter(), suffix)
+        )
+      else result = this.resolveRetType(path)
+    }
+  }
+
+  private newtype TAccessPosition =
+    TArgumentAccessPosition(ArgumentPosition pos) or
+    TReturnAccessPosition()
+
+  class AccessPosition extends TAccessPosition {
+    ArgumentPosition getArgumentPosition() { this = TArgumentAccessPosition(result) }
+
+    predicate isReturn() { this = TReturnAccessPosition() }
+
+    string toString() {
+      exists(ArgumentPosition pos |
+        this = TArgumentAccessPosition(pos) and
+        result = pos.toString()
+      )
+      or
+      this.isReturn() and
+      result = "(return)"
+    }
+  }
+
+  class State = string;
+
+  final private class MethodCallFinal = MethodCall;
+
+  final class Access extends MethodCallFinal {
+    pragma[nomagic]
+    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
+      exists(TypeMention arg |
+        result = arg.resolveTypeAt(path) and
+        arg =
+          this.(MethodCallExpr).getGenericArgList().getTypeArg(apos.asMethodTypeArgumentPosition())
+      )
+    }
+
+    AstNode getNodeAt(AccessPosition apos) {
+      exists(ArgumentPosition pos | apos = TArgumentAccessPosition(pos) |
+        result = this.getArgument(pos)
+      )
+      or
+      result = this and apos.isReturn()
+    }
+
+    private Type testgetInferredType(State state, AccessPosition apos, TypePath path) {
+      exists(this.getTarget(state)) and
+      this.getLocation().getStartLine() = 1355 and
+      this.fromSource() and
+      result = this.getInferredType(state, apos, path)
+    }
+
+    pragma[nomagic]
+    private Type testgetInferredSelfType(State state, TypePath path) {
+      this.getLocation().getStartLine() = 1355 and
+      this.fromSource() and
+      result = this.getInferredSelfType(state, path)
+    }
+
+    pragma[nomagic]
+    private Type getInferredSelfType(State state, TypePath path) {
+      exists(State state0, TypePath path0 |
+        result = MkMethodCallDerefChainRef(this, state0).(MethodCallDerefChainRef).getTypeAt(path0)
+      |
+        state = state0 and
+        path = path0
+        // or
+        // state = state0 + ";borrow" and
+        // path = TypePath::cons(TRefTypeParameter(), path0) and
+        // not path0.getHead() = TRefTypeParameter()
+      )
+    }
+
+    pragma[nomagic]
+    Type getInferredType(State state, AccessPosition apos, TypePath path) {
+      exists(ArgumentPosition pos |
+        apos = TArgumentAccessPosition(pos) and
+        pos.isSelf()
+      |
+        result = this.getInferredSelfType(state, path)
+        // or
+        // // The `Self` type is supplied explicitly as a type qualifier, e.g. `Foo::<Bar>::baz()`
+        // exists(this.getTarget(state)) and
+        // result = getTypeQualifier(this, path)
+      )
+      or
+      exists(this.getTarget(state)) and
+      not apos.getArgumentPosition().isSelf() and
+      // result = inferType(this.getNodeAt(apos), path)
+      exists(Type t0, TypePath path0 | t0 = inferType(this.getNodeAt(apos), path0) |
+        if
+          apos.isReturn() and
+          this instanceof IndexExpr
+        then (
+          path.isEmpty() and
+          result = TRefType()
+          or
+          path = TypePath::cons(TRefTypeParameter(), path0) and
+          result = t0
+        ) else (
+          path = path0 and
+          result = t0
+        )
+      )
+    }
+
+    // bindingset[state]
+    // Type getInferredType(State state, AccessPosition apos, TypePath path) {
+    //   exists(Type t0, TypePath path0 |
+    //     this.implicitBorrowAt(apos.getArgumentPosition(true), _) and
+    //     // this.mayImplicitBorrowAt(state, apos, true) and
+    //     (
+    //       path.isEmpty() and
+    //       result = TRefType()
+    //       or
+    //       path = TypePath::cons(TRefTypeParameter(), path0) and
+    //       // not path0.isCons(TRefTypeParameter(), _) and
+    //       // not (path0.isEmpty() and result = TRefType()) and
+    //       result = t0
+    //     )
+    //     or
+    //     exists(ArgumentPosition pos |
+    //       pos = apos.getArgumentPosition(false) and
+    //       not this.implicitBorrowAt(pos, true)
+    //     ) and
+    //     result = t0 and
+    //     path = path0
+    //   |
+    //     t0 = this.getInferredType0(state, apos, path0)
+    //     // if apos.getArgumentPosition(_).isSelf()
+    //     // then
+    //     //   t0 = this.getInferredSelfType(state, path0)
+    //     //   or
+    //     //   // The `Self` type is supplied explicitly as a type qualifier, e.g. `Foo::<Bar>::baz()`
+    //     //   t0 = getTypeQualifier(this, path0) and
+    //     //   apos.getArgumentPosition(false).isSelf() and
+    //     //   exists(state)
+    //     // else (
+    //     //   t0 = inferType(this.getNodeAt(apos), path0) and exists(state)
+    //     // )
+    //   )
+    // }
+    // bindingset[state]
+    // pragma[nomagic]
+    // predicate mayImplicitBorrowAt_(State state, AccessPosition apos, boolean borrowed) {
+    //   exists(boolean certain | this.implicitBorrowAt(apos.getArgumentPosition(borrowed), certain) |
+    //     this.getInferredType0(state, apos, TypePath::nil()) != TRefType()
+    //   )
+    // }
+    // pragma[nomagic]
+    // private predicate mayNotImplicitBorrowAt0(State state, AccessPosition apos) {
+    //   not this.implicitBorrowAt(apos.getArgumentPosition(_), true) and
+    //   this.implicitBorrowAt(apos.getArgumentPosition(_), _) and
+    //   this.getInferredType0(state, apos, TypePath::nil()) = TRefType()
+    // }
+    // bindingset[state]
+    // predicate mayNotImplicitBorrowAt(State state, AccessPosition apos) {
+    //   // not this.implicitBorrowAt(apos.getArgumentPosition(_), true) and
+    //   if this.implicitBorrowAt(apos.getArgumentPosition(_), _)
+    //   then this.mayNotImplicitBorrowAt0(state, apos)
+    //   else any()
+    // }
+    Declaration getTarget(State state) {
+      exists(State state0 |
+        result = resolveMethodCallTarget(MkMethodCallDerefChainRef(this, state0)) // mutual recursion; resolving method calls requires resolving types and vice versa
+      |
+        state = state0 //or
+        // state = state0 + ";borrow"
+      )
+      // or
+      // result = resolveFunctionCallTarget(this) and // potential mutual recursion; resolving some associated function calls requires resolving types
+      // state = ""
+    }
+
+    private Declaration testgetTarget(State state) {
+      this.getLocation().getStartLine() = 1286 and
+      this.fromSource() and
+      result = this.getTarget(state)
+    }
+
+    private Function testgetTarget(
+      State state, Function f, TraitItemNode trait, string can, string name
+    ) {
+      this.getLocation().getStartLine() = 2071 and
+      this.fromSource() and
+      result.implements(f) and
+      result = this.getTarget(state) and
+      f = trait.getAssocItem(name) and
+      can = trait.getCanonicalPath(_)
+    }
+  }
+
+  predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos) {
+    apos.getArgumentPosition() = dpos.asArgumentPosition()
+    or
+    apos.isReturn() and dpos.isReturn()
+  }
+  // bindingset[apos, target, path, t]
+  // pragma[inline_late]
+  // predicate adjustAccessType(
+  //   AccessPosition apos, Declaration target, TypePath path, Type t, TypePath pathAdj, Type tAdj
+  // ) {
+  //   apos.isBorrowed(true) and
+  //   pathAdj = TypePath::cons(TRefTypeParameter(), path) and
+  //   tAdj = t
+  //   or
+  //   apos.isBorrowed(false) and
+  //   exists(Type selfParamType |
+  //     selfParamType =
+  //       target
+  //           .getParameterType(TArgumentDeclarationPosition(apos.getArgumentPosition()),
+  //             TypePath::nil())
+  //   |
+  //     if selfParamType = TRefType()
+  //     then
+  //       if t != TRefType() and path.isEmpty()
+  //       then
+  //         // adjust for implicit borrow
+  //         pathAdj.isEmpty() and
+  //         tAdj = TRefType()
+  //         or
+  //         // adjust for implicit borrow
+  //         pathAdj = TypePath::singleton(TRefTypeParameter()) and
+  //         tAdj = t
+  //       else
+  //         if path.isCons(TRefTypeParameter(), _)
+  //         then
+  //           pathAdj = path and
+  //           tAdj = t
+  //         else (
+  //           // adjust for implicit borrow
+  //           not (t = TRefType() and path.isEmpty()) and
+  //           pathAdj = TypePath::cons(TRefTypeParameter(), path) and
+  //           tAdj = t
+  //         )
+  //     else (
+  //       // adjust for implicit deref
+  //       path.isCons(TRefTypeParameter(), pathAdj) and
+  //       tAdj = t
+  //       or
+  //       not path.isCons(TRefTypeParameter(), _) and
+  //       not (t = TRefType() and path.isEmpty()) and
+  //       pathAdj = path and
+  //       tAdj = t
+  //     )
+  //   )
+  //   or
+  //   not apos.isBorrowed(_) and
+  //   pathAdj = path and
+  //   tAdj = t
+  // }
+}
+
+private module MethodCallExprMatching = MatchingWithState<MethodCallExprMatchingInput>;
+
+bindingset[s]
+private predicate isBorrowed(string s) { exists(s.splitAt(";", 1)) }
+
+private predicate sdf() { isBorrowed(";ref") }
+
+pragma[nomagic]
+private Type testinferMethodCallExprType(
+  MethodCallExprMatchingInput::Access a, string state,
+  MethodCallExprMatchingInput::AccessPosition apos, TypePath path
+) {
+  // a.getLocation().getStartLine() = 73 and
+  // a.fromSource() and
+  a = Debug::getRelevantLocatable() and
+  result = MethodCallExprMatching::inferAccessType(a, state, apos, path)
+}
+
+private Type testinferMethodCallExprType0(
+  MethodCallExprMatchingInput::Access a, MethodCallExprMatchingInput::AccessPosition apos,
+  AstNode n, string state, TypePath path
+) {
+  n = Debug::getRelevantLocatable() and
+  result = inferMethodCallExprType0(a, apos, n, state, path)
+}
+
+pragma[nomagic]
+private Type inferMethodCallExprType0(
+  MethodCallExprMatchingInput::Access a, MethodCallExprMatchingInput::AccessPosition apos,
+  AstNode n, string state, TypePath path
+) {
+  // a = Debug::getRelevantLocatable() and // todo: remove
+  exists(TypePath path0 |
+    n = a.getNodeAt(apos) and
+    result = MethodCallExprMatching::inferAccessType(a, state, apos, path0)
+  |
+    if
+      apos.isReturn() and
+      a instanceof IndexExpr
+    then
+      // todo: update
+      // The desugaring of the unary `*e` is `*Deref::deref(&e)` and the
+      // desugaring of `a[b]` is `*Index::index(&a, b)`. To handle the deref
+      // expression after the call we must strip a `&` from the type at the
+      // return position.
+      path0.isCons(TRefTypeParameter(), path)
+    else path = path0
+  )
+}
+
+private Type testinferMethodCallExprType(AstNode n, TypePath path) {
+  n = Debug::getRelevantLocatable() and
+  result = inferMethodCallExprType(n, path)
+}
+
+/**
+ * Gets the type of `n` at `path`, where `n` is either a call or an
+ * argument/receiver of a call.
+ */
+pragma[nomagic]
+private Type inferMethodCallExprType(AstNode n, TypePath path) {
+  exists(
+    MethodCallExprMatchingInput::Access a, MethodCallExprMatchingInput::AccessPosition apos,
+    string state, TypePath path0
+  |
+    result = inferMethodCallExprType0(a, apos, n, state, path0)
+  |
+    // n = a.getNodeAt(apos) and
+    // result = MethodCallExprMatching::inferAccessType(a, state, apos, path0)
+    // state = ["", ";", ".ref;ref"] and
+    (
+      not apos.getArgumentPosition().isSelf()
+      or
+      state = ["", ";"]
+    ) and
+    path = path0
+    or
+    // or
+    // (
+    //   state = ";;borrow"
+    //   or
+    //   // isBorrowed(state)
+    //   // apos.isBorrowed(true)
+    //   // The desugaring of the unary `*e` is `*Deref::deref(&e)`   and the
+    //   // desugaring of `a[b]` is `*Index::index(&a, b)`. To handle the deref
+    //   // expression after the call we must strip a `&` from the type at the
+    //   // return position.
+    //   apos.isReturn() and
+    //   (a instanceof DerefExpr or a instanceof IndexExpr)
+    // ) and
+    // path0.isCons(TRefTypeParameter(), path)
+    apos.getArgumentPosition().isSelf() and
+    state = ".ref;" and
+    // adjust for implicit deref
+    // not path0.isCons(TRefTypeParameter(), _) and
+    // not (path0.isEmpty() and result = TRefType()) and
+    path = TypePath::cons(TRefTypeParameter(), path0)
+    or
+    // adjust for implicit borrow
+    apos.getArgumentPosition().isSelf() and
+    state = ";ref" and
+    // if a.receiverImplicitlyBorrowed() then path0.isCons(TRefTypeParameter(), path) else path = path0
+    path0.isCons(TRefTypeParameter(), path)
+  )
+}
+
+/**
+ * A matching configuration for resolving types of function calls
+ * like `foo::bar(baz)`.
+ */
+private module CallExprMatchingInput implements MatchingInputSig {
+  private predicate paramPos(ParamList pl, Param p, int pos) { p = pl.getParam(pos) }
+
+  private newtype TDeclarationPosition =
+    TArgumentDeclarationPosition(ArgumentPosition pos) or
+    TReturnDeclarationPosition()
+
+  class DeclarationPosition extends TDeclarationPosition {
+    predicate isSelf() { this.asArgumentPosition().isSelf() }
+
+    int asPosition() { result = this.asArgumentPosition().asPosition() }
+
+    ArgumentPosition asArgumentPosition() { this = TArgumentDeclarationPosition(result) }
+
+    predicate isReturn() { this = TReturnDeclarationPosition() }
+
+    string toString() {
+      result = this.asArgumentPosition().toString()
+      or
+      this.isReturn() and
+      result = "(return)"
+    }
+  }
+
+  abstract class Declaration extends AstNode {
+    abstract TypeParameter getTypeParameter(TypeParameterPosition ppos);
+
+    pragma[nomagic]
+    abstract Type getParameterType(DeclarationPosition dpos, TypePath path);
+
+    abstract Type getReturnType(TypePath path);
+
+    Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
+      result = this.getParameterType(dpos, path)
+      or
+      dpos.isReturn() and
+      result = this.getReturnType(path)
+    }
+
+    private Type testgetDeclaredType(DeclarationPosition dpos, TypePath path) {
+      result = this.getDeclaredType(dpos, path) and
+      this.getLocation().getStartLine() = 11 and
+      this.fromSource()
     }
   }
 
@@ -900,6 +1356,8 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     }
   }
 
+  private import codeql.rust.elements.internal.OperationImpl as OperationImpl
+
   additional class FunctionDecl extends Declaration, Function {
     override TypeParameter getTypeParameter(TypeParameterPosition ppos) {
       typeParamMatchPosition(this.getGenericParamList().getATypeParam(), result, ppos)
@@ -918,21 +1376,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     }
 
     override Type getParameterType(DeclarationPosition dpos, TypePath path) {
-      exists(Param p, int i |
-        paramPos(this.getParamList(), p, i) and
-        i = dpos.asPosition() and
-        result = p.getTypeRepr().(TypeMention).resolveTypeAt(path)
-      )
-      or
-      exists(SelfParam self |
-        self = pragma[only_bind_into](this.getParamList().getSelfParam()) and
-        dpos.isSelf()
-      |
-        result = inferAnnotatedType(self, path) // `self` parameter with type annotation
-        or
-        result = inferImplicitSelfType(self, path) // `self` parameter without type annotation
-      )
-      or
+      // todo: update
       // For associated functions, we may also need to match type arguments against
       // the `Self` type. For example, in
       //
@@ -949,15 +1393,24 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
       // ```
       //
       // we need to match `i32` against the type parameter `T` of the `impl` block.
+      dpos.isSelf() and
       exists(ImplOrTraitItemNode i |
         this = i.getAnAssocItem() and
-        dpos.isSelf() and
-        not this.getParamList().hasSelfParam()
-      |
-        result = TSelfTypeParameter(i) and
-        path.isEmpty()
-        or
-        result = resolveImplSelfType(i, path)
+        result = resolveImplType(i, path)
+      )
+      or
+      exists(Param p, int i |
+        paramPos(this.getParamList(), p, i) and
+        result = p.getTypeRepr().(TypeMention).resolveTypeAt(path) and
+        if this.getParamList().hasSelfParam()
+        then dpos.asPosition() = i + 1
+        else dpos.asPosition() = i
+      )
+      or
+      dpos.asPosition() = 0 and
+      exists(SelfParam self |
+        self = pragma[only_bind_into](this.getParamList().getSelfParam()) and
+        result = getSelfParamTypeMention(self).resolveTypeAt(path)
       )
     }
 
@@ -980,20 +1433,18 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
   }
 
   private newtype TAccessPosition =
-    TArgumentAccessPosition(ArgumentPosition pos, Boolean borrowed, Boolean certain) or
+    TArgumentAccessPosition(ArgumentPosition pos) or
     TReturnAccessPosition()
 
   class AccessPosition extends TAccessPosition {
-    ArgumentPosition getArgumentPosition() { this = TArgumentAccessPosition(result, _, _) }
-
-    predicate isBorrowed(boolean certain) { this = TArgumentAccessPosition(_, true, certain) }
+    ArgumentPosition getArgumentPosition() { this = TArgumentAccessPosition(result) }
 
     predicate isReturn() { this = TReturnAccessPosition() }
 
     string toString() {
-      exists(ArgumentPosition pos, boolean borrowed, boolean certain |
-        this = TArgumentAccessPosition(pos, borrowed, certain) and
-        result = pos + ":" + borrowed + ":" + certain
+      exists(ArgumentPosition pos |
+        this = TArgumentAccessPosition(pos) and
+        result = pos.toString()
       )
       or
       this.isReturn() and
@@ -1001,7 +1452,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     }
   }
 
-  final class Access extends Call {
+  final class Access extends CallExpr {
     pragma[nomagic]
     Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
       exists(TypeMention arg | result = arg.resolveTypeAt(path) |
@@ -1010,38 +1461,53 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
           arg = p.getSegment().getGenericArgList().getTypeArg(pragma[only_bind_into](i)) and
           apos.asTypeParam() = resolvePath(p).getTypeParam(pragma[only_bind_into](i))
         )
-        or
-        arg =
-          this.(MethodCallExpr).getGenericArgList().getTypeArg(apos.asMethodTypeArgumentPosition())
       )
     }
 
     AstNode getNodeAt(AccessPosition apos) {
-      exists(ArgumentPosition pos, boolean borrowed, boolean certain |
-        apos = TArgumentAccessPosition(pos, borrowed, certain) and
-        result = this.getArgument(pos)
-      |
-        if this.implicitBorrowAt(pos, _)
-        then borrowed = true and this.implicitBorrowAt(pos, certain)
-        else (
-          borrowed = false and certain = true
-        )
+      exists(ArgumentPosition pos | apos = TArgumentAccessPosition(pos) |
+        result = this.getArg(pos.asPosition())
       )
       or
       result = this and apos.isReturn()
     }
 
+    private Type testgetInferredType(AccessPosition apos, TypePath path) {
+      result = this.getInferredType(apos, path) and
+      this = Debug::getRelevantLocatable()
+    }
+
+    pragma[nomagic]
     Type getInferredType(AccessPosition apos, TypePath path) {
-      result = inferType(this.getNodeAt(apos), path)
+      exists(ArgumentPosition pos |
+        apos = TArgumentAccessPosition(pos) and
+        pos.isSelf()
+      |
+        // The `Self` type is supplied explicitly as a type qualifier, e.g. `Foo::<Bar>::baz()`
+        exists(this.getTarget()) and
+        result = getTypeQualifier(this, path)
+      )
       or
-      // The `Self` type is supplied explicitly as a type qualifier, e.g. `Foo::<Bar>::baz()`
-      apos = TArgumentAccessPosition(CallImpl::TSelfArgumentPosition(), false, false) and
-      result = getTypeQualifier(this, path)
+      not apos.getArgumentPosition().isSelf() and
+      result = inferType(this.getNodeAt(apos), path)
+      // exists(Type t0, TypePath path0 | t0 = inferType(this.getNodeAt(apos), path0) |
+      //   if
+      //     apos.isReturn() and
+      //     (this instanceof DerefExpr or this instanceof IndexExpr)
+      //   then (
+      //     path.isEmpty() and
+      //     result = TRefType()
+      //     or
+      //     path = TypePath::cons(TRefTypeParameter(), path0) and
+      //     result = t0
+      //   ) else (
+      //     path = path0 and
+      //     result = t0
+      //   )
+      // )
     }
 
     Declaration getTarget() {
-      result = resolveMethodCallTarget(this) // mutual recursion; resolving method calls requires resolving types and vice versa
-      or
       result = resolveFunctionCallTarget(this) // potential mutual recursion; resolving some associated function calls requires resolving types
     }
   }
@@ -1051,120 +1517,206 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     or
     apos.isReturn() and dpos.isReturn()
   }
+}
 
-  bindingset[apos, target, path, t]
-  pragma[inline_late]
-  predicate adjustAccessType(
-    AccessPosition apos, Declaration target, TypePath path, Type t, TypePath pathAdj, Type tAdj
-  ) {
-    apos.isBorrowed(true) and
-    pathAdj = TypePath::cons(TRefTypeParameter(), path) and
-    tAdj = t
-    or
-    apos.isBorrowed(false) and
-    exists(Type selfParamType |
-      selfParamType =
-        target
-            .getParameterType(TArgumentDeclarationPosition(apos.getArgumentPosition()),
-              TypePath::nil())
-    |
-      if selfParamType = TRefType()
-      then
-        if t != TRefType() and path.isEmpty()
-        then
-          // adjust for implicit borrow
-          pathAdj.isEmpty() and
-          tAdj = TRefType()
-          or
-          // adjust for implicit borrow
-          pathAdj = TypePath::singleton(TRefTypeParameter()) and
-          tAdj = t
-        else
-          if path.isCons(TRefTypeParameter(), _)
-          then
-            pathAdj = path and
-            tAdj = t
-          else (
-            // adjust for implicit borrow
-            not (t = TRefType() and path.isEmpty()) and
-            pathAdj = TypePath::cons(TRefTypeParameter(), path) and
-            tAdj = t
-          )
-      else (
-        // adjust for implicit deref
-        path.isCons(TRefTypeParameter(), pathAdj) and
-        tAdj = t
+private module CallExprMatching = Matching<CallExprMatchingInput>;
+
+pragma[nomagic]
+private Type inferCallExprType(AstNode n, TypePath path) {
+  exists(CallExprMatchingInput::Access a, CallExprMatchingInput::AccessPosition apos |
+    n = a.getNodeAt(apos) and
+    result = CallExprMatching::inferAccessType(a, apos, path)
+  )
+}
+
+/**
+ * A matching configuration for resolving types of operations
+ * like `a + b`.
+ */
+private module OperationMatchingInput implements MatchingInputSig {
+  private import codeql.rust.elements.internal.OperationImpl as OperationImpl
+
+  private predicate paramPos(ParamList pl, Param p, int pos) { p = pl.getParam(pos) }
+
+  private newtype TDeclarationPosition =
+    TArgumentDeclarationPosition(ArgumentPosition pos) or
+    TReturnDeclarationPosition()
+
+  class DeclarationPosition extends TDeclarationPosition {
+    predicate isSelf() { this.asArgumentPosition().isSelf() }
+
+    int asPosition() { result = this.asArgumentPosition().asPosition() }
+
+    ArgumentPosition asArgumentPosition() { this = TArgumentDeclarationPosition(result) }
+
+    predicate isReturn() { this = TReturnDeclarationPosition() }
+
+    string toString() {
+      result = this.asArgumentPosition().toString()
+      or
+      this.isReturn() and
+      result = "(return)"
+    }
+  }
+
+  class Declaration extends Function {
+    // todo
+    TypeParameter getTypeParameter(TypeParameterPosition ppos) {
+      typeParamMatchPosition(this.getGenericParamList().getATypeParam(), result, ppos)
+      or
+      exists(ImplOrTraitItemNode i | this = i.getAnAssocItem() |
+        typeParamMatchPosition(i.getTypeParam(_), result, ppos)
         or
-        not path.isCons(TRefTypeParameter(), _) and
-        not (t = TRefType() and path.isEmpty()) and
-        pathAdj = path and
-        tAdj = t
+        ppos.isImplicit() and result = TSelfTypeParameter(i)
+        or
+        ppos.isImplicit() and
+        result.(AssociatedTypeTypeParameter).getTrait() = i
       )
-    )
+      or
+      ppos.isImplicit() and
+      this = result.(ImplTraitTypeTypeParameter).getFunction()
+    }
+
+    pragma[nomagic]
+    private predicate borrowsAt(DeclarationPosition pos) {
+      exists(TraitItemNode t, Function f, string path, string method |
+        (
+          f = this
+          or
+          this.implements(f)
+        ) and
+        f = t.getAssocItem(method) and
+        path = t.getCanonicalPath(_)
+      |
+        exists(int borrows | OperationImpl::isOverloaded(_, _, path, method, borrows) |
+          pos.isSelf() and borrows >= 1
+          or
+          pos.asPosition() = 0 and
+          borrows >= 2
+        )
+        //         or
+        // path= "core::ops::index::Index" and
+        // method = "index" and
+        // pos =
+      )
+    }
+
+    private Type getParameterType(DeclarationPosition dpos, TypePath path) {
+      exists(TypePath path0 |
+        exists(Param p, int i |
+          paramPos(this.getParamList(), p, i) and
+          i = dpos.asPosition() and
+          result = p.getTypeRepr().(TypeMention).resolveTypeAt(path0)
+        )
+        or
+        dpos.isSelf() and
+        exists(SelfParam self |
+          self = pragma[only_bind_into](this.getParamList().getSelfParam()) and
+          result = getSelfParamTypeMention(self).resolveTypeAt(path0)
+        )
+      |
+        if this.borrowsAt(dpos) then path0.isCons(TRefTypeParameter(), path) else path0 = path
+      )
+    }
+
+    pragma[nomagic]
+    private predicate derefsReturn() {
+      exists(TraitItemNode t, Function f, string path, string method |
+        (
+          f = this
+          or
+          this.implements(f)
+        ) and
+        f = t.getAssocItem(method) and
+        path = t.getCanonicalPath(_)
+      |
+        path = "core::ops::index::Index" and
+        method = "index"
+        or
+        path = "core::ops::deref::Deref" and
+        method = "deref"
+      )
+    }
+
+    private Type resolveRetType(TypePath path) {
+      result = this.getRetType().getTypeRepr().(TypeMention).resolveTypeAt(path)
+    }
+
+    private Type getReturnType(TypePath path) {
+      exists(TypePath path0 |
+        result = this.resolveRetType(path0) and
+        if this.derefsReturn() then path0.isCons(TRefTypeParameter(), path) else path0 = path
+      )
+    }
+
+    Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
+      result = this.getParameterType(dpos, path)
+      or
+      dpos.isReturn() and
+      result = this.getReturnType(path)
+    }
+  }
+
+  private newtype TAccessPosition =
+    TArgumentAccessPosition(ArgumentPosition pos) or
+    TReturnAccessPosition()
+
+  class AccessPosition extends TAccessPosition {
+    ArgumentPosition getArgumentPosition() { this = TArgumentAccessPosition(result) }
+
+    predicate isReturn() { this = TReturnAccessPosition() }
+
+    string toString() {
+      exists(ArgumentPosition pos |
+        this = TArgumentAccessPosition(pos) and
+        result = pos.toString()
+      )
+      or
+      this.isReturn() and
+      result = "(return)"
+    }
+  }
+
+  final private class OpFinal = Op;
+
+  final class Access extends OpFinal {
+    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) { none() }
+
+    AstNode getNodeAt(AccessPosition apos) {
+      exists(ArgumentPosition pos | apos = TArgumentAccessPosition(pos) |
+        result = this.getOperand(0) and
+        pos.isSelf()
+        or
+        result = this.getOperand(pos.asPosition() + 1)
+      )
+      or
+      result = this and apos.isReturn()
+    }
+
+    pragma[nomagic]
+    Type getInferredType(AccessPosition apos, TypePath path) {
+      result = inferType(this.getNodeAt(apos), path)
+    }
+
+    Declaration getTarget() {
+      result = resolveOperation(this) // mutual recursion
+    }
+  }
+
+  predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos) {
+    apos.getArgumentPosition() = dpos.asArgumentPosition()
     or
-    not apos.isBorrowed(_) and
-    pathAdj = path and
-    tAdj = t
+    apos.isReturn() and dpos.isReturn()
   }
 }
 
-private module CallExprBaseMatching = Matching<CallExprBaseMatchingInput>;
+private module OperationMatching = Matching<OperationMatchingInput>;
 
-/**
- * Gets the type of `n` at `path`, where `n` is either a call or an
- * argument/receiver of a call.
- */
 pragma[nomagic]
-private Type inferCallExprBaseType(AstNode n, TypePath path) {
-  exists(
-    CallExprBaseMatchingInput::Access a, CallExprBaseMatchingInput::AccessPosition apos,
-    TypePath path0
-  |
+private Type inferOperationType(AstNode n, TypePath path) {
+  exists(OperationMatchingInput::Access a, OperationMatchingInput::AccessPosition apos |
     n = a.getNodeAt(apos) and
-    result = CallExprBaseMatching::inferAccessType(a, apos, path0)
-  |
-    if
-      apos.isBorrowed(true)
-      or
-      // The desugaring of the unary `*e` is `*Deref::deref(&e)` and the
-      // desugaring of `a[b]` is `*Index::index(&a, b)`. To handle the deref
-      // expression after the call we must strip a `&` from the type at the
-      // return position.
-      apos.isReturn() and
-      (a instanceof DerefExpr or a instanceof IndexExpr)
-    then path0.isCons(TRefTypeParameter(), path)
-    else
-      if apos.isBorrowed(false)
-      then
-        exists(Type argType | argType = inferType(n) |
-          if argType = TRefType()
-          then
-            path = path0 and
-            path0.isCons(TRefTypeParameter(), _)
-            or
-            // adjust for implicit deref
-            not path0.isCons(TRefTypeParameter(), _) and
-            not (path0.isEmpty() and result = TRefType()) and
-            path = TypePath::cons(TRefTypeParameter(), path0)
-          else (
-            not (
-              argType.(StructType).asItemNode() instanceof StringStruct and
-              result.(StructType).asItemNode() instanceof Builtins::Str
-            ) and
-            (
-              not path0.isCons(TRefTypeParameter(), _) and
-              not (path0.isEmpty() and result = TRefType()) and
-              path = path0
-              or
-              // adjust for implicit borrow
-              path0.isCons(TRefTypeParameter(), path)
-            )
-          )
-        )
-      else (
-        not apos.isBorrowed(_) and
-        path = path0
-      )
+    result = OperationMatching::inferAccessType(a, apos, path)
   )
 }
 
@@ -1541,6 +2093,7 @@ private Type inferIndexExprType(IndexExpr ie, TypePath path) {
     ) and
     result = inferType(ie.getBase(), exprPath)
   |
+    // todo: remove?
     exprPath.isCons(any(Vec v).getElementTypeParameter(), path)
     or
     exprPath.isCons(any(ArrayTypeParameter tp), path)
@@ -1609,9 +2162,9 @@ private Type inferStructPatType(AstNode n, TypePath path) {
  * like `let Some(x) = ...`.
  */
 private module TupleStructPatMatchingInput implements MatchingInputSig {
-  class DeclarationPosition = CallExprBaseMatchingInput::DeclarationPosition;
+  class DeclarationPosition = CallExprMatchingInput::DeclarationPosition;
 
-  class Declaration = CallExprBaseMatchingInput::TupleDeclaration;
+  class Declaration = CallExprMatchingInput::TupleDeclaration;
 
   class AccessPosition = DeclarationPosition;
 
@@ -1823,39 +2376,49 @@ private Type inferCastExprType(CastExpr ce, TypePath path) {
   result = ce.getTypeRepr().(TypeMention).resolveTypeAt(path)
 }
 
-final class MethodCall extends Call {
-  MethodCall() { exists(this.getReceiver()) }
+abstract class MethodCall extends Expr {
+  abstract predicate isMethodCall(string name, int arity);
+
+  abstract Expr getArgument(ArgumentPosition pos);
 
   private Type getReceiverTypeAt(TypePath path) {
-    result = inferType(super.getReceiver(), path)
-    or
-    result = getTypeQualifier(this, path)
+    result = inferType(this.getArgument(any(ArgumentPosition pos | pos.isSelf())), path)
   }
 
-  /** Gets the type of the receiver of the method call at `path`. */
-  Type getTypeAt(TypePath path) {
-    if
-      this.receiverImplicitlyBorrowed() or
-      this.(CallImpl::CallExprMethodCall).hasExplicitSelfBorrow()
-    then
-      exists(TypePath path0, Type t0 |
-        t0 = this.getReceiverTypeAt(path0) and
-        (
-          path0.isCons(TRefTypeParameter(), path)
-          or
-          (
-            not path0.isCons(TRefTypeParameter(), _) and
-            not (path0.isEmpty() and result = TRefType())
-            or
-            // Ideally we should find all methods on reference types, but as
-            // that currently causes a blowup we limit this to the `deref`
-            // method in order to make dereferencing work.
-            this.getMethodName() = "deref"
-          ) and
-          path = path0
-        )
-      |
-        result = t0
+  pragma[nomagic]
+  private predicate isMethodCall0(Type rootType, string name, int arity, string derefChain) {
+    rootType = this.getACandidateReceiverTypeRefsAt(TypePath::nil(), derefChain) and //, mcd.getTypeAt(TypePath::singleton(TRefTypeParameter()))] and
+    this.isMethodCall(name, arity)
+  }
+
+  private predicate testisMethodCall0(Type rootType, string name, int arity, string derefChain) {
+    this.isMethodCall0(rootType, name, arity, derefChain) and
+    this = Debug::getRelevantLocatable()
+  }
+
+  /**
+   * Gets a [candidate receiver type][1] of this method call.
+   *
+   * We do not yet model the `Deref` trait, so we hard-code the fact that `String`
+   * dereferences to `str` here. This allows us e.g. to resolve `x.parse::<usize>()`
+   * to the function `<core::str>::parse` when `x` has type `String`.
+   *
+   * [1]: https://doc.rust-lang.org/reference/expressions/method-call-expr.html#r-expr.method.candidate-receivers
+   */
+  pragma[nomagic]
+  private Type getACandidateReceiverTypeAt(TypePath path, string derefChain) {
+    result = this.getReceiverTypeAt(path) and
+    derefChain = ""
+    or
+    exists(TypePath path0, Type t0, string derefChain0 |
+      t0 = this.getACandidateReceiverTypeAtRefNoMatch(path0, derefChain0)
+    |
+      //or
+      // this.(CallImpl::CallExprMethodCall).hasExplicitSelfBorrow()
+      (
+        path0.isCons(TRefTypeParameter(), path) and
+        result = t0 and
+        derefChain = derefChain0 + ".ref"
         or
         // We do not yet model the `Deref` trait, so we hard-code the fact that
         // `String` dereferences to `str` here. This allows us e.g. to resolve
@@ -1863,11 +2426,214 @@ final class MethodCall extends Call {
         // type `String`.
         //
         // See also https://doc.rust-lang.org/reference/expressions/method-call-expr.html#r-expr.method.autoref-deref
-        path.isEmpty() and
+        path0.isEmpty() and
+        path = path0 and
         t0.(StructType).asItemNode() instanceof StringStruct and
-        result.(StructType).asItemNode() instanceof Builtins::Str
+        result.(StructType).asItemNode() instanceof Builtins::Str and
+        derefChain = derefChain0 + ".str"
       )
-    else result = this.getReceiverTypeAt(path)
+    )
+  }
+
+  pragma[nomagic]
+  private Type testgetACandidateReceiverTypeAt(TypePath path, string derefChain) {
+    result = this.getACandidateReceiverTypeAt(path, derefChain) and
+    this = Debug::getRelevantLocatable()
+  }
+
+  pragma[nomagic]
+  private Type testgetACandidateReceiverTypeAtNoMatch(TypePath path, string derefChain) {
+    result = this.getACandidateReceiverTypeAtNoMatch(path, derefChain) and
+    this = Debug::getRelevantLocatable()
+  }
+
+  pragma[nomagic]
+  private Type testgetACandidateReceiverTypeAtNoMatch(
+    TypePath path, string derefChain, Type rootType, string name, int arity, Trait trait,
+    SelfParamType self
+  ) {
+    this = Debug::getRelevantLocatable() and
+    // this.receiverImplicitlyBorrowed() and
+    result = this.getACandidateReceiverTypeAt(path, derefChain) and
+    this.isMethodCall0(rootType, name, arity, derefChain + ";") and
+    traitMethodCandidate(rootType, name, arity, trait, self) and
+    methodCallHasTraitCandidate0(MkMethodCallDerefChainRef(this, derefChain + ";"), trait, _, self,
+      _)
+  }
+
+  pragma[nomagic]
+  private Type getACandidateReceiverTypeAtNoMatch(TypePath path, string derefChain) {
+    // this.receiverImplicitlyBorrowed() and
+    result = this.getACandidateReceiverTypeAt(path, derefChain) and
+    exists(Type rootType, string name, int arity |
+      this.isMethodCall0(rootType, name, arity, derefChain + ";")
+    |
+      forall(Impl impl, SelfParamType self | methodCandidate(rootType, name, arity, impl, self) |
+        IsInstantiationOf<MethodCallDerefChainRef, SelfParamType, MethodCallIsInstantiationOfInput>::isNotInstantiationOfStrict(MkMethodCallDerefChainRef(this,
+            derefChain + ";"), impl, self)
+      ) and
+      forall(Trait trait, SelfParamType self |
+        traitMethodCandidate(rootType, name, arity, trait, self)
+      |
+        IsInstantiationOf<MethodCallDerefChainRef, SelfParamType, MethodCallIsInstantiationOfInput>::isNotInstantiationOfStrict(MkMethodCallDerefChainRef(this,
+            derefChain + ";"), trait, self)
+        or
+        exists(Type t |
+          methodCallHasTraitCandidate0(MkMethodCallDerefChainRef(this, derefChain + ";"), trait, t,
+            self, _) and
+          not trait = getATraitBound(t)
+        )
+      )
+      // not exists(resolveNonImplMethodCallTarget(rootType, name, arity))
+    )
+  }
+
+  pragma[nomagic]
+  private Type getACandidateReceiverTypeAtRef(TypePath path, string derefChain) {
+    // exists(TypePath path0, Type t0, string derefChain |
+    //   t0 = this.getACandidateReceiverTypeAt(path0, derefChain)
+    // |
+    //   path = path0 and
+    //   derefChainRef = derefChain + ";" and
+    //   result = t0
+    // )
+    // or
+    exists(TypePath path0, Type t0 |
+      t0 = this.getACandidateReceiverTypeAtNoMatch(path0, derefChain)
+    |
+      // this.isNotRef(derefChain) and
+      // not path0.isCons(TRefTypeParameter(), _) and
+      // not (path0.isEmpty() and result = TRefType()) and
+      // derefChainRef = derefChain + ";ref" and
+      (
+        path.isEmpty() and
+        result = TRefType()
+        or
+        path = TypePath::cons(TRefTypeParameter(), path0) and
+        result = t0
+      )
+    )
+  }
+
+  pragma[nomagic]
+  private Type testgetACandidateReceiverTypeAtRef(TypePath path, string derefChain) {
+    result = this.getACandidateReceiverTypeAtRef(path, derefChain) and
+    this = Debug::getRelevantLocatable()
+  }
+
+  pragma[nomagic]
+  private Type testgetACandidateReceiverTypeAtRefNoMatch(TypePath path, string derefChain) {
+    result = this.getACandidateReceiverTypeAtRefNoMatch(path, derefChain) and
+    this = Debug::getRelevantLocatable()
+  }
+
+  pragma[nomagic]
+  private Type testgetACandidateReceiverTypeAtRefNoMatch2(
+    TypePath path, string derefChain, Type rootType, string name, int arity
+  ) {
+    result = this.getACandidateReceiverTypeAtNoMatch(path, derefChain) and
+    this.isMethodCall0(rootType, name, arity, derefChain) and
+    this = Debug::getRelevantLocatable()
+  }
+
+  pragma[nomagic]
+  private Type getACandidateReceiverTypeAtRefNoMatch(TypePath path, string derefChain) {
+    result = this.getACandidateReceiverTypeAtNoMatch(path, derefChain) and
+    exists(Type rootType, string name, int arity |
+      this.isMethodCall0(rootType, name, arity, derefChain + ";ref")
+    |
+      forall(Impl impl, SelfParamType self | methodCandidate(rootType, name, arity, impl, self) |
+        IsInstantiationOf<MethodCallDerefChainRef, SelfParamType, MethodCallIsInstantiationOfInput>::isNotInstantiationOfStrict(MkMethodCallDerefChainRef(this,
+            derefChain + ";ref"), impl, self)
+      ) and
+      forall(Trait trait, SelfParamType self |
+        traitMethodCandidate(rootType, name, arity, trait, self)
+      |
+        IsInstantiationOf<MethodCallDerefChainRef, SelfParamType, MethodCallIsInstantiationOfInput>::isNotInstantiationOfStrict(MkMethodCallDerefChainRef(this,
+            derefChain + ";ref"), trait, self)
+        or
+        exists(Type t |
+          methodCallHasTraitCandidate0(MkMethodCallDerefChainRef(this, derefChain + ";ref"), trait,
+            t, self, _) and
+          not trait = getATraitBound(t)
+        )
+      )
+      // not exists(resolveNonImplMethodCallTarget(rootType, name, arity))
+    )
+  }
+
+  pragma[nomagic]
+  private predicate isNotRef(string derefChain) {
+    this.getACandidateReceiverTypeAt(TypePath::nil(), derefChain) != TRefType()
+  }
+
+  /**
+   * Gets a [candidate receiver type][1] of this method call, including reference types.
+   *
+   * [1]: https://doc.rust-lang.org/reference/expressions/method-call-expr.html#r-expr.method.candidate-receivers-refs
+   */
+  pragma[nomagic]
+  Type getACandidateReceiverTypeRefsAt(TypePath path, string derefChainRef) {
+    exists(string derefChain |
+      result = this.getACandidateReceiverTypeAt(path, derefChain) and
+      derefChainRef = derefChain + ";"
+    )
+    or
+    exists(TypePath path0, Type t0, string derefChain |
+      t0 = this.getACandidateReceiverTypeAtRef(path0, derefChain) and
+      derefChainRef = derefChain + ";ref"
+    |
+      // path.isEmpty() and
+      // result = TRefType()
+      // or
+      // path = TypePath::cons(TRefTypeParameter(), path0) and
+      // result = t0
+      path = path0 and
+      result = t0
+    )
+  }
+
+  pragma[nomagic]
+  private Type testgetACandidateReceiverTypeRefsAt(TypePath path, string derefChain) {
+    result = this.getACandidateReceiverTypeRefsAt(path, derefChain) and
+    this = Debug::getRelevantLocatable()
+    // this.getLocation().getStartLine() = 1286 and
+    // this.fromSource()
+  }
+}
+
+final class MethodCallMethodCallExpr extends MethodCall, MethodCallExpr {
+  pragma[nomagic]
+  override predicate isMethodCall(string name, int arity) {
+    name = this.getIdentifier().getText() and
+    arity = this.getArgList().getNumberOfArgs()
+  }
+
+  override Expr getArgument(ArgumentPosition pos) {
+    pos.isSelf() and
+    result = this.getReceiver()
+    or
+    result = this.getArgList().getArg(pos.asPosition())
+  }
+  // MethodCall() { exists(this.getReceiver()) }
+  // override Type getReceiverTypeAt(TypePath path) { result = inferType(super.getReceiver(), path) }
+  // /** An alias for `getCandidateReceiverTypeAt`, needed to implement `HasTypeTreeSig`. */
+  // Type getTypeAt(TypePath path) { result = this.getACandidateReceiverTypeRefsAt(path) }
+}
+
+private class MethodCallIndexExpr extends MethodCall, IndexExpr {
+  pragma[nomagic]
+  override predicate isMethodCall(string name, int arity) {
+    name = this.(Call).getMethodName() and
+    arity = this.(Call).getNumberOfArguments()
+  }
+
+  override Expr getArgument(ArgumentPosition pos) {
+    pos.isSelf() and
+    result = this.getBase()
+    or
+    pos.asPosition() = 0 and
+    result = this.getIndex()
   }
 }
 
@@ -1876,65 +2642,295 @@ final class MethodCall extends Call {
  * exists in `impl`.
  */
 pragma[nomagic]
-private predicate methodCandidate(Type type, string name, int arity, Impl impl) {
-  type = impl.getSelfTy().(TypeMention).resolveType() and
-  exists(Function f |
-    f = impl.(ImplItemNode).getASuccessor(name) and
-    f.getParamList().hasSelfParam() and
-    arity = f.getParamList().getNumberOfParams()
+private predicate methodCandidate(
+  Type type, string name, int arity, ImplItemNode impl, SelfParamType self
+) {
+  exists(Function f, SelfParam param |
+    f = impl.getASuccessor(name) and
+    param = f.getParamList().getSelfParam() and
+    arity = f.getParamList().getNumberOfParams() and
+    type = self.getTypeAt(TypePath::nil()) and
+    f = self.getFunction(impl) and
+    not impl.isBlanket()
   )
+}
+
+/**
+ * Holds if a method for `type` with the name `name` and the arity `arity`
+ * exists in `trait`.
+ */
+pragma[nomagic]
+private predicate traitMethodCandidate0(
+  Type type, string name, int arity, Trait trait, SelfParamType self
+) {
+  exists(Function f, SelfParam param |
+    f = trait.(TraitItemNode).getASuccessor(name) and
+    param = f.getParamList().getSelfParam() and
+    arity = f.getParamList().getNumberOfParams() and
+    f = self.getFunction(trait) and
+    type = self.getTypeAt(TypePath::nil())
+  )
+}
+
+/**
+ * Holds if a method for `type` with the name `name` and the arity `arity`
+ * exists in `trait`.
+ */
+pragma[inline]
+private predicate traitMethodCandidate(
+  Type type, string name, int arity, Trait trait, SelfParamType self
+) {
+  traitMethodCandidate0(type, name, arity, trait, self)
+  or
+  traitMethodCandidate0(TSelfTypeParameter(trait), name, arity, trait, self) and
+  exists(type)
 }
 
 /**
  * Holds if a method for `type` for `trait` with the name `name` and the arity
  * `arity` exists in `impl`.
  */
-pragma[nomagic]
-private predicate methodCandidateTrait(Type type, Trait trait, string name, int arity, Impl impl) {
+// pragma[nomagic]
+pragma[inline]
+private predicate methodCandidateTrait(
+  Type type, Trait trait, string name, int arity, Impl impl, SelfParamType self
+) {
   trait = resolvePath(impl.(ImplItemNode).getTraitPath()) and
-  methodCandidate(type, name, arity, impl)
+  methodCandidate(type, name, arity, impl, self)
+}
+
+private newtype TMethodCallDerefChainRef =
+  MkMethodCallDerefChainRef(MethodCall mc, string derefChainRef) {
+    exists(mc.getACandidateReceiverTypeRefsAt(_, derefChainRef))
+  }
+
+private class MethodCallDerefChainRef extends MkMethodCallDerefChainRef {
+  MethodCall mc;
+  string derefChainRef;
+
+  MethodCallDerefChainRef() { this = MkMethodCallDerefChainRef(mc, derefChainRef) }
+
+  MethodCall getMethodCall() { result = mc }
+
+  Type getTypeAt(TypePath path) { result = mc.getACandidateReceiverTypeRefsAt(path, derefChainRef) }
+
+  string toString() { result = mc.toString() + "[" + derefChainRef + "]" }
+
+  Location getLocation() { result = mc.getLocation() }
 }
 
 pragma[nomagic]
-private predicate isMethodCall(MethodCall mc, Type rootType, string name, int arity) {
-  rootType = mc.getTypeAt(TypePath::nil()) and
-  name = mc.getMethodName() and
-  arity = mc.getNumberOfArguments()
+private predicate isMethodCall(
+  MethodCallDerefChainRef mcd, MethodCall mc, Type rootType, string name, int arity
+) {
+  mc = mcd.getMethodCall() and
+  rootType = [mcd.getTypeAt(TypePath::nil())] and //, mcd.getTypeAt(TypePath::singleton(TRefTypeParameter()))] and
+  mc.isMethodCall(name, arity)
 }
 
-private module IsInstantiationOfInput implements IsInstantiationOfInputSig<MethodCall> {
-  pragma[nomagic]
-  predicate potentialInstantiationOf(MethodCall mc, TypeAbstraction impl, TypeMention constraint) {
-    exists(Type rootType, string name, int arity |
-      isMethodCall(mc, rootType, name, arity) and
-      constraint = impl.(ImplTypeAbstraction).getSelfTy()
+private newtype TSelfParamType =
+  MkSelfParam(SelfParam self, ImplOrTraitItemNode i) {
+    exists(Function f |
+      self = f.getParamList().getSelfParam() and
+      f = i.getAnAssocItem()
+    )
+  } or
+  MkInheritedSelfParam(SelfParamType inherited, ImplOrTraitItemNode i) {
+    exists(Function f, ImplOrTraitItemNode parent |
+      f = inherited.getFunction(parent) and
+      f = i.getASuccessor(_)
     |
-      methodCandidateTrait(rootType, mc.getTrait(), name, arity, impl)
+      parent = i.(ImplItemNode).resolveTraitTy()
       or
-      not exists(mc.getTrait()) and
-      methodCandidate(rootType, name, arity, impl)
+      parent = i.(TraitItemNode).resolveABound() and
+      not i.(TraitItemNode).hasLoop()
     )
   }
 
-  predicate relevantTypeMention(TypeMention constraint) {
-    exists(Impl impl | methodCandidate(_, _, _, impl) and constraint = impl.getSelfTy())
+private class SelfParamType extends TSelfParamType {
+  Function getFunction(ImplOrTraitItemNode i) {
+    this = MkSelfParam(result.getParamList().getSelfParam(), i)
+    or
+    exists(SelfParamType inherited |
+      this = MkInheritedSelfParam(inherited, i) and
+      result = inherited.getFunction(_)
+    )
+  }
+
+  private Type testgetTypeAt(TypePath path, ImplOrTraitItemNode i) {
+    result = this.getTypeAt(path) and
+    exists(this.getFunction(i)) and
+    i.getLocation().getStartLine() = 946
+  }
+
+  Type getTypeAt(TypePath path) {
+    exists(SelfParam self |
+      this.asSelfParam(self, _) and
+      result = getSelfParamTypeMention(self).resolveTypeAt(path)
+    )
+    or
+    exists(SelfParamType inherited, ImplOrTraitItemNode i |
+      this.asInheritedSelfParam(inherited, i)
+    |
+      result = inherited.getTypeAt(path) and
+      not result instanceof TSelfTypeParameter
+      or
+      exists(TypePath prefix, TypePath suffix |
+        inherited.getTypeAt(prefix) = TSelfTypeParameter(_) and
+        result = resolveImplType(i, suffix) and
+        path = prefix.append(suffix)
+      )
+    )
+  }
+
+  predicate asSelfParam(SelfParam self, ImplOrTraitItemNode i) { this = MkSelfParam(self, i) }
+
+  predicate asInheritedSelfParam(SelfParamType inherited, ImplOrTraitItemNode i) {
+    this = MkInheritedSelfParam(inherited, i)
+  }
+
+  string toString() {
+    exists(SelfParam self |
+      this.asSelfParam(self, _) and
+      result = self.toString()
+    )
+    or
+    exists(SelfParamType inherited, ImplOrTraitItemNode i |
+      this.asInheritedSelfParam(inherited, i) and
+      result = inherited.toString() + " (inherited)"
+    )
+  }
+
+  Location getLocation() {
+    exists(SelfParam self |
+      this.asSelfParam(self, _) and
+      result = self.getLocation()
+    )
+    or
+    exists(SelfParamType inherited |
+      this.asInheritedSelfParam(inherited, _) and
+      result = inherited.getLocation()
+    )
+  }
+}
+
+private module MethodCallIsInstantiationOfInput implements
+  IsInstantiationOfInputSig<MethodCallDerefChainRef, SelfParamType>
+{
+  pragma[nomagic]
+  predicate potentialInstantiationOf(
+    MethodCallDerefChainRef mc, TypeAbstraction abs, SelfParamType constraint
+  ) {
+    // mc.getMethodCall() = Debug::getRelevantLocatable() and
+    exists(Type rootType, string name, int arity, MethodCall mc0 |
+      isMethodCall(mc, mc0, rootType, name, arity) //and
+    |
+      // // constraint = getSelfParamTypeMention(self)
+      // methodCandidateTrait(rootType, mc0.getTrait(), name, arity, abs, constraint)
+      // or
+      // not exists(mc0.getTrait()) and
+      methodCandidate(rootType, name, arity, abs, constraint)
+      or
+      traitMethodCandidate(rootType, name, arity, abs, constraint) //and
+      // getATraitBound(mc.getTypeAt(_)) = abs
+    )
+  }
+
+  predicate relevantTypeMention(SelfParamType constraint) {
+    methodCandidate(_, _, _, _, constraint) or
+    traitMethodCandidate(_, _, _, _, constraint)
+  }
+}
+
+abstract private class Op extends Expr {
+  abstract Expr getOperand(int i);
+
+  pragma[nomagic]
+  Type getTypeAt(TypePath path) {
+    if this.(Call).implicitBorrowAt(any(ArgumentPosition pos | pos.isSelf()), true)
+    then
+      result = TRefType() and
+      path.isEmpty()
+      or
+      exists(TypePath path0 |
+        result = inferType(this.getOperand(0), path0) and
+        path = TypePath::cons(TRefTypeParameter(), path0)
+      )
+    else result = inferType(this.getOperand(0), path)
+  }
+
+  private Type testgetTypeAt(TypePath path) {
+    result = this.getTypeAt(path) and
+    this = Debug::getRelevantLocatable()
+  }
+
+  pragma[nomagic]
+  predicate isOperation(Type rootType, string name, int arity) {
+    name = this.(Call).getMethodName() and
+    arity = this.(Call).getNumberOfArguments() and
+    rootType = this.getTypeAt(TypePath::nil())
+  }
+}
+
+private class OpOperation extends Op instanceof Operation {
+  override Expr getOperand(int i) { result = Operation.super.getOperand(i) }
+}
+
+// private class OpIndexExpr extends Op, IndexExpr {
+//   override Expr getOperand(int i) {
+//     i = 0 and result = this.getBase()
+//     or
+//     i = 1 and
+//     result = this.getIndex()
+//   }
+// }
+private module OperationIsInstantiationOfInput implements
+  IsInstantiationOfInputSig<Op, SelfParamType>
+{
+  pragma[nomagic]
+  predicate potentialInstantiationOf(Op op, TypeAbstraction abs, SelfParamType constraint) {
+    exists(Type rootType, string name, int arity | op.isOperation(rootType, name, arity) |
+      // methodCandidate(rootType, name, arity, abs, constraint)
+      methodCandidateTrait(rootType, op.(Call).getTrait(), name, arity, abs, constraint)
+      or
+      traitMethodCandidate(rootType, name, arity, abs, constraint)
+    )
+  }
+
+  predicate testpotentialInstantiationOf(
+    Op op, TypeAbstraction abs, SelfParamType constraint, Type rootType, string name, int arity
+  ) {
+    // potentialInstantiationOf(op, abs, constraint) and
+    op = Debug::getRelevantLocatable() and
+    op.isOperation(rootType, name, arity) and
+    // // methodCandidate(rootType, name, arity, abs, constraint)
+    methodCandidateTrait(rootType, op.(Call).getTrait(), name, arity, abs, constraint)
+    // // or
+    // // todo: add test for indexing a type param with `Index` constraint
+    // traitMethodCandidate(rootType, name, arity, abs, constraint)
+  }
+
+  predicate relevantTypeMention(SelfParamType constraint) {
+    methodCandidateTrait(_, _, _, _, _, constraint) or
+    traitMethodCandidate(_, _, _, _, constraint)
   }
 }
 
 bindingset[item, name]
 pragma[inline_late]
-private Function getMethodSuccessor(ItemNode item, string name) {
-  result = item.getASuccessor(name)
+private Function getMethodSuccessor(ItemNode item, string name, int arity) {
+  result = item.getASuccessor(name) and
+  arity = result.getParamList().getNumberOfParams()
 }
 
-bindingset[tp, name]
+bindingset[tp, name, arity]
 pragma[inline_late]
-private Function getTypeParameterMethod(TypeParameter tp, string name) {
-  result = getMethodSuccessor(tp.(TypeParamTypeParameter).getTypeParam(), name)
+private Function getTypeParameterMethod(TypeParameter tp, string name, int arity) {
+  result = getMethodSuccessor(tp.(TypeParamTypeParameter).getTypeParam(), name, arity)
   or
-  result = getMethodSuccessor(tp.(SelfTypeParameter).getTrait(), name)
+  result = getMethodSuccessor(tp.(SelfTypeParameter).getTrait(), name, arity)
   or
-  result = getMethodSuccessor(tp.(ImplTraitTypeTypeParameter).getImplTraitTypeRepr(), name)
+  result = getMethodSuccessor(tp.(ImplTraitTypeTypeParameter).getImplTraitTypeRepr(), name, arity)
 }
 
 pragma[nomagic]
@@ -1997,7 +2993,12 @@ private predicate implHasSibling(Impl impl, Trait trait) { implSiblings(trait, i
 pragma[nomagic]
 private predicate functionTypeAtPath(Function f, int pos, TypePath path, Type type) {
   exists(TypeMention tm | type = tm.resolveTypeAt(path) |
-    tm = f.getParam(pos).getTypeRepr()
+    pos = 0 and
+    tm = getSelfParamTypeMention(f.getParamList().getSelfParam())
+    or
+    exists(int pos0 | tm = f.getParam(pos0).getTypeRepr() |
+      if f.getParamList().hasSelfParam() then pos = pos0 + 1 else pos = pos0
+    )
     or
     pos = -1 and
     tm = f.getRetType().getTypeRepr()
@@ -2070,82 +3071,233 @@ private predicate functionResolutionDependsOnArgument(
  * resolve to a method in an `impl` block for the type of the receiver.
  */
 pragma[nomagic]
-private predicate methodCallHasNoInherentTarget(MethodCall mc) {
+private predicate methodCallHasNoInherentTarget(MethodCallDerefChainRef mc) {
   exists(Type rootType, string name, int arity |
-    isMethodCall(mc, rootType, name, arity) and
+    isMethodCall(mc, _, rootType, name, arity) and
     forall(Impl impl |
-      methodCandidate(rootType, name, arity, impl) and
+      methodCandidate(rootType, name, arity, impl, _) and
       not impl.hasTrait()
     |
-      IsInstantiationOf<MethodCall, IsInstantiationOfInput>::isNotInstantiationOf(mc, impl, _)
+      IsInstantiationOf<MethodCallDerefChainRef, SelfParamType, MethodCallIsInstantiationOfInput>::isNotInstantiationOf(mc,
+        impl, _)
     )
   )
 }
 
 pragma[nomagic]
-private predicate methodCallHasImplCandidate(MethodCall mc, Impl impl) {
-  IsInstantiationOf<MethodCall, IsInstantiationOfInput>::isInstantiationOf(mc, impl, _) and
-  if impl.hasTrait() and not exists(mc.getTrait())
-  then
-    // inherent methods take precedence over trait methods, so only allow
-    // trait methods when there are no matching inherent methods
-    methodCallHasNoInherentTarget(mc)
-  else any()
+private predicate methodCallHasImplCandidate(MethodCallDerefChainRef mc, Impl impl) {
+  IsInstantiationOf<MethodCallDerefChainRef, SelfParamType, MethodCallIsInstantiationOfInput>::isInstantiationOf(mc,
+    impl, _) and
+  exists(MethodCall mc0 |
+    mc0 = mc.getMethodCall() and
+    if impl.hasTrait() //and
+    then
+      // not mc0.hasTrait()
+      // inherent methods take precedence over trait methods, so only allow
+      // trait methods when there are no matching inherent methods
+      methodCallHasNoInherentTarget(mc)
+    else any()
+  )
+}
+
+pragma[nomagic]
+private predicate operationHasImplCandidate(Op op, Impl impl) {
+  IsInstantiationOf<Op, SelfParamType, OperationIsInstantiationOfInput>::isInstantiationOf(op, impl,
+    _)
+}
+
+private predicate testoperationHasImplCandidate(Op op, Impl impl) {
+  operationHasImplCandidate(op, impl) and
+  op = Debug::getRelevantLocatable()
+}
+
+pragma[nomagic]
+private predicate operationHasTraitCandidate0(
+  Op op, Trait trait, Type t, SelfParamType self, Function f
+) {
+  // op = Debug::getRelevantLocatable() and
+  exists(string name, int arity, TypePath path |
+    // self = getSelfParamTypeMention(f.getParamList().getSelfParam()) and
+    f = self.getFunction(trait) and
+    // self.asSelfParam(f.getParamList().getSelfParam(), trait) and
+    IsInstantiationOf<Op, SelfParamType, OperationIsInstantiationOfInput>::isInstantiationOf(op,
+      trait, self) and
+    op.isOperation(_, name, arity) and
+    // mc.getMethodCall().isMethodCall(name, arity) and
+    TSelfTypeParameter(trait) = self.getTypeAt(path) and
+    t = op.getTypeAt(path)
+    // |
+    //   self =
+    //     getSelfParamTypeMention(getTypeParameterMethod(t, name, arity).getParamList().getSelfParam())
+  )
+}
+
+private Trait getATraitBound(Type t) {
+  result = t.(TypeParamTypeParameter).getTypeParam().(TypeParamItemNode).resolveABound()
+  or
+  result = t.(SelfTypeParameter).getTrait()
+  or
+  result = t.(ImplTraitType).getImplTraitTypeRepr().(ImplTraitTypeReprItemNode).resolveABound()
+  or
+  result = t.(DynTraitType).getTrait()
+}
+
+pragma[nomagic]
+private predicate sdf(MethodCallDerefChainRef mc, Trait trait, TypePath path) {
+  mc.getMethodCall() = Debug::getRelevantLocatable() and
+  trait = getATraitBound(mc.getTypeAt(path))
+}
+
+pragma[nomagic]
+private predicate methodCallHasTraitCandidate0(
+  MethodCallDerefChainRef mc, Trait trait, Type t, SelfParamType self, Function f
+) {
+  exists(string name, int arity, TypePath path |
+    // self = getSelfParamTypeMention(f.getParamList().getSelfParam()) and
+    f = self.getFunction(trait) and
+    // self.asSelfParam(f.getParamList().getSelfParam(), trait) and
+    IsInstantiationOf<MethodCallDerefChainRef, SelfParamType, MethodCallIsInstantiationOfInput>::isInstantiationOf(mc,
+      trait, self) and
+    mc.getMethodCall().isMethodCall(name, arity) and
+    TSelfTypeParameter(trait) = self.getTypeAt(path) and
+    t = mc.getTypeAt(path)
+    // |
+    //   self =
+    //     getSelfParamTypeMention(getTypeParameterMethod(t, name, arity).getParamList().getSelfParam())
+  )
+}
+
+pragma[nomagic]
+private predicate methodCallHasTraitCandidate(
+  MethodCallDerefChainRef mc, Trait trait, Type t, SelfParamType self, Function f
+) {
+  mc.getMethodCall() = Debug::getRelevantLocatable() and
+  methodCallHasTraitCandidate0(mc, trait, t, self, f) and
+  trait = getATraitBound(t)
+  // |
+  //   self =
+  //     getSelfParamTypeMention(getTypeParameterMethod(t, name, arity).getParamList().getSelfParam())
 }
 
 /** Gets a method from an `impl` block that matches the method call `mc`. */
 pragma[nomagic]
-private Function getMethodFromImpl(MethodCall mc) {
-  exists(Impl impl, string name |
+private Function getMethodFromImpl(MethodCallDerefChainRef mc) {
+  exists(Impl impl, string name, MethodCall mc0 |
     methodCallHasImplCandidate(mc, impl) and
-    name = mc.getMethodName() and
-    result = getMethodSuccessor(impl, name)
+    mc0 = mc.getMethodCall() and
+    mc0.isMethodCall(name, _) and
+    result = getMethodSuccessor(impl, name, _)
   |
-    not functionResolutionDependsOnArgument(impl, name, _, _, _, _)
+    not functionResolutionDependsOnArgument(impl, name, _, any(int pos | pos > 0), _, _)
+    or
+    exists(int pos, TypePath path, Type type |
+      functionResolutionDependsOnArgument(impl, name, result, pos + 1, pragma[only_bind_into](path),
+        type) and
+      inferType(mc0.getArgument(CallImpl::TPositionalArgumentPosition(pos)),
+        pragma[only_bind_into](path)) = type
+    )
+  )
+}
+
+private Function testresolveOperation(Op op) {
+  result = resolveOperation(op) and
+  op = Debug::getRelevantLocatable()
+}
+
+private Function testresolveOperation(Op op, Impl impl, string name) {
+  op = Debug::getRelevantLocatable() and
+  operationHasImplCandidate(op, impl) and
+  name = op.(Call).getMethodName() and
+  result = getMethodSuccessor(impl, name, _) and
+  (
+    not functionResolutionDependsOnArgument(impl, name, _, any(int pos | pos > 0), _, _)
     or
     exists(int pos, TypePath path, Type type |
       functionResolutionDependsOnArgument(impl, name, result, pos, pragma[only_bind_into](path),
         type) and
-      inferType(mc.getPositionalArgument(pos), pragma[only_bind_into](path)) = type
+      inferType(op.getOperand(pos), pragma[only_bind_into](path)) = type and
+      pos > 0
     )
+  )
+}
+
+/** Gets a method from an `impl` block that matches the method call `mc`. */
+pragma[nomagic]
+private Function resolveOperation(Op op) {
+  exists(Impl impl, string name |
+    operationHasImplCandidate(op, impl) and
+    name = op.(Call).getMethodName() and
+    result = getMethodSuccessor(impl, name, _)
+  |
+    not functionResolutionDependsOnArgument(impl, name, _, any(int pos | pos > 0), _, _)
+    or
+    exists(int pos, TypePath path, Type type |
+      functionResolutionDependsOnArgument(impl, name, result, pos, pragma[only_bind_into](path),
+        type) and
+      inferType(op.getOperand(pos), pragma[only_bind_into](path)) = type and
+      pos > 0
+    )
+  )
+  or
+  exists(Trait trait, Type t |
+    operationHasTraitCandidate0(op, trait, t, _, result) and
+    trait = getATraitBound(t)
   )
 }
 
 bindingset[trait, name]
 pragma[inline_late]
-private Function getImplTraitMethod(ImplTraitReturnType trait, string name) {
-  result = getMethodSuccessor(trait.getImplTraitTypeRepr(), name)
+private Function getImplTraitMethod(ImplTraitReturnType trait, string name, int arity) {
+  result = getMethodSuccessor(trait.getImplTraitTypeRepr(), name, arity)
 }
 
 bindingset[traitObject, name]
 pragma[inline_late]
-private Function getDynTraitMethod(DynTraitType traitObject, string name) {
-  result = getMethodSuccessor(traitObject.getTrait(), name)
+private Function getDynTraitMethod(DynTraitType traitObject, string name, int arity) {
+  result = getMethodSuccessor(traitObject.getTrait(), name, arity)
+}
+
+bindingset[t, name, arity]
+pragma[inline_late]
+private Function resolveNonImplMethodCallTarget(Type t, string name, int arity) {
+  // The type of the receiver is a type parameter and the method comes from a
+  // trait bound on the type parameter.
+  result = getTypeParameterMethod(t, name, arity)
+  or
+  // The type of the receiver is an `impl Trait` type.
+  result = getImplTraitMethod(t, name, arity)
+  or
+  // The type of the receiver is a trait object `dyn Trait` type.
+  result = getDynTraitMethod(t, name, arity)
 }
 
 pragma[nomagic]
-private Function resolveMethodCallTarget(MethodCall mc) {
+private Function resolveMethodCallTarget(MethodCallDerefChainRef mcd) {
   // The method comes from an `impl` block targeting the type of the receiver.
-  result = getMethodFromImpl(mc)
+  result = getMethodFromImpl(mcd)
   or
-  // The type of the receiver is a type parameter and the method comes from a
-  // trait bound on the type parameter.
-  result = getTypeParameterMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
-  or
-  // The type of the receiver is an `impl Trait` type.
-  result = getImplTraitMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
-  or
-  // The type of the receiver is a trait object `dyn Trait` type.
-  result = getDynTraitMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
+  exists(Trait trait, Type t |
+    methodCallHasTraitCandidate0(mcd, trait, t, _, result) and
+    trait = getATraitBound(t)
+  )
+  // exists(Type rootType, string name, int arity |
+  //   isMethodCall(mcd, _, rootType, name, arity) and
+  //   result = resolveNonImplMethodCallTarget(rootType, name, arity)
+  // )
+}
+
+private Function testresolveMethodCallTarget(MethodCallDerefChainRef mcd) {
+  // result = resolveMethodCallTarget(mcd) and
+  result = resolveMethodCallTarget(mcd) and
+  mcd.getMethodCall() = Debug::getRelevantLocatable()
 }
 
 pragma[nomagic]
 private predicate assocFuncResolutionDependsOnArgument(Function f, Impl impl, int pos) {
-  functionResolutionDependsOnArgument(impl, _, f, pos, _, _) and
-  not f.getParamList().hasSelfParam()
+  functionResolutionDependsOnArgument(impl, _, f, pos, _, _)
 }
 
-private class FunctionCallExpr extends CallImpl::CallExprCall {
+private class FunctionCallExpr extends CallExpr {
   ItemNode getResolvedFunction() { result = CallExprImpl::getResolvedFunction(this) }
 
   /**
@@ -2153,7 +3305,7 @@ private class FunctionCallExpr extends CallImpl::CallExprCall {
    * to disambiguate.
    */
   predicate isAmbigous() {
-    this.hasTrait()
+    this.(Call).hasTrait()
     or
     assocFuncResolutionDependsOnArgument(this.getResolvedFunction(), _, _)
   }
@@ -2171,7 +3323,7 @@ private class FunctionCallExpr extends CallImpl::CallExprCall {
     resolved = this.getResolvedFunction() and
     (
       exists(TraitItemNode trait |
-        trait = this.getTrait() and
+        trait = this.(Call).getTrait() and
         result.implements(resolved) and
         result = impl.getAnAssocItem()
       |
@@ -2182,13 +3334,18 @@ private class FunctionCallExpr extends CallImpl::CallExprCall {
           or
           // We only check that the context of the call provides relevant type information
           // when no argument can
-          not traitTypeParameterOccurrence(trait, resolved, _, any(int pos0 | pos0 >= 0), _, tp)
+          not traitTypeParameterOccurrence(trait, resolved, _, any(int pos0 | pos0 >= 0), _, _)
         )
       )
       or
       result = resolved and
       assocFuncResolutionDependsOnArgument(result, impl, pos)
     )
+  }
+
+  private Function testgetAnAmbigousCandidate(ImplItemNode impl, int pos, Function resolved) {
+    result = this.getAnAmbigousCandidate(impl, pos, resolved) and
+    this = Debug::getRelevantLocatable()
   }
 
   /**
@@ -2219,23 +3376,54 @@ private class AmbigousAssocFunctionCallExpr extends MkAmbigousAssocFunctionCallE
     result = inferType(call, path)
   }
 
-  string toString() { result = call.toString() }
+  private Type testgetTypeAt(TypePath path) {
+    result = this.getTypeAt(path) and
+    call = Debug::getRelevantLocatable()
+  }
+
+  string toString() { result = call.toString() + " (pos: " + pos + ")" }
 
   Location getLocation() { result = call.getLocation() }
 }
 
 private module AmbigousAssocFuncIsInstantiationOfInput implements
-  IsInstantiationOfInputSig<AmbigousAssocFunctionCallExpr>
+  IsInstantiationOfInputSig<AmbigousAssocFunctionCallExpr, TypeMentionTypeTree>
 {
   pragma[nomagic]
   predicate potentialInstantiationOf(
-    AmbigousAssocFunctionCallExpr ce, TypeAbstraction impl, TypeMention constraint
+    AmbigousAssocFunctionCallExpr ce, TypeAbstraction impl, TypeMentionTypeTree constraint
   ) {
     exists(FunctionCallExpr call, Function resolved, Function cand, int pos |
       ce = MkAmbigousAssocFunctionCallExpr(call, resolved, pos) and
       cand = call.getAnAmbigousCandidate(impl, pos, resolved)
     |
-      constraint = cand.getParam(pos).getTypeRepr()
+      pos = 0 and
+      constraint = getSelfParamTypeMention(cand.getParamList().getSelfParam())
+      or
+      exists(int pos0 | constraint = cand.getParam(pos0).getTypeRepr() |
+        if cand.getParamList().hasSelfParam() then pos = pos0 + 1 else pos = pos0
+      )
+      or
+      pos = -1 and
+      constraint = cand.getRetType().getTypeRepr()
+    )
+  }
+
+  private predicate testpotentialInstantiationOf(
+    AmbigousAssocFunctionCallExpr ce, TypeAbstraction impl, TypeMentionTypeTree constraint,
+    FunctionCallExpr call, Function resolved, Function cand, int pos
+  ) {
+    // potentialInstantiationOf(ce, impl, constraint) and
+    ce.getLocation() = Debug::getRelevantLocatable().getLocation() and
+    ce = MkAmbigousAssocFunctionCallExpr(call, resolved, pos) and
+    cand = call.getAnAmbigousCandidate(impl, pos, resolved) and
+    (
+      // pos = 0 and
+      // constraint = getSelfParamTypeMention(cand.getParamList().getSelfParam())
+      // or
+      exists(int pos0 | constraint = cand.getParam(pos0).getTypeRepr() |
+        if cand.getParamList().hasSelfParam() then pos = pos0 + 1 else pos = pos0
+      )
       or
       pos = -1 and
       constraint = cand.getRetType().getTypeRepr()
@@ -2255,7 +3443,7 @@ private ItemNode resolveUnambigousFunctionCallTarget(FunctionCallExpr call) {
 pragma[nomagic]
 private Function resolveAmbigousFunctionCallTargetFromIndex(FunctionCallExpr call, int index) {
   exists(Impl impl, int pos, Function resolved |
-    IsInstantiationOf<AmbigousAssocFunctionCallExpr, AmbigousAssocFuncIsInstantiationOfInput>::isInstantiationOf(MkAmbigousAssocFunctionCallExpr(call,
+    IsInstantiationOf<AmbigousAssocFunctionCallExpr, TypeMentionTypeTree, AmbigousAssocFuncIsInstantiationOfInput>::isInstantiationOf(MkAmbigousAssocFunctionCallExpr(call,
         resolved, pos), impl, _) and
     result = call.getAnAmbigousCandidateRanked(impl, pos, resolved, index)
   |
@@ -2275,6 +3463,11 @@ private Function resolveAmbigousFunctionCallTarget(FunctionCallExpr call) {
       max(int index | result = call.getAnAmbigousCandidateRanked(_, _, _, index)))
 }
 
+private Function testresolveFunctionCallTarget(FunctionCallExpr call) {
+  result = resolveAmbigousFunctionCallTarget(call) and
+  call = Debug::getRelevantLocatable()
+}
+
 pragma[inline]
 private ItemNode resolveFunctionCallTarget(FunctionCallExpr call) {
   result = resolveUnambigousFunctionCallTarget(call)
@@ -2289,31 +3482,46 @@ private module Cached {
   /** Holds if `receiver` is the receiver of a method call with an implicit dereference. */
   cached
   predicate receiverHasImplicitDeref(AstNode receiver) {
-    exists(CallExprBaseMatchingInput::Access a, CallExprBaseMatchingInput::AccessPosition apos |
-      apos.getArgumentPosition().isSelf() and
-      apos.isBorrowed(_) and
-      receiver = a.getNodeAt(apos) and
-      inferType(receiver) = TRefType() and
-      CallExprBaseMatching::inferAccessType(a, apos, TypePath::nil()) != TRefType()
+    exists(MethodCall mc |
+      exists(resolveMethodCallTarget(MkMethodCallDerefChainRef(mc, ".ref;"))) and
+      receiver = mc.getArgument(CallImpl::TSelfArgumentPosition())
     )
+    or
+    exists(Op op |
+      op.(Call).implicitBorrowAt(CallImpl::TSelfArgumentPosition(), true) and
+      receiver = op.getOperand(0)
+    )
+    // exists(MethodCallExprMatchingInput::Access a, MethodCallExprMatchingInput::AccessPosition apos |
+    //   apos.getArgumentPosition().isSelf() and
+    //   apos.isBorrowed(_) and
+    //   receiver = a.getNodeAt(apos) and
+    //   inferType(receiver) = TRefType() and
+    //   MethodCallExprMatching::inferAccessType(a, apos, TypePath::nil()) != TRefType()
+    // )
   }
 
   /** Holds if `receiver` is the receiver of a method call with an implicit borrow. */
   cached
   predicate receiverHasImplicitBorrow(AstNode receiver) {
-    exists(CallExprBaseMatchingInput::Access a, CallExprBaseMatchingInput::AccessPosition apos |
-      apos.getArgumentPosition().isSelf() and
-      apos.isBorrowed(_) and
-      receiver = a.getNodeAt(apos) and
-      CallExprBaseMatching::inferAccessType(a, apos, TypePath::nil()) = TRefType() and
-      inferType(receiver) != TRefType()
+    exists(MethodCall mc |
+      exists(resolveMethodCallTarget(MkMethodCallDerefChainRef(mc, ";ref"))) and
+      receiver = mc.getArgument(CallImpl::TSelfArgumentPosition())
     )
+    // exists(MethodCallExprMatchingInput::Access a, MethodCallExprMatchingInput::AccessPosition apos |
+    //   apos.getArgumentPosition().isSelf() and
+    //   apos.isBorrowed(_) and
+    //   receiver = a.getNodeAt(apos) and
+    //   MethodCallExprMatching::inferAccessType(a, apos, TypePath::nil()) = TRefType() and
+    //   inferType(receiver) != TRefType()
+    // )
   }
 
   /** Gets a function that `call` resolves to, if any. */
   cached
   Function resolveCallTarget(Call call) {
-    result = resolveMethodCallTarget(call)
+    result = resolveMethodCallTarget(any(MethodCallDerefChainRef mcd | call = mcd.getMethodCall()))
+    or
+    result = resolveOperation(call)
     or
     result = resolveFunctionCallTarget(call)
   }
@@ -2392,13 +3600,17 @@ private module Cached {
       or
       result = inferTypeEquality(n, path)
       or
-      result = inferImplicitSelfType(n, path)
+      result = n.(SelfParameterImplicitMention).resolveTypeAt(path)
       or
       result = inferStructExprType(n, path)
       or
       result = inferPathExprType(n, path)
       or
-      result = inferCallExprBaseType(n, path)
+      result = inferMethodCallExprType(n, path)
+      or
+      result = inferCallExprType(n, path)
+      or
+      result = inferOperationType(n, path)
       or
       result = inferFieldExprType(n, path)
       or
@@ -2432,11 +3644,13 @@ Type inferType(AstNode n) { result = inferType(n, TypePath::nil()) }
 
 /** Provides predicates for debugging the type inference implementation. */
 private module Debug {
-  private Locatable getRelevantLocatable() {
+  Locatable getRelevantLocatable() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-      filepath.matches("%/sqlx.rs") and
-      startline = [56 .. 60]
+      // filepath.matches("%/crates/wdk-macros/src/lib.rs") and
+      // endline = [255 .. 256]
+      filepath.matches("%/main.rs") and
+      startline = 1845
     )
   }
 
@@ -2457,14 +3671,13 @@ private module Debug {
     Input2::conditionSatisfiesConstraint(abs, condition, constraint)
   }
 
-  predicate debugInferImplicitSelfType(SelfParam self, TypePath path, Type t) {
-    self = getRelevantLocatable() and
-    t = inferImplicitSelfType(self, path)
-  }
-
-  predicate debugInferCallExprBaseType(AstNode n, TypePath path, Type t) {
+  // predicate debugInferImplicitSelfType(SelfParam self, TypePath path, Type t) {
+  //   self = getRelevantLocatable() and
+  //   t = inferImplicitSelfType(self, path)
+  // }
+  predicate debuginferMethodCallExprType(AstNode n, TypePath path, Type t) {
     n = getRelevantLocatable() and
-    t = inferCallExprBaseType(n, path)
+    t = inferMethodCallExprType(n, path)
   }
 
   predicate debugTypeMention(TypeMention tm, TypePath path, Type type) {
@@ -2529,4 +3742,12 @@ private module Debug {
     n = getRelevantLocatable() and
     Consistency::nonUniqueCertainType(n, path, result)
   }
+  // predicate debugisMethodCall(MethodCall mc, Type rootType, string name, int arity) {
+  //   mc = getRelevantLocatable() and
+  //   isMethodCall(mc, rootType, name, arity)
+  // }
+  // predicate debugMethodCallHasImplCandidate(MethodCall mc, Impl impl) {
+  //   mc = getRelevantLocatable() and
+  //   methodCallHasImplCandidate(mc, impl)
+  // }
 }

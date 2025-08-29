@@ -641,6 +641,8 @@ final class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
 
   TraitItemNode resolveTraitTy() { result = resolvePath(this.getTraitPath()) }
 
+  predicate isBlanket() { this.resolveSelfTy() instanceof TypeParam }
+
   override AssocItemNode getAnAssocItem() { result = this.getADescendant() }
 
   override string getName() { result = "(impl)" }
@@ -726,7 +728,7 @@ final class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
   }
 }
 
-final private class ImplTraitTypeReprItemNode extends TypeItemNode instanceof ImplTraitTypeRepr {
+final class ImplTraitTypeReprItemNode extends TypeItemNode instanceof ImplTraitTypeRepr {
   pragma[nomagic]
   Path getABoundPath() {
     result = super.getTypeBoundList().getABound().getTypeRepr().(PathTypeRepr).getPath()
@@ -842,6 +844,8 @@ final class TraitItemNode extends ImplOrTraitItemNode, TypeItemNode instanceof T
 
   pragma[nomagic]
   ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
+
+  predicate hasLoop() { this.resolveABound+() = this }
 
   override AssocItemNode getAnAssocItem() { result = this.getADescendant() }
 

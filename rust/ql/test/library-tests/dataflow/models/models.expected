@@ -291,9 +291,6 @@ edges
 | main.rs:362:9:362:10 | x5 | main.rs:363:10:363:11 | x5 | provenance |  |
 | main.rs:362:14:362:23 | source(...) | main.rs:362:14:362:30 | ... .lt(...) | provenance | MaD:9 |
 | main.rs:362:14:362:30 | ... .lt(...) | main.rs:362:9:362:10 | x5 | provenance |  |
-| main.rs:365:9:365:10 | x6 | main.rs:366:10:366:11 | x6 | provenance |  |
-| main.rs:365:14:365:23 | source(...) | main.rs:365:14:365:27 | ... < ... | provenance | MaD:9 |
-| main.rs:365:14:365:27 | ... < ... | main.rs:365:9:365:10 | x6 | provenance |  |
 nodes
 | main.rs:15:9:15:9 | s | semmle.label | s |
 | main.rs:15:9:15:9 | s | semmle.label | s |
@@ -611,16 +608,13 @@ nodes
 | main.rs:362:14:362:23 | source(...) | semmle.label | source(...) |
 | main.rs:362:14:362:30 | ... .lt(...) | semmle.label | ... .lt(...) |
 | main.rs:363:10:363:11 | x5 | semmle.label | x5 |
-| main.rs:365:9:365:10 | x6 | semmle.label | x6 |
-| main.rs:365:14:365:23 | source(...) | semmle.label | source(...) |
-| main.rs:365:14:365:27 | ... < ... | semmle.label | ... < ... |
-| main.rs:366:10:366:11 | x6 | semmle.label | x6 |
 subpaths
 | main.rs:198:23:198:23 | f [captured s] | main.rs:197:40:197:40 | s | main.rs:197:17:197:42 | if ... {...} else {...} | main.rs:198:13:198:24 | apply(...) |
 | main.rs:198:23:198:23 | f [captured s] | main.rs:197:40:197:40 | s | main.rs:197:17:197:42 | if ... {...} else {...} | main.rs:198:13:198:24 | apply(...) |
 | main.rs:205:19:205:19 | s | main.rs:204:14:204:14 | ... | main.rs:204:17:204:42 | if ... {...} else {...} | main.rs:205:13:205:23 | apply(...) |
 | main.rs:205:19:205:19 | s | main.rs:204:14:204:14 | ... | main.rs:204:17:204:42 | if ... {...} else {...} | main.rs:205:13:205:23 | apply(...) |
 testFailures
+| main.rs:366:15:366:34 | //... | Missing result: hasTaintFlow=27 |
 invalidSpecComponent
 #select
 | main.rs:16:10:16:20 | identity(...) | main.rs:15:13:15:21 | source(...) | main.rs:16:10:16:20 | identity(...) | $@ | main.rs:15:13:15:21 | source(...) | source(...) |
@@ -675,4 +669,3 @@ invalidSpecComponent
 | main.rs:360:10:360:11 | x4 | main.rs:359:14:359:23 | source(...) | main.rs:360:10:360:11 | x4 | $@ | main.rs:359:14:359:23 | source(...) | source(...) |
 | main.rs:360:10:360:11 | x4 | main.rs:359:14:359:23 | source(...) | main.rs:360:10:360:11 | x4 | $@ | main.rs:359:14:359:23 | source(...) | source(...) |
 | main.rs:363:10:363:11 | x5 | main.rs:362:14:362:23 | source(...) | main.rs:363:10:363:11 | x5 | $@ | main.rs:362:14:362:23 | source(...) | source(...) |
-| main.rs:366:10:366:11 | x6 | main.rs:365:14:365:23 | source(...) | main.rs:366:10:366:11 | x6 | $@ | main.rs:365:14:365:23 | source(...) | source(...) |
