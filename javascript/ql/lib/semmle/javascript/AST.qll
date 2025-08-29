@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with the AST-based representation of JavaScript programs.
  */
+overlay[local]
+module;
 
 import javascript
 private import internal.StmtContainers
@@ -470,6 +472,7 @@ module AST {
    */
   class ValueNode extends AstNode, @dataflownode {
     /** Gets type inference results for this element. */
+    overlay[global]
     DataFlow::AnalyzedNode analyze() { result = DataFlow::valueNode(this).analyze() }
 
     /** Gets the data flow node associated with this program element. */
@@ -481,6 +484,7 @@ module AST {
      * This can be used to map an expression to the class it refers to, or
      * associate it with a named value coming from an dependency.
      */
+    overlay[global]
     ExprNameBindingNode getNameBinding() { result = this }
 
     /**
@@ -490,6 +494,7 @@ module AST {
      * (according to the type system), or to associate it with a named type coming
      * from a dependency.
      */
+    overlay[global]
     TypeNameBindingNode getTypeBinding() { TypeResolution::valueHasType(this, result) }
   }
 }

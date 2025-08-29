@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with expressions.
  */
+overlay[local]
+module;
 
 import javascript
 private import semmle.javascript.internal.CachedStages
@@ -115,12 +117,14 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
   string getStringValue() { Stages::Ast::ref() and result = getStringValue(this) }
 
   /** Holds if this expression is impure, that is, its evaluation could have side effects. */
+  overlay[global]
   predicate isImpure() { any() }
 
   /**
    * Holds if this expression is pure, that is, its evaluation is guaranteed
    * to be side-effect free.
    */
+  overlay[global]
   predicate isPure() { not this.isImpure() }
 
   /**
@@ -153,21 +157,25 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
    * Holds if this expression accesses the global variable `g`, either directly
    * or through the `window` object.
    */
+  overlay[global]
   predicate accessesGlobal(string g) { this.flow().accessesGlobal(g) }
 
   /**
    * Holds if this expression may evaluate to `s`.
    */
+  overlay[global]
   predicate mayHaveStringValue(string s) { this.flow().mayHaveStringValue(s) }
 
   /**
    * Holds if this expression may evaluate to `b`.
    */
+  overlay[global]
   predicate mayHaveBooleanValue(boolean b) { this.flow().mayHaveBooleanValue(b) }
 
   /**
    * Holds if this expression may refer to the initial value of parameter `p`.
    */
+  overlay[global]
   predicate mayReferToParameter(Parameter p) { DataFlow::parameterNode(p).flowsToExpr(this) }
 
   /**
@@ -178,6 +186,7 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
    * Has no result if the expression is in a JavaScript file or in a TypeScript
    * file that was extracted without type information.
    */
+  overlay[global]
   deprecated Type getType() { ast_node_type(this, result) }
 
   /**
@@ -250,6 +259,7 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
    * Gets the data-flow node where exceptions thrown by this expression will
    * propagate if this expression causes an exception to be thrown.
    */
+  overlay[caller]
   pragma[inline]
   DataFlow::Node getExceptionTarget() {
     result = getCatchParameterFromStmt(this.getRawEnclosingStmt(this))
@@ -301,6 +311,7 @@ class Identifier extends @identifier, ExprOrType {
  * ```
  */
 class Label extends @label, Identifier, Expr {
+  overlay[global]
   override predicate isImpure() { none() }
 
   override string getAPrimaryQlClass() { result = "Label" }
@@ -330,6 +341,7 @@ class Literal extends @literal, Expr {
    */
   string getRawValue() { literals(_, result, this) }
 
+  overlay[global]
   override predicate isImpure() { none() }
 
   override string getAPrimaryQlClass() { result = "Literal" }
@@ -352,6 +364,7 @@ class ParExpr extends @par_expr, Expr {
 
   override int getIntValue() { result = this.getExpression().getIntValue() }
 
+  overlay[global]
   override predicate isImpure() { this.getExpression().isImpure() }
 
   override Expr getUnderlyingValue() { result = this.getExpression().getUnderlyingValue() }
@@ -500,6 +513,7 @@ class RegExpLiteral extends @regexp_literal, Literal, RegExpParent {
  * ```
  */
 class ThisExpr extends @this_expr, Expr {
+  overlay[global]
   override predicate isImpure() { none() }
 
   /**
@@ -555,6 +569,7 @@ class ArrayExpr extends @array_expr, Expr {
   /** Holds if this array literal has an omitted element. */
   predicate hasOmittedElement() { this.elementIsOmitted(_) }
 
+  overlay[global]
   override predicate isImpure() { this.getAnElement().isImpure() }
 
   override string getAPrimaryQlClass() { result = "ArrayExpr" }
@@ -597,6 +612,7 @@ class ObjectExpr extends @obj_expr, Expr {
    */
   predicate hasTrailingComma() { this.getLastToken().getPreviousToken().getValue() = "," }
 
+  overlay[global]
   override predicate isImpure() { this.getAProperty().isImpure() }
 
   override string getAPrimaryQlClass() { result = "ObjectExpr" }
@@ -664,6 +680,7 @@ class Property extends @property, Documentable {
    * Holds if this property is impure, that is, the evaluation of its name or
    * its initializer expression could have side effects.
    */
+  overlay[global]
   predicate isImpure() {
     this.isComputed() and this.getNameExpr().isImpure()
     or
@@ -826,6 +843,7 @@ class FunctionExpr extends @function_expr, Expr, Function {
     Stages::Ast::ref() and result = Expr.super.getContainer()
   }
 
+  overlay[global]
   override predicate isImpure() { none() }
 
   override string getAPrimaryQlClass() { result = "FunctionExpr" }
@@ -846,6 +864,7 @@ class ArrowFunctionExpr extends @arrow_function_expr, Expr, Function {
 
   override StmtContainer getEnclosingContainer() { result = Expr.super.getContainer() }
 
+  overlay[global]
   override predicate isImpure() { none() }
 
   override Function getThisBinder() {
@@ -877,6 +896,7 @@ class SeqExpr extends @seq_expr, Expr {
   /** Gets the last expression in this sequence. */
   Expr getLastOperand() { result = this.getOperand(this.getNumOperands() - 1) }
 
+  overlay[global]
   override predicate isImpure() { this.getAnOperand().isImpure() }
 
   override Expr getUnderlyingValue() { result = this.getLastOperand().getUnderlyingValue() }
@@ -906,6 +926,7 @@ class ConditionalExpr extends @conditional_expr, Expr {
   /** Gets either the 'then' or the 'else' expression of this conditional. */
   Expr getABranch() { result = this.getConsequent() or result = this.getAlternate() }
 
+  overlay[global]
   override predicate isImpure() {
     this.getCondition().isImpure() or
     this.getABranch().isImpure()
@@ -985,6 +1006,7 @@ class InvokeExpr extends @invokeexpr, Expr {
    *
    * This predicate is an approximation, computed using only local data flow.
    */
+  overlay[global]
   predicate hasOptionArgument(int i, string name, Expr value) {
     value = this.flow().(DataFlow::InvokeNode).getOptionArgument(i, name).asExpr()
   }
@@ -997,6 +1019,7 @@ class InvokeExpr extends @invokeexpr, Expr {
    *
    * This predicate is only populated for files extracted with full TypeScript extraction.
    */
+  overlay[global]
   deprecated CallSignatureType getResolvedSignature() { invoke_expr_signature(this, result) }
 
   /**
@@ -1014,6 +1037,7 @@ class InvokeExpr extends @invokeexpr, Expr {
    *
    * This predicate is only populated for files extracted with full TypeScript extraction.
    */
+  overlay[global]
   deprecated CanonicalFunctionName getResolvedCalleeName() { ast_node_symbol(this, result) }
 
   /**
@@ -1022,6 +1046,7 @@ class InvokeExpr extends @invokeexpr, Expr {
    * Note that the resolved function may be overridden in a subclass and thus is not
    * necessarily the actual target of this invocation at runtime.
    */
+  overlay[global]
   Function getResolvedCallee() { TypeResolution::callTarget(this, result) }
 }
 
@@ -1156,6 +1181,7 @@ class DotExpr extends @dot_expr, PropAccess {
   /** Gets the identifier specifying the name of the accessed property. */
   Identifier getProperty() { result = this.getChildExpr(1) }
 
+  overlay[global]
   override predicate isImpure() { this.getBase().isImpure() }
 
   override string getAPrimaryQlClass() { result = "DotExpr" }
@@ -1176,6 +1202,7 @@ class IndexExpr extends @index_expr, PropAccess {
 
   override string getPropertyName() { result = this.getIndex().(Literal).getValue() }
 
+  overlay[global]
   override predicate isImpure() {
     this.getBase().isImpure() or
     this.getIndex().isImpure()
@@ -1201,6 +1228,7 @@ class UnaryExpr extends @unaryexpr, Expr {
   /** Gets the operator of this expression. */
   string getOperator() { none() }
 
+  overlay[global]
   override predicate isImpure() { this.getOperand().isImpure() }
 
   override ControlFlowNode getFirstControlFlowNode() {
@@ -1302,6 +1330,7 @@ class VoidExpr extends @void_expr, UnaryExpr {
 class DeleteExpr extends @delete_expr, UnaryExpr {
   override string getOperator() { result = "delete" }
 
+  overlay[global]
   override predicate isImpure() { any() }
 }
 
@@ -1352,6 +1381,7 @@ class BinaryExpr extends @binaryexpr, Expr {
   /** Gets the operator of this expression. */
   string getOperator() { none() }
 
+  overlay[global]
   override predicate isImpure() { this.getAnOperand().isImpure() }
 
   override ControlFlowNode getFirstControlFlowNode() {
@@ -2233,6 +2263,7 @@ class YieldExpr extends @yield_expr, Expr {
   /** Holds if this is a `yield*` expression. */
   predicate isDelegating() { is_delegating(this) }
 
+  overlay[global]
   override predicate isImpure() { any() }
 
   override ControlFlowNode getFirstControlFlowNode() {
@@ -2289,6 +2320,7 @@ class ComprehensionExpr extends @comprehension_expr, Expr {
   /** Gets the body expression of this comprehension. */
   Expr getBody() { result = this.getChildExpr(0) }
 
+  overlay[global]
   override predicate isImpure() {
     this.getABlock().isImpure() or
     this.getAFilter().isImpure() or
@@ -2349,6 +2381,7 @@ class ComprehensionBlock extends @comprehension_block, Expr {
   /** Gets the domain over which this comprehension block iterates. */
   Expr getDomain() { result = this.getChildExpr(1) }
 
+  overlay[global]
   override predicate isImpure() {
     this.getIterator().isImpure() or
     this.getDomain().isImpure()
@@ -2675,6 +2708,7 @@ class AwaitExpr extends @await_expr, Expr {
   /** Gets the operand of this `await` expression. */
   Expr getOperand() { result = this.getChildExpr(0) }
 
+  overlay[global]
   override predicate isImpure() { any() }
 
   override ControlFlowNode getFirstControlFlowNode() {
@@ -2698,6 +2732,7 @@ class AwaitExpr extends @await_expr, Expr {
  * ```
  */
 class FunctionSentExpr extends @function_sent_expr, Expr {
+  overlay[global]
   override predicate isImpure() { none() }
 
   override string getAPrimaryQlClass() { result = "FunctionSentExpr" }
@@ -2857,6 +2892,7 @@ class DynamicImportExpr extends @dynamic_import, Expr, Import {
 }
 
 /** A literal path expression appearing in a dynamic import. */
+overlay[global]
 deprecated private class LiteralDynamicImportPath extends PathExpr, ConstantString {
   LiteralDynamicImportPath() {
     exists(DynamicImportExpr di | this.getParentExpr*() = di.getSource())
@@ -2919,6 +2955,7 @@ class OptionalChainRoot extends ChainElem {
  * ```
  */
 class ImportMetaExpr extends @import_meta_expr, Expr {
+  overlay[global]
   override predicate isImpure() { none() }
 
   override string getAPrimaryQlClass() { result = "ImportMetaExpr" }

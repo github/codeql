@@ -17,6 +17,8 @@
  * Flow through global variables, object properties or function calls is not
  * modeled (except for immediately invoked functions as explained above).
  */
+overlay[local]
+module;
 
 import javascript
 private import internal.CallGraphs
@@ -64,9 +66,11 @@ module DataFlow {
      * `p.getALocalSource()` does _not_ return the corresponding argument, and
      * `p.isIncomplete("call")` holds.
      */
+    overlay[global]
     predicate isIncomplete(Incompleteness cause) { isIncomplete(this, cause) }
 
     /** Gets type inference results for this data flow node. */
+    overlay[global]
     AnalyzedNode analyze() { result = this }
 
     /** Gets the expression corresponding to this data flow node, if any. */
@@ -98,6 +102,7 @@ module DataFlow {
      * Holds if this data flow node accesses the global variable `g`, either directly
      * or through the `window` object.
      */
+    overlay[global]
     predicate accessesGlobal(string g) { globalVarRef(g).flowsTo(this) }
 
     /** Holds if this node may evaluate to the string `s`, possibly through local data flow. */
@@ -124,11 +129,13 @@ module DataFlow {
     int getIntValue() { result = this.asExpr().getIntValue() }
 
     /** Gets a function value that may reach this node. */
+    overlay[global]
     final FunctionNode getAFunctionValue() {
       CallGraph::getAFunctionReference(result, 0).flowsTo(this)
     }
 
     /** Gets a function value that may reach this node with the given `imprecision` level. */
+    overlay[global]
     final FunctionNode getAFunctionValue(int imprecision) {
       CallGraph::getAFunctionReference(result, imprecision).flowsTo(this)
     }
@@ -137,6 +144,7 @@ module DataFlow {
      * Gets a function value that may reach this node,
      * possibly derived from a partial function invocation.
      */
+    overlay[global]
     final FunctionNode getABoundFunctionValue(int boundArgs) {
       result = this.getAFunctionValue() and boundArgs = 0
       or
@@ -192,6 +200,7 @@ module DataFlow {
       FlowSteps::identityFunctionStep(result, this)
     }
 
+    overlay[global]
     private NameResolution::Node getNameResolutionNode() {
       this = valueNode(result)
       or
@@ -205,6 +214,7 @@ module DataFlow {
      * Holds if this node is annotated with the given named type,
      * or is declared as a subtype thereof, or is a union or intersection containing such a type.
      */
+    overlay[global]
     cached
     predicate hasUnderlyingType(string globalName) {
       Stages::TypeTracking::ref() and
@@ -218,6 +228,7 @@ module DataFlow {
      * Holds if this node is annotated with the given named type,
      * or is declared as a subtype thereof, or is a union or intersection containing such a type.
      */
+    overlay[global]
     cached
     predicate hasUnderlyingType(string moduleName, string typeName) {
       Stages::TypeTracking::ref() and
@@ -466,6 +477,7 @@ module DataFlow {
     /**
      * Gets an accessor (`get` or `set` method) that may be invoked by this property reference.
      */
+    overlay[global]
     final DataFlow::FunctionNode getAnAccessorCallee() {
       result = CallGraph::getAnAccessorCallee(this)
     }
@@ -1762,6 +1774,7 @@ module DataFlow {
     )
   }
 
+  overlay[global]
   private class ReflectiveParamsStep extends LegacyPreCallGraphStep {
     override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
       exists(DataFlow::ReflectiveParametersNode params, DataFlow::FunctionNode f, int i |
@@ -1774,6 +1787,7 @@ module DataFlow {
   }
 
   /** A taint step from the reflective parameters node to any parameter. */
+  overlay[global]
   private class ReflectiveParamsTaintStep extends TaintTracking::LegacyTaintStep {
     override predicate step(DataFlow::Node obj, DataFlow::Node element) {
       exists(DataFlow::ReflectiveParametersNode params, DataFlow::FunctionNode f |
@@ -1787,6 +1801,7 @@ module DataFlow {
   /**
    * Holds if there is a step from `pred` to `succ` through a field accessed through `this` in a class.
    */
+  overlay[global]
   predicate localFieldStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(ClassNode cls, string prop |
       pred = AccessPath::getAnAssignmentTo(cls.getADirectSuperClass*().getAReceiverNode(), prop) or
@@ -1819,6 +1834,7 @@ module DataFlow {
    * `p.getALocalSource()` does _not_ return the corresponding argument, and
    * `p.isIncomplete("call")` holds.
    */
+  overlay[global]
   predicate isIncomplete(Node nd, Incompleteness cause) {
     exists(SsaVariable ssa | nd = TSsaDefNode(ssa.getDefinition()) |
       defIsIncomplete(ssa.(SsaExplicitDefinition).getDef(), cause)

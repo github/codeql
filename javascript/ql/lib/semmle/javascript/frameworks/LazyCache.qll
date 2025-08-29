@@ -1,6 +1,8 @@
 /**
  * Models imports through the NPM `lazy-cache` package.
  */
+overlay[local]
+module;
 
 import javascript
 
@@ -58,6 +60,7 @@ module LazyCache {
   }
 
   /** A constant path element appearing in a call to a lazy-cache object. */
+  overlay[global]
   deprecated private class LazyCachePathExpr extends PathExpr, ConstantString {
     LazyCachePathExpr() { this = any(LazyCacheImport rp).getArgument(0) }
 
