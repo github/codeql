@@ -1,0 +1,10 @@
+| test.rs:319:14:319:20 | &buffer | Fixed missing result: hasTaintFlow |
+| test.rs:326:14:326:20 | &buffer | Fixed missing result: hasTaintFlow |
+| test.rs:333:14:333:20 | &buffer | Fixed missing result: hasTaintFlow |
+| test.rs:592:14:592:20 | &buffer | Fixed missing result: hasTaintFlow="file.txt" |
+| test.rs:598:14:598:20 | &buffer | Fixed missing result: hasTaintFlow="file.txt" |
+| test.rs:604:14:604:20 | &buffer | Fixed missing result: hasTaintFlow="file.txt" |
+| test.rs:641:14:641:20 | &buffer | Fixed missing result: hasTaintFlow="another_file.txt" |
+| test.rs:641:14:641:20 | &buffer | Fixed missing result: hasTaintFlow="file.txt" |
+| test.rs:649:14:649:20 | &buffer | Fixed missing result: hasTaintFlow="file.txt" |
+| test_futures_io.rs:147:14:147:20 | &buffer | Fixed missing result: hasTaintFlow=url |
