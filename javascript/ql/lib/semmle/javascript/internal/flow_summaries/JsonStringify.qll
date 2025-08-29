@@ -1,6 +1,8 @@
 /**
  * Contains implicit read steps at the input to any function that converts a deep object to a string, such as `JSON.stringify`.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import FlowSummaryUtil

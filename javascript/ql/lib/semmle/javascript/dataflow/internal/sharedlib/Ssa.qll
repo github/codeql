@@ -3,6 +3,8 @@
  *
  * JavaScript's old SSA library is still responsible for the ordinary SSA flow.
  */
+overlay[local]
+module;
 
 private import javascript as js
 private import codeql.ssa.Ssa
