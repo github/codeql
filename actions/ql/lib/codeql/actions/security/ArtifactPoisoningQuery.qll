@@ -125,8 +125,6 @@ class LegitLabsDownloadArtifactActionStep extends UntrustedArtifactDownloadStep,
 }
 
 class ActionsGitHubScriptDownloadStep extends UntrustedArtifactDownloadStep, UsesStep {
-  string script;
-
   ActionsGitHubScriptDownloadStep() {
     // eg:
     // - uses: actions/github-script@v6
@@ -149,12 +147,14 @@ class ActionsGitHubScriptDownloadStep extends UntrustedArtifactDownloadStep, Use
     //      var fs = require('fs');
     //      fs.writeFileSync('${{github.workspace}}/test-results.zip', Buffer.from(download.data));
     this.getCallee() = "actions/github-script" and
-    this.getArgument("script") = script and
-    script.matches("%listWorkflowRunArtifacts(%") and
-    script.matches("%downloadArtifact(%") and
-    script.matches("%writeFileSync(%") and
-    // Filter out artifacts that were created by pull-request.
-    not script.matches("%exclude_pull_requests: true%")
+    exists(string script |
+      this.getArgument("script") = script and
+      script.matches("%listWorkflowRunArtifacts(%") and
+      script.matches("%downloadArtifact(%") and
+      script.matches("%writeFileSync(%") and
+      // Filter out artifacts that were created by pull-request.
+      not script.matches("%exclude_pull_requests: true%")
+    )
   }
 
   override string getPath() {
@@ -259,15 +259,15 @@ class DirectArtifactDownloadStep extends UntrustedArtifactDownloadStep, Run {
 
 class ArtifactPoisoningSink extends DataFlow::Node {
   UntrustedArtifactDownloadStep download;
-  PoisonableStep poisonable;
 
   ArtifactPoisoningSink() {
-    download.getAFollowingStep() = poisonable and
-    // excluding artifacts downloaded to the temporary directory
-    not download.getPath().regexpMatch("^/tmp.*") and
-    not download.getPath().regexpMatch("^\\$\\{\\{\\s*runner\\.temp\\s*}}.*") and
-    not download.getPath().regexpMatch("^\\$RUNNER_TEMP.*") and
-    (
+    exists(PoisonableStep poisonable |
+      download.getAFollowingStep() = poisonable and
+      // excluding artifacts downloaded to the temporary directory
+      not download.getPath().regexpMatch("^/tmp.*") and
+      not download.getPath().regexpMatch("^\\$\\{\\{\\s*runner\\.temp\\s*}}.*") and
+      not download.getPath().regexpMatch("^\\$RUNNER_TEMP.*")
+    |
       poisonable.(Run).getScript() = this.asExpr() and
       (
         // Check if the poisonable step is a local script execution step

@@ -1,11 +1,13 @@
 import ql
 
 class RedundantInlineCast extends AstNode instanceof InlineCast {
-  Type t;
-
+  // Type t;
   RedundantInlineCast() {
-    t = unique( | | super.getType()) and
-    (
+    exists(Type t |
+      t = unique( | | super.getType()) and
+      // noopt can require explicit casts
+      not this.getEnclosingPredicate().getAnAnnotation() instanceof NoOpt
+    |
       // The cast is to the type the base expression already has
       t = unique( | | super.getBase().getType())
       or
@@ -23,9 +25,7 @@ class RedundantInlineCast extends AstNode instanceof InlineCast {
         target = unique( | | call.getTarget()) and
         t = unique( | | target.getParameterType(i))
       )
-    ) and
-    // noopt can require explicit casts
-    not this.getEnclosingPredicate().getAnAnnotation() instanceof NoOpt
+    )
   }
 
   TypeExpr getTypeExpr() { result = super.getTypeExpr() }
@@ -49,15 +49,16 @@ private class AnyCast extends AstNode instanceof FullAggregate {
 // `foo = any(Bar b)` is effectively a cast to `Bar`.
 class RedundantAnyCast extends AstNode instanceof ComparisonFormula {
   AnyCast cast;
-  Expr operand;
 
   RedundantAnyCast() {
     super.getOperator() = "=" and
     super.getAnOperand() = cast and
-    super.getAnOperand() = operand and
-    cast != operand and
-    unique( | | operand.getType()).getASuperType*() =
-      unique( | | cast.getTypeExpr().getResolvedType()) and
+    exists(Expr operand |
+      super.getAnOperand() = operand and
+      cast != operand and
+      unique( | | operand.getType()).getASuperType*() =
+        unique( | | cast.getTypeExpr().getResolvedType())
+    ) and
     not this.getEnclosingPredicate().getAnAnnotation() instanceof NoOpt
   }
 

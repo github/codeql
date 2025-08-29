@@ -620,9 +620,7 @@ final class TypeBoundTypeAbstraction extends TypeAbstraction, TypeBound {
 }
 
 final class SelfTypeBoundTypeAbstraction extends TypeAbstraction, Name {
-  private TraitTypeAbstraction trait;
-
-  SelfTypeBoundTypeAbstraction() { trait.getName() = this }
+  SelfTypeBoundTypeAbstraction() { any(TraitTypeAbstraction trait).getName() = this }
 
   override TypeParameter getATypeParameter() { none() }
 }
