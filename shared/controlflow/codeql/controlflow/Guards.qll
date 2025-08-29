@@ -53,24 +53,9 @@ module;
 private import codeql.util.Boolean
 private import codeql.util.Location
 private import codeql.util.Unit
+private import SuccessorType
 
 signature module InputSig<LocationSig Location> {
-  class SuccessorType {
-    /** Gets a textual representation of this successor type. */
-    string toString();
-  }
-
-  class ExceptionSuccessor extends SuccessorType;
-
-  class ConditionalSuccessor extends SuccessorType {
-    /** Gets the Boolean value of this successor. */
-    boolean getValue();
-  }
-
-  class BooleanSuccessor extends ConditionalSuccessor;
-
-  class NullnessSuccessor extends ConditionalSuccessor;
-
   /** A control flow node. */
   class ControlFlowNode {
     /** Gets a textual representation of this control flow node. */
