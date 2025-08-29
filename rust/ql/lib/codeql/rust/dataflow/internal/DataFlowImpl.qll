@@ -582,6 +582,7 @@ module RustDataFlow implements InputSig<Location> {
           .isVariantField([any(OptionEnum o).getSome(), any(ResultEnum r).getOk()], 0)
     )
     or
+    // todo: rely on flow summary instead
     exists(PrefixExprCfgNode deref |
       c instanceof ReferenceContent and
       deref.getOperatorName() = "*" and

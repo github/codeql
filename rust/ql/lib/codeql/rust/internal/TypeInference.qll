@@ -3482,7 +3482,15 @@ private module Cached {
   /** Holds if `receiver` is the receiver of a method call with an implicit dereference. */
   cached
   predicate receiverHasImplicitDeref(AstNode receiver) {
-    none() // todo
+    exists(MethodCall mc |
+      exists(resolveMethodCallTarget(MkMethodCallDerefChainRef(mc, ".ref;"))) and
+      receiver = mc.getArgument(CallImpl::TSelfArgumentPosition())
+    )
+    or
+    exists(Op op |
+      op.(Call).implicitBorrowAt(CallImpl::TSelfArgumentPosition(), true) and
+      receiver = op.getOperand(0)
+    )
     // exists(MethodCallExprMatchingInput::Access a, MethodCallExprMatchingInput::AccessPosition apos |
     //   apos.getArgumentPosition().isSelf() and
     //   apos.isBorrowed(_) and
@@ -3495,7 +3503,10 @@ private module Cached {
   /** Holds if `receiver` is the receiver of a method call with an implicit borrow. */
   cached
   predicate receiverHasImplicitBorrow(AstNode receiver) {
-    none() // todo
+    exists(MethodCall mc |
+      exists(resolveMethodCallTarget(MkMethodCallDerefChainRef(mc, ";ref"))) and
+      receiver = mc.getArgument(CallImpl::TSelfArgumentPosition())
+    )
     // exists(MethodCallExprMatchingInput::Access a, MethodCallExprMatchingInput::AccessPosition apos |
     //   apos.getArgumentPosition().isSelf() and
     //   apos.isBorrowed(_) and

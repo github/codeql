@@ -467,7 +467,7 @@ newtype TNode =
         any(TryExprCfgNode try).getExpr(), //
         any(PrefixExprCfgNode pe | pe.getOperatorName() = "*").getExpr(), //
         any(AwaitExprCfgNode a).getExpr(), //
-        any(MethodCallExprCfgNode mc).getReceiver(), //
+        any(CallCfgNode call | call.getCall().receiverImplicitlyBorrowed()).getReceiver(), //
         getPostUpdateReverseStep(any(PostUpdateNode n).getPreUpdateNode().asExpr(), _)
       ]
   } or
