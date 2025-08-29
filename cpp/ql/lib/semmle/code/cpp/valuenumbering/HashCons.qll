@@ -648,7 +648,7 @@ private predicate mk_UuidofOperator(Type t, UuidofOperator e) {
 }
 
 private predicate analyzableTypeidType(TypeidOperator e) {
-  count(e.getAChild()) = 0 and
+  not exists(e.getAChild()) and
   strictcount(e.getResultType()) = 1
 }
 
