@@ -1,6 +1,3 @@
 multipleCallTargets
 | main.rs:118:9:118:11 | f(...) |
-| main.rs:494:13:494:27 | ...::a_method(...) |
-| main.rs:498:13:498:27 | ...::a_method(...) |
-| main.rs:502:13:502:27 | ...::a_method(...) |
 | proc_macro.rs:9:5:9:10 | ...::new(...) |
