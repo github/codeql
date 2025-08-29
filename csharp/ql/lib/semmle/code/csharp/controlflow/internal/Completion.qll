@@ -310,10 +310,8 @@ private class Overflowable extends UnaryOperation {
 
 /** A control flow element that is inside a `try` block. */
 private class TriedControlFlowElement extends ControlFlowElement {
-  TryStmt try;
-
   TriedControlFlowElement() {
-    this = try.getATriedElement() and
+    this = any(TryStmt try).getATriedElement() and
     not this instanceof NonReturningCall
   }
 

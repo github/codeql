@@ -386,34 +386,35 @@ module MakeStateBarrierGuard<
    */
   private class BarrierGuardFunction extends FinalFunction {
     DataFlow::ParameterNode sanitizedParameter;
-    BarrierGuard guard;
     boolean guardOutcome;
     FlowState state;
     int paramIndex;
 
     BarrierGuardFunction() {
-      barrierGuardIsRelevant(guard) and
-      exists(Expr e |
-        exists(Expr returnExpr |
-          returnExpr = guard.asExpr()
-          or
-          // ad hoc support for conjunctions:
-          getALogicalAndParent(guard) = returnExpr and guardOutcome = true
-          or
-          // ad hoc support for disjunctions:
-          getALogicalOrParent(guard) = returnExpr and guardOutcome = false
-        |
-          exists(SsaExplicitDefinition ssa |
-            ssa.getDef().getSource() = returnExpr and
-            ssa.getVariable().getAUse() = this.getAReturnedExpr()
-          )
-          or
-          returnExpr = this.getAReturnedExpr()
+      exists(BarrierGuard guard |
+        barrierGuardIsRelevant(guard) and
+        exists(Expr e |
+          exists(Expr returnExpr |
+            returnExpr = guard.asExpr()
+            or
+            // ad hoc support for conjunctions:
+            getALogicalAndParent(guard) = returnExpr and guardOutcome = true
+            or
+            // ad hoc support for disjunctions:
+            getALogicalOrParent(guard) = returnExpr and guardOutcome = false
+          |
+            exists(SsaExplicitDefinition ssa |
+              ssa.getDef().getSource() = returnExpr and
+              ssa.getVariable().getAUse() = this.getAReturnedExpr()
+            )
+            or
+            returnExpr = this.getAReturnedExpr()
+          ) and
+          sanitizedParameter.flowsToExpr(e) and
+          barrierGuardBlocksExpr(guard, guardOutcome, e, state)
         ) and
-        sanitizedParameter.flowsToExpr(e) and
-        barrierGuardBlocksExpr(guard, guardOutcome, e, state)
-      ) and
-      sanitizedParameter.getParameter() = this.getParameter(paramIndex)
+        sanitizedParameter.getParameter() = this.getParameter(paramIndex)
+      )
     }
 
     /**

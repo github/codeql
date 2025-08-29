@@ -123,11 +123,10 @@ module Impl {
   }
 
   class CallExprMethodCall extends Call instanceof CallExpr {
-    Path qualifier;
     string methodName;
     boolean selfIsRef;
 
-    CallExprMethodCall() { callIsMethodCall(this, qualifier, methodName, selfIsRef) }
+    CallExprMethodCall() { callIsMethodCall(this, _, methodName, selfIsRef) }
 
     /**
      * Holds if this call must have an explicit borrow for the `self` argument,

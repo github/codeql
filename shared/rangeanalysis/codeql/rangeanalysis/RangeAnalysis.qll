@@ -784,10 +784,11 @@ module RangeStage<
           else
             if strictlyNegativeIntegralExpr(x)
             then upper = false and delta = D::fromInt(1)
-            else
-              if semNegative(x)
-              then upper = false and delta = D::fromInt(0)
-              else none()
+            else (
+              semNegative(x) and
+              upper = false and
+              delta = D::fromInt(0)
+            )
       )
       or
       e2.(Sem::RemExpr).getRightOperand() = e1 and

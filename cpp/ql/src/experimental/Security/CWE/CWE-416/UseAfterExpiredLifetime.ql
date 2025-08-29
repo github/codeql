@@ -266,7 +266,7 @@ class LifetimePointerType extends LifetimeIndirectionType {
 class FullExpr extends Expr {
   FullExpr() {
     // A full-expression is not a subexpression
-    not exists(Expr p | this.getParent() = p)
+    not this.getParent() instanceof Expr
     or
     // A sub-expression that is an unevaluated operand
     this.isUnevaluated()

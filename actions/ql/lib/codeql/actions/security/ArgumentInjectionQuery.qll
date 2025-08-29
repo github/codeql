@@ -19,7 +19,6 @@ abstract class ArgumentInjectionSink extends DataFlow::Node {
  */
 class ArgumentInjectionFromEnvVarSink extends ArgumentInjectionSink {
   string command;
-  string argument;
 
   ArgumentInjectionFromEnvVarSink() {
     exists(Run run, string var |
@@ -28,7 +27,7 @@ class ArgumentInjectionFromEnvVarSink extends ArgumentInjectionSink {
         exists(run.getInScopeEnvVarExpr(var)) or
         var = "GITHUB_HEAD_REF"
       ) and
-      run.getScript().getAnEnvReachingArgumentInjectionSink(var, command, argument)
+      run.getScript().getAnEnvReachingArgumentInjectionSink(var, command, _)
     )
   }
 
@@ -44,13 +43,12 @@ class ArgumentInjectionFromEnvVarSink extends ArgumentInjectionSink {
  */
 class ArgumentInjectionFromCommandSink extends ArgumentInjectionSink {
   string command;
-  string argument;
 
   ArgumentInjectionFromCommandSink() {
     exists(CommandSource source, Run run |
       run = source.getEnclosingRun() and
       this.asExpr() = run.getScript() and
-      run.getScript().getACmdReachingArgumentInjectionSink(source.getCommand(), command, argument)
+      run.getScript().getACmdReachingArgumentInjectionSink(source.getCommand(), command, _)
     )
   }
 

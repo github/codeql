@@ -307,13 +307,12 @@ class SemStoreExpr extends SemUnaryExpr {
 }
 
 class SemConditionalExpr extends SemKnownExpr {
-  SemExpr condition;
   SemExpr trueResult;
   SemExpr falseResult;
 
   SemConditionalExpr() {
     opcode instanceof Opcode::Conditional and
-    Specific::conditionalExpr(this, type, condition, trueResult, falseResult)
+    Specific::conditionalExpr(this, type, any(SemExpr condition), trueResult, falseResult)
   }
 
   final SemExpr getBranchExpr(boolean branch) {

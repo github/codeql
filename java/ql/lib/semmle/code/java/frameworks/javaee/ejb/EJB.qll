@@ -35,14 +35,14 @@ class SessionEjb extends EJB {
     // Either the EJB does not declare any business interfaces explicitly
     // and implements a single interface candidate,
     // which is then considered to be the business interface...
-    count(this.getAnExplicitBusinessInterface()) = 0 and
+    not exists(this.getAnExplicitBusinessInterface()) and
     count(this.getAnImplementedBusinessInterfaceCandidate()) = 1 and
     result = this.getAnImplementedBusinessInterfaceCandidate()
     or
     // ...or each business interface needs to be declared explicitly.
     (
       count(this.getAnImplementedBusinessInterfaceCandidate()) != 1 or
-      count(this.getAnExplicitBusinessInterface()) != 0
+      exists(this.getAnExplicitBusinessInterface())
     ) and
     result = this.getAnExplicitBusinessInterface()
   }

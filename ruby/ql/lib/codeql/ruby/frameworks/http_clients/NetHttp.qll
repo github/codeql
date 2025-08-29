@@ -27,11 +27,10 @@ private import codeql.ruby.DataFlow
 class NetHttpRequest extends Http::Client::Request::Range instanceof DataFlow::CallNode {
   private DataFlow::CallNode request;
   API::Node requestNode;
-  API::Node connectionNode;
   private boolean returnsResponseBody;
 
   NetHttpRequest() {
-    exists(string method |
+    exists(string method, API::Node connectionNode |
       request = requestNode.asSource() and
       this = request and
       requestNode = connectionNode.getReturn(method)

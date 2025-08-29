@@ -100,12 +100,12 @@ class InvocationConversionContext extends ConversionSite {
  * See the Java Language Specification, Section 5.4.
  */
 class StringConversionContext extends ConversionSite {
-  AddExpr a;
-
   StringConversionContext() {
-    a.getAnOperand() = this and
-    not this.getType() instanceof TypeString and
-    a.getAnOperand().getType() instanceof TypeString
+    exists(AddExpr a |
+      a.getAnOperand() = this and
+      not this.getType() instanceof TypeString and
+      a.getAnOperand().getType() instanceof TypeString
+    )
   }
 
   override Type getConversionTarget() { result instanceof TypeString }

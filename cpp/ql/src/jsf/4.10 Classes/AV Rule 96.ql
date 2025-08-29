@@ -28,7 +28,7 @@ where
   exists(FunctionCall c, int i, Function f |
     c.getArgument(i) = e and
     c.getTarget() = f and
-    exists(Parameter p | f.getParameter(i) = p) and // varargs
+    exists(f.getParameter(i)) and // varargs
     baseElement(e.getType(), cl) and // only interested in arrays with classes
     not compatible(f.getParameter(i).getUnspecifiedType(), e.getUnspecifiedType())
   )

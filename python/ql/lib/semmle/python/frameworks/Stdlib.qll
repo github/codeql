@@ -3702,11 +3702,8 @@ module StdlibPrivate {
    * A call to a find method on a tree or an element will execute an XPath expression.
    */
   private class ElementTreeFindCall extends XML::XPathExecution::Range, DataFlow::CallCfgNode {
-    string methodName;
-
     ElementTreeFindCall() {
-      methodName in ["find", "findall", "findtext"] and
-      (
+      exists(string methodName | methodName in ["find", "findall", "findtext"] |
         this = elementTreeInstance().getMember(methodName).getACall()
         or
         this = elementInstance().getMember(methodName).getACall()

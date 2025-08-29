@@ -165,4 +165,6 @@ class HasField extends Big {
     or
     this.toString().matches("%foo") // <- field only defined here.
   }
+
+  Big getField() { result = field }
 }

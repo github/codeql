@@ -451,10 +451,9 @@ module Ssa {
    * An SSA definition that corresponds to an explicit assignable definition.
    */
   class ExplicitDefinition extends Definition, SsaImpl::WriteDefinition {
-    SourceVariable sv;
     AssignableDefinition ad;
 
-    ExplicitDefinition() { SsaImpl::explicitDefinition(this, sv, ad) }
+    ExplicitDefinition() { SsaImpl::explicitDefinition(this, _, ad) }
 
     /**
      * Gets an underlying assignable definition. The result is always unique,

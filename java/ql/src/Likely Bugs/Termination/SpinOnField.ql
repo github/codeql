@@ -33,8 +33,8 @@ class Empty extends Stmt {
 class EmptyLoop extends Stmt {
   EmptyLoop() {
     exists(ForStmt stmt | stmt = this |
-      count(stmt.getAnInit()) = 0 and
-      count(stmt.getAnUpdate()) = 0 and
+      not exists(stmt.getAnInit()) and
+      not exists(stmt.getAnUpdate()) and
       stmt.getStmt() instanceof Empty
     )
     or
