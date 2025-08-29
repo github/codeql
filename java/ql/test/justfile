@@ -1,0 +1,16 @@
+import "../justfile"
+
+base_flags := """\
+     CODEQL_EXTRACTOR_KOTLIN_DIAGNOSTIC_LIMIT="\\ " \
+"""
+
+all_checks := default_db_checks + """\
+    --check-undefined-labels \
+    --check-repeated-labels \
+    --check-redefined-labels \
+    --check-use-before-definition \
+    --consistency-queries=""" + consistency_queries
+
+[no-cd]
+test *ARGS=".": (_codeql_test "java" base_flags all_checks ARGS)
+
