@@ -47,7 +47,7 @@ where
   // for a function parameter
   unchecked.getTarget() = param and
   // this function parameter is not overwritten
-  count(param.getAnAssignment()) = 0 and
+  not exists(param.getAnAssignment()) and
   check.getTarget() = param and
   // which is once checked
   candidateResultChecked(check, eqop) and
