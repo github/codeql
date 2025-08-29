@@ -298,10 +298,11 @@ private predicate boundFlowStep(Instruction i, NonPhiOperand op, int delta, bool
       else
         if strictlyNegative(x)
         then upper = true and delta = -1
-        else
-          if negative(x)
-          then upper = true and delta = 0
-          else none()
+        else (
+          negative(x) and
+          upper = true and
+          delta = 0
+        )
   )
   or
   exists(Operand x |
@@ -321,10 +322,11 @@ private predicate boundFlowStep(Instruction i, NonPhiOperand op, int delta, bool
       else
         if strictlyNegative(x)
         then upper = false and delta = 1
-        else
-          if negative(x)
-          then upper = false and delta = 0
-          else none()
+        else (
+          negative(x) and
+          upper = false and
+          delta = 0
+        )
   )
   or
   i.(RemInstruction).getRightOperand() = op and positive(op) and delta = -1 and upper = true
