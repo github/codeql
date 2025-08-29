@@ -10,6 +10,7 @@
 
 import javascript
 import RemotePropertyInjectionCustomizations::RemotePropertyInjection
+private import semmle.javascript.DynamicPropertyAccess
 
 /**
  * A taint-tracking configuration for reasoning about remote property injection.
@@ -22,6 +23,10 @@ module RemotePropertyInjectionConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node instanceof Sanitizer or
     node = StringConcatenation::getRoot(any(ConstantString str).flow())
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    node1 = node2.(EnumeratedPropName).getSourceObject()
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }

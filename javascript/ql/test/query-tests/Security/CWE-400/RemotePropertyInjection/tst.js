@@ -16,10 +16,15 @@ app.get('/user/:id', function(req, res) {
 	headers[prop] = 42; // $ Alert
 	res.set(headers);
 	myCoolLocalFct[req.query.x](); // OK - flagged by method name injection
+
+	Object.keys(req.body).forEach( // $ Source
+		key => {
+			myObj[key] = 42; // $ Alert
+		}
+	);
 });
 
 function myCoolLocalFct(x) {
 	var result = x;
 	return result.substring(0, result.length);
-
 }
