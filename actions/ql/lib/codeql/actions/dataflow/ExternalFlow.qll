@@ -63,10 +63,10 @@ predicate madSource(DataFlow::Node source, string kind, string fieldName) {
     (
       if fieldName.trim().matches("env.%")
       then source.asExpr() = uses.getInScopeEnvVarExpr(fieldName.trim().replaceAll("env.", ""))
-      else
-        if fieldName.trim().matches("output.%")
-        then source.asExpr() = uses
-        else none()
+      else (
+        fieldName.trim().matches("output.%") and
+        source.asExpr() = uses
+      )
     )
   )
 }

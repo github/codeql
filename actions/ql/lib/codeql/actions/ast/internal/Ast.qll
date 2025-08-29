@@ -125,12 +125,11 @@ abstract class AstNodeImpl extends TAstNode {
    * Gets the enclosing Step.
    */
   StepImpl getEnclosingStep() {
-    if this instanceof StepImpl
-    then result = this
-    else
-      if this instanceof ScalarValueImpl
-      then result.getAChildNode*() = this.getParentNode()
-      else none()
+    this instanceof StepImpl and
+    result = this
+    or
+    this instanceof ScalarValueImpl and
+    result.getAChildNode*() = this.getParentNode()
   }
 
   /**
@@ -1416,9 +1415,8 @@ class ExternalJobImpl extends JobImpl, UsesImpl {
   override string getVersion() {
     exists(YamlString name |
       n.lookup("uses") = name and
-      if not name.getValue().matches("\\.%")
-      then result = name.getValue().regexpCapture(repoUsesParser(), 4)
-      else none()
+      not name.getValue().matches("\\.%") and
+      result = name.getValue().regexpCapture(repoUsesParser(), 4)
     )
   }
 }

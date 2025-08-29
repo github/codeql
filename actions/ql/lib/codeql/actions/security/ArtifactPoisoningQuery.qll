@@ -171,10 +171,10 @@ class ActionsGitHubScriptDownloadStep extends UntrustedArtifactDownloadStep, Use
                 .getScript()
                 .getACommand()
                 .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 3)))
-    else
-      if this.getAFollowingStep().(Run).getScript().getACommand().regexpMatch(unzipRegexp())
-      then result = "GITHUB_WORKSPACE/"
-      else none()
+    else (
+      this.getAFollowingStep().(Run).getScript().getACommand().regexpMatch(unzipRegexp()) and
+      result = "GITHUB_WORKSPACE/"
+    )
   }
 }
 
@@ -207,12 +207,13 @@ class GHRunArtifactDownloadStep extends UntrustedArtifactDownloadStep, Run {
                 .getScript()
                 .getACommand()
                 .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 3)))
-    else
-      if
+    else (
+      (
         this.getAFollowingStep().(Run).getScript().getACommand().regexpMatch(unzipRegexp()) or
         this.getScript().getACommand().regexpMatch(unzipRegexp())
-      then result = "GITHUB_WORKSPACE/"
-      else none()
+      ) and
+      result = "GITHUB_WORKSPACE/"
+    )
   }
 }
 
