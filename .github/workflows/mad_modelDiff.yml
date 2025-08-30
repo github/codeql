@@ -28,12 +28,12 @@ jobs:
         slug: ${{fromJson(github.event.inputs.projects || '["apache/commons-codec", "apache/commons-io", "apache/commons-beanutils", "apache/commons-logging", "apache/commons-fileupload", "apache/commons-lang", "apache/commons-validator", "apache/commons-csv", "apache/dubbo"]' )}}
     steps:
       - name: Clone github/codeql from PR
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         if: github.event.pull_request
         with:
           path: codeql-pr
       - name: Clone github/codeql from main
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: codeql-main
           ref: main

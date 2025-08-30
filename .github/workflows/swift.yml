@@ -36,7 +36,7 @@ jobs:
       fail-fast: false
     runs-on: ${{ matrix.runner }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Setup (Linux)
         if: runner.os == 'Linux'
         run: |
@@ -53,7 +53,7 @@ jobs:
   clang-format:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: pre-commit/action@646c83fcd040023954eafda54b4db0192ce70507
         name: Check that python code is properly formatted
         with:
@@ -61,7 +61,7 @@ jobs:
   codegen:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/fetch-codeql
       - uses: pre-commit/action@646c83fcd040023954eafda54b4db0192ce70507
         name: Check that QL generated code was checked in
@@ -77,6 +77,6 @@ jobs:
   check-no-override:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Check that no override is present in load.bzl
         run: bazel test ... --test_tag_filters=override --test_output=errors
