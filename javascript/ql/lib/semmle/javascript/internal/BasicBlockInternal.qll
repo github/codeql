@@ -6,6 +6,7 @@
 import javascript
 private import semmle.javascript.internal.StmtContainers
 private import semmle.javascript.internal.CachedStages
+private import codeql.controlflow.BasicBlock as BB
 
 /**
  * Holds if `nd` starts a new basic block.
@@ -361,5 +362,49 @@ module Public {
         not b = this.getImmediateDominator()
       )
     }
+  }
+
+  final private class FinalBasicBlock = BasicBlock;
+
+  module Cfg implements BB::CfgSig<DbLocation> {
+    private import javascript as Js
+    private import codeql.util.Unit
+
+    class ControlFlowNode = Js::ControlFlowNode;
+
+    class SuccessorType = Unit;
+
+    class BasicBlock extends FinalBasicBlock {
+      BasicBlock getASuccessor() { result = super.getASuccessor() }
+
+      BasicBlock getASuccessor(SuccessorType t) { result = super.getASuccessor() and exists(t) }
+
+      predicate strictlyDominates(BasicBlock bb) {
+        this.(ReachableBasicBlock).strictlyDominates(bb)
+      }
+
+      predicate dominates(BasicBlock bb) { this.(ReachableBasicBlock).dominates(bb) }
+
+      predicate inDominanceFrontier(BasicBlock df) {
+        df.(ReachableJoinBlock).inDominanceFrontierOf(this)
+      }
+
+      BasicBlock getImmediateDominator() { result = super.getImmediateDominator() }
+
+      predicate strictlyPostDominates(BasicBlock bb) {
+        this.(ReachableBasicBlock).strictlyPostDominates(bb)
+      }
+
+      predicate postDominates(BasicBlock bb) { this.(ReachableBasicBlock).postDominates(bb) }
+    }
+
+    pragma[nomagic]
+    predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) {
+      bb1.getASuccessor() = bb2 and
+      bb1 = bb2.getImmediateDominator() and
+      forall(BasicBlock pred | pred = bb2.getAPredecessor() and pred != bb1 | bb2.dominates(pred))
+    }
+
+    predicate entryBlock(BasicBlock bb) { entryBB(bb) }
   }
 }

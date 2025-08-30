@@ -882,30 +882,11 @@ private predicate closureFlowStep(CaptureInput::Expr e1, CaptureInput::Expr e2) 
   e2.(Pattern).getImmediateMatchingExpr() = e1
 }
 
-private module CaptureInput implements VariableCapture::InputSig<Location> {
+private module CaptureInput implements VariableCapture::InputSig<Location, BasicBlock> {
   private import swift as S
   private import codeql.swift.controlflow.ControlFlowGraph as Cfg
-  private import codeql.swift.controlflow.BasicBlocks as B
 
-  class BasicBlock instanceof B::BasicBlock {
-    string toString() { result = super.toString() }
-
-    ControlFlowNode getNode(int i) { result = super.getNode(i) }
-
-    int length() { result = super.length() }
-
-    Callable getEnclosingCallable() { result = super.getScope() }
-
-    Location getLocation() { result = super.getLocation() }
-  }
-
-  class ControlFlowNode = Cfg::ControlFlowNode;
-
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
-    result.(B::BasicBlock).immediatelyDominates(bb)
-  }
-
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.(B::BasicBlock).getASuccessor() }
+  Callable basicBlockGetEnclosingCallable(BasicBlock bb) { result = bb.getScope() }
 
   class CapturedVariable instanceof S::VarDecl {
     CapturedVariable() {
@@ -927,9 +908,7 @@ private module CaptureInput implements VariableCapture::InputSig<Location> {
 
     Location getLocation() { result = super.getLocation() }
 
-    predicate hasCfgNode(BasicBlock bb, int i) {
-      this = bb.(B::BasicBlock).getNode(i).getNode().asAstNode()
-    }
+    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i).getNode().asAstNode() }
   }
 
   class VariableWrite extends Expr {
@@ -1001,7 +980,7 @@ class CapturedVariable = CaptureInput::CapturedVariable;
 
 class CapturedParameter = CaptureInput::CapturedParameter;
 
-module CaptureFlow = VariableCapture::Flow<Location, CaptureInput>;
+module CaptureFlow = VariableCapture::Flow<Location, Cfg, CaptureInput>;
 
 private CaptureFlow::ClosureNode asClosureNode(Node n) {
   result = n.(CaptureNode).getSynthesizedCaptureNode()

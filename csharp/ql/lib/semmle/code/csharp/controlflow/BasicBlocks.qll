@@ -6,6 +6,7 @@ import csharp
 private import ControlFlow::SuccessorTypes
 private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl as CfgImpl
 private import CfgImpl::BasicBlocks as BasicBlocksImpl
+private import codeql.controlflow.BasicBlock as BB
 
 /**
  * A basic block, that is, a maximal straight-line sequence of control flow nodes
@@ -13,7 +14,12 @@ private import CfgImpl::BasicBlocks as BasicBlocksImpl
  */
 final class BasicBlock extends BasicBlocksImpl::BasicBlock {
   /** Gets an immediate successor of this basic block of a given type, if any. */
-  BasicBlock getASuccessorByType(ControlFlow::SuccessorType t) { result = this.getASuccessor(t) }
+  BasicBlock getASuccessor(ControlFlow::SuccessorType t) { result = super.getASuccessor(t) }
+
+  /** DEPRECATED: Use `getASuccessor` instead. */
+  deprecated BasicBlock getASuccessorByType(ControlFlow::SuccessorType t) {
+    result = this.getASuccessor(t)
+  }
 
   /** Gets an immediate predecessor of this basic block of a given type, if any. */
   BasicBlock getAPredecessorByType(ControlFlow::SuccessorType t) {
@@ -57,6 +63,8 @@ final class BasicBlock extends BasicBlocksImpl::BasicBlock {
   BasicBlock getAFalseSuccessor() {
     result.getFirstNode() = this.getLastNode().getAFalseSuccessor()
   }
+
+  BasicBlock getASuccessor() { result = super.getASuccessor() }
 
   /** Gets the control flow node at a specific (zero-indexed) position in this basic block. */
   ControlFlow::Node getNode(int pos) { result = super.getNode(pos) }
@@ -329,4 +337,20 @@ final class ConditionBlock extends BasicBlock, BasicBlocksImpl::ConditionBasicBl
   deprecated predicate controls(BasicBlock controlled, ConditionalSuccessor s) {
     super.edgeDominates(controlled, s)
   }
+}
+
+private class BasicBlockAlias = BasicBlock;
+
+module Cfg implements BB::CfgSig<Location> {
+  class ControlFlowNode = ControlFlow::Node;
+
+  class SuccessorType = ControlFlow::SuccessorType;
+
+  class BasicBlock = BasicBlockAlias;
+
+  predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) {
+    BasicBlocksImpl::dominatingEdge(bb1, bb2)
+  }
+
+  predicate entryBlock(BasicBlock bb) { bb instanceof EntryBasicBlock }
 }
