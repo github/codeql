@@ -11,11 +11,8 @@ multipleCallTargets
 | test.rs:179:30:179:68 | ...::_print(...) |
 | test.rs:188:26:188:105 | ...::_print(...) |
 | test.rs:229:22:229:72 | ... .read_to_string(...) |
-| test.rs:513:22:513:50 | file.read_to_end(...) |
-| test.rs:519:22:519:53 | file.read_to_string(...) |
 | test.rs:697:18:697:38 | ...::_print(...) |
 | test.rs:702:18:702:45 | ...::_print(...) |
-| test.rs:706:25:706:49 | address.to_socket_addrs() |
 | test.rs:720:38:720:42 | ...::_print(...) |
 | test.rs:724:38:724:54 | ...::_print(...) |
 | test.rs:729:38:729:51 | ...::_print(...) |
@@ -76,12 +73,6 @@ multipleCallTargets
 | test.rs:977:14:977:29 | ...::_print(...) |
 | test.rs:979:27:979:36 | ...::_print(...) |
 | test.rs:980:28:980:41 | ...::_print(...) |
-| test_futures_io.rs:35:26:35:63 | pinned.poll_read(...) |
-| test_futures_io.rs:62:22:62:50 | pinned.poll_fill_buf(...) |
-| test_futures_io.rs:69:23:69:67 | ... .poll_fill_buf(...) |
-| test_futures_io.rs:93:26:93:63 | pinned.poll_read(...) |
-| test_futures_io.rs:116:22:116:50 | pinned.poll_fill_buf(...) |
-| test_futures_io.rs:145:26:145:49 | ...::with_capacity(...) |
 | web_frameworks.rs:13:14:13:22 | a.as_str() |
 | web_frameworks.rs:13:14:13:23 | a.as_str() |
 | web_frameworks.rs:14:14:14:24 | a.as_bytes() |
