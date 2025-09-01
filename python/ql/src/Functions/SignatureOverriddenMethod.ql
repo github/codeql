@@ -220,7 +220,7 @@ Call chooseASignatureMismatchWitness(Function base, Function sub) {
   )
 }
 
-module CallOption = LocOption2<Location, Call>;
+module CallOption = LocatableOption<Location, Call>;
 
 from Function base, Function sub, string msg, string extraMsg, CallOption::Option call
 where
