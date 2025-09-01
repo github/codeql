@@ -8,66 +8,14 @@ module;
 private import codeql.util.Boolean
 private import codeql.util.Unit
 private import codeql.util.Location
+private import codeql.controlflow.BasicBlock as BB
 private import codeql.ssa.Ssa as Ssa
 
-signature module InputSig<LocationSig Location> {
-  /**
-   * A basic block, that is, a maximal straight-line sequence of control flow nodes
-   * without branches or joins.
-   */
-  class BasicBlock {
-    /** Gets a textual representation of this basic block. */
-    string toString();
+signature class BasicBlockSig;
 
-    /** Gets the `i`th node in this basic block. */
-    ControlFlowNode getNode(int i);
-
-    /** Gets the length of this basic block. */
-    int length();
-
-    /** Gets the enclosing callable. */
-    Callable getEnclosingCallable();
-
-    /** Gets the location of this basic block. */
-    Location getLocation();
-  }
-
-  /** A control flow node. */
-  class ControlFlowNode {
-    /** Gets a textual representation of this control flow node. */
-    string toString();
-
-    /** Gets the location of this control flow node. */
-    Location getLocation();
-  }
-
-  /**
-   * Gets the basic block that immediately dominates basic block `bb`, if any.
-   *
-   * That is, all paths reaching `bb` from some entry point basic block must go
-   * through the result.
-   *
-   * Example:
-   *
-   * ```csharp
-   * int M(string s) {
-   *   if (s == null)
-   *     throw new ArgumentNullException(nameof(s));
-   *   return s.Length;
-   * }
-   * ```
-   *
-   * The basic block starting on line 2 is an immediate dominator of
-   * the basic block on line 4 (all paths from the entry point of `M`
-   * to `return s.Length;` must go through the null check.
-   */
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb);
-
-  /** Gets an immediate successor of basic block `bb`, if any. */
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb);
-
-  /** Holds if `bb` is a control-flow entry point. */
-  default predicate entryBlock(BasicBlock bb) { not exists(getImmediateBasicBlockDominator(bb)) }
+signature module InputSig<LocationSig Location, BasicBlockSig BasicBlock> {
+  /** Gets the enclosing callable of the basic block. */
+  Callable basicBlockGetEnclosingCallable(BasicBlock bb);
 
   /** A variable that is captured in a closure. */
   class CapturedVariable {
@@ -153,7 +101,9 @@ signature module InputSig<LocationSig Location> {
   }
 }
 
-signature module OutputSig<LocationSig Location, InputSig<Location> I> {
+signature module OutputSig<
+  LocationSig Location, BasicBlockSig BasicBlock, InputSig<Location, BasicBlock> I>
+{
   /**
    * A data flow node that we need to reference in the step relations for
    * captured variables.
@@ -255,8 +205,17 @@ signature module OutputSig<LocationSig Location, InputSig<Location> I> {
  * Constructs the type `ClosureNode` and associated step relations, which are
  * intended to be included in the data-flow node and step relations.
  */
-module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig<Location, Input> {
+module Flow<
+  LocationSig Location, BB::CfgSig<Location> Cfg, InputSig<Location, Cfg::BasicBlock> Input>
+  implements OutputSig<Location, Cfg::BasicBlock, Input>
+{
   private import Input
+
+  final private class CfgBb = Cfg::BasicBlock;
+
+  private class BasicBlock extends CfgBb {
+    Callable getEnclosingCallable() { result = basicBlockGetEnclosingCallable(this) }
+  }
 
   additional module ConsistencyChecks {
     final private class FinalExpr = Expr;
@@ -332,17 +291,17 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
 
     query predicate uniqueDominator(RelevantBasicBlock bb, string msg) {
       msg = "BasicBlock has multiple immediate dominators" and
-      2 <= strictcount(getImmediateBasicBlockDominator(bb))
+      2 <= strictcount(bb.getImmediateDominator())
     }
 
     query predicate localDominator(RelevantBasicBlock bb, string msg) {
       msg = "BasicBlock has non-local dominator" and
-      bb.getEnclosingCallable() != getImmediateBasicBlockDominator(bb).getEnclosingCallable()
+      bb.getEnclosingCallable() != bb.getImmediateDominator().(BasicBlock).getEnclosingCallable()
     }
 
     query predicate localSuccessor(RelevantBasicBlock bb, string msg) {
       msg = "BasicBlock has non-local successor" and
-      bb.getEnclosingCallable() != getABasicBlockSuccessor(bb).getEnclosingCallable()
+      bb.getEnclosingCallable() != bb.getASuccessor().(BasicBlock).getEnclosingCallable()
     }
 
     query predicate uniqueDefiningScope(CapturedVariable v, string msg) {
@@ -669,7 +628,7 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
   /** Holds if `cc` needs a definition at the entry of its callable scope. */
   private predicate entryDef(CaptureContainer cc, BasicBlock bb, int i) {
     exists(Callable c |
-      entryBlock(bb) and
+      bb instanceof Cfg::EntryBasicBlock and
       pragma[only_bind_out](bb.getEnclosingCallable()) = c and
       i =
         min(int j |
@@ -685,22 +644,10 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
     )
   }
 
-  private module CaptureSsaInput implements Ssa::InputSig<Location> {
-    final class BasicBlock = Input::BasicBlock;
-
-    final class ControlFlowNode = Input::ControlFlowNode;
-
-    BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
-      result = Input::getImmediateBasicBlockDominator(bb)
-    }
-
-    BasicBlock getABasicBlockSuccessor(BasicBlock bb) {
-      result = Input::getABasicBlockSuccessor(bb)
-    }
-
+  private module CaptureSsaInput implements Ssa::InputSig<Location, Cfg::BasicBlock> {
     class SourceVariable = CaptureContainer;
 
-    predicate variableWrite(BasicBlock bb, int i, SourceVariable cc, boolean certain) {
+    predicate variableWrite(Cfg::BasicBlock bb, int i, SourceVariable cc, boolean certain) {
       Cached::ref() and
       (
         exists(CapturedVariable v | cc = TVariable(v) and captureWrite(v, bb, i, true, _))
@@ -710,9 +657,9 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
       certain = true
     }
 
-    predicate variableRead(BasicBlock bb, int i, SourceVariable cc, boolean certain) {
+    predicate variableRead(Cfg::BasicBlock bb, int i, SourceVariable cc, boolean certain) {
       (
-        synthThisQualifier(bb, i) and cc = TThis(bb.getEnclosingCallable())
+        synthThisQualifier(bb, i) and cc = TThis(bb.(BasicBlock).getEnclosingCallable())
         or
         exists(CapturedVariable v | cc = TVariable(v) |
           captureRead(v, bb, i, true, _) or synthRead(v, bb, i, true, _)
@@ -722,26 +669,30 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
     }
   }
 
-  private module CaptureSsa = Ssa::Make<Location, CaptureSsaInput>;
+  private module CaptureSsa = Ssa::Make<Location, Cfg, CaptureSsaInput>;
 
   private module DataFlowIntegrationInput implements CaptureSsa::DataFlowIntegrationInputSig {
     private import codeql.util.Void
 
-    class Expr instanceof Input::ControlFlowNode {
+    class Expr instanceof Cfg::ControlFlowNode {
       string toString() { result = super.toString() }
 
-      predicate hasCfgNode(BasicBlock bb, int i) { bb.getNode(i) = this }
+      predicate hasCfgNode(Cfg::BasicBlock bb, int i) { bb.getNode(i) = this }
     }
 
     class GuardValue = Void;
 
     class Guard extends Void {
-      predicate hasValueBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue val) { none() }
+      predicate hasValueBranchEdge(Cfg::BasicBlock bb1, Cfg::BasicBlock bb2, GuardValue val) {
+        none()
+      }
 
-      predicate valueControlsBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue val) { none() }
+      predicate valueControlsBranchEdge(Cfg::BasicBlock bb1, Cfg::BasicBlock bb2, GuardValue val) {
+        none()
+      }
     }
 
-    predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, GuardValue val) { none() }
+    predicate guardDirectlyControlsBlock(Guard guard, Cfg::BasicBlock bb, GuardValue val) { none() }
 
     predicate includeWriteDefsInFlowStep() { none() }
 

@@ -297,7 +297,7 @@ private predicate defNullImpliesStep(
   not exists(SuccessorTypes::ConditionalSuccessor s, NullValue nv |
     bb1.getLastNode() = getANullCheck(def1, s, nv).getAControlFlowNode()
   |
-    bb2 = bb1.getASuccessorByType(s) and
+    bb2 = bb1.getASuccessor(s) and
     nv.isNonNull()
   )
 }

@@ -98,6 +98,16 @@ class BasicBlock extends BbImpl::BasicBlock {
   /** Gets an immediate successor of this basic block of a given type, if any. */
   BasicBlock getASuccessor(Input::SuccessorType t) { result = super.getASuccessor(t) }
 
+  BasicBlock getASuccessor() { result = super.getASuccessor() }
+
+  BasicBlock getImmediateDominator() { result = super.getImmediateDominator() }
+
+  predicate inDominanceFrontier(BasicBlock df) { super.inDominanceFrontier(df) }
+
+  predicate strictlyPostDominates(BasicBlock bb) { super.strictlyPostDominates(bb) }
+
+  predicate postDominates(BasicBlock bb) { super.postDominates(bb) }
+
   /**
    * DEPRECATED: Use `getASuccessor` instead.
    *
@@ -144,4 +154,18 @@ class BasicBlock extends BbImpl::BasicBlock {
 /** A basic block that ends in an exit node. */
 class ExitBlock extends BasicBlock {
   ExitBlock() { this.getLastNode() instanceof ControlFlow::ExitNode }
+}
+
+private class BasicBlockAlias = BasicBlock;
+
+module Cfg implements BB::CfgSig<Location> {
+  class ControlFlowNode = BbImpl::ControlFlowNode;
+
+  class SuccessorType = BbImpl::SuccessorType;
+
+  class BasicBlock = BasicBlockAlias;
+
+  class EntryBasicBlock extends BasicBlock instanceof BbImpl::EntryBasicBlock { }
+
+  predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) { BbImpl::dominatingEdge(bb1, bb2) }
 }
