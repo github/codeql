@@ -1,0 +1,4 @@
+| ScopedValueFlowTest.java:6:28:6:34 | ...[...] | ScopedValueFlowTest.java:12:22:12:26 | value |
+| ScopedValueFlowTest.java:6:28:6:34 | ...[...] | ScopedValueFlowTest.java:21:22:21:25 | user |
+| ScopedValueFlowTest.java:6:28:6:34 | ...[...] | ScopedValueFlowTest.java:31:30:31:34 | inner |
+| ScopedValueFlowTest.java:6:28:6:34 | ...[...] | ScopedValueFlowTest.java:33:22:33:26 | outer |
