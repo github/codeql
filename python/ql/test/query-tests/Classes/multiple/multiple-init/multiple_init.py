@@ -87,3 +87,31 @@ class F4(F2, F3):
         F3.__init__(self)
 
 F4()
+
+class G1:
+    def __init__(self):
+        print("G1 init") 
+
+class G2(G1):
+    def __init__(self):
+        print("G2 init") 
+        G1.__init__(self)
+
+class G3(G1):
+    def __init__(self):
+        print("G3 init") 
+        G1.__init__(self)
+
+class G4(G1):
+    def __init__(self):
+        print("G4 init") 
+        G1.__init__(self)
+
+class G5(G2,G3,G4):
+    def __init__(self): # $ Alert # Only one alert is generated, that mentions the first two calls
+        print("G5 init") 
+        G2.__init__(self)
+        G3.__init__(self)
+        G4.__init__(self)
+
+G5()
