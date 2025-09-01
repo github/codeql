@@ -311,6 +311,8 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool)
 
 	extraction.WaitGroup.Wait()
 
+	util.WriteOverlayBaseMetadata()
+
 	log.Println("Done extracting packages.")
 
 	t := time.Now()
@@ -323,16 +325,17 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool)
 type Extraction struct {
 	// A lock for preventing concurrent writes to maps and the stat trap writer, as they are not
 	// thread-safe
-	Lock         sync.Mutex
-	LabelKey     string
-	Label        trap.Label
-	StatWriter   *trap.Writer
-	WaitGroup    sync.WaitGroup
-	GoroutineSem *semaphore
-	FdSem        *semaphore
-	NextFileId   int
-	FileInfo     map[string]*FileInfo
-	SeenGoMods   map[string]bool
+	Lock           sync.Mutex
+	LabelKey       string
+	Label          trap.Label
+	StatWriter     *trap.Writer
+	WaitGroup      sync.WaitGroup
+	GoroutineSem   *semaphore
+	FdSem          *semaphore
+	NextFileId     int
+	FileInfo       map[string]*FileInfo
+	SeenGoMods     map[string]bool
+	OverlayChanges map[string]bool
 }
 
 type FileInfo struct {
@@ -378,6 +381,21 @@ func NewExtraction(buildFlags []string, patterns []string) *Extraction {
 		io.WriteString(hash, " "+pattern)
 	}
 	sum := hash.Sum(nil)
+
+	overlayChangeList := util.GetOverlayChanges()
+	var overlayChanges map[string]bool
+	if overlayChangeList == nil {
+		overlayChanges = nil
+	} else {
+		overlayChanges = make(map[string]bool)
+		for _, changedFilePath := range overlayChangeList {
+			absPath, err := filepath.Abs(changedFilePath)
+			if err != nil {
+				log.Fatalf("Error resolving absolute path of overlay change %s: %s", changedFilePath, err.Error())
+			}
+			overlayChanges[absPath] = true
+		}
+	}
 
 	i := 0
 	var path string
@@ -438,10 +456,11 @@ func NewExtraction(buildFlags []string, patterns []string) *Extraction {
 		FdSem: newSemaphore(100),
 		// this semaphore is used to limit the number of goroutines spawned, so we
 		// don't run into memory issues
-		GoroutineSem: newSemaphore(MaxGoRoutines),
-		NextFileId:   0,
-		FileInfo:     make(map[string]*FileInfo),
-		SeenGoMods:   make(map[string]bool),
+		GoroutineSem:   newSemaphore(MaxGoRoutines),
+		NextFileId:     0,
+		FileInfo:       make(map[string]*FileInfo),
+		SeenGoMods:     make(map[string]bool),
+		OverlayChanges: overlayChanges,
 	}
 }
 
@@ -720,6 +739,10 @@ func (extraction *Extraction) extractFile(ast *ast.File, pkg *packages.Package) 
 		return nil
 	}
 	path := normalizedPath(ast, fset)
+	if extraction.OverlayChanges != nil && !extraction.OverlayChanges[path] {
+		// This file did not change since the base was extracted
+		return nil
+	}
 
 	extraction.FdSem.acquire(3)
 
