@@ -150,7 +150,7 @@ private module SourceVariableImpl {
   }
 
   /**
-   * Gets an `out`/`ref` definition of the same source variable as the `out`/`ref`
+   * Gets an `out`/`ref` definition of the same source variable `v` as the `out`/`ref`
    * definition `def`, belonging to the same call, at a position after `def`.
    */
   OutRefDefinition getASameOutRefDefAfter(Ssa::SourceVariable v, OutRefDefinition def) {
