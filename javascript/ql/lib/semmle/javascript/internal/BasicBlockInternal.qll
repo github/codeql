@@ -402,13 +402,15 @@ module Public {
       predicate postDominates(BasicBlock bb) { this.(ReachableBasicBlock).postDominates(bb) }
     }
 
+    class EntryBasicBlock extends BasicBlock {
+      EntryBasicBlock() { entryBB(this) }
+    }
+
     pragma[nomagic]
     predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) {
       bb1.getASuccessor() = bb2 and
       bb1 = bb2.getImmediateDominator() and
       forall(BasicBlock pred | pred = bb2.getAPredecessor() and pred != bb1 | bb2.dominates(pred))
     }
-
-    predicate entryBlock(BasicBlock bb) { entryBB(bb) }
   }
 }

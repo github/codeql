@@ -628,7 +628,7 @@ module Flow<
   /** Holds if `cc` needs a definition at the entry of its callable scope. */
   private predicate entryDef(CaptureContainer cc, BasicBlock bb, int i) {
     exists(Callable c |
-      Cfg::entryBlock(bb) and
+      bb instanceof Cfg::EntryBasicBlock and
       pragma[only_bind_out](bb.getEnclosingCallable()) = c and
       i =
         min(int j |

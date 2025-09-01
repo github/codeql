@@ -151,6 +151,12 @@ signature module CfgSig<LocationSig Location> {
   }
 
   /**
+   * An entry basic block, that is, a basic block whose first node is
+   * an entry node.
+   */
+  class EntryBasicBlock extends BasicBlock;
+
+  /**
    * Holds if `bb1` has `bb2` as a direct successor and the edge between `bb1`
    * and `bb2` is a dominating edge.
    *
@@ -164,9 +170,6 @@ signature module CfgSig<LocationSig Location> {
    * means that the edge `(bb1, bb2)` dominates `bb3`.
    */
   predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2);
-
-  /** Holds if `bb` is an entry basic block. */
-  predicate entryBlock(BasicBlock bb);
 }
 
 /**
@@ -365,6 +368,10 @@ module Make<LocationSig Location, InputSig<Location> Input> implements CfgSig<Lo
     string toString() { result = this.getFirstNode().toString() }
   }
 
+  class EntryBasicBlock extends BasicBlock {
+    EntryBasicBlock() { nodeIsDominanceEntry(this.getFirstNode()) }
+  }
+
   /**
    * Holds if `bb1` has `bb2` as a direct successor and the edge between `bb1`
    * and `bb2` is a dominating edge.
@@ -400,9 +407,6 @@ module Make<LocationSig Location, InputSig<Location> Input> implements CfgSig<Lo
     // explicitly including the second conjunct leads to a better join order.
     forall(BasicBlock pred | pred = bb2.getAPredecessor() and pred != bb1 | bb2.dominates(pred))
   }
-
-  /** Holds if `bb` is an entry basic block. */
-  predicate entryBlock(BasicBlock bb) { nodeIsDominanceEntry(bb.getFirstNode()) }
 
   cached
   private module Cached {
@@ -476,6 +480,9 @@ module Make<LocationSig Location, InputSig<Location> Input> implements CfgSig<Lo
     predicate bbSuccessor(BasicBlock bb1, BasicBlock bb2, SuccessorType t) {
       bb2.getFirstNode() = nodeGetASuccessor(bb1.getLastNode(), t)
     }
+
+    /** Holds if `bb` is an entry basic block. */
+    private predicate entryBlock(EntryBasicBlock bb) { any() }
 
     /**
      * Holds if the first node of basic block `succ` is a control flow

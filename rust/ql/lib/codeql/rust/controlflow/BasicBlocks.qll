@@ -25,7 +25,7 @@ module Cfg implements BB::CfgSig<Location> {
 
   class BasicBlock = BasicBlocksImpl::BasicBlock;
 
-  predicate dominatingEdge = BasicBlocksImpl::dominatingEdge/2;
+  class EntryBasicBlock = BasicBlocksImpl::EntryBasicBlock;
 
-  predicate entryBlock(BasicBlock bb) { bb instanceof EntryBasicBlock }
+  predicate dominatingEdge = BasicBlocksImpl::dominatingEdge/2;
 }

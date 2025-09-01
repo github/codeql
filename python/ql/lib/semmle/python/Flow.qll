@@ -1295,12 +1295,14 @@ module Cfg implements BB::CfgSig<Location> {
     }
   }
 
+  class EntryBasicBlock extends BasicBlock {
+    EntryBasicBlock() { this.getNode(0).isEntryNode() }
+  }
+
   pragma[nomagic]
   predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) {
     bb1.getASuccessor() = bb2 and
     bb1 = bb2.getImmediateDominator() and
     forall(BasicBlock pred | pred = bb2.getAPredecessor() and pred != bb1 | bb2.dominates(pred))
   }
-
-  predicate entryBlock(BasicBlock bb) { bb.getNode(0).isEntryNode() }
 }

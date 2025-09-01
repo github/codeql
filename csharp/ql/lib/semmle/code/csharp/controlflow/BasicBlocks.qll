@@ -341,6 +341,8 @@ final class ConditionBlock extends BasicBlock, BasicBlocksImpl::ConditionBasicBl
 
 private class BasicBlockAlias = BasicBlock;
 
+private class EntryBasicBlockAlias = EntryBasicBlock;
+
 module Cfg implements BB::CfgSig<Location> {
   class ControlFlowNode = ControlFlow::Node;
 
@@ -348,9 +350,9 @@ module Cfg implements BB::CfgSig<Location> {
 
   class BasicBlock = BasicBlockAlias;
 
+  class EntryBasicBlock = EntryBasicBlockAlias;
+
   predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) {
     BasicBlocksImpl::dominatingEdge(bb1, bb2)
   }
-
-  predicate entryBlock(BasicBlock bb) { bb instanceof EntryBasicBlock }
 }

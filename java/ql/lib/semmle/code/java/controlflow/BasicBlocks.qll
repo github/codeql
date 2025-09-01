@@ -165,7 +165,7 @@ module Cfg implements BB::CfgSig<Location> {
 
   class BasicBlock = BasicBlockAlias;
 
-  predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) { BbImpl::dominatingEdge(bb1, bb2) }
+  class EntryBasicBlock extends BasicBlock instanceof BbImpl::EntryBasicBlock { }
 
-  predicate entryBlock(BasicBlock bb) { BbImpl::entryBlock(bb) }
+  predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) { BbImpl::dominatingEdge(bb1, bb2) }
 }

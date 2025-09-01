@@ -167,9 +167,11 @@ module PreCfg implements BB::CfgSig<Location> {
 
   class BasicBlock = PreBasicBlock;
 
+  class EntryBasicBlock extends BasicBlock {
+    EntryBasicBlock() { entryBB(this) }
+  }
+
   predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) {
     conditionBlockImmediatelyControls(bb1, bb2, _)
   }
-
-  predicate entryBlock(BasicBlock bb) { entryBB(bb) }
 }

@@ -295,14 +295,16 @@ module IRCfg implements BB::CfgSig<Language::Location> {
     predicate postDominates(BasicBlock bb) { super.postDominates(bb) }
   }
 
+  class EntryBasicBlock extends BasicBlock {
+    EntryBasicBlock() { isEntryBlock(this) }
+  }
+
   pragma[nomagic]
   predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) {
     bb1.getASuccessor() = bb2 and
     bb1 = bb2.getImmediateDominator() and
     forall(BasicBlock pred | pred = bb2.getAPredecessor() and pred != bb1 | bb2.dominates(pred))
   }
-
-  predicate entryBlock(BasicBlock bb) { isEntryBlock(bb) }
 }
 
 cached
