@@ -196,7 +196,8 @@ private ExprCfgNode getALastEvalNode(ExprCfgNode e) {
 
 /**
  * Holds if a reverse local flow step should be added from the post-update node
- * for `e` to the post-update node for the result.
+ * for `e` to the post-update node for the result. `preservesValue` is true
+ * if the step is value preserving.
  *
  * This is needed to allow for side-effects on compound expressions to propagate
  * to sub components. For example, in
