@@ -52,6 +52,7 @@ private import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprB
 /**
  * Holds if in a call to the function with canonical path `path`, the value referred
  * to by `output` is a flow source of the given `kind`.
+ * The `madId` is the data extension row number.
  *
  * `output = "ReturnValue"` simply means the result of the call itself.
  *
@@ -65,6 +66,7 @@ extensible predicate sourceModel(
 /**
  * Holds if in a call to the function with canonical path `path`, the value referred
  * to by `input` is a flow sink of the given `kind`.
+ * The `madId` is the data extension row number.
  *
  * For example, `input = Argument[0]` means the first argument of the call.
  *
@@ -78,6 +80,7 @@ extensible predicate sinkModel(
 /**
  * Holds if in a call to the function with canonical path `path`, the value referred
  * to by `input` can flow to the value referred to by `output`.
+ * The `madId` is the data extension row number.
  *
  * `kind` should be either `value` or `taint`, for value-preserving or taint-preserving
  * steps, respectively.

@@ -46,9 +46,7 @@ abstract class FunctionObject extends Object {
   ControlFlowNode getACall() { result = this.theCallable().getACall() }
 
   /** Gets a call-site from where this function is called, given the `context` */
-  ControlFlowNode getACall(Context caller_context) {
-    result = this.theCallable().getACall(caller_context)
-  }
+  ControlFlowNode getACall(Context context) { result = this.theCallable().getACall(context) }
 
   /**
    * Gets the `ControlFlowNode` that will be passed as the nth argument to `this` when called at `call`.

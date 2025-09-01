@@ -291,7 +291,7 @@ class TryStmt extends Stmt, @trystmt {
   CatchClause getACatchClause() { result.getParent() = this }
 
   /**
-   * Gets the `catch` clause at the specified (zero-based) position
+   * Gets the `catch` clause at the specified (zero-based) position `index`
    * in this `try` statement.
    */
   CatchClause getCatchClause(int index) {
@@ -305,7 +305,7 @@ class TryStmt extends Stmt, @trystmt {
   /** Gets a resource variable declaration, if any. */
   LocalVariableDeclStmt getAResourceDecl() { result.getParent() = this and result.getIndex() <= -3 }
 
-  /** Gets the resource variable declaration at the specified position in this `try` statement. */
+  /** Gets the resource variable declaration at the specified position `index` in this `try` statement. */
   LocalVariableDeclStmt getResourceDecl(int index) {
     result = this.getAResourceDecl() and
     index = -3 - result.getIndex()
@@ -314,7 +314,7 @@ class TryStmt extends Stmt, @trystmt {
   /** Gets a resource expression, if any. */
   VarAccess getAResourceExpr() { result.getParent() = this and result.getIndex() <= -3 }
 
-  /** Gets the resource expression at the specified position in this `try` statement. */
+  /** Gets the resource expression at the specified position `index` in this `try` statement. */
   VarAccess getResourceExpr(int index) {
     result = this.getAResourceExpr() and
     index = -3 - result.getIndex()
@@ -323,7 +323,7 @@ class TryStmt extends Stmt, @trystmt {
   /** Gets a resource in this `try` statement, if any. */
   ExprParent getAResource() { result = this.getAResourceDecl() or result = this.getAResourceExpr() }
 
-  /** Gets the resource at the specified position in this `try` statement. */
+  /** Gets the resource at the specified position `index` in this `try` statement. */
   ExprParent getResource(int index) {
     result = this.getResourceDecl(index) or result = this.getResourceExpr(index)
   }
