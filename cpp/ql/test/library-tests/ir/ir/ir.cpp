@@ -2776,8 +2776,7 @@ void test_allocation_with_initializer() {
     long* p2 = new long(42);
 }
 
-void vla_sizeof_test(int len1, size_t len2, char len3)
-{
+void vla_sizeof_test(int len1, size_t len2, char len3) {
   char tmp1[len1];
   size_t x = sizeof(tmp1);
   int tmp2[len1][len2];
@@ -2788,6 +2787,28 @@ void vla_sizeof_test(int len1, size_t len2, char len3)
   size_t v = sizeof(*tmp3);
   size_t u = sizeof(**tmp3);
   size_t t = sizeof(***tmp3);
+}
+
+void vla_sizeof_test2(int len1, size_t len2, char len3) {
+  int tmp1[len1][len2];
+  size_t z = sizeof(tmp1[1]);
+  int tmp2[len1][len2][len3];
+  size_t v = sizeof(tmp2[1]);
+  size_t u = sizeof(tmp2[1][2]);
+  size_t t = sizeof(tmp2[1][2][3]);
+}
+
+size_t vla_sizeof_test3(int len1, size_t len2, char len3, bool b) {
+  typedef long arr[len1][len2];
+  typedef arr arr2;
+  typedef arr2 arr3[len3];
+
+  if (b) {
+    arr3 tmp;
+    return sizeof(tmp[1]);
+  } 
+
+  return 0;
 }
 
 // semmle-extractor-options: -std=c++20 --clang
