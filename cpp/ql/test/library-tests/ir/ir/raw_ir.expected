@@ -18664,33 +18664,34 @@ ir.cpp:
 # 2793|     r2793_6(unsigned long)        = Load[len2]                : &:r2793_5, ~m?
 # 2793|     v2793_7(void)                 = NoOp                      : 
 # 2794|     r2794_1(glval<unsigned long>) = VariableAddress[z]        : 
-
-# 2794|   Block 1
-# 2794|     mu2794_2(unsigned long)       = Store[z]              : &:r2794_1
-# 2795|     r2795_1(glval<int[][][]>)     = VariableAddress[tmp2] : 
-# 2795|     mu2795_2(int[][][])           = Uninitialized[tmp2]   : &:r2795_1
-# 2795|     r2795_3(glval<int>)           = VariableAddress[len1] : 
-# 2795|     r2795_4(int)                  = Load[len1]            : &:r2795_3, ~m?
-# 2795|     r2795_5(glval<unsigned long>) = VariableAddress[len2] : 
-# 2795|     r2795_6(unsigned long)        = Load[len2]            : &:r2795_5, ~m?
-# 2795|     r2795_7(glval<char>)          = VariableAddress[len3] : 
-# 2795|     r2795_8(char)                 = Load[len3]            : &:r2795_7, ~m?
-# 2795|     v2795_9(void)                 = NoOp                  : 
-# 2796|     r2796_1(glval<unsigned long>) = VariableAddress[v]    : 
-
-# 2796|   Block 2
-# 2796|     mu2796_2(unsigned long)       = Store[v]           : &:r2796_1
-# 2797|     r2797_1(glval<unsigned long>) = VariableAddress[u] : 
-
-# 2797|   Block 3
-# 2797|     mu2797_2(unsigned long)       = Store[u]           : &:r2797_1
-# 2798|     r2798_1(glval<unsigned long>) = VariableAddress[t] : 
-# 2798|     r2798_2(unsigned long)        = Constant[4]        : 
-# 2798|     mu2798_3(unsigned long)       = Store[t]           : &:r2798_1, r2798_2
-# 2799|     v2799_1(void)                 = NoOp               : 
-# 2792|     v2792_10(void)                = ReturnVoid         : 
-# 2792|     v2792_11(void)                = AliasedUse         : ~m?
-# 2792|     v2792_12(void)                = ExitFunction       : 
+# 2794|     r2794_2(unsigned long)        = Constant[4]               : 
+# 2794|     r2794_3(unsigned long)        = Mul                       : r2794_2, r2793_6
+# 2794|     mu2794_4(unsigned long)       = Store[z]                  : &:r2794_1, r2794_3
+# 2795|     r2795_1(glval<int[][][]>)     = VariableAddress[tmp2]     : 
+# 2795|     mu2795_2(int[][][])           = Uninitialized[tmp2]       : &:r2795_1
+# 2795|     r2795_3(glval<int>)           = VariableAddress[len1]     : 
+# 2795|     r2795_4(int)                  = Load[len1]                : &:r2795_3, ~m?
+# 2795|     r2795_5(glval<unsigned long>) = VariableAddress[len2]     : 
+# 2795|     r2795_6(unsigned long)        = Load[len2]                : &:r2795_5, ~m?
+# 2795|     r2795_7(glval<char>)          = VariableAddress[len3]     : 
+# 2795|     r2795_8(char)                 = Load[len3]                : &:r2795_7, ~m?
+# 2795|     v2795_9(void)                 = NoOp                      : 
+# 2796|     r2796_1(glval<unsigned long>) = VariableAddress[v]        : 
+# 2796|     r2796_2(unsigned long)        = Constant[4]               : 
+# 2796|     r2796_3(unsigned long)        = Mul                       : r2796_2, r2795_6
+# 2796|     r2796_4(unsigned long)        = Mul                       : r2796_3, r2795_8
+# 2796|     mu2796_5(unsigned long)       = Store[v]                  : &:r2796_1, r2796_4
+# 2797|     r2797_1(glval<unsigned long>) = VariableAddress[u]        : 
+# 2797|     r2797_2(unsigned long)        = Constant[4]               : 
+# 2797|     r2797_3(unsigned long)        = Mul                       : r2797_2, r2795_8
+# 2797|     mu2797_4(unsigned long)       = Store[u]                  : &:r2797_1, r2797_3
+# 2798|     r2798_1(glval<unsigned long>) = VariableAddress[t]        : 
+# 2798|     r2798_2(unsigned long)        = Constant[4]               : 
+# 2798|     mu2798_3(unsigned long)       = Store[t]                  : &:r2798_1, r2798_2
+# 2799|     v2799_1(void)                 = NoOp                      : 
+# 2792|     v2792_10(void)                = ReturnVoid                : 
+# 2792|     v2792_11(void)                = AliasedUse                : ~m?
+# 2792|     v2792_12(void)                = ExitFunction              : 
 
 # 2801| size_t vla_sizeof_test3(int, size_t, char, bool)
 # 2801|   Block 0
