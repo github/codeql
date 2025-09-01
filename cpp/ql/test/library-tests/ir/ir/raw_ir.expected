@@ -18732,7 +18732,7 @@ ir.cpp:
 # 2807|     mu2807_2(long[][][])          = Uninitialized[tmp]       : &:r2807_1
 # 2807|     v2807_3(void)                 = NoOp                     : 
 # 2808|     r2808_1(glval<unsigned long>) = VariableAddress[#return] : 
-# 2808|     r2808_2(unsigned long)        = Constant                 : 
+# 2808|     r2808_2(unsigned long)        = Constant[8]              : 
 # 2808|     r2808_3(unsigned long)        = Mul                      : r2808_2, r2802_2
 # 2808|     r2808_4(unsigned long)        = Mul                      : r2808_3, r2802_4
 # 2808|     mu2808_5(unsigned long)       = Store[#return]           : &:r2808_1, r2808_4

@@ -4185,8 +4185,18 @@ class TranslatedSizeofExpr extends TranslatedNonConstantExpr {
 
   override string getInstructionConstantValue(InstructionTag tag) {
     tag = SizeofVlaDimensionTag(-1) and
-    result =
-      getBaseType(vlaDeclStmt.getVariable().getUnderlyingType(), vlaDimensions).getSize().toString()
+    result = this.getVlaBaseType(vlaDeclStmt).getSize().toString()
+  }
+
+  private Type getVlaBaseType(VlaDeclStmt v) {
+    not exists(getParentVlaDecl(v)) and
+    (
+      result = getBaseType(v.getVariable().getUnderlyingType(), v.getNumberOfVlaDimensionStmts())
+      or
+      result = getBaseType(v.getType().getUnderlyingType(), v.getNumberOfVlaDimensionStmts())
+    )
+    or
+    result = this.getVlaBaseType(getParentVlaDecl(v))
   }
 
   override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
