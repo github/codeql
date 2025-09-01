@@ -269,7 +269,7 @@ module JCAModel {
   }
 
   /**
-   * Data-flow configuration modelling flow from a cipher string literal to a cipher algorithm consumer.
+   * Data-flow configuration modeling flow from a cipher string literal to a cipher algorithm consumer.
    */
   private module CipherAlgorithmStringToCipherConsumerConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node src) { src.asExpr() instanceof CipherStringLiteral }
@@ -1331,7 +1331,7 @@ module JCAModel {
   }
 
   /**
-   * Data-flow configuration modelling flow from a key agreement string literal to a key agreement algorithm consumer.
+   * Data-flow configuration modeling flow from a key agreement string literal to a key agreement algorithm consumer.
    */
   private module KeyAgreementAlgorithmStringToConsumerConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node src) { src.asExpr() instanceof KeyAgreementStringLiteral }

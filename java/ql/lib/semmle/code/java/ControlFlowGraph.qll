@@ -1709,7 +1709,7 @@ private module ControlFlowGraphImpl {
   private Node mainBranchSucc(Node n, boolean b) { result = succ(n, BooleanCompletion(_, b)) }
 
   /**
-   * A true- or false-successor `b` that is not tagged with a `booleanCompletion`.
+   * A true- or false-successor that is not tagged with a `booleanCompletion`.
    *
    * That is, the label of the edge in the CFG is a `normalCompletion` or
    * some other completion if `n` occurs as the last node in a finally block.

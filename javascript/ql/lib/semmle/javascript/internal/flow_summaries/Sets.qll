@@ -1,5 +1,5 @@
 /**
- * Contains flow summaries and steps modelling flow through `Set` objects.
+ * Contains flow summaries and steps modeling flow through `Set` objects.
  */
 
 private import javascript

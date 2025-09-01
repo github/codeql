@@ -365,7 +365,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    */
   abstract class ArtifactConsumer extends ConsumerElement {
     /**
-     * Use `getAKnownArtifactSource() instead. The behaviour of these two predicates is equivalent.
+     * Use `getAKnownArtifactSource() instead. The behavior of these two predicates is equivalent.
      */
     final override KnownElement getAKnownSource() { result = this.getAKnownArtifactSource() }
 

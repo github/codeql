@@ -191,11 +191,16 @@ module BoostorgAsio {
   class SslContextClass extends Class {
     SslContextClass() { this.getQualifiedName() = "boost::asio::ssl::context" }
 
-    ConstructorCall getAContructorCall() {
+    ConstructorCall getAConstructorCall() {
       this.getAConstructor().getACallToThisFunction() = result and
       not result.getLocation().getFile().toString().matches("%/boost/asio/%") and
       result.fromSource()
     }
+
+    /**
+     * DEPRECATED: Use `getAConstructorCall` instead.
+     */
+    deprecated ConstructorCall getAContructorCall() { result = this.getAConstructorCall() }
   }
 
   /**
@@ -368,7 +373,7 @@ module BoostorgAsio {
      */
     default predicate isSink(DataFlow::Node sink) {
       exists(ConstructorCall cc, SslContextClass c, Expr e | e = sink.asExpr() |
-        c.getAContructorCall() = cc and
+        c.getAConstructorCall() = cc and
         cc.getArgument(0) = e
       )
     }
@@ -468,7 +473,7 @@ module BoostorgAsio {
     predicate isSource(DataFlow::Node source) {
       exists(SslContextClass c, ConstructorCall cc |
         cc = source.asExpr() and
-        c.getAContructorCall() = cc
+        c.getAConstructorCall() = cc
       )
     }
 
