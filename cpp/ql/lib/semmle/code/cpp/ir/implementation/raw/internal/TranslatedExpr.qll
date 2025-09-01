@@ -4103,38 +4103,6 @@ private VlaDeclStmt getVlaDeclStmt(Expr expr, int pointerDerefCount) {
   result = getVlaDeclStmt(expr.(ArrayExpr).getArrayBase(), pointerDerefCount - 1)
 }
 
-private int getNumberOfVlaDimensions(VlaDeclStmt vlaDeclStmt) {
-  not exists(getParentVlaDecl(vlaDeclStmt)) and
-  result = vlaDeclStmt.getNumberOfVlaDimensionStmts()
-  or
-  result =
-    vlaDeclStmt.getNumberOfVlaDimensionStmts() +
-      getNumberOfVlaDimensions(getParentVlaDecl(vlaDeclStmt))
-}
-
-private VlaDeclStmt getParentVlaDecl(VlaDeclStmt vlaDeclStmt) {
-  exists(Variable v, Type baseType |
-    v = vlaDeclStmt.getVariable() and
-    baseType = getBaseType(v.getType(), vlaDeclStmt.getNumberOfVlaDimensionStmts())
-  |
-    result.getType() = baseType
-  )
-  or
-  exists(Type t, Type baseType |
-    t = vlaDeclStmt.getType().(TypedefType).getBaseType() and
-    baseType = getBaseType(t, vlaDeclStmt.getNumberOfVlaDimensionStmts())
-  |
-    result.getType() = baseType
-  )
-}
-
-private Type getBaseType(Type type, int n) {
-  n = 0 and
-  result = type
-  or
-  result = getBaseType(type.(DerivedType).getBaseType(), n - 1)
-}
-
 class TranslatedSizeofExpr extends TranslatedNonConstantExpr {
   override SizeofExprOperator expr;
   VlaDeclStmt vlaDeclStmt;
@@ -4143,12 +4111,12 @@ class TranslatedSizeofExpr extends TranslatedNonConstantExpr {
 
   TranslatedSizeofExpr() {
     vlaDeclStmt = getVlaDeclStmt(expr.getExprOperand(), pointerDerefCount) and
-    vlaDimensions = getNumberOfVlaDimensions(vlaDeclStmt) and
+    vlaDimensions = vlaDeclStmt.getTransitiveNumberOfVlaDimensionStmts() and
     pointerDerefCount < vlaDimensions
   }
 
   final override Instruction getFirstInstruction(EdgeKind kind) {
-    result = this.getInstruction(SizeofVlaDimensionTag(-1)) and
+    result = this.getInstruction(SizeofVlaBaseSizeTag()) and
     kind instanceof GotoEdge
   }
 
@@ -4160,7 +4128,7 @@ class TranslatedSizeofExpr extends TranslatedNonConstantExpr {
 
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     opcode instanceof Opcode::Constant and
-    tag = SizeofVlaDimensionTag(-1) and
+    tag = SizeofVlaBaseSizeTag() and
     resultType = this.getResultType()
     or
     opcode instanceof Opcode::Mul and
@@ -4169,7 +4137,7 @@ class TranslatedSizeofExpr extends TranslatedNonConstantExpr {
   }
 
   final override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
-    tag = SizeofVlaDimensionTag(-1) and
+    tag = SizeofVlaBaseSizeTag() and
     result = this.getInstruction(SizeofVlaDimensionTag(pointerDerefCount)) and
     kind instanceof GotoEdge
     or
@@ -4184,19 +4152,27 @@ class TranslatedSizeofExpr extends TranslatedNonConstantExpr {
   }
 
   override string getInstructionConstantValue(InstructionTag tag) {
-    tag = SizeofVlaDimensionTag(-1) and
-    result = this.getVlaBaseType(vlaDeclStmt).getSize().toString()
+    tag = SizeofVlaBaseSizeTag() and
+    result = this.getBaseType(vlaDeclStmt).getSize().toString()
   }
 
-  private Type getVlaBaseType(VlaDeclStmt v) {
-    not exists(getParentVlaDecl(v)) and
+  private Type getBaseType(VlaDeclStmt v) {
+    not exists(v.getParentVlaDecl()) and
     (
-      result = getBaseType(v.getVariable().getUnderlyingType(), v.getNumberOfVlaDimensionStmts())
+      result =
+        this.getBaseType(v.getVariable().getUnderlyingType(), v.getNumberOfVlaDimensionStmts())
       or
-      result = getBaseType(v.getType().getUnderlyingType(), v.getNumberOfVlaDimensionStmts())
+      result = this.getBaseType(v.getType().getUnderlyingType(), v.getNumberOfVlaDimensionStmts())
     )
     or
-    result = this.getVlaBaseType(getParentVlaDecl(v))
+    result = this.getBaseType(v.getParentVlaDecl())
+  }
+
+  private Type getBaseType(Type type, int n) {
+    n = 0 and
+    result = type
+    or
+    result = this.getBaseType(type.(DerivedType).getBaseType(), n - 1)
   }
 
   override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
@@ -4209,21 +4185,15 @@ class TranslatedSizeofExpr extends TranslatedNonConstantExpr {
           result = this.getInstruction(SizeofVlaDimensionTag(n - 1))
           or
           n - 1 < pointerDerefCount and
-          result = this.getInstruction(SizeofVlaDimensionTag(-1))
+          result = this.getInstruction(SizeofVlaBaseSizeTag())
         )
         or
         operandTag instanceof RightOperandTag and
         result =
-          getTranslatedExpr(this.getVlaDimension(vlaDeclStmt, n).getDimensionExpr()).getResult()
+          getTranslatedExpr(vlaDeclStmt.getTransitiveVlaDimensionStmt(n).getDimensionExpr())
+              .getResult()
       )
     )
-  }
-
-  private VlaDimensionStmt getVlaDimension(VlaDeclStmt v, int n) {
-    n < v.getNumberOfVlaDimensionStmts() and
-    result = v.getVlaDimensionStmt(n)
-    or
-    result = this.getVlaDimension(getParentVlaDecl(v), n - v.getNumberOfVlaDimensionStmts())
   }
 
   final override Instruction getResult() {

@@ -98,10 +98,9 @@ newtype TInstructionTag =
   } or
   CoAwaitBranchTag() or
   BoolToIntConversionTag() or
+  SizeofVlaBaseSizeTag() or
   SizeofVlaDimensionTag(int index) {
-    index = -1
-    or
-    exists(VlaDeclStmt v | exists(v.getVlaDimensionStmt(index)))
+    exists(VlaDeclStmt v | exists(v.getTransitiveVlaDimensionStmt(index)))
   }
 
 class InstructionTag extends TInstructionTag {
