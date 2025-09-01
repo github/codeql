@@ -7,6 +7,7 @@ go_library(
     srcs = [
         "extractvendordirs.go",
         "logging.go",
+        "overlays.go",
         "registryproxy.go",
         "semver.go",
         "util.go",
