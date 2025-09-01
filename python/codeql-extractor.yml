@@ -2,6 +2,7 @@ name: "python"
 display_name: "Python"
 version: 1.22.1
 column_kind: utf32
+overlay_support_version: 20250626
 build_modes:
   - none
 github_api_languages:
