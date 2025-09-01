@@ -223,10 +223,10 @@ class MockitoInjectedField extends MockitoAnnotatedField {
         // If there is no initializer for this field, and there is a most mockable constructor,
         // then we are doing a parameterized injection of mocks into a most mockable constructor.
         result = mockInjectedClass.getAMostMockableConstructor()
-      else
-        if this.usingPropertyInjection()
-        then
-          // We will call the no-arg constructor if the field wasn't initialized.
+      else (
+        this.usingPropertyInjection() and
+        // We will call the no-arg constructor if the field wasn't initialized.
+        (
           not exists(this.getInitializer()) and
           result = mockInjectedClass.getNoArgsConstructor()
           or
@@ -241,9 +241,8 @@ class MockitoInjectedField extends MockitoAnnotatedField {
             // once, but we instead assume that there are sufficient mocks to go around.
             mockedField.getType().(RefType).getAnAncestor() = result.getParameterType(0)
           )
-        else
-          // There's no instance, and no no-arg constructor we can call, so injection fails.
-          none()
+        )
+      )
     )
   }
 
@@ -253,18 +252,16 @@ class MockitoInjectedField extends MockitoAnnotatedField {
    * Field injection only occurs if property injection and not constructor injection is used.
    */
   Field getASetField() {
-    if this.usingPropertyInjection()
-    then
-      result = this.getMockInjectedClass().getASetField() and
-      exists(MockitoMockedField mockedField |
-        mockedField.getDeclaringType() = this.getDeclaringType() and
-        mockedField.isValid()
-      |
-        // We make a simplifying assumption here - in theory, each mock can only be injected
-        // once, but we instead assume that there are sufficient mocks to go around.
-        mockedField.getType().(RefType).getAnAncestor() = result.getType()
-      )
-    else none()
+    this.usingPropertyInjection() and
+    result = this.getMockInjectedClass().getASetField() and
+    exists(MockitoMockedField mockedField |
+      mockedField.getDeclaringType() = this.getDeclaringType() and
+      mockedField.isValid()
+    |
+      // We make a simplifying assumption here - in theory, each mock can only be injected
+      // once, but we instead assume that there are sufficient mocks to go around.
+      mockedField.getType().(RefType).getAnAncestor() = result.getType()
+    )
   }
 }
 

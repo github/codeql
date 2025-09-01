@@ -26,7 +26,8 @@ predicate locallySynchronizedOnThis(Expr e, RefType thisType) {
 }
 
 /**
- * Holds if `e` is synchronized by a `synchronized` modifier on the enclosing (static) method.
+ * Holds if `e` is synchronized by a `synchronized` modifier on the enclosing (static) method
+ * declared in the type `classType`.
  */
 predicate locallySynchronizedOnClass(Expr e, RefType classType) {
   exists(SynchronizedCallable c | c = e.getEnclosingCallable() |
