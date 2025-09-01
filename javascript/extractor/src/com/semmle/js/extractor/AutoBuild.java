@@ -465,7 +465,7 @@ public class AutoBuild {
       try {
         CompletableFuture<?> sourceFuture = extractSource();
         sourceFuture.join(); // wait for source extraction to complete
-        if (hasSeenCode() && !isOverlayChangeMode()) { // don't bother with the externs if no code was seen
+        if (hasSeenCode() && !isOverlayChangeMode()) { // don't bother with the externs if no code was seen or in overlay change mode
           extractExterns();
         }
         extractXml();
