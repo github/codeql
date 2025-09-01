@@ -18718,7 +18718,7 @@ ir.cpp:
 # 2806|     r2806_1(glval<bool>)          = VariableAddress[b]        : 
 # 2806|     r2806_2(bool)                 = Load[b]                   : &:r2806_1, ~m?
 # 2806|     v2806_3(void)                 = ConditionalBranch         : r2806_2
-#-----|   False -> Block 4
+#-----|   False -> Block 3
 #-----|   True -> Block 2
 
 # 2801|   Block 1
@@ -18732,12 +18732,13 @@ ir.cpp:
 # 2807|     mu2807_2(long[][][])          = Uninitialized[tmp]       : &:r2807_1
 # 2807|     v2807_3(void)                 = NoOp                     : 
 # 2808|     r2808_1(glval<unsigned long>) = VariableAddress[#return] : 
-
-# 2808|   Block 3
-# 2808|     mu2808_2(unsigned long) = Store[#return] : &:r2808_1
+# 2808|     r2808_2(unsigned long)        = Constant                 : 
+# 2808|     r2808_3(unsigned long)        = Mul                      : r2808_2, r2802_2
+# 2808|     r2808_4(unsigned long)        = Mul                      : r2808_3, r2802_4
+# 2808|     mu2808_5(unsigned long)       = Store[#return]           : &:r2808_1, r2808_4
 #-----|   Goto -> Block 1
 
-# 2811|   Block 4
+# 2811|   Block 3
 # 2811|     r2811_1(glval<unsigned long>) = VariableAddress[#return] : 
 # 2811|     r2811_2(unsigned long)        = Constant[0]              : 
 # 2811|     mu2811_3(unsigned long)       = Store[#return]           : &:r2811_1, r2811_2

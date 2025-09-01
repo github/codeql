@@ -6,7 +6,6 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| ir.cpp:2808:5:2808:26 | VariableAddress: return ... | Instruction 'VariableAddress: return ...' has no successors in function '$@'. | ir.cpp:2801:8:2801:23 | size_t vla_sizeof_test3(int, size_t, char, bool) | size_t vla_sizeof_test3(int, size_t, char, bool) |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
