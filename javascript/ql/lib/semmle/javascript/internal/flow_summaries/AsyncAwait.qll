@@ -8,7 +8,7 @@ private import semmle.javascript.dataflow.internal.AdditionalFlowInternal
 private import semmle.javascript.dataflow.internal.DataFlowPrivate
 
 /**
- * Steps modelling flow in an `async` function.
+ * Steps modeling flow in an `async` function.
  *
  * Note about promise-coercion and flattening:
  * - `await` preserves non-promise values, e.g. `await "foo"` is just `"foo"`.

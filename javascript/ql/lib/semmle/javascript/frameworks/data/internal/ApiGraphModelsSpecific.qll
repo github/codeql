@@ -35,7 +35,7 @@ class Location = JS::Location;
  * Type names have form `package.type` or just `package` if referring to the package export
  * object. If `package` contains a `.` character it must be enclosed in single quotes, such as `'package'.type`.
  *
- * A type name of form `(package)` may also be used when refering to the package export object.
+ * A type name of form `(package)` may also be used when referring to the package export object.
  * We allow this syntax as an alternative to the above, so models generated based on `EndpointNaming` look more consistent.
  * However, access paths are deliberately not parsed here, as we can not handle aliasing at this stage.
  * The model generator must explicitly generate the step between `(package)` and `(package).foo`, for example.

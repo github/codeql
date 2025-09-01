@@ -17,10 +17,10 @@ private import semmle.javascript.dataflow.internal.DataFlowPrivate
  *
  * - The relevant call sites cannot be matched by the access path syntax, and require the full power of CodeQL.
  *   For example, complex overloading patterns might require more local reasoning at the call site.
- * - The input/output behaviour cannot be described statically in the access path syntax, but the relevant access paths
+ * - The input/output behavior cannot be described statically in the access path syntax, but the relevant access paths
  *   can be generated dynamically in CodeQL, based on the usages found in the codebase.
  *
- * Subclasses should bind `this` to a unique identifier for the function being modelled. There is no special
+ * Subclasses should bind `this` to a unique identifier for the function being modeled. There is no special
  * interpreation of the `this` value, it should just not clash with the `this`-value used by other classes.
  *
  * For example, this models flow through calls such as `require("my-library").myFunction()`:
