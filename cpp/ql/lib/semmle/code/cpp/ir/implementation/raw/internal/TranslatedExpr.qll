@@ -4099,6 +4099,8 @@ private VlaDeclStmt getVlaDeclStmt(Expr expr, int pointerDerefCount) {
   pointerDerefCount = 0
   or
   result = getVlaDeclStmt(expr.(PointerDereferenceExpr).getOperand(), pointerDerefCount - 1)
+  or
+  result = getVlaDeclStmt(expr.(ArrayExpr).getArrayBase(), pointerDerefCount - 1)
 }
 
 class TranslatedSizeofExpr extends TranslatedNonConstantExpr {
