@@ -99,6 +99,9 @@ newtype TInstructionTag =
   CoAwaitBranchTag() or
   BoolToIntConversionTag() or
   SizeofVlaBaseSizeTag() or
+  SizeofVlaConversionTag(int index) {
+    exists(VlaDeclStmt v | exists(v.getTransitiveVlaDimensionStmt(index)))
+  } or
   SizeofVlaDimensionTag(int index) {
     exists(VlaDeclStmt v | exists(v.getTransitiveVlaDimensionStmt(index)))
   }

@@ -4131,6 +4131,23 @@ class TranslatedSizeofExpr extends TranslatedNonConstantExpr {
     tag = SizeofVlaBaseSizeTag() and
     resultType = this.getResultType()
     or
+    exists(int n, Type dimType |
+      pointerDerefCount <= n and
+      n < vlaDimensions and
+      dimType = vlaDeclStmt.getTransitiveVlaDimensionStmt(n).getDimensionExpr().getUnderlyingType()
+    |
+      (
+        expr.getUnderlyingType() = dimType and
+        opcode instanceof Opcode::CopyValue and
+        tag = SizeofVlaConversionTag(n)
+        or
+        not expr.getUnderlyingType() = dimType and
+        opcode instanceof Opcode::Convert and
+        tag = SizeofVlaConversionTag(n)
+      )
+    ) and
+    resultType = this.getResultType()
+    or
     opcode instanceof Opcode::Mul and
     exists(int n | pointerDerefCount <= n and n < vlaDimensions | tag = SizeofVlaDimensionTag(n)) and
     resultType = this.getResultType()
@@ -4138,12 +4155,18 @@ class TranslatedSizeofExpr extends TranslatedNonConstantExpr {
 
   final override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = SizeofVlaBaseSizeTag() and
-    result = this.getInstruction(SizeofVlaDimensionTag(pointerDerefCount)) and
+    result = this.getInstruction(SizeofVlaConversionTag(pointerDerefCount)) and
+    kind instanceof GotoEdge
+    or
+    exists(int n | pointerDerefCount <= n and n < vlaDimensions |
+      tag = SizeofVlaConversionTag(n) and
+      result = this.getInstruction(SizeofVlaDimensionTag(n))
+    ) and
     kind instanceof GotoEdge
     or
     exists(int n | pointerDerefCount <= n and n < vlaDimensions - 1 |
       tag = SizeofVlaDimensionTag(n) and
-      result = this.getInstruction(SizeofVlaDimensionTag(n + 1))
+      result = this.getInstruction(SizeofVlaConversionTag(n + 1))
     ) and
     kind instanceof GotoEdge
     or
@@ -4177,6 +4200,16 @@ class TranslatedSizeofExpr extends TranslatedNonConstantExpr {
 
   override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     exists(int n | pointerDerefCount <= n and n < vlaDimensions |
+      tag = SizeofVlaConversionTag(n) and
+      (
+        operandTag instanceof UnaryOperandTag and
+        result =
+          getTranslatedExpr(vlaDeclStmt.getTransitiveVlaDimensionStmt(n).getDimensionExpr())
+              .getResult()
+      )
+    )
+    or
+    exists(int n | pointerDerefCount <= n and n < vlaDimensions |
       tag = SizeofVlaDimensionTag(n) and
       (
         operandTag instanceof LeftOperandTag and
@@ -4189,9 +4222,7 @@ class TranslatedSizeofExpr extends TranslatedNonConstantExpr {
         )
         or
         operandTag instanceof RightOperandTag and
-        result =
-          getTranslatedExpr(vlaDeclStmt.getTransitiveVlaDimensionStmt(n).getDimensionExpr())
-              .getResult()
+        result = this.getInstruction(SizeofVlaConversionTag(n))
       )
     )
   }
