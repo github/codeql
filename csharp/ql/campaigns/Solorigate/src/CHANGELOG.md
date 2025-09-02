@@ -1,3 +1,7 @@
+## 1.7.47
+
+No user-facing changes.
+
 ## 1.7.46
 
 No user-facing changes.
