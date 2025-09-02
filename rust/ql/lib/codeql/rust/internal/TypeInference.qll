@@ -254,6 +254,10 @@ private TypeMention getTypeAnnotation(AstNode n) {
 pragma[nomagic]
 private Type inferAnnotatedType(AstNode n, TypePath path) {
   result = getTypeAnnotation(n).resolveTypeAt(path)
+  or
+  // The shorthand self syntax (i.e., a self parameter without a type
+  // annotation) is sugar for a self parameter with an annotation.
+  result = inferShorthandSelfType(n, path)
 }
 
 /** Module for inferring certain type information. */
@@ -369,10 +373,7 @@ module CertainTypeInference {
    */
   pragma[nomagic]
   Type inferCertainType(AstNode n, TypePath path) {
-    exists(TypeMention tm |
-      tm = getTypeAnnotation(n) and
-      result = tm.resolveTypeAt(path)
-    )
+    result = inferAnnotatedType(n, path)
     or
     result = inferCertainCallExprType(n, path)
     or
@@ -608,7 +609,7 @@ private Type inferTypeEquality(AstNode n, TypePath path) {
  */
 bindingset[self, suffix, t]
 pragma[inline_late]
-private Type getRefAdjustImplicitSelfType(SelfParam self, TypePath suffix, Type t, TypePath path) {
+private Type getRefAdjustShorthandSelfType(SelfParam self, TypePath suffix, Type t, TypePath path) {
   not self.hasTypeRepr() and
   (
     if self.isRef()
@@ -632,13 +633,17 @@ private Type resolveImplSelfType(Impl i, TypePath path) {
   result = i.getSelfTy().(TypeMention).resolveTypeAt(path)
 }
 
-/** Gets the type at `path` of the implicitly typed `self` parameter. */
+/**
+ * Gets the type at `path` of the parameter `self` which uses the [shorthand
+ * syntax][1] which is sugar for an explicit annotation.
+ *
+ * [1]: https://doc.rust-lang.org/stable/reference/items/associated-items.html#r-associated.fn.method.self-pat-shorthands
+ */
 pragma[nomagic]
-private Type inferImplicitSelfType(SelfParam self, TypePath path) {
-  exists(ImplOrTraitItemNode i, Function f, TypePath suffix, Type t |
-    f = i.getAnAssocItem() and
-    self = f.getParamList().getSelfParam() and
-    result = getRefAdjustImplicitSelfType(self, suffix, t, path)
+private Type inferShorthandSelfType(SelfParam self, TypePath path) {
+  exists(ImplOrTraitItemNode i, TypePath suffix, Type t |
+    self = i.getAnAssocItem().(Function).getParamList().getSelfParam() and
+    result = getRefAdjustShorthandSelfType(self, suffix, t, path)
   |
     t = resolveImplSelfType(i, suffix)
     or
@@ -926,11 +931,8 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
       or
       exists(SelfParam self |
         self = pragma[only_bind_into](this.getParamList().getSelfParam()) and
-        dpos.isSelf()
-      |
+        dpos.isSelf() and
         result = inferAnnotatedType(self, path) // `self` parameter with type annotation
-        or
-        result = inferImplicitSelfType(self, path) // `self` parameter without type annotation
       )
       or
       // For associated functions, we may also need to match type arguments against
@@ -2420,13 +2422,9 @@ private module Cached {
       else any()
     ) and
     (
-      result = inferAnnotatedType(n, path)
-      or
       result = inferAssignmentOperationType(n, path)
       or
       result = inferTypeEquality(n, path)
-      or
-      result = inferImplicitSelfType(n, path)
       or
       result = inferStructExprType(n, path)
       or
@@ -2491,9 +2489,9 @@ private module Debug {
     Input2::conditionSatisfiesConstraint(abs, condition, constraint)
   }
 
-  predicate debugInferImplicitSelfType(SelfParam self, TypePath path, Type t) {
+  predicate debugInferShorthandSelfType(SelfParam self, TypePath path, Type t) {
     self = getRelevantLocatable() and
-    t = inferImplicitSelfType(self, path)
+    t = inferShorthandSelfType(self, path)
   }
 
   predicate debugInferCallExprBaseType(AstNode n, TypePath path, Type t) {
