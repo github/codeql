@@ -97,7 +97,14 @@ newtype TInstructionTag =
     exists(Stmt s | exists(s.getImplicitDestructorCall(index)))
   } or
   CoAwaitBranchTag() or
-  BoolToIntConversionTag()
+  BoolToIntConversionTag() or
+  SizeofVlaBaseSizeTag() or
+  SizeofVlaConversionTag(int index) {
+    exists(VlaDeclStmt v | exists(v.getTransitiveVlaDimensionStmt(index)))
+  } or
+  SizeofVlaDimensionTag(int index) {
+    exists(VlaDeclStmt v | exists(v.getTransitiveVlaDimensionStmt(index)))
+  }
 
 class InstructionTag extends TInstructionTag {
   final string toString() { result = getInstructionTagId(this) }
