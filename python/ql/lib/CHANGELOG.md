@@ -1,3 +1,10 @@
+## 4.0.14
+
+### Minor Analysis Improvements
+
+- The modelling of Psycopg2 now supports the use of `psycopg2.pool` connection pools for handling database connections.
+* Removed `lxml` as an XML bomb sink. The underlying libxml2 library now includes [entity reference loop detection](https://github.com/lxml/lxml/blob/f33ac2c2f5f9c4c4c1fc47f363be96db308f2fa6/doc/FAQ.txt#L1077) that prevents XML bomb attacks. 
+
 ## 4.0.13
 
 No user-facing changes.
