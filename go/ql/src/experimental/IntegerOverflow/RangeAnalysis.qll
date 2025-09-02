@@ -377,16 +377,15 @@ float getAnSsaUpperBound(SsaDefinition def) {
           getAUse(prevDef) = compoundAssign.getLhs() and
           assignInstr = IR::assignInstruction(compoundAssign, 0) and
           prevBound = getAnSsaUpperBound(prevDef) and
-          if compoundAssign instanceof AddAssignStmt
-          then
+          (
+            compoundAssign instanceof AddAssignStmt and
             delta = getAnUpperBound(compoundAssign.getRhs()) and
             result = addRoundingUp(prevBound, delta)
-          else
-            if compoundAssign instanceof SubAssignStmt
-            then
-              delta = getALowerBound(compoundAssign.getRhs()) and
-              result = addRoundingUp(prevBound, -delta)
-            else none()
+            or
+            compoundAssign instanceof SubAssignStmt and
+            delta = getALowerBound(compoundAssign.getRhs()) and
+            result = addRoundingUp(prevBound, -delta)
+          )
         )
       else
         //SSA definition coresponding to an `IncDecStmt`
