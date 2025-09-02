@@ -187,7 +187,7 @@ Function getPossibleMissingSuper(Class base, Function shouldCall, string name) {
   )
 }
 
-private class FunctionOption = LocatableOption<Location, Function>::Option;
+class FunctionOption = LocatableOption<Location, Function>::Option;
 
 /** Gets the result of `getPossibleMissingSuper`, or None if none exists. */
 bindingset[name]
