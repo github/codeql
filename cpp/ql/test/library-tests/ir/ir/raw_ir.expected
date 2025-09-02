@@ -18547,6 +18547,36 @@ ir.cpp:
 # 2769|     v2769_13(void)                  = AliasedUse                      : ~m?
 # 2769|     v2769_14(void)                  = ExitFunction                    : 
 
+# 2774| void test_allocation_with_initializer()
+# 2774|   Block 0
+# 2774|     v2774_1(void)           = EnterFunction                 : 
+# 2774|     mu2774_2(unknown)       = AliasedDefinition             : 
+# 2774|     mu2774_3(unknown)       = InitializeNonLocal            : 
+# 2775|     r2775_1(glval<int *>)   = VariableAddress[p1]           : 
+# 2775|     r2775_2(glval<unknown>) = FunctionAddress[operator new] : 
+# 2775|     r2775_3(unsigned long)  = Constant[4]                   : 
+# 2775|     r2775_4(void *)         = Call[operator new]            : func:r2775_2, 0:r2775_3
+# 2775|     mu2775_5(unknown)       = ^CallSideEffect               : ~m?
+# 2775|     mu2775_6(unknown)       = ^InitializeDynamicAllocation  : &:r2775_4
+# 2775|     r2775_7(int *)          = Convert                       : r2775_4
+# 2775|     r2775_8(int)            = Constant[42]                  : 
+# 2775|     mu2775_9(int)           = Store[?]                      : &:r2775_7, r2775_8
+# 2775|     mu2775_10(int *)        = Store[p1]                     : &:r2775_1, r2775_7
+# 2776|     r2776_1(glval<long *>)  = VariableAddress[p2]           : 
+# 2776|     r2776_2(glval<unknown>) = FunctionAddress[operator new] : 
+# 2776|     r2776_3(unsigned long)  = Constant[8]                   : 
+# 2776|     r2776_4(void *)         = Call[operator new]            : func:r2776_2, 0:r2776_3
+# 2776|     mu2776_5(unknown)       = ^CallSideEffect               : ~m?
+# 2776|     mu2776_6(unknown)       = ^InitializeDynamicAllocation  : &:r2776_4
+# 2776|     r2776_7(long *)         = Convert                       : r2776_4
+# 2776|     r2776_8(long)           = Constant[42]                  : 
+# 2776|     mu2776_9(long)          = Store[?]                      : &:r2776_7, r2776_8
+# 2776|     mu2776_10(long *)       = Store[p2]                     : &:r2776_1, r2776_7
+# 2777|     v2777_1(void)           = NoOp                          : 
+# 2774|     v2774_4(void)           = ReturnVoid                    : 
+# 2774|     v2774_5(void)           = AliasedUse                    : ~m?
+# 2774|     v2774_6(void)           = ExitFunction                  : 
+
 ir23.cpp:
 #    1| bool consteval_1()
 #    1|   Block 0

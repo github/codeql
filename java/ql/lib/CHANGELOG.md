@@ -1,3 +1,7 @@
+## 7.6.1
+
+No user-facing changes.
+
 ## 7.6.0
 
 ### Major Analysis Improvements

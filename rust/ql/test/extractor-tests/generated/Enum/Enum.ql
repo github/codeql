@@ -4,14 +4,6 @@ import TestUtils
 
 query predicate instances(Enum x) { toBeTested(x) and not x.isUnknown() }
 
-query predicate getExtendedCanonicalPath(Enum x, string getExtendedCanonicalPath) {
-  toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
-}
-
-query predicate getCrateOrigin(Enum x, string getCrateOrigin) {
-  toBeTested(x) and not x.isUnknown() and getCrateOrigin = x.getCrateOrigin()
-}
-
 query predicate getAttributeMacroExpansion(Enum x, MacroItems getAttributeMacroExpansion) {
   toBeTested(x) and
   not x.isUnknown() and

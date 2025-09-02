@@ -1,7 +1,8 @@
 name: codeql/ssa
-version: 2.0.6-dev
+version: 2.0.7-dev
 groups: shared
 library: true
 dependencies:
+  codeql/controlflow: ${workspace}
   codeql/util: ${workspace}
 warnOnImplicitThis: true

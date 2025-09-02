@@ -1,7 +1,5 @@
 instances
 | gen_use.rs:4:5:5:34 | use ...::HashMap |
-getExtendedCanonicalPath
-getCrateOrigin
 getAttributeMacroExpansion
 getAttr
 getUseTree

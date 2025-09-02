@@ -1,0 +1,3 @@
+## 5.0.6
+
+No user-facing changes.

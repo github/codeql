@@ -23,14 +23,6 @@ query predicate instances(
   if x.hasImplementation() then hasImplementation = "yes" else hasImplementation = "no"
 }
 
-query predicate getExtendedCanonicalPath(Function x, string getExtendedCanonicalPath) {
-  toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
-}
-
-query predicate getCrateOrigin(Function x, string getCrateOrigin) {
-  toBeTested(x) and not x.isUnknown() and getCrateOrigin = x.getCrateOrigin()
-}
-
 query predicate getAttributeMacroExpansion(Function x, MacroItems getAttributeMacroExpansion) {
   toBeTested(x) and
   not x.isUnknown() and

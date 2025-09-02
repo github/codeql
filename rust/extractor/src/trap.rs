@@ -127,9 +127,10 @@ pub struct TrapFile {
     compression: Compression,
 }
 
-#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Default)]
 pub enum DiagnosticSeverity {
     Debug = 10,
+    #[default]
     Info = 20,
     Warning = 30,
     Error = 40,

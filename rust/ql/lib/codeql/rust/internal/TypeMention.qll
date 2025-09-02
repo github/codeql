@@ -182,7 +182,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
   private TypeMention getTypeMentionForTypeParameter(TypeParameter tp) {
     exists(int i |
       result = this.getPositionalTypeArgument(pragma[only_bind_into](i)) and
-      tp = this.resolveRootType().getTypeParameter(pragma[only_bind_into](i))
+      tp = this.resolveRootType().getPositionalTypeParameter(pragma[only_bind_into](i))
     )
     or
     exists(TypeAlias alias |

@@ -121,6 +121,55 @@ mod trait_impl {
     }
 }
 
+mod trait_visibility {
+    // In this test the correct method target depends on which trait is visible.
+
+    mod m {
+        pub trait Foo {
+            // Foo::a_method
+            fn a_method(&self) {
+                println!("foo!");
+            }
+        }
+
+        pub trait Bar {
+            // Bar::a_method
+            fn a_method(&self) {
+                println!("bar!");
+            }
+        }
+
+        pub struct X;
+        impl Foo for X {}
+        impl Bar for X {}
+    }
+
+    use m::X;
+
+    fn main() {
+        let x = X;
+        {
+            use m::Foo;
+            x.a_method(); // $ target=Foo::a_method
+        }
+        {
+            use m::Bar;
+            x.a_method(); // $ target=Bar::a_method
+        }
+        {
+            use m::Bar as _;
+            x.a_method(); // $ target=Bar::a_method
+        }
+        {
+            use m::Bar;
+            use m::Foo;
+            // x.a_method();  // This would be ambiguous
+            Foo::a_method(&x); // $ target=Foo::a_method
+            Bar::a_method(&x); // $ target=Bar::a_method
+        }
+    }
+}
+
 mod method_non_parametric_impl {
     #[derive(Debug)]
     struct MyThing<A> {
@@ -2332,6 +2381,8 @@ mod loops {
         for u in [0u8..10] {} // $ type=u:Range type=u:Idx.u8
         let range = 0..10; // $ type=range:Range type=range:Idx.i32
         for i in range {} // $ type=i:i32
+        let range_full = ..; // $ type=range_full:RangeFull
+        for i in &[1i64, 2i64, 3i64][range_full] {} // $ target=index MISSING: type=i:&T.i64
 
         let range1 = // $ type=range1:Range type=range1:Idx.u16
         std::ops::Range {
@@ -2558,12 +2609,11 @@ pub mod exec {
 pub mod path_buf {
     // a highly simplified model of `PathBuf::canonicalize`
 
-    pub struct Path {
-    }
+    pub struct Path {}
 
     impl Path {
         pub const fn new() -> Path {
-            Path { }
+            Path {}
         }
 
         pub fn canonicalize(&self) -> Result<PathBuf, ()> {
@@ -2571,12 +2621,11 @@ pub mod path_buf {
         }
     }
 
-    pub struct PathBuf {
-    }
+    pub struct PathBuf {}
 
     impl PathBuf {
         pub const fn new() -> PathBuf {
-            PathBuf { }
+            PathBuf {}
         }
     }
 
@@ -2587,7 +2636,7 @@ pub mod path_buf {
         #[inline]
         fn deref(&self) -> &Path {
             // (very much not a real implementation)
-            static path : Path = Path::new(); // $ target=new
+            static path: Path = Path::new(); // $ target=new
             &path
         }
     }

@@ -71,6 +71,7 @@ ql/java/ql/src/Violations of Best Practice/Exception Handling/IgnoreExceptionalR
 ql/java/ql/src/Violations of Best Practice/Exception Handling/NumberFormatException.ql
 ql/java/ql/src/Violations of Best Practice/Implementation Hiding/AbstractToConcreteCollection.ql
 ql/java/ql/src/Violations of Best Practice/Implementation Hiding/ExposeRepresentation.ql
+ql/java/ql/src/Violations of Best Practice/Implementation Hiding/VisibleForTestingAbuse.ql
 ql/java/ql/src/Violations of Best Practice/Naming Conventions/AmbiguousOuterSuper.ql
 ql/java/ql/src/Violations of Best Practice/Naming Conventions/ConfusingMethodNames.ql
 ql/java/ql/src/Violations of Best Practice/Naming Conventions/ConfusingOverloading.ql
@@ -78,6 +79,7 @@ ql/java/ql/src/Violations of Best Practice/Naming Conventions/LocalShadowsFieldC
 ql/java/ql/src/Violations of Best Practice/Naming Conventions/SameNameAsSuper.ql
 ql/java/ql/src/Violations of Best Practice/Records/IgnoredSerializationMembersOfRecordClass.ql
 ql/java/ql/src/Violations of Best Practice/SpecialCharactersInLiterals/NonExplicitControlAndWhitespaceCharsInLiterals.ql
+ql/java/ql/src/Violations of Best Practice/Testing/ExcessivePublicMethodMocking.ql
 ql/java/ql/src/Violations of Best Practice/Undesirable Calls/CallsToStringToString.ql
 ql/java/ql/src/Violations of Best Practice/Undesirable Calls/DefaultToString.ql
 ql/java/ql/src/Violations of Best Practice/Undesirable Calls/DoNotCallFinalize.ql

@@ -39,7 +39,7 @@ jobs:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Setup dotnet
         uses: actions/setup-dotnet@v4
         with:
@@ -55,7 +55,7 @@ jobs:
   stubgentest:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./csharp/actions/create-extractor-pack
       - name: Run stub generator tests
         run: |

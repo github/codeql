@@ -15,6 +15,7 @@
 
 import Customizations
 import semmle.code.cpp.File
+import semmle.code.cpp.PchFile
 import semmle.code.cpp.Linkage
 import semmle.code.cpp.Location
 import semmle.code.cpp.Compilation

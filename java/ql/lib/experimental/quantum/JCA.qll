@@ -269,7 +269,7 @@ module JCAModel {
   }
 
   /**
-   * Data-flow configuration modelling flow from a cipher string literal to a cipher algorithm consumer.
+   * Data-flow configuration modeling flow from a cipher string literal to a cipher algorithm consumer.
    */
   private module CipherAlgorithmStringToCipherConsumerConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node src) { src.asExpr() instanceof CipherStringLiteral }
@@ -404,9 +404,7 @@ module JCAModel {
    * For example, in `Cipher.getInstance(algorithm)`, this class represents `algorithm`.
    */
   class CipherGetInstanceAlgorithmArg extends CipherAlgorithmValueConsumer instanceof Expr {
-    CipherGetInstanceCall call;
-
-    CipherGetInstanceAlgorithmArg() { this = call.getAlgorithmArg() }
+    CipherGetInstanceAlgorithmArg() { this = any(CipherGetInstanceCall call).getAlgorithmArg() }
 
     override Crypto::ConsumerInputDataFlowNode getInputNode() { result.asExpr() = this }
 
@@ -1333,7 +1331,7 @@ module JCAModel {
   }
 
   /**
-   * Data-flow configuration modelling flow from a key agreement string literal to a key agreement algorithm consumer.
+   * Data-flow configuration modeling flow from a key agreement string literal to a key agreement algorithm consumer.
    */
   private module KeyAgreementAlgorithmStringToConsumerConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node src) { src.asExpr() instanceof KeyAgreementStringLiteral }
@@ -1539,11 +1537,9 @@ module JCAModel {
   }
 
   class MacOperationCall extends Crypto::MacOperationInstance instanceof MethodCall {
-    Expr output;
-
     MacOperationCall() {
       super.getMethod().getDeclaringType().hasQualifiedName("javax.crypto", "Mac") and
-      (
+      exists(Expr output |
         super.getMethod().hasStringSignature(["doFinal()", "doFinal(byte[])"]) and this = output
         or
         super.getMethod().hasStringSignature("doFinal(byte[], int)") and

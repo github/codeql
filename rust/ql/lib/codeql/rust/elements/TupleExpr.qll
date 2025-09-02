@@ -10,8 +10,9 @@ import codeql.rust.elements.Expr
 /**
  * A tuple expression. For example:
  * ```rust
- * (1, "one");
- * (2, "two")[0] = 3;
+ * let tuple = (1, "one");
+ * let n = (2, "two").0;
+ * let (a, b) = tuple;
  * ```
  */
 final class TupleExpr = Impl::TupleExpr;
