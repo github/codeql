@@ -20,6 +20,11 @@ func (extraction *Extraction) extractGoMod(path string) error {
 		path = normPath
 	}
 
+	if extraction.OverlayChanges != nil && !extraction.OverlayChanges[path] {
+		// This go.mod did not change since the base was extracted
+		return nil
+	}
+
 	extraction.Lock.Lock()
 	if extraction.SeenGoMods[path] {
 		extraction.Lock.Unlock()
