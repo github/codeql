@@ -349,10 +349,8 @@ private module Internal {
       varBlockReachesBaseCand(v, b1, b2) and
       blockPrecedesVar(v, b2)
       or
-      exists(ReachableBasicBlock mid |
-        varBlockReachesRecCand(v, b1, mid, b2) and
-        blockPrecedesVar(v, b2)
-      )
+      varBlockReachesRecCand(v, b1, _, b2) and
+      blockPrecedesVar(v, b2)
     }
 
     /**
