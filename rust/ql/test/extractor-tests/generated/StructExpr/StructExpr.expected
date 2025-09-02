@@ -3,8 +3,6 @@ instances
 | gen_struct_expr.rs:6:18:6:38 | Foo {...} |
 | gen_struct_expr.rs:7:13:7:30 | Foo {...} |
 | gen_struct_expr.rs:8:5:8:20 | Foo {...} |
-getResolvedPath
-getResolvedCrateOrigin
 getPath
 | gen_struct_expr.rs:5:17:5:34 | Foo {...} | gen_struct_expr.rs:5:17:5:19 | Foo |
 | gen_struct_expr.rs:6:18:6:38 | Foo {...} | gen_struct_expr.rs:6:18:6:20 | Foo |

@@ -2,14 +2,6 @@ instances
 | gen_module.rs:3:1:4:8 | mod foo |
 | gen_module.rs:5:1:7:1 | mod bar |
 | lib.rs:1:1:1:19 | mod gen_module |
-getExtendedCanonicalPath
-| gen_module.rs:3:1:4:8 | mod foo | crate::gen_module::foo |
-| gen_module.rs:5:1:7:1 | mod bar | crate::gen_module::bar |
-| lib.rs:1:1:1:19 | mod gen_module | crate::gen_module |
-getCrateOrigin
-| gen_module.rs:3:1:4:8 | mod foo | repo::test |
-| gen_module.rs:5:1:7:1 | mod bar | repo::test |
-| lib.rs:1:1:1:19 | mod gen_module | repo::test |
 getAttributeMacroExpansion
 getAttr
 getItemList

@@ -722,8 +722,8 @@ module Synth {
         TExternItemList or TFieldList or TForBinder or TFormatArgsArg or TGenericArg or
         TGenericArgList or TGenericParam or TGenericParamList or TItemList or TLabel or TLetElse or
         TMacroItems or TMatchArm or TMatchArmList or TMatchGuard or TMeta or TName or TParamBase or
-        TParamList or TParenthesizedArgList or TPat or TPath or TPathSegment or TRename or
-        TResolvable or TRetTypeRepr or TReturnTypeSyntax or TSourceFile or TStmt or TStmtList or
+        TParamList or TParenthesizedArgList or TPat or TPath or TPathAstNode or TPathSegment or
+        TRename or TRetTypeRepr or TReturnTypeSyntax or TSourceFile or TStmt or TStmtList or
         TStructExprField or TStructExprFieldList or TStructField or TStructPatField or
         TStructPatFieldList or TToken or TTokenTree or TTupleField or TTypeBound or
         TTypeBoundList or TTypeRepr or TUseBoundGenericArg or TUseBoundGenericArgs or TUseTree or
@@ -814,11 +814,6 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TPathExprBase = TFormatTemplateVariableAccess or TPathExpr;
-
-  /**
-   * INTERNAL: Do not use.
-   */
-  class TResolvable = TMethodCallExpr or TPathAstNode;
 
   /**
    * INTERNAL: Do not use.
@@ -1999,11 +1994,11 @@ module Synth {
     or
     result = convertPathFromRaw(e)
     or
+    result = convertPathAstNodeFromRaw(e)
+    or
     result = convertPathSegmentFromRaw(e)
     or
     result = convertRenameFromRaw(e)
-    or
-    result = convertResolvableFromRaw(e)
     or
     result = convertRetTypeReprFromRaw(e)
     or
@@ -2352,16 +2347,6 @@ module Synth {
     result = convertFormatTemplateVariableAccessFromRaw(e)
     or
     result = convertPathExprFromRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw DB element to a synthesized `TResolvable`, if possible.
-   */
-  TResolvable convertResolvableFromRaw(Raw::Element e) {
-    result = convertMethodCallExprFromRaw(e)
-    or
-    result = convertPathAstNodeFromRaw(e)
   }
 
   /**
@@ -3585,11 +3570,11 @@ module Synth {
     or
     result = convertPathToRaw(e)
     or
+    result = convertPathAstNodeToRaw(e)
+    or
     result = convertPathSegmentToRaw(e)
     or
     result = convertRenameToRaw(e)
-    or
-    result = convertResolvableToRaw(e)
     or
     result = convertRetTypeReprToRaw(e)
     or
@@ -3938,16 +3923,6 @@ module Synth {
     result = convertFormatTemplateVariableAccessToRaw(e)
     or
     result = convertPathExprToRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TResolvable` to a raw DB element, if possible.
-   */
-  Raw::Element convertResolvableToRaw(TResolvable e) {
-    result = convertMethodCallExprToRaw(e)
-    or
-    result = convertPathAstNodeToRaw(e)
   }
 
   /**
