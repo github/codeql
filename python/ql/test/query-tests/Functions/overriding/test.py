@@ -136,7 +136,7 @@ class Derrived2(Base2):
 
     def meth7(self, x, *ys): pass # $Alert[py/inheritance/signature-mismatch] # weak mismatch (base may be called with 1 arg only)
 
-    def meth8(self, x, z): pass # $MISSING:Alert[py/inheritance/signature-mismatch] # weak mismatch (base may be called with arg named y), however the call to meth8 that witnesses this is not detected as a valid call to Base2.meth8.
+    def meth8(self, x, z): pass # $Alert[py/inheritance/signature-mismatch] # weak mismatch (base may be called with arg named y)
 
     def meth9(self, x, z): pass # No alert (never called with wrong keyword arg)
 
@@ -146,4 +146,4 @@ class Derrived2(Base2):
 
     def meth12(self): pass # $Alert[py/inheritance/signature-mismatch] # call including extra kwarg invalid
 
-    def meth13(self, /, y): pass # $MISSING:Alert[py/inheritance/signature-mismatch] # weak mismatch (base may be called with arg named x), however meth13 is incorrectly detected as having 2 minimum positional arguments, whereas x is kw-only; resulting in the witness call not being detected as a valid call to Base2.meth13. 
+    def meth13(self, /, y): pass # $Alert[py/inheritance/signature-mismatch] # weak mismatch (base may be called with arg named x), however meth13 is incorrectly detected as having 2 minimum positional arguments, whereas x is kw-only; resulting in the witness call not being detected as a valid call to Base2.meth13. 
