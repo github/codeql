@@ -2583,9 +2583,7 @@ class NodeRegion instanceof ControlFlow::BasicBlock {
  * Holds if the nodes in `nr` are unreachable when the call context is `call`.
  */
 predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) {
-  exists(
-    ExplicitParameterNode paramNode, Guard guard, ControlFlow::SuccessorTypes::BooleanSuccessor bs
-  |
+  exists(ExplicitParameterNode paramNode, Guard guard, ControlFlow::BooleanSuccessor bs |
     viableConstantBooleanParamArg(paramNode, bs.getValue().booleanNot(), call) and
     paramNode.getSsaDefinition().getARead() = guard and
     guard.controlsBlock(nr, bs, _)

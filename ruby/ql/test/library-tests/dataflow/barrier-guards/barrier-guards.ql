@@ -12,7 +12,7 @@ query predicate newStyleBarrierGuards(DataFlow::Node n) {
   n instanceof StringConstArrayInclusionCallBarrier
 }
 
-query predicate controls(CfgNode condition, BasicBlock bb, SuccessorTypes::ConditionalSuccessor s) {
+query predicate controls(CfgNode condition, BasicBlock bb, ConditionalSuccessor s) {
   exists(ConditionBlock cb |
     cb.edgeDominates(bb, s) and
     condition = cb.getLastNode()

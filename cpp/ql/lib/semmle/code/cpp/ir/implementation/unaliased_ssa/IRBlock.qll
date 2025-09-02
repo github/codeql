@@ -265,9 +265,9 @@ private predicate isEntryBlock(TIRBlock block) {
 }
 
 module IRCfg implements BB::CfgSig<Language::Location> {
-  class ControlFlowNode = Instruction;
+  private import codeql.controlflow.SuccessorType
 
-  class SuccessorType = EdgeKind;
+  class ControlFlowNode = Instruction;
 
   final private class FinalIRBlock = IRBlock;
 
@@ -280,7 +280,12 @@ module IRCfg implements BB::CfgSig<Language::Location> {
 
     BasicBlock getASuccessor() { result = super.getASuccessor() }
 
-    BasicBlock getASuccessor(SuccessorType t) { result = super.getSuccessor(t) }
+    BasicBlock getASuccessor(SuccessorType t) {
+      exists(EdgeKind k |
+        result = super.getSuccessor(k) and
+        t = getAMatchingSuccessorType(k)
+      )
+    }
 
     predicate strictlyDominates(BasicBlock bb) { super.strictlyDominates(bb) }
 

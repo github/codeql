@@ -139,10 +139,6 @@ private predicate isNonFallThroughPredecessor(SwitchCase sc, ControlFlowNode pre
   )
 }
 
-private module SuccessorTypes implements SharedGuards::SuccessorTypesSig<SuccessorType> {
-  import SuccessorType
-}
-
 private module GuardsInput implements SharedGuards::InputSig<Location, ControlFlowNode, BasicBlock> {
   private import java as J
   private import semmle.code.java.dataflow.internal.BaseSSA
@@ -379,7 +375,7 @@ private module GuardsInput implements SharedGuards::InputSig<Location, ControlFl
   }
 }
 
-private module GuardsImpl = SharedGuards::Make<Location, Cfg, SuccessorTypes, GuardsInput>;
+private module GuardsImpl = SharedGuards::Make<Location, Cfg, GuardsInput>;
 
 private module LogicInputCommon {
   private import semmle.code.java.dataflow.NullGuards as NullGuards

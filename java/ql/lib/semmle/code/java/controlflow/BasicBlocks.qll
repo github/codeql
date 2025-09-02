@@ -7,10 +7,9 @@ module;
 import java
 import Dominance
 private import codeql.controlflow.BasicBlock as BB
+private import codeql.controlflow.SuccessorType
 
 private module Input implements BB::InputSig<Location> {
-  import SuccessorType
-
   /** Hold if `t` represents a conditional successor type. */
   predicate successorTypeIsCondition(SuccessorType t) { none() }
 
@@ -34,7 +33,7 @@ private module Input implements BB::InputSig<Location> {
     result = getASpecificSuccessor(node, t)
     or
     node.getASuccessor() = result and
-    t instanceof NormalSuccessor and
+    t instanceof DirectSuccessor and
     not result = getASpecificSuccessor(node, _)
   }
 
@@ -96,7 +95,7 @@ class BasicBlock extends BbImpl::BasicBlock {
   predicate strictlyDominates(BasicBlock bb) { super.strictlyDominates(bb) }
 
   /** Gets an immediate successor of this basic block of a given type, if any. */
-  BasicBlock getASuccessor(Input::SuccessorType t) { result = super.getASuccessor(t) }
+  BasicBlock getASuccessor(SuccessorType t) { result = super.getASuccessor(t) }
 
   BasicBlock getASuccessor() { result = super.getASuccessor() }
 
@@ -160,8 +159,6 @@ private class BasicBlockAlias = BasicBlock;
 
 module Cfg implements BB::CfgSig<Location> {
   class ControlFlowNode = BbImpl::ControlFlowNode;
-
-  class SuccessorType = BbImpl::SuccessorType;
 
   class BasicBlock = BasicBlockAlias;
 

@@ -487,7 +487,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
      * from `bb1` to `bb2`.
      */
     predicate hasValueBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue branch) {
-      exists(Cfg::SuccessorTypes::ConditionalSuccessor s |
+      exists(Cfg::ConditionalSuccessor s |
         this.getBasicBlock() = bb1 and
         bb2 = bb1.getASuccessor(s) and
         s.getValue() = branch
