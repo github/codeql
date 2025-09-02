@@ -243,7 +243,7 @@ class AspNetCoreQueryRemoteFlowSource extends AspNetCoreRemoteFlowSource, DataFl
       ) and
       not this.asExpr()
           .(MemberAccess)
-          .getQualifiedDeclaration()
+          .getTarget()
           .hasFullyQualifiedName("Microsoft.AspNetCore.Http", "HttpRequest",
             ["Method", "Scheme", "IsHttps", "Protocol"])
     )
