@@ -34,8 +34,8 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
-    crate_root = "src/lib.rs",
-    edition = "2018",
+    crate_root = "language.rs",
+    edition = "2021",
     rustc_env_files = [
         ":cargo_toml_env_vars",
     ],

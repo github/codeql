@@ -43,7 +43,7 @@ rust_library(
         "std",
     ],
     crate_root = "binding_rust/lib.rs",
-    edition = "2018",
+    edition = "2021",
     rustc_env_files = [
         ":cargo_toml_env_vars",
     ],
