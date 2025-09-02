@@ -73,7 +73,7 @@ mod method_impl {
 
     impl Foo {
         pub fn m1(self) -> Self {
-            self
+            self // $ type=self:Foo
         }
 
         pub fn m2(self) -> Foo {
@@ -108,7 +108,7 @@ mod trait_impl {
     impl MyTrait<bool> for MyThing {
         // MyThing::trait_method
         fn trait_method(self) -> bool {
-            self.field // $ fieldof=MyThing
+            self.field // $ type=self:MyThing fieldof=MyThing
         }
     }
 
