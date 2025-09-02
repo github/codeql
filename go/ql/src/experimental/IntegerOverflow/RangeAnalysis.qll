@@ -74,7 +74,7 @@ float getAnUpperBound(Expr expr) {
             result = getAnUpperBound(greater.asExpr()) + bias
           )
         else
-          //If not, find the coresponding `SsaDefinition`, then call `getAnSsaUpperBound` on it.
+          //If not, find the corresponding `SsaDefinition`, then call `getAnSsaUpperBound` on it.
           result = getAnSsaUpperBound(v.getDefinition())
       )
     )
@@ -231,7 +231,7 @@ float getALowerBound(Expr expr) {
             result = lbs - bias
           )
         else
-          //find coresponding SSA definition and calls `getAnSsaLowerBound` on it.
+          //find corresponding SSA definition and calls `getAnSsaLowerBound` on it.
           result = getAnSsaLowerBound(v.getDefinition())
       )
     )
@@ -351,7 +351,7 @@ float getAnSsaUpperBound(SsaDefinition def) {
   (
     def instanceof SsaExplicitDefinition and
     exists(SsaExplicitDefinition explicitDef | explicitDef = def |
-      //SSA definition coresponding to a `SimpleAssignStmt`
+      //SSA definition corresponding to a `SimpleAssignStmt`
       if explicitDef.getInstruction() instanceof IR::AssignInstruction
       then
         exists(IR::AssignInstruction assignInstr, SimpleAssignStmt simpleAssign |
@@ -360,7 +360,7 @@ float getAnSsaUpperBound(SsaDefinition def) {
           result = getAnUpperBound(simpleAssign.getRhs())
         )
         or
-        //SSA definition coresponding to a ValueSpec(used in a variable declaration)
+        //SSA definition corresponding to a ValueSpec(used in a variable declaration)
         exists(IR::AssignInstruction declInstr, ValueSpec vs, int i, Expr init |
           declInstr = explicitDef.getInstruction() and
           declInstr = IR::initInstruction(vs, i) and
@@ -368,7 +368,7 @@ float getAnSsaUpperBound(SsaDefinition def) {
           result = getAnUpperBound(init)
         )
         or
-        //SSA definition coresponding to an `AddAssignStmt` (x += y) or `SubAssignStmt` (x -= y)
+        //SSA definition corresponding to an `AddAssignStmt` (x += y) or `SubAssignStmt` (x -= y)
         exists(
           IR::AssignInstruction assignInstr, SsaExplicitDefinition prevDef,
           CompoundAssignStmt compoundAssign, float prevBound, float delta
@@ -388,7 +388,7 @@ float getAnSsaUpperBound(SsaDefinition def) {
           )
         )
       else
-        //SSA definition coresponding to an `IncDecStmt`
+        //SSA definition corresponding to an `IncDecStmt`
         if explicitDef.getInstruction() instanceof IR::IncDecInstruction
         then
           exists(IncDecStmt incOrDec, IR::IncDecInstruction instr, float exprLB |
@@ -521,13 +521,13 @@ float getAnSsaLowerBound(SsaDefinition def) {
  * The structure of this function needs to be same as `getAnSsaLowerBound`
  */
 predicate ssaDependsOnSsa(SsaDefinition nextDef, SsaDefinition prevDef) {
-  //SSA definition coresponding to a `SimpleAssignStmt`
+  //SSA definition corresponding to a `SimpleAssignStmt`
   exists(SimpleAssignStmt simpleAssign |
     nextDef.(SsaExplicitDefinition).getInstruction() = IR::assignInstruction(simpleAssign, _) and
     ssaDependsOnExpr(prevDef, simpleAssign.getRhs())
   )
   or
-  //SSA definition coresponding to a `ValueSpec`(used in variable declaration)
+  //SSA definition corresponding to a `ValueSpec`(used in variable declaration)
   exists(IR::AssignInstruction declInstr, ValueSpec vs, int i, Expr init |
     declInstr = nextDef.(SsaExplicitDefinition).getInstruction() and
     declInstr = IR::initInstruction(vs, i) and
@@ -535,7 +535,7 @@ predicate ssaDependsOnSsa(SsaDefinition nextDef, SsaDefinition prevDef) {
     ssaDependsOnExpr(prevDef, init)
   )
   or
-  //SSA definition coresponding to a `AddAssignStmt` or `SubAssignStmt`
+  //SSA definition corresponding to a `AddAssignStmt` or `SubAssignStmt`
   exists(CompoundAssignStmt compoundAssign |
     (compoundAssign instanceof AddAssignStmt or compoundAssign instanceof SubAssignStmt) and
     nextDef.(SsaExplicitDefinition).getInstruction() = IR::assignInstruction(compoundAssign, 0) and
@@ -545,7 +545,7 @@ predicate ssaDependsOnSsa(SsaDefinition nextDef, SsaDefinition prevDef) {
     )
   )
   or
-  //SSA definition coresponding to a `IncDecStmt`
+  //SSA definition corresponding to a `IncDecStmt`
   exists(IncDecStmt incDec |
     nextDef
         .(SsaExplicitDefinition)
@@ -557,7 +557,7 @@ predicate ssaDependsOnSsa(SsaDefinition nextDef, SsaDefinition prevDef) {
     ssaDependsOnExpr(prevDef, incDec.getOperand())
   )
   or
-  //if `nextDef` coresponding to the init of a parameter, there is no coresponding `prevDef`
+  //if `nextDef` corresponding to the init of a parameter, there is no corresponding `prevDef`
   //if `nextDef` is a phi node and `prevDef` is one of the input of the phi node, then `nextDef` depends on `prevDef` directly.
   exists(SsaPhiNode phi | nextDef = phi and phi.getAnInput().getDefinition() = prevDef)
 }
