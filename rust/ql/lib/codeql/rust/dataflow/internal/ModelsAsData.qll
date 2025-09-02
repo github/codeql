@@ -51,8 +51,8 @@ private import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprB
 
 /**
  * Holds if in a call to the function with canonical path `path`, the value referred
- * to by `output` is a flow source of the given `kind`.
- * The `madId` is the data extension row number.
+ * to by `output` is a flow source of the given `kind` and `madId` is the data
+ * extension row number.
  *
  * `output = "ReturnValue"` simply means the result of the call itself.
  *
