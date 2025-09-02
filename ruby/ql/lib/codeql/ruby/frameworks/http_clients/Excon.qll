@@ -25,27 +25,28 @@ private import codeql.ruby.DataFlow
  */
 class ExconHttpRequest extends Http::Client::Request::Range instanceof DataFlow::CallNode {
   API::Node requestNode;
-  API::Node connectionNode;
   DataFlow::Node connectionUse;
 
   ExconHttpRequest() {
     this = requestNode.asSource() and
-    connectionUse = connectionNode.asSource() and
-    connectionNode =
-      [
-        // one-off requests
-        API::getTopLevelMember("Excon"),
-        // connection re-use
-        API::getTopLevelMember("Excon").getInstance(),
-        API::getTopLevelMember("Excon").getMember("Connection").getInstance()
-      ] and
-    requestNode =
-      connectionNode
-          .getReturn([
-              // Excon#request exists but Excon.request doesn't.
-              // This shouldn't be a problem - in real code the latter would raise NoMethodError anyway.
-              "get", "head", "delete", "options", "post", "put", "patch", "trace", "request"
-            ])
+    exists(API::Node connectionNode |
+      connectionUse = connectionNode.asSource() and
+      connectionNode =
+        [
+          // one-off requests
+          API::getTopLevelMember("Excon"),
+          // connection re-use
+          API::getTopLevelMember("Excon").getInstance(),
+          API::getTopLevelMember("Excon").getMember("Connection").getInstance()
+        ] and
+      requestNode =
+        connectionNode
+            .getReturn([
+                // Excon#request exists but Excon.request doesn't.
+                // This shouldn't be a problem - in real code the latter would raise NoMethodError anyway.
+                "get", "head", "delete", "options", "post", "put", "patch", "trace", "request"
+              ])
+    )
   }
 
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
