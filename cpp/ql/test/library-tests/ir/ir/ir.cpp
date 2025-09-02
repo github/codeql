@@ -2811,4 +2811,14 @@ size_t vla_sizeof_test3(int len1, size_t len2, char len3, bool b) {
   return 0;
 }
 
+void vla_sizeof_test4(int len1, size_t len2) {
+  int tmp1[len1][len2];
+  size_t z = sizeof(1[tmp1]);
+}
+
+void vla_sizeof_test5(int len1, size_t len2) {
+  int tmp1[len1][len2];
+  size_t z = sizeof((*&tmp1)[1]);
+}
+
 // semmle-extractor-options: -std=c++20 --clang

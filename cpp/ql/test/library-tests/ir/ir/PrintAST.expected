@@ -24996,6 +24996,101 @@ ir.cpp:
 # 2811|           Type = [CTypedefType,Size_t] size_t
 # 2811|           Value = [CStyleCast] 0
 # 2811|           ValueCategory = prvalue
+# 2814| [TopLevelFunction] void vla_sizeof_test4(int, size_t)
+# 2814|   <params>: 
+# 2814|     getParameter(0): [Parameter] len1
+# 2814|         Type = [IntType] int
+# 2814|     getParameter(1): [Parameter] len2
+# 2814|         Type = [CTypedefType,Size_t] size_t
+# 2814|   getEntryPoint(): [BlockStmt] { ... }
+# 2815|     getStmt(0): [DeclStmt] declaration
+# 2815|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of tmp1
+# 2815|           Type = [ArrayType] int[][]
+# 2815|     getStmt(1): [VlaDimensionStmt] VLA dimension size
+# 2815|       getDimensionExpr(): [VariableAccess] len1
+# 2815|           Type = [IntType] int
+# 2815|           ValueCategory = prvalue(load)
+# 2815|     getStmt(2): [VlaDimensionStmt] VLA dimension size
+# 2815|       getDimensionExpr(): [VariableAccess] len2
+# 2815|           Type = [CTypedefType,Size_t] size_t
+# 2815|           ValueCategory = prvalue(load)
+# 2815|     getStmt(3): [VlaDeclStmt] VLA declaration
+# 2816|     getStmt(4): [DeclStmt] declaration
+# 2816|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of z
+# 2816|           Type = [CTypedefType,Size_t] size_t
+# 2816|         getVariable().getInitializer(): [Initializer] initializer for z
+# 2816|           getExpr(): [SizeofExprOperator] sizeof(<expr>)
+# 2816|               Type = [LongType] unsigned long
+# 2816|               ValueCategory = prvalue
+# 2816|             getExprOperand(): [ArrayExpr] access to array
+# 2816|                 Type = [ArrayType] int[]
+# 2816|                 ValueCategory = lvalue
+# 2816|               getArrayBase(): [VariableAccess] tmp1
+# 2816|                   Type = [ArrayType] int[][]
+# 2816|                   ValueCategory = lvalue
+# 2816|               getArrayOffset(): [Literal] 1
+# 2816|                   Type = [IntType] int
+# 2816|                   Value = [Literal] 1
+# 2816|                   ValueCategory = prvalue
+# 2816|               getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 2816|                   Type = [PointerType] int(*)[]
+# 2816|                   ValueCategory = prvalue
+# 2816|             getExprOperand().getFullyConverted(): [ParenthesisExpr] (...)
+# 2816|                 Type = [ArrayType] int[]
+# 2816|                 ValueCategory = lvalue
+# 2817|     getStmt(5): [ReturnStmt] return ...
+# 2819| [TopLevelFunction] void vla_sizeof_test5(int, size_t)
+# 2819|   <params>: 
+# 2819|     getParameter(0): [Parameter] len1
+# 2819|         Type = [IntType] int
+# 2819|     getParameter(1): [Parameter] len2
+# 2819|         Type = [CTypedefType,Size_t] size_t
+# 2819|   getEntryPoint(): [BlockStmt] { ... }
+# 2820|     getStmt(0): [DeclStmt] declaration
+# 2820|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of tmp1
+# 2820|           Type = [ArrayType] int[][]
+# 2820|     getStmt(1): [VlaDimensionStmt] VLA dimension size
+# 2820|       getDimensionExpr(): [VariableAccess] len1
+# 2820|           Type = [IntType] int
+# 2820|           ValueCategory = prvalue(load)
+# 2820|     getStmt(2): [VlaDimensionStmt] VLA dimension size
+# 2820|       getDimensionExpr(): [VariableAccess] len2
+# 2820|           Type = [CTypedefType,Size_t] size_t
+# 2820|           ValueCategory = prvalue(load)
+# 2820|     getStmt(3): [VlaDeclStmt] VLA declaration
+# 2821|     getStmt(4): [DeclStmt] declaration
+# 2821|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of z
+# 2821|           Type = [CTypedefType,Size_t] size_t
+# 2821|         getVariable().getInitializer(): [Initializer] initializer for z
+# 2821|           getExpr(): [SizeofExprOperator] sizeof(<expr>)
+# 2821|               Type = [LongType] unsigned long
+# 2821|               ValueCategory = prvalue
+# 2821|             getExprOperand(): [ArrayExpr] access to array
+# 2821|                 Type = [ArrayType] int[]
+# 2821|                 ValueCategory = lvalue
+# 2821|               getArrayBase(): [PointerDereferenceExpr] * ...
+# 2821|                   Type = [ArrayType] int[][]
+# 2821|                   ValueCategory = lvalue
+# 2821|                 getOperand(): [AddressOfExpr] & ...
+# 2821|                     Type = [PointerType] int(*)[][]
+# 2821|                     ValueCategory = prvalue
+# 2821|                   getOperand(): [VariableAccess] tmp1
+# 2821|                       Type = [ArrayType] int[][]
+# 2821|                       ValueCategory = lvalue
+# 2821|               getArrayOffset(): [Literal] 1
+# 2821|                   Type = [IntType] int
+# 2821|                   Value = [Literal] 1
+# 2821|                   ValueCategory = prvalue
+# 2821|               getArrayBase().getFullyConverted(): [ParenthesisExpr] (...)
+# 2821|                   Type = [PointerType] int(*)[]
+# 2821|                   ValueCategory = prvalue
+# 2821|                 getExpr(): [ArrayToPointerConversion] array to pointer conversion
+# 2821|                     Type = [PointerType] int(*)[]
+# 2821|                     ValueCategory = prvalue
+# 2821|             getExprOperand().getFullyConverted(): [ParenthesisExpr] (...)
+# 2821|                 Type = [ArrayType] int[]
+# 2821|                 ValueCategory = lvalue
+# 2822|     getStmt(5): [ReturnStmt] return ...
 ir23.cpp:
 #    1| [TopLevelFunction] bool consteval_1()
 #    1|   <params>: 
