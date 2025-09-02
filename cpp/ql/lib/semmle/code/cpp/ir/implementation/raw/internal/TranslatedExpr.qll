@@ -4144,16 +4144,15 @@ class TranslatedSizeofExpr extends TranslatedNonConstantExpr {
     exists(int n, Type dimType |
       pointerDerefCount <= n and
       n < vlaDimensions and
-      dimType = vlaDeclStmt.getTransitiveVlaDimensionStmt(n).getDimensionExpr().getUnderlyingType()
+      dimType = this.getDimensionExpr(n).getUnderlyingType() and
+      tag = SizeofVlaConversionTag(n)
     |
       (
         expr.getUnderlyingType() = dimType and
-        opcode instanceof Opcode::CopyValue and
-        tag = SizeofVlaConversionTag(n)
+        opcode instanceof Opcode::CopyValue
         or
         not expr.getUnderlyingType() = dimType and
-        opcode instanceof Opcode::Convert and
-        tag = SizeofVlaConversionTag(n)
+        opcode instanceof Opcode::Convert
       )
     ) and
     resultType = this.getResultType()
@@ -4213,9 +4212,7 @@ class TranslatedSizeofExpr extends TranslatedNonConstantExpr {
       tag = SizeofVlaConversionTag(n) and
       (
         operandTag instanceof UnaryOperandTag and
-        result =
-          getTranslatedExpr(vlaDeclStmt.getTransitiveVlaDimensionStmt(n).getDimensionExpr())
-              .getResult()
+        result = getTranslatedExpr(this.getDimensionExpr(n)).getResult()
       )
     )
     or
@@ -4235,6 +4232,10 @@ class TranslatedSizeofExpr extends TranslatedNonConstantExpr {
         result = this.getInstruction(SizeofVlaConversionTag(n))
       )
     )
+  }
+
+  private Expr getDimensionExpr(int n) {
+    result = vlaDeclStmt.getTransitiveVlaDimensionStmt(n).getDimensionExpr().getFullyConverted()
   }
 
   final override Instruction getResult() {
