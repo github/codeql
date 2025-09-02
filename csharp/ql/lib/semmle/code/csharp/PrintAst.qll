@@ -524,10 +524,8 @@ final class AttributeNode extends ElementNode {
  */
 final class TypeParameterNode extends ElementNode {
   TypeParameterNode() {
-    exists(TypeParameter typeParameter |
-      typeParameter = element and
-      not isNotNeeded(typeParameter.getDeclaringGeneric())
-    )
+    element =
+      any(TypeParameter typeParameter | not isNotNeeded(typeParameter.getDeclaringGeneric()))
   }
 
   override ElementNode getChild(int childIndex) { none() }
