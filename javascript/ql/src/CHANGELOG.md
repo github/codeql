@@ -1,3 +1,9 @@
+## 2.0.2
+
+### Minor Analysis Improvements
+
+* The `js/regex-injection` query no longer considers environment variables as sources by default. Environment variables can be re-enabled as sources by setting the threat model to include the "environment" category.
+
 ## 2.0.1
 
 No user-facing changes.

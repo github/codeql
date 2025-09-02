@@ -14,7 +14,7 @@ This is an overview of changes in the CodeQL CLI and relevant CodeQL query and l
 Security Coverage
 -----------------
 
-CodeQL 2.22.1 runs a total of 449 security queries when configured with the Default suite (covering 165 CWE). The Extended suite enables an additional 129 queries (covering 33 more CWE).
+CodeQL 2.22.1 runs a total of 476 security queries when configured with the Default suite (covering 166 CWE). The Extended suite enables an additional 129 queries (covering 32 more CWE). 27 security queries have been added with this release.
 
 CodeQL CLI
 ----------
@@ -38,7 +38,7 @@ Minor Analysis Improvements
 C/C++
 """""
 
-*   Added flow model for the following libraries: :code:`madler/zlib`, :code:`google/brotli`, :code:`libidn/libidn2`, :code:`libssh2/libssh2/`, :code:`nghttp2/nghttp2`, :code:`libuv/libuv/`, and :code:`curl/curl`. This may result in more alerts when running queries on codebases that use these libraries.
+*   Added flow models for the following libraries: :code:`madler/zlib`, :code:`google/brotli`, :code:`libidn/libidn2`, :code:`libssh2/libssh2`, :code:`nghttp2/nghttp2`, :code:`libuv/libuv`, and :code:`curl/curl`. This may result in more alerts when running queries on codebases that use these libraries.
 
 C#
 ""

@@ -178,6 +178,10 @@ module Config implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(UnsafeCast cast).getUnconverted() }
 
   int fieldFlowBranchLimit() { result = 0 }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // used both positively and negatively
+  }
 }
 
 module Flow = DataFlow::Global<Config>;

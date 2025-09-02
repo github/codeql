@@ -124,6 +124,12 @@ module Config implements DataFlow::ConfigSig {
     // Block flow if the node is guarded by any <, <= or = operations.
     node = DataFlow::BarrierGuard<lessThanOrEqual/3>::getABarrierNode()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(BufferWrite bw | result = bw.getLocation() | isSink(sink, bw, _))
+  }
 }
 
 module Flow = TaintTracking::Global<Config>;
