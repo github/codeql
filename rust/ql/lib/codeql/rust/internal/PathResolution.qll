@@ -216,7 +216,7 @@ abstract class ItemNode extends Locatable {
     // items made available through `use` are available to nodes that contain the `use`
     exists(UseItemNode use |
       use = this.getASuccessor(_, _) and
-      result = use.(ItemNode).getASuccessor(name, kind)
+      result = use.getASuccessor(name, kind)
     )
     or
     exists(ExternCrateItemNode ec | result = ec.(ItemNode).getASuccessor(name, kind) |
@@ -240,12 +240,7 @@ abstract class ItemNode extends Locatable {
       )
     or
     // items made available by an implementation where `this` is the implementing type
-    exists(ItemNode node |
-      this = node.(ImplItemNodeImpl).resolveSelfTyCand() and
-      result = node.getASuccessor(name, kind) and
-      kind.isExternalOrBoth() and
-      result instanceof AssocItemNode
-    )
+    typeImplEdge(this, _, name, kind, result)
     or
     // trait items with default implementations made available in an implementation
     exists(ImplItemNodeImpl impl, ItemNode trait |
@@ -1311,6 +1306,7 @@ private predicate declares(ItemNode item, Namespace ns, string name) {
 class RelevantPath extends Path {
   RelevantPath() { not this = any(VariableAccess va).(PathExpr).getPath() }
 
+  /** Holds if this is an unqualified path with the textual value `name`. */
   pragma[nomagic]
   predicate isUnqualified(string name) {
     not exists(this.getQualifier()) and
@@ -1421,6 +1417,35 @@ private ItemNode unqualifiedPathLookup(RelevantPath p, Namespace ns, SuccessorKi
 pragma[nomagic]
 private predicate isUnqualifiedSelfPath(RelevantPath path) { path.isUnqualified("Self") }
 
+/** Provides the input to `TraitIsVisible`. */
+signature predicate relevantTraitVisibleSig(Element element, Trait trait);
+
+/**
+ * Provides the `traitIsVisible` predicate for determining if a trait is visible
+ * at a given element.
+ */
+module TraitIsVisible<relevantTraitVisibleSig/2 relevantTraitVisible> {
+  /** Holds if the trait might be looked up in `encl`. */
+  private predicate traitLookup(ItemNode encl, Element element, Trait trait) {
+    // lookup in immediately enclosing item
+    relevantTraitVisible(element, trait) and
+    encl.getADescendant() = element
+    or
+    // lookup in an outer scope, but only if the trait is not declared in inner scope
+    exists(ItemNode mid |
+      traitLookup(mid, element, trait) and
+      not trait = mid.getASuccessor(_, _) and
+      encl = getOuterScope(mid)
+    )
+  }
+
+  /** Holds if the trait `trait` is visible at `element`. */
+  pragma[nomagic]
+  predicate traitIsVisible(Element element, Trait trait) {
+    exists(ItemNode encl | traitLookup(encl, element, trait) and trait = encl.getASuccessor(_, _))
+  }
+}
+
 pragma[nomagic]
 private ItemNode resolvePathCand0(RelevantPath path, Namespace ns) {
   exists(ItemNode res |
@@ -1446,6 +1471,10 @@ private ItemNode resolvePathCandQualifier(RelevantPath qualifier, RelevantPath p
   name = path.getText()
 }
 
+/**
+ * Gets the item that `path` resolves to in `ns` when `qualifier` is the
+ * qualifier of `path` and `qualifier` resolves to `q`, if any.
+ */
 pragma[nomagic]
 private ItemNode resolvePathCandQualified(
   RelevantPath qualifier, ItemNode q, RelevantPath path, Namespace ns
@@ -1520,11 +1549,31 @@ private ItemNode resolvePathCand(RelevantPath path) {
   )
 }
 
+/** Get a trait that should be visible when `path` resolves to `node`, if any. */
+private Trait getResolvePathTraitUsed(RelevantPath path, AssocItemNode node) {
+  exists(TypeItemNode type, ImplItemNodeImpl impl |
+    node = resolvePathCandQualified(_, type, path, _) and
+    typeImplEdge(type, impl, _, _, node) and
+    result = impl.resolveTraitTyCand()
+  )
+}
+
+private predicate pathTraitUsed(Element path, Trait trait) {
+  trait = getResolvePathTraitUsed(path, _)
+}
+
 /** Gets the item that `path` resolves to, if any. */
 cached
 ItemNode resolvePath(RelevantPath path) {
   result = resolvePathCand(path) and
-  not path = any(Path parent | exists(resolvePathCand(parent))).getQualifier()
+  not path = any(Path parent | exists(resolvePathCand(parent))).getQualifier() and
+  (
+    // When the result is an associated item of a trait implementation the
+    // implemented trait must be visible.
+    TraitIsVisible<pathTraitUsed/2>::traitIsVisible(path, getResolvePathTraitUsed(path, result))
+    or
+    not exists(getResolvePathTraitUsed(path, result))
+  )
   or
   // if `path` is the qualifier of a resolvable `parent`, then we should
   // resolve `path` to something consistent with what `parent` resolves to
@@ -1606,8 +1655,16 @@ private predicate useImportEdge(Use use, string name, ItemNode item, SuccessorKi
         not tree.hasRename() and
         name = item.getName()
         or
-        name = tree.getRename().getName().getText() and
-        name != "_"
+        exists(Rename rename | rename = tree.getRename() |
+          name = rename.getName().getText()
+          or
+          // When the rename doesn't have a name it's an underscore import. This
+          // makes the imported item visible but unnameable. We represent this
+          // by using the name `_` which can never occur in a path.  See also:
+          // https://doc.rust-lang.org/reference/items/use-declarations.html#r-items.use.as-underscore
+          not rename.hasName() and
+          name = "_"
+        )
       )
     )
   )
@@ -1627,6 +1684,18 @@ private predicate externCrateEdge(ExternCrateItemNode ec, string name, CrateItem
     s = "self" and
     ec.getFile() = crate.getASourceFile().getFile()
   )
+}
+
+/**
+ * Holds if `typeItem` is the implementing type of `impl` and the implementation
+ * makes `assoc` available as `name` at `kind`.
+ */
+private predicate typeImplEdge(
+  TypeItemNode typeItem, ImplItemNodeImpl impl, string name, SuccessorKind kind, AssocItemNode assoc
+) {
+  typeItem = impl.resolveSelfTyCand() and
+  assoc = impl.getASuccessor(name, kind) and
+  kind.isExternalOrBoth()
 }
 
 pragma[nomagic]
@@ -1693,7 +1762,7 @@ private module Debug {
     useImportEdge(use, name, item, kind)
   }
 
-  ItemNode debuggetASuccessor(ItemNode i, string name, SuccessorKind kind) {
+  ItemNode debugGetASuccessor(ItemNode i, string name, SuccessorKind kind) {
     i = getRelevantLocatable() and
     result = i.getASuccessor(name, kind)
   }

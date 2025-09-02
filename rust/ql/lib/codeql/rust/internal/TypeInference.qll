@@ -1891,7 +1891,7 @@ private predicate methodCandidate(Type type, string name, int arity, Impl impl) 
  */
 pragma[nomagic]
 private predicate methodCandidateTrait(Type type, Trait trait, string name, int arity, Impl impl) {
-  trait = resolvePath(impl.(ImplItemNode).getTraitPath()) and
+  trait = impl.(ImplItemNode).resolveTraitTy() and
   methodCandidate(type, name, arity, impl)
 }
 
@@ -1903,16 +1903,50 @@ private predicate isMethodCall(MethodCall mc, Type rootType, string name, int ar
 }
 
 private module IsInstantiationOfInput implements IsInstantiationOfInputSig<MethodCall> {
+  /** Holds if `mc` specifies a trait and might target a method in `impl`. */
   pragma[nomagic]
-  predicate potentialInstantiationOf(MethodCall mc, TypeAbstraction impl, TypeMention constraint) {
+  private predicate methodCallTraitCandidate(MethodCall mc, Impl impl) {
     exists(Type rootType, string name, int arity |
       isMethodCall(mc, rootType, name, arity) and
-      constraint = impl.(ImplTypeAbstraction).getSelfTy()
-    |
       methodCandidateTrait(rootType, mc.getTrait(), name, arity, impl)
-      or
+    )
+  }
+
+  /** Holds if `mc` does not specify a trait and might target a method in `impl`. */
+  pragma[nomagic]
+  private predicate methodCallCandidate(MethodCall mc, Impl impl) {
+    exists(Type rootType, string name, int arity |
       not exists(mc.getTrait()) and
+      isMethodCall(mc, rootType, name, arity) and
       methodCandidate(rootType, name, arity, impl)
+    )
+  }
+
+  private predicate relevantTraitVisible(Element mc, Trait trait) {
+    trait = any(ImplItemNode impl | methodCallCandidate(mc, impl)).resolveTraitTy()
+  }
+
+  bindingset[impl]
+  pragma[inline_late]
+  private TypeRepr getImplSelfTy(Impl impl) { result = impl.getSelfTy() }
+
+  pragma[nomagic]
+  predicate potentialInstantiationOf(MethodCall mc, TypeAbstraction impl, TypeMention constraint) {
+    constraint = getImplSelfTy(impl) and
+    (
+      methodCallTraitCandidate(mc, impl)
+      or
+      methodCallCandidate(mc, impl) and
+      (
+        not exists(impl.(ImplItemNode).resolveTraitTy())
+        or
+        // If the `impl` block implements a trait, that trait must be visible in
+        // order for the `impl` to be valid.
+        exists(Trait trait |
+          pragma[only_bind_into](trait) = impl.(ImplItemNode).resolveTraitTy() and
+          TraitIsVisible<relevantTraitVisible/2>::traitIsVisible(mc, pragma[only_bind_into](trait))
+        )
+      )
     )
   }
 
