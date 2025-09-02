@@ -2215,20 +2215,25 @@ private module BlanketImplementation {
       )
   }
 
+  /**
+   * Holds if `impl` is a relevant blanket implementation that requires the
+   * trait `trait` and provides `f`, a method with name `name` and arity
+   * `arity`.
+   */
   private predicate blanketImplementationMethod(
-    Impl impl, Trait trait, string name, int arity, Function f
+    ImplItemNode impl, Trait trait, string name, int arity, Function f
   ) {
     isCanonicalBlanketImplementation(impl) and
     blanketImplementationTraitBound(impl, trait) and
     f.getParamList().hasSelfParam() and
     arity = f.getParamList().getNumberOfParams() and
     (
-      f = impl.(ImplItemNode).getAssocItem(name)
+      f = impl.getAssocItem(name)
       or
       // If the the trait has a method with a default implementation, then that
       // target is interesting as well.
-      not exists(impl.(ImplItemNode).getAssocItem(name)) and
-      f = impl.(ImplItemNode).resolveTraitTy().getAssocItem(name)
+      not exists(impl.getAssocItem(name)) and
+      f = impl.resolveTraitTy().getAssocItem(name)
     ) and
     // If the method is already available through one of the trait bounds on the
     // type parameter (because they share a common trait ancestor) then ignore
@@ -2248,10 +2253,22 @@ private module BlanketImplementation {
     )
   }
 
+  private predicate relevantTraitVisible(Element mc, Trait trait) {
+    exists(ImplItemNode impl |
+      methodCallMatchesBlanketImpl(mc, _, impl, _, _) and
+      trait = impl.resolveTraitTy()
+    )
+  }
+
   module SatisfiesConstraintInput implements SatisfiesConstraintInputSig<MethodCall> {
     pragma[nomagic]
     predicate relevantConstraint(MethodCall mc, Type constraint) {
-      methodCallMatchesBlanketImpl(mc, _, _, constraint.(TraitType).getTrait(), _)
+      exists(Trait trait, Trait trait2, ImplItemNode impl |
+        methodCallMatchesBlanketImpl(mc, _, impl, trait, _) and
+        TraitIsVisible<relevantTraitVisible/2>::traitIsVisible(mc, pragma[only_bind_into](trait2)) and
+        trait2 = pragma[only_bind_into](impl.resolveTraitTy()) and
+        trait = constraint.(TraitType).getTrait()
+      )
     }
 
     predicate useUniversalConditions() { none() }
