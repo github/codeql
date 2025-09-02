@@ -4103,6 +4103,10 @@ private VlaDeclStmt getVlaDeclStmt(Expr expr, int pointerDerefCount) {
   result = getVlaDeclStmt(expr.(ArrayExpr).getArrayBase(), pointerDerefCount - 1)
 }
 
+/**
+ * The IR translation of `SizeofExprOperator` when its result is non-constant, i.e.,
+ * when the operand expression refers to a variable length array.
+ */
 class TranslatedSizeofExpr extends TranslatedNonConstantExpr {
   override SizeofExprOperator expr;
   VlaDeclStmt vlaDeclStmt;
