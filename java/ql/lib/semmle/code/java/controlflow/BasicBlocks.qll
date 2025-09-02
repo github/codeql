@@ -22,20 +22,8 @@ private module Input implements BB::InputSig<Location> {
   /** Gets the CFG scope in which this node occurs. */
   CfgScope nodeGetCfgScope(Node node) { node.getEnclosingCallable() = result }
 
-  private Node getASpecificSuccessor(Node node, SuccessorType t) {
-    node.(ConditionNode).getABranchSuccessor(t.(BooleanSuccessor).getValue()) = result
-    or
-    node.getAnExceptionSuccessor() = result and t instanceof ExceptionSuccessor
-  }
-
   /** Gets an immediate successor of this node. */
-  Node nodeGetASuccessor(Node node, SuccessorType t) {
-    result = getASpecificSuccessor(node, t)
-    or
-    node.getASuccessor() = result and
-    t instanceof DirectSuccessor and
-    not result = getASpecificSuccessor(node, _)
-  }
+  Node nodeGetASuccessor(Node node, SuccessorType t) { result = node.getASuccessor(t) }
 
   /**
    * Holds if `node` represents an entry node to be used when calculating

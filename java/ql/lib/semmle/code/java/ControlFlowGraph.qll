@@ -82,6 +82,7 @@ module;
  */
 
 import java
+private import codeql.controlflow.SuccessorType
 private import codeql.util.Boolean
 private import Completion
 private import controlflow.internal.Preconditions
@@ -122,6 +123,28 @@ module ControlFlow {
     Node getANormalSuccessor() {
       result = succ(this, BooleanCompletion(_, _)) or
       result = succ(this, NormalCompletion())
+    }
+
+    /** Gets an immediate successor of this node of a given type, if any. */
+    Node getASuccessor(SuccessorType t) {
+      result = branchSuccessor(this, t.(BooleanSuccessor).getValue())
+      or
+      exists(Completion completion |
+        result = succ(this, completion) and
+        not result = branchSuccessor(this, _)
+      |
+        completion = NormalCompletion() and t instanceof DirectSuccessor
+        or
+        completion = ReturnCompletion() and t instanceof ReturnSuccessor
+        or
+        completion = BreakCompletion(_) and t instanceof BreakSuccessor
+        or
+        completion = YieldCompletion(_) and t instanceof BreakSuccessor
+        or
+        completion = ContinueCompletion(_) and t instanceof ContinueSuccessor
+        or
+        completion = ThrowCompletion(_) and t instanceof ExceptionSuccessor
+      )
     }
 
     /** Gets the basic block that contains this node. */
