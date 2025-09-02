@@ -15,8 +15,6 @@ private module WrapperConfig implements DataFlow::ConfigSig {
     // if I know the source, otherwise, it has to be through an additional flow step, which
     // we filter as a source, i.e., references are only allowed as sources only,
     // no inferrece? Not sure if that would work
-    //or
-    //   source.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = c.getAnArgument()
     // Filter out sources that are known additional flow steps, as these are likely not the
     // kind of wrapper source we are looking for.
     not exists(AdditionalFlowInputStep s | s.getOutput() = source)
