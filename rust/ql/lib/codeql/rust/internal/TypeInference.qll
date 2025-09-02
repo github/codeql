@@ -257,7 +257,7 @@ private Type inferAnnotatedType(AstNode n, TypePath path) {
 }
 
 /** Module for inferring certain type information. */
-private module CertainTypeInference {
+module CertainTypeInference {
   pragma[nomagic]
   private predicate callResolvesTo(CallExpr ce, Path p, Function f) {
     p = CallExprImpl::getFunctionPath(ce) and
@@ -286,7 +286,7 @@ private module CertainTypeInference {
   }
 
   pragma[nomagic]
-  Type inferCertainCallExprType(CallExpr ce, TypePath path) {
+  private Type inferCertainCallExprType(CallExpr ce, TypePath path) {
     exists(Type ty, TypePath prefix, Path p | ty = getCertainCallExprType(ce, p, prefix) |
       exists(TypePath suffix, TypeParam tp |
         tp = ty.(TypeParamTypeParameter).getTypeParam() and
