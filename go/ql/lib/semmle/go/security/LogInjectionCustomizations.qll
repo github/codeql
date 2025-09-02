@@ -79,9 +79,7 @@ module LogInjection {
    */
   private class SafeFormatArgumentSanitizer extends Sanitizer {
     SafeFormatArgumentSanitizer() {
-      exists(DataFlow::Node arg, StringOps::Formatting::StringFormatCall call |
-        safeFormatArgument(arg, call)
-      |
+      exists(StringOps::Formatting::StringFormatCall call | safeFormatArgument(_, call) |
         this = call.getAResult()
       )
     }
