@@ -117,7 +117,7 @@ module InsecureContextConfig implements DataFlow::StateConfigSig {
 }
 
 /**
- * DEPRECATED: Will be removed in the future.
+ * DEPRECATED: Renamed to `InsecureContextConfig`.
  */
 deprecated module InsecureContextConfiguration = InsecureContextConfig;
 
