@@ -4098,7 +4098,13 @@ private VlaDeclStmt getVlaDeclStmt(Expr expr, int pointerDerefCount) {
   expr.(VariableAccess).getTarget() = result.getVariable() and
   pointerDerefCount = 0
   or
+  not expr.(PointerDereferenceExpr).getOperand() instanceof AddressOfExpr and
   result = getVlaDeclStmt(expr.(PointerDereferenceExpr).getOperand(), pointerDerefCount - 1)
+  or
+  // Skip sequences of the form `*&...`
+  result =
+    getVlaDeclStmt(expr.(PointerDereferenceExpr).getOperand().(AddressOfExpr).getOperand(),
+      pointerDerefCount)
   or
   result = getVlaDeclStmt(expr.(ArrayExpr).getArrayBase(), pointerDerefCount - 1)
 }

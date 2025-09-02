@@ -20662,6 +20662,14 @@ ir.cpp:
 # 2820|     r2820_6(unsigned long)        = Load[len2]                : &:r2820_5, m2819_8
 # 2820|     v2820_7(void)                 = NoOp                      : 
 # 2821|     r2821_1(glval<unsigned long>) = VariableAddress[z]        : 
+# 2821|     r2821_2(unsigned long)        = Constant[4]               : 
+# 2821|     r2821_3(unsigned long)        = CopyValue                 : r2820_6
+# 2821|     r2821_4(unsigned long)        = Mul                       : r2821_2, r2821_3
+# 2821|     m2821_5(unsigned long)        = Store[z]                  : &:r2821_1, r2821_4
+# 2822|     v2822_1(void)                 = NoOp                      : 
+# 2819|     v2819_9(void)                 = ReturnVoid                : 
+# 2819|     v2819_10(void)                = AliasedUse                : m2819_3
+# 2819|     v2819_11(void)                = ExitFunction              : 
 
 ir23.cpp:
 #    1| bool consteval_1()
