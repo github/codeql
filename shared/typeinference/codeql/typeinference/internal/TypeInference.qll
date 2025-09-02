@@ -919,6 +919,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     signature module SatisfiesConstraintInputSig<HasTypeTreeSig HasTypeTree> {
       /** Holds if it is relevant to know if `term` satisfies `constraint`. */
       predicate relevantConstraint(HasTypeTree term, Type constraint);
+
+      default predicate useUniversalConditions() { any() }
     }
 
     module SatisfiesConstraint<
@@ -960,6 +962,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           not exists(countConstraintImplementations(type, constraint)) and
           conditionSatisfiesConstraintTypeAt(abs, condition, constraintMention, _, _) and
           resolveTypeMentionRoot(condition) = abs.getATypeParameter() and
+          useUniversalConditions() and
           constraint = resolveTypeMentionRoot(constraintMention)
           or
           countConstraintImplementations(type, constraint) > 0 and
