@@ -250,6 +250,54 @@ private TypeMention getTypeAnnotation(AstNode n) {
   )
 }
 
+/**
+ * Gets the type of the implicitly typed `self` parameter, taking into account
+ * whether the parameter is passed by value or by reference.
+ */
+bindingset[self, suffix, t]
+pragma[inline_late]
+private Type getRefAdjustShorthandSelfType(SelfParam self, TypePath suffix, Type t, TypePath path) {
+  not self.hasTypeRepr() and
+  (
+    if self.isRef()
+    then
+      // `fn f(&self, ...)`
+      path.isEmpty() and
+      result = TRefType()
+      or
+      path = TypePath::cons(TRefTypeParameter(), suffix) and
+      result = t
+    else (
+      // `fn f(self, ...)`
+      path = suffix and
+      result = t
+    )
+  )
+}
+
+pragma[nomagic]
+private Type resolveImplSelfType(Impl i, TypePath path) {
+  result = i.getSelfTy().(TypeMention).resolveTypeAt(path)
+}
+
+/**
+ * Gets the type at `path` of the parameter `self` which uses the [shorthand
+ * syntax][1] which is sugar for an explicit annotation.
+ *
+ * [1]: https://doc.rust-lang.org/stable/reference/items/associated-items.html#r-associated.fn.method.self-pat-shorthands
+ */
+pragma[nomagic]
+private Type inferShorthandSelfType(SelfParam self, TypePath path) {
+  exists(ImplOrTraitItemNode i, TypePath suffix, Type t |
+    self = i.getAnAssocItem().(Function).getParamList().getSelfParam() and
+    result = getRefAdjustShorthandSelfType(self, suffix, t, path)
+  |
+    t = resolveImplSelfType(i, suffix)
+    or
+    t = TSelfTypeParameter(i) and suffix.isEmpty()
+  )
+}
+
 /** Gets the type of `n`, which has an explicit type annotation. */
 pragma[nomagic]
 private Type inferAnnotatedType(AstNode n, TypePath path) {
@@ -600,54 +648,6 @@ private Type inferTypeEquality(AstNode n, TypePath path) {
     typeEquality(n, prefix1, n2, prefix2)
     or
     typeEquality(n2, prefix2, n, prefix1)
-  )
-}
-
-/**
- * Gets the type of the implicitly typed `self` parameter, taking into account
- * whether the parameter is passed by value or by reference.
- */
-bindingset[self, suffix, t]
-pragma[inline_late]
-private Type getRefAdjustShorthandSelfType(SelfParam self, TypePath suffix, Type t, TypePath path) {
-  not self.hasTypeRepr() and
-  (
-    if self.isRef()
-    then
-      // `fn f(&self, ...)`
-      path.isEmpty() and
-      result = TRefType()
-      or
-      path = TypePath::cons(TRefTypeParameter(), suffix) and
-      result = t
-    else (
-      // `fn f(self, ...)`
-      path = suffix and
-      result = t
-    )
-  )
-}
-
-pragma[nomagic]
-private Type resolveImplSelfType(Impl i, TypePath path) {
-  result = i.getSelfTy().(TypeMention).resolveTypeAt(path)
-}
-
-/**
- * Gets the type at `path` of the parameter `self` which uses the [shorthand
- * syntax][1] which is sugar for an explicit annotation.
- *
- * [1]: https://doc.rust-lang.org/stable/reference/items/associated-items.html#r-associated.fn.method.self-pat-shorthands
- */
-pragma[nomagic]
-private Type inferShorthandSelfType(SelfParam self, TypePath path) {
-  exists(ImplOrTraitItemNode i, TypePath suffix, Type t |
-    self = i.getAnAssocItem().(Function).getParamList().getSelfParam() and
-    result = getRefAdjustShorthandSelfType(self, suffix, t, path)
-  |
-    t = resolveImplSelfType(i, suffix)
-    or
-    t = TSelfTypeParameter(i) and suffix.isEmpty()
   )
 }
 
