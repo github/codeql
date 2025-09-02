@@ -945,6 +945,12 @@ module MakeWithSplitting<
         )
     }
 
+    /** Holds if `t` is an abnormal exit type out of a CFG scope. */
+    private predicate isAbnormalExitType(SuccessorType t) {
+      t instanceof ExceptionSuccessor or
+      t instanceof ExitSuccessor
+    }
+
     /**
      * Internal representation of control flow nodes in the control flow graph.
      * The control flow graph is pruned for unreachable nodes.

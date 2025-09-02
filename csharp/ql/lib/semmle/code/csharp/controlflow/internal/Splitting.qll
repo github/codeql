@@ -470,11 +470,8 @@ module FinallySplitting {
    * then the `finally` block must end with a `return` as well (provided that
    * the `finally` block exits normally).
    */
-  class FinallySplitType instanceof Cfg::SuccessorType {
+  class FinallySplitType extends Cfg::SuccessorType {
     FinallySplitType() { not this instanceof Cfg::ConditionalSuccessor }
-
-    /** Gets a textual representation of this successor type. */
-    string toString() { result = super.toString() }
 
     /** Holds if this split type matches entry into a `finally` block with completion `c`. */
     predicate isSplitForEntryCompletion(Completion c) {

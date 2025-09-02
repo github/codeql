@@ -1,13 +1,8 @@
 /**
  * Provides different types of control flow successor types. These are used as
  * edge labels in the control flow graph.
- */
-overlay[local]
-module;
-
-private import codeql.util.Boolean
-
-/*
+ *
+ * ```text
  * SuccessorType
  *  |- NormalSuccessor
  *  |   |- DirectSuccessor
@@ -25,9 +20,13 @@ private import codeql.util.Boolean
  *          |- ContinueSuccessor
  *          |- GotoSuccessor
  *          |- RedoSuccessor // rare, used in Ruby
- *          |- RetrySuccessor // rare, used in Ruby
- *          \- JavaYieldSuccessor
+ *          \- RetrySuccessor // rare, used in Ruby
+ * ```
  */
+overlay[local]
+module;
+
+private import codeql.util.Boolean
 
 private newtype TSuccessorType =
   TDirectSuccessor() or
@@ -42,8 +41,7 @@ private newtype TSuccessorType =
   TContinueSuccessor() or
   TGotoSuccessor() or
   TRedoSuccessor() or
-  TRetrySuccessor() or
-  TJavaYieldSuccessor()
+  TRetrySuccessor()
 
 /**
  * The type of a control flow successor.
@@ -52,10 +50,12 @@ private newtype TSuccessorType =
  * successors, or abrupt, which covers all other types of successors including
  * for example exceptions, returns, and other jumps.
  */
-class SuccessorType extends TSuccessorType {
+private class SuccessorTypeImpl extends TSuccessorType {
   /** Gets a textual representation of this successor type. */
   abstract string toString();
 }
+
+final class SuccessorType = SuccessorTypeImpl;
 
 private class TNormalSuccessor = TDirectSuccessor or TConditionalSuccessor;
 
@@ -63,10 +63,12 @@ private class TNormalSuccessor = TDirectSuccessor or TConditionalSuccessor;
  * A normal control flow successor. This is either a direct or a conditional
  * successor.
  */
-abstract class NormalSuccessor extends SuccessorType, TNormalSuccessor { }
+abstract private class NormalSuccessorImpl extends SuccessorTypeImpl, TNormalSuccessor { }
+
+final class NormalSuccessor = NormalSuccessorImpl;
 
 /** A direct control flow successor. */
-class DirectSuccessor extends NormalSuccessor, TDirectSuccessor {
+class DirectSuccessor extends NormalSuccessorImpl, TDirectSuccessor {
   override string toString() { result = "successor" }
 }
 
@@ -78,10 +80,12 @@ private class TConditionalSuccessor =
  * a nullness successor (`NullnessSuccessor`), a matching successor (`MatchingSuccessor`),
  * or an emptiness successor (`EmptinessSuccessor`).
  */
-abstract class ConditionalSuccessor extends NormalSuccessor, TConditionalSuccessor {
+abstract private class ConditionalSuccessorImpl extends NormalSuccessorImpl, TConditionalSuccessor {
   /** Gets the Boolean value of this successor. */
   abstract boolean getValue();
 }
+
+final class ConditionalSuccessor = ConditionalSuccessorImpl;
 
 /**
  * A Boolean control flow successor.
@@ -97,7 +101,7 @@ abstract class ConditionalSuccessor extends NormalSuccessor, TConditionalSuccess
  *
  * has a control flow graph containing Boolean successors:
  *
- * ```
+ * ```text
  *        if
  *        |
  *      x < 0
@@ -109,7 +113,7 @@ abstract class ConditionalSuccessor extends NormalSuccessor, TConditionalSuccess
  * return 0   return 1
  * ```
  */
-class BooleanSuccessor extends ConditionalSuccessor, TBooleanSuccessor {
+class BooleanSuccessor extends ConditionalSuccessorImpl, TBooleanSuccessor {
   override boolean getValue() { this = TBooleanSuccessor(result) }
 
   override string toString() { result = this.getValue().toString() }
@@ -126,7 +130,7 @@ class BooleanSuccessor extends ConditionalSuccessor, TBooleanSuccessor {
  *
  * has a control flow graph containing nullness successors:
  *
- * ```
+ * ```text
  *      enter M
  *        |
  *        s
@@ -141,7 +145,7 @@ class BooleanSuccessor extends ConditionalSuccessor, TBooleanSuccessor {
  *      exit M
  * ```
  */
-class NullnessSuccessor extends ConditionalSuccessor, TNullnessSuccessor {
+class NullnessSuccessor extends ConditionalSuccessorImpl, TNullnessSuccessor {
   /** Holds if this is a `null` successor. */
   predicate isNull() { this = TNullnessSuccessor(true) }
 
@@ -166,7 +170,7 @@ class NullnessSuccessor extends ConditionalSuccessor, TNullnessSuccessor {
  *
  * has a control flow graph containing matching successors:
  *
- * ```
+ * ```text
  *      switch
  *        |
  *        x
@@ -182,7 +186,7 @@ class NullnessSuccessor extends ConditionalSuccessor, TNullnessSuccessor {
  *           return 1
  * ```
  */
-class MatchingSuccessor extends ConditionalSuccessor, TMatchingSuccessor {
+class MatchingSuccessor extends ConditionalSuccessorImpl, TMatchingSuccessor {
   /** Holds if this is a match successor. */
   predicate isMatch() { this = TMatchingSuccessor(true) }
 
@@ -206,7 +210,7 @@ class MatchingSuccessor extends ConditionalSuccessor, TMatchingSuccessor {
  *
  * has a control flow graph containing emptiness successors:
  *
- * ```
+ * ```text
  *           args
  *            |
  *        loop-header------<-----
@@ -223,7 +227,7 @@ class MatchingSuccessor extends ConditionalSuccessor, TMatchingSuccessor {
  *                     \_________/
  * ```
  */
-class EmptinessSuccessor extends ConditionalSuccessor, TEmptinessSuccessor {
+class EmptinessSuccessor extends ConditionalSuccessorImpl, TEmptinessSuccessor {
   /** Holds if this is an empty successor. */
   predicate isEmpty() { this = TEmptinessSuccessor(true) }
 
@@ -236,7 +240,9 @@ private class TAbruptSuccessor =
   TExceptionSuccessor or TReturnSuccessor or TExitSuccessor or TJumpSuccessor;
 
 /** An abrupt control flow successor. */
-abstract class AbruptSuccessor extends SuccessorType, TAbruptSuccessor { }
+abstract private class AbruptSuccessorImpl extends SuccessorTypeImpl, TAbruptSuccessor { }
+
+final class AbruptSuccessor = AbruptSuccessorImpl;
 
 /**
  * An exceptional control flow successor.
@@ -255,7 +261,7 @@ abstract class AbruptSuccessor extends SuccessorType, TAbruptSuccessor { }
  * The callable exit node of `M` is an exceptional successor of the node
  * `throw new ArgumentNullException(nameof(s));`.
  */
-class ExceptionSuccessor extends AbruptSuccessor, TExceptionSuccessor {
+class ExceptionSuccessor extends AbruptSuccessorImpl, TExceptionSuccessor {
   override string toString() { result = "exception" }
 }
 
@@ -274,7 +280,7 @@ class ExceptionSuccessor extends AbruptSuccessor, TExceptionSuccessor {
  * The callable exit node of `M` is a `return` successor of the `return;`
  * statement.
  */
-class ReturnSuccessor extends AbruptSuccessor, TReturnSuccessor {
+class ReturnSuccessor extends AbruptSuccessorImpl, TReturnSuccessor {
   override string toString() { result = "return" }
 }
 
@@ -294,13 +300,12 @@ class ReturnSuccessor extends AbruptSuccessor, TReturnSuccessor {
  *
  * The callable exit node of `M` is an exit successor of the node on line 4.
  */
-class ExitSuccessor extends AbruptSuccessor, TExitSuccessor {
+class ExitSuccessor extends AbruptSuccessorImpl, TExitSuccessor {
   override string toString() { result = "exit" }
 }
 
 private class TJumpSuccessor =
-  TBreakSuccessor or TContinueSuccessor or TGotoSuccessor or TRedoSuccessor or TRetrySuccessor or
-      TJavaYieldSuccessor;
+  TBreakSuccessor or TContinueSuccessor or TGotoSuccessor or TRedoSuccessor or TRetrySuccessor;
 
 /**
  * A jump control flow successor.
@@ -308,40 +313,31 @@ private class TJumpSuccessor =
  * This covers non-exceptional, non-local control flow, such as `break`,
  * `continue`, and `goto`.
  */
-abstract class JumpSuccessor extends AbruptSuccessor, TJumpSuccessor { }
+abstract private class JumpSuccessorImpl extends AbruptSuccessorImpl, TJumpSuccessor { }
+
+final class JumpSuccessor = JumpSuccessorImpl;
 
 /** A `break` control flow successor. */
-class BreakSuccessor extends JumpSuccessor, TBreakSuccessor {
+class BreakSuccessor extends JumpSuccessorImpl, TBreakSuccessor {
   override string toString() { result = "break" }
 }
 
 /** A `continue` control flow successor. */
-class ContinueSuccessor extends JumpSuccessor, TContinueSuccessor {
+class ContinueSuccessor extends JumpSuccessorImpl, TContinueSuccessor {
   override string toString() { result = "continue" }
 }
 
 /** A `goto` control flow successor. */
-class GotoSuccessor extends JumpSuccessor, TGotoSuccessor {
+class GotoSuccessor extends JumpSuccessorImpl, TGotoSuccessor {
   override string toString() { result = "goto" }
 }
 
 /** A `redo` control flow successor (rare, used in Ruby). */
-class RedoSuccessor extends JumpSuccessor, TRedoSuccessor {
+class RedoSuccessor extends JumpSuccessorImpl, TRedoSuccessor {
   override string toString() { result = "redo" }
 }
 
 /** A `retry` control flow successor (rare, used in Ruby). */
-class RetrySuccessor extends JumpSuccessor, TRetrySuccessor {
+class RetrySuccessor extends JumpSuccessorImpl, TRetrySuccessor {
   override string toString() { result = "retry" }
-}
-
-/** A Java `yield` control flow successor. */
-class JavaYieldSuccessor extends JumpSuccessor, TJavaYieldSuccessor {
-  override string toString() { result = "yield" }
-}
-
-/** Holds if `t` is an abnormal exit type out of a CFG scope. */
-predicate isAbnormalExitType(SuccessorType t) {
-  t instanceof ExceptionSuccessor or
-  t instanceof ExitSuccessor
 }

@@ -122,11 +122,8 @@ module EnsureSplitting {
    * the `ensure` block must end with a `return` as well (provided that
    * the `ensure` block executes normally).
    */
-  class EnsureSplitType instanceof SuccessorType {
+  class EnsureSplitType extends SuccessorType {
     EnsureSplitType() { not this instanceof ConditionalSuccessor }
-
-    /** Gets a textual representation of this successor type. */
-    string toString() { result = super.toString() }
 
     /** Holds if this split type matches entry into an `ensure` block with completion `c`. */
     predicate isSplitForEntryCompletion(Completion c) {
