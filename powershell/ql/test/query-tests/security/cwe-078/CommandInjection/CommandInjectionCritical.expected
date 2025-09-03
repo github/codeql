@@ -1,0 +1,8 @@
+edges
+| test.ps1:153:11:153:20 | userinput | test.ps1:154:23:154:52 | Get-Process -Name $UserInput | provenance |  |
+nodes
+| test.ps1:153:11:153:20 | userinput | semmle.label | userinput |
+| test.ps1:154:23:154:52 | Get-Process -Name $UserInput | semmle.label | Get-Process -Name $UserInput |
+subpaths
+#select
+| test.ps1:154:23:154:52 | Get-Process -Name $UserInput | test.ps1:153:11:153:20 | userinput | test.ps1:154:23:154:52 | Get-Process -Name $UserInput | This command depends on a $@. | test.ps1:153:11:153:20 | userinput | param to CmdletBinding function |
