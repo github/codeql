@@ -498,8 +498,11 @@ impl<'a> Iterator for TreeIterator<'a> {
     fn next(&mut self) -> Option<Self::Item> {
         if let Some(node) = self.nodes_to_visit.pop() {
             // Add all children to the queue for processing
-            self.nodes_to_visit
-                .extend((0..node.child_count()).rev().filter_map(|i| node.child(i)));
+            let children: Vec<_> = (0..node.child_count())
+                .rev()
+                .filter_map(|i| node.child(i))
+                .collect();
+            self.nodes_to_visit.extend(children);
             Some(node)
         } else {
             None
@@ -523,7 +526,7 @@ fn syntax_errors_from_tree<'a>(
         .map(move |node| {
             let start_pos = node.start_position();
             let end_pos = node.end_position();
-            let text = &source[node.byte_range()];
+            let text = &source.get(node.byte_range()).unwrap_or("");
             SyntaxError {
                 start_pos,
                 end_pos,
