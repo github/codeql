@@ -17,7 +17,7 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.internal.DataFlowDispatch
 import codeql.util.Option
 
-/** Holds if `base` is overriden by `sub` */
+/** Holds if `base` is overridden by `sub` */
 predicate overrides(Function base, Function sub) {
   base.getName() = sub.getName() and
   base.getScope() = getADirectSuperclass+(sub.getScope())
@@ -52,7 +52,7 @@ string describeMax(Function func) {
     )
 }
 
-/** Describes the minumum number of arguments `func` can accept, without repeating "positional arguments". */
+/** Describes the minimum number of arguments `func` can accept, without repeating "positional arguments". */
 string describeMinShort(Function func) {
   exists(string descr | descr = func.getMinPositionalArguments().toString() |
     if func.getMinPositionalArguments() = func.getMaxPositionalArguments()
@@ -148,14 +148,14 @@ Function resolveCall(Call call) {
   )
 }
 
-/** Holds if `call` may resolve to either `base` or `sub`, and `base` is overiden by `sub`. */
+/** Holds if `call` may resolve to either `base` or `sub`, and `base` is overridden by `sub`. */
 predicate callViableForEitherOverride(Function base, Function sub, Call call) {
   overrides(base, sub) and
   base = resolveCall(call) and
   sub = resolveCall(call)
 }
 
-/** Holds if either both `base` and `sub` are static methods, or both are not static methods, and `base` is overriden by `sub`. */
+/** Holds if either both `base` and `sub` are static methods, or both are not static methods, and `base` is overridden by `sub`. */
 predicate matchingStatic(Function base, Function sub) {
   overrides(base, sub) and
   (
@@ -202,7 +202,7 @@ predicate callMatchesSignature(Function func, Call call) {
   )
 }
 
-/** Gets a call which matches the signature of `base`, but not of overriden `sub`. */
+/** Gets a call which matches the signature of `base`, but not of overridden `sub`. */
 Call getASignatureMismatchWitness(Function base, Function sub) {
   callViableForEitherOverride(base, sub, result) and
   callMatchesSignature(base, result) and
