@@ -154,6 +154,12 @@ function Invoke-InvokeExpressionInjectionCmdletBinding
     Invoke-Expression "Get-Process -Name $UserInput" # BAD
 }
 
+function Invoke-StartProcessInjection
+{
+    param($UserInput)
+    Start-Process -FilePath $UserInput # BAD
+}
+
 
 $input = Read-Host "enter input"
 
@@ -178,6 +184,7 @@ Invoke-PropertyInjection -UserInput $input
 Invoke-ExpandStringInjection1 -UserInput $input  
 Invoke-ExpandStringInjection2 -UserInput $input
 Invoke-InvokeExpressionInjectionCmdletBinding -userInput $input
+Invoke-StartProcessInjection -UserInput $input
 
 #typed input
 function Invoke-InvokeExpressionInjectionSafe1

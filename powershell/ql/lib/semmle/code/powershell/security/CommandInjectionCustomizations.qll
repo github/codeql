@@ -60,6 +60,16 @@ module CommandInjection {
     override string getSinkType() { result = "call to Invoke-Expression" }
   }
 
+  class StartProcessSink extends Sink {
+    StartProcessSink(){
+      exists(DataFlow::CallNode call | 
+        call.matchesName("Start-Process") and 
+        call.getAnArgument() = this
+      )
+    }
+    override string getSinkType(){ result = "call to Start-Process"}
+  }
+
   class AddTypeSink extends Sink {
     AddTypeSink() {
       exists(DataFlow::CallNode call |
