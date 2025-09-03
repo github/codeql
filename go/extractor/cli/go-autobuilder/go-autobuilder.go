@@ -13,6 +13,7 @@ import (
 	"github.com/github/codeql-go/extractor/autobuilder"
 	"github.com/github/codeql-go/extractor/diagnostics"
 	"github.com/github/codeql-go/extractor/project"
+	"github.com/github/codeql-go/extractor/srcarchive"
 	"github.com/github/codeql-go/extractor/toolchain"
 	"github.com/github/codeql-go/extractor/util"
 )
@@ -283,7 +284,7 @@ func createPathTransformerFile(newdir string) *os.File {
 }
 
 // Writes the path transformer file
-func writePathTransformerFile(pt *os.File, realSrc, root, newdir string) {
+func writePathTransformerFile(pt *os.File, realSrc, newdir string) {
 	_, err := pt.WriteString("#" + realSrc + "\n" + newdir + "//\n")
 	if err != nil {
 		log.Fatalf("Unable to write path transformer file: %s.", err.Error())
@@ -501,10 +502,6 @@ func installDependenciesAndBuild() {
 
 	srcdir := getSourceDir()
 
-	// we set `CODEQL_PATH_TRANSFORMER` ourselves in some cases, so blank it out first for consistency
-	os.Setenv("CODEQL_PATH_TRANSFORMER", "")
-	os.Setenv("SEMMLE_PATH_TRANSFORMER", "")
-
 	// determine how to install dependencies and whether a GOPATH needs to be set up before
 	// extraction
 	workspaces := project.GetWorkspaceInfo(true)
@@ -535,7 +532,21 @@ func installDependenciesAndBuild() {
 			pt := createPathTransformerFile(paths.newdir)
 			defer os.Remove(pt.Name())
 
-			writePathTransformerFile(pt, paths.realSrc, paths.root, paths.newdir)
+			// We're about to create out own path transformer, so that paths containing the
+			// temporary GOPATH point to the right location. However, if there was already an
+			// incoming path transformer, the right location will be what _it_ wanted to transform
+			// paths to.
+			existingPathTransformer, err := srcarchive.LoadProjectLayoutFromEnv()
+			if err != nil {
+				log.Fatalf("Unable to load path transformer: %s.\n", err.Error())
+			}
+			var realSrc string
+			if existingPathTransformer == nil {
+				realSrc = paths.realSrc
+			} else {
+				realSrc = existingPathTransformer.To
+			}
+			writePathTransformerFile(pt, realSrc, paths.newdir)
 			setGopath(paths.root)
 		}
 	}
