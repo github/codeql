@@ -171,15 +171,15 @@ pub fn literal_patterns() {
     match value {
         // LiteralPat - Literal patterns (including negative literals)
         42 => {
-            let literal_match = value; // $ type=literal_match:i32
+            let literal_match = value; // $ certainType=literal_match:i32
             println!("Literal pattern: {}", literal_match);
         }
         -1 => {
-            let negative_literal = value; // $ type=negative_literal:i32
+            let negative_literal = value; // $ certainType=negative_literal:i32
             println!("Negative literal: {}", negative_literal);
         }
         0 => {
-            let zero_literal = value; // $ type=zero_literal:i32
+            let zero_literal = value; // $ certainType=zero_literal:i32
             println!("Zero literal: {}", zero_literal);
         }
         _ => {}
@@ -188,7 +188,7 @@ pub fn literal_patterns() {
     let float_val = 3.14f64;
     match float_val {
         3.14 => {
-            let pi_match = float_val; // $ type=pi_match:f64
+            let pi_match = float_val; // $ certainType=pi_match:f64
             println!("Pi matched: {}", pi_match);
         }
         _ => {}
@@ -197,7 +197,7 @@ pub fn literal_patterns() {
     let string_val = "hello";
     match string_val {
         "hello" => {
-            let hello_match = string_val; // $ type=hello_match:&T.str
+            let hello_match = string_val; // $ certainType=hello_match:&T.str
             println!("String literal: {}", hello_match);
         }
         _ => {}
@@ -206,11 +206,11 @@ pub fn literal_patterns() {
     let bool_val = true;
     match bool_val {
         true => {
-            let true_match = bool_val; // $ type=true_match:bool
+            let true_match = bool_val; // $ certainType=true_match:bool
             println!("True literal: {}", true_match);
         }
         false => {
-            let false_match = bool_val; // $ type=false_match:bool
+            let false_match = bool_val; // $ certainType=false_match:bool
             println!("False literal: {}", false_match);
         }
     }
@@ -283,7 +283,7 @@ pub fn wildcard_patterns() {
         42 => println!("Specific match"),
         // WildcardPat - Wildcard pattern
         _ => {
-            let wildcard_context = value; // $ type=wildcard_context:i32
+            let wildcard_context = value; // $ certainType=wildcard_context:i32
             println!("Wildcard pattern for: {}", wildcard_context);
         }
     }
@@ -295,15 +295,15 @@ pub fn range_patterns() {
     match value {
         // RangePat - Range patterns
         1..=10 => {
-            let range_inclusive = value; // $ type=range_inclusive:i32
+            let range_inclusive = value; // $ certainType=range_inclusive:i32
             println!("Range inclusive: {}", range_inclusive);
         }
         11.. => {
-            let range_from = value; // $ type=range_from:i32
+            let range_from = value; // $ certainType=range_from:i32
             println!("Range from 11: {}", range_from);
         }
         ..=0 => {
-            let range_to_inclusive = value; // $ type=range_to_inclusive:i32
+            let range_to_inclusive = value; // $ certainType=range_to_inclusive:i32
             println!("Range to 0 inclusive: {}", range_to_inclusive);
         }
         _ => {}
@@ -312,11 +312,11 @@ pub fn range_patterns() {
     let char_val = 'c';
     match char_val {
         'a'..='z' => {
-            let lowercase_char = char_val; // $ type=lowercase_char:char
+            let lowercase_char = char_val; // $ certainType=lowercase_char:char
             println!("Lowercase char: {}", lowercase_char);
         }
         'A'..='Z' => {
-            let uppercase_char = char_val; // $ type=uppercase_char:char
+            let uppercase_char = char_val; // $ certainType=uppercase_char:char
             println!("Uppercase char: {}", uppercase_char);
         }
         _ => {}
@@ -330,7 +330,7 @@ pub fn reference_patterns() {
     // RefPat - Reference patterns
     match &value {
         &42 => {
-            let deref_match = value; // $ type=deref_match:i32
+            let deref_match = value; // $ certainType=deref_match:i32
             println!("Dereferenced match: {}", deref_match);
         }
         &x => {
@@ -446,7 +446,7 @@ pub fn tuple_patterns() {
     // TuplePat - Tuple patterns
     match tuple {
         (1, 2, 3.0) => {
-            let exact_tuple = tuple; // $ type=exact_tuple:(T_3)
+            let exact_tuple = tuple; // $ certainType=exact_tuple:(T_3)
             println!("Exact tuple: {:?}", exact_tuple);
         }
         (a, b, c) => {
@@ -469,7 +469,7 @@ pub fn tuple_patterns() {
     let unit = ();
     match unit {
         () => {
-            let unit_value = unit; // $ type=unit_value:()
+            let unit_value = unit; // $ certainType=unit_value:()
             println!("Unit value: {:?}", unit_value);
         }
     }
@@ -482,6 +482,19 @@ pub fn tuple_patterns() {
             println!("Single element tuple: {}", single_elem);
         }
     }
+
+    // Tuple pattern on reference to tuple in `let` expression
+    let ref_tuple1: &(i32, i32) = &(1, 2);
+    if let (n, m) = ref_tuple1 {
+        println!("n: {}", n);
+        println!("m: {}", m);
+    }
+
+    // Tuple pattern on reference to tuple in `let` statement
+    let ref_tuple2: &(i32, i32) = &(1, 2);
+    let (n, m) = ref_tuple2;
+    println!("n: {}", n);
+    println!("m: {}", m);
 }
 
 pub fn parenthesized_patterns() {
@@ -512,7 +525,7 @@ pub fn slice_patterns() {
     // SlicePat - Slice patterns
     match slice {
         [] => {
-            let empty_slice = slice; // $ type=empty_slice:&T.[T].i32
+            let empty_slice = slice; // $ certainType=empty_slice:&T.[T].i32
             println!("Empty slice: {:?}", empty_slice);
         }
         [x] => {
@@ -556,7 +569,7 @@ pub fn path_patterns() {
 
     match value {
         CONSTANT => {
-            let const_match = value; // $ type=const_match:i32
+            let const_match = value; // $ certainType=const_match:i32
             println!("Matches constant: {}", const_match);
         }
         _ => {}
@@ -593,11 +606,11 @@ pub fn or_patterns() {
     // OrPat - Or patterns
     match value {
         1 | 2 | 3 => {
-            let small_num = value; // $ type=small_num:i32
+            let small_num = value; // $ certainType=small_num:i32
             println!("Small number: {}", small_num);
         }
         10 | 20 => {
-            let round_num = value; // $ type=round_num:i32
+            let round_num = value; // $ certainType=round_num:i32
             println!("Round number: {}", round_num);
         }
         _ => {}
@@ -617,7 +630,7 @@ pub fn or_patterns() {
     // Or pattern with ranges
     match value {
         1..=10 | 90..=100 => {
-            let range_or_value = value; // $ type=range_or_value:i32
+            let range_or_value = value; // $ certainType=range_or_value:i32
             println!("In range: {}", range_or_value);
         }
         _ => {}
@@ -737,11 +750,11 @@ pub fn patterns_in_let_statements() {
     // Let with reference pattern
     let value = 42i32;
     let ref ref_val = value;
-    let let_ref = ref_val; // $ type=let_ref:&T.i32
+    let let_ref = ref_val; // $ certainType=let_ref:&T.i32
 
     // Let with mutable pattern
     let mut mut_val = 10i32;
-    let let_mut = mut_val; // $ type=let_mut:i32
+    let let_mut = mut_val; // $ certainType=let_mut:i32
 }
 
 pub fn patterns_in_function_parameters() {
@@ -766,13 +779,13 @@ pub fn patterns_in_function_parameters() {
 
     // Call the functions to use them
     let point = Point { x: 5, y: 10 };
-    let extracted = extract_point(point); // $ target=extract_point type=extracted:0(2).i32 type=extracted:1(2).i32
+    let extracted = extract_point(point); // $ target=extract_point certainType=extracted:0(2).i32 certainType=extracted:1(2).i32
 
     let color = Color(200, 100, 50);
-    let red = extract_color(color); // $ target=extract_color type=red:u8
+    let red = extract_color(color); // $ target=extract_color certainType=red:u8
 
     let tuple = (42i32, 3.14f64, true);
-    let tuple_extracted = extract_tuple(tuple); // $ target=extract_tuple type=tuple_extracted:0(2).i32 type=tuple_extracted:1(2).bool
+    let tuple_extracted = extract_tuple(tuple); // $ target=extract_tuple certainType=tuple_extracted:0(2).i32 certainType=tuple_extracted:1(2).bool
 }
 
 #[rustfmt::skip]

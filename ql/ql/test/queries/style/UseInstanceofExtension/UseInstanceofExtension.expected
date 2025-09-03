@@ -1,4 +1,4 @@
 | Foo.qll:7:7:7:10 | Class Inst | Consider defining this class as non-extending subtype of $@. | Foo.qll:1:7:1:11 | Class Range | Range |
 | Foo.qll:15:7:15:11 | Class Inst2 | Consider defining this class as non-extending subtype of $@. | Foo.qll:1:7:1:11 | Class Range | Range |
 | Foo.qll:21:7:21:11 | Class Inst3 | Consider defining this class as non-extending subtype of $@. | Foo.qll:1:7:1:11 | Class Range | Range |
-| Foo.qll:27:7:27:11 | Class Inst4 | Consider defining this class as non-extending subtype of $@. | Foo.qll:1:7:1:11 | Class Range | Range |
+| Foo.qll:29:7:29:11 | Class Inst4 | Consider defining this class as non-extending subtype of $@. | Foo.qll:1:7:1:11 | Class Range | Range |

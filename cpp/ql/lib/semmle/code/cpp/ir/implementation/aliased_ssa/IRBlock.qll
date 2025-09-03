@@ -7,6 +7,7 @@ import Instruction
 private import internal.IRBlockImports as Imports
 import Imports::EdgeKind
 private import Cached
+private import codeql.controlflow.BasicBlock as BB
 
 /**
  * Holds if `block` is a block in `func` and `sortOverride`, `sortKey1`, and `sortKey2` are the
@@ -261,6 +262,54 @@ private predicate adjacentInBlock(Instruction i1, Instruction i2) {
 
 private predicate isEntryBlock(TIRBlock block) {
   block = MkIRBlock(any(EnterFunctionInstruction enter))
+}
+
+module IRCfg implements BB::CfgSig<Language::Location> {
+  private import codeql.controlflow.SuccessorType
+
+  class ControlFlowNode = Instruction;
+
+  final private class FinalIRBlock = IRBlock;
+
+  class BasicBlock extends FinalIRBlock {
+    ControlFlowNode getNode(int i) { result = this.getInstruction(i) }
+
+    ControlFlowNode getLastNode() { result = super.getLastInstruction() }
+
+    int length() { result = this.getInstructionCount() }
+
+    BasicBlock getASuccessor() { result = super.getASuccessor() }
+
+    BasicBlock getASuccessor(SuccessorType t) {
+      exists(EdgeKind k |
+        result = super.getSuccessor(k) and
+        t = getAMatchingSuccessorType(k)
+      )
+    }
+
+    predicate strictlyDominates(BasicBlock bb) { super.strictlyDominates(bb) }
+
+    predicate dominates(BasicBlock bb) { super.dominates(bb) }
+
+    BasicBlock getImmediateDominator() { result.immediatelyDominates(this) }
+
+    predicate inDominanceFrontier(BasicBlock df) { super.dominanceFrontier() = df }
+
+    predicate strictlyPostDominates(BasicBlock bb) { super.strictlyPostDominates(bb) }
+
+    predicate postDominates(BasicBlock bb) { super.postDominates(bb) }
+  }
+
+  class EntryBasicBlock extends BasicBlock {
+    EntryBasicBlock() { isEntryBlock(this) }
+  }
+
+  pragma[nomagic]
+  predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) {
+    bb1.getASuccessor() = bb2 and
+    bb1 = bb2.getImmediateDominator() and
+    forall(BasicBlock pred | pred = bb2.getAPredecessor() and pred != bb1 | bb2.dominates(pred))
+  }
 }
 
 cached

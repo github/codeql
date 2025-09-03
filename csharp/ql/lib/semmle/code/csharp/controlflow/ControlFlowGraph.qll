@@ -6,7 +6,6 @@ import csharp
 module ControlFlow {
   private import semmle.code.csharp.controlflow.BasicBlocks as BBs
   import semmle.code.csharp.controlflow.internal.SuccessorType
-  private import SuccessorTypes
   private import internal.ControlFlowGraphImpl as Impl
   private import internal.Splitting as Splitting
 

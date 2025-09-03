@@ -91,6 +91,12 @@ class Class extends Class_, Scope, AstNode {
   /** Gets a method defined in this class */
   Function getAMethod() { result.getScope() = this }
 
+  /** Gets the method defined in this class with the specified name, if any. */
+  Function getMethod(string name) {
+    result = this.getAMethod() and
+    result.getName() = name
+  }
+
   override Location getLocation() { py_scope_location(result, this) }
 
   /** Gets the scope (module, class or function) in which this class is defined */

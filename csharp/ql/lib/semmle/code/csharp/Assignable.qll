@@ -583,7 +583,7 @@ module AssignableDefinitions {
   }
 
   /**
-   * Holds if the `ref` assignment to `aa` via call `c` is uncertain.
+   * Holds if the `ref` assignment to `arg` via call `c` is uncertain.
    */
   // Not in the cached module `Cached`, as that would introduce a dependency
   // on the CFG construction, and effectively collapse too many stages into one

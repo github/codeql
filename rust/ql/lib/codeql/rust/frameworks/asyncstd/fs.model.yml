@@ -1,0 +1,42 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      - ["async_std::fs::read::read", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "file", "manual"]
+      - ["async_std::fs::read_to_string::read_to_string", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "file", "manual"]
+      - ["async_std::fs::read_link::read_link", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "file", "manual"]
+      - ["<async_std::fs::dir_entry::DirEntry>::path", "ReturnValue", "file", "manual"]
+      - ["<async_std::fs::dir_entry::DirEntry>::file_name", "ReturnValue", "file", "manual"]
+      - ["<async_std::fs::file::File>::open", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "file", "manual"]
+      - ["<async_std::fs::open_options::OpenOptions>::open", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "file", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["async_std::fs::copy::copy", "Argument[0,1]", "path-injection", "manual"]
+      - ["async_std::fs::create_dir::create_dir", "Argument[0]", "path-injection", "manual"]
+      - ["async_std::fs::create_dir_all::create_dir_all", "Argument[0]", "path-injection", "manual"]
+      - ["async_std::fs::hard_link::hard_link", "Argument[0,1]", "path-injection", "manual"]
+      - ["async_std::fs::metadata::metadata", "Argument[0]", "path-injection", "manual"]
+      - ["async_std::fs::read::read", "Argument[0]", "path-injection", "manual"]
+      - ["async_std::fs::read_dir::read_dir", "Argument[0]", "path-injection", "manual"]
+      - ["async_std::fs::read_link::read_link", "Argument[0]", "path-injection", "manual"]
+      - ["async_std::fs::read_to_string::read_to_string", "Argument[0]", "path-injection", "manual"]
+      - ["async_std::fs::remove_dir::remove_dir", "Argument[0]", "path-injection", "manual"]
+      - ["async_std::fs::remove_dir_all::remove_dir_all", "Argument[0]", "path-injection", "manual"]
+      - ["async_std::fs::remove_file::remove_file", "Argument[0]", "path-injection", "manual"]
+      - ["async_std::fs::rename::rename", "Argument[0,1]", "path-injection", "manual"]
+      - ["async_std::fs::set_permissions::set_permissions", "Argument[0]", "path-injection", "manual"]
+      - ["async_std::fs::symlink_metadata::symlink_metadata", "Argument[0]", "path-injection", "manual"]
+      - ["async_std::fs::write::write", "Argument[0]", "path-injection", "manual"]
+      - ["<async_std::fs::dir_builder::DirBuilder>::create", "Argument[0]", "path-injection", "manual"]
+      - ["<async_std::fs::file::File>::create", "Argument[0]", "path-injection", "manual"]
+      - ["<async_std::fs::file::File>::open", "Argument[0]", "path-injection", "manual"]
+      - ["<async_std::fs::open_options::OpenOptions>::open", "Argument[0]", "path-injection", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["async_std::fs::canonicalize::canonicalize", "Argument[0].OptionalStep[normalize-path]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+      - ["async_std::fs::canonicalize::canonicalize", "Argument[0].OptionalBarrier[normalize-path]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]

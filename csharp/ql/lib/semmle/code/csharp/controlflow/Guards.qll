@@ -3,7 +3,7 @@
  */
 
 import csharp
-private import ControlFlow::SuccessorTypes
+private import ControlFlow
 private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.commons.ComparisonTest
 private import semmle.code.csharp.commons.StructuralComparison as SC
@@ -999,7 +999,7 @@ module Internal {
     pragma[nomagic]
     private predicate preControlsDirect(Guard g, PreBasicBlocks::PreBasicBlock bb, AbstractValue v) {
       exists(PreBasicBlocks::ConditionBlock cb, ConditionalSuccessor s | cb.controls(bb, s) |
-        v.branch(cb.getLastElement(), s, g)
+        v.branch(cb.getLastNode(), s, g)
       )
     }
 
@@ -1146,9 +1146,9 @@ module Internal {
     /** Gets the successor block that is reached when guard `g` has abstract value `v`. */
     private PreBasicBlocks::PreBasicBlock getConditionalSuccessor(Guard g, AbstractValue v) {
       exists(PreBasicBlocks::ConditionBlock pred, ConditionalSuccessor s |
-        v.branch(pred.getLastElement(), s, g)
+        v.branch(pred.getLastNode(), s, g)
       |
-        result = pred.getASuccessorByType(s)
+        result = pred.getASuccessor(s)
       )
     }
 
@@ -1424,6 +1424,7 @@ module Internal {
 
       cached
       predicate isGuard(Expr e, AbstractValue val) {
+        Stages::ControlFlowStage::forceCachingInSameStage() and
         (
           e.getType() instanceof BoolType and
           not e instanceof BoolLiteral and

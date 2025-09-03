@@ -1,10 +1,8 @@
 import actions
 
 class UnversionedImmutableAction extends UsesStep {
-  string immutable_action;
-
   UnversionedImmutableAction() {
-    isImmutableAction(this, immutable_action) and
+    isImmutableAction(this, _) and
     not isSemVer(this.getVersion())
   }
 }

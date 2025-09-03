@@ -1,20 +1,229 @@
 #select
-| src/main.rs:10:5:10:22 | ...::read_to_string | src/main.rs:6:11:6:19 | file_name | src/main.rs:10:5:10:22 | ...::read_to_string | This path depends on a $@. | src/main.rs:6:11:6:19 | file_name | user-provided value |
+| src/main.rs:11:5:11:22 | ...::read_to_string | src/main.rs:7:11:7:19 | file_name | src/main.rs:11:5:11:22 | ...::read_to_string | This path depends on a $@. | src/main.rs:7:11:7:19 | file_name | user-provided value |
+| src/main.rs:58:5:58:22 | ...::read_to_string | src/main.rs:50:51:50:59 | file_path | src/main.rs:58:5:58:22 | ...::read_to_string | This path depends on a $@. | src/main.rs:50:51:50:59 | file_path | user-provided value |
+| src/main.rs:71:5:71:22 | ...::read_to_string | src/main.rs:63:11:63:19 | file_path | src/main.rs:71:5:71:22 | ...::read_to_string | This path depends on a $@. | src/main.rs:63:11:63:19 | file_path | user-provided value |
+| src/main.rs:99:5:99:22 | ...::read_to_string | src/main.rs:90:11:90:19 | file_path | src/main.rs:99:5:99:22 | ...::read_to_string | This path depends on a $@. | src/main.rs:90:11:90:19 | file_path | user-provided value |
+| src/main.rs:104:13:104:31 | ...::open | src/main.rs:103:17:103:30 | ...::args | src/main.rs:104:13:104:31 | ...::open | This path depends on a $@. | src/main.rs:103:17:103:30 | ...::args | user-provided value |
+| src/main.rs:107:13:107:31 | ...::open | src/main.rs:103:17:103:30 | ...::args | src/main.rs:107:13:107:31 | ...::open | This path depends on a $@. | src/main.rs:103:17:103:30 | ...::args | user-provided value |
+| src/main.rs:110:13:110:33 | ...::open | src/main.rs:103:17:103:30 | ...::args | src/main.rs:110:13:110:33 | ...::open | This path depends on a $@. | src/main.rs:103:17:103:30 | ...::args | user-provided value |
+| src/main.rs:113:13:113:37 | ...::open | src/main.rs:103:17:103:30 | ...::args | src/main.rs:113:13:113:37 | ...::open | This path depends on a $@. | src/main.rs:103:17:103:30 | ...::args | user-provided value |
+| src/main.rs:116:13:116:31 | ...::open | src/main.rs:103:17:103:30 | ...::args | src/main.rs:116:13:116:31 | ...::open | This path depends on a $@. | src/main.rs:103:17:103:30 | ...::args | user-provided value |
+| src/main.rs:119:13:119:31 | ...::open | src/main.rs:103:17:103:30 | ...::args | src/main.rs:119:13:119:31 | ...::open | This path depends on a $@. | src/main.rs:103:17:103:30 | ...::args | user-provided value |
+| src/main.rs:122:13:122:25 | ...::copy | src/main.rs:103:17:103:30 | ...::args | src/main.rs:122:13:122:25 | ...::copy | This path depends on a $@. | src/main.rs:103:17:103:30 | ...::args | user-provided value |
+| src/main.rs:123:13:123:25 | ...::copy | src/main.rs:103:17:103:30 | ...::args | src/main.rs:123:13:123:25 | ...::copy | This path depends on a $@. | src/main.rs:103:17:103:30 | ...::args | user-provided value |
+| src/main.rs:173:13:173:18 | exists | src/main.rs:185:17:185:30 | ...::args | src/main.rs:173:13:173:18 | exists | This path depends on a $@. | src/main.rs:185:17:185:30 | ...::args | user-provided value |
+| src/main.rs:174:25:174:34 | ...::open | src/main.rs:185:17:185:30 | ...::args | src/main.rs:174:25:174:34 | ...::open | This path depends on a $@. | src/main.rs:185:17:185:30 | ...::args | user-provided value |
+| src/main.rs:177:25:177:34 | ...::open | src/main.rs:185:17:185:30 | ...::args | src/main.rs:177:25:177:34 | ...::open | This path depends on a $@. | src/main.rs:185:17:185:30 | ...::args | user-provided value |
 edges
-| src/main.rs:6:11:6:19 | file_name | src/main.rs:8:35:8:43 | file_name | provenance |  |
-| src/main.rs:8:9:8:17 | file_path | src/main.rs:10:24:10:32 | file_path | provenance |  |
-| src/main.rs:8:21:8:44 | ...::from(...) | src/main.rs:8:9:8:17 | file_path | provenance |  |
-| src/main.rs:8:35:8:43 | file_name | src/main.rs:8:21:8:44 | ...::from(...) | provenance | MaD:2 |
-| src/main.rs:8:35:8:43 | file_name | src/main.rs:8:21:8:44 | ...::from(...) | provenance | MaD:2 |
-| src/main.rs:10:24:10:32 | file_path | src/main.rs:10:5:10:22 | ...::read_to_string | provenance | MaD:1 Sink:MaD:1 |
+| src/main.rs:7:11:7:19 | file_name | src/main.rs:9:35:9:43 | file_name | provenance |  |
+| src/main.rs:9:9:9:17 | file_path | src/main.rs:11:24:11:32 | file_path | provenance |  |
+| src/main.rs:9:21:9:44 | ...::from(...) | src/main.rs:9:9:9:17 | file_path | provenance |  |
+| src/main.rs:9:35:9:43 | file_name | src/main.rs:9:21:9:44 | ...::from(...) | provenance | MaD:13 |
+| src/main.rs:11:24:11:32 | file_path | src/main.rs:11:5:11:22 | ...::read_to_string | provenance | MaD:6 Sink:MaD:6 |
+| src/main.rs:50:51:50:59 | file_path | src/main.rs:52:32:52:40 | file_path | provenance |  |
+| src/main.rs:52:9:52:17 | file_path [&ref] | src/main.rs:53:21:53:44 | file_path.canonicalize() [Ok] | provenance | Config |
+| src/main.rs:52:21:52:41 | ...::new(...) [&ref] | src/main.rs:52:9:52:17 | file_path [&ref] | provenance |  |
+| src/main.rs:52:31:52:40 | &file_path [&ref] | src/main.rs:52:21:52:41 | ...::new(...) [&ref] | provenance | MaD:12 |
+| src/main.rs:52:32:52:40 | file_path | src/main.rs:52:31:52:40 | &file_path [&ref] | provenance |  |
+| src/main.rs:53:9:53:17 | file_path | src/main.rs:58:24:58:32 | file_path | provenance |  |
+| src/main.rs:53:21:53:44 | file_path.canonicalize() [Ok] | src/main.rs:53:21:53:53 | ... .unwrap() | provenance | MaD:11 |
+| src/main.rs:53:21:53:53 | ... .unwrap() | src/main.rs:53:9:53:17 | file_path | provenance |  |
+| src/main.rs:58:24:58:32 | file_path | src/main.rs:58:5:58:22 | ...::read_to_string | provenance | MaD:6 Sink:MaD:6 |
+| src/main.rs:63:11:63:19 | file_path | src/main.rs:66:32:66:40 | file_path | provenance |  |
+| src/main.rs:66:9:66:17 | file_path [&ref] | src/main.rs:71:24:71:32 | file_path [&ref] | provenance |  |
+| src/main.rs:66:21:66:41 | ...::new(...) [&ref] | src/main.rs:66:9:66:17 | file_path [&ref] | provenance |  |
+| src/main.rs:66:31:66:40 | &file_path [&ref] | src/main.rs:66:21:66:41 | ...::new(...) [&ref] | provenance | MaD:12 |
+| src/main.rs:66:32:66:40 | file_path | src/main.rs:66:31:66:40 | &file_path [&ref] | provenance |  |
+| src/main.rs:71:24:71:32 | file_path [&ref] | src/main.rs:71:5:71:22 | ...::read_to_string | provenance | MaD:6 Sink:MaD:6 |
+| src/main.rs:90:11:90:19 | file_path | src/main.rs:93:32:93:40 | file_path | provenance |  |
+| src/main.rs:93:9:93:17 | file_path [&ref] | src/main.rs:98:21:98:44 | file_path.canonicalize() [Ok] | provenance | Config |
+| src/main.rs:93:21:93:41 | ...::new(...) [&ref] | src/main.rs:93:9:93:17 | file_path [&ref] | provenance |  |
+| src/main.rs:93:31:93:40 | &file_path [&ref] | src/main.rs:93:21:93:41 | ...::new(...) [&ref] | provenance | MaD:12 |
+| src/main.rs:93:32:93:40 | file_path | src/main.rs:93:31:93:40 | &file_path [&ref] | provenance |  |
+| src/main.rs:98:9:98:17 | file_path | src/main.rs:99:24:99:32 | file_path | provenance |  |
+| src/main.rs:98:21:98:44 | file_path.canonicalize() [Ok] | src/main.rs:98:21:98:53 | ... .unwrap() | provenance | MaD:11 |
+| src/main.rs:98:21:98:53 | ... .unwrap() | src/main.rs:98:9:98:17 | file_path | provenance |  |
+| src/main.rs:99:24:99:32 | file_path | src/main.rs:99:5:99:22 | ...::read_to_string | provenance | MaD:6 Sink:MaD:6 |
+| src/main.rs:103:9:103:13 | path1 | src/main.rs:104:33:104:37 | path1 | provenance |  |
+| src/main.rs:103:9:103:13 | path1 | src/main.rs:104:33:104:45 | path1.clone() | provenance | MaD:8 |
+| src/main.rs:103:9:103:13 | path1 | src/main.rs:106:39:106:43 | path1 | provenance |  |
+| src/main.rs:103:9:103:13 | path1 | src/main.rs:106:39:106:51 | path1.clone() | provenance | MaD:8 |
+| src/main.rs:103:9:103:13 | path1 | src/main.rs:109:41:109:45 | path1 | provenance |  |
+| src/main.rs:103:9:103:13 | path1 | src/main.rs:109:41:109:53 | path1.clone() | provenance | MaD:8 |
+| src/main.rs:103:9:103:13 | path1 | src/main.rs:112:45:112:49 | path1 | provenance |  |
+| src/main.rs:103:9:103:13 | path1 | src/main.rs:112:45:112:57 | path1.clone() | provenance | MaD:8 |
+| src/main.rs:103:9:103:13 | path1 | src/main.rs:115:39:115:43 | path1 | provenance |  |
+| src/main.rs:103:9:103:13 | path1 | src/main.rs:122:27:122:31 | path1 | provenance |  |
+| src/main.rs:103:9:103:13 | path1 | src/main.rs:122:27:122:39 | path1.clone() | provenance | MaD:8 |
+| src/main.rs:103:9:103:13 | path1 | src/main.rs:123:37:123:41 | path1 | provenance |  |
+| src/main.rs:103:9:103:13 | path1 | src/main.rs:123:37:123:49 | path1.clone() | provenance | MaD:8 |
+| src/main.rs:103:17:103:30 | ...::args | src/main.rs:103:17:103:32 | ...::args(...) [element] | provenance | Src:MaD:7  |
+| src/main.rs:103:17:103:32 | ...::args(...) [element] | src/main.rs:103:17:103:39 | ... .nth(...) [Some] | provenance | MaD:9 |
+| src/main.rs:103:17:103:39 | ... .nth(...) [Some] | src/main.rs:103:17:103:48 | ... .unwrap() | provenance | MaD:10 |
+| src/main.rs:103:17:103:48 | ... .unwrap() | src/main.rs:103:9:103:13 | path1 | provenance |  |
+| src/main.rs:104:33:104:37 | path1 | src/main.rs:104:33:104:45 | path1.clone() | provenance | MaD:8 |
+| src/main.rs:104:33:104:45 | path1.clone() | src/main.rs:104:13:104:31 | ...::open | provenance | MaD:2 Sink:MaD:2 |
+| src/main.rs:106:9:106:13 | path2 | src/main.rs:107:33:107:37 | path2 | provenance |  |
+| src/main.rs:106:17:106:52 | ...::canonicalize(...) [Ok] | src/main.rs:106:17:106:61 | ... .unwrap() | provenance | MaD:11 |
+| src/main.rs:106:17:106:61 | ... .unwrap() | src/main.rs:106:9:106:13 | path2 | provenance |  |
+| src/main.rs:106:39:106:43 | path1 | src/main.rs:106:39:106:51 | path1.clone() | provenance | MaD:8 |
+| src/main.rs:106:39:106:51 | path1.clone() | src/main.rs:106:17:106:52 | ...::canonicalize(...) [Ok] | provenance | Config |
+| src/main.rs:107:33:107:37 | path2 | src/main.rs:107:13:107:31 | ...::open | provenance | MaD:2 Sink:MaD:2 |
+| src/main.rs:109:9:109:13 | path3 | src/main.rs:110:35:110:39 | path3 | provenance |  |
+| src/main.rs:109:17:109:54 | ...::canonicalize(...) [future, Ok] | src/main.rs:109:17:109:60 | await ... [Ok] | provenance |  |
+| src/main.rs:109:17:109:60 | await ... [Ok] | src/main.rs:109:17:109:69 | ... .unwrap() | provenance | MaD:11 |
+| src/main.rs:109:17:109:69 | ... .unwrap() | src/main.rs:109:9:109:13 | path3 | provenance |  |
+| src/main.rs:109:41:109:45 | path1 | src/main.rs:109:41:109:53 | path1.clone() | provenance | MaD:8 |
+| src/main.rs:109:41:109:53 | path1.clone() | src/main.rs:109:17:109:54 | ...::canonicalize(...) [future, Ok] | provenance | Config |
+| src/main.rs:110:35:110:39 | path3 | src/main.rs:110:13:110:33 | ...::open | provenance | MaD:4 Sink:MaD:4 |
+| src/main.rs:112:9:112:13 | path4 | src/main.rs:113:39:113:43 | path4 | provenance |  |
+| src/main.rs:112:17:112:58 | ...::canonicalize(...) [future, Ok] | src/main.rs:112:17:112:64 | await ... [Ok] | provenance |  |
+| src/main.rs:112:17:112:64 | await ... [Ok] | src/main.rs:112:17:112:73 | ... .unwrap() | provenance | MaD:11 |
+| src/main.rs:112:17:112:73 | ... .unwrap() | src/main.rs:112:9:112:13 | path4 | provenance |  |
+| src/main.rs:112:45:112:49 | path1 | src/main.rs:112:45:112:57 | path1.clone() | provenance | MaD:8 |
+| src/main.rs:112:45:112:57 | path1.clone() | src/main.rs:112:17:112:58 | ...::canonicalize(...) [future, Ok] | provenance | Config |
+| src/main.rs:113:39:113:43 | path4 | src/main.rs:113:13:113:37 | ...::open | provenance | MaD:1 Sink:MaD:1 |
+| src/main.rs:115:9:115:13 | path5 [&ref] | src/main.rs:116:33:116:37 | path5 [&ref] | provenance |  |
+| src/main.rs:115:17:115:44 | ...::new(...) [&ref] | src/main.rs:115:9:115:13 | path5 [&ref] | provenance |  |
+| src/main.rs:115:38:115:43 | &path1 [&ref] | src/main.rs:115:17:115:44 | ...::new(...) [&ref] | provenance | MaD:12 |
+| src/main.rs:115:39:115:43 | path1 | src/main.rs:115:38:115:43 | &path1 [&ref] | provenance |  |
+| src/main.rs:116:33:116:37 | path5 [&ref] | src/main.rs:116:13:116:31 | ...::open | provenance | MaD:2 Sink:MaD:2 |
+| src/main.rs:116:33:116:37 | path5 [&ref] | src/main.rs:118:17:118:36 | path5.canonicalize() [Ok] | provenance | Config |
+| src/main.rs:118:9:118:13 | path6 | src/main.rs:119:33:119:37 | path6 | provenance |  |
+| src/main.rs:118:17:118:36 | path5.canonicalize() [Ok] | src/main.rs:118:17:118:45 | ... .unwrap() | provenance | MaD:11 |
+| src/main.rs:118:17:118:45 | ... .unwrap() | src/main.rs:118:9:118:13 | path6 | provenance |  |
+| src/main.rs:119:33:119:37 | path6 | src/main.rs:119:13:119:31 | ...::open | provenance | MaD:2 Sink:MaD:2 |
+| src/main.rs:122:27:122:31 | path1 | src/main.rs:122:27:122:39 | path1.clone() | provenance | MaD:8 |
+| src/main.rs:122:27:122:39 | path1.clone() | src/main.rs:122:13:122:25 | ...::copy | provenance | MaD:5 Sink:MaD:5 |
+| src/main.rs:123:37:123:41 | path1 | src/main.rs:123:37:123:49 | path1.clone() | provenance | MaD:8 |
+| src/main.rs:123:37:123:49 | path1.clone() | src/main.rs:123:13:123:25 | ...::copy | provenance | MaD:5 Sink:MaD:5 |
+| src/main.rs:170:16:170:29 | ...: ... [&ref] | src/main.rs:172:26:172:33 | path_str [&ref] | provenance |  |
+| src/main.rs:170:16:170:29 | ...: ... [&ref] | src/main.rs:174:36:174:43 | path_str [&ref] | provenance |  |
+| src/main.rs:172:9:172:12 | path [&ref] | src/main.rs:173:8:173:11 | path [&ref] | provenance |  |
+| src/main.rs:172:16:172:34 | ...::new(...) [&ref] | src/main.rs:172:9:172:12 | path [&ref] | provenance |  |
+| src/main.rs:172:26:172:33 | path_str [&ref] | src/main.rs:172:16:172:34 | ...::new(...) [&ref] | provenance | MaD:12 |
+| src/main.rs:173:8:173:11 | path [&ref] | src/main.rs:173:13:173:18 | exists | provenance | MaD:3 Sink:MaD:3 |
+| src/main.rs:173:8:173:11 | path [&ref] | src/main.rs:177:36:177:39 | path [&ref] | provenance |  |
+| src/main.rs:174:36:174:43 | path_str [&ref] | src/main.rs:174:25:174:34 | ...::open | provenance | MaD:2 Sink:MaD:2 |
+| src/main.rs:177:36:177:39 | path [&ref] | src/main.rs:177:25:177:34 | ...::open | provenance | MaD:2 Sink:MaD:2 |
+| src/main.rs:185:9:185:13 | path1 | src/main.rs:186:18:186:22 | path1 | provenance |  |
+| src/main.rs:185:17:185:30 | ...::args | src/main.rs:185:17:185:32 | ...::args(...) [element] | provenance | Src:MaD:7  |
+| src/main.rs:185:17:185:32 | ...::args(...) [element] | src/main.rs:185:17:185:39 | ... .nth(...) [Some] | provenance | MaD:9 |
+| src/main.rs:185:17:185:39 | ... .nth(...) [Some] | src/main.rs:185:17:185:48 | ... .unwrap() | provenance | MaD:10 |
+| src/main.rs:185:17:185:48 | ... .unwrap() | src/main.rs:185:9:185:13 | path1 | provenance |  |
+| src/main.rs:186:17:186:22 | &path1 [&ref] | src/main.rs:170:16:170:29 | ...: ... [&ref] | provenance |  |
+| src/main.rs:186:18:186:22 | path1 | src/main.rs:186:17:186:22 | &path1 [&ref] | provenance |  |
 models
-| 1 | Sink: std::fs::read_to_string; Argument[0]; path-injection |
-| 2 | Summary: <std::path::PathBuf as core::convert::From>::from; Argument[0]; ReturnValue; taint |
+| 1 | Sink: <async_std::fs::file::File>::open; Argument[0]; path-injection |
+| 2 | Sink: <std::fs::File>::open; Argument[0]; path-injection |
+| 3 | Sink: <std::path::Path>::exists; Argument[self]; path-injection |
+| 4 | Sink: <tokio::fs::file::File>::open; Argument[0]; path-injection |
+| 5 | Sink: std::fs::copy; Argument[0,1]; path-injection |
+| 6 | Sink: std::fs::read_to_string; Argument[0]; path-injection |
+| 7 | Source: std::env::args; ReturnValue.Element; commandargs |
+| 8 | Summary: <_ as core::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 9 | Summary: <_ as core::iter::traits::iterator::Iterator>::nth; Argument[self].Element; ReturnValue.Field[core::option::Option::Some(0)]; value |
+| 10 | Summary: <core::option::Option>::unwrap; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
+| 11 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+| 12 | Summary: <std::path::Path>::new; Argument[0].Reference; ReturnValue.Reference; value |
+| 13 | Summary: <std::path::PathBuf as core::convert::From>::from; Argument[0]; ReturnValue; value |
 nodes
-| src/main.rs:6:11:6:19 | file_name | semmle.label | file_name |
-| src/main.rs:8:9:8:17 | file_path | semmle.label | file_path |
-| src/main.rs:8:21:8:44 | ...::from(...) | semmle.label | ...::from(...) |
-| src/main.rs:8:35:8:43 | file_name | semmle.label | file_name |
-| src/main.rs:10:5:10:22 | ...::read_to_string | semmle.label | ...::read_to_string |
-| src/main.rs:10:24:10:32 | file_path | semmle.label | file_path |
+| src/main.rs:7:11:7:19 | file_name | semmle.label | file_name |
+| src/main.rs:9:9:9:17 | file_path | semmle.label | file_path |
+| src/main.rs:9:21:9:44 | ...::from(...) | semmle.label | ...::from(...) |
+| src/main.rs:9:35:9:43 | file_name | semmle.label | file_name |
+| src/main.rs:11:5:11:22 | ...::read_to_string | semmle.label | ...::read_to_string |
+| src/main.rs:11:24:11:32 | file_path | semmle.label | file_path |
+| src/main.rs:50:51:50:59 | file_path | semmle.label | file_path |
+| src/main.rs:52:9:52:17 | file_path [&ref] | semmle.label | file_path [&ref] |
+| src/main.rs:52:21:52:41 | ...::new(...) [&ref] | semmle.label | ...::new(...) [&ref] |
+| src/main.rs:52:31:52:40 | &file_path [&ref] | semmle.label | &file_path [&ref] |
+| src/main.rs:52:32:52:40 | file_path | semmle.label | file_path |
+| src/main.rs:53:9:53:17 | file_path | semmle.label | file_path |
+| src/main.rs:53:21:53:44 | file_path.canonicalize() [Ok] | semmle.label | file_path.canonicalize() [Ok] |
+| src/main.rs:53:21:53:53 | ... .unwrap() | semmle.label | ... .unwrap() |
+| src/main.rs:58:5:58:22 | ...::read_to_string | semmle.label | ...::read_to_string |
+| src/main.rs:58:24:58:32 | file_path | semmle.label | file_path |
+| src/main.rs:63:11:63:19 | file_path | semmle.label | file_path |
+| src/main.rs:66:9:66:17 | file_path [&ref] | semmle.label | file_path [&ref] |
+| src/main.rs:66:21:66:41 | ...::new(...) [&ref] | semmle.label | ...::new(...) [&ref] |
+| src/main.rs:66:31:66:40 | &file_path [&ref] | semmle.label | &file_path [&ref] |
+| src/main.rs:66:32:66:40 | file_path | semmle.label | file_path |
+| src/main.rs:71:5:71:22 | ...::read_to_string | semmle.label | ...::read_to_string |
+| src/main.rs:71:24:71:32 | file_path [&ref] | semmle.label | file_path [&ref] |
+| src/main.rs:90:11:90:19 | file_path | semmle.label | file_path |
+| src/main.rs:93:9:93:17 | file_path [&ref] | semmle.label | file_path [&ref] |
+| src/main.rs:93:21:93:41 | ...::new(...) [&ref] | semmle.label | ...::new(...) [&ref] |
+| src/main.rs:93:31:93:40 | &file_path [&ref] | semmle.label | &file_path [&ref] |
+| src/main.rs:93:32:93:40 | file_path | semmle.label | file_path |
+| src/main.rs:98:9:98:17 | file_path | semmle.label | file_path |
+| src/main.rs:98:21:98:44 | file_path.canonicalize() [Ok] | semmle.label | file_path.canonicalize() [Ok] |
+| src/main.rs:98:21:98:53 | ... .unwrap() | semmle.label | ... .unwrap() |
+| src/main.rs:99:5:99:22 | ...::read_to_string | semmle.label | ...::read_to_string |
+| src/main.rs:99:24:99:32 | file_path | semmle.label | file_path |
+| src/main.rs:103:9:103:13 | path1 | semmle.label | path1 |
+| src/main.rs:103:17:103:30 | ...::args | semmle.label | ...::args |
+| src/main.rs:103:17:103:32 | ...::args(...) [element] | semmle.label | ...::args(...) [element] |
+| src/main.rs:103:17:103:39 | ... .nth(...) [Some] | semmle.label | ... .nth(...) [Some] |
+| src/main.rs:103:17:103:48 | ... .unwrap() | semmle.label | ... .unwrap() |
+| src/main.rs:104:13:104:31 | ...::open | semmle.label | ...::open |
+| src/main.rs:104:33:104:37 | path1 | semmle.label | path1 |
+| src/main.rs:104:33:104:45 | path1.clone() | semmle.label | path1.clone() |
+| src/main.rs:106:9:106:13 | path2 | semmle.label | path2 |
+| src/main.rs:106:17:106:52 | ...::canonicalize(...) [Ok] | semmle.label | ...::canonicalize(...) [Ok] |
+| src/main.rs:106:17:106:61 | ... .unwrap() | semmle.label | ... .unwrap() |
+| src/main.rs:106:39:106:43 | path1 | semmle.label | path1 |
+| src/main.rs:106:39:106:51 | path1.clone() | semmle.label | path1.clone() |
+| src/main.rs:107:13:107:31 | ...::open | semmle.label | ...::open |
+| src/main.rs:107:33:107:37 | path2 | semmle.label | path2 |
+| src/main.rs:109:9:109:13 | path3 | semmle.label | path3 |
+| src/main.rs:109:17:109:54 | ...::canonicalize(...) [future, Ok] | semmle.label | ...::canonicalize(...) [future, Ok] |
+| src/main.rs:109:17:109:60 | await ... [Ok] | semmle.label | await ... [Ok] |
+| src/main.rs:109:17:109:69 | ... .unwrap() | semmle.label | ... .unwrap() |
+| src/main.rs:109:41:109:45 | path1 | semmle.label | path1 |
+| src/main.rs:109:41:109:53 | path1.clone() | semmle.label | path1.clone() |
+| src/main.rs:110:13:110:33 | ...::open | semmle.label | ...::open |
+| src/main.rs:110:35:110:39 | path3 | semmle.label | path3 |
+| src/main.rs:112:9:112:13 | path4 | semmle.label | path4 |
+| src/main.rs:112:17:112:58 | ...::canonicalize(...) [future, Ok] | semmle.label | ...::canonicalize(...) [future, Ok] |
+| src/main.rs:112:17:112:64 | await ... [Ok] | semmle.label | await ... [Ok] |
+| src/main.rs:112:17:112:73 | ... .unwrap() | semmle.label | ... .unwrap() |
+| src/main.rs:112:45:112:49 | path1 | semmle.label | path1 |
+| src/main.rs:112:45:112:57 | path1.clone() | semmle.label | path1.clone() |
+| src/main.rs:113:13:113:37 | ...::open | semmle.label | ...::open |
+| src/main.rs:113:39:113:43 | path4 | semmle.label | path4 |
+| src/main.rs:115:9:115:13 | path5 [&ref] | semmle.label | path5 [&ref] |
+| src/main.rs:115:17:115:44 | ...::new(...) [&ref] | semmle.label | ...::new(...) [&ref] |
+| src/main.rs:115:38:115:43 | &path1 [&ref] | semmle.label | &path1 [&ref] |
+| src/main.rs:115:39:115:43 | path1 | semmle.label | path1 |
+| src/main.rs:116:13:116:31 | ...::open | semmle.label | ...::open |
+| src/main.rs:116:33:116:37 | path5 [&ref] | semmle.label | path5 [&ref] |
+| src/main.rs:118:9:118:13 | path6 | semmle.label | path6 |
+| src/main.rs:118:17:118:36 | path5.canonicalize() [Ok] | semmle.label | path5.canonicalize() [Ok] |
+| src/main.rs:118:17:118:45 | ... .unwrap() | semmle.label | ... .unwrap() |
+| src/main.rs:119:13:119:31 | ...::open | semmle.label | ...::open |
+| src/main.rs:119:33:119:37 | path6 | semmle.label | path6 |
+| src/main.rs:122:13:122:25 | ...::copy | semmle.label | ...::copy |
+| src/main.rs:122:27:122:31 | path1 | semmle.label | path1 |
+| src/main.rs:122:27:122:39 | path1.clone() | semmle.label | path1.clone() |
+| src/main.rs:123:13:123:25 | ...::copy | semmle.label | ...::copy |
+| src/main.rs:123:37:123:41 | path1 | semmle.label | path1 |
+| src/main.rs:123:37:123:49 | path1.clone() | semmle.label | path1.clone() |
+| src/main.rs:170:16:170:29 | ...: ... [&ref] | semmle.label | ...: ... [&ref] |
+| src/main.rs:172:9:172:12 | path [&ref] | semmle.label | path [&ref] |
+| src/main.rs:172:16:172:34 | ...::new(...) [&ref] | semmle.label | ...::new(...) [&ref] |
+| src/main.rs:172:26:172:33 | path_str [&ref] | semmle.label | path_str [&ref] |
+| src/main.rs:173:8:173:11 | path [&ref] | semmle.label | path [&ref] |
+| src/main.rs:173:13:173:18 | exists | semmle.label | exists |
+| src/main.rs:174:25:174:34 | ...::open | semmle.label | ...::open |
+| src/main.rs:174:36:174:43 | path_str [&ref] | semmle.label | path_str [&ref] |
+| src/main.rs:177:25:177:34 | ...::open | semmle.label | ...::open |
+| src/main.rs:177:36:177:39 | path [&ref] | semmle.label | path [&ref] |
+| src/main.rs:185:9:185:13 | path1 | semmle.label | path1 |
+| src/main.rs:185:17:185:30 | ...::args | semmle.label | ...::args |
+| src/main.rs:185:17:185:32 | ...::args(...) [element] | semmle.label | ...::args(...) [element] |
+| src/main.rs:185:17:185:39 | ... .nth(...) [Some] | semmle.label | ... .nth(...) [Some] |
+| src/main.rs:185:17:185:48 | ... .unwrap() | semmle.label | ... .unwrap() |
+| src/main.rs:186:17:186:22 | &path1 [&ref] | semmle.label | &path1 [&ref] |
+| src/main.rs:186:18:186:22 | path1 | semmle.label | path1 |
 subpaths

@@ -257,7 +257,7 @@ private Type inferAnnotatedType(AstNode n, TypePath path) {
 }
 
 /** Module for inferring certain type information. */
-private module CertainTypeInference {
+module CertainTypeInference {
   pragma[nomagic]
   private predicate callResolvesTo(CallExpr ce, Path p, Function f) {
     p = CallExprImpl::getFunctionPath(ce) and
@@ -286,7 +286,7 @@ private module CertainTypeInference {
   }
 
   pragma[nomagic]
-  Type inferCertainCallExprType(CallExpr ce, TypePath path) {
+  private Type inferCertainCallExprType(CallExpr ce, TypePath path) {
     exists(Type ty, TypePath prefix, Path p | ty = getCertainCallExprType(ce, p, prefix) |
       exists(TypePath suffix, TypeParam tp |
         tp = ty.(TypeParamTypeParameter).getTypeParam() and
@@ -324,13 +324,19 @@ private module CertainTypeInference {
       or
       // A `let` statement with a type annotation is a coercion site and hence
       // is not a certain type equality.
-      exists(LetStmt let | not let.hasTypeRepr() |
-        let.getPat() = n1 and
+      exists(LetStmt let |
+        not let.hasTypeRepr() and
+        // Due to "binding modes" the type of the pattern is not necessarily the
+        // same as the type of the initializer. The pattern being an identifier
+        // pattern is sufficient to ensure that this is not the case.
+        let.getPat().(IdentPat) = n1 and
         let.getInitializer() = n2
       )
       or
       exists(LetExpr let |
-        let.getPat() = n1 and
+        // Similarly as for let statements, we need to rule out binding modes
+        // changing the type.
+        let.getPat().(IdentPat) = n1 and
         let.getScrutinee() = n2
       )
       or
@@ -375,6 +381,11 @@ private module CertainTypeInference {
     result = inferLiteralType(n, path, true)
     or
     result = inferRefNodeType(n) and
+    path.isEmpty()
+    or
+    result = inferLogicalOperationType(n, path)
+    or
+    result = inferRangeExprType(n) and
     path.isEmpty()
     or
     result = inferTupleRootType(n) and
@@ -434,11 +445,10 @@ private module CertainTypeInference {
 }
 
 private Type inferLogicalOperationType(AstNode n, TypePath path) {
-  exists(Builtins::BuiltinType t, BinaryLogicalOperation be |
+  exists(Builtins::Bool t, BinaryLogicalOperation be |
     n = [be, be.getLhs(), be.getRhs()] and
     path.isEmpty() and
-    result = TStruct(t) and
-    t instanceof Builtins::Bool
+    result = TStruct(t)
   )
 }
 
@@ -455,6 +465,9 @@ private Struct getRangeType(RangeExpr re) {
   or
   re instanceof RangeToExpr and
   result instanceof RangeToStruct
+  or
+  re instanceof RangeFullExpr and
+  result instanceof RangeFullStruct
   or
   re instanceof RangeFromToExpr and
   result instanceof RangeStruct
@@ -485,6 +498,11 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
     n1 = n2.(IfExpr).getABranch()
     or
     n1 = n2.(MatchExpr).getAnArm().getExpr()
+    or
+    exists(LetExpr let |
+      n1 = let.getScrutinee() and
+      n2 = let.getPat()
+    )
     or
     exists(MatchExpr me |
       n1 = me.getScrutinee() and
@@ -1873,7 +1891,7 @@ private predicate methodCandidate(Type type, string name, int arity, Impl impl) 
  */
 pragma[nomagic]
 private predicate methodCandidateTrait(Type type, Trait trait, string name, int arity, Impl impl) {
-  trait = resolvePath(impl.(ImplItemNode).getTraitPath()) and
+  trait = impl.(ImplItemNode).resolveTraitTy() and
   methodCandidate(type, name, arity, impl)
 }
 
@@ -1885,16 +1903,50 @@ private predicate isMethodCall(MethodCall mc, Type rootType, string name, int ar
 }
 
 private module IsInstantiationOfInput implements IsInstantiationOfInputSig<MethodCall> {
+  /** Holds if `mc` specifies a trait and might target a method in `impl`. */
   pragma[nomagic]
-  predicate potentialInstantiationOf(MethodCall mc, TypeAbstraction impl, TypeMention constraint) {
+  private predicate methodCallTraitCandidate(MethodCall mc, Impl impl) {
     exists(Type rootType, string name, int arity |
       isMethodCall(mc, rootType, name, arity) and
-      constraint = impl.(ImplTypeAbstraction).getSelfTy()
-    |
       methodCandidateTrait(rootType, mc.getTrait(), name, arity, impl)
-      or
+    )
+  }
+
+  /** Holds if `mc` does not specify a trait and might target a method in `impl`. */
+  pragma[nomagic]
+  private predicate methodCallCandidate(MethodCall mc, Impl impl) {
+    exists(Type rootType, string name, int arity |
       not exists(mc.getTrait()) and
+      isMethodCall(mc, rootType, name, arity) and
       methodCandidate(rootType, name, arity, impl)
+    )
+  }
+
+  private predicate relevantTraitVisible(Element mc, Trait trait) {
+    trait = any(ImplItemNode impl | methodCallCandidate(mc, impl)).resolveTraitTy()
+  }
+
+  bindingset[impl]
+  pragma[inline_late]
+  private TypeRepr getImplSelfTy(Impl impl) { result = impl.getSelfTy() }
+
+  pragma[nomagic]
+  predicate potentialInstantiationOf(MethodCall mc, TypeAbstraction impl, TypeMention constraint) {
+    constraint = getImplSelfTy(impl) and
+    (
+      methodCallTraitCandidate(mc, impl)
+      or
+      methodCallCandidate(mc, impl) and
+      (
+        not exists(impl.(ImplItemNode).resolveTraitTy())
+        or
+        // If the `impl` block implements a trait, that trait must be visible in
+        // order for the `impl` to be valid.
+        exists(Trait trait |
+          pragma[only_bind_into](trait) = impl.(ImplItemNode).resolveTraitTy() and
+          TraitIsVisible<relevantTraitVisible/2>::traitIsVisible(mc, pragma[only_bind_into](trait))
+        )
+      )
     )
   }
 
@@ -2370,8 +2422,6 @@ private module Cached {
     (
       result = inferAnnotatedType(n, path)
       or
-      result = inferLogicalOperationType(n, path)
-      or
       result = inferAssignmentOperationType(n, path)
       or
       result = inferTypeEquality(n, path)
@@ -2391,9 +2441,6 @@ private module Cached {
       result = inferLiteralType(n, path, false)
       or
       result = inferAwaitExprType(n, path)
-      or
-      result = inferRangeExprType(n) and
-      path.isEmpty()
       or
       result = inferIndexExprType(n, path)
       or

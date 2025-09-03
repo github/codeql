@@ -50,80 +50,17 @@
 overlay[local?]
 module;
 
+private import codeql.controlflow.BasicBlock as BB
+private import codeql.controlflow.SuccessorType
 private import codeql.util.Boolean
 private import codeql.util.Location
 private import codeql.util.Unit
 
-signature module InputSig<LocationSig Location> {
-  class SuccessorType {
-    /** Gets a textual representation of this successor type. */
-    string toString();
-  }
+signature class TypSig;
 
-  class ExceptionSuccessor extends SuccessorType;
-
-  class ConditionalSuccessor extends SuccessorType {
-    /** Gets the Boolean value of this successor. */
-    boolean getValue();
-  }
-
-  class BooleanSuccessor extends ConditionalSuccessor;
-
-  class NullnessSuccessor extends ConditionalSuccessor;
-
-  /** A control flow node. */
-  class ControlFlowNode {
-    /** Gets a textual representation of this control flow node. */
-    string toString();
-
-    /** Gets the location of this control flow node. */
-    Location getLocation();
-  }
-
+signature module InputSig<LocationSig Location, TypSig ControlFlowNode, TypSig BasicBlock> {
   /** A control flow node indicating normal termination of a callable. */
   class NormalExitNode extends ControlFlowNode;
-
-  /**
-   * A basic block, that is, a maximal straight-line sequence of control flow nodes
-   * without branches or joins.
-   */
-  class BasicBlock {
-    /** Gets a textual representation of this basic block. */
-    string toString();
-
-    /** Gets the `i`th node in this basic block. */
-    ControlFlowNode getNode(int i);
-
-    /** Gets the last control flow node in this basic block. */
-    ControlFlowNode getLastNode();
-
-    /** Gets the length of this basic block. */
-    int length();
-
-    /** Gets the location of this basic block. */
-    Location getLocation();
-
-    BasicBlock getASuccessor(SuccessorType t);
-
-    predicate dominates(BasicBlock bb);
-
-    predicate strictlyDominates(BasicBlock bb);
-  }
-
-  /**
-   * Holds if `bb1` has `bb2` as a direct successor and the edge between `bb1`
-   * and `bb2` is a dominating edge.
-   *
-   * An edge `(bb1, bb2)` is dominating if there exists a basic block that can
-   * only be reached from the entry block by going through `(bb1, bb2)`. This
-   * implies that `(bb1, bb2)` dominates its endpoint `bb2`. I.e., `bb2` can
-   * only be reached from the entry block by going via `(bb1, bb2)`.
-   *
-   * This is a necessary and sufficient condition for an edge to dominate some
-   * block, and therefore `dominatingEdge(bb1, bb2) and bb2.dominates(bb3)`
-   * means that the edge `(bb1, bb2)` dominates `bb3`.
-   */
-  predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2);
 
   class AstNode {
     /** Gets a textual representation of this AST node. */
@@ -254,7 +191,13 @@ signature module InputSig<LocationSig Location> {
 }
 
 /** Provides guards-related predicates and classes. */
-module Make<LocationSig Location, InputSig<Location> Input> {
+module Make<
+  LocationSig Location, BB::CfgSig<Location> Cfg,
+  InputSig<Location, Cfg::ControlFlowNode, Cfg::BasicBlock> Input>
+{
+  private module Cfg_ = Cfg;
+
+  private import Cfg_
   private import Input
 
   private newtype TAbstractSingleValue =
