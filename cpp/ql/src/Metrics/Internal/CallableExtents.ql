@@ -15,8 +15,8 @@ import cpp
 class RangeFunction extends Function {
   /**
    * Holds if this function is at the specified location.
-   * The location spans column `startcolumn` of line `startline` to
-   * column `endcolumn` of line `endline` in file `filepath`.
+   * The location spans column `sc` of line `sl` to
+   * column `ec` of line `el` in file `path`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
