@@ -17,11 +17,13 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.internal.DataFlowDispatch
 import codeql.util.Option
 
+/** Holds if `base` is overriden by `sub` */
 predicate overrides(Function base, Function sub) {
   base.getName() = sub.getName() and
   base.getScope() = getADirectSuperclass+(sub.getScope())
 }
 
+/** Constructs a string to pluralize `str` depending on `num`. */
 bindingset[num, str]
 string plural(int num, string str) {
   num = 1 and result = "1 " + str
@@ -29,6 +31,7 @@ string plural(int num, string str) {
   num != 1 and result = num.toString() + " " + str + "s"
 }
 
+/** Describes the minimum number of arguments `func` can accept, using "at least" if it may accept more. */
 string describeMin(Function func) {
   exists(string descr | descr = plural(func.getMinPositionalArguments(), "positional argument") |
     if func.getMinPositionalArguments() = func.getMaxPositionalArguments()
@@ -37,6 +40,7 @@ string describeMin(Function func) {
   )
 }
 
+/** Described the maximum number of arguments `func` can accept, using "at most" if it may accept fewer, and "arbitrarily many" if it has a vararg. */
 string describeMax(Function func) {
   if func.hasVarArg()
   then result = "arbitrarily many positional arguments"
@@ -48,6 +52,7 @@ string describeMax(Function func) {
     )
 }
 
+/** Describes the minumum number of arguments `func` can accept, without repeating "positional arguments". */
 string describeMinShort(Function func) {
   exists(string descr | descr = func.getMinPositionalArguments().toString() |
     if func.getMinPositionalArguments() = func.getMaxPositionalArguments()
@@ -56,6 +61,7 @@ string describeMinShort(Function func) {
   )
 }
 
+/** Describes the maximum number of arguments `func` can accept, without repeating "positional arguments". */
 string describeMaxShort(Function func) {
   if func.hasVarArg()
   then result = "arbitrarily many"
@@ -67,6 +73,7 @@ string describeMaxShort(Function func) {
     )
 }
 
+/** Describe an upper bound on the number of arguments `func` may accept, without specifying "at most". */
 string describeMaxBound(Function func) {
   if func.hasVarArg()
   then result = "arbitrarily many"
@@ -121,6 +128,7 @@ predicate weakSignatureMismatch(Function base, Function sub, string msg) {
   )
 }
 
+/** Holds if `f` should be ignored for considering signature mismatches. */
 predicate ignore(Function f) {
   isClassmethod(f)
   or
@@ -133,18 +141,21 @@ predicate ignore(Function f) {
   )
 }
 
+/** Gets a function that `call` may resolve to. */
 Function resolveCall(Call call) {
   exists(DataFlowCall dfc | call = dfc.getNode().(CallNode).getNode() |
     result = viableCallable(dfc).(DataFlowFunction).getScope()
   )
 }
 
+/** Holds if `call` may resolve to either `base` or `sub`, and `base` is overiden by `sub`. */
 predicate callViableForEitherOverride(Function base, Function sub, Call call) {
   overrides(base, sub) and
   base = resolveCall(call) and
   sub = resolveCall(call)
 }
 
+/** Holds if either both `base` and `sub` are static methods, or both are not static methods, and `base` is overriden by `sub`. */
 predicate matchingStatic(Function base, Function sub) {
   overrides(base, sub) and
   (
@@ -158,7 +169,9 @@ predicate matchingStatic(Function base, Function sub) {
 
 int extraSelfArg(Function func) { if isStaticmethod(func) then result = 0 else result = 1 }
 
+/** Holds if the call `call` matches the signature for `func`. */
 predicate callMatchesSignature(Function func, Call call) {
+  func = resolveCall(call) and
   (
     // Each parameter of the function is accounted for in the call
     forall(Parameter param, int i | param = func.getArg(i) |
@@ -189,12 +202,14 @@ predicate callMatchesSignature(Function func, Call call) {
   )
 }
 
+/** Gets a call which matches the signature of `base`, but not of overriden `sub`. */
 Call getASignatureMismatchWitness(Function base, Function sub) {
   callViableForEitherOverride(base, sub, result) and
   callMatchesSignature(base, result) and
   not callMatchesSignature(sub, result)
 }
 
+/** Choose a 'witnessing' call that matches the signature of `base` but not of overridden `sub`, and is in the file `file`. */
 Call chooseASignatureMismatchWitnessInFile(Function base, Function sub, File file) {
   result =
     min(Call c |
@@ -205,6 +220,7 @@ Call chooseASignatureMismatchWitnessInFile(Function base, Function sub, File fil
     )
 }
 
+/** Choose a 'witnessing' call that matches the signature of `base` but not of overridden `sub`. */
 Call chooseASignatureMismatchWitness(Function base, Function sub) {
   exists(getASignatureMismatchWitness(base, sub)) and
   (
@@ -242,6 +258,7 @@ where
   not ignore(base) and
   matchingStatic(base, sub) and
   (
+    // If we have a witness, alert for a 'weak' mismatch, but prefer the message for a 'strong' mismatch if that holds.
     call.asSome() = chooseASignatureMismatchWitness(base, sub) and
     extraMsg =
       " $@ correctly calls the base method, but does not match the signature of the overriding method." and
@@ -252,6 +269,7 @@ where
       weakSignatureMismatch(base, sub, msg)
     )
     or
+    // With no witness, only alert for 'strong' mismatches.
     not exists(getASignatureMismatchWitness(base, sub)) and
     call.isNone() and
     strongSignatureMismatch(base, sub, msg) and
