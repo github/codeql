@@ -332,6 +332,13 @@ private module IndirectInstructions {
 
 import IndirectInstructions
 
+predicate isPostUpdateNodeImpl(Operand operand, int indirectionIndex) {
+  operand = any(FieldAddress fa).getObjectAddressOperand() and
+  indirectionIndex = [0 .. Ssa::countIndirectionsForCppType(Ssa::getLanguageType(operand))]
+  or
+  Ssa::isModifiableByCall(operand, indirectionIndex)
+}
+
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
 

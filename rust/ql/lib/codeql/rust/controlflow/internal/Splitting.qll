@@ -71,13 +71,7 @@ module ConditionalCompletionSplitting {
       child = parent.(LogicalNotExpr).getExpr() and
       childCompletion.getDual() = parentCompletion
       or
-      (
-        childCompletion = parentCompletion
-        or
-        // needed for `let` expressions
-        childCompletion.(MatchCompletion).getValue() =
-          parentCompletion.(BooleanCompletion).getValue()
-      ) and
+      childCompletion = parentCompletion and
       (
         child = parent.(BinaryLogicalOperation).getAnOperand()
         or
@@ -92,6 +86,9 @@ module ConditionalCompletionSplitting {
         or
         child = parent.(PatternTrees::PostOrderPatTree).getPat(_)
       )
+      or
+      child = parent.(LetExpr).getPat() and
+      childCompletion.(MatchCompletion).getValue() = parentCompletion.(BooleanCompletion).getValue()
     }
   }
 

@@ -107,3 +107,6 @@ function TakesTypedParameters([int]$i, [long]$l, [float]$f, [double]$d, [decimal
 }
 
 TakesTypedParameters $userinput $userinput $userinput $userinput $userinput $userinput $userinput $userinput
+
+$query = "SELECT * FROM MyTable WHERE MyColumn = '$userinput'"
+Invoke-Sqlcmd -unknown $userinput -ServerInstance "MyServer" -Database "MyDatabase" -q "SELECT * FROM MyTable" # GOOD

@@ -48,15 +48,19 @@ module SqlInjection {
     override string getSourceType() { result = this.(SourceNode).getSourceType() }
   }
 
+  private string query() { result = ["query", "q"] }
+
+  private string inputfile() { result = ["inputfile", "i"] }
+
   class InvokeSqlCmdSink extends Sink {
     InvokeSqlCmdSink() {
       exists(DataFlow::CallNode call | call.matchesName("Invoke-Sqlcmd") |
-        this = call.getNamedArgument("query")
+        this = call.getNamedArgument(query())
         or
-        this = call.getNamedArgument("inputfile")
+        this = call.getNamedArgument(inputfile())
         or
-        not call.hasNamedArgument("query") and
-        not call.hasNamedArgument("inputfile") and
+        not call.hasNamedArgument(query()) and
+        not call.hasNamedArgument(inputfile()) and
         this = call.getArgument(0)
         or
         // TODO: Here we really should pick a splat argument, but we don't yet extract whether an

@@ -38,4 +38,4 @@ where
   |
     msg = left + op + k + " when " + guard + " is " + value
   )
-select guard.getLocation().getStartLine(), msg
+select guard, msg

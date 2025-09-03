@@ -23,7 +23,7 @@ fn class_name(type_name: &str) -> String {
         "AsmOptions" => "AsmOptionsList".to_owned(),
         "MacroStmts" => "MacroBlockExpr".to_owned(),
         _ if type_name.starts_with("Record") => type_name.replacen("Record", "Struct", 1),
-        _ if type_name.ends_with("Type") => format!("{}Repr", type_name),
+        _ if type_name.ends_with("Type") => format!("{type_name}Repr"),
         _ => type_name.to_owned(),
     }
 }
@@ -171,7 +171,7 @@ fn get_trait_fields(trait_name: &str) -> Vec<FieldInfo> {
         ],
         "HasArgList" => vec![FieldInfo::optional("arg_list", "ArgList")],
         "HasDocComments" => vec![],
-        _ => panic!("Unknown trait {}", trait_name),
+        _ => panic!("Unknown trait {trait_name}"),
     }
 }
 

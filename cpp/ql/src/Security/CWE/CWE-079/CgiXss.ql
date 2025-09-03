@@ -39,6 +39,12 @@ module Config implements DataFlow::ConfigSig {
     or
     node.asCertainDefinition().getUnspecifiedType() instanceof ArithmeticType
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    exists(QueryString query | result = query.getLocation() | query = source.asIndirectExpr())
+  }
 }
 
 module Flow = TaintTracking::Global<Config>;

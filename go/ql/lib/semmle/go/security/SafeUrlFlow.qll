@@ -36,6 +36,10 @@ module SafeUrlFlow {
       or
       node instanceof SanitizerEdge
     }
+
+    predicate observeDiffInformedIncrementalMode() {
+      none() // only used as secondary configuration
+    }
   }
 
   /** Tracks taint flow for reasoning about safe URLs. */

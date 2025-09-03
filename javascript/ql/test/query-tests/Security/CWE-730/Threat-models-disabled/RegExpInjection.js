@@ -83,7 +83,7 @@ app.get('/has-sanitizer', function(req, res) {
 });
 
 app.get("argv", function(req, res) {
-    new RegExp(`^${process.env.HOME}/Foo/bar.app$`); // $ Alert[js/regex-injection]
+    new RegExp(`^${process.env.HOME}/Foo/bar.app$`); // environment variable, should be detected only with threat model enabled.
 
     new RegExp(`^${process.argv[1]}/Foo/bar.app$`); // $ Alert[js/regex-injection]
 });

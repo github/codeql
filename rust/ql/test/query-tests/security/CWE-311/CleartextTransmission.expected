@@ -1,9 +1,9 @@
 #select
-| main.rs:7:5:7:26 | ...::get | main.rs:6:50:6:57 | password | main.rs:7:5:7:26 | ...::get | The operation '...::get', transmits data which may contain unencrypted sensitive data from $@. | main.rs:6:50:6:57 | password | password |
-| main.rs:14:5:14:26 | ...::get | main.rs:12:50:12:57 | password | main.rs:14:5:14:26 | ...::get | The operation '...::get', transmits data which may contain unencrypted sensitive data from $@. | main.rs:12:50:12:57 | password | password |
-| main.rs:21:12:21:15 | post | main.rs:19:50:19:57 | password | main.rs:21:12:21:15 | post | The operation 'post', transmits data which may contain unencrypted sensitive data from $@. | main.rs:19:50:19:57 | password | password |
-| main.rs:28:12:28:18 | request | main.rs:26:50:26:57 | password | main.rs:28:12:28:18 | request | The operation 'request', transmits data which may contain unencrypted sensitive data from $@. | main.rs:26:50:26:57 | password | password |
-| main.rs:35:12:35:18 | request | main.rs:33:50:33:57 | password | main.rs:35:12:35:18 | request | The operation 'request', transmits data which may contain unencrypted sensitive data from $@. | main.rs:33:50:33:57 | password | password |
+| main.rs:7:5:7:26 | ...::get | main.rs:6:50:6:57 | password | main.rs:7:5:7:26 | ...::get | This '...::get' operation transmits data which may contain unencrypted sensitive data from $@. | main.rs:6:50:6:57 | password | password |
+| main.rs:14:5:14:26 | ...::get | main.rs:12:50:12:57 | password | main.rs:14:5:14:26 | ...::get | This '...::get' operation transmits data which may contain unencrypted sensitive data from $@. | main.rs:12:50:12:57 | password | password |
+| main.rs:21:12:21:15 | post | main.rs:19:50:19:57 | password | main.rs:21:12:21:15 | post | This 'post' operation transmits data which may contain unencrypted sensitive data from $@. | main.rs:19:50:19:57 | password | password |
+| main.rs:28:12:28:18 | request | main.rs:26:50:26:57 | password | main.rs:28:12:28:18 | request | This 'request' operation transmits data which may contain unencrypted sensitive data from $@. | main.rs:26:50:26:57 | password | password |
+| main.rs:35:12:35:18 | request | main.rs:33:50:33:57 | password | main.rs:35:12:35:18 | request | This 'request' operation transmits data which may contain unencrypted sensitive data from $@. | main.rs:33:50:33:57 | password | password |
 edges
 | main.rs:6:9:6:11 | url | main.rs:7:28:7:30 | url | provenance |  |
 | main.rs:6:15:6:58 | res | main.rs:6:23:6:57 | { ... } | provenance |  |

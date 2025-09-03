@@ -212,15 +212,7 @@ abstract class PersistentWriteAccess extends DataFlow::Node {
 module Cryptography {
   private import ConceptsShared::Cryptography as SC
 
-  /**
-   * A data-flow node that is an application of a cryptographic algorithm. For example,
-   * encryption, decryption, signature-validation.
-   *
-   * Extend this class to refine existing API models. If you want to model new APIs,
-   * extend `CryptographicOperation::Range` instead.
-   */
-  class CryptographicOperation extends SC::CryptographicOperation instanceof CryptographicOperation::Range
-  { }
+  class CryptographicOperation = SC::CryptographicOperation;
 
   class EncryptionAlgorithm = SC::EncryptionAlgorithm;
 
