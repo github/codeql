@@ -226,7 +226,13 @@ module Consistency {
 
   predicate nonUniqueCertainType(AstNode n, TypePath path, Type t) {
     strictcount(CertainTypeInference::inferCertainType(n, path)) > 1 and
-    t = CertainTypeInference::inferCertainType(n, path)
+    t = CertainTypeInference::inferCertainType(n, path) and
+    // Suppress the inconsistency if `n` is a self parameter and the type
+    // mention for the self type has multiple types for a path.
+    not exists(ImplItemNode impl, TypePath path0 |
+      n = impl.getAnAssocItem().(Function).getParamList().getSelfParam() and
+      strictcount(impl.(Impl).getSelfTy().(TypeMention).resolveTypeAt(path0)) > 1
+    )
   }
 }
 
