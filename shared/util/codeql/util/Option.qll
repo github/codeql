@@ -128,6 +128,7 @@ module LocatableOption<LocationSig Location, WithLocation<Location>::LocatableTy
    * given type.
    */
   class Option extends BaseOption {
+    /** Gets the location of this option. For `None`, returns an empty location. */
     Location getLocation() {
       result = this.asSome().getLocation()
       or

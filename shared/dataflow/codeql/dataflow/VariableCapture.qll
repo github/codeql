@@ -214,6 +214,7 @@ module Flow<
   final private class CfgBb = Cfg::BasicBlock;
 
   private class BasicBlock extends CfgBb {
+    /** Gets the callable that contains this basic block. */
     Callable getEnclosingCallable() { result = basicBlockGetEnclosingCallable(this) }
   }
 
