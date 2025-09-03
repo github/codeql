@@ -53,7 +53,9 @@ final class DataFlowCallable extends TDataFlowCallable {
   }
 
   /** Gets the location of this callable. */
-  Location getLocation() { result = this.asCfgScope().getLocation() }
+  Location getLocation() {
+    result = [this.asCfgScope().getLocation(), this.asSummarizedCallable().getLocation()]
+  }
 }
 
 final class DataFlowCall extends TDataFlowCall {
