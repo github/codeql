@@ -118,7 +118,7 @@ class Generator:
         bqrsFile = os.path.join(rawOutputDir, outputName + '.bqrs')
         jsonFile = os.path.join(rawOutputDir, outputName + '.json')
 
-        sdk_version = '9.0.100'
+        sdk_version = '9.0.300'
         print("\n* Creating new global.json file and setting SDK to " + sdk_version)
         self.run_cmd(['dotnet', 'new', 'globaljson', '--force', '--sdk-version', sdk_version, '--output', self.workDir])
 

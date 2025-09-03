@@ -21,7 +21,7 @@ mkdir -p extractor-pack
 mkdir -p extractor-pack/tools/${platform}
 
 function dotnet_publish {
-  dotnet publish --self-contained --configuration Release --runtime ${dotnet_platform} -p:RuntimeFrameworkVersion=9.0.0 $1 --output extractor-pack/tools/${platform}
+  dotnet publish --self-contained --configuration Release --runtime ${dotnet_platform} -p:RuntimeFrameworkVersion=9.0.5 $1 --output extractor-pack/tools/${platform}
 }
 
 dotnet tool restore
