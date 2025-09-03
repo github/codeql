@@ -7,23 +7,16 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-
-	"github.com/github/codeql-go/extractor/util"
 )
 
 var pathTransformer *ProjectLayout
 
 func init() {
-	pt := util.Getenv("CODEQL_PATH_TRANSFORMER", "SEMMLE_PATH_TRANSFORMER")
-	if pt != "" {
-		ptf, err := os.Open(pt)
-		if err != nil {
-			log.Fatalf("Unable to open path transformer %s: %s.\n", pt, err.Error())
-		}
-		pathTransformer, err = LoadProjectLayout(ptf)
-		if err != nil {
-			log.Fatalf("Unable to initialize path transformer: %s.\n", err.Error())
-		}
+	pt, err := LoadProjectLayoutFromEnv()
+	if err == nil {
+		pathTransformer = pt
+	} else {
+		log.Fatalf("Unable to load path transformer: %s.\n", err.Error())
 	}
 }
 
