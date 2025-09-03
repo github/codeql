@@ -23,6 +23,8 @@ private predicate possiblyAttribute(Expr e, string name) {
   )
 }
 
+final private class FinalExpr = Expr;
+
 /**
  * A bracketed list of expressions.
  *
@@ -34,15 +36,22 @@ private predicate possiblyAttribute(Expr e, string name) {
  *
  * We also allow singleton lists, as in `[a][b]`.
  */
-abstract private class BracketedListOfExpressions extends Expr {
+abstract private class BracketedListOfExpressions extends FinalExpr {
   /** Gets the `i`th element expression of this list. */
   abstract Expr getElement(int i);
+
+  /** Gets the first token in this bracketed list of expressions */
+  Token getFirstToken() { result = Expr.super.getFirstToken() }
+
+  /** Gets the last token in this bracketed list of expressions */
+  Token getLastToken() { result = Expr.super.getLastToken() }
 }
 
 /**
  * An array expression viewed as a bracketed list of expressions.
  */
-private class ArrayExprIsABracketedListOfExpressions extends ArrayExpr, BracketedListOfExpressions {
+private class ArrayExprIsABracketedListOfExpressions extends BracketedListOfExpressions instanceof ArrayExpr
+{
   /** Gets the `i`th element of this array literal. */
   override Expr getElement(int i) { result = ArrayExpr.super.getElement(i) }
 }
