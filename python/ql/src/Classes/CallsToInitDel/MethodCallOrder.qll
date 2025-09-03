@@ -187,7 +187,15 @@ Function getPossibleMissingSuper(Class base, Function shouldCall, string name) {
   )
 }
 
-class FunctionOption = LocatableOption<Location, Function>::Option;
+/** An optional `Function`. */
+class FunctionOption extends LocatableOption<Location, Function>::Option {
+  /** Gets the qualified name of this function, or the empty string if it is None. */
+  string getQualifiedName() {
+    this.isNone() and result = ""
+    or
+    result = this.asSome().getQualifiedName()
+  }
+}
 
 /** Gets the result of `getPossibleMissingSuper`, or None if none exists. */
 bindingset[name]
