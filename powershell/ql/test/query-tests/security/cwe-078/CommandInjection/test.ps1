@@ -147,6 +147,12 @@ function Invoke-ExpandStringInjection2
     $executionContext.SessionState.InvokeCommand.ExpandString($UserInput) # BAD
 }
 
+function Invoke-InvokeExpressionInjectionCmdletBinding
+{
+    [CmdletBinding()]
+    param($UserInput)
+    Invoke-Expression "Get-Process -Name $UserInput" # BAD
+}
 
 
 $input = Read-Host "enter input"
@@ -171,6 +177,7 @@ Invoke-MethodInjection3 -UserInput $input
 Invoke-PropertyInjection -UserInput $input  
 Invoke-ExpandStringInjection1 -UserInput $input  
 Invoke-ExpandStringInjection2 -UserInput $input
+Invoke-InvokeExpressionInjectionCmdletBinding -userInput $input
 
 #typed input
 function Invoke-InvokeExpressionInjectionSafe1
