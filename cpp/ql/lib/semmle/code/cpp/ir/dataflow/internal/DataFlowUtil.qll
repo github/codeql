@@ -2268,13 +2268,15 @@ class ContentSet instanceof Content {
 
   /**
    * Holds if this element is at the specified location.
-   * The location spans column `sc` of line `sl` to
-   * column `ec` of line `el` in file `path`.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    super.hasLocationInfo(path, sl, sc, el, ec)
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
