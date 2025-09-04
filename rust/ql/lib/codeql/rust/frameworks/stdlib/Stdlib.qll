@@ -14,7 +14,7 @@ private import codeql.rust.internal.PathResolution
  */
 private class StartswithCall extends Path::SafeAccessCheck::Range, CfgNodes::MethodCallExprCfgNode {
   StartswithCall() {
-    this.getAstNode().(Resolvable).getResolvedPath() = "<crate::path::Path>::starts_with"
+    this.getMethodCallExpr().getStaticTarget().getCanonicalPath() = "<std::path::Path>::starts_with"
   }
 
   override predicate checks(Cfg::CfgNode e, boolean branch) {
@@ -95,6 +95,16 @@ class RangeToStruct extends Struct {
 }
 
 /**
+ * The [`RangeFull` struct][1].
+ *
+ * [1]: https://doc.rust-lang.org/core/ops/struct.RangeFull.html
+ */
+class RangeFullStruct extends Struct {
+  pragma[nomagic]
+  RangeFullStruct() { this.getCanonicalPath() = "core::ops::range::RangeFull" }
+}
+
+/**
  * The [`RangeInclusive` struct][1].
  *
  * [1]: https://doc.rust-lang.org/core/ops/struct.RangeInclusive.html
@@ -131,6 +141,26 @@ class RangeToInclusiveStruct extends Struct {
 class FutureTrait extends Trait {
   pragma[nomagic]
   FutureTrait() { this.getCanonicalPath() = "core::future::future::Future" }
+
+  /** Gets the `Output` associated type. */
+  pragma[nomagic]
+  TypeAlias getOutputType() {
+    result = this.getAssocItemList().getAnAssocItem() and
+    result.getName().getText() = "Output"
+  }
+}
+
+/**
+ * The [`FnOnce` trait][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/ops/trait.FnOnce.html
+ */
+class FnOnceTrait extends Trait {
+  pragma[nomagic]
+  FnOnceTrait() { this.getCanonicalPath() = "core::ops::function::FnOnce" }
+
+  /** Gets the type parameter of this trait. */
+  TypeParam getTypeParam() { result = this.getGenericParamList().getGenericParam(0) }
 
   /** Gets the `Output` associated type. */
   pragma[nomagic]

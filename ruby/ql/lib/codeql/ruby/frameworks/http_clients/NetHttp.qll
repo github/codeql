@@ -12,38 +12,54 @@ private import codeql.ruby.DataFlow
 /**
  * A `Net::HTTP` call which initiates an HTTP request.
  * ```ruby
+ * # one-off request
  * Net::HTTP.get("http://example.com/")
  * Net::HTTP.post("http://example.com/", "some_data")
  * req = Net::HTTP.new("example.com")
  * response = req.get("/")
+ *
+ * # connection re-use
+ * Net::HTTP.start("http://example.com") do |http|
+ *   http.get("/")
+ * end
  * ```
  */
 class NetHttpRequest extends Http::Client::Request::Range instanceof DataFlow::CallNode {
   private DataFlow::CallNode request;
-  private API::Node requestNode;
+  API::Node requestNode;
   private boolean returnsResponseBody;
 
   NetHttpRequest() {
-    exists(string method |
+    exists(string method, API::Node connectionNode |
       request = requestNode.asSource() and
-      this = request
+      this = request and
+      requestNode = connectionNode.getReturn(method)
     |
       // Net::HTTP.get(...)
       method in ["get", "get_response"] and
-      requestNode = API::getTopLevelMember("Net").getMember("HTTP").getReturn(method) and
+      connectionNode = API::getTopLevelMember("Net").getMember("HTTP") and
       returnsResponseBody = true
       or
       // Net::HTTP.post(...).body
       method in ["post", "post_form"] and
-      requestNode = API::getTopLevelMember("Net").getMember("HTTP").getReturn(method) and
+      connectionNode = API::getTopLevelMember("Net").getMember("HTTP") and
       returnsResponseBody = false
       or
       // Net::HTTP.new(..).get(..).body
+      // Net::HTTP.start(..) do |http| http.get(..) end
       method in [
           "get", "get2", "request_get", "head", "head2", "request_head", "delete", "put", "patch",
           "post", "post2", "request_post", "request"
         ] and
-      requestNode = API::getTopLevelMember("Net").getMember("HTTP").getInstance().getReturn(method) and
+      connectionNode =
+        [
+          API::getTopLevelMember("Net").getMember("HTTP").getInstance(),
+          API::getTopLevelMember("Net")
+              .getMember("HTTP")
+              .getMethod("start")
+              .getBlock()
+              .getParameter(0)
+        ] and
       returnsResponseBody = false
     )
   }

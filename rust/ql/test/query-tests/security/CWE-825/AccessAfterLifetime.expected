@@ -11,6 +11,7 @@
 | lifetime.rs:172:13:172:15 | ptr | lifetime.rs:187:12:187:21 | &my_local1 | lifetime.rs:172:13:172:15 | ptr | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:186:6:186:14 | my_local1 | my_local1 |
 | lifetime.rs:255:14:255:17 | prev | lifetime.rs:251:10:251:19 | &my_local2 | lifetime.rs:255:14:255:17 | prev | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:242:7:242:15 | my_local2 | my_local2 |
 | lifetime.rs:310:31:310:32 | e1 | lifetime.rs:272:30:272:32 | &e1 | lifetime.rs:310:31:310:32 | e1 | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:271:6:271:7 | e1 | e1 |
+| lifetime.rs:314:23:314:24 | p2 | lifetime.rs:279:28:279:30 | &v2 | lifetime.rs:314:23:314:24 | p2 | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:278:6:278:7 | v2 | v2 |
 | lifetime.rs:317:13:317:18 | result | lifetime.rs:289:25:289:26 | &x | lifetime.rs:317:13:317:18 | result | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:289:17:289:17 | x | x |
 | lifetime.rs:411:16:411:17 | p1 | lifetime.rs:383:31:383:37 | &raw mut my_pair | lifetime.rs:411:16:411:17 | p1 | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:382:11:382:17 | my_pair | my_pair |
 | lifetime.rs:416:16:416:17 | p1 | lifetime.rs:383:31:383:37 | &raw mut my_pair | lifetime.rs:416:16:416:17 | p1 | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:382:11:382:17 | my_pair | my_pair |
@@ -21,6 +22,7 @@
 | lifetime.rs:667:14:667:17 | ref1 | lifetime.rs:655:11:655:25 | &raw const str2 | lifetime.rs:667:14:667:17 | ref1 | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:651:7:651:10 | str2 | str2 |
 | lifetime.rs:789:12:789:13 | p1 | lifetime.rs:781:9:781:19 | &my_local10 | lifetime.rs:789:12:789:13 | p1 | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:779:6:779:15 | my_local10 | my_local10 |
 | lifetime.rs:808:23:808:25 | ptr | lifetime.rs:798:9:798:12 | &val | lifetime.rs:808:23:808:25 | ptr | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:796:6:796:8 | val | val |
+| main.rs:64:23:64:24 | p2 | main.rs:44:26:44:28 | &b2 | main.rs:64:23:64:24 | p2 | Access of a pointer to $@ after its lifetime has ended. | main.rs:43:13:43:14 | b2 | b2 |
 edges
 | deallocation.rs:148:6:148:7 | p1 | deallocation.rs:151:14:151:15 | p1 | provenance |  |
 | deallocation.rs:148:6:148:7 | p1 | deallocation.rs:158:14:158:15 | p1 | provenance |  |
@@ -123,14 +125,22 @@ edges
 | lifetime.rs:270:47:275:1 | { ... } | lifetime.rs:303:11:303:31 | get_pointer_to_enum(...) | provenance |  |
 | lifetime.rs:272:6:272:11 | result | lifetime.rs:270:47:275:1 | { ... } | provenance |  |
 | lifetime.rs:272:30:272:32 | &e1 | lifetime.rs:272:6:272:11 | result | provenance |  |
+| lifetime.rs:277:41:282:1 | { ... } [Pointer] | lifetime.rs:304:11:304:31 | get_pointer_in_enum(...) [Pointer] | provenance |  |
+| lifetime.rs:279:6:279:7 | e2 [Pointer] | lifetime.rs:277:41:282:1 | { ... } [Pointer] | provenance |  |
+| lifetime.rs:279:11:279:31 | ...::Pointer(...) [Pointer] | lifetime.rs:279:6:279:7 | e2 [Pointer] | provenance |  |
+| lifetime.rs:279:28:279:30 | &v2 | lifetime.rs:279:11:279:31 | ...::Pointer(...) [Pointer] | provenance |  |
 | lifetime.rs:284:46:300:1 | { ... } | lifetime.rs:305:15:305:37 | get_pointer_from_enum(...) | provenance |  |
 | lifetime.rs:288:2:288:7 | result | lifetime.rs:284:46:300:1 | { ... } | provenance |  |
 | lifetime.rs:288:2:288:7 | result | lifetime.rs:295:13:295:18 | result | provenance |  |
 | lifetime.rs:289:25:289:26 | &x | lifetime.rs:288:2:288:7 | result | provenance |  |
 | lifetime.rs:303:6:303:7 | e1 | lifetime.rs:310:31:310:32 | e1 | provenance |  |
 | lifetime.rs:303:11:303:31 | get_pointer_to_enum(...) | lifetime.rs:303:6:303:7 | e1 | provenance |  |
+| lifetime.rs:304:6:304:7 | e2 [Pointer] | lifetime.rs:313:10:313:29 | ...::Pointer(...) [Pointer] | provenance |  |
+| lifetime.rs:304:11:304:31 | get_pointer_in_enum(...) [Pointer] | lifetime.rs:304:6:304:7 | e2 [Pointer] | provenance |  |
 | lifetime.rs:305:6:305:11 | result | lifetime.rs:317:13:317:18 | result | provenance |  |
 | lifetime.rs:305:15:305:37 | get_pointer_from_enum(...) | lifetime.rs:305:6:305:11 | result | provenance |  |
+| lifetime.rs:313:10:313:29 | ...::Pointer(...) [Pointer] | lifetime.rs:313:27:313:28 | p2 | provenance |  |
+| lifetime.rs:313:27:313:28 | p2 | lifetime.rs:314:23:314:24 | p2 | provenance |  |
 | lifetime.rs:383:3:383:4 | p1 | lifetime.rs:388:15:388:16 | p1 | provenance |  |
 | lifetime.rs:383:3:383:4 | p1 | lifetime.rs:391:15:391:16 | p1 | provenance |  |
 | lifetime.rs:383:3:383:4 | p1 | lifetime.rs:399:6:399:7 | p1 | provenance |  |
@@ -154,7 +164,7 @@ edges
 | lifetime.rs:443:6:443:7 | p1 | lifetime.rs:446:13:446:14 | p1 | provenance |  |
 | lifetime.rs:443:6:443:7 | p1 | lifetime.rs:450:2:450:10 | return p1 | provenance |  |
 | lifetime.rs:443:23:443:44 | ...::from_ref(...) | lifetime.rs:443:6:443:7 | p1 | provenance |  |
-| lifetime.rs:443:42:443:43 | r1 | lifetime.rs:443:23:443:44 | ...::from_ref(...) | provenance | MaD:1 |
+| lifetime.rs:443:42:443:43 | r1 | lifetime.rs:443:23:443:44 | ...::from_ref(...) | provenance | MaD:3 |
 | lifetime.rs:450:2:450:10 | return p1 | lifetime.rs:454:11:454:29 | get_ptr_from_ref(...) | provenance |  |
 | lifetime.rs:450:2:450:10 | return p1 | lifetime.rs:460:13:460:31 | get_ptr_from_ref(...) | provenance |  |
 | lifetime.rs:454:6:454:7 | p1 | lifetime.rs:459:13:459:14 | p1 | provenance |  |
@@ -188,11 +198,13 @@ edges
 | lifetime.rs:719:26:719:34 | &... | lifetime.rs:718:7:718:8 | r1 | provenance |  |
 | lifetime.rs:730:6:730:7 | r1 | lifetime.rs:734:12:734:13 | r1 | provenance |  |
 | lifetime.rs:730:11:730:25 | e1.test_match() | lifetime.rs:730:6:730:7 | r1 | provenance |  |
-| lifetime.rs:766:2:766:13 | &val | lifetime.rs:766:2:766:13 | ptr | provenance |  |
-| lifetime.rs:766:2:766:13 | ptr | lifetime.rs:767:2:767:13 | ptr | provenance |  |
+| lifetime.rs:766:2:766:11 | &val | lifetime.rs:766:2:766:11 | ptr | provenance |  |
+| lifetime.rs:766:2:766:11 | ptr | lifetime.rs:766:2:766:11 | ptr | provenance |  |
+| lifetime.rs:767:2:767:11 | &val | lifetime.rs:767:2:767:11 | ptr | provenance |  |
+| lifetime.rs:767:2:767:11 | ptr | lifetime.rs:767:2:767:11 | ptr | provenance |  |
 | lifetime.rs:769:6:769:8 | ptr | lifetime.rs:771:12:771:14 | ptr | provenance |  |
-| lifetime.rs:769:12:769:23 | &val | lifetime.rs:769:12:769:23 | ptr | provenance |  |
-| lifetime.rs:769:12:769:23 | ptr | lifetime.rs:769:6:769:8 | ptr | provenance |  |
+| lifetime.rs:769:12:769:21 | &val | lifetime.rs:769:12:769:21 | ptr | provenance |  |
+| lifetime.rs:769:12:769:21 | ptr | lifetime.rs:769:6:769:8 | ptr | provenance |  |
 | lifetime.rs:781:2:781:19 | return ... | lifetime.rs:785:11:785:41 | get_local_for_unsafe_function(...) | provenance |  |
 | lifetime.rs:781:9:781:19 | &my_local10 | lifetime.rs:781:2:781:19 | return ... | provenance |  |
 | lifetime.rs:785:6:785:7 | p1 | lifetime.rs:789:12:789:13 | p1 | provenance |  |
@@ -201,8 +213,21 @@ edges
 | lifetime.rs:798:9:798:12 | &val | lifetime.rs:798:2:798:12 | return ... | provenance |  |
 | lifetime.rs:802:6:802:8 | ptr | lifetime.rs:808:23:808:25 | ptr | provenance |  |
 | lifetime.rs:802:12:802:24 | get_pointer(...) | lifetime.rs:802:6:802:8 | ptr | provenance |  |
+| main.rs:18:9:18:10 | p1 [&ref] | main.rs:21:19:21:20 | p1 | provenance |  |
+| main.rs:18:9:18:10 | p1 [&ref] | main.rs:29:19:29:20 | p1 | provenance |  |
+| main.rs:18:14:18:29 | ...::as_ptr(...) [&ref] | main.rs:18:9:18:10 | p1 [&ref] | provenance |  |
+| main.rs:18:26:18:28 | &b1 | main.rs:18:14:18:29 | ...::as_ptr(...) [&ref] | provenance | MaD:2 |
+| main.rs:44:9:44:10 | p2 [&ref] | main.rs:51:23:51:24 | p2 | provenance |  |
+| main.rs:44:9:44:10 | p2 [&ref] | main.rs:64:23:64:24 | p2 | provenance |  |
+| main.rs:44:14:44:29 | ...::as_ptr(...) [&ref] | main.rs:44:9:44:10 | p2 [&ref] | provenance |  |
+| main.rs:44:26:44:28 | &b2 | main.rs:44:14:44:29 | ...::as_ptr(...) [&ref] | provenance | MaD:2 |
+| main.rs:47:9:47:10 | p3 [&ref] | main.rs:52:23:52:24 | p3 | provenance |  |
+| main.rs:47:14:47:37 | ...::as_mut_ptr(...) [&ref] | main.rs:47:9:47:10 | p3 [&ref] | provenance |  |
+| main.rs:47:30:47:36 | &mut b3 | main.rs:47:14:47:37 | ...::as_mut_ptr(...) [&ref] | provenance | MaD:1 |
 models
-| 1 | Summary: core::ptr::from_ref; Argument[0]; ReturnValue; value |
+| 1 | Summary: <alloc::boxed::Box>::as_mut_ptr; Argument[0].Reference.Reference; ReturnValue.Reference; value |
+| 2 | Summary: <alloc::boxed::Box>::as_ptr; Argument[0].Reference.Reference; ReturnValue.Reference; value |
+| 3 | Summary: core::ptr::from_ref; Argument[0]; ReturnValue; value |
 nodes
 | deallocation.rs:148:6:148:7 | p1 | semmle.label | p1 |
 | deallocation.rs:148:30:148:38 | &raw const my_buffer | semmle.label | &raw const my_buffer |
@@ -323,15 +348,24 @@ nodes
 | lifetime.rs:270:47:275:1 | { ... } | semmle.label | { ... } |
 | lifetime.rs:272:6:272:11 | result | semmle.label | result |
 | lifetime.rs:272:30:272:32 | &e1 | semmle.label | &e1 |
+| lifetime.rs:277:41:282:1 | { ... } [Pointer] | semmle.label | { ... } [Pointer] |
+| lifetime.rs:279:6:279:7 | e2 [Pointer] | semmle.label | e2 [Pointer] |
+| lifetime.rs:279:11:279:31 | ...::Pointer(...) [Pointer] | semmle.label | ...::Pointer(...) [Pointer] |
+| lifetime.rs:279:28:279:30 | &v2 | semmle.label | &v2 |
 | lifetime.rs:284:46:300:1 | { ... } | semmle.label | { ... } |
 | lifetime.rs:288:2:288:7 | result | semmle.label | result |
 | lifetime.rs:289:25:289:26 | &x | semmle.label | &x |
 | lifetime.rs:295:13:295:18 | result | semmle.label | result |
 | lifetime.rs:303:6:303:7 | e1 | semmle.label | e1 |
 | lifetime.rs:303:11:303:31 | get_pointer_to_enum(...) | semmle.label | get_pointer_to_enum(...) |
+| lifetime.rs:304:6:304:7 | e2 [Pointer] | semmle.label | e2 [Pointer] |
+| lifetime.rs:304:11:304:31 | get_pointer_in_enum(...) [Pointer] | semmle.label | get_pointer_in_enum(...) [Pointer] |
 | lifetime.rs:305:6:305:11 | result | semmle.label | result |
 | lifetime.rs:305:15:305:37 | get_pointer_from_enum(...) | semmle.label | get_pointer_from_enum(...) |
 | lifetime.rs:310:31:310:32 | e1 | semmle.label | e1 |
+| lifetime.rs:313:10:313:29 | ...::Pointer(...) [Pointer] | semmle.label | ...::Pointer(...) [Pointer] |
+| lifetime.rs:313:27:313:28 | p2 | semmle.label | p2 |
+| lifetime.rs:314:23:314:24 | p2 | semmle.label | p2 |
 | lifetime.rs:317:13:317:18 | result | semmle.label | result |
 | lifetime.rs:383:3:383:4 | p1 | semmle.label | p1 |
 | lifetime.rs:383:31:383:37 | &raw mut my_pair | semmle.label | &raw mut my_pair |
@@ -400,12 +434,15 @@ nodes
 | lifetime.rs:730:6:730:7 | r1 | semmle.label | r1 |
 | lifetime.rs:730:11:730:25 | e1.test_match() | semmle.label | e1.test_match() |
 | lifetime.rs:734:12:734:13 | r1 | semmle.label | r1 |
-| lifetime.rs:766:2:766:13 | &val | semmle.label | &val |
-| lifetime.rs:766:2:766:13 | ptr | semmle.label | ptr |
-| lifetime.rs:767:2:767:13 | ptr | semmle.label | ptr |
+| lifetime.rs:766:2:766:11 | &val | semmle.label | &val |
+| lifetime.rs:766:2:766:11 | ptr | semmle.label | ptr |
+| lifetime.rs:766:2:766:11 | ptr | semmle.label | ptr |
+| lifetime.rs:767:2:767:11 | &val | semmle.label | &val |
+| lifetime.rs:767:2:767:11 | ptr | semmle.label | ptr |
+| lifetime.rs:767:2:767:11 | ptr | semmle.label | ptr |
 | lifetime.rs:769:6:769:8 | ptr | semmle.label | ptr |
-| lifetime.rs:769:12:769:23 | &val | semmle.label | &val |
-| lifetime.rs:769:12:769:23 | ptr | semmle.label | ptr |
+| lifetime.rs:769:12:769:21 | &val | semmle.label | &val |
+| lifetime.rs:769:12:769:21 | ptr | semmle.label | ptr |
 | lifetime.rs:771:12:771:14 | ptr | semmle.label | ptr |
 | lifetime.rs:781:2:781:19 | return ... | semmle.label | return ... |
 | lifetime.rs:781:9:781:19 | &my_local10 | semmle.label | &my_local10 |
@@ -417,4 +454,18 @@ nodes
 | lifetime.rs:802:6:802:8 | ptr | semmle.label | ptr |
 | lifetime.rs:802:12:802:24 | get_pointer(...) | semmle.label | get_pointer(...) |
 | lifetime.rs:808:23:808:25 | ptr | semmle.label | ptr |
+| main.rs:18:9:18:10 | p1 [&ref] | semmle.label | p1 [&ref] |
+| main.rs:18:14:18:29 | ...::as_ptr(...) [&ref] | semmle.label | ...::as_ptr(...) [&ref] |
+| main.rs:18:26:18:28 | &b1 | semmle.label | &b1 |
+| main.rs:21:19:21:20 | p1 | semmle.label | p1 |
+| main.rs:29:19:29:20 | p1 | semmle.label | p1 |
+| main.rs:44:9:44:10 | p2 [&ref] | semmle.label | p2 [&ref] |
+| main.rs:44:14:44:29 | ...::as_ptr(...) [&ref] | semmle.label | ...::as_ptr(...) [&ref] |
+| main.rs:44:26:44:28 | &b2 | semmle.label | &b2 |
+| main.rs:47:9:47:10 | p3 [&ref] | semmle.label | p3 [&ref] |
+| main.rs:47:14:47:37 | ...::as_mut_ptr(...) [&ref] | semmle.label | ...::as_mut_ptr(...) [&ref] |
+| main.rs:47:30:47:36 | &mut b3 | semmle.label | &mut b3 |
+| main.rs:51:23:51:24 | p2 | semmle.label | p2 |
+| main.rs:52:23:52:24 | p3 | semmle.label | p3 |
+| main.rs:64:23:64:24 | p2 | semmle.label | p2 |
 subpaths

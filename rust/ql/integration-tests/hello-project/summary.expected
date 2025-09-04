@@ -1,9 +1,9 @@
 | Extraction errors | 0 |
-| Extraction warnings | 1 |
+| Extraction warnings | 0 |
 | Files extracted - total | 5 |
-| Files extracted - with errors | 1 |
-| Files extracted - without errors | 4 |
-| Files extracted - without errors % | 80 |
+| Files extracted - with errors | 0 |
+| Files extracted - without errors | 5 |
+| Files extracted - without errors % | 100 |
 | Inconsistencies - AST | 0 |
 | Inconsistencies - CFG | 0 |
 | Inconsistencies - Path resolution | 0 |

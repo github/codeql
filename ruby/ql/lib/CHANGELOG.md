@@ -1,3 +1,22 @@
+## 5.0.3
+
+No user-facing changes.
+
+## 5.0.2
+
+### Bug Fixes
+
+* Made the following changes to `NetHttpRequest`
+  * Adds `connectionNode`, like other Ruby HTTP clients
+  * Makes `requestNode` and `connectionNode` public so subclasses can use them
+  * Adds detection of `Net::HTTP.start`, a common way to make HTTP requests in Ruby
+
+## 5.0.1
+
+### Minor Analysis Improvements
+
+* The regular expressions in `SensitiveDataHeuristics.qll` have been extended to find more instances of sensitive data such as secrets used in authentication, finance and health information, and device data. The heuristics have also been refined to find fewer false positive matches. This will improve results for queries related to sensitive information.
+
 ## 5.0.0
 
 ### Breaking Changes

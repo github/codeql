@@ -1,14 +1,14 @@
 edges
 | build-leaks.js:5:20:5:46 | JSON.st ... ss.env) | build-leaks.js:4:39:6:1 | {\\n    " ... leak]\\n} | provenance |  |
 | build-leaks.js:5:35:5:45 | process.env | build-leaks.js:5:20:5:46 | JSON.st ... ss.env) | provenance |  |
-| build-leaks.js:13:11:19:10 | raw | build-leaks.js:22:36:22:38 | raw | provenance |  |
-| build-leaks.js:13:17:19:10 | Object. ...      }) | build-leaks.js:13:11:19:10 | raw | provenance |  |
+| build-leaks.js:13:11:13:13 | raw | build-leaks.js:22:36:22:38 | raw | provenance |  |
+| build-leaks.js:13:17:19:10 | Object. ...      }) | build-leaks.js:13:11:13:13 | raw | provenance |  |
 | build-leaks.js:15:13:15:15 | [post update] env | build-leaks.js:16:20:16:22 | env | provenance |  |
 | build-leaks.js:15:24:15:34 | process.env | build-leaks.js:15:13:15:15 | [post update] env | provenance | Config |
 | build-leaks.js:16:20:16:22 | env | build-leaks.js:13:17:19:10 | Object. ...      }) | provenance |  |
 | build-leaks.js:16:20:16:22 | env | build-leaks.js:22:49:22:51 | env | provenance |  |
-| build-leaks.js:21:11:26:5 | stringifed [process.env] | build-leaks.js:30:22:30:31 | stringifed [process.env] | provenance |  |
-| build-leaks.js:21:24:26:5 | {\\n      ... )\\n    } [process.env] | build-leaks.js:21:11:26:5 | stringifed [process.env] | provenance |  |
+| build-leaks.js:21:11:21:20 | stringifed [process.env] | build-leaks.js:30:22:30:31 | stringifed [process.env] | provenance |  |
+| build-leaks.js:21:24:26:5 | {\\n      ... )\\n    } [process.env] | build-leaks.js:21:11:21:20 | stringifed [process.env] | provenance |  |
 | build-leaks.js:22:24:25:14 | Object. ...  }, {}) | build-leaks.js:21:24:26:5 | {\\n      ... )\\n    } [process.env] | provenance |  |
 | build-leaks.js:22:36:22:38 | raw | build-leaks.js:22:24:25:14 | Object. ...  }, {}) | provenance | Config |
 | build-leaks.js:22:36:22:38 | raw | build-leaks.js:22:49:22:51 | env | provenance | Config |
@@ -19,20 +19,20 @@ edges
 | build-leaks.js:28:12:31:5 | {\\n      ... d\\n    } [stringified, process.env] | build-leaks.js:34:26:34:45 | getEnv('production') [stringified, process.env] | provenance |  |
 | build-leaks.js:30:22:30:31 | stringifed [process.env] | build-leaks.js:28:12:31:5 | {\\n      ... d\\n    } [stringified, process.env] | provenance |  |
 | build-leaks.js:34:26:34:45 | getEnv('production') [stringified, process.env] | build-leaks.js:34:26:34:57 | getEnv( ... ngified | provenance |  |
-| build-leaks.js:40:9:40:60 | pw | build-leaks.js:41:82:41:83 | pw | provenance |  |
-| build-leaks.js:40:14:40:60 | url.par ... assword | build-leaks.js:40:9:40:60 | pw | provenance |  |
+| build-leaks.js:40:9:40:10 | pw | build-leaks.js:41:82:41:83 | pw | provenance |  |
+| build-leaks.js:40:14:40:60 | url.par ... assword | build-leaks.js:40:9:40:10 | pw | provenance |  |
 | build-leaks.js:41:67:41:84 | JSON.stringify(pw) | build-leaks.js:41:43:41:86 | { "proc ... y(pw) } | provenance |  |
 | build-leaks.js:41:82:41:83 | pw | build-leaks.js:41:67:41:84 | JSON.stringify(pw) | provenance |  |
 nodes
 | build-leaks.js:4:39:6:1 | {\\n    " ... leak]\\n} | semmle.label | {\\n    " ... leak]\\n} |
 | build-leaks.js:5:20:5:46 | JSON.st ... ss.env) | semmle.label | JSON.st ... ss.env) |
 | build-leaks.js:5:35:5:45 | process.env | semmle.label | process.env |
-| build-leaks.js:13:11:19:10 | raw | semmle.label | raw |
+| build-leaks.js:13:11:13:13 | raw | semmle.label | raw |
 | build-leaks.js:13:17:19:10 | Object. ...      }) | semmle.label | Object. ...      }) |
 | build-leaks.js:15:13:15:15 | [post update] env | semmle.label | [post update] env |
 | build-leaks.js:15:24:15:34 | process.env | semmle.label | process.env |
 | build-leaks.js:16:20:16:22 | env | semmle.label | env |
-| build-leaks.js:21:11:26:5 | stringifed [process.env] | semmle.label | stringifed [process.env] |
+| build-leaks.js:21:11:21:20 | stringifed [process.env] | semmle.label | stringifed [process.env] |
 | build-leaks.js:21:24:26:5 | {\\n      ... )\\n    } [process.env] | semmle.label | {\\n      ... )\\n    } [process.env] |
 | build-leaks.js:22:24:25:14 | Object. ...  }, {}) | semmle.label | Object. ...  }, {}) |
 | build-leaks.js:22:36:22:38 | raw | semmle.label | raw |
@@ -45,7 +45,7 @@ nodes
 | build-leaks.js:30:22:30:31 | stringifed [process.env] | semmle.label | stringifed [process.env] |
 | build-leaks.js:34:26:34:45 | getEnv('production') [stringified, process.env] | semmle.label | getEnv('production') [stringified, process.env] |
 | build-leaks.js:34:26:34:57 | getEnv( ... ngified | semmle.label | getEnv( ... ngified |
-| build-leaks.js:40:9:40:60 | pw | semmle.label | pw |
+| build-leaks.js:40:9:40:10 | pw | semmle.label | pw |
 | build-leaks.js:40:14:40:60 | url.par ... assword | semmle.label | url.par ... assword |
 | build-leaks.js:41:43:41:86 | { "proc ... y(pw) } | semmle.label | { "proc ... y(pw) } |
 | build-leaks.js:41:67:41:84 | JSON.stringify(pw) | semmle.label | JSON.stringify(pw) |

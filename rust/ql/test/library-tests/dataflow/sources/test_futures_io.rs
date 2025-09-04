@@ -62,7 +62,7 @@ async fn test_futures_rustls_futures_io() -> io::Result<()> {
         let buffer = pinned.poll_fill_buf(&mut cx);
         if let Poll::Ready(Ok(buf)) = buffer {
             sink(&buffer); // $ hasTaintFlow=url
-            sink(buf); // $ MISSING: hasTaintFlow=url
+            sink(buf); // $ hasTaintFlow=url
         }
 
         // using the `AsyncBufRead` trait (alternative syntax)
@@ -116,7 +116,7 @@ async fn test_futures_rustls_futures_io() -> io::Result<()> {
         let buffer = pinned.poll_fill_buf(&mut cx);
         sink(&buffer); // $ hasTaintFlow=url
         if let Poll::Ready(Ok(buf)) = buffer {
-            sink(buf); // $ MISSING: hasTaintFlow=url
+            sink(buf); // $ hasTaintFlow=url
         }
     }
 

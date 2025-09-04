@@ -99,18 +99,14 @@ class OutputClobberingFromEnvVarSink extends OutputClobberingSink {
  *          echo $BODY
  */
 class WorkflowCommandClobberingFromEnvVarSink extends OutputClobberingSink {
-  string clobbering_var;
-  string clobbered_value;
-
   WorkflowCommandClobberingFromEnvVarSink() {
-    exists(Run run, string workflow_cmd_stmt, string clobbering_stmt |
+    exists(Run run, string workflow_cmd_stmt, string clobbering_stmt, string clobbering_var |
       run.getScript() = this.asExpr() and
       run.getScript().getAStmt() = clobbering_stmt and
       clobbering_stmt.regexpMatch("echo\\s+(-e\\s+)?(\"|')?\\$(\\{)?" + clobbering_var + ".*") and
       exists(run.getInScopeEnvVarExpr(clobbering_var)) and
       run.getScript().getAStmt() = workflow_cmd_stmt and
-      clobbered_value =
-        trimQuotes(workflow_cmd_stmt.regexpCapture(".*::set-output\\s+name=.*::(.*)", 1))
+      exists(trimQuotes(workflow_cmd_stmt.regexpCapture(".*::set-output\\s+name=.*::(.*)", 1)))
     )
   }
 }

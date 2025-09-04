@@ -108,7 +108,7 @@ private class DefaultPathInjectionBarrier extends PathInjectionBarrier {
       TaintTracking::localTaint(validated, DataFlow::exprNode(normalize.getQualifier())) and
       DataFlow::localExprFlow(normalize, starts.getQualifier()) and
       DataFlow::localFlow(validated, this) and
-      exists(ConditionBlock bb, SuccessorTypes::BooleanSuccessor b |
+      exists(ConditionBlock bb, BooleanSuccessor b |
         bb.getANode().getNode().asAstNode().(IfStmt).getACondition() = getImmediateParent*(starts) and
         b.getValue() = true
       |

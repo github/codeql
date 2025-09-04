@@ -1,6 +1,7 @@
 /** Provides classes for representing type mentions, used in type inference. */
 
 private import rust
+private import codeql.rust.frameworks.stdlib.Stdlib
 private import Type
 private import PathResolution
 private import TypeInference
@@ -22,6 +23,18 @@ class TupleTypeReprMention extends TypeMention instanceof TupleTypeRepr {
     exists(TypePath suffix, int i |
       result = super.getField(i).(TypeMention).resolveTypeAt(suffix) and
       path = TypePath::cons(TTupleTypeParameter(super.getNumberOfFields(), i), suffix)
+    )
+  }
+}
+
+class ParenthesizedArgListMention extends TypeMention instanceof ParenthesizedArgList {
+  override Type resolveTypeAt(TypePath path) {
+    path.isEmpty() and
+    result = TTuple(super.getNumberOfTypeArgs())
+    or
+    exists(TypePath suffix, int index |
+      result = super.getTypeArg(index).getTypeRepr().(TypeMention).resolveTypeAt(suffix) and
+      path = TypePath::cons(TTupleTypeParameter(super.getNumberOfTypeArgs(), index), suffix)
     )
   }
 }
@@ -62,21 +75,7 @@ class SliceTypeReprMention extends TypeMention instanceof SliceTypeRepr {
   }
 }
 
-/** Holds if `path` is used as a type mention during type inference. */
-predicate relevantPathTypeMention(Path path) {
-  path =
-    [
-      any(PathTypeRepr r).getPath(),
-      any(StructExpr s).getPath().getQualifier*(),
-      any(CallExpr ce).getFunction().(PathExpr).getPath().getQualifier*(),
-      any(StructPat p).getPath(),
-      any(TupleStructPat p).getPath()
-    ]
-}
-
-abstract class PathTypeMention extends TypeMention, Path {
-  PathTypeMention() { relevantPathTypeMention(this) }
-}
+abstract class PathTypeMention extends TypeMention, Path { }
 
 class AliasPathTypeMention extends PathTypeMention {
   TypeAlias resolved;
@@ -183,7 +182,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
   private TypeMention getTypeMentionForTypeParameter(TypeParameter tp) {
     exists(int i |
       result = this.getPositionalTypeArgument(pragma[only_bind_into](i)) and
-      tp = this.resolveRootType().getTypeParameter(pragma[only_bind_into](i))
+      tp = this.resolveRootType().getPositionalTypeParameter(pragma[only_bind_into](i))
     )
     or
     exists(TypeAlias alias |
@@ -215,9 +214,21 @@ class NonAliasPathTypeMention extends PathTypeMention {
               .(TraitItemNode)
               .getAssocItem(pragma[only_bind_into](name)))
     )
+    or
+    // Handle the special syntactic sugar for function traits. For now we only
+    // support `FnOnce` as we can't support the "inherited" associated types of
+    // `Fn` and `FnMut` yet.
+    exists(FnOnceTrait t | t = resolved |
+      tp = TTypeParamTypeParameter(t.getTypeParam()) and
+      result = this.getSegment().getParenthesizedArgList()
+      or
+      tp = TAssociatedTypeTypeParameter(t.getOutputType()) and
+      result = this.getSegment().getRetType().getTypeRepr()
+    )
   }
 
-  Type resolveRootType() {
+  pragma[nomagic]
+  private Type resolveRootType() {
     result = TStruct(resolved)
     or
     result = TEnum(resolved)

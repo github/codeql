@@ -142,10 +142,10 @@ edges
 | lib/lib.js:155:38:155:41 | name | lib/lib.js:161:25:161:28 | name | provenance |  |
 | lib/lib.js:170:41:170:44 | name | lib/lib.js:173:20:173:23 | name | provenance |  |
 | lib/lib.js:177:38:177:41 | name | lib/lib.js:181:21:181:24 | name | provenance |  |
-| lib/lib.js:181:6:181:52 | broken | lib/lib.js:182:22:182:27 | broken | provenance |  |
+| lib/lib.js:181:6:181:11 | broken | lib/lib.js:182:22:182:27 | broken | provenance |  |
 | lib/lib.js:181:21:181:24 | name | lib/lib.js:181:21:181:46 | name.re ... "'\\''") | provenance |  |
 | lib/lib.js:181:21:181:24 | name | lib/lib.js:181:21:181:46 | name.re ... "'\\''") | provenance |  |
-| lib/lib.js:181:21:181:46 | name.re ... "'\\''") | lib/lib.js:181:6:181:52 | broken | provenance |  |
+| lib/lib.js:181:21:181:46 | name.re ... "'\\''") | lib/lib.js:181:6:181:11 | broken | provenance |  |
 | lib/lib.js:186:34:186:37 | name | lib/lib.js:187:22:187:25 | name | provenance |  |
 | lib/lib.js:186:34:186:37 | name | lib/lib.js:190:23:190:26 | name | provenance |  |
 | lib/lib.js:196:45:196:48 | name | lib/lib.js:197:22:197:25 | name | provenance |  |
@@ -160,8 +160,8 @@ edges
 | lib/lib.js:239:28:239:28 | s | lib/lib.js:245:9:245:9 | s | provenance |  |
 | lib/lib.js:248:42:248:45 | name | lib/lib.js:249:22:249:25 | name | provenance |  |
 | lib/lib.js:248:42:248:45 | name | lib/lib.js:251:27:251:30 | name | provenance |  |
-| lib/lib.js:251:6:251:31 | cleaned | lib/lib.js:253:22:253:28 | cleaned | provenance |  |
-| lib/lib.js:251:16:251:31 | cleanInput(name) | lib/lib.js:251:6:251:31 | cleaned | provenance |  |
+| lib/lib.js:251:6:251:12 | cleaned | lib/lib.js:253:22:253:28 | cleaned | provenance |  |
+| lib/lib.js:251:16:251:31 | cleanInput(name) | lib/lib.js:251:6:251:12 | cleaned | provenance |  |
 | lib/lib.js:251:27:251:30 | name | lib/lib.js:239:28:239:28 | s | provenance |  |
 | lib/lib.js:251:27:251:30 | name | lib/lib.js:251:16:251:31 | cleanInput(name) | provenance |  |
 | lib/lib.js:257:35:257:38 | name | lib/lib.js:258:22:258:25 | name | provenance |  |
@@ -235,10 +235,10 @@ edges
 | lib/lib.js:608:42:608:45 | name | lib/lib.js:626:29:626:32 | name | provenance |  |
 | lib/lib.js:608:42:608:45 | name | lib/lib.js:629:25:629:28 | name | provenance |  |
 | lib/lib.js:632:38:632:41 | name | lib/lib.js:633:24:633:27 | name | provenance |  |
-| lib/lib.js:633:6:633:68 | sanitized | lib/lib.js:634:22:634:30 | sanitized | provenance |  |
+| lib/lib.js:633:6:633:14 | sanitized | lib/lib.js:634:22:634:30 | sanitized | provenance |  |
 | lib/lib.js:633:24:633:27 | name | lib/lib.js:633:24:633:62 | name.re ... '\\\\''") | provenance |  |
 | lib/lib.js:633:24:633:27 | name | lib/lib.js:633:24:633:62 | name.re ... '\\\\''") | provenance |  |
-| lib/lib.js:633:24:633:62 | name.re ... '\\\\''") | lib/lib.js:633:6:633:68 | sanitized | provenance |  |
+| lib/lib.js:633:24:633:62 | name.re ... '\\\\''") | lib/lib.js:633:6:633:14 | sanitized | provenance |  |
 | lib/subLib2/compiled-file.ts:3:26:3:29 | name | lib/subLib2/compiled-file.ts:4:25:4:28 | name | provenance |  |
 | lib/subLib2/special-file.js:3:28:3:31 | name | lib/subLib2/special-file.js:4:22:4:25 | name | provenance |  |
 | lib/subLib3/my-file.ts:3:28:3:31 | name | lib/subLib3/my-file.ts:4:22:4:25 | name | provenance |  |
@@ -308,7 +308,7 @@ nodes
 | lib/lib.js:170:41:170:44 | name | semmle.label | name |
 | lib/lib.js:173:20:173:23 | name | semmle.label | name |
 | lib/lib.js:177:38:177:41 | name | semmle.label | name |
-| lib/lib.js:181:6:181:52 | broken | semmle.label | broken |
+| lib/lib.js:181:6:181:11 | broken | semmle.label | broken |
 | lib/lib.js:181:21:181:24 | name | semmle.label | name |
 | lib/lib.js:181:21:181:46 | name.re ... "'\\''") | semmle.label | name.re ... "'\\''") |
 | lib/lib.js:181:21:181:46 | name.re ... "'\\''") | semmle.label | name.re ... "'\\''") |
@@ -333,7 +333,7 @@ nodes
 | lib/lib.js:245:9:245:9 | s | semmle.label | s |
 | lib/lib.js:248:42:248:45 | name | semmle.label | name |
 | lib/lib.js:249:22:249:25 | name | semmle.label | name |
-| lib/lib.js:251:6:251:31 | cleaned | semmle.label | cleaned |
+| lib/lib.js:251:6:251:12 | cleaned | semmle.label | cleaned |
 | lib/lib.js:251:16:251:31 | cleanInput(name) | semmle.label | cleanInput(name) |
 | lib/lib.js:251:27:251:30 | name | semmle.label | name |
 | lib/lib.js:253:22:253:28 | cleaned | semmle.label | cleaned |
@@ -428,7 +428,7 @@ nodes
 | lib/lib.js:626:29:626:32 | name | semmle.label | name |
 | lib/lib.js:629:25:629:28 | name | semmle.label | name |
 | lib/lib.js:632:38:632:41 | name | semmle.label | name |
-| lib/lib.js:633:6:633:68 | sanitized | semmle.label | sanitized |
+| lib/lib.js:633:6:633:14 | sanitized | semmle.label | sanitized |
 | lib/lib.js:633:24:633:27 | name | semmle.label | name |
 | lib/lib.js:633:24:633:62 | name.re ... '\\\\''") | semmle.label | name.re ... '\\\\''") |
 | lib/lib.js:633:24:633:62 | name.re ... '\\\\''") | semmle.label | name.re ... '\\\\''") |

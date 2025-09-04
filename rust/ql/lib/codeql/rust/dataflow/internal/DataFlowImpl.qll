@@ -53,7 +53,9 @@ final class DataFlowCallable extends TDataFlowCallable {
   }
 
   /** Gets the location of this callable. */
-  Location getLocation() { result = this.asCfgScope().getLocation() }
+  Location getLocation() {
+    result = [this.asCfgScope().getLocation(), this.asSummarizedCallable().getLocation()]
+  }
 }
 
 final class DataFlowCall extends TDataFlowCall {
@@ -196,7 +198,8 @@ private ExprCfgNode getALastEvalNode(ExprCfgNode e) {
 
 /**
  * Holds if a reverse local flow step should be added from the post-update node
- * for `e` to the post-update node for the result.
+ * for `e` to the post-update node for the result. `preservesValue` is true
+ * if the step is value preserving.
  *
  * This is needed to allow for side-effects on compound expressions to propagate
  * to sub components. For example, in
@@ -239,6 +242,12 @@ module LocalFlow {
     exists(LetStmtCfgNode s |
       nodeFrom.getCfgNode() = s.getInitializer() and
       nodeTo.getCfgNode() = s.getPat()
+    )
+    or
+    // An edge from the right-hand side of a let expression to the left-hand side.
+    exists(LetExprCfgNode e |
+      nodeFrom.getCfgNode() = e.getScrutinee() and
+      nodeTo.getCfgNode() = e.getPat()
     )
     or
     exists(IdentPatCfgNode p |
@@ -378,6 +387,8 @@ module RustDataFlow implements InputSig<Location> {
 
   predicate neverSkipInPathGraph(Node node) {
     node.(Node::Node).getCfgNode() = any(LetStmtCfgNode s).getPat()
+    or
+    node.(Node::Node).getCfgNode() = any(LetExprCfgNode e).getPat()
     or
     node.(Node::Node).getCfgNode() = any(AssignmentExprCfgNode a).getLhs()
     or
@@ -836,6 +847,7 @@ module RustDataFlow implements InputSig<Location> {
 module VariableCapture {
   private import codeql.rust.internal.CachedStages
   private import codeql.dataflow.VariableCapture as SharedVariableCapture
+  private import codeql.rust.controlflow.BasicBlocks as BasicBlocks
 
   private predicate closureFlowStep(ExprCfgNode e1, ExprCfgNode e2) {
     Stages::DataFlowStage::ref() and
@@ -847,22 +859,13 @@ module VariableCapture {
     )
   }
 
-  private module CaptureInput implements SharedVariableCapture::InputSig<Location> {
+  private module CaptureInput implements
+    SharedVariableCapture::InputSig<Location, BasicBlocks::BasicBlock>
+  {
     private import rust as Ast
-    private import codeql.rust.controlflow.BasicBlocks as BasicBlocks
     private import codeql.rust.elements.Variable as Variable
 
-    class BasicBlock extends BasicBlocks::BasicBlock {
-      Callable getEnclosingCallable() { result = this.getScope() }
-    }
-
-    class ControlFlowNode = CfgNode;
-
-    BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
-      result = bb.getImmediateDominator()
-    }
-
-    BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
+    Callable basicBlockGetEnclosingCallable(BasicBlocks::BasicBlock bb) { result = bb.getScope() }
 
     class CapturedVariable extends Variable {
       CapturedVariable() { this.isCaptured() }
@@ -879,7 +882,7 @@ module VariableCapture {
     }
 
     class Expr extends CfgNode {
-      predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
+      predicate hasCfgNode(BasicBlocks::BasicBlock bb, int i) { this = bb.getNode(i) }
     }
 
     class VariableWrite extends Expr {
@@ -898,6 +901,12 @@ module VariableCapture {
           this = ls and
           v.getPat() = ls.getPat().getPat() and
           ls.getInitializer() = source
+        )
+        or
+        exists(LetExprCfgNode le |
+          this = le and
+          v.getPat() = le.getPat().getPat() and
+          le.getScrutinee() = source
         )
       }
 
@@ -935,7 +944,7 @@ module VariableCapture {
 
   class CapturedVariable = CaptureInput::CapturedVariable;
 
-  module Flow = SharedVariableCapture::Flow<Location, CaptureInput>;
+  module Flow = SharedVariableCapture::Flow<Location, BasicBlocks::Cfg, CaptureInput>;
 
   private Flow::ClosureNode asClosureNode(Node n) {
     result = n.(CaptureNode).getSynthesizedCaptureNode()

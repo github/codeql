@@ -14,8 +14,8 @@ edges
 | bad-code-sanitization.js:7:21:7:70 | `${name ... key])}` | bad-code-sanitization.js:7:5:7:14 | [post update] statements [ArrayElement] | provenance |  |
 | bad-code-sanitization.js:7:31:7:43 | safeProp(key) | bad-code-sanitization.js:7:21:7:70 | `${name ... key])}` | provenance |  |
 | bad-code-sanitization.js:8:27:8:36 | statements [ArrayElement] | bad-code-sanitization.js:8:27:8:46 | statements.join(';') | provenance |  |
-| bad-code-sanitization.js:63:11:63:55 | assignment | bad-code-sanitization.js:64:27:64:36 | assignment | provenance |  |
-| bad-code-sanitization.js:63:31:63:49 | JSON.stringify(key) | bad-code-sanitization.js:63:11:63:55 | assignment | provenance |  |
+| bad-code-sanitization.js:63:11:63:20 | assignment | bad-code-sanitization.js:64:27:64:36 | assignment | provenance |  |
+| bad-code-sanitization.js:63:31:63:49 | JSON.stringify(key) | bad-code-sanitization.js:63:11:63:20 | assignment | provenance |  |
 nodes
 | bad-code-sanitization.js:2:12:2:90 | /^[_$a- ... key)}]` | semmle.label | /^[_$a- ... key)}]` |
 | bad-code-sanitization.js:2:69:2:87 | JSON.stringify(key) | semmle.label | JSON.stringify(key) |
@@ -32,7 +32,7 @@ nodes
 | bad-code-sanitization.js:52:28:52:62 | JSON.st ... bble")) | semmle.label | JSON.st ... bble")) |
 | bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) | semmle.label | JSON.st ... bble")) |
 | bad-code-sanitization.js:58:29:58:49 | JSON.st ... (taint) | semmle.label | JSON.st ... (taint) |
-| bad-code-sanitization.js:63:11:63:55 | assignment | semmle.label | assignment |
+| bad-code-sanitization.js:63:11:63:20 | assignment | semmle.label | assignment |
 | bad-code-sanitization.js:63:31:63:49 | JSON.stringify(key) | semmle.label | JSON.stringify(key) |
 | bad-code-sanitization.js:64:27:64:36 | assignment | semmle.label | assignment |
 subpaths

@@ -1,3 +1,28 @@
+## 0.1.15
+
+### Major Analysis Improvements
+
+* Path resolution has been removed from the Rust extractor. For the majority of purposes CodeQL computed paths have been in use for several previous releases, this completes the transition. Extraction is now faster and more reliable.
+
+### Minor Analysis Improvements
+
+* Attribute macros are now taken into account when identifying macro-expanded code. This affects the queries `rust/unused-variable` and `rust/unused-value`, which exclude results in macro-expanded code.
+* Improved modelling of the `std::fs`, `async_std::fs` and `tokio::fs` libraries. This may cause more alerts to be found by Rust injection queries, particularly `rust/path-injection`.
+
+## 0.1.14
+
+### Minor Analysis Improvements
+
+* [`let` chains in `if` and `while`](https://doc.rust-lang.org/edition-guide/rust-2024/let-chains.html) are now supported, as well as [`if let` guards in `match` expressions](https://rust-lang.github.io/rfcs/2294-if-let-guard.html).
+* Added more detail to models of `postgres`, `rusqlite`, `sqlx` and `tokio-postgres`. This may improve query results, particularly for `rust/sql-injection` and `rust/cleartext-storage-database`.
+
+## 0.1.13
+
+### Minor Analysis Improvements
+
+* Removed deprecated dataflow extensible predicates `sourceModelDeprecated`, `sinkModelDeprecated`, and `summaryModelDeprecated`, along with their associated classes.
+* The regular expressions in `SensitiveDataHeuristics.qll` have been extended to find more instances of sensitive data such as secrets used in authentication, finance and health information, and device data. The heuristics have also been refined to find fewer false positive matches. This will improve results for queries related to sensitive information.
+
 ## 0.1.12
 
 ### Minor Analysis Improvements

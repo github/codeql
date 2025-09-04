@@ -5,63 +5,14 @@
 overlay[local?]
 module;
 
+private import codeql.controlflow.BasicBlock as BB
 private import codeql.util.Location
 private import codeql.util.Unit
 
+signature class BasicBlockSig;
+
 /** Provides the input specification of the SSA implementation. */
-signature module InputSig<LocationSig Location> {
-  /**
-   * A basic block, that is, a maximal straight-line sequence of control flow nodes
-   * without branches or joins.
-   */
-  class BasicBlock {
-    /** Gets a textual representation of this basic block. */
-    string toString();
-
-    /** Gets the `i`th node in this basic block. */
-    ControlFlowNode getNode(int i);
-
-    /** Gets the length of this basic block. */
-    int length();
-
-    /** Gets the location of this basic block. */
-    Location getLocation();
-  }
-
-  /** A control flow node. */
-  class ControlFlowNode {
-    /** Gets a textual representation of this control flow node. */
-    string toString();
-
-    /** Gets the location of this control flow node. */
-    Location getLocation();
-  }
-
-  /**
-   * Gets the basic block that immediately dominates basic block `bb`, if any.
-   *
-   * That is, all paths reaching `bb` from some entry point basic block must go
-   * through the result.
-   *
-   * Example:
-   *
-   * ```csharp
-   * int M(string s) {
-   *   if (s == null)
-   *     throw new ArgumentNullException(nameof(s));
-   *   return s.Length;
-   * }
-   * ```
-   *
-   * The basic block starting on line 2 is an immediate dominator of
-   * the basic block on line 4 (all paths from the entry point of `M`
-   * to `return s.Length;` must go through the null check.
-   */
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb);
-
-  /** Gets an immediate successor of basic block `bb`, if any. */
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb);
-
+signature module InputSig<LocationSig Location, BasicBlockSig BasicBlock> {
   /** A variable that can be SSA converted. */
   class SourceVariable {
     /** Gets a textual representation of this variable. */
@@ -108,12 +59,13 @@ signature module InputSig<LocationSig Location> {
  * NB: If this predicate is exposed, it should be cached.
  * ```
  */
-module Make<LocationSig Location, InputSig<Location> Input> {
+module Make<
+  LocationSig Location, BB::CfgSig<Location> Cfg, InputSig<Location, Cfg::BasicBlock> Input>
+{
+  private import Cfg
   private import Input
 
-  private BasicBlock getABasicBlockPredecessor(BasicBlock bb) {
-    getABasicBlockSuccessor(result) = bb
-  }
+  private BasicBlock getABasicBlockPredecessor(BasicBlock bb) { result.getASuccessor() = bb }
 
   /**
    * A classification of variable references into reads and
@@ -237,9 +189,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /**
      * Holds if source variable `v` is live at the end of basic block `bb`.
      */
-    predicate liveAtExit(BasicBlock bb, SourceVariable v) {
-      liveAtEntry(getABasicBlockSuccessor(bb), v)
-    }
+    predicate liveAtExit(BasicBlock bb, SourceVariable v) { liveAtEntry(bb.getASuccessor(), v) }
 
     /**
      * Holds if variable `v` is live in basic block `bb` at rank `rnk`.
@@ -271,25 +221,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   private import Liveness
 
   /**
-   * Holds if `df` is in the dominance frontier of `bb`.
-   *
-   * This is equivalent to:
-   *
-   * ```ql
-   * bb = getImmediateBasicBlockDominator*(getABasicBlockPredecessor(df)) and
-   * not bb = getImmediateBasicBlockDominator+(df)
-   * ```
-   */
-  private predicate inDominanceFrontier(BasicBlock bb, BasicBlock df) {
-    bb = getABasicBlockPredecessor(df) and not bb = getImmediateBasicBlockDominator(df)
-    or
-    exists(BasicBlock prev | inDominanceFrontier(prev, df) |
-      bb = getImmediateBasicBlockDominator(prev) and
-      not bb = getImmediateBasicBlockDominator(df)
-    )
-  }
-
-  /**
    * Holds if `bb` is in the dominance frontier of a block containing a
    * definition of `v`.
    */
@@ -297,7 +228,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   private predicate inDefDominanceFrontier(BasicBlock bb, SourceVariable v) {
     exists(BasicBlock defbb, Definition def |
       def.definesAt(v, defbb, _) and
-      inDominanceFrontier(defbb, bb)
+      defbb.inDominanceFrontier(bb)
     )
   }
 
@@ -307,7 +238,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    */
   pragma[nomagic]
   private predicate inReadDominanceFrontier(BasicBlock bb, SourceVariable v) {
-    exists(BasicBlock readbb | inDominanceFrontier(readbb, bb) |
+    exists(BasicBlock readbb | readbb.inDominanceFrontier(bb) |
       ssaDefReachesRead(v, _, readbb, _) and
       variableRead(readbb, _, v, true) and
       not variableWrite(readbb, _, v, _)
@@ -389,7 +320,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      */
     pragma[nomagic]
     private predicate liveThrough(BasicBlock idom, BasicBlock bb, SourceVariable v) {
-      idom = getImmediateBasicBlockDominator(bb) and
+      idom = bb.getImmediateDominator() and
       liveAtExit(bb, v) and
       not any(Definition def).definesAt(v, bb, _)
     }
@@ -439,7 +370,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       ssaDefReachesReadWithinBlock(v, def, bb, i)
       or
       ssaRef(bb, i, v, Read()) and
-      ssaDefReachesEndOfBlock(getImmediateBasicBlockDominator(bb), def, v) and
+      ssaDefReachesEndOfBlock(bb.getImmediateDominator(), def, v) and
       not ssaDefReachesReadWithinBlock(v, _, bb, i)
     }
 
@@ -483,7 +414,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      */
     pragma[nomagic]
     private predicate liveThrough(BasicBlock idom, BasicBlock bb, SourceVariable v) {
-      idom = getImmediateBasicBlockDominator(bb) and
+      idom = bb.getImmediateDominator() and
       liveAtExit(bb, v) and
       not ssaRef(bb, _, v, _)
     }
@@ -517,7 +448,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       bb1 = bb2 and
       refRank(bb1, i1, v, _) + 1 = refRank(bb2, i2, v, Read())
       or
-      refReachesEndOfBlock(bb1, i1, getImmediateBasicBlockDominator(bb2), v) and
+      refReachesEndOfBlock(bb1, i1, bb2.getImmediateDominator(), v) and
       1 = refRank(bb2, i2, v, Read())
     }
 
@@ -808,12 +739,12 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       DefinitionExt def, SourceVariable v, BasicBlock bb1, BasicBlock bb2
     ) {
       defOccursInBlock(def, bb1, v, _) and
-      bb2 = getABasicBlockSuccessor(bb1)
+      bb2 = bb1.getASuccessor()
       or
       exists(BasicBlock mid |
         varBlockReachesExt(def, v, bb1, mid) and
         ssaDefReachesThroughBlock(def, mid) and
-        bb2 = getABasicBlockSuccessor(mid)
+        bb2 = mid.getASuccessor()
       )
     }
 
@@ -943,7 +874,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     // the node. If two definitions dominate a node then one must dominate the
     // other, so therefore the definition of _closest_ is given by the dominator
     // tree. Thus, reaching definitions can be calculated in terms of dominance.
-    ssaDefReachesEndOfBlockExt0(getImmediateBasicBlockDominator(bb), def, pragma[only_bind_into](v)) and
+    ssaDefReachesEndOfBlockExt0(bb.getImmediateDominator(), def, pragma[only_bind_into](v)) and
     liveThroughExt(bb, pragma[only_bind_into](v))
   }
 
@@ -1150,7 +1081,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   predicate uncertainWriteDefinitionInput = SsaDefReachesNew::uncertainWriteDefinitionInput/2;
 
   /** Holds if `bb` is a control-flow exit point. */
-  private predicate exitBlock(BasicBlock bb) { not exists(getABasicBlockSuccessor(bb)) }
+  private predicate exitBlock(BasicBlock bb) { not exists(bb.getASuccessor()) }
 
   /**
    * NB: If this predicate is exposed, it should be cached.
@@ -1418,7 +1349,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         or
         ssaDefReachesRead(v, def, bb, i) and
         not SsaDefReachesNew::ssaDefReachesReadWithinBlock(v, def, bb, i) and
-        not def.definesAt(v, getImmediateBasicBlockDominator*(bb), _)
+        not def.definesAt(v, bb.getImmediateDominator*(), _)
       )
     }
 
@@ -1566,23 +1497,29 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      */
     default predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) { none() }
 
+    /** An abstract value that a `Guard` may evaluate to. */
+    class GuardValue {
+      /** Gets a textual representation of this value. */
+      string toString();
+    }
+
     /** A (potential) guard. */
     class Guard {
       /** Gets a textual representation of this guard. */
       string toString();
 
       /**
-       * Holds if the evaluation of this guard to `branch` corresponds to the edge
+       * Holds if the evaluation of this guard to `val` corresponds to the edge
        * from `bb1` to `bb2`.
        */
-      predicate hasBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch);
+      predicate hasValueBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue val);
 
       /**
-       * Holds if this guard evaluating to `branch` controls the control-flow
+       * Holds if this guard evaluating to `val` controls the control-flow
        * branch edge from `bb1` to `bb2`. That is, following the edge from
-       * `bb1` to `bb2` implies that this guard evaluated to `branch`.
+       * `bb1` to `bb2` implies that this guard evaluated to `val`.
        *
-       * This predicate differs from `hasBranchEdge` in that it also covers
+       * This predicate differs from `hasValueBranchEdge` in that it also covers
        * indirect guards, such as:
        * ```
        * b = guard;
@@ -1590,15 +1527,15 @@ module Make<LocationSig Location, InputSig<Location> Input> {
        * if (b) { ... }
        * ```
        */
-      predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch);
+      predicate valueControlsBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue val);
     }
 
-    /** Holds if `guard` directly controls block `bb` upon evaluating to `branch`. */
-    predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, boolean branch);
+    /** Holds if `guard` directly controls block `bb` upon evaluating to `val`. */
+    predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, GuardValue val);
 
-    /** Holds if `guard` controls block `bb` upon evaluating to `branch`. */
-    default predicate guardControlsBlock(Guard guard, BasicBlock bb, boolean branch) {
-      guardDirectlyControlsBlock(guard, bb, branch)
+    /** Holds if `guard` controls block `bb` upon evaluating to `val`. */
+    default predicate guardControlsBlock(Guard guard, BasicBlock bb, GuardValue val) {
+      guardDirectlyControlsBlock(guard, bb, val)
     }
 
     /**
@@ -1661,7 +1598,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         DfInput::keepAllPhiInputBackEdges() and
         exists(getAPhiInputDef(phi, input)) and
         phi.getBasicBlock() = bbPhi and
-        getImmediateBasicBlockDominator+(input) = bbPhi
+        input.getImmediateDominator+() = bbPhi
       )
     }
 
@@ -1683,7 +1620,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       (
         // The input node is relevant either if it sits directly on a branch
         // edge for a guard,
-        exists(DfInput::Guard g | g.hasBranchEdge(input, phi.getBasicBlock(), _))
+        exists(DfInput::Guard g | g.hasValueBranchEdge(input, phi.getBasicBlock(), _))
         or
         // or if the unique predecessor is not an equivalent substitute in
         // terms of being controlled by the same guards.
@@ -1702,9 +1639,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
           AdjacentSsaRefs::adjacentRefPhi(prev, _, input, phi.getBasicBlock(),
             phi.getSourceVariable()) and
           prev != input and
-          exists(DfInput::Guard g, boolean branch |
-            DfInput::guardDirectlyControlsBlock(g, input, branch) and
-            not DfInput::guardDirectlyControlsBlock(g, prev, branch)
+          exists(DfInput::Guard g, DfInput::GuardValue val |
+            DfInput::guardDirectlyControlsBlock(g, input, val) and
+            not DfInput::guardDirectlyControlsBlock(g, prev, val)
           )
         )
       )
@@ -2118,13 +2055,13 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     /**
-     * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
+     * Holds if the guard `g` validates the expression `e` upon evaluating to `val`.
      *
      * The expression `e` is expected to be a syntactic part of the guard `g`.
      * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
      * the argument `x`.
      */
-    signature predicate guardChecksSig(DfInput::Guard g, DfInput::Expr e, boolean branch);
+    signature predicate guardChecksSig(DfInput::Guard g, DfInput::Expr e, DfInput::GuardValue val);
 
     pragma[nomagic]
     private Definition getAPhiInputDef(SsaInputNodeImpl n) {
@@ -2139,7 +2076,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     private module WithState<StateSig State> {
       /**
-       * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`, blocking
+       * Holds if the guard `g` validates the expression `e` upon evaluating to `val`, blocking
        * flow in the given `state`.
        *
        * The expression `e` is expected to be a syntactic part of the guard `g`.
@@ -2147,15 +2084,15 @@ module Make<LocationSig Location, InputSig<Location> Input> {
        * the argument `x`.
        */
       signature predicate guardChecksSig(
-        DfInput::Guard g, DfInput::Expr e, boolean branch, State state
+        DfInput::Guard g, DfInput::Expr e, DfInput::GuardValue val, State state
       );
 
       /**
        * Holds if the guard `g` validates the SSA definition `def` upon
-       * evaluating to `branch`, blocking flow in the given `state`.
+       * evaluating to `val`, blocking flow in the given `state`.
        */
       signature predicate guardChecksDefSig(
-        DfInput::Guard g, Definition def, boolean branch, State state
+        DfInput::Guard g, Definition def, DfInput::GuardValue val, State state
       );
     }
 
@@ -2167,9 +2104,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      */
     module BarrierGuard<guardChecksSig/3 guardChecks> {
       private predicate guardChecksWithState(
-        DfInput::Guard g, DfInput::Expr e, boolean branch, Unit state
+        DfInput::Guard g, DfInput::Expr e, DfInput::GuardValue val, Unit state
       ) {
-        guardChecks(g, e, branch) and exists(state)
+        guardChecks(g, e, val) and exists(state)
       }
 
       private module StatefulBarrier = BarrierGuardWithState<Unit, guardChecksWithState/4>;
@@ -2188,9 +2125,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     module BarrierGuardWithState<StateSig State, WithState<State>::guardChecksSig/4 guardChecks> {
       pragma[nomagic]
       private predicate guardChecksSsaDef(
-        DfInput::Guard g, Definition def, boolean branch, State state
+        DfInput::Guard g, Definition def, DfInput::GuardValue val, State state
       ) {
-        guardChecks(g, DfInput::getARead(def), branch, state)
+        guardChecks(g, DfInput::getARead(def), val, state)
       }
 
       private module Barrier = BarrierGuardDefWithState<State, guardChecksSsaDef/4>;
@@ -2210,14 +2147,14 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       /** Gets a node that is safely guarded by the given guard check. */
       pragma[nomagic]
       Node getABarrierNode(State state) {
-        exists(DfInput::Guard g, boolean branch, Definition def, BasicBlock bb |
-          guardChecksSsaDef(g, def, branch, state)
+        exists(DfInput::Guard g, DfInput::GuardValue val, Definition def, BasicBlock bb |
+          guardChecksSsaDef(g, def, val, state)
         |
           // guard controls a read
           exists(DfInput::Expr e |
             e = DfInput::getARead(def) and
             e.hasCfgNode(bb, _) and
-            DfInput::guardControlsBlock(g, bb, branch) and
+            DfInput::guardControlsBlock(g, bb, val) and
             result.(ExprNode).getExpr() = e
           )
           or
@@ -2226,9 +2163,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
             def = getAPhiInputDef(result) and
             result.(SsaInputNodeImpl).isInputInto(phi, bb)
           |
-            DfInput::guardControlsBlock(g, bb, branch)
+            DfInput::guardControlsBlock(g, bb, val)
             or
-            g.controlsBranchEdge(bb, phi.getBasicBlock(), branch)
+            g.valueControlsBranchEdge(bb, phi.getBasicBlock(), val)
           )
         )
       }

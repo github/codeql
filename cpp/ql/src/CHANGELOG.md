@@ -1,3 +1,22 @@
+## 1.4.7
+
+### Bug Fixes
+
+* Fixed an inconsistency across languages where most have a `Customizations.qll` file for adding customizations, but not all did.
+
+## 1.4.6
+
+### Minor Analysis Improvements
+
+* The `cpp/short-global-name` query will no longer give alerts for instantiations of template variables, only for the template itself.
+* Fixed a false positive in `cpp/overflow-buffer` when the type of the destination buffer is a reference to a class/struct type.
+
+## 1.4.5
+
+### Minor Analysis Improvements
+
+* The "Initialization code not run" query (`cpp/initialization-not-run`) no longer reports an alert on static global variables that have no dereference.
+
 ## 1.4.4
 
 ### Minor Analysis Improvements

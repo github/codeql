@@ -22,12 +22,12 @@ edges
 | xss-through-filenames.js:30:34:30:37 | file | xss-through-filenames.js:31:25:31:28 | file | provenance |  |
 | xss-through-filenames.js:31:25:31:28 | file | xss-through-filenames.js:31:13:31:18 | [post update] files2 [ArrayElement] | provenance |  |
 | xss-through-filenames.js:33:19:33:24 | files2 [ArrayElement] | xss-through-filenames.js:35:29:35:34 | files2 [ArrayElement] | provenance |  |
-| xss-through-filenames.js:35:13:35:35 | files3 | xss-through-filenames.js:37:19:37:24 | files3 | provenance |  |
-| xss-through-filenames.js:35:22:35:35 | format(files2) | xss-through-filenames.js:35:13:35:35 | files3 | provenance |  |
+| xss-through-filenames.js:35:13:35:18 | files3 | xss-through-filenames.js:37:19:37:24 | files3 | provenance |  |
+| xss-through-filenames.js:35:22:35:35 | format(files2) | xss-through-filenames.js:35:13:35:18 | files3 | provenance |  |
 | xss-through-filenames.js:35:29:35:34 | files2 [ArrayElement] | xss-through-filenames.js:17:21:17:26 | files2 [ArrayElement] | provenance |  |
 | xss-through-filenames.js:35:29:35:34 | files2 [ArrayElement] | xss-through-filenames.js:35:22:35:35 | format(files2) | provenance |  |
-| xss-through-torrent.js:6:6:6:24 | name | xss-through-torrent.js:7:11:7:14 | name | provenance |  |
-| xss-through-torrent.js:6:13:6:24 | torrent.name | xss-through-torrent.js:6:6:6:24 | name | provenance |  |
+| xss-through-torrent.js:6:6:6:9 | name | xss-through-torrent.js:7:11:7:14 | name | provenance |  |
+| xss-through-torrent.js:6:13:6:24 | torrent.name | xss-through-torrent.js:6:6:6:9 | name | provenance |  |
 nodes
 | xss-through-filenames.js:7:43:7:48 | files1 | semmle.label | files1 |
 | xss-through-filenames.js:8:18:8:23 | files1 | semmle.label | files1 |
@@ -48,11 +48,11 @@ nodes
 | xss-through-filenames.js:31:25:31:28 | file | semmle.label | file |
 | xss-through-filenames.js:33:19:33:24 | files2 | semmle.label | files2 |
 | xss-through-filenames.js:33:19:33:24 | files2 [ArrayElement] | semmle.label | files2 [ArrayElement] |
-| xss-through-filenames.js:35:13:35:35 | files3 | semmle.label | files3 |
+| xss-through-filenames.js:35:13:35:18 | files3 | semmle.label | files3 |
 | xss-through-filenames.js:35:22:35:35 | format(files2) | semmle.label | format(files2) |
 | xss-through-filenames.js:35:29:35:34 | files2 [ArrayElement] | semmle.label | files2 [ArrayElement] |
 | xss-through-filenames.js:37:19:37:24 | files3 | semmle.label | files3 |
-| xss-through-torrent.js:6:6:6:24 | name | semmle.label | name |
+| xss-through-torrent.js:6:6:6:9 | name | semmle.label | name |
 | xss-through-torrent.js:6:13:6:24 | torrent.name | semmle.label | torrent.name |
 | xss-through-torrent.js:7:11:7:14 | name | semmle.label | name |
 subpaths
