@@ -227,10 +227,10 @@ abstract class Import extends AstNode {
    */
   pragma[nomagic]
   final DataFlow::Node getImportedModuleNodeIfUnambiguous() {
-    if
+    result = this.getImportedModuleNode() and
+    not (
       this.isDefaultImport() and
       this.getImportedModule().(ES2015Module).hasBothNamedAndDefaultExports()
-    then none()
-    else result = this.getImportedModuleNode()
+    )
   }
 }
