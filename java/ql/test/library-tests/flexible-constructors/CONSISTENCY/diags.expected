@@ -1,0 +1,2 @@
+unexpectedDiagnostic
+| <compilation flexible-constructors.testproj/trap/java/diagnostics/diagnostic.trap.gz> | -1 | 0 | file://:0:0:0:0 | Unknown location for jdk.internal.RequiresIdentity+Annotation | Unknown location for jdk.internal.RequiresIdentity+Annotation |
