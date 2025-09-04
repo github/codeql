@@ -1,11 +1,11 @@
 /**
  * @name Permissive CORS configuration
- * @description Misconfiguration of CORS HTTP headers allows CSRF attacks.
+ * @description Cross-origin resource sharing (CORS) policy allows overly broad access.
  * @kind path-problem
- * @problem.severity error
- * @security-severity 7.5
+ * @problem.severity warning
+ * @security-severity 6.0
  * @precision high
- * @id js/cors-misconfiguration
+ * @id js/cors-permissive-configuration
  * @tags security
  *       external/cwe/cwe-942
  */
@@ -18,5 +18,5 @@ from
   CorsQuery::CorsPermissiveConfigurationFlow::PathNode source,
   CorsQuery::CorsPermissiveConfigurationFlow::PathNode sink
 where CorsQuery::CorsPermissiveConfigurationFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "CORS Origin misconfiguration due to a $@.", source.getNode(),
-  "too permissive or user controlled value"
+select sink.getNode(), source, sink, "CORS Origin allows broad access due to $@.", source.getNode(),
+  "permissive or user controlled value"

@@ -68,4 +68,18 @@ module CorsPermissiveConfiguration {
   class CorsOriginSink extends Sink, DataFlow::ValueNode {
     CorsOriginSink() { this = ModelOutput::getASinkNode("cors-misconfiguration").asSink() }
   }
+
+  /**
+   * A sanitizer for CORS configurations where credentials are explicitly disabled.
+   * When credentials are false, using "*" for origin is a legitimate pattern.
+   */
+  private class CredentialsDisabledSanitizer extends Sanitizer {
+    CredentialsDisabledSanitizer() {
+      exists(DataFlow::SourceNode config, DataFlow::CallNode call |
+        call.getArgument(0).getALocalSource() = config and
+        this = config.getAPropertyWrite("origin").getRhs() and
+        config.getAPropertyWrite("credentials").getRhs().mayHaveBooleanValue(false)
+      )
+    }
+  }
 }

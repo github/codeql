@@ -33,4 +33,20 @@ server.on('request', function (req, res) {
         origin: user_origin // $ Alert
     };
     app4.use(cors(corsOption4));
+
+    // GOOD: CORS allows any origin but credentials are disabled (safe pattern)
+    var app5 = express();
+    var corsOption5 = {
+        origin: '*',
+        credentials: false
+    };
+    app5.use(cors(corsOption5));
+
+    // BAD: CORS allows any origin with credentials enabled
+    var app6 = express();
+    var corsOption6 = {
+        origin: '*',       // $ Alert  
+        credentials: true
+    };
+    app6.use(cors(corsOption6));
 });
