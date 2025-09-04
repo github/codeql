@@ -93,4 +93,10 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data, _ = ioutil.ReadFile(part.FileName())
+
+	// GOOD: An attempt has been made to prevent path traversal
+	if filepath.IsLocal(tainted_path) {
+		data, _ = ioutil.ReadFile(tainted_path)
+		w.Write(data)
+	}
 }

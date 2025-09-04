@@ -1,3 +1,4 @@
+| Test.java:5:7:5:11 | ... < ... | false | Test.java:3:7:3:10 | Normal Exit |
 | Test.java:5:7:5:11 | ... < ... | false | Test.java:8:3:8:12 | var ...; |
 | Test.java:5:7:5:11 | ... < ... | false | Test.java:9:9:9:9 | x |
 | Test.java:5:7:5:11 | ... < ... | false | Test.java:9:17:22:3 | { ... } |
@@ -10,6 +11,7 @@
 | Test.java:5:7:5:11 | ... < ... | false | Test.java:18:24:20:4 | { ... } |
 | Test.java:5:7:5:11 | ... < ... | false | Test.java:21:4:21:7 | <Expr>; |
 | Test.java:5:7:5:11 | ... < ... | true | Test.java:5:14:7:3 | { ... } |
+| Test.java:9:9:9:14 | ... >= ... | false | Test.java:3:7:3:10 | Normal Exit |
 | Test.java:9:9:9:14 | ... >= ... | true | Test.java:9:17:22:3 | { ... } |
 | Test.java:9:9:9:14 | ... >= ... | true | Test.java:11:5:11:8 | <Expr>; |
 | Test.java:9:9:9:14 | ... >= ... | true | Test.java:12:4:12:14 | if (...) |

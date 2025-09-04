@@ -16,11 +16,11 @@ jobs:
 
     steps:
       - name: Clone self (github/codeql)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: script
       - name: Clone self (github/codeql) for analysis
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: codeqlModels
           ref: ${{ github.event.inputs.qlModelShaOverride || github.ref }}

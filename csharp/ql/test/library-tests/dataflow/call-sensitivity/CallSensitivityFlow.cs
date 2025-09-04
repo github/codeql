@@ -233,3 +233,33 @@ public interface InterfaceB
 {
     void Foo(A2 a, object o, bool cond);
 }
+
+public class A3
+{
+    public virtual void M1(object o)
+    {
+        this.M2(o);
+    }
+
+    public virtual void M2(object o)
+    {
+        Sink(o); // should not have flow
+    }
+
+    public static void Sink(object o)
+    {
+    }
+}
+
+public class A4 : A3
+{
+    public override void M2(object o)
+    {
+        Sink(o); // should have flow
+    }
+
+    private void CallM1()
+    {
+        base.M1(new object());
+    }
+}

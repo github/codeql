@@ -62,6 +62,8 @@ module TrustBoundaryConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof TrustBoundaryViolationSink }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

@@ -6,8 +6,8 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 import codeql.rust.elements.Path
-import codeql.rust.elements.internal.ResolvableImpl::Impl as ResolvableImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `PathAstNode` and should not
@@ -19,7 +19,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::PathAstNode` class directly.
    * Use the subclass `PathAstNode`, where the following predicates are available.
    */
-  class PathAstNode extends Synth::TPathAstNode, ResolvableImpl::Resolvable {
+  class PathAstNode extends Synth::TPathAstNode, AstNodeImpl::AstNode {
     /**
      * Gets the path of this path ast node, if it exists.
      */

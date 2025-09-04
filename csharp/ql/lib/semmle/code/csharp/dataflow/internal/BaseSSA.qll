@@ -5,6 +5,7 @@ import csharp
  */
 module BaseSsa {
   private import AssignableDefinitions
+  private import semmle.code.csharp.controlflow.BasicBlocks as BasicBlocks
   private import codeql.ssa.Ssa as SsaImplCommon
 
   /**
@@ -27,7 +28,7 @@ module BaseSsa {
   private predicate implicitEntryDef(
     Callable c, ControlFlow::BasicBlocks::EntryBlock bb, SsaInput::SourceVariable v
   ) {
-    exists(ControlFlow::ControlFlow::BasicBlocks::EntryBlock entry |
+    exists(ControlFlow::BasicBlocks::EntryBlock entry |
       c = entry.getCallable() and
       // In case `c` has multiple bodies, we want each body to get its own implicit
       // entry definition. In case `c` doesn't have multiple bodies, the line below
@@ -42,22 +43,12 @@ module BaseSsa {
     )
   }
 
-  private module SsaInput implements SsaImplCommon::InputSig<Location> {
+  private module SsaInput implements SsaImplCommon::InputSig<Location, ControlFlow::BasicBlock> {
     private import semmle.code.csharp.controlflow.internal.PreSsa
-
-    class BasicBlock = ControlFlow::BasicBlock;
-
-    class ControlFlowNode = ControlFlow::Node;
-
-    BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
-      result = bb.getImmediateDominator()
-    }
-
-    BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
     class SourceVariable = PreSsa::SimpleLocalScopeVariable;
 
-    predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+    predicate variableWrite(ControlFlow::BasicBlock bb, int i, SourceVariable v, boolean certain) {
       exists(AssignableDefinition def |
         definitionAt(def, bb, i, v) and
         if def.isCertain() then certain = true else certain = false
@@ -68,7 +59,7 @@ module BaseSsa {
       certain = true
     }
 
-    predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+    predicate variableRead(ControlFlow::BasicBlock bb, int i, SourceVariable v, boolean certain) {
       exists(AssignableRead read |
         read.getAControlFlowNode() = bb.getNode(i) and
         read.getTarget() = v and
@@ -77,7 +68,7 @@ module BaseSsa {
     }
   }
 
-  private module SsaImpl = SsaImplCommon::Make<Location, SsaInput>;
+  private module SsaImpl = SsaImplCommon::Make<Location, BasicBlocks::Cfg, SsaInput>;
 
   class Definition extends SsaImpl::Definition {
     final AssignableRead getARead() {
@@ -114,7 +105,7 @@ module BaseSsa {
     override Location getLocation() {
       result = this.getDefinition().getLocation()
       or
-      exists(Callable c, SsaInput::BasicBlock bb, SsaInput::SourceVariable v |
+      exists(Callable c, ControlFlow::BasicBlock bb, SsaInput::SourceVariable v |
         this.definesAt(v, bb, -1) and
         implicitEntryDef(c, bb, v) and
         result = c.getLocation()

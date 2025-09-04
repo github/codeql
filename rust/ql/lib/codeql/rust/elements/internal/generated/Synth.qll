@@ -133,10 +133,6 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TClosureBinder(Raw::ClosureBinder id) { constructClosureBinder(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
     TClosureExpr(Raw::ClosureExpr id) { constructClosureExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -202,6 +198,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TFnPtrTypeRepr(Raw::FnPtrTypeRepr id) { constructFnPtrTypeRepr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TForBinder(Raw::ForBinder id) { constructForBinder(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -718,12 +718,12 @@ module Synth {
    */
   class TAstNode =
     TAbi or TAddressable or TArgList or TAsmDirSpec or TAsmOperand or TAsmOperandExpr or
-        TAsmOption or TAsmPiece or TAsmRegSpec or TAssocItemList or TAttr or TCallable or
-        TClosureBinder or TExpr or TExternItemList or TFieldList or TFormatArgsArg or TGenericArg or
+        TAsmOption or TAsmPiece or TAsmRegSpec or TAssocItemList or TAttr or TCallable or TExpr or
+        TExternItemList or TFieldList or TForBinder or TFormatArgsArg or TGenericArg or
         TGenericArgList or TGenericParam or TGenericParamList or TItemList or TLabel or TLetElse or
         TMacroItems or TMatchArm or TMatchArmList or TMatchGuard or TMeta or TName or TParamBase or
-        TParamList or TParenthesizedArgList or TPat or TPath or TPathSegment or TRename or
-        TResolvable or TRetTypeRepr or TReturnTypeSyntax or TSourceFile or TStmt or TStmtList or
+        TParamList or TParenthesizedArgList or TPat or TPath or TPathAstNode or TPathSegment or
+        TRename or TRetTypeRepr or TReturnTypeSyntax or TSourceFile or TStmt or TStmtList or
         TStructExprField or TStructExprFieldList or TStructField or TStructPatField or
         TStructPatFieldList or TToken or TTokenTree or TTupleField or TTypeBound or
         TTypeBoundList or TTypeRepr or TUseBoundGenericArg or TUseBoundGenericArgs or TUseTree or
@@ -774,8 +774,8 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TItem =
-    TAdt or TAssocItem or TExternBlock or TExternCrate or TExternItem or TImpl or TMacroDef or
-        TMacroRules or TModule or TTrait or TTraitAlias or TUse;
+    TAdt or TAsmExpr or TAssocItem or TExternBlock or TExternCrate or TExternItem or TImpl or
+        TMacroDef or TMacroRules or TModule or TTrait or TTraitAlias or TUse;
 
   /**
    * INTERNAL: Do not use.
@@ -814,11 +814,6 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TPathExprBase = TFormatTemplateVariableAccess or TPathExpr;
-
-  /**
-   * INTERNAL: Do not use.
-   */
-  class TResolvable = TMethodCallExpr or TPathAstNode;
 
   /**
    * INTERNAL: Do not use.
@@ -1026,12 +1021,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TClosureBinder`, if possible.
-   */
-  TClosureBinder convertClosureBinderFromRaw(Raw::Element e) { result = TClosureBinder(e) }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TClosureExpr`, if possible.
    */
   TClosureExpr convertClosureExprFromRaw(Raw::Element e) { result = TClosureExpr(e) }
@@ -1131,6 +1120,12 @@ module Synth {
    * Converts a raw element to a synthesized `TFnPtrTypeRepr`, if possible.
    */
   TFnPtrTypeRepr convertFnPtrTypeReprFromRaw(Raw::Element e) { result = TFnPtrTypeRepr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TForBinder`, if possible.
+   */
+  TForBinder convertForBinderFromRaw(Raw::Element e) { result = TForBinder(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1953,13 +1948,13 @@ module Synth {
     or
     result = convertCallableFromRaw(e)
     or
-    result = convertClosureBinderFromRaw(e)
-    or
     result = convertExprFromRaw(e)
     or
     result = convertExternItemListFromRaw(e)
     or
     result = convertFieldListFromRaw(e)
+    or
+    result = convertForBinderFromRaw(e)
     or
     result = convertFormatArgsArgFromRaw(e)
     or
@@ -1999,11 +1994,11 @@ module Synth {
     or
     result = convertPathFromRaw(e)
     or
+    result = convertPathAstNodeFromRaw(e)
+    or
     result = convertPathSegmentFromRaw(e)
     or
     result = convertRenameFromRaw(e)
-    or
-    result = convertResolvableFromRaw(e)
     or
     result = convertRetTypeReprFromRaw(e)
     or
@@ -2219,6 +2214,8 @@ module Synth {
   TItem convertItemFromRaw(Raw::Element e) {
     result = convertAdtFromRaw(e)
     or
+    result = convertAsmExprFromRaw(e)
+    or
     result = convertAssocItemFromRaw(e)
     or
     result = convertExternBlockFromRaw(e)
@@ -2350,16 +2347,6 @@ module Synth {
     result = convertFormatTemplateVariableAccessFromRaw(e)
     or
     result = convertPathExprFromRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw DB element to a synthesized `TResolvable`, if possible.
-   */
-  TResolvable convertResolvableFromRaw(Raw::Element e) {
-    result = convertMethodCallExprFromRaw(e)
-    or
-    result = convertPathAstNodeFromRaw(e)
   }
 
   /**
@@ -2612,12 +2599,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TClosureBinder` to a raw DB element, if possible.
-   */
-  Raw::Element convertClosureBinderToRaw(TClosureBinder e) { e = TClosureBinder(result) }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a synthesized `TClosureExpr` to a raw DB element, if possible.
    */
   Raw::Element convertClosureExprToRaw(TClosureExpr e) { e = TClosureExpr(result) }
@@ -2717,6 +2698,12 @@ module Synth {
    * Converts a synthesized `TFnPtrTypeRepr` to a raw DB element, if possible.
    */
   Raw::Element convertFnPtrTypeReprToRaw(TFnPtrTypeRepr e) { e = TFnPtrTypeRepr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TForBinder` to a raw DB element, if possible.
+   */
+  Raw::Element convertForBinderToRaw(TForBinder e) { e = TForBinder(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3537,13 +3524,13 @@ module Synth {
     or
     result = convertCallableToRaw(e)
     or
-    result = convertClosureBinderToRaw(e)
-    or
     result = convertExprToRaw(e)
     or
     result = convertExternItemListToRaw(e)
     or
     result = convertFieldListToRaw(e)
+    or
+    result = convertForBinderToRaw(e)
     or
     result = convertFormatArgsArgToRaw(e)
     or
@@ -3583,11 +3570,11 @@ module Synth {
     or
     result = convertPathToRaw(e)
     or
+    result = convertPathAstNodeToRaw(e)
+    or
     result = convertPathSegmentToRaw(e)
     or
     result = convertRenameToRaw(e)
-    or
-    result = convertResolvableToRaw(e)
     or
     result = convertRetTypeReprToRaw(e)
     or
@@ -3803,6 +3790,8 @@ module Synth {
   Raw::Element convertItemToRaw(TItem e) {
     result = convertAdtToRaw(e)
     or
+    result = convertAsmExprToRaw(e)
+    or
     result = convertAssocItemToRaw(e)
     or
     result = convertExternBlockToRaw(e)
@@ -3934,16 +3923,6 @@ module Synth {
     result = convertFormatTemplateVariableAccessToRaw(e)
     or
     result = convertPathExprToRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TResolvable` to a raw DB element, if possible.
-   */
-  Raw::Element convertResolvableToRaw(TResolvable e) {
-    result = convertMethodCallExprToRaw(e)
-    or
-    result = convertPathAstNodeToRaw(e)
   }
 
   /**

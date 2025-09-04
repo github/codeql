@@ -146,3 +146,4 @@ import semmle.javascript.linters.JSLint
 import semmle.javascript.linters.Linting
 import semmle.javascript.security.dataflow.RemoteFlowSources
 import semmle.javascript.frameworks.UnderscoreDotString
+private import semmle.javascript.internal.Overlay

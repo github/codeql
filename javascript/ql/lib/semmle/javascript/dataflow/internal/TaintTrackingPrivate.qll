@@ -6,6 +6,7 @@ private import semmle.javascript.dataflow.internal.sharedlib.FlowSummaryImpl as 
 private import semmle.javascript.dataflow.internal.FlowSummaryPrivate as FlowSummaryPrivate
 private import semmle.javascript.dataflow.internal.BarrierGuards
 private import semmle.javascript.dataflow.internal.sharedlib.Ssa as Ssa2
+private import codeql.util.Boolean
 
 cached
 predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
@@ -37,7 +38,7 @@ predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2,
 }
 
 private predicate guardChecksFalsy(
-  Ssa2::SsaDataflowInput::Guard g, Ssa2::SsaDataflowInput::Expr e, boolean outcome
+  Ssa2::SsaDataflowInput::Guard g, Ssa2::SsaDataflowInput::Expr e, Boolean outcome
 ) {
   exists(ConditionGuardNode guard |
     guard.getTest() = g and

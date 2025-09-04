@@ -8,12 +8,12 @@
 | libxml.sax.js:6:22:6:42 | req.par ... e-xml") | libxml.sax.js:6:22:6:42 | req.par ... e-xml") | libxml.sax.js:6:22:6:42 | req.par ... e-xml") | XML parsing depends on a $@ without guarding against external entity expansion. | libxml.sax.js:6:22:6:42 | req.par ... e-xml") | user-provided value |
 | libxml.saxpush.js:6:15:6:35 | req.par ... e-xml") | libxml.saxpush.js:6:15:6:35 | req.par ... e-xml") | libxml.saxpush.js:6:15:6:35 | req.par ... e-xml") | XML parsing depends on a $@ without guarding against external entity expansion. | libxml.saxpush.js:6:15:6:35 | req.par ... e-xml") | user-provided value |
 edges
-| domparser.js:2:7:2:36 | src | domparser.js:10:55:10:57 | src | provenance |  |
-| domparser.js:2:7:2:36 | src | domparser.js:12:57:12:59 | src | provenance |  |
-| domparser.js:2:13:2:36 | documen ... .search | domparser.js:2:7:2:36 | src | provenance |  |
+| domparser.js:2:7:2:9 | src | domparser.js:10:55:10:57 | src | provenance |  |
+| domparser.js:2:7:2:9 | src | domparser.js:12:57:12:59 | src | provenance |  |
+| domparser.js:2:13:2:36 | documen ... .search | domparser.js:2:7:2:9 | src | provenance |  |
 | libxml.noent.js:12:27:12:35 | req.files | libxml.noent.js:12:27:12:66 | req.fil ... 'utf8') | provenance |  |
 nodes
-| domparser.js:2:7:2:36 | src | semmle.label | src |
+| domparser.js:2:7:2:9 | src | semmle.label | src |
 | domparser.js:2:13:2:36 | documen ... .search | semmle.label | documen ... .search |
 | domparser.js:10:55:10:57 | src | semmle.label | src |
 | domparser.js:12:57:12:59 | src | semmle.label | src |

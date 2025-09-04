@@ -24,4 +24,4 @@ zstd = "0.13.3"
 [dev-dependencies]
 tree-sitter-ql = "0.23.1"
 tree-sitter-json = "0.24.8"
-rand = "0.9.1"
+rand = "0.9.2"

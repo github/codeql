@@ -2,6 +2,7 @@
  * Provides classes that specify the conditions under which control flows along a given edge.
  */
 
+private import codeql.controlflow.SuccessorType
 private import internal.EdgeKindInternal
 
 private newtype TEdgeKind =
@@ -27,6 +28,21 @@ abstract private class EdgeKindImpl extends TEdgeKind {
 }
 
 final class EdgeKind = EdgeKindImpl;
+
+private SuccessorType getAMatchingSpecificSuccessorType(EdgeKind k) {
+  result.(BooleanSuccessor).getValue() = true and k instanceof TrueEdge
+  or
+  result.(BooleanSuccessor).getValue() = false and k instanceof FalseEdge
+  or
+  result instanceof ExceptionSuccessor and k instanceof ExceptionEdge
+}
+
+SuccessorType getAMatchingSuccessorType(EdgeKind k) {
+  result = getAMatchingSpecificSuccessorType(k)
+  or
+  not exists(getAMatchingSpecificSuccessorType(k)) and
+  result instanceof DirectSuccessor
+}
 
 /**
  * A "goto" edge, representing the unconditional successor of an `Instruction`

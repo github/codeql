@@ -98,10 +98,10 @@
 | main.rs:326:17:326:25 | source(...) | main.rs:1:1:3:1 | fn source |
 | main.rs:327:9:327:15 | sink(...) | main.rs:5:1:7:1 | fn sink |
 | main.rs:330:5:330:17 | sink(...) | main.rs:5:1:7:1 | fn sink |
-| main.rs:334:13:334:55 | ...::block_on(...) | file://:0:0:0:0 | fn block_on |
+| main.rs:334:13:334:55 | ...::block_on(...) | {EXTERNAL LOCATION} | fn block_on |
 | main.rs:334:41:334:54 | async_source(...) | main.rs:315:1:319:1 | fn async_source |
 | main.rs:335:5:335:11 | sink(...) | main.rs:5:1:7:1 | fn sink |
-| main.rs:337:5:337:62 | ...::block_on(...) | file://:0:0:0:0 | fn block_on |
+| main.rs:337:5:337:62 | ...::block_on(...) | {EXTERNAL LOCATION} | fn block_on |
 | main.rs:337:33:337:61 | test_async_await_async_part(...) | main.rs:321:1:331:1 | fn test_async_await_async_part |
 | main.rs:341:5:341:22 | data_out_of_call(...) | main.rs:16:1:19:1 | fn data_out_of_call |
 | main.rs:342:5:342:35 | data_out_of_call_side_effect1(...) | main.rs:35:1:40:1 | fn data_out_of_call_side_effect1 |

@@ -465,10 +465,11 @@ public class AutoBuild {
       try {
         CompletableFuture<?> sourceFuture = extractSource();
         sourceFuture.join(); // wait for source extraction to complete
-        if (hasSeenCode()) { // don't bother with the externs if no code was seen
+        if (hasSeenCode() && !isOverlayChangeMode()) { // don't bother with the externs if no code was seen or in overlay change mode
           extractExterns();
         }
         extractXml();
+        writeOverlayMetadata();
       } catch (OutOfMemoryError oom) {
         System.err.println("Out of memory while extracting the project.");
         return 137; // the CodeQL CLI will interpret this as an out-of-memory error
@@ -507,6 +508,21 @@ public class AutoBuild {
         return 0;
       }
     return 0;
+  }
+
+  private void writeOverlayMetadata() {
+    String file = getEnvVar("CODEQL_EXTRACTOR_JAVASCRIPT_OVERLAY_BASE_METADATA_OUT");
+    if (file == null) {
+      // no overlay metadata file specified, so nothing to do
+      return;
+    }
+    // Write an empty string to the file as we currently have no metadata to emit.
+    // The file must be created for the database to recognized as an overlay base.
+    try {
+      Files.writeString(Paths.get(file), "", StandardCharsets.UTF_8);
+    } catch (IOException e) {
+      throw new ResourceError("Could not write overlay metadata to " + file, e);
+    }
   }
 
   /**
@@ -733,6 +749,17 @@ public class AutoBuild {
     Set<Path> filesToExtract = new LinkedHashSet<>();
     List<Path> tsconfigFiles = new ArrayList<>();
     findFilesToExtract(defaultExtractor, filesToExtract, tsconfigFiles);
+
+    OverlayChanges overlay = getOverlayChanges();
+    if (overlay != null) {
+      Set<Path> changedFiles = overlay.changes.stream()
+          .map(file -> Paths.get(file).toAbsolutePath())
+          .collect(Collectors.toSet());
+      int before = filesToExtract.size();
+      filesToExtract.retainAll(changedFiles);
+      int after = filesToExtract.size();
+      System.out.println("Overlay filter removed " + (before - after) + " out of " + before + " files from extraction.");
+    }
 
     tsconfigFiles = tsconfigFiles.stream()
          .sorted(PATH_ORDERING)
@@ -1336,6 +1363,18 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
     } catch (InterruptedException e) {
       throw new CatastrophicError(e);
     }
+  }
+
+  private boolean isOverlayChangeMode() {
+    return getEnvVar("CODEQL_EXTRACTOR_JAVASCRIPT_OVERLAY_CHANGES") != null;
+  }
+
+  private OverlayChanges getOverlayChanges() throws IOException {
+    String jsonFile = getEnvVar("CODEQL_EXTRACTOR_JAVASCRIPT_OVERLAY_CHANGES");
+    if (jsonFile == null) {
+      return null;
+    }
+    return new Gson().fromJson(Files.newBufferedReader(Paths.get(jsonFile)), OverlayChanges.class);
   }
 
   public static void main(String[] args) {

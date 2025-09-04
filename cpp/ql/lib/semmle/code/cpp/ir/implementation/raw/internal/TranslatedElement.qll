@@ -123,13 +123,16 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   //  or
   ignoreExprAndDescendants(getRealParent(expr)) // recursive case
   or
-  // va_start doesn't evaluate its argument, so we don't need to translate it.
+  // va_start does not evaluate its argument, so we do not need to translate it.
   exists(BuiltInVarArgsStart vaStartExpr |
     vaStartExpr.getLastNamedParameter().getFullyConverted() = expr
   )
   or
+  // sizeof does not evaluate its argument, so we do not need to translate it.
+  exists(SizeofExprOperator sizeofExpr | sizeofExpr.getExprOperand().getFullyConverted() = expr)
+  or
   // The children of C11 _Generic expressions are just surface syntax.
-  exists(C11GenericExpr generic | generic.getAChild() = expr)
+  exists(C11GenericExpr generic | generic.getAChild().getFullyConverted() = expr)
   or
   // Do not translate implicit destructor calls for unnamed temporary variables that are
   // conditionally constructed (until we have a mechanism for calling these only when the
@@ -509,6 +512,41 @@ predicate hasTranslatedSyntheticTemporaryObject(Expr expr) {
   not expr.hasLValueToRValueConversion()
 }
 
+Opcode comparisonOpcode(ComparisonOperation expr) {
+  expr instanceof EQExpr and result instanceof Opcode::CompareEQ
+  or
+  expr instanceof NEExpr and result instanceof Opcode::CompareNE
+  or
+  expr instanceof LTExpr and result instanceof Opcode::CompareLT
+  or
+  expr instanceof GTExpr and result instanceof Opcode::CompareGT
+  or
+  expr instanceof LEExpr and result instanceof Opcode::CompareLE
+  or
+  expr instanceof GEExpr and result instanceof Opcode::CompareGE
+}
+
+private predicate parentExpectsBool(Expr child) {
+  any(NotExpr notExpr).getOperand() = child
+  or
+  usedAsCondition(child)
+}
+
+/**
+ * Holds if `expr` should have a `TranslatedSyntheticBoolToIntConversion` on it.
+ */
+predicate hasTranslatedSyntheticBoolToIntConversion(Expr expr) {
+  not ignoreExpr(expr) and
+  not isIRConstant(expr) and
+  not parentExpectsBool(expr) and
+  expr.getUnspecifiedType() instanceof IntType and
+  (
+    expr instanceof NotExpr
+    or
+    exists(comparisonOpcode(expr))
+  )
+}
+
 class StaticInitializedStaticLocalVariable extends StaticLocalVariable {
   StaticInitializedStaticLocalVariable() {
     this.hasInitializer() and
@@ -647,6 +685,9 @@ newtype TTranslatedElement =
   // A temporary object that we had to synthesize ourselves, so that we could do a field access or
   // method call on a prvalue.
   TTranslatedSyntheticTemporaryObject(Expr expr) { hasTranslatedSyntheticTemporaryObject(expr) } or
+  TTranslatedSyntheticBoolToIntConversion(Expr expr) {
+    hasTranslatedSyntheticBoolToIntConversion(expr)
+  } or
   // For expressions that would not otherwise generate an instruction.
   TTranslatedResultCopy(Expr expr) {
     not ignoreExpr(expr) and

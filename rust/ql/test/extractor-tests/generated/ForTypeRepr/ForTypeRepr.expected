@@ -1,6 +1,6 @@
 instances
-| gen_for_type_repr.rs:9:12:9:41 | ForTypeRepr |
-getGenericParamList
-| gen_for_type_repr.rs:9:12:9:41 | ForTypeRepr | gen_for_type_repr.rs:9:15:9:18 | <...> |
+| gen_for_type_repr.rs:7:21:7:46 | ForTypeRepr |
+getForBinder
+| gen_for_type_repr.rs:7:21:7:46 | ForTypeRepr | gen_for_type_repr.rs:7:21:7:27 | for<...> |
 getTypeRepr
-| gen_for_type_repr.rs:9:12:9:41 | ForTypeRepr | gen_for_type_repr.rs:9:20:9:41 | Fn |
+| gen_for_type_repr.rs:7:21:7:46 | ForTypeRepr | gen_for_type_repr.rs:7:29:7:46 | FnPtrTypeRepr |

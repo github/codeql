@@ -113,7 +113,7 @@ private class ConstantDataSource extends Crypto::GenericConstantSourceInstance i
 }
 
 /**
- * An instance of random number generation, modelled as the expression
+ * An instance of random number generation, modeled as the expression
  * tied to an output node (i.e., the result of the source of randomness)
  */
 abstract class RandomnessInstance extends Crypto::RandomNumberGenerationInstance {

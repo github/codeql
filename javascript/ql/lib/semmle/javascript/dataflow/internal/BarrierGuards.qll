@@ -193,6 +193,8 @@ private module ConditionGuardDominators {
 module MakeStateBarrierGuard<
   FlowStateSig FlowState, WithFlowState<FlowState>::BarrierGuardSig BaseGuard>
 {
+  private import codeql.util.Boolean
+
   final private class FinalNode = DataFlow::Node;
 
   abstract private class BarrierGuard extends FinalNode {
@@ -295,7 +297,7 @@ module MakeStateBarrierGuard<
   }
 
   private predicate ssa2GuardChecks(
-    Ssa2::SsaDataflowInput::Guard guard, Ssa2::SsaDataflowInput::Expr test, boolean branch,
+    Ssa2::SsaDataflowInput::Guard guard, Ssa2::SsaDataflowInput::Expr test, Boolean branch,
     FlowState state
   ) {
     exists(BarrierGuard g |

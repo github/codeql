@@ -18,7 +18,7 @@ private import codeql.ruby.frameworks.Core
  * URI.parse("http://example.com").open.read
  * ```
  */
-class OpenUriRequest extends Http::Client::Request::Range, DataFlow::CallNode {
+class OpenUriRequest extends Http::Client::Request::Range instanceof DataFlow::CallNode {
   API::Node requestNode;
 
   OpenUriRequest() {
@@ -30,7 +30,7 @@ class OpenUriRequest extends Http::Client::Request::Range, DataFlow::CallNode {
     this = requestNode.asSource()
   }
 
-  override DataFlow::Node getAUrlPart() { result = this.getArgument(0) }
+  override DataFlow::Node getAUrlPart() { result = super.getArgument(0) }
 
   override DataFlow::Node getResponseBody() {
     result = requestNode.getAMethodCall(["read", "readlines"])
@@ -38,7 +38,7 @@ class OpenUriRequest extends Http::Client::Request::Range, DataFlow::CallNode {
 
   /** Gets the value that controls certificate validation, if any. */
   DataFlow::Node getCertificateValidationControllingValue() {
-    result = this.getKeywordArgumentIncludeHashArgument("ssl_verify_mode")
+    result = super.getKeywordArgumentIncludeHashArgument("ssl_verify_mode")
   }
 
   cached
@@ -60,11 +60,10 @@ class OpenUriRequest extends Http::Client::Request::Range, DataFlow::CallNode {
  * Kernel.open("http://example.com").read
  * ```
  */
-class OpenUriKernelOpenRequest extends Http::Client::Request::Range, DataFlow::CallNode instanceof KernelMethodCall
-{
+class OpenUriKernelOpenRequest extends Http::Client::Request::Range instanceof KernelMethodCall {
   OpenUriKernelOpenRequest() { this.getMethodName() = "open" }
 
-  override DataFlow::Node getAUrlPart() { result = this.getArgument(0) }
+  override DataFlow::Node getAUrlPart() { result = super.getArgument(0) }
 
   override DataFlow::CallNode getResponseBody() {
     result.asExpr().getExpr().(MethodCall).getMethodName() in ["read", "readlines"] and
@@ -73,14 +72,14 @@ class OpenUriKernelOpenRequest extends Http::Client::Request::Range, DataFlow::C
 
   /** Gets the value that controls certificate validation, if any. */
   DataFlow::Node getCertificateValidationControllingValue() {
-    result = this.getKeywordArgument("ssl_verify_mode")
+    result = super.getKeywordArgument("ssl_verify_mode")
     or
     // using a hashliteral
     exists(
       DataFlow::LocalSourceNode optionsNode, CfgNodes::ExprNodes::PairCfgNode p, DataFlow::Node key
     |
       // can't flow to argument 0, since that's the URL
-      optionsNode.flowsTo(this.getArgument(any(int i | i > 0))) and
+      optionsNode.flowsTo(super.getArgument(any(int i | i > 0))) and
       p = optionsNode.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
       key.asExpr() = p.getKey() and
       key.getALocalSource().asExpr().getConstantValue().isStringlikeValue("ssl_verify_mode") and

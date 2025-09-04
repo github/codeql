@@ -1,0 +1,31 @@
+#select
+| ConditionalBypassTest.java:24:4:24:24 | login(...) | ConditionalBypassTest.java:19:20:19:50 | getParameter(...) : String | ConditionalBypassTest.java:23:7:23:24 | ... == ... | Sensitive method may not be executed depending on a $@, which flows from $@. | ConditionalBypassTest.java:23:7:23:24 | ... == ... | this condition | ConditionalBypassTest.java:19:20:19:50 | getParameter(...) | user-controlled value |
+| ConditionalBypassTest.java:30:4:30:24 | login(...) | ConditionalBypassTest.java:29:7:29:28 | getValue(...) : String | ConditionalBypassTest.java:29:7:29:44 | equals(...) | Sensitive method may not be executed depending on a $@, which flows from $@. | ConditionalBypassTest.java:29:7:29:44 | equals(...) | this condition | ConditionalBypassTest.java:29:7:29:28 | getValue(...) | user-controlled value |
+| ConditionalBypassTest.java:77:4:77:24 | login(...) | ConditionalBypassTest.java:76:7:76:28 | getValue(...) : String | ConditionalBypassTest.java:76:7:76:39 | ... == ... | Sensitive method may not be executed depending on a $@, which flows from $@. | ConditionalBypassTest.java:76:7:76:39 | ... == ... | this condition | ConditionalBypassTest.java:76:7:76:28 | getValue(...) | user-controlled value |
+| ConditionalBypassTest.java:89:4:89:24 | login(...) | ConditionalBypassTest.java:88:7:88:28 | getValue(...) : String | ConditionalBypassTest.java:88:7:88:39 | ... == ... | Sensitive method may not be executed depending on a $@, which flows from $@. | ConditionalBypassTest.java:88:7:88:39 | ... == ... | this condition | ConditionalBypassTest.java:88:7:88:28 | getValue(...) | user-controlled value |
+| ConditionalBypassTest.java:134:4:134:24 | login(...) | ConditionalBypassTest.java:133:7:133:28 | getValue(...) : String | ConditionalBypassTest.java:133:7:133:39 | ... == ... | Sensitive method may not be executed depending on a $@, which flows from $@. | ConditionalBypassTest.java:133:7:133:39 | ... == ... | this condition | ConditionalBypassTest.java:133:7:133:28 | getValue(...) | user-controlled value |
+| ConditionalBypassTest.java:146:5:146:29 | authorize(...) | ConditionalBypassTest.java:145:8:145:29 | getValue(...) : String | ConditionalBypassTest.java:145:8:145:40 | ... == ... | Sensitive method may not be executed depending on a $@, which flows from $@. | ConditionalBypassTest.java:145:8:145:40 | ... == ... | this condition | ConditionalBypassTest.java:145:8:145:29 | getValue(...) | user-controlled value |
+edges
+| ConditionalBypassTest.java:19:20:19:50 | getParameter(...) : String | ConditionalBypassTest.java:23:7:23:24 | ... == ... | provenance | Src:MaD:2  |
+| ConditionalBypassTest.java:29:7:29:28 | getValue(...) : String | ConditionalBypassTest.java:29:7:29:44 | equals(...) | provenance | Src:MaD:1  |
+| ConditionalBypassTest.java:76:7:76:28 | getValue(...) : String | ConditionalBypassTest.java:76:7:76:39 | ... == ... | provenance | Src:MaD:1  |
+| ConditionalBypassTest.java:88:7:88:28 | getValue(...) : String | ConditionalBypassTest.java:88:7:88:39 | ... == ... | provenance | Src:MaD:1  |
+| ConditionalBypassTest.java:133:7:133:28 | getValue(...) : String | ConditionalBypassTest.java:133:7:133:39 | ... == ... | provenance | Src:MaD:1  |
+| ConditionalBypassTest.java:145:8:145:29 | getValue(...) : String | ConditionalBypassTest.java:145:8:145:40 | ... == ... | provenance | Src:MaD:1  |
+models
+| 1 | Source: javax.servlet.http; Cookie; false; getValue; (); ; ReturnValue; remote; manual |
+| 2 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+nodes
+| ConditionalBypassTest.java:19:20:19:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| ConditionalBypassTest.java:23:7:23:24 | ... == ... | semmle.label | ... == ... |
+| ConditionalBypassTest.java:29:7:29:28 | getValue(...) : String | semmle.label | getValue(...) : String |
+| ConditionalBypassTest.java:29:7:29:44 | equals(...) | semmle.label | equals(...) |
+| ConditionalBypassTest.java:76:7:76:28 | getValue(...) : String | semmle.label | getValue(...) : String |
+| ConditionalBypassTest.java:76:7:76:39 | ... == ... | semmle.label | ... == ... |
+| ConditionalBypassTest.java:88:7:88:28 | getValue(...) : String | semmle.label | getValue(...) : String |
+| ConditionalBypassTest.java:88:7:88:39 | ... == ... | semmle.label | ... == ... |
+| ConditionalBypassTest.java:133:7:133:28 | getValue(...) : String | semmle.label | getValue(...) : String |
+| ConditionalBypassTest.java:133:7:133:39 | ... == ... | semmle.label | ... == ... |
+| ConditionalBypassTest.java:145:8:145:29 | getValue(...) : String | semmle.label | getValue(...) : String |
+| ConditionalBypassTest.java:145:8:145:40 | ... == ... | semmle.label | ... == ... |
+subpaths

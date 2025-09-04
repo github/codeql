@@ -166,17 +166,7 @@ private predicate uncertainVariableUpdate(TrackedVar v, ControlFlowNode n, Basic
   uncertainVariableUpdate(v.getQualifier(), n, b, i)
 }
 
-private module SsaInput implements SsaImplCommon::InputSig<Location> {
-  private import java as J
-
-  class BasicBlock = J::BasicBlock;
-
-  class ControlFlowNode = J::ControlFlowNode;
-
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result.immediatelyDominates(bb) }
-
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
-
+private module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
   class SourceVariable = SsaSourceVariable;
 
   /**
@@ -218,7 +208,7 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
   }
 }
 
-import SsaImplCommon::Make<Location, SsaInput> as Impl
+import SsaImplCommon::Make<Location, Cfg, SsaInput> as Impl
 
 final class Definition = Impl::Definition;
 
@@ -562,14 +552,20 @@ private module Cached {
 
     cached // nothing is actually cached
     module BarrierGuard<guardChecksSig/3 guardChecks> {
-      private predicate guardChecksAdjTypes(
-        DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e, boolean branch
-      ) {
+      private predicate guardChecksAdjTypes(Guards::Guards_v3::Guard g, Expr e, boolean branch) {
         guardChecks(g, e, branch)
       }
 
+      private predicate guardChecksWithWrappers(
+        DataFlowIntegrationInput::Guard g, Definition def, Guards::GuardValue val, Unit state
+      ) {
+        Guards::Guards_v3::ValidationWrapper<guardChecksAdjTypes/3>::guardChecksDef(g, def, val) and
+        exists(state)
+      }
+
       private Node getABarrierNodeImpl() {
-        result = DataFlowIntegrationImpl::BarrierGuard<guardChecksAdjTypes/3>::getABarrierNode()
+        result =
+          DataFlowIntegrationImpl::BarrierGuardDefWithState<Unit, guardChecksWithWrappers/4>::getABarrierNode(_)
       }
 
       predicate getABarrierNode = getABarrierNodeImpl/0;
@@ -657,16 +653,18 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
     def instanceof SsaUncertainImplicitUpdate
   }
 
+  class GuardValue = Guards::GuardValue;
+
   class Guard = Guards::Guard;
 
-  /** Holds if the guard `guard` directly controls block `bb` upon evaluating to `branch`. */
-  predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, boolean branch) {
-    guard.directlyControls(bb, branch)
+  /** Holds if the guard `guard` directly controls block `bb` upon evaluating to `val`. */
+  predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, GuardValue val) {
+    guard.directlyValueControls(bb, val)
   }
 
-  /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
-  predicate guardControlsBlock(Guard guard, BasicBlock bb, boolean branch) {
-    guard.controls(bb, branch)
+  /** Holds if the guard `guard` controls block `bb` upon evaluating to `val`. */
+  predicate guardControlsBlock(Guard guard, BasicBlock bb, GuardValue val) {
+    guard.valueControls(bb, val)
   }
 
   predicate includeWriteDefsInFlowStep() { none() }

@@ -5,7 +5,7 @@
  */
 
 import swift
-import internal.SensitiveDataHeuristics
+import codeql.concepts.internal.SensitiveDataHeuristics
 private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.ExternalFlow
 

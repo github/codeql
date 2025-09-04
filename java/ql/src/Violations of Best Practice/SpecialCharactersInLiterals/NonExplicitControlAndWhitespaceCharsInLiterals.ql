@@ -23,6 +23,7 @@ class ReservedUnicodeInLiteral extends Literal {
 
   ReservedUnicodeInLiteral() {
     not this instanceof CharacterLiteral and
+    this.getCompilationUnit().fromSource() and
     exists(int codePoint |
       this.getLiteral().codePointAt(indexStart) = codePoint and
       (
@@ -45,6 +46,9 @@ where
   literal.getIndexStart() = charIndex and
   literal.getLiteral().codePointAt(charIndex) = codePoint and
   not literal.getEnclosingCallable() instanceof LikelyTestMethod and
+  // Kotlin extraction doesn't preserve the literal value so we can't distinguish
+  // between control characters and their escaped versions, so we exclude Kotlin
+  // to avoid false positives.
   not literal.getFile().isKotlinSourceFile()
 select literal,
   "Literal value contains control or non-printable whitespace character(s) starting with Unicode code point "

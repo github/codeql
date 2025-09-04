@@ -5,11 +5,16 @@
  */
 
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.internal.DataFlowImpl
+private import codeql.Locations
 private import codeql.threatmodels.ThreatModels
 private import codeql.rust.Frameworks
 private import codeql.rust.dataflow.FlowSource
 private import codeql.rust.controlflow.ControlFlowGraph as Cfg
 private import codeql.rust.controlflow.CfgNodes as CfgNodes
+private import codeql.concepts.ConceptsShared
+
+private module ConceptsShared = ConceptsMake<Location, RustDataFlow>;
 
 /**
  * A data flow source for a specific threat-model.
@@ -302,7 +307,7 @@ module SqlSanitization {
  * Provides models for cryptographic things.
  */
 module Cryptography {
-  private import codeql.rust.internal.ConceptsShared::Cryptography as SC
+  import ConceptsShared::Cryptography as SC
 
   final class CryptographicOperation = SC::CryptographicOperation;
 

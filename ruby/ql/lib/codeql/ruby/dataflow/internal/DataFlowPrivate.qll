@@ -153,7 +153,7 @@ module LocalFlow {
       exprTo = nodeTo.asExpr() and
       n.getReturningNode().getAstNode() instanceof BreakStmt and
       exprTo.getAstNode() instanceof Loop and
-      nodeTo.asExpr().getAPredecessor(any(SuccessorTypes::BreakSuccessor s)) = n.getReturningNode()
+      nodeTo.asExpr().getAPredecessor(any(BreakSuccessor s)) = n.getReturningNode()
     )
     or
     nodeFrom.asExpr() = nodeTo.(ReturningStatementNode).getReturningNode().getReturnedValueNode()
@@ -161,7 +161,7 @@ module LocalFlow {
     nodeTo.asExpr() =
       any(CfgNodes::ExprNodes::ForExprCfgNode for |
         exists(SuccessorType s |
-          not s instanceof SuccessorTypes::BreakSuccessor and
+          not s instanceof BreakSuccessor and
           exists(for.getAPredecessor(s))
         ) and
         nodeFrom.asExpr() = for.getValue()
@@ -280,6 +280,7 @@ predicate isNonConstantExpr(CfgNodes::ExprCfgNode n) {
 /** Provides logic related to captured variables. */
 module VariableCapture {
   private import codeql.dataflow.VariableCapture as Shared
+  private import codeql.ruby.controlflow.BasicBlocks as BasicBlocks
 
   private predicate closureFlowStep(CfgNodes::ExprCfgNode e1, CfgNodes::ExprCfgNode e2) {
     e1 = getALastEvalNode(e2)
@@ -290,22 +291,13 @@ module VariableCapture {
     )
   }
 
-  private module CaptureInput implements Shared::InputSig<Location> {
+  private module CaptureInput implements Shared::InputSig<Location, BasicBlocks::Cfg::BasicBlock> {
     private import codeql.ruby.controlflow.ControlFlowGraph as Cfg
-    private import codeql.ruby.controlflow.BasicBlocks as BasicBlocks
     private import TaintTrackingPrivate as TaintTrackingPrivate
 
-    class BasicBlock extends BasicBlocks::BasicBlock {
-      Callable getEnclosingCallable() { result = this.getScope() }
+    Callable basicBlockGetEnclosingCallable(BasicBlocks::Cfg::BasicBlock bb) {
+      result = bb.getScope()
     }
-
-    class ControlFlowNode = Cfg::CfgNode;
-
-    BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
-      result = bb.getImmediateDominator()
-    }
-
-    BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
     class CapturedVariable extends LocalVariable {
       CapturedVariable() {
@@ -377,7 +369,7 @@ module VariableCapture {
 
   class ClosureExpr = CaptureInput::ClosureExpr;
 
-  module Flow = Shared::Flow<Location, CaptureInput>;
+  module Flow = Shared::Flow<Location, BasicBlocks::Cfg, CaptureInput>;
 
   private Flow::ClosureNode asClosureNode(Node n) {
     result = n.(CaptureNode).getSynthesizedCaptureNode()
@@ -2394,8 +2386,7 @@ module TypeInference {
     |
       m = resolveConstantReadAccess(pattern.getExpr()) and
       cb.getLastNode() = pattern and
-      cb.edgeDominates(read.getBasicBlock(),
-        any(SuccessorTypes::MatchingSuccessor match | match.getValue() = true)) and
+      cb.edgeDominates(read.getBasicBlock(), any(MatchingSuccessor match | match.getValue() = true)) and
       caseRead = def.getARead() and
       read = def.getARead() and
       case.getValue() = caseRead

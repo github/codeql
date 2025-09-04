@@ -3,7 +3,7 @@
  * an underlying OpenSSL or LibreSSL C library.
  */
 
-private import internal.CryptoAlgorithmNames
+private import codeql.concepts.internal.CryptoAlgorithmNames
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.ApiGraphs
@@ -544,8 +544,7 @@ private class CipherNode extends DataFlow::Node {
 }
 
 /** An operation using the OpenSSL library that uses a cipher. */
-private class CipherOperation extends Cryptography::CryptographicOperation::Range,
-  DataFlow::CallNode
+private class CipherOperation extends Cryptography::CryptographicOperation::Range instanceof DataFlow::CallNode
 {
   private CipherNode cipherNode;
 
@@ -564,8 +563,8 @@ private class CipherOperation extends Cryptography::CryptographicOperation::Rang
   }
 
   override DataFlow::Node getAnInput() {
-    this.getMethodName() = "update" and
-    result = this.getArgument(0)
+    super.getMethodName() = "update" and
+    result = super.getArgument(0)
   }
 
   override Cryptography::BlockMode getBlockMode() {

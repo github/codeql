@@ -3,6 +3,8 @@ private import codeql.controlflow.Cfg as CfgShared
 private import codeql.Locations
 
 module Completion {
+  import codeql.controlflow.SuccessorType
+
   private newtype TCompletion =
     TSimpleCompletion() or
     TBooleanCompletion(boolean b) { b in [false, true] } or
@@ -25,7 +27,7 @@ module Completion {
 
     override predicate isValidFor(AstNode e) { not any(Completion c).isValidForSpecific(e) }
 
-    override NormalSuccessor getAMatchingSuccessorType() { any() }
+    override DirectSuccessor getAMatchingSuccessorType() { any() }
   }
 
   class BooleanCompletion extends NormalCompletion, TBooleanCompletion {
@@ -48,34 +50,6 @@ module Completion {
     override predicate isValidForSpecific(AstNode e) { none() }
 
     override ReturnSuccessor getAMatchingSuccessorType() { any() }
-  }
-
-  cached
-  private newtype TSuccessorType =
-    TNormalSuccessor() or
-    TBooleanSuccessor(boolean b) { b in [false, true] } or
-    TReturnSuccessor()
-
-  class SuccessorType extends TSuccessorType {
-    string toString() { none() }
-  }
-
-  class NormalSuccessor extends SuccessorType, TNormalSuccessor {
-    override string toString() { result = "successor" }
-  }
-
-  class BooleanSuccessor extends SuccessorType, TBooleanSuccessor {
-    boolean value;
-
-    BooleanSuccessor() { this = TBooleanSuccessor(value) }
-
-    override string toString() { result = value.toString() }
-
-    boolean getValue() { result = value }
-  }
-
-  class ReturnSuccessor extends SuccessorType, TReturnSuccessor {
-    override string toString() { result = "return" }
   }
 }
 
@@ -127,13 +101,7 @@ private module Implementation implements CfgShared::InputSig<Location> {
     last(scope.(CompositeAction), e, c)
   }
 
-  predicate successorTypeIsSimple(SuccessorType t) { t instanceof NormalSuccessor }
-
-  predicate successorTypeIsCondition(SuccessorType t) { t instanceof BooleanSuccessor }
-
   SuccessorType getAMatchingSuccessorType(Completion c) { result = c.getAMatchingSuccessorType() }
-
-  predicate isAbnormalExitType(SuccessorType t) { none() }
 
   int idOfAstNode(AstNode node) { none() }
 

@@ -1,0 +1,10 @@
+qltest_cargo_check: true
+qltest_dependencies:
+    - cipher = { version = "0.4.4" }
+    - rabbit = { version = "0.4.1" }
+    - aes = { version = "0.8.4" }
+    - aes-gcm = { version = "0.10.3" }
+    - cfb-mode = { version = "0.8.2" }
+    - base64 = { version = "0.22.1" }
+    - getrandom = { version = "0.3.1" }
+    - getrandom2 = { package = "getrandom", version = "0.2.15" }

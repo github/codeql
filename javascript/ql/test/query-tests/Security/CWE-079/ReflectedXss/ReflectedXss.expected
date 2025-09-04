@@ -78,8 +78,8 @@ edges
 | ReflectedXss.js:7:33:7:45 | req.params.id | ReflectedXss.js:7:14:7:45 | "Unknow ... rams.id | provenance |  |
 | ReflectedXss.js:16:31:16:39 | params.id | ReflectedXss.js:16:12:16:39 | "Unknow ... rams.id | provenance |  |
 | ReflectedXss.js:22:19:22:26 | req.body | ReflectedXss.js:22:12:22:27 | marked(req.body) | provenance |  |
-| ReflectedXss.js:29:7:32:4 | mytable | ReflectedXss.js:33:12:33:18 | mytable | provenance |  |
-| ReflectedXss.js:29:17:32:4 | table([ ... ce\\n  ]) | ReflectedXss.js:29:7:32:4 | mytable | provenance |  |
+| ReflectedXss.js:29:7:29:13 | mytable | ReflectedXss.js:33:12:33:18 | mytable | provenance |  |
+| ReflectedXss.js:29:17:32:4 | table([ ... ce\\n  ]) | ReflectedXss.js:29:7:29:13 | mytable | provenance |  |
 | ReflectedXss.js:29:23:32:3 | [\\n    [ ... rce\\n  ] [1, 1] | ReflectedXss.js:29:17:32:4 | table([ ... ce\\n  ]) | provenance |  |
 | ReflectedXss.js:31:5:31:22 | ['body', req.body] [1] | ReflectedXss.js:29:23:32:3 | [\\n    [ ... rce\\n  ] [1, 1] | provenance |  |
 | ReflectedXss.js:31:14:31:21 | req.body | ReflectedXss.js:31:5:31:22 | ['body', req.body] [1] | provenance |  |
@@ -97,23 +97,23 @@ edges
 | ReflectedXss.js:97:30:97:37 | req.body | ReflectedXss.js:97:12:97:38 | markdow ... q.body) | provenance |  |
 | ReflectedXss.js:99:31:99:38 | req.body | ReflectedXss.js:99:12:99:39 | markdow ... q.body) | provenance |  |
 | ReflectedXss.js:102:76:102:83 | req.body | ReflectedXss.js:102:12:102:84 | markdow ... q.body) | provenance |  |
-| ReflectedXss.js:113:11:113:41 | queryKeys | ReflectedXss.js:115:18:115:26 | queryKeys | provenance |  |
-| ReflectedXss.js:113:13:113:27 | keys: queryKeys | ReflectedXss.js:113:11:113:41 | queryKeys | provenance |  |
-| ReflectedXss.js:115:11:115:45 | keys | ReflectedXss.js:117:50:117:53 | keys | provenance |  |
-| ReflectedXss.js:115:11:115:45 | keys | ReflectedXss.js:117:58:117:61 | keys | provenance |  |
-| ReflectedXss.js:115:18:115:26 | queryKeys | ReflectedXss.js:115:11:115:45 | keys | provenance |  |
-| ReflectedXss.js:115:31:115:45 | paramKeys?.keys | ReflectedXss.js:115:11:115:45 | keys | provenance |  |
-| ReflectedXss.js:117:11:117:61 | keyArray | ReflectedXss.js:118:25:118:32 | keyArray | provenance |  |
-| ReflectedXss.js:117:11:117:61 | keyArray [0] | ReflectedXss.js:118:25:118:32 | keyArray [0] | provenance |  |
-| ReflectedXss.js:117:49:117:54 | [keys] [0] | ReflectedXss.js:117:11:117:61 | keyArray [0] | provenance |  |
+| ReflectedXss.js:113:13:113:27 | keys: queryKeys | ReflectedXss.js:113:19:113:27 | queryKeys | provenance |  |
+| ReflectedXss.js:113:19:113:27 | queryKeys | ReflectedXss.js:115:18:115:26 | queryKeys | provenance |  |
+| ReflectedXss.js:115:11:115:14 | keys | ReflectedXss.js:117:50:117:53 | keys | provenance |  |
+| ReflectedXss.js:115:11:115:14 | keys | ReflectedXss.js:117:58:117:61 | keys | provenance |  |
+| ReflectedXss.js:115:18:115:26 | queryKeys | ReflectedXss.js:115:11:115:14 | keys | provenance |  |
+| ReflectedXss.js:115:31:115:45 | paramKeys?.keys | ReflectedXss.js:115:11:115:14 | keys | provenance |  |
+| ReflectedXss.js:117:11:117:18 | keyArray | ReflectedXss.js:118:25:118:32 | keyArray | provenance |  |
+| ReflectedXss.js:117:11:117:18 | keyArray [0] | ReflectedXss.js:118:25:118:32 | keyArray [0] | provenance |  |
+| ReflectedXss.js:117:49:117:54 | [keys] [0] | ReflectedXss.js:117:11:117:18 | keyArray [0] | provenance |  |
 | ReflectedXss.js:117:50:117:53 | keys | ReflectedXss.js:117:49:117:54 | [keys] [0] | provenance |  |
-| ReflectedXss.js:117:58:117:61 | keys | ReflectedXss.js:117:11:117:61 | keyArray | provenance |  |
-| ReflectedXss.js:118:11:118:72 | invalidKeys | ReflectedXss.js:121:33:121:43 | invalidKeys | provenance |  |
-| ReflectedXss.js:118:11:118:72 | invalidKeys [0] | ReflectedXss.js:121:33:121:43 | invalidKeys [0] | provenance |  |
+| ReflectedXss.js:117:58:117:61 | keys | ReflectedXss.js:117:11:117:18 | keyArray | provenance |  |
+| ReflectedXss.js:118:11:118:21 | invalidKeys | ReflectedXss.js:121:33:121:43 | invalidKeys | provenance |  |
+| ReflectedXss.js:118:11:118:21 | invalidKeys [0] | ReflectedXss.js:121:33:121:43 | invalidKeys [0] | provenance |  |
 | ReflectedXss.js:118:25:118:32 | keyArray | ReflectedXss.js:118:25:118:72 | keyArra ... s(key)) | provenance |  |
 | ReflectedXss.js:118:25:118:32 | keyArray [0] | ReflectedXss.js:118:25:118:72 | keyArra ... s(key)) [0] | provenance |  |
-| ReflectedXss.js:118:25:118:72 | keyArra ... s(key)) | ReflectedXss.js:118:11:118:72 | invalidKeys | provenance |  |
-| ReflectedXss.js:118:25:118:72 | keyArra ... s(key)) [0] | ReflectedXss.js:118:11:118:72 | invalidKeys [0] | provenance |  |
+| ReflectedXss.js:118:25:118:72 | keyArra ... s(key)) | ReflectedXss.js:118:11:118:21 | invalidKeys | provenance |  |
+| ReflectedXss.js:118:25:118:72 | keyArra ... s(key)) [0] | ReflectedXss.js:118:11:118:21 | invalidKeys [0] | provenance |  |
 | ReflectedXss.js:121:33:121:43 | invalidKeys | ReflectedXss.js:121:33:121:54 | invalid ... n(', ') | provenance |  |
 | ReflectedXss.js:121:33:121:43 | invalidKeys [0] | ReflectedXss.js:121:33:121:54 | invalid ... n(', ') | provenance |  |
 | ReflectedXss.js:121:33:121:54 | invalid ... n(', ') | ReflectedXss.js:121:30:121:73 | `${inva ... telist` | provenance |  |
@@ -123,11 +123,11 @@ edges
 | ReflectedXssContentTypes.js:70:22:70:34 | req.params.id | ReflectedXssContentTypes.js:70:12:70:34 | "FOO: " ... rams.id | provenance |  |
 | ReflectedXssGood3.js:68:22:68:26 | value | ReflectedXssGood3.js:77:16:77:20 | value | provenance |  |
 | ReflectedXssGood3.js:68:22:68:26 | value | ReflectedXssGood3.js:105:18:105:22 | value | provenance |  |
-| ReflectedXssGood3.js:77:7:77:37 | parts | ReflectedXssGood3.js:108:10:108:14 | parts | provenance |  |
-| ReflectedXssGood3.js:77:7:77:37 | parts [0] | ReflectedXssGood3.js:108:10:108:14 | parts [0] | provenance |  |
-| ReflectedXssGood3.js:77:15:77:37 | [value. ... (0, i)] [0] | ReflectedXssGood3.js:77:7:77:37 | parts [0] | provenance |  |
+| ReflectedXssGood3.js:77:7:77:11 | parts | ReflectedXssGood3.js:108:10:108:14 | parts | provenance |  |
+| ReflectedXssGood3.js:77:7:77:11 | parts [0] | ReflectedXssGood3.js:108:10:108:14 | parts [0] | provenance |  |
+| ReflectedXssGood3.js:77:15:77:37 | [value. ... (0, i)] [0] | ReflectedXssGood3.js:77:7:77:11 | parts [0] | provenance |  |
 | ReflectedXssGood3.js:77:16:77:20 | value | ReflectedXssGood3.js:77:16:77:36 | value.s ... g(0, i) | provenance |  |
-| ReflectedXssGood3.js:77:16:77:36 | value.s ... g(0, i) | ReflectedXssGood3.js:77:7:77:37 | parts | provenance |  |
+| ReflectedXssGood3.js:77:16:77:36 | value.s ... g(0, i) | ReflectedXssGood3.js:77:7:77:11 | parts | provenance |  |
 | ReflectedXssGood3.js:77:16:77:36 | value.s ... g(0, i) | ReflectedXssGood3.js:77:15:77:37 | [value. ... (0, i)] [0] | provenance |  |
 | ReflectedXssGood3.js:77:16:77:36 | value.s ... g(0, i) | ReflectedXssGood3.js:108:10:108:23 | parts.join('') | provenance |  |
 | ReflectedXssGood3.js:105:7:105:11 | [post update] parts [ArrayElement] | ReflectedXssGood3.js:108:10:108:14 | parts [ArrayElement] | provenance |  |
@@ -136,34 +136,34 @@ edges
 | ReflectedXssGood3.js:108:10:108:14 | parts | ReflectedXssGood3.js:108:10:108:23 | parts.join('') | provenance |  |
 | ReflectedXssGood3.js:108:10:108:14 | parts [0] | ReflectedXssGood3.js:108:10:108:23 | parts.join('') | provenance |  |
 | ReflectedXssGood3.js:108:10:108:14 | parts [ArrayElement] | ReflectedXssGood3.js:108:10:108:23 | parts.join('') | provenance |  |
-| ReflectedXssGood3.js:135:9:135:27 | url | ReflectedXssGood3.js:139:24:139:26 | url | provenance |  |
-| ReflectedXssGood3.js:135:15:135:27 | req.params.id | ReflectedXssGood3.js:135:9:135:27 | url | provenance |  |
+| ReflectedXssGood3.js:135:9:135:11 | url | ReflectedXssGood3.js:139:24:139:26 | url | provenance |  |
+| ReflectedXssGood3.js:135:15:135:27 | req.params.id | ReflectedXssGood3.js:135:9:135:11 | url | provenance |  |
 | ReflectedXssGood3.js:139:24:139:26 | url | ReflectedXssGood3.js:68:22:68:26 | value | provenance |  |
 | ReflectedXssGood3.js:139:24:139:26 | url | ReflectedXssGood3.js:139:12:139:27 | escapeHtml3(url) | provenance |  |
-| app/api/route.ts:2:11:2:33 | body | app/api/route.ts:5:18:5:21 | body | provenance |  |
-| app/api/route.ts:2:11:2:33 | body | app/api/route.ts:13:18:13:21 | body | provenance |  |
-| app/api/route.ts:2:11:2:33 | body | app/api/route.ts:25:18:25:21 | body | provenance |  |
-| app/api/route.ts:2:11:2:33 | body | app/api/route.ts:29:25:29:28 | body | provenance |  |
-| app/api/route.ts:2:18:2:33 | await req.json() | app/api/route.ts:2:11:2:33 | body | provenance |  |
+| app/api/route.ts:2:11:2:14 | body | app/api/route.ts:5:18:5:21 | body | provenance |  |
+| app/api/route.ts:2:11:2:14 | body | app/api/route.ts:13:18:13:21 | body | provenance |  |
+| app/api/route.ts:2:11:2:14 | body | app/api/route.ts:25:18:25:21 | body | provenance |  |
+| app/api/route.ts:2:11:2:14 | body | app/api/route.ts:29:25:29:28 | body | provenance |  |
+| app/api/route.ts:2:18:2:33 | await req.json() | app/api/route.ts:2:11:2:14 | body | provenance |  |
 | app/api/route.ts:2:24:2:33 | req.json() | app/api/route.ts:2:18:2:33 | await req.json() | provenance |  |
-| app/api/routeNextRequest.ts:4:9:4:31 | body | app/api/routeNextRequest.ts:7:20:7:23 | body | provenance |  |
-| app/api/routeNextRequest.ts:4:9:4:31 | body | app/api/routeNextRequest.ts:15:20:15:23 | body | provenance |  |
-| app/api/routeNextRequest.ts:4:9:4:31 | body | app/api/routeNextRequest.ts:27:20:27:23 | body | provenance |  |
-| app/api/routeNextRequest.ts:4:9:4:31 | body | app/api/routeNextRequest.ts:31:27:31:30 | body | provenance |  |
-| app/api/routeNextRequest.ts:4:16:4:31 | await req.json() | app/api/routeNextRequest.ts:4:9:4:31 | body | provenance |  |
+| app/api/routeNextRequest.ts:4:9:4:12 | body | app/api/routeNextRequest.ts:7:20:7:23 | body | provenance |  |
+| app/api/routeNextRequest.ts:4:9:4:12 | body | app/api/routeNextRequest.ts:15:20:15:23 | body | provenance |  |
+| app/api/routeNextRequest.ts:4:9:4:12 | body | app/api/routeNextRequest.ts:27:20:27:23 | body | provenance |  |
+| app/api/routeNextRequest.ts:4:9:4:12 | body | app/api/routeNextRequest.ts:31:27:31:30 | body | provenance |  |
+| app/api/routeNextRequest.ts:4:16:4:31 | await req.json() | app/api/routeNextRequest.ts:4:9:4:12 | body | provenance |  |
 | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | app/api/routeNextRequest.ts:4:16:4:31 | await req.json() | provenance |  |
-| etherpad.js:9:5:9:53 | response | etherpad.js:11:12:11:19 | response | provenance |  |
-| etherpad.js:9:16:9:30 | req.query.jsonp | etherpad.js:9:5:9:53 | response | provenance |  |
-| formatting.js:4:9:4:29 | evil | formatting.js:6:43:6:46 | evil | provenance |  |
-| formatting.js:4:9:4:29 | evil | formatting.js:7:49:7:52 | evil | provenance |  |
-| formatting.js:4:16:4:29 | req.query.evil | formatting.js:4:9:4:29 | evil | provenance |  |
+| etherpad.js:9:5:9:12 | response | etherpad.js:11:12:11:19 | response | provenance |  |
+| etherpad.js:9:16:9:30 | req.query.jsonp | etherpad.js:9:5:9:12 | response | provenance |  |
+| formatting.js:4:9:4:12 | evil | formatting.js:6:43:6:46 | evil | provenance |  |
+| formatting.js:4:9:4:12 | evil | formatting.js:7:49:7:52 | evil | provenance |  |
+| formatting.js:4:16:4:29 | req.query.evil | formatting.js:4:9:4:12 | evil | provenance |  |
 | formatting.js:6:43:6:46 | evil | formatting.js:6:14:6:47 | util.fo ... , evil) | provenance |  |
 | formatting.js:7:49:7:52 | evil | formatting.js:7:14:7:53 | require ... , evil) | provenance |  |
-| live-server.js:4:11:4:27 | tainted | live-server.js:6:28:6:34 | tainted | provenance |  |
-| live-server.js:4:21:4:27 | req.url | live-server.js:4:11:4:27 | tainted | provenance |  |
+| live-server.js:4:11:4:17 | tainted | live-server.js:6:28:6:34 | tainted | provenance |  |
+| live-server.js:4:21:4:27 | req.url | live-server.js:4:11:4:17 | tainted | provenance |  |
 | live-server.js:6:28:6:34 | tainted | live-server.js:6:13:6:50 | `<html> ... /html>` | provenance |  |
-| live-server.js:10:11:10:27 | tainted | live-server.js:12:28:12:34 | tainted | provenance |  |
-| live-server.js:10:21:10:27 | req.url | live-server.js:10:11:10:27 | tainted | provenance |  |
+| live-server.js:10:11:10:17 | tainted | live-server.js:12:28:12:34 | tainted | provenance |  |
+| live-server.js:10:21:10:27 | req.url | live-server.js:10:11:10:17 | tainted | provenance |  |
 | live-server.js:12:28:12:34 | tainted | live-server.js:12:13:12:50 | `<html> ... /html>` | provenance |  |
 | partial.js:9:25:9:25 | x | partial.js:10:14:10:14 | x | provenance |  |
 | partial.js:10:14:10:14 | x | partial.js:10:14:10:18 | x + y | provenance |  |
@@ -182,85 +182,85 @@ edges
 | promises.js:5:36:5:42 | [post update] resolve [resolve-value] | promises.js:5:16:5:22 | resolve [Return] [resolve-value] | provenance |  |
 | promises.js:5:44:5:57 | req.query.data | promises.js:5:36:5:42 | [post update] resolve [resolve-value] | provenance |  |
 | promises.js:6:11:6:11 | x | promises.js:6:25:6:25 | x | provenance |  |
-| response-object.js:7:11:7:25 | data | response-object.js:9:18:9:21 | data | provenance |  |
-| response-object.js:7:11:7:25 | data | response-object.js:10:18:10:21 | data | provenance |  |
-| response-object.js:7:11:7:25 | data | response-object.js:11:18:11:21 | data | provenance |  |
-| response-object.js:7:11:7:25 | data | response-object.js:14:18:14:21 | data | provenance |  |
-| response-object.js:7:11:7:25 | data | response-object.js:17:18:17:21 | data | provenance |  |
-| response-object.js:7:11:7:25 | data | response-object.js:23:18:23:21 | data | provenance |  |
-| response-object.js:7:11:7:25 | data | response-object.js:26:18:26:21 | data | provenance |  |
-| response-object.js:7:11:7:25 | data | response-object.js:34:18:34:21 | data | provenance |  |
-| response-object.js:7:11:7:25 | data | response-object.js:38:18:38:21 | data | provenance |  |
-| response-object.js:7:18:7:25 | req.body | response-object.js:7:11:7:25 | data | provenance |  |
-| tst2.js:6:7:6:30 | p | tst2.js:7:12:7:12 | p | provenance |  |
-| tst2.js:6:7:6:30 | r | tst2.js:8:12:8:12 | r | provenance |  |
-| tst2.js:6:9:6:9 | p | tst2.js:6:7:6:30 | p | provenance |  |
-| tst2.js:6:12:6:15 | q: r | tst2.js:6:7:6:30 | r | provenance |  |
-| tst2.js:14:7:14:24 | p | tst2.js:18:12:18:12 | p | provenance |  |
-| tst2.js:14:7:14:24 | p | tst2.js:21:14:21:14 | p | provenance |  |
-| tst2.js:14:9:14:9 | p | tst2.js:14:7:14:24 | p | provenance |  |
-| tst2.js:30:7:30:24 | p | tst2.js:33:11:33:11 | p | provenance |  |
-| tst2.js:30:7:30:24 | p | tst2.js:36:12:36:12 | p | provenance |  |
-| tst2.js:30:9:30:9 | p | tst2.js:30:7:30:24 | p | provenance |  |
+| response-object.js:7:11:7:14 | data | response-object.js:9:18:9:21 | data | provenance |  |
+| response-object.js:7:11:7:14 | data | response-object.js:10:18:10:21 | data | provenance |  |
+| response-object.js:7:11:7:14 | data | response-object.js:11:18:11:21 | data | provenance |  |
+| response-object.js:7:11:7:14 | data | response-object.js:14:18:14:21 | data | provenance |  |
+| response-object.js:7:11:7:14 | data | response-object.js:17:18:17:21 | data | provenance |  |
+| response-object.js:7:11:7:14 | data | response-object.js:23:18:23:21 | data | provenance |  |
+| response-object.js:7:11:7:14 | data | response-object.js:26:18:26:21 | data | provenance |  |
+| response-object.js:7:11:7:14 | data | response-object.js:34:18:34:21 | data | provenance |  |
+| response-object.js:7:11:7:14 | data | response-object.js:38:18:38:21 | data | provenance |  |
+| response-object.js:7:18:7:25 | req.body | response-object.js:7:11:7:14 | data | provenance |  |
+| tst2.js:6:9:6:9 | p | tst2.js:6:9:6:9 | p | provenance |  |
+| tst2.js:6:9:6:9 | p | tst2.js:7:12:7:12 | p | provenance |  |
+| tst2.js:6:12:6:15 | q: r | tst2.js:6:15:6:15 | r | provenance |  |
+| tst2.js:6:15:6:15 | r | tst2.js:8:12:8:12 | r | provenance |  |
+| tst2.js:14:9:14:9 | p | tst2.js:14:9:14:9 | p | provenance |  |
+| tst2.js:14:9:14:9 | p | tst2.js:18:12:18:12 | p | provenance |  |
+| tst2.js:14:9:14:9 | p | tst2.js:21:14:21:14 | p | provenance |  |
+| tst2.js:30:9:30:9 | p | tst2.js:30:9:30:9 | p | provenance |  |
+| tst2.js:30:9:30:9 | p | tst2.js:33:11:33:11 | p | provenance |  |
+| tst2.js:30:9:30:9 | p | tst2.js:36:12:36:12 | p | provenance |  |
 | tst2.js:33:3:33:5 | [post update] obj [p] | tst2.js:34:21:34:23 | obj [p] | provenance |  |
 | tst2.js:33:11:33:11 | p | tst2.js:33:3:33:5 | [post update] obj [p] | provenance |  |
-| tst2.js:34:7:34:24 | other [p] | tst2.js:37:12:37:16 | other [p] | provenance |  |
-| tst2.js:34:15:34:24 | clone(obj) [p] | tst2.js:34:7:34:24 | other [p] | provenance |  |
+| tst2.js:34:7:34:11 | other [p] | tst2.js:37:12:37:16 | other [p] | provenance |  |
+| tst2.js:34:15:34:24 | clone(obj) [p] | tst2.js:34:7:34:11 | other [p] | provenance |  |
 | tst2.js:34:21:34:23 | obj [p] | tst2.js:34:15:34:24 | clone(obj) [p] | provenance |  |
 | tst2.js:37:12:37:16 | other [p] | tst2.js:37:12:37:18 | other.p | provenance |  |
-| tst2.js:43:7:43:24 | p | tst2.js:49:36:49:36 | p | provenance |  |
-| tst2.js:43:9:43:9 | p | tst2.js:43:7:43:24 | p | provenance |  |
-| tst2.js:49:7:49:53 | unsafe | tst2.js:51:12:51:17 | unsafe | provenance |  |
-| tst2.js:49:16:49:53 | seriali ...  true}) | tst2.js:49:7:49:53 | unsafe | provenance |  |
+| tst2.js:43:9:43:9 | p | tst2.js:43:9:43:9 | p | provenance |  |
+| tst2.js:43:9:43:9 | p | tst2.js:49:36:49:36 | p | provenance |  |
+| tst2.js:49:7:49:12 | unsafe | tst2.js:51:12:51:17 | unsafe | provenance |  |
+| tst2.js:49:16:49:53 | seriali ...  true}) | tst2.js:49:7:49:12 | unsafe | provenance |  |
 | tst2.js:49:36:49:36 | p | tst2.js:49:16:49:53 | seriali ...  true}) | provenance |  |
-| tst2.js:57:7:57:24 | p | tst2.js:60:11:60:11 | p | provenance |  |
-| tst2.js:57:7:57:24 | p | tst2.js:63:12:63:12 | p | provenance |  |
-| tst2.js:57:9:57:9 | p | tst2.js:57:7:57:24 | p | provenance |  |
+| tst2.js:57:9:57:9 | p | tst2.js:57:9:57:9 | p | provenance |  |
+| tst2.js:57:9:57:9 | p | tst2.js:60:11:60:11 | p | provenance |  |
+| tst2.js:57:9:57:9 | p | tst2.js:63:12:63:12 | p | provenance |  |
 | tst2.js:60:3:60:5 | [post update] obj [p] | tst2.js:61:22:61:24 | obj [p] | provenance |  |
 | tst2.js:60:11:60:11 | p | tst2.js:60:3:60:5 | [post update] obj [p] | provenance |  |
-| tst2.js:61:7:61:25 | other [p] | tst2.js:64:12:64:16 | other [p] | provenance |  |
-| tst2.js:61:15:61:25 | fclone(obj) [p] | tst2.js:61:7:61:25 | other [p] | provenance |  |
+| tst2.js:61:7:61:11 | other [p] | tst2.js:64:12:64:16 | other [p] | provenance |  |
+| tst2.js:61:15:61:25 | fclone(obj) [p] | tst2.js:61:7:61:11 | other [p] | provenance |  |
 | tst2.js:61:22:61:24 | obj [p] | tst2.js:61:15:61:25 | fclone(obj) [p] | provenance |  |
 | tst2.js:64:12:64:16 | other [p] | tst2.js:64:12:64:18 | other.p | provenance |  |
-| tst2.js:69:7:69:24 | p | tst2.js:72:11:72:11 | p | provenance |  |
-| tst2.js:69:7:69:24 | p | tst2.js:75:12:75:12 | p | provenance |  |
-| tst2.js:69:9:69:9 | p | tst2.js:69:7:69:24 | p | provenance |  |
+| tst2.js:69:9:69:9 | p | tst2.js:69:9:69:9 | p | provenance |  |
+| tst2.js:69:9:69:9 | p | tst2.js:72:11:72:11 | p | provenance |  |
+| tst2.js:69:9:69:9 | p | tst2.js:75:12:75:12 | p | provenance |  |
 | tst2.js:72:3:72:5 | [post update] obj [p] | tst2.js:73:40:73:42 | obj [p] | provenance |  |
 | tst2.js:72:11:72:11 | p | tst2.js:72:3:72:5 | [post update] obj [p] | provenance |  |
-| tst2.js:73:7:73:44 | other [p] | tst2.js:76:12:76:16 | other [p] | provenance |  |
-| tst2.js:73:15:73:44 | jc.retr ... e(obj)) [p] | tst2.js:73:7:73:44 | other [p] | provenance |  |
+| tst2.js:73:7:73:11 | other [p] | tst2.js:76:12:76:16 | other [p] | provenance |  |
+| tst2.js:73:15:73:44 | jc.retr ... e(obj)) [p] | tst2.js:73:7:73:11 | other [p] | provenance |  |
 | tst2.js:73:29:73:43 | jc.decycle(obj) [p] | tst2.js:73:15:73:44 | jc.retr ... e(obj)) [p] | provenance |  |
 | tst2.js:73:40:73:42 | obj [p] | tst2.js:73:29:73:43 | jc.decycle(obj) [p] | provenance |  |
 | tst2.js:76:12:76:16 | other [p] | tst2.js:76:12:76:18 | other.p | provenance |  |
-| tst2.js:82:7:82:24 | p | tst2.js:85:11:85:11 | p | provenance |  |
-| tst2.js:82:7:82:24 | p | tst2.js:88:12:88:12 | p | provenance |  |
-| tst2.js:82:9:82:9 | p | tst2.js:82:7:82:24 | p | provenance |  |
+| tst2.js:82:9:82:9 | p | tst2.js:82:9:82:9 | p | provenance |  |
+| tst2.js:82:9:82:9 | p | tst2.js:85:11:85:11 | p | provenance |  |
+| tst2.js:82:9:82:9 | p | tst2.js:88:12:88:12 | p | provenance |  |
 | tst2.js:85:3:85:5 | [post update] obj [p] | tst2.js:86:24:86:26 | obj [p] | provenance |  |
 | tst2.js:85:11:85:11 | p | tst2.js:85:3:85:5 | [post update] obj [p] | provenance |  |
-| tst2.js:86:7:86:27 | other [p] | tst2.js:89:12:89:16 | other [p] | provenance |  |
-| tst2.js:86:15:86:27 | sortKeys(obj) [p] | tst2.js:86:7:86:27 | other [p] | provenance |  |
+| tst2.js:86:7:86:11 | other [p] | tst2.js:89:12:89:16 | other [p] | provenance |  |
+| tst2.js:86:15:86:27 | sortKeys(obj) [p] | tst2.js:86:7:86:11 | other [p] | provenance |  |
 | tst2.js:86:24:86:26 | obj [p] | tst2.js:86:15:86:27 | sortKeys(obj) [p] | provenance |  |
 | tst2.js:89:12:89:16 | other [p] | tst2.js:89:12:89:18 | other.p | provenance |  |
-| tst2.js:93:7:93:24 | p | tst2.js:99:51:99:51 | p | provenance |  |
-| tst2.js:93:9:93:9 | p | tst2.js:93:7:93:24 | p | provenance |  |
-| tst2.js:99:7:99:69 | unsafe | tst2.js:101:12:101:17 | unsafe | provenance |  |
-| tst2.js:99:16:99:69 | seriali ...  true}) | tst2.js:99:7:99:69 | unsafe | provenance |  |
+| tst2.js:93:9:93:9 | p | tst2.js:93:9:93:9 | p | provenance |  |
+| tst2.js:93:9:93:9 | p | tst2.js:99:51:99:51 | p | provenance |  |
+| tst2.js:99:7:99:12 | unsafe | tst2.js:101:12:101:17 | unsafe | provenance |  |
+| tst2.js:99:16:99:69 | seriali ...  true}) | tst2.js:99:7:99:12 | unsafe | provenance |  |
 | tst2.js:99:36:99:52 | {someProperty: p} [someProperty] | tst2.js:99:16:99:69 | seriali ...  true}) | provenance |  |
 | tst2.js:99:51:99:51 | p | tst2.js:99:16:99:69 | seriali ...  true}) | provenance |  |
 | tst2.js:99:51:99:51 | p | tst2.js:99:36:99:52 | {someProperty: p} [someProperty] | provenance |  |
-| tst2.js:105:7:105:24 | p | tst2.js:110:28:110:28 | p | provenance |  |
-| tst2.js:105:9:105:9 | p | tst2.js:105:7:105:24 | p | provenance |  |
-| tst2.js:110:7:110:29 | obj [someProperty] | tst2.js:111:36:111:38 | obj [someProperty] | provenance |  |
-| tst2.js:110:13:110:29 | {someProperty: p} [someProperty] | tst2.js:110:7:110:29 | obj [someProperty] | provenance |  |
+| tst2.js:105:9:105:9 | p | tst2.js:105:9:105:9 | p | provenance |  |
+| tst2.js:105:9:105:9 | p | tst2.js:110:28:110:28 | p | provenance |  |
+| tst2.js:110:7:110:9 | obj [someProperty] | tst2.js:111:36:111:38 | obj [someProperty] | provenance |  |
+| tst2.js:110:13:110:29 | {someProperty: p} [someProperty] | tst2.js:110:7:110:9 | obj [someProperty] | provenance |  |
 | tst2.js:110:28:110:28 | p | tst2.js:110:13:110:29 | {someProperty: p} [someProperty] | provenance |  |
 | tst2.js:110:28:110:28 | p | tst2.js:111:16:111:55 | seriali ...  true}) | provenance |  |
-| tst2.js:111:7:111:55 | unsafe | tst2.js:113:12:113:17 | unsafe | provenance |  |
-| tst2.js:111:16:111:55 | seriali ...  true}) | tst2.js:111:7:111:55 | unsafe | provenance |  |
+| tst2.js:111:7:111:12 | unsafe | tst2.js:113:12:113:17 | unsafe | provenance |  |
+| tst2.js:111:16:111:55 | seriali ...  true}) | tst2.js:111:7:111:12 | unsafe | provenance |  |
 | tst2.js:111:36:111:38 | obj [someProperty] | tst2.js:111:16:111:55 | seriali ...  true}) | provenance |  |
-| tst3.js:5:7:5:24 | p | tst3.js:6:12:6:12 | p | provenance |  |
-| tst3.js:5:9:5:9 | p | tst3.js:5:7:5:24 | p | provenance |  |
-| tst3.js:11:9:11:74 | code | tst3.js:12:12:12:15 | code | provenance |  |
-| tst3.js:11:16:11:74 | prettie ... bel" }) | tst3.js:11:9:11:74 | code | provenance |  |
+| tst3.js:5:9:5:9 | p | tst3.js:5:9:5:9 | p | provenance |  |
+| tst3.js:5:9:5:9 | p | tst3.js:6:12:6:12 | p | provenance |  |
+| tst3.js:11:9:11:12 | code | tst3.js:12:12:12:15 | code | provenance |  |
+| tst3.js:11:16:11:74 | prettie ... bel" }) | tst3.js:11:9:11:12 | code | provenance |  |
 | tst3.js:11:32:11:39 | reg.body | tst3.js:11:16:11:74 | prettie ... bel" }) | provenance |  |
 nodes
 | ReflectedXss.js:7:14:7:45 | "Unknow ... rams.id | semmle.label | "Unknow ... rams.id |
@@ -271,7 +271,7 @@ nodes
 | ReflectedXss.js:22:12:22:27 | marked(req.body) | semmle.label | marked(req.body) |
 | ReflectedXss.js:22:19:22:26 | req.body | semmle.label | req.body |
 | ReflectedXss.js:28:12:28:19 | req.body | semmle.label | req.body |
-| ReflectedXss.js:29:7:32:4 | mytable | semmle.label | mytable |
+| ReflectedXss.js:29:7:29:13 | mytable | semmle.label | mytable |
 | ReflectedXss.js:29:17:32:4 | table([ ... ce\\n  ]) | semmle.label | table([ ... ce\\n  ]) |
 | ReflectedXss.js:29:23:32:3 | [\\n    [ ... rce\\n  ] [1, 1] | semmle.label | [\\n    [ ... rce\\n  ] [1, 1] |
 | ReflectedXss.js:31:5:31:22 | ['body', req.body] [1] | semmle.label | ['body', req.body] [1] |
@@ -306,18 +306,18 @@ nodes
 | ReflectedXss.js:102:12:102:84 | markdow ... q.body) | semmle.label | markdow ... q.body) |
 | ReflectedXss.js:102:76:102:83 | req.body | semmle.label | req.body |
 | ReflectedXss.js:109:16:109:30 | request.query.p | semmle.label | request.query.p |
-| ReflectedXss.js:113:11:113:41 | queryKeys | semmle.label | queryKeys |
 | ReflectedXss.js:113:13:113:27 | keys: queryKeys | semmle.label | keys: queryKeys |
-| ReflectedXss.js:115:11:115:45 | keys | semmle.label | keys |
+| ReflectedXss.js:113:19:113:27 | queryKeys | semmle.label | queryKeys |
+| ReflectedXss.js:115:11:115:14 | keys | semmle.label | keys |
 | ReflectedXss.js:115:18:115:26 | queryKeys | semmle.label | queryKeys |
 | ReflectedXss.js:115:31:115:45 | paramKeys?.keys | semmle.label | paramKeys?.keys |
-| ReflectedXss.js:117:11:117:61 | keyArray | semmle.label | keyArray |
-| ReflectedXss.js:117:11:117:61 | keyArray [0] | semmle.label | keyArray [0] |
+| ReflectedXss.js:117:11:117:18 | keyArray | semmle.label | keyArray |
+| ReflectedXss.js:117:11:117:18 | keyArray [0] | semmle.label | keyArray [0] |
 | ReflectedXss.js:117:49:117:54 | [keys] [0] | semmle.label | [keys] [0] |
 | ReflectedXss.js:117:50:117:53 | keys | semmle.label | keys |
 | ReflectedXss.js:117:58:117:61 | keys | semmle.label | keys |
-| ReflectedXss.js:118:11:118:72 | invalidKeys | semmle.label | invalidKeys |
-| ReflectedXss.js:118:11:118:72 | invalidKeys [0] | semmle.label | invalidKeys [0] |
+| ReflectedXss.js:118:11:118:21 | invalidKeys | semmle.label | invalidKeys |
+| ReflectedXss.js:118:11:118:21 | invalidKeys [0] | semmle.label | invalidKeys [0] |
 | ReflectedXss.js:118:25:118:32 | keyArray | semmle.label | keyArray |
 | ReflectedXss.js:118:25:118:32 | keyArray [0] | semmle.label | keyArray [0] |
 | ReflectedXss.js:118:25:118:72 | keyArra ... s(key)) | semmle.label | keyArra ... s(key)) |
@@ -335,8 +335,8 @@ nodes
 | ReflectedXssContentTypes.js:70:12:70:34 | "FOO: " ... rams.id | semmle.label | "FOO: " ... rams.id |
 | ReflectedXssContentTypes.js:70:22:70:34 | req.params.id | semmle.label | req.params.id |
 | ReflectedXssGood3.js:68:22:68:26 | value | semmle.label | value |
-| ReflectedXssGood3.js:77:7:77:37 | parts | semmle.label | parts |
-| ReflectedXssGood3.js:77:7:77:37 | parts [0] | semmle.label | parts [0] |
+| ReflectedXssGood3.js:77:7:77:11 | parts | semmle.label | parts |
+| ReflectedXssGood3.js:77:7:77:11 | parts [0] | semmle.label | parts [0] |
 | ReflectedXssGood3.js:77:15:77:37 | [value. ... (0, i)] [0] | semmle.label | [value. ... (0, i)] [0] |
 | ReflectedXssGood3.js:77:16:77:20 | value | semmle.label | value |
 | ReflectedXssGood3.js:77:16:77:36 | value.s ... g(0, i) | semmle.label | value.s ... g(0, i) |
@@ -347,38 +347,38 @@ nodes
 | ReflectedXssGood3.js:108:10:108:14 | parts [0] | semmle.label | parts [0] |
 | ReflectedXssGood3.js:108:10:108:14 | parts [ArrayElement] | semmle.label | parts [ArrayElement] |
 | ReflectedXssGood3.js:108:10:108:23 | parts.join('') | semmle.label | parts.join('') |
-| ReflectedXssGood3.js:135:9:135:27 | url | semmle.label | url |
+| ReflectedXssGood3.js:135:9:135:11 | url | semmle.label | url |
 | ReflectedXssGood3.js:135:15:135:27 | req.params.id | semmle.label | req.params.id |
 | ReflectedXssGood3.js:139:12:139:27 | escapeHtml3(url) | semmle.label | escapeHtml3(url) |
 | ReflectedXssGood3.js:139:24:139:26 | url | semmle.label | url |
-| app/api/route.ts:2:11:2:33 | body | semmle.label | body |
+| app/api/route.ts:2:11:2:14 | body | semmle.label | body |
 | app/api/route.ts:2:18:2:33 | await req.json() | semmle.label | await req.json() |
 | app/api/route.ts:2:24:2:33 | req.json() | semmle.label | req.json() |
 | app/api/route.ts:5:18:5:21 | body | semmle.label | body |
 | app/api/route.ts:13:18:13:21 | body | semmle.label | body |
 | app/api/route.ts:25:18:25:21 | body | semmle.label | body |
 | app/api/route.ts:29:25:29:28 | body | semmle.label | body |
-| app/api/routeNextRequest.ts:4:9:4:31 | body | semmle.label | body |
+| app/api/routeNextRequest.ts:4:9:4:12 | body | semmle.label | body |
 | app/api/routeNextRequest.ts:4:16:4:31 | await req.json() | semmle.label | await req.json() |
 | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | semmle.label | req.json() |
 | app/api/routeNextRequest.ts:7:20:7:23 | body | semmle.label | body |
 | app/api/routeNextRequest.ts:15:20:15:23 | body | semmle.label | body |
 | app/api/routeNextRequest.ts:27:20:27:23 | body | semmle.label | body |
 | app/api/routeNextRequest.ts:31:27:31:30 | body | semmle.label | body |
-| etherpad.js:9:5:9:53 | response | semmle.label | response |
+| etherpad.js:9:5:9:12 | response | semmle.label | response |
 | etherpad.js:9:16:9:30 | req.query.jsonp | semmle.label | req.query.jsonp |
 | etherpad.js:11:12:11:19 | response | semmle.label | response |
-| formatting.js:4:9:4:29 | evil | semmle.label | evil |
+| formatting.js:4:9:4:12 | evil | semmle.label | evil |
 | formatting.js:4:16:4:29 | req.query.evil | semmle.label | req.query.evil |
 | formatting.js:6:14:6:47 | util.fo ... , evil) | semmle.label | util.fo ... , evil) |
 | formatting.js:6:43:6:46 | evil | semmle.label | evil |
 | formatting.js:7:14:7:53 | require ... , evil) | semmle.label | require ... , evil) |
 | formatting.js:7:49:7:52 | evil | semmle.label | evil |
-| live-server.js:4:11:4:27 | tainted | semmle.label | tainted |
+| live-server.js:4:11:4:17 | tainted | semmle.label | tainted |
 | live-server.js:4:21:4:27 | req.url | semmle.label | req.url |
 | live-server.js:6:13:6:50 | `<html> ... /html>` | semmle.label | `<html> ... /html>` |
 | live-server.js:6:28:6:34 | tainted | semmle.label | tainted |
-| live-server.js:10:11:10:27 | tainted | semmle.label | tainted |
+| live-server.js:10:11:10:17 | tainted | semmle.label | tainted |
 | live-server.js:10:21:10:27 | req.url | semmle.label | req.url |
 | live-server.js:12:13:12:50 | `<html> ... /html>` | semmle.label | `<html> ... /html>` |
 | live-server.js:12:28:12:34 | tainted | semmle.label | tainted |
@@ -407,7 +407,7 @@ nodes
 | promises.js:5:44:5:57 | req.query.data | semmle.label | req.query.data |
 | promises.js:6:11:6:11 | x | semmle.label | x |
 | promises.js:6:25:6:25 | x | semmle.label | x |
-| response-object.js:7:11:7:25 | data | semmle.label | data |
+| response-object.js:7:11:7:14 | data | semmle.label | data |
 | response-object.js:7:18:7:25 | req.body | semmle.label | req.body |
 | response-object.js:9:18:9:21 | data | semmle.label | data |
 | response-object.js:10:18:10:21 | data | semmle.label | data |
@@ -418,83 +418,83 @@ nodes
 | response-object.js:26:18:26:21 | data | semmle.label | data |
 | response-object.js:34:18:34:21 | data | semmle.label | data |
 | response-object.js:38:18:38:21 | data | semmle.label | data |
-| tst2.js:6:7:6:30 | p | semmle.label | p |
-| tst2.js:6:7:6:30 | r | semmle.label | r |
+| tst2.js:6:9:6:9 | p | semmle.label | p |
 | tst2.js:6:9:6:9 | p | semmle.label | p |
 | tst2.js:6:12:6:15 | q: r | semmle.label | q: r |
+| tst2.js:6:15:6:15 | r | semmle.label | r |
 | tst2.js:7:12:7:12 | p | semmle.label | p |
 | tst2.js:8:12:8:12 | r | semmle.label | r |
-| tst2.js:14:7:14:24 | p | semmle.label | p |
+| tst2.js:14:9:14:9 | p | semmle.label | p |
 | tst2.js:14:9:14:9 | p | semmle.label | p |
 | tst2.js:18:12:18:12 | p | semmle.label | p |
 | tst2.js:21:14:21:14 | p | semmle.label | p |
-| tst2.js:30:7:30:24 | p | semmle.label | p |
+| tst2.js:30:9:30:9 | p | semmle.label | p |
 | tst2.js:30:9:30:9 | p | semmle.label | p |
 | tst2.js:33:3:33:5 | [post update] obj [p] | semmle.label | [post update] obj [p] |
 | tst2.js:33:11:33:11 | p | semmle.label | p |
-| tst2.js:34:7:34:24 | other [p] | semmle.label | other [p] |
+| tst2.js:34:7:34:11 | other [p] | semmle.label | other [p] |
 | tst2.js:34:15:34:24 | clone(obj) [p] | semmle.label | clone(obj) [p] |
 | tst2.js:34:21:34:23 | obj [p] | semmle.label | obj [p] |
 | tst2.js:36:12:36:12 | p | semmle.label | p |
 | tst2.js:37:12:37:16 | other [p] | semmle.label | other [p] |
 | tst2.js:37:12:37:18 | other.p | semmle.label | other.p |
-| tst2.js:43:7:43:24 | p | semmle.label | p |
 | tst2.js:43:9:43:9 | p | semmle.label | p |
-| tst2.js:49:7:49:53 | unsafe | semmle.label | unsafe |
+| tst2.js:43:9:43:9 | p | semmle.label | p |
+| tst2.js:49:7:49:12 | unsafe | semmle.label | unsafe |
 | tst2.js:49:16:49:53 | seriali ...  true}) | semmle.label | seriali ...  true}) |
 | tst2.js:49:36:49:36 | p | semmle.label | p |
 | tst2.js:51:12:51:17 | unsafe | semmle.label | unsafe |
-| tst2.js:57:7:57:24 | p | semmle.label | p |
+| tst2.js:57:9:57:9 | p | semmle.label | p |
 | tst2.js:57:9:57:9 | p | semmle.label | p |
 | tst2.js:60:3:60:5 | [post update] obj [p] | semmle.label | [post update] obj [p] |
 | tst2.js:60:11:60:11 | p | semmle.label | p |
-| tst2.js:61:7:61:25 | other [p] | semmle.label | other [p] |
+| tst2.js:61:7:61:11 | other [p] | semmle.label | other [p] |
 | tst2.js:61:15:61:25 | fclone(obj) [p] | semmle.label | fclone(obj) [p] |
 | tst2.js:61:22:61:24 | obj [p] | semmle.label | obj [p] |
 | tst2.js:63:12:63:12 | p | semmle.label | p |
 | tst2.js:64:12:64:16 | other [p] | semmle.label | other [p] |
 | tst2.js:64:12:64:18 | other.p | semmle.label | other.p |
-| tst2.js:69:7:69:24 | p | semmle.label | p |
+| tst2.js:69:9:69:9 | p | semmle.label | p |
 | tst2.js:69:9:69:9 | p | semmle.label | p |
 | tst2.js:72:3:72:5 | [post update] obj [p] | semmle.label | [post update] obj [p] |
 | tst2.js:72:11:72:11 | p | semmle.label | p |
-| tst2.js:73:7:73:44 | other [p] | semmle.label | other [p] |
+| tst2.js:73:7:73:11 | other [p] | semmle.label | other [p] |
 | tst2.js:73:15:73:44 | jc.retr ... e(obj)) [p] | semmle.label | jc.retr ... e(obj)) [p] |
 | tst2.js:73:29:73:43 | jc.decycle(obj) [p] | semmle.label | jc.decycle(obj) [p] |
 | tst2.js:73:40:73:42 | obj [p] | semmle.label | obj [p] |
 | tst2.js:75:12:75:12 | p | semmle.label | p |
 | tst2.js:76:12:76:16 | other [p] | semmle.label | other [p] |
 | tst2.js:76:12:76:18 | other.p | semmle.label | other.p |
-| tst2.js:82:7:82:24 | p | semmle.label | p |
+| tst2.js:82:9:82:9 | p | semmle.label | p |
 | tst2.js:82:9:82:9 | p | semmle.label | p |
 | tst2.js:85:3:85:5 | [post update] obj [p] | semmle.label | [post update] obj [p] |
 | tst2.js:85:11:85:11 | p | semmle.label | p |
-| tst2.js:86:7:86:27 | other [p] | semmle.label | other [p] |
+| tst2.js:86:7:86:11 | other [p] | semmle.label | other [p] |
 | tst2.js:86:15:86:27 | sortKeys(obj) [p] | semmle.label | sortKeys(obj) [p] |
 | tst2.js:86:24:86:26 | obj [p] | semmle.label | obj [p] |
 | tst2.js:88:12:88:12 | p | semmle.label | p |
 | tst2.js:89:12:89:16 | other [p] | semmle.label | other [p] |
 | tst2.js:89:12:89:18 | other.p | semmle.label | other.p |
-| tst2.js:93:7:93:24 | p | semmle.label | p |
 | tst2.js:93:9:93:9 | p | semmle.label | p |
-| tst2.js:99:7:99:69 | unsafe | semmle.label | unsafe |
+| tst2.js:93:9:93:9 | p | semmle.label | p |
+| tst2.js:99:7:99:12 | unsafe | semmle.label | unsafe |
 | tst2.js:99:16:99:69 | seriali ...  true}) | semmle.label | seriali ...  true}) |
 | tst2.js:99:36:99:52 | {someProperty: p} [someProperty] | semmle.label | {someProperty: p} [someProperty] |
 | tst2.js:99:51:99:51 | p | semmle.label | p |
 | tst2.js:101:12:101:17 | unsafe | semmle.label | unsafe |
-| tst2.js:105:7:105:24 | p | semmle.label | p |
 | tst2.js:105:9:105:9 | p | semmle.label | p |
-| tst2.js:110:7:110:29 | obj [someProperty] | semmle.label | obj [someProperty] |
+| tst2.js:105:9:105:9 | p | semmle.label | p |
+| tst2.js:110:7:110:9 | obj [someProperty] | semmle.label | obj [someProperty] |
 | tst2.js:110:13:110:29 | {someProperty: p} [someProperty] | semmle.label | {someProperty: p} [someProperty] |
 | tst2.js:110:28:110:28 | p | semmle.label | p |
-| tst2.js:111:7:111:55 | unsafe | semmle.label | unsafe |
+| tst2.js:111:7:111:12 | unsafe | semmle.label | unsafe |
 | tst2.js:111:16:111:55 | seriali ...  true}) | semmle.label | seriali ...  true}) |
 | tst2.js:111:36:111:38 | obj [someProperty] | semmle.label | obj [someProperty] |
 | tst2.js:113:12:113:17 | unsafe | semmle.label | unsafe |
-| tst3.js:5:7:5:24 | p | semmle.label | p |
+| tst3.js:5:9:5:9 | p | semmle.label | p |
 | tst3.js:5:9:5:9 | p | semmle.label | p |
 | tst3.js:6:12:6:12 | p | semmle.label | p |
-| tst3.js:11:9:11:74 | code | semmle.label | code |
+| tst3.js:11:9:11:12 | code | semmle.label | code |
 | tst3.js:11:16:11:74 | prettie ... bel" }) | semmle.label | prettie ... bel" }) |
 | tst3.js:11:32:11:39 | reg.body | semmle.label | reg.body |
 | tst3.js:12:12:12:15 | code | semmle.label | code |

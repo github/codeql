@@ -41,13 +41,15 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
         succ.asExpr() = index
       )
       or
-      // Although data flow through collections is modeled using stores/reads,
-      // we also allow taint to flow out of a tainted collection. This is
-      // needed in order to support taint-tracking configurations where the
-      // source is a collection.
-      exists(SingletonContentSet cs |
-        RustDataFlow::readStep(pred, cs, succ) and
+      // Although data flow through collections and references is modeled using
+      // stores/reads, we also allow taint to flow out of a tainted collection
+      // or reference.
+      // This is needed in order to support taint-tracking configurations where
+      // the source is a collection or reference.
+      exists(SingletonContentSet cs | RustDataFlow::readStep(pred, cs, succ) |
         cs.getContent() instanceof ElementContent
+        or
+        cs.getContent() instanceof ReferenceContent
       )
       or
       exists(FormatArgsExprCfgNode format | succ.asExpr() = format |

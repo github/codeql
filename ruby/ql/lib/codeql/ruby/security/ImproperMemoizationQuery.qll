@@ -45,7 +45,7 @@ private class MemoCandidate extends Method {
 }
 
 /**
- * Holds if parameter `p` of `m` is read in the right hand side of `assign`.
+ * Holds if parameter `p` of `m` is read in the right hand side of `a`.
  */
 private predicate parameterUsedInMemoValue(Method m, Parameter p, MemoStmt a) {
   p = m.getAParameter() and
@@ -54,7 +54,7 @@ private predicate parameterUsedInMemoValue(Method m, Parameter p, MemoStmt a) {
 }
 
 /**
- * Holds if parameter `p` of `m` is read in the left hand side of `assign`.
+ * Holds if parameter `p` of `m` is read in the left hand side of `a`.
  */
 private predicate parameterUsedInMemoKey(Method m, Parameter p, HashMemoStmt a) {
   p = m.getAParameter() and

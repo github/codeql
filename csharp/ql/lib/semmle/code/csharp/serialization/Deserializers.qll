@@ -560,9 +560,15 @@ class FsPicklerSerializerClassDeserializeSequenceMethod extends Method, UnsafeDe
   }
 }
 
+/**
+ * DEPRECATED: Use `FsPicklerSerializerClassDeserializeSiftedMethod` instead.
+ */
+deprecated class FsPicklerSerializerClasDeserializeSiftedMethod =
+  FsPicklerSerializerClassDeserializeSiftedMethod;
+
 /** `MBrace.FsPickler.FsPicklerSerializer.DeserializeSifted` method */
-class FsPicklerSerializerClasDeserializeSiftedMethod extends Method, UnsafeDeserializer {
-  FsPicklerSerializerClasDeserializeSiftedMethod() {
+class FsPicklerSerializerClassDeserializeSiftedMethod extends Method, UnsafeDeserializer {
+  FsPicklerSerializerClassDeserializeSiftedMethod() {
     this.getDeclaringType().getBaseClass*() instanceof FsPicklerSerializerClass and
     this.hasUndecoratedName("DeserializeSifted")
   }

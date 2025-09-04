@@ -1,10 +1,10 @@
 callsWithNoArguments
-| break_ensure.rb:8:6:8:13 | [ensure: raise] call to elements |
+| break_ensure.rb:8:6:8:13 | [ensure: exception] call to elements |
 | break_ensure.rb:8:6:8:13 | call to elements |
-| break_ensure.rb:8:6:8:18 | [ensure: raise] call to nil? |
+| break_ensure.rb:8:6:8:18 | [ensure: exception] call to nil? |
 | break_ensure.rb:8:6:8:18 | call to nil? |
 | break_ensure.rb:20:10:20:15 | [ensure: break] call to nil? |
-| break_ensure.rb:20:10:20:15 | [ensure: raise] call to nil? |
+| break_ensure.rb:20:10:20:15 | [ensure: exception] call to nil? |
 | break_ensure.rb:20:10:20:15 | call to nil? |
 | break_ensure.rb:29:8:29:13 | call to nil? |
 | case.rb:2:8:2:9 | call to x1 |
@@ -72,25 +72,25 @@ callsWithNoArguments
 positionalArguments
 | break_ensure.rb:2:9:2:13 | ... < ... | break_ensure.rb:2:13:2:13 | 0 |
 | break_ensure.rb:3:8:3:12 | ... > ... | break_ensure.rb:3:12:3:12 | 0 |
-| break_ensure.rb:9:5:9:23 | [ensure: raise] call to puts | break_ensure.rb:9:10:9:23 | [ensure: raise] "elements nil" |
+| break_ensure.rb:9:5:9:23 | [ensure: exception] call to puts | break_ensure.rb:9:10:9:23 | [ensure: exception] "elements nil" |
 | break_ensure.rb:9:5:9:23 | call to puts | break_ensure.rb:9:10:9:23 | "elements nil" |
 | break_ensure.rb:14:9:14:13 | ... < ... | break_ensure.rb:14:13:14:13 | 0 |
 | break_ensure.rb:16:10:16:14 | ... > ... | break_ensure.rb:16:14:16:14 | 0 |
 | break_ensure.rb:21:9:21:20 | [ensure: break] call to puts | break_ensure.rb:21:14:21:20 | [ensure: break] "y nil" |
-| break_ensure.rb:21:9:21:20 | [ensure: raise] call to puts | break_ensure.rb:21:14:21:20 | [ensure: raise] "y nil" |
+| break_ensure.rb:21:9:21:20 | [ensure: exception] call to puts | break_ensure.rb:21:14:21:20 | [ensure: exception] "y nil" |
 | break_ensure.rb:21:9:21:20 | call to puts | break_ensure.rb:21:14:21:20 | "y nil" |
 | break_ensure.rb:33:11:33:15 | ... < ... | break_ensure.rb:33:15:33:15 | 0 |
-| break_ensure.rb:33:11:33:15 | [ensure: raise] ... < ... | break_ensure.rb:33:15:33:15 | [ensure: raise] 0 |
+| break_ensure.rb:33:11:33:15 | [ensure: exception] ... < ... | break_ensure.rb:33:15:33:15 | [ensure: exception] 0 |
 | break_ensure.rb:33:11:33:15 | [ensure: return] ... < ... | break_ensure.rb:33:15:33:15 | [ensure: return] 0 |
 | break_ensure.rb:35:12:35:16 | ... > ... | break_ensure.rb:35:16:35:16 | 0 |
-| break_ensure.rb:35:12:35:16 | [ensure: raise] ... > ... | break_ensure.rb:35:16:35:16 | [ensure: raise] 0 |
+| break_ensure.rb:35:12:35:16 | [ensure: exception] ... > ... | break_ensure.rb:35:16:35:16 | [ensure: exception] 0 |
 | break_ensure.rb:35:12:35:16 | [ensure: return] ... > ... | break_ensure.rb:35:16:35:16 | [ensure: return] 0 |
 | break_ensure.rb:41:3:41:13 | call to puts | break_ensure.rb:41:8:41:13 | "Done" |
 | break_ensure.rb:45:9:45:13 | ... < ... | break_ensure.rb:45:13:45:13 | 0 |
 | break_ensure.rb:47:10:47:14 | ... > ... | break_ensure.rb:47:14:47:14 | 1 |
 | break_ensure.rb:48:9:48:16 | call to raise | break_ensure.rb:48:15:48:16 | "" |
 | break_ensure.rb:51:10:51:14 | ... > ... | break_ensure.rb:51:14:51:14 | 0 |
-| break_ensure.rb:51:10:51:14 | [ensure: raise] ... > ... | break_ensure.rb:51:14:51:14 | [ensure: raise] 0 |
+| break_ensure.rb:51:10:51:14 | [ensure: exception] ... > ... | break_ensure.rb:51:14:51:14 | [ensure: exception] 0 |
 | case.rb:3:29:3:37 | call to puts | case.rb:3:34:3:37 | "x2" |
 | case.rb:4:17:4:24 | call to puts | case.rb:4:22:4:24 | "2" |
 | case.rb:14:13:14:18 | ... == ... | case.rb:14:18:14:18 | 5 |
@@ -319,7 +319,7 @@ positionalArguments
 | raise.rb:70:5:70:17 | call to raise | raise.rb:70:11:70:17 | "x > 2" |
 | raise.rb:71:9:71:13 | ... < ... | raise.rb:71:13:71:13 | 0 |
 | raise.rb:74:3:74:20 | call to puts | raise.rb:74:8:74:20 | "0 <= x <= 2" |
-| raise.rb:76:3:76:15 | [ensure: raise] call to puts | raise.rb:76:8:76:15 | [ensure: raise] "ensure" |
+| raise.rb:76:3:76:15 | [ensure: exception] call to puts | raise.rb:76:8:76:15 | [ensure: exception] "ensure" |
 | raise.rb:76:3:76:15 | [ensure: return] call to puts | raise.rb:76:8:76:15 | [ensure: return] "ensure" |
 | raise.rb:76:3:76:15 | call to puts | raise.rb:76:8:76:15 | "ensure" |
 | raise.rb:80:3:80:17 | call to puts | raise.rb:80:8:80:17 | "Begin m8" |
@@ -327,7 +327,7 @@ positionalArguments
 | raise.rb:83:7:83:19 | call to raise | raise.rb:83:13:83:19 | "x > 2" |
 | raise.rb:84:11:84:15 | ... < ... | raise.rb:84:15:84:15 | 0 |
 | raise.rb:87:5:87:22 | call to puts | raise.rb:87:10:87:22 | "0 <= x <= 2" |
-| raise.rb:89:5:89:17 | [ensure: raise] call to puts | raise.rb:89:10:89:17 | [ensure: raise] "ensure" |
+| raise.rb:89:5:89:17 | [ensure: exception] call to puts | raise.rb:89:10:89:17 | [ensure: exception] "ensure" |
 | raise.rb:89:5:89:17 | [ensure: return] call to puts | raise.rb:89:10:89:17 | [ensure: return] "ensure" |
 | raise.rb:89:5:89:17 | call to puts | raise.rb:89:10:89:17 | "ensure" |
 | raise.rb:91:3:91:15 | call to puts | raise.rb:91:8:91:15 | "End m8" |
@@ -336,30 +336,30 @@ positionalArguments
 | raise.rb:98:7:98:19 | call to raise | raise.rb:98:13:98:19 | "x > 2" |
 | raise.rb:99:11:99:15 | ... < ... | raise.rb:99:15:99:15 | 0 |
 | raise.rb:102:5:102:22 | call to puts | raise.rb:102:10:102:22 | "0 <= x <= 2" |
-| raise.rb:104:5:104:23 | [ensure: raise] call to puts | raise.rb:104:10:104:23 | [ensure: raise] "outer ensure" |
+| raise.rb:104:5:104:23 | [ensure: exception] call to puts | raise.rb:104:10:104:23 | [ensure: exception] "outer ensure" |
 | raise.rb:104:5:104:23 | [ensure: return] call to puts | raise.rb:104:10:104:23 | [ensure: return] "outer ensure" |
 | raise.rb:104:5:104:23 | call to puts | raise.rb:104:10:104:23 | "outer ensure" |
-| raise.rb:107:9:107:26 | [ensure: raise] call to raise | raise.rb:107:15:107:26 | [ensure: raise] "b1 is true" |
+| raise.rb:107:9:107:26 | [ensure: exception] call to raise | raise.rb:107:15:107:26 | [ensure: exception] "b1 is true" |
 | raise.rb:107:9:107:26 | [ensure: return] call to raise | raise.rb:107:15:107:26 | [ensure: return] "b1 is true" |
 | raise.rb:107:9:107:26 | call to raise | raise.rb:107:15:107:26 | "b1 is true" |
-| raise.rb:110:7:110:25 | [ensure(1): raise] call to puts | raise.rb:110:12:110:25 | [ensure(1): raise] "inner ensure" |
-| raise.rb:110:7:110:25 | [ensure: raise, ensure(1): raise] call to puts | raise.rb:110:12:110:25 | [ensure: raise, ensure(1): raise] "inner ensure" |
-| raise.rb:110:7:110:25 | [ensure: raise] call to puts | raise.rb:110:12:110:25 | [ensure: raise] "inner ensure" |
-| raise.rb:110:7:110:25 | [ensure: return, ensure(1): raise] call to puts | raise.rb:110:12:110:25 | [ensure: return, ensure(1): raise] "inner ensure" |
+| raise.rb:110:7:110:25 | [ensure(1): exception] call to puts | raise.rb:110:12:110:25 | [ensure(1): exception] "inner ensure" |
+| raise.rb:110:7:110:25 | [ensure: exception, ensure(1): exception] call to puts | raise.rb:110:12:110:25 | [ensure: exception, ensure(1): exception] "inner ensure" |
+| raise.rb:110:7:110:25 | [ensure: exception] call to puts | raise.rb:110:12:110:25 | [ensure: exception] "inner ensure" |
+| raise.rb:110:7:110:25 | [ensure: return, ensure(1): exception] call to puts | raise.rb:110:12:110:25 | [ensure: return, ensure(1): exception] "inner ensure" |
 | raise.rb:110:7:110:25 | [ensure: return] call to puts | raise.rb:110:12:110:25 | [ensure: return] "inner ensure" |
 | raise.rb:110:7:110:25 | call to puts | raise.rb:110:12:110:25 | "inner ensure" |
 | raise.rb:113:3:113:15 | call to puts | raise.rb:113:8:113:15 | "End m9" |
-| raise.rb:115:3:115:22 | [ensure: raise] call to puts | raise.rb:115:8:115:22 | [ensure: raise] "method ensure" |
+| raise.rb:115:3:115:22 | [ensure: exception] call to puts | raise.rb:115:8:115:22 | [ensure: exception] "method ensure" |
 | raise.rb:115:3:115:22 | [ensure: return] call to puts | raise.rb:115:8:115:22 | [ensure: return] "method ensure" |
 | raise.rb:115:3:115:22 | call to puts | raise.rb:115:8:115:22 | "method ensure" |
-| raise.rb:117:5:117:22 | [ensure: raise] call to raise | raise.rb:117:11:117:22 | [ensure: raise] "b2 is true" |
+| raise.rb:117:5:117:22 | [ensure: exception] call to raise | raise.rb:117:11:117:22 | [ensure: exception] "b2 is true" |
 | raise.rb:117:5:117:22 | [ensure: return] call to raise | raise.rb:117:11:117:22 | [ensure: return] "b2 is true" |
 | raise.rb:117:5:117:22 | call to raise | raise.rb:117:11:117:22 | "b2 is true" |
 | raise.rb:121:14:121:30 | call to raise | raise.rb:121:20:121:30 | "Exception" |
 | raise.rb:125:3:125:51 | call to puts | raise.rb:125:8:125:51 | "Will not get executed if p is..." |
 | raise.rb:131:7:131:22 | call to raise | raise.rb:131:13:131:22 | ExceptionA |
 | raise.rb:135:5:135:21 | call to puts | raise.rb:135:10:135:21 | "ExceptionB" |
-| raise.rb:137:5:137:17 | [ensure: raise] call to puts | raise.rb:137:10:137:17 | [ensure: raise] "Ensure" |
+| raise.rb:137:5:137:17 | [ensure: exception] call to puts | raise.rb:137:10:137:17 | [ensure: exception] "Ensure" |
 | raise.rb:137:5:137:17 | call to puts | raise.rb:137:10:137:17 | "Ensure" |
 | raise.rb:139:3:139:16 | call to puts | raise.rb:139:8:139:16 | "End m11" |
 | raise.rb:144:5:144:12 | call to raise | raise.rb:144:11:144:12 | "" |

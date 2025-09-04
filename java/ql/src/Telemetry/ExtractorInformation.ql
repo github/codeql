@@ -10,8 +10,6 @@ import java
 import semmle.code.java.Diagnostics
 import DatabaseQuality
 
-extensible predicate extractorInformationSkipKey(string key);
-
 predicate compilationInfo(string key, int value) {
   exists(Compilation c, string infoKey |
     key = infoKey + ": " + c.getInfo(infoKey) and

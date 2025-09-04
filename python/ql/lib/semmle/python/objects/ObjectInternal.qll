@@ -174,9 +174,9 @@ class ObjectInternal extends TObject {
   abstract int length();
 
   /**
-   * Holds if the object `function` is called when this object is called and `paramOffset`
+   * Holds if the object `function` is called when this object is called and `offset`
    * is the difference from the parameter position and the argument position.
-   * For a normal function `paramOffset` is 0. For classes and bound-methods it is 1.
+   * For a normal function `offset` is 0. For classes and bound-methods it is 1.
    * This is used to implement the `CallableValue` public API.
    */
   predicate functionAndOffset(CallableObjectInternal function, int offset) { none() }

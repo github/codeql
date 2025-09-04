@@ -261,7 +261,7 @@ class If extends AstNode instanceof IfImpl {
 }
 
 /**
- * An Environemnt node representing a deployment environment.
+ * An Environment node representing a deployment environment.
  */
 class Environment extends AstNode instanceof EnvironmentImpl {
   string getName() { result = super.getName() }

@@ -470,7 +470,8 @@ private predicate enhancedForStmtStep(Node node1, Node node2, Type containerType
 }
 
 /**
- * Holds if the step from `node1` to `node2` reads a value from an array.
+ * Holds if the step from `node1` to `node2` reads a value from an array, where
+ * the elements are of type `elemType`.
  * This covers ordinary array reads as well as array iteration through enhanced
  * `for` statements.
  */

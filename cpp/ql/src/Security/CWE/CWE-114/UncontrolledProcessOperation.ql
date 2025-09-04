@@ -23,7 +23,7 @@ predicate isProcessOperationExplanation(DataFlow::Node arg, string processOperat
   exists(int processOperationArg, FunctionCall call |
     isProcessOperationArgument(processOperation, processOperationArg) and
     call.getTarget().getName() = processOperation and
-    call.getArgument(processOperationArg) = [arg.asExpr(), arg.asIndirectExpr()]
+    call.getArgument(processOperationArg) = arg.asIndirectExpr()
   )
 }
 

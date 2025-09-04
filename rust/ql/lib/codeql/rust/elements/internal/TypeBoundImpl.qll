@@ -19,6 +19,8 @@ module Impl {
    * ```rust
    * fn foo<T: Debug>(t: T) {}
    * //        ^^^^^
+   * fn bar(value: impl for<'a> From<&'a str>) {}
+   * //                 ^^^^^^^^^^^^^^^^^^^^^
    * ```
    */
   class TypeBound extends Generated::TypeBound { }

@@ -14,6 +14,15 @@ module ImproperValidationOfArrayConstructionConfig implements DataFlow::ConfigSi
   predicate isSink(DataFlow::Node sink) {
     any(CheckableArrayAccess caa).canThrowOutOfBoundsDueToEmptyArray(sink.asExpr(), _)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(ArrayCreationExpr arrayCreation, CheckableArrayAccess arrayAccess |
+      result = [arrayCreation, arrayAccess.getIndexExpr()].getLocation() and
+      arrayAccess.canThrowOutOfBoundsDueToEmptyArray(sink.asExpr(), arrayCreation)
+    )
+  }
 }
 
 /**

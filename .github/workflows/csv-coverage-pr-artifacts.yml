@@ -35,11 +35,11 @@ jobs:
           GITHUB_CONTEXT: ${{ toJSON(github.event) }}
         run: echo "$GITHUB_CONTEXT"
       - name: Clone self (github/codeql) - MERGE
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: merge
       - name: Clone self (github/codeql) - BASE
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 2
           path: base

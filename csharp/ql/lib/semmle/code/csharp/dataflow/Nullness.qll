@@ -151,9 +151,7 @@ private predicate exprImpliesSsaDef(
  * If the returned element takes the `s` branch, then `def` is guaranteed to be
  * `null` if `nv.isNull()` holds, and non-`null` otherwise.
  */
-private ControlFlowElement getANullCheck(
-  Ssa::Definition def, SuccessorTypes::ConditionalSuccessor s, NullValue nv
-) {
+private ControlFlowElement getANullCheck(Ssa::Definition def, ConditionalSuccessor s, NullValue nv) {
   exists(Expr e, G::AbstractValue v | v.branch(result, s, e) | exprImpliesSsaDef(e, v, def, nv))
 }
 
@@ -294,10 +292,10 @@ private predicate defNullImpliesStep(
       bb2 = phi.getBasicBlock()
     )
   ) and
-  not exists(SuccessorTypes::ConditionalSuccessor s, NullValue nv |
+  not exists(ConditionalSuccessor s, NullValue nv |
     bb1.getLastNode() = getANullCheck(def1, s, nv).getAControlFlowNode()
   |
-    bb2 = bb1.getASuccessorByType(s) and
+    bb2 = bb1.getASuccessor(s) and
     nv.isNonNull()
   )
 }

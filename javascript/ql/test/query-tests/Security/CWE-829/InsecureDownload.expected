@@ -6,12 +6,12 @@
 | insecure-download.js:48:12:48:38 | "http:/ ... unsafe" | insecure-download.js:48:12:48:38 | "http:/ ... unsafe" | insecure-download.js:48:12:48:38 | "http:/ ... unsafe" | $@ of sensitive file from $@. | insecure-download.js:48:5:48:71 | nugget( ... => { }) | Download | insecure-download.js:48:12:48:38 | "http:/ ... unsafe" | HTTP source |
 | insecure-download.js:52:11:52:45 | "http:/ ... nknown" | insecure-download.js:52:11:52:45 | "http:/ ... nknown" | insecure-download.js:52:11:52:45 | "http:/ ... nknown" | $@ of sensitive file from $@. | insecure-download.js:52:5:54:6 | $.get(" ... \\n    }) | Download | insecure-download.js:52:11:52:45 | "http:/ ... nknown" | HTTP source |
 edges
-| insecure-download.js:36:9:36:45 | url | insecure-download.js:37:23:37:25 | url | provenance |  |
-| insecure-download.js:36:9:36:45 | url | insecure-download.js:39:26:39:28 | url | provenance |  |
-| insecure-download.js:36:15:36:45 | "http:/ ... fe.APK" | insecure-download.js:36:9:36:45 | url | provenance |  |
+| insecure-download.js:36:9:36:11 | url | insecure-download.js:37:23:37:25 | url | provenance |  |
+| insecure-download.js:36:9:36:11 | url | insecure-download.js:39:26:39:28 | url | provenance |  |
+| insecure-download.js:36:15:36:45 | "http:/ ... fe.APK" | insecure-download.js:36:9:36:11 | url | provenance |  |
 nodes
 | insecure-download.js:30:12:30:42 | "http:/ ... fe.APK" | semmle.label | "http:/ ... fe.APK" |
-| insecure-download.js:36:9:36:45 | url | semmle.label | url |
+| insecure-download.js:36:9:36:11 | url | semmle.label | url |
 | insecure-download.js:36:15:36:45 | "http:/ ... fe.APK" | semmle.label | "http:/ ... fe.APK" |
 | insecure-download.js:37:23:37:25 | url | semmle.label | url |
 | insecure-download.js:39:26:39:28 | url | semmle.label | url |

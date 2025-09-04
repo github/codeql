@@ -231,34 +231,9 @@
     "java/ql/src/experimental/Security/CWE/CWE-400/LocalThreadResourceAbuse.qhelp",
     "java/ql/src/experimental/Security/CWE/CWE-400/ThreadResourceAbuse.qhelp"
   ],
-  "CryptoAlgorithms Python/JS/Ruby": [
-    "javascript/ql/lib/semmle/javascript/security/CryptoAlgorithms.qll",
-    "python/ql/lib/semmle/python/concepts/CryptoAlgorithms.qll",
-    "ruby/ql/lib/codeql/ruby/security/CryptoAlgorithms.qll",
-    "rust/ql/lib/codeql/rust/security/CryptoAlgorithms.qll"
-  ],
-  "CryptoAlgorithmNames Python/JS/Ruby": [
-    "javascript/ql/lib/semmle/javascript/security/internal/CryptoAlgorithmNames.qll",
-    "python/ql/lib/semmle/python/concepts/internal/CryptoAlgorithmNames.qll",
-    "ruby/ql/lib/codeql/ruby/security/internal/CryptoAlgorithmNames.qll",
-    "rust/ql/lib/codeql/rust/security/internal/CryptoAlgorithmNames.qll"
-  ],
-  "SensitiveDataHeuristics Python/JS": [
-    "javascript/ql/lib/semmle/javascript/security/internal/SensitiveDataHeuristics.qll",
-    "python/ql/lib/semmle/python/security/internal/SensitiveDataHeuristics.qll",
-    "ruby/ql/lib/codeql/ruby/security/internal/SensitiveDataHeuristics.qll",
-    "swift/ql/lib/codeql/swift/security/internal/SensitiveDataHeuristics.qll",
-    "rust/ql/lib/codeql/rust/security/internal/SensitiveDataHeuristics.qll"
-  ],
   "IncompleteUrlSubstringSanitization": [
     "javascript/ql/src/Security/CWE-020/IncompleteUrlSubstringSanitization.qll",
     "ruby/ql/src/queries/security/cwe-020/IncompleteUrlSubstringSanitization.qll"
-  ],
-  "Concepts Python/Ruby/JS": [
-    "python/ql/lib/semmle/python/internal/ConceptsShared.qll",
-    "ruby/ql/lib/codeql/ruby/internal/ConceptsShared.qll",
-    "javascript/ql/lib/semmle/javascript/internal/ConceptsShared.qll",
-    "rust/ql/lib/codeql/rust/internal/ConceptsShared.qll"
   ],
   "ApiGraphModels": [
     "javascript/ql/lib/semmle/javascript/frameworks/data/internal/ApiGraphModels.qll",

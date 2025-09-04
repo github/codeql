@@ -832,3 +832,14 @@ void test_write_to_const_ptr_ptr() {
   take_const_ptr(out, in);
   sink(out); // $ SPURIOUS: ast
 }
+
+void indirect_sink(FILE *fp);
+int fprintf(FILE *fp, const char *format, ...);
+
+int f7(void)
+{
+  FILE* fp = (FILE*)indirect_source();
+  fprintf(fp, "");
+	indirect_sink(fp); // $ ir MISSING: ast
+  return 0;
+}

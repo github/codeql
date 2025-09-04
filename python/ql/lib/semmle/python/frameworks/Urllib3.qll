@@ -54,7 +54,7 @@ module Urllib3 {
      * - https://urllib3.readthedocs.io/en/stable/reference/urllib3.request.html#urllib3.request.RequestMethods
      * - https://urllib3.readthedocs.io/en/stable/reference/urllib3.connectionpool.html#urllib3.HTTPConnectionPool.urlopen
      */
-    private class RequestCall extends Http::Client::Request::Range, API::CallNode {
+    private class RequestCall extends Http::Client::Request::Range instanceof API::CallNode {
       RequestCall() {
         this =
           classRef()
@@ -63,7 +63,9 @@ module Urllib3 {
               .getACall()
       }
 
-      override DataFlow::Node getAUrlPart() { result in [this.getArg(1), this.getArgByName("url")] }
+      override DataFlow::Node getAUrlPart() {
+        result in [super.getArg(1), super.getArgByName("url")]
+      }
 
       override string getFramework() { result = "urllib3.PoolManager" }
 

@@ -6,6 +6,7 @@
 import javascript
 private import semmle.javascript.internal.StmtContainers
 private import semmle.javascript.internal.CachedStages
+private import codeql.controlflow.BasicBlock as BB
 
 /**
  * Holds if `nd` starts a new basic block.
@@ -67,11 +68,12 @@ private module Cached {
   }
 
   cached
-  predicate defAt(BasicBlock bb, int i, Variable v, VarDef d) {
-    exists(VarRef lhs |
+  predicate defAt(BasicBlock bb, int i, Variable v, VarDef d, VarRef lhs) {
+    (
       lhs = d.getTarget().(BindingPattern).getABindingVarRef() and
       v = lhs.getVariable()
-    |
+    ) and
+    (
       lhs = d.getTarget() and
       bbIndex(bb, d, i)
       or
@@ -148,7 +150,10 @@ module Public {
     predicate useAt(int i, Variable v, VarUse u) { useAt(this, i, v, u) }
 
     /** Holds if this basic block defines variable `v` in its `i`th node `d`. */
-    predicate defAt(int i, Variable v, VarDef d) { defAt(this, i, v, d) }
+    predicate defAt(int i, Variable v, VarDef d) { defAt(this, i, v, d, _) }
+
+    /** Holds if this basic block defines variable `v` in its `i`th node `d`, and `lhs` is the corresponding variable reference. */
+    predicate defAt(int i, Variable v, VarDef d, VarRef lhs) { defAt(this, i, v, d, lhs) }
 
     /**
      * Holds if `v` is live at entry to this basic block and `u` is a use of `v`
@@ -360,6 +365,64 @@ module Public {
         b = prev.getImmediateDominator() and
         not b = this.getImmediateDominator()
       )
+    }
+  }
+
+  final private class FinalBasicBlock = BasicBlock;
+
+  module Cfg implements BB::CfgSig<Location> {
+    private import javascript as Js
+    private import codeql.controlflow.SuccessorType
+
+    class ControlFlowNode = Js::ControlFlowNode;
+
+    private predicate conditionSucc(BasicBlock bb1, BasicBlock bb2, boolean branch) {
+      exists(ConditionGuardNode g |
+        bb1 = g.getTest().getBasicBlock() and
+        bb2 = g.getBasicBlock() and
+        branch = g.getOutcome()
+      )
+    }
+
+    class BasicBlock extends FinalBasicBlock {
+      BasicBlock getASuccessor() { result = super.getASuccessor() }
+
+      BasicBlock getASuccessor(SuccessorType t) {
+        conditionSucc(this, result, t.(BooleanSuccessor).getValue())
+        or
+        result = super.getASuccessor() and
+        t instanceof DirectSuccessor and
+        not conditionSucc(this, result, _)
+      }
+
+      predicate strictlyDominates(BasicBlock bb) {
+        this.(ReachableBasicBlock).strictlyDominates(bb)
+      }
+
+      predicate dominates(BasicBlock bb) { this.(ReachableBasicBlock).dominates(bb) }
+
+      predicate inDominanceFrontier(BasicBlock df) {
+        df.(ReachableJoinBlock).inDominanceFrontierOf(this)
+      }
+
+      BasicBlock getImmediateDominator() { result = super.getImmediateDominator() }
+
+      predicate strictlyPostDominates(BasicBlock bb) {
+        this.(ReachableBasicBlock).strictlyPostDominates(bb)
+      }
+
+      predicate postDominates(BasicBlock bb) { this.(ReachableBasicBlock).postDominates(bb) }
+    }
+
+    class EntryBasicBlock extends BasicBlock {
+      EntryBasicBlock() { entryBB(this) }
+    }
+
+    pragma[nomagic]
+    predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) {
+      bb1.getASuccessor() = bb2 and
+      bb1 = bb2.getImmediateDominator() and
+      forall(BasicBlock pred | pred = bb2.getAPredecessor() and pred != bb1 | bb2.dominates(pred))
     }
   }
 }

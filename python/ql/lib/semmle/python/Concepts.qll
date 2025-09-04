@@ -6,11 +6,16 @@
 
 private import python
 private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.internal.DataFlowImplSpecific
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
+private import semmle.python.Files
 private import semmle.python.Frameworks
 private import semmle.python.security.internal.EncryptionKeySizes
 private import codeql.threatmodels.ThreatModels
+private import codeql.concepts.ConceptsShared
+
+private module ConceptsShared = ConceptsMake<Location, PythonDataFlow>;
 
 /**
  * A data flow source, for a specific threat-model.
@@ -1617,7 +1622,7 @@ module Http {
     }
   }
 
-  import semmle.python.internal.ConceptsShared::Http::Client as Client
+  import ConceptsShared::Http::Client as Client
   // TODO: investigate whether we should treat responses to client requests as
   // remote-flow-sources in general.
 }
@@ -1725,5 +1730,5 @@ module Cryptography {
     }
   }
 
-  import semmle.python.internal.ConceptsShared::Cryptography
+  import ConceptsShared::Cryptography
 }

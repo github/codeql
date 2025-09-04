@@ -50,7 +50,7 @@ lxml.etree.fromstring(x, parser=parser) # $ decodeFormat=XML decodeInput=x xmlVu
 
 # Billion laughs vuln (also XXE)
 parser = lxml.etree.XMLParser(huge_tree=True)
-lxml.etree.fromstring(x, parser=parser) # $ decodeFormat=XML decodeInput=x xmlVuln='XML bomb' xmlVuln='XXE' decodeOutput=lxml.etree.fromstring(..)
+lxml.etree.fromstring(x, parser=parser) # $ decodeFormat=XML decodeInput=x xmlVuln='XXE' decodeOutput=lxml.etree.fromstring(..)
 
 # Safe for both Billion laughs and XXE
 parser = lxml.etree.XMLParser(resolve_entities=False, huge_tree=True)
@@ -63,5 +63,5 @@ lxml.etree.fromstring(x, parser=parser) # $ decodeFormat=XML decodeInput=x xmlVu
 # iterparse configurations ... this doesn't use a parser argument but takes MOST (!) of
 # the normal XMLParser arguments. Specifically, it doesn't allow disabling XXE :O
 
-lxml.etree.iterparse(xml_file, huge_tree=True) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='XML bomb' xmlVuln='XXE' decodeOutput=lxml.etree.iterparse(..) getAPathArgument=xml_file
+lxml.etree.iterparse(xml_file, huge_tree=True) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='XXE' decodeOutput=lxml.etree.iterparse(..) getAPathArgument=xml_file
 lxml.etree.iterparse(xml_file, load_dtd=True, no_network=False) # $ decodeFormat=XML decodeInput=xml_file xmlVuln='DTD retrieval' xmlVuln='XXE' decodeOutput=lxml.etree.iterparse(..) getAPathArgument=xml_file

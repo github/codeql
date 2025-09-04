@@ -48,7 +48,7 @@ private predicate overloadedMethodsMostSpecific(Method n, Method m) {
 private predicate whitelist(string name) { name = "visit" }
 
 /**
- * Method `m` has name `name`, number of parameters `numParams`
+ * Method `m` has name `name`, number of parameters `numParam`
  * and is declared in `t` or inherited from a supertype of `t`.
  */
 pragma[nomagic]

@@ -1,5 +1,7 @@
 instances
-| gen_macro_block_expr.rs:5:14:5:28 | MacroBlockExpr |
-getTailExpr
-| gen_macro_block_expr.rs:5:14:5:28 | MacroBlockExpr | gen_macro_block_expr.rs:5:14:5:28 | { ... } |
+| gen_macro_block_expr.rs:13:5:13:13 | MacroBlockExpr |
 getStatement
+| gen_macro_block_expr.rs:13:5:13:13 | MacroBlockExpr | 0 | gen_macro_block_expr.rs:13:5:13:13 | let ... = 40 |
+| gen_macro_block_expr.rs:13:5:13:13 | MacroBlockExpr | 1 | gen_macro_block_expr.rs:13:5:13:13 | ExprStmt |
+getTailExpr
+| gen_macro_block_expr.rs:13:5:13:13 | MacroBlockExpr | gen_macro_block_expr.rs:13:5:13:13 | x |

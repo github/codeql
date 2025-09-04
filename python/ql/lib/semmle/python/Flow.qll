@@ -1,6 +1,7 @@
 import python
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.internal.CachedStages
+private import codeql.controlflow.BasicBlock as BB
 
 /*
  * Note about matching parent and child nodes and CFG splitting:
@@ -1082,9 +1083,15 @@ class BasicBlock extends @py_flow_node {
    * Dominance frontier of a node x is the set of all nodes `other` such that `this` dominates a predecessor
    * of `other` but does not strictly dominate `other`
    */
-  pragma[noinline]
-  predicate dominanceFrontier(BasicBlock other) {
-    this.dominates(other.getAPredecessor()) and not this.strictlyDominates(other)
+  predicate dominanceFrontier(BasicBlock other) { this.inDominanceFrontier(other) }
+
+  predicate inDominanceFrontier(BasicBlock df) {
+    this = df.getAPredecessor() and not this = df.getImmediateDominator()
+    or
+    exists(BasicBlock prev | prev.inDominanceFrontier(df) |
+      this = prev.getImmediateDominator() and
+      not this = df.getImmediateDominator()
+    )
   }
 
   private ControlFlowNode firstNode() { result = this }
@@ -1245,4 +1252,74 @@ private predicate end_bb_likely_reachable(BasicBlock b) {
     s = b.getNode(_) and
     not p = b.getLastNode()
   )
+}
+
+private class ControlFlowNodeAlias = ControlFlowNode;
+
+final private class FinalBasicBlock = BasicBlock;
+
+module Cfg implements BB::CfgSig<Location> {
+  private import codeql.controlflow.SuccessorType
+
+  class ControlFlowNode = ControlFlowNodeAlias;
+
+  class BasicBlock extends FinalBasicBlock {
+    // Note `PY:BasicBlock` does not have a `getLocation`.
+    // (Instead it has a complicated location info logic.)
+    // Using the location of the first node is simple
+    // and we just need a way to identify the basic block
+    // during debugging, so this will be serviceable.
+    Location getLocation() { result = super.getNode(0).getLocation() }
+
+    int length() { result = count(int i | exists(this.getNode(i))) }
+
+    BasicBlock getASuccessor() { result = super.getASuccessor() }
+
+    private BasicBlock getANonDirectSuccessor(SuccessorType t) {
+      result = this.getATrueSuccessor() and
+      t.(BooleanSuccessor).getValue() = true
+      or
+      result = this.getAFalseSuccessor() and
+      t.(BooleanSuccessor).getValue() = false
+      or
+      result = this.getAnExceptionalSuccessor() and
+      t instanceof ExceptionSuccessor
+    }
+
+    BasicBlock getASuccessor(SuccessorType t) {
+      result = this.getANonDirectSuccessor(t)
+      or
+      result = super.getASuccessor() and
+      t instanceof DirectSuccessor and
+      not result = this.getANonDirectSuccessor(_)
+    }
+
+    predicate strictlyDominates(BasicBlock bb) { super.strictlyDominates(bb) }
+
+    predicate dominates(BasicBlock bb) { super.dominates(bb) }
+
+    predicate inDominanceFrontier(BasicBlock df) { super.inDominanceFrontier(df) }
+
+    BasicBlock getImmediateDominator() { result = super.getImmediateDominator() }
+
+    /** Unsupported. Do not use. */
+    predicate strictlyPostDominates(BasicBlock bb) { none() }
+
+    /** Unsupported. Do not use. */
+    predicate postDominates(BasicBlock bb) {
+      this.strictlyPostDominates(bb) or
+      this = bb
+    }
+  }
+
+  class EntryBasicBlock extends BasicBlock {
+    EntryBasicBlock() { this.getNode(0).isEntryNode() }
+  }
+
+  pragma[nomagic]
+  predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) {
+    bb1.getASuccessor() = bb2 and
+    bb1 = bb2.getImmediateDominator() and
+    forall(BasicBlock pred | pred = bb2.getAPredecessor() and pred != bb1 | bb2.dominates(pred))
+  }
 }

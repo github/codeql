@@ -4,5 +4,5 @@
 | test.qll:62:7:65:14 | Disjunction | This formula of 4 comparisons can be replaced with a single equality on a set literal, improving readability. |
 | test.qll:68:7:71:13 | Disjunction | This formula of 4 comparisons can be replaced with a single equality on a set literal, improving readability. |
 | test.qll:74:7:77:13 | Disjunction | This formula of 4 comparisons can be replaced with a single equality on a set literal, improving readability. |
-| test.qll:87:3:90:9 | Disjunction | This formula of 4 predicate calls can be replaced with a single call on a set literal, improving readability. |
-| test.qll:128:3:134:3 | Disjunction | This formula of 4 comparisons can be replaced with a single equality on a set literal, improving readability. |
+| test.qll:89:3:92:9 | Disjunction | This formula of 4 predicate calls can be replaced with a single call on a set literal, improving readability. |
+| test.qll:130:3:136:3 | Disjunction | This formula of 4 comparisons can be replaced with a single equality on a set literal, improving readability. |

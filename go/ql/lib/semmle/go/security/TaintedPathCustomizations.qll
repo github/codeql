@@ -243,4 +243,20 @@ module TaintedPath {
 
     override predicate checks(Expr e, boolean branch) { regexpFunctionChecksExpr(this, e, branch) }
   }
+
+  /**
+   * A call of the form `filepath.IsLocal(path)` considered as a sanitizer guard for `path`.
+   */
+  class IsLocalCheck extends SanitizerGuard, DataFlow::CallNode {
+    IsLocalCheck() {
+      exists(Function f |
+        f.hasQualifiedName("path/filepath", "IsLocal") and
+        this = f.getACall()
+      )
+    }
+
+    override predicate checks(Expr e, boolean branch) {
+      e = this.getArgument(0).asExpr() and branch = true
+    }
+  }
 }

@@ -6,10 +6,19 @@
 #     bazel run @@//misc/bazel/3rdparty:vendor_tree_sitter_extractors
 ###############################################################################
 
-load("@rules_rust//cargo:defs.bzl", "cargo_build_script")
+load(
+    "@rules_rust//cargo:defs.bzl",
+    "cargo_build_script",
+    "cargo_toml_env_vars",
+)
 load("@rules_rust//rust:defs.bzl", "rust_library")
 
 package(default_visibility = ["//visibility:public"])
+
+cargo_toml_env_vars(
+    name = "cargo_toml_env_vars",
+    src = "Cargo.toml",
+)
 
 rust_library(
     name = "serde",
@@ -40,6 +49,9 @@ rust_library(
     edition = "2018",
     proc_macro_deps = [
         "@vendor_ts__serde_derive-1.0.219//:serde_derive",
+    ],
+    rustc_env_files = [
+        ":cargo_toml_env_vars",
     ],
     rustc_flags = [
         "--cap-lints=allow",
@@ -138,6 +150,9 @@ cargo_build_script(
     ),
     edition = "2018",
     pkg_name = "serde",
+    rustc_env_files = [
+        ":cargo_toml_env_vars",
+    ],
     rustc_flags = [
         "--cap-lints=allow",
     ],

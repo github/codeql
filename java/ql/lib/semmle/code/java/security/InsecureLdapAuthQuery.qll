@@ -40,6 +40,10 @@ private module BasicAuthConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof InsecureLdapUrlSink }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // used as secondary flow to InsecureLdapUrlFlow in InsecureLdapAuth.ql
+  }
 }
 
 module BasicAuthFlow = DataFlow::Global<BasicAuthConfig>;
@@ -56,6 +60,10 @@ private module RequiresSslConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof InsecureLdapUrlSink }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // only used negatively in InsecureLdapAuth.ql
+  }
 }
 
 module RequiresSslFlow = DataFlow::Global<RequiresSslConfig>;

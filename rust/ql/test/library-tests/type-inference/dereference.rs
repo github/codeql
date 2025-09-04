@@ -93,10 +93,46 @@ fn implicit_dereference() {
     let _y = x.is_positive(); // $ MISSING: target=is_positive type=_y:bool
 }
 
+mod implicit_deref_coercion_cycle {
+    use std::collections::HashMap;
+
+    #[derive(Hash, PartialEq, Eq, PartialOrd, Ord, Debug, Clone, Copy)]
+    pub struct Key {}
+
+    // This example can trigger a cycle in type inference due to an implicit
+    // dereference if we are not careful and accurate enough.
+    //
+    // To explain how a cycle might happen, we let `[V]` denote the type of the
+    // type parameter `V` of `key_to_key` (i.e., the type of the values in the
+    // map) and `[key]` denote the type of `key`.
+    //
+    // 1. From the first two lines we infer `[V] = &Key` and `[key] = &Key`
+    // 2. At the 3. line we infer the type of `ref_key` to be `&[V]`.
+    // 3. At the 4. line we impose the equality `[key] = &[V]`, not accounting
+    //    for the implicit deref caused by a coercion.
+    // 4. At the last line we infer `[key] = [V]`.
+    //
+    // Putting the above together we have `[V] = [key] = &[V]` which is a cycle.
+    // This means that `[key]` is both `&Key`, `&&Key`, `&&&Key`, and so on ad
+    // infinitum.
+
+    #[rustfmt::skip]
+    pub fn test() {
+        let mut key_to_key = HashMap::<&Key, &Key>::new(); // $ target=new
+        let mut key = &Key {}; // Initialize key2 to a reference
+        if let Some(ref_key) = key_to_key.get(key) { // $ target=get
+            // Below `ref_key` is implicitly dereferenced from `&&Key` to `&Key`
+            key = ref_key;
+        }
+        key_to_key.insert(key, key); // $ target=insert
+    }
+}
+
 pub fn test() {
     explicit_monomorphic_dereference(); // $ target=explicit_monomorphic_dereference
     explicit_polymorphic_dereference(); // $ target=explicit_polymorphic_dereference
     explicit_ref_dereference(); // $ target=explicit_ref_dereference
     explicit_box_dereference(); // $ target=explicit_box_dereference
     implicit_dereference(); // $ target=implicit_dereference
+    implicit_deref_coercion_cycle::test(); // $ target=test
 }

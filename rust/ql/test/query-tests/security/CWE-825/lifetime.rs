@@ -276,7 +276,7 @@ pub fn get_pointer_to_enum() -> *const MyEnum {
 
 pub fn get_pointer_in_enum() -> MyEnum2 {
 	let v2 = 2;
-	let e2 = MyEnum2::Pointer(&v2); // $ MISSING: Source[rust/access-after-lifetime-ended]=v2
+	let e2 = MyEnum2::Pointer(&v2); // $ Source[rust/access-after-lifetime-ended]=v2
 
 	e2
 } // (v2 goes out of scope, so the contained pointer is dangling)
@@ -311,7 +311,7 @@ pub fn test_enums() {
 			println!("	v1 = {v1} (!)"); // corrupt in practice
 		}
 		if let MyEnum2::Pointer(p2) = e2 {
-			let v2 = unsafe { *p2 }; // $ MISSING: Alert[rust/access-after-lifetime-ended]=v2
+			let v2 = unsafe { *p2 }; // $ Alert[rust/access-after-lifetime-ended]=v2
 			println!("	v2 = {v2} (!)"); // corrupt in practice
 		}
 		let v3 = *result; // $ Alert[rust/access-after-lifetime-ended]=match_x

@@ -4,14 +4,6 @@ import TestUtils
 
 query predicate instances(MacroCall x) { toBeTested(x) and not x.isUnknown() }
 
-query predicate getExtendedCanonicalPath(MacroCall x, string getExtendedCanonicalPath) {
-  toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
-}
-
-query predicate getCrateOrigin(MacroCall x, string getCrateOrigin) {
-  toBeTested(x) and not x.isUnknown() and getCrateOrigin = x.getCrateOrigin()
-}
-
 query predicate getAttributeMacroExpansion(MacroCall x, MacroItems getAttributeMacroExpansion) {
   toBeTested(x) and
   not x.isUnknown() and

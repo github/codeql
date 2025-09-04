@@ -37,8 +37,6 @@ where
     )
     or
     // upload artifact is not used in the same workflow
-    not exists(UsesStep upload |
-      download.getEnclosingWorkflow().getAJob().(LocalJob).getAStep() = upload
-    )
+    not download.getEnclosingWorkflow().getAJob().(LocalJob).getAStep() instanceof UsesStep
   )
 select download, "Potential artifact poisoning"

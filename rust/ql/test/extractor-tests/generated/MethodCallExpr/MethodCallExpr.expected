@@ -8,8 +8,6 @@ getAttr
 getArg
 | gen_method_call_expr.rs:5:5:5:13 | x.foo(...) | 0 | gen_method_call_expr.rs:5:11:5:12 | 42 |
 | gen_method_call_expr.rs:6:5:6:25 | x.foo(...) | 0 | gen_method_call_expr.rs:6:23:6:24 | 42 |
-getResolvedPath
-getResolvedCrateOrigin
 getGenericArgList
 | gen_method_call_expr.rs:6:5:6:25 | x.foo(...) | gen_method_call_expr.rs:6:10:6:21 | <...> |
 getIdentifier

@@ -204,7 +204,7 @@ private module Impl {
   /** Gets the character value of expression `e`. */
   string getCharValue(Expr e) { result = e.(CharacterLiteral).getValue() }
 
-  /** Gets the constant `float` value of non-`ConstantIntegerExpr` expressions. */
+  /** Gets the constant `float` value of non-`ConstantIntegerExpr` expression `e`. */
   float getNonIntegerValue(Expr e) {
     result = e.(LongLiteral).getValue().toFloat() or
     result = e.(FloatLiteral).getValue().toFloat() or
@@ -256,12 +256,12 @@ private module Impl {
     exists(EnhancedForStmt for | def = for.getVariable())
   }
 
-  /** Returns the operand of the operation if `def` is a decrement. */
+  /** Returns the operand of the operation if `e` is a decrement. */
   Expr getDecrementOperand(Element e) {
     result = e.(PostDecExpr).getExpr() or result = e.(PreDecExpr).getExpr()
   }
 
-  /** Returns the operand of the operation if `def` is an increment. */
+  /** Returns the operand of the operation if `e` is an increment. */
   Expr getIncrementOperand(Element e) {
     result = e.(PostIncExpr).getExpr() or result = e.(PreIncExpr).getExpr()
   }

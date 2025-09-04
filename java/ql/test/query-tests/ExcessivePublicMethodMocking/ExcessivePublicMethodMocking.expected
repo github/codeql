@@ -1,0 +1,2 @@
+| TestORM.java:34:15:34:27 | nonCompliant1 | This test method mocks all public methods of a $@. | EmployeeRecord.java:4:14:4:27 | EmployeeRecord | class or an interface |
+| TestORM.java:47:15:47:27 | nonCompliant2 | This test method mocks all public methods of a $@. | EmployeeRecord.java:4:14:4:27 | EmployeeRecord | class or an interface |

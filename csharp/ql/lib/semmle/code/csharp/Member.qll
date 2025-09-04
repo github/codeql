@@ -491,7 +491,7 @@ class Parameterizable extends Declaration, @parameterizable {
   final Parameter getARawParameter() { result = this.getRawParameter(_) }
 
   /**
-   * Gets the type of the parameter, possibly prefixed
+   * Gets the type of the `i`th parameter, possibly prefixed
    * with `out`, `ref`, or `params`, where appropriate.
    */
   private string parameterTypeToString(int i) {

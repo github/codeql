@@ -201,7 +201,7 @@ module KDF {
 
   // TODO: better modeling of scrypt
   /**
-   * Identifies key derivation fucntion hashlib.scrypt accesses.
+   * Identifies key derivation function hashlib.scrypt accesses.
    */
   class HashlibScryptAlgorithm extends KeyDerivationAlgorithm, KeyDerivationOperation {
     HashlibScryptAlgorithm() { this = API::moduleImport("hashlib").getMember("scrypt").getACall() }

@@ -467,3 +467,110 @@ void test_create_thread()
       &threadId);
   }
 }
+
+using size_t = decltype(sizeof(0));
+
+volatile void * RtlCopyVolatileMemory(
+  volatile void       *Destination,
+  volatile const void *Source,
+  size_t              Length
+);
+
+volatile void * RtlCopyDeviceMemory(
+  volatile void       *Destination,
+  volatile const void *Source,
+  size_t              Length
+);
+
+void RtlCopyMemory(
+   void*       Destination,
+   const void* Source,
+   size_t      Length
+);
+
+using VOID = void;
+
+VOID RtlCopyMemoryNonTemporal(
+  VOID       *Destination,
+  const VOID *Source,
+  SIZE_T     Length
+);
+
+using USHORT = unsigned short;
+using PWSTR = wchar_t*;
+using PCWSTR = const wchar_t*;
+using PCUNICODE_STRING = const struct _UNICODE_STRING*;
+
+typedef struct _UNICODE_STRING {
+  USHORT Length;
+  USHORT MaximumLength;
+  PWSTR  Buffer;
+} UNICODE_STRING, *PUNICODE_STRING;
+
+VOID RtlCopyUnicodeString(
+  PUNICODE_STRING  DestinationString,
+  PCUNICODE_STRING SourceString
+);
+
+void RtlMoveMemory(
+   void*       Destination,
+   const void* Source,
+   size_t      Length
+);
+
+volatile void * RtlMoveVolatileMemory(
+  volatile void       *Destination,
+  volatile const void *Source,
+  size_t              Length
+);
+
+void RtlInitUnicodeString(
+  PUNICODE_STRING DestinationString,
+  PCWSTR          SourceString
+);
+
+void test_copy_and_move_memory() {
+  int x = source();
+
+  {
+    char dest_buffer[1024];
+    RtlCopyVolatileMemory(dest_buffer, &x, sizeof(x));
+    sink(dest_buffer[0]); // $ ir
+  }
+  {
+    char dest_buffer[1024];
+    RtlCopyDeviceMemory(dest_buffer, &x, sizeof(x));
+    sink(dest_buffer[0]); // $ ir
+  }
+  {
+    char dest_buffer[1024];
+    RtlCopyMemory(dest_buffer, &x, sizeof(x));
+    sink(dest_buffer[0]); // $ ir
+  }
+  {
+    char dest_buffer[1024];
+    RtlCopyMemoryNonTemporal(dest_buffer, &x, sizeof(x));
+    sink(dest_buffer[0]); // $ ir
+  }
+  {
+    UNICODE_STRING dest_string;
+    UNICODE_STRING src_string;
+    wchar_t buffer[1024];
+    buffer[0] = source();
+    
+    RtlInitUnicodeString(&src_string, buffer);
+    sink(src_string.Buffer[0]); // $ ir
+    RtlCopyUnicodeString(&dest_string, &src_string);
+    sink(dest_string.Buffer[0]); // $ ir
+  }
+  {
+    char dest_buffer[1024];
+    RtlMoveMemory(dest_buffer, &x, sizeof(x));
+    sink(dest_buffer[0]); // $ ir
+  }
+  {
+    volatile char dest_buffer[1024];
+    RtlMoveVolatileMemory(dest_buffer, &x, sizeof(x));
+    sink(dest_buffer[0]); // $ ir
+  }
+}

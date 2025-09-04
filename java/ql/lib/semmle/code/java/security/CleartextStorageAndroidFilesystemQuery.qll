@@ -55,7 +55,7 @@ private predicate isVarargs(Argument arg, DataFlow::ImplicitVarargsArray varargs
   arg.isVararg() and arg.getCall() = varargs.getCall()
 }
 
-/** Holds if `store` closes `file`. */
+/** Holds if `closeCall` closes `file`. */
 private predicate closesFile(DataFlow::Node file, Call closeCall) {
   closeCall.getCallee() instanceof CloseFileMethod and
   if closeCall.getCallee().isStatic()

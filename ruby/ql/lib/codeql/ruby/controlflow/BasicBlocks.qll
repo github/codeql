@@ -8,8 +8,8 @@ private import codeql.ruby.ast.internal.TreeSitter
 private import codeql.ruby.controlflow.ControlFlowGraph
 private import internal.ControlFlowGraphImpl as CfgImpl
 private import CfgNodes
-private import SuccessorTypes
 private import CfgImpl::BasicBlocks as BasicBlocksImpl
+private import codeql.controlflow.BasicBlock as BB
 
 /**
  * A basic block, that is, a maximal straight-line sequence of control flow nodes
@@ -294,5 +294,21 @@ final class ConditionBlock extends BasicBlock, BasicBlocksImpl::ConditionBasicBl
    */
   deprecated predicate controls(BasicBlock controlled, ConditionalSuccessor s) {
     super.edgeDominates(controlled, s)
+  }
+}
+
+private class BasicBlockAlias = BasicBlock;
+
+private class EntryBasicBlockAlias = EntryBasicBlock;
+
+module Cfg implements BB::CfgSig<Location> {
+  class ControlFlowNode = CfgNode;
+
+  class BasicBlock = BasicBlockAlias;
+
+  class EntryBasicBlock = EntryBasicBlockAlias;
+
+  predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) {
+    BasicBlocksImpl::dominatingEdge(bb1, bb2)
   }
 }

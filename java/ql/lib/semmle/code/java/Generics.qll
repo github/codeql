@@ -521,7 +521,13 @@ private predicate unificationTargets(RefType t1, Type t2) {
     t2 = a2.getComponentType()
   )
   or
-  exists(ParameterizedType pt1, ParameterizedType pt2, int pos |
+  unificationTargetsParameterized(_, _, t1, t2)
+}
+
+private predicate unificationTargetsParameterized(
+  ParameterizedType pt1, ParameterizedType pt2, RefType t1, RefType t2
+) {
+  exists(int pos |
     unificationTargets(pt1, pt2) and
     t1 = pt1.getTypeArgument(pos) and
     t2 = pt2.getTypeArgument(pos)
@@ -565,10 +571,12 @@ private predicate hasParameterSubstitution(
   GenericType g1, ParameterizedType pt1, GenericType g2, ParameterizedType pt2, TypeVariable v,
   RefType subst
 ) {
-  unificationTargets(pt1, pt2) and
-  exists(int pos | hasSubstitution(pt1.getTypeArgument(pos), pt2.getTypeArgument(pos), v, subst)) and
-  g1 = pt1.getGenericType() and
-  g2 = pt2.getGenericType()
+  exists(RefType t1, RefType t2 |
+    unificationTargetsParameterized(pt1, pt2, t1, t2) and
+    hasSubstitution(t1, t2, v, subst) and
+    g1 = pt1.getGenericType() and
+    g2 = pt2.getGenericType()
+  )
 }
 
 /**

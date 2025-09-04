@@ -7,10 +7,14 @@
 private import codeql.ruby.AST
 private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
+private import codeql.ruby.dataflow.internal.DataFlowImplSpecific
 private import codeql.ruby.Frameworks
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.Regexp as RE
+private import codeql.concepts.ConceptsShared
+
+private module ConceptsShared = ConceptsMake<Location, RubyDataFlow>;
 
 /**
  * A data-flow node that constructs a SQL statement.
@@ -682,7 +686,7 @@ module Http {
 
   /** Provides classes for modeling HTTP clients. */
   module Client {
-    import codeql.ruby.internal.ConceptsShared::Http::Client as SC
+    import ConceptsShared::Http::Client as SC
 
     /**
      * A method call that makes an outgoing HTTP request.
@@ -1041,7 +1045,7 @@ module Cryptography {
   // modify that part of the shared concept... which means we have to explicitly
   // re-export everything else.
   // Using SC shorthand for "Shared Cryptography"
-  import codeql.ruby.internal.ConceptsShared::Cryptography as SC
+  import ConceptsShared::Cryptography as SC
 
   class CryptographicAlgorithm = SC::CryptographicAlgorithm;
 

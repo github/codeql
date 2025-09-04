@@ -708,7 +708,7 @@ class TrueOperator extends UnaryOperator {
  *
  * Either an addition operator (`AddOperator`), a checked addition operator
  * (`CheckedAddOperator`) a subtraction operator (`SubOperator`), a checked
- * substraction operator (`CheckedSubOperator`), a multiplication operator
+ * subtraction operator (`CheckedSubOperator`), a multiplication operator
  * (`MulOperator`), a checked multiplication operator (`CheckedMulOperator`),
  * a division operator (`DivOperator`), a checked division operator
  * (`CheckedDivOperator`), a remainder operator (`RemOperator`), an and

@@ -12,11 +12,9 @@ import codeql.util.Unit
 class DbQualityDiagnostic extends Unit {
   DbQualityDiagnostic() {
     exists(float percentageGood |
-      CallTargetStatsReport::percentageOfOk(_, percentageGood)
+      CallTargetStatsReport::percentageOfOk(_, percentageGood) and percentageGood < 50
       or
-      MacroCallTargetStatsReport::percentageOfOk(_, percentageGood)
-    |
-      percentageGood < 95
+      MacroCallTargetStatsReport::percentageOfOk(_, percentageGood) and percentageGood < 50
     )
   }
 

@@ -12,6 +12,14 @@ mod M1 {
             }
         }
     }
+
+    pub struct S2<T>(T);
+
+    impl<T> S2<T> {
+        pub fn new(x: T) -> Self {
+            S2(x)
+        }
+    }
 }
 
 fn main() {
@@ -28,4 +36,5 @@ fn main() {
     let x = S;
     let s = M1::M2::S;
     s.method();
+    M1::S2::<S>::new(S);
 }

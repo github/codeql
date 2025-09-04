@@ -168,6 +168,19 @@ module NonConstFlowConfig implements DataFlow::ConfigSig {
       cannotContainString(t)
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getLocation()
+    or
+    exists(FormattingFunctionCall call, Expr formatString | result = call.getLocation() |
+      isSinkImpl(sink, formatString) and
+      call.getArgument(call.getFormatParameterIndex()) = formatString
+    )
+  }
 }
 
 module NonConstFlow = TaintTracking::Global<NonConstFlowConfig>;

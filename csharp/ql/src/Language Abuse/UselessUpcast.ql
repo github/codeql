@@ -75,15 +75,16 @@ private class ConstructorCall extends Call {
 
 /** An explicit upcast. */
 class ExplicitUpcast extends ExplicitCast {
-  ValueOrRefType src;
   ValueOrRefType dest;
 
   ExplicitUpcast() {
-    src = this.getSourceType() and
-    dest = this.getTargetType() and
-    (src instanceof RefType or src instanceof Struct) and
-    src.isImplicitlyConvertibleTo(dest) and
-    src != dest // Handled by `cs/useless-cast-to-self`
+    exists(ValueOrRefType src |
+      src = this.getSourceType() and
+      dest = this.getTargetType() and
+      (src instanceof RefType or src instanceof Struct) and
+      src.isImplicitlyConvertibleTo(dest) and
+      src != dest // Handled by `cs/useless-cast-to-self`
+    )
   }
 
   pragma[nomagic]

@@ -10,15 +10,11 @@ import experimental.quantum.Language
  */
 private module WrapperConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    exists(Call c |
-      c = source.asExpr()
-      // not handling references yet, I think we want to flat say references are only ok
-      // if I know the source, otherwise, it has to be through an additional flow step, which
-      // we filter as a source, i.e., references are only allowed as sources only,
-      // no inferrece? Not sure if that would work
-      //or
-      //   source.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = c.getAnArgument()
-    ) and
+    source.asExpr() instanceof Call and
+    // not handling references yet, I think we want to flat say references are only ok
+    // if I know the source, otherwise, it has to be through an additional flow step, which
+    // we filter as a source, i.e., references are only allowed as sources only,
+    // no inferrece? Not sure if that would work
     // Filter out sources that are known additional flow steps, as these are likely not the
     // kind of wrapper source we are looking for.
     not exists(AdditionalFlowInputStep s | s.getOutput() = source)

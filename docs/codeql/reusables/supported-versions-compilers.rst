@@ -17,11 +17,11 @@
 
    .NET 5, .NET 6, .NET 7, .NET 8, .NET 9","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
    GitHub Actions,"Not applicable",Not applicable,"``.github/workflows/*.yml``, ``.github/workflows/*.yaml``, ``**/action.yml``, ``**/action.yaml``"
-   Go (aka Golang), "Go up to 1.24", "Go 1.11 or more recent", ``.go``
+   Go (aka Golang), "Go up to 1.25", "Go 1.11 or more recent", ``.go``
    Java,"Java 7 to 24 [6]_","javac (OpenJDK and Oracle JDK),
 
    Eclipse compiler for Java (ECJ) [7]_",``.java``
-   Kotlin,"Kotlin 1.6.0 to 2.2.0\ *x*","kotlinc",``.kt``
+   Kotlin,"Kotlin 1.6.0 to 2.2.2\ *x*","kotlinc",``.kt``
    JavaScript,ECMAScript 2022 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhtm``, ``.xhtml``, ``.vue``, ``.hbs``, ``.ejs``, ``.njk``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [8]_"
    Python [9]_,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 3.12, 3.13",Not applicable,``.py``
    Ruby [10]_,"up to 3.3",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"

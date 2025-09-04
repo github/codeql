@@ -55,12 +55,8 @@ class EnvVarInjectionFromFileReadSink extends EnvVarInjectionSink {
  *          echo "COMMIT_MESSAGE=${COMMIT_MESSAGE}" >> $GITHUB_ENV
  */
 class EnvVarInjectionFromCommandSink extends EnvVarInjectionSink {
-  CommandSource inCommand;
-  string injectedVar;
-  string command;
-
   EnvVarInjectionFromCommandSink() {
-    exists(Run run |
+    exists(Run run, CommandSource inCommand, string injectedVar, string command |
       this.asExpr() = inCommand.getEnclosingRun().getScript() and
       run = inCommand.getEnclosingRun() and
       run.getScript().getACmdReachingGitHubEnvWrite(inCommand.getCommand(), injectedVar) and
@@ -86,12 +82,8 @@ class EnvVarInjectionFromCommandSink extends EnvVarInjectionSink {
  *      echo "FOO=$BODY" >> $GITHUB_ENV
  */
 class EnvVarInjectionFromEnvVarSink extends EnvVarInjectionSink {
-  string inVar;
-  string injectedVar;
-  string command;
-
   EnvVarInjectionFromEnvVarSink() {
-    exists(Run run |
+    exists(Run run, string inVar, string injectedVar, string command |
       run.getScript() = this.asExpr() and
       exists(run.getInScopeEnvVarExpr(inVar)) and
       run.getScript().getAnEnvReachingGitHubEnvWrite(inVar, injectedVar) and
@@ -124,6 +116,32 @@ class EnvVarInjectionFromEnvVarSink extends EnvVarInjectionSink {
  */
 class EnvVarInjectionFromMaDSink extends EnvVarInjectionSink {
   EnvVarInjectionFromMaDSink() { madSink(this, "envvar-injection") }
+}
+
+/**
+ * Get the relevant event for a sink in EnvVarInjectionCritical.ql where the source type is "artifact".
+ */
+Event getRelevantArtifactEventInPrivilegedContext(DataFlow::Node sink) {
+  inPrivilegedContext(sink.asExpr(), result) and
+  not exists(ControlCheck check |
+    check
+        .protects(sink.asExpr(), result,
+          ["envvar-injection", "untrusted-checkout", "artifact-poisoning"])
+  ) and
+  (
+    sink instanceof EnvVarInjectionFromFileReadSink or
+    madSink(sink, "envvar-injection")
+  )
+}
+
+/**
+ * Get the relevant event for a sink in EnvVarInjectionCritical.ql where the source type is not "artifact".
+ */
+Event getRelevantNonArtifactEventInPrivilegedContext(DataFlow::Node sink) {
+  inPrivilegedContext(sink.asExpr(), result) and
+  not exists(ControlCheck check |
+    check.protects(sink.asExpr(), result, ["envvar-injection", "code-injection"])
+  )
 }
 
 /**
@@ -162,6 +180,18 @@ private module EnvVarInjectionConfig implements DataFlow::ConfigSig {
       succ.asExpr() = run.getScript() and
       exists(run.getScript().getAFileReadCommand())
     )
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getLocation()
+    or
+    result = getRelevantArtifactEventInPrivilegedContext(sink).getLocation()
+    or
+    result = getRelevantNonArtifactEventInPrivilegedContext(sink).getLocation()
   }
 }
 

@@ -256,7 +256,15 @@ class Callable extends StmtParent, Member, @callable {
   Exception getAnException() { exceptions(result, _, this) }
 
   /** Gets an exception type that occurs in the `throws` clause of this callable. */
-  RefType getAThrownExceptionType() { result = this.getAnException().getType() }
+  RefType getAThrownExceptionType() {
+    result = this.getAnException().getType()
+    or
+    exists(Annotation a |
+      this.getAnAnnotation() = a and
+      a.getType().hasQualifiedName("kotlin.jvm", "Throws") and
+      a.getATypeArrayValue(_) = result
+    )
+  }
 
   /** Gets a call site that references this callable. */
   Call getAReference() { result.getCallee() = this }

@@ -20,7 +20,7 @@ jobs:
         os: [ubuntu-22.04, macos-13, windows-2022]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           repository: google/ripunzip
           ref: ${{ inputs.ripunzip-version }}
@@ -28,7 +28,7 @@ jobs:
       # see https://github.com/sfackler/rust-openssl/issues/183
       - if: runner.os == 'Linux'
         name: checkout openssl
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: openssl/openssl
           path: openssl

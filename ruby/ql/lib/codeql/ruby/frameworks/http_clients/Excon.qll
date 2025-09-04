@@ -23,29 +23,30 @@ private import codeql.ruby.DataFlow
  * TODO: pipelining, streaming responses
  * https://github.com/excon/excon/blob/master/README.md
  */
-class ExconHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode {
+class ExconHttpRequest extends Http::Client::Request::Range instanceof DataFlow::CallNode {
   API::Node requestNode;
-  API::Node connectionNode;
   DataFlow::Node connectionUse;
 
   ExconHttpRequest() {
     this = requestNode.asSource() and
-    connectionUse = connectionNode.asSource() and
-    connectionNode =
-      [
-        // one-off requests
-        API::getTopLevelMember("Excon"),
-        // connection re-use
-        API::getTopLevelMember("Excon").getInstance(),
-        API::getTopLevelMember("Excon").getMember("Connection").getInstance()
-      ] and
-    requestNode =
-      connectionNode
-          .getReturn([
-              // Excon#request exists but Excon.request doesn't.
-              // This shouldn't be a problem - in real code the latter would raise NoMethodError anyway.
-              "get", "head", "delete", "options", "post", "put", "patch", "trace", "request"
-            ])
+    exists(API::Node connectionNode |
+      connectionUse = connectionNode.asSource() and
+      connectionNode =
+        [
+          // one-off requests
+          API::getTopLevelMember("Excon"),
+          // connection re-use
+          API::getTopLevelMember("Excon").getInstance(),
+          API::getTopLevelMember("Excon").getMember("Connection").getInstance()
+        ] and
+      requestNode =
+        connectionNode
+            .getReturn([
+                // Excon#request exists but Excon.request doesn't.
+                // This shouldn't be a problem - in real code the latter would raise NoMethodError anyway.
+                "get", "head", "delete", "options", "post", "put", "patch", "trace", "request"
+              ])
+    )
   }
 
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
@@ -54,9 +55,9 @@ class ExconHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode 
     // For one-off requests, the URL is in the first argument of the request method call.
     // For connection re-use, the URL is split between the first argument of the `new` call
     // and the `path` keyword argument of the request method call.
-    result = this.getArgument(0) and not result.asExpr().getExpr() instanceof Pair
+    result = super.getArgument(0) and not result.asExpr().getExpr() instanceof Pair
     or
-    result = this.getKeywordArgument("path")
+    result = super.getKeywordArgument("path")
     or
     result = connectionUse.(DataFlow::CallNode).getArgument(0)
   }

@@ -286,7 +286,7 @@ private module Cached {
   /**
    * Holds if `cfn` is the `i`th node in basic block `bb`.
    *
-   * In other words, `i` is the shortest distance from a node `bb`
+   * In other words, `i` is the shortest distance from a node `bbStart`
    * that starts a basic block to `cfn` along the `intraBBSucc` relation.
    */
   cached

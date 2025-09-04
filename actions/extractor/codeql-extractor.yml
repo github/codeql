@@ -6,6 +6,8 @@ column_kind: "utf16"
 unicode_newlines: true
 build_modes:
   - none
+default_queries:
+  - codeql/actions-queries
 file_coverage_languages: []
 github_api_languages: []
 scc_languages: []

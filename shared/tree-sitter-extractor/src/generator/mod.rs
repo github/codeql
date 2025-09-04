@@ -259,8 +259,8 @@ fn add_field_for_column_storage<'a>(
 ///    values are their integer representations.
 fn convert_nodes(
     nodes: &node_types::NodeTypeMap,
-) -> (Vec<dbscheme::Entry>, Set<&str>, Map<&str, usize>) {
-    let mut entries: Vec<dbscheme::Entry> = Vec::new();
+) -> (Vec<dbscheme::Entry<'_>>, Set<&str>, Map<&str, usize>) {
+    let mut entries = Vec::new();
     let mut ast_node_members: Set<&str> = Set::new();
     let token_kinds: Map<&str, usize> = nodes
         .iter()

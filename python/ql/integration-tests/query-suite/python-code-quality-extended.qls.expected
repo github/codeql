@@ -1,12 +1,14 @@
+ql/python/ql/src/Classes/Comparisons/EqualsOrHash.ql
+ql/python/ql/src/Classes/Comparisons/EqualsOrNotEquals.ql
+ql/python/ql/src/Classes/Comparisons/IncompleteOrdering.ql
 ql/python/ql/src/Classes/ConflictingAttributesInBaseClasses.ql
 ql/python/ql/src/Classes/DefineEqualsWhenAddingAttributes.ql
-ql/python/ql/src/Classes/EqualsOrHash.ql
 ql/python/ql/src/Classes/InconsistentMRO.ql
 ql/python/ql/src/Classes/InitCallsSubclass/InitCallsSubclassMethod.ql
 ql/python/ql/src/Classes/MissingCallToDel.ql
 ql/python/ql/src/Classes/MissingCallToInit.ql
 ql/python/ql/src/Classes/MutatingDescriptor.ql
-ql/python/ql/src/Classes/SubclassShadowing.ql
+ql/python/ql/src/Classes/SubclassShadowing/SubclassShadowing.ql
 ql/python/ql/src/Classes/SuperclassDelCalledMultipleTimes.ql
 ql/python/ql/src/Classes/SuperclassInitCalledMultipleTimes.ql
 ql/python/ql/src/Classes/WrongNameForArgumentInClassInstantiation.ql

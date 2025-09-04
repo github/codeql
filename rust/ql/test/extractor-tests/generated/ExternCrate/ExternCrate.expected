@@ -1,7 +1,5 @@
 instances
 | gen_extern_crate.rs:4:5:7:23 | ExternCrate |
-getExtendedCanonicalPath
-getCrateOrigin
 getAttributeMacroExpansion
 getAttr
 getIdentifier

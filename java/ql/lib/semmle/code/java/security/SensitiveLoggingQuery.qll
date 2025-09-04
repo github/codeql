@@ -53,6 +53,8 @@ module SensitiveLoggerConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module SensitiveLoggerFlow = TaintTracking::Global<SensitiveLoggerConfig>;

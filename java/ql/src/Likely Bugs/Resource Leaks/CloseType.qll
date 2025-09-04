@@ -212,33 +212,35 @@ private LocalVariableDecl getCloseableVariable(CloseableInitExpr cie) {
 /**
  * A variable on which a "close" method is called, implicitly or explicitly, directly or indirectly.
  */
-private predicate closeCalled(Variable v) {
+private predicate closeCalled(LocalScopeVariable v) {
   // `close()` is implicitly called on variables declared or referenced
   // in the resources clause of try-with-resource statements.
   exists(TryStmt try | try.getAResourceVariable() = v)
   or
   // Otherwise, there should be an explicit call to a method whose name contains "close".
   exists(MethodCall e |
-    v = getCloseableVariable(_) or v instanceof Parameter or v instanceof LocalVariableDecl
-  |
     e.getMethod().getName().toLowerCase().matches("%close%") and
     exists(VarAccess va | va = v.getAnAccess() |
       e.getQualifier() = va or
       e.getAnArgument() = va
     )
-    or
-    // The "close" call could happen indirectly inside a helper method of unknown name.
-    exists(int i | e.getArgument(i) = v.getAnAccess() |
-      exists(Parameter p, int j | p.getPosition() = j and p.getCallable() = e.getMethod() |
-        closeCalled(p) and i = j
-        or
-        // The helper method could be iterating over a varargs parameter.
-        exists(EnhancedForStmt for | for.getExpr() = p.getAnAccess() |
-          closeCalled(for.getVariable().getVariable())
-        ) and
-        p.isVarargs() and
-        j <= i
-      )
+  )
+  or
+  // The "close" call could happen indirectly inside a helper method of unknown name.
+  exists(Parameter p |
+    closeCalled(p) and p.getAnArgument() = v.getAnAccess() and p.getCallable() instanceof Method
+  )
+  or
+  exists(MethodCall e, int i | e.getArgument(i) = v.getAnAccess() |
+    exists(Parameter p, int j |
+      p.getPosition() = j and p.getCallable() = e.getMethod().getSourceDeclaration()
+    |
+      // The helper method could be iterating over a varargs parameter.
+      exists(EnhancedForStmt for | for.getExpr() = p.getAnAccess() |
+        closeCalled(for.getVariable().getVariable())
+      ) and
+      p.isVarargs() and
+      j <= i
     )
   )
 }

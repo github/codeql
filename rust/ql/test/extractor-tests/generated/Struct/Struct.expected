@@ -1,7 +1,5 @@
 instances
 | gen_struct.rs:4:5:8:5 | struct Point |
-getExtendedCanonicalPath
-getCrateOrigin
 getAttributeMacroExpansion
 getDeriveMacroExpansion
 getAttr

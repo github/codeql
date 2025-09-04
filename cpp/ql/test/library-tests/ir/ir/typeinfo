@@ -1,0 +1,5 @@
+#pragma once
+
+namespace std{
+    class type_info {};
+}

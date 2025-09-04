@@ -6,8 +6,11 @@ display_name: "JavaScript/TypeScript"
 version: 1.22.1
 column_kind: "utf16"
 unicode_newlines: true
+overlay_support_version: 20250626
 build_modes:
   - none
+default_queries:
+  - codeql/javascript-queries
 file_coverage_languages:
   - name: javascript
     display_name: JavaScript

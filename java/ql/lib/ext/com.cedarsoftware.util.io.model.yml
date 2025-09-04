@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.cedarsoftware.util.io", "JsonReader", False, "jsonToJava", "", "", "Argument[0]", "unsafe-deserialization", "manual"]
+      - ["com.cedarsoftware.util.io", "JsonReader", True, "readObject", "", "", "Argument[this]", "unsafe-deserialization", "manual"]

@@ -14,7 +14,7 @@ private import codeql.ruby.DataFlow
  * Typhoeus.get("http://example.com").body
  * ```
  */
-class TyphoeusHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode {
+class TyphoeusHttpRequest extends Http::Client::Request::Range instanceof DataFlow::CallNode {
   API::Node requestNode;
   boolean directResponse;
 
@@ -31,7 +31,7 @@ class TyphoeusHttpRequest extends Http::Client::Request::Range, DataFlow::CallNo
     )
   }
 
-  override DataFlow::Node getAUrlPart() { result = this.getArgument(0) }
+  override DataFlow::Node getAUrlPart() { result = super.getArgument(0) }
 
   override DataFlow::Node getResponseBody() {
     directResponse = true and
@@ -43,7 +43,7 @@ class TyphoeusHttpRequest extends Http::Client::Request::Range, DataFlow::CallNo
 
   /** Gets the value that controls certificate validation, if any. */
   DataFlow::Node getCertificateValidationControllingValue() {
-    result = this.getKeywordArgumentIncludeHashArgument("ssl_verifypeer")
+    result = super.getKeywordArgumentIncludeHashArgument("ssl_verifypeer")
   }
 
   cached

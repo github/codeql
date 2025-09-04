@@ -17,10 +17,12 @@ class UnsafeHessianInput extends RefType {
 }
 
 /**
+ * DEPRECATED: Now modeled using data extensions instead.
+ *
  * A AbstractHessianInput or Hessian2StreamingInput subclass readObject method.
  * This is either `AbstractHessianInput.readObject` or `Hessian2StreamingInput.readObject`.
  */
-class UnsafeHessianInputReadObjectMethod extends Method {
+deprecated class UnsafeHessianInputReadObjectMethod extends Method {
   UnsafeHessianInputReadObjectMethod() {
     this.getDeclaringType().getAnAncestor() instanceof UnsafeHessianInput and
     this.getName() = "readObject"
@@ -34,8 +36,12 @@ class BurlapInput extends RefType {
   BurlapInput() { this.hasQualifiedName("com.caucho.burlap.io", "BurlapInput") }
 }
 
-/** A method with the name `readObject` declared in `com.caucho.burlap.io.BurlapInput`. */
-class BurlapInputReadObjectMethod extends Method {
+/**
+ * DEPRECATED: Now modeled using data extensions instead.
+ *
+ *  A method with the name `readObject` declared in `com.caucho.burlap.io.BurlapInput`.
+ */
+deprecated class BurlapInputReadObjectMethod extends Method {
   BurlapInputReadObjectMethod() {
     this.getDeclaringType() instanceof BurlapInput and
     this.getName() = "readObject"

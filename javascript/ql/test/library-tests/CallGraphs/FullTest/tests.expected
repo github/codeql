@@ -50,15 +50,15 @@ test_getAFunctionValue
 | c.js:2:8:2:24 | function bar() {} | c.js:2:8:2:24 | function bar() {} |
 | classes.js:1:1:19:2 | (functi ... o();\\n}) | classes.js:1:2:19:1 | functio ... lo();\\n} |
 | classes.js:1:2:19:1 | functio ... lo();\\n} | classes.js:1:2:19:1 | functio ... lo();\\n} |
-| classes.js:2:3:10:3 | A | classes.js:2:11:2:10 | () {} |
 | classes.js:2:3:10:3 | class A ...   }\\n  } | classes.js:2:11:2:10 | () {} |
+| classes.js:2:9:2:9 | A | classes.js:2:11:2:10 | () {} |
 | classes.js:2:11:2:10 | () {} | classes.js:2:11:2:10 | () {} |
 | classes.js:3:10:5:5 | () {\\n   ... ;\\n    } | classes.js:3:10:5:5 | () {\\n   ... ;\\n    } |
 | classes.js:7:6:9:5 | () {\\n   ... ;\\n    } | classes.js:7:6:9:5 | () {\\n   ... ;\\n    } |
 | classes.js:8:7:8:16 | this.hello | classes.js:3:10:5:5 | () {\\n   ... ;\\n    } |
 | classes.js:8:7:8:16 | this.hello | classes.js:13:10:15:5 | () {\\n   ... ;\\n    } |
-| classes.js:12:3:16:3 | B | classes.js:12:21:12:20 | (...arg ... rgs); } |
 | classes.js:12:3:16:3 | class B ...   }\\n  } | classes.js:12:21:12:20 | (...arg ... rgs); } |
+| classes.js:12:9:12:9 | B | classes.js:12:21:12:20 | (...arg ... rgs); } |
 | classes.js:12:19:12:19 | A | classes.js:2:11:2:10 | () {} |
 | classes.js:12:21:12:20 | (...arg ... rgs); } | classes.js:12:21:12:20 | (...arg ... rgs); } |
 | classes.js:13:10:15:5 | () {\\n   ... ;\\n    } | classes.js:13:10:15:5 | () {\\n   ... ;\\n    } |
@@ -146,9 +146,9 @@ test_getAFunctionValue
 | tst.js:11:1:20:1 | functio ... \\tf();\\n} | tst.js:11:1:20:1 | functio ... \\tf();\\n} |
 | tst.js:11:12:11:12 | m | tst.js:2:9:2:21 | function() {} |
 | tst.js:11:12:11:12 | m | tst.js:2:9:2:21 | function() {} |
-| tst.js:12:6:12:6 | m | tst.js:2:9:2:21 | function() {} |
-| tst.js:12:6:12:27 | n | tst.js:2:9:2:21 | function() {} |
-| tst.js:12:6:12:27 | n | tst.js:12:15:12:27 | function() {} |
+| tst.js:12:6:12:6 | n | tst.js:2:9:2:21 | function() {} |
+| tst.js:12:6:12:6 | n | tst.js:12:15:12:27 | function() {} |
+| tst.js:12:6:12:27 | m | tst.js:2:9:2:21 | function() {} |
 | tst.js:12:10:12:10 | m | tst.js:2:9:2:21 | function() {} |
 | tst.js:12:10:12:10 | m | tst.js:2:9:2:21 | function() {} |
 | tst.js:12:10:12:10 | m | tst.js:2:9:2:21 | function() {} |

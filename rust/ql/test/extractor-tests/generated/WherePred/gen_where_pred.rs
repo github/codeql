@@ -6,4 +6,6 @@ fn test_where_pred() -> () {
     // For example:
     fn foo<T, U>(t: T, u: U) where T: Debug, U: Clone {}
     //                             ^^^^^^^^  ^^^^^^^^
+    fn bar<T>(value: T) where for<'a> T: From<&'a str> {}
+    //                        ^^^^^^^^^^^^^^^^^^^^^^^^
 }

@@ -61,3 +61,9 @@ class Diagnostic extends @diagnostic {
   /** Gets a textual representation of this diagnostic. */
   string toString() { result = this.getMessage() }
 }
+
+/**
+ * Holds for extraction information keys that should be skipped from telemetry reports.
+ * This predicate can be extended by other packs to filter out specific telemetry keys.
+ */
+extensible predicate extractorInformationSkipKey(string key);

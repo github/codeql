@@ -5,3 +5,5 @@ multipleCallTargets
 | main.rs:28:16:28:29 | query.as_str() |
 | main.rs:29:20:29:33 | query.as_str() |
 | main.rs:30:20:30:33 | query.as_str() |
+| main.rs:32:20:32:33 | query.as_str() |
+| main.rs:33:22:33:35 | query.as_str() |

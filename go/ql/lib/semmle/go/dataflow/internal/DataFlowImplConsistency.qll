@@ -4,11 +4,11 @@
  */
 
 private import go
-private import DataFlowImplSpecific
+private import DataFlowImplSpecific as Impl
 private import TaintTrackingImplSpecific
 private import codeql.dataflow.internal.DataFlowImplConsistency
 private import semmle.go.dataflow.internal.DataFlowNodes
 
-private module Input implements InputSig<Location, GoDataFlow> { }
+private module Input implements InputSig<Location, Impl::GoDataFlow> { }
 
-module Consistency = MakeConsistency<Location, GoDataFlow, GoTaintTracking, Input>;
+module Consistency = MakeConsistency<Location, Impl::GoDataFlow, GoTaintTracking, Input>;

@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Check bazel formatting
         uses: pre-commit/action@646c83fcd040023954eafda54b4db0192ce70507
         with:

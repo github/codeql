@@ -1,5 +1,9 @@
-| SaveFileTest.java:11:14:11:25 | super(...) | SaveFileTest.java:11:14:11:25 | Exit |
+| SaveFileTest.java:11:14:11:25 | Exceptional Exit | SaveFileTest.java:11:14:11:25 | Exit |
+| SaveFileTest.java:11:14:11:25 | Normal Exit | SaveFileTest.java:11:14:11:25 | Exit |
+| SaveFileTest.java:11:14:11:25 | super(...) | SaveFileTest.java:11:14:11:25 | Normal Exit |
 | SaveFileTest.java:11:14:11:25 | { ... } | SaveFileTest.java:11:14:11:25 | super(...) |
+| SaveFileTest.java:12:14:12:21 | Exceptional Exit | SaveFileTest.java:12:14:12:21 | Exit |
+| SaveFileTest.java:12:14:12:21 | Normal Exit | SaveFileTest.java:12:14:12:21 | Exit |
 | SaveFileTest.java:15:2:55:2 | { ... } | SaveFileTest.java:17:3:17:25 | var ...; |
 | SaveFileTest.java:17:3:17:25 | var ...; | SaveFileTest.java:17:21:17:24 | path |
 | SaveFileTest.java:17:10:17:24 | savePath | SaveFileTest.java:18:3:18:27 | if (...) |
@@ -95,9 +99,11 @@
 | SaveFileTest.java:48:5:48:15 | flush(...) | SaveFileTest.java:50:6:50:30 | catch (...) |
 | SaveFileTest.java:48:5:48:16 | <Expr>; | SaveFileTest.java:48:5:48:7 | bos |
 | SaveFileTest.java:49:5:49:7 | bos | SaveFileTest.java:49:5:49:15 | close(...) |
-| SaveFileTest.java:49:5:49:15 | close(...) | SaveFileTest.java:12:14:12:21 | Exit |
+| SaveFileTest.java:49:5:49:15 | close(...) | SaveFileTest.java:12:14:12:21 | Exceptional Exit |
+| SaveFileTest.java:49:5:49:15 | close(...) | SaveFileTest.java:12:14:12:21 | Normal Exit |
 | SaveFileTest.java:49:5:49:15 | close(...) | SaveFileTest.java:50:6:50:30 | catch (...) |
 | SaveFileTest.java:49:5:49:16 | <Expr>; | SaveFileTest.java:49:5:49:7 | bos |
 | SaveFileTest.java:50:6:50:30 | catch (...) | SaveFileTest.java:50:23:50:29 | ignored |
 | SaveFileTest.java:50:23:50:29 | ignored | SaveFileTest.java:51:4:52:4 | { ... } |
-| SaveFileTest.java:51:4:52:4 | { ... } | SaveFileTest.java:12:14:12:21 | Exit |
+| SaveFileTest.java:51:4:52:4 | { ... } | SaveFileTest.java:12:14:12:21 | Exceptional Exit |
+| SaveFileTest.java:51:4:52:4 | { ... } | SaveFileTest.java:12:14:12:21 | Normal Exit |

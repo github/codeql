@@ -28,6 +28,10 @@ module UnsafeWebViewFetchConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(UnsafeWebViewFetchAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // can't override location accurately because of secondary use in select.
+  }
 }
 
 /**

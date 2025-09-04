@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Runtime.Serialization", "SerializationInfo", False, "AddValue", "(System.String,System.Object)", "", "Argument[1]", "Argument[this]", "taint", "manual"]
+      - ["System.Runtime.Serialization", "SerializationInfo", False, "AddValue", "(System.String,System.Object,System.Type)", "", "Argument[1]", "Argument[this]", "taint", "manual"]
+      - ["System.Runtime.Serialization", "SerializationInfo", False, "GetEnumerator", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["System.Runtime.Serialization", "SerializationInfo", False, "GetString", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["System.Runtime.Serialization", "SerializationInfo", False, "GetValue", "(System.String,System.Type)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      # Note that SerializationEntry hasn't been modeled yet, so the model below for get_Current will not in itself provide more flow.
+      - ["System.Runtime.Serialization", "SerializationInfoEnumerator", False, "get_Current", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["System.Runtime.Serialization", "SerializationInfoEnumerator", False, "get_Value", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]

@@ -26,7 +26,6 @@ private import semmle.code.csharp.frameworks.System
 private import ControlFlowGraphImpl
 private import NonReturning
 private import SuccessorType
-private import SuccessorTypes
 
 private newtype TCompletion =
   TSimpleCompletion() or
@@ -310,10 +309,8 @@ private class Overflowable extends UnaryOperation {
 
 /** A control flow element that is inside a `try` block. */
 private class TriedControlFlowElement extends ControlFlowElement {
-  TryStmt try;
-
   TriedControlFlowElement() {
-    this = try.getATriedElement() and
+    this = any(TryStmt try).getATriedElement() and
     not this instanceof NonReturningCall
   }
 
@@ -575,7 +572,7 @@ abstract private class NonNestedNormalCompletion extends NormalCompletion { }
 
 /** A simple (normal) completion. */
 class SimpleCompletion extends NonNestedNormalCompletion, TSimpleCompletion {
-  override NormalSuccessor getAMatchingSuccessorType() { any() }
+  override DirectSuccessor getAMatchingSuccessorType() { any() }
 
   override string toString() { result = "normal" }
 }
@@ -859,7 +856,7 @@ class GotoCompletion extends Completion {
   /** Gets the label of the `goto` completion. */
   string getLabel() { result = label }
 
-  override GotoSuccessor getAMatchingSuccessorType() { result.getLabel() = label }
+  override GotoSuccessor getAMatchingSuccessorType() { any() }
 
   override string toString() {
     // `NestedCompletion` defines `toString()` for the other case
@@ -882,7 +879,7 @@ class ThrowCompletion extends Completion {
   /** Gets the type of the exception being thrown. */
   ExceptionClass getExceptionClass() { result = ec }
 
-  override ExceptionSuccessor getAMatchingSuccessorType() { result.getExceptionClass() = ec }
+  override ExceptionSuccessor getAMatchingSuccessorType() { any() }
 
   override string toString() {
     // `NestedCompletion` defines `toString()` for the other case

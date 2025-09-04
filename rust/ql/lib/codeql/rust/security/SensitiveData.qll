@@ -6,7 +6,7 @@
  */
 
 import rust
-import internal.SensitiveDataHeuristics
+import codeql.concepts.internal.SensitiveDataHeuristics
 private import codeql.rust.dataflow.DataFlow
 
 /**

@@ -6,6 +6,8 @@ legacy_qltest_extraction: true
 overlay_support_version: 20250626
 build_modes:
   - none
+default_queries:
+  - codeql/ruby-queries
 github_api_languages:
   - Ruby
 scc_languages:

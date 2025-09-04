@@ -13,3 +13,8 @@ extensions:
       - ["java.beans", "PropertyEditor", "getValue", "()", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
       - ["java.beans", "PropertyEditor", "setAsText", "()", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
       - ["java.beans", "PropertyEditor", "setValue", "()", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["java.beans", "XMLDecoder", True, "readObject", "()", "", "Argument[this]", "unsafe-deserialization", "manual"]

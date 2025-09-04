@@ -12,7 +12,7 @@
  */
 
 //THIS QUERY IS A REPLICA OF: https://github.com/github/codeql/blob/main/java/ql/src/Security/CWE/CWE-327/BrokenCryptoAlgorithm.ql
-//but uses the **NEW MODELLING**
+//but uses the **NEW MODELING**
 import experimental.quantum.Language
 
 /**
