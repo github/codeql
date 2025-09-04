@@ -1446,6 +1446,16 @@ module TraitIsVisible<relevantTraitVisibleSig/2 relevantTraitVisible> {
   predicate traitIsVisible(Element element, Trait trait) {
     exists(ItemNode encl | traitLookup(encl, element, trait) and trait = encl.getASuccessor(_, _))
   }
+
+  /** Holds if the trait `trait` is _not_ visible at `element`. */
+  pragma[nomagic]
+  predicate traitIsNotVisible(Element element, Trait trait) {
+    exists(ItemNode top |
+      traitLookup(top, element, trait) and
+      not exists(getOuterScope(top)) and
+      not trait = top.getASuccessor(_, _)
+    )
+  }
 }
 
 pragma[nomagic]

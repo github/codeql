@@ -1092,7 +1092,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          * For example, if this access is the method call `M(42)`, then the inferred
          * type at argument position `0` is `int`.
          */
-        bindingset[state]
         Type getInferredType(State state, AccessPosition apos, TypePath path);
 
         /** Gets the declaration that this access targets in `state`. */
@@ -1103,29 +1102,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       bindingset[apos]
       bindingset[dpos]
       predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos);
-
-      /**
-       * Holds if matching an inferred type `t` at `path` inside an access at `apos`
-       * against the declaration `target` means that the type should be adjusted to
-       * `tAdj` at `pathAdj`.
-       *
-       * For example, in
-       *
-       * ```csharp
-       * void M(int? i) {}
-       * M(42);
-       * ```
-       *
-       * the inferred type of `42` is `int`, but it should be adjusted to `int?`
-       * when matching against `M`.
-       */
-      bindingset[apos, target, path, t]
-      default predicate adjustAccessType(
-        AccessPosition apos, Declaration target, TypePath path, Type t, TypePath pathAdj, Type tAdj
-      ) {
-        pathAdj = path and
-        tAdj = t
-      }
     }
 
     /**
@@ -1136,21 +1112,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
      */
     module MatchingWithState<MatchingWithStateInputSig Input> {
       private import Input
-
-      /**
-       * Holds if `a` targets `target` in `state` and the type for `apos` at `path`
-       * in `a` is `t` after adjustment by `target`.
-       */
-      pragma[nomagic]
-      private predicate adjustedAccessType(
-        Access a, State state, AccessPosition apos, Declaration target, TypePath path, Type t
-      ) {
-        target = a.getTarget(state) and
-        exists(TypePath path0, Type t0 |
-          t0 = a.getInferredType(state, apos, path0) and
-          adjustAccessType(apos, target, path0, t0, path, t)
-        )
-      }
 
       /**
        * Gets the type of the type argument at `path` in `a` that corresponds to
@@ -1170,6 +1131,16 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
       }
 
+      pragma[nomagic]
+      private predicate directTypeMatch0(
+        Access a, State state, Declaration target, DeclarationPosition dpos,
+        TypePath pathToTypeParam, TypeParameter tp
+      ) {
+        not exists(getTypeArgument(a, target, tp, _)) and
+        tp = target.getDeclaredType(dpos, pathToTypeParam) and
+        target = a.getTarget(state)
+      }
+
       /**
        * Holds if the type `t` at `path` of `a` in `state` matches the type parameter `tp`
        * of `target`.
@@ -1178,11 +1149,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private predicate directTypeMatch(
         Access a, State state, Declaration target, TypePath path, Type t, TypeParameter tp
       ) {
-        not exists(getTypeArgument(a, target, tp, _)) and
         exists(AccessPosition apos, DeclarationPosition dpos, TypePath pathToTypeParam |
-          tp = target.getDeclaredType(dpos, pathToTypeParam) and
+          directTypeMatch0(a, state, target, dpos, pathToTypeParam, tp) and
           accessDeclarationPositionMatch(apos, dpos) and
-          adjustedAccessType(a, state, apos, target, pathToTypeParam.appendInverse(path), t)
+          t = a.getInferredType(state, apos, pathToTypeParam.appendInverse(path))
         )
       }
 
@@ -1193,7 +1163,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          */
         private predicate relevantAccess(Access a, State state, AccessPosition apos, Type base) {
           exists(Declaration target, DeclarationPosition dpos |
-            adjustedAccessType(a, state, apos, target, _, _) and
+            target = a.getTarget(state) and
             accessDeclarationPositionMatch(apos, dpos) and
             declarationBaseType(target, dpos, base, _, _)
           )
@@ -1268,10 +1238,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         }
 
         private newtype TRelevantAccess =
-          MkRelevantAccess(
-            Access a, State state, Declaration target, AccessPosition apos, TypePath path
-          ) {
-            relevantAccessConstraint(a, state, target, apos, path, _)
+          MkRelevantAccess(Access a, State state, AccessPosition apos, TypePath path) {
+            relevantAccessConstraint(a, state, _, apos, path, _)
           }
 
         /**
@@ -1281,18 +1249,19 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         private class RelevantAccess extends MkRelevantAccess {
           Access a;
           State state;
-          Declaration target;
           AccessPosition apos;
           TypePath path;
 
-          RelevantAccess() { this = MkRelevantAccess(a, state, target, apos, path) }
+          RelevantAccess() { this = MkRelevantAccess(a, state, apos, path) }
 
           Type getTypeAt(TypePath suffix) {
-            adjustedAccessType(a, state, apos, target, path.appendInverse(suffix), result)
+            result = a.getInferredType(state, apos, path.appendInverse(suffix))
           }
 
           /** Holds if this relevant access should satisfy `constraint`. */
-          Type getConstraint() { relevantAccessConstraint(a, state, target, apos, path, result) }
+          Type getConstraint(Declaration target) {
+            relevantAccessConstraint(a, state, target, apos, path, result)
+          }
 
           string toString() {
             result = a.toString() + ", " + apos.toString() + ", " + path.toString()
@@ -1305,7 +1274,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           SatisfiesConstraintInputSig<RelevantAccess>
         {
           predicate relevantConstraint(RelevantAccess at, Type constraint) {
-            constraint = at.getConstraint()
+            constraint = at.getConstraint(_)
           }
         }
 
@@ -1313,8 +1282,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           Access a, State state, Declaration target, AccessPosition apos, TypePath prefix,
           Type constraint, TypePath path, Type t
         ) {
-          SatisfiesConstraint<RelevantAccess, SatisfiesConstraintInput>::satisfiesConstraintType(MkRelevantAccess(a,
-              state, target, apos, prefix), constraint, path, t)
+          exists(RelevantAccess ra |
+            ra = MkRelevantAccess(a, state, apos, prefix) and
+            SatisfiesConstraint<RelevantAccess, SatisfiesConstraintInput>::satisfiesConstraintType(ra,
+              constraint, path, t) and
+            constraint = ra.getConstraint(target)
+          )
         }
       }
 
@@ -1605,29 +1578,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       bindingset[apos]
       bindingset[dpos]
       predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos);
-
-      /**
-       * Holds if matching an inferred type `t` at `path` inside an access at `apos`
-       * against the declaration `target` means that the type should be adjusted to
-       * `tAdj` at `pathAdj`.
-       *
-       * For example, in
-       *
-       * ```csharp
-       * void M(int? i) {}
-       * M(42);
-       * ```
-       *
-       * the inferred type of `42` is `int`, but it should be adjusted to `int?`
-       * when matching against `M`.
-       */
-      bindingset[apos, target, path, t]
-      default predicate adjustAccessType(
-        AccessPosition apos, Declaration target, TypePath path, Type t, TypePath pathAdj, Type tAdj
-      ) {
-        pathAdj = path and
-        tAdj = t
-      }
     }
 
     /**
@@ -1640,8 +1590,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private module Inp implements MatchingWithStateInputSig {
         private import codeql.util.Unit
         import Input
-
-        predicate adjustAccessType = Input::adjustAccessType/6;
 
         class State = Unit;
 
