@@ -1,4 +1,4 @@
-const { AthenaClient, StartQueryExecutionCommand, CreateNamedQueryCommand, UpdateNamedQueryCommand } = require("@aws-sdk/client-athena");
+const { AthenaClient, StartQueryExecutionCommand, CreateNamedQueryCommand, UpdateNamedQueryCommand, CreatePreparedStatementCommand } = require("@aws-sdk/client-athena");
 const AWS = require('aws-sdk');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -10,7 +10,7 @@ app.post('/v3/athena/all', async (req, res) => {
 
     const client = new AthenaClient({ region: "us-east-1" });
 
-    const params1 = {
+    const params1 = {   
         QueryString: "SQL" + userQuery,
         QueryExecutionContext: { Database: "default" },
         ResultConfiguration: { OutputLocation: "s3://my-results/" }
@@ -69,4 +69,17 @@ app.post('/v2/athena/all', async (req, res) => {
     await athena.updateNamedQuery(params3).promise();
 
     res.end();
+});
+
+app.post('/dynamodb-v3', async (req, res) => {
+    const userQueryStatement = req.body.query; // $ MISSING: Source
+    const client = new AthenaClient({ region: "us-east-1" });
+    const input = {
+        StatementName: "STRING_VALUE",
+        WorkGroup: "STRING_VALUE",
+        QueryStatement: userQueryStatement,
+        Description: "STRING_VALUE",
+    };
+    const command = new CreatePreparedStatementCommand(input);
+    await client.send(command); // $ MISSING: Alert
 });
