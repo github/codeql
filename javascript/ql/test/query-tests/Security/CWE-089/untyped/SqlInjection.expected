@@ -5,6 +5,7 @@
 | athena.js:48:22:48:30 | userQuery | athena.js:43:23:43:30 | req.body | athena.js:48:22:48:30 | userQuery | This query string depends on a $@. | athena.js:43:23:43:30 | req.body | user-provided value |
 | athena.js:57:22:57:30 | userQuery | athena.js:43:23:43:30 | req.body | athena.js:57:22:57:30 | userQuery | This query string depends on a $@. | athena.js:43:23:43:30 | req.body | user-provided value |
 | athena.js:66:22:66:30 | userQuery | athena.js:43:23:43:30 | req.body | athena.js:66:22:66:30 | userQuery | This query string depends on a $@. | athena.js:43:23:43:30 | req.body | user-provided value |
+| athena.js:84:23:84:29 | command | athena.js:75:32:75:39 | req.body | athena.js:84:23:84:29 | command | This query string depends on a $@. | athena.js:75:32:75:39 | req.body | user-provided value |
 | clients3.js:18:23:18:60 | new Sel ... params) | clients3.js:10:26:10:33 | req.body | clients3.js:18:23:18:60 | new Sel ... params) | This query string depends on a $@. | clients3.js:10:26:10:33 | req.body | user-provided value |
 | clients3.js:29:21:29:68 | "SELECT ... usInput | clients3.js:23:26:23:33 | req.body | clients3.js:29:21:29:68 | "SELECT ... usInput | This query string depends on a $@. | clients3.js:23:26:23:33 | req.body | user-provided value |
 | clients3.js:38:21:38:68 | "SELECT ... usInput | clients3.js:23:26:23:33 | req.body | clients3.js:38:21:38:68 | "SELECT ... usInput | This query string depends on a $@. | clients3.js:23:26:23:33 | req.body | user-provided value |
@@ -161,8 +162,8 @@ edges
 | athena.js:9:11:9:19 | userQuery | athena.js:33:22:33:30 | userQuery | provenance |  |
 | athena.js:9:23:9:30 | req.body | athena.js:9:11:9:19 | userQuery | provenance |  |
 | athena.js:13:11:13:17 | params1 [QueryString] | athena.js:18:46:18:52 | params1 [QueryString] | provenance |  |
-| athena.js:13:21:17:5 | {\\n      ... }\\n    } [QueryString] | athena.js:13:11:13:17 | params1 [QueryString] | provenance |  |
-| athena.js:14:22:14:38 | "SQL" + userQuery | athena.js:13:21:17:5 | {\\n      ... }\\n    } [QueryString] | provenance |  |
+| athena.js:13:21:17:5 | {   \\n   ... }\\n    } [QueryString] | athena.js:13:11:13:17 | params1 [QueryString] | provenance |  |
+| athena.js:14:22:14:38 | "SQL" + userQuery | athena.js:13:21:17:5 | {   \\n   ... }\\n    } [QueryString] | provenance |  |
 | athena.js:14:30:14:38 | userQuery | athena.js:14:22:14:38 | "SQL" + userQuery | provenance |  |
 | athena.js:18:11:18:11 | p | athena.js:19:23:19:23 | p | provenance |  |
 | athena.js:18:15:18:53 | new Sta ... arams1) | athena.js:18:11:18:11 | p | provenance |  |
@@ -179,6 +180,14 @@ edges
 | athena.js:43:11:43:19 | userQuery | athena.js:57:22:57:30 | userQuery | provenance |  |
 | athena.js:43:11:43:19 | userQuery | athena.js:66:22:66:30 | userQuery | provenance |  |
 | athena.js:43:23:43:30 | req.body | athena.js:43:11:43:19 | userQuery | provenance |  |
+| athena.js:75:11:75:28 | userQueryStatement | athena.js:80:25:80:42 | userQueryStatement | provenance |  |
+| athena.js:75:32:75:39 | req.body | athena.js:75:11:75:28 | userQueryStatement | provenance |  |
+| athena.js:77:11:77:15 | input [QueryStatement] | athena.js:83:56:83:60 | input [QueryStatement] | provenance |  |
+| athena.js:77:19:82:5 | {\\n      ... ,\\n    } [QueryStatement] | athena.js:77:11:77:15 | input [QueryStatement] | provenance |  |
+| athena.js:80:25:80:42 | userQueryStatement | athena.js:77:19:82:5 | {\\n      ... ,\\n    } [QueryStatement] | provenance |  |
+| athena.js:83:11:83:17 | command | athena.js:84:23:84:29 | command | provenance |  |
+| athena.js:83:21:83:61 | new Cre ... (input) | athena.js:83:11:83:17 | command | provenance |  |
+| athena.js:83:56:83:60 | input [QueryStatement] | athena.js:83:21:83:61 | new Cre ... (input) | provenance |  |
 | clients3.js:10:9:10:22 | maliciousInput | clients3.js:16:55:16:68 | maliciousInput | provenance |  |
 | clients3.js:10:26:10:33 | req.body | clients3.js:10:9:10:22 | maliciousInput | provenance |  |
 | clients3.js:12:11:12:16 | params [Expression] | clients3.js:18:54:18:59 | params [Expression] | provenance |  |
@@ -615,7 +624,7 @@ nodes
 | athena.js:9:11:9:19 | userQuery | semmle.label | userQuery |
 | athena.js:9:23:9:30 | req.body | semmle.label | req.body |
 | athena.js:13:11:13:17 | params1 [QueryString] | semmle.label | params1 [QueryString] |
-| athena.js:13:21:17:5 | {\\n      ... }\\n    } [QueryString] | semmle.label | {\\n      ... }\\n    } [QueryString] |
+| athena.js:13:21:17:5 | {   \\n   ... }\\n    } [QueryString] | semmle.label | {   \\n   ... }\\n    } [QueryString] |
 | athena.js:14:22:14:38 | "SQL" + userQuery | semmle.label | "SQL" + userQuery |
 | athena.js:14:30:14:38 | userQuery | semmle.label | userQuery |
 | athena.js:18:11:18:11 | p | semmle.label | p |
@@ -637,6 +646,15 @@ nodes
 | athena.js:48:22:48:30 | userQuery | semmle.label | userQuery |
 | athena.js:57:22:57:30 | userQuery | semmle.label | userQuery |
 | athena.js:66:22:66:30 | userQuery | semmle.label | userQuery |
+| athena.js:75:11:75:28 | userQueryStatement | semmle.label | userQueryStatement |
+| athena.js:75:32:75:39 | req.body | semmle.label | req.body |
+| athena.js:77:11:77:15 | input [QueryStatement] | semmle.label | input [QueryStatement] |
+| athena.js:77:19:82:5 | {\\n      ... ,\\n    } [QueryStatement] | semmle.label | {\\n      ... ,\\n    } [QueryStatement] |
+| athena.js:80:25:80:42 | userQueryStatement | semmle.label | userQueryStatement |
+| athena.js:83:11:83:17 | command | semmle.label | command |
+| athena.js:83:21:83:61 | new Cre ... (input) | semmle.label | new Cre ... (input) |
+| athena.js:83:56:83:60 | input [QueryStatement] | semmle.label | input [QueryStatement] |
+| athena.js:84:23:84:29 | command | semmle.label | command |
 | clients3.js:10:9:10:22 | maliciousInput | semmle.label | maliciousInput |
 | clients3.js:10:26:10:33 | req.body | semmle.label | req.body |
 | clients3.js:12:11:12:16 | params [Expression] | semmle.label | params [Expression] |

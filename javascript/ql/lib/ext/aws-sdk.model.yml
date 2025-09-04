@@ -30,6 +30,7 @@ extensions:
       extensible: summaryModel
     data:
       - ["@aws-sdk/client-athena", "Member[StartQueryExecutionCommand,CreateNamedQueryCommand,UpdateNamedQueryCommand]", "Argument[0].Member[QueryString]", "ReturnValue", "taint"]
+      - ["@aws-sdk/client-athena", "Member[CreatePreparedStatementCommand]", "Argument[0].Member[QueryStatement]", "ReturnValue", "taint"]
       - ["@aws-sdk/client-s3", "Member[SelectObjectContentCommand]", "Argument[0].Member[Expression]", "ReturnValue", "taint"]
       - ["@aws-sdk/client-rds-data", "Member[ExecuteStatementCommand,BatchExecuteStatementCommand]", "Argument[0].Member[sql]", "ReturnValue", "taint"]
       - ["@aws-sdk/client-rds-data", "Member[BatchExecuteStatementCommand]", "Argument[0].Member[parameterSets].ArrayElement.Member[sql]", "ReturnValue", "taint"]

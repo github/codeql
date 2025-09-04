@@ -72,7 +72,7 @@ app.post('/v2/athena/all', async (req, res) => {
 });
 
 app.post('/dynamodb-v3', async (req, res) => {
-    const userQueryStatement = req.body.query; // $ MISSING: Source
+    const userQueryStatement = req.body.query; // $ Source
     const client = new AthenaClient({ region: "us-east-1" });
     const input = {
         StatementName: "STRING_VALUE",
@@ -81,5 +81,5 @@ app.post('/dynamodb-v3', async (req, res) => {
         Description: "STRING_VALUE",
     };
     const command = new CreatePreparedStatementCommand(input);
-    await client.send(command); // $ MISSING: Alert
+    await client.send(command); // $ Alert
 });
