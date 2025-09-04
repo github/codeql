@@ -10,18 +10,15 @@ import javascript
 module CorsPermissiveConfiguration {
   private newtype TFlowState =
     TTaint() or
-    TTrueOrNull() or
-    TWildcard()
+    TPermissive()
 
-  /** A flow state to asociate with a tracked value. */
+  /** A flow state to associate with a tracked value. */
   class FlowState extends TFlowState {
     /** Gets a string representation of this flow state. */
     string toString() {
       this = TTaint() and result = "taint"
       or
-      this = TTrueOrNull() and result = "true-or-null"
-      or
-      this = TWildcard() and result = "wildcard"
+      this = TPermissive() and result = "permissive"
     }
   }
 
@@ -30,11 +27,8 @@ module CorsPermissiveConfiguration {
     /** A tainted value. */
     FlowState taint() { result = TTaint() }
 
-    /** A `true` or `null` value. */
-    FlowState trueOrNull() { result = TTrueOrNull() }
-
-    /** A `"*"` value. */
-    FlowState wildcard() { result = TWildcard() }
+    /** A permissive value (true, null, or "*"). */
+    FlowState permissive() { result = TPermissive() }
   }
 
   /**
@@ -59,14 +53,13 @@ module CorsPermissiveConfiguration {
     ActiveThreatModelSourceAsSource() { not this instanceof ClientSideRemoteFlowSource }
   }
 
-  /** An overly permissive value for `origin` (Apollo) */
-  class TrueNullValue extends Source {
-    TrueNullValue() { this.mayHaveBooleanValue(true) or this.asExpr() instanceof NullLiteral }
-  }
-
-  /** An overly permissive value for `origin` (Express) */
-  class WildcardValue extends Source {
-    WildcardValue() { this.mayHaveStringValue("*") }
+  /** An overly permissive value for `origin` configuration. */
+  class PermissiveValue extends Source {
+    PermissiveValue() {
+      this.mayHaveBooleanValue(true) or
+      this.asExpr() instanceof NullLiteral or
+      this.mayHaveStringValue("*")
+    }
   }
 
   /**
