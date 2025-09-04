@@ -228,6 +228,17 @@ module CommandInjection {
     }
   }
 
+    class ValidateAttributeSanitizer extends Sanitizer {
+    ValidateAttributeSanitizer() {
+      exists(Function f, Attribute a, Parameter p |
+        p = f.getAParameter() and
+        p.getAnAttribute() = a and 
+        a.getName() = ["ValidateScript", "ValidateSet", "ValidatePattern"] and
+        this.asParameter() = p
+      )
+    }
+  }
+
   class SingleQuoteSanitizer extends Sanitizer {
     SingleQuoteSanitizer() {
       exists(ExpandableStringExpr e, VarReadAccess v |

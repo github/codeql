@@ -218,10 +218,27 @@ function Invoke-InvokeExpressionInjectionSafe4
     Invoke-Expression "Get-Process -Name $UserInputClean"
 }
 
+#ValidatePattern Attribute
+function Invoke-InvokeExpressionInjectionSafe5
+{
+    param(
+        [ValidateScript({
+            if ($_ -eq "GoodValue") {
+                $true
+            } else {
+                throw "$_ is invalid."
+            }
+        })]
+        $UserInput
+    )
+    Invoke-Expression "Get-Process -Name $UserInput"
+}
+
 Invoke-InvokeExpressionInjectionSafe1 -UserInput $input 
 Invoke-InvokeExpressionInjectionSafe2 -UserInput $input 
 Invoke-InvokeExpressionInjectionSafe3 -UserInput $input 
 Invoke-InvokeExpressionInjectionSafe4 -UserInput $input 
+Invoke-InvokeExpressionInjectionSafe5 -UserInput $input 
 
 function false-positive-in-call-operator($d)
 {

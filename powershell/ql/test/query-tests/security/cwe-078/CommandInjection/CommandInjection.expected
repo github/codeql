@@ -61,14 +61,14 @@ edges
 | test.ps1:185:42:185:47 | input | test.ps1:144:11:144:20 | userinput | provenance |  |
 | test.ps1:186:58:186:63 | input | test.ps1:153:11:153:20 | userinput | provenance |  |
 | test.ps1:187:41:187:46 | input | test.ps1:159:11:159:20 | userinput | provenance |  |
-| test.ps1:228:5:228:6 | o | test.ps1:231:7:231:10 | $o | provenance |  |
-| test.ps1:228:10:228:32 | Call to read-host | test.ps1:228:5:228:6 | o | provenance | Src:MaD:0  |
-| test.ps1:239:5:239:10 | input | test.ps1:240:5:240:21 | env:bar | provenance |  |
-| test.ps1:239:5:239:10 | input | test.ps1:240:5:240:21 | env:bar | provenance |  |
-| test.ps1:239:14:239:36 | Call to read-host | test.ps1:239:5:239:10 | input | provenance | Src:MaD:0  |
-| test.ps1:239:14:239:36 | Call to read-host | test.ps1:239:5:239:10 | input | provenance | Src:MaD:0  |
-| test.ps1:240:5:240:21 | env:bar | test.ps1:242:5:242:6 | y | provenance |  |
-| test.ps1:242:5:242:6 | y | test.ps1:243:7:243:10 | $y | provenance |  |
+| test.ps1:245:5:245:6 | o | test.ps1:248:7:248:10 | $o | provenance |  |
+| test.ps1:245:10:245:32 | Call to read-host | test.ps1:245:5:245:6 | o | provenance | Src:MaD:0  |
+| test.ps1:256:5:256:10 | input | test.ps1:257:5:257:21 | env:bar | provenance |  |
+| test.ps1:256:5:256:10 | input | test.ps1:257:5:257:21 | env:bar | provenance |  |
+| test.ps1:256:14:256:36 | Call to read-host | test.ps1:256:5:256:10 | input | provenance | Src:MaD:0  |
+| test.ps1:256:14:256:36 | Call to read-host | test.ps1:256:5:256:10 | input | provenance | Src:MaD:0  |
+| test.ps1:257:5:257:21 | env:bar | test.ps1:259:5:259:6 | y | provenance |  |
+| test.ps1:259:5:259:6 | y | test.ps1:260:7:260:10 | $y | provenance |  |
 nodes
 | test.ps1:3:11:3:20 | userinput | semmle.label | userinput |
 | test.ps1:4:23:4:52 | Get-Process -Name $UserInput | semmle.label | Get-Process -Name $UserInput |
@@ -133,15 +133,15 @@ nodes
 | test.ps1:185:42:185:47 | input | semmle.label | input |
 | test.ps1:186:58:186:63 | input | semmle.label | input |
 | test.ps1:187:41:187:46 | input | semmle.label | input |
-| test.ps1:228:5:228:6 | o | semmle.label | o |
-| test.ps1:228:10:228:32 | Call to read-host | semmle.label | Call to read-host |
-| test.ps1:231:7:231:10 | $o | semmle.label | $o |
-| test.ps1:239:5:239:10 | input | semmle.label | input |
-| test.ps1:239:5:239:10 | input | semmle.label | input |
-| test.ps1:239:14:239:36 | Call to read-host | semmle.label | Call to read-host |
-| test.ps1:240:5:240:21 | env:bar | semmle.label | env:bar |
-| test.ps1:242:5:242:6 | y | semmle.label | y |
-| test.ps1:243:7:243:10 | $y | semmle.label | $y |
+| test.ps1:245:5:245:6 | o | semmle.label | o |
+| test.ps1:245:10:245:32 | Call to read-host | semmle.label | Call to read-host |
+| test.ps1:248:7:248:10 | $o | semmle.label | $o |
+| test.ps1:256:5:256:10 | input | semmle.label | input |
+| test.ps1:256:5:256:10 | input | semmle.label | input |
+| test.ps1:256:14:256:36 | Call to read-host | semmle.label | Call to read-host |
+| test.ps1:257:5:257:21 | env:bar | semmle.label | env:bar |
+| test.ps1:259:5:259:6 | y | semmle.label | y |
+| test.ps1:260:7:260:10 | $y | semmle.label | $y |
 subpaths
 #select
 | test.ps1:4:23:4:52 | Get-Process -Name $UserInput | test.ps1:164:10:164:32 | Call to read-host | test.ps1:4:23:4:52 | Get-Process -Name $UserInput | This command depends on a $@. | test.ps1:164:10:164:32 | Call to read-host | user-provided value |
@@ -164,5 +164,5 @@ subpaths
 | test.ps1:147:63:147:72 | UserInput | test.ps1:164:10:164:32 | Call to read-host | test.ps1:147:63:147:72 | UserInput | This command depends on a $@. | test.ps1:164:10:164:32 | Call to read-host | user-provided value |
 | test.ps1:154:23:154:52 | Get-Process -Name $UserInput | test.ps1:164:10:164:32 | Call to read-host | test.ps1:154:23:154:52 | Get-Process -Name $UserInput | This command depends on a $@. | test.ps1:164:10:164:32 | Call to read-host | user-provided value |
 | test.ps1:160:29:160:38 | UserInput | test.ps1:164:10:164:32 | Call to read-host | test.ps1:160:29:160:38 | UserInput | This command depends on a $@. | test.ps1:164:10:164:32 | Call to read-host | user-provided value |
-| test.ps1:231:7:231:10 | $o | test.ps1:228:10:228:32 | Call to read-host | test.ps1:231:7:231:10 | $o | This command depends on a $@. | test.ps1:228:10:228:32 | Call to read-host | user-provided value |
-| test.ps1:243:7:243:10 | $y | test.ps1:239:14:239:36 | Call to read-host | test.ps1:243:7:243:10 | $y | This command depends on a $@. | test.ps1:239:14:239:36 | Call to read-host | user-provided value |
+| test.ps1:248:7:248:10 | $o | test.ps1:245:10:245:32 | Call to read-host | test.ps1:248:7:248:10 | $o | This command depends on a $@. | test.ps1:245:10:245:32 | Call to read-host | user-provided value |
+| test.ps1:260:7:260:10 | $y | test.ps1:256:14:256:36 | Call to read-host | test.ps1:260:7:260:10 | $y | This command depends on a $@. | test.ps1:256:14:256:36 | Call to read-host | user-provided value |
