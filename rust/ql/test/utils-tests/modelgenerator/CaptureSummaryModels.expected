@@ -1,2 +1,4 @@
 unexpectedModel
+| Unexpected summary found: <test::option::MyOption>::cloned;Argument[self].Field[test::option::MyOption::MySome(0)].Reference;ReturnValue.Field[test::option::MyOption::MySome(0)];value;dfc-generated |
+| Unexpected summary found: <test::option::MyOption>::cloned;Argument[self].Field[test::option::MyOption::MySome(0)];ReturnValue.Field[test::option::MyOption::MySome(0)];value;dfc-generated |
 expectedModel

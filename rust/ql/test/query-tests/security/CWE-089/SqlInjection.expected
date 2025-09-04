@@ -20,17 +20,13 @@ edges
 | sqlx.rs:49:25:49:52 | remote_string.parse() [Ok] | sqlx.rs:49:25:49:65 | ... .unwrap_or(...) | provenance | MaD:8 |
 | sqlx.rs:49:25:49:65 | ... .unwrap_or(...) | sqlx.rs:49:9:49:21 | remote_number | provenance |  |
 | sqlx.rs:52:9:52:20 | safe_query_3 | sqlx.rs:77:25:77:36 | safe_query_3 | provenance |  |
-| sqlx.rs:52:9:52:20 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() | provenance | MaD:9 |
 | sqlx.rs:52:9:52:20 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() | provenance | MaD:5 |
-| sqlx.rs:52:9:52:20 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() | provenance | MaD:9 |
 | sqlx.rs:52:24:52:30 | res | sqlx.rs:52:32:52:87 | { ... } | provenance |  |
 | sqlx.rs:52:32:52:87 | ...::format(...) | sqlx.rs:52:24:52:30 | res | provenance |  |
 | sqlx.rs:52:32:52:87 | ...::must_use(...) | sqlx.rs:52:9:52:20 | safe_query_3 | provenance |  |
 | sqlx.rs:52:32:52:87 | MacroExpr | sqlx.rs:52:32:52:87 | ...::format(...) | provenance | MaD:12 |
 | sqlx.rs:52:32:52:87 | { ... } | sqlx.rs:52:32:52:87 | ...::must_use(...) | provenance | MaD:13 |
-| sqlx.rs:53:9:53:22 | unsafe_query_1 [&ref] | sqlx.rs:78:25:78:47 | unsafe_query_1.as_str() [&ref] | provenance | MaD:9 |
 | sqlx.rs:53:9:53:22 | unsafe_query_1 [&ref] | sqlx.rs:78:25:78:47 | unsafe_query_1.as_str() [&ref] | provenance | MaD:5 |
-| sqlx.rs:53:9:53:22 | unsafe_query_1 [&ref] | sqlx.rs:78:25:78:47 | unsafe_query_1.as_str() [&ref] | provenance | MaD:9 |
 | sqlx.rs:53:26:53:36 | &arg_string [&ref] | sqlx.rs:53:9:53:22 | unsafe_query_1 [&ref] | provenance |  |
 | sqlx.rs:53:27:53:36 | arg_string | sqlx.rs:53:26:53:36 | &arg_string [&ref] | provenance |  |
 | sqlx.rs:54:9:54:22 | unsafe_query_2 [&ref] | sqlx.rs:80:29:80:51 | unsafe_query_2.as_str() [&ref] | provenance | MaD:9 |
@@ -38,9 +34,7 @@ edges
 | sqlx.rs:54:9:54:22 | unsafe_query_2 [&ref] | sqlx.rs:80:29:80:51 | unsafe_query_2.as_str() [&ref] | provenance | MaD:9 |
 | sqlx.rs:54:26:54:39 | &remote_string [&ref] | sqlx.rs:54:9:54:22 | unsafe_query_2 [&ref] | provenance |  |
 | sqlx.rs:54:27:54:39 | remote_string | sqlx.rs:54:26:54:39 | &remote_string [&ref] | provenance |  |
-| sqlx.rs:77:25:77:36 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() [&ref] | provenance | MaD:9 |
 | sqlx.rs:77:25:77:36 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() [&ref] | provenance | MaD:5 |
-| sqlx.rs:77:25:77:36 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() [&ref] | provenance | MaD:9 |
 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() | sqlx.rs:77:13:77:23 | ...::query | provenance | MaD:1 Sink:MaD:1 |
 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() [&ref] | sqlx.rs:77:13:77:23 | ...::query | provenance | MaD:1 Sink:MaD:1 |
 | sqlx.rs:78:25:78:47 | unsafe_query_1.as_str() [&ref] | sqlx.rs:78:13:78:23 | ...::query | provenance | MaD:1 Sink:MaD:1 |
