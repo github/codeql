@@ -129,12 +129,14 @@ private predicate filteredNumberableInstruction(Instruction instr) {
     count(instr.(InheritanceConversionInstruction).getBaseClass()) != 1 or
     count(instr.(InheritanceConversionInstruction).getDerivedClass()) != 1
   )
+  or
+  count(instr.getEnclosingIRFunction()) != 1
 }
 
 private predicate variableAddressValueNumber(
   VariableAddressInstruction instr, IRFunction irFunc, Language::AST ast
 ) {
-  instr.getEnclosingIRFunction() = irFunc and
+  unique( | | instr.getEnclosingIRFunction()) = irFunc and
   // The underlying AST element is used as value-numbering key instead of the
   // `IRVariable` to work around a problem where a variable or expression with
   // multiple types gives rise to multiple `IRVariable`s.
@@ -144,7 +146,7 @@ private predicate variableAddressValueNumber(
 private predicate initializeParameterValueNumber(
   InitializeParameterInstruction instr, IRFunction irFunc, Language::AST var
 ) {
-  instr.getEnclosingIRFunction() = irFunc and
+  unique( | | instr.getEnclosingIRFunction()) = irFunc and
   // The underlying AST element is used as value-numbering key instead of the
   // `IRVariable` to work around a problem where a variable or expression with
   // multiple types gives rise to multiple `IRVariable`s.
@@ -154,7 +156,7 @@ private predicate initializeParameterValueNumber(
 private predicate constantValueNumber(
   ConstantInstruction instr, IRFunction irFunc, IRType type, string value
 ) {
-  instr.getEnclosingIRFunction() = irFunc and
+  unique( | | instr.getEnclosingIRFunction()) = irFunc and
   unique( | | instr.getResultIRType()) = type and
   instr.getValue() = value
 }
@@ -162,7 +164,7 @@ private predicate constantValueNumber(
 private predicate stringConstantValueNumber(
   StringConstantInstruction instr, IRFunction irFunc, IRType type, string value
 ) {
-  instr.getEnclosingIRFunction() = irFunc and
+  unique( | | instr.getEnclosingIRFunction()) = irFunc and
   instr.getResultIRType() = type and
   instr.getValue().getValue() = value
 }
@@ -171,7 +173,7 @@ private predicate fieldAddressValueNumber(
   FieldAddressInstruction instr, IRFunction irFunc, Language::Field field,
   TValueNumber objectAddress
 ) {
-  instr.getEnclosingIRFunction() = irFunc and
+  unique( | | instr.getEnclosingIRFunction()) = irFunc and
   unique( | | instr.getField()) = field and
   tvalueNumber(instr.getObjectAddress()) = objectAddress
 }
@@ -182,7 +184,7 @@ private predicate binaryValueNumber0(
   TValueNumber valueNumber
 ) {
   not instr instanceof PointerArithmeticInstruction and
-  instr.getEnclosingIRFunction() = irFunc and
+  unique( | | instr.getEnclosingIRFunction()) = irFunc and
   instr.getOpcode() = opcode and
   (
     isLeft = true and
@@ -206,7 +208,7 @@ private predicate pointerArithmeticValueNumber0(
   PointerArithmeticInstruction instr, IRFunction irFunc, Opcode opcode, int elementSize,
   boolean isLeft, TValueNumber valueNumber
 ) {
-  instr.getEnclosingIRFunction() = irFunc and
+  unique( | | instr.getEnclosingIRFunction()) = irFunc and
   instr.getOpcode() = opcode and
   instr.getElementSize() = elementSize and
   (
@@ -229,7 +231,7 @@ private predicate pointerArithmeticValueNumber(
 private predicate unaryValueNumber(
   UnaryInstruction instr, IRFunction irFunc, Opcode opcode, TValueNumber operand
 ) {
-  instr.getEnclosingIRFunction() = irFunc and
+  unique( | | instr.getEnclosingIRFunction()) = irFunc and
   not instr instanceof InheritanceConversionInstruction and
   not instr instanceof CopyInstruction and
   not instr instanceof FieldAddressInstruction and
@@ -242,7 +244,7 @@ private predicate inheritanceConversionValueNumber(
   InheritanceConversionInstruction instr, IRFunction irFunc, Opcode opcode,
   Language::Class baseClass, Language::Class derivedClass, TValueNumber operand
 ) {
-  instr.getEnclosingIRFunction() = irFunc and
+  unique( | | instr.getEnclosingIRFunction()) = irFunc and
   instr.getOpcode() = opcode and
   tvalueNumber(instr.getUnary()) = operand and
   unique( | | instr.getBaseClass()) = baseClass and
@@ -254,7 +256,7 @@ private predicate loadTotalOverlapValueNumber0(
   LoadTotalOverlapInstruction instr, IRFunction irFunc, IRType type, TValueNumber valueNumber,
   boolean isAddress
 ) {
-  instr.getEnclosingIRFunction() = irFunc and
+  unique( | | instr.getEnclosingIRFunction()) = irFunc and
   instr.getResultIRType() = type and
   (
     isAddress = true and
