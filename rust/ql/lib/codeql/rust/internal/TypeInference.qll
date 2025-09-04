@@ -773,7 +773,7 @@ class FunctionPosition extends TFunctionPosition {
     this.isReturn() and
     result = this
     or
-    if f.getParamList().hasSelfParam()
+    if f.hasSelfParam()
     then
       this.isSelf() and result.asPositional() = 0
       or
@@ -951,7 +951,7 @@ private newtype TFunctionPositionType =
   MkFunctionPositionType(Function f, FunctionPosition pos, ImplOrTraitItemNode i) {
     f = i.getAnAssocItem() and
     (
-      f.getParamList().hasSelfParam() and
+      f.hasSelfParam() and
       pos.asArgumentPosition().isSelf()
       or
       exists(f.getParam(pos.asPositional()))
@@ -1107,7 +1107,8 @@ private module MethodCallResolution {
    */
   pragma[nomagic]
   predicate methodCandidate(
-    Type type, string name, int arity, ImplOrTraitItemNode i, FunctionPositionType self
+    Type type, string name, int arity, ImplOrTraitItemNode i, FunctionPositionType self,
+    Type selfType
   ) {
     exists(Function f, FunctionPosition pos |
       f = i.getASuccessor(name) and
@@ -1116,13 +1117,17 @@ private module MethodCallResolution {
       self.appliesTo(f, pos, i) and
       pos.isSelf() and
       not i.(ImplItemNode).isBlanket()
+    |
+      selfType = i.(Impl).getSelfTy().(TypeMention).resolveType()
+      or
+      selfType = TTrait(i)
     )
   }
 
   pragma[nomagic]
   private predicate methodCandidateImplTrait(string name, int arity, Trait trait) {
     exists(ImplItemNode i |
-      methodCandidate(_, name, arity, i, _) and
+      methodCandidate(_, name, arity, i, _, _) and
       trait = i.resolveTraitTy()
     )
   }
@@ -1151,7 +1156,7 @@ private module MethodCallResolution {
   ) {
     exists(string name, int arity |
       mc.isMethodCall(name, arity) and
-      methodCandidate(type, name, arity, i, self) //and
+      methodCandidate(type, name, arity, i, self, _) //and
     |
       // not CertainTypeInference::inferCertainType(mc.getReceiver(), TypePath::nil()) != type
       not exists(i.(ImplItemNode).resolveTraitTy())
@@ -1389,7 +1394,7 @@ private module MethodCallResolution {
       exists(Type type, string name, int arity |
         this.isMethodCall(_, type, name, arity) and
         forall(Impl impl |
-          methodCandidate(type, name, arity, impl, _) and
+          methodCandidate(type, name, arity, impl, _, _) and
           not impl.hasTrait()
         |
           this.isNotInherentTarget(impl)
@@ -1656,22 +1661,39 @@ private module FunctionCallResolution {
 
   /** A function call, `f(x)`. */
   final class FunctionCall extends CallExpr {
-    // FunctionCall() { this = Debug::getRelevantLocatable() }
-    private ItemNode getResolvedFunction() { result = CallExprImpl::getResolvedFunction(this) }
+    private ItemNode getPathResolutionResolvedFunction() {
+      result = CallExprImpl::getResolvedFunction(this)
+    }
+
+    // The `Self` type is supplied explicitly as a type qualifier, e.g. `Foo::<Bar>::baz()`
+    pragma[nomagic]
+    Type getQualifierType(TypePath path) {
+      exists(PathExpr pe, TypeMention tm |
+        pe = this.getFunction() and
+        tm = pe.getPath().getQualifier() and
+        result = tm.resolveTypeAt(path) and
+        not resolvePath(tm) instanceof Trait
+      )
+    }
 
     /**
      * Holds if the target of this call is ambigous, and type information is required
      * to disambiguate.
      */
-    predicate isAmbigous() {
+    private predicate isAmbigous() {
       this.(Call).hasTrait()
       or
-      functionResolutionDependsOnArgument(_, _, this.getResolvedFunction(), _, _, _)
+      functionResolutionDependsOnArgument(_, _, this.getPathResolutionResolvedFunction(), _, _, _)
+      // or
+      // // always check the `self` type in method calls
+      // this.getPathResolutionResolvedFunction().(Function).hasSelfParam()
     }
 
     pragma[nomagic]
-    Function getAnAmbigousCandidate0(ImplItemNode impl, FunctionPosition pos, Function resolved) {
-      resolved = this.getResolvedFunction() and
+    Function getAnAmbigousCandidate0(
+      ImplOrTraitItemNode impl, FunctionPosition pos, Function resolved
+    ) {
+      resolved = this.getPathResolutionResolvedFunction() and
       (
         exists(TraitItemNode trait |
           trait = this.(Call).getTrait() and
@@ -1680,18 +1702,32 @@ private module FunctionCallResolution {
         |
           functionResolutionDependsOnArgument(impl, _, result, pos, _, _)
           or
+          // todo: remove tp
           exists(TypeParameter tp | traitTypeParameterOccurrence(trait, resolved, _, pos, _, tp) |
             not pos.isReturn()
             or
             // We only check that the context of the call provides relevant type information
             // when no argument can
-            not traitTypeParameterOccurrence(trait, resolved, _,
-              any(FunctionPosition pos0 | not pos0.isReturn()), _, _)
+            not exists(FunctionPosition pos0 |
+              traitTypeParameterOccurrence(trait, resolved, _, pos0, _, _) and
+              not pos0.isReturn()
+            )
           )
+          or
+          // always check the `self` type in method calls
+          resolved.hasSelfParam() and
+          pos.isSelf()
         )
         or
+        not this.(Call).hasTrait() and
         result = resolved and
         functionResolutionDependsOnArgument(impl, _, result, pos, _, _)
+        // or
+        // // always check the `self` type in method calls
+        // not this.(Call).hasTrait() and
+        // result = impl.getASuccessor(_) and
+        // resolved.hasSelfParam() and
+        // pos.isSelf()
       )
     }
 
@@ -1704,7 +1740,9 @@ private module FunctionCallResolution {
      * `resolved` is the corresponding function resolved through path resolution.
      */
     pragma[nomagic]
-    Function getAnAmbigousCandidate(ImplItemNode impl, FunctionPosition pos, Function resolved) {
+    Function getAnAmbigousCandidate(
+      ImplOrTraitItemNode impl, FunctionPosition pos, Function resolved
+    ) {
       exists(FunctionPosition pos0 |
         result = this.getAnAmbigousCandidate0(impl, pos0, resolved) and
         pos = pos0.getFunctionCallAdjusted(result)
@@ -1715,7 +1753,7 @@ private module FunctionCallResolution {
      * Same as `getAnAmbigousCandidate`, ranks the positions to be checked.
      */
     private Function getAnAmbigousCandidateRanked(
-      ImplItemNode impl, FunctionPosition pos, Function f, int rnk
+      ImplOrTraitItemNode impl, FunctionPosition pos, Function f, int rnk
     ) {
       pos =
         rank[rnk + 1](FunctionPosition pos0, int i1, int i2 |
@@ -1732,7 +1770,7 @@ private module FunctionCallResolution {
 
     pragma[nomagic]
     private Function resolveAmbigousFunctionCallTargetFromIndex(int index) {
-      exists(Impl impl, FunctionPosition pos, Function resolved |
+      exists(ImplOrTraitItemNode impl, FunctionPosition pos, Function resolved |
         IsInstantiationOf<AmbigousFunctionCall, FunctionPositionType, AmbigousFuncIsInstantiationOfInput>::isInstantiationOf(MkAmbigousFunctionCall(this,
             resolved, pos), impl, _) and
         result = this.getAnAmbigousCandidateRanked(impl, pos, resolved, index)
@@ -1759,7 +1797,7 @@ private module FunctionCallResolution {
      */
     pragma[nomagic]
     private ItemNode resolveUnambigousFunctionCallTarget() {
-      result = this.getResolvedFunction() and
+      result = this.getPathResolutionResolvedFunction() and
       not this.isAmbigous()
     }
 
@@ -1785,11 +1823,22 @@ private module FunctionCallResolution {
     AmbigousFunctionCall() { this = MkAmbigousFunctionCall(call, resolved, pos) }
 
     pragma[nomagic]
-    Type getTypeAt(TypePath path) {
+    private Type getTypeAt0(TypePath path) {
       result = inferType(call.(CallExpr).getArg(pos.asPositional()), path)
       or
+      // pos.asPositional() = 0 and
+      // result = call.getQualifierType(path)
+      // or
       pos.isReturn() and
       result = inferType(call, path)
+    }
+
+    pragma[nomagic]
+    Type getTypeAt(TypePath path) {
+      result = this.getTypeAt0(path) and
+      not exists(getATraitBound(result))
+      or
+      result = TTrait(getATraitBound(this.getTypeAt0(path)))
     }
 
     string toString() { result = call.toString() + " (pos: " + pos + ")" }
@@ -1937,9 +1986,7 @@ private module FunctionCallMatchingInput implements MatchingInputSig {
       exists(Param p, int i |
         p = this.getParam(i) and
         result = p.getTypeRepr().(TypeMention).resolveTypeAt(path) and
-        if this.getParamList().hasSelfParam()
-        then dpos.asPositional() = i + 1
-        else dpos.asPositional() = i
+        if this.hasSelfParam() then dpos.asPositional() = i + 1 else dpos.asPositional() = i
       )
       or
       dpos.asPositional() = 0 and
@@ -1992,14 +2039,8 @@ private module FunctionCallMatchingInput implements MatchingInputSig {
 
     pragma[nomagic]
     Type getInferredType(AccessPosition apos, TypePath path) {
-      // The `Self` type is supplied explicitly as a type qualifier, e.g. `Foo::<Bar>::baz()`
       apos.asArgumentPosition().isSelf() and
-      exists(PathExpr pe, TypeMention tm |
-        pe = this.getFunction() and
-        tm = pe.getPath().getQualifier() and
-        result = tm.resolveTypeAt(path) and
-        not resolvePath(tm) instanceof Trait
-      )
+      result = this.getQualifierType(path)
       or
       result = inferType(this.getNodeAt(apos), path)
     }
@@ -2028,6 +2069,7 @@ private Type inferCallExprType(AstNode n, TypePath path) {
 private module OperationResolution {
   /** An operation, `x + y`. */
   final class Op extends Operation {
+    // Op() { none() }
     pragma[nomagic]
     private Type getTypeAt0(TypePath path) {
       if this.(Call).implicitBorrowAt(any(ArgumentPosition pos | pos.isSelf()), true)
@@ -2099,7 +2141,7 @@ private module OperationResolution {
       Type type, Trait trait, string name, int arity, ImplOrTraitItemNode i,
       FunctionPositionType self
     ) {
-      MethodCallResolution::methodCandidate(type, name, arity, i, self) and
+      MethodCallResolution::methodCandidate(type, name, arity, i, self, _) and
       (
         trait = i.(ImplItemNode).resolveTraitTy()
         or
@@ -2109,9 +2151,10 @@ private module OperationResolution {
 
     pragma[nomagic]
     predicate potentialInstantiationOf(Op op, TypeAbstraction abs, FunctionPositionType constraint) {
-      exists(Type type, Trait trait, string name, int arity |
+      exists(Type type, Trait trait, string name, int arity, Type selfType |
         op.isOperation(type, trait, name, arity) and
-        MethodCallResolution::methodCandidate(type, name, arity, abs, constraint)
+        MethodCallResolution::methodCandidate(type, name, arity, abs, constraint, selfType) and
+        op.getTypeAt(_) = selfType
       |
         trait = abs.(ImplItemNode).resolveTraitTy()
         or
@@ -3035,7 +3078,7 @@ private module Debug {
       // filepath.matches("%/crates/wdk-macros/src/lib.rs") and
       // endline = [255 .. 256]
       filepath.matches("%/main.rs") and
-      startline = 2318
+      startline = 2317
     )
   }
 

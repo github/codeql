@@ -6755,3 +6755,4 @@ inferType
 | pattern_matching.rs:827:5:827:7 | f(...) |  | {EXTERNAL LOCATION} | Option |
 | pattern_matching.rs:827:5:827:7 | f(...) | T | file://:0:0:0:0 | () |
 testFailures
+| main.rs:2317:22:2317:43 | ...::my_from(...) | Unexpected result: target=MyFrom::my_from |
