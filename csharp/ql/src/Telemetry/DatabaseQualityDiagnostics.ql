@@ -8,26 +8,37 @@
 import csharp
 import DatabaseQuality
 
+private int getThreshold() { result = 85 }
+
 private newtype TDbQualityDiagnostic =
-  TTheDbQualityDiagnostic() {
-    exists(float percentageGood |
-      CallTargetStatsReport::percentageOfOk(_, percentageGood)
-      or
-      ExprTypeStatsReport::percentageOfOk(_, percentageGood)
-    |
-      percentageGood < 95
-    )
+  TTheDbQualityDiagnostic(string callMsg, float callTargetOk, string exprMsg, float exprTypeOk) {
+    CallTargetStatsReport::percentageOfOk(callMsg, callTargetOk) and
+    ExprTypeStatsReport::percentageOfOk(exprMsg, exprTypeOk) and
+    [callTargetOk, exprTypeOk] < getThreshold()
   }
 
 class DbQualityDiagnostic extends TDbQualityDiagnostic {
+  private string callMsg;
+  private float callTargetOk;
+  private float exprTypeOk;
+  private string exprMsg;
+
+  DbQualityDiagnostic() {
+    this = TTheDbQualityDiagnostic(callMsg, callTargetOk, exprMsg, exprTypeOk)
+  }
+
+  private string getDbHealth() {
+    result =
+      callMsg + ": " + callTargetOk.floor() + ". " + exprMsg + ": " + exprTypeOk.floor() + ". "
+  }
+
   string toString() {
     result =
       "Scanning C# code completed successfully, but the scan encountered issues. " +
-        "This may be caused by problems identifying dependencies or use of generated source code, among other reasons -- "
-        +
-        "see other CodeQL diagnostics reported on the CodeQL status page for more details of possible causes. "
-        +
-        "Addressing these warnings is advisable to avoid false-positive or missing results. If they cannot be addressed, consider scanning C# "
+        "This may be caused by problems identifying dependencies or use of generated source code. " +
+        "Some metrics of the database quality are: " + this.getDbHealth() +
+        "Both of these metrics should ideally be above " + getThreshold() + ". " +
+        "Addressing these issues is advisable to avoid false-positives or missing results. If they cannot be addressed, consider scanning C# "
         +
         "using either the `autobuild` or `manual` [build modes](https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/codeql-code-scanning-for-compiled-languages#comparison-of-the-build-modes)."
   }
