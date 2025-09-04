@@ -1025,6 +1025,7 @@ private class FunctionPositionType extends TFunctionPositionType {
     this.asInheritedFunctionPositionType(f, pos, _, i)
   }
 
+  pragma[nomagic]
   private Type getTypeAt0(TypePath path) {
     exists(Function f, FunctionPosition pos | this.asFunctionPositionType(f, pos, _) |
       pos.asArgumentPosition().isSelf() and
@@ -1047,11 +1048,16 @@ private class FunctionPositionType extends TFunctionPositionType {
       not result instanceof TSelfTypeParameter
       or
       exists(TypePath prefix, TypePath suffix |
-        parentType.getTypeAt0(prefix) = TSelfTypeParameter(_) and
+        parentType.hasSelfTypeParameterAt(prefix) and
         result = resolveImplOrTraitType(i, suffix) and
         path = prefix.append(suffix)
       )
     )
+  }
+
+  pragma[nomagic]
+  private predicate hasSelfTypeParameterAt(TypePath path) {
+    this.getTypeAt0(path) = TSelfTypeParameter(_)
   }
 
   Type getTypeAt(TypePath path) {
@@ -1113,6 +1119,50 @@ private module MethodCallResolution {
     )
   }
 
+  pragma[nomagic]
+  private predicate methodCandidateImplTrait(string name, int arity, Trait trait) {
+    exists(ImplItemNode i |
+      methodCandidate(_, name, arity, i, _) and
+      trait = i.resolveTraitTy()
+    )
+  }
+
+  pragma[nomagic]
+  private predicate methodCallTraitCandidate(Element mc, Trait trait) {
+    exists(string name, int arity |
+      mc.(MethodCall).isMethodCall(name, arity) and
+      methodCandidateImplTrait(name, arity, trait)
+    )
+  }
+
+  private predicate methodCallVisibleTraitCandidate(MethodCall mc, Trait trait) {
+    TraitIsVisible<methodCallTraitCandidate/2>::traitIsVisible(mc, trait)
+  }
+
+  bindingset[mc, impl]
+  pragma[inline_late]
+  private predicate methodCallVisibleImplTraitCandidate(MethodCall mc, ImplItemNode impl) {
+    methodCallVisibleTraitCandidate(mc, impl.resolveTraitTy())
+  }
+
+  pragma[nomagic]
+  private predicate methodCallCandidate(
+    MethodCall mc, Type type, ImplOrTraitItemNode i, FunctionPositionType self
+  ) {
+    exists(string name, int arity |
+      mc.isMethodCall(name, arity) and
+      methodCandidate(type, name, arity, i, self) //and
+    |
+      // not CertainTypeInference::inferCertainType(mc.getReceiver(), TypePath::nil()) != type
+      not exists(i.(ImplItemNode).resolveTraitTy())
+      or
+      methodCallVisibleImplTraitCandidate(mc, i)
+      or
+      mc instanceof IndexExpr and
+      i.(ImplItemNode).resolveTraitTy() instanceof IndexTrait
+    )
+  }
+
   /**
    * A method call.
    *
@@ -1139,9 +1189,9 @@ private module MethodCallResolution {
 
     abstract Expr getArgument(ArgumentPosition pos);
 
-    private Type getReceiverTypeAt(TypePath path) {
-      result = inferType(this.getArgument(any(ArgumentPosition pos | pos.isSelf())), path)
-    }
+    Expr getReceiver() { result = this.getArgument(any(ArgumentPosition pos | pos.isSelf())) }
+
+    private Type getReceiverTypeAt(TypePath path) { result = inferType(this.getReceiver(), path) }
 
     /**
      * Same as `getACandidateReceiverTypeAt`, but without borrows.
@@ -1167,20 +1217,9 @@ private module MethodCallResolution {
     }
 
     pragma[nomagic]
-    private predicate isMethodCall0(Type rootType, string name, int arity, string derefChainBorrow) {
-      rootType = this.getACandidateReceiverTypeAt(TypePath::nil(), derefChainBorrow) and
+    private predicate isMethodCall0(Type type, string name, int arity, string derefChainBorrow) {
+      type = this.getACandidateReceiverTypeAt(TypePath::nil(), derefChainBorrow) and
       this.isMethodCall(name, arity)
-    }
-
-    pragma[nomagic]
-    predicate hasTraitImplCandidate(
-      ImplItemNode i, FunctionPositionType self, string derefChainBorrow, Trait trait
-    ) {
-      exists(Type rootType, string name, int arity |
-        this.isMethodCall0(rootType, name, arity, derefChainBorrow) and
-        methodCandidate(rootType, name, arity, i, self) and
-        trait = i.resolveTraitTy()
-      )
     }
 
     pragma[nomagic]
@@ -1189,26 +1228,18 @@ private module MethodCallResolution {
     ) {
       IsInstantiationOf<MethodCallCand, FunctionPositionType, MethodCallIsInstantiationOfInput>::isNotInstantiationOf(MkMethodCallCand(this,
           derefChainBorrow), i, self)
-      or
-      exists(Trait trait |
-        this.hasTraitImplCandidate(i, self, derefChainBorrow, trait) and
-        TraitIsVisible<relevantTraitVisible1/2>::traitIsNotVisible(this, trait)
-      |
-        not this instanceof IndexExpr or
-        not trait instanceof IndexTrait
-      )
     }
 
     pragma[nomagic]
     private Type getACandidateReceiverTypeAtNoBorrowNoMatch(TypePath path, string derefChain) {
       result = this.getACandidateReceiverTypeAtNoBorrow(path, derefChain) and
-      exists(Type rootType, string name, int arity, string derefChainBorrow |
+      exists(Type type, string name, int arity, string derefChainBorrow |
         derefChainBorrow = derefChain + ";" and
         not derefChain.matches("%.ref") and // no need to try a borrow if the last thing we did was a deref
-        this.isMethodCall0(rootType, name, arity, derefChainBorrow)
+        this.isMethodCall0(type, name, arity, derefChainBorrow)
       |
         forall(ImplOrTraitItemNode i, FunctionPositionType self |
-          methodCandidate(rootType, name, arity, i, self)
+          methodCallCandidate(this, type, i, self)
         |
           this.isNotCandidate(i, self, derefChainBorrow)
         )
@@ -1218,12 +1249,12 @@ private module MethodCallResolution {
     pragma[nomagic]
     private Type getACandidateReceiverTypeAtNoMatch(TypePath path, string derefChain) {
       result = this.getACandidateReceiverTypeAtNoBorrowNoMatch(path, derefChain) and
-      exists(Type rootType, string name, int arity, string derefChainBorrow |
+      exists(Type type, string name, int arity, string derefChainBorrow |
         derefChainBorrow = derefChain + ";borrow" and
-        this.isMethodCall0(rootType, name, arity, derefChainBorrow)
+        this.isMethodCall0(type, name, arity, derefChainBorrow)
       |
         forall(ImplOrTraitItemNode i, FunctionPositionType self |
-          methodCandidate(rootType, name, arity, i, self)
+          methodCallCandidate(this, type, i, self)
         |
           this.isNotCandidate(i, self, derefChainBorrow)
         )
@@ -1281,22 +1312,18 @@ private module MethodCallResolution {
     }
   }
 
-  private predicate relevantTraitVisible1(Element mc, Trait trait) {
-    mc.(MethodCall).hasTraitImplCandidate(_, _, _, trait)
-  }
-
-  private class MethodCallMethodCallExpr extends MethodCall, MethodCallExpr {
+  private class MethodCallMethodCallExpr extends MethodCall instanceof MethodCallExpr {
     pragma[nomagic]
     override predicate isMethodCall(string name, int arity) {
-      name = this.getIdentifier().getText() and
-      arity = this.getArgList().getNumberOfArgs()
+      name = super.getIdentifier().getText() and
+      arity = super.getArgList().getNumberOfArgs()
     }
 
     override Expr getArgument(ArgumentPosition pos) {
       pos.isSelf() and
-      result = this.getReceiver()
+      result = MethodCallExpr.super.getReceiver()
       or
-      result = this.getArgList().getArg(pos.asPosition())
+      result = super.getArgList().getArg(pos.asPosition())
     }
   }
 
@@ -1323,15 +1350,15 @@ private module MethodCallResolution {
 
   /** A method call tagged with a candidate receiver type. */
   private class MethodCallCand extends MkMethodCallCand {
-    MethodCall mc;
+    MethodCall mc_;
     string derefChainBorrow;
 
-    MethodCallCand() { this = MkMethodCallCand(mc, derefChainBorrow) }
+    MethodCallCand() { this = MkMethodCallCand(mc_, derefChainBorrow) }
 
-    MethodCall getMethodCall() { result = mc }
+    MethodCall getMethodCall() { result = mc_ }
 
     Type getTypeAt(TypePath path) {
-      exists(Type t | t = mc.getACandidateReceiverTypeAt(path, derefChainBorrow) |
+      exists(Type t | t = mc_.getACandidateReceiverTypeAt(path, derefChainBorrow) |
         not exists(getATraitBound(t)) and
         result = t
         or
@@ -1340,8 +1367,9 @@ private module MethodCallResolution {
     }
 
     pragma[nomagic]
-    predicate isMethodCall(Type rootType, string name, int arity) {
-      rootType = this.getTypeAt(TypePath::nil()) and
+    predicate isMethodCall(MethodCall mc, Type type, string name, int arity) {
+      type = this.getTypeAt(TypePath::nil()) and
+      mc = mc_ and
       mc.isMethodCall(name, arity)
     }
 
@@ -1358,10 +1386,10 @@ private module MethodCallResolution {
      */
     pragma[nomagic]
     private predicate hasNoInherentTarget() {
-      exists(Type rootType, string name, int arity |
-        this.isMethodCall(rootType, name, arity) and
+      exists(Type type, string name, int arity |
+        this.isMethodCall(_, type, name, arity) and
         forall(Impl impl |
-          methodCandidate(rootType, name, arity, impl, _) and
+          methodCandidate(type, name, arity, impl, _) and
           not impl.hasTrait()
         |
           this.isNotInherentTarget(impl)
@@ -1373,7 +1401,7 @@ private module MethodCallResolution {
     private Function resolveCallTargetCand(ImplOrTraitItemNode i, string name) {
       IsInstantiationOf<MethodCallCand, FunctionPositionType, MethodCallIsInstantiationOfInput>::isInstantiationOf(this,
         i, _) and
-      mc.isMethodCall(name, _) and
+      mc_.isMethodCall(name, _) and
       result = getMethodSuccessor(i, name, _) and
       if i.(Impl).hasTrait()
       then
@@ -1394,54 +1422,31 @@ private module MethodCallResolution {
           FunctionOverloading::functionResolutionDependsOnArgument(i, name, result, pos,
             pragma[only_bind_into](path), type) and
           pos.isPositional() and
-          inferType(mc.getArgument(pos.asArgumentPosition()), pragma[only_bind_into](path)) = type
+          inferType(mc_.getArgument(pos.asArgumentPosition()), pragma[only_bind_into](path)) = type
         )
       )
     }
 
-    string toString() { result = mc.toString() + " [" + derefChainBorrow + "]" }
+    string toString() { result = mc_.toString() + " [" + derefChainBorrow + "]" }
 
-    Location getLocation() { result = mc.getLocation() }
+    Location getLocation() { result = mc_.getLocation() }
   }
 
   private module MethodCallIsInstantiationOfInput implements
     IsInstantiationOfInputSig<MethodCallCand, FunctionPositionType>
   {
     pragma[nomagic]
-    private predicate methodCallCandidate(
-      MethodCallCand mcc, MethodCall mc, ImplOrTraitItemNode i, FunctionPositionType constraint
-    ) {
-      exists(Type rootType, string name, int arity |
-        mcc.isMethodCall(rootType, name, arity) and
-        methodCandidate(rootType, name, arity, i, constraint) and
-        mc = mcc.getMethodCall()
-      )
-    }
-
-    private predicate relevantTraitVisible(Element mc, Trait trait) {
-      trait = any(ImplItemNode impl | methodCallCandidate(_, mc, impl, _)).resolveTraitTy()
-    }
-
-    pragma[nomagic]
     predicate potentialInstantiationOf(
       MethodCallCand mcc, TypeAbstraction abs, FunctionPositionType constraint
     ) {
-      exists(MethodCall mc | methodCallCandidate(mcc, mc, abs, constraint) |
-        not exists(abs.(ImplItemNode).resolveTraitTy())
-        or
-        // If the `impl` block implements a trait, that trait must be visible in
-        // order for the `impl` to be valid.
-        exists(Trait trait | pragma[only_bind_into](trait) = abs.(ImplItemNode).resolveTraitTy() |
-          TraitIsVisible<relevantTraitVisible/2>::traitIsVisible(mc, pragma[only_bind_into](trait))
-          or
-          mc instanceof IndexExpr and
-          trait instanceof IndexTrait
-        )
+      exists(MethodCall mc, Type type, string name, int arity |
+        mcc.isMethodCall(mc, type, name, arity) and
+        methodCallCandidate(mc, type, abs, constraint)
       )
     }
 
     predicate relevantTypeMention(FunctionPositionType constraint) {
-      methodCandidate(_, _, _, _, constraint)
+      methodCallCandidate(_, _, _, constraint)
     }
   }
 }
@@ -2033,10 +2038,10 @@ private module OperationResolution {
     }
 
     pragma[nomagic]
-    predicate isOperation(Type rootType, Trait trait, string name, int arity) {
+    predicate isOperation(Type type, Trait trait, string name, int arity) {
       name = this.(Call).getMethodName() and
       arity = this.(Call).getNumberOfArguments() and
-      rootType = this.getTypeAt(TypePath::nil()) and
+      type = this.getTypeAt(TypePath::nil()) and
       trait = this.(Call).getTrait()
     }
 
@@ -2089,9 +2094,9 @@ private module OperationResolution {
 
     pragma[nomagic]
     predicate potentialInstantiationOf(Op op, TypeAbstraction abs, FunctionPositionType constraint) {
-      exists(Type rootType, Trait trait, string name, int arity |
-        op.isOperation(rootType, trait, name, arity) and
-        MethodCallResolution::methodCandidate(rootType, name, arity, abs, constraint)
+      exists(Type type, Trait trait, string name, int arity |
+        op.isOperation(type, trait, name, arity) and
+        MethodCallResolution::methodCandidate(type, name, arity, abs, constraint)
       |
         trait = abs.(ImplItemNode).resolveTraitTy()
         or
