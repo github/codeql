@@ -41,7 +41,7 @@ newtype TValueNumber =
   ) {
     loadTotalOverlapValueNumber(_, irFunc, type, memOperand, operand)
   } or
-  TUniqueValueNumber(IRFunction irFunc, Instruction instr) { uniqueValueNumber(instr, irFunc) }
+  TUniqueValueNumber(Instruction instr) { uniqueValueNumber(instr) }
 
 /**
  * A `ConvertInstruction` which converts data of type `T` to data of type `U`
@@ -277,8 +277,7 @@ private predicate loadTotalOverlapValueNumber(
  * Holds if `instr` should be assigned a unique value number because this library does not know how
  * to determine if two instances of that instruction are equivalent.
  */
-private predicate uniqueValueNumber(Instruction instr, IRFunction irFunc) {
-  instr.getEnclosingIRFunction() = irFunc and
+private predicate uniqueValueNumber(Instruction instr) {
   not instr.getResultIRType() instanceof IRVoidType and
   (
     not numberableInstruction(instr)
@@ -294,10 +293,8 @@ cached
 TValueNumber tvalueNumber(Instruction instr) {
   result = nonUniqueValueNumber(instr)
   or
-  exists(IRFunction irFunc |
-    uniqueValueNumber(instr, irFunc) and
-    result = TUniqueValueNumber(irFunc, instr)
-  )
+  uniqueValueNumber(instr) and
+  result = TUniqueValueNumber(instr)
 }
 
 /**
