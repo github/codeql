@@ -179,7 +179,58 @@ abstract class Import extends AstNode {
   }
 
   /**
-   * Gets the data flow node that the default import of this import is available at.
+   * Gets the data flow node referring to imported module object.
+   *
+   * For example:
+   * ```js
+   * // ES2015 style
+   * import * as foo from "bar"; // gets the node for `foo`
+   * import foo from "bar"; // gets the node for `foo` (see note on default imports below)
+   *
+   * // CommonJS style
+   * require("bar"); // gets the node for the `require` call
+   *
+   * // AMD style
+   * define(["bar"], function(foo) { // gets the node for the `foo` parameter
+   * })
+   * ```
+   *
+   * For statements of form `import foo from "bar'`, this gives the node corresponding to `foo`.
+   * Technically this should refer to the export binding named `"default"`, not the whole module, but for compatibility with non-standard
+   * interpretations of default imports, this node is usually treated as also referring to the whole module.
+   * If this behaviour is not wanted, use `isDefaultImport()` to handle that case differently.
    */
   abstract DataFlow::Node getImportedModuleNode();
+
+  /**
+   * Holds of the result of `getImportedModuleNode` actually refers to the export binding named `"default"`,
+   * as opposed an object whose properties correspond to the export bindings of the imported module.
+   *
+   * For compatibility with non-standard interpretations of `default` imports, the default
+   * import is usually returned by `getImportedModuleNode()`. If such behaviour is not wanted,
+   * this predicate can be used to handle that case differently.
+   *
+   * For example, `getImportedModuleNode()` returns `foo` in both of these imports, but `isDefaultImport()`
+   * only holds for the first one:
+   * ```js
+   * import foo from "bar";
+   * import * as foo from "bar";
+   * ```
+   */
+  predicate isDefaultImport() { none() }
+
+  /**
+   * Gets the same as `getImportedModuleNode()` expect this has no result for default imports when the target module
+   * has both default and named exports.
+   *
+   * This is to avoid ambiguity between named export bindings and the properties of the default-exported object.
+   */
+  pragma[nomagic]
+  final DataFlow::Node getImportedModuleNodeIfUnambiguous() {
+    if
+      this.isDefaultImport() and
+      this.getImportedModule().(ES2015Module).hasBothNamedAndDefaultExports()
+    then none()
+    else result = this.getImportedModuleNode()
+  }
 }

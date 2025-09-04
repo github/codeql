@@ -130,18 +130,18 @@ class ImportDeclaration extends Stmt, Import, @import_declaration {
 
   override DataFlow::Node getImportedModuleNode() {
     // `import * as http from 'http'` or `import http from `http`'
+    not exists(DataFlow::destructuredModuleImportNode(this)) and
     exists(ImportSpecifier is |
       is = this.getASpecifier() and
       result = DataFlow::valueNode(is)
     |
-      is instanceof ImportNamespaceSpecifier and
-      count(this.getASpecifier()) = 1
+      is instanceof ImportNamespaceSpecifier
       or
       // For compatibility with the non-standard implementation of default imports,
-      // treat default imports as namespace imports in cases where it can't cause ambiguity
-      // between named exports and the properties of a default-exported object.
-      not this.getImportedModule().(ES2015Module).hasBothNamedAndDefaultExports() and
-      is.getImportedName() = "default"
+      // treat default imports as namespace imports. In cases where it causes ambiguity
+      // between named exports and the properties of a default-exported object, the caller
+      // of `getImportedModuleNode()` must check `isDefaultImport()` and correct the behaviour.
+      this.hasOnlyDefaultImport()
     )
     or
     // `import { createServer } from 'http'`
@@ -152,6 +152,12 @@ class ImportDeclaration extends Stmt, Import, @import_declaration {
   predicate isTypeOnly() { has_type_keyword(this) }
 
   override string getAPrimaryQlClass() { result = "ImportDeclaration" }
+
+  private predicate hasOnlyDefaultImport() {
+    unique( | | this.getASpecifier()) instanceof ImportDefaultSpecifier
+  }
+
+  override predicate isDefaultImport() { this.hasOnlyDefaultImport() }
 }
 
 /** A literal path expression appearing in an `import` declaration. */
