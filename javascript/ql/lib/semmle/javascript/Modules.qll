@@ -198,7 +198,7 @@ abstract class Import extends AstNode {
    * For statements of form `import foo from "bar'`, this gives the node corresponding to `foo`.
    * Technically this should refer to the export binding named `"default"`, not the whole module, but for compatibility with non-standard
    * interpretations of default imports, this node is usually treated as also referring to the whole module.
-   * If this behaviour is not wanted, use `isDefaultImport()` to handle that case differently.
+   * If this behavior is not wanted, use `isDefaultImport()` to handle that case differently.
    */
   abstract DataFlow::Node getImportedModuleNode();
 
@@ -207,7 +207,7 @@ abstract class Import extends AstNode {
    * as opposed an object whose properties correspond to the export bindings of the imported module.
    *
    * For compatibility with non-standard interpretations of `default` imports, the default
-   * import is usually returned by `getImportedModuleNode()`. If such behaviour is not wanted,
+   * import is usually returned by `getImportedModuleNode()`. If such behavior is not wanted,
    * this predicate can be used to handle that case differently.
    *
    * For example, `getImportedModuleNode()` returns `foo` in both of these imports, but `isDefaultImport()`

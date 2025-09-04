@@ -140,7 +140,7 @@ class ImportDeclaration extends Stmt, Import, @import_declaration {
       // For compatibility with the non-standard implementation of default imports,
       // treat default imports as namespace imports. In cases where it causes ambiguity
       // between named exports and the properties of a default-exported object, the caller
-      // of `getImportedModuleNode()` must check `isDefaultImport()` and correct the behaviour.
+      // of `getImportedModuleNode()` must check `isDefaultImport()` and correct the behavior.
       this.hasOnlyDefaultImport()
     )
     or
