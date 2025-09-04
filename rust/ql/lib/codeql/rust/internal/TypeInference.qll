@@ -1411,19 +1411,34 @@ private module MethodCallResolution {
       else any()
     }
 
+    pragma[nomagic]
+    private Type inferPositionalArgumentType(FunctionPosition pos, TypePath path) {
+      pos.isPositional() and
+      result = inferType(mc_.getArgument(pos.asArgumentPosition()), path)
+    }
+
+    pragma[nomagic]
+    private Function resolveAmbigousCallTargetCand(FunctionPosition pos, TypePath path, Type type) {
+      exists(ImplOrTraitItemNode i, string name |
+        result = this.resolveCallTargetCand(i, name) and
+        FunctionOverloading::functionResolutionDependsOnArgument(i, name, result, pos, path, type)
+      )
+    }
+
     /** Gets a method that matches this method call. */
     pragma[nomagic]
     Function resolveCallTarget() {
-      exists(ImplOrTraitItemNode i, string name | result = this.resolveCallTargetCand(i, name) |
-        not FunctionOverloading::functionResolutionDependsOnArgument(i, name, _,
-          any(FunctionPosition pos | pos.isPositional()), _, _)
-        or
-        exists(FunctionPosition pos, TypePath path, Type type |
-          FunctionOverloading::functionResolutionDependsOnArgument(i, name, result, pos,
-            pragma[only_bind_into](path), type) and
-          pos.isPositional() and
-          inferType(mc_.getArgument(pos.asArgumentPosition()), pragma[only_bind_into](path)) = type
+      exists(ImplOrTraitItemNode i, string name |
+        result = this.resolveCallTargetCand(i, name) and
+        not exists(FunctionPosition pos |
+          FunctionOverloading::functionResolutionDependsOnArgument(i, name, _, pos, _, _) and
+          pos.isPositional()
         )
+      )
+      or
+      exists(FunctionPosition pos, TypePath path, Type type |
+        result = this.resolveAmbigousCallTargetCand(pos, path, type) and
+        type = this.inferPositionalArgumentType(pos, path)
       )
     }
 
