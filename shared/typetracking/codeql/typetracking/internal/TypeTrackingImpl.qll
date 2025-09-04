@@ -249,20 +249,20 @@ module TypeTracking<LocationSig Location, TypeTrackingInput<Location> I> {
       returnStep(nodeFrom, nodeTo) and summary = ReturnStep()
     }
 
-    pragma[inline]
-    private predicate isLocalSourceNode(LocalSourceNode n) { any() }
+    private predicate isLocalSourceNode(LocalSourceNode n) {
+      not nonStandardFlowsTo(_, _) and exists(n)
+    }
+
+    private predicate simpleLocalSmallStepPlus(Node localSource, Node dst) =
+      sourceBoundedFastTC(simpleLocalSmallStep/2, isLocalSourceNode/1)(localSource, dst)
 
     cached
     predicate standardFlowsTo(Node localSource, Node dst) {
-      not nonStandardFlowsTo(_, _) and
       // explicit type check in base case to avoid repeated type tests in recursive case
       isLocalSourceNode(localSource) and
       dst = localSource
       or
-      exists(Node mid |
-        standardFlowsTo(localSource, mid) and
-        simpleLocalSmallStep(mid, dst)
-      )
+      simpleLocalSmallStepPlus(localSource, dst)
     }
 
     cached
