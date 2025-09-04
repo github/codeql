@@ -53,7 +53,13 @@ func getEnvVars() []string {
 	if proxy_host, proxy_host_set := os.LookupEnv(PROXY_HOST); proxy_host_set && proxy_host != "" {
 		if proxy_port, proxy_port_set := os.LookupEnv(PROXY_PORT); proxy_port_set && proxy_port != "" {
 			proxy_address = fmt.Sprintf("http://%s:%s", proxy_host, proxy_port)
-			result = append(result, fmt.Sprintf("HTTP_PROXY=%s", proxy_address), fmt.Sprintf("HTTPS_PROXY=%s", proxy_address))
+			result = append(
+				result,
+				fmt.Sprintf("HTTP_PROXY=%s", proxy_address),
+				fmt.Sprintf("HTTPS_PROXY=%s", proxy_address),
+				fmt.Sprintf("http_proxy=%s", proxy_address),
+				fmt.Sprintf("https_proxy=%s", proxy_address),
+			)
 
 			slog.Info("Found private registry proxy", slog.String("proxy_address", proxy_address))
 		}
