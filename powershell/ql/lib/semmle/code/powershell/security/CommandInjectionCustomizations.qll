@@ -34,10 +34,17 @@ module CommandInjection {
   class FlowSourceAsSource extends Source {
     FlowSourceAsSource() {
       this instanceof SourceNode and
-      not this instanceof EnvironmentVariableSource
+      not this instanceof EnvironmentVariableSource and 
+      not this instanceof InvokeWebRequest
     }
 
     override string getSourceType() { result = "user-provided value" }
+  }
+
+  class InvokeWebRequest extends DataFlow::CallNode {
+    InvokeWebRequest(){
+      this.matchesName("Invoke-WebRequest")
+    }
   }
 
   /**

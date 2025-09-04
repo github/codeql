@@ -186,6 +186,15 @@ Invoke-ExpandStringInjection2 -UserInput $input
 Invoke-InvokeExpressionInjectionCmdletBinding -userInput $input
 Invoke-StartProcessInjection -UserInput $input
 
+function Get-NugetHardcoded
+{
+    Invoke-WebRequest "https://somehardcodedwebsite.org/somefile.exe" -OutFile $webRequestResultSafe
+    return $webRequestResultSafe
+}
+
+$nugetPathSafe = Get-NugetHardcoded
+. $nugetPathSafe
+
 #typed input
 function Invoke-InvokeExpressionInjectionSafe1
 {
