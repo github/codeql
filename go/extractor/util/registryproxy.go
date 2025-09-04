@@ -108,8 +108,6 @@ func getEnvVars() []string {
 				}
 			}
 
-			goprivate := []string{}
-
 			if len(goproxy_servers) > 0 {
 				goproxy_val := "https://proxy.golang.org,direct"
 
@@ -117,12 +115,10 @@ func getEnvVars() []string {
 					goproxy_val = url + "," + goproxy_val
 				}
 
-				result = append(result, fmt.Sprintf("GOPROXY=%s", goproxy_val), "GONOPROXY=")
+				result = append(result, fmt.Sprintf("GOPROXY=%s", goproxy_val))
 			}
 
 			if len(git_sources) > 0 {
-				goprivate = append(goprivate, git_sources...)
-
 				if proxy_cert_file != "" {
 					cmd := exec.Command("git", "config", "--global", "http.sslCAInfo", proxy_cert_file)
 
@@ -135,7 +131,8 @@ func getEnvVars() []string {
 				}
 			}
 
-			result = append(result, fmt.Sprintf("GOPRIVATE=%s", strings.Join(goprivate, ",")))
+			result = append(result, fmt.Sprintf("GOPRIVATE=%s", strings.Join(git_sources, ",")))
+			result = append(result, fmt.Sprintf("GONOPROXY=%s", strings.Join(git_sources, ",")))
 		}
 	}
 
