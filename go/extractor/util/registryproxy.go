@@ -122,6 +122,17 @@ func getEnvVars() []string {
 
 			if len(git_sources) > 0 {
 				goprivate = append(goprivate, git_sources...)
+
+				if proxy_cert_file != "" {
+					cmd := exec.Command("git", "config", "--global", "http.sslCAInfo", proxy_cert_file)
+
+					out, cmdErr := cmd.CombinedOutput()
+					slog.Info(string(out))
+
+					if cmdErr != nil {
+						slog.Error("Failed to configure `git` to accept the certificate file", slog.String("error", cmdErr.Error()))
+					}
+				}
 			}
 
 			result = append(result, fmt.Sprintf("GOPRIVATE=%s", strings.Join(goprivate, ",")))
