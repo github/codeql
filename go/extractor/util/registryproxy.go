@@ -14,6 +14,7 @@ const PROXY_PORT = "CODEQL_PROXY_PORT"
 const PROXY_CA_CERTIFICATE = "CODEQL_PROXY_CA_CERTIFICATE"
 const PROXY_URLS = "CODEQL_PROXY_URLS"
 const GOPROXY_SERVER = "goproxy_server"
+const GIT_SOURCE = "git_source"
 
 type RegistryConfig struct {
 	Type string `json:"type"`
@@ -28,6 +29,9 @@ var proxy_cert_file string
 
 // An array of goproxy server URLs.
 var goproxy_servers []string
+
+// An array of Git URLs.
+var git_sources []string
 
 // Stores the environment variables that we wish to pass on to `go` commands.
 var proxy_vars []string = nil
@@ -98,8 +102,13 @@ func getEnvVars() []string {
 				if cfg.Type == GOPROXY_SERVER {
 					goproxy_servers = append(goproxy_servers, cfg.URL)
 					slog.Info("Found GOPROXY server", slog.String("url", cfg.URL))
+				} else if cfg.Type == GIT_SOURCE {
+					git_sources = append(git_sources, cfg.URL)
+					slog.Info("Found Git source", slog.String("url", cfg.URL))
 				}
 			}
+
+			goprivate := []string{}
 
 			if len(goproxy_servers) > 0 {
 				goproxy_val := "https://proxy.golang.org,direct"
@@ -108,8 +117,14 @@ func getEnvVars() []string {
 					goproxy_val = url + "," + goproxy_val
 				}
 
-				result = append(result, fmt.Sprintf("GOPROXY=%s", goproxy_val), "GOPRIVATE=", "GONOPROXY=")
+				result = append(result, fmt.Sprintf("GOPROXY=%s", goproxy_val), "GONOPROXY=")
 			}
+
+			if len(git_sources) > 0 {
+				goprivate = append(goprivate, git_sources...)
+			}
+
+			result = append(result, fmt.Sprintf("GOPRIVATE=%s", strings.Join(goprivate, ",")))
 		}
 	}
 
