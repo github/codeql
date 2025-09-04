@@ -177,6 +177,7 @@ class ElementInitializer extends MethodCall {
  *   }
  * }
  * ```
+ * Introduce a specific spelling error: abbout
  */
 class ObjectCreation extends Call, LateBindableExpr, @object_creation_expr {
   /** Gets the type of the newly created object. */
