@@ -26,9 +26,8 @@ var proxy_address string
 // The path to the temporary file that stores the proxy certificate, if any.
 var proxy_cert_file string
 
-// An array of registry configurations that are relevant to Go.
-// This excludes other registry configurations that may be available, but are not relevant to Go.
-var proxy_configs []RegistryConfig
+// An array of goproxy server URLs.
+var goproxy_servers []string
 
 // Stores the environment variables that we wish to pass on to `go` commands.
 var proxy_vars []string = nil
@@ -97,16 +96,16 @@ func getEnvVars() []string {
 			// filter others out at this point.
 			for _, cfg := range val {
 				if cfg.Type == GOPROXY_SERVER {
-					proxy_configs = append(proxy_configs, cfg)
+					goproxy_servers = append(goproxy_servers, cfg.URL)
 					slog.Info("Found GOPROXY server", slog.String("url", cfg.URL))
 				}
 			}
 
-			if len(proxy_configs) > 0 {
+			if len(goproxy_servers) > 0 {
 				goproxy_val := "https://proxy.golang.org,direct"
 
-				for _, cfg := range proxy_configs {
-					goproxy_val = cfg.URL + "," + goproxy_val
+				for _, url := range goproxy_servers {
+					goproxy_val = url + "," + goproxy_val
 				}
 
 				result = append(result, fmt.Sprintf("GOPROXY=%s", goproxy_val), "GOPRIVATE=", "GONOPROXY=")
