@@ -27,9 +27,8 @@ module CorsPermissiveConfigurationConfig implements DataFlow::StateConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink, FlowState state) {
-    sink instanceof CorsApolloServer and state = [FlowState::taint(), FlowState::trueOrNull()]
-    or
-    sink instanceof ExpressCors and state = [FlowState::taint(), FlowState::wildcard()]
+    sink instanceof CorsOriginSink and
+    state = [FlowState::taint(), FlowState::trueOrNull(), FlowState::wildcard()]
   }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }

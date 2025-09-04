@@ -5,7 +5,6 @@
  */
 
 import javascript
-private import semmle.javascript.frameworks.Cors
 
 /** Module containing sources, sinks, and sanitizers for overly permissive CORS configurations. */
 module CorsPermissiveConfiguration {
@@ -73,40 +72,7 @@ module CorsPermissiveConfiguration {
   /**
    * The value of cors origin when initializing the application.
    */
-  class CorsApolloServer extends Sink, DataFlow::ValueNode {
-    CorsApolloServer() {
-      exists(API::NewNode agql |
-        agql = ModelOutput::getATypeNode("ApolloServer").getAnInstantiation() and
-        this =
-          agql.getOptionArgument(0, "cors").getALocalSource().getAPropertyWrite("origin").getRhs()
-      )
-    }
-  }
-
-  /**
-   * The value of cors origin when initializing the application.
-   */
-  class ExpressCors extends Sink, DataFlow::ValueNode {
-    ExpressCors() {
-      exists(CorsConfiguration config | this = config.getCorsConfiguration().getOrigin())
-    }
-  }
-
-  /**
-   * An express route setup configured with the `cors` package.
-   */
-  class CorsConfiguration extends DataFlow::MethodCallNode {
-    Cors::Cors corsConfig;
-
-    CorsConfiguration() {
-      exists(Express::RouteSetup setup | this = setup |
-        if setup.isUseCall()
-        then corsConfig = setup.getArgument(0)
-        else corsConfig = setup.getArgument(any(int i | i > 0))
-      )
-    }
-
-    /** Gets the expression that configures `cors` on this route setup. */
-    Cors::Cors getCorsConfiguration() { result = corsConfig }
+  class CorsOriginSink extends Sink, DataFlow::ValueNode {
+    CorsOriginSink() { this = ModelOutput::getASinkNode("cors-misconfiguration").asSink() }
   }
 }
