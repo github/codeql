@@ -23,8 +23,8 @@ edges
 | sqlx.rs:52:9:52:20 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() | provenance | MaD:9 |
 | sqlx.rs:52:9:52:20 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() | provenance | MaD:5 |
 | sqlx.rs:52:9:52:20 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() | provenance | MaD:9 |
-| sqlx.rs:52:24:52:88 | res | sqlx.rs:52:32:52:87 | { ... } | provenance |  |
-| sqlx.rs:52:32:52:87 | ...::format(...) | sqlx.rs:52:24:52:88 | res | provenance |  |
+| sqlx.rs:52:24:52:30 | res | sqlx.rs:52:32:52:87 | { ... } | provenance |  |
+| sqlx.rs:52:32:52:87 | ...::format(...) | sqlx.rs:52:24:52:30 | res | provenance |  |
 | sqlx.rs:52:32:52:87 | ...::must_use(...) | sqlx.rs:52:9:52:20 | safe_query_3 | provenance |  |
 | sqlx.rs:52:32:52:87 | MacroExpr | sqlx.rs:52:32:52:87 | ...::format(...) | provenance | MaD:12 |
 | sqlx.rs:52:32:52:87 | { ... } | sqlx.rs:52:32:52:87 | ...::must_use(...) | provenance | MaD:13 |
@@ -75,7 +75,7 @@ nodes
 | sqlx.rs:49:25:49:52 | remote_string.parse() [Ok] | semmle.label | remote_string.parse() [Ok] |
 | sqlx.rs:49:25:49:65 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
 | sqlx.rs:52:9:52:20 | safe_query_3 | semmle.label | safe_query_3 |
-| sqlx.rs:52:24:52:88 | res | semmle.label | res |
+| sqlx.rs:52:24:52:30 | res | semmle.label | res |
 | sqlx.rs:52:32:52:87 | ...::format(...) | semmle.label | ...::format(...) |
 | sqlx.rs:52:32:52:87 | ...::must_use(...) | semmle.label | ...::must_use(...) |
 | sqlx.rs:52:32:52:87 | MacroExpr | semmle.label | MacroExpr |

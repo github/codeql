@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p> A class that implements the rich comparison operators
+(<code>__lt__</code>, <code>__gt__</code>, <code>__le__</code>, or <code>__ge__</code>) should ensure that all four 
+comparison operations <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, and <code>&gt;=</code> function as expected, consistent 
+with expected mathematical rules.   
+In Python 3, this is ensured by implementing one of <code>__lt__</code> or <code>__gt__</code>, and one of  <code>__le__</code> or <code>__ge__</code>.
+If the ordering is not consistent with default equality, then <code>__eq__</code> should also be implemented.
+</p>
+
+</overview>
+<recommendation>
+<p>Ensure that at least one of <code>__lt__</code> or <code>__gt__</code> and at least one of <code>__le__</code> or <code>__ge__</code> is defined. 
+  </p>
+
+<p>
+The <code>functools.total_ordering</code> class decorator can be used to automatically implement all four comparison methods from a 
+single one,
+which is typically the cleanest way to ensure all necessary comparison methods are implemented consistently.</p>
+
+</recommendation>
+<example>
+<p>In the following example, only the <code>__lt__</code> operator has been implemented, which would lead to unexpected
+errors if the <code>&lt;=</code> or <code>&gt;=</code> operators are used on <code>A</code> instances.
+The <code>__le__</code> method should also be defined, as well as <code>__eq__</code> in this case.</p>
+<sample src="examples/IncompleteOrdering.py" />
+
+</example>
+<references>
+
+  <li>Python Language Reference: <a href="http://docs.python.org/3/reference/datamodel.html#object.__lt__">Rich comparisons in Python</a>.</li>
+
+
+</references>
+</qhelp>

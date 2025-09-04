@@ -169,10 +169,6 @@ irFlow
 | clang.cpp:50:35:50:40 | call to source | clang.cpp:53:17:53:26 | *stackArray |
 | clang.cpp:51:19:51:24 | call to source | clang.cpp:53:17:53:26 | *stackArray |
 | clang.cpp:57:21:57:28 | call to source | clang.cpp:59:8:59:8 | d |
-| dispatch.cpp:9:37:9:42 | call to source | dispatch.cpp:35:16:35:25 | call to notSource1 |
-| dispatch.cpp:9:37:9:42 | call to source | dispatch.cpp:43:15:43:24 | call to notSource1 |
-| dispatch.cpp:10:37:10:42 | call to source | dispatch.cpp:36:16:36:25 | call to notSource2 |
-| dispatch.cpp:10:37:10:42 | call to source | dispatch.cpp:44:15:44:24 | call to notSource2 |
 | dispatch.cpp:16:37:16:42 | call to source | dispatch.cpp:32:16:32:24 | call to isSource2 |
 | dispatch.cpp:16:37:16:42 | call to source | dispatch.cpp:40:15:40:23 | call to isSource2 |
 | dispatch.cpp:22:37:22:42 | call to source | dispatch.cpp:31:16:31:24 | call to isSource1 |
@@ -180,13 +176,13 @@ irFlow
 | dispatch.cpp:22:37:22:42 | call to source | dispatch.cpp:55:22:55:30 | call to isSource1 |
 | dispatch.cpp:22:37:22:42 | call to source | dispatch.cpp:58:28:58:36 | call to isSource1 |
 | dispatch.cpp:33:18:33:23 | call to source | dispatch.cpp:23:38:23:38 | x |
-| dispatch.cpp:37:19:37:24 | call to source | dispatch.cpp:11:38:11:38 | x |
 | dispatch.cpp:41:17:41:22 | call to source | dispatch.cpp:23:38:23:38 | x |
-| dispatch.cpp:45:18:45:23 | call to source | dispatch.cpp:11:38:11:38 | x |
 | dispatch.cpp:69:15:69:20 | call to source | dispatch.cpp:23:38:23:38 | x |
 | dispatch.cpp:73:14:73:19 | call to source | dispatch.cpp:23:38:23:38 | x |
 | dispatch.cpp:81:13:81:18 | call to source | dispatch.cpp:23:38:23:38 | x |
 | dispatch.cpp:107:17:107:22 | call to source | dispatch.cpp:96:8:96:8 | x |
+| dispatch.cpp:117:38:117:43 | call to source | dispatch.cpp:129:18:129:25 | call to isSource |
+| dispatch.cpp:117:38:117:43 | call to source | dispatch.cpp:130:17:130:24 | call to isSource |
 | dispatch.cpp:140:8:140:13 | call to source | dispatch.cpp:96:8:96:8 | x |
 | dispatch.cpp:144:8:144:13 | call to source | dispatch.cpp:96:8:96:8 | x |
 | flowOut.cpp:5:16:5:21 | call to source | flowOut.cpp:31:9:31:9 | x |

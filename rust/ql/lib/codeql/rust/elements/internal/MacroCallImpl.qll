@@ -19,6 +19,8 @@ module Impl {
     or
     n = root.(Adt).getDeriveMacroExpansion(_)
     or
+    n = root.(Item).getAttributeMacroExpansion()
+    or
     isInMacroExpansion(root, n.getParentNode())
   }
 

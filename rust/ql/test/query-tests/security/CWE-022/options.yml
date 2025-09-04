@@ -1,3 +1,5 @@
 qltest_use_nightly: true
 qltest_dependencies:
     - poem = { version = "3.1.7" }
+    - tokio = { version = "1.43.0", features = ["full"] }
+    - async-std = { version = "1.13.1" }

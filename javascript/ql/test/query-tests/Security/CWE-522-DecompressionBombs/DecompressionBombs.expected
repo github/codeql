@@ -74,16 +74,16 @@ edges
 | pako.js:13:14:13:22 | req.files | pako.js:13:14:13:39 | req.fil ... le.data | provenance |  |
 | pako.js:13:14:13:39 | req.fil ... le.data | pako.js:28:19:28:25 | zipFile | provenance |  |
 | pako.js:17:19:17:25 | zipFile | pako.js:18:48:18:54 | zipFile | provenance |  |
-| pako.js:18:11:18:68 | myArray | pako.js:21:31:21:37 | myArray | provenance |  |
-| pako.js:18:21:18:68 | Buffer. ... uffer)) | pako.js:18:11:18:68 | myArray | provenance |  |
+| pako.js:18:11:18:17 | myArray | pako.js:21:31:21:37 | myArray | provenance |  |
+| pako.js:18:21:18:68 | Buffer. ... uffer)) | pako.js:18:11:18:17 | myArray | provenance |  |
 | pako.js:18:33:18:67 | new Uin ... buffer) | pako.js:18:21:18:68 | Buffer. ... uffer)) | provenance |  |
 | pako.js:18:48:18:54 | zipFile | pako.js:18:48:18:66 | zipFile.data.buffer | provenance |  |
 | pako.js:18:48:18:66 | zipFile.data.buffer | pako.js:18:33:18:67 | new Uin ... buffer) | provenance | Config |
 | pako.js:28:19:28:25 | zipFile | pako.js:29:36:29:42 | zipFile | provenance |  |
-| pako.js:29:11:29:62 | myArray | pako.js:32:31:32:37 | myArray | provenance |  |
-| pako.js:29:11:29:62 | myArray [ArrayElement] | pako.js:32:31:32:37 | myArray | provenance |  |
-| pako.js:29:21:29:55 | new Uin ... buffer) | pako.js:29:11:29:62 | myArray | provenance |  |
-| pako.js:29:21:29:55 | new Uin ... buffer) [ArrayElement] | pako.js:29:11:29:62 | myArray [ArrayElement] | provenance |  |
+| pako.js:29:11:29:17 | myArray | pako.js:32:31:32:37 | myArray | provenance |  |
+| pako.js:29:11:29:17 | myArray [ArrayElement] | pako.js:32:31:32:37 | myArray | provenance |  |
+| pako.js:29:21:29:55 | new Uin ... buffer) | pako.js:29:11:29:17 | myArray | provenance |  |
+| pako.js:29:21:29:55 | new Uin ... buffer) [ArrayElement] | pako.js:29:11:29:17 | myArray [ArrayElement] | provenance |  |
 | pako.js:29:36:29:42 | zipFile | pako.js:29:36:29:54 | zipFile.data.buffer | provenance |  |
 | pako.js:29:36:29:54 | zipFile.data.buffer | pako.js:29:21:29:55 | new Uin ... buffer) | provenance | Config |
 | pako.js:29:36:29:54 | zipFile.data.buffer | pako.js:29:21:29:55 | new Uin ... buffer) [ArrayElement] | provenance |  |
@@ -132,8 +132,8 @@ edges
 | zlib.js:75:39:75:45 | zipFile | zlib.js:75:39:75:50 | zipFile.data | provenance |  |
 | zlib.js:75:39:75:50 | zipFile.data | zlib.js:75:25:75:51 | Readabl ... e.data) | provenance | Config |
 | zlib.js:82:43:82:49 | zipFile | zlib.js:83:39:83:45 | zipFile | provenance |  |
-| zlib.js:83:11:83:51 | inputStream | zlib.js:86:9:86:19 | inputStream | provenance |  |
-| zlib.js:83:25:83:51 | Readabl ... e.data) | zlib.js:83:11:83:51 | inputStream | provenance |  |
+| zlib.js:83:11:83:21 | inputStream | zlib.js:86:9:86:19 | inputStream | provenance |  |
+| zlib.js:83:25:83:51 | Readabl ... e.data) | zlib.js:83:11:83:21 | inputStream | provenance |  |
 | zlib.js:83:39:83:45 | zipFile | zlib.js:83:39:83:50 | zipFile.data | provenance |  |
 | zlib.js:83:39:83:50 | zipFile.data | zlib.js:83:25:83:51 | Readabl ... e.data) | provenance | Config |
 | zlib.js:86:9:86:19 | inputStream | zlib.js:87:9:87:27 | zlib.createGunzip() | provenance | Config |
@@ -178,15 +178,15 @@ nodes
 | pako.js:13:14:13:22 | req.files | semmle.label | req.files |
 | pako.js:13:14:13:39 | req.fil ... le.data | semmle.label | req.fil ... le.data |
 | pako.js:17:19:17:25 | zipFile | semmle.label | zipFile |
-| pako.js:18:11:18:68 | myArray | semmle.label | myArray |
+| pako.js:18:11:18:17 | myArray | semmle.label | myArray |
 | pako.js:18:21:18:68 | Buffer. ... uffer)) | semmle.label | Buffer. ... uffer)) |
 | pako.js:18:33:18:67 | new Uin ... buffer) | semmle.label | new Uin ... buffer) |
 | pako.js:18:48:18:54 | zipFile | semmle.label | zipFile |
 | pako.js:18:48:18:66 | zipFile.data.buffer | semmle.label | zipFile.data.buffer |
 | pako.js:21:31:21:37 | myArray | semmle.label | myArray |
 | pako.js:28:19:28:25 | zipFile | semmle.label | zipFile |
-| pako.js:29:11:29:62 | myArray | semmle.label | myArray |
-| pako.js:29:11:29:62 | myArray [ArrayElement] | semmle.label | myArray [ArrayElement] |
+| pako.js:29:11:29:17 | myArray | semmle.label | myArray |
+| pako.js:29:11:29:17 | myArray [ArrayElement] | semmle.label | myArray [ArrayElement] |
 | pako.js:29:21:29:55 | new Uin ... buffer) | semmle.label | new Uin ... buffer) |
 | pako.js:29:21:29:55 | new Uin ... buffer) [ArrayElement] | semmle.label | new Uin ... buffer) [ArrayElement] |
 | pako.js:29:36:29:42 | zipFile | semmle.label | zipFile |
@@ -246,7 +246,7 @@ nodes
 | zlib.js:78:22:78:39 | zlib.createUnzip() | semmle.label | zlib.createUnzip() |
 | zlib.js:79:22:79:50 | zlib.cr ... press() | semmle.label | zlib.cr ... press() |
 | zlib.js:82:43:82:49 | zipFile | semmle.label | zipFile |
-| zlib.js:83:11:83:51 | inputStream | semmle.label | inputStream |
+| zlib.js:83:11:83:21 | inputStream | semmle.label | inputStream |
 | zlib.js:83:25:83:51 | Readabl ... e.data) | semmle.label | Readabl ... e.data) |
 | zlib.js:83:39:83:45 | zipFile | semmle.label | zipFile |
 | zlib.js:83:39:83:50 | zipFile.data | semmle.label | zipFile.data |

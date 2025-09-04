@@ -10,7 +10,6 @@ import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprBaseImpl
 import codeql.rust.elements.Expr
 import codeql.rust.elements.GenericArgList
 import codeql.rust.elements.NameRef
-import codeql.rust.elements.internal.ResolvableImpl::Impl as ResolvableImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `MethodCallExpr` and should not
@@ -26,9 +25,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::MethodCallExpr` class directly.
    * Use the subclass `MethodCallExpr`, where the following predicates are available.
    */
-  class MethodCallExpr extends Synth::TMethodCallExpr, CallExprBaseImpl::CallExprBase,
-    ResolvableImpl::Resolvable
-  {
+  class MethodCallExpr extends Synth::TMethodCallExpr, CallExprBaseImpl::CallExprBase {
     override string getAPrimaryQlClass() { result = "MethodCallExpr" }
 
     /**

@@ -4,14 +4,6 @@ import TestUtils
 
 query predicate instances(Variant x) { toBeTested(x) and not x.isUnknown() }
 
-query predicate getExtendedCanonicalPath(Variant x, string getExtendedCanonicalPath) {
-  toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
-}
-
-query predicate getCrateOrigin(Variant x, string getCrateOrigin) {
-  toBeTested(x) and not x.isUnknown() and getCrateOrigin = x.getCrateOrigin()
-}
-
 query predicate getAttr(Variant x, int index, Attr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }

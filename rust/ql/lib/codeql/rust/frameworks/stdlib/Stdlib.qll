@@ -95,6 +95,16 @@ class RangeToStruct extends Struct {
 }
 
 /**
+ * The [`RangeFull` struct][1].
+ *
+ * [1]: https://doc.rust-lang.org/core/ops/struct.RangeFull.html
+ */
+class RangeFullStruct extends Struct {
+  pragma[nomagic]
+  RangeFullStruct() { this.getCanonicalPath() = "core::ops::range::RangeFull" }
+}
+
+/**
  * The [`RangeInclusive` struct][1].
  *
  * [1]: https://doc.rust-lang.org/core/ops/struct.RangeInclusive.html

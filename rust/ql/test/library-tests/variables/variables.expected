@@ -130,9 +130,9 @@ variable
 | main.rs:676:17:676:20 | self |
 | main.rs:682:13:682:13 | a |
 | main.rs:704:9:704:22 | var_from_macro |
-| main.rs:705:9:705:25 | var_in_macro |
+| main.rs:705:9:705:21 | var_in_macro |
 | main.rs:707:9:707:20 | var_in_macro |
-| main.rs:712:15:712:42 | var_in_macro |
+| main.rs:712:15:712:28 | var_in_macro |
 | main.rs:717:9:717:9 | x |
 | main.rs:723:13:723:13 | x |
 | main.rs:724:13:724:15 | cap |
@@ -341,9 +341,9 @@ variableAccess
 | main.rs:677:10:677:13 | self | main.rs:676:17:676:20 | self |
 | main.rs:683:5:683:5 | a | main.rs:682:13:682:13 | a |
 | main.rs:686:15:686:15 | a | main.rs:682:13:682:13 | a |
-| main.rs:705:9:705:25 | var_in_macro | main.rs:705:9:705:25 | var_in_macro |
+| main.rs:705:9:705:21 | var_in_macro | main.rs:705:9:705:21 | var_in_macro |
 | main.rs:706:15:706:28 | var_from_macro | main.rs:704:9:704:22 | var_from_macro |
-| main.rs:712:30:712:41 | var_in_macro | main.rs:712:15:712:42 | var_in_macro |
+| main.rs:712:30:712:41 | var_in_macro | main.rs:712:15:712:28 | var_in_macro |
 | main.rs:713:15:713:26 | var_in_macro | main.rs:707:9:707:20 | var_in_macro |
 | main.rs:718:5:718:5 | x | main.rs:717:9:717:9 | x |
 | main.rs:719:15:719:15 | x | main.rs:717:9:717:9 | x |
@@ -547,9 +547,9 @@ variableReadAccess
 | main.rs:677:10:677:13 | self | main.rs:676:17:676:20 | self |
 | main.rs:683:5:683:5 | a | main.rs:682:13:682:13 | a |
 | main.rs:686:15:686:15 | a | main.rs:682:13:682:13 | a |
-| main.rs:705:9:705:25 | var_in_macro | main.rs:705:9:705:25 | var_in_macro |
+| main.rs:705:9:705:21 | var_in_macro | main.rs:705:9:705:21 | var_in_macro |
 | main.rs:706:15:706:28 | var_from_macro | main.rs:704:9:704:22 | var_from_macro |
-| main.rs:712:30:712:41 | var_in_macro | main.rs:712:15:712:42 | var_in_macro |
+| main.rs:712:30:712:41 | var_in_macro | main.rs:712:15:712:28 | var_in_macro |
 | main.rs:713:15:713:26 | var_in_macro | main.rs:707:9:707:20 | var_in_macro |
 | main.rs:719:15:719:15 | x | main.rs:717:9:717:9 | x |
 | main.rs:726:20:726:20 | b | main.rs:724:20:724:20 | b |
@@ -621,9 +621,9 @@ variableInitializer
 | main.rs:667:9:667:9 | z | main.rs:667:13:667:14 | 17 |
 | main.rs:682:13:682:13 | a | main.rs:682:17:682:35 | MyStruct {...} |
 | main.rs:704:9:704:22 | var_from_macro | main.rs:705:9:705:25 | MacroExpr |
-| main.rs:705:9:705:25 | var_in_macro | main.rs:705:23:705:24 | 37 |
+| main.rs:705:9:705:21 | var_in_macro | main.rs:705:23:705:24 | 37 |
 | main.rs:707:9:707:20 | var_in_macro | main.rs:707:24:707:25 | 33 |
-| main.rs:712:15:712:42 | var_in_macro | main.rs:712:15:712:42 | 0 |
+| main.rs:712:15:712:28 | var_in_macro | main.rs:712:15:712:28 | 0 |
 | main.rs:723:13:723:13 | x | main.rs:723:17:723:19 | 100 |
 | main.rs:724:13:724:15 | cap | main.rs:724:19:729:5 | \|...\| ... |
 capturedVariable

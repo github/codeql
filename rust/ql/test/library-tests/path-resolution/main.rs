@@ -460,6 +460,58 @@ mod m16 {
     } // I83
 }
 
+mod trait_visibility {
+    mod m {
+        pub trait Foo {
+            fn a_method(&self); // Foo::a_method
+        } // Foo
+
+        pub trait Bar {
+            fn a_method(&self); // Bar::a_method
+        } // Bar
+
+        pub struct X;
+        #[rustfmt::skip]
+        impl Foo for X { // $ item=Foo item=X
+            fn a_method(&self) {
+                println!("foo!");
+            } // X_Foo::a_method
+        }
+        #[rustfmt::skip]
+        impl Bar for X { // $ item=Bar item=X
+            fn a_method(&self) {
+                println!("bar!");
+            } // X_Bar::a_method
+        }
+    }
+
+    use m::X; // $ item=X
+
+    pub fn f() {
+        let x = X; // $ item=X
+        {
+            // Only the `Foo` trait is visible
+            use m::Foo; // $ item=Foo
+            X::a_method(&x); // $ item=X_Foo::a_method
+        }
+        {
+            // Only the `Bar` trait is visible
+            use m::Bar; // $ item=Bar
+            X::a_method(&x); // $ item=X_Bar::a_method
+        }
+        {
+            // Only the `Bar` trait is visible (but unnameable)
+            use m::Bar as _; // $ item=Bar
+            X::a_method(&x); // $ item=X_Bar::a_method
+        }
+        {
+            // The `Bar` trait is not visible, but we can refer to its method
+            // with a full path.
+            m::Bar::a_method(&x); // $ item=Bar::a_method
+        }
+    } // trait_visibility::f
+}
+
 mod m17 {
     trait MyTrait {
         fn f(&self); // I1
@@ -730,6 +782,7 @@ fn main() {
     m11::f(); // $ item=I63
     m15::f(); // $ item=I75
     m16::f(); // $ item=I83
+    trait_visibility::f(); // $ item=trait_visibility::f
     m17::f(); // $ item=I99
     nested6::f(); // $ item=I116
     nested8::f(); // $ item=I119

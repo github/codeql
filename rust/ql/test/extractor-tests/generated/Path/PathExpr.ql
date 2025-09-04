@@ -4,14 +4,6 @@ import TestUtils
 
 query predicate instances(PathExpr x) { toBeTested(x) and not x.isUnknown() }
 
-query predicate getResolvedPath(PathExpr x, string getResolvedPath) {
-  toBeTested(x) and not x.isUnknown() and getResolvedPath = x.getResolvedPath()
-}
-
-query predicate getResolvedCrateOrigin(PathExpr x, string getResolvedCrateOrigin) {
-  toBeTested(x) and not x.isUnknown() and getResolvedCrateOrigin = x.getResolvedCrateOrigin()
-}
-
 query predicate getPath(PathExpr x, Path getPath) {
   toBeTested(x) and not x.isUnknown() and getPath = x.getPath()
 }
