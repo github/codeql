@@ -203,7 +203,7 @@ abstract class Import extends AstNode {
   abstract DataFlow::Node getImportedModuleNode();
 
   /**
-   * Holds of the result of `getImportedModuleNode` actually refers to the export binding named `"default"`,
+   * Holds if the result of `getImportedModuleNode` actually refers to the export binding named `"default"`,
    * as opposed an object whose properties correspond to the export bindings of the imported module.
    *
    * For compatibility with non-standard interpretations of `default` imports, the default
@@ -220,7 +220,7 @@ abstract class Import extends AstNode {
   predicate isDefaultImport() { none() }
 
   /**
-   * Gets the same as `getImportedModuleNode()` expect this has no result for default imports when the target module
+   * Gets the same as `getImportedModuleNode()` except this has no result for default imports when the target module
    * has both default and named exports.
    *
    * This is to avoid ambiguity between named export bindings and the properties of the default-exported object.
