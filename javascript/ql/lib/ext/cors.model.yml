@@ -3,4 +3,4 @@ extensions:
       pack: codeql/javascript-all
       extensible: sinkModel
     data:
-      - ["cors", "Argument[0].Member[origin]", "cors-misconfiguration"]
+      - ["cors", "Argument[0].Member[origin]", "cors-origin"]

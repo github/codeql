@@ -10,7 +10,7 @@ extensions:
       extensible: sinkModel
     data:
       - ["@apollo/server", "Member[gql].Argument[0]", "sql-injection"]
-      - ["@apollo/server", "Member[ApolloServer,ApolloServerBase].Argument[0].Member[cors].Member[origin]", "cors-misconfiguration"]
+      - ["@apollo/server", "Member[ApolloServer,ApolloServerBase].Argument[0].Member[cors].Member[origin]", "cors-origin"]
 
   - addsTo:
       pack: codeql/javascript-all
