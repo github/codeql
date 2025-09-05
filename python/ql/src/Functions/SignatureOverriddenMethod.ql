@@ -171,24 +171,14 @@ int extraSelfArg(Function func) { if isStaticmethod(func) then result = 0 else r
 
 /** Holds if the call `call` matches the signature for `func`. */
 predicate callMatchesSignature(Function func, Call call) {
-  func = resolveCall(call) and
+  // TODO: This is not fully precise.
+  // For example, it does not detect that a method `def foo(self,x,y)` is matched by a call `obj.foo(1,y=2)`
+  // since y is passed in the call as a keyword argument, but still counts toward a positional argument of the method.
+  // A more precise version was attempted, but reverted due to performance concerns.
   (
-    // Each parameter of the function is accounted for in the call
-    forall(Parameter param, int i | param = func.getArg(i) |
-      // self arg
-      i = 0 and not isStaticmethod(func)
-      or
-      // positional arg
-      i - extraSelfArg(func) < call.getPositionalArgumentCount()
-      or
-      // has default
-      exists(param.getDefault())
-      or
-      // keyword arg
-      call.getANamedArgumentName() = param.getName()
-    )
+    // Enough parameters
+    call.getPositionalArgumentCount() + extraSelfArg(func) >= func.getMinPositionalArguments()
     or
-    // arbitrary varargs or kwargs
     exists(call.getStarArg())
     or
     exists(call.getKwargs())
