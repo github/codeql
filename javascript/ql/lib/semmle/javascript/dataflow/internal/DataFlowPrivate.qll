@@ -674,7 +674,7 @@ predicate neverSkipInPathGraph(Node node) {
   // Include the return-value expression
   node.asExpr() = any(Function f).getAReturnedExpr()
   or
-  // Include calls (which may have been modelled as steps)
+  // Include calls (which may have been modeled as steps)
   node.asExpr() instanceof InvokeExpr
   or
   // Include references to a variable
@@ -1103,7 +1103,7 @@ private predicate legacyBarrier(DataFlow::Node node) {
 pragma[nomagic]
 private predicate isBlockedLegacyNode(Node node) {
   // Ignore captured variable nodes for those variables that are handled by the captured-variable library.
-  // Note that some variables, such as top-level variables, are still modelled with these nodes (which will result in jump steps).
+  // Note that some variables, such as top-level variables, are still modeled with these nodes (which will result in jump steps).
   exists(LocalVariable variable |
     node = TCapturedVariableNode(variable) and
     variable = any(VariableCaptureConfig::CapturedVariable v).asLocalVariable()

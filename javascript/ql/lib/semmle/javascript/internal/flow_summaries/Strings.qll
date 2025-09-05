@@ -1,5 +1,5 @@
 /**
- * Contains flow summaries and steps modelling flow through string methods.
+ * Contains flow summaries and steps modeling flow through string methods.
  */
 
 private import javascript
@@ -73,7 +73,7 @@ class StringSplit extends SummarizedCallable {
  * These are of special significance when tracking a tainted URL suffix, such as `window.location.href`,
  * because the first element of the resulting array should not be considered tainted.
  *
- * This summary defaults to the same behaviour as the general `.split()` case, but it contains optional steps
+ * This summary defaults to the same behavior as the general `.split()` case, but it contains optional steps
  * and barriers named `tainted-url-suffix` that should be activated when tracking a tainted URL suffix.
  */
 class StringSplitHashOrQuestionMark extends SummarizedCallable {
