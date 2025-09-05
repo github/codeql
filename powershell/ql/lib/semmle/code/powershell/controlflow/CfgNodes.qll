@@ -180,6 +180,11 @@ class AttributeCfgNode extends AttributeBaseCfgNode {
   ExprCfgNode getPositionalArgument(int i) {
     attr.hasCfgChild(attr.getPositionalArgument(i), this, result)
   }
+
+  string getLowerCaseName() { result = attr.getLowerCaseName() }
+
+  bindingset[result]
+  string getAName() { result = attr.getAName() }
 }
 
 private class ScriptBlockChildMapping extends NonExprChildMapping, ScriptBlock {

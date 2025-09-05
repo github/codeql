@@ -1,7 +1,10 @@
 private import AstImport
 
 class Attribute extends AttributeBase, TAttribute {
-  string getName() { result = getRawAst(this).(Raw::Attribute).getName() }
+  string getLowerCaseName() { result = getRawAst(this).(Raw::Attribute).getName().toLowerCase() }
+
+  bindingset[result]
+  string getAName() { result.toLowerCase() = this.getLowerCaseName() }
 
   NamedAttributeArgument getNamedArgument(int i) {
     exists(ChildIndex index, Raw::Ast r | index = attributeNamedArg(i) and r = getRawAst(this) |
@@ -41,7 +44,7 @@ class Attribute extends AttributeBase, TAttribute {
     result = this.toStringSpecific()
     or
     not exists(this.toStringSpecific()) and
-    result = this.getName()
+    result = this.getLowerCaseName()
   }
 
   final override Ast getChild(ChildIndex i) {
