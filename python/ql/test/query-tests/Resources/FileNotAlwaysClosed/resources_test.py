@@ -151,11 +151,11 @@ def not_closed17():
 #With statement will close the fp
 def closed18(path):
     try:
-        f18 = open(path)
+        f18 = open(path) # $SPURIOUS: Alert # Dataflow appears to not detect this with statement as guarding the exceptions produced by the `read()` call.
     except IOError as ex:
         print(ex)
         raise ex
-    with f18:
+    with f18: 
         f18.read()
 
 class Closed19(object):
@@ -286,7 +286,7 @@ def closed29(path):
     f28.close()
     f28.write("already closed") 
 
-# False positive:
+# False positive in a previous implementation:
 
 class NotWrapper:
     def __init__(self, fp):
@@ -297,12 +297,13 @@ class NotWrapper:
         pass 
 
 def closed30(path):
-    # Combination of approximations resulting in this FP:
+    # Combination of approximations resulted in this FP:
     # - NotWrapper is treated as a wrapper class as a file handle is passed to it 
     # - thing.do_something() is treated as a call that can raise an exception while a file is open
     # - this call is treated as occurring after the open but not as being guarded by the with statement, as it is in the same basic block
+    # - - this behaviour has been changed fixing the FP
 
-    with open(path) as fp: # $SPURIOUS:Alert # not closed on exception
+    with open(path) as fp: # No longer spurious alert here.
         thing = NotWrapper(fp)
 
     thing.do_something() 
@@ -314,10 +315,20 @@ def closed31(path):
         data2 = fp.readline()
 
 
-class FlowReader():
+class Wrapper():
     def __init__(self, f):
+        self.f = f
+    def read(self):
+        return self.f.read()
+    def __enter__(self):
         pass
-def test_cannot_convert(tdata):
-    with open(tdata, "rb") as f:
-        flow_reader = FlowReader(f)
-        list(flow_reader.stream())
+    def __exit__(self):
+        self.f.close()
+
+def closed32(path):
+    with open(path, "rb") as f: # No longer spurious alert here.
+        wrap = Wrapper(f)
+        # This resulted in an FP in a previous implementation, 
+        # due to a check that an operation is lexically contained within a `with` block (with `expr.getParent*()`)
+        # not detecting this case.
+        return list(wrap.read())
