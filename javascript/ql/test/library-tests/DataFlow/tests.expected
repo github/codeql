@@ -1564,8 +1564,10 @@ sources
 | tst.js:50:14:53:3 | () {\\n   ... et`\\n  } |
 | tst.js:50:14:53:3 | return of constructor of class A |
 | tst.js:51:5:51:13 | super(42) |
+| tst.js:57:1:57:9 | `x: ${x}` |
 | tst.js:58:1:58:3 | tag |
 | tst.js:58:1:58:13 | tag `x: ${x}` |
+| tst.js:58:5:58:13 | `x: ${x}` |
 | tst.js:61:1:61:5 | ::o.m |
 | tst.js:61:3:61:5 | o.m |
 | tst.js:62:1:62:4 | o::g |
