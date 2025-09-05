@@ -544,6 +544,25 @@ class ToSpliced extends SummarizedCallable {
   }
 }
 
+class With extends SummarizedCallable {
+  With() { this = "Array#with" }
+
+  override InstanceCall getACallSimple() { result.getMethodName() = "with" }
+
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    preservesValue = true and
+    (
+      // Copy all elements from the original array to the new array
+      input = "Argument[this].WithArrayElement" and
+      output = "ReturnValue"
+      or
+      // Replace the value at the specified index
+      input = "Argument[1]" and
+      output = "ReturnValue.ArrayElement"
+    )
+  }
+}
+
 class ArrayCoercionPackage extends FunctionalPackageSummary {
   ArrayCoercionPackage() { this = "ArrayCoercionPackage" }
 
