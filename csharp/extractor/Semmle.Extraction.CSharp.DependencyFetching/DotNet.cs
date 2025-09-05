@@ -138,7 +138,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         // The version number should be kept in sync with the version .NET version used for building the application.
-        public const string LatestDotNetSdkVersion = "9.0.100";
+        public const string LatestDotNetSdkVersion = "9.0.300";
 
         /// <summary>
         /// Returns a script for downloading relevant versions of the

@@ -47,6 +47,30 @@ def codeql_xunit_test(name, **kwargs):
         **kwargs
     )
 
+def _filter_published_files_impl(ctx):
+    dir = ctx.attr.src[DefaultInfo].files_to_run.executable.dirname
+    files = ctx.attr.src[DefaultInfo].files.to_list()
+
+    # filter out all unneeded localization directories, that contain
+    # duplicate files that would break our packaging
+    files = [
+        f
+        for f in files
+        if f.dirname in (dir, dir + "/bin", dir + "\\bin")
+    ]
+    return [
+        DefaultInfo(
+            files = depset(files),
+        ),
+    ]
+
+_filter_published_files = rule(
+    implementation = _filter_published_files_impl,
+    attrs = {
+        "src": attr.label(),
+    },
+)
+
 def codeql_csharp_binary(name, **kwargs):
     kwargs.setdefault("nullable", "enable")
     kwargs.setdefault("target_frameworks", [TARGET_FRAMEWORK])
@@ -63,6 +87,7 @@ def codeql_csharp_binary(name, **kwargs):
 
     csharp_binary_target = "bin/" + name
     publish_binary_target = "publish/" + name
+    filtered_target = "filtered/" + name
     csharp_binary(name = csharp_binary_target, srcs = srcs, resources = resources, visibility = visibility, **kwargs)
     publish_binary(
         name = publish_binary_target,
@@ -76,10 +101,14 @@ def codeql_csharp_binary(name, **kwargs):
             },
         ),
     )
+    _filter_published_files(
+        name = filtered_target,
+        src = publish_binary_target,
+    )
 
     codeql_pkg_files(
         name = name,
-        exes = [publish_binary_target],
+        exes = [filtered_target],
         prefix = "tools/{CODEQL_PLATFORM}",
         strip_prefix = strip_prefix.files_only(),
         visibility = visibility,
