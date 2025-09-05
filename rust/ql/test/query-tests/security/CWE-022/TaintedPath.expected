@@ -45,12 +45,18 @@ edges
 | src/main.rs:98:21:98:53 | ... .unwrap() | src/main.rs:98:9:98:17 | file_path | provenance |  |
 | src/main.rs:99:24:99:32 | file_path | src/main.rs:99:5:99:22 | ...::read_to_string | provenance | MaD:6 Sink:MaD:6 |
 | src/main.rs:103:9:103:13 | path1 | src/main.rs:104:33:104:37 | path1 | provenance |  |
+| src/main.rs:103:9:103:13 | path1 | src/main.rs:104:33:104:45 | path1.clone() | provenance | MaD:8 |
 | src/main.rs:103:9:103:13 | path1 | src/main.rs:106:39:106:43 | path1 | provenance |  |
+| src/main.rs:103:9:103:13 | path1 | src/main.rs:106:39:106:51 | path1.clone() | provenance | MaD:8 |
 | src/main.rs:103:9:103:13 | path1 | src/main.rs:109:41:109:45 | path1 | provenance |  |
+| src/main.rs:103:9:103:13 | path1 | src/main.rs:109:41:109:53 | path1.clone() | provenance | MaD:8 |
 | src/main.rs:103:9:103:13 | path1 | src/main.rs:112:45:112:49 | path1 | provenance |  |
+| src/main.rs:103:9:103:13 | path1 | src/main.rs:112:45:112:57 | path1.clone() | provenance | MaD:8 |
 | src/main.rs:103:9:103:13 | path1 | src/main.rs:115:39:115:43 | path1 | provenance |  |
 | src/main.rs:103:9:103:13 | path1 | src/main.rs:122:27:122:31 | path1 | provenance |  |
+| src/main.rs:103:9:103:13 | path1 | src/main.rs:122:27:122:39 | path1.clone() | provenance | MaD:8 |
 | src/main.rs:103:9:103:13 | path1 | src/main.rs:123:37:123:41 | path1 | provenance |  |
+| src/main.rs:103:9:103:13 | path1 | src/main.rs:123:37:123:49 | path1.clone() | provenance | MaD:8 |
 | src/main.rs:103:17:103:30 | ...::args | src/main.rs:103:17:103:32 | ...::args(...) [element] | provenance | Src:MaD:7  |
 | src/main.rs:103:17:103:32 | ...::args(...) [element] | src/main.rs:103:17:103:39 | ... .nth(...) [Some] | provenance | MaD:9 |
 | src/main.rs:103:17:103:39 | ... .nth(...) [Some] | src/main.rs:103:17:103:48 | ... .unwrap() | provenance | MaD:10 |

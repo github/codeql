@@ -1,12 +1,6 @@
 instances
 | gen_trait.rs:3:1:8:1 | trait Frobinizable | isAuto: | no | isUnsafe: | no |
 | gen_trait.rs:10:1:10:57 | trait Foo | isAuto: | no | isUnsafe: | no |
-getExtendedCanonicalPath
-| gen_trait.rs:3:1:8:1 | trait Frobinizable | crate::gen_trait::Frobinizable |
-| gen_trait.rs:10:1:10:57 | trait Foo | crate::gen_trait::Foo |
-getCrateOrigin
-| gen_trait.rs:3:1:8:1 | trait Frobinizable | repo::test |
-| gen_trait.rs:10:1:10:57 | trait Foo | repo::test |
 getAttributeMacroExpansion
 getAssocItemList
 | gen_trait.rs:3:1:8:1 | trait Frobinizable | gen_trait.rs:4:20:8:1 | AssocItemList |

@@ -613,7 +613,7 @@ DataFlowType getNodeType(Node node) {
 // Extra flow
 //--------
 /**
- * Holds if `pred` can flow to `succ`, by jumping from one callable to
+ * Holds if `nodeFrom` can flow to `nodeTo`, by jumping from one callable to
  * another. Additional steps specified by the configuration are *not*
  * taken into account.
  */
@@ -634,7 +634,7 @@ predicate jumpStep(Node nodeFrom, Node nodeTo) {
  * the type-trackers as well, as that would make evaluation of type-tracking recursive
  * with the new jumpsteps.
  *
- * Holds if `pred` can flow to `succ`, by jumping from one callable to
+ * Holds if `nodeFrom` can flow to `nodeTo`, by jumping from one callable to
  * another. Additional steps specified by the configuration are *not*
  * taken into account.
  */
@@ -657,7 +657,7 @@ predicate jumpStepSharedWithTypeTracker(Node nodeFrom, Node nodeTo) {
  * the type-trackers as well, as that would make evaluation of type-tracking recursive
  * with the new jumpsteps.
  *
- * Holds if `pred` can flow to `succ`, by jumping from one callable to
+ * Holds if `nodeFrom` can flow to `nodeTo`, by jumping from one callable to
  * another. Additional steps specified by the configuration are *not*
  * taken into account.
  */
@@ -766,7 +766,7 @@ module Orm {
     abstract predicate storeStep(Node nodeFrom, Content c, Node nodeTo);
 
     /**
-     * Holds if `pred` can flow to `succ`, by jumping from one callable to
+     * Holds if `nodeFrom` can flow to `nodeTo`, by jumping from one callable to
      * another. Additional steps specified by the configuration are *not*
      * taken into account.
      */

@@ -121,6 +121,55 @@ mod trait_impl {
     }
 }
 
+mod trait_visibility {
+    // In this test the correct method target depends on which trait is visible.
+
+    mod m {
+        pub trait Foo {
+            // Foo::a_method
+            fn a_method(&self) {
+                println!("foo!");
+            }
+        }
+
+        pub trait Bar {
+            // Bar::a_method
+            fn a_method(&self) {
+                println!("bar!");
+            }
+        }
+
+        pub struct X;
+        impl Foo for X {}
+        impl Bar for X {}
+    }
+
+    use m::X;
+
+    fn main() {
+        let x = X;
+        {
+            use m::Foo;
+            x.a_method(); // $ target=Foo::a_method
+        }
+        {
+            use m::Bar;
+            x.a_method(); // $ target=Bar::a_method
+        }
+        {
+            use m::Bar as _;
+            x.a_method(); // $ target=Bar::a_method
+        }
+        {
+            use m::Bar;
+            use m::Foo;
+            // x.a_method();  // This would be ambiguous
+            Foo::a_method(&x); // $ target=Foo::a_method
+            Bar::a_method(&x); // $ target=Bar::a_method
+        }
+    }
+}
+
 mod method_non_parametric_impl {
     #[derive(Debug)]
     struct MyThing<A> {
@@ -1140,20 +1189,20 @@ mod type_aliases {
         println!("{:?}", p1);
 
         // Type can be only inferred from the type alias
-        let p2: MyPair = PairOption::PairNone(); // $ type=p2:Fst.S1 type=p2:Snd.S2
+        let p2: MyPair = PairOption::PairNone(); // $ certainType=p2:Fst.S1 certainType=p2:Snd.S2
         println!("{:?}", p2);
 
         // First type from alias, second from constructor
-        let p3: AnotherPair<_> = PairOption::PairSnd(S3); // $ type=p3:Fst.S2
+        let p3: AnotherPair<_> = PairOption::PairSnd(S3); // $ certainType=p3:Fst.S2
         println!("{:?}", p3);
 
         // First type from alias definition, second from argument to alias
-        let p3: AnotherPair<S3> = PairOption::PairNone(); // $ type=p3:Fst.S2 type=p3:Snd.S3
+        let p3: AnotherPair<S3> = PairOption::PairNone(); // $ certainType=p3:Fst.S2 certainType=p3:Snd.S3
         println!("{:?}", p3);
 
         g(PairOption::PairSnd(PairOption::PairSnd(S3))); // $ target=g
 
-        let x: S7<S2>; // $ type=x:Result $ type=x:E.S1 $ type=x:T.S4 $ type=x:T.T41.S2 $ type=x:T.T42.S5 $ type=x:T.T42.T5.S2
+        let x: S7<S2>; // $ certainType=x:Result $ certainType=x:E.S1 $ certainType=x:T.S4 $ certainType=x:T.T41.S2 $ certainType=x:T.T42.S5 $ certainType=x:T.T42.T5.S2
 
         let y = GenS(true).get_input(); // $ type=y:Result type=y:T.bool type=y:E.bool target=get_input
     }
@@ -1199,7 +1248,7 @@ mod option_methods {
     struct S;
 
     pub fn f() {
-        let x1 = MyOption::<S>::new(); // $ type=x1:T.S target=new
+        let x1 = MyOption::<S>::new(); // $ certainType=x1:T.S target=new
         println!("{:?}", x1);
 
         let mut x2 = MyOption::new(); // $ target=new
@@ -1327,7 +1376,7 @@ mod method_call_type_conversion {
         let t = x7.m1(); // $ target=m1 type=t:& type=t:&T.S2
         println!("{:?}", x7);
 
-        let x9: String = "Hello".to_string(); // $ type=x9:String
+        let x9: String = "Hello".to_string(); // $ certainType=x9:String
 
         // Implicit `String` -> `str` conversion happens via the `Deref` trait:
         // https://doc.rust-lang.org/std/string/struct.String.html#deref.
@@ -1502,23 +1551,23 @@ mod try_expressions {
 
 mod builtins {
     pub fn f() {
-        let x: i32 = 1; // $ type=x:i32
+        let x: i32 = 1; // $ certainType=x:i32
         let y = 2; // $ type=y:i32
         let z = x + y; // $ type=z:i32 target=add
         let z = x.abs(); // $ target=abs $ type=z:i32
-        let c = 'c'; // $ type=c:char
-        let hello = "Hello"; // $ type=hello:&T.str
-        let f = 123.0f64; // $ type=f:f64
-        let t = true; // $ type=t:bool
-        let f = false; // $ type=f:bool
+        let c = 'c'; // $ certainType=c:char
+        let hello = "Hello"; // $ certainType=hello:&T.str
+        let f = 123.0f64; // $ certainType=f:f64
+        let t = true; // $ certainType=t:bool
+        let f = false; // $ certainType=f:bool
     }
 }
 
 // Tests for non-overloaded operators.
 mod operators {
     pub fn f() {
-        let x = true && false; // $ type=x:bool
-        let y = true || false; // $ type=y:bool
+        let x = true && false; // $ certainType=x:bool
+        let y = true || false; // $ certainType=y:bool
 
         let mut a;
         let cond = 34 == 33; // $ target=eq
@@ -2292,10 +2341,10 @@ mod loops {
         let vals2 = [1u16; 3]; // $ type=vals2:[T;...].u16
         for u in vals2 {} // $ type=u:u16
 
-        let vals3: [u32; 3] = [1, 2, 3]; // $ type=vals3:[T;...].u32
+        let vals3: [u32; 3] = [1, 2, 3]; // $ certainType=vals3:[T;...].u32
         for u in vals3 {} // $ type=u:u32
 
-        let vals4: [u64; 3] = [1; 3]; // $ type=vals4:[T;...].u64
+        let vals4: [u64; 3] = [1; 3]; // $ certainType=vals4:[T;...].u64
         for u in vals4 {} // $ type=u:u64
 
         let mut strings1 = ["foo", "bar", "baz"]; // $ type=strings1:[T;...].&T.str
@@ -2330,9 +2379,9 @@ mod loops {
 
         for i in 0..10 {} // $ type=i:i32
         for u in [0u8..10] {} // $ type=u:Range type=u:Idx.u8
-        let range = 0..10; // $ type=range:Range type=range:Idx.i32
+        let range = 0..10; // $ certainType=range:Range type=range:Idx.i32
         for i in range {} // $ type=i:i32
-        let range_full = ..; // $ type=range_full:RangeFull
+        let range_full = ..; // $ certainType=range_full:RangeFull
         for i in &[1i64, 2i64, 3i64][range_full] {} // $ target=index MISSING: type=i:&T.i64
 
         let range1 = // $ type=range1:Range type=range1:Idx.u16
@@ -2347,19 +2396,19 @@ mod loops {
         let vals3 = vec![1, 2, 3]; // $ MISSING: type=vals3:Vec type=vals3:T.i32
         for i in vals3 {} // $ MISSING: type=i:i32
 
-        let vals4a: Vec<u16> = [1u16, 2, 3].to_vec(); // $ type=vals4a:Vec type=vals4a:T.u16
+        let vals4a: Vec<u16> = [1u16, 2, 3].to_vec(); // $ certainType=vals4a:Vec certainType=vals4a:T.u16
         for u in vals4a {} // $ type=u:u16
 
         let vals4b = [1u16, 2, 3].to_vec(); // $ MISSING: type=vals4b:Vec type=vals4b:T.u16
         for u in vals4b {} // $ MISSING: type=u:u16
 
-        let vals5 = Vec::from([1u32, 2, 3]); // $ type=vals5:Vec target=from type=vals5:T.u32
+        let vals5 = Vec::from([1u32, 2, 3]); // $ certainType=vals5:Vec target=from type=vals5:T.u32
         for u in vals5 {} // $ type=u:u32
 
-        let vals6: Vec<&u64> = [1u64, 2, 3].iter().collect(); // $ type=vals6:Vec type=vals6:T.&T.u64
+        let vals6: Vec<&u64> = [1u64, 2, 3].iter().collect(); // $ certainType=vals6:Vec certainType=vals6:T.&T.u64
         for u in vals6 {} // $ type=u:&T.u64
 
-        let mut vals7 = Vec::new(); // $ target=new type=vals7:Vec type=vals7:T.u8
+        let mut vals7 = Vec::new(); // $ target=new certainType=vals7:Vec type=vals7:T.u8
         vals7.push(1u8); // $ target=push
         for u in vals7 {} // $ type=u:u8
 
@@ -2380,11 +2429,11 @@ mod loops {
 
         // while loops
 
-        let mut a: i64 = 0; // $ type=a:i64
+        let mut a: i64 = 0; // $ certainType=a:i64
         #[rustfmt::skip]
-        let _ = while a < 10 // $ target=lt type=a:i64
+        let _ = while a < 10 // $ target=lt certainType=a:i64
         {
-            a += 1; // $ type=a:i64 MISSING: target=add_assign
+            a += 1; // $ certainType=a:i64 MISSING: target=add_assign
         };
     }
 }
@@ -2422,11 +2471,11 @@ mod explicit_type_args {
     }
 
     pub fn f() {
-        let x1: Option<S1<S2>> = S1::assoc_fun(); // $ type=x1:T.T.S2 target=assoc_fun
-        let x2 = S1::<S2>::assoc_fun(); // $ type=x2:T.T.S2 target=assoc_fun
-        let x3 = S3::assoc_fun(); // $ type=x3:T.T.S2 target=assoc_fun
-        let x4 = S1::<S2>::method(S1::default()); // $ target=method target=default type=x4:T.S2
-        let x5 = S3::method(S1::default()); // $ target=method target=default type=x5:T.S2
+        let x1: Option<S1<S2>> = S1::assoc_fun(); // $ certainType=x1:T.T.S2 target=assoc_fun
+        let x2 = S1::<S2>::assoc_fun(); // $ certainType=x2:T.T.S2 target=assoc_fun
+        let x3 = S3::assoc_fun(); // $ certainType=x3:T.T.S2 target=assoc_fun
+        let x4 = S1::<S2>::method(S1::default()); // $ target=method target=default certainType=x4:T.S2
+        let x5 = S3::method(S1::default()); // $ target=method target=default certainType=x5:T.S2
         let x6 = S4::<S2>(Default::default()); // $ type=x6:T4.S2 target=default
         let x7 = S4(S2); // $ type=x7:T4.S2
         let x8 = S4(0); // $ type=x8:T4.i32
@@ -2441,7 +2490,7 @@ mod explicit_type_args {
         {
             field: S2::default(), // $ target=default
         };
-        let x14 = foo::<i32>(Default::default()); // $ type=x14:i32 target=default target=foo
+        let x14 = foo::<i32>(Default::default()); // $ certainType=x14:i32 target=default target=foo
     }
 }
 
@@ -2457,8 +2506,8 @@ mod tuples {
     }
 
     pub fn f() {
-        let a = S1::get_pair(); // $ target=get_pair type=a:(T_2)
-        let mut b = S1::get_pair(); // $ target=get_pair type=b:(T_2)
+        let a = S1::get_pair(); // $ target=get_pair certainType=a:(T_2)
+        let mut b = S1::get_pair(); // $ target=get_pair certainType=b:(T_2)
         let (c, d) = S1::get_pair(); // $ target=get_pair type=c:S1 type=d:S1
         let (mut e, f) = S1::get_pair(); // $ target=get_pair type=e:S1 type=f:S1
         let (mut g, mut h) = S1::get_pair(); // $ target=get_pair type=g:S1 type=h:S1
@@ -2593,11 +2642,11 @@ pub mod path_buf {
     }
 
     pub fn f() {
-        let path1 = Path::new(); // $ target=new type=path1:Path
+        let path1 = Path::new(); // $ target=new certainType=path1:Path
         let path2 = path1.canonicalize(); // $ target=canonicalize
         let path3 = path2.unwrap(); // $ target=unwrap type=path3:PathBuf
 
-        let pathbuf1 = PathBuf::new(); // $ target=new type=pathbuf1:PathBuf
+        let pathbuf1 = PathBuf::new(); // $ target=new certainType=pathbuf1:PathBuf
         let pathbuf2 = pathbuf1.canonicalize(); // $ MISSING: target=canonicalize
         let pathbuf3 = pathbuf2.unwrap(); // $ MISSING: target=unwrap type=pathbuf3:PathBuf
     }

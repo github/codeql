@@ -1,8 +1,9 @@
 name: codeql/dataflow
-version: 2.0.14-dev
+version: 2.0.15-dev
 groups: shared
 library: true
 dependencies:
+  codeql/controlflow: ${workspace}
   codeql/ssa: ${workspace}
   codeql/typetracking: ${workspace}
   codeql/util: ${workspace}

@@ -72,7 +72,6 @@ multipleCallTargets
 | test_logging.rs:195:15:195:38 | ...::_eprint(...) |
 | test_logging.rs:229:30:229:71 | ... .as_str() |
 | test_logging.rs:242:16:242:61 | ... .as_bytes() |
-| test_logging.rs:243:5:245:66 | ... .write_all(...) |
 | test_logging.rs:245:20:245:65 | ... .as_bytes() |
 | test_logging.rs:248:15:248:60 | ... .as_bytes() |
 | test_logging.rs:251:15:251:60 | ... .as_bytes() |

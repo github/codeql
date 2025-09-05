@@ -6,17 +6,10 @@ import csharp
 private import codeql.ssa.Ssa as SsaImplCommon
 private import AssignableDefinitions
 private import semmle.code.csharp.controlflow.internal.PreSsa
+private import semmle.code.csharp.controlflow.BasicBlocks as BasicBlocks
 private import semmle.code.csharp.controlflow.Guards as Guards
 
-private module SsaInput implements SsaImplCommon::InputSig<Location> {
-  class BasicBlock = ControlFlow::BasicBlock;
-
-  class ControlFlowNode = ControlFlow::Node;
-
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
-
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
-
+private module SsaInput implements SsaImplCommon::InputSig<Location, ControlFlow::BasicBlock> {
   class SourceVariable = Ssa::SourceVariable;
 
   /**
@@ -25,7 +18,7 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
    *
    * This includes implicit writes via calls.
    */
-  predicate variableWrite(BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
+  predicate variableWrite(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
     variableWriteDirect(bb, i, v, certain)
     or
     variableWriteQualifier(bb, i, v, certain)
@@ -39,7 +32,7 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
    *
    * This includes implicit reads via calls.
    */
-  predicate variableRead(BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
+  predicate variableRead(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
     variableReadActual(bb, i, v) and
     certain = true
     or
@@ -48,7 +41,7 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
   }
 }
 
-import SsaImplCommon::Make<Location, SsaInput> as Impl
+import SsaImplCommon::Make<Location, BasicBlocks::Cfg, SsaInput> as Impl
 
 class Definition = Impl::Definition;
 
@@ -150,7 +143,7 @@ private module SourceVariableImpl {
   }
 
   /**
-   * Gets an `out`/`ref` definition of the same source variable as the `out`/`ref`
+   * Gets an `out`/`ref` definition of the same source variable `v` as the `out`/`ref`
    * definition `def`, belonging to the same call, at a position after `def`.
    */
   OutRefDefinition getASameOutRefDefAfter(Ssa::SourceVariable v, OutRefDefinition def) {
@@ -729,7 +722,7 @@ private predicate variableReadPseudo(ControlFlow::BasicBlock bb, int i, Ssa::Sou
 
 pragma[noinline]
 deprecated private predicate adjacentDefRead(
-  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2,
+  Definition def, ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2,
   SsaInput::SourceVariable v
 ) {
   Impl::adjacentDefRead(def, bb1, i1, bb2, i2) and
@@ -737,8 +730,8 @@ deprecated private predicate adjacentDefRead(
 }
 
 deprecated private predicate adjacentDefReachesRead(
-  Definition def, SsaInput::SourceVariable v, SsaInput::BasicBlock bb1, int i1,
-  SsaInput::BasicBlock bb2, int i2
+  Definition def, SsaInput::SourceVariable v, ControlFlow::BasicBlock bb1, int i1,
+  ControlFlow::BasicBlock bb2, int i2
 ) {
   adjacentDefRead(def, bb1, i1, bb2, i2, v) and
   (
@@ -747,7 +740,7 @@ deprecated private predicate adjacentDefReachesRead(
     SsaInput::variableRead(bb1, i1, v, true)
   )
   or
-  exists(SsaInput::BasicBlock bb3, int i3 |
+  exists(ControlFlow::BasicBlock bb3, int i3 |
     adjacentDefReachesRead(def, v, bb1, i1, bb3, i3) and
     SsaInput::variableRead(bb3, i3, _, false) and
     Impl::adjacentDefRead(def, bb3, i3, bb2, i2)
@@ -755,7 +748,7 @@ deprecated private predicate adjacentDefReachesRead(
 }
 
 deprecated private predicate adjacentDefReachesUncertainRead(
-  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
+  Definition def, ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2
 ) {
   exists(SsaInput::SourceVariable v |
     adjacentDefReachesRead(def, v, bb1, i1, bb2, i2) and
@@ -766,12 +759,12 @@ deprecated private predicate adjacentDefReachesUncertainRead(
 /** Same as `lastRefRedef`, but skips uncertain reads. */
 pragma[nomagic]
 deprecated private predicate lastRefSkipUncertainReads(
-  Definition def, SsaInput::BasicBlock bb, int i
+  Definition def, ControlFlow::BasicBlock bb, int i
 ) {
   Impl::lastRef(def, bb, i) and
   not SsaInput::variableRead(bb, i, def.getSourceVariable(), false)
   or
-  exists(SsaInput::BasicBlock bb0, int i0 |
+  exists(ControlFlow::BasicBlock bb0, int i0 |
     Impl::lastRef(def, bb0, i0) and
     adjacentDefReachesUncertainRead(def, bb, i, bb0, i0)
   )
@@ -825,8 +818,8 @@ private module Cached {
   }
 
   cached
-  predicate implicitEntryDefinition(ControlFlow::ControlFlow::BasicBlock bb, Ssa::SourceVariable v) {
-    exists(ControlFlow::ControlFlow::BasicBlocks::EntryBlock entry, Callable c |
+  predicate implicitEntryDefinition(ControlFlow::BasicBlock bb, Ssa::SourceVariable v) {
+    exists(ControlFlow::BasicBlocks::EntryBlock entry, Callable c |
       c = entry.getCallable() and
       // In case `c` has multiple bodies, we want each body to get its own implicit
       // entry definition. In case `c` doesn't have multiple bodies, the line below
@@ -1052,9 +1045,9 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
      * from `bb1` to `bb2`.
      */
     predicate hasValueBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue branch) {
-      exists(ControlFlow::SuccessorTypes::ConditionalSuccessor s |
+      exists(ControlFlow::ConditionalSuccessor s |
         this.getAControlFlowNode() = bb1.getLastNode() and
-        bb2 = bb1.getASuccessorByType(s) and
+        bb2 = bb1.getASuccessor(s) and
         s.getValue() = branch
       )
     }
@@ -1071,7 +1064,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
   predicate guardDirectlyControlsBlock(Guard guard, ControlFlow::BasicBlock bb, GuardValue branch) {
-    exists(ConditionBlock conditionBlock, ControlFlow::SuccessorTypes::ConditionalSuccessor s |
+    exists(ConditionBlock conditionBlock, ControlFlow::ConditionalSuccessor s |
       guard.getAControlFlowNode() = conditionBlock.getLastNode() and
       s.getValue() = branch and
       conditionBlock.edgeDominates(bb, s)

@@ -101,7 +101,7 @@ predicate postDominates(ControlFlowNode postDominator, ControlFlowNode node) {
  */
 
 /**
- * Holds if `dominator` is an immediate dominator of `node` in the control-flow
+ * Holds if `dom` is an immediate dominator of `node` in the control-flow
  * graph of basic blocks.
  */
 predicate bbIDominates(BasicBlock dom, BasicBlock node) =
@@ -117,7 +117,7 @@ private predicate bb_predecessor(BasicBlock succ, BasicBlock pred) { bb_successo
 private predicate bb_exit(ExitBasicBlock exit) { any() }
 
 /**
- * Holds if `postDominator` is an immediate post-dominator of `node` in the control-flow
+ * Holds if `pDom` is an immediate post-dominator of `node` in the control-flow
  * graph of basic blocks.
  */
 predicate bbIPostDominates(BasicBlock pDom, BasicBlock node) =

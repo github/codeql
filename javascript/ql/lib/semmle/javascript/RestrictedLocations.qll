@@ -26,7 +26,7 @@ class FirstLineOf extends Locatable {
       then endcolumn = xc
       else
         endcolumn =
-          max(int c | any(DbLocation l).hasLocationInfo(filepath, startline, _, startline, c))
+          max(int c | any(Location l).hasLocationInfo(filepath, startline, _, startline, c))
     )
   }
 }

@@ -13,28 +13,28 @@
 | sentAsHeaders.js:14:20:19:9 | {\\n      ...       } | sentAsHeaders.js:10:79:10:84 | buffer | sentAsHeaders.js:14:20:19:9 | {\\n      ...       } | Outbound network request depends on $@. | sentAsHeaders.js:10:79:10:84 | buffer | file data |
 | sentAsHeaders.js:20:20:25:9 | {\\n      ...       } | sentAsHeaders.js:10:79:10:84 | buffer | sentAsHeaders.js:20:20:25:9 | {\\n      ...       } | Outbound network request depends on $@. | sentAsHeaders.js:10:79:10:84 | buffer | file data |
 edges
-| FileAccessToHttp.js:4:5:4:47 | content | FileAccessToHttp.js:9:23:9:29 | content | provenance |  |
-| FileAccessToHttp.js:4:15:4:47 | fs.read ... "utf8") | FileAccessToHttp.js:4:5:4:47 | content | provenance |  |
+| FileAccessToHttp.js:4:5:4:11 | content | FileAccessToHttp.js:9:23:9:29 | content | provenance |  |
+| FileAccessToHttp.js:4:15:4:47 | fs.read ... "utf8") | FileAccessToHttp.js:4:5:4:11 | content | provenance |  |
 | FileAccessToHttp.js:9:12:9:31 | { Referer: content } [Referer] | FileAccessToHttp.js:5:11:10:1 | {\\n  hos ... ent }\\n} | provenance |  |
 | FileAccessToHttp.js:9:23:9:29 | content | FileAccessToHttp.js:9:12:9:31 | { Referer: content } [Referer] | provenance |  |
-| FileAccessToHttp.js:16:11:16:56 | content | FileAccessToHttp.js:22:27:22:33 | content | provenance |  |
-| FileAccessToHttp.js:16:21:16:56 | await f ... "utf8") | FileAccessToHttp.js:16:11:16:56 | content | provenance |  |
+| FileAccessToHttp.js:16:11:16:17 | content | FileAccessToHttp.js:22:27:22:33 | content | provenance |  |
+| FileAccessToHttp.js:16:21:16:56 | await f ... "utf8") | FileAccessToHttp.js:16:11:16:17 | content | provenance |  |
 | FileAccessToHttp.js:22:16:22:35 | { Referer: content } [Referer] | FileAccessToHttp.js:18:15:23:5 | {\\n      ... }\\n    } | provenance |  |
 | FileAccessToHttp.js:22:27:22:33 | content | FileAccessToHttp.js:22:16:22:35 | { Referer: content } [Referer] | provenance |  |
-| FileAccessToHttp.js:34:9:34:57 | buffer | FileAccessToHttp.js:40:25:40:30 | buffer | provenance |  |
-| FileAccessToHttp.js:34:18:34:57 | [Buffer ... (1024)] | FileAccessToHttp.js:34:9:34:57 | buffer | provenance |  |
+| FileAccessToHttp.js:34:9:34:14 | buffer | FileAccessToHttp.js:40:25:40:30 | buffer | provenance |  |
+| FileAccessToHttp.js:34:18:34:57 | [Buffer ... (1024)] | FileAccessToHttp.js:34:9:34:14 | buffer | provenance |  |
 | FileAccessToHttp.js:40:14:40:32 | { Referer: buffer } [Referer] | FileAccessToHttp.js:36:13:41:3 | {\\n    h ... r }\\n  } | provenance |  |
 | FileAccessToHttp.js:40:25:40:30 | buffer | FileAccessToHttp.js:40:14:40:32 | { Referer: buffer } [Referer] | provenance |  |
-| FileAccessToHttp.js:43:9:43:36 | buffer1 | FileAccessToHttp.js:49:25:49:31 | buffer1 | provenance |  |
-| FileAccessToHttp.js:43:19:43:36 | Buffer.alloc(1024) | FileAccessToHttp.js:43:9:43:36 | buffer1 | provenance |  |
+| FileAccessToHttp.js:43:9:43:15 | buffer1 | FileAccessToHttp.js:49:25:49:31 | buffer1 | provenance |  |
+| FileAccessToHttp.js:43:19:43:36 | Buffer.alloc(1024) | FileAccessToHttp.js:43:9:43:15 | buffer1 | provenance |  |
 | FileAccessToHttp.js:49:14:49:65 | { Refer ... ing() } [Referer] | FileAccessToHttp.js:45:13:50:3 | {\\n    h ... ) }\\n  } | provenance |  |
 | FileAccessToHttp.js:49:25:49:31 | buffer1 | FileAccessToHttp.js:49:25:49:52 | buffer1 ... sRead1) | provenance |  |
 | FileAccessToHttp.js:49:25:49:31 | buffer1 | FileAccessToHttp.js:49:25:49:52 | buffer1 ... sRead1) [ArrayElement] | provenance |  |
 | FileAccessToHttp.js:49:25:49:52 | buffer1 ... sRead1) | FileAccessToHttp.js:49:25:49:63 | buffer1 ... tring() | provenance |  |
 | FileAccessToHttp.js:49:25:49:52 | buffer1 ... sRead1) [ArrayElement] | FileAccessToHttp.js:49:25:49:63 | buffer1 ... tring() | provenance |  |
 | FileAccessToHttp.js:49:25:49:63 | buffer1 ... tring() | FileAccessToHttp.js:49:14:49:65 | { Refer ... ing() } [Referer] | provenance |  |
-| FileAccessToHttp.js:52:9:52:36 | buffer2 | FileAccessToHttp.js:53:17:53:23 | buffer2 | provenance |  |
-| FileAccessToHttp.js:52:19:52:36 | Buffer.alloc(1024) | FileAccessToHttp.js:52:9:52:36 | buffer2 | provenance |  |
+| FileAccessToHttp.js:52:9:52:15 | buffer2 | FileAccessToHttp.js:53:17:53:23 | buffer2 | provenance |  |
+| FileAccessToHttp.js:52:19:52:36 | Buffer.alloc(1024) | FileAccessToHttp.js:52:9:52:15 | buffer2 | provenance |  |
 | FileAccessToHttp.js:53:17:53:23 | buffer2 | FileAccessToHttp.js:58:27:58:33 | buffer2 | provenance |  |
 | FileAccessToHttp.js:58:16:58:67 | { Refer ... ing() } [Referer] | FileAccessToHttp.js:54:15:59:5 | {\\n      ... }\\n    } | provenance |  |
 | FileAccessToHttp.js:58:27:58:33 | buffer2 | FileAccessToHttp.js:58:27:58:54 | buffer2 ... sRead2) | provenance |  |
@@ -42,28 +42,28 @@ edges
 | FileAccessToHttp.js:58:27:58:54 | buffer2 ... sRead2) | FileAccessToHttp.js:58:27:58:65 | buffer2 ... tring() | provenance |  |
 | FileAccessToHttp.js:58:27:58:54 | buffer2 ... sRead2) [ArrayElement] | FileAccessToHttp.js:58:27:58:65 | buffer2 ... tring() | provenance |  |
 | FileAccessToHttp.js:58:27:58:65 | buffer2 ... tring() | FileAccessToHttp.js:58:16:58:67 | { Refer ... ing() } [Referer] | provenance |  |
-| bufferRead.js:12:13:12:43 | buffer | bufferRead.js:13:21:13:26 | buffer | provenance |  |
-| bufferRead.js:12:13:12:43 | buffer | bufferRead.js:13:32:13:37 | buffer | provenance |  |
-| bufferRead.js:12:22:12:43 | new Buf ... s.size) | bufferRead.js:12:13:12:43 | buffer | provenance |  |
+| bufferRead.js:12:13:12:18 | buffer | bufferRead.js:13:21:13:26 | buffer | provenance |  |
+| bufferRead.js:12:13:12:18 | buffer | bufferRead.js:13:32:13:37 | buffer | provenance |  |
+| bufferRead.js:12:22:12:43 | new Buf ... s.size) | bufferRead.js:12:13:12:18 | buffer | provenance |  |
 | bufferRead.js:13:21:13:26 | buffer | bufferRead.js:13:32:13:37 | buffer | provenance |  |
 | bufferRead.js:13:32:13:37 | buffer | bufferRead.js:15:26:15:31 | buffer | provenance |  |
-| bufferRead.js:15:15:15:62 | postData | bufferRead.js:32:21:32:28 | postData | provenance |  |
+| bufferRead.js:15:15:15:22 | postData | bufferRead.js:32:21:32:28 | postData | provenance |  |
 | bufferRead.js:15:26:15:31 | buffer | bufferRead.js:15:26:15:62 | buffer. ... esRead) | provenance |  |
-| bufferRead.js:15:26:15:62 | buffer. ... esRead) | bufferRead.js:15:15:15:62 | postData | provenance |  |
+| bufferRead.js:15:26:15:62 | buffer. ... esRead) | bufferRead.js:15:15:15:22 | postData | provenance |  |
 | googlecompiler.js:7:19:7:28 | codestring | googlecompiler.js:14:21:14:30 | codestring | provenance |  |
-| googlecompiler.js:9:7:15:4 | post_data | googlecompiler.js:37:18:37:26 | post_data | provenance |  |
-| googlecompiler.js:9:19:15:4 | queryst ... dy\\n  }) | googlecompiler.js:9:7:15:4 | post_data | provenance |  |
+| googlecompiler.js:9:7:9:15 | post_data | googlecompiler.js:37:18:37:26 | post_data | provenance |  |
+| googlecompiler.js:9:19:15:4 | queryst ... dy\\n  }) | googlecompiler.js:9:7:9:15 | post_data | provenance |  |
 | googlecompiler.js:9:41:15:3 | {\\n      ... ody\\n  } [js_code] | googlecompiler.js:9:19:15:4 | queryst ... dy\\n  }) | provenance |  |
 | googlecompiler.js:14:21:14:30 | codestring | googlecompiler.js:9:41:15:3 | {\\n      ... ody\\n  } [js_code] | provenance |  |
 | googlecompiler.js:43:54:43:57 | data | googlecompiler.js:55:14:55:17 | data | provenance |  |
 | googlecompiler.js:55:14:55:17 | data | googlecompiler.js:7:19:7:28 | codestring | provenance |  |
-| readFileSync.js:5:5:5:39 | data | readFileSync.js:7:11:7:14 | data | provenance |  |
-| readFileSync.js:5:12:5:39 | fs.read ... t.txt") | readFileSync.js:5:5:5:39 | data | provenance |  |
-| readFileSync.js:7:7:7:25 | s | readFileSync.js:25:18:25:18 | s | provenance |  |
+| readFileSync.js:5:5:5:8 | data | readFileSync.js:7:11:7:14 | data | provenance |  |
+| readFileSync.js:5:12:5:39 | fs.read ... t.txt") | readFileSync.js:5:5:5:8 | data | provenance |  |
+| readFileSync.js:7:7:7:7 | s | readFileSync.js:25:18:25:18 | s | provenance |  |
 | readFileSync.js:7:11:7:14 | data | readFileSync.js:7:11:7:25 | data.toString() | provenance |  |
-| readFileSync.js:7:11:7:25 | data.toString() | readFileSync.js:7:7:7:25 | s | provenance |  |
-| readStreamRead.js:13:13:13:35 | chunk | readStreamRead.js:29:19:29:23 | chunk | provenance |  |
-| readStreamRead.js:13:21:13:35 | readable.read() | readStreamRead.js:13:13:13:35 | chunk | provenance |  |
+| readFileSync.js:7:11:7:25 | data.toString() | readFileSync.js:7:7:7:7 | s | provenance |  |
+| readStreamRead.js:13:13:13:17 | chunk | readStreamRead.js:29:19:29:23 | chunk | provenance |  |
+| readStreamRead.js:13:21:13:35 | readable.read() | readStreamRead.js:13:13:13:17 | chunk | provenance |  |
 | request.js:6:19:6:26 | jsonData | request.js:8:12:8:19 | jsonData | provenance |  |
 | request.js:8:12:8:19 | jsonData | request.js:8:11:8:20 | {jsonData} | provenance |  |
 | request.js:13:18:13:24 | xmlData | request.js:22:11:22:17 | xmlData | provenance |  |
@@ -73,14 +73,14 @@ edges
 | request.js:43:51:43:54 | data | request.js:50:13:50:16 | data | provenance |  |
 | request.js:50:13:50:16 | data | request.js:13:18:13:24 | xmlData | provenance |  |
 | sentAsHeaders.js:10:79:10:84 | buffer | sentAsHeaders.js:11:23:11:28 | buffer | provenance |  |
-| sentAsHeaders.js:11:13:11:59 | content | sentAsHeaders.js:12:19:12:25 | content | provenance |  |
+| sentAsHeaders.js:11:13:11:19 | content | sentAsHeaders.js:12:19:12:25 | content | provenance |  |
 | sentAsHeaders.js:11:23:11:28 | buffer | sentAsHeaders.js:11:23:11:59 | buffer. ... esRead) | provenance |  |
-| sentAsHeaders.js:11:23:11:59 | buffer. ... esRead) | sentAsHeaders.js:11:13:11:59 | content | provenance |  |
-| sentAsHeaders.js:12:9:12:81 | content | sentAsHeaders.js:18:47:18:53 | content | provenance |  |
-| sentAsHeaders.js:12:9:12:81 | content | sentAsHeaders.js:24:47:24:53 | content | provenance |  |
+| sentAsHeaders.js:11:23:11:59 | buffer. ... esRead) | sentAsHeaders.js:11:13:11:19 | content | provenance |  |
+| sentAsHeaders.js:12:9:12:15 | content | sentAsHeaders.js:18:47:18:53 | content | provenance |  |
+| sentAsHeaders.js:12:9:12:15 | content | sentAsHeaders.js:24:47:24:53 | content | provenance |  |
 | sentAsHeaders.js:12:19:12:25 | content | sentAsHeaders.js:12:19:12:74 | content ... =", "") | provenance |  |
 | sentAsHeaders.js:12:19:12:74 | content ... =", "") | sentAsHeaders.js:12:19:12:81 | content ... .trim() | provenance |  |
-| sentAsHeaders.js:12:19:12:81 | content ... .trim() | sentAsHeaders.js:12:9:12:81 | content | provenance |  |
+| sentAsHeaders.js:12:19:12:81 | content ... .trim() | sentAsHeaders.js:12:9:12:15 | content | provenance |  |
 | sentAsHeaders.js:18:20:18:55 | { Refer ... ntent } [Referer] | sentAsHeaders.js:14:20:19:9 | {\\n      ...       } | provenance |  |
 | sentAsHeaders.js:18:31:18:53 | "http:/ ... content | sentAsHeaders.js:18:20:18:55 | { Refer ... ntent } [Referer] | provenance |  |
 | sentAsHeaders.js:18:47:18:53 | content | sentAsHeaders.js:18:31:18:53 | "http:/ ... content | provenance |  |
@@ -88,22 +88,22 @@ edges
 | sentAsHeaders.js:24:31:24:53 | "http:/ ... content | sentAsHeaders.js:24:20:24:55 | { Refer ... ntent } [Referer] | provenance |  |
 | sentAsHeaders.js:24:47:24:53 | content | sentAsHeaders.js:24:31:24:53 | "http:/ ... content | provenance |  |
 nodes
-| FileAccessToHttp.js:4:5:4:47 | content | semmle.label | content |
+| FileAccessToHttp.js:4:5:4:11 | content | semmle.label | content |
 | FileAccessToHttp.js:4:15:4:47 | fs.read ... "utf8") | semmle.label | fs.read ... "utf8") |
 | FileAccessToHttp.js:5:11:10:1 | {\\n  hos ... ent }\\n} | semmle.label | {\\n  hos ... ent }\\n} |
 | FileAccessToHttp.js:9:12:9:31 | { Referer: content } [Referer] | semmle.label | { Referer: content } [Referer] |
 | FileAccessToHttp.js:9:23:9:29 | content | semmle.label | content |
-| FileAccessToHttp.js:16:11:16:56 | content | semmle.label | content |
+| FileAccessToHttp.js:16:11:16:17 | content | semmle.label | content |
 | FileAccessToHttp.js:16:21:16:56 | await f ... "utf8") | semmle.label | await f ... "utf8") |
 | FileAccessToHttp.js:18:15:23:5 | {\\n      ... }\\n    } | semmle.label | {\\n      ... }\\n    } |
 | FileAccessToHttp.js:22:16:22:35 | { Referer: content } [Referer] | semmle.label | { Referer: content } [Referer] |
 | FileAccessToHttp.js:22:27:22:33 | content | semmle.label | content |
-| FileAccessToHttp.js:34:9:34:57 | buffer | semmle.label | buffer |
+| FileAccessToHttp.js:34:9:34:14 | buffer | semmle.label | buffer |
 | FileAccessToHttp.js:34:18:34:57 | [Buffer ... (1024)] | semmle.label | [Buffer ... (1024)] |
 | FileAccessToHttp.js:36:13:41:3 | {\\n    h ... r }\\n  } | semmle.label | {\\n    h ... r }\\n  } |
 | FileAccessToHttp.js:40:14:40:32 | { Referer: buffer } [Referer] | semmle.label | { Referer: buffer } [Referer] |
 | FileAccessToHttp.js:40:25:40:30 | buffer | semmle.label | buffer |
-| FileAccessToHttp.js:43:9:43:36 | buffer1 | semmle.label | buffer1 |
+| FileAccessToHttp.js:43:9:43:15 | buffer1 | semmle.label | buffer1 |
 | FileAccessToHttp.js:43:19:43:36 | Buffer.alloc(1024) | semmle.label | Buffer.alloc(1024) |
 | FileAccessToHttp.js:45:13:50:3 | {\\n    h ... ) }\\n  } | semmle.label | {\\n    h ... ) }\\n  } |
 | FileAccessToHttp.js:49:14:49:65 | { Refer ... ing() } [Referer] | semmle.label | { Refer ... ing() } [Referer] |
@@ -111,7 +111,7 @@ nodes
 | FileAccessToHttp.js:49:25:49:52 | buffer1 ... sRead1) | semmle.label | buffer1 ... sRead1) |
 | FileAccessToHttp.js:49:25:49:52 | buffer1 ... sRead1) [ArrayElement] | semmle.label | buffer1 ... sRead1) [ArrayElement] |
 | FileAccessToHttp.js:49:25:49:63 | buffer1 ... tring() | semmle.label | buffer1 ... tring() |
-| FileAccessToHttp.js:52:9:52:36 | buffer2 | semmle.label | buffer2 |
+| FileAccessToHttp.js:52:9:52:15 | buffer2 | semmle.label | buffer2 |
 | FileAccessToHttp.js:52:19:52:36 | Buffer.alloc(1024) | semmle.label | Buffer.alloc(1024) |
 | FileAccessToHttp.js:53:17:53:23 | buffer2 | semmle.label | buffer2 |
 | FileAccessToHttp.js:54:15:59:5 | {\\n      ... }\\n    } | semmle.label | {\\n      ... }\\n    } |
@@ -120,29 +120,29 @@ nodes
 | FileAccessToHttp.js:58:27:58:54 | buffer2 ... sRead2) | semmle.label | buffer2 ... sRead2) |
 | FileAccessToHttp.js:58:27:58:54 | buffer2 ... sRead2) [ArrayElement] | semmle.label | buffer2 ... sRead2) [ArrayElement] |
 | FileAccessToHttp.js:58:27:58:65 | buffer2 ... tring() | semmle.label | buffer2 ... tring() |
-| bufferRead.js:12:13:12:43 | buffer | semmle.label | buffer |
+| bufferRead.js:12:13:12:18 | buffer | semmle.label | buffer |
 | bufferRead.js:12:22:12:43 | new Buf ... s.size) | semmle.label | new Buf ... s.size) |
 | bufferRead.js:13:21:13:26 | buffer | semmle.label | buffer |
 | bufferRead.js:13:32:13:37 | buffer | semmle.label | buffer |
-| bufferRead.js:15:15:15:62 | postData | semmle.label | postData |
+| bufferRead.js:15:15:15:22 | postData | semmle.label | postData |
 | bufferRead.js:15:26:15:31 | buffer | semmle.label | buffer |
 | bufferRead.js:15:26:15:62 | buffer. ... esRead) | semmle.label | buffer. ... esRead) |
 | bufferRead.js:32:21:32:28 | postData | semmle.label | postData |
 | googlecompiler.js:7:19:7:28 | codestring | semmle.label | codestring |
-| googlecompiler.js:9:7:15:4 | post_data | semmle.label | post_data |
+| googlecompiler.js:9:7:9:15 | post_data | semmle.label | post_data |
 | googlecompiler.js:9:19:15:4 | queryst ... dy\\n  }) | semmle.label | queryst ... dy\\n  }) |
 | googlecompiler.js:9:41:15:3 | {\\n      ... ody\\n  } [js_code] | semmle.label | {\\n      ... ody\\n  } [js_code] |
 | googlecompiler.js:14:21:14:30 | codestring | semmle.label | codestring |
 | googlecompiler.js:37:18:37:26 | post_data | semmle.label | post_data |
 | googlecompiler.js:43:54:43:57 | data | semmle.label | data |
 | googlecompiler.js:55:14:55:17 | data | semmle.label | data |
-| readFileSync.js:5:5:5:39 | data | semmle.label | data |
+| readFileSync.js:5:5:5:8 | data | semmle.label | data |
 | readFileSync.js:5:12:5:39 | fs.read ... t.txt") | semmle.label | fs.read ... t.txt") |
-| readFileSync.js:7:7:7:25 | s | semmle.label | s |
+| readFileSync.js:7:7:7:7 | s | semmle.label | s |
 | readFileSync.js:7:11:7:14 | data | semmle.label | data |
 | readFileSync.js:7:11:7:25 | data.toString() | semmle.label | data.toString() |
 | readFileSync.js:25:18:25:18 | s | semmle.label | s |
-| readStreamRead.js:13:13:13:35 | chunk | semmle.label | chunk |
+| readStreamRead.js:13:13:13:17 | chunk | semmle.label | chunk |
 | readStreamRead.js:13:21:13:35 | readable.read() | semmle.label | readable.read() |
 | readStreamRead.js:29:19:29:23 | chunk | semmle.label | chunk |
 | request.js:6:19:6:26 | jsonData | semmle.label | jsonData |
@@ -156,10 +156,10 @@ nodes
 | request.js:43:51:43:54 | data | semmle.label | data |
 | request.js:50:13:50:16 | data | semmle.label | data |
 | sentAsHeaders.js:10:79:10:84 | buffer | semmle.label | buffer |
-| sentAsHeaders.js:11:13:11:59 | content | semmle.label | content |
+| sentAsHeaders.js:11:13:11:19 | content | semmle.label | content |
 | sentAsHeaders.js:11:23:11:28 | buffer | semmle.label | buffer |
 | sentAsHeaders.js:11:23:11:59 | buffer. ... esRead) | semmle.label | buffer. ... esRead) |
-| sentAsHeaders.js:12:9:12:81 | content | semmle.label | content |
+| sentAsHeaders.js:12:9:12:15 | content | semmle.label | content |
 | sentAsHeaders.js:12:19:12:25 | content | semmle.label | content |
 | sentAsHeaders.js:12:19:12:74 | content ... =", "") | semmle.label | content ... =", "") |
 | sentAsHeaders.js:12:19:12:81 | content ... .trim() | semmle.label | content ... .trim() |
