@@ -174,7 +174,7 @@
 { let @unaryop.node = (ast-node @unaryop "UnaryOp") }
 
 (exec_statement) @exec
-{ let @exec.node = (ast-node @exec "Exec") }
+{ let @exec.node = (ast-node @exec "Exec") }
 
 (print_statement) @print
 { let @print.node = (ast-node @print "Print") }
@@ -3040,7 +3040,7 @@
     if some @is_kwarg {
         attr (@lambda.function -> @name.node) kwonlyargs = (named-child-index @param)
     }
-    else { 
+    else { 
         attr (@lambda.function -> @name.node) args = (named-child-index @param)
     }
 
@@ -3153,7 +3153,7 @@
     if some @is_kwarg {
         attr (@funcdef.function -> @name.node) kwonlyargs = (named-child-index @param)
     }
-    else { 
+    else { 
         attr (@funcdef.function -> @name.node) args = (named-child-index @param)
     }
 
@@ -3284,7 +3284,7 @@
     attr (@last.node) func = @exp.node
     edge @last.node -> @funcdef.funcexpr
     attr (@last.node -> @funcdef.funcexpr) positional_args = 0
-    attr (@last.node) _location_end = (location-end @exp)
+    attr (@last.node) _location_end = (location-end @exp)
 }
 
 (decorated_definition
@@ -3296,7 +3296,7 @@
     attr (@last.node) func = @exp.node
     edge @last.node -> @class.class_expr
     attr (@last.node -> @class.class_expr) positional_args = 0
-    attr (@last.node) _location_end = (location-end @exp)
+    attr (@last.node) _location_end = (location-end @exp)
 }
 
 ;;; Type parameters

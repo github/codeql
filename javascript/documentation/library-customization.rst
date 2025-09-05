@@ -178,7 +178,7 @@ added by extending ``Dataflow::SourceNode::Range``. Some of its subclasses can s
 extended. For example, ``DataFlow::ModuleImportNode`` models module imports, and ``DataFlow::ClassNode`` models
 class definitions. The former provides default implementations covering CommonJS, AMD, and ECMAScript
 2015 modules, while the latter handles ECMAScript 2015 classes, as well as traditional function-based
-classes. You can extend their corresponding ``::Range`` classes to add support for other module or
+classes. You can extend their corresponding ``::Range`` classes to add support for other module or
 class systems.
 
 Type inference
