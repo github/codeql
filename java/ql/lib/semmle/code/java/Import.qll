@@ -179,13 +179,8 @@ class ModuleImportDeclaration extends Import {
     )
   }
 
-  /** Gets a type that is imported from the module. */
-  RefType getAnImportedType() {
-    exists(Package pkg |
-      pkg = this.getAnImportedPackage() and
-      result.getPackage() = pkg
-    )
-  }
+  /** Gets a type from a package that is accessible through this module import. */
+  RefType getAnImportedType() { result.getPackage() = this.getAnImportedPackage() }
 
   override string toString() { result = "import module " + this.getModuleName() }
 
