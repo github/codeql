@@ -1,7 +1,7 @@
 /**
  * Provides a module to check whether two `ParameterizedType`s are unifiable.
  */
-overlay[local?]
+overlay[global]
 module;
 
 import java
