@@ -192,26 +192,6 @@ module DataFlow {
       FlowSteps::identityFunctionStep(result, this)
     }
 
-    /**
-     * Gets the type annotation describing the type of this node,
-     * provided that a static type could not be found.
-     *
-     * Doesn't take field types and function return types into account.
-     */
-    private TypeAnnotation getFallbackTypeAnnotation() {
-      exists(BindingPattern pattern |
-        this = valueNode(pattern) and
-        result = pattern.getTypeAnnotation()
-      )
-      or
-      result = this.getAPredecessor().getFallbackTypeAnnotation()
-      or
-      exists(DataFlow::ClassNode cls, string fieldName |
-        this = cls.getAReceiverNode().getAPropertyRead(fieldName) and
-        result = cls.getFieldTypeAnnotation(fieldName)
-      )
-    }
-
     private NameResolution::Node getNameResolutionNode() {
       this = valueNode(result)
       or
