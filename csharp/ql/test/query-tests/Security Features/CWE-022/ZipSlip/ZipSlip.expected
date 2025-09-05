@@ -8,6 +8,7 @@
 | ZipSlip.cs:105:72:105:85 | access to property FullName | ZipSlip.cs:105:72:105:85 | access to property FullName : String | ZipSlip.cs:119:71:119:82 | access to local variable destFilePath | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlip.cs:119:71:119:82 | access to local variable destFilePath | file system operation |
 | ZipSlip.cs:105:72:105:85 | access to property FullName | ZipSlip.cs:105:72:105:85 | access to property FullName : String | ZipSlip.cs:126:57:126:68 | access to local variable destFilePath | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlip.cs:126:57:126:68 | access to local variable destFilePath | file system operation |
 | ZipSlip.cs:105:72:105:85 | access to property FullName | ZipSlip.cs:105:72:105:85 | access to property FullName : String | ZipSlip.cs:134:58:134:69 | access to local variable destFilePath | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlip.cs:134:58:134:69 | access to local variable destFilePath | file system operation |
+| ZipSlip.cs:305:80:305:93 | access to property FullName | ZipSlip.cs:305:80:305:93 | access to property FullName : String | ZipSlip.cs:308:37:308:53 | access to local variable destinationOnDisk | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlip.cs:308:37:308:53 | access to local variable destinationOnDisk | file system operation |
 | ZipSlipBad.cs:9:59:9:72 | access to property FullName | ZipSlipBad.cs:9:59:9:72 | access to property FullName : String | ZipSlipBad.cs:10:29:10:40 | access to local variable destFileName | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlipBad.cs:10:29:10:40 | access to local variable destFileName | file system operation |
 edges
 | ZipSlip.cs:15:24:15:40 | access to local variable fullPath_relative : String | ZipSlip.cs:30:71:30:87 | access to local variable fullPath_relative : String | provenance |  |
@@ -47,6 +48,13 @@ edges
 | ZipSlip.cs:121:71:121:82 | access to local variable destFilePath : String | ZipSlip.cs:126:57:126:68 | access to local variable destFilePath | provenance |  |
 | ZipSlip.cs:121:71:121:82 | access to local variable destFilePath : String | ZipSlip.cs:129:71:129:82 | access to local variable destFilePath : String | provenance |  |
 | ZipSlip.cs:129:71:129:82 | access to local variable destFilePath : String | ZipSlip.cs:134:58:134:69 | access to local variable destFilePath | provenance |  |
+| ZipSlip.cs:305:24:305:40 | access to local variable destinationOnDisk : String | ZipSlip.cs:307:44:307:60 | access to local variable destinationOnDisk : String | provenance |  |
+| ZipSlip.cs:305:44:305:95 | call to method GetFullPath : String | ZipSlip.cs:305:24:305:40 | access to local variable destinationOnDisk : String | provenance |  |
+| ZipSlip.cs:305:61:305:94 | call to method Combine : String | ZipSlip.cs:305:44:305:95 | call to method GetFullPath : String | provenance | Config |
+| ZipSlip.cs:305:61:305:94 | call to method Combine : String | ZipSlip.cs:305:44:305:95 | call to method GetFullPath : String | provenance | MaD:2 |
+| ZipSlip.cs:305:80:305:93 | access to property FullName : String | ZipSlip.cs:305:61:305:94 | call to method Combine : String | provenance | Config |
+| ZipSlip.cs:305:80:305:93 | access to property FullName : String | ZipSlip.cs:305:61:305:94 | call to method Combine : String | provenance | MaD:1 |
+| ZipSlip.cs:307:44:307:60 | access to local variable destinationOnDisk : String | ZipSlip.cs:308:37:308:53 | access to local variable destinationOnDisk | provenance |  |
 | ZipSlipBad.cs:9:16:9:27 | access to local variable destFileName : String | ZipSlipBad.cs:10:29:10:40 | access to local variable destFileName | provenance |  |
 | ZipSlipBad.cs:9:31:9:73 | call to method Combine : String | ZipSlipBad.cs:9:16:9:27 | access to local variable destFileName : String | provenance |  |
 | ZipSlipBad.cs:9:59:9:72 | access to property FullName : String | ZipSlipBad.cs:9:31:9:73 | call to method Combine : String | provenance | Config |
@@ -91,6 +99,12 @@ nodes
 | ZipSlip.cs:126:57:126:68 | access to local variable destFilePath | semmle.label | access to local variable destFilePath |
 | ZipSlip.cs:129:71:129:82 | access to local variable destFilePath : String | semmle.label | access to local variable destFilePath : String |
 | ZipSlip.cs:134:58:134:69 | access to local variable destFilePath | semmle.label | access to local variable destFilePath |
+| ZipSlip.cs:305:24:305:40 | access to local variable destinationOnDisk : String | semmle.label | access to local variable destinationOnDisk : String |
+| ZipSlip.cs:305:44:305:95 | call to method GetFullPath : String | semmle.label | call to method GetFullPath : String |
+| ZipSlip.cs:305:61:305:94 | call to method Combine : String | semmle.label | call to method Combine : String |
+| ZipSlip.cs:305:80:305:93 | access to property FullName : String | semmle.label | access to property FullName : String |
+| ZipSlip.cs:307:44:307:60 | access to local variable destinationOnDisk : String | semmle.label | access to local variable destinationOnDisk : String |
+| ZipSlip.cs:308:37:308:53 | access to local variable destinationOnDisk | semmle.label | access to local variable destinationOnDisk |
 | ZipSlipBad.cs:9:16:9:27 | access to local variable destFileName : String | semmle.label | access to local variable destFileName : String |
 | ZipSlipBad.cs:9:31:9:73 | call to method Combine : String | semmle.label | call to method Combine : String |
 | ZipSlipBad.cs:9:59:9:72 | access to property FullName : String | semmle.label | access to property FullName : String |

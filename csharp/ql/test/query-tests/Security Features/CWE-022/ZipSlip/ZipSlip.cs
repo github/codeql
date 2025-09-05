@@ -196,6 +196,22 @@ namespace ZipSlip
             }
         }
 
+        /* Test that the given `fullPath` exists within the given `path` directory.
+         * If it does not, throw an exception to terminate the request.
+        */
+        public static void ContainsPathValidationThrowing(string? fullPath, string? path)
+        {
+            fullPath = Path.GetFullPath(fullPath);
+            path = Path.GetFullPath(path);
+
+            fullPath = AddBackslashIfNotPresent(fullPath);
+            path = AddBackslashIfNotPresent(path);
+
+            if (!fullPath!.StartsWith(path, StringComparison.OrdinalIgnoreCase)) {
+                throw new Exception("Attempting path traversal");
+            }
+        }
+
         static void Main(string[] args)
         {
             string zipFileName;
@@ -228,6 +244,67 @@ namespace ZipSlip
                     throw new Exception("Entry is outside of target directory. There may have been some directory traversal sequences in filename.");
                 }
                 // NEGATIVE, above exception short circuits on invalid input by path traversal.
+                entry.ExtractToFile(destinationOnDisk, true);
+            }
+        }
+
+        /**
+        * Negative - dangerous path terminates early due to exception thrown by guarded condition in descendent call.
+        */
+        static void fp_throw_nested_exception(ZipArchive archive, string root){
+            foreach (var entry in archive.Entries){
+                string destinationOnDisk = Path.GetFullPath(Path.Combine(root, entry.FullName));
+                string fullRoot = Path.GetFullPath(root + Path.DirectorySeparatorChar);
+                ContainsPathValidationThrowing(destinationOnDisk, fullRoot);
+                // NEGATIVE, above exception short circuits by exception on invalid input by path traversal.
+                entry.ExtractToFile(destinationOnDisk, true);
+            }
+        }
+
+        /**
+        * Negative - no extraction, only sanitization
+        */
+        static void fp_throw_sanitizer_valid(string file, string root){
+            string destinationOnDisk = Path.GetFullPath(file);
+            string fullRoot = Path.GetFullPath(root + Path.DirectorySeparatorChar);
+            if (!destinationOnDisk.StartsWith(fullRoot)){
+                throw new Exception("Entry is outside of target directory. There may have been some directory traversal sequences in filename.");
+            }
+        }
+
+        /**
+        * Negative - dangerous path terminates early due to throw in fp_throw_sanitizer_valid
+        */
+        static void fp_throw_nested_exception_uncaught(ZipArchive archive, string root){
+            foreach (var entry in archive.Entries){
+                string destinationOnDisk = Path.GetFullPath(Path.Combine(root, entry.FullName));
+                string fullRoot = Path.GetFullPath(root + Path.DirectorySeparatorChar);
+                fp_throw_sanitizer_valid(destinationOnDisk, fullRoot);
+                entry.ExtractToFile(destinationOnDisk, true);
+            }
+        }
+
+        /**
+        * Negative - no extraction, only sanitization
+        */
+        static void fp_throw_sanitizer_invalid(string file, string root){
+            try{
+                string destinationOnDisk = Path.GetFullPath(file);
+                string fullRoot = Path.GetFullPath(root);
+                if (!destinationOnDisk.StartsWith(fullRoot)){
+                    throw new Exception("Entry is outside of target directory. There may have been some directory traversal sequences in filename.");
+                }
+            }catch(Exception e){}
+        }
+
+        /**
+        * Positive - dangerous path does not terminate early due to try block in fp_throw_sanitizer_invalid
+        */
+        static void tp_throw_nested_exception_caught(ZipArchive archive, string root){
+            foreach (var entry in archive.Entries){
+                string destinationOnDisk = Path.GetFullPath(Path.Combine(root, entry.FullName));
+                string fullRoot = Path.GetFullPath(root + Path.DirectorySeparatorChar);
+                fp_throw_sanitizer_invalid(destinationOnDisk, fullRoot);
                 entry.ExtractToFile(destinationOnDisk, true);
             }
         }
