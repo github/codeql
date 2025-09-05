@@ -2,8 +2,14 @@ import javax.crypto.KDF;
 import javax.crypto.spec.HKDFParameterSpec;
 
 public class KDFDataflowTest {
+    public static String source(String label) {
+        return "tainted";
+    }
+
+    public static void sink(Object o) {}
+
     public static void main(String[] args) throws Exception {
-        String userInput = args[0]; // source
+        String userInput = source("");
         byte[] taintedBytes = userInput.getBytes();
 
         testBuilderPattern(taintedBytes);
@@ -20,7 +26,7 @@ public class KDFDataflowTest {
 
         KDF kdf = KDF.getInstance("HKDF-SHA256");
         byte[] result = kdf.deriveData(spec);
-        sink(result); // should flag
+        sink(result); // $ hasTaintFlow
     }
 
     public static void testSeparateBuilder(byte[] taintedIKM) throws Exception {
@@ -30,10 +36,8 @@ public class KDFDataflowTest {
 
         KDF kdf = KDF.getInstance("HKDF-SHA256");
         byte[] result = kdf.deriveData(spec);
-        sink(result); // should flag
+        sink(result); // $ hasTaintFlow
     }
-
-    public static void sink(Object o) {}
 
     public static void testKDFWithSalt(byte[] taintedIKM) throws Exception {
         HKDFParameterSpec.Builder builder = HKDFParameterSpec.ofExtract();
@@ -43,7 +47,7 @@ public class KDFDataflowTest {
 
         KDF kdf = KDF.getInstance("HKDF-SHA256");
         byte[] result = kdf.deriveData(spec);
-        sink(result); // should flag
+        sink(result); // $ hasTaintFlow
     }
 
     public static void testStaticParameterSpec(byte[] taintedIKM) throws Exception {
@@ -53,18 +57,18 @@ public class KDFDataflowTest {
 
         KDF kdf = KDF.getInstance("HKDF-SHA256");
         byte[] result = kdf.deriveData(spec);
-        sink(result); // should flag
+        sink(result); // $ hasTaintFlow
     }
 
     public static void testCleanUsage() throws Exception {
         byte[] cleanKeyMaterial = "static-key-material".getBytes();
 
         HKDFParameterSpec.Builder builder = HKDFParameterSpec.ofExtract();
-        builder.addIKM(cleanKeyMaterial); // clean input
+        builder.addIKM(cleanKeyMaterial);
         HKDFParameterSpec spec = builder.thenExpand("info".getBytes(), 32);
 
         KDF kdf = KDF.getInstance("HKDF-SHA256");
         byte[] cleanResult = kdf.deriveData(spec);
-        sink(cleanResult); // should NOT flag - no taint source
+        sink(cleanResult); // Safe - no taint
     }
 }
