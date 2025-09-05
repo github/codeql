@@ -213,3 +213,43 @@ class StringStruct extends Struct {
   pragma[nomagic]
   StringStruct() { this.getCanonicalPath() = "alloc::string::String" }
 }
+
+/**
+ * The [`Deref` trait][1].
+ *
+ * [1]: https://doc.rust-lang.org/core/ops/trait.Deref.html
+ */
+class DerefTrait extends Trait {
+  pragma[nomagic]
+  DerefTrait() { this.getCanonicalPath() = "core::ops::deref::Deref" }
+
+  /** Gets the `deref` function. */
+  Function getDerefFunction() { result = this.(TraitItemNode).getAssocItem("deref") }
+
+  /** Gets the `Target` associated type. */
+  pragma[nomagic]
+  TypeAlias getTargetType() {
+    result = this.getAssocItemList().getAnAssocItem() and
+    result.getName().getText() = "Target"
+  }
+}
+
+/**
+ * The [`Index` trait][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/ops/trait.Index.html
+ */
+class IndexTrait extends Trait {
+  pragma[nomagic]
+  IndexTrait() { this.getCanonicalPath() = "core::ops::index::Index" }
+
+  /** Gets the `index` function. */
+  Function getIndexFunction() { result = this.(TraitItemNode).getAssocItem("index") }
+
+  /** Gets the `Output` associated type. */
+  pragma[nomagic]
+  TypeAlias getOutputType() {
+    result = this.getAssocItemList().getAnAssocItem() and
+    result.getName().getText() = "Output"
+  }
+}

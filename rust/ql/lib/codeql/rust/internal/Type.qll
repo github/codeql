@@ -42,11 +42,14 @@ newtype TType =
   TStruct(Struct s) or
   TEnum(Enum e) or
   TTrait(Trait t) or
+  TUnion(Union u) or
   TArrayType() or // todo: add size?
   TRefType() or // todo: add mut?
   TImplTraitType(ImplTraitTypeRepr impl) or
   TDynTraitType(Trait t) { t = any(DynTraitTypeRepr dt).getTrait() } or
   TSliceType() or
+  TNeverType() or
+  TPtrType() or
   TTupleTypeParameter(int arity, int i) { exists(TTuple(arity)) and i in [0 .. arity - 1] } or
   TTypeParamTypeParameter(TypeParam t) or
   TAssociatedTypeTypeParameter(TypeAlias t) { any(TraitItemNode trait).getAnAssocItem() = t } or
@@ -57,7 +60,8 @@ newtype TType =
   } or
   TRefTypeParameter() or
   TSelfTypeParameter(Trait t) or
-  TSliceTypeParameter()
+  TSliceTypeParameter() or
+  TPtrTypeParameter()
 
 private predicate implTraitTypeParam(ImplTraitTypeRepr implTrait, int i, TypeParam tp) {
   implTrait.isInReturnPos() and
@@ -224,6 +228,31 @@ class TraitType extends Type, TTrait {
   override Location getLocation() { result = trait.getLocation() }
 }
 
+/** A union type. */
+class UnionType extends StructOrEnumType, TUnion {
+  private Union union;
+
+  UnionType() { this = TUnion(union) }
+
+  override ItemNode asItemNode() { result = union }
+
+  override StructField getStructField(string name) { result = union.getStructField(name) }
+
+  override TupleField getTupleField(int i) { none() }
+
+  override TypeParameter getPositionalTypeParameter(int i) {
+    result = TTypeParamTypeParameter(union.getGenericParamList().getTypeParam(i))
+  }
+
+  override TypeMention getTypeParameterDefault(int i) {
+    result = union.getGenericParamList().getTypeParam(i).getDefaultType()
+  }
+
+  override string toString() { result = union.getName().getText() }
+
+  override Location getLocation() { result = union.getLocation() }
+}
+
 /**
  * An array type.
  *
@@ -370,6 +399,33 @@ class SliceType extends Type, TSliceType {
   }
 
   override string toString() { result = "[]" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
+class NeverType extends Type, TNeverType {
+  override StructField getStructField(string name) { none() }
+
+  override TupleField getTupleField(int i) { none() }
+
+  override TypeParameter getPositionalTypeParameter(int i) { none() }
+
+  override string toString() { result = "!" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
+class PtrType extends Type, TPtrType {
+  override StructField getStructField(string name) { none() }
+
+  override TupleField getTupleField(int i) { none() }
+
+  override TypeParameter getPositionalTypeParameter(int i) {
+    i = 0 and
+    result = TPtrTypeParameter()
+  }
+
+  override string toString() { result = "*" }
 
   override Location getLocation() { result instanceof EmptyLocation }
 }
@@ -525,6 +581,12 @@ class RefTypeParameter extends TypeParameter, TRefTypeParameter {
 /** An implicit slice type parameter. */
 class SliceTypeParameter extends TypeParameter, TSliceTypeParameter {
   override string toString() { result = "[T]" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
+class PtrTypeParameter extends TypeParameter, TPtrTypeParameter {
+  override string toString() { result = "*T" }
 
   override Location getLocation() { result instanceof EmptyLocation }
 }
