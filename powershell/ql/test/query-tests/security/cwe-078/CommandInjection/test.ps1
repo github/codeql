@@ -147,6 +147,18 @@ function Invoke-ExpandStringInjection2
     $executionContext.SessionState.InvokeCommand.ExpandString($UserInput) # BAD
 }
 
+function Invoke-InvokeExpressionInjectionCmdletBinding
+{
+    [CmdletBinding()]
+    param($UserInput)
+    Invoke-Expression "Get-Process -Name $UserInput" # BAD
+}
+
+function Invoke-StartProcessInjection
+{
+    param($UserInput)
+    Start-Process -FilePath $UserInput # BAD
+}
 
 
 $input = Read-Host "enter input"
@@ -171,6 +183,17 @@ Invoke-MethodInjection3 -UserInput $input
 Invoke-PropertyInjection -UserInput $input  
 Invoke-ExpandStringInjection1 -UserInput $input  
 Invoke-ExpandStringInjection2 -UserInput $input
+Invoke-InvokeExpressionInjectionCmdletBinding -userInput $input
+Invoke-StartProcessInjection -UserInput $input
+
+function Get-NugetHardcoded
+{
+    Invoke-WebRequest "https://somehardcodedwebsite.org/somefile.exe" -OutFile $webRequestResultSafe
+    return $webRequestResultSafe
+}
+
+$nugetPathSafe = Get-NugetHardcoded
+. $nugetPathSafe
 
 #typed input
 function Invoke-InvokeExpressionInjectionSafe1
@@ -204,10 +227,27 @@ function Invoke-InvokeExpressionInjectionSafe4
     Invoke-Expression "Get-Process -Name $UserInputClean"
 }
 
+#ValidatePattern Attribute
+function Invoke-InvokeExpressionInjectionSafe5
+{
+    param(
+        [ValidateScript({
+            if ($_ -eq "GoodValue") {
+                $true
+            } else {
+                throw "$_ is invalid."
+            }
+        })]
+        $UserInput
+    )
+    Invoke-Expression "Get-Process -Name $UserInput"
+}
+
 Invoke-InvokeExpressionInjectionSafe1 -UserInput $input 
 Invoke-InvokeExpressionInjectionSafe2 -UserInput $input 
 Invoke-InvokeExpressionInjectionSafe3 -UserInput $input 
 Invoke-InvokeExpressionInjectionSafe4 -UserInput $input 
+Invoke-InvokeExpressionInjectionSafe5 -UserInput $input 
 
 function false-positive-in-call-operator($d)
 {

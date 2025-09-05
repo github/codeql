@@ -34,10 +34,17 @@ module CommandInjection {
   class FlowSourceAsSource extends Source {
     FlowSourceAsSource() {
       this instanceof SourceNode and
-      not this instanceof EnvironmentVariableSource
+      not this instanceof EnvironmentVariableSource and 
+      not this instanceof InvokeWebRequest
     }
 
     override string getSourceType() { result = "user-provided value" }
+  }
+
+  class InvokeWebRequest extends DataFlow::CallNode {
+    InvokeWebRequest(){
+      this.matchesName("Invoke-WebRequest")
+    }
   }
 
   /**
@@ -58,6 +65,16 @@ module CommandInjection {
     }
 
     override string getSinkType() { result = "call to Invoke-Expression" }
+  }
+
+  class StartProcessSink extends Sink {
+    StartProcessSink(){
+      exists(DataFlow::CallNode call | 
+        call.matchesName("Start-Process") and 
+        call.getAnArgument() = this
+      )
+    }
+    override string getSinkType(){ result = "call to Start-Process"}
   }
 
   class AddTypeSink extends Sink {
@@ -213,6 +230,17 @@ module CommandInjection {
       exists(Function f, Parameter p |
         p = f.getAParameter() and
         p.getStaticType() != "object" and
+        this.asParameter() = p
+      )
+    }
+  }
+
+    class ValidateAttributeSanitizer extends Sanitizer {
+    ValidateAttributeSanitizer() {
+      exists(Function f, Attribute a, Parameter p |
+        p = f.getAParameter() and
+        p.getAnAttribute() = a and 
+        a.getName() = ["ValidateScript", "ValidateSet", "ValidatePattern"] and
         this.asParameter() = p
       )
     }
