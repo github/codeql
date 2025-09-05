@@ -32,6 +32,82 @@ nodes
 | angular-tempate-url.js:13:30:13:31 | ev | semmle.label | ev |
 | angular-tempate-url.js:14:26:14:27 | ev | semmle.label | ev |
 | angular-tempate-url.js:14:26:14:32 | ev.data | semmle.label | ev.data |
+| aws-db.js:15:31:15:37 | results | semmle.label | results |
+| aws-db.js:15:31:15:76 | results ... arValue | semmle.label | results ... arValue |
+| aws-db.js:20:31:20:38 | response | semmle.label | response |
+| aws-db.js:20:31:20:54 | respons ... tring() | semmle.label | respons ... tring() |
+| aws-db.js:24:31:24:39 | response2 | semmle.label | response2 |
+| aws-db.js:24:31:24:47 | response2.records | semmle.label | response2.records |
+| aws-db.js:28:31:28:39 | response3 | semmle.label | response3 |
+| aws-db.js:28:31:28:44 | response3.Item | semmle.label | response3.Item |
+| aws-db.js:43:31:43:37 | results | semmle.label | results |
+| aws-db.js:43:31:43:76 | results ... arValue | semmle.label | results ... arValue |
+| aws-db.js:46:35:46:38 | data | semmle.label | data |
+| aws-db.js:46:35:46:77 | data.Re ... arValue | semmle.label | data.Re ... arValue |
+| aws-db.js:51:31:51:38 | response | semmle.label | response |
+| aws-db.js:51:31:51:54 | respons ... tring() | semmle.label | respons ... tring() |
+| aws-db.js:54:35:54:38 | data | semmle.label | data |
+| aws-db.js:54:35:54:54 | data.Body.toString() | semmle.label | data.Body.toString() |
+| aws-db.js:59:31:59:39 | response1 | semmle.label | response1 |
+| aws-db.js:59:31:59:47 | response1.records | semmle.label | response1.records |
+| aws-db.js:62:35:62:38 | data | semmle.label | data |
+| aws-db.js:62:35:62:46 | data.records | semmle.label | data.records |
+| aws-db.js:66:31:66:39 | response2 | semmle.label | response2 |
+| aws-db.js:66:31:66:53 | respons ... Results | semmle.label | respons ... Results |
+| aws-db.js:69:35:69:38 | data | semmle.label | data |
+| aws-db.js:69:35:69:52 | data.updateResults | semmle.label | data.updateResults |
+| aws-db.js:74:35:74:38 | data | semmle.label | data |
+| aws-db.js:74:35:74:43 | data.Item | semmle.label | data.Item |
+| aws-db.js:77:35:77:38 | data | semmle.label | data |
+| aws-db.js:77:35:77:43 | data.Item | semmle.label | data.Item |
+| aws.js:14:31:14:36 | result | semmle.label | result |
+| aws.js:14:31:14:44 | result.comment | semmle.label | result.comment |
+| aws.js:18:31:18:37 | result2 | semmle.label | result2 |
+| aws.js:18:31:18:45 | result2.comment | semmle.label | result2.comment |
+| aws.js:22:31:22:37 | result3 | semmle.label | result3 |
+| aws.js:22:31:22:45 | result3.comment | semmle.label | result3.comment |
+| aws.js:26:31:26:37 | result4 | semmle.label | result4 |
+| aws.js:26:31:26:45 | result4.comment | semmle.label | result4.comment |
+| aws.js:34:31:34:34 | data | semmle.label | data |
+| aws.js:34:31:34:42 | data.comment | semmle.label | data.comment |
+| aws.js:37:35:37:38 | data | semmle.label | data |
+| aws.js:37:35:37:46 | data.comment | semmle.label | data.comment |
+| aws.js:47:31:47:34 | data | semmle.label | data |
+| aws.js:47:31:47:42 | data.comment | semmle.label | data.comment |
+| aws.js:50:35:50:38 | data | semmle.label | data |
+| aws.js:50:35:50:46 | data.comment | semmle.label | data.comment |
+| aws.js:59:31:59:34 | data | semmle.label | data |
+| aws.js:59:31:59:42 | data.comment | semmle.label | data.comment |
+| aws.js:62:35:62:38 | data | semmle.label | data |
+| aws.js:62:35:62:46 | data.comment | semmle.label | data.comment |
+| aws.js:66:31:66:35 | data2 | semmle.label | data2 |
+| aws.js:66:31:66:43 | data2.comment | semmle.label | data2.comment |
+| aws.js:69:35:69:38 | data | semmle.label | data |
+| aws.js:69:35:69:46 | data.comment | semmle.label | data.comment |
+| aws.js:78:31:78:34 | data | semmle.label | data |
+| aws.js:78:31:78:42 | data.comment | semmle.label | data.comment |
+| aws.js:81:35:81:38 | data | semmle.label | data |
+| aws.js:81:35:81:46 | data.comment | semmle.label | data.comment |
+| aws.js:85:31:85:35 | data2 | semmle.label | data2 |
+| aws.js:85:31:85:43 | data2.comment | semmle.label | data2.comment |
+| aws.js:88:35:88:38 | data | semmle.label | data |
+| aws.js:88:35:88:46 | data.comment | semmle.label | data.comment |
+| aws.js:92:31:92:35 | data3 | semmle.label | data3 |
+| aws.js:92:31:92:43 | data3.comment | semmle.label | data3.comment |
+| aws.js:95:35:95:38 | data | semmle.label | data |
+| aws.js:95:35:95:46 | data.comment | semmle.label | data.comment |
+| aws.js:99:31:99:35 | data4 | semmle.label | data4 |
+| aws.js:99:31:99:43 | data4.comment | semmle.label | data4.comment |
+| aws.js:102:35:102:38 | data | semmle.label | data |
+| aws.js:102:35:102:46 | data.comment | semmle.label | data.comment |
+| aws.js:106:31:106:35 | data5 | semmle.label | data5 |
+| aws.js:106:31:106:43 | data5.comment | semmle.label | data5.comment |
+| aws.js:109:35:109:38 | data | semmle.label | data |
+| aws.js:109:35:109:46 | data.comment | semmle.label | data.comment |
+| aws.js:113:31:113:35 | data6 | semmle.label | data6 |
+| aws.js:113:31:113:43 | data6.comment | semmle.label | data6.comment |
+| aws.js:116:35:116:38 | data | semmle.label | data |
+| aws.js:116:35:116:46 | data.comment | semmle.label | data.comment |
 | classnames.js:7:31:7:84 | `<span  ... <span>` | semmle.label | `<span  ... <span>` |
 | classnames.js:7:47:7:69 | classNa ... w.name) | semmle.label | classNa ... w.name) |
 | classnames.js:7:58:7:68 | window.name | semmle.label | window.name |
@@ -724,6 +800,44 @@ edges
 | angular-tempate-url.js:13:30:13:31 | ev | angular-tempate-url.js:14:26:14:27 | ev | provenance |  |
 | angular-tempate-url.js:14:26:14:27 | ev | angular-tempate-url.js:14:26:14:32 | ev.data | provenance |  |
 | angular-tempate-url.js:14:26:14:32 | ev.data | angular-tempate-url.js:9:26:9:45 | Cookie.get("unsafe") | provenance |  |
+| aws-db.js:15:31:15:37 | results | aws-db.js:15:31:15:76 | results ... arValue | provenance |  |
+| aws-db.js:20:31:20:38 | response | aws-db.js:20:31:20:54 | respons ... tring() | provenance |  |
+| aws-db.js:24:31:24:39 | response2 | aws-db.js:24:31:24:47 | response2.records | provenance |  |
+| aws-db.js:28:31:28:39 | response3 | aws-db.js:28:31:28:44 | response3.Item | provenance |  |
+| aws-db.js:43:31:43:37 | results | aws-db.js:43:31:43:76 | results ... arValue | provenance |  |
+| aws-db.js:46:35:46:38 | data | aws-db.js:46:35:46:77 | data.Re ... arValue | provenance |  |
+| aws-db.js:51:31:51:38 | response | aws-db.js:51:31:51:54 | respons ... tring() | provenance |  |
+| aws-db.js:54:35:54:38 | data | aws-db.js:54:35:54:54 | data.Body.toString() | provenance |  |
+| aws-db.js:59:31:59:39 | response1 | aws-db.js:59:31:59:47 | response1.records | provenance |  |
+| aws-db.js:62:35:62:38 | data | aws-db.js:62:35:62:46 | data.records | provenance |  |
+| aws-db.js:66:31:66:39 | response2 | aws-db.js:66:31:66:53 | respons ... Results | provenance |  |
+| aws-db.js:69:35:69:38 | data | aws-db.js:69:35:69:52 | data.updateResults | provenance |  |
+| aws-db.js:74:35:74:38 | data | aws-db.js:74:35:74:43 | data.Item | provenance |  |
+| aws-db.js:77:35:77:38 | data | aws-db.js:77:35:77:43 | data.Item | provenance |  |
+| aws.js:14:31:14:36 | result | aws.js:14:31:14:44 | result.comment | provenance |  |
+| aws.js:18:31:18:37 | result2 | aws.js:18:31:18:45 | result2.comment | provenance |  |
+| aws.js:22:31:22:37 | result3 | aws.js:22:31:22:45 | result3.comment | provenance |  |
+| aws.js:26:31:26:37 | result4 | aws.js:26:31:26:45 | result4.comment | provenance |  |
+| aws.js:34:31:34:34 | data | aws.js:34:31:34:42 | data.comment | provenance |  |
+| aws.js:37:35:37:38 | data | aws.js:37:35:37:46 | data.comment | provenance |  |
+| aws.js:47:31:47:34 | data | aws.js:47:31:47:42 | data.comment | provenance |  |
+| aws.js:50:35:50:38 | data | aws.js:50:35:50:46 | data.comment | provenance |  |
+| aws.js:59:31:59:34 | data | aws.js:59:31:59:42 | data.comment | provenance |  |
+| aws.js:62:35:62:38 | data | aws.js:62:35:62:46 | data.comment | provenance |  |
+| aws.js:66:31:66:35 | data2 | aws.js:66:31:66:43 | data2.comment | provenance |  |
+| aws.js:69:35:69:38 | data | aws.js:69:35:69:46 | data.comment | provenance |  |
+| aws.js:78:31:78:34 | data | aws.js:78:31:78:42 | data.comment | provenance |  |
+| aws.js:81:35:81:38 | data | aws.js:81:35:81:46 | data.comment | provenance |  |
+| aws.js:85:31:85:35 | data2 | aws.js:85:31:85:43 | data2.comment | provenance |  |
+| aws.js:88:35:88:38 | data | aws.js:88:35:88:46 | data.comment | provenance |  |
+| aws.js:92:31:92:35 | data3 | aws.js:92:31:92:43 | data3.comment | provenance |  |
+| aws.js:95:35:95:38 | data | aws.js:95:35:95:46 | data.comment | provenance |  |
+| aws.js:99:31:99:35 | data4 | aws.js:99:31:99:43 | data4.comment | provenance |  |
+| aws.js:102:35:102:38 | data | aws.js:102:35:102:46 | data.comment | provenance |  |
+| aws.js:106:31:106:35 | data5 | aws.js:106:31:106:43 | data5.comment | provenance |  |
+| aws.js:109:35:109:38 | data | aws.js:109:35:109:46 | data.comment | provenance |  |
+| aws.js:113:31:113:35 | data6 | aws.js:113:31:113:43 | data6.comment | provenance |  |
+| aws.js:116:35:116:38 | data | aws.js:116:35:116:46 | data.comment | provenance |  |
 | classnames.js:7:47:7:69 | classNa ... w.name) | classnames.js:7:31:7:84 | `<span  ... <span>` | provenance |  |
 | classnames.js:7:58:7:68 | window.name | classnames.js:7:47:7:69 | classNa ... w.name) | provenance |  |
 | classnames.js:8:47:8:70 | classNa ... w.name) | classnames.js:8:31:8:85 | `<span  ... <span>` | provenance |  |
@@ -1319,6 +1433,44 @@ subpaths
 | various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | various-concat-obfuscations.js:17:24:17:28 | attrs | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') | various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) |
 | various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | various-concat-obfuscations.js:17:24:17:28 | attrs | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') [ArrayElement] | various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) |
 #select
+| aws-db.js:15:31:15:76 | results ... arValue | aws-db.js:15:31:15:37 | results | aws-db.js:15:31:15:76 | results ... arValue | Cross-site scripting vulnerability due to $@. | aws-db.js:15:31:15:37 | results | user-provided value |
+| aws-db.js:20:31:20:54 | respons ... tring() | aws-db.js:20:31:20:38 | response | aws-db.js:20:31:20:54 | respons ... tring() | Cross-site scripting vulnerability due to $@. | aws-db.js:20:31:20:38 | response | user-provided value |
+| aws-db.js:24:31:24:47 | response2.records | aws-db.js:24:31:24:39 | response2 | aws-db.js:24:31:24:47 | response2.records | Cross-site scripting vulnerability due to $@. | aws-db.js:24:31:24:39 | response2 | user-provided value |
+| aws-db.js:28:31:28:44 | response3.Item | aws-db.js:28:31:28:39 | response3 | aws-db.js:28:31:28:44 | response3.Item | Cross-site scripting vulnerability due to $@. | aws-db.js:28:31:28:39 | response3 | user-provided value |
+| aws-db.js:43:31:43:76 | results ... arValue | aws-db.js:43:31:43:37 | results | aws-db.js:43:31:43:76 | results ... arValue | Cross-site scripting vulnerability due to $@. | aws-db.js:43:31:43:37 | results | user-provided value |
+| aws-db.js:46:35:46:77 | data.Re ... arValue | aws-db.js:46:35:46:38 | data | aws-db.js:46:35:46:77 | data.Re ... arValue | Cross-site scripting vulnerability due to $@. | aws-db.js:46:35:46:38 | data | user-provided value |
+| aws-db.js:51:31:51:54 | respons ... tring() | aws-db.js:51:31:51:38 | response | aws-db.js:51:31:51:54 | respons ... tring() | Cross-site scripting vulnerability due to $@. | aws-db.js:51:31:51:38 | response | user-provided value |
+| aws-db.js:54:35:54:54 | data.Body.toString() | aws-db.js:54:35:54:38 | data | aws-db.js:54:35:54:54 | data.Body.toString() | Cross-site scripting vulnerability due to $@. | aws-db.js:54:35:54:38 | data | user-provided value |
+| aws-db.js:59:31:59:47 | response1.records | aws-db.js:59:31:59:39 | response1 | aws-db.js:59:31:59:47 | response1.records | Cross-site scripting vulnerability due to $@. | aws-db.js:59:31:59:39 | response1 | user-provided value |
+| aws-db.js:62:35:62:46 | data.records | aws-db.js:62:35:62:38 | data | aws-db.js:62:35:62:46 | data.records | Cross-site scripting vulnerability due to $@. | aws-db.js:62:35:62:38 | data | user-provided value |
+| aws-db.js:66:31:66:53 | respons ... Results | aws-db.js:66:31:66:39 | response2 | aws-db.js:66:31:66:53 | respons ... Results | Cross-site scripting vulnerability due to $@. | aws-db.js:66:31:66:39 | response2 | user-provided value |
+| aws-db.js:69:35:69:52 | data.updateResults | aws-db.js:69:35:69:38 | data | aws-db.js:69:35:69:52 | data.updateResults | Cross-site scripting vulnerability due to $@. | aws-db.js:69:35:69:38 | data | user-provided value |
+| aws-db.js:74:35:74:43 | data.Item | aws-db.js:74:35:74:38 | data | aws-db.js:74:35:74:43 | data.Item | Cross-site scripting vulnerability due to $@. | aws-db.js:74:35:74:38 | data | user-provided value |
+| aws-db.js:77:35:77:43 | data.Item | aws-db.js:77:35:77:38 | data | aws-db.js:77:35:77:43 | data.Item | Cross-site scripting vulnerability due to $@. | aws-db.js:77:35:77:38 | data | user-provided value |
+| aws.js:14:31:14:44 | result.comment | aws.js:14:31:14:36 | result | aws.js:14:31:14:44 | result.comment | Cross-site scripting vulnerability due to $@. | aws.js:14:31:14:36 | result | user-provided value |
+| aws.js:18:31:18:45 | result2.comment | aws.js:18:31:18:37 | result2 | aws.js:18:31:18:45 | result2.comment | Cross-site scripting vulnerability due to $@. | aws.js:18:31:18:37 | result2 | user-provided value |
+| aws.js:22:31:22:45 | result3.comment | aws.js:22:31:22:37 | result3 | aws.js:22:31:22:45 | result3.comment | Cross-site scripting vulnerability due to $@. | aws.js:22:31:22:37 | result3 | user-provided value |
+| aws.js:26:31:26:45 | result4.comment | aws.js:26:31:26:37 | result4 | aws.js:26:31:26:45 | result4.comment | Cross-site scripting vulnerability due to $@. | aws.js:26:31:26:37 | result4 | user-provided value |
+| aws.js:34:31:34:42 | data.comment | aws.js:34:31:34:34 | data | aws.js:34:31:34:42 | data.comment | Cross-site scripting vulnerability due to $@. | aws.js:34:31:34:34 | data | user-provided value |
+| aws.js:37:35:37:46 | data.comment | aws.js:37:35:37:38 | data | aws.js:37:35:37:46 | data.comment | Cross-site scripting vulnerability due to $@. | aws.js:37:35:37:38 | data | user-provided value |
+| aws.js:47:31:47:42 | data.comment | aws.js:47:31:47:34 | data | aws.js:47:31:47:42 | data.comment | Cross-site scripting vulnerability due to $@. | aws.js:47:31:47:34 | data | user-provided value |
+| aws.js:50:35:50:46 | data.comment | aws.js:50:35:50:38 | data | aws.js:50:35:50:46 | data.comment | Cross-site scripting vulnerability due to $@. | aws.js:50:35:50:38 | data | user-provided value |
+| aws.js:59:31:59:42 | data.comment | aws.js:59:31:59:34 | data | aws.js:59:31:59:42 | data.comment | Cross-site scripting vulnerability due to $@. | aws.js:59:31:59:34 | data | user-provided value |
+| aws.js:62:35:62:46 | data.comment | aws.js:62:35:62:38 | data | aws.js:62:35:62:46 | data.comment | Cross-site scripting vulnerability due to $@. | aws.js:62:35:62:38 | data | user-provided value |
+| aws.js:66:31:66:43 | data2.comment | aws.js:66:31:66:35 | data2 | aws.js:66:31:66:43 | data2.comment | Cross-site scripting vulnerability due to $@. | aws.js:66:31:66:35 | data2 | user-provided value |
+| aws.js:69:35:69:46 | data.comment | aws.js:69:35:69:38 | data | aws.js:69:35:69:46 | data.comment | Cross-site scripting vulnerability due to $@. | aws.js:69:35:69:38 | data | user-provided value |
+| aws.js:78:31:78:42 | data.comment | aws.js:78:31:78:34 | data | aws.js:78:31:78:42 | data.comment | Cross-site scripting vulnerability due to $@. | aws.js:78:31:78:34 | data | user-provided value |
+| aws.js:81:35:81:46 | data.comment | aws.js:81:35:81:38 | data | aws.js:81:35:81:46 | data.comment | Cross-site scripting vulnerability due to $@. | aws.js:81:35:81:38 | data | user-provided value |
+| aws.js:85:31:85:43 | data2.comment | aws.js:85:31:85:35 | data2 | aws.js:85:31:85:43 | data2.comment | Cross-site scripting vulnerability due to $@. | aws.js:85:31:85:35 | data2 | user-provided value |
+| aws.js:88:35:88:46 | data.comment | aws.js:88:35:88:38 | data | aws.js:88:35:88:46 | data.comment | Cross-site scripting vulnerability due to $@. | aws.js:88:35:88:38 | data | user-provided value |
+| aws.js:92:31:92:43 | data3.comment | aws.js:92:31:92:35 | data3 | aws.js:92:31:92:43 | data3.comment | Cross-site scripting vulnerability due to $@. | aws.js:92:31:92:35 | data3 | user-provided value |
+| aws.js:95:35:95:46 | data.comment | aws.js:95:35:95:38 | data | aws.js:95:35:95:46 | data.comment | Cross-site scripting vulnerability due to $@. | aws.js:95:35:95:38 | data | user-provided value |
+| aws.js:99:31:99:43 | data4.comment | aws.js:99:31:99:35 | data4 | aws.js:99:31:99:43 | data4.comment | Cross-site scripting vulnerability due to $@. | aws.js:99:31:99:35 | data4 | user-provided value |
+| aws.js:102:35:102:46 | data.comment | aws.js:102:35:102:38 | data | aws.js:102:35:102:46 | data.comment | Cross-site scripting vulnerability due to $@. | aws.js:102:35:102:38 | data | user-provided value |
+| aws.js:106:31:106:43 | data5.comment | aws.js:106:31:106:35 | data5 | aws.js:106:31:106:43 | data5.comment | Cross-site scripting vulnerability due to $@. | aws.js:106:31:106:35 | data5 | user-provided value |
+| aws.js:109:35:109:46 | data.comment | aws.js:109:35:109:38 | data | aws.js:109:35:109:46 | data.comment | Cross-site scripting vulnerability due to $@. | aws.js:109:35:109:38 | data | user-provided value |
+| aws.js:113:31:113:43 | data6.comment | aws.js:113:31:113:35 | data6 | aws.js:113:31:113:43 | data6.comment | Cross-site scripting vulnerability due to $@. | aws.js:113:31:113:35 | data6 | user-provided value |
+| aws.js:116:35:116:46 | data.comment | aws.js:116:35:116:38 | data | aws.js:116:35:116:46 | data.comment | Cross-site scripting vulnerability due to $@. | aws.js:116:35:116:38 | data | user-provided value |
 | hana.js:11:37:11:51 | rows[0].comment | hana.js:11:37:11:40 | rows | hana.js:11:37:11:51 | rows[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:11:37:11:40 | rows | user-provided value |
 | hana.js:16:37:16:51 | rows[0].comment | hana.js:16:37:16:40 | rows | hana.js:16:37:16:51 | rows[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:16:37:16:40 | rows | user-provided value |
 | hana.js:19:37:19:51 | rows[0].comment | hana.js:19:37:19:40 | rows | hana.js:19:37:19:51 | rows[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:19:37:19:40 | rows | user-provided value |
