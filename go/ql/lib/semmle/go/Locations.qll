@@ -1,6 +1,7 @@
 /** Provides classes for working with locations and program elements that have locations. */
 
 import go
+private import semmle.go.Overlay
 
 /**
  * A location as given by a file, a start line, a start column,
