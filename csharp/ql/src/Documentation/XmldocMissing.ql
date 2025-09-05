@@ -6,7 +6,9 @@
  * @problem.severity recommendation
  * @precision medium
  * @id cs/xmldoc/missing-xmldoc
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
  */
 
 import Documentation
