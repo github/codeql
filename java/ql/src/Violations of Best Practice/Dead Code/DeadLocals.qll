@@ -4,7 +4,7 @@
 
 import java
 import semmle.code.java.dataflow.SSA
-private import semmle.code.java.frameworks.Assertions
+private import semmle.code.java.controlflow.internal.Preconditions
 
 private predicate emptyDecl(LocalVariableDeclExpr decl) {
   not exists(decl.getInit()) and
@@ -22,7 +22,19 @@ predicate deadLocal(VariableUpdate upd) {
 /**
  * A dead variable update that is expected to be dead as indicated by an assertion.
  */
-predicate expectedDead(VariableUpdate upd) { assertFail(upd.getBasicBlock(), _) }
+predicate expectedDead(VariableUpdate upd) {
+  exists(BasicBlock bb, ControlFlowNode n |
+    bb = upd.getBasicBlock() and
+    bb = n.getBasicBlock()
+  |
+    methodCallUnconditionallyThrows(n.asExpr())
+    or
+    exists(AssertStmt a |
+      n.asExpr() = a.getExpr() and
+      a.getExpr().(BooleanLiteral).getBooleanValue() = false
+    )
+  )
+}
 
 /**
  * A dead update that is overwritten by a live update.
