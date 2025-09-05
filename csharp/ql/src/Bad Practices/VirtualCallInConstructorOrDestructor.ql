@@ -6,9 +6,9 @@
  * @precision medium
  * @id cs/virtual-call-in-constructor
  * @alternate-ids cs/virtual-call-in-constructor-or-destructor
- * @tags reliability
- *       maintainability
- *       modularity
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import csharp

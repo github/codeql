@@ -6,7 +6,8 @@
  * @problem.severity warning
  * @precision medium
  * @id cs/reference-equality-with-object
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       external/cwe/cwe-595
  */
