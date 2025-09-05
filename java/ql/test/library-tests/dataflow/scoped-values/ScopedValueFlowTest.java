@@ -1,15 +1,23 @@
+import java.lang.ScopedValue;
+
 public class ScopedValueFlowTest {
     private static final ScopedValue<String> USER_CONTEXT = ScopedValue.newInstance();
     private static final ScopedValue<String> SESSION_ID = ScopedValue.newInstance();
 
+    public static String source(String label) {
+        return "tainted";
+    }
+
+    public static void sink(String value) {}
+
     public static void main(String[] args) {
-        String userInput = args[0]; // source
+        String userInput = source("");
 
         // Test 1: Basic scoped value binding and retrieval
         ScopedValue.where(USER_CONTEXT, userInput)
             .run(() -> {
                 String value = USER_CONTEXT.get();
-                sink(value); // should flag: tainted data reaches sink
+                sink(value); // $ hasTaintFlow
             });
 
         // Test 2: Multiple scoped value bindings with chaining
@@ -18,8 +26,8 @@ public class ScopedValueFlowTest {
             .run(() -> {
                 String user = USER_CONTEXT.get();
                 String session = SESSION_ID.get();
-                sink(user); // should flag: tainted data reaches sink
-                sink(session); // should NOT flag
+                sink(user); // $ hasTaintFlow
+                sink(session); // safe - should NOT have taint flow
             });
 
         ScopedValue.where(USER_CONTEXT, userInput)
@@ -28,12 +36,9 @@ public class ScopedValueFlowTest {
                 ScopedValue.where(USER_CONTEXT, "safe-two")
                     .run(() -> {
                         String inner = USER_CONTEXT.get();
-                        sink(inner); // False Positive: currently flags (model limitation
+                        sink(inner); // $ SPURIOUS: hasTaintFlow
                     });
-                sink(outer); // should flag: tainted data reaches sink
+                sink(outer); // $ hasTaintFlow
             });
-    }
-
-    public static void sink(String s) {
     }
 }

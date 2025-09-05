@@ -1,4 +1,42 @@
-| ScopedValueFlowTest.java:6:28:6:34 | ...[...] | ScopedValueFlowTest.java:12:22:12:26 | value |
-| ScopedValueFlowTest.java:6:28:6:34 | ...[...] | ScopedValueFlowTest.java:21:22:21:25 | user |
-| ScopedValueFlowTest.java:6:28:6:34 | ...[...] | ScopedValueFlowTest.java:31:30:31:34 | inner |
-| ScopedValueFlowTest.java:6:28:6:34 | ...[...] | ScopedValueFlowTest.java:33:22:33:26 | outer |
+models
+| 1 | Summary: java.lang; ScopedValue; false; where; (ScopedValue,Object); ; Argument[1]; Argument[0].SyntheticField[java.lang.ScopedValue.boundValue]; value; manual |
+| 2 | Summary: java.lang; ScopedValue; true; get; (); ; Argument[this].SyntheticField[java.lang.ScopedValue.boundValue]; ReturnValue; value; manual |
+edges
+| ScopedValueFlowTest.java:4:46:4:57 | USER_CONTEXT : ScopedValue [java.lang.ScopedValue.boundValue] : String | ScopedValueFlowTest.java:21:32:21:43 | USER_CONTEXT : ScopedValue [java.lang.ScopedValue.boundValue] : String | provenance |  |
+| ScopedValueFlowTest.java:4:46:4:57 | USER_CONTEXT : ScopedValue [java.lang.ScopedValue.boundValue] : String | ScopedValueFlowTest.java:29:31:29:42 | USER_CONTEXT : ScopedValue [java.lang.ScopedValue.boundValue] : String | provenance |  |
+| ScopedValueFlowTest.java:4:46:4:57 | USER_CONTEXT : ScopedValue [java.lang.ScopedValue.boundValue] : String | ScopedValueFlowTest.java:37:32:37:43 | USER_CONTEXT : ScopedValue [java.lang.ScopedValue.boundValue] : String | provenance |  |
+| ScopedValueFlowTest.java:16:28:16:37 | source(...) : String | ScopedValueFlowTest.java:19:41:19:49 | userInput : String | provenance |  |
+| ScopedValueFlowTest.java:16:28:16:37 | source(...) : String | ScopedValueFlowTest.java:26:41:26:49 | userInput : String | provenance |  |
+| ScopedValueFlowTest.java:16:28:16:37 | source(...) : String | ScopedValueFlowTest.java:35:41:35:49 | userInput : String | provenance |  |
+| ScopedValueFlowTest.java:19:27:19:38 | USER_CONTEXT [post update] : ScopedValue [java.lang.ScopedValue.boundValue] : String | ScopedValueFlowTest.java:4:46:4:57 | USER_CONTEXT : ScopedValue [java.lang.ScopedValue.boundValue] : String | provenance |  |
+| ScopedValueFlowTest.java:19:41:19:49 | userInput : String | ScopedValueFlowTest.java:19:27:19:38 | USER_CONTEXT [post update] : ScopedValue [java.lang.ScopedValue.boundValue] : String | provenance | MaD:1 |
+| ScopedValueFlowTest.java:21:32:21:43 | USER_CONTEXT : ScopedValue [java.lang.ScopedValue.boundValue] : String | ScopedValueFlowTest.java:21:32:21:49 | get(...) : String | provenance | MaD:2 |
+| ScopedValueFlowTest.java:21:32:21:49 | get(...) : String | ScopedValueFlowTest.java:22:22:22:26 | value | provenance |  |
+| ScopedValueFlowTest.java:26:27:26:38 | USER_CONTEXT [post update] : ScopedValue [java.lang.ScopedValue.boundValue] : String | ScopedValueFlowTest.java:4:46:4:57 | USER_CONTEXT : ScopedValue [java.lang.ScopedValue.boundValue] : String | provenance |  |
+| ScopedValueFlowTest.java:26:41:26:49 | userInput : String | ScopedValueFlowTest.java:26:27:26:38 | USER_CONTEXT [post update] : ScopedValue [java.lang.ScopedValue.boundValue] : String | provenance | MaD:1 |
+| ScopedValueFlowTest.java:29:31:29:42 | USER_CONTEXT : ScopedValue [java.lang.ScopedValue.boundValue] : String | ScopedValueFlowTest.java:29:31:29:48 | get(...) : String | provenance | MaD:2 |
+| ScopedValueFlowTest.java:29:31:29:48 | get(...) : String | ScopedValueFlowTest.java:31:22:31:25 | user | provenance |  |
+| ScopedValueFlowTest.java:35:27:35:38 | USER_CONTEXT [post update] : ScopedValue [java.lang.ScopedValue.boundValue] : String | ScopedValueFlowTest.java:4:46:4:57 | USER_CONTEXT : ScopedValue [java.lang.ScopedValue.boundValue] : String | provenance |  |
+| ScopedValueFlowTest.java:35:41:35:49 | userInput : String | ScopedValueFlowTest.java:35:27:35:38 | USER_CONTEXT [post update] : ScopedValue [java.lang.ScopedValue.boundValue] : String | provenance | MaD:1 |
+| ScopedValueFlowTest.java:37:32:37:43 | USER_CONTEXT : ScopedValue [java.lang.ScopedValue.boundValue] : String | ScopedValueFlowTest.java:37:32:37:49 | get(...) : String | provenance | MaD:2 |
+| ScopedValueFlowTest.java:37:32:37:49 | get(...) : String | ScopedValueFlowTest.java:38:22:38:26 | outer | provenance |  |
+nodes
+| ScopedValueFlowTest.java:4:46:4:57 | USER_CONTEXT : ScopedValue [java.lang.ScopedValue.boundValue] : String | semmle.label | USER_CONTEXT : ScopedValue [java.lang.ScopedValue.boundValue] : String |
+| ScopedValueFlowTest.java:16:28:16:37 | source(...) : String | semmle.label | source(...) : String |
+| ScopedValueFlowTest.java:19:27:19:38 | USER_CONTEXT [post update] : ScopedValue [java.lang.ScopedValue.boundValue] : String | semmle.label | USER_CONTEXT [post update] : ScopedValue [java.lang.ScopedValue.boundValue] : String |
+| ScopedValueFlowTest.java:19:41:19:49 | userInput : String | semmle.label | userInput : String |
+| ScopedValueFlowTest.java:21:32:21:43 | USER_CONTEXT : ScopedValue [java.lang.ScopedValue.boundValue] : String | semmle.label | USER_CONTEXT : ScopedValue [java.lang.ScopedValue.boundValue] : String |
+| ScopedValueFlowTest.java:21:32:21:49 | get(...) : String | semmle.label | get(...) : String |
+| ScopedValueFlowTest.java:22:22:22:26 | value | semmle.label | value |
+| ScopedValueFlowTest.java:26:27:26:38 | USER_CONTEXT [post update] : ScopedValue [java.lang.ScopedValue.boundValue] : String | semmle.label | USER_CONTEXT [post update] : ScopedValue [java.lang.ScopedValue.boundValue] : String |
+| ScopedValueFlowTest.java:26:41:26:49 | userInput : String | semmle.label | userInput : String |
+| ScopedValueFlowTest.java:29:31:29:42 | USER_CONTEXT : ScopedValue [java.lang.ScopedValue.boundValue] : String | semmle.label | USER_CONTEXT : ScopedValue [java.lang.ScopedValue.boundValue] : String |
+| ScopedValueFlowTest.java:29:31:29:48 | get(...) : String | semmle.label | get(...) : String |
+| ScopedValueFlowTest.java:31:22:31:25 | user | semmle.label | user |
+| ScopedValueFlowTest.java:35:27:35:38 | USER_CONTEXT [post update] : ScopedValue [java.lang.ScopedValue.boundValue] : String | semmle.label | USER_CONTEXT [post update] : ScopedValue [java.lang.ScopedValue.boundValue] : String |
+| ScopedValueFlowTest.java:35:41:35:49 | userInput : String | semmle.label | userInput : String |
+| ScopedValueFlowTest.java:37:32:37:43 | USER_CONTEXT : ScopedValue [java.lang.ScopedValue.boundValue] : String | semmle.label | USER_CONTEXT : ScopedValue [java.lang.ScopedValue.boundValue] : String |
+| ScopedValueFlowTest.java:37:32:37:49 | get(...) : String | semmle.label | get(...) : String |
+| ScopedValueFlowTest.java:38:22:38:26 | outer | semmle.label | outer |
+subpaths
+testFailures
