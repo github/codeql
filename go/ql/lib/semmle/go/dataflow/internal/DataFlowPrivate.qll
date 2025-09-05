@@ -72,16 +72,6 @@ predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
     nodeTo = ssaNode(succ.getVariable())
   )
   or
-  // SSA defn -> SSA capture
-  exists(SsaExplicitDefinition pred, SsaVariableCapture succ |
-    // Check: should these flow from PHIs as well? Perhaps they should be included
-    // in the use-use graph?
-    succ.getSourceVariable() = pred.getSourceVariable()
-  |
-    nodeFrom = ssaNode(pred.getVariable()) and
-    nodeTo = ssaNode(succ.getVariable())
-  )
-  or
   // SSA defn -> first SSA use
   exists(SsaDefinition pred, IR::Instruction succ | succ = pred.getAFirstUse() |
     (pred instanceof SsaExplicitDefinition or pred instanceof SsaVariableCapture) and
