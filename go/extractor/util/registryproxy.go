@@ -113,11 +113,6 @@ func getEnvVars() []string {
 
 // Applies private package proxy related environment variables to `cmd`.
 func ApplyProxyEnvVars(cmd *exec.Cmd) {
-	slog.Debug(
-		"Applying private registry proxy environment variables",
-		slog.String("cmd_args", strings.Join(cmd.Args, " ")),
-	)
-
 	// If we haven't done so yet, check whether the proxy environment variables are set
 	// and extract information from them.
 	if !proxy_vars_checked {
@@ -131,4 +126,10 @@ func ApplyProxyEnvVars(cmd *exec.Cmd) {
 	if proxy_vars != nil {
 		cmd.Env = append(os.Environ(), proxy_vars...)
 	}
+
+	slog.Debug(
+		"Applying private registry proxy environment variables",
+		slog.String("cmd_args", strings.Join(cmd.Args, " ")),
+		slog.String("proxy_vars", strings.Join(proxy_vars, ",")),
+	)
 }
