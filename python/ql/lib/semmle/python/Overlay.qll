@@ -1,8 +1,6 @@
 /**
  * Defines entity discard predicates for Python overlay analysis.
  */
-overlay[local?]
-module;
 
 import python
 
@@ -143,6 +141,7 @@ private predicate discardVar(@py_base_var n) {
   )
 }
 
+overlay[local]
 final private class DiscardableVar extends DiscardableBaseVar instanceof @py_variable {
   override string getPath() {
     exists(Discardable parent | result = parent.getPath() |
@@ -153,6 +152,7 @@ final private class DiscardableVar extends DiscardableBaseVar instanceof @py_var
   }
 }
 
+overlay[local]
 final private class DiscardableSsaVar extends DiscardableBaseVar instanceof @py_ssa_var {
   override string getPath() {
     exists(DiscardableSsaVar other | result = other.getPath() |
