@@ -120,6 +120,7 @@ func getEnvVars() []string {
 
 			if len(git_sources) > 0 {
 				if proxy_cert_file != "" {
+					slog.Info("Configuring `git` to use proxy certificate", slog.String("path", proxy_cert_file))
 					cmd := exec.Command("git", "config", "--global", "http.sslCAInfo", proxy_cert_file)
 
 					out, cmdErr := cmd.CombinedOutput()
