@@ -211,7 +211,7 @@ private Expr nonEmptyExpr() {
     // ...or it is guarded by a condition proving its length to be non-zero.
     exists(ConditionBlock cond, boolean branch, FieldAccess length |
       cond.controls(result.getBasicBlock(), branch) and
-      cond.getCondition() = integerGuard(length, branch, 0, false) and
+      cond.getCondition() = nonZeroGuard(length, branch) and
       length.getField().hasName("length") and
       length.getQualifier() = v.getAUse()
     )
@@ -241,7 +241,7 @@ private Expr nonEmptyExpr() {
       or
       // ...or a check on its `size`.
       exists(MethodCall size |
-        c = integerGuard(size, branch, 0, false) and
+        c = nonZeroGuard(size, branch) and
         size.getMethod().hasName("size") and
         size.getQualifier() = v.getAUse()
       )
