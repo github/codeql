@@ -1,4 +1,4 @@
-| Annotation processors enabled: true | 1 |
+| Annotation processors enabled: false | 1 |
 | Number of calls with call target | 1 |
 | Number of calls with missing call target | 4 |
 | Number of diagnostics from CodeQL Java extractor with severity 5 | 10 |
@@ -15,5 +15,3 @@
 | Total number of diagnostics from CodeQL Java extractor | 12 |
 | Total number of lines | 13 |
 | Total number of lines with extension java | 13 |
-| Used annotation processor: lombok.launch.AnnotationProcessorHider$AnnotationProcessor | 1 |
-| Used annotation processor: lombok.launch.AnnotationProcessorHider$ClaimingProcessor | 1 |
