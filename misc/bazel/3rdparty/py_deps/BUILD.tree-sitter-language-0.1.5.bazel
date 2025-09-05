@@ -17,7 +17,7 @@ cargo_toml_env_vars(
 )
 
 rust_library(
-    name = "tree_sitter_graph",
+    name = "tree_sitter_language",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -34,8 +34,8 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
-    crate_root = "src/lib.rs",
-    edition = "2018",
+    crate_root = "language.rs",
+    edition = "2021",
     rustc_env_files = [
         ":cargo_toml_env_vars",
     ],
@@ -44,7 +44,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=tree-sitter-graph",
+        "crate-name=tree-sitter-language",
         "manual",
         "noclippy",
         "norustfmt",
@@ -88,15 +88,5 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.7.0",
-    deps = [
-        "@vendor_py__log-0.4.25//:log",
-        "@vendor_py__regex-1.11.1//:regex",
-        "@vendor_py__serde-1.0.217//:serde",
-        "@vendor_py__serde_json-1.0.138//:serde_json",
-        "@vendor_py__smallvec-1.14.0//:smallvec",
-        "@vendor_py__string-interner-0.12.2//:string_interner",
-        "@vendor_py__thiserror-1.0.69//:thiserror",
-        "@vendor_py__tree-sitter-0.20.4//:tree_sitter",
-    ],
+    version = "0.1.5",
 )

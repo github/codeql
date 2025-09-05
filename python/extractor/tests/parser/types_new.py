@@ -17,6 +17,6 @@ class Qux1[*Ts1 = *tuple[int, bool]]: ...
 
 # TypeAliases
 type Foo2[T15, U1 = str] = Bar1[T15, U1]
-type Baz2[**P2 = [int, str]] = Spam[**P2]
+# type Baz2[**P2 = [int, str]] = Spam[**P2] # From the PEP, but this is not actually valid syntax!
 type Qux2[*Ts2 = *tuple[str]] = Ham[*Ts2]
 type Rab[U2, T15 = str] = Bar2[T15, U2]
