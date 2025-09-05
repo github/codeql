@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log/slog"
+	"net/url"
 	"os"
 	"os/exec"
 	"strings"
@@ -103,12 +104,14 @@ func getEnvVars() []string {
 					goproxy_servers = append(goproxy_servers, cfg.URL)
 					slog.Info("Found GOPROXY server", slog.String("url", cfg.URL))
 				} else if cfg.Type == GIT_SOURCE {
-					if strings.HasSuffix(cfg.URL, "*") {
-						git_sources = append(git_sources, cfg.URL)
+					parsed, err := url.Parse(cfg.URL)
+					if err == nil && parsed.Hostname() != "" {
+						git_source := parsed.Hostname() + parsed.Path + "*"
+						git_sources = append(git_sources, git_source)
+						slog.Info("Found Git source", slog.String("source", git_source))
 					} else {
-						git_sources = append(git_sources, cfg.URL+"*")
+						slog.Warn("Not a valid URL for Git source", slog.String("url", cfg.URL))
 					}
-					slog.Info("Found Git source", slog.String("url", cfg.URL))
 				}
 			}
 
