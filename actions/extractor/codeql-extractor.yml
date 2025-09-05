@@ -6,7 +6,8 @@ column_kind: "utf16"
 unicode_newlines: true
 build_modes:
   - none
-file_coverage_languages: []
+# Actions workflows are not reported separately by the GitHub API, so we can't
+# associate them with a specific language.
 github_api_languages: []
 scc_languages:
   - YAML
