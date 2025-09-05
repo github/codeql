@@ -103,7 +103,11 @@ func getEnvVars() []string {
 					goproxy_servers = append(goproxy_servers, cfg.URL)
 					slog.Info("Found GOPROXY server", slog.String("url", cfg.URL))
 				} else if cfg.Type == GIT_SOURCE {
-					git_sources = append(git_sources, cfg.URL)
+					if strings.HasSuffix(cfg.URL, "*") {
+						git_sources = append(git_sources, cfg.URL)
+					} else {
+						git_sources = append(git_sources, cfg.URL+"*")
+					}
 					slog.Info("Found Git source", slog.String("url", cfg.URL))
 				}
 			}
