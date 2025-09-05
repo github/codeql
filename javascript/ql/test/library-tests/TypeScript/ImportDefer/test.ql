@@ -1,5 +1,3 @@
 import javascript
 
-from ImportDeclaration decl
-select decl
-
+query predicate deferredImports(ImportDeclaration decl) { decl.isDeferredImport() }

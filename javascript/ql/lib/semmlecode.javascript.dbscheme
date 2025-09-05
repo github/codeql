@@ -516,6 +516,7 @@ has_private_keyword (int id: @property ref);
 has_protected_keyword (int id: @property ref);
 has_readonly_keyword (int id: @property ref);
 has_type_keyword (int id: @type_keyword_operand ref);
+has_defer_keyword (int id: @import_declaration ref);
 is_optional_member (int id: @property ref);
 has_definite_assignment_assertion (int id: @field_or_vardeclarator ref);
 is_optional_parameter_declaration (unique int parameter: @pattern ref);

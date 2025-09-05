@@ -1833,6 +1833,9 @@ public class ASTExtractor {
       if (nd.hasTypeKeyword()) {
         trapwriter.addTuple("has_type_keyword", lbl);
       }
+      if (nd.hasDeferKeyword()) {
+        trapwriter.addTuple("has_defer_keyword", lbl);
+      }
       return lbl;
     }
 
