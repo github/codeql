@@ -5,8 +5,9 @@
  * @problem.severity warning
  * @precision medium
  * @id cs/wrong-compareto-signature
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import csharp

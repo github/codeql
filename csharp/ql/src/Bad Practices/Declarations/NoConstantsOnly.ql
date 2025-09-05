@@ -6,8 +6,9 @@
  * @problem.severity recommendation
  * @precision medium
  * @id cs/constants-only-interface
- * @tags maintainability
- *       modularity
+ * @tags quality
+ *       maintainability
+ *       readability
  */
 
 import csharp
