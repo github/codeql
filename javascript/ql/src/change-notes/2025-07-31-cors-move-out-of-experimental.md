@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* The query "CORS misconfiguration" (`js/cors-misconfiguration`) has been promoted from experimental and is now part of the default security suite.
+* The query "Permissive CORS configuration" (`js/cors-permissive-configuration`) has been promoted from experimental and is now part of the default security suite.
