@@ -158,8 +158,9 @@ class ImportStaticTypeMember extends Import {
 /**
  * A module import declaration, which imports an entire module.
  *
- * For example, `import module java.base;` imports all packages exported
- * by the `java.base module`, making their types available for use.
+ * For example, `import module java.base;` makes all packages exported
+ * by the `java.base` module available, and through those packages,
+ * the types they declare become accessible.
  */
 class ModuleImportDeclaration extends Import {
   ModuleImportDeclaration() { imports(this, _, _, 6) }
