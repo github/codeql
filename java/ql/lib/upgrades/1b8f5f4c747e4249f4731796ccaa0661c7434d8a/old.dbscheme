@@ -537,10 +537,6 @@ isLocalClassOrInterface(
   int parent: @localtypedeclstmt ref
 );
 
-isImplicitClass(
-  unique int classid: @classorinterface ref
-);
-
 isDefConstr(
   int constructorid: @constructor ref
 );
