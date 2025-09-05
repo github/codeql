@@ -116,11 +116,11 @@
 | Arrays/Arrays.ps1:15:1:15:14 | [Stmt] Call to add | Arrays/Arrays.ps1:1:1:15:14 | {...} |
 | Arrays/Arrays.ps1:15:9:15:11 | Add | Arrays/Arrays.ps1:15:1:15:14 | Call to add |
 | Arrays/Arrays.ps1:15:13:15:13 | 1 | Arrays/Arrays.ps1:15:1:15:14 | Call to add |
-| Blocks/ParamBlock.ps1:1:1:1:17 | CmdletBinding | Blocks/ParamBlock.ps1:1:1:5:1 | {...} |
+| Blocks/ParamBlock.ps1:1:1:1:17 | cmdletbinding | Blocks/ParamBlock.ps1:1:1:5:1 | {...} |
 | Blocks/ParamBlock.ps1:1:1:5:1 | [synth] pipeline | Blocks/ParamBlock.ps1:1:1:5:1 | {...} |
 | Blocks/ParamBlock.ps1:1:1:5:1 | {...} | Blocks/ParamBlock.ps1:1:1:5:1 | toplevel function for ParamBlock.ps1 |
 | Blocks/ParamBlock.ps1:2:1:5:1 | {...} | Blocks/ParamBlock.ps1:1:1:5:1 | {...} |
-| Blocks/ParamBlock.ps1:3:5:3:17 | Parameter | Blocks/ParamBlock.ps1:3:5:4:22 | parameter |
+| Blocks/ParamBlock.ps1:3:5:3:17 | parameter | Blocks/ParamBlock.ps1:3:5:4:22 | parameter |
 | Blocks/ParamBlock.ps1:3:5:4:22 | parameter | Blocks/ParamBlock.ps1:1:1:5:1 | {...} |
 | Blocks/ParamBlock.ps1:4:5:4:12 | string | Blocks/ParamBlock.ps1:3:5:4:22 | parameter |
 | Dynamic/DynamicExecution.ps1:1:1:1:4 | foo | Dynamic/DynamicExecution.ps1:1:1:1:16 | ...=... |
@@ -420,7 +420,7 @@
 | Statements/UseProcessBlockForPipelineCommand.ps1:1:1:11:1 | {...} | Statements/UseProcessBlockForPipelineCommand.ps1:1:1:11:1 | toplevel function for UseProcessBlockForPipelineCommand.ps1 |
 | Statements/UseProcessBlockForPipelineCommand.ps1:1:1:11:1 | {...} | Statements/UseProcessBlockForPipelineCommand.ps1:1:1:11:1 | {...} |
 | Statements/UseProcessBlockForPipelineCommand.ps1:2:1:11:1 | {...} | Statements/UseProcessBlockForPipelineCommand.ps1:1:1:11:1 | Get-Number |
-| Statements/UseProcessBlockForPipelineCommand.ps1:3:5:3:21 | CmdletBinding | Statements/UseProcessBlockForPipelineCommand.ps1:2:1:11:1 | {...} |
+| Statements/UseProcessBlockForPipelineCommand.ps1:3:5:3:21 | cmdletbinding | Statements/UseProcessBlockForPipelineCommand.ps1:2:1:11:1 | {...} |
 | Statements/UseProcessBlockForPipelineCommand.ps1:4:5:10:11 | {...} | Statements/UseProcessBlockForPipelineCommand.ps1:2:1:11:1 | {...} |
 | Statements/UseProcessBlockForPipelineCommand.ps1:5:9:5:38 | ValueFromPipeline | Statements/UseProcessBlockForPipelineCommand.ps1:5:9:7:15 | number |
 | Statements/UseProcessBlockForPipelineCommand.ps1:5:9:7:15 | number | Statements/UseProcessBlockForPipelineCommand.ps1:2:1:11:1 | {...} |
