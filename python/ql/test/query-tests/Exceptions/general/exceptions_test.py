@@ -71,7 +71,7 @@ try:
     pass
 except ValueError:
     pass 
-except MyExc: # $Alert[py/unreachable-except]
+except MyExc: # $MISSING:Alert[py/unreachable-except] # Missing due to dataflow limitiation preventing MyExc from being tracked here.
     pass 
 
 class MyBaseExc(Exception):
@@ -84,7 +84,7 @@ try:
     pass
 except MyBaseExc:
     pass 
-except MySubExc: # $Alert[py/unreachable-except]
+except MySubExc: # $MISSING:Alert[py/unreachable-except] # Missing due to dataflow limitation preventing MyExc from being tracked here.
     pass 
 except Exception:
     pass
