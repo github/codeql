@@ -1,6 +1,6 @@
 import pathlib
 
-from flask import Flask, request
+from flask import Flask, request # $ Source
 app = Flask(__name__)
 
 
@@ -11,7 +11,7 @@ STATIC_DIR = pathlib.Path("/server/static/")
 def path_injection():
     filename = request.args.get('filename', '')
     p = STATIC_DIR / filename
-    p.open() # $ result=BAD
+    p.open() # $ Alert
 
     p2 = pathlib.Path(STATIC_DIR, filename)
-    p2.open() # $ result=BAD
+    p2.open() # $ Alert
