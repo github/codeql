@@ -1,0 +1,10 @@
+{
+    "paths": [
+        ".github/workflows/*.yml",
+        ".github/workflows/*.yaml",
+        ".github/reusable_workflows/**/*.yml",
+        ".github/reusable_workflows/**/*.yaml",
+        "**/action.yml",
+        "**/action.yaml"
+    ]
+}
