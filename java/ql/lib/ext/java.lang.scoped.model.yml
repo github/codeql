@@ -1,0 +1,19 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.lang", "ScopedValue", False, "where", "(ScopedValue,Object)", "", "Argument[1]", "Argument[0].SyntheticField[java.lang.ScopedValue.boundValue]", "value", "manual"]
+      - ["java.lang", "ScopedValue", True, "get", "()", "", "Argument[this].SyntheticField[java.lang.ScopedValue.boundValue]", "ReturnValue", "value", "manual"]
+      - ["java.lang", "ScopedValue", False, "where", "(ScopedValue,Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.lang", "ScopedValue$Carrier", False, "where", "(ScopedValue,Object)", "", "Argument[1]", "Argument[0].SyntheticField[java.lang.ScopedValue.boundValue]", "value", "manual"]
+      - ["java.lang", "ScopedValue$Carrier", False, "where", "(ScopedValue,Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.lang", "ScopedValue$Carrier", False, "run", "(Runnable)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["java.lang", "ScopedValue$Carrier", False, "call", "(Callable)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.lang", "ScopedValue", "newInstance", "()", "summary", "manual"]
+      - ["java.lang", "ScopedValue", "isBound", "()", "summary", "manual"]
