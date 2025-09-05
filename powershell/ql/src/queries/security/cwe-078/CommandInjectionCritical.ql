@@ -26,7 +26,7 @@ abstract class CriticalSource extends DataFlow::Node {
 class CmdletBindingParam extends CriticalSource {
     CmdletBindingParam(){
         exists(Attribute a, Function f | 
-            a.getName() = "CmdletBinding" and 
+            a.getAName() = "CmdletBinding" and 
             f = a.getEnclosingFunction() and 
             this.asParameter() = f.getAParameter()    
         )
