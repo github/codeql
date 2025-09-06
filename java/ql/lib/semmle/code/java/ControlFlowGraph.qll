@@ -365,10 +365,10 @@ private module ControlFlowGraphImpl {
    * Bind `t` to an unchecked exception that may occur in a precondition check or guard wrapper.
    */
   private predicate uncheckedExceptionFromMethod(MethodCall ma, ThrowableType t) {
-    conditionCheckArgument(ma, _, _) and
+    methodCallChecksArgument(ma) and
     (t instanceof TypeError or t instanceof TypeRuntimeException)
     or
-    methodMayThrow(ma.getMethod(), t)
+    methodMayThrow(ma.getMethod().getSourceDeclaration(), t)
   }
 
   /**
