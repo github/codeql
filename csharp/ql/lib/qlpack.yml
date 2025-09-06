@@ -9,6 +9,7 @@ dependencies:
   codeql/controlflow: ${workspace}
   codeql/dataflow: ${workspace}
   codeql/mad: ${workspace}
+  codeql/quantum: ${workspace}
   codeql/ssa: ${workspace}
   codeql/threat-models: ${workspace}
   codeql/tutorial: ${workspace}
