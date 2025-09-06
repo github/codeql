@@ -14,8 +14,9 @@ class Evp_PKey_Ctx_set_rsa_padding_AlgorithmValueConsumer extends PaddingAlgorit
   DataFlow::Node resultNode;
 
   Evp_PKey_Ctx_set_rsa_padding_AlgorithmValueConsumer() {
-    resultNode.asExpr() = this and
+    resultNode.asDefiningArgument() = this.(Call).getArgument(0) and
     this.(Call).getTarget().getName() = "EVP_PKEY_CTX_set_rsa_padding" and
+    // algorithm is an int, use asExpr
     valueArgNode.asExpr() = this.(Call).getArgument(1)
   }
 

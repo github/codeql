@@ -11,7 +11,7 @@ class EvpPKeyAlgorithmConsumer extends PKeyValueConsumer {
   DataFlow::Node resultNode;
 
   EvpPKeyAlgorithmConsumer() {
-    resultNode.asExpr() = this.(Call) and // in all cases the result is the return
+    resultNode.asIndirectExpr() = this.(Call) and // in all cases the result is the return
     (
       // NOTE: some of these consumers are themselves key gen operations,
       // in these cases, the operation will be created separately for the same function.
@@ -19,6 +19,7 @@ class EvpPKeyAlgorithmConsumer extends PKeyValueConsumer {
           "EVP_PKEY_CTX_new_id", "EVP_PKEY_new_raw_private_key", "EVP_PKEY_new_raw_public_key",
           "EVP_PKEY_new_mac_key"
         ] and
+      // Algorithm is an int, use asExpr
       valueArgNode.asExpr() = this.(Call).getArgument(0)
       or
       this.(Call).getTarget().getName() in [
@@ -26,7 +27,8 @@ class EvpPKeyAlgorithmConsumer extends PKeyValueConsumer {
           "EVP_PKEY_new_raw_public_key_ex", "EVP_PKEY_CTX_ctrl", "EVP_PKEY_CTX_ctrl_uint64",
           "EVP_PKEY_CTX_ctrl_str", "EVP_PKEY_CTX_set_group_name"
         ] and
-      valueArgNode.asExpr() = this.(Call).getArgument(1)
+      // AAlgorithm is a char*, use asIndirectExpr
+      valueArgNode.asIndirectExpr() = this.(Call).getArgument(1)
       or
       // argInd 2 is 'type' which can be RSA, or EC
       // if RSA argInd 3 is the key size, else if EC argInd 3 is the curve name
@@ -38,10 +40,10 @@ class EvpPKeyAlgorithmConsumer extends PKeyValueConsumer {
         // Elliptic curve case
         // If the argInd 3 is a derived type (pointer or array) then assume it is a curve name
         if this.(Call).getArgument(3).getType().getUnderlyingType() instanceof DerivedType
-        then valueArgNode.asExpr() = this.(Call).getArgument(3)
+        then valueArgNode.asIndirectExpr() = this.(Call).getArgument(3)
         else
           // All other cases
-          valueArgNode.asExpr() = this.(Call).getArgument(2)
+          valueArgNode.asIndirectExpr() = this.(Call).getArgument(2)
       )
     )
   }

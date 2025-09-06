@@ -23,7 +23,7 @@ class DirectAlgorithmValueConsumer extends OpenSslAlgorithmValueConsumer instanc
    */
   override DataFlow::Node getResultNode() {
     this instanceof OpenSslDirectAlgorithmFetchCall and
-    result.asExpr() = this
+    result.asIndirectExpr() = this
     // NOTE: if instanceof OpenSslDirectAlgorithmOperationCall then there is no algorithm generated
     // the algorithm is directly used
   }
