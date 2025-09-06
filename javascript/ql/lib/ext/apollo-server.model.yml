@@ -7,9 +7,22 @@ extensions:
 
   - addsTo:
       pack: codeql/javascript-all
+      extensible: sinkModel
+    data:
+      - ["@apollo/server", "Member[gql].Argument[0]", "sql-injection"]
+      - ["@apollo/server", "Member[ApolloServer,ApolloServerBase].Argument[0].Member[cors].Member[origin]", "cors-origin"]
+
+  - addsTo:
+      pack: codeql/javascript-all
       extensible: typeModel
     data:
       - ["@apollo/server", "@apollo/server/standalone", ""]
       - ["@apollo/server", "apollo-server-express", ""]
       - ["@apollo/server", "apollo-server-core", ""]
       - ["@apollo/server", "apollo-server", ""]
+      - ["@apollo/server", "@apollo/apollo-server-express", ""]
+      - ["@apollo/server", "apollo-server-express", ""]
+      - ["@apollo/server", "@apollo/server", ""]
+      - ["@apollo/server", "@apollo/apollo-server-core", ""]
+      - ["ApolloServer", "@apollo/server", "Member[ApolloServer]"]
+      - ["GraphQLApollo", "@apollo/server", "Member[gql]"]

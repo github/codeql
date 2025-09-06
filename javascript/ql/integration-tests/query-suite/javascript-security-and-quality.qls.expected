@@ -184,6 +184,7 @@ ql/javascript/ql/src/Security/CWE-915/PrototypePollutingMergeCall.ql
 ql/javascript/ql/src/Security/CWE-916/InsufficientPasswordHash.ql
 ql/javascript/ql/src/Security/CWE-918/ClientSideRequestForgery.ql
 ql/javascript/ql/src/Security/CWE-918/RequestForgery.ql
+ql/javascript/ql/src/Security/CWE-942/CorsPermissiveConfiguration.ql
 ql/javascript/ql/src/Statements/DanglingElse.ql
 ql/javascript/ql/src/Statements/IgnoreArrayResult.ql
 ql/javascript/ql/src/Statements/InconsistentLoopOrientation.ql
