@@ -26,11 +26,11 @@ public class ImportDeclaration extends Statement implements INodeWithSymbol {
 
   private int symbol = -1;
 
-  private boolean hasTypeKeyword;
+  private ImportPhaseModifier phaseModifier;
 
   public ImportDeclaration(
       SourceLocation loc, List<ImportSpecifier> specifiers, Literal source, Expression attributes) {
-    this(loc, specifiers, source, attributes, false);
+    this(loc, specifiers, source, attributes, ImportPhaseModifier.NONE);
   }
 
   public ImportDeclaration(
@@ -38,12 +38,12 @@ public class ImportDeclaration extends Statement implements INodeWithSymbol {
       List<ImportSpecifier> specifiers,
       Literal source,
       Expression attributes,
-      boolean hasTypeKeyword) {
+      ImportPhaseModifier phaseModifier) {
     super("ImportDeclaration", loc);
     this.specifiers = specifiers;
     this.source = source;
     this.attributes = attributes;
-    this.hasTypeKeyword = hasTypeKeyword;
+    this.phaseModifier = phaseModifier;
   }
 
   public Literal getSource() {
@@ -79,6 +79,15 @@ public class ImportDeclaration extends Statement implements INodeWithSymbol {
 
   /** Returns true if this is an <code>import type</code> declaration. */
   public boolean hasTypeKeyword() {
-    return hasTypeKeyword;
+    return phaseModifier == ImportPhaseModifier.TYPE;
+  }
+
+  /** Returns true if this is an <code>import defer</code> declaration. */
+  public boolean hasDeferKeyword() {
+    return phaseModifier == ImportPhaseModifier.DEFER;
+  }
+
+  public ImportPhaseModifier getPhaseModifier() {
+    return phaseModifier;
   }
 }

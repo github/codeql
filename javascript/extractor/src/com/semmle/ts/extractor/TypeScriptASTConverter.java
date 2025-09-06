@@ -52,6 +52,7 @@ import com.semmle.js.ast.IfStatement;
 import com.semmle.js.ast.ImportDeclaration;
 import com.semmle.js.ast.ImportDefaultSpecifier;
 import com.semmle.js.ast.ImportNamespaceSpecifier;
+import com.semmle.js.ast.ImportPhaseModifier;
 import com.semmle.js.ast.ImportSpecifier;
 import com.semmle.js.ast.InvokeExpression;
 import com.semmle.js.ast.LabeledStatement;
@@ -1404,7 +1405,7 @@ public class TypeScriptASTConverter {
     Literal src = tryConvertChild(node, "moduleSpecifier", Literal.class);
     Expression attributes = convertChild(node, "attributes");
     List<ImportSpecifier> specifiers = new ArrayList<>();
-    boolean hasTypeKeyword = false;
+    ImportPhaseModifier phaseModifier = ImportPhaseModifier.NONE;
     if (hasChild(node, "importClause")) {
       JsonObject importClause = node.get("importClause").getAsJsonObject();
       if (hasChild(importClause, "name")) {
@@ -1418,10 +1419,22 @@ public class TypeScriptASTConverter {
           specifiers.addAll(convertChildren(namedBindings, "elements"));
         }
       }
-      hasTypeKeyword = importClause.get("isTypeOnly").getAsBoolean();
+      if (hasChild(importClause, "phaseModifier")) {
+        String name = metadata.getSyntaxKindName(importClause.get("phaseModifier").getAsInt());
+        switch (name) {
+          case "DeferKeyword": {
+            phaseModifier = ImportPhaseModifier.DEFER;
+            break;
+          }
+          case "TypeKeyword": {
+            phaseModifier = ImportPhaseModifier.TYPE;
+            break;
+          }
+        }
+      }
     }
     ImportDeclaration importDecl =
-        new ImportDeclaration(loc, specifiers, src, attributes, hasTypeKeyword);
+        new ImportDeclaration(loc, specifiers, src, attributes, phaseModifier);
     attachSymbolInformation(importDecl, node);
     return importDecl;
   }

@@ -564,7 +564,7 @@ public class NodeCopier implements Visitor<Void, INode> {
         copy(nd.getSpecifiers()),
         copy(nd.getSource()),
         copy(nd.getAttributes()),
-        nd.hasTypeKeyword());
+        nd.getPhaseModifier());
   }
 
   @Override

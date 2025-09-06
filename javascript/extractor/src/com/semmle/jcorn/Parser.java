@@ -61,6 +61,7 @@ import com.semmle.js.ast.IfStatement;
 import com.semmle.js.ast.ImportDeclaration;
 import com.semmle.js.ast.ImportDefaultSpecifier;
 import com.semmle.js.ast.ImportNamespaceSpecifier;
+import com.semmle.js.ast.ImportPhaseModifier;
 import com.semmle.js.ast.ImportSpecifier;
 import com.semmle.js.ast.LabeledStatement;
 import com.semmle.js.ast.Literal;
@@ -3587,6 +3588,7 @@ public class Parser {
   }
 
   protected ImportDeclaration parseImportRest(SourceLocation loc) {
+    ImportPhaseModifier[] phaseModifier = { ImportPhaseModifier.NONE };
     List<ImportSpecifier> specifiers;
     Literal source;
     // import '...'
@@ -3594,27 +3596,32 @@ public class Parser {
       specifiers = new ArrayList<ImportSpecifier>();
       source = (Literal) this.parseExprAtom(null);
     } else {
-      specifiers = this.parseImportSpecifiers();
+      specifiers = this.parseImportSpecifiers(phaseModifier);
       this.expectContextual("from");
       if (this.type != TokenType.string) this.unexpected();
       source = (Literal) this.parseExprAtom(null);
     }
     Expression attributes = this.parseImportOrExportAttributesAndSemicolon();
     if (specifiers == null) return null;
-    return this.finishNode(new ImportDeclaration(loc, specifiers, source, attributes));
+    return this.finishNode(new ImportDeclaration(loc, specifiers, source, attributes, phaseModifier[0]));
   }
 
   // Parses a comma-separated list of module imports.
-  protected List<ImportSpecifier> parseImportSpecifiers() {
+  protected List<ImportSpecifier> parseImportSpecifiers(ImportPhaseModifier[] phaseModifier) {
     List<ImportSpecifier> nodes = new ArrayList<ImportSpecifier>();
     boolean first = true;
     if (this.type == TokenType.name) {
       // import defaultObj, { x, y as z } from '...'
       SourceLocation loc = new SourceLocation(this.startLoc);
       Identifier local = this.parseIdent(false);
-      this.checkLVal(local, true, null);
-      nodes.add(this.finishNode(new ImportDefaultSpecifier(loc, local)));
-      if (!this.eat(TokenType.comma)) return nodes;
+      // Parse `import defer *` as the beginning of a deferred import, instead of a default import specifier
+      if (this.type == TokenType.star && local.getName().equals("defer")) {
+        phaseModifier[0] = ImportPhaseModifier.DEFER;
+      } else {
+        this.checkLVal(local, true, null);
+        nodes.add(this.finishNode(new ImportDefaultSpecifier(loc, local)));
+        if (!this.eat(TokenType.comma)) return nodes;
+      }
     }
     if (this.type == TokenType.star) {
       SourceLocation loc = new SourceLocation(this.startLoc);
@@ -3647,7 +3654,7 @@ public class Parser {
     if (this.type == TokenType.string) {
       // Arbitrary Module Namespace Identifiers
       // e.g. `import { "Foo::new" as Foo_new } from "./foo.wasm"`
-      Expression string = this.parseExprAtom(null);    
+      Expression string = this.parseExprAtom(null);
       String str = ((Literal)string).getStringValue();
       imported = this.finishNode(new Identifier(loc, str));
       // only makes sense if there is a local identifier
