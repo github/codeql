@@ -1,4 +1,4 @@
-#Calling a method multiple times by using explicit calls when a base inherits from other base
+
 class Vehicle(object):
     
     def __init__(self):
@@ -10,27 +10,17 @@ class Car(Vehicle):
         Vehicle.__init__(self)
         self.car_init()
         
-    def car_init(self):
-        pass
-    
+# BAD: Car.__init__ is not called.
 class SportsCar(Car, Vehicle):
     
-    # Vehicle.__init__ will get called twice
     def __init__(self):
         Vehicle.__init__(self)
-        Car.__init__(self)
         self.sports_car_init()
         
-    def sports_car_init(self):
-        pass
-        
-#Fix SportsCar by only calling Car.__init__
+# GOOD: Car.__init__ is called correctly.
 class FixedSportsCar(Car, Vehicle):
     
     def __init__(self):
         Car.__init__(self)
         self.sports_car_init()
         
-    def sports_car_init(self):
-        pass
- 
