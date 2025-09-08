@@ -3386,7 +3386,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       )
     }
 
-    overlay[local]
     private predicate flowLocal(Node source, Node sink) =
       forceLocal(flowIncremental/2)(source, sink)
 
@@ -3408,7 +3407,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       exists(PathNode n | n.isSink() and n.getNode() = sink)
     }
 
-    overlay[local]
     private predicate flowToLocal(Node sink) = forceLocal(flowToIncremental/1)(sink)
 
     /**
@@ -3434,7 +3432,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       exists(PathNode n | n.isSource() and n.getNode() = source)
     }
 
-    overlay[local]
     private predicate flowFromLocal(Node source) = forceLocal(flowFromIncremental/1)(source)
 
     /**
