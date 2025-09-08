@@ -8,36 +8,38 @@
 import csharp
 import DatabaseQuality
 
-private int getThreshold() { result = 85 }
+private predicate diagnostic(string msg, float value, float threshold) {
+  CallTargetStatsReport::percentageOfOk(msg, value) and
+  threshold = 85
+  or
+  ExprTypeStatsReport::percentageOfOk(msg, value) and
+  threshold = 85
+}
 
 private newtype TDbQualityDiagnostic =
-  TTheDbQualityDiagnostic(string callMsg, float callTargetOk, string exprMsg, float exprTypeOk) {
-    CallTargetStatsReport::percentageOfOk(callMsg, callTargetOk) and
-    ExprTypeStatsReport::percentageOfOk(exprMsg, exprTypeOk) and
-    [callTargetOk, exprTypeOk] < getThreshold()
+  TTheDbQualityDiagnostic() {
+    exists(float percentageGood, float threshold |
+      diagnostic(_, percentageGood, threshold) and
+      percentageGood < threshold
+    )
   }
+
+private string getDbHealth() {
+  result =
+    strictconcat(string msg, float value, float threshold |
+      diagnostic(msg, value, threshold)
+    |
+      msg + ": " + value.floor() + " % (threshold " + threshold.floor() + " %)", ". "
+    )
+}
 
 class DbQualityDiagnostic extends TDbQualityDiagnostic {
-  private string callMsg;
-  private float callTargetOk;
-  private float exprTypeOk;
-  private string exprMsg;
-
-  DbQualityDiagnostic() {
-    this = TTheDbQualityDiagnostic(callMsg, callTargetOk, exprMsg, exprTypeOk)
-  }
-
-  private string getDbHealth() {
-    result =
-      callMsg + ": " + callTargetOk.floor() + ". " + exprMsg + ": " + exprTypeOk.floor() + ". "
-  }
-
   string toString() {
     result =
       "Scanning C# code completed successfully, but the scan encountered issues. " +
         "This may be caused by problems identifying dependencies or use of generated source code. " +
-        "Some metrics of the database quality are: " + this.getDbHealth() +
-        "Both of these metrics should ideally be above " + getThreshold() + ". " +
+        "Some metrics of the database quality are: " + getDbHealth() + ". " +
+        "Ideally these metrics should be above their thresholds. " +
         "Addressing these issues is advisable to avoid false-positives or missing results. If they cannot be addressed, consider scanning C# "
         +
         "using either the `autobuild` or `manual` [build modes](https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/codeql-code-scanning-for-compiled-languages#comparison-of-the-build-modes)."
