@@ -20,6 +20,7 @@ ql/csharp/ql/src/Dead Code/DeadRefTypes.ql
 ql/csharp/ql/src/Dead Code/NonAssignedFields.ql
 ql/csharp/ql/src/Dead Code/UnusedField.ql
 ql/csharp/ql/src/Dead Code/UnusedMethod.ql
+ql/csharp/ql/src/Documentation/XmldocMissing.ql
 ql/csharp/ql/src/Documentation/XmldocMissingException.ql
 ql/csharp/ql/src/Documentation/XmldocMissingParam.ql
 ql/csharp/ql/src/Documentation/XmldocMissingReturn.ql

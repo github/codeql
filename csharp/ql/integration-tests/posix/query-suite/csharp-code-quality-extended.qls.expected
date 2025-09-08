@@ -47,7 +47,6 @@ ql/csharp/ql/src/Concurrency/UnsynchronizedStaticAccess.ql
 ql/csharp/ql/src/Dead Code/DeadStoreOfLocal.ql
 ql/csharp/ql/src/Documentation/XmldocExtraParam.ql
 ql/csharp/ql/src/Documentation/XmldocExtraTypeParam.ql
-ql/csharp/ql/src/Documentation/XmldocMissing.ql
 ql/csharp/ql/src/Documentation/XmldocMissingSummary.ql
 ql/csharp/ql/src/Language Abuse/CastThisToTypeParameter.ql
 ql/csharp/ql/src/Language Abuse/CatchOfGenericException.ql
