@@ -14,7 +14,7 @@ private import DataFlowImpl
 
 module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
-  private import DataFlowMake<Location, Lang>
+  private import DataFlowMakeCore<Location, Lang>
   private import MakeImpl<Location, Lang> as Impl
   private import DataFlowImplCommon::MakeImplCommon<Location, Lang>
   private import DataFlowImplCommonPublic
@@ -144,49 +144,32 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
         exists(node)
       }
 
-      /**
-       * Holds if `node` comes from a file that was in the diff for which we
-       * are producing results.
-       */
-      overlay[global]
-      private predicate isDiffFileNode(Node node) {
-        exists(string filePath |
-          node.getLocation().hasLocationInfo(filePath, _, _, _, _) and
-          AlertFiltering::fileIsInDiff(filePath)
-        )
-      }
-
       overlay[global]
       pragma[nomagic]
       private predicate isFilteredSource(Node source) {
         Config::isSource(source, _) and
         // Data flow is always incremental in one of two ways.
-        // 1. If the configuration is diff-informed and diff information is
-        //    available, we filter to only include nodes in the diff, which
-        //    gives the smallest set of nodes.
+        // 1. If the configuration is diff-informed, we filter to only include nodes in the diff,
+        //    which gives the smallest set of nodes.
+        //    If diff information is not available, we do not filter at all.
         // 2. If not, in global evaluation with overlay, we filter to only
-        //    include nodes from files in the overlay or the diff; flow from
-        //    other nodes will be added back later. There can be two reasons
-        //    why we are in this case:
-        //    1. This could be the primary configuration for a query that
-        //       hasn't yet become diff-informed. In that case, the
-        //       `getASelectedSourceLocation` information is probably just the
-        //       default, and it's a fairly safe overapproximation to
-        //       effectively expand to all nodes in the file (via
-        //       `isDiffFileNode`).
-        //    2. This could be a secondary configuration, like a helper
-        //       configuration for finding sources or sinks of a primary
-        //       configuration. In that case, the results of this configuration
-        //       are typically in the same file as the final alert.
-        if
-          Config::observeDiffInformedIncrementalMode()
-        then AlertFiltering::diffInformationAvailable() implies AlertFiltering::locationIsInDiff(Config::getASelectedSourceLocation(source))
+        //    include nodes from files in the overlay; flow from
+        //    other nodes will be added back later.
+        // We start by seeing if we should be in case 1.
+        if Config::observeDiffInformedIncrementalMode()
+        then
+          // Case 1: We are meant to be diff-informed.
+          // We still only filter if we have diff information.
+          AlertFiltering::diffInformationAvailable()
+          implies
+          AlertFiltering::locationIsInDiff(Config::getASelectedSourceLocation(source))
         else (
+          // Case 2: We are not meant to be diff-informed, so we fall back to overlay-based filtering.
           // If we are in base-only global evaluation, do not filter out any sources.
           not isEvaluatingInOverlay()
           or
           // If we are in global evaluation with an overlay present, restrict
-          // sources to those visible in the overlay or
+          // sources to those visible in the overlay.
           isOverlayNode(source)
         )
       }
@@ -199,18 +182,16 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
           Config::isSink(sink)
         ) and
         // See the comments in `isFilteredSource` for the reasoning behind the following.
-          if
-          Config::observeDiffInformedIncrementalMode()
-        then AlertFiltering::diffInformationAvailable() implies AlertFiltering::locationIsInDiff(Config::getASelectedSinkLocation(sink))
+        if Config::observeDiffInformedIncrementalMode()
+        then
+          AlertFiltering::diffInformationAvailable()
+          implies
+          AlertFiltering::locationIsInDiff(Config::getASelectedSinkLocation(sink))
         else (
-          // If we are in base-only global evaluation, do not filter out any sources.
           not isEvaluatingInOverlay()
           or
-          // If we are in global evaluation with an overlay present, restrict
-          // sources to those visible in the overlay or
           isOverlayNode(sink)
         )
-
       }
 
       private predicate hasFilteredSource() { isFilteredSource(_) }

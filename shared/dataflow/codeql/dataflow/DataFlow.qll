@@ -657,7 +657,7 @@ private module PathGraphSigMod {
   }
 }
 
-module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
+module DataFlowMakeCore<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
   private import internal.DataFlowImpl::MakeImpl<Location, Lang>
   private import internal.DataFlowImplStage1::MakeImplStage1<Location, Lang>
@@ -703,58 +703,6 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
     predicate flowToExpr(DataFlowExpr sink);
   }
 
-  /**
-   * Constructs a global data flow computation.
-   */
-  module Global<ConfigSig Config> implements GlobalFlowSig {
-    private module C implements FullStateConfigSig {
-      import DefaultState<Config>
-      import Config
-
-      predicate accessPathLimit = Config::accessPathLimit/0;
-
-      predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
-        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
-      }
-    }
-
-    private module Stage1 = ImplStage1<C>;
-
-    import Stage1::PartialFlow
-
-    private module Flow = Impl<C, Stage1::Stage1NoState>;
-
-    import Flow
-  }
-
-  /**
-   * Constructs a global data flow computation using flow state.
-   */
-  module GlobalWithState<StateConfigSig Config> implements GlobalFlowSig {
-    private module C implements FullStateConfigSig {
-      import Config
-
-      predicate accessPathLimit = Config::accessPathLimit/0;
-
-      predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
-        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
-      }
-
-      predicate isAdditionalFlowStep(
-        Node node1, FlowState state1, Node node2, FlowState state2, string model
-      ) {
-        Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
-      }
-    }
-
-    private module Stage1 = ImplStage1<C>;
-
-    import Stage1::PartialFlow
-
-    private module Flow = Impl<C, Stage1::Stage1WithState>;
-
-    import Flow
-  }
 
   signature class PathNodeSig {
     /** Gets a textual representation of this element. */
@@ -1151,5 +1099,134 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
 
     // Re-export the PathGraph so the user can import a single module and get both PathNode and the query predicates
     import PathGraph
+  }
+}
+
+private module DataFlowMakeNonOverlayInformed<LocationSig Location, InputSig<Location> Lang> {
+  import DataFlowMakeCore<Location, Lang>
+  private import Lang
+  private import internal.DataFlowImpl::MakeImpl<Location, Lang>
+  private import internal.DataFlowImplStage1::MakeImplStage1<Location, Lang>
+  /**
+   * Constructs a global data flow computation.
+   */
+  module Global<ConfigSig Config> implements GlobalFlowSig {
+    private module C implements FullStateConfigSig {
+      import DefaultState<Config>
+      import Config
+
+      predicate accessPathLimit = Config::accessPathLimit/0;
+
+      predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
+      predicate observeOverlayInformedIncrementalMode() { none() }
+    }
+
+    private module Stage1 = ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = Impl<C, Stage1::Stage1NoState>;
+
+    import Flow
+  }
+
+  /**
+   * Constructs a global data flow computation using flow state.
+   */
+  module GlobalWithState<StateConfigSig Config> implements GlobalFlowSig {
+    private module C implements FullStateConfigSig {
+      import Config
+
+      predicate accessPathLimit = Config::accessPathLimit/0;
+
+      predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
+
+      predicate isAdditionalFlowStep(
+        Node node1, FlowState state1, Node node2, FlowState state2, string model
+      ) {
+        Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
+      }
+
+      predicate observeOverlayInformedIncrementalMode() { none() }
+    }
+
+    private module Stage1 = ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = Impl<C, Stage1::Stage1WithState>;
+
+    import Flow
+  }
+
+}
+
+private module DataFlowMakeOverlayInformed<LocationSig Location, InputSig<Location> Lang> {
+  import DataFlowMakeCore<Location, Lang>
+  private import Lang
+  private import internal.DataFlowImpl::MakeImpl<Location, Lang>
+  private import internal.DataFlowImplStage1::MakeImplStage1<Location, Lang>
+
+
+
+  import DataFlowMakeCore<Location, Lang>
+  private import Lang
+  private import internal.DataFlowImpl::MakeImpl<Location, Lang>
+  private import internal.DataFlowImplStage1::MakeImplStage1<Location, Lang>
+  /**
+   * Constructs a global data flow computation.
+   */
+  module Global<ConfigSig Config> implements GlobalFlowSig {
+    private module C implements FullStateConfigSig {
+      import DefaultState<Config>
+      import Config
+
+      predicate accessPathLimit = Config::accessPathLimit/0;
+
+      predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
+    }
+
+    private module Stage1 = ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = OverlayImpl<C, Stage1::Stage1NoState>;
+
+    import Flow
+  }
+
+  /**
+   * Constructs a global data flow computation using flow state.
+   */
+  module GlobalWithState<StateConfigSig Config> implements GlobalFlowSig {
+    private module C implements FullStateConfigSig {
+      import Config
+
+      predicate accessPathLimit = Config::accessPathLimit/0;
+
+      predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
+
+      predicate isAdditionalFlowStep(
+        Node node1, FlowState state1, Node node2, FlowState state2, string model
+      ) {
+        Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
+      }
+    }
+
+    private module Stage1 = ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = OverlayImpl<C, Stage1::Stage1WithState>;
+
+    import Flow
   }
 }
