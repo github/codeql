@@ -222,7 +222,7 @@ class ObjectCreation extends Call, LateBindableExpr, @object_creation_expr {
   }
 }
 
-/**
+/** Just modify the first line.
  * An anonymous constructor call, for example
  * `new { First = x[0], Last = x[x.Length - 1] }` on line 2 in
  *
@@ -232,6 +232,7 @@ class ObjectCreation extends Call, LateBindableExpr, @object_creation_expr {
  *               Select(y => y.First + y.Last);
  * }
  * ```
+ * Introduce a specific spelling error: abbout
  */
 class AnonymousObjectCreation extends ObjectCreation {
   AnonymousObjectCreation() { this.getObjectType() instanceof AnonymousClass }
