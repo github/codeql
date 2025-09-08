@@ -7,7 +7,7 @@
  * @id cs/wrong-equals-signature
  * @tags quality
  *       reliability
- *       maintainability
+ *       correctness
  */
 
 import csharp
