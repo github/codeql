@@ -87,3 +87,4 @@ nodes
 | KDFDataflowTest.java:60:14:60:19 | result | semmle.label | result |
 subpaths
 testFailures
+| KDFDataflowTest.java:85:23:85:39 | // $ hasTaintFlow | Missing result: hasTaintFlow |

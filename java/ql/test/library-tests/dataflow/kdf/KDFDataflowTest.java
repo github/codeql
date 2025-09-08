@@ -71,4 +71,17 @@ public class KDFDataflowTest {
         byte[] cleanResult = kdf.deriveData(spec);
         sink(cleanResult); // Safe - no taint
     }
+
+    public static void testThenExpand(byte[] cleanIKM) throws Exception {
+        String userInput = source("");
+        byte[] taintedInfo = userInput.getBytes();
+
+        HKDFParameterSpec.Builder builder = HKDFParameterSpec.ofExtract();
+        builder.addIKM(cleanIKM);
+        HKDFParameterSpec spec = builder.thenExpand(taintedInfo, 32);
+
+        KDF kdf = KDF.getInstance("HKDF-SHA256");
+        byte[] result = kdf.deriveData(spec);
+        sink(result); // $ hasTaintFlow
+    }
 }
