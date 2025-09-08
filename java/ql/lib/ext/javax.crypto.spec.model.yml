@@ -17,6 +17,7 @@ extensions:
       - ["javax.crypto.spec", "HKDFParameterSpec$Builder", True, "addSalt", "(SecretKey)", "", "Argument[this]", "ReturnValue", "value", "manual"]
       - ["javax.crypto.spec", "HKDFParameterSpec$Builder", True, "thenExpand", "(byte[],int)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["javax.crypto.spec", "HKDFParameterSpec$Builder", True, "thenExpand", "(byte[],int)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["javax.crypto.spec", "HKDFParameterSpec$Builder", True, "thenExpand", "(byte[],int)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["javax.crypto.spec", "HKDFParameterSpec", False, "expandOnly", "(SecretKey,byte[],int)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["javax.crypto.spec", "HKDFParameterSpec", False, "expandOnly", "(SecretKey,byte[],int)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
       - ["javax.crypto.spec", "SecretKeySpec", False, "SecretKeySpec", "(byte[],String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
