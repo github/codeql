@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go/types"
 
+	"github.com/github/codeql-go/extractor/srcarchive"
 	"github.com/github/codeql-go/extractor/util"
 )
 
@@ -67,7 +68,7 @@ func (l *Labeler) GlobalID(key string) Label {
 // FileLabel returns the label for a file with path `path`.
 func (l *Labeler) FileLabel() Label {
 	if l.fileLabel == InvalidLabel {
-		l.fileLabel = l.FileLabelFor(l.tw.path)
+		l.fileLabel = l.FileLabelFor(srcarchive.TransformPath(l.tw.path))
 	}
 	return l.fileLabel
 }
