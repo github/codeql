@@ -237,7 +237,7 @@ abstract private class GuardConditionImpl extends Expr {
   pragma[inline]
   final predicate ensuresLtEdge(Expr e, int k, BasicBlock pred, BasicBlock succ, boolean isLessThan) {
     exists(AbstractValue v |
-      this.comparesEq(e, k, isLessThan, v) and
+      this.comparesLt(e, k, isLessThan, v) and
       this.valueControlsEdge(pred, succ, v)
     )
   }
