@@ -20,8 +20,10 @@ private predicate externalStorageFlowStep(DataFlow::Node node1, DataFlow::Node n
   node2.asExpr().(FieldRead).getField().getInitializer() = node1.asExpr()
 }
 
-private predicate externalStorageFlow(DataFlow::Node node1, DataFlow::Node node2) {
-  externalStorageFlowStep*(node1, node2)
+private predicate externalStorageDirFlowsTo(DataFlow::Node n) {
+  sourceNode(n, "android-external-storage-dir")
+  or
+  exists(DataFlow::Node mid | externalStorageDirFlowsTo(mid) and externalStorageFlowStep(mid, n))
 }
 
 /**
@@ -29,9 +31,8 @@ private predicate externalStorageFlow(DataFlow::Node node1, DataFlow::Node node2
  * This is controllable by third-party applications, so is treated as a remote flow source.
  */
 predicate androidExternalStorageSource(DataFlow::Node n) {
-  exists(DataFlow::Node externalDir, DirectFileReadExpr read |
-    sourceNode(externalDir, "android-external-storage-dir") and
+  exists(DirectFileReadExpr read |
     n.asExpr() = read and
-    externalStorageFlow(externalDir, DataFlow::exprNode(read.getFileExpr()))
+    externalStorageDirFlowsTo(DataFlow::exprNode(read.getFileExpr()))
   )
 }
