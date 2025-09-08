@@ -202,6 +202,9 @@ predicate callMatchesSignature(Function func, Call call) {
   )
 }
 
+pragma[nomagic]
+private File getFunctionFile(Function f) { result = f.getLocation().getFile() }
+
 /** Gets a call which matches the signature of `base`, but not of overridden `sub`. */
 Call getASignatureMismatchWitness(Function base, Function sub) {
   callViableForEitherOverride(base, sub, result) and
@@ -224,17 +227,17 @@ Call chooseASignatureMismatchWitnessInFile(Function base, Function sub, File fil
 Call chooseASignatureMismatchWitness(Function base, Function sub) {
   exists(getASignatureMismatchWitness(base, sub)) and
   (
-    result = chooseASignatureMismatchWitnessInFile(base, sub, base.getLocation().getFile())
+    result = chooseASignatureMismatchWitnessInFile(base, sub, getFunctionFile(base))
     or
     not exists(Call c |
       c = getASignatureMismatchWitness(base, sub) and
       c.getLocation().getFile() = base.getLocation().getFile()
     ) and
-    result = chooseASignatureMismatchWitnessInFile(base, sub, sub.getLocation().getFile())
+    result = chooseASignatureMismatchWitnessInFile(base, sub, getFunctionFile(sub))
     or
     not exists(Call c |
       c = getASignatureMismatchWitness(base, sub) and
-      c.getLocation().getFile() = [base, sub].getLocation().getFile()
+      c.getLocation().getFile() = getFunctionFile([base, sub])
     ) and
     result =
       min(Call c |
