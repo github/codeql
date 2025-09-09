@@ -16,3 +16,4 @@ qltest_dependencies:
     - rustls = { version = "0.23.27" }
     - futures-rustls = { version = "0.26.0" }
     - async-std = { version = "1.13.1" }
+    - warp = { version = "0.4.2", features = ["server"] }
