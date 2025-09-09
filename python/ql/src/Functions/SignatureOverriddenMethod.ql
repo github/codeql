@@ -212,43 +212,28 @@ Call getASignatureMismatchWitness(Function base, Function sub) {
   not callMatchesSignature(sub, result)
 }
 
-/** Choose a 'witnessing' call that matches the signature of `base` but not of overridden `sub`, and is in the file `file`. */
-Call chooseASignatureMismatchWitnessInFile(Function base, Function sub, File file) {
-  result =
-    min(Call c |
-      c = getASignatureMismatchWitness(base, sub) and
-      c.getLocation().getFile() = file
-    |
-      c order by c.getLocation().getStartLine(), c.getLocation().getStartColumn()
-    )
+pragma[inline]
+string preferredFile(File callFile, Function base, Function sub) {
+  if callFile = getFunctionFile(base)
+  then result = " A"
+  else
+    if callFile = getFunctionFile(sub)
+    then result = " B"
+    else result = callFile.getAbsolutePath()
 }
 
 /** Choose a 'witnessing' call that matches the signature of `base` but not of overridden `sub`. */
 Call chooseASignatureMismatchWitness(Function base, Function sub) {
   exists(getASignatureMismatchWitness(base, sub)) and
-  (
-    result = chooseASignatureMismatchWitnessInFile(base, sub, getFunctionFile(base))
-    or
-    not exists(Call c |
-      c = getASignatureMismatchWitness(base, sub) and
-      c.getLocation().getFile() = base.getLocation().getFile()
-    ) and
-    result = chooseASignatureMismatchWitnessInFile(base, sub, getFunctionFile(sub))
-    or
-    not exists(Call c |
-      c = getASignatureMismatchWitness(base, sub) and
-      c.getLocation().getFile() = getFunctionFile([base, sub])
-    ) and
-    result =
-      min(Call c |
-        c = getASignatureMismatchWitness(base, sub)
-      |
-        c
-        order by
-          c.getLocation().getFile().getAbsolutePath(), c.getLocation().getStartLine(),
-          c.getLocation().getStartColumn()
-      )
-  )
+  result =
+    min(Call c |
+      c = getASignatureMismatchWitness(base, sub)
+    |
+      c
+      order by
+        preferredFile(c.getLocation().getFile(), base, sub), c.getLocation().getStartLine(),
+        c.getLocation().getStartColumn()
+    )
 }
 
 module CallOption = LocatableOption<Location, Call>;
