@@ -57,8 +57,8 @@ module SqlInjection {
       exists(DataFlow::CallNode call | call.matchesName("Invoke-Sqlcmd") |
         this = call.getNamedArgument(query())
         or
-        this = call.getNamedArgument(inputfile())
-        or
+        // If the input is not provided as a query parameter or an input file
+        // parameter then it's the first argument.
         not call.hasNamedArgument(query()) and
         not call.hasNamedArgument(inputfile()) and
         this = call.getArgument(0)
