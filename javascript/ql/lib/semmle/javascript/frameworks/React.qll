@@ -361,7 +361,7 @@ abstract private class SharedReactPreactClassComponent extends ReactComponent in
    * Note that every class has a constructor: if no explicit constructor
    * is declared, it has a synthetic default constructor.
    */
-  ConstructorDeclaration getConstructor() { result = ClassDefinition.super.getAMethod() }
+  ConstructorDeclaration getConstructor() { result = ClassDefinition.super.getConstructor() }
 }
 
 /**
