@@ -2467,7 +2467,6 @@ inferType
 | main.rs:1328:33:1328:36 | SelfParam |  | main.rs:1326:5:1329:5 | Self [trait ATrait] |
 | main.rs:1334:29:1334:33 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1334:29:1334:33 | SelfParam | &T | file://:0:0:0:0 | & |
-| main.rs:1334:29:1334:33 | SelfParam | &T | main.rs:1307:5:1310:5 | MyInt |
 | main.rs:1334:29:1334:33 | SelfParam | &T.&T | main.rs:1307:5:1310:5 | MyInt |
 | main.rs:1334:43:1336:9 | { ... } |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1335:13:1335:22 | (...) |  | main.rs:1307:5:1310:5 | MyInt |
@@ -2481,7 +2480,6 @@ inferType
 | main.rs:1335:16:1335:20 | * ... | &T | main.rs:1307:5:1310:5 | MyInt |
 | main.rs:1335:17:1335:20 | self |  | file://:0:0:0:0 | & |
 | main.rs:1335:17:1335:20 | self | &T | file://:0:0:0:0 | & |
-| main.rs:1335:17:1335:20 | self | &T | main.rs:1307:5:1310:5 | MyInt |
 | main.rs:1335:17:1335:20 | self | &T.&T | main.rs:1307:5:1310:5 | MyInt |
 | main.rs:1339:33:1339:36 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1339:33:1339:36 | SelfParam | &T | main.rs:1307:5:1310:5 | MyInt |
@@ -3798,7 +3796,6 @@ inferType
 | main.rs:2030:31:2032:9 | { ... } |  | main.rs:2002:5:2002:14 | S2 |
 | main.rs:2031:13:2031:14 | S2 |  | main.rs:2002:5:2002:14 | S2 |
 | main.rs:2036:18:2036:22 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:2036:18:2036:22 | SelfParam |  | main.rs:2003:5:2003:22 | S3 |
 | main.rs:2036:18:2036:22 | SelfParam | &T | main.rs:2003:5:2003:22 | S3 |
 | main.rs:2036:18:2036:22 | SelfParam | &T.T3 | main.rs:2035:10:2035:17 | T |
 | main.rs:2036:30:2039:9 | { ... } |  | main.rs:2035:10:2035:17 | T |
@@ -3807,7 +3804,6 @@ inferType
 | main.rs:2037:17:2037:21 | S3(...) | &T | main.rs:2003:5:2003:22 | S3 |
 | main.rs:2037:17:2037:21 | S3(...) | &T.T3 | main.rs:2035:10:2035:17 | T |
 | main.rs:2037:25:2037:28 | self |  | file://:0:0:0:0 | & |
-| main.rs:2037:25:2037:28 | self |  | main.rs:2003:5:2003:22 | S3 |
 | main.rs:2037:25:2037:28 | self | &T | main.rs:2003:5:2003:22 | S3 |
 | main.rs:2037:25:2037:28 | self | &T.T3 | main.rs:2035:10:2035:17 | T |
 | main.rs:2038:13:2038:21 | t.clone() |  | main.rs:2035:10:2035:17 | T |
