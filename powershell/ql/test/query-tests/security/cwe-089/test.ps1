@@ -110,3 +110,5 @@ TakesTypedParameters $userinput $userinput $userinput $userinput $userinput $use
 
 $query = "SELECT * FROM MyTable WHERE MyColumn = '$userinput'"
 Invoke-Sqlcmd -unknown $userinput -ServerInstance "MyServer" -Database "MyDatabase" -q "SELECT * FROM MyTable" # GOOD
+
+Invoke-Sqlcmd -ServerInstance "MyServer" -Database "MyDatabase" -InputFile $userinput # GOOD [FALSE POSITIVE] # this is not really what this query is about.
