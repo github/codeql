@@ -40,6 +40,12 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
   )
 }
 
+predicate test0(Node nodeFrom, Node nodeTo) {
+  nodeFrom.getStartLine() = 692 and
+  nodeFrom.getFile().getBaseName() = "pprof.go" and
+  basicLocalFlowStep(nodeFrom, nodeTo)
+}
+
 /**
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
  * (intra-procedural) step, not taking function models into account.
@@ -74,7 +80,7 @@ predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
   or
   // SSA defn -> first SSA use
   exists(SsaDefinition pred, IR::Instruction succ | succ = pred.getAFirstUse() |
-    (pred instanceof SsaExplicitDefinition or pred instanceof SsaVariableCapture) and
+    // (pred instanceof SsaExplicitDefinition or pred instanceof SsaVariableCapture) and
     nodeFrom = ssaNode(pred.getVariable()) and
     nodeTo = instructionNode(succ)
   )
