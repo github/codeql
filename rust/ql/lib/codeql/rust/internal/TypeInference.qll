@@ -1910,7 +1910,9 @@ private predicate isMethodCall(MethodCall mc, Type rootType, string name, int ar
   arity = mc.getNumberOfArguments()
 }
 
-private module IsInstantiationOfInput implements IsInstantiationOfInputSig<MethodCall> {
+private module IsInstantiationOfInput implements
+  IsInstantiationOfInputSig<MethodCall, TypeMentionTypeTree>
+{
   /** Holds if `mc` specifies a trait and might target a method in `impl`. */
   pragma[nomagic]
   private predicate methodCallTraitCandidate(MethodCall mc, Impl impl) {
@@ -1939,7 +1941,9 @@ private module IsInstantiationOfInput implements IsInstantiationOfInputSig<Metho
   private TypeRepr getImplSelfTy(Impl impl) { result = impl.getSelfTy() }
 
   pragma[nomagic]
-  predicate potentialInstantiationOf(MethodCall mc, TypeAbstraction impl, TypeMention constraint) {
+  predicate potentialInstantiationOf(
+    MethodCall mc, TypeAbstraction impl, TypeMentionTypeTree constraint
+  ) {
     constraint = getImplSelfTy(impl) and
     (
       methodCallTraitCandidate(mc, impl)
@@ -1958,7 +1962,7 @@ private module IsInstantiationOfInput implements IsInstantiationOfInputSig<Metho
     )
   }
 
-  predicate relevantTypeMention(TypeMention constraint) {
+  predicate relevantTypeMention(TypeMentionTypeTree constraint) {
     exists(Impl impl | methodCandidate(_, _, _, impl) and constraint = impl.getSelfTy())
   }
 }
@@ -2119,14 +2123,16 @@ private predicate methodCallHasNoInherentTarget(MethodCall mc) {
       methodCandidate(rootType, name, arity, impl) and
       not impl.hasTrait()
     |
-      IsInstantiationOf<MethodCall, IsInstantiationOfInput>::isNotInstantiationOf(mc, impl, _)
+      IsInstantiationOf<MethodCall, TypeMentionTypeTree, IsInstantiationOfInput>::isNotInstantiationOf(mc,
+        impl, _)
     )
   )
 }
 
 pragma[nomagic]
 private predicate methodCallHasImplCandidate(MethodCall mc, Impl impl) {
-  IsInstantiationOf<MethodCall, IsInstantiationOfInput>::isInstantiationOf(mc, impl, _) and
+  IsInstantiationOf<MethodCall, TypeMentionTypeTree, IsInstantiationOfInput>::isInstantiationOf(mc,
+    impl, _) and
   if impl.hasTrait() and not exists(mc.getTrait())
   then
     // inherent methods take precedence over trait methods, so only allow
@@ -2267,11 +2273,11 @@ private class AmbigousAssocFunctionCallExpr extends MkAmbigousAssocFunctionCallE
 }
 
 private module AmbigousAssocFuncIsInstantiationOfInput implements
-  IsInstantiationOfInputSig<AmbigousAssocFunctionCallExpr>
+  IsInstantiationOfInputSig<AmbigousAssocFunctionCallExpr, TypeMentionTypeTree>
 {
   pragma[nomagic]
   predicate potentialInstantiationOf(
-    AmbigousAssocFunctionCallExpr ce, TypeAbstraction impl, TypeMention constraint
+    AmbigousAssocFunctionCallExpr ce, TypeAbstraction impl, TypeMentionTypeTree constraint
   ) {
     exists(FunctionCallExpr call, Function resolved, Function cand, int pos |
       ce = MkAmbigousAssocFunctionCallExpr(call, resolved, pos) and
@@ -2297,7 +2303,7 @@ private ItemNode resolveUnambigousFunctionCallTarget(FunctionCallExpr call) {
 pragma[nomagic]
 private Function resolveAmbigousFunctionCallTargetFromIndex(FunctionCallExpr call, int index) {
   exists(Impl impl, int pos, Function resolved |
-    IsInstantiationOf<AmbigousAssocFunctionCallExpr, AmbigousAssocFuncIsInstantiationOfInput>::isInstantiationOf(MkAmbigousAssocFunctionCallExpr(call,
+    IsInstantiationOf<AmbigousAssocFunctionCallExpr, TypeMentionTypeTree, AmbigousAssocFuncIsInstantiationOfInput>::isInstantiationOf(MkAmbigousAssocFunctionCallExpr(call,
         resolved, pos), impl, _) and
     result = call.getAnAmbigousCandidateRanked(impl, pos, resolved, index)
   |
