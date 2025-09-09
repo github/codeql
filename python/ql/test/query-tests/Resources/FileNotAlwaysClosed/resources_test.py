@@ -151,7 +151,7 @@ def not_closed17():
 #With statement will close the fp
 def closed18(path):
     try:
-        f18 = open(path) # $Alert 
+        f18 = open(path) 
     except IOError as ex:
         print(ex)
         raise ex
