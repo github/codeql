@@ -151,7 +151,7 @@ def not_closed17():
 #With statement will close the fp
 def closed18(path):
     try:
-        f18 = open(path) # $SPURIOUS: Alert # Dataflow appears to not detect this with statement as guarding the exceptions produced by the `read()` call.
+        f18 = open(path) # $Alert 
     except IOError as ex:
         print(ex)
         raise ex
@@ -301,7 +301,7 @@ def closed30(path):
     # - NotWrapper is treated as a wrapper class as a file handle is passed to it 
     # - thing.do_something() is treated as a call that can raise an exception while a file is open
     # - this call is treated as occurring after the open but not as being guarded by the with statement, as it is in the same basic block
-    # - - this behaviour has been changed fixing the FP
+    # - - this behavior has been changed fixing the FP
 
     with open(path) as fp: # No longer spurious alert here.
         thing = NotWrapper(fp)

@@ -88,6 +88,12 @@ class WithStatement extends FileClose {
   With w;
 
   WithStatement() { this.asExpr() = w.getContextExpr() }
+
+  override predicate guardsExceptions(DataFlow::CfgNode fileRaises) {
+    super.guardsExceptions(fileRaises)
+    or
+    w.getBody().contains(fileRaises.asExpr())
+  }
 }
 
 /** Holds if an exception may be raised at `raises` if `file` is a file object. */
