@@ -1070,7 +1070,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       /** An environment to track during type matching. */
       bindingset[this]
-      class Environment {
+      class AccessEnvironment {
         /** Gets a textual representation of this environment. */
         bindingset[this]
         string toString();
@@ -1101,10 +1101,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          * type at argument position `0` is `int`.
          */
         bindingset[e]
-        Type getInferredType(Environment e, AccessPosition apos, TypePath path);
+        Type getInferredType(AccessEnvironment e, AccessPosition apos, TypePath path);
 
         /** Gets the declaration that this access targets in environment `e`. */
-        Declaration getTarget(Environment e);
+        Declaration getTarget(AccessEnvironment e);
       }
 
       /** Holds if `apos` and `dpos` match. */
@@ -1151,7 +1151,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        */
       pragma[nomagic]
       private predicate adjustedAccessType(
-        Access a, Environment e, AccessPosition apos, Declaration target, TypePath path, Type t
+        Access a, AccessEnvironment e, AccessPosition apos, Declaration target, TypePath path,
+        Type t
       ) {
         target = a.getTarget(e) and
         exists(TypePath path0, Type t0 |
@@ -1184,7 +1185,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        */
       pragma[nomagic]
       private predicate directTypeMatch(
-        Access a, Environment e, Declaration target, TypePath path, Type t, TypeParameter tp
+        Access a, AccessEnvironment e, Declaration target, TypePath path, Type t, TypeParameter tp
       ) {
         not exists(getTypeArgument(a, target, tp, _)) and
         exists(AccessPosition apos, DeclarationPosition dpos, TypePath pathToTypeParam |
@@ -1199,7 +1200,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          * Holds if inferring types at `a` in environment `e` might depend on the type at
          * `path` of `apos` having `base` as a transitive base type.
          */
-        private predicate relevantAccess(Access a, Environment e, AccessPosition apos, Type base) {
+        private predicate relevantAccess(
+          Access a, AccessEnvironment e, AccessPosition apos, Type base
+        ) {
           exists(Declaration target, DeclarationPosition dpos |
             adjustedAccessType(a, e, apos, target, _, _) and
             accessDeclarationPositionMatch(apos, dpos) and
@@ -1209,7 +1212,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
         pragma[nomagic]
         private Type inferTypeAt(
-          Access a, Environment e, AccessPosition apos, TypeParameter tp, TypePath suffix
+          Access a, AccessEnvironment e, AccessPosition apos, TypeParameter tp, TypePath suffix
         ) {
           relevantAccess(a, e, apos, _) and
           exists(TypePath path0 |
@@ -1252,8 +1255,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          * `Base<C<T3>>` | `"T2.T1.T1"` | `int`
          */
         predicate hasBaseTypeMention(
-          Access a, Environment e, AccessPosition apos, TypeMention baseMention, TypePath path,
-          Type t
+          Access a, AccessEnvironment e, AccessPosition apos, TypeMention baseMention,
+          TypePath path, Type t
         ) {
           relevantAccess(a, e, apos, resolveTypeMentionRoot(baseMention)) and
           exists(Type sub | sub = a.getInferredType(e, apos, TypePath::nil()) |
@@ -1270,7 +1273,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       private module AccessConstraint {
         predicate relevantAccessConstraint(
-          Access a, Environment e, Declaration target, AccessPosition apos, TypePath path,
+          Access a, AccessEnvironment e, Declaration target, AccessPosition apos, TypePath path,
           Type constraint
         ) {
           target = a.getTarget(e) and
@@ -1279,7 +1282,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
         private newtype TRelevantAccess =
           MkRelevantAccess(
-            Access a, Environment e, Declaration target, AccessPosition apos, TypePath path
+            Access a, AccessEnvironment e, Declaration target, AccessPosition apos, TypePath path
           ) {
             relevantAccessConstraint(a, e, target, apos, path, _)
           }
@@ -1290,7 +1293,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          */
         private class RelevantAccess extends MkRelevantAccess {
           Access a;
-          Environment e;
+          AccessEnvironment e;
           Declaration target;
           AccessPosition apos;
           TypePath path;
@@ -1320,7 +1323,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         }
 
         predicate satisfiesConstraintType(
-          Access a, Environment e, Declaration target, AccessPosition apos, TypePath prefix,
+          Access a, AccessEnvironment e, Declaration target, AccessPosition apos, TypePath prefix,
           Type constraint, TypePath path, Type t
         ) {
           SatisfiesConstraint<RelevantAccess, SatisfiesConstraintInput>::satisfiesConstraintType(MkRelevantAccess(a,
@@ -1334,7 +1337,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        */
       pragma[nomagic]
       private predicate accessBaseType(
-        Access a, Environment e, AccessPosition apos, Type base, TypePath path, Type t
+        Access a, AccessEnvironment e, AccessPosition apos, Type base, TypePath path, Type t
       ) {
         exists(TypeMention tm |
           AccessBaseType::hasBaseTypeMention(a, e, apos, tm, path, t) and
@@ -1388,7 +1391,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        */
       pragma[nomagic]
       private predicate baseTypeMatch(
-        Access a, Environment e, Declaration target, TypePath path, Type t, TypeParameter tp
+        Access a, AccessEnvironment e, Declaration target, TypePath path, Type t, TypeParameter tp
       ) {
         not exists(getTypeArgument(a, target, tp, _)) and
         target = a.getTarget(e) and
@@ -1406,7 +1409,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        */
       pragma[nomagic]
       private predicate explicitTypeMatch(
-        Access a, Environment e, Declaration target, TypePath path, Type t, TypeParameter tp
+        Access a, AccessEnvironment e, Declaration target, TypePath path, Type t, TypeParameter tp
       ) {
         target = a.getTarget(e) and
         t = getTypeArgument(a, target, tp, path)
@@ -1450,7 +1453,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       pragma[nomagic]
       private predicate typeConstraintBaseTypeMatch(
-        Access a, Environment e, Declaration target, TypePath path, Type t, TypeParameter tp
+        Access a, AccessEnvironment e, Declaration target, TypePath path, Type t, TypeParameter tp
       ) {
         not exists(getTypeArgument(a, target, tp, _)) and
         exists(Type constraint, AccessPosition apos, TypePath pathToTp, TypePath pathToTp2 |
@@ -1462,7 +1465,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       pragma[inline]
       private predicate typeMatch(
-        Access a, Environment e, Declaration target, TypePath path, Type t, TypeParameter tp
+        Access a, AccessEnvironment e, Declaration target, TypePath path, Type t, TypeParameter tp
       ) {
         // A type given at the access corresponds directly to the type parameter
         // at the target.
@@ -1517,7 +1520,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * `"T2.T1.T1"` | `int`
        */
       pragma[nomagic]
-      Type inferAccessType(Access a, Environment e, AccessPosition apos, TypePath path) {
+      Type inferAccessType(Access a, AccessEnvironment e, AccessPosition apos, TypePath path) {
         exists(DeclarationPosition dpos | accessDeclarationPositionMatch(apos, dpos) |
           // A suffix of `path` leads to a type parameter in the target
           exists(Declaration target, TypePath prefix, TypeParameter tp, TypePath suffix |
@@ -1653,17 +1656,17 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
         predicate adjustAccessType = Input::adjustAccessType/6;
 
-        class Environment = Unit;
+        class AccessEnvironment = Unit;
 
         final private class AccessFinal = Input::Access;
 
         class Access extends AccessFinal {
-          Type getInferredType(Environment e, AccessPosition apos, TypePath path) {
+          Type getInferredType(AccessEnvironment e, AccessPosition apos, TypePath path) {
             exists(e) and
             result = super.getInferredType(apos, path)
           }
 
-          Declaration getTarget(Environment e) {
+          Declaration getTarget(AccessEnvironment e) {
             exists(e) and
             result = super.getTarget()
           }
