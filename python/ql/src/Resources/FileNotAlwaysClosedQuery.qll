@@ -52,7 +52,7 @@ class FileWrapperCall extends DataFlow::CallCfgNode {
 
 /** A node where a file is closed. */
 abstract class FileClose extends DataFlow::CfgNode {
-  /** Holds if this file close will occur if an exception is raised at `raises`. */
+  /** Holds if this file close will occur if an exception is raised at `fileRaises`. */
   predicate guardsExceptions(DataFlow::CfgNode fileRaises) {
     // The close call occurs after an exception edge in the cfg (a catch or finally)
     bbReachableRefl(fileRaises.asCfgNode().getBasicBlock().getAnExceptionalSuccessor(),
