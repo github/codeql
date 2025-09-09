@@ -6,7 +6,10 @@
  * @problem.severity recommendation
  * @precision medium
  * @id java/undocumented-exception
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
+ *       error-handling
  */
 
 import java
