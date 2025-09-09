@@ -10,6 +10,6 @@ getTypeRepr
 | gen_where_pred.rs:7:46:7:53 | WherePred | gen_where_pred.rs:7:46:7:46 | U |
 | gen_where_pred.rs:9:31:9:54 | WherePred | gen_where_pred.rs:9:39:9:39 | T |
 getTypeBoundList
-| gen_where_pred.rs:7:36:7:43 | WherePred | gen_where_pred.rs:7:39:7:43 | TypeBoundList |
-| gen_where_pred.rs:7:46:7:53 | WherePred | gen_where_pred.rs:7:49:7:53 | TypeBoundList |
-| gen_where_pred.rs:9:31:9:54 | WherePred | gen_where_pred.rs:9:42:9:54 | TypeBoundList |
+| gen_where_pred.rs:7:36:7:43 | WherePred | gen_where_pred.rs:7:39:7:43 | ... |
+| gen_where_pred.rs:7:46:7:53 | WherePred | gen_where_pred.rs:7:49:7:53 | ... |
+| gen_where_pred.rs:9:31:9:54 | WherePred | gen_where_pred.rs:9:42:9:54 | ... |
