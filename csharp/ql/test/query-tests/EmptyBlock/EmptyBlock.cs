@@ -29,7 +29,6 @@ class EmptyBlock
         // OK - comment
         if (true)
         {
-            // comment
         }
 
         // OK - not empty
@@ -46,6 +45,12 @@ class EmptyBlock
         // BAD: there is no update
         for (int i = 0; i < 10;)
         {
+        }
+
+        // BAD
+        if (true)
+        {
+            // comment
         }
     }
 }
