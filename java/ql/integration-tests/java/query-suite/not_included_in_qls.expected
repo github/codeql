@@ -1,25 +1,3 @@
-ql/java/ql/src/Advisory/Declarations/NonFinalImmutableField.ql
-ql/java/ql/src/Advisory/Declarations/NonPrivateField.ql
-ql/java/ql/src/Advisory/Documentation/MissingJavadocMethods.ql
-ql/java/ql/src/Advisory/Documentation/MissingJavadocParameters.ql
-ql/java/ql/src/Advisory/Documentation/MissingJavadocReturnValues.ql
-ql/java/ql/src/Advisory/Documentation/MissingJavadocThrows.ql
-ql/java/ql/src/Advisory/Documentation/MissingJavadocTypes.ql
-ql/java/ql/src/Advisory/Java Objects/AvoidCloneMethodAccess.ql
-ql/java/ql/src/Advisory/Java Objects/AvoidCloneOverride.ql
-ql/java/ql/src/Advisory/Java Objects/AvoidCloneableInterface.ql
-ql/java/ql/src/Advisory/Java Objects/AvoidFinalizeOverride.ql
-ql/java/ql/src/Advisory/Naming/NamingConventionsConstants.ql
-ql/java/ql/src/Advisory/Naming/NamingConventionsMethods.ql
-ql/java/ql/src/Advisory/Naming/NamingConventionsPackages.ql
-ql/java/ql/src/Advisory/Naming/NamingConventionsRefTypes.ql
-ql/java/ql/src/Advisory/Naming/NamingConventionsVariables.ql
-ql/java/ql/src/Advisory/Statements/MissingDefaultInSwitch.ql
-ql/java/ql/src/Advisory/Statements/OneStatementPerLine.ql
-ql/java/ql/src/Advisory/Statements/TerminateIfElseIfWithElse.ql
-ql/java/ql/src/Advisory/Types/GenericsConstructor.ql
-ql/java/ql/src/Advisory/Types/GenericsReturnType.ql
-ql/java/ql/src/Advisory/Types/GenericsVariable.ql
 ql/java/ql/src/AlertSuppression.ql
 ql/java/ql/src/AlertSuppressionAnnotations.ql
 ql/java/ql/src/Architecture/Dependencies/MutualDependency.ql
@@ -31,10 +9,6 @@ ql/java/ql/src/Architecture/Refactoring Opportunities/HubClasses.ql
 ql/java/ql/src/Architecture/Refactoring Opportunities/InappropriateIntimacy.ql
 ql/java/ql/src/Complexity/BlockWithTooManyStatements.ql
 ql/java/ql/src/Complexity/ComplexCondition.ql
-ql/java/ql/src/DeadCode/DeadClass.ql
-ql/java/ql/src/DeadCode/DeadEnumConstant.ql
-ql/java/ql/src/DeadCode/DeadField.ql
-ql/java/ql/src/DeadCode/DeadMethod.ql
 ql/java/ql/src/DeadCode/FLinesOfDeadCode.ql
 ql/java/ql/src/Frameworks/JavaEE/EJB/EjbContainerInterference.ql
 ql/java/ql/src/Frameworks/JavaEE/EJB/EjbFileIO.ql
