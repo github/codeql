@@ -293,7 +293,7 @@ class NotWrapper:
         self.data = fp.read()
         fp.close()
 
-    def do_something():
+    def do_something(self):
         pass 
 
 def closed30(path):
@@ -322,7 +322,7 @@ class Wrapper():
         return self.f.read()
     def __enter__(self):
         pass
-    def __exit__(self):
+    def __exit__(self,exc_type, exc_value,traceback):
         self.f.close()
 
 def closed32(path):
