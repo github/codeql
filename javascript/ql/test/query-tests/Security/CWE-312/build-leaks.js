@@ -90,4 +90,14 @@ var server = https.createServer(function (req, res) {
     }
 
     new webpack.DefinePlugin(getOnlyReactVariables3());
+
+    function getFilteredEnv4() {
+        return ["FOO", "BAR", "BAZ"]
+            .reduce((env, key) => {
+                env[key] = JSON.stringify(process.env[key]); // $ SPURIOUS: Source[js/build-artifact-leak]
+                return env;
+            }, {});
+    }
+
+    new webpack.DefinePlugin(getFilteredEnv4()); // $ SPURIOUS: Alert[js/build-artifact-leak]
 })();
