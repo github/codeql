@@ -27,7 +27,7 @@
    Ruby [10]_,"up to 3.3",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
    Rust [11]_,"Rust editions 2021 and 2024","Rust compiler","``.rs``, ``Cargo.toml``"
    Swift [12]_,"Swift 5.4-6.1","Swift compiler","``.swift``"
-   TypeScript [13]_,"2.6-5.8",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
+   TypeScript [13]_,"2.6-5.9",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
 
 .. container:: footnote-group
 

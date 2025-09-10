@@ -151,6 +151,14 @@ class ImportDeclaration extends Stmt, Import, @import_declaration {
   /** Holds if this is declared with the `type` keyword, so it only imports types. */
   predicate isTypeOnly() { has_type_keyword(this) }
 
+  /**
+   * Holds if this is declared with the `defer` keyword, for example:
+   * ```ts
+   * import defer * as f from "somewhere";
+   * ```
+   */
+  predicate isDeferredImport() { has_defer_keyword(this) }
+
   override string getAPrimaryQlClass() { result = "ImportDeclaration" }
 }
 
