@@ -822,7 +822,7 @@ module API {
           or
           // special case: from `require('m')` to an export of `prop` in `m`
           exists(Import imp, Module m, string prop |
-            pred = imp.getImportedModuleNode() and
+            pred = imp.getImportedModuleNodeStrict() and
             m = imp.getImportedModule() and
             lbl = Label::member(prop) and
             rhs = m.getAnExportedValue(prop)
@@ -1337,7 +1337,7 @@ module API {
       result = nd.getALocalSource()
       or
       // additional backwards step from `require('m')` to `exports` or `module.exports` in m
-      exists(Import imp | imp.getImportedModuleNode() = trackDefNode(nd, t.continue()) |
+      exists(Import imp | imp.getImportedModuleNodeStrict() = trackDefNode(nd, t.continue()) |
         result = DataFlow::exportsVarNode(imp.getImportedModule())
         or
         result = DataFlow::moduleVarNode(imp.getImportedModule()).getAPropertyRead("exports")
