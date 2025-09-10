@@ -8,7 +8,6 @@ private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.dataflow.FlowSource
 private import codeql.rust.Concepts
-private import codeql.rust.security.CleartextTransmissionExtensions
 
 /**
  * Provides default sources, sinks and barriers for detecting request forgery
@@ -41,8 +40,6 @@ module RequestForgery {
    */
   private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
-  // TODO: Do this in a cleaner way
-  //   private class ClearTextTransmissionSink extends Sink instanceof CleartextTransmission::Sink { }
   /**
    * A sink for request forgery from model data.
    */
