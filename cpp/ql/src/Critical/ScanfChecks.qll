@@ -4,13 +4,9 @@ private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.ir.ValueNumbering
 
 private predicate exprInBooleanContext(Expr e) {
-  exists(IRGuardCondition gc |
-    exists(Instruction i |
-      i.getUnconvertedResultExpression() = e and
-      gc.comparesEq(valueNumber(i).getAUse(), 0, _, _)
-    )
-    or
-    gc.getUnconvertedResultExpression() = e
+  exists(IRGuardCondition gc, Instruction i |
+    i.getUnconvertedResultExpression() = e and
+    gc.comparesEq(valueNumber(i).getAUse(), 0, _, _)
   )
 }
 
