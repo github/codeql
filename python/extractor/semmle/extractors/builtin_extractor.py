@@ -1,4 +1,6 @@
 import sys
+import os
+from pathlib import Path
 from semmle import util
 from semmle.python.passes.objects import ObjectPass
 from semmle.extractors.base import BaseExtractor
@@ -17,7 +19,7 @@ class BuiltinExtractor(BaseExtractor):
         # Modules in the standard library (e.g. `os`)
         if not self.options.extract_stdlib and \
             isinstance(unit, util.FileExtractable) and \
-            unit.path.startswith(util.STDLIB_PATH):
+            _is_subpath(unit.path, util.STDLIB_PATH):
                 return SkippedBuiltin
         if not isinstance(unit, util.BuiltinModuleExtractable):
             return NotImplemented
@@ -39,3 +41,18 @@ class BuiltinExtractor(BaseExtractor):
 
     def close(self):
         pass
+
+def _is_subpath(path, prefix):
+    # Prefer filesystem-canonical comparison when possible
+    try:
+        p = Path(path).resolve()
+        q = Path(prefix).resolve()
+        return p == q or q in p.parents
+    except OSError:
+        # Fallback for non-existent paths: normalize and compare strings
+        p_str = os.path.normcase(os.path.normpath(os.path.abspath(path)))
+        q_str = os.path.normcase(os.path.normpath(os.path.abspath(prefix)))
+        # Ensure prefix is a directory boundary
+        if not q_str.endswith(os.path.sep):
+            q_str = q_str + os.path.sep
+        return p_str == q_str.rstrip(os.path.sep) or p_str.startswith(q_str)
