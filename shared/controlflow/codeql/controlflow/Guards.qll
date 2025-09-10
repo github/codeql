@@ -773,6 +773,10 @@ module Make<
       or
       exprHasValue(e.(IdExpr).getEqualChildExpr(), v)
       or
+      exists(ConditionalExpr cond | cond = e |
+        exprHasValue(cond.getThen(), v) and exprHasValue(cond.getElse(), v)
+      )
+      or
       exists(SsaDefinition def, Guard g, GuardValue gv |
         e = def.getARead() and
         g.directlyValueControls(e.getBasicBlock(), gv) and
