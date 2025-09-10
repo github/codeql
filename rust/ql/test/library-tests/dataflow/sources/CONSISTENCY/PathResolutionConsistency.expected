@@ -4,6 +4,7 @@ multipleCallTargets
 | test.rs:113:62:113:77 | ...::from(...) |
 | test.rs:120:58:120:73 | ...::from(...) |
 | test.rs:136:22:136:43 | ...::_print(...) |
+| test.rs:137:24:137:37 | body.collect() |
 | test.rs:141:22:141:43 | ...::_print(...) |
 | test.rs:145:22:145:44 | ...::_print(...) |
 | test.rs:161:26:161:110 | ...::_print(...) |
@@ -11,8 +12,12 @@ multipleCallTargets
 | test.rs:179:30:179:68 | ...::_print(...) |
 | test.rs:188:26:188:105 | ...::_print(...) |
 | test.rs:229:22:229:72 | ... .read_to_string(...) |
-| test.rs:664:22:664:43 | file.read(...) |
-| test.rs:673:22:673:41 | f1.read(...) |
+| test.rs:385:32:385:88 | ... .split(...) |
+| test.rs:394:25:394:38 | reader.lines() |
+| test.rs:639:26:639:43 | file1.chain(...) |
+| test.rs:640:9:640:42 | reader.read_to_string(...) |
+| test.rs:647:26:647:40 | file1.take(...) |
+| test.rs:648:9:648:42 | reader.read_to_string(...) |
 | test.rs:697:18:697:38 | ...::_print(...) |
 | test.rs:702:18:702:45 | ...::_print(...) |
 | test.rs:720:38:720:42 | ...::_print(...) |
@@ -31,6 +36,7 @@ multipleCallTargets
 | test.rs:825:30:825:43 | ...::_print(...) |
 | test.rs:840:14:840:43 | ...::_print(...) |
 | test.rs:854:14:854:34 | ...::_print(...) |
+| test.rs:865:23:865:80 | ...::try_from(...) |
 | test.rs:894:50:894:66 | ...::from(...) |
 | test.rs:894:50:894:66 | ...::from(...) |
 | test.rs:896:14:896:31 | ...::_print(...) |
@@ -75,23 +81,12 @@ multipleCallTargets
 | test.rs:977:14:977:29 | ...::_print(...) |
 | test.rs:979:27:979:36 | ...::_print(...) |
 | test.rs:980:28:980:41 | ...::_print(...) |
-| test_futures_io.rs:45:27:45:84 | ...::read(...) |
-| test_futures_io.rs:49:27:49:51 | reader.read(...) |
-| test_futures_io.rs:83:22:83:39 | reader2.fill_buf() |
-| test_futures_io.rs:103:27:103:85 | ...::read(...) |
-| test_futures_io.rs:107:27:107:52 | reader2.read(...) |
-| test_futures_io.rs:125:22:125:39 | reader2.fill_buf() |
-| test_futures_io.rs:132:27:132:62 | reader2.read_until(...) |
-| test_futures_io.rs:139:27:139:54 | reader2.read_line(...) |
-| test_futures_io.rs:146:27:146:58 | reader2.read_to_end(...) |
-| test_futures_io.rs:152:32:152:46 | reader2.lines() |
-| test_futures_io.rs:153:14:153:32 | lines_stream.next() |
-| test_futures_io.rs:154:32:154:50 | lines_stream.next() |
-| web_frameworks.rs:13:14:13:22 | a.as_str() |
-| web_frameworks.rs:13:14:13:23 | a.as_str() |
-| web_frameworks.rs:14:14:14:24 | a.as_bytes() |
-| web_frameworks.rs:14:14:14:25 | a.as_bytes() |
-| web_frameworks.rs:101:14:101:23 | a.as_str() |
-| web_frameworks.rs:102:14:102:25 | a.as_bytes() |
-| web_frameworks.rs:158:14:158:23 | a.as_str() |
-| web_frameworks.rs:159:14:159:25 | a.as_bytes() |
+| test_futures_io.rs:25:23:25:80 | ...::try_from(...) |
+| test_futures_io.rs:62:22:62:50 | pinned.poll_fill_buf(...) |
+| test_futures_io.rs:69:23:69:67 | ... .poll_fill_buf(...) |
+| test_futures_io.rs:93:26:93:63 | pinned.poll_read(...) |
+| test_futures_io.rs:116:22:116:50 | pinned.poll_fill_buf(...) |
+| web_frameworks.rs:242:13:247:9 | ... .map(...) |
+| web_frameworks.rs:242:13:247:10 | ... .map(...) |
+| web_frameworks.rs:272:34:278:15 | ... .map(...) |
+| web_frameworks.rs:272:34:279:9 | ... .map(...) |
