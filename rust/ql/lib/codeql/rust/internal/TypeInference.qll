@@ -99,6 +99,11 @@ private module Input1 implements InputSig1<Location> {
         id1 = 0 and
         id2 = 2
         or
+        tp0 instanceof PtrTypeParameter and
+        kind = 0 and
+        id1 = 0 and
+        id2 = 3
+        or
         kind = 1 and
         id1 = 0 and
         id2 =
@@ -230,7 +235,7 @@ module Consistency {
     // Suppress the inconsistency if `n` is a self parameter and the type
     // mention for the self type has multiple types for a path.
     not exists(ImplItemNode impl, TypePath selfTypePath |
-      n = impl.getAnAssocItem().(Function).getParamList().getSelfParam() and
+      n = impl.getAnAssocItem().(Function).getSelfParam() and
       strictcount(impl.(Impl).getSelfTy().(TypeMention).resolveTypeAt(selfTypePath)) > 1
     )
   }
@@ -256,62 +261,12 @@ private TypeMention getTypeAnnotation(AstNode n) {
   )
 }
 
-/**
- * Gets the type of the implicitly typed `self` parameter, taking into account
- * whether the parameter is passed by value or by reference.
- */
-bindingset[self, suffix, t]
-pragma[inline_late]
-private Type getRefAdjustShorthandSelfType(SelfParam self, TypePath suffix, Type t, TypePath path) {
-  not self.hasTypeRepr() and
-  (
-    if self.isRef()
-    then
-      // `fn f(&self, ...)`
-      path.isEmpty() and
-      result = TRefType()
-      or
-      path = TypePath::cons(TRefTypeParameter(), suffix) and
-      result = t
-    else (
-      // `fn f(self, ...)`
-      path = suffix and
-      result = t
-    )
-  )
-}
-
-pragma[nomagic]
-private Type resolveImplSelfType(Impl i, TypePath path) {
-  result = i.getSelfTy().(TypeMention).resolveTypeAt(path)
-}
-
-/**
- * Gets the type at `path` of the parameter `self` which uses the [shorthand
- * syntax][1] which is sugar for an explicit annotation.
- *
- * [1]: https://doc.rust-lang.org/stable/reference/items/associated-items.html#r-associated.fn.method.self-pat-shorthands
- */
-pragma[nomagic]
-private Type inferShorthandSelfType(SelfParam self, TypePath path) {
-  exists(ImplOrTraitItemNode i, TypePath suffix, Type t |
-    self = i.getAnAssocItem().(Function).getParamList().getSelfParam() and
-    result = getRefAdjustShorthandSelfType(self, suffix, t, path)
-  |
-    t = resolveImplSelfType(i, suffix)
-    or
-    t = TSelfTypeParameter(i) and suffix.isEmpty()
-  )
-}
-
 /** Gets the type of `n`, which has an explicit type annotation. */
 pragma[nomagic]
 private Type inferAnnotatedType(AstNode n, TypePath path) {
   result = getTypeAnnotation(n).resolveTypeAt(path)
   or
-  // The shorthand self syntax (i.e., a self parameter without a type
-  // annotation) is sugar for a self parameter with an annotation.
-  result = inferShorthandSelfType(n, path)
+  result = n.(ShorthandSelfParameterMention).resolveTypeAt(path)
 }
 
 /** Module for inferring certain type information. */
@@ -324,7 +279,7 @@ module CertainTypeInference {
 
   pragma[nomagic]
   private Type getCallExprType(
-    CallExpr ce, Path p, CallExprBaseMatchingInput::FunctionDecl f, TypePath tp
+    CallExpr ce, Path p, FunctionCallMatchingInput::FunctionDecl f, TypePath tp
   ) {
     callResolvesTo(ce, p, f) and
     result = f.getReturnType(tp)
@@ -362,7 +317,7 @@ module CertainTypeInference {
         // instantiation from the path. For instance, for `fn bar<A>(a: A) -> A`
         // and the path `bar<i64>`, we must resolve `A` to `i64`.
         result =
-          ce.(CallExprBaseMatchingInput::Access)
+          ce.(FunctionCallMatchingInput::Access)
               .getTypeArgument(TTypeParamTypeArgumentPosition(tp), suffix)
       )
       or
@@ -813,42 +768,1139 @@ private Type inferPathExprType(PathExpr pe, TypePath path) {
   )
 }
 
-/** Gets the explicit type qualifier of the call `ce`, if any. */
-private Type getTypeQualifier(CallExpr ce, TypePath path) {
-  exists(PathExpr pe, TypeMention tm |
-    pe = ce.getFunction() and
-    tm = pe.getPath().getQualifier() and
-    result = tm.resolveTypeAt(path)
+pragma[nomagic]
+private TypeMention getSelfParamTypeMention(SelfParam self) {
+  result = self.(ShorthandSelfParameterMention)
+  or
+  result = self.getTypeRepr()
+}
+
+private newtype TFunctionTypePosition =
+  TArgumentFunctionTypePosition(ArgumentPosition pos) or
+  TReturnFunctionTypePosition()
+
+/**
+ * A position inside a function where the function can have a type.
+ *
+ * Either `self`, `return`, or a positional parameter index.
+ */
+class FunctionTypePosition extends TFunctionTypePosition {
+  predicate isSelf() { this.asArgumentPosition().isSelf() }
+
+  int asPositional() { result = this.asArgumentPosition().asPosition() }
+
+  predicate isPositional() { exists(this.asPositional()) }
+
+  ArgumentPosition asArgumentPosition() { this = TArgumentFunctionTypePosition(result) }
+
+  predicate isReturn() { this = TReturnFunctionTypePosition() }
+
+  /** Gets the corresponding position when `f` is invoked via a function call. */
+  bindingset[f]
+  FunctionTypePosition getFunctionCallAdjusted(Function f) {
+    this.isReturn() and
+    result = this
+    or
+    if f.hasSelfParam()
+    then
+      this.isSelf() and result.asPositional() = 0
+      or
+      result.asPositional() = this.asPositional() + 1
+    else result = this
+  }
+
+  TypeMention getTypeMention(Function f) {
+    this.isSelf() and
+    result = getSelfParamTypeMention(f.getSelfParam())
+    or
+    result = f.getParam(this.asPositional()).getTypeRepr()
+    or
+    this.isReturn() and
+    result = f.getRetType().getTypeRepr()
+  }
+
+  string toString() {
+    result = this.asArgumentPosition().toString()
+    or
+    this.isReturn() and
+    result = "(return)"
+  }
+}
+
+pragma[nomagic]
+predicate functionTypeAtPath(Function f, FunctionTypePosition pos, TypePath path, Type type) {
+  type = pos.getTypeMention(f).resolveTypeAt(path)
+}
+
+/**
+ * Provides logic for identifying functions that are overloaded based on their
+ * argument types. While Rust does not allow for overloading inside a single
+ * `impl` block, it is still possible for a trait to have multiple implementations
+ * that differ only in the types of non-`self` arguments.
+ */
+private module FunctionOverloading {
+  pragma[nomagic]
+  private Type resolveNonTypeParameterTypeAt(TypeMention tm, TypePath path) {
+    result = tm.resolveTypeAt(path) and
+    not result instanceof TypeParameter
+  }
+
+  bindingset[t1, t2]
+  private predicate typeMentionEqual(TypeMention t1, TypeMention t2) {
+    forex(TypePath path, Type type | resolveNonTypeParameterTypeAt(t1, path) = type |
+      resolveNonTypeParameterTypeAt(t2, path) = type
+    )
+  }
+
+  pragma[nomagic]
+  private predicate implSiblingCandidate(
+    Impl impl, TraitItemNode trait, Type rootType, TypeMention selfTy
+  ) {
+    trait = impl.(ImplItemNode).resolveTraitTy() and
+    // If `impl` has an expansion from a macro attribute, then it's been
+    // superseded by the output of the expansion (and usually the expansion
+    // contains the same `impl` block so considering both would give spurious
+    // siblings).
+    not exists(impl.getAttributeMacroExpansion()) and
+    selfTy = impl.getSelfTy() and
+    rootType = selfTy.resolveType()
+  }
+
+  /**
+   * Holds if `impl1` and `impl2` are a sibling implementations of `trait`. We
+   * consider implementations to be siblings if they implement the same trait for
+   * the same type. In that case `Self` is the same type in both implementations,
+   * and method calls to the implementations cannot be resolved unambiguously
+   * based only on the receiver type.
+   */
+  pragma[inline]
+  private predicate implSiblings(TraitItemNode trait, Impl impl1, Impl impl2) {
+    exists(Type rootType, TypeMention selfTy1, TypeMention selfTy2 |
+      impl1 != impl2 and
+      implSiblingCandidate(impl1, trait, rootType, selfTy1) and
+      implSiblingCandidate(impl2, trait, rootType, selfTy2) and
+      // In principle the second conjunct below should be superflous, but we still
+      // have ill-formed type mentions for types that we don't understand. For
+      // those checking both directions restricts further. Note also that we check
+      // syntactic equality, whereas equality up to renaming would be more
+      // correct.
+      typeMentionEqual(selfTy1, selfTy2) and
+      typeMentionEqual(selfTy2, selfTy1)
+    )
+  }
+
+  /**
+   * Holds if `impl` is an implementation of `trait` and if another implementation
+   * exists for the same type.
+   */
+  pragma[nomagic]
+  private predicate implHasSibling(Impl impl, Trait trait) { implSiblings(trait, impl, _) }
+
+  /**
+   * Holds if type parameter `tp` of `trait` occurs in the function `f` with the name
+   * `functionName` at position `pos` and path `path`.
+   *
+   * Note that `pos` can also be the special `return` position, which is sometimes
+   * needed to disambiguate associated function calls like `Default::default()`
+   * (in this case, `tp` is the special `Self` type parameter).
+   */
+  bindingset[trait]
+  pragma[inline_late]
+  predicate traitTypeParameterOccurrence(
+    TraitItemNode trait, Function f, string functionName, FunctionTypePosition pos, TypePath path,
+    TypeParameter tp
+  ) {
+    f = trait.getAssocItem(functionName) and
+    functionTypeAtPath(f, pos, path, tp) and
+    tp = trait.(TraitTypeAbstraction).getATypeParameter()
+  }
+
+  /**
+   * Holds if resolving the function `f` in `impl` with the name `functionName`
+   * requires inspecting the types of applied _arguments_ in order to determine
+   * whether it is the correct resolution.
+   */
+  pragma[nomagic]
+  predicate functionResolutionDependsOnArgument(
+    ImplItemNode impl, Function f, FunctionTypePosition pos, TypePath path, Type type
+  ) {
+    /*
+     * As seen in the example below, when an implementation has a sibling for a
+     * trait we find occurrences of a type parameter of the trait in a function
+     * signature in the trait. We then find the type given in the implementation
+     * at the same position, which is a position that might disambiguate the
+     * function from its siblings.
+     *
+     * ```rust
+     * trait MyTrait<T> {
+     *     fn method(&self, value: Foo<T>) -> Self;
+     * //                   ^^^^^^^^^^^^^ `pos` = 0
+     * //                              ^ `path` = "T"
+     * }
+     * impl MyAdd<i64> for i64 {
+     *     fn method(&self, value: Foo<i64>) -> Self { ... }
+     * //                              ^^^ `type` = i64
+     * }
+     * ```
+     *
+     * Note that we only check the root type symbol at the position. If the type
+     * at that position is a type constructor (for instance `Vec<..>`) then
+     * inspecting the entire type tree could be necessary to disambiguate the
+     * method. In that case we will still resolve several methods.
+     */
+
+    exists(TraitItemNode trait, string functionName |
+      implHasSibling(impl, trait) and
+      traitTypeParameterOccurrence(trait, _, functionName, pos, path, _) and
+      functionTypeAtPath(f, pos, path, type) and
+      f = impl.getASuccessor(functionName) and
+      not pos.isReturn()
+    )
+  }
+}
+
+private Trait getATraitBound(Type t) {
+  result = t.(TypeParamTypeParameter).getTypeParam().(TypeParamItemNode).resolveABound()
+  or
+  result = t.(SelfTypeParameter).getTrait()
+  or
+  result = t.(ImplTraitType).getImplTraitTypeRepr().(ImplTraitTypeReprItemNode).resolveABound()
+  or
+  result = t.(DynTraitType).getTrait()
+}
+
+bindingset[t]
+private Type substituteTraitBounds(Type t) {
+  not exists(getATraitBound(t)) and
+  result = t
+  or
+  result = TTrait(getATraitBound(t))
+}
+
+private newtype TFunctionType =
+  MkFunctionType(Function f, FunctionTypePosition pos, ImplOrTraitItemNode i) {
+    f = i.getAnAssocItem() and
+    exists(pos.getTypeMention(f))
+  } or
+  MkInheritedFunctionType(
+    Function f, FunctionTypePosition pos, ImplOrTraitItemNode parent, ImplOrTraitItemNode i
+  ) {
+    exists(FunctionType inherited |
+      inherited.appliesTo(f, pos, parent) and
+      f = i.getASuccessor(_)
+    |
+      parent = i.(ImplItemNode).resolveTraitTy()
+      or
+      parent = i.(TraitItemNode).resolveABound()
+    )
+  }
+
+/**
+ * The type of a function at a given position, when viewed as a member of given
+ * trait or `impl` block.
+ *
+ * Example:
+ *
+ * ```rust
+ * trait T1 {
+ *   fn m1(self);              // self1
+ *
+ *   fn m2(self) { m1(self); } // self2
+ * }
+ *
+ * trait T2 : T1 {
+ *   fn m3(self);              // self3
+ * }
+ *
+ * impl T2 for X {
+ *   fn m1(self) { ... }       // self4
+ *
+ *   fn m3(self) { ... }       // self5
+ * }
+ * ```
+ *
+ * param   | `impl` or trait | type
+ * ------- | --------------- | ----
+ * `self1` | `trait T1`      | `T1`
+ * `self1` | `trait T2`      | `T2`
+ * `self2` | `trait T1`      | `T1`
+ * `self2` | `trait T2`      | `T2`
+ * `self2` | `impl T2 for X` | `X`
+ * `self3` | `trait T2`      | `T2`
+ * `self4` | `impl T2 for X` | `X`
+ * `self5` | `impl T2 for X` | `X`
+ */
+private class FunctionType extends TFunctionType {
+  private predicate asFunctionType(Function f, FunctionTypePosition pos, ImplOrTraitItemNode i) {
+    this = MkFunctionType(f, pos, i)
+  }
+
+  private predicate asInheritedFunctionType(
+    Function f, FunctionTypePosition pos, ImplOrTraitItemNode parent, ImplOrTraitItemNode i
+  ) {
+    this = MkInheritedFunctionType(f, pos, parent, i)
+  }
+
+  /**
+   * Holds if this function type applies to the function `f` at position `pos`,
+   * when viewed as a member of the `impl` or trait item `i`.
+   */
+  predicate appliesTo(Function f, FunctionTypePosition pos, ImplOrTraitItemNode i) {
+    this.asFunctionType(f, pos, i)
+    or
+    this.asInheritedFunctionType(f, pos, _, i)
+  }
+
+  pragma[nomagic]
+  private Type getTypeAt0(TypePath path) {
+    exists(Function f, FunctionTypePosition pos |
+      this.asFunctionType(f, pos, _) and
+      functionTypeAtPath(f, pos, path, result)
+    )
+    or
+    exists(
+      Function f, FunctionTypePosition pos, FunctionType parentType, ImplOrTraitItemNode parent,
+      ImplOrTraitItemNode i
+    |
+      this.asInheritedFunctionType(f, pos, parent, i) and
+      parentType.appliesTo(f, pos, parent)
+    |
+      result = parentType.getTypeAt0(path) and
+      not result instanceof TSelfTypeParameter
+      or
+      exists(TypePath prefix, TypePath suffix |
+        parentType.hasSelfTypeParameterAt(prefix) and
+        result = resolveImplOrTraitType(i, suffix) and
+        path = prefix.append(suffix)
+      )
+    )
+  }
+
+  pragma[nomagic]
+  private predicate hasSelfTypeParameterAt(TypePath path) {
+    this.getTypeAt0(path) = TSelfTypeParameter(_)
+  }
+
+  /**
+   * Gets the type of this function at the given position and path.
+   *
+   * For functions belonging to a `trait`, we use the type of the trait itself instead
+   * of the implicit `Self` type parameter, as otherwise any type will match.
+   *
+   * Calls will use `getATraitBound` to map receiver types to the relevant
+   * traits when matching.
+   */
+  Type getTypeAt(TypePath path) {
+    exists(Type t | t = this.getTypeAt0(path) |
+      not t instanceof SelfTypeParameter and
+      result = t
+      or
+      result = TTrait(t.(SelfTypeParameter).getTrait())
+    )
+  }
+
+  private AstNode getReportingNode() {
+    exists(Function f, FunctionTypePosition pos | this.appliesTo(f, pos, _) |
+      pos.isSelf() and
+      result = f.getSelfParam()
+      or
+      result = f.getParam(pos.asPositional())
+      or
+      pos.isReturn() and
+      result = f.getRetType().getTypeRepr()
+    )
+  }
+
+  string toString() { result = this.getReportingNode().toString() }
+
+  Location getLocation() { result = this.getReportingNode().getLocation() }
+}
+
+bindingset[item, name]
+pragma[inline_late]
+private Function getMethodSuccessor(ItemNode item, string name, int arity) {
+  result = item.getASuccessor(name) and
+  arity = result.getParamList().getNumberOfParams()
+}
+
+/** Provides logic for resolving method calls. */
+private module MethodCallResolution {
+  /**
+   * Holds if method `f` with the name `name` and the arity `arity` exists in
+   * `i`, and the type of the `self` parameter is `selfType`.
+   *
+   * `rootType` is the root type of `selfType`, and `selfRootPath` points to
+   * `selfRootType` inside `selfType`, where `selfRootType` is either the type
+   * being implemented, when `i` is an `impl`, or the trait itself when `i` is
+   * a trait.
+   */
+  pragma[nomagic]
+  predicate methodInfo(
+    Function f, string name, int arity, ImplOrTraitItemNode i, FunctionType selfType, Type rootType,
+    TypePath selfRootPath, Type selfRootType
+  ) {
+    exists(FunctionTypePosition pos |
+      f = i.getASuccessor(name) and
+      arity = f.getParamList().getNumberOfParams() and
+      rootType = selfType.getTypeAt(TypePath::nil()) and
+      selfType.appliesTo(f, pos, i) and
+      pos.isSelf() and
+      selfType.getTypeAt(selfRootPath) = selfRootType and
+      not i.(ImplItemNode).isBlanket()
+    |
+      selfRootType = i.(Impl).getSelfTy().(TypeMention).resolveType()
+      or
+      selfRootType = TTrait(i)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate traitMethodInfo(string name, int arity, Trait trait) {
+    exists(ImplItemNode i |
+      methodInfo(_, name, arity, i, _, _, _, _) and
+      trait = i.resolveTraitTy()
+    )
+  }
+
+  pragma[nomagic]
+  private predicate methodCallTraitCandidate(Element mc, Trait trait) {
+    exists(string name, int arity |
+      mc.(MethodCall).isMethodCall(name, arity) and
+      traitMethodInfo(name, arity, trait)
+    )
+  }
+
+  private predicate methodCallVisibleTraitCandidate(MethodCall mc, Trait trait) {
+    TraitIsVisible<methodCallTraitCandidate/2>::traitIsVisible(mc, trait)
+  }
+
+  bindingset[mc, impl]
+  pragma[inline_late]
+  private predicate methodCallVisibleImplTraitCandidate(MethodCall mc, ImplItemNode impl) {
+    methodCallVisibleTraitCandidate(mc, impl.resolveTraitTy())
+  }
+
+  /**
+   * Holds if method call `mc` may target a method in `i` with `self` parameter having
+   * type `selfType`.
+   *
+   * `rootType` is the root type of `selfType`, and `selfRootPath` points to
+   * `selfRootType` inside `selfType`, where `selfRootType` is either the type
+   * being implemented, when `i` is an `impl`, or the trait itself when `i` is
+   * a trait.
+   *
+   * This predicate only checks for matching method names and arities, and whether
+   * the trait being implemented by `i` (when `i` is not a trait itself) is visible
+   * at `mc`.
+   */
+  pragma[inline]
+  private predicate methodCallCandidate(
+    MethodCall mc, ImplOrTraitItemNode i, FunctionType self, Type rootType, TypePath selfRootPath,
+    Type selfRootType
+  ) {
+    exists(string name, int arity |
+      mc.isMethodCall(name, arity) and
+      methodInfo(_, name, arity, i, self, rootType, selfRootPath, selfRootType)
+    |
+      not i.(Impl).hasTrait()
+      or
+      methodCallVisibleImplTraitCandidate(mc, i)
+      or
+      mc instanceof IndexExpr and
+      i.(ImplItemNode).resolveTraitTy() instanceof IndexTrait
+    )
+  }
+
+  /**
+   * A method call.
+   *
+   * This is either an actual method call, `x.m()`, or an index expression, `x[i]`
+   * (which is [syntactic sugar][1] for `*x.index(i)`).
+   *
+   * When resolving a method call, a list of [candidate receiver types][2] is constructed
+   *
+   * > by repeatedly dereferencing the receiver expression's type, adding each type
+   * > encountered to the list, then finally attempting an unsized coercion at the end,
+   * > and adding the result type if that is successful.
+   * >
+   * > Then, for each candidate `T`, add `&T` and `&mut T` to the list immediately after `T`.
+   *
+   * We do not currently model unsized coercions, and we do not yet model the `Deref` trait,
+   * instead we limit dereferencing to standard dereferencing and the fact that `String`
+   * dereferences to `str` .
+   *
+   * [1]: https://doc.rust-lang.org/std/ops/trait.Index.html
+   * [2]: https://doc.rust-lang.org/reference/expressions/method-call-expr.html#r-expr.method.candidate-receivers
+   */
+  abstract class MethodCall extends Expr {
+    abstract predicate isMethodCall(string name, int arity);
+
+    abstract Expr getArgument(ArgumentPosition pos);
+
+    Expr getReceiver() { result = this.getArgument(any(ArgumentPosition pos | pos.isSelf())) }
+
+    private Type getReceiverTypeAt(TypePath path) { result = inferType(this.getReceiver(), path) }
+
+    /**
+     * Same as `getACandidateReceiverTypeAt`, but without borrows.
+     */
+    pragma[nomagic]
+    private Type getACandidateReceiverTypeAtNoBorrow(TypePath path, string derefChain) {
+      result = this.getReceiverTypeAt(path) and
+      derefChain = ""
+      or
+      exists(TypePath path0, Type t0, string derefChain0 |
+        this.noCandidateReceiverTypeAt(derefChain0) and
+        t0 = this.getACandidateReceiverTypeAtNoBorrow(path0, derefChain0)
+      |
+        path0.isCons(TRefTypeParameter(), path) and
+        result = t0 and
+        derefChain = derefChain0 + ".ref"
+        or
+        path0.isEmpty() and
+        path = path0 and
+        t0.(StructType).asItemNode() instanceof StringStruct and
+        result.(StructType).asItemNode() instanceof Builtins::Str and
+        derefChain = derefChain0 + ".str"
+      )
+    }
+
+    /**
+     * Holds if the method inside `i` with matching name and arity can be ruled out
+     * as a candidate for the receiver type represented by `derefChainBorrow`.
+     */
+    pragma[nomagic]
+    private predicate isNotCandidate(ImplOrTraitItemNode i, string derefChainBorrow) {
+      IsInstantiationOf<MethodCallCand, FunctionType, MethodCallIsInstantiationOfInput>::isNotInstantiationOf(MkMethodCallCand(this,
+          derefChainBorrow), i, _)
+      or
+      exists(Type rootType, TypePath selfRootPath, Type selfRootType |
+        rootType = this.getACandidateReceiverTypeAtSubstituteTraitBounds(derefChainBorrow) and
+        methodCallCandidate(this, i, _, rootType, selfRootPath, selfRootType) and
+        selfRootType !=
+          this.getACandidateReceiverTypeAtSubstituteTraitBounds(selfRootPath, derefChainBorrow)
+      )
+    }
+
+    /**
+     * Holds if the candidate receiver type represented by `derefChain` does not
+     * have a matching method target.
+     */
+    pragma[nomagic]
+    private predicate noCandidateReceiverTypeAtNoBorrow(string derefChain) {
+      exists(Type rootType, string derefChainBorrow |
+        derefChainBorrow = derefChain + ";" and
+        not derefChain.matches("%.ref") and // no need to try a borrow if the last thing we did was a deref
+        rootType = this.getACandidateReceiverTypeAtSubstituteTraitBounds(derefChainBorrow)
+      |
+        forall(ImplOrTraitItemNode i | methodCallCandidate(this, i, _, rootType, _, _) |
+          this.isNotCandidate(i, derefChainBorrow)
+        )
+      )
+    }
+
+    pragma[nomagic]
+    private predicate hasRefCandidate(ImplOrTraitItemNode i) {
+      methodCallCandidate(this, i, _, TRefType(), _, _)
+    }
+
+    /**
+     * Holds if the candidate receiver type represented by `derefChain;borrow` does not
+     * have a matching method target.
+     */
+    pragma[nomagic]
+    private predicate noCandidateReceiverTypeAt(string derefChain) {
+      exists(string derefChainBorrow |
+        derefChainBorrow = derefChain + ";borrow" and
+        this.noCandidateReceiverTypeAtNoBorrow(derefChain)
+      |
+        forall(ImplOrTraitItemNode i | this.hasRefCandidate(i) |
+          this.isNotCandidate(i, derefChainBorrow)
+        )
+      )
+    }
+
+    /**
+     * Gets a [candidate receiver type][1] of this method call at `path`.
+     *
+     * The type is obtained by repeatedly dereferencing the receiver expression's type,
+     * as long as the method cannot be resolved in an earlier candidate type, and possibly
+     * applying a borrow at the end.
+     *
+     * The string `derefChainBorrow` encodes the sequences of dereferences and whether a
+     * borrow has been applied.
+     *
+     * [1]: https://doc.rust-lang.org/reference/expressions/method-call-expr.html#r-expr.method.candidate-receivers
+     */
+    pragma[nomagic]
+    Type getACandidateReceiverTypeAt(TypePath path, string derefChainBorrow) {
+      exists(string derefChain |
+        result = this.getACandidateReceiverTypeAtNoBorrow(path, derefChain) and
+        derefChainBorrow = derefChain + ";"
+        or
+        this.noCandidateReceiverTypeAtNoBorrow(derefChain) and
+        derefChainBorrow = derefChain + ";borrow" and
+        (
+          path.isEmpty() and
+          result = TRefType()
+          or
+          exists(TypePath suffix |
+            result = this.getACandidateReceiverTypeAtNoBorrow(suffix, derefChain) and
+            path = TypePath::cons(TRefTypeParameter(), suffix)
+          )
+        )
+      )
+    }
+
+    /**
+     * Same as `getACandidateReceiverTypeAt`, but with traits substituted in for types
+     * with trait bounds.
+     */
+    pragma[nomagic]
+    Type getACandidateReceiverTypeAtSubstituteTraitBounds(TypePath path, string derefChainBorrow) {
+      result = substituteTraitBounds(this.getACandidateReceiverTypeAt(path, derefChainBorrow))
+    }
+
+    pragma[nomagic]
+    private Type getACandidateReceiverTypeAtSubstituteTraitBounds(string derefChainBorrow) {
+      result =
+        this.getACandidateReceiverTypeAtSubstituteTraitBounds(TypePath::nil(), derefChainBorrow)
+    }
+
+    /**
+     * Gets a method that this call resolves to after having applied a sequence of
+     * dereferences and possibly a borrow on the receiver type, encoded in the string
+     * `derefChainBorrow`.
+     */
+    pragma[nomagic]
+    Function resolveCallTarget(string derefChainBorrow) {
+      result = MkMethodCallCand(this, derefChainBorrow).(MethodCallCand).resolveCallTarget()
+    }
+
+    predicate receiverHasImplicitDeref(AstNode receiver) {
+      exists(this.resolveCallTarget(".ref;")) and
+      receiver = this.getArgument(CallImpl::TSelfArgumentPosition())
+    }
+
+    predicate receiverHasImplicitBorrow(AstNode receiver) {
+      exists(this.resolveCallTarget(";borrow")) and
+      receiver = this.getArgument(CallImpl::TSelfArgumentPosition())
+    }
+  }
+
+  private class MethodCallMethodCallExpr extends MethodCall instanceof MethodCallExpr {
+    pragma[nomagic]
+    override predicate isMethodCall(string name, int arity) {
+      name = super.getIdentifier().getText() and
+      arity = super.getArgList().getNumberOfArgs()
+    }
+
+    override Expr getArgument(ArgumentPosition pos) {
+      pos.isSelf() and
+      result = MethodCallExpr.super.getReceiver()
+      or
+      result = super.getArgList().getArg(pos.asPosition())
+    }
+  }
+
+  private class MethodCallIndexExpr extends MethodCall, IndexExpr {
+    pragma[nomagic]
+    override predicate isMethodCall(string name, int arity) {
+      name = "index" and
+      arity = 1
+    }
+
+    override Expr getArgument(ArgumentPosition pos) {
+      pos.isSelf() and
+      result = this.getBase()
+      or
+      pos.asPosition() = 0 and
+      result = this.getIndex()
+    }
+  }
+
+  private newtype TMethodCallCand =
+    MkMethodCallCand(MethodCall mc, string derefChainBorrow) {
+      exists(mc.getACandidateReceiverTypeAt(_, derefChainBorrow))
+    }
+
+  /** A method call tagged with a candidate receiver type. */
+  private class MethodCallCand extends MkMethodCallCand {
+    MethodCall mc_;
+    string derefChainBorrow;
+
+    MethodCallCand() { this = MkMethodCallCand(mc_, derefChainBorrow) }
+
+    MethodCall getMethodCall() { result = mc_ }
+
+    Type getTypeAt(TypePath path) {
+      result = mc_.getACandidateReceiverTypeAtSubstituteTraitBounds(path, derefChainBorrow)
+    }
+
+    pragma[nomagic]
+    predicate isMethodCall(MethodCall mc, TypePath path, Type type, string name, int arity) {
+      type = this.getTypeAt(path) and
+      mc = mc_ and
+      mc.isMethodCall(name, arity)
+    }
+
+    /**
+     * Holds if the inherent method inside `i` with matching name and arity can be
+     * ruled out as a candidate for this call.
+     */
+    pragma[nomagic]
+    private predicate isNotInherentCandidate(Impl impl) {
+      IsInstantiationOf<MethodCallCand, FunctionType, MethodCallIsNotInstantiationOfInput>::isNotInstantiationOf(this,
+        impl, _)
+    }
+
+    /**
+     * Holds if this method call has no inherent target, i.e., it does not
+     * resolve to a method in an `impl` block for the type of the receiver.
+     */
+    pragma[nomagic]
+    private predicate hasNoInherentTarget() {
+      exists(Type rootType, string name, int arity |
+        this.isMethodCall(_, TypePath::nil(), rootType, name, arity) and
+        forall(Impl i, FunctionType self, TypePath selfRootPath, Type selfRootType |
+          methodInfo(_, name, arity, i, self, rootType, selfRootPath, selfRootType) and
+          not i.hasTrait()
+        |
+          this.isNotInherentCandidate(i)
+        )
+      )
+    }
+
+    pragma[nomagic]
+    private Function resolveCallTargetCand(ImplOrTraitItemNode i) {
+      exists(string name |
+        IsInstantiationOf<MethodCallCand, FunctionType, MethodCallIsInstantiationOfInput>::isInstantiationOf(this,
+          i, _) and
+        mc_.isMethodCall(name, _) and
+        result = getMethodSuccessor(i, name, _) and
+        if i.(Impl).hasTrait()
+        then
+          // inherent methods take precedence over trait methods, so only allow
+          // trait methods when there are no matching inherent methods
+          this.hasNoInherentTarget()
+        else any()
+      )
+    }
+
+    pragma[nomagic]
+    private Type inferPositionalArgumentType(FunctionTypePosition pos, TypePath path) {
+      pos.isPositional() and
+      result = substituteTraitBounds(inferType(mc_.getArgument(pos.asArgumentPosition()), path))
+    }
+
+    pragma[nomagic]
+    private Function resolveAmbigousCallTargetCand(
+      FunctionTypePosition pos, TypePath path, Type type
+    ) {
+      exists(ImplOrTraitItemNode i |
+        result = this.resolveCallTargetCand(i) and
+        FunctionOverloading::functionResolutionDependsOnArgument(i, result, pos, path, type)
+      )
+    }
+
+    /** Gets a method that matches this method call. */
+    pragma[nomagic]
+    Function resolveCallTarget() {
+      exists(ImplOrTraitItemNode i |
+        result = this.resolveCallTargetCand(i) and
+        not exists(FunctionTypePosition pos |
+          FunctionOverloading::functionResolutionDependsOnArgument(i, _, pos, _, _) and
+          pos.isPositional()
+        )
+      )
+      or
+      exists(FunctionTypePosition pos, TypePath path, Type type |
+        result = this.resolveAmbigousCallTargetCand(pos, path, type) and
+        type = this.inferPositionalArgumentType(pos, path)
+      )
+    }
+
+    string toString() { result = mc_.toString() + " [" + derefChainBorrow + "]" }
+
+    Location getLocation() { result = mc_.getLocation() }
+  }
+
+  /**
+   * A configuration for matching the type of a receiver against the type of
+   * a `self` parameter.
+   */
+  private module MethodCallIsInstantiationOfInput implements
+    IsInstantiationOfInputSig<MethodCallCand, FunctionType>
+  {
+    pragma[nomagic]
+    predicate potentialInstantiationOf(
+      MethodCallCand mcc, TypeAbstraction abs, FunctionType constraint
+    ) {
+      exists(MethodCall mc, string name, int arity, TypePath selfRootPath, Type selfRootType |
+        mcc.isMethodCall(mc, selfRootPath, selfRootType, name, arity) and
+        methodCallCandidate(mc, abs, constraint, _, selfRootPath, selfRootType)
+      )
+    }
+
+    predicate relevantTypeMention(FunctionType constraint) {
+      methodInfo(_, _, _, _, constraint, _, _, _)
+    }
+  }
+
+  /**
+   * A configuration for anti-matching the type of a receiver against the type of
+   * a `self` parameter in an inherent method.
+   */
+  private module MethodCallIsNotInstantiationOfInput implements
+    IsInstantiationOfInputSig<MethodCallCand, FunctionType>
+  {
+    pragma[nomagic]
+    predicate potentialInstantiationOf(
+      MethodCallCand mcc, TypeAbstraction abs, FunctionType constraint
+    ) {
+      abs = any(Impl i | not i.hasTrait()) and
+      exists(MethodCall mc, string name, int arity, Type rootType |
+        mcc.isMethodCall(mc, TypePath::nil(), rootType, name, arity) and
+        methodCallCandidate(mc, abs, constraint, rootType, _, _)
+      )
+    }
+
+    predicate relevantTypeMention(FunctionType constraint) {
+      methodInfo(_, _, _, _, constraint, _, _, _)
+    }
+  }
+}
+
+/**
+ * A matching configuration for resolving types of method call expressions
+ * like `foo.bar(baz)`.
+ */
+private module MethodCallMatchingInput implements MatchingWithEnvironmentInputSig {
+  class DeclarationPosition = FunctionTypePosition;
+
+  final class Declaration extends Function {
+    TypeParameter getTypeParameter(TypeParameterPosition ppos) {
+      typeParamMatchPosition(this.getGenericParamList().getATypeParam(), result, ppos)
+      or
+      exists(ImplOrTraitItemNode i | this = i.getAnAssocItem() |
+        typeParamMatchPosition(i.getTypeParam(_), result, ppos)
+        or
+        ppos.isImplicit() and result = TSelfTypeParameter(i)
+        or
+        ppos.isImplicit() and
+        result.(AssociatedTypeTypeParameter).getTrait() = i
+      )
+      or
+      ppos.isImplicit() and
+      this = result.(ImplTraitTypeTypeParameter).getFunction()
+    }
+
+    pragma[nomagic]
+    Type getParameterType(DeclarationPosition dpos, TypePath path) {
+      exists(Param p, int i |
+        p = this.getParam(i) and
+        i = dpos.asPositional() and
+        result = p.getTypeRepr().(TypeMention).resolveTypeAt(path)
+      )
+      or
+      dpos.isSelf() and
+      exists(SelfParam self |
+        self = pragma[only_bind_into](this.getSelfParam()) and
+        result = getSelfParamTypeMention(self).resolveTypeAt(path)
+      )
+    }
+
+    private Type resolveRetType(TypePath path) {
+      result = this.getRetType().getTypeRepr().(TypeMention).resolveTypeAt(path)
+    }
+
+    pragma[nomagic]
+    Type getReturnType(TypePath path) {
+      if this.isAsync()
+      then
+        path.isEmpty() and
+        result = getFutureTraitType()
+        or
+        exists(TypePath suffix |
+          result = this.resolveRetType(suffix) and
+          path = TypePath::cons(getFutureOutputTypeParameter(), suffix)
+        )
+      else result = this.resolveRetType(path)
+    }
+
+    Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
+      result = this.getParameterType(dpos, path)
+      or
+      dpos.isReturn() and
+      result = this.getReturnType(path)
+    }
+  }
+
+  class AccessPosition = DeclarationPosition;
+
+  class AccessEnvironment = string;
+
+  final private class MethodCallFinal = MethodCallResolution::MethodCall;
+
+  class Access extends MethodCallFinal {
+    pragma[nomagic]
+    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
+      exists(TypeMention arg |
+        result = arg.resolveTypeAt(path) and
+        arg =
+          this.(MethodCallExpr).getGenericArgList().getTypeArg(apos.asMethodTypeArgumentPosition())
+      )
+    }
+
+    AstNode getNodeAt(AccessPosition apos) {
+      result = this.getArgument(apos.asArgumentPosition())
+      or
+      result = this and apos.isReturn()
+    }
+
+    pragma[nomagic]
+    private Type getInferredSelfType(AccessEnvironment state, TypePath path) {
+      result = this.getACandidateReceiverTypeAt(path, state)
+    }
+
+    pragma[nomagic]
+    Type getInferredNonSelfType(AccessPosition apos, TypePath path) {
+      if
+        // index expression `x[i]` desugars to `*x.index(i)`, so we must account for
+        // the implicit deref
+        apos.isReturn() and
+        this instanceof IndexExpr
+      then
+        path.isEmpty() and
+        result = TRefType()
+        or
+        exists(TypePath suffix |
+          result = inferType(this.getNodeAt(apos), suffix) and
+          path = TypePath::cons(TRefTypeParameter(), suffix)
+        )
+      else (
+        not apos.asArgumentPosition().isSelf() and
+        result = inferType(this.getNodeAt(apos), path)
+      )
+    }
+
+    pragma[nomagic]
+    Type getInferredType(AccessEnvironment state, AccessPosition apos, TypePath path) {
+      apos.asArgumentPosition().isSelf() and
+      result = this.getInferredSelfType(state, path)
+      or
+      result = this.getInferredNonSelfType(apos, path) and
+      exists(this.getTarget(state))
+    }
+
+    Declaration getTarget(AccessEnvironment state) {
+      result = this.resolveCallTarget(state) // mutual recursion; resolving method calls requires resolving types and vice versa
+    }
+  }
+
+  predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos) {
+    apos = dpos
+  }
+}
+
+private module MethodCallMatching = MatchingWithEnvironment<MethodCallMatchingInput>;
+
+pragma[nomagic]
+private Type inferMethodCallExprType0(
+  MethodCallMatchingInput::Access a, MethodCallMatchingInput::AccessPosition apos, AstNode n,
+  string state, TypePath path
+) {
+  exists(TypePath path0 |
+    n = a.getNodeAt(apos) and
+    result = MethodCallMatching::inferAccessType(a, state, apos, path0)
+  |
+    if
+      // index expression `x[i]` desugars to `*x.index(i)`, so we must account for
+      // the implicit deref
+      apos.isReturn() and
+      a instanceof IndexExpr
+    then path0.isCons(TRefTypeParameter(), path)
+    else path = path0
   )
 }
 
 /**
- * A matching configuration for resolving types of call expressions
- * like `foo::bar(baz)` and `foo.bar(baz)`.
+ * Gets the type of `n` at `path`, where `n` is either a method call or an
+ * argument/receiver of a method call.
  */
-private module CallExprBaseMatchingInput implements MatchingInputSig {
-  private predicate paramPos(ParamList pl, Param p, int pos) { p = pl.getParam(pos) }
-
-  private newtype TDeclarationPosition =
-    TArgumentDeclarationPosition(ArgumentPosition pos) or
-    TReturnDeclarationPosition()
-
-  class DeclarationPosition extends TDeclarationPosition {
-    predicate isSelf() { this.asArgumentPosition().isSelf() }
-
-    int asPosition() { result = this.asArgumentPosition().asPosition() }
-
-    ArgumentPosition asArgumentPosition() { this = TArgumentDeclarationPosition(result) }
-
-    predicate isReturn() { this = TReturnDeclarationPosition() }
-
-    string toString() {
-      result = this.asArgumentPosition().toString()
+pragma[nomagic]
+private Type inferMethodCallExprType(AstNode n, TypePath path) {
+  exists(
+    MethodCallMatchingInput::Access a, MethodCallMatchingInput::AccessPosition apos, string state,
+    TypePath path0
+  |
+    result = inferMethodCallExprType0(a, apos, n, state, path0)
+  |
+    (
+      not apos.asArgumentPosition().isSelf()
       or
-      this.isReturn() and
-      result = "(return)"
+      state = ";"
+    ) and
+    path = path0
+    or
+    // adjust for implicit deref
+    apos.asArgumentPosition().isSelf() and
+    state = ".ref;" and
+    path = TypePath::cons(TRefTypeParameter(), path0)
+    or
+    // adjust for implicit borrow
+    apos.asArgumentPosition().isSelf() and
+    state = ";borrow" and
+    path0.isCons(TRefTypeParameter(), path)
+  )
+}
+
+/** Provides logic for resolving function calls. */
+private module FunctionCallResolution {
+  private import FunctionOverloading
+
+  bindingset[trait, resolved, result]
+  pragma[inline_late]
+  Function assocTraitFunctionDependsOnArgument(
+    TraitItemNode trait, Function resolved, FunctionTypePosition pos, TypePath path, Type type
+  ) {
+    not resolved.hasSelfParam() and
+    functionTypeAtPath(result, pos, path, type) and
+    traitTypeParameterOccurrence(trait, resolved, _, pos, _, _) and
+    (
+      not pos.isReturn()
+      or
+      // We only check that the context of the call provides relevant type information
+      // when no argument can
+      not exists(FunctionTypePosition pos0 |
+        traitTypeParameterOccurrence(trait, resolved, _, pos0, _, _) and
+        not pos0.isReturn()
+      )
+    )
+  }
+
+  /** A function call, `f(x)`. */
+  final class FunctionCall extends CallExpr {
+    private ItemNode getPathResolutionResolvedFunction() {
+      result = CallExprImpl::getResolvedFunction(this)
+    }
+
+    ItemNode getPathResolutionResolvedFunctionOrImplementation(ItemNode resolved) {
+      resolved = this.getPathResolutionResolvedFunction() and
+      (
+        result = resolved
+        or
+        result.(AssocItem).implements(resolved)
+      )
+    }
+
+    pragma[nomagic]
+    Type getTypeAt(TypePath path) {
+      result = substituteTraitBounds(inferType(this.getArg(0), path))
+    }
+
+    pragma[nomagic]
+    private Function getACandidateTraitMethod() {
+      exists(TraitItemNode trait, ImplOrTraitItemNode i, FunctionType self, Function resolved |
+        FunctionMethodCallIsInstantiationOfInput::potentialInstantiationOf(this, trait, i, self,
+          resolved, result) and
+        IsInstantiationOf<FunctionCall, FunctionType, FunctionMethodCallIsInstantiationOfInput>::isInstantiationOf(this,
+          i, self)
+      )
+    }
+
+    pragma[nomagic]
+    private Function getAnAmbigousCandidate(FunctionTypePosition pos, TypePath path, Type type) {
+      exists(TraitItemNode trait, Function resolved |
+        result = this.getPathResolutionResolvedFunctionOrImplementation(resolved) and
+        trait = this.(Call).getTrait() and
+        result = assocTraitFunctionDependsOnArgument(trait, resolved, pos, path, type)
+      )
+      or
+      (
+        result = this.getACandidateTraitMethod()
+        or
+        not this.(Call).hasTrait() and
+        result = this.getPathResolutionResolvedFunction()
+      ) and
+      functionResolutionDependsOnArgument(_, result, pos, path, type)
+    }
+
+    pragma[nomagic]
+    private Type inferArgumentType(FunctionTypePosition pos, TypePath path) {
+      result = substituteTraitBounds(inferType(this.getArg(pos.asPositional()), path))
+      or
+      pos.isReturn() and
+      result = substituteTraitBounds(inferType(this, path))
+    }
+
+    /**
+     * Gets the target of `call`, where resolution relies on type inference.
+     */
+    pragma[nomagic]
+    private Function resolveAmbigousFunctionCallTarget() {
+      exists(FunctionTypePosition pos, TypePath path, Type type |
+        result = this.getAnAmbigousCandidate(pos, path, type) and
+        type = this.inferArgumentType(pos, path)
+      )
+    }
+
+    /**
+     * Gets the target of this call, where resolution does not rely on type inference.
+     */
+    pragma[nomagic]
+    private ItemNode resolveUnambigousFunctionCallTarget() {
+      (
+        result = this.getACandidateTraitMethod()
+        or
+        not this.(Call).hasTrait() and
+        result = this.getPathResolutionResolvedFunction()
+      ) and
+      not functionResolutionDependsOnArgument(_, result, _, _, _)
+    }
+
+    ItemNode resolveCallTarget() {
+      result = this.resolveUnambigousFunctionCallTarget()
+      or
+      result = this.resolveAmbigousFunctionCallTarget()
     }
   }
+
+  private module FunctionMethodCallIsInstantiationOfInput implements
+    IsInstantiationOfInputSig<FunctionCall, FunctionType>
+  {
+    pragma[nomagic]
+    additional predicate potentialInstantiationOf(
+      FunctionCall call, TraitItemNode trait, ImplOrTraitItemNode i, FunctionType self,
+      Function resolved, Function f
+    ) {
+      exists(TypePath selfRootPath, Type selfRootType |
+        f = call.getPathResolutionResolvedFunctionOrImplementation(resolved) and
+        trait = call.(Call).getTrait() and
+        MethodCallResolution::methodInfo(f, _, _, i, self, _, selfRootPath, selfRootType) and
+        call.getTypeAt(selfRootPath) = selfRootType
+      )
+    }
+
+    pragma[nomagic]
+    predicate potentialInstantiationOf(
+      FunctionCall call, TypeAbstraction abs, FunctionType constraint
+    ) {
+      potentialInstantiationOf(call, _, abs, constraint, _, _)
+    }
+
+    predicate relevantTypeMention(FunctionType constraint) {
+      MethodCallResolution::methodInfo(_, _, _, _, constraint, _, _, _)
+    }
+  }
+}
+
+/**
+ * A matching configuration for resolving types of function calls
+ * like `foo::bar(baz)`.
+ */
+private module FunctionCallMatchingInput implements MatchingInputSig {
+  class DeclarationPosition = FunctionTypePosition;
 
   abstract class Declaration extends AstNode {
     abstract TypeParameter getTypeParameter(TypeParameterPosition ppos);
@@ -885,7 +1937,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     override Type getParameterType(DeclarationPosition dpos, TypePath path) {
       exists(int pos |
         result = this.getTupleField(pos).getTypeRepr().(TypeMention).resolveTypeAt(path) and
-        pos = dpos.asPosition()
+        pos = dpos.asPositional()
       )
     }
 
@@ -908,7 +1960,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     override Type getParameterType(DeclarationPosition dpos, TypePath path) {
       exists(int pos |
         result = this.getTupleField(pos).getTypeRepr().(TypeMention).resolveTypeAt(path) and
-        pos = dpos.asPosition()
+        pos = dpos.asPositional()
       )
     }
 
@@ -941,18 +1993,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     }
 
     override Type getParameterType(DeclarationPosition dpos, TypePath path) {
-      exists(Param p, int i |
-        paramPos(this.getParamList(), p, i) and
-        i = dpos.asPosition() and
-        result = p.getTypeRepr().(TypeMention).resolveTypeAt(path)
-      )
-      or
-      exists(SelfParam self |
-        self = pragma[only_bind_into](this.getParamList().getSelfParam()) and
-        dpos.isSelf() and
-        result = inferAnnotatedType(self, path) // `self` parameter with type annotation
-      )
-      or
+      // todo: update
       // For associated functions, we may also need to match type arguments against
       // the `Self` type. For example, in
       //
@@ -969,15 +2010,22 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
       // ```
       //
       // we need to match `i32` against the type parameter `T` of the `impl` block.
+      dpos.isSelf() and
       exists(ImplOrTraitItemNode i |
         this = i.getAnAssocItem() and
-        dpos.isSelf() and
-        not this.getParamList().hasSelfParam()
-      |
-        result = TSelfTypeParameter(i) and
-        path.isEmpty()
-        or
-        result = resolveImplSelfType(i, path)
+        result = resolveImplOrTraitType(i, path)
+      )
+      or
+      exists(Param p, int i |
+        p = this.getParam(i) and
+        result = p.getTypeRepr().(TypeMention).resolveTypeAt(path) and
+        if this.hasSelfParam() then dpos.asPositional() = i + 1 else dpos.asPositional() = i
+      )
+      or
+      dpos.asPositional() = 0 and
+      exists(SelfParam self |
+        self = pragma[only_bind_into](this.getSelfParam()) and
+        result = getSelfParamTypeMention(self).resolveTypeAt(path)
       )
     }
 
@@ -999,29 +2047,9 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     }
   }
 
-  private newtype TAccessPosition =
-    TArgumentAccessPosition(ArgumentPosition pos, Boolean borrowed, Boolean certain) or
-    TReturnAccessPosition()
+  class AccessPosition = DeclarationPosition;
 
-  class AccessPosition extends TAccessPosition {
-    ArgumentPosition getArgumentPosition() { this = TArgumentAccessPosition(result, _, _) }
-
-    predicate isBorrowed(boolean certain) { this = TArgumentAccessPosition(_, true, certain) }
-
-    predicate isReturn() { this = TReturnAccessPosition() }
-
-    string toString() {
-      exists(ArgumentPosition pos, boolean borrowed, boolean certain |
-        this = TArgumentAccessPosition(pos, borrowed, certain) and
-        result = pos + ":" + borrowed + ":" + certain
-      )
-      or
-      this.isReturn() and
-      result = "(return)"
-    }
-  }
-
-  final class Access extends Call {
+  class Access extends FunctionCallResolution::FunctionCall {
     pragma[nomagic]
     Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
       exists(TypeMention arg | result = arg.resolveTypeAt(path) |
@@ -1030,161 +2058,256 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
           arg = p.getSegment().getGenericArgList().getTypeArg(pragma[only_bind_into](i)) and
           apos.asTypeParam() = resolvePath(p).getTypeParam(pragma[only_bind_into](i))
         )
-        or
-        arg =
-          this.(MethodCallExpr).getGenericArgList().getTypeArg(apos.asMethodTypeArgumentPosition())
       )
     }
 
     AstNode getNodeAt(AccessPosition apos) {
-      exists(ArgumentPosition pos, boolean borrowed, boolean certain |
-        apos = TArgumentAccessPosition(pos, borrowed, certain) and
-        result = this.getArgument(pos)
-      |
-        if this.implicitBorrowAt(pos, _)
-        then borrowed = true and this.implicitBorrowAt(pos, certain)
-        else (
-          borrowed = false and certain = true
-        )
+      exists(ArgumentPosition pos |
+        pos = apos.asArgumentPosition() and
+        result = this.getArg(pos.asPosition())
       )
       or
       result = this and apos.isReturn()
     }
 
+    /**
+     * Gets the type qualifier of this function call, if any.
+     *
+     * For example, the type qualifier of `Foo::<Bar>::baz()` is `Foo::<Bar>`,
+     * but only when `Foo` is not a trait.
+     */
+    pragma[nomagic]
+    private Type getQualifierType(TypePath path) {
+      exists(PathExpr pe, TypeMention tm |
+        pe = this.getFunction() and
+        tm = pe.getPath().getQualifier() and
+        result = tm.resolveTypeAt(path) and
+        not resolvePath(tm) instanceof Trait
+      )
+    }
+
+    pragma[nomagic]
     Type getInferredType(AccessPosition apos, TypePath path) {
-      result = inferType(this.getNodeAt(apos), path)
+      apos.asArgumentPosition().isSelf() and
+      result = this.getQualifierType(path)
       or
-      // The `Self` type is supplied explicitly as a type qualifier, e.g. `Foo::<Bar>::baz()`
-      apos = TArgumentAccessPosition(CallImpl::TSelfArgumentPosition(), false, false) and
-      result = getTypeQualifier(this, path)
+      result = inferType(this.getNodeAt(apos), path)
     }
 
     Declaration getTarget() {
-      result = resolveMethodCallTarget(this) // mutual recursion; resolving method calls requires resolving types and vice versa
-      or
-      result = resolveFunctionCallTarget(this) // potential mutual recursion; resolving some associated function calls requires resolving types
+      result = this.resolveCallTarget() // potential mutual recursion; resolving some associated function calls requires resolving types
     }
   }
 
   predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos) {
-    apos.getArgumentPosition() = dpos.asArgumentPosition()
-    or
-    apos.isReturn() and dpos.isReturn()
-  }
-
-  bindingset[apos, target, path, t]
-  pragma[inline_late]
-  predicate adjustAccessType(
-    AccessPosition apos, Declaration target, TypePath path, Type t, TypePath pathAdj, Type tAdj
-  ) {
-    apos.isBorrowed(true) and
-    pathAdj = TypePath::cons(TRefTypeParameter(), path) and
-    tAdj = t
-    or
-    apos.isBorrowed(false) and
-    exists(Type selfParamType |
-      selfParamType =
-        target
-            .getParameterType(TArgumentDeclarationPosition(apos.getArgumentPosition()),
-              TypePath::nil())
-    |
-      if selfParamType = TRefType()
-      then
-        if t != TRefType() and path.isEmpty()
-        then
-          // adjust for implicit borrow
-          pathAdj.isEmpty() and
-          tAdj = TRefType()
-          or
-          // adjust for implicit borrow
-          pathAdj = TypePath::singleton(TRefTypeParameter()) and
-          tAdj = t
-        else
-          if path.isCons(TRefTypeParameter(), _)
-          then
-            pathAdj = path and
-            tAdj = t
-          else (
-            // adjust for implicit borrow
-            not (t = TRefType() and path.isEmpty()) and
-            pathAdj = TypePath::cons(TRefTypeParameter(), path) and
-            tAdj = t
-          )
-      else (
-        // adjust for implicit deref
-        path.isCons(TRefTypeParameter(), pathAdj) and
-        tAdj = t
-        or
-        not path.isCons(TRefTypeParameter(), _) and
-        not (t = TRefType() and path.isEmpty()) and
-        pathAdj = path and
-        tAdj = t
-      )
-    )
-    or
-    not apos.isBorrowed(_) and
-    pathAdj = path and
-    tAdj = t
+    apos = dpos
   }
 }
 
-private module CallExprBaseMatching = Matching<CallExprBaseMatchingInput>;
+private module FunctionCallMatching = Matching<FunctionCallMatchingInput>;
+
+pragma[nomagic]
+private Type inferCallExprType(AstNode n, TypePath path) {
+  exists(FunctionCallMatchingInput::Access a, FunctionCallMatchingInput::AccessPosition apos |
+    n = a.getNodeAt(apos) and
+    result = FunctionCallMatching::inferAccessType(a, apos, path)
+  )
+}
+
+/** Provides logic for resolving operations. */
+private module OperationResolution {
+  /** An operation, `x + y`. */
+  final class Op extends Operation {
+    pragma[nomagic]
+    private Type getTypeAt0(TypePath path) {
+      if this.(Call).implicitBorrowAt(any(ArgumentPosition pos | pos.isSelf()), true)
+      then
+        result = TRefType() and
+        path.isEmpty()
+        or
+        exists(TypePath path0 |
+          result = inferType(this.getOperand(0), path0) and
+          path = TypePath::cons(TRefTypeParameter(), path0)
+        )
+      else result = inferType(this.getOperand(0), path)
+    }
+
+    pragma[nomagic]
+    Type getTypeAt(TypePath path) { result = substituteTraitBounds(this.getTypeAt0(path)) }
+
+    pragma[nomagic]
+    predicate isOperation(TypePath path, Type type, Trait trait, string name, int arity) {
+      name = this.(Call).getMethodName() and
+      arity = this.(Call).getNumberOfArguments() and
+      type = this.getTypeAt(path) and
+      trait = this.(Call).getTrait()
+    }
+
+    pragma[nomagic]
+    private predicate hasImplCandidate(ImplOrTraitItemNode i) {
+      IsInstantiationOf<Op, FunctionType, OperationIsInstantiationOfInput>::isInstantiationOf(this,
+        i, _)
+    }
+
+    /** Gets a method from an `impl` block that matches the method call `mc`. */
+    pragma[nomagic]
+    Function resolveCallTarget() {
+      exists(ImplOrTraitItemNode i, string name |
+        this.hasImplCandidate(i) and
+        name = this.(Call).getMethodName() and
+        result = getMethodSuccessor(i, name, _)
+      |
+        not FunctionOverloading::functionResolutionDependsOnArgument(i, result,
+          any(FunctionTypePosition pos | pos.isPositional()), _, _)
+        or
+        exists(FunctionTypePosition pos, TypePath path, Type type |
+          FunctionOverloading::functionResolutionDependsOnArgument(i, result, pos,
+            pragma[only_bind_into](path), type) and
+          inferType(this.getOperand(pos.asPositional() + 1), pragma[only_bind_into](path)) = type
+        )
+      )
+    }
+  }
+
+  private module OperationIsInstantiationOfInput implements
+    IsInstantiationOfInputSig<Op, FunctionType>
+  {
+    pragma[nomagic]
+    private predicate methodInfo(
+      TypeAbstraction abs, FunctionType constraint, Trait trait, string name, int arity,
+      TypePath selfRootPath, Type selfRootType
+    ) {
+      MethodCallResolution::methodInfo(_, name, arity, abs, constraint, _, selfRootPath,
+        selfRootType) and
+      (
+        trait = abs.(ImplItemNode).resolveTraitTy()
+        or
+        trait = abs
+      )
+    }
+
+    pragma[nomagic]
+    predicate potentialInstantiationOf(Op op, TypeAbstraction abs, FunctionType constraint) {
+      exists(Trait trait, string name, int arity, TypePath selfRootPath, Type selfRootType |
+        op.isOperation(selfRootPath, selfRootType, trait, name, arity) and
+        methodInfo(abs, constraint, trait, name, arity, selfRootPath, selfRootType)
+      )
+    }
+
+    predicate relevantTypeMention(FunctionType constraint) {
+      MethodCallResolution::methodInfo(_, _, _, _, constraint, _, _, _)
+    }
+  }
+}
 
 /**
- * Gets the type of `n` at `path`, where `n` is either a call or an
- * argument/receiver of a call.
+ * A matching configuration for resolving types of operations
+ * like `a + b`.
  */
-pragma[nomagic]
-private Type inferCallExprBaseType(AstNode n, TypePath path) {
-  exists(
-    CallExprBaseMatchingInput::Access a, CallExprBaseMatchingInput::AccessPosition apos,
-    TypePath path0
-  |
-    n = a.getNodeAt(apos) and
-    result = CallExprBaseMatching::inferAccessType(a, apos, path0)
-  |
-    if
-      apos.isBorrowed(true)
-      or
-      // The desugaring of the unary `*e` is `*Deref::deref(&e)` and the
-      // desugaring of `a[b]` is `*Index::index(&a, b)`. To handle the deref
-      // expression after the call we must strip a `&` from the type at the
-      // return position.
-      apos.isReturn() and
-      (a instanceof DerefExpr or a instanceof IndexExpr)
-    then path0.isCons(TRefTypeParameter(), path)
-    else
-      if apos.isBorrowed(false)
-      then
-        exists(Type argType | argType = inferType(n) |
-          if argType = TRefType()
-          then
-            path = path0 and
-            path0.isCons(TRefTypeParameter(), _)
-            or
-            // adjust for implicit deref
-            not path0.isCons(TRefTypeParameter(), _) and
-            not (path0.isEmpty() and result = TRefType()) and
-            path = TypePath::cons(TRefTypeParameter(), path0)
-          else (
-            not (
-              argType.(StructType).asItemNode() instanceof StringStruct and
-              result.(StructType).asItemNode() instanceof Builtins::Str
-            ) and
-            (
-              not path0.isCons(TRefTypeParameter(), _) and
-              not (path0.isEmpty() and result = TRefType()) and
-              path = path0
-              or
-              // adjust for implicit borrow
-              path0.isCons(TRefTypeParameter(), path)
-            )
-          )
+private module OperationMatchingInput implements MatchingInputSig {
+  private import codeql.rust.elements.internal.OperationImpl as OperationImpl
+
+  class DeclarationPosition = FunctionTypePosition;
+
+  class Declaration extends MethodCallMatchingInput::Declaration {
+    pragma[nomagic]
+    private predicate borrowsAt(DeclarationPosition pos) {
+      // todo: cleanup
+      exists(TraitItemNode t, Function f, string path, string method |
+        (
+          f = this
+          or
+          this.implements(f)
+        ) and
+        f = t.getAssocItem(method) and
+        path = t.getCanonicalPath(_)
+      |
+        exists(int borrows | OperationImpl::isOverloaded(_, _, path, method, borrows) |
+          pos.isSelf() and borrows >= 1
+          or
+          pos.asPositional() = 0 and
+          borrows >= 2
         )
-      else (
-        not apos.isBorrowed(_) and
-        path = path0
       )
+    }
+
+    pragma[nomagic]
+    private Type getParameterType(DeclarationPosition dpos, TypePath path) {
+      exists(TypePath path0 |
+        result = super.getParameterType(dpos, path0) and
+        if this.borrowsAt(dpos) then path0.isCons(TRefTypeParameter(), path) else path0 = path
+      )
+    }
+
+    pragma[nomagic]
+    private predicate derefsReturn() {
+      exists(Function f |
+        (
+          f = this
+          or
+          this.implements(f)
+        ) and
+        (
+          f = any(DerefTrait t).getDerefFunction()
+          or
+          f = any(IndexTrait t).getIndexFunction()
+        )
+      )
+    }
+
+    pragma[nomagic]
+    private Type getReturnType(TypePath path) {
+      exists(TypePath path0 |
+        result = super.getReturnType(path0) and
+        if this.derefsReturn() then path0.isCons(TRefTypeParameter(), path) else path0 = path
+      )
+    }
+
+    Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
+      result = this.getParameterType(dpos, path)
+      or
+      dpos.isReturn() and
+      result = this.getReturnType(path)
+    }
+  }
+
+  class AccessPosition = MethodCallMatchingInput::AccessPosition;
+
+  class Access extends OperationResolution::Op {
+    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) { none() }
+
+    AstNode getNodeAt(AccessPosition apos) {
+      exists(ArgumentPosition pos | pos = apos.asArgumentPosition() |
+        result = this.getOperand(0) and
+        pos.isSelf()
+        or
+        result = this.getOperand(pos.asPosition() + 1)
+      )
+      or
+      result = this and apos.isReturn()
+    }
+
+    pragma[nomagic]
+    Type getInferredType(AccessPosition apos, TypePath path) {
+      result = inferType(this.getNodeAt(apos), path)
+    }
+
+    Declaration getTarget() {
+      result = this.resolveCallTarget() // mutual recursion
+    }
+  }
+
+  predicate accessDeclarationPositionMatch =
+    MethodCallMatchingInput::accessDeclarationPositionMatch/2;
+}
+
+private module OperationMatching = Matching<OperationMatchingInput>;
+
+pragma[nomagic]
+private Type inferOperationType(AstNode n, TypePath path) {
+  exists(OperationMatchingInput::Access a, OperationMatchingInput::AccessPosition apos |
+    n = a.getNodeAt(apos) and
+    result = OperationMatching::inferAccessType(a, apos, path)
   )
 }
 
@@ -1340,7 +2463,17 @@ private module FieldExprMatchingInput implements MatchingInputSig {
     }
 
     Type getInferredType(AccessPosition apos, TypePath path) {
-      result = inferType(this.getNodeAt(apos), path)
+      exists(TypePath path0 | result = inferType(this.getNodeAt(apos), path0) |
+        if apos.isSelf()
+        then
+          // adjust for implicit deref
+          path0.isCons(TRefTypeParameter(), path)
+          or
+          not path0.isCons(TRefTypeParameter(), _) and
+          not (result = TRefType() and path0.isEmpty()) and
+          path = path0
+        else path = path0
+      )
     }
 
     Declaration getTarget() {
@@ -1356,28 +2489,6 @@ private module FieldExprMatchingInput implements MatchingInputSig {
 
   predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos) {
     apos = dpos
-  }
-
-  bindingset[apos, target, path, t]
-  pragma[inline_late]
-  predicate adjustAccessType(
-    AccessPosition apos, Declaration target, TypePath path, Type t, TypePath pathAdj, Type tAdj
-  ) {
-    exists(target) and
-    if apos.isSelf()
-    then
-      // adjust for implicit deref
-      path.isCons(TRefTypeParameter(), pathAdj) and
-      tAdj = t
-      or
-      not path.isCons(TRefTypeParameter(), _) and
-      not (t = TRefType() and path.isEmpty()) and
-      pathAdj = path and
-      tAdj = t
-    else (
-      pathAdj = path and
-      tAdj = t
-    )
   }
 }
 
@@ -1561,6 +2672,7 @@ private Type inferIndexExprType(IndexExpr ie, TypePath path) {
     ) and
     result = inferType(ie.getBase(), exprPath)
   |
+    // todo: remove?
     exprPath.isCons(any(Vec v).getElementTypeParameter(), path)
     or
     exprPath.isCons(any(ArrayTypeParameter tp), path)
@@ -1629,9 +2741,9 @@ private Type inferStructPatType(AstNode n, TypePath path) {
  * like `let Some(x) = ...`.
  */
 private module TupleStructPatMatchingInput implements MatchingInputSig {
-  class DeclarationPosition = CallExprBaseMatchingInput::DeclarationPosition;
+  class DeclarationPosition = FunctionCallMatchingInput::DeclarationPosition;
 
-  class Declaration = CallExprBaseMatchingInput::TupleDeclaration;
+  class Declaration = FunctionCallMatchingInput::TupleDeclaration;
 
   class AccessPosition = DeclarationPosition;
 
@@ -1639,7 +2751,7 @@ private module TupleStructPatMatchingInput implements MatchingInputSig {
     Type getTypeArgument(TypeArgumentPosition apos, TypePath path) { none() }
 
     AstNode getNodeAt(AccessPosition apos) {
-      result = this.getField(apos.asPosition())
+      result = this.getField(apos.asPositional())
       or
       result = this and
       apos.isSelf()
@@ -1843,505 +2955,6 @@ private Type inferCastExprType(CastExpr ce, TypePath path) {
   result = ce.getTypeRepr().(TypeMention).resolveTypeAt(path)
 }
 
-final class MethodCall extends Call {
-  MethodCall() { exists(this.getReceiver()) }
-
-  private Type getReceiverTypeAt(TypePath path) {
-    result = inferType(super.getReceiver(), path)
-    or
-    result = getTypeQualifier(this, path)
-  }
-
-  /** Gets the type of the receiver of the method call at `path`. */
-  Type getTypeAt(TypePath path) {
-    if
-      this.receiverImplicitlyBorrowed() or
-      this.(CallImpl::CallExprMethodCall).hasExplicitSelfBorrow()
-    then
-      exists(TypePath path0, Type t0 |
-        t0 = this.getReceiverTypeAt(path0) and
-        (
-          path0.isCons(TRefTypeParameter(), path)
-          or
-          (
-            not path0.isCons(TRefTypeParameter(), _) and
-            not (path0.isEmpty() and result = TRefType())
-            or
-            // Ideally we should find all methods on reference types, but as
-            // that currently causes a blowup we limit this to the `deref`
-            // method in order to make dereferencing work.
-            this.getMethodName() = "deref"
-          ) and
-          path = path0
-        )
-      |
-        result = t0
-        or
-        // We do not yet model the `Deref` trait, so we hard-code the fact that
-        // `String` dereferences to `str` here. This allows us e.g. to resolve
-        // `x.parse::<usize>()` to the function `<core::str>::parse` when `x` has
-        // type `String`.
-        //
-        // See also https://doc.rust-lang.org/reference/expressions/method-call-expr.html#r-expr.method.autoref-deref
-        path.isEmpty() and
-        t0.(StructType).asItemNode() instanceof StringStruct and
-        result.(StructType).asItemNode() instanceof Builtins::Str
-      )
-    else result = this.getReceiverTypeAt(path)
-  }
-}
-
-/**
- * Holds if a method for `type` with the name `name` and the arity `arity`
- * exists in `impl`.
- */
-pragma[nomagic]
-private predicate methodCandidate(Type type, string name, int arity, Impl impl) {
-  type = impl.getSelfTy().(TypeMention).resolveType() and
-  exists(Function f |
-    f = impl.(ImplItemNode).getASuccessor(name) and
-    f.getParamList().hasSelfParam() and
-    arity = f.getParamList().getNumberOfParams()
-  )
-}
-
-/**
- * Holds if a method for `type` for `trait` with the name `name` and the arity
- * `arity` exists in `impl`.
- */
-pragma[nomagic]
-private predicate methodCandidateTrait(Type type, Trait trait, string name, int arity, Impl impl) {
-  trait = impl.(ImplItemNode).resolveTraitTy() and
-  methodCandidate(type, name, arity, impl)
-}
-
-pragma[nomagic]
-private predicate isMethodCall(MethodCall mc, Type rootType, string name, int arity) {
-  rootType = mc.getTypeAt(TypePath::nil()) and
-  name = mc.getMethodName() and
-  arity = mc.getNumberOfArguments()
-}
-
-private module IsInstantiationOfInput implements
-  IsInstantiationOfInputSig<MethodCall, TypeMentionTypeTree>
-{
-  /** Holds if `mc` specifies a trait and might target a method in `impl`. */
-  pragma[nomagic]
-  private predicate methodCallTraitCandidate(MethodCall mc, Impl impl) {
-    exists(Type rootType, string name, int arity |
-      isMethodCall(mc, rootType, name, arity) and
-      methodCandidateTrait(rootType, mc.getTrait(), name, arity, impl)
-    )
-  }
-
-  /** Holds if `mc` does not specify a trait and might target a method in `impl`. */
-  pragma[nomagic]
-  private predicate methodCallCandidate(MethodCall mc, Impl impl) {
-    exists(Type rootType, string name, int arity |
-      not exists(mc.getTrait()) and
-      isMethodCall(mc, rootType, name, arity) and
-      methodCandidate(rootType, name, arity, impl)
-    )
-  }
-
-  private predicate relevantTraitVisible(Element mc, Trait trait) {
-    trait = any(ImplItemNode impl | methodCallCandidate(mc, impl)).resolveTraitTy()
-  }
-
-  bindingset[impl]
-  pragma[inline_late]
-  private TypeRepr getImplSelfTy(Impl impl) { result = impl.getSelfTy() }
-
-  pragma[nomagic]
-  predicate potentialInstantiationOf(
-    MethodCall mc, TypeAbstraction impl, TypeMentionTypeTree constraint
-  ) {
-    constraint = getImplSelfTy(impl) and
-    (
-      methodCallTraitCandidate(mc, impl)
-      or
-      methodCallCandidate(mc, impl) and
-      (
-        not exists(impl.(ImplItemNode).resolveTraitTy())
-        or
-        // If the `impl` block implements a trait, that trait must be visible in
-        // order for the `impl` to be valid.
-        exists(Trait trait |
-          pragma[only_bind_into](trait) = impl.(ImplItemNode).resolveTraitTy() and
-          TraitIsVisible<relevantTraitVisible/2>::traitIsVisible(mc, pragma[only_bind_into](trait))
-        )
-      )
-    )
-  }
-
-  predicate relevantTypeMention(TypeMentionTypeTree constraint) {
-    exists(Impl impl | methodCandidate(_, _, _, impl) and constraint = impl.getSelfTy())
-  }
-}
-
-bindingset[item, name]
-pragma[inline_late]
-private Function getMethodSuccessor(ItemNode item, string name) {
-  result = item.getASuccessor(name)
-}
-
-bindingset[tp, name]
-pragma[inline_late]
-private Function getTypeParameterMethod(TypeParameter tp, string name) {
-  result = getMethodSuccessor(tp.(TypeParamTypeParameter).getTypeParam(), name)
-  or
-  result = getMethodSuccessor(tp.(SelfTypeParameter).getTrait(), name)
-  or
-  result = getMethodSuccessor(tp.(ImplTraitTypeTypeParameter).getImplTraitTypeRepr(), name)
-}
-
-pragma[nomagic]
-private Type resolveNonTypeParameterTypeAt(TypeMention tm, TypePath path) {
-  result = tm.resolveTypeAt(path) and
-  not result instanceof TypeParameter
-}
-
-bindingset[t1, t2]
-private predicate typeMentionEqual(TypeMention t1, TypeMention t2) {
-  forex(TypePath path, Type type | resolveNonTypeParameterTypeAt(t1, path) = type |
-    resolveNonTypeParameterTypeAt(t2, path) = type
-  )
-}
-
-pragma[nomagic]
-private predicate implSiblingCandidate(
-  Impl impl, TraitItemNode trait, Type rootType, TypeMention selfTy
-) {
-  trait = impl.(ImplItemNode).resolveTraitTy() and
-  // If `impl` has an expansion from a macro attribute, then it's been
-  // superseded by the output of the expansion (and usually the expansion
-  // contains the same `impl` block so considering both would give spurious
-  // siblings).
-  not exists(impl.getAttributeMacroExpansion()) and
-  selfTy = impl.getSelfTy() and
-  rootType = selfTy.resolveType()
-}
-
-/**
- * Holds if `impl1` and `impl2` are a sibling implementations of `trait`. We
- * consider implementations to be siblings if they implement the same trait for
- * the same type. In that case `Self` is the same type in both implementations,
- * and method calls to the implementations cannot be resolved unambiguously
- * based only on the receiver type.
- */
-pragma[inline]
-private predicate implSiblings(TraitItemNode trait, Impl impl1, Impl impl2) {
-  exists(Type rootType, TypeMention selfTy1, TypeMention selfTy2 |
-    impl1 != impl2 and
-    implSiblingCandidate(impl1, trait, rootType, selfTy1) and
-    implSiblingCandidate(impl2, trait, rootType, selfTy2) and
-    // In principle the second conjunct below should be superflous, but we still
-    // have ill-formed type mentions for types that we don't understand. For
-    // those checking both directions restricts further. Note also that we check
-    // syntactic equality, whereas equality up to renaming would be more
-    // correct.
-    typeMentionEqual(selfTy1, selfTy2) and
-    typeMentionEqual(selfTy2, selfTy1)
-  )
-}
-
-/**
- * Holds if `impl` is an implementation of `trait` and if another implementation
- * exists for the same type.
- */
-pragma[nomagic]
-private predicate implHasSibling(Impl impl, Trait trait) { implSiblings(trait, impl, _) }
-
-pragma[nomagic]
-private predicate functionTypeAtPath(Function f, int pos, TypePath path, Type type) {
-  exists(TypeMention tm | type = tm.resolveTypeAt(path) |
-    tm = f.getParam(pos).getTypeRepr()
-    or
-    pos = -1 and
-    tm = f.getRetType().getTypeRepr()
-  )
-}
-
-/**
- * Holds if type parameter `tp` of `trait` occurs in the function with the name
- * `functionName` at the `pos`th parameter at `path`.
- *
- * The special position `-1` refers to the return type of the function, which
- * is sometimes needed to disambiguate associated function calls like
- * `Default::default()` (in this case, `tp` is the special `Self` type parameter).
- */
-bindingset[trait]
-pragma[inline_late]
-private predicate traitTypeParameterOccurrence(
-  TraitItemNode trait, Function f, string functionName, int pos, TypePath path, TypeParameter tp
-) {
-  f = trait.getAssocItem(functionName) and
-  functionTypeAtPath(f, pos, path, tp) and
-  tp = trait.(TraitTypeAbstraction).getATypeParameter()
-}
-
-/**
- * Holds if resolving the function `f` in `impl` with the name `functionName`
- * requires inspecting the types of applied _arguments_ in order to determine
- * whether it is the correct resolution.
- */
-pragma[nomagic]
-private predicate functionResolutionDependsOnArgument(
-  ImplItemNode impl, string functionName, Function f, int pos, TypePath path, Type type
-) {
-  /*
-   * As seen in the example below, when an implementation has a sibling for a
-   * trait we find occurrences of a type parameter of the trait in a function
-   * signature in the trait. We then find the type given in the implementation
-   * at the same position, which is a position that might disambiguate the
-   * function from its siblings.
-   *
-   * ```rust
-   * trait MyTrait<T> {
-   *     fn method(&self, value: Foo<T>) -> Self;
-   * //                   ^^^^^^^^^^^^^ `pos` = 0
-   * //                              ^ `path` = "T"
-   * }
-   * impl MyAdd<i64> for i64 {
-   *     fn method(&self, value: Foo<i64>) -> Self { ... }
-   * //                              ^^^ `type` = i64
-   * }
-   * ```
-   *
-   * Note that we only check the root type symbol at the position. If the type
-   * at that position is a type constructor (for instance `Vec<..>`) then
-   * inspecting the entire type tree could be necessary to disambiguate the
-   * method. In that case we will still resolve several methods.
-   */
-
-  exists(TraitItemNode trait |
-    implHasSibling(impl, trait) and
-    traitTypeParameterOccurrence(trait, _, functionName, pos, path, _) and
-    functionTypeAtPath(f, pos, path, type) and
-    f = impl.getAssocItem(functionName) and
-    pos >= 0
-  )
-}
-
-/**
- * Holds if the method call `mc` has no inherent target, i.e., it does not
- * resolve to a method in an `impl` block for the type of the receiver.
- */
-pragma[nomagic]
-private predicate methodCallHasNoInherentTarget(MethodCall mc) {
-  exists(Type rootType, string name, int arity |
-    isMethodCall(mc, rootType, name, arity) and
-    forall(Impl impl |
-      methodCandidate(rootType, name, arity, impl) and
-      not impl.hasTrait()
-    |
-      IsInstantiationOf<MethodCall, TypeMentionTypeTree, IsInstantiationOfInput>::isNotInstantiationOf(mc,
-        impl, _)
-    )
-  )
-}
-
-pragma[nomagic]
-private predicate methodCallHasImplCandidate(MethodCall mc, Impl impl) {
-  IsInstantiationOf<MethodCall, TypeMentionTypeTree, IsInstantiationOfInput>::isInstantiationOf(mc,
-    impl, _) and
-  if impl.hasTrait() and not exists(mc.getTrait())
-  then
-    // inherent methods take precedence over trait methods, so only allow
-    // trait methods when there are no matching inherent methods
-    methodCallHasNoInherentTarget(mc)
-  else any()
-}
-
-/** Gets a method from an `impl` block that matches the method call `mc`. */
-pragma[nomagic]
-private Function getMethodFromImpl(MethodCall mc) {
-  exists(Impl impl, string name |
-    methodCallHasImplCandidate(mc, impl) and
-    name = mc.getMethodName() and
-    result = getMethodSuccessor(impl, name)
-  |
-    not functionResolutionDependsOnArgument(impl, name, _, _, _, _)
-    or
-    exists(int pos, TypePath path, Type type |
-      functionResolutionDependsOnArgument(impl, name, result, pos, pragma[only_bind_into](path),
-        type) and
-      inferType(mc.getPositionalArgument(pos), pragma[only_bind_into](path)) = type
-    )
-  )
-}
-
-bindingset[trait, name]
-pragma[inline_late]
-private Function getImplTraitMethod(ImplTraitReturnType trait, string name) {
-  result = getMethodSuccessor(trait.getImplTraitTypeRepr(), name)
-}
-
-bindingset[traitObject, name]
-pragma[inline_late]
-private Function getDynTraitMethod(DynTraitType traitObject, string name) {
-  result = getMethodSuccessor(traitObject.getTrait(), name)
-}
-
-pragma[nomagic]
-private Function resolveMethodCallTarget(MethodCall mc) {
-  // The method comes from an `impl` block targeting the type of the receiver.
-  result = getMethodFromImpl(mc)
-  or
-  // The type of the receiver is a type parameter and the method comes from a
-  // trait bound on the type parameter.
-  result = getTypeParameterMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
-  or
-  // The type of the receiver is an `impl Trait` type.
-  result = getImplTraitMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
-  or
-  // The type of the receiver is a trait object `dyn Trait` type.
-  result = getDynTraitMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
-}
-
-pragma[nomagic]
-private predicate assocFuncResolutionDependsOnArgument(Function f, Impl impl, int pos) {
-  functionResolutionDependsOnArgument(impl, _, f, pos, _, _) and
-  not f.getParamList().hasSelfParam()
-}
-
-private class FunctionCallExpr extends CallImpl::CallExprCall {
-  ItemNode getResolvedFunction() { result = CallExprImpl::getResolvedFunction(this) }
-
-  /**
-   * Holds if the target of this call is ambigous, and type information is required
-   * to disambiguate.
-   */
-  predicate isAmbigous() {
-    this.hasTrait()
-    or
-    assocFuncResolutionDependsOnArgument(this.getResolvedFunction(), _, _)
-  }
-
-  /**
-   * Gets a target candidate of this ambigous call, which belongs to `impl`.
-   *
-   * In order for the candidate to be a match, the argument type at `pos` must be
-   * checked against the type of the function at the same position.
-   *
-   * `resolved` is the corresponding function resolved through path resolution.
-   */
-  pragma[nomagic]
-  Function getAnAmbigousCandidate(ImplItemNode impl, int pos, Function resolved) {
-    resolved = this.getResolvedFunction() and
-    (
-      exists(TraitItemNode trait |
-        trait = this.getTrait() and
-        result.implements(resolved) and
-        result = impl.getAnAssocItem()
-      |
-        assocFuncResolutionDependsOnArgument(result, impl, pos)
-        or
-        exists(TypeParameter tp | traitTypeParameterOccurrence(trait, resolved, _, pos, _, tp) |
-          pos >= 0
-          or
-          // We only check that the context of the call provides relevant type information
-          // when no argument can
-          not traitTypeParameterOccurrence(trait, resolved, _, any(int pos0 | pos0 >= 0), _, tp)
-        )
-      )
-      or
-      result = resolved and
-      assocFuncResolutionDependsOnArgument(result, impl, pos)
-    )
-  }
-
-  /**
-   * Same as `getAnAmbigousCandidate`, ranks the positions to be checked.
-   */
-  Function getAnAmbigousCandidateRanked(ImplItemNode impl, int pos, Function f, int rnk) {
-    pos = rank[rnk + 1](int pos0 | result = this.getAnAmbigousCandidate(impl, pos0, f) | pos0)
-  }
-}
-
-private newtype TAmbigousAssocFunctionCallExpr =
-  MkAmbigousAssocFunctionCallExpr(FunctionCallExpr call, Function resolved, int pos) {
-    exists(call.getAnAmbigousCandidate(_, pos, resolved))
-  }
-
-private class AmbigousAssocFunctionCallExpr extends MkAmbigousAssocFunctionCallExpr {
-  FunctionCallExpr call;
-  Function resolved;
-  int pos;
-
-  AmbigousAssocFunctionCallExpr() { this = MkAmbigousAssocFunctionCallExpr(call, resolved, pos) }
-
-  pragma[nomagic]
-  Type getTypeAt(TypePath path) {
-    result = inferType(call.(CallExpr).getArg(pos), path)
-    or
-    pos = -1 and
-    result = inferType(call, path)
-  }
-
-  string toString() { result = call.toString() }
-
-  Location getLocation() { result = call.getLocation() }
-}
-
-private module AmbigousAssocFuncIsInstantiationOfInput implements
-  IsInstantiationOfInputSig<AmbigousAssocFunctionCallExpr, TypeMentionTypeTree>
-{
-  pragma[nomagic]
-  predicate potentialInstantiationOf(
-    AmbigousAssocFunctionCallExpr ce, TypeAbstraction impl, TypeMentionTypeTree constraint
-  ) {
-    exists(FunctionCallExpr call, Function resolved, Function cand, int pos |
-      ce = MkAmbigousAssocFunctionCallExpr(call, resolved, pos) and
-      cand = call.getAnAmbigousCandidate(impl, pos, resolved)
-    |
-      constraint = cand.getParam(pos).getTypeRepr()
-      or
-      pos = -1 and
-      constraint = cand.getRetType().getTypeRepr()
-    )
-  }
-}
-
-/**
- * Gets the target of `call`, where resolution does not rely on type inference.
- */
-pragma[nomagic]
-private ItemNode resolveUnambigousFunctionCallTarget(FunctionCallExpr call) {
-  result = call.getResolvedFunction() and
-  not call.isAmbigous()
-}
-
-pragma[nomagic]
-private Function resolveAmbigousFunctionCallTargetFromIndex(FunctionCallExpr call, int index) {
-  exists(Impl impl, int pos, Function resolved |
-    IsInstantiationOf<AmbigousAssocFunctionCallExpr, TypeMentionTypeTree, AmbigousAssocFuncIsInstantiationOfInput>::isInstantiationOf(MkAmbigousAssocFunctionCallExpr(call,
-        resolved, pos), impl, _) and
-    result = call.getAnAmbigousCandidateRanked(impl, pos, resolved, index)
-  |
-    index = 0
-    or
-    result = resolveAmbigousFunctionCallTargetFromIndex(call, index - 1)
-  )
-}
-
-/**
- * Gets the target of `call`, where resolution relies on type inference.
- */
-pragma[nomagic]
-private Function resolveAmbigousFunctionCallTarget(FunctionCallExpr call) {
-  result =
-    resolveAmbigousFunctionCallTargetFromIndex(call,
-      max(int index | result = call.getAnAmbigousCandidateRanked(_, _, _, index)))
-}
-
-pragma[inline]
-private ItemNode resolveFunctionCallTarget(FunctionCallExpr call) {
-  result = resolveUnambigousFunctionCallTarget(call)
-  or
-  result = resolveAmbigousFunctionCallTarget(call)
-}
-
 cached
 private module Cached {
   private import codeql.rust.internal.CachedStages
@@ -2349,33 +2962,28 @@ private module Cached {
   /** Holds if `receiver` is the receiver of a method call with an implicit dereference. */
   cached
   predicate receiverHasImplicitDeref(AstNode receiver) {
-    exists(CallExprBaseMatchingInput::Access a, CallExprBaseMatchingInput::AccessPosition apos |
-      apos.getArgumentPosition().isSelf() and
-      apos.isBorrowed(_) and
-      receiver = a.getNodeAt(apos) and
-      inferType(receiver) = TRefType() and
-      CallExprBaseMatching::inferAccessType(a, apos, TypePath::nil()) != TRefType()
-    )
+    exists(MethodCallResolution::MethodCall mc | mc.receiverHasImplicitDeref(receiver))
   }
 
   /** Holds if `receiver` is the receiver of a method call with an implicit borrow. */
   cached
   predicate receiverHasImplicitBorrow(AstNode receiver) {
-    exists(CallExprBaseMatchingInput::Access a, CallExprBaseMatchingInput::AccessPosition apos |
-      apos.getArgumentPosition().isSelf() and
-      apos.isBorrowed(_) and
-      receiver = a.getNodeAt(apos) and
-      CallExprBaseMatching::inferAccessType(a, apos, TypePath::nil()) = TRefType() and
-      inferType(receiver) != TRefType()
+    exists(MethodCallResolution::MethodCall mc | mc.receiverHasImplicitBorrow(receiver))
+    or
+    exists(OperationResolution::Op op |
+      op.(Call).implicitBorrowAt(CallImpl::TSelfArgumentPosition(), true) and
+      receiver = op.getOperand(0)
     )
   }
 
   /** Gets a function that `call` resolves to, if any. */
   cached
   Function resolveCallTarget(Call call) {
-    result = resolveMethodCallTarget(call)
+    result = call.(MethodCallResolution::MethodCall).resolveCallTarget(_)
     or
-    result = resolveFunctionCallTarget(call)
+    result = call.(FunctionCallResolution::FunctionCall).resolveCallTarget()
+    or
+    result = call.(OperationResolution::Op).resolveCallTarget()
   }
 
   /**
@@ -2454,7 +3062,11 @@ private module Cached {
       or
       result = inferPathExprType(n, path)
       or
-      result = inferCallExprBaseType(n, path)
+      result = inferMethodCallExprType(n, path)
+      or
+      result = inferCallExprType(n, path)
+      or
+      result = inferOperationType(n, path)
       or
       result = inferFieldExprType(n, path)
       or
@@ -2488,11 +3100,13 @@ Type inferType(AstNode n) { result = inferType(n, TypePath::nil()) }
 
 /** Provides predicates for debugging the type inference implementation. */
 private module Debug {
-  private Locatable getRelevantLocatable() {
+  Locatable getRelevantLocatable() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-      filepath.matches("%/sqlx.rs") and
-      startline = [56 .. 60]
+      // filepath.matches("%/crates/wdk-macros/src/lib.rs") and
+      // endline = [255 .. 256]
+      filepath.matches("%/main.rs") and
+      startline = 286
     )
   }
 
@@ -2513,14 +3127,14 @@ private module Debug {
     Input2::conditionSatisfiesConstraint(abs, condition, constraint)
   }
 
-  predicate debugInferShorthandSelfType(SelfParam self, TypePath path, Type t) {
+  predicate debugInferShorthandSelfType(ShorthandSelfParameterMention self, TypePath path, Type t) {
     self = getRelevantLocatable() and
-    t = inferShorthandSelfType(self, path)
+    t = self.resolveTypeAt(path)
   }
 
-  predicate debugInferCallExprBaseType(AstNode n, TypePath path, Type t) {
+  predicate debuginferMethodCallExprType(AstNode n, TypePath path, Type t) {
     n = getRelevantLocatable() and
-    t = inferCallExprBaseType(n, path)
+    t = inferMethodCallExprType(n, path)
   }
 
   predicate debugTypeMention(TypeMention tm, TypePath path, Type type) {
@@ -2585,4 +3199,12 @@ private module Debug {
     n = getRelevantLocatable() and
     Consistency::nonUniqueCertainType(n, path, result)
   }
+  // predicate debugisMethodCall(MethodCall mc, Type rootType, string name, int arity) {
+  //   mc = getRelevantLocatable() and
+  //   isMethodCall(mc, rootType, name, arity)
+  // }
+  // predicate debugMethodCallHasImplCandidate(MethodCall mc, Impl impl) {
+  //   mc = getRelevantLocatable() and
+  //   methodCallHasImplCandidate(mc, impl)
+  // }
 }

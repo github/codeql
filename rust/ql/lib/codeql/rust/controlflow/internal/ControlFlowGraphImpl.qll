@@ -77,7 +77,7 @@ class CallableScopeTree extends StandardTree, PreOrderTree, PostOrderTree, Scope
 
   override AstNode getChildNode(int i) {
     i = 0 and
-    result = this.getParamList().getSelfParam()
+    result = this.getSelfParam()
     or
     result = this.getParam(i - 1)
     or
