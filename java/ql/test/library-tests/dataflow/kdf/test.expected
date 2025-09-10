@@ -1,0 +1,105 @@
+models
+| 1 | Summary: java.lang; String; false; getBytes; ; ; Argument[this]; ReturnValue; taint; manual |
+| 2 | Summary: javax.crypto.spec; HKDFParameterSpec$Builder; true; addIKM; (byte[]); ; Argument[0]; Argument[this]; taint; manual |
+| 3 | Summary: javax.crypto.spec; HKDFParameterSpec$Builder; true; addIKM; (byte[]); ; Argument[this]; ReturnValue; value; manual |
+| 4 | Summary: javax.crypto.spec; HKDFParameterSpec$Builder; true; thenExpand; (byte[],int); ; Argument[0]; ReturnValue; taint; manual |
+| 5 | Summary: javax.crypto.spec; HKDFParameterSpec$Builder; true; thenExpand; (byte[],int); ; Argument[this]; ReturnValue; taint; manual |
+| 6 | Summary: javax.crypto.spec; HKDFParameterSpec; false; expandOnly; (SecretKey,byte[],int); ; Argument[0]; ReturnValue; taint; manual |
+| 7 | Summary: javax.crypto.spec; SecretKeySpec; false; SecretKeySpec; (byte[],String); ; Argument[0]; Argument[this]; taint; manual |
+| 8 | Summary: javax.crypto; KDF; true; deriveData; (AlgorithmParameterSpec); ; Argument[0]; ReturnValue; taint; manual |
+edges
+| KDFDataflowTest.java:12:28:12:37 | source(...) : String | KDFDataflowTest.java:13:31:13:39 | userInput : String | provenance |  |
+| KDFDataflowTest.java:13:31:13:39 | userInput : String | KDFDataflowTest.java:13:31:13:50 | getBytes(...) : byte[] | provenance | MaD:1 |
+| KDFDataflowTest.java:13:31:13:50 | getBytes(...) : byte[] | KDFDataflowTest.java:15:28:15:39 | taintedBytes : byte[] | provenance |  |
+| KDFDataflowTest.java:13:31:13:50 | getBytes(...) : byte[] | KDFDataflowTest.java:16:29:16:40 | taintedBytes : byte[] | provenance |  |
+| KDFDataflowTest.java:13:31:13:50 | getBytes(...) : byte[] | KDFDataflowTest.java:17:25:17:36 | taintedBytes : byte[] | provenance |  |
+| KDFDataflowTest.java:13:31:13:50 | getBytes(...) : byte[] | KDFDataflowTest.java:18:33:18:44 | taintedBytes : byte[] | provenance |  |
+| KDFDataflowTest.java:15:28:15:39 | taintedBytes : byte[] | KDFDataflowTest.java:22:43:22:59 | taintedIKM : byte[] | provenance |  |
+| KDFDataflowTest.java:16:29:16:40 | taintedBytes : byte[] | KDFDataflowTest.java:32:44:32:60 | taintedIKM : byte[] | provenance |  |
+| KDFDataflowTest.java:17:25:17:36 | taintedBytes : byte[] | KDFDataflowTest.java:42:40:42:56 | taintedIKM : byte[] | provenance |  |
+| KDFDataflowTest.java:18:33:18:44 | taintedBytes : byte[] | KDFDataflowTest.java:53:48:53:64 | taintedIKM : byte[] | provenance |  |
+| KDFDataflowTest.java:22:43:22:59 | taintedIKM : byte[] | KDFDataflowTest.java:24:24:24:33 | taintedIKM : byte[] | provenance |  |
+| KDFDataflowTest.java:24:9:24:15 | builder [post update] : Builder | KDFDataflowTest.java:25:34:25:40 | builder : Builder | provenance |  |
+| KDFDataflowTest.java:24:24:24:33 | taintedIKM : byte[] | KDFDataflowTest.java:24:9:24:15 | builder [post update] : Builder | provenance | MaD:2 |
+| KDFDataflowTest.java:25:34:25:40 | builder : Builder | KDFDataflowTest.java:25:34:25:74 | thenExpand(...) : ExtractThenExpand | provenance | MaD:5 |
+| KDFDataflowTest.java:25:34:25:74 | thenExpand(...) : ExtractThenExpand | KDFDataflowTest.java:28:40:28:43 | spec : ExtractThenExpand | provenance |  |
+| KDFDataflowTest.java:28:25:28:44 | deriveData(...) : byte[] | KDFDataflowTest.java:29:14:29:19 | result | provenance |  |
+| KDFDataflowTest.java:28:40:28:43 | spec : ExtractThenExpand | KDFDataflowTest.java:28:25:28:44 | deriveData(...) : byte[] | provenance | MaD:8 |
+| KDFDataflowTest.java:32:44:32:60 | taintedIKM : byte[] | KDFDataflowTest.java:34:62:34:71 | taintedIKM : byte[] | provenance |  |
+| KDFDataflowTest.java:34:46:34:72 | addIKM(...) : Builder | KDFDataflowTest.java:35:34:35:41 | builder2 : Builder | provenance |  |
+| KDFDataflowTest.java:34:62:34:71 | taintedIKM : byte[] | KDFDataflowTest.java:34:46:34:72 | addIKM(...) : Builder | provenance | MaD:2+MaD:3 |
+| KDFDataflowTest.java:35:34:35:41 | builder2 : Builder | KDFDataflowTest.java:35:34:35:75 | thenExpand(...) : ExtractThenExpand | provenance | MaD:5 |
+| KDFDataflowTest.java:35:34:35:75 | thenExpand(...) : ExtractThenExpand | KDFDataflowTest.java:38:40:38:43 | spec : ExtractThenExpand | provenance |  |
+| KDFDataflowTest.java:38:25:38:44 | deriveData(...) : byte[] | KDFDataflowTest.java:39:14:39:19 | result | provenance |  |
+| KDFDataflowTest.java:38:40:38:43 | spec : ExtractThenExpand | KDFDataflowTest.java:38:25:38:44 | deriveData(...) : byte[] | provenance | MaD:8 |
+| KDFDataflowTest.java:42:40:42:56 | taintedIKM : byte[] | KDFDataflowTest.java:44:24:44:33 | taintedIKM : byte[] | provenance |  |
+| KDFDataflowTest.java:44:9:44:15 | builder [post update] : Builder | KDFDataflowTest.java:46:34:46:40 | builder : Builder | provenance |  |
+| KDFDataflowTest.java:44:24:44:33 | taintedIKM : byte[] | KDFDataflowTest.java:44:9:44:15 | builder [post update] : Builder | provenance | MaD:2 |
+| KDFDataflowTest.java:46:34:46:40 | builder : Builder | KDFDataflowTest.java:46:34:46:74 | thenExpand(...) : ExtractThenExpand | provenance | MaD:5 |
+| KDFDataflowTest.java:46:34:46:74 | thenExpand(...) : ExtractThenExpand | KDFDataflowTest.java:49:40:49:43 | spec : ExtractThenExpand | provenance |  |
+| KDFDataflowTest.java:49:25:49:44 | deriveData(...) : byte[] | KDFDataflowTest.java:50:14:50:19 | result | provenance |  |
+| KDFDataflowTest.java:49:40:49:43 | spec : ExtractThenExpand | KDFDataflowTest.java:49:25:49:44 | deriveData(...) : byte[] | provenance | MaD:8 |
+| KDFDataflowTest.java:53:48:53:64 | taintedIKM : byte[] | KDFDataflowTest.java:54:89:54:98 | taintedIKM : byte[] | provenance |  |
+| KDFDataflowTest.java:54:53:54:106 | new SecretKeySpec(...) : SecretKeySpec | KDFDataflowTest.java:56:13:56:21 | secretKey : SecretKeySpec | provenance |  |
+| KDFDataflowTest.java:54:89:54:98 | taintedIKM : byte[] | KDFDataflowTest.java:54:53:54:106 | new SecretKeySpec(...) : SecretKeySpec | provenance | MaD:7 |
+| KDFDataflowTest.java:55:34:56:45 | expandOnly(...) : Expand | KDFDataflowTest.java:59:40:59:43 | spec : Expand | provenance |  |
+| KDFDataflowTest.java:56:13:56:21 | secretKey : SecretKeySpec | KDFDataflowTest.java:55:34:56:45 | expandOnly(...) : Expand | provenance | MaD:6 |
+| KDFDataflowTest.java:59:25:59:44 | deriveData(...) : byte[] | KDFDataflowTest.java:60:14:60:19 | result | provenance |  |
+| KDFDataflowTest.java:59:40:59:43 | spec : Expand | KDFDataflowTest.java:59:25:59:44 | deriveData(...) : byte[] | provenance | MaD:8 |
+| KDFDataflowTest.java:76:28:76:37 | source(...) : String | KDFDataflowTest.java:77:30:77:38 | userInput : String | provenance |  |
+| KDFDataflowTest.java:77:30:77:38 | userInput : String | KDFDataflowTest.java:77:30:77:49 | getBytes(...) : byte[] | provenance | MaD:1 |
+| KDFDataflowTest.java:77:30:77:49 | getBytes(...) : byte[] | KDFDataflowTest.java:81:53:81:63 | taintedInfo : byte[] | provenance |  |
+| KDFDataflowTest.java:81:34:81:68 | thenExpand(...) : ExtractThenExpand | KDFDataflowTest.java:84:40:84:43 | spec : ExtractThenExpand | provenance |  |
+| KDFDataflowTest.java:81:53:81:63 | taintedInfo : byte[] | KDFDataflowTest.java:81:34:81:68 | thenExpand(...) : ExtractThenExpand | provenance | MaD:4 |
+| KDFDataflowTest.java:84:25:84:44 | deriveData(...) : byte[] | KDFDataflowTest.java:85:14:85:19 | result | provenance |  |
+| KDFDataflowTest.java:84:40:84:43 | spec : ExtractThenExpand | KDFDataflowTest.java:84:25:84:44 | deriveData(...) : byte[] | provenance | MaD:8 |
+nodes
+| KDFDataflowTest.java:12:28:12:37 | source(...) : String | semmle.label | source(...) : String |
+| KDFDataflowTest.java:13:31:13:39 | userInput : String | semmle.label | userInput : String |
+| KDFDataflowTest.java:13:31:13:50 | getBytes(...) : byte[] | semmle.label | getBytes(...) : byte[] |
+| KDFDataflowTest.java:15:28:15:39 | taintedBytes : byte[] | semmle.label | taintedBytes : byte[] |
+| KDFDataflowTest.java:16:29:16:40 | taintedBytes : byte[] | semmle.label | taintedBytes : byte[] |
+| KDFDataflowTest.java:17:25:17:36 | taintedBytes : byte[] | semmle.label | taintedBytes : byte[] |
+| KDFDataflowTest.java:18:33:18:44 | taintedBytes : byte[] | semmle.label | taintedBytes : byte[] |
+| KDFDataflowTest.java:22:43:22:59 | taintedIKM : byte[] | semmle.label | taintedIKM : byte[] |
+| KDFDataflowTest.java:24:9:24:15 | builder [post update] : Builder | semmle.label | builder [post update] : Builder |
+| KDFDataflowTest.java:24:24:24:33 | taintedIKM : byte[] | semmle.label | taintedIKM : byte[] |
+| KDFDataflowTest.java:25:34:25:40 | builder : Builder | semmle.label | builder : Builder |
+| KDFDataflowTest.java:25:34:25:74 | thenExpand(...) : ExtractThenExpand | semmle.label | thenExpand(...) : ExtractThenExpand |
+| KDFDataflowTest.java:28:25:28:44 | deriveData(...) : byte[] | semmle.label | deriveData(...) : byte[] |
+| KDFDataflowTest.java:28:40:28:43 | spec : ExtractThenExpand | semmle.label | spec : ExtractThenExpand |
+| KDFDataflowTest.java:29:14:29:19 | result | semmle.label | result |
+| KDFDataflowTest.java:32:44:32:60 | taintedIKM : byte[] | semmle.label | taintedIKM : byte[] |
+| KDFDataflowTest.java:34:46:34:72 | addIKM(...) : Builder | semmle.label | addIKM(...) : Builder |
+| KDFDataflowTest.java:34:62:34:71 | taintedIKM : byte[] | semmle.label | taintedIKM : byte[] |
+| KDFDataflowTest.java:35:34:35:41 | builder2 : Builder | semmle.label | builder2 : Builder |
+| KDFDataflowTest.java:35:34:35:75 | thenExpand(...) : ExtractThenExpand | semmle.label | thenExpand(...) : ExtractThenExpand |
+| KDFDataflowTest.java:38:25:38:44 | deriveData(...) : byte[] | semmle.label | deriveData(...) : byte[] |
+| KDFDataflowTest.java:38:40:38:43 | spec : ExtractThenExpand | semmle.label | spec : ExtractThenExpand |
+| KDFDataflowTest.java:39:14:39:19 | result | semmle.label | result |
+| KDFDataflowTest.java:42:40:42:56 | taintedIKM : byte[] | semmle.label | taintedIKM : byte[] |
+| KDFDataflowTest.java:44:9:44:15 | builder [post update] : Builder | semmle.label | builder [post update] : Builder |
+| KDFDataflowTest.java:44:24:44:33 | taintedIKM : byte[] | semmle.label | taintedIKM : byte[] |
+| KDFDataflowTest.java:46:34:46:40 | builder : Builder | semmle.label | builder : Builder |
+| KDFDataflowTest.java:46:34:46:74 | thenExpand(...) : ExtractThenExpand | semmle.label | thenExpand(...) : ExtractThenExpand |
+| KDFDataflowTest.java:49:25:49:44 | deriveData(...) : byte[] | semmle.label | deriveData(...) : byte[] |
+| KDFDataflowTest.java:49:40:49:43 | spec : ExtractThenExpand | semmle.label | spec : ExtractThenExpand |
+| KDFDataflowTest.java:50:14:50:19 | result | semmle.label | result |
+| KDFDataflowTest.java:53:48:53:64 | taintedIKM : byte[] | semmle.label | taintedIKM : byte[] |
+| KDFDataflowTest.java:54:53:54:106 | new SecretKeySpec(...) : SecretKeySpec | semmle.label | new SecretKeySpec(...) : SecretKeySpec |
+| KDFDataflowTest.java:54:89:54:98 | taintedIKM : byte[] | semmle.label | taintedIKM : byte[] |
+| KDFDataflowTest.java:55:34:56:45 | expandOnly(...) : Expand | semmle.label | expandOnly(...) : Expand |
+| KDFDataflowTest.java:56:13:56:21 | secretKey : SecretKeySpec | semmle.label | secretKey : SecretKeySpec |
+| KDFDataflowTest.java:59:25:59:44 | deriveData(...) : byte[] | semmle.label | deriveData(...) : byte[] |
+| KDFDataflowTest.java:59:40:59:43 | spec : Expand | semmle.label | spec : Expand |
+| KDFDataflowTest.java:60:14:60:19 | result | semmle.label | result |
+| KDFDataflowTest.java:76:28:76:37 | source(...) : String | semmle.label | source(...) : String |
+| KDFDataflowTest.java:77:30:77:38 | userInput : String | semmle.label | userInput : String |
+| KDFDataflowTest.java:77:30:77:49 | getBytes(...) : byte[] | semmle.label | getBytes(...) : byte[] |
+| KDFDataflowTest.java:81:34:81:68 | thenExpand(...) : ExtractThenExpand | semmle.label | thenExpand(...) : ExtractThenExpand |
+| KDFDataflowTest.java:81:53:81:63 | taintedInfo : byte[] | semmle.label | taintedInfo : byte[] |
+| KDFDataflowTest.java:84:25:84:44 | deriveData(...) : byte[] | semmle.label | deriveData(...) : byte[] |
+| KDFDataflowTest.java:84:40:84:43 | spec : ExtractThenExpand | semmle.label | spec : ExtractThenExpand |
+| KDFDataflowTest.java:85:14:85:19 | result | semmle.label | result |
+subpaths
+testFailures
