@@ -6,8 +6,7 @@
  * @problem.severity recommendation
  * @precision medium
  * @id java/undocumented-parameter
- * @tags quality
- *       maintainability
+ * @tags maintainability
  *       readability
  */
 
