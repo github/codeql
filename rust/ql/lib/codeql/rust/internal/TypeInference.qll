@@ -372,6 +372,10 @@ module CertainTypeInference {
     )
   }
 
+  private Type inferCertainStructExprType(StructExpr se, TypePath path) {
+    result = se.getPath().(TypeMention).resolveTypeAt(path)
+  }
+
   predicate certainTypeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
     prefix1.isEmpty() and
     prefix2.isEmpty() and
@@ -439,6 +443,8 @@ module CertainTypeInference {
     path.isEmpty()
     or
     result = inferLogicalOperationType(n, path)
+    or
+    result = inferCertainStructExprType(n, path)
     or
     result = inferRangeExprType(n) and
     path.isEmpty()
@@ -743,7 +749,12 @@ private module StructExprMatchingInput implements MatchingInputSig {
   class AccessPosition = DeclarationPosition;
 
   class Access extends StructExpr {
-    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) { none() }
+    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
+      exists(TypePath suffix |
+        suffix.isCons(TTypeParamTypeParameter(apos.asTypeParam()), path) and
+        result = CertainTypeInference::inferCertainType(this, suffix)
+      )
+    }
 
     AstNode getNodeAt(AccessPosition apos) {
       result = this.getFieldExpr(apos.asFieldPos()).getExpr()
@@ -754,11 +765,6 @@ private module StructExprMatchingInput implements MatchingInputSig {
 
     Type getInferredType(AccessPosition apos, TypePath path) {
       result = inferType(this.getNodeAt(apos), path)
-      or
-      // The struct/enum type is supplied explicitly as a type qualifier, e.g.
-      // `Foo<Bar>::Variant { ... }`.
-      apos.isStructPos() and
-      result = this.getPath().(TypeMention).resolveTypeAt(path)
     }
 
     Declaration getTarget() { result = resolvePath(this.getPath()) }

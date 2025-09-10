@@ -360,16 +360,16 @@ pub fn record_patterns() {
     // RecordPat - Record (struct) patterns
     match point {
         Point { x: 0, y: 0 } => {
-            let origin = point; // $ type=origin:Point
+            let origin = point; // $ certainType=origin:Point
             println!("Origin point: {:?}", origin);
         }
         Point { x, y: 0 } => {
             let x_axis_x = x; // $ type=x_axis_x:i32
-            let x_axis_point = point; // $ type=x_axis_point:Point
+            let x_axis_point = point; // $ certainType=x_axis_point:Point
             println!("Point on x-axis: x={}, point={:?}", x_axis_x, x_axis_point);
         }
         Point { x: 10, .. } => {
-            let ten_x_point = point; // $ type=ten_x_point:Point
+            let ten_x_point = point; // $ certainType=ten_x_point:Point
             println!("Point with x=10: {:?}", ten_x_point);
         }
         Point { x, y } => {
