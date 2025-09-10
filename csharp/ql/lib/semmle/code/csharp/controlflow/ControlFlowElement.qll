@@ -90,7 +90,7 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
     // all other nodes can use regular CFG dominance
     this instanceof Impl::SplitAstNode and
     cb.getLastNode() = this.getAControlFlowNode() and
-    succ = cb.getASuccessorByType(s)
+    succ = cb.getASuccessor(s)
   }
 
   pragma[noinline]

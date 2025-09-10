@@ -116,7 +116,7 @@ namespace My.Qltest
         {
             var a = new object[] { new object() };
             var b = Reverse(a);
-            Sink(b); // No flow
+            Sink(b); // Flow
             Sink(b[0]); // Flow
         }
 

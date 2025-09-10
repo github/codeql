@@ -20395,6 +20395,41 @@ ir.cpp:
 # 2769|     v2769_14(void)                  = AliasedUse                      : ~m2771_8
 # 2769|     v2769_15(void)                  = ExitFunction                    : 
 
+# 2774| void test_allocation_with_initializer()
+# 2774|   Block 0
+# 2774|     v2774_1(void)           = EnterFunction                 : 
+# 2774|     m2774_2(unknown)        = AliasedDefinition             : 
+# 2774|     m2774_3(unknown)        = InitializeNonLocal            : 
+# 2774|     m2774_4(unknown)        = Chi                           : total:m2774_2, partial:m2774_3
+# 2775|     r2775_1(glval<int *>)   = VariableAddress[p1]           : 
+# 2775|     r2775_2(glval<unknown>) = FunctionAddress[operator new] : 
+# 2775|     r2775_3(unsigned long)  = Constant[4]                   : 
+# 2775|     r2775_4(void *)         = Call[operator new]            : func:r2775_2, 0:r2775_3
+# 2775|     m2775_5(unknown)        = ^CallSideEffect               : ~m2774_4
+# 2775|     m2775_6(unknown)        = Chi                           : total:m2774_4, partial:m2775_5
+# 2775|     m2775_7(unknown)        = ^InitializeDynamicAllocation  : &:r2775_4
+# 2775|     r2775_8(int *)          = Convert                       : r2775_4
+# 2775|     r2775_9(int)            = Constant[42]                  : 
+# 2775|     m2775_10(int)           = Store[?]                      : &:r2775_8, r2775_9
+# 2775|     m2775_11(unknown)       = Chi                           : total:m2775_7, partial:m2775_10
+# 2775|     m2775_12(int *)         = Store[p1]                     : &:r2775_1, r2775_8
+# 2776|     r2776_1(glval<long *>)  = VariableAddress[p2]           : 
+# 2776|     r2776_2(glval<unknown>) = FunctionAddress[operator new] : 
+# 2776|     r2776_3(unsigned long)  = Constant[8]                   : 
+# 2776|     r2776_4(void *)         = Call[operator new]            : func:r2776_2, 0:r2776_3
+# 2776|     m2776_5(unknown)        = ^CallSideEffect               : ~m2775_6
+# 2776|     m2776_6(unknown)        = Chi                           : total:m2775_6, partial:m2776_5
+# 2776|     m2776_7(unknown)        = ^InitializeDynamicAllocation  : &:r2776_4
+# 2776|     r2776_8(long *)         = Convert                       : r2776_4
+# 2776|     r2776_9(long)           = Constant[42]                  : 
+# 2776|     m2776_10(long)          = Store[?]                      : &:r2776_8, r2776_9
+# 2776|     m2776_11(unknown)       = Chi                           : total:m2776_7, partial:m2776_10
+# 2776|     m2776_12(long *)        = Store[p2]                     : &:r2776_1, r2776_8
+# 2777|     v2777_1(void)           = NoOp                          : 
+# 2774|     v2774_5(void)           = ReturnVoid                    : 
+# 2774|     v2774_6(void)           = AliasedUse                    : ~m2776_6
+# 2774|     v2774_7(void)           = ExitFunction                  : 
+
 ir23.cpp:
 #    1| bool consteval_1()
 #    1|   Block 0

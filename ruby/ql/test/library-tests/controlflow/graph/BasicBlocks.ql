@@ -1,4 +1,3 @@
-import ruby
 import codeql.ruby.controlflow.ControlFlowGraph
 import codeql.ruby.controlflow.BasicBlocks
 

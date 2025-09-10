@@ -13,6 +13,10 @@ query predicate instances(
   if x.isConst() then isConst = "yes" else isConst = "no"
 }
 
+query predicate getForBinder(TypeBound x, ForBinder getForBinder) {
+  toBeTested(x) and not x.isUnknown() and getForBinder = x.getForBinder()
+}
+
 query predicate getLifetime(TypeBound x, Lifetime getLifetime) {
   toBeTested(x) and not x.isUnknown() and getLifetime = x.getLifetime()
 }

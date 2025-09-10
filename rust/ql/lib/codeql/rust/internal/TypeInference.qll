@@ -224,8 +224,9 @@ private import M2
 module Consistency {
   import M2::Consistency
 
-  query predicate nonUniqueCertainType(AstNode n, TypePath path) {
-    strictcount(CertainTypeInference::inferCertainType(n, path)) > 1
+  predicate nonUniqueCertainType(AstNode n, TypePath path, Type t) {
+    strictcount(CertainTypeInference::inferCertainType(n, path)) > 1 and
+    t = CertainTypeInference::inferCertainType(n, path)
   }
 }
 
@@ -323,13 +324,19 @@ private module CertainTypeInference {
       or
       // A `let` statement with a type annotation is a coercion site and hence
       // is not a certain type equality.
-      exists(LetStmt let | not let.hasTypeRepr() |
-        let.getPat() = n1 and
+      exists(LetStmt let |
+        not let.hasTypeRepr() and
+        // Due to "binding modes" the type of the pattern is not necessarily the
+        // same as the type of the initializer. The pattern being an identifier
+        // pattern is sufficient to ensure that this is not the case.
+        let.getPat().(IdentPat) = n1 and
         let.getInitializer() = n2
       )
       or
       exists(LetExpr let |
-        let.getPat() = n1 and
+        // Similarly as for let statements, we need to rule out binding modes
+        // changing the type.
+        let.getPat().(IdentPat) = n1 and
         let.getScrutinee() = n2
       )
       or
@@ -373,6 +380,25 @@ private module CertainTypeInference {
     or
     result = inferLiteralType(n, path, true)
     or
+    result = inferRefNodeType(n) and
+    path.isEmpty()
+    or
+    result = inferLogicalOperationType(n, path)
+    or
+    result = inferRangeExprType(n) and
+    path.isEmpty()
+    or
+    result = inferTupleRootType(n) and
+    path.isEmpty()
+    or
+    result = inferAsyncBlockExprRootType(n) and
+    path.isEmpty()
+    or
+    result = inferArrayExprType(n) and
+    path.isEmpty()
+    or
+    result = inferCastExprType(n, path)
+    or
     infersCertainTypeAt(n, path, result.getATypeParameter())
   }
 
@@ -404,7 +430,7 @@ private module CertainTypeInference {
     inferCertainType(n, path) != t
     or
     // If we infer that `n` has _some_ type at `T1.T2....Tn`, and we also
-    // know that `n` certainly has type `certainType` at `T1.T2...Ti`, `i <=0 < n`,
+    // know that `n` certainly has type `certainType` at `T1.T2...Ti`, `0 <= i < n`,
     // then it must be the case that `T(i+1)` is a type parameter of `certainType`,
     // otherwise there is a conflict.
     //
@@ -419,11 +445,10 @@ private module CertainTypeInference {
 }
 
 private Type inferLogicalOperationType(AstNode n, TypePath path) {
-  exists(Builtins::BuiltinType t, BinaryLogicalOperation be |
+  exists(Builtins::Bool t, BinaryLogicalOperation be |
     n = [be, be.getLhs(), be.getRhs()] and
     path.isEmpty() and
-    result = TStruct(t) and
-    t instanceof Builtins::Bool
+    result = TStruct(t)
   )
 }
 
@@ -440,6 +465,9 @@ private Struct getRangeType(RangeExpr re) {
   or
   re instanceof RangeToExpr and
   result instanceof RangeToStruct
+  or
+  re instanceof RangeFullExpr and
+  result instanceof RangeFullStruct
   or
   re instanceof RangeFromToExpr and
   result instanceof RangeStruct
@@ -470,6 +498,11 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
     n1 = n2.(IfExpr).getABranch()
     or
     n1 = n2.(MatchExpr).getAnArm().getExpr()
+    or
+    exists(LetExpr let |
+      n1 = let.getScrutinee() and
+      n2 = let.getPat()
+    )
     or
     exists(MatchExpr me |
       n1 = me.getScrutinee() and
@@ -1858,7 +1891,7 @@ private predicate methodCandidate(Type type, string name, int arity, Impl impl) 
  */
 pragma[nomagic]
 private predicate methodCandidateTrait(Type type, Trait trait, string name, int arity, Impl impl) {
-  trait = resolvePath(impl.(ImplItemNode).getTraitPath()) and
+  trait = impl.(ImplItemNode).resolveTraitTy() and
   methodCandidate(type, name, arity, impl)
 }
 
@@ -1870,16 +1903,50 @@ private predicate isMethodCall(MethodCall mc, Type rootType, string name, int ar
 }
 
 private module IsInstantiationOfInput implements IsInstantiationOfInputSig<MethodCall> {
+  /** Holds if `mc` specifies a trait and might target a method in `impl`. */
   pragma[nomagic]
-  predicate potentialInstantiationOf(MethodCall mc, TypeAbstraction impl, TypeMention constraint) {
+  private predicate methodCallTraitCandidate(MethodCall mc, Impl impl) {
     exists(Type rootType, string name, int arity |
       isMethodCall(mc, rootType, name, arity) and
-      constraint = impl.(ImplTypeAbstraction).getSelfTy()
-    |
       methodCandidateTrait(rootType, mc.getTrait(), name, arity, impl)
-      or
+    )
+  }
+
+  /** Holds if `mc` does not specify a trait and might target a method in `impl`. */
+  pragma[nomagic]
+  private predicate methodCallCandidate(MethodCall mc, Impl impl) {
+    exists(Type rootType, string name, int arity |
       not exists(mc.getTrait()) and
+      isMethodCall(mc, rootType, name, arity) and
       methodCandidate(rootType, name, arity, impl)
+    )
+  }
+
+  private predicate relevantTraitVisible(Element mc, Trait trait) {
+    trait = any(ImplItemNode impl | methodCallCandidate(mc, impl)).resolveTraitTy()
+  }
+
+  bindingset[impl]
+  pragma[inline_late]
+  private TypeRepr getImplSelfTy(Impl impl) { result = impl.getSelfTy() }
+
+  pragma[nomagic]
+  predicate potentialInstantiationOf(MethodCall mc, TypeAbstraction impl, TypeMention constraint) {
+    constraint = getImplSelfTy(impl) and
+    (
+      methodCallTraitCandidate(mc, impl)
+      or
+      methodCallCandidate(mc, impl) and
+      (
+        not exists(impl.(ImplItemNode).resolveTraitTy())
+        or
+        // If the `impl` block implements a trait, that trait must be visible in
+        // order for the `impl` to be valid.
+        exists(Trait trait |
+          pragma[only_bind_into](trait) = impl.(ImplItemNode).resolveTraitTy() and
+          TraitIsVisible<relevantTraitVisible/2>::traitIsVisible(mc, pragma[only_bind_into](trait))
+        )
+      )
     )
   }
 
@@ -2355,8 +2422,6 @@ private module Cached {
     (
       result = inferAnnotatedType(n, path)
       or
-      result = inferLogicalOperationType(n, path)
-      or
       result = inferAssignmentOperationType(n, path)
       or
       result = inferTypeEquality(n, path)
@@ -2365,32 +2430,17 @@ private module Cached {
       or
       result = inferStructExprType(n, path)
       or
-      result = inferTupleRootType(n) and
-      path.isEmpty()
-      or
       result = inferPathExprType(n, path)
       or
       result = inferCallExprBaseType(n, path)
       or
       result = inferFieldExprType(n, path)
       or
-      result = inferRefNodeType(n) and
-      path.isEmpty()
-      or
       result = inferTryExprType(n, path)
       or
       result = inferLiteralType(n, path, false)
       or
-      result = inferAsyncBlockExprRootType(n) and
-      path.isEmpty()
-      or
       result = inferAwaitExprType(n, path)
-      or
-      result = inferArrayExprType(n) and
-      path.isEmpty()
-      or
-      result = inferRangeExprType(n) and
-      path.isEmpty()
       or
       result = inferIndexExprType(n, path)
       or
@@ -2399,8 +2449,6 @@ private module Cached {
       result = inferDynamicCallExprType(n, path)
       or
       result = inferClosureExprType(n, path)
-      or
-      result = inferCastExprType(n, path)
       or
       result = inferStructPatType(n, path)
       or
@@ -2513,7 +2561,6 @@ private module Debug {
 
   Type debugInferCertainNonUniqueType(AstNode n, TypePath path) {
     n = getRelevantLocatable() and
-    Consistency::nonUniqueCertainType(n, path) and
-    result = CertainTypeInference::inferCertainType(n, path)
+    Consistency::nonUniqueCertainType(n, path, result)
   }
 }

@@ -874,7 +874,7 @@ private predicate isStrongTypeFsPicklerCall(MethodCall mc, Method m) {
   (
     m instanceof FsPicklerSerializerClassDeserializeMethod or
     m instanceof FsPicklerSerializerClassDeserializeSequenceMethod or
-    m instanceof FsPicklerSerializerClasDeserializeSiftedMethod or
+    m instanceof FsPicklerSerializerClassDeserializeSiftedMethod or
     m instanceof FsPicklerSerializerClassUnPickleMethod or
     m instanceof FsPicklerSerializerClassUnPickleSiftedMethod or
     m instanceof CsPicklerSerializerClassDeserializeMethod or

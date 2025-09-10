@@ -253,7 +253,7 @@ class TestCase extends TTestCase {
 
   /**
    * Returns a call to `source()` wrapped in `newWith` methods as needed according to `input`.
-   * For example, if the input specification is `ArrayElement of MapValue of Argument[0]`, this
+   * For example, if the `stack` is `Argument[0].MapValue.ArrayElement`, this
    * will return `newWithMapValue(newWithArrayElement(source()))`.
    */
   string getInput(SummaryComponentStack stack) {
@@ -269,7 +269,7 @@ class TestCase extends TTestCase {
 
   /**
    * Returns `out` wrapped in `get` methods as needed according to `output`.
-   * For example, if the output specification is `ArrayElement of MapValue of Argument[0]`, this
+   * For example, if the `componentStack` is `Argument[0].MapValue.ArrayElement`, this
    * will return `getArrayElement(getMapValue(out))`.
    */
   string getOutput(SummaryComponentStack componentStack) {

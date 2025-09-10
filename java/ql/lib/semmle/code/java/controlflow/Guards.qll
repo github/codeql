@@ -139,18 +139,16 @@ private predicate isNonFallThroughPredecessor(SwitchCase sc, ControlFlowNode pre
   )
 }
 
-private module GuardsInput implements SharedGuards::InputSig<Location> {
-  private import java as J
-  private import semmle.code.java.dataflow.NullGuards as NullGuards
+private module SuccessorTypes implements SharedGuards::SuccessorTypesSig<SuccessorType> {
   import SuccessorType
+}
 
-  class ControlFlowNode = J::ControlFlowNode;
+private module GuardsInput implements SharedGuards::InputSig<Location, ControlFlowNode, BasicBlock> {
+  private import java as J
+  private import semmle.code.java.dataflow.internal.BaseSSA
+  private import semmle.code.java.dataflow.NullGuards as NullGuards
 
   class NormalExitNode = ControlFlow::NormalExitNode;
-
-  class BasicBlock = J::BasicBlock;
-
-  predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) { J::dominatingEdge(bb1, bb2) }
 
   class AstNode = ExprParent;
 
@@ -215,6 +213,12 @@ private module GuardsInput implements SharedGuards::InputSig<Location> {
         this = f.getAnAccess() and
         f.isFinal() and
         f.getInitializer() = NullGuards::baseNotNullExpr()
+      )
+      or
+      exists(CatchClause cc, LocalVariableDeclExpr decl, BaseSsaUpdate v |
+        decl = cc.getVariable() and
+        decl = v.getDefiningExpr() and
+        this = v.getAUse()
       )
     }
   }
@@ -375,7 +379,7 @@ private module GuardsInput implements SharedGuards::InputSig<Location> {
   }
 }
 
-private module GuardsImpl = SharedGuards::Make<Location, GuardsInput>;
+private module GuardsImpl = SharedGuards::Make<Location, Cfg, SuccessorTypes, GuardsInput>;
 
 private module LogicInputCommon {
   private import semmle.code.java.dataflow.NullGuards as NullGuards

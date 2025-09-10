@@ -436,4 +436,83 @@ public class B {
       }
     }
   }
+
+  public void loopCorrTest1(int[] a) {
+    boolean ready = a.length > 7;
+    Object x = new Object();
+    for (int i = 0; i < a.length; i++) {
+      // condition correlates with itself through iterations when ready isn't updated
+      if (!ready) {
+        x = null;
+      } else {
+        x.hashCode(); // Spurious NPE - false positive
+      }
+      if ((a[i] & 1) != 0) {
+        ready = (a[i] & 2) != 0;
+        x = new Object();
+      }
+    }
+  }
+
+  public void loopCorrTest2(boolean[] a) {
+    Object x = new Object();
+    boolean cur = a[0];
+    for (int i = 1; i < a.length; i++) {
+      boolean prev = cur;
+      cur = a[i];
+      if (!prev) {
+        // correctly guarded by !cur from the _previous_ iteration
+        x.hashCode(); // Spurious NPE - false positive
+      } else {
+        x = new Object();
+      }
+      if (cur) {
+        x = null;
+      }
+    }
+  }
+
+  public void loopCorrTest3(String[] ss) {
+    Object x = null;
+    Object t = null;
+    for (String s : ss) {
+      if (t == null) {
+        t = s;
+      } else {
+        if (t instanceof String) {
+          x = new Object();
+          t = new Object();
+        }
+        // correctly guarded by t: null -> String -> Object
+        x.hashCode(); // Spurious NPE - false positive
+      }
+    }
+  }
+
+  public void initCorr(boolean b) {
+    Object o2 = b ? null : "";
+    if (b)
+      o2 = "";
+    else
+      o2.hashCode(); // OK
+  }
+
+  public void complexLoopTest(int[] xs, int[] ys) {
+    int len = ys != null ? ys.length : 0;
+    for (int i = 0, j = 0; i < xs.length; i++) {
+      if (j < len && ys[j] == 42) { // OK
+        j++;
+      } else if (j > 0) {
+        ys[0]++; // OK
+      }
+    }
+  }
+
+  public void trackTest(Object o, int n) {
+    boolean isnull = o == null;
+    int c = -1;
+    if (maybe) { }
+    if (c == 100) { return; }
+    o.hashCode(); // NPE
+  }
 }

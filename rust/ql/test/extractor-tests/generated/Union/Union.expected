@@ -1,7 +1,5 @@
 instances
 | gen_union.rs:4:5:7:32 | union U |
-getExtendedCanonicalPath
-getCrateOrigin
 getAttributeMacroExpansion
 getDeriveMacroExpansion
 getAttr

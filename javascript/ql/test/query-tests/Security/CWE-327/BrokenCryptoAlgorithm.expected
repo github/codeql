@@ -5,11 +5,11 @@
 | tst.js:22:21:22:30 | secretText | tst.js:3:18:3:24 | trusted | tst.js:22:21:22:30 | secretText | $@ depends on $@. | tst.js:21:22:21:60 | crypto. ... ', key) | A broken or weak cryptographic algorithm | tst.js:3:18:3:24 | trusted | sensitive data from an access to trusted |
 | tst.js:22:21:22:30 | secretText | tst.js:22:21:22:30 | secretText | tst.js:22:21:22:30 | secretText | $@ depends on $@. | tst.js:21:22:21:60 | crypto. ... ', key) | A broken or weak cryptographic algorithm | tst.js:22:21:22:30 | secretText | sensitive data from an access to secretText |
 edges
-| tst.js:3:5:3:24 | secretText | tst.js:11:17:11:26 | secretText | provenance |  |
-| tst.js:3:5:3:24 | secretText | tst.js:22:21:22:30 | secretText | provenance |  |
-| tst.js:3:18:3:24 | trusted | tst.js:3:5:3:24 | secretText | provenance |  |
+| tst.js:3:5:3:14 | secretText | tst.js:11:17:11:26 | secretText | provenance |  |
+| tst.js:3:5:3:14 | secretText | tst.js:22:21:22:30 | secretText | provenance |  |
+| tst.js:3:18:3:24 | trusted | tst.js:3:5:3:14 | secretText | provenance |  |
 nodes
-| tst.js:3:5:3:24 | secretText | semmle.label | secretText |
+| tst.js:3:5:3:14 | secretText | semmle.label | secretText |
 | tst.js:3:18:3:24 | trusted | semmle.label | trusted |
 | tst.js:11:17:11:26 | secretText | semmle.label | secretText |
 | tst.js:17:17:17:25 | o.trusted | semmle.label | o.trusted |

@@ -653,7 +653,7 @@ private Expr trackingVarGuard(
       result = integerGuard(trackvar.getAnAccess(), branch, k, isA)
       or
       exists(int k2 |
-        result = integerGuard(trackvar.getAnAccess(), branch.booleanNot(), k2, true) and
+        result = integerGuard(trackvar.getAnAccess(), branch, k2, true) and
         isA = false and
         k2 != k
       )
