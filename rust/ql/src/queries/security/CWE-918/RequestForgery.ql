@@ -34,5 +34,5 @@ import RequestForgeryFlow::PathGraph
 
 from RequestForgeryFlow::PathNode source, RequestForgeryFlow::PathNode sink
 where RequestForgeryFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "The URL of this request depends on a $@.",
-  source.getNode(), "user-provided value"
+select sink.getNode(), source, sink, "The URL of this request depends on a $@.", source.getNode(),
+  "user-provided value"
