@@ -1,3 +1,8 @@
+ql/java/ql/src/Advisory/Documentation/MissingJavadocMethods.ql
+ql/java/ql/src/Advisory/Documentation/MissingJavadocParameters.ql
+ql/java/ql/src/Advisory/Documentation/MissingJavadocReturnValues.ql
+ql/java/ql/src/Advisory/Documentation/MissingJavadocThrows.ql
+ql/java/ql/src/Advisory/Documentation/MissingJavadocTypes.ql
 ql/java/ql/src/AlertSuppression.ql
 ql/java/ql/src/AlertSuppressionAnnotations.ql
 ql/java/ql/src/Architecture/Dependencies/MutualDependency.ql

@@ -2,11 +2,6 @@ ql/java/ql/src/Advisory/Declarations/MissingOverrideAnnotation.ql
 ql/java/ql/src/Advisory/Declarations/NonFinalImmutableField.ql
 ql/java/ql/src/Advisory/Declarations/NonPrivateField.ql
 ql/java/ql/src/Advisory/Documentation/ImpossibleJavadocThrows.ql
-ql/java/ql/src/Advisory/Documentation/MissingJavadocMethods.ql
-ql/java/ql/src/Advisory/Documentation/MissingJavadocParameters.ql
-ql/java/ql/src/Advisory/Documentation/MissingJavadocReturnValues.ql
-ql/java/ql/src/Advisory/Documentation/MissingJavadocThrows.ql
-ql/java/ql/src/Advisory/Documentation/MissingJavadocTypes.ql
 ql/java/ql/src/Advisory/Documentation/SpuriousJavadocParam.ql
 ql/java/ql/src/Advisory/Java Objects/AvoidCloneMethodAccess.ql
 ql/java/ql/src/Advisory/Java Objects/AvoidCloneOverride.ql
