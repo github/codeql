@@ -46,9 +46,6 @@ known fixed string.
   <li>
     <a href="https://owasp.org/www-community/attacks/Server_Side_Request_Forgery">OWASP SSRF</a>
   </li>
-  <li>
-    <a href="https://cwe.mitre.org/data/definitions/918.html">CWE-918: Server-Side Request Forgery (SSRF)</a>
-  </li>
 </references>
 
 </qhelp>

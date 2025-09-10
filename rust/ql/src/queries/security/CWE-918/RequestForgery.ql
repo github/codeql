@@ -13,9 +13,6 @@
 private import rust
 private import codeql.rust.dataflow.TaintTracking
 private import codeql.rust.dataflow.DataFlow
-private import codeql.rust.dataflow.FlowSink
-private import codeql.rust.Concepts
-private import codeql.rust.security.CleartextTransmissionExtensions
 private import codeql.rust.security.RequestForgeryExtensions
 
 /**
@@ -37,5 +34,5 @@ import RequestForgeryFlow::PathGraph
 
 from RequestForgeryFlow::PathNode source, RequestForgeryFlow::PathNode sink
 where RequestForgeryFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "The $@ of this request depends on a $@.", sink, "URL",
+select sink.getNode(), source, sink, "The URL of this request depends on a $@.",
   source.getNode(), "user-provided value"
