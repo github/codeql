@@ -269,7 +269,7 @@ module TypeTracking<LocationSig Location, TypeTrackingInput<Location> I> {
   }
 
   pragma[inline]
-  predicate standardFlowsTo(Node localSource, Node dst) {
+  private predicate standardFlowsTo(Node localSource, Node dst) {
     isLocalSourceNode(localSource) and
     dst = localSource
     or
