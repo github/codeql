@@ -2,7 +2,6 @@
 | build-leaks.js:4:39:6:1 | {\\n    " ... leak]\\n} | build-leaks.js:5:35:5:45 | process.env | build-leaks.js:4:39:6:1 | {\\n    " ... leak]\\n} | This creates a build artifact that depends on $@. | build-leaks.js:5:35:5:45 | process.env | sensitive data returned byprocess environment |
 | build-leaks.js:34:26:34:57 | getEnv( ... ngified | build-leaks.js:15:24:15:34 | process.env | build-leaks.js:34:26:34:57 | getEnv( ... ngified | This creates a build artifact that depends on $@. | build-leaks.js:15:24:15:34 | process.env | sensitive data returned byprocess environment |
 | build-leaks.js:41:43:41:86 | { "proc ... y(pw) } | build-leaks.js:40:14:40:60 | url.par ... assword | build-leaks.js:41:43:41:86 | { "proc ... y(pw) } | This creates a build artifact that depends on $@. | build-leaks.js:40:14:40:60 | url.par ... assword | sensitive data returned byan access to current_password |
-| build-leaks.js:102:30:102:46 | getFilteredEnv4() | build-leaks.js:97:43:97:53 | process.env | build-leaks.js:102:30:102:46 | getFilteredEnv4() | This creates a build artifact that depends on $@. | build-leaks.js:97:43:97:53 | process.env | sensitive data returned byprocess environment |
 edges
 | build-leaks.js:5:20:5:46 | JSON.st ... ss.env) | build-leaks.js:4:39:6:1 | {\\n    " ... leak]\\n} | provenance |  |
 | build-leaks.js:5:35:5:45 | process.env | build-leaks.js:5:20:5:46 | JSON.st ... ss.env) | provenance |  |
@@ -28,11 +27,6 @@ edges
 | build-leaks.js:40:14:40:60 | url.par ... assword | build-leaks.js:40:9:40:10 | pw | provenance |  |
 | build-leaks.js:41:67:41:84 | JSON.stringify(pw) | build-leaks.js:41:43:41:86 | { "proc ... y(pw) } | provenance |  |
 | build-leaks.js:41:82:41:83 | pw | build-leaks.js:41:67:41:84 | JSON.stringify(pw) | provenance |  |
-| build-leaks.js:95:16:99:18 | ["FOO", ...  }, {}) | build-leaks.js:102:30:102:46 | getFilteredEnv4() | provenance |  |
-| build-leaks.js:97:17:97:19 | [post update] env | build-leaks.js:98:24:98:26 | env | provenance |  |
-| build-leaks.js:97:43:97:53 | process.env | build-leaks.js:97:17:97:19 | [post update] env | provenance | Config |
-| build-leaks.js:98:24:98:26 | env | build-leaks.js:22:49:22:51 | env | provenance |  |
-| build-leaks.js:98:24:98:26 | env | build-leaks.js:95:16:99:18 | ["FOO", ...  }, {}) | provenance |  |
 nodes
 | build-leaks.js:4:39:6:1 | {\\n    " ... leak]\\n} | semmle.label | {\\n    " ... leak]\\n} |
 | build-leaks.js:5:20:5:46 | JSON.st ... ss.env) | semmle.label | JSON.st ... ss.env) |
@@ -60,11 +54,6 @@ nodes
 | build-leaks.js:41:43:41:86 | { "proc ... y(pw) } | semmle.label | { "proc ... y(pw) } |
 | build-leaks.js:41:67:41:84 | JSON.stringify(pw) | semmle.label | JSON.stringify(pw) |
 | build-leaks.js:41:82:41:83 | pw | semmle.label | pw |
-| build-leaks.js:95:16:99:18 | ["FOO", ...  }, {}) | semmle.label | ["FOO", ...  }, {}) |
-| build-leaks.js:97:17:97:19 | [post update] env | semmle.label | [post update] env |
-| build-leaks.js:97:43:97:53 | process.env | semmle.label | process.env |
-| build-leaks.js:98:24:98:26 | env | semmle.label | env |
-| build-leaks.js:102:30:102:46 | getFilteredEnv4() | semmle.label | getFilteredEnv4() |
 subpaths
 | build-leaks.js:22:36:22:38 | raw | build-leaks.js:22:49:22:51 | env | build-leaks.js:24:20:24:22 | env | build-leaks.js:22:24:25:14 | Object. ...  }, {}) |
 | build-leaks.js:22:36:22:38 | raw | build-leaks.js:23:39:23:41 | raw | build-leaks.js:24:20:24:22 | env | build-leaks.js:22:24:25:14 | Object. ...  }, {}) |

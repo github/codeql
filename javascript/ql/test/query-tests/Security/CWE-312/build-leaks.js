@@ -94,10 +94,10 @@ var server = https.createServer(function (req, res) {
     function getFilteredEnv4() {
         return ["FOO", "BAR", "BAZ"]
             .reduce((env, key) => {
-                env[key] = JSON.stringify(process.env[key]); // $ SPURIOUS: Source[js/build-artifact-leak]
+                env[key] = JSON.stringify(process.env[key]);
                 return env;
             }, {});
     }
 
-    new webpack.DefinePlugin(getFilteredEnv4()); // $ SPURIOUS: Alert[js/build-artifact-leak]
+    new webpack.DefinePlugin(getFilteredEnv4());
 })();
