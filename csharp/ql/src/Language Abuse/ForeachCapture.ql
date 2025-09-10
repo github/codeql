@@ -5,8 +5,7 @@
  * @problem.severity recommendation
  * @precision medium
  * @id cs/captured-foreach-variable
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  *       external/cwe/cwe-758
  */
