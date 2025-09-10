@@ -815,15 +815,28 @@ module Public {
       e = any(DerefExpr ae).getOperand() or
       e = any(IR::EvalImplicitDerefInstruction eidi).getOperand()
     )
+    or
+    exists(CallExpr ce |
+      ce.getArgument(0).getType() instanceof TupleType and
+      insn = IR::extractTupleElement(IR::evalExprInstruction(ce.getArgument(0)), _)
+      or
+      not ce.getArgument(0).getType() instanceof TupleType and
+      insn = IR::evalExprInstruction(ce.getAnArgument())
+      or
+      // Receiver of a method call
+      exists(IR::MethodReadInstruction mri |
+        ce.getTarget() instanceof Method and
+        mri = IR::evalExprInstruction(ce.getCalleeExpr()) and
+        insn = mri.getReceiver()
+      )
+    ) and
+    mutableType(insn.getResultType())
   }
 
   predicate hasPostUpdateNode(Node preupd) {
     insnHasPostUpdateNode(preupd.asInstruction())
     or
     preupd = getAWrittenNode()
-    or
-    preupd = any(ArgumentNode arg).getACorrespondingSyntacticArgument() and
-    mutableType(preupd.getType())
   }
 
   private class DefaultPostUpdateNode extends PostUpdateNode {
