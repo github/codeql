@@ -32,7 +32,7 @@ jobs:
       ### Build the extractor ###
       - name: Cache entire extractor
         id: cache-extractor
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ql/extractor-pack/
@@ -40,7 +40,7 @@ jobs:
           key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-extractor-${{ hashFiles('ql/**/Cargo.lock') }}-${{ hashFiles('shared/tree-sitter-extractor') }}-${{ hashFiles('ql/**/*.rs') }}
       - name: Cache cargo
         if: steps.cache-extractor.outputs.cache-hit != 'true'
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.cargo/registry
