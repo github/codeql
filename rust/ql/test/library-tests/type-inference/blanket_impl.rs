@@ -122,3 +122,40 @@ mod extension_trait_blanket_impl {
         let result = my_other_flag.try_read_flag_twice(); // $ target=MyOtherFlag::try_read_flag_twice
     }
 }
+
+pub mod sql_exec {
+    // a highly simplified model of `MySqlConnection.execute` in SQLx
+
+    trait Connection {}
+
+    trait Executor {
+        fn execute1(&self);
+        fn execute2<E>(&self, query: E);
+    }
+
+    impl<T: Connection> Executor for T {
+        fn execute1(&self) {
+            println!("Executor::execute1");
+        }
+
+        fn execute2<E>(&self, _query: E) {
+            println!("Executor::execute2");
+        }
+    }
+
+    struct MySqlConnection {}
+
+    impl Connection for MySqlConnection {}
+
+    pub fn f() {
+        let c = MySqlConnection {}; // $ certainType=c:MySqlConnection
+
+        c.execute1(); // $ MISSING: target=execute1
+        MySqlConnection::execute1(&c); // $ MISSING: target=execute1
+
+        c.execute2("SELECT * FROM users"); // $ MISSING: target=execute2
+        c.execute2::<&str>("SELECT * FROM users"); // $ MISSING: target=execute2
+        MySqlConnection::execute2(&c, "SELECT * FROM users"); // $ MISSING: target=execute2
+        MySqlConnection::execute2::<&str>(&c, "SELECT * FROM users"); // $ MISSING: target=execute2
+    }
+}
