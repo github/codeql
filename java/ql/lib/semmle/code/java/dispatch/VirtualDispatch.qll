@@ -2,8 +2,6 @@
  * Provides predicates for reasoning about runtime call targets through virtual
  * dispatch.
  */
-overlay[global]
-module;
 
 import java
 import semmle.code.java.dataflow.TypeFlow
