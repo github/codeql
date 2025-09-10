@@ -52,7 +52,6 @@ ql/csharp/ql/src/Language Abuse/CastThisToTypeParameter.ql
 ql/csharp/ql/src/Language Abuse/CatchOfGenericException.ql
 ql/csharp/ql/src/Language Abuse/DubiousDowncastOfThis.ql
 ql/csharp/ql/src/Language Abuse/DubiousTypeTestOfThis.ql
-ql/csharp/ql/src/Language Abuse/ForeachCapture.ql
 ql/csharp/ql/src/Language Abuse/MissedReadonlyOpportunity.ql
 ql/csharp/ql/src/Language Abuse/MissedTernaryOpportunity.ql
 ql/csharp/ql/src/Language Abuse/MissedUsingOpportunity.ql

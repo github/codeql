@@ -25,6 +25,7 @@ ql/csharp/ql/src/Documentation/XmldocMissingException.ql
 ql/csharp/ql/src/Documentation/XmldocMissingParam.ql
 ql/csharp/ql/src/Documentation/XmldocMissingReturn.ql
 ql/csharp/ql/src/Documentation/XmldocMissingTypeParam.ql
+ql/csharp/ql/src/Language Abuse/ForeachCapture.ql
 ql/csharp/ql/src/Likely Bugs/BadCheckOdd.ql
 ql/csharp/ql/src/Likely Bugs/RandomUsedOnce.ql
 ql/csharp/ql/src/Metrics/Callables/CCyclomaticComplexity.ql
