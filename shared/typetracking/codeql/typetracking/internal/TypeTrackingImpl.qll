@@ -270,7 +270,6 @@ module TypeTracking<LocationSig Location, TypeTrackingInput<Location> I> {
 
   pragma[inline]
   predicate standardFlowsTo(Node localSource, Node dst) {
-    // explicit type check in base case to avoid repeated type tests in recursive case
     isLocalSourceNode(localSource) and
     dst = localSource
     or
