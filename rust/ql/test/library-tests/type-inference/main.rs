@@ -365,7 +365,7 @@ mod method_non_parametric_trait_impl {
 
     fn type_bound_type_parameter_impl<TP: MyTrait<S1>>(thing: TP) -> S1 {
         // The trait bound on `TP` makes the implementation of `ConvertTo` valid
-        thing.convert_to() // $ MISSING: target=T::convert_to
+        thing.convert_to() // $ target=T::convert_to
     }
 
     pub fn f() {
@@ -437,7 +437,7 @@ mod method_non_parametric_trait_impl {
         let x = get_snd_fst(c); // $ type=x:S1 target=get_snd_fst
 
         let thing = MyThing { a: S1 };
-        let i = thing.convert_to(); // $ MISSING: type=i:S1 target=T::convert_to
+        let i = thing.convert_to(); // $ type=i:S1 target=T::convert_to
         let j = convert_to(thing); // $ type=j:S1 target=convert_to
     }
 }
@@ -1376,7 +1376,7 @@ mod method_call_type_conversion {
         let t = x7.m1(); // $ target=m1 type=t:& type=t:&T.S2
         println!("{:?}", x7);
 
-        let x9: String = "Hello".to_string(); // $ certainType=x9:String
+        let x9: String = "Hello".to_string(); // $ certainType=x9:String target=to_string
 
         // Implicit `String` -> `str` conversion happens via the `Deref` trait:
         // https://doc.rust-lang.org/std/string/struct.String.html#deref.

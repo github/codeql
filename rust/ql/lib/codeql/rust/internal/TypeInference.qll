@@ -1915,6 +1915,10 @@ private predicate methodCandidateTrait(Type type, Trait trait, string name, int 
   methodCandidate(type, name, arity, impl)
 }
 
+/**
+ * Holds if `mc` has `rootType` as the root type of the reciever and the target
+ * method is named `name` and has arity `arity`
+ */
 pragma[nomagic]
 private predicate isMethodCall(MethodCall mc, Type rootType, string name, int arity) {
   rootType = mc.getTypeAt(TypePath::nil()) and
@@ -2153,6 +2157,155 @@ private predicate methodCallHasImplCandidate(MethodCall mc, Impl impl) {
   else any()
 }
 
+private module BlanketImplementation {
+  /**
+   * Gets the type parameter for which `impl` is a blanket implementation, if
+   * any.
+   */
+  private TypeParamItemNode getBlanketImplementationTypeParam(Impl impl) {
+    result = impl.(ImplItemNode).resolveSelfTy() and
+    result = impl.getGenericParamList().getAGenericParam() and
+    // This impl block is not superseded by the expansion of an attribute macro.
+    not exists(impl.getAttributeMacroExpansion())
+  }
+
+  predicate isBlanketImplementation(Impl impl) { exists(getBlanketImplementationTypeParam(impl)) }
+
+  private Impl getPotentialDuplicated(string fileName, string traitName, int arity, string tpName) {
+    tpName = getBlanketImplementationTypeParam(result).getName() and
+    fileName = result.getLocation().getFile().getBaseName() and
+    traitName = result.(ImplItemNode).resolveTraitTy().getName() and
+    arity = result.(ImplItemNode).resolveTraitTy().(Trait).getNumberOfGenericParams()
+  }
+
+  /**
+   * Holds if `impl1` and `impl2` are duplicates and `impl2` is strictly more
+   * "canonical" than `impl1`.
+   *
+   * Libraries can often occur several times in the database for different
+   * library versions. This causes the same blanket implementations to exist
+   * multiple times, and these add no useful information.
+   *
+   * We detect these duplicates based on some simple heuristics (same trait
+   * name, file name, etc.). For these duplicates we select the one with the
+   * greatest file name (which usually is also the one with the greatest library
+   * version in the path)
+   */
+  predicate duplicatedImpl(Impl impl1, Impl impl2) {
+    exists(string fileName, string traitName, int arity, string tpName |
+      impl1 = getPotentialDuplicated(fileName, traitName, arity, tpName) and
+      impl2 = getPotentialDuplicated(fileName, traitName, arity, tpName) and
+      impl1.getLocation().getFile().getAbsolutePath() <
+        impl2.getLocation().getFile().getAbsolutePath()
+    )
+  }
+
+  predicate isCanonicalImpl(Impl impl) {
+    not duplicatedImpl(impl, _) and isBlanketImplementation(impl)
+  }
+
+  Impl getCanonicalImpl(Impl impl) {
+    result =
+      max(Impl impl0, Location l |
+        duplicatedImpl(impl, impl0) and l = impl0.getLocation()
+      |
+        impl0 order by l.getFile().getAbsolutePath(), l.getStartLine()
+      )
+    or
+    isCanonicalImpl(impl) and result = impl
+  }
+
+  predicate isCanonicalBlanketImplementation(Impl impl) { impl = getCanonicalImpl(impl) }
+
+  /**
+   * Holds if `impl` is a blanket implementation for a type parameter and the type
+   * parameter must implement `trait`.
+   */
+  private predicate blanketImplementationTraitBound(Impl impl, Trait t) {
+    t =
+      min(Trait trait, int i |
+        trait = getBlanketImplementationTypeParam(impl).resolveBound(i) and
+        // Exclude traits that are known to not narrow things down very much.
+        not trait.getName().getText() =
+          [
+            "Sized", "Clone",
+            // The auto traits
+            "Send", "Sync", "Unpin", "UnwindSafe", "RefUnwindSafe"
+          ]
+      |
+        trait order by i
+      )
+  }
+
+  /**
+   * Holds if `impl` is a relevant blanket implementation that requires the
+   * trait `trait` and provides `f`, a method with name `name` and arity
+   * `arity`.
+   */
+  private predicate blanketImplementationMethod(
+    ImplItemNode impl, Trait trait, string name, int arity, Function f
+  ) {
+    isCanonicalBlanketImplementation(impl) and
+    blanketImplementationTraitBound(impl, trait) and
+    f.getParamList().hasSelfParam() and
+    arity = f.getParamList().getNumberOfParams() and
+    (
+      f = impl.getAssocItem(name)
+      or
+      // If the trait has a method with a default implementation, then that
+      // target is interesting as well.
+      not exists(impl.getAssocItem(name)) and
+      f = impl.resolveTraitTy().getAssocItem(name)
+    ) and
+    // If the method is already available through one of the trait bounds on the
+    // type parameter (because they share a common ancestor trait) then ignore
+    // it.
+    not getBlanketImplementationTypeParam(impl).resolveABound().(TraitItemNode).getASuccessor(name) =
+      f
+  }
+
+  predicate methodCallMatchesBlanketImpl(MethodCall mc, Type t, Impl impl, Trait trait, Function f) {
+    // Only check method calls where we have ruled out inherent method targets.
+    // Ideally we would also check if non-blanket method targets have been ruled
+    // out.
+    methodCallHasNoInherentTarget(mc) and
+    exists(string name, int arity |
+      isMethodCall(mc, t, name, arity) and
+      blanketImplementationMethod(impl, trait, name, arity, f)
+    )
+  }
+
+  private predicate relevantTraitVisible(Element mc, Trait trait) {
+    exists(ImplItemNode impl |
+      methodCallMatchesBlanketImpl(mc, _, impl, _, _) and
+      trait = impl.resolveTraitTy()
+    )
+  }
+
+  module SatisfiesConstraintInput implements SatisfiesConstraintInputSig<MethodCall> {
+    pragma[nomagic]
+    predicate relevantConstraint(MethodCall mc, Type constraint) {
+      exists(Trait trait, Trait trait2, ImplItemNode impl |
+        methodCallMatchesBlanketImpl(mc, _, impl, trait, _) and
+        TraitIsVisible<relevantTraitVisible/2>::traitIsVisible(mc, pragma[only_bind_into](trait2)) and
+        trait2 = pragma[only_bind_into](impl.resolveTraitTy()) and
+        trait = constraint.(TraitType).getTrait()
+      )
+    }
+
+    predicate useUniversalConditions() { none() }
+  }
+
+  predicate hasBlanketImpl(MethodCall mc, Type t, Impl impl, Trait trait, Function f) {
+    SatisfiesConstraint<MethodCall, SatisfiesConstraintInput>::satisfiesConstraintType(mc,
+      TTrait(trait), _, _) and
+    methodCallMatchesBlanketImpl(mc, t, impl, trait, f)
+  }
+
+  pragma[nomagic]
+  Function getMethodFromBlanketImpl(MethodCall mc) { hasBlanketImpl(mc, _, _, _, result) }
+}
+
 /** Gets a method from an `impl` block that matches the method call `mc`. */
 pragma[nomagic]
 private Function getMethodFromImpl(MethodCall mc) {
@@ -2187,6 +2340,8 @@ pragma[nomagic]
 private Function resolveMethodCallTarget(MethodCall mc) {
   // The method comes from an `impl` block targeting the type of the receiver.
   result = getMethodFromImpl(mc)
+  or
+  result = BlanketImplementation::getMethodFromBlanketImpl(mc)
   or
   // The type of the receiver is a type parameter and the method comes from a
   // trait bound on the type parameter.

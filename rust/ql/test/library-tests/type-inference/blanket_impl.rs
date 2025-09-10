@@ -32,7 +32,7 @@ mod basic_blanket_impl {
     pub fn test_basic_blanket() {
         let x = S1.clone1(); // $ target=S1::clone1
         println!("{x:?}");
-        let y = S1.duplicate(); // $ MISSING: target=Clone1duplicate
+        let y = S1.duplicate(); // $ target=Clone1duplicate
         println!("{y:?}");
     }
 }
@@ -109,7 +109,7 @@ mod extension_trait_blanket_impl {
 
     fn test() {
         let my_try_flag = MyTryFlag { flag: true };
-        let result = my_try_flag.try_read_flag_twice(); // $ MISSING: target=TryFlagExt::try_read_flag_twice
+        let result = my_try_flag.try_read_flag_twice(); // $ target=TryFlagExt::try_read_flag_twice
 
         let my_flag = MyFlag { flag: true };
         // Here `TryFlagExt::try_read_flag_twice` is since there is a blanket
@@ -150,11 +150,11 @@ pub mod sql_exec {
     pub fn f() {
         let c = MySqlConnection {}; // $ certainType=c:MySqlConnection
 
-        c.execute1(); // $ MISSING: target=execute1
+        c.execute1(); // $ target=execute1
         MySqlConnection::execute1(&c); // $ MISSING: target=execute1
 
-        c.execute2("SELECT * FROM users"); // $ MISSING: target=execute2
-        c.execute2::<&str>("SELECT * FROM users"); // $ MISSING: target=execute2
+        c.execute2("SELECT * FROM users"); // $ target=execute2
+        c.execute2::<&str>("SELECT * FROM users"); // $ target=execute2
         MySqlConnection::execute2(&c, "SELECT * FROM users"); // $ MISSING: target=execute2
         MySqlConnection::execute2::<&str>(&c, "SELECT * FROM users"); // $ MISSING: target=execute2
     }
