@@ -1164,9 +1164,10 @@ private module MethodCallResolution {
 
   pragma[nomagic]
   private predicate methodCallTraitCandidate(Element mc, Trait trait) {
-    exists(string name, int arity |
-      mc.(MethodCall).isMethodCall(name, arity) and
+    exists(string name, int arity | mc.(MethodCall).isMethodCall(name, arity) |
       traitMethodInfo(name, arity, trait)
+      or
+      methodInfo(_, name, arity, trait, _, _, _, _)
     )
   }
 
@@ -1202,13 +1203,27 @@ private module MethodCallResolution {
       mc.isMethodCall(name, arity) and
       methodInfo(_, name, arity, i, self, rootType, selfRootPath, selfRootType)
     |
-      not i.(Impl).hasTrait()
+      i =
+        any(Impl impl |
+          not impl.hasTrait()
+          or
+          methodCallVisibleImplTraitCandidate(mc, i)
+        )
       or
-      methodCallVisibleImplTraitCandidate(mc, i)
+      methodCallVisibleTraitCandidate(mc, i)
       or
       mc instanceof IndexExpr and
       i.(ImplItemNode).resolveTraitTy() instanceof IndexTrait
     )
+  }
+
+  private int countmethodCallCandidate(MethodCall mc) {
+    result = strictcount(ImplOrTraitItemNode i | methodCallCandidate(mc, i, _, _, _, _))
+  }
+
+  private predicate countmethodCallMaxCandidate(MethodCall mc, ImplOrTraitItemNode i) {
+    methodCallCandidate(mc, i, _, _, _, _) and
+    countmethodCallCandidate(mc) = max(countmethodCallCandidate(_))
   }
 
   /**
@@ -3106,7 +3121,7 @@ private module Debug {
       // filepath.matches("%/crates/wdk-macros/src/lib.rs") and
       // endline = [255 .. 256]
       filepath.matches("%/main.rs") and
-      startline = 286
+      startline = 550
     )
   }
 
