@@ -50,16 +50,14 @@
 overlay[local?]
 module;
 
+private import codeql.controlflow.BasicBlock as BB
 private import codeql.util.Boolean
 private import codeql.util.Location
 private import codeql.util.Unit
 
-signature module InputSig<LocationSig Location> {
-  class SuccessorType {
-    /** Gets a textual representation of this successor type. */
-    string toString();
-  }
+signature class TypSig;
 
+signature module SuccessorTypesSig<TypSig SuccessorType> {
   class ExceptionSuccessor extends SuccessorType;
 
   class ConditionalSuccessor extends SuccessorType {
@@ -70,60 +68,11 @@ signature module InputSig<LocationSig Location> {
   class BooleanSuccessor extends ConditionalSuccessor;
 
   class NullnessSuccessor extends ConditionalSuccessor;
+}
 
-  /** A control flow node. */
-  class ControlFlowNode {
-    /** Gets a textual representation of this control flow node. */
-    string toString();
-
-    /** Gets the location of this control flow node. */
-    Location getLocation();
-  }
-
+signature module InputSig<LocationSig Location, TypSig ControlFlowNode, TypSig BasicBlock> {
   /** A control flow node indicating normal termination of a callable. */
   class NormalExitNode extends ControlFlowNode;
-
-  /**
-   * A basic block, that is, a maximal straight-line sequence of control flow nodes
-   * without branches or joins.
-   */
-  class BasicBlock {
-    /** Gets a textual representation of this basic block. */
-    string toString();
-
-    /** Gets the `i`th node in this basic block. */
-    ControlFlowNode getNode(int i);
-
-    /** Gets the last control flow node in this basic block. */
-    ControlFlowNode getLastNode();
-
-    /** Gets the length of this basic block. */
-    int length();
-
-    /** Gets the location of this basic block. */
-    Location getLocation();
-
-    BasicBlock getASuccessor(SuccessorType t);
-
-    predicate dominates(BasicBlock bb);
-
-    predicate strictlyDominates(BasicBlock bb);
-  }
-
-  /**
-   * Holds if `bb1` has `bb2` as a direct successor and the edge between `bb1`
-   * and `bb2` is a dominating edge.
-   *
-   * An edge `(bb1, bb2)` is dominating if there exists a basic block that can
-   * only be reached from the entry block by going through `(bb1, bb2)`. This
-   * implies that `(bb1, bb2)` dominates its endpoint `bb2`. I.e., `bb2` can
-   * only be reached from the entry block by going via `(bb1, bb2)`.
-   *
-   * This is a necessary and sufficient condition for an edge to dominate some
-   * block, and therefore `dominatingEdge(bb1, bb2) and bb2.dominates(bb3)`
-   * means that the edge `(bb1, bb2)` dominates `bb3`.
-   */
-  predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2);
 
   class AstNode {
     /** Gets a textual representation of this AST node. */
@@ -254,7 +203,15 @@ signature module InputSig<LocationSig Location> {
 }
 
 /** Provides guards-related predicates and classes. */
-module Make<LocationSig Location, InputSig<Location> Input> {
+module Make<
+  LocationSig Location, BB::CfgSig<Location> Cfg,
+  SuccessorTypesSig<Cfg::SuccessorType> SuccessorTypes,
+  InputSig<Location, Cfg::ControlFlowNode, Cfg::BasicBlock> Input>
+{
+  private module Cfg_ = Cfg;
+
+  private import Cfg_
+  private import SuccessorTypes
   private import Input
 
   private newtype TAbstractSingleValue =
@@ -873,77 +830,85 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     private signature predicate baseGuardValueSig(Guard guard, GuardValue v);
 
-    /**
-     * Calculates the transitive closure of all the guard implication steps
-     * starting from a given set of base cases.
-     */
     cached
-    private module ImpliesTC<baseGuardValueSig/2 baseGuardValue> {
+    private module Cached {
       /**
-       * Holds if `tgtGuard` evaluating to `tgtVal` implies that `guard`
-       * evaluates to `v`.
+       * Calculates the transitive closure of all the guard implication steps
+       * starting from a given set of base cases.
        */
-      pragma[nomagic]
       cached
-      predicate guardControls(Guard guard, GuardValue v, Guard tgtGuard, GuardValue tgtVal) {
-        baseGuardValue(tgtGuard, tgtVal) and
-        guard = tgtGuard and
-        v = tgtVal
-        or
-        exists(Guard g0, GuardValue v0 |
-          guardControls(g0, v0, tgtGuard, tgtVal) and
-          impliesStep2(g0, v0, guard, v)
-        )
-        or
-        exists(Guard g0, GuardValue v0 |
-          guardControls(g0, v0, tgtGuard, tgtVal) and
-          unboundImpliesStep(g0, v0, guard, v)
-        )
-        or
-        exists(SsaDefinition def0, GuardValue v0 |
-          ssaControls(def0, v0, tgtGuard, tgtVal) and
-          impliesStepSsaGuard(def0, v0, guard, v)
-        )
-        or
-        exists(Guard g0, GuardValue v0 |
-          guardControls(g0, v0, tgtGuard, tgtVal) and
-          WrapperGuard::wrapperImpliesStep(g0, v0, guard, v)
-        )
-        or
-        exists(Guard g0, GuardValue v0 |
-          guardControls(g0, v0, tgtGuard, tgtVal) and
-          additionalImpliesStep(g0, v0, guard, v)
-        )
+      module ImpliesTC<baseGuardValueSig/2 baseGuardValue> {
+        /**
+         * Holds if `tgtGuard` evaluating to `tgtVal` implies that `guard`
+         * evaluates to `v`.
+         */
+        pragma[nomagic]
+        cached
+        predicate guardControls(Guard guard, GuardValue v, Guard tgtGuard, GuardValue tgtVal) {
+          baseGuardValue(tgtGuard, tgtVal) and
+          guard = tgtGuard and
+          v = tgtVal
+          or
+          exists(Guard g0, GuardValue v0 |
+            guardControls(g0, v0, tgtGuard, tgtVal) and
+            impliesStep2(g0, v0, guard, v)
+          )
+          or
+          exists(Guard g0, GuardValue v0 |
+            guardControls(g0, v0, tgtGuard, tgtVal) and
+            unboundImpliesStep(g0, v0, guard, v)
+          )
+          or
+          exists(SsaDefinition def0, GuardValue v0 |
+            ssaControls(def0, v0, tgtGuard, tgtVal) and
+            impliesStepSsaGuard(def0, v0, guard, v)
+          )
+          or
+          exists(Guard g0, GuardValue v0 |
+            guardControls(g0, v0, tgtGuard, tgtVal) and
+            WrapperGuard::wrapperImpliesStep(g0, v0, guard, v)
+          )
+          or
+          exists(Guard g0, GuardValue v0 |
+            guardControls(g0, v0, tgtGuard, tgtVal) and
+            additionalImpliesStep(g0, v0, guard, v)
+          )
+        }
+
+        /**
+         * Holds if `tgtGuard` evaluating to `tgtVal` implies that `def`
+         * evaluates to `v`.
+         */
+        pragma[nomagic]
+        cached
+        predicate ssaControls(SsaDefinition def, GuardValue v, Guard tgtGuard, GuardValue tgtVal) {
+          exists(Guard g0 |
+            guardControls(g0, v, tgtGuard, tgtVal) and
+            guardReadsSsaVar(g0, def)
+          )
+          or
+          exists(SsaDefinition def0 |
+            ssaControls(def0, v, tgtGuard, tgtVal) and
+            impliesStepSsa(def0, v, def)
+          )
+        }
       }
 
       /**
-       * Holds if `tgtGuard` evaluating to `tgtVal` implies that `def`
-       * evaluates to `v`.
+       * Holds if `guard` evaluating to `v` implies that `e` is guaranteed to be
+       * null if `isNull` is true, and non-null if `isNull` is false.
        */
-      pragma[nomagic]
       cached
-      predicate ssaControls(SsaDefinition def, GuardValue v, Guard tgtGuard, GuardValue tgtVal) {
-        exists(Guard g0 |
-          guardControls(g0, v, tgtGuard, tgtVal) and
-          guardReadsSsaVar(g0, def)
-        )
-        or
-        exists(SsaDefinition def0 |
-          ssaControls(def0, v, tgtGuard, tgtVal) and
-          impliesStepSsa(def0, v, def)
-        )
+      predicate nullGuard(Guard guard, GuardValue v, Expr e, boolean isNull) {
+        impliesStep2(guard, v, e, any(GuardValue gv | gv.isNullness(isNull))) or
+        WrapperGuard::wrapperImpliesStep(guard, v, e, any(GuardValue gv | gv.isNullness(isNull))) or
+        additionalImpliesStep(guard, v, e, any(GuardValue gv | gv.isNullness(isNull)))
       }
     }
 
-    /**
-     * Holds if `guard` evaluating to `v` implies that `e` is guaranteed to be
-     * null if `isNull` is true, and non-null if `isNull` is false.
-     */
-    predicate nullGuard(Guard guard, GuardValue v, Expr e, boolean isNull) {
-      impliesStep2(guard, v, e, any(GuardValue gv | gv.isNullness(isNull))) or
-      WrapperGuard::wrapperImpliesStep(guard, v, e, any(GuardValue gv | gv.isNullness(isNull))) or
-      additionalImpliesStep(guard, v, e, any(GuardValue gv | gv.isNullness(isNull)))
-    }
+    private import Cached
+
+    predicate nullGuard = Cached::nullGuard/4;
 
     private predicate hasAValueBranchEdge(Guard guard, GuardValue v) {
       guard.hasValueBranchEdge(_, _, v)

@@ -36,7 +36,7 @@ jobs:
   qlupgrade:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/fetch-codeql
       - name: Check DB upgrade scripts
         run: |
@@ -58,7 +58,7 @@ jobs:
     strategy:
       fail-fast: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/fetch-codeql
       - uses: ./ruby/actions/create-extractor-pack
       - name: Cache compilation cache

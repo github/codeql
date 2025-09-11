@@ -270,6 +270,14 @@ private module Internal {
     hasOverrider(t, c)
   }
 
+  /**
+   * For `base` expressions, the extractor provides the type of the base
+   * class instead of the derived class; this predicate provides the latter.
+   */
+  private Type getBaseAdjustedType(BaseAccess base) {
+    result = base.getEnclosingCallable().getDeclaringType()
+  }
+
   abstract private class DispatchOverridableCall extends DispatchCallImpl {
     pragma[noinline]
     OverridableCallable getAStaticTargetExt() {
@@ -360,7 +368,12 @@ private module Internal {
     private predicate contextArgHasType(DispatchCall ctx, Type t, boolean isExact) {
       exists(Expr arg, int i |
         this.relevantContext(ctx, i) and
-        t = getAPossibleType(arg, isExact)
+        (
+          t = getBaseAdjustedType(arg) and isExact = false
+          or
+          not exists(getBaseAdjustedType(arg)) and
+          t = getAPossibleType(arg, isExact)
+        )
       |
         ctx.getArgument(i) = arg
         or
@@ -725,9 +738,7 @@ private module Internal {
 
       Type getType(boolean isExact) {
         result = this.getType() and
-        if
-          this instanceof ObjectCreation or
-          this instanceof BaseAccess
+        if this instanceof ObjectCreation or this instanceof BaseAccess
         then isExact = true
         else isExact = false
       }

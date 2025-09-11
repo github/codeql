@@ -39,12 +39,6 @@ module HardcodedCryptographicValueConfig implements DataFlow::ConfigSig {
     //  case like `[0, 0, 0, 0]`)
     isSource(node)
   }
-
-  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
-    // flow out from reference content at sinks.
-    isSink(node) and
-    c.getAReadContent() instanceof ReferenceContent
-  }
 }
 
 module HardcodedCryptographicValueFlow = TaintTracking::Global<HardcodedCryptographicValueConfig>;

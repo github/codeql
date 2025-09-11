@@ -24550,6 +24550,37 @@ ir.cpp:
 # 2771|                 Type = [LValueReferenceType] ThreeWay &
 # 2771|                 ValueCategory = prvalue
 # 2772|     getStmt(2): [ReturnStmt] return ...
+# 2774| [TopLevelFunction] void test_allocation_with_initializer()
+# 2774|   <params>: 
+# 2774|   getEntryPoint(): [BlockStmt] { ... }
+# 2775|     getStmt(0): [DeclStmt] declaration
+# 2775|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of p1
+# 2775|           Type = [IntPointerType] int *
+# 2775|         getVariable().getInitializer(): [Initializer] initializer for p1
+# 2775|           getExpr(): [NewExpr] new
+# 2775|               Type = [IntPointerType] int *
+# 2775|               ValueCategory = prvalue
+# 2775|             getInitializer(): [Literal] 42
+# 2775|                 Type = [IntType] int
+# 2775|                 Value = [Literal] 42
+# 2775|                 ValueCategory = prvalue
+# 2776|     getStmt(1): [DeclStmt] declaration
+# 2776|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of p2
+# 2776|           Type = [PointerType] long *
+# 2776|         getVariable().getInitializer(): [Initializer] initializer for p2
+# 2776|           getExpr(): [NewExpr] new
+# 2776|               Type = [PointerType] long *
+# 2776|               ValueCategory = prvalue
+# 2776|             getInitializer(): [Literal] 42
+# 2776|                 Type = [IntType] int
+# 2776|                 Value = [Literal] 42
+# 2776|                 ValueCategory = prvalue
+# 2776|             getInitializer().getFullyConverted(): [CStyleCast] (long)...
+# 2776|                 Conversion = [IntegralConversion] integral conversion
+# 2776|                 Type = [LongType] long
+# 2776|                 Value = [CStyleCast] 42
+# 2776|                 ValueCategory = prvalue
+# 2777|     getStmt(2): [ReturnStmt] return ...
 ir23.cpp:
 #    1| [TopLevelFunction] bool consteval_1()
 #    1|   <params>: 

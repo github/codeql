@@ -33,10 +33,6 @@ common --@rules_dotnet//dotnet/settings:strict_deps=false
 # we only configure a nightly toolchain
 common --@rules_rust//rust/toolchain/channel=nightly
 
-# rust does not like the gold linker, while bazel does by default, so let's avoid using it
-common:linux --linkopt=-fuse-ld=lld
-common:macos --linkopt=-fuse-ld=lld
-
 # Reduce this eventually to empty, once we've fixed all our usages of java, and https://github.com/bazel-contrib/rules_go/issues/4193 is fixed
 common --incompatible_autoload_externally="+@rules_java,+@rules_shell"
 

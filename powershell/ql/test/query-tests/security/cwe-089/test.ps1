@@ -110,3 +110,32 @@ TakesTypedParameters $userinput $userinput $userinput $userinput $userinput $use
 
 $query = "SELECT * FROM MyTable WHERE MyColumn = '$userinput'"
 Invoke-Sqlcmd -unknown $userinput -ServerInstance "MyServer" -Database "MyDatabase" -q "SELECT * FROM MyTable" # GOOD
+
+Invoke-Sqlcmd -ServerInstance "MyServer" -Database "MyDatabase" -InputFile $userinput # GOOD # this is not really what this query is about.
+
+function With-Validation() {
+    param(
+        [ValidateSet("FirstName","LastName")]
+        [parameter(Mandatory=$true)][string]$validated,
+
+        [parameter(Mandatory=$true)][string]$unvalidated
+    )
+
+    Invoke-Sqlcmd -unknown $userinput -ServerInstance "MyServer" -Database "MyDatabase" -q $validated # GOOD
+    Invoke-Sqlcmd -unknown $userinput -ServerInstance "MyServer" -Database "MyDatabase" -q $unvalidated # BAD
+}
+
+With-Validation $userinput $userinput
+
+$QueryConn3 = @{
+    Database = "MyDB"
+    ServerInstance = "MyServer"
+    Username = "MyUserName"
+    Password = "MyPassword"
+    ConnectionTimeout = 0
+    inputfile = $userinput
+}
+
+Invoke-Sqlcmd @QueryConn3 # GOOD
+
+&sqlcmd -e -S $userinput -U "Login" -P "MyPassword" -d "MyDBName" -i "input_file.sql" # GOOD

@@ -89,7 +89,7 @@ private VarAccess getFileForPathConversion(Expr pathExpr) {
 }
 
 /**
- * Holds if `fileAccess` is used in the `setWorldWritableExpr` to set the file to be world writable.
+ * Holds if `fileAccess` is used in the `setWorldWritable` to set the file to be world writable.
  */
 private predicate fileSetWorldWritable(VarAccess fileAccess, Expr setWorldWritable) {
   // Calls to `File.setWritable(.., false)`.

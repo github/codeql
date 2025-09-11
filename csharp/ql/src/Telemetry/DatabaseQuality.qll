@@ -12,7 +12,7 @@ module CallTargetStats implements StatsSig {
   private predicate isNoSetterPropertyCallInConstructor(PropertyCall c) {
     exists(Property p, Constructor ctor |
       p = c.getProperty() and
-      not exists(Setter a | a = p.getAnAccessor()) and
+      not p.getAnAccessor() instanceof Setter and
       c.getEnclosingCallable() = ctor and
       (
         c.hasThisQualifier()
@@ -25,7 +25,7 @@ module CallTargetStats implements StatsSig {
   private predicate isNoSetterPropertyInitialization(PropertyCall c) {
     exists(Property p, AssignExpr assign |
       p = c.getProperty() and
-      not exists(Setter a | a = p.getAnAccessor()) and
+      not p.getAnAccessor() instanceof Setter and
       assign = c.getParent() and
       assign.getLValue() = c and
       assign.getParent() instanceof Property

@@ -20,7 +20,7 @@ def test(codeql, rust, expected_files, dir):
     codeql.test.run(dir)
 
 def test_failing_cargo_check(codeql, rust):
-    out = codeql.test.run("failing_cargo_check", _assert_failure=True, _capture="stderr")
+    out = codeql.test.run("failing_cargo_check", _assert_failure=True, _capture="all")
     # TODO: QL test output redirection is currently broken on windows, leaving it up for follow-up work
     if not runs_on.windows:
         assert "requested cargo check failed" in out
