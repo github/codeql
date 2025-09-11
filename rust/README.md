@@ -78,7 +78,7 @@ installing [`cargo-edit`](https://crates.io/crates/cargo-edit) with `cargo insta
    ```
    git commit -am 'Cargo: upgrade dependencies' --no-verify
    ```
-4. Regenerate vendored bazel files, commit the changes:
+4. Regenerate vendored bazel files (these allow faster builds, particularly on CI where it has to start from scratch each time), commit the changes:
    ```
    misc/bazel/3rdparty/update_tree_sitter_extractors_deps.sh
    git add .
@@ -101,6 +101,7 @@ installing [`cargo-edit`](https://crates.io/crates/cargo-edit) with `cargo insta
       * in `codeql`, update both `RUST_VERSION` in `MODULE.bazel` _and_ `rust-toolchain.toml` files. You may want to also update the
         nightly toolchain in `rust/extractor/src/nightly-toolchain/rust-toolchain.toml` to a more recent date while you're at it.
    * if it fails while compiling rust extractor code, you will need to adapt it to the new library version.
+      * for example updating annotations in `annotations.py`, adding / removing generated tests.
 
    If you had to do any changes, commit them. If you updated the rust toolchain, running `rust/lint.py` might reformat or apply new
    lints to the code.
