@@ -5,7 +5,9 @@
  * @problem.severity recommendation
  * @precision medium
  * @id java/multiple-statements-on-same-line
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
  */
 
 import java

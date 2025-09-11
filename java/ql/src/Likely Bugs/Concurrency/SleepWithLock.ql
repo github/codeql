@@ -6,9 +6,11 @@
  * @problem.severity error
  * @precision medium
  * @id java/sleep-with-lock-held
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       concurrency
+ *       performance
  *       external/cwe/cwe-833
  */
 

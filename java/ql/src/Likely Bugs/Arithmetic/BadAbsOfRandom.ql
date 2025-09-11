@@ -6,8 +6,9 @@
  * @problem.severity warning
  * @precision medium
  * @id java/abs-of-random
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import java

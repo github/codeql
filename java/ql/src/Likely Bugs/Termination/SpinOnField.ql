@@ -6,9 +6,11 @@
  * @problem.severity warning
  * @precision medium
  * @id java/spin-on-field
- * @tags efficiency
+ * @tags quality
+ *       reliability
  *       correctness
  *       concurrency
+ *       performance
  */
 
 import java

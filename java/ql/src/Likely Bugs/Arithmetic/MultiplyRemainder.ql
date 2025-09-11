@@ -6,7 +6,9 @@
  * @problem.severity warning
  * @precision medium
  * @id java/multiplication-of-remainder
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
  *       correctness
  */
 

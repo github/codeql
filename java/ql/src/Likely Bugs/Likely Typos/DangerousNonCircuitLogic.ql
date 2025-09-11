@@ -7,7 +7,9 @@
  * @problem.severity warning
  * @precision medium
  * @id java/non-short-circuit-evaluation
- * @tags reliability
+ * @tags quality
+ *       reliability
+ *       correctness
  *       readability
  *       external/cwe/cwe-691
  */

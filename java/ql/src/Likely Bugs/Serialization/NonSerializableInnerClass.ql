@@ -6,9 +6,9 @@
  * @problem.severity warning
  * @precision medium
  * @id java/non-serializable-inner-class
- * @tags reliability
- *       maintainability
- *       language-features
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import java

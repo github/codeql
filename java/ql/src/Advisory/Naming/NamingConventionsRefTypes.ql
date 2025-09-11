@@ -5,7 +5,9 @@
  * @problem.severity recommendation
  * @precision medium
  * @id java/misnamed-type
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
  */
 
 import java

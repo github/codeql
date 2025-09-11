@@ -6,8 +6,10 @@
  * @problem.severity warning
  * @precision medium
  * @id java/non-overriding-package-private
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       readability
+ *       correctness
  */
 
 import java

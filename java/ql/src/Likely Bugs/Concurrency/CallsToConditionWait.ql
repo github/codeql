@@ -6,7 +6,8 @@
  * @problem.severity error
  * @precision medium
  * @id java/wait-on-condition-interface
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       concurrency
  *       external/cwe/cwe-662

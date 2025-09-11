@@ -7,7 +7,8 @@
  * @problem.severity warning
  * @precision medium
  * @id java/thread-start-in-constructor
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       concurrency
  */

@@ -7,9 +7,9 @@
  * @problem.severity warning
  * @precision medium
  * @id java/type-bound-extends-final
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       readability
- *       types
  */
 
 import java
