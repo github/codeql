@@ -253,11 +253,11 @@ class SsaImplicitUpdate extends SsaUpdate {
     or
     if this.hasImplicitQualifierUpdate()
     then
-      if isNonNonLocal(this)
+      if isNonLocal(this)
       then result = "nonlocal + nonlocal qualifier"
       else result = "nonlocal qualifier"
     else (
-      isNonNonLocal(this) and result = "nonlocal"
+      isNonLocal(this) and result = "nonlocal"
     )
   }
 
@@ -289,9 +289,9 @@ class SsaImplicitUpdate extends SsaUpdate {
 }
 
 overlay[global]
-private predicate isNonNonLocalImpl(SsaImplicitUpdate su) { exists(su.getANonLocalUpdate()) }
+private predicate isNonLocalImpl(SsaImplicitUpdate su) { exists(su.getANonLocalUpdate()) }
 
-private predicate isNonNonLocal(SsaImplicitUpdate su) = forceLocal(isNonNonLocalImpl/1)(su)
+private predicate isNonLocal(SsaImplicitUpdate su) = forceLocal(isNonLocalImpl/1)(su)
 
 /**
  * An SSA variable that represents an uncertain implicit update of the value.

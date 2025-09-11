@@ -555,7 +555,6 @@ private module Cached {
     Impl::phiHasInputFromBlock(phi, inp, bb)
   }
 
-  overlay[global]
   cached
   module DataFlowIntegration {
     import DataFlowIntegrationImpl
