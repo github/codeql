@@ -602,14 +602,14 @@ alias(
 )
 
 alias(
-    name = "tree-sitter-embedded-template-0.25.0",
-    actual = "@vendor_ts__tree-sitter-embedded-template-0.25.0//:tree_sitter_embedded_template",
+    name = "tree-sitter-embedded-template-0.23.2",
+    actual = "@vendor_ts__tree-sitter-embedded-template-0.23.2//:tree_sitter_embedded_template",
     tags = ["manual"],
 )
 
 alias(
     name = "tree-sitter-embedded-template",
-    actual = "@vendor_ts__tree-sitter-embedded-template-0.25.0//:tree_sitter_embedded_template",
+    actual = "@vendor_ts__tree-sitter-embedded-template-0.23.2//:tree_sitter_embedded_template",
     tags = ["manual"],
 )
 

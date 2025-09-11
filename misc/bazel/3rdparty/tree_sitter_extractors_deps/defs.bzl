@@ -304,7 +304,7 @@ _NORMAL_DEPENDENCIES = {
             "tracing": Label("@vendor_ts__tracing-0.1.41//:tracing"),
             "tracing-subscriber": Label("@vendor_ts__tracing-subscriber-0.3.20//:tracing_subscriber"),
             "tree-sitter": Label("@vendor_ts__tree-sitter-0.24.6//:tree_sitter"),
-            "tree-sitter-embedded-template": Label("@vendor_ts__tree-sitter-embedded-template-0.25.0//:tree_sitter_embedded_template"),
+            "tree-sitter-embedded-template": Label("@vendor_ts__tree-sitter-embedded-template-0.23.2//:tree_sitter_embedded_template"),
             "tree-sitter-ruby": Label("@vendor_ts__tree-sitter-ruby-0.23.1//:tree_sitter_ruby"),
         },
     },
@@ -3359,12 +3359,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__tree-sitter-embedded-template-0.25.0",
-        sha256 = "833d528e8fcb4e49ddb04d4d6450ddb8ac08f282a58fec94ce981c9c5dbf7e3a",
+        name = "vendor_ts__tree-sitter-embedded-template-0.23.2",
+        sha256 = "790063ef14e5b67556abc0b3be0ed863fb41d65ee791cf8c0b20eb42a1fa46af",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/tree-sitter-embedded-template/0.25.0/download"],
-        strip_prefix = "tree-sitter-embedded-template-0.25.0",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.tree-sitter-embedded-template-0.25.0.bazel"),
+        urls = ["https://static.crates.io/crates/tree-sitter-embedded-template/0.23.2/download"],
+        strip_prefix = "tree-sitter-embedded-template-0.23.2",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.tree-sitter-embedded-template-0.23.2.bazel"),
     )
 
     maybe(
@@ -4214,7 +4214,7 @@ def crate_repositories():
         struct(repo = "vendor_ts__tracing-flame-0.2.0", is_dev_dep = False),
         struct(repo = "vendor_ts__tracing-subscriber-0.3.20", is_dev_dep = False),
         struct(repo = "vendor_ts__tree-sitter-0.24.6", is_dev_dep = False),
-        struct(repo = "vendor_ts__tree-sitter-embedded-template-0.25.0", is_dev_dep = False),
+        struct(repo = "vendor_ts__tree-sitter-embedded-template-0.23.2", is_dev_dep = False),
         struct(repo = "vendor_ts__tree-sitter-ruby-0.23.1", is_dev_dep = False),
         struct(repo = "vendor_ts__triomphe-0.1.14", is_dev_dep = False),
         struct(repo = "vendor_ts__ungrammar-1.16.1", is_dev_dep = False),

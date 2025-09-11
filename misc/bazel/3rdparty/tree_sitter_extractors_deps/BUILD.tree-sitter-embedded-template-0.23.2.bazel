@@ -92,9 +92,9 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.25.0",
+    version = "0.23.2",
     deps = [
-        "@vendor_ts__tree-sitter-embedded-template-0.25.0//:build_script_build",
+        "@vendor_ts__tree-sitter-embedded-template-0.23.2//:build_script_build",
         "@vendor_ts__tree-sitter-language-0.1.5//:tree_sitter_language",
     ],
 )
@@ -147,7 +147,7 @@ cargo_build_script(
         "noclippy",
         "norustfmt",
     ],
-    version = "0.25.0",
+    version = "0.23.2",
     visibility = ["//visibility:private"],
     deps = [
         "@vendor_ts__cc-1.2.36//:cc",

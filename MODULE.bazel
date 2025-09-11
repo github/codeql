@@ -145,7 +145,7 @@ use_repo(
     "vendor_ts__tracing-flame-0.2.0",
     "vendor_ts__tracing-subscriber-0.3.20",
     "vendor_ts__tree-sitter-0.24.6",
-    "vendor_ts__tree-sitter-embedded-template-0.25.0",
+    "vendor_ts__tree-sitter-embedded-template-0.23.2",
     "vendor_ts__tree-sitter-json-0.24.8",
     "vendor_ts__tree-sitter-ql-0.23.1",
     "vendor_ts__tree-sitter-ruby-0.23.1",
