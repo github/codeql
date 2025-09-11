@@ -376,6 +376,10 @@ module CertainTypeInference {
     result = se.getPath().(TypeMention).resolveTypeAt(path)
   }
 
+  private Type inferCertainStructPatType(StructPat sp, TypePath path) {
+    result = sp.getPath().(TypeMention).resolveTypeAt(path)
+  }
+
   predicate certainTypeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
     prefix1.isEmpty() and
     prefix2.isEmpty() and
@@ -445,6 +449,8 @@ module CertainTypeInference {
     result = inferLogicalOperationType(n, path)
     or
     result = inferCertainStructExprType(n, path)
+    or
+    result = inferCertainStructPatType(n, path)
     or
     result = inferRangeExprType(n) and
     path.isEmpty()
