@@ -121,7 +121,7 @@ function With-Validation() {
         [parameter(Mandatory=$true)][string]$unvalidated
     )
 
-    Invoke-Sqlcmd -unknown $userinput -ServerInstance "MyServer" -Database "MyDatabase" -q $validated # GOOD [FALSE POSITIVE]
+    Invoke-Sqlcmd -unknown $userinput -ServerInstance "MyServer" -Database "MyDatabase" -q $validated # GOOD
     Invoke-Sqlcmd -unknown $userinput -ServerInstance "MyServer" -Database "MyDatabase" -q $unvalidated # BAD
 }
 
