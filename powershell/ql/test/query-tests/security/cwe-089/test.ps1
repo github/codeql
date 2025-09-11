@@ -112,3 +112,17 @@ $query = "SELECT * FROM MyTable WHERE MyColumn = '$userinput'"
 Invoke-Sqlcmd -unknown $userinput -ServerInstance "MyServer" -Database "MyDatabase" -q "SELECT * FROM MyTable" # GOOD
 
 Invoke-Sqlcmd -ServerInstance "MyServer" -Database "MyDatabase" -InputFile $userinput # GOOD # this is not really what this query is about.
+
+function With-Validation() {
+    param(
+        [ValidateSet("FirstName","LastName")]
+        [parameter(Mandatory=$true)][string]$validated,
+
+        [parameter(Mandatory=$true)][string]$unvalidated
+    )
+
+    Invoke-Sqlcmd -unknown $userinput -ServerInstance "MyServer" -Database "MyDatabase" -q $validated # GOOD [FALSE POSITIVE]
+    Invoke-Sqlcmd -unknown $userinput -ServerInstance "MyServer" -Database "MyDatabase" -q $unvalidated # BAD
+}
+
+With-Validation $userinput $userinput
