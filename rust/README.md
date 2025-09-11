@@ -66,7 +66,7 @@ Here's a rundown of the typical actions to perform to do a rust-analyzer (and ot
 installing [`cargo-edit`](https://crates.io/crates/cargo-edit) with `cargo install cargo-edit`. On Ubuntu that also requires
 `sudo apt install libssl-dev pkg-config`.
 
-1. from the root of the `codeql` repo checkout, run an upgrade, and commit the changes (skipping `pre-commit` hooks if you have them enabled):
+1. From the root of the `codeql` repo checkout, run a Cargo upgrade:
    ```
    cargo upgrade --incompatible --pinned
    ```
