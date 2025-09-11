@@ -3,6 +3,8 @@
 | test.go:22:2:22:2 | definition of a | test.go:24:2:24:2 | a |
 | test.go:22:2:22:2 | definition of a | test.go:25:2:25:2 | a |
 | test.go:22:2:22:2 | definition of a | test.go:26:2:26:2 | a |
+| test.go:22:2:22:2 | definition of a | test.go:29:6:29:6 | a |
+| test.go:22:2:22:2 | definition of a | test.go:30:7:30:7 | a |
 | test.go:23:11:23:14 | &... | test.go:23:11:23:14 | &... |
 | test.go:23:12:23:14 | selection of b | test.go:23:12:23:14 | selection of b |
 | test.go:24:2:24:5 | selection of bs | test.go:24:2:24:5 | selection of bs |
@@ -17,3 +19,6 @@
 | test.go:26:2:26:7 | selection of bptr | test.go:26:2:26:7 | selection of bptr |
 | test.go:26:2:26:12 | implicit dereference | test.go:26:2:26:12 | implicit dereference |
 | test.go:26:2:26:12 | selection of cptr | test.go:26:2:26:12 | selection of cptr |
+| test.go:28:2:28:2 | definition of c | test.go:29:2:29:2 | c |
+| test.go:28:2:28:2 | definition of c | test.go:30:2:30:2 | c |
+| test.go:28:7:28:10 | struct literal | test.go:28:7:28:10 | struct literal |

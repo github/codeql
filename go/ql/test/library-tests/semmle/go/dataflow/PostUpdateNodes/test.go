@@ -25,4 +25,8 @@ func f() {
 	a.bs[3].cptr.field = 100
 	a.bptr.cptr.field = 101
 
+	c := C{0}
+	c.m(a)
+	c.mp(a)
+
 }
