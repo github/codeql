@@ -126,3 +126,14 @@ function With-Validation() {
 }
 
 With-Validation $userinput $userinput
+
+$QueryConn3 = @{
+    Database = "MyDB"
+    ServerInstance = "MyServer"
+    Username = "MyUserName"
+    Password = "MyPassword"
+    ConnectionTimeout = 0
+    inputfile = $userinput
+}
+
+Invoke-Sqlcmd @QueryConn3 # GOOD [FALSE POSITIVE]
