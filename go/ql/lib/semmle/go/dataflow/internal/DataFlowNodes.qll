@@ -760,18 +760,27 @@ module Public {
     predicate isReceiverOf(MethodDecl m) { parm.isReceiverOf(m) }
   }
 
-  private Node getADirectlyWrittenNode() {
-    exists(Write w | w.writesComponent(result, _)) or
-    result = DataFlow::exprNode(any(SendStmt s).getChannel())
-  }
-
-  private DataFlow::Node getAccessPathPredecessor(DataFlow::Node node) {
-    result = node.(PointerDereferenceNode).getOperand()
+  private IR::Instruction getADirectlyWrittenInsn() {
+    exists(Write w | w.writesComponentInstruction(result, _))
     or
-    result = node.(ComponentReadNode).getBase()
+    result = IR::evalExprInstruction(any(SendStmt s).getChannel())
   }
 
-  private Node getAWrittenNode() { result = getAccessPathPredecessor*(getADirectlyWrittenNode()) }
+  private IR::Instruction getAccessPathPredecessorInsn(IR::Instruction insn) {
+    exists(Expr e1, Expr e2 |
+      insn = IR::evalExprInstruction(e1) and result = IR::evalExprInstruction(e2)
+    |
+      e2 = e1.(DerefExpr).getOperand() or e2 = e1.(StarExpr).getBase()
+    )
+    or
+    exists(Expr e | insn = IR::implicitDerefInstruction(e) and result = IR::evalExprInstruction(e))
+    or
+    result = insn.(IR::ComponentReadInstruction).getBase()
+  }
+
+  private IR::Instruction getAWrittenInsn() {
+    result = getAccessPathPredecessorInsn*(getADirectlyWrittenInsn())
+  }
 
   /**
    * Holds if `tp` is a type that may (directly or indirectly) reference a memory location.
@@ -831,13 +840,11 @@ module Public {
       )
     ) and
     mutableType(insn.getResultType())
+    or
+    insn = getAWrittenInsn()
   }
 
-  predicate hasPostUpdateNode(Node preupd) {
-    insnHasPostUpdateNode(preupd.asInstruction())
-    or
-    preupd = getAWrittenNode()
-  }
+  predicate hasPostUpdateNode(Node preupd) { insnHasPostUpdateNode(preupd.asInstruction()) }
 
   private class DefaultPostUpdateNode extends PostUpdateNode {
     Node preupd;
