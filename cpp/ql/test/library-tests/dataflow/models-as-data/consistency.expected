@@ -18,7 +18,6 @@ postIsInSameCallable
 reverseRead
 argHasPostUpdate
 postWithInFlow
-| tests.cpp:436:6:436:25 | [summary] to write: Argument[1] in madCallArg0WithValue | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge
 uniqueParameterNodeAtPosition
 uniqueParameterNodePosition
