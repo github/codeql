@@ -4,6 +4,9 @@ type C struct {
 	field int
 }
 
+func (c C) m(a A)   {}
+func (c *C) mp(a A) {}
+
 type B struct {
 	cptr *C
 }
