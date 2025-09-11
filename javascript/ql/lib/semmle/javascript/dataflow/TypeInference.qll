@@ -30,7 +30,6 @@ import AbstractValues
 private import InferredTypes
 private import Refinements
 import internal.BasicExprTypeInference
-import internal.InterModuleTypeInference
 import internal.InterProceduralTypeInference
 import internal.PropertyTypeInference
 import internal.VariableTypeInference

@@ -37,14 +37,25 @@ class NodeModule extends Module {
    * into this module's `module.exports` property.
    */
   pragma[noinline]
-  DefiniteAbstractValue getAModuleExportsValue() {
-    result = this.getAModuleExportsProperty().getAValue()
+  deprecated DefiniteAbstractValue getAModuleExportsValue() { none() }
+
+  /**
+   * Gets the `SourceNode` corresponding to the value of `module`.
+   */
+  private DataFlow::SourceNode getModuleSourceNode() {
+    result = DataFlow::ssaDefinitionNode(Ssa::implicitInit(this.getModuleVariable()))
   }
 
-  pragma[noinline]
-  private AbstractProperty getAModuleExportsProperty() {
-    result.getBase().(AbstractModuleObject).getModule() = this and
-    result.getPropertyName() = "exports"
+  /**
+   * Gets a `SourceNode` corresponding to the initial value of `module.exports` or
+   * anything assigned to `module.exports`.
+   */
+  private DataFlow::SourceNode getExportsSourceNode() {
+    result = DataFlow::ssaDefinitionNode(Ssa::implicitInit(this.getExportsVariable()))
+    or
+    result = this.getModuleSourceNode().getAPropertyWrite("exports").getRhs().getALocalSource()
+    or
+    result = this.getModuleSourceNode().getAPropertyRead("exports")
   }
 
   /**
@@ -52,9 +63,8 @@ class NodeModule extends Module {
    * For performance this predicate only computes relevant expressions (in `getAModuleExportsCandidate`).
    * So if using this predicate - consider expanding the list of relevant expressions.
    */
-  DataFlow::AnalyzedNode getAModuleExportsNode() {
-    result = getAModuleExportsCandidate() and
-    result.getAValue() = this.getAModuleExportsValue()
+  deprecated DataFlow::AnalyzedNode getAModuleExportsNode() {
+    result = this.getExportsSourceNode().getALocalUse()
   }
 
   /** Gets a symbol exported by this module. */
@@ -64,21 +74,15 @@ class NodeModule extends Module {
     result = this.getAnImplicitlyExportedSymbol()
     or
     // getters and the like.
-    exists(DataFlow::PropWrite pwn |
-      pwn.getBase() = this.getAModuleExportsNode() and
-      result = pwn.getPropertyName()
-    )
+    result = this.getExportsSourceNode().getAPropertyWrite().getPropertyName()
   }
 
   override DataFlow::Node getAnExportedValue(string name) {
     // a property write whose base is `exports` or `module.exports`
-    exists(DataFlow::PropWrite pwn | result = pwn.getRhs() |
-      pwn.getBase() = this.getAModuleExportsNode() and
-      name = pwn.getPropertyName()
-    )
+    result = this.getExportsSourceNode().getAPropertyWrite(name).getRhs()
     or
     // a re-export using spread-operator. E.g. `const foo = require("./foo"); module.exports = {bar: bar, ...foo};`
-    exists(ObjectExpr obj | obj = this.getAModuleExportsNode().asExpr() |
+    exists(ObjectExpr obj | obj = this.getExportsSourceNode().asExpr() |
       result =
         obj.getAProperty()
             .(SpreadProperty)
@@ -99,16 +103,15 @@ class NodeModule extends Module {
     // }
     exists(DynamicPropertyAccess::EnumeratedPropName read, Import imp, DataFlow::PropWrite write |
       read.getSourceObject().getALocalSource().asExpr() = imp and
+      write = this.getExportsSourceNode().getAPropertyWrite() and
       getASourceProp(read) = write.getRhs() and
-      write.getBase() = this.getAModuleExportsNode() and
       write.getPropertyNameExpr().flow().getImmediatePredecessor*() = read and
       result = imp.getImportedModule().getAnExportedValue(name)
     )
     or
     // an externs definition (where appropriate)
     exists(PropAccess pacc | result = DataFlow::valueNode(pacc) |
-      pacc.getBase() = this.getAModuleExportsNode().asExpr() and
-      name = pacc.getPropertyName() and
+      pacc = this.getExportsSourceNode().getAPropertyRead(name).asExpr() and
       this.isExterns() and
       exists(pacc.getDocumentation())
     )
