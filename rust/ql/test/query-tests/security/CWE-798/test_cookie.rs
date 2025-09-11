@@ -14,13 +14,13 @@ fn test_cookie_jar(array_var: &[u8]) {
     _ = jar.signed_mut(&key_var);
     _ = jar.private_mut(&key_var);
 
-    let array1: [u8; 64] = [0; 64]; // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
-    let key1 = Key::from(&array1);
-    _ = jar.signed_mut(&key1); // $ MISSING: Sink
+    let array1: [u8; 64] = [0; 64]; // $ Alert[rust/hard-coded-cryptographic-value]
+    let key1 = Key::from(&array1); // $ Sink
+    _ = jar.signed_mut(&key1);
 
-    let array2: [u8; 64] = [0; 64]; // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
-    let key2 = Key::from(&array2);
-    _ = jar.private_mut(&key2); // $ MISSING: Sink
+    let array2: [u8; 64] = [0; 64]; // $ Alert[rust/hard-coded-cryptographic-value]
+    let key2 = Key::from(&array2); // $ Sink
+    _ = jar.private_mut(&key2);
 }
 
 fn test_biscotti_crypto(array_var: &[u8]) {
