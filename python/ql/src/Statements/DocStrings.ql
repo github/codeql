@@ -3,8 +3,7 @@
  * @description Omitting documentation strings from public classes, functions or methods
  *              makes it more difficult for other developers to maintain the code.
  * @kind problem
- * @tags quality
- *       maintainability
+ * @tags maintainability
  *       readability
  * @problem.severity recommendation
  * @sub-severity low
