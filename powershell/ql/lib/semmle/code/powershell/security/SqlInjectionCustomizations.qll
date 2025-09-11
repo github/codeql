@@ -73,7 +73,7 @@ module SqlInjection {
 
     override predicate allowImplicitRead(DataFlow::ContentSet cs) {
       cs.getAStoreContent().(DataFlow::Content::KnownKeyContent).getIndex().asString().toLowerCase() =
-        ["query", "inputfile"]
+        query()
     }
   }
 
