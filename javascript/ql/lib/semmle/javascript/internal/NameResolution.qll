@@ -356,6 +356,8 @@ module NameResolution {
         name = "$$promise-content" and
         result = imprt.getImportedPathExpr()
       )
+      or
+      storeToExports(result, mod, name)
     }
 
     /**
@@ -371,6 +373,58 @@ module NameResolution {
       or
       // target = { name: value }
       value = target.getAnAssignedExpr().(ObjectExpr).getPropertyByName(prop).getInit()
+    }
+
+    pragma[nomagic]
+    private GlobalVarAccess globalAccess(Module mod, string name) {
+      result.getName() = name and
+      result.getTopLevel() = mod and
+      name = ["exports", "module"] // manually restrict size of predicate
+    }
+
+    private Node moduleObjectRef(Module mod) {
+      result = mod.getScope().getVariable("module").getAnAccess()
+      or
+      result = globalAccess(mod, "module")
+      or
+      commonStep(moduleObjectRef(mod), result)
+    }
+
+    private Node exportsObjectRhs(Module mod) {
+      exists(AssignExpr assign |
+        assign.getLhs().(PropAccess).accesses(moduleObjectRef(mod), "exports") and
+        result = assign.getRhs()
+      )
+      or
+      commonStep(result, exportsObjectRhs(mod))
+    }
+
+    private Node exportsObjectAlias(Module mod) {
+      result = mod.getScope().getVariable("exports").getAnAccess()
+      or
+      result = globalAccess(mod, "exports")
+      or
+      result.(ThisExpr).getBindingContainer() = mod and
+      mod instanceof NodeModule
+      or
+      readStep(moduleObjectRef(mod), "exports", result)
+      or
+      result = exportsObjectRhs(mod)
+      or
+      commonStep(exportsObjectAlias(mod), result)
+    }
+
+    private predicate storeToExports(Node node, Module mod, string name) {
+      exists(AssignExpr assign |
+        node = assign.getRhs() and
+        assign.getLhs().(PropAccess).accesses(exportsObjectAlias(mod), name)
+      )
+      or
+      exists(Property prop |
+        node = prop.getInit() and
+        name = prop.getName() and
+        prop.getObjectExpr() = exportsObjectAlias(mod)
+      )
     }
 
     /** Steps that only apply for this configuration. */
