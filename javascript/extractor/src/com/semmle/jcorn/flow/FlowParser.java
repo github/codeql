@@ -14,6 +14,7 @@ import com.semmle.js.ast.Expression;
 import com.semmle.js.ast.ExpressionStatement;
 import com.semmle.js.ast.FieldDefinition;
 import com.semmle.js.ast.Identifier;
+import com.semmle.js.ast.ImportPhaseModifier;
 import com.semmle.js.ast.ImportSpecifier;
 import com.semmle.js.ast.Literal;
 import com.semmle.js.ast.MethodDefinition;
@@ -1064,13 +1065,13 @@ public class FlowParser extends ESNextParser {
   }
 
   @Override
-  protected List<ImportSpecifier> parseImportSpecifiers() {
+  protected List<ImportSpecifier> parseImportSpecifiers(ImportPhaseModifier[] phaseModifier) {
     String kind = null;
     if (flow()) {
       kind = flowParseImportSpecifiers();
     }
 
-    List<ImportSpecifier> specs = super.parseImportSpecifiers();
+    List<ImportSpecifier> specs = super.parseImportSpecifiers(phaseModifier);
     if (kind != null || specs.isEmpty()) return null;
     return specs;
   }
