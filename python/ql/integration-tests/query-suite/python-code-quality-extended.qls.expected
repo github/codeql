@@ -83,7 +83,6 @@ ql/python/ql/src/Statements/AssertLiteralConstant.ql
 ql/python/ql/src/Statements/AssertOnTuple.ql
 ql/python/ql/src/Statements/BreakOrReturnInFinally.ql
 ql/python/ql/src/Statements/ConstantInConditional.ql
-ql/python/ql/src/Statements/DocStrings.ql
 ql/python/ql/src/Statements/IterableStringOrSequence.ql
 ql/python/ql/src/Statements/MismatchInMultipleAssignment.ql
 ql/python/ql/src/Statements/ModificationOfLocals.ql
