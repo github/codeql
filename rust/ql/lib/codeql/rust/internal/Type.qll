@@ -146,6 +146,8 @@ class StructType extends StructOrEnumType, TStruct {
 
   StructType() { this = TStruct(struct) }
 
+  Struct asStruct() { result = struct }
+
   override ItemNode asItemNode() { result = struct }
 
   override StructField getStructField(string name) { result = struct.getStructField(name) }

@@ -500,10 +500,10 @@ module CertainTypeInference {
 }
 
 private Type inferLogicalOperationType(AstNode n, TypePath path) {
-  exists(Builtins::Bool t, BinaryLogicalOperation be |
+  exists(BinaryLogicalOperation be |
     n = [be, be.getLhs(), be.getRhs()] and
     path.isEmpty() and
-    result = TStruct(t)
+    result.(StructType).asStruct() instanceof Builtins::Bool
   )
 }
 
@@ -1465,6 +1465,11 @@ private Type inferLiteralType(LiteralExpr le, TypePath path, boolean certain) {
     result = getStrStruct()
   ) and
   certain = true
+}
+
+predicate uncertainNumberLiteral(LiteralExpr le) {
+  le instanceof NumberLiteralExpr and
+  not CertainTypeInference::hasInferredCertainType(le)
 }
 
 pragma[nomagic]
@@ -2431,6 +2436,12 @@ private module Cached {
     (
       if CertainTypeInference::hasInferredCertainType(n)
       then not CertainTypeInference::certainTypeConflict(n, path, result)
+      else any()
+    ) and
+    // Don't infer non-numerical types for number literals.
+    (
+      if uncertainNumberLiteral(n)
+      then result.(StructType).asStruct() instanceof Builtins::NumericType and path.isEmpty()
       else any()
     ) and
     (
