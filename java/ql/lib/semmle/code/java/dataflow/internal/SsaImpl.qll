@@ -335,6 +335,7 @@ private module Cached {
    *   Constructor --(intraInstanceCallEdge)-->+ Method(setter of this.f)
    * ```
    */
+  overlay[global]
   private predicate intraInstanceCallEdge(Callable c1, Method m2) {
     exists(MethodCall ma, RefType t1 |
       ma.getCaller() = c1 and
@@ -355,6 +356,7 @@ private module Cached {
     )
   }
 
+  overlay[global]
   private Callable tgt(Call c) {
     result = viableImpl_v2(c)
     or
@@ -364,11 +366,13 @@ private module Cached {
   }
 
   /** Holds if `(c1,c2)` is an edge in the call graph. */
+  overlay[global]
   private predicate callEdge(Callable c1, Callable c2) {
     exists(Call c | c.getCaller() = c1 and c2 = tgt(c))
   }
 
   /** Holds if `(c1,c2)` is an edge in the call graph excluding `intraInstanceCallEdge`. */
+  overlay[global]
   private predicate crossInstanceCallEdge(Callable c1, Callable c2) {
     callEdge(c1, c2) and not intraInstanceCallEdge(c1, c2)
   }
@@ -382,6 +386,7 @@ private module Cached {
     relevantFieldUpdate(_, f.getField(), _)
   }
 
+  overlay[global]
   private predicate source(Call call, TrackedField f, Field field, Callable c, boolean fresh) {
     relevantCall(call, f) and
     field = f.getField() and
@@ -395,9 +400,11 @@ private module Cached {
    * `fresh` indicates whether the instance `this` in `c` has been freshly
    * allocated along the call-chain.
    */
+  overlay[global]
   private newtype TCallableNode =
     MkCallableNode(Callable c, boolean fresh) { source(_, _, _, c, fresh) or edge(_, c, fresh) }
 
+  overlay[global]
   private predicate edge(TCallableNode n, Callable c2, boolean f2) {
     exists(Callable c1, boolean f1 | n = MkCallableNode(c1, f1) |
       intraInstanceCallEdge(c1, c2) and f2 = f1
@@ -407,6 +414,7 @@ private module Cached {
     )
   }
 
+  overlay[global]
   private predicate edge(TCallableNode n1, TCallableNode n2) {
     exists(Callable c2, boolean f2 |
       edge(n1, c2, f2) and
@@ -414,6 +422,7 @@ private module Cached {
     )
   }
 
+  overlay[global]
   pragma[noinline]
   private predicate source(Call call, TrackedField f, Field field, TCallableNode n) {
     exists(Callable c, boolean fresh |
@@ -422,24 +431,28 @@ private module Cached {
     )
   }
 
+  overlay[global]
   private predicate sink(Callable c, Field f, TCallableNode n) {
     setsOwnField(c, f) and n = MkCallableNode(c, false)
     or
     setsOtherField(c, f) and n = MkCallableNode(c, _)
   }
 
+  overlay[global]
   private predicate prunedNode(TCallableNode n) {
     sink(_, _, n)
     or
     exists(TCallableNode mid | edge(n, mid) and prunedNode(mid))
   }
 
+  overlay[global]
   private predicate prunedEdge(TCallableNode n1, TCallableNode n2) {
     prunedNode(n1) and
     prunedNode(n2) and
     edge(n1, n2)
   }
 
+  overlay[global]
   private predicate edgePlus(TCallableNode c1, TCallableNode c2) = fastTC(prunedEdge/2)(c1, c2)
 
   /**
@@ -447,14 +460,18 @@ private module Cached {
    * where `f` and `call` share the same enclosing callable in which a
    * `FieldRead` of `f` is reachable from `call`.
    */
+  overlay[global]
   pragma[noopt]
-  private predicate updatesNamedFieldImpl(Call call, TrackedField f, Callable setter) {
+  private predicate updatesNamedFieldImplGlobal(Call call, TrackedField f, Callable setter) {
     exists(TCallableNode src, TCallableNode sink, Field field |
       source(call, f, field, src) and
       sink(setter, field, sink) and
       (src = sink or edgePlus(src, sink))
     )
   }
+
+  private predicate updatesNamedFieldImpl(Call call, TrackedField f, Callable setter) =
+    forceLocal(updatesNamedFieldImplGlobal/3)(call, f, setter)
 
   bindingset[call, f]
   pragma[inline_late]
@@ -463,10 +480,14 @@ private module Cached {
   }
 
   cached
-  predicate defUpdatesNamedField(SsaImplicitUpdate def, TrackedField f, Callable setter) {
+  predicate defUpdatesNamedFieldImpl(SsaImplicitUpdate def, TrackedField f, Callable setter) {
     f = def.getSourceVariable() and
     updatesNamedField0(def.getCfgNode().asCall(), f, setter)
   }
+
+  cached
+  predicate defUpdatesNamedField(SsaImplicitUpdate def, TrackedField f, Callable setter) =
+    forceLocal(defUpdatesNamedFieldImpl/3)(def, f, setter)
 
   cached
   predicate ssaUncertainImplicitUpdate(SsaImplicitUpdate def) {
