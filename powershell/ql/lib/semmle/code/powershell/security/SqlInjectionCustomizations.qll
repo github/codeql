@@ -106,4 +106,15 @@ module SqlInjection {
   }
 
   class TypeSanitizer extends Sanitizer instanceof SimpleTypeSanitizer { }
+
+  class ValidateAttributeSanitizer extends Sanitizer {
+    ValidateAttributeSanitizer() {
+      exists(Function f, Attribute a, Parameter p |
+        p = f.getAParameter() and
+        p.getAnAttribute() = a and
+        a.getAName() = ["ValidateScript", "ValidateSet", "ValidatePattern"] and
+        this.asParameter() = p
+      )
+    }
+  }
 }
