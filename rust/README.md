@@ -95,7 +95,7 @@ installing [`cargo-edit`](https://crates.io/crates/cargo-edit) with `cargo insta
    ```
    * if it succeeds: good! You can move on to the next step.
    * if it fails while compiling rust-analyzer dependencies, you need to update the rust toolchain. Sometimes the error will tell you
-     so explcitly, but it may happen that the error is more obscure. To update the rust toolchain:
+     so explicitly, but it may happen that the error is more obscure. To update the rust toolchain:
       * you will need to open a PR on the internal repo updating `RUST_VERSION` in `MODULE.bazel`. In general you can have this merged
         independently of the changes in `codeql`.
       * in `codeql`, update both `RUST_VERSION` in `MODULE.bazel` _and_ `rust-toolchain.toml` files. You may want to also update the
