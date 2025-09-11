@@ -1,0 +1,13 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Must validate the AAD key issuer if you use IdentityModel directly to validate Azure AD tokens. See the link below for details</p>
+</overview>
+<references>
+
+  <li><a href="https://aka.ms/wilson/vul-23030">Validate the AAD key issuer if you use IdentityModel directly to validate Azure AD tokens wiki</a></li>
+
+</references>
+</qhelp>

@@ -1,0 +1,21 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p><code>JsonWebTokenHandler.ValidateToken</code> returns a <code>TokenValidationResult</code> object but does not throw an exception when token validation fails. </p>
+
+<p>Instead, developers must explicitly check the <code>IsValid</code> property or the <code>Exception</code> property of the <code>TokenValidationResult</code>. 
+If neither check is performed, the application may treat an invalid token as valid, leading to security vulnerabilities such as unauthorized access.</p>
+</overview>
+
+<recommendation>
+<p>Always verify the <code>TokenValidationResult</code> returned by <code>ValidateToken</code> by checking the <code>IsValid</code> property or <code>Exception</code> property. </p>
+</recommendation>
+
+<references>
+
+  <li><a href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.identitymodel.jsonwebtokens.jsonwebtokenhandler.validatetoken">JsonWebTokenHandler.ValidateToken</a></li>
+
+</references>
+</qhelp>

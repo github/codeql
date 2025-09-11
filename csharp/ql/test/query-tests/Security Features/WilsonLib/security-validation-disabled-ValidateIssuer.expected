@@ -1,0 +1,1 @@
+| security-validation-disabled-test.cs:35:34:35:38 | false | The ValidateIssuer security-sensitive property is being disabled by the following value: $@. | security-validation-disabled-test.cs:35:34:35:38 | false | false |

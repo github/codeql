@@ -1,0 +1,2 @@
+| AadValidation.cs:14:43:17:13 | object creation of type TokenValidationParameters | The usage of Wilson library without validating the AAD key issuer if you use IdentityModel directly to validate Azure AD tokens was detected. Visit https://aka.ms/wilson/vul-23030 for details. |
+| AadValidation.cs:22:49:25:13 | object creation of type TokenValidationParameters | The usage of Wilson library without validating the AAD key issuer if you use IdentityModel directly to validate Azure AD tokens was detected. Visit https://aka.ms/wilson/vul-23030 for details. |
