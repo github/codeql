@@ -6,8 +6,7 @@
  * @problem.severity recommendation
  * @precision medium
  * @id cs/xmldoc/unknown-type-parameter
- * @tags quality
- *       maintainability
+ * @tags maintainability
  *       readability
  */
 
