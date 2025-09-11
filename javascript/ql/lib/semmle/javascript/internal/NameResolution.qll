@@ -386,6 +386,10 @@ module NameResolution {
         node2.(JSDocLocalTypeAccess).getALexicalName() = var
       )
       or
+      resolvedReadStep(node1, node2)
+    }
+
+    predicate resolvedReadStep(Node node1, Node node2) {
       exists(Node base, string name, ModuleLike mod |
         readStep(base, name, node2) and
         base = trackModule(mod) and
