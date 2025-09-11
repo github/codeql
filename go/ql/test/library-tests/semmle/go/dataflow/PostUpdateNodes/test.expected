@@ -5,6 +5,8 @@
 | test.go:22:2:22:2 | definition of a | test.go:26:2:26:2 | a |
 | test.go:22:2:22:2 | definition of a | test.go:29:6:29:6 | a |
 | test.go:22:2:22:2 | definition of a | test.go:30:7:30:7 | a |
+| test.go:22:2:22:2 | definition of a | test.go:35:4:35:4 | a |
+| test.go:22:2:22:2 | definition of a | test.go:36:5:36:5 | a |
 | test.go:23:11:23:14 | &... | test.go:23:11:23:14 | &... |
 | test.go:23:12:23:14 | selection of b | test.go:23:12:23:14 | selection of b |
 | test.go:24:2:24:5 | selection of bs | test.go:24:2:24:5 | selection of bs |

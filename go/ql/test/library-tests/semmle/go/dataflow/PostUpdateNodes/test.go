@@ -29,4 +29,9 @@ func f() {
 	c.m(a)
 	c.mp(a)
 
+	// Indirect method calls - missing post-update nodes for the receivers
+	f := c.m
+	fp := c.mp
+	f(a)
+	fp(a)
 }
