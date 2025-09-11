@@ -5,6 +5,7 @@
  *              is used at all times.
  * @kind problem
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @id rust/insecure-cookie
  * @tags security
