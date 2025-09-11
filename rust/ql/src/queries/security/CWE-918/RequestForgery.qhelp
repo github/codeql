@@ -23,7 +23,7 @@ request, if the request response is handled in an unsafe way.
 
 <recommendation>
 <p>
-To guard against SSRF attacks you should avoid putting user-provided input
+To guard against SSRF attacks, you should avoid putting user-provided input
 directly into a request URL. Instead, maintain a list of authorized URLs on the
 server; then choose from that list based on the input provided. Alternatively,
 ensure requests constructed from user input are limited to a particular host or
