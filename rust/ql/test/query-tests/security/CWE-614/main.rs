@@ -13,7 +13,7 @@ fn test_cookie(sometimes: bool) {
     println!("cookie2 = '{}'", cookie2.to_string());
 
     // secure left as default (which is `None`, equivalent here to `false`)
-    let cookie3 = Cookie::build(("name", "value")).build(); // $ MISSING: Alert[rust/insecure-cookie]
+    let cookie3 = Cookie::build(("name", "value")).build(); // $ Alert[rust/insecure-cookie]
     println!("cookie3 = '{}'", cookie3.to_string());
 
     // secure setting varies (may be false)

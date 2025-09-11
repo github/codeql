@@ -1,0 +1,6 @@
+#select
+| main.rs:16:19:16:50 | ...::build(...) | main.rs:16:19:16:50 | ...::build(...) | main.rs:16:19:16:50 | ...::build(...) | Cookie attribute 'Secure' is not set to true. |
+edges
+nodes
+| main.rs:16:19:16:50 | ...::build(...) | semmle.label | ...::build(...) |
+subpaths
