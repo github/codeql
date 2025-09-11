@@ -53,6 +53,8 @@ class NodeModule extends Module {
   private DataFlow::SourceNode getExportsSourceNode() {
     result = DataFlow::ssaDefinitionNode(Ssa::implicitInit(this.getExportsVariable()))
     or
+    result = DataFlow::thisNode(this) // `this` is an alias for `module.exports`
+    or
     result = this.getModuleSourceNode().getAPropertyWrite("exports").getRhs().getALocalSource()
     or
     result = this.getModuleSourceNode().getAPropertyRead("exports")
