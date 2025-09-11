@@ -98,11 +98,11 @@ rust_library(
     }),
     version = "0.24.6",
     deps = [
-        "@vendor_ts__regex-1.11.1//:regex",
-        "@vendor_ts__regex-syntax-0.8.5//:regex_syntax",
+        "@vendor_ts__regex-1.11.2//:regex",
+        "@vendor_ts__regex-syntax-0.8.6//:regex_syntax",
         "@vendor_ts__streaming-iterator-0.1.9//:streaming_iterator",
         "@vendor_ts__tree-sitter-0.24.6//:build_script_build",
-        "@vendor_ts__tree-sitter-language-0.1.3//:tree_sitter_language",
+        "@vendor_ts__tree-sitter-language-0.1.5//:tree_sitter_language",
     ],
 )
 
@@ -162,7 +162,7 @@ cargo_build_script(
     version = "0.24.6",
     visibility = ["//visibility:private"],
     deps = [
-        "@vendor_ts__cc-1.2.29//:cc",
+        "@vendor_ts__cc-1.2.36//:cc",
     ],
 )
 
