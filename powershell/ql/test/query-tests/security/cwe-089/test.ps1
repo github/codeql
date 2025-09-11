@@ -136,4 +136,4 @@ $QueryConn3 = @{
     inputfile = $userinput
 }
 
-Invoke-Sqlcmd @QueryConn3 # GOOD [FALSE POSITIVE]
+Invoke-Sqlcmd @QueryConn3 # GOOD
