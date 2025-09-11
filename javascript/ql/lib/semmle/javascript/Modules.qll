@@ -25,8 +25,8 @@ abstract class Module extends TopLevel {
   /** Gets a module from which this module imports. */
   Module getAnImportedModule() { result = this.getAnImport().getImportedModule() }
 
-  /** Gets a symbol exported by this module. */
-  string getAnExportedSymbol() { exists(this.getAnExportedValue(result)) }
+  /** DEPRECATED. Use `exists(getAnExportedValue(name))` instead. */
+  deprecated string getAnExportedSymbol() { exists(this.getAnExportedValue(result)) }
 
   /**
    * Get a value that is explicitly exported from this module with under `name`.

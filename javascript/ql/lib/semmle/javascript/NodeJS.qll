@@ -57,19 +57,6 @@ class NodeModule extends Module {
     result.getAValue() = this.getAModuleExportsValue()
   }
 
-  /** Gets a symbol exported by this module. */
-  override string getAnExportedSymbol() {
-    result = super.getAnExportedSymbol()
-    or
-    result = this.getAnImplicitlyExportedSymbol()
-    or
-    // getters and the like.
-    exists(DataFlow::PropWrite pwn |
-      pwn.getBase() = this.getAModuleExportsNode() and
-      result = pwn.getPropertyName()
-    )
-  }
-
   override DataFlow::Node getAnExportedValue(string name) {
     // a property write whose base is `exports` or `module.exports`
     exists(DataFlow::PropWrite pwn | result = pwn.getRhs() |
@@ -120,29 +107,6 @@ class NodeModule extends Module {
       write.getBase().asExpr() = this.getModuleVariable().getAnAccess() and
       write.getPropertyName() = "exports" and
       result = write.getRhs()
-    )
-  }
-
-  /** Gets a symbol that the module object inherits from its prototypes. */
-  private string getAnImplicitlyExportedSymbol() {
-    exists(ExternalConstructor ec | ec = this.getPrototypeOfExportedExpr() |
-      result = ec.getAMember().getName()
-      or
-      ec instanceof FunctionExternal and result = "prototype"
-      or
-      ec instanceof ArrayExternal and
-      exists(NumberLiteral nl | result = nl.getValue() and exists(result.toInt()))
-    )
-  }
-
-  /** Gets an externs declaration of the prototype object of a value exported by this module. */
-  private ExternalConstructor getPrototypeOfExportedExpr() {
-    exists(AbstractValue exported | exported = this.getAModuleExportsValue() |
-      result instanceof ObjectExternal
-      or
-      exported instanceof AbstractFunction and result instanceof FunctionExternal
-      or
-      exported instanceof AbstractOtherObject and result instanceof ArrayExternal
     )
   }
 
