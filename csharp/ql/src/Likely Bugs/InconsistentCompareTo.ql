@@ -5,8 +5,9 @@
  * @problem.severity warning
  * @precision medium
  * @id cs/inconsistent-compareto-and-equals
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import semmle.code.csharp.frameworks.System
