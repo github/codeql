@@ -23,7 +23,6 @@ ql/csharp/ql/src/Concurrency/LockOrder.ql
 ql/csharp/ql/src/Concurrency/LockThis.ql
 ql/csharp/ql/src/Concurrency/LockedWait.ql
 ql/csharp/ql/src/Dead Code/DeadStoreOfLocal.ql
-ql/csharp/ql/src/Documentation/XmldocMissingSummary.ql
 ql/csharp/ql/src/Language Abuse/CastThisToTypeParameter.ql
 ql/csharp/ql/src/Language Abuse/CatchOfGenericException.ql
 ql/csharp/ql/src/Language Abuse/DubiousDowncastOfThis.ql
