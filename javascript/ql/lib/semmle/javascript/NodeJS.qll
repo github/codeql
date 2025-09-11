@@ -67,16 +67,6 @@ class NodeModule extends Module {
     result = this.getExportsSourceNode().getALocalUse()
   }
 
-  /** Gets a symbol exported by this module. */
-  override string getAnExportedSymbol() {
-    result = super.getAnExportedSymbol()
-    or
-    result = this.getAnImplicitlyExportedSymbol()
-    or
-    // getters and the like.
-    result = this.getExportsSourceNode().getAPropertyWrite().getPropertyName()
-  }
-
   override DataFlow::Node getAnExportedValue(string name) {
     // a property write whose base is `exports` or `module.exports`
     result = this.getExportsSourceNode().getAPropertyWrite(name).getRhs()
@@ -126,29 +116,6 @@ class NodeModule extends Module {
     )
   }
 
-  /** Gets a symbol that the module object inherits from its prototypes. */
-  private string getAnImplicitlyExportedSymbol() {
-    exists(ExternalConstructor ec | ec = this.getPrototypeOfExportedExpr() |
-      result = ec.getAMember().getName()
-      or
-      ec instanceof FunctionExternal and result = "prototype"
-      or
-      ec instanceof ArrayExternal and
-      exists(NumberLiteral nl | result = nl.getValue() and exists(result.toInt()))
-    )
-  }
-
-  /** Gets an externs declaration of the prototype object of a value exported by this module. */
-  private ExternalConstructor getPrototypeOfExportedExpr() {
-    exists(AbstractValue exported | exported = this.getAModuleExportsValue() |
-      result instanceof ObjectExternal
-      or
-      exported instanceof AbstractFunction and result instanceof FunctionExternal
-      or
-      exported instanceof AbstractOtherObject and result instanceof ArrayExternal
-    )
-  }
-
   deprecated override predicate searchRoot(PathExpr path, Folder searchRoot, int priority) {
     path.getEnclosingModule() = this and
     exists(string pathval | pathval = path.getValue() |
@@ -182,21 +149,6 @@ private DataFlow::SourceNode getASourceProp(DynamicPropertyAccess::EnumeratedPro
     prop.getASourceObjectRef().flowsTo(base) and
     key.getImmediatePredecessor*() = prop
   )
-}
-
-/**
- * Gets an expression that syntactically could be a alias for `module.exports`.
- * This predicate exists to reduce the size of `getAModuleExportsNode`,
- * while keeping all the tuples that could be relevant in later computations.
- */
-pragma[noinline]
-private DataFlow::Node getAModuleExportsCandidate() {
-  // A bit of manual magic
-  result = any(DataFlow::PropWrite w).getBase()
-  or
-  result = DataFlow::valueNode(any(PropAccess p | exists(p.getPropertyName())).getBase())
-  or
-  result = DataFlow::valueNode(any(ObjectExpr obj))
 }
 
 /**
