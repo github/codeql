@@ -5,7 +5,6 @@ edges
 | test.ps1:1:1:1:10 | userinput | test.ps1:28:24:28:76 | SELECT * FROM MyTable WHERE MyColumn = '$userinput' | provenance |  |
 | test.ps1:1:1:1:10 | userinput | test.ps1:78:13:78:22 | userinput | provenance |  |
 | test.ps1:1:1:1:10 | userinput | test.ps1:128:28:128:37 | userinput | provenance |  |
-| test.ps1:1:1:1:10 | userinput | test.ps1:141:15:141:24 | userinput | provenance |  |
 | test.ps1:1:14:1:45 | Call to read-host | test.ps1:1:1:1:10 | userinput | provenance | Src:MaD:0  |
 | test.ps1:4:1:4:6 | query | test.ps1:5:72:5:77 | query | provenance |  |
 | test.ps1:8:1:8:6 | query | test.ps1:9:72:9:77 | query | provenance |  |
@@ -30,7 +29,6 @@ nodes
 | test.ps1:121:9:121:56 | unvalidated | semmle.label | unvalidated |
 | test.ps1:125:92:125:103 | unvalidated | semmle.label | unvalidated |
 | test.ps1:128:28:128:37 | userinput | semmle.label | userinput |
-| test.ps1:141:15:141:24 | userinput | semmle.label | userinput |
 subpaths
 #select
 | test.ps1:5:72:5:77 | query | test.ps1:1:14:1:45 | Call to read-host | test.ps1:5:72:5:77 | query | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | read from stdin |
@@ -39,4 +37,3 @@ subpaths
 | test.ps1:28:24:28:76 | SELECT * FROM MyTable WHERE MyColumn = '$userinput' | test.ps1:1:14:1:45 | Call to read-host | test.ps1:28:24:28:76 | SELECT * FROM MyTable WHERE MyColumn = '$userinput' | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | read from stdin |
 | test.ps1:81:15:81:25 | QueryConn2 | test.ps1:1:14:1:45 | Call to read-host | test.ps1:81:15:81:25 | QueryConn2 | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | read from stdin |
 | test.ps1:125:92:125:103 | unvalidated | test.ps1:1:14:1:45 | Call to read-host | test.ps1:125:92:125:103 | unvalidated | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | read from stdin |
-| test.ps1:141:15:141:24 | userinput | test.ps1:1:14:1:45 | Call to read-host | test.ps1:141:15:141:24 | userinput | This SQL query depends on a $@. | test.ps1:1:14:1:45 | Call to read-host | read from stdin |

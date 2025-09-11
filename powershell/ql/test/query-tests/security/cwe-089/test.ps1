@@ -138,4 +138,4 @@ $QueryConn3 = @{
 
 Invoke-Sqlcmd @QueryConn3 # GOOD
 
-&sqlcmd -e -S $userinput -U "Login" -P "MyPassword" -d "MyDBName" -i "input_file.sql" # GOOD [FALSE POSITIVE]
+&sqlcmd -e -S $userinput -U "Login" -P "MyPassword" -d "MyDBName" -i "input_file.sql" # GOOD
