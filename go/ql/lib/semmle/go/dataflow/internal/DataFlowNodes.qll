@@ -844,13 +844,11 @@ module Public {
     insn = getAWrittenInsn()
   }
 
-  predicate hasPostUpdateNode(Node preupd) { insnHasPostUpdateNode(preupd.asInstruction()) }
-
   private class DefaultPostUpdateNode extends PostUpdateNode {
     Node preupd;
 
     DefaultPostUpdateNode() {
-      hasPostUpdateNode(preupd) and
+      insnHasPostUpdateNode(preupd.asInstruction()) and
       (
         preupd = this.(SsaNode).getAUse()
         or
