@@ -88,7 +88,7 @@ installing [`cargo-edit`](https://crates.io/crates/cargo-edit) with `cargo insta
    ```
    bazel run //rust/codegen
    ```
-   Take note whether `rust/schema/ast.py` was changed. That might need tweaks, new tests and/or downgrade/upgrade scripts down the line
+   Take note whether `rust/schema/ast.py` was changed. That might need tweaks, new tests and/or downgrade/upgrade scripts down the line.
 6. Try compiling
    ```
    bazel run //rust:install
@@ -105,6 +105,8 @@ installing [`cargo-edit`](https://crates.io/crates/cargo-edit) with `cargo insta
 
    If you had to do any changes, commit them. If you updated the rust toolchain, running `rust/lint.py` might reformat or apply new
    lints to the code.
-7. If in step 5 the schema was updated, add upgrade/downgrade scripts and a change note
-8. Check with CI if everything is in order.
-9. Run DCA. Iterate on the code if needed.
+7. Check with CI if everything is in order.
+8. Run DCA. Iterate on the code if needed.
+9. If in step 5 the schema was updated, add upgrade/downgrade scripts and a change note. This is best done last to reduce the chance of
+merge conflicts (none of the other testing depends on having upgrade and downgrade scripts in place). See
+[Upgrading a language database schema](docs/prepare-db-upgrade.md).
