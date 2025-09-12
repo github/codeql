@@ -92,11 +92,11 @@ rust_library(
     deps = [
         "@vendor_ts__semver-1.0.26//:semver",
         "@vendor_ts__serde-1.0.219//:serde",
-        "@vendor_ts__serde-untagged-0.1.7//:serde_untagged",
+        "@vendor_ts__serde-untagged-0.1.8//:serde_untagged",
         "@vendor_ts__serde-value-0.7.0//:serde_value",
-        "@vendor_ts__thiserror-2.0.12//:thiserror",
+        "@vendor_ts__thiserror-2.0.16//:thiserror",
         "@vendor_ts__toml-0.8.23//:toml",
         "@vendor_ts__unicode-xid-0.2.6//:unicode_xid",
-        "@vendor_ts__url-2.5.4//:url",
+        "@vendor_ts__url-2.5.7//:url",
     ],
 )

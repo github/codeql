@@ -96,7 +96,7 @@ rust_library(
     }),
     version = "0.5.0",
     deps = [
-        "@vendor_ts__libc-0.2.174//:libc",
+        "@vendor_ts__libc-0.2.175//:libc",
     ] + select({
         "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [
             "@vendor_ts__windows-sys-0.52.0//:windows_sys",  # aarch64-pc-windows-msvc

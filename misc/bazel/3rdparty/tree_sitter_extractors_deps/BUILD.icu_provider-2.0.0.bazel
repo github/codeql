@@ -104,6 +104,6 @@ rust_library(
         "@vendor_ts__yoke-0.8.0//:yoke",
         "@vendor_ts__zerofrom-0.1.6//:zerofrom",
         "@vendor_ts__zerotrie-0.2.2//:zerotrie",
-        "@vendor_ts__zerovec-0.11.2//:zerovec",
+        "@vendor_ts__zerovec-0.11.4//:zerovec",
     ],
 )

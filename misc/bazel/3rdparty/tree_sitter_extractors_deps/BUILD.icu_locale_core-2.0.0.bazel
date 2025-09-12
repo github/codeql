@@ -99,6 +99,6 @@ rust_library(
         "@vendor_ts__litemap-0.8.0//:litemap",
         "@vendor_ts__tinystr-0.8.1//:tinystr",
         "@vendor_ts__writeable-0.6.1//:writeable",
-        "@vendor_ts__zerovec-0.11.2//:zerovec",
+        "@vendor_ts__zerovec-0.11.4//:zerovec",
     ],
 )
