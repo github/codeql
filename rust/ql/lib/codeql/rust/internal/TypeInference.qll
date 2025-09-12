@@ -1136,13 +1136,19 @@ private module MethodCallResolution {
    */
   pragma[nomagic]
   predicate methodInfo(
-    Function f, string name, int arity, ImplOrTraitItemNode i, FunctionType selfType, Type rootType,
-    TypePath selfRootPath, Type selfRootType
+    Function f, string name, int arity, ImplOrTraitItemNode i, FunctionType selfType,
+    TypePath rootTypePath, Type rootType, TypePath selfRootPath, Type selfRootType
   ) {
     exists(FunctionTypePosition pos |
       f = i.getASuccessor(name) and
       arity = f.getParamList().getNumberOfParams() and
-      rootType = selfType.getTypeAt(TypePath::nil()) and
+      rootType = selfType.getTypeAt(rootTypePath) and
+      (
+        rootTypePath.isEmpty() and
+        rootType != TRefType()
+        or
+        rootTypePath = TypePath::singleton(TRefTypeParameter())
+      ) and
       selfType.appliesTo(f, pos, i) and
       pos.isSelf() and
       selfType.getTypeAt(selfRootPath) = selfRootType and
@@ -1157,7 +1163,7 @@ private module MethodCallResolution {
   pragma[nomagic]
   private predicate traitMethodInfo(string name, int arity, Trait trait) {
     exists(ImplItemNode i |
-      methodInfo(_, name, arity, i, _, _, _, _) and
+      methodInfo(_, name, arity, i, _, _, _, _, _) and
       trait = i.resolveTraitTy()
     )
   }
@@ -1167,7 +1173,7 @@ private module MethodCallResolution {
     exists(string name, int arity | mc.(MethodCall).isMethodCall(name, arity) |
       traitMethodInfo(name, arity, trait)
       or
-      methodInfo(_, name, arity, trait, _, _, _, _)
+      methodInfo(_, name, arity, trait, _, _, _, _, _)
     )
   }
 
@@ -1196,12 +1202,12 @@ private module MethodCallResolution {
    */
   pragma[inline]
   private predicate methodCallCandidate(
-    MethodCall mc, ImplOrTraitItemNode i, FunctionType self, Type rootType, TypePath selfRootPath,
-    Type selfRootType
+    MethodCall mc, ImplOrTraitItemNode i, FunctionType self, TypePath rootTypePath, Type rootType,
+    TypePath selfRootPath, Type selfRootType
   ) {
     exists(string name, int arity |
       mc.isMethodCall(name, arity) and
-      methodInfo(_, name, arity, i, self, rootType, selfRootPath, selfRootType)
+      methodInfo(_, name, arity, i, self, rootTypePath, rootType, selfRootPath, selfRootType)
     |
       i =
         any(Impl impl |
@@ -1218,11 +1224,11 @@ private module MethodCallResolution {
   }
 
   private int countmethodCallCandidate(MethodCall mc) {
-    result = strictcount(ImplOrTraitItemNode i | methodCallCandidate(mc, i, _, _, _, _))
+    result = strictcount(ImplOrTraitItemNode i | methodCallCandidate(mc, i, _, _, _, _, _))
   }
 
   private predicate countmethodCallMaxCandidate(MethodCall mc, ImplOrTraitItemNode i) {
-    methodCallCandidate(mc, i, _, _, _, _) and
+    methodCallCandidate(mc, i, _, _, _, _, _) and
     countmethodCallCandidate(mc) = max(countmethodCallCandidate(_))
   }
 
@@ -1289,9 +1295,10 @@ private module MethodCallResolution {
       IsInstantiationOf<MethodCallCand, FunctionType, MethodCallIsInstantiationOfInput>::isNotInstantiationOf(MkMethodCallCand(this,
           derefChainBorrow), i, _)
       or
-      exists(Type rootType, TypePath selfRootPath, Type selfRootType |
-        rootType = this.getACandidateReceiverTypeAtSubstituteTraitBounds(derefChainBorrow) and
-        methodCallCandidate(this, i, _, rootType, selfRootPath, selfRootType) and
+      exists(TypePath rootTypePath, Type rootType, TypePath selfRootPath, Type selfRootType |
+        rootType =
+          this.getACandidateReceiverTypeAtSubstituteTraitBounds(rootTypePath, derefChainBorrow) and
+        methodCallCandidate(this, i, _, rootTypePath, rootType, selfRootPath, selfRootType) and
         selfRootType !=
           this.getACandidateReceiverTypeAtSubstituteTraitBounds(selfRootPath, derefChainBorrow)
       )
@@ -1303,33 +1310,46 @@ private module MethodCallResolution {
      */
     pragma[nomagic]
     private predicate noCandidateReceiverTypeAtNoBorrow(string derefChain) {
-      exists(Type rootType, string derefChainBorrow |
+      exists(TypePath rootTypePath, Type rootType, string derefChainBorrow |
         derefChainBorrow = derefChain + ";" and
         not derefChain.matches("%.ref") and // no need to try a borrow if the last thing we did was a deref
-        rootType = this.getACandidateReceiverTypeAtSubstituteTraitBounds(derefChainBorrow)
+        rootType =
+          this.getACandidateReceiverTypeAtSubstituteTraitBounds(rootTypePath, derefChainBorrow) and
+        (
+          rootTypePath.isEmpty() and
+          rootType != TRefType()
+          or
+          rootTypePath = TypePath::singleton(TRefTypeParameter())
+        )
       |
-        forall(ImplOrTraitItemNode i | methodCallCandidate(this, i, _, rootType, _, _) |
+        forall(ImplOrTraitItemNode i |
+          methodCallCandidate(this, i, _, rootTypePath, rootType, _, _)
+        |
           this.isNotCandidate(i, derefChainBorrow)
         )
       )
     }
 
-    pragma[nomagic]
-    private predicate hasRefCandidate(ImplOrTraitItemNode i) {
-      methodCallCandidate(this, i, _, TRefType(), _, _)
-    }
-
+    // pragma[nomagic]
+    // private predicate hasRefCandidate(ImplOrTraitItemNode i) {
+    //   methodCallCandidate(this, i, _, TRefType(), _, _)
+    // }
     /**
      * Holds if the candidate receiver type represented by `derefChain;borrow` does not
      * have a matching method target.
      */
     pragma[nomagic]
     private predicate noCandidateReceiverTypeAt(string derefChain) {
-      exists(string derefChainBorrow |
+      exists(TypePath rootTypePath, Type rootType, string derefChainBorrow |
         derefChainBorrow = derefChain + ";borrow" and
-        this.noCandidateReceiverTypeAtNoBorrow(derefChain)
+        this.noCandidateReceiverTypeAtNoBorrow(derefChain) and
+        rootType =
+          this.getACandidateReceiverTypeAtSubstituteTraitBounds(rootTypePath, derefChainBorrow) and
+        rootTypePath = TypePath::singleton(TRefTypeParameter())
       |
-        forall(ImplOrTraitItemNode i | this.hasRefCandidate(i) |
+        forall(ImplOrTraitItemNode i |
+          methodCallCandidate(this, i, _, rootTypePath, rootType, _, _)
+        |
           this.isNotCandidate(i, derefChainBorrow)
         )
       )
@@ -1475,10 +1495,16 @@ private module MethodCallResolution {
      */
     pragma[nomagic]
     private predicate hasNoInherentTarget() {
-      exists(Type rootType, string name, int arity |
-        this.isMethodCall(_, TypePath::nil(), rootType, name, arity) and
+      exists(TypePath rootTypePath, Type rootType, string name, int arity |
+        this.isMethodCall(_, rootTypePath, rootType, name, arity) and
+        (
+          rootTypePath.isEmpty() and
+          rootType != TRefType()
+          or
+          rootTypePath = TypePath::singleton(TRefTypeParameter())
+        ) and
         forall(Impl i, FunctionType self, TypePath selfRootPath, Type selfRootType |
-          methodInfo(_, name, arity, i, self, rootType, selfRootPath, selfRootType) and
+          methodInfo(_, name, arity, i, self, rootTypePath, rootType, selfRootPath, selfRootType) and
           not i.hasTrait()
         |
           this.isNotInherentCandidate(i)
@@ -1553,12 +1579,12 @@ private module MethodCallResolution {
     ) {
       exists(MethodCall mc, string name, int arity, TypePath selfRootPath, Type selfRootType |
         mcc.isMethodCall(mc, selfRootPath, selfRootType, name, arity) and
-        methodCallCandidate(mc, abs, constraint, _, selfRootPath, selfRootType)
+        methodCallCandidate(mc, abs, constraint, _, _, selfRootPath, selfRootType)
       )
     }
 
     predicate relevantTypeMention(FunctionType constraint) {
-      methodInfo(_, _, _, _, constraint, _, _, _)
+      methodInfo(_, _, _, _, constraint, _, _, _, _)
     }
   }
 
@@ -1574,14 +1600,14 @@ private module MethodCallResolution {
       MethodCallCand mcc, TypeAbstraction abs, FunctionType constraint
     ) {
       abs = any(Impl i | not i.hasTrait()) and
-      exists(MethodCall mc, string name, int arity, Type rootType |
-        mcc.isMethodCall(mc, TypePath::nil(), rootType, name, arity) and
-        methodCallCandidate(mc, abs, constraint, rootType, _, _)
+      exists(MethodCall mc, string name, int arity, TypePath rootTypePath, Type rootType |
+        mcc.isMethodCall(mc, rootTypePath, rootType, name, arity) and
+        methodCallCandidate(mc, abs, constraint, rootTypePath, rootType, _, _)
       )
     }
 
     predicate relevantTypeMention(FunctionType constraint) {
-      methodInfo(_, _, _, _, constraint, _, _, _)
+      methodInfo(_, _, _, _, constraint, _, _, _, _)
     }
   }
 }
@@ -1892,7 +1918,7 @@ private module FunctionCallResolution {
       exists(TypePath selfRootPath, Type selfRootType |
         f = call.getPathResolutionResolvedFunctionOrImplementation(resolved) and
         trait = call.(Call).getTrait() and
-        MethodCallResolution::methodInfo(f, _, _, i, self, _, selfRootPath, selfRootType) and
+        MethodCallResolution::methodInfo(f, _, _, i, self, _, _, selfRootPath, selfRootType) and
         call.getTypeAt(selfRootPath) = selfRootType
       )
     }
@@ -1905,7 +1931,7 @@ private module FunctionCallResolution {
     }
 
     predicate relevantTypeMention(FunctionType constraint) {
-      MethodCallResolution::methodInfo(_, _, _, _, constraint, _, _, _)
+      MethodCallResolution::methodInfo(_, _, _, _, constraint, _, _, _, _)
     }
   }
 }
@@ -2192,7 +2218,7 @@ private module OperationResolution {
       TypeAbstraction abs, FunctionType constraint, Trait trait, string name, int arity,
       TypePath selfRootPath, Type selfRootType
     ) {
-      MethodCallResolution::methodInfo(_, name, arity, abs, constraint, _, selfRootPath,
+      MethodCallResolution::methodInfo(_, name, arity, abs, constraint, _, _, selfRootPath,
         selfRootType) and
       (
         trait = abs.(ImplItemNode).resolveTraitTy()
@@ -2210,7 +2236,7 @@ private module OperationResolution {
     }
 
     predicate relevantTypeMention(FunctionType constraint) {
-      MethodCallResolution::methodInfo(_, _, _, _, constraint, _, _, _)
+      MethodCallResolution::methodInfo(_, _, _, _, constraint, _, _, _, _)
     }
   }
 }
