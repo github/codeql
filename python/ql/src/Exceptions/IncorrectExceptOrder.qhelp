@@ -25,11 +25,11 @@ is a super class of <code>Error</code>.
 
 <p>Reorganize the <code>except</code> blocks so that the more specific <code>except</code> 
 is defined first. Alternatively, if the more specific <code>except</code> block is 
-no longer required then it should be deleted.</p>
+no longer required, then it should be deleted.</p>
 
 </recommendation>
 <example>
-<p>In this example the <code>except Exception:</code> will handle <code>AttributeError</code> preventing the
+<p>In the following example, the <code>except Exception:</code> will handle <code>AttributeError</code> preventing the
 subsequent handler from ever executing.</p>
 <sample src="IncorrectExceptOrder.py" />
 
@@ -37,8 +37,8 @@ subsequent handler from ever executing.</p>
 </example>
 <references>
 
-<li>Python Language Reference: <a href="http://docs.python.org/2.7/reference/compound_stmts.html#try">The try statement</a>, 
-<a href="http://docs.python.org/2.7/reference/executionmodel.html#exceptions">Exceptions</a>.</li>
+<li>Python Language Reference: <a href="http://docs.python.org/3/reference/compound_stmts.html#try">The try statement</a>, 
+<a href="http://docs.python.org/3/reference/executionmodel.html#exceptions">Exceptions</a>.</li>
 
 
 </references>
