@@ -90,7 +90,7 @@ models
 | 6 | Sink: <cipher::stream_wrapper::StreamCipherCoreWrapper as crypto_common::KeyIvInit>::new; Argument[1]; credentials-iv |
 | 7 | Sink: <cookie::secure::key::Key>::from; Argument[0].Reference; credentials-key |
 | 8 | Source: core::mem::zeroed; ReturnValue.Element; constant-source |
-| 9 | Summary: <alloc::vec::Vec as core::convert::From>::from; Argument[0]; ReturnValue; value |
+| 9 | Summary: <_ as core::convert::From>::from; Argument[0]; ReturnValue; value |
 | 10 | Summary: <generic_array::GenericArray>::from_slice; Argument[0].Reference; ReturnValue.Reference; value |
 | 11 | Summary: alloc::vec::from_elem; Argument[0]; ReturnValue.Element; value |
 nodes
