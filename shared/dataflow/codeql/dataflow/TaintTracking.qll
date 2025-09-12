@@ -155,7 +155,7 @@ private module TaintFlowMakeCore<
   }
 }
 
-private module TaintFlowMakeNonOverlay<
+module TaintFlowMake<
   LocationSig Location, DF::InputSig<Location> DataFlowLang,
   InputSig<Location, DataFlowLang> TaintTrackingLang>
 {
@@ -173,6 +173,10 @@ private module TaintFlowMakeNonOverlay<
         DataFlowLang::Node node1, DataFlowLang::Node node2, string model
       ) {
         Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
+
+      predicate observeOverlayInformedIncrementalMode() {
+        not Config::observeDiffInformedIncrementalMode()
       }
     }
 
@@ -208,6 +212,8 @@ private module TaintFlowMakeNonOverlay<
       ) {
         Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
       }
+
+      predicate observeOverlayInformedIncrementalMode() { none() }
     }
 
     private module C implements DataFlowInternal::FullStateConfigSig {
@@ -279,6 +285,8 @@ private module TaintFlowMakeNonOverlay<
       ) {
         Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
       }
+
+      predicate observeOverlayInformedIncrementalMode() { none() }
     }
 
     private module C implements DataFlowInternal::FullStateConfigSig {
@@ -295,8 +303,7 @@ private module TaintFlowMakeNonOverlay<
   }
 }
 
-
-private module TaintFlowMakeOverlay<
+module TaintFlowMakeOverlay<
   LocationSig Location, DF::InputSig<Location> DataFlowLang,
   InputSig<Location, DataFlowLang> TaintTrackingLang>
 {
@@ -316,6 +323,9 @@ private module TaintFlowMakeOverlay<
         Config::isAdditionalFlowStep(node1, node2) and model = "Config"
       }
 
+      predicate observeOverlayInformedIncrementalMode() {
+        not Config::observeDiffInformedIncrementalMode()
+      }
     }
 
     private module C implements DataFlowInternal::FullStateConfigSig {
@@ -350,6 +360,10 @@ private module TaintFlowMakeOverlay<
       ) {
         Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
       }
+
+      predicate observeOverlayInformedIncrementalMode() {
+        not Config::observeDiffInformedIncrementalMode()
+      }
     }
 
     private module C implements DataFlowInternal::FullStateConfigSig {
@@ -380,6 +394,10 @@ private module TaintFlowMakeOverlay<
         DataFlowLang::Node node1, DataFlowLang::Node node2, string model
       ) {
         Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
+
+      predicate observeOverlayInformedIncrementalMode() {
+        not Config::observeDiffInformedIncrementalMode()
       }
     }
 
@@ -418,6 +436,10 @@ private module TaintFlowMakeOverlay<
         string model
       ) {
         Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
+      }
+
+      predicate observeOverlayInformedIncrementalMode() {
+        not Config::observeDiffInformedIncrementalMode()
       }
     }
 

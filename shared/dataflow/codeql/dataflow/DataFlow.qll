@@ -1102,7 +1102,7 @@ module DataFlowMakeCore<LocationSig Location, InputSig<Location> Lang> {
   }
 }
 
-private module DataFlowMakeNonOverlayInformed<LocationSig Location, InputSig<Location> Lang> {
+module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
   import DataFlowMakeCore<Location, Lang>
   private import Lang
   private import internal.DataFlowImpl::MakeImpl<Location, Lang>
@@ -1162,17 +1162,9 @@ private module DataFlowMakeNonOverlayInformed<LocationSig Location, InputSig<Loc
 
     import Flow
   }
-
 }
 
-private module DataFlowMakeOverlayInformed<LocationSig Location, InputSig<Location> Lang> {
-  import DataFlowMakeCore<Location, Lang>
-  private import Lang
-  private import internal.DataFlowImpl::MakeImpl<Location, Lang>
-  private import internal.DataFlowImplStage1::MakeImplStage1<Location, Lang>
-
-
-
+module DataFlowMakeOverlay<LocationSig Location, InputSig<Location> Lang> {
   import DataFlowMakeCore<Location, Lang>
   private import Lang
   private import internal.DataFlowImpl::MakeImpl<Location, Lang>
@@ -1190,6 +1182,8 @@ private module DataFlowMakeOverlayInformed<LocationSig Location, InputSig<Locati
       predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
         Config::isAdditionalFlowStep(node1, node2) and model = "Config"
       }
+
+      predicate observeOverlayInformedIncrementalMode() { not Config::observeDiffInformedIncrementalMode() }
     }
 
     private module Stage1 = ImplStage1<C>;
@@ -1219,6 +1213,8 @@ private module DataFlowMakeOverlayInformed<LocationSig Location, InputSig<Locati
       ) {
         Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
       }
+
+      predicate observeOverlayInformedIncrementalMode() { not Config::observeDiffInformedIncrementalMode() }
     }
 
     private module Stage1 = ImplStage1<C>;
