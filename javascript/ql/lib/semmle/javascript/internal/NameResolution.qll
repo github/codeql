@@ -250,6 +250,17 @@ module NameResolution {
     )
   }
 
+  /**
+   * A step that treats imports of form `import foo from "somewhere"` as a namespace import,
+   * to support some non-standard compilers.
+   */
+  private predicate defaultImportInteropStep(Node node1, Node node2) {
+    exists(ImportDefaultSpecifier spec |
+      node1 = spec.getImportDeclaration().getImportedPathExpr() and
+      node2 = spec.getLocal()
+    )
+  }
+
   private signature module TypeResolutionInputSig {
     /**
      * Holds if flow is permitted through the given variable.
@@ -488,7 +499,14 @@ module NameResolution {
   /**
    * Gets a node to which the given module flows.
    */
-  predicate trackModule = ValueFlow::TrackNode<ModuleLike>::track/1;
+  Node trackModule(ModuleLike mod) {
+    result = mod
+    or
+    ValueFlow::step(trackModule(mod), result)
+    or
+    defaultImportInteropStep(trackModule(mod), result) and
+    not mod.(ES2015Module).hasBothNamedAndDefaultExports()
+  }
 
   predicate trackClassValue = ValueFlow::TrackNode<ClassDefinition>::track/1;
 
