@@ -26,7 +26,7 @@ public class Guards {
     }
     int sz = a != null ? a.length : 0;
     for (int i = 0; i < sz; i++) {
-      chk(); // $ guarded='a != null:true' guarded='i < sz:true' guarded='sz:not 0' guarded='...?...:...:not 0' guarded='a.length:not 0' guarded='a:not null'
+      chk(); // $ guarded='a != null:true' guarded='i < sz:true' guarded='sz:Lower bound 1' guarded='...?...:...:Lower bound 1' guarded='a.length:Lower bound 1' guarded='a:not null'
       int e = a[i];
       if (e > 2) break;
     }
@@ -136,11 +136,11 @@ public class Guards {
         found = true;
       }
       if (found) {
-        chk(); // $ guarded=found:true guarded='i < a.length:true'
+        chk(); // $ guarded=found:true guarded='i < a.length:true' guarded='a.length:Lower bound 1'
       }
     }
     if (found) {
-      chk(); // $ guarded=found:true guarded='i < a.length:false'
+      chk(); // $ guarded=found:true guarded='i < a.length:false' guarded='i:Lower bound 0'
     }
   }
 
