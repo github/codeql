@@ -703,7 +703,6 @@ module DataFlowMakeCore<LocationSig Location, InputSig<Location> Lang> {
     predicate flowToExpr(DataFlowExpr sink);
   }
 
-
   signature class PathNodeSig {
     /** Gets a textual representation of this element. */
     string toString();
@@ -1107,6 +1106,7 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
   private import internal.DataFlowImpl::MakeImpl<Location, Lang>
   private import internal.DataFlowImplStage1::MakeImplStage1<Location, Lang>
+
   /**
    * Constructs a global data flow computation.
    */
@@ -1120,6 +1120,7 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
         Config::isAdditionalFlowStep(node1, node2) and model = "Config"
       }
+
       predicate observeOverlayInformedIncrementalMode() { none() }
     }
 
@@ -1169,6 +1170,7 @@ module DataFlowMakeOverlay<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
   private import internal.DataFlowImpl::MakeImpl<Location, Lang>
   private import internal.DataFlowImplStage1::MakeImplStage1<Location, Lang>
+
   /**
    * Constructs a global data flow computation.
    */
@@ -1183,7 +1185,9 @@ module DataFlowMakeOverlay<LocationSig Location, InputSig<Location> Lang> {
         Config::isAdditionalFlowStep(node1, node2) and model = "Config"
       }
 
-      predicate observeOverlayInformedIncrementalMode() { not Config::observeDiffInformedIncrementalMode() }
+      predicate observeOverlayInformedIncrementalMode() {
+        not Config::observeDiffInformedIncrementalMode()
+      }
     }
 
     private module Stage1 = ImplStage1<C>;
@@ -1214,7 +1218,9 @@ module DataFlowMakeOverlay<LocationSig Location, InputSig<Location> Lang> {
         Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
       }
 
-      predicate observeOverlayInformedIncrementalMode() { not Config::observeDiffInformedIncrementalMode() }
+      predicate observeOverlayInformedIncrementalMode() {
+        not Config::observeDiffInformedIncrementalMode()
+      }
     }
 
     private module Stage1 = ImplStage1<C>;
