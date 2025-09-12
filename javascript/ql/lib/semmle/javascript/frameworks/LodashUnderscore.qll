@@ -341,6 +341,18 @@ module LodashUnderscore {
       preservesValue = true
     }
   }
+
+  private class LodashGroupBy extends DataFlow::SummarizedCallable {
+    LodashGroupBy() { this = "_.groupBy" }
+
+    override DataFlow::CallNode getACall() { result = member("groupBy").getACall() }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      input = "Argument[0]" and
+      output = ["Argument[1].Parameter[0]", "ReturnValue"] and
+      preservesValue = false
+    }
+  }
 }
 
 /**
