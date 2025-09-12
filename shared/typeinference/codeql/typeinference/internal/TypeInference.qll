@@ -919,6 +919,15 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     signature module SatisfiesConstraintInputSig<HasTypeTreeSig HasTypeTree> {
       /** Holds if it is relevant to know if `term` satisfies `constraint`. */
       predicate relevantConstraint(HasTypeTree term, Type constraint);
+
+      /**
+       * Holds if constraints that are satisfied through conditions that are
+       * universally quantified type parameters should be used. Such type
+       * parameters might have type parameter constraints, and these are _not_
+       * checked. Hence using these represent a trade-off between too many
+       * constraints and too few constraints being satisfied.
+       */
+      default predicate useUniversalConditions() { any() }
     }
 
     module SatisfiesConstraint<
@@ -961,6 +970,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         TypeMention constraintMention
       ) {
         exists(Type type | hasTypeConstraint(tt, type, constraint) |
+          useUniversalConditions() and
           not exists(countConstraintImplementations(type, constraint)) and
           conditionSatisfiesConstraintTypeAt(abs, condition, constraintMention, _, _) and
           resolveTypeMentionRoot(condition) = abs.getATypeParameter() and
