@@ -143,7 +143,8 @@ namespace Semmle.Extraction.CSharp.Standalone
             var pathTransformer = new PathTransformer(canonicalPathCache);
 
             var progressMonitor = new ExtractionProgress(logger);
-            using var analyser = new StandaloneAnalyser(progressMonitor, fileLogger, pathTransformer, canonicalPathCache, false);
+            var overlayInfo = OverlayInfoFactory.Make(logger, options.SrcDir);
+            using var analyser = new StandaloneAnalyser(progressMonitor, fileLogger, pathTransformer, canonicalPathCache, overlayInfo, false);
             try
             {
                 var extractionInput = new ExtractionInput(dependencyManager.AllSourceFiles, dependencyManager.ReferenceFiles, dependencyManager.CompilationInfos);
