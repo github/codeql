@@ -12,7 +12,8 @@ private newtype TNode =
   MkGlobalFunctionNode(Function f) or
   MkImplicitVarargsSlice(CallExpr c) { c.hasImplicitVarargs() } or
   MkSliceElementNode(SliceExpr se) or
-  MkFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn)
+  MkFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
+  MkDefaultPostUpdateNode(IR::Instruction insn) { insnHasPostUpdateNode(insn) }
 
 /** Nodes intended for only use inside the data-flow libraries. */
 module Private {
@@ -844,20 +845,22 @@ module Public {
     insn = getAWrittenInsn()
   }
 
-  private class DefaultPostUpdateNode extends PostUpdateNode {
+  private class DefaultPostUpdateNode extends PostUpdateNode, MkDefaultPostUpdateNode {
     Node preupd;
 
-    DefaultPostUpdateNode() {
-      insnHasPostUpdateNode(preupd.asInstruction()) and
-      (
-        preupd = this.(SsaNode).getAUse()
-        or
-        preupd = this and
-        not basicLocalFlowStep(_, this)
-      )
-    }
+    DefaultPostUpdateNode() { this = MkDefaultPostUpdateNode(preupd.asInstruction()) }
 
     override Node getPreUpdateNode() { result = preupd }
+
+    override ControlFlow::Root getRoot() { result = preupd.getRoot() }
+
+    override Type getType() { result = preupd.getType() }
+
+    override string getNodeKind() { result = "post-update node" }
+
+    override string toString() { result = preupd.toString() + " [postupdate]" }
+
+    override Location getLocation() { result = preupd.getLocation() }
   }
 
   /**

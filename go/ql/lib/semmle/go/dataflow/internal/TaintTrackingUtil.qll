@@ -88,14 +88,18 @@ class AdditionalTaintStep extends Unit {
  * global taint flow configurations.
  */
 predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ, string model) {
-  (
-    referenceStep(pred, succ) or
-    elementWriteStep(pred, succ) or
-    fieldReadStep(pred, succ) or
-    elementStep(pred, succ) or
-    tupleStep(pred, succ) or
-    stringConcatStep(pred, succ) or
-    sliceStep(pred, succ)
+  exists(DataFlow::Node pred2 |
+    pred2 = pred
+    or
+    pred2 = pred.(DataFlow::PostUpdateNode).getPreUpdateNode()
+  |
+    referenceStep(pred2, succ) or
+    elementWriteStep(pred2, succ) or
+    fieldReadStep(pred2, succ) or
+    elementStep(pred2, succ) or
+    tupleStep(pred2, succ) or
+    stringConcatStep(pred2, succ) or
+    sliceStep(pred2, succ)
   ) and
   model = ""
   or
