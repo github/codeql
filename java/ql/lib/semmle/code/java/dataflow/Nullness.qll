@@ -119,39 +119,18 @@ private ControlFlowNode varDereference(SsaVariable v, VarAccess va) {
 }
 
 /**
- * A `ControlFlowNode` that ensures that the SSA variable is not null in any
- * subsequent use, either by dereferencing it or by an assertion.
- */
-private ControlFlowNode ensureNotNull(SsaVariable v) { result = varDereference(v, _) }
-
-private predicate assertFail(BasicBlock bb, ControlFlowNode n) {
-  bb = n.getBasicBlock() and
-  methodCallUnconditionallyThrows(n.asExpr())
-}
-
-/**
- * A variable dereference that cannot be reached by a `null` value, because of an earlier
- * dereference or assertion in the same `BasicBlock`.
- */
-private predicate unreachableVarDereference(BasicBlock bb, SsaVariable v, ControlFlowNode varDeref) {
-  exists(ControlFlowNode n, int i, int j |
-    (n = ensureNotNull(v) or assertFail(bb, n)) and
-    varDeref = varDereference(v, _) and
-    bb.getNode(i) = n and
-    bb.getNode(j) = varDeref and
-    i < j
-  )
-}
-
-/**
- * The first dereference of a variable in a given `BasicBlock` excluding those dereferences
- * that are preceded by a not-null assertion or a trivially failing assertion.
+ * The first dereference of a variable in a given `BasicBlock`.
  */
 private predicate firstVarDereferenceInBlock(BasicBlock bb, SsaVariable v, VarAccess va) {
   exists(ControlFlowNode n |
     varDereference(v, va) = n and
     n.getBasicBlock() = bb and
-    not unreachableVarDereference(bb, v, n)
+    n =
+      min(ControlFlowNode n0, int i |
+        varDereference(v, _) = n0 and bb.getNode(i) = n0
+      |
+        n0 order by i
+      )
   )
 }
 
