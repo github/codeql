@@ -1,4 +1,20 @@
 #select
+| athena.js:19:23:19:23 | p | athena.js:9:23:9:30 | req.body | athena.js:19:23:19:23 | p | This query string depends on a $@. | athena.js:9:23:9:30 | req.body | user-provided value |
+| athena.js:27:23:27:58 | new Cre ... arams2) | athena.js:9:23:9:30 | req.body | athena.js:27:23:27:58 | new Cre ... arams2) | This query string depends on a $@. | athena.js:9:23:9:30 | req.body | user-provided value |
+| athena.js:36:23:36:58 | new Upd ... arams3) | athena.js:9:23:9:30 | req.body | athena.js:36:23:36:58 | new Upd ... arams3) | This query string depends on a $@. | athena.js:9:23:9:30 | req.body | user-provided value |
+| athena.js:48:22:48:30 | userQuery | athena.js:43:23:43:30 | req.body | athena.js:48:22:48:30 | userQuery | This query string depends on a $@. | athena.js:43:23:43:30 | req.body | user-provided value |
+| athena.js:57:22:57:30 | userQuery | athena.js:43:23:43:30 | req.body | athena.js:57:22:57:30 | userQuery | This query string depends on a $@. | athena.js:43:23:43:30 | req.body | user-provided value |
+| athena.js:66:22:66:30 | userQuery | athena.js:43:23:43:30 | req.body | athena.js:66:22:66:30 | userQuery | This query string depends on a $@. | athena.js:43:23:43:30 | req.body | user-provided value |
+| athena.js:84:23:84:29 | command | athena.js:75:32:75:39 | req.body | athena.js:84:23:84:29 | command | This query string depends on a $@. | athena.js:75:32:75:39 | req.body | user-provided value |
+| clients3.js:18:23:18:60 | new Sel ... params) | clients3.js:10:26:10:33 | req.body | clients3.js:18:23:18:60 | new Sel ... params) | This query string depends on a $@. | clients3.js:10:26:10:33 | req.body | user-provided value |
+| clients3.js:29:21:29:68 | "SELECT ... usInput | clients3.js:23:26:23:33 | req.body | clients3.js:29:21:29:68 | "SELECT ... usInput | This query string depends on a $@. | clients3.js:23:26:23:33 | req.body | user-provided value |
+| clients3.js:38:21:38:68 | "SELECT ... usInput | clients3.js:23:26:23:33 | req.body | clients3.js:38:21:38:68 | "SELECT ... usInput | This query string depends on a $@. | clients3.js:23:26:23:33 | req.body | user-provided value |
+| dynamodb.js:15:23:15:29 | command | dynamodb.js:9:26:9:33 | req.body | dynamodb.js:15:23:15:29 | command | This query string depends on a $@. | dynamodb.js:9:26:9:33 | req.body | user-provided value |
+| dynamodb.js:21:23:21:35 | updateCommand | dynamodb.js:9:26:9:33 | req.body | dynamodb.js:21:23:21:35 | updateCommand | This query string depends on a $@. | dynamodb.js:9:26:9:33 | req.body | user-provided value |
+| dynamodb.js:47:24:47:30 | command | dynamodb.js:9:26:9:33 | req.body | dynamodb.js:47:24:47:30 | command | This query string depends on a $@. | dynamodb.js:9:26:9:33 | req.body | user-provided value |
+| dynamodb.js:58:20:58:77 | `SELECT ... nput}'` | dynamodb.js:56:26:56:33 | req.body | dynamodb.js:58:20:58:77 | `SELECT ... nput}'` | This query string depends on a $@. | dynamodb.js:56:26:56:33 | req.body | user-provided value |
+| dynamodb.js:64:28:64:85 | `SELECT ... nput}'` | dynamodb.js:56:26:56:33 | req.body | dynamodb.js:64:28:64:85 | `SELECT ... nput}'` | This query string depends on a $@. | dynamodb.js:56:26:56:33 | req.body | user-provided value |
+| dynamodb.js:67:28:67:85 | `SELECT ... nput}'` | dynamodb.js:56:26:56:33 | req.body | dynamodb.js:67:28:67:85 | `SELECT ... nput}'` | This query string depends on a $@. | dynamodb.js:56:26:56:33 | req.body | user-provided value |
 | graphql.js:9:34:19:5 | `\\n      ... }\\n    ` | graphql.js:8:16:8:28 | req.params.id | graphql.js:9:34:19:5 | `\\n      ... }\\n    ` | This query string depends on a $@. | graphql.js:8:16:8:28 | req.params.id | user-provided value |
 | graphql.js:26:30:26:40 | `foo ${id}` | graphql.js:25:16:25:28 | req.params.id | graphql.js:26:30:26:40 | `foo ${id}` | This query string depends on a $@. | graphql.js:25:16:25:28 | req.params.id | user-provided value |
 | graphql.js:29:32:29:42 | `foo ${id}` | graphql.js:25:16:25:28 | req.params.id | graphql.js:29:32:29:42 | `foo ${id}` | This query string depends on a $@. | graphql.js:25:16:25:28 | req.params.id | user-provided value |
@@ -122,6 +138,10 @@
 | pg-promise.js:60:20:60:24 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:60:20:60:24 | query | This query string depends on a $@. | pg-promise.js:7:16:7:34 | req.params.category | user-provided value |
 | pg-promise.js:63:23:63:27 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:63:23:63:27 | query | This query string depends on a $@. | pg-promise.js:7:16:7:34 | req.params.category | user-provided value |
 | pg-promise.js:64:16:64:20 | query | pg-promise.js:7:16:7:34 | req.params.category | pg-promise.js:64:16:64:20 | query | This query string depends on a $@. | pg-promise.js:7:16:7:34 | req.params.category | user-provided value |
+| rds-client.js:19:23:19:58 | new Exe ... arams1) | rds-client.js:8:23:8:30 | req.body | rds-client.js:19:23:19:58 | new Exe ... arams1) | This query string depends on a $@. | rds-client.js:8:23:8:30 | req.body | user-provided value |
+| rds-client.js:36:23:36:51 | new Exe ... params) | rds-client.js:8:23:8:30 | req.body | rds-client.js:36:23:36:51 | new Exe ... params) | This query string depends on a $@. | rds-client.js:8:23:8:30 | req.body | user-provided value |
+| rds-client.js:53:14:53:22 | userQuery | rds-client.js:44:23:44:30 | req.body | rds-client.js:53:14:53:22 | userQuery | This query string depends on a $@. | rds-client.js:44:23:44:30 | req.body | user-provided value |
+| rds-client.js:61:50:61:52 | sql | rds-client.js:45:25:45:32 | req.body | rds-client.js:61:50:61:52 | sql | This query string depends on a $@. | rds-client.js:45:25:45:32 | req.body | user-provided value |
 | redis.js:10:16:10:27 | req.body.key | redis.js:10:16:10:23 | req.body | redis.js:10:16:10:27 | req.body.key | This query object depends on a $@. | redis.js:10:16:10:23 | req.body | user-provided value |
 | redis.js:18:16:18:18 | key | redis.js:12:15:12:22 | req.body | redis.js:18:16:18:18 | key | This query object depends on a $@. | redis.js:12:15:12:22 | req.body | user-provided value |
 | redis.js:19:43:19:45 | key | redis.js:12:15:12:22 | req.body | redis.js:19:43:19:45 | key | This query object depends on a $@. | redis.js:12:15:12:22 | req.body | user-provided value |
@@ -137,6 +157,72 @@
 | tst4.js:8:10:8:66 | 'SELECT ... d + '"' | tst4.js:8:46:8:60 | $routeParams.id | tst4.js:8:10:8:66 | 'SELECT ... d + '"' | This query string depends on a $@. | tst4.js:8:46:8:60 | $routeParams.id | user-provided value |
 | tst.js:10:10:10:64 | 'SELECT ... d + '"' | tst.js:10:46:10:58 | req.params.id | tst.js:10:10:10:64 | 'SELECT ... d + '"' | This query string depends on a $@. | tst.js:10:46:10:58 | req.params.id | user-provided value |
 edges
+| athena.js:9:11:9:19 | userQuery | athena.js:14:30:14:38 | userQuery | provenance |  |
+| athena.js:9:11:9:19 | userQuery | athena.js:24:22:24:30 | userQuery | provenance |  |
+| athena.js:9:11:9:19 | userQuery | athena.js:33:22:33:30 | userQuery | provenance |  |
+| athena.js:9:23:9:30 | req.body | athena.js:9:11:9:19 | userQuery | provenance |  |
+| athena.js:13:11:13:17 | params1 [QueryString] | athena.js:18:46:18:52 | params1 [QueryString] | provenance |  |
+| athena.js:13:21:17:5 | {   \\n   ... }\\n    } [QueryString] | athena.js:13:11:13:17 | params1 [QueryString] | provenance |  |
+| athena.js:14:22:14:38 | "SQL" + userQuery | athena.js:13:21:17:5 | {   \\n   ... }\\n    } [QueryString] | provenance |  |
+| athena.js:14:30:14:38 | userQuery | athena.js:14:22:14:38 | "SQL" + userQuery | provenance |  |
+| athena.js:18:11:18:11 | p | athena.js:19:23:19:23 | p | provenance |  |
+| athena.js:18:15:18:53 | new Sta ... arams1) | athena.js:18:11:18:11 | p | provenance |  |
+| athena.js:18:46:18:52 | params1 [QueryString] | athena.js:18:15:18:53 | new Sta ... arams1) | provenance |  |
+| athena.js:21:11:21:17 | params2 [QueryString] | athena.js:27:51:27:57 | params2 [QueryString] | provenance |  |
+| athena.js:21:21:26:5 | {\\n      ... "\\n    } [QueryString] | athena.js:21:11:21:17 | params2 [QueryString] | provenance |  |
+| athena.js:24:22:24:30 | userQuery | athena.js:21:21:26:5 | {\\n      ... "\\n    } [QueryString] | provenance |  |
+| athena.js:27:51:27:57 | params2 [QueryString] | athena.js:27:23:27:58 | new Cre ... arams2) | provenance |  |
+| athena.js:29:11:29:17 | params3 [QueryString] | athena.js:36:51:36:57 | params3 [QueryString] | provenance |  |
+| athena.js:29:21:35:5 | {\\n      ... "\\n    } [QueryString] | athena.js:29:11:29:17 | params3 [QueryString] | provenance |  |
+| athena.js:33:22:33:30 | userQuery | athena.js:29:21:35:5 | {\\n      ... "\\n    } [QueryString] | provenance |  |
+| athena.js:36:51:36:57 | params3 [QueryString] | athena.js:36:23:36:58 | new Upd ... arams3) | provenance |  |
+| athena.js:43:11:43:19 | userQuery | athena.js:48:22:48:30 | userQuery | provenance |  |
+| athena.js:43:11:43:19 | userQuery | athena.js:57:22:57:30 | userQuery | provenance |  |
+| athena.js:43:11:43:19 | userQuery | athena.js:66:22:66:30 | userQuery | provenance |  |
+| athena.js:43:23:43:30 | req.body | athena.js:43:11:43:19 | userQuery | provenance |  |
+| athena.js:75:11:75:28 | userQueryStatement | athena.js:80:25:80:42 | userQueryStatement | provenance |  |
+| athena.js:75:32:75:39 | req.body | athena.js:75:11:75:28 | userQueryStatement | provenance |  |
+| athena.js:77:11:77:15 | input [QueryStatement] | athena.js:83:56:83:60 | input [QueryStatement] | provenance |  |
+| athena.js:77:19:82:5 | {\\n      ... ,\\n    } [QueryStatement] | athena.js:77:11:77:15 | input [QueryStatement] | provenance |  |
+| athena.js:80:25:80:42 | userQueryStatement | athena.js:77:19:82:5 | {\\n      ... ,\\n    } [QueryStatement] | provenance |  |
+| athena.js:83:11:83:17 | command | athena.js:84:23:84:29 | command | provenance |  |
+| athena.js:83:21:83:61 | new Cre ... (input) | athena.js:83:11:83:17 | command | provenance |  |
+| athena.js:83:56:83:60 | input [QueryStatement] | athena.js:83:21:83:61 | new Cre ... (input) | provenance |  |
+| clients3.js:10:9:10:22 | maliciousInput | clients3.js:16:55:16:68 | maliciousInput | provenance |  |
+| clients3.js:10:26:10:33 | req.body | clients3.js:10:9:10:22 | maliciousInput | provenance |  |
+| clients3.js:12:11:12:16 | params [Expression] | clients3.js:18:54:18:59 | params [Expression] | provenance |  |
+| clients3.js:12:20:17:5 | {\\n      ... ,\\n    } [Expression] | clients3.js:12:11:12:16 | params [Expression] | provenance |  |
+| clients3.js:16:21:16:68 | "SELECT ... usInput | clients3.js:12:20:17:5 | {\\n      ... ,\\n    } [Expression] | provenance |  |
+| clients3.js:16:55:16:68 | maliciousInput | clients3.js:16:21:16:68 | "SELECT ... usInput | provenance |  |
+| clients3.js:18:54:18:59 | params [Expression] | clients3.js:18:23:18:60 | new Sel ... params) | provenance |  |
+| clients3.js:23:9:23:22 | maliciousInput | clients3.js:29:55:29:68 | maliciousInput | provenance |  |
+| clients3.js:23:9:23:22 | maliciousInput | clients3.js:38:55:38:68 | maliciousInput | provenance |  |
+| clients3.js:23:26:23:33 | req.body | clients3.js:23:9:23:22 | maliciousInput | provenance |  |
+| clients3.js:29:55:29:68 | maliciousInput | clients3.js:29:21:29:68 | "SELECT ... usInput | provenance |  |
+| clients3.js:38:55:38:68 | maliciousInput | clients3.js:38:21:38:68 | "SELECT ... usInput | provenance |  |
+| dynamodb.js:9:9:9:22 | maliciousInput | dynamodb.js:11:64:11:77 | maliciousInput | provenance |  |
+| dynamodb.js:9:9:9:22 | maliciousInput | dynamodb.js:17:80:17:93 | maliciousInput | provenance |  |
+| dynamodb.js:9:26:9:33 | req.body | dynamodb.js:9:9:9:22 | maliciousInput | provenance |  |
+| dynamodb.js:11:11:11:19 | statement | dynamodb.js:13:20:13:28 | statement | provenance |  |
+| dynamodb.js:11:64:11:77 | maliciousInput | dynamodb.js:11:11:11:19 | statement | provenance |  |
+| dynamodb.js:12:11:12:17 | command | dynamodb.js:15:23:15:29 | command | provenance |  |
+| dynamodb.js:12:11:12:17 | command | dynamodb.js:47:24:47:30 | command | provenance |  |
+| dynamodb.js:12:21:14:6 | new Exe ... \\n    }) | dynamodb.js:12:11:12:17 | command | provenance |  |
+| dynamodb.js:12:49:14:5 | {\\n      ... t\\n    } [Statement] | dynamodb.js:12:21:14:6 | new Exe ... \\n    }) | provenance |  |
+| dynamodb.js:13:20:13:28 | statement | dynamodb.js:12:49:14:5 | {\\n      ... t\\n    } [Statement] | provenance |  |
+| dynamodb.js:17:11:17:25 | updateStatement | dynamodb.js:19:20:19:34 | updateStatement | provenance |  |
+| dynamodb.js:17:80:17:93 | maliciousInput | dynamodb.js:17:11:17:25 | updateStatement | provenance |  |
+| dynamodb.js:18:11:18:23 | updateCommand | dynamodb.js:21:23:21:35 | updateCommand | provenance |  |
+| dynamodb.js:18:27:20:6 | new Exe ... \\n    }) | dynamodb.js:18:11:18:23 | updateCommand | provenance |  |
+| dynamodb.js:18:55:20:5 | {\\n      ... t\\n    } [Statement] | dynamodb.js:18:27:20:6 | new Exe ... \\n    }) | provenance |  |
+| dynamodb.js:19:20:19:34 | updateStatement | dynamodb.js:18:55:20:5 | {\\n      ... t\\n    } [Statement] | provenance |  |
+| dynamodb.js:56:9:56:22 | maliciousInput | dynamodb.js:58:61:58:74 | maliciousInput | provenance |  |
+| dynamodb.js:56:9:56:22 | maliciousInput | dynamodb.js:64:69:64:82 | maliciousInput | provenance |  |
+| dynamodb.js:56:9:56:22 | maliciousInput | dynamodb.js:67:69:67:82 | maliciousInput | provenance |  |
+| dynamodb.js:56:26:56:33 | req.body | dynamodb.js:56:9:56:22 | maliciousInput | provenance |  |
+| dynamodb.js:58:61:58:74 | maliciousInput | dynamodb.js:58:20:58:77 | `SELECT ... nput}'` | provenance |  |
+| dynamodb.js:64:69:64:82 | maliciousInput | dynamodb.js:64:28:64:85 | `SELECT ... nput}'` | provenance |  |
+| dynamodb.js:67:69:67:82 | maliciousInput | dynamodb.js:67:28:67:85 | `SELECT ... nput}'` | provenance |  |
 | graphql.js:8:11:8:12 | id | graphql.js:11:46:11:47 | id | provenance |  |
 | graphql.js:8:16:8:28 | req.params.id | graphql.js:8:11:8:12 | id | provenance |  |
 | graphql.js:11:46:11:47 | id | graphql.js:9:34:19:5 | `\\n      ... }\\n    ` | provenance |  |
@@ -490,6 +576,23 @@ edges
 | pg-promise.js:22:11:22:15 | query | pg-promise.js:60:20:60:24 | query | provenance |  |
 | pg-promise.js:22:11:22:15 | query | pg-promise.js:63:23:63:27 | query | provenance |  |
 | pg-promise.js:22:11:22:15 | query | pg-promise.js:64:16:64:20 | query | provenance |  |
+| rds-client.js:8:11:8:19 | userQuery | rds-client.js:17:14:17:22 | userQuery | provenance |  |
+| rds-client.js:8:11:8:19 | userQuery | rds-client.js:33:24:33:32 | userQuery | provenance |  |
+| rds-client.js:8:23:8:30 | req.body | rds-client.js:8:11:8:19 | userQuery | provenance |  |
+| rds-client.js:13:11:13:17 | params1 [sql] | rds-client.js:19:51:19:57 | params1 [sql] | provenance |  |
+| rds-client.js:13:21:18:5 | {\\n      ... y\\n    } [sql] | rds-client.js:13:11:13:17 | params1 [sql] | provenance |  |
+| rds-client.js:17:14:17:22 | userQuery | rds-client.js:13:21:18:5 | {\\n      ... y\\n    } [sql] | provenance |  |
+| rds-client.js:19:51:19:57 | params1 [sql] | rds-client.js:19:23:19:58 | new Exe ... arams1) | provenance |  |
+| rds-client.js:29:11:29:16 | params [sqlStatements] | rds-client.js:36:45:36:50 | params [sqlStatements] | provenance |  |
+| rds-client.js:29:20:34:5 | {\\n      ... y\\n    } [sqlStatements] | rds-client.js:29:11:29:16 | params [sqlStatements] | provenance |  |
+| rds-client.js:33:24:33:32 | userQuery | rds-client.js:29:20:34:5 | {\\n      ... y\\n    } [sqlStatements] | provenance |  |
+| rds-client.js:36:45:36:50 | params [sqlStatements] | rds-client.js:36:23:36:51 | new Exe ... params) | provenance |  |
+| rds-client.js:44:11:44:19 | userQuery | rds-client.js:53:14:53:22 | userQuery | provenance |  |
+| rds-client.js:44:23:44:30 | req.body | rds-client.js:44:11:44:19 | userQuery | provenance |  |
+| rds-client.js:45:11:45:21 | userQueries | rds-client.js:61:24:61:34 | userQueries | provenance |  |
+| rds-client.js:45:25:45:32 | req.body | rds-client.js:45:11:45:21 | userQueries | provenance |  |
+| rds-client.js:61:24:61:34 | userQueries | rds-client.js:61:40:61:42 | sql | provenance |  |
+| rds-client.js:61:40:61:42 | sql | rds-client.js:61:50:61:52 | sql | provenance |  |
 | redis.js:10:16:10:23 | req.body | redis.js:10:16:10:27 | req.body.key | provenance | Config |
 | redis.js:12:9:12:11 | key | redis.js:13:16:13:18 | key | provenance |  |
 | redis.js:12:9:12:11 | key | redis.js:18:16:18:18 | key | provenance |  |
@@ -518,6 +621,79 @@ edges
 | tst4.js:8:46:8:60 | $routeParams.id | tst4.js:8:10:8:66 | 'SELECT ... d + '"' | provenance |  |
 | tst.js:10:46:10:58 | req.params.id | tst.js:10:10:10:64 | 'SELECT ... d + '"' | provenance |  |
 nodes
+| athena.js:9:11:9:19 | userQuery | semmle.label | userQuery |
+| athena.js:9:23:9:30 | req.body | semmle.label | req.body |
+| athena.js:13:11:13:17 | params1 [QueryString] | semmle.label | params1 [QueryString] |
+| athena.js:13:21:17:5 | {   \\n   ... }\\n    } [QueryString] | semmle.label | {   \\n   ... }\\n    } [QueryString] |
+| athena.js:14:22:14:38 | "SQL" + userQuery | semmle.label | "SQL" + userQuery |
+| athena.js:14:30:14:38 | userQuery | semmle.label | userQuery |
+| athena.js:18:11:18:11 | p | semmle.label | p |
+| athena.js:18:15:18:53 | new Sta ... arams1) | semmle.label | new Sta ... arams1) |
+| athena.js:18:46:18:52 | params1 [QueryString] | semmle.label | params1 [QueryString] |
+| athena.js:19:23:19:23 | p | semmle.label | p |
+| athena.js:21:11:21:17 | params2 [QueryString] | semmle.label | params2 [QueryString] |
+| athena.js:21:21:26:5 | {\\n      ... "\\n    } [QueryString] | semmle.label | {\\n      ... "\\n    } [QueryString] |
+| athena.js:24:22:24:30 | userQuery | semmle.label | userQuery |
+| athena.js:27:23:27:58 | new Cre ... arams2) | semmle.label | new Cre ... arams2) |
+| athena.js:27:51:27:57 | params2 [QueryString] | semmle.label | params2 [QueryString] |
+| athena.js:29:11:29:17 | params3 [QueryString] | semmle.label | params3 [QueryString] |
+| athena.js:29:21:35:5 | {\\n      ... "\\n    } [QueryString] | semmle.label | {\\n      ... "\\n    } [QueryString] |
+| athena.js:33:22:33:30 | userQuery | semmle.label | userQuery |
+| athena.js:36:23:36:58 | new Upd ... arams3) | semmle.label | new Upd ... arams3) |
+| athena.js:36:51:36:57 | params3 [QueryString] | semmle.label | params3 [QueryString] |
+| athena.js:43:11:43:19 | userQuery | semmle.label | userQuery |
+| athena.js:43:23:43:30 | req.body | semmle.label | req.body |
+| athena.js:48:22:48:30 | userQuery | semmle.label | userQuery |
+| athena.js:57:22:57:30 | userQuery | semmle.label | userQuery |
+| athena.js:66:22:66:30 | userQuery | semmle.label | userQuery |
+| athena.js:75:11:75:28 | userQueryStatement | semmle.label | userQueryStatement |
+| athena.js:75:32:75:39 | req.body | semmle.label | req.body |
+| athena.js:77:11:77:15 | input [QueryStatement] | semmle.label | input [QueryStatement] |
+| athena.js:77:19:82:5 | {\\n      ... ,\\n    } [QueryStatement] | semmle.label | {\\n      ... ,\\n    } [QueryStatement] |
+| athena.js:80:25:80:42 | userQueryStatement | semmle.label | userQueryStatement |
+| athena.js:83:11:83:17 | command | semmle.label | command |
+| athena.js:83:21:83:61 | new Cre ... (input) | semmle.label | new Cre ... (input) |
+| athena.js:83:56:83:60 | input [QueryStatement] | semmle.label | input [QueryStatement] |
+| athena.js:84:23:84:29 | command | semmle.label | command |
+| clients3.js:10:9:10:22 | maliciousInput | semmle.label | maliciousInput |
+| clients3.js:10:26:10:33 | req.body | semmle.label | req.body |
+| clients3.js:12:11:12:16 | params [Expression] | semmle.label | params [Expression] |
+| clients3.js:12:20:17:5 | {\\n      ... ,\\n    } [Expression] | semmle.label | {\\n      ... ,\\n    } [Expression] |
+| clients3.js:16:21:16:68 | "SELECT ... usInput | semmle.label | "SELECT ... usInput |
+| clients3.js:16:55:16:68 | maliciousInput | semmle.label | maliciousInput |
+| clients3.js:18:23:18:60 | new Sel ... params) | semmle.label | new Sel ... params) |
+| clients3.js:18:54:18:59 | params [Expression] | semmle.label | params [Expression] |
+| clients3.js:23:9:23:22 | maliciousInput | semmle.label | maliciousInput |
+| clients3.js:23:26:23:33 | req.body | semmle.label | req.body |
+| clients3.js:29:21:29:68 | "SELECT ... usInput | semmle.label | "SELECT ... usInput |
+| clients3.js:29:55:29:68 | maliciousInput | semmle.label | maliciousInput |
+| clients3.js:38:21:38:68 | "SELECT ... usInput | semmle.label | "SELECT ... usInput |
+| clients3.js:38:55:38:68 | maliciousInput | semmle.label | maliciousInput |
+| dynamodb.js:9:9:9:22 | maliciousInput | semmle.label | maliciousInput |
+| dynamodb.js:9:26:9:33 | req.body | semmle.label | req.body |
+| dynamodb.js:11:11:11:19 | statement | semmle.label | statement |
+| dynamodb.js:11:64:11:77 | maliciousInput | semmle.label | maliciousInput |
+| dynamodb.js:12:11:12:17 | command | semmle.label | command |
+| dynamodb.js:12:21:14:6 | new Exe ... \\n    }) | semmle.label | new Exe ... \\n    }) |
+| dynamodb.js:12:49:14:5 | {\\n      ... t\\n    } [Statement] | semmle.label | {\\n      ... t\\n    } [Statement] |
+| dynamodb.js:13:20:13:28 | statement | semmle.label | statement |
+| dynamodb.js:15:23:15:29 | command | semmle.label | command |
+| dynamodb.js:17:11:17:25 | updateStatement | semmle.label | updateStatement |
+| dynamodb.js:17:80:17:93 | maliciousInput | semmle.label | maliciousInput |
+| dynamodb.js:18:11:18:23 | updateCommand | semmle.label | updateCommand |
+| dynamodb.js:18:27:20:6 | new Exe ... \\n    }) | semmle.label | new Exe ... \\n    }) |
+| dynamodb.js:18:55:20:5 | {\\n      ... t\\n    } [Statement] | semmle.label | {\\n      ... t\\n    } [Statement] |
+| dynamodb.js:19:20:19:34 | updateStatement | semmle.label | updateStatement |
+| dynamodb.js:21:23:21:35 | updateCommand | semmle.label | updateCommand |
+| dynamodb.js:47:24:47:30 | command | semmle.label | command |
+| dynamodb.js:56:9:56:22 | maliciousInput | semmle.label | maliciousInput |
+| dynamodb.js:56:26:56:33 | req.body | semmle.label | req.body |
+| dynamodb.js:58:20:58:77 | `SELECT ... nput}'` | semmle.label | `SELECT ... nput}'` |
+| dynamodb.js:58:61:58:74 | maliciousInput | semmle.label | maliciousInput |
+| dynamodb.js:64:28:64:85 | `SELECT ... nput}'` | semmle.label | `SELECT ... nput}'` |
+| dynamodb.js:64:69:64:82 | maliciousInput | semmle.label | maliciousInput |
+| dynamodb.js:67:28:67:85 | `SELECT ... nput}'` | semmle.label | `SELECT ... nput}'` |
+| dynamodb.js:67:69:67:82 | maliciousInput | semmle.label | maliciousInput |
 | graphql.js:8:11:8:12 | id | semmle.label | id |
 | graphql.js:8:16:8:28 | req.params.id | semmle.label | req.params.id |
 | graphql.js:9:34:19:5 | `\\n      ... }\\n    ` | semmle.label | `\\n      ... }\\n    ` |
@@ -803,6 +979,26 @@ nodes
 | pg-promise.js:60:20:60:24 | query | semmle.label | query |
 | pg-promise.js:63:23:63:27 | query | semmle.label | query |
 | pg-promise.js:64:16:64:20 | query | semmle.label | query |
+| rds-client.js:8:11:8:19 | userQuery | semmle.label | userQuery |
+| rds-client.js:8:23:8:30 | req.body | semmle.label | req.body |
+| rds-client.js:13:11:13:17 | params1 [sql] | semmle.label | params1 [sql] |
+| rds-client.js:13:21:18:5 | {\\n      ... y\\n    } [sql] | semmle.label | {\\n      ... y\\n    } [sql] |
+| rds-client.js:17:14:17:22 | userQuery | semmle.label | userQuery |
+| rds-client.js:19:23:19:58 | new Exe ... arams1) | semmle.label | new Exe ... arams1) |
+| rds-client.js:19:51:19:57 | params1 [sql] | semmle.label | params1 [sql] |
+| rds-client.js:29:11:29:16 | params [sqlStatements] | semmle.label | params [sqlStatements] |
+| rds-client.js:29:20:34:5 | {\\n      ... y\\n    } [sqlStatements] | semmle.label | {\\n      ... y\\n    } [sqlStatements] |
+| rds-client.js:33:24:33:32 | userQuery | semmle.label | userQuery |
+| rds-client.js:36:23:36:51 | new Exe ... params) | semmle.label | new Exe ... params) |
+| rds-client.js:36:45:36:50 | params [sqlStatements] | semmle.label | params [sqlStatements] |
+| rds-client.js:44:11:44:19 | userQuery | semmle.label | userQuery |
+| rds-client.js:44:23:44:30 | req.body | semmle.label | req.body |
+| rds-client.js:45:11:45:21 | userQueries | semmle.label | userQueries |
+| rds-client.js:45:25:45:32 | req.body | semmle.label | req.body |
+| rds-client.js:53:14:53:22 | userQuery | semmle.label | userQuery |
+| rds-client.js:61:24:61:34 | userQueries | semmle.label | userQueries |
+| rds-client.js:61:40:61:42 | sql | semmle.label | sql |
+| rds-client.js:61:50:61:52 | sql | semmle.label | sql |
 | redis.js:10:16:10:23 | req.body | semmle.label | req.body |
 | redis.js:10:16:10:27 | req.body.key | semmle.label | req.body.key |
 | redis.js:12:9:12:11 | key | semmle.label | key |
