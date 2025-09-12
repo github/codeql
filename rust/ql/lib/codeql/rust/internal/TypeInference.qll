@@ -1129,6 +1129,7 @@ private module MethodCallResolution {
    * Holds if method `f` with the name `name` and the arity `arity` exists in
    * `i`, and the type of the `self` parameter is `selfType`.
    *
+   * TODO
    * `rootType` is the root type of `selfType`, and `selfRootPath` points to
    * `selfRootType` inside `selfType`, where `selfRootType` is either the type
    * being implemented, when `i` is an `impl`, or the trait itself when `i` is
@@ -1137,7 +1138,7 @@ private module MethodCallResolution {
   pragma[nomagic]
   predicate methodInfo(
     Function f, string name, int arity, ImplOrTraitItemNode i, FunctionType selfType,
-    TypePath rootTypePath, Type rootType, TypePath selfRootPath, Type selfRootType
+    TypePath rootTypePath, Type rootType
   ) {
     exists(FunctionTypePosition pos |
       f = i.getASuccessor(name) and
@@ -1151,19 +1152,14 @@ private module MethodCallResolution {
       ) and
       selfType.appliesTo(f, pos, i) and
       pos.isSelf() and
-      selfType.getTypeAt(selfRootPath) = selfRootType and
       not i.(ImplItemNode).isBlanket()
-    |
-      selfRootType = i.(Impl).getSelfTy().(TypeMention).resolveType()
-      or
-      selfRootType = TTrait(i)
     )
   }
 
   pragma[nomagic]
   private predicate traitMethodInfo(string name, int arity, Trait trait) {
     exists(ImplItemNode i |
-      methodInfo(_, name, arity, i, _, _, _, _, _) and
+      methodInfo(_, name, arity, i, _, _, _) and
       trait = i.resolveTraitTy()
     )
   }
@@ -1173,7 +1169,7 @@ private module MethodCallResolution {
     exists(string name, int arity | mc.(MethodCall).isMethodCall(name, arity) |
       traitMethodInfo(name, arity, trait)
       or
-      methodInfo(_, name, arity, trait, _, _, _, _, _)
+      methodInfo(_, name, arity, trait, _, _, _)
     )
   }
 
@@ -1191,6 +1187,8 @@ private module MethodCallResolution {
    * Holds if method call `mc` may target a method in `i` with `self` parameter having
    * type `selfType`.
    *
+   * todo
+   *
    * `rootType` is the root type of `selfType`, and `selfRootPath` points to
    * `selfRootType` inside `selfType`, where `selfRootType` is either the type
    * being implemented, when `i` is an `impl`, or the trait itself when `i` is
@@ -1202,12 +1200,11 @@ private module MethodCallResolution {
    */
   pragma[inline]
   private predicate methodCallCandidate(
-    MethodCall mc, ImplOrTraitItemNode i, FunctionType self, TypePath rootTypePath, Type rootType,
-    TypePath selfRootPath, Type selfRootType
+    MethodCall mc, ImplOrTraitItemNode i, FunctionType self, TypePath rootTypePath, Type rootType
   ) {
     exists(string name, int arity |
       mc.isMethodCall(name, arity) and
-      methodInfo(_, name, arity, i, self, rootTypePath, rootType, selfRootPath, selfRootType)
+      methodInfo(_, name, arity, i, self, rootTypePath, rootType)
     |
       i =
         any(Impl impl |
@@ -1221,15 +1218,6 @@ private module MethodCallResolution {
       mc instanceof IndexExpr and
       i.(ImplItemNode).resolveTraitTy() instanceof IndexTrait
     )
-  }
-
-  private int countmethodCallCandidate(MethodCall mc) {
-    result = strictcount(ImplOrTraitItemNode i | methodCallCandidate(mc, i, _, _, _, _, _))
-  }
-
-  private predicate countmethodCallMaxCandidate(MethodCall mc, ImplOrTraitItemNode i) {
-    methodCallCandidate(mc, i, _, _, _, _, _) and
-    countmethodCallCandidate(mc) = max(countmethodCallCandidate(_))
   }
 
   /**
@@ -1292,16 +1280,8 @@ private module MethodCallResolution {
      */
     pragma[nomagic]
     private predicate isNotCandidate(ImplOrTraitItemNode i, string derefChainBorrow) {
-      IsInstantiationOf<MethodCallCand, FunctionType, MethodCallIsInstantiationOfInput>::isNotInstantiationOf(MkMethodCallCand(this,
+      IsInstantiationOf<MethodCallCand, FunctionType, MethodCallReceiverIsInstantiationOfInput>::isNotInstantiationOf(MkMethodCallCand(this,
           derefChainBorrow), i, _)
-      or
-      exists(TypePath rootTypePath, Type rootType, TypePath selfRootPath, Type selfRootType |
-        rootType =
-          this.getACandidateReceiverTypeAtSubstituteTraitBounds(rootTypePath, derefChainBorrow) and
-        methodCallCandidate(this, i, _, rootTypePath, rootType, selfRootPath, selfRootType) and
-        selfRootType !=
-          this.getACandidateReceiverTypeAtSubstituteTraitBounds(selfRootPath, derefChainBorrow)
-      )
     }
 
     /**
@@ -1322,18 +1302,12 @@ private module MethodCallResolution {
           rootTypePath = TypePath::singleton(TRefTypeParameter())
         )
       |
-        forall(ImplOrTraitItemNode i |
-          methodCallCandidate(this, i, _, rootTypePath, rootType, _, _)
-        |
+        forall(ImplOrTraitItemNode i | methodCallCandidate(this, i, _, rootTypePath, rootType) |
           this.isNotCandidate(i, derefChainBorrow)
         )
       )
     }
 
-    // pragma[nomagic]
-    // private predicate hasRefCandidate(ImplOrTraitItemNode i) {
-    //   methodCallCandidate(this, i, _, TRefType(), _, _)
-    // }
     /**
      * Holds if the candidate receiver type represented by `derefChain;borrow` does not
      * have a matching method target.
@@ -1347,9 +1321,7 @@ private module MethodCallResolution {
           this.getACandidateReceiverTypeAtSubstituteTraitBounds(rootTypePath, derefChainBorrow) and
         rootTypePath = TypePath::singleton(TRefTypeParameter())
       |
-        forall(ImplOrTraitItemNode i |
-          methodCallCandidate(this, i, _, rootTypePath, rootType, _, _)
-        |
+        forall(ImplOrTraitItemNode i | methodCallCandidate(this, i, _, rootTypePath, rootType) |
           this.isNotCandidate(i, derefChainBorrow)
         )
       )
@@ -1394,12 +1366,6 @@ private module MethodCallResolution {
     pragma[nomagic]
     Type getACandidateReceiverTypeAtSubstituteTraitBounds(TypePath path, string derefChainBorrow) {
       result = substituteTraitBounds(this.getACandidateReceiverTypeAt(path, derefChainBorrow))
-    }
-
-    pragma[nomagic]
-    private Type getACandidateReceiverTypeAtSubstituteTraitBounds(string derefChainBorrow) {
-      result =
-        this.getACandidateReceiverTypeAtSubstituteTraitBounds(TypePath::nil(), derefChainBorrow)
     }
 
     /**
@@ -1485,7 +1451,7 @@ private module MethodCallResolution {
      */
     pragma[nomagic]
     private predicate isNotInherentCandidate(Impl impl) {
-      IsInstantiationOf<MethodCallCand, FunctionType, MethodCallIsNotInstantiationOfInput>::isNotInstantiationOf(this,
+      IsInstantiationOf<MethodCallCand, FunctionType, MethodCallReceiverIsInstantiationOfInherentInput>::isNotInstantiationOf(this,
         impl, _)
     }
 
@@ -1503,8 +1469,8 @@ private module MethodCallResolution {
           or
           rootTypePath = TypePath::singleton(TRefTypeParameter())
         ) and
-        forall(Impl i, FunctionType self, TypePath selfRootPath, Type selfRootType |
-          methodInfo(_, name, arity, i, self, rootTypePath, rootType, selfRootPath, selfRootType) and
+        forall(Impl i |
+          methodInfo(_, name, arity, i, _, rootTypePath, rootType) and
           not i.hasTrait()
         |
           this.isNotInherentCandidate(i)
@@ -1515,7 +1481,7 @@ private module MethodCallResolution {
     pragma[nomagic]
     private Function resolveCallTargetCand(ImplOrTraitItemNode i) {
       exists(string name |
-        IsInstantiationOf<MethodCallCand, FunctionType, MethodCallIsInstantiationOfInput>::isInstantiationOf(this,
+        IsInstantiationOf<MethodCallCand, FunctionType, MethodCallReceiverIsInstantiationOfInput>::isInstantiationOf(this,
           i, _) and
         mc_.isMethodCall(name, _) and
         result = getMethodSuccessor(i, name, _) and
@@ -1570,21 +1536,21 @@ private module MethodCallResolution {
    * A configuration for matching the type of a receiver against the type of
    * a `self` parameter.
    */
-  private module MethodCallIsInstantiationOfInput implements
+  private module MethodCallReceiverIsInstantiationOfInput implements
     IsInstantiationOfInputSig<MethodCallCand, FunctionType>
   {
     pragma[nomagic]
     predicate potentialInstantiationOf(
       MethodCallCand mcc, TypeAbstraction abs, FunctionType constraint
     ) {
-      exists(MethodCall mc, string name, int arity, TypePath selfRootPath, Type selfRootType |
-        mcc.isMethodCall(mc, selfRootPath, selfRootType, name, arity) and
-        methodCallCandidate(mc, abs, constraint, _, _, selfRootPath, selfRootType)
+      exists(MethodCall mc, string name, int arity, TypePath rootTypePath, Type rootType |
+        mcc.isMethodCall(mc, rootTypePath, rootType, name, arity) and
+        methodCallCandidate(mc, abs, constraint, rootTypePath, rootType)
       )
     }
 
     predicate relevantTypeMention(FunctionType constraint) {
-      methodInfo(_, _, _, _, constraint, _, _, _, _)
+      methodInfo(_, _, _, _, constraint, _, _)
     }
   }
 
@@ -1592,22 +1558,19 @@ private module MethodCallResolution {
    * A configuration for anti-matching the type of a receiver against the type of
    * a `self` parameter in an inherent method.
    */
-  private module MethodCallIsNotInstantiationOfInput implements
+  private module MethodCallReceiverIsInstantiationOfInherentInput implements
     IsInstantiationOfInputSig<MethodCallCand, FunctionType>
   {
     pragma[nomagic]
     predicate potentialInstantiationOf(
       MethodCallCand mcc, TypeAbstraction abs, FunctionType constraint
     ) {
-      abs = any(Impl i | not i.hasTrait()) and
-      exists(MethodCall mc, string name, int arity, TypePath rootTypePath, Type rootType |
-        mcc.isMethodCall(mc, rootTypePath, rootType, name, arity) and
-        methodCallCandidate(mc, abs, constraint, rootTypePath, rootType, _, _)
-      )
+      MethodCallReceiverIsInstantiationOfInput::potentialInstantiationOf(mcc, abs, constraint) and
+      abs = any(Impl i | not i.hasTrait())
     }
 
     predicate relevantTypeMention(FunctionType constraint) {
-      methodInfo(_, _, _, _, constraint, _, _, _, _)
+      methodInfo(_, _, _, _, constraint, _, _)
     }
   }
 }
@@ -1915,11 +1878,11 @@ private module FunctionCallResolution {
       FunctionCall call, TraitItemNode trait, ImplOrTraitItemNode i, FunctionType self,
       Function resolved, Function f
     ) {
-      exists(TypePath selfRootPath, Type selfRootType |
+      exists(TypePath rootTypePath, Type rootType |
         f = call.getPathResolutionResolvedFunctionOrImplementation(resolved) and
         trait = call.(Call).getTrait() and
-        MethodCallResolution::methodInfo(f, _, _, i, self, _, _, selfRootPath, selfRootType) and
-        call.getTypeAt(selfRootPath) = selfRootType
+        MethodCallResolution::methodInfo(f, _, _, i, self, rootTypePath, rootType) and
+        call.getTypeAt(rootTypePath) = rootType
       )
     }
 
@@ -1931,7 +1894,7 @@ private module FunctionCallResolution {
     }
 
     predicate relevantTypeMention(FunctionType constraint) {
-      MethodCallResolution::methodInfo(_, _, _, _, constraint, _, _, _, _)
+      MethodCallResolution::methodInfo(_, _, _, _, constraint, _, _)
     }
   }
 }
@@ -2216,10 +2179,9 @@ private module OperationResolution {
     pragma[nomagic]
     private predicate methodInfo(
       TypeAbstraction abs, FunctionType constraint, Trait trait, string name, int arity,
-      TypePath selfRootPath, Type selfRootType
+      TypePath rootTypePath, Type rootType
     ) {
-      MethodCallResolution::methodInfo(_, name, arity, abs, constraint, _, _, selfRootPath,
-        selfRootType) and
+      MethodCallResolution::methodInfo(_, name, arity, abs, constraint, rootTypePath, rootType) and
       (
         trait = abs.(ImplItemNode).resolveTraitTy()
         or
@@ -2229,14 +2191,14 @@ private module OperationResolution {
 
     pragma[nomagic]
     predicate potentialInstantiationOf(Op op, TypeAbstraction abs, FunctionType constraint) {
-      exists(Trait trait, string name, int arity, TypePath selfRootPath, Type selfRootType |
-        op.isOperation(selfRootPath, selfRootType, trait, name, arity) and
-        methodInfo(abs, constraint, trait, name, arity, selfRootPath, selfRootType)
+      exists(Trait trait, string name, int arity, TypePath rootTypePath, Type rootType |
+        op.isOperation(rootTypePath, rootType, trait, name, arity) and
+        methodInfo(abs, constraint, trait, name, arity, rootTypePath, rootType)
       )
     }
 
     predicate relevantTypeMention(FunctionType constraint) {
-      MethodCallResolution::methodInfo(_, _, _, _, constraint, _, _, _, _)
+      MethodCallResolution::methodInfo(_, _, _, _, constraint, _, _)
     }
   }
 }
