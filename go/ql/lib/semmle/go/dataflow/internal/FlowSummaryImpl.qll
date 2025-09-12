@@ -377,7 +377,8 @@ module SourceSinkInterpretationInput implements
       or
       n2.asExpr() = n.asInstruction().(IR::EvalImplicitDerefInstruction).getOperand()
     |
-      result = lookThroughPointerType(skipImplicitFieldReads(n2).getType())
+      result =
+        maybeLookThroughNamedType(lookThroughPointerType(skipImplicitFieldReads(n2).getType()))
     )
   }
 
@@ -393,6 +394,12 @@ module SourceSinkInterpretationInput implements
           .asInstruction()
           .(IR::ImplicitFieldReadInstruction)
           .getBaseInstruction()
+  }
+
+  private DefinedType maybeLookThroughNamedType(DefinedType t) {
+    // We do not have information on what a defined type is defined to be, only
+    // the underlying type, so we have to be a bit imprecise.
+    result.getBaseType() = t.getBaseType()
   }
 
   /** Provides additional sink specification logic. */
