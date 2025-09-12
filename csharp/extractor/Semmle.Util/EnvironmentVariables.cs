@@ -53,5 +53,19 @@ namespace Semmle.Util
         {
             return Environment.GetEnvironmentVariable(name)?.Split(" ", StringSplitOptions.RemoveEmptyEntries) ?? [];
         }
+
+        /// <summary>
+        /// Used to
+        /// (1) Detect whether the extractor should run in overlay mode.
+        /// (2) Returns the path to the file containing a list of changed files
+        /// in JSON format.
+        ///
+        /// The environment variable is only set in case the extraction is supposed to be
+        /// performed in overlay mode. Furthermore, this only applies to buildless extraction.
+        /// </summary>
+        public static string? GetOverlayChangesFilePath()
+        {
+            return Environment.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_OVERLAY_CHANGES");
+        }
     }
 }
