@@ -13,5 +13,5 @@ module TaintTracking {
   private import semmle.code.java.dataflow.internal.DataFlowImplSpecific
   private import semmle.code.java.dataflow.internal.TaintTrackingImplSpecific
   private import codeql.dataflow.TaintTracking
-  import TaintFlowMake<Location, JavaDataFlow, JavaTaintTracking>
+  import TaintFlowMakeOverlay<Location, JavaDataFlow, JavaTaintTracking>
 }

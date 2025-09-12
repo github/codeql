@@ -15,7 +15,7 @@ private import DataFlowImplStage1
 
 module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
-  private import DataFlowMake<Location, Lang>
+  private import DataFlowMakeCore<Location, Lang>
   private import MakeImplStage1<Location, Lang>
   private import DataFlowImplCommon::MakeImplCommon<Location, Lang>
   private import DataFlowImplCommonPublic
@@ -143,6 +143,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
      */
     predicate observeDiffInformedIncrementalMode();
 
+    /**
+     * Holds if sources and sinks should be filtered to only include those that
+     * are in the overlay database. This only has an effect when running
+     * in overlay-informed incremental mode.
+     */
+    predicate observeOverlayInformedIncrementalMode();
+
     Location getASelectedSourceLocation(Node source);
 
     Location getASelectedSinkLocation(Node sink);
@@ -169,6 +176,79 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     ) {
       none()
     }
+  }
+
+  /**
+   * Constructs a data flow computation given a full input configuration, and
+   * an initial stage 1 pruning with merging of overlay and base results.
+   */
+  module OverlayImpl<FullStateConfigSig Config, Stage1Output<Config::FlowState> Stage1> {
+    module Base = Impl<Config, Stage1>;
+
+    import Base
+
+    /**
+     * Holds if data can flow from `source` to `sink`.
+     *
+     * This is a local predicate that only has results local to the overlay/base database.
+     */
+    predicate flowLocal(Node source, Node sink) = forceLocal(Base::flow/2)(source, sink)
+
+    /**
+     * Holds if data can flow from `source` to `sink`.
+     */
+    predicate flow(Node source, Node sink) {
+      Base::flow(source, sink)
+      or
+      // If we are overlay informed (i.e. we are not diff-informed), we
+      // merge in the local results which includes the base database results.
+      flowLocal(source, sink) and Config::observeOverlayInformedIncrementalMode()
+    }
+
+    /**
+     * Holds if data can flow from some source to `sink`.
+     * This predicate that only has results local to the overlay/base database.
+     */
+    predicate flowToLocal(Node sink) = forceLocal(Base::flowTo/1)(sink)
+
+    /**
+     * Holds if data can flow from some source to `sink`.
+     */
+    predicate flowTo(Node sink) {
+      Base::flowTo(sink)
+      or
+      // If we are overlay informed (i.e. we are not diff-informed), we
+      // merge in the local results which includes the base database results.
+      flowToLocal(sink) and not Config::observeOverlayInformedIncrementalMode()
+    }
+
+    /**
+     * Holds if data can flow from some source to `sink`.
+     */
+    predicate flowToExpr(Lang::DataFlowExpr sink) { flowTo(exprNode(sink)) }
+
+    /**
+     * Holds if data can flow to some sink from `source`.
+     *
+     * This is a local predicate that only has results local to the overlay/base database.
+     */
+    predicate flowFromLocal(Node source) = forceLocal(Base::flowFrom/1)(source)
+
+    /**
+     * Holds if data can flow to some sink from `source`.
+     */
+    predicate flowFrom(Node source) {
+      Base::flowFrom(source)
+      or
+      // If we are overlay informed (i.e. we are not diff-informed), we
+      // merge in the local results which includes the base database results.
+      flowFromLocal(source) and not Config::observeOverlayInformedIncrementalMode()
+    }
+
+    /**
+     * Holds if data can flow from some source to `sink`.
+     */
+    predicate flowFromExpr(Lang::DataFlowExpr sink) { flowFrom(exprNode(sink)) }
   }
 
   /**
@@ -3393,6 +3473,16 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
      * Holds if data can flow from some source to `sink`.
      */
     predicate flowToExpr(Expr sink) { flowTo(exprNode(sink)) }
+
+    /**
+     * Holds if data can flow from `source` to some sink.
+     */
+    predicate flowFrom(Node source) { exists(PathNode n | n.isSource() and n.getNode() = source) }
+
+    /**
+     * Holds if data can flow from `source` to some sink.
+     */
+    predicate flowFromExpr(Expr source) { flowFrom(exprNode(source)) }
 
     /**
      * INTERNAL: Only for debugging.
