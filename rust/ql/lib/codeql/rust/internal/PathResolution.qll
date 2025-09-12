@@ -648,6 +648,19 @@ final class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
 
   override Visibility getVisibility() { result = Impl.super.getVisibility() }
 
+  TypeParamItemNode getBlanketImplementationTypeParam() {
+    result = this.resolveSelfTy() and
+    result = super.getGenericParamList().getAGenericParam() and
+    // This impl block is not superseded by the expansion of an attribute macro.
+    not exists(super.getAttributeMacroExpansion())
+  }
+
+  /**
+   * Holds if this impl block is a blanket implementation. That is, the
+   * implementation targets a generic parameter of the impl block.
+   */
+  predicate isBlanketImplementation() { exists(this.getBlanketImplementationTypeParam()) }
+
   override predicate hasCanonicalPath(Crate c) { this.resolveSelfTy().hasCanonicalPathPrefix(c) }
 
   /**

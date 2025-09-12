@@ -112,8 +112,8 @@ mod extension_trait_blanket_impl {
         let result = my_try_flag.try_read_flag_twice(); // $ target=TryFlagExt::try_read_flag_twice
 
         let my_flag = MyFlag { flag: true };
-        // Here `TryFlagExt::try_read_flag_twice` is since there is a blanket
-        // implementaton of `TryFlag` for `Flag`.
+        // Here `TryFlagExt::try_read_flag_twice` is a target since there is a
+        // blanket implementaton of `TryFlag` for `Flag`.
         let result = my_flag.try_read_flag_twice(); // $ MISSING: target=TryFlagExt::try_read_flag_twice
 
         let my_other_flag = MyOtherFlag { flag: true };
