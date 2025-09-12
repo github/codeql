@@ -115,7 +115,7 @@ class GrapeEndpoint extends DataFlow::CallNode {
  * Grape parameters available via the `params` method within an endpoint.
  */
 class GrapeParamsSource extends Http::Server::RequestInputAccess::Range {
-  GrapeParamsSource() { 
+  GrapeParamsSource() {
     this.asExpr().getExpr() instanceof GrapeParamsCall
   }
 
