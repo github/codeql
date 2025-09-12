@@ -106,7 +106,7 @@ installing [`cargo-edit`](https://crates.io/crates/cargo-edit) with `cargo insta
    If you had to do any changes, commit them. If you updated the rust toolchain, running `rust/lint.py` might reformat or apply new
    lints to the code.
 7. Check with CI if everything is in order.
-8. Run DCA. Iterate on the code if needed.
+8. Run DCA with database caching disabled. Iterate on the code if needed.
 9. If in step 5 the schema was updated, add upgrade/downgrade scripts and a change note. This is best done last to reduce the chance of
 merge conflicts (none of the other testing depends on having upgrade and downgrade scripts in place). See
 [Upgrading a language database schema](docs/prepare-db-upgrade.md).
