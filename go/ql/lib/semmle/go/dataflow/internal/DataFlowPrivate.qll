@@ -68,7 +68,10 @@ predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Instruction -> SSA defn
   exists(IR::Instruction pred, SsaExplicitDefinition succ |
     succ.getRhs() = pred and
-    nodeFrom = instructionNode(pred) and
+    (
+      nodeFrom = instructionNode(pred) or
+      nodeFrom.(PostUpdateNode).getPreUpdateNode() = instructionNode(pred)
+    ) and
     nodeTo = ssaNode(succ.getVariable())
   )
   or
@@ -82,7 +85,10 @@ predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // SSA use -> successive SSA use
   // Note this case includes Phi node traversal
   exists(IR::Instruction pred, IR::Instruction succ | succ = getAnAdjacentUse(pred) |
-    nodeFrom = instructionNode(pred) and
+    (
+      nodeFrom = instructionNode(pred) or
+      nodeFrom.(PostUpdateNode).getPreUpdateNode() = instructionNode(pred)
+    ) and
     nodeTo = instructionNode(succ)
   )
   or
