@@ -385,8 +385,6 @@ inferType
 | dereference.rs:122:23:122:29 | &... | &T | file://:0:0:0:0 | & |
 | dereference.rs:122:23:122:29 | &... | &T.&T | dereference.rs:99:5:100:21 | Key |
 | dereference.rs:122:24:122:29 | Key {...} |  | dereference.rs:99:5:100:21 | Key |
-| dereference.rs:122:24:122:29 | Key {...} |  | file://:0:0:0:0 | & |
-| dereference.rs:122:24:122:29 | Key {...} | &T | dereference.rs:99:5:100:21 | Key |
 | dereference.rs:123:16:123:28 | Some(...) |  | {EXTERNAL LOCATION} | Option |
 | dereference.rs:123:16:123:28 | Some(...) | T | file://:0:0:0:0 | & |
 | dereference.rs:123:16:123:28 | Some(...) | T.&T | dereference.rs:99:5:100:21 | Key |
@@ -501,10 +499,8 @@ inferType
 | dyn_type.rs:61:5:61:36 | ...::new(...) | T | dyn_type.rs:33:1:36:1 | GenStruct |
 | dyn_type.rs:61:5:61:36 | ...::new(...) | T.A | dyn_type.rs:60:18:60:43 | A |
 | dyn_type.rs:61:5:61:36 | ...::new(...) | T.dyn(A) | dyn_type.rs:60:18:60:43 | A |
-| dyn_type.rs:61:14:61:35 | GenStruct {...} |  | dyn_type.rs:10:1:13:1 | dyn GenericGet |
 | dyn_type.rs:61:14:61:35 | GenStruct {...} |  | dyn_type.rs:33:1:36:1 | GenStruct |
 | dyn_type.rs:61:14:61:35 | GenStruct {...} | A | dyn_type.rs:60:18:60:43 | A |
-| dyn_type.rs:61:14:61:35 | GenStruct {...} | dyn(A) | dyn_type.rs:60:18:60:43 | A |
 | dyn_type.rs:61:33:61:33 | a |  | dyn_type.rs:60:18:60:43 | A |
 | dyn_type.rs:64:25:64:27 | obj |  | file://:0:0:0:0 | & |
 | dyn_type.rs:64:25:64:27 | obj | &T | dyn_type.rs:5:1:8:1 | dyn MyTrait1 |
@@ -623,16 +619,13 @@ inferType
 | dyn_type.rs:102:26:102:48 | &... |  | file://:0:0:0:0 | & |
 | dyn_type.rs:102:26:102:48 | &... | &T | dyn_type.rs:5:1:8:1 | dyn MyTrait1 |
 | dyn_type.rs:102:26:102:48 | &... | &T | dyn_type.rs:21:1:24:1 | MyStruct |
-| dyn_type.rs:102:27:102:48 | MyStruct {...} |  | dyn_type.rs:5:1:8:1 | dyn MyTrait1 |
 | dyn_type.rs:102:27:102:48 | MyStruct {...} |  | dyn_type.rs:21:1:24:1 | MyStruct |
 | dyn_type.rs:102:45:102:46 | 42 |  | {EXTERNAL LOCATION} | i32 |
 | dyn_type.rs:103:28:105:5 | &... |  | file://:0:0:0:0 | & |
 | dyn_type.rs:103:28:105:5 | &... | &T | dyn_type.rs:10:1:13:1 | dyn GenericGet |
 | dyn_type.rs:103:28:105:5 | &... | &T | dyn_type.rs:33:1:36:1 | GenStruct |
 | dyn_type.rs:103:28:105:5 | &... | &T.dyn(A) | {EXTERNAL LOCATION} | String |
-| dyn_type.rs:103:29:105:5 | GenStruct {...} |  | dyn_type.rs:10:1:13:1 | dyn GenericGet |
 | dyn_type.rs:103:29:105:5 | GenStruct {...} |  | dyn_type.rs:33:1:36:1 | GenStruct |
-| dyn_type.rs:103:29:105:5 | GenStruct {...} | dyn(A) | {EXTERNAL LOCATION} | String |
 | dyn_type.rs:104:16:104:17 | "" |  | file://:0:0:0:0 | & |
 | dyn_type.rs:104:16:104:17 | "" | &T | {EXTERNAL LOCATION} | str |
 | dyn_type.rs:107:21:107:45 | &... |  | file://:0:0:0:0 | & |
@@ -641,11 +634,8 @@ inferType
 | dyn_type.rs:107:21:107:45 | &... | &T.A | {EXTERNAL LOCATION} | i32 |
 | dyn_type.rs:107:21:107:45 | &... | &T.dyn(AP) | {EXTERNAL LOCATION} | bool |
 | dyn_type.rs:107:21:107:45 | &... | &T.dyn(GP) | {EXTERNAL LOCATION} | i64 |
-| dyn_type.rs:107:22:107:45 | GenStruct {...} |  | dyn_type.rs:15:1:19:1 | dyn AssocTrait |
 | dyn_type.rs:107:22:107:45 | GenStruct {...} |  | dyn_type.rs:33:1:36:1 | GenStruct |
 | dyn_type.rs:107:22:107:45 | GenStruct {...} | A | {EXTERNAL LOCATION} | i32 |
-| dyn_type.rs:107:22:107:45 | GenStruct {...} | dyn(AP) | {EXTERNAL LOCATION} | bool |
-| dyn_type.rs:107:22:107:45 | GenStruct {...} | dyn(GP) | {EXTERNAL LOCATION} | i64 |
 | dyn_type.rs:107:41:107:43 | 100 |  | {EXTERNAL LOCATION} | i32 |
 | loop/main.rs:7:12:7:15 | SelfParam |  | loop/main.rs:6:1:8:1 | Self [trait T1] |
 | loop/main.rs:11:12:11:15 | SelfParam |  | loop/main.rs:10:1:14:1 | Self [trait T2] |
