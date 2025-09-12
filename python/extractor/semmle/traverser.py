@@ -31,19 +31,6 @@ class Traverser(object):
                 if not os.path.exists(p) and not options.ignore_missing_modules:
                     raise FileNotFoundError("'%s' does not exist." % p)
                 self.paths.add(p)
-        # During overlay extraction, only traverse the files that were changed.
-        self.overlay_changes = None
-        if 'CODEQL_EXTRACTOR_PYTHON_OVERLAY_CHANGES' in os.environ:
-            overlay_changes_file = os.environ['CODEQL_EXTRACTOR_PYTHON_OVERLAY_CHANGES']
-            logger.info("Overlay extraction mode: only extracting files changed according to '%s'", overlay_changes_file)
-            try:
-                with open(overlay_changes_file, 'r', encoding='utf-8') as f:
-                    data = json.load(f)
-                    changed_paths = data.get('changes', [])
-                    self.overlay_changes = { os.path.abspath(p) for p in changed_paths }
-            except (IOError, ValueError) as e:
-                logger.warn("Failed to read overlay changes from '%s' (falling back to full extraction): %s", overlay_changes_file, e)
-                self.overlay_changes = None
         self.exclude_paths = set([ os.path.abspath(f) for f in options.exclude_file ])
         self.exclude = exclude_filter_from_options(options)
         self.filter = filter_from_options_and_environment(options)
@@ -62,20 +49,11 @@ class Traverser(object):
                 if mod is None:
                     self.logger.error("No module named '%s'.", name)
                     raise ExtractorFailure()
-                if self.overlay_changes is not None and mod.path not in self.overlay_changes:
-                    self.logger.debug("Skipping module '%s' as it was not changed in overlay extraction.", name)
-                    continue
                 yield mod.get_extractable()
         for path in self.paths:
-            if self.overlay_changes is not None and path not in self.overlay_changes:
-                self.logger.debug("Skipping path '%s' as it was not changed in overlay extraction.", path)
-                continue
             yield Extractable.from_path(path)
         for path in self.recurse_files:
             for modpath in self._treewalk(path):
-                if self.overlay_changes is not None and modpath not in self.overlay_changes:
-                    self.logger.debug("Skipping file '%s' as it was not changed in overlay extraction.", modpath)
-                    continue
                 yield Extractable.from_path(modpath)
         for name in self.recurse_packages:
             mod = self.finder.find(name)
@@ -89,9 +67,6 @@ class Traverser(object):
                 self.logger.error("Package '%s' does not have a path.", name)
                 raise ExtractorFailure()
             for modpath in self._treewalk(path):
-                if self.overlay_changes is not None and modpath not in self.overlay_changes:
-                    self.logger.debug("Skipping package '%s' as it was not changed in overlay extraction.", modpath)
-                    continue
                 yield Extractable.from_path(modpath)
 
     def _treewalk(self, path):
