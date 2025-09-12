@@ -179,7 +179,42 @@ abstract class Import extends AstNode {
   }
 
   /**
-   * Gets the data flow node that the default import of this import is available at.
+   * Gets the data flow node corresponding to the imported module.
+   *
+   * For example:
+   * ```js
+   * // ES2015 style
+   * import * as foo from "fs"; // Gets the node for `foo`
+   * import { readSync } from "fs"; // Gets a node representing the destructured import
+   *
+   * // CommonJS style
+   * require("fs"); // Gets the return value
+   *
+   * // AMD style
+   * define(["fs"], function(fs) { // Gets the node for the `fs` parameter
+   * });
+   * ```
+   *
+   * For default imports, this gets two nodes: the default import node, and a node representing the imported module:
+   * ```js
+   * import foo from "fs"; // gets both `foo` and a node representing the imported module
+   * ```
+   * This behaviour is to support non-standard compilers that treat default imports
+   * as namespace imports. Use `getImportedModuleNodeStrict()` to avoid this behaviour in cases
+   * where it would cause ambiguous data flow.
    */
   abstract DataFlow::Node getImportedModuleNode();
+
+  /**
+   * Gets the same as `getImportedModuleNode()` except ambiguous default imports are excluded
+   * in cases where it would cause ambiguity between named exports and properties
+   * of a default export.
+   */
+  final DataFlow::Node getImportedModuleNodeStrict() {
+    result = this.getImportedModuleNode() and
+    not (
+      result = this.(ImportDeclaration).getAmbiguousDefaultImportNode() and
+      this.getImportedModule().(ES2015Module).hasBothNamedAndDefaultExports()
+    )
+  }
 }
