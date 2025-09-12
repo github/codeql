@@ -175,9 +175,7 @@ module TaintFlowMake<
         Config::isAdditionalFlowStep(node1, node2) and model = "Config"
       }
 
-      predicate observeOverlayInformedIncrementalMode() {
-        not Config::observeDiffInformedIncrementalMode()
-      }
+      predicate observeOverlayInformedIncrementalMode() { none() }
     }
 
     private module C implements DataFlowInternal::FullStateConfigSig {
