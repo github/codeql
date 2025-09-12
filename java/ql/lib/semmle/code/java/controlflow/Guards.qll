@@ -395,11 +395,13 @@ private module LogicInputCommon {
   predicate additionalImpliesStep(
     GuardsImpl::PreGuard g1, GuardValue v1, GuardsImpl::PreGuard g2, GuardValue v2
   ) {
-    exists(MethodCall check, int argIndex |
+    exists(MethodCall check |
       g1 = check and
-      v1.getDualValue().isThrowsException() and
-      conditionCheckArgument(check, argIndex, v2.asBooleanValue()) and
-      g2 = check.getArgument(argIndex)
+      v1.getDualValue().isThrowsException()
+    |
+      methodCallChecksBoolean(check, g2, v2.asBooleanValue())
+      or
+      methodCallChecksNotNull(check, g2) and v2.isNonNullValue()
     )
   }
 }
