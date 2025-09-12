@@ -1,6 +1,6 @@
 models
-| 1 | Summary: <alloc::string::String as core::convert::From>::from; Argument[0].Reference; ReturnValue; value |
-| 2 | Summary: <alloc::string::String as core::convert::From>::from; Argument[0]; ReturnValue; value |
+| 1 | Summary: <_ as core::convert::From>::from; Argument[0]; ReturnValue; value |
+| 2 | Summary: <alloc::string::String as core::convert::From>::from; Argument[0].Reference; ReturnValue; value |
 | 3 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[self]; ReturnValue; value |
 | 4 | Summary: <alloc::string::String>::as_str; Argument[self]; ReturnValue; value |
 | 5 | Summary: <core::str>::as_str; Argument[self]; ReturnValue; value |

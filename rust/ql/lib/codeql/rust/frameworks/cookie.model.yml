@@ -1,0 +1,7 @@
+# Models for the `cookie` crate.
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["<cookie::secure::key::Key>::from", "Argument[0].Reference", "credentials-key", "manual"]

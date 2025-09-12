@@ -46,4 +46,5 @@ extensions:
       - ["<alloc::string::String as alloc::string::ToString>::to_string", "Argument[self]", "ReturnValue", "taint", "manual"]
       - ["<core::str>::parse", "Argument[self]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["<core::str>::trim", "Argument[self]", "ReturnValue.Reference", "taint", "manual"]
-      - ["<alloc::string::String as core::convert::From>::from", "Argument[0]", "ReturnValue", "value", "manual"]
+      # Vec
+      - ["alloc::vec::from_elem", "Argument[0]", "ReturnValue.Element", "value", "manual"]

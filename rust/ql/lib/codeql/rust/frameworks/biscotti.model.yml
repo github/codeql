@@ -1,0 +1,7 @@
+# Models for the `biscotti` crate.
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["<biscotti::crypto::master::Key>::from", "Argument[0]", "credentials-key", "manual"]
