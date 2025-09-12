@@ -34,7 +34,7 @@ ConditionGuardNode getLengthLEGuard(Variable index, Variable array) {
 }
 
 /**
- * Gets a condition that checks that `index` is less than or equal to `array.length`.
+ * Gets a condition that checks that `index` is less than `array.length`.
  */
 ConditionGuardNode getLengthLTGuard(Variable index, Variable array) {
   exists(RelationalComparison cmp | cmp instanceof GTExpr or cmp instanceof LTExpr |
