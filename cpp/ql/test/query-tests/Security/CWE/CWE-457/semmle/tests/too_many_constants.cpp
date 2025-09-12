@@ -38,5 +38,5 @@ char *too_many_constants(const char *h, bool k, int i) {
 
   too_many_constants_init(s);
 
-  return m;
+  return m; // GOOD - initialized by too_many_constants_init
 }
