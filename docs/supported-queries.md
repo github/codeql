@@ -2,7 +2,7 @@
 
 Queries and libraries outside [the `experimental` directories](experimental.md) are _supported_ by GitHub, allowing our users to rely on their continued existence and functionality in the future:
 
-1. Once a query or library has appeared in a stable release, a one-year deprecation period is required before we can remove it. There can be exceptions to this when it's not technically possible to mark it as deprecated.
+1. Once a query has appeared in a stable release, a one-year deprecation period is required before we can remove it.
 2. Major changes to supported queries and libraries are always announced in the [change notes for stable releases](../change-notes/).
 3. We will do our best to address user reports of false positives or false negatives.
 
