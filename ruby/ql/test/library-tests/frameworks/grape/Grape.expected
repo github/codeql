@@ -1,0 +1,25 @@
+grapeAPIClasses
+| app.rb:1:1:48:3 | MyAPI |
+| app.rb:50:1:54:3 | AdminAPI |
+grapeEndpoints
+| app.rb:1:1:48:3 | MyAPI | app.rb:7:3:11:5 | call to get | GET | /hello/:name |
+| app.rb:1:1:48:3 | MyAPI | app.rb:17:3:20:5 | call to post | POST | /messages |
+| app.rb:1:1:48:3 | MyAPI | app.rb:23:3:27:5 | call to put | PUT | /update/:id |
+| app.rb:1:1:48:3 | MyAPI | app.rb:30:3:32:5 | call to delete | DELETE | /items/:id |
+| app.rb:1:1:48:3 | MyAPI | app.rb:35:3:37:5 | call to patch | PATCH | /items/:id |
+| app.rb:1:1:48:3 | MyAPI | app.rb:40:3:42:5 | call to head | HEAD | /status |
+| app.rb:1:1:48:3 | MyAPI | app.rb:45:3:47:5 | call to options | OPTIONS | /info |
+| app.rb:50:1:54:3 | AdminAPI | app.rb:51:3:53:5 | call to get | GET | /admin |
+grapeParams
+| app.rb:8:12:8:17 | call to params |
+| app.rb:14:3:16:5 | call to params |
+| app.rb:18:11:18:16 | call to params |
+| app.rb:24:10:24:15 | call to params |
+| app.rb:31:5:31:10 | call to params |
+| app.rb:36:5:36:10 | call to params |
+| app.rb:52:5:52:10 | call to params |
+grapeHeaders
+| app.rb:9:18:9:24 | call to headers |
+| app.rb:46:5:46:11 | call to headers |
+grapeRequest
+| app.rb:25:12:25:18 | call to request |

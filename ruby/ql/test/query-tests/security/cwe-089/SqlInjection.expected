@@ -81,6 +81,10 @@ edges
 | ArelInjection.rb:4:5:4:8 | name | ArelInjection.rb:7:39:7:80 | "SELECT * FROM users WHERE nam..." | provenance | AdditionalTaintStep |
 | ArelInjection.rb:4:12:4:17 | call to params | ArelInjection.rb:4:12:4:29 | ...[...] | provenance |  |
 | ArelInjection.rb:4:12:4:29 | ...[...] | ArelInjection.rb:4:5:4:8 | name | provenance |  |
+| ArelInjection.rb:13:5:13:8 | name | ArelInjection.rb:15:20:15:61 | "SELECT * FROM users WHERE nam..." | provenance | AdditionalTaintStep |
+| ArelInjection.rb:13:5:13:8 | name | ArelInjection.rb:16:39:16:80 | "SELECT * FROM users WHERE nam..." | provenance | AdditionalTaintStep |
+| ArelInjection.rb:13:12:13:17 | call to params | ArelInjection.rb:13:12:13:29 | ...[...] | provenance |  |
+| ArelInjection.rb:13:12:13:29 | ...[...] | ArelInjection.rb:13:5:13:8 | name | provenance |  |
 | PgInjection.rb:6:5:6:8 | name | PgInjection.rb:13:5:13:8 | qry1 : String | provenance | AdditionalTaintStep |
 | PgInjection.rb:6:5:6:8 | name | PgInjection.rb:19:5:19:8 | qry2 : String | provenance | AdditionalTaintStep |
 | PgInjection.rb:6:5:6:8 | name | PgInjection.rb:31:5:31:8 | qry3 : String | provenance | AdditionalTaintStep |
@@ -209,6 +213,11 @@ nodes
 | ArelInjection.rb:4:12:4:29 | ...[...] | semmle.label | ...[...] |
 | ArelInjection.rb:6:20:6:61 | "SELECT * FROM users WHERE nam..." | semmle.label | "SELECT * FROM users WHERE nam..." |
 | ArelInjection.rb:7:39:7:80 | "SELECT * FROM users WHERE nam..." | semmle.label | "SELECT * FROM users WHERE nam..." |
+| ArelInjection.rb:13:5:13:8 | name | semmle.label | name |
+| ArelInjection.rb:13:12:13:17 | call to params | semmle.label | call to params |
+| ArelInjection.rb:13:12:13:29 | ...[...] | semmle.label | ...[...] |
+| ArelInjection.rb:15:20:15:61 | "SELECT * FROM users WHERE nam..." | semmle.label | "SELECT * FROM users WHERE nam..." |
+| ArelInjection.rb:16:39:16:80 | "SELECT * FROM users WHERE nam..." | semmle.label | "SELECT * FROM users WHERE nam..." |
 | PgInjection.rb:6:5:6:8 | name | semmle.label | name |
 | PgInjection.rb:6:12:6:17 | call to params | semmle.label | call to params |
 | PgInjection.rb:6:12:6:24 | ...[...] | semmle.label | ...[...] |
@@ -266,6 +275,8 @@ subpaths
 | ActiveRecordInjection.rb:216:38:216:53 | "role = #{...}" | ActiveRecordInjection.rb:222:29:222:34 | call to params | ActiveRecordInjection.rb:216:38:216:53 | "role = #{...}" | This SQL query depends on a $@. | ActiveRecordInjection.rb:222:29:222:34 | call to params | user-provided value |
 | ArelInjection.rb:6:20:6:61 | "SELECT * FROM users WHERE nam..." | ArelInjection.rb:4:12:4:17 | call to params | ArelInjection.rb:6:20:6:61 | "SELECT * FROM users WHERE nam..." | This SQL query depends on a $@. | ArelInjection.rb:4:12:4:17 | call to params | user-provided value |
 | ArelInjection.rb:7:39:7:80 | "SELECT * FROM users WHERE nam..." | ArelInjection.rb:4:12:4:17 | call to params | ArelInjection.rb:7:39:7:80 | "SELECT * FROM users WHERE nam..." | This SQL query depends on a $@. | ArelInjection.rb:4:12:4:17 | call to params | user-provided value |
+| ArelInjection.rb:15:20:15:61 | "SELECT * FROM users WHERE nam..." | ArelInjection.rb:13:12:13:17 | call to params | ArelInjection.rb:15:20:15:61 | "SELECT * FROM users WHERE nam..." | This SQL query depends on a $@. | ArelInjection.rb:13:12:13:17 | call to params | user-provided value |
+| ArelInjection.rb:16:39:16:80 | "SELECT * FROM users WHERE nam..." | ArelInjection.rb:13:12:13:17 | call to params | ArelInjection.rb:16:39:16:80 | "SELECT * FROM users WHERE nam..." | This SQL query depends on a $@. | ArelInjection.rb:13:12:13:17 | call to params | user-provided value |
 | PgInjection.rb:14:15:14:18 | qry1 | PgInjection.rb:6:12:6:17 | call to params | PgInjection.rb:14:15:14:18 | qry1 | This SQL query depends on a $@. | PgInjection.rb:6:12:6:17 | call to params | user-provided value |
 | PgInjection.rb:15:21:15:24 | qry1 | PgInjection.rb:6:12:6:17 | call to params | PgInjection.rb:15:21:15:24 | qry1 | This SQL query depends on a $@. | PgInjection.rb:6:12:6:17 | call to params | user-provided value |
 | PgInjection.rb:20:22:20:25 | qry2 | PgInjection.rb:6:12:6:17 | call to params | PgInjection.rb:20:22:20:25 | qry2 | This SQL query depends on a $@. | PgInjection.rb:6:12:6:17 | call to params | user-provided value |
