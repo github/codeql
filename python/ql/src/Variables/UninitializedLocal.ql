@@ -2,7 +2,8 @@
  * @name Potentially uninitialized local variable
  * @description Using a local variable before it is initialized causes an UnboundLocalError.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  * @problem.severity error
  * @sub-severity low

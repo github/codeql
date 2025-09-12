@@ -4,6 +4,7 @@
  *              makes it more difficult for other developers to maintain the code.
  * @kind problem
  * @tags maintainability
+ *       readability
  * @problem.severity recommendation
  * @sub-severity low
  * @precision medium

@@ -2,8 +2,10 @@
  * @name Useless class
  * @description Class only defines one public method (apart from `__init__` or `__new__`) and should be replaced by a function
  * @kind problem
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       useless-code
+ *       complexity
  * @problem.severity recommendation
  * @sub-severity low
  * @precision medium
