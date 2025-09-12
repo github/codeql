@@ -5,7 +5,6 @@ multipleCallTargets
 | dereference.rs:184:17:184:30 | ... .foo() |
 | dereference.rs:186:17:186:25 | S.bar(...) |
 | dereference.rs:187:17:187:29 | S.bar(...) |
-| main.rs:1803:13:1803:63 | ... .partial_cmp(...) |
 | main.rs:2318:9:2318:34 | ...::my_from2(...) |
 | main.rs:2319:9:2319:33 | ...::my_from2(...) |
 | main.rs:2320:9:2320:38 | ...::my_from2(...) |

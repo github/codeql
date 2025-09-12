@@ -1123,17 +1123,27 @@ private Function getMethodSuccessor(ItemNode item, string name, int arity) {
   arity = result.getParamList().getNumberOfParams()
 }
 
+/**
+ * Holds if the type path `path` pointing to `type` is either empty, in which
+ * case `type` is not `&`, or `path` points to a type being referenced by `&`.
+ */
+bindingset[path, type]
+predicate isRefStrippedRoot(TypePath path, Type type) {
+  path.isEmpty() and
+  type != TRefType()
+  or
+  path = TypePath::singleton(TRefTypeParameter()) and
+  exists(type)
+}
+
 /** Provides logic for resolving method calls. */
 private module MethodCallResolution {
   /**
    * Holds if method `f` with the name `name` and the arity `arity` exists in
    * `i`, and the type of the `self` parameter is `selfType`.
    *
-   * TODO
-   * `rootType` is the root type of `selfType`, and `selfRootPath` points to
-   * `selfRootType` inside `selfType`, where `selfRootType` is either the type
-   * being implemented, when `i` is an `impl`, or the trait itself when `i` is
-   * a trait.
+   * `rootTypePath` points to the type `rootType` inside `selfType`, which is
+   * the (possibly `&`-stripped) root type of `selfType`.
    */
   pragma[nomagic]
   predicate methodInfo(
@@ -1144,12 +1154,7 @@ private module MethodCallResolution {
       f = i.getASuccessor(name) and
       arity = f.getParamList().getNumberOfParams() and
       rootType = selfType.getTypeAt(rootTypePath) and
-      (
-        rootTypePath.isEmpty() and
-        rootType != TRefType()
-        or
-        rootTypePath = TypePath::singleton(TRefTypeParameter())
-      ) and
+      isRefStrippedRoot(rootTypePath, rootType) and
       selfType.appliesTo(f, pos, i) and
       pos.isSelf() and
       not i.(ImplItemNode).isBlanket()
@@ -1284,6 +1289,14 @@ private module MethodCallResolution {
           derefChainBorrow), i, _)
     }
 
+    pragma[nomagic]
+    private Type getACandidateReceiverRootTypeAtSubstituteTraitBounds(
+      TypePath rootTypePath, string derefChainBorrow
+    ) {
+      result = this.getACandidateReceiverTypeAtSubstituteTraitBounds(rootTypePath, derefChainBorrow) and
+      isRefStrippedRoot(rootTypePath, result)
+    }
+
     /**
      * Holds if the candidate receiver type represented by `derefChain` does not
      * have a matching method target.
@@ -1294,13 +1307,7 @@ private module MethodCallResolution {
         derefChainBorrow = derefChain + ";" and
         not derefChain.matches("%.ref") and // no need to try a borrow if the last thing we did was a deref
         rootType =
-          this.getACandidateReceiverTypeAtSubstituteTraitBounds(rootTypePath, derefChainBorrow) and
-        (
-          rootTypePath.isEmpty() and
-          rootType != TRefType()
-          or
-          rootTypePath = TypePath::singleton(TRefTypeParameter())
-        )
+          this.getACandidateReceiverRootTypeAtSubstituteTraitBounds(rootTypePath, derefChainBorrow)
       |
         forall(ImplOrTraitItemNode i | methodCallCandidate(this, i, _, rootTypePath, rootType) |
           this.isNotCandidate(i, derefChainBorrow)
@@ -1318,8 +1325,7 @@ private module MethodCallResolution {
         derefChainBorrow = derefChain + ";borrow" and
         this.noCandidateReceiverTypeAtNoBorrow(derefChain) and
         rootType =
-          this.getACandidateReceiverTypeAtSubstituteTraitBounds(rootTypePath, derefChainBorrow) and
-        rootTypePath = TypePath::singleton(TRefTypeParameter())
+          this.getACandidateReceiverRootTypeAtSubstituteTraitBounds(rootTypePath, derefChainBorrow)
       |
         forall(ImplOrTraitItemNode i | methodCallCandidate(this, i, _, rootTypePath, rootType) |
           this.isNotCandidate(i, derefChainBorrow)
@@ -1463,12 +1469,7 @@ private module MethodCallResolution {
     private predicate hasNoInherentTarget() {
       exists(TypePath rootTypePath, Type rootType, string name, int arity |
         this.isMethodCall(_, rootTypePath, rootType, name, arity) and
-        (
-          rootTypePath.isEmpty() and
-          rootType != TRefType()
-          or
-          rootTypePath = TypePath::singleton(TRefTypeParameter())
-        ) and
+        isRefStrippedRoot(rootTypePath, rootType) and
         forall(Impl i |
           methodInfo(_, name, arity, i, _, rootTypePath, rootType) and
           not i.hasTrait()
@@ -2314,18 +2315,13 @@ private Type inferOperationType(AstNode n, TypePath path) {
   )
 }
 
-pragma[inline]
-private Type inferRootTypeDeref(AstNode n) {
-  result = inferType(n) and
-  result != TRefType()
-  or
-  // for reference types, lookup members in the type being referenced
-  result = inferType(n, TypePath::singleton(TRefTypeParameter()))
-}
-
 pragma[nomagic]
 private Type getFieldExprLookupType(FieldExpr fe, string name) {
-  result = inferRootTypeDeref(fe.getContainer()) and name = fe.getIdentifier().getText()
+  exists(TypePath path |
+    result = inferType(fe.getContainer(), path) and
+    name = fe.getIdentifier().getText() and
+    isRefStrippedRoot(path, result)
+  )
 }
 
 pragma[nomagic]
