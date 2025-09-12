@@ -110,7 +110,7 @@ rust_library(
         "@vendor_ts__chalk-ir-0.103.0//:chalk_ir",
         "@vendor_ts__chalk-recursive-0.103.0//:chalk_recursive",
         "@vendor_ts__chalk-solve-0.103.0//:chalk_solve",
-        "@vendor_ts__cov-mark-2.0.0//:cov_mark",
+        "@vendor_ts__cov-mark-2.1.0//:cov_mark",
         "@vendor_ts__either-1.15.0//:either",
         "@vendor_ts__ena-0.14.3//:ena",
         "@vendor_ts__indexmap-2.11.1//:indexmap",

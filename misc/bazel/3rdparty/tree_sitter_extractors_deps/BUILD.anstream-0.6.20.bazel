@@ -103,13 +103,13 @@ rust_library(
         "@vendor_ts__utf8parse-0.2.2//:utf8parse",
     ] + select({
         "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [
-            "@vendor_ts__anstyle-wincon-3.0.9//:anstyle_wincon",  # aarch64-pc-windows-msvc
+            "@vendor_ts__anstyle-wincon-3.0.10//:anstyle_wincon",  # aarch64-pc-windows-msvc
         ],
         "@rules_rust//rust/platform:i686-pc-windows-msvc": [
-            "@vendor_ts__anstyle-wincon-3.0.9//:anstyle_wincon",  # i686-pc-windows-msvc
+            "@vendor_ts__anstyle-wincon-3.0.10//:anstyle_wincon",  # i686-pc-windows-msvc
         ],
         "@rules_rust//rust/platform:x86_64-pc-windows-msvc": [
-            "@vendor_ts__anstyle-wincon-3.0.9//:anstyle_wincon",  # x86_64-pc-windows-msvc
+            "@vendor_ts__anstyle-wincon-3.0.10//:anstyle_wincon",  # x86_64-pc-windows-msvc
         ],
         "//conditions:default": [],
     }),

@@ -104,6 +104,6 @@ rust_library(
     }),
     version = "0.60.2",
     deps = [
-        "@vendor_ts__windows-targets-0.53.2//:windows_targets",
+        "@vendor_ts__windows-targets-0.53.3//:windows_targets",
     ],
 )

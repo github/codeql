@@ -96,7 +96,7 @@ rust_library(
     version = "0.0.301",
     deps = [
         "@vendor_ts__crossbeam-channel-0.5.15//:crossbeam_channel",
-        "@vendor_ts__notify-8.1.0//:notify",
+        "@vendor_ts__notify-8.2.0//:notify",
         "@vendor_ts__ra_ap_paths-0.0.301//:ra_ap_paths",
         "@vendor_ts__ra_ap_stdx-0.0.301//:ra_ap_stdx",
         "@vendor_ts__ra_ap_vfs-0.0.301//:ra_ap_vfs",

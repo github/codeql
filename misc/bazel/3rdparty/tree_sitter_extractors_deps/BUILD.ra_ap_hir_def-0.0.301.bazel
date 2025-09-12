@@ -108,7 +108,7 @@ rust_library(
     deps = [
         "@vendor_ts__arrayvec-0.7.6//:arrayvec",
         "@vendor_ts__bitflags-2.9.4//:bitflags",
-        "@vendor_ts__cov-mark-2.0.0//:cov_mark",
+        "@vendor_ts__cov-mark-2.1.0//:cov_mark",
         "@vendor_ts__drop_bomb-0.1.5//:drop_bomb",
         "@vendor_ts__either-1.15.0//:either",
         "@vendor_ts__fst-0.4.7//:fst",

@@ -107,7 +107,7 @@ rust_library(
     }),
     version = "0.0.301",
     deps = [
-        "@vendor_ts__cov-mark-2.0.0//:cov_mark",
+        "@vendor_ts__cov-mark-2.1.0//:cov_mark",
         "@vendor_ts__either-1.15.0//:either",
         "@vendor_ts__itertools-0.14.0//:itertools",
         "@vendor_ts__ra_ap_base_db-0.0.301//:ra_ap_base_db",

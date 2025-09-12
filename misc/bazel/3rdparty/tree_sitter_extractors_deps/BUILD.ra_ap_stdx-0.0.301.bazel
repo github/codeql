@@ -109,7 +109,7 @@ rust_library(
             "@vendor_ts__libc-0.2.175//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [
-            "@vendor_ts__miow-0.6.0//:miow",  # cfg(windows)
+            "@vendor_ts__miow-0.6.1//:miow",  # cfg(windows)
             "@vendor_ts__windows-sys-0.60.2//:windows_sys",  # cfg(windows)
         ],
         "@rules_rust//rust/platform:aarch64-unknown-fuchsia": [
@@ -140,7 +140,7 @@ rust_library(
             "@vendor_ts__libc-0.2.175//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:i686-pc-windows-msvc": [
-            "@vendor_ts__miow-0.6.0//:miow",  # cfg(windows)
+            "@vendor_ts__miow-0.6.1//:miow",  # cfg(windows)
             "@vendor_ts__windows-sys-0.60.2//:windows_sys",  # cfg(windows)
         ],
         "@rules_rust//rust/platform:i686-unknown-freebsd": [
@@ -165,7 +165,7 @@ rust_library(
             "@vendor_ts__libc-0.2.175//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:x86_64-pc-windows-msvc": [
-            "@vendor_ts__miow-0.6.0//:miow",  # cfg(windows)
+            "@vendor_ts__miow-0.6.1//:miow",  # cfg(windows)
             "@vendor_ts__windows-sys-0.60.2//:windows_sys",  # cfg(windows)
         ],
         "@rules_rust//rust/platform:x86_64-unknown-freebsd": [
