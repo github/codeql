@@ -14,7 +14,7 @@ namespace Semmle.Extraction.CSharp
         private bool init;
 
         public TracingAnalyser(IProgressMonitor pm, ILogger logger, PathTransformer pathTransformer, IPathCache pathCache, bool addAssemblyTrapPrefix)
-            : base(pm, logger, pathTransformer, pathCache, addAssemblyTrapPrefix)
+            : base(pm, logger, pathTransformer, pathCache, new TrivialOverlayInfo(), addAssemblyTrapPrefix)
         {
         }
 
