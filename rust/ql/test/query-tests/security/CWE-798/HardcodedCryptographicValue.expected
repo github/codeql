@@ -15,6 +15,7 @@
 | test_cookie.rs:17:29:17:29 | 0 | test_cookie.rs:17:29:17:29 | 0 | test_cookie.rs:18:16:18:24 | ...::from | This hard-coded value is used as $@. | test_cookie.rs:18:16:18:24 | ...::from | a key |
 | test_cookie.rs:21:29:21:29 | 0 | test_cookie.rs:21:29:21:29 | 0 | test_cookie.rs:22:16:22:24 | ...::from | This hard-coded value is used as $@. | test_cookie.rs:22:16:22:24 | ...::from | a key |
 | test_cookie.rs:38:29:38:31 | 0u8 | test_cookie.rs:38:29:38:31 | 0u8 | test_cookie.rs:42:14:42:32 | ...::from | This hard-coded value is used as $@. | test_cookie.rs:42:14:42:32 | ...::from | a key |
+| test_cookie.rs:49:23:49:25 | 0u8 | test_cookie.rs:49:23:49:25 | 0u8 | test_cookie.rs:53:14:53:32 | ...::from | This hard-coded value is used as $@. | test_cookie.rs:53:14:53:32 | ...::from | a key |
 edges
 | test_cipher.rs:18:9:18:14 | const1 [&ref, element] | test_cipher.rs:19:73:19:78 | const1 [&ref, element] | provenance |  |
 | test_cipher.rs:18:28:18:36 | &... [&ref, element] | test_cipher.rs:18:9:18:14 | const1 [&ref, element] | provenance |  |
@@ -76,6 +77,10 @@ edges
 | test_cookie.rs:38:28:38:36 | [0u8; 64] [element] | test_cookie.rs:38:18:38:37 | ...::from(...) [element] | provenance | MaD:9 |
 | test_cookie.rs:38:29:38:31 | 0u8 | test_cookie.rs:38:28:38:36 | [0u8; 64] [element] | provenance |  |
 | test_cookie.rs:42:34:42:39 | array2 [element] | test_cookie.rs:42:14:42:32 | ...::from | provenance | MaD:2 Sink:MaD:2 |
+| test_cookie.rs:49:9:49:14 | array3 [element] | test_cookie.rs:53:34:53:39 | array3 [element] | provenance |  |
+| test_cookie.rs:49:23:49:25 | 0u8 | test_cookie.rs:49:23:49:29 | ...::from_elem(...) [element] | provenance | MaD:11 |
+| test_cookie.rs:49:23:49:29 | ...::from_elem(...) [element] | test_cookie.rs:49:9:49:14 | array3 [element] | provenance |  |
+| test_cookie.rs:53:34:53:39 | array3 [element] | test_cookie.rs:53:14:53:32 | ...::from | provenance | MaD:2 Sink:MaD:2 |
 models
 | 1 | Sink: <_ as crypto_common::KeyInit>::new_from_slice; Argument[0]; credentials-key |
 | 2 | Sink: <biscotti::crypto::master::Key>::from; Argument[0]; credentials-key |
@@ -87,6 +92,7 @@ models
 | 8 | Source: core::mem::zeroed; ReturnValue.Element; constant-source |
 | 9 | Summary: <alloc::vec::Vec as core::convert::From>::from; Argument[0]; ReturnValue; value |
 | 10 | Summary: <generic_array::GenericArray>::from_slice; Argument[0].Reference; ReturnValue.Reference; value |
+| 11 | Summary: alloc::vec::from_elem; Argument[0]; ReturnValue.Element; value |
 nodes
 | test_cipher.rs:18:9:18:14 | const1 [&ref, element] | semmle.label | const1 [&ref, element] |
 | test_cipher.rs:18:28:18:36 | &... [&ref, element] | semmle.label | &... [&ref, element] |
@@ -158,4 +164,9 @@ nodes
 | test_cookie.rs:38:29:38:31 | 0u8 | semmle.label | 0u8 |
 | test_cookie.rs:42:14:42:32 | ...::from | semmle.label | ...::from |
 | test_cookie.rs:42:34:42:39 | array2 [element] | semmle.label | array2 [element] |
+| test_cookie.rs:49:9:49:14 | array3 [element] | semmle.label | array3 [element] |
+| test_cookie.rs:49:23:49:25 | 0u8 | semmle.label | 0u8 |
+| test_cookie.rs:49:23:49:29 | ...::from_elem(...) [element] | semmle.label | ...::from_elem(...) [element] |
+| test_cookie.rs:53:14:53:32 | ...::from | semmle.label | ...::from |
+| test_cookie.rs:53:34:53:39 | array3 [element] | semmle.label | array3 [element] |
 subpaths

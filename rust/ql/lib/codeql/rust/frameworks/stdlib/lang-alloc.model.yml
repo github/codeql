@@ -49,3 +49,4 @@ extensions:
       - ["<alloc::string::String as core::convert::From>::from", "Argument[0]", "ReturnValue", "value", "manual"]
       # Vec
       - ["<alloc::vec::Vec as core::convert::From>::from", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["alloc::vec::from_elem", "Argument[0]", "ReturnValue.Element", "value", "manual"]
