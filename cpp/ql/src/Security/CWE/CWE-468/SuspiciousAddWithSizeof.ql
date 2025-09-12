@@ -6,7 +6,7 @@
  * @kind problem
  * @problem.severity warning
  * @security-severity 8.8
- * @precision high
+ * @precision medium
  * @id cpp/suspicious-add-sizeof
  * @tags security
  *       external/cwe/cwe-468
@@ -24,7 +24,6 @@ private predicate isCharSzPtrExpr(Expr e) {
 
 from Expr sizeofExpr, Expr e
 where
-  not any(Compilation c).buildModeNone() and
   // If we see an addWithSizeof then we expect the type of
   // the pointer expression to be `char*` or `void*`. Otherwise it
   // is probably a mistake.

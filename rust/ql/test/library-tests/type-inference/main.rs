@@ -34,7 +34,7 @@ mod field_access {
 
     fn generic_field_access() {
         // Explicit type argument
-        let x = GenericThing::<S> { a: S }; // $ type=x:A.S
+        let x = GenericThing::<S> { a: S }; // $ certainType=x:A.S
         println!("{:?}", x.a); // $ fieldof=GenericThing
 
         // Implicit type argument
@@ -73,7 +73,7 @@ mod method_impl {
 
     impl Foo {
         pub fn m1(self) -> Self {
-            self
+            self // $ certainType=self:Foo
         }
 
         pub fn m2(self) -> Foo {
@@ -108,7 +108,7 @@ mod trait_impl {
     impl MyTrait<bool> for MyThing {
         // MyThing::trait_method
         fn trait_method(self) -> bool {
-            self.field // $ fieldof=MyThing
+            self.field // $ certainType=self:MyThing fieldof=MyThing
         }
     }
 
@@ -2384,7 +2384,7 @@ mod loops {
         let range_full = ..; // $ certainType=range_full:RangeFull
         for i in &[1i64, 2i64, 3i64][range_full] {} // $ target=index MISSING: type=i:&T.i64
 
-        let range1 = // $ type=range1:Range type=range1:Idx.u16
+        let range1 = // $ certainType=range1:Range type=range1:Idx.u16
         std::ops::Range {
             start: 0u16,
             end: 10u16,
@@ -2480,7 +2480,7 @@ mod explicit_type_args {
         let x7 = S4(S2); // $ type=x7:T4.S2
         let x8 = S4(0); // $ type=x8:T4.i32
         let x9 = S4(S2::default()); // $ type=x9:T4.S2 target=default
-        let x10 = S5::<S2>  // $ type=x10:T5.S2
+        let x10 = S5::<S2>  // $ certainType=x10:T5.S2
         {
             field: Default::default(), // $ target=default
         };
@@ -2594,7 +2594,7 @@ pub mod exec {
     impl Connection for MySqlConnection {}
 
     pub fn f() {
-        let c = MySqlConnection {}; // $ type=c:MySqlConnection
+        let c = MySqlConnection {}; // $ certainType=c:MySqlConnection
 
         c.execute1(); // $ MISSING: target=execute1
         MySqlConnection::execute1(&c); // $ MISSING: target=execute1

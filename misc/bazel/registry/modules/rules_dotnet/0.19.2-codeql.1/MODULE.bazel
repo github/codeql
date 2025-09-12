@@ -1,0 +1,57 @@
+"rules_dotnet"
+
+module(
+    name = "rules_dotnet",
+    version = "0.19.2-codeql.1",
+    bazel_compatibility = [">=7.0.0"],
+    compatibility_level = 0,
+)
+
+dotnet = use_extension("@rules_dotnet//dotnet:extensions.bzl", "dotnet")
+dotnet.toolchain(dotnet_version = "9.0.300")
+use_repo(dotnet, "dotnet_toolchains")
+
+register_toolchains("@dotnet_toolchains//:all")
+
+paket2bazel_dependencies_extension = use_extension("//dotnet:paket.paket2bazel_dependencies_extension.bzl", "paket2bazel_dependencies_extension")
+use_repo(paket2bazel_dependencies_extension, "paket.paket2bazel_dependencies")
+
+rules_dotnet_nuget_packages_extension = use_extension("//dotnet:paket.rules_dotnet_nuget_packages_extension.bzl", "rules_dotnet_nuget_packages_extension")
+use_repo(rules_dotnet_nuget_packages_extension, "paket.rules_dotnet_nuget_packages")
+
+targeting_packs_extension = use_extension("//dotnet/private/sdk/targeting_packs:dotnet.targeting_packs_extension.bzl", "targeting_packs_extension")
+use_repo(targeting_packs_extension, "dotnet.targeting_packs")
+
+runtime_packs_extension = use_extension("//dotnet/private/sdk/runtime_packs:dotnet.runtime_packs_extension.bzl", "runtime_packs_extension")
+use_repo(runtime_packs_extension, "dotnet.runtime_packs")
+
+apphost_packs_extension = use_extension("//dotnet/private/sdk/apphost_packs:dotnet.apphost_packs_extension.bzl", "apphost_packs_extension")
+use_repo(apphost_packs_extension, "dotnet.apphost_packs")
+
+bazel_dep(name = "bazel_skylib", version = "1.7.1")
+bazel_dep(name = "platforms", version = "1.0.0")
+bazel_dep(name = "aspect_bazel_lib", version = "2.19.4")
+bazel_dep(name = "rules_shell", version = "0.5.0")
+
+# Dev dependencies
+bazel_dep(name = "stardoc", version = "0.8.0", dev_dependency = True)
+bazel_dep(name = "rules_pkg", version = "1.1.0", dev_dependency = True)
+bazel_dep(name = "gazelle", version = "0.44.0", dev_dependency = True, repo_name = "bazel_gazelle")
+bazel_dep(name = "bazel_skylib_gazelle_plugin", version = "1.7.1", dev_dependency = True)
+bazel_dep(name = "rules_cc", version = "0.1.2", dev_dependency = True)
+bazel_dep(name = "rules_testing", version = "0.8.0", dev_dependency = True)
+bazel_dep(name = "bazel_ci_rules", version = "1.0.0", dev_dependency = True)
+bazel_dep(name = "dotnet_test_resources_other_repo", version = "", dev_dependency = True)
+local_path_override(
+    module_name = "dotnet_test_resources_other_repo",
+    path = "dotnet/private/tests/resources/other_repo",
+)
+
+rules_dotnet_dev_nuget_packages_extension = use_extension("//dotnet:paket.rules_dotnet_dev_nuget_packages_extension.bzl", "rules_dotnet_dev_nuget_packages_extension", dev_dependency = True)
+use_repo(rules_dotnet_dev_nuget_packages_extension, "paket.rules_dotnet_dev_nuget_packages")
+
+rules_dotnet_nuget_resource_assemblies_tests_extension = use_extension("//dotnet:paket.rules_dotnet_nuget_resource_assemblies_tests_extension.bzl", "rules_dotnet_nuget_resource_assemblies_tests_extension", dev_dependency = True)
+use_repo(rules_dotnet_nuget_resource_assemblies_tests_extension, "paket.rules_dotnet_nuget_resource_assemblies_tests")
+
+internal_dev_deps = use_extension("//dotnet:internal_dev_deps.bzl", "internal_dev_deps", dev_dependency = True)
+use_repo(internal_dev_deps, "buildkite_config")
