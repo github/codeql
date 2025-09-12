@@ -1,4 +1,6 @@
 /** Provides classes for working with locations and program elements that have locations. */
+overlay[local]
+module;
 
 import javascript
 

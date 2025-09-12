@@ -4,6 +4,8 @@
  * Provides predicates and classes for relating nodes to their
  * enclosing `StmtContainer`.
  */
+overlay[local]
+module;
 
 private import javascript
 private import semmle.javascript.internal.CachedStages

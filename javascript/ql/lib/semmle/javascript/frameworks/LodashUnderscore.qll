@@ -181,9 +181,11 @@ module LodashUnderscore {
     }
   }
 
+  overlay[local]
   private class LodashEach extends DataFlow::SummarizedCallable {
     LodashEach() { this = "_.each-like" }
 
+    overlay[global]
     override DataFlow::CallNode getACall() {
       result = member(["each", "eachRight", "forEach", "forEachRight", "every", "some"]).getACall()
     }
@@ -195,9 +197,11 @@ module LodashUnderscore {
     }
   }
 
+  overlay[local]
   private class LodashMap extends DataFlow::SummarizedCallable {
     LodashMap() { this = "_.map" }
 
+    overlay[global]
     override DataFlow::CallNode getACall() { result = member("map").getACall() }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -212,9 +216,11 @@ module LodashUnderscore {
     }
   }
 
+  overlay[local]
   private class LodashFlatMap extends DataFlow::SummarizedCallable {
     LodashFlatMap() { this = "_.flatMap" }
 
+    overlay[global]
     override DataFlow::CallNode getACall() { result = member("flatMap").getACall() }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -232,9 +238,11 @@ module LodashUnderscore {
     }
   }
 
+  overlay[local]
   private class LodashFlatMapDeep extends DataFlow::SummarizedCallable {
     LodashFlatMapDeep() { this = "_.flatMapDeep" }
 
+    overlay[global]
     override DataFlow::CallNode getACall() {
       result = member(["flatMapDeep", "flatMapDepth"]).getACall()
     }
@@ -254,9 +262,11 @@ module LodashUnderscore {
     }
   }
 
+  overlay[local]
   private class LodashReduce extends DataFlow::SummarizedCallable {
     LodashReduce() { this = "_.reduce-like" }
 
+    overlay[global]
     override DataFlow::CallNode getACall() { result = member(["reduce", "reduceRight"]).getACall() }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -271,9 +281,11 @@ module LodashUnderscore {
     }
   }
 
+  overlay[local]
   private class LoashSortBy extends DataFlow::SummarizedCallable {
     LoashSortBy() { this = "_.sortBy-like" }
 
+    overlay[global]
     override DataFlow::CallNode getACall() { result = member(["sortBy", "orderBy"]).getACall() }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -287,9 +299,11 @@ module LodashUnderscore {
     }
   }
 
+  overlay[local]
   private class LodashMinMaxBy extends DataFlow::SummarizedCallable {
     LodashMinMaxBy() { this = "_.minBy / _.maxBy" }
 
+    overlay[global]
     override DataFlow::CallNode getACall() { result = member(["minBy", "maxBy"]).getACall() }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -299,9 +313,11 @@ module LodashUnderscore {
     }
   }
 
+  overlay[local]
   private class LodashPartition extends DataFlow::SummarizedCallable {
     LodashPartition() { this = "_.partition" }
 
+    overlay[global]
     override DataFlow::CallNode getACall() { result = member("partition").getACall() }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -311,9 +327,11 @@ module LodashUnderscore {
     }
   }
 
+  overlay[local]
   private class UnderscoreMapObject extends DataFlow::SummarizedCallable {
     UnderscoreMapObject() { this = "_.mapObject" }
 
+    overlay[global]
     override DataFlow::CallNode getACall() { result = member("mapObject").getACall() }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -330,9 +348,11 @@ module LodashUnderscore {
     }
   }
 
+  overlay[local]
   private class LodashTap extends DataFlow::SummarizedCallable {
     LodashTap() { this = "_.tap" }
 
+    overlay[global]
     override DataFlow::CallNode getACall() { result = member("tap").getACall() }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {

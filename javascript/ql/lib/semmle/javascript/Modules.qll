@@ -3,6 +3,8 @@
  * ECMAScript 2015-style modules, and the older CommonJS and AMD-style
  * modules.
  */
+overlay[local]
+module;
 
 import javascript
 private import semmle.javascript.internal.CachedStages
@@ -23,9 +25,11 @@ abstract class Module extends TopLevel {
   Import getAnImport() { result.getTopLevel() = this }
 
   /** Gets a module from which this module imports. */
+  overlay[global]
   Module getAnImportedModule() { result = this.getAnImport().getImportedModule() }
 
   /** Gets a symbol exported by this module. */
+  overlay[global]
   string getAnExportedSymbol() { exists(this.getAnExportedValue(result)) }
 
   /**
@@ -39,12 +43,14 @@ abstract class Module extends TopLevel {
    * Symbols defined in another module that are re-exported by
    * this module are only sometimes considered.
    */
+  overlay[global]
   cached
   abstract DataFlow::Node getAnExportedValue(string name);
 
   /**
    * Gets a value that is exported as the whole exports object of this module.
    */
+  overlay[global]
   cached
   DataFlow::Node getABulkExportedNode() { none() } // overridden in subclasses
 
@@ -55,6 +61,7 @@ abstract class Module extends TopLevel {
    * This can be used to determine which value a default-import will likely refer to,
    * as the interaction between different module types is not standardized.
    */
+  overlay[global]
   DataFlow::Node getDefaultOrBulkExport() {
     result = [this.getAnExportedValue("default"), this.getABulkExportedNode()]
   }
@@ -69,6 +76,7 @@ abstract class Module extends TopLevel {
    * This predicate is not part of the public API, it is only exposed to allow
    * overriding by subclasses.
    */
+  overlay[global]
   deprecated predicate searchRoot(PathExpr path, Folder searchRoot, int priority) {
     path.getEnclosingModule() = this and
     priority = 0 and
@@ -90,6 +98,7 @@ abstract class Module extends TopLevel {
    * resolves to a folder containing a main module (such as `index.js`), then
    * that file is the result.
    */
+  overlay[global]
   deprecated File resolve(PathExpr path) {
     path.getEnclosingModule() = this and
     (
@@ -124,6 +133,7 @@ abstract class Import extends AstNode {
   abstract Module getEnclosingModule();
 
   /** DEPRECATED. Use `getImportedPathExpr` instead. */
+  overlay[global]
   deprecated PathExpr getImportedPath() { result = this.getImportedPathExpr() }
 
   /** Gets the (unresolved) path that this import refers to. */
@@ -138,6 +148,7 @@ abstract class Import extends AstNode {
    * Any externs module whose name exactly matches the imported
    * path is assumed to be a possible target of the import.
    */
+  overlay[global]
   Module resolveExternsImport() {
     result.isExterns() and result.getName() = this.getImportedPathString()
   }
@@ -145,16 +156,19 @@ abstract class Import extends AstNode {
   /**
    * Gets the module the path of this import resolves to.
    */
+  overlay[global]
   Module resolveImportedPath() { result.getFile() = this.getImportedFile() }
 
   /**
    * Gets the module the path of this import resolves to.
    */
+  overlay[global]
   File getImportedFile() { result = ImportPathResolver::resolveExpr(this.getImportedPathExpr()) }
 
   /**
    * DEPRECATED. Use `getImportedModule()` instead.
    */
+  overlay[global]
   deprecated Module resolveFromTypeScriptSymbol() {
     exists(CanonicalName symbol |
       ast_node_symbol(this, symbol) and
@@ -170,6 +184,7 @@ abstract class Import extends AstNode {
    * behavior of Node.js imports, which prefer core modules such as `fs` over any
    * source module of the same name.
    */
+  overlay[global]
   cached
   Module getImportedModule() {
     Stages::Imports::ref() and
@@ -179,7 +194,43 @@ abstract class Import extends AstNode {
   }
 
   /**
-   * Gets the data flow node that the default import of this import is available at.
+   * Gets the data flow node corresponding to the imported module.
+   *
+   * For example:
+   * ```js
+   * // ES2015 style
+   * import * as foo from "fs"; // Gets the node for `foo`
+   * import { readSync } from "fs"; // Gets a node representing the destructured import
+   *
+   * // CommonJS style
+   * require("fs"); // Gets the return value
+   *
+   * // AMD style
+   * define(["fs"], function(fs) { // Gets the node for the `fs` parameter
+   * });
+   * ```
+   *
+   * For default imports, this gets two nodes: the default import node, and a node representing the imported module:
+   * ```js
+   * import foo from "fs"; // gets both `foo` and a node representing the imported module
+   * ```
+   * This behaviour is to support non-standard compilers that treat default imports
+   * as namespace imports. Use `getImportedModuleNodeStrict()` to avoid this behaviour in cases
+   * where it would cause ambiguous data flow.
    */
   abstract DataFlow::Node getImportedModuleNode();
+
+  /**
+   * Gets the same as `getImportedModuleNode()` except ambiguous default imports are excluded
+   * in cases where it would cause ambiguity between named exports and properties
+   * of a default export.
+   */
+  overlay[global]
+  final DataFlow::Node getImportedModuleNodeStrict() {
+    result = this.getImportedModuleNode() and
+    not (
+      result = this.(ImportDeclaration).getAmbiguousDefaultImportNode() and
+      this.getImportedModule().(ES2015Module).hasBothNamedAndDefaultExports()
+    )
+  }
 }
