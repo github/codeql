@@ -47,3 +47,5 @@ extensions:
       - ["<core::str>::parse", "Argument[self]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["<core::str>::trim", "Argument[self]", "ReturnValue.Reference", "taint", "manual"]
       - ["<alloc::string::String as core::convert::From>::from", "Argument[0]", "ReturnValue", "value", "manual"]
+      # Vec
+      - ["<alloc::vec::Vec as core::convert::From>::from", "Argument[0]", "ReturnValue", "value", "manual"]

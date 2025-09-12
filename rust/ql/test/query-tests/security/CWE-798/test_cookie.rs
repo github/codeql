@@ -35,11 +35,11 @@ fn test_biscotti_crypto(array_var: &[u8]) {
     let processor1: biscotti::Processor = config1.into();
 
     let mut config2 = biscotti::ProcessorConfig::default();
-    let array2 = Vec::from([0u8; 64]); // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
+    let array2 = Vec::from([0u8; 64]); // $ Alert[rust/hard-coded-cryptographic-value]
     let crypto_rules2 = biscotti::config::CryptoRule {
         cookie_names: vec!["name".to_string()],
         algorithm: biscotti::config::CryptoAlgorithm::Signing,
-        key: biscotti::Key::from(array2), // $ MISSING: Sink
+        key: biscotti::Key::from(array2), // $ Sink
         fallbacks: vec![],
     };
     config2.crypto_rules.push(crypto_rules2);
