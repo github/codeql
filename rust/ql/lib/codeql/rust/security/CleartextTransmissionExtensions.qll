@@ -53,6 +53,6 @@ module CleartextTransmission {
    * A sink defined through MaD.
    */
   private class ModelsAsDataSink extends Sink {
-    ModelsAsDataSink() { sinkNode(this, "transmission") }
+    ModelsAsDataSink() { sinkNode(this, ["transmission", "request-url"]) }
   }
 }
