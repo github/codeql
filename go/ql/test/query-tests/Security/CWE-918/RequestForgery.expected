@@ -37,12 +37,7 @@ edges
 | tst.go:10:13:10:35 | call to FormValue | tst.go:38:11:38:29 | ...+... | provenance | Src:MaD:1  |
 | tst.go:10:13:10:35 | call to FormValue | tst.go:40:11:40:40 | ...+... | provenance | Src:MaD:1  |
 | tst.go:10:13:10:35 | call to FormValue | tst.go:47:11:47:18 | tainted2 | provenance | Src:MaD:1  |
-| tst.go:46:2:46:2 | definition of u [pointer] | tst.go:47:2:47:2 | u [pointer] | provenance |  |
-| tst.go:47:2:47:2 | implicit dereference | tst.go:46:2:46:2 | definition of u [pointer] | provenance |  |
-| tst.go:47:2:47:2 | implicit dereference | tst.go:47:2:47:2 | u | provenance |  |
-| tst.go:47:2:47:2 | u | tst.go:47:2:47:2 | implicit dereference | provenance |  |
 | tst.go:47:2:47:2 | u | tst.go:48:11:48:11 | u | provenance |  |
-| tst.go:47:2:47:2 | u [pointer] | tst.go:47:2:47:2 | implicit dereference | provenance |  |
 | tst.go:47:11:47:18 | tainted2 | tst.go:47:2:47:2 | u | provenance | Config |
 | tst.go:47:11:47:18 | tainted2 | tst.go:48:11:48:11 | u | provenance | Config |
 | tst.go:48:11:48:11 | u | tst.go:48:11:48:20 | call to String | provenance | MaD:3 |
@@ -75,10 +70,7 @@ nodes
 | tst.go:36:18:36:24 | tainted | semmle.label | tainted |
 | tst.go:38:11:38:29 | ...+... | semmle.label | ...+... |
 | tst.go:40:11:40:40 | ...+... | semmle.label | ...+... |
-| tst.go:46:2:46:2 | definition of u [pointer] | semmle.label | definition of u [pointer] |
-| tst.go:47:2:47:2 | implicit dereference | semmle.label | implicit dereference |
 | tst.go:47:2:47:2 | u | semmle.label | u |
-| tst.go:47:2:47:2 | u [pointer] | semmle.label | u [pointer] |
 | tst.go:47:11:47:18 | tainted2 | semmle.label | tainted2 |
 | tst.go:48:11:48:11 | u | semmle.label | u |
 | tst.go:48:11:48:20 | call to String | semmle.label | call to String |
