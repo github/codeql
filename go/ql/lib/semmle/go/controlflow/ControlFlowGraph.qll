@@ -140,13 +140,17 @@ module ControlFlow {
      * node corresponding to `newWidth`.
      */
     predicate writesField(DataFlow::Node base, Field f, DataFlow::Node rhs) {
+      this.writesFieldInsn(base.asInstruction(), f, rhs.asInstruction())
+    }
+
+    private predicate writesFieldInsn(IR::Instruction base, Field f, IR::Instruction rhs) {
       exists(IR::FieldTarget trg | trg = super.getLhs() |
         (
-          trg.getBase() = base.asInstruction() or
-          trg.getBase() = MkImplicitDeref(base.asExpr())
+          trg.getBase() = base or
+          trg.getBase() = MkImplicitDeref(base.(IR::EvalInstruction).getExpr())
         ) and
         trg.getField() = f and
-        super.getRhs() = rhs.asInstruction()
+        super.getRhs() = rhs
       )
     }
 
@@ -160,13 +164,19 @@ module ControlFlow {
      * is the data-flow node corresponding to `base`.
      */
     predicate writesElement(DataFlow::Node base, DataFlow::Node index, DataFlow::Node rhs) {
+      this.writesElementInsn(base.asInstruction(), index.asInstruction(), rhs.asInstruction())
+    }
+
+    private predicate writesElementInsn(
+      IR::Instruction base, IR::Instruction index, IR::Instruction rhs
+    ) {
       exists(IR::ElementTarget trg | trg = super.getLhs() |
         (
-          trg.getBase() = base.asInstruction() or
-          trg.getBase() = MkImplicitDeref(base.asExpr())
+          trg.getBase() = base or
+          trg.getBase() = MkImplicitDeref(base.(IR::EvalInstruction).getExpr())
         ) and
-        trg.getIndex() = index.asInstruction() and
-        super.getRhs() = rhs.asInstruction()
+        trg.getIndex() = index and
+        super.getRhs() = rhs
       )
     }
 
@@ -174,7 +184,14 @@ module ControlFlow {
      * Holds if this node sets any field or element of `base` to `rhs`.
      */
     predicate writesComponent(DataFlow::Node base, DataFlow::Node rhs) {
-      this.writesElement(base, _, rhs) or this.writesField(base, _, rhs)
+      this.writesComponentInstruction(base.asInstruction(), rhs.asInstruction())
+    }
+
+    /**
+     * Holds if this node sets any field or element of `base` to `rhs`.
+     */
+    predicate writesComponentInstruction(IR::Instruction base, IR::Instruction rhs) {
+      this.writesElementInsn(base, _, rhs) or this.writesFieldInsn(base, _, rhs)
     }
   }
 
