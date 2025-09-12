@@ -5,8 +5,9 @@
  * @kind problem
  * @problem.severity recommendation
  * @id js/parameter-reassignment-with-arguments
- * @tags efficiency
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       performance
  * @precision medium
  */
 

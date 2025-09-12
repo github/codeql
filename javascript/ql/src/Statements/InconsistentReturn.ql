@@ -4,8 +4,10 @@
  * @kind problem
  * @problem.severity recommendation
  * @id js/mixed-returns
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
+ *       readability
  * @precision medium
  */
 
