@@ -337,7 +337,17 @@ private module CachedSteps {
     exists(NameResolution::Node node1, NameResolution::Node node2 |
       NameResolution::ValueFlow::resolvedReadStep(node1, node2) and
       pred = DataFlow::valueNode(node1) and
-      succ = DataFlow::valueNode(node2)
+      succ = getNodeFromNameResolutionNode(node2)
+    )
+  }
+
+  pragma[inline]
+  private DataFlow::Node getNodeFromNameResolutionNode(NameResolution::Node node) {
+    result = DataFlow::valueNode(node)
+    or
+    exists(ImportSpecifier spec |
+      node = spec.getLocal() and
+      result = DataFlow::valueNode(spec)
     )
   }
 

@@ -339,6 +339,12 @@ module NameResolution {
         S::isRelevantVariable(result)
       )
       or
+      exists(ExportDefaultDeclaration exprt |
+        mod = exprt.getContainer() and
+        name = "default" and
+        result = exprt.getOperand()
+      )
+      or
       exists(ExportNamespaceSpecifier spec |
         result = spec and
         mod = spec.getContainer() and
