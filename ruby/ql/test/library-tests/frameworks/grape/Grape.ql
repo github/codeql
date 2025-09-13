@@ -16,3 +16,7 @@ query predicate grapeParams(GrapeParamsSource params) { any() }
 query predicate grapeHeaders(GrapeHeadersSource headers) { any() }
 
 query predicate grapeRequest(GrapeRequestSource request) { any() }
+
+query predicate grapeRouteParam(GrapeRouteParamSource routeParam) { any() }
+
+query predicate grapeCookies(GrapeCookiesSource cookies) { any() }

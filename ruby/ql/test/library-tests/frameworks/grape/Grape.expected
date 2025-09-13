@@ -1,15 +1,18 @@
 grapeAPIClasses
-| app.rb:1:1:48:3 | MyAPI |
-| app.rb:50:1:54:3 | AdminAPI |
+| app.rb:1:1:90:3 | MyAPI |
+| app.rb:92:1:96:3 | AdminAPI |
 grapeEndpoints
-| app.rb:1:1:48:3 | MyAPI | app.rb:7:3:11:5 | call to get | GET | /hello/:name |
-| app.rb:1:1:48:3 | MyAPI | app.rb:17:3:20:5 | call to post | POST | /messages |
-| app.rb:1:1:48:3 | MyAPI | app.rb:23:3:27:5 | call to put | PUT | /update/:id |
-| app.rb:1:1:48:3 | MyAPI | app.rb:30:3:32:5 | call to delete | DELETE | /items/:id |
-| app.rb:1:1:48:3 | MyAPI | app.rb:35:3:37:5 | call to patch | PATCH | /items/:id |
-| app.rb:1:1:48:3 | MyAPI | app.rb:40:3:42:5 | call to head | HEAD | /status |
-| app.rb:1:1:48:3 | MyAPI | app.rb:45:3:47:5 | call to options | OPTIONS | /info |
-| app.rb:50:1:54:3 | AdminAPI | app.rb:51:3:53:5 | call to get | GET | /admin |
+| app.rb:1:1:90:3 | MyAPI | app.rb:7:3:11:5 | call to get | GET | /hello/:name |
+| app.rb:1:1:90:3 | MyAPI | app.rb:17:3:20:5 | call to post | POST | /messages |
+| app.rb:1:1:90:3 | MyAPI | app.rb:23:3:27:5 | call to put | PUT | /update/:id |
+| app.rb:1:1:90:3 | MyAPI | app.rb:30:3:32:5 | call to delete | DELETE | /items/:id |
+| app.rb:1:1:90:3 | MyAPI | app.rb:35:3:37:5 | call to patch | PATCH | /items/:id |
+| app.rb:1:1:90:3 | MyAPI | app.rb:40:3:42:5 | call to head | HEAD | /status |
+| app.rb:1:1:90:3 | MyAPI | app.rb:45:3:47:5 | call to options | OPTIONS | /info |
+| app.rb:1:1:90:3 | MyAPI | app.rb:50:3:54:5 | call to get | GET | /users/:user_id/posts/:post_id |
+| app.rb:1:1:90:3 | MyAPI | app.rb:78:3:82:5 | call to get | GET | /cookie_test |
+| app.rb:1:1:90:3 | MyAPI | app.rb:85:3:89:5 | call to get | GET | /header_test |
+| app.rb:92:1:96:3 | AdminAPI | app.rb:93:3:95:5 | call to get | GET | /admin |
 grapeParams
 | app.rb:8:12:8:17 | call to params |
 | app.rb:14:3:16:5 | call to params |
@@ -17,9 +20,21 @@ grapeParams
 | app.rb:24:10:24:15 | call to params |
 | app.rb:31:5:31:10 | call to params |
 | app.rb:36:5:36:10 | call to params |
-| app.rb:52:5:52:10 | call to params |
+| app.rb:60:12:60:17 | call to params |
+| app.rb:94:5:94:10 | call to params |
 grapeHeaders
 | app.rb:9:18:9:24 | call to headers |
 | app.rb:46:5:46:11 | call to headers |
+| app.rb:66:3:69:5 | call to headers |
+| app.rb:86:12:86:18 | call to headers |
+| app.rb:87:14:87:20 | call to headers |
 grapeRequest
 | app.rb:25:12:25:18 | call to request |
+grapeRouteParam
+| app.rb:51:15:51:35 | call to route_param |
+| app.rb:52:15:52:36 | call to route_param |
+| app.rb:57:3:63:5 | call to route_param |
+grapeCookies
+| app.rb:72:3:75:5 | call to cookies |
+| app.rb:79:15:79:21 | call to cookies |
+| app.rb:80:16:80:22 | call to cookies |

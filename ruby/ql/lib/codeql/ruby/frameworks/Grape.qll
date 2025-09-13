@@ -137,12 +137,14 @@ private class GrapeParamsCall extends ParamsCallImpl {
     )
   }
 }/**
- * A call to `headers` from within a Grape API endpoint.
+ * A call to `headers` from within a Grape API endpoint or headers block.
  * Headers can also be a source of user input.
  */
 class GrapeHeadersSource extends Http::Server::RequestInputAccess::Range {
   GrapeHeadersSource() {
     this.asExpr().getExpr() instanceof GrapeHeadersCall
+    or
+    this.asExpr().getExpr() instanceof GrapeHeadersBlockCall
   }
 
   override string getSourceType() { result = "Grape::API#headers" }
@@ -180,6 +182,20 @@ class GrapeRequestSource extends Http::Server::RequestInputAccess::Range {
 }
 
 /**
+ * A call to `route_param` from within a Grape API endpoint.
+ * Route parameters are extracted from the URL path and can be a source of user input.
+ */
+class GrapeRouteParamSource extends Http::Server::RequestInputAccess::Range {
+  GrapeRouteParamSource() {
+    this.asExpr().getExpr() instanceof GrapeRouteParamCall
+  }
+
+  override string getSourceType() { result = "Grape::API#route_param" }
+
+  override Http::Server::RequestInputKind getKind() { result = Http::Server::parameterInputKind() }
+}
+
+/**
  * A call to `request` from within a Grape API endpoint.
  */
 private class GrapeRequestCall extends MethodCall {
@@ -191,6 +207,80 @@ private class GrapeRequestCall extends MethodCall {
     or
     // Also handle cases where request is called on an instance of a Grape API class
     this = grapeAPIInstance().getAMethodCall("request").asExpr().getExpr()
+  }
+}
+
+/**
+ * A call to `route_param` from within a Grape API endpoint.
+ */
+private class GrapeRouteParamCall extends MethodCall {
+  GrapeRouteParamCall() {
+    exists(GrapeEndpoint endpoint |
+      this.getParent+() = endpoint.getBody().asExpr().getExpr() and
+      this.getMethodName() = "route_param"
+    )
+    or
+    // Also handle cases where route_param is called on an instance of a Grape API class
+    this = grapeAPIInstance().getAMethodCall("route_param").asExpr().getExpr()
+  }
+}
+
+/**
+ * A call to `headers` block within a Grape API class.
+ * This is different from the headers() method call - this is the DSL block for defining header requirements.
+ */
+private class GrapeHeadersBlockCall extends MethodCall {
+  GrapeHeadersBlockCall() {
+    exists(GrapeAPIClass api |
+      this.getParent+() = api.getADeclaration() and
+      this.getMethodName() = "headers" and
+      exists(this.getBlock())
+    )
+  }
+}
+
+/**
+ * A call to `cookies` block within a Grape API class.
+ * This DSL block defines cookie requirements and those cookies are user-controlled.
+ */
+private class GrapeCookiesBlockCall extends MethodCall {
+  GrapeCookiesBlockCall() {
+    exists(GrapeAPIClass api |
+      this.getParent+() = api.getADeclaration() and
+      this.getMethodName() = "cookies" and
+      exists(this.getBlock())
+    )
+  }
+}
+
+/**
+ * A call to `cookies` method from within a Grape API endpoint or cookies block.
+ * Similar to headers, cookies can be accessed as a method and are user-controlled input.
+ */
+class GrapeCookiesSource extends Http::Server::RequestInputAccess::Range {
+  GrapeCookiesSource() {
+    this.asExpr().getExpr() instanceof GrapeCookiesCall
+    or
+    this.asExpr().getExpr() instanceof GrapeCookiesBlockCall
+  }
+
+  override string getSourceType() { result = "Grape::API#cookies" }
+
+  override Http::Server::RequestInputKind getKind() { result = Http::Server::cookieInputKind() }
+}
+
+/**
+ * A call to `cookies` method from within a Grape API endpoint.
+ */
+private class GrapeCookiesCall extends MethodCall {
+  GrapeCookiesCall() {
+    exists(GrapeEndpoint endpoint |
+      this.getParent+() = endpoint.getBody().asCallableAstNode() and
+      this.getMethodName() = "cookies"
+    )
+    or
+    // Also handle cases where cookies is called on an instance of a Grape API class
+    this = grapeAPIInstance().getAMethodCall("cookies").asExpr().getExpr()
   }
 }
 
