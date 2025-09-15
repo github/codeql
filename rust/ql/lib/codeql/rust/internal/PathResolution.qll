@@ -650,7 +650,6 @@ final class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
 
   TypeParamItemNode getBlanketImplementationTypeParam() {
     result = this.resolveSelfTy() and
-    result = super.getGenericParamList().getAGenericParam() and
     // This impl block is not superseded by the expansion of an attribute macro.
     not exists(super.getAttributeMacroExpansion())
   }
