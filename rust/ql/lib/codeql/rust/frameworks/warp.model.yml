@@ -3,18 +3,6 @@ extensions:
       pack: codeql/rust-all
       extensible: sourceModel
     data:
-      - ["<_ as warp::filter::Filter>::then", "Argument[0].Parameter[0]", "remote", "manual"]
-      - ["<_ as warp::filter::Filter>::then", "Argument[0].Parameter[1]", "remote", "manual"]
-      - ["<_ as warp::filter::Filter>::then", "Argument[0].Parameter[2]", "remote", "manual"]
-      - ["<_ as warp::filter::Filter>::then", "Argument[0].Parameter[3]", "remote", "manual"]
-      - ["<_ as warp::filter::Filter>::then", "Argument[0].Parameter[4]", "remote", "manual"]
-      - ["<_ as warp::filter::Filter>::map", "Argument[0].Parameter[0]", "remote", "manual"]
-      - ["<_ as warp::filter::Filter>::map", "Argument[0].Parameter[1]", "remote", "manual"]
-      - ["<_ as warp::filter::Filter>::map", "Argument[0].Parameter[2]", "remote", "manual"]
-      - ["<_ as warp::filter::Filter>::map", "Argument[0].Parameter[3]", "remote", "manual"]
-      - ["<_ as warp::filter::Filter>::map", "Argument[0].Parameter[4]", "remote", "manual"]
-      - ["<_ as warp::filter::Filter>::and_then", "Argument[0].Parameter[0]", "remote", "manual"]
-      - ["<_ as warp::filter::Filter>::and_then", "Argument[0].Parameter[1]", "remote", "manual"]
-      - ["<_ as warp::filter::Filter>::and_then", "Argument[0].Parameter[2]", "remote", "manual"]
-      - ["<_ as warp::filter::Filter>::and_then", "Argument[0].Parameter[3]", "remote", "manual"]
-      - ["<_ as warp::filter::Filter>::and_then", "Argument[0].Parameter[4]", "remote", "manual"]
+      - ["<_ as warp::filter::Filter>::then", "Argument[0].Parameter[0,1,2,3,4,5,6]", "remote", "manual"]
+      - ["<_ as warp::filter::Filter>::map", "Argument[0].Parameter[0,1,2,3,4,5,6]", "remote", "manual"]
+      - ["<_ as warp::filter::Filter>::and_then", "Argument[0].Parameter[0,1,2,3,4,5,6]", "remote", "manual"]
