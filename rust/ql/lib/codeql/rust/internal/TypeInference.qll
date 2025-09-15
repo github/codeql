@@ -1916,7 +1916,7 @@ private predicate methodCandidateTrait(Type type, Trait trait, string name, int 
 }
 
 /**
- * Holds if `mc` has `rootType` as the root type of the reciever and the target
+ * Holds if `mc` has `rootType` as the root type of the receiver and the target
  * method is named `name` and has arity `arity`
  */
 pragma[nomagic]
@@ -2193,8 +2193,8 @@ private module BlanketImplementation {
   }
 
   /**
-   * Holds if `impl` is a blanket implementation for a type parameter with trait
-   * bound `traitBound`.
+   * Holds if `impl` is a blanket implementation for a type parameter and
+   * `traitBound` is the first non-trivial trait bound of that type parameter.
    */
   private predicate blanketImplementationTraitBound(ImplItemNode impl, Trait traitBound) {
     traitBound =
@@ -2214,7 +2214,7 @@ private module BlanketImplementation {
 
   /**
    * Holds if `impl` is a relevant blanket implementation that requires the
-   * trait `trait` and provides `f`, a method with name `name` and arity
+   * trait `traitBound` and provides `f`, a method with name `name` and arity
    * `arity`.
    */
   private predicate blanketImplementationMethod(
@@ -2233,8 +2233,8 @@ private module BlanketImplementation {
       f = impl.resolveTraitTy().getAssocItem(name)
     ) and
     // If the method is already available through one of the trait bounds on the
-    // type parameter (because they share a common super trait) then ignore
-    // it.
+    // type parameter (because they implement the trait targeted by the impl
+    // block) then ignore it.
     not impl.getBlanketImplementationTypeParam().resolveABound().(TraitItemNode).getASuccessor(name) =
       f
   }
