@@ -349,6 +349,16 @@ module Make<
         gv2.isIntRange(high, true) and
         result = mkRange(low, high)
       )
+      or
+      exists(int bound, boolean upper, int d |
+        gv1.isIntRange(bound, upper) and
+        gv2.getDualValue().asIntValue() = bound and
+        result.asBase().isIntRange(bound + d, upper)
+      |
+        upper = true and d = -1
+        or
+        upper = false and d = 1
+      )
     )
   }
 
