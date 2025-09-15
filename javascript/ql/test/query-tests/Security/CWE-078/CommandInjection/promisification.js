@@ -27,8 +27,8 @@ app.post('/eval', async (req, res) => {
 app.post('/eval', async (req, res) => {
     const promisify2 = require('util.promisify-all');
     const promisifiedCp = promisify2(cp);
-    const code = req.body; // $ MISSING: Source
-    promisifiedCp.exec(code); // $ MISSING: Alert
+    const code = req.body; // $ Source
+    promisifiedCp.exec(code); // $ Alert
 });
 
 
@@ -127,13 +127,13 @@ app.post('/eval', async (req, res) => {
 
 app.post('/eval', async (req, res) => {
     const utilPromisify = require('util-promisify');
-    const code = req.body; // $ MISSING: Source
+    const code = req.body; // $ Source
 
     const promisifiedExec = utilPromisify(cp.exec);
-    promisifiedExec(code); // $ MISSING: Alert
+    promisifiedExec(code); // $ Alert
 
     const execAsync = utilPromisify(cp.exec.bind(cp));
-    execAsync(code); // $ MISSING: Alert
+    execAsync(code); // $ Alert
 });
 
 app.post('/eval', async (req, res) => {
