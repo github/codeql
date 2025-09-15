@@ -34,13 +34,13 @@ app.post('/eval', async (req, res) => {
 
 app.post('/eval', async (req, res) => {
     var garPromisify = require("@gar/promisify");
-    const code = req.body; // $ MISSING: Source
+    const code = req.body; // $ Source
 
     const promisifiedExec = garPromisify(cp.exec);
-    promisifiedExec(code); // $ MISSING: Alert
+    promisifiedExec(code); // $ Alert
 
     const promisifiedCp = garPromisify(cp);
-    promisifiedCp.exec(code); // $ MISSING: Alert
+    promisifiedCp.exec(code); // $ Alert
 });
 
 app.post('/eval', async (req, res) => {

@@ -83,6 +83,8 @@
 | other.js:30:33:30:35 | cmd | other.js:5:25:5:31 | req.url | other.js:30:33:30:35 | cmd | This command line depends on a $@. | other.js:5:25:5:31 | req.url | user-provided value |
 | other.js:34:44:34:46 | cmd | other.js:5:25:5:31 | req.url | other.js:34:44:34:46 | cmd | This command line depends on a $@. | other.js:5:25:5:31 | req.url | user-provided value |
 | promisification.js:24:22:24:25 | code | promisification.js:21:18:21:25 | req.body | promisification.js:24:22:24:25 | code | This command line depends on a $@. | promisification.js:21:18:21:25 | req.body | user-provided value |
+| promisification.js:40:21:40:24 | code | promisification.js:37:18:37:25 | req.body | promisification.js:40:21:40:24 | code | This command line depends on a $@. | promisification.js:37:18:37:25 | req.body | user-provided value |
+| promisification.js:43:24:43:27 | code | promisification.js:37:18:37:25 | req.body | promisification.js:43:24:43:27 | code | This command line depends on a $@. | promisification.js:37:18:37:25 | req.body | user-provided value |
 | promisification.js:52:21:52:24 | code | promisification.js:49:18:49:25 | req.body | promisification.js:52:21:52:24 | code | This command line depends on a $@. | promisification.js:49:18:49:25 | req.body | user-provided value |
 | promisification.js:55:15:55:18 | code | promisification.js:49:18:49:25 | req.body | promisification.js:55:15:55:18 | code | This command line depends on a $@. | promisification.js:49:18:49:25 | req.body | user-provided value |
 | promisification.js:100:23:100:26 | code | promisification.js:99:18:99:25 | req.body | promisification.js:100:23:100:26 | code | This command line depends on a $@. | promisification.js:99:18:99:25 | req.body | user-provided value |
@@ -274,6 +276,9 @@ edges
 | other.js:5:25:5:31 | req.url | other.js:5:15:5:38 | url.par ... , true) | provenance |  |
 | promisification.js:21:11:21:14 | code | promisification.js:24:22:24:25 | code | provenance |  |
 | promisification.js:21:18:21:25 | req.body | promisification.js:21:11:21:14 | code | provenance |  |
+| promisification.js:37:11:37:14 | code | promisification.js:40:21:40:24 | code | provenance |  |
+| promisification.js:37:11:37:14 | code | promisification.js:43:24:43:27 | code | provenance |  |
+| promisification.js:37:18:37:25 | req.body | promisification.js:37:11:37:14 | code | provenance |  |
 | promisification.js:49:11:49:14 | code | promisification.js:52:21:52:24 | code | provenance |  |
 | promisification.js:49:11:49:14 | code | promisification.js:55:15:55:18 | code | provenance |  |
 | promisification.js:49:18:49:25 | req.body | promisification.js:49:11:49:14 | code | provenance |  |
@@ -479,6 +484,10 @@ nodes
 | promisification.js:21:11:21:14 | code | semmle.label | code |
 | promisification.js:21:18:21:25 | req.body | semmle.label | req.body |
 | promisification.js:24:22:24:25 | code | semmle.label | code |
+| promisification.js:37:11:37:14 | code | semmle.label | code |
+| promisification.js:37:18:37:25 | req.body | semmle.label | req.body |
+| promisification.js:40:21:40:24 | code | semmle.label | code |
+| promisification.js:43:24:43:27 | code | semmle.label | code |
 | promisification.js:49:11:49:14 | code | semmle.label | code |
 | promisification.js:49:18:49:25 | req.body | semmle.label | req.body |
 | promisification.js:52:21:52:24 | code | semmle.label | code |
