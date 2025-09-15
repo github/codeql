@@ -138,16 +138,16 @@ app.post('/eval', async (req, res) => {
 
 app.post('/eval', async (req, res) => {
     const {promisify, promisifyAll} = require('@google-cloud/promisify');
-    const code = req.body; // $ MISSING: Source
+    const code = req.body; // $ Source
 
     const promisifiedExec = promisify(cp.exec);
-    promisifiedExec(code); // $ MISSING: Alert
+    promisifiedExec(code); // $ Alert
 
     const execAsync = promisify(cp.exec.bind(cp));
-    execAsync(code); // $ MISSING: Alert
+    execAsync(code); // $ Alert
 
     const promisifiedCp = promisifyAll(cp);
-    promisifiedCp.exec(code); // $ MISSING: Alert
-    promisifiedCp.execFile(code); // $ MISSING: Alert
-    promisifiedCp.spawn(code); // $ MISSING: Alert
+    promisifiedCp.exec(code); // $ Alert
+    promisifiedCp.execFile(code); // $ Alert
+    promisifiedCp.spawn(code); // $ Alert
 });
