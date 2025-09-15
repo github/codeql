@@ -1912,6 +1912,7 @@ module DataFlow {
   deprecated import Configuration
   import TypeTracking
   import AdditionalFlowSteps
+  import PromisifyFlow
   import internal.FunctionWrapperSteps
   import internal.sharedlib.DataFlow
   import internal.BarrierGuards

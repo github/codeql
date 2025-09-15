@@ -6,13 +6,13 @@ const app = express();
 app.use(bodyParser.json());
 
 function legacyEval(code) {
-    cp.exec(code.code); // $ MISSING: Alert
+    cp.exec(code.code); // $ Alert
 }
 
 app.post('/eval', async (req, res) => {
     const { promisify } = require('util');
     const evalAsync = promisify(legacyEval);
-    const code = req.body; // $ MISSING: Source
+    const code = req.body; // $ Source
     evalAsync(code);
 });
 
@@ -80,7 +80,7 @@ app.post('/eval', async (req, res) => {
 
     const lambda = es6Promisify((code, callback) => {
         try {
-            const result = cp.exec(code); // $ MISSING: Alert
+            const result = cp.exec(code); // $ Alert
             callback(null, result);
         } catch (err) {
             callback(err);
