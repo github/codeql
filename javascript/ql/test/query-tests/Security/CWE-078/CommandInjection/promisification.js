@@ -58,25 +58,25 @@ app.post('/eval', async (req, res) => {
 
 app.post('/eval', async (req, res) => {
     const es6Promisify = require("es6-promisify");
-    let cmd = req.body; // $ MISSING: Source
+    let cmd = req.body; // $ Source
 
     // Test basic promisification
     const promisifiedExec = es6Promisify(cp.exec);
-    promisifiedExec(cmd); // $ MISSING: Alert
+    promisifiedExec(cmd); // $ Alert
 
     // Test with method binding
     const execBoundAsync = es6Promisify(cp.exec.bind(cp));
-    execBoundAsync(cmd); // $ MISSING: Alert
+    execBoundAsync(cmd); // $ Alert
 
     const promisifiedExecMulti = es6Promisify(cp.exec, {
         multiArgs: true
     });
-    promisifiedExecMulti(cmd); // $ MISSING: Alert
+    promisifiedExecMulti(cmd); // $ Alert
 
     const promisifiedCp = es6Promisify.promisifyAll(cp);
-    promisifiedCp.exec(cmd); // $ MISSING: Alert
-    promisifiedCp.execFile(cmd); // $ MISSING: Alert
-    promisifiedCp.spawn(cmd); // $ MISSING: Alert
+    promisifiedCp.exec(cmd); // $ Alert
+    promisifiedCp.execFile(cmd); // $ Alert
+    promisifiedCp.spawn(cmd); // $ Alert
 
     const lambda = es6Promisify((code, callback) => {
         try {
