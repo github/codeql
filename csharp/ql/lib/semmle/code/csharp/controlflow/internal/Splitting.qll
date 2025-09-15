@@ -40,14 +40,16 @@ private module Cached {
       success in [false, true]
     } or
     TFinallySplit(FinallySplitting::FinallySplitType type, int nestLevel) {
-      nestLevel = any(Statements::TryStmtTree t).nestLevel()
+      // nestLevel = any(Statements::TryStmtTree t).nestLevel()
+      none()
     } or
     TExceptionHandlerSplit(ExceptionClass ec) or
     TBooleanSplit(BooleanSplitting::BooleanSplitSubKind kind, boolean branch) {
-      kind.startsSplit(_) and
-      branch in [false, true]
+      // kind.startsSplit(_) and
+      // branch in [false, true]
+      none()
     } or
-    TLoopSplit(LoopSplitting::AnalyzableLoopStmt loop)
+    TLoopSplit(LoopSplitting::AnalyzableLoopStmt loop) { none() }
 }
 
 import Cached
