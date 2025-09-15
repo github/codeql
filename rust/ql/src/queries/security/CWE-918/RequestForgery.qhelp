@@ -10,14 +10,11 @@ input can facilitate server-side request forgery (SSRF) attacks. In these
 attacks, the server may be tricked into making a request to an unintended API
 endpoint or resource.
 
-If the server performing the request is connected to an internal network, this
-can give an attacker the means to bypass the network boundary and make requests
-against internal services.
+If the server is connected to an internal network, attackers can bypass security
+boundaries to target internal services.
 
-A forged request may perform an unintended action on behalf of the attacker, or
-cause information leak if redirected to an external server or if the request
-response is fed back to the user. It may also compromise the server making the
-request, if the request response is handled in an unsafe way.
+Forged requests can execute unintended actions, leak data if redirected to an
+external server, or compromise the server if responses are handled insecurely.
 </p>
 </overview>
 
