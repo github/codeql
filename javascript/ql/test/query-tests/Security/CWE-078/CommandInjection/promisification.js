@@ -111,7 +111,7 @@ app.post('/eval', async (req, res) => {
 
 app.post('/eval', async (req, res) => {
     const maybe = require('call-me-maybe');
-    const code = req.body; // $ MISSING: Source
+    const code = req.body; // $ Source
     
     function createExecPromise(cmd) {
         return new Promise((resolve) => {
@@ -121,7 +121,7 @@ app.post('/eval', async (req, res) => {
     
     const cmdPromise = createExecPromise(code);
     maybe(null, cmdPromise).then(cmd => {
-        cp.exec(cmd); // $ MISSING: Alert
+        cp.exec(cmd); // $ Alert
     });
 });
 
