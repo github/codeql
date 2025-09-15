@@ -96,17 +96,17 @@ app.post('/eval', async (req, res) => {
       'exec',
       'execSync',
     ]);
-    const code = req.body; // $ MISSING: Source
-    cpThenifyAll.exec(code); // $ MISSING: Alert
-    cpThenifyAll.execSync(code); // $ MISSING: Alert
-    cpThenifyAll.execFile(code); // $ MISSING: Alert - not promisified, as it is not listed in `thenifyAll`
+    const code = req.body; // $ Source
+    cpThenifyAll.exec(code); // $ Alert
+    cpThenifyAll.execSync(code); // $ Alert
+    cpThenifyAll.execFile(code); // $ SPURIOUS: Alert - not promisified, as it is not listed in `thenifyAll`, but it should fine to flag it
 
 
     var cpThenifyAll1 = thenifyAll.withCallback(require('child_process'), {}, ['exec']);
-    cpThenifyAll1.exec(code, function (err, string) {}); // $ MISSING: Alert
+    cpThenifyAll1.exec(code, function (err, string) {}); // $ Alert
 
     var cpThenifyAll2 = thenifyAll(require('child_process'));
-    cpThenifyAll2.exec(code); // $ MISSING: Alert
+    cpThenifyAll2.exec(code); // $ Alert
 });
 
 app.post('/eval', async (req, res) => {

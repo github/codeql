@@ -1115,6 +1115,17 @@ module API {
           ref = awaited(call)
         )
         or
+        // Handle promisified object member access: promisify(obj).member should be treated as obj.member (promisified)
+        exists(
+          DataFlow::SourceNode promisifiedObj, DataFlow::SourceNode originalObj, string member
+        |
+          promisifiedObj instanceof Promisify::PromisifyAllCall and
+          originalObj.flowsTo(promisifiedObj.(Promisify::PromisifyAllCall).getArgument(0)) and
+          use(base, originalObj) and
+          lbl = Label::member(member) and
+          ref = promisifiedObj.getAPropertyRead(member)
+        )
+        or
         decoratorDualEdge(base, lbl, ref)
         or
         decoratorUseEdge(base, lbl, ref)

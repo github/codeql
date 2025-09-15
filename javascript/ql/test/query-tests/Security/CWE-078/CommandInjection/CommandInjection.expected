@@ -85,6 +85,11 @@
 | promisification.js:24:22:24:25 | code | promisification.js:21:18:21:25 | req.body | promisification.js:24:22:24:25 | code | This command line depends on a $@. | promisification.js:21:18:21:25 | req.body | user-provided value |
 | promisification.js:52:21:52:24 | code | promisification.js:49:18:49:25 | req.body | promisification.js:52:21:52:24 | code | This command line depends on a $@. | promisification.js:49:18:49:25 | req.body | user-provided value |
 | promisification.js:55:15:55:18 | code | promisification.js:49:18:49:25 | req.body | promisification.js:55:15:55:18 | code | This command line depends on a $@. | promisification.js:49:18:49:25 | req.body | user-provided value |
+| promisification.js:100:23:100:26 | code | promisification.js:99:18:99:25 | req.body | promisification.js:100:23:100:26 | code | This command line depends on a $@. | promisification.js:99:18:99:25 | req.body | user-provided value |
+| promisification.js:101:27:101:30 | code | promisification.js:99:18:99:25 | req.body | promisification.js:101:27:101:30 | code | This command line depends on a $@. | promisification.js:99:18:99:25 | req.body | user-provided value |
+| promisification.js:102:27:102:30 | code | promisification.js:99:18:99:25 | req.body | promisification.js:102:27:102:30 | code | This command line depends on a $@. | promisification.js:99:18:99:25 | req.body | user-provided value |
+| promisification.js:106:24:106:27 | code | promisification.js:99:18:99:25 | req.body | promisification.js:106:24:106:27 | code | This command line depends on a $@. | promisification.js:99:18:99:25 | req.body | user-provided value |
+| promisification.js:109:24:109:27 | code | promisification.js:99:18:99:25 | req.body | promisification.js:109:24:109:27 | code | This command line depends on a $@. | promisification.js:99:18:99:25 | req.body | user-provided value |
 | third-party-command-injection.js:6:21:6:27 | command | third-party-command-injection.js:5:20:5:26 | command | third-party-command-injection.js:6:21:6:27 | command | This command line depends on a $@. | third-party-command-injection.js:5:20:5:26 | command | user-provided value |
 edges
 | actions.js:8:9:8:13 | title | actions.js:9:16:9:20 | title | provenance |  |
@@ -267,6 +272,12 @@ edges
 | promisification.js:49:11:49:14 | code | promisification.js:52:21:52:24 | code | provenance |  |
 | promisification.js:49:11:49:14 | code | promisification.js:55:15:55:18 | code | provenance |  |
 | promisification.js:49:18:49:25 | req.body | promisification.js:49:11:49:14 | code | provenance |  |
+| promisification.js:99:11:99:14 | code | promisification.js:100:23:100:26 | code | provenance |  |
+| promisification.js:99:11:99:14 | code | promisification.js:101:27:101:30 | code | provenance |  |
+| promisification.js:99:11:99:14 | code | promisification.js:102:27:102:30 | code | provenance |  |
+| promisification.js:99:11:99:14 | code | promisification.js:106:24:106:27 | code | provenance |  |
+| promisification.js:99:11:99:14 | code | promisification.js:109:24:109:27 | code | provenance |  |
+| promisification.js:99:18:99:25 | req.body | promisification.js:99:11:99:14 | code | provenance |  |
 | third-party-command-injection.js:5:20:5:26 | command | third-party-command-injection.js:6:21:6:27 | command | provenance |  |
 nodes
 | actions.js:8:9:8:13 | title | semmle.label | title |
@@ -461,6 +472,13 @@ nodes
 | promisification.js:49:18:49:25 | req.body | semmle.label | req.body |
 | promisification.js:52:21:52:24 | code | semmle.label | code |
 | promisification.js:55:15:55:18 | code | semmle.label | code |
+| promisification.js:99:11:99:14 | code | semmle.label | code |
+| promisification.js:99:18:99:25 | req.body | semmle.label | req.body |
+| promisification.js:100:23:100:26 | code | semmle.label | code |
+| promisification.js:101:27:101:30 | code | semmle.label | code |
+| promisification.js:102:27:102:30 | code | semmle.label | code |
+| promisification.js:106:24:106:27 | code | semmle.label | code |
+| promisification.js:109:24:109:27 | code | semmle.label | code |
 | third-party-command-injection.js:5:20:5:26 | command | semmle.label | command |
 | third-party-command-injection.js:6:21:6:27 | command | semmle.label | command |
 subpaths
