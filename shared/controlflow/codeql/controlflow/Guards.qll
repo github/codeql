@@ -696,13 +696,14 @@ module Make<
     private predicate impliesStep1(Guard g1, GuardValue v1, Guard g2, GuardValue v2) {
       baseImpliesStep(g1, v1, g2, v2)
       or
-      exists(SsaDefinition def, Expr e |
+      exists(SsaDefinition def, Expr e, BasicBlock bb1 |
         // If `def = g2 ? v1 : ...` and all other assignments to `def` are different from
         // `v1` then a guard proving `def == v1` ensures that `g2` evaluates to `v2`.
         uniqueValue(def, e, v1) and
         guardReadsSsaVar(g1, def) and
         g2.directlyValueControls(e.getBasicBlock(), v2) and
-        not g2.directlyValueControls(g1.getBasicBlock(), v2)
+        bb1 = g1.getBasicBlock() and
+        not g2.directlyValueControls(bb1, v2)
       )
       or
       exists(int k1, int k2, boolean upper |
