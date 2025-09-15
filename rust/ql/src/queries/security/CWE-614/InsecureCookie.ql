@@ -16,7 +16,8 @@
 import rust
 import codeql.rust.dataflow.DataFlow
 import codeql.rust.dataflow.TaintTracking
-import InsecureCookieFlow::PathGraph
+import codeql.rust.dataflow.FlowSource
+import codeql.rust.dataflow.FlowSink
 
 /**
  * A data flow configuration for tracking values representing cookies without the
@@ -24,25 +25,21 @@ import InsecureCookieFlow::PathGraph
  */
 module InsecureCookieConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
-    // creation of a cookie with default settings (insecure)
-    exists(CallExprBase ce |
-      ce.getStaticTarget().getCanonicalPath() = "<cookie::Cookie>::build" and
-      node.asExpr().getExpr() = ce
-    )
+    // creation of a cookie or cookie configuration with default, insecure settings
+    sourceNode(node, "cookie-create")
   }
 
   predicate isSink(DataFlow::Node node) {
-    // qualifier of a call to `.build`.
-    exists(MethodCallExpr ce |
-      ce.getStaticTarget().getCanonicalPath() = "<cookie::builder::CookieBuilder>::build" and
-      node.asExpr().getExpr() = ce.getReceiver()
-    )
+    // use of a cookie or cookie configuration
+    sinkNode(node, "cookie-use")
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module InsecureCookieFlow = TaintTracking::Global<InsecureCookieConfig>;
+
+import InsecureCookieFlow::PathGraph
 
 from InsecureCookieFlow::PathNode sourceNode, InsecureCookieFlow::PathNode sinkNode
 where InsecureCookieFlow::flowPath(sourceNode, sinkNode)
