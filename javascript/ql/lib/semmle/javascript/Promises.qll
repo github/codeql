@@ -728,7 +728,8 @@ module Promisify {
       this =
         [
           DataFlow::moduleMember("bluebird", "promisifyAll"),
-          DataFlow::moduleImport(["util-promisifyall", "pify"])
+          DataFlow::moduleMember("thenify-all", "withCallback"),
+          DataFlow::moduleImport(["util-promisifyall", "pify", "thenify-all"])
         ].getACall()
     }
   }
