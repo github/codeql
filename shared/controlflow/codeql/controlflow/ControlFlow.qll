@@ -75,18 +75,43 @@ signature module InputSig<LocationSig Location, TypSig ControlFlowNode, TypSig B
     SsaDefinition getPriorDefinition();
   }
 
+  /** An abstract value that a `Guard` may evaluate to. */
   class GuardValue {
+    /** Gets a textual representation of this value. */
     string toString();
 
+    /**
+     * Gets the dual value. Examples of dual values include:
+     * - null vs. not null
+     * - true vs. false
+     * - evaluating to a specific value vs. evaluating to any other value
+     * - throwing an exception vs. not throwing an exception
+     */
     GuardValue getDualValue();
 
+    /** Gets the integer that this value represents, if any. */
     int asIntValue();
 
+    /**
+     * Holds if this value represents an integer range.
+     *
+     * If `upper = true` the range is `(-infinity, bound]`.
+     * If `upper = false` the range is `[bound, infinity)`.
+     */
     predicate isIntRange(int bound, boolean upper);
   }
 
+  /**
+   * Holds if `def` evaluating to `v` controls the control-flow branch
+   * edge from `bb1` to `bb2`. That is, following the edge from `bb1` to
+   * `bb2` implies that `def` evaluated to `v`.
+   */
   predicate ssaControlsBranchEdge(SsaDefinition def, BasicBlock bb1, BasicBlock bb2, GuardValue v);
 
+  /**
+   * Holds if `def` evaluating to `v` controls the basic block `bb`.
+   * That is, execution of `bb` implies that `def` evaluated to `v`.
+   */
   predicate ssaControls(SsaDefinition def, BasicBlock bb, GuardValue v);
 
   predicate exprHasValue(Expr e, GuardValue gv);
