@@ -1,4 +1,143 @@
 inferType
+| blanket_impl.rs:8:19:8:23 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:8:19:8:23 | SelfParam | &T | blanket_impl.rs:7:5:9:5 | Self [trait Clone1] |
+| blanket_impl.rs:12:22:12:26 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:12:22:12:26 | SelfParam | &T | blanket_impl.rs:11:5:15:5 | Self [trait Duplicatable] |
+| blanket_impl.rs:19:19:19:23 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:19:19:19:23 | SelfParam | &T | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:19:34:21:9 | { ... } |  | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:20:13:20:17 | * ... |  | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:20:14:20:17 | self |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:20:14:20:17 | self | &T | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:27:22:27:26 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:27:22:27:26 | SelfParam | &T | blanket_impl.rs:25:10:25:18 | T |
+| blanket_impl.rs:27:37:29:9 | { ... } |  | blanket_impl.rs:25:10:25:18 | T |
+| blanket_impl.rs:28:13:28:16 | self |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:28:13:28:16 | self | &T | blanket_impl.rs:25:10:25:18 | T |
+| blanket_impl.rs:28:13:28:25 | self.clone1() |  | blanket_impl.rs:25:10:25:18 | T |
+| blanket_impl.rs:33:13:33:13 | x |  | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:33:17:33:18 | S1 |  | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:33:17:33:27 | S1.clone1() |  | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:34:18:34:24 | "{x:?}\\n" |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:34:18:34:24 | "{x:?}\\n" | &T | {EXTERNAL LOCATION} | str |
+| blanket_impl.rs:34:18:34:24 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| blanket_impl.rs:34:18:34:24 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
+| blanket_impl.rs:34:20:34:20 | x |  | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:35:13:35:13 | y |  | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:35:17:35:18 | S1 |  | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:35:17:35:30 | S1.duplicate() |  | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:36:18:36:24 | "{y:?}\\n" |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:36:18:36:24 | "{y:?}\\n" | &T | {EXTERNAL LOCATION} | str |
+| blanket_impl.rs:36:18:36:24 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| blanket_impl.rs:36:18:36:24 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
+| blanket_impl.rs:36:20:36:20 | y |  | blanket_impl.rs:4:5:5:14 | S1 |
+| blanket_impl.rs:47:22:47:26 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:47:22:47:26 | SelfParam | &T | blanket_impl.rs:46:5:48:5 | Self [trait Flag] |
+| blanket_impl.rs:51:26:51:30 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:51:26:51:30 | SelfParam | &T | blanket_impl.rs:50:5:52:5 | Self [trait TryFlag] |
+| blanket_impl.rs:58:26:58:30 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:58:26:58:30 | SelfParam | &T | blanket_impl.rs:54:10:54:11 | Fl |
+| blanket_impl.rs:58:49:60:9 | { ... } |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:58:49:60:9 | { ... } | T | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:59:13:59:34 | Some(...) |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:59:13:59:34 | Some(...) | T | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:59:18:59:21 | self |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:59:18:59:21 | self | &T | blanket_impl.rs:54:10:54:11 | Fl |
+| blanket_impl.rs:59:18:59:33 | self.read_flag() |  | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:65:32:65:36 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:65:32:65:36 | SelfParam | &T | blanket_impl.rs:63:5:68:5 | Self [trait TryFlagExt] |
+| blanket_impl.rs:65:55:67:9 | { ... } |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:65:55:67:9 | { ... } | T | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:66:13:66:16 | self |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:66:13:66:16 | self | &T | blanket_impl.rs:63:5:68:5 | Self [trait TryFlagExt] |
+| blanket_impl.rs:66:13:66:32 | self.try_read_flag() |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:66:13:66:32 | self.try_read_flag() | T | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:74:32:74:36 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:74:32:74:36 | SelfParam | &T | blanket_impl.rs:72:5:75:5 | Self [trait AnotherTryFlag] |
+| blanket_impl.rs:83:26:83:30 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:83:26:83:30 | SelfParam | &T | blanket_impl.rs:77:5:79:5 | MyTryFlag |
+| blanket_impl.rs:83:49:85:9 | { ... } |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:83:49:85:9 | { ... } | T | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:84:13:84:27 | Some(...) |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:84:13:84:27 | Some(...) | T | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:84:18:84:21 | self |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:84:18:84:21 | self | &T | blanket_impl.rs:77:5:79:5 | MyTryFlag |
+| blanket_impl.rs:84:18:84:26 | self.flag |  | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:94:22:94:26 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:94:22:94:26 | SelfParam | &T | blanket_impl.rs:88:5:90:5 | MyFlag |
+| blanket_impl.rs:94:37:96:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:95:13:95:16 | self |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:95:13:95:16 | self | &T | blanket_impl.rs:88:5:90:5 | MyFlag |
+| blanket_impl.rs:95:13:95:21 | self.flag |  | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:105:32:105:36 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:105:32:105:36 | SelfParam | &T | blanket_impl.rs:99:5:101:5 | MyOtherFlag |
+| blanket_impl.rs:105:55:107:9 | { ... } |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:105:55:107:9 | { ... } | T | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:106:13:106:27 | Some(...) |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:106:13:106:27 | Some(...) | T | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:106:18:106:21 | self |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:106:18:106:21 | self | &T | blanket_impl.rs:99:5:101:5 | MyOtherFlag |
+| blanket_impl.rs:106:18:106:26 | self.flag |  | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:111:13:111:23 | my_try_flag |  | blanket_impl.rs:77:5:79:5 | MyTryFlag |
+| blanket_impl.rs:111:27:111:50 | MyTryFlag {...} |  | blanket_impl.rs:77:5:79:5 | MyTryFlag |
+| blanket_impl.rs:111:45:111:48 | true |  | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:112:13:112:18 | result |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:112:13:112:18 | result | T | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:112:22:112:32 | my_try_flag |  | blanket_impl.rs:77:5:79:5 | MyTryFlag |
+| blanket_impl.rs:112:22:112:54 | my_try_flag.try_read_flag_twice() |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:112:22:112:54 | my_try_flag.try_read_flag_twice() | T | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:114:13:114:19 | my_flag |  | blanket_impl.rs:88:5:90:5 | MyFlag |
+| blanket_impl.rs:114:23:114:43 | MyFlag {...} |  | blanket_impl.rs:88:5:90:5 | MyFlag |
+| blanket_impl.rs:114:38:114:41 | true |  | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:117:22:117:28 | my_flag |  | blanket_impl.rs:88:5:90:5 | MyFlag |
+| blanket_impl.rs:119:13:119:25 | my_other_flag |  | blanket_impl.rs:99:5:101:5 | MyOtherFlag |
+| blanket_impl.rs:119:29:119:54 | MyOtherFlag {...} |  | blanket_impl.rs:99:5:101:5 | MyOtherFlag |
+| blanket_impl.rs:119:49:119:52 | true |  | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:122:13:122:18 | result |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:122:13:122:18 | result | T | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:122:22:122:34 | my_other_flag |  | blanket_impl.rs:99:5:101:5 | MyOtherFlag |
+| blanket_impl.rs:122:22:122:56 | my_other_flag.try_read_flag_twice() |  | {EXTERNAL LOCATION} | Option |
+| blanket_impl.rs:122:22:122:56 | my_other_flag.try_read_flag_twice() | T | {EXTERNAL LOCATION} | bool |
+| blanket_impl.rs:132:21:132:25 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:132:21:132:25 | SelfParam | &T | blanket_impl.rs:131:5:134:5 | Self [trait Executor] |
+| blanket_impl.rs:133:24:133:28 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:133:24:133:28 | SelfParam | &T | blanket_impl.rs:131:5:134:5 | Self [trait Executor] |
+| blanket_impl.rs:133:31:133:35 | query |  | blanket_impl.rs:133:21:133:21 | E |
+| blanket_impl.rs:137:21:137:25 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:137:21:137:25 | SelfParam | &T | blanket_impl.rs:136:10:136:22 | T |
+| blanket_impl.rs:138:22:138:41 | "Executor::execute1\\n" |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:138:22:138:41 | "Executor::execute1\\n" | &T | {EXTERNAL LOCATION} | str |
+| blanket_impl.rs:138:22:138:41 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| blanket_impl.rs:138:22:138:41 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
+| blanket_impl.rs:141:24:141:28 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:141:24:141:28 | SelfParam | &T | blanket_impl.rs:136:10:136:22 | T |
+| blanket_impl.rs:141:31:141:36 | _query |  | blanket_impl.rs:141:21:141:21 | E |
+| blanket_impl.rs:142:22:142:41 | "Executor::execute2\\n" |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:142:22:142:41 | "Executor::execute2\\n" | &T | {EXTERNAL LOCATION} | str |
+| blanket_impl.rs:142:22:142:41 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| blanket_impl.rs:142:22:142:41 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
+| blanket_impl.rs:151:13:151:13 | c |  | blanket_impl.rs:146:5:146:29 | MySqlConnection |
+| blanket_impl.rs:151:17:151:34 | MySqlConnection {...} |  | blanket_impl.rs:146:5:146:29 | MySqlConnection |
+| blanket_impl.rs:153:9:153:9 | c |  | blanket_impl.rs:146:5:146:29 | MySqlConnection |
+| blanket_impl.rs:154:35:154:36 | &c |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:154:35:154:36 | &c | &T | blanket_impl.rs:146:5:146:29 | MySqlConnection |
+| blanket_impl.rs:154:36:154:36 | c |  | blanket_impl.rs:146:5:146:29 | MySqlConnection |
+| blanket_impl.rs:156:9:156:9 | c |  | blanket_impl.rs:146:5:146:29 | MySqlConnection |
+| blanket_impl.rs:156:20:156:40 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:156:20:156:40 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
+| blanket_impl.rs:157:9:157:9 | c |  | blanket_impl.rs:146:5:146:29 | MySqlConnection |
+| blanket_impl.rs:157:28:157:48 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:157:28:157:48 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
+| blanket_impl.rs:158:35:158:36 | &c |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:158:35:158:36 | &c | &T | blanket_impl.rs:146:5:146:29 | MySqlConnection |
+| blanket_impl.rs:158:36:158:36 | c |  | blanket_impl.rs:146:5:146:29 | MySqlConnection |
+| blanket_impl.rs:158:39:158:59 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:158:39:158:59 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
+| blanket_impl.rs:159:43:159:44 | &c |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:159:43:159:44 | &c | &T | blanket_impl.rs:146:5:146:29 | MySqlConnection |
+| blanket_impl.rs:159:44:159:44 | c |  | blanket_impl.rs:146:5:146:29 | MySqlConnection |
+| blanket_impl.rs:159:47:159:67 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:159:47:159:67 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
 | closure.rs:6:13:6:22 | my_closure |  | {EXTERNAL LOCATION} | dyn FnOnce |
 | closure.rs:6:13:6:22 | my_closure | dyn(Args) | file://:0:0:0:0 | (T_2) |
 | closure.rs:6:13:6:22 | my_closure | dyn(Args).0(2) | {EXTERNAL LOCATION} | bool |
@@ -624,10 +763,13 @@ inferType
 | dyn_type.rs:103:28:105:5 | &... |  | file://:0:0:0:0 | & |
 | dyn_type.rs:103:28:105:5 | &... | &T | dyn_type.rs:10:1:13:1 | dyn GenericGet |
 | dyn_type.rs:103:28:105:5 | &... | &T | dyn_type.rs:33:1:36:1 | GenStruct |
+| dyn_type.rs:103:28:105:5 | &... | &T.A | {EXTERNAL LOCATION} | String |
 | dyn_type.rs:103:28:105:5 | &... | &T.dyn(A) | {EXTERNAL LOCATION} | String |
 | dyn_type.rs:103:29:105:5 | GenStruct {...} |  | dyn_type.rs:33:1:36:1 | GenStruct |
+| dyn_type.rs:103:29:105:5 | GenStruct {...} | A | {EXTERNAL LOCATION} | String |
 | dyn_type.rs:104:16:104:17 | "" |  | file://:0:0:0:0 | & |
 | dyn_type.rs:104:16:104:17 | "" | &T | {EXTERNAL LOCATION} | str |
+| dyn_type.rs:104:16:104:29 | "".to_string() |  | {EXTERNAL LOCATION} | String |
 | dyn_type.rs:107:21:107:45 | &... |  | file://:0:0:0:0 | & |
 | dyn_type.rs:107:21:107:45 | &... | &T | dyn_type.rs:15:1:19:1 | dyn AssocTrait |
 | dyn_type.rs:107:21:107:45 | &... | &T | dyn_type.rs:33:1:36:1 | GenStruct |
@@ -1260,8 +1402,10 @@ inferType
 | main.rs:439:21:439:37 | MyThing {...} |  | main.rs:224:5:227:5 | MyThing |
 | main.rs:439:21:439:37 | MyThing {...} | A | main.rs:235:5:236:14 | S1 |
 | main.rs:439:34:439:35 | S1 |  | main.rs:235:5:236:14 | S1 |
+| main.rs:440:13:440:13 | i |  | main.rs:235:5:236:14 | S1 |
 | main.rs:440:17:440:21 | thing |  | main.rs:224:5:227:5 | MyThing |
 | main.rs:440:17:440:21 | thing | A | main.rs:235:5:236:14 | S1 |
+| main.rs:440:17:440:34 | thing.convert_to() |  | main.rs:235:5:236:14 | S1 |
 | main.rs:441:13:441:13 | j |  | main.rs:235:5:236:14 | S1 |
 | main.rs:441:17:441:33 | convert_to(...) |  | main.rs:235:5:236:14 | S1 |
 | main.rs:441:28:441:32 | thing |  | main.rs:224:5:227:5 | MyThing |
@@ -3187,14 +3331,22 @@ inferType
 | main.rs:1706:13:1709:13 | Vec2 {...} |  | main.rs:1586:5:1591:5 | Vec2 |
 | main.rs:1707:20:1707:23 | self |  | main.rs:1586:5:1591:5 | Vec2 |
 | main.rs:1707:20:1707:25 | self.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1707:20:1707:33 | ... \| ... |  | {EXTERNAL LOCATION} | NonZero |
 | main.rs:1707:20:1707:33 | ... \| ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1707:20:1707:33 | ... \| ... | T | {EXTERNAL LOCATION} | i64 |
 | main.rs:1707:29:1707:31 | rhs |  | main.rs:1586:5:1591:5 | Vec2 |
+| main.rs:1707:29:1707:33 | rhs.x |  | {EXTERNAL LOCATION} | NonZero |
 | main.rs:1707:29:1707:33 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1707:29:1707:33 | rhs.x | T | {EXTERNAL LOCATION} | i64 |
 | main.rs:1708:20:1708:23 | self |  | main.rs:1586:5:1591:5 | Vec2 |
 | main.rs:1708:20:1708:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1708:20:1708:33 | ... \| ... |  | {EXTERNAL LOCATION} | NonZero |
 | main.rs:1708:20:1708:33 | ... \| ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1708:20:1708:33 | ... \| ... | T | {EXTERNAL LOCATION} | i64 |
 | main.rs:1708:29:1708:31 | rhs |  | main.rs:1586:5:1591:5 | Vec2 |
+| main.rs:1708:29:1708:33 | rhs.y |  | {EXTERNAL LOCATION} | NonZero |
 | main.rs:1708:29:1708:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1708:29:1708:33 | rhs.y | T | {EXTERNAL LOCATION} | i64 |
 | main.rs:1714:25:1714:33 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1714:25:1714:33 | SelfParam | &T | main.rs:1586:5:1591:5 | Vec2 |
 | main.rs:1714:36:1714:38 | rhs |  | main.rs:1586:5:1591:5 | Vec2 |
@@ -3532,9 +3684,13 @@ inferType
 | main.rs:1857:26:1857:30 | 33i64 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1857:26:1857:38 | ... & ... |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1857:34:1857:38 | 34i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1858:13:1858:21 | i64_bitor |  | {EXTERNAL LOCATION} | NonZero |
 | main.rs:1858:13:1858:21 | i64_bitor |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1858:13:1858:21 | i64_bitor | T | {EXTERNAL LOCATION} | i64 |
 | main.rs:1858:25:1858:29 | 35i64 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1858:25:1858:37 | ... \| ... |  | {EXTERNAL LOCATION} | NonZero |
 | main.rs:1858:25:1858:37 | ... \| ... |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:1858:25:1858:37 | ... \| ... | T | {EXTERNAL LOCATION} | i64 |
 | main.rs:1858:33:1858:37 | 36i64 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1859:13:1859:22 | i64_bitxor |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1859:26:1859:30 | 37i64 |  | {EXTERNAL LOCATION} | i64 |
@@ -4922,89 +5078,49 @@ inferType
 | main.rs:2566:26:2566:43 | "Nested boxed: {}\\n" | &T | {EXTERNAL LOCATION} | str |
 | main.rs:2566:26:2566:59 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:2566:26:2566:59 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
-| main.rs:2578:21:2578:25 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:2578:21:2578:25 | SelfParam | &T | main.rs:2577:5:2580:5 | Self [trait Executor] |
-| main.rs:2579:24:2579:28 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:2579:24:2579:28 | SelfParam | &T | main.rs:2577:5:2580:5 | Self [trait Executor] |
-| main.rs:2579:31:2579:35 | query |  | main.rs:2579:21:2579:21 | E |
-| main.rs:2583:21:2583:25 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:2583:21:2583:25 | SelfParam | &T | main.rs:2582:10:2582:22 | T |
-| main.rs:2584:22:2584:41 | "Executor::execute1\\n" |  | file://:0:0:0:0 | & |
-| main.rs:2584:22:2584:41 | "Executor::execute1\\n" | &T | {EXTERNAL LOCATION} | str |
-| main.rs:2584:22:2584:41 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
-| main.rs:2584:22:2584:41 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
-| main.rs:2587:24:2587:28 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:2587:24:2587:28 | SelfParam | &T | main.rs:2582:10:2582:22 | T |
-| main.rs:2587:31:2587:36 | _query |  | main.rs:2587:21:2587:21 | E |
-| main.rs:2588:22:2588:41 | "Executor::execute2\\n" |  | file://:0:0:0:0 | & |
-| main.rs:2588:22:2588:41 | "Executor::execute2\\n" | &T | {EXTERNAL LOCATION} | str |
-| main.rs:2588:22:2588:41 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
-| main.rs:2588:22:2588:41 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
-| main.rs:2597:13:2597:13 | c |  | main.rs:2592:5:2592:29 | MySqlConnection |
-| main.rs:2597:17:2597:34 | MySqlConnection {...} |  | main.rs:2592:5:2592:29 | MySqlConnection |
-| main.rs:2599:9:2599:9 | c |  | main.rs:2592:5:2592:29 | MySqlConnection |
-| main.rs:2600:35:2600:36 | &c |  | file://:0:0:0:0 | & |
-| main.rs:2600:35:2600:36 | &c | &T | main.rs:2592:5:2592:29 | MySqlConnection |
-| main.rs:2600:36:2600:36 | c |  | main.rs:2592:5:2592:29 | MySqlConnection |
-| main.rs:2602:9:2602:9 | c |  | main.rs:2592:5:2592:29 | MySqlConnection |
-| main.rs:2602:20:2602:40 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
-| main.rs:2602:20:2602:40 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
-| main.rs:2603:9:2603:9 | c |  | main.rs:2592:5:2592:29 | MySqlConnection |
-| main.rs:2603:28:2603:48 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
-| main.rs:2603:28:2603:48 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
-| main.rs:2604:35:2604:36 | &c |  | file://:0:0:0:0 | & |
-| main.rs:2604:35:2604:36 | &c | &T | main.rs:2592:5:2592:29 | MySqlConnection |
-| main.rs:2604:36:2604:36 | c |  | main.rs:2592:5:2592:29 | MySqlConnection |
-| main.rs:2604:39:2604:59 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
-| main.rs:2604:39:2604:59 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
-| main.rs:2605:43:2605:44 | &c |  | file://:0:0:0:0 | & |
-| main.rs:2605:43:2605:44 | &c | &T | main.rs:2592:5:2592:29 | MySqlConnection |
-| main.rs:2605:44:2605:44 | c |  | main.rs:2592:5:2592:29 | MySqlConnection |
-| main.rs:2605:47:2605:67 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
-| main.rs:2605:47:2605:67 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
-| main.rs:2615:36:2617:9 | { ... } |  | main.rs:2612:5:2612:22 | Path |
-| main.rs:2616:13:2616:19 | Path {...} |  | main.rs:2612:5:2612:22 | Path |
-| main.rs:2619:29:2619:33 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:2619:29:2619:33 | SelfParam | &T | main.rs:2612:5:2612:22 | Path |
-| main.rs:2619:59:2621:9 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| main.rs:2619:59:2621:9 | { ... } | E | file://:0:0:0:0 | () |
-| main.rs:2619:59:2621:9 | { ... } | T | main.rs:2624:5:2624:25 | PathBuf |
-| main.rs:2620:13:2620:30 | Ok(...) |  | {EXTERNAL LOCATION} | Result |
-| main.rs:2620:13:2620:30 | Ok(...) | E | file://:0:0:0:0 | () |
-| main.rs:2620:13:2620:30 | Ok(...) | T | main.rs:2624:5:2624:25 | PathBuf |
-| main.rs:2620:16:2620:29 | ...::new(...) |  | main.rs:2624:5:2624:25 | PathBuf |
-| main.rs:2627:39:2629:9 | { ... } |  | main.rs:2624:5:2624:25 | PathBuf |
-| main.rs:2628:13:2628:22 | PathBuf {...} |  | main.rs:2624:5:2624:25 | PathBuf |
-| main.rs:2637:18:2637:22 | SelfParam |  | file://:0:0:0:0 | & |
-| main.rs:2637:18:2637:22 | SelfParam | &T | main.rs:2624:5:2624:25 | PathBuf |
-| main.rs:2637:34:2641:9 | { ... } |  | file://:0:0:0:0 | & |
-| main.rs:2637:34:2641:9 | { ... } | &T | main.rs:2612:5:2612:22 | Path |
-| main.rs:2639:33:2639:43 | ...::new(...) |  | main.rs:2612:5:2612:22 | Path |
-| main.rs:2640:13:2640:17 | &path |  | file://:0:0:0:0 | & |
-| main.rs:2640:13:2640:17 | &path | &T | main.rs:2612:5:2612:22 | Path |
-| main.rs:2640:14:2640:17 | path |  | main.rs:2612:5:2612:22 | Path |
-| main.rs:2645:13:2645:17 | path1 |  | main.rs:2612:5:2612:22 | Path |
-| main.rs:2645:21:2645:31 | ...::new(...) |  | main.rs:2612:5:2612:22 | Path |
-| main.rs:2646:13:2646:17 | path2 |  | {EXTERNAL LOCATION} | Result |
-| main.rs:2646:13:2646:17 | path2 | E | file://:0:0:0:0 | () |
-| main.rs:2646:13:2646:17 | path2 | T | main.rs:2624:5:2624:25 | PathBuf |
-| main.rs:2646:21:2646:25 | path1 |  | main.rs:2612:5:2612:22 | Path |
-| main.rs:2646:21:2646:40 | path1.canonicalize() |  | {EXTERNAL LOCATION} | Result |
-| main.rs:2646:21:2646:40 | path1.canonicalize() | E | file://:0:0:0:0 | () |
-| main.rs:2646:21:2646:40 | path1.canonicalize() | T | main.rs:2624:5:2624:25 | PathBuf |
-| main.rs:2647:13:2647:17 | path3 |  | main.rs:2624:5:2624:25 | PathBuf |
-| main.rs:2647:21:2647:25 | path2 |  | {EXTERNAL LOCATION} | Result |
-| main.rs:2647:21:2647:25 | path2 | E | file://:0:0:0:0 | () |
-| main.rs:2647:21:2647:25 | path2 | T | main.rs:2624:5:2624:25 | PathBuf |
-| main.rs:2647:21:2647:34 | path2.unwrap() |  | main.rs:2624:5:2624:25 | PathBuf |
-| main.rs:2649:13:2649:20 | pathbuf1 |  | main.rs:2624:5:2624:25 | PathBuf |
-| main.rs:2649:24:2649:37 | ...::new(...) |  | main.rs:2624:5:2624:25 | PathBuf |
-| main.rs:2650:24:2650:31 | pathbuf1 |  | main.rs:2624:5:2624:25 | PathBuf |
-| main.rs:2661:5:2661:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2662:5:2662:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2662:20:2662:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2662:41:2662:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2678:5:2678:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:2578:36:2580:9 | { ... } |  | main.rs:2575:5:2575:22 | Path |
+| main.rs:2579:13:2579:19 | Path {...} |  | main.rs:2575:5:2575:22 | Path |
+| main.rs:2582:29:2582:33 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:2582:29:2582:33 | SelfParam | &T | main.rs:2575:5:2575:22 | Path |
+| main.rs:2582:59:2584:9 | { ... } |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2582:59:2584:9 | { ... } | E | file://:0:0:0:0 | () |
+| main.rs:2582:59:2584:9 | { ... } | T | main.rs:2587:5:2587:25 | PathBuf |
+| main.rs:2583:13:2583:30 | Ok(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2583:13:2583:30 | Ok(...) | E | file://:0:0:0:0 | () |
+| main.rs:2583:13:2583:30 | Ok(...) | T | main.rs:2587:5:2587:25 | PathBuf |
+| main.rs:2583:16:2583:29 | ...::new(...) |  | main.rs:2587:5:2587:25 | PathBuf |
+| main.rs:2590:39:2592:9 | { ... } |  | main.rs:2587:5:2587:25 | PathBuf |
+| main.rs:2591:13:2591:22 | PathBuf {...} |  | main.rs:2587:5:2587:25 | PathBuf |
+| main.rs:2600:18:2600:22 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:2600:18:2600:22 | SelfParam | &T | main.rs:2587:5:2587:25 | PathBuf |
+| main.rs:2600:34:2604:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:2600:34:2604:9 | { ... } | &T | main.rs:2575:5:2575:22 | Path |
+| main.rs:2602:33:2602:43 | ...::new(...) |  | main.rs:2575:5:2575:22 | Path |
+| main.rs:2603:13:2603:17 | &path |  | file://:0:0:0:0 | & |
+| main.rs:2603:13:2603:17 | &path | &T | main.rs:2575:5:2575:22 | Path |
+| main.rs:2603:14:2603:17 | path |  | main.rs:2575:5:2575:22 | Path |
+| main.rs:2608:13:2608:17 | path1 |  | main.rs:2575:5:2575:22 | Path |
+| main.rs:2608:21:2608:31 | ...::new(...) |  | main.rs:2575:5:2575:22 | Path |
+| main.rs:2609:13:2609:17 | path2 |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2609:13:2609:17 | path2 | E | file://:0:0:0:0 | () |
+| main.rs:2609:13:2609:17 | path2 | T | main.rs:2587:5:2587:25 | PathBuf |
+| main.rs:2609:21:2609:25 | path1 |  | main.rs:2575:5:2575:22 | Path |
+| main.rs:2609:21:2609:40 | path1.canonicalize() |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2609:21:2609:40 | path1.canonicalize() | E | file://:0:0:0:0 | () |
+| main.rs:2609:21:2609:40 | path1.canonicalize() | T | main.rs:2587:5:2587:25 | PathBuf |
+| main.rs:2610:13:2610:17 | path3 |  | main.rs:2587:5:2587:25 | PathBuf |
+| main.rs:2610:21:2610:25 | path2 |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2610:21:2610:25 | path2 | E | file://:0:0:0:0 | () |
+| main.rs:2610:21:2610:25 | path2 | T | main.rs:2587:5:2587:25 | PathBuf |
+| main.rs:2610:21:2610:34 | path2.unwrap() |  | main.rs:2587:5:2587:25 | PathBuf |
+| main.rs:2612:13:2612:20 | pathbuf1 |  | main.rs:2587:5:2587:25 | PathBuf |
+| main.rs:2612:24:2612:37 | ...::new(...) |  | main.rs:2587:5:2587:25 | PathBuf |
+| main.rs:2613:24:2613:31 | pathbuf1 |  | main.rs:2587:5:2587:25 | PathBuf |
+| main.rs:2625:5:2625:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2626:5:2626:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2626:20:2626:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2626:41:2626:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2642:5:2642:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
 | pattern_matching.rs:13:26:133:1 | { ... } |  | {EXTERNAL LOCATION} | Option |
 | pattern_matching.rs:13:26:133:1 | { ... } | T | file://:0:0:0:0 | () |
 | pattern_matching.rs:14:9:14:13 | value |  | {EXTERNAL LOCATION} | Option |
