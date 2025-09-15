@@ -210,6 +210,7 @@ module Make<
     TValue(TAbstractSingleValue val, Boolean isVal) or
     TIntRange(int bound, Boolean upper) {
       exists(ConstantExpr c | c.asIntegerValue() + [-1, 0, 1] = bound) and
+      // exclude edge cases to avoid overflow issues when computing duals
       bound != 2147483647 and
       bound != -2147483648
     } or
