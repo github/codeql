@@ -4,7 +4,9 @@ No user-facing changes.
 
 ## 4.3.2
 
-No user-facing changes.
+### Minor Analysis Improvements
+
+* Go 1.25 is now supported.
 
 ## 4.3.1
 

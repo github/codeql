@@ -42,7 +42,7 @@ private import RangeUtils
 private import IntegerGuards
 private import NullGuards
 private import semmle.code.java.Collections
-private import semmle.code.java.frameworks.Assertions
+private import semmle.code.java.controlflow.internal.Preconditions
 
 /** Gets an expression that may be `null`. */
 Expr nullExpr() {
@@ -140,20 +140,11 @@ private ControlFlowNode varDereference(SsaVariable v, VarAccess va) {
  * A `ControlFlowNode` that ensures that the SSA variable is not null in any
  * subsequent use, either by dereferencing it or by an assertion.
  */
-private ControlFlowNode ensureNotNull(SsaVariable v) {
-  result = varDereference(v, _)
-  or
-  exists(AssertTrueMethod m | result.asCall() = m.getACheck(directNullGuard(v, true, false)))
-  or
-  exists(AssertFalseMethod m | result.asCall() = m.getACheck(directNullGuard(v, false, false)))
-  or
-  exists(AssertNotNullMethod m | result.asCall() = m.getACheck(v.getAUse()))
-  or
-  exists(AssertThatMethod m, MethodCall ma |
-    result.asCall() = m.getACheck(v.getAUse()) and ma.getControlFlowNode() = result
-  |
-    ma.getAnArgument().(MethodCall).getMethod().getName() = "notNullValue"
-  )
+private ControlFlowNode ensureNotNull(SsaVariable v) { result = varDereference(v, _) }
+
+private predicate assertFail(BasicBlock bb, ControlFlowNode n) {
+  bb = n.getBasicBlock() and
+  methodCallUnconditionallyThrows(n.asExpr())
 }
 
 /**

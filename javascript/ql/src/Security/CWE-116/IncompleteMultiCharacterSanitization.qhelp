@@ -108,7 +108,7 @@ str.replace(/\.\.\//g, "");
 </sample>
 
 <p>
-The regular expression attempts to strip out all occurences of <code>/../</code> from <code>str</code>.
+The regular expression attempts to strip out all occurrences of <code>/../</code> from <code>str</code>.
 This will not work as expected: for the string <code>/./.././</code>, for example, it will remove the single
 occurrence of <code>/../</code> in the middle, but the remainder of the string then becomes
 <code>/../</code>, which is another instance of the substring we were trying to remove.
