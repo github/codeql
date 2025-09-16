@@ -2533,7 +2533,7 @@ dictionary_types(  //dir=type
 
 @local_archetype_type =
   @element_archetype_type
-| @opened_archetype_type
+| @existential_archetype_type
 ;
 
 @nominal_type =
@@ -2596,8 +2596,8 @@ enum_types(  //dir=type
   unique int id: @enum_type
 );
 
-opened_archetype_types(  //dir=type
-  unique int id: @opened_archetype_type
+existential_archetype_types(  //dir=type
+  unique int id: @existential_archetype_type
 );
 
 optional_types(  //dir=type
