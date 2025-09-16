@@ -15,8 +15,6 @@
 /lib/codeql/swift/elements/Locatable.qll linguist-generated
 /lib/codeql/swift/elements/Location.qll linguist-generated
 /lib/codeql/swift/elements/MacroRole.qll linguist-generated
-/lib/codeql/swift/elements/OtherAvailabilitySpec.qll linguist-generated
-/lib/codeql/swift/elements/PlatformVersionAvailabilitySpec.qll linguist-generated
 /lib/codeql/swift/elements/UnknownFile.qll linguist-generated
 /lib/codeql/swift/elements/UnknownLocation.qll linguist-generated
 /lib/codeql/swift/elements/UnspecifiedElement.qll linguist-generated
@@ -435,7 +433,7 @@
 /lib/codeql/swift/elements/expr/internal/UnsafeCastExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/VarargExpansionExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/internal/AvailabilityInfoConstructor.qll linguist-generated
-/lib/codeql/swift/elements/internal/AvailabilitySpecImpl.qll linguist-generated
+/lib/codeql/swift/elements/internal/AvailabilitySpecConstructor.qll linguist-generated
 /lib/codeql/swift/elements/internal/CommentConstructor.qll linguist-generated
 /lib/codeql/swift/elements/internal/DbFileConstructor.qll linguist-generated
 /lib/codeql/swift/elements/internal/DbFileImpl.qll linguist-generated
@@ -445,8 +443,6 @@
 /lib/codeql/swift/elements/internal/ErrorElementImpl.qll linguist-generated
 /lib/codeql/swift/elements/internal/KeyPathComponentConstructor.qll linguist-generated
 /lib/codeql/swift/elements/internal/MacroRoleConstructor.qll linguist-generated
-/lib/codeql/swift/elements/internal/OtherAvailabilitySpecConstructor.qll linguist-generated
-/lib/codeql/swift/elements/internal/PlatformVersionAvailabilitySpecConstructor.qll linguist-generated
 /lib/codeql/swift/elements/internal/UnspecifiedElementConstructor.qll linguist-generated
 /lib/codeql/swift/elements/pattern/AnyPattern.qll linguist-generated
 /lib/codeql/swift/elements/pattern/BindingPattern.qll linguist-generated
@@ -734,9 +730,7 @@
 /lib/codeql/swift/generated/Locatable.qll linguist-generated
 /lib/codeql/swift/generated/Location.qll linguist-generated
 /lib/codeql/swift/generated/MacroRole.qll linguist-generated
-/lib/codeql/swift/generated/OtherAvailabilitySpec.qll linguist-generated
 /lib/codeql/swift/generated/ParentChild.qll linguist-generated
-/lib/codeql/swift/generated/PlatformVersionAvailabilitySpec.qll linguist-generated
 /lib/codeql/swift/generated/PureSynthConstructors.qll linguist-generated
 /lib/codeql/swift/generated/Raw.qll linguist-generated
 /lib/codeql/swift/generated/Synth.qll linguist-generated
@@ -1035,12 +1029,11 @@
 /lib/codeql/swift/generated/type/VariadicSequenceType.qll linguist-generated
 /lib/codeql/swift/generated/type/WeakStorageType.qll linguist-generated
 /test/extractor-tests/generated/AvailabilityInfo/AvailabilityInfo.ql linguist-generated
+/test/extractor-tests/generated/AvailabilitySpec/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/Comment/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/Diagnostics/Diagnostics.ql linguist-generated
 /test/extractor-tests/generated/File/File.ql linguist-generated
 /test/extractor-tests/generated/KeyPathComponent/KeyPathComponent.ql linguist-generated
-/test/extractor-tests/generated/OtherAvailabilitySpec/MISSING_SOURCE.txt linguist-generated
-/test/extractor-tests/generated/PlatformVersionAvailabilitySpec/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/decl/Accessor/Accessor.ql linguist-generated
 /test/extractor-tests/generated/decl/AssociatedTypeDecl/AssociatedTypeDecl.ql linguist-generated
 /test/extractor-tests/generated/decl/CapturedDecl/CapturedDecl.ql linguist-generated

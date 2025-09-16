@@ -21,6 +21,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TAvailabilitySpec(Raw::AvailabilitySpec id) { constructAvailabilitySpec(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TComment(Raw::Comment id) { constructComment(id) } or
     /**
      * INTERNAL: Do not use.
@@ -42,16 +46,6 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TMacroRole(Raw::MacroRole id) { constructMacroRole(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
-    TOtherAvailabilitySpec(Raw::OtherAvailabilitySpec id) { constructOtherAvailabilitySpec(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
-    TPlatformVersionAvailabilitySpec(Raw::PlatformVersionAvailabilitySpec id) {
-      constructPlatformVersionAvailabilitySpec(id)
-    } or
     /**
      * INTERNAL: Do not use.
      */
@@ -1126,11 +1120,6 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TAvailabilitySpec = TOtherAvailabilitySpec or TPlatformVersionAvailabilitySpec;
-
-  /**
-   * INTERNAL: Do not use.
-   */
   class TCallable = TClosureExpr or TFunction;
 
   /**
@@ -1457,6 +1446,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TAvailabilitySpec`, if possible.
+   */
+  TAvailabilitySpec convertAvailabilitySpecFromRaw(Raw::Element e) { result = TAvailabilitySpec(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TComment`, if possible.
    */
   TComment convertCommentFromRaw(Raw::Element e) { result = TComment(e) }
@@ -1490,22 +1485,6 @@ module Synth {
    * Converts a raw element to a synthesized `TMacroRole`, if possible.
    */
   TMacroRole convertMacroRoleFromRaw(Raw::Element e) { result = TMacroRole(e) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TOtherAvailabilitySpec`, if possible.
-   */
-  TOtherAvailabilitySpec convertOtherAvailabilitySpecFromRaw(Raw::Element e) {
-    result = TOtherAvailabilitySpec(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TPlatformVersionAvailabilitySpec`, if possible.
-   */
-  TPlatformVersionAvailabilitySpec convertPlatformVersionAvailabilitySpecFromRaw(Raw::Element e) {
-    result = TPlatformVersionAvailabilitySpec(e)
-  }
 
   /**
    * INTERNAL: Do not use.
@@ -3243,16 +3222,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw DB element to a synthesized `TAvailabilitySpec`, if possible.
-   */
-  TAvailabilitySpec convertAvailabilitySpecFromRaw(Raw::Element e) {
-    result = convertOtherAvailabilitySpecFromRaw(e)
-    or
-    result = convertPlatformVersionAvailabilitySpecFromRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TCallable`, if possible.
    */
   TCallable convertCallableFromRaw(Raw::Element e) {
@@ -4201,6 +4170,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TAvailabilitySpec` to a raw DB element, if possible.
+   */
+  Raw::Element convertAvailabilitySpecToRaw(TAvailabilitySpec e) { e = TAvailabilitySpec(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TComment` to a raw DB element, if possible.
    */
   Raw::Element convertCommentToRaw(TComment e) { e = TComment(result) }
@@ -4234,22 +4209,6 @@ module Synth {
    * Converts a synthesized `TMacroRole` to a raw DB element, if possible.
    */
   Raw::Element convertMacroRoleToRaw(TMacroRole e) { e = TMacroRole(result) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TOtherAvailabilitySpec` to a raw DB element, if possible.
-   */
-  Raw::Element convertOtherAvailabilitySpecToRaw(TOtherAvailabilitySpec e) {
-    e = TOtherAvailabilitySpec(result)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TPlatformVersionAvailabilitySpec` to a raw DB element, if possible.
-   */
-  Raw::Element convertPlatformVersionAvailabilitySpecToRaw(TPlatformVersionAvailabilitySpec e) {
-    e = TPlatformVersionAvailabilitySpec(result)
-  }
 
   /**
    * INTERNAL: Do not use.
@@ -5981,16 +5940,6 @@ module Synth {
     result = convertStmtConditionToRaw(e)
     or
     result = convertTypeReprToRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TAvailabilitySpec` to a raw DB element, if possible.
-   */
-  Raw::Element convertAvailabilitySpecToRaw(TAvailabilitySpec e) {
-    result = convertOtherAvailabilitySpecToRaw(e)
-    or
-    result = convertPlatformVersionAvailabilitySpecToRaw(e)
   }
 
   /**
