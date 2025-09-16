@@ -3859,8 +3859,8 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class OpenedArchetypeType extends @opened_archetype_type, LocalArchetypeType {
-    override string toString() { result = "OpenedArchetypeType" }
+  class ExistentialArchetypeType extends @existential_archetype_type, LocalArchetypeType {
+    override string toString() { result = "ExistentialArchetypeType" }
   }
 
   /**

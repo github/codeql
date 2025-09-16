@@ -268,6 +268,7 @@ import codeql.swift.elements.type.DynamicSelfType
 import codeql.swift.elements.type.ElementArchetypeType
 import codeql.swift.elements.type.EnumType
 import codeql.swift.elements.type.ErrorType
+import codeql.swift.elements.type.ExistentialArchetypeType
 import codeql.swift.elements.type.ExistentialMetatypeType
 import codeql.swift.elements.type.ExistentialType
 import codeql.swift.elements.type.FunctionType
@@ -282,7 +283,6 @@ import codeql.swift.elements.type.ModuleType
 import codeql.swift.elements.type.NominalOrBoundGenericNominalType
 import codeql.swift.elements.type.NominalType
 import codeql.swift.elements.type.OpaqueTypeArchetypeType
-import codeql.swift.elements.type.OpenedArchetypeType
 import codeql.swift.elements.type.OptionalType
 import codeql.swift.elements.type.PackArchetypeType
 import codeql.swift.elements.type.PackElementType

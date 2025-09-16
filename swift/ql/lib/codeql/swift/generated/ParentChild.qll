@@ -3140,8 +3140,8 @@ private module Impl {
     none()
   }
 
-  private Element getImmediateChildOfOpenedArchetypeType(
-    OpenedArchetypeType e, int index, string partialPredicateCall
+  private Element getImmediateChildOfExistentialArchetypeType(
+    ExistentialArchetypeType e, int index, string partialPredicateCall
   ) {
     none()
   }
@@ -3674,7 +3674,7 @@ private module Impl {
     or
     result = getImmediateChildOfEnumType(e, index, partialAccessor)
     or
-    result = getImmediateChildOfOpenedArchetypeType(e, index, partialAccessor)
+    result = getImmediateChildOfExistentialArchetypeType(e, index, partialAccessor)
     or
     result = getImmediateChildOfOptionalType(e, index, partialAccessor)
     or

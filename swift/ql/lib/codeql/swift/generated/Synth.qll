@@ -979,6 +979,12 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TExistentialArchetypeType(Raw::ExistentialArchetypeType id) {
+      constructExistentialArchetypeType(id)
+    } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TExistentialMetatypeType(Raw::ExistentialMetatypeType id) {
       constructExistentialMetatypeType(id)
     } or
@@ -1024,10 +1030,6 @@ module Synth {
     TOpaqueTypeArchetypeType(Raw::OpaqueTypeArchetypeType id) {
       constructOpaqueTypeArchetypeType(id)
     } or
-    /**
-     * INTERNAL: Do not use.
-     */
-    TOpenedArchetypeType(Raw::OpenedArchetypeType id) { constructOpenedArchetypeType(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -1400,7 +1402,7 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TLocalArchetypeType = TElementArchetypeType or TOpenedArchetypeType;
+  class TLocalArchetypeType = TElementArchetypeType or TExistentialArchetypeType;
 
   /**
    * INTERNAL: Do not use.
@@ -2989,6 +2991,14 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TExistentialArchetypeType`, if possible.
+   */
+  TExistentialArchetypeType convertExistentialArchetypeTypeFromRaw(Raw::Element e) {
+    result = TExistentialArchetypeType(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TExistentialMetatypeType`, if possible.
    */
   TExistentialMetatypeType convertExistentialMetatypeTypeFromRaw(Raw::Element e) {
@@ -3059,14 +3069,6 @@ module Synth {
    */
   TOpaqueTypeArchetypeType convertOpaqueTypeArchetypeTypeFromRaw(Raw::Element e) {
     result = TOpaqueTypeArchetypeType(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TOpenedArchetypeType`, if possible.
-   */
-  TOpenedArchetypeType convertOpenedArchetypeTypeFromRaw(Raw::Element e) {
-    result = TOpenedArchetypeType(e)
   }
 
   /**
@@ -4058,7 +4060,7 @@ module Synth {
   TLocalArchetypeType convertLocalArchetypeTypeFromRaw(Raw::Element e) {
     result = convertElementArchetypeTypeFromRaw(e)
     or
-    result = convertOpenedArchetypeTypeFromRaw(e)
+    result = convertExistentialArchetypeTypeFromRaw(e)
   }
 
   /**
@@ -5731,6 +5733,14 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TExistentialArchetypeType` to a raw DB element, if possible.
+   */
+  Raw::Element convertExistentialArchetypeTypeToRaw(TExistentialArchetypeType e) {
+    e = TExistentialArchetypeType(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TExistentialMetatypeType` to a raw DB element, if possible.
    */
   Raw::Element convertExistentialMetatypeTypeToRaw(TExistentialMetatypeType e) {
@@ -5801,14 +5811,6 @@ module Synth {
    */
   Raw::Element convertOpaqueTypeArchetypeTypeToRaw(TOpaqueTypeArchetypeType e) {
     e = TOpaqueTypeArchetypeType(result)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TOpenedArchetypeType` to a raw DB element, if possible.
-   */
-  Raw::Element convertOpenedArchetypeTypeToRaw(TOpenedArchetypeType e) {
-    e = TOpenedArchetypeType(result)
   }
 
   /**
@@ -6800,7 +6802,7 @@ module Synth {
   Raw::Element convertLocalArchetypeTypeToRaw(TLocalArchetypeType e) {
     result = convertElementArchetypeTypeToRaw(e)
     or
-    result = convertOpenedArchetypeTypeToRaw(e)
+    result = convertExistentialArchetypeTypeToRaw(e)
   }
 
   /**
