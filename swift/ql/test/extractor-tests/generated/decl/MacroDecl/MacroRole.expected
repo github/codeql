@@ -15,6 +15,7 @@ instances
 | file://:0:0:0:0 | @attached(memberAttribute) | getKind: | 8 | getMacroSyntax: | 1 |
 | file://:0:0:0:0 | @attached(peer) | getKind: | 32 | getMacroSyntax: | 1 |
 | file://:0:0:0:0 | @attached(peer) | getKind: | 32 | getMacroSyntax: | 1 |
+| file://:0:0:0:0 | @attached(peer) | getKind: | 32 | getMacroSyntax: | 1 |
 | test.swift:1:2:1:26 | #freestanding(declaration) | getKind: | 2 | getMacroSyntax: | 0 |
 | test.swift:3:2:3:25 | #freestanding(expression) | getKind: | 1 | getMacroSyntax: | 0 |
 | test.swift:5:2:5:17 | @attached(member) | getKind: | 16 | getMacroSyntax: | 1 |
@@ -22,4 +23,5 @@ instances
 getConformance
 getName
 | file://:0:0:0:0 | @attached(peer) | 0 | $() |
+| file://:0:0:0:0 | @attached(peer) | 0 | _() |
 | file://:0:0:0:0 | @attached(peer) | 0 | _lldb_summary() |
