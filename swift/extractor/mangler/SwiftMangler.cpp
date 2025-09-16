@@ -215,8 +215,8 @@ SwiftMangledName SwiftMangler::visitAnyFunctionType(const swift::AnyFunctionType
     if (flags.isSending()) {
       ret << "_sending";
     }
-    if (flags.isCompileTimeConst()) {
-      ret << "_compiletimeconst";
+    if (flags.isCompileTimeLiteral()) {
+      ret << "_compiletimeliteral";
     }
     if (flags.isNoDerivative()) {
       ret << "_noderivative";
@@ -361,7 +361,8 @@ SwiftMangledName SwiftMangler::visitOpaqueTypeArchetypeType(
   return visitArchetypeType(type) << fetch(type->getDecl());
 }
 
-SwiftMangledName SwiftMangler::visitOpenedArchetypeType(const swift::OpenedArchetypeType* type) {
+SwiftMangledName SwiftMangler::visitExistentialArchetypeType(
+    const swift::ExistentialArchetypeType* type) {
   auto* env = type->getGenericEnvironment();
   llvm::SmallVector<char> uuid;
   env->getOpenedExistentialUUID().toString(uuid);
