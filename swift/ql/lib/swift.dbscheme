@@ -133,10 +133,26 @@ availability_info_specs(
   int spec: @availability_spec_or_none ref
 );
 
-@availability_spec =
-  @other_availability_spec
-| @platform_version_availability_spec
-;
+availability_specs(
+  unique int id: @availability_spec
+);
+
+#keyset[id]
+availability_spec_platforms(
+  int id: @availability_spec ref,
+  string platform: string ref
+);
+
+#keyset[id]
+availability_spec_versions(
+  int id: @availability_spec ref,
+  string version: string ref
+);
+
+#keyset[id]
+availability_spec_is_wildcard(
+  int id: @availability_spec ref
+);
 
 @callable =
   @closure_expr
@@ -243,16 +259,6 @@ unspecified_element_children(
   int id: @unspecified_element ref,
   int index: int ref,
   int child: @ast_node_or_none ref
-);
-
-other_availability_specs(
-  unique int id: @other_availability_spec
-);
-
-platform_version_availability_specs(
-  unique int id: @platform_version_availability_spec,
-  string platform: string ref,
-  string version: string ref
 );
 
 @decl =

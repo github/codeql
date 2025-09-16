@@ -18,8 +18,6 @@ import codeql.swift.elements.KeyPathComponent
 import codeql.swift.elements.Locatable
 import codeql.swift.elements.Location
 import codeql.swift.elements.MacroRole
-import codeql.swift.elements.OtherAvailabilitySpec
-import codeql.swift.elements.PlatformVersionAvailabilitySpec
 import codeql.swift.elements.UnknownFile
 import codeql.swift.elements.UnknownLocation
 import codeql.swift.elements.UnspecifiedElement

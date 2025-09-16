@@ -4,14 +4,13 @@
  */
 
 import codeql.swift.elements.internal.AvailabilityInfoConstructor
+import codeql.swift.elements.internal.AvailabilitySpecConstructor
 import codeql.swift.elements.internal.CommentConstructor
 import codeql.swift.elements.internal.DbFileConstructor
 import codeql.swift.elements.internal.DbLocationConstructor
 import codeql.swift.elements.internal.DiagnosticsConstructor
 import codeql.swift.elements.internal.KeyPathComponentConstructor
 import codeql.swift.elements.internal.MacroRoleConstructor
-import codeql.swift.elements.internal.OtherAvailabilitySpecConstructor
-import codeql.swift.elements.internal.PlatformVersionAvailabilitySpecConstructor
 import codeql.swift.elements.internal.UnspecifiedElementConstructor
 import codeql.swift.elements.decl.internal.AccessorConstructor
 import codeql.swift.elements.decl.internal.AssociatedTypeDeclConstructor

@@ -905,20 +905,9 @@ class AvailabilitySpec(AstNode):
     if #available(iOS 12, *)
     ```
     """
-    pass
-
-class PlatformVersionAvailabilitySpec(AvailabilitySpec):
-    """
-    An availability spec based on platform and version, for example `macOS 12` or `watchOS 14`
-    """
-    platform: string
-    version: string
-
-class OtherAvailabilitySpec(AvailabilitySpec):
-    """
-    A wildcard availability spec `*`
-    """
-    pass
+    platform: optional[string]
+    version: optional[string]
+    is_wildcard: predicate
 
 class AvailabilityInfo(AstNode):
     """
