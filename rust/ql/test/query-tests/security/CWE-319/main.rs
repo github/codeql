@@ -56,10 +56,20 @@ fn test_localhost_exemptions() {
 // Additional test cases that mirror the Bad/Good examples
 fn test_examples() {
     // From UseOfHttpBad.rs - BAD case
-    let url = "http://example.com/sensitive-data"; // $ Source
-    let _response = reqwest::blocking::get(url).unwrap(); // $ Alert[rust/non-https-url]
+    {
+        let url = "http://example.com/sensitive-data"; // $ Source
+
+        // This makes an insecure HTTP request that can be intercepted
+        let response = reqwest::blocking::get(url).unwrap(); // $ Alert[rust/non-https-url]
+        println!("Response: {}", response.text().unwrap());
+    }
 
     // From UseOfHttpGood.rs - GOOD case
-    let secure_url = "https://example.com/sensitive-data";
-    let _secure_response = reqwest::blocking::get(secure_url).unwrap();
+    {
+        let url = "https://example.com/sensitive-data";
+
+        // This makes a secure HTTPS request that is encrypted
+        let response = reqwest::blocking::get(url).unwrap();
+        println!("Response: {}", response.text().unwrap());
+    }
 }
