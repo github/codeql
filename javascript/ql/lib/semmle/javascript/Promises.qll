@@ -727,8 +727,12 @@ module Promisify {
     PromisifyAllCall() {
       this =
         [
-          DataFlow::moduleMember("bluebird", "promisifyAll"),
-          DataFlow::moduleImport(["util-promisifyall", "pify"])
+          DataFlow::moduleMember(["bluebird", "@google-cloud/promisify", "es6-promisify"],
+            "promisifyAll"),
+          DataFlow::moduleMember("thenify-all", "withCallback"),
+          DataFlow::moduleImport([
+              "util-promisifyall", "pify", "thenify-all", "@gar/promisify", "util.promisify-all"
+            ])
         ].getACall()
     }
   }
@@ -741,11 +745,13 @@ module Promisify {
     PromisifyCall() {
       this = DataFlow::moduleImport(["util", "bluebird"]).getAMemberCall("promisify")
       or
-      this = DataFlow::moduleImport(["pify", "util.promisify"]).getACall()
+      this = DataFlow::moduleImport(["pify", "util.promisify", "util-promisify"]).getACall()
       or
-      this = DataFlow::moduleImport("thenify").getACall()
+      this = DataFlow::moduleImport(["thenify", "@gar/promisify", "es6-promisify"]).getACall()
       or
       this = DataFlow::moduleMember("thenify", "withCallback").getACall()
+      or
+      this = DataFlow::moduleMember("@google-cloud/promisify", "promisify").getACall()
     }
   }
 }
