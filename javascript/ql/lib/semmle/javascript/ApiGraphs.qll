@@ -1117,10 +1117,10 @@ module API {
         or
         // Handle promisified object member access: promisify(obj).member should be treated as obj.member (promisified)
         exists(
-          DataFlow::SourceNode promisifiedObj, DataFlow::SourceNode originalObj, string member
+          Promisify::PromisifyAllCall promisifiedObj, DataFlow::SourceNode originalObj,
+          string member
         |
-          promisifiedObj instanceof Promisify::PromisifyAllCall and
-          originalObj.flowsTo(promisifiedObj.(Promisify::PromisifyAllCall).getArgument(0)) and
+          originalObj.flowsTo(promisifiedObj.getArgument(0)) and
           use(base, originalObj) and
           lbl = Label::member(member) and
           ref = promisifiedObj.getAPropertyRead(member)
