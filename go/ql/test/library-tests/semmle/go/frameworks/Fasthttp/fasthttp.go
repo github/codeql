@@ -169,10 +169,10 @@ func fasthttpServer() {
 		fmt.Println(body1, body2, body3, body4)
 		requestCtx.Request.BodyStream() // $ RemoteFlowSource="call to BodyStream"
 
-		requestCtx.Request.ReadBody(&bufio.Reader{}, 100, 1000)               // $ RemoteFlowSource="&..."
-		requestCtx.Request.ReadLimitBody(&bufio.Reader{}, 100)                // $ RemoteFlowSource="&..."
-		requestCtx.Request.ContinueReadBodyStream(&bufio.Reader{}, 100, true) // $ RemoteFlowSource="&..."
-		requestCtx.Request.ContinueReadBody(&bufio.Reader{}, 100)             // $ RemoteFlowSource="&..."
+		requestCtx.Request.ReadBody(&bufio.Reader{}, 100, 1000)               // $ RemoteFlowSource="&..." RemoteFlowSource="&... [postupdate]"
+		requestCtx.Request.ReadLimitBody(&bufio.Reader{}, 100)                // $ RemoteFlowSource="&..." RemoteFlowSource="&... [postupdate]"
+		requestCtx.Request.ContinueReadBodyStream(&bufio.Reader{}, 100, true) // $ RemoteFlowSource="&..." RemoteFlowSource="&... [postupdate]"
+		requestCtx.Request.ContinueReadBody(&bufio.Reader{}, 100)             // $ RemoteFlowSource="&..." RemoteFlowSource="&... [postupdate]"
 
 		// Response methods
 		// Xss Sinks Related method
