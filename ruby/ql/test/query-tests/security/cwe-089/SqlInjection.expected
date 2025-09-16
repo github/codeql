@@ -81,32 +81,6 @@ edges
 | ArelInjection.rb:4:5:4:8 | name | ArelInjection.rb:7:39:7:80 | "SELECT * FROM users WHERE nam..." | provenance | AdditionalTaintStep |
 | ArelInjection.rb:4:12:4:17 | call to params | ArelInjection.rb:4:12:4:29 | ...[...] | provenance |  |
 | ArelInjection.rb:4:12:4:29 | ...[...] | ArelInjection.rb:4:5:4:8 | name | provenance |  |
-| ArelInjection.rb:13:5:13:8 | name | ArelInjection.rb:15:20:15:61 | "SELECT * FROM users WHERE nam..." | provenance | AdditionalTaintStep |
-| ArelInjection.rb:13:5:13:8 | name | ArelInjection.rb:16:39:16:80 | "SELECT * FROM users WHERE nam..." | provenance | AdditionalTaintStep |
-| ArelInjection.rb:13:12:13:17 | call to params | ArelInjection.rb:13:12:13:29 | ...[...] | provenance |  |
-| ArelInjection.rb:13:12:13:29 | ...[...] | ArelInjection.rb:13:5:13:8 | name | provenance |  |
-| ArelInjection.rb:22:5:22:5 | x | ArelInjection.rb:23:14:23:52 | "SELECT * FROM users WHERE nam..." | provenance | AdditionalTaintStep |
-| ArelInjection.rb:22:9:22:14 | call to params | ArelInjection.rb:22:9:22:21 | ...[...] | provenance |  |
-| ArelInjection.rb:22:9:22:21 | ...[...] | ArelInjection.rb:22:5:22:5 | x | provenance |  |
-| ArelInjection.rb:30:29:30:35 | user_id | ArelInjection.rb:32:18:32:60 | "SELECT * FROM users WHERE id ..." | provenance | AdditionalTaintStep |
-| ArelInjection.rb:47:7:47:13 | user_id | ArelInjection.rb:54:16:54:153 | "SELECT * FROM users WHERE id ..." | provenance | AdditionalTaintStep |
-| ArelInjection.rb:47:17:47:22 | call to params | ArelInjection.rb:47:17:47:32 | ...[...] | provenance |  |
-| ArelInjection.rb:47:17:47:32 | ...[...] | ArelInjection.rb:47:7:47:13 | user_id | provenance |  |
-| ArelInjection.rb:48:7:48:14 | route_id | ArelInjection.rb:54:16:54:153 | "SELECT * FROM users WHERE id ..." | provenance | AdditionalTaintStep |
-| ArelInjection.rb:48:18:48:38 | call to route_param | ArelInjection.rb:48:7:48:14 | route_id | provenance |  |
-| ArelInjection.rb:49:7:49:10 | auth | ArelInjection.rb:54:16:54:153 | "SELECT * FROM users WHERE id ..." | provenance | AdditionalTaintStep |
-| ArelInjection.rb:49:14:49:20 | call to headers | ArelInjection.rb:49:14:49:36 | ...[...] | provenance |  |
-| ArelInjection.rb:49:14:49:36 | ...[...] | ArelInjection.rb:49:7:49:10 | auth | provenance |  |
-| ArelInjection.rb:50:7:50:13 | session | ArelInjection.rb:54:16:54:153 | "SELECT * FROM users WHERE id ..." | provenance | AdditionalTaintStep |
-| ArelInjection.rb:50:17:50:23 | call to cookies | ArelInjection.rb:50:17:50:36 | ...[...] | provenance |  |
-| ArelInjection.rb:50:17:50:36 | ...[...] | ArelInjection.rb:50:7:50:13 | session | provenance |  |
-| ArelInjection.rb:59:7:59:13 | user_id | ArelInjection.rb:60:25:60:31 | user_id | provenance |  |
-| ArelInjection.rb:59:17:59:22 | call to params | ArelInjection.rb:59:17:59:32 | ...[...] | provenance |  |
-| ArelInjection.rb:59:17:59:32 | ...[...] | ArelInjection.rb:59:7:59:13 | user_id | provenance |  |
-| ArelInjection.rb:60:25:60:31 | user_id | ArelInjection.rb:30:29:30:35 | user_id | provenance | AdditionalTaintStep |
-| ArelInjection.rb:67:9:67:15 | user_id | ArelInjection.rb:68:18:68:60 | "SELECT * FROM users WHERE id ..." | provenance | AdditionalTaintStep |
-| ArelInjection.rb:67:19:67:24 | call to params | ArelInjection.rb:67:19:67:29 | ...[...] | provenance |  |
-| ArelInjection.rb:67:19:67:29 | ...[...] | ArelInjection.rb:67:9:67:15 | user_id | provenance |  |
 | PgInjection.rb:6:5:6:8 | name | PgInjection.rb:13:5:13:8 | qry1 : String | provenance | AdditionalTaintStep |
 | PgInjection.rb:6:5:6:8 | name | PgInjection.rb:19:5:19:8 | qry2 : String | provenance | AdditionalTaintStep |
 | PgInjection.rb:6:5:6:8 | name | PgInjection.rb:31:5:31:8 | qry3 : String | provenance | AdditionalTaintStep |
@@ -235,37 +209,6 @@ nodes
 | ArelInjection.rb:4:12:4:29 | ...[...] | semmle.label | ...[...] |
 | ArelInjection.rb:6:20:6:61 | "SELECT * FROM users WHERE nam..." | semmle.label | "SELECT * FROM users WHERE nam..." |
 | ArelInjection.rb:7:39:7:80 | "SELECT * FROM users WHERE nam..." | semmle.label | "SELECT * FROM users WHERE nam..." |
-| ArelInjection.rb:13:5:13:8 | name | semmle.label | name |
-| ArelInjection.rb:13:12:13:17 | call to params | semmle.label | call to params |
-| ArelInjection.rb:13:12:13:29 | ...[...] | semmle.label | ...[...] |
-| ArelInjection.rb:15:20:15:61 | "SELECT * FROM users WHERE nam..." | semmle.label | "SELECT * FROM users WHERE nam..." |
-| ArelInjection.rb:16:39:16:80 | "SELECT * FROM users WHERE nam..." | semmle.label | "SELECT * FROM users WHERE nam..." |
-| ArelInjection.rb:22:5:22:5 | x | semmle.label | x |
-| ArelInjection.rb:22:9:22:14 | call to params | semmle.label | call to params |
-| ArelInjection.rb:22:9:22:21 | ...[...] | semmle.label | ...[...] |
-| ArelInjection.rb:23:14:23:52 | "SELECT * FROM users WHERE nam..." | semmle.label | "SELECT * FROM users WHERE nam..." |
-| ArelInjection.rb:30:29:30:35 | user_id | semmle.label | user_id |
-| ArelInjection.rb:32:18:32:60 | "SELECT * FROM users WHERE id ..." | semmle.label | "SELECT * FROM users WHERE id ..." |
-| ArelInjection.rb:47:7:47:13 | user_id | semmle.label | user_id |
-| ArelInjection.rb:47:17:47:22 | call to params | semmle.label | call to params |
-| ArelInjection.rb:47:17:47:32 | ...[...] | semmle.label | ...[...] |
-| ArelInjection.rb:48:7:48:14 | route_id | semmle.label | route_id |
-| ArelInjection.rb:48:18:48:38 | call to route_param | semmle.label | call to route_param |
-| ArelInjection.rb:49:7:49:10 | auth | semmle.label | auth |
-| ArelInjection.rb:49:14:49:20 | call to headers | semmle.label | call to headers |
-| ArelInjection.rb:49:14:49:36 | ...[...] | semmle.label | ...[...] |
-| ArelInjection.rb:50:7:50:13 | session | semmle.label | session |
-| ArelInjection.rb:50:17:50:23 | call to cookies | semmle.label | call to cookies |
-| ArelInjection.rb:50:17:50:36 | ...[...] | semmle.label | ...[...] |
-| ArelInjection.rb:54:16:54:153 | "SELECT * FROM users WHERE id ..." | semmle.label | "SELECT * FROM users WHERE id ..." |
-| ArelInjection.rb:59:7:59:13 | user_id | semmle.label | user_id |
-| ArelInjection.rb:59:17:59:22 | call to params | semmle.label | call to params |
-| ArelInjection.rb:59:17:59:32 | ...[...] | semmle.label | ...[...] |
-| ArelInjection.rb:60:25:60:31 | user_id | semmle.label | user_id |
-| ArelInjection.rb:67:9:67:15 | user_id | semmle.label | user_id |
-| ArelInjection.rb:67:19:67:24 | call to params | semmle.label | call to params |
-| ArelInjection.rb:67:19:67:29 | ...[...] | semmle.label | ...[...] |
-| ArelInjection.rb:68:18:68:60 | "SELECT * FROM users WHERE id ..." | semmle.label | "SELECT * FROM users WHERE id ..." |
 | PgInjection.rb:6:5:6:8 | name | semmle.label | name |
 | PgInjection.rb:6:12:6:17 | call to params | semmle.label | call to params |
 | PgInjection.rb:6:12:6:24 | ...[...] | semmle.label | ...[...] |
@@ -323,15 +266,6 @@ subpaths
 | ActiveRecordInjection.rb:216:38:216:53 | "role = #{...}" | ActiveRecordInjection.rb:222:29:222:34 | call to params | ActiveRecordInjection.rb:216:38:216:53 | "role = #{...}" | This SQL query depends on a $@. | ActiveRecordInjection.rb:222:29:222:34 | call to params | user-provided value |
 | ArelInjection.rb:6:20:6:61 | "SELECT * FROM users WHERE nam..." | ArelInjection.rb:4:12:4:17 | call to params | ArelInjection.rb:6:20:6:61 | "SELECT * FROM users WHERE nam..." | This SQL query depends on a $@. | ArelInjection.rb:4:12:4:17 | call to params | user-provided value |
 | ArelInjection.rb:7:39:7:80 | "SELECT * FROM users WHERE nam..." | ArelInjection.rb:4:12:4:17 | call to params | ArelInjection.rb:7:39:7:80 | "SELECT * FROM users WHERE nam..." | This SQL query depends on a $@. | ArelInjection.rb:4:12:4:17 | call to params | user-provided value |
-| ArelInjection.rb:15:20:15:61 | "SELECT * FROM users WHERE nam..." | ArelInjection.rb:13:12:13:17 | call to params | ArelInjection.rb:15:20:15:61 | "SELECT * FROM users WHERE nam..." | This SQL query depends on a $@. | ArelInjection.rb:13:12:13:17 | call to params | user-provided value |
-| ArelInjection.rb:16:39:16:80 | "SELECT * FROM users WHERE nam..." | ArelInjection.rb:13:12:13:17 | call to params | ArelInjection.rb:16:39:16:80 | "SELECT * FROM users WHERE nam..." | This SQL query depends on a $@. | ArelInjection.rb:13:12:13:17 | call to params | user-provided value |
-| ArelInjection.rb:23:14:23:52 | "SELECT * FROM users WHERE nam..." | ArelInjection.rb:22:9:22:14 | call to params | ArelInjection.rb:23:14:23:52 | "SELECT * FROM users WHERE nam..." | This SQL query depends on a $@. | ArelInjection.rb:22:9:22:14 | call to params | user-provided value |
-| ArelInjection.rb:32:18:32:60 | "SELECT * FROM users WHERE id ..." | ArelInjection.rb:59:17:59:22 | call to params | ArelInjection.rb:32:18:32:60 | "SELECT * FROM users WHERE id ..." | This SQL query depends on a $@. | ArelInjection.rb:59:17:59:22 | call to params | user-provided value |
-| ArelInjection.rb:54:16:54:153 | "SELECT * FROM users WHERE id ..." | ArelInjection.rb:47:17:47:22 | call to params | ArelInjection.rb:54:16:54:153 | "SELECT * FROM users WHERE id ..." | This SQL query depends on a $@. | ArelInjection.rb:47:17:47:22 | call to params | user-provided value |
-| ArelInjection.rb:54:16:54:153 | "SELECT * FROM users WHERE id ..." | ArelInjection.rb:48:18:48:38 | call to route_param | ArelInjection.rb:54:16:54:153 | "SELECT * FROM users WHERE id ..." | This SQL query depends on a $@. | ArelInjection.rb:48:18:48:38 | call to route_param | user-provided value |
-| ArelInjection.rb:54:16:54:153 | "SELECT * FROM users WHERE id ..." | ArelInjection.rb:49:14:49:20 | call to headers | ArelInjection.rb:54:16:54:153 | "SELECT * FROM users WHERE id ..." | This SQL query depends on a $@. | ArelInjection.rb:49:14:49:20 | call to headers | user-provided value |
-| ArelInjection.rb:54:16:54:153 | "SELECT * FROM users WHERE id ..." | ArelInjection.rb:50:17:50:23 | call to cookies | ArelInjection.rb:54:16:54:153 | "SELECT * FROM users WHERE id ..." | This SQL query depends on a $@. | ArelInjection.rb:50:17:50:23 | call to cookies | user-provided value |
-| ArelInjection.rb:68:18:68:60 | "SELECT * FROM users WHERE id ..." | ArelInjection.rb:67:19:67:24 | call to params | ArelInjection.rb:68:18:68:60 | "SELECT * FROM users WHERE id ..." | This SQL query depends on a $@. | ArelInjection.rb:67:19:67:24 | call to params | user-provided value |
 | PgInjection.rb:14:15:14:18 | qry1 | PgInjection.rb:6:12:6:17 | call to params | PgInjection.rb:14:15:14:18 | qry1 | This SQL query depends on a $@. | PgInjection.rb:6:12:6:17 | call to params | user-provided value |
 | PgInjection.rb:15:21:15:24 | qry1 | PgInjection.rb:6:12:6:17 | call to params | PgInjection.rb:15:21:15:24 | qry1 | This SQL query depends on a $@. | PgInjection.rb:6:12:6:17 | call to params | user-provided value |
 | PgInjection.rb:20:22:20:25 | qry2 | PgInjection.rb:6:12:6:17 | call to params | PgInjection.rb:20:22:20:25 | qry2 | This SQL query depends on a $@. | PgInjection.rb:6:12:6:17 | call to params | user-provided value |

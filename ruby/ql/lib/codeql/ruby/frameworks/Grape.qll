@@ -121,10 +121,17 @@ class GrapeParamsSource extends Http::Server::RequestInputAccess::Range {
  */
 private class GrapeParamsCall extends ParamsCallImpl {
   GrapeParamsCall() {
-    // Simplified approach: find params calls that are descendants of Grape API class methods
+    // Params calls within endpoint blocks
     exists(GrapeApiClass api |
       this.getMethodName() = "params" and
       this.getParent+() = api.getADeclaration()
+    )
+    or
+    // Params calls within helper methods (defined in helpers blocks)
+    exists(GrapeApiClass api, DataFlow::CallNode helpersCall |
+      helpersCall = api.getAModuleLevelCall("helpers") and
+      this.getMethodName() = "params" and
+      this.getParent+() = helpersCall.getBlock().asExpr().getExpr()
     )
   }
 }
@@ -295,18 +302,31 @@ private class GrapeHelperMethod extends Method {
 
 /**
  * Additional taint step to model dataflow from method arguments to parameters
- * for Grape helper methods defined in `helpers` blocks.
+ * and from return values back to call sites for Grape helper methods defined in `helpers` blocks.
  * This bridges the gap where standard dataflow doesn't recognize the Grape DSL semantics.
  */
 private class GrapeHelperMethodTaintStep extends AdditionalTaintStep {
   override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    // Map arguments to parameters for helper method calls
     exists(GrapeHelperMethod helperMethod, MethodCall call, int i |
-      // Find calls to helper methods from within Grape endpoints
+      // Find calls to helper methods from within Grape endpoints or other helper methods
       call.getMethodName() = helperMethod.getName() and
-      exists(GrapeEndpoint endpoint | call.getParent+() = endpoint.getBody().asExpr().getExpr()) and
+      exists(GrapeApiClass api | call.getParent+() = api.getADeclaration()) and
       // Map argument to parameter
       nodeFrom.asExpr().getExpr() = call.getArgument(i) and
       nodeTo.asParameter() = helperMethod.getParameter(i)
+    )
+    or
+    // Model implicit return values: the last expression in a helper method flows to the call site
+    exists(GrapeHelperMethod helperMethod, MethodCall helperCall, Expr lastExpr |
+      // Find calls to helper methods from within Grape endpoints or other helper methods
+      helperCall.getMethodName() = helperMethod.getName() and
+      exists(GrapeApiClass api | helperCall.getParent+() = api.getADeclaration()) and
+      // Get the last expression in the helper method (Ruby's implicit return)
+      lastExpr = helperMethod.getLastStmt() and
+      // Flow from the last expression in the helper method to the call site
+      nodeFrom.asExpr().getExpr() = lastExpr and
+      nodeTo.asExpr().getExpr() = helperCall
     )
   }
 }

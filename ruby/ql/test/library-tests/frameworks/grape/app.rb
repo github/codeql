@@ -94,3 +94,75 @@ class AdminAPI < Grape::API
     params[:token]
   end
 end
+
+class UserAPI < Grape::API
+    VALID_PARAMS = %w(name email password password_confirmation)
+
+    helpers do
+        def user_params
+            params.select{|key,value| VALID_PARAMS.include?(key.to_s)} # Real helper implementation
+        end
+
+        def vulnerable_helper(user_id)
+            source "paramHelper" # Test parameter passing to helper
+        end
+
+        def simple_helper
+            source "simpleHelper" # Test simple helper return
+        end
+    end
+
+    # Headers and cookies blocks for DSL testing
+    headers do
+        requires :Authorization, type: String
+    end
+
+    cookies do
+        requires :session_id, type: String
+    end
+
+    get '/comprehensive_test/:user_id' do
+        # Test all Grape input sources
+        user_id = params[:user_id]           # params taint source
+        route_id = route_param(:user_id)     # route_param taint source
+        auth = headers[:Authorization]       # headers taint source
+        session = cookies[:session_id]       # cookies taint source
+        body_data = request.body.read        # request taint source
+
+        # Test sinks for all sources
+        sink user_id # $ hasTaintFlow
+        sink route_id # $ hasTaintFlow
+        sink auth # $ hasTaintFlow
+        sink session # $ hasTaintFlow
+        # Note: request.body.read may not be detected by this flow test config
+    end
+
+    get '/helper_test/:user_id' do
+        # Test helper method parameter passing dataflow
+        user_id = params[:user_id]
+        result = vulnerable_helper(user_id)
+        sink result # $ hasTaintFlow=paramHelper
+    end
+
+    post '/users' do
+        # Test helper method return dataflow
+        user_data = user_params
+        simple_result = simple_helper
+        sink user_data # $ hasTaintFlow
+        sink simple_result # $ hasTaintFlow=simpleHelper
+    end
+
+    # Test route_param block pattern
+    route_param :id do
+        get do
+            # params[:id] should be user input from the path
+            user_id = params[:id]
+            sink user_id # $ hasTaintFlow
+        end
+    end
+
+    post '/users' do
+        user_data = user_params
+        sink user_data # $ hasTaintFlow
+    end
+end
