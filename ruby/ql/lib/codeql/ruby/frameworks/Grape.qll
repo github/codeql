@@ -301,7 +301,7 @@ private class GrapeHelperMethod extends Method {
   /**
    * Gets the API class that contains this helper method.
    */
-  GrapeApiClass getAPIClass() { result = apiClass }
+  GrapeApiClass getApiClass() { result = apiClass }
 }
 
 /**
