@@ -7,10 +7,10 @@ extensions:
       - ["aws-sdk.S3", "aws-sdk", "Member[S3]"]
       - ["aws-sdk.RDSDataService", "aws-sdk", "Member[RDSDataService]"]
       - ["aws-sdk.DynamoDB", "aws-sdk", "Member[DynamoDB]"]
-      - ["AWS-V3-Common", "@aws-sdk/client-athena", "Member[AthenaClient]"]
-      - ["AWS-V3-Common", "@aws-sdk/client-s3", "Member[S3Client]"]
-      - ["AWS-V3-Common", "@aws-sdk/client-dynamodb", "Member[DynamoDBClient,DynamoDB]"]
-      - ["AWS-V3-Common", "@aws-sdk/client-rds-data", "Member[RDSDataClient]"]
+      - ["@aws-sdk/client.Client", "@aws-sdk/client-athena", "Member[AthenaClient]"]
+      - ["@aws-sdk/client.Client", "@aws-sdk/client-s3", "Member[S3Client]"]
+      - ["@aws-sdk/client.Client", "@aws-sdk/client-dynamodb", "Member[DynamoDBClient,DynamoDB]"]
+      - ["@aws-sdk/client.Client", "@aws-sdk/client-rds-data", "Member[RDSDataClient]"]
   - addsTo:
       pack: codeql/javascript-all
       extensible: sinkModel
@@ -18,7 +18,7 @@ extensions:
       - ["aws-sdk", "AnyMember.Argument[0].Member[secretAccessKey,accessKeyId]", "credentials-key"]
       - ["aws-sdk", "AnyMember.Member[secretAccessKey,accessKeyId]", "credentials-key"]
       - ["aws-sdk", "Member[Credentials].Argument[0,1]", "credentials-key"]
-      - ["AWS-V3-Common", "ReturnValue.Member[send].Argument[0]", "sql-injection"]
+      - ["@aws-sdk/client.Client", "ReturnValue.Member[send].Argument[0]", "sql-injection"]
       - ["aws-sdk.Athena", "ReturnValue.Member[startQueryExecution,createNamedQuery,updateNamedQuery].Argument[0].Member[QueryString]", "sql-injection"]
       - ["aws-sdk.S3", "ReturnValue.Member[selectObjectContent].Argument[0].Member[Expression]", "sql-injection"]
       - ["aws-sdk.RDSDataService", "ReturnValue.Member[executeStatement,batchExecuteStatement].Argument[0].Member[sql]", "sql-injection"]
@@ -41,7 +41,7 @@ extensions:
       pack: codeql/javascript-all
       extensible: sourceModel
     data:
-      - ["AWS-V3-Common", "ReturnValue.Member[send].ReturnValue.Awaited", "database-access-result"]
+      - ["@aws-sdk/client.Client", "ReturnValue.Member[send].ReturnValue.Awaited", "database-access-result"]
       - ["aws-sdk.Athena", "ReturnValue.Member[getQueryResults].ReturnValue.Member[promise].ReturnValue.Awaited", "database-access-result"]
       - ["aws-sdk.Athena", "ReturnValue.Member[getQueryResults].Argument[1].Parameter[1]", "database-access-result"]
       - ["aws-sdk.S3", "ReturnValue.Member[getObject].ReturnValue.Member[promise].ReturnValue.Awaited", "database-access-result"]
