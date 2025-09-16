@@ -6,7 +6,6 @@
 import rust
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.FlowSink
-private import codeql.rust.elements.LiteralExprExt
 private import codeql.rust.Concepts
 
 /**
