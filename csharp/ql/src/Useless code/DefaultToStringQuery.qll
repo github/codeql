@@ -47,6 +47,7 @@ private predicate alwaysInvokesToString(ParameterRead pr) {
  */
 predicate alwaysDefaultToString(ValueOrRefType t) {
   not t instanceof TupleType and
+  not t instanceof Enum and
   exists(ToStringMethod m | t.hasMethod(m) |
     m.getDeclaringType() instanceof SystemObjectClass or
     m.getDeclaringType() instanceof SystemValueTypeClass
