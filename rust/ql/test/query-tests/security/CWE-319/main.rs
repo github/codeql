@@ -10,7 +10,7 @@ fn main() {
 fn test_direct_literals() {
     // BAD: Direct HTTP URLs that should be flagged
     let _response1 = reqwest::blocking::get("http://example.com/api").unwrap(); // $ Alert[rust/non-https-url]
-    let _response2 = reqwest::blocking::get("HTTP://EXAMPLE.COM/API").unwrap(); // $ MISSING: Alert[rust/non-https-url]
+    let _response2 = reqwest::blocking::get("HTTP://EXAMPLE.COM/API").unwrap(); // $ Alert[rust/non-https-url]
     let _response3 = reqwest::blocking::get("http://api.example.com/data").unwrap(); // $ Alert[rust/non-https-url]
 
     // GOOD: HTTPS URLs that should not be flagged

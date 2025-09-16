@@ -1,5 +1,6 @@
 #select
 | main.rs:12:22:12:43 | ...::get | main.rs:12:45:12:68 | "http://example.com/api" | main.rs:12:22:12:43 | ...::get | This URL may be constructed with the HTTP protocol, from $@. | main.rs:12:45:12:68 | "http://example.com/api" | this HTTP URL |
+| main.rs:13:22:13:43 | ...::get | main.rs:13:45:13:68 | "HTTP://EXAMPLE.COM/API" | main.rs:13:22:13:43 | ...::get | This URL may be constructed with the HTTP protocol, from $@. | main.rs:13:45:13:68 | "HTTP://EXAMPLE.COM/API" | this HTTP URL |
 | main.rs:14:22:14:43 | ...::get | main.rs:14:45:14:73 | "http://api.example.com/data" | main.rs:14:22:14:43 | ...::get | This URL may be constructed with the HTTP protocol, from $@. | main.rs:14:45:14:73 | "http://api.example.com/data" | this HTTP URL |
 | main.rs:26:21:26:42 | ...::get | main.rs:23:20:23:39 | "http://example.com" | main.rs:26:21:26:42 | ...::get | This URL may be constructed with the HTTP protocol, from $@. | main.rs:23:20:23:39 | "http://example.com" | this HTTP URL |
 | main.rs:37:30:37:51 | ...::get | main.rs:34:20:34:28 | "http://" | main.rs:37:30:37:51 | ...::get | This URL may be constructed with the HTTP protocol, from $@. | main.rs:34:20:34:28 | "http://" | this HTTP URL |
@@ -7,6 +8,7 @@
 | main.rs:71:24:71:45 | ...::get | main.rs:68:19:68:53 | "http://example.com/sensitive-... | main.rs:71:24:71:45 | ...::get | This URL may be constructed with the HTTP protocol, from $@. | main.rs:68:19:68:53 | "http://example.com/sensitive-... | this HTTP URL |
 edges
 | main.rs:12:45:12:68 | "http://example.com/api" | main.rs:12:22:12:43 | ...::get | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:13:45:13:68 | "HTTP://EXAMPLE.COM/API" | main.rs:13:22:13:43 | ...::get | provenance | MaD:1 Sink:MaD:1 |
 | main.rs:14:45:14:73 | "http://api.example.com/data" | main.rs:14:22:14:43 | ...::get | provenance | MaD:1 Sink:MaD:1 |
 | main.rs:23:9:23:16 | base_url | main.rs:25:28:25:53 | MacroExpr | provenance |  |
 | main.rs:23:20:23:39 | "http://example.com" | main.rs:23:9:23:16 | base_url | provenance |  |
@@ -39,6 +41,8 @@ models
 nodes
 | main.rs:12:22:12:43 | ...::get | semmle.label | ...::get |
 | main.rs:12:45:12:68 | "http://example.com/api" | semmle.label | "http://example.com/api" |
+| main.rs:13:22:13:43 | ...::get | semmle.label | ...::get |
+| main.rs:13:45:13:68 | "HTTP://EXAMPLE.COM/API" | semmle.label | "HTTP://EXAMPLE.COM/API" |
 | main.rs:14:22:14:43 | ...::get | semmle.label | ...::get |
 | main.rs:14:45:14:73 | "http://api.example.com/data" | semmle.label | "http://api.example.com/data" |
 | main.rs:23:9:23:16 | base_url | semmle.label | base_url |
