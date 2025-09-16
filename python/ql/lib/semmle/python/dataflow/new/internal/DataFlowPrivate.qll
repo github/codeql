@@ -561,18 +561,36 @@ predicate runtimeJumpStep(Node nodeFrom, Node nodeTo) {
   globalVariableNestedFieldJumpStep(nodeFrom, nodeTo)
 }
 
+/** Helper predicate for `globalVariableNestedFieldJumpStep`. */
+pragma[nomagic]
+private predicate globalVariableAttrPathRead(
+  ModuleVariableNode globalVar, string accessPath, AttrRead r, string attrName
+) {
+  globalVariableAttrPathAtDepth(globalVar, accessPath, r.getObject(), _) and
+  attrName = r.getAttributeName()
+}
+
+/** Helper predicate for `globalVariableNestedFieldJumpStep`. */
+pragma[nomagic]
+private predicate globalVariableAttrPathWrite(
+  ModuleVariableNode globalVar, string accessPath, AttrWrite w, string attrName
+) {
+  globalVariableAttrPathAtDepth(globalVar, accessPath, w.getObject(), _) and
+  attrName = w.getAttributeName()
+}
+
 /**
  * Holds if there is a jump step from `nodeFrom` to `nodeTo` through global variable field access.
  * This supports tracking nested object field access through global variables like `app.obj.foo`.
  */
+pragma[nomagic]
 private predicate globalVariableNestedFieldJumpStep(Node nodeFrom, Node nodeTo) {
   exists(ModuleVariableNode globalVar, AttrWrite write, AttrRead read |
     // Match writes and reads on the same global variable attribute path
-    exists(string accessPath |
-      globalVariableAttrPathAtDepth(globalVar, accessPath, write.getObject(), _) and
-      globalVariableAttrPathAtDepth(globalVar, accessPath, read.getObject(), _)
+    exists(string accessPath, string attrName |
+      globalVariableAttrPathRead(globalVar, accessPath, read, attrName) and
+      globalVariableAttrPathWrite(globalVar, accessPath, write, attrName)
     ) and
-    write.getAttributeName() = read.getAttributeName() and
     nodeFrom = write.getValue() and
     nodeTo = read
   )
