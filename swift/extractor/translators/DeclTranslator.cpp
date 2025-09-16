@@ -292,7 +292,9 @@ void DeclTranslator::fillTypeDecl(const swift::TypeDecl& decl, codeql::TypeDecl&
 void DeclTranslator::fillIterableDeclContext(const swift::IterableDeclContext& decl,
                                              codeql::Decl& entry) {
   for (auto member : decl.getMembers()) {
-    // TODO: Swift 6.2 unavailable members
+    if (member->isUnavailable()) {
+      continue;
+    }
     entry.members.emplace_back(dispatcher.fetchLabel(member));
   }
 }
