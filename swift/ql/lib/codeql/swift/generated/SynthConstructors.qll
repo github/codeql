@@ -224,6 +224,7 @@ import codeql.swift.elements.type.internal.DynamicSelfTypeConstructor
 import codeql.swift.elements.type.internal.ElementArchetypeTypeConstructor
 import codeql.swift.elements.type.internal.EnumTypeConstructor
 import codeql.swift.elements.type.internal.ErrorTypeConstructor
+import codeql.swift.elements.type.internal.ExistentialArchetypeTypeConstructor
 import codeql.swift.elements.type.internal.ExistentialMetatypeTypeConstructor
 import codeql.swift.elements.type.internal.ExistentialTypeConstructor
 import codeql.swift.elements.type.internal.FunctionTypeConstructor
@@ -235,7 +236,6 @@ import codeql.swift.elements.type.internal.LValueTypeConstructor
 import codeql.swift.elements.type.internal.MetatypeTypeConstructor
 import codeql.swift.elements.type.internal.ModuleTypeConstructor
 import codeql.swift.elements.type.internal.OpaqueTypeArchetypeTypeConstructor
-import codeql.swift.elements.type.internal.OpenedArchetypeTypeConstructor
 import codeql.swift.elements.type.internal.OptionalTypeConstructor
 import codeql.swift.elements.type.internal.PackArchetypeTypeConstructor
 import codeql.swift.elements.type.internal.PackElementTypeConstructor
