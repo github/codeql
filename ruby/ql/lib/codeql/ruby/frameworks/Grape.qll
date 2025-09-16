@@ -136,7 +136,9 @@ private class GrapeParamsCall extends ParamsCallImpl {
       this.getParent+() = api.getADeclaration()
     )
   }
-}/**
+}
+
+/**
  * A call to `headers` from within a Grape API endpoint or headers block.
  * Headers can also be a source of user input.
  */

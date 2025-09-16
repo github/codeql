@@ -365,7 +365,7 @@ mod method_non_parametric_trait_impl {
 
     fn type_bound_type_parameter_impl<TP: MyTrait<S1>>(thing: TP) -> S1 {
         // The trait bound on `TP` makes the implementation of `ConvertTo` valid
-        thing.convert_to() // $ MISSING: target=T::convert_to
+        thing.convert_to() // $ target=T::convert_to
     }
 
     pub fn f() {
@@ -437,7 +437,7 @@ mod method_non_parametric_trait_impl {
         let x = get_snd_fst(c); // $ type=x:S1 target=get_snd_fst
 
         let thing = MyThing { a: S1 };
-        let i = thing.convert_to(); // $ MISSING: type=i:S1 target=T::convert_to
+        let i = thing.convert_to(); // $ type=i:S1 target=T::convert_to
         let j = convert_to(thing); // $ type=j:S1 target=convert_to
     }
 }
@@ -1376,7 +1376,7 @@ mod method_call_type_conversion {
         let t = x7.m1(); // $ target=m1 type=t:& type=t:&T.S2
         println!("{:?}", x7);
 
-        let x9: String = "Hello".to_string(); // $ certainType=x9:String
+        let x9: String = "Hello".to_string(); // $ certainType=x9:String target=to_string
 
         // Implicit `String` -> `str` conversion happens via the `Deref` trait:
         // https://doc.rust-lang.org/std/string/struct.String.html#deref.
@@ -2569,43 +2569,6 @@ pub mod pattern_matching_experimental {
     }
 }
 
-pub mod exec {
-    // a highly simplified model of `MySqlConnection.execute` in SQLx
-
-    trait Connection {}
-
-    trait Executor {
-        fn execute1(&self);
-        fn execute2<E>(&self, query: E);
-    }
-
-    impl<T: Connection> Executor for T {
-        fn execute1(&self) {
-            println!("Executor::execute1");
-        }
-
-        fn execute2<E>(&self, _query: E) {
-            println!("Executor::execute2");
-        }
-    }
-
-    struct MySqlConnection {}
-
-    impl Connection for MySqlConnection {}
-
-    pub fn f() {
-        let c = MySqlConnection {}; // $ certainType=c:MySqlConnection
-
-        c.execute1(); // $ MISSING: target=execute1
-        MySqlConnection::execute1(&c); // $ MISSING: target=execute1
-
-        c.execute2("SELECT * FROM users"); // $ MISSING: target=execute2
-        c.execute2::<&str>("SELECT * FROM users"); // $ MISSING: target=execute2
-        MySqlConnection::execute2(&c, "SELECT * FROM users"); // $ MISSING: target=execute2
-        MySqlConnection::execute2::<&str>(&c, "SELECT * FROM users"); // $ MISSING: target=execute2
-    }
-}
-
 pub mod path_buf {
     // a highly simplified model of `PathBuf::canonicalize`
 
@@ -2655,6 +2618,7 @@ pub mod path_buf {
 mod closure;
 mod dereference;
 mod dyn_type;
+mod blanket_impl;
 
 fn main() {
     field_access::f(); // $ target=f
@@ -2683,7 +2647,6 @@ fn main() {
     macros::f(); // $ target=f
     method_determined_by_argument_type::f(); // $ target=f
     tuples::f(); // $ target=f
-    exec::f(); // $ target=f
     path_buf::f(); // $ target=f
     dereference::test(); // $ target=test
     pattern_matching::test_all_patterns(); // $ target=test_all_patterns
