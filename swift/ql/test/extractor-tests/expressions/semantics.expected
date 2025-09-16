@@ -1,8 +1,10 @@
+| expressions.swift:7:10:7:10 | appendLiteral(_:) | OrdinarySemantics |
 | expressions.swift:7:11:7:11 | $interpolation | OrdinarySemantics |
 | expressions.swift:7:18:7:18 | $interpolation | OrdinarySemantics |
 | expressions.swift:7:18:7:18 | appendInterpolation(_:) | OrdinarySemantics |
 | expressions.swift:7:19:7:19 | a | OrdinarySemantics |
 | expressions.swift:7:21:7:21 | $interpolation | OrdinarySemantics |
+| expressions.swift:7:21:7:21 | appendLiteral(_:) | OrdinarySemantics |
 | expressions.swift:15:9:15:9 | x | OrdinarySemantics |
 | expressions.swift:15:11:15:11 | !=(_:_:) | OrdinarySemantics |
 | expressions.swift:16:19:16:19 | failed | OrdinarySemantics |

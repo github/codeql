@@ -222,14 +222,16 @@ closures.swift:
 #   39|                       getExpr(): [IntegerLiteralExpr] 1
 #   39|               getResult().getFullyConverted(): [AwaitExpr] await ...
 #   39|           getCapture(0): [CapturedDecl] callback
-#   41|         getElement(1): [CallExpr] call to Task<Success, Never>.init(priority:operation:)
-#   41|           getFunction(): [MethodLookupExpr] Task<Success, Never>.init(priority:operation:)
+#   41|         getElement(1): [CallExpr] call to Task<Success, Never>.init(name:priority:operation:)
+#   41|           getFunction(): [MethodLookupExpr] Task<Success, Never>.init(name:priority:operation:)
 #   41|             getBase(): [TypeExpr] Task<(), Never>.Type
 #   41|               getTypeRepr(): [TypeRepr] Task<(), Never>
-#   41|             getMethodRef(): [DeclRefExpr] Task<Success, Never>.init(priority:operation:)
-#   41|           getArgument(0): [Argument] priority: default priority
+#   41|             getMethodRef(): [DeclRefExpr] Task<Success, Never>.init(name:priority:operation:)
+#   41|           getArgument(0): [Argument] name: default name
+#   41|             getExpr(): [DefaultArgumentExpr] default name
+#   41|           getArgument(1): [Argument] priority: default priority
 #   41|             getExpr(): [DefaultArgumentExpr] default priority
-#   41|           getArgument(1): [Argument] operation: { ... }
+#   41|           getArgument(2): [Argument] operation: { ... }
 #   41|             getExpr(): [ExplicitClosureExpr] { ... }
 #   41|               getBody(): [BraceStmt] { ... }
 #   42|                 getElement(0): [ReturnStmt] return ...
@@ -269,6 +271,7 @@ closures.swift:
 #   46|                   getExpr(): [DeclRefExpr] x
 #   46|                 getArgument(1): [Argument] : 1
 #   46|                   getExpr(): [IntegerLiteralExpr] 1
+#   41| [NilLiteralExpr] nil
 #   41| [NilLiteralExpr] nil
 #   50| [NamedFunction] foo()
 #   50|     InterfaceType = () -> Int

@@ -124,14 +124,14 @@
 | cfg.swift:40:11:40:11 | "..." | cfg.swift:40:11:40:11 | (Any) ... |  |
 | cfg.swift:40:11:40:11 | (Any) ... | cfg.swift:40:11:40:11 | [...] |  |
 | cfg.swift:40:11:40:11 | OpaqueValueExpr | cfg.swift:40:12:40:12 | .appendLiteral(_:) |  |
-| cfg.swift:40:11:40:11 | Unknown error  | cfg.swift:40:12:40:11 | call to appendLiteral(_:) |  |
+| cfg.swift:40:11:40:11 | Unknown error  | cfg.swift:40:12:40:12 | call to appendLiteral(_:) |  |
 | cfg.swift:40:11:40:11 | [...] | cfg.swift:40:10:40:10 | default separator |  |
 | cfg.swift:40:11:40:11 | [...] | cfg.swift:40:11:40:11 | [...] |  |
 | cfg.swift:40:11:40:34 | TapExpr | cfg.swift:40:11:40:11 | "..." |  |
-| cfg.swift:40:12:40:11 | call to appendLiteral(_:) | cfg.swift:40:27:40:27 | .appendInterpolation(_:) |  |
 | cfg.swift:40:12:40:12 | $interpolation | cfg.swift:40:12:40:12 | &... |  |
 | cfg.swift:40:12:40:12 | &... | cfg.swift:40:11:40:11 | Unknown error  |  |
 | cfg.swift:40:12:40:12 | .appendLiteral(_:) | cfg.swift:40:12:40:12 | $interpolation |  |
+| cfg.swift:40:12:40:12 | call to appendLiteral(_:) | cfg.swift:40:27:40:27 | .appendInterpolation(_:) |  |
 | cfg.swift:40:27:40:27 | $interpolation | cfg.swift:40:27:40:27 | &... |  |
 | cfg.swift:40:27:40:27 | &... | cfg.swift:40:28:40:28 | error |  |
 | cfg.swift:40:27:40:27 | .appendInterpolation(_:) | cfg.swift:40:27:40:27 | $interpolation |  |
@@ -472,10 +472,10 @@
 | cfg.swift:138:3:138:22 | for ... in ... { ... } | cfg.swift:140:3:148:3 | switch x { ... } | empty |
 | cfg.swift:138:7:138:7 | _ | cfg.swift:138:19:138:22 | { ... } | match |
 | cfg.swift:138:12:138:12 | 0 | cfg.swift:138:16:138:16 | 10 |  |
-| cfg.swift:138:12:138:12 | $generator | cfg.swift:138:12:138:16 | .makeIterator() | match |
-| cfg.swift:138:12:138:16 | ... ....(_:_:) ... | cfg.swift:138:12:138:16 | call to makeIterator() |  |
-| cfg.swift:138:12:138:16 | .makeIterator() | cfg.swift:138:13:138:13 | ....(_:_:) |  |
-| cfg.swift:138:12:138:16 | call to makeIterator() | file://:0:0:0:0 | var ... = ... |  |
+| cfg.swift:138:12:138:12 | $generator | cfg.swift:138:12:138:12 | .makeIterator() | match |
+| cfg.swift:138:12:138:12 | .makeIterator() | cfg.swift:138:13:138:13 | ....(_:_:) |  |
+| cfg.swift:138:12:138:12 | call to makeIterator() | file://:0:0:0:0 | var ... = ... |  |
+| cfg.swift:138:12:138:16 | ... ....(_:_:) ... | cfg.swift:138:12:138:12 | call to makeIterator() |  |
 | cfg.swift:138:13:138:13 | ....(_:_:) | cfg.swift:138:13:138:13 | Int.Type |  |
 | cfg.swift:138:13:138:13 | Int.Type | cfg.swift:138:12:138:12 | 0 |  |
 | cfg.swift:138:16:138:16 | 10 | cfg.swift:138:12:138:16 | ... ....(_:_:) ... |  |
@@ -896,14 +896,14 @@
 | cfg.swift:262:25:262:29 | x | cfg.swift:262:34:262:38 | y |  |
 | cfg.swift:262:34:262:38 | y | cfg.swift:263:10:263:10 | OpaqueValueExpr |  |
 | cfg.swift:263:3:263:10 | return ... | cfg.swift:262:1:264:1 | exit interpolatedString(x:y:) (normal) | return |
-| cfg.swift:263:10:263:10 |  | cfg.swift:263:11:263:10 | call to appendLiteral(_:) |  |
+| cfg.swift:263:10:263:10 |  | cfg.swift:263:11:263:11 | call to appendLiteral(_:) |  |
 | cfg.swift:263:10:263:10 | "..." | cfg.swift:263:3:263:10 | return ... |  |
 | cfg.swift:263:10:263:10 | OpaqueValueExpr | cfg.swift:263:11:263:11 | .appendLiteral(_:) |  |
 | cfg.swift:263:10:263:79 | TapExpr | cfg.swift:263:10:263:10 | "..." |  |
-| cfg.swift:263:11:263:10 | call to appendLiteral(_:) | cfg.swift:263:12:263:12 | .appendInterpolation(_:) |  |
 | cfg.swift:263:11:263:11 | $interpolation | cfg.swift:263:11:263:11 | &... |  |
 | cfg.swift:263:11:263:11 | &... | cfg.swift:263:10:263:10 |  |  |
 | cfg.swift:263:11:263:11 | .appendLiteral(_:) | cfg.swift:263:11:263:11 | $interpolation |  |
+| cfg.swift:263:11:263:11 | call to appendLiteral(_:) | cfg.swift:263:12:263:12 | .appendInterpolation(_:) |  |
 | cfg.swift:263:12:263:12 | $interpolation | cfg.swift:263:12:263:12 | &... |  |
 | cfg.swift:263:12:263:12 | &... | cfg.swift:263:13:263:13 | x |  |
 | cfg.swift:263:12:263:12 | .appendInterpolation(_:) | cfg.swift:263:12:263:12 | $interpolation |  |
@@ -2002,12 +2002,13 @@
 | cfg.swift:523:78:531:5 | exit { ... } (normal) | cfg.swift:523:78:531:5 | exit { ... } |  |
 | cfg.swift:523:78:531:5 | { ... } | cfg.swift:523:18:531:6 | call to AsyncStream<Element>.init(_:bufferingPolicy:_:) |  |
 | cfg.swift:523:78:531:5 | { ... } | cfg.swift:524:9:524:9 | continuation |  |
-| cfg.swift:524:9:524:9 | continuation | cfg.swift:525:13:525:18 | .detached(priority:operation:) |  |
-| cfg.swift:525:13:525:13 | Task<(), Never>.Type | cfg.swift:525:27:525:27 | default priority |  |
-| cfg.swift:525:13:525:18 | .detached(priority:operation:) | cfg.swift:525:13:525:13 | Task<(), Never>.Type |  |
-| cfg.swift:525:13:530:13 | call to detached(priority:operation:) | cfg.swift:523:78:531:5 | exit { ... } (normal) |  |
+| cfg.swift:524:9:524:9 | continuation | cfg.swift:525:13:525:18 | .detached(name:priority:operation:) |  |
+| cfg.swift:525:13:525:13 | Task<(), Never>.Type | cfg.swift:525:27:525:27 | default name |  |
+| cfg.swift:525:13:525:18 | .detached(name:priority:operation:) | cfg.swift:525:13:525:13 | Task<(), Never>.Type |  |
+| cfg.swift:525:13:530:13 | call to detached(name:priority:operation:) | cfg.swift:523:78:531:5 | exit { ... } (normal) |  |
+| cfg.swift:525:27:525:27 | default name | cfg.swift:525:27:525:27 | default priority |  |
 | cfg.swift:525:27:525:27 | default priority | cfg.swift:525:27:530:13 | { ... } |  |
-| cfg.swift:525:27:530:13 | (@isolated(any) () async -> ()) ... | cfg.swift:525:13:530:13 | call to detached(priority:operation:) |  |
+| cfg.swift:525:27:530:13 | (@isolated(any) () async -> ()) ... | cfg.swift:525:13:530:13 | call to detached(name:priority:operation:) |  |
 | cfg.swift:525:27:530:13 | enter { ... } | cfg.swift:525:27:530:13 | { ... } |  |
 | cfg.swift:525:27:530:13 | exit { ... } (normal) | cfg.swift:525:27:530:13 | exit { ... } |  |
 | cfg.swift:525:27:530:13 | { ... } | cfg.swift:525:27:530:13 | (@isolated(any) () async -> ()) ... |  |
@@ -2020,10 +2021,10 @@
 | cfg.swift:526:17:528:17 | for ... in ... { ... } | cfg.swift:529:17:529:30 | .finish() | empty |
 | cfg.swift:526:21:526:21 | i | cfg.swift:527:21:527:34 | .yield(_:) | match |
 | cfg.swift:526:26:526:26 | 1 | cfg.swift:526:30:526:30 | 100 |  |
-| cfg.swift:526:26:526:26 | $i$generator | cfg.swift:526:26:526:30 | .makeIterator() | match |
-| cfg.swift:526:26:526:30 | ... ....(_:_:) ... | cfg.swift:526:26:526:30 | call to makeIterator() |  |
-| cfg.swift:526:26:526:30 | .makeIterator() | cfg.swift:526:27:526:27 | ....(_:_:) |  |
-| cfg.swift:526:26:526:30 | call to makeIterator() | file://:0:0:0:0 | var ... = ... |  |
+| cfg.swift:526:26:526:26 | $i$generator | cfg.swift:526:26:526:26 | .makeIterator() | match |
+| cfg.swift:526:26:526:26 | .makeIterator() | cfg.swift:526:27:526:27 | ....(_:_:) |  |
+| cfg.swift:526:26:526:26 | call to makeIterator() | file://:0:0:0:0 | var ... = ... |  |
+| cfg.swift:526:26:526:30 | ... ....(_:_:) ... | cfg.swift:526:26:526:26 | call to makeIterator() |  |
 | cfg.swift:526:27:526:27 | ....(_:_:) | cfg.swift:526:27:526:27 | Int.Type |  |
 | cfg.swift:526:27:526:27 | Int.Type | cfg.swift:526:26:526:26 | 1 |  |
 | cfg.swift:526:30:526:30 | 100 | cfg.swift:526:26:526:30 | ... ....(_:_:) ... |  |
