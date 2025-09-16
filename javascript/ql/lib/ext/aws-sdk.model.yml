@@ -3,10 +3,10 @@ extensions:
       pack: codeql/javascript-all
       extensible: typeModel
     data:
-      - ["AthenaClientV2", "aws-sdk", "Member[Athena]"]
-      - ["S3ClientV2", "aws-sdk", "Member[S3]"]
-      - ["RDSDataClientV2", "aws-sdk", "Member[RDSDataService]"]
-      - ["DynamoDBClientV2", "aws-sdk", "Member[DynamoDB]"]
+      - ["aws-sdk.Athena", "aws-sdk", "Member[Athena]"]
+      - ["aws-sdk.S3", "aws-sdk", "Member[S3]"]
+      - ["aws-sdk.RDSDataService", "aws-sdk", "Member[RDSDataService]"]
+      - ["aws-sdk.DynamoDB", "aws-sdk", "Member[DynamoDB]"]
       - ["AWS-V3-Common", "@aws-sdk/client-athena", "Member[AthenaClient]"]
       - ["AWS-V3-Common", "@aws-sdk/client-s3", "Member[S3Client]"]
       - ["AWS-V3-Common", "@aws-sdk/client-dynamodb", "Member[DynamoDBClient,DynamoDB]"]
@@ -19,12 +19,12 @@ extensions:
       - ["aws-sdk", "AnyMember.Member[secretAccessKey,accessKeyId]", "credentials-key"]
       - ["aws-sdk", "Member[Credentials].Argument[0,1]", "credentials-key"]
       - ["AWS-V3-Common", "ReturnValue.Member[send].Argument[0]", "sql-injection"]
-      - ["AthenaClientV2", "ReturnValue.Member[startQueryExecution,createNamedQuery,updateNamedQuery].Argument[0].Member[QueryString]", "sql-injection"]
-      - ["S3ClientV2", "ReturnValue.Member[selectObjectContent].Argument[0].Member[Expression]", "sql-injection"]
-      - ["RDSDataClientV2", "ReturnValue.Member[executeStatement,batchExecuteStatement].Argument[0].Member[sql]", "sql-injection"]
-      - ["RDSDataClientV2", "ReturnValue.Member[batchExecuteStatement].Argument[0].Member[parameterSets].ArrayElement.Member[sql]", "sql-injection"]
-      - ["DynamoDBClientV2", "ReturnValue.Member[executeStatement].Argument[0].Member[Statement]", "sql-injection"]
-      - ["DynamoDBClientV2", "ReturnValue.Member[batchExecuteStatement].Argument[0].Member[Statements].ArrayElement.Member[Statement]", "sql-injection"]
+      - ["aws-sdk.Athena", "ReturnValue.Member[startQueryExecution,createNamedQuery,updateNamedQuery].Argument[0].Member[QueryString]", "sql-injection"]
+      - ["aws-sdk.S3", "ReturnValue.Member[selectObjectContent].Argument[0].Member[Expression]", "sql-injection"]
+      - ["aws-sdk.RDSDataService", "ReturnValue.Member[executeStatement,batchExecuteStatement].Argument[0].Member[sql]", "sql-injection"]
+      - ["aws-sdk.RDSDataService", "ReturnValue.Member[batchExecuteStatement].Argument[0].Member[parameterSets].ArrayElement.Member[sql]", "sql-injection"]
+      - ["aws-sdk.DynamoDB", "ReturnValue.Member[executeStatement].Argument[0].Member[Statement]", "sql-injection"]
+      - ["aws-sdk.DynamoDB", "ReturnValue.Member[batchExecuteStatement].Argument[0].Member[Statements].ArrayElement.Member[Statement]", "sql-injection"]
   - addsTo:
       pack: codeql/javascript-all
       extensible: summaryModel
@@ -42,11 +42,11 @@ extensions:
       extensible: sourceModel
     data:
       - ["AWS-V3-Common", "ReturnValue.Member[send].ReturnValue.Awaited", "database-access-result"]
-      - ["AthenaClientV2", "ReturnValue.Member[getQueryResults].ReturnValue.Member[promise].ReturnValue.Awaited", "database-access-result"]
-      - ["AthenaClientV2", "ReturnValue.Member[getQueryResults].Argument[1].Parameter[1]", "database-access-result"]
-      - ["S3ClientV2", "ReturnValue.Member[getObject].ReturnValue.Member[promise].ReturnValue.Awaited", "database-access-result"]
-      - ["S3ClientV2", "ReturnValue.Member[getObject].Argument[1].Parameter[1]", "database-access-result"]
-      - ["RDSDataClientV2", "ReturnValue.Member[executeStatement,batchExecuteStatement].ReturnValue.Member[promise].ReturnValue.Awaited", "database-access-result"]
-      - ["RDSDataClientV2", "ReturnValue.Member[executeStatement,batchExecuteStatement].Argument[1].Parameter[1]", "database-access-result"]
-      - ["DynamoDBClientV2", "ReturnValue.Member[executeStatement,batchExecuteStatement,query,scan,getItem,batchGetItem].ReturnValue.Member[promise].ReturnValue.Awaited", "database-access-result"]
-      - ["DynamoDBClientV2", "ReturnValue.Member[executeStatement,batchExecuteStatement,query,scan,getItem,batchGetItem].Argument[1].Parameter[1]", "database-access-result"]
+      - ["aws-sdk.Athena", "ReturnValue.Member[getQueryResults].ReturnValue.Member[promise].ReturnValue.Awaited", "database-access-result"]
+      - ["aws-sdk.Athena", "ReturnValue.Member[getQueryResults].Argument[1].Parameter[1]", "database-access-result"]
+      - ["aws-sdk.S3", "ReturnValue.Member[getObject].ReturnValue.Member[promise].ReturnValue.Awaited", "database-access-result"]
+      - ["aws-sdk.S3", "ReturnValue.Member[getObject].Argument[1].Parameter[1]", "database-access-result"]
+      - ["aws-sdk.RDSDataService", "ReturnValue.Member[executeStatement,batchExecuteStatement].ReturnValue.Member[promise].ReturnValue.Awaited", "database-access-result"]
+      - ["aws-sdk.RDSDataService", "ReturnValue.Member[executeStatement,batchExecuteStatement].Argument[1].Parameter[1]", "database-access-result"]
+      - ["aws-sdk.DynamoDB", "ReturnValue.Member[executeStatement,batchExecuteStatement,query,scan,getItem,batchGetItem].ReturnValue.Member[promise].ReturnValue.Awaited", "database-access-result"]
+      - ["aws-sdk.DynamoDB", "ReturnValue.Member[executeStatement,batchExecuteStatement,query,scan,getItem,batchGetItem].Argument[1].Parameter[1]", "database-access-result"]
