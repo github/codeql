@@ -97,7 +97,7 @@ public class C {
       arr2 = new int[arr1.length];
     }
     for (int i = 0; i < arr1.length; i++)
-      arr2[i] = arr1[i]; // NPE - false positive
+      arr2[i] = arr1[i]; // OK
   }
 
   public void ex8(int x, int lim) {
@@ -107,7 +107,7 @@ public class C {
     while (!stop) {
       int j = 0;
       while (!stop && j < lim) {
-        int step = (j * obj.hashCode()) % 10; // NPE - false positive
+        int step = (j * obj.hashCode()) % 10; // OK
         if (step == 0) {
           obj.hashCode();
           i += 1;
@@ -134,7 +134,7 @@ public class C {
       cond = true;
     }
     if (cond) {
-      obj2.hashCode(); // NPE - false positive
+      obj2.hashCode(); // OK
     }
   }
 
@@ -185,7 +185,7 @@ public class C {
         b = true;
       } else if (a[i] == 2) {
         verifyBool(b);
-        obj.hashCode(); // NPE - false positive
+        obj.hashCode(); // OK
       }
     }
   }
