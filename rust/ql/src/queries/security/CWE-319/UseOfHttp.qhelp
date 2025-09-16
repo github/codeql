@@ -19,13 +19,14 @@ Then, any connections that are made using that URL are secure SSL/TLS connection
 </recommendation>
 <example>
 
-<p>The following example shows two ways of making a network request using a URL. When the request is
+<p>The following examples show two ways of making a network request using a URL. When the request is
 made using an HTTP URL rather than an HTTPS URL, the connection is unsecured and can be intercepted
-by attackers. When the request is made using an HTTPS URL, the connection is a secure SSL/TLS connection.</p>
+by attackers:</p>
 
 <sample src="UseOfHttpBad.rs" />
 
-<p>A better approach is to use HTTPS:</p>
+<p>A better approach is to use HTTPS. When the request is made using an HTTPS URL, the connection
+is a secure SSL/TLS connection:</p>
 
 <sample src="UseOfHttpGood.rs" />
 
