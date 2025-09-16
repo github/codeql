@@ -37,7 +37,6 @@ class ExprTranslator : public AstTranslatorBase<ExprTranslator> {
   codeql::MakeTemporarilyEscapableExpr translateMakeTemporarilyEscapableExpr(
       const swift::MakeTemporarilyEscapableExpr& expr);
   codeql::ObjCSelectorExpr translateObjCSelectorExpr(const swift::ObjCSelectorExpr& expr);
-  codeql::OneWayExpr translateOneWayExpr(const swift::OneWayExpr& expr);
   codeql::OpenExistentialExpr translateOpenExistentialExpr(const swift::OpenExistentialExpr& expr);
   codeql::OptionalEvaluationExpr translateOptionalEvaluationExpr(
       const swift::OptionalEvaluationExpr& expr);
