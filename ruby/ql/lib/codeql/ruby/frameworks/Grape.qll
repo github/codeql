@@ -52,9 +52,7 @@ class GrapeApiClass extends DataFlow::ClassNode {
   /**
    * Gets a `GrapeEndpoint` defined in this class.
    */
-  GrapeEndpoint getAnEndpoint() {
-    result.getApiClass() = this
-  }
+  GrapeEndpoint getAnEndpoint() { result.getApiClass() = this }
 
   /**
    * Gets a `self` that possibly refers to an instance of this class.
@@ -72,9 +70,7 @@ private DataFlow::ConstRef grapeApiBaseClass() {
   result = DataFlow::getConstant("Grape").getConstant("API")
 }
 
-private API::Node grapeApiInstance() {
-  result = any(GrapeApiClass cls).getSelf().track()
-}
+private API::Node grapeApiInstance() { result = any(GrapeApiClass cls).getSelf().track() }
 
 /**
  * A Grape API endpoint (get, post, put, delete, etc.) call within a `Grape::API` class.
@@ -83,15 +79,14 @@ class GrapeEndpoint extends DataFlow::CallNode {
   private GrapeApiClass apiClass;
 
   GrapeEndpoint() {
-    this = apiClass.getAModuleLevelCall(["get", "post", "put", "delete", "patch", "head", "options"])
+    this =
+      apiClass.getAModuleLevelCall(["get", "post", "put", "delete", "patch", "head", "options"])
   }
 
   /**
    * Gets the HTTP method for this endpoint (e.g., "GET", "POST", etc.)
    */
-  string getHttpMethod() {
-    result = this.getMethodName().toUpperCase()
-  }
+  string getHttpMethod() { result = this.getMethodName().toUpperCase() }
 
   /**
    * Gets the API class containing this endpoint.
@@ -106,9 +101,7 @@ class GrapeEndpoint extends DataFlow::CallNode {
   /**
    * Gets the path pattern for this endpoint, if specified.
    */
-  string getPath() {
-    result = this.getArgument(0).getConstantValue().getString()
-  }
+  string getPath() { result = this.getArgument(0).getConstantValue().getString() }
 }
 
 /**
@@ -116,9 +109,7 @@ class GrapeEndpoint extends DataFlow::CallNode {
  * Grape parameters available via the `params` method within an endpoint.
  */
 class GrapeParamsSource extends Http::Server::RequestInputAccess::Range {
-  GrapeParamsSource() {
-    this.asExpr().getExpr() instanceof GrapeParamsCall
-  }
+  GrapeParamsSource() { this.asExpr().getExpr() instanceof GrapeParamsCall }
 
   override string getSourceType() { result = "Grape::API#params" }
 
@@ -174,9 +165,7 @@ private class GrapeHeadersCall extends MethodCall {
  * The request object can contain user input.
  */
 class GrapeRequestSource extends Http::Server::RequestInputAccess::Range {
-  GrapeRequestSource() {
-    this.asExpr().getExpr() instanceof GrapeRequestCall
-  }
+  GrapeRequestSource() { this.asExpr().getExpr() instanceof GrapeRequestCall }
 
   override string getSourceType() { result = "Grape::API#request" }
 
@@ -188,9 +177,7 @@ class GrapeRequestSource extends Http::Server::RequestInputAccess::Range {
  * Route parameters are extracted from the URL path and can be a source of user input.
  */
 class GrapeRouteParamSource extends Http::Server::RequestInputAccess::Range {
-  GrapeRouteParamSource() {
-    this.asExpr().getExpr() instanceof GrapeRouteParamCall
-  }
+  GrapeRouteParamSource() { this.asExpr().getExpr() instanceof GrapeRouteParamCall }
 
   override string getSourceType() { result = "Grape::API#route_param" }
 
@@ -316,9 +303,7 @@ private class GrapeHelperMethodTaintStep extends AdditionalTaintStep {
     exists(GrapeHelperMethod helperMethod, MethodCall call, int i |
       // Find calls to helper methods from within Grape endpoints
       call.getMethodName() = helperMethod.getName() and
-      exists(GrapeEndpoint endpoint |
-        call.getParent+() = endpoint.getBody().asExpr().getExpr()
-      ) and
+      exists(GrapeEndpoint endpoint | call.getParent+() = endpoint.getBody().asExpr().getExpr()) and
       // Map argument to parameter
       nodeFrom.asExpr().getExpr() = call.getArgument(i) and
       nodeTo.asParameter() = helperMethod.getParameter(i)
