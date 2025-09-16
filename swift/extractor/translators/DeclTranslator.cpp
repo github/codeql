@@ -197,6 +197,18 @@ codeql::Accessor DeclTranslator::translateAccessorDecl(const swift::AccessorDecl
     case swift::AccessorKind::MutableAddress:
       entry.is_unsafe_mutable_address = true;
       break;
+    case swift::AccessorKind::DistributedGet:
+      // TODO: Swift 6.2
+      break;
+    case swift::AccessorKind::Read2:
+      // TODO: Swift 6.2
+      break;
+    case swift::AccessorKind::Modify2:
+      // TODO: Swift 6.2
+      break;
+    case swift::AccessorKind::Init:
+      // TODO: Swift 6.2
+      break;
   }
   fillFunction(decl, entry);
   return entry;
@@ -280,9 +292,7 @@ void DeclTranslator::fillTypeDecl(const swift::TypeDecl& decl, codeql::TypeDecl&
 void DeclTranslator::fillIterableDeclContext(const swift::IterableDeclContext& decl,
                                              codeql::Decl& entry) {
   for (auto member : decl.getMembers()) {
-    if (swift::AvailableAttr::isUnavailable(member)) {
-      continue;
-    }
+    // TODO: Swift 6.2 unavailable members
     entry.members.emplace_back(dispatcher.fetchLabel(member));
   }
 }
@@ -339,14 +349,6 @@ codeql::OpaqueTypeDecl DeclTranslator::translateOpaqueTypeDecl(const swift::Opaq
   fillTypeDecl(decl, entry);
   entry.naming_declaration = dispatcher.fetchLabel(decl.getNamingDecl());
   entry.opaque_generic_params = dispatcher.fetchRepeatedLabels(decl.getOpaqueGenericParams());
-  return entry;
-}
-
-codeql::PoundDiagnosticDecl DeclTranslator::translatePoundDiagnosticDecl(
-    const swift::PoundDiagnosticDecl& decl) {
-  auto entry = createEntry(decl);
-  entry.kind = translateDiagnosticsKind(decl.getKind());
-  entry.message = dispatcher.fetchLabel(decl.getMessage());
   return entry;
 }
 
