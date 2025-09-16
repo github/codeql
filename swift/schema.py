@@ -1211,7 +1211,7 @@ class PrimaryArchetypeType(ArchetypeType):
 class LocalArchetypeType(ArchetypeType):
     pass
 
-class OpenedArchetypeType(LocalArchetypeType):
+class ExistentialArchetypeType(LocalArchetypeType):
     pass
 
 @qltest.test_with("PackType")

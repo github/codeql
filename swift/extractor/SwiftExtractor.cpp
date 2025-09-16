@@ -170,9 +170,7 @@ static std::unordered_set<swift::ModuleDecl*> extractDeclarations(
                        bodyEmissionStrategy);
   auto topLevelDecls = getTopLevelDecls(module, primaryFile, lazyDeclaration);
   for (auto decl : topLevelDecls) {
-    if (swift::AvailableAttr::isUnavailable(decl)) {
-      continue;
-    }
+    // TODO: Swift 6.2 is unavailable
     visitor.extract(decl);
   }
   for (auto& comment : comments) {
