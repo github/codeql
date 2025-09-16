@@ -803,7 +803,7 @@ module Express {
   }
 
   /**
-   * An argument passed to the `json` or `json` method of an HTTP response object.
+   * An argument passed to the `json` or `jsonp` method of an HTTP response object.
    */
   private class ResponseJsonCallArgument extends Http::ResponseSendArgument {
     ResponseJsonCall call;
