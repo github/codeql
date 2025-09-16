@@ -93,7 +93,7 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitTypeAliasType(const swift::TypeAliasType* type);
   SwiftMangledName visitArchetypeType(const swift::ArchetypeType* type);
   SwiftMangledName visitOpaqueTypeArchetypeType(const swift::OpaqueTypeArchetypeType* type);
-  SwiftMangledName visitOpenedArchetypeType(const swift::OpenedArchetypeType* type);
+  SwiftMangledName visitExistentialArchetypeType(const swift::ExistentialArchetypeType* type);
   SwiftMangledName visitProtocolCompositionType(const swift::ProtocolCompositionType* type);
   SwiftMangledName visitLValueType(const swift::LValueType* type);
   SwiftMangledName visitDynamicSelfType(const swift::DynamicSelfType* type);
