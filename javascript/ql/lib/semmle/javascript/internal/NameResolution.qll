@@ -73,7 +73,7 @@ module NameResolution {
    *
    * May also include some type-specific steps in cases where this is harmless when tracking values.
    */
-  private predicate commonStep(Node node1, Node node2) {
+  private predicate commonStep1(Node node1, Node node2) {
     // Import paths are part of the graph and has an incoming edge from the imported module, if found.
     // This ensures we can also use the PathExpr as a source when working with external (unresolved) modules.
     exists(Import imprt |
@@ -182,6 +182,13 @@ module NameResolution {
       node1 = fun.getArgument(i) and
       node2 = fun.getParameter(i)
     )
+  }
+
+  pragma[inline]
+  private predicate commonStep(Node node1, Node node2) {
+    commonStep1(node1, node2)
+    or
+    node2 = ValueFlow::exportsObjectRhs(node1)
   }
 
   /**
@@ -404,17 +411,17 @@ module NameResolution {
       or
       result = globalAccess(mod, "module")
       or
-      commonStep(moduleObjectRef(mod), result)
+      commonStep1(moduleObjectRef(mod), result)
     }
 
-    private Node exportsObjectRhs(Module mod) {
+    Node exportsObjectRhs(Module mod) {
       exists(AssignExpr assign |
         assign.getLhs().(PropAccess).accesses(moduleObjectRef(mod), "exports") and
         result = assign.getRhs()
       )
-      or
-      commonStep(result, exportsObjectRhs(mod))
     }
+
+    private Node exportsObjectRhsPred(Module mod) { commonStep1*(result, exportsObjectRhs(mod)) }
 
     private Node exportsObjectAlias(Module mod) {
       result = mod.getScope().getVariable("exports").getAnAccess()
@@ -426,7 +433,7 @@ module NameResolution {
       or
       readStep(moduleObjectRef(mod), "exports", result)
       or
-      result = exportsObjectRhs(mod)
+      result = exportsObjectRhsPred(mod)
       or
       commonStep(exportsObjectAlias(mod), result)
     }
