@@ -36,8 +36,10 @@ predicate containerStoreStep(Node node1, Node node2, Content c) {
     )
     or
     c instanceof CollectionContent and
-    exists(SendStmt send |
-      send.getChannel() = node2.(ExprNode).asExpr() and send.getValue() = node1.(ExprNode).asExpr()
+    exists(SendStmt send, Node channelExprNode |
+      send.getChannel() = channelExprNode.(ExprNode).asExpr() and
+      node2.(PostUpdateNode).getPreUpdateNode() = channelExprNode and
+      send.getValue() = node1.(ExprNode).asExpr()
     )
     or
     c instanceof MapKeyContent and
