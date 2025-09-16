@@ -208,6 +208,12 @@ module Make<
 
   private newtype TGuardValue =
     TValue(TAbstractSingleValue val, Boolean isVal) or
+    TIntRange(int bound, Boolean upper) {
+      exists(ConstantExpr c | c.asIntegerValue() + [-1, 0, 1] = bound) and
+      // exclude edge cases to avoid overflow issues when computing duals
+      bound != 2147483647 and
+      bound != -2147483648
+    } or
     TException(Boolean throws)
 
   private class AbstractSingleValue extends TAbstractSingleValue {
@@ -238,6 +244,15 @@ module Make<
         result = TValue(val, isVal.booleanNot())
       )
       or
+      exists(int bound, int d, boolean upper |
+        upper = true and d = 1
+        or
+        upper = false and d = -1
+      |
+        this = TIntRange(bound, pragma[only_bind_into](upper)) and
+        result = TIntRange(bound + d, pragma[only_bind_into](upper.booleanNot()))
+      )
+      or
       exists(boolean throws |
         this = TException(throws) and
         result = TException(throws.booleanNot())
@@ -262,6 +277,14 @@ module Make<
     /** Gets the constant that this value represents, if any. */
     ConstantValue asConstantValue() { this = TValue(TValueConstant(result), true) }
 
+    /**
+     * Holds if this value represents an integer range.
+     *
+     * If `upper = true` the range is `(-infinity, bound]`.
+     * If `upper = false` the range is `[bound, infinity)`.
+     */
+    predicate isIntRange(int bound, boolean upper) { this = TIntRange(bound, upper) }
+
     /** Holds if this value represents throwing an exception. */
     predicate isThrowsException() { this = TException(true) }
 
@@ -273,6 +296,12 @@ module Make<
         this = TValue(val, true) and result = val.toString()
         or
         this = TValue(val, false) and result = "not " + val.toString()
+      )
+      or
+      exists(int bound |
+        this = TIntRange(bound, true) and result = "Upper bound " + bound.toString()
+        or
+        this = TIntRange(bound, false) and result = "Lower bound " + bound.toString()
       )
       or
       exists(boolean throws | this = TException(throws) |
@@ -292,6 +321,24 @@ module Make<
       a = TValue(a1, true) and
       b = TValue(b1, true) and
       a1 != b1
+    )
+    or
+    exists(int upperbound, int lowerbound |
+      a = TIntRange(upperbound, true) and b = TIntRange(lowerbound, false)
+      or
+      b = TIntRange(upperbound, true) and a = TIntRange(lowerbound, false)
+    |
+      upperbound < lowerbound
+    )
+    or
+    exists(int bound, boolean upper, int k |
+      a = TIntRange(bound, upper) and b.asIntValue() = k
+      or
+      b = TIntRange(bound, upper) and a.asIntValue() = k
+    |
+      upper = true and bound < k
+      or
+      upper = false and bound > k
     )
   }
 
@@ -681,18 +728,6 @@ module Make<
       )
     }
 
-    /** Holds if `e` may take the value `k` */
-    private predicate relevantInt(Expr e, int k) {
-      e.(ConstantExpr).asIntegerValue() = k
-      or
-      relevantInt(any(Expr e1 | valueStep(e1, e)), k)
-      or
-      exists(SsaDefinition def |
-        guardReadsSsaVar(e, def) and
-        relevantInt(getAnUltimateDefinition(def, _).(SsaWriteDefinition).getDefinition(), k)
-      )
-    }
-
     private predicate impliesStep1(Guard g1, GuardValue v1, Guard g2, GuardValue v2) {
       baseImpliesStep(g1, v1, g2, v2)
       or
@@ -705,14 +740,9 @@ module Make<
         not g2.directlyValueControls(g1.getBasicBlock(), v2)
       )
       or
-      exists(int k1, int k2, boolean upper |
-        rangeGuard(g1, v1, g2, k1, upper) and
-        relevantInt(g2, k2) and
-        v2 = TValue(TValueInt(k2), false)
-      |
-        upper = true and k1 < k2 // g2 <= k1 < k2  ==>  g2 != k2
-        or
-        upper = false and k1 > k2 // g2 >= k1 > k2  ==>  g2 != k2
+      exists(int k, boolean upper |
+        rangeGuard(g1, v1, g2, k, upper) and
+        v2 = TIntRange(k, upper)
       )
       or
       exists(boolean isNull |
@@ -743,6 +773,10 @@ module Make<
       e instanceof NonNullExpr and v.isNonNullValue()
       or
       exprHasValue(e.(IdExpr).getEqualChildExpr(), v)
+      or
+      exists(ConditionalExpr cond | cond = e |
+        exprHasValue(cond.getThen(), v) and exprHasValue(cond.getElse(), v)
+      )
       or
       exists(SsaDefinition def, Guard g, GuardValue gv |
         e = def.getARead() and
@@ -1212,6 +1246,17 @@ module Make<
       predicate controls(BasicBlock bb, boolean branch) {
         this.valueControls(bb, any(GuardValue gv | gv.asBooleanValue() = branch))
       }
+    }
+
+    private predicate exprHasValueAlias = exprHasValue/2;
+
+    private predicate disjointValuesAlias = disjointValues/2;
+
+    /** Provides utility predicates for working with `GuardValue`s. */
+    module InternalUtil {
+      predicate exprHasValue = exprHasValueAlias/2;
+
+      predicate disjointValues = disjointValuesAlias/2;
     }
   }
 }
