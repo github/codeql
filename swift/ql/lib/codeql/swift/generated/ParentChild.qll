@@ -55,6 +55,12 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfAvailabilitySpec(
+    AvailabilitySpec e, int index, string partialPredicateCall
+  ) {
+    none()
+  }
+
   private Element getImmediateChildOfKeyPathComponent(
     KeyPathComponent e, int index, string partialPredicateCall
   ) {
@@ -87,18 +93,6 @@ private module Impl {
         partialPredicateCall = "Child(" + (index - n).toString() + ")"
       )
     )
-  }
-
-  private Element getImmediateChildOfOtherAvailabilitySpec(
-    OtherAvailabilitySpec e, int index, string partialPredicateCall
-  ) {
-    none()
-  }
-
-  private Element getImmediateChildOfPlatformVersionAvailabilitySpec(
-    PlatformVersionAvailabilitySpec e, int index, string partialPredicateCall
-  ) {
-    none()
   }
 
   private Element getImmediateChildOfCapturedDecl(
@@ -3188,15 +3182,13 @@ private module Impl {
     or
     result = getImmediateChildOfAvailabilityInfo(e, index, partialAccessor)
     or
+    result = getImmediateChildOfAvailabilitySpec(e, index, partialAccessor)
+    or
     result = getImmediateChildOfKeyPathComponent(e, index, partialAccessor)
     or
     result = getImmediateChildOfMacroRole(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnspecifiedElement(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfOtherAvailabilitySpec(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfPlatformVersionAvailabilitySpec(e, index, partialAccessor)
     or
     result = getImmediateChildOfCapturedDecl(e, index, partialAccessor)
     or
