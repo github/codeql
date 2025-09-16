@@ -66,13 +66,3 @@ nodes
 | main.rs:60:21:60:42 | ...::get | semmle.label | ...::get |
 | main.rs:60:44:60:46 | url | semmle.label | url |
 subpaths
-testFailures
-| main.rs:22:20:22:39 | "http://example.com" | Unexpected result: Source |
-| main.rs:22:42:22:71 | //... | Missing result: Alert[rust/non-https-url] |
-| main.rs:25:21:25:42 | ...::get | Unexpected result: Alert |
-| main.rs:33:20:33:28 | "http://" | Unexpected result: Source |
-| main.rs:33:31:33:60 | //... | Missing result: Alert[rust/non-https-url] |
-| main.rs:36:30:36:51 | ...::get | Unexpected result: Alert |
-| main.rs:59:15:59:49 | "http://example.com/sensitive-... | Unexpected result: Source |
-| main.rs:59:52:59:81 | //... | Missing result: Alert[rust/non-https-url] |
-| main.rs:60:21:60:42 | ...::get | Unexpected result: Alert |
