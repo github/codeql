@@ -38,7 +38,7 @@ module UseOfHttp {
       exists(string s | this.getTextValue() = s |
         // Match HTTP URLs that are not private/local
         s.regexpMatch("\"http://.*\"") and
-        not s.regexpMatch("\"http://(localhost|127\\.0\\.0\\.1|192\\.168\\.[0-9]+\\.[0-9]+|10\\.[0-9]+\\.[0-9]+\\.[0-9]+|172\\.16\\.[0-9]+\\.[0-9]+|\\[::1\\]|\\[0:0:0:0:0:0:0:1\\]).*\"")
+        not s.regexpMatch("\"http://(localhost|127\\.0\\.0\\.1|192\\.168\\.[0-9]+\\.[0-9]+|10\\.[0-9]+\\.[0-9]+\\.[0-9]+|172\\.(1[6-9]|2[0-9]|3[01])\\.[0-9]+|\\[::1\\]|\\[0:0:0:0:0:0:0:1\\]).*\"")
       )
     }
   }

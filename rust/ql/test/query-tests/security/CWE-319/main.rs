@@ -50,7 +50,7 @@ fn test_localhost_exemptions() {
     let _local4 = reqwest::blocking::get("http://192.168.1.100/internal").unwrap();
     let _local5 = reqwest::blocking::get("http://10.0.0.1/admin").unwrap();
     let _local6 = reqwest::blocking::get("http://172.16.0.0/foo").unwrap();
-    let _local7 = reqwest::blocking::get("http://172.31.255.255/bar").unwrap(); // $ SPURIOUS: Alert[rust/non-https-url]
+    let _local7 = reqwest::blocking::get("http://172.31.255.255/bar").unwrap();
 
     // GOOD: test IPv6 localhost variants
     let _local8 = reqwest::blocking::get("http://[::1]:8080/api").unwrap();

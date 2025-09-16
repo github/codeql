@@ -3,7 +3,6 @@
 | main.rs:14:22:14:43 | ...::get | main.rs:14:45:14:73 | "http://api.example.com/data" | main.rs:14:22:14:43 | ...::get | This URL may be constructed with the HTTP protocol, from $@. | main.rs:14:45:14:73 | "http://api.example.com/data" | this HTTP URL |
 | main.rs:26:21:26:42 | ...::get | main.rs:23:20:23:39 | "http://example.com" | main.rs:26:21:26:42 | ...::get | This URL may be constructed with the HTTP protocol, from $@. | main.rs:23:20:23:39 | "http://example.com" | this HTTP URL |
 | main.rs:37:30:37:51 | ...::get | main.rs:34:20:34:28 | "http://" | main.rs:37:30:37:51 | ...::get | This URL may be constructed with the HTTP protocol, from $@. | main.rs:34:20:34:28 | "http://" | this HTTP URL |
-| main.rs:53:19:53:40 | ...::get | main.rs:53:42:53:68 | "http://172.31.255.255/bar" | main.rs:53:19:53:40 | ...::get | This URL may be constructed with the HTTP protocol, from $@. | main.rs:53:42:53:68 | "http://172.31.255.255/bar" | this HTTP URL |
 | main.rs:60:20:60:41 | ...::get | main.rs:60:43:60:65 | "http://172.32.0.0/baz" | main.rs:60:20:60:41 | ...::get | This URL may be constructed with the HTTP protocol, from $@. | main.rs:60:43:60:65 | "http://172.32.0.0/baz" | this HTTP URL |
 | main.rs:71:24:71:45 | ...::get | main.rs:68:19:68:53 | "http://example.com/sensitive-... | main.rs:71:24:71:45 | ...::get | This URL may be constructed with the HTTP protocol, from $@. | main.rs:68:19:68:53 | "http://example.com/sensitive-... | this HTTP URL |
 edges
@@ -29,7 +28,6 @@ edges
 | main.rs:36:32:36:53 | { ... } | main.rs:36:32:36:53 | ...::must_use(...) | provenance | MaD:3 |
 | main.rs:37:53:37:65 | &insecure_url [&ref] | main.rs:37:30:37:51 | ...::get | provenance | MaD:1 Sink:MaD:1 |
 | main.rs:37:54:37:65 | insecure_url | main.rs:37:53:37:65 | &insecure_url [&ref] | provenance |  |
-| main.rs:53:42:53:68 | "http://172.31.255.255/bar" | main.rs:53:19:53:40 | ...::get | provenance | MaD:1 Sink:MaD:1 |
 | main.rs:60:43:60:65 | "http://172.32.0.0/baz" | main.rs:60:20:60:41 | ...::get | provenance | MaD:1 Sink:MaD:1 |
 | main.rs:68:13:68:15 | url | main.rs:71:47:71:49 | url | provenance |  |
 | main.rs:68:19:68:53 | "http://example.com/sensitive-... | main.rs:68:13:68:15 | url | provenance |  |
@@ -65,8 +63,6 @@ nodes
 | main.rs:37:30:37:51 | ...::get | semmle.label | ...::get |
 | main.rs:37:53:37:65 | &insecure_url [&ref] | semmle.label | &insecure_url [&ref] |
 | main.rs:37:54:37:65 | insecure_url | semmle.label | insecure_url |
-| main.rs:53:19:53:40 | ...::get | semmle.label | ...::get |
-| main.rs:53:42:53:68 | "http://172.31.255.255/bar" | semmle.label | "http://172.31.255.255/bar" |
 | main.rs:60:20:60:41 | ...::get | semmle.label | ...::get |
 | main.rs:60:43:60:65 | "http://172.32.0.0/baz" | semmle.label | "http://172.32.0.0/baz" |
 | main.rs:68:13:68:15 | url | semmle.label | url |
