@@ -150,8 +150,8 @@ edges
 | test2.swift:84:9:84:15 | (...) [Tuple element at index 1] | test2.swift:84:14:84:14 | v | provenance |  |
 | test2.swift:84:14:84:14 | v | test2.swift:86:19:86:19 | v | provenance |  |
 | test2.swift:84:20:84:20 | a1 [Collection element] | test2.swift:84:20:84:34 | call to enumerated() [Collection element, Tuple element at index 1] | provenance |  |
-| test2.swift:84:20:84:34 | call to enumerated() [Collection element, Tuple element at index 1] | test2.swift:84:20:84:34 | call to makeIterator() [Collection element, Tuple element at index 1] | provenance |  |
-| test2.swift:84:20:84:34 | call to makeIterator() [Collection element, Tuple element at index 1] | test2.swift:84:5:84:5 | $generator [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:84:20:84:20 | call to makeIterator() [Collection element, Tuple element at index 1] | test2.swift:84:5:84:5 | $generator [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:84:20:84:34 | call to enumerated() [Collection element, Tuple element at index 1] | test2.swift:84:20:84:20 | call to makeIterator() [Collection element, Tuple element at index 1] | provenance |  |
 | test2.swift:93:5:93:5 | [post] a2 [Collection element] | test2.swift:95:14:95:14 | a2 [Collection element] | provenance |  |
 | test2.swift:93:5:93:5 | [post] a2 [Collection element] | test2.swift:99:19:99:19 | a2 [Collection element] | provenance |  |
 | test2.swift:93:5:93:5 | [post] a2 [Collection element] | test2.swift:101:20:101:20 | a2 [Collection element] | provenance |  |
@@ -167,8 +167,8 @@ edges
 | test2.swift:101:9:101:15 | (...) [Tuple element at index 1] | test2.swift:101:14:101:14 | v | provenance |  |
 | test2.swift:101:14:101:14 | v | test2.swift:103:19:103:19 | v | provenance |  |
 | test2.swift:101:20:101:20 | a2 [Collection element] | test2.swift:101:20:101:34 | call to enumerated() [Collection element, Tuple element at index 1] | provenance |  |
-| test2.swift:101:20:101:34 | call to enumerated() [Collection element, Tuple element at index 1] | test2.swift:101:20:101:34 | call to makeIterator() [Collection element, Tuple element at index 1] | provenance |  |
-| test2.swift:101:20:101:34 | call to makeIterator() [Collection element, Tuple element at index 1] | test2.swift:101:5:101:5 | $generator [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:101:20:101:20 | call to makeIterator() [Collection element, Tuple element at index 1] | test2.swift:101:5:101:5 | $generator [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:101:20:101:34 | call to enumerated() [Collection element, Tuple element at index 1] | test2.swift:101:20:101:20 | call to makeIterator() [Collection element, Tuple element at index 1] | provenance |  |
 | test.swift:6:19:6:26 | call to source() | test.swift:7:15:7:15 | t1 | provenance |  |
 | test.swift:6:19:6:26 | call to source() | test.swift:9:15:9:15 | t1 | provenance |  |
 | test.swift:6:19:6:26 | call to source() | test.swift:10:15:10:15 | t2 | provenance |  |
@@ -940,8 +940,8 @@ nodes
 | test2.swift:84:9:84:15 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
 | test2.swift:84:14:84:14 | v | semmle.label | v |
 | test2.swift:84:20:84:20 | a1 [Collection element] | semmle.label | a1 [Collection element] |
+| test2.swift:84:20:84:20 | call to makeIterator() [Collection element, Tuple element at index 1] | semmle.label | call to makeIterator() [Collection element, Tuple element at index 1] |
 | test2.swift:84:20:84:34 | call to enumerated() [Collection element, Tuple element at index 1] | semmle.label | call to enumerated() [Collection element, Tuple element at index 1] |
-| test2.swift:84:20:84:34 | call to makeIterator() [Collection element, Tuple element at index 1] | semmle.label | call to makeIterator() [Collection element, Tuple element at index 1] |
 | test2.swift:86:19:86:19 | v | semmle.label | v |
 | test2.swift:93:5:93:5 | [post] a2 [Collection element] | semmle.label | [post] a2 [Collection element] |
 | test2.swift:93:13:93:29 | call to source(_:) | semmle.label | call to source(_:) |
@@ -958,8 +958,8 @@ nodes
 | test2.swift:101:9:101:15 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
 | test2.swift:101:14:101:14 | v | semmle.label | v |
 | test2.swift:101:20:101:20 | a2 [Collection element] | semmle.label | a2 [Collection element] |
+| test2.swift:101:20:101:20 | call to makeIterator() [Collection element, Tuple element at index 1] | semmle.label | call to makeIterator() [Collection element, Tuple element at index 1] |
 | test2.swift:101:20:101:34 | call to enumerated() [Collection element, Tuple element at index 1] | semmle.label | call to enumerated() [Collection element, Tuple element at index 1] |
-| test2.swift:101:20:101:34 | call to makeIterator() [Collection element, Tuple element at index 1] | semmle.label | call to makeIterator() [Collection element, Tuple element at index 1] |
 | test2.swift:103:19:103:19 | v | semmle.label | v |
 | test.swift:6:19:6:26 | call to source() | semmle.label | call to source() |
 | test.swift:7:15:7:15 | t1 | semmle.label | t1 |
