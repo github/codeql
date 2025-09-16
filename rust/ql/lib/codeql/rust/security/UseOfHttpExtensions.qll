@@ -36,9 +36,12 @@ module UseOfHttp {
   class HttpStringLiteral extends StringLiteralExpr {
     HttpStringLiteral() {
       exists(string s | this.getTextValue() = s |
-        // Match HTTP URLs that are not private/local
+        // match HTTP URLs
         s.regexpMatch("(?i)\"http://.*\"") and
-        not s.regexpMatch("(?i)\"http://(localhost|127\\.0\\.0\\.1|192\\.168\\.[0-9]+\\.[0-9]+|10\\.[0-9]+\\.[0-9]+\\.[0-9]+|172\\.(1[6-9]|2[0-9]|3[01])\\.[0-9]+|\\[::1\\]|\\[0:0:0:0:0:0:0:1\\]).*\"")
+        // exclude private/local addresses:
+        //  - IPv4: localhost / 127.0.0.1, 192.168.x.x, 10.x.x.x, 172.16.x.x -> 172.31.x.x
+        //  - IPv6 (address inside []): ::1 (or 0:0:0:0:0:0:0:1), fc00::/7 (i.e. anything beginning `fcxx:` or `fdxx:`)
+        not s.regexpMatch("(?i)\"http://(localhost|127\\.0\\.0\\.1|192\\.168\\.[0-9]+\\.[0-9]+|10\\.[0-9]+\\.[0-9]+\\.[0-9]+|172\\.(1[6-9]|2[0-9]|3[01])\\.[0-9]+|\\[::1\\]|\\[0:0:0:0:0:0:0:1\\]|\\[f[cd][0-9a-f]{2}:.*\\]).*\"")
       )
     }
   }
