@@ -14,7 +14,7 @@ import (
 var i int = rand.Int()
 
 func main() {
-	password := "P4ssw0rd"
+	password := "P4ssw0rd" // $ Source
 
 	log.Print(password)        // $ Alert
 	log.Printf("%s", password) // $ Alert
@@ -84,7 +84,7 @@ func main() {
 
 	fields := make(logrus.Fields)
 	fields["pass"] = password
-	entry := logrus.WithFields(fields)
+	entry := logrus.WithFields(fields) // $ Alert
 	entry.Errorf("")
 
 	entry = logrus.WithField("pass", password) // $ Alert

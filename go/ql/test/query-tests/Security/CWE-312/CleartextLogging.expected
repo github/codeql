@@ -41,7 +41,6 @@
 | passwords.go:34:14:34:35 | ...+... | passwords.go:21:2:21:9 | definition of password | passwords.go:34:14:34:35 | ...+... | $@ flows to a logging call. | passwords.go:21:2:21:9 | definition of password | Sensitive data returned by an access to password |
 | passwords.go:39:14:39:17 | obj1 | passwords.go:37:13:37:13 | x | passwords.go:39:14:39:17 | obj1 | $@ flows to a logging call. | passwords.go:37:13:37:13 | x | Sensitive data returned by an access to password |
 | passwords.go:44:14:44:17 | obj2 | passwords.go:21:2:21:9 | definition of password | passwords.go:44:14:44:17 | obj2 | $@ flows to a logging call. | passwords.go:21:2:21:9 | definition of password | Sensitive data returned by an access to password |
-| passwords.go:47:14:47:17 | obj3 | passwords.go:21:2:21:9 | definition of password | passwords.go:47:14:47:17 | obj3 | $@ flows to a logging call. | passwords.go:21:2:21:9 | definition of password | Sensitive data returned by an access to password |
 | passwords.go:51:14:51:27 | fixed_password | passwords.go:50:2:50:15 | definition of fixed_password | passwords.go:51:14:51:27 | fixed_password | $@ flows to a logging call. | passwords.go:50:2:50:15 | definition of fixed_password | Sensitive data returned by an access to fixed_password |
 | passwords.go:89:14:89:26 | utilityObject | passwords.go:87:16:87:36 | call to make | passwords.go:89:14:89:26 | utilityObject | $@ flows to a logging call. | passwords.go:87:16:87:36 | call to make | Sensitive data returned by an access to passwordSet |
 | passwords.go:92:23:92:28 | secret | passwords.go:21:2:21:9 | definition of password | passwords.go:92:23:92:28 | secret | $@ flows to a logging call. | passwords.go:21:2:21:9 | definition of password | Sensitive data returned by an access to password |
@@ -175,8 +174,8 @@ edges
 | main.go:80:17:80:24 | password | main.go:82:12:82:19 | password | provenance |  |
 | main.go:80:17:80:24 | password | main.go:83:17:83:24 | password | provenance |  |
 | main.go:80:17:80:24 | password | main.go:86:19:86:26 | password | provenance |  |
-| main.go:85:2:85:7 | definition of fields | main.go:87:29:87:34 | fields | provenance | Sink:MaD:2 |
-| main.go:86:19:86:26 | password | main.go:85:2:85:7 | definition of fields | provenance | Config |
+| main.go:86:2:86:7 | fields [postupdate] | main.go:87:29:87:34 | fields | provenance | Sink:MaD:2 |
+| main.go:86:19:86:26 | password | main.go:86:2:86:7 | fields [postupdate] | provenance | Config |
 | main.go:86:19:86:26 | password | main.go:90:35:90:42 | password | provenance | Sink:MaD:1 |
 | overrides.go:8:2:8:9 | definition of password | overrides.go:9:9:9:16 | password | provenance |  |
 | overrides.go:9:9:9:16 | password | overrides.go:13:14:13:23 | call to String | provenance |  |
@@ -188,21 +187,19 @@ edges
 | passwords.go:30:8:30:15 | password | passwords.go:8:12:8:12 | definition of x | provenance |  |
 | passwords.go:34:28:34:35 | password | passwords.go:34:14:34:35 | ...+... | provenance | Config |
 | passwords.go:34:28:34:35 | password | passwords.go:42:6:42:13 | password | provenance |  |
-| passwords.go:36:10:38:2 | struct literal | passwords.go:39:14:39:17 | obj1 | provenance |  |
-| passwords.go:37:13:37:13 | x | passwords.go:36:10:38:2 | struct literal | provenance | Config |
-| passwords.go:41:10:43:2 | struct literal | passwords.go:44:14:44:17 | obj2 | provenance |  |
-| passwords.go:42:6:42:13 | password | passwords.go:41:10:43:2 | struct literal | provenance | Config |
+| passwords.go:36:10:38:2 | struct literal [postupdate] | passwords.go:39:14:39:17 | obj1 | provenance |  |
+| passwords.go:37:13:37:13 | x | passwords.go:36:10:38:2 | struct literal [postupdate] | provenance | Config |
+| passwords.go:41:10:43:2 | struct literal [postupdate] | passwords.go:44:14:44:17 | obj2 | provenance |  |
+| passwords.go:42:6:42:13 | password | passwords.go:41:10:43:2 | struct literal [postupdate] | provenance | Config |
 | passwords.go:42:6:42:13 | password | passwords.go:48:11:48:18 | password | provenance |  |
-| passwords.go:46:6:46:9 | definition of obj3 | passwords.go:47:14:47:17 | obj3 | provenance |  |
-| passwords.go:48:11:48:18 | password | passwords.go:46:6:46:9 | definition of obj3 | provenance | Config |
 | passwords.go:48:11:48:18 | password | passwords.go:92:23:92:28 | secret | provenance |  |
 | passwords.go:48:11:48:18 | password | passwords.go:102:33:102:40 | password | provenance |  |
 | passwords.go:48:11:48:18 | password | passwords.go:108:34:108:41 | password | provenance |  |
 | passwords.go:48:11:48:18 | password | passwords.go:113:33:113:40 | password | provenance |  |
 | passwords.go:48:11:48:18 | password | passwords.go:123:13:123:20 | password | provenance |  |
 | passwords.go:50:2:50:15 | definition of fixed_password | passwords.go:51:14:51:27 | fixed_password | provenance |  |
-| passwords.go:86:19:88:2 | struct literal | passwords.go:89:14:89:26 | utilityObject | provenance |  |
-| passwords.go:87:16:87:36 | call to make | passwords.go:86:19:88:2 | struct literal | provenance | Config |
+| passwords.go:86:19:88:2 | struct literal [postupdate] | passwords.go:89:14:89:26 | utilityObject | provenance |  |
+| passwords.go:87:16:87:36 | call to make | passwords.go:86:19:88:2 | struct literal [postupdate] | provenance | Config |
 | passwords.go:102:33:102:40 | password | passwords.go:102:15:102:40 | ...+... | provenance | Config |
 | passwords.go:102:33:102:40 | password | passwords.go:108:34:108:41 | password | provenance |  |
 | passwords.go:102:33:102:40 | password | passwords.go:113:33:113:40 | password | provenance |  |
@@ -215,22 +212,20 @@ edges
 | passwords.go:116:6:116:14 | definition of password1 | passwords.go:117:28:117:36 | password1 | provenance |  |
 | passwords.go:117:28:117:36 | password1 | passwords.go:117:28:117:45 | call to String | provenance | Config |
 | passwords.go:117:28:117:45 | call to String | passwords.go:117:14:117:45 | ...+... | provenance | Config |
-| passwords.go:120:12:125:2 | struct literal | passwords.go:127:14:127:19 | config | provenance |  |
-| passwords.go:120:12:125:2 | struct literal [x] | passwords.go:128:14:128:19 | config [x] | provenance |  |
-| passwords.go:120:12:125:2 | struct literal [y] | passwords.go:129:14:129:19 | config [y] | provenance |  |
-| passwords.go:121:13:121:14 | x3 | passwords.go:120:12:125:2 | struct literal | provenance | Config |
-| passwords.go:123:13:123:20 | password | passwords.go:120:12:125:2 | struct literal | provenance | Config |
-| passwords.go:123:13:123:20 | password | passwords.go:120:12:125:2 | struct literal [x] | provenance |  |
-| passwords.go:124:13:124:25 | call to getPassword | passwords.go:120:12:125:2 | struct literal | provenance | Config |
-| passwords.go:124:13:124:25 | call to getPassword | passwords.go:120:12:125:2 | struct literal [y] | provenance |  |
+| passwords.go:120:12:125:2 | struct literal [postupdate] | passwords.go:127:14:127:19 | config | provenance |  |
+| passwords.go:120:12:125:2 | struct literal [postupdate] [x] | passwords.go:128:14:128:19 | config [x] | provenance |  |
+| passwords.go:120:12:125:2 | struct literal [postupdate] [y] | passwords.go:129:14:129:19 | config [y] | provenance |  |
+| passwords.go:121:13:121:14 | x3 | passwords.go:120:12:125:2 | struct literal [postupdate] | provenance | Config |
+| passwords.go:123:13:123:20 | password | passwords.go:120:12:125:2 | struct literal [postupdate] | provenance | Config |
+| passwords.go:123:13:123:20 | password | passwords.go:120:12:125:2 | struct literal [postupdate] [x] | provenance |  |
+| passwords.go:124:13:124:25 | call to getPassword | passwords.go:120:12:125:2 | struct literal [postupdate] | provenance | Config |
+| passwords.go:124:13:124:25 | call to getPassword | passwords.go:120:12:125:2 | struct literal [postupdate] [y] | provenance |  |
 | passwords.go:128:14:128:19 | config [x] | passwords.go:128:14:128:21 | selection of x | provenance |  |
 | passwords.go:129:14:129:19 | config [y] | passwords.go:129:14:129:21 | selection of y | provenance |  |
 | protobuf.go:9:2:9:9 | definition of password | protobuf.go:12:22:12:29 | password | provenance |  |
-| protobuf.go:11:2:11:6 | definition of query [pointer, Description] | protobuf.go:12:2:12:6 | query [pointer, Description] | provenance |  |
-| protobuf.go:12:2:12:6 | implicit dereference [Description] | protobuf.go:11:2:11:6 | definition of query [pointer, Description] | provenance |  |
-| protobuf.go:12:2:12:6 | query [pointer, Description] | protobuf.go:12:2:12:6 | implicit dereference [Description] | provenance |  |
-| protobuf.go:12:2:12:6 | query [pointer, Description] | protobuf.go:14:14:14:18 | query [pointer, Description] | provenance |  |
-| protobuf.go:12:22:12:29 | password | protobuf.go:12:2:12:6 | implicit dereference [Description] | provenance |  |
+| protobuf.go:12:2:12:6 | implicit dereference [postupdate] [Description] | protobuf.go:12:2:12:6 | query [postupdate] [pointer, Description] | provenance |  |
+| protobuf.go:12:2:12:6 | query [postupdate] [pointer, Description] | protobuf.go:14:14:14:18 | query [pointer, Description] | provenance |  |
+| protobuf.go:12:22:12:29 | password | protobuf.go:12:2:12:6 | implicit dereference [postupdate] [Description] | provenance |  |
 | protobuf.go:14:14:14:18 | query [pointer, Description] | protobuf.go:14:14:14:35 | call to GetDescription | provenance |  |
 | protobuf.go:14:14:14:18 | query [pointer, Description] | protos/query/query.pb.go:117:7:117:7 | definition of x [pointer, Description] | provenance |  |
 | protos/query/query.pb.go:117:7:117:7 | definition of x [pointer, Description] | protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] | provenance |  |
@@ -298,7 +293,7 @@ nodes
 | main.go:80:17:80:24 | password | semmle.label | password |
 | main.go:82:12:82:19 | password | semmle.label | password |
 | main.go:83:17:83:24 | password | semmle.label | password |
-| main.go:85:2:85:7 | definition of fields | semmle.label | definition of fields |
+| main.go:86:2:86:7 | fields [postupdate] | semmle.label | fields [postupdate] |
 | main.go:86:19:86:26 | password | semmle.label | password |
 | main.go:87:29:87:34 | fields | semmle.label | fields |
 | main.go:90:35:90:42 | password | semmle.label | password |
@@ -316,18 +311,16 @@ nodes
 | passwords.go:32:12:32:19 | password | semmle.label | password |
 | passwords.go:34:14:34:35 | ...+... | semmle.label | ...+... |
 | passwords.go:34:28:34:35 | password | semmle.label | password |
-| passwords.go:36:10:38:2 | struct literal | semmle.label | struct literal |
+| passwords.go:36:10:38:2 | struct literal [postupdate] | semmle.label | struct literal [postupdate] |
 | passwords.go:37:13:37:13 | x | semmle.label | x |
 | passwords.go:39:14:39:17 | obj1 | semmle.label | obj1 |
-| passwords.go:41:10:43:2 | struct literal | semmle.label | struct literal |
+| passwords.go:41:10:43:2 | struct literal [postupdate] | semmle.label | struct literal [postupdate] |
 | passwords.go:42:6:42:13 | password | semmle.label | password |
 | passwords.go:44:14:44:17 | obj2 | semmle.label | obj2 |
-| passwords.go:46:6:46:9 | definition of obj3 | semmle.label | definition of obj3 |
-| passwords.go:47:14:47:17 | obj3 | semmle.label | obj3 |
 | passwords.go:48:11:48:18 | password | semmle.label | password |
 | passwords.go:50:2:50:15 | definition of fixed_password | semmle.label | definition of fixed_password |
 | passwords.go:51:14:51:27 | fixed_password | semmle.label | fixed_password |
-| passwords.go:86:19:88:2 | struct literal | semmle.label | struct literal |
+| passwords.go:86:19:88:2 | struct literal [postupdate] | semmle.label | struct literal [postupdate] |
 | passwords.go:87:16:87:36 | call to make | semmle.label | call to make |
 | passwords.go:89:14:89:26 | utilityObject | semmle.label | utilityObject |
 | passwords.go:92:23:92:28 | secret | semmle.label | secret |
@@ -341,9 +334,9 @@ nodes
 | passwords.go:117:14:117:45 | ...+... | semmle.label | ...+... |
 | passwords.go:117:28:117:36 | password1 | semmle.label | password1 |
 | passwords.go:117:28:117:45 | call to String | semmle.label | call to String |
-| passwords.go:120:12:125:2 | struct literal | semmle.label | struct literal |
-| passwords.go:120:12:125:2 | struct literal [x] | semmle.label | struct literal [x] |
-| passwords.go:120:12:125:2 | struct literal [y] | semmle.label | struct literal [y] |
+| passwords.go:120:12:125:2 | struct literal [postupdate] | semmle.label | struct literal [postupdate] |
+| passwords.go:120:12:125:2 | struct literal [postupdate] [x] | semmle.label | struct literal [postupdate] [x] |
+| passwords.go:120:12:125:2 | struct literal [postupdate] [y] | semmle.label | struct literal [postupdate] [y] |
 | passwords.go:121:13:121:14 | x3 | semmle.label | x3 |
 | passwords.go:123:13:123:20 | password | semmle.label | password |
 | passwords.go:124:13:124:25 | call to getPassword | semmle.label | call to getPassword |
@@ -353,9 +346,8 @@ nodes
 | passwords.go:129:14:129:19 | config [y] | semmle.label | config [y] |
 | passwords.go:129:14:129:21 | selection of y | semmle.label | selection of y |
 | protobuf.go:9:2:9:9 | definition of password | semmle.label | definition of password |
-| protobuf.go:11:2:11:6 | definition of query [pointer, Description] | semmle.label | definition of query [pointer, Description] |
-| protobuf.go:12:2:12:6 | implicit dereference [Description] | semmle.label | implicit dereference [Description] |
-| protobuf.go:12:2:12:6 | query [pointer, Description] | semmle.label | query [pointer, Description] |
+| protobuf.go:12:2:12:6 | implicit dereference [postupdate] [Description] | semmle.label | implicit dereference [postupdate] [Description] |
+| protobuf.go:12:2:12:6 | query [postupdate] [pointer, Description] | semmle.label | query [postupdate] [pointer, Description] |
 | protobuf.go:12:22:12:29 | password | semmle.label | password |
 | protobuf.go:14:14:14:18 | query [pointer, Description] | semmle.label | query [pointer, Description] |
 | protobuf.go:14:14:14:35 | call to GetDescription | semmle.label | call to GetDescription |
@@ -365,18 +357,3 @@ nodes
 | protos/query/query.pb.go:119:10:119:22 | selection of Description | semmle.label | selection of Description |
 subpaths
 | protobuf.go:14:14:14:18 | query [pointer, Description] | protos/query/query.pb.go:117:7:117:7 | definition of x [pointer, Description] | protos/query/query.pb.go:119:10:119:22 | selection of Description | protobuf.go:14:14:14:35 | call to GetDescription |
-testFailures
-| main.go:17:2:17:9 | definition of password | Unexpected result: Source |
-| main.go:87:29:87:34 | fields | Unexpected result: Alert |
-| overrides.go:8:2:8:9 | definition of password | Unexpected result: Source |
-| overrides.go:9:18:9:28 | comment | Missing result: Source |
-| passwords.go:21:2:21:9 | definition of password | Unexpected result: Source |
-| passwords.go:30:18:30:28 | comment | Missing result: Source |
-| passwords.go:42:16:42:26 | comment | Missing result: Source |
-| passwords.go:48:20:48:30 | comment | Missing result: Source |
-| passwords.go:50:2:50:15 | definition of fixed_password | Unexpected result: Source |
-| passwords.go:91:31:91:41 | comment | Missing result: Source |
-| passwords.go:116:6:116:14 | definition of password1 | Unexpected result: Source |
-| passwords.go:123:28:123:38 | comment | Missing result: Source |
-| protobuf.go:9:2:9:9 | definition of password | Unexpected result: Source |
-| protobuf.go:12:31:12:41 | comment | Missing result: Source |
