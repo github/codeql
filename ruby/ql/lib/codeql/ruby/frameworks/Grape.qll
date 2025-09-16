@@ -23,9 +23,9 @@ module Grape {
    * A Grape API class which sits at the top of the class hierarchy.
    * In other words, it does not subclass any other Grape API class in source code.
    */
-  class RootAPI extends GrapeAPIClass {
-    RootAPI() {
-      not exists(GrapeAPIClass parent | this != parent and this = parent.getADescendent())
+  class RootApi extends GrapeApiClass {
+    RootApi() {
+      not exists(GrapeApiClass parent | this != parent and this = parent.getADescendent())
     }
   }
 }
@@ -43,17 +43,17 @@ module Grape {
  * end
  * ```
  */
-class GrapeAPIClass extends DataFlow::ClassNode {
-  GrapeAPIClass() {
-    this = grapeAPIBaseClass().getADescendentModule() and
-    not exists(DataFlow::ModuleNode m | m = grapeAPIBaseClass().asModule() | this = m)
+class GrapeApiClass extends DataFlow::ClassNode {
+  GrapeApiClass() {
+    this = grapeApiBaseClass().getADescendentModule() and
+    not exists(DataFlow::ModuleNode m | m = grapeApiBaseClass().asModule() | this = m)
   }
 
   /**
    * Gets a `GrapeEndpoint` defined in this class.
    */
   GrapeEndpoint getAnEndpoint() {
-    result.getAPIClass() = this
+    result.getApiClass() = this
   }
 
   /**
@@ -68,19 +68,19 @@ class GrapeAPIClass extends DataFlow::ClassNode {
   }
 }
 
-private DataFlow::ConstRef grapeAPIBaseClass() {
+private DataFlow::ConstRef grapeApiBaseClass() {
   result = DataFlow::getConstant("Grape").getConstant("API")
 }
 
-private API::Node grapeAPIInstance() {
-  result = any(GrapeAPIClass cls).getSelf().track()
+private API::Node grapeApiInstance() {
+  result = any(GrapeApiClass cls).getSelf().track()
 }
 
 /**
  * A Grape API endpoint (get, post, put, delete, etc.) call within a `Grape::API` class.
  */
 class GrapeEndpoint extends DataFlow::CallNode {
-  private GrapeAPIClass apiClass;
+  private GrapeApiClass apiClass;
 
   GrapeEndpoint() {
     this = apiClass.getAModuleLevelCall(["get", "post", "put", "delete", "patch", "head", "options"])
@@ -96,7 +96,7 @@ class GrapeEndpoint extends DataFlow::CallNode {
   /**
    * Gets the API class containing this endpoint.
    */
-  GrapeAPIClass getAPIClass() { result = apiClass }
+  GrapeApiClass getApiClass() { result = apiClass }
 
   /**
    * Gets the block containing the endpoint logic.
@@ -131,7 +131,7 @@ class GrapeParamsSource extends Http::Server::RequestInputAccess::Range {
 private class GrapeParamsCall extends ParamsCallImpl {
   GrapeParamsCall() {
     // Simplified approach: find params calls that are descendants of Grape API class methods
-    exists(GrapeAPIClass api |
+    exists(GrapeApiClass api |
       this.getMethodName() = "params" and
       this.getParent+() = api.getADeclaration()
     )
@@ -163,7 +163,7 @@ private class GrapeHeadersCall extends MethodCall {
     )
     or
     // Also handle cases where headers is called on an instance of a Grape API class
-    this = grapeAPIInstance().getAMethodCall("headers").asExpr().getExpr()
+    this = grapeApiInstance().getAMethodCall("headers").asExpr().getExpr()
   }
 }
 
@@ -206,7 +206,7 @@ private class GrapeRequestCall extends MethodCall {
     )
     or
     // Also handle cases where request is called on an instance of a Grape API class
-    this = grapeAPIInstance().getAMethodCall("request").asExpr().getExpr()
+    this = grapeApiInstance().getAMethodCall("request").asExpr().getExpr()
   }
 }
 
@@ -221,7 +221,7 @@ private class GrapeRouteParamCall extends MethodCall {
     )
     or
     // Also handle cases where route_param is called on an instance of a Grape API class
-    this = grapeAPIInstance().getAMethodCall("route_param").asExpr().getExpr()
+    this = grapeApiInstance().getAMethodCall("route_param").asExpr().getExpr()
   }
 }
 
@@ -231,7 +231,7 @@ private class GrapeRouteParamCall extends MethodCall {
  */
 private class GrapeHeadersBlockCall extends MethodCall {
   GrapeHeadersBlockCall() {
-    exists(GrapeAPIClass api |
+    exists(GrapeApiClass api |
       this.getParent+() = api.getADeclaration() and
       this.getMethodName() = "headers" and
       exists(this.getBlock())
@@ -245,7 +245,7 @@ private class GrapeHeadersBlockCall extends MethodCall {
  */
 private class GrapeCookiesBlockCall extends MethodCall {
   GrapeCookiesBlockCall() {
-    exists(GrapeAPIClass api |
+    exists(GrapeApiClass api |
       this.getParent+() = api.getADeclaration() and
       this.getMethodName() = "cookies" and
       exists(this.getBlock())
@@ -280,7 +280,7 @@ private class GrapeCookiesCall extends MethodCall {
     )
     or
     // Also handle cases where cookies is called on an instance of a Grape API class
-    this = grapeAPIInstance().getAMethodCall("cookies").asExpr().getExpr()
+    this = grapeApiInstance().getAMethodCall("cookies").asExpr().getExpr()
   }
 }
 
@@ -289,7 +289,7 @@ private class GrapeCookiesCall extends MethodCall {
  * These methods become available in endpoint contexts through Grape's DSL.
  */
 private class GrapeHelperMethod extends Method {
-  private GrapeAPIClass apiClass;
+  private GrapeApiClass apiClass;
 
   GrapeHelperMethod() {
     exists(DataFlow::CallNode helpersCall |
@@ -301,7 +301,7 @@ private class GrapeHelperMethod extends Method {
   /**
    * Gets the API class that contains this helper method.
    */
-  GrapeAPIClass getAPIClass() { result = apiClass }
+  GrapeApiClass getAPIClass() { result = apiClass }
 }
 
 /**

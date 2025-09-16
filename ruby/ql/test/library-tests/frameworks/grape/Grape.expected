@@ -1,4 +1,4 @@
-grapeAPIClasses
+grapeApiClasses
 | app.rb:1:1:90:3 | MyAPI |
 | app.rb:92:1:96:3 | AdminAPI |
 grapeEndpoints
