@@ -187,10 +187,10 @@ edges
 | passwords.go:30:8:30:15 | password | passwords.go:8:12:8:12 | definition of x | provenance |  |
 | passwords.go:34:28:34:35 | password | passwords.go:34:14:34:35 | ...+... | provenance | Config |
 | passwords.go:34:28:34:35 | password | passwords.go:42:6:42:13 | password | provenance |  |
-| passwords.go:36:10:38:2 | struct literal [postupdate] | passwords.go:39:14:39:17 | obj1 | provenance |  |
-| passwords.go:37:13:37:13 | x | passwords.go:36:10:38:2 | struct literal [postupdate] | provenance | Config |
-| passwords.go:41:10:43:2 | struct literal [postupdate] | passwords.go:44:14:44:17 | obj2 | provenance |  |
-| passwords.go:42:6:42:13 | password | passwords.go:41:10:43:2 | struct literal [postupdate] | provenance | Config |
+| passwords.go:36:10:38:2 | struct literal | passwords.go:39:14:39:17 | obj1 | provenance |  |
+| passwords.go:37:13:37:13 | x | passwords.go:36:10:38:2 | struct literal | provenance | Config |
+| passwords.go:41:10:43:2 | struct literal | passwords.go:44:14:44:17 | obj2 | provenance |  |
+| passwords.go:42:6:42:13 | password | passwords.go:41:10:43:2 | struct literal | provenance | Config |
 | passwords.go:42:6:42:13 | password | passwords.go:48:11:48:18 | password | provenance |  |
 | passwords.go:48:11:48:18 | password | passwords.go:92:23:92:28 | secret | provenance |  |
 | passwords.go:48:11:48:18 | password | passwords.go:102:33:102:40 | password | provenance |  |
@@ -198,8 +198,8 @@ edges
 | passwords.go:48:11:48:18 | password | passwords.go:113:33:113:40 | password | provenance |  |
 | passwords.go:48:11:48:18 | password | passwords.go:123:13:123:20 | password | provenance |  |
 | passwords.go:50:2:50:15 | definition of fixed_password | passwords.go:51:14:51:27 | fixed_password | provenance |  |
-| passwords.go:86:19:88:2 | struct literal [postupdate] | passwords.go:89:14:89:26 | utilityObject | provenance |  |
-| passwords.go:87:16:87:36 | call to make | passwords.go:86:19:88:2 | struct literal [postupdate] | provenance | Config |
+| passwords.go:86:19:88:2 | struct literal | passwords.go:89:14:89:26 | utilityObject | provenance |  |
+| passwords.go:87:16:87:36 | call to make | passwords.go:86:19:88:2 | struct literal | provenance | Config |
 | passwords.go:102:33:102:40 | password | passwords.go:102:15:102:40 | ...+... | provenance | Config |
 | passwords.go:102:33:102:40 | password | passwords.go:108:34:108:41 | password | provenance |  |
 | passwords.go:102:33:102:40 | password | passwords.go:113:33:113:40 | password | provenance |  |
@@ -212,14 +212,14 @@ edges
 | passwords.go:116:6:116:14 | definition of password1 | passwords.go:117:28:117:36 | password1 | provenance |  |
 | passwords.go:117:28:117:36 | password1 | passwords.go:117:28:117:45 | call to String | provenance | Config |
 | passwords.go:117:28:117:45 | call to String | passwords.go:117:14:117:45 | ...+... | provenance | Config |
-| passwords.go:120:12:125:2 | struct literal [postupdate] | passwords.go:127:14:127:19 | config | provenance |  |
-| passwords.go:120:12:125:2 | struct literal [postupdate] [x] | passwords.go:128:14:128:19 | config [x] | provenance |  |
-| passwords.go:120:12:125:2 | struct literal [postupdate] [y] | passwords.go:129:14:129:19 | config [y] | provenance |  |
-| passwords.go:121:13:121:14 | x3 | passwords.go:120:12:125:2 | struct literal [postupdate] | provenance | Config |
-| passwords.go:123:13:123:20 | password | passwords.go:120:12:125:2 | struct literal [postupdate] | provenance | Config |
-| passwords.go:123:13:123:20 | password | passwords.go:120:12:125:2 | struct literal [postupdate] [x] | provenance |  |
-| passwords.go:124:13:124:25 | call to getPassword | passwords.go:120:12:125:2 | struct literal [postupdate] | provenance | Config |
-| passwords.go:124:13:124:25 | call to getPassword | passwords.go:120:12:125:2 | struct literal [postupdate] [y] | provenance |  |
+| passwords.go:120:12:125:2 | struct literal | passwords.go:127:14:127:19 | config | provenance |  |
+| passwords.go:120:12:125:2 | struct literal [x] | passwords.go:128:14:128:19 | config [x] | provenance |  |
+| passwords.go:120:12:125:2 | struct literal [y] | passwords.go:129:14:129:19 | config [y] | provenance |  |
+| passwords.go:121:13:121:14 | x3 | passwords.go:120:12:125:2 | struct literal | provenance | Config |
+| passwords.go:123:13:123:20 | password | passwords.go:120:12:125:2 | struct literal | provenance | Config |
+| passwords.go:123:13:123:20 | password | passwords.go:120:12:125:2 | struct literal [x] | provenance |  |
+| passwords.go:124:13:124:25 | call to getPassword | passwords.go:120:12:125:2 | struct literal | provenance | Config |
+| passwords.go:124:13:124:25 | call to getPassword | passwords.go:120:12:125:2 | struct literal [y] | provenance |  |
 | passwords.go:128:14:128:19 | config [x] | passwords.go:128:14:128:21 | selection of x | provenance |  |
 | passwords.go:129:14:129:19 | config [y] | passwords.go:129:14:129:21 | selection of y | provenance |  |
 | protobuf.go:9:2:9:9 | definition of password | protobuf.go:12:22:12:29 | password | provenance |  |
@@ -311,16 +311,16 @@ nodes
 | passwords.go:32:12:32:19 | password | semmle.label | password |
 | passwords.go:34:14:34:35 | ...+... | semmle.label | ...+... |
 | passwords.go:34:28:34:35 | password | semmle.label | password |
-| passwords.go:36:10:38:2 | struct literal [postupdate] | semmle.label | struct literal [postupdate] |
+| passwords.go:36:10:38:2 | struct literal | semmle.label | struct literal |
 | passwords.go:37:13:37:13 | x | semmle.label | x |
 | passwords.go:39:14:39:17 | obj1 | semmle.label | obj1 |
-| passwords.go:41:10:43:2 | struct literal [postupdate] | semmle.label | struct literal [postupdate] |
+| passwords.go:41:10:43:2 | struct literal | semmle.label | struct literal |
 | passwords.go:42:6:42:13 | password | semmle.label | password |
 | passwords.go:44:14:44:17 | obj2 | semmle.label | obj2 |
 | passwords.go:48:11:48:18 | password | semmle.label | password |
 | passwords.go:50:2:50:15 | definition of fixed_password | semmle.label | definition of fixed_password |
 | passwords.go:51:14:51:27 | fixed_password | semmle.label | fixed_password |
-| passwords.go:86:19:88:2 | struct literal [postupdate] | semmle.label | struct literal [postupdate] |
+| passwords.go:86:19:88:2 | struct literal | semmle.label | struct literal |
 | passwords.go:87:16:87:36 | call to make | semmle.label | call to make |
 | passwords.go:89:14:89:26 | utilityObject | semmle.label | utilityObject |
 | passwords.go:92:23:92:28 | secret | semmle.label | secret |
@@ -334,9 +334,9 @@ nodes
 | passwords.go:117:14:117:45 | ...+... | semmle.label | ...+... |
 | passwords.go:117:28:117:36 | password1 | semmle.label | password1 |
 | passwords.go:117:28:117:45 | call to String | semmle.label | call to String |
-| passwords.go:120:12:125:2 | struct literal [postupdate] | semmle.label | struct literal [postupdate] |
-| passwords.go:120:12:125:2 | struct literal [postupdate] [x] | semmle.label | struct literal [postupdate] [x] |
-| passwords.go:120:12:125:2 | struct literal [postupdate] [y] | semmle.label | struct literal [postupdate] [y] |
+| passwords.go:120:12:125:2 | struct literal | semmle.label | struct literal |
+| passwords.go:120:12:125:2 | struct literal [x] | semmle.label | struct literal [x] |
+| passwords.go:120:12:125:2 | struct literal [y] | semmle.label | struct literal [y] |
 | passwords.go:121:13:121:14 | x3 | semmle.label | x3 |
 | passwords.go:123:13:123:20 | password | semmle.label | password |
 | passwords.go:124:13:124:25 | call to getPassword | semmle.label | call to getPassword |
