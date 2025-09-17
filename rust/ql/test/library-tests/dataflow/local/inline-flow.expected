@@ -31,6 +31,9 @@ edges
 | main.rs:76:9:76:9 | k | main.rs:79:10:79:10 | k | provenance |  |
 | main.rs:76:13:76:21 | source(...) | main.rs:76:9:76:9 | k | provenance |  |
 | main.rs:77:5:77:5 | j | main.rs:78:10:78:10 | j | provenance |  |
+| main.rs:81:9:81:13 | mut l | main.rs:82:5:82:5 | l | provenance |  |
+| main.rs:81:17:81:25 | source(...) | main.rs:81:9:81:13 | mut l | provenance |  |
+| main.rs:82:5:82:5 | l | main.rs:83:10:83:10 | l | provenance |  |
 | main.rs:115:9:115:9 | i [&ref] | main.rs:116:11:116:11 | i [&ref] | provenance |  |
 | main.rs:115:13:115:31 | ...::new(...) [&ref] | main.rs:115:9:115:9 | i [&ref] | provenance |  |
 | main.rs:115:22:115:30 | source(...) | main.rs:115:13:115:31 | ...::new(...) [&ref] | provenance | MaD:1 |
@@ -279,6 +282,10 @@ nodes
 | main.rs:77:5:77:5 | j | semmle.label | j |
 | main.rs:78:10:78:10 | j | semmle.label | j |
 | main.rs:79:10:79:10 | k | semmle.label | k |
+| main.rs:81:9:81:13 | mut l | semmle.label | mut l |
+| main.rs:81:17:81:25 | source(...) | semmle.label | source(...) |
+| main.rs:82:5:82:5 | l | semmle.label | l |
+| main.rs:83:10:83:10 | l | semmle.label | l |
 | main.rs:115:9:115:9 | i [&ref] | semmle.label | i [&ref] |
 | main.rs:115:13:115:31 | ...::new(...) [&ref] | semmle.label | ...::new(...) [&ref] |
 | main.rs:115:22:115:30 | source(...) | semmle.label | source(...) |
@@ -553,6 +560,7 @@ testFailures
 | main.rs:71:10:71:10 | i | main.rs:70:9:70:17 | source(...) | main.rs:71:10:71:10 | i | $@ | main.rs:70:9:70:17 | source(...) | source(...) |
 | main.rs:78:10:78:10 | j | main.rs:76:13:76:21 | source(...) | main.rs:78:10:78:10 | j | $@ | main.rs:76:13:76:21 | source(...) | source(...) |
 | main.rs:79:10:79:10 | k | main.rs:76:13:76:21 | source(...) | main.rs:79:10:79:10 | k | $@ | main.rs:76:13:76:21 | source(...) | source(...) |
+| main.rs:83:10:83:10 | l | main.rs:81:17:81:25 | source(...) | main.rs:83:10:83:10 | l | $@ | main.rs:81:17:81:25 | source(...) | source(...) |
 | main.rs:116:10:116:11 | * ... | main.rs:115:22:115:30 | source(...) | main.rs:116:10:116:11 | * ... | $@ | main.rs:115:22:115:30 | source(...) | source(...) |
 | main.rs:124:10:124:12 | a.0 | main.rs:123:14:123:22 | source(...) | main.rs:124:10:124:12 | a.0 | $@ | main.rs:123:14:123:22 | source(...) | source(...) |
 | main.rs:132:10:132:11 | a1 | main.rs:129:17:129:26 | source(...) | main.rs:132:10:132:11 | a1 | $@ | main.rs:129:17:129:26 | source(...) | source(...) |

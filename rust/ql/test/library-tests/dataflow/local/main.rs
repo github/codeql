@@ -80,7 +80,7 @@ fn assignment() {
 
     let mut l = source(8);
     l = l;
-    sink(l); // $ MISSING: hasValueFlow=8
+    sink(l); // $ hasValueFlow=8
 }
 
 fn block_expression1() -> i64 {
