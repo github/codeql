@@ -6,7 +6,10 @@
  * @problem.severity recommendation
  * @precision medium
  * @id java/raw-constructor-invocation
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
+ *       correctness
  */
 
 import java

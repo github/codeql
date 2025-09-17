@@ -1,5 +1,0 @@
----
-category: minorAnalysis
----
-* Added modeling for promisification libraries `@gar/promisify`, `es6-promisify`, `util.promisify`, `thenify-all`, `call-me-maybe`, `@google-cloud/promisify`, and `util-promisify`.
-* Data flow is now tracked through promisified user-defined functions. 

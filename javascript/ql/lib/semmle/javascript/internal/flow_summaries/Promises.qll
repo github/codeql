@@ -368,3 +368,29 @@ private class PromiseWithResolversLike extends SummarizedCallable {
     )
   }
 }
+
+class PromiseTry extends DataFlow::SummarizedCallable {
+  PromiseTry() { this = "Promise.try()" }
+
+  override DataFlow::CallNode getACallSimple() {
+    result = promiseConstructorRef().getAMemberCall(["try", "attempt"])
+    or
+    result = DataFlow::moduleImport(["p-try", "es6-promise-try"]).getACall()
+  }
+
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    preservesValue = true and
+    (
+      exists(int i | i = getAnArgumentPosition() |
+        input = "Argument[" + (i + 1) + "]" and
+        output = "Argument[0].Parameter[" + i + "]"
+      )
+      or
+      input = "Argument[0].ReturnValue" and
+      output = "ReturnValue.Awaited"
+      or
+      input = "Argument[0].ReturnValue[exception]" and
+      output = "ReturnValue.Awaited[error]"
+    )
+  }
+}
