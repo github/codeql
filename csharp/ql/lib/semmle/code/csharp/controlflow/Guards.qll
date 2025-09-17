@@ -274,7 +274,7 @@ module AbstractValues {
 private import AbstractValues
 
 /** Gets the value resulting from matching `null` against `pat`. */
-private boolean patternContainsNull(PatternExpr pat) {
+private boolean patternMatchesNull(PatternExpr pat) {
   pat instanceof NullLiteral and result = true
   or
   not pat instanceof NullLiteral and
@@ -283,18 +283,16 @@ private boolean patternContainsNull(PatternExpr pat) {
   not pat instanceof AndPatternExpr and
   result = false
   or
-  result = patternContainsNull(pat.(NotPatternExpr).getPattern()).booleanNot()
+  result = patternMatchesNull(pat.(NotPatternExpr).getPattern()).booleanNot()
   or
   exists(OrPatternExpr ope | pat = ope |
     result =
-      patternContainsNull(ope.getLeftOperand())
-          .booleanOr(patternContainsNull(ope.getRightOperand()))
+      patternMatchesNull(ope.getLeftOperand()).booleanOr(patternMatchesNull(ope.getRightOperand()))
   )
   or
   exists(AndPatternExpr ape | pat = ape |
     result =
-      patternContainsNull(ape.getLeftOperand())
-          .booleanAnd(patternContainsNull(ape.getRightOperand()))
+      patternMatchesNull(ape.getLeftOperand()).booleanAnd(patternMatchesNull(ape.getRightOperand()))
   )
 }
 
@@ -387,7 +385,7 @@ class DereferenceableExpr extends Expr {
             isNull = branch
             or
             // E.g. `x is string` or `x is ""`
-            branch.booleanNot() = patternContainsNull(pm.getPattern()) and
+            branch.booleanNot() = patternMatchesNull(pm.getPattern()) and
             isNull = false
             or
             exists(TypePatternExpr tpe |
