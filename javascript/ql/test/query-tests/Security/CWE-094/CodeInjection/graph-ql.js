@@ -33,4 +33,24 @@ app.post('/graphql', async (req, res) => {
     variableValues: variables
   });
   res.json(result);
+
+  const root1 = {
+    greet: ({ name, title }) => {
+      return eval(name + title).toString(); // $ MISSING: Alert[js/code-injection]
+    }
+  };
+  graphql({
+    schema: buildSchema(`
+    type Query {
+      greet(name: String!, title: String): String
+    }
+  `),
+    source: `
+      query GreetUser($name: String!, $title: String) {
+        greet(name: $name, title: $title)
+      }
+    `,
+    rootValue: root1,
+    variableValues: variables
+  });
 });
