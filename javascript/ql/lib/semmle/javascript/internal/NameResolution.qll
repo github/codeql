@@ -188,7 +188,7 @@ module NameResolution {
   private predicate commonStep(Node node1, Node node2) {
     commonStep1(node1, node2)
     or
-    node2 = ValueFlow::exportsObjectRhs(node1)
+    node2 = exportsObjectRhs(node1)
   }
 
   /**
@@ -216,7 +216,8 @@ module NameResolution {
     exists(PropAccess access |
       node1 = access.getBase() and
       name = access.getPropertyName() and
-      node2 = access
+      node2 = access and
+      access instanceof RValue
     )
     or
     exists(ObjectPattern pattern |
@@ -265,6 +266,66 @@ module NameResolution {
     exists(ImportDefaultSpecifier spec |
       node1 = spec.getImportDeclaration().getImportedPathExpr() and
       node2 = spec.getLocal()
+    )
+  }
+
+  pragma[nomagic]
+  private GlobalVarAccess globalAccess(Module mod, string name) {
+    result.getName() = name and
+    result.getTopLevel() = mod and
+    name = ["exports", "module"] // manually restrict size of predicate
+  }
+
+  /** Gets a reference to the CommonJS `module` object within the given module. */
+  private Node moduleObjectRef(Module mod) {
+    result = mod.getScope().getVariable("module").getAnAccess()
+    or
+    result = globalAccess(mod, "module")
+    or
+    commonStep1(moduleObjectRef(mod), result)
+  }
+
+  /** Gets the right-hand side of an assignment to `module.exports` within the given module. */
+  private Node exportsObjectRhs(Module mod) {
+    exists(AssignExpr assign |
+      assign.getLhs().(PropAccess).accesses(moduleObjectRef(mod), "exports") and
+      result = assign.getRhs()
+    )
+  }
+
+  /** Gets a node that is bulk-exported from the given module. */
+  Node getModuleBulkExport(ModuleLike mod) { result = exportsObjectRhs(mod) }
+
+  /** Gets a node that flows to `module.exports` within the given module. */
+  private Node exportsObjectRhsPred(Module mod) { commonStep1*(result, exportsObjectRhs(mod)) }
+
+  /** Gets a node that is an alias for `module.exports` within the given module. */
+  private Node exportsObjectAlias(Module mod) {
+    result = mod.getScope().getVariable("exports").getAnAccess()
+    or
+    result = globalAccess(mod, "exports")
+    or
+    result.(ThisExpr).getBindingContainer() = mod and
+    mod instanceof NodeModule
+    or
+    readStep(moduleObjectRef(mod), "exports", result)
+    or
+    result = exportsObjectRhsPred(mod)
+    or
+    commonStep(exportsObjectAlias(mod), result)
+  }
+
+  /** Holds if `node` is stored into `module.exports.<name>` within the given module. */
+  private predicate storeToExports(Node node, Module mod, string name) {
+    exists(AssignExpr assign |
+      node = assign.getRhs() and
+      assign.getLhs().(PropAccess).accesses(exportsObjectAlias(mod), name)
+    )
+    or
+    exists(Property prop |
+      node = prop.getInit() and
+      name = prop.getName() and
+      prop.getObjectExpr() = exportsObjectAlias(mod)
     )
   }
 
@@ -399,58 +460,6 @@ module NameResolution {
       value = target.getAnAssignedExpr().(ObjectExpr).getPropertyByName(prop).getInit()
     }
 
-    pragma[nomagic]
-    private GlobalVarAccess globalAccess(Module mod, string name) {
-      result.getName() = name and
-      result.getTopLevel() = mod and
-      name = ["exports", "module"] // manually restrict size of predicate
-    }
-
-    private Node moduleObjectRef(Module mod) {
-      result = mod.getScope().getVariable("module").getAnAccess()
-      or
-      result = globalAccess(mod, "module")
-      or
-      commonStep1(moduleObjectRef(mod), result)
-    }
-
-    Node exportsObjectRhs(Module mod) {
-      exists(AssignExpr assign |
-        assign.getLhs().(PropAccess).accesses(moduleObjectRef(mod), "exports") and
-        result = assign.getRhs()
-      )
-    }
-
-    private Node exportsObjectRhsPred(Module mod) { commonStep1*(result, exportsObjectRhs(mod)) }
-
-    private Node exportsObjectAlias(Module mod) {
-      result = mod.getScope().getVariable("exports").getAnAccess()
-      or
-      result = globalAccess(mod, "exports")
-      or
-      result.(ThisExpr).getBindingContainer() = mod and
-      mod instanceof NodeModule
-      or
-      readStep(moduleObjectRef(mod), "exports", result)
-      or
-      result = exportsObjectRhsPred(mod)
-      or
-      commonStep(exportsObjectAlias(mod), result)
-    }
-
-    private predicate storeToExports(Node node, Module mod, string name) {
-      exists(AssignExpr assign |
-        node = assign.getRhs() and
-        assign.getLhs().(PropAccess).accesses(exportsObjectAlias(mod), name)
-      )
-      or
-      exists(Property prop |
-        node = prop.getInit() and
-        name = prop.getName() and
-        prop.getObjectExpr() = exportsObjectAlias(mod)
-      )
-    }
-
     /** Steps that only apply for this configuration. */
     private predicate specificStep(Node node1, Node node2) {
       exists(LexicalName var | S::isRelevantVariable(var) |
@@ -519,6 +528,8 @@ module NameResolution {
     or
     defaultImportInteropStep(trackModule(mod), result) and
     not mod.(ES2015Module).hasBothNamedAndDefaultExports()
+    or
+    result = exportsObjectAlias(mod)
   }
 
   predicate trackClassValue = ValueFlow::TrackNode<ClassDefinition>::track/1;

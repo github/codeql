@@ -339,6 +339,12 @@ private module CachedSteps {
       pred = DataFlow::valueNode(node1) and
       succ = getNodeFromNameResolutionNode(node2)
     )
+    or
+    exists(Import imprt, Module mod |
+      imprt.getImportedModule() = mod and
+      pred = DataFlow::valueNode(NameResolution::getModuleBulkExport(mod)) and
+      succ = imprt.getImportedModuleNodeStrict()
+    )
   }
 
   pragma[inline]
