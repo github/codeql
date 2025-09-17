@@ -771,7 +771,7 @@ fn main() {
     my::nested::nested1::nested2::f(); // $ item=I4
     my::f(); // $ item=I38
     nested2::nested3::nested4::f(); // $ item=I12
-    f(); // $ item=I12 $ SPURIOUS: item=I119
+    f(); // $ item=I12
     g(); // $ item=I13
     crate::h(); // $ item=I25
     m1::m2::g(); // $ item=I19

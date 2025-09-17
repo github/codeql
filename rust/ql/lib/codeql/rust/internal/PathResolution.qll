@@ -72,9 +72,9 @@ private ItemNode getAChildSuccessor(ItemNode item, string name, SuccessorKind ki
       if item instanceof ImplOrTraitItemNode and result instanceof AssocItem
       then kind.isExternal()
       else
-        if result instanceof Use
-        then kind.isInternal()
-        else kind.isBoth()
+        if result.isPublic()
+        then kind.isBoth()
+        else kind.isInternal()
   )
 }
 
@@ -164,6 +164,20 @@ abstract class ItemNode extends Locatable {
 
   /** Gets the visibility of this item, if any. */
   abstract Visibility getVisibility();
+
+  /**
+   * Holds if this item is public.
+   *
+   * This is the case when this item either has `pub` visibility (but is not
+   * a `use`; a `use` itself is not visible from the outside), or when this
+   * item is a variant.
+   */
+  predicate isPublic() {
+    exists(this.getVisibility()) and
+    not this instanceof Use
+    or
+    this instanceof Variant
+  }
 
   /** Gets the `i`th type parameter of this item, if any. */
   abstract TypeParam getTypeParam(int i);
@@ -380,9 +394,7 @@ abstract private class ModuleLikeNode extends ItemNode {
 
 private class SourceFileItemNode extends ModuleLikeNode, SourceFile {
   pragma[nomagic]
-  ModuleLikeNode getSuper() {
-    result = any(ModuleItemNode mod | fileImport(mod, this)).getASuccessor("super")
-  }
+  ModuleLikeNode getSuper() { fileImport(result.getAnItemInScope(), this) }
 
   override string getName() { result = "(source file)" }
 
@@ -1300,7 +1312,8 @@ private predicate useTreeDeclares(UseTree tree, string name) {
  */
 pragma[nomagic]
 private predicate declaresDirectly(ItemNode item, Namespace ns, string name) {
-  exists(ItemNode child, SuccessorKind kind | child = getAChildSuccessor(item, name, kind) |
+  exists(ItemNode child, SuccessorKind kind |
+    child = getAChildSuccessor(item, name, kind) and
     child.getNamespace() = ns and
     kind.isInternalOrBoth()
   )
@@ -1491,6 +1504,13 @@ private ItemNode resolvePathCandQualifier(RelevantPath qualifier, RelevantPath p
   name = path.getText()
 }
 
+pragma[nomagic]
+private Crate getCrate0(Locatable l) { result.getASourceFile().getFile() = l.getFile() }
+
+bindingset[l]
+pragma[inline_late]
+private Crate getCrate(Locatable l) { result = getCrate0(l) }
+
 /**
  * Gets the item that `path` resolves to in `ns` when `qualifier` is the
  * qualifier of `path` and `qualifier` resolves to `q`, if any.
@@ -1501,8 +1521,17 @@ private ItemNode resolvePathCandQualified(
 ) {
   exists(string name, SuccessorKind kind |
     q = resolvePathCandQualifier(qualifier, path, name) and
-    result = getASuccessor(q, name, ns, kind) and
+    result = getASuccessor(q, name, ns, kind)
+  |
     kind.isExternalOrBoth()
+    or
+    // Non-public items are visible to paths in descendant modules of the declaring
+    // module; the declaration may happen via a `use` statement, where the item
+    // being used is _not_ itself in an ancestor module, and we currently don't track
+    // that information in `getASuccessor`. So, for simplicity, we allow for non-public
+    // items when the path and the item are in the same crate.
+    getCrate(path) = getCrate(result) and
+    not result instanceof TypeParam
   )
 }
 
@@ -1646,10 +1675,12 @@ private ItemNode resolveUseTreeListItemQualifier(
 
 pragma[nomagic]
 private ItemNode resolveUseTreeListItem(Use use, UseTree tree) {
-  tree = use.getUseTree() and
-  result = resolvePathCand(tree.getPath())
-  or
-  result = resolveUseTreeListItem(use, tree, tree.getPath(), _)
+  exists(Path path | path = tree.getPath() |
+    tree = use.getUseTree() and
+    result = resolvePathCand(path)
+    or
+    result = resolveUseTreeListItem(use, tree, path, _)
+  )
 }
 
 /** Holds if `use` imports `item` as `name`. */
@@ -1673,7 +1704,10 @@ private predicate useImportEdge(Use use, string name, ItemNode item, SuccessorKi
       item = used and
       (
         not tree.hasRename() and
-        name = item.getName()
+        exists(string pathName |
+          pathName = tree.getPath().getText() and
+          if pathName = "self" then name = item.getName() else name = pathName
+        )
         or
         exists(Rename rename | rename = tree.getRename() |
           name = rename.getName().getText()

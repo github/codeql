@@ -7,4 +7,4 @@ pub fn f() {
 use super::super::h; // $ item=I25
 use super::g; // $ item=I9
 
-use super::nested6_f; // $ MISSING: item=I116
+use super::nested6_f; // $ item=I116
