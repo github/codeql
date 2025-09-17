@@ -61,6 +61,7 @@
 | fastify.js:107:23:107:31 | userInput | fastify.js:106:21:106:38 | request.query.code | fastify.js:107:23:107:31 | userInput | This code execution depends on a $@. | fastify.js:106:21:106:38 | request.query.code | user-provided value |
 | fastify.js:108:28:108:50 | reply.l ... tedCode | fastify.js:94:29:94:41 | request.query | fastify.js:108:28:108:50 | reply.l ... tedCode | This code execution depends on a $@. | fastify.js:94:29:94:41 | request.query | user-provided value |
 | fastify.js:108:28:108:50 | reply.l ... tedCode | fastify.js:94:29:94:51 | request ... plyCode | fastify.js:108:28:108:50 | reply.l ... tedCode | This code execution depends on a $@. | fastify.js:94:29:94:51 | request ... plyCode | user-provided value |
+| graph-ql.js:20:19:20:22 | expr | graph-ql.js:28:32:28:39 | req.body | graph-ql.js:20:19:20:22 | expr | This code execution depends on a $@. | graph-ql.js:28:32:28:39 | req.body | user-provided value |
 | module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code | This code execution depends on a $@. | module.js:9:16:9:29 | req.query.code | user-provided value |
 | module.js:11:17:11:30 | req.query.code | module.js:11:17:11:30 | req.query.code | module.js:11:17:11:30 | req.query.code | This code execution depends on a $@. | module.js:11:17:11:30 | req.query.code | user-provided value |
 | react-native.js:8:32:8:38 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:8:32:8:38 | tainted | This code execution depends on a $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
@@ -154,6 +155,12 @@ edges
 | fastify.js:106:9:106:17 | userInput | fastify.js:107:23:107:31 | userInput | provenance |  |
 | fastify.js:106:21:106:33 | request.query | fastify.js:106:9:106:17 | userInput | provenance |  |
 | fastify.js:106:21:106:38 | request.query.code | fastify.js:106:9:106:17 | userInput | provenance |  |
+| graph-ql.js:18:12:18:15 | expr | graph-ql.js:18:12:18:15 | expr | provenance |  |
+| graph-ql.js:18:12:18:15 | expr | graph-ql.js:20:19:20:22 | expr | provenance |  |
+| graph-ql.js:28:9:28:28 | { query, variables } | graph-ql.js:28:11:28:15 | query | provenance |  |
+| graph-ql.js:28:11:28:15 | query | graph-ql.js:31:13:31:17 | query | provenance |  |
+| graph-ql.js:28:32:28:39 | req.body | graph-ql.js:28:9:28:28 | { query, variables } | provenance |  |
+| graph-ql.js:31:13:31:17 | query | graph-ql.js:18:12:18:15 | expr | provenance |  |
 | react-native.js:7:7:7:13 | tainted | react-native.js:8:32:8:38 | tainted | provenance |  |
 | react-native.js:7:7:7:13 | tainted | react-native.js:10:23:10:29 | tainted | provenance |  |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:13 | tainted | provenance |  |
@@ -288,6 +295,13 @@ nodes
 | fastify.js:106:21:106:38 | request.query.code | semmle.label | request.query.code |
 | fastify.js:107:23:107:31 | userInput | semmle.label | userInput |
 | fastify.js:108:28:108:50 | reply.l ... tedCode | semmle.label | reply.l ... tedCode |
+| graph-ql.js:18:12:18:15 | expr | semmle.label | expr |
+| graph-ql.js:18:12:18:15 | expr | semmle.label | expr |
+| graph-ql.js:20:19:20:22 | expr | semmle.label | expr |
+| graph-ql.js:28:9:28:28 | { query, variables } | semmle.label | { query, variables } |
+| graph-ql.js:28:11:28:15 | query | semmle.label | query |
+| graph-ql.js:28:32:28:39 | req.body | semmle.label | req.body |
+| graph-ql.js:31:13:31:17 | query | semmle.label | query |
 | module.js:9:16:9:29 | req.query.code | semmle.label | req.query.code |
 | module.js:11:17:11:30 | req.query.code | semmle.label | req.query.code |
 | react-native.js:7:7:7:13 | tainted | semmle.label | tainted |

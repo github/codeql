@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: summaryModel
+    data:
+      - ["graphql", "Member[graphql]", "Argument[0].Member[source]", "Argument[0].Member[rootValue].AnyMember.Parameter[0].AnyMember", "taint"]

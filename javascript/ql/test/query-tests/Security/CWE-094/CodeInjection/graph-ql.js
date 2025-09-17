@@ -17,7 +17,7 @@ const root = {
   },
   calc: ({ expr }) => {
     try {
-      return eval(expr).toString(); // $ MISSING: Alert[js/code-injection]
+      return eval(expr).toString(); // $ Alert[js/code-injection]
     } catch (e) {
       return `Error: ${e.message}`;
     }
@@ -25,7 +25,7 @@ const root = {
 };
 
 app.post('/graphql', async (req, res) => {
-  const { query, variables } = req.body; // $ MISSING: Source[js/code-injection]
+  const { query, variables } = req.body; // $ Source[js/code-injection]
   const result = await graphql({
     schema,
     source: query,
