@@ -269,7 +269,7 @@ mod warp_test {
         );
 
         // A route with path, parameter, and `and_then`
-        let path_and_map_route = warp::path("1").and(warp::path::param()).map( // $ MISSING: Alert[rust/summary/taint-sources] 
+        let path_and_map_route = warp::path("1").and(warp::path::param()).map( // $ Alert[rust/summary/taint-sources] 
             | a: String |
             {
                 sink(a); // $ MISSING: hasTaintFlow
