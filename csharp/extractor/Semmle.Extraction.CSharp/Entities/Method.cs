@@ -48,7 +48,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected virtual void PopulateMethodBody(TextWriter trapFile)
         {
-            if (!IsSourceDeclaration)
+            if (!IsSourceDeclaration || Context.OnlyScaffold)
                 return;
 
             var block = Block;
@@ -94,7 +94,7 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 trapFile.explicitly_implements(this, explicitInterface.TypeRef);
 
-                if (IsSourceDeclaration)
+                if (IsSourceDeclaration && !Context.OnlyScaffold)
                 {
                     foreach (var syntax in Symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()).OfType<MethodDeclarationSyntax>())
                         TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier!.Name, this, explicitInterface);

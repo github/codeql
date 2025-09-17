@@ -559,7 +559,8 @@ namespace Semmle.Extraction.CSharp
 
         public bool ExtractLocation(ISymbol symbol) =>
             SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition) &&
-            scope.InScope(symbol);
+            scope.InScope(symbol) &&
+            !OnlyScaffold;
 
         /// <summary>
         /// Gets the locations of the symbol that are either

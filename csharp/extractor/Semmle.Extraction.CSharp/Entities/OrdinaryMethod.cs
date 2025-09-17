@@ -34,7 +34,7 @@ namespace Semmle.Extraction.CSharp.Entities
             var returnType = Type.Create(Context, Symbol.ReturnType);
             trapFile.methods(this, Name, ContainingType, returnType.TypeRef, OriginalDefinition);
 
-            if (IsSourceDeclaration)
+            if (IsSourceDeclaration && !Context.OnlyScaffold)
             {
                 foreach (var declaration in Symbol.DeclaringSyntaxReferences.Select(s => s.GetSyntax()).OfType<MethodDeclarationSyntax>())
                 {

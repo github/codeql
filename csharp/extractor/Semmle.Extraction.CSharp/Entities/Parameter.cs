@@ -140,7 +140,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 Context.PopulateLater(defaultValueExpressionCreation);
             }
 
-            if (!IsSourceDeclaration || !Symbol.FromSource())
+            if (!IsSourceDeclaration || !Symbol.FromSource() || Context.OnlyScaffold)
                 return;
 
             BindComments();

@@ -11,7 +11,10 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate(TextWriter trapFile)
         {
             trapFile.commentblock(this);
-            WriteLocationToTrap(trapFile.commentblock_location, this, Context.CreateLocation(Symbol.Location));
+            if (!Context.OnlyScaffold)
+            {
+                WriteLocationToTrap(trapFile.commentblock_location, this, Context.CreateLocation(Symbol.Location));
+            }
             Symbol.CommentLines.ForEach((l, child) => trapFile.commentblock_child(this, l, child));
         }
 
