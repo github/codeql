@@ -5,7 +5,8 @@
  * @problem.severity warning
  * @precision medium
  * @id cs/class-name-comparison
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       external/cwe/cwe-486
  */
