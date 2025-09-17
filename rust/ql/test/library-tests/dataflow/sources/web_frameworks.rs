@@ -248,7 +248,7 @@ mod warp_test {
 
         // A route with parameter and `then`
         let then_route = warp::path::param().then( // $ Alert[rust/summary/taint-sources]
-            |a: String| async move {
+            async move |a: String| {
                 sink(a); // $ MISSING: hasTaintFlow
 
                 "".to_string()
@@ -257,8 +257,8 @@ mod warp_test {
 
         // A route with parameter and `and_then`
         let and_then_route = warp::path::param().and_then( // $ Alert[rust/summary/taint-sources] 
-            | id: u64 |
-            async move {
+            async move | id: u64 |
+            {
             if id != 0 {
                 sink(id); // $ MISSING: hasTaintFlow
                 Ok("".to_string())
