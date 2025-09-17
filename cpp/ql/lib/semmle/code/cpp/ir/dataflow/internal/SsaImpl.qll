@@ -1159,7 +1159,7 @@ class Definition extends SsaImpl::Definition {
     exists(SourceVariable sv, IRBlock bb, int i, UseImpl use |
       ssaDefReachesRead(sv, this, bb, i) and
       use.hasIndexInBlock(bb, i, sv) and
-      result = use.getNode().asOperand()
+      use = TDirectUseImpl(result, 0)
     )
   }
 
@@ -1177,10 +1177,11 @@ class Definition extends SsaImpl::Definition {
    * value that was defined by the definition.
    */
   Operand getAnIndirectUse(int indirectionIndex) {
+    indirectionIndex > 0 and
     exists(SourceVariable sv, IRBlock bb, int i, UseImpl use |
       ssaDefReachesRead(sv, this, bb, i) and
       use.hasIndexInBlock(bb, i, sv) and
-      result = use.getNode().asIndirectOperand(indirectionIndex)
+      use = TDirectUseImpl(result, indirectionIndex)
     )
   }
 
