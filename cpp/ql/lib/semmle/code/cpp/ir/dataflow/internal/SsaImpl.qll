@@ -1126,7 +1126,15 @@ predicate ssaFlow(Node nodeFrom, Node nodeTo) {
  */
 class PhiNode extends Definition instanceof SsaImpl::PhiNode {
   /** Gets a definition that is an input to this phi node. */
-  final Definition getAnInput() { phiHasInputFromBlock(this, result, _) }
+  final Definition getAnInput() { this.hasInputFromBlock(result, _) }
+
+  /**
+   * Holds if `input` is an input to this phi node along the edge originating
+   * in `bb`.
+   */
+  final predicate hasInputFromBlock(Definition input, IRBlock bb) {
+    phiHasInputFromBlock(this, input, bb)
+  }
 }
 
 /** An static single assignment (SSA) definition. */
