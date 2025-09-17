@@ -23,7 +23,7 @@ query predicate astGuardsCompare(int startLine, string msg) {
       )
     )
     or
-    exists(AbstractValue value |
+    exists(GuardValue value |
       guard.comparesEq(left, k, true, value) and op = " == "
       or
       guard.comparesEq(left, k, false, value) and op = " != "
@@ -95,7 +95,7 @@ query predicate irGuardsCompare(int startLine, string msg) {
       )
     )
     or
-    exists(AbstractValue value |
+    exists(GuardValue value |
       guard.comparesLt(left, k, true, value) and op = " < "
       or
       guard.comparesLt(left, k, false, value) and op = " >= "
