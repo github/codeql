@@ -5,9 +5,457 @@
 
 import cpp as Cpp
 import semmle.code.cpp.ir.IR
+private import codeql.util.Void
+private import codeql.controlflow.Guards as SharedGuards
 private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.ir.implementation.raw.internal.TranslatedExpr
 private import semmle.code.cpp.ir.implementation.raw.internal.InstructionTag
+
+private class BasicBlock = IRCfg::BasicBlock;
+
+/**
+ * INTERNAL: Do not use.
+ */
+module GuardsInput implements SharedGuards::InputSig<Cpp::Location, Instruction, IRCfg::BasicBlock> {
+  private import cpp as Cpp
+
+  class NormalExitNode = ExitFunctionInstruction;
+
+  class AstNode = Instruction;
+
+  /** The `Guards` library uses `Instruction`s as expressions. */
+  class Expr extends Instruction {
+    Instruction getControlFlowNode() { result = this }
+
+    IRCfg::BasicBlock getBasicBlock() { result = this.getBlock() }
+  }
+
+  private newtype TConstantValue =
+    TRange(string minValue, string maxValue) {
+      minValue != maxValue and
+      exists(EdgeKind::caseEdge(minValue, maxValue))
+    }
+
+  /**
+   * The constant values that can be inferred. The only additional constant
+   * value required is the GCC extension for case ranges.
+   */
+  class ConstantValue extends TConstantValue {
+    /**
+     * Holds if this constant value is the case range `minValue..maxValue`.
+     */
+    predicate isRange(string minValue, string maxValue) { this = TRange(minValue, maxValue) }
+
+    string toString() {
+      exists(string minValue, string maxValue |
+        this.isRange(minValue, maxValue) and
+        result = minValue + ".." + maxValue
+      )
+    }
+  }
+
+  private class EqualityExpr extends CompareInstruction {
+    EqualityExpr() {
+      this instanceof CompareEQInstruction
+      or
+      this instanceof CompareNEInstruction
+    }
+
+    boolean getPolarity() {
+      result = true and
+      this instanceof CompareEQInstruction
+      or
+      result = false and
+      this instanceof CompareNEInstruction
+    }
+  }
+
+  /** A constant expression. */
+  abstract class ConstantExpr extends Expr {
+    /** Holds if this expression is the null constant. */
+    predicate isNull() { none() }
+
+    /** Holds if this expression is a boolean constant. */
+    boolean asBooleanValue() { none() }
+
+    /** Holds if this expression is an integer constant. */
+    int asIntegerValue() { none() }
+
+    /**
+     * Holds if this expression is a C/C++ specific constant value such as
+     * a GCC case range.
+     */
+    ConstantValue asConstantValue() { none() }
+  }
+
+  private class NullConstant extends ConstantExpr instanceof ConstantInstruction {
+    NullConstant() {
+      this.getValue() = "0" and
+      this.getResultIRType() instanceof IRAddressType
+    }
+
+    override predicate isNull() { any() }
+  }
+
+  private class BooleanConstant extends ConstantExpr instanceof ConstantInstruction {
+    BooleanConstant() { this.getResultIRType() instanceof IRBooleanType }
+
+    override boolean asBooleanValue() {
+      super.getValue() = "0" and
+      result = false
+      or
+      super.getValue() = "1" and
+      result = true
+    }
+  }
+
+  private class IntegerConstant extends ConstantExpr {
+    int value;
+
+    IntegerConstant() {
+      this.(ConstantInstruction).getValue().toInt() = value and
+      this.getResultIRType() instanceof IRIntegerType
+      or
+      // In order to have an "integer constant" for a switch case
+      // we misuse the first instruction (which is always a NoOp instruction)
+      // as a constant with the switch case's value.
+      exists(CaseEdge edge |
+        this = any(SwitchInstruction switch).getSuccessor(edge) and
+        value = edge.getValue().toInt()
+      )
+    }
+
+    override int asIntegerValue() { result = value }
+  }
+
+  /**
+   * The instruction representing the constant expression in a case statement.
+   *
+   * Since the IR does not have an instruction for this (as this is represented
+   * by the edge) we use the `NoOp` instruction which is always generated.
+   */
+  private class CaseConstant extends ConstantExpr instanceof NoOpInstruction {
+    SwitchInstruction switch;
+    SwitchEdge edge;
+
+    CaseConstant() { this = switch.getSuccessor(edge) }
+
+    override ConstantValue asConstantValue() {
+      exists(string minValue, string maxValue |
+        edge.getMinValue() = minValue and
+        edge.getMaxValue() = maxValue and
+        result.isRange(minValue, maxValue)
+      )
+    }
+
+    predicate hasEdge(SwitchInstruction switch_, SwitchEdge edge_) {
+      switch_ = switch and
+      edge_ = edge
+    }
+  }
+
+  private predicate nonNullExpr(Instruction i) {
+    i instanceof VariableAddressInstruction
+    or
+    i.(PointerConstantInstruction).getValue() != "0"
+    or
+    i instanceof TypeidInstruction
+    or
+    nonNullExpr(i.(FieldAddressInstruction).getObjectAddress())
+    or
+    nonNullExpr(i.(PointerAddInstruction).getLeft())
+    or
+    nonNullExpr(i.(CopyInstruction).getSourceValue())
+    or
+    nonNullExpr(i.(ConvertInstruction).getUnary())
+    or
+    nonNullExpr(i.(CheckedConvertOrThrowInstruction).getUnary())
+    or
+    nonNullExpr(i.(CompleteObjectAddressInstruction).getUnary())
+    or
+    nonNullExpr(i.(InheritanceConversionInstruction).getUnary())
+    or
+    nonNullExpr(i.(BitOrInstruction).getAnInput())
+  }
+
+  /**
+   * An expression that is guaranteed to not be `null`.
+   */
+  class NonNullExpr extends Expr {
+    NonNullExpr() { nonNullExpr(this) }
+  }
+
+  /** A `case` in a `switch` instruction. */
+  class Case extends Expr {
+    SwitchInstruction switch;
+    SwitchEdge edge;
+
+    Case() { switch.getSuccessor(edge) = this }
+
+    /**
+     * Gets the edge for which control flows from the `Switch` instruction to
+     * the target case.
+     */
+    SwitchEdge getEdge() { result = edge }
+
+    /**
+     * Holds if this case takes control-flow from `bb1` to `bb2` when
+     * the case matches the scrutinee.
+     */
+    predicate matchEdge(BasicBlock bb1, BasicBlock bb2) {
+      switch.getBlock() = bb1 and
+      this.getBasicBlock() = bb2
+    }
+
+    /**
+     * Holds if case takes control-flow from `bb1` to `bb2` when the
+     * case does not match the scrutinee.
+     *
+     * This predicate never holds for C/C++.
+     */
+    predicate nonMatchEdge(BasicBlock bb1, BasicBlock bb2) { none() }
+
+    /**
+     * Gets the scrutinee expression.
+     */
+    Expr getSwitchExpr() { result = switch.getExpression() }
+
+    /**
+     * Holds if this case is the default case.
+     */
+    predicate isDefaultCase() { edge.isDefault() }
+
+    /**
+     * Gets the constant expression of this case.
+     */
+    ConstantExpr asConstantCase() { result.(CaseConstant).hasEdge(switch, edge) }
+  }
+
+  abstract private class BinExpr extends Expr instanceof BinaryInstruction {
+    Expr getAnOperand() { result = super.getAnInput() }
+  }
+
+  /**
+   * A bitwise "AND" expression.
+   *
+   * This does not include logical AND expressions since these are desugared as
+   * part of IR generation.
+   */
+  class AndExpr extends BinExpr instanceof BitAndInstruction { }
+
+  /**
+   * A bitwise "OR" expression.
+   *
+   * This does not include logical OR expressions since these are desugared as
+   * part of IR generation.
+   */
+  class OrExpr extends BinExpr instanceof BitOrInstruction { }
+
+  /** A (bitwise or logical) "NOT" expression. */
+  class NotExpr extends Expr instanceof UnaryInstruction {
+    NotExpr() {
+      this instanceof LogicalNotInstruction
+      or
+      this instanceof BitComplementInstruction
+    }
+
+    /** Gets the operand of this expression. */
+    Expr getOperand() { result = super.getUnary() }
+  }
+
+  private predicate isBoolToIntConversion(ConvertInstruction convert, Instruction unary) {
+    convert.getUnary() = unary and
+    unary.getResultIRType() instanceof IRBooleanType and
+    convert.getResultIRType() instanceof IRIntegerType
+  }
+
+  /**
+   * A value preserving expression.
+   */
+  class IdExpr extends Expr {
+    IdExpr() {
+      this instanceof CopyInstruction
+      or
+      not isBoolToIntConversion(this, _) and
+      this instanceof ConvertInstruction
+      or
+      this instanceof InheritanceConversionInstruction
+    }
+
+    /** Get the child expression that defines the value of this expression. */
+    Expr getEqualChildExpr() {
+      result = this.(CopyInstruction).getSourceValue()
+      or
+      result = this.(ConvertInstruction).getUnary()
+      or
+      result = this.(InheritanceConversionInstruction).getUnary()
+    }
+  }
+
+  /**
+   * Holds if `eqtest` tests the equality (or inequality) of `left` and
+   * `right.`
+   *
+   * If `polarity` is `true` then `eqtest` is an equality test, and otherwise
+   * `eqtest` is an inequality test.
+   */
+  pragma[nomagic]
+  predicate equalityTest(Expr eqtest, Expr left, Expr right, boolean polarity) {
+    exists(EqualityExpr eq | eqtest = eq |
+      eq.getLeft() = left and
+      eq.getRight() = right and
+      polarity = eq.getPolarity()
+    )
+  }
+
+  /**
+   * A conditional expression (i.e., `b ? e1 : e2`). This expression is desugared
+   * as part of IR generation.
+   */
+  class ConditionalExpr extends Expr {
+    ConditionalExpr() { none() }
+
+    /** Gets the condition of this conditional expression. */
+    Expr getCondition() { none() }
+
+    /** Gets the true branch of this conditional expression. */
+    Expr getThen() { none() }
+
+    /** Gets the false branch of this conditional expression. */
+    Expr getElse() { none() }
+  }
+
+  private import semmle.code.cpp.dataflow.new.DataFlow::DataFlow as DataFlow
+  private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate as Private
+
+  class Parameter = Cpp::Parameter;
+
+  /**
+   * A (direct) parameter position. The value `-1` represents the position of
+   * the implicit `this` parameter.
+   */
+  private int parameterPosition() { result in [-1, any(Cpp::Parameter p).getIndex()] }
+
+  /** A parameter position represented by an integer. */
+  class ParameterPosition extends int {
+    ParameterPosition() { this = parameterPosition() }
+  }
+
+  /** An argument position represented by an integer. */
+  class ArgumentPosition extends int {
+    ArgumentPosition() { this = parameterPosition() }
+  }
+
+  /** Holds if arguments at position `apos` match parameters at position `ppos`. */
+  overlay[caller?]
+  pragma[inline]
+  predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
+
+  final private class FinalMethod = Cpp::Function;
+
+  /**
+   * A non-overridable function.
+   *
+   * This function is non-overrideable either because it is not a member function, or
+   * because it is a final member function.
+   */
+  class NonOverridableMethod extends FinalMethod {
+    NonOverridableMethod() {
+      not this instanceof Cpp::MemberFunction
+      or
+      exists(Cpp::MemberFunction mf | this = mf |
+        not mf.isVirtual()
+        or
+        mf.isFinal()
+      )
+    }
+
+    /** Gets the `Parameter` at `pos` of this function, if any. */
+    Parameter getParameter(ParameterPosition ppos) { super.getParameter(ppos) = result }
+
+    /** Gets an expression returned from this function. */
+    GuardsInput::Expr getAReturnExpr() {
+      exists(ReturnValueInstruction ret |
+        ret.getEnclosingFunction() = this and
+        result = ret.getReturnValue()
+      )
+    }
+  }
+
+  private predicate nonOverridableMethodCall(CallInstruction call, NonOverridableMethod m) {
+    call.getStaticCallTarget() = m
+  }
+
+  /**
+   * A call to a `NonOverridableMethod`.
+   */
+  class NonOverridableMethodCall extends GuardsInput::Expr instanceof CallInstruction {
+    NonOverridableMethodCall() { nonOverridableMethodCall(this, _) }
+
+    /** Gets the function that is called. */
+    NonOverridableMethod getMethod() { nonOverridableMethodCall(this, result) }
+
+    /** Gets the argument at `apos`, if any. */
+    GuardsInput::Expr getArgument(ArgumentPosition apos) { result = super.getArgument(apos) }
+  }
+}
+
+private module GuardsImpl = SharedGuards::Make<Cpp::Location, IRCfg, GuardsInput>;
+
+private module LogicInput_v1 implements GuardsImpl::LogicInputSig {
+  private import semmle.code.cpp.dataflow.new.DataFlow::DataFlow::Ssa
+
+  final private class FinalBaseSsaVariable = Definition;
+
+  class SsaDefinition extends FinalBaseSsaVariable {
+    GuardsInput::Expr getARead() { result = this.getAUse().getDef() }
+  }
+
+  class SsaWriteDefinition extends SsaDefinition instanceof ExplicitDefinition {
+    GuardsInput::Expr getDefinition() { result = super.getAssignedInstruction() }
+  }
+
+  class SsaPhiNode extends SsaDefinition instanceof PhiNode {
+    predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb) {
+      super.hasInputFromBlock(inp, bb)
+    }
+  }
+
+  predicate parameterDefinition(GuardsInput::Parameter p, SsaDefinition def) {
+    def.isParameterDefinition(p)
+  }
+
+  predicate additionalImpliesStep(
+    GuardsImpl::PreGuard g1, GuardValue v1, GuardsImpl::PreGuard g2, GuardValue v2
+  ) {
+    g1.(ConditionalBranchInstruction).getCondition() = g2 and
+    v1.asBooleanValue() = v2.asBooleanValue()
+    or
+    exists(SwitchInstruction switch, SwitchEdge edge |
+      g1 = switch.getSuccessor(edge) and
+      g2 = switch.getExpression()
+    |
+      v1.asBooleanValue() = true and
+      (
+        v2.asIntValue() = edge.getValue().toInt()
+        or
+        v2.asConstantValue().isRange(edge.getMinValue(), edge.getMaxValue())
+      )
+      or
+      v1.asBooleanValue() = false and
+      (
+        v2.getDualValue().asIntValue() = edge.getValue().toInt()
+        or
+        v2.getDualValue().asConstantValue().isRange(edge.getMinValue(), edge.getMaxValue())
+      )
+    )
+  }
+}
+
+class GuardValue = GuardsImpl::GuardValue;
+
+/** INTERNAL: Don't use. */
+module Guards_v1 = GuardsImpl::Logic<LogicInput_v1>;
 
 /**
  * Holds if `block` consists of an `UnreachedInstruction`.
