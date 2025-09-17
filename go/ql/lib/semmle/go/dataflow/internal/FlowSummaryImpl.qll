@@ -117,7 +117,9 @@ private module StepsInput implements Impl::Private::StepsInputSig {
     )
   }
 
-  Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponent sc) { none() }
+  DataFlowCallable getSourceNodeEnclosingCallable(Input::SourceBase source) { none() }
+
+  Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponentStack s) { none() }
 
   Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) { none() }
 }
