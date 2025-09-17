@@ -798,8 +798,7 @@ fn main() {
     m23::f(); // $ item=I108
     m24::f(); // $ item=I121
     zelf::h(); // $ item=I25
-    z_changed(); // $ MISSING: item=I122
-    AStruct::z_on_type(); // $ MISSING: item=I124
-    AStruct {} // $ item=I123
-        .z_on_instance(); // MISSING: item=I125
+    z_changed(); // $ item=I122
+    AStruct::z_on_type(); // $ item=I124
+    AStruct {}.z_on_instance(); // $ item=I123 item=I125
 }

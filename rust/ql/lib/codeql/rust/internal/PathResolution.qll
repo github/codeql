@@ -156,6 +156,11 @@ private ItemNode getAChildSuccessor(ItemNode item, string name, SuccessorKind ki
  * - https://doc.rust-lang.org/reference/names/namespaces.html
  */
 abstract class ItemNode extends Locatable {
+  ItemNode() {
+    // Exclude items that are superceded by the expansion of an attribute macro.
+    not this.(Item).hasAttributeMacroExpansion()
+  }
+
   /** Gets the (original) name of this item. */
   abstract string getName();
 
@@ -660,11 +665,7 @@ final class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
 
   override Visibility getVisibility() { result = Impl.super.getVisibility() }
 
-  TypeParamItemNode getBlanketImplementationTypeParam() {
-    result = this.resolveSelfTy() and
-    // This impl block is not superseded by the expansion of an attribute macro.
-    not exists(super.getAttributeMacroExpansion())
-  }
+  TypeParamItemNode getBlanketImplementationTypeParam() { result = this.resolveSelfTy() }
 
   /**
    * Holds if this impl block is a blanket implementation. That is, the
