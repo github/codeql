@@ -16,22 +16,27 @@
 import rust
 import codeql.rust.dataflow.DataFlow
 import codeql.rust.dataflow.TaintTracking
-import codeql.rust.dataflow.FlowSource
-import codeql.rust.dataflow.FlowSink
+import codeql.rust.security.InsecureCookieExtensions
 
 /**
  * A data flow configuration for tracking values representing cookies without the
- * 'secure' flag set.
+ * 'secure' attribute set.
  */
 module InsecureCookieConfig implements DataFlow::ConfigSig {
+  import InsecureCookie
+
   predicate isSource(DataFlow::Node node) {
     // creation of a cookie or cookie configuration with default, insecure settings
-    sourceNode(node, "cookie-create")
+    node instanceof Source
   }
 
   predicate isSink(DataFlow::Node node) {
     // use of a cookie or cookie configuration
-    sinkNode(node, "cookie-use")
+    node instanceof Sink
+  }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof Barrier
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
@@ -42,5 +47,6 @@ module InsecureCookieFlow = TaintTracking::Global<InsecureCookieConfig>;
 import InsecureCookieFlow::PathGraph
 
 from InsecureCookieFlow::PathNode sourceNode, InsecureCookieFlow::PathNode sinkNode
-where InsecureCookieFlow::flowPath(sourceNode, sinkNode)
+where
+  InsecureCookieFlow::flowPath(sourceNode, sinkNode)
 select sinkNode.getNode(), sourceNode, sinkNode, "Cookie attribute 'Secure' is not set to true."
