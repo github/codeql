@@ -40,7 +40,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 Parameter.Create(Context, Symbol.Parameters[i], this, original);
             }
 
-            if (IsSourceDeclaration)
+            if (IsSourceDeclaration && !Context.OnlyScaffold)
             {
                 var expressionBody = ExpressionBody;
                 if (expressionBody is not null)
@@ -53,6 +53,12 @@ namespace Semmle.Extraction.CSharp.Entities
 
             PopulateAttributes();
             PopulateModifiers(trapFile);
+
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
+
             BindComments();
 
             var declSyntaxReferences = IsSourceDeclaration

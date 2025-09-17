@@ -72,7 +72,7 @@ namespace Semmle.Extraction.CSharp.Entities
             foreach (var l in Locations)
                 trapFile.property_location(this, l);
 
-            if (IsSourceDeclaration && Symbol.FromSource())
+            if (IsSourceDeclaration && Symbol.FromSource() && !Context.OnlyScaffold)
             {
                 var expressionBody = ExpressionBody;
                 if (expressionBody is not null)
