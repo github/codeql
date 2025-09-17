@@ -36,7 +36,7 @@ app.post('/graphql', async (req, res) => {
 
   const root1 = {
     greet: ({ name, title }) => {
-      return eval(name + title).toString(); // $ MISSING: Alert[js/code-injection]
+      return eval(name + title).toString(); // $ Alert[js/code-injection]
     }
   };
   graphql({
