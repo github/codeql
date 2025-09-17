@@ -498,7 +498,9 @@ class FinalParameterUse extends UseImpl, TFinalParameterUse {
 
   int getArgumentIndex() { result = p.getIndex() }
 
-  override Node getNode() { finalParameterNodeHasParameterAndIndex(result, p, indirectionIndex) }
+  override FinalParameterNode getNode() {
+    finalParameterNodeHasParameterAndIndex(result, p, indirectionIndex)
+  }
 
   override int getIndirection() { result = indirectionIndex + 1 }
 
