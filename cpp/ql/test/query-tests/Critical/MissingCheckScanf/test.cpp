@@ -194,7 +194,7 @@ int main()
 
 		if (b >= 1)
 		{
-			use(i); // BAD [NOT DETECTED]: scanf can return EOF (boolifies true)
+			use(i); // BAD: scanf can return EOF (boolifies true)
 		}
 	}
 
