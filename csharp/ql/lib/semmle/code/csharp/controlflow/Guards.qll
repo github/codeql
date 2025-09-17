@@ -273,6 +273,29 @@ module AbstractValues {
 
 private import AbstractValues
 
+/** Gets the value resulting from matching `null` against `pat`. */
+private boolean patternMatchesNull(PatternExpr pat) {
+  pat instanceof NullLiteral and result = true
+  or
+  not pat instanceof NullLiteral and
+  not pat instanceof NotPatternExpr and
+  not pat instanceof OrPatternExpr and
+  not pat instanceof AndPatternExpr and
+  result = false
+  or
+  result = patternMatchesNull(pat.(NotPatternExpr).getPattern()).booleanNot()
+  or
+  exists(OrPatternExpr ope | pat = ope |
+    result =
+      patternMatchesNull(ope.getLeftOperand()).booleanOr(patternMatchesNull(ope.getRightOperand()))
+  )
+  or
+  exists(AndPatternExpr ape | pat = ape |
+    result =
+      patternMatchesNull(ape.getLeftOperand()).booleanAnd(patternMatchesNull(ape.getRightOperand()))
+  )
+}
+
 pragma[nomagic]
 private predicate typePattern(PatternMatch pm, TypePatternExpr tpe, Type t) {
   tpe = pm.getPattern() and
@@ -362,8 +385,7 @@ class DereferenceableExpr extends Expr {
             isNull = branch
             or
             // E.g. `x is string` or `x is ""`
-            not pm.getPattern() instanceof NullLiteral and
-            branch = true and
+            branch.booleanNot() = patternMatchesNull(pm.getPattern()) and
             isNull = false
             or
             exists(TypePatternExpr tpe |

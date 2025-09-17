@@ -5,8 +5,9 @@
  * @problem.severity warning
  * @precision medium
  * @id cs/unsafe-year-construction
- * @tags date-time
+ * @tags quality
  *       reliability
+ *       correctness
  */
 
 import csharp

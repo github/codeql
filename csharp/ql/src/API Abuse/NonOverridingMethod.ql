@@ -5,9 +5,10 @@
  * @problem.severity recommendation
  * @precision medium
  * @id cs/nonoverriding-method
- * @tags reliability
+ * @tags quality
+ *       reliability
+ *       correctness
  *       readability
- *       naming
  */
 
 import csharp

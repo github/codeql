@@ -5,8 +5,9 @@
  * @problem.severity warning
  * @precision medium
  * @id cs/useless-cast-to-self
- * @tags maintainability
- *       language-features
+ * @tags quality
+ *       maintainability
+ *       useless-code
  *       external/cwe/cwe-561
  */
 

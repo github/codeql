@@ -6,7 +6,8 @@
  * @problem.severity warning
  * @precision medium
  * @id java/notify-instead-of-notify-all
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       concurrency
  *       external/cwe/cwe-662

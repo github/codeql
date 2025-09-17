@@ -18,23 +18,22 @@ private predicate isInUninitializedLet(Name name) {
   )
 }
 
-/** Holds if `write` writes to variable `v`. */
-predicate variableWrite(AstNode write, Variable v) {
+/** Holds if `write` writes to variable `v` via `access`. */
+predicate variableWrite(AstNode write, AstNode access, Variable v) {
   exists(Name name |
     name = write and
+    access = write and
     name = v.getName() and
     not isInUninitializedLet(name)
   )
   or
-  exists(VariableAccess access |
-    access = write and
-    access.getVariable() = v
-  |
-    access instanceof VariableWriteAccess
+  v = access.(VariableAccess).getVariable() and
+  (
+    write = access.(VariableWriteAccess).getAssignmentExpr()
     or
     // Although compound assignments, like `x += y`, may in fact not update `x`,
     // it makes sense to treat them as such
-    access = any(CompoundAssignmentExpr cae).getLhs()
+    access = write.(CompoundAssignmentExpr).getLhs()
   )
 }
 
@@ -226,7 +225,7 @@ private module Cached {
   cached
   predicate variableWriteActual(BasicBlock bb, int i, Variable v, CfgNode write) {
     bb.getNode(i) = write and
-    variableWrite(write.getAstNode(), v)
+    variableWrite(write.getAstNode(), _, v)
   }
 
   cached

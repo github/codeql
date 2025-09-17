@@ -263,7 +263,7 @@ module LocalFlow {
     or
     // An edge from a pattern/expression to its corresponding SSA definition.
     nodeFrom.(AstCfgFlowNode).getCfgNode() =
-      nodeTo.(SsaNode).asDefinition().(Ssa::WriteDefinition).getControlFlowNode()
+      nodeTo.(SsaNode).asDefinition().(Ssa::WriteDefinition).getWriteAccess()
     or
     nodeFrom.(SourceParameterNode).getParameter().(ParamCfgNode).getPat() = nodeTo.asPat()
     or
