@@ -251,6 +251,8 @@ module ControlFlow {
       }
     }
 
+    class NormalExitNode extends AnnotatedExitNode instanceof Impl::NormalExitNode { }
+
     /** A node for a callable exit point. */
     class ExitNode extends Node instanceof Impl::ExitNode {
       /** Gets the callable that this exit applies to. */

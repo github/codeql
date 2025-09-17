@@ -13,6 +13,365 @@ private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Linq
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.collections.Generic
+private import codeql.controlflow.Guards as SharedGuards
+
+private module GuardsInput implements
+  SharedGuards::InputSig<Location, ControlFlow::Node, ControlFlow::BasicBlock>
+{
+  private import csharp as CS
+
+  class NormalExitNode = ControlFlow::Nodes::NormalExitNode;
+
+  class AstNode = ControlFlowElement;
+
+  class Expr = CS::Expr;
+
+  private newtype TConstantValue =
+    TStringValue(string value) { any(StringLiteral s).getValue() = value }
+
+  class ConstantValue extends TConstantValue {
+    string toString() { this = TStringValue(result) }
+  }
+
+  abstract class ConstantExpr extends Expr {
+    predicate isNull() { none() }
+
+    boolean asBooleanValue() { none() }
+
+    int asIntegerValue() { none() }
+
+    ConstantValue asConstantValue() { none() }
+  }
+
+  private class NullConstant extends ConstantExpr {
+    NullConstant() { nullValueImplied(this) }
+
+    override predicate isNull() { any() }
+  }
+
+  private class BooleanConstant extends ConstantExpr instanceof BoolLiteral {
+    override boolean asBooleanValue() { result = super.getBoolValue() }
+  }
+
+  private predicate intConst(Expr e, int i) {
+    e.getValue().toInt() = i and
+    (
+      e.getType() instanceof Enum
+      or
+      e.getType() instanceof IntegralType
+    )
+  }
+
+  private class IntegerConstant extends ConstantExpr {
+    IntegerConstant() { intConst(this, _) }
+
+    override int asIntegerValue() { intConst(this, result) }
+  }
+
+  private class EnumConst extends ConstantExpr {
+    EnumConst() { this.getType() instanceof Enum and this.hasValue() }
+
+    override int asIntegerValue() { result = this.getValue().toInt() }
+  }
+
+  private class StringConstant extends ConstantExpr instanceof StringLiteral {
+    override ConstantValue asConstantValue() { result = TStringValue(this.getValue()) }
+  }
+
+  class NonNullExpr extends Expr {
+    NonNullExpr() { nonNullValueImplied(this) }
+  }
+
+  class Case extends AstNode instanceof CS::Case {
+    Expr getSwitchExpr() { super.getExpr() = result }
+
+    predicate isDefaultCase() { this instanceof DefaultCase }
+
+    ConstantExpr asConstantCase() { super.getPattern() = result }
+
+    private predicate hasEdge(BasicBlock bb1, BasicBlock bb2, MatchingCompletion c) {
+      exists(PatternExpr pe |
+        super.getPattern() = pe and
+        c.isValidFor(pe) and
+        bb1.getLastNode() = pe.getAControlFlowNode() and
+        bb1.getASuccessor(c.getAMatchingSuccessorType()) = bb2
+      )
+    }
+
+    predicate matchEdge(BasicBlock bb1, BasicBlock bb2) {
+      exists(MatchingCompletion c | this.hasEdge(bb1, bb2, c) and c.isMatch())
+    }
+
+    predicate nonMatchEdge(BasicBlock bb1, BasicBlock bb2) {
+      exists(MatchingCompletion c | this.hasEdge(bb1, bb2, c) and c.isNonMatch())
+    }
+  }
+
+  abstract private class BinExpr extends BinaryOperation { }
+
+  class AndExpr extends BinExpr {
+    AndExpr() {
+      this instanceof LogicalAndExpr or
+      this instanceof BitwiseAndExpr
+    }
+  }
+
+  class OrExpr extends BinExpr {
+    OrExpr() {
+      this instanceof LogicalOrExpr or
+      this instanceof BitwiseOrExpr
+    }
+  }
+
+  class NotExpr = LogicalNotExpr;
+
+  class IdExpr extends Expr {
+    IdExpr() { this instanceof AssignExpr or this instanceof CastExpr }
+
+    Expr getEqualChildExpr() {
+      result = this.(AssignExpr).getRValue()
+      or
+      result = this.(CastExpr).getExpr()
+    }
+  }
+
+  predicate equalityTest(Expr eqtest, Expr left, Expr right, boolean polarity) {
+    exists(ComparisonTest ct |
+      ct.getExpr() = eqtest and
+      ct.getFirstArgument() = left and
+      ct.getSecondArgument() = right
+    |
+      ct.getComparisonKind().isEquality() and polarity = true
+      or
+      ct.getComparisonKind().isInequality() and polarity = false
+    )
+    or
+    exists(IsExpr ie, PatternExpr pat |
+      ie = eqtest and
+      ie.getExpr() = left and
+      ie.getPattern() = pat
+    |
+      right = pat.(ConstantPatternExpr) and
+      polarity = true
+      or
+      right = pat.(NotPatternExpr).getPattern().(ConstantPatternExpr) and
+      polarity = false
+    )
+  }
+
+  class ConditionalExpr = CS::ConditionalExpr;
+
+  class Parameter = CS::Parameter;
+
+  private int parameterPosition() { result in [-1, any(Parameter p).getPosition()] }
+
+  class ParameterPosition extends int {
+    ParameterPosition() { this = parameterPosition() }
+  }
+
+  class ArgumentPosition extends int {
+    ArgumentPosition() { this = parameterPosition() }
+  }
+
+  pragma[inline]
+  predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
+
+  final private class FinalCallable = Callable;
+
+  class NonOverridableMethod extends FinalCallable {
+    NonOverridableMethod() { not this.(Overridable).isOverridableOrImplementable() }
+
+    Parameter getParameter(ParameterPosition ppos) {
+      super.getParameter(ppos) = result and
+      not result.isParams()
+    }
+
+    Expr getAReturnExpr() { this.canReturn(result) }
+  }
+
+  class NonOverridableMethodCall extends Expr instanceof Call {
+    NonOverridableMethod getMethod() { super.getTarget().getUnboundDeclaration() = result }
+
+    Expr getArgument(ArgumentPosition apos) {
+      result = super.getArgumentForParameter(any(Parameter p | p.getPosition() = apos))
+    }
+  }
+}
+
+private module GuardsImpl = SharedGuards::Make<Location, Cfg, GuardsInput>;
+
+class GuardValue = GuardsImpl::GuardValue;
+
+private module LogicInput implements GuardsImpl::LogicInputSig {
+  class SsaDefinition extends Ssa::Definition {
+    Expr getARead() { super.getARead() = result }
+  }
+
+  class SsaWriteDefinition extends SsaDefinition instanceof Ssa::ExplicitDefinition {
+    Expr getDefinition() { result = super.getADefinition().getSource() }
+  }
+
+  class SsaPhiNode extends SsaDefinition instanceof Ssa::PhiNode {
+    predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb) {
+      super.hasInputFromBlock(inp, bb)
+    }
+  }
+
+  predicate parameterDefinition(Parameter p, SsaDefinition def) {
+    def.(Ssa::ImplicitParameterDefinition).getParameter() = p
+  }
+
+  predicate additionalNullCheck(GuardsImpl::PreGuard guard, GuardValue val, Expr e, boolean isNull) {
+    // Comparison with a non-`null` value, for example `x?.Length > 0`
+    exists(ComparisonTest ct, ComparisonKind ck, Expr arg | ct.getExpr() = guard |
+      e instanceof DereferenceableExpr and
+      ct.getAnArgument() = e and
+      ct.getAnArgument() = arg and
+      arg = any(NullValue nv | nv.isNonNull()).getAnExpr() and
+      ck = ct.getComparisonKind() and
+      e != arg and
+      isNull = false and
+      not ck.isEquality() and
+      not ck.isInequality() and
+      val.asBooleanValue() = true
+    )
+    or
+    // Call to `string.IsNullOrEmpty()` or `string.IsNullOrWhiteSpace()`
+    exists(MethodCall mc, string name | guard = mc |
+      mc.getTarget() = any(SystemStringClass c).getAMethod(name) and
+      name.regexpMatch("IsNullOr(Empty|WhiteSpace)") and
+      mc.getArgument(0) = e and
+      val.asBooleanValue() = false and
+      isNull = false
+    )
+    or
+    guard =
+      any(PatternMatch pm |
+        e instanceof DereferenceableExpr and
+        e = pm.getExpr() and
+        (
+          val.asBooleanValue().booleanNot() = patternMatchesNull(pm.getPattern()) and
+          isNull = false
+          or
+          exists(TypePatternExpr tpe |
+            // E.g. `x is string` where `x` has type `string`
+            typePattern(guard, tpe, tpe.getCheckedType()) and
+            val.asBooleanValue() = false and
+            isNull = true
+          )
+        )
+      )
+    or
+    e.(DereferenceableExpr).hasNullableType() and
+    guard =
+      any(PropertyAccess pa |
+        pa.getQualifier() = e and
+        pa.getTarget().hasName("HasValue") and
+        val.asBooleanValue().booleanNot() = isNull
+      )
+  }
+
+  predicate additionalImpliesStep(
+    GuardsImpl::PreGuard g1, GuardValue v1, GuardsImpl::PreGuard g2, GuardValue v2
+  ) {
+    g1 instanceof DereferenceableExpr and
+    g1 = getNullEquivParent(g2) and
+    v1.isNullness(_) and
+    v2 = v1
+    or
+    g1 instanceof DereferenceableExpr and
+    g2 = getANullImplyingChild(g1) and
+    v1.isNonNullValue() and
+    v2 = v1
+    or
+    g2 = g1.(NullCoalescingExpr).getAnOperand() and
+    v1.isNullValue() and
+    v2 = v1
+  }
+}
+
+module Guards = GuardsImpl::Logic<LogicInput>;
+
+/*
+ * Temporary debug predicates:
+ */
+
+predicate debug_newcontrols(Guards::Guard g, BasicBlock bb, GuardValue v) { g.valueControls(bb, v) }
+
+predicate debug_oldconvert(Guards::Guard g, BasicBlock bb, GuardValue v) {
+  exists(AbstractValue av |
+    g.(Guard).controlsBasicBlock(bb, av) and
+    debug_convVals(av, v)
+  )
+  or
+  debug_oldconvertCase(_, _, g, bb, v)
+}
+
+predicate debug_oldconvertCase(Guard g1, MatchValue av, Guards::Guard g2, BasicBlock bb, GuardValue v) {
+  g1.controlsBasicBlock(bb, av) and
+  av.getCase() = g2 and
+  if av.isMatch() then v.asBooleanValue() = true else v.asBooleanValue() = false
+}
+
+predicate debug_caseconverted(Guard g1, Guards::Guard g, BasicBlock bb, GuardValue v) {
+  debug_oldconvertCase(g1, _, g, bb, v) and
+  2 <= strictcount(Guard g0 | debug_oldconvertCase(g0, _, g, bb, v))
+}
+
+predicate debug_useless(Guards::Guard g, BasicBlock bb, GuardValue v) {
+  debug_oldconvert(g, bb, v) and
+  Guards::InternalUtil::exprHasValue(g, v)
+}
+
+predicate debug_compare(int eq, int oldconv, int oldnonconv, int added, int new) {
+  eq =
+    count(Guards::Guard g, BasicBlock bb, GuardValue v |
+      debug_newcontrols(g, bb, v) and debug_oldconvert(g, bb, v)
+    ) and
+  oldconv =
+    count(Guards::Guard g, BasicBlock bb, GuardValue v |
+      debug_oldconvert(g, bb, v) and
+      not debug_newcontrols(g, bb, v) and
+      not debug_useless(g, bb, v)
+    ) and
+  oldnonconv =
+    count(Guard g, BasicBlock bb, AbstractValue av |
+      g.controlsBasicBlock(bb, av) and
+      not debug_convVals(av, _) and
+      not debug_oldconvertCase(g, av, _, bb, _)
+      // Remaining that are not converted:
+      // av instanceof EmptyCollectionValue
+    ) and
+  added =
+    count(Guards::Guard g, BasicBlock bb, GuardValue v |
+      debug_newcontrols(g, bb, v) and
+      not debug_oldconvert(g, bb, v) and
+      not debug_newGv(v)
+    ) and
+  new =
+    count(Guards::Guard g, BasicBlock bb, GuardValue v |
+      debug_newcontrols(g, bb, v) and
+      not debug_oldconvert(g, bb, v) and
+      debug_newGv(v)
+    )
+}
+
+predicate debug_newGv(GuardValue v) {
+  v.isThrowsException() or
+  v.getDualValue().isThrowsException() or
+  exists(v.getDualValue().asIntValue()) or
+  v.isIntRange(_, _)
+}
+
+predicate debug_convVals(AbstractValue av, GuardValue gv) {
+  av.(AbstractValues::BooleanValue).getValue() = gv.asBooleanValue()
+  or
+  av.(AbstractValues::IntegerValue).getValue() = gv.asIntValue()
+  or
+  av.(AbstractValues::NullValue).isNull() and gv.isNullValue()
+  or
+  av.(AbstractValues::NullValue).isNonNull() and gv.isNonNullValue()
+}
 
 /** An expression whose value may control the execution of another element. */
 class Guard extends Expr {
