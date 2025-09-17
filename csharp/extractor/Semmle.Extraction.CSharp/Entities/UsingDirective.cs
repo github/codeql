@@ -32,7 +32,10 @@ namespace Semmle.Extraction.CSharp.Entities
                 {
                     var ns = Namespace.Create(Context, namespaceSymbol);
                     trapFile.using_namespace_directives(this, ns);
-                    trapFile.using_directive_location(this, Context.CreateLocation(ReportingLocation));
+                    if (!Context.OnlyScaffold)
+                    {
+                        trapFile.using_directive_location(this, Context.CreateLocation(ReportingLocation));
+                    }
                 }
                 else
                 {
@@ -46,7 +49,10 @@ namespace Semmle.Extraction.CSharp.Entities
                 // A "using static"
                 var m = Type.Create(Context, (ITypeSymbol?)info.Symbol);
                 trapFile.using_static_directives(this, m.TypeRef);
-                trapFile.using_directive_location(this, Context.CreateLocation(ReportingLocation));
+                if (!Context.OnlyScaffold)
+                {
+                    trapFile.using_directive_location(this, Context.CreateLocation(ReportingLocation));
+                }
             }
 
             if (node.GlobalKeyword.IsKind(SyntaxKind.GlobalKeyword))
