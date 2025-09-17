@@ -1,8 +1,6 @@
 import cpp
 import semmle.code.cpp.controlflow.IRGuards
 
-query predicate astGuards(GuardCondition guard) { any() }
-
 query predicate astGuardsCompare(int startLine, string msg) {
   exists(GuardCondition guard, Expr left, int k, string op |
     exists(boolean sense, string which |
@@ -69,8 +67,6 @@ query predicate astGuardsEnsure_const(
     block.hasLocationInfo(_, start, _, end, _)
   )
 }
-
-query predicate irGuards(IRGuardCondition guard) { any() }
 
 query predicate irGuardsCompare(int startLine, string msg) {
   exists(IRGuardCondition guard, Operand left, int k, string op |
