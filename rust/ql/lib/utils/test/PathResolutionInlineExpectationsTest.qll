@@ -25,9 +25,9 @@ private module ResolveTest implements TestSig {
 
   private predicate item(ItemNode i, string value) {
     exists(string filepath, int line, boolean inMacro | itemAt(i, filepath, line, inMacro) |
-      commmentAt(value, filepath, line) and inMacro = false
+      commmentAt(value, filepath, line)
       or
-      not (commmentAt(_, filepath, line) and inMacro = false) and
+      not commmentAt(_, filepath, line) and
       value = i.getName()
     )
   }
