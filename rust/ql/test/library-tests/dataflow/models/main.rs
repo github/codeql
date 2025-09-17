@@ -258,20 +258,20 @@ mod source_into_function {
     }
 
     fn test_source_into_function() {
-        let a = |a| sink(a); // $ MISSING: hasValueFlow=1
+        let a = |a| sink(a); // $ hasValueFlow=1
         pass_source(1, a);
 
         pass_source(2, |a| {
-            sink(a); // $ MISSING: hasValueFlow=2
+            sink(a); // $ hasValueFlow=2
         });
 
         fn f(a: i64) {
-            sink(a) // $ MISSING: hasValueFlow=3
+            sink(a) // $ hasValueFlow=3
         }
         pass_source(3, f);
 
         pass_source(4, async move |a| {
-            sink(a); // $ MISSING: hasValueFlow=4
+            sink(a); // $ hasValueFlow=4
         });
     }
 }
