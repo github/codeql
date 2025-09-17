@@ -144,7 +144,7 @@ predicate referenceStep(DataFlow::Node pred, DataFlow::Node succ) {
  * `succ`.
  */
 predicate elementWriteStep(DataFlow::Node pred, DataFlow::Node succ) {
-  any(DataFlow::Write w).writesElement(succ.(DataFlow::PostUpdateNode).getPreUpdateNode(), _, pred)
+  any(DataFlow::Write w).writesElement(succ, _, pred)
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(pred.(DataFlowPrivate::FlowSummaryNode)
         .getSummaryNode(), any(DataFlow::ArrayContent ac).asContentSet(),

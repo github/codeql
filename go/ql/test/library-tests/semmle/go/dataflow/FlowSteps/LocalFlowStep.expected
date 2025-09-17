@@ -85,12 +85,15 @@
 | main.go:26:11:26:11 | x | main.go:26:2:26:17 | ... := ...[0] |
 | main.go:38:2:38:2 | definition of s | main.go:39:15:39:15 | s |
 | main.go:38:7:38:20 | slice literal | main.go:38:2:38:2 | definition of s |
+| main.go:38:7:38:20 | slice literal [postupdate] | main.go:38:2:38:2 | definition of s |
 | main.go:39:2:39:3 | definition of s1 | main.go:40:18:40:19 | s1 |
 | main.go:39:8:39:25 | call to append | main.go:39:2:39:3 | definition of s1 |
 | main.go:39:15:39:15 | s | main.go:40:15:40:15 | s |
+| main.go:39:15:39:15 | s [postupdate] | main.go:40:15:40:15 | s |
 | main.go:40:2:40:3 | definition of s2 | main.go:43:9:43:10 | s2 |
 | main.go:40:8:40:23 | call to append | main.go:40:2:40:3 | definition of s2 |
 | main.go:40:15:40:15 | s | main.go:42:7:42:7 | s |
+| main.go:40:15:40:15 | s [postupdate] | main.go:42:7:42:7 | s |
 | main.go:41:2:41:3 | definition of s4 | main.go:42:10:42:11 | s4 |
 | main.go:41:8:41:21 | call to make | main.go:41:2:41:3 | definition of s4 |
 | main.go:46:13:46:14 | argument corresponding to xs | main.go:46:13:46:14 | definition of xs |
@@ -114,6 +117,7 @@
 | main.go:55:6:55:7 | definition of ch | main.go:56:2:56:3 | ch |
 | main.go:55:6:55:7 | zero value for ch | main.go:55:6:55:7 | definition of ch |
 | main.go:56:2:56:3 | ch | main.go:57:4:57:5 | ch |
+| main.go:56:2:56:3 | ch [postupdate] | main.go:57:4:57:5 | ch |
 | main.go:61:2:61:2 | definition of x | main.go:64:11:64:11 | x |
 | main.go:61:7:61:7 | 1 | main.go:61:2:61:2 | definition of x |
 | main.go:62:2:62:2 | definition of y | main.go:64:14:64:14 | y |
@@ -165,30 +169,41 @@
 | url.go:27:2:27:2 | definition of u | url.go:28:14:28:14 | u |
 | url.go:27:2:27:30 | ... = ...[0] | url.go:27:2:27:2 | definition of u |
 | url.go:28:14:28:14 | u | url.go:29:14:29:14 | u |
+| url.go:28:14:28:14 | u [postupdate] | url.go:29:14:29:14 | u |
 | url.go:29:14:29:14 | u | url.go:30:11:30:11 | u |
+| url.go:29:14:29:14 | u [postupdate] | url.go:30:11:30:11 | u |
 | url.go:30:2:30:3 | definition of bs | url.go:31:14:31:15 | bs |
 | url.go:30:2:30:27 | ... := ...[0] | url.go:30:2:30:3 | definition of bs |
 | url.go:30:11:30:11 | u | url.go:32:9:32:9 | u |
+| url.go:30:11:30:11 | u [postupdate] | url.go:32:9:32:9 | u |
 | url.go:32:2:32:2 | definition of u | url.go:33:14:33:14 | u |
 | url.go:32:2:32:23 | ... = ...[0] | url.go:32:2:32:2 | definition of u |
 | url.go:33:14:33:14 | u | url.go:34:14:34:14 | u |
+| url.go:33:14:33:14 | u [postupdate] | url.go:34:14:34:14 | u |
 | url.go:34:14:34:14 | u | url.go:35:14:35:14 | u |
+| url.go:34:14:34:14 | u [postupdate] | url.go:35:14:35:14 | u |
 | url.go:35:14:35:14 | u | url.go:36:6:36:6 | u |
+| url.go:35:14:35:14 | u [postupdate] | url.go:36:6:36:6 | u |
 | url.go:36:2:36:2 | definition of u | url.go:37:9:37:9 | u |
 | url.go:36:6:36:6 | u | url.go:36:25:36:25 | u |
+| url.go:36:6:36:6 | u [postupdate] | url.go:36:25:36:25 | u |
 | url.go:36:6:36:26 | call to ResolveReference | url.go:36:2:36:2 | definition of u |
 | url.go:42:2:42:3 | definition of ui | url.go:43:11:43:12 | ui |
 | url.go:42:7:42:38 | call to UserPassword | url.go:42:2:42:3 | definition of ui |
 | url.go:43:2:43:3 | definition of pw | url.go:44:14:44:15 | pw |
 | url.go:43:2:43:23 | ... := ...[0] | url.go:43:2:43:3 | definition of pw |
 | url.go:43:11:43:12 | ui | url.go:45:14:45:15 | ui |
+| url.go:43:11:43:12 | ui [postupdate] | url.go:45:14:45:15 | ui |
 | url.go:45:14:45:15 | ui | url.go:46:9:46:10 | ui |
+| url.go:45:14:45:15 | ui [postupdate] | url.go:46:9:46:10 | ui |
 | url.go:49:12:49:12 | argument corresponding to q | url.go:49:12:49:12 | definition of q |
 | url.go:49:12:49:12 | definition of q | url.go:50:25:50:25 | q |
 | url.go:50:2:50:2 | definition of v | url.go:51:14:51:14 | v |
 | url.go:50:2:50:26 | ... := ...[0] | url.go:50:2:50:2 | definition of v |
 | url.go:51:14:51:14 | v | url.go:52:14:52:14 | v |
+| url.go:51:14:51:14 | v [postupdate] | url.go:52:14:52:14 | v |
 | url.go:52:14:52:14 | v | url.go:53:9:53:9 | v |
+| url.go:52:14:52:14 | v [postupdate] | url.go:53:9:53:9 | v |
 | url.go:56:12:56:12 | argument corresponding to q | url.go:56:12:56:12 | definition of q |
 | url.go:56:12:56:12 | definition of q | url.go:57:29:57:29 | q |
 | url.go:57:2:57:8 | definition of joined1 | url.go:58:38:58:44 | joined1 |

@@ -25,10 +25,15 @@ module GinCors {
     DataFlow::Node base;
 
     AllowCredentialsWrite() {
-      exists(Field f, Write w |
+      exists(Field f, Write w, DataFlow::Node n |
         f.hasQualifiedName(packagePath(), "Config", "AllowCredentials") and
-        w.writesField(base, f, this) and
-        this.getType() instanceof BoolType
+        w.writesField(n, f, this) and
+        this.getType() instanceof BoolType and
+        (
+          base = n.(DataFlow::PostUpdateNode).getPreUpdateNode()
+          or
+          not n instanceof DataFlow::PostUpdateNode and base = n
+        )
       )
     }
 
@@ -59,10 +64,15 @@ module GinCors {
     DataFlow::Node base;
 
     AllowOriginsWrite() {
-      exists(Field f, Write w |
+      exists(Field f, Write w, DataFlow::Node n |
         f.hasQualifiedName(packagePath(), "Config", "AllowOrigins") and
-        w.writesField(base, f, this) and
-        this.asExpr() instanceof SliceLit
+        w.writesField(n, f, this) and
+        this.asExpr() instanceof SliceLit and
+        (
+          base = n.(DataFlow::PostUpdateNode).getPreUpdateNode()
+          or
+          not n instanceof DataFlow::PostUpdateNode and base = n
+        )
       )
     }
 
@@ -93,10 +103,15 @@ module GinCors {
     DataFlow::Node base;
 
     AllowAllOriginsWrite() {
-      exists(Field f, Write w |
+      exists(Field f, Write w, DataFlow::Node n |
         f.hasQualifiedName(packagePath(), "Config", "AllowAllOrigins") and
-        w.writesField(base, f, this) and
-        this.getType() instanceof BoolType
+        w.writesField(n, f, this) and
+        this.getType() instanceof BoolType and
+        (
+          base = n.(DataFlow::PostUpdateNode).getPreUpdateNode()
+          or
+          not n instanceof DataFlow::PostUpdateNode and base = n
+        )
       )
     }
 
@@ -109,14 +124,9 @@ module GinCors {
      * Get config variable holding header values
      */
     override GinConfig getConfig() {
-      exists(GinConfig gc |
-        (
-          gc.getV().getBaseVariable().getDefinition().(SsaExplicitDefinition).getRhs() =
-            base.asInstruction() or
-          gc.getV().getAUse() = base
-        ) and
-        result = gc
-      )
+      result.getV().getBaseVariable().getDefinition().(SsaExplicitDefinition).getRhs() =
+        base.asInstruction() or
+      result.getV().getAUse() = base
     }
   }
 

@@ -26,9 +26,14 @@ private class GorillaSessionOptionsField extends Field {
  * This should cover most typical patterns...
  */
 private DataFlow::Node getValueForFieldWrite(StructLit sl, string field) {
-  exists(Write w, DataFlow::Node base, Field f |
+  exists(Write w, DataFlow::Node base, DataFlow::Node n, Field f |
     f.getName() = field and
-    w.writesField(base, f, result) and
+    w.writesField(n, f, result) and
+    (
+      base = n.(DataFlow::PostUpdateNode).getPreUpdateNode()
+      or
+      not n instanceof DataFlow::PostUpdateNode and base = n
+    ) and
     (
       sl = base.asExpr()
       or
@@ -209,10 +214,7 @@ private module GorillaSessionOptionsTrackingConfig implements DataFlow::ConfigSi
   predicate isSink(DataFlow::Node sink) { sink instanceof GorillaSessionSaveSink }
 
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(GorillaSessionOptionsField f, DataFlow::Write w, DataFlow::Node base |
-      w.writesField(base, f, pred) and
-      succ = base
-    )
+    exists(GorillaSessionOptionsField f, DataFlow::Write w | w.writesField(succ, f, pred))
   }
 }
 
@@ -236,10 +238,7 @@ private module BoolToGorillaSessionOptionsTrackingConfig implements DataFlow::Co
       sl = succ.asExpr()
     )
     or
-    exists(GorillaSessionOptionsField f, DataFlow::Write w, DataFlow::Node base |
-      w.writesField(base, f, pred) and
-      succ = base
-    )
+    exists(GorillaSessionOptionsField f, DataFlow::Write w | w.writesField(succ, f, pred))
   }
 }
 
