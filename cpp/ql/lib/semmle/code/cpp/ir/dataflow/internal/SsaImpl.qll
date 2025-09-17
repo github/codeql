@@ -1002,7 +1002,7 @@ private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationI
     result instanceof FalseEdge
   }
 
-  class GuardValue = Boolean;
+  class GuardValue = IRGuards::GuardValue;
 
   class Guard instanceof IRGuards::IRGuardCondition {
     string toString() { result = super.toString() }
@@ -1010,7 +1010,7 @@ private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationI
     predicate hasValueBranchEdge(IRCfg::BasicBlock bb1, IRCfg::BasicBlock bb2, GuardValue branch) {
       exists(EdgeKind kind |
         super.getBlock() = bb1 and
-        kind = getConditionalEdge(branch) and
+        kind = getConditionalEdge(branch.asBooleanValue()) and
         bb1.getSuccessor(kind) = bb2
       )
     }
@@ -1023,7 +1023,7 @@ private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationI
   }
 
   predicate guardDirectlyControlsBlock(Guard guard, IRCfg::BasicBlock bb, GuardValue branch) {
-    guard.(IRGuards::IRGuardCondition).controls(bb, branch)
+    guard.(IRGuards::IRGuardCondition).valueControls(bb, branch)
   }
 
   predicate keepAllPhiInputBackEdges() { any() }
@@ -1050,25 +1050,35 @@ module BarrierGuardWithIntParam<guardChecksNodeSig/4 guardChecksNode> {
     )
   }
 
-  private predicate guardChecks(
-    DataFlowIntegrationInput::Guard g, SsaImpl::Definition def,
-    DataFlowIntegrationInput::GuardValue branch, int indirectionIndex
+  private predicate guardChecksInstr(
+    IRGuards::Guards_v1::Guard g, IRGuards::GuardsInput::Expr instr, boolean branch,
+    int indirectionIndex
   ) {
-    exists(UseImpl use |
-      guardChecksNode(g, use.getNode(), branch, indirectionIndex) and
-      ssaDefReachesCertainUse(def, use)
+    exists(Node node |
+      nodeHasInstruction(node, instr, indirectionIndex) and
+      guardChecksNode(g, node, branch, indirectionIndex)
     )
+  }
+
+  private predicate guardChecksWithWrappers(
+    DataFlowIntegrationInput::Guard g, SsaImpl::Definition def, IRGuards::GuardValue val,
+    int indirectionIndex
+  ) {
+    IRGuards::Guards_v1::ValidationWrapperWithState<int, guardChecksInstr/4>::guardChecksDef(g, def,
+      val, indirectionIndex)
   }
 
   Node getABarrierNode(int indirectionIndex) {
     // Only get the SynthNodes from the shared implementation, as the ExprNodes cannot
     // be matched on SourceVariable.
     result.(SsaSynthNode).getSynthNode() =
-      DataFlowIntegrationImpl::BarrierGuardDefWithState<int, guardChecks/4>::getABarrierNode(indirectionIndex)
+      DataFlowIntegrationImpl::BarrierGuardDefWithState<int, guardChecksWithWrappers/4>::getABarrierNode(indirectionIndex)
     or
     // Calculate the guarded UseImpls corresponding to ExprNodes directly.
-    exists(DataFlowIntegrationInput::Guard g, boolean branch, Definition def, IRBlock bb |
-      guardChecks(g, def, branch, indirectionIndex) and
+    exists(
+      DataFlowIntegrationInput::Guard g, IRGuards::GuardValue branch, Definition def, IRBlock bb
+    |
+      guardChecksWithWrappers(g, def, branch, indirectionIndex) and
       exists(UseImpl use |
         ssaDefReachesCertainUse(def, use) and
         use.getBlock() = bb and
