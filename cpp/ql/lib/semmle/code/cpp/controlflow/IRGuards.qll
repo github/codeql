@@ -3,7 +3,7 @@
  * flow elements controlled by those guards.
  */
 
-import cpp
+import cpp as Cpp
 import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.ir.implementation.raw.internal.TranslatedExpr
@@ -68,14 +68,14 @@ deprecated class MatchValue extends AbstractValue {
  * A Boolean condition in the AST that guards one or more basic blocks. This includes
  * operands of logical operators but not switch statements.
  */
-private class GuardConditionImpl extends Element {
+private class GuardConditionImpl extends Cpp::Element {
   /**
    * Holds if this condition controls `controlled`, meaning that `controlled` is only
    * entered if the value of this condition is `v`.
    *
    * For details on what "controls" mean, see the QLDoc for `controls`.
    */
-  abstract predicate valueControls(BasicBlock controlled, GuardValue v);
+  abstract predicate valueControls(Cpp::BasicBlock controlled, GuardValue v);
 
   /**
    * Holds if this condition controls `controlled`, meaning that `controlled` is only
@@ -103,7 +103,7 @@ private class GuardConditionImpl extends Element {
    * being short-circuited) then it will only control blocks dominated by the
    * true (for `&&`) or false (for `||`) branch.
    */
-  final predicate controls(BasicBlock controlled, boolean testIsTrue) {
+  final predicate controls(Cpp::BasicBlock controlled, boolean testIsTrue) {
     this.valueControls(controlled, any(GuardValue bv | bv.asBooleanValue() = testIsTrue))
   }
 
@@ -111,13 +111,13 @@ private class GuardConditionImpl extends Element {
    * Holds if the control-flow edge `(pred, succ)` may be taken only if
    * the value of this condition is `v`.
    */
-  abstract predicate valueControlsEdge(BasicBlock pred, BasicBlock succ, GuardValue v);
+  abstract predicate valueControlsEdge(Cpp::BasicBlock pred, Cpp::BasicBlock succ, GuardValue v);
 
   /**
    * Holds if  the control-flow edge `(pred, succ)` may be taken only if
    * this the value of this condition is `testIsTrue`.
    */
-  final predicate controlsEdge(BasicBlock pred, BasicBlock succ, boolean testIsTrue) {
+  final predicate controlsEdge(Cpp::BasicBlock pred, Cpp::BasicBlock succ, boolean testIsTrue) {
     this.valueControlsEdge(pred, succ, any(GuardValue bv | bv.asBooleanValue() = testIsTrue))
   }
 
@@ -127,7 +127,9 @@ private class GuardConditionImpl extends Element {
    * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
    */
   pragma[inline]
-  abstract predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue);
+  abstract predicate comparesLt(
+    Cpp::Expr left, Cpp::Expr right, int k, boolean isLessThan, boolean testIsTrue
+  );
 
   /**
    * Holds if (determined by this guard) `left < right + k` must be `isLessThan` in `block`.
@@ -135,7 +137,9 @@ private class GuardConditionImpl extends Element {
    * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
    */
   pragma[inline]
-  abstract predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan);
+  abstract predicate ensuresLt(
+    Cpp::Expr left, Cpp::Expr right, int k, Cpp::BasicBlock block, boolean isLessThan
+  );
 
   /**
    * Holds if (determined by this guard) `e < k` evaluates to `isLessThan` if
@@ -143,7 +147,7 @@ private class GuardConditionImpl extends Element {
    * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
    */
   pragma[inline]
-  abstract predicate comparesLt(Expr e, int k, boolean isLessThan, GuardValue value);
+  abstract predicate comparesLt(Cpp::Expr e, int k, boolean isLessThan, GuardValue value);
 
   /**
    * Holds if (determined by this guard) `e < k` must be `isLessThan` in `block`.
@@ -151,7 +155,7 @@ private class GuardConditionImpl extends Element {
    * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
    */
   pragma[inline]
-  abstract predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan);
+  abstract predicate ensuresLt(Cpp::Expr e, int k, Cpp::BasicBlock block, boolean isLessThan);
 
   /**
    * Holds if (determined by this guard) `left == right + k` evaluates to `areEqual` if this
@@ -164,7 +168,9 @@ private class GuardConditionImpl extends Element {
    *    necessarily integer).
    */
   pragma[inline]
-  abstract predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue);
+  abstract predicate comparesEq(
+    Cpp::Expr left, Cpp::Expr right, int k, boolean areEqual, boolean testIsTrue
+  );
 
   /**
    * Holds if (determined by this guard) `left == right + k` must be `areEqual` in `block`.
@@ -172,7 +178,9 @@ private class GuardConditionImpl extends Element {
    * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
    */
   pragma[inline]
-  abstract predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual);
+  abstract predicate ensuresEq(
+    Cpp::Expr left, Cpp::Expr right, int k, Cpp::BasicBlock block, boolean areEqual
+  );
 
   /**
    * Holds if (determined by this guard) `e == k` evaluates to `areEqual` if this expression
@@ -185,7 +193,7 @@ private class GuardConditionImpl extends Element {
    *    necessarily integer).
    */
   pragma[inline]
-  abstract predicate comparesEq(Expr e, int k, boolean areEqual, GuardValue value);
+  abstract predicate comparesEq(Cpp::Expr e, int k, boolean areEqual, GuardValue value);
 
   /**
    * Holds if (determined by this guard) `e == k` must be `areEqual` in `block`.
@@ -193,7 +201,7 @@ private class GuardConditionImpl extends Element {
    * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
    */
   pragma[inline]
-  abstract predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual);
+  abstract predicate ensuresEq(Cpp::Expr e, int k, Cpp::BasicBlock block, boolean areEqual);
 
   /**
    * Holds if (determined by this guard) `left == right + k` must be `areEqual` on the edge from
@@ -201,7 +209,8 @@ private class GuardConditionImpl extends Element {
    */
   pragma[inline]
   final predicate ensuresEqEdge(
-    Expr left, Expr right, int k, BasicBlock pred, BasicBlock succ, boolean areEqual
+    Cpp::Expr left, Cpp::Expr right, int k, Cpp::BasicBlock pred, Cpp::BasicBlock succ,
+    boolean areEqual
   ) {
     exists(boolean testIsTrue |
       this.comparesEq(left, right, k, areEqual, testIsTrue) and
@@ -214,7 +223,9 @@ private class GuardConditionImpl extends Element {
    * `pred` to `succ`. If `areEqual = false` then this implies `e != k`.
    */
   pragma[inline]
-  final predicate ensuresEqEdge(Expr e, int k, BasicBlock pred, BasicBlock succ, boolean areEqual) {
+  final predicate ensuresEqEdge(
+    Cpp::Expr e, int k, Cpp::BasicBlock pred, Cpp::BasicBlock succ, boolean areEqual
+  ) {
     exists(GuardValue v |
       this.comparesEq(e, k, areEqual, v) and
       this.valueControlsEdge(pred, succ, v)
@@ -227,7 +238,8 @@ private class GuardConditionImpl extends Element {
    */
   pragma[inline]
   final predicate ensuresLtEdge(
-    Expr left, Expr right, int k, BasicBlock pred, BasicBlock succ, boolean isLessThan
+    Cpp::Expr left, Cpp::Expr right, int k, Cpp::BasicBlock pred, Cpp::BasicBlock succ,
+    boolean isLessThan
   ) {
     exists(boolean testIsTrue |
       this.comparesLt(left, right, k, isLessThan, testIsTrue) and
@@ -240,7 +252,9 @@ private class GuardConditionImpl extends Element {
    * `pred` to `succ`. If `isLessThan = false` then this implies `e >= k`.
    */
   pragma[inline]
-  final predicate ensuresLtEdge(Expr e, int k, BasicBlock pred, BasicBlock succ, boolean isLessThan) {
+  final predicate ensuresLtEdge(
+    Cpp::Expr e, int k, Cpp::BasicBlock pred, Cpp::BasicBlock succ, boolean isLessThan
+  ) {
     exists(GuardValue v |
       this.comparesLt(e, k, isLessThan, v) and
       this.valueControlsEdge(pred, succ, v)
@@ -253,10 +267,10 @@ final class GuardCondition = GuardConditionImpl;
 /**
  * A binary logical operator in the AST that guards one or more basic blocks.
  */
-private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl instanceof BinaryLogicalOperation
+private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl instanceof Cpp::BinaryLogicalOperation
 {
-  override predicate valueControls(BasicBlock controlled, GuardValue v) {
-    exists(BinaryLogicalOperation binop, GuardCondition lhs, GuardCondition rhs |
+  override predicate valueControls(Cpp::BasicBlock controlled, GuardValue v) {
+    exists(Cpp::BinaryLogicalOperation binop, GuardCondition lhs, GuardCondition rhs |
       this = binop and
       lhs = binop.getLeftOperand() and
       rhs = binop.getRightOperand() and
@@ -265,8 +279,8 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl
     )
   }
 
-  override predicate valueControlsEdge(BasicBlock pred, BasicBlock succ, GuardValue v) {
-    exists(BinaryLogicalOperation binop, GuardCondition lhs, GuardCondition rhs |
+  override predicate valueControlsEdge(Cpp::BasicBlock pred, Cpp::BasicBlock succ, GuardValue v) {
+    exists(Cpp::BinaryLogicalOperation binop, GuardCondition lhs, GuardCondition rhs |
       this = binop and
       lhs = binop.getLeftOperand() and
       rhs = binop.getRightOperand() and
@@ -275,17 +289,19 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl
     )
   }
 
-  override predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue) {
+  override predicate comparesLt(
+    Cpp::Expr left, Cpp::Expr right, int k, boolean isLessThan, boolean testIsTrue
+  ) {
     exists(boolean partIsTrue, GuardCondition part |
-      this.(BinaryLogicalOperation).impliesValue(part, partIsTrue, testIsTrue)
+      this.(Cpp::BinaryLogicalOperation).impliesValue(part, partIsTrue, testIsTrue)
     |
       part.comparesLt(left, right, k, isLessThan, partIsTrue)
     )
   }
 
-  override predicate comparesLt(Expr e, int k, boolean isLessThan, GuardValue value) {
+  override predicate comparesLt(Cpp::Expr e, int k, boolean isLessThan, GuardValue value) {
     exists(GuardValue partValue, GuardCondition part |
-      this.(BinaryLogicalOperation)
+      this.(Cpp::BinaryLogicalOperation)
           .impliesValue(part, partValue.asBooleanValue(), value.asBooleanValue())
     |
       part.comparesLt(e, k, isLessThan, partValue)
@@ -293,37 +309,43 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl
   }
 
   pragma[inline]
-  override predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
+  override predicate ensuresLt(
+    Cpp::Expr left, Cpp::Expr right, int k, Cpp::BasicBlock block, boolean isLessThan
+  ) {
     exists(boolean testIsTrue |
       this.comparesLt(left, right, k, isLessThan, testIsTrue) and this.controls(block, testIsTrue)
     )
   }
 
   pragma[inline]
-  override predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan) {
+  override predicate ensuresLt(Cpp::Expr e, int k, Cpp::BasicBlock block, boolean isLessThan) {
     exists(GuardValue value |
       this.comparesLt(e, k, isLessThan, value) and this.valueControls(block, value)
     )
   }
 
-  override predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
+  override predicate comparesEq(
+    Cpp::Expr left, Cpp::Expr right, int k, boolean areEqual, boolean testIsTrue
+  ) {
     exists(boolean partIsTrue, GuardCondition part |
-      this.(BinaryLogicalOperation).impliesValue(part, partIsTrue, testIsTrue)
+      this.(Cpp::BinaryLogicalOperation).impliesValue(part, partIsTrue, testIsTrue)
     |
       part.comparesEq(left, right, k, areEqual, partIsTrue)
     )
   }
 
   pragma[inline]
-  override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
+  override predicate ensuresEq(
+    Cpp::Expr left, Cpp::Expr right, int k, Cpp::BasicBlock block, boolean areEqual
+  ) {
     exists(boolean testIsTrue |
       this.comparesEq(left, right, k, areEqual, testIsTrue) and this.controls(block, testIsTrue)
     )
   }
 
-  override predicate comparesEq(Expr e, int k, boolean areEqual, GuardValue value) {
+  override predicate comparesEq(Cpp::Expr e, int k, boolean areEqual, GuardValue value) {
     exists(GuardValue partValue, GuardCondition part |
-      this.(BinaryLogicalOperation)
+      this.(Cpp::BinaryLogicalOperation)
           .impliesValue(part, partValue.asBooleanValue(), value.asBooleanValue())
     |
       part.comparesEq(e, k, areEqual, partValue)
@@ -331,7 +353,7 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl
   }
 
   pragma[inline]
-  override predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual) {
+  override predicate ensuresEq(Cpp::Expr e, int k, Cpp::BasicBlock block, boolean areEqual) {
     exists(GuardValue value |
       this.comparesEq(e, k, areEqual, value) and this.valueControls(block, value)
     )
@@ -344,7 +366,7 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl
  * predicate does not necessarily hold for binary logical operations like
  * `&&` and `||`. See the detailed explanation on predicate `controls`.
  */
-private predicate controlsBlock(IRGuardCondition ir, BasicBlock controlled, GuardValue v) {
+private predicate controlsBlock(IRGuardCondition ir, Cpp::BasicBlock controlled, GuardValue v) {
   exists(IRBlock irb |
     ir.valueControls(irb, v) and
     nonExcludedIRAndBasicBlock(irb, controlled) and
@@ -359,7 +381,9 @@ private predicate controlsBlock(IRGuardCondition ir, BasicBlock controlled, Guar
  * like `&&` and `||`.
  * See the detailed explanation on predicate `controlsEdge`.
  */
-private predicate controlsEdge(IRGuardCondition ir, BasicBlock pred, BasicBlock succ, GuardValue v) {
+private predicate controlsEdge(
+  IRGuardCondition ir, Cpp::BasicBlock pred, Cpp::BasicBlock succ, GuardValue v
+) {
   exists(IRBlock irPred, IRBlock irSucc |
     ir.valueControlsBranchEdge(irPred, irSucc, v) and
     nonExcludedIRAndBasicBlock(irPred, pred) and
@@ -378,25 +402,27 @@ private class GuardConditionFromNotExpr extends GuardConditionImpl {
     // comparison against 0 so it's not included as a normal
     // `IRGuardCondition`. So to align with user expectations we make that `x`
     // a `GuardCondition`.
-    exists(NotExpr notExpr | this = notExpr.getOperand() |
+    exists(Cpp::NotExpr notExpr | this = notExpr.getOperand() |
       ir.getUnconvertedResultExpression() = notExpr
       or
       ir.(ConditionalBranchInstruction).getCondition().getUnconvertedResultExpression() = notExpr
     )
   }
 
-  override predicate valueControls(BasicBlock controlled, GuardValue v) {
+  override predicate valueControls(Cpp::BasicBlock controlled, GuardValue v) {
     // This condition must determine the flow of control; that is, this
     // node must be a top-level condition.
     controlsBlock(ir, controlled, v.getDualValue())
   }
 
-  override predicate valueControlsEdge(BasicBlock pred, BasicBlock succ, GuardValue v) {
+  override predicate valueControlsEdge(Cpp::BasicBlock pred, Cpp::BasicBlock succ, GuardValue v) {
     controlsEdge(ir, pred, succ, v.getDualValue())
   }
 
   pragma[inline]
-  override predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue) {
+  override predicate comparesLt(
+    Cpp::Expr left, Cpp::Expr right, int k, boolean isLessThan, boolean testIsTrue
+  ) {
     exists(Instruction li, Instruction ri |
       li.getUnconvertedResultExpression() = left and
       ri.getUnconvertedResultExpression() = right and
@@ -405,7 +431,7 @@ private class GuardConditionFromNotExpr extends GuardConditionImpl {
   }
 
   pragma[inline]
-  override predicate comparesLt(Expr e, int k, boolean isLessThan, GuardValue value) {
+  override predicate comparesLt(Cpp::Expr e, int k, boolean isLessThan, GuardValue value) {
     exists(Instruction i |
       i.getUnconvertedResultExpression() = e and
       ir.comparesLt(i.getAUse(), k, isLessThan, value.getDualValue())
@@ -413,7 +439,9 @@ private class GuardConditionFromNotExpr extends GuardConditionImpl {
   }
 
   pragma[inline]
-  override predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
+  override predicate ensuresLt(
+    Cpp::Expr left, Cpp::Expr right, int k, Cpp::BasicBlock block, boolean isLessThan
+  ) {
     exists(Instruction li, Instruction ri, boolean testIsTrue |
       li.getUnconvertedResultExpression() = left and
       ri.getUnconvertedResultExpression() = right and
@@ -423,7 +451,7 @@ private class GuardConditionFromNotExpr extends GuardConditionImpl {
   }
 
   pragma[inline]
-  override predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan) {
+  override predicate ensuresLt(Cpp::Expr e, int k, Cpp::BasicBlock block, boolean isLessThan) {
     exists(Instruction i, GuardValue value |
       i.getUnconvertedResultExpression() = e and
       ir.comparesLt(i.getAUse(), k, isLessThan, value.getDualValue()) and
@@ -432,7 +460,9 @@ private class GuardConditionFromNotExpr extends GuardConditionImpl {
   }
 
   pragma[inline]
-  override predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
+  override predicate comparesEq(
+    Cpp::Expr left, Cpp::Expr right, int k, boolean areEqual, boolean testIsTrue
+  ) {
     exists(Instruction li, Instruction ri |
       li.getUnconvertedResultExpression() = left and
       ri.getUnconvertedResultExpression() = right and
@@ -441,7 +471,9 @@ private class GuardConditionFromNotExpr extends GuardConditionImpl {
   }
 
   pragma[inline]
-  override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
+  override predicate ensuresEq(
+    Cpp::Expr left, Cpp::Expr right, int k, Cpp::BasicBlock block, boolean areEqual
+  ) {
     exists(Instruction li, Instruction ri, boolean testIsTrue |
       li.getUnconvertedResultExpression() = left and
       ri.getUnconvertedResultExpression() = right and
@@ -451,7 +483,7 @@ private class GuardConditionFromNotExpr extends GuardConditionImpl {
   }
 
   pragma[inline]
-  override predicate comparesEq(Expr e, int k, boolean areEqual, GuardValue value) {
+  override predicate comparesEq(Cpp::Expr e, int k, boolean areEqual, GuardValue value) {
     exists(Instruction i |
       i.getUnconvertedResultExpression() = e and
       ir.comparesEq(i.getAUse(), k, areEqual, value.getDualValue())
@@ -459,7 +491,7 @@ private class GuardConditionFromNotExpr extends GuardConditionImpl {
   }
 
   pragma[inline]
-  override predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual) {
+  override predicate ensuresEq(Cpp::Expr e, int k, Cpp::BasicBlock block, boolean areEqual) {
     exists(Instruction i, GuardValue value |
       i.getUnconvertedResultExpression() = e and
       ir.comparesEq(i.getAUse(), k, areEqual, value.getDualValue()) and
@@ -483,18 +515,20 @@ private class GuardConditionFromIR extends GuardConditionImpl {
     ir.getUnconvertedResultExpression() = this
   }
 
-  override predicate valueControls(BasicBlock controlled, GuardValue v) {
+  override predicate valueControls(Cpp::BasicBlock controlled, GuardValue v) {
     // This condition must determine the flow of control; that is, this
     // node must be a top-level condition.
     controlsBlock(ir, controlled, v)
   }
 
-  override predicate valueControlsEdge(BasicBlock pred, BasicBlock succ, GuardValue v) {
+  override predicate valueControlsEdge(Cpp::BasicBlock pred, Cpp::BasicBlock succ, GuardValue v) {
     controlsEdge(ir, pred, succ, v)
   }
 
   pragma[inline]
-  override predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue) {
+  override predicate comparesLt(
+    Cpp::Expr left, Cpp::Expr right, int k, boolean isLessThan, boolean testIsTrue
+  ) {
     exists(Instruction li, Instruction ri |
       li.getUnconvertedResultExpression() = left and
       ri.getUnconvertedResultExpression() = right and
@@ -503,7 +537,7 @@ private class GuardConditionFromIR extends GuardConditionImpl {
   }
 
   pragma[inline]
-  override predicate comparesLt(Expr e, int k, boolean isLessThan, GuardValue value) {
+  override predicate comparesLt(Cpp::Expr e, int k, boolean isLessThan, GuardValue value) {
     exists(Instruction i |
       i.getUnconvertedResultExpression() = e and
       ir.comparesLt(i.getAUse(), k, isLessThan, value)
@@ -511,7 +545,9 @@ private class GuardConditionFromIR extends GuardConditionImpl {
   }
 
   pragma[inline]
-  override predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
+  override predicate ensuresLt(
+    Cpp::Expr left, Cpp::Expr right, int k, Cpp::BasicBlock block, boolean isLessThan
+  ) {
     exists(Instruction li, Instruction ri, boolean testIsTrue |
       li.getUnconvertedResultExpression() = left and
       ri.getUnconvertedResultExpression() = right and
@@ -521,7 +557,7 @@ private class GuardConditionFromIR extends GuardConditionImpl {
   }
 
   pragma[inline]
-  override predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan) {
+  override predicate ensuresLt(Cpp::Expr e, int k, Cpp::BasicBlock block, boolean isLessThan) {
     exists(Instruction i, GuardValue value |
       i.getUnconvertedResultExpression() = e and
       ir.comparesLt(i.getAUse(), k, isLessThan, value) and
@@ -530,7 +566,9 @@ private class GuardConditionFromIR extends GuardConditionImpl {
   }
 
   pragma[inline]
-  override predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
+  override predicate comparesEq(
+    Cpp::Expr left, Cpp::Expr right, int k, boolean areEqual, boolean testIsTrue
+  ) {
     exists(Instruction li, Instruction ri |
       li.getUnconvertedResultExpression() = left and
       ri.getUnconvertedResultExpression() = right and
@@ -539,7 +577,9 @@ private class GuardConditionFromIR extends GuardConditionImpl {
   }
 
   pragma[inline]
-  override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
+  override predicate ensuresEq(
+    Cpp::Expr left, Cpp::Expr right, int k, Cpp::BasicBlock block, boolean areEqual
+  ) {
     exists(Instruction li, Instruction ri, boolean testIsTrue |
       li.getUnconvertedResultExpression() = left and
       ri.getUnconvertedResultExpression() = right and
@@ -549,7 +589,7 @@ private class GuardConditionFromIR extends GuardConditionImpl {
   }
 
   pragma[inline]
-  override predicate comparesEq(Expr e, int k, boolean areEqual, GuardValue value) {
+  override predicate comparesEq(Cpp::Expr e, int k, boolean areEqual, GuardValue value) {
     exists(Instruction i |
       i.getUnconvertedResultExpression() = e and
       ir.comparesEq(i.getAUse(), k, areEqual, value)
@@ -557,7 +597,7 @@ private class GuardConditionFromIR extends GuardConditionImpl {
   }
 
   pragma[inline]
-  override predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual) {
+  override predicate ensuresEq(Cpp::Expr e, int k, Cpp::BasicBlock block, boolean areEqual) {
     exists(Instruction i, GuardValue value |
       i.getUnconvertedResultExpression() = e and
       ir.comparesEq(i.getAUse(), k, areEqual, value) and
@@ -588,7 +628,7 @@ private predicate excludeAsControlledInstruction(Instruction instr) {
  * the `irb` be ignored.
  */
 pragma[nomagic]
-private predicate nonExcludedIRAndBasicBlock(IRBlock irb, BasicBlock controlled) {
+private predicate nonExcludedIRAndBasicBlock(IRBlock irb, Cpp::BasicBlock controlled) {
   exists(Instruction instr |
     instr = irb.getAnInstruction() and
     instr.getAst() = controlled.getANode() and
