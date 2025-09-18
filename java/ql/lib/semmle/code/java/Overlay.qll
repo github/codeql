@@ -73,22 +73,24 @@ private predicate discardReferableLocatable(@locatable el) {
   )
 }
 
+/** Gets the raw file for a configLocatable. */
 overlay[local]
-private predicate baseConfigLocatable(@configLocatable l) { not isOverlay() and exists(l) }
+private string getRawFileForConfig(@configLocatable el) {
+  exists(@location loc, @file file |
+    configLocations(el, loc) and
+    locations_default(loc, file, _, _, _, _) and
+    files(file, result)
+  )
+}
 
 overlay[local]
-private predicate overlayHasConfigLocatables() {
-  isOverlay() and
-  exists(@configLocatable el)
+private string baseConfigLocatable(@configLocatable el) {
+  not isOverlay() and result = getRawFileForConfig(el)
 }
 
 overlay[discard_entity]
 private predicate discardBaseConfigLocatable(@configLocatable el) {
-  // The properties extractor is currently not incremental, so if
-  // the overlay contains any config locatables, the overlay should
-  // contain a full extraction and all config locatables from base
-  // should be discarded.
-  baseConfigLocatable(el) and overlayHasConfigLocatables()
+  overlayChangedFiles(baseConfigLocatable(el))
 }
 
 overlay[local]
