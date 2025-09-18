@@ -1620,10 +1620,6 @@ module Internal {
         isGuard(g1, v1) and
         v2 = v1
         or
-        g2 = g1.(Assignment).getLValue() and
-        isGuard(g1, v1) and
-        v2 = v1
-        or
         g2 = g1.(CastExpr).getExpr() and
         isGuard(g1, v1) and
         v2 = v1.(NullValue)
