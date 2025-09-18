@@ -1,5 +1,5 @@
 {
-  "markdownMessage": "A Maven process was aborted because it didn't write to the console for 5 seconds. Consider either lenghtening the timeout if appropriate by setting CODEQL_EXTRACTOR_JAVA_BUILDLESS_CHILD_PROCESS_IDLE_TIMEOUT to a higher value or zero for no timeout, or else investigate why Maven timed out. Java analysis will continue, but the analysis may be of reduced quality.",
+  "markdownMessage": "A Maven process was aborted because it didn't write to the console for 3 seconds. Consider either lenghtening the timeout if appropriate by setting CODEQL_EXTRACTOR_JAVA_BUILDLESS_CHILD_PROCESS_IDLE_TIMEOUT to a higher value or zero for no timeout, or else investigate why Maven timed out. Java analysis will continue, but the analysis may be of reduced quality.",
   "severity": "note",
   "source": {
     "extractorName": "java",
