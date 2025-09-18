@@ -18,7 +18,7 @@ predicate isOverlay() { databaseMetadata("isOverlay", "true") }
 overlay[local]
 string getRawFile(@locatable el) {
   exists(@location loc, @file file |
-    hasLocation(el, loc) and
+    (hasLocation(el, loc) or xmllocations(el, loc)) and
     locations_default(loc, file, _, _, _, _) and
     files(file, result)
   )
@@ -91,24 +91,4 @@ private string baseConfigLocatable(@configLocatable el) {
 overlay[discard_entity]
 private predicate discardBaseConfigLocatable(@configLocatable el) {
   overlayChangedFiles(baseConfigLocatable(el))
-}
-
-overlay[local]
-private predicate baseXmlLocatable(@xmllocatable l) {
-  not isOverlay() and not files(l, _) and not xmlNs(l, _, _, _)
-}
-
-overlay[local]
-private predicate overlayHasXmlLocatable() {
-  isOverlay() and
-  exists(@xmllocatable l | not files(l, _) and not xmlNs(l, _, _, _))
-}
-
-overlay[discard_entity]
-private predicate discardBaseXmlLocatable(@xmllocatable el) {
-  // The XML extractor is currently not incremental, so if
-  // the overlay contains any XML locatables, the overlay should
-  // contain a full extraction and all XML locatables from base
-  // should be discarded.
-  baseXmlLocatable(el) and overlayHasXmlLocatable()
 }
