@@ -203,6 +203,8 @@ module NameResolution {
       node1 = fun.getArgument(i) and
       node2 = fun.getParameter(i)
     )
+    or
+    defaultImportInteropStep(node1, node2)
   }
 
   pragma[inline]
@@ -533,7 +535,11 @@ module NameResolution {
   Node trackModule(ModuleLike mod) {
     result = mod
     or
-    ValueFlow::step(trackModule(mod), result)
+    exists(Node prev |
+      prev = trackModule(mod) and
+      ValueFlow::step(prev, result) and
+      not defaultImportInteropStep(prev, result)
+    )
     or
     defaultImportInteropStep(trackModule(mod), result) and
     not mod.(ES2015Module).hasBothNamedAndDefaultExports()
