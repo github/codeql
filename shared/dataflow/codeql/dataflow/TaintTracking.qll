@@ -167,6 +167,8 @@ module TaintFlowMake<
       ) {
         Config::isAdditionalFlowStep(node1, node2) and model = "Config"
       }
+
+      predicate observeOverlayInformedIncrementalMode() { none() }
     }
 
     private module C implements DataFlowInternal::FullStateConfigSig {
@@ -201,6 +203,8 @@ module TaintFlowMake<
       ) {
         Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
       }
+
+      predicate observeOverlayInformedIncrementalMode() { none() }
     }
 
     private module C implements DataFlowInternal::FullStateConfigSig {
@@ -232,6 +236,8 @@ module TaintFlowMake<
       ) {
         Config::isAdditionalFlowStep(node1, node2) and model = "Config"
       }
+
+      predicate observeOverlayInformedIncrementalMode() { none() }
     }
 
     private module C implements DataFlowInternal::FullStateConfigSig {
@@ -270,6 +276,8 @@ module TaintFlowMake<
       ) {
         Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
       }
+
+      predicate observeOverlayInformedIncrementalMode() { none() }
     }
 
     private module C implements DataFlowInternal::FullStateConfigSig {
