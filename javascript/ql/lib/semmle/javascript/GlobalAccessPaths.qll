@@ -273,10 +273,21 @@ module AccessPath {
       root.isGlobal()
     )
     or
-    exists(Closure::ClosureModule mod |
+    exists(Closure::ClosureModule mod | root.isGlobal() |
       node = mod.getExportsVariable().getAnAssignedExpr().flow() and
-      root.isGlobal() and
       result = mod.getClosureNamespace()
+      or
+      exists(ExportNamedDeclaration decl, string name |
+        decl.getContainer() = mod and
+        node = decl.getSourceNode(name) and
+        result = join(mod.getClosureNamespace(), name)
+      )
+      or
+      exists(ExportDefaultDeclaration decl |
+        decl.getContainer() = mod and
+        node = DataFlow::valueNode(decl.getOperand()) and
+        result = mod.getClosureNamespace()
+      )
     )
   }
 
