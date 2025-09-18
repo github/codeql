@@ -1164,6 +1164,49 @@ class Definition extends SsaImpl::Definition {
   }
 
   /**
+   * Holds if this definition defines the parameter `p` upon entry into the
+   * enclosing function.
+   */
+  pragma[nomagic]
+  predicate isParameterDefinition(Parameter p) {
+    this.getIndirectionIndex() = 0 and
+    getDefImpl(this).getValue().asInstruction().(InitializeParameterInstruction).getParameter() = p
+  }
+
+  /**
+   * Holds if this definition defines the `indirectionIndex`'th indirection of
+   * parameter `p` upon entry into the enclosing function.
+   */
+  pragma[nomagic]
+  predicate isIndirectParameterDefinition(Parameter p, int indirectionIndex) {
+    this.getIndirectionIndex() = indirectionIndex and
+    indirectionIndex > 0 and
+    getDefImpl(this).getValue().asInstruction().(InitializeParameterInstruction).getParameter() = p
+  }
+
+  /**
+   * Holds if this definition defines the implicit `this` parameter upon entry into
+   * the enclosing member function.
+   */
+  pragma[nomagic]
+  predicate isThisDefinition() {
+    this.getIndirectionIndex() = 0 and
+    getDefImpl(this).getValue().asInstruction().(InitializeParameterInstruction).hasIndex(-1)
+  }
+
+  /**
+   * Holds if this definition defines the implicit `*this` parameter (i.e., the
+   * indirection of the `this` parameter) upon entry into the enclosing member
+   * function.
+   */
+  pragma[nomagic]
+  predicate isIndirectThisDefinition(int indirectionIndex) {
+    this.getIndirectionIndex() = indirectionIndex and
+    indirectionIndex > 0 and
+    getDefImpl(this).getValue().asInstruction().(InitializeParameterInstruction).hasIndex(-1)
+  }
+
+  /**
    * Gets an `Operand` that represents an indirect use of this definition.
    *
    * The use is indirect because the operand represents a pointer that points
