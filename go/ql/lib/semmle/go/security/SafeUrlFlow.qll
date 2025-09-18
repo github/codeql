@@ -23,11 +23,8 @@ module SafeUrlFlow {
 
     predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       // propagate to a URL when its host is assigned to
-      exists(Write w, DataFlow::Node base, Field f, SsaWithFields v |
-        f.hasQualifiedName("net/url", "URL", "Host")
-      |
-        w.writesField(base, f, node1) and
-        [base, base.(DataFlow::PostUpdateNode).getPreUpdateNode()] = v.getAUse() and
+      exists(Write w, Field f, SsaWithFields v | f.hasQualifiedName("net/url", "URL", "Host") |
+        w.writesFieldOnSsaWithFields(v, f, node1) and
         node2 = v.getAUse()
       )
     }
