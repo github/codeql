@@ -72,14 +72,13 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(EscapingTextWriter trapFile)
         {
-            if (isOutputAssembly && Context.ExtractionContext.IsStandalone)
+            if (Context.ExtractionContext.IsStandalone)
             {
-                trapFile.Write("buildlessOutputAssembly");
+                WriteStarId(trapFile);
+                return;
             }
-            else
-            {
-                trapFile.Write(assembly.ToString());
-            }
+
+            trapFile.Write(assembly.ToString());
 
             if (assemblyPath is not null)
             {
