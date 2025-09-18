@@ -209,7 +209,10 @@ module NameResolution {
   private predicate commonStep(Node node1, Node node2) {
     commonStep1(node1, node2)
     or
-    node2 = exportsObjectRhs(node1)
+    exists(ModuleLike mod |
+      node1 = exportsObjectRhs(mod) and
+      node2 = mod
+    )
   }
 
   /**
