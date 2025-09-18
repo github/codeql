@@ -143,6 +143,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
      */
     predicate observeDiffInformedIncrementalMode();
 
+    /**
+     * Holds if sources and sinks should be filtered to only include those that
+     * are in the overlay database. This only has an effect when running
+     * in overlay-informed incremental mode. This should be used in conjunction
+     * with the `OverlayImpl` implementation to merge the base results back in.
+     */
+    predicate observeOverlayInformedIncrementalMode();
+
     Location getASelectedSourceLocation(Node source);
 
     Location getASelectedSinkLocation(Node sink);

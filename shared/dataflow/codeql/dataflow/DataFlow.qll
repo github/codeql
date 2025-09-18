@@ -349,6 +349,18 @@ signature module InputSig<LocationSig Location> {
 
   /** Holds if `fieldFlowBranchLimit` should be ignored for flow going into/out of `c`. */
   default predicate ignoreFieldFlowBranchLimit(DataFlowCallable c) { none() }
+
+  /**
+   * Holds if the evaluator is currently evaluating with an overlay. The
+   * implementation of this predicate needs to be `overlay[local]`. For a
+   * language with no overlay support, `none()` is a valid implementation.
+   *
+   * When called from a local predicate, this predicate holds if we are in the
+   * overlay-only local evaluation. When called from a global predicate, this
+   * predicate holds if we are evaluating globally with overlay and base both
+   * visible.
+   */
+  default predicate isEvaluatingInOverlay() { none() }
 }
 
 module Configs<LocationSig Location, InputSig<Location> Lang> {
@@ -1101,6 +1113,8 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
         Config::isAdditionalFlowStep(node1, node2) and model = "Config"
       }
+
+      predicate observeOverlayInformedIncrementalMode() { none() }
     }
 
     private module Stage1 = ImplStage1<C>;
@@ -1130,6 +1144,8 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       ) {
         Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
       }
+
+      predicate observeOverlayInformedIncrementalMode() { none() }
     }
 
     private module Stage1 = ImplStage1<C>;
