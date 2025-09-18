@@ -315,6 +315,8 @@ module NameResolution {
       assign.getLhs().(PropAccess).accesses(moduleObjectRef(mod), "exports") and
       result = assign.getRhs()
     )
+    or
+    result = mod.(Closure::ClosureModule).getExportsVariable().getAnAssignedExpr()
   }
 
   /** Gets a node that is bulk-exported from the given module. */
@@ -458,8 +460,6 @@ module NameResolution {
         result = enum.getMemberByName(name).getIdentifier()
       )
       or
-      storeToVariable(result, name, mod.(Closure::ClosureModule).getExportsVariable())
-      or
       exists(DynamicImportExpr imprt |
         mod = imprt and
         name = "$$promise-content" and
@@ -467,21 +467,6 @@ module NameResolution {
       )
       or
       storeToExports(result, mod, name)
-    }
-
-    /**
-     * Holds if `value` is stored in `target.prop`. Only needs to recognise assignments
-     * that are also recognised by JSDoc tooling such as the Closure compiler.
-     */
-    private predicate storeToVariable(Expr value, string prop, LocalVariableLike target) {
-      exists(AssignExpr assign |
-        // target.name = value
-        assign.getLhs().(PropAccess).accesses(target.getAnAccess(), prop) and
-        value = assign.getRhs()
-      )
-      or
-      // target = { name: value }
-      value = target.getAnAssignedExpr().(ObjectExpr).getPropertyByName(prop).getInit()
     }
 
     /** Steps that only apply for this configuration. */
