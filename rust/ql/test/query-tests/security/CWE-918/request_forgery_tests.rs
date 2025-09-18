@@ -54,6 +54,26 @@ mod poem_server {
     }
 }
 
+mod warp_test {
+    use warp::Filter;
+
+    #[tokio::main]
+    #[rustfmt::skip]
+    async fn test_warp() {
+        // A route with parameter and `and_then`
+        let map_route =
+            warp::path::param().and_then(async |a: String| // $ MISSING: Source=a
+            {
+
+            let response = reqwest::get(&a).await; // $ MISSING: Alert[rust/request-forgery]=a
+            match response {
+                Ok(resp) => Ok(resp.text().await.unwrap_or_default()),
+                Err(_err) => Err(warp::reject::not_found()),
+            }
+        });
+    }
+}
+
 /// Start the Poem web application
 pub fn start() {
     tokio::runtime::Runtime::new()
