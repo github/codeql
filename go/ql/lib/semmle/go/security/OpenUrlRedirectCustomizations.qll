@@ -90,10 +90,9 @@ module OpenUrlRedirect {
    */
   class PathAssignmentBarrier extends Barrier, Read {
     PathAssignmentBarrier() {
-      exists(Write w, DataFlow::Node base, SsaWithFields var |
+      exists(Write w, SsaWithFields var |
         hasHostnameSanitizingSubstring(w.getRhs()) and
-        w.writesField(base, any(Field f | f.getName() = "Path"), _) and
-        [base, base.(DataFlow::PostUpdateNode).getPreUpdateNode()] = var.getAUse() and
+        w.writesFieldOnSsaWithFields(var, any(Field f | f.getName() = "Path"), _) and
         useIsDominated(var, w, this)
       )
     }
