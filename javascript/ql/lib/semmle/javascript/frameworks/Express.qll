@@ -782,6 +782,40 @@ module Express {
   }
 
   /**
+   * A call to `res.json()` or `res.jsonp()`.
+   *
+   * This sets the `content-type` header.
+   */
+  private class ResponseJsonCall extends DataFlow::MethodCallNode, Http::HeaderDefinition {
+    private ResponseSource response;
+
+    ResponseJsonCall() { this = response.ref().getAMethodCall(["json", "jsonp"]) }
+
+    override RouteHandler getRouteHandler() { result = response.getRouteHandler() }
+
+    override string getAHeaderName() { result = "content-type" }
+
+    override predicate defines(string headerName, string headerValue) {
+      // Note: for `jsonp` the actual content-type header will be `text/javascript` or similar, but to avoid
+      // generating a spurious HTML injection sink, we treat it as `application/json` here.
+      headerName = "content-type" and headerValue = "application/json"
+    }
+  }
+
+  /**
+   * An argument passed to the `json` or `jsonp` method of an HTTP response object.
+   */
+  private class ResponseJsonCallArgument extends Http::ResponseSendArgument {
+    ResponseJsonCall call;
+
+    ResponseJsonCallArgument() { this = call.getArgument(0) }
+
+    override RouteHandler getRouteHandler() { result = call.getRouteHandler() }
+
+    override HeaderDefinition getAnAssociatedHeaderDefinition() { result = call }
+  }
+
+  /**
    * An invocation of the `cookie` method on an HTTP response object.
    */
   class SetCookie extends Http::CookieDefinition, DataFlow::MethodCallNode {
