@@ -1,0 +1,2 @@
+query: Resources/FileNotAlwaysClosed.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
