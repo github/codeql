@@ -43,6 +43,11 @@ module NameResolution {
         this = spec.getLocal() and
         result = DataFlow::valueNode(spec)
       )
+      or
+      exists(ExportDeclaration exprt, string name |
+        exprt.exportsAs(this, name) and
+        result = exprt.getSourceNode(name)
+      )
     }
   }
 
