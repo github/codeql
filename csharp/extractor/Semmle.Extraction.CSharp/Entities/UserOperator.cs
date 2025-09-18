@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp.Entities
             foreach (var l in Locations)
                 trapFile.operator_location(this, l);
 
-            if (IsSourceDeclaration)
+            if (IsSourceDeclaration && !Context.OnlyScaffold)
             {
                 var declSyntaxReferences = Symbol.DeclaringSyntaxReferences.Select(s => s.GetSyntax()).ToArray();
                 foreach (var declaration in declSyntaxReferences.OfType<OperatorDeclarationSyntax>())

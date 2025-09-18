@@ -108,7 +108,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         protected void BindComments()
         {
-            if (!Symbol.IsImplicitlyDeclared && IsSourceDeclaration && Symbol.FromSource())
+            if (!Symbol.IsImplicitlyDeclared && IsSourceDeclaration && Symbol.FromSource() && !Context.OnlyScaffold)
                 Context.BindComments(this, FullLocation);
         }
 
