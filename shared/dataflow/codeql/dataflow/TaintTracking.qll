@@ -83,68 +83,6 @@ module TaintFlowMake<
     }
   }
 
-  /**
-   * Constructs a global taint tracking computation.
-   */
-  module Global<DataFlow::ConfigSig Config> implements DataFlow::GlobalFlowSig {
-    private module Config0 implements DataFlowInternal::FullStateConfigSig {
-      import DataFlowInternal::DefaultState<Config>
-      import Config
-
-      predicate isAdditionalFlowStep(
-        DataFlowLang::Node node1, DataFlowLang::Node node2, string model
-      ) {
-        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
-      }
-    }
-
-    private module C implements DataFlowInternal::FullStateConfigSig {
-      import AddTaintDefaults<Config0>
-    }
-
-    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
-
-    import Stage1::PartialFlow
-
-    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1NoState>;
-
-    import Flow
-  }
-
-  /**
-   * Constructs a global taint tracking computation using flow state.
-   */
-  module GlobalWithState<DataFlow::StateConfigSig Config> implements DataFlow::GlobalFlowSig {
-    private module Config0 implements DataFlowInternal::FullStateConfigSig {
-      import Config
-
-      predicate isAdditionalFlowStep(
-        DataFlowLang::Node node1, DataFlowLang::Node node2, string model
-      ) {
-        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
-      }
-
-      predicate isAdditionalFlowStep(
-        DataFlowLang::Node node1, FlowState state1, DataFlowLang::Node node2, FlowState state2,
-        string model
-      ) {
-        Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
-      }
-    }
-
-    private module C implements DataFlowInternal::FullStateConfigSig {
-      import AddTaintDefaults<Config0>
-    }
-
-    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
-
-    import Stage1::PartialFlow
-
-    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1WithState>;
-
-    import Flow
-  }
-
   signature int speculationLimitSig();
 
   private module AddSpeculativeTaintSteps<
@@ -214,6 +152,68 @@ module TaintFlowMake<
       state1.getSpec() + 1 = state2.getSpec() and
       state1.getState() = state2.getState()
     }
+  }
+
+  /**
+   * Constructs a global taint tracking computation.
+   */
+  module Global<DataFlow::ConfigSig Config> implements DataFlow::GlobalFlowSig {
+    private module Config0 implements DataFlowInternal::FullStateConfigSig {
+      import DataFlowInternal::DefaultState<Config>
+      import Config
+
+      predicate isAdditionalFlowStep(
+        DataFlowLang::Node node1, DataFlowLang::Node node2, string model
+      ) {
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
+    }
+
+    private module C implements DataFlowInternal::FullStateConfigSig {
+      import AddTaintDefaults<Config0>
+    }
+
+    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1NoState>;
+
+    import Flow
+  }
+
+  /**
+   * Constructs a global taint tracking computation using flow state.
+   */
+  module GlobalWithState<DataFlow::StateConfigSig Config> implements DataFlow::GlobalFlowSig {
+    private module Config0 implements DataFlowInternal::FullStateConfigSig {
+      import Config
+
+      predicate isAdditionalFlowStep(
+        DataFlowLang::Node node1, DataFlowLang::Node node2, string model
+      ) {
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
+
+      predicate isAdditionalFlowStep(
+        DataFlowLang::Node node1, FlowState state1, DataFlowLang::Node node2, FlowState state2,
+        string model
+      ) {
+        Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
+      }
+    }
+
+    private module C implements DataFlowInternal::FullStateConfigSig {
+      import AddTaintDefaults<Config0>
+    }
+
+    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1WithState>;
+
+    import Flow
   }
 
   /**
