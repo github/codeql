@@ -21,70 +21,61 @@ private predicate isUnreachedBlock(IRBlock block) {
   block.getFirstInstruction() instanceof UnreachedInstruction
 }
 
-private newtype TAbstractValue =
-  TBooleanValue(boolean b) { b = true or b = false } or
-  TMatchValue(CaseEdge c)
-
 /**
+ * DEPRECATED: Use `GuardValue` instead.
+ *
  * An abstract value. This is either a boolean value, or a `switch` case.
  */
-abstract class AbstractValue extends TAbstractValue {
-  /** Gets an abstract value that represents the dual of this value, if any. */
-  abstract AbstractValue getDualValue();
+deprecated class AbstractValue extends GuardValue { }
 
-  /** Gets a textual representation of this abstract value. */
-  abstract string toString();
-}
+/**
+ * DEPRECATED: Use `GuardValue` instead.
+ *
+ * A Boolean value.
+ */
+deprecated class BooleanValue extends AbstractValue {
+  BooleanValue() { exists(this.asBooleanValue()) }
 
-/** A Boolean value. */
-class BooleanValue extends AbstractValue, TBooleanValue {
   /** Gets the underlying Boolean value. */
-  boolean getValue() { this = TBooleanValue(result) }
-
-  override BooleanValue getDualValue() { result.getValue() = this.getValue().booleanNot() }
-
-  override string toString() { result = this.getValue().toString() }
+  boolean getValue() { result = this.asBooleanValue() }
 }
 
-/** A value that represents a match against a specific `switch` case. */
-class MatchValue extends AbstractValue, TMatchValue {
-  /** Gets the case. */
-  CaseEdge getCase() { this = TMatchValue(result) }
-
-  override MatchValue getDualValue() {
-    // A `MatchValue` has no dual.
-    none()
+/**
+ * DEPRECATED: Use `GuardValue` instead.
+ *
+ * A value that represents a match against a specific `switch` case.
+ */
+deprecated class MatchValue extends AbstractValue {
+  MatchValue() {
+    exists(this.asIntValue())
+    or
+    this.asConstantValue().isRange(_, _)
   }
 
-  override string toString() { result = this.getCase().toString() }
+  /** Gets the case. */
+  CaseEdge getCase() {
+    result.getValue().toInt() = this.asIntValue()
+    or
+    exists(string minValue, string maxValue |
+      result.getMinValue() = minValue and
+      result.getMaxValue() = maxValue and
+      this.asConstantValue().isRange(minValue, maxValue)
+    )
+  }
 }
 
 /**
  * A Boolean condition in the AST that guards one or more basic blocks. This includes
  * operands of logical operators but not switch statements.
  */
-abstract private class GuardConditionImpl extends Expr {
+private class GuardConditionImpl extends Element {
   /**
    * Holds if this condition controls `controlled`, meaning that `controlled` is only
    * entered if the value of this condition is `v`.
    *
    * For details on what "controls" mean, see the QLDoc for `controls`.
    */
-  abstract predicate valueControls(BasicBlock controlled, AbstractValue v);
-
-  /**
-   * Holds if the control-flow edge `(pred, succ)` may be taken only if
-   * the value of this condition is `v`.
-   */
-  abstract predicate valueControlsEdge(BasicBlock pred, BasicBlock succ, AbstractValue v);
-
-  /**
-   * Holds if  the control-flow edge `(pred, succ)` may be taken only if
-   * this the value of this condition is `testIsTrue`.
-   */
-  final predicate controlsEdge(BasicBlock pred, BasicBlock succ, boolean testIsTrue) {
-    this.valueControlsEdge(pred, succ, any(BooleanValue bv | bv.getValue() = testIsTrue))
-  }
+  abstract predicate valueControls(BasicBlock controlled, GuardValue v);
 
   /**
    * Holds if this condition controls `controlled`, meaning that `controlled` is only
@@ -113,7 +104,21 @@ abstract private class GuardConditionImpl extends Expr {
    * true (for `&&`) or false (for `||`) branch.
    */
   final predicate controls(BasicBlock controlled, boolean testIsTrue) {
-    this.valueControls(controlled, any(BooleanValue bv | bv.getValue() = testIsTrue))
+    this.valueControls(controlled, any(GuardValue bv | bv.asBooleanValue() = testIsTrue))
+  }
+
+  /**
+   * Holds if the control-flow edge `(pred, succ)` may be taken only if
+   * the value of this condition is `v`.
+   */
+  abstract predicate valueControlsEdge(BasicBlock pred, BasicBlock succ, GuardValue v);
+
+  /**
+   * Holds if  the control-flow edge `(pred, succ)` may be taken only if
+   * this the value of this condition is `testIsTrue`.
+   */
+  final predicate controlsEdge(BasicBlock pred, BasicBlock succ, boolean testIsTrue) {
+    this.valueControlsEdge(pred, succ, any(GuardValue bv | bv.asBooleanValue() = testIsTrue))
   }
 
   /**
@@ -138,7 +143,7 @@ abstract private class GuardConditionImpl extends Expr {
    * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
    */
   pragma[inline]
-  abstract predicate comparesLt(Expr e, int k, boolean isLessThan, AbstractValue value);
+  abstract predicate comparesLt(Expr e, int k, boolean isLessThan, GuardValue value);
 
   /**
    * Holds if (determined by this guard) `e < k` must be `isLessThan` in `block`.
@@ -180,7 +185,7 @@ abstract private class GuardConditionImpl extends Expr {
    *    necessarily integer).
    */
   pragma[inline]
-  abstract predicate comparesEq(Expr e, int k, boolean areEqual, AbstractValue value);
+  abstract predicate comparesEq(Expr e, int k, boolean areEqual, GuardValue value);
 
   /**
    * Holds if (determined by this guard) `e == k` must be `areEqual` in `block`.
@@ -210,7 +215,7 @@ abstract private class GuardConditionImpl extends Expr {
    */
   pragma[inline]
   final predicate ensuresEqEdge(Expr e, int k, BasicBlock pred, BasicBlock succ, boolean areEqual) {
-    exists(AbstractValue v |
+    exists(GuardValue v |
       this.comparesEq(e, k, areEqual, v) and
       this.valueControlsEdge(pred, succ, v)
     )
@@ -236,7 +241,7 @@ abstract private class GuardConditionImpl extends Expr {
    */
   pragma[inline]
   final predicate ensuresLtEdge(Expr e, int k, BasicBlock pred, BasicBlock succ, boolean isLessThan) {
-    exists(AbstractValue v |
+    exists(GuardValue v |
       this.comparesLt(e, k, isLessThan, v) and
       this.valueControlsEdge(pred, succ, v)
     )
@@ -248,28 +253,25 @@ final class GuardCondition = GuardConditionImpl;
 /**
  * A binary logical operator in the AST that guards one or more basic blocks.
  */
-private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl {
-  GuardConditionFromBinaryLogicalOperator() {
-    this.(BinaryLogicalOperation).getAnOperand() instanceof GuardCondition
-  }
-
-  override predicate valueControlsEdge(BasicBlock pred, BasicBlock succ, AbstractValue v) {
-    exists(BinaryLogicalOperation binop, GuardCondition lhs, GuardCondition rhs |
-      this = binop and
-      lhs = binop.getLeftOperand() and
-      rhs = binop.getRightOperand() and
-      lhs.valueControlsEdge(pred, succ, v) and
-      rhs.valueControlsEdge(pred, succ, v)
-    )
-  }
-
-  override predicate valueControls(BasicBlock controlled, AbstractValue v) {
+private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl instanceof BinaryLogicalOperation
+{
+  override predicate valueControls(BasicBlock controlled, GuardValue v) {
     exists(BinaryLogicalOperation binop, GuardCondition lhs, GuardCondition rhs |
       this = binop and
       lhs = binop.getLeftOperand() and
       rhs = binop.getRightOperand() and
       lhs.valueControls(controlled, v) and
       rhs.valueControls(controlled, v)
+    )
+  }
+
+  override predicate valueControlsEdge(BasicBlock pred, BasicBlock succ, GuardValue v) {
+    exists(BinaryLogicalOperation binop, GuardCondition lhs, GuardCondition rhs |
+      this = binop and
+      lhs = binop.getLeftOperand() and
+      rhs = binop.getRightOperand() and
+      lhs.valueControlsEdge(pred, succ, v) and
+      rhs.valueControlsEdge(pred, succ, v)
     )
   }
 
@@ -281,10 +283,10 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl
     )
   }
 
-  override predicate comparesLt(Expr e, int k, boolean isLessThan, AbstractValue value) {
-    exists(BooleanValue partValue, GuardCondition part |
+  override predicate comparesLt(Expr e, int k, boolean isLessThan, GuardValue value) {
+    exists(GuardValue partValue, GuardCondition part |
       this.(BinaryLogicalOperation)
-          .impliesValue(part, partValue.getValue(), value.(BooleanValue).getValue())
+          .impliesValue(part, partValue.asBooleanValue(), value.asBooleanValue())
     |
       part.comparesLt(e, k, isLessThan, partValue)
     )
@@ -299,7 +301,7 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl
 
   pragma[inline]
   override predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan) {
-    exists(AbstractValue value |
+    exists(GuardValue value |
       this.comparesLt(e, k, isLessThan, value) and this.valueControls(block, value)
     )
   }
@@ -319,10 +321,10 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl
     )
   }
 
-  override predicate comparesEq(Expr e, int k, boolean areEqual, AbstractValue value) {
-    exists(BooleanValue partValue, GuardCondition part |
+  override predicate comparesEq(Expr e, int k, boolean areEqual, GuardValue value) {
+    exists(GuardValue partValue, GuardCondition part |
       this.(BinaryLogicalOperation)
-          .impliesValue(part, partValue.getValue(), value.(BooleanValue).getValue())
+          .impliesValue(part, partValue.asBooleanValue(), value.asBooleanValue())
     |
       part.comparesEq(e, k, areEqual, partValue)
     )
@@ -330,7 +332,7 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl
 
   pragma[inline]
   override predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual) {
-    exists(AbstractValue value |
+    exists(GuardValue value |
       this.comparesEq(e, k, areEqual, value) and this.valueControls(block, value)
     )
   }
@@ -342,7 +344,7 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl
  * predicate does not necessarily hold for binary logical operations like
  * `&&` and `||`. See the detailed explanation on predicate `controls`.
  */
-private predicate controlsBlock(IRGuardCondition ir, BasicBlock controlled, AbstractValue v) {
+private predicate controlsBlock(IRGuardCondition ir, BasicBlock controlled, GuardValue v) {
   exists(IRBlock irb |
     ir.valueControls(irb, v) and
     nonExcludedIRAndBasicBlock(irb, controlled) and
@@ -357,11 +359,9 @@ private predicate controlsBlock(IRGuardCondition ir, BasicBlock controlled, Abst
  * like `&&` and `||`.
  * See the detailed explanation on predicate `controlsEdge`.
  */
-private predicate controlsEdge(
-  IRGuardCondition ir, BasicBlock pred, BasicBlock succ, AbstractValue v
-) {
+private predicate controlsEdge(IRGuardCondition ir, BasicBlock pred, BasicBlock succ, GuardValue v) {
   exists(IRBlock irPred, IRBlock irSucc |
-    ir.valueControlsEdge(irPred, irSucc, v) and
+    ir.valueControlsBranchEdge(irPred, irSucc, v) and
     nonExcludedIRAndBasicBlock(irPred, pred) and
     nonExcludedIRAndBasicBlock(irSucc, succ) and
     not isUnreachedBlock(irPred) and
@@ -378,19 +378,20 @@ private class GuardConditionFromNotExpr extends GuardConditionImpl {
     // comparison against 0 so it's not included as a normal
     // `IRGuardCondition`. So to align with user expectations we make that `x`
     // a `GuardCondition`.
-    exists(NotExpr notExpr |
-      this = notExpr.getOperand() and
+    exists(NotExpr notExpr | this = notExpr.getOperand() |
       ir.getUnconvertedResultExpression() = notExpr
+      or
+      ir.(ConditionalBranchInstruction).getCondition().getUnconvertedResultExpression() = notExpr
     )
   }
 
-  override predicate valueControls(BasicBlock controlled, AbstractValue v) {
+  override predicate valueControls(BasicBlock controlled, GuardValue v) {
     // This condition must determine the flow of control; that is, this
     // node must be a top-level condition.
     controlsBlock(ir, controlled, v.getDualValue())
   }
 
-  override predicate valueControlsEdge(BasicBlock pred, BasicBlock succ, AbstractValue v) {
+  override predicate valueControlsEdge(BasicBlock pred, BasicBlock succ, GuardValue v) {
     controlsEdge(ir, pred, succ, v.getDualValue())
   }
 
@@ -404,7 +405,7 @@ private class GuardConditionFromNotExpr extends GuardConditionImpl {
   }
 
   pragma[inline]
-  override predicate comparesLt(Expr e, int k, boolean isLessThan, AbstractValue value) {
+  override predicate comparesLt(Expr e, int k, boolean isLessThan, GuardValue value) {
     exists(Instruction i |
       i.getUnconvertedResultExpression() = e and
       ir.comparesLt(i.getAUse(), k, isLessThan, value.getDualValue())
@@ -423,7 +424,7 @@ private class GuardConditionFromNotExpr extends GuardConditionImpl {
 
   pragma[inline]
   override predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan) {
-    exists(Instruction i, AbstractValue value |
+    exists(Instruction i, GuardValue value |
       i.getUnconvertedResultExpression() = e and
       ir.comparesLt(i.getAUse(), k, isLessThan, value.getDualValue()) and
       this.valueControls(block, value)
@@ -450,7 +451,7 @@ private class GuardConditionFromNotExpr extends GuardConditionImpl {
   }
 
   pragma[inline]
-  override predicate comparesEq(Expr e, int k, boolean areEqual, AbstractValue value) {
+  override predicate comparesEq(Expr e, int k, boolean areEqual, GuardValue value) {
     exists(Instruction i |
       i.getUnconvertedResultExpression() = e and
       ir.comparesEq(i.getAUse(), k, areEqual, value.getDualValue())
@@ -459,7 +460,7 @@ private class GuardConditionFromNotExpr extends GuardConditionImpl {
 
   pragma[inline]
   override predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual) {
-    exists(Instruction i, AbstractValue value |
+    exists(Instruction i, GuardValue value |
       i.getUnconvertedResultExpression() = e and
       ir.comparesEq(i.getAUse(), k, areEqual, value.getDualValue()) and
       this.valueControls(block, value)
@@ -474,15 +475,21 @@ private class GuardConditionFromNotExpr extends GuardConditionImpl {
 private class GuardConditionFromIR extends GuardConditionImpl {
   IRGuardCondition ir;
 
-  GuardConditionFromIR() { this = ir.getUnconvertedResultExpression() }
+  GuardConditionFromIR() {
+    ir.(InitializeParameterInstruction).getParameter() = this
+    or
+    ir.(ConditionalBranchInstruction).getCondition().getUnconvertedResultExpression() = this
+    or
+    ir.getUnconvertedResultExpression() = this
+  }
 
-  override predicate valueControls(BasicBlock controlled, AbstractValue v) {
+  override predicate valueControls(BasicBlock controlled, GuardValue v) {
     // This condition must determine the flow of control; that is, this
     // node must be a top-level condition.
     controlsBlock(ir, controlled, v)
   }
 
-  override predicate valueControlsEdge(BasicBlock pred, BasicBlock succ, AbstractValue v) {
+  override predicate valueControlsEdge(BasicBlock pred, BasicBlock succ, GuardValue v) {
     controlsEdge(ir, pred, succ, v)
   }
 
@@ -496,7 +503,7 @@ private class GuardConditionFromIR extends GuardConditionImpl {
   }
 
   pragma[inline]
-  override predicate comparesLt(Expr e, int k, boolean isLessThan, AbstractValue value) {
+  override predicate comparesLt(Expr e, int k, boolean isLessThan, GuardValue value) {
     exists(Instruction i |
       i.getUnconvertedResultExpression() = e and
       ir.comparesLt(i.getAUse(), k, isLessThan, value)
@@ -515,7 +522,7 @@ private class GuardConditionFromIR extends GuardConditionImpl {
 
   pragma[inline]
   override predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan) {
-    exists(Instruction i, AbstractValue value |
+    exists(Instruction i, GuardValue value |
       i.getUnconvertedResultExpression() = e and
       ir.comparesLt(i.getAUse(), k, isLessThan, value) and
       this.valueControls(block, value)
@@ -542,7 +549,7 @@ private class GuardConditionFromIR extends GuardConditionImpl {
   }
 
   pragma[inline]
-  override predicate comparesEq(Expr e, int k, boolean areEqual, AbstractValue value) {
+  override predicate comparesEq(Expr e, int k, boolean areEqual, GuardValue value) {
     exists(Instruction i |
       i.getUnconvertedResultExpression() = e and
       ir.comparesEq(i.getAUse(), k, areEqual, value)
@@ -551,7 +558,7 @@ private class GuardConditionFromIR extends GuardConditionImpl {
 
   pragma[inline]
   override predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual) {
-    exists(Instruction i, AbstractValue value |
+    exists(Instruction i, GuardValue value |
       i.getUnconvertedResultExpression() = e and
       ir.comparesEq(i.getAUse(), k, areEqual, value) and
       this.valueControls(block, value)
@@ -584,20 +591,17 @@ pragma[nomagic]
 private predicate nonExcludedIRAndBasicBlock(IRBlock irb, BasicBlock controlled) {
   exists(Instruction instr |
     instr = irb.getAnInstruction() and
-    instr.getAst().(ControlFlowNode).getBasicBlock() = controlled and
+    instr.getAst() = controlled.getANode() and
     not excludeAsControlledInstruction(instr)
   )
 }
 
 /**
- * A Boolean condition in the IR that guards one or more basic blocks.
- *
- * Note that `&&` and `||` don't have an explicit representation in the IR,
- * and therefore will not appear as IRGuardConditions.
+ * A guard. This may be any expression whose value determines subsequent
+ * control flow. It may also be a switch case, which as a guard is considered
+ * to evaluate to either true or false depending on whether the case matches.
  */
-class IRGuardCondition extends Instruction {
-  Instruction branch;
-
+final class IRGuardCondition extends Guards_v1::Guard {
   /*
    * An `IRGuardCondition` supports reasoning about four different kinds of
    * relations:
@@ -625,119 +629,12 @@ class IRGuardCondition extends Instruction {
    * `e1 + k1 == e2 + k2` into canonical the form `e1 == e2 + (k2 - k1)`.
    */
 
-  IRGuardCondition() { branch = getBranchForCondition(this) }
-
-  /**
-   * Holds if this condition controls `controlled`, meaning that `controlled` is only
-   * entered if the value of this condition is `v`.
-   *
-   * For details on what "controls" mean, see the QLDoc for `controls`.
-   */
-  predicate valueControls(IRBlock controlled, AbstractValue v) {
-    // This condition must determine the flow of control; that is, this
-    // node must be a top-level condition.
-    this.controlsBlock(controlled, v)
-    or
-    exists(IRGuardCondition ne |
-      this = ne.(LogicalNotInstruction).getUnary() and
-      ne.valueControls(controlled, v.getDualValue())
-    )
-  }
-
-  /**
-   * Holds if this condition controls `controlled`, meaning that `controlled` is only
-   * entered if the value of this condition is `testIsTrue`.
-   *
-   * Illustration:
-   *
-   * ```
-   * [                    (testIsTrue)                        ]
-   * [             this ----------------succ ---- controlled  ]
-   * [               |                    |                   ]
-   * [ (testIsFalse) |                     ------ ...         ]
-   * [             other                                      ]
-   * ```
-   *
-   * The predicate holds if all paths to `controlled` go via the `testIsTrue`
-   * edge of the control-flow graph. In other words, the `testIsTrue` edge
-   * must dominate `controlled`. This means that `controlled` must be
-   * dominated by both `this` and `succ` (the target of the `testIsTrue`
-   * edge). It also means that any other edge into `succ` must be a back-edge
-   * from a node which is dominated by `succ`.
-   *
-   * The short-circuit boolean operations have slightly surprising behavior
-   * here: because the operation itself only dominates one branch (due to
-   * being short-circuited) then it will only control blocks dominated by the
-   * true (for `&&`) or false (for `||`) branch.
-   */
-  predicate controls(IRBlock controlled, boolean testIsTrue) {
-    this.valueControls(controlled, any(BooleanValue bv | bv.getValue() = testIsTrue))
-  }
-
-  /**
-   * Holds if the control-flow edge `(pred, succ)` may be taken only if
-   * the value of this condition is `v`.
-   */
-  predicate valueControlsEdge(IRBlock pred, IRBlock succ, AbstractValue v) {
-    pred.getASuccessor() = succ and
-    this.valueControls(pred, v)
-    or
-    succ = this.getBranchSuccessor(v) and
-    (
-      branch.(ConditionalBranchInstruction).getCondition() = this and
-      branch.getBlock() = pred
-      or
-      branch.(SwitchInstruction).getExpression() = this and
-      branch.getBlock() = pred
-    )
-  }
-
-  /**
-   * Holds if the control-flow edge `(pred, succ)` may be taken only if
-   * the value of this condition is `testIsTrue`.
-   */
-  final predicate controlsEdge(IRBlock pred, IRBlock succ, boolean testIsTrue) {
-    this.valueControlsEdge(pred, succ, any(BooleanValue bv | bv.getValue() = testIsTrue))
-  }
-
-  /**
-   * Gets the block to which `branch` jumps directly when the value of this condition is `v`.
-   *
-   * This predicate is intended to help with situations in which an inference can only be made
-   * based on an edge between a block with multiple successors and a block with multiple
-   * predecessors. For example, in the following situation, an inference can be made about the
-   * value of `x` at the end of the `if` statement, but there is no block which is controlled by
-   * the `if` statement when `x >= y`.
-   * ```
-   * if (x < y) {
-   *   x = y;
-   * }
-   * return x;
-   * ```
-   */
-  private IRBlock getBranchSuccessor(AbstractValue v) {
-    branch.(ConditionalBranchInstruction).getCondition() = this and
-    exists(BooleanValue bv | bv = v |
-      bv.getValue() = true and
-      result.getFirstInstruction() = branch.(ConditionalBranchInstruction).getTrueSuccessor()
-      or
-      bv.getValue() = false and
-      result.getFirstInstruction() = branch.(ConditionalBranchInstruction).getFalseSuccessor()
-    )
-    or
-    exists(SwitchInstruction switch, CaseEdge kind | switch = branch |
-      switch.getExpression() = this and
-      result.getFirstInstruction() = switch.getSuccessor(kind) and
-      kind = v.(MatchValue).getCase()
-    )
-  }
-
   /** Holds if (determined by this guard) `left < right + k` evaluates to `isLessThan` if this expression evaluates to `testIsTrue`. */
   pragma[inline]
   predicate comparesLt(Operand left, Operand right, int k, boolean isLessThan, boolean testIsTrue) {
-    exists(BooleanValue value |
+    exists(GuardValue value |
       compares_lt(valueNumber(this), left, right, k, isLessThan, value) and
-      value.getValue() = testIsTrue
+      value.asBooleanValue() = testIsTrue
     )
   }
 
@@ -746,7 +643,7 @@ class IRGuardCondition extends Instruction {
    * this expression evaluates to `value`.
    */
   pragma[inline]
-  predicate comparesLt(Operand op, int k, boolean isLessThan, AbstractValue value) {
+  predicate comparesLt(Operand op, int k, boolean isLessThan, GuardValue value) {
     compares_lt(valueNumber(this), op, k, isLessThan, value)
   }
 
@@ -756,7 +653,7 @@ class IRGuardCondition extends Instruction {
    */
   pragma[inline]
   predicate ensuresLt(Operand left, Operand right, int k, IRBlock block, boolean isLessThan) {
-    exists(AbstractValue value |
+    exists(GuardValue value |
       compares_lt(valueNumber(this), left, right, k, isLessThan, value) and
       this.valueControls(block, value)
     )
@@ -768,7 +665,7 @@ class IRGuardCondition extends Instruction {
    */
   pragma[inline]
   predicate ensuresLt(Operand op, int k, IRBlock block, boolean isLessThan) {
-    exists(AbstractValue value |
+    exists(GuardValue value |
       compares_lt(valueNumber(this), op, k, isLessThan, value) and
       this.valueControls(block, value)
     )
@@ -782,9 +679,9 @@ class IRGuardCondition extends Instruction {
   predicate ensuresLtEdge(
     Operand left, Operand right, int k, IRBlock pred, IRBlock succ, boolean isLessThan
   ) {
-    exists(AbstractValue value |
+    exists(GuardValue value |
       compares_lt(valueNumber(this), left, right, k, isLessThan, value) and
-      this.valueControlsEdge(pred, succ, value)
+      this.valueControlsBranchEdge(pred, succ, value)
     )
   }
 
@@ -794,24 +691,24 @@ class IRGuardCondition extends Instruction {
    */
   pragma[inline]
   predicate ensuresLtEdge(Operand left, int k, IRBlock pred, IRBlock succ, boolean isLessThan) {
-    exists(AbstractValue value |
+    exists(GuardValue value |
       compares_lt(valueNumber(this), left, k, isLessThan, value) and
-      this.valueControlsEdge(pred, succ, value)
+      this.valueControlsBranchEdge(pred, succ, value)
     )
   }
 
   /** Holds if (determined by this guard) `left == right + k` evaluates to `areEqual` if this expression evaluates to `testIsTrue`. */
   pragma[inline]
   predicate comparesEq(Operand left, Operand right, int k, boolean areEqual, boolean testIsTrue) {
-    exists(BooleanValue value |
+    exists(GuardValue value |
       compares_eq(valueNumber(this), left, right, k, areEqual, value) and
-      value.getValue() = testIsTrue
+      value.asBooleanValue() = testIsTrue
     )
   }
 
   /** Holds if (determined by this guard) `op == k` evaluates to `areEqual` if this expression evaluates to `value`. */
   pragma[inline]
-  predicate comparesEq(Operand op, int k, boolean areEqual, AbstractValue value) {
+  predicate comparesEq(Operand op, int k, boolean areEqual, GuardValue value) {
     unary_compares_eq(valueNumber(this), op, k, areEqual, value)
   }
 
@@ -821,7 +718,7 @@ class IRGuardCondition extends Instruction {
    */
   pragma[inline]
   predicate ensuresEq(Operand left, Operand right, int k, IRBlock block, boolean areEqual) {
-    exists(AbstractValue value |
+    exists(GuardValue value |
       compares_eq(valueNumber(this), left, right, k, areEqual, value) and
       this.valueControls(block, value)
     )
@@ -833,7 +730,7 @@ class IRGuardCondition extends Instruction {
    */
   pragma[inline]
   predicate ensuresEq(Operand op, int k, IRBlock block, boolean areEqual) {
-    exists(AbstractValue value |
+    exists(GuardValue value |
       unary_compares_eq(valueNumber(this), op, k, areEqual, value) and
       this.valueControls(block, value)
     )
@@ -847,9 +744,9 @@ class IRGuardCondition extends Instruction {
   predicate ensuresEqEdge(
     Operand left, Operand right, int k, IRBlock pred, IRBlock succ, boolean areEqual
   ) {
-    exists(AbstractValue value |
+    exists(GuardValue value |
       compares_eq(valueNumber(this), left, right, k, areEqual, value) and
-      this.valueControlsEdge(pred, succ, value)
+      this.valueControlsBranchEdge(pred, succ, value)
     )
   }
 
@@ -859,102 +756,18 @@ class IRGuardCondition extends Instruction {
    */
   pragma[inline]
   predicate ensuresEqEdge(Operand op, int k, IRBlock pred, IRBlock succ, boolean areEqual) {
-    exists(AbstractValue value |
+    exists(GuardValue value |
       unary_compares_eq(valueNumber(this), op, k, areEqual, value) and
-      this.valueControlsEdge(pred, succ, value)
+      this.valueControlsBranchEdge(pred, succ, value)
     )
   }
 
   /**
-   * Holds if this condition controls `block`, meaning that `block` is only
-   * entered if the value of this condition is `v`. This helper
-   * predicate does not necessarily hold for binary logical operations like
-   * `&&` and `||`. See the detailed explanation on predicate `controls`.
+   * DEPRECATED: Use `controlsBranchEdge` instead.
    */
-  private predicate controlsBlock(IRBlock controlled, AbstractValue v) {
-    not isUnreachedBlock(controlled) and
-    //
-    // For this block to control the block `controlled` with `testIsTrue` the
-    // following must hold: Execution must have passed through the test; that
-    // is, `this` must strictly dominate `controlled`. Execution must have
-    // passed through the `testIsTrue` edge leaving `this`.
-    //
-    // Although "passed through the true edge" implies that
-    // `getBranchSuccessor(true)` dominates `controlled`, the reverse is not
-    // true, as flow may have passed through another edge to get to
-    // `getBranchSuccessor(true)`, so we need to assert that
-    // `getBranchSuccessor(true)` dominates `controlled` *and* that all
-    // predecessors of `getBranchSuccessor(true)` are either `this` or
-    // dominated by `getBranchSuccessor(true)`.
-    //
-    // For example, in the following snippet:
-    //
-    //     if (x)
-    //       controlled;
-    //     false_successor;
-    //     uncontrolled;
-    //
-    // `false_successor` dominates `uncontrolled`, but not all of its
-    // predecessors are `this` (`if (x)`) or dominated by itself. Whereas in
-    // the following code:
-    //
-    //     if (x)
-    //       while (controlled)
-    //         also_controlled;
-    //     false_successor;
-    //     uncontrolled;
-    //
-    // the block `while (controlled)` is controlled because all of its
-    // predecessors are `this` (`if (x)`) or (in the case of `also_controlled`)
-    // dominated by itself.
-    //
-    // The additional constraint on the predecessors of the test successor implies
-    // that `this` strictly dominates `controlled` so that isn't necessary to check
-    // directly.
-    exists(IRBlock succ |
-      succ = this.getBranchSuccessor(v) and
-      this.hasDominatingEdgeTo(succ) and
-      succ.dominates(controlled)
-    )
+  deprecated predicate controlsEdge(IRBlock bb1, IRBlock bb2, boolean branch) {
+    this.controlsBranchEdge(bb1, bb2, branch)
   }
-
-  /**
-   * Holds if `(this, succ)` is an edge that dominates `succ`, that is, all other
-   * predecessors of `succ` are dominated by `succ`. This implies that `this` is the
-   * immediate dominator of `succ`.
-   *
-   * This is a necessary and sufficient condition for an edge to dominate anything,
-   * and in particular `bb1.hasDominatingEdgeTo(bb2) and bb2.dominates(bb3)` means
-   * that the edge `(bb1, bb2)` dominates `bb3`.
-   */
-  private predicate hasDominatingEdgeTo(IRBlock succ) {
-    exists(IRBlock branchBlock | branchBlock = this.getBranchBlock() |
-      branchBlock.immediatelyDominates(succ) and
-      branchBlock.getASuccessor() = succ and
-      forall(IRBlock pred | pred = succ.getAPredecessor() and pred != branchBlock |
-        succ.dominates(pred)
-        or
-        // An unreachable `pred` is vacuously dominated by `succ` since all
-        // paths from the entry to `pred` go through `succ`. Such vacuous
-        // dominance is not included in the `dominates` predicate since that
-        // could cause quadratic blow-up.
-        not pred.isReachableFromFunctionEntry()
-      )
-    )
-  }
-
-  pragma[noinline]
-  private IRBlock getBranchBlock() { result = branch.getBlock() }
-}
-
-private Instruction getBranchForCondition(Instruction guard) {
-  result.(ConditionalBranchInstruction).getCondition() = guard
-  or
-  result.(SwitchInstruction).getExpression() = guard
-  or
-  exists(LogicalNotInstruction cond |
-    result = getBranchForCondition(cond) and cond.getUnary() = guard
-  )
 }
 
 cached
