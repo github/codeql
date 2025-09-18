@@ -5,6 +5,7 @@
 private import javascript
 private import semmle.javascript.dataflow.internal.StepSummary
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
+private import semmle.javascript.internal.NameResolution
 
 cached
 module CallGraph {
@@ -12,6 +13,8 @@ module CallGraph {
   cached
   Function getAFunctionValue(AnalyzedNode node) {
     result = node.getAValue().(AbstractCallable).getFunction()
+    or
+    node = DataFlow::valueNode(NameResolution::trackFunctionValue(result))
   }
 
   /** Holds if the type inferred for `node` is indefinite due to global flow. */
