@@ -39,8 +39,8 @@ func main() {
 		untrustedInput := r.Referer() // $ Source
 
 		s, _ := smtp.Dial("test.test")
-		write, _ := s.Data() // $ Alert
-		io.WriteString(write, untrustedInput)
+		write, _ := s.Data()
+		io.WriteString(write, untrustedInput) // $ Alert
 	})
 
 	// Not OK
