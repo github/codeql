@@ -194,11 +194,6 @@ module NameResolution {
       node2 = req
     )
     or
-    exists(Closure::ClosureModule mod |
-      node1 = mod.getExportsVariable() and
-      node2 = mod
-    )
-    or
     exists(ImmediatelyInvokedFunctionExpr fun, int i |
       node1 = fun.getArgument(i) and
       node2 = fun.getParameter(i)
@@ -319,6 +314,12 @@ module NameResolution {
     )
     or
     result = mod.(Closure::ClosureModule).getExportsVariable().getAnAssignedExpr()
+    or
+    exists(ExportDefaultDeclaration exprt |
+      mod instanceof Closure::ClosureModule and
+      exprt.getContainer() = mod and
+      result = exprt.getOperand()
+    )
   }
 
   /** Gets a node that is bulk-exported from the given module. */

@@ -272,6 +272,12 @@ module AccessPath {
       result = decl.getIdentifier().(GlobalVarDecl).getName() and
       root.isGlobal()
     )
+    or
+    exists(Closure::ClosureModule mod |
+      node = mod.getExportsVariable().getAnAssignedExpr().flow() and
+      root.isGlobal() and
+      result = mod.getClosureNamespace()
+    )
   }
 
   /** A module for computing an access to a variable that happens after a property has been written onto it */
