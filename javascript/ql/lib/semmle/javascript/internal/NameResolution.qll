@@ -102,6 +102,13 @@ module NameResolution {
       node2 = exprt.getImportedPath()
     )
     or
+    // For imports like `require()` that are just expressions evaluating to the imported module.
+    exists(Import imprt |
+      imprt.getImportedModuleNode() = DataFlow::valueNode(imprt) and
+      node1 = imprt.getImportedPathExpr() and
+      node2 = imprt
+    )
+    or
     exists(ImportNamespaceSpecifier spec |
       node1 = spec.getImportDeclaration().getImportedPathExpr() and
       node2 = spec.getLocal()
