@@ -6252,7 +6252,8 @@ joinBlockPredecessor
 | break_ensure.rb:20:7:22:9 | [ensure: exception] if ... | break_ensure.rb:21:9:21:20 | [ensure: exception] self | 1 |
 | break_ensure.rb:20:7:22:9 | if ... | break_ensure.rb:16:7:18:9 | if ... | 0 |
 | break_ensure.rb:20:7:22:9 | if ... | break_ensure.rb:21:9:21:20 | self | 1 |
-| break_ensure.rb:27:1:42:3 | exit m3 | break_ensure.rb:33:5:39:7 | [ensure: exception] while ... | 0 |
+| break_ensure.rb:27:1:42:3 | exit m3 | break_ensure.rb:27:1:42:3 | exit m3 (normal) | 0 |
+| break_ensure.rb:27:1:42:3 | exit m3 | break_ensure.rb:33:5:39:7 | [ensure: exception] while ... | 1 |
 | break_ensure.rb:27:1:42:3 | exit m3 (normal) | break_ensure.rb:33:5:39:7 | [ensure: return] while ... | 1 |
 | break_ensure.rb:27:1:42:3 | exit m3 (normal) | break_ensure.rb:33:5:39:7 | while ... | 0 |
 | break_ensure.rb:33:5:39:7 | [ensure: exception] while ... | break_ensure.rb:33:11:33:11 | [ensure: exception] y | 0 |
@@ -6286,20 +6287,25 @@ joinBlockPredecessor
 | case.rb:9:3:17:5 | case ... | case.rb:14:25:14:25 | 6 | 3 |
 | case.rb:9:3:17:5 | case ... | case.rb:15:28:15:28 | 7 | 4 |
 | case.rb:9:3:17:5 | case ... | case.rb:16:10:16:10 | 8 | 5 |
-| case.rb:20:1:24:3 | exit case_match_no_match | case.rb:21:3:23:5 | case ... | 0 |
-| case.rb:26:1:30:3 | exit case_match_raise | case.rb:27:3:29:5 | case ... | 0 |
-| case.rb:32:1:39:3 | exit case_match_array | case.rb:33:3:38:5 | case ... | 0 |
+| case.rb:20:1:24:3 | exit case_match_no_match | case.rb:20:1:24:3 | exit case_match_no_match (abnormal) | 0 |
+| case.rb:20:1:24:3 | exit case_match_no_match | case.rb:21:3:23:5 | case ... | 1 |
+| case.rb:26:1:30:3 | exit case_match_raise | case.rb:26:1:30:3 | exit case_match_raise (abnormal) | 0 |
+| case.rb:26:1:30:3 | exit case_match_raise | case.rb:27:3:29:5 | case ... | 1 |
+| case.rb:32:1:39:3 | exit case_match_array | case.rb:32:1:39:3 | exit case_match_array (abnormal) | 0 |
+| case.rb:32:1:39:3 | exit case_match_array | case.rb:33:3:38:5 | case ... | 1 |
 | case.rb:32:1:39:3 | exit case_match_array (abnormal) | case.rb:37:5:37:27 | in ... then ... | 0 |
 | case.rb:32:1:39:3 | exit case_match_array (abnormal) | case.rb:37:8:37:26 | [ ..., * ] | 1 |
 | case.rb:33:3:38:5 | case ... | case.rb:32:1:39:3 | enter case_match_array | 0 |
 | case.rb:33:3:38:5 | case ... | case.rb:35:9:35:9 | x | 1 |
 | case.rb:33:3:38:5 | case ... | case.rb:36:9:36:9 | x | 2 |
 | case.rb:33:3:38:5 | case ... | case.rb:37:25:37:25 | e | 3 |
-| case.rb:41:1:45:3 | exit case_match_find | case.rb:43:20:43:20 | y | 0 |
+| case.rb:41:1:45:3 | exit case_match_find | case.rb:41:1:45:3 | exit case_match_find (abnormal) | 0 |
+| case.rb:41:1:45:3 | exit case_match_find | case.rb:43:20:43:20 | y | 1 |
 | case.rb:41:1:45:3 | exit case_match_find (abnormal) | case.rb:41:1:45:3 | enter case_match_find | 0 |
 | case.rb:41:1:45:3 | exit case_match_find (abnormal) | case.rb:43:10:43:10 | x | 1 |
 | case.rb:41:1:45:3 | exit case_match_find (abnormal) | case.rb:43:16:43:16 | 2 | 2 |
-| case.rb:47:1:53:3 | exit case_match_hash | case.rb:48:3:52:5 | case ... | 0 |
+| case.rb:47:1:53:3 | exit case_match_hash | case.rb:47:1:53:3 | exit case_match_hash (abnormal) | 0 |
+| case.rb:47:1:53:3 | exit case_match_hash | case.rb:48:3:52:5 | case ... | 1 |
 | case.rb:47:1:53:3 | exit case_match_hash (abnormal) | case.rb:51:5:51:17 | in ... then ... | 0 |
 | case.rb:47:1:53:3 | exit case_match_hash (abnormal) | case.rb:51:8:51:16 | { ..., ** } | 1 |
 | case.rb:48:3:52:5 | case ... | case.rb:49:29:49:32 | rest | 0 |
@@ -6315,7 +6321,8 @@ joinBlockPredecessor
 | case.rb:56:3:60:5 | case ... | case.rb:58:5:58:10 | in ... then ... | 1 |
 | case.rb:64:3:66:5 | case ... | case.rb:63:1:67:3 | enter case_match_underscore | 0 |
 | case.rb:64:3:66:5 | case ... | case.rb:65:12:65:12 | _ | 1 |
-| case.rb:69:1:93:3 | exit case_match_various | case.rb:72:3:92:5 | case ... | 0 |
+| case.rb:69:1:93:3 | exit case_match_various | case.rb:69:1:93:3 | exit case_match_various (abnormal) | 0 |
+| case.rb:69:1:93:3 | exit case_match_various | case.rb:72:3:92:5 | case ... | 1 |
 | case.rb:72:3:92:5 | case ... | case.rb:69:1:93:3 | enter case_match_various | 0 |
 | case.rb:72:3:92:5 | case ... | case.rb:74:5:74:11 | in ... then ... | 1 |
 | case.rb:72:3:92:5 | case ... | case.rb:75:5:75:15 | in ... then ... | 2 |
@@ -6347,7 +6354,8 @@ joinBlockPredecessor
 | case.rb:72:3:92:5 | case ... | case.rb:91:13:91:14 | "" | 28 |
 | case.rb:72:3:92:5 | case ... | case.rb:91:18:91:19 | [ ..., * ] | 29 |
 | case.rb:72:3:92:5 | case ... | case.rb:91:23:91:24 | { ..., ** } | 30 |
-| case.rb:95:1:99:3 | exit case_match_guard_no_else | case.rb:97:25:97:25 | 6 | 0 |
+| case.rb:95:1:99:3 | exit case_match_guard_no_else | case.rb:95:1:99:3 | exit case_match_guard_no_else (abnormal) | 0 |
+| case.rb:95:1:99:3 | exit case_match_guard_no_else | case.rb:97:25:97:25 | 6 | 1 |
 | cfg.html.erb:18:14:22:16 | if ... | cfg.html.erb:19:19:19:32 | self | 0 |
 | cfg.html.erb:18:14:22:16 | if ... | cfg.html.erb:21:19:21:32 | self | 1 |
 | cfg.rb:41:1:45:3 | case ... | cfg.rb:42:15:42:24 | self | 0 |
@@ -6454,7 +6462,8 @@ joinBlockPredecessor
 | loops.rb:31:9:31:9 | x | loops.rb:31:15:32:5 | do ... | 1 |
 | raise.rb:7:1:12:3 | exit m1 | raise.rb:8:3:10:5 | if ... | 0 |
 | raise.rb:7:1:12:3 | exit m1 | raise.rb:9:5:9:17 | self | 1 |
-| raise.rb:14:1:23:3 | exit m2 | raise.rb:22:3:22:15 | self | 0 |
+| raise.rb:14:1:23:3 | exit m2 | raise.rb:14:1:23:3 | exit m2 (abnormal) | 0 |
+| raise.rb:14:1:23:3 | exit m2 | raise.rb:22:3:22:15 | self | 1 |
 | raise.rb:22:3:22:15 | self | raise.rb:16:5:18:7 | if ... | 0 |
 | raise.rb:22:3:22:15 | self | raise.rb:20:5:20:18 | self | 1 |
 | raise.rb:33:3:33:15 | self | raise.rb:27:5:29:7 | if ... | 0 |
@@ -6463,25 +6472,30 @@ joinBlockPredecessor
 | raise.rb:44:3:44:15 | self | raise.rb:39:7:39:22 | self | 1 |
 | raise.rb:54:3:54:15 | self | raise.rb:49:5:51:7 | if ... | 0 |
 | raise.rb:54:3:54:15 | self | raise.rb:50:7:50:22 | self | 1 |
-| raise.rb:57:1:66:3 | exit m6 | raise.rb:65:3:65:15 | self | 0 |
+| raise.rb:57:1:66:3 | exit m6 | raise.rb:57:1:66:3 | exit m6 (abnormal) | 0 |
+| raise.rb:57:1:66:3 | exit m6 | raise.rb:65:3:65:15 | self | 1 |
 | raise.rb:62:36:62:36 | e | raise.rb:60:7:60:22 | self | 0 |
 | raise.rb:62:36:62:36 | e | raise.rb:62:22:62:31 | ExceptionB | 1 |
 | raise.rb:65:3:65:15 | self | raise.rb:59:5:61:7 | if ... | 0 |
 | raise.rb:65:3:65:15 | self | raise.rb:62:36:62:36 | e | 1 |
-| raise.rb:68:1:77:3 | exit m7 | raise.rb:76:3:76:15 | [ensure: exception] self | 0 |
+| raise.rb:68:1:77:3 | exit m7 | raise.rb:68:1:77:3 | exit m7 (normal) | 0 |
+| raise.rb:68:1:77:3 | exit m7 | raise.rb:76:3:76:15 | [ensure: exception] self | 1 |
 | raise.rb:68:1:77:3 | exit m7 (normal) | raise.rb:72:13:72:17 | x < 0 | 0 |
 | raise.rb:68:1:77:3 | exit m7 (normal) | raise.rb:76:3:76:15 | self | 1 |
 | raise.rb:76:3:76:15 | [ensure: exception] self | raise.rb:68:1:77:3 | enter m7 | 0 |
 | raise.rb:76:3:76:15 | [ensure: exception] self | raise.rb:70:5:70:17 | self | 1 |
 | raise.rb:76:3:76:15 | [ensure: exception] self | raise.rb:71:3:72:18 | elsif ... | 2 |
 | raise.rb:76:3:76:15 | [ensure: exception] self | raise.rb:71:9:71:9 | x | 3 |
-| raise.rb:79:1:92:3 | exit m8 | raise.rb:89:5:89:17 | [ensure: exception] self | 0 |
+| raise.rb:79:1:92:3 | exit m8 | raise.rb:79:1:92:3 | exit m8 (normal) | 0 |
+| raise.rb:79:1:92:3 | exit m8 | raise.rb:89:5:89:17 | [ensure: exception] self | 1 |
 | raise.rb:79:1:92:3 | exit m8 (normal) | raise.rb:85:15:85:19 | x < 0 | 0 |
 | raise.rb:79:1:92:3 | exit m8 (normal) | raise.rb:89:5:89:17 | self | 1 |
 | raise.rb:89:5:89:17 | [ensure: exception] self | raise.rb:79:1:92:3 | enter m8 | 0 |
 | raise.rb:89:5:89:17 | [ensure: exception] self | raise.rb:83:7:83:19 | self | 1 |
 | raise.rb:89:5:89:17 | [ensure: exception] self | raise.rb:84:5:85:20 | elsif ... | 2 |
 | raise.rb:89:5:89:17 | [ensure: exception] self | raise.rb:84:11:84:11 | x | 3 |
+| raise.rb:94:1:119:3 | exit m9 | raise.rb:94:1:119:3 | exit m9 (abnormal) | 1 |
+| raise.rb:94:1:119:3 | exit m9 | raise.rb:94:1:119:3 | exit m9 (normal) | 0 |
 | raise.rb:94:1:119:3 | exit m9 (abnormal) | raise.rb:116:3:118:5 | [ensure: exception] if ... | 0 |
 | raise.rb:94:1:119:3 | exit m9 (abnormal) | raise.rb:117:5:117:22 | [ensure: exception] self | 2 |
 | raise.rb:94:1:119:3 | exit m9 (abnormal) | raise.rb:117:5:117:22 | [ensure: return] self | 3 |
@@ -6520,6 +6534,8 @@ joinBlockPredecessor
 | raise.rb:155:16:155:50 | exit { ... } | raise.rb:155:25:155:48 | ... if ... | 0 |
 | raise.rb:160:9:162:7 | exit -> { ... } | raise.rb:161:7:161:14 | self | 1 |
 | raise.rb:160:9:162:7 | exit -> { ... } | raise.rb:161:7:161:23 | ... unless ... | 0 |
+| raise.rb:172:1:182:3 | exit m16 | raise.rb:172:1:182:3 | exit m16 (abnormal) | 1 |
+| raise.rb:172:1:182:3 | exit m16 | raise.rb:172:1:182:3 | exit m16 (normal) | 0 |
 | raise.rb:172:1:182:3 | exit m16 (normal) | raise.rb:175:14:175:14 | 1 | 0 |
 | raise.rb:172:1:182:3 | exit m16 (normal) | raise.rb:177:14:177:14 | 2 | 1 |
 | raise.rb:172:1:182:3 | exit m16 (normal) | raise.rb:180:12:180:12 | 3 | 2 |
