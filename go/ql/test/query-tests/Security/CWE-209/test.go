@@ -12,7 +12,8 @@ var logger log.Logger
 
 func handlePanic(w http.ResponseWriter, r *http.Request) {
 	buf := make([]byte, 2<<16)
-	buf = buf[:runtime.Stack(buf, true)]
+	stackLen := runtime.Stack(buf, true)
+	buf = buf[:stackLen]
 	// BAD: printing a stack trace back to the response
 	w.Write(buf)
 	// GOOD: logging the response to the server and sending
