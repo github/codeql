@@ -120,11 +120,18 @@ predicate jumpStep(Node n1, Node n2) {
     n2 = v.getARead()
   )
   or
-  exists(SsaDefinition pred, SsaDefinition succ |
-    succ.(SsaVariableCapture).getSourceVariable() = pred.(SsaExplicitDefinition).getSourceVariable()
-  |
-    n1 = ssaNode(pred) and
+  exists(SsaExplicitDefinition def, SsaVariableCapture succ |
+    succ.getSourceVariable() = def.getSourceVariable() and
     n2 = ssaNode(succ)
+  |
+    not exists(def.getAFirstUse()) and n1 = ssaNode(def)
+    or
+    exists(IR::Instruction lastUse |
+      lastUse = getAnAdjacentUse*(def.getAFirstUse()) and
+      not exists(getAnAdjacentUse(lastUse))
+    |
+      [n1, n1.(DataFlow::PostUpdateNode).getPreUpdateNode()] = instructionNode(lastUse)
+    )
   )
   or
   // If a channel-typed field is referenced exactly once in the context of
