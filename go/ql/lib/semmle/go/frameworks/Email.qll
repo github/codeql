@@ -26,9 +26,14 @@ module EmailData {
   private class SmtpData extends Range {
     SmtpData() {
       // func (c *Client) Data() (io.WriteCloser, error)
-      exists(Method data |
+      exists(Method data, DataFlow::Node n |
         data.hasQualifiedName("net/smtp", "Client", "Data") and
-        this.(DataFlow::SsaNode).getInit() = data.getACall().getResult(0)
+        // Deal with cases like
+        //   w, _ := s.Data()
+        //   io.WriteString(w, source()) // $ Alert
+        //   w.Write(source())           // $ Alert
+        DataFlow::localFlow(data.getACall().getResult(0), n) and
+        this.(DataFlow::PostUpdateNode).getPreUpdateNode() = n
       )
       or
       // func SendMail(addr string, a Auth, from string, to []string, msg []byte) error
@@ -98,3 +103,18 @@ private class MultipartNewWriterModel extends TaintTracking::FunctionModel {
     input.isResult() and output.isParameter(0)
   }
 }
+// /**
+//  * A taint model of the `Data` method of `Client` from `net/smtp`.
+//  *
+//  * If tainted data is written to the writer created by this method, the client
+//  * should be considered tainted as well.
+//  */
+// private class SmtpClientDataModel extends TaintTracking::FunctionModel, Method {
+//   SmtpClientDataModel() {
+//     // func (c *Client) Data() (io.WriteCloser, error)
+//     this.hasQualifiedName("net/smtp", "Client", "Data")
+//   }
+//   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+//     input.isResult(0) and output.isReceiver()
+//   }
+// }

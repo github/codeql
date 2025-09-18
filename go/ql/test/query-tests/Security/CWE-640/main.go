@@ -39,8 +39,8 @@ func main() {
 		untrustedInput := r.Referer() // $ Source
 
 		s, _ := smtp.Dial("test.test")
-		write, _ := s.Data() // $ Alert
-		io.WriteString(write, untrustedInput)
+		write, _ := s.Data()
+		io.WriteString(write, untrustedInput) // $ Alert
 	})
 
 	// Not OK
@@ -140,6 +140,19 @@ func main() {
 		// Send email with user-controlled form file content
 		smtp.SendMail("test.test", nil, "from@from.com", nil, b.Bytes()) // $ Alert
 	})
+
+	// Not OK - check only one result when sink is Client.Data() from net/smtp
+	{
+		untrustedInput1 := r.Referer() // $ Source=s1
+		untrustedInput2 := r.Referer() // $ Source=s2
+		c, _ := smtp.Dial("mail.example.com:smtp")
+		w, _ := c.Data()
+		w.Write([]byte("safe text"))
+		w.Write([]byte(untrustedInput1)) // $ Alert=s1
+		w.Write([]byte(untrustedInput2)) // $ Alert=s2
+		w.Close()
+		c.Quit()
+	}
 
 	log.Println(http.ListenAndServe(":80", nil))
 

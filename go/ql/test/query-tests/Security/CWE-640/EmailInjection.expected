@@ -1,6 +1,7 @@
 #select
 | EmailBad.go:12:56:12:67 | type conversion | EmailBad.go:9:10:9:17 | selection of Header | EmailBad.go:12:56:12:67 | type conversion | Email content may contain $@. | EmailBad.go:9:10:9:17 | selection of Header | untrusted input |
 | main.go:33:57:33:78 | type conversion | main.go:31:21:31:31 | call to Referer | main.go:33:57:33:78 | type conversion | Email content may contain $@. | main.go:31:21:31:31 | call to Referer | untrusted input |
+| main.go:43:18:43:22 | write [postupdate] | main.go:39:21:39:31 | call to Referer | main.go:43:18:43:22 | write [postupdate] | Email content may contain $@. | main.go:39:21:39:31 | call to Referer | untrusted input |
 | main.go:54:46:54:59 | untrustedInput | main.go:48:21:48:31 | call to Referer | main.go:54:46:54:59 | untrustedInput | Email content may contain $@. | main.go:48:21:48:31 | call to Referer | untrusted input |
 | main.go:55:52:55:65 | untrustedInput | main.go:48:21:48:31 | call to Referer | main.go:55:52:55:65 | untrustedInput | Email content may contain $@. | main.go:48:21:48:31 | call to Referer | untrusted input |
 | main.go:65:16:65:22 | content | main.go:60:21:60:31 | call to Referer | main.go:65:16:65:22 | content | Email content may contain $@. | main.go:60:21:60:31 | call to Referer | untrusted input |
@@ -11,10 +12,14 @@
 | main.go:95:16:95:23 | content2 | main.go:84:21:84:31 | call to Referer | main.go:95:16:95:23 | content2 | Email content may contain $@. | main.go:84:21:84:31 | call to Referer | untrusted input |
 | main.go:124:57:124:65 | call to Bytes | main.go:113:21:113:31 | call to Referer | main.go:124:57:124:65 | call to Bytes | Email content may contain $@. | main.go:113:21:113:31 | call to Referer | untrusted input |
 | main.go:141:57:141:65 | call to Bytes | main.go:129:21:129:31 | call to Referer | main.go:141:57:141:65 | call to Bytes | Email content may contain $@. | main.go:129:21:129:31 | call to Referer | untrusted input |
+| main.go:151:3:151:3 | w [postupdate] | main.go:146:22:146:32 | call to Referer | main.go:151:3:151:3 | w [postupdate] | Email content may contain $@. | main.go:146:22:146:32 | call to Referer | untrusted input |
+| main.go:152:3:152:3 | w [postupdate] | main.go:147:22:147:32 | call to Referer | main.go:152:3:152:3 | w [postupdate] | Email content may contain $@. | main.go:147:22:147:32 | call to Referer | untrusted input |
 edges
-| EmailBad.go:9:10:9:17 | selection of Header | EmailBad.go:9:10:9:29 | call to Get | provenance | Src:MaD:1 MaD:7 |
+| EmailBad.go:9:10:9:17 | selection of Header | EmailBad.go:9:10:9:29 | call to Get | provenance | Src:MaD:1 MaD:8 |
 | EmailBad.go:9:10:9:29 | call to Get | EmailBad.go:12:56:12:67 | type conversion | provenance |  |
 | main.go:31:21:31:31 | call to Referer | main.go:33:57:33:78 | type conversion | provenance | Src:MaD:2  |
+| main.go:39:21:39:31 | call to Referer | main.go:43:25:43:38 | untrustedInput | provenance | Src:MaD:2  |
+| main.go:43:25:43:38 | untrustedInput | main.go:43:18:43:22 | write [postupdate] | provenance | MaD:5 |
 | main.go:48:21:48:31 | call to Referer | main.go:54:46:54:59 | untrustedInput | provenance | Src:MaD:2  |
 | main.go:48:21:48:31 | call to Referer | main.go:55:52:55:65 | untrustedInput | provenance | Src:MaD:2  |
 | main.go:60:21:60:31 | call to Referer | main.go:62:47:62:60 | untrustedInput | provenance | Src:MaD:2  |
@@ -32,7 +37,7 @@ edges
 | main.go:113:21:113:31 | call to Referer | main.go:119:28:119:41 | untrustedInput | provenance | Src:MaD:2  |
 | main.go:116:29:116:30 | &... [postupdate] | main.go:124:57:124:57 | b | provenance |  |
 | main.go:119:3:119:4 | mw [postupdate] | main.go:116:29:116:30 | &... [postupdate] | provenance | FunctionModel |
-| main.go:119:28:119:41 | untrustedInput | main.go:119:3:119:4 | mw [postupdate] | provenance | MaD:6 |
+| main.go:119:28:119:41 | untrustedInput | main.go:119:3:119:4 | mw [postupdate] | provenance | MaD:7 |
 | main.go:124:57:124:57 | b | main.go:124:57:124:65 | call to Bytes | provenance | MaD:3 |
 | main.go:129:21:129:31 | call to Referer | main.go:136:30:136:43 | untrustedInput | provenance | Src:MaD:2  |
 | main.go:132:29:132:30 | &... [postupdate] | main.go:141:57:141:57 | b | provenance |  |
@@ -40,20 +45,28 @@ edges
 | main.go:136:18:136:27 | formWriter [postupdate] | main.go:135:20:135:21 | mw [postupdate] | provenance | FunctionModel |
 | main.go:136:30:136:43 | untrustedInput | main.go:136:18:136:27 | formWriter [postupdate] | provenance | MaD:5 |
 | main.go:141:57:141:57 | b | main.go:141:57:141:65 | call to Bytes | provenance | MaD:3 |
+| main.go:146:22:146:32 | call to Referer | main.go:151:11:151:33 | type conversion | provenance | Src:MaD:2  |
+| main.go:147:22:147:32 | call to Referer | main.go:152:11:152:33 | type conversion | provenance | Src:MaD:2  |
+| main.go:151:11:151:33 | type conversion | main.go:151:3:151:3 | w [postupdate] | provenance | MaD:6 |
+| main.go:152:11:152:33 | type conversion | main.go:152:3:152:3 | w [postupdate] | provenance | MaD:6 |
 models
 | 1 | Source: net/http; Request; true; Header; ; ; ; remote; manual |
 | 2 | Source: net/http; Request; true; Referer; ; ; ReturnValue; remote; manual |
 | 3 | Summary: bytes; Buffer; true; Bytes; ; ; Argument[receiver]; ReturnValue; taint; manual |
 | 4 | Summary: github.com/sendgrid/sendgrid-go/helpers/mail; ; false; NewContent; ; ; Argument[1]; ReturnValue; taint; manual |
 | 5 | Summary: io; ; false; WriteString; ; ; Argument[1]; Argument[0]; taint; manual |
-| 6 | Summary: mime/multipart; Writer; true; WriteField; ; ; Argument[0..1]; Argument[receiver]; taint; manual |
-| 7 | Summary: net/http; Header; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
+| 6 | Summary: io; Writer; true; Write; ; ; Argument[0]; Argument[receiver]; taint; manual |
+| 7 | Summary: mime/multipart; Writer; true; WriteField; ; ; Argument[0..1]; Argument[receiver]; taint; manual |
+| 8 | Summary: net/http; Header; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
 nodes
 | EmailBad.go:9:10:9:17 | selection of Header | semmle.label | selection of Header |
 | EmailBad.go:9:10:9:29 | call to Get | semmle.label | call to Get |
 | EmailBad.go:12:56:12:67 | type conversion | semmle.label | type conversion |
 | main.go:31:21:31:31 | call to Referer | semmle.label | call to Referer |
 | main.go:33:57:33:78 | type conversion | semmle.label | type conversion |
+| main.go:39:21:39:31 | call to Referer | semmle.label | call to Referer |
+| main.go:43:18:43:22 | write [postupdate] | semmle.label | write [postupdate] |
+| main.go:43:25:43:38 | untrustedInput | semmle.label | untrustedInput |
 | main.go:48:21:48:31 | call to Referer | semmle.label | call to Referer |
 | main.go:54:46:54:59 | untrustedInput | semmle.label | untrustedInput |
 | main.go:55:52:55:65 | untrustedInput | semmle.label | untrustedInput |
@@ -85,7 +98,10 @@ nodes
 | main.go:136:30:136:43 | untrustedInput | semmle.label | untrustedInput |
 | main.go:141:57:141:57 | b | semmle.label | b |
 | main.go:141:57:141:65 | call to Bytes | semmle.label | call to Bytes |
+| main.go:146:22:146:32 | call to Referer | semmle.label | call to Referer |
+| main.go:147:22:147:32 | call to Referer | semmle.label | call to Referer |
+| main.go:151:3:151:3 | w [postupdate] | semmle.label | w [postupdate] |
+| main.go:151:11:151:33 | type conversion | semmle.label | type conversion |
+| main.go:152:3:152:3 | w [postupdate] | semmle.label | w [postupdate] |
+| main.go:152:11:152:33 | type conversion | semmle.label | type conversion |
 subpaths
-testFailures
-| main.go:39:33:39:43 | comment | Missing result: Source |
-| main.go:42:24:42:33 | comment | Missing result: Alert |
