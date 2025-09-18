@@ -81,6 +81,12 @@ module NameResolution {
       node2 = imprt.getImportedPathExpr()
     )
     or
+    // Same as above, but for re-export declarations
+    exists(ReExportDeclaration exprt |
+      node1 = exprt.getReExportedModule() and
+      node2 = exprt.getImportedPath()
+    )
+    or
     exists(ImportNamespaceSpecifier spec |
       node1 = spec.getImportDeclaration().getImportedPathExpr() and
       node2 = spec.getLocal()
