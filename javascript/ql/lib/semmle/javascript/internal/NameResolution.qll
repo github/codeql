@@ -34,6 +34,16 @@ module NameResolution {
       or
       result = this.(JSDocTypeExpr).getLocation()
     }
+
+    DataFlow::Node toDataFlowNode() {
+      result = DataFlow::valueNode(this)
+      or
+      // TODO: refactor graph to avoid the need for this
+      exists(ImportSpecifier spec |
+        this = spec.getLocal() and
+        result = DataFlow::valueNode(spec)
+      )
+    }
   }
 
   private signature predicate nodeSig(Node node);

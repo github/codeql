@@ -14,7 +14,7 @@ module CallGraph {
   Function getAFunctionValue(AnalyzedNode node) {
     result = node.getAValue().(AbstractCallable).getFunction()
     or
-    node = DataFlow::valueNode(NameResolution::trackFunctionValue(result))
+    node = NameResolution::trackFunctionValue(result).toDataFlowNode().(DataFlow::SourceNode)
   }
 
   /** Holds if the type inferred for `node` is indefinite due to global flow. */
