@@ -19,6 +19,12 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(EscapingTextWriter trapFile)
         {
+            if (Context.ExtractionContext.IsStandalone)
+            {
+                WriteStarId(trapFile);
+                return;
+            }
+
             trapFile.Write("loc,");
             trapFile.WriteSubId(generatedFile);
             trapFile.Write(",0,0,0,0");
