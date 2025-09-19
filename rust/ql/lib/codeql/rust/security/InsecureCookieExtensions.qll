@@ -46,4 +46,36 @@ module InsecureCookie {
   private class ModelsAsDataSink extends Sink {
     ModelsAsDataSink() { sinkNode(this, "cookie-use") }
   }
+
+  /**
+   * Holds if cookie attribute `attrib` (`secure` or `partitioned`) is set to `value` (`true` or `false`) at `node`.
+   * A value that cannot be determined is treated as `false`.
+   *
+   * This references models-as-data optional barrier nodes, for example `OptionalBarrier[cookie-secure-arg0]`.
+   */
+  predicate cookieSetNode(DataFlow::Node node, string attrib, boolean value) {
+    exists(
+      FlowSummaryNode summaryNode, string barrierName, CallExprBase ce, int arg,
+      DataFlow::Node argNode
+    |
+      // decode a `cookie-`... optional barrier
+      DataflowImpl::optionalBarrier(summaryNode, barrierName) and
+      attrib = barrierName.regexpCapture("cookie-(secure|partitioned)-arg([0-9]+)", 1) and
+      arg = barrierName.regexpCapture("cookie-(secure|partitioned)-arg([0-9]+)", 2).toInt() and
+      // find a call and arg referenced by this optional barrier
+      ce.getStaticTarget() = summaryNode.getSummarizedCallable() and
+      ce.getArg(arg) = argNode.asExpr().getExpr() and
+      // check if the argument is always `true`
+      (
+        if
+          forex(DataFlow::Node argSourceNode | DataFlow::localFlow(argSourceNode, argNode) |
+            argSourceNode.asExpr().getExpr().(BooleanLiteralExpr).getTextValue() = "true"
+          )
+        then value = true // `true` flow to here
+        else value = false // `false` or unknown
+      ) and
+      // and the node `node` where this happens
+      node.asExpr().getExpr() = ce
+    )
+  }
 }

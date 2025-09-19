@@ -9,7 +9,7 @@ fn test_cookie(sometimes: bool) {
     println!("cookie1 = '{}'", cookie1.to_string());
 
     // secure set to true
-    let cookie2 = Cookie::build(("name", "value")).secure(true).build(); // $ SPURIOUS: Alert[rust/insecure-cookie]
+    let cookie2 = Cookie::build(("name", "value")).secure(true).build(); // good
     println!("cookie2 = '{}'", cookie2.to_string());
 
     // secure left as default (which is `None`, equivalent here to `false`)
@@ -51,7 +51,7 @@ fn test_cookie(sometimes: bool) {
 
     // edge cases
     Cookie::build(("name", "value")).secure(true).secure(false).build(); // $ Alert[rust/insecure-cookie]
-    Cookie::build(("name", "value")).secure(false).secure(true).build(); // $ SPURIOUS: Alert[rust/insecure-cookie]
+    Cookie::build(("name", "value")).secure(false).secure(true).build(); // good
 
     // mutable cookie
     let mut jar = CookieJar::new();
@@ -111,7 +111,7 @@ fn test_cookie(sometimes: bool) {
     }
 
     // partitioned (implies secure)
-    Cookie::build(("name", "value")).partitioned(true).build(); // $ SPURIOUS: Alert[rust/insecure-cookie]
+    Cookie::build(("name", "value")).partitioned(true).build(); // good
 }
 
 fn test_biscotti() {
@@ -124,7 +124,7 @@ fn test_biscotti() {
     println!("biscotti1 = {}", a.to_string());
 
     let b = a.set_secure(true);
-    cookies.insert(b.clone()); // $ SPURIOUS: Alert[rust/insecure-cookie]
+    cookies.insert(b.clone()); // good
     println!("biscotti2 = {}", b.to_string());
 
     let c = b.set_secure(false);
@@ -132,15 +132,15 @@ fn test_biscotti() {
     println!("biscotti3 = {}", c.to_string());
 
     let d = c.set_partitioned(true); // (implies secure)
-    cookies.insert(d.clone()); // $ SPURIOUS: Alert[rust/insecure-cookie]
+    cookies.insert(d.clone()); // good
     println!("biscotti4 = {}", d.to_string());
 
     let e = d.set_secure(true);
-    cookies.insert(e.clone()); // $ SPURIOUS: Alert[rust/insecure-cookie]
+    cookies.insert(e.clone()); // good
     println!("biscotti5 = {}", e.to_string());
 
     let f = e.set_partitioned(false);
-    cookies.insert(f.clone()); // $ SPURIOUS: Alert[rust/insecure-cookie]
+    cookies.insert(f.clone()); // good
     println!("biscotti6 = {}", f.to_string());
 
     let g = f.set_secure(false);

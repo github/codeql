@@ -26,8 +26,8 @@ extensions:
       pack: codeql/rust-all
       extensible: summaryModel
     data:
-      - ["<cookie::builder::CookieBuilder>::secure", "Argument[self]", "ReturnValue", "taint", "manual"]
-      - ["<cookie::builder::CookieBuilder>::partitioned", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<cookie::builder::CookieBuilder>::secure", "Argument[self].OptionalBarrier[cookie-secure-arg0]", "ReturnValue", "taint", "manual"]
+      - ["<cookie::builder::CookieBuilder>::partitioned", "Argument[self].OptionalBarrier[cookie-partitioned-arg0]", "ReturnValue", "taint", "manual"]
       - ["<cookie::builder::CookieBuilder>::expires", "Argument[self]", "ReturnValue", "taint", "manual"]
       - ["<cookie::builder::CookieBuilder>::max_age", "Argument[self]", "ReturnValue", "taint", "manual"]
       - ["<cookie::builder::CookieBuilder>::domain", "Argument[self]", "ReturnValue", "taint", "manual"]
@@ -36,5 +36,5 @@ extensions:
       - ["<cookie::builder::CookieBuilder>::same_site", "Argument[self]", "ReturnValue", "taint", "manual"]
       - ["<cookie::builder::CookieBuilder>::permanent", "Argument[self]", "ReturnValue", "taint", "manual"]
       - ["<cookie::builder::CookieBuilder>::removal", "Argument[self]", "ReturnValue", "taint", "manual"]
-      - ["<cookie::Cookie>::set_secure", "Argument[self]", "ReturnValue", "taint", "manual"]
-      - ["<cookie::Cookie>::set_partitioned", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<cookie::Cookie>::set_secure", "Argument[self].OptionalBarrier[cookie-secure-arg0]", "ReturnValue", "taint", "manual"]
+      - ["<cookie::Cookie>::set_partitioned", "Argument[self].OptionalBarrier[cookie-partitioned-arg0]", "ReturnValue", "taint", "manual"]

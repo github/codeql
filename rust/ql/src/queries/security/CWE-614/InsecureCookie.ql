@@ -20,7 +20,8 @@ import codeql.rust.security.InsecureCookieExtensions
 
 /**
  * A data flow configuration for tracking values representing cookies without the
- * 'secure' attribute set.
+ * 'secure' attribute set. This is the primary data flow configurationn for this
+ * query.
  */
 module InsecureCookieConfig implements DataFlow::ConfigSig {
   import InsecureCookie
@@ -28,6 +29,9 @@ module InsecureCookieConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     // creation of a cookie or cookie configuration with default, insecure settings
     node instanceof Source
+    or
+    // setting the 'secure' attribute to false (or an unknown value)
+    cookieSetNode(node, "secure", false)
   }
 
   predicate isSink(DataFlow::Node node) {
@@ -36,6 +40,37 @@ module InsecureCookieConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) {
+    // setting the 'secure' attribute to true
+    cookieSetNode(node, "secure", true)
+    or
+    node instanceof Barrier
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+}
+
+/**
+ * A data flow configuration for tracking values representing cookies with the
+ * 'partitioned' attribute set. This is a secondary data flow configuration used
+ * to filter out unwanted results.
+ */
+module PartitionedCookieConfig implements DataFlow::ConfigSig {
+  import InsecureCookie
+
+  predicate isSource(DataFlow::Node node) {
+    // setting the 'partitioned' attribute to true
+    cookieSetNode(node, "partitioned", true)
+  }
+
+  predicate isSink(DataFlow::Node node) {
+    // use of a cookie or cookie configuration
+    node instanceof Sink
+  }
+
+  predicate isBarrier(DataFlow::Node node) {
+    // setting the 'partitioned' attribute to false (or an unknown value)
+    cookieSetNode(node, "partitioned", false)
+    or
     node instanceof Barrier
   }
 
@@ -44,9 +79,12 @@ module InsecureCookieConfig implements DataFlow::ConfigSig {
 
 module InsecureCookieFlow = TaintTracking::Global<InsecureCookieConfig>;
 
+module PartitionedCookieFlow = TaintTracking::Global<PartitionedCookieConfig>;
+
 import InsecureCookieFlow::PathGraph
 
 from InsecureCookieFlow::PathNode sourceNode, InsecureCookieFlow::PathNode sinkNode
 where
-  InsecureCookieFlow::flowPath(sourceNode, sinkNode)
+  InsecureCookieFlow::flowPath(sourceNode, sinkNode) and
+  not PartitionedCookieFlow::flow(_, sinkNode.getNode())
 select sinkNode.getNode(), sourceNode, sinkNode, "Cookie attribute 'Secure' is not set to true."

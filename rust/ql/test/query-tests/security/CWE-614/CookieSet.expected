@@ -1,0 +1,44 @@
+| main.rs:8:19:8:64 | ... .secure(...) | secure | false |
+| main.rs:12:19:12:63 | ... .secure(...) | secure | true |
+| main.rs:20:5:20:54 | ... .secure(...) | secure | false |
+| main.rs:21:5:21:55 | ... .secure(...) | secure | false |
+| main.rs:24:5:24:51 | ... .secure(...) | secure | false |
+| main.rs:25:5:25:52 | ... .secure(...) | secure | false |
+| main.rs:26:5:26:50 | ... .secure(...) | secure | false |
+| main.rs:27:5:27:51 | ... .secure(...) | secure | false |
+| main.rs:28:5:28:60 | ... .secure(...) | secure | false |
+| main.rs:29:5:29:60 | ... .secure(...) | secure | false |
+| main.rs:33:9:33:58 | ... .secure(...) | secure | false |
+| main.rs:35:9:35:58 | ... .secure(...) | secure | false |
+| main.rs:39:5:39:53 | ... .secure(...) | secure | false |
+| main.rs:40:5:40:64 | ... .secure(...) | secure | false |
+| main.rs:41:5:41:93 | ... .secure(...) | secure | false |
+| main.rs:42:5:42:72 | ... .secure(...) | secure | false |
+| main.rs:43:5:43:60 | ... .secure(...) | secure | false |
+| main.rs:44:5:44:66 | ... .secure(...) | secure | false |
+| main.rs:45:5:45:86 | ... .secure(...) | secure | false |
+| main.rs:46:5:46:62 | ... .secure(...) | secure | false |
+| main.rs:47:5:47:60 | ... .secure(...) | secure | false |
+| main.rs:48:5:48:50 | ... .secure(...) | secure | false |
+| main.rs:49:5:49:39 | ... .secure(...) | secure | false |
+| main.rs:50:5:50:54 | ... .secure(...) | secure | false |
+| main.rs:53:5:53:49 | ... .secure(...) | secure | true |
+| main.rs:53:5:53:63 | ... .secure(...) | secure | false |
+| main.rs:54:5:54:50 | ... .secure(...) | secure | false |
+| main.rs:54:5:54:63 | ... .secure(...) | secure | true |
+| main.rs:61:5:61:22 | a.set_secure(...) | secure | true |
+| main.rs:63:5:63:23 | a.set_secure(...) | secure | false |
+| main.rs:71:5:71:27 | b.set_secure(...) | secure | false |
+| main.rs:73:5:73:22 | b.set_secure(...) | secure | true |
+| main.rs:81:9:81:26 | c.set_secure(...) | secure | true |
+| main.rs:84:5:84:22 | c.set_secure(...) | secure | true |
+| main.rs:90:9:90:26 | c.set_secure(...) | secure | true |
+| main.rs:92:9:92:31 | c.set_partitioned(...) | partitioned | true |
+| main.rs:109:9:109:26 | e.set_secure(...) | secure | true |
+| main.rs:114:5:114:54 | ... .partitioned(...) | partitioned | true |
+| main.rs:126:13:126:30 | a.set_secure(...) | secure | true |
+| main.rs:130:13:130:31 | b.set_secure(...) | secure | false |
+| main.rs:134:13:134:35 | c.set_partitioned(...) | partitioned | true |
+| main.rs:138:13:138:30 | d.set_secure(...) | secure | true |
+| main.rs:142:13:142:36 | e.set_partitioned(...) | partitioned | false |
+| main.rs:146:13:146:31 | f.set_secure(...) | secure | false |
