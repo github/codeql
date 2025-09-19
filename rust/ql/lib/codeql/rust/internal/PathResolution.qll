@@ -79,18 +79,18 @@ private ItemNode getAChildSuccessor(ItemNode item, string name, SuccessorKind ki
 }
 
 /**
- * Holds if `n` is superceded by an attribute macro expansion. That is, `n` is
+ * Holds if `n` is superseded by an attribute macro expansion. That is, `n` is
  * an item or a transitive child of an item with an attribute macro expansion.
  */
-predicate supercededByAttributeMacroExpansion(AstNode n) {
+predicate supersededByAttributeMacroExpansion(AstNode n) {
   n.(Item).hasAttributeMacroExpansion()
   or
   exists(AstNode parent |
     n.getParentNode() = parent and
-    supercededByAttributeMacroExpansion(parent) and
+    supersededByAttributeMacroExpansion(parent) and
     // Don't exclude expansions themselves as they supercede other nodes.
     not n = parent.(Item).getAttributeMacroExpansion() and
-    // Don't consider attributes themselves to be superceded.  E.g., in `#[a] fn
+    // Don't consider attributes themselves to be superseded.  E.g., in `#[a] fn
     // f() {}` the macro expansion supercedes `fn f() {}` but not `#[a]`.
     not n instanceof Attr
   )
@@ -175,8 +175,8 @@ predicate supercededByAttributeMacroExpansion(AstNode n) {
  */
 abstract class ItemNode extends Locatable {
   ItemNode() {
-    // Exclude items that are superceded by the expansion of an attribute macro.
-    not supercededByAttributeMacroExpansion(this)
+    // Exclude items that are superseded by the expansion of an attribute macro.
+    not supersededByAttributeMacroExpansion(this)
   }
 
   /** Gets the (original) name of this item. */
