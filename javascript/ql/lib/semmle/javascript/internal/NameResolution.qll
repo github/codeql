@@ -35,18 +35,20 @@ module NameResolution {
       result = this.(JSDocTypeExpr).getLocation()
     }
 
-    DataFlow::Node toDataFlowNode() {
+    DataFlow::Node toDataFlowNodeIn() {
       result = DataFlow::valueNode(this)
       or
-      // TODO: refactor graph to avoid the need for this
+      result = DataFlow::valueNode(this.(Variable).getAnAssignedExpr())
+    }
+
+    DataFlow::Node toDataFlowNodeOut() {
+      result = DataFlow::valueNode(this)
+      or
+      result = DataFlow::valueNode(this.(Variable).getAnAccess())
+      or
       exists(ImportSpecifier spec |
         this = spec.getLocal() and
         result = DataFlow::valueNode(spec)
-      )
-      or
-      exists(ExportDeclaration exprt, string name |
-        exprt.exportsAs(this, name) and
-        result = exprt.getSourceNode(name)
       )
     }
   }

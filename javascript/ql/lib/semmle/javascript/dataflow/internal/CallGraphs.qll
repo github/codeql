@@ -14,7 +14,7 @@ module CallGraph {
   Function getAFunctionValue(AnalyzedNode node) {
     result = node.getAValue().(AbstractCallable).getFunction()
     or
-    node = NameResolution::trackFunctionValue(result).toDataFlowNode()
+    node = NameResolution::trackFunctionValue(result).toDataFlowNodeOut()
     or
     exists(DataFlow::Node pred |
       AccessPath::step(pred, node) and

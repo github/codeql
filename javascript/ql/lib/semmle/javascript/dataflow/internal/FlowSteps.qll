@@ -336,13 +336,13 @@ private module CachedSteps {
     // TODO: Ensure name resolution has good enough support for NodeJS and AMD
     exists(NameResolution::Node node1, NameResolution::Node node2 |
       NameResolution::ValueFlow::resolvedReadStep(node1, node2) and
-      pred = node1.toDataFlowNode() and
-      succ = node2.toDataFlowNode()
+      pred = node1.toDataFlowNodeIn() and
+      succ = node2.toDataFlowNodeOut()
     )
     or
     exists(Import imprt, Module mod |
       imprt.getImportedModule() = mod and
-      pred = NameResolution::getModuleBulkExport(mod).toDataFlowNode() and
+      pred = NameResolution::getModuleBulkExport(mod).toDataFlowNodeIn() and
       succ = imprt.getImportedModuleNodeStrict()
     )
   }
