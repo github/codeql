@@ -448,7 +448,7 @@ func installDependencies(workspace project.GoWorkspace) {
 }
 
 // Run the extractor.
-func extract(workspace project.GoWorkspace) bool {
+func extract(workspace project.GoWorkspace, sourceRoot string) bool {
 	extractor, err := util.GetExtractorPath()
 	if err != nil {
 		log.Fatalf("Could not determine path of extractor: %v.\n", err)
@@ -457,6 +457,12 @@ func extract(workspace project.GoWorkspace) bool {
 	extractorArgs := []string{}
 	if workspace.DepMode == project.GoGetWithModules {
 		extractorArgs = append(extractorArgs, workspace.ModMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...)
+	}
+
+	if util.IsOverlayExtraction() {
+		// When we are extracting an overlay, pass the source root to the extractor so that it knows
+		// how to resolve the relative paths in the list of changed files.
+		extractorArgs = append(extractorArgs, "--source-root", sourceRoot)
 	}
 
 	if len(workspace.Modules) == 0 {
@@ -587,6 +593,12 @@ func installDependenciesAndBuild() {
 		buildWithCustomCommands(inst)
 	}
 
+	// The autobuilder is invoked with its working directory set to the source directory.
+	sourceRoot, err := os.Getwd()
+	if err != nil {
+		log.Fatalf("Failed to get current working directory: %s\n", err.Error())
+	}
+
 	// Attempt to extract all workspaces; we will tolerate individual extraction failures here
 	for i, workspace := range workspaces {
 		if workspace.ModMode == project.ModVendor {
@@ -607,7 +619,7 @@ func installDependenciesAndBuild() {
 			}
 		}
 
-		workspaces[i].Extracted = extract(workspace)
+		workspaces[i].Extracted = extract(workspace, sourceRoot)
 
 		if !workspaces[i].Extracted {
 			unsuccessfulProjects = append(unsuccessfulProjects, workspace.BaseDir)
@@ -632,6 +644,8 @@ func installDependenciesAndBuild() {
 	} else {
 		log.Printf("Success: extraction succeeded for all %d discovered project(s).\n", len(workspaces))
 	}
+
+	util.WriteOverlayBaseMetadata()
 }
 
 func main() {

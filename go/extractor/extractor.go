@@ -58,16 +58,11 @@ func init() {
 	}
 }
 
-// Extract extracts the packages specified by the given patterns
-func Extract(patterns []string) error {
-	return ExtractWithFlags(nil, patterns, false)
-}
-
 // ExtractWithFlags extracts the packages specified by the given patterns and build flags
-func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool) error {
+func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool, sourceRoot string) error {
 	startTime := time.Now()
 
-	extraction := NewExtraction(buildFlags, patterns)
+	extraction := NewExtraction(buildFlags, patterns, sourceRoot)
 	defer extraction.StatWriter.Close()
 
 	modEnabled := os.Getenv("GO111MODULE") != "off"
@@ -311,8 +306,6 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool)
 
 	extraction.WaitGroup.Wait()
 
-	util.WriteOverlayBaseMetadata()
-
 	log.Println("Done extracting packages.")
 
 	t := time.Now()
@@ -370,7 +363,7 @@ func (extraction *Extraction) GetNextErr(path string) int {
 	return res
 }
 
-func NewExtraction(buildFlags []string, patterns []string) *Extraction {
+func NewExtraction(buildFlags []string, patterns []string, sourceRoot string) *Extraction {
 	hash := md5.New()
 	io.WriteString(hash, "go")
 	for _, buildFlag := range buildFlags {
@@ -382,7 +375,7 @@ func NewExtraction(buildFlags []string, patterns []string) *Extraction {
 	}
 	sum := hash.Sum(nil)
 
-	overlayChangeList := util.GetOverlayChanges()
+	overlayChangeList := util.GetOverlayChanges(sourceRoot)
 	var overlayChanges map[string]bool
 	if overlayChangeList == nil {
 		overlayChanges = nil
