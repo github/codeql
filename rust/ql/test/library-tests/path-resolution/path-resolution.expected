@@ -455,6 +455,7 @@ resolvePath
 | my2/my3/mod.rs:10:5:10:9 | super | my2/mod.rs:1:1:25:34 | SourceFile |
 | my2/my3/mod.rs:10:5:10:20 | ...::nested6_f | my2/nested2.rs:15:9:17:9 | fn f |
 | my2/my3/mod.rs:12:5:12:9 | super | my2/mod.rs:1:1:25:34 | SourceFile |
+| my2/my3/mod.rs:14:16:14:20 | Deref | {EXTERNAL LOCATION} | trait Deref |
 | my.rs:3:5:3:10 | nested | my.rs:1:1:1:15 | mod nested |
 | my.rs:3:5:3:13 | ...::g | my/nested.rs:19:1:22:1 | fn g |
 | my.rs:11:5:11:5 | g | my/nested.rs:19:1:22:1 | fn g |

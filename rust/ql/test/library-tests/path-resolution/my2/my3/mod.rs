@@ -11,4 +11,4 @@ use super::nested6_f; // $ item=I116
 
 use super::*; // $ item=mod.rs
 
-trait MyTrait: Deref {} // $ MISSING: item=Deref
+trait MyTrait: Deref {} // $ item=Deref
