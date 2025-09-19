@@ -1807,6 +1807,8 @@ private module Debug {
     path = p.toStringDebug()
   }
 
+  predicate debugItemNode(ItemNode item) { item = getRelevantLocatable() }
+
   ItemNode debugResolvePath(RelevantPath path) {
     path = getRelevantLocatable() and
     result = resolvePath(path)
