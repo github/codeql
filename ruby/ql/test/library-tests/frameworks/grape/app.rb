@@ -141,7 +141,7 @@ class UserAPI < Grape::API
         # Test helper method parameter passing dataflow
         user_id = params[:user_id]
         result = vulnerable_helper(user_id)
-        sink result # $ hasTaintFlow=paramHelper
+        sink result # $ hasValueFlow=paramHelper
     end
 
     post '/users' do
@@ -149,7 +149,7 @@ class UserAPI < Grape::API
         user_data = user_params
         simple_result = simple_helper
         sink user_data # $ hasTaintFlow
-        sink simple_result # $ hasTaintFlow=simpleHelper
+        sink simple_result # $ hasValueFlow=simpleHelper
     end
 
     # Test route_param block pattern

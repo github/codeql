@@ -3,6 +3,7 @@
  */
 
 private import codeql.ruby.AST
+private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
@@ -301,32 +302,20 @@ private class GrapeHelperMethod extends Method {
 }
 
 /**
- * Additional taint step to model dataflow from method arguments to parameters
- * and from return values back to call sites for Grape helper methods defined in `helpers` blocks.
- * This bridges the gap where standard dataflow doesn't recognize the Grape DSL semantics.
+ * Additional call-target to resolve helper method calls defined in `helpers` blocks.
+ *
+ * This class is responsible for resolving calls to helper methods defined in
+ * `helpers` blocks, allowing the dataflow framework to accurately track
+ * the flow of information between these methods and their call sites.
  */
-private class GrapeHelperMethodTaintStep extends AdditionalTaintStep {
-  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    // Map arguments to parameters for helper method calls
-    exists(GrapeHelperMethod helperMethod, MethodCall call, int i |
-      // Find calls to helper methods from within Grape endpoints or other helper methods
-      call.getMethodName() = helperMethod.getName() and
-      exists(GrapeApiClass api | call.getParent+() = api.getADeclaration()) and
-      // Map argument to parameter
-      nodeFrom.asExpr().getExpr() = call.getArgument(i) and
-      nodeTo.asParameter() = helperMethod.getParameter(i)
-    )
-    or
-    // Model implicit return values: the last expression in a helper method flows to the call site
-    exists(GrapeHelperMethod helperMethod, MethodCall helperCall, Expr lastExpr |
-      // Find calls to helper methods from within Grape endpoints or other helper methods
-      helperCall.getMethodName() = helperMethod.getName() and
-      exists(GrapeApiClass api | helperCall.getParent+() = api.getADeclaration()) and
-      // Get the last expression in the helper method (Ruby's implicit return)
-      lastExpr = helperMethod.getLastStmt() and
-      // Flow from the last expression in the helper method to the call site
-      nodeFrom.asExpr().getExpr() = lastExpr and
-      nodeTo.asExpr().getExpr() = helperCall
+private class GrapeHelperMethodTarget extends AdditionalCallTarget {
+  override DataFlowCallable viableTarget(CfgNodes::ExprNodes::CallCfgNode call) {
+    // Find calls to helper methods from within Grape endpoints or other helper methods
+    exists(GrapeHelperMethod helperMethod, MethodCall mc |
+      result.asCfgScope() = helperMethod and
+      mc = call.getAstNode() and
+      mc.getMethodName() = helperMethod.getName() and
+      mc.getParent+() = helperMethod.getApiClass().getADeclaration()
     )
   }
 }
