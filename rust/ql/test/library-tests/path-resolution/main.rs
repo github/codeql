@@ -8,7 +8,13 @@ mod my2; // I14
 
 use my2::*; // $ item=I14
 
-use my2::nested2::nested3::nested4::{f, g}; // $ item=I11 item=I12 item=I13
+#[rustfmt::skip]
+use my2::nested2::nested3::nested4::{ // $ item=I11
+    f, // $ item=I12
+    g, // $ item=I13
+};
+
+use my2::nested8_f; // $ item=I119
 
 mod m1 {
     fn f() {
