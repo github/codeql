@@ -4,7 +4,7 @@
 <qhelp>
 <overview>
 
-<p>Constructing URLs with the HTTP protocol can lead to unsecured connections.</p>
+<p>Constructing URLs with the HTTP protocol can lead to insecure connections.</p>
 
 <p>Furthermore, constructing URLs with the HTTP protocol can create problems if other parts of the
 code expect HTTPS URLs. A typical pattern is to use libraries that expect secure connections,
@@ -14,7 +14,7 @@ which may fail or fall back to insecure behavior when provided with HTTP URLs in
 <recommendation>
 
 <p>When you construct a URL for network requests, ensure that you use an HTTPS URL rather than an HTTP URL.
-Then, any connections that are made using that URL are secure SSL/TLS connections.</p>
+Then, any connections that are made using that URL are secure TLS connections.</p>
 
 </recommendation>
 <example>
@@ -26,7 +26,7 @@ by attackers:</p>
 <sample src="UseOfHttpBad.rs" />
 
 <p>A better approach is to use HTTPS. When the request is made using an HTTPS URL, the connection
-is a secure SSL/TLS connection:</p>
+is a secure TLS connection:</p>
 
 <sample src="UseOfHttpGood.rs" />
 
