@@ -767,6 +767,27 @@ use std::{self as ztd}; // $ item=std
 
 fn use_ztd(x: ztd::string::String) {} // $ item=String
 
+#[rustfmt::skip]
+mod impl_with_attribute_macro {
+    struct Foo; // IFoo
+
+    trait ATrait {
+        type Foo;
+    } // IATrait
+
+    #[proc_macro::identity] // $ item=identity
+    impl ATrait for i64 { // $ item=IATrait item=i64
+        type Foo =
+          i64 // $ item=i64
+        ; // IATrait_i64_Foo
+    }
+
+    pub fn test() {
+        // This should resolve to the struct, not the associated type.
+        let _x: Foo; // $ item=IFoo SPURIOUS: item=IATrait_i64_Foo
+    } // impl_with_attribute_macro::test
+}
+
 fn main() {
     my::nested::nested1::nested2::f(); // $ item=I4
     my::f(); // $ item=I38
@@ -801,4 +822,5 @@ fn main() {
     z_changed(); // $ item=I122
     AStruct::z_on_type(); // $ item=I124
     AStruct {}.z_on_instance(); // $ item=I123 item=I125
+    impl_with_attribute_macro::test(); // $ item=impl_with_attribute_macro::test
 }
