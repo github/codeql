@@ -4,12 +4,18 @@ import (
 	"encoding/json"
 	"log"
 	"os"
+	"path/filepath"
 )
+
+func IsOverlayExtraction() bool {
+	_, present := os.LookupEnv("CODEQL_EXTRACTOR_GO_OVERLAY_METADATA_IN")
+	return present
+}
 
 // If the relevant environment variable is set, indicating that we are extracting an overlay
 // database, GetOverlayChanges returns the list of relative paths of files that have changed (or
 // been deleted). Otherwise, it returns `nil`.
-func GetOverlayChanges() []string {
+func GetOverlayChanges(sourceRoot string) []string {
 	if overlayChangesJsonPath, present := os.LookupEnv("CODEQL_EXTRACTOR_GO_OVERLAY_CHANGES"); present {
 		log.Printf("Reading overlay changes from: %s", overlayChangesJsonPath)
 
@@ -28,7 +34,19 @@ func GetOverlayChanges() []string {
 			log.Fatalf("Failed to decode overlay changes JSON file: %s", err)
 		}
 
-		return overlayData.Changes
+		absPaths := make([]string, 0, len(overlayData.Changes))
+		if sourceRoot == "" {
+			// This shouldn't happen, because it implies the extractor was invoked in some way other
+			// than from the autobuilder. However, we'll only attempt to build an overlay if there
+			// exists an overlay _base_, and only the autobuilder writes the metadata file that
+			// ensures a database is created as an overlay-base.
+			log.Fatalf("Extractor is running in overlay mode, but --source-root was not provided")
+		}
+		for _, relPath := range overlayData.Changes {
+			absPaths = append(absPaths, filepath.Clean(sourceRoot+"/"+relPath))
+		}
+
+		return absPaths
 	} else {
 		return nil
 	}
