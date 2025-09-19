@@ -215,8 +215,8 @@ SwiftMangledName SwiftMangler::visitAnyFunctionType(const swift::AnyFunctionType
     if (flags.isSending()) {
       ret << "_sending";
     }
-    if (flags.isCompileTimeConst()) {
-      ret << "_compiletimeconst";
+    if (flags.isCompileTimeLiteral()) {
+      ret << "_compiletimeliteral";
     }
     if (flags.isNoDerivative()) {
       ret << "_noderivative";
@@ -225,6 +225,40 @@ SwiftMangledName SwiftMangler::visitAnyFunctionType(const swift::AnyFunctionType
       ret << "...";
     }
   }
+
+  if (type->hasLifetimeDependencies()) {
+    for (const auto& lifetime : type->getLifetimeDependencies()) {
+      auto addressable = lifetime.getAddressableIndices();
+      auto condAddressable = lifetime.getConditionallyAddressableIndices();
+      ret << "_lifetime";
+
+      auto addIndexes = [&](swift::IndexSubset* bitvector) {
+        for (unsigned i = 0; i < bitvector->getCapacity(); ++i) {
+          if (bitvector->contains(i)) {
+            if (addressable && addressable->contains(i)) {
+              ret << "_address";
+            } else if (condAddressable && condAddressable->contains(i)) {
+              ret << "_address_for_deps";
+            }
+            ret << "_" << i;
+          }
+        }
+      };
+
+      if (lifetime.hasInheritLifetimeParamIndices()) {
+        ret << "_copy";
+        addIndexes(lifetime.getInheritIndices());
+      }
+      if (lifetime.hasScopeLifetimeParamIndices()) {
+        ret << "_borrow";
+        addIndexes(lifetime.getScopeIndices());
+      }
+      if (lifetime.isImmortal()) {
+        ret << "_immortal";
+      }
+    }
+  }
+
   ret << "->" << fetch(type->getResult());
   if (type->isAsync()) {
     ret << "_async";
@@ -361,7 +395,8 @@ SwiftMangledName SwiftMangler::visitOpaqueTypeArchetypeType(
   return visitArchetypeType(type) << fetch(type->getDecl());
 }
 
-SwiftMangledName SwiftMangler::visitOpenedArchetypeType(const swift::OpenedArchetypeType* type) {
+SwiftMangledName SwiftMangler::visitExistentialArchetypeType(
+    const swift::ExistentialArchetypeType* type) {
   auto* env = type->getGenericEnvironment();
   llvm::SmallVector<char> uuid;
   env->getOpenedExistentialUUID().toString(uuid);
