@@ -16,9 +16,9 @@ For example, to declare a module ``M`` as private, you could use:
     }
 
 Note that some annotations act on an entity itself, whilst others act on a particular *name* for the entity:
-  - Act on an **entity**: ``abstract``, ``bindingset``, ``cached``, ``external``, ``language``,
+  - Act on an **entity**: ``abstract``, ``bindingset``, ``cached``, ``extensible``, ``external``, ``language``,
     ``override``, ``pragma``, and ``transient``
-  - Act on a **name**: ``deprecated``, ``final``, ``library``, ``private``, and ``query``
+  - Act on a **name**: ``additional``, ``deprecated``, ``final``, ``library``, ``private``, and ``query``
 
 For example, if you annotate an entity with ``private``, then only that particular name is
 private. You could still access that entity under a different name (using an :ref:`alias <aliases>`).

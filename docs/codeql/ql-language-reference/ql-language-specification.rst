@@ -933,7 +933,8 @@ A predicate definition adds a mapping from the predicate name and arity to the p
 
 When a predicate is a top-level clause in a module, it is called a non-member predicate. See below for "`Member predicates <#member-predicates>`__."
 
-A valid non-member predicate can be annotated with ``cached``, ``deprecated``, ``external``, ``transient``, ``private``, and ``query``. Note, the ``transient`` annotation can only be applied if the non-member predicate is also annotated with ``external``.
+A valid non-member predicate can be annotated with ``additional``, ``cached``, ``deprecated``, ``extensible``, ``external``, ``transient``, ``private``, and ``query``.
+Note, the ``transient`` annotation can only be applied if the non-member predicate is also annotated with ``external``.
 
 The head of the predicate gives a name, an optional *result type*, and a sequence of variables declarations that are *arguments*:
 
@@ -979,7 +980,7 @@ A class type is said to *final inherit* from base types that are final or refere
 
 A class adds a mapping from the class name to the class declaration to the current module's declared type environment.
 
-A valid class can be annotated with ``abstract``, ``final``, ``library``, and ``private``. Any other annotation renders the class invalid.
+A valid class can be annotated with ``abstract``, ``additional``, ``final``, ``library``, and ``private``. Any other annotation renders the class invalid.
 
 A valid class may not inherit from itself, or from more than one primitive type. The set of types that a valid class inherits from must be disjoint from the set of types that it final inherits from.
 
