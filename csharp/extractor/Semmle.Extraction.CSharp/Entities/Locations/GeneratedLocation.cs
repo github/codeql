@@ -14,11 +14,21 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
+            if (Context.ExtractionContext.IsStandalone)
+            {
+                return;
+            }
+
             trapFile.locations_default(this, generatedFile, 0, 0, 0, 0);
         }
 
         public override void WriteId(EscapingTextWriter trapFile)
         {
+            if (Context.ExtractionContext.IsStandalone)
+            {
+                return;
+            }
+
             trapFile.Write("loc,");
             trapFile.WriteSubId(generatedFile);
             trapFile.Write(",0,0,0,0");
