@@ -446,6 +446,7 @@ module IR {
     /** Gets the target to which this instruction writes. */
     WriteTarget getLhs() { result = lhs }
 
+    /** Holds if this instruction initializes a literal. */
     predicate isInitialization() { initialization = true }
 
     /** Gets the instruction computing the value this instruction writes. */

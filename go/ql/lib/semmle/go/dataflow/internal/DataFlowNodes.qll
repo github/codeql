@@ -817,6 +817,7 @@ module Public {
     abstract Node getPreUpdateNode();
   }
 
+  /** Holds if the node corresponding to `insn` has a post-update node. */
   predicate insnHasPostUpdateNode(IR::Instruction insn) {
     exists(Expr e | insn.(IR::EvalInstruction).getExpr() = e |
       e instanceof AddressExpr or
