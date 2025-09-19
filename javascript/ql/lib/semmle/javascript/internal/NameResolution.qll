@@ -378,19 +378,10 @@ module NameResolution {
     predicate isRelevantVariable(LexicalName var);
   }
 
-  /**
-   * A local variable with exactly one definition, not counting implicit initialization.
-   */
-  private class EffectivelyConstantVariable extends LocalVariableLike {
-    EffectivelyConstantVariable() {
-      count(SsaExplicitDefinition ssa | ssa.getSourceVariable() = this) <= 1 // count may be zero if ambient
-    }
-  }
-
   /** Configuration for propagating values and namespaces */
   private module ValueConfig implements TypeResolutionInputSig {
     predicate isRelevantVariable(LexicalName var) {
-      var instanceof EffectivelyConstantVariable
+      var instanceof LocalVariableLike
       or
       // We merge the namespace and value declaration spaces as it seems there is
       // no need to distinguish them in practice.
