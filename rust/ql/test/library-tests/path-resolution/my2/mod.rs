@@ -15,6 +15,8 @@ pub use nested2::nested7::nested8::{ // $ item=I118
 
 use nested2::nested5::nested6::f as nested6_f; // $ item=I116
 
+use std::ops::Deref; // $ item=Deref
+
 pub mod my3;
 
 #[path = "renamed.rs"]
