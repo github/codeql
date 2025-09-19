@@ -1,0 +1,7 @@
+| test.py:8:5:8:37 | ControlFlowNode for Attribute() | Cookie is added without the HttpOnly attribute properly set. |
+| test.py:9:5:9:50 | ControlFlowNode for Attribute() | Cookie is added without the HttpOnly attribute properly set. |
+| test.py:11:5:11:56 | ControlFlowNode for Attribute() | Cookie is added without the HttpOnly attribute properly set. |
+| test.py:12:5:12:53 | ControlFlowNode for Attribute() | Cookie is added without the HttpOnly attribute properly set. |
+| test.py:13:5:13:54 | ControlFlowNode for Attribute() | Cookie is added without the HttpOnly attribute properly set. |
+| test.py:14:5:14:69 | ControlFlowNode for Attribute() | Cookie is added without the HttpOnly attribute properly set. |
+| test.py:16:5:16:67 | ControlFlowNode for Attribute() | Cookie is added without the HttpOnly attribute properly set. |

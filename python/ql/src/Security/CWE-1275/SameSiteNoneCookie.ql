@@ -3,7 +3,7 @@
  * @description Cookies with `SameSite` set to `None` can allow for Cross-Site Request Forgery (CSRF) attacks.
  * @kind problem
  * @problem.severity warning
- * @security-severity 5.0
+ * @security-severity 3.5
  * @precision high
  * @id py/samesite-none-cookie
  * @tags security
