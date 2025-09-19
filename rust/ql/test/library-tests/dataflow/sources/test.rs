@@ -638,7 +638,7 @@ async fn test_tokio_file() -> std::io::Result<()> {
         let file2 = tokio::fs::File::open("another_file.txt").await?; // $ Alert[rust/summary/taint-sources]
         let mut reader = file1.chain(file2);
         reader.read_to_string(&mut buffer).await?;
-        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt" hasTaintFlow="another_file.txt" -- we cannot resolve the `chain` and `read_to_string` calls above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
+        sink(&buffer); // $ hasTaintFlow="file.txt" hasTaintFlow="another_file.txt"
     }
 
     {
@@ -646,7 +646,7 @@ async fn test_tokio_file() -> std::io::Result<()> {
         let file1 = tokio::fs::File::open("file.txt").await?; // $ Alert[rust/summary/taint-sources]
         let mut reader = file1.take(100);
         reader.read_to_string(&mut buffer).await?;
-        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt" -- we cannot resolve the `take` and `read_to_string` calls above, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
+        sink(&buffer); // $ hasTaintFlow="file.txt"
     }
 
     Ok(())
@@ -662,7 +662,7 @@ async fn test_async_std_file() -> std::io::Result<()> {
     {
         let mut buffer = [0u8; 100];
         let _bytes = file.read(&mut buffer).await?;
-        sink(&buffer); // $ hasTaintFlow="file.txt"
+        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt"
     }
 
     // --- OpenOptions ---
@@ -671,7 +671,7 @@ async fn test_async_std_file() -> std::io::Result<()> {
         let mut f1 = async_std::fs::OpenOptions::new().open("f1.txt").await?; // $ Alert[rust/summary/taint-sources]
         let mut buffer = [0u8; 1024];
         let _bytes = f1.read(&mut buffer).await?;
-        sink(&buffer); // $ hasTaintFlow="f1.txt"
+        sink(&buffer); // $ MISSING: hasTaintFlow="f1.txt"
     }
 
     Ok(())

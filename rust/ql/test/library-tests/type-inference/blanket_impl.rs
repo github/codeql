@@ -1,8 +1,21 @@
 // Tests for method resolution targeting blanket trait implementations
 
 mod basic_blanket_impl {
+    use std::ops::Deref;
+
     #[derive(Debug, Copy, Clone)]
     struct S1;
+
+    #[derive(Debug, Copy, Clone)]
+    struct S2;
+
+    impl Deref for S2 {
+        type Target = S1;
+
+        fn deref(&self) -> &Self::Target {
+            &S1
+        }
+    }
 
     trait Clone1 {
         fn clone1(&self) -> Self;
@@ -30,10 +43,18 @@ mod basic_blanket_impl {
     }
 
     pub fn test_basic_blanket() {
-        let x = S1.clone1(); // $ target=S1::clone1
-        println!("{x:?}");
-        let y = S1.duplicate(); // $ target=Clone1duplicate
-        println!("{y:?}");
+        let x1 = S1.clone1(); // $ target=S1::clone1
+        println!("{x1:?}");
+        let x2 = (&S1).clone1(); // $ target=S1::clone1
+        println!("{x2:?}");
+        let x3 = S1.duplicate(); // $ target=Clone1duplicate
+        println!("{x3:?}");
+        let x4 = (&S1).duplicate(); // $ target=Clone1duplicate
+        println!("{x4:?}");
+        let x5 = S2.duplicate(); // $ MISSING: target=Clone1duplicate
+        println!("{x5:?}");
+        let x6 = (&S2).duplicate(); // $ MISSING: target=Clone1duplicate
+        println!("{x6:?}");
     }
 }
 

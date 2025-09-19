@@ -1014,24 +1014,29 @@ readStep
 | main.rs:470:44:470:55 | this | main.rs:467:9:467:20 | captured default_name | main.rs:470:44:470:55 | default_name |
 | main.rs:471:18:471:18 | [post] receiver for n | file://:0:0:0:0 | &ref | main.rs:471:18:471:18 | [post] n |
 | main.rs:494:13:494:13 | [post] receiver for a | file://:0:0:0:0 | &ref | main.rs:494:13:494:13 | [post] a |
-| main.rs:495:13:495:13 | [post] receiver for b | file://:0:0:0:0 | &ref | main.rs:495:13:495:13 | [post] b |
-| main.rs:496:18:496:18 | [post] receiver for b | file://:0:0:0:0 | &ref | main.rs:496:18:496:18 | [post] b |
 | main.rs:507:10:507:11 | vs | file://:0:0:0:0 | element | main.rs:507:10:507:14 | vs[0] |
 | main.rs:508:11:508:35 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:508:10:508:35 | * ... |
+| main.rs:508:11:508:35 | [post] receiver for ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:508:11:508:35 | [post] ... .unwrap() |
 | main.rs:509:11:509:35 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:509:10:509:35 | * ... |
+| main.rs:509:11:509:35 | [post] receiver for ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:509:11:509:35 | [post] ... .unwrap() |
 | main.rs:511:14:511:15 | vs | file://:0:0:0:0 | element | main.rs:511:9:511:9 | v |
 | main.rs:514:9:514:10 | &... | file://:0:0:0:0 | &ref | main.rs:514:10:514:10 | v |
 | main.rs:514:15:514:23 | vs.iter() | file://:0:0:0:0 | element | main.rs:514:9:514:10 | &... |
 | main.rs:519:9:519:10 | &... | file://:0:0:0:0 | &ref | main.rs:519:10:519:10 | v |
 | main.rs:519:15:519:17 | vs2 | file://:0:0:0:0 | element | main.rs:519:9:519:10 | &... |
+| main.rs:523:29:523:29 | [post] receiver for x | file://:0:0:0:0 | &ref | main.rs:523:29:523:29 | [post] x |
 | main.rs:523:29:523:29 | x | file://:0:0:0:0 | &ref | main.rs:523:28:523:29 | * ... |
+| main.rs:524:34:524:34 | [post] receiver for x | file://:0:0:0:0 | &ref | main.rs:524:34:524:34 | [post] x |
 | main.rs:524:34:524:34 | x | file://:0:0:0:0 | &ref | main.rs:524:33:524:34 | * ... |
 | main.rs:526:14:526:27 | vs.into_iter() | file://:0:0:0:0 | element | main.rs:526:9:526:9 | v |
 | main.rs:532:10:532:15 | vs_mut | file://:0:0:0:0 | element | main.rs:532:10:532:18 | vs_mut[0] |
 | main.rs:533:11:533:39 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:533:10:533:39 | * ... |
+| main.rs:533:11:533:39 | [post] receiver for ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:533:11:533:39 | [post] ... .unwrap() |
 | main.rs:534:11:534:39 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:534:10:534:39 | * ... |
+| main.rs:534:11:534:39 | [post] receiver for ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:534:11:534:39 | [post] ... .unwrap() |
 | main.rs:536:9:536:14 | &mut ... | file://:0:0:0:0 | &ref | main.rs:536:14:536:14 | v |
 | main.rs:536:19:536:35 | vs_mut.iter_mut() | file://:0:0:0:0 | element | main.rs:536:9:536:14 | &mut ... |
+| main.rs:550:11:550:15 | [post] receiver for c_ref | file://:0:0:0:0 | &ref | main.rs:550:11:550:15 | [post] c_ref |
 | main.rs:550:11:550:15 | c_ref | file://:0:0:0:0 | &ref | main.rs:550:10:550:15 | * ... |
 storeStep
 | main.rs:104:11:104:11 | i | file://:0:0:0:0 | &ref | main.rs:104:11:104:11 | receiver for i |
@@ -1118,16 +1123,21 @@ storeStep
 | main.rs:470:44:470:55 | default_name | file://:0:0:0:0 | &ref | main.rs:470:44:470:55 | receiver for default_name |
 | main.rs:471:18:471:18 | n | file://:0:0:0:0 | &ref | main.rs:471:18:471:18 | receiver for n |
 | main.rs:494:13:494:13 | a | file://:0:0:0:0 | &ref | main.rs:494:13:494:13 | receiver for a |
-| main.rs:495:13:495:13 | b | file://:0:0:0:0 | &ref | main.rs:495:13:495:13 | receiver for b |
-| main.rs:496:18:496:18 | b | file://:0:0:0:0 | &ref | main.rs:496:18:496:18 | receiver for b |
 | main.rs:505:15:505:24 | source(...) | file://:0:0:0:0 | element | main.rs:505:14:505:34 | [...] |
 | main.rs:505:27:505:27 | 2 | file://:0:0:0:0 | element | main.rs:505:14:505:34 | [...] |
 | main.rs:505:30:505:30 | 3 | file://:0:0:0:0 | element | main.rs:505:14:505:34 | [...] |
 | main.rs:505:33:505:33 | 4 | file://:0:0:0:0 | element | main.rs:505:14:505:34 | [...] |
+| main.rs:508:11:508:35 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:508:11:508:35 | receiver for ... .unwrap() |
+| main.rs:509:11:509:35 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:509:11:509:35 | receiver for ... .unwrap() |
+| main.rs:523:29:523:29 | x | file://:0:0:0:0 | &ref | main.rs:523:29:523:29 | receiver for x |
+| main.rs:524:34:524:34 | x | file://:0:0:0:0 | &ref | main.rs:524:34:524:34 | receiver for x |
 | main.rs:530:23:530:32 | source(...) | file://:0:0:0:0 | element | main.rs:530:22:530:42 | [...] |
 | main.rs:530:35:530:35 | 2 | file://:0:0:0:0 | element | main.rs:530:22:530:42 | [...] |
 | main.rs:530:38:530:38 | 3 | file://:0:0:0:0 | element | main.rs:530:22:530:42 | [...] |
 | main.rs:530:41:530:41 | 4 | file://:0:0:0:0 | element | main.rs:530:22:530:42 | [...] |
+| main.rs:533:11:533:39 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:533:11:533:39 | receiver for ... .unwrap() |
+| main.rs:534:11:534:39 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:534:11:534:39 | receiver for ... .unwrap() |
 | main.rs:545:18:545:18 | c | file://:0:0:0:0 | &ref | main.rs:545:17:545:18 | &c |
 | main.rs:548:15:548:15 | b | file://:0:0:0:0 | &ref | main.rs:548:14:548:15 | &b |
+| main.rs:550:11:550:15 | c_ref | file://:0:0:0:0 | &ref | main.rs:550:11:550:15 | receiver for c_ref |
 | main.rs:571:27:571:27 | 0 | {EXTERNAL LOCATION} | Some | main.rs:571:22:571:28 | Some(...) |

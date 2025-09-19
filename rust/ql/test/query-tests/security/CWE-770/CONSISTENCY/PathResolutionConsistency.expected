@@ -1,0 +1,7 @@
+multipleCallTargets
+| main.rs:242:44:242:78 | ... .cast() |
+| main.rs:245:44:245:78 | ... .cast() |
+| main.rs:248:44:248:78 | ... .cast() |
+| main.rs:251:14:251:48 | ... .cast() |
+| main.rs:254:14:254:48 | ... .cast() |
+| main.rs:257:14:257:48 | ... .cast() |
