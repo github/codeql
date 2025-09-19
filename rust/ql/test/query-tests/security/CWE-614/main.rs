@@ -59,7 +59,7 @@ fn test_cookie(sometimes: bool) {
     jar.add(a.clone()); // $ Alert[rust/insecure-cookie]
     jar.add_original(a.clone()); // $ Alert[rust/insecure-cookie]
     a.set_secure(true);
-    jar.add(a.clone()); // $ SPURIOUS: Alert[rust/insecure-cookie]
+    jar.add(a.clone()); // good
     a.set_secure(false);
     jar.add(a.clone()); // $ Alert[rust/insecure-cookie]
 
@@ -71,7 +71,7 @@ fn test_cookie(sometimes: bool) {
     b.set_secure(sometimes);
     signed_jar.add(b.clone()); // $ Alert[rust/insecure-cookie]
     b.set_secure(true);
-    signed_jar.add(b.clone()); // $ SPURIOUS: Alert[rust/insecure-cookie]
+    signed_jar.add(b.clone()); // good
 
     let mut private_jar = jar.private_mut(&key);
     let mut c = Cookie::from("name");
@@ -82,7 +82,7 @@ fn test_cookie(sometimes: bool) {
     }
     private_jar.add(c.clone()); // $ Alert[rust/insecure-cookie]
     c.set_secure(true);
-    private_jar.add(c.clone()); // $ SPURIOUS: Alert[rust/insecure-cookie]
+    private_jar.add(c.clone()); // $ good
 
     let mut d = Cookie::from("name");
     jar.add(d.clone()); // $ Alert[rust/insecure-cookie]

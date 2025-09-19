@@ -10,6 +10,7 @@ private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.Concepts
 private import codeql.rust.dataflow.internal.DataFlowImpl as DataflowImpl
 private import codeql.rust.dataflow.internal.Node
+private import codeql.rust.controlflow.BasicBlocks
 
 /**
  * Provides default sources, sinks and barriers for detecting insecure
@@ -74,8 +75,16 @@ module InsecureCookie {
         then value = true // `true` flow to here
         else value = false // `false` or unknown
       ) and
-      // and the node `node` where this happens
-      node.asExpr().getExpr() = ce
+      // and find the node where this happens
+      (
+        node.asExpr().getExpr() = ce.(MethodCallExpr).getReceiver() // e.g. `a` in `a.set_secure(true)`
+        or
+        exists(BasicBlock bb, int i |
+          // associated SSA node
+          node.(SsaNode).asDefinition().definesAt(_, bb, i) and
+          ce.(MethodCallExpr).getReceiver() = bb.getNode(i).getAstNode()
+        )
+      )
     )
   }
 }
