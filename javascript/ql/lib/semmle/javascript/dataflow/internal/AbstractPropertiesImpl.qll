@@ -30,13 +30,6 @@ newtype TAbstractProperty =
  * of the concrete objects represented by `baseVal`.
  */
 AbstractValue getAnInitialPropertyValue(DefiniteAbstractValue baseVal, string propertyName) {
-  // initially, `module.exports === exports`
-  exists(Module m |
-    baseVal = TAbstractModuleObject(m) and
-    propertyName = "exports" and
-    result = TAbstractExportsObject(m)
-  )
-  or
   // class members
   result = getAnInitialMemberValue(getMember(baseVal, propertyName))
   or
@@ -77,11 +70,7 @@ private AbstractValue getAnInitialMemberValue(MemberDefinition m) {
  * Holds if `baseVal` is an abstract value whose properties we track for the purposes
  * of `getALocalValue`.
  */
-predicate shouldAlwaysTrackProperties(AbstractValue baseVal) {
-  baseVal instanceof AbstractModuleObject or
-  baseVal instanceof AbstractExportsObject or
-  baseVal instanceof AbstractCallable
-}
+predicate shouldAlwaysTrackProperties(AbstractValue baseVal) { baseVal instanceof AbstractCallable }
 
 /** Holds if `baseVal` is an abstract value whose properties we track. */
 predicate shouldTrackProperties(AbstractValue baseVal) {

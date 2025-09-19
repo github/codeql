@@ -43,10 +43,10 @@ newtype TAbstractValue =
   TAbstractArguments(Function f) { exists(f.getArgumentsVariable().getAnAccess()) } or
   /** An abstract representation of the global object. */
   TAbstractGlobalObject() or
-  /** An abstract representation of a `module` object. */
-  TAbstractModuleObject(Module m) or
-  /** An abstract representation of a `exports` object. */
-  TAbstractExportsObject(Module m) or
+  /** DEPRECATED. This abstract value is no longer tracked. */
+  deprecated TAbstractModuleObject(Module m) { none() } or
+  /** DEPRECATED. This abstract value is no longer tracked. */
+  deprecated TAbstractExportsObject(Module m) { none() } or
   /** An abstract representation of all objects arising from an object literal expression. */
   TAbstractObjectLiteral(ObjectExpr oe) or
   /**
