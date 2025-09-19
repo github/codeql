@@ -113,7 +113,8 @@ class NonAliasPathTypeMention extends PathTypeMention {
 
   NonAliasPathTypeMention() {
     resolved = [resolvePath(this), resolvePath(this).(Variant).getEnum().(TypeItemNode)] and
-    not exists(resolved.(TypeAlias).getTypeRepr())
+    not exists(resolved.(TypeAlias).getTypeRepr()) and
+    not this = any(ImplItemNode i).getASelfPath() // handled by `ImplSelfMention`
   }
 
   TypeItemNode getResolved() { result = resolved }
@@ -144,23 +145,6 @@ class NonAliasPathTypeMention extends PathTypeMention {
 
   private TypeMention getPositionalTypeArgument0(int i) {
     result = this.getSegment().getGenericArgList().getTypeArg(i)
-    or
-    // `Self` paths inside `impl` blocks have implicit type arguments that are
-    // the type parameters of the `impl` block. For example, in
-    //
-    // ```rust
-    // impl<T> Foo<T> {
-    //   fn m(self) -> Self {
-    //     self
-    //   }
-    // }
-    // ```
-    //
-    // the `Self` return type is shorthand for `Foo<T>`.
-    exists(ImplItemNode node |
-      this = node.getASelfPath() and
-      result = node.(ImplItemNode).getSelfPath().getSegment().getGenericArgList().getTypeArg(i)
-    )
     or
     // `Option::<i32>::Some` is valid in addition to `Option::Some::<i32>`
     resolvePath(this) instanceof Variant and
@@ -258,6 +242,14 @@ class NonAliasPathTypeMention extends PathTypeMention {
       typePath = TypePath::cons(tp, suffix)
     )
   }
+}
+
+class ImplSelfMention extends PathTypeMention {
+  private ImplItemNode impl;
+
+  ImplSelfMention() { this = impl.getASelfPath() }
+
+  override Type resolveTypeAt(TypePath typePath) { result = resolveImplSelfType(impl, typePath) }
 }
 
 class PathTypeReprMention extends TypeMention, PathTypeRepr {

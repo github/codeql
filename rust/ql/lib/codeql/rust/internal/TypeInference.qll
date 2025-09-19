@@ -1239,17 +1239,16 @@ private module MethodCallResolution {
       strippedType = selfType.getTypeAt(strippedTypePath) and
       isComplexRootStripped(strippedTypePath, strippedType) and
       selfType.appliesTo(m, pos, i) and
-      pos.isSelf() and
-      not i.(ImplItemNode).isBlanketImplementation()
+      pos.isSelf()
     )
   }
 
   pragma[nomagic]
   predicate methodInfoTypeParam(
     Function m, string name, int arity, ImplOrTraitItemNode i, FunctionType selfType,
-    TypePath strippedTypePath
+    TypePath strippedTypePath, TypeParam tp
   ) {
-    methodInfo(m, name, arity, i, selfType, strippedTypePath, TTypeParamTypeParameter(_))
+    methodInfo(m, name, arity, i, selfType, strippedTypePath, TTypeParamTypeParameter(tp))
   }
 
   /**
@@ -1257,13 +1256,28 @@ private module MethodCallResolution {
    * corresponding type inside `m` is a type parameter.
    */
   pragma[inline]
-  predicate methodInfoMatch(
+  predicate methodInfoNonBlanketMatch(
     Function m, string name, int arity, ImplOrTraitItemNode i, FunctionType selfType,
     TypePath strippedTypePath, Type strippedType
   ) {
-    methodInfo(m, name, arity, i, selfType, strippedTypePath, strippedType)
-    or
-    methodInfoTypeParam(m, name, arity, i, selfType, strippedTypePath)
+    (
+      methodInfo(m, name, arity, i, selfType, strippedTypePath, strippedType) or
+      methodInfoTypeParam(m, name, arity, i, selfType, strippedTypePath, _)
+    ) and
+    not i.(ImplItemNode).isBlanketImplementation()
+  }
+
+  /**
+   * Same as `methodInfo`, but allows for any `strippedType` when the
+   * corresponding type inside `m` is a type parameter.
+   */
+  pragma[nomagic]
+  predicate methodInfoBlanketMatch(
+    Function m, string name, int arity, ImplItemNode i, FunctionType selfType, TypePath blanketPath,
+    TypeParam blanketTypeParam
+  ) {
+    methodInfoTypeParam(m, name, arity, i, selfType, blanketPath, blanketTypeParam) and
+    blanketTypeParam = i.getBlanketImplementationTypeParam()
   }
 
   pragma[nomagic]
@@ -1278,7 +1292,8 @@ private module MethodCallResolution {
 
   pragma[nomagic]
   private predicate methodCallTraitCandidate(Element mc, Trait trait) {
-    exists(string name, int arity | mc.(MethodCall).hasNameAndArity(name, arity) |
+    exists(string name, int arity |
+      mc.(MethodCall).hasNameAndArity(name, arity) and
       methodTraitInfo(name, arity, trait)
     )
   }
@@ -1306,25 +1321,53 @@ private module MethodCallResolution {
    */
   bindingset[mc, strippedTypePath, strippedType]
   pragma[inline_late]
-  private predicate methodCallCandidate(
-    MethodCall mc, ImplOrTraitItemNode i, FunctionType self, TypePath strippedTypePath,
+  private predicate methodCallNonBlanketCandidate(
+    MethodCall mc, Function m, ImplOrTraitItemNode i, FunctionType self, TypePath strippedTypePath,
     Type strippedType
   ) {
     exists(string name, int arity |
       mc.hasNameAndArity(name, arity) and
-      methodInfoMatch(_, name, arity, i, self, strippedTypePath, strippedType)
+      methodInfoNonBlanketMatch(m, name, arity, i, self, strippedTypePath, strippedType)
     |
       i =
         any(Impl impl |
           not impl.hasTrait()
           or
-          methodCallVisibleImplTraitCandidate(mc, i)
+          methodCallVisibleImplTraitCandidate(mc, impl)
         )
       or
       methodCallVisibleTraitCandidate(mc, i)
       or
       mc instanceof IndexExpr and
       i.(ImplItemNode).resolveTraitTy() instanceof IndexTrait
+    )
+  }
+
+  /**
+   * Holds if method call `mc` may target a method in `i` with `self` parameter having
+   * type `selfType`.
+   *
+   * `strippedTypePath` points to the type `strippedType` inside `selfType`,
+   * which is the (possibly complex-stripped) root type of `selfType`.
+   *
+   * This predicate only checks for matching method names and arities, and whether
+   * the trait being implemented by `i` (when `i` is not a trait itself) is visible
+   * at `mc`.
+   */
+  bindingset[mc]
+  pragma[inline_late]
+  private predicate methodCallBlanketCandidate(
+    MethodCall mc, Function m, ImplItemNode i, FunctionType self, TypePath blanketPath,
+    TypeParam blanketTypeParam
+  ) {
+    exists(string name, int arity |
+      mc.hasNameAndArity(name, arity) and
+      methodInfoBlanketMatch(m, name, arity, i, self, blanketPath, blanketTypeParam)
+    |
+      methodCallVisibleImplTraitCandidate(mc, i)
+      or
+      mc instanceof IndexExpr and
+      i.resolveTraitTy() instanceof IndexTrait
     )
   }
 
@@ -1408,7 +1451,7 @@ private module MethodCallResolution {
         strippedType = this.getComplexstrippedType(strippedTypePath, derefChainBorrow)
       |
         forall(ImplOrTraitItemNode i |
-          methodCallCandidate(this, i, _, strippedTypePath, strippedType)
+          methodCallNonBlanketCandidate(this, _, i, _, strippedTypePath, strippedType)
         |
           this.hasIncompatibleTarget(i, derefChainBorrow)
         )
@@ -1427,7 +1470,7 @@ private module MethodCallResolution {
         strippedType = this.getComplexstrippedType(strippedTypePath, derefChainBorrow)
       |
         forall(ImplOrTraitItemNode i |
-          methodCallCandidate(this, i, _, strippedTypePath, strippedType)
+          methodCallNonBlanketCandidate(this, _, i, _, strippedTypePath, strippedType)
         |
           this.hasIncompatibleTarget(i, derefChainBorrow)
         )
@@ -1473,7 +1516,9 @@ private module MethodCallResolution {
      */
     pragma[nomagic]
     Function resolveCallTarget(string derefChainBorrow) {
-      result = MkMethodCallCand(this, derefChainBorrow).(MethodCallCand).resolveCallTarget()
+      exists(MethodCallCand mcc | mcc = MkMethodCallCand(this, derefChainBorrow) |
+        result = mcc.resolveCallTarget()
+      )
     }
 
     predicate receiverHasImplicitDeref(AstNode receiver) {
@@ -1561,11 +1606,11 @@ private module MethodCallResolution {
      * resolve to a method in an `impl` block for the type of the receiver.
      */
     pragma[nomagic]
-    private predicate hasNoInherentTarget() {
+    predicate hasNoInherentTarget() {
       exists(TypePath strippedTypePath, Type strippedType, string name, int arity |
         this.hasInfo(_, strippedTypePath, strippedType, name, arity) and
         forall(Impl i |
-          methodInfoMatch(_, name, arity, i, _, strippedTypePath, strippedType) and
+          methodInfoNonBlanketMatch(_, name, arity, i, _, strippedTypePath, strippedType) and
           not i.hasTrait()
         |
           this.hasIncompatibleInherentTarget(i)
@@ -1627,6 +1672,88 @@ private module MethodCallResolution {
     Location getLocation() { result = mc_.getLocation() }
   }
 
+  private newtype TMethodCallCandAndBlanketOffset =
+    MkMethodCallCandAndBlanketOffset(MethodCallCand mcc, TypePath blanketPath) {
+      exists(MethodCall mc, string name, int arity, TypeParam blanketTypeParam |
+        mcc.hasInfo(mc, _, _, name, arity) and
+        methodCallBlanketCandidate(mc, _, _, _, blanketPath, blanketTypeParam)
+      )
+    }
+
+  private class MethodCallCandAndBlanketOffset extends MkMethodCallCandAndBlanketOffset {
+    MethodCallCand mcc_;
+    TypePath blanketPath;
+
+    MethodCallCandAndBlanketOffset() { this = MkMethodCallCandAndBlanketOffset(mcc_, blanketPath) }
+
+    MethodCallCand getMethodCallCand() { result = mcc_ }
+
+    TypePath getBlanketPath() { result = blanketPath }
+
+    Location getLocation() { result = mcc_.getLocation() }
+
+    Type getTypeAt(TypePath path) { result = mcc_.getTypeAt(blanketPath.appendInverse(path)) }
+
+    string toString() { result = mcc_.toString() + " (blanket at " + blanketPath.toString() + ")" }
+  }
+
+  private module SatisfiesBlanketConstraintInput implements
+    SatisfiesConstraintInputSig<MethodCallCandAndBlanketOffset>
+  {
+    /**
+     * Holds if `impl` is a blanket implementation for a type parameter and
+     * `traitBound` is the first non-trivial trait bound of that type parameter.
+     */
+    pragma[nomagic]
+    private predicate blanketImplementationTraitBound(TypeParamItemNode tp, Trait traitBound) {
+      tp = any(ImplItemNode impl).getBlanketImplementationTypeParam() and
+      traitBound =
+        min(Trait trait, int i |
+          trait = tp.resolveBound(i) and
+          // Exclude traits that are known to not narrow things down very much.
+          not trait.getName().getText() =
+            [
+              "Sized", "Clone",
+              // The auto traits
+              "Send", "Sync", "Unpin", "UnwindSafe", "RefUnwindSafe"
+            ]
+        |
+          trait order by i
+        )
+    }
+
+    pragma[nomagic]
+    additional predicate relevantConstraint(
+      MethodCallCandAndBlanketOffset mcco, Function m, Trait traitBound
+    ) {
+      exists(
+        MethodCallCand mcc, MethodCall mc, string name, int arity, TypePath blanketPath,
+        TypeParam blanketTypeParam
+      |
+        mcco = MkMethodCallCandAndBlanketOffset(mcc, blanketPath) and
+        mcc.hasInfo(mc, _, _, name, arity) and
+        methodCallBlanketCandidate(mc, m, _, _, blanketPath, blanketTypeParam) and
+        blanketImplementationTraitBound(blanketTypeParam, traitBound)
+      )
+    }
+
+    pragma[nomagic]
+    predicate relevantConstraint(MethodCallCandAndBlanketOffset mcco, Type constraint) {
+      relevantConstraint(mcco, _, constraint.(TraitType).getTrait())
+    }
+
+    predicate useUniversalConditions() { none() }
+  }
+
+  private predicate hasBlanketImpl(MethodCallCand mcc, Function f) {
+    exists(MethodCallCandAndBlanketOffset mcco, Trait traitBound |
+      mcco = MkMethodCallCandAndBlanketOffset(mcc, _) and
+      SatisfiesBlanketConstraintInput::relevantConstraint(mcco, f, traitBound) and
+      SatisfiesConstraint<MethodCallCandAndBlanketOffset, SatisfiesBlanketConstraintInput>::satisfiesConstraintType(mcco,
+        TTrait(traitBound), _, _)
+    )
+  }
+
   /**
    * A configuration for matching the type of a receiver against the type of
    * a `self` parameter.
@@ -1638,9 +1765,16 @@ private module MethodCallResolution {
     predicate potentialInstantiationOf(
       MethodCallCand mcc, TypeAbstraction abs, FunctionType constraint
     ) {
-      exists(MethodCall mc, string name, int arity, TypePath strippedTypePath, Type strippedType |
-        mcc.hasInfo(mc, strippedTypePath, strippedType, name, arity) and
-        methodCallCandidate(mc, abs, constraint, strippedTypePath, strippedType)
+      exists(
+        MethodCall mc, Function m, string name, int arity, TypePath strippedTypePath,
+        Type strippedType
+      |
+        mcc.hasInfo(mc, strippedTypePath, strippedType, name, arity)
+      |
+        methodCallNonBlanketCandidate(mc, m, abs, constraint, strippedTypePath, strippedType)
+        or
+        methodCallBlanketCandidate(mc, m, abs, constraint, _, _) and
+        hasBlanketImpl(mcc, m)
       )
     }
 
@@ -1981,12 +2115,15 @@ private module FunctionCallResolution {
       TypePath strippedTypePath, Type strippedType, TraitItemNode trait, Function f,
       Function traitFunction
     ) {
-      MethodCallResolution::methodInfo(f, _, _, _, _, strippedTypePath, strippedType) and
-      traitFunction = trait.getAnAssocItem() and
-      (
-        f.implements(traitFunction)
-        or
-        f = traitFunction
+      exists(ImplOrTraitItemNode i |
+        MethodCallResolution::methodInfo(f, _, _, i, _, strippedTypePath, strippedType) and
+        not i.(ImplItemNode).isBlanketImplementation() and
+        traitFunction = trait.getAnAssocItem() and
+        (
+          f.implements(traitFunction)
+          or
+          f = traitFunction
+        )
       )
     }
 
@@ -1994,7 +2131,7 @@ private module FunctionCallResolution {
     private predicate methodInfoTypeParam(
       TypePath strippedTypePath, TraitItemNode trait, Function f, Function traitFunction
     ) {
-      MethodCallResolution::methodInfoTypeParam(f, _, _, _, _, strippedTypePath) and
+      MethodCallResolution::methodInfoTypeParam(f, _, _, _, _, strippedTypePath, _) and
       traitFunction = trait.getAnAssocItem() and
       (
         f.implements(traitFunction)
@@ -2274,13 +2411,15 @@ private module OperationResolution {
   private module OperationIsInstantiationOfInput implements
     IsInstantiationOfInputSig<Op, FunctionType>
   {
-    pragma[inline]
-    private predicate methodInfoMatch(
+    // todo
+    bindingset[strippedTypePath]
+    private predicate methodInfoNonBlanketMatch(
       TypeAbstraction abs, FunctionType constraint, Trait trait, string name, int arity,
       TypePath strippedTypePath, Type strippedType
     ) {
-      MethodCallResolution::methodInfoMatch(_, name, arity, abs, constraint, strippedTypePath,
-        strippedType) and
+      MethodCallResolution::methodInfoNonBlanketMatch(_, name, arity, abs, constraint,
+        strippedTypePath, strippedType) and
+      not abs.(ImplItemNode).isBlanketImplementation() and
       (
         trait = abs.(ImplItemNode).resolveTraitTy()
         or
@@ -2292,7 +2431,8 @@ private module OperationResolution {
     predicate potentialInstantiationOf(Op op, TypeAbstraction abs, FunctionType constraint) {
       exists(Trait trait, string name, int arity, TypePath strippedTypePath, Type strippedType |
         op.hasInfo(strippedTypePath, strippedType, trait, name, arity) and
-        methodInfoMatch(abs, constraint, trait, name, arity, strippedTypePath, strippedType)
+        methodInfoNonBlanketMatch(abs, constraint, trait, name, arity, strippedTypePath,
+          strippedType)
       )
     }
 
