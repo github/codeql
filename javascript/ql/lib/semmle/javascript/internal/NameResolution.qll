@@ -39,6 +39,10 @@ module NameResolution {
       result = DataFlow::valueNode(this)
       or
       result = DataFlow::valueNode(this.(Variable).getAnAssignedExpr())
+      or
+      result = DataFlow::valueNode(any(ClassDefinition def | this = def.getVariable()))
+      or
+      result = DataFlow::valueNode(any(FunctionDeclStmt def | this = def.getVariable()))
     }
 
     DataFlow::Node toDataFlowNodeOut() {
