@@ -103,6 +103,10 @@ private Field getASparselyUsedChannelTypedField() {
   count(result.getARead()) = 2
 }
 
+bindingset[v]
+pragma[inline_late]
+private predicate jumpStepHelper(ValueEntity v, Node n) { n = v.getARead() }
+
 /**
  * Holds if data can flow from `node1` to `node2` in a way that loses the
  * calling context. For example, this would happen with flow through a
@@ -117,7 +121,7 @@ predicate jumpStep(Node n1, Node n2) {
       or
       n1.(DataFlow::PostUpdateNode).getPreUpdateNode() = v.getARead()
     ) and
-    n2 = v.getARead()
+    jumpStepHelper(v, n2)
   )
   or
   exists(SsaExplicitDefinition def, SsaVariableCapture succ |
