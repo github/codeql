@@ -62,8 +62,8 @@ app.post('/graphql', async (req, res) => {
         args: {
           value: { type: GraphQLString }
         },
-        resolve: (_, { value }, context) => { // $ MISSING: Source[js/code-injection]
-          return eval(value); // $ MISSING: Alert[js/code-injection]
+        resolve: (_, { value }, context) => { // $ Source[js/code-injection]
+          return eval(value); // $ Alert[js/code-injection]
         }
       }
     }
