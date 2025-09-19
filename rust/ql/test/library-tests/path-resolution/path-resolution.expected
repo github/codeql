@@ -356,7 +356,6 @@ resolvePath
 | main.rs:779:21:779:23 | i64 | {EXTERNAL LOCATION} | struct i64 |
 | main.rs:781:11:781:13 | i64 | {EXTERNAL LOCATION} | struct i64 |
 | main.rs:787:17:787:19 | Foo | main.rs:772:5:772:15 | struct Foo |
-| main.rs:787:17:787:19 | Foo | main.rs:779:27:782:9 | type Foo |
 | main.rs:792:5:792:6 | my | main.rs:1:1:1:7 | mod my |
 | main.rs:792:5:792:14 | ...::nested | my.rs:1:1:1:15 | mod nested |
 | main.rs:792:5:792:23 | ...::nested1 | my/nested.rs:1:1:17:1 | mod nested1 |

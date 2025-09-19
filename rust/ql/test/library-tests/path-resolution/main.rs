@@ -784,7 +784,7 @@ mod impl_with_attribute_macro {
 
     pub fn test() {
         // This should resolve to the struct, not the associated type.
-        let _x: Foo; // $ item=IFoo SPURIOUS: item=IATrait_i64_Foo
+        let _x: Foo; // $ item=IFoo
     } // impl_with_attribute_macro::test
 }
 
