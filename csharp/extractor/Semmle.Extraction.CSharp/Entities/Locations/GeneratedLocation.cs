@@ -14,6 +14,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
+            if (Context.ExtractionContext.IsStandalone)
+            {
+                return;
+            }
+
             trapFile.locations_default(this, generatedFile, 0, 0, 0, 0);
         }
 
@@ -21,7 +26,6 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (Context.ExtractionContext.IsStandalone)
             {
-                WriteStarId(trapFile);
                 return;
             }
 
