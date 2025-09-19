@@ -249,6 +249,33 @@ fn test_enum_method_source() {
     }
 }
 
+mod source_into_function {
+    use super::sink;
+
+    // has a source model
+    fn pass_source<A>(_i: i64, f: impl FnOnce(i64) -> A) -> A {
+        f(42)
+    }
+
+    fn test_source_into_function() {
+        let a = |a| sink(a); // $ hasValueFlow=1
+        pass_source(1, a);
+
+        pass_source(2, |a| {
+            sink(a); // $ hasValueFlow=2
+        });
+
+        fn f(a: i64) {
+            sink(a) // $ hasValueFlow=3
+        }
+        pass_source(3, f);
+
+        pass_source(4, async move |a| {
+            sink(a); // $ hasValueFlow=4
+        });
+    }
+}
+
 // has a sink model
 fn enum_sink(e: MyFieldEnum) {}
 

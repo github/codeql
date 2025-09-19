@@ -508,7 +508,8 @@ module RustDataFlow implements InputSig<Location> {
    */
   predicate jumpStep(Node node1, Node node2) {
     FlowSummaryImpl::Private::Steps::summaryJumpStep(node1.(FlowSummaryNode).getSummaryNode(),
-      node2.(FlowSummaryNode).getSummaryNode())
+      node2.(FlowSummaryNode).getSummaryNode()) or
+    FlowSummaryImpl::Private::Steps::sourceJumpStep(node1.(FlowSummaryNode).getSummaryNode(), node2)
   }
 
   pragma[nomagic]

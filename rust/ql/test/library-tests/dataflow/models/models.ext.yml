@@ -7,6 +7,7 @@ extensions:
       - ["main::enum_source", "ReturnValue.Field[main::MyFieldEnum::D::field_d]", "test-source", "manual"]
       - ["<main::MyFieldEnum>::source", "ReturnValue.Field[main::MyFieldEnum::C::field_c]", "test-source", "manual"]
       - ["main::arg_source", "Argument[0]", "test-source", "manual"]
+      - ["main::source_into_function::pass_source", "Argument[1].Parameter[0]", "test-source", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sinkModel
