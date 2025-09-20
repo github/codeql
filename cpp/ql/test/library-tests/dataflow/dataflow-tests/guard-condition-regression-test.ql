@@ -17,7 +17,7 @@ module IRTestAllocationConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) {
-    exists(GuardCondition gc | node.asExpr() = gc.getAChild*())
+    exists(GuardCondition gc | node.asExpr() = gc.(Expr).getAChild*())
   }
 }
 
