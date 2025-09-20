@@ -554,9 +554,9 @@ class RegExp extends Expr instanceof StringLiteral {
     or
     this.negativeAssertionGroup(start, end)
     or
-    this.positiveLookaheadAssertionGroup(start, end)
+    this.positiveLookaheadAssertionGroup(start, end, _, _)
     or
-    this.positiveLookbehindAssertionGroup(start, end)
+    this.positiveLookbehindAssertionGroup(start, end, _, _)
   }
 
   /** Holds if an empty group is found between `start` and `end`. */
@@ -572,7 +572,7 @@ class RegExp extends Expr instanceof StringLiteral {
     or
     this.negativeAssertionGroup(start, end)
     or
-    this.positiveLookaheadAssertionGroup(start, end)
+    this.positiveLookaheadAssertionGroup(start, end, _, _)
   }
 
   private predicate emptyMatchAtEndGroup(int start, int end) {
@@ -580,7 +580,7 @@ class RegExp extends Expr instanceof StringLiteral {
     or
     this.negativeAssertionGroup(start, end)
     or
-    this.positiveLookbehindAssertionGroup(start, end)
+    this.positiveLookbehindAssertionGroup(start, end, _, _)
   }
 
   private predicate negativeAssertionGroup(int start, int end) {
@@ -593,32 +593,40 @@ class RegExp extends Expr instanceof StringLiteral {
     )
   }
 
-  /** Holds if a negative lookahead is found between `start` and `end` */
-  predicate negativeLookaheadAssertionGroup(int start, int end) {
-    exists(int in_start | this.negative_lookahead_assertion_start(start, in_start) |
-      this.groupContents(start, end, in_start, _)
-    )
+  /**
+   * Holds if a negative lookahead is found between `start` and `end`, with contents
+   * between  `in_start` and `in_end`.
+   */
+  predicate negativeLookaheadAssertionGroup(int start, int end, int in_start, int in_end) {
+    this.negative_lookahead_assertion_start(start, in_start) and
+    this.groupContents(start, end, in_start, in_end)
   }
 
-  /** Holds if a negative lookbehind is found between `start` and `end` */
-  predicate negativeLookbehindAssertionGroup(int start, int end) {
-    exists(int in_start | this.negative_lookbehind_assertion_start(start, in_start) |
-      this.groupContents(start, end, in_start, _)
-    )
+  /**
+   * Holds if a negative lookbehind is found between `start` and `end`, with contents
+   * between `in_start` and `in_end`.
+   */
+  predicate negativeLookbehindAssertionGroup(int start, int end, int in_start, int in_end) {
+    this.negative_lookbehind_assertion_start(start, in_start) and
+    this.groupContents(start, end, in_start, in_end)
   }
 
-  /** Holds if a positive lookahead is found between `start` and `end` */
-  predicate positiveLookaheadAssertionGroup(int start, int end) {
-    exists(int in_start | this.lookahead_assertion_start(start, in_start) |
-      this.groupContents(start, end, in_start, _)
-    )
+  /**
+   * Holds if a positive lookahead is found between `start` and `end`, with contents
+   * between `in_start` and `in_end`.
+   */
+  predicate positiveLookaheadAssertionGroup(int start, int end, int in_start, int in_end) {
+    this.lookahead_assertion_start(start, in_start) and
+    this.groupContents(start, end, in_start, in_end)
   }
 
-  /** Holds if a positive lookbehind is found between `start` and `end` */
-  predicate positiveLookbehindAssertionGroup(int start, int end) {
-    exists(int in_start | this.lookbehind_assertion_start(start, in_start) |
-      this.groupContents(start, end, in_start, _)
-    )
+  /**
+   * Holds if a positive lookbehind is found between `start` and `end`, with contents
+   * between `in_start` and `in_end`.
+   */
+  predicate positiveLookbehindAssertionGroup(int start, int end, int in_start, int in_end) {
+    this.lookbehind_assertion_start(start, in_start) and
+    this.groupContents(start, end, in_start, in_end)
   }
 
   private predicate group_start(int start, int end) {
@@ -1049,6 +1057,13 @@ class RegExp extends Expr instanceof StringLiteral {
       or
       this.alternationOption(x, y, start, end)
     )
+    or
+    // Lookbehind assertions can potentially match the start of the string
+    (
+      this.positiveLookbehindAssertionGroup(_, _, start, _) or
+      this.negativeLookbehindAssertionGroup(_, _, start, _)
+    ) and
+    this.item(start, end)
   }
 
   /** A part of the regex that may match the end of the string. */
@@ -1074,6 +1089,13 @@ class RegExp extends Expr instanceof StringLiteral {
       or
       this.alternationOption(x, y, start, end)
     )
+    or
+    // Lookahead assertions can potentially match the end of the string
+    (
+      this.positiveLookaheadAssertionGroup(_, _, _, end) or
+      this.negativeLookaheadAssertionGroup(_, _, _, end)
+    ) and
+    this.item(start, end)
   }
 
   /**
