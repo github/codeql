@@ -4,4 +4,5 @@ module OpenSslModel {
   import Operations.OpenSSLOperations
   import Random
   import GenericSourceCandidateLiteral
+  import ArtifactPassthrough
 }
