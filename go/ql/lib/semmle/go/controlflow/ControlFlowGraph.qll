@@ -118,6 +118,8 @@ module ControlFlow {
     /** Gets the left-hand side of this write. */
     IR::WriteTarget getLhs() { result = super.getLhs() }
 
+    private predicate isInitialization() { super.isInitialization() }
+
     /** Gets the right-hand side of this write. */
     DataFlow::Node getRhs() { super.getRhs() = result.asInstruction() }
 
@@ -134,19 +136,39 @@ module ControlFlow {
      * Holds if this node sets the value of field `f` on `base` (or its implicit dereference) to
      * `rhs`.
      *
-     * For example, for the assignment `x.width = newWidth`, `base` is either the data-flow node
-     * corresponding to `x` or (if `x` is a pointer) the data-flow node corresponding to the
-     * implicit dereference `*x`, `f` is the field referenced by `width`, and `rhs` is the data-flow
-     * node corresponding to `newWidth`.
+     * For example, for the assignment `x.width = newWidth`, `base` is the post-update node of
+     * either the data-flow node corresponding to `x` or (if `x` is a pointer) the data-flow node
+     * corresponding to the implicit dereference `*x`, `f` is the field referenced by `width`, and
+     * `rhs` is the data-flow node corresponding to `newWidth`. If this `WriteNode` is a struct
+     * initialization then there is no need for a post-update node and `base` is the struct literal
+     * being initialized.
      */
     predicate writesField(DataFlow::Node base, Field f, DataFlow::Node rhs) {
+      exists(DataFlow::Node b | this.writesFieldInsn(b.asInstruction(), f, rhs.asInstruction()) |
+        this.isInitialization() and base = b
+        or
+        not this.isInitialization() and
+        b = base.(DataFlow::PostUpdateNode).getPreUpdateNode()
+      )
+    }
+
+    /**
+     * Holds if this node sets the value of field `f` on `v` to `rhs`.
+     */
+    predicate writesFieldOnSsaWithFields(SsaWithFields v, Field f, DataFlow::Node rhs) {
+      exists(IR::Instruction insn | this.writesFieldInsn(insn, f, rhs.asInstruction()) |
+        v.getAUse().asInstruction() = insn
+      )
+    }
+
+    private predicate writesFieldInsn(IR::Instruction base, Field f, IR::Instruction rhs) {
       exists(IR::FieldTarget trg | trg = super.getLhs() |
         (
-          trg.getBase() = base.asInstruction() or
-          trg.getBase() = MkImplicitDeref(base.asExpr())
+          trg.getBase() = base or
+          trg.getBase() = MkImplicitDeref(base.(IR::EvalInstruction).getExpr())
         ) and
         trg.getField() = f and
-        super.getRhs() = rhs.asInstruction()
+        super.getRhs() = rhs
       )
     }
 
@@ -154,19 +176,34 @@ module ControlFlow {
      * Holds if this node sets the value of element `index` on `base` (or its implicit dereference)
      * to `rhs`.
      *
-     * For example, for the assignment `xs[i] = v`, `base` is either the data-flow node
-     * corresponding to `xs` or (if `xs` is a pointer) the data-flow node corresponding to the
-     * implicit dereference `*xs`, `index` is the data-flow node corresponding to `i`, and `rhs`
-     * is the data-flow node corresponding to `base`.
+     * For example, for the assignment `xs[i] = v`, `base` is the post-update node of the data-flow
+     * node corresponding to `xs` or (if `xs` is a pointer) the implicit dereference `*xs`, `index`
+     * is the data-flow node corresponding to `i`, and `rhs` is the data-flow node corresponding to
+     * `base`. If this `WriteNode` corresponds to the initialization of an array/slice/map then
+     * there is no need for a post-update node and `base` is the array/slice/map literal being
+     * initialized.
      */
     predicate writesElement(DataFlow::Node base, DataFlow::Node index, DataFlow::Node rhs) {
+      exists(DataFlow::Node b |
+        this.writesElementInsn(b.asInstruction(), index.asInstruction(), rhs.asInstruction())
+      |
+        this.isInitialization() and base = b
+        or
+        not this.isInitialization() and
+        b = base.(DataFlow::PostUpdateNode).getPreUpdateNode()
+      )
+    }
+
+    private predicate writesElementInsn(
+      IR::Instruction base, IR::Instruction index, IR::Instruction rhs
+    ) {
       exists(IR::ElementTarget trg | trg = super.getLhs() |
         (
-          trg.getBase() = base.asInstruction() or
-          trg.getBase() = MkImplicitDeref(base.asExpr())
+          trg.getBase() = base or
+          trg.getBase() = MkImplicitDeref(base.(IR::EvalInstruction).getExpr())
         ) and
-        trg.getIndex() = index.asInstruction() and
-        super.getRhs() = rhs.asInstruction()
+        trg.getIndex() = index and
+        super.getRhs() = rhs
       )
     }
 
@@ -175,6 +212,13 @@ module ControlFlow {
      */
     predicate writesComponent(DataFlow::Node base, DataFlow::Node rhs) {
       this.writesElement(base, _, rhs) or this.writesField(base, _, rhs)
+    }
+
+    /**
+     * Holds if this node sets any field or element of `base` to `rhs`.
+     */
+    predicate writesComponentInstruction(IR::Instruction base, IR::Instruction rhs) {
+      this.writesElementInsn(base, _, rhs) or this.writesFieldInsn(base, _, rhs)
     }
   }
 

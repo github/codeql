@@ -64,11 +64,10 @@ module Protobuf {
    */
   private class MarshalStateStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(DataFlow::PostUpdateNode marshalInput, DataFlow::CallNode marshalStateCall |
+      exists(DataFlow::Node marshalInput, DataFlow::CallNode marshalStateCall |
         marshalStateCall = marshalStateMethod().getACall() and
         // pred -> marshalInput.Message
-        any(DataFlow::Write w)
-            .writesField(marshalInput.getPreUpdateNode(), inputMessageField(), pred) and
+        any(DataFlow::Write w).writesField(marshalInput, inputMessageField(), pred) and
         // marshalInput -> marshalStateCall
         marshalStateCall.getArgument(0) = globalValueNumber(marshalInput).getANode() and
         // marshalStateCall -> succ
@@ -142,10 +141,13 @@ module Protobuf {
   private class WriteMessageFieldStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       [succ.getType(), succ.getType().getPointerType()] instanceof MessageType and
-      exists(DataFlow::ReadNode base |
+      exists(DataFlow::Node n, DataFlow::ReadNode base |
         succ.(DataFlow::PostUpdateNode).getPreUpdateNode() = getUnderlyingNode(base)
       |
-        any(DataFlow::Write w).writesComponent(base, pred)
+        any(DataFlow::Write w).writesComponent(n, pred) and
+        // The below line only works because `base`'s type, `DataFlow::ReadNode`,
+        // is incompatible with `DataFlow::PostUpdateNode`.
+        base = [n, n.(DataFlow::PostUpdateNode).getPreUpdateNode()]
       )
     }
   }
