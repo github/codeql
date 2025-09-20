@@ -71,19 +71,42 @@ class EvpCtxSetEcParamgenCurveNidInitializer extends OperationStep {
  * - `EVP_PKEY_CTX_set_ecdh_kdf_md`
  */
 class EvpCtxSetHashInitializer extends OperationStep {
+  boolean isOaep;
+  boolean isMgf1;
+
   EvpCtxSetHashInitializer() {
     this.getTarget().getName() in [
-        "EVP_PKEY_CTX_set_signature_md", "EVP_PKEY_CTX_set_rsa_mgf1_md_name",
-        "EVP_PKEY_CTX_set_rsa_mgf1_md", "EVP_PKEY_CTX_set_rsa_oaep_md_name",
-        "EVP_PKEY_CTX_set_rsa_oaep_md", "EVP_PKEY_CTX_set_dsa_paramgen_md",
+        "EVP_PKEY_CTX_set_signature_md", "EVP_PKEY_CTX_set_dsa_paramgen_md",
         "EVP_PKEY_CTX_set_dh_kdf_md", "EVP_PKEY_CTX_set_ecdh_kdf_md"
-      ]
+      ] and
+    isOaep = false and
+    isMgf1 = false
+    or
+    this.getTarget().getName() in [
+        "EVP_PKEY_CTX_set_rsa_mgf1_md_name", "EVP_PKEY_CTX_set_rsa_mgf1_md"
+      ] and
+    isOaep = false and
+    isMgf1 = true
+    or
+    this.getTarget().getName() in [
+        "EVP_PKEY_CTX_set_rsa_oaep_md_name",
+        "EVP_PKEY_CTX_set_rsa_oaep_md"
+      ] and
+    isOaep = true and
+    isMgf1 = false
   }
 
   override DataFlow::Node getInput(IOType type) {
     result.asExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and type = HashAlgorithmIO()
+    result.asExpr() = this.getArgument(1) and
+    type = HashAlgorithmIO() and
+    isOaep = false and
+    isMgf1 = false
+    or
+    result.asExpr() = this.getArgument(1) and type = HashAlgorithmOaepIO() and isOaep = true
+    or
+    result.asExpr() = this.getArgument(1) and type = HashAlgorithmMgf1IO() and isMgf1 = true
   }
 
   override DataFlow::Node getOutput(IOType type) {
