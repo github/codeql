@@ -1,5 +1,5 @@
 const express = require('express');
-const { graphql, buildSchema } = require('graphql');
+const { graphql, buildSchema, GraphQLObjectType, GraphQLString } = require('graphql');
 
 const app = express();
 app.use(express.json());
@@ -51,6 +51,32 @@ app.post('/graphql', async (req, res) => {
       }
     `,
     rootValue: root1,
+    variableValues: variables
+  });
+
+  const MutationType = new GraphQLObjectType({
+    name: 'Mutation',
+    fields: {
+      runEval: {
+        type: GraphQLString,
+        args: {
+          value: { type: GraphQLString }
+        },
+        resolve: (_, { value }, context) => { // $ Source[js/code-injection]
+          return eval(value); // $ Alert[js/code-injection]
+        }
+      }
+    }
+  });
+  
+  const schema = new GraphQLSchema({
+    query: QueryType,
+    mutation: MutationType
+  });
+
+  await graphql({
+    schema,
+    source: query,
     variableValues: variables
   });
 });
