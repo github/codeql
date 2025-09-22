@@ -167,7 +167,7 @@ fn test_biscotti() {
     cookies.insert(i.clone().make_permanent()); // $ Alert[rust/insecure-cookie]
 }
 
-fn test_qhelp_examples() {use cookie::Cookie;
+fn test_qhelp_examples() {
     {
         // BAD: creating a cookie without specifying the `secure` attribute
         let cookie = Cookie::build(("session", "abcd1234")).build(); // $ Alert[rust/insecure-cookie]
