@@ -333,6 +333,8 @@ module NameResolution {
       exprt.getContainer() = mod and
       result = exprt.getOperand()
     )
+    or
+    result = mod.(AmdModule).getDefine().getFactoryFunction().getAReturnedExpr()
   }
 
   /** Gets a node that is bulk-exported from the given module. */
@@ -351,6 +353,8 @@ module NameResolution {
     mod instanceof NodeModule
     or
     readStep(moduleObjectRef(mod), "exports", result)
+    or
+    result = mod.(AmdModule).getDefine().getExportsParameter()
     or
     result = exportsObjectRhsPred(mod)
     or
