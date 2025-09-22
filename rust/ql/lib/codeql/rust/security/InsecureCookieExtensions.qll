@@ -69,11 +69,13 @@ module InsecureCookie {
       // check if the argument is always `true`
       (
         if
-          forex(DataFlow::Node argSourceNode | DataFlow::localFlow(argSourceNode, argNode) |
-            argSourceNode.asExpr().getExpr().(BooleanLiteralExpr).getTextValue() = "true"
+          forex(DataFlow::Node argSourceNode, BooleanLiteralExpr argSourceValue |
+            DataFlow::localFlow(argSourceNode, argNode) and
+            argSourceValue = argSourceNode.asExpr().getExpr() |
+            argSourceValue.getTextValue() = "true"
           )
-        then value = true // `true` flow to here
-        else value = false // `false` or unknown
+        then value = true // `true` flows to here
+        else value = false // `false`, unknown, or multiple values
       ) and
       // and find the node where this happens
       (

@@ -6,8 +6,6 @@
 | main.rs:20:56:20:60 | build | main.rs:20:5:20:36 | ...::build(...) | main.rs:20:56:20:60 | build | Cookie attribute 'Secure' is not set to true. |
 | main.rs:21:57:21:61 | build | main.rs:21:5:21:17 | ...::build | main.rs:21:57:21:61 | build | Cookie attribute 'Secure' is not set to true. |
 | main.rs:21:57:21:61 | build | main.rs:21:5:21:36 | ...::build(...) | main.rs:21:57:21:61 | build | Cookie attribute 'Secure' is not set to true. |
-| main.rs:24:53:24:57 | build | main.rs:24:5:24:17 | ...::build | main.rs:24:53:24:57 | build | Cookie attribute 'Secure' is not set to true. |
-| main.rs:24:53:24:57 | build | main.rs:24:5:24:36 | ...::build(...) | main.rs:24:53:24:57 | build | Cookie attribute 'Secure' is not set to true. |
 | main.rs:25:54:25:58 | build | main.rs:25:5:25:17 | ...::build | main.rs:25:54:25:58 | build | Cookie attribute 'Secure' is not set to true. |
 | main.rs:25:54:25:58 | build | main.rs:25:5:25:36 | ...::build(...) | main.rs:25:54:25:58 | build | Cookie attribute 'Secure' is not set to true. |
 | main.rs:26:52:26:56 | build | main.rs:26:5:26:17 | ...::build | main.rs:26:52:26:56 | build | Cookie attribute 'Secure' is not set to true. |
@@ -91,9 +89,6 @@ edges
 | main.rs:21:5:21:17 | ...::build | main.rs:21:5:21:36 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
 | main.rs:21:5:21:36 | ...::build(...) | main.rs:21:5:21:55 | ... .secure(...) | provenance | MaD:41 |
 | main.rs:21:5:21:55 | ... .secure(...) | main.rs:21:57:21:61 | build | provenance | MaD:2 Sink:MaD:2 |
-| main.rs:24:5:24:17 | ...::build | main.rs:24:5:24:36 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
-| main.rs:24:5:24:36 | ...::build(...) | main.rs:24:5:24:51 | ... .secure(...) | provenance | MaD:41 |
-| main.rs:24:5:24:51 | ... .secure(...) | main.rs:24:53:24:57 | build | provenance | MaD:2 Sink:MaD:2 |
 | main.rs:25:5:25:17 | ...::build | main.rs:25:5:25:36 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
 | main.rs:25:5:25:36 | ...::build(...) | main.rs:25:5:25:52 | ... .secure(...) | provenance | MaD:41 |
 | main.rs:25:5:25:52 | ... .secure(...) | main.rs:25:54:25:58 | build | provenance | MaD:2 Sink:MaD:2 |
@@ -374,10 +369,6 @@ nodes
 | main.rs:21:5:21:36 | ...::build(...) | semmle.label | ...::build(...) |
 | main.rs:21:5:21:55 | ... .secure(...) | semmle.label | ... .secure(...) |
 | main.rs:21:57:21:61 | build | semmle.label | build |
-| main.rs:24:5:24:17 | ...::build | semmle.label | ...::build |
-| main.rs:24:5:24:36 | ...::build(...) | semmle.label | ...::build(...) |
-| main.rs:24:5:24:51 | ... .secure(...) | semmle.label | ... .secure(...) |
-| main.rs:24:53:24:57 | build | semmle.label | build |
 | main.rs:25:5:25:17 | ...::build | semmle.label | ...::build |
 | main.rs:25:5:25:36 | ...::build(...) | semmle.label | ...::build(...) |
 | main.rs:25:5:25:52 | ... .secure(...) | semmle.label | ... .secure(...) |

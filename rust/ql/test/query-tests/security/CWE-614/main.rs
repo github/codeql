@@ -21,7 +21,7 @@ fn test_cookie(sometimes: bool) {
     Cookie::build(("name", "value")).secure(!sometimes).build(); // $ Alert[rust/insecure-cookie]
 
     // with data flow on the "secure" value
-    Cookie::build(("name", "value")).secure(always).build(); // $ SPURIOUS: Alert[rust/insecure-cookie]
+    Cookie::build(("name", "value")).secure(always).build(); // good
     Cookie::build(("name", "value")).secure(!always).build(); // $ Alert[rust/insecure-cookie]
     Cookie::build(("name", "value")).secure(never).build(); // $ Alert[rust/insecure-cookie]
     Cookie::build(("name", "value")).secure(!never).build(); // $ SPURIOUS: Alert[rust/insecure-cookie]
