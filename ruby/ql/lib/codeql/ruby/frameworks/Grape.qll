@@ -237,11 +237,8 @@ module Grape {
    */
   private class GrapeHeadersBlockCall extends MethodCall {
     GrapeHeadersBlockCall() {
-      exists(GrapeApiClass api |
-        this.getParent+() = api.getADeclaration() and
-        this.getMethodName() = "headers" and
-        exists(this.getBlock())
-      )
+      this = grapeApiInstance().getAMethodCall("headers").asExpr().getExpr() and
+      exists(this.getBlock())
     }
   }
 
@@ -251,11 +248,8 @@ module Grape {
    */
   private class GrapeCookiesBlockCall extends MethodCall {
     GrapeCookiesBlockCall() {
-      exists(GrapeApiClass api |
-        this.getParent+() = api.getADeclaration() and
-        this.getMethodName() = "cookies" and
-        exists(this.getBlock())
-      )
+      this = grapeApiInstance().getAMethodCall("cookies").asExpr().getExpr() and
+      exists(this.getBlock())
     }
   }
 
