@@ -18,14 +18,29 @@ module CallGraph {
   }
 
   pragma[nomagic]
+  private predicate methodHostToReceiverStep(DataFlow::SourceNode node1, DataFlow::SourceNode node2) {
+    exists(DataFlow::PropWrite write |
+      node1 = write.getBase().getALocalSource() and
+      node2 = write.getRhs().getALocalSource().(DataFlow::FunctionNode).getReceiver()
+    )
+  }
+
+  pragma[inline]
+  private predicate step(DataFlow::SourceNode node1, DataFlow::SourceNode node2) {
+    AccessPath::step(node1.getALocalUse(), node2)
+    or
+    propertyFlowStep(node1.getALocalUse(), node2)
+    or
+    storeReadStep(node1, node2)
+    or
+    methodHostToReceiverStep(node1, node2)
+  }
+
+  pragma[nomagic]
   private DataFlow::SourceNode backtrackStoreTarget() {
     shouldBackTrack(result)
     or
-    AccessPath::step(result.getALocalUse(), backtrackStoreTarget())
-    or
-    propertyFlowStep(result.getALocalUse(), backtrackStoreTarget())
-    or
-    storeReadStep(result, backtrackStoreTarget())
+    step(result, backtrackStoreTarget())
   }
 
   pragma[nomagic]
@@ -63,15 +78,9 @@ module CallGraph {
   pragma[nomagic]
   private DataFlow::SourceNode track(DataFlow::SourceNode source) {
     shouldTrack(source) and
-    (
-      result = source
-      or
-      AccessPath::step(track(source).getALocalUse(), result)
-      or
-      propertyFlowStep(track(source).getALocalUse(), result)
-      or
-      storeReadStep(track(source), result)
-    )
+    result = source
+    or
+    step(track(source), result)
   }
 
   /** Gets the function referenced by `node`, as determined by the type inference. */
