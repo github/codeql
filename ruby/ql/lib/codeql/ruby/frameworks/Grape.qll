@@ -45,8 +45,7 @@ module Grape {
    */
   class GrapeApiClass extends DataFlow::ClassNode {
     GrapeApiClass() {
-      this = grapeApiBaseClass().getADescendentModule() and
-      not exists(DataFlow::ModuleNode m | m = grapeApiBaseClass().asModule() | this = m)
+      this = grapeApiBaseClass().getADescendentModule()
     }
 
     /**
