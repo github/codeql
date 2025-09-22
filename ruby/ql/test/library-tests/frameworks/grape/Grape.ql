@@ -5,7 +5,9 @@ import codeql.ruby.AST
 
 query predicate grapeApiClasses(Grape::GrapeApiClass api) { any() }
 
-query predicate grapeEndpoints(Grape::GrapeApiClass api, Grape::GrapeEndpoint endpoint, string method, string path) {
+query predicate grapeEndpoints(
+  Grape::GrapeApiClass api, Grape::GrapeEndpoint endpoint, string method, string path
+) {
   endpoint = api.getAnEndpoint() and
   method = endpoint.getHttpMethod() and
   path = endpoint.getPath()
