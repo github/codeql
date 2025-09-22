@@ -1,5 +1,13 @@
 private import AstImport
 
+/**
+ * A throw statement. For example:
+ * ```
+ * throw "An error occurred"
+ * throw [System.ArgumentException]::new("Invalid argument")
+ * throw
+ * ```
+ */
 class ThrowStmt extends Stmt, TThrowStmt {
   Expr getPipeline() {
     exists(Raw::Ast r | r = getRawAst(this) |

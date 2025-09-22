@@ -1,5 +1,15 @@
 private import AstImport
 
+/**
+ * A type definition statement. For example:
+ * ```
+ * class Person {
+ *   [string]$Name
+ *   [int]$Age
+ *   Person([string]$name) { $this.Name = $name }
+ * }
+ * ```
+ */
 class TypeDefinitionStmt extends Stmt, TTypeDefinitionStmt {
   string getLowerCaseName() { result = getRawAst(this).(Raw::TypeStmt).getName().toLowerCase() }
 

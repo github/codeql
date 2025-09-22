@@ -1,5 +1,13 @@
 private import AstImport
 
+/**
+ * A function or command call expression. For example:
+ * ```
+ * Get-Process
+ * Write-Host "Hello World"
+ * $result = $myObj.foo()
+ * ```
+ */
 class CallExpr extends Expr, TCallExpr {
   /** Gets the i'th argument to this call. */
   Expr getArgument(int i) { none() }

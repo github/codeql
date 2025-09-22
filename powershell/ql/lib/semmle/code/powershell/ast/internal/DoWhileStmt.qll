@@ -1,5 +1,13 @@
 private import AstImport
 
+/**
+ * A do-while loop statement. For example:
+ * ```
+ * do {
+ *   $input = Read-Host
+ * } while ($input -ne "exit")
+ * ```
+ */
 class DoWhileStmt extends LoopStmt, TDoWhileStmt {
   override string toString() { result = "do...while..." }
 

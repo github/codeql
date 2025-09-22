@@ -1,5 +1,19 @@
 private import AstImport
 
+/**
+ * An array expression. For example:
+ * ```
+ * $myArray = @("text", 42, $true)
+ * ```
+ * 
+ * An array expression is an expression of the form `@(...)` where `...` is
+ * a `StmtBlock` that computes the elements of the array. Often, that
+ * `StmtBlock` is an `ArrayLiteral`, but that is not necessarily the case. For
+ * example in:
+ * ```
+ * $squares = @(foreach ($n in 1..5) { $n * $n })
+ * ```
+ */
 class ArrayExpr extends Expr, TArrayExpr {
   StmtBlock getStmtBlock() {
     exists(Raw::Ast r | r = getRawAst(this) |

@@ -1,5 +1,8 @@
 private import AstImport
 
+/**
+ * A goto statement. A goto statement is either a `break` or a `continue`.
+ */
 class GotoStmt extends Stmt, TGotoStmt {
   Expr getLabel() {
     exists(Raw::Ast r | r = getRawAst(this) |

@@ -1,5 +1,17 @@
 private import AstImport
 
+/**
+ * A data statement in a PowerShell DSC (Desired State Configuration) script.
+ * For example:
+ * ```
+ * data Messages {
+ *   @{
+ *     Welcome = "Hello!"
+ *     Goodbye = "Bye!"
+ *   }
+ * }
+ * ```
+ */
 class DataStmt extends Stmt, TDataStmt {
   override string toString() { result = "data {...}" }
 

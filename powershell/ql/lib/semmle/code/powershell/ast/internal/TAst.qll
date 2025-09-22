@@ -218,7 +218,7 @@ private module Cached {
 
   class TVarAccess = TVarAccessReal or TVarAccessSynth;
 
-  class TLiteral = TBoolLiteral or TNullLiteral;
+  class TLiteral = TBoolLiteral or TNullLiteral; // TODO: Numbers and strings?
 
   class TGotoStmt = TContinueStmt or TBreakStmt;
 

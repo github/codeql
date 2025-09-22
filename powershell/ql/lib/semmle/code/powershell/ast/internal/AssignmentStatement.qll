@@ -1,5 +1,11 @@
 private import AstImport
 
+/**
+ * An assignment statement. For example:
+ * ```
+ * $name = "John"
+ * ```
+ */
 class AssignStmt extends Stmt, TAssignStmt {
   Expr getRightHandSide() {
     exists(Raw::Ast r | r = getRawAst(this) |

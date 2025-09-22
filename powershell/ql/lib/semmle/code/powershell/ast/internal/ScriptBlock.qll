@@ -1,5 +1,8 @@
 private import AstImport
 
+/**
+ * A script block. For example, the body of a function or a script file.
+ */
 class ScriptBlock extends Ast, TScriptBlock {
   override string toString() {
     if this.isTopLevel()
