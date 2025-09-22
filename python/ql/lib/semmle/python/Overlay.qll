@@ -34,7 +34,12 @@ private string getPathForContainer(@container fileOrFolder) {
 
 /*- Discardable entities and their discard predicates -*/
 overlay[local]
-private class Discardable_ = @py_source_element or @py_flow_node or @py_base_var or @location;
+private class Discardable_ =
+  @py_source_element or @py_flow_node or @py_base_var or @location or @py_line or
+      @py_StringPart_list or @py_alias or @py_alias_list or @py_arguments or @py_boolop or
+      @py_cmpop or @py_cmpop_list or @py_comprehension_list or @py_dict_item_list or
+      @py_expr_context or @py_expr_list or @py_operator or @py_parameter_list or @py_pattern_list or
+      @py_stmt_list or @py_str_list or @py_type_parameter_list or @py_unaryop or @py_comment;
 
 overlay[discard_entity]
 private predicate discardEntity(@py_source_element el) {
@@ -68,7 +73,187 @@ private predicate discardVar(@py_base_var n) {
 overlay[discard_entity]
 private predicate discardLocation(@location loc) {
   // Locations use *-ids, so cannot exist both in base and overlay.
-  exists(Discardable d | d = loc |
+  exists(DiscardableLocation d | d = loc |
+    overlayChangedFiles(d.getPath()) and
+    d.existsInBase()
+  )
+}
+
+overlay[discard_entity]
+private predicate discardLine(@py_line line) {
+  // Lines use *-ids, so cannot exist both in base and overlay.
+  exists(DiscardableLine d | d = line |
+    overlayChangedFiles(d.getPath()) and
+    d.existsInBase()
+  )
+}
+
+overlay[discard_entity]
+private predicate discardStringPartList(@py_StringPart_list list) {
+  // String part lists use *-ids, so cannot exist both in base and overlay.
+  exists(DiscardableStringPartList d | d = list |
+    overlayChangedFiles(d.getPath()) and
+    d.existsInBase()
+  )
+}
+
+overlay[discard_entity]
+private predicate discardAlias(@py_alias alias) {
+  // Aliases use *-ids, so cannot exist both in base and overlay.
+  exists(DiscardableAlias d | d = alias |
+    overlayChangedFiles(d.getPath()) and
+    d.existsInBase()
+  )
+}
+
+overlay[discard_entity]
+private predicate discardAliasList(@py_alias_list list) {
+  // Alias lists use *-ids, so cannot exist both in base and overlay.
+  exists(DiscardableAliasList d | d = list |
+    overlayChangedFiles(d.getPath()) and
+    d.existsInBase()
+  )
+}
+
+overlay[discard_entity]
+private predicate discardArguments(@py_arguments args) {
+  // Arguments use *-ids, so cannot exist both in base and overlay.
+  exists(DiscardableArguments d | d = args |
+    overlayChangedFiles(d.getPath()) and
+    d.existsInBase()
+  )
+}
+
+overlay[discard_entity]
+private predicate discardBoolOp(@py_boolop op) {
+  // Boolops use *-ids, so cannot exist both in base and overlay.
+  exists(DiscardableBoolOp d | d = op |
+    overlayChangedFiles(d.getPath()) and
+    d.existsInBase()
+  )
+}
+
+overlay[discard_entity]
+private predicate discardCmpOp(@py_cmpop op) {
+  // Cmpops use *-ids, so cannot exist both in base and overlay.
+  exists(DiscardableCmpOp d | d = op |
+    overlayChangedFiles(d.getPath()) and
+    d.existsInBase()
+  )
+}
+
+overlay[discard_entity]
+private predicate discardCmpOpList(@py_cmpop_list list) {
+  // Cmpop lists use *-ids, so cannot exist both in base and overlay.
+  exists(DiscardableCmpOpList d | d = list |
+    overlayChangedFiles(d.getPath()) and
+    d.existsInBase()
+  )
+}
+
+overlay[discard_entity]
+private predicate discardComprehensionList(@py_comprehension_list list) {
+  // Comprehension lists use *-ids, so cannot exist both in base and overlay.
+  exists(DiscardableComprehensionList d | d = list |
+    overlayChangedFiles(d.getPath()) and
+    d.existsInBase()
+  )
+}
+
+overlay[discard_entity]
+private predicate discardDictItemList(@py_dict_item_list list) {
+  // Dict item lists use *-ids, so cannot exist both in base and overlay.
+  exists(DiscardableDictItemList d | d = list |
+    overlayChangedFiles(d.getPath()) and
+    d.existsInBase()
+  )
+}
+
+overlay[discard_entity]
+private predicate discardExprContext(@py_expr_context ctx) {
+  // Expr contexts use *-ids, so cannot exist both in base and overlay.
+  exists(DiscardableExprContext d | d = ctx |
+    overlayChangedFiles(d.getPath()) and
+    d.existsInBase()
+  )
+}
+
+overlay[discard_entity]
+private predicate discardExprList(@py_expr_list list) {
+  // Expr lists use *-ids, so cannot exist both in base and overlay.
+  exists(DiscardableExprList d | d = list |
+    overlayChangedFiles(d.getPath()) and
+    d.existsInBase()
+  )
+}
+
+overlay[discard_entity]
+private predicate discardOperator(@py_operator op) {
+  // Operators use *-ids, so cannot exist both in base and overlay.
+  exists(DiscardableOperator d | d = op |
+    overlayChangedFiles(d.getPath()) and
+    d.existsInBase()
+  )
+}
+
+overlay[discard_entity]
+private predicate discardParameterList(@py_parameter_list list) {
+  // Parameter lists use *-ids, so cannot exist both in base and overlay.
+  exists(DiscardableParameterList d | d = list |
+    overlayChangedFiles(d.getPath()) and
+    d.existsInBase()
+  )
+}
+
+overlay[discard_entity]
+private predicate discardPatternList(@py_pattern_list list) {
+  // Pattern lists use *-ids, so cannot exist both in base and overlay.
+  exists(DiscardablePatternList d | d = list |
+    overlayChangedFiles(d.getPath()) and
+    d.existsInBase()
+  )
+}
+
+overlay[discard_entity]
+private predicate discardStmtList(@py_stmt_list list) {
+  // Stmt lists use *-ids, so cannot exist both in base and overlay.
+  exists(DiscardableStmtList d | d = list |
+    overlayChangedFiles(d.getPath()) and
+    d.existsInBase()
+  )
+}
+
+overlay[discard_entity]
+private predicate discardStrList(@py_str_list list) {
+  // Str lists use *-ids, so cannot exist both in base and overlay.
+  exists(DiscardableStrList d | d = list |
+    overlayChangedFiles(d.getPath()) and
+    d.existsInBase()
+  )
+}
+
+overlay[discard_entity]
+private predicate discardTypeParameterList(@py_type_parameter_list list) {
+  // Type parameter lists use *-ids, so cannot exist both in base and overlay.
+  exists(DiscardableTypeParameterList d | d = list |
+    overlayChangedFiles(d.getPath()) and
+    d.existsInBase()
+  )
+}
+
+overlay[discard_entity]
+private predicate discardUnaryOp(@py_unaryop op) {
+  // Unaryops use *-ids, so cannot exist both in base and overlay.
+  exists(DiscardableUnaryOp d | d = op |
+    overlayChangedFiles(d.getPath()) and
+    d.existsInBase()
+  )
+}
+
+overlay[discard_entity]
+private predicate discardComment(@py_comment c) {
+  // Comments use *-ids, so cannot exist both in base and overlay.
+  exists(DiscardableComment d | d = c |
     overlayChangedFiles(d.getPath()) and
     d.existsInBase()
   )
@@ -170,6 +355,176 @@ final private class DiscardableLocation extends Discardable instanceof @location
   override string getPath() { result = getPathForLocation(this) }
 }
 
+/** Discardable lines. */
+overlay[local]
+final private class DiscardableLine extends Discardable instanceof @py_line {
+  override string getPath() {
+    exists(Discardable d | result = d.getPath() | py_line_lengths(this, d.(@py_Module), _, _))
+  }
+}
+
+/** Discardable string part lists. */
+overlay[local]
+final private class DiscardableStringPartList extends Discardable instanceof @py_StringPart_list {
+  override string getPath() {
+    exists(Discardable d | result = d.getPath() | py_StringPart_lists(this, d.(@py_Bytes_or_Str)))
+  }
+}
+
+/** Discardable alias */
+overlay[local]
+final private class DiscardableAlias extends Discardable instanceof @py_alias {
+  override string getPath() {
+    exists(DiscardableAliasList d | result = d.getPath() | py_aliases(this, d, _))
+  }
+}
+
+/** Discardable alias list */
+overlay[local]
+final private class DiscardableAliasList extends Discardable instanceof @py_alias_list {
+  override string getPath() {
+    exists(Discardable d | result = d.getPath() | py_alias_lists(this, d.(@py_Import)))
+  }
+}
+
+/** Discardable arguments */
+overlay[local]
+final private class DiscardableArguments extends Discardable instanceof @py_arguments {
+  override string getPath() {
+    exists(Discardable d | result = d.getPath() | py_arguments(this, d.(@py_arguments_parent)))
+  }
+}
+
+/** Discardable boolop */
+overlay[local]
+final private class DiscardableBoolOp extends Discardable instanceof @py_boolop {
+  override string getPath() {
+    exists(Discardable d | result = d.getPath() | py_boolops(this, _, d.(@py_BoolExpr)))
+  }
+}
+
+/** Discardable cmpop */
+overlay[local]
+final private class DiscardableCmpOp extends Discardable instanceof @py_cmpop {
+  override string getPath() {
+    exists(DiscardableCmpOpList d | result = d.getPath() | py_cmpops(this, _, d, _))
+  }
+}
+
+/** Discardable cmpop list */
+overlay[local]
+final private class DiscardableCmpOpList extends Discardable instanceof @py_cmpop_list {
+  override string getPath() {
+    exists(Discardable d | result = d.getPath() | py_cmpop_lists(this, d.(@py_Compare)))
+  }
+}
+
+/** Discardable comprehension list */
+overlay[local]
+final private class DiscardableComprehensionList extends Discardable instanceof @py_comprehension_list
+{
+  override string getPath() {
+    exists(Discardable d | result = d.getPath() | py_comprehension_lists(this, d.(@py_ListComp)))
+  }
+}
+
+/** Discardable dict item list */
+overlay[local]
+final private class DiscardableDictItemList extends Discardable instanceof @py_dict_item_list {
+  override string getPath() {
+    exists(Discardable d | result = d.getPath() |
+      py_dict_item_lists(this, d.(@py_dict_item_list_parent))
+    )
+  }
+}
+
+/** Discardable expr context */
+overlay[local]
+final private class DiscardableExprContext extends Discardable instanceof @py_expr_context {
+  override string getPath() {
+    exists(Discardable d | result = d.getPath() |
+      py_expr_contexts(this, _, d.(@py_expr_context_parent))
+    )
+  }
+}
+
+/** Discardable expr list */
+overlay[local]
+final private class DiscardableExprList extends Discardable instanceof @py_expr_list {
+  override string getPath() {
+    exists(Discardable d | result = d.getPath() | py_expr_lists(this, d.(@py_expr_list_parent), _))
+  }
+}
+
+/** Discardable operator */
+overlay[local]
+final private class DiscardableOperator extends Discardable instanceof @py_operator {
+  override string getPath() {
+    exists(Discardable d | result = d.getPath() | py_operators(this, _, d.(@py_BinaryExpr)))
+  }
+}
+
+/** Discardable parameter list */
+overlay[local]
+final private class DiscardableParameterList extends Discardable instanceof @py_parameter_list {
+  override string getPath() {
+    exists(Discardable d | result = d.getPath() | py_parameter_lists(this, d.(@py_Function)))
+  }
+}
+
+/** Discardable pattern list */
+overlay[local]
+final private class DiscardablePatternList extends Discardable instanceof @py_pattern_list {
+  override string getPath() {
+    exists(Discardable d | result = d.getPath() |
+      py_pattern_lists(this, d.(@py_pattern_list_parent), _)
+    )
+  }
+}
+
+/** Discardable stmt list */
+overlay[local]
+final private class DiscardableStmtList extends Discardable instanceof @py_stmt_list {
+  override string getPath() {
+    exists(Discardable d | result = d.getPath() | py_stmt_lists(this, d.(@py_stmt_list_parent), _))
+  }
+}
+
+/** Discardable str list */
+overlay[local]
+final private class DiscardableStrList extends Discardable instanceof @py_str_list {
+  override string getPath() {
+    exists(Discardable d | result = d.getPath() | py_str_lists(this, d.(@py_str_list_parent)))
+  }
+}
+
+/** Discardable type parameter list */
+overlay[local]
+final private class DiscardableTypeParameterList extends Discardable instanceof @py_type_parameter_list
+{
+  override string getPath() {
+    exists(Discardable d | result = d.getPath() |
+      py_type_parameter_lists(this, d.(@py_type_parameter_list_parent))
+    )
+  }
+}
+
+/** Discardable unaryop */
+overlay[local]
+final private class DiscardableUnaryOp extends Discardable instanceof @py_unaryop {
+  override string getPath() {
+    exists(Discardable d | result = d.getPath() | py_unaryops(this, _, d.(@py_UnaryExpr)))
+  }
+}
+
+/** Discardable comment */
+overlay[local]
+final private class DiscardableComment extends Discardable instanceof @py_comment {
+  override string getPath() {
+    exists(DiscardableLocation d | result = d.getPath() | py_comments(this, _, d))
+  }
+}
+
 /*- XML -*/
 overlay[local]
 private predicate baseXmlLocatable(@xmllocatable l) {
@@ -209,3 +564,45 @@ private predicate discardBaseYamlLocatable(@yaml_locatable el) {
   // should be discarded.
   baseYamlLocatable(el) and overlayHasYamlLocatable()
 }
+///////////////////////////////////////////////////////////////////////////////
+// predicate locations_default_withoutPath(@location_default x) { not exists(x.(Discardable).getPath()) }
+// predicate locations_ast_withoutPath(@location_ast x) { not exists(x.(Discardable).getPath()) }
+// predicate files_withoutPath(@file x) { not exists(x.(Discardable).getPath()) }
+// predicate folders_withoutPath(@folder x) { not exists(x.(Discardable).getPath()) }
+// predicate variable_withoutPath(@py_variable x) { not exists(x.(Discardable).getPath()) }
+// predicate py_line_lengths_withoutPath(@py_line x) { not exists(x.(Discardable).getPath()) }
+// predicate py_Classes_withoutPath(@py_Class x) { not exists(x.(Discardable).getPath()) }
+// predicate py_Functions_withoutPath(@py_Function x) { not exists(x.(Discardable).getPath()) }
+// predicate py_Modules_withoutPath(@py_Module x) { not exists(x.(Discardable).getPath()) }
+// predicate py_StringPart_withoutPath(@py_StringPart x) { not exists(x.(Discardable).getPath()) }
+// predicate py_StringPart_lists_withoutPath(@py_StringPart_list x) { not exists(x.(Discardable).getPath()) }
+// predicate py_aliases_withoutPath(@py_alias x) { not exists(x.(Discardable).getPath()) }
+// predicate py_alias_lists_withoutPath(@py_alias_list x) { not exists(x.(Discardable).getPath()) }
+// predicate py_arguments_withoutPath(@py_arguments x) { not exists(x.(Discardable).getPath()) }
+// predicate py_boolops_withoutPath(@py_boolop x) { not exists(x.(Discardable).getPath()) }
+// predicate py_cmpops_withoutPath(@py_cmpop x) { not exists(x.(Discardable).getPath()) }
+// predicate py_cmpop_lists_withoutPath(@py_cmpop_list x) { not exists(x.(Discardable).getPath()) }
+// predicate py_comprehensions_withoutPath(@py_comprehension x) { not exists(x.(Discardable).getPath()) }
+// predicate py_comprehension_lists_withoutPath(@py_comprehension_list x) { not exists(x.(Discardable).getPath()) }
+// predicate py_dict_item_withoutPath(@py_dict_item x) { not exists(x.(Discardable).getPath()) }
+// predicate py_dict_item_lists_withoutPath(@py_dict_item_list x) { not exists(x.(Discardable).getPath()) }
+// predicate py_exprs_withoutPath(@py_expr x) { not exists(x.(Discardable).getPath()) }
+// predicate py_expr_contexts_withoutPath(@py_expr_context x) { not exists(x.(Discardable).getPath()) }
+// predicate py_expr_lists_withoutPath(@py_expr_list x) { not exists(x.(Discardable).getPath()) }
+// predicate py_operators_withoutPath(@py_operator x) { not exists(x.(Discardable).getPath()) }
+// predicate py_parameter_lists_withoutPath(@py_parameter_list x) { not exists(x.(Discardable).getPath()) }
+// predicate py_patterns_withoutPath(@py_pattern x) { not exists(x.(Discardable).getPath()) }
+// predicate py_pattern_lists_withoutPath(@py_pattern_list x) { not exists(x.(Discardable).getPath()) }
+// predicate py_stmts_withoutPath(@py_stmt x) { not exists(x.(Discardable).getPath()) }
+// predicate py_stmt_lists_withoutPath(@py_stmt_list x) { not exists(x.(Discardable).getPath()) }
+// predicate py_str_lists_withoutPath(@py_str_list x) { not exists(x.(Discardable).getPath()) }
+// predicate py_type_parameters_withoutPath(@py_type_parameter x) { not exists(x.(Discardable).getPath()) }
+// predicate py_type_parameter_lists_withoutPath(@py_type_parameter_list x) { not exists(x.(Discardable).getPath()) }
+// predicate py_unaryops_withoutPath(@py_unaryop x) { not exists(x.(Discardable).getPath()) }
+// predicate py_flow_bb_node_withoutPath(@py_flow_node x) { not exists(x.(Discardable).getPath()) }
+// predicate py_ssa_var_withoutPath(@py_ssa_var x) { not exists(x.(Discardable).getPath()) }
+// predicate py_comments_withoutPath(@py_comment x) { not exists(x.(Discardable).getPath()) }
+// predicate py_source_element_withoutPath(@py_source_element x) { not exists(x.(Discardable).getPath()) }
+// predicate py_flow_node_withoutPath(@py_flow_node x) { not exists(x.(Discardable).getPath()) }
+// predicate py_base_var_withoutPath(@py_base_var x) { not exists(x.(Discardable).getPath()) }
+// predicate py_location_withoutPath(@location x) { not exists(x.(Discardable).getPath()) }
