@@ -1078,6 +1078,17 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node2 = TProcessPropertyByNameNode(p, true)
   )
   or
+  // Read from a collection into a `foreach` loop
+  exists(
+    CfgNodes::StmtNodes::ForEachStmtCfgNode forEach, Content::KnownElementContent ec, BasicBlock bb,
+    int i
+  |
+    c.isKnownOrUnknownElement(ec) and
+    node1.asExpr() = forEach.getIterableExpr() and
+    bb.getNode(i) = forEach.getVarAccess() and
+    node2.asDefinition().definesAt(_, bb, i)
+  )
+  or
   // Summary read steps
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())

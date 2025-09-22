@@ -1,6 +1,7 @@
 private import powershell
 private import DataFlowDispatch
 private import DataFlowPrivate
+private import semmle.code.powershell.dataflow.Ssa
 private import semmle.code.powershell.typetracking.internal.TypeTrackingImpl
 private import semmle.code.powershell.ApiGraphs
 private import semmle.code.powershell.Cfg
@@ -12,6 +13,9 @@ private import semmle.code.powershell.Cfg
 class Node extends TNode {
   /** Gets the expression corresponding to this node, if any. */
   CfgNodes::ExprCfgNode asExpr() { result = this.(ExprNode).getExprNode() }
+
+  /** Gets the definition corresponding to this node, if any. */
+  Ssa::Definition asDefinition() { result = this.(SsaDefinitionNodeImpl).getDefinition() }
 
   ScriptBlock asCallable() { result = this.(CallableNode).asCallableAstNode() }
 
