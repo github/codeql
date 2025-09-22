@@ -64,7 +64,7 @@ signature module InputSig<LocationSig Location, TypSig ControlFlowNode, TypSig B
     /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
     predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb);
 
-    SsaDefinition getAPhiInput();
+    SsaDefinition getAnInput();
   }
 
   class SsaUncertainDefinition extends SsaDefinition {
@@ -663,8 +663,8 @@ module Make<
         or
         exists(SsaPhiNode phi |
           phi.definesAt(var, loopEntry, _) and
-          phi.getAPhiInput+() = def and
-          def.(SsaPhiNode).getAPhiInput*() = phi
+          phi.getAnInput+() = def and
+          def.(SsaPhiNode).getAnInput*() = phi
         )
       )
     }
