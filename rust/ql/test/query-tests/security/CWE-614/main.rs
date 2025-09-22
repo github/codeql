@@ -55,26 +55,26 @@ fn test_cookie(sometimes: bool) {
 
     // mutable cookie
     let mut jar = CookieJar::new();
-    let mut a = Cookie::new("name", "value");
+    let mut a = Cookie::new("name", "value"); // $ Source
     jar.add(a.clone()); // $ Alert[rust/insecure-cookie]
     jar.add_original(a.clone()); // $ Alert[rust/insecure-cookie]
     a.set_secure(true);
     jar.add(a.clone()); // good
-    a.set_secure(false);
+    a.set_secure(false); // $ Source
     jar.add(a.clone()); // $ Alert[rust/insecure-cookie]
 
     let key = Key::generate();
     let mut signed_jar = jar.signed_mut(&key);
-    let mut b = Cookie::named("name");
+    let mut b = Cookie::named("name"); // $ Source
     signed_jar.add(b.clone()); // $ Alert[rust/insecure-cookie]
     signed_jar.add_original(a.clone()); // $ Alert[rust/insecure-cookie]
-    b.set_secure(sometimes);
+    b.set_secure(sometimes); // $ Source
     signed_jar.add(b.clone()); // $ Alert[rust/insecure-cookie]
     b.set_secure(true);
     signed_jar.add(b.clone()); // good
 
     let mut private_jar = jar.private_mut(&key);
-    let mut c = Cookie::from("name");
+    let mut c = Cookie::from("name"); // $ Source
     private_jar.add(c.clone()); // $ Alert[rust/insecure-cookie]
     private_jar.add_original(a.clone()); // $ Alert[rust/insecure-cookie]
     if sometimes {
@@ -84,7 +84,7 @@ fn test_cookie(sometimes: bool) {
     c.set_secure(true);
     private_jar.add(c.clone()); // $ good
 
-    let mut d = Cookie::from("name");
+    let mut d = Cookie::from("name"); // $ Source
     jar.add(d.clone()); // $ Alert[rust/insecure-cookie]
     if sometimes {
         c.set_secure(true);
@@ -119,7 +119,7 @@ fn test_biscotti() {
 
     // test set_secure, set_partitioned
 
-    let a = biscotti::ResponseCookie::new("name", "value");
+    let a = biscotti::ResponseCookie::new("name", "value"); // $ Source
     cookies.insert(a.clone()); // $ Alert[rust/insecure-cookie]
     println!("biscotti1 = {}", a.to_string());
 
@@ -127,7 +127,7 @@ fn test_biscotti() {
     cookies.insert(b.clone()); // good
     println!("biscotti2 = {}", b.to_string());
 
-    let c = b.set_secure(false);
+    let c = b.set_secure(false); // $ Source
     cookies.insert(c.clone()); // $ Alert[rust/insecure-cookie]
     println!("biscotti3 = {}", c.to_string());
 
@@ -143,16 +143,16 @@ fn test_biscotti() {
     cookies.insert(f.clone()); // good
     println!("biscotti6 = {}", f.to_string());
 
-    let g = f.set_secure(false);
+    let g = f.set_secure(false); // $ Source
     cookies.insert(g.clone()); // $ Alert[rust/insecure-cookie]
     println!("biscotti7 = {}", g.to_string());
 
     // variant creation (insecure)
-    let h = biscotti::ResponseCookie::from(("name", "value"));
+    let h = biscotti::ResponseCookie::from(("name", "value")); // $ Source
     cookies.insert(h); // $ Alert[rust/insecure-cookie]
 
     // variant uses (all insecure)
-    let i = biscotti::ResponseCookie::new("name", "value");
+    let i = biscotti::ResponseCookie::new("name", "value"); // $ Source
     cookies.insert(i.clone().set_name("name2")); // $ Alert[rust/insecure-cookie]
     cookies.insert(i.clone().set_value("value2")); // $ Alert[rust/insecure-cookie]
     cookies.insert(i.clone().set_http_only(true)); // $ Alert[rust/insecure-cookie]
