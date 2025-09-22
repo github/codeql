@@ -1321,6 +1321,12 @@ private predicate crateDependency(SourceFileItemNode file, string name, CrateIte
   exists(CrateItemNode c | dep = c.(Crate).getDependency(name) | file = c.getASourceFile())
 }
 
+pragma[nomagic]
+private predicate hasDeclOrDep(SourceFileItemNode file, string name) {
+  declaresDirectly(file, TTypeNamespace(), name) or
+  crateDependency(file, name, _)
+}
+
 /**
  * Holds if `file` depends on crate `dep` named `name`.
  */
@@ -1334,8 +1340,7 @@ private predicate crateDependencyEdge(SourceFileItemNode file, string name, Crat
   // a given file to its crate (for example, if the file is `mod` imported inside a macro that the
   // extractor is unable to expand).
   name = dep.getName() and
-  not declaresDirectly(file, TTypeNamespace(), name) and
-  not crateDependency(file, name, _)
+  not hasDeclOrDep(file, name)
 }
 
 private predicate useTreeDeclares(UseTree tree, string name) {
