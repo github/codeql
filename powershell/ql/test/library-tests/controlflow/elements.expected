@@ -1,0 +1,2 @@
+| graph/functions.ps1:29:5:32:5 | forach(... in ...) | graph/functions.ps1:29:14:29:20 | number | graph/functions.ps1:29:25:29:32 | numbers | graph/functions.ps1:29:35:32:5 | {...} |
+| graph/loops.ps1:52:5:55:5 | forach(... in ...) | graph/loops.ps1:52:14:52:20 | letter | graph/loops.ps1:52:25:52:36 | letterArray | graph/loops.ps1:53:5:55:5 | {...} |
