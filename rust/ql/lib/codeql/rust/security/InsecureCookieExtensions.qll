@@ -8,7 +8,7 @@ private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.FlowSource
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.Concepts
-private import codeql.rust.dataflow.internal.DataFlowImpl as DataflowImpl
+private import codeql.rust.dataflow.internal.DataFlowImpl as DataFlowImpl
 private import codeql.rust.dataflow.internal.Node
 private import codeql.rust.controlflow.BasicBlocks
 
@@ -60,7 +60,7 @@ module InsecureCookie {
       DataFlow::Node argNode
     |
       // decode a `cookie-`... optional barrier
-      DataflowImpl::optionalBarrier(summaryNode, barrierName) and
+      DataFlowImpl::optionalBarrier(summaryNode, barrierName) and
       attrib = barrierName.regexpCapture("cookie-(secure|partitioned)-arg([0-9]+)", 1) and
       arg = barrierName.regexpCapture("cookie-(secure|partitioned)-arg([0-9]+)", 2).toInt() and
       // find a call and arg referenced by this optional barrier
