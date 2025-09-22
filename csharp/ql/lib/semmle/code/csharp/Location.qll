@@ -74,8 +74,20 @@ class Location extends @location {
 }
 
 /** An empty location. */
-class EmptyLocation extends Location {
-  EmptyLocation() { this.hasLocationInfo("", 0, 0, 0, 0) }
+class EmptyLocation extends Location, @location_default {
+  EmptyLocation() { locations_default(this, _, -1, -1, -1, -1) }
+
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    filepath = "" and
+    startline = 0 and
+    startcolumn = 0 and
+    endline = 0 and
+    endcolumn = 0
+  }
+
+  override string toString() { result = "empty location" }
 }
 
 /**
@@ -83,6 +95,8 @@ class EmptyLocation extends Location {
  * within the file.
  */
 class SourceLocation extends Location, @location_default {
+  SourceLocation() { not this instanceof EmptyLocation }
+
   /** Gets the location that takes into account `#line` directives, if any. */
   SourceLocation getMappedLocation() {
     locations_mapped(this, result) and
