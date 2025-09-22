@@ -77,6 +77,7 @@
 | main.rs:165:13:165:18 | insert | main.rs:155:13:155:41 | ...::new | main.rs:165:13:165:18 | insert | Cookie attribute 'Secure' is not set to true. |
 | main.rs:166:13:166:18 | insert | main.rs:155:13:155:41 | ...::new | main.rs:166:13:166:18 | insert | Cookie attribute 'Secure' is not set to true. |
 | main.rs:167:13:167:18 | insert | main.rs:155:13:155:41 | ...::new | main.rs:167:13:167:18 | insert | Cookie attribute 'Secure' is not set to true. |
+| main.rs:173:61:173:65 | build | main.rs:173:22:173:34 | ...::build | main.rs:173:61:173:65 | build | Cookie attribute 'Secure' is not set to true. |
 edges
 | main.rs:8:19:8:31 | ...::build | main.rs:8:19:8:50 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
 | main.rs:8:19:8:50 | ...::build(...) | main.rs:8:19:8:64 | ... .secure(...) | provenance | MaD:41 |
@@ -311,6 +312,8 @@ edges
 | main.rs:167:20:167:20 | i | main.rs:167:20:167:28 | i.clone() | provenance | MaD:17 |
 | main.rs:167:20:167:28 | i.clone() | main.rs:167:20:167:45 | ... .make_permanent() | provenance | MaD:18 |
 | main.rs:167:20:167:45 | ... .make_permanent() | main.rs:167:13:167:18 | insert | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:173:22:173:34 | ...::build | main.rs:173:22:173:59 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:173:22:173:59 | ...::build(...) | main.rs:173:61:173:65 | build | provenance | MaD:2 Sink:MaD:2 |
 models
 | 1 | Sink: <biscotti::response_cookies::ResponseCookies>::insert; Argument[0]; cookie-use |
 | 2 | Sink: <cookie::builder::CookieBuilder>::build; Argument[self]; cookie-use |
@@ -588,4 +591,7 @@ nodes
 | main.rs:167:20:167:20 | i | semmle.label | i |
 | main.rs:167:20:167:28 | i.clone() | semmle.label | i.clone() |
 | main.rs:167:20:167:45 | ... .make_permanent() | semmle.label | ... .make_permanent() |
+| main.rs:173:22:173:34 | ...::build | semmle.label | ...::build |
+| main.rs:173:22:173:59 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:173:61:173:65 | build | semmle.label | build |
 subpaths

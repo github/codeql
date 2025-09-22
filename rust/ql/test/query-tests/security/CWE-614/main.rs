@@ -167,8 +167,30 @@ fn test_biscotti() {
     cookies.insert(i.clone().make_permanent()); // $ Alert[rust/insecure-cookie]
 }
 
+fn test_qhelp_examples() {use cookie::Cookie;
+    {
+        // BAD: creating a cookie without specifying the `secure` attribute
+        let cookie = Cookie::build(("session", "abcd1234")).build(); // $ Alert[rust/insecure-cookie]
+        let mut jar = cookie::CookieJar::new();
+        jar.add(cookie.clone());
+    }
+
+    {
+        // GOOD: set the `CookieBuilder` 'Secure' attribute so that the cookie is only sent over HTTPS
+        let secure_cookie = Cookie::build(("session", "abcd1234")).secure(true).build();
+        let mut jar = cookie::CookieJar::new();
+        jar.add(secure_cookie.clone());
+
+        // GOOD: alternatively, set the 'Secure' attribute on an existing `Cookie`
+        let mut secure_cookie2 = Cookie::new("session", "abcd1234");
+        secure_cookie2.set_secure(true);
+        jar.add(secure_cookie2);
+    }
+}
+
 fn main() {
     test_cookie(true);
     test_cookie(false);
     test_biscotti();
+    test_qhelp_examples();
 }

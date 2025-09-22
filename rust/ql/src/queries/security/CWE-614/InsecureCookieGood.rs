@@ -1,7 +1,7 @@
 use cookie::Cookie;
 
 // GOOD: set the `CookieBuilder` 'Secure' attribute so that the cookie is only sent over HTTPS
-let secure_cookie = Cookie::build("session", "abcd1234").secure(true).build();
+let secure_cookie = Cookie::build(("session", "abcd1234")).secure(true).build();
 let mut jar = cookie::CookieJar::new();
 jar.add(secure_cookie.clone());
 
