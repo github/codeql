@@ -25,9 +25,7 @@ module Grape {
    * In other words, it does not subclass any other Grape API class in source code.
    */
   class RootApi extends GrapeApiClass {
-    RootApi() {
-      not this = any(GrapeApiClass parent).getAnImmediateDescendent()
-    }
+    RootApi() { not this = any(GrapeApiClass parent).getAnImmediateDescendent() }
   }
 
   /**
@@ -44,9 +42,7 @@ module Grape {
    * ```
    */
   class GrapeApiClass extends DataFlow::ClassNode {
-    GrapeApiClass() {
-      this = grapeApiBaseClass().getADescendentModule()
-    }
+    GrapeApiClass() { this = grapeApiBaseClass().getADescendentModule() }
 
     /**
      * Gets a `GrapeEndpoint` defined in this class.
@@ -62,6 +58,20 @@ module Grape {
       // Include the module-level `self` to recover some cases where a block at the module level
       // is invoked with an instance as the `self`.
       result = this.getModuleLevelSelf()
+    }
+
+    /**
+     * Gets the `self` parameter belonging to a method defined within a
+     * `helpers` block in this API class.
+     *
+     * These methods become available in endpoint contexts through Grape's DSL.
+     */
+    DataFlow::SelfParameterNode getHelperSelf() {
+      exists(DataFlow::CallNode helpersCall |
+        helpersCall = this.getAModuleLevelCall("helpers") and
+        result.getSelfVariable().getDeclaringScope().getOuterScope+() =
+          helpersCall.getBlock().asExpr().getExpr()
+      )
     }
   }
 
@@ -122,17 +132,12 @@ module Grape {
    */
   private class GrapeParamsCall extends ParamsCallImpl {
     GrapeParamsCall() {
-      // Params calls within endpoint blocks
-      exists(GrapeApiClass api |
-        this.getMethodName() = "params" and
-        this.getParent+() = api.getADeclaration()
-      )
-      or
-      // Params calls within helper methods (defined in helpers blocks)
-      exists(GrapeApiClass api, DataFlow::CallNode helpersCall |
-        helpersCall = api.getAModuleLevelCall("helpers") and
-        this.getMethodName() = "params" and
-        this.getParent+() = helpersCall.getBlock().asExpr().getExpr()
+      exists(API::Node n | this = n.getAMethodCall("params").asExpr().getExpr() |
+        // Params calls within endpoint blocks
+        n = grapeApiInstance()
+        or
+        // Params calls within helper methods (defined in helpers blocks)
+        n = any(GrapeApiClass c).getHelperSelf().track()
       )
     }
   }
