@@ -26,7 +26,7 @@ module Grape {
    */
   class RootApi extends GrapeApiClass {
     RootApi() {
-      not exists(GrapeApiClass parent | this != parent and this = parent.getADescendent())
+      not this = any(GrapeApiClass parent).getAnImmediateDescendent()
     }
   }
 
