@@ -51,7 +51,7 @@ mod basic_blanket_impl {
         println!("{x3:?}");
         let x4 = (&S1).duplicate(); // $ target=Clone1duplicate
         println!("{x4:?}");
-        let x5 = S1::duplicate(&S1); // $ MISSING: target=Clone1duplicate
+        let x5 = S1::duplicate(&S1); // $ target=Clone1duplicate
         println!("{x5:?}");
         let x6 = S2.duplicate(); // $ MISSING: target=Clone1duplicate
         println!("{x6:?}");
@@ -91,7 +91,7 @@ mod assoc_blanket_impl {
         println!("{x1:?}");
         let x2 = Trait1::assoc_func1(1, S1); // $ target=S1::assoc_func1
         println!("{x2:?}");
-        let x3 = S1::assoc_func2(1, S1); // $ MISSING: target=Blanket_assoc_func2
+        let x3 = S1::assoc_func2(1, S1); // $ target=Blanket_assoc_func2
         println!("{x3:?}");
         let x4 = Trait2::assoc_func2(1, S1); // $ target=Blanket_assoc_func2
         println!("{x4:?}");
@@ -212,11 +212,11 @@ pub mod sql_exec {
         let c = MySqlConnection {}; // $ certainType=c:MySqlConnection
 
         c.execute1(); // $ target=execute1
-        MySqlConnection::execute1(&c); // $ MISSING: target=execute1
+        MySqlConnection::execute1(&c); // $ target=execute1
 
         c.execute2("SELECT * FROM users"); // $ target=execute2
         c.execute2::<&str>("SELECT * FROM users"); // $ target=execute2
-        MySqlConnection::execute2(&c, "SELECT * FROM users"); // $ MISSING: target=execute2
-        MySqlConnection::execute2::<&str>(&c, "SELECT * FROM users"); // $ MISSING: target=execute2
+        MySqlConnection::execute2(&c, "SELECT * FROM users"); // $ target=execute2
+        MySqlConnection::execute2::<&str>(&c, "SELECT * FROM users"); // $ target=execute2
     }
 }

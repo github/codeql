@@ -1402,12 +1402,12 @@ mod method_call_type_conversion {
 
         let my_thing = &MyInt { a: 37 };
         // implicit borrow of a `&`
-        let a = my_thing.method_on_borrow(); // $ MISSING: target=MyInt::method_on_borrow
+        let a = my_thing.method_on_borrow(); // $ target=MyInt::method_on_borrow
         println!("{:?}", a);
 
         // no implicit borrow
         let my_thing = &MyInt { a: 38 };
-        let a = my_thing.method_not_on_borrow(); // $ MISSING: target=MyInt::method_not_on_borrow
+        let a = my_thing.method_not_on_borrow(); // $ target=MyInt::method_not_on_borrow
         println!("{:?}", a);
     }
 }
@@ -2333,9 +2333,9 @@ mod method_determined_by_argument_type {
         let x = i64::my_from(73i64); // $ target=MyFrom<i64>::my_from
         let y = i64::my_from(true); // $ target=MyFrom<bool>::my_from
         let z: i64 = MyFrom::my_from(73i64); // $ target=MyFrom<i64>::my_from
-        i64::my_from2(73i64, 0i64); // $ target=MyFrom2<i64>::my_from2
-        i64::my_from2(true, 0i64); // $ target=MyFrom2<bool>::my_from2
-        MyFrom2::my_from2(73i64, 0i64); // $ target=MyFrom2<i64>::my_from2
+        i64::my_from2(73i64, 0i64); // $ target=MyFrom2<i64>::my_from2 $ SPURIOUS: target=MyFrom2<bool>::my_from2
+        i64::my_from2(true, 0i64); // $ target=MyFrom2<bool>::my_from2 $ SPURIOUS: target=MyFrom2<i64>::my_from2
+        MyFrom2::my_from2(73i64, 0i64); // $ target=MyFrom2<i64>::my_from2 $ SPURIOUS: target=MyFrom2<bool>::my_from2
 
         i64::f1(73i64); // $ target=MySelfTrait<i64>::f1
         i64::f2(73i64); // $ target=MySelfTrait<i64>::f2
