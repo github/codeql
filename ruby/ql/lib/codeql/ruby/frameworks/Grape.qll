@@ -291,12 +291,7 @@ module Grape {
   private class GrapeHelperMethod extends Method {
     private GrapeApiClass apiClass;
 
-    GrapeHelperMethod() {
-      exists(DataFlow::CallNode helpersCall |
-        helpersCall = apiClass.getAModuleLevelCall("helpers") and
-        this.getParent+() = helpersCall.getBlock().asExpr().getExpr()
-      )
-    }
+    GrapeHelperMethod() { this = apiClass.getHelperSelf().getSelfVariable().getDeclaringScope() }
 
     /**
      * Gets the API class that contains this helper method.

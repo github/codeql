@@ -110,6 +110,46 @@ class UserAPI < Grape::API
         def simple_helper
             source "simpleHelper" # Test simple helper return
         end
+
+        # Nested helper scenarios that require getParent+()
+        module AuthHelpers
+            def authenticate_user
+                token = params[:token]
+                source "nestedModuleHelper" # Test nested module helper
+            end
+
+            def check_permissions(resource)
+                source "nestedPermissionHelper" # Test nested module helper with params
+            end
+        end
+
+        class ValidationHelpers
+            def self.validate_email(email)
+                source "nestedClassHelper" # Test nested class helper
+            end
+        end
+
+        if Rails.env.development?
+            def debug_helper
+                source "conditionalHelper" # Test helper inside conditional block
+            end
+        end
+
+        begin
+            def rescue_helper
+                source "rescueHelper" # Test helper inside begin block
+            end
+        rescue
+            # error handling
+        end
+
+        # Helper inside a case statement
+        case ENV['RACK_ENV']
+        when 'test'
+            def test_helper
+                source "caseHelper" # Test helper inside case block
+            end
+        end
     end
 
     # Headers and cookies blocks for DSL testing
@@ -164,5 +204,36 @@ class UserAPI < Grape::API
     post '/users' do
         user_data = user_params
         sink user_data # $ hasTaintFlow
+    end
+
+    # Test nested helper methods
+    get '/nested_test/:token' do
+        # Test nested module helper
+        auth_result = authenticate_user
+        sink auth_result # $ hasValueFlow=nestedModuleHelper
+
+        # Test nested module helper with parameters
+        perm_result = check_permissions("admin")
+        sink perm_result # $ hasValueFlow=nestedPermissionHelper
+
+        # Test nested class helper
+        validation_result = ValidationHelpers.validate_email("test@example.com")
+        sink validation_result # $ hasValueFlow=nestedClassHelper
+
+        # Test conditional helper (if it exists)
+        if respond_to?(:debug_helper)
+            debug_result = debug_helper
+            sink debug_result # $ hasValueFlow=conditionalHelper
+        end
+
+        # Test rescue helper
+        rescue_result = rescue_helper
+        sink rescue_result # $ hasValueFlow=rescueHelper
+
+        # Test case helper (if it exists)
+        if respond_to?(:test_helper)
+            case_result = test_helper
+            sink case_result # $ hasValueFlow=caseHelper
+        end
     end
 end
