@@ -1020,6 +1020,12 @@ module MakeWithSplitting<
         not jbp instanceof BasicBlocks::EntryBasicBlock and
         id = idOfAstNode(jbp.getFirstNode().(AstCfgNode).getAstNode()) and
         kind = 1
+        or
+        exists(AnnotatedExitNode aen |
+          jbp.getFirstNode() = aen and
+          id = idOfCfgScope(aen.getScope()) and
+          if aen.isNormal() then kind = 2 else kind = 3
+        )
       }
 
       string getSplitString(BasicBlocks::JoinPredecessorBasicBlock jbp) {
