@@ -1401,11 +1401,20 @@ class RelevantPath extends Path {
     name = this.getText()
   }
 
+  /**
+   * Holds if this is an unqualified path with the textual value `name` and
+   * enclosing item `encl`.
+   */
+  pragma[nomagic]
+  predicate isUnqualified(string name, ItemNode encl) {
+    this.isUnqualified(name) and
+    encl.getADescendant() = this
+  }
+
   pragma[nomagic]
   predicate isCratePath(string name, ItemNode encl) {
     name = ["crate", "$crate"] and
-    this.isUnqualified(name) and
-    encl.getADescendant() = this
+    this.isUnqualified(name, encl)
   }
 
   pragma[nomagic]
@@ -1432,26 +1441,26 @@ private ItemNode getOuterScope(ItemNode i) {
 }
 
 /**
- * Holds if the unqualified path `p` references an item named `name`, and `name`
- * may be looked up in the `ns` namespace inside enclosing item `encl`.
+ * Holds if _some_ unqualified path in `encl` references an item named `name`,
+ * and `name` may be looked up in the `ns` namespace inside `ancestor`.
  */
 pragma[nomagic]
-private predicate unqualifiedPathLookup(ItemNode encl, string name, Namespace ns, RelevantPath p) {
+private predicate unqualifiedPathLookup(ItemNode ancestor, string name, Namespace ns, ItemNode encl) {
   // lookup in the immediately enclosing item
-  p.isUnqualified(name) and
-  encl.getADescendant() = p and
+  any(RelevantPath p).isUnqualified(name, encl) and
+  ancestor = encl and
   exists(ns) and
   not name = ["crate", "$crate", "super", "self"]
   or
   // lookup in an outer scope, but only if the item is not declared in inner scope
   exists(ItemNode mid |
-    unqualifiedPathLookup(mid, name, ns, p) and
+    unqualifiedPathLookup(mid, name, ns, encl) and
     not declares(mid, ns, name) and
     not (
       name = "Self" and
       mid = any(ImplOrTraitItemNode i).getAnItemInSelfScope()
     ) and
-    encl = getOuterScope(mid)
+    ancestor = getOuterScope(mid)
   )
 }
 
@@ -1474,32 +1483,34 @@ private predicate sourceFileHasCratePathTc(ItemNode i1, ItemNode i2) =
 
 /**
  * Holds if the unqualified path `p` references a keyword item named `name`, and
- * `name` may be looked up inside enclosing item `encl`.
+ * `name` may be looked up inside `ancestor`.
  */
 pragma[nomagic]
-private predicate keywordLookup(ItemNode encl, string name, RelevantPath p) {
+private predicate keywordLookup(ItemNode ancestor, string name, RelevantPath p) {
   // For `($)crate`, jump directly to the root module
   exists(ItemNode i | p.isCratePath(name, i) |
-    encl instanceof SourceFile and
-    encl = i
+    ancestor instanceof SourceFile and
+    ancestor = i
     or
-    sourceFileHasCratePathTc(encl, i)
+    sourceFileHasCratePathTc(ancestor, i)
   )
   or
   name = ["super", "self"] and
-  p.isUnqualified(name) and
-  encl.getADescendant() = p
+  p.isUnqualified(name, ancestor)
 }
 
 pragma[nomagic]
 private ItemNode unqualifiedPathLookup(RelevantPath p, Namespace ns, SuccessorKind kind) {
-  exists(ItemNode encl, string name |
-    result = getASuccessor(encl, name, ns, kind, _) and
+  exists(ItemNode ancestor, string name |
+    result = getASuccessor(ancestor, pragma[only_bind_into](name), ns, kind, _) and
     kind.isInternalOrBoth()
   |
-    unqualifiedPathLookup(encl, name, ns, p)
+    exists(ItemNode encl |
+      unqualifiedPathLookup(ancestor, name, ns, encl) and
+      p.isUnqualified(pragma[only_bind_into](name), encl)
+    )
     or
-    keywordLookup(encl, name, p) and exists(ns)
+    keywordLookup(ancestor, name, p) and exists(ns)
   )
 }
 
@@ -1880,10 +1891,13 @@ private module Debug {
   }
 
   predicate debugUnqualifiedPathLookup(
-    RelevantPath p, string name, Namespace ns, ItemNode encl, string path
+    RelevantPath p, string name, Namespace ns, ItemNode ancestor, string path
   ) {
     p = getRelevantLocatable() and
-    unqualifiedPathLookup(encl, name, ns, p) and
+    exists(ItemNode encl |
+      unqualifiedPathLookup(encl, name, ns, ancestor) and
+      p.isUnqualified(name, encl)
+    ) and
     path = p.toStringDebug()
   }
 
