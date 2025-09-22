@@ -3,7 +3,7 @@
  * @description Omitting the 'Secure' attribute allows data to be transmitted insecurely
  *              using HTTP. Always set 'Secure' to 'true' to ensure that HTTPS
  *              is used at all times.
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @security-severity 7.5
  * @precision high
