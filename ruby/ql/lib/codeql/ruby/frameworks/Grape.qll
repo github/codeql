@@ -163,12 +163,7 @@ module Grape {
    */
   private class GrapeHeadersCall extends MethodCall {
     GrapeHeadersCall() {
-      exists(GrapeEndpoint endpoint |
-        this.getParent+() = endpoint.getBody().asCallableAstNode() and
-        this.getMethodName() = "headers"
-      )
-      or
-      // Also handle cases where headers is called on an instance of a Grape API class
+      // Handle cases where headers is called on an instance of a Grape API class
       this = grapeApiInstance().getAMethodCall("headers").asExpr().getExpr()
     }
   }
@@ -206,12 +201,7 @@ module Grape {
    */
   private class GrapeRequestCall extends MethodCall {
     GrapeRequestCall() {
-      exists(GrapeEndpoint endpoint |
-        this.getParent+() = endpoint.getBody().asCallableAstNode() and
-        this.getMethodName() = "request"
-      )
-      or
-      // Also handle cases where request is called on an instance of a Grape API class
+      // Handle cases where request is called on an instance of a Grape API class
       this = grapeApiInstance().getAMethodCall("request").asExpr().getExpr()
     }
   }
@@ -221,12 +211,7 @@ module Grape {
    */
   private class GrapeRouteParamCall extends MethodCall {
     GrapeRouteParamCall() {
-      exists(GrapeEndpoint endpoint |
-        this.getParent+() = endpoint.getBody().asExpr().getExpr() and
-        this.getMethodName() = "route_param"
-      )
-      or
-      // Also handle cases where route_param is called on an instance of a Grape API class
+      // Handle cases where route_param is called on an instance of a Grape API class
       this = grapeApiInstance().getAMethodCall("route_param").asExpr().getExpr()
     }
   }
@@ -274,12 +259,7 @@ module Grape {
    */
   private class GrapeCookiesCall extends MethodCall {
     GrapeCookiesCall() {
-      exists(GrapeEndpoint endpoint |
-        this.getParent+() = endpoint.getBody().asCallableAstNode() and
-        this.getMethodName() = "cookies"
-      )
-      or
-      // Also handle cases where cookies is called on an instance of a Grape API class
+      // Handle cases where cookies is called on an instance of a Grape API class
       this = grapeApiInstance().getAMethodCall("cookies").asExpr().getExpr()
     }
   }
