@@ -20,7 +20,7 @@ import codeql.rust.security.InsecureCookieExtensions
 
 /**
  * A data flow configuration for tracking values representing cookies without the
- * 'secure' attribute set. This is the primary data flow configurationn for this
+ * 'secure' attribute set. This is the primary data flow configuration for this
  * query.
  */
 module InsecureCookieConfig implements DataFlow::ConfigSig {
