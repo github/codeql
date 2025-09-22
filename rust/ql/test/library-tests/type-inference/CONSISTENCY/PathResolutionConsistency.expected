@@ -1,8 +1,10 @@
 multipleCallTargets
 | dereference.rs:69:15:69:24 | e1.deref() |
+| dereference.rs:182:17:182:26 | ... .foo() |
+| dereference.rs:183:17:183:23 | S.foo() |
+| dereference.rs:184:17:184:30 | ... .foo() |
 | dereference.rs:186:17:186:25 | S.bar(...) |
 | dereference.rs:187:17:187:29 | S.bar(...) |
-| invalid/main.rs:91:17:91:30 | S1.duplicate() |
 | main.rs:2437:13:2437:31 | ...::from(...) |
 | main.rs:2438:13:2438:31 | ...::from(...) |
 | main.rs:2439:13:2439:31 | ...::from(...) |
