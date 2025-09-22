@@ -88,6 +88,6 @@ mod impl_specialization {
     pub fn test_basic_blanket() {
         // this call should target the specialized implementation of Duplicatable for S1,
         // not the blanket implementation
-        let x = S1.duplicate(); // $ target=S1::duplicate $ SPURIOUS: target=Clone1duplicate
+        let x = S1.duplicate(); // $ target=S1::duplicate
     }
 }

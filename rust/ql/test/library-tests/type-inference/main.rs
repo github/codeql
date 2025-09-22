@@ -698,9 +698,9 @@ mod function_trait_bounds {
         T2::assoc(x) // $ target=assoc
     }
     fn call_trait_assoc_2<T1, T2: MyTrait<T1> + Copy>(x: T2) -> T1 {
-        let y = MyTrait::assoc(x); // $ MISSING: target=assoc
-        y; // $ MISSING: type=y:T1
-        MyTrait::assoc(x) // $ MISSING: target=assoc
+        let y = MyTrait::assoc(x); // $ target=assoc
+        y; // $ type=y:T1
+        MyTrait::assoc(x) // $ target=assoc
     }
 
     // Type parameter with bound occurs nested within another type.
@@ -1449,12 +1449,12 @@ mod method_call_type_conversion {
 
         let my_thing = &MyInt { a: 37 };
         // implicit borrow of a `&`
-        let a = my_thing.method_on_borrow(); // $ MISSING: target=MyInt::method_on_borrow
+        let a = my_thing.method_on_borrow(); // $ target=MyInt::method_on_borrow
         println!("{:?}", a);
 
         // no implicit borrow
         let my_thing = &MyInt { a: 38 };
-        let a = my_thing.method_not_on_borrow(); // $ MISSING: target=MyInt::method_not_on_borrow
+        let a = my_thing.method_not_on_borrow(); // $ target=MyInt::method_not_on_borrow
         println!("{:?}", a);
     }
 }
