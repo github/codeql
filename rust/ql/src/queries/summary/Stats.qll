@@ -27,6 +27,7 @@ private import codeql.rust.security.LogInjectionExtensions
 private import codeql.rust.security.SqlInjectionExtensions
 private import codeql.rust.security.TaintedPathExtensions
 private import codeql.rust.security.UncontrolledAllocationSizeExtensions
+private import codeql.rust.security.UseOfHttpExtensions
 private import codeql.rust.security.WeakSensitiveDataHashingExtensions
 private import codeql.rust.security.HardcodedCryptographicValueExtensions
 
