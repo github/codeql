@@ -709,6 +709,9 @@ module Make<
         this = TConsSummaryComponentStack(result, _)
       }
 
+      /** Gets the head of this stack if it is a singleton. */
+      SummaryComponent headOfSingleton() { this = TSingletonSummaryComponentStack(result) }
+
       /** Gets the tail of this stack, if any. */
       SummaryComponentStack tail() { this = TConsSummaryComponentStack(_, result) }
 

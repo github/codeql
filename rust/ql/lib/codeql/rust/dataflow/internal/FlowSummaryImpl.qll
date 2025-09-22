@@ -168,12 +168,12 @@ private module StepsInput implements Impl::Private::StepsInputSig {
     or
     exists(ArgumentPosition pos, Expr arg |
       s.head() = Impl::Private::SummaryComponent::parameter(pos) and
-      arg = getSourceNodeArgument(source, s.tail().head()) and
+      arg = getSourceNodeArgument(source, s.tail().headOfSingleton()) and
       result.asParameter() = getCallable(arg).getParam(pos.getPosition())
     )
     or
     result.(RustDataFlow::PostUpdateNode).getPreUpdateNode().asExpr().getExpr() =
-      getSourceNodeArgument(source, s.head())
+      getSourceNodeArgument(source, s.headOfSingleton())
   }
 
   RustDataFlow::Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) {
