@@ -26,27 +26,30 @@ private import semmle.code.csharp.controlflow.Guards::AbstractValues
 private import semmle.code.csharp.dataflow.internal.SsaImpl as SsaImpl
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.Test
+private import semmle.code.csharp.controlflow.ControlFlowReachability as Cf
+
+private Expr maybeNullExpr(Expr reason) {
+  G::Internal::nullValue(result) and reason = result
+  or
+  result instanceof AsExpr and reason = result
+  or
+  result.(AssignExpr).getRValue() = maybeNullExpr(reason)
+  or
+  result.(Cast).getExpr() = maybeNullExpr(reason)
+  or
+  result =
+    any(ConditionalExpr ce |
+      ce.getThen() = maybeNullExpr(reason)
+      or
+      ce.getElse() = maybeNullExpr(reason)
+    )
+  or
+  result.(NullCoalescingExpr).getRightOperand() = maybeNullExpr(reason)
+}
 
 /** An expression that may be `null`. */
 class MaybeNullExpr extends Expr {
-  MaybeNullExpr() {
-    G::Internal::nullValue(this)
-    or
-    this instanceof AsExpr
-    or
-    this.(AssignExpr).getRValue() instanceof MaybeNullExpr
-    or
-    this.(Cast).getExpr() instanceof MaybeNullExpr
-    or
-    this =
-      any(ConditionalExpr ce |
-        ce.getThen() instanceof MaybeNullExpr
-        or
-        ce.getElse() instanceof MaybeNullExpr
-      )
-    or
-    this.(NullCoalescingExpr).getRightOperand() instanceof MaybeNullExpr
-  }
+  MaybeNullExpr() { this = maybeNullExpr(_) }
 }
 
 /** An expression that is always `null`. */
@@ -121,6 +124,10 @@ private predicate nonNullDef(Ssa::ExplicitDefinition def) {
  */
 private predicate dereferenceAt(BasicBlock bb, int i, Ssa::Definition def, Dereference d) {
   d = def.getAReadAtNode(bb.getNode(i))
+}
+
+private predicate dereferenceAt(ControlFlow::Node node, Ssa::Definition def, Dereference d) {
+  d = def.getAReadAtNode(node)
 }
 
 /**
@@ -217,13 +224,16 @@ private predicate isNullDefaultArgument(Ssa::ImplicitParameterDefinition def, Al
 }
 
 /** Holds if `def` is an SSA definition that may be `null`. */
-private predicate defMaybeNull(Ssa::Definition def, string msg, Element reason) {
+private predicate defMaybeNull(
+  Ssa::Definition def, ControlFlow::Node node, string msg, Element reason
+) {
   not nonNullDef(def) and
   (
     // A variable compared to `null` might be `null`
     exists(G::DereferenceableExpr de | de = def.getARead() |
       reason = de.getANullCheck(_, true) and
       msg = "as suggested by $@ null check" and
+      node = def.getControlFlowNode() and
       not de = any(Ssa::PhiNode phi).getARead() and
       strictcount(Element e | e = any(Ssa::Definition def0 | de = def0.getARead()).getElement()) = 1 and
       // Don't use a check as reason if there is a `null` assignment
@@ -234,23 +244,27 @@ private predicate defMaybeNull(Ssa::Definition def, string msg, Element reason) 
     or
     // A parameter might be `null` if there is a `null` argument somewhere
     isMaybeNullArgument(def, reason) and
+    node = def.getControlFlowNode() and
     (
       if reason instanceof AlwaysNullExpr
       then msg = "because of $@ null argument"
       else msg = "because of $@ potential null argument"
     )
     or
-    isNullDefaultArgument(def, reason) and msg = "because the parameter has a null default value"
+    isNullDefaultArgument(def, reason) and
+    node = def.getControlFlowNode() and
+    msg = "because the parameter has a null default value"
     or
     // If the source of a variable is `null` then the variable may be `null`
     exists(AssignableDefinition adef | adef = def.(Ssa::ExplicitDefinition).getADefinition() |
-      adef.getSource() instanceof MaybeNullExpr and
+      adef.getSource() = maybeNullExpr(node.getAstNode()) and
       reason = adef.getExpr() and
       msg = "because of $@ assignment"
     )
     or
     // A variable of nullable type may be null
     exists(Dereference d | dereferenceAt(_, _, def, d) |
+      node = def.getControlFlowNode() and
       d.hasNullableType() and
       not def instanceof Ssa::PhiNode and
       reason = def.getSourceVariable().getAssignable() and
@@ -261,7 +275,7 @@ private predicate defMaybeNull(Ssa::Definition def, string msg, Element reason) 
 
 pragma[noinline]
 private predicate sourceVariableMaybeNull(Ssa::SourceVariable v) {
-  defMaybeNull(v.getAnSsaDefinition(), _, _)
+  defMaybeNull(v.getAnSsaDefinition(), _, _, _)
 }
 
 pragma[noinline]
@@ -305,7 +319,7 @@ private predicate defNullImpliesStep(
  * That is, those basic blocks for which the SSA definition is suspected of being `null`.
  */
 private predicate defMaybeNullInBlock(Ssa::Definition def, BasicBlock bb) {
-  defMaybeNull(def, _, _) and
+  defMaybeNull(def, _, _, _) and
   bb = def.getBasicBlock()
   or
   exists(BasicBlock mid, Ssa::Definition midDef | defMaybeNullInBlock(midDef, mid) |
@@ -341,7 +355,7 @@ private predicate succSourceSink(SourcePathNode source, Ssa::Definition def, Bas
 private newtype TPathNode =
   TSourcePathNode(Ssa::Definition def, string msg, Element reason, boolean isNullArgument) {
     nullDerefCandidateVariable(def.getSourceVariable()) and
-    defMaybeNull(def, msg, reason) and
+    defMaybeNull(def, _, msg, reason) and
     if isMaybeNullArgument(def, reason) then isNullArgument = true else isNullArgument = false
   } or
   TInternalPathNode(Ssa::Definition def, BasicBlock bb) {
@@ -501,6 +515,40 @@ private predicate defReaches(Ssa::Definition def, ControlFlow::Node cfn, boolean
         else d.isMaybeNull(def, _, _, _, _)
       ).getAControlFlowNode()
   )
+}
+
+private module NullnessConfig implements Cf::ControlFlowReachability::ConfigSig {
+  predicate source(ControlFlow::Node node, Ssa::Definition def) { defMaybeNull(def, node, _, _) }
+
+  predicate sink(ControlFlow::Node node, Ssa::Definition def) {
+    exists(Dereference d |
+      dereferenceAt(node, def, d) and
+      not d instanceof NonNullExpr
+    )
+  }
+
+  predicate barrierValue(G::GuardValue gv) { gv.isNullness(false) }
+
+  predicate uncertainFlow() { none() }
+}
+
+private module NullnessFlow = Cf::ControlFlowReachability::Flow<NullnessConfig>;
+
+predicate debug_nullness_new(Dereference d, Ssa::SourceVariable v, string msg, Element reason) {
+  exists(
+    Ssa::Definition origin, Ssa::Definition ssa, ControlFlow::Node src, ControlFlow::Node sink
+  |
+    defMaybeNull(origin, src, msg, reason) and
+    NullnessFlow::flow(src, origin, sink, ssa) and
+    ssa.getSourceVariable() = v and
+    dereferenceAt(sink, ssa, d) and
+    not d.isAlwaysNull(v)
+  )
+}
+
+predicate debug_nullness_orig(Dereference d, Ssa::SourceVariable v, string msg, Element reason) {
+  d.isFirstMaybeNull(v.getAnSsaDefinition(), _, _, msg, reason) and
+  not d instanceof NonNullExpr
 }
 
 /**
