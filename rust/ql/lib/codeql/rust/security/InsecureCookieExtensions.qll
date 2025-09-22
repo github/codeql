@@ -71,7 +71,8 @@ module InsecureCookie {
         if
           forex(DataFlow::Node argSourceNode, BooleanLiteralExpr argSourceValue |
             DataFlow::localFlow(argSourceNode, argNode) and
-            argSourceValue = argSourceNode.asExpr().getExpr() |
+            argSourceValue = argSourceNode.asExpr().getExpr()
+          |
             argSourceValue.getTextValue() = "true"
           )
         then value = true // `true` flows to here
