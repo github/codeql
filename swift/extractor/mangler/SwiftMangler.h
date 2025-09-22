@@ -112,7 +112,9 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   virtual SwiftMangledName fetch(const swift::TypeBase* type) = 0;
   SwiftMangledName fetch(swift::Type type) { return fetch(type.getPointer()); }
 
-  void indexExtensions(llvm::ArrayRef<swift::Decl*> siblings);
+  void indexNominalTypeExtensions(swift::ExtensionRange unsortedExtensions,
+                                  const swift::Decl* parent);
+  void indexIterableExtensions(llvm::ArrayRef<swift::Decl*> siblings);
   unsigned int getExtensionIndex(const swift::ExtensionDecl* decl, const swift::Decl* parent);
   static SwiftMangledName initMangled(const swift::TypeBase* type);
   SwiftMangledName initMangled(const swift::Decl* decl);
