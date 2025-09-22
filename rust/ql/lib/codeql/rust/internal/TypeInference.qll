@@ -230,7 +230,7 @@ module Consistency {
     // Suppress the inconsistency if `n` is a self parameter and the type
     // mention for the self type has multiple types for a path.
     not exists(ImplItemNode impl, TypePath selfTypePath |
-      n = impl.getAnAssocItem().(Function).getParamList().getSelfParam() and
+      n = impl.getAnAssocItem().(Function).getSelfParam() and
       strictcount(impl.(Impl).getSelfTy().(TypeMention).resolveTypeAt(selfTypePath)) > 1
     )
   }
@@ -948,7 +948,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
       )
       or
       exists(SelfParam self |
-        self = pragma[only_bind_into](this.getParamList().getSelfParam()) and
+        self = pragma[only_bind_into](this.getSelfParam()) and
         dpos.isSelf() and
         result = inferAnnotatedType(self, path) // `self` parameter with type annotation
       )
@@ -972,7 +972,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
       exists(ImplOrTraitItemNode i |
         this = i.getAnAssocItem() and
         dpos.isSelf() and
-        not this.getParamList().hasSelfParam()
+        not this.hasSelfParam()
       |
         result = TSelfTypeParameter(i) and
         path.isEmpty()
@@ -1900,7 +1900,7 @@ private predicate methodCandidate(Type type, string name, int arity, Impl impl) 
   type = impl.getSelfTy().(TypeMention).resolveType() and
   exists(Function f |
     f = impl.(ImplItemNode).getASuccessor(name) and
-    f.getParamList().hasSelfParam() and
+    f.hasSelfParam() and
     arity = f.getParamList().getNumberOfParams()
   )
 }
@@ -2222,7 +2222,7 @@ private module BlanketImplementation {
   ) {
     isCanonicalImpl(impl) and
     blanketImplementationTraitBound(impl, traitBound) and
-    f.getParamList().hasSelfParam() and
+    f.hasSelfParam() and
     arity = f.getParamList().getNumberOfParams() and
     (
       f = impl.getAssocItem(name)
@@ -2332,7 +2332,7 @@ private Function resolveMethodCallTarget(MethodCall mc) {
 pragma[nomagic]
 private predicate assocFuncResolutionDependsOnArgument(Function f, Impl impl, int pos) {
   functionResolutionDependsOnArgument(impl, _, f, pos, _, _) and
-  not f.getParamList().hasSelfParam()
+  not f.hasSelfParam()
 }
 
 private class FunctionCallExpr extends CallImpl::CallExprCall {
