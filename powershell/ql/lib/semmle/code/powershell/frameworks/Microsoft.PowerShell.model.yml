@@ -44,6 +44,9 @@ extensions:
       - ["microsoft.powershell.utility!", "Method[format-wide]", "Argument[-inputobject,pipeline]", "ReturnValue", "taint"]
       - ["microsoft.powershell.utility!", "Method[get-unique]", "Argument[-inputobject,pipeline]", "ReturnValue", "taint"]
       - ["microsoft.powershell.utility!", "Method[join-string]", "Argument[-inputobject,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.management!", "Method[join-path]", "Argument[-path,0]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.management!", "Method[join-path]", "Argument[-childpath,1]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.management!", "Method[join-path]", "Argument[-additionalchildpath,2]", "ReturnValue", "taint"]
 
   - addsTo:
       pack: microsoft/powershell-all
