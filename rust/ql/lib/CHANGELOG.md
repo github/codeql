@@ -1,3 +1,9 @@
+## 0.1.16
+
+### Minor Analysis Improvements
+
+* Added cryptography related models for the `cookie` and `biscotti` crates.
+
 ## 0.1.15
 
 ### Major Analysis Improvements

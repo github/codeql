@@ -25,10 +25,10 @@ import semmle.code.cpp.controlflow.IRGuards as IRGuards
 predicate outOfBoundsExpr(Expr expr, string kind) {
   if convertedExprMightOverflowPositively(expr)
   then kind = "overflow"
-  else
-    if convertedExprMightOverflowNegatively(expr)
-    then kind = "overflow negatively"
-    else none()
+  else (
+    convertedExprMightOverflowNegatively(expr) and
+    kind = "overflow negatively"
+  )
 }
 
 predicate isSource(FS::FlowSource source, string sourceType) { sourceType = source.getSourceType() }

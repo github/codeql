@@ -75,7 +75,6 @@ ql/javascript/ql/src/experimental/Security/CWE-347/decodeJwtWithoutVerificationL
 ql/javascript/ql/src/experimental/Security/CWE-444/InsecureHttpParser.ql
 ql/javascript/ql/src/experimental/Security/CWE-522-DecompressionBombs/DecompressionBombs.ql
 ql/javascript/ql/src/experimental/Security/CWE-918/SSRF.ql
-ql/javascript/ql/src/experimental/Security/CWE-942/CorsPermissiveConfiguration.ql
 ql/javascript/ql/src/experimental/StandardLibrary/MultipleArgumentsToSetConstructor.ql
 ql/javascript/ql/src/experimental/heuristics/ql/src/Security/CWE-020/UntrustedDataToExternalAPI.ql
 ql/javascript/ql/src/experimental/heuristics/ql/src/Security/CWE-078/CommandInjection.ql

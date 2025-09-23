@@ -101,7 +101,7 @@ fn test_assoc_type(obj: &dyn AssocTrait<i64, AP = bool>) {
 pub fn test() {
     test_basic_dyn_trait(&MyStruct { value: 42 }); // $ target=test_basic_dyn_trait
     test_generic_dyn_trait(&GenStruct {
-        value: "".to_string(),
+        value: "".to_string(), // $ target=to_string
     }); // $ target=test_generic_dyn_trait
     test_poly_dyn_trait(); // $ target=test_poly_dyn_trait
     test_assoc_type(&GenStruct { value: 100 }); // $ target=test_assoc_type

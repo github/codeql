@@ -150,7 +150,7 @@ class ConditionBlock extends PreBasicBlock {
   }
 
   pragma[nomagic]
-  predicate controls(PreBasicBlock controlled, Cfg::SuccessorTypes::ConditionalSuccessor s) {
+  predicate controls(PreBasicBlock controlled, Cfg::ConditionalSuccessor s) {
     exists(PreBasicBlock succ, ConditionalCompletion c |
       conditionBlockImmediatelyControls(this, succ, c)
     |
@@ -162,8 +162,6 @@ class ConditionBlock extends PreBasicBlock {
 
 module PreCfg implements BB::CfgSig<Location> {
   class ControlFlowNode = ControlFlowElement;
-
-  class SuccessorType = Cfg::SuccessorType;
 
   class BasicBlock = PreBasicBlock;
 

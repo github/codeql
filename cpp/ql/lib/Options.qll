@@ -35,7 +35,7 @@ class CustomOptions extends Options {
   override predicate returnsNull(Call call) { Options.super.returnsNull(call) }
 
   /**
-   * Holds if a call to this function will never return.
+   * Holds if a call to the function `f` will never return.
    *
    * By default, this holds for `exit`, `_exit`, `abort`, `__assert_fail`,
    * `longjmp`, `error`, `__builtin_unreachable` and any function with a

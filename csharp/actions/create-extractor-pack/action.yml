@@ -7,7 +7,7 @@ runs:
     - name: Setup dotnet
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 9.0.100
+        dotnet-version: 9.0.300
     - name: Build Extractor
       shell: bash
       run: scripts/create-extractor-pack.sh

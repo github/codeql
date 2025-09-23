@@ -21,8 +21,6 @@ final class JoinPredecessorBasicBlock = BasicBlocksImpl::JoinPredecessorBasicBlo
 module Cfg implements BB::CfgSig<Location> {
   class ControlFlowNode = ControlFlowGraph::CfgNode;
 
-  class SuccessorType = ControlFlowGraph::SuccessorType;
-
   class BasicBlock = BasicBlocksImpl::BasicBlock;
 
   class EntryBasicBlock = BasicBlocksImpl::EntryBasicBlock;

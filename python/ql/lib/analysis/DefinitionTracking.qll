@@ -83,7 +83,7 @@ private predicate ssa_phi_defn(PhiFunction phi, Definition defn) {
   ssa_variable_defn(phi.getAnInput(), defn)
 }
 
-/** Holds if the ESSA defn `def`  refers to (`value`, `cls`, `origin`) given the context `context`. */
+/** Holds if the ESSA defn `def` refers to (`value`, `cls`, `origin`) given the context `context`. */
 private predicate ssa_defn_defn(EssaDefinition def, Definition defn) {
   ssa_phi_defn(def, defn)
   or

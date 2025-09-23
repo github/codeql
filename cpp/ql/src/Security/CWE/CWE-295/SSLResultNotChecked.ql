@@ -55,30 +55,9 @@ predicate resultIsChecked(SslGetPeerCertificateCall getCertCall, ControlFlowNode
 predicate certIsZero(
   SslGetPeerCertificateCall getCertCall, ControlFlowNode node1, ControlFlowNode node2
 ) {
-  exists(Expr cert | cert = globalValueNumber(getCertCall).getAnExpr() |
-    exists(GuardCondition guard, Expr zero |
-      zero.getValue().toInt() = 0 and
-      node1 = guard and
-      (
-        // if (cert == zero) {
-        guard.comparesEq(cert, zero, 0, true, true) and
-        node2 = guard.getATrueSuccessor()
-        or
-        // if (cert != zero) { }
-        guard.comparesEq(cert, zero, 0, false, true) and
-        node2 = guard.getAFalseSuccessor()
-      )
-    )
-    or
-    (
-      // if (cert) { }
-      node1 = cert
-      or
-      // if (!cert) {
-      node1.(NotExpr).getAChild() = cert
-    ) and
-    node2 = node1.getASuccessor() and
-    not cert.(GuardCondition).controls(node2, true) // cert may be false
+  exists(Expr cert |
+    cert = globalValueNumber(getCertCall).getAnExpr() and
+    node1.(GuardCondition).ensuresEqEdge(cert, 0, _, node2.getBasicBlock(), true)
   )
 }
 
