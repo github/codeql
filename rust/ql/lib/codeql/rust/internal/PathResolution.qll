@@ -840,7 +840,7 @@ final class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
   }
 }
 
-final private class ImplTraitTypeReprItemNode extends TypeItemNode instanceof ImplTraitTypeRepr {
+final class ImplTraitTypeReprItemNode extends TypeItemNode instanceof ImplTraitTypeRepr {
   pragma[nomagic]
   Path getABoundPath() {
     result = super.getTypeBoundList().getABound().getTypeRepr().(PathTypeRepr).getPath()
@@ -963,7 +963,9 @@ final class TraitItemNode extends ImplOrTraitItemNode, TypeItemNode instanceof T
   Path getABoundPath() { result = super.getATypeBound().getTypeRepr().(PathTypeRepr).getPath() }
 
   pragma[nomagic]
-  ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
+  ItemNode resolveBound(Path path) { path = this.getABoundPath() and result = resolvePath(path) }
+
+  ItemNode resolveABound() { result = this.resolveBound(_) }
 
   override AssocItemNode getAnAssocItem() { result = this.getADescendant() }
 
@@ -2101,7 +2103,7 @@ private predicate builtin(string name, ItemNode i) {
 
 /** Provides predicates for debugging the path resolution implementation. */
 private module Debug {
-  private Locatable getRelevantLocatable() {
+  Locatable getRelevantLocatable() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
       filepath.matches("%/main.rs") and

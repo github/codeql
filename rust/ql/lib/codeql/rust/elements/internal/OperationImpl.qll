@@ -12,7 +12,7 @@ private import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
  * the canonical path `path` and the method name `method`, and if it borrows its
  * first `borrows` arguments.
  */
-private predicate isOverloaded(string op, int arity, string path, string method, int borrows) {
+predicate isOverloaded(string op, int arity, string path, string method, int borrows) {
   arity = 1 and
   (
     // Negation
