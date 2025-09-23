@@ -1,6 +1,6 @@
-.. _basic-query-for-swift-code:
+.. _basic-query-for-rust-code:
 
-Basic query for Swift code
+Basic query for Rust code
 ==========================
 
 Learn to write and run a simple CodeQL query using Visual Studio Code with the CodeQL extension.
@@ -12,7 +12,7 @@ About the query
 
 The query we're going to run performs a basic search of the code for ``if`` expressions that are redundant, in the sense that they have an empty ``then`` branch. For example, code such as:
 
-.. code-block:: swift
+.. code-block:: rust
 
    if error {
      // we should handle the error
@@ -29,7 +29,7 @@ Running a quick query
 
    .. code-block:: ql
 
-      import swift
+      import rust
 
       from IfStmt ifStmt
       where ifStmt.getThen().(BraceStmt).getNumberOfElements() = 0
@@ -37,12 +37,12 @@ Running a quick query
 
 .. include:: ../reusables/vs-code-basic-instructions/run-quick-query-2.rst
 
-.. image:: ../images/codeql-for-visual-studio-code/basic-swift-query-results-1.png
+.. image:: ../images/codeql-for-visual-studio-code/basic-rust-query-results-1.png
    :align: center
 
 If any matching code is found, click a link in the ``ifStmt`` column to open the file and highlight the matching ``if`` statement.
 
-.. image:: ../images/codeql-for-visual-studio-code/basic-swift-query-results-2.png
+.. image:: ../images/codeql-for-visual-studio-code/basic-rust-query-results-2.png
    :align: center
 
 .. include:: ../reusables/vs-code-basic-instructions/note-store-quick-query.rst
@@ -55,7 +55,7 @@ After the initial ``import`` statement, this simple query comprises three parts 
 +------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------+
 | Query part                                                       | Purpose                                                                                                           | Details                                                                                         |
 +==================================================================+===================================================================================================================+=================================================================================================+
-| ``import swift``                                                 | Imports the standard CodeQL AST libraries for Swift.                                                              | Every query begins with one or more ``import`` statements.                                      |
+| ``import rust``                                                  | Imports the standard CodeQL AST libraries for Rust.                                                              | Every query begins with one or more ``import`` statements.                                       |
 +------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------+
 | ``from IfStmt ifStmt``                                           | Defines the variables for the query.                                                                              | We use: an ``IfStmt`` variable for ``if`` statements.                                           |
 |                                                                  | Declarations are of the form:                                                                                     |                                                                                                 |
@@ -81,7 +81,7 @@ Remove false positive results
 
 Browsing the results of our basic query shows that it could be improved. Among the results you are likely to find examples of ``if`` statements with an ``else`` branch, where an empty ``then`` branch does serve a purpose. For example:
 
-.. code-block:: swift
+.. code-block:: rust
 
    if (option == "-verbose") {
      // nothing to do - handled earlier
@@ -114,17 +114,17 @@ To exclude ``if`` statements that have an ``else`` branch:
 Further reading
 ---------------
 
-.. include:: ../reusables/swift-further-reading.rst
+.. include:: ../reusables/rust-further-reading.rst
 .. include:: ../reusables/codeql-ref-tools-further-reading.rst
 
 .. Article-specific substitutions for the reusables used in docs/codeql/reusables/vs-code-basic-instructions
 
-.. |language-text| replace:: Swift
+.. |language-text| replace:: Rust
 
-.. |language-code| replace:: ``swift``
+.. |language-code| replace:: ``rust``
 
 .. |example-url| replace:: https://github.com/alamofire/alamofire
 
-.. |image-quick-query| image:: ../images/codeql-for-visual-studio-code/quick-query-tab-swift.png
+.. |image-quick-query| image:: ../images/codeql-for-visual-studio-code/quick-query-tab-rust.png
 
 .. |result-col-1|  replace:: The first column corresponds to the expression ``ifStmt`` and is linked to the location in the source code of the project where ``ifStmt`` occurs.
