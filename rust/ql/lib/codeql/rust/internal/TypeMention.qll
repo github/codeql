@@ -241,6 +241,8 @@ class NonAliasPathTypeMention extends PathTypeMention {
       else result = TTrait(trait)
     )
     or
+    result = TUnion(resolved)
+    or
     result = TTypeParamTypeParameter(resolved)
     or
     result = TAssociatedTypeTypeParameter(resolved)
@@ -384,6 +386,22 @@ class DynTypeBoundListMention extends TypeMention instanceof TypeBoundList {
       trait = tp.getTrait() and
       path = TypePath::singleton(tp) and
       result = tp.getTraitTypeParameter()
+    )
+  }
+}
+
+class NeverTypeReprMention extends TypeMention, NeverTypeRepr {
+  override Type resolveTypeAt(TypePath path) { result = TNeverType() and path.isEmpty() }
+}
+
+class PtrTypeReprMention extends TypeMention instanceof PtrTypeRepr {
+  override Type resolveTypeAt(TypePath path) {
+    path.isEmpty() and
+    result = TPtrType()
+    or
+    exists(TypePath suffix |
+      result = super.getTypeRepr().(TypeMention).resolveTypeAt(suffix) and
+      path = TypePath::cons(TPtrTypeParameter(), suffix)
     )
   }
 }

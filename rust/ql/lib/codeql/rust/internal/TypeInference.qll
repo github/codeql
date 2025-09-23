@@ -99,6 +99,11 @@ private module Input1 implements InputSig1<Location> {
         id1 = 0 and
         id2 = 2
         or
+        tp0 instanceof PtrTypeParameter and
+        kind = 0 and
+        id1 = 0 and
+        id2 = 3
+        or
         kind = 1 and
         id1 = 0 and
         id2 =
