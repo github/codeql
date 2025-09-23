@@ -803,7 +803,7 @@ final class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
   }
 }
 
-final private class ImplTraitTypeReprItemNode extends TypeItemNode instanceof ImplTraitTypeRepr {
+final class ImplTraitTypeReprItemNode extends TypeItemNode instanceof ImplTraitTypeRepr {
   pragma[nomagic]
   Path getABoundPath() {
     result = super.getTypeBoundList().getABound().getTypeRepr().(PathTypeRepr).getPath()
@@ -1905,7 +1905,7 @@ private predicate builtin(string name, ItemNode i) {
 
 /** Provides predicates for debugging the path resolution implementation. */
 private module Debug {
-  private Locatable getRelevantLocatable() {
+  Locatable getRelevantLocatable() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
       filepath.matches("%/main.rs") and
