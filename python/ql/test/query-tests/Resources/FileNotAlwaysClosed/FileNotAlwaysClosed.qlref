@@ -1,2 +1,2 @@
-query: Exceptions/IncorrectExceptOrder.ql
+query: Resources/FileNotAlwaysClosed.ql
 postprocess: utils/test/InlineExpectationsTestQuery.ql

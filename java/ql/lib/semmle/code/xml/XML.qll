@@ -6,6 +6,7 @@ module;
 
 import semmle.files.FileSystem
 private import codeql.xml.Xml
+private import semmle.code.java.Overlay
 
 private module Input implements InputSig<File, Location> {
   class XmlLocatableBase = @xmllocatable or @xmlnamespaceable;
@@ -69,3 +70,13 @@ private module Input implements InputSig<File, Location> {
 }
 
 import Make<File, Location, Input>
+
+private class DiscardableXmlAttribute extends DiscardableLocatable, @xmlattribute { }
+
+private class DiscardableXmlElement extends DiscardableLocatable, @xmlelement { }
+
+private class DiscardableXmlComment extends DiscardableLocatable, @xmlcomment { }
+
+private class DiscardableXmlCharacters extends DiscardableLocatable, @xmlcharacters { }
+
+private class DiscardableXmlDtd extends DiscardableLocatable, @xmldtd { }
