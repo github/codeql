@@ -3,7 +3,7 @@ edges
 | test.ps1:9:11:9:20 | userinput | test.ps1:10:9:10:38 | Get-Process -Name $UserInput | provenance |  |
 | test.ps1:15:11:15:20 | userinput | test.ps1:16:50:16:79 | Get-Process -Name $UserInput | provenance |  |
 | test.ps1:21:11:21:20 | userinput | test.ps1:22:41:22:70 | Get-Process -Name $UserInput | provenance |  |
-| test.ps1:27:11:27:20 | userinput | test.ps1:28:38:28:67 | Get-Process -Name $UserInput | provenance | Sink:MaD:102 |
+| test.ps1:27:11:27:20 | userinput | test.ps1:28:38:28:67 | Get-Process -Name $UserInput | provenance | Sink:MaD:106 |
 | test.ps1:33:11:33:20 | userinput | test.ps1:34:14:34:46 | public class Foo { $UserInput } | provenance |  |
 | test.ps1:39:11:39:20 | userinput | test.ps1:40:30:40:62 | public class Foo { $UserInput } | provenance |  |
 | test.ps1:45:11:45:20 | userinput | test.ps1:47:5:47:9 | code | provenance |  |
@@ -11,7 +11,7 @@ edges
 | test.ps1:73:11:73:20 | userinput | test.ps1:75:25:75:54 | Get-Process -Name $UserInput | provenance |  |
 | test.ps1:80:11:80:20 | userinput | test.ps1:82:16:82:45 | Get-Process -Name $UserInput | provenance |  |
 | test.ps1:87:11:87:20 | userinput | test.ps1:89:12:89:28 | ping $UserInput | provenance |  |
-| test.ps1:94:11:94:20 | userinput | test.ps1:98:33:98:62 | Get-Process -Name $UserInput | provenance | Sink:MaD:101 |
+| test.ps1:94:11:94:20 | userinput | test.ps1:98:33:98:62 | Get-Process -Name $UserInput | provenance | Sink:MaD:105 |
 | test.ps1:104:11:104:20 | userinput | test.ps1:108:58:108:87 | Get-Process -Name $UserInput | provenance |  |
 | test.ps1:114:11:114:20 | userinput | test.ps1:116:34:116:43 | UserInput | provenance |  |
 | test.ps1:121:11:121:20 | userinput | test.ps1:123:28:123:37 | UserInput | provenance |  |
