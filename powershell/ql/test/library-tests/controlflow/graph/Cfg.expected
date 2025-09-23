@@ -161,18 +161,18 @@
 | conditionals.ps1:102:5:107:5 | switch(...) {...} | conditionals.ps1:102:12:102:13 | n |  |
 | conditionals.ps1:102:5:107:5 | {...} | conditionals.ps1:102:5:107:5 | switch(...) {...} |  |
 | conditionals.ps1:102:12:102:13 | n | conditionals.ps1:104:9:104:10 | 0: |  |
-| conditionals.ps1:104:9:104:10 | 0: | conditionals.ps1:104:12:104:24 | {...} | true |
-| conditionals.ps1:104:9:104:10 | 0: | conditionals.ps1:105:9:105:10 | 1: | false |
+| conditionals.ps1:104:9:104:10 | 0: | conditionals.ps1:104:12:104:24 | {...} | match |
+| conditionals.ps1:104:9:104:10 | 0: | conditionals.ps1:105:9:105:10 | 1: | no-match |
 | conditionals.ps1:104:12:104:24 | {...} | conditionals.ps1:104:14:104:21 | return ... |  |
 | conditionals.ps1:104:14:104:21 | return ... | conditionals.ps1:104:21:104:21 | 0 |  |
 | conditionals.ps1:104:21:104:21 | 0 | conditionals.ps1:101:26:108:1 | exit {...} (normal) |  |
-| conditionals.ps1:105:9:105:10 | 1: | conditionals.ps1:105:12:105:24 | {...} | true |
-| conditionals.ps1:105:9:105:10 | 1: | conditionals.ps1:106:9:106:10 | 2: | false |
+| conditionals.ps1:105:9:105:10 | 1: | conditionals.ps1:105:12:105:24 | {...} | match |
+| conditionals.ps1:105:9:105:10 | 1: | conditionals.ps1:106:9:106:10 | 2: | no-match |
 | conditionals.ps1:105:12:105:24 | {...} | conditionals.ps1:105:14:105:21 | return ... |  |
 | conditionals.ps1:105:14:105:21 | return ... | conditionals.ps1:105:21:105:21 | 1 |  |
 | conditionals.ps1:105:21:105:21 | 1 | conditionals.ps1:101:26:108:1 | exit {...} (normal) |  |
-| conditionals.ps1:106:9:106:10 | 2: | conditionals.ps1:101:26:108:1 | exit {...} (normal) | false |
-| conditionals.ps1:106:9:106:10 | 2: | conditionals.ps1:106:12:106:24 | {...} | true |
+| conditionals.ps1:106:9:106:10 | 2: | conditionals.ps1:101:26:108:1 | exit {...} (normal) | no-match |
+| conditionals.ps1:106:9:106:10 | 2: | conditionals.ps1:106:12:106:24 | {...} | match |
 | conditionals.ps1:106:12:106:24 | {...} | conditionals.ps1:106:14:106:21 | return ... |  |
 | conditionals.ps1:106:14:106:21 | return ... | conditionals.ps1:106:21:106:21 | 2 |  |
 | conditionals.ps1:106:21:106:21 | 2 | conditionals.ps1:101:26:108:1 | exit {...} (normal) |  |
@@ -185,23 +185,23 @@
 | conditionals.ps1:111:5:120:5 | switch(...) {...} | conditionals.ps1:111:12:111:13 | n |  |
 | conditionals.ps1:111:5:120:5 | {...} | conditionals.ps1:111:5:120:5 | switch(...) {...} |  |
 | conditionals.ps1:111:12:111:13 | n | conditionals.ps1:113:9:113:10 | 0: |  |
-| conditionals.ps1:113:9:113:10 | 0: | conditionals.ps1:113:12:113:24 | {...} | true |
-| conditionals.ps1:113:9:113:10 | 0: | conditionals.ps1:114:9:114:10 | 1: | false |
+| conditionals.ps1:113:9:113:10 | 0: | conditionals.ps1:113:12:113:24 | {...} | match |
+| conditionals.ps1:113:9:113:10 | 0: | conditionals.ps1:114:9:114:10 | 1: | no-match |
 | conditionals.ps1:113:12:113:24 | {...} | conditionals.ps1:113:14:113:21 | return ... |  |
 | conditionals.ps1:113:14:113:21 | return ... | conditionals.ps1:113:21:113:21 | 0 |  |
 | conditionals.ps1:113:21:113:21 | 0 | conditionals.ps1:110:34:121:1 | exit {...} (normal) |  |
-| conditionals.ps1:114:9:114:10 | 1: | conditionals.ps1:114:12:114:24 | {...} | true |
-| conditionals.ps1:114:9:114:10 | 1: | conditionals.ps1:115:9:115:10 | 2: | false |
+| conditionals.ps1:114:9:114:10 | 1: | conditionals.ps1:114:12:114:24 | {...} | match |
+| conditionals.ps1:114:9:114:10 | 1: | conditionals.ps1:115:9:115:10 | 2: | no-match |
 | conditionals.ps1:114:12:114:24 | {...} | conditionals.ps1:114:14:114:21 | return ... |  |
 | conditionals.ps1:114:14:114:21 | return ... | conditionals.ps1:114:21:114:21 | 1 |  |
 | conditionals.ps1:114:21:114:21 | 1 | conditionals.ps1:110:34:121:1 | exit {...} (normal) |  |
-| conditionals.ps1:115:9:115:10 | 2: | conditionals.ps1:115:12:115:24 | {...} | true |
-| conditionals.ps1:115:9:115:10 | 2: | conditionals.ps1:116:9:116:16 | default: | false |
+| conditionals.ps1:115:9:115:10 | 2: | conditionals.ps1:115:12:115:24 | {...} | match |
+| conditionals.ps1:115:9:115:10 | 2: | conditionals.ps1:116:9:116:16 | default: | no-match |
 | conditionals.ps1:115:12:115:24 | {...} | conditionals.ps1:115:14:115:21 | return ... |  |
 | conditionals.ps1:115:14:115:21 | return ... | conditionals.ps1:115:21:115:21 | 2 |  |
 | conditionals.ps1:115:21:115:21 | 2 | conditionals.ps1:110:34:121:1 | exit {...} (normal) |  |
-| conditionals.ps1:116:9:116:16 | default: | conditionals.ps1:110:34:121:1 | exit {...} (normal) | false |
-| conditionals.ps1:116:9:116:16 | default: | conditionals.ps1:116:18:119:9 | {...} | true |
+| conditionals.ps1:116:9:116:16 | default: | conditionals.ps1:110:34:121:1 | exit {...} (normal) | no-match |
+| conditionals.ps1:116:9:116:16 | default: | conditionals.ps1:116:18:119:9 | {...} | match |
 | conditionals.ps1:116:18:119:9 | {...} | conditionals.ps1:117:13:117:33 | [Stmt] Call to write-output |  |
 | conditionals.ps1:117:13:117:24 | Write-Output | conditionals.ps1:117:26:117:33 | Error! |  |
 | conditionals.ps1:117:13:117:33 | Call to write-output | conditionals.ps1:118:13:118:20 | return ... |  |
