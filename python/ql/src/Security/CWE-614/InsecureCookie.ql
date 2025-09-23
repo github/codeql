@@ -19,4 +19,4 @@ from Http::Server::CookieWrite cookie
 where
   cookie.hasSecureFlag(false) and
   cookie.isSensitive()
-select cookie, "Cookie is added without the Secure attribute properly set."
+select cookie, "Cookie is added to response without the 'secure' flag being set."

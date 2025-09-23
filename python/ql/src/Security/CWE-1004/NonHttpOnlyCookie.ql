@@ -1,5 +1,5 @@
 /**
- * @name Cookie missing `HttpOnly` attribute.
+ * @name Sensitive cookie missing `HttpOnly` attribute.
  * @description Cookies without the `HttpOnly` attribute set can be accessed by JS scripts, making them more vulnerable to XSS attacks.
  * @kind problem
  * @problem.severity warning
@@ -18,4 +18,4 @@ from Http::Server::CookieWrite cookie
 where
   cookie.hasHttpOnlyFlag(false) and
   cookie.isSensitive()
-select cookie, "Cookie is added without the HttpOnly attribute properly set."
+select cookie, "Sensitive cookie is set without HttpOnly flag."
