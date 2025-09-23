@@ -88,7 +88,17 @@ private string baseConfigLocatable(@configLocatable el) {
   not isOverlay() and result = getRawFileForConfig(el)
 }
 
+overlay[local]
+private predicate overlayConfigExtracted(string file) {
+  isOverlay() and
+  exists(@configLocatable el | file = getRawFileForConfig(el))
+}
+
 overlay[discard_entity]
 private predicate discardBaseConfigLocatable(@configLocatable el) {
   overlayChangedFiles(baseConfigLocatable(el))
+  or
+  // The config extractor is currently not incremental and may extract more
+  // property files than those included in overlayChangedFiles.
+  overlayConfigExtracted(baseConfigLocatable(el))
 }
