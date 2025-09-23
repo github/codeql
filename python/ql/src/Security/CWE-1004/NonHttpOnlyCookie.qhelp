@@ -6,7 +6,7 @@
 <overview>
 <p>Cookies without the <code>HttpOnly</code> flag set are accessible to JavaScript running in the same origin. 
 In case of a Cross-Site Scripting (XSS) vulnerability, the cookie can be stolen by a malicious script.
-If a cookie does not need to be accessed directly by client-side JS, the <code>HttpOnly</code> flag should be set.</p>
+If a sensitive cookie does not need to be accessed directly by client-side JS, the <code>HttpOnly</code> flag should be set.</p>
 </overview>
 
 <recommendation>

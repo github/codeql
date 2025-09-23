@@ -5,7 +5,7 @@
 
 <overview>
 <p>Cookies with the <code>SameSite</code> attribute set to <code>'None'</code> will be sent with cross-origin requests. 
-This can sometimes allow for Cross-Site Request Forgery (CSRF) attacks, in which a third-party site could perform actions on behalf of a user.</p>
+This can sometimes allow for Cross-Site Request Forgery (CSRF) attacks, in which a third-party site could perform actions on behalf of a user, if the cookie is used for authentication.</p>
 </overview>
 
 <recommendation>
