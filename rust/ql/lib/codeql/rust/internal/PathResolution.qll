@@ -1645,25 +1645,55 @@ signature predicate relevantTraitVisibleSig(Element element, Trait trait);
  * at a given element.
  */
 module TraitIsVisible<relevantTraitVisibleSig/2 relevantTraitVisible> {
-  /** Holds if the trait might be looked up in `encl`. */
-  private predicate traitLookup(ItemNode encl, Element element, Trait trait) {
-    // lookup in immediately enclosing item
-    relevantTraitVisible(element, trait) and
-    encl.getADescendant() = element
+  private newtype TNode =
+    TTrait(Trait t) { relevantTraitVisible(_, t) } or
+    TItemNode(ItemNode i) or
+    TElement(Element e) { relevantTraitVisible(e, _) }
+
+  private predicate isTrait(TNode n) { n instanceof TTrait }
+
+  private predicate step(TNode n1, TNode n2) {
+    exists(Trait t1, ItemNode i2 |
+      n1 = TTrait(t1) and
+      n2 = TItemNode(i2) and
+      t1 = i2.getASuccessor(_, _, _)
+    )
     or
-    // lookup in an outer scope, but only if the trait is not declared in inner scope
-    exists(ItemNode mid |
-      traitLookup(mid, element, trait) and
-      not trait = mid.getASuccessor(_, _, _) and
-      encl = getOuterScope(mid)
+    exists(ItemNode i1, ItemNode i2 |
+      n1 = TItemNode(i1) and
+      n2 = TItemNode(i2) and
+      i1 = getOuterScope(i2)
+    )
+    or
+    exists(ItemNode i1, Element e2 |
+      n1 = TItemNode(i1) and
+      n2 = TElement(e2) and
+      i1.getADescendant() = e2
+    )
+  }
+
+  private predicate isElement(TNode n) { n instanceof TElement }
+
+  private predicate traitIsVisibleTC(TNode trait, TNode element) =
+    doublyBoundedFastTC(step/2, isTrait/1, isElement/1)(trait, element)
+
+  pragma[nomagic]
+  private predicate relevantTraitVisibleLift(TNode trait, TElement element) {
+    exists(Trait t, Element e |
+      trait = TTrait(t) and
+      element = TElement(e) and
+      relevantTraitVisible(e, t)
     )
   }
 
   /** Holds if the trait `trait` is visible at `element`. */
   pragma[nomagic]
   predicate traitIsVisible(Element element, Trait trait) {
-    exists(ItemNode encl |
-      traitLookup(encl, element, trait) and trait = encl.getASuccessor(_, _, _)
+    exists(TNode t, TNode e |
+      traitIsVisibleTC(t, e) and
+      relevantTraitVisibleLift(t, e) and
+      t = TTrait(trait) and
+      e = TElement(element)
     )
   }
 }
