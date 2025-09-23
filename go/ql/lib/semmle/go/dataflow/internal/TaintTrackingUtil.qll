@@ -83,11 +83,9 @@ class AdditionalTaintStep extends Unit {
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
 
-/**
- * Holds if the additional step from `pred` to `succ` should be included in all
- * global taint flow configurations.
- */
-predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ, string model) {
+private predicate localAdditionalForwardTaintStep(
+  DataFlow::Node pred, DataFlow::Node succ, string model
+) {
   exists(DataFlow::Node pred2 |
     pred2 = pred
     or
@@ -103,12 +101,43 @@ predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ, str
   ) and
   model = ""
   or
-  any(FunctionModel fm).taintStep(pred, succ) and model = "FunctionModel"
+  any(FunctionModel fm).forwardTaintStep(pred, succ) and model = "FunctionModel"
   or
   any(AdditionalTaintStep a).step(pred, succ) and model = "AdditionalTaintStep"
   or
   FlowSummaryImpl::Private::Steps::summaryLocalStep(pred.(DataFlowPrivate::FlowSummaryNode)
         .getSummaryNode(), succ.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false, model)
+}
+
+private predicate localForwardTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  DataFlow::localFlow(pred, succ) or
+  localAdditionalForwardTaintStep(pred, succ, _) or
+  // Simple flow through library code is included in the exposed local
+  // step relation, even though flow is technically inter-procedural
+  FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(pred, succ, _)
+}
+
+/**
+ * Holds if taint flows backwards from `pred` to `succ` via a function model.
+ */
+private predicate localAdditionalBackwardTaintStep(
+  DataFlow::Node pred, DataFlow::Node succ, string model
+) {
+  // backward step through function model
+  exists(FunctionModel m, DataFlow::Node resultNode |
+    m.backwardTaintStep(resultNode, succ) and
+    localForwardTaintStep+(resultNode, pred.(DataFlow::PostUpdateNode).getPreUpdateNode())
+  ) and
+  model = "FunctionModel"
+}
+
+/**
+ * Holds if the additional step from `pred` to `succ` should be included in all
+ * global taint flow configurations.
+ */
+predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ, string model) {
+  localAdditionalForwardTaintStep(pred, succ, model) or
+  localAdditionalBackwardTaintStep(pred, succ, model)
 }
 
 /**
@@ -199,23 +228,36 @@ abstract class FunctionModel extends Function {
   abstract predicate hasTaintFlow(FunctionInput input, FunctionOutput output);
 
   /** Gets an input node for this model for the call `c`. */
-  DataFlow::Node getAnInputNode(DataFlow::CallNode c) { this.taintStepForCall(result, _, c) }
+  DataFlow::Node getAnInputNode(DataFlow::CallNode c) { this.taintStepForCall(result, _, c, _) }
 
   /** Gets an output node for this model for the call `c`. */
-  DataFlow::Node getAnOutputNode(DataFlow::CallNode c) { this.taintStepForCall(_, result, c) }
+  DataFlow::Node getAnOutputNode(DataFlow::CallNode c) { this.taintStepForCall(_, result, c, _) }
 
   /** Holds if this function model causes taint to flow from `pred` to `succ` for the call `c`. */
-  predicate taintStepForCall(DataFlow::Node pred, DataFlow::Node succ, DataFlow::CallNode c) {
+  predicate taintStepForCall(
+    DataFlow::Node pred, DataFlow::Node succ, DataFlow::CallNode c, Boolean forward
+  ) {
     c = this.getACall() and
     exists(FunctionInput inp, FunctionOutput outp | this.hasTaintFlow(inp, outp) |
       pred = pragma[only_bind_out](inp).getNode(c) and
-      succ = pragma[only_bind_out](outp).getNode(c)
+      succ = pragma[only_bind_out](outp).getNode(c) and
+      if inp.isResult() or inp.isResult(_) then forward = false else forward = true
     )
   }
 
   /** Holds if this function model causes taint to flow from `pred` to `succ`. */
   predicate taintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    this.taintStepForCall(pred, succ, _)
+    this.taintStepForCall(pred, succ, _, _)
+  }
+
+  /** Holds if this function model causes taint to flow forward from `pred` to `succ`. */
+  predicate forwardTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    this.taintStepForCall(pred, succ, _, true)
+  }
+
+  /** Holds if this function model causes taint to flow backwards from `pred` to `succ`. */
+  predicate backwardTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    this.taintStepForCall(pred, succ, _, false)
   }
 }
 

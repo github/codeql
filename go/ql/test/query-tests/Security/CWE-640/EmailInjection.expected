@@ -1,7 +1,6 @@
 #select
 | EmailBad.go:12:56:12:67 | type conversion | EmailBad.go:9:10:9:17 | selection of Header | EmailBad.go:12:56:12:67 | type conversion | Email content may contain $@. | EmailBad.go:9:10:9:17 | selection of Header | untrusted input |
 | main.go:33:57:33:78 | type conversion | main.go:31:21:31:31 | call to Referer | main.go:33:57:33:78 | type conversion | Email content may contain $@. | main.go:31:21:31:31 | call to Referer | untrusted input |
-| main.go:42:3:42:7 | definition of write | main.go:39:21:39:31 | call to Referer | main.go:42:3:42:7 | definition of write | Email content may contain $@. | main.go:39:21:39:31 | call to Referer | untrusted input |
 | main.go:54:46:54:59 | untrustedInput | main.go:48:21:48:31 | call to Referer | main.go:54:46:54:59 | untrustedInput | Email content may contain $@. | main.go:48:21:48:31 | call to Referer | untrusted input |
 | main.go:55:52:55:65 | untrustedInput | main.go:48:21:48:31 | call to Referer | main.go:55:52:55:65 | untrustedInput | Email content may contain $@. | main.go:48:21:48:31 | call to Referer | untrusted input |
 | main.go:65:16:65:22 | content | main.go:60:21:60:31 | call to Referer | main.go:65:16:65:22 | content | Email content may contain $@. | main.go:60:21:60:31 | call to Referer | untrusted input |
@@ -16,8 +15,6 @@ edges
 | EmailBad.go:9:10:9:17 | selection of Header | EmailBad.go:9:10:9:29 | call to Get | provenance | Src:MaD:1 MaD:7 |
 | EmailBad.go:9:10:9:29 | call to Get | EmailBad.go:12:56:12:67 | type conversion | provenance |  |
 | main.go:31:21:31:31 | call to Referer | main.go:33:57:33:78 | type conversion | provenance | Src:MaD:2  |
-| main.go:39:21:39:31 | call to Referer | main.go:43:25:43:38 | untrustedInput | provenance | Src:MaD:2  |
-| main.go:43:25:43:38 | untrustedInput | main.go:42:3:42:7 | definition of write | provenance | MaD:5 |
 | main.go:48:21:48:31 | call to Referer | main.go:54:46:54:59 | untrustedInput | provenance | Src:MaD:2  |
 | main.go:48:21:48:31 | call to Referer | main.go:55:52:55:65 | untrustedInput | provenance | Src:MaD:2  |
 | main.go:60:21:60:31 | call to Referer | main.go:62:47:62:60 | untrustedInput | provenance | Src:MaD:2  |
@@ -33,15 +30,15 @@ edges
 | main.go:93:15:93:62 | call to NewContent | main.go:95:16:95:23 | content2 | provenance |  |
 | main.go:93:48:93:61 | untrustedInput | main.go:93:15:93:62 | call to NewContent | provenance | MaD:4 |
 | main.go:113:21:113:31 | call to Referer | main.go:119:28:119:41 | untrustedInput | provenance | Src:MaD:2  |
-| main.go:116:3:116:4 | definition of mw | main.go:116:29:116:30 | &... | provenance | FunctionModel |
-| main.go:116:29:116:30 | &... | main.go:124:57:124:57 | b | provenance |  |
-| main.go:119:28:119:41 | untrustedInput | main.go:116:3:116:4 | definition of mw | provenance | MaD:6 |
+| main.go:116:29:116:30 | &... [postupdate] | main.go:124:57:124:57 | b | provenance |  |
+| main.go:119:3:119:4 | mw [postupdate] | main.go:116:29:116:30 | &... [postupdate] | provenance | FunctionModel |
+| main.go:119:28:119:41 | untrustedInput | main.go:119:3:119:4 | mw [postupdate] | provenance | MaD:6 |
 | main.go:124:57:124:57 | b | main.go:124:57:124:65 | call to Bytes | provenance | MaD:3 |
 | main.go:129:21:129:31 | call to Referer | main.go:136:30:136:43 | untrustedInput | provenance | Src:MaD:2  |
-| main.go:132:3:132:4 | definition of mw | main.go:132:29:132:30 | &... | provenance | FunctionModel |
-| main.go:132:29:132:30 | &... | main.go:141:57:141:57 | b | provenance |  |
-| main.go:135:3:135:12 | definition of formWriter | main.go:132:3:132:4 | definition of mw | provenance | FunctionModel |
-| main.go:136:30:136:43 | untrustedInput | main.go:135:3:135:12 | definition of formWriter | provenance | MaD:5 |
+| main.go:132:29:132:30 | &... [postupdate] | main.go:141:57:141:57 | b | provenance |  |
+| main.go:135:20:135:21 | mw [postupdate] | main.go:132:29:132:30 | &... [postupdate] | provenance | FunctionModel |
+| main.go:136:18:136:27 | formWriter [postupdate] | main.go:135:20:135:21 | mw [postupdate] | provenance | FunctionModel |
+| main.go:136:30:136:43 | untrustedInput | main.go:136:18:136:27 | formWriter [postupdate] | provenance | MaD:5 |
 | main.go:141:57:141:57 | b | main.go:141:57:141:65 | call to Bytes | provenance | MaD:3 |
 models
 | 1 | Source: net/http; Request; true; Header; ; ; ; remote; manual |
@@ -57,9 +54,6 @@ nodes
 | EmailBad.go:12:56:12:67 | type conversion | semmle.label | type conversion |
 | main.go:31:21:31:31 | call to Referer | semmle.label | call to Referer |
 | main.go:33:57:33:78 | type conversion | semmle.label | type conversion |
-| main.go:39:21:39:31 | call to Referer | semmle.label | call to Referer |
-| main.go:42:3:42:7 | definition of write | semmle.label | definition of write |
-| main.go:43:25:43:38 | untrustedInput | semmle.label | untrustedInput |
 | main.go:48:21:48:31 | call to Referer | semmle.label | call to Referer |
 | main.go:54:46:54:59 | untrustedInput | semmle.label | untrustedInput |
 | main.go:55:52:55:65 | untrustedInput | semmle.label | untrustedInput |
@@ -79,16 +73,19 @@ nodes
 | main.go:93:48:93:61 | untrustedInput | semmle.label | untrustedInput |
 | main.go:95:16:95:23 | content2 | semmle.label | content2 |
 | main.go:113:21:113:31 | call to Referer | semmle.label | call to Referer |
-| main.go:116:3:116:4 | definition of mw | semmle.label | definition of mw |
-| main.go:116:29:116:30 | &... | semmle.label | &... |
+| main.go:116:29:116:30 | &... [postupdate] | semmle.label | &... [postupdate] |
+| main.go:119:3:119:4 | mw [postupdate] | semmle.label | mw [postupdate] |
 | main.go:119:28:119:41 | untrustedInput | semmle.label | untrustedInput |
 | main.go:124:57:124:57 | b | semmle.label | b |
 | main.go:124:57:124:65 | call to Bytes | semmle.label | call to Bytes |
 | main.go:129:21:129:31 | call to Referer | semmle.label | call to Referer |
-| main.go:132:3:132:4 | definition of mw | semmle.label | definition of mw |
-| main.go:132:29:132:30 | &... | semmle.label | &... |
-| main.go:135:3:135:12 | definition of formWriter | semmle.label | definition of formWriter |
+| main.go:132:29:132:30 | &... [postupdate] | semmle.label | &... [postupdate] |
+| main.go:135:20:135:21 | mw [postupdate] | semmle.label | mw [postupdate] |
+| main.go:136:18:136:27 | formWriter [postupdate] | semmle.label | formWriter [postupdate] |
 | main.go:136:30:136:43 | untrustedInput | semmle.label | untrustedInput |
 | main.go:141:57:141:57 | b | semmle.label | b |
 | main.go:141:57:141:65 | call to Bytes | semmle.label | call to Bytes |
 subpaths
+testFailures
+| main.go:39:33:39:43 | comment | Missing result: Source |
+| main.go:42:24:42:33 | comment | Missing result: Alert |
