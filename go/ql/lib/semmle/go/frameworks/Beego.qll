@@ -109,7 +109,7 @@ module Beego {
 
     override string getAContentType() {
       // Super-method provides content-types for `Body`, which requires us to search
-      // for `ContentType` and `Header` calls against the same `BeegoOutput` instance
+      // for `ContentType` and `Header` calls against the same `BeegoOutput` instance
       result = super.getAContentType()
       or
       // Specifically describe methods that set the content-type and body in one operation:

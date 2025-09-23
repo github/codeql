@@ -48,32 +48,10 @@ module CfgInput implements InputSig<Location> {
 
   CfgScope getCfgScope(AstNode n) { result = scopeOfAst(n.asAstNode()) }
 
-  class SuccessorType = Cfg::SuccessorType;
+  private class SuccessorType = Cfg::SuccessorType;
 
   /** Gets a successor type that matches completion `c`. */
   SuccessorType getAMatchingSuccessorType(Completion c) { result = c.getAMatchingSuccessorType() }
-
-  /**
-   * Hold if `c` represents simple (normal) evaluation of a statement or an
-   * expression.
-   */
-  predicate successorTypeIsSimple(SuccessorType t) {
-    t instanceof Cfg::SuccessorTypes::NormalSuccessor
-  }
-
-  /** Holds if `t` is an abnormal exit type out of a CFG scope. */
-  predicate isAbnormalExitType(SuccessorType t) {
-    t instanceof Cfg::SuccessorTypes::ExceptionSuccessor
-  }
-
-  /** Hold if `t` represents a conditional successor type. */
-  predicate successorTypeIsCondition(SuccessorType t) {
-    t instanceof Cfg::SuccessorTypes::BooleanSuccessor or
-    t instanceof Cfg::SuccessorTypes::BreakSuccessor or
-    t instanceof Cfg::SuccessorTypes::ContinueSuccessor or
-    t instanceof Cfg::SuccessorTypes::MatchingSuccessor or
-    t instanceof Cfg::SuccessorTypes::EmptinessSuccessor
-  }
 
   /** Holds if `first` is first executed when entering `scope`. */
   predicate scopeFirst(CfgScope scope, AstNode first) {

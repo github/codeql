@@ -1005,12 +1005,15 @@ readStep
 | main.rs:458:5:458:11 | mut_arr | file://:0:0:0:0 | element | main.rs:458:5:458:14 | mut_arr[1] |
 | main.rs:459:13:459:19 | mut_arr | file://:0:0:0:0 | element | main.rs:459:13:459:22 | mut_arr[1] |
 | main.rs:461:10:461:16 | mut_arr | file://:0:0:0:0 | element | main.rs:461:10:461:19 | mut_arr[0] |
+| main.rs:467:24:467:33 | [post] receiver for source(...) | file://:0:0:0:0 | &ref | main.rs:467:24:467:33 | [post] source(...) |
 | main.rs:468:9:468:20 | TuplePat | file://:0:0:0:0 | tuple.0 | main.rs:468:10:468:13 | cond |
 | main.rs:468:9:468:20 | TuplePat | file://:0:0:0:0 | tuple.1 | main.rs:468:16:468:19 | name |
 | main.rs:468:25:468:29 | names | file://:0:0:0:0 | element | main.rs:468:9:468:20 | TuplePat |
 | main.rs:470:41:470:67 | [post] \|...\| ... | main.rs:467:9:467:20 | captured default_name | main.rs:470:41:470:67 | [post] default_name |
+| main.rs:470:44:470:55 | [post] receiver for default_name | file://:0:0:0:0 | &ref | main.rs:470:44:470:55 | [post] default_name |
 | main.rs:470:44:470:55 | this | main.rs:467:9:467:20 | captured default_name | main.rs:470:44:470:55 | default_name |
 | main.rs:471:18:471:18 | [post] receiver for n | file://:0:0:0:0 | &ref | main.rs:471:18:471:18 | [post] n |
+| main.rs:494:13:494:13 | [post] receiver for a | file://:0:0:0:0 | &ref | main.rs:494:13:494:13 | [post] a |
 | main.rs:495:13:495:13 | [post] receiver for b | file://:0:0:0:0 | &ref | main.rs:495:13:495:13 | [post] b |
 | main.rs:496:18:496:18 | [post] receiver for b | file://:0:0:0:0 | &ref | main.rs:496:18:496:18 | [post] b |
 | main.rs:507:10:507:11 | vs | file://:0:0:0:0 | element | main.rs:507:10:507:14 | vs[0] |
@@ -1110,8 +1113,11 @@ storeStep
 | main.rs:455:27:455:27 | 2 | file://:0:0:0:0 | element | main.rs:455:23:455:31 | [...] |
 | main.rs:455:30:455:30 | 3 | file://:0:0:0:0 | element | main.rs:455:23:455:31 | [...] |
 | main.rs:458:18:458:27 | source(...) | file://:0:0:0:0 | element | main.rs:458:5:458:11 | [post] mut_arr |
+| main.rs:467:24:467:33 | source(...) | file://:0:0:0:0 | &ref | main.rs:467:24:467:33 | receiver for source(...) |
 | main.rs:470:41:470:67 | default_name | main.rs:467:9:467:20 | captured default_name | main.rs:470:41:470:67 | \|...\| ... |
+| main.rs:470:44:470:55 | default_name | file://:0:0:0:0 | &ref | main.rs:470:44:470:55 | receiver for default_name |
 | main.rs:471:18:471:18 | n | file://:0:0:0:0 | &ref | main.rs:471:18:471:18 | receiver for n |
+| main.rs:494:13:494:13 | a | file://:0:0:0:0 | &ref | main.rs:494:13:494:13 | receiver for a |
 | main.rs:495:13:495:13 | b | file://:0:0:0:0 | &ref | main.rs:495:13:495:13 | receiver for b |
 | main.rs:496:18:496:18 | b | file://:0:0:0:0 | &ref | main.rs:496:18:496:18 | receiver for b |
 | main.rs:505:15:505:24 | source(...) | file://:0:0:0:0 | element | main.rs:505:14:505:34 | [...] |

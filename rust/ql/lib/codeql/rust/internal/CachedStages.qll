@@ -65,7 +65,6 @@ module Stages {
   cached
   module CfgStage {
     private import codeql.rust.controlflow.internal.Splitting
-    private import codeql.rust.controlflow.internal.SuccessorType
     private import codeql.rust.controlflow.internal.ControlFlowGraphImpl
     private import codeql.rust.controlflow.CfgNodes
 
@@ -86,8 +85,6 @@ module Stages {
       1 = 1
       or
       exists(TConditionalCompletionSplitKind())
-      or
-      exists(TNormalSuccessor())
       or
       exists(AstCfgNode n)
       or

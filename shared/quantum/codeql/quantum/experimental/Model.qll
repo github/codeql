@@ -365,7 +365,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    */
   abstract class ArtifactConsumer extends ConsumerElement {
     /**
-     * Use `getAKnownArtifactSource() instead. The behaviour of these two predicates is equivalent.
+     * Use `getAKnownArtifactSource() instead. The behavior of these two predicates is equivalent.
      */
     final override KnownElement getAKnownSource() { result = this.getAKnownArtifactSource() }
 
@@ -1841,9 +1841,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    * An SCRYPT key derivation algorithm node.
    */
   class ScryptAlgorithmNode extends KeyDerivationAlgorithmNode {
-    ScryptAlgorithmInstance scryptInstance;
-
-    ScryptAlgorithmNode() { scryptInstance = instance.asAlg() }
+    ScryptAlgorithmNode() { instance.asAlg() instanceof ScryptAlgorithmInstance }
 
     /**
      * Gets the iteration count (`N`) argument

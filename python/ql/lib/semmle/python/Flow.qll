@@ -1259,9 +1259,9 @@ private class ControlFlowNodeAlias = ControlFlowNode;
 final private class FinalBasicBlock = BasicBlock;
 
 module Cfg implements BB::CfgSig<Location> {
-  class ControlFlowNode = ControlFlowNodeAlias;
+  private import codeql.controlflow.SuccessorType
 
-  class SuccessorType = Unit;
+  class ControlFlowNode = ControlFlowNodeAlias;
 
   class BasicBlock extends FinalBasicBlock {
     // Note `PY:BasicBlock` does not have a `getLocation`.
@@ -1275,7 +1275,24 @@ module Cfg implements BB::CfgSig<Location> {
 
     BasicBlock getASuccessor() { result = super.getASuccessor() }
 
-    BasicBlock getASuccessor(SuccessorType t) { result = super.getASuccessor() and exists(t) }
+    private BasicBlock getANonDirectSuccessor(SuccessorType t) {
+      result = this.getATrueSuccessor() and
+      t.(BooleanSuccessor).getValue() = true
+      or
+      result = this.getAFalseSuccessor() and
+      t.(BooleanSuccessor).getValue() = false
+      or
+      result = this.getAnExceptionalSuccessor() and
+      t instanceof ExceptionSuccessor
+    }
+
+    BasicBlock getASuccessor(SuccessorType t) {
+      result = this.getANonDirectSuccessor(t)
+      or
+      result = super.getASuccessor() and
+      t instanceof DirectSuccessor and
+      not result = this.getANonDirectSuccessor(_)
+    }
 
     predicate strictlyDominates(BasicBlock bb) { super.strictlyDominates(bb) }
 

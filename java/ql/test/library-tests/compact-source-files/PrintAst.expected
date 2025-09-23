@@ -1,0 +1,45 @@
+Test.java:
+#    0| [CompilationUnit] Test
+#    1|   1: [Class] Test
+#    1|     4: [FieldDeclaration] int instanceField;
+#    1|       -1: [TypeAccess] int
+#    1|       0: [IntegerLiteral] 10
+#    2|     5: [FieldDeclaration] int STATIC_CONSTANT;
+#    2|       -1: [TypeAccess] int
+#    2|       0: [IntegerLiteral] 42
+#    3|     6: [FieldDeclaration] String privateField;
+#    3|       -1: [TypeAccess] String
+#    3|       0: [StringLiteral] "data"
+#    5|     7: [Method] main
+#    5|       3: [TypeAccess] void
+#    5|       5: [BlockStmt] { ... }
+#    6|         0: [ExprStmt] <Expr>;
+#    6|           0: [MethodCall] processData(...)
+#    7|         1: [ExprStmt] <Expr>;
+#    7|           0: [MethodCall] testStaticAccess(...)
+#   11|     8: [Method] processData
+#   11|       3: [TypeAccess] void
+#   11|       5: [BlockStmt] { ... }
+#   12|         0: [ExprStmt] <Expr>;
+#   12|           0: [PostIncExpr] ...++
+#   12|             0: [VarAccess] instanceField
+#   13|         1: [ExprStmt] <Expr>;
+#   13|           0: [MethodCall] updatePrivateField(...)
+#   16|     9: [Method] updatePrivateField
+#   16|       3: [TypeAccess] void
+#   16|       5: [BlockStmt] { ... }
+#   17|         0: [ExprStmt] <Expr>;
+#   17|           0: [AssignExpr] ...=...
+#   17|             0: [VarAccess] privateField
+#   17|             1: [StringLiteral] "updated"
+#   21|     10: [Method] testStaticAccess
+#   21|       3: [TypeAccess] void
+#   21|       5: [BlockStmt] { ... }
+#   22|         0: [ExprStmt] <Expr>;
+#   22|           0: [MethodCall] println(...)
+#   22|             -1: [TypeAccess] IO
+#   22|             0: [StringLiteral] "Static access test"
+#   25|     11: [Class] NotCompact
+#   27|       2: [Method] methodNotCompact
+#   27|         3: [TypeAccess] void
+#   27|         5: [BlockStmt] { ... }

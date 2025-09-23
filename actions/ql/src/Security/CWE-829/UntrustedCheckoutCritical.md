@@ -32,7 +32,7 @@ jobs:
 
       - uses: actions/setup-node@v1
       - run: |
-          npm install # scripts in package.json from PR would be executed here
+          npm install # scripts in package.json from PR would be executed here
           npm build
 
       - uses: completely/fakeaction@v2
