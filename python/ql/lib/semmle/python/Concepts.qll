@@ -1296,7 +1296,7 @@ module Http {
         exists(DataFlow::Node name |
           name = [this.getNameArg(), this.getHeaderArg()] and
           (
-            name instanceof SensitiveDataSource
+            DataFlow::localFlow(any(SensitiveDataSource src), name)
             or
             name = sensitiveLookupStringConst(_)
           )

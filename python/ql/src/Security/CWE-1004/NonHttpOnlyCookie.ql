@@ -15,5 +15,7 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.Concepts
 
 from Http::Server::CookieWrite cookie
-where cookie.hasHttpOnlyFlag(false)
+where
+  cookie.hasHttpOnlyFlag(false) and
+  cookie.isSensitive()
 select cookie, "Cookie is added without the HttpOnly attribute properly set."

@@ -1,3 +1,2 @@
-| test.py:13:5:13:54 | ControlFlowNode for Attribute() | Cookie is added with the SameSite attribute set to None. |
-| test.py:16:5:16:67 | ControlFlowNode for Attribute() | Cookie is added with the SameSite attribute set to None. |
-| test.py:17:5:17:69 | ControlFlowNode for Attribute() | Cookie is added with the SameSite attribute set to None. |
+| test.py:10:5:10:60 | ControlFlowNode for Attribute() | Cookie is added with the SameSite attribute set to None. |
+| test.py:13:5:13:78 | ControlFlowNode for Attribute() | Cookie is added with the SameSite attribute set to None. |
