@@ -5,13 +5,96 @@
 private import javascript
 private import semmle.javascript.dataflow.internal.StepSummary
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
+private import semmle.javascript.dataflow.internal.FlowSteps
+private import semmle.javascript.internal.NameResolution
 
 cached
 module CallGraph {
+  pragma[nomagic]
+  private predicate shouldBackTrack(DataFlow::SourceNode node) {
+    exists(DataFlow::Node rhs | rhs = node.getAPropertyWrite().getRhs().getALocalSource() |
+      track(_) = rhs
+    )
+  }
+
+  pragma[nomagic]
+  private predicate methodHostToReceiverStep(DataFlow::SourceNode node1, DataFlow::SourceNode node2) {
+    exists(DataFlow::PropWrite write |
+      node1 = write.getBase().getALocalSource() and
+      node2 = write.getRhs().getALocalSource().(DataFlow::FunctionNode).getReceiver()
+    )
+  }
+
+  pragma[inline]
+  private predicate step(DataFlow::SourceNode node1, DataFlow::SourceNode node2) {
+    AccessPath::step(node1.getALocalUse(), node2)
+    or
+    propertyFlowStep(node1.getALocalUse(), node2)
+    or
+    storeReadStep(node1, node2)
+    or
+    methodHostToReceiverStep(node1, node2)
+  }
+
+  pragma[nomagic]
+  private DataFlow::SourceNode backtrackStoreTarget() {
+    shouldBackTrack(result)
+    or
+    step(result, backtrackStoreTarget())
+  }
+
+  pragma[nomagic]
+  private predicate shouldTrack(DataFlow::SourceNode node) {
+    node instanceof DataFlow::FunctionNode
+    or
+    node instanceof DataFlow::ClassNode
+    or
+    (
+      node instanceof DataFlow::ObjectLiteralNode or
+      node instanceof DataFlow::InvokeNode or
+      node instanceof DataFlow::ArrayLiteralNode
+    ) and
+    backtrackStoreTarget() = node
+  }
+
+  pragma[nomagic]
+  private predicate deepStore(DataFlow::SourceNode node1, string prop, DataFlow::SourceNode node2) {
+    track(node2).getAPropertyWrite(prop).getRhs().getALocalSource() = node1
+  }
+
+  pragma[nomagic]
+  private predicate deepRead(DataFlow::SourceNode node1, string prop, DataFlow::SourceNode node2) {
+    track(node1).getAPropertyRead(prop) = node2
+  }
+
+  pragma[nomagic]
+  private predicate storeReadStep(DataFlow::SourceNode node1, DataFlow::SourceNode node2) {
+    exists(DataFlow::SourceNode base, string name |
+      deepStore(node1, name, base) and
+      deepRead(base, name, node2)
+    )
+  }
+
+  pragma[nomagic]
+  private DataFlow::SourceNode track(DataFlow::SourceNode source) {
+    shouldTrack(source) and
+    result = source
+    or
+    step(track(source), result)
+  }
+
   /** Gets the function referenced by `node`, as determined by the type inference. */
   cached
   Function getAFunctionValue(AnalyzedNode node) {
-    result = node.getAValue().(AbstractCallable).getFunction()
+    exists(DataFlow::FunctionNode func |
+      result = func.getFunction() and
+      track(func).getALocalUse() = node
+    )
+    or
+    exists(DataFlow::ClassNode cls |
+      result = cls.getConstructor().getFunction() and
+      track(cls).getALocalUse() = node
+    )
   }
 
   /** Holds if the type inferred for `node` is indefinite due to global flow. */

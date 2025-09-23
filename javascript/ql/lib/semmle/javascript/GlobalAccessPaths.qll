@@ -272,6 +272,23 @@ module AccessPath {
       result = decl.getIdentifier().(GlobalVarDecl).getName() and
       root.isGlobal()
     )
+    or
+    exists(Closure::ClosureModule mod | root.isGlobal() |
+      node = mod.getExportsVariable().getAnAssignedExpr().flow() and
+      result = mod.getClosureNamespace()
+      or
+      exists(ExportNamedDeclaration decl, string name |
+        decl.getContainer() = mod and
+        node = decl.getSourceNode(name) and
+        result = join(mod.getClosureNamespace(), name)
+      )
+      or
+      exists(ExportDefaultDeclaration decl |
+        decl.getContainer() = mod and
+        node = DataFlow::valueNode(decl.getOperand()) and
+        result = mod.getClosureNamespace()
+      )
+    )
   }
 
   /** A module for computing an access to a variable that happens after a property has been written onto it */
