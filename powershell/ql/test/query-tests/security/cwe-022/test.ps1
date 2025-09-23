@@ -6,14 +6,14 @@ foreach ($entry in $zip.Entries) {
     $targetPath = Join-Path $extractPath $entry.FullName
     $fullTargetPath = [System.IO.Path]::GetFullPath($targetPath)
 
-    [System.IO.Compression.ZipFileExtensions]::ExtractToFile($entry, $fullTargetPath) # BAD [NOT DETECTED]
+    [System.IO.Compression.ZipFileExtensions]::ExtractToFile($entry, $fullTargetPath) # BAD
 }
 
 foreach ($entry in $zip.Entries) {
     $targetPath = Join-Path $extractPath $entry.FullName
     $fullTargetPath = [System.IO.Path]::GetFullPath($targetPath)
 
-    $stream = [System.IO.File]::Open($fullTargetPath, 'Create') # BAD [NOT DETECTED]
+    $stream = [System.IO.File]::Open($fullTargetPath, 'Create') # BAD
     $entry.Open().CopyTo($stream)
     $stream.Close()
 }
@@ -24,6 +24,6 @@ foreach ($entry in $zip.Entries) {
 
     $extractRoot = [System.IO.Path]::GetFullPath($extractPath)
     if ($fullTargetPath.StartsWith($extractRoot)) {
-        [System.IO.Compression.ZipFileExtensions]::ExtractToFile($entry, $fullTargetPath) # GOOD
+        [System.IO.Compression.ZipFileExtensions]::ExtractToFile($entry, $fullTargetPath) # GOOD [FALSE POSITIVE]
     }
 }
