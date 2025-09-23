@@ -16,5 +16,6 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.Concepts
 
 from Http::Server::CookieWrite cookie
-where cookie.hasSecureFlag(false)
+where cookie.hasSecureFlag(false) //and
+//cookie.isSensitive()
 select cookie, "Cookie is added without the Secure attribute properly set."
