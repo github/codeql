@@ -11,6 +11,7 @@ private import codeql.rust.elements.internal.generated.StmtList
  * be referenced directly.
  */
 module Impl {
+  // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
    * A list of statements in a block, with an optional tail expression at the
    * end that determines the block's value.
