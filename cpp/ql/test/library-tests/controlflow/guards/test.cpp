@@ -380,9 +380,9 @@ void testWrappers(void* p, int* i, char* s, bool b) {
   }
 
   if (testNotNull2(p)) {
-    chk(); // $ guarded='call to testNotNull2:true' MISSING: guarded='p:not null'
+    chk(); // $ guarded='call to testNotNull2:true' guarded='p:not null'
   } else {
-    chk(); // $ guarded='call to testNotNull2:false'
+    chk(); // $ guarded='call to testNotNull2:false' guarded=p:null
   }
 
   if (0 == getNumOrDefault(i)) {
@@ -394,7 +394,7 @@ void testWrappers(void* p, int* i, char* s, bool b) {
   if ('\0' == returnAIfNoneAreNull(s, "suffix")) {
     chk(); // $ guarded='0 == call to returnAIfNoneAreNull:true' guarded='call to returnAIfNoneAreNull:0'
   } else {
-    chk(); // $ guarded='0 == call to returnAIfNoneAreNull:false' guarded='call to returnAIfNoneAreNull:not 0' MISSING: guarded='s:not null'
+    chk(); // $ guarded='0 == call to returnAIfNoneAreNull:false' guarded='call to returnAIfNoneAreNull:not 0' guarded='s:not null' guarded='suffix:not null'
   }
 
   switch (testEnumWrapper(b)) {

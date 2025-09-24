@@ -139,7 +139,7 @@ void test_guarded_wrapper() {
   int x = source();
 
   if(guarded_wrapper(x)) {
-    sink(x); // $ SPURIOUS: ast,ir
+    sink(x); // $ SPURIOUS: ast
   } else {
     sink(x); // $ ast,ir
   }

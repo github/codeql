@@ -381,8 +381,11 @@
 | test.cpp:372:10:372:13 | flag | false | test.cpp:372:35:372:49 | FAILURE |
 | test.cpp:372:10:372:13 | flag | true | test.cpp:372:17:372:31 | SUCCESS |
 | test.cpp:375:25:375:25 | p | not null | test.cpp:376:24:377:7 | { ... } |
+| test.cpp:375:25:375:25 | p | not null | test.cpp:382:24:383:7 | { ... } |
 | test.cpp:375:25:375:25 | p | null | test.cpp:378:10:379:7 | { ... } |
+| test.cpp:375:25:375:25 | p | null | test.cpp:384:10:385:7 | { ... } |
 | test.cpp:375:33:375:33 | i | not null | test.cpp:390:10:391:7 | { ... } |
+| test.cpp:375:42:375:42 | s | not null | test.cpp:396:10:397:7 | { ... } |
 | test.cpp:375:50:375:50 | b | false | test.cpp:404:5:406:12 | case ...: |
 | test.cpp:375:50:375:50 | b | true | test.cpp:401:5:403:12 | case ...: |
 | test.cpp:376:7:376:18 | call to testNotNull1 | false | test.cpp:378:10:379:7 | { ... } |
@@ -391,6 +394,8 @@
 | test.cpp:376:20:376:20 | p | null | test.cpp:378:10:379:7 | { ... } |
 | test.cpp:382:7:382:18 | call to testNotNull2 | false | test.cpp:384:10:385:7 | { ... } |
 | test.cpp:382:7:382:18 | call to testNotNull2 | true | test.cpp:382:24:383:7 | { ... } |
+| test.cpp:382:20:382:20 | p | not null | test.cpp:382:24:383:7 | { ... } |
+| test.cpp:382:20:382:20 | p | null | test.cpp:384:10:385:7 | { ... } |
 | test.cpp:388:7:388:29 | ... == ... | false | test.cpp:390:10:391:7 | { ... } |
 | test.cpp:388:7:388:29 | ... == ... | true | test.cpp:388:32:389:7 | { ... } |
 | test.cpp:388:12:388:26 | call to getNumOrDefault | 0 | test.cpp:388:32:389:7 | { ... } |
@@ -400,6 +405,8 @@
 | test.cpp:394:7:394:47 | ... == ... | true | test.cpp:394:50:395:7 | { ... } |
 | test.cpp:394:15:394:34 | call to returnAIfNoneAreNull | 0 | test.cpp:394:50:395:7 | { ... } |
 | test.cpp:394:15:394:34 | call to returnAIfNoneAreNull | not 0 | test.cpp:396:10:397:7 | { ... } |
+| test.cpp:394:36:394:36 | s | not null | test.cpp:396:10:397:7 | { ... } |
+| test.cpp:394:39:394:46 | suffix | not null | test.cpp:396:10:397:7 | { ... } |
 | test.cpp:400:11:400:25 | call to testEnumWrapper | 1 | test.cpp:401:5:403:12 | case ...: |
 | test.cpp:400:11:400:25 | call to testEnumWrapper | 2 | test.cpp:404:5:406:12 | case ...: |
 | test.cpp:400:27:400:27 | b | false | test.cpp:404:5:406:12 | case ...: |
