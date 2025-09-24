@@ -17,13 +17,15 @@ import codeql.rust.elements.Stmt
  */
 module Generated {
   /**
-   * A list of statements in a block.
+   * A list of statements in a block, with an optional tail expression at the
+   * end that determines the block's value.
    *
    * For example:
    * ```rust
    * {
    *     let x = 1;
    *     let y = 2;
+   *     x + y
    * }
    * //  ^^^^^^^^^
    * ```
