@@ -436,25 +436,6 @@ private module LogicInput_v1 implements GuardsImpl::LogicInputSig {
   ) {
     g1.(ConditionalBranchInstruction).getCondition() = g2 and
     v1.asBooleanValue() = v2.asBooleanValue()
-    or
-    exists(SwitchInstruction switch, SwitchEdge edge |
-      g1 = switch.getSuccessor(edge) and
-      g2 = switch.getExpression()
-    |
-      v1.asBooleanValue() = true and
-      (
-        v2.asIntValue() = edge.getValue().toInt()
-        or
-        v2.asConstantValue().isRange(edge.getMinValue(), edge.getMaxValue())
-      )
-      or
-      v1.asBooleanValue() = false and
-      (
-        v2.getDualValue().asIntValue() = edge.getValue().toInt()
-        or
-        v2.getDualValue().asConstantValue().isRange(edge.getMinValue(), edge.getMaxValue())
-      )
-    )
   }
 }
 
