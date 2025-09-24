@@ -69,7 +69,7 @@ module ZipSlip {
       )
     }
 
-    override string getSinkType() { result = "argument to file extraction" }
+    override string getSinkType() { result = "argument to archive extraction" }
   }
 
   class SinkFileOpenArgument extends Sink {
