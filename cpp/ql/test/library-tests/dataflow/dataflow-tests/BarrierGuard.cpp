@@ -126,3 +126,21 @@ void test_phi_read_guard_2(bool b) {
   
   sink(x); // $ SPURIOUS: ast
 }
+
+bool guarded_wrapper(int x) {
+  if(guarded(x)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+void test_guarded_wrapper() {
+  int x = source();
+
+  if(guarded_wrapper(x)) {
+    sink(x); // $ SPURIOUS: ast,ir
+  } else {
+    sink(x); // $ ast,ir
+  }
+}
