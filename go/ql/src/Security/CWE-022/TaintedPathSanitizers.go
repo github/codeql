@@ -54,32 +54,3 @@ func handleFileWithSanitizers(w http.ResponseWriter, r *http.Request) {
 
 	// Process file...
 }
-
-// Example using mime/multipart filename sanitization
-func handleUpload(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseMultipartForm(32 << 20) // 32MB max
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	file, header, err := r.FormFile("upload")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-	defer file.Close()
-
-	// The Filename field is automatically sanitized by mime/multipart
-	// using filepath.Base, making it safe from path traversal
-	filename := header.Filename
-
-	// Additional validation can still be useful
-	if strings.Contains(filename, "..") || strings.ContainsAny(filename, "/\\") {
-		http.Error(w, "Invalid filename", http.StatusBadRequest)
-		return
-	}
-
-	// Safe to use filename
-	_ = filename
-}
