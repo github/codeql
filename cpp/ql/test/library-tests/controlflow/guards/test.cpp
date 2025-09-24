@@ -321,3 +321,20 @@ void test_cmp_implies_unary(int a) {
 
   }
 }
+
+int foo();
+
+void test_constant_value_and_case_range(bool b)
+{
+  int x = foo();
+  if (b)
+  {
+    x = 42;
+  }
+  switch (x)
+  {
+  case 40 ... 50:
+    // should not be guarded by `foo() = 40..50`
+    use(x);
+  }
+}

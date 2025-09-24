@@ -1296,3 +1296,15 @@
 | test.cpp:318:7:318:12 | ... < ... | a < 42+0 when ... < ... is true |
 | test.cpp:318:7:318:12 | ... < ... | a >= 42 when ... < ... is false |
 | test.cpp:318:7:318:12 | ... < ... | a >= 42+0 when ... < ... is false |
+| test.cpp:327:46:327:46 | b | b != 0 when b is true |
+| test.cpp:327:46:327:46 | b | b != 1 when b is false |
+| test.cpp:327:46:327:46 | b | b == 0 when b is false |
+| test.cpp:327:46:327:46 | b | b == 1 when b is true |
+| test.cpp:330:7:330:7 | b | b != 0 when b is true |
+| test.cpp:330:7:330:7 | b | b != 1 when b is false |
+| test.cpp:330:7:330:7 | b | b == 0 when b is false |
+| test.cpp:330:7:330:7 | b | b == 1 when b is true |
+| test.cpp:334:11:334:11 | x | x < 51 when x is 40..50 |
+| test.cpp:334:11:334:11 | x | x >= 40 when x is 40..50 |
+| test.cpp:338:9:338:9 | x | x < 51 when x is 40..50 |
+| test.cpp:338:9:338:9 | x | x >= 40 when x is 40..50 |
