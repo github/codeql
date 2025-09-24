@@ -31,6 +31,12 @@ module GuardsInput implements SharedGuards::InputSig<Cpp::Location, Instruction,
   }
 
   private newtype TConstantValue =
+    // This is slightly abusing the shared guards library. Using
+    // `TRange(40, 50)` to model a constant expression in the program such as
+    // the literal "42" causes the shared guards library to make incorrect
+    // inferences.
+    // However, since we only use them to model `CaseConstant::asConstantValue`
+    // this does not cause any wrong inferences (at least for now).
     TRange(string minValue, string maxValue) {
       minValue != maxValue and
       exists(EdgeKind::caseEdge(minValue, maxValue))
