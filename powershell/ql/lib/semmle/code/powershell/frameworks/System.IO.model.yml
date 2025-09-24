@@ -31,3 +31,9 @@ extensions:
       - ["system.io.filestream", "Instance", "file-write"]
       - ["system.io.streamwriter", "Instance", "file-write"]
       - ["system.io.streamwriter", "Instance", "file-write"]
+
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.io.path!", "Method[getfullpath]", "Argument[0]", "ReturnValue", "taint"]

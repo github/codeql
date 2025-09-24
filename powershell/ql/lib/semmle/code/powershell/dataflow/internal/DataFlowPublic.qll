@@ -1,6 +1,7 @@
 private import powershell
 private import DataFlowDispatch
 private import DataFlowPrivate
+private import semmle.code.powershell.dataflow.Ssa
 private import semmle.code.powershell.typetracking.internal.TypeTrackingImpl
 private import semmle.code.powershell.ApiGraphs
 private import semmle.code.powershell.Cfg
@@ -12,6 +13,9 @@ private import semmle.code.powershell.Cfg
 class Node extends TNode {
   /** Gets the expression corresponding to this node, if any. */
   CfgNodes::ExprCfgNode asExpr() { result = this.(ExprNode).getExprNode() }
+
+  /** Gets the definition corresponding to this node, if any. */
+  Ssa::Definition asDefinition() { result = this.(SsaDefinitionNodeImpl).getDefinition() }
 
   ScriptBlock asCallable() { result = this.(CallableNode).asCallableAstNode() }
 
@@ -477,14 +481,10 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
  *
  * For example, `[Foo]::new()` or `New-Object Foo`.
  */
-class ObjectCreationNode extends ExprNode {
-  CfgNodes::ExprNodes::ObjectCreationCfgNode objectCreation;
+class ObjectCreationNode extends CallNode {
+  override CfgNodes::ExprNodes::ObjectCreationCfgNode call;
 
-  ObjectCreationNode() { this.getExprNode() = objectCreation }
-
-  final CfgNodes::ExprNodes::ObjectCreationCfgNode getObjectCreationNode() {
-    result = objectCreation
-  }
+  final CfgNodes::ExprNodes::ObjectCreationCfgNode getObjectCreationNode() { result = call }
 
   /**
    * Gets the node corresponding to the expression that decides which type
@@ -493,7 +493,7 @@ class ObjectCreationNode extends ExprNode {
    * For example, in `[Foo]::new()`, this would be `Foo`, and in
    * `New-Object Foo`, this would be `Foo`.
    */
-  Node getConstructedTypeNode() { result.asExpr() = objectCreation.getConstructedTypeExpr() }
+  Node getConstructedTypeNode() { result.asExpr() = call.getConstructedTypeExpr() }
 
   bindingset[result]
   pragma[inline_late]

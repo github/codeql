@@ -72,8 +72,25 @@ abstract private class ChildMapping extends Ast {
    */
   abstract predicate relevantChild(Ast child);
 
+  /**
+   * Holds if `child` appears before its parent in the control-flow graph.
+   * This always holds for expressions, and _almost_ never for statements.
+   */
+  abstract predicate precedesParent(Ast child);
+
   pragma[nomagic]
-  abstract predicate reachesBasicBlock(Ast child, CfgNode cfn, BasicBlock bb);
+  final predicate reachesBasicBlock(Ast child, CfgNode cfn, BasicBlock bb) {
+    this.relevantChild(child) and
+    cfn.getAstNode() = this and
+    bb.getANode() = cfn
+    or
+    exists(BasicBlock mid |
+      this.reachesBasicBlock(child, cfn, mid) and
+      not mid.getANode().getAstNode() = child
+    |
+      if this.precedesParent(child) then bb = mid.getAPredecessor() else bb = mid.getASuccessor()
+    )
+  }
 
   /**
    * Holds if there is a control-flow path from `cfn` to `cfnChild`, where `cfn`
@@ -93,18 +110,7 @@ abstract private class ChildMapping extends Ast {
  * A class for mapping parent-child AST nodes to parent-child CFG nodes.
  */
 abstract private class ExprChildMapping extends Expr, ChildMapping {
-  pragma[nomagic]
-  override predicate reachesBasicBlock(Ast child, CfgNode cfn, BasicBlock bb) {
-    this.relevantChild(child) and
-    cfn.getAstNode() = this and
-    bb.getANode() = cfn
-    or
-    exists(BasicBlock mid |
-      this.reachesBasicBlock(child, cfn, mid) and
-      bb = mid.getAPredecessor() and
-      not mid.getANode().getAstNode() = child
-    )
-  }
+  final override predicate precedesParent(Ast child) { this.relevantChild(child) }
 }
 
 /**
@@ -113,18 +119,7 @@ abstract private class ExprChildMapping extends Expr, ChildMapping {
 abstract private class NonExprChildMapping extends ChildMapping {
   NonExprChildMapping() { not this instanceof Expr }
 
-  pragma[nomagic]
-  override predicate reachesBasicBlock(Ast child, CfgNode cfn, BasicBlock bb) {
-    this.relevantChild(child) and
-    cfn.getAstNode() = this and
-    bb.getANode() = cfn
-    or
-    exists(BasicBlock mid |
-      this.reachesBasicBlock(child, cfn, mid) and
-      bb = mid.getASuccessor() and
-      not mid.getANode().getAstNode() = child
-    )
-  }
+  override predicate precedesParent(Ast child) { none() } // this is not final because it is overriden by ForEachStmt
 }
 
 private class AttributeBaseChildMapping extends NonExprChildMapping, AttributeBase {
@@ -1208,7 +1203,7 @@ module StmtNodes {
     StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
   }
 
-  private class LoopStmtChildMapping extends NonExprChildMapping, LoopStmt {
+  abstract private class LoopStmtChildMapping extends ChildMapping, LoopStmt {
     override predicate relevantChild(Ast child) { child = this.getBody() }
   }
 
@@ -1222,7 +1217,9 @@ module StmtNodes {
     StmtCfgNode getBody() { s.hasCfgChild(s.getBody(), this, result) }
   }
 
-  private class DoUntilStmtChildMapping extends LoopStmtChildMapping, DoUntilStmt {
+  private class DoUntilStmtChildMapping extends LoopStmtChildMapping, NonExprChildMapping,
+    DoUntilStmt
+  {
     override predicate relevantChild(Ast child) {
       child = this.getCondition() or super.relevantChild(child)
     }
@@ -1238,7 +1235,9 @@ module StmtNodes {
     ExprCfgNode getCondition() { s.hasCfgChild(s.getCondition(), this, result) }
   }
 
-  private class DoWhileStmtChildMapping extends LoopStmtChildMapping, DoWhileStmt {
+  private class DoWhileStmtChildMapping extends LoopStmtChildMapping, NonExprChildMapping,
+    DoWhileStmt
+  {
     override predicate relevantChild(Ast child) {
       child = this.getCondition() or super.relevantChild(child)
     }
@@ -1300,10 +1299,14 @@ module StmtNodes {
     ExprCfgNode getHashTableExpr() { s.hasCfgChild(s.getHashTableExpr(), this, result) }
   }
 
-  private class ForEachStmtChildMapping extends LoopStmtChildMapping, ForEachStmt {
+  private class ForEachStmtChildMapping extends LoopStmtChildMapping, NonExprChildMapping,
+    ForEachStmt
+  {
     override predicate relevantChild(Ast child) {
       child = this.getVarAccess() or child = this.getIterableExpr() or super.relevantChild(child)
     }
+
+    override predicate precedesParent(Ast child) { child = this.getIterableExpr() }
   }
 
   class ForEachStmtCfgNode extends LoopStmtCfgNode {
@@ -1313,12 +1316,12 @@ module StmtNodes {
 
     override ForEachStmt getStmt() { result = s }
 
-    ExprCfgNode getVarAccess() { s.hasCfgChild(s.getVarAccess(), this, result) }
+    ExprNodes::VarAccessCfgNode getVarAccess() { s.hasCfgChild(s.getVarAccess(), this, result) }
 
     ExprCfgNode getIterableExpr() { s.hasCfgChild(s.getIterableExpr(), this, result) }
   }
 
-  private class ForStmtChildMapping extends LoopStmtChildMapping, ForStmt {
+  private class ForStmtChildMapping extends LoopStmtChildMapping, NonExprChildMapping, ForStmt {
     override predicate relevantChild(Ast child) {
       child = this.getInitializer() or
       child = this.getCondition() or
@@ -1476,7 +1479,7 @@ module StmtNodes {
     override UsingStmt getStmt() { result = s }
   }
 
-  private class WhileStmtChildMapping extends LoopStmtChildMapping, WhileStmt {
+  private class WhileStmtChildMapping extends LoopStmtChildMapping, NonExprChildMapping, WhileStmt {
     override predicate relevantChild(Ast child) {
       child = this.getCondition() or
       super.relevantChild(child)

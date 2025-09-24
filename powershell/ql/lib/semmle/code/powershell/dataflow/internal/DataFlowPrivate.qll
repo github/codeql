@@ -1025,6 +1025,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
  * Holds if there is a read step of content `c` from `node1` to `node2`.
  */
 predicate readStep(Node node1, ContentSet c, Node node2) {
+  // Qualifier -> Member read
   exists(CfgNodes::ExprNodes::MemberExprReadAccessCfgNode var, Content::FieldContent fc |
     node2.asExpr() = var and
     node1.asExpr() = var.getQualifier() and
@@ -1032,6 +1033,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(fc)
   )
   or
+  // Qualifier -> Index read
   exists(CfgNodes::ExprNodes::IndexExprReadAccessCfgNode var, CfgNodes::ExprCfgNode e |
     node2.asExpr() = var and
     node1.asExpr() = var.getBase() and
@@ -1046,18 +1048,21 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     c.isAnyElement()
   )
   or
+  // Implicit read before a return
   exists(CfgNode cfgNode |
     node1 = TPreReturnNodeImpl(cfgNode, true) and
     node2 = TImplicitWrapNode(cfgNode, true) and
     c.isSingleton(any(Content::KnownElementContent ec | exists(ec.getIndex().asInt())))
   )
   or
+  // Implicit read before a process block
   c.isAnyPositional() and
   exists(CfgNodes::ProcessBlockCfgNode processBlock |
     processBlock.getPipelineParameterAccess() = node1.asExpr() and
     node2 = TProcessNode(processBlock)
   )
   or
+  // Implicit read of a positional before a property-by-name process iteration
   c.isAnyPositional() and
   exists(CfgNodes::ProcessBlockCfgNode pb, CfgNodes::ExprNodes::VarReadAccessCfgNode va |
     va = pb.getAPipelineByPropertyNameParameterAccess() and
@@ -1065,6 +1070,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node2 = TProcessPropertyByNameNode(va.getVariable(), false)
   )
   or
+  // Implicit read of a property before a property-by-name process iteration
   exists(PipelineByPropertyNameParameter p, Content::KnownElementContent ec |
     c.isKnownOrUnknownElement(ec) and
     ec.getIndex().asString() = p.getLowerCaseName() and
@@ -1072,6 +1078,18 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node2 = TProcessPropertyByNameNode(p, true)
   )
   or
+  // Read from a collection into a `foreach` loop
+  exists(
+    CfgNodes::StmtNodes::ForEachStmtCfgNode forEach, Content::KnownElementContent ec, BasicBlock bb,
+    int i
+  |
+    c.isKnownOrUnknownElement(ec) and
+    node1.asExpr() = forEach.getIterableExpr() and
+    bb.getNode(i) = forEach.getVarAccess() and
+    node2.asDefinition().definesAt(_, bb, i)
+  )
+  or
+  // Summary read steps
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
 }

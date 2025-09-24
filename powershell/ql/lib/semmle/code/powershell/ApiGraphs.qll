@@ -250,6 +250,15 @@ module API {
     }
 
     /**
+     * Gets a representative for the instanceof field of the given `name`.
+     */
+    pragma[inline]
+    Node getField(string name) {
+      // This predicate is currently not 'inline_late' because 'name' can be an input or output
+      Impl::fieldEdge(this.getAnEpsilonSuccessor(), name, result)
+    }
+
+    /**
      * Gets a representative for an arbitrary element of this collection.
      */
     bindingset[this]
@@ -613,6 +622,15 @@ module API {
     cached
     predicate elementEdge(Node pred, Node succ) {
       contentEdge(pred, any(DataFlow::ContentSet set | set.isAnyElement()).getAReadContent(), succ)
+    }
+
+    cached
+    predicate fieldEdge(Node pred, string name, Node succ) {
+      exists(DataFlow::ContentSet set, DataFlow::Content::FieldContent fc |
+        fc.getLowerCaseName() = name and
+        set.isSingleton(fc) and
+        contentEdge(pred, set.getAReadContent(), succ)
+      )
     }
 
     cached

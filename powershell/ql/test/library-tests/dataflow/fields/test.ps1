@@ -87,3 +87,7 @@ $hash["a"] = 0
 Sink $hash["a"] # $ SPURIOUS: hasValueFlow=16
 $hash.b = Source "17"
 Sink $hash.b # $ hasValueFlow=17
+
+foreach($a in 1, 2, (Source "18"), 3) {
+    Sink $a # $ hasValueFlow=18
+}
