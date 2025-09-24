@@ -289,6 +289,7 @@ compGenerated
 | file://<external>/LongProgression.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/LongRange.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/LongRange.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/String.class:0:0:0:0 | getChars | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/String.class:0:0:0:0 | isEmpty | Forwarder for a Kotlin class inheriting an interface default method |
 | reflection.kt:7:49:7:54 | new Function2<Ccc,Integer,Double>(...) { ... } | The class around a local function, a lambda, or a function reference |
 | reflection.kt:10:38:10:42 | new KProperty1<C,Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |

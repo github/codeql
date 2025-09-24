@@ -311,14 +311,15 @@ class FunctionalComponent extends ReactComponent, Function {
 /**
  * A React/Preact component implemented as a class.
  */
-abstract private class SharedReactPreactClassComponent extends ReactComponent, ClassDefinition {
+abstract private class SharedReactPreactClassComponent extends ReactComponent instanceof ClassDefinition
+{
   override Function getInstanceMethod(string name) {
     result = ClassDefinition.super.getInstanceMethod(name)
   }
 
   override Function getStaticMethod(string name) {
     exists(MethodDeclaration decl |
-      decl = this.getMethod(name) and
+      decl = ClassDefinition.super.getMethod(name) and
       decl.isStatic() and
       result = decl.getBody()
     )
@@ -327,7 +328,8 @@ abstract private class SharedReactPreactClassComponent extends ReactComponent, C
   override DataFlow::SourceNode getADirectPropsAccess() {
     result = this.getAnInstanceReference().getAPropertyRead("props")
     or
-    result = DataFlow::parameterNode(this.getConstructor().getBody().getParameter(0))
+    result =
+      DataFlow::parameterNode(ClassDefinition.super.getConstructor().getBody().getParameter(0))
   }
 
   override AbstractValue getAbstractComponent() { result = AbstractInstance::of(this) }
@@ -340,7 +342,7 @@ abstract private class SharedReactPreactClassComponent extends ReactComponent, C
 
   override DataFlow::SourceNode getACandidateStateSource() {
     result = ReactComponent.super.getACandidateStateSource() or
-    result.flowsToExpr(this.getField("state").getInit())
+    result.flowsToExpr(ClassDefinition.super.getField("state").getInit())
   }
 
   override DataFlow::SourceNode getADefaultPropsSource() {
@@ -349,6 +351,17 @@ abstract private class SharedReactPreactClassComponent extends ReactComponent, C
       DataFlow::valueNode(this).(DataFlow::SourceNode).hasPropertyWrite("defaultProps", props)
     )
   }
+
+  /** Gets the expression denoting the super class of the defined class, if any. */
+  Expr getSuperClass() { result = ClassDefinition.super.getSuperClass() }
+
+  /**
+   * Gets the constructor of this class.
+   *
+   * Note that every class has a constructor: if no explicit constructor
+   * is declared, it has a synthetic default constructor.
+   */
+  ConstructorDeclaration getConstructor() { result = ClassDefinition.super.getConstructor() }
 }
 
 /**
@@ -362,7 +375,7 @@ abstract class ES2015Component extends SharedReactPreactClassComponent { }
  */
 private class DefiniteES2015Component extends ES2015Component {
   DefiniteES2015Component() {
-    exists(DataFlow::SourceNode sup | sup.flowsToExpr(this.getSuperClass()) |
+    exists(DataFlow::SourceNode sup | sup.flowsToExpr(this.(ClassDefinition).getSuperClass()) |
       exists(PropAccess access, string globalReactName |
         (globalReactName = "react" or globalReactName = "React") and
         access = sup.asExpr()
@@ -400,7 +413,7 @@ abstract class PreactComponent extends SharedReactPreactClassComponent {
  */
 private class DefinitePreactComponent extends PreactComponent {
   DefinitePreactComponent() {
-    exists(DataFlow::SourceNode sup | sup.flowsToExpr(this.getSuperClass()) |
+    exists(DataFlow::SourceNode sup | sup.flowsToExpr(this.(ClassDefinition).getSuperClass()) |
       exists(PropAccess access, string globalPreactName |
         (globalPreactName = "preact" or globalPreactName = "Preact") and
         access = sup.asExpr()
@@ -419,12 +432,11 @@ private class DefinitePreactComponent extends PreactComponent {
  * - extends class called `Component`
  * - has a `render` method that returns JSX or React elements.
  */
-private class HeuristicReactPreactComponent extends ClassDefinition, PreactComponent,
-  ES2015Component
-{
+private class HeuristicReactPreactComponent extends PreactComponent, ES2015Component {
   HeuristicReactPreactComponent() {
-    any(DataFlow::GlobalVarRefNode c | c.getName() = "Component").flowsToExpr(this.getSuperClass()) and
-    alwaysReturnsJsxOrReactElements(ClassDefinition.super.getInstanceMethod("render"))
+    any(DataFlow::GlobalVarRefNode c | c.getName() = "Component")
+        .flowsToExpr(this.(ClassDefinition).getSuperClass()) and
+    alwaysReturnsJsxOrReactElements(this.(ClassDefinition).getInstanceMethod("render"))
   }
 }
 

@@ -6,7 +6,6 @@ private import powershell
 private import Completion as Comp
 private import Comp
 private import ControlFlowGraphImpl
-private import Cfg::SuccessorTypes
 private import semmle.code.powershell.controlflow.ControlFlowGraph as Cfg
 
 cached

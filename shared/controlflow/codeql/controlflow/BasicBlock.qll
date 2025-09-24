@@ -9,17 +9,12 @@ overlay[local?]
 module;
 
 private import codeql.util.Location
+private import SuccessorType
 
 /** Provides the language-specific input specification. */
 signature module InputSig<LocationSig Location> {
-  /** The type of a control flow successor. */
-  class SuccessorType {
-    /** Gets a textual representation of this successor type. */
-    string toString();
-  }
-
   /** Hold if `t` represents a conditional successor type. */
-  predicate successorTypeIsCondition(SuccessorType t);
+  default predicate successorTypeIsCondition(SuccessorType t) { t instanceof ConditionalSuccessor }
 
   /** A delineated part of the AST with its own CFG. */
   class CfgScope;
@@ -59,12 +54,6 @@ signature module CfgSig<LocationSig Location> {
 
     /** Gets the location of this control flow node. */
     Location getLocation();
-  }
-
-  /** The type of a control flow successor. */
-  class SuccessorType {
-    /** Gets a textual representation of this successor type. */
-    string toString();
   }
 
   /**
@@ -179,8 +168,6 @@ module Make<LocationSig Location, InputSig<Location> Input> implements CfgSig<Lo
   private import Input
 
   class ControlFlowNode = Input::Node;
-
-  class SuccessorType = Input::SuccessorType;
 
   /**
    * A basic block, that is, a maximal straight-line sequence of control flow nodes

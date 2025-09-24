@@ -36,22 +36,9 @@ private module CfgInput implements CfgShared::InputSig<Location> {
     scope.(Impl::CfgScope).exit(last, c)
   }
 
-  class SuccessorType = Cfg::SuccessorType;
+  private class SuccessorType = Cfg::SuccessorType;
 
   SuccessorType getAMatchingSuccessorType(Completion c) { result = c.getAMatchingSuccessorType() }
-
-  predicate successorTypeIsSimple(SuccessorType t) {
-    t instanceof Cfg::SuccessorTypes::NormalSuccessor
-  }
-
-  predicate successorTypeIsCondition(SuccessorType t) {
-    t instanceof Cfg::SuccessorTypes::ConditionalSuccessor
-  }
-
-  predicate isAbnormalExitType(SuccessorType t) {
-    t instanceof Cfg::SuccessorTypes::ThrowSuccessor or
-    t instanceof Cfg::SuccessorTypes::ExitSuccessor
-  }
 
   private predicate id(Raw::Ast node1, Raw::Ast node2) { node1 = node2 }
 
@@ -927,20 +914,3 @@ CfgScope getCfgScope(Ast n) {
     pragma[only_bind_into](result) = getCfgScopeImpl(n0)
   )
 }
-
-cached
-private module Cached {
-  cached
-  newtype TSuccessorType =
-    TSuccessorSuccessor() or
-    TBooleanSuccessor(Boolean b) or
-    TReturnSuccessor() or
-    TBreakSuccessor() or
-    TContinueSuccessor() or
-    TThrowSuccessor() or
-    TExitSuccessor() or
-    TMatchingSuccessor(Boolean b) or
-    TEmptinessSuccessor(Boolean b)
-}
-
-import Cached

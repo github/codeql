@@ -5,8 +5,6 @@
  * data flow check for lambdas, anonymous classes, and other sufficiently
  * private classes where all object instantiations are accounted for.
  */
-overlay[local?]
-module;
 
 import java
 private import VirtualDispatch

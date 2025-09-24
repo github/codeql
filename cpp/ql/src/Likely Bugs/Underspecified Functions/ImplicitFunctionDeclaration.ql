@@ -5,7 +5,7 @@
  * may lead to unpredictable behavior.
  * @kind problem
  * @problem.severity warning
- * @precision high
+ * @precision medium
  * @id cpp/implicit-function-declaration
  * @tags correctness
  *       maintainability
@@ -38,7 +38,6 @@ predicate isCompiledAsC(File f) {
 
 from FunctionDeclarationEntry fdeIm, FunctionCall fc
 where
-  not any(Compilation c).buildModeNone() and
   isCompiledAsC(fdeIm.getFile()) and
   not isFromMacroDefinition(fc) and
   fdeIm.isImplicit() and

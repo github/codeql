@@ -3,7 +3,6 @@
 private import powershell
 private import ControlFlowGraph
 private import CfgNodes
-private import SuccessorTypes
 private import internal.ControlFlowGraphImpl as CfgImpl
 private import CfgImpl::BasicBlocks as BasicBlocksImpl
 private import codeql.controlflow.BasicBlock as BB
@@ -163,12 +162,8 @@ private class BasicBlockAlias = BasicBlock;
 
 private class EntryBasicBlockAlias = EntryBasicBlock;
 
-private class SuccessorTypeAlias = SuccessorType;
-
 module Cfg implements BB::CfgSig<Location> {
   class ControlFlowNode = CfgNode;
-
-  class SuccessorType = SuccessorTypeAlias;
 
   class BasicBlock = BasicBlockAlias;
 

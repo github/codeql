@@ -7,7 +7,6 @@
 private import powershell
 private import semmle.code.powershell.controlflow.ControlFlowGraph
 private import ControlFlowGraphImpl as CfgImpl
-private import SuccessorTypes
 private import codeql.util.Boolean
 
 // TODO: We most likely need a TrapCompletion as well
@@ -202,7 +201,7 @@ abstract class NormalCompletion extends Completion { }
 
 /** A simple (normal) completion. */
 class SimpleCompletion extends NormalCompletion, TSimpleCompletion {
-  override NormalSuccessor getAMatchingSuccessorType() { any() }
+  override DirectSuccessor getAMatchingSuccessorType() { any() }
 
   override string toString() { result = "simple" }
 }
@@ -293,7 +292,7 @@ class ContinueCompletion extends Completion, TContinueCompletion {
  * expression resulting in a thrown exception.
  */
 class ThrowCompletion extends Completion, TThrowCompletion {
-  override ThrowSuccessor getAMatchingSuccessorType() { any() }
+  override ExceptionSuccessor getAMatchingSuccessorType() { any() }
 
   override string toString() { result = "throw" }
 }

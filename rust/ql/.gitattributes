@@ -421,9 +421,7 @@
 /lib/codeql/rust/elements/internal/TypeArgConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeArgImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeBoundConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/TypeBoundImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeBoundListConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/TypeBoundListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeParamConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeReprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/UnderscoreExprConstructor.qll linguist-generated

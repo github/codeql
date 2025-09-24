@@ -3,7 +3,6 @@
 private import swift
 private import ControlFlowGraph
 private import internal.ControlFlowGraphImpl as CfgImpl
-private import SuccessorTypes
 private import CfgImpl::BasicBlocks as BasicBlocksImpl
 private import codeql.controlflow.BasicBlock as BB
 
@@ -120,12 +119,8 @@ private class EntryBasicBlockAlias = EntryBasicBlock;
 
 private class ControlFlowNodeAlias = ControlFlowNode;
 
-private class SuccessorTypeAlias = SuccessorType;
-
 module Cfg implements BB::CfgSig<Location> {
   class ControlFlowNode = ControlFlowNodeAlias;
-
-  class SuccessorType = SuccessorTypeAlias;
 
   class BasicBlock = BasicBlockAlias;
 

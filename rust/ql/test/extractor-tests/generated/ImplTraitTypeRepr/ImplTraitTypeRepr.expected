@@ -1,4 +1,4 @@
 instances
-| gen_impl_trait_type_repr.rs:7:17:7:41 | ImplTraitTypeRepr |
+| gen_impl_trait_type_repr.rs:7:17:7:41 | impl ... |
 getTypeBoundList
-| gen_impl_trait_type_repr.rs:7:17:7:41 | ImplTraitTypeRepr | gen_impl_trait_type_repr.rs:7:22:7:41 | TypeBoundList |
+| gen_impl_trait_type_repr.rs:7:17:7:41 | impl ... | gen_impl_trait_type_repr.rs:7:22:7:41 | ... |

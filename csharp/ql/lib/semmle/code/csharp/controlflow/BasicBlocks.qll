@@ -3,7 +3,7 @@
  */
 
 import csharp
-private import ControlFlow::SuccessorTypes
+private import ControlFlow
 private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl as CfgImpl
 private import CfgImpl::BasicBlocks as BasicBlocksImpl
 private import codeql.controlflow.BasicBlock as BB
@@ -345,8 +345,6 @@ private class EntryBasicBlockAlias = EntryBasicBlock;
 
 module Cfg implements BB::CfgSig<Location> {
   class ControlFlowNode = ControlFlow::Node;
-
-  class SuccessorType = ControlFlow::SuccessorType;
 
   class BasicBlock = BasicBlockAlias;
 

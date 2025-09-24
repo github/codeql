@@ -69,14 +69,15 @@ predicate containerModification(string package, string type, int p, string signa
 class MismatchedContainerModification extends MethodCall {
   MismatchedContainerModification() {
     exists(string package, string type, int i |
-      containerModification(package, type, _, this.getCallee().getSignature(), i)
+      containerModification(package, type, _, this.getCallee().getSignature(),
+        pragma[only_bind_into](i))
     |
       this.getCallee()
           .getDeclaringType()
           .getASourceSupertype*()
           .getSourceDeclaration()
           .hasQualifiedName(package, type) and
-      this.getCallee().getParameter(i).getType() instanceof TypeObject
+      this.getCallee().getParameter(pragma[only_bind_into](i)).getType() instanceof TypeObject
     )
   }
 

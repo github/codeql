@@ -170,7 +170,7 @@ module VariableCaptureConfig implements InputSig<js::Location, js::Cfg::BasicBlo
 
     predicate hasCfgNode(js::Cfg::BasicBlock bb, int i) { none() } // Overridden in subclass
 
-    // note: langauge-specific
+    // note: language-specific
     js::DataFlow::Node getSource() { none() } // Overridden in subclass
   }
 

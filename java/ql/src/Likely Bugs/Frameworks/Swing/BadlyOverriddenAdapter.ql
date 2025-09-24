@@ -24,14 +24,20 @@ class Adapter extends Class {
   }
 }
 
-from Class c, Adapter adapter, Method m
-where
+pragma[nomagic]
+predicate candidate(Class c, Adapter adapter, Method m, string name) {
   adapter = c.getASupertype() and
   c = m.getDeclaringType() and
-  exists(Method original | adapter = original.getDeclaringType() | m.getName() = original.getName()) and
-  not exists(Method overridden | adapter = overridden.getDeclaringType() | m.overrides(overridden)) and
+  name = m.getName() and
   // The method is not used for any other purpose.
   not exists(MethodCall ma | ma.getMethod() = m)
+}
+
+from Class c, Adapter adapter, Method m, string name
+where
+  candidate(c, adapter, m, name) and
+  exists(Method original | adapter = original.getDeclaringType() | name = original.getName()) and
+  not exists(Method overridden | adapter = overridden.getDeclaringType() | m.overrides(overridden))
 select m,
   "Method " + m.getName() + " attempts to override a method in " + adapter.getName() +
     ", but does not have the same argument types. " + m.getName() +

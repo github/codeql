@@ -82,6 +82,8 @@ module PreSsa {
   }
 
   module SsaInput implements SsaImplCommon::InputSig<Location, PreBasicBlocks::PreBasicBlock> {
+    private import semmle.code.csharp.Caching
+
     private class ExitBasicBlock extends PreBasicBlocks::PreBasicBlock {
       ExitBasicBlock() { scopeLast(_, this.getLastNode(), _) }
     }
@@ -124,6 +126,7 @@ module PreSsa {
     predicate variableWrite(
       PreBasicBlocks::PreBasicBlock bb, int i, SourceVariable v, boolean certain
     ) {
+      Stages::ControlFlowStage::forceCachingInSameStage() and
       exists(AssignableDefinition def |
         definitionAt(def, bb, i, v) and
         if def.getTargetAccess().isRefArgument() then certain = false else certain = true

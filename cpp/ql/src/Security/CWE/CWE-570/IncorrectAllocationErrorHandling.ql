@@ -41,7 +41,7 @@ predicate deleteMayThrow(DeleteOrDeleteArrayExpr deleteExpr) {
 }
 
 /**
- * Holds if the function may throw an exception when called. That is, if the body of the function looks
+ * Holds if the function `f` may throw an exception when called. That is, if the body of the function looks
  * like it might throw an exception, and the function does not have a `noexcept` or `throw()` specifier.
  */
 predicate functionMayThrow(Function f) {
