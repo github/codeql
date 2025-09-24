@@ -241,7 +241,7 @@ mod warp_test {
         let map_route =
             warp::path::param().map(|a: String| // $ Alert[rust/summary/taint-sources]
             {
-            sink(a); // $ MISSING: hasTaintFlow
+            sink(a); // $ hasTaintFlow
 
             "".to_string()
         });
@@ -249,7 +249,7 @@ mod warp_test {
         // A route with parameter and `then`
         let then_route = warp::path::param().then( // $ Alert[rust/summary/taint-sources]
             async move |a: String| {
-                sink(a); // $ MISSING: hasTaintFlow
+                sink(a); // $ hasTaintFlow
 
                 "".to_string()
             },
@@ -260,7 +260,7 @@ mod warp_test {
             async move | id: u64 |
             {
             if id != 0 {
-                sink(id); // $ MISSING: hasTaintFlow
+                sink(id); // $ hasTaintFlow
                 Ok("".to_string())
             } else {
                 Err(warp::reject::not_found())
@@ -272,7 +272,7 @@ mod warp_test {
         let path_and_map_route = warp::path("1").and(warp::path::param()).map( // $ Alert[rust/summary/taint-sources] 
             | a: String |
             {
-                sink(a); // $ MISSING: hasTaintFlow
+                sink(a); // $ hasTaintFlow
 
                 "".to_string()
              },

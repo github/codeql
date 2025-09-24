@@ -709,6 +709,9 @@ module Make<
         this = TConsSummaryComponentStack(result, _)
       }
 
+      /** Gets the head of this stack if it is a singleton. */
+      SummaryComponent headOfSingleton() { this = TSingletonSummaryComponentStack(result) }
+
       /** Gets the tail of this stack, if any. */
       SummaryComponentStack tail() { this = TConsSummaryComponentStack(_, result) }
 
@@ -1206,12 +1209,12 @@ module Make<
        * Holds if this node is an exit node, i.e. after all stores have been performed.
        *
        * A local flow step should be added from this node to a data flow node representing
-       * `sc` inside `source`.
+       * `s` inside `source`.
        */
-      predicate isExit(SourceElement source, SummaryComponent sc, string model) {
+      predicate isExit(SourceElement source, SummaryComponentStack s, string model) {
         source = source_ and
         model = model_ and
-        state_.isSourceOutputState(source, TSingletonSummaryComponentStack(sc), _, model)
+        state_.isSourceOutputState(source, s, _, model)
       }
 
       override predicate isHidden() { not this.isEntry(_, _) }
@@ -1460,7 +1463,7 @@ module Make<
 
       DataFlowType getSyntheticGlobalType(SyntheticGlobal sg);
 
-      DataFlowType getSourceType(SourceBase source, SummaryComponent sc);
+      DataFlowType getSourceType(SourceBase source, SummaryComponentStack sc);
 
       DataFlowType getSinkType(SinkBase sink, SummaryComponent sc);
     }
@@ -1543,9 +1546,9 @@ module Make<
         )
         or
         exists(SourceElement source |
-          exists(SummaryComponent sc |
-            n.(SourceOutputNode).isExit(source, sc, _) and
-            result = getSourceType(source, sc)
+          exists(SummaryComponentStack s |
+            n.(SourceOutputNode).isExit(source, s, _) and
+            result = getSourceType(source, s)
           )
           or
           exists(SummaryComponentStack s, ContentSet cont |
@@ -1574,13 +1577,16 @@ module Make<
       /** Gets a call that targets summarized callable `sc`. */
       DataFlowCall getACall(SummarizedCallable sc);
 
+      /** Gets the enclosing callable of `source`. */
+      DataFlowCallable getSourceNodeEnclosingCallable(SourceBase source);
+
       /**
-       * Gets a data flow node corresponding to the `sc` part of `source`.
+       * Gets a data flow node corresponding to the `s` part of `source`.
        *
-       * `sc` is typically `ReturnValue` and the result is the node that
+       * `s` is typically `ReturnValue` and the result is the node that
        * represents the return value of `source`.
        */
-      Node getSourceNode(SourceBase source, SummaryComponent sc);
+      Node getSourceNode(SourceBase source, SummaryComponentStack s);
 
       /**
        * Gets a data flow node corresponding to the `sc` part of `sink`.
@@ -1622,11 +1628,18 @@ module Make<
         )
       }
 
-      predicate sourceLocalStep(SourceOutputNode nodeFrom, Node nodeTo, string model) {
-        exists(SummaryComponent sc, SourceElement source |
+      predicate sourceStep(SourceOutputNode nodeFrom, Node nodeTo, string model, boolean local) {
+        exists(SummaryComponentStack sc, SourceElement source |
           nodeFrom.isExit(source, sc, model) and
-          nodeTo = StepsInput::getSourceNode(source, sc)
+          nodeTo = StepsInput::getSourceNode(source, sc) and
+          if StepsInput::getSourceNodeEnclosingCallable(source) = getNodeEnclosingCallable(nodeTo)
+          then local = true
+          else local = false
         )
+      }
+
+      predicate sourceLocalStep(SourceOutputNode nodeFrom, Node nodeTo, string model) {
+        sourceStep(nodeFrom, nodeTo, model, true)
       }
 
       predicate sinkLocalStep(Node nodeFrom, SinkInputNode nodeTo, string model) {
@@ -1687,6 +1700,10 @@ module Make<
           pred = summaryNodeOutputState(_, s) and
           succ = summaryNodeInputState(_, s)
         )
+      }
+
+      predicate sourceJumpStep(SourceOutputNode nodeFrom, Node nodeTo) {
+        sourceStep(nodeFrom, nodeTo, _, false)
       }
 
       /**
