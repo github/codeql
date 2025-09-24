@@ -1,5 +1,13 @@
 private import AstImport
 
+/**
+ * A trap statement. For example:
+ * ```
+ * trap {
+ *   Write-Host "An error occurred"
+ * }
+ * ```
+ */
 class TrapStmt extends Stmt, TTrapStmt {
   StmtBlock getBody() {
     exists(Raw::Ast r | r = getRawAst(this) |

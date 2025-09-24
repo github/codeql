@@ -1,5 +1,22 @@
 private import AstImport
 
+/**
+ * A named block in a script block, function, or method. For example, the
+ * `process`, `begin`, or `end` block in:
+ * ```
+ * function My-Function {
+ *   begin {
+ *     Write-Host "Starting..."
+ *   }
+ *   process {
+ *     Write-Host "Processing..."
+ *   }
+ *   end {
+ *     Write-Host "Done!"
+ *   }
+ * }
+ * ```
+ */
 class NamedBlock extends Ast, TNamedBlock {
   override string toString() { result = "{...}" }
 

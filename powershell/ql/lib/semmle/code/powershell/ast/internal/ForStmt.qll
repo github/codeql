@@ -1,5 +1,13 @@
 private import AstImport
 
+/**
+ * A for loop statement. For example:
+ * ```
+ * for ($i = 0; $i -lt 10; $i++) {
+ *   Write-Host $i
+ * }
+ * ```
+ */
 class ForStmt extends LoopStmt, TForStmt {
   override string toString() { result = "for(...;...;...)" }
 

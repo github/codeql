@@ -1,5 +1,9 @@
 private import AstImport
 
+/**
+ * An operation expression. For example, a binary operation like `1 + 2` or a
+ * unary operation like `-1`.
+ */
 class Operation extends Expr, TOperation {
   Expr getAnOperand() { none() }
 

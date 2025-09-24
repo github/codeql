@@ -11,6 +11,7 @@ go_library(
     deps = [
         "//go/extractor",
         "//go/extractor/diagnostics",
+        "//go/extractor/util",
     ],
 )
 

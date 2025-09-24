@@ -10,7 +10,7 @@
  *       security
  */
 
- import powershell
+import powershell
 
 from Parameter p
 where p.matchesName(["username", "password"])

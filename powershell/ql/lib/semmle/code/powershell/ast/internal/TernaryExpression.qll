@@ -1,5 +1,11 @@
 private import AstImport
 
+/**
+ * A ternary conditional expression. For example:
+ * ```
+ * $result = $condition ? "true" : "false"
+ * ```
+ */
 class ConditionalExpr extends Expr, TConditionalExpr {
   override string toString() { result = "...?...:..." }
 

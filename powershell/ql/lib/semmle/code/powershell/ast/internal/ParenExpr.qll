@@ -1,5 +1,11 @@
 private import AstImport
 
+/**
+ * A parenthesized expression. For example:
+ * ```
+ * ($a + $b)
+ * ```
+ */
 class ParenExpr extends Expr, TParenExpr {
   override string toString() { result = "(...)" }
 

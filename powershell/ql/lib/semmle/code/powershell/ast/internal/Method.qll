@@ -1,5 +1,15 @@
 private import AstImport
 
+/**
+ * A method declaration in a class. For example:
+ * ```
+ * class MyClass {
+ *   My-Method($param1, $param2) {
+ *     Write-Host "Hello, World!"
+ *   }
+ * }
+ * ```
+ */
 class Method extends Member, FunctionBase, TMethod {
   final override string getLowerCaseName() { result = Member.super.getLowerCaseName() }
 

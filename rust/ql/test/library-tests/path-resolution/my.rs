@@ -30,7 +30,7 @@ fn int_div(
 ) -> Result<i32> // $ item=my::Result $ item=i32
 {
     if y == 0 {
-        return Err("Div by zero".to_string()); // $ item=Err
+        return Err("Div by zero".to_string()); // $ item=Err item=to_string
     }
     Ok(x / y) // $ item=Ok
 }

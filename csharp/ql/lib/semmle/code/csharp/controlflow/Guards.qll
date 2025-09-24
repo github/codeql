@@ -3,7 +3,7 @@
  */
 
 import csharp
-private import ControlFlow::SuccessorTypes
+private import ControlFlow
 private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.commons.ComparisonTest
 private import semmle.code.csharp.commons.StructuralComparison as SC
@@ -1424,6 +1424,7 @@ module Internal {
 
       cached
       predicate isGuard(Expr e, AbstractValue val) {
+        Stages::ControlFlowStage::forceCachingInSameStage() and
         (
           e.getType() instanceof BoolType and
           not e instanceof BoolLiteral and

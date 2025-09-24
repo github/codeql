@@ -1,4 +1,6 @@
 /**
+ * @deprecated This query is no longer relevant as the semantics of capturing a 'foreach' variable
+ *             and using it outside the loop has been stable since C# version 5.
  * @name Capturing a foreach variable
  * @description Code that captures a 'foreach' variable and uses it outside the loop behaves differently in C# version 4 and C# version 5
  * @kind problem

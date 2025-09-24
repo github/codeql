@@ -177,6 +177,12 @@ def insert_overlay_caller_annotations(lines):
         out_lines.append(line)
     return out_lines
 
+explicitly_global = set([
+    "java/ql/lib/semmle/code/java/dispatch/VirtualDispatch.qll",
+    "java/ql/lib/semmle/code/java/dispatch/DispatchFlow.qll",
+    "java/ql/lib/semmle/code/java/dispatch/ObjFlow.qll",
+    "java/ql/lib/semmle/code/java/dispatch/internal/Unification.qll",
+])
 
 def annotate_as_appropriate(filename, lines):
     '''
@@ -195,6 +201,9 @@ def annotate_as_appropriate(filename, lines):
     if (filename.endswith("Test.qll") or
         ((filename.endswith("Query.qll") or filename.endswith("Config.qll")) and
          any("implements DataFlow::ConfigSig" in line for line in lines))):
+        return None
+    elif filename in explicitly_global:
+        # These files are explicitly global and should not be annotated.
         return None
     elif not any(line for line in lines if line.strip()):
         return None

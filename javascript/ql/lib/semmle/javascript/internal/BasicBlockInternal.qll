@@ -372,16 +372,28 @@ module Public {
 
   module Cfg implements BB::CfgSig<Location> {
     private import javascript as Js
-    private import codeql.util.Unit
+    private import codeql.controlflow.SuccessorType
 
     class ControlFlowNode = Js::ControlFlowNode;
 
-    class SuccessorType = Unit;
+    private predicate conditionSucc(BasicBlock bb1, BasicBlock bb2, boolean branch) {
+      exists(ConditionGuardNode g |
+        bb1 = g.getTest().getBasicBlock() and
+        bb2 = g.getBasicBlock() and
+        branch = g.getOutcome()
+      )
+    }
 
     class BasicBlock extends FinalBasicBlock {
       BasicBlock getASuccessor() { result = super.getASuccessor() }
 
-      BasicBlock getASuccessor(SuccessorType t) { result = super.getASuccessor() and exists(t) }
+      BasicBlock getASuccessor(SuccessorType t) {
+        conditionSucc(this, result, t.(BooleanSuccessor).getValue())
+        or
+        result = super.getASuccessor() and
+        t instanceof DirectSuccessor and
+        not conditionSucc(this, result, _)
+      }
 
       predicate strictlyDominates(BasicBlock bb) {
         this.(ReachableBasicBlock).strictlyDominates(bb)

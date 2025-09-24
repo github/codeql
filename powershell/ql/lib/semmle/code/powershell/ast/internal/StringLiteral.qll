@@ -1,5 +1,11 @@
 private import AstImport
 
+/**
+ * A string literal. For example:
+ * ```
+ * "Hello World"
+ * ```
+ */
 // TODO: A string literal should ideally be the string constants that are
 // surrounded by quotes (single or double), but we don't yet extract that
 // information. So for now we just use the StringConstExpr class, which is

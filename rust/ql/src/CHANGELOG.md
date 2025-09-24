@@ -1,3 +1,13 @@
+## 0.1.16
+
+### New Queries
+
+* Added a new query, `rust/request-forgery`, for detecting server-side request forgery vulnerabilities.
+
+### Bug Fixes
+
+* The message for `rust/diagnostic/database-quality` has been updated to include detailed database health metrics. These changes are visible on the tool status page.
+
 ## 0.1.15
 
 ### New Queries

@@ -1,5 +1,14 @@
 private import AstImport
 
+/**
+ * A hashtable expression. For example:
+ * ```
+ * @{
+ *   "key1" = $value1;
+ *   "key2" = $value2
+ * }
+ * ```
+ */
 class HashTableExpr extends Expr, THashTableExpr {
   final override string toString() { result = "${...}" }
 

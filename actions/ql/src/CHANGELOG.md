@@ -1,3 +1,9 @@
+## 0.6.9
+
+### Minor Analysis Improvements
+
+* Actions analysis now reports file coverage information on the CodeQL status page.
+
 ## 0.6.8
 
 No user-facing changes.

@@ -1,5 +1,8 @@
 private import AstImport
 
+/**
+ * A PowerShell environment variable (for example, `$env:PATH`).
+ */
 class EnvVariable extends Variable instanceof EnvVariableImpl {
   string getLowerCaseName() { result = super.getLowerCaseNameImpl() }
 

@@ -137,19 +137,36 @@ class ImportDeclaration extends Stmt, Import, @import_declaration {
       is instanceof ImportNamespaceSpecifier and
       count(this.getASpecifier()) = 1
       or
-      // For compatibility with the non-standard implementation of default imports,
-      // treat default imports as namespace imports in cases where it can't cause ambiguity
-      // between named exports and the properties of a default-exported object.
-      not this.getImportedModule().(ES2015Module).hasBothNamedAndDefaultExports() and
-      is.getImportedName() = "default"
+      result = this.getAmbiguousDefaultImportNode()
     )
     or
     // `import { createServer } from 'http'`
     result = DataFlow::destructuredModuleImportNode(this)
   }
 
+  /**
+   * Gets the data flow node corresponding to the `foo` in `import foo from "somewhere"`.
+   *
+   * This refers to the default import, but some non-standard compilers will treat it as a namespace
+   * import. In order to support both interpretations, it is considered an "ambiguous default import".
+   *
+   * Note that renamed default imports, such as `import { default as foo } from "somewhere"`,
+   * are not considered ambiguous, and will not be reported by this predicate.
+   */
+  DataFlow::Node getAmbiguousDefaultImportNode() {
+    result = DataFlow::valueNode(this.getASpecifier().(ImportDefaultSpecifier))
+  }
+
   /** Holds if this is declared with the `type` keyword, so it only imports types. */
   predicate isTypeOnly() { has_type_keyword(this) }
+
+  /**
+   * Holds if this is declared with the `defer` keyword, for example:
+   * ```ts
+   * import defer * as f from "somewhere";
+   * ```
+   */
+  predicate isDeferredImport() { has_defer_keyword(this) }
 
   override string getAPrimaryQlClass() { result = "ImportDeclaration" }
 }

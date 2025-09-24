@@ -9,8 +9,8 @@ toolchain go1.25.0
 // when adding or removing dependencies, run
 //    bazel mod tidy
 require (
-	golang.org/x/mod v0.27.0
-	golang.org/x/tools v0.36.0
+	golang.org/x/mod v0.28.0
+	golang.org/x/tools v0.37.0
 )
 
-require golang.org/x/sync v0.16.0 // indirect
+require golang.org/x/sync v0.17.0 // indirect

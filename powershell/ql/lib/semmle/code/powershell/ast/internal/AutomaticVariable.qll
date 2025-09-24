@@ -1,5 +1,8 @@
 private import AstImport
 
+/**
+ * A PowerShell automatic variable (for example, `$PSVersionTable` or `$MyInvocation`).
+ */
 class AutomaticVariable extends Expr, TAutomaticVariable {
   final override string toString() { result = this.getLowerCaseName() }
 

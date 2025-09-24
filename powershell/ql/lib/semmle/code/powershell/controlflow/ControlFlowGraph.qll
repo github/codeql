@@ -1,8 +1,8 @@
 /** Provides classes representing the control flow graph. */
 
+import codeql.controlflow.SuccessorType
 private import powershell
 private import BasicBlocks
-private import SuccessorTypes
 private import internal.ControlFlowGraphImpl as CfgImpl
 private import internal.Splitting as Splitting
 private import internal.Completion
@@ -55,73 +55,6 @@ class CfgNode extends CfgImpl::Node {
 
   /** Gets the basic block that this control flow node belongs to. */
   BasicBlock getBasicBlock() { result.getANode() = this }
-}
-
-/** The type of a control flow successor. */
-class SuccessorType extends CfgImpl::TSuccessorType {
-  /** Gets a textual representation of successor type. */
-  string toString() { none() }
-}
-
-/** Provides different types of control flow successor types. */
-module SuccessorTypes {
-  /** A normal control flow successor. */
-  class NormalSuccessor extends SuccessorType, CfgImpl::TSuccessorSuccessor {
-    final override string toString() { result = "successor" }
-  }
-
-  /**
-   * A conditional control flow successor. Either a Boolean successor (`BooleanSuccessor`)
-   * or a matching successor (`MatchingSuccessor`)
-   */
-  abstract class ConditionalSuccessor extends SuccessorType {
-    boolean value;
-
-    bindingset[value]
-    ConditionalSuccessor() { any() }
-
-    /** Gets the Boolean value of this successor. */
-    final boolean getValue() { result = value }
-
-    override string toString() { result = this.getValue().toString() }
-  }
-
-  class BooleanSuccessor extends ConditionalSuccessor, CfgImpl::TBooleanSuccessor {
-    BooleanSuccessor() { this = CfgImpl::TBooleanSuccessor(value) }
-  }
-
-  class MatchingSuccessor extends ConditionalSuccessor, CfgImpl::TMatchingSuccessor {
-    MatchingSuccessor() { this = CfgImpl::TMatchingSuccessor(value) }
-  }
-
-  class ReturnSuccessor extends SuccessorType, CfgImpl::TReturnSuccessor {
-    final override string toString() { result = "return" }
-  }
-
-  class BreakSuccessor extends SuccessorType, CfgImpl::TBreakSuccessor {
-    final override string toString() { result = "break" }
-  }
-
-  class ContinueSuccessor extends SuccessorType, CfgImpl::TContinueSuccessor {
-    final override string toString() { result = "continue" }
-  }
-
-  class ThrowSuccessor extends SuccessorType, CfgImpl::TThrowSuccessor {
-    final override string toString() { result = "throw" }
-  }
-
-  class ExitSuccessor extends SuccessorType, CfgImpl::TExitSuccessor {
-    final override string toString() { result = "exit" }
-  }
-
-  class EmptinessSuccessor extends ConditionalSuccessor, CfgImpl::TEmptinessSuccessor {
-    EmptinessSuccessor() { this = CfgImpl::TEmptinessSuccessor(value) }
-
-    /** Holds if this is an empty successor. */
-    predicate isEmpty() { value = true }
-
-    override string toString() { if this.isEmpty() then result = "empty" else result = "non-empty" }
-  }
 }
 
 class Split = Splitting::Split;

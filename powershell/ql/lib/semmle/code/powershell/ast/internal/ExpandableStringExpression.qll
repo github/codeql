@@ -1,5 +1,12 @@
 private import AstImport
 
+/**
+ * An expandable string expression with variable interpolation. For example:
+ * ```
+ * "Hello $name, you have $count messages"
+ * "Current date: $(Get-Date)"
+ * ```
+ */
 class ExpandableStringExpr extends Expr, TExpandableStringExpr {
   string getUnexpandedValue() {
     result = getRawAst(this).(Raw::ExpandableStringExpr).getUnexpandedValue().getValue()

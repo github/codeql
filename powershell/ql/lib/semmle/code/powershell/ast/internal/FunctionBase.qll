@@ -1,6 +1,23 @@
 private import AstImport
 private import semmle.code.powershell.controlflow.BasicBlocks
 
+/**
+ * A non-member function or a method. For example:
+ * ```
+ * function My-Function {
+ *   param($param1, $param2)
+ *   Write-Host "Hello, World!"
+ * }
+ * ```
+ * or
+ * ```
+ * class MyClass {
+ *   [void] MyMethod($param1) {
+ *     Write-Host "Hello, World!"
+ *   }
+ * }
+ * ```
+ */
 class FunctionBase extends Ast, TFunctionBase {
   final override string toString() { result = this.getLowerCaseName() }
 

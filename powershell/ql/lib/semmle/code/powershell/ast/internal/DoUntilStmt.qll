@@ -1,5 +1,13 @@
 private import AstImport
 
+/**
+ * A do-until loop statement. For example:
+ * ```
+ * do {
+ *   $input = Read-Host
+ * } until ($input -eq "exit")
+ * ```
+ */
 class DoUntilStmt extends LoopStmt, TDoUntilStmt {
   override string toString() { result = "do...until..." }
 

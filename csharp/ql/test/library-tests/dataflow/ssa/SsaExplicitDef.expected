@@ -15,7 +15,7 @@
 | Capture.cs:212:30:212:35 | exited | Capture.cs:212:30:212:71 | SSA def(exited) | Capture.cs:212:30:212:71 | EventHandler exited = ... |
 | Capture.cs:248:36:248:36 | j | Capture.cs:251:13:251:17 | SSA def(j) | Capture.cs:251:13:251:17 | ... = ... |
 | Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | SSA def(i) | Consistency.cs:15:17:15:21 | Int32 i = ... |
-| Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | [finally: exception(Exception)] SSA def(i) | Consistency.cs:15:17:15:21 | Int32 i = ... |
+| Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | [finally: exception] SSA def(i) | Consistency.cs:15:17:15:21 | Int32 i = ... |
 | Consistency.cs:25:29:25:29 | c | Consistency.cs:25:29:25:29 | SSA def(c) | Consistency.cs:25:29:25:29 | Consistency c |
 | Consistency.cs:30:30:30:30 | c | Consistency.cs:32:9:32:29 | SSA def(c) | Consistency.cs:32:9:32:29 | ... = ... |
 | Consistency.cs:44:11:44:11 | s | Consistency.cs:44:11:44:11 | SSA def(s) | Consistency.cs:44:11:44:11 | S s |

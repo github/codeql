@@ -278,21 +278,23 @@ private predicate inputStreamWrapper(Constructor c, int argi) {
 
 /** An object construction that preserves the data flow status of any of its arguments. */
 private predicate constructorStep(Expr tracked, ConstructorCall sink, string model) {
-  exists(int argi | sink.getArgument(argi) = tracked |
+  exists(int argi | sink.getArgument(pragma[only_bind_into](argi)) = tracked |
     // wrappers constructed by extension
     exists(Constructor c, Parameter p, SuperConstructorInvocationStmt sup |
       c = sink.getConstructor() and
-      p = c.getParameter(argi) and
+      p = c.getParameter(pragma[only_bind_into](argi)) and
       sup.getEnclosingCallable() = c and
       constructorStep(p.getAnAccess(), sup, model)
     )
     or
     // a custom InputStream that wraps a tainted data source is tainted
     model = "inputStreamWrapper" and
-    inputStreamWrapper(sink.getConstructor(), argi)
+    inputStreamWrapper(sink.getConstructor(), pragma[only_bind_into](argi))
     or
     model = "TaintPreservingCallable" and
-    sink.getConstructor().(TaintPreservingCallable).returnsTaintFrom(argToParam(sink, argi))
+    sink.getConstructor()
+        .(TaintPreservingCallable)
+        .returnsTaintFrom(argToParam(sink, pragma[only_bind_into](argi)))
   )
 }
 

@@ -1,5 +1,12 @@
 private import AstImport
 
+/**
+ * An index expression. For example:
+ * ```
+ * $array[0]
+ * $hashtable["key"]
+ * ```
+ */
 class IndexExpr extends Expr, TIndexExpr {
   override string toString() { result = "...[...]" }
 

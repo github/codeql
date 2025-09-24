@@ -1,5 +1,11 @@
 private import AstImport
 
+/**
+ * A script block expression. For example:
+ * ```
+ * $callback = { Write-Host "Done!" }
+ * ```
+ */
 class ScriptBlockExpr extends Expr, TScriptBlockExpr {
   override string toString() { result = "{...}" }
 

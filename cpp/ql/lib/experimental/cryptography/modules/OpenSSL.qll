@@ -652,14 +652,14 @@ module KeyGeneration {
    * Trace from EVP_PKEY_CTX* at algorithm sink to keygen,
    * users can then extrapolatae the matching algorithm from the alg sink to the keygen
    */
-  module EVP_PKEY_CTX_Ptr_Source_to_KeyGenOperationWithNoSize implements DataFlow::ConfigSig {
+  module EVP_PKEY_CTX_Ptr_Source_to_KeyGenOperationWithNoSizeConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) { isEVP_PKEY_CTX_Source(source, _) }
 
     predicate isSink(DataFlow::Node sink) { isKeyGen_EVP_PKEY_CTX_Sink(sink, _) }
   }
 
   module EVP_PKEY_CTX_Ptr_Source_to_KeyGenOperationWithNoSize_Flow =
-    DataFlow::Global<EVP_PKEY_CTX_Ptr_Source_to_KeyGenOperationWithNoSize>;
+    DataFlow::Global<EVP_PKEY_CTX_Ptr_Source_to_KeyGenOperationWithNoSizeConfig>;
 
   /**
    * UNKNOWN key sizes to general purpose key generation functions (i.e., that take in no key size and assume
