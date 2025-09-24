@@ -1841,7 +1841,14 @@ class _:
     //  ^^^^^^^^^
     ```
     """
-
+    statements: _ | doc("statements of this statement list") | desc("""
+      The statements of a `StmtList` do not include any tail expression, which
+      can be accessed with predicates such as `getTailExpr`.
+    """)
+    tail_expr: _ | doc("tail expression of this statement list") | desc("""
+      The tail expression is the expression at the end of a block, that
+      determines the block's value.
+    """)
 
 @annotate(Struct, replace_bases={Item: None})  # still an Item via Adt
 class _:
