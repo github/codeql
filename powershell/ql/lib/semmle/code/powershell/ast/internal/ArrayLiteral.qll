@@ -1,5 +1,11 @@
 private import AstImport
 
+/**
+ * An array literal. For example:
+ * ```
+ * 1, 2, 3, 4
+ * ```
+ */
 class ArrayLiteral extends Expr, TArrayLiteral {
   Expr getExpr(int index) {
     exists(ChildIndex i, Raw::Ast r | i = arrayLiteralExpr(index) and r = getRawAst(this) |

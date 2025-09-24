@@ -1,5 +1,14 @@
 private import AstImport
 
+/**
+ * A unary expression. For example:
+ * ```
+ * -$number
+ * !$condition
+ * -not $isActive
+ * ++$counter
+ * ```
+ */
 class UnaryExpr extends Expr, TUnaryExpr {
   final override Ast getChild(ChildIndex i) {
     result = super.getChild(i)
@@ -20,6 +29,14 @@ class UnaryExpr extends Expr, TUnaryExpr {
   }
 }
 
+/**
+ * A logical negation expression. For example:
+ * ```
+ * !$condition
+ * -not $isActive
+ * -not ($count -eq 0)
+ * ```
+ */
 class NotExpr extends UnaryExpr {
   NotExpr() { this.getKind() = [36, 51] }
 
@@ -54,12 +71,26 @@ final class IncrExpr = AbstractIncrExpr;
 
 final class DecrExpr = AbstractDecrExpr;
 
+/**
+ * A postfix increment expression. For example:
+ * ```
+ * $counter++
+ * $index++
+ * ```
+ */
 class PostfixIncrExpr extends AbstractPostfixExpr, AbstractIncrExpr {
   PostfixIncrExpr() { this.getKind() = 95 }
 
   final override string toString() { result = "...++" }
 }
 
+/**
+ * A postfix decrement expression. For example:
+ * ```
+ * $counter--
+ * $index--
+ * ```
+ */
 class PostfixDecrExpr extends AbstractPostfixExpr, AbstractIncrExpr {
   PostfixDecrExpr() { this.getKind() = 96 }
 
@@ -72,12 +103,27 @@ class PrefixDecrExpr extends AbstractPostfixExpr, AbstractIncrExpr {
   final override string toString() { result = "--..." }
 }
 
+/**
+ * A prefix increment expression. For example:
+ * ```
+ * ++$counter
+ * ++$index
+ * ```
+ */
 class PrefixIncrExpr extends AbstractPostfixExpr, AbstractIncrExpr {
   PrefixIncrExpr() { this.getKind() = 32 }
 
   final override string toString() { result = "++..." }
 }
 
+/**
+ * A numeric negation expression. For example:
+ * ```
+ * -$number
+ * -42
+ * -($a + $b)
+ * ```
+ */
 class NegateExpr extends AbstractUnaryArithmeticExpr {
   NegateExpr() { this.getKind() = 41 }
 

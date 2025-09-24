@@ -1,5 +1,15 @@
 private import AstImport
 
+/**
+ * A switch statement. For example:
+ * ```
+ * switch ($day) {
+ *   "Monday" { "Start of the week" }
+ *   "Friday" { "TGIF!" }
+ *   default { "Regular day" }
+ * }
+ * ```
+ */
 class SwitchStmt extends Stmt, TSwitchStmt {
   final override string toString() { result = "switch(...) {...}" }
 

@@ -1,5 +1,12 @@
 private import AstImport
 
+/**
+ * A catch clause in a try-catch statement. For example:
+ * ```
+ * catch [System.IO.FileNotFoundException] { Write-Host "File not found" }
+ * catch { Write-Host "General error: $($_.Exception.Message)" }
+ * ```
+ */
 class CatchClause extends Ast, TCatchClause {
   StmtBlock getBody() {
     exists(Raw::Ast r | r = getRawAst(this) |

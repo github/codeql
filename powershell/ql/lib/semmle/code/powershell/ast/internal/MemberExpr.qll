@@ -1,5 +1,11 @@
 private import AstImport
 
+/**
+ * A member access expression. For example:
+ * ```
+ * $object.Property
+ * ```
+ */
 class MemberExpr extends Expr, TMemberExpr {
   Expr getQualifier() {
     exists(Raw::Ast r | r = getRawAst(this) |

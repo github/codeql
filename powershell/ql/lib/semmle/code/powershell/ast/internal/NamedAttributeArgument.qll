@@ -1,5 +1,10 @@
 private import AstImport
 
+/**
+ * A named argument in an attribute. For example, in
+ * `[Parameter(Mandatory=$true)]`, `Mandatory=$true` is a named attribute
+ * argument.
+ */
 class NamedAttributeArgument extends Ast, TNamedAttributeArgument {
   final override string toString() { result = this.getName() }
 

@@ -1,5 +1,14 @@
 private import AstImport
 
+/**
+ * A class declaration. For example:
+ * ```
+ * class MyClass {
+ *   [string]$property1
+ *   [int]$property2
+ * }
+ * ```
+ */
 class Type extends Ast, TTypeSynth {
   override string toString() { result = this.getLowerCaseName() }
 

@@ -1,5 +1,18 @@
 private import AstImport
 
+/**
+ * A DSC configuration (Desired State Configuration). For example:
+ * ```
+ * Configuration MyConfig {
+ *   Node "MyNode" {
+ *     WindowsFeature MyFeature {
+ *       Name = "Web-Server"
+ *       Ensure = "Present"
+ *     }
+ *   }
+ * }
+ * ```
+ */
 class Configuration extends Stmt, TConfiguration {
   override string toString() { result = this.getName().toString() }
 

@@ -1,5 +1,17 @@
 private import AstImport
 
+/**
+ * An if statement. For example:
+ * ```
+ * if ($a) {
+ *   "First"
+ * } elseif ($b) {
+ *   "Second"
+ * } else {
+ *   "Default"
+ * }
+ * ```
+ */
 class If extends Expr, TIf {
   override string toString() {
     if this.hasElse() then result = "if (...) {...} else {...}" else result = "if (...) {...}"

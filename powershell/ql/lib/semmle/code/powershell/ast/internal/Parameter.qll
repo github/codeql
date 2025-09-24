@@ -1,5 +1,14 @@
 private import AstImport
 
+/**
+ * A function or script parameter. For example in a parameter block:
+ * ```
+ * param([string]$Name, [int]$Age = 25)
+ * ```
+ * or as a function parameter:
+ * function Test([string]$Name, [int]$Age = 25) { ... }
+ * ```
+ */
 class Parameter extends Variable instanceof ParameterImpl {
   string getLowerCaseName() { result = super.getLowerCaseNameImpl() }
 

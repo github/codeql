@@ -1,5 +1,15 @@
 private import AstImport
 
+/**
+ * A sequence of statements, possibly including trap statements. For example:
+ * ```
+ * {
+ *   $a = 1
+ *   $b = 2
+ *   $c = 3
+ * }
+ * ```
+ */
 class StmtBlock extends Stmt, TStmtBlock {
   pragma[nomagic]
   Stmt getStmt(int i) {
