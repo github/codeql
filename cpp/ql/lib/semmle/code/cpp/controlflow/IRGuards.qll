@@ -434,6 +434,15 @@ private module LogicInput_v1 implements GuardsImpl::LogicInputSig {
   predicate additionalImpliesStep(
     GuardsImpl::PreGuard g1, GuardValue v1, GuardsImpl::PreGuard g2, GuardValue v2
   ) {
+    // The `ConditionalBranch` instruction is the instruction for which there are
+    // conditional successors out of. However, the condition that controls
+    // which conditional successor is taken is given by the condition of the
+    // `ConditionalBranch` instruction. So this step either needs to be here,
+    // or we need `ConditionalBranch` instructions to be `IdExpr`s. Modeling
+    // them as `IdExpr`s would be a bit weird since the result type is
+    // `IRVoidType`. Including them here is fine as long as `ConditionalBranch`
+    // instructions cannot be assigned to SSA variables (which they cannot
+    // since they produce no value).
     g1.(ConditionalBranchInstruction).getCondition() = g2 and
     v1.asBooleanValue() = v2.asBooleanValue()
   }
