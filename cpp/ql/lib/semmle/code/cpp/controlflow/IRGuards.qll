@@ -1128,7 +1128,7 @@ final class IRGuardCondition extends Guards_v1::Guard {
    */
   pragma[inline]
   predicate comparesLt(Operand op, int k, boolean isLessThan, GuardValue value) {
-    compares_lt(valueNumber(this), op, k, isLessThan, value)
+    unary_compares_lt(valueNumber(this), op, k, isLessThan, value)
   }
 
   /**
@@ -1150,7 +1150,7 @@ final class IRGuardCondition extends Guards_v1::Guard {
   pragma[inline]
   predicate ensuresLt(Operand op, int k, IRBlock block, boolean isLessThan) {
     exists(GuardValue value |
-      compares_lt(valueNumber(this), op, k, isLessThan, value) and
+      unary_compares_lt(valueNumber(this), op, k, isLessThan, value) and
       this.valueControls(block, value)
     )
   }
@@ -1176,7 +1176,7 @@ final class IRGuardCondition extends Guards_v1::Guard {
   pragma[inline]
   predicate ensuresLtEdge(Operand left, int k, IRBlock pred, IRBlock succ, boolean isLessThan) {
     exists(GuardValue value |
-      compares_lt(valueNumber(this), left, k, isLessThan, value) and
+      unary_compares_lt(valueNumber(this), left, k, isLessThan, value) and
       this.valueControlsBranchEdge(pred, succ, value)
     )
   }
@@ -1648,14 +1648,14 @@ private module Cached {
 
   /** Holds if `op < k` evaluates to `isLt` given that `test` evaluates to `value`. */
   cached
-  predicate compares_lt(ValueNumber test, Operand op, int k, boolean isLt, GuardValue value) {
+  predicate unary_compares_lt(ValueNumber test, Operand op, int k, boolean isLt, GuardValue value) {
     unary_simple_comparison_lt(test, op, k, isLt, value)
     or
     complex_lt(test, op, k, isLt, value)
     or
     /* (x is true => (op < k)) => (!x is false => (op < k)) */
     exists(GuardValue dual | value = dual.getDualValue() |
-      compares_lt(test.(LogicalNotValueNumber).getUnary(), op, k, isLt, dual)
+      unary_compares_lt(test.(LogicalNotValueNumber).getUnary(), op, k, isLt, dual)
     )
     or
     exists(int k1, int k2, Instruction const |
@@ -1664,13 +1664,13 @@ private module Cached {
       k = k1 + k2
     )
     or
-    compares_lt(test.(BuiltinExpectCallValueNumber).getCondition(), op, k, isLt, value)
+    unary_compares_lt(test.(BuiltinExpectCallValueNumber).getCondition(), op, k, isLt, value)
     or
     // See argument for why this is correct in compares_eq
     exists(Operand l, GuardValue bv |
       unary_compares_eq(test, l, 0, bv.asBooleanValue().booleanNot(), value) and
-      compares_lt(valueNumber(BooleanInstruction<isUnaryComparesEqLeft/1>::get(l.getDef())), op, k,
-        isLt, bv)
+      unary_compares_lt(valueNumber(BooleanInstruction<isUnaryComparesEqLeft/1>::get(l.getDef())),
+        op, k, isLt, bv)
     )
   }
 
@@ -1769,14 +1769,14 @@ private module Cached {
 
   private predicate sub_lt(ValueNumber test, Operand left, int k, boolean isLt, GuardValue value) {
     exists(SubInstruction lhs, int c, int x |
-      compares_lt(test, lhs.getAUse(), c, isLt, value) and
+      unary_compares_lt(test, lhs.getAUse(), c, isLt, value) and
       left = lhs.getLeftOperand() and
       x = int_value(lhs.getRight()) and
       k = c + x
     )
     or
     exists(PointerSubInstruction lhs, int c, int x |
-      compares_lt(test, lhs.getAUse(), c, isLt, value) and
+      unary_compares_lt(test, lhs.getAUse(), c, isLt, value) and
       left = lhs.getLeftOperand() and
       x = int_value(lhs.getRight()) and
       k = c + x
@@ -1831,7 +1831,7 @@ private module Cached {
 
   private predicate add_lt(ValueNumber test, Operand left, int k, boolean isLt, GuardValue value) {
     exists(AddInstruction lhs, int c, int x |
-      compares_lt(test, lhs.getAUse(), c, isLt, value) and
+      unary_compares_lt(test, lhs.getAUse(), c, isLt, value) and
       (
         left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
         or
@@ -1841,7 +1841,7 @@ private module Cached {
     )
     or
     exists(PointerAddInstruction lhs, int c, int x |
-      compares_lt(test, lhs.getAUse(), c, isLt, value) and
+      unary_compares_lt(test, lhs.getAUse(), c, isLt, value) and
       (
         left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
         or
