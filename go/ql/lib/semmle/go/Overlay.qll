@@ -24,12 +24,29 @@ private predicate discardableLocatable(@file file, @locatable locatable) {
 }
 
 /**
+ * Holds if the given `path` is for a file in the base database whose entities should be discarded.
+ */
+bindingset[path]
+private predicate discardableFile(string path) {
+  isOverlay() and
+  (
+    overlayChangedFiles(path)
+    or
+    // The extractor unconditionally extracts files outside of the source directory (these are
+    // typically cgo-processed source files), so all entities in such files should be discarded.
+    not exists(string srcLoc | sourceLocationPrefix(srcLoc) |
+      path.substring(0, srcLoc.length()) = srcLoc
+    )
+  )
+}
+
+/**
  * Holds if the given `locatable` should be discarded, because it is part of the overlay base and is
  * in a file that was also extracted as part of the overlay database.
  */
 overlay[discard_entity]
 private predicate discardLocatable(@locatable locatable) {
   exists(@file file, string path | files(file, path) |
-    discardableLocatable(file, locatable) and overlayChangedFiles(path)
+    discardableLocatable(file, locatable) and discardableFile(path)
   )
 }

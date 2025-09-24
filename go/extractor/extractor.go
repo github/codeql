@@ -732,8 +732,13 @@ func (extraction *Extraction) extractFile(ast *ast.File, pkg *packages.Package) 
 		return nil
 	}
 	path := normalizedPath(ast, fset)
-	if extraction.OverlayChanges != nil && !extraction.OverlayChanges[path] {
-		// This file did not change since the base was extracted
+	// If we're extracting an overlay, we want to skip extraction of files that haven't changed.
+	// Since some files may be outside the source directory (e.g. files preprocessed by cgo) we
+	// can't easily know if they have changed (or came from source files that changed), so we always
+	// extract a file if it's not in the package directory.
+	if extraction.OverlayChanges != nil &&
+		!extraction.OverlayChanges[path] &&
+		strings.HasPrefix(path+string(filepath.Separator), pkg.Dir) {
 		return nil
 	}
 
