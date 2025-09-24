@@ -178,12 +178,18 @@
 | test.cpp:42:13:42:20 | call to getABool | true | test.cpp:43:9:45:23 | { ... } |
 | test.cpp:60:31:60:31 | i | 0 | test.cpp:62:5:64:12 | case ...: |
 | test.cpp:60:31:60:31 | i | 1 | test.cpp:65:5:66:10 | case ...: |
+| test.cpp:60:31:60:31 | i | 10 | test.cpp:62:5:64:12 | case ...: |
 | test.cpp:61:10:61:10 | i | 0 | test.cpp:62:5:64:12 | case ...: |
 | test.cpp:61:10:61:10 | i | 1 | test.cpp:65:5:66:10 | case ...: |
-| test.cpp:73:30:73:30 | i | 0..10 | test.cpp:75:5:77:12 | case ...: |
-| test.cpp:73:30:73:30 | i | 11..20 | test.cpp:78:5:79:10 | case ...: |
-| test.cpp:74:10:74:10 | i | 0..10 | test.cpp:75:5:77:12 | case ...: |
-| test.cpp:74:10:74:10 | i | 11..20 | test.cpp:78:5:79:10 | case ...: |
+| test.cpp:61:10:61:10 | i | 10 | test.cpp:62:5:64:12 | case ...: |
+| test.cpp:73:30:73:30 | i | Lower bound 0 | test.cpp:75:5:77:12 | case ...: |
+| test.cpp:73:30:73:30 | i | Lower bound 11 | test.cpp:78:5:79:10 | case ...: |
+| test.cpp:73:30:73:30 | i | Upper bound 10 | test.cpp:75:5:77:12 | case ...: |
+| test.cpp:73:30:73:30 | i | Upper bound 20 | test.cpp:78:5:79:10 | case ...: |
+| test.cpp:74:10:74:10 | i | Lower bound 0 | test.cpp:75:5:77:12 | case ...: |
+| test.cpp:74:10:74:10 | i | Lower bound 11 | test.cpp:78:5:79:10 | case ...: |
+| test.cpp:74:10:74:10 | i | Upper bound 10 | test.cpp:75:5:77:12 | case ...: |
+| test.cpp:74:10:74:10 | i | Upper bound 20 | test.cpp:78:5:79:10 | case ...: |
 | test.cpp:92:31:92:31 | c | not null | test.cpp:93:9:94:7 | { ... } |
 | test.cpp:93:6:93:6 | c | not null | test.cpp:93:9:94:7 | { ... } |
 | test.cpp:93:6:93:6 | c | true | test.cpp:93:9:94:7 | { ... } |
@@ -328,9 +334,7 @@
 | test.cpp:318:6:318:18 | ... != ... | true | test.cpp:318:21:320:3 | { ... } |
 | test.cpp:318:7:318:12 | ... < ... | 0 | test.cpp:320:10:322:3 | { ... } |
 | test.cpp:318:7:318:12 | ... < ... | not 0 | test.cpp:318:21:320:3 | { ... } |
-| test.cpp:327:46:327:46 | b | false | test.cpp:336:3:338:7 | case ...: |
 | test.cpp:327:46:327:46 | b | true | test.cpp:331:3:332:10 | { ... } |
-| test.cpp:329:11:329:13 | call to foo | 40..50 | test.cpp:336:3:338:7 | case ...: |
-| test.cpp:330:7:330:7 | b | false | test.cpp:336:3:338:7 | case ...: |
 | test.cpp:330:7:330:7 | b | true | test.cpp:331:3:332:10 | { ... } |
-| test.cpp:334:11:334:11 | x | 40..50 | test.cpp:336:3:338:7 | case ...: |
+| test.cpp:334:11:334:11 | x | Lower bound 40 | test.cpp:336:3:338:7 | case ...: |
+| test.cpp:334:11:334:11 | x | Upper bound 50 | test.cpp:336:3:338:7 | case ...: |

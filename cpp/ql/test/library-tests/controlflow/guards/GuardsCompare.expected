@@ -490,22 +490,22 @@
 | test.cpp:69:12:69:12 | i | i == 0 when i is 0 |
 | test.cpp:69:12:69:12 | i | i == 1 when i is 1 |
 | test.cpp:69:12:69:12 | i | i == 2 when i is 2 |
-| test.cpp:73:30:73:30 | i | i < 11 when i is 0..10 |
-| test.cpp:73:30:73:30 | i | i < 21 when i is 11..20 |
-| test.cpp:73:30:73:30 | i | i >= 0 when i is 0..10 |
-| test.cpp:73:30:73:30 | i | i >= 11 when i is 11..20 |
-| test.cpp:74:10:74:10 | i | i < 11 when i is 0..10 |
-| test.cpp:74:10:74:10 | i | i < 21 when i is 11..20 |
-| test.cpp:74:10:74:10 | i | i >= 0 when i is 0..10 |
-| test.cpp:74:10:74:10 | i | i >= 11 when i is 11..20 |
-| test.cpp:76:12:76:12 | i | i < 11 when i is 0..10 |
-| test.cpp:76:12:76:12 | i | i < 21 when i is 11..20 |
-| test.cpp:76:12:76:12 | i | i >= 0 when i is 0..10 |
-| test.cpp:76:12:76:12 | i | i >= 11 when i is 11..20 |
-| test.cpp:79:12:79:12 | i | i < 11 when i is 0..10 |
-| test.cpp:79:12:79:12 | i | i < 21 when i is 11..20 |
-| test.cpp:79:12:79:12 | i | i >= 0 when i is 0..10 |
-| test.cpp:79:12:79:12 | i | i >= 11 when i is 11..20 |
+| test.cpp:73:30:73:30 | i | i < 11 when i is Upper bound 10 |
+| test.cpp:73:30:73:30 | i | i < 21 when i is Upper bound 20 |
+| test.cpp:73:30:73:30 | i | i >= 0 when i is Lower bound 0 |
+| test.cpp:73:30:73:30 | i | i >= 11 when i is Lower bound 11 |
+| test.cpp:74:10:74:10 | i | i < 11 when i is Upper bound 10 |
+| test.cpp:74:10:74:10 | i | i < 21 when i is Upper bound 20 |
+| test.cpp:74:10:74:10 | i | i >= 0 when i is Lower bound 0 |
+| test.cpp:74:10:74:10 | i | i >= 11 when i is Lower bound 11 |
+| test.cpp:76:12:76:12 | i | i < 11 when i is Upper bound 10 |
+| test.cpp:76:12:76:12 | i | i < 21 when i is Upper bound 20 |
+| test.cpp:76:12:76:12 | i | i >= 0 when i is Lower bound 0 |
+| test.cpp:76:12:76:12 | i | i >= 11 when i is Lower bound 11 |
+| test.cpp:79:12:79:12 | i | i < 11 when i is Upper bound 10 |
+| test.cpp:79:12:79:12 | i | i < 21 when i is Upper bound 20 |
+| test.cpp:79:12:79:12 | i | i >= 0 when i is Lower bound 0 |
+| test.cpp:79:12:79:12 | i | i >= 11 when i is Lower bound 11 |
 | test.cpp:93:6:93:6 | c | c != 0 when c is true |
 | test.cpp:93:6:93:6 | c | c != 1 when c is false |
 | test.cpp:93:6:93:6 | c | c == 0 when c is false |
@@ -1304,7 +1304,7 @@
 | test.cpp:330:7:330:7 | b | b != 1 when b is false |
 | test.cpp:330:7:330:7 | b | b == 0 when b is false |
 | test.cpp:330:7:330:7 | b | b == 1 when b is true |
-| test.cpp:334:11:334:11 | x | x < 51 when x is 40..50 |
-| test.cpp:334:11:334:11 | x | x >= 40 when x is 40..50 |
-| test.cpp:338:9:338:9 | x | x < 51 when x is 40..50 |
-| test.cpp:338:9:338:9 | x | x >= 40 when x is 40..50 |
+| test.cpp:334:11:334:11 | x | x < 51 when x is Upper bound 50 |
+| test.cpp:334:11:334:11 | x | x >= 40 when x is Lower bound 40 |
+| test.cpp:338:9:338:9 | x | x < 51 when x is Upper bound 50 |
+| test.cpp:338:9:338:9 | x | x >= 40 when x is Lower bound 40 |

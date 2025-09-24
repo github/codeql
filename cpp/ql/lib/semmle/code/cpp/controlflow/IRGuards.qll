@@ -125,39 +125,14 @@ module GuardsInput implements SharedGuards::InputSig<Cpp::Location, Instruction,
       // In order to have an "integer constant" for a switch case
       // we misuse the first instruction (which is always a NoOp instruction)
       // as a constant with the switch case's value.
-      exists(CaseEdge edge |
-        this = any(SwitchInstruction switch).getSuccessor(edge) and
-        value = edge.getValue().toInt()
+      exists(CaseEdge edge | this = any(SwitchInstruction switch).getSuccessor(edge) |
+        value = edge.getMaxValue().toInt()
+        or
+        value = edge.getMinValue().toInt()
       )
     }
 
     override int asIntegerValue() { result = value }
-  }
-
-  /**
-   * The instruction representing the constant expression in a case statement.
-   *
-   * Since the IR does not have an instruction for this (as this is represented
-   * by the edge) we use the `NoOp` instruction which is always generated.
-   */
-  private class CaseConstant extends ConstantExpr instanceof NoOpInstruction {
-    SwitchInstruction switch;
-    SwitchEdge edge;
-
-    CaseConstant() { this = switch.getSuccessor(edge) }
-
-    override ConstantValue asConstantValue() {
-      exists(string minValue, string maxValue |
-        edge.getMinValue() = minValue and
-        edge.getMaxValue() = maxValue and
-        result.isRange(minValue, maxValue)
-      )
-    }
-
-    predicate hasEdge(SwitchInstruction switch_, SwitchEdge edge_) {
-      switch_ = switch and
-      edge_ = edge
-    }
   }
 
   private predicate nonNullExpr(Instruction i) {
@@ -234,7 +209,12 @@ module GuardsInput implements SharedGuards::InputSig<Cpp::Location, Instruction,
     /**
      * Gets the constant expression of this case.
      */
-    ConstantExpr asConstantCase() { result.(CaseConstant).hasEdge(switch, edge) }
+    ConstantExpr asConstantCase() {
+      // Note: This only has a value if there is a unique value for the case.
+      // So the will not be a result when using the GCC case range extension.
+      // Instead, we model these using the `LogicInput_v1::rangeGuard` predicate.
+      result.asIntegerValue() = this.getEdge().getValue().toInt()
+    }
   }
 
   abstract private class BinExpr extends Expr instanceof BinaryInstruction {
@@ -445,6 +425,23 @@ private module LogicInput_v1 implements GuardsImpl::LogicInputSig {
     // since they produce no value).
     g1.(ConditionalBranchInstruction).getCondition() = g2 and
     v1.asBooleanValue() = v2.asBooleanValue()
+  }
+
+  predicate rangeGuard(
+    GuardsImpl::PreGuard guard, GuardValue val, GuardsInput::Expr e, int k, boolean upper
+  ) {
+    exists(SwitchInstruction switch, string minValue, string maxValue |
+      switch.getSuccessor(EdgeKind::caseEdge(minValue, maxValue)) = guard and
+      e = switch.getExpression() and
+      minValue != maxValue and
+      val.asBooleanValue() = true
+    |
+      upper = false and
+      k = minValue.toInt()
+      or
+      upper = true and
+      k = maxValue.toInt()
+    )
   }
 }
 
@@ -1707,15 +1704,16 @@ private module Cached {
     exists(string minValue, string maxValue |
       test.getExpressionOperand() = op and
       exists(test.getSuccessor(EdgeKind::caseEdge(minValue, maxValue))) and
-      value.asConstantValue().isRange(minValue, maxValue) and
       minValue < maxValue
     |
       // op <= k => op < k - 1
       isLt = true and
-      maxValue.toInt() = k - 1
+      maxValue.toInt() = k - 1 and
+      value.isIntRange(k - 1, true)
       or
       isLt = false and
-      minValue.toInt() = k
+      minValue.toInt() = k and
+      value.isIntRange(k, false)
     )
   }
 
