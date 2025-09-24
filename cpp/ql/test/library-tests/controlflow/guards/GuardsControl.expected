@@ -338,3 +338,85 @@
 | test.cpp:330:7:330:7 | b | true | test.cpp:331:3:332:10 | { ... } |
 | test.cpp:334:11:334:11 | x | Lower bound 40 | test.cpp:336:3:338:7 | case ...: |
 | test.cpp:334:11:334:11 | x | Upper bound 50 | test.cpp:336:3:338:7 | case ...: |
+| test.cpp:348:25:348:25 | y | not null | test.cpp:349:29:349:30 | 42 |
+| test.cpp:348:25:348:25 | y | not null | test.cpp:350:15:351:7 | { ... } |
+| test.cpp:348:25:348:25 | y | null | test.cpp:349:34:349:34 | 0 |
+| test.cpp:349:11:349:22 | call to testNotNull1 | false | test.cpp:349:34:349:34 | 0 |
+| test.cpp:349:11:349:22 | call to testNotNull1 | true | test.cpp:349:29:349:30 | 42 |
+| test.cpp:349:11:349:22 | call to testNotNull1 | true | test.cpp:350:15:351:7 | { ... } |
+| test.cpp:349:11:349:34 | ... ? ... : ... | not 0 | test.cpp:350:15:351:7 | { ... } |
+| test.cpp:349:24:349:24 | y | not null | test.cpp:349:29:349:30 | 42 |
+| test.cpp:349:24:349:24 | y | not null | test.cpp:350:15:351:7 | { ... } |
+| test.cpp:349:24:349:24 | y | null | test.cpp:349:34:349:34 | 0 |
+| test.cpp:349:29:349:30 | 42 | not 0 | test.cpp:350:15:351:7 | { ... } |
+| test.cpp:350:7:350:7 | x | not 0 | test.cpp:350:15:351:7 | { ... } |
+| test.cpp:350:7:350:12 | ... != ... | true | test.cpp:350:15:351:7 | { ... } |
+| test.cpp:355:25:355:29 | input | not null | test.cpp:357:3:357:13 | return ... |
+| test.cpp:355:25:355:29 | input | null | test.cpp:356:25:356:36 | return ... |
+| test.cpp:356:7:356:11 | input | not null | test.cpp:357:3:357:13 | return ... |
+| test.cpp:356:7:356:11 | input | null | test.cpp:356:25:356:36 | return ... |
+| test.cpp:356:7:356:22 | ... == ... | false | test.cpp:357:3:357:13 | return ... |
+| test.cpp:356:7:356:22 | ... == ... | true | test.cpp:356:25:356:36 | return ... |
+| test.cpp:360:26:360:31 | number | not null | test.cpp:361:35:361:40 | number |
+| test.cpp:360:26:360:31 | number | null | test.cpp:361:30:361:30 | 0 |
+| test.cpp:361:10:361:15 | number | not null | test.cpp:361:35:361:40 | number |
+| test.cpp:361:10:361:15 | number | null | test.cpp:361:30:361:30 | 0 |
+| test.cpp:361:10:361:26 | ... == ... | false | test.cpp:361:35:361:40 | number |
+| test.cpp:361:10:361:26 | ... == ... | true | test.cpp:361:30:361:30 | 0 |
+| test.cpp:364:33:364:34 | s1 | not null | test.cpp:365:15:365:16 | s2 |
+| test.cpp:364:33:364:34 | s1 | not null | test.cpp:366:3:366:12 | return ... |
+| test.cpp:364:43:364:44 | s2 | not null | test.cpp:366:3:366:12 | return ... |
+| test.cpp:365:7:365:9 | ! ... | false | test.cpp:365:15:365:16 | s2 |
+| test.cpp:365:7:365:9 | ! ... | false | test.cpp:366:3:366:12 | return ... |
+| test.cpp:365:7:365:16 | ... \|\| ... | false | test.cpp:366:3:366:12 | return ... |
+| test.cpp:365:8:365:9 | s1 | not null | test.cpp:365:15:365:16 | s2 |
+| test.cpp:365:8:365:9 | s1 | not null | test.cpp:366:3:366:12 | return ... |
+| test.cpp:365:8:365:9 | s1 | true | test.cpp:365:15:365:16 | s2 |
+| test.cpp:365:8:365:9 | s1 | true | test.cpp:366:3:366:12 | return ... |
+| test.cpp:365:14:365:16 | ! ... | false | test.cpp:366:3:366:12 | return ... |
+| test.cpp:365:15:365:16 | s2 | not null | test.cpp:366:3:366:12 | return ... |
+| test.cpp:365:15:365:16 | s2 | true | test.cpp:366:3:366:12 | return ... |
+| test.cpp:371:29:371:32 | flag | false | test.cpp:372:35:372:49 | FAILURE |
+| test.cpp:371:29:371:32 | flag | true | test.cpp:372:17:372:31 | SUCCESS |
+| test.cpp:372:10:372:13 | flag | false | test.cpp:372:35:372:49 | FAILURE |
+| test.cpp:372:10:372:13 | flag | true | test.cpp:372:17:372:31 | SUCCESS |
+| test.cpp:375:25:375:25 | p | not null | test.cpp:376:24:377:7 | { ... } |
+| test.cpp:375:25:375:25 | p | null | test.cpp:378:10:379:7 | { ... } |
+| test.cpp:375:33:375:33 | i | not null | test.cpp:390:10:391:7 | { ... } |
+| test.cpp:375:50:375:50 | b | false | test.cpp:404:5:406:12 | case ...: |
+| test.cpp:375:50:375:50 | b | true | test.cpp:401:5:403:12 | case ...: |
+| test.cpp:376:7:376:18 | call to testNotNull1 | false | test.cpp:378:10:379:7 | { ... } |
+| test.cpp:376:7:376:18 | call to testNotNull1 | true | test.cpp:376:24:377:7 | { ... } |
+| test.cpp:376:20:376:20 | p | not null | test.cpp:376:24:377:7 | { ... } |
+| test.cpp:376:20:376:20 | p | null | test.cpp:378:10:379:7 | { ... } |
+| test.cpp:382:7:382:18 | call to testNotNull2 | false | test.cpp:384:10:385:7 | { ... } |
+| test.cpp:382:7:382:18 | call to testNotNull2 | true | test.cpp:382:24:383:7 | { ... } |
+| test.cpp:388:7:388:29 | ... == ... | false | test.cpp:390:10:391:7 | { ... } |
+| test.cpp:388:7:388:29 | ... == ... | true | test.cpp:388:32:389:7 | { ... } |
+| test.cpp:388:12:388:26 | call to getNumOrDefault | 0 | test.cpp:388:32:389:7 | { ... } |
+| test.cpp:388:12:388:26 | call to getNumOrDefault | not 0 | test.cpp:390:10:391:7 | { ... } |
+| test.cpp:388:28:388:28 | i | not null | test.cpp:390:10:391:7 | { ... } |
+| test.cpp:394:7:394:47 | ... == ... | false | test.cpp:396:10:397:7 | { ... } |
+| test.cpp:394:7:394:47 | ... == ... | true | test.cpp:394:50:395:7 | { ... } |
+| test.cpp:394:15:394:34 | call to returnAIfNoneAreNull | 0 | test.cpp:394:50:395:7 | { ... } |
+| test.cpp:394:15:394:34 | call to returnAIfNoneAreNull | not 0 | test.cpp:396:10:397:7 | { ... } |
+| test.cpp:400:11:400:25 | call to testEnumWrapper | 1 | test.cpp:401:5:403:12 | case ...: |
+| test.cpp:400:11:400:25 | call to testEnumWrapper | 2 | test.cpp:404:5:406:12 | case ...: |
+| test.cpp:400:27:400:27 | b | false | test.cpp:404:5:406:12 | case ...: |
+| test.cpp:400:27:400:27 | b | true | test.cpp:401:5:403:12 | case ...: |
+| test.cpp:410:26:410:26 | o | not null | test.cpp:410:6:410:18 | ensureNotNull |
+| test.cpp:410:26:410:26 | o | not null | test.cpp:412:1:412:1 | return ... |
+| test.cpp:410:26:410:26 | o | null | test.cpp:410:6:410:18 | ensureNotNull |
+| test.cpp:410:26:410:26 | o | null | test.cpp:411:11:411:18 | ExprStmt |
+| test.cpp:411:7:411:8 | ! ... | false | test.cpp:410:6:410:18 | ensureNotNull |
+| test.cpp:411:7:411:8 | ! ... | false | test.cpp:412:1:412:1 | return ... |
+| test.cpp:411:7:411:8 | ! ... | true | test.cpp:410:6:410:18 | ensureNotNull |
+| test.cpp:411:7:411:8 | ! ... | true | test.cpp:411:11:411:18 | ExprStmt |
+| test.cpp:411:8:411:8 | o | false | test.cpp:410:6:410:18 | ensureNotNull |
+| test.cpp:411:8:411:8 | o | false | test.cpp:411:11:411:18 | ExprStmt |
+| test.cpp:411:8:411:8 | o | not null | test.cpp:410:6:410:18 | ensureNotNull |
+| test.cpp:411:8:411:8 | o | not null | test.cpp:412:1:412:1 | return ... |
+| test.cpp:411:8:411:8 | o | null | test.cpp:410:6:410:18 | ensureNotNull |
+| test.cpp:411:8:411:8 | o | null | test.cpp:411:11:411:18 | ExprStmt |
+| test.cpp:411:8:411:8 | o | true | test.cpp:410:6:410:18 | ensureNotNull |
+| test.cpp:411:8:411:8 | o | true | test.cpp:412:1:412:1 | return ... |
