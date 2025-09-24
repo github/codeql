@@ -29,7 +29,10 @@ namespace Semmle.Extraction.CSharp.Entities
             ContainingType!.PopulateGenerics();
 
             trapFile.constructors(this, Symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition);
-            trapFile.constructor_location(this, Location);
+            if (Context.ExtractLocation(Symbol))
+            {
+                trapFile.constructor_location(this, Location);
+            }
 
             if (MakeSynthetic)
             {

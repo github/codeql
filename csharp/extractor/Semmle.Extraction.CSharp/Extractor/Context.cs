@@ -550,6 +550,10 @@ namespace Semmle.Extraction.CSharp
             !SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition) ||
             scope.InScope(symbol);
 
+        public bool ExtractLocation(ISymbol symbol) =>
+            SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition) &&
+            scope.InScope(symbol);
+
         /// <summary>
         /// Runs the given action <paramref name="a"/>, guarding for trap duplication
         /// based on key <paramref name="key"/>.
