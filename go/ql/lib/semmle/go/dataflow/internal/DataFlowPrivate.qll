@@ -105,7 +105,7 @@ private Field getASparselyUsedChannelTypedField() {
 
 bindingset[v]
 pragma[inline_late]
-private predicate jumpStepHelper(ValueEntity v, Node n) { n = v.getARead() }
+private predicate isValueEntityRead(ValueEntity v, Node n) { n = v.getARead() }
 
 /**
  * Holds if data can flow from `node1` to `node2` in a way that loses the
@@ -121,7 +121,7 @@ predicate jumpStep(Node n1, Node n2) {
       or
       n1.(DataFlow::PostUpdateNode).getPreUpdateNode() = v.getARead()
     ) and
-    jumpStepHelper(v, n2)
+    isValueEntityRead(v, n2)
   )
   or
   exists(SsaExplicitDefinition def, SsaVariableCapture succ |
