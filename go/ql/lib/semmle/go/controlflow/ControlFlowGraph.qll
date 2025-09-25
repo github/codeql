@@ -165,13 +165,6 @@ module ControlFlow {
       this.writesFieldInsn(base.asInstruction(), f, rhs.asInstruction())
     }
 
-    /**
-     * Holds if this node sets the value of field `f` on `v` to `rhs`.
-     */
-    predicate writesFieldOnSsaWithFields(SsaWithFields v, Field f, DataFlow::Node rhs) {
-      this.writesFieldPreUpdate(v.getAUse(), f, rhs)
-    }
-
     private predicate writesFieldInsn(IR::Instruction base, Field f, IR::Instruction rhs) {
       exists(IR::FieldTarget trg | trg = super.getLhs() |
         (
