@@ -342,25 +342,7 @@ module GuardsInput implements SharedGuards::InputSig<Cpp::Location, Instruction,
     /** Gets an expression returned from this function. */
     GuardsInput::Expr getAReturnExpr() {
       exists(StoreInstruction store |
-        // We use the `Store` instruction that writes the return value instead of the
-        // `ReturnValue` instruction since the `ReturnValue` instruction is not always
-        // dominated by certain guards. For example:
-        // ```
-        // if(b) {
-        //   return true;
-        // } else {
-        //   return false;
-        // }
-        // ```
-        // this will be translated into IR like:
-        // ```
-        // if(b) {
-        //   x = true;
-        // } else {
-        //   x = false;
-        // }
-        // return x;
-        // ```
+        // A write to the `IRVariable` which represents the return value.
         store.getDestinationAddress().(VariableAddressInstruction).getIRVariable() instanceof
           IRReturnVariable and
         store.getEnclosingFunction() = this and
