@@ -8,6 +8,8 @@
 #include <swift/AST/ASTContext.h>
 #include <swift/AST/GenericEnvironment.h>
 #include <swift/AST/GenericParamList.h>
+#include <swift/AST/ClangModuleLoader.h>
+#include <clang/Basic/Module.h>
 
 using namespace codeql;
 
@@ -15,6 +17,43 @@ namespace {
 Logger& logger() {
   static Logger ret{"mangler"};
   return ret;
+}
+
+const swift::ModuleDecl* getRealModuleOf(const swift::Decl* decl) {
+  auto* swiftModule = decl->getModuleContext();
+  auto* clangModule = swiftModule->findUnderlyingClangModule();
+
+  if (!clangModule) {
+    return swiftModule;
+  }
+
+  auto* clangModuleLoader = decl->getASTContext().getClangModuleLoader();
+
+  if (!clangModuleLoader) {
+    return swiftModule;
+  }
+
+  static std::unordered_map<const swift::Decl*, const swift::ModuleDecl*> cache;
+
+  if (auto result = cache.find(decl); result != cache.end()) {
+    return result->second;
+  }
+
+  for (const auto& submodule : clangModule->submodules()) {
+    if (auto* swiftSubmodule = clangModuleLoader->getWrapperForModule(submodule)) {
+      llvm::SmallVector<swift::Decl*> children;
+      swiftSubmodule->getTopLevelDecls(children);
+      for (const auto child : children) {
+        cache[child] = swiftSubmodule;
+      }
+    }
+  }
+
+  if (auto result = cache.find(decl); result != cache.end()) {
+    return result->second;
+  } else {
+    return swiftModule;
+  }
 }
 
 const swift::Decl* getParent(const swift::Decl* decl) {
@@ -112,7 +151,8 @@ unsigned SwiftMangler::getExtensionIndex(const swift::ExtensionDecl* decl,
   if (auto found = preloadedExtensionIndexes.extract(decl)) {
     return found.mapped();
   }
-  if (auto parentModule = llvm::dyn_cast<swift::ModuleDecl>(parent)) {
+  if (llvm::isa<swift::ModuleDecl>(parent)) {
+    auto* parentModule = getRealModuleOf(decl);
     llvm::SmallVector<swift::Decl*> siblings;
     parentModule->getTopLevelDecls(siblings);
     indexExtensions(siblings);
