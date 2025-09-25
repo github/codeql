@@ -188,7 +188,7 @@ module GuardsInput implements SharedGuards::InputSig<Cpp::Location, Instruction,
       // Note: This only has a value if there is a unique value for the case.
       // So the will not be a result when using the GCC case range extension.
       // Instead, we model these using the `LogicInput_v1::rangeGuard` predicate.
-      result.asIntegerValue() = this.getEdge().getValue().toInt()
+      result = this and exists(this.getEdge().getValue())
     }
   }
 
