@@ -48,8 +48,10 @@ module OpenUrlRedirect {
 
     predicate isBarrierOut(DataFlow::Node node) {
       // block propagation of this unsafe value when its host is overwritten
-      exists(Write w, Field f | f.hasQualifiedName("net/url", "URL", "Host") |
-        w.writesField(node.(DataFlow::PostUpdateNode).getPreUpdateNode(), f, _)
+      exists(Write w, Field f, DataFlow::Node base |
+        f.hasQualifiedName("net/url", "URL", "Host") and
+        w.writesField(base, f, _) and
+        base.(DataFlow::PostUpdateNode).getPreUpdateNode() = node
       )
       or
       hostnameSanitizingPrefixEdge(node, _)
