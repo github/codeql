@@ -333,7 +333,6 @@ All support is experimental.
    `futures <https://crates.io/crates/futures>`__, Asynchronous programming library
    `futures-rustls <https://crates.io/crates/futures-rustls>`__, Network communicator
    `hyper <https://crates.io/crates/hyper>`__, HTTP library
-   `hyper-util <https://crates.io/crates/hyper-util>`__, HTTP library
    `libc <https://crates.io/crates/libc>`__, Utility library
    `log <https://crates.io/crates/log>`__, Logging library
    `md5 <https://crates.io/crates/md5>`__, Utility library
