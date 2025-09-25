@@ -150,6 +150,7 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
        * Shared between sources and sinks.
        */
       pragma[inline]
+      overlay[global]
       private predicate nonDiffInformedFilter(Node node) {
         // If we are in base-only global evaluation, do not filter out any sources.
         not isEvaluatingInOverlay()
