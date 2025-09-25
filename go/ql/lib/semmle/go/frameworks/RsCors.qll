@@ -52,15 +52,10 @@ module RsCors {
     DataFlow::Node base;
 
     AllowCredentialsWrite() {
-      exists(Field f, Write w, DataFlow::Node n |
+      exists(Field f, Write w |
         f.hasQualifiedName(packagePath(), "Options", "AllowCredentials") and
-        w.writesField(n, f, this) and
-        this.getType() instanceof BoolType and
-        (
-          base = n.(DataFlow::PostUpdateNode).getPreUpdateNode()
-          or
-          not n instanceof DataFlow::PostUpdateNode and base = n
-        )
+        w.writesFieldPreUpdate(base, f, this) and
+        this.getType() instanceof BoolType
       )
     }
 
@@ -85,15 +80,10 @@ module RsCors {
     DataFlow::Node base;
 
     AllowOriginsWrite() {
-      exists(Field f, Write w, DataFlow::Node n |
+      exists(Field f, Write w |
         f.hasQualifiedName(packagePath(), "Options", "AllowedOrigins") and
-        w.writesField(n, f, this) and
-        this.asExpr() instanceof SliceLit and
-        (
-          base = n.(DataFlow::PostUpdateNode).getPreUpdateNode()
-          or
-          not n instanceof DataFlow::PostUpdateNode and base = n
-        )
+        w.writesFieldPreUpdate(base, f, this) and
+        this.asExpr() instanceof SliceLit
       )
     }
 
@@ -121,15 +111,10 @@ module RsCors {
     DataFlow::Node base;
 
     AllowAllOriginsWrite() {
-      exists(Field f, Write w, DataFlow::Node n |
+      exists(Field f, Write w |
         f.hasQualifiedName(packagePath(), "Options", "AllowAllOrigins") and
-        w.writesField(n, f, this) and
-        this.getType() instanceof BoolType and
-        (
-          base = n.(DataFlow::PostUpdateNode).getPreUpdateNode()
-          or
-          not n instanceof DataFlow::PostUpdateNode and base = n
-        )
+        w.writesFieldPreUpdate(base, f, this) and
+        this.getType() instanceof BoolType
       )
     }
 

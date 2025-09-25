@@ -65,11 +65,7 @@ module TlsVersionFlowConfig implements DataFlow::ConfigSig {
    */
   additional predicate isSink(DataFlow::Node sink, Field fld, DataFlow::Node base, Write fieldWrite) {
     fld.hasQualifiedName("crypto/tls", "Config", ["MinVersion", "MaxVersion"]) and
-    exists(DataFlow::Node n | fieldWrite.writesField(n, fld, sink) |
-      base = n.(DataFlow::PostUpdateNode).getPreUpdateNode()
-      or
-      not n instanceof DataFlow::PostUpdateNode and base = n
-    )
+    fieldWrite.writesFieldPreUpdate(base, fld, sink)
   }
 
   predicate isSource(DataFlow::Node source) { intIsSource(source, _) }
@@ -194,11 +190,7 @@ module TlsInsecureCipherSuitesFlowConfig implements DataFlow::ConfigSig {
    */
   additional predicate isSink(DataFlow::Node sink, Field fld, DataFlow::Node base, Write fieldWrite) {
     fld.hasQualifiedName("crypto/tls", "Config", "CipherSuites") and
-    exists(DataFlow::Node n | fieldWrite.writesField(n, fld, sink) |
-      base = n.(DataFlow::PostUpdateNode).getPreUpdateNode()
-      or
-      not n instanceof DataFlow::PostUpdateNode and base = n
-    )
+    fieldWrite.writesFieldPreUpdate(base, fld, sink)
   }
 
   predicate isSink(DataFlow::Node sink) { isSink(sink, _, _, _) }
