@@ -26,14 +26,9 @@ private class GorillaSessionOptionsField extends Field {
  * This should cover most typical patterns...
  */
 private DataFlow::Node getValueForFieldWrite(StructLit sl, string field) {
-  exists(Write w, DataFlow::Node base, DataFlow::Node n, Field f |
+  exists(Write w, DataFlow::Node base, Field f |
     f.getName() = field and
-    w.writesField(n, f, result) and
-    (
-      base = n.(DataFlow::PostUpdateNode).getPreUpdateNode()
-      or
-      not n instanceof DataFlow::PostUpdateNode and base = n
-    ) and
+    w.writesFieldPreUpdate(base, f, result) and
     (
       sl = base.asExpr()
       or

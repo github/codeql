@@ -134,17 +134,17 @@ module ControlFlow {
 
     /**
      * Holds if this node sets the value of field `f` on `base` (or its implicit dereference) to
-     * `rhs`.
+     * `rhs`, where `base` represents the post-update value.
      *
      * For example, for the assignment `x.width = newWidth`, `base` is the post-update node of
      * either the data-flow node corresponding to `x` or (if `x` is a pointer) the data-flow node
      * corresponding to the implicit dereference `*x`, `f` is the field referenced by `width`, and
      * `rhs` is the data-flow node corresponding to `newWidth`. If this `WriteNode` is a struct
-     * initialization then there is no need for a post-update node and `base` is the struct literal
-     * being initialized.
+     * initialization then there is no post-update node and `base` is the struct literal being
+     * initialized.
      */
     predicate writesField(DataFlow::Node base, Field f, DataFlow::Node rhs) {
-      exists(DataFlow::Node b | this.writesFieldInsn(b.asInstruction(), f, rhs.asInstruction()) |
+      exists(DataFlow::Node b | this.writesFieldPreUpdate(b, f, rhs) |
         this.isInitialization() and base = b
         or
         not this.isInitialization() and
@@ -153,12 +153,23 @@ module ControlFlow {
     }
 
     /**
+     * Holds if this node sets the value of field `f` on `base` (or its implicit dereference) to
+     * `rhs`, where `base` represents the pre-update value.
+     *
+     * For example, for the assignment `x.width = newWidth`, `base` is either the data-flow node
+     * corresponding to `x` or (if `x` is a pointer) the data-flow node corresponding to the
+     * implicit dereference `*x`, `f` is the field referenced by `width`, and `rhs` is the
+     * data-flow node corresponding to `newWidth`.
+     */
+    predicate writesFieldPreUpdate(DataFlow::Node base, Field f, DataFlow::Node rhs) {
+      this.writesFieldInsn(base.asInstruction(), f, rhs.asInstruction())
+    }
+
+    /**
      * Holds if this node sets the value of field `f` on `v` to `rhs`.
      */
     predicate writesFieldOnSsaWithFields(SsaWithFields v, Field f, DataFlow::Node rhs) {
-      exists(IR::Instruction insn | this.writesFieldInsn(insn, f, rhs.asInstruction()) |
-        v.getAUse().asInstruction() = insn
-      )
+      this.writesFieldPreUpdate(v.getAUse(), f, rhs)
     }
 
     private predicate writesFieldInsn(IR::Instruction base, Field f, IR::Instruction rhs) {

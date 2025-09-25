@@ -437,20 +437,13 @@ module SourceSinkInterpretationInput implements
       mid.asCallable() = getNodeEnclosingCallable(ret)
     )
     or
-    exists(
-      SourceOrSinkElement e, DataFlow::Write fw, DataFlow::Node base, DataFlow::Node qual, Field f
-    |
+    exists(SourceOrSinkElement e, DataFlow::Write fw, DataFlow::Node base, Field f |
       e = mid.asElement() and
       f = e.asFieldEntity()
     |
       c = "" and
-      fw.writesField(base, f, node.asNode()) and
-      pragma[only_bind_into](e) = getElementWithQualifier(f, qual) and
-      (
-        qual = base.(PostUpdateNode).getPreUpdateNode()
-        or
-        not base instanceof PostUpdateNode and qual = base
-      )
+      fw.writesFieldPreUpdate(base, f, node.asNode()) and
+      pragma[only_bind_into](e) = getElementWithQualifier(f, base)
     )
     or
     // A package-scope (or universe-scope) variable

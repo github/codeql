@@ -86,11 +86,10 @@ Type getTypeEmbeddedViaPointer(Type t) {
   result = getEmbeddedType*(getEmbeddedType(getEmbeddedType*(t), true))
 }
 
-from Write w, DataFlow::Node base, LocalVariable v, Field f
+from Write w, LocalVariable v, Field f
 where
   // `w` writes `f` on `v`
-  w.writesField(base, f, _) and
-  [base, base.(DataFlow::PostUpdateNode).getPreUpdateNode()] = v.getARead() and
+  w.writesFieldPreUpdate(v.getARead(), f, _) and
   // but `f` is never read on `v`
   not exists(Read r | r.readsField(v.getARead(), f)) and
   // exclude pointer-typed `v`; there may be reads through an alias
