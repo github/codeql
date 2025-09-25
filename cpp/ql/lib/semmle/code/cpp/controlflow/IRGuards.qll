@@ -30,35 +30,10 @@ module GuardsInput implements SharedGuards::InputSig<Cpp::Location, Instruction,
     IRCfg::BasicBlock getBasicBlock() { result = this.getBlock() }
   }
 
-  private newtype TConstantValue =
-    // This is slightly abusing the shared guards library. Using
-    // `TRange(40, 50)` to model a constant expression in the program such as
-    // the literal "42" causes the shared guards library to make incorrect
-    // inferences.
-    // However, since we only use them to model `CaseConstant::asConstantValue`
-    // this does not cause any wrong inferences (at least for now).
-    TRange(string minValue, string maxValue) {
-      minValue != maxValue and
-      exists(EdgeKind::caseEdge(minValue, maxValue))
-    }
-
   /**
-   * The constant values that can be inferred. The only additional constant
-   * value required is the GCC extension for case ranges.
+   * The constant values that can be inferred.
    */
-  class ConstantValue extends TConstantValue {
-    /**
-     * Holds if this constant value is the case range `minValue..maxValue`.
-     */
-    predicate isRange(string minValue, string maxValue) { this = TRange(minValue, maxValue) }
-
-    string toString() {
-      exists(string minValue, string maxValue |
-        this.isRange(minValue, maxValue) and
-        result = minValue + ".." + maxValue
-      )
-    }
-  }
+  class ConstantValue = Void;
 
   private class EqualityExpr extends CompareInstruction {
     EqualityExpr() {
@@ -508,22 +483,10 @@ deprecated class BooleanValue extends AbstractValue {
  * A value that represents a match against a specific `switch` case.
  */
 deprecated class MatchValue extends AbstractValue {
-  MatchValue() {
-    exists(this.asIntValue())
-    or
-    this.asConstantValue().isRange(_, _)
-  }
+  MatchValue() { exists(this.asIntValue()) }
 
   /** Gets the case. */
-  CaseEdge getCase() {
-    result.getValue().toInt() = this.asIntValue()
-    or
-    exists(string minValue, string maxValue |
-      result.getMinValue() = minValue and
-      result.getMaxValue() = maxValue and
-      this.asConstantValue().isRange(minValue, maxValue)
-    )
-  }
+  CaseEdge getCase() { result.getValue().toInt() = this.asIntValue() }
 }
 
 /**
