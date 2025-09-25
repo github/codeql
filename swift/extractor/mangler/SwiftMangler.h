@@ -106,13 +106,15 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitPackExpansionType(const swift::PackExpansionType* type);
 
  private:
-  std::unordered_map<const swift::Decl*, unsigned> preloadedExtensionIndexes;
+  static std::unordered_map<const swift::Decl*, unsigned> preloadedExtensionIndexes;
 
   virtual SwiftMangledName fetch(const swift::Decl* decl) = 0;
   virtual SwiftMangledName fetch(const swift::TypeBase* type) = 0;
   SwiftMangledName fetch(swift::Type type) { return fetch(type.getPointer()); }
 
   void indexExtensions(llvm::ArrayRef<swift::Decl*> siblings);
+  void indexClangExtensions(const clang::Module* clangModule,
+                            swift::ClangModuleLoader* moduleLoader);
   unsigned int getExtensionIndex(const swift::ExtensionDecl* decl, const swift::Decl* parent);
   static SwiftMangledName initMangled(const swift::TypeBase* type);
   SwiftMangledName initMangled(const swift::Decl* decl);
