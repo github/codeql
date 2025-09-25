@@ -97,9 +97,14 @@ module GuardsInput implements SharedGuards::InputSig<Cpp::Location, Instruction,
       this.(ConstantInstruction).getValue().toInt() = value and
       this.getResultIRType() instanceof IRIntegerType
       or
-      // In order to have an "integer constant" for a switch case
+      // In order to have an integer constant for a switch case
       // we misuse the first instruction (which is always a NoOp instruction)
       // as a constant with the switch case's value.
+      // Even worse, since we need a case range to generate an `TIntRange`
+      // guard value we must ensure that there exists `ConstantExpr`s whose
+      // integer value is the end-points. So we let this constant expression
+      // have both end-point values. Luckily, these `NoOp` instructions do not
+      // interact with SSA in any way. So this should not break anything.
       exists(CaseEdge edge | this = any(SwitchInstruction switch).getSuccessor(edge) |
         value = edge.getMaxValue().toInt()
         or
