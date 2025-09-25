@@ -31,7 +31,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.type_location(this, Context.CreateLocation(l));
             }
 
-            if (IsSourceDeclaration)
+            if (IsSourceDeclaration && !Context.OnlyScaffold)
             {
                 var declSyntaxReferences = Symbol.DeclaringSyntaxReferences
                     .Select(d => d.GetSyntax())

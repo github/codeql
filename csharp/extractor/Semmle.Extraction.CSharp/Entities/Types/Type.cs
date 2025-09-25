@@ -222,7 +222,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private IEnumerable<BaseTypeSyntax> GetBaseTypeDeclarations()
         {
-            if (!IsSourceDeclaration || !Symbol.FromSource())
+            if (!IsSourceDeclaration || !Symbol.FromSource() || Context.OnlyScaffold)
             {
                 return Enumerable.Empty<BaseTypeSyntax>();
             }
