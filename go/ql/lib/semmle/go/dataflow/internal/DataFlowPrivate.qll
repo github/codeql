@@ -134,7 +134,8 @@ predicate jumpStep(Node n1, Node n2) {
       lastUse = getAnAdjacentUse*(def.getAFirstUse()) and
       not exists(getAnAdjacentUse(lastUse))
     |
-      [n1, n1.(DataFlow::PostUpdateNode).getPreUpdateNode()] = instructionNode(lastUse)
+      n1 = instructionNode(lastUse) or
+      n1.(DataFlow::PostUpdateNode).getPreUpdateNode() = instructionNode(lastUse)
     )
   )
   or
