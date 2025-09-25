@@ -178,12 +178,12 @@ namespace System.Web
         public string RawUrl { get; set; }
         public HttpCookieCollection Cookies => null;
         public bool IsAuthenticated { get; set; }
-        public NameValueCollection Form => null;
-        public NameValueCollection Headers => null;
-        public NameValueCollection Params => null;
-        public string UserAgent(string s) => null;
-        public string UrlReferrer(string s) => null;
-        public NameValueCollection ServerVariables => null;
+        public NameValueCollection Form { get; }
+        public NameValueCollection Headers { get; }
+        public NameValueCollection Params { get; }
+        public string UserAgent { get; }
+        public Uri UrlReferrer { get; }
+        public NameValueCollection ServerVariables { get; }
         public String this[String key] => null;
     }
 
