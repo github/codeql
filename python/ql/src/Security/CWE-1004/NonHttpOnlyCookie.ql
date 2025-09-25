@@ -18,4 +18,4 @@ from Http::Server::CookieWrite cookie
 where
   cookie.hasHttpOnlyFlag(false) and
   cookie.isSensitive()
-select cookie, "Sensitive cookie is set without HttpOnly flag."
+select cookie, "Sensitive server cookie is set without HttpOnly flag."
