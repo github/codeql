@@ -196,9 +196,25 @@ func serveStdlib() {
 		http.Redirect(w, r, target.Path, 301) // $ Alert
 		// BAD: EscapedPath() does not help with that
 		http.Redirect(w, r, target.EscapedPath(), 301) // $ Alert
+		target.Host = "example.com"
+		// BAD: Host field was overwritten but Path field remains untrusted
+		http.Redirect(w, r, target.Path, 301) // $ MISSING: Alert
+		// GOOD: untrusted Host field was overwritten
+		http.Redirect(w, r, target.String(), 301)
 	})
 
 	http.HandleFunc("/ex11", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+
+		u, _ := url.Parse("http://bing.com/search?q=dotnet")
+		u.Host = r.FormValue("host") // $ Source
+		// GOOD: Path field is trusted
+		http.Redirect(w, r, u.Path, 301) // $ SPURIOUS: Alert
+		// BAD: Host field is untrusted
+		http.Redirect(w, r, u.String(), 301) // $ Alert
+	})
+
+	http.HandleFunc("/ex12", func(w http.ResponseWriter, r *http.Request) {
 		// GOOD: all these fields and methods are disregarded for OpenRedirect attacks:
 		buf := make([]byte, 100)
 		r.Body.Read(buf)
