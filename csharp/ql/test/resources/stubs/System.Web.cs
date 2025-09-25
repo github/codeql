@@ -184,31 +184,7 @@ namespace System.Web
         public string UserAgent(string s) => null;
         public string UrlReferrer(string s) => null;
         public NameValueCollection ServerVariables => null;
-        // Default property that goes through the collections
-        //      QueryString, Form, Cookies, ClientCertificate and ServerVariables
-        public String this[String key]
-        {
-            get
-            {
-                String s;
-
-                s = QueryString[key];
-                if (s != null)
-                    return s;
-
-                s = Form[key];
-                if (s != null)
-                    return s;
-
-                HttpCookie c = Cookies[key];
-                if (c != null)
-                    return c.Value;
-
-                s = ServerVariables[key];
-                if (s != null)
-                    return s;
-            }
-        }
+        public String this[String key] => null;
     }
 
     public class HttpRequestWrapper : System.Web.HttpRequestBase
