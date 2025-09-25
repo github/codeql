@@ -109,7 +109,13 @@ private predicate localAdditionalForwardTaintStep(
         .getSummaryNode(), succ.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false, model)
 }
 
-private predicate localForwardTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+/**
+ * This is a helper predicate for `localAdditionalBackwardTaintStep`. It mixes
+ * local data flow with local forward taint steps. It should only ever be used
+ * via its transitive closure, which gives local forward taint flow, that is
+ * with backward steps excluded.
+ */
+private predicate partialLocalForwardTaintFlow(DataFlow::Node pred, DataFlow::Node succ) {
   DataFlow::localFlow(pred, succ) or
   localAdditionalForwardTaintStep(pred, succ, _) or
   // Simple flow through library code is included in the exposed local
@@ -126,7 +132,7 @@ private predicate localAdditionalBackwardTaintStep(
   // backward step through function model
   exists(FunctionModel m, DataFlow::Node resultNode |
     m.backwardTaintStep(resultNode, succ) and
-    localForwardTaintStep+(resultNode, pred.(DataFlow::PostUpdateNode).getPreUpdateNode())
+    partialLocalForwardTaintFlow+(resultNode, pred.(DataFlow::PostUpdateNode).getPreUpdateNode())
   ) and
   model = "FunctionModel"
 }
