@@ -8,6 +8,8 @@
 #include <swift/AST/ASTContext.h>
 #include <swift/AST/GenericEnvironment.h>
 #include <swift/AST/GenericParamList.h>
+#include <swift/AST/ClangModuleLoader.h>
+#include <clang/Basic/Module.h>
 
 using namespace codeql;
 
@@ -37,6 +39,8 @@ std::string_view getTypeKindStr(const swift::TypeBase* type) {
 }
 
 }  // namespace
+
+std::unordered_map<const swift::Decl*, unsigned> SwiftMangler::preloadedExtensionIndexes;
 
 SwiftMangledName SwiftMangler::initMangled(const swift::TypeBase* type) {
   return {getTypeKindStr(type), '_'};
@@ -109,32 +113,58 @@ unsigned SwiftMangler::getExtensionIndex(const swift::ExtensionDecl* decl,
   // indexes once for each encountered parent into the `preloadedExtensionIndexes` mapping.
   // Because we mangle declarations only once in a given trap/dispatcher context, we can safely
   // discard preloaded indexes on use
-  if (auto found = preloadedExtensionIndexes.extract(decl)) {
-    return found.mapped();
+  if (auto found = SwiftMangler::preloadedExtensionIndexes.find(decl);
+      found != SwiftMangler::preloadedExtensionIndexes.end()) {
+    return found->second;
   }
   if (auto parentModule = llvm::dyn_cast<swift::ModuleDecl>(parent)) {
     llvm::SmallVector<swift::Decl*> siblings;
     parentModule->getTopLevelDecls(siblings);
     indexExtensions(siblings);
+    if (auto clangModule = parentModule->findUnderlyingClangModule()) {
+      indexClangExtensions(clangModule, decl->getASTContext().getClangModuleLoader());
+    }
   } else if (auto iterableParent = llvm::dyn_cast<swift::IterableDeclContext>(parent)) {
     indexExtensions(iterableParent->getAllMembers());
   } else {
     // TODO use a generic logging handle for Swift entities here, once it's available
     CODEQL_ASSERT(false, "non-local context must be module or iterable decl context");
   }
-  auto found = preloadedExtensionIndexes.extract(decl);
+  auto found = SwiftMangler::preloadedExtensionIndexes.find(decl);
   // TODO use a generic logging handle for Swift entities here, once it's available
-  CODEQL_ASSERT(found, "extension not found within parent");
-  return found.mapped();
+  CODEQL_ASSERT(found != SwiftMangler::preloadedExtensionIndexes.end(),
+                "extension not found within parent");
+  return found->second;
 }
 
 void SwiftMangler::indexExtensions(llvm::ArrayRef<swift::Decl*> siblings) {
   auto index = 0u;
   for (auto sibling : siblings) {
     if (sibling->getKind() == swift::DeclKind::Extension) {
-      preloadedExtensionIndexes.emplace(sibling, index);
+      SwiftMangler::preloadedExtensionIndexes.emplace(sibling, index);
+      index += 2;
     }
-    ++index;
+  }
+}
+
+void SwiftMangler::indexClangExtensions(const clang::Module* clangModule,
+                                        swift::ClangModuleLoader* moduleLoader) {
+  if (!moduleLoader) {
+    return;
+  }
+
+  auto index = 1u;
+  for (const auto& submodule : clangModule->submodules()) {
+    if (auto* swiftSubmodule = moduleLoader->getWrapperForModule(submodule)) {
+      llvm::SmallVector<swift::Decl*> children;
+      swiftSubmodule->getTopLevelDecls(children);
+      for (const auto child : children) {
+        if (child->getKind() == swift::DeclKind::Extension) {
+          SwiftMangler::preloadedExtensionIndexes.emplace(child, index);
+          index += 2;
+        }
+      }
+    }
   }
 }
 
