@@ -26,6 +26,7 @@ bool SwiftBodyEmissionStrategy::shouldEmitDeclBody(const swift::Decl& decl) {
   }
   if (auto context = decl.getDeclContext()) {
     return currentPrimarySourceFile == context->getParentSourceFile();
+    //Nothing
   }
   return false;
 }
