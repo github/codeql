@@ -278,7 +278,7 @@ module Make<
     exists(Expr e |
       def.getDefinition() = e and
       exprHasValue(e, gv) and
-      (exists(GuardValue gv0 | exprHasValue(e, gv0) and gv0.isSingleton()) implies gv.isSingleton())
+      (any(GuardValue gv0 | exprHasValue(e, gv0)).isSingleton() implies gv.isSingleton())
     )
   }
 
@@ -595,7 +595,7 @@ module Make<
     ) {
       ssaControlsBranchEdge(t, bb1, bb2, gv) and
       (
-        exists(GuardValue gv0 | ssaControlsBranchEdge(t, bb1, bb2, gv0) and gv0.isSingleton())
+        any(GuardValue gv0 | ssaControlsBranchEdge(t, bb1, bb2, gv0)).isSingleton()
         implies
         gv.isSingleton()
       ) and
@@ -694,7 +694,7 @@ module Make<
      * `src`, and `var` is a relevant splitting variable that gets (re-)defined
      * in `bb2` by `t`, which is not a phi node.
      *
-     * `val` is the best known value for `t` in `bb2`.
+     * `val` is the best known value that is relatable to `condgv` for `t` in `bb2`.
      */
     private predicate stepSsaValueRedef(
       SourceVariable src, BasicBlock bb1, BasicBlock bb2, SourceVariable var, GuardValue condgv,
@@ -720,7 +720,8 @@ module Make<
      * `t2`, in `bb2` taking input from `t1` along this edge. Furthermore,
      * there is no further redefinition of `var` in `bb2`.
      *
-     * `val` is the best value for `t1`/`t2` implied by taking this edge.
+     * `val` is the best value that is relatable to `condgv` for `t1`/`t2`
+     * implied by taking this edge.
      */
     private predicate stepSsaValuePhi(
       SourceVariable src, BasicBlock bb1, BasicBlock bb2, SourceVariable var, GuardValue condgv,
@@ -747,7 +748,7 @@ module Make<
      * redefinition along this edge nor in `bb2`.
      *
      * Additionally, this edge implies that the SSA definition `t` of `var` has
-     * value `val`.
+     * value `val` and that `val` is relatable to `condgv`.
      */
     private predicate stepSsaValueNoRedef(
       SourceVariable src, BasicBlock bb1, BasicBlock bb2, SourceVariable var, GuardValue condgv,
@@ -763,6 +764,12 @@ module Make<
     /**
      * Holds if the source `srcDef` in `srcBb` may reach `def` in `bb`. The
      * taken path takes splitting based on the value of `var` into account.
+     *
+     * When multiple `GuardValue`s can be chosen for `var`, we prioritize those
+     * that are relatable to `condgv`, as that will help determine whether a
+     * particular edge may be taken or not. Singleton values are prioritized
+     * highly as they are in principle relatable to every other `GuardValue`.
+     *
      * The pair `(tracked, val)` is the current SSA definition and known value
      * for `var` in `bb`.
      */
