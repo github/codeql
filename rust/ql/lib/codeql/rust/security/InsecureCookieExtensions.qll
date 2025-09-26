@@ -49,20 +49,40 @@ module InsecureCookie {
   }
 
   /**
-   * Holds if cookie attribute `attrib` (`secure` or `partitioned`) is set to `value` (`true` or `false`) at `node`.
-   * A value that cannot be determined is treated as `false`.
+   * Holds if a models-as-data optional barrier for cookies is specified for `summaryNode`,
+   * with arguments `attrib` (`secure` or `partitioned`) and `arg` (argument index). For example,
+   * if a summary has input:
+   * ```
+   * [..., Argument[self].OptionalBarrier[cookie-secure-arg0], ...]
+   * ```
+   * then `attrib` is `secure` and `arg` is `0`.
    *
-   * This references models-as-data optional barrier nodes, for example `OptionalBarrier[cookie-secure-arg0]`.
+   * The meaning here is that a call to the function summarized by `summaryNode` would set
+   * the cookie attribute `attrib` to the value of argument `arg`. This may in practice be
+   * interpretted as a barrier to flow (when the cookie is made secure) or as a source (when
+   * the cookie is made insecure).
    */
-  predicate cookieSetNode(DataFlow::Node node, string attrib, boolean value) {
-    exists(
-      FlowSummaryNode summaryNode, string barrierName, CallExprBase ce, int arg,
-      DataFlow::Node argNode
-    |
-      // decode a `cookie-`... optional barrier
+  private predicate cookieOptionalBarrier(FlowSummaryNode summaryNode, string attrib, int arg) {
+    exists(string barrierName |
       DataFlowImpl::optionalBarrier(summaryNode, barrierName) and
       attrib = barrierName.regexpCapture("cookie-(secure|partitioned)-arg([0-9]+)", 1) and
-      arg = barrierName.regexpCapture("cookie-(secure|partitioned)-arg([0-9]+)", 2).toInt() and
+      arg = barrierName.regexpCapture("cookie-(secure|partitioned)-arg([0-9]+)", 2).toInt()
+    )
+  }
+
+  /**
+   * Holds if cookie attribute `attrib` (`secure` or `partitioned`) is set to `value`
+   * (`true` or `false`) at `node`. For example, the call:
+   * ```
+   * cookie.secure(true)
+   * ```
+   * sets the `"secure"` attribute to `true`. A value that cannot be determined is treated
+   * as `false`.
+   */
+  predicate cookieSetNode(DataFlow::Node node, string attrib, boolean value) {
+    exists(FlowSummaryNode summaryNode, CallExprBase ce, int arg, DataFlow::Node argNode |
+      // decode the models-as-data `OptionalBarrier`
+      cookieOptionalBarrier(summaryNode, attrib, arg) and
       // find a call and arg referenced by this optional barrier
       ce.getStaticTarget() = summaryNode.getSummarizedCallable() and
       ce.getArg(arg) = argNode.asExpr().getExpr() and
@@ -78,7 +98,8 @@ module InsecureCookie {
         then value = true // `true` flows to here
         else value = false // `false`, unknown, or multiple values
       ) and
-      // and find the node where this happens
+      // and find the node where this happens (we can't just use the flow summary node, since its
+      // shared across all calls to the modelled function, we need a node specific to this call)
       (
         node.asExpr().getExpr() = ce.(MethodCallExpr).getReceiver() // e.g. `a` in `a.set_secure(true)`
         or
