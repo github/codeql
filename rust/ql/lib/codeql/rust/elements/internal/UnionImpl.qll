@@ -21,7 +21,7 @@ module Impl {
    * ```
    */
   class Union extends Generated::Union {
-    /** Gets the record field named `name`, if any. */
+    /** Gets the struct field named `name`, if any. */
     pragma[nomagic]
     StructField getStructField(string name) {
       result = this.getStructFieldList().getAField() and
