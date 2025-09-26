@@ -29,6 +29,10 @@ module Impl {
   class StmtList extends Generated::StmtList {
     /**
      * Gets the `index`th statement or expression of this statement list (0-based).
+     *
+     * This includes both the statements and any tail expression in the statement list. To access
+     * just the statements, use `getStatement`. To access just the tail expression, if any,
+     * use `getTailExpr`.
      */
     AstNode getStmtOrExpr(int index) {
       result = this.getStatement(index)
@@ -39,6 +43,10 @@ module Impl {
 
     /**
      * Gets any of the statements or expressions of this statement list.
+     *
+     * This includes both the statements and any tail expression in the statement list. To access
+     * just the statements, use `getAStatement`. To access just the tail expression, if any,
+     * use `getTailExpr`.
      */
     final AstNode getAStmtOrExpr() { result = this.getStmtOrExpr(_) }
 
