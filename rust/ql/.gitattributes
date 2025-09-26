@@ -387,7 +387,6 @@
 /lib/codeql/rust/elements/internal/StaticImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/StmtImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/StmtListConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/StmtListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/StructConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/StructExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/StructExprFieldConstructor.qll linguist-generated
