@@ -5,10 +5,10 @@
 | examples/booking/app/init.go:36:44:36:53 | selection of Path | examples/booking/app/init.go:36:44:36:48 | selection of URL | examples/booking/app/init.go:36:44:36:53 | selection of Path | Cross-site scripting vulnerability due to $@. | examples/booking/app/init.go:36:44:36:48 | selection of URL | user-provided value | examples/booking/app/init.go:0:0:0:0 | examples/booking/app/init.go |  |
 | examples/booking/app/init.go:40:49:40:58 | selection of Path | examples/booking/app/init.go:40:49:40:53 | selection of URL | examples/booking/app/init.go:40:49:40:58 | selection of Path | Cross-site scripting vulnerability due to $@. | examples/booking/app/init.go:40:49:40:53 | selection of URL | user-provided value | examples/booking/app/init.go:0:0:0:0 | examples/booking/app/init.go |  |
 edges
-| EndToEnd.go:35:2:35:4 | definition of buf | EndToEnd.go:37:24:37:26 | buf | provenance |  |
+| EndToEnd.go:36:2:36:4 | buf [postupdate] | EndToEnd.go:37:24:37:26 | buf | provenance |  |
 | EndToEnd.go:36:18:36:25 | selection of Params | EndToEnd.go:36:18:36:30 | selection of Form | provenance | Src:MaD:1  |
 | EndToEnd.go:36:18:36:30 | selection of Form | EndToEnd.go:36:18:36:47 | call to Get | provenance | MaD:4 |
-| EndToEnd.go:36:18:36:47 | call to Get | EndToEnd.go:35:2:35:4 | definition of buf | provenance | MaD:3 |
+| EndToEnd.go:36:18:36:47 | call to Get | EndToEnd.go:36:2:36:4 | buf [postupdate] | provenance | MaD:3 |
 | EndToEnd.go:69:22:69:29 | selection of Params | EndToEnd.go:69:22:69:34 | selection of Form | provenance | Src:MaD:1  |
 | EndToEnd.go:69:22:69:34 | selection of Form | EndToEnd.go:69:22:69:51 | call to Get | provenance | MaD:4 |
 | Revel.go:70:22:70:29 | selection of Params | Revel.go:70:22:70:35 | selection of Query | provenance | Src:MaD:1  |
@@ -20,7 +20,7 @@ models
 | 3 | Summary: io; StringWriter; true; WriteString; ; ; Argument[0]; Argument[receiver]; taint; manual |
 | 4 | Summary: net/url; Values; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
 nodes
-| EndToEnd.go:35:2:35:4 | definition of buf | semmle.label | definition of buf |
+| EndToEnd.go:36:2:36:4 | buf [postupdate] | semmle.label | buf [postupdate] |
 | EndToEnd.go:36:18:36:25 | selection of Params | semmle.label | selection of Params |
 | EndToEnd.go:36:18:36:30 | selection of Form | semmle.label | selection of Form |
 | EndToEnd.go:36:18:36:47 | call to Get | semmle.label | call to Get |

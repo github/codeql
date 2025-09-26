@@ -3,15 +3,15 @@
 | stored.go:61:22:61:25 | path | stored.go:59:30:59:33 | definition of path | stored.go:61:22:61:25 | path | Stored cross-site scripting vulnerability due to $@. | stored.go:59:30:59:33 | definition of path | stored value |
 edges
 | stored.go:18:3:18:28 | ... := ...[0] | stored.go:25:14:25:17 | rows | provenance | Src:MaD:1  |
-| stored.go:25:14:25:17 | rows | stored.go:25:29:25:33 | &... | provenance | FunctionModel |
-| stored.go:25:29:25:33 | &... | stored.go:30:22:30:25 | name | provenance |  |
+| stored.go:25:14:25:17 | rows | stored.go:25:29:25:33 | &... [postupdate] | provenance | FunctionModel |
+| stored.go:25:29:25:33 | &... [postupdate] | stored.go:30:22:30:25 | name | provenance |  |
 | stored.go:59:30:59:33 | definition of path | stored.go:61:22:61:25 | path | provenance |  |
 models
 | 1 | Source: database/sql; DB; true; Query; ; ; ReturnValue[0]; database; manual |
 nodes
 | stored.go:18:3:18:28 | ... := ...[0] | semmle.label | ... := ...[0] |
 | stored.go:25:14:25:17 | rows | semmle.label | rows |
-| stored.go:25:29:25:33 | &... | semmle.label | &... |
+| stored.go:25:29:25:33 | &... [postupdate] | semmle.label | &... [postupdate] |
 | stored.go:30:22:30:25 | name | semmle.label | name |
 | stored.go:59:30:59:33 | definition of path | semmle.label | definition of path |
 | stored.go:61:22:61:25 | path | semmle.label | path |

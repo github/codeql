@@ -92,7 +92,7 @@ module OpenUrlRedirect {
     PathAssignmentBarrier() {
       exists(Write w, SsaWithFields var |
         hasHostnameSanitizingSubstring(w.getRhs()) and
-        w.writesField(var.getAUse(), any(Field f | f.getName() = "Path"), _) and
+        w.writesFieldPreUpdate(var.getAUse(), any(Field f | f.getName() = "Path"), _) and
         useIsDominated(var, w, this)
       )
     }

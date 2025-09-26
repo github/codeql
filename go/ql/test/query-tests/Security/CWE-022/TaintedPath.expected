@@ -6,8 +6,8 @@ edges
 | TaintedPath.go:15:18:15:22 | selection of URL | TaintedPath.go:15:18:15:30 | call to Query | provenance | Src:MaD:2 MaD:3 |
 | TaintedPath.go:15:18:15:30 | call to Query | TaintedPath.go:18:29:18:40 | tainted_path | provenance | Sink:MaD:1 |
 | TaintedPath.go:15:18:15:30 | call to Query | TaintedPath.go:22:57:22:68 | tainted_path | provenance |  |
-| TaintedPath.go:15:18:15:30 | call to Query | TaintedPath.go:74:39:74:56 | ...+... | provenance |  |
 | TaintedPath.go:22:57:22:68 | tainted_path | TaintedPath.go:22:28:22:69 | call to Join | provenance | FunctionModel Sink:MaD:1 |
+| TaintedPath.go:22:57:22:68 | tainted_path | TaintedPath.go:74:39:74:56 | ...+... | provenance |  |
 | TaintedPath.go:74:39:74:56 | ...+... | TaintedPath.go:74:28:74:57 | call to Clean | provenance | MaD:4 Sink:MaD:1 |
 models
 | 1 | Sink: io/ioutil; ; false; ReadFile; ; ; Argument[0]; path-injection; manual |

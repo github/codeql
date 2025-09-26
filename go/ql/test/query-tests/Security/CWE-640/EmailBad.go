@@ -6,8 +6,8 @@ import (
 )
 
 func mail(w http.ResponseWriter, r *http.Request) {
-	host := r.Header.Get("Host")
+	host := r.Header.Get("Host") // $ Source
 	token := backend.getUserSecretResetToken(email)
 	body := "Click to reset password: " + host + "/" + token
-	smtp.SendMail("test.test", nil, "from@from.com", nil, []byte(body))
+	smtp.SendMail("test.test", nil, "from@from.com", nil, []byte(body)) // $ Alert
 }

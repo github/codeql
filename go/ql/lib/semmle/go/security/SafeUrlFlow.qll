@@ -24,14 +24,16 @@ module SafeUrlFlow {
     predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       // propagate to a URL when its host is assigned to
       exists(Write w, Field f, SsaWithFields v | f.hasQualifiedName("net/url", "URL", "Host") |
-        w.writesField(v.getAUse(), f, node1) and node2 = v.getAUse()
+        w.writesFieldPreUpdate(v.getAUse(), f, node1) and
+        node2 = v.getAUse()
       )
     }
 
     predicate isBarrierOut(DataFlow::Node node) {
       // block propagation of this safe value when its host is overwritten
-      exists(Write w, Field f | f.hasQualifiedName("net/url", "URL", "Host") |
-        w.writesField(node.getASuccessor(), f, _)
+      exists(Write w, DataFlow::Node base, Field f | f.hasQualifiedName("net/url", "URL", "Host") |
+        w.writesField(base, f, _) and
+        [base, base.(DataFlow::PostUpdateNode).getPreUpdateNode()] = node.getASuccessor()
       )
       or
       node instanceof SanitizerEdge
