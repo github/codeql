@@ -47,12 +47,32 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public sealed override void WriteQuotedId(EscapingTextWriter writer)
         {
-            WriteStarId(writer);
+            if (Context.ExtractionContext.IsStandalone)
+            {
+                WriteStarId(writer);
+                return;
+            }
+            base.WriteQuotedId(writer);
         }
 
         public override void WriteId(EscapingTextWriter trapFile)
         {
-            WriteStarId(trapFile);
+            if (Context.ExtractionContext.IsStandalone)
+            {
+                WriteStarId(trapFile);
+                return;
+            }
+
+            trapFile.Write("loc,");
+            trapFile.WriteSubId(FileEntity);
+            trapFile.Write(',');
+            trapFile.Write(Position.Span.Start.Line + 1);
+            trapFile.Write(',');
+            trapFile.Write(Position.Span.Start.Character + 1);
+            trapFile.Write(',');
+            trapFile.Write(Position.Span.End.Line + 1);
+            trapFile.Write(',');
+            trapFile.Write(Position.Span.End.Character);
         }
 
         private class SourceLocationFactory : CachedEntityFactory<Microsoft.CodeAnalysis.Location, NonGeneratedSourceLocation>
