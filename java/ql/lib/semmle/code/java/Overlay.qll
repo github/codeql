@@ -88,7 +88,45 @@ private string baseConfigLocatable(@configLocatable el) {
   not isOverlay() and result = getRawFileForConfig(el)
 }
 
+overlay[local]
+private predicate overlayConfigExtracted(string file) {
+  isOverlay() and
+  exists(@configLocatable el | file = getRawFileForConfig(el))
+}
+
 overlay[discard_entity]
 private predicate discardBaseConfigLocatable(@configLocatable el) {
   overlayChangedFiles(baseConfigLocatable(el))
+  or
+  // The config extractor is currently not incremental and may extract more
+  // property files than those included in overlayChangedFiles.
+  overlayConfigExtracted(baseConfigLocatable(el))
+}
+
+/**
+ * An `@xmllocatable` that should be discarded in the base variant if its file is
+ * extracted in the overlay variant.
+ */
+overlay[local]
+abstract class DiscardableXmlLocatable extends @xmllocatable {
+  /** Gets the raw file for an xmllocatable in base. */
+  string getRawFileInBase() { not isOverlay() and result = getRawFile(this) }
+
+  /** Gets a textual representation of this discardable xmllocatable. */
+  string toString() { none() }
+}
+
+overlay[local]
+private predicate overlayXmlExtracted(string file) {
+  isOverlay() and
+  exists(@xmllocatable el | not files(el, _) and not xmlNs(el, _, _, _) and file = getRawFile(el))
+}
+
+overlay[discard_entity]
+private predicate discardXmlLocatable(@xmllocatable el) {
+  overlayChangedFiles(el.(DiscardableXmlLocatable).getRawFileInBase())
+  or
+  // The XML extractor is currently not incremental and may extract more
+  // XML files than those included in overlayChangedFiles.
+  overlayXmlExtracted(el.(DiscardableXmlLocatable).getRawFileInBase())
 }

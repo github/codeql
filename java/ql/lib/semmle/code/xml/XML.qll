@@ -71,12 +71,12 @@ private module Input implements InputSig<File, Location> {
 
 import Make<File, Location, Input>
 
-private class DiscardableXmlAttribute extends DiscardableLocatable, @xmlattribute { }
+private class DiscardableXmlAttribute extends DiscardableXmlLocatable, @xmlattribute { }
 
-private class DiscardableXmlElement extends DiscardableLocatable, @xmlelement { }
+private class DiscardableXmlElement extends DiscardableXmlLocatable, @xmlelement { }
 
-private class DiscardableXmlComment extends DiscardableLocatable, @xmlcomment { }
+private class DiscardableXmlComment extends DiscardableXmlLocatable, @xmlcomment { }
 
-private class DiscardableXmlCharacters extends DiscardableLocatable, @xmlcharacters { }
+private class DiscardableXmlCharacters extends DiscardableXmlLocatable, @xmlcharacters { }
 
-private class DiscardableXmlDtd extends DiscardableLocatable, @xmldtd { }
+private class DiscardableXmlDtd extends DiscardableXmlLocatable, @xmldtd { }
