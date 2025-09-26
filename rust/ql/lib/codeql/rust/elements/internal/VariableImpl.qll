@@ -109,7 +109,7 @@ module Impl {
       text = name.getText() and
       // exclude self parameters from functions without a body as these are
       // trait method declarations without implementations
-      not exists(Function f | not f.hasBody() and f.getParamList().getSelfParam() = sp)
+      not exists(Function f | not f.hasBody() and f.getSelfParam() = sp)
     )
     or
     exists(IdentPat pat |
