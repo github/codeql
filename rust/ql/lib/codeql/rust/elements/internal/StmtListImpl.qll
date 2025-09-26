@@ -33,7 +33,7 @@ module Impl {
     AstNode getStmtOrExpr(int index) {
       result = this.getStatement(index)
       or
-      index = max(int i | i = -1 or exists(this.getStatement(i))) + 1 and
+      index = this.getNumberOfStatements() and
       result = this.getTailExpr()
     }
 
