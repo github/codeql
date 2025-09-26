@@ -14,7 +14,7 @@
 </recommendation>
 <example>
 
-<p>The following example creates a cookie using the <code>cookie</code> crate without the 'Secure' attribute:</p>
+<p>The following example creates a cookie using the <a href="https://crates.io/crates/cookie">cookie</a> crate without the 'Secure' attribute:</p>
 
 <sample src="InsecureCookieBad.rs" />
 
