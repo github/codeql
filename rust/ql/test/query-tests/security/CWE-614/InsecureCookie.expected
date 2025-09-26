@@ -1,0 +1,597 @@
+#select
+| main.rs:8:66:8:70 | build | main.rs:8:19:8:31 | ...::build | main.rs:8:66:8:70 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:8:66:8:70 | build | main.rs:8:19:8:50 | ...::build(...) | main.rs:8:66:8:70 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:16:52:16:56 | build | main.rs:16:19:16:31 | ...::build | main.rs:16:52:16:56 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:20:56:20:60 | build | main.rs:20:5:20:17 | ...::build | main.rs:20:56:20:60 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:20:56:20:60 | build | main.rs:20:5:20:36 | ...::build(...) | main.rs:20:56:20:60 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:21:57:21:61 | build | main.rs:21:5:21:17 | ...::build | main.rs:21:57:21:61 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:21:57:21:61 | build | main.rs:21:5:21:36 | ...::build(...) | main.rs:21:57:21:61 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:25:54:25:58 | build | main.rs:25:5:25:17 | ...::build | main.rs:25:54:25:58 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:25:54:25:58 | build | main.rs:25:5:25:36 | ...::build(...) | main.rs:25:54:25:58 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:26:52:26:56 | build | main.rs:26:5:26:17 | ...::build | main.rs:26:52:26:56 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:26:52:26:56 | build | main.rs:26:5:26:36 | ...::build(...) | main.rs:26:52:26:56 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:27:53:27:57 | build | main.rs:27:5:27:17 | ...::build | main.rs:27:53:27:57 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:27:53:27:57 | build | main.rs:27:5:27:36 | ...::build(...) | main.rs:27:53:27:57 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:28:62:28:66 | build | main.rs:28:5:28:17 | ...::build | main.rs:28:62:28:66 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:28:62:28:66 | build | main.rs:28:5:28:36 | ...::build(...) | main.rs:28:62:28:66 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:29:62:29:66 | build | main.rs:29:5:29:17 | ...::build | main.rs:29:62:29:66 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:29:62:29:66 | build | main.rs:29:5:29:36 | ...::build(...) | main.rs:29:62:29:66 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:33:60:33:64 | build | main.rs:33:9:33:21 | ...::build | main.rs:33:60:33:64 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:33:60:33:64 | build | main.rs:33:9:33:40 | ...::build(...) | main.rs:33:60:33:64 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:35:60:35:64 | build | main.rs:35:9:35:21 | ...::build | main.rs:35:60:35:64 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:35:60:35:64 | build | main.rs:35:9:35:40 | ...::build(...) | main.rs:35:60:35:64 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:39:55:39:59 | build | main.rs:39:5:39:22 | ...::new | main.rs:39:55:39:59 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:39:55:39:59 | build | main.rs:39:5:39:39 | ...::new(...) | main.rs:39:55:39:59 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:40:66:40:70 | build | main.rs:40:5:40:17 | ...::build | main.rs:40:66:40:70 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:40:66:40:70 | build | main.rs:40:5:40:50 | ... .expires(...) | main.rs:40:66:40:70 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:41:95:41:99 | build | main.rs:41:5:41:17 | ...::build | main.rs:41:95:41:99 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:41:95:41:99 | build | main.rs:41:5:41:79 | ... .max_age(...) | main.rs:41:95:41:99 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:42:74:42:78 | build | main.rs:42:5:42:17 | ...::build | main.rs:42:74:42:78 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:42:74:42:78 | build | main.rs:42:5:42:58 | ... .domain(...) | main.rs:42:74:42:78 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:43:62:43:66 | build | main.rs:43:5:43:17 | ...::build | main.rs:43:62:43:66 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:43:62:43:66 | build | main.rs:43:5:43:46 | ... .path(...) | main.rs:43:62:43:66 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:44:68:44:72 | build | main.rs:44:5:44:17 | ...::build | main.rs:44:68:44:72 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:44:68:44:72 | build | main.rs:44:5:44:52 | ... .http_only(...) | main.rs:44:68:44:72 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:45:88:45:92 | build | main.rs:45:5:45:17 | ...::build | main.rs:45:88:45:92 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:45:88:45:92 | build | main.rs:45:5:45:72 | ... .same_site(...) | main.rs:45:88:45:92 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:46:64:46:68 | build | main.rs:46:5:46:17 | ...::build | main.rs:46:64:46:68 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:46:64:46:68 | build | main.rs:46:5:46:48 | ... .permanent() | main.rs:46:64:46:68 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:47:62:47:66 | build | main.rs:47:5:47:17 | ...::build | main.rs:47:62:47:66 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:47:62:47:66 | build | main.rs:47:5:47:46 | ... .removal() | main.rs:47:62:47:66 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:48:52:48:57 | finish | main.rs:48:5:48:17 | ...::build | main.rs:48:52:48:57 | finish | Cookie attribute 'Secure' is not set to true. |
+| main.rs:48:52:48:57 | finish | main.rs:48:5:48:36 | ...::build(...) | main.rs:48:52:48:57 | finish | Cookie attribute 'Secure' is not set to true. |
+| main.rs:49:41:49:45 | build | main.rs:49:5:49:17 | ...::build | main.rs:49:41:49:45 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:49:41:49:45 | build | main.rs:49:5:49:25 | ...::build(...) | main.rs:49:41:49:45 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:50:56:50:60 | build | main.rs:50:5:50:17 | ...::build | main.rs:50:56:50:60 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:50:56:50:60 | build | main.rs:50:5:50:40 | ...::build(...) | main.rs:50:56:50:60 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:53:65:53:69 | build | main.rs:53:5:53:49 | ... .secure(...) | main.rs:53:65:53:69 | build | Cookie attribute 'Secure' is not set to true. |
+| main.rs:59:9:59:11 | add | main.rs:58:17:58:27 | ...::new | main.rs:59:9:59:11 | add | Cookie attribute 'Secure' is not set to true. |
+| main.rs:60:9:60:20 | add_original | main.rs:58:17:58:27 | ...::new | main.rs:60:9:60:20 | add_original | Cookie attribute 'Secure' is not set to true. |
+| main.rs:64:9:64:11 | add | main.rs:63:5:63:5 | [SSA] a | main.rs:64:9:64:11 | add | Cookie attribute 'Secure' is not set to true. |
+| main.rs:64:9:64:11 | add | main.rs:63:5:63:5 | a | main.rs:64:9:64:11 | add | Cookie attribute 'Secure' is not set to true. |
+| main.rs:69:16:69:18 | add | main.rs:68:17:68:29 | ...::named | main.rs:69:16:69:18 | add | Cookie attribute 'Secure' is not set to true. |
+| main.rs:70:16:70:27 | add_original | main.rs:63:5:63:5 | [SSA] a | main.rs:70:16:70:27 | add_original | Cookie attribute 'Secure' is not set to true. |
+| main.rs:70:16:70:27 | add_original | main.rs:63:5:63:5 | a | main.rs:70:16:70:27 | add_original | Cookie attribute 'Secure' is not set to true. |
+| main.rs:72:16:72:18 | add | main.rs:68:17:68:29 | ...::named | main.rs:72:16:72:18 | add | Cookie attribute 'Secure' is not set to true. |
+| main.rs:72:16:72:18 | add | main.rs:71:5:71:5 | [SSA] b | main.rs:72:16:72:18 | add | Cookie attribute 'Secure' is not set to true. |
+| main.rs:72:16:72:18 | add | main.rs:71:5:71:5 | b | main.rs:72:16:72:18 | add | Cookie attribute 'Secure' is not set to true. |
+| main.rs:78:17:78:19 | add | main.rs:77:17:77:28 | ...::from | main.rs:78:17:78:19 | add | Cookie attribute 'Secure' is not set to true. |
+| main.rs:79:17:79:28 | add_original | main.rs:63:5:63:5 | [SSA] a | main.rs:79:17:79:28 | add_original | Cookie attribute 'Secure' is not set to true. |
+| main.rs:79:17:79:28 | add_original | main.rs:63:5:63:5 | a | main.rs:79:17:79:28 | add_original | Cookie attribute 'Secure' is not set to true. |
+| main.rs:83:17:83:19 | add | main.rs:77:17:77:28 | ...::from | main.rs:83:17:83:19 | add | Cookie attribute 'Secure' is not set to true. |
+| main.rs:88:9:88:11 | add | main.rs:87:17:87:28 | ...::from | main.rs:88:9:88:11 | add | Cookie attribute 'Secure' is not set to true. |
+| main.rs:94:9:94:11 | add | main.rs:87:17:87:28 | ...::from | main.rs:94:9:94:11 | add | Cookie attribute 'Secure' is not set to true. |
+| main.rs:123:13:123:18 | insert | main.rs:122:13:122:41 | ...::new | main.rs:123:13:123:18 | insert | Cookie attribute 'Secure' is not set to true. |
+| main.rs:131:13:131:18 | insert | main.rs:130:13:130:13 | b | main.rs:131:13:131:18 | insert | Cookie attribute 'Secure' is not set to true. |
+| main.rs:147:13:147:18 | insert | main.rs:146:13:146:13 | f | main.rs:147:13:147:18 | insert | Cookie attribute 'Secure' is not set to true. |
+| main.rs:152:13:152:18 | insert | main.rs:151:13:151:42 | ...::from | main.rs:152:13:152:18 | insert | Cookie attribute 'Secure' is not set to true. |
+| main.rs:156:13:156:18 | insert | main.rs:155:13:155:41 | ...::new | main.rs:156:13:156:18 | insert | Cookie attribute 'Secure' is not set to true. |
+| main.rs:157:13:157:18 | insert | main.rs:155:13:155:41 | ...::new | main.rs:157:13:157:18 | insert | Cookie attribute 'Secure' is not set to true. |
+| main.rs:158:13:158:18 | insert | main.rs:155:13:155:41 | ...::new | main.rs:158:13:158:18 | insert | Cookie attribute 'Secure' is not set to true. |
+| main.rs:159:13:159:18 | insert | main.rs:155:13:155:41 | ...::new | main.rs:159:13:159:18 | insert | Cookie attribute 'Secure' is not set to true. |
+| main.rs:160:13:160:18 | insert | main.rs:155:13:155:41 | ...::new | main.rs:160:13:160:18 | insert | Cookie attribute 'Secure' is not set to true. |
+| main.rs:161:13:161:18 | insert | main.rs:155:13:155:41 | ...::new | main.rs:161:13:161:18 | insert | Cookie attribute 'Secure' is not set to true. |
+| main.rs:162:13:162:18 | insert | main.rs:155:13:155:41 | ...::new | main.rs:162:13:162:18 | insert | Cookie attribute 'Secure' is not set to true. |
+| main.rs:163:13:163:18 | insert | main.rs:155:13:155:41 | ...::new | main.rs:163:13:163:18 | insert | Cookie attribute 'Secure' is not set to true. |
+| main.rs:164:13:164:18 | insert | main.rs:155:13:155:41 | ...::new | main.rs:164:13:164:18 | insert | Cookie attribute 'Secure' is not set to true. |
+| main.rs:165:13:165:18 | insert | main.rs:155:13:155:41 | ...::new | main.rs:165:13:165:18 | insert | Cookie attribute 'Secure' is not set to true. |
+| main.rs:166:13:166:18 | insert | main.rs:155:13:155:41 | ...::new | main.rs:166:13:166:18 | insert | Cookie attribute 'Secure' is not set to true. |
+| main.rs:167:13:167:18 | insert | main.rs:155:13:155:41 | ...::new | main.rs:167:13:167:18 | insert | Cookie attribute 'Secure' is not set to true. |
+| main.rs:173:61:173:65 | build | main.rs:173:22:173:34 | ...::build | main.rs:173:61:173:65 | build | Cookie attribute 'Secure' is not set to true. |
+edges
+| main.rs:8:19:8:31 | ...::build | main.rs:8:19:8:50 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:8:19:8:50 | ...::build(...) | main.rs:8:19:8:64 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:8:19:8:64 | ... .secure(...) | main.rs:8:66:8:70 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:16:19:16:31 | ...::build | main.rs:16:19:16:50 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:16:19:16:50 | ...::build(...) | main.rs:16:52:16:56 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:20:5:20:17 | ...::build | main.rs:20:5:20:36 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:20:5:20:36 | ...::build(...) | main.rs:20:5:20:54 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:20:5:20:54 | ... .secure(...) | main.rs:20:56:20:60 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:21:5:21:17 | ...::build | main.rs:21:5:21:36 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:21:5:21:36 | ...::build(...) | main.rs:21:5:21:55 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:21:5:21:55 | ... .secure(...) | main.rs:21:57:21:61 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:25:5:25:17 | ...::build | main.rs:25:5:25:36 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:25:5:25:36 | ...::build(...) | main.rs:25:5:25:52 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:25:5:25:52 | ... .secure(...) | main.rs:25:54:25:58 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:26:5:26:17 | ...::build | main.rs:26:5:26:36 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:26:5:26:36 | ...::build(...) | main.rs:26:5:26:50 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:26:5:26:50 | ... .secure(...) | main.rs:26:52:26:56 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:27:5:27:17 | ...::build | main.rs:27:5:27:36 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:27:5:27:36 | ...::build(...) | main.rs:27:5:27:51 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:27:5:27:51 | ... .secure(...) | main.rs:27:53:27:57 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:28:5:28:17 | ...::build | main.rs:28:5:28:36 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:28:5:28:36 | ...::build(...) | main.rs:28:5:28:60 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:28:5:28:60 | ... .secure(...) | main.rs:28:62:28:66 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:29:5:29:17 | ...::build | main.rs:29:5:29:36 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:29:5:29:36 | ...::build(...) | main.rs:29:5:29:60 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:29:5:29:60 | ... .secure(...) | main.rs:29:62:29:66 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:33:9:33:21 | ...::build | main.rs:33:9:33:40 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:33:9:33:40 | ...::build(...) | main.rs:33:9:33:58 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:33:9:33:58 | ... .secure(...) | main.rs:33:60:33:64 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:35:9:35:21 | ...::build | main.rs:35:9:35:40 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:35:9:35:40 | ...::build(...) | main.rs:35:9:35:58 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:35:9:35:58 | ... .secure(...) | main.rs:35:60:35:64 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:39:5:39:22 | ...::new | main.rs:39:5:39:39 | ...::new(...) | provenance | Src:MaD:16 MaD:16 |
+| main.rs:39:5:39:39 | ...::new(...) | main.rs:39:5:39:53 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:39:5:39:53 | ... .secure(...) | main.rs:39:55:39:59 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:40:5:40:17 | ...::build | main.rs:40:5:40:36 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:40:5:40:36 | ...::build(...) | main.rs:40:5:40:50 | ... .expires(...) | provenance | MaD:33 |
+| main.rs:40:5:40:50 | ... .expires(...) | main.rs:40:5:40:64 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:40:5:40:64 | ... .secure(...) | main.rs:40:66:40:70 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:41:5:41:17 | ...::build | main.rs:41:5:41:36 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:41:5:41:36 | ...::build(...) | main.rs:41:5:41:79 | ... .max_age(...) | provenance | MaD:35 |
+| main.rs:41:5:41:79 | ... .max_age(...) | main.rs:41:5:41:93 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:41:5:41:93 | ... .secure(...) | main.rs:41:95:41:99 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:42:5:42:17 | ...::build | main.rs:42:5:42:36 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:42:5:42:36 | ...::build(...) | main.rs:42:5:42:58 | ... .domain(...) | provenance | MaD:32 |
+| main.rs:42:5:42:58 | ... .domain(...) | main.rs:42:5:42:72 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:42:5:42:72 | ... .secure(...) | main.rs:42:74:42:78 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:43:5:43:17 | ...::build | main.rs:43:5:43:36 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:43:5:43:36 | ...::build(...) | main.rs:43:5:43:46 | ... .path(...) | provenance | MaD:37 |
+| main.rs:43:5:43:46 | ... .path(...) | main.rs:43:5:43:60 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:43:5:43:60 | ... .secure(...) | main.rs:43:62:43:66 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:44:5:44:17 | ...::build | main.rs:44:5:44:36 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:44:5:44:36 | ...::build(...) | main.rs:44:5:44:52 | ... .http_only(...) | provenance | MaD:34 |
+| main.rs:44:5:44:52 | ... .http_only(...) | main.rs:44:5:44:66 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:44:5:44:66 | ... .secure(...) | main.rs:44:68:44:72 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:45:5:45:17 | ...::build | main.rs:45:5:45:36 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:45:5:45:36 | ...::build(...) | main.rs:45:5:45:72 | ... .same_site(...) | provenance | MaD:40 |
+| main.rs:45:5:45:72 | ... .same_site(...) | main.rs:45:5:45:86 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:45:5:45:86 | ... .secure(...) | main.rs:45:88:45:92 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:46:5:46:17 | ...::build | main.rs:46:5:46:36 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:46:5:46:36 | ...::build(...) | main.rs:46:5:46:48 | ... .permanent() | provenance | MaD:38 |
+| main.rs:46:5:46:48 | ... .permanent() | main.rs:46:5:46:62 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:46:5:46:62 | ... .secure(...) | main.rs:46:64:46:68 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:47:5:47:17 | ...::build | main.rs:47:5:47:36 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:47:5:47:36 | ...::build(...) | main.rs:47:5:47:46 | ... .removal() | provenance | MaD:39 |
+| main.rs:47:5:47:46 | ... .removal() | main.rs:47:5:47:60 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:47:5:47:60 | ... .secure(...) | main.rs:47:62:47:66 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:48:5:48:17 | ...::build | main.rs:48:5:48:36 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:48:5:48:36 | ...::build(...) | main.rs:48:5:48:50 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:48:5:48:50 | ... .secure(...) | main.rs:48:52:48:57 | finish | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:49:5:49:17 | ...::build | main.rs:49:5:49:25 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:49:5:49:25 | ...::build(...) | main.rs:49:5:49:39 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:49:5:49:39 | ... .secure(...) | main.rs:49:41:49:45 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:50:5:50:17 | ...::build | main.rs:50:5:50:40 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:50:5:50:40 | ...::build(...) | main.rs:50:5:50:54 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:50:5:50:54 | ... .secure(...) | main.rs:50:56:50:60 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:53:5:53:49 | ... .secure(...) | main.rs:53:5:53:63 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:53:5:53:63 | ... .secure(...) | main.rs:53:65:53:69 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:58:9:58:13 | mut a | main.rs:59:13:59:13 | a | provenance |  |
+| main.rs:58:9:58:13 | mut a | main.rs:59:13:59:21 | a.clone() | provenance | MaD:17 |
+| main.rs:58:9:58:13 | mut a | main.rs:60:22:60:22 | a | provenance |  |
+| main.rs:58:9:58:13 | mut a | main.rs:60:22:60:30 | a.clone() | provenance | MaD:17 |
+| main.rs:58:17:58:27 | ...::new | main.rs:58:17:58:44 | ...::new(...) | provenance | Src:MaD:15 MaD:15 |
+| main.rs:58:17:58:44 | ...::new(...) | main.rs:58:9:58:13 | mut a | provenance |  |
+| main.rs:59:13:59:13 | a | main.rs:59:13:59:21 | a.clone() | provenance | MaD:17 |
+| main.rs:59:13:59:21 | a.clone() | main.rs:59:9:59:11 | add | provenance | MaD:4 Sink:MaD:4 |
+| main.rs:60:22:60:22 | a | main.rs:60:22:60:30 | a.clone() | provenance | MaD:17 |
+| main.rs:60:22:60:30 | a.clone() | main.rs:60:9:60:20 | add_original | provenance | MaD:5 Sink:MaD:5 |
+| main.rs:63:5:63:5 | [SSA] a | main.rs:64:13:64:13 | a | provenance |  |
+| main.rs:63:5:63:5 | [SSA] a | main.rs:64:13:64:21 | a.clone() | provenance | MaD:17 |
+| main.rs:63:5:63:5 | [SSA] a | main.rs:70:29:70:29 | a | provenance |  |
+| main.rs:63:5:63:5 | [SSA] a | main.rs:70:29:70:37 | a.clone() | provenance | MaD:17 |
+| main.rs:63:5:63:5 | [SSA] a | main.rs:79:30:79:30 | a | provenance |  |
+| main.rs:63:5:63:5 | [SSA] a | main.rs:79:30:79:38 | a.clone() | provenance | MaD:17 |
+| main.rs:63:5:63:5 | a | main.rs:64:13:64:13 | a | provenance |  |
+| main.rs:63:5:63:5 | a | main.rs:64:13:64:21 | a.clone() | provenance | MaD:17 |
+| main.rs:63:5:63:5 | a | main.rs:70:29:70:29 | a | provenance |  |
+| main.rs:63:5:63:5 | a | main.rs:70:29:70:37 | a.clone() | provenance | MaD:17 |
+| main.rs:63:5:63:5 | a | main.rs:79:30:79:30 | a | provenance |  |
+| main.rs:63:5:63:5 | a | main.rs:79:30:79:38 | a.clone() | provenance | MaD:17 |
+| main.rs:64:13:64:13 | a | main.rs:64:13:64:21 | a.clone() | provenance | MaD:17 |
+| main.rs:64:13:64:21 | a.clone() | main.rs:64:9:64:11 | add | provenance | MaD:4 Sink:MaD:4 |
+| main.rs:68:9:68:13 | mut b | main.rs:69:20:69:20 | b | provenance |  |
+| main.rs:68:9:68:13 | mut b | main.rs:69:20:69:28 | b.clone() | provenance | MaD:17 |
+| main.rs:68:9:68:13 | mut b | main.rs:72:20:72:20 | b | provenance |  |
+| main.rs:68:9:68:13 | mut b | main.rs:72:20:72:28 | b.clone() | provenance | MaD:17 |
+| main.rs:68:17:68:29 | ...::named | main.rs:68:17:68:37 | ...::named(...) | provenance | Src:MaD:14 MaD:14 |
+| main.rs:68:17:68:37 | ...::named(...) | main.rs:68:9:68:13 | mut b | provenance |  |
+| main.rs:69:20:69:20 | b | main.rs:69:20:69:28 | b.clone() | provenance | MaD:17 |
+| main.rs:69:20:69:28 | b.clone() | main.rs:69:16:69:18 | add | provenance | MaD:8 Sink:MaD:8 |
+| main.rs:70:29:70:29 | a | main.rs:70:29:70:37 | a.clone() | provenance | MaD:17 |
+| main.rs:70:29:70:37 | a.clone() | main.rs:70:16:70:27 | add_original | provenance | MaD:9 Sink:MaD:9 |
+| main.rs:71:5:71:5 | [SSA] b | main.rs:72:20:72:20 | b | provenance |  |
+| main.rs:71:5:71:5 | [SSA] b | main.rs:72:20:72:28 | b.clone() | provenance | MaD:17 |
+| main.rs:71:5:71:5 | b | main.rs:72:20:72:20 | b | provenance |  |
+| main.rs:71:5:71:5 | b | main.rs:72:20:72:28 | b.clone() | provenance | MaD:17 |
+| main.rs:72:20:72:20 | b | main.rs:72:20:72:28 | b.clone() | provenance | MaD:17 |
+| main.rs:72:20:72:28 | b.clone() | main.rs:72:16:72:18 | add | provenance | MaD:8 Sink:MaD:8 |
+| main.rs:77:9:77:13 | mut c | main.rs:78:21:78:21 | c | provenance |  |
+| main.rs:77:9:77:13 | mut c | main.rs:78:21:78:29 | c.clone() | provenance | MaD:17 |
+| main.rs:77:9:77:13 | mut c | main.rs:83:21:83:21 | c | provenance |  |
+| main.rs:77:9:77:13 | mut c | main.rs:83:21:83:29 | c.clone() | provenance | MaD:17 |
+| main.rs:77:17:77:28 | ...::from | main.rs:77:17:77:36 | ...::from(...) | provenance | Src:MaD:12 MaD:12 |
+| main.rs:77:17:77:36 | ...::from(...) | main.rs:77:9:77:13 | mut c | provenance |  |
+| main.rs:78:21:78:21 | c | main.rs:78:21:78:29 | c.clone() | provenance | MaD:17 |
+| main.rs:78:21:78:29 | c.clone() | main.rs:78:17:78:19 | add | provenance | MaD:6 Sink:MaD:6 |
+| main.rs:79:30:79:30 | a | main.rs:79:30:79:38 | a.clone() | provenance | MaD:17 |
+| main.rs:79:30:79:38 | a.clone() | main.rs:79:17:79:28 | add_original | provenance | MaD:7 Sink:MaD:7 |
+| main.rs:83:21:83:21 | c | main.rs:83:21:83:29 | c.clone() | provenance | MaD:17 |
+| main.rs:83:21:83:29 | c.clone() | main.rs:83:17:83:19 | add | provenance | MaD:6 Sink:MaD:6 |
+| main.rs:87:9:87:13 | mut d | main.rs:88:13:88:13 | d | provenance |  |
+| main.rs:87:9:87:13 | mut d | main.rs:88:13:88:21 | d.clone() | provenance | MaD:17 |
+| main.rs:87:9:87:13 | mut d | main.rs:94:13:94:13 | d | provenance |  |
+| main.rs:87:9:87:13 | mut d | main.rs:94:13:94:21 | d.clone() | provenance | MaD:17 |
+| main.rs:87:17:87:28 | ...::from | main.rs:87:17:87:36 | ...::from(...) | provenance | Src:MaD:12 MaD:12 |
+| main.rs:87:17:87:36 | ...::from(...) | main.rs:87:9:87:13 | mut d | provenance |  |
+| main.rs:88:13:88:13 | d | main.rs:88:13:88:21 | d.clone() | provenance | MaD:17 |
+| main.rs:88:13:88:21 | d.clone() | main.rs:88:9:88:11 | add | provenance | MaD:4 Sink:MaD:4 |
+| main.rs:94:13:94:13 | d | main.rs:94:13:94:21 | d.clone() | provenance | MaD:17 |
+| main.rs:94:13:94:21 | d.clone() | main.rs:94:9:94:11 | add | provenance | MaD:4 Sink:MaD:4 |
+| main.rs:114:5:114:17 | ...::build | main.rs:114:5:114:36 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:114:5:114:36 | ...::build(...) | main.rs:114:5:114:54 | ... .partitioned(...) | provenance | MaD:36 |
+| main.rs:114:5:114:54 | ... .partitioned(...) | main.rs:114:56:114:60 | build | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:122:9:122:9 | a | main.rs:123:20:123:20 | a | provenance |  |
+| main.rs:122:9:122:9 | a | main.rs:123:20:123:28 | a.clone() | provenance | MaD:17 |
+| main.rs:122:13:122:41 | ...::new | main.rs:122:13:122:58 | ...::new(...) | provenance | Src:MaD:11 MaD:11 |
+| main.rs:122:13:122:58 | ...::new(...) | main.rs:122:9:122:9 | a | provenance |  |
+| main.rs:123:20:123:20 | a | main.rs:123:20:123:28 | a.clone() | provenance | MaD:17 |
+| main.rs:123:20:123:28 | a.clone() | main.rs:123:13:123:18 | insert | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:130:9:130:9 | c | main.rs:131:20:131:20 | c | provenance |  |
+| main.rs:130:9:130:9 | c | main.rs:131:20:131:28 | c.clone() | provenance | MaD:17 |
+| main.rs:130:9:130:9 | c | main.rs:134:13:134:35 | c.set_partitioned(...) | provenance | MaD:24 |
+| main.rs:130:13:130:13 | b | main.rs:130:13:130:31 | b.set_secure(...) | provenance | MaD:27 |
+| main.rs:130:13:130:31 | b.set_secure(...) | main.rs:130:9:130:9 | c | provenance |  |
+| main.rs:131:20:131:20 | c | main.rs:131:20:131:28 | c.clone() | provenance | MaD:17 |
+| main.rs:131:20:131:28 | c.clone() | main.rs:131:13:131:18 | insert | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:134:9:134:9 | d | main.rs:135:20:135:20 | d | provenance |  |
+| main.rs:134:9:134:9 | d | main.rs:135:20:135:28 | d.clone() | provenance | MaD:17 |
+| main.rs:134:13:134:35 | c.set_partitioned(...) | main.rs:134:9:134:9 | d | provenance |  |
+| main.rs:135:20:135:20 | d | main.rs:135:20:135:28 | d.clone() | provenance | MaD:17 |
+| main.rs:135:20:135:28 | d.clone() | main.rs:135:13:135:18 | insert | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:146:9:146:9 | g | main.rs:147:20:147:20 | g | provenance |  |
+| main.rs:146:9:146:9 | g | main.rs:147:20:147:28 | g.clone() | provenance | MaD:17 |
+| main.rs:146:13:146:13 | f | main.rs:146:13:146:31 | f.set_secure(...) | provenance | MaD:27 |
+| main.rs:146:13:146:31 | f.set_secure(...) | main.rs:146:9:146:9 | g | provenance |  |
+| main.rs:147:20:147:20 | g | main.rs:147:20:147:28 | g.clone() | provenance | MaD:17 |
+| main.rs:147:20:147:28 | g.clone() | main.rs:147:13:147:18 | insert | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:151:9:151:9 | h | main.rs:152:20:152:20 | h | provenance |  |
+| main.rs:151:13:151:42 | ...::from | main.rs:151:13:151:61 | ...::from(...) | provenance | Src:MaD:10 MaD:10 |
+| main.rs:151:13:151:61 | ...::from(...) | main.rs:151:9:151:9 | h | provenance |  |
+| main.rs:152:20:152:20 | h | main.rs:152:13:152:18 | insert | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:155:9:155:9 | i | main.rs:156:20:156:20 | i | provenance |  |
+| main.rs:155:9:155:9 | i | main.rs:156:20:156:28 | i.clone() | provenance | MaD:17 |
+| main.rs:155:9:155:9 | i | main.rs:157:20:157:20 | i | provenance |  |
+| main.rs:155:9:155:9 | i | main.rs:157:20:157:28 | i.clone() | provenance | MaD:17 |
+| main.rs:155:9:155:9 | i | main.rs:158:20:158:20 | i | provenance |  |
+| main.rs:155:9:155:9 | i | main.rs:158:20:158:28 | i.clone() | provenance | MaD:17 |
+| main.rs:155:9:155:9 | i | main.rs:159:20:159:20 | i | provenance |  |
+| main.rs:155:9:155:9 | i | main.rs:159:20:159:28 | i.clone() | provenance | MaD:17 |
+| main.rs:155:9:155:9 | i | main.rs:160:20:160:20 | i | provenance |  |
+| main.rs:155:9:155:9 | i | main.rs:160:20:160:28 | i.clone() | provenance | MaD:17 |
+| main.rs:155:9:155:9 | i | main.rs:161:20:161:20 | i | provenance |  |
+| main.rs:155:9:155:9 | i | main.rs:161:20:161:28 | i.clone() | provenance | MaD:17 |
+| main.rs:155:9:155:9 | i | main.rs:162:20:162:20 | i | provenance |  |
+| main.rs:155:9:155:9 | i | main.rs:162:20:162:28 | i.clone() | provenance | MaD:17 |
+| main.rs:155:9:155:9 | i | main.rs:163:20:163:20 | i | provenance |  |
+| main.rs:155:9:155:9 | i | main.rs:163:20:163:28 | i.clone() | provenance | MaD:17 |
+| main.rs:155:9:155:9 | i | main.rs:164:20:164:20 | i | provenance |  |
+| main.rs:155:9:155:9 | i | main.rs:164:20:164:28 | i.clone() | provenance | MaD:17 |
+| main.rs:155:9:155:9 | i | main.rs:165:20:165:20 | i | provenance |  |
+| main.rs:155:9:155:9 | i | main.rs:165:20:165:28 | i.clone() | provenance | MaD:17 |
+| main.rs:155:9:155:9 | i | main.rs:166:20:166:20 | i | provenance |  |
+| main.rs:155:9:155:9 | i | main.rs:166:20:166:28 | i.clone() | provenance | MaD:17 |
+| main.rs:155:9:155:9 | i | main.rs:167:20:167:20 | i | provenance |  |
+| main.rs:155:9:155:9 | i | main.rs:167:20:167:28 | i.clone() | provenance | MaD:17 |
+| main.rs:155:13:155:41 | ...::new | main.rs:155:13:155:58 | ...::new(...) | provenance | Src:MaD:11 MaD:11 |
+| main.rs:155:13:155:58 | ...::new(...) | main.rs:155:9:155:9 | i | provenance |  |
+| main.rs:156:20:156:20 | i | main.rs:156:20:156:28 | i.clone() | provenance | MaD:17 |
+| main.rs:156:20:156:28 | i.clone() | main.rs:156:20:156:46 | ... .set_name(...) | provenance | MaD:23 |
+| main.rs:156:20:156:46 | ... .set_name(...) | main.rs:156:13:156:18 | insert | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:157:20:157:20 | i | main.rs:157:20:157:28 | i.clone() | provenance | MaD:17 |
+| main.rs:157:20:157:28 | i.clone() | main.rs:157:20:157:48 | ... .set_value(...) | provenance | MaD:28 |
+| main.rs:157:20:157:48 | ... .set_value(...) | main.rs:157:13:157:18 | insert | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:158:20:158:20 | i | main.rs:158:20:158:28 | i.clone() | provenance | MaD:17 |
+| main.rs:158:20:158:28 | i.clone() | main.rs:158:20:158:48 | ... .set_http_only(...) | provenance | MaD:21 |
+| main.rs:158:20:158:48 | ... .set_http_only(...) | main.rs:158:13:158:18 | insert | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:159:20:159:20 | i | main.rs:159:20:159:28 | i.clone() | provenance | MaD:17 |
+| main.rs:159:20:159:28 | i.clone() | main.rs:159:20:159:70 | ... .set_same_site(...) | provenance | MaD:26 |
+| main.rs:159:20:159:70 | ... .set_same_site(...) | main.rs:159:13:159:18 | insert | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:160:20:160:20 | i | main.rs:160:20:160:28 | i.clone() | provenance | MaD:17 |
+| main.rs:160:20:160:28 | i.clone() | main.rs:160:20:160:46 | ... .set_max_age(...) | provenance | MaD:22 |
+| main.rs:160:20:160:46 | ... .set_max_age(...) | main.rs:160:13:160:18 | insert | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:161:20:161:20 | i | main.rs:161:20:161:28 | i.clone() | provenance | MaD:17 |
+| main.rs:161:20:161:28 | i.clone() | main.rs:161:20:161:42 | ... .set_path(...) | provenance | MaD:25 |
+| main.rs:161:20:161:42 | ... .set_path(...) | main.rs:161:13:161:18 | insert | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:162:20:162:20 | i | main.rs:162:20:162:28 | i.clone() | provenance | MaD:17 |
+| main.rs:162:20:162:28 | i.clone() | main.rs:162:20:162:41 | ... .unset_path() | provenance | MaD:31 |
+| main.rs:162:20:162:41 | ... .unset_path() | main.rs:162:13:162:18 | insert | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:163:20:163:20 | i | main.rs:163:20:163:28 | i.clone() | provenance | MaD:17 |
+| main.rs:163:20:163:28 | i.clone() | main.rs:163:20:163:54 | ... .set_domain(...) | provenance | MaD:19 |
+| main.rs:163:20:163:54 | ... .set_domain(...) | main.rs:163:13:163:18 | insert | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:164:20:164:20 | i | main.rs:164:20:164:28 | i.clone() | provenance | MaD:17 |
+| main.rs:164:20:164:28 | i.clone() | main.rs:164:20:164:43 | ... .unset_domain() | provenance | MaD:29 |
+| main.rs:164:20:164:43 | ... .unset_domain() | main.rs:164:13:164:18 | insert | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:165:20:165:20 | i | main.rs:165:20:165:28 | i.clone() | provenance | MaD:17 |
+| main.rs:165:20:165:28 | i.clone() | main.rs:165:20:165:46 | ... .set_expires(...) | provenance | MaD:20 |
+| main.rs:165:20:165:46 | ... .set_expires(...) | main.rs:165:13:165:18 | insert | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:166:20:166:20 | i | main.rs:166:20:166:28 | i.clone() | provenance | MaD:17 |
+| main.rs:166:20:166:28 | i.clone() | main.rs:166:20:166:44 | ... .unset_expires() | provenance | MaD:30 |
+| main.rs:166:20:166:44 | ... .unset_expires() | main.rs:166:13:166:18 | insert | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:167:20:167:20 | i | main.rs:167:20:167:28 | i.clone() | provenance | MaD:17 |
+| main.rs:167:20:167:28 | i.clone() | main.rs:167:20:167:45 | ... .make_permanent() | provenance | MaD:18 |
+| main.rs:167:20:167:45 | ... .make_permanent() | main.rs:167:13:167:18 | insert | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:173:22:173:34 | ...::build | main.rs:173:22:173:59 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:173:22:173:59 | ...::build(...) | main.rs:173:61:173:65 | build | provenance | MaD:2 Sink:MaD:2 |
+models
+| 1 | Sink: <biscotti::response_cookies::ResponseCookies>::insert; Argument[0]; cookie-use |
+| 2 | Sink: <cookie::builder::CookieBuilder>::build; Argument[self]; cookie-use |
+| 3 | Sink: <cookie::builder::CookieBuilder>::finish; Argument[self]; cookie-use |
+| 4 | Sink: <cookie::jar::CookieJar>::add; Argument[0]; cookie-use |
+| 5 | Sink: <cookie::jar::CookieJar>::add_original; Argument[0]; cookie-use |
+| 6 | Sink: <cookie::secure::private::PrivateJar>::add; Argument[0]; cookie-use |
+| 7 | Sink: <cookie::secure::private::PrivateJar>::add_original; Argument[0]; cookie-use |
+| 8 | Sink: <cookie::secure::signed::SignedJar>::add; Argument[0]; cookie-use |
+| 9 | Sink: <cookie::secure::signed::SignedJar>::add_original; Argument[0]; cookie-use |
+| 10 | Source: <biscotti::response_cookie::ResponseCookie as core::convert::From>::from; ReturnValue; cookie-create |
+| 11 | Source: <biscotti::response_cookie::ResponseCookie>::new; ReturnValue; cookie-create |
+| 12 | Source: <cookie::Cookie as core::convert::From>::from; ReturnValue; cookie-create |
+| 13 | Source: <cookie::Cookie>::build; ReturnValue; cookie-create |
+| 14 | Source: <cookie::Cookie>::named; ReturnValue; cookie-create |
+| 15 | Source: <cookie::Cookie>::new; ReturnValue; cookie-create |
+| 16 | Source: <cookie::builder::CookieBuilder>::new; ReturnValue; cookie-create |
+| 17 | Summary: <_ as core::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 18 | Summary: <biscotti::response_cookie::ResponseCookie>::make_permanent; Argument[self]; ReturnValue; taint |
+| 19 | Summary: <biscotti::response_cookie::ResponseCookie>::set_domain; Argument[self]; ReturnValue; taint |
+| 20 | Summary: <biscotti::response_cookie::ResponseCookie>::set_expires; Argument[self]; ReturnValue; taint |
+| 21 | Summary: <biscotti::response_cookie::ResponseCookie>::set_http_only; Argument[self]; ReturnValue; taint |
+| 22 | Summary: <biscotti::response_cookie::ResponseCookie>::set_max_age; Argument[self]; ReturnValue; taint |
+| 23 | Summary: <biscotti::response_cookie::ResponseCookie>::set_name; Argument[self]; ReturnValue; taint |
+| 24 | Summary: <biscotti::response_cookie::ResponseCookie>::set_partitioned; Argument[self].OptionalBarrier[cookie-partitioned-arg0]; ReturnValue; taint |
+| 25 | Summary: <biscotti::response_cookie::ResponseCookie>::set_path; Argument[self]; ReturnValue; taint |
+| 26 | Summary: <biscotti::response_cookie::ResponseCookie>::set_same_site; Argument[self]; ReturnValue; taint |
+| 27 | Summary: <biscotti::response_cookie::ResponseCookie>::set_secure; Argument[self].OptionalBarrier[cookie-secure-arg0]; ReturnValue; taint |
+| 28 | Summary: <biscotti::response_cookie::ResponseCookie>::set_value; Argument[self]; ReturnValue; taint |
+| 29 | Summary: <biscotti::response_cookie::ResponseCookie>::unset_domain; Argument[self]; ReturnValue; taint |
+| 30 | Summary: <biscotti::response_cookie::ResponseCookie>::unset_expires; Argument[self]; ReturnValue; taint |
+| 31 | Summary: <biscotti::response_cookie::ResponseCookie>::unset_path; Argument[self]; ReturnValue; taint |
+| 32 | Summary: <cookie::builder::CookieBuilder>::domain; Argument[self]; ReturnValue; taint |
+| 33 | Summary: <cookie::builder::CookieBuilder>::expires; Argument[self]; ReturnValue; taint |
+| 34 | Summary: <cookie::builder::CookieBuilder>::http_only; Argument[self]; ReturnValue; taint |
+| 35 | Summary: <cookie::builder::CookieBuilder>::max_age; Argument[self]; ReturnValue; taint |
+| 36 | Summary: <cookie::builder::CookieBuilder>::partitioned; Argument[self].OptionalBarrier[cookie-partitioned-arg0]; ReturnValue; taint |
+| 37 | Summary: <cookie::builder::CookieBuilder>::path; Argument[self]; ReturnValue; taint |
+| 38 | Summary: <cookie::builder::CookieBuilder>::permanent; Argument[self]; ReturnValue; taint |
+| 39 | Summary: <cookie::builder::CookieBuilder>::removal; Argument[self]; ReturnValue; taint |
+| 40 | Summary: <cookie::builder::CookieBuilder>::same_site; Argument[self]; ReturnValue; taint |
+| 41 | Summary: <cookie::builder::CookieBuilder>::secure; Argument[self].OptionalBarrier[cookie-secure-arg0]; ReturnValue; taint |
+nodes
+| main.rs:8:19:8:31 | ...::build | semmle.label | ...::build |
+| main.rs:8:19:8:50 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:8:19:8:64 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:8:66:8:70 | build | semmle.label | build |
+| main.rs:16:19:16:31 | ...::build | semmle.label | ...::build |
+| main.rs:16:19:16:50 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:16:52:16:56 | build | semmle.label | build |
+| main.rs:20:5:20:17 | ...::build | semmle.label | ...::build |
+| main.rs:20:5:20:36 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:20:5:20:54 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:20:56:20:60 | build | semmle.label | build |
+| main.rs:21:5:21:17 | ...::build | semmle.label | ...::build |
+| main.rs:21:5:21:36 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:21:5:21:55 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:21:57:21:61 | build | semmle.label | build |
+| main.rs:25:5:25:17 | ...::build | semmle.label | ...::build |
+| main.rs:25:5:25:36 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:25:5:25:52 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:25:54:25:58 | build | semmle.label | build |
+| main.rs:26:5:26:17 | ...::build | semmle.label | ...::build |
+| main.rs:26:5:26:36 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:26:5:26:50 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:26:52:26:56 | build | semmle.label | build |
+| main.rs:27:5:27:17 | ...::build | semmle.label | ...::build |
+| main.rs:27:5:27:36 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:27:5:27:51 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:27:53:27:57 | build | semmle.label | build |
+| main.rs:28:5:28:17 | ...::build | semmle.label | ...::build |
+| main.rs:28:5:28:36 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:28:5:28:60 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:28:62:28:66 | build | semmle.label | build |
+| main.rs:29:5:29:17 | ...::build | semmle.label | ...::build |
+| main.rs:29:5:29:36 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:29:5:29:60 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:29:62:29:66 | build | semmle.label | build |
+| main.rs:33:9:33:21 | ...::build | semmle.label | ...::build |
+| main.rs:33:9:33:40 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:33:9:33:58 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:33:60:33:64 | build | semmle.label | build |
+| main.rs:35:9:35:21 | ...::build | semmle.label | ...::build |
+| main.rs:35:9:35:40 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:35:9:35:58 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:35:60:35:64 | build | semmle.label | build |
+| main.rs:39:5:39:22 | ...::new | semmle.label | ...::new |
+| main.rs:39:5:39:39 | ...::new(...) | semmle.label | ...::new(...) |
+| main.rs:39:5:39:53 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:39:55:39:59 | build | semmle.label | build |
+| main.rs:40:5:40:17 | ...::build | semmle.label | ...::build |
+| main.rs:40:5:40:36 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:40:5:40:50 | ... .expires(...) | semmle.label | ... .expires(...) |
+| main.rs:40:5:40:64 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:40:66:40:70 | build | semmle.label | build |
+| main.rs:41:5:41:17 | ...::build | semmle.label | ...::build |
+| main.rs:41:5:41:36 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:41:5:41:79 | ... .max_age(...) | semmle.label | ... .max_age(...) |
+| main.rs:41:5:41:93 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:41:95:41:99 | build | semmle.label | build |
+| main.rs:42:5:42:17 | ...::build | semmle.label | ...::build |
+| main.rs:42:5:42:36 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:42:5:42:58 | ... .domain(...) | semmle.label | ... .domain(...) |
+| main.rs:42:5:42:72 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:42:74:42:78 | build | semmle.label | build |
+| main.rs:43:5:43:17 | ...::build | semmle.label | ...::build |
+| main.rs:43:5:43:36 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:43:5:43:46 | ... .path(...) | semmle.label | ... .path(...) |
+| main.rs:43:5:43:60 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:43:62:43:66 | build | semmle.label | build |
+| main.rs:44:5:44:17 | ...::build | semmle.label | ...::build |
+| main.rs:44:5:44:36 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:44:5:44:52 | ... .http_only(...) | semmle.label | ... .http_only(...) |
+| main.rs:44:5:44:66 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:44:68:44:72 | build | semmle.label | build |
+| main.rs:45:5:45:17 | ...::build | semmle.label | ...::build |
+| main.rs:45:5:45:36 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:45:5:45:72 | ... .same_site(...) | semmle.label | ... .same_site(...) |
+| main.rs:45:5:45:86 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:45:88:45:92 | build | semmle.label | build |
+| main.rs:46:5:46:17 | ...::build | semmle.label | ...::build |
+| main.rs:46:5:46:36 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:46:5:46:48 | ... .permanent() | semmle.label | ... .permanent() |
+| main.rs:46:5:46:62 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:46:64:46:68 | build | semmle.label | build |
+| main.rs:47:5:47:17 | ...::build | semmle.label | ...::build |
+| main.rs:47:5:47:36 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:47:5:47:46 | ... .removal() | semmle.label | ... .removal() |
+| main.rs:47:5:47:60 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:47:62:47:66 | build | semmle.label | build |
+| main.rs:48:5:48:17 | ...::build | semmle.label | ...::build |
+| main.rs:48:5:48:36 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:48:5:48:50 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:48:52:48:57 | finish | semmle.label | finish |
+| main.rs:49:5:49:17 | ...::build | semmle.label | ...::build |
+| main.rs:49:5:49:25 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:49:5:49:39 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:49:41:49:45 | build | semmle.label | build |
+| main.rs:50:5:50:17 | ...::build | semmle.label | ...::build |
+| main.rs:50:5:50:40 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:50:5:50:54 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:50:56:50:60 | build | semmle.label | build |
+| main.rs:53:5:53:49 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:53:5:53:63 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:53:65:53:69 | build | semmle.label | build |
+| main.rs:58:9:58:13 | mut a | semmle.label | mut a |
+| main.rs:58:17:58:27 | ...::new | semmle.label | ...::new |
+| main.rs:58:17:58:44 | ...::new(...) | semmle.label | ...::new(...) |
+| main.rs:59:9:59:11 | add | semmle.label | add |
+| main.rs:59:13:59:13 | a | semmle.label | a |
+| main.rs:59:13:59:21 | a.clone() | semmle.label | a.clone() |
+| main.rs:60:9:60:20 | add_original | semmle.label | add_original |
+| main.rs:60:22:60:22 | a | semmle.label | a |
+| main.rs:60:22:60:30 | a.clone() | semmle.label | a.clone() |
+| main.rs:63:5:63:5 | [SSA] a | semmle.label | [SSA] a |
+| main.rs:63:5:63:5 | a | semmle.label | a |
+| main.rs:64:9:64:11 | add | semmle.label | add |
+| main.rs:64:13:64:13 | a | semmle.label | a |
+| main.rs:64:13:64:21 | a.clone() | semmle.label | a.clone() |
+| main.rs:68:9:68:13 | mut b | semmle.label | mut b |
+| main.rs:68:17:68:29 | ...::named | semmle.label | ...::named |
+| main.rs:68:17:68:37 | ...::named(...) | semmle.label | ...::named(...) |
+| main.rs:69:16:69:18 | add | semmle.label | add |
+| main.rs:69:20:69:20 | b | semmle.label | b |
+| main.rs:69:20:69:28 | b.clone() | semmle.label | b.clone() |
+| main.rs:70:16:70:27 | add_original | semmle.label | add_original |
+| main.rs:70:29:70:29 | a | semmle.label | a |
+| main.rs:70:29:70:37 | a.clone() | semmle.label | a.clone() |
+| main.rs:71:5:71:5 | [SSA] b | semmle.label | [SSA] b |
+| main.rs:71:5:71:5 | b | semmle.label | b |
+| main.rs:72:16:72:18 | add | semmle.label | add |
+| main.rs:72:20:72:20 | b | semmle.label | b |
+| main.rs:72:20:72:28 | b.clone() | semmle.label | b.clone() |
+| main.rs:77:9:77:13 | mut c | semmle.label | mut c |
+| main.rs:77:17:77:28 | ...::from | semmle.label | ...::from |
+| main.rs:77:17:77:36 | ...::from(...) | semmle.label | ...::from(...) |
+| main.rs:78:17:78:19 | add | semmle.label | add |
+| main.rs:78:21:78:21 | c | semmle.label | c |
+| main.rs:78:21:78:29 | c.clone() | semmle.label | c.clone() |
+| main.rs:79:17:79:28 | add_original | semmle.label | add_original |
+| main.rs:79:30:79:30 | a | semmle.label | a |
+| main.rs:79:30:79:38 | a.clone() | semmle.label | a.clone() |
+| main.rs:83:17:83:19 | add | semmle.label | add |
+| main.rs:83:21:83:21 | c | semmle.label | c |
+| main.rs:83:21:83:29 | c.clone() | semmle.label | c.clone() |
+| main.rs:87:9:87:13 | mut d | semmle.label | mut d |
+| main.rs:87:17:87:28 | ...::from | semmle.label | ...::from |
+| main.rs:87:17:87:36 | ...::from(...) | semmle.label | ...::from(...) |
+| main.rs:88:9:88:11 | add | semmle.label | add |
+| main.rs:88:13:88:13 | d | semmle.label | d |
+| main.rs:88:13:88:21 | d.clone() | semmle.label | d.clone() |
+| main.rs:94:9:94:11 | add | semmle.label | add |
+| main.rs:94:13:94:13 | d | semmle.label | d |
+| main.rs:94:13:94:21 | d.clone() | semmle.label | d.clone() |
+| main.rs:114:5:114:17 | ...::build | semmle.label | ...::build |
+| main.rs:114:5:114:36 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:114:5:114:54 | ... .partitioned(...) | semmle.label | ... .partitioned(...) |
+| main.rs:114:56:114:60 | build | semmle.label | build |
+| main.rs:122:9:122:9 | a | semmle.label | a |
+| main.rs:122:13:122:41 | ...::new | semmle.label | ...::new |
+| main.rs:122:13:122:58 | ...::new(...) | semmle.label | ...::new(...) |
+| main.rs:123:13:123:18 | insert | semmle.label | insert |
+| main.rs:123:20:123:20 | a | semmle.label | a |
+| main.rs:123:20:123:28 | a.clone() | semmle.label | a.clone() |
+| main.rs:130:9:130:9 | c | semmle.label | c |
+| main.rs:130:13:130:13 | b | semmle.label | b |
+| main.rs:130:13:130:31 | b.set_secure(...) | semmle.label | b.set_secure(...) |
+| main.rs:131:13:131:18 | insert | semmle.label | insert |
+| main.rs:131:20:131:20 | c | semmle.label | c |
+| main.rs:131:20:131:28 | c.clone() | semmle.label | c.clone() |
+| main.rs:134:9:134:9 | d | semmle.label | d |
+| main.rs:134:13:134:35 | c.set_partitioned(...) | semmle.label | c.set_partitioned(...) |
+| main.rs:135:13:135:18 | insert | semmle.label | insert |
+| main.rs:135:20:135:20 | d | semmle.label | d |
+| main.rs:135:20:135:28 | d.clone() | semmle.label | d.clone() |
+| main.rs:146:9:146:9 | g | semmle.label | g |
+| main.rs:146:13:146:13 | f | semmle.label | f |
+| main.rs:146:13:146:31 | f.set_secure(...) | semmle.label | f.set_secure(...) |
+| main.rs:147:13:147:18 | insert | semmle.label | insert |
+| main.rs:147:20:147:20 | g | semmle.label | g |
+| main.rs:147:20:147:28 | g.clone() | semmle.label | g.clone() |
+| main.rs:151:9:151:9 | h | semmle.label | h |
+| main.rs:151:13:151:42 | ...::from | semmle.label | ...::from |
+| main.rs:151:13:151:61 | ...::from(...) | semmle.label | ...::from(...) |
+| main.rs:152:13:152:18 | insert | semmle.label | insert |
+| main.rs:152:20:152:20 | h | semmle.label | h |
+| main.rs:155:9:155:9 | i | semmle.label | i |
+| main.rs:155:13:155:41 | ...::new | semmle.label | ...::new |
+| main.rs:155:13:155:58 | ...::new(...) | semmle.label | ...::new(...) |
+| main.rs:156:13:156:18 | insert | semmle.label | insert |
+| main.rs:156:20:156:20 | i | semmle.label | i |
+| main.rs:156:20:156:28 | i.clone() | semmle.label | i.clone() |
+| main.rs:156:20:156:46 | ... .set_name(...) | semmle.label | ... .set_name(...) |
+| main.rs:157:13:157:18 | insert | semmle.label | insert |
+| main.rs:157:20:157:20 | i | semmle.label | i |
+| main.rs:157:20:157:28 | i.clone() | semmle.label | i.clone() |
+| main.rs:157:20:157:48 | ... .set_value(...) | semmle.label | ... .set_value(...) |
+| main.rs:158:13:158:18 | insert | semmle.label | insert |
+| main.rs:158:20:158:20 | i | semmle.label | i |
+| main.rs:158:20:158:28 | i.clone() | semmle.label | i.clone() |
+| main.rs:158:20:158:48 | ... .set_http_only(...) | semmle.label | ... .set_http_only(...) |
+| main.rs:159:13:159:18 | insert | semmle.label | insert |
+| main.rs:159:20:159:20 | i | semmle.label | i |
+| main.rs:159:20:159:28 | i.clone() | semmle.label | i.clone() |
+| main.rs:159:20:159:70 | ... .set_same_site(...) | semmle.label | ... .set_same_site(...) |
+| main.rs:160:13:160:18 | insert | semmle.label | insert |
+| main.rs:160:20:160:20 | i | semmle.label | i |
+| main.rs:160:20:160:28 | i.clone() | semmle.label | i.clone() |
+| main.rs:160:20:160:46 | ... .set_max_age(...) | semmle.label | ... .set_max_age(...) |
+| main.rs:161:13:161:18 | insert | semmle.label | insert |
+| main.rs:161:20:161:20 | i | semmle.label | i |
+| main.rs:161:20:161:28 | i.clone() | semmle.label | i.clone() |
+| main.rs:161:20:161:42 | ... .set_path(...) | semmle.label | ... .set_path(...) |
+| main.rs:162:13:162:18 | insert | semmle.label | insert |
+| main.rs:162:20:162:20 | i | semmle.label | i |
+| main.rs:162:20:162:28 | i.clone() | semmle.label | i.clone() |
+| main.rs:162:20:162:41 | ... .unset_path() | semmle.label | ... .unset_path() |
+| main.rs:163:13:163:18 | insert | semmle.label | insert |
+| main.rs:163:20:163:20 | i | semmle.label | i |
+| main.rs:163:20:163:28 | i.clone() | semmle.label | i.clone() |
+| main.rs:163:20:163:54 | ... .set_domain(...) | semmle.label | ... .set_domain(...) |
+| main.rs:164:13:164:18 | insert | semmle.label | insert |
+| main.rs:164:20:164:20 | i | semmle.label | i |
+| main.rs:164:20:164:28 | i.clone() | semmle.label | i.clone() |
+| main.rs:164:20:164:43 | ... .unset_domain() | semmle.label | ... .unset_domain() |
+| main.rs:165:13:165:18 | insert | semmle.label | insert |
+| main.rs:165:20:165:20 | i | semmle.label | i |
+| main.rs:165:20:165:28 | i.clone() | semmle.label | i.clone() |
+| main.rs:165:20:165:46 | ... .set_expires(...) | semmle.label | ... .set_expires(...) |
+| main.rs:166:13:166:18 | insert | semmle.label | insert |
+| main.rs:166:20:166:20 | i | semmle.label | i |
+| main.rs:166:20:166:28 | i.clone() | semmle.label | i.clone() |
+| main.rs:166:20:166:44 | ... .unset_expires() | semmle.label | ... .unset_expires() |
+| main.rs:167:13:167:18 | insert | semmle.label | insert |
+| main.rs:167:20:167:20 | i | semmle.label | i |
+| main.rs:167:20:167:28 | i.clone() | semmle.label | i.clone() |
+| main.rs:167:20:167:45 | ... .make_permanent() | semmle.label | ... .make_permanent() |
+| main.rs:173:22:173:34 | ...::build | semmle.label | ...::build |
+| main.rs:173:22:173:59 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:173:61:173:65 | build | semmle.label | build |
+subpaths
