@@ -4,7 +4,7 @@
 <qhelp>
 <overview>
 
-<p>Failing to set the 'Secure' attribute on a cookie allows it to be transmitted over an unencrypted (HTTP) connection. If an attacker can observe a user's network traffic (for example over an insecure Wi‑Fi network), they can access sensitive information in the cookie and potentially use it to impersonate the user.</p>
+<p>Failing to set the 'Secure' attribute on a cookie allows it to be transmitted over an unencrypted (HTTP) connection. If an attacker can observe a user's network traffic, they can access sensitive information in the cookie and potentially use it to impersonate the user.</p>
 
 </overview>
 <recommendation>
