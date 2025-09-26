@@ -7,6 +7,6 @@
 import cpp
 import semmle.code.cpp.controlflow.Guards
 
-from GuardCondition guard, AbstractValue value, BasicBlock block
+from GuardCondition guard, GuardValue value, BasicBlock block
 where guard.valueControls(block, value)
 select guard, value, block

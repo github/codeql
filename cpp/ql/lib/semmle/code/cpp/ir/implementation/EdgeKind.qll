@@ -53,10 +53,17 @@ class GotoEdge extends EdgeKindImpl, TGotoEdge {
 }
 
 /**
+ * A "true" or "false" edge representing a successor of a conditional branch.
+ */
+abstract private class BooleanEdgeKindImpl extends EdgeKindImpl { }
+
+final class BooleanEdge = BooleanEdgeKindImpl;
+
+/**
  * A "true" edge, representing the successor of a conditional branch when the
  * condition is non-zero.
  */
-class TrueEdge extends EdgeKindImpl, TTrueEdge {
+class TrueEdge extends BooleanEdgeKindImpl, TTrueEdge {
   final override string toString() { result = "True" }
 }
 
@@ -64,7 +71,7 @@ class TrueEdge extends EdgeKindImpl, TTrueEdge {
  * A "false" edge, representing the successor of a conditional branch when the
  * condition is zero.
  */
-class FalseEdge extends EdgeKindImpl, TFalseEdge {
+class FalseEdge extends BooleanEdgeKindImpl, TFalseEdge {
   final override string toString() { result = "False" }
 }
 
@@ -96,18 +103,47 @@ class SehExceptionEdge extends ExceptionEdgeImpl, TSehExceptionEdge {
 }
 
 /**
+ * An edge from a `Switch` instruction to one of the cases, or to the default
+ * branch.
+ */
+abstract private class SwitchEdgeKindImpl extends EdgeKindImpl {
+  /**
+   * Gets the smallest value of the switch expression for which control will flow along this edge.
+   */
+  string getMinValue() { none() }
+
+  /**
+   * Gets the largest value of the switch expression for which control will flow along this edge.
+   */
+  string getMaxValue() { none() }
+
+  /**
+   * Gets the unique value of the switch expression for which control will
+   * flow along this edge, if any.
+   */
+  final string getValue() { result = unique( | | [this.getMinValue(), this.getMaxValue()]) }
+
+  /** Holds if this edge is the default edge. */
+  predicate isDefault() { none() }
+}
+
+final class SwitchEdge = SwitchEdgeKindImpl;
+
+/**
  * A "default" edge, representing the successor of a `Switch` instruction when
  * none of the case values matches the condition value.
  */
-class DefaultEdge extends EdgeKindImpl, TDefaultEdge {
+class DefaultEdge extends SwitchEdgeKindImpl, TDefaultEdge {
   final override string toString() { result = "Default" }
+
+  final override predicate isDefault() { any() }
 }
 
 /**
  * A "case" edge, representing the successor of a `Switch` instruction when the
  * the condition value matches a corresponding `case` label.
  */
-class CaseEdge extends EdgeKindImpl, TCaseEdge {
+class CaseEdge extends SwitchEdgeKindImpl, TCaseEdge {
   string minValue;
   string maxValue;
 
@@ -119,24 +155,9 @@ class CaseEdge extends EdgeKindImpl, TCaseEdge {
     else result = "Case[" + minValue + ".." + maxValue + "]"
   }
 
-  /**
-   * Gets the smallest value of the switch expression for which control will flow along this edge.
-   */
-  final string getMinValue() { result = minValue }
+  final override string getMinValue() { result = minValue }
 
-  /**
-   * Gets the largest value of the switch expression for which control will flow along this edge.
-   */
-  final string getMaxValue() { result = maxValue }
-
-  /**
-   * Gets the unique value of the switch expression for which control will
-   * flow along this edge, if any.
-   */
-  final string getValue() {
-    minValue = maxValue and
-    result = minValue
-  }
+  final override string getMaxValue() { result = maxValue }
 }
 
 /**

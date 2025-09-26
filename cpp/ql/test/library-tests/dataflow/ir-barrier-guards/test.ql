@@ -7,7 +7,7 @@ predicate instructionGuardChecks(IRGuardCondition gc, Instruction checked, boole
   exists(CallInstruction call |
     call.getStaticCallTarget().hasName("checkArgument") and
     checked = call.getAnArgument() and
-    gc.comparesEq(call.getAUse(), 0, false, any(BooleanValue bv | bv.getValue() = branch))
+    gc.comparesEq(call.getAUse(), 0, false, any(GuardValue bv | bv.asBooleanValue() = branch))
   )
 }
 

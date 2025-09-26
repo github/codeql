@@ -51,7 +51,7 @@ class ReallocCallLeak extends FunctionCall {
   predicate mayHandleByTermination() {
     exists(GuardCondition guard, CallMayNotReturn exit |
       this.(ControlFlowNode).getASuccessor*() = guard and
-      guard.getAChild*() = v.getAnAccess() and
+      guard.(Expr).getAChild*() = v.getAnAccess() and
       guard.controls(exit.getBasicBlock(), _)
     )
   }

@@ -321,3 +321,98 @@ void test_cmp_implies_unary(int a) {
 
   }
 }
+
+int foo();
+
+void test_constant_value_and_case_range(bool b)
+{
+  int x = foo();
+  if (b)
+  {
+    x = 42;
+  }
+  switch (x)
+  {
+  case 40 ... 50:
+    // should not be guarded by `foo() = 40..50`
+    use(x);
+  }
+}
+
+void chk();
+
+bool testNotNull1(void* input) {
+  return input != nullptr;
+}
+
+void test_ternary(void* y) {
+  int x = testNotNull1(y) ? 42 : 0;
+  if (x != 0) {
+    chk(); // $ guarded='... ? ... : ...:not 0' guarded='42:not 0' guarded='call to testNotNull1:true' guarded='x != 0:true' guarded='x:not 0' guarded='y:not null'
+  }
+}
+
+bool testNotNull2(void* input) {
+  if (input == nullptr) return false;
+  return true;
+}
+
+int getNumOrDefault(int* number) {
+  return number == nullptr ? 0 : *number;
+}
+
+char returnAIfNoneAreNull(char* s1, char* s2) {
+  if (!s1 || !s2) return '\0';
+  return 'a';
+}
+
+enum class Status { SUCCESS = 1, FAILURE = 2 };
+
+Status testEnumWrapper(bool flag) {
+  return flag ? Status::SUCCESS : Status::FAILURE;
+}
+
+void testWrappers(void* p, int* i, char* s, bool b) {
+  if (testNotNull1(p)) {
+    chk(); // $ guarded='p:not null' guarded='call to testNotNull1:true'
+  } else {
+    chk(); // $ guarded=p:null guarded='call to testNotNull1:false'
+  }
+
+  if (testNotNull2(p)) {
+    chk(); // $ guarded='call to testNotNull2:true' guarded='p:not null'
+  } else {
+    chk(); // $ guarded='call to testNotNull2:false' guarded=p:null
+  }
+
+  if (0 == getNumOrDefault(i)) {
+    chk(); // $ guarded='0 == call to getNumOrDefault:true' guarded='call to getNumOrDefault:0'
+  } else {
+    chk(); // $ guarded='0 == call to getNumOrDefault:false' guarded='call to getNumOrDefault:not 0' guarded='i:not null'
+  }
+
+  if ('\0' == returnAIfNoneAreNull(s, "suffix")) {
+    chk(); // $ guarded='0 == call to returnAIfNoneAreNull:true' guarded='call to returnAIfNoneAreNull:0'
+  } else {
+    chk(); // $ guarded='0 == call to returnAIfNoneAreNull:false' guarded='call to returnAIfNoneAreNull:not 0' guarded='s:not null' guarded='suffix:not null'
+  }
+
+  switch (testEnumWrapper(b)) {
+    case Status::SUCCESS:
+      chk(); // $ guarded='call to testEnumWrapper=SUCCESS:true' guarded='call to testEnumWrapper:1' guarded=b:true 
+      break;
+    case Status::FAILURE:
+      chk(); // $ guarded='call to testEnumWrapper=FAILURE:true' guarded='call to testEnumWrapper:2' guarded=b:false
+      break;
+  }
+}
+
+void ensureNotNull(void* o) {
+  if (!o) throw 42;
+}
+
+void testExceptionWrapper(void* s) {
+  chk(); // nothing guards here
+  ensureNotNull(s);
+  chk(); // $ MISSING: guarded='call to ensureNotNull:no exception' guarded='s:not null'
+}
