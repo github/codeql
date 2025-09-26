@@ -505,7 +505,8 @@ module Make<
     or
     exists(NonNullExpr nonnull |
       equalityTestSymmetric(g1, g2, nonnull, v1.asBooleanValue()) and
-      v2.isNonNullValue()
+      v2.isNonNullValue() and
+      not g2 instanceof NonNullExpr // disregard trivial guard
     )
     or
     exists(Case c1, Expr switchExpr |
@@ -801,13 +802,16 @@ module Make<
     }
 
     private predicate impliesStep2(Guard g1, GuardValue v1, Guard g2, GuardValue v2) {
-      impliesStep1(g1, v1, g2, v2)
-      or
-      exists(Expr nonnull |
-        exprHasValue(nonnull, v2) and
-        equalityTestSymmetric(g1, g2, nonnull, v1.asBooleanValue()) and
-        v2.isNonNullValue()
-      )
+      (
+        impliesStep1(g1, v1, g2, v2)
+        or
+        exists(Expr nonnull |
+          exprHasValue(nonnull, v2) and
+          equalityTestSymmetric(g1, g2, nonnull, v1.asBooleanValue()) and
+          v2.isNonNullValue()
+        )
+      ) and
+      not exprHasValue(g2, v2) // disregard trivial guard
     }
 
     bindingset[g1, v1]
