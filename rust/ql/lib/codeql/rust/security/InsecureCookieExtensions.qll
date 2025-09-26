@@ -99,7 +99,7 @@ module InsecureCookie {
         else value = false // `false`, unknown, or multiple values
       ) and
       // and find the node where this happens (we can't just use the flow summary node, since its
-      // shared across all calls to the modelled function, we need a node specific to this call)
+      // shared across all calls to the modeled function, we need a node specific to this call)
       (
         node.asExpr().getExpr() = ce.(MethodCallExpr).getReceiver() // e.g. `a` in `a.set_secure(true)`
         or
