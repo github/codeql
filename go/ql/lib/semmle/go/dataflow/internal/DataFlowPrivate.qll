@@ -164,15 +164,17 @@ predicate jumpStep(Node n1, Node n2) {
  */
 predicate storeStep(Node node1, ContentSet cs, Node node2) {
   exists(Content c | cs.asOneContent() = c |
-    // a write `(*p).f = rhs` is modeled as two store steps: `rhs` is flows into field `f` of `(*p)`,
-    // which in turn flows into the pointer content of `p`
+    // a write `(*p).f = rhs` is modeled as two store steps: `rhs` is flows into field `f` of the
+    // post-update node of `(*p)`, which in turn flows into the pointer content of the post-update
+    // node of `p`
     exists(Write w, Field f, DataFlow::Node base, DataFlow::Node rhs | w.writesField(base, f, rhs) |
       node1 = rhs and
       node2 = base and
       c = any(DataFlow::FieldContent fc | fc.getField() = f)
       or
       node1 = base and
-      node2.(PostUpdateNode).getPreUpdateNode() = node1.(PointerDereferenceNode).getOperand() and
+      node2.(PostUpdateNode).getPreUpdateNode() =
+        node1.(PostUpdateNode).getPreUpdateNode().(PointerDereferenceNode).getOperand() and
       c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
     )
     or
