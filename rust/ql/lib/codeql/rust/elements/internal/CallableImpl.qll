@@ -27,5 +27,15 @@ module Impl {
      * Holds if `getSelfParam()` exists.
      */
     predicate hasSelfParam() { exists(this.getSelfParam()) }
+
+    /**
+     * Gets the number of parameters of this callable, including `self` if it exists.
+     */
+    int getNumberOfParamsInclSelf() {
+      exists(int arr |
+        arr = this.getNumberOfParams() and
+        if this.hasSelfParam() then result = arr + 1 else result = arr
+      )
+    }
   }
 }

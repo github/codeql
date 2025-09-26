@@ -605,13 +605,13 @@ private class EnumItemNode extends TypeItemNode instanceof Enum {
   }
 }
 
-/** An item that can be called with arguments. */
-abstract class CallableItemNode extends ItemNode {
-  /** Gets the number of parameters of this item. */
-  abstract int getNumberOfParameters();
+/** An item that can be referenced with arguments. */
+abstract class ParameterizableItemNode extends ItemNode {
+  /** Gets the arity this item. */
+  abstract int getArity();
 }
 
-private class VariantItemNode extends CallableItemNode instanceof Variant {
+private class VariantItemNode extends ParameterizableItemNode instanceof Variant {
   override string getName() { result = Variant.super.getName().getText() }
 
   override Namespace getNamespace() {
@@ -624,9 +624,7 @@ private class VariantItemNode extends CallableItemNode instanceof Variant {
 
   override Visibility getVisibility() { result = super.getEnum().getVisibility() }
 
-  override int getNumberOfParameters() {
-    result = super.getFieldList().(TupleFieldList).getNumberOfFields()
-  }
+  override int getArity() { result = super.getFieldList().(TupleFieldList).getNumberOfFields() }
 
   override predicate hasCanonicalPath(Crate c) { this.hasCanonicalPathPrefix(c) }
 
@@ -649,7 +647,7 @@ private class VariantItemNode extends CallableItemNode instanceof Variant {
   }
 }
 
-class FunctionItemNode extends AssocItemNode, CallableItemNode instanceof Function {
+class FunctionItemNode extends AssocItemNode, ParameterizableItemNode instanceof Function {
   override string getName() { result = Function.super.getName().getText() }
 
   override predicate hasImplementation() { Function.super.hasImplementation() }
@@ -660,12 +658,7 @@ class FunctionItemNode extends AssocItemNode, CallableItemNode instanceof Functi
 
   override Visibility getVisibility() { result = Function.super.getVisibility() }
 
-  override int getNumberOfParameters() {
-    exists(int arr |
-      arr = super.getNumberOfParams() and
-      if super.hasSelfParam() then result = arr + 1 else result = arr
-    )
-  }
+  override int getArity() { result = super.getNumberOfParamsInclSelf() }
 }
 
 abstract class ImplOrTraitItemNode extends ItemNode {
@@ -885,7 +878,7 @@ private class ImplItemNodeImpl extends ImplItemNode {
   TraitItemNode resolveTraitTyCand() { result = resolvePathCand(this.getTraitPath()) }
 }
 
-private class StructItemNode extends TypeItemNode, CallableItemNode instanceof Struct {
+private class StructItemNode extends TypeItemNode, ParameterizableItemNode instanceof Struct {
   override string getName() { result = Struct.super.getName().getText() }
 
   override Namespace getNamespace() {
@@ -897,9 +890,7 @@ private class StructItemNode extends TypeItemNode, CallableItemNode instanceof S
 
   override Visibility getVisibility() { result = Struct.super.getVisibility() }
 
-  override int getNumberOfParameters() {
-    result = super.getFieldList().(TupleFieldList).getNumberOfFields()
-  }
+  override int getArity() { result = super.getFieldList().(TupleFieldList).getNumberOfFields() }
 
   override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
 
@@ -1717,7 +1708,7 @@ private ItemNode resolvePathCand(RelevantPath path) {
     or
     exists(CallExpr ce |
       path = CallExprImpl::getFunctionPath(ce) and
-      result.(CallableItemNode).getNumberOfParameters() = ce.getNumberOfArgs()
+      result.(ParameterizableItemNode).getArity() = ce.getNumberOfArgs()
     )
   )
 }
