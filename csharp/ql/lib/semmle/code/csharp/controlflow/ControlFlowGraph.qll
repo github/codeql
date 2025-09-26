@@ -294,13 +294,7 @@ module ControlFlow {
 
     class Split = Splitting::Split;
 
-    class FinallySplit = Splitting::FinallySplitting::FinallySplit;
-
     class ExceptionHandlerSplit = Splitting::ExceptionHandlerSplitting::ExceptionHandlerSplit;
-
-    class BooleanSplit = Splitting::BooleanSplitting::BooleanSplit;
-
-    class LoopSplit = Splitting::LoopSplitting::LoopSplit;
   }
 
   class BasicBlock = BBs::BasicBlock;
