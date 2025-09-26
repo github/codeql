@@ -30,6 +30,7 @@ import semmle.code.java.frameworks.Guice
 import semmle.code.java.frameworks.struts.StrutsActions
 import semmle.code.java.frameworks.Thrift
 import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
+import semmle.code.java.security.FileReadWrite
 private import semmle.code.java.dataflow.ExternalFlow
 private import codeql.threatmodels.ThreatModels
 
@@ -248,7 +249,7 @@ private class StdinInput extends LocalUserInput {
 private class FileInput extends LocalUserInput {
   FileInput() {
     // Access to files.
-    sourceNode(this, "file")
+    sourceNode(this, "file") or this.asExpr() instanceof FileReadExpr
   }
 
   override string getThreatModel() { result = "file" }
