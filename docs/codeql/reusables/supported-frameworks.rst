@@ -324,12 +324,15 @@ All support is experimental.
    Name, Category
    `actix-web <https://crates.io/crates/actix-web>`__, Web framework
    alloc, Standard library
+   `async-std <https://crates.io/crates/async-std>`__, Asynchronous programming library
+   `biscotti <https://crates.io/crates/biscotti>`__, Cookie management
    `clap <http://crates.io/crates/clap>`__, Utility library
+   `cookie <https://crates.io/crates/cookie>`__, Cookie management
    core, Standard library
    `digest <https://crates.io/crates/digest>`__, Cryptography library
-   `futures-executor <https://crates.io/crates/futures-executor>`__, Utility library
+   `futures <https://crates.io/crates/futures>`__, Asynchronous programming library
+   `futures-rustls <https://crates.io/crates/futures-rustls>`__, Network communicator
    `hyper <https://crates.io/crates/hyper>`__, HTTP library
-   `hyper-util <https://crates.io/crates/hyper-util>`__, HTTP library
    `libc <https://crates.io/crates/libc>`__, Utility library
    `log <https://crates.io/crates/log>`__, Logging library
    `md5 <https://crates.io/crates/md5>`__, Utility library
@@ -345,12 +348,14 @@ All support is experimental.
    `rusqlite <https://crates.io/crates/rusqlite>`__, Database
    std, Standard library
    `rust-crypto <https://crates.io/crates/rust-crypto>`__, Cryptography library
+   `rustls <https://crates.io/crates/rustls>`__, Network communicator
    `serde <https://crates.io/crates/serde>`__, Serialization
    `smallvec <https://crates.io/crates/smallvec>`__, Utility library
    `sqlx <https://crates.io/crates/sqlx>`__, Database
    `tokio <https://crates.io/crates/tokio>`__, Asynchronous IO
    `tokio-postgres <https://crates.io/crates/tokio-postgres>`__, Database
    `url <https://crates.io/crates/url>`__, Utility library
+   `warp <https://crates.io/crates/warp>`__, Web framework
 
 Swift built-in support
 ================================
