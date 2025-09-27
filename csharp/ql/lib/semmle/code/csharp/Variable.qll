@@ -213,7 +213,11 @@ class Parameter extends LocalScopeVariable, Attributable, TopLevelExprParent, @p
     params(this, _, getTypeRef(result), _, _, _, _)
   }
 
-  override Location getALocation() { param_location(this, result) }
+  override Location getALocation() {
+    param_location(this, result)
+    or
+    not param_location(this, _) and result instanceof EmptyLocation
+  }
 
   override string toString() { result = this.getName() }
 

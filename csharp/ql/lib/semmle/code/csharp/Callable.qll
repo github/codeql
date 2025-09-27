@@ -265,7 +265,13 @@ class Method extends Callable, Virtualizable, Attributable, @method {
     result = Virtualizable.super.getAnUltimateImplementor()
   }
 
-  override Location getALocation() { method_location(this, result) }
+  override Location getALocation() {
+    exists(Method m | m = this.getUnboundDeclaration() |
+      method_location(m, result)
+      or
+      not method_location(m, _) and result instanceof EmptyLocation
+    )
+  }
 
   /** Holds if this method is an extension method. */
   predicate isExtensionMethod() { this.getParameter(0).hasExtensionMethodModifier() }
@@ -357,7 +363,11 @@ class Constructor extends Callable, Member, Attributable, @constructor {
 
   override Constructor getUnboundDeclaration() { constructors(this, _, _, result) }
 
-  override Location getALocation() { constructor_location(this, result) }
+  override Location getALocation() {
+    constructor_location(this, result)
+    or
+    not constructor_location(this, _) and result instanceof EmptyLocation
+  }
 
   override predicate fromSource() { Member.super.fromSource() and not this.isCompilerGenerated() }
 
