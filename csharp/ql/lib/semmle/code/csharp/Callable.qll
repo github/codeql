@@ -265,7 +265,7 @@ class Method extends Callable, Virtualizable, Attributable, @method {
     result = Virtualizable.super.getAnUltimateImplementor()
   }
 
-  override Location getALocation() { method_location(this, result) }
+  override Location getALocation() { method_location(this.getUnboundDeclaration(), result) }
 
   /** Holds if this method is an extension method. */
   predicate isExtensionMethod() { this.getParameter(0).hasExtensionMethodModifier() }

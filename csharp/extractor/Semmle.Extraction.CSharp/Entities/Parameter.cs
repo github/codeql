@@ -247,7 +247,7 @@ namespace Semmle.Extraction.CSharp.Entities
             var typeKey = VarargsType.Create(Context);
             // !! Maybe originaldefinition is wrong
             trapFile.@params(this, "", typeKey, Ordinal, Kind.None, Parent!, this);
-            trapFile.param_location(this, GeneratedLocation.Create(Context));
+            trapFile.param_location(this, EmptyLocation.Create(Context));
         }
 
         protected override int Ordinal => ((Method)Parent!).OriginalDefinition.Symbol.Parameters.Length;
