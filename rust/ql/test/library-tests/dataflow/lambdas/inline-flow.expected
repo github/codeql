@@ -1,0 +1,50 @@
+models
+edges
+| main.rs:10:20:10:52 | if cond {...} else {...} | main.rs:11:10:11:16 | f(...) | provenance |  |
+| main.rs:10:30:10:39 | source(...) | main.rs:10:20:10:52 | if cond {...} else {...} | provenance |  |
+| main.rs:15:20:15:23 | ... | main.rs:17:18:17:21 | data | provenance |  |
+| main.rs:22:9:22:9 | a | main.rs:23:13:23:13 | a | provenance |  |
+| main.rs:22:13:22:22 | source(...) | main.rs:22:9:22:9 | a | provenance |  |
+| main.rs:23:13:23:13 | a | main.rs:15:20:15:23 | ... | provenance |  |
+| main.rs:27:20:27:23 | ... | main.rs:27:26:27:52 | if cond {...} else {...} | provenance |  |
+| main.rs:28:9:28:9 | a | main.rs:29:21:29:21 | a | provenance |  |
+| main.rs:28:13:28:22 | source(...) | main.rs:28:9:28:9 | a | provenance |  |
+| main.rs:29:9:29:9 | b | main.rs:30:10:30:10 | b | provenance |  |
+| main.rs:29:13:29:22 | f(...) | main.rs:29:9:29:9 | b | provenance |  |
+| main.rs:29:21:29:21 | a | main.rs:27:20:27:23 | ... | provenance |  |
+| main.rs:29:21:29:21 | a | main.rs:29:13:29:22 | f(...) | provenance |  |
+| main.rs:37:16:37:25 | source(...) | main.rs:39:5:39:5 | [post] f [captured capt] | provenance |  |
+| main.rs:39:5:39:5 | [post] f [captured capt] | main.rs:40:10:40:13 | capt | provenance |  |
+| main.rs:39:5:39:5 | [post] f [captured capt] | main.rs:44:5:44:5 | g [captured capt] | provenance |  |
+| main.rs:44:5:44:5 | g [captured capt] | main.rs:42:14:42:17 | capt | provenance |  |
+nodes
+| main.rs:10:20:10:52 | if cond {...} else {...} | semmle.label | if cond {...} else {...} |
+| main.rs:10:30:10:39 | source(...) | semmle.label | source(...) |
+| main.rs:11:10:11:16 | f(...) | semmle.label | f(...) |
+| main.rs:15:20:15:23 | ... | semmle.label | ... |
+| main.rs:17:18:17:21 | data | semmle.label | data |
+| main.rs:22:9:22:9 | a | semmle.label | a |
+| main.rs:22:13:22:22 | source(...) | semmle.label | source(...) |
+| main.rs:23:13:23:13 | a | semmle.label | a |
+| main.rs:27:20:27:23 | ... | semmle.label | ... |
+| main.rs:27:26:27:52 | if cond {...} else {...} | semmle.label | if cond {...} else {...} |
+| main.rs:28:9:28:9 | a | semmle.label | a |
+| main.rs:28:13:28:22 | source(...) | semmle.label | source(...) |
+| main.rs:29:9:29:9 | b | semmle.label | b |
+| main.rs:29:13:29:22 | f(...) | semmle.label | f(...) |
+| main.rs:29:21:29:21 | a | semmle.label | a |
+| main.rs:30:10:30:10 | b | semmle.label | b |
+| main.rs:37:16:37:25 | source(...) | semmle.label | source(...) |
+| main.rs:39:5:39:5 | [post] f [captured capt] | semmle.label | [post] f [captured capt] |
+| main.rs:40:10:40:13 | capt | semmle.label | capt |
+| main.rs:42:14:42:17 | capt | semmle.label | capt |
+| main.rs:44:5:44:5 | g [captured capt] | semmle.label | g [captured capt] |
+subpaths
+| main.rs:29:21:29:21 | a | main.rs:27:20:27:23 | ... | main.rs:27:26:27:52 | if cond {...} else {...} | main.rs:29:13:29:22 | f(...) |
+testFailures
+#select
+| main.rs:11:10:11:16 | f(...) | main.rs:10:30:10:39 | source(...) | main.rs:11:10:11:16 | f(...) | $@ | main.rs:10:30:10:39 | source(...) | source(...) |
+| main.rs:17:18:17:21 | data | main.rs:22:13:22:22 | source(...) | main.rs:17:18:17:21 | data | $@ | main.rs:22:13:22:22 | source(...) | source(...) |
+| main.rs:30:10:30:10 | b | main.rs:28:13:28:22 | source(...) | main.rs:30:10:30:10 | b | $@ | main.rs:28:13:28:22 | source(...) | source(...) |
+| main.rs:40:10:40:13 | capt | main.rs:37:16:37:25 | source(...) | main.rs:40:10:40:13 | capt | $@ | main.rs:37:16:37:25 | source(...) | source(...) |
+| main.rs:42:14:42:17 | capt | main.rs:37:16:37:25 | source(...) | main.rs:42:14:42:17 | capt | $@ | main.rs:37:16:37:25 | source(...) | source(...) |
