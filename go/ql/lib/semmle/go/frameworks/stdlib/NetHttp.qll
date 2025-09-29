@@ -52,13 +52,7 @@ module NetHttp {
 
     MapWrite() {
       this.getType().hasQualifiedName("net/http", "Header") and
-      exists(Write write, DataFlow::Node base |
-        write.writesElement(base, index, rhs) and
-        // The following line works because `Http::HeaderWrite::Range` extends
-        // `DataFlow::ExprNode`, which is incompatible with
-        // `DataFlow::PostUpdateNode`.
-        this = [base, base.(DataFlow::PostUpdateNode).getPreUpdateNode()]
-      )
+      any(Write write).writesElementPreUpdate(this, index, rhs)
     }
 
     override DataFlow::Node getName() { result = index }

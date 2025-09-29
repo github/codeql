@@ -188,14 +188,27 @@ module ControlFlow {
      * initialized.
      */
     predicate writesElement(DataFlow::Node base, DataFlow::Node index, DataFlow::Node rhs) {
-      exists(DataFlow::Node b |
-        this.writesElementInsn(b.asInstruction(), index.asInstruction(), rhs.asInstruction())
-      |
+      exists(DataFlow::Node b | this.writesElementPreUpdate(b, index, rhs) |
         this.isInitialization() and base = b
         or
         not this.isInitialization() and
         b = base.(DataFlow::PostUpdateNode).getPreUpdateNode()
       )
+    }
+
+    /**
+     * Holds if this node sets the value of element `index` on `base` (or its implicit dereference)
+     * to `rhs`.
+     *
+     * For example, for the assignment `xs[i] = v`, `base` is the post-update node of the data-flow
+     * node corresponding to `xs` or (if `xs` is a pointer) the implicit dereference `*xs`, `index`
+     * is the data-flow node corresponding to `i`, and `rhs` is the data-flow node corresponding to
+     * `base`. If this `WriteNode` corresponds to the initialization of an array/slice/map then
+     * there is no need for a post-update node and `base` is the array/slice/map literal being
+     * initialized.
+     */
+    predicate writesElementPreUpdate(DataFlow::Node base, DataFlow::Node index, DataFlow::Node rhs) {
+      this.writesElementInsn(base.asInstruction(), index.asInstruction(), rhs.asInstruction())
     }
 
     private predicate writesElementInsn(
