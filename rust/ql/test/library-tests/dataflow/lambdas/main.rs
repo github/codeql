@@ -49,12 +49,12 @@ fn get_from_source() -> i64 {
 }
 
 fn pass_to_sink(data: i64) {
-    sink(data); // $ MISSING: hasValueFlow=34
+    sink(data); // $ hasValueFlow=34
 }
 
 fn function_flow_out() {
     let f = get_from_source;
-    sink(f()); // $ MISSING: hasValueFlow=93
+    sink(f()); // $ hasValueFlow=93
 }
 
 fn function_flow_in() {
@@ -75,7 +75,7 @@ fn function_flows_through() {
     let f = get_arg;
     let a = source(56);
     let b = f(true, a);
-    sink(b); // $ MISSING: hasValueFlow=56
+    sink(b); // $ hasValueFlow=56
 }
 
 fn main() {
