@@ -1,3 +1,4 @@
 pub fn hello() {
-    println!("Hello, world!");
+    my_macro!(); // $ item=my_macro
+    println!("Hello, world!"); // $ item=println
 } // HELLO
