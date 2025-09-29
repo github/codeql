@@ -141,13 +141,10 @@ module Protobuf {
   private class WriteMessageFieldStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       [succ.getType(), succ.getType().getPointerType()] instanceof MessageType and
-      exists(DataFlow::Node n, DataFlow::ReadNode base |
-        succ.(DataFlow::PostUpdateNode).getPreUpdateNode() = getUnderlyingNode(base)
+      exists(DataFlow::Write w, DataFlow::ReadNode base |
+        w.writesElementPreUpdate(base, _, pred) or w.writesFieldPreUpdate(base, _, pred)
       |
-        any(DataFlow::Write w).writesComponent(n, pred) and
-        // The below line only works because `base`'s type, `DataFlow::ReadNode`,
-        // is incompatible with `DataFlow::PostUpdateNode`.
-        base = [n, n.(DataFlow::PostUpdateNode).getPreUpdateNode()]
+        succ.(DataFlow::PostUpdateNode).getPreUpdateNode() = getUnderlyingNode(base)
       )
     }
   }
