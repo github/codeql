@@ -95,18 +95,18 @@ mod actix_test {
     use actix_web::{get, web, App};
 
     async fn my_actix_handler_1(
-        path: web::Path<String>, // $ MISSING: Alert[rust/summary/taint-sources]
+        path: web::Path<String>,
     ) -> String {
         let a = path.into_inner();
-        sink(a.as_str()); // $ MISSING: hasTaintFlow
-        sink(a.as_bytes()); // $ MISSING: hasTaintFlow
-        sink(a); // $ MISSING: hasTaintFlow
+        sink(a.as_str()); // $ hasTaintFlow=my_actix_handler_1
+        sink(a.as_bytes()); // $ hasTaintFlow=my_actix_handler_1
+        sink(a); // $ hasTaintFlow=my_actix_handler_1
 
         "".to_string()
     }
 
     async fn my_actix_handler_2(
-        path: web::Path<(String, String)>, // $ MISSING: Alert[rust/summary/taint-sources]
+        path: web::Path<(String, String)>,
     ) -> String {
         let (a, b) = path.into_inner();
 
@@ -117,28 +117,28 @@ mod actix_test {
     }
 
     async fn my_actix_handler_3(
-        web::Query(a): web::Query<String>, // $ MISSING: Alert[rust/summary/taint-sources]
+        web::Query(a): web::Query<String>,
     ) -> String {
         sink(a); // $ MISSING: hasTaintFlow
 
         "".to_string()
     }
 
-    #[get("/4/{a}")]
+    #[get("/4/{a}")] // $ Alert[rust/summary/taint-sources]
     async fn my_actix_handler_4(
-        path: web::Path<String>, // $ MISSING: Alert[rust/summary/taint-sources]
+        path: web::Path<String>,
     ) -> String {
         let a = path.into_inner();
-        sink(a); // $ MISSING: hasTaintFlow
+        sink(a); // $ hasTaintFlow=my_actix_handler_4
 
         "".to_string()
     }
 
     async fn test_actix() {
         let app = App::new()
-            .route("/1/{a}", web::get().to(my_actix_handler_1))
-            .route("/2/{a}/{b}", web::get().to(my_actix_handler_2))
-            .route("/3/{a}", web::get().to(my_actix_handler_3))
+            .route("/1/{a}", web::get().to(my_actix_handler_1)) // $ Alert[rust/summary/taint-sources]
+            .route("/2/{a}/{b}", web::get().to(my_actix_handler_2)) // $ Alert[rust/summary/taint-sources]
+            .route("/3/{a}", web::get().to(my_actix_handler_3)) // $ Alert[rust/summary/taint-sources]
             .service(my_actix_handler_4);
 
         // ...
