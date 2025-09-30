@@ -1,0 +1,54 @@
+| main.rs:8:19:8:50 | ...::build(...) | secure | false |
+| main.rs:12:19:12:50 | ...::build(...) | secure | true |
+| main.rs:20:5:20:36 | ...::build(...) | secure | false |
+| main.rs:21:5:21:36 | ...::build(...) | secure | false |
+| main.rs:24:5:24:36 | ...::build(...) | secure | true |
+| main.rs:25:5:25:36 | ...::build(...) | secure | false |
+| main.rs:26:5:26:36 | ...::build(...) | secure | false |
+| main.rs:27:5:27:36 | ...::build(...) | secure | false |
+| main.rs:28:5:28:36 | ...::build(...) | secure | false |
+| main.rs:29:5:29:36 | ...::build(...) | secure | false |
+| main.rs:33:9:33:40 | ...::build(...) | secure | false |
+| main.rs:35:9:35:40 | ...::build(...) | secure | false |
+| main.rs:39:5:39:39 | ...::new(...) | secure | false |
+| main.rs:40:5:40:50 | ... .expires(...) | secure | false |
+| main.rs:41:5:41:79 | ... .max_age(...) | secure | false |
+| main.rs:42:5:42:58 | ... .domain(...) | secure | false |
+| main.rs:43:5:43:46 | ... .path(...) | secure | false |
+| main.rs:44:5:44:52 | ... .http_only(...) | secure | false |
+| main.rs:45:5:45:72 | ... .same_site(...) | secure | false |
+| main.rs:46:5:46:48 | ... .permanent() | secure | false |
+| main.rs:47:5:47:46 | ... .removal() | secure | false |
+| main.rs:48:5:48:36 | ...::build(...) | secure | false |
+| main.rs:49:5:49:25 | ...::build(...) | secure | false |
+| main.rs:50:5:50:40 | ...::build(...) | secure | false |
+| main.rs:53:5:53:36 | ...::build(...) | secure | true |
+| main.rs:53:5:53:49 | ... .secure(...) | secure | false |
+| main.rs:54:5:54:36 | ...::build(...) | secure | false |
+| main.rs:54:5:54:50 | ... .secure(...) | secure | true |
+| main.rs:61:5:61:5 | [SSA] a | secure | true |
+| main.rs:61:5:61:5 | a | secure | true |
+| main.rs:63:5:63:5 | [SSA] a | secure | false |
+| main.rs:63:5:63:5 | a | secure | false |
+| main.rs:71:5:71:5 | [SSA] b | secure | false |
+| main.rs:71:5:71:5 | b | secure | false |
+| main.rs:73:5:73:5 | [SSA] b | secure | true |
+| main.rs:73:5:73:5 | b | secure | true |
+| main.rs:81:9:81:9 | [SSA] c | secure | true |
+| main.rs:81:9:81:9 | c | secure | true |
+| main.rs:84:5:84:5 | [SSA] c | secure | true |
+| main.rs:84:5:84:5 | c | secure | true |
+| main.rs:90:9:90:9 | c | secure | true |
+| main.rs:92:9:92:9 | c | partitioned | true |
+| main.rs:109:9:109:9 | [SSA] e | secure | true |
+| main.rs:109:9:109:9 | e | secure | true |
+| main.rs:114:5:114:36 | ...::build(...) | partitioned | true |
+| main.rs:126:13:126:13 | a | secure | true |
+| main.rs:130:13:130:13 | b | secure | false |
+| main.rs:134:13:134:13 | c | partitioned | true |
+| main.rs:138:13:138:13 | d | secure | true |
+| main.rs:142:13:142:13 | e | partitioned | false |
+| main.rs:146:13:146:13 | f | secure | false |
+| main.rs:180:29:180:66 | ...::build(...) | secure | true |
+| main.rs:186:9:186:22 | [SSA] secure_cookie2 | secure | true |
+| main.rs:186:9:186:22 | secure_cookie2 | secure | true |
