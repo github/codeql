@@ -63,8 +63,8 @@ module GuardsInput implements SharedGuards::InputSig<Cpp::Location, Instruction,
     int asIntegerValue() { none() }
 
     /**
-     * Holds if this expression is a C/C++ specific constant value such as
-     * a GCC case range.
+     * Holds if this expression is a C/C++ specific constant value.
+     * This currently never holds in C/C++.
      */
     ConstantValue asConstantValue() { none() }
   }
