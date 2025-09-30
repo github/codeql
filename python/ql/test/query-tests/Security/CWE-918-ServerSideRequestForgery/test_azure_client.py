@@ -34,6 +34,3 @@ def azure_sdk_test(credential, output_path):
         credential=credential,
         overwrite=True 
     )
-
-
-
