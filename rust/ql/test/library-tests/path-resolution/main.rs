@@ -119,7 +119,8 @@ mod m6 {
 
     pub fn g() {
         println!("main.rs::m6::g"); // $ item=println
-                                    // this import shadows the definition `I35`, which we don't currently handle
+
+        // this import shadows the definition `I35`, which we don't currently handle
         use super::m5::*; // $ item=I32
         f(); // $ item=I33 $ SPURIOUS: item=I35
     } // I36
