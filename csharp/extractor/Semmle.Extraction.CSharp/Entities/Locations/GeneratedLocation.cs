@@ -4,23 +4,29 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     public class GeneratedLocation : SourceLocation
     {
-        private readonly File generatedFile;
+        protected File GenFile { get; init; }
 
-        private GeneratedLocation(Context cx)
+        protected GeneratedLocation(Context cx)
             : base(cx, null)
         {
-            generatedFile = GeneratedFile.Create(cx);
+            GenFile = GeneratedFile.Create(cx);
         }
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.locations_default(this, generatedFile, 0, 0, 0, 0);
+            trapFile.locations_default(this, GenFile, 0, 0, 0, 0);
         }
 
         public override void WriteId(EscapingTextWriter trapFile)
         {
+            if (Context.ExtractionContext.IsStandalone)
+            {
+                WriteStarId(trapFile);
+                return;
+            }
+
             trapFile.Write("loc,");
-            trapFile.WriteSubId(generatedFile);
+            trapFile.WriteSubId(GenFile);
             trapFile.Write(",0,0,0,0");
         }
 
