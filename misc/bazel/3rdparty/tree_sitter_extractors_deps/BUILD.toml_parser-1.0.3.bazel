@@ -17,7 +17,7 @@ cargo_toml_env_vars(
 )
 
 rust_library(
-    name = "darling",
+    name = "toml_parser",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -35,14 +35,11 @@ rust_library(
         ],
     ),
     crate_features = [
-        "default",
-        "suggestions",
+        "alloc",
+        "std",
     ],
     crate_root = "src/lib.rs",
     edition = "2021",
-    proc_macro_deps = [
-        "@vendor_ts__darling_macro-0.20.11//:darling_macro",
-    ],
     rustc_env_files = [
         ":cargo_toml_env_vars",
     ],
@@ -51,7 +48,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=darling",
+        "crate-name=toml_parser",
         "manual",
         "noclippy",
         "norustfmt",
@@ -95,8 +92,8 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.20.11",
+    version = "1.0.3",
     deps = [
-        "@vendor_ts__darling_core-0.20.11//:darling_core",
+        "@vendor_ts__winnow-0.7.13//:winnow",
     ],
 )

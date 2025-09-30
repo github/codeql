@@ -17,7 +17,7 @@ cargo_toml_env_vars(
 )
 
 rust_library(
-    name = "toml_datetime",
+    name = "indexmap",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -35,7 +35,7 @@ rust_library(
         ],
     ),
     crate_features = [
-        "alloc",
+        "default",
         "serde",
         "std",
     ],
@@ -49,7 +49,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=toml_datetime",
+        "crate-name=indexmap",
         "manual",
         "noclippy",
         "norustfmt",
@@ -93,8 +93,10 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.7.0",
+    version = "2.11.4",
     deps = [
-        "@vendor_ts__serde-1.0.219//:serde",
+        "@vendor_ts__equivalent-1.0.2//:equivalent",
+        "@vendor_ts__hashbrown-0.15.5//:hashbrown",
+        "@vendor_ts__serde_core-1.0.228//:serde_core",
     ],
 )

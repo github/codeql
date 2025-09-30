@@ -7,7 +7,7 @@
 ###############################################################################
 
 load("@rules_rust//cargo:defs.bzl", "cargo_toml_env_vars")
-load("@rules_rust//rust:defs.bzl", "rust_library")
+load("@rules_rust//rust:defs.bzl", "rust_proc_macro")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -16,8 +16,8 @@ cargo_toml_env_vars(
     src = "Cargo.toml",
 )
 
-rust_library(
-    name = "clap_builder",
+rust_proc_macro(
+    name = "darling_macro",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -34,14 +34,6 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
-    crate_features = [
-        "color",
-        "error-context",
-        "help",
-        "std",
-        "suggestions",
-        "usage",
-    ],
     crate_root = "src/lib.rs",
     edition = "2021",
     rustc_env_files = [
@@ -52,7 +44,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=clap_builder",
+        "crate-name=darling_macro",
         "manual",
         "noclippy",
         "norustfmt",
@@ -96,11 +88,10 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "4.5.47",
+    version = "0.21.3",
     deps = [
-        "@vendor_ts__anstream-0.6.20//:anstream",
-        "@vendor_ts__anstyle-1.0.11//:anstyle",
-        "@vendor_ts__clap_lex-0.7.5//:clap_lex",
-        "@vendor_ts__strsim-0.11.1//:strsim",
+        "@vendor_ts__darling_core-0.21.3//:darling_core",
+        "@vendor_ts__quote-1.0.41//:quote",
+        "@vendor_ts__syn-2.0.106//:syn",
     ],
 )

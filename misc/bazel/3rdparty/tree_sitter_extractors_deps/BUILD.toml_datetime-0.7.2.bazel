@@ -7,7 +7,7 @@
 ###############################################################################
 
 load("@rules_rust//cargo:defs.bzl", "cargo_toml_env_vars")
-load("@rules_rust//rust:defs.bzl", "rust_proc_macro")
+load("@rules_rust//rust:defs.bzl", "rust_library")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -16,8 +16,8 @@ cargo_toml_env_vars(
     src = "Cargo.toml",
 )
 
-rust_proc_macro(
-    name = "serde_with_macros",
+rust_library(
+    name = "toml_datetime",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -34,6 +34,11 @@ rust_proc_macro(
             "WORKSPACE.bazel",
         ],
     ),
+    crate_features = [
+        "alloc",
+        "serde",
+        "std",
+    ],
     crate_root = "src/lib.rs",
     edition = "2021",
     rustc_env_files = [
@@ -44,7 +49,7 @@ rust_proc_macro(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=serde_with_macros",
+        "crate-name=toml_datetime",
         "manual",
         "noclippy",
         "norustfmt",
@@ -88,11 +93,8 @@ rust_proc_macro(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "3.14.0",
+    version = "0.7.2",
     deps = [
-        "@vendor_ts__darling-0.20.11//:darling",
-        "@vendor_ts__proc-macro2-1.0.101//:proc_macro2",
-        "@vendor_ts__quote-1.0.40//:quote",
-        "@vendor_ts__syn-2.0.106//:syn",
+        "@vendor_ts__serde_core-1.0.228//:serde_core",
     ],
 )

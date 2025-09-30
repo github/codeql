@@ -21,7 +21,7 @@ cargo_toml_env_vars(
 )
 
 rust_library(
-    name = "tree_sitter_embedded_template",
+    name = "serde_core",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -38,7 +38,12 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
-    crate_root = "bindings/rust/lib.rs",
+    crate_features = [
+        "alloc",
+        "result",
+        "std",
+    ],
+    crate_root = "src/lib.rs",
     edition = "2021",
     rustc_env_files = [
         ":cargo_toml_env_vars",
@@ -48,7 +53,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=tree-sitter-embedded-template",
+        "crate-name=serde_core",
         "manual",
         "noclippy",
         "norustfmt",
@@ -92,10 +97,9 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.23.2",
+    version = "1.0.228",
     deps = [
-        "@vendor_ts__tree-sitter-embedded-template-0.23.2//:build_script_build",
-        "@vendor_ts__tree-sitter-language-0.1.5//:tree_sitter_language",
+        "@vendor_ts__serde_core-1.0.228//:build_script_build",
     ],
 )
 
@@ -118,8 +122,13 @@ cargo_build_script(
             "WORKSPACE.bazel",
         ],
     ),
+    crate_features = [
+        "alloc",
+        "result",
+        "std",
+    ],
     crate_name = "build_script_build",
-    crate_root = "bindings/rust/build.rs",
+    crate_root = "build.rs",
     data = glob(
         include = ["**"],
         allow_empty = True,
@@ -133,7 +142,7 @@ cargo_build_script(
         ],
     ),
     edition = "2021",
-    pkg_name = "tree-sitter-embedded-template",
+    pkg_name = "serde_core",
     rustc_env_files = [
         ":cargo_toml_env_vars",
     ],
@@ -142,16 +151,13 @@ cargo_build_script(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=tree-sitter-embedded-template",
+        "crate-name=serde_core",
         "manual",
         "noclippy",
         "norustfmt",
     ],
-    version = "0.23.2",
+    version = "1.0.228",
     visibility = ["//visibility:private"],
-    deps = [
-        "@vendor_ts__cc-1.2.37//:cc",
-    ],
 )
 
 alias(
