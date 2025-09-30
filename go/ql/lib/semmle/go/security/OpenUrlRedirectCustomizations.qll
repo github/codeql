@@ -6,7 +6,7 @@
 
 import go
 import UrlConcatenation
-import SafeUrlFlowCustomizations
+private import SafeUrlFlowCustomizations
 import semmle.go.dataflow.barrierguardutil.RedirectCheckBarrierGuard
 import semmle.go.dataflow.barrierguardutil.RegexpCheck
 import semmle.go.dataflow.barrierguardutil.UrlCheck
