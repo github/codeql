@@ -6,7 +6,7 @@ private import semmle.python.frameworks.data.ModelsAsData
 /**
  * INTERNAL: Do not use.
  *
- * Sets up SSRF sinks as Http::CLient::Request
+ * Sets up SSRF sinks as Http::Client::Request
  */
 module SSRFMaDModel {
   class SSRFSink extends Http::Client::Request::Range instanceof API::CallNode {
