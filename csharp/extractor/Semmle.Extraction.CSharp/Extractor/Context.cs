@@ -550,6 +550,10 @@ namespace Semmle.Extraction.CSharp
             !SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition) ||
             scope.InScope(symbol);
 
+        public bool ExtractLocation(ISymbol symbol) =>
+            SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition) &&
+            scope.InScope(symbol);
+
         /// <summary>
         /// Runs the given action <paramref name="a"/>, guarding for trap duplication
         /// based on key <paramref name="key"/>.
@@ -582,14 +586,14 @@ namespace Semmle.Extraction.CSharp
         public Entities.Location CreateLocation()
         {
             return SourceTree is null
-                ? Entities.GeneratedLocation.Create(this)
+                ? Entities.EmptyLocation.Create(this)
                 : CreateLocation(Microsoft.CodeAnalysis.Location.Create(SourceTree, Microsoft.CodeAnalysis.Text.TextSpan.FromBounds(0, 0)));
         }
 
         public Entities.Location CreateLocation(Microsoft.CodeAnalysis.Location? location)
         {
             return (location is null || location.Kind == LocationKind.None)
-                ? Entities.GeneratedLocation.Create(this)
+                ? Entities.EmptyLocation.Create(this)
                 : location.IsInSource
                     ? Entities.NonGeneratedSourceLocation.Create(this, location)
                     : Entities.Assembly.Create(this, location);
