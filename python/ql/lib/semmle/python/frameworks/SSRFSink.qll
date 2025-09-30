@@ -12,14 +12,14 @@ private import semmle.python.frameworks.data.ModelsAsData
  *
  * Sets up SSRF sinks as Http::Client::Request
  */
-module SSRFMaDModel {
+module SsrfMaDModel {
   /**
    * An HTTP request modeled from `ssrf` sinks, modeled using MaD.
    */
-  class SSRFSink extends Http::Client::Request::Range instanceof API::CallNode {
+  class SsrfSink extends Http::Client::Request::Range instanceof API::CallNode {
     DataFlow::Node urlArg;
 
-    SSRFSink() {
+    SsrfSink() {
       (
         this.getArg(_) = urlArg
         or
