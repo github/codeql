@@ -23,15 +23,12 @@ module SSRFMaDModel {
 
     override DataFlow::Node getAUrlPart() { result = urlArg }
 
-    override string getFramework() {
-      // TOOD: how to get type of this node?
-      result = "MaD"
-    }
+    override string getFramework() { result = "MaD" }
 
     override predicate disablesCertificateValidation(
       DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
     ) {
-      // TODO: if you need to define this, you have to special case it for every possible API in MaD
+      // NOTE: if you need to define this, you have to special case it for every possible API in MaD
       none()
     }
   }
