@@ -554,6 +554,9 @@ namespace Semmle.Extraction.CSharp
             SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition) &&
             scope.InScope(symbol);
 
+        public bool IsLocationInContext(Location location) =>
+            location.SourceTree == SourceTree;
+
         /// <summary>
         /// Runs the given action <paramref name="a"/>, guarding for trap duplication
         /// based on key <paramref name="key"/>.
