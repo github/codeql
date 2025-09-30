@@ -61,8 +61,8 @@
       Note this remains true even in Rails version 5 and later: these versions
       automatically run <code>protect_from_forgery with: :exception</code>
       by default, but manually calling <code>protect_from_forgery</code> with
-      no <code>with</code> argument will still downgrade protection to null the
-      session rather than raise an exception.
+      no <code>with</code> argument will still downgrade protection to provide an
+      empty session rather than raise an exception.
     </p>
 
   </example>
