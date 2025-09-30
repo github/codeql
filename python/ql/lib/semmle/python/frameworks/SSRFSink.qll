@@ -1,3 +1,7 @@
+/**
+ * Provides classes for SSRF sinks modeled using Models as Data (MaD).
+ */
+
 private import python
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
@@ -9,6 +13,9 @@ private import semmle.python.frameworks.data.ModelsAsData
  * Sets up SSRF sinks as Http::Client::Request
  */
 module SSRFMaDModel {
+  /**
+   * An HTTP request modeled from `ssrf` sinks, modeled using MaD.
+   */
   class SSRFSink extends Http::Client::Request::Range instanceof API::CallNode {
     DataFlow::Node urlArg;
 
