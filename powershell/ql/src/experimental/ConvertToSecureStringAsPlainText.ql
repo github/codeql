@@ -10,10 +10,10 @@
  *       security
  */
 
- import powershell
+import powershell
 
- from CmdCall c 
- where 
- c.matchesName("ConvertTo-SecureString") and
- c.hasNamedArgument("asplaintext")
- select c, "Use of AsPlainText parameter in ConvertTo-SecureString call"
+from CmdCall c
+where
+  c.matchesName("ConvertTo-SecureString") and
+  c.hasNamedArgument("asplaintext")
+select c, "Use of AsPlainText parameter in ConvertTo-SecureString call"

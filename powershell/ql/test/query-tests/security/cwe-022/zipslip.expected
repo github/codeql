@@ -1,0 +1,64 @@
+edges
+| file://:0:0:0:0 | [summary param] pos(0, {}) in microsoft.powershell.management!;Method[join-path] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] | provenance | MaD:36 |
+| file://:0:0:0:0 | [summary param] pos(0, {}) in system.io.path!;Method[getfullpath] | file://:0:0:0:0 | [summary] to write: ReturnValue in system.io.path!;Method[getfullpath] | provenance | MaD:103 |
+| test.ps1:6:5:6:15 | targetPath | test.ps1:7:53:7:63 | targetPath | provenance |  |
+| test.ps1:6:19:6:56 | Call to join-path | test.ps1:6:5:6:15 | targetPath | provenance |  |
+| test.ps1:6:42:6:56 | fullname | file://:0:0:0:0 | [summary param] pos(0, {}) in microsoft.powershell.management!;Method[join-path] | provenance |  |
+| test.ps1:6:42:6:56 | fullname | test.ps1:6:19:6:56 | Call to join-path | provenance | MaD:36 |
+| test.ps1:7:5:7:19 | fullTargetPath | test.ps1:9:70:9:84 | fullTargetPath | provenance |  |
+| test.ps1:7:23:7:64 | Call to getfullpath | test.ps1:7:5:7:19 | fullTargetPath | provenance |  |
+| test.ps1:7:53:7:63 | targetPath | file://:0:0:0:0 | [summary param] pos(0, {}) in system.io.path!;Method[getfullpath] | provenance |  |
+| test.ps1:7:53:7:63 | targetPath | test.ps1:7:23:7:64 | Call to getfullpath | provenance | MaD:103 |
+| test.ps1:13:5:13:15 | targetPath | test.ps1:14:53:14:63 | targetPath | provenance |  |
+| test.ps1:13:19:13:56 | Call to join-path | test.ps1:13:5:13:15 | targetPath | provenance |  |
+| test.ps1:13:42:13:56 | fullname | file://:0:0:0:0 | [summary param] pos(0, {}) in microsoft.powershell.management!;Method[join-path] | provenance |  |
+| test.ps1:13:42:13:56 | fullname | test.ps1:13:19:13:56 | Call to join-path | provenance | MaD:36 |
+| test.ps1:14:5:14:19 | fullTargetPath | test.ps1:16:38:16:52 | fullTargetPath | provenance |  |
+| test.ps1:14:23:14:64 | Call to getfullpath | test.ps1:14:5:14:19 | fullTargetPath | provenance |  |
+| test.ps1:14:53:14:63 | targetPath | file://:0:0:0:0 | [summary param] pos(0, {}) in system.io.path!;Method[getfullpath] | provenance |  |
+| test.ps1:14:53:14:63 | targetPath | test.ps1:14:23:14:64 | Call to getfullpath | provenance | MaD:103 |
+| test.ps1:22:5:22:15 | targetPath | test.ps1:23:53:23:63 | targetPath | provenance |  |
+| test.ps1:22:19:22:56 | Call to join-path | test.ps1:22:5:22:15 | targetPath | provenance |  |
+| test.ps1:22:42:22:56 | fullname | file://:0:0:0:0 | [summary param] pos(0, {}) in microsoft.powershell.management!;Method[join-path] | provenance |  |
+| test.ps1:22:42:22:56 | fullname | test.ps1:22:19:22:56 | Call to join-path | provenance | MaD:36 |
+| test.ps1:23:5:23:19 | fullTargetPath | test.ps1:27:74:27:88 | fullTargetPath | provenance |  |
+| test.ps1:23:23:23:64 | Call to getfullpath | test.ps1:23:5:23:19 | fullTargetPath | provenance |  |
+| test.ps1:23:53:23:63 | targetPath | file://:0:0:0:0 | [summary param] pos(0, {}) in system.io.path!;Method[getfullpath] | provenance |  |
+| test.ps1:23:53:23:63 | targetPath | test.ps1:23:23:23:64 | Call to getfullpath | provenance | MaD:103 |
+nodes
+| file://:0:0:0:0 | [summary param] pos(0, {}) in microsoft.powershell.management!;Method[join-path] | semmle.label | [summary param] pos(0, {}) in microsoft.powershell.management!;Method[join-path] |
+| file://:0:0:0:0 | [summary param] pos(0, {}) in system.io.path!;Method[getfullpath] | semmle.label | [summary param] pos(0, {}) in system.io.path!;Method[getfullpath] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] | semmle.label | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in system.io.path!;Method[getfullpath] | semmle.label | [summary] to write: ReturnValue in system.io.path!;Method[getfullpath] |
+| test.ps1:6:5:6:15 | targetPath | semmle.label | targetPath |
+| test.ps1:6:19:6:56 | Call to join-path | semmle.label | Call to join-path |
+| test.ps1:6:42:6:56 | fullname | semmle.label | fullname |
+| test.ps1:7:5:7:19 | fullTargetPath | semmle.label | fullTargetPath |
+| test.ps1:7:23:7:64 | Call to getfullpath | semmle.label | Call to getfullpath |
+| test.ps1:7:53:7:63 | targetPath | semmle.label | targetPath |
+| test.ps1:9:70:9:84 | fullTargetPath | semmle.label | fullTargetPath |
+| test.ps1:13:5:13:15 | targetPath | semmle.label | targetPath |
+| test.ps1:13:19:13:56 | Call to join-path | semmle.label | Call to join-path |
+| test.ps1:13:42:13:56 | fullname | semmle.label | fullname |
+| test.ps1:14:5:14:19 | fullTargetPath | semmle.label | fullTargetPath |
+| test.ps1:14:23:14:64 | Call to getfullpath | semmle.label | Call to getfullpath |
+| test.ps1:14:53:14:63 | targetPath | semmle.label | targetPath |
+| test.ps1:16:38:16:52 | fullTargetPath | semmle.label | fullTargetPath |
+| test.ps1:22:5:22:15 | targetPath | semmle.label | targetPath |
+| test.ps1:22:19:22:56 | Call to join-path | semmle.label | Call to join-path |
+| test.ps1:22:42:22:56 | fullname | semmle.label | fullname |
+| test.ps1:23:5:23:19 | fullTargetPath | semmle.label | fullTargetPath |
+| test.ps1:23:23:23:64 | Call to getfullpath | semmle.label | Call to getfullpath |
+| test.ps1:23:53:23:63 | targetPath | semmle.label | targetPath |
+| test.ps1:27:74:27:88 | fullTargetPath | semmle.label | fullTargetPath |
+subpaths
+| test.ps1:6:42:6:56 | fullname | file://:0:0:0:0 | [summary param] pos(0, {}) in microsoft.powershell.management!;Method[join-path] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] | test.ps1:6:19:6:56 | Call to join-path |
+| test.ps1:7:53:7:63 | targetPath | file://:0:0:0:0 | [summary param] pos(0, {}) in system.io.path!;Method[getfullpath] | file://:0:0:0:0 | [summary] to write: ReturnValue in system.io.path!;Method[getfullpath] | test.ps1:7:23:7:64 | Call to getfullpath |
+| test.ps1:13:42:13:56 | fullname | file://:0:0:0:0 | [summary param] pos(0, {}) in microsoft.powershell.management!;Method[join-path] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] | test.ps1:13:19:13:56 | Call to join-path |
+| test.ps1:14:53:14:63 | targetPath | file://:0:0:0:0 | [summary param] pos(0, {}) in system.io.path!;Method[getfullpath] | file://:0:0:0:0 | [summary] to write: ReturnValue in system.io.path!;Method[getfullpath] | test.ps1:14:23:14:64 | Call to getfullpath |
+| test.ps1:22:42:22:56 | fullname | file://:0:0:0:0 | [summary param] pos(0, {}) in microsoft.powershell.management!;Method[join-path] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] | test.ps1:22:19:22:56 | Call to join-path |
+| test.ps1:23:53:23:63 | targetPath | file://:0:0:0:0 | [summary param] pos(0, {}) in system.io.path!;Method[getfullpath] | file://:0:0:0:0 | [summary] to write: ReturnValue in system.io.path!;Method[getfullpath] | test.ps1:23:23:23:64 | Call to getfullpath |
+#select
+| test.ps1:6:42:6:56 | fullname | test.ps1:6:42:6:56 | fullname | test.ps1:9:70:9:84 | fullTargetPath | Unsanitized archive entry, which may contain '..', is used in a $@. | test.ps1:9:70:9:84 | fullTargetPath | file system operation |
+| test.ps1:13:42:13:56 | fullname | test.ps1:13:42:13:56 | fullname | test.ps1:16:38:16:52 | fullTargetPath | Unsanitized archive entry, which may contain '..', is used in a $@. | test.ps1:16:38:16:52 | fullTargetPath | file system operation |
+| test.ps1:22:42:22:56 | fullname | test.ps1:22:42:22:56 | fullname | test.ps1:27:74:27:88 | fullTargetPath | Unsanitized archive entry, which may contain '..', is used in a $@. | test.ps1:27:74:27:88 | fullTargetPath | file system operation |

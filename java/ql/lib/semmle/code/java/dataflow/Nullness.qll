@@ -9,49 +9,31 @@
 overlay[local?]
 module;
 
-/*
- * Implementation details:
- *
- * The three exported predicates, `nullDeref`, `alwaysNullDeref`, and
- * `superfluousNullGuard`, compute potential null dereferences, definite null
- * dereferences, and superfluous null checks, respectively.  The bulk of the
- * library supports `nullDeref`, while the latter two are fairly simple in
- * comparison.
- *
- * The NPE (NullPointerException) candidates are computed by
- * `nullDerefCandidate` and consist of three parts: A variable definition that
- * might be null as computed by `varMaybeNull`, a dereference that can cause a
- * NPE as computed by `firstVarDereferenceInBlock`, and a control flow path
- * between the two points.  The path is computed by `varMaybeNullInBlock`,
- * which is the transitive closure of the step relation `nullVarStep`
- * originating in a definition given by `varMaybeNull`.  The step relation
- * `nullVarStep` is essentially just the successor relation on basic blocks
- * restricted to exclude edges along which the variable cannot be null.
- *
- * The step relation `nullVarStep` is then reused twice to produce two
- * refinements of the path reachability predicate `varMaybeNullInBlock` in
- * order to prune impossible paths that would otherwise lead to a potential
- * NPE.  These two refinements are `varMaybeNullInBlock_corrCond` and
- * `varMaybeNullInBlock_trackVar` and are described in further detail below.
- */
-
 import java
 private import SSA
 private import semmle.code.java.controlflow.Guards
-private import RangeUtils
 private import IntegerGuards
 private import NullGuards
 private import semmle.code.java.Collections
-private import semmle.code.java.frameworks.Assertions
+private import semmle.code.java.controlflow.internal.Preconditions
+private import semmle.code.java.controlflow.ControlFlow as Cf
 
 /** Gets an expression that may be `null`. */
-Expr nullExpr() {
-  result instanceof NullLiteral or
-  result.(ChooseExpr).getAResultExpr() = nullExpr() or
-  result.(AssignExpr).getSource() = nullExpr() or
-  result.(CastExpr).getExpr() = nullExpr() or
-  result.(ImplicitCastExpr).getExpr() = nullExpr() or
-  result instanceof SafeCastExpr
+Expr nullExpr() { result = nullExpr(_) }
+
+/** Gets an expression that may be `null`. */
+private Expr nullExpr(Expr reason) {
+  result instanceof NullLiteral and reason = result
+  or
+  result.(ChooseExpr).getAResultExpr() = nullExpr(reason)
+  or
+  result.(AssignExpr).getSource() = nullExpr(reason)
+  or
+  result.(CastExpr).getExpr() = nullExpr(reason)
+  or
+  result.(ImplicitCastExpr).getExpr() = nullExpr(reason)
+  or
+  result instanceof SafeCastExpr and reason = result
 }
 
 /** An expression of a boxed type that is implicitly unboxed. */
@@ -137,58 +119,29 @@ private ControlFlowNode varDereference(SsaVariable v, VarAccess va) {
 }
 
 /**
- * A `ControlFlowNode` that ensures that the SSA variable is not null in any
- * subsequent use, either by dereferencing it or by an assertion.
- */
-private ControlFlowNode ensureNotNull(SsaVariable v) {
-  result = varDereference(v, _)
-  or
-  exists(AssertTrueMethod m | result.asCall() = m.getACheck(directNullGuard(v, true, false)))
-  or
-  exists(AssertFalseMethod m | result.asCall() = m.getACheck(directNullGuard(v, false, false)))
-  or
-  exists(AssertNotNullMethod m | result.asCall() = m.getACheck(v.getAUse()))
-  or
-  exists(AssertThatMethod m, MethodCall ma |
-    result.asCall() = m.getACheck(v.getAUse()) and ma.getControlFlowNode() = result
-  |
-    ma.getAnArgument().(MethodCall).getMethod().getName() = "notNullValue"
-  )
-}
-
-/**
- * A variable dereference that cannot be reached by a `null` value, because of an earlier
- * dereference or assertion in the same `BasicBlock`.
- */
-private predicate unreachableVarDereference(BasicBlock bb, SsaVariable v, ControlFlowNode varDeref) {
-  exists(ControlFlowNode n, int i, int j |
-    (n = ensureNotNull(v) or assertFail(bb, n)) and
-    varDeref = varDereference(v, _) and
-    bb.getNode(i) = n and
-    bb.getNode(j) = varDeref and
-    i < j
-  )
-}
-
-/**
- * The first dereference of a variable in a given `BasicBlock` excluding those dereferences
- * that are preceded by a not-null assertion or a trivially failing assertion.
+ * The first dereference of a variable in a given `BasicBlock`.
  */
 private predicate firstVarDereferenceInBlock(BasicBlock bb, SsaVariable v, VarAccess va) {
   exists(ControlFlowNode n |
     varDereference(v, va) = n and
     n.getBasicBlock() = bb and
-    not unreachableVarDereference(bb, v, n)
+    n =
+      min(ControlFlowNode n0, int i |
+        varDereference(v, _) = n0 and bb.getNode(i) = n0
+      |
+        n0 order by i
+      )
   )
 }
 
 /** A variable suspected of being `null`. */
-private predicate varMaybeNull(SsaVariable v, string msg, Expr reason) {
+private predicate varMaybeNull(SsaVariable v, ControlFlowNode node, string msg, Expr reason) {
   // A variable compared to null might be null.
   exists(Expr e |
     reason = e and
     msg = "as suggested by $@ null guard" and
     guardSuggestsVarMaybeNull(e, v) and
+    node = v.getCfgNode() and
     not v instanceof SsaPhiNode and
     not clearlyNotNull(v) and
     // Comparisons in finally blocks are excluded since missing exception edges in the CFG could otherwise yield FPs.
@@ -204,6 +157,7 @@ private predicate varMaybeNull(SsaVariable v, string msg, Expr reason) {
   // A parameter might be null if there is a null argument somewhere.
   exists(Parameter p, Expr arg |
     v.(SsaImplicitInit).isParameterDefinition(p) and
+    node = v.getCfgNode() and
     p.getAnArgument() = arg and
     reason = arg and
     msg = "because of $@ null argument" and
@@ -214,7 +168,7 @@ private predicate varMaybeNull(SsaVariable v, string msg, Expr reason) {
   // If the source of a variable is null then the variable may be null.
   exists(VariableAssign def |
     v.(SsaExplicitUpdate).getDefiningExpr() = def and
-    def.getSource() = nullExpr() and
+    def.getSource() = nullExpr(node.asExpr()) and
     reason = def and
     msg = "because of $@ assignment"
   )
@@ -236,7 +190,7 @@ private Expr nonEmptyExpr() {
     // ...or it is guarded by a condition proving its length to be non-zero.
     exists(ConditionBlock cond, boolean branch, FieldAccess length |
       cond.controls(result.getBasicBlock(), branch) and
-      cond.getCondition() = integerGuard(length, branch, 0, false) and
+      cond.getCondition() = nonZeroGuard(length, branch) and
       length.getField().hasName("length") and
       length.getQualifier() = v.getAUse()
     )
@@ -266,7 +220,7 @@ private Expr nonEmptyExpr() {
       or
       // ...or a check on its `size`.
       exists(MethodCall size |
-        c = integerGuard(size, branch, 0, false) and
+        c = nonZeroGuard(size, branch) and
         size.getMethod().hasName("size") and
         size.getQualifier() = v.getAUse()
       )
@@ -294,536 +248,29 @@ private predicate impossibleEdge(BasicBlock bb1, BasicBlock bb2) {
   )
 }
 
-/** A control flow edge that leaves a finally-block. */
-private predicate leavingFinally(BasicBlock bb1, BasicBlock bb2, boolean normaledge) {
-  exists(TryStmt try, BlockStmt finally |
-    try.getFinally() = finally and
-    bb1.getASuccessor() = bb2 and
-    bb1.getFirstNode().getEnclosingStmt().getEnclosingStmt*() = finally and
-    not bb2.getFirstNode().getEnclosingStmt().getEnclosingStmt*() = finally and
-    if bb1.getLastNode().getANormalSuccessor() = bb2.getFirstNode()
-    then normaledge = true
-    else normaledge = false
-  )
+private module NullnessConfig implements Cf::ControlFlow::ConfigSig {
+  predicate source(ControlFlowNode node, SsaVariable def) { varMaybeNull(def, node, _, _) }
+
+  predicate sink(ControlFlowNode node, SsaVariable def) { varDereference(def, _) = node }
+
+  predicate barrierValue(GuardValue gv) { gv.isNullness(false) }
+
+  predicate barrierEdge(BasicBlock bb1, BasicBlock bb2) { impossibleEdge(bb1, bb2) }
+
+  predicate uncertainFlow() { none() }
 }
 
-private predicate ssaSourceVarMaybeNull(SsaSourceVariable v) {
-  varMaybeNull(v.getAnSsaVariable(), _, _)
-}
+private module NullnessFlow = Cf::ControlFlow::Flow<NullnessConfig>;
 
 /**
- * The step relation for propagating that a given SSA variable might be `null` in a given `BasicBlock`.
- *
- * If `midssa` is null in `mid` then `ssa` might be null in `bb`. The SSA variables share the same
- * `SsaSourceVariable`.
- *
- * A boolean flag tracks whether a non-normal completion is waiting to resume upon the exit of a finally-block.
- * If the flag is set, then the normal edge out of the finally-block is prohibited, but if it is not set then
- * no knowledge is assumed of any potentially waiting completions. `midstoredcompletion` is the flag before
- * the step and `storedcompletion` is the flag after the step.
- */
-private predicate nullVarStep(
-  SsaVariable midssa, BasicBlock mid, boolean midstoredcompletion, SsaVariable ssa, BasicBlock bb,
-  boolean storedcompletion
-) {
-  exists(SsaSourceVariable v |
-    ssaSourceVarMaybeNull(v) and
-    midssa.getSourceVariable() = v
-  |
-    ssa.(SsaPhiNode).getAPhiInput() = midssa and ssa.getBasicBlock() = bb
-    or
-    ssa = midssa and
-    not exists(SsaPhiNode phi | phi.getSourceVariable() = v and phi.getBasicBlock() = bb)
-  ) and
-  (midstoredcompletion = true or midstoredcompletion = false) and
-  midssa.isLiveAtEndOfBlock(mid) and
-  not ensureNotNull(midssa).getBasicBlock() = mid and
-  not assertFail(mid, _) and
-  bb = mid.getASuccessor() and
-  not impossibleEdge(mid, bb) and
-  not nullGuardControlsBranchEdge(midssa, false, mid, bb) and
-  not (leavingFinally(mid, bb, true) and midstoredcompletion = true) and
-  if bb.getFirstNode().asStmt() = any(TryStmt try | | try.getFinally())
-  then
-    if bb.getFirstNode() = mid.getLastNode().getANormalSuccessor()
-    then storedcompletion = false
-    else storedcompletion = true
-  else
-    if leavingFinally(mid, bb, _)
-    then storedcompletion = false
-    else storedcompletion = midstoredcompletion
-}
-
-/**
- * The transitive closure of `nullVarStep` originating from `varMaybeNull`. That is, those `BasicBlock`s
- * for which the SSA variable is suspected of being `null`.
- */
-private predicate varMaybeNullInBlock(
-  SsaVariable ssa, SsaSourceVariable v, BasicBlock bb, boolean storedcompletion
-) {
-  varMaybeNull(ssa, _, _) and
-  bb = ssa.getBasicBlock() and
-  storedcompletion = false and
-  v = ssa.getSourceVariable()
-  or
-  exists(BasicBlock mid, SsaVariable midssa, boolean midstoredcompletion |
-    varMaybeNullInBlock(midssa, v, mid, midstoredcompletion) and
-    nullVarStep(midssa, mid, midstoredcompletion, ssa, bb, storedcompletion)
-  )
-}
-
-/**
- * Holds if `v` is a source variable that might reach a potential `null`
- * dereference.
- */
-private predicate nullDerefCandidateVariable(SsaSourceVariable v) {
-  exists(SsaVariable ssa, BasicBlock bb |
-    firstVarDereferenceInBlock(bb, ssa, _) and
-    varMaybeNullInBlock(ssa, v, bb, _)
-  )
-}
-
-private predicate varMaybeNullInBlock_origin(
-  SsaVariable origin, SsaVariable ssa, BasicBlock bb, boolean storedcompletion
-) {
-  nullDerefCandidateVariable(ssa.getSourceVariable()) and
-  varMaybeNull(ssa, _, _) and
-  bb = ssa.getBasicBlock() and
-  storedcompletion = false and
-  origin = ssa
-  or
-  exists(BasicBlock mid, SsaVariable midssa, boolean midstoredcompletion |
-    varMaybeNullInBlock_origin(origin, midssa, mid, midstoredcompletion) and
-    nullVarStep(midssa, mid, midstoredcompletion, ssa, bb, storedcompletion)
-  )
-}
-
-/**
- * A potential `null` dereference. That is, the first dereference of a variable in a block
- * where it is suspected of being `null`.
- */
-private predicate nullDerefCandidate(SsaVariable origin, VarAccess va) {
-  exists(SsaVariable ssa, BasicBlock bb |
-    firstVarDereferenceInBlock(bb, ssa, va) and
-    varMaybeNullInBlock_origin(origin, ssa, bb, _)
-  )
-}
-
-/*
- * In the following, the potential `null` dereference candidates are pruned by proving that
- * a `NullPointerException` (NPE) cannot occur. This is done by pruning the control-flow paths
- * that lead to the NPE candidate in two ways:
- *
- * 1. For each set of correlated conditions that are passed by the path, consistent
- *    branches must be taken. For example, the following code is safe due to the two tests on
- *    `flag` begin correlated.
- *    ```
- *    x = null;
- *    if (flag) x = new A();
- *    if (flag) x.m();
- *    ```
- *
- * 2. For each other variable that changes its value alongside the potential NPE candidate,
- *    the passed conditions must be consistent with its value. For example, the following
- *    code is safe due to the value of `t`.
- *    ```
- *    x = null;
- *    t = null;
- *    if (...) { x = new A(); t = new B(); }
- *    if (t != null) x.m();
- *    ```
- *    We call such a variable a _tracking variable_ as it tracks the null-ness of `x`.
- */
-
-/** A variable that is assigned `null` if the given condition takes the given branch. */
-private predicate varConditionallyNull(SsaExplicitUpdate v, ConditionBlock cond, boolean branch) {
-  exists(ConditionalExpr condexpr |
-    v.getDefiningExpr().(VariableAssign).getSource() = condexpr and
-    condexpr.getCondition() = cond.getCondition()
-  |
-    condexpr.getBranchExpr(branch) = nullExpr() and
-    not condexpr.getBranchExpr(branch.booleanNot()) = nullExpr()
-  )
-  or
-  v.getDefiningExpr().(VariableAssign).getSource() = nullExpr() and
-  cond.controls(v.getBasicBlock(), branch)
-}
-
-/**
- * A condition that might be useful in proving an NPE candidate safe.
- *
- * This is a condition along the path that found the NPE candidate.
- */
-private predicate interestingCond(SsaSourceVariable npecand, ConditionBlock cond) {
-  nullDerefCandidateVariable(npecand) and
-  (
-    varMaybeNullInBlock(_, npecand, cond, _) or
-    varConditionallyNull(npecand.getAnSsaVariable(), cond, _)
-  ) and
-  not cond.getCondition().(Expr).getAChildExpr*() = npecand.getAnAccess()
-}
-
-pragma[nomagic]
-private ConditionBlock ssaIntegerGuard(SsaVariable v, boolean branch, int k, boolean is_k) {
-  result.getCondition() = integerGuard(v.getAUse(), branch, k, is_k)
-}
-
-pragma[nomagic]
-private ConditionBlock ssaIntBoundGuard(SsaVariable v, boolean branch_with_lower_bound_k, int k) {
-  result.getCondition() = intBoundGuard(v.getAUse(), branch_with_lower_bound_k, k)
-}
-
-pragma[nomagic]
-private ConditionBlock ssaEnumConstEquality(SsaVariable v, boolean polarity, EnumConstant c) {
-  result.getCondition() = enumConstEquality(v.getAUse(), polarity, c)
-}
-
-private predicate conditionChecksNull(ConditionBlock cond, SsaVariable v, boolean branchIsNull) {
-  nullGuardControlsBranchEdge(v, true, cond, cond.getTestSuccessor(branchIsNull)) and
-  nullGuardControlsBranchEdge(v, false, cond, cond.getTestSuccessor(branchIsNull.booleanNot()))
-}
-
-/** A pair of correlated conditions for a given NPE candidate. */
-private predicate correlatedConditions(
-  SsaSourceVariable npecand, ConditionBlock cond1, ConditionBlock cond2, boolean inverted
-) {
-  interestingCond(npecand, cond1) and
-  interestingCond(npecand, cond2) and
-  cond1 != cond2 and
-  (
-    exists(SsaVariable v |
-      cond1.getCondition() = v.getAUse() and
-      cond2.getCondition() = v.getAUse() and
-      inverted = false
-    )
-    or
-    exists(SsaVariable v, boolean branch1, boolean branch2 |
-      conditionChecksNull(cond1, v, branch1) and
-      conditionChecksNull(cond2, v, branch2) and
-      inverted = branch1.booleanXor(branch2)
-    )
-    or
-    exists(SsaVariable v, int k, boolean branch1, boolean branch2 |
-      cond1 = ssaIntegerGuard(v, branch1, k, true) and
-      cond1 = ssaIntegerGuard(v, branch1.booleanNot(), k, false) and
-      cond2 = ssaIntegerGuard(v, branch2, k, true) and
-      cond2 = ssaIntegerGuard(v, branch2.booleanNot(), k, false) and
-      inverted = branch1.booleanXor(branch2)
-    )
-    or
-    exists(SsaVariable v, int k, boolean branch1, boolean branch2 |
-      cond1 = ssaIntBoundGuard(v, branch1, k) and
-      cond2 = ssaIntBoundGuard(v, branch2, k) and
-      inverted = branch1.booleanXor(branch2)
-    )
-    or
-    exists(SsaVariable v, EnumConstant c, boolean pol1, boolean pol2 |
-      cond1 = ssaEnumConstEquality(v, pol1, c) and
-      cond2 = ssaEnumConstEquality(v, pol2, c) and
-      inverted = pol1.booleanXor(pol2)
-    )
-    or
-    exists(SsaVariable v, RefType type |
-      cond1.getCondition() = instanceofExpr(v, type) and
-      cond2.getCondition() = instanceofExpr(v, type) and
-      inverted = false
-    )
-    or
-    exists(SsaVariable v1, SsaVariable v2, boolean branch1, boolean branch2 |
-      cond1.getCondition() = varEqualityTestExpr(v1, v2, branch1) and
-      cond2.getCondition() = varEqualityTestExpr(v1, v2, branch2) and
-      inverted = branch1.booleanXor(branch2)
-    )
-  )
-}
-
-/**
- * This is again the transitive closure of `nullVarStep` similarly to `varMaybeNullInBlock`, but
- * this time restricted based on pairs of correlated conditions consistent with `cond1`
- * evaluating to `branch`.
- */
-private predicate varMaybeNullInBlock_corrCond(
-  SsaVariable origin, SsaVariable ssa, BasicBlock bb, boolean storedcompletion,
-  ConditionBlock cond1, boolean branch
-) {
-  exists(SsaSourceVariable npecand | npecand = ssa.getSourceVariable() |
-    nullDerefCandidateVariable(npecand) and correlatedConditions(npecand, cond1, _, _)
-  ) and
-  (
-    varConditionallyNull(ssa, cond1, branch)
-    or
-    not varConditionallyNull(ssa, cond1, _) and
-    (branch = true or branch = false)
-  ) and
-  varMaybeNull(ssa, _, _) and
-  bb = ssa.getBasicBlock() and
-  storedcompletion = false and
-  origin = ssa
-  or
-  exists(BasicBlock mid, SsaVariable midssa, boolean midstoredcompletion |
-    varMaybeNullInBlock_corrCond(origin, midssa, mid, midstoredcompletion, cond1, branch) and
-    (
-      cond1 = mid and cond1.getTestSuccessor(branch) = bb
-      or
-      exists(ConditionBlock cond2, boolean inverted, boolean branch2 |
-        cond2 = mid and
-        correlatedConditions(_, cond1, cond2, inverted) and
-        cond2.getTestSuccessor(branch2) = bb and
-        branch = branch2.booleanXor(inverted)
-      )
-      or
-      cond1 != mid and
-      not exists(ConditionBlock cond2 | cond2 = mid and correlatedConditions(_, cond1, cond2, _))
-    ) and
-    nullVarStep(midssa, mid, midstoredcompletion, ssa, bb, storedcompletion)
-  )
-}
-
-/*
- * A tracking variable has its possible values divided into two sets, A and B, for
- * which we can attribute at least one direct assignment to be contained in either
- * A or B.
- * Four kinds are supported:
- * - null: A means null and B means non-null.
- * - boolean: A means true and B means false.
- * - enum: A means a specific enum constant and B means any other value.
- * - int: A means a specific integer value and B means any other value.
- */
-
-private newtype TrackVarKind =
-  TrackVarKindNull() or
-  TrackVarKindBool() or
-  TrackVarKindEnum() or
-  TrackVarKindInt()
-
-/** A variable that might be relevant as a tracking variable for the NPE candidate. */
-private predicate trackingVar(
-  SsaSourceVariable npecand, SsaExplicitUpdate trackssa, SsaSourceVariable trackvar,
-  TrackVarKind kind, Expr init
-) {
-  exists(ConditionBlock cond |
-    interestingCond(npecand, cond) and
-    varMaybeNullInBlock(_, npecand, cond, _) and
-    cond.getCondition().(Expr).getAChildExpr*() = trackvar.getAnAccess() and
-    trackssa.getSourceVariable() = trackvar and
-    trackssa.getDefiningExpr().(VariableAssign).getSource() = init
-  |
-    init instanceof NullLiteral and kind = TrackVarKindNull()
-    or
-    init = clearlyNotNullExpr() and kind = TrackVarKindNull()
-    or
-    init instanceof BooleanLiteral and kind = TrackVarKindBool()
-    or
-    init.(VarAccess).getVariable() instanceof EnumConstant and kind = TrackVarKindEnum()
-    or
-    exists(init.(ConstantIntegerExpr).getIntValue()) and kind = TrackVarKindInt()
-  )
-}
-
-/** Gets an expression that tests the value of a given tracking variable. */
-private Expr trackingVarGuard(
-  SsaVariable trackssa, SsaSourceVariable trackvar, TrackVarKind kind, boolean branch, boolean isA
-) {
-  exists(Expr init | trackingVar(_, trackssa, trackvar, kind, init) |
-    result = basicNullGuard(trackvar.getAnAccess(), branch, isA) and
-    kind = TrackVarKindNull()
-    or
-    result = trackvar.getAnAccess() and
-    kind = TrackVarKindBool() and
-    (branch = true or branch = false) and
-    isA = branch
-    or
-    exists(boolean polarity, EnumConstant c, EnumConstant initc |
-      initc.getAnAccess() = init and
-      kind = TrackVarKindEnum() and
-      result = enumConstEquality(trackvar.getAnAccess(), polarity, c) and
-      (
-        initc = c and branch = polarity.booleanNot() and isA = false
-        or
-        initc = c and branch = polarity and isA = true
-        or
-        initc != c and branch = polarity and isA = false
-      )
-    )
-    or
-    exists(int k |
-      init.(ConstantIntegerExpr).getIntValue() = k and
-      kind = TrackVarKindInt()
-    |
-      result = integerGuard(trackvar.getAnAccess(), branch, k, isA)
-      or
-      exists(int k2 |
-        result = integerGuard(trackvar.getAnAccess(), branch.booleanNot(), k2, true) and
-        isA = false and
-        k2 != k
-      )
-      or
-      exists(int bound, boolean branch_with_lower_bound |
-        result = intBoundGuard(trackvar.getAnAccess(), branch_with_lower_bound, bound) and
-        isA = false
-      |
-        branch = branch_with_lower_bound and k < bound
-        or
-        branch = branch_with_lower_bound.booleanNot() and bound <= k
-      )
-    )
-  )
-  or
-  exists(EqualityTest eqtest, boolean branch0, boolean polarity, BooleanLiteral boollit |
-    eqtest = result and
-    eqtest.hasOperands(trackingVarGuard(trackssa, trackvar, kind, branch0, isA), boollit) and
-    eqtest.polarity() = polarity and
-    branch = branch0.booleanXor(polarity).booleanXor(boollit.getBooleanValue())
-  )
-}
-
-/** An update to a tracking variable that is contained fully in either A or B. */
-private predicate isReset(
-  SsaVariable trackssa, SsaSourceVariable trackvar, TrackVarKind kind, SsaExplicitUpdate update,
-  boolean isA
-) {
-  exists(Expr init, Expr e |
-    trackingVar(_, trackssa, trackvar, kind, init) and
-    update.getSourceVariable() = trackvar and
-    e = update.getDefiningExpr().(VariableAssign).getSource()
-  |
-    e instanceof NullLiteral and kind = TrackVarKindNull() and isA = true
-    or
-    e = clearlyNotNullExpr() and kind = TrackVarKindNull() and isA = false
-    or
-    e.(BooleanLiteral).getBooleanValue() = isA and kind = TrackVarKindBool()
-    or
-    e.(VarAccess).getVariable().(EnumConstant) = init.(VarAccess).getVariable() and
-    kind = TrackVarKindEnum() and
-    isA = true
-    or
-    e.(VarAccess).getVariable().(EnumConstant) != init.(VarAccess).getVariable() and
-    kind = TrackVarKindEnum() and
-    isA = false
-    or
-    e.(ConstantIntegerExpr).getIntValue() = init.(ConstantIntegerExpr).getIntValue() and
-    kind = TrackVarKindInt() and
-    isA = true
-    or
-    e.(ConstantIntegerExpr).getIntValue() != init.(ConstantIntegerExpr).getIntValue() and
-    kind = TrackVarKindInt() and
-    isA = false
-  )
-}
-
-/** The abstract value of the tracked variable. */
-private newtype TrackedValue =
-  TrackedValueA() or
-  TrackedValueB() or
-  TrackedValueUnknown()
-
-private TrackedValue trackValAorB(boolean isA) {
-  isA = true and result = TrackedValueA()
-  or
-  isA = false and result = TrackedValueB()
-}
-
-/** A control flow edge passing through a condition that implies a specific value for a tracking variable. */
-private predicate stepImplies(
-  BasicBlock bb1, BasicBlock bb2, SsaVariable trackssa, SsaSourceVariable trackvar,
-  TrackVarKind kind, boolean isA
-) {
-  exists(ConditionBlock cond, boolean branch |
-    cond = bb1 and
-    cond.getTestSuccessor(branch) = bb2 and
-    cond.getCondition() = trackingVarGuard(trackssa, trackvar, kind, branch, isA)
-  )
-}
-
-/**
- * This is again the transitive closure of `nullVarStep` similarly to `varMaybeNullInBlock`, but
- * this time restricted based on a tracking variable.
- */
-private predicate varMaybeNullInBlock_trackVar(
-  SsaVariable origin, SsaVariable ssa, BasicBlock bb, boolean storedcompletion,
-  SsaVariable trackssa, SsaSourceVariable trackvar, TrackVarKind kind, TrackedValue trackvalue
-) {
-  exists(SsaSourceVariable npecand | npecand = ssa.getSourceVariable() |
-    nullDerefCandidateVariable(npecand) and trackingVar(npecand, trackssa, trackvar, kind, _)
-  ) and
-  (
-    exists(SsaVariable init, boolean isA |
-      init.getSourceVariable() = trackvar and
-      init.isLiveAtEndOfBlock(bb) and
-      isReset(trackssa, trackvar, kind, init, isA) and
-      trackvalue = trackValAorB(isA)
-    )
-    or
-    trackvalue = TrackedValueUnknown() and
-    not exists(SsaVariable init |
-      init.getSourceVariable() = trackvar and
-      init.isLiveAtEndOfBlock(bb) and
-      isReset(trackssa, trackvar, kind, init, _)
-    )
-  ) and
-  varMaybeNull(ssa, _, _) and
-  bb = ssa.getBasicBlock() and
-  storedcompletion = false and
-  origin = ssa
-  or
-  exists(BasicBlock mid, SsaVariable midssa, boolean midstoredcompletion, TrackedValue trackvalue0 |
-    varMaybeNullInBlock_trackVar(origin, midssa, mid, midstoredcompletion, trackssa, trackvar, kind,
-      trackvalue0) and
-    nullVarStep(midssa, mid, midstoredcompletion, ssa, bb, storedcompletion) and
-    (
-      trackvalue0 = TrackedValueUnknown()
-      or
-      // A step that implies a value that contradicts the current value is not allowed.
-      exists(boolean isA | trackvalue0 = trackValAorB(isA) |
-        not stepImplies(mid, bb, trackssa, trackvar, kind, isA.booleanNot())
-      )
-    ) and
-    (
-      // If no update occurs then the tracked value is unchanged unless the step implies a given value via a condition.
-      not exists(SsaUpdate update |
-        update.getSourceVariable() = trackvar and
-        update.getBasicBlock() = bb
-      ) and
-      (
-        exists(boolean isA | stepImplies(mid, bb, trackssa, trackvar, kind, isA) |
-          trackvalue = trackValAorB(isA)
-        )
-        or
-        not stepImplies(mid, bb, trackssa, trackvar, kind, _) and trackvalue = trackvalue0
-      )
-      or
-      // If an update occurs then the tracked value is set accordingly.
-      exists(SsaUpdate update |
-        update.getSourceVariable() = trackvar and
-        update.getBasicBlock() = bb
-      |
-        exists(boolean isA | isReset(trackssa, trackvar, kind, update, isA) |
-          trackvalue = trackValAorB(isA)
-        )
-        or
-        not isReset(trackssa, trackvar, kind, update, _) and trackvalue = TrackedValueUnknown()
-      )
-    )
-  )
-}
-
-/**
- * A potential `null` dereference that has not been proven safe.
+ * Holds if the dereference of `v` at `va` might be `null`.
  */
 predicate nullDeref(SsaSourceVariable v, VarAccess va, string msg, Expr reason) {
-  exists(SsaVariable origin, SsaVariable ssa, BasicBlock bb |
-    nullDerefCandidate(origin, va) and
-    varMaybeNull(origin, msg, reason) and
+  exists(SsaVariable origin, SsaVariable ssa, ControlFlowNode src, ControlFlowNode sink |
+    varMaybeNull(origin, src, msg, reason) and
+    NullnessFlow::flow(src, origin, sink, ssa) and
     ssa.getSourceVariable() = v and
-    firstVarDereferenceInBlock(bb, ssa, va) and
-    forall(ConditionBlock cond | correlatedConditions(v, cond, _, _) |
-      varMaybeNullInBlock_corrCond(origin, ssa, bb, _, cond, _)
-    ) and
-    forall(SsaVariable guardssa, SsaSourceVariable guardvar, TrackVarKind kind |
-      trackingVar(v, guardssa, guardvar, kind, _)
-    |
-      varMaybeNullInBlock_trackVar(origin, ssa, bb, _, guardssa, guardvar, kind, _)
-    )
+    varDereference(ssa, va) = sink
   )
 }
 

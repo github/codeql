@@ -1,5 +1,11 @@
 private import AstImport
 
+/**
+ * An expandable sub-expression. For example `$(Get-Date)` in:
+ * ```
+ * "Hello $(Get-Date)"
+ * ```
+ */
 class ExpandableSubExpr extends Expr, TExpandableSubExpr {
   StmtBlock getExpr() {
     exists(Raw::Ast r | r = getRawAst(this) |

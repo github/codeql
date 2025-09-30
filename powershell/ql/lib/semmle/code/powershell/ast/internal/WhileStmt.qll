@@ -1,5 +1,11 @@
 private import AstImport
 
+/**
+ * A while loop statement. For example:
+ * ```
+ * while ($count -lt 10) { $count++ }
+ * ```
+ */
 class WhileStmt extends LoopStmt, TWhileStmt {
   override string toString() { result = "while(...) {...}" }
 

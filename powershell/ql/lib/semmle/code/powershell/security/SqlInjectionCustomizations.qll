@@ -52,20 +52,27 @@ module SqlInjection {
 
   private string inputfile() { result = ["inputfile", "i"] }
 
+  bindingset[call]
+  pragma[inline_late]
+  private predicate sqlCmdSinkCommon(DataFlow::CallNode call, DataFlow::Node s) {
+    s = call.getNamedArgument(query())
+    or
+    // If the input is not provided as a query parameter or an input file
+    // parameter then it's the first argument.
+    not call.hasNamedArgument(query()) and
+    not call.hasNamedArgument(inputfile()) and
+    s = call.getArgument(0)
+    or
+    // TODO: Here we really should pick a splat argument, but we don't yet extract whether an
+    // argument is a splat argument.
+    s = unique( | | call.getAnArgument())
+  }
+
   class InvokeSqlCmdSink extends Sink {
     InvokeSqlCmdSink() {
-      exists(DataFlow::CallNode call | call.matchesName("Invoke-Sqlcmd") |
-        this = call.getNamedArgument(query())
-        or
-        this = call.getNamedArgument(inputfile())
-        or
-        not call.hasNamedArgument(query()) and
-        not call.hasNamedArgument(inputfile()) and
-        this = call.getArgument(0)
-        or
-        // TODO: Here we really should pick a splat argument, but we don't yet extract whether an
-        // argument is a splat argument.
-        this = unique( | | call.getAnArgument())
+      exists(DataFlow::CallNode call |
+        call.matchesName("Invoke-Sqlcmd") and
+        sqlCmdSinkCommon(call, this)
       )
     }
 
@@ -73,7 +80,7 @@ module SqlInjection {
 
     override predicate allowImplicitRead(DataFlow::ContentSet cs) {
       cs.getAStoreContent().(DataFlow::Content::KnownKeyContent).getIndex().asString().toLowerCase() =
-        ["query", "inputfile"]
+        query()
     }
   }
 
@@ -94,11 +101,17 @@ module SqlInjection {
     override string getSinkType() { result = "write to " + memberName }
   }
 
+  /**
+   * A call of the form `&sqlcmd`.
+   *
+   * We don't know if this is actually a call to an SQL execution procedure, but it is
+   * very common to define a `sqlcmd` variable and point it to an SQL execution program.
+   */
   class SqlCmdSink extends Sink {
     SqlCmdSink() {
       exists(DataFlow::CallOperatorNode call |
         call.getCommand().asExpr().getValue().stringMatches("sqlcmd") and
-        call.getAnArgument() = this
+        sqlCmdSinkCommon(call, this)
       )
     }
 
@@ -106,4 +119,15 @@ module SqlInjection {
   }
 
   class TypeSanitizer extends Sanitizer instanceof SimpleTypeSanitizer { }
+
+  class ValidateAttributeSanitizer extends Sanitizer {
+    ValidateAttributeSanitizer() {
+      exists(Function f, Attribute a, Parameter p |
+        p = f.getAParameter() and
+        p.getAnAttribute() = a and
+        a.getAName() = ["ValidateScript", "ValidateSet", "ValidatePattern"] and
+        this.asParameter() = p
+      )
+    }
+  }
 }

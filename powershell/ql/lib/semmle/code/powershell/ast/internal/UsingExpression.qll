@@ -1,5 +1,11 @@
 private import AstImport
 
+/**
+ * A using expression. For example:
+ * ```
+ * Invoke-Command -ComputerName $server -ScriptBlock { $using:data }
+ * ```
+ */
 class UsingExpr extends Expr, TUsingExpr {
   override string toString() { result = "$using..." }
 

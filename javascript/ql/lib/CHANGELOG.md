@@ -1,3 +1,16 @@
+## 2.6.11
+
+### Minor Analysis Improvements
+
+* Added modeling for promisification libraries `@gar/promisify`, `es6-promisify`, `util.promisify`, `thenify-all`, `call-me-maybe`, `@google-cloud/promisify`, and `util-promisify`.
+* Data flow is now tracked through promisified user-defined functions. 
+
+## 2.6.10
+
+### Minor Analysis Improvements
+
+* Removed `libxmljs` as an XML bomb sink. The underlying libxml2 library now includes [entity reference loop detection](https://github.com/GNOME/libxml2/blob/0c948334a8f5c66d50e9f8992e62998017dc4fc6/NEWS#L905-L908) that prevents XML bomb attacks.
+
 ## 2.6.9
 
 ### Minor Analysis Improvements

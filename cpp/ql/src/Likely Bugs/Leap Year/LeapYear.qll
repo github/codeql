@@ -352,9 +352,16 @@ abstract class LeapYearFieldAccess extends YearFieldAccess {
   /**
    * Holds if the top-level binary operation includes an addition or subtraction operator with an operand specified by `valueToCheck`.
    */
-  predicate additionalAdditionOrSubstractionCheckForLeapYear(int valueToCheck) {
+  predicate additionalAdditionOrSubtractionCheckForLeapYear(int valueToCheck) {
     additionalLogicalCheck(this, "+", valueToCheck) or
     additionalLogicalCheck(this, "-", valueToCheck)
+  }
+
+  /**
+   * DEPRECATED: Use `additionalAdditionOrSubtractionCheckForLeapYear` instead.
+   */
+  deprecated predicate additionalAdditionOrSubstractionCheckForLeapYear(int valueToCheck) {
+    this.additionalAdditionOrSubtractionCheckForLeapYear(valueToCheck)
   }
 
   /**

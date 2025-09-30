@@ -1,5 +1,8 @@
 private import AstImport
 
+/**
+ * An exit statement. For example `exit` or `exit 1`.
+ */
 class ExitStmt extends Stmt, TExitStmt {
   Expr getPipeline() {
     exists(Raw::Ast r | r = getRawAst(this) |

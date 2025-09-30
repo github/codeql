@@ -198,7 +198,7 @@ class ConceptIdExpr extends Expr, @concept_id {
   final Locatable getATemplateArgumentKind() { result = this.getTemplateArgumentKind(_) }
 
   /**
-   * Gets the `i`th template argument passed to the concept.
+   * Gets template argument at index `index` passed to the concept, if any.
    *
    * For example, if:
    * ```cpp
@@ -219,7 +219,7 @@ class ConceptIdExpr extends Expr, @concept_id {
   }
 
   /**
-   * Gets the kind of the `i`th template argument value passed to the concept.
+   * Gets the kind of the template argument value at index `index` passed to the concept, if any.
    *
    * For example, if:
    * ```cpp

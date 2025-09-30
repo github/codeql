@@ -1,5 +1,10 @@
 private import AstImport
 
+/**
+ * A PowerShell AST (Abstract Syntax Tree) element.
+ * 
+ * This is the root of the PowerShell AST class hierarchy.
+ */
 class Ast extends TAst {
   string toString() { none() }
 

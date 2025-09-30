@@ -10,21 +10,18 @@
  *       security
  */
 
- import powershell
+import powershell
 
 class ReservedCharacter extends string {
-    ReservedCharacter() { 
-        this = [
-        "!", "@", "#", "$",
-        "&", "*", "(", ")", 
-        "+", "=", "{", "^", 
-        "}", "[", "]", "|", 
-        ";", ":", "'", "\"", 
-        "<", ">", ",", "?", 
-        "/", "~"]
-    }
+  ReservedCharacter() {
+    this =
+      [
+        "!", "@", "#", "$", "&", "*", "(", ")", "+", "=", "{", "^", "}", "[", "]", "|", ";", ":",
+        "'", "\"", "<", ">", ",", "?", "/", "~"
+      ]
+  }
 }
 
 from Function f, ReservedCharacter r
-where f.getLowerCaseName().matches("%"+ r + "%")
+where f.getLowerCaseName().matches("%" + r + "%")
 select f, "Function name contains a reserved character: " + r

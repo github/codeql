@@ -4,32 +4,32 @@
 | clientSide.js:17:5:17:58 | request ...  '/id') | clientSide.js:16:22:16:41 | window.location.hash | clientSide.js:17:13:17:57 | 'https: ... + '/id' | The $@ of this request depends on a $@. | clientSide.js:17:13:17:57 | 'https: ... + '/id' | URL | clientSide.js:16:22:16:41 | window.location.hash | user-provided value |
 | clientSide.js:21:5:21:54 | request ...  '/id') | clientSide.js:20:18:20:28 | window.name | clientSide.js:21:13:21:53 | 'https: ... + '/id' | The $@ of this request depends on a $@. | clientSide.js:21:13:21:53 | 'https: ... + '/id' | URL | clientSide.js:20:18:20:28 | window.name | user-provided value |
 edges
-| clientSide.js:11:11:11:53 | query | clientSide.js:12:42:12:46 | query | provenance |  |
+| clientSide.js:11:11:11:15 | query | clientSide.js:12:42:12:46 | query | provenance |  |
 | clientSide.js:11:19:11:40 | window. ... .search | clientSide.js:11:19:11:53 | window. ... ring(1) | provenance |  |
-| clientSide.js:11:19:11:53 | window. ... ring(1) | clientSide.js:11:11:11:53 | query | provenance |  |
+| clientSide.js:11:19:11:53 | window. ... ring(1) | clientSide.js:11:11:11:15 | query | provenance |  |
 | clientSide.js:12:42:12:46 | query | clientSide.js:12:13:12:54 | 'https: ... + '/id' | provenance |  |
 | clientSide.js:14:42:14:63 | window. ... .search | clientSide.js:14:13:14:63 | 'https: ... .search | provenance |  |
-| clientSide.js:16:11:16:54 | fragment | clientSide.js:17:42:17:49 | fragment | provenance |  |
+| clientSide.js:16:11:16:18 | fragment | clientSide.js:17:42:17:49 | fragment | provenance |  |
 | clientSide.js:16:22:16:41 | window.location.hash | clientSide.js:16:22:16:54 | window. ... ring(1) | provenance |  |
-| clientSide.js:16:22:16:54 | window. ... ring(1) | clientSide.js:16:11:16:54 | fragment | provenance |  |
+| clientSide.js:16:22:16:54 | window. ... ring(1) | clientSide.js:16:11:16:18 | fragment | provenance |  |
 | clientSide.js:17:42:17:49 | fragment | clientSide.js:17:13:17:57 | 'https: ... + '/id' | provenance |  |
-| clientSide.js:20:11:20:28 | name | clientSide.js:21:42:21:45 | name | provenance |  |
-| clientSide.js:20:18:20:28 | window.name | clientSide.js:20:11:20:28 | name | provenance |  |
+| clientSide.js:20:11:20:14 | name | clientSide.js:21:42:21:45 | name | provenance |  |
+| clientSide.js:20:18:20:28 | window.name | clientSide.js:20:11:20:14 | name | provenance |  |
 | clientSide.js:21:42:21:45 | name | clientSide.js:21:13:21:53 | 'https: ... + '/id' | provenance |  |
 nodes
-| clientSide.js:11:11:11:53 | query | semmle.label | query |
+| clientSide.js:11:11:11:15 | query | semmle.label | query |
 | clientSide.js:11:19:11:40 | window. ... .search | semmle.label | window. ... .search |
 | clientSide.js:11:19:11:53 | window. ... ring(1) | semmle.label | window. ... ring(1) |
 | clientSide.js:12:13:12:54 | 'https: ... + '/id' | semmle.label | 'https: ... + '/id' |
 | clientSide.js:12:42:12:46 | query | semmle.label | query |
 | clientSide.js:14:13:14:63 | 'https: ... .search | semmle.label | 'https: ... .search |
 | clientSide.js:14:42:14:63 | window. ... .search | semmle.label | window. ... .search |
-| clientSide.js:16:11:16:54 | fragment | semmle.label | fragment |
+| clientSide.js:16:11:16:18 | fragment | semmle.label | fragment |
 | clientSide.js:16:22:16:41 | window.location.hash | semmle.label | window.location.hash |
 | clientSide.js:16:22:16:54 | window. ... ring(1) | semmle.label | window. ... ring(1) |
 | clientSide.js:17:13:17:57 | 'https: ... + '/id' | semmle.label | 'https: ... + '/id' |
 | clientSide.js:17:42:17:49 | fragment | semmle.label | fragment |
-| clientSide.js:20:11:20:28 | name | semmle.label | name |
+| clientSide.js:20:11:20:14 | name | semmle.label | name |
 | clientSide.js:20:18:20:28 | window.name | semmle.label | window.name |
 | clientSide.js:21:13:21:53 | 'https: ... + '/id' | semmle.label | 'https: ... + '/id' |
 | clientSide.js:21:42:21:45 | name | semmle.label | name |

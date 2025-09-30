@@ -3,9 +3,9 @@
 private import powershell
 private import ControlFlowGraph
 private import CfgNodes
-private import SuccessorTypes
 private import internal.ControlFlowGraphImpl as CfgImpl
 private import CfgImpl::BasicBlocks as BasicBlocksImpl
+private import codeql.controlflow.BasicBlock as BB
 
 /**
  * A basic block, that is, a maximal straight-line sequence of control flow nodes
@@ -157,3 +157,19 @@ final class JoinBlockPredecessor extends BasicBlock, BasicBlocksImpl::JoinPredec
  * control flow.
  */
 final class ConditionBlock extends BasicBlock, BasicBlocksImpl::ConditionBasicBlock { }
+
+private class BasicBlockAlias = BasicBlock;
+
+private class EntryBasicBlockAlias = EntryBasicBlock;
+
+module Cfg implements BB::CfgSig<Location> {
+  class ControlFlowNode = CfgNode;
+
+  class BasicBlock = BasicBlockAlias;
+
+  class EntryBasicBlock = EntryBasicBlockAlias;
+
+  predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) {
+    BasicBlocksImpl::dominatingEdge(bb1, bb2)
+  }
+}

@@ -1,14 +1,17 @@
 name: "actions"
-aliases: []
 display_name: "GitHub Actions"
 version: 0.0.1
 column_kind: "utf16"
 unicode_newlines: true
 build_modes:
   - none
-file_coverage_languages: []
+default_queries:
+  - codeql/actions-queries
+# Actions workflows are not reported separately by the GitHub API, so we can't
+# associate them with a specific language.
 github_api_languages: []
-scc_languages: []
+scc_languages:
+  - YAML
 file_types:
   - name: workflow
     display_name: GitHub Actions workflow files

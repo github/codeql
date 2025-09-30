@@ -1,5 +1,11 @@
 private import AstImport
 
+/**
+ * A pipeline expression. For example:
+ * ```
+ * Get-Process | Where-Object { $_.CPU -gt 100 }
+ * ```
+ */
 class Pipeline extends Expr, TPipeline {
   override string toString() {
     if this.getNumberOfComponents() = 1

@@ -20,12 +20,14 @@ class RangeFunction extends Function {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    super.getLocation().hasLocationInfo(path, sl, sc, _, _) and
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    super.getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _) and
     (
-      this.getBlock().getLocation().hasLocationInfo(path, _, _, el, ec)
+      this.getBlock().getLocation().hasLocationInfo(filepath, _, _, endline, endcolumn)
       or
-      not exists(this.getBlock()) and el = sl + 1 and ec = 1
+      not exists(this.getBlock()) and endline = startline + 1 and endcolumn = 1
     )
   }
 }

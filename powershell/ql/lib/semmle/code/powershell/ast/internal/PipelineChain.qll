@@ -1,5 +1,12 @@
 private import AstImport
 
+/**
+ * A pipeline chain expression. For example:
+ * ```
+ * Get-Process && Write-Host "Success"
+ * Test-Path $file || Write-Host "File not found"
+ * ```
+ */
 class PipelineChain extends Expr, TPipelineChain {
   predicate isBackground() { getRawAst(this).(Raw::PipelineChain).isBackground() }
 

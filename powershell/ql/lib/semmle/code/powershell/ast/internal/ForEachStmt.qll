@@ -1,5 +1,11 @@
 private import AstImport
 
+/**
+ * A foreach loop statement. For example:
+ * ```
+ * foreach ($item in $collection) { Write-Host $item }
+ * ```
+ */
 class ForEachStmt extends LoopStmt, TForEachStmt {
   override string toString() { result = "forach(... in ...)" }
 

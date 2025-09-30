@@ -1,5 +1,13 @@
 private import AstImport
 
+/**
+ * A method invocation expression. For example:
+ * ```
+ * $process.Start()
+ * $string.ToUpper()
+ * $list.Add($item)
+ * ```
+ */
 class InvokeMemberExpr extends CallExpr, TInvokeMemberExpr {
   final override string getLowerCaseName() {
     result = getRawAst(this).(Raw::InvokeMemberExpr).getLowerCaseName()

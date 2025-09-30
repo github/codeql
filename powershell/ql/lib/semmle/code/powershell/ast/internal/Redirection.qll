@@ -1,5 +1,11 @@
 private import AstImport
 
+/**
+ * A redirection expression. For example, `>` in:
+ * ```
+ * Get-Process > processes.txt
+ * ```
+ */
 class Redirection extends Ast, TRedirection {
   Expr getExpr() {
     exists(Raw::Ast r | r = getRawAst(this) |

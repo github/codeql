@@ -1,3 +1,29 @@
+## 1.8.0
+
+### Major Analysis Improvements
+
+* The implementation of `java/dereferenced-value-may-be-null` has been completely replaced with a new general control-flow reachability library. This improves precision by reducing false positives. However, since the entire calculation has been reworked, there can be small corner cases where precision regressions might occur and new false positives may occur, but these cases should be rare.
+
+### Bug Fixes
+
+* The message for `java/diagnostic/database-quality` has been updated to include detailed database health metrics. Additionally, the threshold for reporting database health issues has been lowered from 95% to 85% (if any metric falls below this percentage). These changes are visible on the tool status page.
+
+## 1.7.0
+
+### New Queries
+
+* The query `java/insecure-spring-actuator-config` has been promoted from experimental to the main query pack as `java/spring-boot-exposed-actuators-config`. Its results will now appear by default. This query detects exposure of Spring Boot actuators through configuration files. It was originally submitted as an experimental query [by @luchua-bc](https://github.com/github/codeql/pull/5384).
+
+### Query Metadata Changes
+
+* The tag `maintainability` has been removed from `java/run-finalizers-on-exit` and the tags `quality`, `correctness`, and `performance` have been added.
+* The tag `maintainability` has been removed from `java/garbage-collection` and the tags `quality` and `correctness` have been added.
+
+### Minor Analysis Improvements
+
+* Fixed a bug that was causing false negatives in rare cases in the query `java/dereferenced-value-may-be-null`.
+* Removed the `java/empty-statement` query that was subsumed by the `java/empty-block` query.
+
 ## 1.6.3
 
 No user-facing changes.

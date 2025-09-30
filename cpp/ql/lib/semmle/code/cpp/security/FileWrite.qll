@@ -21,7 +21,9 @@ class FileWrite extends Expr {
   Expr getDest() { fileWrite(this, _, result) }
 
   /**
-   * Gets the conversion character for this write, if it exists and is known. For example in the following code the write of `value1` has conversion character `"s"`, whereas the write of `value2` has no conversion specifier.
+   * Gets the conversion character from `source` for this write, if it exists and is known.
+   * For example in the following code the write of `value1` has conversion character `"s"`, whereas
+   * the write of `value2` has no conversion specifier.
    * ```
    * fprintf(file, "%s", value1);
    * stream << value2;

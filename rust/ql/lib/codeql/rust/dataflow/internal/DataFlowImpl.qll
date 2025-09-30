@@ -21,7 +21,6 @@ private import Node
 private import Content
 private import FlowSummaryImpl as FlowSummaryImpl
 
-
 /**
  * A return kind. A return kind describes how a value can be returned from a
  * callable.
@@ -54,11 +53,9 @@ final class DataFlowCallable extends TDataFlowCallable {
   }
 
   /** Gets the location of this callable. */
-  Location getLocation() { result = this.asCfgScope().getLocation() }
-
-  //** TODO JB1: Move to subclass, monkey patching for #153 */
-  int totalorder(){ none() }
-  //** TODO JB1: end stubs for #153 */
+  Location getLocation() {
+    result = [this.asCfgScope().getLocation(), this.asSummarizedCallable().getLocation()]
+  }
 }
 
 final class DataFlowCall extends TDataFlowCall {
@@ -87,12 +84,6 @@ final class DataFlowCall extends TDataFlowCall {
       result = "[summary] call to " + receiver + " in " + c
     )
   }
-
-  //** TODO JB1: Move to subclass, monkey patching for #153 */
-  DataFlowCallable getARuntimeTarget(){ none() }
-  ArgumentNode getAnArgumentNode(){ none() }
-  int totalorder(){ none() }
-  //** TODO JB1: end stubs for #153 */
 
   Location getLocation() { result = this.asCallCfgNode().getLocation() }
 }
@@ -207,7 +198,8 @@ private ExprCfgNode getALastEvalNode(ExprCfgNode e) {
 
 /**
  * Holds if a reverse local flow step should be added from the post-update node
- * for `e` to the post-update node for the result.
+ * for `e` to the post-update node for the result. `preservesValue` is true
+ * if the step is value preserving.
  *
  * This is needed to allow for side-effects on compound expressions to propagate
  * to sub components. For example, in
@@ -774,10 +766,6 @@ module RustDataFlow implements InputSig<Location> {
     string toString() { result = "NodeRegion" }
 
     predicate contains(Node n) { none() }
-
-    //** TODO JB1: Move to subclass, monkey patching for #153 */
-    int totalOrder(){ none() }
-    //** TODO JB1: end stubs for #153 */
   }
 
   /**
@@ -859,6 +847,7 @@ module RustDataFlow implements InputSig<Location> {
 module VariableCapture {
   private import codeql.rust.internal.CachedStages
   private import codeql.dataflow.VariableCapture as SharedVariableCapture
+  private import codeql.rust.controlflow.BasicBlocks as BasicBlocks
 
   private predicate closureFlowStep(ExprCfgNode e1, ExprCfgNode e2) {
     Stages::DataFlowStage::ref() and
@@ -870,22 +859,13 @@ module VariableCapture {
     )
   }
 
-  private module CaptureInput implements SharedVariableCapture::InputSig<Location> {
+  private module CaptureInput implements
+    SharedVariableCapture::InputSig<Location, BasicBlocks::BasicBlock>
+  {
     private import rust as Ast
-    private import codeql.rust.controlflow.BasicBlocks as BasicBlocks
     private import codeql.rust.elements.Variable as Variable
 
-    class BasicBlock extends BasicBlocks::BasicBlock {
-      Callable getEnclosingCallable() { result = this.getScope() }
-    }
-
-    class ControlFlowNode = CfgNode;
-
-    BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
-      result = bb.getImmediateDominator()
-    }
-
-    BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
+    Callable basicBlockGetEnclosingCallable(BasicBlocks::BasicBlock bb) { result = bb.getScope() }
 
     class CapturedVariable extends Variable {
       CapturedVariable() { this.isCaptured() }
@@ -902,7 +882,7 @@ module VariableCapture {
     }
 
     class Expr extends CfgNode {
-      predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
+      predicate hasCfgNode(BasicBlocks::BasicBlock bb, int i) { this = bb.getNode(i) }
     }
 
     class VariableWrite extends Expr {
@@ -964,7 +944,7 @@ module VariableCapture {
 
   class CapturedVariable = CaptureInput::CapturedVariable;
 
-  module Flow = SharedVariableCapture::Flow<Location, CaptureInput>;
+  module Flow = SharedVariableCapture::Flow<Location, BasicBlocks::Cfg, CaptureInput>;
 
   private Flow::ClosureNode asClosureNode(Node n) {
     result = n.(CaptureNode).getSynthesizedCaptureNode()

@@ -31,14 +31,14 @@ abstract class RemoteFlowSource extends SourceNode {
 class GitHubCtxSource extends RemoteFlowSource {
   string flag;
   string event;
-  GitHubExpression e;
 
   GitHubCtxSource() {
-    this.asExpr() = e and
-    // github.head_ref
-    e.getFieldName() = "head_ref" and
-    flag = "branch" and
-    (
+    exists(GitHubExpression e |
+      this.asExpr() = e and
+      // github.head_ref
+      e.getFieldName() = "head_ref" and
+      flag = "branch"
+    |
       event = e.getATriggerEvent().getName() and
       event = "pull_request_target"
       or
@@ -148,7 +148,6 @@ class GhCLICommandSource extends RemoteFlowSource, CommandSource {
 class GitHubEventPathSource extends RemoteFlowSource, CommandSource {
   string cmd;
   string flag;
-  string access_path;
   Run run;
 
   // Examples
@@ -163,7 +162,7 @@ class GitHubEventPathSource extends RemoteFlowSource, CommandSource {
     run.getScript().getACommand() = cmd and
     cmd.matches("jq%") and
     cmd.matches("%GITHUB_EVENT_PATH%") and
-    exists(string regexp |
+    exists(string regexp, string access_path |
       untrustedEventPropertiesDataModel(regexp, flag) and
       not flag = "json" and
       access_path = "github.event" + cmd.regexpCapture(".*\\s+([^\\s]+)\\s+.*", 1) and

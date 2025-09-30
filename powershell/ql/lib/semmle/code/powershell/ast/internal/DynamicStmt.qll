@@ -1,5 +1,27 @@
 private import AstImport
 
+/**
+ * A `dynamicparam` statement. For example this declares a dynamic optional
+ * parameter named `MyParam`:
+ * ```
+ * dynamicparam
+ * {
+ *   $parameterAttribute = [System.Management.Automation.ParameterAttribute]@{
+ *     Mandatory = $false
+ *   }
+ *
+ *   $attributeCollection = [System.Collections.ObjectModel.Collection[System.Attribute]]::new()
+ *   $attributeCollection.Add($parameterAttribute)
+ *
+ *   $dynParam1 = [System.Management.Automation.RuntimeDefinedParameter]::new(
+ *     'MyParam', [int32], $attributeCollection
+ *   )
+ *
+ *   $paramDictionary = [System.Management.Automation.RuntimeDefinedParameterDictionary]::new()
+ *   $paramDictionary.Add('MyParam', $dynParam1)
+ *   return $paramDictionary
+ * }
+ */
 class DynamicStmt extends Stmt, TDynamicStmt {
   override string toString() { result = "&..." }
 

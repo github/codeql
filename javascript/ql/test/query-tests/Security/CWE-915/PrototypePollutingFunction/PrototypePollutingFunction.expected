@@ -61,42 +61,42 @@ edges
 | examples/PrototypePollutingFunction_fixed.js:5:29:5:36 | src[key] | examples/PrototypePollutingFunction_fixed.js:1:21:1:23 | src | provenance |  |
 | examples/PrototypePollutingFunction_fixed.js:7:24:7:26 | src | examples/PrototypePollutingFunction_fixed.js:7:24:7:31 | src[key] | provenance | Config |
 | examples/PrototypePollutingFunction_fixed.js:7:28:7:30 | key | examples/PrototypePollutingFunction_fixed.js:7:24:7:31 | src[key] | provenance | Config |
-| path-assignment.js:8:13:8:25 | key | path-assignment.js:13:29:13:31 | key | provenance |  |
-| path-assignment.js:8:13:8:25 | key | path-assignment.js:15:20:15:22 | key | provenance |  |
-| path-assignment.js:8:19:8:25 | keys[i] | path-assignment.js:8:13:8:25 | key | provenance |  |
-| path-assignment.js:13:13:13:32 | target | path-assignment.js:13:22:13:27 | target | provenance |  |
-| path-assignment.js:13:13:13:32 | target | path-assignment.js:15:13:15:18 | target | provenance |  |
+| path-assignment.js:8:13:8:15 | key | path-assignment.js:13:29:13:31 | key | provenance |  |
+| path-assignment.js:8:13:8:15 | key | path-assignment.js:15:20:15:22 | key | provenance |  |
+| path-assignment.js:8:19:8:25 | keys[i] | path-assignment.js:8:13:8:15 | key | provenance |  |
+| path-assignment.js:13:13:13:18 | target | path-assignment.js:13:22:13:27 | target | provenance |  |
+| path-assignment.js:13:13:13:18 | target | path-assignment.js:15:13:15:18 | target | provenance |  |
 | path-assignment.js:13:22:13:27 | target | path-assignment.js:13:22:13:32 | target[key] | provenance | Config |
-| path-assignment.js:13:22:13:32 | target[key] | path-assignment.js:13:13:13:32 | target | provenance |  |
+| path-assignment.js:13:22:13:32 | target[key] | path-assignment.js:13:13:13:18 | target | provenance |  |
 | path-assignment.js:13:29:13:31 | key | path-assignment.js:13:22:13:32 | target[key] | provenance | Config |
-| path-assignment.js:41:13:41:25 | key | path-assignment.js:42:25:42:27 | key | provenance |  |
-| path-assignment.js:41:13:41:25 | key | path-assignment.js:42:39:42:41 | key | provenance |  |
-| path-assignment.js:41:19:41:25 | keys[i] | path-assignment.js:41:13:41:25 | key | provenance |  |
-| path-assignment.js:42:9:42:48 | target | path-assignment.js:42:18:42:23 | target | provenance |  |
-| path-assignment.js:42:9:42:48 | target | path-assignment.js:42:32:42:37 | target | provenance |  |
-| path-assignment.js:42:9:42:48 | target | path-assignment.js:44:5:44:10 | target | provenance |  |
+| path-assignment.js:41:13:41:15 | key | path-assignment.js:42:25:42:27 | key | provenance |  |
+| path-assignment.js:41:13:41:15 | key | path-assignment.js:42:39:42:41 | key | provenance |  |
+| path-assignment.js:41:19:41:25 | keys[i] | path-assignment.js:41:13:41:15 | key | provenance |  |
+| path-assignment.js:42:9:42:14 | target | path-assignment.js:42:18:42:23 | target | provenance |  |
+| path-assignment.js:42:9:42:14 | target | path-assignment.js:42:32:42:37 | target | provenance |  |
+| path-assignment.js:42:9:42:14 | target | path-assignment.js:44:5:44:10 | target | provenance |  |
 | path-assignment.js:42:32:42:37 | target | path-assignment.js:42:32:42:42 | target[key] | provenance | Config |
-| path-assignment.js:42:32:42:42 | target[key] | path-assignment.js:42:9:42:48 | target | provenance |  |
+| path-assignment.js:42:32:42:42 | target[key] | path-assignment.js:42:9:42:14 | target | provenance |  |
 | path-assignment.js:42:32:42:42 | target[key] | path-assignment.js:42:32:42:48 | target[key] \|\| {} | provenance |  |
 | path-assignment.js:42:39:42:41 | key | path-assignment.js:42:32:42:42 | target[key] | provenance | Config |
-| path-assignment.js:58:13:58:25 | key | path-assignment.js:59:25:59:27 | key | provenance |  |
-| path-assignment.js:58:13:58:25 | key | path-assignment.js:59:39:59:41 | key | provenance |  |
-| path-assignment.js:58:19:58:25 | keys[i] | path-assignment.js:58:13:58:25 | key | provenance |  |
-| path-assignment.js:59:9:59:48 | target | path-assignment.js:59:18:59:23 | target | provenance |  |
-| path-assignment.js:59:9:59:48 | target | path-assignment.js:59:32:59:37 | target | provenance |  |
-| path-assignment.js:59:9:59:48 | target | path-assignment.js:61:5:61:10 | target | provenance |  |
+| path-assignment.js:58:13:58:15 | key | path-assignment.js:59:25:59:27 | key | provenance |  |
+| path-assignment.js:58:13:58:15 | key | path-assignment.js:59:39:59:41 | key | provenance |  |
+| path-assignment.js:58:19:58:25 | keys[i] | path-assignment.js:58:13:58:15 | key | provenance |  |
+| path-assignment.js:59:9:59:14 | target | path-assignment.js:59:18:59:23 | target | provenance |  |
+| path-assignment.js:59:9:59:14 | target | path-assignment.js:59:32:59:37 | target | provenance |  |
+| path-assignment.js:59:9:59:14 | target | path-assignment.js:61:5:61:10 | target | provenance |  |
 | path-assignment.js:59:32:59:37 | target | path-assignment.js:59:32:59:42 | target[key] | provenance | Config |
-| path-assignment.js:59:32:59:42 | target[key] | path-assignment.js:59:9:59:48 | target | provenance |  |
+| path-assignment.js:59:32:59:42 | target[key] | path-assignment.js:59:9:59:14 | target | provenance |  |
 | path-assignment.js:59:32:59:42 | target[key] | path-assignment.js:59:32:59:48 | target[key] \|\| {} | provenance |  |
 | path-assignment.js:59:39:59:41 | key | path-assignment.js:59:32:59:42 | target[key] | provenance | Config |
-| path-assignment.js:68:13:68:25 | key | path-assignment.js:69:25:69:27 | key | provenance |  |
-| path-assignment.js:68:13:68:25 | key | path-assignment.js:69:39:69:41 | key | provenance |  |
-| path-assignment.js:68:19:68:25 | keys[i] | path-assignment.js:68:13:68:25 | key | provenance |  |
-| path-assignment.js:69:9:69:48 | target | path-assignment.js:69:18:69:23 | target | provenance |  |
-| path-assignment.js:69:9:69:48 | target | path-assignment.js:69:32:69:37 | target | provenance |  |
-| path-assignment.js:69:9:69:48 | target | path-assignment.js:71:5:71:10 | target | provenance |  |
+| path-assignment.js:68:13:68:15 | key | path-assignment.js:69:25:69:27 | key | provenance |  |
+| path-assignment.js:68:13:68:15 | key | path-assignment.js:69:39:69:41 | key | provenance |  |
+| path-assignment.js:68:19:68:25 | keys[i] | path-assignment.js:68:13:68:15 | key | provenance |  |
+| path-assignment.js:69:9:69:14 | target | path-assignment.js:69:18:69:23 | target | provenance |  |
+| path-assignment.js:69:9:69:14 | target | path-assignment.js:69:32:69:37 | target | provenance |  |
+| path-assignment.js:69:9:69:14 | target | path-assignment.js:71:5:71:10 | target | provenance |  |
 | path-assignment.js:69:32:69:37 | target | path-assignment.js:69:32:69:42 | target[key] | provenance | Config |
-| path-assignment.js:69:32:69:42 | target[key] | path-assignment.js:69:9:69:48 | target | provenance |  |
+| path-assignment.js:69:32:69:42 | target[key] | path-assignment.js:69:9:69:14 | target | provenance |  |
 | path-assignment.js:69:32:69:42 | target[key] | path-assignment.js:69:32:69:48 | target[key] \|\| {} | provenance |  |
 | path-assignment.js:69:39:69:41 | key | path-assignment.js:69:32:69:42 | target[key] | provenance | Config |
 | tests.js:3:25:3:27 | dst | tests.js:6:28:6:30 | dst | provenance |  |
@@ -149,9 +149,9 @@ edges
 | tests.js:31:27:31:31 | value | tests.js:36:20:36:24 | value | provenance |  |
 | tests.js:31:34:31:36 | key | tests.js:32:24:32:26 | key | provenance |  |
 | tests.js:31:34:31:36 | key | tests.js:36:13:36:15 | key | provenance |  |
-| tests.js:32:9:32:27 | dstValue | tests.js:34:18:34:25 | dstValue | provenance |  |
+| tests.js:32:9:32:16 | dstValue | tests.js:34:18:34:25 | dstValue | provenance |  |
 | tests.js:32:20:32:22 | dst | tests.js:32:20:32:27 | dst[key] | provenance | Config |
-| tests.js:32:20:32:27 | dst[key] | tests.js:32:9:32:27 | dstValue | provenance |  |
+| tests.js:32:20:32:27 | dst[key] | tests.js:32:9:32:16 | dstValue | provenance |  |
 | tests.js:32:24:32:26 | key | tests.js:32:20:32:27 | dst[key] | provenance | Config |
 | tests.js:34:18:34:25 | dstValue | tests.js:23:19:23:21 | dst | provenance |  |
 | tests.js:34:28:34:32 | value | tests.js:23:27:23:33 | sources [0] | provenance |  |
@@ -274,11 +274,11 @@ edges
 | tests.js:189:32:189:34 | dst | tests.js:196:13:196:15 | dst | provenance |  |
 | tests.js:189:37:189:39 | src | tests.js:194:45:194:47 | src | provenance |  |
 | tests.js:189:37:189:39 | src | tests.js:196:24:196:26 | src | provenance |  |
-| tests.js:192:13:192:25 | key | tests.js:194:39:194:41 | key | provenance |  |
-| tests.js:192:13:192:25 | key | tests.js:194:49:194:51 | key | provenance |  |
-| tests.js:192:13:192:25 | key | tests.js:196:17:196:19 | key | provenance |  |
-| tests.js:192:13:192:25 | key | tests.js:196:28:196:30 | key | provenance |  |
-| tests.js:192:19:192:25 | keys[i] | tests.js:192:13:192:25 | key | provenance |  |
+| tests.js:192:13:192:15 | key | tests.js:194:39:194:41 | key | provenance |  |
+| tests.js:192:13:192:15 | key | tests.js:194:49:194:51 | key | provenance |  |
+| tests.js:192:13:192:15 | key | tests.js:196:17:196:19 | key | provenance |  |
+| tests.js:192:13:192:15 | key | tests.js:196:28:196:30 | key | provenance |  |
+| tests.js:192:19:192:25 | keys[i] | tests.js:192:13:192:15 | key | provenance |  |
 | tests.js:194:35:194:37 | dst | tests.js:194:35:194:42 | dst[key] | provenance | Config |
 | tests.js:194:35:194:42 | dst[key] | tests.js:189:32:189:34 | dst | provenance |  |
 | tests.js:194:39:194:41 | key | tests.js:194:35:194:42 | dst[key] | provenance | Config |
@@ -329,11 +329,11 @@ edges
 | tests.js:240:41:240:43 | key | tests.js:240:36:240:44 | data[key] | provenance | Config |
 | tests.js:263:27:263:29 | dst | tests.js:268:30:268:32 | dst | provenance |  |
 | tests.js:263:27:263:29 | dst | tests.js:270:13:270:15 | dst | provenance |  |
-| tests.js:265:13:265:26 | key | tests.js:268:34:268:36 | key | provenance |  |
-| tests.js:265:13:265:26 | key | tests.js:270:17:270:19 | key | provenance |  |
-| tests.js:265:19:265:26 | entry[0] | tests.js:265:13:265:26 | key | provenance |  |
-| tests.js:266:13:266:28 | value | tests.js:270:24:270:28 | value | provenance |  |
-| tests.js:266:21:266:28 | entry[1] | tests.js:266:13:266:28 | value | provenance |  |
+| tests.js:265:13:265:15 | key | tests.js:268:34:268:36 | key | provenance |  |
+| tests.js:265:13:265:15 | key | tests.js:270:17:270:19 | key | provenance |  |
+| tests.js:265:19:265:26 | entry[0] | tests.js:265:13:265:15 | key | provenance |  |
+| tests.js:266:13:266:17 | value | tests.js:270:24:270:28 | value | provenance |  |
+| tests.js:266:21:266:28 | entry[1] | tests.js:266:13:266:17 | value | provenance |  |
 | tests.js:268:30:268:32 | dst | tests.js:268:30:268:37 | dst[key] | provenance | Config |
 | tests.js:268:30:268:37 | dst[key] | tests.js:263:27:263:29 | dst | provenance |  |
 | tests.js:268:34:268:36 | key | tests.js:268:30:268:37 | dst[key] | provenance | Config |
@@ -360,15 +360,15 @@ edges
 | tests.js:302:14:302:16 | key | tests.js:304:29:304:31 | key | provenance |  |
 | tests.js:302:14:302:16 | key | tests.js:306:38:306:40 | key | provenance |  |
 | tests.js:302:14:302:16 | key | tests.js:308:21:308:23 | key | provenance |  |
-| tests.js:304:17:304:32 | value | tests.js:306:44:306:48 | value | provenance |  |
-| tests.js:304:17:304:32 | value | tests.js:306:44:306:48 | value | provenance |  |
-| tests.js:304:17:304:32 | value | tests.js:308:28:308:32 | value | provenance |  |
-| tests.js:304:17:304:32 | value | tests.js:308:28:308:32 | value | provenance |  |
-| tests.js:304:17:304:32 | value | tests.js:308:28:308:32 | value | provenance |  |
+| tests.js:304:17:304:21 | value | tests.js:306:44:306:48 | value | provenance |  |
+| tests.js:304:17:304:21 | value | tests.js:306:44:306:48 | value | provenance |  |
+| tests.js:304:17:304:21 | value | tests.js:308:28:308:32 | value | provenance |  |
+| tests.js:304:17:304:21 | value | tests.js:308:28:308:32 | value | provenance |  |
+| tests.js:304:17:304:21 | value | tests.js:308:28:308:32 | value | provenance |  |
 | tests.js:304:25:304:27 | src | tests.js:304:25:304:32 | src[key] | provenance | Config |
-| tests.js:304:25:304:32 | src[key] | tests.js:304:17:304:32 | value | provenance |  |
-| tests.js:304:25:304:32 | src[key] | tests.js:304:17:304:32 | value | provenance |  |
-| tests.js:304:25:304:32 | src[key] | tests.js:304:17:304:32 | value | provenance |  |
+| tests.js:304:25:304:32 | src[key] | tests.js:304:17:304:21 | value | provenance |  |
+| tests.js:304:25:304:32 | src[key] | tests.js:304:17:304:21 | value | provenance |  |
+| tests.js:304:25:304:32 | src[key] | tests.js:304:17:304:21 | value | provenance |  |
 | tests.js:304:29:304:31 | key | tests.js:304:25:304:32 | src[key] | provenance | Config |
 | tests.js:304:29:304:31 | key | tests.js:304:25:304:32 | src[key] | provenance | Config |
 | tests.js:306:34:306:36 | dst | tests.js:306:34:306:41 | dst[key] | provenance | Config |
@@ -381,15 +381,15 @@ edges
 | tests.js:315:14:315:16 | key | tests.js:318:29:318:31 | key | provenance |  |
 | tests.js:315:14:315:16 | key | tests.js:320:42:320:44 | key | provenance |  |
 | tests.js:315:14:315:16 | key | tests.js:322:21:322:23 | key | provenance |  |
-| tests.js:318:17:318:32 | value | tests.js:320:48:320:52 | value | provenance |  |
-| tests.js:318:17:318:32 | value | tests.js:320:48:320:52 | value | provenance |  |
-| tests.js:318:17:318:32 | value | tests.js:322:28:322:32 | value | provenance |  |
-| tests.js:318:17:318:32 | value | tests.js:322:28:322:32 | value | provenance |  |
-| tests.js:318:17:318:32 | value | tests.js:322:28:322:32 | value | provenance |  |
+| tests.js:318:17:318:21 | value | tests.js:320:48:320:52 | value | provenance |  |
+| tests.js:318:17:318:21 | value | tests.js:320:48:320:52 | value | provenance |  |
+| tests.js:318:17:318:21 | value | tests.js:322:28:322:32 | value | provenance |  |
+| tests.js:318:17:318:21 | value | tests.js:322:28:322:32 | value | provenance |  |
+| tests.js:318:17:318:21 | value | tests.js:322:28:322:32 | value | provenance |  |
 | tests.js:318:25:318:27 | src | tests.js:318:25:318:32 | src[key] | provenance | Config |
-| tests.js:318:25:318:32 | src[key] | tests.js:318:17:318:32 | value | provenance |  |
-| tests.js:318:25:318:32 | src[key] | tests.js:318:17:318:32 | value | provenance |  |
-| tests.js:318:25:318:32 | src[key] | tests.js:318:17:318:32 | value | provenance |  |
+| tests.js:318:25:318:32 | src[key] | tests.js:318:17:318:21 | value | provenance |  |
+| tests.js:318:25:318:32 | src[key] | tests.js:318:17:318:21 | value | provenance |  |
+| tests.js:318:25:318:32 | src[key] | tests.js:318:17:318:21 | value | provenance |  |
 | tests.js:318:29:318:31 | key | tests.js:318:25:318:32 | src[key] | provenance | Config |
 | tests.js:318:29:318:31 | key | tests.js:318:25:318:32 | src[key] | provenance | Config |
 | tests.js:320:38:320:40 | dst | tests.js:320:38:320:45 | dst[key] | provenance | Config |
@@ -526,15 +526,15 @@ edges
 | tests.js:413:14:413:16 | key | tests.js:414:38:414:40 | key | provenance |  |
 | tests.js:413:14:413:16 | key | tests.js:415:39:415:41 | key | provenance |  |
 | tests.js:413:14:413:16 | key | tests.js:419:17:419:19 | key | provenance |  |
-| tests.js:414:13:414:41 | value | tests.js:417:42:417:46 | value | provenance |  |
-| tests.js:414:13:414:41 | value | tests.js:419:24:419:28 | value | provenance |  |
-| tests.js:414:21:414:41 | wrapped ... c, key) | tests.js:414:13:414:41 | value | provenance |  |
+| tests.js:414:13:414:17 | value | tests.js:417:42:417:46 | value | provenance |  |
+| tests.js:414:13:414:17 | value | tests.js:419:24:419:28 | value | provenance |  |
+| tests.js:414:21:414:41 | wrapped ... c, key) | tests.js:414:13:414:17 | value | provenance |  |
 | tests.js:414:33:414:35 | src | tests.js:408:22:408:24 | obj | provenance |  |
 | tests.js:414:33:414:35 | src | tests.js:414:21:414:41 | wrapped ... c, key) | provenance | Config |
 | tests.js:414:38:414:40 | key | tests.js:408:27:408:29 | key | provenance |  |
 | tests.js:414:38:414:40 | key | tests.js:414:21:414:41 | wrapped ... c, key) | provenance | Config |
-| tests.js:415:13:415:42 | target | tests.js:417:34:417:39 | target | provenance |  |
-| tests.js:415:22:415:42 | wrapped ... t, key) | tests.js:415:13:415:42 | target | provenance |  |
+| tests.js:415:13:415:18 | target | tests.js:417:34:417:39 | target | provenance |  |
+| tests.js:415:22:415:42 | wrapped ... t, key) | tests.js:415:13:415:18 | target | provenance |  |
 | tests.js:415:34:415:36 | dst | tests.js:408:22:408:24 | obj | provenance |  |
 | tests.js:415:34:415:36 | dst | tests.js:415:22:415:42 | wrapped ... t, key) | provenance | Config |
 | tests.js:415:39:415:41 | key | tests.js:408:27:408:29 | key | provenance |  |
@@ -551,15 +551,15 @@ edges
 | tests.js:430:14:430:16 | key | tests.js:431:41:431:43 | key | provenance |  |
 | tests.js:430:14:430:16 | key | tests.js:432:42:432:44 | key | provenance |  |
 | tests.js:430:14:430:16 | key | tests.js:436:17:436:19 | key | provenance |  |
-| tests.js:431:13:431:44 | value | tests.js:434:45:434:49 | value | provenance |  |
-| tests.js:431:13:431:44 | value | tests.js:436:24:436:28 | value | provenance |  |
-| tests.js:431:21:431:44 | almostS ... c, key) | tests.js:431:13:431:44 | value | provenance |  |
+| tests.js:431:13:431:17 | value | tests.js:434:45:434:49 | value | provenance |  |
+| tests.js:431:13:431:17 | value | tests.js:436:24:436:28 | value | provenance |  |
+| tests.js:431:21:431:44 | almostS ... c, key) | tests.js:431:13:431:17 | value | provenance |  |
 | tests.js:431:36:431:38 | src | tests.js:424:25:424:27 | obj | provenance |  |
 | tests.js:431:36:431:38 | src | tests.js:431:21:431:44 | almostS ... c, key) | provenance | Config |
 | tests.js:431:41:431:43 | key | tests.js:424:30:424:32 | key | provenance |  |
 | tests.js:431:41:431:43 | key | tests.js:431:21:431:44 | almostS ... c, key) | provenance | Config |
-| tests.js:432:13:432:45 | target | tests.js:434:37:434:42 | target | provenance |  |
-| tests.js:432:22:432:45 | almostS ... t, key) | tests.js:432:13:432:45 | target | provenance |  |
+| tests.js:432:13:432:18 | target | tests.js:434:37:434:42 | target | provenance |  |
+| tests.js:432:22:432:45 | almostS ... t, key) | tests.js:432:13:432:18 | target | provenance |  |
 | tests.js:432:37:432:39 | dst | tests.js:424:25:424:27 | obj | provenance |  |
 | tests.js:432:37:432:39 | dst | tests.js:432:22:432:45 | almostS ... t, key) | provenance | Config |
 | tests.js:432:42:432:44 | key | tests.js:424:30:424:32 | key | provenance |  |
@@ -570,9 +570,9 @@ edges
 | tests.js:443:12:443:14 | obj | tests.js:443:12:443:19 | obj[key] | provenance | Config |
 | tests.js:446:33:446:35 | src | tests.js:448:30:448:32 | src | provenance |  |
 | tests.js:447:14:447:16 | key | tests.js:453:17:453:19 | key | provenance |  |
-| tests.js:448:13:448:38 | value | tests.js:451:39:451:43 | value | provenance |  |
-| tests.js:448:13:448:38 | value | tests.js:453:24:453:28 | value | provenance |  |
-| tests.js:448:21:448:38 | safeRead(src, key) | tests.js:448:13:448:38 | value | provenance |  |
+| tests.js:448:13:448:17 | value | tests.js:451:39:451:43 | value | provenance |  |
+| tests.js:448:13:448:17 | value | tests.js:453:24:453:28 | value | provenance |  |
+| tests.js:448:21:448:38 | safeRead(src, key) | tests.js:448:13:448:17 | value | provenance |  |
 | tests.js:448:30:448:32 | src | tests.js:441:19:441:21 | obj | provenance |  |
 | tests.js:448:30:448:32 | src | tests.js:448:21:448:38 | safeRead(src, key) | provenance | Config |
 | tests.js:451:39:451:43 | value | tests.js:446:33:446:35 | src | provenance |  |
@@ -630,26 +630,26 @@ edges
 | tests.js:494:32:494:34 | src | tests.js:498:21:498:23 | src | provenance |  |
 | tests.js:495:14:495:16 | key | tests.js:498:25:498:27 | key | provenance |  |
 | tests.js:495:14:495:16 | key | tests.js:502:17:502:19 | key | provenance |  |
-| tests.js:498:13:498:28 | value | tests.js:500:38:500:42 | value | provenance |  |
-| tests.js:498:13:498:28 | value | tests.js:500:38:500:42 | value | provenance |  |
-| tests.js:498:13:498:28 | value | tests.js:502:24:502:28 | value | provenance |  |
-| tests.js:498:13:498:28 | value | tests.js:502:24:502:28 | value | provenance |  |
-| tests.js:498:13:498:28 | value | tests.js:502:24:502:28 | value | provenance |  |
+| tests.js:498:13:498:17 | value | tests.js:500:38:500:42 | value | provenance |  |
+| tests.js:498:13:498:17 | value | tests.js:500:38:500:42 | value | provenance |  |
+| tests.js:498:13:498:17 | value | tests.js:502:24:502:28 | value | provenance |  |
+| tests.js:498:13:498:17 | value | tests.js:502:24:502:28 | value | provenance |  |
+| tests.js:498:13:498:17 | value | tests.js:502:24:502:28 | value | provenance |  |
 | tests.js:498:21:498:23 | src | tests.js:498:21:498:28 | src[key] | provenance | Config |
-| tests.js:498:21:498:28 | src[key] | tests.js:498:13:498:28 | value | provenance |  |
-| tests.js:498:21:498:28 | src[key] | tests.js:498:13:498:28 | value | provenance |  |
-| tests.js:498:21:498:28 | src[key] | tests.js:498:13:498:28 | value | provenance |  |
+| tests.js:498:21:498:28 | src[key] | tests.js:498:13:498:17 | value | provenance |  |
+| tests.js:498:21:498:28 | src[key] | tests.js:498:13:498:17 | value | provenance |  |
+| tests.js:498:21:498:28 | src[key] | tests.js:498:13:498:17 | value | provenance |  |
 | tests.js:498:25:498:27 | key | tests.js:498:21:498:28 | src[key] | provenance | Config |
 | tests.js:500:38:500:42 | value | tests.js:494:32:494:34 | src | provenance |  |
 | tests.js:508:30:508:32 | dst | tests.js:513:33:513:35 | dst | provenance |  |
 | tests.js:508:30:508:32 | dst | tests.js:517:35:517:37 | dst | provenance |  |
 | tests.js:508:35:508:37 | src | tests.js:513:43:513:45 | src | provenance |  |
 | tests.js:508:35:508:37 | src | tests.js:516:32:516:34 | src | provenance |  |
-| tests.js:511:13:511:25 | key | tests.js:513:37:513:39 | key | provenance |  |
-| tests.js:511:13:511:25 | key | tests.js:513:47:513:49 | key | provenance |  |
-| tests.js:511:13:511:25 | key | tests.js:516:36:516:38 | key | provenance |  |
-| tests.js:511:13:511:25 | key | tests.js:517:40:517:42 | key | provenance |  |
-| tests.js:511:19:511:25 | keys[i] | tests.js:511:13:511:25 | key | provenance |  |
+| tests.js:511:13:511:15 | key | tests.js:513:37:513:39 | key | provenance |  |
+| tests.js:511:13:511:15 | key | tests.js:513:47:513:49 | key | provenance |  |
+| tests.js:511:13:511:15 | key | tests.js:516:36:516:38 | key | provenance |  |
+| tests.js:511:13:511:15 | key | tests.js:517:40:517:42 | key | provenance |  |
+| tests.js:511:19:511:25 | keys[i] | tests.js:511:13:511:15 | key | provenance |  |
 | tests.js:513:33:513:35 | dst | tests.js:513:33:513:40 | dst[key] | provenance | Config |
 | tests.js:513:33:513:40 | dst[key] | tests.js:508:30:508:32 | dst | provenance |  |
 | tests.js:513:37:513:39 | key | tests.js:513:33:513:40 | dst[key] | provenance | Config |
@@ -660,14 +660,14 @@ edges
 | tests.js:516:36:516:38 | key | tests.js:516:32:516:39 | src[key] | provenance | Config |
 | tests.js:522:35:522:38 | args [0] | tests.js:523:17:523:20 | args [0] | provenance |  |
 | tests.js:522:35:522:38 | args [1] | tests.js:524:17:524:20 | args [1] | provenance |  |
-| tests.js:523:11:523:23 | dst | tests.js:527:35:527:37 | dst | provenance |  |
-| tests.js:523:11:523:23 | dst | tests.js:529:13:529:15 | dst | provenance |  |
+| tests.js:523:11:523:13 | dst | tests.js:527:35:527:37 | dst | provenance |  |
+| tests.js:523:11:523:13 | dst | tests.js:529:13:529:15 | dst | provenance |  |
 | tests.js:523:17:523:20 | args [0] | tests.js:523:17:523:23 | args[0] | provenance |  |
-| tests.js:523:17:523:23 | args[0] | tests.js:523:11:523:23 | dst | provenance |  |
-| tests.js:524:11:524:23 | src | tests.js:527:45:527:47 | src | provenance |  |
-| tests.js:524:11:524:23 | src | tests.js:529:24:529:26 | src | provenance |  |
+| tests.js:523:17:523:23 | args[0] | tests.js:523:11:523:13 | dst | provenance |  |
+| tests.js:524:11:524:13 | src | tests.js:527:45:527:47 | src | provenance |  |
+| tests.js:524:11:524:13 | src | tests.js:529:24:529:26 | src | provenance |  |
 | tests.js:524:17:524:20 | args [1] | tests.js:524:17:524:23 | args[1] | provenance |  |
-| tests.js:524:17:524:23 | args[1] | tests.js:524:11:524:23 | src | provenance |  |
+| tests.js:524:17:524:23 | args[1] | tests.js:524:11:524:13 | src | provenance |  |
 | tests.js:525:14:525:16 | key | tests.js:527:39:527:41 | key | provenance |  |
 | tests.js:525:14:525:16 | key | tests.js:527:49:527:51 | key | provenance |  |
 | tests.js:525:14:525:16 | key | tests.js:529:17:529:19 | key | provenance |  |
@@ -776,17 +776,17 @@ nodes
 | examples/PrototypePollutingFunction_fixed.js:7:24:7:26 | src | semmle.label | src |
 | examples/PrototypePollutingFunction_fixed.js:7:24:7:31 | src[key] | semmle.label | src[key] |
 | examples/PrototypePollutingFunction_fixed.js:7:28:7:30 | key | semmle.label | key |
-| path-assignment.js:8:13:8:25 | key | semmle.label | key |
+| path-assignment.js:8:13:8:15 | key | semmle.label | key |
 | path-assignment.js:8:19:8:25 | keys[i] | semmle.label | keys[i] |
-| path-assignment.js:13:13:13:32 | target | semmle.label | target |
+| path-assignment.js:13:13:13:18 | target | semmle.label | target |
 | path-assignment.js:13:22:13:27 | target | semmle.label | target |
 | path-assignment.js:13:22:13:32 | target[key] | semmle.label | target[key] |
 | path-assignment.js:13:29:13:31 | key | semmle.label | key |
 | path-assignment.js:15:13:15:18 | target | semmle.label | target |
 | path-assignment.js:15:20:15:22 | key | semmle.label | key |
-| path-assignment.js:41:13:41:25 | key | semmle.label | key |
+| path-assignment.js:41:13:41:15 | key | semmle.label | key |
 | path-assignment.js:41:19:41:25 | keys[i] | semmle.label | keys[i] |
-| path-assignment.js:42:9:42:48 | target | semmle.label | target |
+| path-assignment.js:42:9:42:14 | target | semmle.label | target |
 | path-assignment.js:42:18:42:23 | target | semmle.label | target |
 | path-assignment.js:42:25:42:27 | key | semmle.label | key |
 | path-assignment.js:42:32:42:37 | target | semmle.label | target |
@@ -795,9 +795,9 @@ nodes
 | path-assignment.js:42:39:42:41 | key | semmle.label | key |
 | path-assignment.js:44:5:44:10 | target | semmle.label | target |
 | path-assignment.js:44:12:44:18 | keys[i] | semmle.label | keys[i] |
-| path-assignment.js:58:13:58:25 | key | semmle.label | key |
+| path-assignment.js:58:13:58:15 | key | semmle.label | key |
 | path-assignment.js:58:19:58:25 | keys[i] | semmle.label | keys[i] |
-| path-assignment.js:59:9:59:48 | target | semmle.label | target |
+| path-assignment.js:59:9:59:14 | target | semmle.label | target |
 | path-assignment.js:59:18:59:23 | target | semmle.label | target |
 | path-assignment.js:59:25:59:27 | key | semmle.label | key |
 | path-assignment.js:59:32:59:37 | target | semmle.label | target |
@@ -806,9 +806,9 @@ nodes
 | path-assignment.js:59:39:59:41 | key | semmle.label | key |
 | path-assignment.js:61:5:61:10 | target | semmle.label | target |
 | path-assignment.js:61:12:61:18 | keys[i] | semmle.label | keys[i] |
-| path-assignment.js:68:13:68:25 | key | semmle.label | key |
+| path-assignment.js:68:13:68:15 | key | semmle.label | key |
 | path-assignment.js:68:19:68:25 | keys[i] | semmle.label | keys[i] |
-| path-assignment.js:69:9:69:48 | target | semmle.label | target |
+| path-assignment.js:69:9:69:14 | target | semmle.label | target |
 | path-assignment.js:69:18:69:23 | target | semmle.label | target |
 | path-assignment.js:69:25:69:27 | key | semmle.label | key |
 | path-assignment.js:69:32:69:37 | target | semmle.label | target |
@@ -859,7 +859,7 @@ nodes
 | tests.js:31:22:31:24 | dst | semmle.label | dst |
 | tests.js:31:27:31:31 | value | semmle.label | value |
 | tests.js:31:34:31:36 | key | semmle.label | key |
-| tests.js:32:9:32:27 | dstValue | semmle.label | dstValue |
+| tests.js:32:9:32:16 | dstValue | semmle.label | dstValue |
 | tests.js:32:20:32:22 | dst | semmle.label | dst |
 | tests.js:32:20:32:27 | dst[key] | semmle.label | dst[key] |
 | tests.js:32:24:32:26 | key | semmle.label | key |
@@ -976,7 +976,7 @@ nodes
 | tests.js:184:24:184:31 | src[key] | semmle.label | src[key] |
 | tests.js:189:32:189:34 | dst | semmle.label | dst |
 | tests.js:189:37:189:39 | src | semmle.label | src |
-| tests.js:192:13:192:25 | key | semmle.label | key |
+| tests.js:192:13:192:15 | key | semmle.label | key |
 | tests.js:192:19:192:25 | keys[i] | semmle.label | keys[i] |
 | tests.js:194:35:194:37 | dst | semmle.label | dst |
 | tests.js:194:35:194:42 | dst[key] | semmle.label | dst[key] |
@@ -1031,9 +1031,9 @@ nodes
 | tests.js:240:36:240:44 | data[key] | semmle.label | data[key] |
 | tests.js:240:41:240:43 | key | semmle.label | key |
 | tests.js:263:27:263:29 | dst | semmle.label | dst |
-| tests.js:265:13:265:26 | key | semmle.label | key |
+| tests.js:265:13:265:15 | key | semmle.label | key |
 | tests.js:265:19:265:26 | entry[0] | semmle.label | entry[0] |
-| tests.js:266:13:266:28 | value | semmle.label | value |
+| tests.js:266:13:266:17 | value | semmle.label | value |
 | tests.js:266:21:266:28 | entry[1] | semmle.label | entry[1] |
 | tests.js:268:30:268:32 | dst | semmle.label | dst |
 | tests.js:268:30:268:37 | dst[key] | semmle.label | dst[key] |
@@ -1059,9 +1059,9 @@ nodes
 | tests.js:301:27:301:29 | dst | semmle.label | dst |
 | tests.js:301:32:301:34 | src | semmle.label | src |
 | tests.js:302:14:302:16 | key | semmle.label | key |
-| tests.js:304:17:304:32 | value | semmle.label | value |
-| tests.js:304:17:304:32 | value | semmle.label | value |
-| tests.js:304:17:304:32 | value | semmle.label | value |
+| tests.js:304:17:304:21 | value | semmle.label | value |
+| tests.js:304:17:304:21 | value | semmle.label | value |
+| tests.js:304:17:304:21 | value | semmle.label | value |
 | tests.js:304:25:304:27 | src | semmle.label | src |
 | tests.js:304:25:304:32 | src[key] | semmle.label | src[key] |
 | tests.js:304:25:304:32 | src[key] | semmle.label | src[key] |
@@ -1077,9 +1077,9 @@ nodes
 | tests.js:314:31:314:33 | dst | semmle.label | dst |
 | tests.js:314:36:314:38 | src | semmle.label | src |
 | tests.js:315:14:315:16 | key | semmle.label | key |
-| tests.js:318:17:318:32 | value | semmle.label | value |
-| tests.js:318:17:318:32 | value | semmle.label | value |
-| tests.js:318:17:318:32 | value | semmle.label | value |
+| tests.js:318:17:318:21 | value | semmle.label | value |
+| tests.js:318:17:318:21 | value | semmle.label | value |
+| tests.js:318:17:318:21 | value | semmle.label | value |
 | tests.js:318:25:318:27 | src | semmle.label | src |
 | tests.js:318:25:318:32 | src[key] | semmle.label | src[key] |
 | tests.js:318:25:318:32 | src[key] | semmle.label | src[key] |
@@ -1197,11 +1197,11 @@ nodes
 | tests.js:412:31:412:33 | dst | semmle.label | dst |
 | tests.js:412:36:412:38 | src | semmle.label | src |
 | tests.js:413:14:413:16 | key | semmle.label | key |
-| tests.js:414:13:414:41 | value | semmle.label | value |
+| tests.js:414:13:414:17 | value | semmle.label | value |
 | tests.js:414:21:414:41 | wrapped ... c, key) | semmle.label | wrapped ... c, key) |
 | tests.js:414:33:414:35 | src | semmle.label | src |
 | tests.js:414:38:414:40 | key | semmle.label | key |
-| tests.js:415:13:415:42 | target | semmle.label | target |
+| tests.js:415:13:415:18 | target | semmle.label | target |
 | tests.js:415:22:415:42 | wrapped ... t, key) | semmle.label | wrapped ... t, key) |
 | tests.js:415:34:415:36 | dst | semmle.label | dst |
 | tests.js:415:39:415:41 | key | semmle.label | key |
@@ -1218,11 +1218,11 @@ nodes
 | tests.js:429:34:429:36 | dst | semmle.label | dst |
 | tests.js:429:39:429:41 | src | semmle.label | src |
 | tests.js:430:14:430:16 | key | semmle.label | key |
-| tests.js:431:13:431:44 | value | semmle.label | value |
+| tests.js:431:13:431:17 | value | semmle.label | value |
 | tests.js:431:21:431:44 | almostS ... c, key) | semmle.label | almostS ... c, key) |
 | tests.js:431:36:431:38 | src | semmle.label | src |
 | tests.js:431:41:431:43 | key | semmle.label | key |
-| tests.js:432:13:432:45 | target | semmle.label | target |
+| tests.js:432:13:432:18 | target | semmle.label | target |
 | tests.js:432:22:432:45 | almostS ... t, key) | semmle.label | almostS ... t, key) |
 | tests.js:432:37:432:39 | dst | semmle.label | dst |
 | tests.js:432:42:432:44 | key | semmle.label | key |
@@ -1236,7 +1236,7 @@ nodes
 | tests.js:443:12:443:19 | obj[key] | semmle.label | obj[key] |
 | tests.js:446:33:446:35 | src | semmle.label | src |
 | tests.js:447:14:447:16 | key | semmle.label | key |
-| tests.js:448:13:448:38 | value | semmle.label | value |
+| tests.js:448:13:448:17 | value | semmle.label | value |
 | tests.js:448:21:448:38 | safeRead(src, key) | semmle.label | safeRead(src, key) |
 | tests.js:448:30:448:32 | src | semmle.label | src |
 | tests.js:451:39:451:43 | value | semmle.label | value |
@@ -1293,9 +1293,9 @@ nodes
 | tests.js:489:28:489:30 | key | semmle.label | key |
 | tests.js:494:32:494:34 | src | semmle.label | src |
 | tests.js:495:14:495:16 | key | semmle.label | key |
-| tests.js:498:13:498:28 | value | semmle.label | value |
-| tests.js:498:13:498:28 | value | semmle.label | value |
-| tests.js:498:13:498:28 | value | semmle.label | value |
+| tests.js:498:13:498:17 | value | semmle.label | value |
+| tests.js:498:13:498:17 | value | semmle.label | value |
+| tests.js:498:13:498:17 | value | semmle.label | value |
 | tests.js:498:21:498:23 | src | semmle.label | src |
 | tests.js:498:21:498:28 | src[key] | semmle.label | src[key] |
 | tests.js:498:21:498:28 | src[key] | semmle.label | src[key] |
@@ -1306,7 +1306,7 @@ nodes
 | tests.js:502:24:502:28 | value | semmle.label | value |
 | tests.js:508:30:508:32 | dst | semmle.label | dst |
 | tests.js:508:35:508:37 | src | semmle.label | src |
-| tests.js:511:13:511:25 | key | semmle.label | key |
+| tests.js:511:13:511:15 | key | semmle.label | key |
 | tests.js:511:19:511:25 | keys[i] | semmle.label | keys[i] |
 | tests.js:513:33:513:35 | dst | semmle.label | dst |
 | tests.js:513:33:513:40 | dst[key] | semmle.label | dst[key] |
@@ -1321,10 +1321,10 @@ nodes
 | tests.js:517:40:517:42 | key | semmle.label | key |
 | tests.js:522:35:522:38 | args [0] | semmle.label | args [0] |
 | tests.js:522:35:522:38 | args [1] | semmle.label | args [1] |
-| tests.js:523:11:523:23 | dst | semmle.label | dst |
+| tests.js:523:11:523:13 | dst | semmle.label | dst |
 | tests.js:523:17:523:20 | args [0] | semmle.label | args [0] |
 | tests.js:523:17:523:23 | args[0] | semmle.label | args[0] |
-| tests.js:524:11:524:23 | src | semmle.label | src |
+| tests.js:524:11:524:13 | src | semmle.label | src |
 | tests.js:524:17:524:20 | args [1] | semmle.label | args [1] |
 | tests.js:524:17:524:23 | args[1] | semmle.label | args[1] |
 | tests.js:525:14:525:16 | key | semmle.label | key |

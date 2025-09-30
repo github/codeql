@@ -1,5 +1,10 @@
 private import AstImport
 
+/**
+ * A type expression. For example, the string `MyNamespace.MyClass` in:
+ * ```
+ * [MyNamespace.MyClass]$obj = [MyNamespace.MyClass]::new()
+ */
 class TypeNameExpr extends Expr, TTypeNameExpr {
   private predicate parseName(string namespace, string typename) {
     exists(string fullName | fullName = this.getPossiblyQualifiedName() |

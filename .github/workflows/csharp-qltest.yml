@@ -39,23 +39,23 @@ jobs:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Setup dotnet
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.0.100
+          dotnet-version: 9.0.300
       - name: Extractor unit tests
         run: |
           dotnet tool restore
-          dotnet test -p:RuntimeFrameworkVersion=9.0.0 extractor/Semmle.Util.Tests
-          dotnet test -p:RuntimeFrameworkVersion=9.0.0 extractor/Semmle.Extraction.Tests
-          dotnet test -p:RuntimeFrameworkVersion=9.0.0 autobuilder/Semmle.Autobuild.CSharp.Tests
-          dotnet test -p:RuntimeFrameworkVersion=9.0.0 autobuilder/Semmle.Autobuild.Cpp.Tests
+          dotnet test -p:RuntimeFrameworkVersion=9.0.5 extractor/Semmle.Util.Tests
+          dotnet test -p:RuntimeFrameworkVersion=9.0.5 extractor/Semmle.Extraction.Tests
+          dotnet test -p:RuntimeFrameworkVersion=9.0.5 autobuilder/Semmle.Autobuild.CSharp.Tests
+          dotnet test -p:RuntimeFrameworkVersion=9.0.5 autobuilder/Semmle.Autobuild.Cpp.Tests
         shell: bash
   stubgentest:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./csharp/actions/create-extractor-pack
       - name: Run stub generator tests
         run: |

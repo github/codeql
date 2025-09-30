@@ -69,7 +69,7 @@ class AsmConst(AsmOperand, ):
 class AsmDirSpec(AstNode, ):
     pass
 
-class AsmExpr(Expr, ):
+class AsmExpr(Expr, Item, ):
     asm_pieces: list["AsmPiece"] | child
     attrs: list["Attr"] | child
     template: list["Expr"] | child
@@ -162,13 +162,10 @@ class CastExpr(Expr, ):
     expr: optional["Expr"] | child
     type_repr: optional["TypeRepr"] | child
 
-class ClosureBinder(AstNode, ):
-    generic_param_list: optional["GenericParamList"] | child
-
 class ClosureExpr(Expr, ):
     attrs: list["Attr"] | child
     body: optional["Expr"] | child
-    closure_binder: optional["ClosureBinder"] | child
+    for_binder: optional["ForBinder"] | child
     is_async: predicate
     is_const: predicate
     is_gen: predicate
@@ -265,6 +262,9 @@ class FnPtrTypeRepr(TypeRepr, ):
     param_list: optional["ParamList"] | child
     ret_type: optional["RetTypeRepr"] | child
 
+class ForBinder(AstNode, ):
+    generic_param_list: optional["GenericParamList"] | child
+
 class ForExpr(Expr, ):
     attrs: list["Attr"] | child
     iterable: optional["Expr"] | child
@@ -273,7 +273,7 @@ class ForExpr(Expr, ):
     pat: optional["Pat"] | child
 
 class ForTypeRepr(TypeRepr, ):
-    generic_param_list: optional["GenericParamList"] | child
+    for_binder: optional["ForBinder"] | child
     type_repr: optional["TypeRepr"] | child
 
 class FormatArgsArg(AstNode, ):
@@ -398,10 +398,6 @@ class MacroRules(Item, ):
     name: optional["Name"] | child
     token_tree: optional["TokenTree"] | child
     visibility: optional["Visibility"] | child
-
-class MacroBlockExpr(AstNode, ):
-    tail_expr: optional["Expr"] | child
-    statements: list["Stmt"] | child
 
 class MacroTypeRepr(TypeRepr, ):
     macro_call: optional["MacroCall"] | child
@@ -697,6 +693,7 @@ class TypeArg(GenericArg, ):
     type_repr: optional["TypeRepr"] | child
 
 class TypeBound(AstNode, ):
+    for_binder: optional["ForBinder"] | child
     is_async: predicate
     is_const: predicate
     lifetime: optional["Lifetime"] | child
@@ -757,7 +754,7 @@ class WhereClause(AstNode, ):
     predicates: list["WherePred"] | child
 
 class WherePred(AstNode, ):
-    generic_param_list: optional["GenericParamList"] | child
+    for_binder: optional["ForBinder"] | child
     lifetime: optional["Lifetime"] | child
     type_repr: optional["TypeRepr"] | child
     type_bound_list: optional["TypeBoundList"] | child

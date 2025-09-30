@@ -1,5 +1,18 @@
 private import AstImport
 
+/**
+ * A method or property member of a class. For example, in the following code,
+ * `Get-Name` is a member of the `Person` class, and `Name` is a property member.
+ * ```
+ * class Person {
+ *   [string] $Name
+ * 
+ *   [string] Get-Name() {
+ *     return $this.Name
+ *   }
+ * }
+ * ```
+ */
 class Member extends Ast, TMember {
   string getLowerCaseName() {
     result = getRawAst(this).(Raw::Member).getName().toLowerCase()

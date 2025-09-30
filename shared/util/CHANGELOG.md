@@ -1,3 +1,13 @@
+## 2.0.18
+
+No user-facing changes.
+
+## 2.0.17
+
+### Minor Analysis Improvements
+
+* Added `LocatableOption` and `OptionWithLocationInfo` as modules providing option types with location information.
+
 ## 2.0.16
 
 No user-facing changes.

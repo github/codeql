@@ -1,4 +1,7 @@
+/** Utility definitions for reasoning about equality methods. */
+
 import python
+import semmle.python.dataflow.new.DataFlow
 
 private Attribute dictAccess(LocalVariable var) {
   result.getName() = "__dict__" and
@@ -59,16 +62,28 @@ class IdentityEqMethod extends Function {
 /** An (in)equality method that delegates to its complement */
 class DelegatingEqualityMethod extends Function {
   DelegatingEqualityMethod() {
-    exists(Return ret, UnaryExpr not_, Compare comp, Cmpop op, Parameter p0, Parameter p1 |
+    exists(Return ret, UnaryExpr not_, Expr comp, Parameter p0, Parameter p1 |
       ret.getScope() = this and
       ret.getValue() = not_ and
       not_.getOp() instanceof Not and
-      not_.getOperand() = comp and
-      comp.compares(p0.getVariable().getAnAccess(), op, p1.getVariable().getAnAccess())
+      not_.getOperand() = comp
     |
-      this.getName() = "__eq__" and op instanceof NotEq
+      exists(Cmpop op |
+        comp.(Compare).compares(p0.getVariable().getAnAccess(), op, p1.getVariable().getAnAccess())
+      |
+        this.getName() = "__eq__" and op instanceof NotEq
+        or
+        this.getName() = "__ne__" and op instanceof Eq
+      )
       or
-      this.getName() = "__ne__" and op instanceof Eq
+      exists(DataFlow::MethodCallNode call, string name |
+        call.calls(DataFlow::exprNode(p0.getVariable().getAnAccess()), name) and
+        call.getArg(0).asExpr() = p1.getVariable().getAnAccess()
+      |
+        this.getName() = "__eq__" and name = "__ne__"
+        or
+        this.getName() = "__ne__" and name = "__eq__"
+      )
     )
   }
 }

@@ -408,12 +408,6 @@ class DataFlowCallable extends TDataFlowCallable {
 
   /** Gets the corresponding `LibraryCallable` if this is a library callable. */
   LibraryCallable asLibraryCallable() { this = MkLibraryCallable(result) }
-
-  int totalorder() {
-    result = TotalOrdering::astNodeId(this.asSourceCallable()).bitShiftLeft(1)
-    or
-    result = TotalOrdering::libraryCallableId(this.asLibraryCallable()).bitShiftLeft(1) + 1
-  }
 }
 
 /** A callable defined in library code, identified by a unique string. */
@@ -680,7 +674,7 @@ predicate neverSkipInPathGraph(Node node) {
   // Include the return-value expression
   node.asExpr() = any(Function f).getAReturnedExpr()
   or
-  // Include calls (which may have been modelled as steps)
+  // Include calls (which may have been modeled as steps)
   node.asExpr() instanceof InvokeExpr
   or
   // Include references to a variable
@@ -797,47 +791,6 @@ private newtype TDataFlowCall =
     FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
   }
 
-private module TotalOrdering {
-  private predicate astNodeRefl(AstNode x, AstNode y) { x = y }
-
-  int astNodeId(AstNode n) = equivalenceRelation(astNodeRefl/2)(n, result)
-
-  predicate dataFlowNodeId(DataFlow::Node node, int cls, int content) {
-    exists(AstNode n |
-      node = TValueNode(n) and cls = 1 and content = astNodeId(n)
-      or
-      node = TReflectiveCallNode(n, _) and cls = 2 and content = astNodeId(n)
-    )
-  }
-
-  predicate callId(DataFlowCall call, int cls, int child, int extra) {
-    exists(DataFlow::Node node |
-      call = MkOrdinaryCall(node) and dataFlowNodeId(node, cls - 1000, child) and extra = 0
-      or
-      call = MkPartialCall(node, _) and dataFlowNodeId(node, cls - 2000, child) and extra = 0
-      or
-      call = MkBoundCall(node, extra) and dataFlowNodeId(node, cls - 3000, child)
-      or
-      call = MkAccessorCall(node) and dataFlowNodeId(node, cls - 4000, child) and extra = 0
-    )
-    or
-    exists(Function f |
-      call = MkImpliedLambdaCall(f) and cls = 5000 and child = astNodeId(f) and extra = 0
-    )
-    or
-    exists(
-      FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
-    |
-      call = MkSummaryCall(c, receiver) and
-      cls = 6000 and
-      c = rank[child](FlowSummaryImpl::Public::SummarizedCallable cs) and
-      extra = 0
-    )
-  }
-
-  int libraryCallableId(LibraryCallable callable) { callable = rank[result](LibraryCallable c) }
-}
-
 class DataFlowCall extends TDataFlowCall {
   DataFlowCallable getEnclosingCallable() { none() } // Overridden in subclass
 
@@ -861,15 +814,6 @@ class DataFlowCall extends TDataFlowCall {
   }
 
   Location getLocation() { none() } // Overridden in subclass
-
-  int totalorder() {
-    this =
-      rank[result](DataFlowCall call, int x, int y, int z |
-        TotalOrdering::callId(call, x, y, z)
-      |
-        call order by x, y, z
-      )
-  }
 }
 
 private class OrdinaryCall extends DataFlowCall, MkOrdinaryCall {
@@ -1159,7 +1103,7 @@ private predicate legacyBarrier(DataFlow::Node node) {
 pragma[nomagic]
 private predicate isBlockedLegacyNode(Node node) {
   // Ignore captured variable nodes for those variables that are handled by the captured-variable library.
-  // Note that some variables, such as top-level variables, are still modelled with these nodes (which will result in jump steps).
+  // Note that some variables, such as top-level variables, are still modeled with these nodes (which will result in jump steps).
   exists(LocalVariable variable |
     node = TCapturedVariableNode(variable) and
     variable = any(VariableCaptureConfig::CapturedVariable v).asLocalVariable()
@@ -1653,8 +1597,6 @@ abstract class NodeRegion extends Unit {
 
   /** Holds if this region contains `n`. */
   predicate contains(Node n) { none() }
-
-  int totalOrder() { none() }
 }
 
 /**

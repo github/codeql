@@ -334,6 +334,7 @@ module SourceNode {
         astNode instanceof Templating::PipeRefExpr or
         astNode instanceof Templating::TemplateVarRefExpr or
         astNode instanceof StringLiteral or
+        astNode instanceof TemplateLiteral or
         astNode instanceof TypeAssertion or
         astNode instanceof SatisfiesExpr
       )

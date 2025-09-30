@@ -5,8 +5,8 @@
 
 private import internal.ClosureExprImpl
 import codeql.rust.elements.Callable
-import codeql.rust.elements.ClosureBinder
 import codeql.rust.elements.Expr
+import codeql.rust.elements.ForBinder
 import codeql.rust.elements.RetTypeRepr
 
 /**
@@ -15,10 +15,13 @@ import codeql.rust.elements.RetTypeRepr
  * |x| x + 1;
  * move |x: i32| -> i32 { x + 1 };
  * async |x: i32, y| x + y;
- *  #[coroutine]
+ * #[coroutine]
  * |x| yield x;
- *  #[coroutine]
- *  static |x| yield x;
+ * #[coroutine]
+ * static |x| yield x;
+ * for<T: std::fmt::Debug> |x: T| {
+ *     println!("{:?}", x);
+ * };
  * ```
  */
 final class ClosureExpr = Impl::ClosureExpr;

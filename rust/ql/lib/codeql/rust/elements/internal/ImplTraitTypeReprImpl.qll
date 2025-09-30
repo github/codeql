@@ -36,5 +36,9 @@ module Impl {
     predicate isInReturnPos() {
       exists(Function f | f.getRetType().getTypeRepr() = this.getFunctionTypeRepr(f))
     }
+
+    override string toStringImpl() {
+      result = "impl " + this.getTypeBoundList().toAbbreviatedString()
+    }
   }
 }

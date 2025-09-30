@@ -1,8 +1,15 @@
 models
 edges
+| file://:0:0:0:0 | [summary param] kw(additionalchildpath) in microsoft.powershell.management!;Method[join-path] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] | provenance |  |
+| file://:0:0:0:0 | [summary param] kw(childpath) in microsoft.powershell.management!;Method[join-path] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] | provenance |  |
+| file://:0:0:0:0 | [summary param] kw(path) in microsoft.powershell.management!;Method[join-path] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] | provenance |  |
 | file://:0:0:0:0 | [summary param] pipeline in microsoft.powershell.utility!;Method[join-string] [element 0] | file://:0:0:0:0 | [summary] read: Argument[pipeline].Element[?] in microsoft.powershell.utility!;Method[join-string] | provenance |  |
 | file://:0:0:0:0 | [summary param] pipeline in microsoft.powershell.utility!;Method[join-string] [element 1] | file://:0:0:0:0 | [summary] read: Argument[pipeline].Element[?] in microsoft.powershell.utility!;Method[join-string] | provenance |  |
+| file://:0:0:0:0 | [summary param] pos(0, {}) in microsoft.powershell.management!;Method[join-path] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] | provenance |  |
+| file://:0:0:0:0 | [summary param] pos(0, {}) in system.io.path!;Method[getfullpath] | file://:0:0:0:0 | [summary] to write: ReturnValue in system.io.path!;Method[getfullpath] | provenance |  |
 | file://:0:0:0:0 | [summary param] pos(0, {}) in system.management.automation.language.codegeneration!;Method[escapesinglequotedstringcontent] | file://:0:0:0:0 | [summary] to write: ReturnValue in system.management.automation.language.codegeneration!;Method[escapesinglequotedstringcontent] | provenance |  |
+| file://:0:0:0:0 | [summary param] pos(1, {}) in microsoft.powershell.management!;Method[join-path] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] | provenance |  |
+| file://:0:0:0:0 | [summary param] pos(2, {}) in microsoft.powershell.management!;Method[join-path] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] | provenance |  |
 | file://:0:0:0:0 | [summary] read: Argument[pipeline].Element[?] in microsoft.powershell.utility!;Method[join-string] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.utility!;Method[join-string] | provenance |  |
 | file://:0:0:0:0 | [summary] read: Argument[pipeline].Element[?] in microsoft.powershell.utility!;Method[join-string] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.utility!;Method[join-string] | provenance |  |
 | test.ps1:1:1:1:2 | x | test.ps1:2:94:2:95 | x | provenance |  |
@@ -12,6 +19,13 @@ edges
 | test.ps1:2:94:2:95 | x | file://:0:0:0:0 | [summary param] pos(0, {}) in system.management.automation.language.codegeneration!;Method[escapesinglequotedstringcontent] | provenance |  |
 | test.ps1:2:94:2:95 | x | test.ps1:2:6:2:96 | Call to escapesinglequotedstringcontent | provenance |  |
 | test.ps1:5:1:5:2 | x | test.ps1:7:6:7:7 | x | provenance |  |
+| test.ps1:5:1:5:2 | x | test.ps1:10:23:10:24 | x | provenance |  |
+| test.ps1:5:1:5:2 | x | test.ps1:13:28:13:29 | x | provenance |  |
+| test.ps1:5:1:5:2 | x | test.ps1:16:38:16:39 | x | provenance |  |
+| test.ps1:5:1:5:2 | x | test.ps1:19:17:19:18 | x | provenance |  |
+| test.ps1:5:1:5:2 | x | test.ps1:22:20:22:21 | x | provenance |  |
+| test.ps1:5:1:5:2 | x | test.ps1:25:23:25:24 | x | provenance |  |
+| test.ps1:5:1:5:2 | x | test.ps1:28:37:28:38 | x | provenance |  |
 | test.ps1:5:6:5:15 | Call to source | test.ps1:5:1:5:2 | x | provenance |  |
 | test.ps1:6:1:6:2 | y | test.ps1:7:10:7:11 | y | provenance |  |
 | test.ps1:6:6:6:15 | Call to source | test.ps1:6:1:6:2 | y | provenance |  |
@@ -23,14 +37,56 @@ edges
 | test.ps1:7:6:7:11 | ...,... [element 1] | test.ps1:7:15:7:25 | Call to join-string | provenance |  |
 | test.ps1:7:10:7:11 | y | test.ps1:7:6:7:11 | ...,... [element 1] | provenance |  |
 | test.ps1:7:15:7:25 | Call to join-string | test.ps1:7:1:7:2 | z | provenance |  |
+| test.ps1:10:1:10:3 | z1 | test.ps1:11:6:11:8 | z1 | provenance |  |
+| test.ps1:10:7:10:27 | Call to join-path | test.ps1:10:1:10:3 | z1 | provenance |  |
+| test.ps1:10:23:10:24 | x | file://:0:0:0:0 | [summary param] kw(path) in microsoft.powershell.management!;Method[join-path] | provenance |  |
+| test.ps1:10:23:10:24 | x | test.ps1:10:7:10:27 | Call to join-path | provenance |  |
+| test.ps1:13:1:13:3 | z2 | test.ps1:14:6:14:8 | z2 | provenance |  |
+| test.ps1:13:7:13:32 | Call to join-path | test.ps1:13:1:13:3 | z2 | provenance |  |
+| test.ps1:13:28:13:29 | x | file://:0:0:0:0 | [summary param] kw(childpath) in microsoft.powershell.management!;Method[join-path] | provenance |  |
+| test.ps1:13:28:13:29 | x | test.ps1:13:7:13:32 | Call to join-path | provenance |  |
+| test.ps1:16:1:16:3 | z3 | test.ps1:17:6:17:8 | z3 | provenance |  |
+| test.ps1:16:7:16:42 | Call to join-path | test.ps1:16:1:16:3 | z3 | provenance |  |
+| test.ps1:16:38:16:39 | x | file://:0:0:0:0 | [summary param] kw(additionalchildpath) in microsoft.powershell.management!;Method[join-path] | provenance |  |
+| test.ps1:16:38:16:39 | x | test.ps1:16:7:16:42 | Call to join-path | provenance |  |
+| test.ps1:19:1:19:3 | z4 | test.ps1:20:6:20:8 | z4 | provenance |  |
+| test.ps1:19:7:19:18 | Call to join-path | test.ps1:19:1:19:3 | z4 | provenance |  |
+| test.ps1:19:17:19:18 | x | file://:0:0:0:0 | [summary param] pos(0, {}) in microsoft.powershell.management!;Method[join-path] | provenance |  |
+| test.ps1:19:17:19:18 | x | test.ps1:19:7:19:18 | Call to join-path | provenance |  |
+| test.ps1:22:1:22:3 | z5 | test.ps1:23:6:23:8 | z5 | provenance |  |
+| test.ps1:22:7:22:21 | Call to join-path | test.ps1:22:1:22:3 | z5 | provenance |  |
+| test.ps1:22:20:22:21 | x | file://:0:0:0:0 | [summary param] pos(1, {}) in microsoft.powershell.management!;Method[join-path] | provenance |  |
+| test.ps1:22:20:22:21 | x | test.ps1:22:7:22:21 | Call to join-path | provenance |  |
+| test.ps1:25:1:25:3 | z6 | test.ps1:26:6:26:8 | z6 | provenance |  |
+| test.ps1:25:7:25:24 | Call to join-path | test.ps1:25:1:25:3 | z6 | provenance |  |
+| test.ps1:25:23:25:24 | x | file://:0:0:0:0 | [summary param] pos(2, {}) in microsoft.powershell.management!;Method[join-path] | provenance |  |
+| test.ps1:25:23:25:24 | x | test.ps1:25:7:25:24 | Call to join-path | provenance |  |
+| test.ps1:28:1:28:3 | z7 | test.ps1:29:6:29:8 | z7 | provenance |  |
+| test.ps1:28:7:28:39 | Call to getfullpath | test.ps1:28:1:28:3 | z7 | provenance |  |
+| test.ps1:28:37:28:38 | x | file://:0:0:0:0 | [summary param] pos(0, {}) in system.io.path!;Method[getfullpath] | provenance |  |
+| test.ps1:28:37:28:38 | x | test.ps1:28:7:28:39 | Call to getfullpath | provenance |  |
 nodes
+| file://:0:0:0:0 | [summary param] kw(additionalchildpath) in microsoft.powershell.management!;Method[join-path] | semmle.label | [summary param] kw(additionalchildpath) in microsoft.powershell.management!;Method[join-path] |
+| file://:0:0:0:0 | [summary param] kw(childpath) in microsoft.powershell.management!;Method[join-path] | semmle.label | [summary param] kw(childpath) in microsoft.powershell.management!;Method[join-path] |
+| file://:0:0:0:0 | [summary param] kw(path) in microsoft.powershell.management!;Method[join-path] | semmle.label | [summary param] kw(path) in microsoft.powershell.management!;Method[join-path] |
 | file://:0:0:0:0 | [summary param] pipeline in microsoft.powershell.utility!;Method[join-string] [element 0] | semmle.label | [summary param] pipeline in microsoft.powershell.utility!;Method[join-string] [element 0] |
 | file://:0:0:0:0 | [summary param] pipeline in microsoft.powershell.utility!;Method[join-string] [element 1] | semmle.label | [summary param] pipeline in microsoft.powershell.utility!;Method[join-string] [element 1] |
+| file://:0:0:0:0 | [summary param] pos(0, {}) in microsoft.powershell.management!;Method[join-path] | semmle.label | [summary param] pos(0, {}) in microsoft.powershell.management!;Method[join-path] |
+| file://:0:0:0:0 | [summary param] pos(0, {}) in system.io.path!;Method[getfullpath] | semmle.label | [summary param] pos(0, {}) in system.io.path!;Method[getfullpath] |
 | file://:0:0:0:0 | [summary param] pos(0, {}) in system.management.automation.language.codegeneration!;Method[escapesinglequotedstringcontent] | semmle.label | [summary param] pos(0, {}) in system.management.automation.language.codegeneration!;Method[escapesinglequotedstringcontent] |
+| file://:0:0:0:0 | [summary param] pos(1, {}) in microsoft.powershell.management!;Method[join-path] | semmle.label | [summary param] pos(1, {}) in microsoft.powershell.management!;Method[join-path] |
+| file://:0:0:0:0 | [summary param] pos(2, {}) in microsoft.powershell.management!;Method[join-path] | semmle.label | [summary param] pos(2, {}) in microsoft.powershell.management!;Method[join-path] |
 | file://:0:0:0:0 | [summary] read: Argument[pipeline].Element[?] in microsoft.powershell.utility!;Method[join-string] | semmle.label | [summary] read: Argument[pipeline].Element[?] in microsoft.powershell.utility!;Method[join-string] |
 | file://:0:0:0:0 | [summary] read: Argument[pipeline].Element[?] in microsoft.powershell.utility!;Method[join-string] | semmle.label | [summary] read: Argument[pipeline].Element[?] in microsoft.powershell.utility!;Method[join-string] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] | semmle.label | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] | semmle.label | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] | semmle.label | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] | semmle.label | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] | semmle.label | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] | semmle.label | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] |
 | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.utility!;Method[join-string] | semmle.label | [summary] to write: ReturnValue in microsoft.powershell.utility!;Method[join-string] |
 | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.utility!;Method[join-string] | semmle.label | [summary] to write: ReturnValue in microsoft.powershell.utility!;Method[join-string] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in system.io.path!;Method[getfullpath] | semmle.label | [summary] to write: ReturnValue in system.io.path!;Method[getfullpath] |
 | file://:0:0:0:0 | [summary] to write: ReturnValue in system.management.automation.language.codegeneration!;Method[escapesinglequotedstringcontent] | semmle.label | [summary] to write: ReturnValue in system.management.automation.language.codegeneration!;Method[escapesinglequotedstringcontent] |
 | test.ps1:1:1:1:2 | x | semmle.label | x |
 | test.ps1:1:6:1:15 | Call to source | semmle.label | Call to source |
@@ -49,12 +105,54 @@ nodes
 | test.ps1:7:10:7:11 | y | semmle.label | y |
 | test.ps1:7:15:7:25 | Call to join-string | semmle.label | Call to join-string |
 | test.ps1:8:6:8:7 | z | semmle.label | z |
+| test.ps1:10:1:10:3 | z1 | semmle.label | z1 |
+| test.ps1:10:7:10:27 | Call to join-path | semmle.label | Call to join-path |
+| test.ps1:10:23:10:24 | x | semmle.label | x |
+| test.ps1:11:6:11:8 | z1 | semmle.label | z1 |
+| test.ps1:13:1:13:3 | z2 | semmle.label | z2 |
+| test.ps1:13:7:13:32 | Call to join-path | semmle.label | Call to join-path |
+| test.ps1:13:28:13:29 | x | semmle.label | x |
+| test.ps1:14:6:14:8 | z2 | semmle.label | z2 |
+| test.ps1:16:1:16:3 | z3 | semmle.label | z3 |
+| test.ps1:16:7:16:42 | Call to join-path | semmle.label | Call to join-path |
+| test.ps1:16:38:16:39 | x | semmle.label | x |
+| test.ps1:17:6:17:8 | z3 | semmle.label | z3 |
+| test.ps1:19:1:19:3 | z4 | semmle.label | z4 |
+| test.ps1:19:7:19:18 | Call to join-path | semmle.label | Call to join-path |
+| test.ps1:19:17:19:18 | x | semmle.label | x |
+| test.ps1:20:6:20:8 | z4 | semmle.label | z4 |
+| test.ps1:22:1:22:3 | z5 | semmle.label | z5 |
+| test.ps1:22:7:22:21 | Call to join-path | semmle.label | Call to join-path |
+| test.ps1:22:20:22:21 | x | semmle.label | x |
+| test.ps1:23:6:23:8 | z5 | semmle.label | z5 |
+| test.ps1:25:1:25:3 | z6 | semmle.label | z6 |
+| test.ps1:25:7:25:24 | Call to join-path | semmle.label | Call to join-path |
+| test.ps1:25:23:25:24 | x | semmle.label | x |
+| test.ps1:26:6:26:8 | z6 | semmle.label | z6 |
+| test.ps1:28:1:28:3 | z7 | semmle.label | z7 |
+| test.ps1:28:7:28:39 | Call to getfullpath | semmle.label | Call to getfullpath |
+| test.ps1:28:37:28:38 | x | semmle.label | x |
+| test.ps1:29:6:29:8 | z7 | semmle.label | z7 |
 subpaths
 | test.ps1:2:94:2:95 | x | file://:0:0:0:0 | [summary param] pos(0, {}) in system.management.automation.language.codegeneration!;Method[escapesinglequotedstringcontent] | file://:0:0:0:0 | [summary] to write: ReturnValue in system.management.automation.language.codegeneration!;Method[escapesinglequotedstringcontent] | test.ps1:2:6:2:96 | Call to escapesinglequotedstringcontent |
 | test.ps1:7:6:7:11 | ...,... [element 0] | file://:0:0:0:0 | [summary param] pipeline in microsoft.powershell.utility!;Method[join-string] [element 0] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.utility!;Method[join-string] | test.ps1:7:15:7:25 | Call to join-string |
 | test.ps1:7:6:7:11 | ...,... [element 1] | file://:0:0:0:0 | [summary param] pipeline in microsoft.powershell.utility!;Method[join-string] [element 1] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.utility!;Method[join-string] | test.ps1:7:15:7:25 | Call to join-string |
+| test.ps1:10:23:10:24 | x | file://:0:0:0:0 | [summary param] kw(path) in microsoft.powershell.management!;Method[join-path] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] | test.ps1:10:7:10:27 | Call to join-path |
+| test.ps1:13:28:13:29 | x | file://:0:0:0:0 | [summary param] kw(childpath) in microsoft.powershell.management!;Method[join-path] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] | test.ps1:13:7:13:32 | Call to join-path |
+| test.ps1:16:38:16:39 | x | file://:0:0:0:0 | [summary param] kw(additionalchildpath) in microsoft.powershell.management!;Method[join-path] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] | test.ps1:16:7:16:42 | Call to join-path |
+| test.ps1:19:17:19:18 | x | file://:0:0:0:0 | [summary param] pos(0, {}) in microsoft.powershell.management!;Method[join-path] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] | test.ps1:19:7:19:18 | Call to join-path |
+| test.ps1:22:20:22:21 | x | file://:0:0:0:0 | [summary param] pos(1, {}) in microsoft.powershell.management!;Method[join-path] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] | test.ps1:22:7:22:21 | Call to join-path |
+| test.ps1:25:23:25:24 | x | file://:0:0:0:0 | [summary param] pos(2, {}) in microsoft.powershell.management!;Method[join-path] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.management!;Method[join-path] | test.ps1:25:7:25:24 | Call to join-path |
+| test.ps1:28:37:28:38 | x | file://:0:0:0:0 | [summary param] pos(0, {}) in system.io.path!;Method[getfullpath] | file://:0:0:0:0 | [summary] to write: ReturnValue in system.io.path!;Method[getfullpath] | test.ps1:28:7:28:39 | Call to getfullpath |
 testFailures
 #select
 | test.ps1:3:6:3:7 | y | test.ps1:1:6:1:15 | Call to source | test.ps1:3:6:3:7 | y | $@ | test.ps1:1:6:1:15 | Call to source | Call to source |
 | test.ps1:8:6:8:7 | z | test.ps1:5:6:5:15 | Call to source | test.ps1:8:6:8:7 | z | $@ | test.ps1:5:6:5:15 | Call to source | Call to source |
 | test.ps1:8:6:8:7 | z | test.ps1:6:6:6:15 | Call to source | test.ps1:8:6:8:7 | z | $@ | test.ps1:6:6:6:15 | Call to source | Call to source |
+| test.ps1:11:6:11:8 | z1 | test.ps1:5:6:5:15 | Call to source | test.ps1:11:6:11:8 | z1 | $@ | test.ps1:5:6:5:15 | Call to source | Call to source |
+| test.ps1:14:6:14:8 | z2 | test.ps1:5:6:5:15 | Call to source | test.ps1:14:6:14:8 | z2 | $@ | test.ps1:5:6:5:15 | Call to source | Call to source |
+| test.ps1:17:6:17:8 | z3 | test.ps1:5:6:5:15 | Call to source | test.ps1:17:6:17:8 | z3 | $@ | test.ps1:5:6:5:15 | Call to source | Call to source |
+| test.ps1:20:6:20:8 | z4 | test.ps1:5:6:5:15 | Call to source | test.ps1:20:6:20:8 | z4 | $@ | test.ps1:5:6:5:15 | Call to source | Call to source |
+| test.ps1:23:6:23:8 | z5 | test.ps1:5:6:5:15 | Call to source | test.ps1:23:6:23:8 | z5 | $@ | test.ps1:5:6:5:15 | Call to source | Call to source |
+| test.ps1:26:6:26:8 | z6 | test.ps1:5:6:5:15 | Call to source | test.ps1:26:6:26:8 | z6 | $@ | test.ps1:5:6:5:15 | Call to source | Call to source |
+| test.ps1:29:6:29:8 | z7 | test.ps1:5:6:5:15 | Call to source | test.ps1:29:6:29:8 | z7 | $@ | test.ps1:5:6:5:15 | Call to source | Call to source |

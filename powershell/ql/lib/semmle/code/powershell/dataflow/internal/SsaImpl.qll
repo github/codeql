@@ -1,23 +1,17 @@
 private import codeql.ssa.Ssa as SsaImplCommon
 private import powershell
 private import semmle.code.powershell.Cfg as Cfg
+private import semmle.code.powershell.controlflow.BasicBlocks as BasicBlocks
 private import semmle.code.powershell.controlflow.internal.ControlFlowGraphImpl as ControlFlowGraphImpl
 private import semmle.code.powershell.dataflow.Ssa
 import Cfg::CfgNodes
 private import ExprNodes
 private import StmtNodes
 
-module SsaInput implements SsaImplCommon::InputSig<Location> {
+private class BasicBlock = BasicBlocks::Cfg::BasicBlock;
+
+module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
   private import semmle.code.powershell.controlflow.ControlFlowGraph as Cfg
-  private import semmle.code.powershell.controlflow.BasicBlocks as BasicBlocks
-
-  class BasicBlock = BasicBlocks::BasicBlock;
-
-  class ControlFlowNode = Cfg::CfgNode;
-
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
-
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
   class SourceVariable = Variable;
 
@@ -54,7 +48,7 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
   }
 }
 
-import SsaImplCommon::Make<Location, SsaInput> as Impl
+import SsaImplCommon::Make<Location, BasicBlocks::Cfg, SsaInput> as Impl
 
 class Definition = Impl::Definition;
 
@@ -300,7 +294,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
     predicate isFinalEnvVarRead(Scope scope, EnvVariable v) { this = TFinalEnvVarRead(scope, v) }
 
-    predicate hasCfgNode(SsaInput::BasicBlock bb, int i) {
+    predicate hasCfgNode(BasicBlock bb, int i) {
       this.asExprCfgNode() = bb.getNode(i)
       or
       exists(EnvVariable v |
@@ -341,9 +335,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
      * and that the edge from `bb1` to `bb2` corresponds to the evaluation of this
      * guard to `branch`.
      */
-    predicate valueControlsBranchEdge(
-      SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, GuardValue branch
-    ) {
+    predicate valueControlsBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue branch) {
       this.hasValueBranchEdge(bb1, bb2, branch)
     }
 
@@ -351,10 +343,8 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
      * Holds if the evaluation of this guard to `branch` corresponds to the edge
      * from `bb1` to `bb2`.
      */
-    predicate hasValueBranchEdge(
-      SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, GuardValue branch
-    ) {
-      exists(Cfg::SuccessorTypes::ConditionalSuccessor s |
+    predicate hasValueBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue branch) {
+      exists(Cfg::ConditionalSuccessor s |
         this.getBasicBlock() = bb1 and
         bb2 = bb1.getASuccessor(s) and
         s.getValue() = branch
@@ -363,9 +353,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   }
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
-  predicate guardDirectlyControlsBlock(Guard guard, SsaInput::BasicBlock bb, GuardValue branch) {
-    none()
-  }
+  predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, GuardValue branch) { none() }
 }
 
 private module DataFlowIntegrationImpl = Impl::DataFlowIntegration<DataFlowIntegrationInput>;

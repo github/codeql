@@ -1,5 +1,17 @@
 private import AstImport
 
+/**
+ * A try-catch-finally statement. For example:
+ * ```
+ * try {
+ *   Get-Item "nonexistent.txt"
+ * } catch {
+ *   Write-Host "File not found"
+ * } finally {
+ *   Write-Host "Cleanup complete"
+ * }
+ * ```
+ */
 class TryStmt extends Stmt, TTryStmt {
   CatchClause getCatchClause(int i) {
     exists(ChildIndex index, Raw::Ast r | index = tryStmtCatchClause(i) and r = getRawAst(this) |

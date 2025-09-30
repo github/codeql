@@ -1,5 +1,8 @@
 private import AstImport
 
+/**
+ * A return statement. For example `return $result` or `return`.
+ */
 class ReturnStmt extends Stmt, TReturnStmt {
   override string toString() {
     if this.hasPipeline() then result = "return ..." else result = "return"

@@ -73,6 +73,20 @@ abstract private class GuardConditionImpl extends Expr {
   abstract predicate valueControls(BasicBlock controlled, AbstractValue v);
 
   /**
+   * Holds if the control-flow edge `(pred, succ)` may be taken only if
+   * the value of this condition is `v`.
+   */
+  abstract predicate valueControlsEdge(BasicBlock pred, BasicBlock succ, AbstractValue v);
+
+  /**
+   * Holds if  the control-flow edge `(pred, succ)` may be taken only if
+   * this the value of this condition is `testIsTrue`.
+   */
+  final predicate controlsEdge(BasicBlock pred, BasicBlock succ, boolean testIsTrue) {
+    this.valueControlsEdge(pred, succ, any(BooleanValue bv | bv.getValue() = testIsTrue))
+  }
+
+  /**
    * Holds if this condition controls `controlled`, meaning that `controlled` is only
    * entered if the value of this condition is `testIsTrue`.
    *
@@ -175,6 +189,58 @@ abstract private class GuardConditionImpl extends Expr {
    */
   pragma[inline]
   abstract predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual);
+
+  /**
+   * Holds if (determined by this guard) `left == right + k` must be `areEqual` on the edge from
+   * `pred` to `succ`. If `areEqual = false` then this implies `left != right + k`.
+   */
+  pragma[inline]
+  final predicate ensuresEqEdge(
+    Expr left, Expr right, int k, BasicBlock pred, BasicBlock succ, boolean areEqual
+  ) {
+    exists(boolean testIsTrue |
+      this.comparesEq(left, right, k, areEqual, testIsTrue) and
+      this.controlsEdge(pred, succ, testIsTrue)
+    )
+  }
+
+  /**
+   * Holds if (determined by this guard) `e == k` must be `areEqual` on the edge from
+   * `pred` to `succ`. If `areEqual = false` then this implies `e != k`.
+   */
+  pragma[inline]
+  final predicate ensuresEqEdge(Expr e, int k, BasicBlock pred, BasicBlock succ, boolean areEqual) {
+    exists(AbstractValue v |
+      this.comparesEq(e, k, areEqual, v) and
+      this.valueControlsEdge(pred, succ, v)
+    )
+  }
+
+  /**
+   * Holds if (determined by this guard) `left < right + k` must be `isLessThan` on the edge from
+   * `pred` to `succ`. If `isLessThan = false` then this implies `left >= right + k`.
+   */
+  pragma[inline]
+  final predicate ensuresLtEdge(
+    Expr left, Expr right, int k, BasicBlock pred, BasicBlock succ, boolean isLessThan
+  ) {
+    exists(boolean testIsTrue |
+      this.comparesLt(left, right, k, isLessThan, testIsTrue) and
+      this.controlsEdge(pred, succ, testIsTrue)
+    )
+  }
+
+  /**
+   * Holds if (determined by this guard) `e < k` must be `isLessThan` on the edge from
+   * `pred` to `succ`. If `isLessThan = false` then this implies `e >= k`.
+   */
+  pragma[inline]
+  final predicate ensuresLtEdge(Expr e, int k, BasicBlock pred, BasicBlock succ, boolean isLessThan) {
+    exists(AbstractValue v |
+      this.comparesLt(e, k, isLessThan, v) and
+      this.valueControlsEdge(pred, succ, v)
+    )
+  }
 }
 
 final class GuardCondition = GuardConditionImpl;
@@ -185,6 +251,16 @@ final class GuardCondition = GuardConditionImpl;
 private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl {
   GuardConditionFromBinaryLogicalOperator() {
     this.(BinaryLogicalOperation).getAnOperand() instanceof GuardCondition
+  }
+
+  override predicate valueControlsEdge(BasicBlock pred, BasicBlock succ, AbstractValue v) {
+    exists(BinaryLogicalOperation binop, GuardCondition lhs, GuardCondition rhs |
+      this = binop and
+      lhs = binop.getLeftOperand() and
+      rhs = binop.getRightOperand() and
+      lhs.valueControlsEdge(pred, succ, v) and
+      rhs.valueControlsEdge(pred, succ, v)
+    )
   }
 
   override predicate valueControls(BasicBlock controlled, AbstractValue v) {
@@ -274,6 +350,25 @@ private predicate controlsBlock(IRGuardCondition ir, BasicBlock controlled, Abst
   )
 }
 
+/**
+ * Holds if `ir` controls the `(pred, succ)` edge, meaning that the edge
+ * `(pred, succ)` is only taken if the value of this condition is `v`. This
+ * helper predicate does not necessarily hold for binary logical operations
+ * like `&&` and `||`.
+ * See the detailed explanation on predicate `controlsEdge`.
+ */
+private predicate controlsEdge(
+  IRGuardCondition ir, BasicBlock pred, BasicBlock succ, AbstractValue v
+) {
+  exists(IRBlock irPred, IRBlock irSucc |
+    ir.valueControlsEdge(irPred, irSucc, v) and
+    nonExcludedIRAndBasicBlock(irPred, pred) and
+    nonExcludedIRAndBasicBlock(irSucc, succ) and
+    not isUnreachedBlock(irPred) and
+    not isUnreachedBlock(irSucc)
+  )
+}
+
 private class GuardConditionFromNotExpr extends GuardConditionImpl {
   IRGuardCondition ir;
 
@@ -293,6 +388,10 @@ private class GuardConditionFromNotExpr extends GuardConditionImpl {
     // This condition must determine the flow of control; that is, this
     // node must be a top-level condition.
     controlsBlock(ir, controlled, v.getDualValue())
+  }
+
+  override predicate valueControlsEdge(BasicBlock pred, BasicBlock succ, AbstractValue v) {
+    controlsEdge(ir, pred, succ, v.getDualValue())
   }
 
   pragma[inline]
@@ -381,6 +480,10 @@ private class GuardConditionFromIR extends GuardConditionImpl {
     // This condition must determine the flow of control; that is, this
     // node must be a top-level condition.
     controlsBlock(ir, controlled, v)
+  }
+
+  override predicate valueControlsEdge(BasicBlock pred, BasicBlock succ, AbstractValue v) {
+    controlsEdge(ir, pred, succ, v)
   }
 
   pragma[inline]

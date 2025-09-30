@@ -1,5 +1,11 @@
 private import AstImport
 
+/**
+ * A type conversion expression. For example:
+ * ```
+ * [int]$stringValue
+ * ```
+ */
 class ConvertExpr extends AttributedExprBase, TConvertExpr {
   override string toString() { result = "[...]..." }
 

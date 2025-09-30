@@ -1,5 +1,11 @@
 private import AstImport
 
+/**
+ * A call to a command (i.e., a function that is not a method). For example:
+ * ```
+ * Get-Process
+ * ```
+ */
 class CmdCall extends CallExpr, TCmd {
   final override string getLowerCaseName() {
     result = getRawAst(this).(Raw::Cmd).getLowerCaseName()

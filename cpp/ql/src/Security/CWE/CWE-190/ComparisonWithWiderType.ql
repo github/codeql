@@ -6,7 +6,7 @@
  * @kind problem
  * @problem.severity warning
  * @security-severity 7.8
- * @precision high
+ * @precision medium
  * @tags reliability
  *       security
  *       external/cwe/cwe-190
@@ -51,7 +51,6 @@ int getComparisonSizeAdjustment(Expr e) {
 
 from Loop l, RelationalOperation rel, VariableAccess small, Expr large
 where
-  not any(Compilation c).buildModeNone() and
   small = rel.getLesserOperand() and
   large = rel.getGreaterOperand() and
   rel = l.getCondition().getAChild*() and
