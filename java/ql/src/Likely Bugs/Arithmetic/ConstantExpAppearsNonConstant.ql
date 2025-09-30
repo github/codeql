@@ -19,7 +19,7 @@ predicate isConstantExp(Expr e) {
   // A literal is constant.
   e instanceof Literal
   or
-  exists(TypeAccess ta | ta = e | not ta.getType() instanceof ErrorType)
+  e instanceof TypeAccess and not e.(TypeAccess).getType() instanceof ErrorType
   or
   e instanceof ArrayTypeAccess
   or
