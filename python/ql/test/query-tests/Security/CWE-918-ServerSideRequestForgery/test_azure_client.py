@@ -22,7 +22,6 @@ def azure_sdk_test(credential, output_path):
     c = ContainerClient.from_container_url(container_url=url, credential=credential) # NOT OK -- user only controlled fragment
     c = ContainerClient.from_container_url(container_url=full_url, credential=credential) # NOT OK -- user has full control
 
-    
     download_blob_from_url(
         blob_url=url, # NOT OK -- user only controlled fragment
         output=output_path,
