@@ -49,7 +49,7 @@ module SafeUrlFlow {
     UnsafeFieldReadSanitizer() {
       exists(DataFlow::FieldReadNode frn, string name |
         name = ["Fragment", "RawQuery", "User"] and
-        frn.getField().hasQualifiedName("net/url", "URL")
+        frn.getField().hasQualifiedName("net/url", "URL", name)
       |
         this = frn.getBase()
       )
