@@ -80,6 +80,9 @@ signature module InputSig<LocationSig Location, TypSig ControlFlowNode, TypSig B
     /** Gets a textual representation of this value. */
     string toString();
 
+    /** Holds if this value represents a single concrete value. */
+    predicate isSingleton();
+
     /**
      * Gets the dual value. Examples of dual values include:
      * - null vs. not null
@@ -265,23 +268,17 @@ module Make<
     )
   }
 
-  /** Holds if `gv1` is a strict subset of `gv2`. */
-  bindingset[gv1, gv2]
-  private predicate smaller(GuardValue gv1, GuardValue gv2) {
-    disjointValues(gv1, gv2.getDualValue()) and
-    gv1 != gv2
-  }
-
   /**
    * Holds if the value of `def` is `gv`.
    *
-   * If multiple values apply, then we only include the most precise ones.
+   * If multiple values apply, including a singleton, then we only include the
+   * singleton.
    */
   private predicate ssaHasValue(SsaWriteDefinition def, GuardValue gv) {
     exists(Expr e |
       def.getDefinition() = e and
       exprHasValue(e, gv) and
-      not exists(GuardValue gv0 | exprHasValue(e, gv0) and smaller(gv0, gv))
+      (any(GuardValue gv0 | exprHasValue(e, gv0)).isSingleton() implies gv.isSingleton())
     )
   }
 
@@ -292,157 +289,51 @@ module Make<
   }
 
   pragma[nomagic]
-  private predicate initSsaValue0(SourceVariable var, BasicBlock bb, SsaDefinition t, GuardValue val) {
+  private predicate initSsaValue0(
+    SourceVariable var, BasicBlock bb, SsaDefinition t, GuardValue val, boolean isSingleton
+  ) {
     ssaLiveAtEndOfBlock(var, t, bb) and
     (
       ssaControls(t, bb, val)
       or
       ssaHasValue(t, val)
-    )
+    ) and
+    if val.isSingleton() then isSingleton = true else isSingleton = false
   }
 
   /**
    * Holds if the value of `t` in `bb` is `val` and that `t` is live at the
    * end of `bb`.
    *
-   * If multiple values apply, then we only include the most precise ones.
+   * If multiple values apply, including a singleton, then we only include the
+   * singleton.
    *
    * The underlying variable of `t` is `var`.
    */
   private predicate initSsaValue(SourceVariable var, BasicBlock bb, SsaDefinition t, GuardValue val) {
-    initSsaValue0(var, bb, t, val) and
-    not exists(GuardValue val0 | initSsaValue0(var, bb, t, val0) and smaller(val0, val))
-  }
-
-  private predicate possibleValue(SourceVariable var, GuardValue gv) {
-    exists(SsaDefinition def | def.getSourceVariable() = var |
-      ssaHasValue(def, gv)
-      or
-      ssaControlsBranchEdge(def, _, _, gv)
+    exists(boolean isSingleton |
+      initSsaValue0(var, bb, t, val, isSingleton) and
+      (initSsaValue0(var, bb, t, _, true) implies isSingleton = true)
     )
   }
 
-  private predicate possibleRangeBound(SourceVariable var, int bound, boolean upper) {
-    exists(GuardValue gv | possibleValue(var, gv) and gv.isIntRange(bound, upper))
-  }
+  private module GuardValueOption = Option<GuardValue>;
 
-  private predicate possibleClosedRange(SourceVariable var, int low, int high) {
-    possibleRangeBound(var, low, false) and
-    possibleRangeBound(var, high, true) and
-    low < high
-  }
+  private class GuardValueOption = GuardValueOption::Option;
 
-  private newtype TGuardValueExt =
-    AnyValue() or
-    BaseValue(GuardValue gv) { possibleValue(_, gv) } or
-    IntRange(int low, int high) { possibleClosedRange(_, low, high) }
-
-  private class GuardValueExt extends TGuardValueExt {
-    string toString() {
-      result = "Any" and this = AnyValue()
-      or
-      result = this.asBase().toString()
-      or
-      exists(int low, int high |
-        this = IntRange(low, high) and result = "[" + low + ", " + high + "]"
-      )
-    }
-
-    GuardValue asBase() { this = BaseValue(result) }
-  }
-
-  private class TGuardValueOrAny = AnyValue or BaseValue;
-
-  private class GuardValueOrAny extends GuardValueExt, TGuardValueOrAny { }
-
-  private GuardValueExt mkRange(int low, int high) {
-    result = IntRange(low, high)
-    or
-    low = high and
-    result.asBase().asIntValue() = low
-  }
-
-  private GuardValueExt intersectBase1(GuardValue gv1, GuardValue gv2) {
-    exists(SourceVariable var |
-      possibleValue(var, gv1) and
-      possibleValue(var, gv2)
-    |
-      smaller(gv1, gv2) and result.asBase() = gv1
-      or
-      exists(int low, int high |
-        gv1.isIntRange(low, false) and
-        gv2.isIntRange(high, true) and
-        result = mkRange(low, high)
-      )
-      or
-      exists(int bound, boolean upper, int d |
-        gv1.isIntRange(bound, upper) and
-        gv2.getDualValue().asIntValue() = bound and
-        result.asBase().isIntRange(bound + d, upper)
-      |
-        upper = true and d = -1
-        or
-        upper = false and d = 1
-      )
-    )
-  }
-
-  private GuardValueExt intersectBase2(GuardValueExt v1, GuardValue v2) {
-    result = intersectBase1(v1.asBase(), v2)
-    or
-    result = intersectBase1(v2, v1.asBase())
-  }
-
+  /**
+   * Gets the best constraint of `v1` and `v2`. If both are non-singletons,
+   * then we arbitrarily choose `v1`. This operation approximates intersection.
+   */
   bindingset[v1, v2]
   pragma[inline_late]
-  private GuardValueExt intersectRange(GuardValueExt v1, GuardValue v2) {
-    exists(int low, int high | v1 = IntRange(low, high) |
-      exists(int bound, boolean upper | v2.isIntRange(bound, upper) |
-        upper = true and result = mkRange(low, high.minimum(bound))
-        or
-        upper = false and result = mkRange(low.maximum(bound), high)
-      )
-      or
-      exists(int k |
-        v2.asIntValue() = k and
-        result.asBase() = v2 and
-        low <= k and
-        k <= high
-      )
-      or
-      not v2.isIntRange(_, _) and not exists(v2.asIntValue()) and result = v1
-    )
-  }
-
-  bindingset[v1, v2]
-  pragma[inline_late]
-  private GuardValueExt intersect(GuardValueExt v1, GuardValue v2) {
-    v1 = AnyValue() and result.asBase() = v2
-    or
-    result = intersectBase2(v1, v2)
-    or
-    result = v1 and
-    v1 instanceof BaseValue and
-    not exists(intersectBase2(v1, v2))
-    or
-    result = intersectRange(v1, v2)
-  }
-
-  bindingset[v1, gv2]
-  private predicate disjointValuesExt(GuardValueExt v1, GuardValue gv2) {
-    disjointValues(v1.asBase(), gv2)
-    or
-    exists(int low, int high | v1 = IntRange(low, high) |
-      gv2.asIntValue() < low
-      or
-      high < gv2.asIntValue()
-      or
-      exists(int bound, boolean upper | gv2.isIntRange(bound, upper) |
-        upper = true and bound < low
-        or
-        upper = false and high < bound
-      )
-    )
+  private GuardValueOption intersect(GuardValueOption v1, GuardValue v2) {
+    if v2.isSingleton()
+    then result.asSome() = v2
+    else
+      if v1.isNone()
+      then result.asSome() = v2
+      else result = v1
   }
 
   /** An input configuration for control flow reachability. */
@@ -558,11 +449,17 @@ module Make<
      * Holds if the edge from `bb1` to `bb2` implies that `def` has a value
      * that is considered a barrier.
      */
+    pragma[nomagic]
     private predicate ssaValueBarrierEdge(SsaDefinition def, BasicBlock bb1, BasicBlock bb2) {
       exists(GuardValue v |
         ssaControlsBranchEdge(def, bb1, bb2, v) and
         Config::barrierValue(v)
       )
+    }
+
+    pragma[nomagic]
+    private predicate phiBlock(BasicBlock bb, SourceVariable v) {
+      exists(SsaPhiNode phi | phi.getBasicBlock() = bb and phi.getSourceVariable() = v)
     }
 
     /** Holds if `def1` in `bb1` may step to `def2` in `bb2`. */
@@ -577,7 +474,7 @@ module Make<
           ssaRelevantAtEndOfBlock(def1, bb1) and
           bb1.getASuccessor() = bb2 and
           v = def1.getSourceVariable() and
-          not exists(SsaPhiNode phi | phi.getBasicBlock() = bb2 and phi.getSourceVariable() = v) and
+          not phiBlock(bb2, v) and
           def1 = def2
         )
         or
@@ -687,8 +584,8 @@ module Make<
      * Holds if the edge from `bb1` to `bb2` implies that `def` has the value
      * `gv` and that the edge is relevant for computing reachability of `src`.
      *
-     * If multiple values may be implied by this edge, then we only include the
-     * most precise ones.
+     * If multiple values may be implied by this edge, including a singleton,
+     * then we only include the singleton.
      *
      * The underlying variable of `t` is `var`.
      */
@@ -697,7 +594,11 @@ module Make<
       BasicBlock bb2
     ) {
       ssaControlsBranchEdge(t, bb1, bb2, gv) and
-      not exists(GuardValue gv0 | ssaControlsBranchEdge(t, bb1, bb2, gv0) and smaller(gv0, gv)) and
+      (
+        any(GuardValue gv0 | ssaControlsBranchEdge(t, bb1, bb2, gv0)).isSingleton()
+        implies
+        gv.isSingleton()
+      ) and
       pathEdge(src, bb1, bb2) and
       t.getSourceVariable() = var
     }
@@ -712,17 +613,35 @@ module Make<
     }
 
     /**
+     * Gets either `gv` or its dual value. This is intended as a mostly unique
+     * representation of the set of values `gv` and `gv.getDualValue()`.
+     */
+    private GuardValue getPrimary(GuardValue gv) {
+      exists(GuardValue dual | dual = gv.getDualValue() |
+        if dual.isSingleton() then result = dual else result = gv
+      )
+    }
+
+    /**
      * Holds if precision may be improved by splitting control flow on the
      * value of `var` during the reachability computation of `src`.
+     *
+     * The `condgv`/`condgv.getDualValue()` separation of the values of `var`
+     * determines whether a possibly relevant edge may be taken or not.
      */
-    private predicate relevantSplit(SourceVariable src, SourceVariable var) {
+    private predicate relevantSplit(SourceVariable src, SourceVariable var, GuardValue condgv) {
       // `var` may be a relevant split if we encounter 2+ conditional edges
       // that imply information about `var`.
-      2 <= strictcount(BasicBlock bb1 | ssaControlsPathEdge(src, _, var, _, bb1, _))
+      exists(GuardValue gv |
+        ssaControlsPathEdge(src, _, var, gv, _, _) and
+        condgv = getPrimary(gv) and
+        2 <= strictcount(BasicBlock bb1 | ssaControlsPathEdge(src, _, var, _, bb1, _))
+      )
       or
       // Or if we encounter a conditional edge that imply a value that's
       // incompatible with an initial or later assigned value.
       exists(GuardValue gv1, GuardValue gv2, BasicBlock bb |
+        condgv = getPrimary(gv1) and
         ssaControlsPathEdge(src, _, var, gv1, _, _) and
         initSsaValue(var, bb, _, gv2) and
         disjointValues(gv1, gv2) and
@@ -731,8 +650,11 @@ module Make<
       or
       // Or if we encounter a conditional edge in a loop that imply a value for
       // `var` that may be unchanged from one iteration to the next.
-      exists(SsaDefinition def, BasicBlock bb1, BasicBlock bb2, BasicBlock loopEntry |
-        ssaControlsPathEdge(src, def, var, _, bb1, bb2) and
+      exists(
+        SsaDefinition def, BasicBlock bb1, BasicBlock bb2, BasicBlock loopEntry, GuardValue gv
+      |
+        ssaControlsPathEdge(src, def, var, gv, bb1, bb2) and
+        condgv = getPrimary(gv) and
         loopEntryBlock(src, loopEntry) and
         loopEntry.strictlyDominates(bb1) and
         bb2.getASuccessor*() = loopEntry
@@ -756,24 +678,39 @@ module Make<
     }
 
     /**
+     * Holds if `gv` is relatable to the `condgv`/`condgv.getDualValue()` pair
+     * in the sense that a conditional branch based on `condgv` may be
+     * determined by `gv`.
+     */
+    bindingset[gv, condgv]
+    pragma[inline_late]
+    private predicate relatable(GuardValue gv, GuardValue condgv) {
+      disjointValues(gv, condgv) or
+      disjointValues(gv, condgv.getDualValue())
+    }
+
+    /**
      * Holds if `bb1` to `bb2` is a relevant edge for computing reachability of
      * `src`, and `var` is a relevant splitting variable that gets (re-)defined
      * in `bb2` by `t`, which is not a phi node.
      *
-     * `val` is the best known value for `t` in `bb2`.
+     * `val` is the best known value that is relatable to `condgv` for `t` in `bb2`.
      */
     private predicate stepSsaValueRedef(
-      SourceVariable src, BasicBlock bb1, BasicBlock bb2, SourceVariable var, SsaDefinition t,
-      GuardValueOrAny val
+      SourceVariable src, BasicBlock bb1, BasicBlock bb2, SourceVariable var, GuardValue condgv,
+      SsaDefinition t, GuardValueOption val
     ) {
       pathEdge(src, bb1, bb2) and
-      relevantSplit(src, var) and
+      relevantSplit(src, var, condgv) and
       lastDefInBlock(var, t, bb2) and
       not t instanceof SsaPhiNode and
       (
-        ssaHasValue(t, val.asBase())
+        exists(GuardValue gv |
+          ssaHasValue(t, gv) and
+          if relatable(gv, condgv) then val.asSome() = gv else val.isNone()
+        )
         or
-        not ssaHasValue(t, _) and val = AnyValue()
+        not ssaHasValue(t, _) and val.isNone()
       )
     }
 
@@ -783,21 +720,25 @@ module Make<
      * `t2`, in `bb2` taking input from `t1` along this edge. Furthermore,
      * there is no further redefinition of `var` in `bb2`.
      *
-     * `val` is the best value for `t1`/`t2` implied by taking this edge.
+     * `val` is the best value that is relatable to `condgv` for `t1`/`t2`
+     * implied by taking this edge.
      */
     private predicate stepSsaValuePhi(
-      SourceVariable src, BasicBlock bb1, BasicBlock bb2, SourceVariable var, SsaDefinition t1,
-      SsaDefinition t2, GuardValueOrAny val
+      SourceVariable src, BasicBlock bb1, BasicBlock bb2, SourceVariable var, GuardValue condgv,
+      SsaDefinition t1, SsaDefinition t2, GuardValueOption val
     ) {
       pathEdge(src, bb1, bb2) and
-      relevantSplit(src, var) and
+      relevantSplit(src, var, condgv) and
       lastDefInBlock(var, t2, bb2) and
       t2.(SsaPhiNode).hasInputFromBlock(t1, bb1) and
       (
-        ssaControlsPathEdge(src, t1, _, val.asBase(), bb1, bb2)
+        exists(GuardValue gv |
+          ssaControlsPathEdge(src, t1, _, gv, bb1, bb2) and
+          if relatable(gv, condgv) then val.asSome() = gv else val.isNone()
+        )
         or
         not ssaControlsPathEdge(src, t1, _, _, bb1, bb2) and
-        val = AnyValue()
+        val.isNone()
       )
     }
 
@@ -807,84 +748,94 @@ module Make<
      * redefinition along this edge nor in `bb2`.
      *
      * Additionally, this edge implies that the SSA definition `t` of `var` has
-     * value `val`.
+     * value `val` and that `val` is relatable to `condgv`.
      */
     private predicate stepSsaValueNoRedef(
-      SourceVariable src, BasicBlock bb1, BasicBlock bb2, SourceVariable var, SsaDefinition t,
-      GuardValue val
+      SourceVariable src, BasicBlock bb1, BasicBlock bb2, SourceVariable var, GuardValue condgv,
+      SsaDefinition t, GuardValue val
     ) {
       pathEdge(src, bb1, bb2) and
-      relevantSplit(src, var) and
+      relevantSplit(src, var, condgv) and
       not lastDefInBlock(var, _, bb2) and
-      ssaControlsPathEdge(src, t, var, val, bb1, bb2)
+      ssaControlsPathEdge(src, t, var, val, bb1, bb2) and
+      relatable(val, condgv)
     }
 
     /**
      * Holds if the source `srcDef` in `srcBb` may reach `def` in `bb`. The
      * taken path takes splitting based on the value of `var` into account.
+     *
+     * When multiple `GuardValue`s can be chosen for `var`, we prioritize those
+     * that are relatable to `condgv`, as that will help determine whether a
+     * particular edge may be taken or not. Singleton values are prioritized
+     * highly as they are in principle relatable to every other `GuardValue`.
+     *
      * The pair `(tracked, val)` is the current SSA definition and known value
      * for `var` in `bb`.
      */
     private predicate sourceReachesBlockWithTrackedVar(
       SsaDefinition srcDef, BasicBlock srcBb, SsaDefinition def, BasicBlock bb, FinallyStack fs,
-      SsaDefOption tracked, GuardValueExt val, SourceVariable var
+      SsaDefOption tracked, GuardValueOption val, SourceVariable var, GuardValue condgv
     ) {
       sourceBlock(srcDef, srcBb, _) and
       def = srcDef and
       bb = srcBb and
       fs = TNil() and
-      relevantSplit(def.getSourceVariable(), var) and
+      relevantSplit(def.getSourceVariable(), var, condgv) and
       (
         // tracking variable is not yet live
         not ssaLiveAtEndOfBlock(var, _, bb) and
         tracked.isNone() and
-        val = AnyValue()
+        val.isNone()
         or
         // tracking variable is live but without known value
         ssaLiveAtEndOfBlock(var, tracked.asSome(), bb) and
         not initSsaValue(var, bb, _, _) and
-        val = AnyValue()
+        val.isNone()
         or
-        // tracking variable has known value
-        initSsaValue(var, bb, tracked.asSome(), val.asBase())
+        // tracking variable has known value, track it if it is relatable to condgv
+        exists(GuardValue gv | initSsaValue(var, bb, tracked.asSome(), gv) |
+          if relatable(gv, condgv) then val.asSome() = gv else val.isNone()
+        )
       )
       or
       exists(
         SourceVariable src, SsaDefinition middef, BasicBlock midbb, FinallyStack midfs,
-        SsaDefOption tracked0, GuardValueExt val0
+        SsaDefOption tracked0, GuardValueOption val0
       |
-        sourceReachesBlockWithTrackedVar(srcDef, srcBb, middef, midbb, midfs, tracked0, val0, var) and
+        sourceReachesBlockWithTrackedVar(srcDef, srcBb, middef, midbb, midfs, tracked0, val0, var,
+          condgv) and
         src = srcDef.getSourceVariable() and
         step(middef, midbb, def, bb) and
         stepFinallyStack(midbb, bb, midfs, fs) and
-        pathBlock(src, bb) and
+        pathBlock(pragma[only_bind_into](src), bb) and
         not exists(GuardValue gv |
           ssaControlsPathEdge(src, tracked0.asSome(), _, gv, midbb, bb) and
-          disjointValuesExt(val0, gv)
+          disjointValues(val0.asSome(), gv)
         )
       |
         // tracking variable is redefined
-        stepSsaValueRedef(src, midbb, bb, var, tracked.asSome(), val)
+        stepSsaValueRedef(src, midbb, bb, var, condgv, tracked.asSome(), val)
         or
-        exists(GuardValueOrAny val1 |
+        exists(GuardValueOption val1 |
           // tracking variable has a phi node, and maybe value information from the edge
-          stepSsaValuePhi(src, midbb, bb, var, tracked0.asSome(), tracked.asSome(), val1)
+          stepSsaValuePhi(src, midbb, bb, var, condgv, tracked0.asSome(), tracked.asSome(), val1)
         |
-          val = val0 and val1 = AnyValue()
+          val = val0 and val1.isNone()
           or
-          val = intersect(val0, val1.asBase())
+          val = intersect(val0, val1.asSome())
         )
         or
         exists(GuardValue val1 |
           // tracking variable is unchanged, and has value information from the edge
-          stepSsaValueNoRedef(src, midbb, bb, var, tracked0.asSome(), val1) and
+          stepSsaValueNoRedef(src, midbb, bb, var, condgv, tracked0.asSome(), val1) and
           tracked = tracked0 and
           val = intersect(val0, val1)
         )
         or
         // tracking variable is unchanged, and has no value information from the edge
         not lastDefInBlock(var, _, bb) and
-        not stepSsaValueNoRedef(src, midbb, bb, var, tracked0.asSome(), _) and
+        not stepSsaValueNoRedef(src, midbb, bb, var, condgv, tracked0.asSome(), _) and
         tracked = tracked0 and
         val = val0
       )
@@ -903,8 +854,8 @@ module Make<
         sourceReachesBlock(srcDef, srcBb, sinkDef, sinkBb, _) and
         sinkBlock(sinkDef, sinkBb, sink) and
         srcVar = srcDef.getSourceVariable() and
-        forall(SourceVariable t | relevantSplit(srcVar, t) |
-          sourceReachesBlockWithTrackedVar(srcDef, srcBb, sinkDef, sinkBb, _, _, _, t)
+        forall(SourceVariable t, GuardValue condgv | relevantSplit(srcVar, t, condgv) |
+          sourceReachesBlockWithTrackedVar(srcDef, srcBb, sinkDef, sinkBb, _, _, _, t, condgv)
         )
       )
     }
@@ -920,8 +871,8 @@ module Make<
         sourceBlock(srcDef, srcBb, src) and
         sourceEscapesSink(srcDef, srcBb, escDef, escBb) and
         srcVar = srcDef.getSourceVariable() and
-        forall(SourceVariable t | relevantSplit(srcVar, t) |
-          sourceReachesBlockWithTrackedVar(srcDef, srcBb, escDef, escBb, _, _, _, t)
+        forall(SourceVariable t, GuardValue condgv | relevantSplit(srcVar, t, condgv) |
+          sourceReachesBlockWithTrackedVar(srcDef, srcBb, escDef, escBb, _, _, _, t, condgv)
         )
       )
     }

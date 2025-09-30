@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log/slog"
+	"net/url"
 	"os"
 	"os/exec"
 	"strings"
@@ -14,6 +15,7 @@ const PROXY_PORT = "CODEQL_PROXY_PORT"
 const PROXY_CA_CERTIFICATE = "CODEQL_PROXY_CA_CERTIFICATE"
 const PROXY_URLS = "CODEQL_PROXY_URLS"
 const GOPROXY_SERVER = "goproxy_server"
+const GIT_SOURCE = "git_source"
 
 type RegistryConfig struct {
 	Type string `json:"type"`
@@ -26,9 +28,11 @@ var proxy_address string
 // The path to the temporary file that stores the proxy certificate, if any.
 var proxy_cert_file string
 
-// An array of registry configurations that are relevant to Go.
-// This excludes other registry configurations that may be available, but are not relevant to Go.
-var proxy_configs []RegistryConfig
+// An array of goproxy server URLs.
+var goproxy_servers []string
+
+// An array of Git URLs.
+var git_sources []string
 
 // Stores the environment variables that we wish to pass on to `go` commands.
 var proxy_vars []string = nil
@@ -53,7 +57,13 @@ func getEnvVars() []string {
 	if proxy_host, proxy_host_set := os.LookupEnv(PROXY_HOST); proxy_host_set && proxy_host != "" {
 		if proxy_port, proxy_port_set := os.LookupEnv(PROXY_PORT); proxy_port_set && proxy_port != "" {
 			proxy_address = fmt.Sprintf("http://%s:%s", proxy_host, proxy_port)
-			result = append(result, fmt.Sprintf("HTTP_PROXY=%s", proxy_address), fmt.Sprintf("HTTPS_PROXY=%s", proxy_address))
+			result = append(
+				result,
+				fmt.Sprintf("HTTP_PROXY=%s", proxy_address),
+				fmt.Sprintf("HTTPS_PROXY=%s", proxy_address),
+				fmt.Sprintf("http_proxy=%s", proxy_address),
+				fmt.Sprintf("https_proxy=%s", proxy_address),
+			)
 
 			slog.Info("Found private registry proxy", slog.String("proxy_address", proxy_address))
 		}
@@ -91,20 +101,49 @@ func getEnvVars() []string {
 			// filter others out at this point.
 			for _, cfg := range val {
 				if cfg.Type == GOPROXY_SERVER {
-					proxy_configs = append(proxy_configs, cfg)
+					goproxy_servers = append(goproxy_servers, cfg.URL)
 					slog.Info("Found GOPROXY server", slog.String("url", cfg.URL))
+				} else if cfg.Type == GIT_SOURCE {
+					parsed, err := url.Parse(cfg.URL)
+					if err == nil && parsed.Hostname() != "" {
+						git_source := parsed.Hostname() + parsed.Path + "*"
+						git_sources = append(git_sources, git_source)
+						slog.Info("Found Git source", slog.String("source", git_source))
+					} else {
+						slog.Warn("Not a valid URL for Git source", slog.String("url", cfg.URL))
+					}
 				}
 			}
 
-			if len(proxy_configs) > 0 {
+			goprivate := []string{}
+
+			if len(goproxy_servers) > 0 {
 				goproxy_val := "https://proxy.golang.org,direct"
 
-				for _, cfg := range proxy_configs {
-					goproxy_val = cfg.URL + "," + goproxy_val
+				for _, url := range goproxy_servers {
+					goproxy_val = url + "," + goproxy_val
 				}
 
-				result = append(result, fmt.Sprintf("GOPROXY=%s", goproxy_val), "GOPRIVATE=", "GONOPROXY=")
+				result = append(result, fmt.Sprintf("GOPROXY=%s", goproxy_val), "GONOPROXY=")
 			}
+
+			if len(git_sources) > 0 {
+				goprivate = append(goprivate, git_sources...)
+
+				if proxy_cert_file != "" {
+					slog.Info("Configuring `git` to use proxy certificate", slog.String("path", proxy_cert_file))
+					cmd := exec.Command("git", "config", "--global", "http.sslCAInfo", proxy_cert_file)
+
+					out, cmdErr := cmd.CombinedOutput()
+					slog.Info(string(out))
+
+					if cmdErr != nil {
+						slog.Error("Failed to configure `git` to accept the certificate file", slog.String("error", cmdErr.Error()))
+					}
+				}
+			}
+
+			result = append(result, fmt.Sprintf("GOPRIVATE=%s", strings.Join(goprivate, ",")))
 		}
 	}
 
@@ -113,11 +152,6 @@ func getEnvVars() []string {
 
 // Applies private package proxy related environment variables to `cmd`.
 func ApplyProxyEnvVars(cmd *exec.Cmd) {
-	slog.Debug(
-		"Applying private registry proxy environment variables",
-		slog.String("cmd_args", strings.Join(cmd.Args, " ")),
-	)
-
 	// If we haven't done so yet, check whether the proxy environment variables are set
 	// and extract information from them.
 	if !proxy_vars_checked {
@@ -131,4 +165,10 @@ func ApplyProxyEnvVars(cmd *exec.Cmd) {
 	if proxy_vars != nil {
 		cmd.Env = append(os.Environ(), proxy_vars...)
 	}
+
+	slog.Debug(
+		"Applying private registry proxy environment variables",
+		slog.String("cmd_args", strings.Join(cmd.Args, " ")),
+		slog.String("proxy_vars", strings.Join(proxy_vars, ",")),
+	)
 }
