@@ -322,7 +322,7 @@ module GuardsInput implements SharedGuards::InputSig<Cpp::Location, Instruction,
   /**
    * A non-overridable function.
    *
-   * This function is non-overrideable either because it is not a member function, or
+   * This function is non-overridable either because it is not a member function, or
    * because it is a final member function.
    */
   class NonOverridableMethod extends FinalMethod {
