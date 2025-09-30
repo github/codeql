@@ -33,7 +33,7 @@ Running a quick query
 
       from IfExpr ifExpr
       where ifExpr.getThen().(BlockExpr).getStmtList().getNumberOfStmtOrExpr() = 0
-      select ifExpr, "This 'if' statement is redundant."
+      select ifExpr, "This 'if' expression is redundant."
 
 .. include:: ../reusables/vs-code-basic-instructions/run-quick-query-2.rst
 
