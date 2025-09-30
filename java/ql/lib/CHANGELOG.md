@@ -1,3 +1,7 @@
+## 7.7.1
+
+No user-facing changes.
+
 ## 7.7.0
 
 ### New Features
