@@ -24,11 +24,10 @@ edges
 | builtin.go:112:21:112:31 | call to Referer | builtin.go:115:15:115:28 | untrustedInput | provenance | Src:MaD:8  |
 | builtin.go:130:21:130:31 | call to Referer | builtin.go:133:38:133:51 | untrustedInput | provenance | Src:MaD:8  |
 | builtin.go:151:16:151:36 | call to FormValue | builtin.go:154:13:154:22 | unsafehost | provenance | Src:MaD:7  |
-| builtin.go:154:2:154:4 | implicit dereference | builtin.go:156:21:156:23 | url | provenance |  |
-| builtin.go:154:2:154:4 | url | builtin.go:154:2:154:4 | implicit dereference | provenance |  |
-| builtin.go:154:2:154:4 | url | builtin.go:156:21:156:23 | url | provenance |  |
-| builtin.go:154:13:154:22 | unsafehost | builtin.go:154:2:154:4 | implicit dereference | provenance | Config |
-| builtin.go:154:13:154:22 | unsafehost | builtin.go:154:2:154:4 | url | provenance | Config |
+| builtin.go:154:2:154:4 | implicit dereference [postupdate] | builtin.go:154:2:154:4 | url [postupdate] | provenance |  |
+| builtin.go:154:2:154:4 | url [postupdate] | builtin.go:156:21:156:23 | url | provenance |  |
+| builtin.go:154:13:154:22 | unsafehost | builtin.go:154:2:154:4 | implicit dereference [postupdate] | provenance | Config |
+| builtin.go:154:13:154:22 | unsafehost | builtin.go:154:2:154:4 | url [postupdate] | provenance | Config |
 | builtin.go:156:21:156:23 | url | builtin.go:156:21:156:32 | call to String | provenance | MaD:12 |
 | new-tests.go:26:26:26:30 | &... [postupdate] | new-tests.go:31:48:31:56 | selection of word | provenance | Src:MaD:3  |
 | new-tests.go:26:26:26:30 | &... [postupdate] | new-tests.go:32:48:32:56 | selection of safe | provenance | Src:MaD:3  |
@@ -96,8 +95,8 @@ nodes
 | builtin.go:130:21:130:31 | call to Referer | semmle.label | call to Referer |
 | builtin.go:133:38:133:51 | untrustedInput | semmle.label | untrustedInput |
 | builtin.go:151:16:151:36 | call to FormValue | semmle.label | call to FormValue |
-| builtin.go:154:2:154:4 | implicit dereference | semmle.label | implicit dereference |
-| builtin.go:154:2:154:4 | url | semmle.label | url |
+| builtin.go:154:2:154:4 | implicit dereference [postupdate] | semmle.label | implicit dereference [postupdate] |
+| builtin.go:154:2:154:4 | url [postupdate] | semmle.label | url [postupdate] |
 | builtin.go:154:13:154:22 | unsafehost | semmle.label | unsafehost |
 | builtin.go:156:21:156:23 | url | semmle.label | url |
 | builtin.go:156:21:156:32 | call to String | semmle.label | call to String |
