@@ -97,6 +97,20 @@ own body, or they must inherit from another class that overrides ``isSource``:
       // doesn't need to override `isSource`, because it inherits it from ConfigA
     }
 
+.. index:: additional
+.. _additional:
+
+``additional``
+==============
+
+**Available for**: |classes|, |algebraic datatypes|, |type unions|, |non-member predicates|, |modules|, |aliases|, |signatures|
+
+The ``additional`` annotation can be used on declarations directly inside of modules that implement |module signatures|.
+All declarations in such modules that are not required by a module signature must be annotated with ``additional``.
+
+Omitting ``additional`` on such declarations, or using the annotation in any other context, will result in a compiler error.
+Other than that, the annotation has no effect.
+
 .. index:: cached
 .. _cached:
 
@@ -495,3 +509,4 @@ The ``bindingset`` annotation takes a comma-separated list of variables.
 .. |signatures|                replace:: :ref:`signatures <signatures>`
 .. |predicate signatures|      replace:: :ref:`predicate signatures <predicate-signatures>`
 .. |type signatures|           replace:: :ref:`type signatures <type-signatures>`
+.. |module signatures|         replace:: :ref:`module signatures <module-signatures>`
