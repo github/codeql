@@ -1581,6 +1581,18 @@ module JCAModel {
       result.asExpr() = super.getArgument(0) and
       super.getMethod().getParameterType(0).hasName("byte[]")
     }
+
+    override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() { result.asExpr() = output }
+
+    override Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() { none() }
+
+    override predicate hasHashAlgorithmConsumer() { none() }
+
+    override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
+      result instanceof Crypto::TMacMode
+    }
+
+    override Crypto::ConsumerInputDataFlowNode getNonceConsumer() { none() }
   }
 
   /*
