@@ -126,7 +126,7 @@ body must also be annotated with ``cached``, otherwise a compiler error is repor
 ``deprecated``
 ==============
 
-**Available for**: |classes|, |algebraic datatypes|, |member predicates|, |non-member predicates|, |imports|, |fields|, |modules|, |aliases|
+**Available for**: |classes|, |algebraic datatypes|, |member predicates|, |non-member predicates|, |imports|, |fields|, |modules|, |aliases|, |signatures|
 
 The ``deprecated`` annotation is applied to names that are outdated and scheduled for removal
 in a future release of QL.
@@ -235,7 +235,7 @@ warning.
 ``private``
 ===========
 
-**Available for**: |classes|, |algebraic datatypes|, |member predicates|, |non-member predicates|, |imports|, |fields|, |modules|, |aliases|
+**Available for**: |classes|, |algebraic datatypes|, |member predicates|, |non-member predicates|, |imports|, |fields|, |modules|, |aliases|, |signatures|
 
 The ``private`` annotation is used to prevent names from being exported.
 
@@ -461,7 +461,7 @@ For more information, see ":ref:`monotonic-aggregates`."
 Binding sets
 ============
 
-**Available for**: |classes|, |characteristic predicates|, |member predicates|, |non-member predicates|
+**Available for**: |classes|, |characteristic predicates|, |member predicates|, |non-member predicates|, |predicate signatures|, |type signatures|
 
 ``bindingset[...]``
 -------------------
@@ -491,3 +491,6 @@ The ``bindingset`` annotation takes a comma-separated list of variables.
 .. |type-aliases|              replace:: :ref:`type aliases <type-aliases>`
 .. |algebraic datatypes|       replace:: :ref:`algebraic datatypes <algebraic-datatypes>`
 .. |expressions|               replace:: :ref:`expressions <expressions>`
+.. |signatures|                replace:: :ref:`signatures <signatures>`
+.. |predicate signatures|      replace:: :ref:`predicate signatures <predicate-signatures>`
+.. |type signatures|           replace:: :ref:`type signatures <type-signatures>`
