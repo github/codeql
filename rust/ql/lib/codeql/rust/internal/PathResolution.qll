@@ -1559,7 +1559,6 @@ private predicate unqualifiedPathLookup(ItemNode ancestor, string name, Namespac
   exists(RelevantPath path |
     path.isUnqualified(name, encl) and
     ancestor = encl and
-    exists(ns) and
     not name = ["crate", "$crate", "super", "self"]
   |
     pathUsesNamespace(path, ns)
@@ -1668,7 +1667,7 @@ module TraitIsVisible<relevantTraitVisibleSig/2 relevantTraitVisible> {
 }
 
 pragma[nomagic]
-private predicate isMacroExpansion(AstNode expansion, Path macroDefPath) {
+private predicate isDollarCrateSupportedMacroExpansion(Path macroDefPath, AstNode expansion) {
   exists(MacroCall mc |
     expansion = mc.getMacroCallExpansion() and
     macroDefPath = mc.getPath()
@@ -1681,25 +1680,25 @@ private predicate isMacroExpansion(AstNode expansion, Path macroDefPath) {
 }
 
 pragma[nomagic]
-predicate isInMacroExpansion(Path macroDefPath, AstNode n) {
-  isMacroExpansion(n, macroDefPath)
+predicate isInDollarCrateSupportedMacroExpansion(File macroDefFile, AstNode n) {
+  exists(Path macroDefPath |
+    isDollarCrateSupportedMacroExpansion(macroDefPath, n) and
+    macroDefFile = resolvePathCand(macroDefPath).getFile()
+  )
   or
-  isInMacroExpansion(macroDefPath, n.getParentNode())
+  isInDollarCrateSupportedMacroExpansion(macroDefFile, n.getParentNode())
 }
 
 /**
- * Holds if `n` is inside a macro expansion, and the macro _may_ originate from
- * crate `crate`.
+ * Holds if `n` is a `$crate` path, and it may resolve to `crate`.
  *
  * The reason why we cannot be sure is that we need to consider all ancestor macro
  * calls.
  */
 pragma[nomagic]
-predicate isInMacroFromCrateExpansion(CrateItemNode crate, AstNode n) {
-  exists(Path macroDefPath |
-    isInMacroExpansion(macroDefPath, n) and
-    crate.getASourceFile().getFile() = resolvePathCand(macroDefPath).getFile()
-  )
+predicate resolveDollarCrate(RelevantPath p, CrateItemNode crate) {
+  p.isDollarCrate() and
+  isInDollarCrateSupportedMacroExpansion(crate.getASourceFile().getFile(), p)
 }
 
 pragma[nomagic]
@@ -1714,8 +1713,7 @@ private ItemNode resolvePathCand0(RelevantPath path, Namespace ns) {
     else result = res
   )
   or
-  path.isDollarCrate() and
-  isInMacroFromCrateExpansion(result, path) and
+  resolveDollarCrate(path, result) and
   ns = result.getNamespace()
   or
   result = resolvePathCandQualified(_, _, path, ns)
