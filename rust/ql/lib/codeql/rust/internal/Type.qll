@@ -134,8 +134,8 @@ class StructType extends Type, TStruct {
 
   StructType() { this = TStruct(struct) }
 
-  /** Get the struct that this struct type represents. */
-  Struct asStruct() { result = struct }
+  /** Gets the struct that this struct type represents. */
+  Struct getStruct() { result = struct }
 
   override TypeParameter getPositionalTypeParameter(int i) {
     result = TTypeParamTypeParameter(struct.getGenericParamList().getTypeParam(i))
@@ -205,8 +205,8 @@ class UnionType extends Type, TUnion {
 
   UnionType() { this = TUnion(union) }
 
-  /** Get the union that this union type represents. */
-  Union asUnion() { result = union }
+  /** Gets the union that this union type represents. */
+  Union getUnion() { result = union }
 
   override TypeParameter getPositionalTypeParameter(int i) {
     result = TTypeParamTypeParameter(union.getGenericParamList().getTypeParam(i))

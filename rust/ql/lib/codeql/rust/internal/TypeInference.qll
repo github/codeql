@@ -1173,8 +1173,8 @@ private Type inferCallExprBaseType(AstNode n, TypePath path) {
             path = TypePath::cons(TRefTypeParameter(), path0)
           else (
             not (
-              argType.(StructType).asStruct() instanceof StringStruct and
-              result.(StructType).asStruct() instanceof Builtins::Str
+              argType.(StructType).getStruct() instanceof StringStruct and
+              result.(StructType).getStruct() instanceof Builtins::Str
             ) and
             (
               not path0.isCons(TRefTypeParameter(), _) and
@@ -1889,8 +1889,8 @@ final class MethodCall extends Call {
         //
         // See also https://doc.rust-lang.org/reference/expressions/method-call-expr.html#r-expr.method.autoref-deref
         path.isEmpty() and
-        t0.(StructType).asStruct() instanceof StringStruct and
-        result.(StructType).asStruct() instanceof Builtins::Str
+        t0.(StructType).getStruct() instanceof StringStruct and
+        result.(StructType).getStruct() instanceof Builtins::Str
       )
     else result = this.getReceiverTypeAt(path)
   }
@@ -2519,8 +2519,8 @@ private module Cached {
   cached
   StructField resolveStructFieldExpr(FieldExpr fe) {
     exists(string name, Type ty | ty = getFieldExprLookupType(fe, name) |
-      result = ty.(StructType).asStruct().getStructField(name) or
-      result = ty.(UnionType).asUnion().getStructField(name)
+      result = ty.(StructType).getStruct().getStructField(name) or
+      result = ty.(UnionType).getUnion().getStructField(name)
     )
   }
 
@@ -2530,7 +2530,7 @@ private module Cached {
   cached
   TupleField resolveTupleFieldExpr(FieldExpr fe) {
     exists(int i |
-      result = getTupleFieldExprLookupType(fe, i).(StructType).asStruct().getTupleField(i)
+      result = getTupleFieldExprLookupType(fe, i).(StructType).getStruct().getTupleField(i)
     )
   }
 
