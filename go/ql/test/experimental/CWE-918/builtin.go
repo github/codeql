@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/url"
 	"regexp"
 	"strings"
 
@@ -144,4 +145,17 @@ func test() {
 
 	log.Println(http.ListenAndServe(":80", nil))
 
+}
+
+func handler2(w http.ResponseWriter, req *http.Request) {
+	unsafehost := req.FormValue("host") // $ Source
+
+	url, _ := url.Parse("http://example.com/data")
+	url.Host = unsafehost
+	// BAD: `target` is controlled by the attacker
+	_, err := http.Get(url.String()) // $ Alert
+	if err != nil {
+		// error handling
+	}
+	// process request response
 }
