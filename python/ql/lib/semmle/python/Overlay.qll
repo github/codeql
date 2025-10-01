@@ -307,40 +307,51 @@ final private class DiscardableComment extends Discardable instanceof @py_commen
 
 /*- XML -*/
 overlay[local]
-private predicate baseXmlLocatable(@xmllocatable l) {
-  not isOverlay() and not files(l, _) and not xmlNs(l, _, _, _)
+final private class DiscardableXmlLocatable extends Discardable instanceof @xmllocatable {
+  override string getPath() {
+    exists(@location loc | xmllocations(this, loc) | result = getPathForLocation(loc))
+  }
 }
 
 overlay[local]
-private predicate overlayHasXmlLocatable() {
-  isOverlay() and
-  exists(@xmllocatable l | not files(l, _) and not xmlNs(l, _, _, _))
+private predicate overlayXmlExtracted(string path) {
+  exists(DiscardableXmlLocatable d | not files(d, _) and not xmlNs(d, _, _, _) |
+    d.existsInOverlay() and
+    path = d.getPath()
+  )
 }
 
 overlay[discard_entity]
-private predicate discardBaseXmlLocatable(@xmllocatable el) {
-  // The XML extractor is currently not incremental, so if
-  // the overlay contains any XML locatables, the overlay should
-  // contain a full extraction and all XML locatables from base
-  // should be discarded.
-  baseXmlLocatable(el) and overlayHasXmlLocatable()
+private predicate discardXmlLocatable(@xmllocatable el) {
+  exists(DiscardableXmlLocatable d | d = el |
+    // The XML extractor is currently not incremental and may extract more
+    // XML files than those included in `overlayChangedFiles`, so this discard predicate
+    // handles those files alongside the normal `discardStarEntity` logic.
+    overlayXmlExtracted(d.getPath()) and
+    d.existsInBase()
+  )
 }
 
 /*- YAML -*/
 overlay[local]
-private predicate baseYamlLocatable(@yaml_locatable l) { not isOverlay() and exists(l) }
+final private class DiscardableYamlLocatable extends Discardable instanceof @yaml_locatable {
+  override string getPath() {
+    exists(@location loc | yaml_locations(this, loc) | result = getPathForLocation(loc))
+  }
+}
 
 overlay[local]
-private predicate overlayHasYamlLocatable() {
-  isOverlay() and
-  exists(@yaml_locatable l)
+private predicate overlayYamlExtracted(string path) {
+  exists(DiscardableYamlLocatable l | l.existsInOverlay() | path = l.getPath())
 }
 
 overlay[discard_entity]
 private predicate discardBaseYamlLocatable(@yaml_locatable el) {
-  // The Yaml extractor is currently not incremental, so if
-  // the overlay contains any Yaml locatables, the overlay should
-  // contain a full extraction and all Yaml locatables from base
-  // should be discarded.
-  baseYamlLocatable(el) and overlayHasYamlLocatable()
+  exists(DiscardableYamlLocatable d | d = el |
+    // The Yaml extractor is currently not incremental and may extract more
+    // Yaml files than those included in `overlayChangedFiles`, so this discard predicate
+    // handles those files alongside the normal `discardStarEntity` logic.
+    overlayYamlExtracted(d.getPath()) and
+    d.existsInBase()
+  )
 }
