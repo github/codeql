@@ -9,6 +9,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 .. toctree::
    :hidden:
 
+   basic-query-for-rust-code
    codeql-library-for-rust
    analyzing-data-flow-in-rust
 
