@@ -165,6 +165,16 @@ For example, the name ``DataFlowNode`` is deprecated and has the following QLDoc
 
 This QLDoc comment appears when you use the name ``DataFlowNode`` in a QL editor.
 
+.. index:: extensible
+.. _extensible:
+
+``extensible``
+==============
+
+**Available for**: |non-member predicates|
+
+The ``extensible`` annotation is used to mark predicates that are populated at evaluation time through data extensions.
+
 .. index:: external
 .. _external:
 
