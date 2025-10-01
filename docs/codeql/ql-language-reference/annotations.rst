@@ -103,7 +103,7 @@ own body, or they must inherit from another class that overrides ``isSource``:
 ``cached``
 ==========
 
-**Available for**: |classes|, |algebraic datatypes|, |characteristic predicates|, |member predicates|, |non-member predicates|, |modules|
+**Available for**: |classes|, |algebraic datatypes|, |type unions|, |characteristic predicates|, |member predicates|, |non-member predicates|, |modules|
 
 The ``cached`` annotation indicates that an entity should be evaluated in its entirety and
 stored in the evaluation cache. All later references to this entity will use the 
@@ -126,7 +126,7 @@ body must also be annotated with ``cached``, otherwise a compiler error is repor
 ``deprecated``
 ==============
 
-**Available for**: |classes|, |algebraic datatypes|, |member predicates|, |non-member predicates|, |imports|, |fields|, |modules|, |aliases|, |signatures|
+**Available for**: |classes|, |algebraic datatypes|, |type unions|, |member predicates|, |non-member predicates|, |imports|, |fields|, |modules|, |aliases|, |signatures|
 
 The ``deprecated`` annotation is applied to names that are outdated and scheduled for removal
 in a future release of QL.
@@ -235,7 +235,7 @@ warning.
 ``private``
 ===========
 
-**Available for**: |classes|, |algebraic datatypes|, |member predicates|, |non-member predicates|, |imports|, |fields|, |modules|, |aliases|, |signatures|
+**Available for**: |classes|, |algebraic datatypes|, |type unions|, |member predicates|, |non-member predicates|, |imports|, |fields|, |modules|, |aliases|, |signatures|
 
 The ``private`` annotation is used to prevent names from being exported.
 
@@ -490,6 +490,7 @@ The ``bindingset`` annotation takes a comma-separated list of variables.
 .. |aliases|                   replace:: :ref:`aliases <aliases>`
 .. |type-aliases|              replace:: :ref:`type aliases <type-aliases>`
 .. |algebraic datatypes|       replace:: :ref:`algebraic datatypes <algebraic-datatypes>`
+.. |type unions|               replace:: :ref:`type unions <type-unions>`
 .. |expressions|               replace:: :ref:`expressions <expressions>`
 .. |signatures|                replace:: :ref:`signatures <signatures>`
 .. |predicate signatures|      replace:: :ref:`predicate signatures <predicate-signatures>`
