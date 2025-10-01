@@ -119,15 +119,15 @@ module JCAModel {
 
   bindingset[name]
   Crypto::HashType hash_name_to_type_known(string name, int digestLength) {
-    name = "SHA-1" and result instanceof Crypto::SHA1 and digestLength = 160
+    name in ["SHA-1", "SHA1"] and result instanceof Crypto::SHA1 and digestLength = 160
     or
-    name = ["SHA-256", "SHA-384", "SHA-512"] and
+    name in ["SHA-256", "SHA-384", "SHA-512", "SHA256", "SHA384", "SHA512"] and
     result instanceof Crypto::SHA2 and
-    digestLength = name.splitAt("-", 1).toInt()
+    digestLength = name.replaceAll("-", "").splitAt("SHA", 1).toInt()
     or
-    name = ["SHA3-224", "SHA3-256", "SHA3-384", "SHA3-512"] and
+    name in ["SHA3-224", "SHA3-256", "SHA3-384", "SHA3-512", "SHA3256", "SHA3384", "SHA3512"] and
     result instanceof Crypto::SHA3 and
-    digestLength = name.splitAt("-", 1).toInt()
+    digestLength = name.replaceAll("-", "").splitAt("SHA3", 1).toInt()
     or
     (
       name.matches("BLAKE2b%") and
@@ -1222,37 +1222,73 @@ module JCAModel {
     SecretKeyFactoryKDFAlgorithmValueConsumer getConsumer() { result = consumer }
   }
 
+  class PBKDF2WithHmac_KeyOperationAlgorithmStringLiteral extends Crypto::KeyOperationAlgorithmInstance instanceof KdfAlgorithmStringLiteral
+  {
+    PBKDF2WithHmac_KeyOperationAlgorithmStringLiteral() {
+      this.(StringLiteral).getValue().toUpperCase().matches(["PBKDF2WithHmac%"].toUpperCase())
+    }
+
+    override Crypto::KeyOpAlg::AlgorithmType getAlgorithmType() {
+      result = KeyOpAlg::TMac(KeyOpAlg::HMAC())
+    }
+
+    override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() {
+      // TODO: trace to any key size initializer?
+      none()
+    }
+
+    override int getKeySizeFixed() {
+      // TODO: are there known fixed key sizes to consider?
+      none()
+    }
+
+    override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() { none() }
+
+    override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
+
+    override string getRawAlgorithmName() {
+      // Note: hardcoding "hmac" since that should be the only option
+      result = "Hmac"
+    }
+  }
+
+  class PBKDF2WithHmac_HashAlgorithmStringLiteral extends Crypto::HashAlgorithmInstance instanceof PBKDF2WithHmac_KeyOperationAlgorithmStringLiteral
+  {
+    string hashName;
+
+    PBKDF2WithHmac_HashAlgorithmStringLiteral() {
+      hashName = this.(StringLiteral).getValue().splitAt("WithHmac", 1)
+    }
+
+    override string getRawHashAlgorithmName() { result = this.(StringLiteral).getValue() }
+
+    override Crypto::THashType getHashFamily() { result = hash_name_to_type_known(hashName, _) }
+
+    override int getFixedDigestLength() { exists(hash_name_to_type_known(hashName, result)) }
+  }
+
+  //TODO: handle PBE
   class Pbkdf2AlgorithmStringLiteral extends KdfAlgorithmStringLiteral,
-    Crypto::Pbkdf2AlgorithmInstance, Crypto::HmacAlgorithmInstance, Crypto::HashAlgorithmInstance,
-    Crypto::AlgorithmValueConsumer
+    Crypto::Pbkdf2AlgorithmInstance, Crypto::HmacAlgorithmInstance
   {
     Pbkdf2AlgorithmStringLiteral() { super.getKdfType() instanceof Crypto::PBKDF2 }
-
-    override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }
-
-    override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = this }
-
-    override Crypto::THashType getHashFamily() {
-      result = hash_name_to_type_known(this.getRawHashAlgorithmName(), _)
-    }
-
-    override int getFixedDigestLength() {
-      exists(hash_name_to_type_known(this.getRawHashAlgorithmName(), result))
-    }
-
-    override string getRawMacAlgorithmName() {
-      result = super.getRawKdfAlgorithmName().splitAt("PBKDF2With", 1)
-    }
-
-    override string getRawHashAlgorithmName() {
-      result = super.getRawKdfAlgorithmName().splitAt("WithHmac", 1)
-    }
-
-    override Crypto::MacType getMacType() { result = Crypto::HMAC() }
 
     override Crypto::AlgorithmValueConsumer getHmacAlgorithmValueConsumer() { result = this }
 
     override Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() { result = this }
+
+    override int getKeySizeFixed() { none() }
+
+    override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() { none() }
+
+    override string getRawAlgorithmName() {
+      // Note: hard coding "hmac" since that should be the only option
+      result = "Hmac"
+    }
+
+    override Crypto::KeyOpAlg::AlgorithmType getAlgorithmType() {
+      result = KeyOpAlg::TMac(KeyOpAlg::HMAC())
+    }
   }
 
   class SecretKeyFactoryKDFAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer instanceof Expr
