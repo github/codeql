@@ -3,7 +3,7 @@
  * @description Finds all potential key lengths for elliptic curve algorithms usage.
  * @kind problem
  * @id cpp/quantum-readiness/cbom/elliptic-curve-key-length
- * @problem.severity error
+ * @severity recommendation
  * @tags cbom
  *       cryptography
  */
