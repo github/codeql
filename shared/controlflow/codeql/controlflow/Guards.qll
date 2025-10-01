@@ -259,6 +259,9 @@ module Make<
       )
     }
 
+    /** Holds if this value represents a single concrete value. */
+    predicate isSingleton() { this = TValue(_, true) }
+
     /** Holds if this value represents `null`. */
     predicate isNullValue() { this.isNullness(true) }
 
@@ -689,6 +692,9 @@ module Make<
      * Holds if `e` equals `k` and may be assigned to `v`. The boolean
      * `fromBackEdge` indicates whether the flow from `e` to `v` goes through a
      * back edge.
+     *
+     * This predicate is restricted to cases where all such possible values are
+     * constants, which means that the `GuardValue`s are singleton values.
      */
     private predicate possibleValue(SsaDefinition v, boolean fromBackEdge, Expr e, GuardValue k) {
       not hasPossibleUnknownValue(v) and
@@ -708,9 +714,10 @@ module Make<
     private predicate uniqueValue(SsaDefinition v, Expr e, GuardValue k) {
       possibleValue(v, false, e, k) and
       not possibleValue(v, true, e, k) and
-      forex(Expr other, GuardValue otherval | possibleValue(v, _, other, otherval) and other != e |
-        disjointValues(otherval, k)
-      )
+      // there's only one expression with the value `k`
+      1 = strictcount(Expr e0 | possibleValue(v, _, e0, k)) and
+      // and `v` has at least two possible values
+      2 <= strictcount(GuardValue k0 | possibleValue(v, _, _, k0))
     }
 
     /**

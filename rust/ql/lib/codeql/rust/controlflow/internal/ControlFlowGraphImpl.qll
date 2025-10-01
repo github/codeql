@@ -77,7 +77,7 @@ class CallableScopeTree extends StandardTree, PreOrderTree, PostOrderTree, Scope
 
   override AstNode getChildNode(int i) {
     i = 0 and
-    result = this.getParamList().getSelfParam()
+    result = this.getSelfParam()
     or
     result = this.getParam(i - 1)
     or
@@ -266,15 +266,8 @@ module ExprTrees {
     }
   }
 
-  private AstNode getBlockChildNode(BlockExpr b, int i) {
-    result = b.getStmtList().getStatement(i)
-    or
-    i = b.getStmtList().getNumberOfStatements() and
-    result = b.getStmtList().getTailExpr()
-  }
-
   class AsyncBlockExprTree extends StandardTree, PreOrderTree, PostOrderTree, AsyncBlockExpr {
-    override AstNode getChildNode(int i) { result = getBlockChildNode(this, i) }
+    override AstNode getChildNode(int i) { result = this.getStmtList().getStmtOrExpr(i) }
 
     override predicate propagatesAbnormal(AstNode child) { none() }
   }
@@ -282,7 +275,7 @@ module ExprTrees {
   class BlockExprTree extends StandardPostOrderTree, BlockExpr {
     BlockExprTree() { not this.isAsync() }
 
-    override AstNode getChildNode(int i) { result = getBlockChildNode(this, i) }
+    override AstNode getChildNode(int i) { result = this.getStmtList().getStmtOrExpr(i) }
 
     override predicate propagatesAbnormal(AstNode child) { child = this.getChildNode(_) }
   }

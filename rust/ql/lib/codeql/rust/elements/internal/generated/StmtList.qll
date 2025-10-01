@@ -17,13 +17,15 @@ import codeql.rust.elements.Stmt
  */
 module Generated {
   /**
-   * A list of statements in a block.
+   * A list of statements in a block, with an optional tail expression at the
+   * end that determines the block's value.
    *
    * For example:
    * ```rust
    * {
    *     let x = 1;
    *     let y = 2;
+   *     x + y
    * }
    * //  ^^^^^^^^^
    * ```
@@ -53,6 +55,9 @@ module Generated {
 
     /**
      * Gets the `index`th statement of this statement list (0-based).
+     *
+     * The statements of a `StmtList` do not include any tail expression, which
+     * can be accessed with predicates such as `getTailExpr`.
      */
     Stmt getStatement(int index) {
       result =
@@ -73,6 +78,9 @@ module Generated {
 
     /**
      * Gets the tail expression of this statement list, if it exists.
+     *
+     * The tail expression is the expression at the end of a block, that
+     * determines the block's value.
      */
     Expr getTailExpr() {
       result =

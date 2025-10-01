@@ -30,8 +30,10 @@ module SafeUrlFlow {
 
     predicate isBarrierOut(DataFlow::Node node) {
       // block propagation of this safe value when its host is overwritten
-      exists(Write w, Field f | f.hasQualifiedName("net/url", "URL", "Host") |
-        w.writesField(node.getASuccessor(), f, _)
+      exists(Write w, DataFlow::Node b, Field f |
+        f.hasQualifiedName("net/url", "URL", "Host") and
+        b = node.getASuccessor() and
+        w.writesField(b, f, _)
       )
       or
       node instanceof SanitizerEdge

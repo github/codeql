@@ -4,6 +4,7 @@
 
 private import rust
 private import codeql.rust.elements.internal.generated.ParentChild
+private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 private import codeql.rust.internal.CachedStages
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 private import codeql.util.Option
@@ -604,7 +605,13 @@ private class EnumItemNode extends TypeItemNode instanceof Enum {
   }
 }
 
-private class VariantItemNode extends ItemNode instanceof Variant {
+/** An item that can be referenced with arguments. */
+abstract class ParameterizableItemNode extends ItemNode {
+  /** Gets the arity this item. */
+  abstract int getArity();
+}
+
+private class VariantItemNode extends ParameterizableItemNode instanceof Variant {
   override string getName() { result = Variant.super.getName().getText() }
 
   override Namespace getNamespace() {
@@ -616,6 +623,8 @@ private class VariantItemNode extends ItemNode instanceof Variant {
   }
 
   override Visibility getVisibility() { result = super.getEnum().getVisibility() }
+
+  override int getArity() { result = super.getFieldList().(TupleFieldList).getNumberOfFields() }
 
   override predicate hasCanonicalPath(Crate c) { this.hasCanonicalPathPrefix(c) }
 
@@ -638,7 +647,7 @@ private class VariantItemNode extends ItemNode instanceof Variant {
   }
 }
 
-class FunctionItemNode extends AssocItemNode instanceof Function {
+class FunctionItemNode extends AssocItemNode, ParameterizableItemNode instanceof Function {
   override string getName() { result = Function.super.getName().getText() }
 
   override predicate hasImplementation() { Function.super.hasImplementation() }
@@ -648,6 +657,8 @@ class FunctionItemNode extends AssocItemNode instanceof Function {
   override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
 
   override Visibility getVisibility() { result = Function.super.getVisibility() }
+
+  override int getArity() { result = super.getNumberOfParamsInclSelf() }
 }
 
 abstract class ImplOrTraitItemNode extends ItemNode {
@@ -712,8 +723,10 @@ final class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
   TypeParamItemNode getBlanketImplementationTypeParam() { result = this.resolveSelfTy() }
 
   /**
-   * Holds if this impl block is a blanket implementation. That is, the
+   * Holds if this impl block is a [blanket implementation][1]. That is, the
    * implementation targets a generic parameter of the impl block.
+   *
+   * [1]: https://doc.rust-lang.org/book/ch10-02-traits.html#using-trait-bounds-to-conditionally-implement-methods
    */
   predicate isBlanketImplementation() { exists(this.getBlanketImplementationTypeParam()) }
 
@@ -865,7 +878,7 @@ private class ImplItemNodeImpl extends ImplItemNode {
   TraitItemNode resolveTraitTyCand() { result = resolvePathCand(this.getTraitPath()) }
 }
 
-private class StructItemNode extends TypeItemNode instanceof Struct {
+private class StructItemNode extends TypeItemNode, ParameterizableItemNode instanceof Struct {
   override string getName() { result = Struct.super.getName().getText() }
 
   override Namespace getNamespace() {
@@ -876,6 +889,8 @@ private class StructItemNode extends TypeItemNode instanceof Struct {
   }
 
   override Visibility getVisibility() { result = Struct.super.getVisibility() }
+
+  override int getArity() { result = super.getFieldList().(TupleFieldList).getNumberOfFields() }
 
   override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
 
@@ -1687,6 +1702,14 @@ private ItemNode resolvePathCand(RelevantPath path) {
     or
     not pathUsesNamespace(path, _) and
     not path = any(MacroCall mc).getPath()
+  ) and
+  (
+    not path = CallExprImpl::getFunctionPath(_)
+    or
+    exists(CallExpr ce |
+      path = CallExprImpl::getFunctionPath(ce) and
+      result.(ParameterizableItemNode).getArity() = ce.getNumberOfArgs()
+    )
   )
 }
 

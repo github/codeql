@@ -4,7 +4,7 @@
 
 import go
 import UrlConcatenation
-import SafeUrlFlowCustomizations
+private import SafeUrlFlowCustomizations
 import semmle.go.dataflow.barrierguardutil.RedirectCheckBarrierGuard
 import semmle.go.dataflow.barrierguardutil.RegexpCheck
 import semmle.go.dataflow.barrierguardutil.UrlCheck
@@ -118,18 +118,3 @@ module RequestForgery {
 
 /** A sink for request forgery, considered as a sink for safe URL flow. */
 private class SafeUrlSink extends SafeUrlFlow::Sink instanceof RequestForgery::Sink { }
-
-/**
- * A read of a field considered unsafe for request forgery, considered as a sanitizer for a safe
- * URL.
- */
-private class UnsafeFieldReadSanitizer extends SafeUrlFlow::SanitizerEdge {
-  UnsafeFieldReadSanitizer() {
-    exists(DataFlow::FieldReadNode frn, string name |
-      (name = "RawQuery" or name = "Fragment" or name = "User") and
-      frn.getField().hasQualifiedName("net/url", "URL")
-    |
-      this = frn.getBase()
-    )
-  }
-}

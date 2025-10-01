@@ -31,8 +31,7 @@ class StreamCipherInit extends Cryptography::CryptographicOperation::Range {
       // extract the algorithm name from the type of `ce` or its receiver.
       exists(Type t, TypePath tp |
         t = inferType([ce, ce.(MethodCallExpr).getReceiver()], tp) and
-        rawAlgorithmName =
-          t.(StructType).asItemNode().(Addressable).getCanonicalPath().splitAt("::")
+        rawAlgorithmName = t.(StructType).getStruct().(Addressable).getCanonicalPath().splitAt("::")
       ) and
       algorithmName = simplifyAlgorithmName(rawAlgorithmName) and
       // only match a known cryptographic algorithm

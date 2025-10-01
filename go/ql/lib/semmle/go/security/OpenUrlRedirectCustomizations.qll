@@ -6,7 +6,7 @@
 
 import go
 import UrlConcatenation
-import SafeUrlFlowCustomizations
+private import SafeUrlFlowCustomizations
 import semmle.go.dataflow.barrierguardutil.RedirectCheckBarrierGuard
 import semmle.go.dataflow.barrierguardutil.RegexpCheck
 import semmle.go.dataflow.barrierguardutil.UrlCheck
@@ -120,21 +120,6 @@ module OpenUrlRedirect {
 
 /** A sink for an open redirect, considered as a sink for safe URL flow. */
 private class SafeUrlSink extends SafeUrlFlow::Sink instanceof OpenUrlRedirect::Sink { }
-
-/**
- * A read of a field considered unsafe to redirect to, considered as a sanitizer for a safe
- * URL.
- */
-private class UnsafeFieldReadSanitizer extends SafeUrlFlow::SanitizerEdge {
-  UnsafeFieldReadSanitizer() {
-    exists(DataFlow::FieldReadNode frn, string name |
-      name = ["User", "RawQuery", "Fragment"] and
-      frn.getField().hasQualifiedName("net/url", "URL")
-    |
-      this = frn.getBase()
-    )
-  }
-}
 
 /**
  * Reinstate the usual field propagation rules for fields, which the OpenURLRedirect

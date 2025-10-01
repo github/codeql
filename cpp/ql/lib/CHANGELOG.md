@@ -1,3 +1,7 @@
+## 5.6.1
+
+No user-facing changes.
+
 ## 5.6.0
 
 ### Deprecated APIs
