@@ -75,7 +75,7 @@ $QueryConn2 = @{
     Username = "MyUserName"
     Password = "MyPassword"
     ConnectionTimeout = 0
-    Query = $userinput
+    Query = "SELECT * FROM Customers WHERE id = $userinput"
 }
 
 Invoke-Sqlcmd @QueryConn2 # BAD
@@ -122,7 +122,7 @@ function With-Validation() {
     )
 
     Invoke-Sqlcmd -unknown $userinput -ServerInstance "MyServer" -Database "MyDatabase" -q $validated # GOOD
-    Invoke-Sqlcmd -unknown $userinput -ServerInstance "MyServer" -Database "MyDatabase" -q $unvalidated # BAD
+    Invoke-Sqlcmd -unknown $userinput -ServerInstance "MyServer" -Database "MyDatabase" -q "SELECT * FROM Customers where id = $($unvalidated)" # BAD
 }
 
 With-Validation $userinput $userinput
