@@ -83,6 +83,7 @@ overlay[caller?]
 pragma[inline]
 predicate localFlow(Node node1, Node node2) { node1 = node2 or localFlowStepPlus(node1, node2) }
 
+overlay[caller?]
 private predicate localFlowStepPlus(Node node1, Node node2) = fastTC(localFlowStep/2)(node1, node2)
 
 /**

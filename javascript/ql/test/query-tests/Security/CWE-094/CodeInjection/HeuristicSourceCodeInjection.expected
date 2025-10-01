@@ -72,6 +72,8 @@ edges
 | graph-ql.js:39:19:39:22 | name | graph-ql.js:39:19:39:30 | name + title | provenance |  |
 | graph-ql.js:39:26:39:30 | title | graph-ql.js:39:19:39:30 | name + title | provenance |  |
 | graph-ql.js:54:21:54:29 | variables | graph-ql.js:38:13:38:27 | { name, title } | provenance |  |
+| graph-ql.js:65:22:65:30 | { value } | graph-ql.js:65:24:65:28 | value | provenance |  |
+| graph-ql.js:65:24:65:28 | value | graph-ql.js:66:23:66:27 | value | provenance |  |
 | react-native.js:7:7:7:13 | tainted | react-native.js:8:32:8:38 | tainted | provenance |  |
 | react-native.js:7:7:7:13 | tainted | react-native.js:10:23:10:29 | tainted | provenance |  |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:13 | tainted | provenance |  |
@@ -224,6 +226,9 @@ nodes
 | graph-ql.js:39:19:39:30 | name + title | semmle.label | name + title |
 | graph-ql.js:39:26:39:30 | title | semmle.label | title |
 | graph-ql.js:54:21:54:29 | variables | semmle.label | variables |
+| graph-ql.js:65:22:65:30 | { value } | semmle.label | { value } |
+| graph-ql.js:65:24:65:28 | value | semmle.label | value |
+| graph-ql.js:66:23:66:27 | value | semmle.label | value |
 | module.js:9:16:9:29 | req.query.code | semmle.label | req.query.code |
 | module.js:11:17:11:30 | req.query.code | semmle.label | req.query.code |
 | react-native.js:7:7:7:13 | tainted | semmle.label | tainted |

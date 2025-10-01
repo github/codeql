@@ -34,10 +34,9 @@ private module FlowTestImpl implements InputSig<Location, RustDataFlow> {
     result = src.asExpr().(CallExprCfgNode).getArgument(0).toString()
     or
     sourceNode(src, _) and
-    exists(CallExprBase call |
-      call = src.(Node::FlowSummaryNode).getSourceElement().getCall() and
-      result = call.getArgList().getArg(0).toString()
-    )
+    result = src.(Node::FlowSummaryNode).getSourceElement().getCall().getArg(0).toString() and
+    // Don't use the result if it contains spaces
+    not result.matches("% %")
   }
 
   bindingset[src, sink]

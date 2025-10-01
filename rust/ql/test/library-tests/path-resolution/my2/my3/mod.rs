@@ -6,3 +6,9 @@ pub fn f() {
 
 use super::super::h; // $ item=I25
 use super::g; // $ item=I9
+
+use super::nested6_f; // $ item=I116
+
+use super::*; // $ item=mod.rs
+
+trait MyTrait: Deref {} // $ item=Deref

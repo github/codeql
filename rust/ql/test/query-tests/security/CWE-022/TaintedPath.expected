@@ -123,7 +123,7 @@ models
 | 6 | Sink: std::fs::read_to_string; Argument[0]; path-injection |
 | 7 | Source: std::env::args; ReturnValue.Element; commandargs |
 | 8 | Summary: <_ as core::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
-| 9 | Summary: <_ as core::convert::From>::from; Argument[0]; ReturnValue; value |
+| 9 | Summary: <_ as core::convert::From>::from; Argument[0]; ReturnValue; taint |
 | 10 | Summary: <_ as core::iter::traits::iterator::Iterator>::nth; Argument[self].Element; ReturnValue.Field[core::option::Option::Some(0)]; value |
 | 11 | Summary: <core::option::Option>::unwrap; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
 | 12 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
