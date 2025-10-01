@@ -8,30 +8,28 @@ import (
 
 func testStdlibSources(w http.ResponseWriter, req *http.Request) {
 	host := req.Host                                                 // $ Source
-	http.Redirect(w, req, "https://"+host+"/safe", http.StatusFound) // $ Alert
+	http.Redirect(w, req, "https://"+host+"/path", http.StatusFound) // $ Alert
 
 	baseURL := req.URL                           // $ Source
 	w.Header().Set("Location", baseURL.String()) // $ Alert
 
 	targetURL := url.URL{}
-	targetURL.Host = host        // propagation to URL when Host is assigned
+	targetURL.Host = host        // additional flow step from Host field to URL struct
 	http.Get(targetURL.String()) // $ Alert
 }
 
-func testSanitizerEdge1(w http.ResponseWriter, req *http.Request) {
+func testBarrierEdge1(w http.ResponseWriter, req *http.Request) {
 	baseURL := req.URL
 
-	// SanitizerEdge: Query method call (unsafe URL method - breaks flow)
-	query := baseURL.Query()                                       // sanitizer edge blocks flow here
+	query := baseURL.Query()                                       // barrier edge blocks flow here
 	http.Redirect(w, req, query.Get("redirect"), http.StatusFound) // no flow expected
 }
 
-func testSanitizerEdge2(w http.ResponseWriter, req *http.Request) {
+func testBarrierEdge2(w http.ResponseWriter, req *http.Request) {
 	baseURL := req.URL
 
-	// SanitizerEdge: String slicing (breaks flow)
 	urlString := baseURL.String()
-	sliced := urlString[0:10]          // sanitizer edge blocks flow here
+	sliced := urlString[0:10]          // barrier edge (string slicing) blocks flow here
 	w.Header().Set("Location", sliced) // no flow expected
 }
 
@@ -42,12 +40,12 @@ func testFieldReads(w http.ResponseWriter, req *http.Request) {
 	scheme := baseURL.Scheme     // should preserve flow
 	host := baseURL.Host         // should preserve flow
 	path := baseURL.Path         // should preserve flow
-	fragment := baseURL.Fragment // should preserve flow
-	user := baseURL.User         // should preserve flow (but unsafe field)
+	fragment := baseURL.Fragment // should not preserve flow
+	user := baseURL.User         // should not preserve flow
 
 	// These should still have flow (not sanitized)
 	http.Redirect(w, req, "https://"+scheme+"://example.com", http.StatusFound) // $ Alert
-	w.Header().Set("Location", "https://"+host+"/safe")                         // $ Alert
+	w.Header().Set("Location", "https://"+host+"/path")                         // $ Alert
 	http.Get("https://example.com" + path)                                      // $ Alert
 	http.Get(fragment)
 	http.Get(user.String())
@@ -84,28 +82,25 @@ func testRequestForgerySinks(req *http.Request) {
 }
 
 func testHostFieldAssignmentFlow(w http.ResponseWriter, req *http.Request) {
-	safeHost := req.Host // $ Source
+	host := req.Host // $ Source
 
-	// Test additional flow step: propagation when Host field is assigned
 	targetURL, _ := url.Parse("http://example.com/data")
-	targetURL.Host = safeHost // additional flow step from SafeUrlFlow config
+	targetURL.Host = host // additional flow step from Host field to URL struct
 
-	// Flow should propagate to the whole URL after Host assignment
 	http.Redirect(w, req, targetURL.String(), http.StatusFound) // $ Alert
 }
 
 func testHostFieldOverwritten(w http.ResponseWriter, req *http.Request) {
 	baseURL := req.URL
 
-	// Flow should be blocked when Host is overwritten
-	baseURL.Host = "something.else.com"
+	baseURL.Host = "something.else.com" // barrier edge (Host field overwritten) blocks flow here
 	http.Get(baseURL.String())
 }
 
 func testFieldAccess(w http.ResponseWriter, req *http.Request) {
 	baseURL := req.URL // $ Source
 
-	// Safe field accesses that should preserve flow
+	// These field accesses should preserve flow
 	host := baseURL.Host
 	path := baseURL.Path
 	scheme := baseURL.Scheme
@@ -119,20 +114,18 @@ func testFieldAccess(w http.ResponseWriter, req *http.Request) {
 	http.Redirect(w, req, "https://"+host+"/path", http.StatusFound) // $ Alert
 	w.Header().Set("Location", "https://example.com"+path)           // $ Alert
 	http.Post(scheme+"://example.com/api", "application/json", nil)  // $ Alert
-	use(opaquePart)                                                  // avoid unused variable warning
+	http.Post(opaquePart, "application/json", nil)                   // $ Alert
 
-	// Unsafe field accesses that should be sanitized by UnsafeFieldReadSanitizer
-	// These read unsafe URL fields and should NOT have flow
-	unsafeUser := baseURL.User         // sanitizer edge (User field)
-	unsafeQuery := baseURL.RawQuery    // sanitizer edge (RawQuery field)
-	unsafeFragment := baseURL.Fragment // sanitizer edge (Fragment field)
+	// These field accesses should block flow
+	user := baseURL.User         // barrier edge (User field)
+	query := baseURL.RawQuery    // barrier edge (RawQuery field)
+	fragment := baseURL.Fragment // barrier edge (Fragment field)
 
-	// These should NOT have flow due to sanitizer edges
-	if unsafeUser != nil {
-		http.Redirect(w, req, unsafeUser.String(), http.StatusFound) // no flow expected
+	if user != nil {
+		http.Redirect(w, req, user.String(), http.StatusFound) // no flow expected
 	}
-	w.Header().Set("Location", "https://example.com/?"+unsafeQuery) // no flow expected
-	http.Get("https://example.com/#" + unsafeFragment)              // no flow expected
+	w.Header().Set("Location", "https://example.com/?"+query) // no flow expected
+	http.Get("https://example.com/#" + fragment)              // no flow expected
 }
 
 // Helper function to avoid unused variable warnings
