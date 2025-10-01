@@ -23,7 +23,6 @@ import java
 import semmle.code.java.dataflow.FlowSteps
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.dataflow.TaintTracking
-import MissingHttpOnlyFlow::PathGraph
 
 /** Gets a regular expression for matching common names of sensitive cookies. */
 string getSensitiveCookieNameRegex() { result = "(?i).*(auth|session|token|key|credential).*" }
@@ -195,6 +194,8 @@ module MissingHttpOnlyConfig implements DataFlow::ConfigSig {
 }
 
 module MissingHttpOnlyFlow = TaintTracking::Global<MissingHttpOnlyConfig>;
+
+import MissingHttpOnlyFlow::PathGraph
 
 from MissingHttpOnlyFlow::PathNode source, MissingHttpOnlyFlow::PathNode sink
 where MissingHttpOnlyFlow::flowPath(source, sink)
