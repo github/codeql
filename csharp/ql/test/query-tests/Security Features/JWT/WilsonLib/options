@@ -1,0 +1,2 @@
+semmle-extractor-options: /nostdlib /noconfig
+semmle-extractor-options: --load-sources-from-project:${testdir}/../../../../resources/stubs/Microsoft.Identity.ServiceEssentials.SDK/1.19.7-preview-41027191730/src.csproj
