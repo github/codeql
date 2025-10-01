@@ -109,11 +109,7 @@ final private class DiscardableContainer extends Discardable instanceof @contain
 overlay[local]
 final private class DiscardableCfgNode extends Discardable instanceof @py_flow_node {
   override string getPath() {
-    exists(Discardable d | result = d.getPath() |
-      py_flow_bb_node(this, d.(@py_ast_node), _, _)
-      or
-      py_scope_flow(this, d.(@py_scope), _)
-    )
+    exists(Discardable d | result = d.getPath() | py_flow_bb_node(this, d.(@py_ast_node), _, _))
   }
 }
 
@@ -121,11 +117,7 @@ final private class DiscardableCfgNode extends Discardable instanceof @py_flow_n
 overlay[local]
 final private class DiscardableVar extends Discardable instanceof @py_variable {
   override string getPath() {
-    exists(Discardable parent | result = parent.getPath() |
-      variable(this, parent.(@py_scope), _)
-      or
-      py_variables(this, parent.(@py_variable_parent))
-    )
+    exists(Discardable parent | result = parent.getPath() | variable(this, parent.(@py_scope), _))
   }
 }
 
@@ -133,17 +125,7 @@ final private class DiscardableVar extends Discardable instanceof @py_variable {
 overlay[local]
 final private class DiscardableSsaVar extends Discardable instanceof @py_ssa_var {
   override string getPath() {
-    exists(DiscardableSsaVar other | result = other.getPath() |
-      py_ssa_phi(this, other.(@py_ssa_var))
-    )
-    or
     exists(DiscardableVar other | result = other.getPath() | py_ssa_var(this, other))
-    or
-    exists(DiscardableCfgNode node | result = node.getPath() |
-      py_ssa_use(node, this)
-      or
-      py_ssa_defn(this, node)
-    )
   }
 }
 
