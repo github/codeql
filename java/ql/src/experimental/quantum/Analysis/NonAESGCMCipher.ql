@@ -4,7 +4,6 @@
  * @description An AES cipher is in use without GCM
  * @kind problem
  * @problem.severity error
- * @security.severity low
  * @precision high
  * @tags quantum
  *       experimental

@@ -4,7 +4,6 @@
  * @description An asymmetric cipher with a short key size is in use
  * @kind problem
  * @problem.severity error
- * @security.severity low
  * @precision high
  * @tags quantum
  *       experimental

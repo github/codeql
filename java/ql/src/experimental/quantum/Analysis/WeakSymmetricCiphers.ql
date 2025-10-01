@@ -4,7 +4,6 @@
  * @id java/quantum/slices/weak-ciphers
  * @kind problem
  * @problem.severity error
- * @security.severity low
  * @precision high
  * @tags external/cwe/cwe-327
  */

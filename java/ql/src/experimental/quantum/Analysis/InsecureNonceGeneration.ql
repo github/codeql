@@ -5,7 +5,6 @@
  *              vulnerabilities such as replay attacks or key recovery.
  * @kind problem
  * @problem.severity error
- * @security.severity low
  * @precision high
  * @tags quantum
  *       experimental
