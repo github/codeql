@@ -3,7 +3,7 @@
  * @description Finds all potential usage of key derivation using the supported libraries.
  * @kind problem
  * @id py/quantum-readiness/cbom/key-derivation
- * @problem.severity error
+ * @severity recommendation
  * @tags cbom
  *       cryptography
  */
