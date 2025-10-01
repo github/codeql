@@ -7,126 +7,120 @@ import (
 )
 
 func testStdlibSources(w http.ResponseWriter, req *http.Request) {
-	host := req.Host                                                 // $ Source
-	http.Redirect(w, req, "https://"+host+"/path", http.StatusFound) // $ Alert
+	safeHost := req.Host                                                 // $ Source
+	http.Redirect(w, req, "https://"+safeHost+"/path", http.StatusFound) // $ Alert
 
-	baseURL := req.URL                           // $ Source
-	w.Header().Set("Location", baseURL.String()) // $ Alert
+	safeURL := req.URL                           // $ Source
+	w.Header().Set("Location", safeURL.String()) // $ Alert
 
 	targetURL := url.URL{}
-	targetURL.Host = host        // additional flow step from Host field to URL struct
+	targetURL.Host = safeHost    // URL is safe if Host is safe
 	http.Get(targetURL.String()) // $ Alert
 }
 
 func testBarrierEdge1(w http.ResponseWriter, req *http.Request) {
-	baseURL := req.URL
+	safeURL := req.URL
 
-	query := baseURL.Query()                                       // barrier edge blocks flow here
-	http.Redirect(w, req, query.Get("redirect"), http.StatusFound) // no flow expected
+	query := safeURL.Query()                                       // query is not guaranteed to be safe
+	http.Redirect(w, req, query.Get("redirect"), http.StatusFound) // not guaranteed to be safe
 }
 
 func testBarrierEdge2(w http.ResponseWriter, req *http.Request) {
-	baseURL := req.URL
+	safeURL := req.URL
 
-	urlString := baseURL.String()
-	sliced := urlString[0:10]          // barrier edge (string slicing) blocks flow here
-	w.Header().Set("Location", sliced) // no flow expected
+	urlString := safeURL.String()
+	sliced := urlString[0:10]          // a substring of a safe URL is not guaranteed to be safe
+	w.Header().Set("Location", sliced) // not guaranteed to be safe
 }
 
 func testFieldReads(w http.ResponseWriter, req *http.Request) {
-	baseURL := req.URL // $ Source
+	safeURL := req.URL // $ Source
 
-	// Test that other URL methods preserve flow
-	scheme := baseURL.Scheme     // should preserve flow
-	host := baseURL.Host         // should preserve flow
-	path := baseURL.Path         // should preserve flow
-	fragment := baseURL.Fragment // should not preserve flow
-	user := baseURL.User         // should not preserve flow
+	safeScheme := safeURL.Scheme // the scheme of a safe URL is safe
+	safeHost := safeURL.Host     // the host of a safe URL is safe
+	safePath := safeURL.Path     // the path of a safe URL is safe
+	fragment := safeURL.Fragment // the fragment of a safe URL is not guaranteed to be safe
+	user := safeURL.User         // the user of a safe URL is not guaranteed to be safe
 
-	// These should still have flow (not sanitized)
-	http.Redirect(w, req, "https://"+scheme+"://example.com", http.StatusFound) // $ Alert
-	w.Header().Set("Location", "https://"+host+"/path")                         // $ Alert
-	http.Get("https://example.com" + path)                                      // $ Alert
-	http.Get(fragment)
-	http.Get(user.String())
+	http.Redirect(w, req, "https://"+safeScheme+"://example.com", http.StatusFound) // $ Alert
+	w.Header().Set("Location", "https://"+safeHost+"/path")                         // $ Alert
+	http.Get("https://example.com" + safePath)                                      // $ Alert
+
+	http.Get(fragment)      // not guaranteed to be safe
+	http.Get(user.String()) // not guaranteed to be safe
 }
 
 func testRequestForgerySinks(req *http.Request) {
-	baseURL := req.URL // $ Source
+	safeURL := req.URL // $ Source
 
 	// Standard library HTTP functions (request-forgery sinks)
-	http.Get(baseURL.String())                           // $ Alert
-	http.Post(baseURL.String(), "application/json", nil) // $ Alert
-	http.PostForm(baseURL.String(), nil)                 // $ Alert
-	http.Head(baseURL.String())                          // $ Alert
+	http.Get(safeURL.String())                           // $ Alert
+	http.Post(safeURL.String(), "application/json", nil) // $ Alert
+	http.PostForm(safeURL.String(), nil)                 // $ Alert
+	http.Head(safeURL.String())                          // $ Alert
 
 	// HTTP Client methods (request-forgery sinks)
 	client := &http.Client{}
-	client.Get(baseURL.String())                           // $ Alert
-	client.Post(baseURL.String(), "application/json", nil) // $ Alert
-	client.PostForm(baseURL.String(), nil)                 // $ Alert
-	client.Head(baseURL.String())                          // $ Alert
+	client.Get(safeURL.String())                           // $ Alert
+	client.Post(safeURL.String(), "application/json", nil) // $ Alert
+	client.PostForm(safeURL.String(), nil)                 // $ Alert
+	client.Head(safeURL.String())                          // $ Alert
 
 	// NewRequest + Client.Do (request-forgery sinks)
-	request, _ := http.NewRequest("GET", baseURL.String(), nil) // $ Alert
+	request, _ := http.NewRequest("GET", safeURL.String(), nil) // $ Alert
 	client.Do(request)
 
 	// NewRequestWithContext + Client.Do (request-forgery sinks)
-	reqWithCtx, _ := http.NewRequestWithContext(context.TODO(), "POST", baseURL.String(), nil) // $ Alert
+	reqWithCtx, _ := http.NewRequestWithContext(context.TODO(), "POST", safeURL.String(), nil) // $ Alert
 	client.Do(reqWithCtx)
 
 	// RoundTrip method (request-forgery sink)
-	request2, _ := http.NewRequest("GET", baseURL.String(), nil) // $ Alert
+	request2, _ := http.NewRequest("GET", safeURL.String(), nil) // $ Alert
 	transport := &http.Transport{}
 	transport.RoundTrip(request2)
 }
 
 func testHostFieldAssignmentFlow(w http.ResponseWriter, req *http.Request) {
-	host := req.Host // $ Source
+	safeHost := req.Host // $ Source
 
 	targetURL, _ := url.Parse("http://example.com/data")
-	targetURL.Host = host // additional flow step from Host field to URL struct
+	targetURL.Host = safeHost // URL is safe if Host is safe
 
 	http.Redirect(w, req, targetURL.String(), http.StatusFound) // $ Alert
 }
 
 func testHostFieldOverwritten(w http.ResponseWriter, req *http.Request) {
-	baseURL := req.URL
+	safeURL := req.URL
 
-	baseURL.Host = "something.else.com" // barrier edge (Host field overwritten) blocks flow here
-	http.Get(baseURL.String())
+	safeURL.Host = "something.else.com" // safeURL is not guaranteed to be safe now that Host is overwritten
+	http.Get(safeURL.String())          // not guaranteed to be safe
 }
 
 func testFieldAccess(w http.ResponseWriter, req *http.Request) {
-	baseURL := req.URL // $ Source
+	safeURL := req.URL // $ Source
 
-	// These field accesses should preserve flow
-	host := baseURL.Host
-	path := baseURL.Path
-	scheme := baseURL.Scheme
-	opaquePart := baseURL.Opaque
+	safeHost := safeURL.Host         // the host of a safe URL is safe
+	safePath := safeURL.Path         // the path of a safe URL is safe
+	safeScheme := safeURL.Scheme     // the scheme of a safe URL is safe
+	safeOpaquePart := safeURL.Opaque // the opaque part of a safe URL is safe
 
-	// Reconstruct URL - flow should be preserved through field access
-	reconstructed := scheme + "://" + host + path
+	// Reconstruct URL - still guaranteed to be safe
+	reconstructed := safeScheme + "://" + safeHost + safePath
 	http.Get(reconstructed) // $ Alert
 
 	// Test individual fields
-	http.Redirect(w, req, "https://"+host+"/path", http.StatusFound) // $ Alert
-	w.Header().Set("Location", "https://example.com"+path)           // $ Alert
-	http.Post(scheme+"://example.com/api", "application/json", nil)  // $ Alert
-	http.Post(opaquePart, "application/json", nil)                   // $ Alert
+	http.Redirect(w, req, "https://"+safeHost+"/path", http.StatusFound) // $ Alert
+	w.Header().Set("Location", "https://example.com"+safePath)           // $ Alert
+	http.Post(safeScheme+"://example.com/api", "application/json", nil)  // $ Alert
+	http.Post(safeOpaquePart, "application/json", nil)                   // $ Alert
 
-	// These field accesses should block flow
-	user := baseURL.User         // barrier edge (User field)
-	query := baseURL.RawQuery    // barrier edge (RawQuery field)
-	fragment := baseURL.Fragment // barrier edge (Fragment field)
+	user := safeURL.User         // the user of a safe URL is not guaranteed to be safe
+	query := safeURL.RawQuery    // the query of a safe URL is not guaranteed to be safe
+	fragment := safeURL.Fragment // the fragment of a safe URL is not guaranteed to be safe
 
 	if user != nil {
-		http.Redirect(w, req, user.String(), http.StatusFound) // no flow expected
+		http.Redirect(w, req, user.String(), http.StatusFound) // not guaranteed to be safe
 	}
-	w.Header().Set("Location", "https://example.com/?"+query) // no flow expected
-	http.Get("https://example.com/#" + fragment)              // no flow expected
+	w.Header().Set("Location", "https://example.com/?"+query) // not guaranteed to be safe
+	http.Get("https://example.com/#" + fragment)              // not guaranteed to be safe
 }
-
-// Helper function to avoid unused variable warnings
-func use(vars ...interface{}) {}
