@@ -12,6 +12,7 @@
 | stdlib.go:198:23:198:42 | call to EscapedPath | stdlib.go:194:36:194:56 | call to FormValue | stdlib.go:198:23:198:42 | call to EscapedPath | This path to an untrusted URL redirection depends on a $@. | stdlib.go:194:36:194:56 | call to FormValue | user-provided value |
 | stdlib.go:212:23:212:28 | selection of Path | stdlib.go:210:12:210:30 | call to FormValue | stdlib.go:212:23:212:28 | selection of Path | This path to an untrusted URL redirection depends on a $@. | stdlib.go:210:12:210:30 | call to FormValue | user-provided value |
 | stdlib.go:214:23:214:32 | call to String | stdlib.go:210:12:210:30 | call to FormValue | stdlib.go:214:23:214:32 | call to String | This path to an untrusted URL redirection depends on a $@. | stdlib.go:210:12:210:30 | call to FormValue | user-provided value |
+| stdlib.go:261:23:261:32 | call to String | stdlib.go:257:12:257:30 | call to FormValue | stdlib.go:261:23:261:32 | call to String | This path to an untrusted URL redirection depends on a $@. | stdlib.go:257:12:257:30 | call to FormValue | user-provided value |
 edges
 | OpenUrlRedirect.go:10:23:10:28 | selection of Form | OpenUrlRedirect.go:10:23:10:42 | call to Get | provenance | Src:MaD:2 Config Sink:MaD:1 |
 | stdlib.go:13:13:13:18 | selection of Form | stdlib.go:13:13:13:32 | call to Get | provenance | Src:MaD:2 Config |
@@ -75,6 +76,19 @@ edges
 | stdlib.go:212:23:212:23 | u [postupdate] | stdlib.go:212:23:212:23 | implicit dereference | provenance | Config |
 | stdlib.go:212:23:212:23 | u [postupdate] | stdlib.go:214:23:214:23 | u | provenance |  |
 | stdlib.go:214:23:214:23 | u | stdlib.go:214:23:214:32 | call to String | provenance | Config Sink:MaD:1 |
+| stdlib.go:257:3:257:3 | implicit dereference [postupdate] | stdlib.go:257:3:257:3 | u [postupdate] | provenance | Config |
+| stdlib.go:257:3:257:3 | implicit dereference [postupdate] | stdlib.go:257:3:257:3 | u [postupdate] [pointer] | provenance |  |
+| stdlib.go:257:3:257:3 | u [postupdate] | stdlib.go:260:3:260:3 | u | provenance |  |
+| stdlib.go:257:3:257:3 | u [postupdate] [pointer] | stdlib.go:260:3:260:3 | u [pointer] | provenance |  |
+| stdlib.go:257:12:257:30 | call to FormValue | stdlib.go:257:3:257:3 | implicit dereference [postupdate] | provenance | Src:MaD:3 Config |
+| stdlib.go:257:12:257:30 | call to FormValue | stdlib.go:257:3:257:3 | u [postupdate] | provenance | Src:MaD:3 Config |
+| stdlib.go:260:3:260:3 | implicit dereference | stdlib.go:260:3:260:3 | u [postupdate] | provenance | Config |
+| stdlib.go:260:3:260:3 | u | stdlib.go:260:3:260:3 | implicit dereference | provenance | Config |
+| stdlib.go:260:3:260:3 | u | stdlib.go:261:23:261:23 | u | provenance |  |
+| stdlib.go:260:3:260:3 | u [pointer] | stdlib.go:260:3:260:3 | implicit dereference | provenance |  |
+| stdlib.go:260:3:260:3 | u [postupdate] | stdlib.go:260:3:260:3 | implicit dereference | provenance | Config |
+| stdlib.go:260:3:260:3 | u [postupdate] | stdlib.go:261:23:261:23 | u | provenance |  |
+| stdlib.go:261:23:261:23 | u | stdlib.go:261:23:261:32 | call to String | provenance | Config Sink:MaD:1 |
 models
 | 1 | Sink: net/http; ; false; Redirect; ; ; Argument[2]; url-redirection[0]; manual |
 | 2 | Source: net/http; Request; true; Form; ; ; ; remote; manual |
@@ -147,4 +161,14 @@ nodes
 | stdlib.go:212:23:212:28 | selection of Path | semmle.label | selection of Path |
 | stdlib.go:214:23:214:23 | u | semmle.label | u |
 | stdlib.go:214:23:214:32 | call to String | semmle.label | call to String |
+| stdlib.go:257:3:257:3 | implicit dereference [postupdate] | semmle.label | implicit dereference [postupdate] |
+| stdlib.go:257:3:257:3 | u [postupdate] | semmle.label | u [postupdate] |
+| stdlib.go:257:3:257:3 | u [postupdate] [pointer] | semmle.label | u [postupdate] [pointer] |
+| stdlib.go:257:12:257:30 | call to FormValue | semmle.label | call to FormValue |
+| stdlib.go:260:3:260:3 | implicit dereference | semmle.label | implicit dereference |
+| stdlib.go:260:3:260:3 | u | semmle.label | u |
+| stdlib.go:260:3:260:3 | u [pointer] | semmle.label | u [pointer] |
+| stdlib.go:260:3:260:3 | u [postupdate] | semmle.label | u [postupdate] |
+| stdlib.go:261:23:261:23 | u | semmle.label | u |
+| stdlib.go:261:23:261:32 | call to String | semmle.label | call to String |
 subpaths

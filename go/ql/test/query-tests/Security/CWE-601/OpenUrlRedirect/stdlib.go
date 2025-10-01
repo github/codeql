@@ -239,5 +239,27 @@ func serveStdlib() {
 		http.Redirect(w, r, string(buf), 301)
 	})
 
+	http.HandleFunc("/ex13", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+
+		u, _ := url.Parse("http://example.com")
+		u.Host = r.FormValue("host")
+		// GOOD: Path field is assigned a value with a hostname-sanitizing substring,
+		// so subsequent uses of u are sanitized by PathAssignmentBarrier
+		u.Path = "/safe/" + r.FormValue("path")
+		http.Redirect(w, r, u.String(), 301)
+	})
+
+	http.HandleFunc("/ex14", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+
+		u, _ := url.Parse("http://example.com")
+		u.Host = r.FormValue("host") // $ Source
+		// BAD: Path field is assigned but without a hostname-sanitizing substring,
+		// so the Host field remains untrusted
+		u.Path = r.FormValue("path")
+		http.Redirect(w, r, u.String(), 301) // $ Alert
+	})
+
 	http.ListenAndServe(":80", nil)
 }
