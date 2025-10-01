@@ -1053,7 +1053,7 @@ A member predicate ``p`` with enclosing class ``C`` *shadows* a member predicate
 
 Member predicates have one or more *root definitions*. If a member predicate overrides no other member predicate, then it is its own root definition. Otherwise, its root definitions are those of any member predicate that it overrides.
 
-A valid member predicate must have a body unless it is abstract or external, in which case it must not have a body.
+A valid member predicate must have a body unless it is abstract, in which case it must not have a body.
 
 A valid member predicate must override another member predicate if it is annotated override.
 
