@@ -14,9 +14,9 @@
  * Sketch of the structure of this query: we track cookie names that appear to be sensitive
  * (e.g. `session` or `token`) to a `ServletResponse.addHeader(...)` or `.addCookie(...)`
  * method that does not set the `httpOnly` flag. Subsidiary configurations
- * `MatchesHttpOnlyToRawHeaderConfiguration` and `SetHttpOnlyInCookieConfiguration` are used to establish
+ * `MatchesHttpOnlyToRawHeaderConfig` and `SetHttpOnlyInCookieConfig` are used to establish
  * when the `httpOnly` flag is likely to have been set, before configuration
- * `MissingHttpOnlyConfiguration` establishes that a non-`httpOnly` cookie has a sensitive-seeming name.
+ * `MissingHttpOnlyConfig` establishes that a non-`httpOnly` cookie has a sensitive-seeming name.
  */
 
 import java
@@ -158,8 +158,8 @@ predicate setsHttpOnlyInNewCookie(ClassInstanceExpr cie) {
 /**
  * A taint configuration tracking flow from a sensitive cookie without the `HttpOnly` flag
  * set to its HTTP response.
- * Tracks string literals containing sensitive names (`SensitiveNameExpr`), to an `addCookie` call (as a `Cookie` object)
- * or an `addHeader` call (as a string) (`CookieResponseWithoutHttpOnly`).
+ * Tracks string literals containing sensitive names (`SensitiveCookieNameExpr`), to an `addCookie` call (as a `Cookie` object)
+ * or an `addHeader` call (as a string) (`CookieResponseWithoutHttpOnlySink`).
  * Passes through `Cookie` constructors and `toString` calls.
  */
 module MissingHttpOnlyConfig implements DataFlow::ConfigSig {
