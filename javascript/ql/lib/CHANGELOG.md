@@ -1,3 +1,30 @@
+## 2.6.12
+
+### Minor Analysis Improvements
+
+* Added modeling of `GraphQLObjectType` resolver function parameters as remote sources.
+* Support for the [graphql](https://www.npmjs.com/package/graphql) library has been improved. Data flow from GraphQL query sources and variables to resolver function parameters is now tracked.
+* Added support for the `aws-sdk` and `@aws-sdk/client-dynamodb`, `@aws-sdk/client-athena`, `@aws-sdk/client-s3`, and `@aws-sdk/client-rds-data` packages.
+
+## 2.6.11
+
+### Minor Analysis Improvements
+
+* Added modeling for promisification libraries `@gar/promisify`, `es6-promisify`, `util.promisify`, `thenify-all`, `call-me-maybe`, `@google-cloud/promisify`, and `util-promisify`.
+* Data flow is now tracked through promisified user-defined functions. 
+
+## 2.6.10
+
+### Minor Analysis Improvements
+
+* Removed `libxmljs` as an XML bomb sink. The underlying libxml2 library now includes [entity reference loop detection](https://github.com/GNOME/libxml2/blob/0c948334a8f5c66d50e9f8992e62998017dc4fc6/NEWS#L905-L908) that prevents XML bomb attacks.
+
+## 2.6.9
+
+### Minor Analysis Improvements
+
+* Improved modeling of command-line argument parsing libraries [arg](https://www.npmjs.com/package/arg), [args](https://www.npmjs.com/package/args), [command-line-args](https://www.npmjs.com/package/command-line-args) and [commander](https://www.npmjs.com/package/commander)
+
 ## 2.6.8
 
 ### Minor Analysis Improvements

@@ -3,7 +3,8 @@
  * @description An assert statement testing a literal constant value may exhibit
  *              different behavior when optimizations are enabled.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  * @problem.severity recommendation
  * @sub-severity low

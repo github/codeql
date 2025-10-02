@@ -1278,6 +1278,223 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | atl.cpp:1240:22:1240:30 | call to CStrBufT | atl.cpp:1241:46:1241:46 | b |  |
 | atl.cpp:1240:22:1240:30 | call to CStrBufT | atl.cpp:1242:45:1242:45 | b |  |
 | atl.cpp:1241:46:1241:46 | ref arg b | atl.cpp:1242:45:1242:45 | b |  |
+| atl.cpp:1348:31:1348:32 | call to ComPtr | atl.cpp:1349:9:1349:10 | p0 |  |
+| atl.cpp:1348:31:1348:32 | call to ComPtr | atl.cpp:1361:1:1361:1 | p0 |  |
+| atl.cpp:1349:9:1349:10 | ref arg p0 | atl.cpp:1361:1:1361:1 | p0 |  |
+| atl.cpp:1349:12:1349:14 | call to Get | atl.cpp:1349:8:1349:16 | * ... | TAINT |
+| atl.cpp:1351:11:1351:21 | call to source | atl.cpp:1352:42:1352:42 | x |  |
+| atl.cpp:1352:34:1352:43 | new | atl.cpp:1352:34:1352:44 | call to ComPtr | TAINT |
+| atl.cpp:1352:34:1352:44 | call to ComPtr | atl.cpp:1353:9:1353:10 | p1 |  |
+| atl.cpp:1352:34:1352:44 | call to ComPtr | atl.cpp:1354:9:1354:10 | p1 |  |
+| atl.cpp:1352:34:1352:44 | call to ComPtr | atl.cpp:1356:34:1356:35 | p1 |  |
+| atl.cpp:1352:34:1352:44 | call to ComPtr | atl.cpp:1359:44:1359:45 | p1 |  |
+| atl.cpp:1352:34:1352:44 | call to ComPtr | atl.cpp:1361:1:1361:1 | p1 |  |
+| atl.cpp:1352:42:1352:42 | x | atl.cpp:1352:34:1352:43 | new |  |
+| atl.cpp:1353:9:1353:10 | ref arg p1 | atl.cpp:1354:9:1354:10 | p1 |  |
+| atl.cpp:1353:9:1353:10 | ref arg p1 | atl.cpp:1356:34:1356:35 | p1 |  |
+| atl.cpp:1353:9:1353:10 | ref arg p1 | atl.cpp:1359:44:1359:45 | p1 |  |
+| atl.cpp:1353:9:1353:10 | ref arg p1 | atl.cpp:1361:1:1361:1 | p1 |  |
+| atl.cpp:1353:12:1353:14 | call to Get | atl.cpp:1353:8:1353:16 | * ... | TAINT |
+| atl.cpp:1354:9:1354:10 | ref arg p1 | atl.cpp:1356:34:1356:35 | p1 |  |
+| atl.cpp:1354:9:1354:10 | ref arg p1 | atl.cpp:1359:44:1359:45 | p1 |  |
+| atl.cpp:1354:9:1354:10 | ref arg p1 | atl.cpp:1361:1:1361:1 | p1 |  |
+| atl.cpp:1354:12:1354:17 | call to Detach | atl.cpp:1354:8:1354:19 | * ... | TAINT |
+| atl.cpp:1356:34:1356:35 | p1 | atl.cpp:1356:34:1356:36 | call to ComPtr |  |
+| atl.cpp:1356:34:1356:36 | call to ComPtr | atl.cpp:1357:9:1357:10 | p2 |  |
+| atl.cpp:1356:34:1356:36 | call to ComPtr | atl.cpp:1361:1:1361:1 | p2 |  |
+| atl.cpp:1357:9:1357:10 | ref arg p2 | atl.cpp:1361:1:1361:1 | p2 |  |
+| atl.cpp:1357:12:1357:14 | call to Get | atl.cpp:1357:8:1357:16 | * ... | TAINT |
+| atl.cpp:1359:34:1359:42 | call to move | atl.cpp:1359:34:1359:47 | call to ComPtr | TAINT |
+| atl.cpp:1359:34:1359:42 | ref arg call to move | atl.cpp:1359:44:1359:45 | p1 [inner post update] |  |
+| atl.cpp:1359:34:1359:42 | ref arg call to move | atl.cpp:1361:1:1361:1 | p1 |  |
+| atl.cpp:1359:34:1359:47 | call to ComPtr | atl.cpp:1360:9:1360:10 | p3 |  |
+| atl.cpp:1359:34:1359:47 | call to ComPtr | atl.cpp:1361:1:1361:1 | p3 |  |
+| atl.cpp:1359:44:1359:45 | p1 | atl.cpp:1359:34:1359:42 | call to move | TAINT |
+| atl.cpp:1359:44:1359:45 | p1 | atl.cpp:1359:34:1359:47 | call to ComPtr |  |
+| atl.cpp:1360:9:1360:10 | ref arg p3 | atl.cpp:1361:1:1361:1 | p3 |  |
+| atl.cpp:1360:12:1360:14 | call to Get | atl.cpp:1360:8:1360:16 | * ... | TAINT |
+| atl.cpp:1365:11:1365:21 | call to source | atl.cpp:1366:42:1366:42 | x |  |
+| atl.cpp:1366:34:1366:43 | new | atl.cpp:1366:34:1366:44 | call to ComPtr | TAINT |
+| atl.cpp:1366:34:1366:44 | call to ComPtr | atl.cpp:1368:3:1368:4 | p1 |  |
+| atl.cpp:1366:34:1366:44 | call to ComPtr | atl.cpp:1370:1:1370:1 | p1 |  |
+| atl.cpp:1366:42:1366:42 | x | atl.cpp:1366:34:1366:43 | new |  |
+| atl.cpp:1367:32:1367:33 | p2 | atl.cpp:1368:9:1368:10 | p2 |  |
+| atl.cpp:1367:32:1367:33 | p2 | atl.cpp:1369:9:1369:10 | p2 |  |
+| atl.cpp:1368:9:1368:10 | ref arg p2 | atl.cpp:1369:9:1369:10 | p2 |  |
+| atl.cpp:1369:13:1369:15 | call to Get | atl.cpp:1369:8:1369:17 | * ... | TAINT |
+| atl.cpp:1374:11:1374:21 | call to source | atl.cpp:1375:42:1375:42 | x |  |
+| atl.cpp:1374:11:1374:21 | call to source | atl.cpp:1384:42:1384:42 | x |  |
+| atl.cpp:1375:34:1375:43 | new | atl.cpp:1375:34:1375:44 | call to ComPtr | TAINT |
+| atl.cpp:1375:34:1375:44 | call to ComPtr | atl.cpp:1377:3:1377:4 | p1 |  |
+| atl.cpp:1375:34:1375:44 | call to ComPtr | atl.cpp:1381:3:1381:4 | p1 |  |
+| atl.cpp:1375:34:1375:44 | call to ComPtr | atl.cpp:1389:1:1389:1 | p1 |  |
+| atl.cpp:1375:42:1375:42 | x | atl.cpp:1375:34:1375:43 | new |  |
+| atl.cpp:1376:14:1376:20 | 0 | atl.cpp:1377:14:1377:16 | raw |  |
+| atl.cpp:1376:14:1376:20 | 0 | atl.cpp:1378:9:1378:11 | raw |  |
+| atl.cpp:1376:14:1376:20 | 0 | atl.cpp:1381:31:1381:33 | raw |  |
+| atl.cpp:1376:14:1376:20 | 0 | atl.cpp:1382:9:1382:11 | raw |  |
+| atl.cpp:1377:3:1377:4 | ref arg p1 | atl.cpp:1381:3:1381:4 | p1 |  |
+| atl.cpp:1377:3:1377:4 | ref arg p1 | atl.cpp:1389:1:1389:1 | p1 |  |
+| atl.cpp:1377:13:1377:16 | ref arg & ... | atl.cpp:1377:14:1377:16 | raw [inner post update] |  |
+| atl.cpp:1377:13:1377:16 | ref arg & ... | atl.cpp:1378:9:1378:11 | raw |  |
+| atl.cpp:1377:13:1377:16 | ref arg & ... | atl.cpp:1381:31:1381:33 | raw |  |
+| atl.cpp:1377:13:1377:16 | ref arg & ... | atl.cpp:1382:9:1382:11 | raw |  |
+| atl.cpp:1377:14:1377:16 | raw | atl.cpp:1377:13:1377:16 | & ... |  |
+| atl.cpp:1378:9:1378:11 | raw | atl.cpp:1378:8:1378:11 | * ... | TAINT |
+| atl.cpp:1380:31:1380:32 | call to ComPtr | atl.cpp:1389:1:1389:1 | p2 |  |
+| atl.cpp:1381:30:1381:33 | ref arg & ... | atl.cpp:1381:31:1381:33 | raw [inner post update] |  |
+| atl.cpp:1381:30:1381:33 | ref arg & ... | atl.cpp:1382:9:1382:11 | raw |  |
+| atl.cpp:1381:31:1381:33 | raw | atl.cpp:1381:30:1381:33 | & ... |  |
+| atl.cpp:1382:9:1382:11 | raw | atl.cpp:1382:8:1382:11 | * ... | TAINT |
+| atl.cpp:1384:34:1384:43 | new | atl.cpp:1384:34:1384:44 | call to ComPtr | TAINT |
+| atl.cpp:1384:34:1384:44 | call to ComPtr | atl.cpp:1387:3:1387:4 | p3 |  |
+| atl.cpp:1384:34:1384:44 | call to ComPtr | atl.cpp:1389:1:1389:1 | p3 |  |
+| atl.cpp:1384:42:1384:42 | x | atl.cpp:1384:34:1384:43 | new |  |
+| atl.cpp:1386:15:1386:21 | 0 | atl.cpp:1387:19:1387:22 | raw2 |  |
+| atl.cpp:1386:15:1386:21 | 0 | atl.cpp:1388:9:1388:12 | raw2 |  |
+| atl.cpp:1387:18:1387:22 | ref arg & ... | atl.cpp:1387:19:1387:22 | raw2 [inner post update] |  |
+| atl.cpp:1387:18:1387:22 | ref arg & ... | atl.cpp:1388:9:1388:12 | raw2 |  |
+| atl.cpp:1387:19:1387:22 | raw2 | atl.cpp:1387:18:1387:22 | & ... |  |
+| atl.cpp:1388:9:1388:12 | raw2 | atl.cpp:1388:8:1388:12 | * ... | TAINT |
+| atl.cpp:1393:11:1393:21 | call to source | atl.cpp:1394:42:1394:42 | x |  |
+| atl.cpp:1394:34:1394:43 | new | atl.cpp:1394:34:1394:44 | call to ComPtr | TAINT |
+| atl.cpp:1394:34:1394:44 | call to ComPtr | atl.cpp:1396:3:1396:4 | p1 |  |
+| atl.cpp:1394:34:1394:44 | call to ComPtr | atl.cpp:1398:9:1398:10 | p1 |  |
+| atl.cpp:1394:34:1394:44 | call to ComPtr | atl.cpp:1399:1:1399:1 | p1 |  |
+| atl.cpp:1394:42:1394:42 | x | atl.cpp:1394:34:1394:43 | new |  |
+| atl.cpp:1395:31:1395:32 | call to ComPtr | atl.cpp:1396:11:1396:12 | p2 |  |
+| atl.cpp:1395:31:1395:32 | call to ComPtr | atl.cpp:1397:9:1397:10 | p2 |  |
+| atl.cpp:1395:31:1395:32 | call to ComPtr | atl.cpp:1399:1:1399:1 | p2 |  |
+| atl.cpp:1396:3:1396:4 | ref arg p1 | atl.cpp:1398:9:1398:10 | p1 |  |
+| atl.cpp:1396:3:1396:4 | ref arg p1 | atl.cpp:1399:1:1399:1 | p1 |  |
+| atl.cpp:1396:11:1396:12 | ref arg p2 | atl.cpp:1397:9:1397:10 | p2 |  |
+| atl.cpp:1396:11:1396:12 | ref arg p2 | atl.cpp:1399:1:1399:1 | p2 |  |
+| atl.cpp:1397:9:1397:10 | ref arg p2 | atl.cpp:1399:1:1399:1 | p2 |  |
+| atl.cpp:1397:12:1397:14 | call to Get | atl.cpp:1397:8:1397:16 | * ... | TAINT |
+| atl.cpp:1398:9:1398:10 | ref arg p1 | atl.cpp:1399:1:1399:1 | p1 |  |
+| atl.cpp:1398:12:1398:14 | call to Get | atl.cpp:1398:8:1398:16 | * ... | TAINT |
+| atl.cpp:1403:11:1403:21 | call to source | atl.cpp:1404:42:1404:42 | x |  |
+| atl.cpp:1403:11:1403:21 | call to source | atl.cpp:1407:48:1407:48 | x |  |
+| atl.cpp:1403:11:1403:21 | call to source | atl.cpp:1410:42:1410:42 | x |  |
+| atl.cpp:1404:34:1404:43 | new | atl.cpp:1404:34:1404:44 | call to ComPtr | TAINT |
+| atl.cpp:1404:34:1404:44 | call to ComPtr | atl.cpp:1405:10:1405:11 | p1 |  |
+| atl.cpp:1404:34:1404:44 | call to ComPtr | atl.cpp:1413:1:1413:1 | p1 |  |
+| atl.cpp:1404:42:1404:42 | x | atl.cpp:1404:34:1404:43 | new |  |
+| atl.cpp:1405:9:1405:26 | * ... | atl.cpp:1405:8:1405:26 | * ... | TAINT |
+| atl.cpp:1405:10:1405:11 | ref arg p1 | atl.cpp:1413:1:1413:1 | p1 |  |
+| atl.cpp:1405:13:1405:24 | call to GetAddressOf | atl.cpp:1405:9:1405:26 | * ... | TAINT |
+| atl.cpp:1407:40:1407:49 | new | atl.cpp:1407:40:1407:50 | call to ComPtr | TAINT |
+| atl.cpp:1407:40:1407:50 | call to ComPtr | atl.cpp:1408:10:1408:11 | p2 |  |
+| atl.cpp:1407:40:1407:50 | call to ComPtr | atl.cpp:1413:1:1413:1 | p2 |  |
+| atl.cpp:1407:48:1407:48 | x | atl.cpp:1407:40:1407:49 | new |  |
+| atl.cpp:1408:9:1408:26 | * ... | atl.cpp:1408:8:1408:26 | * ... | TAINT |
+| atl.cpp:1408:10:1408:11 | ref arg p2 | atl.cpp:1413:1:1413:1 | p2 |  |
+| atl.cpp:1408:13:1408:24 | call to GetAddressOf | atl.cpp:1408:9:1408:26 | * ... | TAINT |
+| atl.cpp:1410:34:1410:43 | new | atl.cpp:1410:34:1410:44 | call to ComPtr | TAINT |
+| atl.cpp:1410:34:1410:44 | call to ComPtr | atl.cpp:1411:14:1411:15 | p3 |  |
+| atl.cpp:1410:34:1410:44 | call to ComPtr | atl.cpp:1413:1:1413:1 | p3 |  |
+| atl.cpp:1410:42:1410:42 | x | atl.cpp:1410:34:1410:43 | new |  |
+| atl.cpp:1411:14:1411:15 | ref arg p3 | atl.cpp:1413:1:1413:1 | p3 |  |
+| atl.cpp:1411:17:1411:38 | call to ReleaseAndGetAddressOf | atl.cpp:1412:10:1412:11 | pp |  |
+| atl.cpp:1412:9:1412:11 | * ... | atl.cpp:1412:8:1412:11 | * ... | TAINT |
+| atl.cpp:1412:10:1412:11 | pp | atl.cpp:1412:9:1412:11 | * ... | TAINT |
+| atl.cpp:1420:11:1420:21 | call to source | atl.cpp:1421:42:1421:42 | x |  |
+| atl.cpp:1420:11:1420:21 | call to source | atl.cpp:1426:48:1426:48 | x |  |
+| atl.cpp:1421:34:1421:43 | new | atl.cpp:1421:34:1421:44 | call to ComPtr | TAINT |
+| atl.cpp:1421:34:1421:44 | call to ComPtr | atl.cpp:1422:73:1422:74 | p1 |  |
+| atl.cpp:1421:34:1421:44 | call to ComPtr | atl.cpp:1435:1:1435:1 | p1 |  |
+| atl.cpp:1421:42:1421:42 | x | atl.cpp:1421:34:1421:43 | new |  |
+| atl.cpp:1422:72:1422:72 | call to operator& | atl.cpp:1423:38:1423:39 | pp |  |
+| atl.cpp:1422:73:1422:74 | ref arg p1 | atl.cpp:1435:1:1435:1 | p1 |  |
+| atl.cpp:1423:37:1423:37 | call to operator* | atl.cpp:1424:9:1424:10 | qq |  |
+| atl.cpp:1424:13:1424:15 | call to Get | atl.cpp:1424:8:1424:17 | * ... | TAINT |
+| atl.cpp:1426:40:1426:49 | new | atl.cpp:1426:40:1426:50 | call to ComPtr | TAINT |
+| atl.cpp:1426:40:1426:50 | call to ComPtr | atl.cpp:1427:80:1427:81 | p2 |  |
+| atl.cpp:1426:40:1426:50 | call to ComPtr | atl.cpp:1435:1:1435:1 | p2 |  |
+| atl.cpp:1426:48:1426:48 | x | atl.cpp:1426:40:1426:49 | new |  |
+| atl.cpp:1427:79:1427:79 | call to operator& | atl.cpp:1428:45:1428:47 | pp2 |  |
+| atl.cpp:1428:44:1428:44 | call to operator* | atl.cpp:1429:9:1429:11 | qq2 |  |
+| atl.cpp:1429:14:1429:16 | call to Get | atl.cpp:1429:8:1429:18 | * ... | TAINT |
+| atl.cpp:1431:5:1431:5 | s | atl.cpp:1432:3:1432:3 | s |  |
+| atl.cpp:1431:5:1431:5 | s | atl.cpp:1433:33:1433:33 | s |  |
+| atl.cpp:1432:3:1432:3 | s [post update] | atl.cpp:1433:33:1433:33 | s |  |
+| atl.cpp:1432:3:1432:21 | ... = ... | atl.cpp:1432:5:1432:5 | x [post update] |  |
+| atl.cpp:1432:9:1432:19 | call to source | atl.cpp:1432:3:1432:21 | ... = ... |  |
+| atl.cpp:1433:32:1433:33 | & ... | atl.cpp:1433:32:1433:34 | call to ComPtr | TAINT |
+| atl.cpp:1433:32:1433:33 | ref arg & ... | atl.cpp:1433:33:1433:33 | s [inner post update] |  |
+| atl.cpp:1433:32:1433:34 | call to ComPtr | atl.cpp:1434:8:1434:9 | p3 |  |
+| atl.cpp:1433:32:1433:34 | call to ComPtr | atl.cpp:1435:1:1435:1 | p3 |  |
+| atl.cpp:1433:33:1433:33 | s | atl.cpp:1433:32:1433:33 | & ... |  |
+| atl.cpp:1434:8:1434:9 | ref arg p3 | atl.cpp:1435:1:1435:1 | p3 |  |
+| atl.cpp:1438:31:1438:32 | call to ComPtr | atl.cpp:1439:3:1439:4 | p1 |  |
+| atl.cpp:1438:31:1438:32 | call to ComPtr | atl.cpp:1440:9:1440:10 | p1 |  |
+| atl.cpp:1438:31:1438:32 | call to ComPtr | atl.cpp:1447:8:1447:9 | p1 |  |
+| atl.cpp:1438:31:1438:32 | call to ComPtr | atl.cpp:1451:8:1451:9 | p1 |  |
+| atl.cpp:1438:31:1438:32 | call to ComPtr | atl.cpp:1455:18:1455:19 | p1 |  |
+| atl.cpp:1438:31:1438:32 | call to ComPtr | atl.cpp:1459:18:1459:19 | p1 |  |
+| atl.cpp:1438:31:1438:32 | call to ComPtr | atl.cpp:1461:1:1461:1 | p1 |  |
+| atl.cpp:1439:3:1439:4 | ref arg p1 | atl.cpp:1440:9:1440:10 | p1 |  |
+| atl.cpp:1439:3:1439:4 | ref arg p1 | atl.cpp:1447:8:1447:9 | p1 |  |
+| atl.cpp:1439:3:1439:4 | ref arg p1 | atl.cpp:1451:8:1451:9 | p1 |  |
+| atl.cpp:1439:3:1439:4 | ref arg p1 | atl.cpp:1455:18:1455:19 | p1 |  |
+| atl.cpp:1439:3:1439:4 | ref arg p1 | atl.cpp:1459:18:1459:19 | p1 |  |
+| atl.cpp:1439:3:1439:4 | ref arg p1 | atl.cpp:1461:1:1461:1 | p1 |  |
+| atl.cpp:1439:16:1439:26 | call to source | atl.cpp:1439:8:1439:29 | new |  |
+| atl.cpp:1440:9:1440:10 | ref arg p1 | atl.cpp:1447:8:1447:9 | p1 |  |
+| atl.cpp:1440:9:1440:10 | ref arg p1 | atl.cpp:1451:8:1451:9 | p1 |  |
+| atl.cpp:1440:9:1440:10 | ref arg p1 | atl.cpp:1455:18:1455:19 | p1 |  |
+| atl.cpp:1440:9:1440:10 | ref arg p1 | atl.cpp:1459:18:1459:19 | p1 |  |
+| atl.cpp:1440:9:1440:10 | ref arg p1 | atl.cpp:1461:1:1461:1 | p1 |  |
+| atl.cpp:1440:12:1440:14 | call to Get | atl.cpp:1440:8:1440:16 | * ... | TAINT |
+| atl.cpp:1442:31:1442:32 | call to ComPtr | atl.cpp:1443:3:1443:4 | p2 |  |
+| atl.cpp:1442:31:1442:32 | call to ComPtr | atl.cpp:1444:9:1444:10 | p2 |  |
+| atl.cpp:1442:31:1442:32 | call to ComPtr | atl.cpp:1461:1:1461:1 | p2 |  |
+| atl.cpp:1443:3:1443:4 | ref arg p2 | atl.cpp:1444:9:1444:10 | p2 |  |
+| atl.cpp:1443:3:1443:4 | ref arg p2 | atl.cpp:1461:1:1461:1 | p2 |  |
+| atl.cpp:1443:17:1443:28 | call to source | atl.cpp:1443:8:1443:31 | new |  |
+| atl.cpp:1444:9:1444:10 | ref arg p2 | atl.cpp:1461:1:1461:1 | p2 |  |
+| atl.cpp:1444:12:1444:14 | call to Get | atl.cpp:1444:8:1444:16 | * ... | TAINT |
+| atl.cpp:1446:31:1446:32 | call to ComPtr | atl.cpp:1447:3:1447:4 | p3 |  |
+| atl.cpp:1446:31:1446:32 | call to ComPtr | atl.cpp:1448:9:1448:10 | p3 |  |
+| atl.cpp:1446:31:1446:32 | call to ComPtr | atl.cpp:1461:1:1461:1 | p3 |  |
+| atl.cpp:1447:3:1447:4 | ref arg p3 | atl.cpp:1448:9:1448:10 | p3 |  |
+| atl.cpp:1447:3:1447:4 | ref arg p3 | atl.cpp:1461:1:1461:1 | p3 |  |
+| atl.cpp:1447:8:1447:9 | p1 | atl.cpp:1447:3:1447:4 | ref arg p3 | TAINT |
+| atl.cpp:1447:8:1447:9 | p1 | atl.cpp:1447:6:1447:6 | call to operator= | TAINT |
+| atl.cpp:1448:9:1448:10 | ref arg p3 | atl.cpp:1461:1:1461:1 | p3 |  |
+| atl.cpp:1448:12:1448:14 | call to Get | atl.cpp:1448:8:1448:16 | * ... | TAINT |
+| atl.cpp:1450:32:1450:33 | call to ComPtr | atl.cpp:1451:3:1451:4 | p4 |  |
+| atl.cpp:1450:32:1450:33 | call to ComPtr | atl.cpp:1452:9:1452:10 | p4 |  |
+| atl.cpp:1450:32:1450:33 | call to ComPtr | atl.cpp:1461:1:1461:1 | p4 |  |
+| atl.cpp:1451:3:1451:4 | ref arg p4 | atl.cpp:1452:9:1452:10 | p4 |  |
+| atl.cpp:1451:3:1451:4 | ref arg p4 | atl.cpp:1461:1:1461:1 | p4 |  |
+| atl.cpp:1452:9:1452:10 | ref arg p4 | atl.cpp:1461:1:1461:1 | p4 |  |
+| atl.cpp:1452:12:1452:14 | call to Get | atl.cpp:1452:8:1452:16 | * ... | TAINT |
+| atl.cpp:1454:31:1454:32 | call to ComPtr | atl.cpp:1455:3:1455:4 | p5 |  |
+| atl.cpp:1454:31:1454:32 | call to ComPtr | atl.cpp:1456:9:1456:10 | p5 |  |
+| atl.cpp:1454:31:1454:32 | call to ComPtr | atl.cpp:1461:1:1461:1 | p5 |  |
+| atl.cpp:1455:3:1455:4 | ref arg p5 | atl.cpp:1456:9:1456:10 | p5 |  |
+| atl.cpp:1455:3:1455:4 | ref arg p5 | atl.cpp:1461:1:1461:1 | p5 |  |
+| atl.cpp:1455:8:1455:16 | call to move | atl.cpp:1455:3:1455:4 | ref arg p5 | TAINT |
+| atl.cpp:1455:8:1455:16 | call to move | atl.cpp:1455:6:1455:6 | call to operator= | TAINT |
+| atl.cpp:1455:8:1455:16 | ref arg call to move | atl.cpp:1455:18:1455:19 | p1 [inner post update] |  |
+| atl.cpp:1455:8:1455:16 | ref arg call to move | atl.cpp:1459:18:1459:19 | p1 |  |
+| atl.cpp:1455:8:1455:16 | ref arg call to move | atl.cpp:1461:1:1461:1 | p1 |  |
+| atl.cpp:1455:18:1455:19 | p1 | atl.cpp:1455:3:1455:4 | ref arg p5 | TAINT |
+| atl.cpp:1455:18:1455:19 | p1 | atl.cpp:1455:6:1455:6 | call to operator= | TAINT |
+| atl.cpp:1455:18:1455:19 | p1 | atl.cpp:1455:8:1455:16 | call to move | TAINT |
+| atl.cpp:1456:9:1456:10 | ref arg p5 | atl.cpp:1461:1:1461:1 | p5 |  |
+| atl.cpp:1456:12:1456:14 | call to Get | atl.cpp:1456:8:1456:16 | * ... | TAINT |
+| atl.cpp:1458:32:1458:33 | call to ComPtr | atl.cpp:1459:3:1459:4 | p6 |  |
+| atl.cpp:1458:32:1458:33 | call to ComPtr | atl.cpp:1460:9:1460:10 | p6 |  |
+| atl.cpp:1458:32:1458:33 | call to ComPtr | atl.cpp:1461:1:1461:1 | p6 |  |
+| atl.cpp:1459:3:1459:4 | ref arg p6 | atl.cpp:1460:9:1460:10 | p6 |  |
+| atl.cpp:1459:3:1459:4 | ref arg p6 | atl.cpp:1461:1:1461:1 | p6 |  |
+| atl.cpp:1459:8:1459:16 | ref arg call to move | atl.cpp:1459:18:1459:19 | p1 [inner post update] |  |
+| atl.cpp:1459:8:1459:16 | ref arg call to move | atl.cpp:1461:1:1461:1 | p1 |  |
+| atl.cpp:1459:18:1459:19 | p1 | atl.cpp:1459:8:1459:16 | call to move | TAINT |
+| atl.cpp:1460:9:1460:10 | ref arg p6 | atl.cpp:1461:1:1461:1 | p6 |  |
+| atl.cpp:1460:12:1460:14 | call to Get | atl.cpp:1460:8:1460:16 | * ... | TAINT |
 | bsd.cpp:17:11:17:16 | call to source | bsd.cpp:20:18:20:18 | s |  |
 | bsd.cpp:18:12:18:15 | addr | bsd.cpp:20:22:20:25 | addr |  |
 | bsd.cpp:18:12:18:15 | addr | bsd.cpp:23:8:23:11 | addr |  |

@@ -11,6 +11,8 @@ extensions:
       - ["<_ as core::convert::Into>::into", "Argument[self].Reference.Element", "ReturnValue.Element", "taint", "manual"]
       - ["<alloc::string::String as core::convert::Into>::into", "Argument[self].Element", "ReturnValue.Element", "taint", "manual"]
       - ["<alloc::string::String as core::convert::Into>::into", "Argument[self].Reference.Element", "ReturnValue.Element", "taint", "manual"]
+      # From
+      - ["<_ as core::convert::From>::from", "Argument[0]", "ReturnValue", "taint", "manual"]
       # Iterator
       - ["<core::result::Result>::iter", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
       - ["<alloc::vec::Vec as value_trait::array::Array>::iter", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]

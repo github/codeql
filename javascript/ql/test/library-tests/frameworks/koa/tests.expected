@@ -67,7 +67,7 @@ test_HeaderAccess
 test_ResponseExpr
 | src/koa.js:12:3:12:15 | this.response | src/koa.js:10:10:28:1 | functio ... az');\\n} |
 | src/koa.js:14:3:14:14 | ctx.response | src/koa.js:10:10:28:1 | functio ... az');\\n} |
-| src/koa.js:15:7:15:24 | rsp | src/koa.js:10:10:28:1 | functio ... az');\\n} |
+| src/koa.js:15:7:15:9 | rsp | src/koa.js:10:10:28:1 | functio ... az');\\n} |
 | src/koa.js:15:13:15:24 | ctx.response | src/koa.js:10:10:28:1 | functio ... az');\\n} |
 | src/koa.js:16:3:16:5 | rsp | src/koa.js:10:10:28:1 | functio ... az');\\n} |
 | src/koa.js:18:3:18:14 | ctx.response | src/koa.js:10:10:28:1 | functio ... az');\\n} |
@@ -190,7 +190,7 @@ test_RouteHandler_getARequestExpr
 test_RouteHandler_getAResponseExpr
 | src/koa.js:10:10:28:1 | functio ... az');\\n} | src/koa.js:12:3:12:15 | this.response |
 | src/koa.js:10:10:28:1 | functio ... az');\\n} | src/koa.js:14:3:14:14 | ctx.response |
-| src/koa.js:10:10:28:1 | functio ... az');\\n} | src/koa.js:15:7:15:24 | rsp |
+| src/koa.js:10:10:28:1 | functio ... az');\\n} | src/koa.js:15:7:15:9 | rsp |
 | src/koa.js:10:10:28:1 | functio ... az');\\n} | src/koa.js:15:13:15:24 | ctx.response |
 | src/koa.js:10:10:28:1 | functio ... az');\\n} | src/koa.js:16:3:16:5 | rsp |
 | src/koa.js:10:10:28:1 | functio ... az');\\n} | src/koa.js:18:3:18:14 | ctx.response |

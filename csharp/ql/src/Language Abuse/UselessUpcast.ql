@@ -5,8 +5,9 @@
  * @problem.severity warning
  * @precision medium
  * @id cs/useless-upcast
- * @tags maintainability
- *       language-features
+ * @tags quality
+ *       maintainability
+ *       useless-code
  *       external/cwe/cwe-561
  */
 
@@ -75,15 +76,16 @@ private class ConstructorCall extends Call {
 
 /** An explicit upcast. */
 class ExplicitUpcast extends ExplicitCast {
-  ValueOrRefType src;
   ValueOrRefType dest;
 
   ExplicitUpcast() {
-    src = this.getSourceType() and
-    dest = this.getTargetType() and
-    (src instanceof RefType or src instanceof Struct) and
-    src.isImplicitlyConvertibleTo(dest) and
-    src != dest // Handled by `cs/useless-cast-to-self`
+    exists(ValueOrRefType src |
+      src = this.getSourceType() and
+      dest = this.getTargetType() and
+      (src instanceof RefType or src instanceof Struct) and
+      src.isImplicitlyConvertibleTo(dest) and
+      src != dest // Handled by `cs/useless-cast-to-self`
+    )
   }
 
   pragma[nomagic]

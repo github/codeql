@@ -154,3 +154,35 @@ class ImportStaticTypeMember extends Import {
 
   override string getAPrimaryQlClass() { result = "ImportStaticTypeMember" }
 }
+
+/**
+ * A module import declaration, which imports an entire module.
+ *
+ * For example, `import module java.base;` makes all packages exported
+ * by the `java.base` module available, and through those packages,
+ * the types they declare become accessible.
+ */
+class ModuleImportDeclaration extends Import {
+  ModuleImportDeclaration() { imports(this, _, _, 6) }
+
+  /** Gets the name of the imported module. */
+  string getModuleName() { imports(this, _, result, _) }
+
+  /** Gets the imported module. */
+  Module getModule() { result.getName() = this.getModuleName() }
+
+  /** Gets an exported package from the imported module. */
+  Package getAnImportedPackage() {
+    exists(ExportsDirective exports |
+      exports = this.getModule().getADirective() and
+      result = exports.getExportedPackage()
+    )
+  }
+
+  /** Gets a type from a package that is accessible through this module import. */
+  RefType getAnImportedType() { result.getPackage() = this.getAnImportedPackage() }
+
+  override string toString() { result = "import module " + this.getModuleName() }
+
+  override string getAPrimaryQlClass() { result = "ModuleImportDeclaration" }
+}

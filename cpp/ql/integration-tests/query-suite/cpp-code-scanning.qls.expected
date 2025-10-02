@@ -7,12 +7,10 @@ ql/cpp/ql/src/Diagnostics/ExtractedFiles.ql
 ql/cpp/ql/src/Diagnostics/ExtractionWarnings.ql
 ql/cpp/ql/src/Diagnostics/FailedExtractorInvocations.ql
 ql/cpp/ql/src/Likely Bugs/Arithmetic/BadAdditionOverflowCheck.ql
-ql/cpp/ql/src/Likely Bugs/Arithmetic/IntMultToLong.ql
 ql/cpp/ql/src/Likely Bugs/Arithmetic/SignedOverflowCheck.ql
 ql/cpp/ql/src/Likely Bugs/Conversion/CastArrayPointerArithmetic.ql
 ql/cpp/ql/src/Likely Bugs/Format/SnprintfOverflow.ql
 ql/cpp/ql/src/Likely Bugs/Format/WrongNumberOfFormatArguments.ql
-ql/cpp/ql/src/Likely Bugs/Format/WrongTypeFormatArguments.ql
 ql/cpp/ql/src/Likely Bugs/Memory Management/AllocaInLoop.ql
 ql/cpp/ql/src/Likely Bugs/Memory Management/PointerOverflow.ql
 ql/cpp/ql/src/Likely Bugs/Memory Management/ReturnStackAllocatedMemory.ql
@@ -30,7 +28,6 @@ ql/cpp/ql/src/Security/CWE/CWE-120/VeryLikelyOverrunWrite.ql
 ql/cpp/ql/src/Security/CWE/CWE-131/NoSpaceForZeroTerminator.ql
 ql/cpp/ql/src/Security/CWE/CWE-134/UncontrolledFormatString.ql
 ql/cpp/ql/src/Security/CWE/CWE-190/ArithmeticUncontrolled.ql
-ql/cpp/ql/src/Security/CWE/CWE-190/ComparisonWithWiderType.ql
 ql/cpp/ql/src/Security/CWE/CWE-191/UnsignedDifferenceExpressionComparedZero.ql
 ql/cpp/ql/src/Security/CWE/CWE-253/HResultBooleanConversion.ql
 ql/cpp/ql/src/Security/CWE/CWE-311/CleartextFileWrite.ql
@@ -43,7 +40,6 @@ ql/cpp/ql/src/Security/CWE/CWE-367/TOCTOUFilesystemRace.ql
 ql/cpp/ql/src/Security/CWE/CWE-416/IteratorToExpiredContainer.ql
 ql/cpp/ql/src/Security/CWE/CWE-416/UseOfStringAfterLifetimeEnds.ql
 ql/cpp/ql/src/Security/CWE/CWE-416/UseOfUniquePointerAfterLifetimeEnds.ql
-ql/cpp/ql/src/Security/CWE/CWE-468/SuspiciousAddWithSizeof.ql
 ql/cpp/ql/src/Security/CWE/CWE-497/ExposedSystemData.ql
 ql/cpp/ql/src/Security/CWE/CWE-611/XXE.ql
 ql/cpp/ql/src/Security/CWE/CWE-676/DangerousFunctionOverflow.ql

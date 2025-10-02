@@ -1,0 +1,2 @@
+| EqualsOrNotEquals.py:14:1:14:8 | Class B | This class implements $@, but does not implement __eq__. | EqualsOrNotEquals.py:19:5:19:28 | Function __ne__ | __ne__ |
+| EqualsOrNotEquals.py:37:1:37:11 | Class D | This class implements $@, but does not implement __ne__. | EqualsOrNotEquals.py:43:5:43:28 | Function __eq__ | __eq__ |

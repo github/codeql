@@ -267,6 +267,7 @@ const astProperties: string[] = [
     "parameterName",
     "parameters",
     "parseDiagnostics",
+    "phaseModifier",
     "properties",
     "propertyName",
     "qualifier",

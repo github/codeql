@@ -211,7 +211,7 @@ module TlsInsecureCipherSuitesFlow = TaintTracking::Global<TlsInsecureCipherSuit
 
 /**
  * Holds if an insecure TLS cipher suite flows from `source` to `sink`, where `sink`
- * is written to the CipherSuites list of a `tls.Config` instance. `message` describes
+ * is written to the CipherSuites list of a `tls.Config` instance. `message` describes
  * the exact problem found.
  */
 predicate isInsecureTlsCipherFlow(

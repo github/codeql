@@ -3,7 +3,7 @@
  * See `shared/util/codeql/dataflow/test/InlineFlowTest.qll`
  */
 
-import ruby
+private import ruby
 private import codeql.Locations
 private import codeql.dataflow.test.InlineFlowTest
 private import codeql.ruby.dataflow.internal.DataFlowImplSpecific

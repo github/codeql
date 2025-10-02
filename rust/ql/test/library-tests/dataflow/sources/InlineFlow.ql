@@ -1,3 +1,7 @@
+/**
+ * @kind path-problem
+ */
+
 import rust
 import codeql.rust.dataflow.DataFlow
 import codeql.rust.Concepts
@@ -25,3 +29,8 @@ module MyFlowConfig implements DataFlow::ConfigSig {
 module MyFlowTest = TaintFlowTest<MyFlowConfig>;
 
 import MyFlowTest
+import PathGraph
+
+from PathNode source, PathNode sink
+where flowPath(source, sink)
+select sink, source, sink, "$@", source, source.toString()

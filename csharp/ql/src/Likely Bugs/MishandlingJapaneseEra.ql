@@ -5,8 +5,9 @@
  * @kind problem
  * @problem.severity warning
  * @precision medium
- * @tags reliability
- *       date-time
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import csharp

@@ -59,7 +59,7 @@ private string privateNormalizeFunctionName(Function f, string algType) {
  *
  * The predicate attempts to restrict normalization to what looks like an openssl
  * library by looking for functions only in an openssl path (see `isPossibleOpenSSLFunction`).
- * This may give false postive functions if a directory erronously appears to be openssl;
+ * This may give false positive functions if a directory erronously appears to be openssl;
  * however, we take the stance that if a function
  * exists strongly mapping to a known function name in a directory such as these,
  * regardless of whether its actually a part of openSSL or not, we will analyze it as though it were.

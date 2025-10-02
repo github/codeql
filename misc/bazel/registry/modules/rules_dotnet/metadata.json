@@ -1,0 +1,19 @@
+{
+    "homepage": "https://github.com/bazel-contrib/rules_dotnet",
+    "maintainers": [
+        {
+            "name": "Dan\u00edel Poul Purkh\u00fas",
+            "email": "purkhusid@gmail.com",
+            "github": "purkhusid",
+            "github_user_id": 5622403
+        }
+    ],
+    "repository": [
+        "github:bazelbuild/rules_dotnet",
+        "github:bazel-contrib/rules_dotnet"
+    ],
+    "versions": [
+        "0.19.2-codeql.1"
+    ],
+    "yanked_versions": {}
+}

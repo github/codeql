@@ -1492,7 +1492,14 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
 }
 
 /** Extra data-flow steps needed for lambda flow analysis. */
-predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) {
+  preservesValue = false and
+  exists(ContentSet cs | cs.isSingleton(any(UnionContent uc)) |
+    storeStep(nodeFrom, cs, nodeTo)
+    or
+    readStep(nodeFrom, cs, nodeTo)
+  )
+}
 
 predicate knownSourceModel(Node source, string model) { External::sourceNode(source, _, model) }
 
@@ -1873,9 +1880,7 @@ module IteratorFlow {
     }
   }
 
-  private module SsaInput implements SsaImpl::InputSig<Location> {
-    import Ssa::InputSigCommon
-
+  private module SsaInput implements SsaImpl::InputSig<Location, IRCfg::BasicBlock> {
     class SourceVariable = IteratorFlow::SourceVariable;
 
     /** A call to function that dereferences an iterator. */
@@ -1953,7 +1958,7 @@ module IteratorFlow {
      * Holds if `(bb, i)` contains a write to an iterator that may have been obtained
      * by calling `begin` (or related functions) on the variable `v`.
      */
-    predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+    predicate variableWrite(IRCfg::BasicBlock bb, int i, SourceVariable v, boolean certain) {
       certain = false and
       exists(GetsIteratorCall beginCall, Instruction writeToDeref, IRBlock bbQual, int iQual |
         isIteratorStoreInstruction(beginCall, writeToDeref) and
@@ -1964,12 +1969,12 @@ module IteratorFlow {
     }
 
     /** Holds if `(bb, i)` reads the container variable `v`. */
-    predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+    predicate variableRead(IRCfg::BasicBlock bb, int i, SourceVariable v, boolean certain) {
       Ssa::variableRead(bb, i, v, certain)
     }
   }
 
-  private module IteratorSsa = SsaImpl::Make<Location, SsaInput>;
+  private module IteratorSsa = SsaImpl::Make<Location, IRCfg, SsaInput>;
 
   private module DataFlowIntegrationInput implements IteratorSsa::DataFlowIntegrationInputSig {
     private import codeql.util.Void
@@ -1982,7 +1987,7 @@ module IteratorFlow {
         )
       }
 
-      predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { bb.getInstruction(i) = this }
+      predicate hasCfgNode(IRCfg::BasicBlock bb, int i) { bb.getInstruction(i) = this }
     }
 
     predicate ssaDefHasSource(IteratorSsa::WriteDefinition def) { none() }
@@ -1992,20 +1997,16 @@ module IteratorFlow {
     class GuardValue = Void;
 
     class Guard extends Void {
-      predicate hasValueBranchEdge(
-        SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, GuardValue val
-      ) {
+      predicate hasValueBranchEdge(IRCfg::BasicBlock bb1, IRCfg::BasicBlock bb2, GuardValue val) {
         none()
       }
 
-      predicate valueControlsBranchEdge(
-        SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, GuardValue val
-      ) {
+      predicate valueControlsBranchEdge(IRCfg::BasicBlock bb1, IRCfg::BasicBlock bb2, GuardValue val) {
         none()
       }
     }
 
-    predicate guardDirectlyControlsBlock(Guard guard, SsaInput::BasicBlock bb, GuardValue val) {
+    predicate guardDirectlyControlsBlock(Guard guard, IRCfg::BasicBlock bb, GuardValue val) {
       none()
     }
 

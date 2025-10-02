@@ -994,7 +994,7 @@ module Public {
   class ComponentReadNode extends ReadNode {
     override IR::ComponentReadInstruction insn;
 
-    /** Gets the data-flow node representing the base from which the field or element is read. */
+    /** Gets the data-flow node representing the base from which the field or element is read. */
     Node getBase() { result = DataFlow::instructionNode(insn.getBase()) }
   }
 

@@ -6,9 +6,10 @@
  * @problem.severity recommendation
  * @precision medium
  * @id cs/confusing-override-name
- * @tags reliability
+ * @tags quality
+ *       maintainability
  *       readability
- *       naming
+ *       correctness
  */
 
 import csharp

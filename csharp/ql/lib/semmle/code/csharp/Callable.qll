@@ -265,7 +265,7 @@ class Method extends Callable, Virtualizable, Attributable, @method {
     result = Virtualizable.super.getAnUltimateImplementor()
   }
 
-  override Location getALocation() { method_location(this, result) }
+  override Location getALocation() { method_location(this.getUnboundDeclaration(), result) }
 
   /** Holds if this method is an extension method. */
   predicate isExtensionMethod() { this.getParameter(0).hasExtensionMethodModifier() }
@@ -708,7 +708,7 @@ class TrueOperator extends UnaryOperator {
  *
  * Either an addition operator (`AddOperator`), a checked addition operator
  * (`CheckedAddOperator`) a subtraction operator (`SubOperator`), a checked
- * substraction operator (`CheckedSubOperator`), a multiplication operator
+ * subtraction operator (`CheckedSubOperator`), a multiplication operator
  * (`MulOperator`), a checked multiplication operator (`CheckedMulOperator`),
  * a division operator (`DivOperator`), a checked division operator
  * (`CheckedDivOperator`), a remainder operator (`RemOperator`), an and

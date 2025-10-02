@@ -109,7 +109,7 @@ module Impl {
       text = name.getText() and
       // exclude self parameters from functions without a body as these are
       // trait method declarations without implementations
-      not exists(Function f | not f.hasBody() and f.getParamList().getSelfParam() = sp)
+      not exists(Function f | not f.hasBody() and f.getSelfParam() = sp)
     )
     or
     exists(IdentPat pat |
@@ -679,11 +679,11 @@ module Impl {
   }
 
   /** Holds if `e` occurs in the LHS of an assignment or compound assignment. */
-  private predicate assignmentExprDescendant(Expr e) {
-    e = any(AssignmentExpr ae).getLhs()
+  private predicate assignmentExprDescendant(AssignmentExpr ae, Expr e) {
+    e = ae.getLhs()
     or
     exists(Expr mid |
-      assignmentExprDescendant(mid) and
+      assignmentExprDescendant(ae, mid) and
       getImmediateParentAdj(e) = mid and
       not mid instanceof DerefExpr and
       not mid instanceof FieldExpr and
@@ -693,11 +693,16 @@ module Impl {
 
   /** A variable write. */
   class VariableWriteAccess extends VariableAccess {
+    private AssignmentExpr ae;
+
     cached
     VariableWriteAccess() {
       Cached::ref() and
-      assignmentExprDescendant(this)
+      assignmentExprDescendant(ae, this)
     }
+
+    /** Gets the assignment expression that has this write access in the left-hand side. */
+    AssignmentExpr getAssignmentExpr() { result = ae }
   }
 
   /** A variable read. */

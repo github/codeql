@@ -59,13 +59,11 @@ edges
 | test.rs:129:4:130:21 | fn bad3_1 | test.rs:130:5:130:19 | call_target3_1(...) |
 | test.rs:130:5:130:19 | call_target3_1(...) | test.rs:124:1:126:1 | fn call_target3_1 |
 | test.rs:144:1:144:7 | Attr | test.rs:145:4:147:21 | fn bad3_3 |
-| test.rs:144:1:148:1 | fn bad3_3 | test.rs:146:5:146:20 | call_target3_1(...) |
 | test.rs:145:4:147:21 | fn bad3_3 | test.rs:146:5:146:19 | call_target3_1(...) |
 | test.rs:146:5:146:19 | call_target3_1(...) | test.rs:124:1:126:1 | fn call_target3_1 |
-| test.rs:146:5:146:20 | call_target3_1(...) | test.rs:124:1:126:1 | fn call_target3_1 |
 | test.rs:150:1:150:7 | Attr | test.rs:151:4:152:13 | fn bad3_4 |
 | test.rs:151:4:152:13 | fn bad3_4 | test.rs:152:5:152:11 | bad3_3(...) |
-| test.rs:152:5:152:11 | bad3_3(...) | test.rs:144:1:148:1 | fn bad3_3 |
+| test.rs:152:5:152:11 | bad3_3(...) | test.rs:145:4:147:21 | fn bad3_3 |
 | test.rs:168:1:168:7 | Attr | test.rs:169:4:170:16 | fn bad4_1 |
 | test.rs:169:4:170:16 | fn bad4_1 | test.rs:168:1:168:7 | ... .write(...) |
 | test.rs:169:4:170:16 | fn bad4_1 | test.rs:168:1:168:7 | ...::stdout(...) |

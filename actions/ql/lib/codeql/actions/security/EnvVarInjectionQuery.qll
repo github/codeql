@@ -55,12 +55,8 @@ class EnvVarInjectionFromFileReadSink extends EnvVarInjectionSink {
  *          echo "COMMIT_MESSAGE=${COMMIT_MESSAGE}" >> $GITHUB_ENV
  */
 class EnvVarInjectionFromCommandSink extends EnvVarInjectionSink {
-  CommandSource inCommand;
-  string injectedVar;
-  string command;
-
   EnvVarInjectionFromCommandSink() {
-    exists(Run run |
+    exists(Run run, CommandSource inCommand, string injectedVar, string command |
       this.asExpr() = inCommand.getEnclosingRun().getScript() and
       run = inCommand.getEnclosingRun() and
       run.getScript().getACmdReachingGitHubEnvWrite(inCommand.getCommand(), injectedVar) and
@@ -86,12 +82,8 @@ class EnvVarInjectionFromCommandSink extends EnvVarInjectionSink {
  *      echo "FOO=$BODY" >> $GITHUB_ENV
  */
 class EnvVarInjectionFromEnvVarSink extends EnvVarInjectionSink {
-  string inVar;
-  string injectedVar;
-  string command;
-
   EnvVarInjectionFromEnvVarSink() {
-    exists(Run run |
+    exists(Run run, string inVar, string injectedVar, string command |
       run.getScript() = this.asExpr() and
       exists(run.getInScopeEnvVarExpr(inVar)) and
       run.getScript().getAnEnvReachingGitHubEnvWrite(inVar, injectedVar) and
