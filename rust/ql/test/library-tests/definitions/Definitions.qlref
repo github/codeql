@@ -1,0 +1,2 @@
+query: Definitions.ql
+postprocess: utils/test/ExternalLocationPostProcessing.ql

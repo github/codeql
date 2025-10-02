@@ -19,7 +19,8 @@ private module ResolveTest implements TestSig {
     exists(Comment c |
       c.getLocation().hasLocationInfo(filepath, line, _, _, _) and
       c.getCommentText().trim() = text and
-      c.fromSource()
+      c.fromSource() and
+      not text.matches("$%")
     )
   }
 
