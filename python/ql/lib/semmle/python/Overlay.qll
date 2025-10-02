@@ -61,7 +61,7 @@ private predicate discardStarEntity(@top el) {
  * An abstract base class for all elements that can be discarded from the base.
  */
 overlay[local]
-abstract private class Discardable extends @top {
+abstract class Discardable extends @top {
   /** Gets the path to the file in which this element occurs. */
   abstract string getPath();
 
