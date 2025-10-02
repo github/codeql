@@ -1223,7 +1223,7 @@ module JCAModel {
   class Pbkdf2WithHmac_KeyOperationAlgorithmStringLiteral extends Crypto::KeyOperationAlgorithmInstance instanceof KdfAlgorithmStringLiteral
   {
     Pbkdf2WithHmac_KeyOperationAlgorithmStringLiteral() {
-      this.(StringLiteral).getValue().toUpperCase().matches(["PBKDF2WithHmac%"].toUpperCase())
+      this.(StringLiteral).getValue().toUpperCase().matches("PBKDF2WithHmac%".toUpperCase())
     }
 
     override Crypto::KeyOpAlg::AlgorithmType getAlgorithmType() {
