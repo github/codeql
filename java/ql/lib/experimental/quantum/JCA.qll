@@ -1047,6 +1047,21 @@ module JCAModel {
     }
   }
 
+  /**
+   * An instance of `java.security.SecureRandom.nextBytes(byte[])` call.
+   * This is already generally modeled for Java in CodeQL, but
+   * we model it again as part of the crypto API model to have a cohesive model.
+   */
+  class JavaSecuritySecureRandom extends Crypto::RandomNumberGenerationInstance instanceof Call {
+    JavaSecuritySecureRandom() {
+      this.getCallee().hasQualifiedName("java.security", "SecureRandom", "nextBytes")
+    }
+
+    override Crypto::DataFlowNode getOutputNode() { result.asExpr() = this.(Call).getArgument(0) }
+
+    override string getGeneratorName() { result = this.(Call).getCallee().getName() }
+  }
+
   class KeyGeneratorGenerateCall extends Crypto::KeyGenerationOperationInstance instanceof MethodCall
   {
     Crypto::KeyArtifactType type;
