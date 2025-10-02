@@ -1252,7 +1252,7 @@ module JCAModel {
     }
   }
 
-  class Pbkdf2WithHmac_HashAlgorithmStringLiteral extends Crypto::HashAlgorithmInstance instanceof PBKDF2WithHmac_KeyOperationAlgorithmStringLiteral
+  class Pbkdf2WithHmac_HashAlgorithmStringLiteral extends Crypto::HashAlgorithmInstance instanceof Pbkdf2WithHmac_KeyOperationAlgorithmStringLiteral
   {
     string hashName;
 
