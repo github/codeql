@@ -94,7 +94,10 @@ module GenericDataSourceFlow = TaintTracking::Global<GenericDataSourceFlowConfig
 private class ConstantDataSource extends Crypto::GenericConstantSourceInstance instanceof OpenSslGenericSourceCandidateLiteral
 {
   override DataFlow::Node getOutputNode() {
-    // A literal can be a string or an int, so handling both indirect and direct cases
+    // OpenSSL algorithms may be referenced either by string name or by numeric ID:
+    // String names (e.g. "AES-256-CBC") appear in the AST as character pointer
+    // literals. For these we must use `asIndirectExpr`. Numeric IDs (e.g. NID_aes_256_cbc)
+    // appear as integer literals. For these, we must use `asExpr` to get the "value" node.
     [result.asIndirectExpr(), result.asExpr()] = this
   }
 

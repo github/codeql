@@ -651,27 +651,19 @@ module JCAModel {
 
   class IvParameterSpecInstance extends NonceParameterInstantiation {
     IvParameterSpecInstance() {
-      this.(ClassInstanceExpr)
-          .getConstructedType()
-          .hasQualifiedName("javax.crypto.spec", "IvParameterSpec")
+      super.getConstructedType().hasQualifiedName("javax.crypto.spec", "IvParameterSpec")
     }
 
-    override DataFlow::Node getInputNode() {
-      result.asExpr() = this.(ClassInstanceExpr).getArgument(0)
-    }
+    override DataFlow::Node getInputNode() { result.asExpr() = super.getArgument(0) }
   }
 
   // TODO: this also specifies the tag length for GCM
   class GCMParameterSpecInstance extends NonceParameterInstantiation {
     GCMParameterSpecInstance() {
-      this.(ClassInstanceExpr)
-          .getConstructedType()
-          .hasQualifiedName("javax.crypto.spec", "GCMParameterSpec")
+      super.getConstructedType().hasQualifiedName("javax.crypto.spec", "GCMParameterSpec")
     }
 
-    override DataFlow::Node getInputNode() {
-      result.asExpr() = this.(ClassInstanceExpr).getArgument(1)
-    }
+    override DataFlow::Node getInputNode() { result.asExpr() = super.getArgument(1) }
   }
 
   class IvParameterSpecGetIvCall extends MethodCall {
@@ -811,14 +803,14 @@ module JCAModel {
     HashAlgorithmValueConsumer consumer;
 
     KnownHashAlgorithm() {
-      hash_names(this.getValue()) and
+      hash_names(super.getValue()) and
       KnownHashAlgorithmLiteralToMessageDigestFlow::flow(DataFlow::exprNode(this),
         consumer.getInputNode())
     }
 
     HashAlgorithmValueConsumer getConsumer() { result = consumer }
 
-    override string getRawHashAlgorithmName() { result = this.(StringLiteral).getValue() }
+    override string getRawHashAlgorithmName() { result = super.getValue() }
 
     override Crypto::THashType getHashFamily() {
       result = hash_name_to_type_known(this.getRawHashAlgorithmName(), _)
@@ -917,9 +909,7 @@ module JCAModel {
 
   class DHGenParameterSpecInstance extends KeyGeneratorParameterSpecClassInstanceExpr {
     DHGenParameterSpecInstance() {
-      this.(ClassInstanceExpr)
-          .getConstructedType()
-          .hasQualifiedName("javax.crypto.spec", "DHGenParameterSpec")
+      super.getConstructedType().hasQualifiedName("javax.crypto.spec", "DHGenParameterSpec")
     }
 
     Expr getPrimeSizeArg() { result = this.getArgument(0) }
@@ -929,9 +919,7 @@ module JCAModel {
 
   class DSAParameterSpecInstance extends KeyGeneratorParameterSpecClassInstanceExpr {
     DSAParameterSpecInstance() {
-      this.(ClassInstanceExpr)
-          .getConstructedType()
-          .hasQualifiedName("java.security.spec", "DSAParameterSpec")
+      super.getConstructedType().hasQualifiedName("java.security.spec", "DSAParameterSpec")
     }
 
     Expr getPArg() { result = this.getArgument(0) }
@@ -943,9 +931,7 @@ module JCAModel {
 
   class ECGenParameterSpecInstance extends KeyGeneratorParameterSpecClassInstanceExpr {
     ECGenParameterSpecInstance() {
-      this.(ClassInstanceExpr)
-          .getConstructedType()
-          .hasQualifiedName("java.security.spec", "ECGenParameterSpec")
+      super.getConstructedType().hasQualifiedName("java.security.spec", "ECGenParameterSpec")
     }
 
     Expr getCurveNameArg() { result = this.getArgument(0) }
@@ -955,9 +941,7 @@ module JCAModel {
 
   class RSAGenParameterSpecInstance extends KeyGeneratorParameterSpecClassInstanceExpr {
     RSAGenParameterSpecInstance() {
-      this.(ClassInstanceExpr)
-          .getConstructedType()
-          .hasQualifiedName("java.security.spec", "RSAGenParameterSpec")
+      super.getConstructedType().hasQualifiedName("java.security.spec", "RSAGenParameterSpec")
     }
 
     Expr getKeySizeArg() { result = this.getArgument(0) }
@@ -981,9 +965,7 @@ module JCAModel {
 
   class ECGenParameterSpecClassInstanceExpr extends KeyGeneratorParameterSpecClassInstanceExpr {
     ECGenParameterSpecClassInstanceExpr() {
-      this.(ClassInstanceExpr)
-          .getConstructedType()
-          .hasQualifiedName("java.security.spec", "ECGenParameterSpec")
+      super.getConstructedType().hasQualifiedName("java.security.spec", "ECGenParameterSpec")
     }
 
     Expr getAlgorithmArg() { result = this.getArgument(0) }

@@ -9,11 +9,11 @@ abstract class HashAlgorithmValueConsumer extends OpenSslAlgorithmValueConsumer 
 /**
  * An EVP_Q_Digest directly consumes algorithm constant values
  */
-class Evp_Q_Digest_Algorithm_Consumer extends HashAlgorithmValueConsumer {
-  Evp_Q_Digest_Algorithm_Consumer() { this.(Call).getTarget().getName() = "EVP_Q_digest" }
+class Evp_Q_Digest_Algorithm_Consumer extends HashAlgorithmValueConsumer instanceof Call {
+  Evp_Q_Digest_Algorithm_Consumer() { super.getTarget().getName() = "EVP_Q_digest" }
 
   override Crypto::ConsumerInputDataFlowNode getInputNode() {
-    result.asIndirectExpr() = this.(Call).getArgument(1)
+    result.asIndirectExpr() = super.getArgument(1)
   }
 
   override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
