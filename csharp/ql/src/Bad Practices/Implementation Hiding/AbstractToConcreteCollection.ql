@@ -7,9 +7,9 @@
  * @problem.severity warning
  * @precision medium
  * @id cs/cast-from-abstract-to-concrete-collection
- * @tags reliability
- *       maintainability
- *       modularity
+ * @tags quality
+ *       reliability
+ *       correctness
  *       external/cwe/cwe-485
  */
 

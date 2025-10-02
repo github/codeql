@@ -259,6 +259,9 @@ module Make<
       )
     }
 
+    /** Holds if this value represents a single concrete value. */
+    predicate isSingleton() { this = TValue(_, true) }
+
     /** Holds if this value represents `null`. */
     predicate isNullValue() { this.isNullness(true) }
 

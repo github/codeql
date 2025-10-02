@@ -7,9 +7,9 @@
  * @problem.severity warning
  * @precision medium
  * @id java/wrong-swing-event-adapter-signature
- * @tags reliability
- *       maintainability
- *       frameworks/swing
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import java

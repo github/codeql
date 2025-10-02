@@ -55,6 +55,25 @@ edges
 | fastify.js:106:9:106:17 | userInput | fastify.js:107:23:107:31 | userInput | provenance |  |
 | fastify.js:106:21:106:33 | request.query | fastify.js:106:9:106:17 | userInput | provenance |  |
 | fastify.js:106:21:106:38 | request.query.code | fastify.js:106:9:106:17 | userInput | provenance |  |
+| graph-ql.js:18:10:18:17 | { expr } | graph-ql.js:18:12:18:15 | expr | provenance |  |
+| graph-ql.js:18:12:18:15 | expr | graph-ql.js:20:19:20:22 | expr | provenance |  |
+| graph-ql.js:28:9:28:28 | { query, variables } | graph-ql.js:28:11:28:15 | query | provenance |  |
+| graph-ql.js:28:9:28:28 | { query, variables } | graph-ql.js:28:18:28:26 | variables | provenance |  |
+| graph-ql.js:28:11:28:15 | query | graph-ql.js:31:13:31:17 | query | provenance |  |
+| graph-ql.js:28:18:28:26 | variables | graph-ql.js:33:21:33:29 | variables | provenance |  |
+| graph-ql.js:28:18:28:26 | variables | graph-ql.js:54:21:54:29 | variables | provenance |  |
+| graph-ql.js:28:32:28:39 | req.body | graph-ql.js:28:9:28:28 | { query, variables } | provenance |  |
+| graph-ql.js:31:13:31:17 | query | graph-ql.js:18:10:18:17 | { expr } | provenance |  |
+| graph-ql.js:33:21:33:29 | variables | graph-ql.js:18:10:18:17 | { expr } | provenance |  |
+| graph-ql.js:38:13:38:27 | { name, title } | graph-ql.js:38:15:38:18 | name | provenance |  |
+| graph-ql.js:38:13:38:27 | { name, title } | graph-ql.js:38:21:38:25 | title | provenance |  |
+| graph-ql.js:38:15:38:18 | name | graph-ql.js:39:19:39:22 | name | provenance |  |
+| graph-ql.js:38:21:38:25 | title | graph-ql.js:39:26:39:30 | title | provenance |  |
+| graph-ql.js:39:19:39:22 | name | graph-ql.js:39:19:39:30 | name + title | provenance |  |
+| graph-ql.js:39:26:39:30 | title | graph-ql.js:39:19:39:30 | name + title | provenance |  |
+| graph-ql.js:54:21:54:29 | variables | graph-ql.js:38:13:38:27 | { name, title } | provenance |  |
+| graph-ql.js:65:22:65:30 | { value } | graph-ql.js:65:24:65:28 | value | provenance |  |
+| graph-ql.js:65:24:65:28 | value | graph-ql.js:66:23:66:27 | value | provenance |  |
 | react-native.js:7:7:7:13 | tainted | react-native.js:8:32:8:38 | tainted | provenance |  |
 | react-native.js:7:7:7:13 | tainted | react-native.js:10:23:10:29 | tainted | provenance |  |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:13 | tainted | provenance |  |
@@ -191,6 +210,25 @@ nodes
 | fastify.js:106:21:106:38 | request.query.code | semmle.label | request.query.code |
 | fastify.js:107:23:107:31 | userInput | semmle.label | userInput |
 | fastify.js:108:28:108:50 | reply.l ... tedCode | semmle.label | reply.l ... tedCode |
+| graph-ql.js:18:10:18:17 | { expr } | semmle.label | { expr } |
+| graph-ql.js:18:12:18:15 | expr | semmle.label | expr |
+| graph-ql.js:20:19:20:22 | expr | semmle.label | expr |
+| graph-ql.js:28:9:28:28 | { query, variables } | semmle.label | { query, variables } |
+| graph-ql.js:28:11:28:15 | query | semmle.label | query |
+| graph-ql.js:28:18:28:26 | variables | semmle.label | variables |
+| graph-ql.js:28:32:28:39 | req.body | semmle.label | req.body |
+| graph-ql.js:31:13:31:17 | query | semmle.label | query |
+| graph-ql.js:33:21:33:29 | variables | semmle.label | variables |
+| graph-ql.js:38:13:38:27 | { name, title } | semmle.label | { name, title } |
+| graph-ql.js:38:15:38:18 | name | semmle.label | name |
+| graph-ql.js:38:21:38:25 | title | semmle.label | title |
+| graph-ql.js:39:19:39:22 | name | semmle.label | name |
+| graph-ql.js:39:19:39:30 | name + title | semmle.label | name + title |
+| graph-ql.js:39:26:39:30 | title | semmle.label | title |
+| graph-ql.js:54:21:54:29 | variables | semmle.label | variables |
+| graph-ql.js:65:22:65:30 | { value } | semmle.label | { value } |
+| graph-ql.js:65:24:65:28 | value | semmle.label | value |
+| graph-ql.js:66:23:66:27 | value | semmle.label | value |
 | module.js:9:16:9:29 | req.query.code | semmle.label | req.query.code |
 | module.js:11:17:11:30 | req.query.code | semmle.label | req.query.code |
 | react-native.js:7:7:7:13 | tainted | semmle.label | tainted |

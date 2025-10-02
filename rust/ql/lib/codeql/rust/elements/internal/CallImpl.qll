@@ -102,7 +102,7 @@ module Impl {
       f = resolvePath(path) and
       path.getSegment().getIdentifier().getText() = methodName and
       exists(SelfParam self |
-        self = f.getParamList().getSelfParam() and
+        self = f.getSelfParam() and
         if self.isRef() then selfIsRef = true else selfIsRef = false
       )
     )

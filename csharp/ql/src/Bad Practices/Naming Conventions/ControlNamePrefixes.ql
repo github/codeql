@@ -6,7 +6,9 @@
  * @problem.severity recommendation
  * @precision medium
  * @id cs/web/unprefixed-control-name
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
  */
 
 import csharp

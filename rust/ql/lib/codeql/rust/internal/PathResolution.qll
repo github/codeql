@@ -4,8 +4,10 @@
 
 private import rust
 private import codeql.rust.elements.internal.generated.ParentChild
+private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 private import codeql.rust.internal.CachedStages
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
+private import codeql.util.Option
 
 private newtype TNamespace =
   TTypeNamespace() or
@@ -72,9 +74,31 @@ private ItemNode getAChildSuccessor(ItemNode item, string name, SuccessorKind ki
       if item instanceof ImplOrTraitItemNode and result instanceof AssocItem
       then kind.isExternal()
       else
-        if result instanceof Use
-        then kind.isInternal()
-        else kind.isBoth()
+        if result.isPublic()
+        then kind.isBoth()
+        else kind.isInternal()
+  )
+}
+
+private module UseOption = Option<Use>;
+
+private class UseOption = UseOption::Option;
+
+/**
+ * Holds if `n` is superseded by an attribute macro expansion. That is, `n` is
+ * an item or a transitive child of an item with an attribute macro expansion.
+ */
+predicate supersededByAttributeMacroExpansion(AstNode n) {
+  n.(Item).hasAttributeMacroExpansion()
+  or
+  exists(AstNode parent |
+    n.getParentNode() = parent and
+    supersededByAttributeMacroExpansion(parent) and
+    // Don't exclude expansions themselves as they supercede other nodes.
+    not n = parent.(Item).getAttributeMacroExpansion() and
+    // Don't consider attributes themselves to be superseded.  E.g., in `#[a] fn
+    // f() {}` the macro expansion supercedes `fn f() {}` but not `#[a]`.
+    not n instanceof Attr
   )
 }
 
@@ -156,6 +180,11 @@ private ItemNode getAChildSuccessor(ItemNode item, string name, SuccessorKind ki
  * - https://doc.rust-lang.org/reference/names/namespaces.html
  */
 abstract class ItemNode extends Locatable {
+  ItemNode() {
+    // Exclude items that are superseded by the expansion of an attribute macro.
+    not supersededByAttributeMacroExpansion(this)
+  }
+
   /** Gets the (original) name of this item. */
   abstract string getName();
 
@@ -164,6 +193,20 @@ abstract class ItemNode extends Locatable {
 
   /** Gets the visibility of this item, if any. */
   abstract Visibility getVisibility();
+
+  /**
+   * Holds if this item is public.
+   *
+   * This is the case when this item either has `pub` visibility (but is not
+   * a `use`; a `use` itself is not visible from the outside), or when this
+   * item is a variant.
+   */
+  predicate isPublic() {
+    exists(this.getVisibility()) and
+    not this instanceof Use
+    or
+    this instanceof Variant
+  }
 
   /** Gets the `i`th type parameter of this item, if any. */
   abstract TypeParam getTypeParam(int i);
@@ -192,40 +235,51 @@ abstract class ItemNode extends Locatable {
     result = this.(SourceFileItemNode).getSuper()
   }
 
-  /** Gets a successor named `name` of the given `kind`, if any. */
+  /**
+   * Gets a successor named `name` of the given `kind`, if any.
+   *
+   * `useOpt` represents the `use` statement that brought the item into scope,
+   * if any.
+   */
   cached
-  ItemNode getASuccessor(string name, SuccessorKind kind) {
+  ItemNode getASuccessor(string name, SuccessorKind kind, UseOption useOpt) {
     Stages::PathResolutionStage::ref() and
     sourceFileEdge(this, name, result) and
-    kind.isBoth()
+    kind.isBoth() and
+    useOpt.isNone()
     or
-    result = getAChildSuccessor(this, name, kind)
+    result = getAChildSuccessor(this, name, kind) and
+    useOpt.isNone()
     or
-    fileImportEdge(this, name, result, kind)
+    fileImportEdge(this, name, result, kind, useOpt)
     or
-    useImportEdge(this, name, result, kind)
+    useImportEdge(this, name, result, kind) and
+    useOpt.isNone()
     or
-    crateDefEdge(this, name, result, kind)
+    crateDefEdge(this, name, result, kind, useOpt)
     or
     crateDependencyEdge(this, name, result) and
-    kind.isInternal()
+    kind.isInternal() and
+    useOpt.isNone()
     or
     externCrateEdge(this, name, result) and
-    kind.isInternal()
+    kind.isInternal() and
+    useOpt.isNone()
     or
     // items made available through `use` are available to nodes that contain the `use`
-    exists(UseItemNode use |
-      use = this.getASuccessor(_, _) and
-      result = use.getASuccessor(name, kind)
-    )
+    useOpt.asSome() =
+      any(UseItemNode use_ |
+        use_ = this.getASuccessor(_, _, _) and
+        result = use_.getASuccessor(name, kind, _)
+      )
     or
-    exists(ExternCrateItemNode ec | result = ec.(ItemNode).getASuccessor(name, kind) |
-      ec = this.getASuccessor(_, _)
+    exists(ExternCrateItemNode ec | result = ec.(ItemNode).getASuccessor(name, kind, useOpt) |
+      ec = this.getASuccessor(_, _, _)
       or
       // if the extern crate appears in the crate root, then the crate name is also added
       // to the 'extern prelude', see https://doc.rust-lang.org/reference/items/extern-crates.html
       exists(Crate c |
-        ec = c.getSourceFile().(ItemNode).getASuccessor(_, _) and
+        ec = c.getSourceFile().(ItemNode).getASuccessor(_, _, _) and
         this = c.getASourceFile()
       )
     )
@@ -233,20 +287,20 @@ abstract class ItemNode extends Locatable {
     // a trait has access to the associated items of its supertraits
     this =
       any(TraitItemNodeImpl trait |
-        result = trait.resolveABoundCand().getASuccessor(name, kind) and
+        result = trait.resolveABoundCand().getASuccessor(name, kind, useOpt) and
         kind.isExternalOrBoth() and
         result instanceof AssocItemNode and
         not trait.hasAssocItem(name)
       )
     or
     // items made available by an implementation where `this` is the implementing type
-    typeImplEdge(this, _, name, kind, result)
+    typeImplEdge(this, _, name, kind, result, useOpt)
     or
     // trait items with default implementations made available in an implementation
     exists(ImplItemNodeImpl impl, ItemNode trait |
       this = impl and
       trait = impl.resolveTraitTyCand() and
-      result = trait.getASuccessor(name, kind) and
+      result = trait.getASuccessor(name, kind, useOpt) and
       result.(AssocItemNode).hasImplementation() and
       kind.isExternalOrBoth() and
       not impl.hasAssocItem(name)
@@ -254,42 +308,52 @@ abstract class ItemNode extends Locatable {
     or
     // type parameters have access to the associated items of its bounds
     result =
-      this.(TypeParamItemNodeImpl).resolveABoundCand().getASuccessor(name, kind).(AssocItemNode) and
+      this.(TypeParamItemNodeImpl)
+          .resolveABoundCand()
+          .getASuccessor(name, kind, useOpt)
+          .(AssocItemNode) and
     kind.isExternalOrBoth()
     or
     result =
       this.(ImplTraitTypeReprItemNodeImpl)
           .resolveABoundCand()
-          .getASuccessor(name, kind)
+          .getASuccessor(name, kind, useOpt)
           .(AssocItemNode) and
     kind.isExternalOrBoth()
     or
-    result = this.(TypeAliasItemNodeImpl).resolveAliasCand().getASuccessor(name, kind) and
+    result = this.(TypeAliasItemNodeImpl).resolveAliasCand().getASuccessor(name, kind, useOpt) and
     kind.isExternalOrBoth()
     or
     name = "super" and
-    if this instanceof Module or this instanceof SourceFile
-    then (
-      kind.isBoth() and result = this.getImmediateParentModule()
-    ) else (
-      kind.isInternal() and result = this.getImmediateParentModule().getImmediateParentModule()
+    useOpt.isNone() and
+    (
+      if this instanceof Module or this instanceof SourceFile
+      then (
+        kind.isBoth() and result = this.getImmediateParentModule()
+      ) else (
+        kind.isInternal() and result = this.getImmediateParentModule().getImmediateParentModule()
+      )
     )
     or
     name = "self" and
-    if
-      this instanceof Module or
-      this instanceof Enum or
-      this instanceof Struct or
-      this instanceof Crate
-    then (
-      kind.isBoth() and
-      result = this
-    ) else (
-      kind.isInternal() and
-      result = this.getImmediateParentModule()
+    useOpt.isNone() and
+    (
+      if
+        this instanceof Module or
+        this instanceof Enum or
+        this instanceof Struct or
+        this instanceof Crate
+      then (
+        kind.isBoth() and
+        result = this
+      ) else (
+        kind.isInternal() and
+        result = this.getImmediateParentModule()
+      )
     )
     or
     kind.isInternal() and
+    useOpt.isNone() and
     (
       preludeEdge(this, name, result)
       or
@@ -313,7 +377,7 @@ abstract class ItemNode extends Locatable {
   pragma[nomagic]
   ItemNode getASuccessor(string name) {
     exists(SuccessorKind kind |
-      result = this.getASuccessor(name, kind) and
+      result = this.getASuccessor(name, kind, _) and
       kind.isExternalOrBoth()
     )
   }
@@ -380,9 +444,7 @@ abstract private class ModuleLikeNode extends ItemNode {
 
 private class SourceFileItemNode extends ModuleLikeNode, SourceFile {
   pragma[nomagic]
-  ModuleLikeNode getSuper() {
-    result = any(ModuleItemNode mod | fileImport(mod, this)).getASuccessor("super")
-  }
+  ModuleLikeNode getSuper() { fileImport(result.getAnItemInScope(), this) }
 
   override string getName() { result = "(source file)" }
 
@@ -543,7 +605,13 @@ private class EnumItemNode extends TypeItemNode instanceof Enum {
   }
 }
 
-private class VariantItemNode extends ItemNode instanceof Variant {
+/** An item that can be referenced with arguments. */
+abstract class ParameterizableItemNode extends ItemNode {
+  /** Gets the arity this item. */
+  abstract int getArity();
+}
+
+private class VariantItemNode extends ParameterizableItemNode instanceof Variant {
   override string getName() { result = Variant.super.getName().getText() }
 
   override Namespace getNamespace() {
@@ -555,6 +623,8 @@ private class VariantItemNode extends ItemNode instanceof Variant {
   }
 
   override Visibility getVisibility() { result = super.getEnum().getVisibility() }
+
+  override int getArity() { result = super.getFieldList().(TupleFieldList).getNumberOfFields() }
 
   override predicate hasCanonicalPath(Crate c) { this.hasCanonicalPathPrefix(c) }
 
@@ -577,7 +647,7 @@ private class VariantItemNode extends ItemNode instanceof Variant {
   }
 }
 
-class FunctionItemNode extends AssocItemNode instanceof Function {
+class FunctionItemNode extends AssocItemNode, ParameterizableItemNode instanceof Function {
   override string getName() { result = Function.super.getName().getText() }
 
   override predicate hasImplementation() { Function.super.hasImplementation() }
@@ -587,6 +657,8 @@ class FunctionItemNode extends AssocItemNode instanceof Function {
   override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
 
   override Visibility getVisibility() { result = Function.super.getVisibility() }
+
+  override int getArity() { result = super.getNumberOfParamsInclSelf() }
 }
 
 abstract class ImplOrTraitItemNode extends ItemNode {
@@ -648,15 +720,13 @@ final class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
 
   override Visibility getVisibility() { result = Impl.super.getVisibility() }
 
-  TypeParamItemNode getBlanketImplementationTypeParam() {
-    result = this.resolveSelfTy() and
-    // This impl block is not superseded by the expansion of an attribute macro.
-    not exists(super.getAttributeMacroExpansion())
-  }
+  TypeParamItemNode getBlanketImplementationTypeParam() { result = this.resolveSelfTy() }
 
   /**
-   * Holds if this impl block is a blanket implementation. That is, the
+   * Holds if this impl block is a [blanket implementation][1]. That is, the
    * implementation targets a generic parameter of the impl block.
+   *
+   * [1]: https://doc.rust-lang.org/book/ch10-02-traits.html#using-trait-bounds-to-conditionally-implement-methods
    */
   predicate isBlanketImplementation() { exists(this.getBlanketImplementationTypeParam()) }
 
@@ -808,7 +878,7 @@ private class ImplItemNodeImpl extends ImplItemNode {
   TraitItemNode resolveTraitTyCand() { result = resolvePathCand(this.getTraitPath()) }
 }
 
-private class StructItemNode extends TypeItemNode instanceof Struct {
+private class StructItemNode extends TypeItemNode, ParameterizableItemNode instanceof Struct {
   override string getName() { result = Struct.super.getName().getText() }
 
   override Namespace getNamespace() {
@@ -819,6 +889,8 @@ private class StructItemNode extends TypeItemNode instanceof Struct {
   }
 
   override Visibility getVisibility() { result = Struct.super.getVisibility() }
+
+  override int getArity() { result = super.getFieldList().(TupleFieldList).getNumberOfFields() }
 
   override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
 
@@ -1235,10 +1307,12 @@ predicate fileImport(Module m, SourceFile f) {
  * in scope under the name `name`.
  */
 pragma[nomagic]
-private predicate fileImportEdge(Module mod, string name, ItemNode item, SuccessorKind kind) {
+private predicate fileImportEdge(
+  Module mod, string name, ItemNode item, SuccessorKind kind, UseOption useOpt
+) {
   exists(SourceFileItemNode f |
     fileImport(mod, f) and
-    item = f.getASuccessor(name, kind)
+    item = f.getASuccessor(name, kind, useOpt)
   )
 }
 
@@ -1246,8 +1320,10 @@ private predicate fileImportEdge(Module mod, string name, ItemNode item, Success
  * Holds if crate `c` defines the item `i` named `name`.
  */
 pragma[nomagic]
-private predicate crateDefEdge(CrateItemNode c, string name, ItemNode i, SuccessorKind kind) {
-  i = c.getSourceFile().getASuccessor(name, kind) and
+private predicate crateDefEdge(
+  CrateItemNode c, string name, ItemNode i, SuccessorKind kind, UseOption useOpt
+) {
+  i = c.getSourceFile().getASuccessor(name, kind, useOpt) and
   kind.isExternalOrBoth()
 }
 
@@ -1258,6 +1334,12 @@ private class BuiltinSourceFile extends SourceFileItemNode {
 pragma[nomagic]
 private predicate crateDependency(SourceFileItemNode file, string name, CrateItemNode dep) {
   exists(CrateItemNode c | dep = c.(Crate).getDependency(name) | file = c.getASourceFile())
+}
+
+pragma[nomagic]
+private predicate hasDeclOrDep(SourceFileItemNode file, string name) {
+  declaresDirectly(file, TTypeNamespace(), name) or
+  crateDependency(file, name, _)
 }
 
 /**
@@ -1273,8 +1355,7 @@ private predicate crateDependencyEdge(SourceFileItemNode file, string name, Crat
   // a given file to its crate (for example, if the file is `mod` imported inside a macro that the
   // extractor is unable to expand).
   name = dep.getName() and
-  not declaresDirectly(file, TTypeNamespace(), name) and
-  not crateDependency(file, name, _)
+  not hasDeclOrDep(file, name)
 }
 
 private predicate useTreeDeclares(UseTree tree, string name) {
@@ -1300,7 +1381,8 @@ private predicate useTreeDeclares(UseTree tree, string name) {
  */
 pragma[nomagic]
 private predicate declaresDirectly(ItemNode item, Namespace ns, string name) {
-  exists(ItemNode child, SuccessorKind kind | child = getAChildSuccessor(item, name, kind) |
+  exists(ItemNode child, SuccessorKind kind |
+    child = getAChildSuccessor(item, name, kind) and
     child.getNamespace() = ns and
     kind.isInternalOrBoth()
   )
@@ -1334,11 +1416,20 @@ class RelevantPath extends Path {
     name = this.getText()
   }
 
+  /**
+   * Holds if this is an unqualified path with the textual value `name` and
+   * enclosing item `encl`.
+   */
+  pragma[nomagic]
+  predicate isUnqualified(string name, ItemNode encl) {
+    this.isUnqualified(name) and
+    encl.getADescendant() = this
+  }
+
   pragma[nomagic]
   predicate isCratePath(string name, ItemNode encl) {
     name = ["crate", "$crate"] and
-    this.isUnqualified(name) and
-    encl.getADescendant() = this
+    this.isUnqualified(name, encl)
   }
 
   pragma[nomagic]
@@ -1365,32 +1456,34 @@ private ItemNode getOuterScope(ItemNode i) {
 }
 
 /**
- * Holds if the unqualified path `p` references an item named `name`, and `name`
- * may be looked up in the `ns` namespace inside enclosing item `encl`.
+ * Holds if _some_ unqualified path in `encl` references an item named `name`,
+ * and `name` may be looked up in the `ns` namespace inside `ancestor`.
  */
 pragma[nomagic]
-private predicate unqualifiedPathLookup(ItemNode encl, string name, Namespace ns, RelevantPath p) {
+private predicate unqualifiedPathLookup(ItemNode ancestor, string name, Namespace ns, ItemNode encl) {
   // lookup in the immediately enclosing item
-  p.isUnqualified(name) and
-  encl.getADescendant() = p and
+  any(RelevantPath p).isUnqualified(name, encl) and
+  ancestor = encl and
   exists(ns) and
   not name = ["crate", "$crate", "super", "self"]
   or
   // lookup in an outer scope, but only if the item is not declared in inner scope
   exists(ItemNode mid |
-    unqualifiedPathLookup(mid, name, ns, p) and
+    unqualifiedPathLookup(mid, name, ns, encl) and
     not declares(mid, ns, name) and
     not (
       name = "Self" and
       mid = any(ImplOrTraitItemNode i).getAnItemInSelfScope()
     ) and
-    encl = getOuterScope(mid)
+    ancestor = getOuterScope(mid)
   )
 }
 
 pragma[nomagic]
-private ItemNode getASuccessor(ItemNode pred, string name, Namespace ns, SuccessorKind kind) {
-  result = pred.getASuccessor(name, kind) and
+private ItemNode getASuccessor(
+  ItemNode pred, string name, Namespace ns, SuccessorKind kind, UseOption useOpt
+) {
+  result = pred.getASuccessor(name, kind, useOpt) and
   ns = result.getNamespace()
 }
 
@@ -1405,32 +1498,34 @@ private predicate sourceFileHasCratePathTc(ItemNode i1, ItemNode i2) =
 
 /**
  * Holds if the unqualified path `p` references a keyword item named `name`, and
- * `name` may be looked up inside enclosing item `encl`.
+ * `name` may be looked up inside `ancestor`.
  */
 pragma[nomagic]
-private predicate keywordLookup(ItemNode encl, string name, RelevantPath p) {
+private predicate keywordLookup(ItemNode ancestor, string name, RelevantPath p) {
   // For `($)crate`, jump directly to the root module
   exists(ItemNode i | p.isCratePath(name, i) |
-    encl instanceof SourceFile and
-    encl = i
+    ancestor instanceof SourceFile and
+    ancestor = i
     or
-    sourceFileHasCratePathTc(encl, i)
+    sourceFileHasCratePathTc(ancestor, i)
   )
   or
   name = ["super", "self"] and
-  p.isUnqualified(name) and
-  encl.getADescendant() = p
+  p.isUnqualified(name, ancestor)
 }
 
 pragma[nomagic]
 private ItemNode unqualifiedPathLookup(RelevantPath p, Namespace ns, SuccessorKind kind) {
-  exists(ItemNode encl, string name |
-    result = getASuccessor(encl, name, ns, kind) and
+  exists(ItemNode ancestor, string name |
+    result = getASuccessor(ancestor, pragma[only_bind_into](name), ns, kind, _) and
     kind.isInternalOrBoth()
   |
-    unqualifiedPathLookup(encl, name, ns, p)
+    exists(ItemNode encl |
+      unqualifiedPathLookup(ancestor, name, ns, encl) and
+      p.isUnqualified(pragma[only_bind_into](name), encl)
+    )
     or
-    keywordLookup(encl, name, p) and exists(ns)
+    keywordLookup(ancestor, name, p) and exists(ns)
   )
 }
 
@@ -1454,7 +1549,7 @@ module TraitIsVisible<relevantTraitVisibleSig/2 relevantTraitVisible> {
     // lookup in an outer scope, but only if the trait is not declared in inner scope
     exists(ItemNode mid |
       traitLookup(mid, element, trait) and
-      not trait = mid.getASuccessor(_, _) and
+      not trait = mid.getASuccessor(_, _, _) and
       encl = getOuterScope(mid)
     )
   }
@@ -1462,7 +1557,9 @@ module TraitIsVisible<relevantTraitVisibleSig/2 relevantTraitVisible> {
   /** Holds if the trait `trait` is visible at `element`. */
   pragma[nomagic]
   predicate traitIsVisible(Element element, Trait trait) {
-    exists(ItemNode encl | traitLookup(encl, element, trait) and trait = encl.getASuccessor(_, _))
+    exists(ItemNode encl |
+      traitLookup(encl, element, trait) and trait = encl.getASuccessor(_, _, _)
+    )
   }
 }
 
@@ -1491,6 +1588,43 @@ private ItemNode resolvePathCandQualifier(RelevantPath qualifier, RelevantPath p
   name = path.getText()
 }
 
+bindingset[l]
+pragma[inline_late]
+private ModuleLikeNode getAnAncestorModule(Locatable l) {
+  exists(ItemNode encl |
+    encl.getADescendant() = l and
+    result = encl.getImmediateParentModule*()
+  )
+}
+
+bindingset[i]
+pragma[inline_late]
+private ModuleLikeNode getParent(ItemNode i) { result = i.getImmediateParent() }
+
+/**
+ * Holds if resolving a qualified path at `l` to the item `i` with successor kind
+ * `kind` respects visibility.
+ *
+ * This is the case when either `i` is externally visible (e.g. a `pub` function),
+ * or when `i` (or the `use` statement, `useOpt`, that brought `i` into scope) is
+ * in an ancestor module of `l`.
+ */
+bindingset[l, i, kind, useOpt]
+pragma[inline_late]
+private predicate checkQualifiedVisibility(
+  Locatable l, ItemNode i, SuccessorKind kind, UseOption useOpt
+) {
+  kind.isExternalOrBoth()
+  or
+  exists(AstNode n | getAnAncestorModule(l) = getParent(n) |
+    n = useOpt.asSome()
+    or
+    useOpt.isNone() and
+    n = i
+  ) and
+  not i instanceof TypeParam
+}
+
 /**
  * Gets the item that `path` resolves to in `ns` when `qualifier` is the
  * qualifier of `path` and `qualifier` resolves to `q`, if any.
@@ -1499,10 +1633,10 @@ pragma[nomagic]
 private ItemNode resolvePathCandQualified(
   RelevantPath qualifier, ItemNode q, RelevantPath path, Namespace ns
 ) {
-  exists(string name, SuccessorKind kind |
+  exists(string name, SuccessorKind kind, UseOption useOpt |
     q = resolvePathCandQualifier(qualifier, path, name) and
-    result = getASuccessor(q, name, ns, kind) and
-    kind.isExternalOrBoth()
+    result = getASuccessor(q, name, ns, kind, useOpt) and
+    checkQualifiedVisibility(path, result, kind, useOpt)
   )
 }
 
@@ -1513,6 +1647,8 @@ private predicate pathUsesNamespace(Path p, Namespace n) {
     p = any(PathExpr pe).getPath()
     or
     p = any(TupleStructPat tsp).getPath()
+    or
+    p = any(Meta m).getPath()
   )
   or
   n.isType() and
@@ -1566,6 +1702,14 @@ private ItemNode resolvePathCand(RelevantPath path) {
     or
     not pathUsesNamespace(path, _) and
     not path = any(MacroCall mc).getPath()
+  ) and
+  (
+    not path = CallExprImpl::getFunctionPath(_)
+    or
+    exists(CallExpr ce |
+      path = CallExprImpl::getFunctionPath(ce) and
+      result.(ParameterizableItemNode).getArity() = ce.getNumberOfArgs()
+    )
   )
 }
 
@@ -1573,7 +1717,7 @@ private ItemNode resolvePathCand(RelevantPath path) {
 private Trait getResolvePathTraitUsed(RelevantPath path, AssocItemNode node) {
   exists(TypeItemNode type, ImplItemNodeImpl impl |
     node = resolvePathCandQualified(_, type, path, _) and
-    typeImplEdge(type, impl, _, _, node) and
+    typeImplEdge(type, impl, _, _, node, _) and
     result = impl.resolveTraitTyCand()
   )
 }
@@ -1620,18 +1764,17 @@ private predicate isUseTreeSubPathUnqualified(UseTree tree, RelevantPath path, s
 
 pragma[nomagic]
 private ItemNode resolveUseTreeListItem(Use use, UseTree tree, RelevantPath path, SuccessorKind kind) {
-  kind.isExternalOrBoth() and
-  (
+  exists(UseOption useOpt | checkQualifiedVisibility(use, result, kind, useOpt) |
     exists(UseTree midTree, ItemNode mid, string name |
       mid = resolveUseTreeListItem(use, midTree) and
       tree = midTree.getUseTreeList().getAUseTree() and
       isUseTreeSubPathUnqualified(tree, path, pragma[only_bind_into](name)) and
-      result = mid.getASuccessor(pragma[only_bind_into](name), kind)
+      result = mid.getASuccessor(pragma[only_bind_into](name), kind, useOpt)
     )
     or
     exists(ItemNode q, string name |
       q = resolveUseTreeListItemQualifier(use, tree, path, name) and
-      result = q.getASuccessor(name, kind)
+      result = q.getASuccessor(name, kind, useOpt)
     )
   )
 }
@@ -1646,10 +1789,12 @@ private ItemNode resolveUseTreeListItemQualifier(
 
 pragma[nomagic]
 private ItemNode resolveUseTreeListItem(Use use, UseTree tree) {
-  tree = use.getUseTree() and
-  result = resolvePathCand(tree.getPath())
-  or
-  result = resolveUseTreeListItem(use, tree, tree.getPath(), _)
+  exists(Path path | path = tree.getPath() |
+    tree = use.getUseTree() and
+    result = resolvePathCand(path)
+    or
+    result = resolveUseTreeListItem(use, tree, path, _)
+  )
 }
 
 /** Holds if `use` imports `item` as `name`. */
@@ -1661,10 +1806,10 @@ private predicate useImportEdge(Use use, string name, ItemNode item, SuccessorKi
     not tree.hasUseTreeList() and
     if tree.isGlob()
     then
-      exists(ItemNode encl, Namespace ns, SuccessorKind kind1 |
+      exists(ItemNode encl, Namespace ns, SuccessorKind kind1, UseOption useOpt |
         encl.getADescendant() = use and
-        item = getASuccessor(used, name, ns, kind1) and
-        kind1.isExternalOrBoth() and
+        item = getASuccessor(used, name, ns, kind1, useOpt) and
+        checkQualifiedVisibility(use, item, kind1, useOpt) and
         // glob imports can be shadowed
         not declares(encl, ns, name) and
         not name = ["super", "self"]
@@ -1673,7 +1818,10 @@ private predicate useImportEdge(Use use, string name, ItemNode item, SuccessorKi
       item = used and
       (
         not tree.hasRename() and
-        name = item.getName()
+        exists(string pathName |
+          pathName = tree.getPath().getText() and
+          if pathName = "self" then name = item.getName() else name = pathName
+        )
         or
         exists(Rename rename | rename = tree.getRename() |
           name = rename.getName().getText()
@@ -1711,10 +1859,11 @@ private predicate externCrateEdge(ExternCrateItemNode ec, string name, CrateItem
  * makes `assoc` available as `name` at `kind`.
  */
 private predicate typeImplEdge(
-  TypeItemNode typeItem, ImplItemNodeImpl impl, string name, SuccessorKind kind, AssocItemNode assoc
+  TypeItemNode typeItem, ImplItemNodeImpl impl, string name, SuccessorKind kind,
+  AssocItemNode assoc, UseOption useOpt
 ) {
   typeItem = impl.resolveSelfTyCand() and
-  assoc = impl.getASuccessor(name, kind) and
+  assoc = impl.getASuccessor(name, kind, useOpt) and
   kind.isExternalOrBoth()
 }
 
@@ -1765,12 +1914,17 @@ private module Debug {
   }
 
   predicate debugUnqualifiedPathLookup(
-    RelevantPath p, string name, Namespace ns, ItemNode encl, string path
+    RelevantPath p, string name, Namespace ns, ItemNode ancestor, string path
   ) {
     p = getRelevantLocatable() and
-    unqualifiedPathLookup(encl, name, ns, p) and
+    exists(ItemNode encl |
+      unqualifiedPathLookup(encl, name, ns, ancestor) and
+      p.isUnqualified(name, encl)
+    ) and
     path = p.toStringDebug()
   }
+
+  predicate debugItemNode(ItemNode item) { item = getRelevantLocatable() }
 
   ItemNode debugResolvePath(RelevantPath path) {
     path = getRelevantLocatable() and
@@ -1784,12 +1938,12 @@ private module Debug {
 
   ItemNode debugGetASuccessor(ItemNode i, string name, SuccessorKind kind) {
     i = getRelevantLocatable() and
-    result = i.getASuccessor(name, kind)
+    result = i.getASuccessor(name, kind, _)
   }
 
   predicate debugFileImportEdge(Module mod, string name, ItemNode item, SuccessorKind kind) {
     mod = getRelevantLocatable() and
-    fileImportEdge(mod, name, item, kind)
+    fileImportEdge(mod, name, item, kind, _)
   }
 
   predicate debugFileImport(Module m, SourceFile f) {

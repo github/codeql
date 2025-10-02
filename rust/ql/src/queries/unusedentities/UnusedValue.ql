@@ -16,7 +16,7 @@ import UnusedVariable
 
 from AstNode write, Ssa::Variable v
 where
-  variableWrite(write, v) and
+  variableWrite(_, write, v) and
   not v instanceof DiscardVariable and
   not write.isInMacroExpansion() and
   not isAllowableUnused(v) and
