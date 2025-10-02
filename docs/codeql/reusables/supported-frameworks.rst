@@ -313,7 +313,6 @@ Rust built-in support
 Provided by the current versions of the
 CodeQL query pack ``codeql/rust-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/rust/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/rust/ql/src>`__)
 and the CodeQL library pack ``codeql/rust-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/rust/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/rust/ql/lib>`__).
-All support is experimental.
 
 .. csv-table::
    :header-rows: 1
