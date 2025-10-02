@@ -1,0 +1,24 @@
+/**
+ * @name Weak Asymetric Key Size
+ * @id java/quantum/weak-asymmetric-key-size
+ * @description An asymmetric cipher with a short key size is in use
+ * @kind problem
+ * @problem.severity error
+ * @precision high
+ * @tags quantum
+ *       experimental
+ */
+
+import java
+import experimental.quantum.Language
+
+from Crypto::KeyOperationAlgorithmNode op, DataFlow::Node configSrc, int keySize, string algName
+where
+  keySize = op.getKeySizeFixed() and
+  keySize < 2048 and
+  algName = op.getAlgorithmName() and
+  // Can't be an elliptic curve
+  not Crypto::isEllipticCurveAlgorithmName(algName)
+select op,
+  "Use of weak asymmetric key size (int bits)" + keySize.toString() + " for algorithm " +
+    algName.toString() + " at config source $@", configSrc, configSrc.toString()

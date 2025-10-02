@@ -4,7 +4,6 @@
  * @id java/quantum/unknown-kdf-iteration-count
  * @kind problem
  * @precision medium
- * @severity warning
  * @tags quantum
  *       experimental
  */
