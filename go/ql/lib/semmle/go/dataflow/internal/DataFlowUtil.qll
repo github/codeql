@@ -367,7 +367,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
   }
 
   /**
-   * Holds if `guard` marks a point in the control-flow graph where this node
+   * Holds if `guard` marks a point in the control-flow graph where `g`
    * is known to validate `nd`, which is represented by `ap`.
    *
    * This predicate exists to enforce a good join order in `getAGuardedNode`.
@@ -378,7 +378,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
   }
 
   /**
-   * Holds if `guard` marks a point in the control-flow graph where this node
+   * Holds if `guard` marks a point in the control-flow graph where `g`
    * is known to validate `nd`.
    */
   private predicate guards(Node g, ControlFlow::ConditionGuardNode guard, Node nd) {

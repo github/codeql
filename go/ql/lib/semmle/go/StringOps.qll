@@ -306,11 +306,12 @@ module StringOps {
      */
     class StringFormatCall extends DataFlow::CallNode {
       string fmt;
-      Range f;
 
       StringFormatCall() {
-        this = f.getACall() and
-        fmt = this.getArgument(f.getFormatStringIndex()).getStringValue() and
+        exists(Range f |
+          this = f.getACall() and
+          fmt = this.getArgument(f.getFormatStringIndex()).getStringValue()
+        ) and
         fmt.regexpMatch(getFormatComponentRegex() + "*")
       }
 

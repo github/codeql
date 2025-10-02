@@ -26,6 +26,8 @@ fn mutable_variable() {
     print_i64(x2); // $ read_access=x2
     x2 = 5; // $ write_access=x2
     print_i64(x2); // $ read_access=x2
+    x2 = x2; // $ read_access=x2 $ write_access=x2
+    print_i64(x2); // $ read_access=x2
 }
 
 fn mutable_variable_immutable_borrow() {

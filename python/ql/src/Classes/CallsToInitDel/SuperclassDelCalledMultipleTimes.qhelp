@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Python, unlike some other object-oriented languages such as Java, allows the developer complete freedom in 
+when and how superclass finalizers are called during object finalization.
+However, the developer has responsibility for ensuring that objects are properly cleaned up.
+</p>
+
+<p>
+Objects with a <code>__del__</code> method (a finalizer) often hold resources such as file handles that need to be cleaned up.
+If a superclass finalizer is called multiple times, this may lead to errors such as closing an already closed file, and lead to objects not being 
+cleaned up properly as expected. 
+</p>
+
+<p>There are a number of ways that a <code>__del__</code> method may be be called more than once.</p>
+<ul>
+    <li>There may be more than one explicit call to the method in the hierarchy of <code>__del__</code> methods.</li>
+    <li>In situations involving multiple inheritance, an finalization method may call the finalizers of each of its base types,
+     which themselves both call the finalizer of a shared base type. (This is an example of the Diamond Inheritance problem)</li>
+    <li>Another situation involving multiple inheritance arises when a subclass calls the <code>__del__</code> methods of each of its base classes,
+    one of which calls <code>super().__del__</code>. This super call resolves to the next class in the Method Resolution Order (MRO) of the subclass,
+    which may be another base class that already has its initializer explicitly called.</li>
+</ul>
+
+
+</overview>
+<recommendation>
+<p>Ensure that each finalizer method is called exactly once during finalization. 
+This can be ensured by calling <code>super().__del__</code> for each finalizer method in the inheritance chain.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, there is a mixture of explicit calls to <code>__del__</code> and calls using <code>super()</code>, resulting in <code>Vehicle.__del__</code>
+being called twice.
+<code>FixedSportsCar.__del__</code> fixes this by using <code>super()</code> consistently with the other delete methods.
+</p>
+
+<sample src="examples/SuperclassDelCalledMultipleTimes.py" />
+
+</example>
+<references>
+        
+        <li>Python Reference: <a href="https://docs.python.org/3/reference/datamodel.html#object.__del__">__del__</a>.</li>
+        <li>Python Standard Library: <a href="https://docs.python.org/3/library/functions.html#super">super</a>.</li>
+        <li>Python Glossary: <a href="https://docs.python.org/3/glossary.html#term-method-resolution-order">Method resolution order</a>.</li>
+        <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem">The Diamond Problem</a>.</li>
+
+</references>
+</qhelp>

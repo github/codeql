@@ -36,7 +36,7 @@ Architecture
 
 A *QL program* consists of a query module defined in a QL file and a number of library modules defined in QLL files that it imports (see "`Import directives <#import-directives>`__"). The module in the QL file includes one or more queries (see "`Queries <#queries>`__"). A module may also include *import directives* (see "`Import directives <#import-directives>`__"), non-member predicates (see "`Non-member predicates <#non-member-predicates>`__"), class definitions (see "`Classes <#classes>`__"), and module definitions (see "`Modules <#modules>`__").
 
-QL programs are interpreted in the context of a *database* and a *library path* . The database provides a number of definitions: database types (see "`Types <#types>`__"), entities (see "`Values <#values>`__"), built-in predicates (see "`Built-ins <#built-ins>`__"), and the *database content* of built-in predicates and external predicates (see "`Evaluation <#evaluation>`__"). The library path is a sequence of file-system directories that hold QLL files.
+QL programs are interpreted in the context of a *database* and a *library path* . The database provides a number of definitions: database types (see "`Types <#types>`__"), entities (see "`Values <#values>`__"), built-in predicates (see "`Built-ins <#built-ins>`__"), and the *database content* of built-in predicates, external predicates, and extensible predicates (see "`Evaluation <#evaluation>`__"). The library path is a sequence of file-system directories that hold QLL files.
 
 A QL program can be *evaluated* (see "`Evaluation <#evaluation>`__") to produce a set of tuples of values (see "`Values <#values>`__").
 
@@ -761,17 +761,17 @@ Various kinds of syntax can have *annotations* applied to them. Annotations are 
    annotation ::= simpleAnnotation | argsAnnotation
 
    simpleAnnotation ::= "abstract"
-                    |   "cached"
-                    |   "external"
-                    |   "extensible"
-                    |   "final"
-                    |   "transient"
-                    |   "library"
-                    |   "private"
-                    |   "deprecated"
-                    |   "override"
                     |   "additional"
+                    |   "cached"
+                    |   "deprecated"
+                    |   "extensible"
+                    |   "external"
+                    |   "final"
+                    |   "library"
+                    |   "override"
+                    |   "private"
                     |   "query"
+                    |   "transient"
 
    argsAnnotation ::= "pragma" "[" ("inline" | "inline_late" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
                   |   "language" "[" "monotonicAggregates" "]"
@@ -791,27 +791,27 @@ The following table summarizes the syntactic constructs which can be marked with
 +================+=========+============+===================+=======================+=========+========+=========+=========+============+
 | ``abstract``   | yes     |            | yes               |                       |         |        |         |         |            |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| ``additional`` | yes     |            |                   | yes                   |         |        | yes     | yes     | yes        |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
 | ``cached``     | yes     | yes        | yes               | yes                   |         |        | yes     |         |            |
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
-| ``external``   |         |            |                   | yes                   |         |        |         |         |            |
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
-| ``extensible`` |         |            |                   | yes                   |         |        |         |         |            |
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
-| ``final``      | yes     |            | yes               |                       |         | yes    |         | (yes)   |            |
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
-| ``transient``  |         |            |                   | yes                   |         |        |         |         |            |
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
-| ``library``    | (yes)   |            |                   |                       |         |        |         |         |            |
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
-| ``private``    | yes     |            | yes               | yes                   | yes     | yes    | yes     | yes     | yes        |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
 | ``deprecated`` | yes     |            | yes               | yes                   | yes     | yes    | yes     | yes     | yes        |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| ``extensible`` |         |            |                   | yes                   |         |        |         |         |            |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| ``external``   |         |            |                   | yes                   |         |        |         |         |            |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| ``final``      | yes     |            | yes               |                       |         | yes    |         | (yes)   |            |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| ``library``    | (yes)   |            |                   |                       |         |        |         |         |            |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
 | ``override``   |         |            | yes               |                       |         | yes    |         |         |            |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
-| ``additional`` | yes     |            |                   | yes                   |         |        | yes     | yes     | yes        |
+| ``private``    | yes     |            | yes               | yes                   | yes     | yes    | yes     | yes     | yes        |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
 | ``query``      |         |            |                   | yes                   |         |        |         | yes     |            |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| ``transient``  |         |            |                   | yes                   |         |        |         |         |            |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
 
 The ``library`` annotation is only usable within a QLL file, not a QL file.
@@ -933,7 +933,9 @@ A predicate definition adds a mapping from the predicate name and arity to the p
 
 When a predicate is a top-level clause in a module, it is called a non-member predicate. See below for "`Member predicates <#member-predicates>`__."
 
-A valid non-member predicate can be annotated with ``cached``, ``deprecated``, ``external``, ``transient``, ``private``, and ``query``. Note, the ``transient`` annotation can only be applied if the non-member predicate is also annotated with ``external``.
+A valid non-member predicate can be annotated with ``additional``, ``cached``, ``deprecated``, ``extensible``, ``external``, ``transient``, ``private``, and ``query``.
+Note, the ``transient`` annotation can only be applied if the non-member predicate is also annotated with ``external``.
+Note, the annotations ``extensible`` and ``external`` cannot both be used on the same non-member predicate.
 
 The head of the predicate gives a name, an optional *result type*, and a sequence of variables declarations that are *arguments*:
 
@@ -951,7 +953,7 @@ The body of a predicate is of one of three forms:
 
 In the first form, with just a semicolon, the predicate is said to not have a body. In the second form, the body of the predicate is the given formula (see "`Formulas <#formulas>`__"). In the third form, the body is a higher-order relation.
 
-A valid non-member predicate must have a body, either a formula or a higher-order relation, unless it is external, in which case it must not have a body.
+A valid non-member predicate must have a body, either a formula or a higher-order relation, unless it is external or extensible, in which case it must not have a body.
 
 The typing environment for the body of the formula, if present, maps the variables in the head of the predicate to their associated types. If the predicate has a result type, then the typing environment also maps ``result`` to the result type.
 
@@ -979,7 +981,7 @@ A class type is said to *final inherit* from base types that are final or refere
 
 A class adds a mapping from the class name to the class declaration to the current module's declared type environment.
 
-A valid class can be annotated with ``abstract``, ``final``, ``library``, and ``private``. Any other annotation renders the class invalid.
+A valid class can be annotated with ``abstract``, ``additional``, ``final``, ``library``, and ``private``. Any other annotation renders the class invalid.
 
 A valid class may not inherit from itself, or from more than one primitive type. The set of types that a valid class inherits from must be disjoint from the set of types that it final inherits from.
 
@@ -1052,7 +1054,7 @@ A member predicate ``p`` with enclosing class ``C`` *shadows* a member predicate
 
 Member predicates have one or more *root definitions*. If a member predicate overrides no other member predicate, then it is its own root definition. Otherwise, its root definitions are those of any member predicate that it overrides.
 
-A valid member predicate must have a body unless it is abstract or external, in which case it must not have a body.
+A valid member predicate must have a body unless it is abstract, in which case it must not have a body.
 
 A valid member predicate must override another member predicate if it is annotated override.
 
@@ -2179,7 +2181,7 @@ If a QL program has no valid stratification, then the program itself is not vali
 Layer evaluation
 ~~~~~~~~~~~~~~~~
 
-The store is first initialized with the *database content* of all built-in predicates and external predicates. The database content of a predicate is a set of ordered tuples that are included in the database.
+The store is first initialized with the *database content* of all built-in predicates, external predicates, and extensible predicates. The database content of a predicate is a set of ordered tuples that are included in the database.
 
 Each layer of the stratification is *populated* in order. To populate a layer, each predicate in the layer is repeatedly populated until the store stops changing. The way that a predicate is populated is as follows:
 
@@ -2292,17 +2294,17 @@ The complete grammar for QL is as follows:
    annotation ::= simpleAnnotation | argsAnnotation
 
    simpleAnnotation ::= "abstract"
-                    |   "cached"
-                    |   "external"
-                    |   "extensible"
-                    |   "final"
-                    |   "transient"
-                    |   "library"
-                    |   "private"
-                    |   "deprecated"
-                    |   "override"
                     |   "additional"
+                    |   "cached"
+                    |   "deprecated"
+                    |   "extensible"
+                    |   "external"
+                    |   "final"
+                    |   "library"
+                    |   "override"
+                    |   "private"
                     |   "query"
+                    |   "transient"
 
    argsAnnotation ::= "pragma" "[" ("inline" | "inline_late" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
                   |   "language" "[" "monotonicAggregates" "]"

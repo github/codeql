@@ -119,15 +119,15 @@ module JCAModel {
 
   bindingset[name]
   Crypto::HashType hash_name_to_type_known(string name, int digestLength) {
-    name = "SHA-1" and result instanceof Crypto::SHA1 and digestLength = 160
+    name in ["SHA-1", "SHA1"] and result instanceof Crypto::SHA1 and digestLength = 160
     or
-    name = ["SHA-256", "SHA-384", "SHA-512"] and
+    name in ["SHA-256", "SHA-384", "SHA-512", "SHA256", "SHA384", "SHA512"] and
     result instanceof Crypto::SHA2 and
-    digestLength = name.splitAt("-", 1).toInt()
+    digestLength = name.replaceAll("-", "").splitAt("SHA", 1).toInt()
     or
-    name = ["SHA3-224", "SHA3-256", "SHA3-384", "SHA3-512"] and
+    name in ["SHA3-224", "SHA3-256", "SHA3-384", "SHA3-512", "SHA3256", "SHA3384", "SHA3512"] and
     result instanceof Crypto::SHA3 and
-    digestLength = name.splitAt("-", 1).toInt()
+    digestLength = name.replaceAll("-", "").splitAt("SHA3", 1).toInt()
     or
     (
       name.matches("BLAKE2b%") and
@@ -206,12 +206,6 @@ module JCAModel {
   }
 
   bindingset[name]
-  predicate mac_name_to_mac_type_known(Crypto::TMacType type, string name) {
-    type = Crypto::HMAC() and
-    name.toUpperCase().matches("HMAC%")
-  }
-
-  bindingset[name]
   predicate key_agreement_name_to_type_known(Crypto::TKeyAgreementType type, string name) {
     type = Crypto::DH() and
     name.toUpperCase() = "DH"
@@ -269,7 +263,7 @@ module JCAModel {
   }
 
   /**
-   * Data-flow configuration modelling flow from a cipher string literal to a cipher algorithm consumer.
+   * Data-flow configuration modeling flow from a cipher string literal to a cipher algorithm consumer.
    */
   private module CipherAlgorithmStringToCipherConsumerConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node src) { src.asExpr() instanceof CipherStringLiteral }
@@ -404,9 +398,7 @@ module JCAModel {
    * For example, in `Cipher.getInstance(algorithm)`, this class represents `algorithm`.
    */
   class CipherGetInstanceAlgorithmArg extends CipherAlgorithmValueConsumer instanceof Expr {
-    CipherGetInstanceCall call;
-
-    CipherGetInstanceAlgorithmArg() { this = call.getAlgorithmArg() }
+    CipherGetInstanceAlgorithmArg() { this = any(CipherGetInstanceCall call).getAlgorithmArg() }
 
     override Crypto::ConsumerInputDataFlowNode getInputNode() { result.asExpr() = this }
 
@@ -659,27 +651,19 @@ module JCAModel {
 
   class IvParameterSpecInstance extends NonceParameterInstantiation {
     IvParameterSpecInstance() {
-      this.(ClassInstanceExpr)
-          .getConstructedType()
-          .hasQualifiedName("javax.crypto.spec", "IvParameterSpec")
+      super.getConstructedType().hasQualifiedName("javax.crypto.spec", "IvParameterSpec")
     }
 
-    override DataFlow::Node getInputNode() {
-      result.asExpr() = this.(ClassInstanceExpr).getArgument(0)
-    }
+    override DataFlow::Node getInputNode() { result.asExpr() = super.getArgument(0) }
   }
 
   // TODO: this also specifies the tag length for GCM
   class GCMParameterSpecInstance extends NonceParameterInstantiation {
     GCMParameterSpecInstance() {
-      this.(ClassInstanceExpr)
-          .getConstructedType()
-          .hasQualifiedName("javax.crypto.spec", "GCMParameterSpec")
+      super.getConstructedType().hasQualifiedName("javax.crypto.spec", "GCMParameterSpec")
     }
 
-    override DataFlow::Node getInputNode() {
-      result.asExpr() = this.(ClassInstanceExpr).getArgument(1)
-    }
+    override DataFlow::Node getInputNode() { result.asExpr() = super.getArgument(1) }
   }
 
   class IvParameterSpecGetIvCall extends MethodCall {
@@ -819,14 +803,14 @@ module JCAModel {
     HashAlgorithmValueConsumer consumer;
 
     KnownHashAlgorithm() {
-      hash_names(this.getValue()) and
+      hash_names(super.getValue()) and
       KnownHashAlgorithmLiteralToMessageDigestFlow::flow(DataFlow::exprNode(this),
         consumer.getInputNode())
     }
 
     HashAlgorithmValueConsumer getConsumer() { result = consumer }
 
-    override string getRawHashAlgorithmName() { result = this.(StringLiteral).getValue() }
+    override string getRawHashAlgorithmName() { result = super.getValue() }
 
     override Crypto::THashType getHashFamily() {
       result = hash_name_to_type_known(this.getRawHashAlgorithmName(), _)
@@ -925,9 +909,7 @@ module JCAModel {
 
   class DHGenParameterSpecInstance extends KeyGeneratorParameterSpecClassInstanceExpr {
     DHGenParameterSpecInstance() {
-      this.(ClassInstanceExpr)
-          .getConstructedType()
-          .hasQualifiedName("javax.crypto.spec", "DHGenParameterSpec")
+      super.getConstructedType().hasQualifiedName("javax.crypto.spec", "DHGenParameterSpec")
     }
 
     Expr getPrimeSizeArg() { result = this.getArgument(0) }
@@ -937,9 +919,7 @@ module JCAModel {
 
   class DSAParameterSpecInstance extends KeyGeneratorParameterSpecClassInstanceExpr {
     DSAParameterSpecInstance() {
-      this.(ClassInstanceExpr)
-          .getConstructedType()
-          .hasQualifiedName("java.security.spec", "DSAParameterSpec")
+      super.getConstructedType().hasQualifiedName("java.security.spec", "DSAParameterSpec")
     }
 
     Expr getPArg() { result = this.getArgument(0) }
@@ -951,9 +931,7 @@ module JCAModel {
 
   class ECGenParameterSpecInstance extends KeyGeneratorParameterSpecClassInstanceExpr {
     ECGenParameterSpecInstance() {
-      this.(ClassInstanceExpr)
-          .getConstructedType()
-          .hasQualifiedName("java.security.spec", "ECGenParameterSpec")
+      super.getConstructedType().hasQualifiedName("java.security.spec", "ECGenParameterSpec")
     }
 
     Expr getCurveNameArg() { result = this.getArgument(0) }
@@ -963,9 +941,7 @@ module JCAModel {
 
   class RSAGenParameterSpecInstance extends KeyGeneratorParameterSpecClassInstanceExpr {
     RSAGenParameterSpecInstance() {
-      this.(ClassInstanceExpr)
-          .getConstructedType()
-          .hasQualifiedName("java.security.spec", "RSAGenParameterSpec")
+      super.getConstructedType().hasQualifiedName("java.security.spec", "RSAGenParameterSpec")
     }
 
     Expr getKeySizeArg() { result = this.getArgument(0) }
@@ -989,9 +965,7 @@ module JCAModel {
 
   class ECGenParameterSpecClassInstanceExpr extends KeyGeneratorParameterSpecClassInstanceExpr {
     ECGenParameterSpecClassInstanceExpr() {
-      this.(ClassInstanceExpr)
-          .getConstructedType()
-          .hasQualifiedName("java.security.spec", "ECGenParameterSpec")
+      super.getConstructedType().hasQualifiedName("java.security.spec", "ECGenParameterSpec")
     }
 
     Expr getAlgorithmArg() { result = this.getArgument(0) }
@@ -1228,37 +1202,86 @@ module JCAModel {
     SecretKeyFactoryKDFAlgorithmValueConsumer getConsumer() { result = consumer }
   }
 
-  class Pbkdf2AlgorithmStringLiteral extends KdfAlgorithmStringLiteral,
-    Crypto::Pbkdf2AlgorithmInstance, Crypto::HmacAlgorithmInstance, Crypto::HashAlgorithmInstance,
-    Crypto::AlgorithmValueConsumer
+  class Pbkdf2WithHmac_KeyOperationAlgorithmStringLiteral extends Crypto::KeyOperationAlgorithmInstance instanceof KdfAlgorithmStringLiteral
   {
-    Pbkdf2AlgorithmStringLiteral() { super.getKdfType() instanceof Crypto::PBKDF2 }
-
-    override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }
-
-    override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = this }
-
-    override Crypto::THashType getHashFamily() {
-      result = hash_name_to_type_known(this.getRawHashAlgorithmName(), _)
+    Pbkdf2WithHmac_KeyOperationAlgorithmStringLiteral() {
+      this.(StringLiteral).getValue().toUpperCase().matches("PBKDF2WithHmac%".toUpperCase())
     }
 
-    override int getFixedDigestLength() {
-      exists(hash_name_to_type_known(this.getRawHashAlgorithmName(), result))
+    override Crypto::KeyOpAlg::AlgorithmType getAlgorithmType() {
+      result = KeyOpAlg::TMac(KeyOpAlg::HMAC())
     }
 
-    override string getRawMacAlgorithmName() {
-      result = super.getRawKdfAlgorithmName().splitAt("PBKDF2With", 1)
+    override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() {
+      // TODO: trace to any key size initializer?
+      none()
     }
 
-    override string getRawHashAlgorithmName() {
-      result = super.getRawKdfAlgorithmName().splitAt("WithHmac", 1)
+    override int getKeySizeFixed() {
+      // TODO: are there known fixed key sizes to consider?
+      none()
     }
 
-    override Crypto::MacType getMacType() { result = Crypto::HMAC() }
+    override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() { none() }
 
-    override Crypto::AlgorithmValueConsumer getHmacAlgorithmValueConsumer() { result = this }
+    override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
 
-    override Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() { result = this }
+    override string getRawAlgorithmName() { result = this.(StringLiteral).getValue() }
+  }
+
+  class Pbkdf2WithHmac_HashAlgorithmStringLiteral extends Crypto::HashAlgorithmInstance instanceof Pbkdf2WithHmac_KeyOperationAlgorithmStringLiteral
+  {
+    string hashName;
+
+    Pbkdf2WithHmac_HashAlgorithmStringLiteral() {
+      hashName = this.(StringLiteral).getValue().splitAt("WithHmac", 1)
+    }
+
+    override string getRawHashAlgorithmName() { result = this.(StringLiteral).getValue() }
+
+    override Crypto::THashType getHashFamily() { result = hash_name_to_type_known(hashName, _) }
+
+    override int getFixedDigestLength() { exists(hash_name_to_type_known(hashName, result)) }
+  }
+
+  //TODO: handle PBE "with" cases
+  class Pbkdf2WithHmac_Pbkdf2AlgorithmInstance extends Crypto::Pbkdf2AlgorithmInstance,
+    KdfAlgorithmStringLiteral, // this is a parent already, but extending to have immediate access to 'getConsumer()'
+    Pbkdf2WithHmac_KeyOperationAlgorithmStringLiteral
+  {
+    override Crypto::AlgorithmValueConsumer getHmacAlgorithmValueConsumer() {
+      result = this.getConsumer()
+    }
+  }
+
+  // NOTE: must use instanceof to avoid non-monotonic recursion
+  class Pbkdf2WithHmac_HmacAlgorithmInstance extends Crypto::HmacAlgorithmInstance instanceof Pbkdf2WithHmac_KeyOperationAlgorithmStringLiteral
+  {
+    override Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() {
+      result = this.(KdfAlgorithmStringLiteral).getConsumer()
+    }
+
+    override int getKeySizeFixed() {
+      // already defined by parent key operation algorithm, but extending an instance
+      // still requires we override this method
+      result = super.getKeySizeFixed()
+    }
+
+    override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() {
+      // already defined by parent key operation algorithm, but extending an instance
+      // still requires we override this method
+      result = super.getKeySizeConsumer()
+    }
+
+    override string getRawAlgorithmName() {
+      // already defined by parent key operation algorithm, but extending an instance
+      // still requires we override this method
+      result = super.getRawAlgorithmName()
+    }
+
+    override Crypto::KeyOpAlg::AlgorithmType getAlgorithmType() {
+      result = KeyOpAlg::TMac(KeyOpAlg::HMAC())
+    }
   }
 
   class SecretKeyFactoryKDFAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer instanceof Expr
@@ -1333,7 +1356,7 @@ module JCAModel {
   }
 
   /**
-   * Data-flow configuration modelling flow from a key agreement string literal to a key agreement algorithm consumer.
+   * Data-flow configuration modeling flow from a key agreement string literal to a key agreement algorithm consumer.
    */
   private module KeyAgreementAlgorithmStringToConsumerConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node src) { src.asExpr() instanceof KeyAgreementStringLiteral }
@@ -1480,7 +1503,7 @@ module JCAModel {
 
   module MacInitCallToMacOperationFlow = DataFlow::Global<MacInitCallToMacOperationFlowConfig>;
 
-  class KnownMacAlgorithm extends Crypto::MacAlgorithmInstance instanceof StringLiteral {
+  class KnownMacAlgorithm extends Crypto::KeyOperationAlgorithmInstance instanceof StringLiteral {
     MacGetInstanceAlgorithmValueConsumer consumer;
 
     KnownMacAlgorithm() {
@@ -1490,13 +1513,30 @@ module JCAModel {
 
     MacGetInstanceAlgorithmValueConsumer getConsumer() { result = consumer }
 
-    override string getRawMacAlgorithmName() { result = super.getValue() }
+    override string getRawAlgorithmName() { result = super.getValue() }
 
-    override Crypto::MacType getMacType() {
-      if mac_name_to_mac_type_known(_, super.getValue())
-      then mac_name_to_mac_type_known(result, super.getValue())
-      else result = Crypto::OtherMacType()
+    override Crypto::KeyOpAlg::AlgorithmType getAlgorithmType() {
+      if super.getValue().toUpperCase().matches("HMAC%")
+      then result = KeyOpAlg::TMac(KeyOpAlg::HMAC())
+      else
+        if super.getValue().toUpperCase().matches("CMAC%")
+        then result = KeyOpAlg::TMac(KeyOpAlg::CMAC())
+        else result = KeyOpAlg::TMac(KeyOpAlg::OtherMacAlgorithmType())
     }
+
+    override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() {
+      // TODO: trace to any key size initializer?
+      none()
+    }
+
+    override int getKeySizeFixed() {
+      // TODO: are there known fixed key sizes to consider?
+      none()
+    }
+
+    override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() { none() }
+
+    override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
   }
 
   class MacGetInstanceCall extends MethodCall {
@@ -1566,10 +1606,22 @@ module JCAModel {
       )
     }
 
-    override Crypto::ConsumerInputDataFlowNode getMessageConsumer() {
+    override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
       result.asExpr() = super.getArgument(0) and
       super.getMethod().getParameterType(0).hasName("byte[]")
     }
+
+    override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() { result.asExpr() = output }
+
+    override Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() { none() }
+
+    override predicate hasHashAlgorithmConsumer() { none() }
+
+    override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
+      result instanceof Crypto::TMacMode
+    }
+
+    override Crypto::ConsumerInputDataFlowNode getNonceConsumer() { none() }
   }
 
   /*

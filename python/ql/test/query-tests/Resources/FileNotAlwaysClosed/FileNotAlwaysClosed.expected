@@ -1,0 +1,9 @@
+| resources_test.py:4:10:4:25 | ControlFlowNode for open() | File may not be closed if $@ raises an exception. | resources_test.py:5:5:5:33 | ControlFlowNode for Attribute() | this operation |
+| resources_test.py:9:10:9:25 | ControlFlowNode for open() | File is opened but is not closed. | file://:0:0:0:0 | (none) | this operation |
+| resources_test.py:108:11:108:20 | ControlFlowNode for open() | File is opened but is not closed. | file://:0:0:0:0 | (none) | this operation |
+| resources_test.py:112:11:112:28 | ControlFlowNode for opener_func2() | File may not be closed if $@ raises an exception. | resources_test.py:113:5:113:22 | ControlFlowNode for Attribute() | this operation |
+| resources_test.py:123:11:123:24 | ControlFlowNode for opener_func2() | File is opened but is not closed. | file://:0:0:0:0 | (none) | this operation |
+| resources_test.py:129:15:129:24 | ControlFlowNode for open() | File may not be closed if $@ raises an exception. | resources_test.py:130:9:130:26 | ControlFlowNode for Attribute() | this operation |
+| resources_test.py:248:11:248:25 | ControlFlowNode for open() | File is opened but is not closed. | file://:0:0:0:0 | (none) | this operation |
+| resources_test.py:269:10:269:27 | ControlFlowNode for Attribute() | File may not be closed if $@ raises an exception. | resources_test.py:271:5:271:19 | ControlFlowNode for Attribute() | this operation |
+| resources_test.py:285:11:285:20 | ControlFlowNode for open() | File may not be closed if $@ raises an exception. | resources_test.py:287:5:287:31 | ControlFlowNode for Attribute() | this operation |

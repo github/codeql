@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             location = Context.CreateLocation(Location);
             trapFile.commentline(this, Type == CommentLineType.MultilineContinuation ? CommentLineType.Multiline : Type, Text, RawText);
-            trapFile.commentline_location(this, location);
+            WriteLocationToTrap(trapFile.commentline_location, this, location);
         }
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => location?.Symbol;

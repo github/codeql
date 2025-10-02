@@ -964,7 +964,7 @@ module Impl implements RegexTreeViewSig {
    * ```
    */
   class RegExpPositiveLookahead extends RegExpLookahead {
-    RegExpPositiveLookahead() { re.positiveLookaheadAssertionGroup(start, end) }
+    RegExpPositiveLookahead() { re.positiveLookaheadAssertionGroup(start, end, _, _) }
 
     override string getPrimaryQLClass() { result = "RegExpPositiveLookahead" }
   }
@@ -979,7 +979,7 @@ module Impl implements RegexTreeViewSig {
    * ```
    */
   additional class RegExpNegativeLookahead extends RegExpLookahead {
-    RegExpNegativeLookahead() { re.negativeLookaheadAssertionGroup(start, end) }
+    RegExpNegativeLookahead() { re.negativeLookaheadAssertionGroup(start, end, _, _) }
 
     override string getPrimaryQLClass() { result = "RegExpNegativeLookahead" }
   }
@@ -1006,7 +1006,7 @@ module Impl implements RegexTreeViewSig {
    * ```
    */
   class RegExpPositiveLookbehind extends RegExpLookbehind {
-    RegExpPositiveLookbehind() { re.positiveLookbehindAssertionGroup(start, end) }
+    RegExpPositiveLookbehind() { re.positiveLookbehindAssertionGroup(start, end, _, _) }
 
     override string getPrimaryQLClass() { result = "RegExpPositiveLookbehind" }
   }
@@ -1021,7 +1021,7 @@ module Impl implements RegexTreeViewSig {
    * ```
    */
   additional class RegExpNegativeLookbehind extends RegExpLookbehind {
-    RegExpNegativeLookbehind() { re.negativeLookbehindAssertionGroup(start, end) }
+    RegExpNegativeLookbehind() { re.negativeLookbehindAssertionGroup(start, end, _, _) }
 
     override string getPrimaryQLClass() { result = "RegExpNegativeLookbehind" }
   }

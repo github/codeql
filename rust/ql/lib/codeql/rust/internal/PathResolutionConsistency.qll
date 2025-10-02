@@ -9,8 +9,8 @@ private import PathResolution
 query predicate multiplePathResolutions(Path p, ItemNode i) {
   p.fromSource() and
   i = resolvePath(p) and
-  // known limitation for `$crate`
-  not p.getQualifier*().(RelevantPath).isUnqualified("$crate") and
+  // `panic` is defined in both `std` and `core`; both are included in the prelude
+  not p.getText() = "panic" and
   // `use foo::bar` may use both a type `bar` and a value `bar`
   not p =
     any(UseTree use |
@@ -19,7 +19,9 @@ query predicate multiplePathResolutions(Path p, ItemNode i) {
     ).getPath() and
   // avoid overlap with `multipleCallTargets` below
   not p = any(CallExpr ce).getFunction().(PathExpr).getPath() and
-  strictcount(resolvePath(p)) > 1
+  // exclude crates when counting: crates can exist in many versions and configurations,
+  // we deliberately want to exhibit them all
+  strictcount(ItemNode i0 | i0 = resolvePath(p) and not i0 instanceof Crate) > 1
 }
 
 /** Holds if `call` has multiple static call targets including `target`. */

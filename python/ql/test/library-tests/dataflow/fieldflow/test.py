@@ -301,12 +301,12 @@ def set_to_source():
 @expects(4) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
 def test_global_flow_to_class_attribute():
     inst = WithTuple2()
-    SINK_F(WithTuple2.my_tuple[0])
+    SINK_F(WithTuple2.my_tuple[0])  # $ SPURIOUS: flow="SOURCE, l:-5 -> WithTuple2.my_tuple[0]"
     SINK_F(inst.my_tuple[0])
 
     set_to_source()
 
-    SINK(WithTuple2.my_tuple[0]) # $ MISSING: flow="SOURCE, l:-10 -> WithTuple2.my_tuple[0]"
+    SINK(WithTuple2.my_tuple[0]) # $ flow="SOURCE, l:-10 -> WithTuple2.my_tuple[0]"
     SINK(inst.my_tuple[0]) # $ MISSING: flow="SOURCE, l:-11 -> inst.my_tuple[0]"
 
 

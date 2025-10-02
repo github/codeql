@@ -3,11 +3,11 @@ pub mod nested; // I37
 use nested::g; // $ item=I7
 
 pub fn f() {
-    println!("my.rs::f");
+    println!("my.rs::f"); // $ item=println
 } // I38
 
 pub fn h() {
-    println!("my.rs::h");
+    println!("my.rs::h"); // $ item=println
     g(); // $ item=I7
 } // I39
 
@@ -30,7 +30,7 @@ fn int_div(
 ) -> Result<i32> // $ item=my::Result $ item=i32
 {
     if y == 0 {
-        return Err("Div by zero".to_string()); // $ item=Err
+        return Err("Div by zero".to_string()); // $ item=Err item=to_string
     }
     Ok(x / y) // $ item=Ok
 }

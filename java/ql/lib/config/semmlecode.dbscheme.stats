@@ -13987,6 +13987,17 @@
             </dependencies>
         </relation>
         <relation>
+            <name>isImplicitClass</name>
+            <cardinality>4</cardinality>
+            <columnsizes>
+                <e>
+                    <k>classid</k>
+                    <v>4</v>
+                </e>
+            </columnsizes>
+            <dependencies/>
+        </relation>
+        <relation>
             <name>isDefConstr</name>
             <cardinality>139376</cardinality>
             <columnsizes>

@@ -1042,8 +1042,8 @@ private predicate subEdgeIncludingDestructors(Pos p1, Node n1, Node n2, Pos p2) 
  * - `MicrosoftTryFinallyStmt`: On the edge following the `__finally` block for
  *   the case where an exception was thrown and needs to be propagated.
  */
-DestructorCall getSynthesisedDestructorCallAfterNode(Node n, int i) {
-  synthetic_destructor_call(n, i, result)
+DestructorCall getSynthesisedDestructorCallAfterNode(Node node, int index) {
+  synthetic_destructor_call(node, index, result)
 }
 
 /**

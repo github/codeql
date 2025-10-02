@@ -1,0 +1,2 @@
+query: Functions/IncorrectRaiseInSpecialMethod.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

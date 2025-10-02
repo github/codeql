@@ -7,10 +7,9 @@ module;
 import java
 import Dominance
 private import codeql.controlflow.BasicBlock as BB
+private import codeql.controlflow.SuccessorType
 
 private module Input implements BB::InputSig<Location> {
-  import SuccessorType
-
   /** Hold if `t` represents a conditional successor type. */
   predicate successorTypeIsCondition(SuccessorType t) { none() }
 
@@ -23,20 +22,8 @@ private module Input implements BB::InputSig<Location> {
   /** Gets the CFG scope in which this node occurs. */
   CfgScope nodeGetCfgScope(Node node) { node.getEnclosingCallable() = result }
 
-  private Node getASpecificSuccessor(Node node, SuccessorType t) {
-    node.(ConditionNode).getABranchSuccessor(t.(BooleanSuccessor).getValue()) = result
-    or
-    node.getAnExceptionSuccessor() = result and t instanceof ExceptionSuccessor
-  }
-
   /** Gets an immediate successor of this node. */
-  Node nodeGetASuccessor(Node node, SuccessorType t) {
-    result = getASpecificSuccessor(node, t)
-    or
-    node.getASuccessor() = result and
-    t instanceof NormalSuccessor and
-    not result = getASpecificSuccessor(node, _)
-  }
+  Node nodeGetASuccessor(Node node, SuccessorType t) { result = node.getASuccessor(t) }
 
   /**
    * Holds if `node` represents an entry node to be used when calculating
@@ -96,7 +83,17 @@ class BasicBlock extends BbImpl::BasicBlock {
   predicate strictlyDominates(BasicBlock bb) { super.strictlyDominates(bb) }
 
   /** Gets an immediate successor of this basic block of a given type, if any. */
-  BasicBlock getASuccessor(Input::SuccessorType t) { result = super.getASuccessor(t) }
+  BasicBlock getASuccessor(SuccessorType t) { result = super.getASuccessor(t) }
+
+  BasicBlock getASuccessor() { result = super.getASuccessor() }
+
+  BasicBlock getImmediateDominator() { result = super.getImmediateDominator() }
+
+  predicate inDominanceFrontier(BasicBlock df) { super.inDominanceFrontier(df) }
+
+  predicate strictlyPostDominates(BasicBlock bb) { super.strictlyPostDominates(bb) }
+
+  predicate postDominates(BasicBlock bb) { super.postDominates(bb) }
 
   /**
    * DEPRECATED: Use `getASuccessor` instead.
@@ -144,4 +141,16 @@ class BasicBlock extends BbImpl::BasicBlock {
 /** A basic block that ends in an exit node. */
 class ExitBlock extends BasicBlock {
   ExitBlock() { this.getLastNode() instanceof ControlFlow::ExitNode }
+}
+
+private class BasicBlockAlias = BasicBlock;
+
+module Cfg implements BB::CfgSig<Location> {
+  class ControlFlowNode = BbImpl::ControlFlowNode;
+
+  class BasicBlock = BasicBlockAlias;
+
+  class EntryBasicBlock extends BasicBlock instanceof BbImpl::EntryBasicBlock { }
+
+  predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) { BbImpl::dominatingEdge(bb1, bb2) }
 }

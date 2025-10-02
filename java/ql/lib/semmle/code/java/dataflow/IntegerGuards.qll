@@ -10,7 +10,7 @@ private import RangeUtils
 private import RangeAnalysis
 
 /** Gets an expression that might have the value `i`. */
-private Expr exprWithIntValue(int i) {
+deprecated private Expr exprWithIntValue(int i) {
   result.(ConstantIntegerExpr).getIntValue() = i or
   result.(ChooseExpr).getAResultExpr() = exprWithIntValue(i)
 }
@@ -19,11 +19,11 @@ private Expr exprWithIntValue(int i) {
  * An expression for which the predicate `integerGuard` is relevant.
  * This includes `VarRead` and `MethodCall`.
  */
-class IntComparableExpr extends Expr {
+deprecated class IntComparableExpr extends Expr {
   IntComparableExpr() { this instanceof VarRead or this instanceof MethodCall }
 
   /** Gets an integer that is directly assigned to the expression in case of a variable; or zero. */
-  int relevantInt() {
+  deprecated int relevantInt() {
     exists(SsaExplicitUpdate ssa, SsaSourceVariable v |
       this = v.getAnAccess() and
       ssa.getSourceVariable() = v and
@@ -55,6 +55,9 @@ private predicate comparison(ComparisonExpr comp, boolean branch, Expr e1, Expr 
  * Holds if `guard` evaluating to `branch` ensures that:
  * `e <= k` when `upper = true`
  * `e >= k` when `upper = false`
+ *
+ * Does _not_ include the constant comparison case where the guard directly
+ * ensures `e == k`.
  */
 pragma[nomagic]
 predicate rangeGuard(Expr guard, boolean branch, Expr e, int k, boolean upper) {
@@ -62,7 +65,8 @@ predicate rangeGuard(Expr guard, boolean branch, Expr e, int k, boolean upper) {
     eqtest = guard and
     eqtest.hasOperands(e, c) and
     bounded(c, any(ZeroBound zb), k, upper, _) and
-    branch = eqtest.polarity()
+    branch = eqtest.polarity() and
+    not c instanceof ConstantIntegerExpr
   )
   or
   exists(Expr c, int val, boolean strict, int d |
@@ -87,6 +91,30 @@ predicate rangeGuard(Expr guard, boolean branch, Expr e, int k, boolean upper) {
 }
 
 /**
+ * Gets an expression that directly tests whether a given expression, `e`, is
+ * non-zero.
+ */
+Expr nonZeroGuard(Expr e, boolean branch) {
+  exists(EqualityTest eqtest, boolean polarity, int k |
+    eqtest = result and
+    eqtest.hasOperands(e, any(ConstantIntegerExpr c | c.getIntValue() = k)) and
+    polarity = eqtest.polarity()
+  |
+    k = 0 and branch = polarity.booleanNot()
+    or
+    k != 0 and branch = polarity
+  )
+  or
+  exists(int val, boolean upper | rangeGuard(result, branch, e, val, upper) |
+    upper = true and val < 0 // e <= val < 0  ==>  e != 0
+    or
+    upper = false and val > 0 // e >= val > 0  ==>  e != 0
+  )
+}
+
+/**
+ * DEPRECATED.
+ *
  * An expression that directly tests whether a given expression is equal to `k` or not.
  * The set of `k`s is restricted to those that are relevant for the expression or
  * have a direct comparison with the expression.
@@ -95,7 +123,7 @@ predicate rangeGuard(Expr guard, boolean branch, Expr e, int k, boolean upper) {
  * is true, and different from `k` if `is_k` is false.
  */
 pragma[nomagic]
-Expr integerGuard(IntComparableExpr e, boolean branch, int k, boolean is_k) {
+deprecated Expr integerGuard(IntComparableExpr e, boolean branch, int k, boolean is_k) {
   exists(EqualityTest eqtest, boolean polarity |
     eqtest = result and
     eqtest.hasOperands(e, any(ConstantIntegerExpr c | c.getIntValue() = k)) and
@@ -119,13 +147,15 @@ Expr integerGuard(IntComparableExpr e, boolean branch, int k, boolean is_k) {
 }
 
 /**
+ * DEPRECATED: Use `rangeGuard` instead.
+ *
  * A guard that splits the values of a variable into one range with an upper bound of `k-1`
  * and one with a lower bound of `k`.
  *
  * If `branch_with_lower_bound_k` is true then `result` is equivalent to `k <= x`
  * and if it is false then `result` is equivalent to `k > x`.
  */
-Expr intBoundGuard(VarRead x, boolean branch_with_lower_bound_k, int k) {
+deprecated Expr intBoundGuard(VarRead x, boolean branch_with_lower_bound_k, int k) {
   exists(ComparisonExpr comp, ConstantIntegerExpr c, int val |
     comp = result and
     comp.hasOperands(x, c) and

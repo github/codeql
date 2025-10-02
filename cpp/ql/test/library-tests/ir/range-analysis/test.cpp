@@ -146,3 +146,14 @@ void nonterminating_without_operands_as_ssa(X *x) {
     x->n--;
   }
 }
+
+void test_with_irreduble_cfg(int i, int x) {
+  if (x < i) {
+  } else {
+    goto inLoop;
+  }
+  for(; i < x; i++) {
+    inLoop:
+    range(i); // $ range="<=InitializeParameter: x+0"
+  }
+}

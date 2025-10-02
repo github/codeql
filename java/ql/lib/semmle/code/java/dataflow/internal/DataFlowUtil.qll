@@ -83,6 +83,7 @@ overlay[caller?]
 pragma[inline]
 predicate localFlow(Node node1, Node node2) { node1 = node2 or localFlowStepPlus(node1, node2) }
 
+overlay[caller?]
 private predicate localFlowStepPlus(Node node1, Node node2) = fastTC(localFlowStep/2)(node1, node2)
 
 /**
@@ -263,8 +264,8 @@ class Content extends TContent {
 
   /**
    * Holds if this element is at the specified location.
-   * The location spans column `startcolumn` of line `startline` to
-   * column `endcolumn` of line `endline` in file `filepath`.
+   * The location spans column `sc` of line `sl` to
+   * column `ec` of line `el` in file `path`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
@@ -362,8 +363,8 @@ class ContentSet instanceof Content {
 
   /**
    * Holds if this element is at the specified location.
-   * The location spans column `startcolumn` of line `startline` to
-   * column `endcolumn` of line `endline` in file `filepath`.
+   * The location spans column `sc` of line `sl` to
+   * column `ec` of line `el` in file `path`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */

@@ -1,3 +1,32 @@
+## 1.5.1
+
+No user-facing changes.
+
+## 1.5.0
+
+### Major Analysis Improvements
+
+* The queries `cpp/wrong-type-format-argument`, `cpp/comparison-with-wider-type`, `cpp/integer-multiplication-cast-to-long`, `cpp/implicit-function-declaration` and `cpp/suspicious-add-sizeof` have had their precisions reduced from `high` to `medium`. They will also now give alerts for projects built with `build-mode: none`.
+* The queries `cpp/wrong-type-format-argument`, `cpp/comparison-with-wider-type`, `cpp/integer-multiplication-cast-to-long` and `cpp/suspicious-add-sizeof` are no longer included in the `code-scanning` suite.
+
+### Bug Fixes
+
+* The predicate `occurenceCount` in the file module `MagicConstants` has been deprecated. Use `occurrenceCount` instead.
+* The predicate `additionalAdditionOrSubstractionCheckForLeapYear` in the file module `LeapYear` has been deprecated. Use `additionalAdditionOrSubtractionCheckForLeapYear` instead.
+
+## 1.4.7
+
+### Bug Fixes
+
+* Fixed an inconsistency across languages where most have a `Customizations.qll` file for adding customizations, but not all did.
+
+## 1.4.6
+
+### Minor Analysis Improvements
+
+* The `cpp/short-global-name` query will no longer give alerts for instantiations of template variables, only for the template itself.
+* Fixed a false positive in `cpp/overflow-buffer` when the type of the destination buffer is a reference to a class/struct type.
+
 ## 1.4.5
 
 ### Minor Analysis Improvements

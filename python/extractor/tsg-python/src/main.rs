@@ -480,6 +480,102 @@ pub mod extra_functions {
     }
 }
 
+struct TreeIterator<'a> {
+    nodes_to_visit: Vec<tree_sitter::Node<'a>>,
+}
+
+impl<'a> TreeIterator<'a> {
+    fn new(root: tree_sitter::Node<'a>) -> Self {
+        Self {
+            nodes_to_visit: vec![root],
+        }
+    }
+}
+
+impl<'a> Iterator for TreeIterator<'a> {
+    type Item = tree_sitter::Node<'a>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if let Some(node) = self.nodes_to_visit.pop() {
+            // Add all children to the queue for processing
+            let children: Vec<_> = (0..node.child_count())
+                .rev()
+                .filter_map(|i| node.child(i))
+                .collect();
+            self.nodes_to_visit.extend(children);
+            Some(node)
+        } else {
+            None
+        }
+    }
+}
+
+#[derive(Debug, Clone)]
+struct SyntaxError {
+    start_pos: tree_sitter::Point,
+    end_pos: tree_sitter::Point,
+    source: String,
+}
+
+fn syntax_errors_from_tree<'a>(
+    root: tree_sitter::Node<'a>,
+    source: &'a str,
+) -> impl Iterator<Item = SyntaxError> + 'a {
+    TreeIterator::new(root)
+        .filter(|&node| node.is_error() || node.is_missing())
+        .map(move |node| {
+            let start_pos = node.start_position();
+            let end_pos = node.end_position();
+            let text = &source.get(node.byte_range()).unwrap_or("");
+            SyntaxError {
+                start_pos,
+                end_pos,
+                source: text.to_string(),
+            }
+        })
+}
+
+fn add_syntax_error_nodes(graph: &mut tree_sitter_graph::graph::Graph, errors: &[SyntaxError]) {
+    for error in errors {
+        let error_node = graph.add_graph_node();
+
+        // Add _kind attribute
+        graph[error_node]
+            .attributes
+            .add(
+                tree_sitter_graph::Identifier::from("_kind"),
+                tree_sitter_graph::graph::Value::String("SyntaxErrorNode".to_string()),
+            )
+            .expect("Fresh node should not have duplicate attributes");
+
+        // Add _location attribute
+        let location = tree_sitter_graph::graph::Value::List(
+            vec![
+                error.start_pos.row,
+                error.start_pos.column,
+                error.end_pos.row,
+                error.end_pos.column,
+            ]
+            .into_iter()
+            .map(|v| tree_sitter_graph::graph::Value::from(v as u32))
+            .collect(),
+        );
+        graph[error_node]
+            .attributes
+            .add(tree_sitter_graph::Identifier::from("_location"), location)
+            .expect("Fresh node should not have duplicate attributes");
+
+        // Add source attribute
+        graph[error_node]
+            .attributes
+            .add(
+                tree_sitter_graph::Identifier::from("source"),
+                tree_sitter_graph::graph::Value::String(error.source.clone()),
+            )
+            .expect("Fresh node should not have duplicate attributes");
+    }
+}
+
 fn main() -> Result<()> {
     let matches = Command::new("tsg-python")
         .version(BUILD_VERSION)
@@ -502,7 +598,7 @@ fn main() -> Result<()> {
     let source_path = Path::new(matches.get_one::<String>("source").unwrap());
     let language = tsp::language();
     let mut parser = Parser::new();
-    parser.set_language(language)?;
+    parser.set_language(&language)?;
     // Statically include `python.tsg`:
     let tsg = if matches.contains_id("tsg") {
         std::fs::read(&tsg_path).with_context(|| format!("Error reading TSG file {}", tsg_path))?
@@ -581,10 +677,18 @@ fn main() -> Result<()> {
     );
 
     let globals = Variables::new();
-    let mut config = ExecutionConfig::new(&mut functions, &globals).lazy(false);
-    let graph = file
-        .execute(&tree, &source, &mut config, &NoCancellation)
+    let config = ExecutionConfig::new(&functions, &globals).lazy(false);
+    let mut graph = file
+        .execute(&tree, &source, &config, &NoCancellation)
         .with_context(|| format!("Could not execute TSG file {}", tsg_path))?;
+
+    // Collect and add syntax error nodes to the graph
+    if tree.root_node().has_error() {
+        let syntax_errors: Vec<SyntaxError> =
+            syntax_errors_from_tree(tree.root_node(), &source).collect();
+        add_syntax_error_nodes(&mut graph, &syntax_errors);
+    }
+
     print!("{}", graph.pretty_print());
     Ok(())
 }

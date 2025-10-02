@@ -109,7 +109,7 @@ predicate lessThanOrEqual(IRGuardCondition g, Expr e, boolean branch) {
     g.comparesEq(left, _, _, true, branch)
   |
     interestingLessThanOrEqual(left) and
-    left.getDef().getUnconvertedResultExpression() = e
+    left.getDef().getConvertedResultExpression() = e
   )
 }
 
