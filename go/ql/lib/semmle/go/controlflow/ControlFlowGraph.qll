@@ -225,12 +225,14 @@ module ControlFlow {
     }
 
     /**
-     * DEPRECATED: Use the disjunct of `writesElement` and `writesField` instead.
+     * DEPRECATED: Use the disjunct of `writesElement` and `writesField`, or `writesFieldPreUpdate`
+     * and `writesElementPreUpdate`, instead.
      *
-     * Holds if this node sets any field or element of `base` to `rhs`.
+     * Holds if this node sets any field or element of `base` (or its implicit dereference) to
+     * `rhs`, where `base` represents the pre-update value.
      */
     deprecated predicate writesComponent(DataFlow::Node base, DataFlow::Node rhs) {
-      this.writesElement(base, _, rhs) or this.writesField(base, _, rhs)
+      this.writesElementPreUpdate(base, _, rhs) or this.writesFieldPreUpdate(base, _, rhs)
     }
 
     /**
