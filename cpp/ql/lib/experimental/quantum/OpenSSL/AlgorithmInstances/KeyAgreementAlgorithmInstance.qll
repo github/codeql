@@ -37,7 +37,8 @@ class KnownOpenSslKeyAgreementConstantAlgorithmInstance extends OpenSslAlgorithm
       // Sink is an argument to a CipherGetterCall
       sink = getterCall.getInputNode() and
       // Source is `this`
-      src.asExpr() = this and
+      // NOTE: src literals can be ints or strings, so need to consider asExpr and asIndirectExpr
+      this = [src.asExpr(), src.asIndirectExpr()] and
       // This traces to a getter
       KnownOpenSslAlgorithmToAlgorithmValueConsumerFlow::flow(src, sink)
     )
