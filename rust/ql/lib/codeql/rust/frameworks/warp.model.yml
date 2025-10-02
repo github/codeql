@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      - ["<_ as warp::filter::Filter>::then", "Argument[0].Parameter[0..7]", "remote", "manual"]
+      - ["<_ as warp::filter::Filter>::map", "Argument[0].Parameter[0..7]", "remote", "manual"]
+      - ["<_ as warp::filter::Filter>::and_then", "Argument[0].Parameter[0..7]", "remote", "manual"]

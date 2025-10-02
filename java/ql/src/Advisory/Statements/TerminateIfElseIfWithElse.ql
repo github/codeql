@@ -6,7 +6,9 @@
  * @problem.severity recommendation
  * @precision medium
  * @id java/non-terminated-if-else-if-chain
- * @tags reliability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import java

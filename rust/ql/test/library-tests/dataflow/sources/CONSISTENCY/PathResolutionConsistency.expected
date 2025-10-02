@@ -11,6 +11,8 @@ multipleCallTargets
 | test.rs:179:30:179:68 | ...::_print(...) |
 | test.rs:188:26:188:105 | ...::_print(...) |
 | test.rs:229:22:229:72 | ... .read_to_string(...) |
+| test.rs:664:22:664:43 | file.read(...) |
+| test.rs:673:22:673:41 | f1.read(...) |
 | test.rs:697:18:697:38 | ...::_print(...) |
 | test.rs:702:18:702:45 | ...::_print(...) |
 | test.rs:720:38:720:42 | ...::_print(...) |

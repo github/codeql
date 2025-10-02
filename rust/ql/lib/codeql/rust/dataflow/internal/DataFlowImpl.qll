@@ -263,7 +263,7 @@ module LocalFlow {
     or
     // An edge from a pattern/expression to its corresponding SSA definition.
     nodeFrom.(AstCfgFlowNode).getCfgNode() =
-      nodeTo.(SsaNode).asDefinition().(Ssa::WriteDefinition).getControlFlowNode()
+      nodeTo.(SsaNode).asDefinition().(Ssa::WriteDefinition).getWriteAccess()
     or
     nodeFrom.(SourceParameterNode).getParameter().(ParamCfgNode).getPat() = nodeTo.asPat()
     or
@@ -508,7 +508,8 @@ module RustDataFlow implements InputSig<Location> {
    */
   predicate jumpStep(Node node1, Node node2) {
     FlowSummaryImpl::Private::Steps::summaryJumpStep(node1.(FlowSummaryNode).getSummaryNode(),
-      node2.(FlowSummaryNode).getSummaryNode())
+      node2.(FlowSummaryNode).getSummaryNode()) or
+    FlowSummaryImpl::Private::Steps::sourceJumpStep(node1.(FlowSummaryNode).getSummaryNode(), node2)
   }
 
   pragma[nomagic]

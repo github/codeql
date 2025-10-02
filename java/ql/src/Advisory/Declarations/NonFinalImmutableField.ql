@@ -7,7 +7,10 @@
  * @problem.severity recommendation
  * @precision medium
  * @id java/non-final-immutable-field
- * @tags reliability
+ * @tags quality
+ *       reliability
+ *       correctness
+ *       readability
  */
 
 import java

@@ -76,3 +76,6 @@ node_modules/
 # some upgrade/downgrade checks create these files
 **/upgrades/*/*.dbscheme.stats
 **/downgrades/*/*.dbscheme.stats
+
+# Mergetool files
+*.orig

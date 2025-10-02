@@ -100,8 +100,8 @@ rust_library(
         "@vendor_ts__icu_locale_core-2.0.0//:icu_locale_core",
         "@vendor_ts__icu_properties_data-2.0.1//:icu_properties_data",
         "@vendor_ts__icu_provider-2.0.0//:icu_provider",
-        "@vendor_ts__potential_utf-0.1.2//:potential_utf",
+        "@vendor_ts__potential_utf-0.1.3//:potential_utf",
         "@vendor_ts__zerotrie-0.2.2//:zerotrie",
-        "@vendor_ts__zerovec-0.11.2//:zerovec",
+        "@vendor_ts__zerovec-0.11.4//:zerovec",
     ],
 )

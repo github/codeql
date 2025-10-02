@@ -7,11 +7,19 @@ fn g() {
 
 pub use nested2::nested5::*; // $ item=I114
 
-pub use nested2::nested7::nested8::{self}; // $ item=I118
+#[rustfmt::skip]
+pub use nested2::nested7::nested8::{ // $ item=I118
+    self, // $ item=I118
+    f as nested8_f // $ item=I119
+};
+
+use nested2::nested5::nested6::f as nested6_f; // $ item=I116
+
+use std::ops::Deref; // $ item=Deref
 
 pub mod my3;
 
 #[path = "renamed.rs"]
 mod mymod;
 
-use mymod::f; // $ item=I1001
+pub use mymod::f; // $ item=I1001
