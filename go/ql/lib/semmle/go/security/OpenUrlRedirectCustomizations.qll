@@ -75,25 +75,18 @@ module OpenUrlRedirect {
     }
   }
 
-  bindingset[var, w]
-  pragma[inline_late]
-  private predicate useIsDominated(SsaWithFields var, Write w, DataFlow::ReadNode sanitizedRead) {
-    w.dominatesNode(sanitizedRead.asInstruction()) and
-    sanitizedRead = var.getAUse()
-  }
-
   /**
-   * An access to a variable that is preceded by an assignment to its `Path` field.
+   * An assignment of a safe value to the field `Path`, considered as a barrier for sanitizing
+   * untrusted URLs.
    *
    * This is overapproximate; this will currently remove flow through all `Url.Path` assignments
    * which contain a substring that could sanitize data.
    */
-  class PathAssignmentBarrier extends Barrier, Read {
+  class PathAssignmentBarrier extends Barrier {
     PathAssignmentBarrier() {
-      exists(Write w, SsaWithFields var |
-        hasHostnameSanitizingSubstring(w.getRhs()) and
-        w.writesField(var.getAUse(), any(Field f | f.getName() = "Path"), _) and
-        useIsDominated(var, w, this)
+      exists(Write w, DataFlow::Node rhs |
+        hasHostnameSanitizingSubstring(rhs) and
+        w.writesFieldPreUpdate(this, any(Field f | f.getName() = "Path"), rhs)
       )
     }
   }

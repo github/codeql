@@ -98,8 +98,8 @@ predicate hostCheckReachesSink(Flow::PathNode sink) {
         Flow::flowPath(source, otherSink) and
         Config::writeIsSink(sink.getNode(), sinkWrite) and
         Config::writeIsSink(otherSink.getNode(), otherSinkWrite) and
-        sinkWrite.writesField(sinkAccessPath.getAUse(), _, sink.getNode()) and
-        otherSinkWrite.writesField(otherSinkAccessPath.getAUse(), _, otherSink.getNode()) and
+        sinkWrite.writesFieldPreUpdate(sinkAccessPath.getAUse(), _, sink.getNode()) and
+        otherSinkWrite.writesFieldPreUpdate(otherSinkAccessPath.getAUse(), _, otherSink.getNode()) and
         otherSinkAccessPath = sinkAccessPath.similar()
       )
     )
