@@ -1244,10 +1244,7 @@ module JCAModel {
 
     override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
 
-    override string getRawAlgorithmName() {
-      // Note: hardcoding "hmac" since that should be the only option
-      result = "Hmac"
-    }
+    override string getRawAlgorithmName() { result = this.(StringLiteral).getValue() }
   }
 
   class Pbkdf2WithHmac_HashAlgorithmStringLiteral extends Crypto::HashAlgorithmInstance instanceof Pbkdf2WithHmac_KeyOperationAlgorithmStringLiteral
