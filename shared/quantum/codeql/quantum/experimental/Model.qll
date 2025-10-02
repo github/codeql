@@ -1633,7 +1633,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     override string getInternalType() { result = "HMACAlgorithm" }
 
-    NodeBase getHashAlgorithmOrUnknown() {
+    HashAlgorithmNode getHashAlgorithmOrUnknown() {
       result.asElement() = hmacInstance.getHashAlgorithmValueConsumer().getASource()
     }
 

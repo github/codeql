@@ -1265,23 +1265,39 @@ module JCAModel {
     override int getFixedDigestLength() { exists(hash_name_to_type_known(hashName, result)) }
   }
 
-  //TODO: handle PBE
-  class Pbkdf2AlgorithmStringLiteral extends KdfAlgorithmStringLiteral,
-    Crypto::Pbkdf2AlgorithmInstance, Crypto::HmacAlgorithmInstance
+  //TODO: handle PBE "with" cases
+  class Pbkdf2WithHmac_Pbkdf2AlgorithmInstance extends Crypto::Pbkdf2AlgorithmInstance,
+    KdfAlgorithmStringLiteral, // this is a parent already, but extending to have immediate access to 'getConsumer()'
+    Pbkdf2WithHmac_KeyOperationAlgorithmStringLiteral
   {
-    Pbkdf2AlgorithmStringLiteral() { super.getKdfType() instanceof Crypto::PBKDF2 }
+    override Crypto::AlgorithmValueConsumer getHmacAlgorithmValueConsumer() {
+      result = this.getConsumer()
+    }
+  }
 
-    override Crypto::AlgorithmValueConsumer getHmacAlgorithmValueConsumer() { result = this }
+  // NOTE: must use instanceof to avoid non-monotonic recursion
+  class Pbkdf2WithHmac_HmacAlgorithmInstance extends Crypto::HmacAlgorithmInstance instanceof Pbkdf2WithHmac_KeyOperationAlgorithmStringLiteral
+  {
+    override Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() {
+      result = this.(KdfAlgorithmStringLiteral).getConsumer()
+    }
 
-    override Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() { result = this }
+    override int getKeySizeFixed() {
+      // already defined by parent key operation algorithm, but extending an instance
+      // still requires we override this method
+      result = super.getKeySizeFixed()
+    }
 
-    override int getKeySizeFixed() { none() }
-
-    override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() { none() }
+    override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() {
+      // already defined by parent key operation algorithm, but extending an instance
+      // still requires we override this method
+      result = super.getKeySizeConsumer()
+    }
 
     override string getRawAlgorithmName() {
-      // Note: hard coding "hmac" since that should be the only option
-      result = "Hmac"
+      // already defined by parent key operation algorithm, but extending an instance
+      // still requires we override this method
+      result = super.getRawAlgorithmName()
     }
 
     override Crypto::KeyOpAlg::AlgorithmType getAlgorithmType() {
