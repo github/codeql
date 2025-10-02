@@ -58,3 +58,7 @@ type_location
 | A.cs:12:14:12:15 | A2 | A.cs:12:14:12:15 | A.cs:12:14:12:15 |
 | B.cs:3:14:3:14 | B | B.cs:3:14:3:14 | B.cs:3:14:3:14 |
 | C.cs:3:7:3:7 | C | C.cs:3:7:3:7 | C.cs:3:7:3:7 |
+| Multiple1.cs:1:22:1:29 | Multiple | Multiple1.cs:1:22:1:29 | Multiple1.cs:1:22:1:29 |
+| Multiple1.cs:1:22:1:29 | Multiple | Multiple2.cs:1:22:1:29 | Multiple2.cs:1:22:1:29 |
+| Multiple2.cs:1:22:1:29 | Multiple | Multiple1.cs:1:22:1:29 | Multiple1.cs:1:22:1:29 |
+| Multiple2.cs:1:22:1:29 | Multiple | Multiple2.cs:1:22:1:29 | Multiple2.cs:1:22:1:29 |
