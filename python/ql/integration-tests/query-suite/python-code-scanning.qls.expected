@@ -13,8 +13,10 @@ ql/python/ql/src/Security/CWE-079/ReflectedXss.ql
 ql/python/ql/src/Security/CWE-089/SqlInjection.ql
 ql/python/ql/src/Security/CWE-090/LdapInjection.ql
 ql/python/ql/src/Security/CWE-094/CodeInjection.ql
+ql/python/ql/src/Security/CWE-1004/NonHttpOnlyCookie.ql
 ql/python/ql/src/Security/CWE-113/HeaderInjection.ql
 ql/python/ql/src/Security/CWE-116/BadTagFilter.ql
+ql/python/ql/src/Security/CWE-1275/SameSiteNoneCookie.ql
 ql/python/ql/src/Security/CWE-209/StackTraceExposure.ql
 ql/python/ql/src/Security/CWE-215/FlaskDebug.ql
 ql/python/ql/src/Security/CWE-285/PamAuthorization.ql
