@@ -5,7 +5,7 @@
  * @kind problem
  * @problem.severity error
  * @security-severity 7.5
- * @precision high
+ * @precision medium
  * @id cpp/wrong-type-format-argument
  * @tags reliability
  *       correctness
@@ -154,7 +154,6 @@ int sizeof_IntType() { exists(IntType it | result = it.getSize()) }
 
 from FormattingFunctionCall ffc, int n, Expr arg, Type expected, Type actual
 where
-  not any(Compilation c).buildModeNone() and
   (
     formattingFunctionCallExpectedType(ffc, n, expected) and
     formattingFunctionCallActualType(ffc, n, arg, actual) and

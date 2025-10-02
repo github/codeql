@@ -2,5 +2,5 @@ multipleCallTargets
 | main.rs:14:13:14:29 | ...::from(...) |
 | main.rs:15:13:15:29 | ...::from(...) |
 | unreachable.rs:165:20:165:42 | ...::from(...) |
-| unreachable.rs:171:9:171:17 | ...::from(...) |
+| unreachable.rs:171:9:171:15 | ...::from(...) |
 | unreachable.rs:177:17:177:25 | ...::from(...) |

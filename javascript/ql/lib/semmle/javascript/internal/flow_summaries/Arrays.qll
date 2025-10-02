@@ -1,7 +1,7 @@
 /**
  * Contains a summary for relevant methods on arrays.
  *
- * Note that some of Array methods are modelled in `AmbiguousCoreMethods.qll`, and `toString` is special-cased elsewhere.
+ * Note that some of Array methods are modeled in `AmbiguousCoreMethods.qll`, and `toString` is special-cased elsewhere.
  */
 
 private import javascript
@@ -60,7 +60,7 @@ private predicate isForLoopVariable(Variable v) {
 
 private predicate isLikelyArrayIndex(Expr e) {
   // Require that 'e' is of type number and refers to a for-loop variable.
-  // TODO: This is here to mirror the old behaviour. Experiment with turning the 'and' into an 'or'.
+  // TODO: This is here to mirror the old behavior. Experiment with turning the 'and' into an 'or'.
   TTNumber() = unique(InferredType type | type = e.flow().analyze().getAType()) and
   isForLoopVariable(e.(VarAccess).getVariable())
   or
@@ -114,7 +114,7 @@ class ArrayConstructorSummary extends SummarizedCallable {
 /**
  * A call to `join` with a separator argument.
  *
- * Calls without separators are modelled in `StringConcatenation.qll`.
+ * Calls without separators are modeled in `StringConcatenation.qll`.
  */
 class Join extends SummarizedCallable {
   Join() { this = "Array#join" }
@@ -539,6 +539,25 @@ class ToSpliced extends SummarizedCallable {
       output = "ReturnValue.ArrayElement"
       or
       input = "Argument[2..]" and
+      output = "ReturnValue.ArrayElement"
+    )
+  }
+}
+
+class With extends SummarizedCallable {
+  With() { this = "Array#with" }
+
+  override InstanceCall getACallSimple() { result.getMethodName() = "with" }
+
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    preservesValue = true and
+    (
+      // Copy all elements from the original array to the new array
+      input = "Argument[this].WithArrayElement" and
+      output = "ReturnValue"
+      or
+      // Replace the value at the specified index
+      input = "Argument[1]" and
       output = "ReturnValue.ArrayElement"
     )
   }

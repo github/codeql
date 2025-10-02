@@ -13,12 +13,16 @@
 
 import go
 
+private Expr getConstantInitialiser(Expr e) {
+  exists(DeclaredConstant c | e = c.getAReference() | result = c.getInit())
+}
+
 /** Holds if `e` is not 0 and is either an octal or hexadecimal literal, or the number one. */
 predicate maybeXorBitPattern(Expr e) {
   // 0 makes no sense as an xor bit pattern
   not e.getNumericValue() = 0 and
   // include octal and hex literals
-  e.(IntLit).getText().matches("0%")
+  [e, getConstantInitialiser(e)].(IntLit).getText().matches("0%")
   or
   e.getNumericValue() = 1
 }

@@ -4,21 +4,16 @@
  */
 
 private import internal.ForTypeReprImpl
-import codeql.rust.elements.GenericParamList
+import codeql.rust.elements.ForBinder
 import codeql.rust.elements.TypeRepr
 
 /**
- * A higher-ranked trait bound.
+ * A function pointer type with a `for` modifier.
  *
  * For example:
  * ```rust
- * fn foo<T>(value: T)
- * where
- *     T: for<'a> Fn(&'a str) -> &'a str
- * //     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- * {
- *     // ...
- * }
+ * type RefOp<X> = for<'a> fn(&'a X) -> &'a X;
+ * //              ^^^^^^^^^^^^^^^^^^^^^^^^^^
  * ```
  */
 final class ForTypeRepr = Impl::ForTypeRepr;

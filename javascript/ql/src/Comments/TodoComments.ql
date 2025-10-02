@@ -5,7 +5,9 @@
  * @kind problem
  * @problem.severity recommendation
  * @id js/todo-comment
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
  *       external/cwe/cwe-546
  * @precision medium
  */

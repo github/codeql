@@ -46,9 +46,7 @@ string getKind(MemberDeclaration m) {
  * A call-signature that originates from a MethodSignature in the AST.
  */
 private class MethodCallSig extends Function {
-  private MethodSignature signature;
-
-  MethodCallSig() { this = signature.getBody() }
+  MethodCallSig() { this = any(MethodSignature signature).getBody() }
 
   int getNumOptionalParameter() {
     result = count(Parameter p | p = this.getParameter(_) and p.isDeclaredOptional())

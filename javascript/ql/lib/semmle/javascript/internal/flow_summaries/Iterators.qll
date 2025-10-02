@@ -1,5 +1,5 @@
 /**
- * Contains flow summaries and steps modelling flow through iterators.
+ * Contains flow summaries and steps modeling flow through iterators.
  */
 
 private import javascript

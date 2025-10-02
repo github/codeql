@@ -12,7 +12,7 @@ is likely to be able to run malicious LDAP queries.</p>
 <p>If user input must be included in an LDAP query, it should be escaped to
 avoid a malicious user providing special characters that change the meaning
 of the query. If possible, use an existing library, such as the AntiXSS
-library.</p>
+library. One may also make their own encoder filter <code>`LdapEncode`</code> following RFC 4515 standards.</p>
 </recommendation>
 
 <example>
@@ -35,7 +35,6 @@ the query cannot be changed by a malicious user.</p>
 <references>
 <li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/LDAP_Injection_Prevention_Cheat_Sheet.html">LDAP Injection Prevention Cheat Sheet</a>.</li>
 <li>OWASP: <a href="https://www.owasp.org/index.php/Preventing_LDAP_Injection_in_Java">Preventing LDAP Injection in Java</a>.</li>
-<li>AntiXSS doc: <a href="http://www.nudoq.org/#!/Packages/AntiXSS/AntiXssLibrary/Encoder/M/LdapFilterEncode">LdapFilterEncode</a>.</li>
-<li>AntiXSS doc: <a href="http://www.nudoq.org/#!/Packages/AntiXSS/AntiXssLibrary/Encoder/M/LdapDistinguishedNameEncode">LdapDistinguishedNameEncode</a>.</li>
+<li>RFC 4515: <a href="https://datatracker.ietf.org/doc/html/rfc4515#section-3">String Search Filter Definition</a>.</li>
 </references>
 </qhelp>

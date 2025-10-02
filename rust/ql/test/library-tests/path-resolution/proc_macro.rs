@@ -8,5 +8,11 @@ pub fn add_suffix(attr: TokenStream, item: TokenStream) -> TokenStream {
     ast.sig.ident = syn::Ident::new(&format!("{}_{}", ast.sig.ident, suff), ast.sig.ident.span());
     quote! {
         #ast
-    }.into()
+    }
+    .into()
+}
+
+#[proc_macro_attribute]
+pub fn identity(_attr: TokenStream, item: TokenStream) -> TokenStream {
+    item
 }

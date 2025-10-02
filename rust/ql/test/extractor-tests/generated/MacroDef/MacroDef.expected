@@ -1,7 +1,5 @@
 instances
 | gen_macro_def.rs:4:5:9:5 | MacroDef |
-getExtendedCanonicalPath
-getCrateOrigin
 getAttributeMacroExpansion
 getArgs
 | gen_macro_def.rs:4:5:9:5 | MacroDef | gen_macro_def.rs:7:25:7:39 | TokenTree |

@@ -1,7 +1,6 @@
 /** Provides classes for working with locations and program elements that have locations. */
 
 import javascript
-private import internal.Locations
 
 /**
  * A location as given by a file, a start line, a start column,
@@ -11,31 +10,31 @@ private import internal.Locations
  *
  * For more information about locations see [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
  */
-class DbLocation extends TDbLocation {
+final class Location extends @location_default {
   /** Gets the file for this location. */
-  File getFile() { dbLocationInfo(this, result, _, _, _, _) }
+  File getFile() { locations_default(this, result, _, _, _, _) }
 
   /** Gets the 1-based line number (inclusive) where this location starts. */
-  int getStartLine() { dbLocationInfo(this, _, result, _, _, _) }
+  int getStartLine() { locations_default(this, _, result, _, _, _) }
 
   /** Gets the 1-based column number (inclusive) where this location starts. */
-  int getStartColumn() { dbLocationInfo(this, _, _, result, _, _) }
+  int getStartColumn() { locations_default(this, _, _, result, _, _) }
 
   /** Gets the 1-based line number (inclusive) where this location ends. */
-  int getEndLine() { dbLocationInfo(this, _, _, _, result, _) }
+  int getEndLine() { locations_default(this, _, _, _, result, _) }
 
   /** Gets the 1-based column number (inclusive) where this location ends. */
-  int getEndColumn() { dbLocationInfo(this, _, _, _, _, result) }
+  int getEndColumn() { locations_default(this, _, _, _, _, result) }
 
   /** Gets the number of lines covered by this location. */
   int getNumLines() { result = this.getEndLine() - this.getStartLine() + 1 }
 
   /** Holds if this location starts before location `that`. */
   pragma[inline]
-  predicate startsBefore(DbLocation that) {
-    exists(File f, int sl1, int sc1, int sl2, int sc2 |
-      dbLocationInfo(this, f, sl1, sc1, _, _) and
-      dbLocationInfo(that, f, sl2, sc2, _, _)
+  predicate startsBefore(Location that) {
+    exists(string f, int sl1, int sc1, int sl2, int sc2 |
+      this.hasLocationInfo(f, sl1, sc1, _, _) and
+      that.hasLocationInfo(f, sl2, sc2, _, _)
     |
       sl1 < sl2
       or
@@ -45,10 +44,10 @@ class DbLocation extends TDbLocation {
 
   /** Holds if this location ends after location `that`. */
   pragma[inline]
-  predicate endsAfter(DbLocation that) {
-    exists(File f, int el1, int ec1, int el2, int ec2 |
-      dbLocationInfo(this, f, _, _, el1, ec1) and
-      dbLocationInfo(that, f, _, _, el2, ec2)
+  predicate endsAfter(Location that) {
+    exists(string f, int el1, int ec1, int el2, int ec2 |
+      this.hasLocationInfo(f, _, _, el1, ec1) and
+      that.hasLocationInfo(f, _, _, el2, ec2)
     |
       el1 > el2
       or
@@ -60,10 +59,10 @@ class DbLocation extends TDbLocation {
    * Holds if this location contains location `that`, meaning that it starts
    * before and ends after it.
    */
-  predicate contains(DbLocation that) { this.startsBefore(that) and this.endsAfter(that) }
+  predicate contains(Location that) { this.startsBefore(that) and this.endsAfter(that) }
 
   /** Holds if this location is empty. */
-  predicate isEmpty() { exists(int l, int c | dbLocationInfo(this, _, l, c, l, c - 1)) }
+  predicate isEmpty() { exists(int l, int c | this.hasLocationInfo(_, l, c, l, c - 1)) }
 
   /** Gets a textual representation of this element. */
   string toString() { result = this.getFile().getBaseName() + ":" + this.getStartLine().toString() }
@@ -79,13 +78,19 @@ class DbLocation extends TDbLocation {
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     exists(File f |
-      dbLocationInfo(this, f, startline, startcolumn, endline, endcolumn) and
+      locations_default(this, f, startline, startcolumn, endline, endcolumn) and
       filepath = f.getAbsolutePath()
     )
   }
 }
 
-final class Location = LocationImpl;
+cached
+private Location getLocatableLocation(@locatable l) {
+  hasLocation(l, result) or
+  xmllocations(l, result) or
+  json_locations(l, result) or
+  yaml_locations(l, result)
+}
 
 /** A program element with a location. */
 class Locatable extends @locatable {
@@ -93,7 +98,7 @@ class Locatable extends @locatable {
   File getFile() { result = this.getLocation().getFile() }
 
   /** Gets this element's location. */
-  final DbLocation getLocation() { result = getLocatableLocation(this) }
+  final Location getLocation() { result = getLocatableLocation(this) }
 
   /**
    * Gets the line on which this element starts.
@@ -144,3 +149,8 @@ class Locatable extends @locatable {
    */
   string getAPrimaryQlClass() { result = "???" }
 }
+
+/**
+ * DEPRECATED. Use `Location` instead.
+ */
+deprecated class DbLocation = Location;

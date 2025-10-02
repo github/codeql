@@ -131,6 +131,12 @@ test_isRequest
 | src/inheritedFromNode.js:4:24:4:26 | req |
 | src/inheritedFromNode.js:4:24:4:26 | req |
 | src/inheritedFromNode.js:7:2:7:4 | req |
+| src/json.js:4:32:4:34 | req |
+| src/json.js:4:32:4:34 | req |
+| src/json.js:5:14:5:16 | req |
+| src/json.js:8:33:8:35 | req |
+| src/json.js:8:33:8:35 | req |
+| src/json.js:9:15:9:17 | req |
 | src/middleware-flow.js:5:20:5:22 | req |
 | src/middleware-flow.js:5:20:5:22 | req |
 | src/middleware-flow.js:6:5:6:7 | req |
@@ -201,6 +207,8 @@ test_RouteSetup
 | src/express.js:65:1:69:2 | app.get ... es);\\n}) | src/express.js:2:11:2:19 | express() | false |
 | src/express.js:71:1:75:2 | app.get ... es);\\n}) | src/express.js:2:11:2:19 | express() | false |
 | src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | src/inheritedFromNode.js:2:11:2:19 | express() | false |
+| src/json.js:4:1:6:2 | app.get ... ta);\\n}) | src/json.js:2:13:2:21 | express() | false |
+| src/json.js:8:1:10:2 | app.get ... ta);\\n}) | src/json.js:2:13:2:21 | express() | false |
 | src/middleware-flow.js:13:5:13:25 | router. ... tallDb) | src/middleware-flow.js:2:13:2:21 | express() | true |
 | src/middleware-flow.js:17:5:21:6 | router. ... \\n    }) | src/middleware-flow.js:2:13:2:21 | express() | false |
 | src/middleware-flow.js:39:1:43:2 | unrelat ... .db;\\n}) | src/middleware-flow.js:37:22:37:30 | express() | false |
@@ -345,6 +353,14 @@ test_isResponse
 | src/inheritedFromNode.js:4:29:4:31 | res |
 | src/inheritedFromNode.js:5:2:5:4 | res |
 | src/inheritedFromNode.js:6:2:6:4 | res |
+| src/json.js:4:37:4:39 | res |
+| src/json.js:4:37:4:39 | res |
+| src/json.js:5:5:5:7 | res |
+| src/json.js:5:5:5:28 | res.jso ... y.data) |
+| src/json.js:8:38:8:40 | res |
+| src/json.js:8:38:8:40 | res |
+| src/json.js:9:5:9:7 | res |
+| src/json.js:9:5:9:29 | res.jso ... y.data) |
 | src/middleware-flow.js:5:25:5:27 | res |
 | src/middleware-flow.js:17:30:17:32 | res |
 | src/middleware-flow.js:23:23:23:25 | res |
@@ -575,6 +591,12 @@ test_RequestExpr
 | src/inheritedFromNode.js:4:24:4:26 | req | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 | src/inheritedFromNode.js:4:24:4:26 | req | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 | src/inheritedFromNode.js:7:2:7:4 | req | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/json.js:4:32:4:34 | req | src/json.js:4:23:6:1 | functio ... ata);\\n} |
+| src/json.js:4:32:4:34 | req | src/json.js:4:23:6:1 | functio ... ata);\\n} |
+| src/json.js:5:14:5:16 | req | src/json.js:4:23:6:1 | functio ... ata);\\n} |
+| src/json.js:8:33:8:35 | req | src/json.js:8:24:10:1 | functio ... ata);\\n} |
+| src/json.js:8:33:8:35 | req | src/json.js:8:24:10:1 | functio ... ata);\\n} |
+| src/json.js:9:15:9:17 | req | src/json.js:8:24:10:1 | functio ... ata);\\n} |
 | src/middleware-flow.js:5:20:5:22 | req | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} |
 | src/middleware-flow.js:5:20:5:22 | req | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} |
 | src/middleware-flow.js:6:5:6:7 | req | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} |
@@ -627,6 +649,7 @@ test_appCreation
 | src/express4.js:2:11:2:19 | express() |
 | src/express.js:2:11:2:19 | express() |
 | src/inheritedFromNode.js:2:11:2:19 | express() |
+| src/json.js:2:13:2:21 | express() |
 | src/middleware-flow.js:2:13:2:21 | express() |
 | src/middleware-flow.js:37:22:37:30 | express() |
 | src/params.js:2:11:2:19 | express() |
@@ -651,6 +674,8 @@ test_ResponseBody
 | src/express.js:61:12:61:25 | req.params.foo | src/express.js:59:23:63:1 | functio ... res);\\n} |
 | src/express.js:67:12:67:25 | req.params.foo | src/express.js:65:27:69:1 | functio ... res);\\n} |
 | src/express.js:73:12:73:19 | req.path | src/express.js:71:23:75:1 | functio ... res);\\n} |
+| src/json.js:5:14:5:27 | req.query.data | src/json.js:4:23:6:1 | functio ... ata);\\n} |
+| src/json.js:9:15:9:28 | req.query.data | src/json.js:8:24:10:1 | functio ... ata);\\n} |
 | src/params.js:8:18:8:22 | value | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
 | src/params.js:15:12:15:18 | "Hello" | src/params.js:14:24:16:1 | functio ... lo");\\n} |
 test_ResponseExpr
@@ -820,6 +845,14 @@ test_ResponseExpr
 | src/inheritedFromNode.js:4:29:4:31 | res | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 | src/inheritedFromNode.js:5:2:5:4 | res | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 | src/inheritedFromNode.js:6:2:6:4 | res | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/json.js:4:37:4:39 | res | src/json.js:4:23:6:1 | functio ... ata);\\n} |
+| src/json.js:4:37:4:39 | res | src/json.js:4:23:6:1 | functio ... ata);\\n} |
+| src/json.js:5:5:5:7 | res | src/json.js:4:23:6:1 | functio ... ata);\\n} |
+| src/json.js:5:5:5:28 | res.jso ... y.data) | src/json.js:4:23:6:1 | functio ... ata);\\n} |
+| src/json.js:8:38:8:40 | res | src/json.js:8:24:10:1 | functio ... ata);\\n} |
+| src/json.js:8:38:8:40 | res | src/json.js:8:24:10:1 | functio ... ata);\\n} |
+| src/json.js:9:5:9:7 | res | src/json.js:8:24:10:1 | functio ... ata);\\n} |
+| src/json.js:9:5:9:29 | res.jso ... y.data) | src/json.js:8:24:10:1 | functio ... ata);\\n} |
 | src/middleware-flow.js:5:25:5:27 | res | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} |
 | src/middleware-flow.js:17:30:17:32 | res | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
 | src/middleware-flow.js:23:23:23:25 | res | src/middleware-flow.js:23:17:23:41 | (req, r ... q.db; } |
@@ -940,6 +973,8 @@ test_RouteHandler
 | src/express.js:65:27:69:1 | functio ... res);\\n} | src/express.js:65:36:65:38 | req | src/express.js:65:41:65:43 | res |
 | src/express.js:71:23:75:1 | functio ... res);\\n} | src/express.js:71:32:71:34 | req | src/express.js:71:37:71:39 | res |
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:4:24:4:26 | req | src/inheritedFromNode.js:4:29:4:31 | res |
+| src/json.js:4:23:6:1 | functio ... ata);\\n} | src/json.js:4:32:4:34 | req | src/json.js:4:37:4:39 | res |
+| src/json.js:8:24:10:1 | functio ... ata);\\n} | src/json.js:8:33:8:35 | req | src/json.js:8:38:8:40 | res |
 | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} | src/middleware-flow.js:5:20:5:22 | req | src/middleware-flow.js:5:25:5:27 | res |
 | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } | src/middleware-flow.js:17:25:17:27 | req | src/middleware-flow.js:17:30:17:32 | res |
 | src/middleware-flow.js:23:17:23:41 | (req, r ... q.db; } | src/middleware-flow.js:23:18:23:20 | req | src/middleware-flow.js:23:23:23:25 | res |
@@ -972,6 +1007,8 @@ test_HeaderDefinition
 | src/express.js:66:3:66:42 | res.hea ... plain") | src/express.js:65:27:69:1 | functio ... res);\\n} |
 | src/express.js:72:3:72:41 | res.hea ... /html") | src/express.js:71:23:75:1 | functio ... res);\\n} |
 | src/inheritedFromNode.js:6:2:6:16 | res.setHeader() | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/json.js:5:5:5:28 | res.jso ... y.data) | src/json.js:4:23:6:1 | functio ... ata);\\n} |
+| src/json.js:9:5:9:29 | res.jso ... y.data) | src/json.js:8:24:10:1 | functio ... ata);\\n} |
 | src/responseExprs.js:19:5:19:16 | res.append() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:37:5:37:28 | f(res.a ... ppend() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:37:7:37:18 | res.append() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
@@ -1036,6 +1073,8 @@ test_RouteHandlerExpr
 | src/express.js:65:27:69:1 | functio ... res);\\n} | src/express.js:65:1:69:2 | app.get ... es);\\n}) | true |
 | src/express.js:71:23:75:1 | functio ... res);\\n} | src/express.js:71:1:75:2 | app.get ... es);\\n}) | true |
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | true |
+| src/json.js:4:23:6:1 | functio ... ata);\\n} | src/json.js:4:1:6:2 | app.get ... ta);\\n}) | true |
+| src/json.js:8:24:10:1 | functio ... ata);\\n} | src/json.js:8:1:10:2 | app.get ... ta);\\n}) | true |
 | src/middleware-flow.js:13:16:13:24 | installDb | src/middleware-flow.js:13:5:13:25 | router. ... tallDb) | false |
 | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } | src/middleware-flow.js:17:5:21:6 | router. ... \\n    }) | true |
 | src/middleware-flow.js:27:23:27:32 | routers[p] | src/middleware-flow.js:27:9:27:33 | router. ... ers[p]) | true |
@@ -1068,6 +1107,7 @@ test_isRouterCreation
 | src/express4.js:2:11:2:19 | express() |
 | src/express.js:2:11:2:19 | express() |
 | src/inheritedFromNode.js:2:11:2:19 | express() |
+| src/json.js:2:13:2:21 | express() |
 | src/middleware-flow.js:2:13:2:21 | express() |
 | src/middleware-flow.js:37:22:37:30 | express() |
 | src/params.js:2:11:2:19 | express() |
@@ -1111,6 +1151,8 @@ test_RequestInputAccess
 | src/express.js:67:12:67:25 | req.params.foo | parameter | src/express.js:65:27:69:1 | functio ... res);\\n} |
 | src/express.js:73:12:73:19 | req.path | url | src/express.js:71:23:75:1 | functio ... res);\\n} |
 | src/inheritedFromNode.js:7:2:7:8 | req.url | url | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/json.js:5:14:5:27 | req.query.data | parameter | src/json.js:4:23:6:1 | functio ... ata);\\n} |
+| src/json.js:9:15:9:28 | req.query.data | parameter | src/json.js:8:24:10:1 | functio ... ata);\\n} |
 | src/params.js:4:35:4:39 | value | parameter | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
 | src/params.js:5:17:5:28 | req.query.xx | parameter | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
 | src/params.js:6:17:6:24 | req.body | body | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
@@ -1125,6 +1167,8 @@ test_ResponseSendArgument
 | src/express.js:61:12:61:25 | req.params.foo | src/express.js:59:23:63:1 | functio ... res);\\n} |
 | src/express.js:67:12:67:25 | req.params.foo | src/express.js:65:27:69:1 | functio ... res);\\n} |
 | src/express.js:73:12:73:19 | req.path | src/express.js:71:23:75:1 | functio ... res);\\n} |
+| src/json.js:5:14:5:27 | req.query.data | src/json.js:4:23:6:1 | functio ... ata);\\n} |
+| src/json.js:9:15:9:28 | req.query.data | src/json.js:8:24:10:1 | functio ... ata);\\n} |
 | src/params.js:8:18:8:22 | value | src/params.js:4:18:12:1 | (req, r ...     }\\n} |
 | src/params.js:15:12:15:18 | "Hello" | src/params.js:14:24:16:1 | functio ... lo");\\n} |
 test_RouteSetup_getRouter
@@ -1182,6 +1226,8 @@ test_RouteSetup_getRouter
 | src/express.js:65:1:69:2 | app.get ... es);\\n}) | src/express.js:2:11:2:19 | express() |
 | src/express.js:71:1:75:2 | app.get ... es);\\n}) | src/express.js:2:11:2:19 | express() |
 | src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | src/inheritedFromNode.js:2:11:2:19 | express() |
+| src/json.js:4:1:6:2 | app.get ... ta);\\n}) | src/json.js:2:13:2:21 | express() |
+| src/json.js:8:1:10:2 | app.get ... ta);\\n}) | src/json.js:2:13:2:21 | express() |
 | src/middleware-flow.js:13:5:13:25 | router. ... tallDb) | src/middleware-flow.js:2:13:2:21 | express() |
 | src/middleware-flow.js:17:5:21:6 | router. ... \\n    }) | src/middleware-flow.js:2:13:2:21 | express() |
 | src/middleware-flow.js:27:9:27:33 | router. ... ers[p]) | src/middleware-flow.js:2:13:2:21 | express() |
@@ -1226,6 +1272,8 @@ test_RouteSetup_getServer
 | src/express.js:65:1:69:2 | app.get ... es);\\n}) | src/express.js:2:11:2:19 | express() |
 | src/express.js:71:1:75:2 | app.get ... es);\\n}) | src/express.js:2:11:2:19 | express() |
 | src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | src/inheritedFromNode.js:2:11:2:19 | express() |
+| src/json.js:4:1:6:2 | app.get ... ta);\\n}) | src/json.js:2:13:2:21 | express() |
+| src/json.js:8:1:10:2 | app.get ... ta);\\n}) | src/json.js:2:13:2:21 | express() |
 | src/middleware-flow.js:13:5:13:25 | router. ... tallDb) | src/middleware-flow.js:2:13:2:21 | express() |
 | src/middleware-flow.js:17:5:21:6 | router. ... \\n    }) | src/middleware-flow.js:2:13:2:21 | express() |
 | src/middleware-flow.js:39:1:43:2 | unrelat ... .db;\\n}) | src/middleware-flow.js:37:22:37:30 | express() |
@@ -1266,6 +1314,8 @@ test_StandardRouteHandler
 | src/express.js:65:27:69:1 | functio ... res);\\n} | src/express.js:2:11:2:19 | express() | src/express.js:65:36:65:38 | req | src/express.js:65:41:65:43 | res |
 | src/express.js:71:23:75:1 | functio ... res);\\n} | src/express.js:2:11:2:19 | express() | src/express.js:71:32:71:34 | req | src/express.js:71:37:71:39 | res |
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:2:11:2:19 | express() | src/inheritedFromNode.js:4:24:4:26 | req | src/inheritedFromNode.js:4:29:4:31 | res |
+| src/json.js:4:23:6:1 | functio ... ata);\\n} | src/json.js:2:13:2:21 | express() | src/json.js:4:32:4:34 | req | src/json.js:4:37:4:39 | res |
+| src/json.js:8:24:10:1 | functio ... ata);\\n} | src/json.js:2:13:2:21 | express() | src/json.js:8:33:8:35 | req | src/json.js:8:38:8:40 | res |
 | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} | src/middleware-flow.js:2:13:2:21 | express() | src/middleware-flow.js:5:20:5:22 | req | src/middleware-flow.js:5:25:5:27 | res |
 | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } | src/middleware-flow.js:2:13:2:21 | express() | src/middleware-flow.js:17:25:17:27 | req | src/middleware-flow.js:17:30:17:32 | res |
 | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} | src/middleware-flow.js:37:22:37:30 | express() | src/middleware-flow.js:39:24:39:26 | req | src/middleware-flow.js:39:29:39:31 | res |
@@ -1322,6 +1372,8 @@ test_HeaderDefinition_defines
 | src/express.js:60:3:60:47 | res.hea ... n/xml") | content-type | application/xml |
 | src/express.js:66:3:66:42 | res.hea ... plain") | content-type | text/plain |
 | src/express.js:72:3:72:41 | res.hea ... /html") | content-type | text/html |
+| src/json.js:5:5:5:28 | res.jso ... y.data) | content-type | application/json |
+| src/json.js:9:5:9:29 | res.jso ... y.data) | content-type | application/json |
 test_RouteHandlerExpr_getBody
 | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") | src/advanced-routehandler-registration.js:51:9:51:60 | (req, r ... tever") |
 | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) | src/advanced-routehandler-registration.js:64:9:64:53 | (req, r ... q, res) |
@@ -1346,6 +1398,8 @@ test_RouteHandlerExpr_getBody
 | src/express.js:65:27:69:1 | functio ... res);\\n} | src/express.js:65:27:69:1 | functio ... res);\\n} |
 | src/express.js:71:23:75:1 | functio ... res);\\n} | src/express.js:71:23:75:1 | functio ... res);\\n} |
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/json.js:4:23:6:1 | functio ... ata);\\n} | src/json.js:4:23:6:1 | functio ... ata);\\n} |
+| src/json.js:8:24:10:1 | functio ... ata);\\n} | src/json.js:8:24:10:1 | functio ... ata);\\n} |
 | src/middleware-flow.js:13:16:13:24 | installDb | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} |
 | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
 | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} |
@@ -1466,6 +1520,8 @@ test_RouteSetup_getARouteHandler
 | src/express.js:65:1:69:2 | app.get ... es);\\n}) | src/express.js:65:27:69:1 | functio ... res);\\n} |
 | src/express.js:71:1:75:2 | app.get ... es);\\n}) | src/express.js:71:23:75:1 | functio ... res);\\n} |
 | src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/json.js:4:1:6:2 | app.get ... ta);\\n}) | src/json.js:4:23:6:1 | functio ... ata);\\n} |
+| src/json.js:8:1:10:2 | app.get ... ta);\\n}) | src/json.js:8:24:10:1 | functio ... ata);\\n} |
 | src/middleware-flow.js:13:5:13:25 | router. ... tallDb) | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} |
 | src/middleware-flow.js:17:5:21:6 | router. ... \\n    }) | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
 | src/middleware-flow.js:27:9:27:33 | router. ... ers[p]) | src/middleware-flow.js:23:17:23:41 | (req, r ... q.db; } |
@@ -1526,6 +1582,8 @@ test_RouteSetup_getRequestMethod
 | src/express.js:65:1:69:2 | app.get ... es);\\n}) | GET |
 | src/express.js:71:1:75:2 | app.get ... es);\\n}) | GET |
 | src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | POST |
+| src/json.js:4:1:6:2 | app.get ... ta);\\n}) | GET |
+| src/json.js:8:1:10:2 | app.get ... ta);\\n}) | GET |
 | src/middleware-flow.js:17:5:21:6 | router. ... \\n    }) | GET |
 | src/middleware-flow.js:27:9:27:33 | router. ... ers[p]) | GET |
 | src/middleware-flow.js:39:1:43:2 | unrelat ... .db;\\n}) | GET |
@@ -1699,6 +1757,12 @@ test_RouteHandler_getARequestExpr
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:4:24:4:26 | req |
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:4:24:4:26 | req |
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:7:2:7:4 | req |
+| src/json.js:4:23:6:1 | functio ... ata);\\n} | src/json.js:4:32:4:34 | req |
+| src/json.js:4:23:6:1 | functio ... ata);\\n} | src/json.js:4:32:4:34 | req |
+| src/json.js:4:23:6:1 | functio ... ata);\\n} | src/json.js:5:14:5:16 | req |
+| src/json.js:8:24:10:1 | functio ... ata);\\n} | src/json.js:8:33:8:35 | req |
+| src/json.js:8:24:10:1 | functio ... ata);\\n} | src/json.js:8:33:8:35 | req |
+| src/json.js:8:24:10:1 | functio ... ata);\\n} | src/json.js:9:15:9:17 | req |
 | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} | src/middleware-flow.js:5:20:5:22 | req |
 | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} | src/middleware-flow.js:5:20:5:22 | req |
 | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} | src/middleware-flow.js:6:5:6:7 | req |
@@ -1909,6 +1973,14 @@ test_RouteHandler_getAResponseExpr
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:4:29:4:31 | res |
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:5:2:5:4 | res |
 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:6:2:6:4 | res |
+| src/json.js:4:23:6:1 | functio ... ata);\\n} | src/json.js:4:37:4:39 | res |
+| src/json.js:4:23:6:1 | functio ... ata);\\n} | src/json.js:4:37:4:39 | res |
+| src/json.js:4:23:6:1 | functio ... ata);\\n} | src/json.js:5:5:5:7 | res |
+| src/json.js:4:23:6:1 | functio ... ata);\\n} | src/json.js:5:5:5:28 | res.jso ... y.data) |
+| src/json.js:8:24:10:1 | functio ... ata);\\n} | src/json.js:8:38:8:40 | res |
+| src/json.js:8:24:10:1 | functio ... ata);\\n} | src/json.js:8:38:8:40 | res |
+| src/json.js:8:24:10:1 | functio ... ata);\\n} | src/json.js:9:5:9:7 | res |
+| src/json.js:8:24:10:1 | functio ... ata);\\n} | src/json.js:9:5:9:29 | res.jso ... y.data) |
 | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} | src/middleware-flow.js:5:25:5:27 | res |
 | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } | src/middleware-flow.js:17:30:17:32 | res |
 | src/middleware-flow.js:23:17:23:41 | (req, r ... q.db; } | src/middleware-flow.js:23:23:23:25 | res |
@@ -2041,6 +2113,8 @@ test_RouteSetup_getRouteHandlerExpr
 | src/express.js:65:1:69:2 | app.get ... es);\\n}) | 0 | src/express.js:65:27:69:1 | functio ... res);\\n} |
 | src/express.js:71:1:75:2 | app.get ... es);\\n}) | 0 | src/express.js:71:23:75:1 | functio ... res);\\n} |
 | src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | 0 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/json.js:4:1:6:2 | app.get ... ta);\\n}) | 0 | src/json.js:4:23:6:1 | functio ... ata);\\n} |
+| src/json.js:8:1:10:2 | app.get ... ta);\\n}) | 0 | src/json.js:8:24:10:1 | functio ... ata);\\n} |
 | src/middleware-flow.js:13:5:13:25 | router. ... tallDb) | 0 | src/middleware-flow.js:13:16:13:24 | installDb |
 | src/middleware-flow.js:17:5:21:6 | router. ... \\n    }) | 0 | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
 | src/middleware-flow.js:27:9:27:33 | router. ... ers[p]) | 0 | src/middleware-flow.js:27:23:27:32 | routers[p] |
@@ -2073,6 +2147,8 @@ test_HeaderDefinition_getAHeaderName
 | src/express.js:60:3:60:47 | res.hea ... n/xml") | content-type |
 | src/express.js:66:3:66:42 | res.hea ... plain") | content-type |
 | src/express.js:72:3:72:41 | res.hea ... /html") | content-type |
+| src/json.js:5:5:5:28 | res.jso ... y.data) | content-type |
+| src/json.js:9:5:9:29 | res.jso ... y.data) | content-type |
 test_RouteHandlerExpr_getAsSubRouter
 | src/csurf-example.js:13:17:13:19 | api | src/csurf-example.js:30:16:30:35 | new express.Router() |
 | src/express2.js:6:9:6:14 | router | src/express2.js:2:14:2:23 | e.Router() |
@@ -2089,6 +2165,8 @@ test_RouteHandler_getAResponseHeader
 | src/express.js:65:27:69:1 | functio ... res);\\n} | content-type | src/express.js:66:3:66:42 | res.hea ... plain") |
 | src/express.js:71:23:75:1 | functio ... res);\\n} | access-control-allow-credentials | src/express.js:12:3:12:54 | arg.hea ... , true) |
 | src/express.js:71:23:75:1 | functio ... res);\\n} | content-type | src/express.js:72:3:72:41 | res.hea ... /html") |
+| src/json.js:4:23:6:1 | functio ... ata);\\n} | content-type | src/json.js:5:5:5:28 | res.jso ... y.data) |
+| src/json.js:8:24:10:1 | functio ... ata);\\n} | content-type | src/json.js:9:5:9:29 | res.jso ... y.data) |
 test_RouteSetup_getARouteHandlerExpr
 | src/advanced-routehandler-registration.js:10:3:10:24 | app.get ... es0[p]) | src/advanced-routehandler-registration.js:10:14:10:23 | routes0[p] |
 | src/advanced-routehandler-registration.js:19:3:19:18 | app.use(handler) | src/advanced-routehandler-registration.js:19:11:19:17 | handler |
@@ -2149,6 +2227,8 @@ test_RouteSetup_getARouteHandlerExpr
 | src/express.js:65:1:69:2 | app.get ... es);\\n}) | src/express.js:65:27:69:1 | functio ... res);\\n} |
 | src/express.js:71:1:75:2 | app.get ... es);\\n}) | src/express.js:71:23:75:1 | functio ... res);\\n} |
 | src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/json.js:4:1:6:2 | app.get ... ta);\\n}) | src/json.js:4:23:6:1 | functio ... ata);\\n} |
+| src/json.js:8:1:10:2 | app.get ... ta);\\n}) | src/json.js:8:24:10:1 | functio ... ata);\\n} |
 | src/middleware-flow.js:13:5:13:25 | router. ... tallDb) | src/middleware-flow.js:13:16:13:24 | installDb |
 | src/middleware-flow.js:17:5:21:6 | router. ... \\n    }) | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
 | src/middleware-flow.js:27:9:27:33 | router. ... ers[p]) | src/middleware-flow.js:27:23:27:32 | routers[p] |
@@ -2181,6 +2261,7 @@ test_RouterDefinition_RouterDefinition
 | src/express4.js:2:11:2:19 | express() |
 | src/express.js:2:11:2:19 | express() |
 | src/inheritedFromNode.js:2:11:2:19 | express() |
+| src/json.js:2:13:2:21 | express() |
 | src/middleware-flow.js:2:13:2:21 | express() |
 | src/middleware-flow.js:37:22:37:30 | express() |
 | src/params.js:2:11:2:19 | express() |
@@ -2216,6 +2297,8 @@ test_RouterDefinition_getARouteHandler
 | src/express.js:2:11:2:19 | express() | src/express.js:65:27:69:1 | functio ... res);\\n} |
 | src/express.js:2:11:2:19 | express() | src/express.js:71:23:75:1 | functio ... res);\\n} |
 | src/inheritedFromNode.js:2:11:2:19 | express() | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/json.js:2:13:2:21 | express() | src/json.js:4:23:6:1 | functio ... ata);\\n} |
+| src/json.js:2:13:2:21 | express() | src/json.js:8:24:10:1 | functio ... ata);\\n} |
 | src/middleware-flow.js:2:13:2:21 | express() | src/middleware-flow.js:5:1:10:1 | functio ... xt();\\n} |
 | src/middleware-flow.js:2:13:2:21 | express() | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
 | src/middleware-flow.js:37:22:37:30 | express() | src/middleware-flow.js:39:23:43:1 | (req, r ... s.db;\\n} |
@@ -2334,6 +2417,8 @@ test_RouteSetup_getLastRouteHandlerExpr
 | src/express.js:65:1:69:2 | app.get ... es);\\n}) | src/express.js:65:27:69:1 | functio ... res);\\n} |
 | src/express.js:71:1:75:2 | app.get ... es);\\n}) | src/express.js:71:23:75:1 | functio ... res);\\n} |
 | src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/json.js:4:1:6:2 | app.get ... ta);\\n}) | src/json.js:4:23:6:1 | functio ... ata);\\n} |
+| src/json.js:8:1:10:2 | app.get ... ta);\\n}) | src/json.js:8:24:10:1 | functio ... ata);\\n} |
 | src/middleware-flow.js:13:5:13:25 | router. ... tallDb) | src/middleware-flow.js:13:16:13:24 | installDb |
 | src/middleware-flow.js:17:5:21:6 | router. ... \\n    }) | src/middleware-flow.js:17:24:21:5 | (req, r ... ;\\n    } |
 | src/middleware-flow.js:27:9:27:33 | router. ... ers[p]) | src/middleware-flow.js:27:23:27:32 | routers[p] |

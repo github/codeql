@@ -6,4 +6,6 @@ fn test_type_bound() -> () {
     // For example:
     fn foo<T: Debug>(t: T) {}
     //        ^^^^^
+    fn bar(value: impl for<'a> From<&'a str>) {}
+    //                 ^^^^^^^^^^^^^^^^^^^^^
 }

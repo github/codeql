@@ -50,80 +50,17 @@
 overlay[local?]
 module;
 
+private import codeql.controlflow.BasicBlock as BB
+private import codeql.controlflow.SuccessorType
 private import codeql.util.Boolean
 private import codeql.util.Location
 private import codeql.util.Unit
 
-signature module InputSig<LocationSig Location> {
-  class SuccessorType {
-    /** Gets a textual representation of this successor type. */
-    string toString();
-  }
+signature class TypSig;
 
-  class ExceptionSuccessor extends SuccessorType;
-
-  class ConditionalSuccessor extends SuccessorType {
-    /** Gets the Boolean value of this successor. */
-    boolean getValue();
-  }
-
-  class BooleanSuccessor extends ConditionalSuccessor;
-
-  class NullnessSuccessor extends ConditionalSuccessor;
-
-  /** A control flow node. */
-  class ControlFlowNode {
-    /** Gets a textual representation of this control flow node. */
-    string toString();
-
-    /** Gets the location of this control flow node. */
-    Location getLocation();
-  }
-
+signature module InputSig<LocationSig Location, TypSig ControlFlowNode, TypSig BasicBlock> {
   /** A control flow node indicating normal termination of a callable. */
   class NormalExitNode extends ControlFlowNode;
-
-  /**
-   * A basic block, that is, a maximal straight-line sequence of control flow nodes
-   * without branches or joins.
-   */
-  class BasicBlock {
-    /** Gets a textual representation of this basic block. */
-    string toString();
-
-    /** Gets the `i`th node in this basic block. */
-    ControlFlowNode getNode(int i);
-
-    /** Gets the last control flow node in this basic block. */
-    ControlFlowNode getLastNode();
-
-    /** Gets the length of this basic block. */
-    int length();
-
-    /** Gets the location of this basic block. */
-    Location getLocation();
-
-    BasicBlock getASuccessor(SuccessorType t);
-
-    predicate dominates(BasicBlock bb);
-
-    predicate strictlyDominates(BasicBlock bb);
-  }
-
-  /**
-   * Holds if `bb1` has `bb2` as a direct successor and the edge between `bb1`
-   * and `bb2` is a dominating edge.
-   *
-   * An edge `(bb1, bb2)` is dominating if there exists a basic block that can
-   * only be reached from the entry block by going through `(bb1, bb2)`. This
-   * implies that `(bb1, bb2)` dominates its endpoint `bb2`. I.e., `bb2` can
-   * only be reached from the entry block by going via `(bb1, bb2)`.
-   *
-   * This is a necessary and sufficient condition for an edge to dominate some
-   * block, and therefore `dominatingEdge(bb1, bb2) and bb2.dominates(bb3)`
-   * means that the edge `(bb1, bb2)` dominates `bb3`.
-   */
-  predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2);
 
   class AstNode {
     /** Gets a textual representation of this AST node. */
@@ -254,7 +191,13 @@ signature module InputSig<LocationSig Location> {
 }
 
 /** Provides guards-related predicates and classes. */
-module Make<LocationSig Location, InputSig<Location> Input> {
+module Make<
+  LocationSig Location, BB::CfgSig<Location> Cfg,
+  InputSig<Location, Cfg::ControlFlowNode, Cfg::BasicBlock> Input>
+{
+  private module Cfg_ = Cfg;
+
+  private import Cfg_
   private import Input
 
   private newtype TAbstractSingleValue =
@@ -265,6 +208,12 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
   private newtype TGuardValue =
     TValue(TAbstractSingleValue val, Boolean isVal) or
+    TIntRange(int bound, Boolean upper) {
+      exists(ConstantExpr c | c.asIntegerValue() + [-1, 0, 1] = bound) and
+      // exclude edge cases to avoid overflow issues when computing duals
+      bound != 2147483647 and
+      bound != -2147483648
+    } or
     TException(Boolean throws)
 
   private class AbstractSingleValue extends TAbstractSingleValue {
@@ -295,11 +244,23 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         result = TValue(val, isVal.booleanNot())
       )
       or
+      exists(int bound, int d, boolean upper |
+        upper = true and d = 1
+        or
+        upper = false and d = -1
+      |
+        this = TIntRange(bound, pragma[only_bind_into](upper)) and
+        result = TIntRange(bound + d, pragma[only_bind_into](upper.booleanNot()))
+      )
+      or
       exists(boolean throws |
         this = TException(throws) and
         result = TException(throws.booleanNot())
       )
     }
+
+    /** Holds if this value represents a single concrete value. */
+    predicate isSingleton() { this = TValue(_, true) }
 
     /** Holds if this value represents `null`. */
     predicate isNullValue() { this.isNullness(true) }
@@ -319,6 +280,14 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /** Gets the constant that this value represents, if any. */
     ConstantValue asConstantValue() { this = TValue(TValueConstant(result), true) }
 
+    /**
+     * Holds if this value represents an integer range.
+     *
+     * If `upper = true` the range is `(-infinity, bound]`.
+     * If `upper = false` the range is `[bound, infinity)`.
+     */
+    predicate isIntRange(int bound, boolean upper) { this = TIntRange(bound, upper) }
+
     /** Holds if this value represents throwing an exception. */
     predicate isThrowsException() { this = TException(true) }
 
@@ -330,6 +299,12 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         this = TValue(val, true) and result = val.toString()
         or
         this = TValue(val, false) and result = "not " + val.toString()
+      )
+      or
+      exists(int bound |
+        this = TIntRange(bound, true) and result = "Upper bound " + bound.toString()
+        or
+        this = TIntRange(bound, false) and result = "Lower bound " + bound.toString()
       )
       or
       exists(boolean throws | this = TException(throws) |
@@ -349,6 +324,24 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       a = TValue(a1, true) and
       b = TValue(b1, true) and
       a1 != b1
+    )
+    or
+    exists(int upperbound, int lowerbound |
+      a = TIntRange(upperbound, true) and b = TIntRange(lowerbound, false)
+      or
+      b = TIntRange(upperbound, true) and a = TIntRange(lowerbound, false)
+    |
+      upperbound < lowerbound
+    )
+    or
+    exists(int bound, boolean upper, int k |
+      a = TIntRange(bound, upper) and b.asIntValue() = k
+      or
+      b = TIntRange(bound, upper) and a.asIntValue() = k
+    |
+      upper = true and bound < k
+      or
+      upper = false and bound > k
     )
   }
 
@@ -699,6 +692,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * Holds if `e` equals `k` and may be assigned to `v`. The boolean
      * `fromBackEdge` indicates whether the flow from `e` to `v` goes through a
      * back edge.
+     *
+     * This predicate is restricted to cases where all such possible values are
+     * constants, which means that the `GuardValue`s are singleton values.
      */
     private predicate possibleValue(SsaDefinition v, boolean fromBackEdge, Expr e, GuardValue k) {
       not hasPossibleUnknownValue(v) and
@@ -718,9 +714,10 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     private predicate uniqueValue(SsaDefinition v, Expr e, GuardValue k) {
       possibleValue(v, false, e, k) and
       not possibleValue(v, true, e, k) and
-      forex(Expr other, GuardValue otherval | possibleValue(v, _, other, otherval) and other != e |
-        disjointValues(otherval, k)
-      )
+      // there's only one expression with the value `k`
+      1 = strictcount(Expr e0 | possibleValue(v, _, e0, k)) and
+      // and `v` has at least two possible values
+      2 <= strictcount(GuardValue k0 | possibleValue(v, _, _, k0))
     }
 
     /**
@@ -738,38 +735,22 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       )
     }
 
-    /** Holds if `e` may take the value `k` */
-    private predicate relevantInt(Expr e, int k) {
-      e.(ConstantExpr).asIntegerValue() = k
-      or
-      relevantInt(any(Expr e1 | valueStep(e1, e)), k)
-      or
-      exists(SsaDefinition def |
-        guardReadsSsaVar(e, def) and
-        relevantInt(getAnUltimateDefinition(def, _).(SsaWriteDefinition).getDefinition(), k)
-      )
-    }
-
     private predicate impliesStep1(Guard g1, GuardValue v1, Guard g2, GuardValue v2) {
       baseImpliesStep(g1, v1, g2, v2)
       or
-      exists(SsaDefinition def, Expr e |
+      exists(SsaDefinition def, Expr e, BasicBlock bb1 |
         // If `def = g2 ? v1 : ...` and all other assignments to `def` are different from
         // `v1` then a guard proving `def == v1` ensures that `g2` evaluates to `v2`.
         uniqueValue(def, e, v1) and
         guardReadsSsaVar(g1, def) and
         g2.directlyValueControls(e.getBasicBlock(), v2) and
-        not g2.directlyValueControls(g1.getBasicBlock(), v2)
+        bb1 = g1.getBasicBlock() and
+        not g2.directlyValueControls(bb1, v2)
       )
       or
-      exists(int k1, int k2, boolean upper |
-        rangeGuard(g1, v1, g2, k1, upper) and
-        relevantInt(g2, k2) and
-        v2 = TValue(TValueInt(k2), false)
-      |
-        upper = true and k1 < k2 // g2 <= k1 < k2  ==>  g2 != k2
-        or
-        upper = false and k1 > k2 // g2 >= k1 > k2  ==>  g2 != k2
+      exists(int k, boolean upper |
+        rangeGuard(g1, v1, g2, k, upper) and
+        v2 = TIntRange(k, upper)
       )
       or
       exists(boolean isNull |
@@ -800,6 +781,10 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       e instanceof NonNullExpr and v.isNonNullValue()
       or
       exprHasValue(e.(IdExpr).getEqualChildExpr(), v)
+      or
+      exists(ConditionalExpr cond | cond = e |
+        exprHasValue(cond.getThen(), v) and exprHasValue(cond.getElse(), v)
+      )
       or
       exists(SsaDefinition def, Guard g, GuardValue gv |
         e = def.getARead() and
@@ -1269,6 +1254,17 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       predicate controls(BasicBlock bb, boolean branch) {
         this.valueControls(bb, any(GuardValue gv | gv.asBooleanValue() = branch))
       }
+    }
+
+    private predicate exprHasValueAlias = exprHasValue/2;
+
+    private predicate disjointValuesAlias = disjointValues/2;
+
+    /** Provides utility predicates for working with `GuardValue`s. */
+    module InternalUtil {
+      predicate exprHasValue = exprHasValueAlias/2;
+
+      predicate disjointValues = disjointValuesAlias/2;
     }
   }
 }

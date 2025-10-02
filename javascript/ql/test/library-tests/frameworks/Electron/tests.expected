@@ -1,7 +1,7 @@
 browserObject
-| electron.js:3:5:3:48 | bw |
+| electron.js:3:5:3:6 | bw |
 | electron.js:3:10:3:48 | new Bro ... s: {}}) |
-| electron.js:4:5:4:46 | bv |
+| electron.js:4:5:4:6 | bv |
 | electron.js:4:10:4:46 | new Bro ... s: {}}) |
 | electron.js:35:1:37:1 | return of function foo |
 | electron.js:35:14:35:14 | x |
@@ -11,7 +11,7 @@ browserObject
 | electron.js:39:5:39:6 | bw |
 | electron.js:40:1:40:7 | foo(bv) |
 | electron.js:40:5:40:6 | bv |
-| electron.js:62:7:62:59 | win |
+| electron.js:62:7:62:9 | win |
 | electron.js:62:13:62:59 | new Bro ... 1500 }) |
 | electron.js:63:3:63:5 | win |
 | electron.js:65:18:65:20 | win |

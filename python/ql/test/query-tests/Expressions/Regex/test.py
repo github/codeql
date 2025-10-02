@@ -151,3 +151,11 @@ re.compile(r"[\u0000-\uFFFF]")
 
 #Allow unicode names
 re.compile(r"[\N{degree sign}\N{EM DASH}]")
+
+#Lookahead assertions. None of these are unmatchable dollars:
+re.compile(r"^(?=a$)[ab]")
+re.compile(r"^(?!a$)[ab]")
+
+#Lookbehind assertions. None of these are unmatchable carets:
+re.compile(r"(?<=^a)a")
+re.compile(r"(?<!^a)a")

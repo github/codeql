@@ -43,7 +43,7 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 2
           persist-credentials: false

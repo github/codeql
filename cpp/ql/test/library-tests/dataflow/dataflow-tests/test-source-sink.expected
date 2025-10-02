@@ -16,6 +16,14 @@ astFlow
 | BarrierGuard.cpp:90:11:90:16 | call to source | BarrierGuard.cpp:101:8:101:8 | x |
 | BarrierGuard.cpp:107:11:107:16 | call to source | BarrierGuard.cpp:112:8:112:8 | x |
 | BarrierGuard.cpp:116:11:116:16 | call to source | BarrierGuard.cpp:127:8:127:8 | x |
+| BarrierGuard.cpp:165:11:165:16 | call to source | BarrierGuard.cpp:168:10:168:10 | x |
+| BarrierGuard.cpp:165:11:165:16 | call to source | BarrierGuard.cpp:170:10:170:10 | x |
+| BarrierGuard.cpp:165:11:165:16 | call to source | BarrierGuard.cpp:174:10:174:10 | x |
+| BarrierGuard.cpp:165:11:165:16 | call to source | BarrierGuard.cpp:176:10:176:10 | x |
+| BarrierGuard.cpp:165:11:165:16 | call to source | BarrierGuard.cpp:180:10:180:10 | x |
+| BarrierGuard.cpp:165:11:165:16 | call to source | BarrierGuard.cpp:182:10:182:10 | x |
+| BarrierGuard.cpp:165:11:165:16 | call to source | BarrierGuard.cpp:186:10:186:10 | x |
+| BarrierGuard.cpp:165:11:165:16 | call to source | BarrierGuard.cpp:188:10:188:10 | x |
 | acrossLinkTargets.cpp:19:27:19:32 | call to source | acrossLinkTargets.cpp:12:8:12:8 | x |
 | clang.cpp:12:9:12:20 | sourceArray1 | clang.cpp:18:8:18:19 | sourceArray1 |
 | clang.cpp:12:9:12:20 | sourceArray1 | clang.cpp:22:8:22:20 | & ... |
@@ -156,6 +164,10 @@ irFlow
 | BarrierGuard.cpp:49:10:49:15 | call to source | BarrierGuard.cpp:55:13:55:13 | x |
 | BarrierGuard.cpp:60:11:60:16 | call to source | BarrierGuard.cpp:64:14:64:14 | x |
 | BarrierGuard.cpp:60:11:60:16 | call to source | BarrierGuard.cpp:66:14:66:14 | x |
+| BarrierGuard.cpp:165:11:165:16 | call to source | BarrierGuard.cpp:170:10:170:10 | x |
+| BarrierGuard.cpp:165:11:165:16 | call to source | BarrierGuard.cpp:176:10:176:10 | x |
+| BarrierGuard.cpp:165:11:165:16 | call to source | BarrierGuard.cpp:182:10:182:10 | x |
+| BarrierGuard.cpp:165:11:165:16 | call to source | BarrierGuard.cpp:188:10:188:10 | x |
 | acrossLinkTargets.cpp:19:27:19:32 | call to source | acrossLinkTargets.cpp:12:8:12:8 | x |
 | clang.cpp:12:9:12:20 | sourceArray1 | clang.cpp:18:8:18:19 | sourceArray1 |
 | clang.cpp:12:9:12:20 | sourceArray1 | clang.cpp:23:17:23:29 | *& ... |
@@ -169,10 +181,6 @@ irFlow
 | clang.cpp:50:35:50:40 | call to source | clang.cpp:53:17:53:26 | *stackArray |
 | clang.cpp:51:19:51:24 | call to source | clang.cpp:53:17:53:26 | *stackArray |
 | clang.cpp:57:21:57:28 | call to source | clang.cpp:59:8:59:8 | d |
-| dispatch.cpp:9:37:9:42 | call to source | dispatch.cpp:35:16:35:25 | call to notSource1 |
-| dispatch.cpp:9:37:9:42 | call to source | dispatch.cpp:43:15:43:24 | call to notSource1 |
-| dispatch.cpp:10:37:10:42 | call to source | dispatch.cpp:36:16:36:25 | call to notSource2 |
-| dispatch.cpp:10:37:10:42 | call to source | dispatch.cpp:44:15:44:24 | call to notSource2 |
 | dispatch.cpp:16:37:16:42 | call to source | dispatch.cpp:32:16:32:24 | call to isSource2 |
 | dispatch.cpp:16:37:16:42 | call to source | dispatch.cpp:40:15:40:23 | call to isSource2 |
 | dispatch.cpp:22:37:22:42 | call to source | dispatch.cpp:31:16:31:24 | call to isSource1 |
@@ -180,13 +188,13 @@ irFlow
 | dispatch.cpp:22:37:22:42 | call to source | dispatch.cpp:55:22:55:30 | call to isSource1 |
 | dispatch.cpp:22:37:22:42 | call to source | dispatch.cpp:58:28:58:36 | call to isSource1 |
 | dispatch.cpp:33:18:33:23 | call to source | dispatch.cpp:23:38:23:38 | x |
-| dispatch.cpp:37:19:37:24 | call to source | dispatch.cpp:11:38:11:38 | x |
 | dispatch.cpp:41:17:41:22 | call to source | dispatch.cpp:23:38:23:38 | x |
-| dispatch.cpp:45:18:45:23 | call to source | dispatch.cpp:11:38:11:38 | x |
 | dispatch.cpp:69:15:69:20 | call to source | dispatch.cpp:23:38:23:38 | x |
 | dispatch.cpp:73:14:73:19 | call to source | dispatch.cpp:23:38:23:38 | x |
 | dispatch.cpp:81:13:81:18 | call to source | dispatch.cpp:23:38:23:38 | x |
 | dispatch.cpp:107:17:107:22 | call to source | dispatch.cpp:96:8:96:8 | x |
+| dispatch.cpp:117:38:117:43 | call to source | dispatch.cpp:129:18:129:25 | call to isSource |
+| dispatch.cpp:117:38:117:43 | call to source | dispatch.cpp:130:17:130:24 | call to isSource |
 | dispatch.cpp:140:8:140:13 | call to source | dispatch.cpp:96:8:96:8 | x |
 | dispatch.cpp:144:8:144:13 | call to source | dispatch.cpp:96:8:96:8 | x |
 | flowOut.cpp:5:16:5:21 | call to source | flowOut.cpp:31:9:31:9 | x |

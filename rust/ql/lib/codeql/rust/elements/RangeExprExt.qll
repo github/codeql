@@ -47,6 +47,20 @@ final class RangeFromToExpr extends RangeExpr {
 }
 
 /**
+ * A range-full expression. For example:
+ * ```rust
+ * let x = ..;
+ * ```
+ */
+final class RangeFullExpr extends RangeExpr {
+  RangeFullExpr() {
+    this.getOperatorName() = ".." and
+    not this.hasStart() and
+    not this.hasEnd()
+  }
+}
+
+/**
  * A range-inclusive expression. For example:
  * ```rust
  * let x = 1..=10;

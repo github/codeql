@@ -5,6 +5,8 @@ column_kind: "utf8"
 legacy_qltest_extraction: true
 build_modes:
   - none
+default_queries:
+  - codeql/rust-queries
 github_api_languages:
   - Rust
 scc_languages:
@@ -80,12 +82,6 @@ options:
           Collect flame graph data using the `tracing-flame` crate. To render a flame graph
           or chart, run the `inferno-flamegraph` command. See also: https://crates.io/crates/tracing-flame
         type: string
-  skip_path_resolution:
-    title: Skip path resolution
-    description: >
-      Skip path resolution. This is experimental, while we move path resolution from the extractor to the QL library.
-    type: string
-    pattern: "^(false|true)$"
   extract_dependencies_as_source:
     title: Extract dependencies as source code
     description: >

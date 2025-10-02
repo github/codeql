@@ -17,5 +17,25 @@ module Impl {
    */
   class Callable extends Generated::Callable {
     override Param getParam(int index) { result = this.getParamList().getParam(index) }
+
+    /**
+     * Gets the self parameter of this callable, if it exists.
+     */
+    SelfParam getSelfParam() { result = this.getParamList().getSelfParam() }
+
+    /**
+     * Holds if `getSelfParam()` exists.
+     */
+    predicate hasSelfParam() { exists(this.getSelfParam()) }
+
+    /**
+     * Gets the number of parameters of this callable, including `self` if it exists.
+     */
+    int getNumberOfParamsInclSelf() {
+      exists(int arr |
+        arr = this.getNumberOfParams() and
+        if this.hasSelfParam() then result = arr + 1 else result = arr
+      )
+    }
   }
 }

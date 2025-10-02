@@ -26,8 +26,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 returnType.TypeRef,
                 (UserOperator)OriginalDefinition);
 
-            foreach (var l in Locations)
-                trapFile.operator_location(this, l);
+            WriteLocationsToTrap(trapFile.operator_location, this, Locations);
 
             if (IsSourceDeclaration)
             {

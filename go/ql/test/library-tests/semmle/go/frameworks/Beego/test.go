@@ -297,7 +297,7 @@ func testUtilsPropagators(c *beego.Controller) {
 	c.CustomAbort(500, utils.SlicePad(untainted, 10, genericFiles[0])[0].(*multipart.FileHeader).Filename)
 	c.CustomAbort(500, utils.SlicePad(genericFiles, 10, untainted[0])[0].(*multipart.FileHeader).Filename)
 	c.CustomAbort(500, utils.SliceRand(genericFiles).(*multipart.FileHeader).Filename)
-	// Note this is misnamed -- it's a map operation, not a reduce
+	// Note this is misnamed -- it's a map operation, not a reduce
 	c.CustomAbort(500, utils.SliceReduce(genericFiles, func(x interface{}) interface{} { return x })[0].(*multipart.FileHeader).Filename)
 	c.CustomAbort(500, utils.SliceShuffle(genericFiles)[0].(*multipart.FileHeader).Filename)
 	c.CustomAbort(500, utils.SliceUnique(genericFiles)[0].(*multipart.FileHeader).Filename)

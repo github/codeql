@@ -432,7 +432,7 @@ public class E
         return @is.Any();
     }
 
-    static void Ex45(string s)
+    static void Ex45(string s) // $ Source[cs/dereferenced-value-may-be-null]
     {
         if (s is null)
         {
@@ -441,7 +441,7 @@ public class E
 
         if (s is not not null)
         {
-            s.ToString(); // $ MISSING: Alert[cs/dereferenced-value-is-always-null]
+            s.ToString(); // $ Alert[cs/dereferenced-value-may-be-null] MISSING: Alert[cs/dereferenced-value-is-always-null]
         }
 
         if (s is not null)
@@ -450,6 +450,15 @@ public class E
         }
 
         if (s is object)
+        {
+            s.ToString(); // GOOD
+        }
+
+        if (s is not object)
+        {
+            s.ToString();  // $ Alert[cs/dereferenced-value-may-be-null]
+        }
+        else
         {
             s.ToString(); // GOOD
         }

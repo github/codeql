@@ -19,6 +19,6 @@ jobs:
     name: Check query IDs
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Check for duplicate query IDs
         run: python3 misc/scripts/check-query-ids.py

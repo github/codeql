@@ -308,47 +308,6 @@ Module: [1, 0] - [23, 0]
               ]
               ctx: Load
           ctx: Load
-    TypeAlias: [20, 0] - [20, 41]
-      name:
-        Name: [20, 5] - [20, 9]
-          variable: Variable('Baz2', None)
-          ctx: Store
-      type_parameters: [
-        ParamSpec: [20, 10] - [20, 27]
-          name:
-            Name: [20, 12] - [20, 14]
-              variable: Variable('P2', None)
-              ctx: Store
-          default:
-            List: [20, 17] - [20, 27]
-              elts: [
-                Name: [20, 18] - [20, 21]
-                  variable: Variable('int', None)
-                  ctx: Load
-                Name: [20, 23] - [20, 26]
-                  variable: Variable('str', None)
-                  ctx: Load
-              ]
-              ctx: Load
-      ]
-      value:
-        Subscript: [20, 31] - [20, 41]
-          value:
-            Name: [20, 31] - [20, 35]
-              variable: Variable('Spam', None)
-              ctx: Load
-          index:
-            BinOp: [20, 36] - [20, 40]
-              left:
-                Name: [20, 36] - [20, 36]
-                  variable: Variable('', None)
-                  ctx: Load
-              op: Pow
-              right:
-                Name: [20, 38] - [20, 40]
-                  variable: Variable('P2', None)
-                  ctx: Load
-          ctx: Load
     TypeAlias: [21, 0] - [21, 41]
       name:
         Name: [21, 5] - [21, 9]

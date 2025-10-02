@@ -19,8 +19,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
             var type = Type.Create(Context, Symbol.Type);
             trapFile.indexers(this, Symbol.GetName(useMetadataName: true), ContainingType!, type.TypeRef, OriginalDefinition);
-            foreach (var l in Locations)
-                trapFile.indexer_location(this, l);
+            if (Context.ExtractLocation(Symbol))
+            {
+                WriteLocationsToTrap(trapFile.indexer_location, this, Locations);
+            }
 
             var getter = BodyDeclaringSymbol.GetMethod;
             var setter = BodyDeclaringSymbol.SetMethod;

@@ -23,7 +23,7 @@ jobs:
 
     steps:
     - name: Clone self (github/codeql)
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         path: codeql 
     - name: Set up Python 3.8
@@ -31,7 +31,7 @@ jobs:
       with:
         python-version: 3.8
     - name: Download CodeQL CLI
-      # Look under the `codeql` directory, as this is where we checked out the `github/codeql` repo
+      # Look under the `codeql` directory, as this is where we checked out the `github/codeql` repo
       uses: ./codeql/.github/actions/fetch-codeql
     - name: Build code scanning query list
       run: |

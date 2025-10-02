@@ -20395,6 +20395,282 @@ ir.cpp:
 # 2769|     v2769_14(void)                  = AliasedUse                      : ~m2771_8
 # 2769|     v2769_15(void)                  = ExitFunction                    : 
 
+# 2774| void test_allocation_with_initializer()
+# 2774|   Block 0
+# 2774|     v2774_1(void)           = EnterFunction                 : 
+# 2774|     m2774_2(unknown)        = AliasedDefinition             : 
+# 2774|     m2774_3(unknown)        = InitializeNonLocal            : 
+# 2774|     m2774_4(unknown)        = Chi                           : total:m2774_2, partial:m2774_3
+# 2775|     r2775_1(glval<int *>)   = VariableAddress[p1]           : 
+# 2775|     r2775_2(glval<unknown>) = FunctionAddress[operator new] : 
+# 2775|     r2775_3(unsigned long)  = Constant[4]                   : 
+# 2775|     r2775_4(void *)         = Call[operator new]            : func:r2775_2, 0:r2775_3
+# 2775|     m2775_5(unknown)        = ^CallSideEffect               : ~m2774_4
+# 2775|     m2775_6(unknown)        = Chi                           : total:m2774_4, partial:m2775_5
+# 2775|     m2775_7(unknown)        = ^InitializeDynamicAllocation  : &:r2775_4
+# 2775|     r2775_8(int *)          = Convert                       : r2775_4
+# 2775|     r2775_9(int)            = Constant[42]                  : 
+# 2775|     m2775_10(int)           = Store[?]                      : &:r2775_8, r2775_9
+# 2775|     m2775_11(unknown)       = Chi                           : total:m2775_7, partial:m2775_10
+# 2775|     m2775_12(int *)         = Store[p1]                     : &:r2775_1, r2775_8
+# 2776|     r2776_1(glval<long *>)  = VariableAddress[p2]           : 
+# 2776|     r2776_2(glval<unknown>) = FunctionAddress[operator new] : 
+# 2776|     r2776_3(unsigned long)  = Constant[8]                   : 
+# 2776|     r2776_4(void *)         = Call[operator new]            : func:r2776_2, 0:r2776_3
+# 2776|     m2776_5(unknown)        = ^CallSideEffect               : ~m2775_6
+# 2776|     m2776_6(unknown)        = Chi                           : total:m2775_6, partial:m2776_5
+# 2776|     m2776_7(unknown)        = ^InitializeDynamicAllocation  : &:r2776_4
+# 2776|     r2776_8(long *)         = Convert                       : r2776_4
+# 2776|     r2776_9(long)           = Constant[42]                  : 
+# 2776|     m2776_10(long)          = Store[?]                      : &:r2776_8, r2776_9
+# 2776|     m2776_11(unknown)       = Chi                           : total:m2776_7, partial:m2776_10
+# 2776|     m2776_12(long *)        = Store[p2]                     : &:r2776_1, r2776_8
+# 2777|     v2777_1(void)           = NoOp                          : 
+# 2774|     v2774_5(void)           = ReturnVoid                    : 
+# 2774|     v2774_6(void)           = AliasedUse                    : ~m2776_6
+# 2774|     v2774_7(void)           = ExitFunction                  : 
+
+# 2779| void vla_sizeof_test(int, size_t, char)
+# 2779|   Block 0
+# 2779|     v2779_1(void)                 = EnterFunction             : 
+# 2779|     m2779_2(unknown)              = AliasedDefinition         : 
+# 2779|     m2779_3(unknown)              = InitializeNonLocal        : 
+# 2779|     m2779_4(unknown)              = Chi                       : total:m2779_2, partial:m2779_3
+# 2779|     r2779_5(glval<int>)           = VariableAddress[len1]     : 
+# 2779|     m2779_6(int)                  = InitializeParameter[len1] : &:r2779_5
+# 2779|     r2779_7(glval<unsigned long>) = VariableAddress[len2]     : 
+# 2779|     m2779_8(unsigned long)        = InitializeParameter[len2] : &:r2779_7
+# 2779|     r2779_9(glval<char>)          = VariableAddress[len3]     : 
+# 2779|     m2779_10(char)                = InitializeParameter[len3] : &:r2779_9
+# 2780|     r2780_1(glval<char[]>)        = VariableAddress[tmp1]     : 
+# 2780|     m2780_2(char[])               = Uninitialized[tmp1]       : &:r2780_1
+# 2780|     r2780_3(glval<int>)           = VariableAddress[len1]     : 
+# 2780|     r2780_4(int)                  = Load[len1]                : &:r2780_3, m2779_6
+# 2780|     v2780_5(void)                 = NoOp                      : 
+# 2781|     r2781_1(glval<unsigned long>) = VariableAddress[x]        : 
+# 2781|     r2781_2(unsigned long)        = Constant[1]               : 
+# 2781|     r2781_3(unsigned long)        = Convert                   : r2780_4
+# 2781|     r2781_4(unsigned long)        = Mul                       : r2781_2, r2781_3
+# 2781|     m2781_5(unsigned long)        = Store[x]                  : &:r2781_1, r2781_4
+# 2782|     r2782_1(glval<int[][]>)       = VariableAddress[tmp2]     : 
+# 2782|     m2782_2(int[][])              = Uninitialized[tmp2]       : &:r2782_1
+# 2782|     r2782_3(glval<int>)           = VariableAddress[len1]     : 
+# 2782|     r2782_4(int)                  = Load[len1]                : &:r2782_3, m2779_6
+# 2782|     r2782_5(glval<unsigned long>) = VariableAddress[len2]     : 
+# 2782|     r2782_6(unsigned long)        = Load[len2]                : &:r2782_5, m2779_8
+# 2782|     v2782_7(void)                 = NoOp                      : 
+# 2783|     r2783_1(glval<unsigned long>) = VariableAddress[y]        : 
+# 2783|     r2783_2(unsigned long)        = Constant[4]               : 
+# 2783|     r2783_3(unsigned long)        = Convert                   : r2782_4
+# 2783|     r2783_4(unsigned long)        = Mul                       : r2783_2, r2783_3
+# 2783|     r2783_5(unsigned long)        = CopyValue                 : r2782_6
+# 2783|     r2783_6(unsigned long)        = Mul                       : r2783_4, r2783_5
+# 2783|     m2783_7(unsigned long)        = Store[y]                  : &:r2783_1, r2783_6
+# 2784|     r2784_1(glval<unsigned long>) = VariableAddress[z]        : 
+# 2784|     r2784_2(unsigned long)        = Constant[4]               : 
+# 2784|     r2784_3(unsigned long)        = CopyValue                 : r2782_6
+# 2784|     r2784_4(unsigned long)        = Mul                       : r2784_2, r2784_3
+# 2784|     m2784_5(unsigned long)        = Store[z]                  : &:r2784_1, r2784_4
+# 2785|     r2785_1(glval<int[][][]>)     = VariableAddress[tmp3]     : 
+# 2785|     m2785_2(int[][][])            = Uninitialized[tmp3]       : &:r2785_1
+# 2785|     r2785_3(glval<int>)           = VariableAddress[len1]     : 
+# 2785|     r2785_4(int)                  = Load[len1]                : &:r2785_3, m2779_6
+# 2785|     r2785_5(glval<unsigned long>) = VariableAddress[len2]     : 
+# 2785|     r2785_6(unsigned long)        = Load[len2]                : &:r2785_5, m2779_8
+# 2785|     r2785_7(glval<char>)          = VariableAddress[len3]     : 
+# 2785|     r2785_8(char)                 = Load[len3]                : &:r2785_7, m2779_10
+# 2785|     v2785_9(void)                 = NoOp                      : 
+# 2786|     r2786_1(glval<unsigned long>) = VariableAddress[w]        : 
+# 2786|     r2786_2(unsigned long)        = Constant[4]               : 
+# 2786|     r2786_3(unsigned long)        = Convert                   : r2785_4
+# 2786|     r2786_4(unsigned long)        = Mul                       : r2786_2, r2786_3
+# 2786|     r2786_5(unsigned long)        = CopyValue                 : r2785_6
+# 2786|     r2786_6(unsigned long)        = Mul                       : r2786_4, r2786_5
+# 2786|     r2786_7(unsigned long)        = Convert                   : r2785_8
+# 2786|     r2786_8(unsigned long)        = Mul                       : r2786_6, r2786_7
+# 2786|     m2786_9(unsigned long)        = Store[w]                  : &:r2786_1, r2786_8
+# 2787|     r2787_1(glval<unsigned long>) = VariableAddress[v]        : 
+# 2787|     r2787_2(unsigned long)        = Constant[4]               : 
+# 2787|     r2787_3(unsigned long)        = CopyValue                 : r2785_6
+# 2787|     r2787_4(unsigned long)        = Mul                       : r2787_2, r2787_3
+# 2787|     r2787_5(unsigned long)        = Convert                   : r2785_8
+# 2787|     r2787_6(unsigned long)        = Mul                       : r2787_4, r2787_5
+# 2787|     m2787_7(unsigned long)        = Store[v]                  : &:r2787_1, r2787_6
+# 2788|     r2788_1(glval<unsigned long>) = VariableAddress[u]        : 
+# 2788|     r2788_2(unsigned long)        = Constant[4]               : 
+# 2788|     r2788_3(unsigned long)        = Convert                   : r2785_8
+# 2788|     r2788_4(unsigned long)        = Mul                       : r2788_2, r2788_3
+# 2788|     m2788_5(unsigned long)        = Store[u]                  : &:r2788_1, r2788_4
+# 2789|     r2789_1(glval<unsigned long>) = VariableAddress[t]        : 
+# 2789|     r2789_2(unsigned long)        = Constant[4]               : 
+# 2789|     m2789_3(unsigned long)        = Store[t]                  : &:r2789_1, r2789_2
+# 2790|     v2790_1(void)                 = NoOp                      : 
+# 2779|     v2779_11(void)                = ReturnVoid                : 
+# 2779|     v2779_12(void)                = AliasedUse                : m2779_3
+# 2779|     v2779_13(void)                = ExitFunction              : 
+
+# 2792| void vla_sizeof_test2(int, size_t, char)
+# 2792|   Block 0
+# 2792|     v2792_1(void)                 = EnterFunction             : 
+# 2792|     m2792_2(unknown)              = AliasedDefinition         : 
+# 2792|     m2792_3(unknown)              = InitializeNonLocal        : 
+# 2792|     m2792_4(unknown)              = Chi                       : total:m2792_2, partial:m2792_3
+# 2792|     r2792_5(glval<int>)           = VariableAddress[len1]     : 
+# 2792|     m2792_6(int)                  = InitializeParameter[len1] : &:r2792_5
+# 2792|     r2792_7(glval<unsigned long>) = VariableAddress[len2]     : 
+# 2792|     m2792_8(unsigned long)        = InitializeParameter[len2] : &:r2792_7
+# 2792|     r2792_9(glval<char>)          = VariableAddress[len3]     : 
+# 2792|     m2792_10(char)                = InitializeParameter[len3] : &:r2792_9
+# 2793|     r2793_1(glval<int[][]>)       = VariableAddress[tmp1]     : 
+# 2793|     m2793_2(int[][])              = Uninitialized[tmp1]       : &:r2793_1
+# 2793|     r2793_3(glval<int>)           = VariableAddress[len1]     : 
+# 2793|     r2793_4(int)                  = Load[len1]                : &:r2793_3, m2792_6
+# 2793|     r2793_5(glval<unsigned long>) = VariableAddress[len2]     : 
+# 2793|     r2793_6(unsigned long)        = Load[len2]                : &:r2793_5, m2792_8
+# 2793|     v2793_7(void)                 = NoOp                      : 
+# 2794|     r2794_1(glval<unsigned long>) = VariableAddress[z]        : 
+# 2794|     r2794_2(unsigned long)        = Constant[4]               : 
+# 2794|     r2794_3(unsigned long)        = CopyValue                 : r2793_6
+# 2794|     r2794_4(unsigned long)        = Mul                       : r2794_2, r2794_3
+# 2794|     m2794_5(unsigned long)        = Store[z]                  : &:r2794_1, r2794_4
+# 2795|     r2795_1(glval<int[][][]>)     = VariableAddress[tmp2]     : 
+# 2795|     m2795_2(int[][][])            = Uninitialized[tmp2]       : &:r2795_1
+# 2795|     r2795_3(glval<int>)           = VariableAddress[len1]     : 
+# 2795|     r2795_4(int)                  = Load[len1]                : &:r2795_3, m2792_6
+# 2795|     r2795_5(glval<unsigned long>) = VariableAddress[len2]     : 
+# 2795|     r2795_6(unsigned long)        = Load[len2]                : &:r2795_5, m2792_8
+# 2795|     r2795_7(glval<char>)          = VariableAddress[len3]     : 
+# 2795|     r2795_8(char)                 = Load[len3]                : &:r2795_7, m2792_10
+# 2795|     v2795_9(void)                 = NoOp                      : 
+# 2796|     r2796_1(glval<unsigned long>) = VariableAddress[v]        : 
+# 2796|     r2796_2(unsigned long)        = Constant[4]               : 
+# 2796|     r2796_3(unsigned long)        = CopyValue                 : r2795_6
+# 2796|     r2796_4(unsigned long)        = Mul                       : r2796_2, r2796_3
+# 2796|     r2796_5(unsigned long)        = Convert                   : r2795_8
+# 2796|     r2796_6(unsigned long)        = Mul                       : r2796_4, r2796_5
+# 2796|     m2796_7(unsigned long)        = Store[v]                  : &:r2796_1, r2796_6
+# 2797|     r2797_1(glval<unsigned long>) = VariableAddress[u]        : 
+# 2797|     r2797_2(unsigned long)        = Constant[4]               : 
+# 2797|     r2797_3(unsigned long)        = Convert                   : r2795_8
+# 2797|     r2797_4(unsigned long)        = Mul                       : r2797_2, r2797_3
+# 2797|     m2797_5(unsigned long)        = Store[u]                  : &:r2797_1, r2797_4
+# 2798|     r2798_1(glval<unsigned long>) = VariableAddress[t]        : 
+# 2798|     r2798_2(unsigned long)        = Constant[4]               : 
+# 2798|     m2798_3(unsigned long)        = Store[t]                  : &:r2798_1, r2798_2
+# 2799|     v2799_1(void)                 = NoOp                      : 
+# 2792|     v2792_11(void)                = ReturnVoid                : 
+# 2792|     v2792_12(void)                = AliasedUse                : m2792_3
+# 2792|     v2792_13(void)                = ExitFunction              : 
+
+# 2801| size_t vla_sizeof_test3(int, size_t, char, bool)
+# 2801|   Block 0
+# 2801|     v2801_1(void)                 = EnterFunction             : 
+# 2801|     m2801_2(unknown)              = AliasedDefinition         : 
+# 2801|     m2801_3(unknown)              = InitializeNonLocal        : 
+# 2801|     m2801_4(unknown)              = Chi                       : total:m2801_2, partial:m2801_3
+# 2801|     r2801_5(glval<int>)           = VariableAddress[len1]     : 
+# 2801|     m2801_6(int)                  = InitializeParameter[len1] : &:r2801_5
+# 2801|     r2801_7(glval<unsigned long>) = VariableAddress[len2]     : 
+# 2801|     m2801_8(unsigned long)        = InitializeParameter[len2] : &:r2801_7
+# 2801|     r2801_9(glval<char>)          = VariableAddress[len3]     : 
+# 2801|     m2801_10(char)                = InitializeParameter[len3] : &:r2801_9
+# 2801|     r2801_11(glval<bool>)         = VariableAddress[b]        : 
+# 2801|     m2801_12(bool)                = InitializeParameter[b]    : &:r2801_11
+# 2802|     r2802_1(glval<int>)           = VariableAddress[len1]     : 
+# 2802|     r2802_2(int)                  = Load[len1]                : &:r2802_1, m2801_6
+# 2802|     r2802_3(glval<unsigned long>) = VariableAddress[len2]     : 
+# 2802|     r2802_4(unsigned long)        = Load[len2]                : &:r2802_3, m2801_8
+# 2802|     v2802_5(void)                 = NoOp                      : 
+# 2803|     v2803_1(void)                 = NoOp                      : 
+# 2804|     r2804_1(glval<char>)          = VariableAddress[len3]     : 
+# 2804|     r2804_2(char)                 = Load[len3]                : &:r2804_1, m2801_10
+# 2804|     v2804_3(void)                 = NoOp                      : 
+# 2806|     r2806_1(glval<bool>)          = VariableAddress[b]        : 
+# 2806|     r2806_2(bool)                 = Load[b]                   : &:r2806_1, m2801_12
+# 2806|     v2806_3(void)                 = ConditionalBranch         : r2806_2
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+# 2801|   Block 1
+# 2801|     m2801_13(unsigned long)        = Phi                      : from 2:m2808_7, from 3:m2811_3
+# 2801|     r2801_14(glval<unsigned long>) = VariableAddress[#return] : 
+# 2801|     v2801_15(void)                 = ReturnValue              : &:r2801_14, m2801_13
+# 2801|     v2801_16(void)                 = AliasedUse               : m2801_3
+# 2801|     v2801_17(void)                 = ExitFunction             : 
+
+# 2807|   Block 2
+# 2807|     r2807_1(glval<long[][][]>)    = VariableAddress[tmp]     : 
+# 2807|     m2807_2(long[][][])           = Uninitialized[tmp]       : &:r2807_1
+# 2807|     v2807_3(void)                 = NoOp                     : 
+# 2808|     r2808_1(glval<unsigned long>) = VariableAddress[#return] : 
+# 2808|     r2808_2(unsigned long)        = Constant[8]              : 
+# 2808|     r2808_3(unsigned long)        = Convert                  : r2802_2
+# 2808|     r2808_4(unsigned long)        = Mul                      : r2808_2, r2808_3
+# 2808|     r2808_5(unsigned long)        = CopyValue                : r2802_4
+# 2808|     r2808_6(unsigned long)        = Mul                      : r2808_4, r2808_5
+# 2808|     m2808_7(unsigned long)        = Store[#return]           : &:r2808_1, r2808_6
+#-----|   Goto -> Block 1
+
+# 2811|   Block 3
+# 2811|     r2811_1(glval<unsigned long>) = VariableAddress[#return] : 
+# 2811|     r2811_2(unsigned long)        = Constant[0]              : 
+# 2811|     m2811_3(unsigned long)        = Store[#return]           : &:r2811_1, r2811_2
+#-----|   Goto -> Block 1
+
+# 2814| void vla_sizeof_test4(int, size_t)
+# 2814|   Block 0
+# 2814|     v2814_1(void)                 = EnterFunction             : 
+# 2814|     m2814_2(unknown)              = AliasedDefinition         : 
+# 2814|     m2814_3(unknown)              = InitializeNonLocal        : 
+# 2814|     m2814_4(unknown)              = Chi                       : total:m2814_2, partial:m2814_3
+# 2814|     r2814_5(glval<int>)           = VariableAddress[len1]     : 
+# 2814|     m2814_6(int)                  = InitializeParameter[len1] : &:r2814_5
+# 2814|     r2814_7(glval<unsigned long>) = VariableAddress[len2]     : 
+# 2814|     m2814_8(unsigned long)        = InitializeParameter[len2] : &:r2814_7
+# 2815|     r2815_1(glval<int[][]>)       = VariableAddress[tmp1]     : 
+# 2815|     m2815_2(int[][])              = Uninitialized[tmp1]       : &:r2815_1
+# 2815|     r2815_3(glval<int>)           = VariableAddress[len1]     : 
+# 2815|     r2815_4(int)                  = Load[len1]                : &:r2815_3, m2814_6
+# 2815|     r2815_5(glval<unsigned long>) = VariableAddress[len2]     : 
+# 2815|     r2815_6(unsigned long)        = Load[len2]                : &:r2815_5, m2814_8
+# 2815|     v2815_7(void)                 = NoOp                      : 
+# 2816|     r2816_1(glval<unsigned long>) = VariableAddress[z]        : 
+# 2816|     r2816_2(unsigned long)        = Constant[4]               : 
+# 2816|     r2816_3(unsigned long)        = CopyValue                 : r2815_6
+# 2816|     r2816_4(unsigned long)        = Mul                       : r2816_2, r2816_3
+# 2816|     m2816_5(unsigned long)        = Store[z]                  : &:r2816_1, r2816_4
+# 2817|     v2817_1(void)                 = NoOp                      : 
+# 2814|     v2814_9(void)                 = ReturnVoid                : 
+# 2814|     v2814_10(void)                = AliasedUse                : m2814_3
+# 2814|     v2814_11(void)                = ExitFunction              : 
+
+# 2819| void vla_sizeof_test5(int, size_t)
+# 2819|   Block 0
+# 2819|     v2819_1(void)                 = EnterFunction             : 
+# 2819|     m2819_2(unknown)              = AliasedDefinition         : 
+# 2819|     m2819_3(unknown)              = InitializeNonLocal        : 
+# 2819|     m2819_4(unknown)              = Chi                       : total:m2819_2, partial:m2819_3
+# 2819|     r2819_5(glval<int>)           = VariableAddress[len1]     : 
+# 2819|     m2819_6(int)                  = InitializeParameter[len1] : &:r2819_5
+# 2819|     r2819_7(glval<unsigned long>) = VariableAddress[len2]     : 
+# 2819|     m2819_8(unsigned long)        = InitializeParameter[len2] : &:r2819_7
+# 2820|     r2820_1(glval<int[][]>)       = VariableAddress[tmp1]     : 
+# 2820|     m2820_2(int[][])              = Uninitialized[tmp1]       : &:r2820_1
+# 2820|     r2820_3(glval<int>)           = VariableAddress[len1]     : 
+# 2820|     r2820_4(int)                  = Load[len1]                : &:r2820_3, m2819_6
+# 2820|     r2820_5(glval<unsigned long>) = VariableAddress[len2]     : 
+# 2820|     r2820_6(unsigned long)        = Load[len2]                : &:r2820_5, m2819_8
+# 2820|     v2820_7(void)                 = NoOp                      : 
+# 2821|     r2821_1(glval<unsigned long>) = VariableAddress[z]        : 
+# 2821|     r2821_2(unsigned long)        = Constant[4]               : 
+# 2821|     r2821_3(unsigned long)        = CopyValue                 : r2820_6
+# 2821|     r2821_4(unsigned long)        = Mul                       : r2821_2, r2821_3
+# 2821|     m2821_5(unsigned long)        = Store[z]                  : &:r2821_1, r2821_4
+# 2822|     v2822_1(void)                 = NoOp                      : 
+# 2819|     v2819_9(void)                 = ReturnVoid                : 
+# 2819|     v2819_10(void)                = AliasedUse                : m2819_3
+# 2819|     v2819_11(void)                = ExitFunction              : 
+
 ir23.cpp:
 #    1| bool consteval_1()
 #    1|   Block 0

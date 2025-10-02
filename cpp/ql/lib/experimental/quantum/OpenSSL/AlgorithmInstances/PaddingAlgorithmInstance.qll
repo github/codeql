@@ -4,8 +4,7 @@ private import OpenSSLAlgorithmInstanceBase
 private import experimental.quantum.OpenSSL.Operations.OpenSSLOperationBase
 private import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
 private import AlgToAVCFlow
-private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.DirectAlgorithmValueConsumer
-private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
+private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 private import codeql.quantum.experimental.Standardization::Types::KeyOpAlg as KeyOpAlg
 
 /**
@@ -65,7 +64,8 @@ class KnownOpenSslPaddingConstantAlgorithmInstance extends OpenSslAlgorithmInsta
       // Sink is an argument to a CipherGetterCall
       sink = getterCall.getInputNode() and
       // Source is `this`
-      src.asExpr() = this and
+      // NOTE: src literals can be ints or strings, so need to consider asExpr and asIndirectExpr
+      this = [src.asExpr(), src.asIndirectExpr()] and
       // This traces to a getter
       KnownOpenSslAlgorithmToAlgorithmValueConsumerFlow::flow(src, sink) and
       isPaddingSpecificConsumer = false
@@ -83,7 +83,8 @@ class KnownOpenSslPaddingConstantAlgorithmInstance extends OpenSslAlgorithmInsta
       // Sink is an argument to a CipherGetterCall
       sink = getterCall.getInputNode() and
       // Source is `this`
-      src.asExpr() = this and
+      // NOTE: src literals can be ints or strings, so need to consider asExpr and asIndirectExpr
+      this = [src.asExpr(), src.asIndirectExpr()] and
       // This traces to a padding-specific consumer
       RsaPaddingAlgorithmToPaddingAlgorithmValueConsumerFlow::flow(src, sink)
     ) and
