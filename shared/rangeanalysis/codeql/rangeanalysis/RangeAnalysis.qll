@@ -1045,7 +1045,8 @@ module RangeStage<
     D::Delta origdelta, SemReason reason, int rix
   ) {
     exists(Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge |
-      rankedPhiInput(phi, inp, edge, rix) and
+      rankedPhiInput(pragma[only_bind_into](phi), pragma[only_bind_into](inp),
+        pragma[only_bind_into](edge), rix) and
       boundedPhiCandValidForEdge(phi, b, delta, upper, fromBackEdge, origdelta, reason, inp, edge)
     |
       rix = 1
