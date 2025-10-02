@@ -3,7 +3,7 @@
  * @description Finds all potential usage of asymmeric keys for encryption or key exchange using the supported libraries.
  * @kind problem
  * @id py/quantum-readiness/cbom/all-asymmetric-encryption-algorithms
- * @problem.severity error
+ * @severity recommendation
  * @tags cbom
  *       cryptography
  */
