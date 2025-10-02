@@ -10,6 +10,7 @@ import (
 
 	"github.com/github/codeql-go/extractor"
 	"github.com/github/codeql-go/extractor/diagnostics"
+	"github.com/github/codeql-go/extractor/util"
 )
 
 var cpuprofile, memprofile string
@@ -96,6 +97,8 @@ func parseFlags(args []string, mimic bool, extractTests bool) ([]string, []strin
 }
 
 func main() {
+	util.SetLogLevel()
+
 	extractTestsDefault := os.Getenv("CODEQL_EXTRACTOR_GO_OPTION_EXTRACT_TESTS") == "true"
 	buildFlags, patterns, extractTests := parseFlags(os.Args[1:], false, extractTestsDefault)
 

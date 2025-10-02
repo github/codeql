@@ -138,23 +138,7 @@ module Raw {
    *
    * TODO: This does not yet include all possible cases.
    */
-  class Addressable extends @addressable, AstNode {
-    /**
-     * Gets the extended canonical path of this addressable, if it exists.
-     *
-     * Either a canonical path (see https://doc.rust-lang.org/reference/paths.html#canonical-paths),
-     * or `{<block id>}::name` for addressable items defined in an anonymous block (and only
-     * addressable there-in).
-     */
-    string getExtendedCanonicalPath() { addressable_extended_canonical_paths(this, result) }
-
-    /**
-     * Gets the crate origin of this addressable, if it exists.
-     *
-     * One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.
-     */
-    string getCrateOrigin() { addressable_crate_origins(this, result) }
-  }
+  class Addressable extends @addressable, AstNode { }
 
   /**
    * INTERNAL: Do not use.
@@ -321,30 +305,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A closure binder, specifying lifetime or type parameters for a closure.
-   *
-   * For example:
-   * ```rust
-   * let print_any = for<T: std::fmt::Debug> |x: T| {
-   * //              ^^^^^^^^^^^^^^^^^^^^^^^
-   *     println!("{:?}", x);
-   * };
-   *
-   * print_any(42);
-   * print_any("hello");
-   * ```
-   */
-  class ClosureBinder extends @closure_binder, AstNode {
-    override string toString() { result = "ClosureBinder" }
-
-    /**
-     * Gets the generic parameter list of this closure binder, if it exists.
-     */
-    GenericParamList getGenericParamList() { closure_binder_generic_param_lists(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * The base class for expressions.
    */
   class Expr extends @expr, AstNode { }
@@ -388,6 +348,30 @@ module Raw {
    * ```
    */
   class FieldList extends @field_list, AstNode { }
+
+  /**
+   * INTERNAL: Do not use.
+   * A for binder, specifying lifetime or type parameters for a closure or a type.
+   *
+   * For example:
+   * ```rust
+   * let print_any = for<T: std::fmt::Debug> |x: T| {
+   * //              ^^^^^^^^^^^^^^^^^^^^^^^
+   *     println!("{:?}", x);
+   * };
+   *
+   * print_any(42);
+   * print_any("hello");
+   * ```
+   */
+  class ForBinder extends @for_binder, AstNode {
+    override string toString() { result = "ForBinder" }
+
+    /**
+     * Gets the generic parameter list of this for binder, if it exists.
+     */
+    GenericParamList getGenericParamList() { for_binder_generic_param_lists(this, result) }
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -805,6 +789,17 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An AST element wrapping a path (`PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat`).
+   */
+  class PathAstNode extends @path_ast_node, AstNode {
+    /**
+     * Gets the path of this path ast node, if it exists.
+     */
+    Path getPath() { path_ast_node_paths(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A path segment, which is one part of a whole path.
    * For example:
    * - `HashMap`
@@ -871,22 +866,6 @@ module Raw {
      * Gets the name of this rename, if it exists.
      */
     Name getName() { rename_names(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * One of `PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat` or `MethodCallExpr`.
-   */
-  class Resolvable extends @resolvable, AstNode {
-    /**
-     * Gets the resolved path of this resolvable, if it exists.
-     */
-    string getResolvedPath() { resolvable_resolved_paths(this, result) }
-
-    /**
-     * Gets the resolved crate origin of this resolvable, if it exists.
-     */
-    string getResolvedCrateOrigin() { resolvable_resolved_crate_origins(this, result) }
   }
 
   /**
@@ -964,13 +943,15 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A list of statements in a block.
+   * A list of statements in a block, with an optional tail expression at the
+   * end that determines the block's value.
    *
    * For example:
    * ```rust
    * {
    *     let x = 1;
    *     let y = 2;
+   *     x + y
    * }
    * //  ^^^^^^^^^
    * ```
@@ -985,11 +966,17 @@ module Raw {
 
     /**
      * Gets the `index`th statement of this statement list (0-based).
+     *
+     * The statements of a `StmtList` do not include any tail expression, which
+     * can be accessed with predicates such as `getTailExpr`.
      */
     Stmt getStatement(int index) { stmt_list_statements(this, index, result) }
 
     /**
      * Gets the tail expression of this statement list, if it exists.
+     *
+     * The tail expression is the expression at the end of a block, that
+     * determines the block's value.
      */
     Expr getTailExpr() { stmt_list_tail_exprs(this, result) }
   }
@@ -1204,10 +1191,17 @@ module Raw {
    * ```rust
    * fn foo<T: Debug>(t: T) {}
    * //        ^^^^^
+   * fn bar(value: impl for<'a> From<&'a str>) {}
+   * //                 ^^^^^^^^^^^^^^^^^^^^^
    * ```
    */
   class TypeBound extends @type_bound, AstNode {
     override string toString() { result = "TypeBound" }
+
+    /**
+     * Gets the for binder of this type bound, if it exists.
+     */
+    ForBinder getForBinder() { type_bound_for_binders(this, result) }
 
     /**
      * Holds if this type bound is async.
@@ -1409,15 +1403,17 @@ module Raw {
    * ```rust
    * fn foo<T, U>(t: T, u: U) where T: Debug, U: Clone {}
    * //                             ^^^^^^^^  ^^^^^^^^
+   * fn bar<T>(value: T) where for<'a> T: From<&'a str> {}
+   * //                        ^^^^^^^^^^^^^^^^^^^^^^^^
    * ```
    */
   class WherePred extends @where_pred, AstNode {
     override string toString() { result = "WherePred" }
 
     /**
-     * Gets the generic parameter list of this where pred, if it exists.
+     * Gets the for binder of this where pred, if it exists.
      */
-    GenericParamList getGenericParamList() { where_pred_generic_param_lists(this, result) }
+    ForBinder getForBinder() { where_pred_for_binders(this, result) }
 
     /**
      * Gets the lifetime of this where pred, if it exists.
@@ -1519,35 +1515,6 @@ module Raw {
      * Holds if this asm const is const.
      */
     predicate isConst() { asm_const_is_const(this) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * An inline assembly expression. For example:
-   * ```rust
-   * unsafe {
-   *     #[inline(always)]
-   *     builtin # asm("cmp {0}, {1}", in(reg) a, in(reg) b);
-   * }
-   * ```
-   */
-  class AsmExpr extends @asm_expr, Expr {
-    override string toString() { result = "AsmExpr" }
-
-    /**
-     * Gets the `index`th asm piece of this asm expression (0-based).
-     */
-    AsmPiece getAsmPiece(int index) { asm_expr_asm_pieces(this, index, result) }
-
-    /**
-     * Gets the `index`th attr of this asm expression (0-based).
-     */
-    Attr getAttr(int index) { asm_expr_attrs(this, index, result) }
-
-    /**
-     * Gets the `index`th template of this asm expression (0-based).
-     */
-    Expr getTemplate(int index) { asm_expr_templates(this, index, result) }
   }
 
   /**
@@ -1926,10 +1893,13 @@ module Raw {
    * |x| x + 1;
    * move |x: i32| -> i32 { x + 1 };
    * async |x: i32, y| x + y;
-   *  #[coroutine]
+   * #[coroutine]
    * |x| yield x;
-   *  #[coroutine]
-   *  static |x| yield x;
+   * #[coroutine]
+   * static |x| yield x;
+   * for<T: std::fmt::Debug> |x: T| {
+   *     println!("{:?}", x);
+   * };
    * ```
    */
   class ClosureExpr extends @closure_expr, Expr, Callable {
@@ -1941,9 +1911,9 @@ module Raw {
     Expr getBody() { closure_expr_bodies(this, result) }
 
     /**
-     * Gets the closure binder of this closure expression, if it exists.
+     * Gets the for binder of this closure expression, if it exists.
      */
-    ClosureBinder getClosureBinder() { closure_expr_closure_binders(this, result) }
+    ForBinder getForBinder() { closure_expr_for_binders(this, result) }
 
     /**
      * Holds if this closure expression is async.
@@ -2221,26 +2191,21 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A higher-ranked trait bound.
+   * A function pointer type with a `for` modifier.
    *
    * For example:
    * ```rust
-   * fn foo<T>(value: T)
-   * where
-   *     T: for<'a> Fn(&'a str) -> &'a str
-   * //     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   * {
-   *     // ...
-   * }
+   * type RefOp<X> = for<'a> fn(&'a X) -> &'a X;
+   * //              ^^^^^^^^^^^^^^^^^^^^^^^^^^
    * ```
    */
   class ForTypeRepr extends @for_type_repr, TypeRepr {
     override string toString() { result = "ForTypeRepr" }
 
     /**
-     * Gets the generic parameter list of this for type representation, if it exists.
+     * Gets the for binder of this for type representation, if it exists.
      */
-    GenericParamList getGenericParamList() { for_type_repr_generic_param_lists(this, result) }
+    ForBinder getForBinder() { for_type_repr_for_binders(this, result) }
 
     /**
      * Gets the type representation of this for type representation, if it exists.
@@ -2641,23 +2606,29 @@ module Raw {
    * INTERNAL: Do not use.
    * A sequence of statements generated by a `MacroCall`. For example:
    * ```rust
-   * fn main() {
-   *     println!("Hello, world!"); // This macro expands into a list of statements
+   * macro_rules! my_macro {
+   *     () => {
+   *         let mut x = 40;
+   *         x += 2;
+   *         x
+   *     };
    * }
+   *
+   * my_macro!();  // this macro expands to a sequence of statements (and an expression)
    * ```
    */
   class MacroBlockExpr extends @macro_block_expr, Expr {
     override string toString() { result = "MacroBlockExpr" }
 
     /**
-     * Gets the tail expression of this macro block expression, if it exists.
-     */
-    Expr getTailExpr() { macro_block_expr_tail_exprs(this, result) }
-
-    /**
      * Gets the `index`th statement of this macro block expression (0-based).
      */
     Stmt getStatement(int index) { macro_block_expr_statements(this, index, result) }
+
+    /**
+     * Gets the tail expression of this macro block expression, if it exists.
+     */
+    Expr getTailExpr() { macro_block_expr_tail_exprs(this, result) }
   }
 
   /**
@@ -2920,20 +2891,23 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * An AST element wrapping a path (`PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat`).
-   */
-  class PathAstNode extends @path_ast_node, Resolvable {
-    /**
-     * Gets the path of this path ast node, if it exists.
-     */
-    Path getPath() { path_ast_node_paths(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A path expression or a variable access in a formatting template. See `PathExpr` and `FormatTemplateVariableAccess` for further details.
    */
   class PathExprBase extends @path_expr_base, Expr { }
+
+  /**
+   * INTERNAL: Do not use.
+   * A path pattern. For example:
+   * ```rust
+   * match x {
+   *     Foo::Bar => "ok",
+   *     _ => "fail",
+   * }
+   * ```
+   */
+  class PathPat extends @path_pat, Pat, PathAstNode {
+    override string toString() { result = "PathPat" }
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -3295,6 +3269,27 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A struct expression. For example:
+   * ```rust
+   * let first = Foo { a: 1, b: 2 };
+   * let second = Foo { a: 2, ..first };
+   * let n = Foo { a: 1, b: 2 }.b;
+   * Foo { a: m, .. } = second;
+   * ```
+   */
+  class StructExpr extends @struct_expr, Expr, PathAstNode {
+    override string toString() { result = "StructExpr" }
+
+    /**
+     * Gets the struct expression field list of this struct expression, if it exists.
+     */
+    StructExprFieldList getStructExprFieldList() {
+      struct_expr_struct_expr_field_lists(this, result)
+    }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A list of fields in a struct declaration.
    *
    * For example:
@@ -3310,6 +3305,25 @@ module Raw {
      * Gets the `index`th field of this struct field list (0-based).
      */
     StructField getField(int index) { struct_field_list_fields(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A struct pattern. For example:
+   * ```rust
+   * match x {
+   *     Foo { a: 1, b: 2 } => "ok",
+   *     Foo { .. } => "fail",
+   * }
+   * ```
+   */
+  class StructPat extends @struct_pat, Pat, PathAstNode {
+    override string toString() { result = "StructPat" }
+
+    /**
+     * Gets the struct pattern field list of this struct pattern, if it exists.
+     */
+    StructPatFieldList getStructPatFieldList() { struct_pat_struct_pat_field_lists(this, result) }
   }
 
   /**
@@ -3340,8 +3354,9 @@ module Raw {
    * INTERNAL: Do not use.
    * A tuple expression. For example:
    * ```rust
-   * (1, "one");
-   * (2, "two")[0] = 3;
+   * let tuple = (1, "one");
+   * let n = (2, "two").0;
+   * let (a, b) = tuple;
    * ```
    */
   class TupleExpr extends @tuple_expr, Expr {
@@ -3392,6 +3407,26 @@ module Raw {
      * Gets the `index`th field of this tuple pattern (0-based).
      */
     Pat getField(int index) { tuple_pat_fields(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A tuple struct pattern. For example:
+   * ```rust
+   * match x {
+   *     Tuple("a", 1, 2, 3) => "great",
+   *     Tuple(.., 3) => "fine",
+   *     Tuple(..) => "fail",
+   * };
+   * ```
+   */
+  class TupleStructPat extends @tuple_struct_pat, Pat, PathAstNode {
+    override string toString() { result = "TupleStructPat" }
+
+    /**
+     * Gets the `index`th field of this tuple struct pattern (0-based).
+     */
+    Pat getField(int index) { tuple_struct_pat_fields(this, index, result) }
   }
 
   /**
@@ -3590,6 +3625,35 @@ module Raw {
     MacroItems getDeriveMacroExpansion(int index) {
       adt_derive_macro_expansions(this, index, result)
     }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An inline assembly expression. For example:
+   * ```rust
+   * unsafe {
+   *     #[inline(always)]
+   *     builtin # asm("cmp {0}, {1}", in(reg) a, in(reg) b);
+   * }
+   * ```
+   */
+  class AsmExpr extends @asm_expr, Expr, Item {
+    override string toString() { result = "AsmExpr" }
+
+    /**
+     * Gets the `index`th asm piece of this asm expression (0-based).
+     */
+    AsmPiece getAsmPiece(int index) { asm_expr_asm_pieces(this, index, result) }
+
+    /**
+     * Gets the `index`th attr of this asm expression (0-based).
+     */
+    Attr getAttr(int index) { asm_expr_attrs(this, index, result) }
+
+    /**
+     * Gets the `index`th template of this asm expression (0-based).
+     */
+    Expr getTemplate(int index) { asm_expr_templates(this, index, result) }
   }
 
   /**
@@ -3923,7 +3987,7 @@ module Raw {
    * x.foo::<u32, u64>(42);
    * ```
    */
-  class MethodCallExpr extends @method_call_expr, CallExprBase, Resolvable {
+  class MethodCallExpr extends @method_call_expr, CallExprBase {
     override string toString() { result = "MethodCallExpr" }
 
     /**
@@ -3995,60 +4059,6 @@ module Raw {
      * Gets the `index`th attr of this path expression (0-based).
      */
     Attr getAttr(int index) { path_expr_attrs(this, index, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A path pattern. For example:
-   * ```rust
-   * match x {
-   *     Foo::Bar => "ok",
-   *     _ => "fail",
-   * }
-   * ```
-   */
-  class PathPat extends @path_pat, Pat, PathAstNode {
-    override string toString() { result = "PathPat" }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A struct expression. For example:
-   * ```rust
-   * let first = Foo { a: 1, b: 2 };
-   * let second = Foo { a: 2, ..first };
-   * Foo { a: 1, b: 2 }[2] = 10;
-   * Foo { .. } = second;
-   * ```
-   */
-  class StructExpr extends @struct_expr, Expr, PathAstNode {
-    override string toString() { result = "StructExpr" }
-
-    /**
-     * Gets the struct expression field list of this struct expression, if it exists.
-     */
-    StructExprFieldList getStructExprFieldList() {
-      struct_expr_struct_expr_field_lists(this, result)
-    }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A struct pattern. For example:
-   * ```rust
-   * match x {
-   *     Foo { a: 1, b: 2 } => "ok",
-   *     Foo { .. } => "fail",
-   * }
-   * ```
-   */
-  class StructPat extends @struct_pat, Pat, PathAstNode {
-    override string toString() { result = "StructPat" }
-
-    /**
-     * Gets the struct pattern field list of this struct pattern, if it exists.
-     */
-    StructPatFieldList getStructPatFieldList() { struct_pat_struct_pat_field_lists(this, result) }
   }
 
   /**
@@ -4154,26 +4164,6 @@ module Raw {
      * Gets the where clause of this trait alias, if it exists.
      */
     WhereClause getWhereClause() { trait_alias_where_clauses(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A tuple struct pattern. For example:
-   * ```rust
-   * match x {
-   *     Tuple("a", 1, 2, 3) => "great",
-   *     Tuple(.., 3) => "fine",
-   *     Tuple(..) => "fail",
-   * };
-   * ```
-   */
-  class TupleStructPat extends @tuple_struct_pat, Pat, PathAstNode {
-    override string toString() { result = "TupleStructPat" }
-
-    /**
-     * Gets the `index`th field of this tuple struct pattern (0-based).
-     */
-    Pat getField(int index) { tuple_struct_pat_fields(this, index, result) }
   }
 
   /**

@@ -1,7 +1,5 @@
 instances
 | gen_extern_block.rs:7:5:9:5 | ExternBlock | isUnsafe: | no |
-getExtendedCanonicalPath
-getCrateOrigin
 getAttributeMacroExpansion
 getAbi
 | gen_extern_block.rs:7:5:9:5 | ExternBlock | gen_extern_block.rs:7:5:7:14 | Abi |

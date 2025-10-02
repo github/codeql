@@ -29,18 +29,10 @@ private module CfgInput implements InputSig<Location> {
     Stages::CfgStage::ref()
   }
 
-  class SuccessorType = Cfg::SuccessorType;
+  private class SuccessorType = Cfg::SuccessorType;
 
   /** Gets a successor type that matches completion `c`. */
   SuccessorType getAMatchingSuccessorType(Completion c) { result = c.getAMatchingSuccessorType() }
-
-  /**
-   * Hold if `c` represents simple (normal) evaluation of a statement or an expression.
-   */
-  predicate successorTypeIsSimple(SuccessorType t) { t instanceof Cfg::NormalSuccessor }
-
-  /** Holds if `t` is an abnormal exit type out of a CFG scope. */
-  predicate isAbnormalExitType(SuccessorType t) { none() }
 
   /** Hold if `t` represents a conditional successor type. */
   predicate successorTypeIsCondition(SuccessorType t) { t instanceof Cfg::BooleanSuccessor }
@@ -85,7 +77,7 @@ class CallableScopeTree extends StandardTree, PreOrderTree, PostOrderTree, Scope
 
   override AstNode getChildNode(int i) {
     i = 0 and
-    result = this.getParamList().getSelfParam()
+    result = this.getSelfParam()
     or
     result = this.getParam(i - 1)
     or
@@ -274,15 +266,8 @@ module ExprTrees {
     }
   }
 
-  private AstNode getBlockChildNode(BlockExpr b, int i) {
-    result = b.getStmtList().getStatement(i)
-    or
-    i = b.getStmtList().getNumberOfStatements() and
-    result = b.getStmtList().getTailExpr()
-  }
-
   class AsyncBlockExprTree extends StandardTree, PreOrderTree, PostOrderTree, AsyncBlockExpr {
-    override AstNode getChildNode(int i) { result = getBlockChildNode(this, i) }
+    override AstNode getChildNode(int i) { result = this.getStmtList().getStmtOrExpr(i) }
 
     override predicate propagatesAbnormal(AstNode child) { none() }
   }
@@ -290,7 +275,7 @@ module ExprTrees {
   class BlockExprTree extends StandardPostOrderTree, BlockExpr {
     BlockExprTree() { not this.isAsync() }
 
-    override AstNode getChildNode(int i) { result = getBlockChildNode(this, i) }
+    override AstNode getChildNode(int i) { result = this.getStmtList().getStmtOrExpr(i) }
 
     override predicate propagatesAbnormal(AstNode child) { child = this.getChildNode(_) }
   }

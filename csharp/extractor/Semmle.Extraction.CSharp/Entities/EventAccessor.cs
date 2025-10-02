@@ -48,8 +48,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
             trapFile.event_accessors(this, kind, Symbol.Name, parent, unboundAccessor);
 
-            foreach (var l in Locations)
-                trapFile.event_accessor_location(this, l);
+            if (Context.ExtractLocation(Symbol))
+            {
+                WriteLocationsToTrap(trapFile.event_accessor_location, this, Locations);
+            }
 
             Overrides(trapFile);
 

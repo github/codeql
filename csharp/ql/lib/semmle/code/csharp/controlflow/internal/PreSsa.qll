@@ -12,9 +12,9 @@ module PreSsa {
   private import codeql.ssa.Ssa as SsaImplCommon
 
   private predicate definitionAt(
-    AssignableDefinition def, SsaInput::BasicBlock bb, int i, SsaInput::SourceVariable v
+    AssignableDefinition def, PreBasicBlocks::PreBasicBlock bb, int i, SsaInput::SourceVariable v
   ) {
-    bb.getElement(i) = def.getExpr() and
+    bb.getNode(i) = def.getExpr() and
     v = def.getTarget() and
     // In cases like `(x, x) = (0, 1)`, we discard the first (dead) definition of `x`
     not exists(TupleAssignmentDefinition first, TupleAssignmentDefinition second | first = def |
@@ -30,7 +30,9 @@ module PreSsa {
     )
   }
 
-  predicate implicitEntryDef(Callable c, SsaInput::BasicBlock bb, SsaInput::SourceVariable v) {
+  predicate implicitEntryDef(
+    Callable c, PreBasicBlocks::PreBasicBlock bb, SsaInput::SourceVariable v
+  ) {
     c = v.getACallable() and
     scopeFirst(c, bb) and
     (
@@ -79,19 +81,11 @@ module PreSsa {
     }
   }
 
-  module SsaInput implements SsaImplCommon::InputSig<Location> {
-    class BasicBlock extends PreBasicBlocks::PreBasicBlock {
-      ControlFlowNode getNode(int i) { result = this.getElement(i) }
-    }
+  module SsaInput implements SsaImplCommon::InputSig<Location, PreBasicBlocks::PreBasicBlock> {
+    private import semmle.code.csharp.Caching
 
-    class ControlFlowNode = ControlFlowElement;
-
-    BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result.immediatelyDominates(bb) }
-
-    BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
-
-    private class ExitBasicBlock extends BasicBlock {
-      ExitBasicBlock() { scopeLast(_, this.getLastElement(), _) }
+    private class ExitBasicBlock extends PreBasicBlocks::PreBasicBlock {
+      ExitBasicBlock() { scopeLast(_, this.getLastNode(), _) }
     }
 
     pragma[noinline]
@@ -129,7 +123,10 @@ module PreSsa {
       Callable getACallable() { result = c }
     }
 
-    predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+    predicate variableWrite(
+      PreBasicBlocks::PreBasicBlock bb, int i, SourceVariable v, boolean certain
+    ) {
+      Stages::ControlFlowStage::forceCachingInSameStage() and
       exists(AssignableDefinition def |
         definitionAt(def, bb, i, v) and
         if def.getTargetAccess().isRefArgument() then certain = false else certain = true
@@ -140,9 +137,11 @@ module PreSsa {
       certain = true
     }
 
-    predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+    predicate variableRead(
+      PreBasicBlocks::PreBasicBlock bb, int i, SourceVariable v, boolean certain
+    ) {
       exists(AssignableRead read |
-        read = bb.getElement(i) and
+        read = bb.getNode(i) and
         read.getTarget() = v and
         certain = true
       )
@@ -157,27 +156,27 @@ module PreSsa {
     }
   }
 
-  private module SsaImpl = SsaImplCommon::Make<Location, SsaInput>;
+  private module SsaImpl = SsaImplCommon::Make<Location, PreBasicBlocks::PreCfg, SsaInput>;
 
   class Definition extends SsaImpl::Definition {
     final AssignableRead getARead() {
-      exists(SsaInput::BasicBlock bb, int i |
+      exists(PreBasicBlocks::PreBasicBlock bb, int i |
         SsaImpl::ssaDefReachesRead(_, this, bb, i) and
-        result = bb.getElement(i)
+        result = bb.getNode(i)
       )
     }
 
     final AssignableDefinition getDefinition() {
-      exists(SsaInput::BasicBlock bb, int i, SsaInput::SourceVariable v |
+      exists(PreBasicBlocks::PreBasicBlock bb, int i, SsaInput::SourceVariable v |
         this.definesAt(v, bb, i) and
         definitionAt(result, bb, i, v)
       )
     }
 
     final AssignableRead getAFirstRead() {
-      exists(SsaInput::BasicBlock bb, int i |
+      exists(PreBasicBlocks::PreBasicBlock bb, int i |
         SsaImpl::firstUse(this, bb, i, true) and
-        result = bb.getElement(i)
+        result = bb.getNode(i)
       )
     }
 
@@ -191,14 +190,14 @@ module PreSsa {
       not result instanceof PhiNode
     }
 
-    final predicate isLiveAtEndOfBlock(SsaInput::BasicBlock bb) {
+    final predicate isLiveAtEndOfBlock(PreBasicBlocks::PreBasicBlock bb) {
       SsaImpl::ssaDefReachesEndOfBlock(bb, this, _)
     }
 
     override Location getLocation() {
       result = this.getDefinition().getLocation()
       or
-      exists(Callable c, SsaInput::BasicBlock bb, SsaInput::SourceVariable v |
+      exists(Callable c, PreBasicBlocks::PreBasicBlock bb, SsaInput::SourceVariable v |
         this.definesAt(v, bb, -1) and
         implicitEntryDef(c, bb, v) and
         result = c.getLocation()
@@ -213,10 +212,10 @@ module PreSsa {
   }
 
   predicate adjacentReadPairSameVar(AssignableRead read1, AssignableRead read2) {
-    exists(SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2 |
-      read1 = bb1.getElement(i1) and
+    exists(PreBasicBlocks::PreBasicBlock bb1, int i1, PreBasicBlocks::PreBasicBlock bb2, int i2 |
+      read1 = bb1.getNode(i1) and
       SsaImpl::adjacentUseUse(bb1, i1, bb2, i2, _, true) and
-      read2 = bb2.getElement(i2)
+      read2 = bb2.getNode(i2)
     )
   }
 }

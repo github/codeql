@@ -4,7 +4,7 @@ private import semmle.javascript.dataflow.internal.VariableOrThis
 private import codeql.dataflow.VariableCapture
 private import semmle.javascript.dataflow.internal.sharedlib.DataFlowImplCommon as DataFlowImplCommon
 
-module VariableCaptureConfig implements InputSig<js::DbLocation> {
+module VariableCaptureConfig implements InputSig<js::Location, js::Cfg::BasicBlock> {
   private js::Function getLambdaFromVariable(js::LocalVariable variable) {
     result.getVariable() = variable
     or
@@ -106,10 +106,8 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
     )
   }
 
-  class ControlFlowNode = js::ControlFlowNode;
-
-  class BasicBlock extends js::BasicBlock {
-    Callable getEnclosingCallable() { result = this.getContainer().getFunctionBoundary() }
+  Callable basicBlockGetEnclosingCallable(js::Cfg::BasicBlock bb) {
+    result = bb.getContainer().getFunctionBoundary()
   }
 
   class Callable extends js::StmtContainer {
@@ -125,7 +123,7 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
 
   class Expr extends js::AST::ValueNode {
     /** Holds if the `i`th node of basic block `bb` evaluates this expression. */
-    predicate hasCfgNode(BasicBlock bb, int i) {
+    predicate hasCfgNode(js::Cfg::BasicBlock bb, int i) {
       // Note: this is overridden for FunctionDeclStmt
       bb.getNode(i) = this
     }
@@ -168,11 +166,11 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
 
     string toString() { none() } // Overridden in subclass
 
-    js::DbLocation getLocation() { none() } // Overridden in subclass
+    js::Location getLocation() { none() } // Overridden in subclass
 
-    predicate hasCfgNode(BasicBlock bb, int i) { none() } // Overridden in subclass
+    predicate hasCfgNode(js::Cfg::BasicBlock bb, int i) { none() } // Overridden in subclass
 
-    // note: langauge-specific
+    // note: language-specific
     js::DataFlow::Node getSource() { none() } // Overridden in subclass
   }
 
@@ -186,7 +184,7 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
     override string toString() { result = pattern.toString() }
 
     /** Gets the location of this write. */
-    override js::DbLocation getLocation() { result = pattern.getLocation() }
+    override js::Location getLocation() { result = pattern.getLocation() }
 
     override js::DataFlow::Node getSource() {
       // Note: there is not always an expression corresponding to the RHS of the assignment.
@@ -207,7 +205,7 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
     }
 
     /** Holds if the `i`th node of basic block `bb` evaluates this expression. */
-    override predicate hasCfgNode(BasicBlock bb, int i) {
+    override predicate hasCfgNode(js::Cfg::BasicBlock bb, int i) {
       bb.getNode(i) = this.getCfgNodeOverride()
       or
       not exists(this.getCfgNodeOverride()) and
@@ -222,11 +220,11 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
 
     override string toString() { result = "[implicit init] " + variable }
 
-    override js::DbLocation getLocation() { result = variable.getLocation() }
+    override js::Location getLocation() { result = variable.getLocation() }
 
     override CapturedVariable getVariable() { result = variable }
 
-    override predicate hasCfgNode(BasicBlock bb, int i) {
+    override predicate hasCfgNode(js::Cfg::BasicBlock bb, int i) {
       // 'i' would normally be bound to 0, but we lower it to -1 so FunctionDeclStmts can be evaluated
       // at index 0.
       any(js::SsaImplicitInit def).definesAt(bb, _, variable.asLocalVariable()) and i = -1
@@ -234,15 +232,9 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
       bb.(js::EntryBasicBlock).getContainer() = variable.asThisContainer() and i = -1
     }
   }
-
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
-
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
-
-  predicate entryBlock(BasicBlock bb) { bb instanceof js::EntryBasicBlock }
 }
 
-module VariableCaptureOutput = Flow<js::DbLocation, VariableCaptureConfig>;
+module VariableCaptureOutput = Flow<js::Location, js::Cfg, VariableCaptureConfig>;
 
 js::DataFlow::Node getNodeFromClosureNode(VariableCaptureOutput::ClosureNode node) {
   result = TValueNode(node.(VariableCaptureOutput::ExprNode).getExpr())
@@ -288,9 +280,9 @@ private module Debug {
     relevantContainer(node1.getContainer())
   }
 
-  predicate readBB(VariableRead read, BasicBlock bb, int i) { read.hasCfgNode(bb, i) }
+  predicate readBB(VariableRead read, js::Cfg::BasicBlock bb, int i) { read.hasCfgNode(bb, i) }
 
-  predicate writeBB(VariableWrite write, BasicBlock bb, int i) { write.hasCfgNode(bb, i) }
+  predicate writeBB(VariableWrite write, js::Cfg::BasicBlock bb, int i) { write.hasCfgNode(bb, i) }
 
   int captureDegree(js::Function fun) {
     result = strictcount(CapturedVariable v | captures(fun, v))

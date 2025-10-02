@@ -1,218 +1,21 @@
 private import cpp
 private import semmle.code.cpp.ir.IR
-private import DataFlowPrivate
+private import semmle.code.cpp.ir.dataflow.DataFlow
+private import DataFlowPrivate as DataFlowPrivate
 private import DataFlowUtil
 private import DataFlowImplCommon as DataFlowImplCommon
+private import codeql.typetracking.TypeTracking
+private import SsaImpl as SsaImpl
 
 /**
- * Gets a function that might be called by `call`.
- *
- * This predicate does not take additional call targets
- * from `AdditionalCallTarget` into account.
+ * Holds if `f` has name `qualifiedName` and `nparams` parameter count. This is
+ * an approximation of its signature for the purpose of matching functions that
+ * might be the same across link targets.
  */
-cached
-DataFlowCallable defaultViableCallable(DataFlowCall call) {
-  DataFlowImplCommon::forceCachingInSameStage() and
-  result = call.getStaticCallTarget()
-  or
-  // If the target of the call does not have a body in the snapshot, it might
-  // be because the target is just a header declaration, and the real target
-  // will be determined at run time when the caller and callee are linked
-  // together by the operating system's dynamic linker. In case a _unique_
-  // function with the right signature is present in the database, we return
-  // that as a potential callee.
-  exists(string qualifiedName, int nparams |
-    callSignatureWithoutBody(qualifiedName, nparams, call.asCallInstruction()) and
-    functionSignatureWithBody(qualifiedName, nparams, result.getUnderlyingCallable()) and
-    strictcount(Function other | functionSignatureWithBody(qualifiedName, nparams, other)) = 1
-  )
-  or
-  // Virtual dispatch
-  result.asSourceCallable() = call.(VirtualDispatch::DataSensitiveCall).resolve()
-}
-
-/**
- * Gets a function that might be called by `call`.
- */
-cached
-DataFlowCallable viableCallable(DataFlowCall call) {
-  result = defaultViableCallable(call)
-  or
-  // Additional call targets
-  result.getUnderlyingCallable() =
-    any(AdditionalCallTarget additional)
-        .viableTarget(call.asCallInstruction().getUnconvertedResultExpression())
-}
-
-/**
- * Provides virtual dispatch support compatible with the original
- * implementation of `semmle.code.cpp.security.TaintTracking`.
- */
-private module VirtualDispatch {
-  /** A call that may dispatch differently depending on the qualifier value. */
-  abstract class DataSensitiveCall extends DataFlowCall {
-    /**
-     * Gets the node whose value determines the target of this call. This node
-     * could be the qualifier of a virtual dispatch or the function-pointer
-     * expression in a call to a function pointer. What they have in common is
-     * that we need to find out which data flows there, and then it's up to the
-     * `resolve` predicate to stitch that information together and resolve the
-     * call.
-     */
-    abstract Node getDispatchValue();
-
-    /** Gets a candidate target for this call. */
-    abstract Function resolve();
-
-    /**
-     * Whether `src` can flow to this call.
-     *
-     * Searches backwards from `getDispatchValue()` to `src`. The `allowFromArg`
-     * parameter is true when the search is allowed to continue backwards into
-     * a parameter; non-recursive callers should pass `_` for `allowFromArg`.
-     */
-    predicate flowsFrom(Node src, boolean allowFromArg) {
-      src = this.getDispatchValue() and allowFromArg = true
-      or
-      exists(Node other, boolean allowOtherFromArg | this.flowsFrom(other, allowOtherFromArg) |
-        // Call argument
-        exists(DataFlowCall call, Position i |
-          other.(ParameterNode).isParameterOf(pragma[only_bind_into](call).getStaticCallTarget(), i) and
-          src.(ArgumentNode).argumentOf(call, pragma[only_bind_into](pragma[only_bind_out](i)))
-        ) and
-        allowOtherFromArg = true and
-        allowFromArg = true
-        or
-        // Call return
-        exists(DataFlowCall call, ReturnKind returnKind |
-          other = getAnOutNode(call, returnKind) and
-          returnNodeWithKindAndEnclosingCallable(src, returnKind, call.getStaticCallTarget())
-        ) and
-        allowFromArg = false
-        or
-        // Local flow
-        localFlowStep(src, other) and
-        allowFromArg = allowOtherFromArg
-        or
-        // Flow from global variable to load.
-        exists(LoadInstruction load, GlobalOrNamespaceVariable var |
-          var = src.asVariable() and
-          other.asInstruction() = load and
-          addressOfGlobal(load.getSourceAddress(), var) and
-          // The `allowFromArg` concept doesn't play a role when `src` is a
-          // global variable, so we just set it to a single arbitrary value for
-          // performance.
-          allowFromArg = true
-        )
-        or
-        // Flow from store to global variable.
-        exists(StoreInstruction store, GlobalOrNamespaceVariable var |
-          var = other.asVariable() and
-          store = src.asInstruction() and
-          storeIntoGlobal(store, var) and
-          // Setting `allowFromArg` to `true` like in the base case means we
-          // treat a store to a global variable like the dispatch itself: flow
-          // may come from anywhere.
-          allowFromArg = true
-        )
-      )
-    }
-  }
-
-  pragma[noinline]
-  private predicate storeIntoGlobal(StoreInstruction store, GlobalOrNamespaceVariable var) {
-    addressOfGlobal(store.getDestinationAddress(), var)
-  }
-
-  /** Holds if `addressInstr` is an instruction that produces the address of `var`. */
-  private predicate addressOfGlobal(Instruction addressInstr, GlobalOrNamespaceVariable var) {
-    // Access directly to the global variable
-    addressInstr.(VariableAddressInstruction).getAstVariable() = var
-    or
-    // Access to a field on a global union
-    exists(FieldAddressInstruction fa |
-      fa = addressInstr and
-      fa.getObjectAddress().(VariableAddressInstruction).getAstVariable() = var and
-      fa.getField().getDeclaringType() instanceof Union
-    )
-  }
-
-  /**
-   * A ReturnNode with its ReturnKind and its enclosing callable.
-   *
-   * Used to fix a join ordering issue in flowsFrom.
-   */
-  pragma[noinline]
-  private predicate returnNodeWithKindAndEnclosingCallable(
-    ReturnNode node, ReturnKind kind, DataFlowCallable callable
-  ) {
-    node.getKind() = kind and
-    node.getFunction() = callable.getUnderlyingCallable()
-  }
-
-  /** Call through a function pointer. */
-  private class DataSensitiveExprCall extends DataSensitiveCall {
-    DataSensitiveExprCall() { not exists(this.getStaticCallTarget()) }
-
-    override Node getDispatchValue() { result.asOperand() = this.getCallTargetOperand() }
-
-    override Function resolve() {
-      exists(FunctionInstruction fi |
-        this.flowsFrom(instructionNode(fi), _) and
-        result = fi.getFunctionSymbol()
-      ) and
-      (
-        this.getNumberOfArguments() <= result.getEffectiveNumberOfParameters() and
-        this.getNumberOfArguments() >= result.getEffectiveNumberOfParameters()
-        or
-        result.isVarargs()
-      )
-    }
-  }
-
-  /** Call to a virtual function. */
-  private class DataSensitiveOverriddenFunctionCall extends DataSensitiveCall {
-    DataSensitiveOverriddenFunctionCall() {
-      exists(
-        this.getStaticCallTarget()
-            .getUnderlyingCallable()
-            .(VirtualFunction)
-            .getAnOverridingFunction()
-      )
-    }
-
-    override Node getDispatchValue() { result.asInstruction() = this.getArgument(-1) }
-
-    override MemberFunction resolve() {
-      exists(Class overridingClass |
-        this.overrideMayAffectCall(overridingClass, result) and
-        this.hasFlowFromCastFrom(overridingClass)
-      )
-    }
-
-    /**
-     * Holds if `this` is a virtual function call whose static target is
-     * overridden by `overridingFunction` in `overridingClass`.
-     */
-    pragma[noinline]
-    private predicate overrideMayAffectCall(Class overridingClass, MemberFunction overridingFunction) {
-      overridingFunction.getAnOverriddenFunction+() =
-        this.getStaticCallTarget().getUnderlyingCallable().(VirtualFunction) and
-      overridingFunction.getDeclaringType() = overridingClass
-    }
-
-    /**
-     * Holds if the qualifier of `this` has flow from an upcast from
-     * `derivedClass`.
-     */
-    pragma[noinline]
-    private predicate hasFlowFromCastFrom(Class derivedClass) {
-      exists(ConvertToBaseInstruction toBase |
-        this.flowsFrom(instructionNode(toBase), _) and
-        derivedClass = toBase.getDerivedClass()
-      )
-    }
-  }
+private predicate functionSignature(Function f, string qualifiedName, int nparams) {
+  qualifiedName = f.getQualifiedName() and
+  nparams = f.getNumberOfParameters() and
+  not f.isStatic()
 }
 
 /**
@@ -238,34 +41,319 @@ private predicate callSignatureWithoutBody(string qualifiedName, int nparams, Ca
 }
 
 /**
- * Holds if `f` has name `qualifiedName` and `nparams` parameter count. This is
- * an approximation of its signature for the purpose of matching functions that
- * might be the same across link targets.
+ * Gets a function that might be called by `call`.
+ *
+ * This predicate does not take additional call targets
+ * from `AdditionalCallTarget` into account.
  */
-private predicate functionSignature(Function f, string qualifiedName, int nparams) {
-  qualifiedName = f.getQualifiedName() and
-  nparams = f.getNumberOfParameters() and
-  not f.isStatic()
+cached
+DataFlowPrivate::DataFlowCallable defaultViableCallable(DataFlowPrivate::DataFlowCall call) {
+  result = defaultViableCallableWithoutLambda(call)
+  or
+  result = DataFlowImplCommon::viableCallableLambda(call, _)
+}
+
+private DataFlowPrivate::DataFlowCallable defaultViableCallableWithoutLambda(
+  DataFlowPrivate::DataFlowCall call
+) {
+  DataFlowImplCommon::forceCachingInSameStage() and
+  result = call.getStaticCallTarget()
+  or
+  // If the target of the call does not have a body in the snapshot, it might
+  // be because the target is just a header declaration, and the real target
+  // will be determined at run time when the caller and callee are linked
+  // together by the operating system's dynamic linker. In case a _unique_
+  // function with the right signature is present in the database, we return
+  // that as a potential callee.
+  exists(string qualifiedName, int nparams |
+    callSignatureWithoutBody(qualifiedName, nparams, call.asCallInstruction()) and
+    functionSignatureWithBody(qualifiedName, nparams, result.getUnderlyingCallable()) and
+    strictcount(Function other | functionSignatureWithBody(qualifiedName, nparams, other)) = 1
+  )
+}
+
+/**
+ * Gets a function that might be called by `call`.
+ */
+private DataFlowPrivate::DataFlowCallable nonVirtualDispatch(DataFlowPrivate::DataFlowCall call) {
+  result = defaultViableCallableWithoutLambda(call)
+  or
+  // Additional call targets
+  result.getUnderlyingCallable() =
+    any(AdditionalCallTarget additional)
+        .viableTarget(call.asCallInstruction().getUnconvertedResultExpression())
+}
+
+private class RelevantNode extends Node {
+  RelevantNode() { this.getType().stripType() instanceof Class }
+}
+
+private signature DataFlowPrivate::DataFlowCallable methodDispatchSig(
+  DataFlowPrivate::DataFlowCall c
+);
+
+private predicate ignoreConstructor(Expr e) {
+  e instanceof ConstructorDirectInit or
+  e instanceof ConstructorVirtualInit or
+  e instanceof ConstructorDelegationInit or
+  exists(ConstructorFieldInit init | init.getExpr() = e)
+}
+
+/**
+ * Holds if `n` is either:
+ * - the post-update node of a qualifier after a call to a constructor which
+ * constructs an object containing at least one virtual function.
+ * - a node which represents a derived-to-base instruction that converts from `c`.
+ */
+private predicate qualifierSourceImpl(RelevantNode n, Class c) {
+  // Object construction
+  exists(CallInstruction call, ThisArgumentOperand qualifier, Call e |
+    qualifier = call.getThisArgumentOperand() and
+    n.(PostUpdateNode).getPreUpdateNode().asOperand() = qualifier and
+    call.getStaticCallTarget() instanceof Constructor and
+    qualifier.getType().stripType() = c and
+    c.getABaseClass*().getAMemberFunction().isVirtual() and
+    e = call.getUnconvertedResultExpression() and
+    not ignoreConstructor(e)
+  |
+    exists(c.getABaseClass())
+    or
+    exists(c.getADerivedClass())
+  )
+  or
+  // Conversion to a base class
+  exists(ConvertToBaseInstruction convert |
+    // Only keep the most specific cast
+    not convert.getUnary() instanceof ConvertToBaseInstruction and
+    n.asInstruction() = convert and
+    convert.getDerivedClass() = c and
+    c.getABaseClass*().getAMemberFunction().isVirtual()
+  )
+}
+
+private module TrackVirtualDispatch<methodDispatchSig/1 virtualDispatch0> {
+  /**
+   * Gets a possible runtime target of `c` using both static call-target
+   * information, and call-target resolution from `virtualDispatch0`.
+   */
+  private DataFlowPrivate::DataFlowCallable dispatch(DataFlowPrivate::DataFlowCall c) {
+    result = nonVirtualDispatch(c) or
+    result = virtualDispatch0(c)
+  }
+
+  private module TtInput implements TypeTrackingInput<Location> {
+    final class Node = RelevantNode;
+
+    class LocalSourceNode extends Node {
+      LocalSourceNode() {
+        this instanceof ParameterNode
+        or
+        this instanceof DataFlowPrivate::OutNode
+        or
+        DataFlowPrivate::readStep(_, _, this)
+        or
+        DataFlowPrivate::storeStep(_, _, this)
+        or
+        DataFlowPrivate::jumpStep(_, this)
+        or
+        qualifierSourceImpl(this, _)
+      }
+    }
+
+    final private class ContentSetFinal = ContentSet;
+
+    class Content extends ContentSetFinal {
+      Content() {
+        exists(DataFlow::Content c |
+          this.isSingleton(c) and
+          c.getIndirectionIndex() = 1
+        )
+      }
+    }
+
+    class ContentFilter extends Content {
+      Content getAMatchingContent() { result = this }
+    }
+
+    predicate compatibleContents(Content storeContents, Content loadContents) {
+      storeContents = loadContents
+    }
+
+    predicate simpleLocalSmallStep(Node nodeFrom, Node nodeTo) {
+      nodeFrom.getFunction() instanceof Function and
+      simpleLocalFlowStep(nodeFrom, nodeTo, _)
+    }
+
+    predicate levelStepNoCall(Node n1, LocalSourceNode n2) { none() }
+
+    predicate levelStepCall(Node n1, LocalSourceNode n2) { none() }
+
+    predicate storeStep(Node n1, Node n2, Content f) { DataFlowPrivate::storeStep(n1, f, n2) }
+
+    predicate callStep(Node n1, LocalSourceNode n2) {
+      exists(DataFlowPrivate::DataFlowCall call, DataFlowPrivate::Position pos |
+        n1.(DataFlowPrivate::ArgumentNode).argumentOf(call, pos) and
+        n2.(ParameterNode).isParameterOf(dispatch(call), pos)
+      )
+    }
+
+    predicate returnStep(Node n1, LocalSourceNode n2) {
+      exists(DataFlowPrivate::DataFlowCallable callable, DataFlowPrivate::DataFlowCall call |
+        n1.(DataFlowPrivate::ReturnNode).getEnclosingCallable() = callable and
+        callable = dispatch(call) and
+        n2 = DataFlowPrivate::getAnOutNode(call, n1.(DataFlowPrivate::ReturnNode).getKind())
+      )
+    }
+
+    predicate loadStep(Node n1, LocalSourceNode n2, Content f) {
+      DataFlowPrivate::readStep(n1, f, n2)
+    }
+
+    predicate loadStoreStep(Node nodeFrom, Node nodeTo, Content f1, Content f2) { none() }
+
+    predicate withContentStep(Node nodeFrom, LocalSourceNode nodeTo, ContentFilter f) { none() }
+
+    predicate withoutContentStep(Node nodeFrom, LocalSourceNode nodeTo, ContentFilter f) { none() }
+
+    predicate jumpStep(Node n1, LocalSourceNode n2) { DataFlowPrivate::jumpStep(n1, n2) }
+
+    predicate hasFeatureBacktrackStoreTarget() { none() }
+  }
+
+  private predicate qualifierSource(RelevantNode n) { qualifierSourceImpl(n, _) }
+
+  /**
+   * Holds if `n` is the qualifier of `call` which targets the virtual member
+   * function `mf`.
+   */
+  private predicate qualifierOfVirtualCallImpl(
+    RelevantNode n, CallInstruction call, MemberFunction mf
+  ) {
+    n.asOperand() = call.getThisArgumentOperand() and
+    call.getStaticCallTarget() = mf and
+    mf.isVirtual()
+  }
+
+  private predicate qualifierOfVirtualCall(RelevantNode n) { qualifierOfVirtualCallImpl(n, _, _) }
+
+  private import TypeTracking<Location, TtInput>::TypeTrack<qualifierSource/1>::Graph<qualifierOfVirtualCall/1>
+
+  private predicate edgePlus(PathNode n1, PathNode n2) = fastTC(edges/2)(n1, n2)
+
+  /**
+   * Gets the most specific implementation of `mf` that may be called when the
+   * qualifier has runtime type `c`.
+   */
+  private MemberFunction mostSpecific(MemberFunction mf, Class c) {
+    qualifierOfVirtualCallImpl(_, _, mf) and
+    mf.getAnOverridingFunction*() = result and
+    (
+      result.getDeclaringType() = c
+      or
+      not c.getAMemberFunction().getAnOverriddenFunction*() = mf and
+      result = mostSpecific(mf, c.getABaseClass())
+    )
+  }
+
+  /**
+   * Gets a possible pair of end-points `(p1, p2)` where:
+   * - `p1` is a derived-to-base conversion that converts from some
+   * class `derived`, and
+   * - `p2` is the qualifier of a call to a virtual function that may
+   * target `callable`, and
+   * - `callable` is the most specific implementation that may be called when
+   * the qualifier has type `derived`.
+   */
+  private predicate pairCand(
+    PathNode p1, PathNode p2, DataFlowPrivate::DataFlowCallable callable,
+    DataFlowPrivate::DataFlowCall call
+  ) {
+    exists(Class derived, MemberFunction mf |
+      qualifierSourceImpl(p1.getNode(), derived) and
+      qualifierOfVirtualCallImpl(p2.getNode(), call.asCallInstruction(), mf) and
+      p1.isSource() and
+      p2.isSink() and
+      callable.asSourceCallable() = mostSpecific(mf, derived)
+    )
+  }
+
+  /** Gets a possible run-time target of `call`. */
+  DataFlowPrivate::DataFlowCallable virtualDispatch(DataFlowPrivate::DataFlowCall call) {
+    exists(PathNode p1, PathNode p2 | p1 = p2 or edgePlus(p1, p2) | pairCand(p1, p2, result, call))
+  }
+}
+
+private DataFlowPrivate::DataFlowCallable noDisp(DataFlowPrivate::DataFlowCall call) { none() }
+
+pragma[nomagic]
+private DataFlowPrivate::DataFlowCallable d1(DataFlowPrivate::DataFlowCall call) {
+  result = TrackVirtualDispatch<noDisp/1>::virtualDispatch(call)
+}
+
+pragma[nomagic]
+private DataFlowPrivate::DataFlowCallable d2(DataFlowPrivate::DataFlowCall call) {
+  result = TrackVirtualDispatch<d1/1>::virtualDispatch(call)
+}
+
+pragma[nomagic]
+private DataFlowPrivate::DataFlowCallable d3(DataFlowPrivate::DataFlowCall call) {
+  result = TrackVirtualDispatch<d2/1>::virtualDispatch(call)
+}
+
+pragma[nomagic]
+private DataFlowPrivate::DataFlowCallable d4(DataFlowPrivate::DataFlowCall call) {
+  result = TrackVirtualDispatch<d3/1>::virtualDispatch(call)
+}
+
+pragma[nomagic]
+private DataFlowPrivate::DataFlowCallable d5(DataFlowPrivate::DataFlowCall call) {
+  result = TrackVirtualDispatch<d4/1>::virtualDispatch(call)
+}
+
+pragma[nomagic]
+private DataFlowPrivate::DataFlowCallable d6(DataFlowPrivate::DataFlowCall call) {
+  result = TrackVirtualDispatch<d5/1>::virtualDispatch(call)
+}
+
+/** Gets a function that might be called by `call`. */
+cached
+DataFlowPrivate::DataFlowCallable viableCallable(DataFlowPrivate::DataFlowCall call) {
+  not exists(d6(call)) and
+  result = nonVirtualDispatch(call)
+  or
+  result = d6(call)
 }
 
 /**
  * Holds if the set of viable implementations that can be called by `call`
  * might be improved by knowing the call context.
  */
-predicate mayBenefitFromCallContext(DataFlowCall call) { mayBenefitFromCallContext(call, _, _) }
+predicate mayBenefitFromCallContext(DataFlowPrivate::DataFlowCall call) {
+  mayBenefitFromCallContext(call, _, _)
+}
+
+private predicate localLambdaFlowStep(Node nodeFrom, Node nodeTo) {
+  localFlowStep(nodeFrom, nodeTo)
+  or
+  DataFlowPrivate::additionalLambdaFlowStep(nodeFrom, nodeTo, _)
+}
 
 /**
  * Holds if `call` is a call through a function pointer, and the pointer
  * value is given as the `arg`'th argument to `f`.
  */
 private predicate mayBenefitFromCallContext(
-  VirtualDispatch::DataSensitiveCall call, DataFlowCallable f, int arg
+  DataFlowPrivate::DataFlowCall call, DataFlowPrivate::DataFlowCallable f, int arg
 ) {
   f = pragma[only_bind_out](call).getEnclosingCallable() and
   exists(InitializeParameterInstruction init |
-    not exists(call.getStaticCallTarget()) and
+    not exists(call.getStaticCallTarget())
+    or
+    exists(call.getStaticCallSourceTarget().(VirtualFunction).getAnOverridingFunction())
+  |
     init.getEnclosingFunction() = f.getUnderlyingCallable() and
-    call.flowsFrom(instructionNode(init), _) and
+    localLambdaFlowStep+(instructionNode(init),
+      operandNode(call.asCallInstruction().getCallTargetOperand())) and
     init.getParameter().getIndex() = arg
   )
 }
@@ -274,9 +362,11 @@ private predicate mayBenefitFromCallContext(
  * Gets a viable dispatch target of `call` in the context `ctx`. This is
  * restricted to those `call`s for which a context might make a difference.
  */
-DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
+DataFlowPrivate::DataFlowCallable viableImplInCallContext(
+  DataFlowPrivate::DataFlowCall call, DataFlowPrivate::DataFlowCall ctx
+) {
   result = viableCallable(call) and
-  exists(int i, DataFlowCallable f |
+  exists(int i, DataFlowPrivate::DataFlowCallable f |
     mayBenefitFromCallContext(pragma[only_bind_into](call), f, i) and
     f = ctx.getStaticCallTarget() and
     result.asSourceCallable() =
@@ -286,4 +376,8 @@ DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
 
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
 pragma[inline]
-predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
+predicate parameterMatch(
+  DataFlowPrivate::ParameterPosition ppos, DataFlowPrivate::ArgumentPosition apos
+) {
+  ppos = apos
+}

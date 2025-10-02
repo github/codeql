@@ -1,5 +1,5 @@
 /**
- * Provides an implementation of _API graphs_, which allow efficient modelling of how a given
+ * Provides an implementation of _API graphs_, which allow efficient modeling of how a given
  * value is used by the code base or how values produced by the code base are consumed by a library.
  *
  * See `API::Node` for more details.

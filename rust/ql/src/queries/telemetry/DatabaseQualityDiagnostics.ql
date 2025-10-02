@@ -9,24 +9,36 @@ import rust
 import DatabaseQuality
 import codeql.util.Unit
 
+private predicate diagnostic(string msg, float value, float threshold) {
+  CallTargetStatsReport::percentageOfOk(msg, value) and threshold = 50
+  or
+  MacroCallTargetStatsReport::percentageOfOk(msg, value) and threshold = 50
+}
+
+private string getDbHealth() {
+  result =
+    strictconcat(string msg, float value, float threshold |
+      diagnostic(msg, value, threshold)
+    |
+      msg + ": " + value.floor() + " % (threshold " + threshold.floor() + " %)", ". "
+    )
+}
+
 class DbQualityDiagnostic extends Unit {
   DbQualityDiagnostic() {
-    exists(float percentageGood |
-      CallTargetStatsReport::percentageOfOk(_, percentageGood)
-      or
-      MacroCallTargetStatsReport::percentageOfOk(_, percentageGood)
-    |
-      percentageGood < 95
+    exists(float percentageGood, float threshold |
+      diagnostic(_, percentageGood, threshold) and
+      percentageGood < threshold
     )
   }
 
   string toString() {
     result =
       "Scanning Rust code completed successfully, but the scan encountered issues. " +
-        "This may be caused by problems identifying dependencies or use of generated source code, among other reasons -- "
-        +
-        "see other CodeQL diagnostics reported on the CodeQL status page for more details of possible causes. "
-        + "Addressing these warnings is advisable to avoid false-positive or missing results."
+        "This may be caused by problems identifying dependencies or use of generated source code. " +
+        "Some metrics of the database quality are: " + getDbHealth() + ". " +
+        "Ideally these metrics should be above their thresholds. " +
+        "Addressing these issues is advisable to avoid false-positives or missing results."
   }
 }
 

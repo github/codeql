@@ -1,4 +1,6 @@
 /**
+ * DEPRECATED.
+ *
  * A library providing uniform access to various assertion frameworks.
  *
  * Currently supports `org.junit.Assert`, `junit.framework.*`,
@@ -6,7 +8,7 @@
  * and `java.util.Objects`.
  */
 overlay[local?]
-module;
+deprecated module;
 
 import java
 

@@ -1,3 +1,19 @@
+## 1.7.49
+
+No user-facing changes.
+
+## 1.7.48
+
+No user-facing changes.
+
+## 1.7.47
+
+No user-facing changes.
+
+## 1.7.46
+
+No user-facing changes.
+
 ## 1.7.45
 
 No user-facing changes.

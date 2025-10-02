@@ -623,6 +623,8 @@ func installDependenciesAndBuild() {
 }
 
 func main() {
+	util.SetLogLevel()
+
 	if len(os.Args) == 1 {
 		installDependenciesAndBuild()
 	} else if len(os.Args) == 2 && os.Args[1] == "--identify-environment" {

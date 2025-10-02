@@ -48,7 +48,7 @@ private predicate overloadedMethodsMostSpecific(Method n, Method m) {
 private predicate whitelist(string name) { name = "visit" }
 
 /**
- * Method `m` has name `name`, number of parameters `numParams`
+ * Method `m` has name `name`, number of parameters `numParam`
  * and is declared in `t` or inherited from a supertype of `t`.
  */
 pragma[nomagic]
@@ -66,8 +66,8 @@ private predicate candidateMethod(RefType t, Method m, string name, int numParam
 predicate paramTypePair(Type t1, Type t2) {
   exists(Method n, Method m, int i |
     overloadedMethodsMostSpecific(n, m) and
-    t1 = n.getParameterType(i) and
-    t2 = m.getParameterType(i)
+    t1 = n.getParameterType(pragma[only_bind_into](i)) and
+    t2 = m.getParameterType(pragma[only_bind_into](i))
   )
 }
 
@@ -93,6 +93,7 @@ predicate potentiallyConfusingTypesRefTypes(RefType t1, RefType t2) {
 }
 
 // then check hasSubtypeOrInstantiation
+pragma[nomagic]
 predicate potentiallyConfusingTypes(Type t1, Type t2) {
   potentiallyConfusingTypesSimple(t1, t2)
   or

@@ -187,7 +187,7 @@ Variable getEnclosingVariable(Expr e) {
 }
 
 /**
- * The IR translation of the "core"  part of an expression. This is the part of
+ * The IR translation of the "core" part of an expression. This is the part of
  * the expression that produces the result value of the expression, before any
  * lvalue-to-rvalue conversion on the result. Every expression has a single
  * `TranslatedCoreExpr`.
@@ -3884,7 +3884,7 @@ class TranslatedNewExpr extends TranslatedNewOrNewArrayExpr {
   final override Type getTargetType() { result = expr.getAllocatedType().getUnspecifiedType() }
 
   final override TranslatedInitialization getInitialization() {
-    result = getTranslatedInitialization(expr.getInitializer())
+    result = getTranslatedInitialization(expr.getInitializer().getFullyConverted())
   }
 }
 
@@ -4092,6 +4092,155 @@ class TranslatedStmtExpr extends TranslatedNonConstantExpr {
   }
 
   TranslatedStmt getStmt() { result = getTranslatedStmt(expr.getStmt()) }
+}
+
+private VlaDeclStmt getVlaDeclStmt(Expr expr, int pointerDerefCount) {
+  expr.(VariableAccess).getTarget() = result.getVariable() and
+  pointerDerefCount = 0
+  or
+  not expr.(PointerDereferenceExpr).getOperand() instanceof AddressOfExpr and
+  result = getVlaDeclStmt(expr.(PointerDereferenceExpr).getOperand(), pointerDerefCount - 1)
+  or
+  // Skip sequences of the form `*&...`
+  result =
+    getVlaDeclStmt(expr.(PointerDereferenceExpr).getOperand().(AddressOfExpr).getOperand(),
+      pointerDerefCount)
+  or
+  result = getVlaDeclStmt(expr.(ArrayExpr).getArrayBase(), pointerDerefCount - 1)
+}
+
+/**
+ * The IR translation of `SizeofExprOperator` when its result is non-constant, i.e.,
+ * when the operand expression refers to a variable length array.
+ */
+class TranslatedSizeofExpr extends TranslatedNonConstantExpr {
+  override SizeofExprOperator expr;
+  VlaDeclStmt vlaDeclStmt;
+  int vlaDimensions;
+  int pointerDerefCount;
+
+  TranslatedSizeofExpr() {
+    vlaDeclStmt = getVlaDeclStmt(expr.getExprOperand(), pointerDerefCount) and
+    vlaDimensions = vlaDeclStmt.getTransitiveNumberOfVlaDimensionStmts() and
+    pointerDerefCount < vlaDimensions
+  }
+
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getInstruction(SizeofVlaBaseSizeTag()) and
+    kind instanceof GotoEdge
+  }
+
+  override Instruction getALastInstructionInternal() {
+    result = this.getInstruction(SizeofVlaDimensionTag(vlaDimensions - 1))
+  }
+
+  final override TranslatedElement getChildInternal(int id) { none() }
+
+  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    opcode instanceof Opcode::Constant and
+    tag = SizeofVlaBaseSizeTag() and
+    resultType = this.getResultType()
+    or
+    exists(int n, Type dimType |
+      pointerDerefCount <= n and
+      n < vlaDimensions and
+      dimType = this.getDimensionExpr(n).getUnderlyingType() and
+      tag = SizeofVlaConversionTag(n)
+    |
+      (
+        expr.getUnderlyingType() = dimType and
+        opcode instanceof Opcode::CopyValue
+        or
+        not expr.getUnderlyingType() = dimType and
+        opcode instanceof Opcode::Convert
+      )
+    ) and
+    resultType = this.getResultType()
+    or
+    opcode instanceof Opcode::Mul and
+    exists(int n | pointerDerefCount <= n and n < vlaDimensions | tag = SizeofVlaDimensionTag(n)) and
+    resultType = this.getResultType()
+  }
+
+  final override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    tag = SizeofVlaBaseSizeTag() and
+    result = this.getInstruction(SizeofVlaConversionTag(pointerDerefCount)) and
+    kind instanceof GotoEdge
+    or
+    exists(int n | pointerDerefCount <= n and n < vlaDimensions |
+      tag = SizeofVlaConversionTag(n) and
+      result = this.getInstruction(SizeofVlaDimensionTag(n))
+    ) and
+    kind instanceof GotoEdge
+    or
+    exists(int n | pointerDerefCount <= n and n < vlaDimensions - 1 |
+      tag = SizeofVlaDimensionTag(n) and
+      result = this.getInstruction(SizeofVlaConversionTag(n + 1))
+    ) and
+    kind instanceof GotoEdge
+    or
+    tag = SizeofVlaDimensionTag(vlaDimensions - 1) and
+    result = this.getParent().getChildSuccessor(this, kind)
+  }
+
+  override string getInstructionConstantValue(InstructionTag tag) {
+    tag = SizeofVlaBaseSizeTag() and
+    result = this.getBaseType(vlaDeclStmt).getSize().toString()
+  }
+
+  private Type getBaseType(VlaDeclStmt v) {
+    not exists(v.getParentVlaDecl()) and
+    (
+      result =
+        this.getBaseType(v.getVariable().getUnderlyingType(), v.getNumberOfVlaDimensionStmts())
+      or
+      result = this.getBaseType(v.getType().getUnderlyingType(), v.getNumberOfVlaDimensionStmts())
+    )
+    or
+    result = this.getBaseType(v.getParentVlaDecl())
+  }
+
+  private Type getBaseType(Type type, int n) {
+    n = 0 and
+    result = type
+    or
+    result = this.getBaseType(type.(DerivedType).getBaseType(), n - 1)
+  }
+
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    exists(int n | pointerDerefCount <= n and n < vlaDimensions |
+      tag = SizeofVlaConversionTag(n) and
+      (
+        operandTag instanceof UnaryOperandTag and
+        result = getTranslatedExpr(this.getDimensionExpr(n)).getResult()
+      )
+    )
+    or
+    exists(int n | pointerDerefCount <= n and n < vlaDimensions |
+      tag = SizeofVlaDimensionTag(n) and
+      (
+        operandTag instanceof LeftOperandTag and
+        (
+          n - 1 >= pointerDerefCount and
+          result = this.getInstruction(SizeofVlaDimensionTag(n - 1))
+          or
+          n - 1 < pointerDerefCount and
+          result = this.getInstruction(SizeofVlaBaseSizeTag())
+        )
+        or
+        operandTag instanceof RightOperandTag and
+        result = this.getInstruction(SizeofVlaConversionTag(n))
+      )
+    )
+  }
+
+  private Expr getDimensionExpr(int n) {
+    result = vlaDeclStmt.getTransitiveVlaDimensionStmt(n).getDimensionExpr().getFullyConverted()
+  }
+
+  final override Instruction getResult() {
+    result = this.getInstruction(SizeofVlaDimensionTag(vlaDimensions - 1))
+  }
 }
 
 class TranslatedErrorExpr extends TranslatedSingleInstructionExpr {

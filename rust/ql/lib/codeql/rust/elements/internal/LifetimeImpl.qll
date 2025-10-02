@@ -22,7 +22,9 @@ module Impl {
    * ```
    */
   class Lifetime extends Generated::Lifetime {
-    override string toStringImpl() {
+    override string toStringImpl() { result = this.toAbbreviatedString() }
+
+    override string toAbbreviatedString() {
       result = this.getText()
       or
       not this.hasText() and result = "'_"

@@ -69,8 +69,10 @@ namespace Semmle.Extraction.CSharp.Entities
                     TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier!.Name, this, explicitInterface);
             }
 
-            foreach (var l in Locations)
-                trapFile.property_location(this, l);
+            if (Context.ExtractLocation(Symbol))
+            {
+                WriteLocationsToTrap(trapFile.property_location, this, Locations);
+            }
 
             if (IsSourceDeclaration && Symbol.FromSource())
             {

@@ -1,4 +1,3 @@
-import ruby
 import codeql.ruby.controlflow.ControlFlowGraph
 import codeql.ruby.controlflow.BasicBlocks
 
@@ -10,7 +9,7 @@ query predicate immediateDominator(BasicBlock bb1, BasicBlock bb2) {
   bb1.getImmediateDominator() = bb2
 }
 
-query predicate controls(ConditionBlock bb1, BasicBlock bb2, SuccessorTypes::ConditionalSuccessor t) {
+query predicate controls(ConditionBlock bb1, BasicBlock bb2, ConditionalSuccessor t) {
   bb1.edgeDominates(bb2, t)
 }
 

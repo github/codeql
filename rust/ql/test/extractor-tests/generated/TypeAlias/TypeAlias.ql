@@ -9,14 +9,6 @@ query predicate instances(TypeAlias x, string isDefault__label, string isDefault
   if x.isDefault() then isDefault = "yes" else isDefault = "no"
 }
 
-query predicate getExtendedCanonicalPath(TypeAlias x, string getExtendedCanonicalPath) {
-  toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
-}
-
-query predicate getCrateOrigin(TypeAlias x, string getCrateOrigin) {
-  toBeTested(x) and not x.isUnknown() and getCrateOrigin = x.getCrateOrigin()
-}
-
 query predicate getAttributeMacroExpansion(TypeAlias x, MacroItems getAttributeMacroExpansion) {
   toBeTested(x) and
   not x.isUnknown() and
