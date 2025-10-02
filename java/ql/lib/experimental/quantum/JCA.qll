@@ -1222,9 +1222,9 @@ module JCAModel {
     SecretKeyFactoryKDFAlgorithmValueConsumer getConsumer() { result = consumer }
   }
 
-  class PBKDF2WithHmac_KeyOperationAlgorithmStringLiteral extends Crypto::KeyOperationAlgorithmInstance instanceof KdfAlgorithmStringLiteral
+  class Pbkdf2WithHmac_KeyOperationAlgorithmStringLiteral extends Crypto::KeyOperationAlgorithmInstance instanceof KdfAlgorithmStringLiteral
   {
-    PBKDF2WithHmac_KeyOperationAlgorithmStringLiteral() {
+    Pbkdf2WithHmac_KeyOperationAlgorithmStringLiteral() {
       this.(StringLiteral).getValue().toUpperCase().matches(["PBKDF2WithHmac%"].toUpperCase())
     }
 
@@ -1252,11 +1252,11 @@ module JCAModel {
     }
   }
 
-  class PBKDF2WithHmac_HashAlgorithmStringLiteral extends Crypto::HashAlgorithmInstance instanceof PBKDF2WithHmac_KeyOperationAlgorithmStringLiteral
+  class Pbkdf2WithHmac_HashAlgorithmStringLiteral extends Crypto::HashAlgorithmInstance instanceof PBKDF2WithHmac_KeyOperationAlgorithmStringLiteral
   {
     string hashName;
 
-    PBKDF2WithHmac_HashAlgorithmStringLiteral() {
+    Pbkdf2WithHmac_HashAlgorithmStringLiteral() {
       hashName = this.(StringLiteral).getValue().splitAt("WithHmac", 1)
     }
 
