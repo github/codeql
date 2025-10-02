@@ -1666,39 +1666,51 @@ module TraitIsVisible<relevantTraitVisibleSig/2 relevantTraitVisible> {
   }
 }
 
-pragma[nomagic]
-private predicate isDollarCrateSupportedMacroExpansion(Path macroDefPath, AstNode expansion) {
-  exists(MacroCall mc |
-    expansion = mc.getMacroCallExpansion() and
-    macroDefPath = mc.getPath()
-  )
-  or
-  exists(ItemNode adt |
-    expansion = adt.(Adt).getDeriveMacroExpansion(_) and
-    macroDefPath = adt.getAttr("derive").getMeta().getPath()
-  )
-}
+private module DollarCrateResolution {
+  pragma[nomagic]
+  private predicate isDollarCrateSupportedMacroExpansion(Path macroDefPath, AstNode expansion) {
+    exists(MacroCall mc |
+      expansion = mc.getMacroCallExpansion() and
+      macroDefPath = mc.getPath()
+    )
+    or
+    exists(ItemNode adt |
+      expansion = adt.(Adt).getDeriveMacroExpansion(_) and
+      macroDefPath = adt.getAttr("derive").getMeta().getPath()
+    )
+  }
 
-pragma[nomagic]
-predicate isInDollarCrateSupportedMacroExpansion(File macroDefFile, AstNode n) {
-  exists(Path macroDefPath |
-    isDollarCrateSupportedMacroExpansion(macroDefPath, n) and
-    macroDefFile = resolvePathCand(macroDefPath).getFile()
-  )
-  or
-  isInDollarCrateSupportedMacroExpansion(macroDefFile, n.getParentNode())
-}
+  private predicate hasParent(AstNode child, AstNode parent) { parent = child.getParentNode() }
 
-/**
- * Holds if `n` is a `$crate` path, and it may resolve to `crate`.
- *
- * The reason why we cannot be sure is that we need to consider all ancestor macro
- * calls.
- */
-pragma[nomagic]
-predicate resolveDollarCrate(RelevantPath p, CrateItemNode crate) {
-  p.isDollarCrate() and
-  isInDollarCrateSupportedMacroExpansion(crate.getASourceFile().getFile(), p)
+  private predicate isDollarCrateSupportedMacroExpansion(AstNode expansion) {
+    isDollarCrateSupportedMacroExpansion(_, expansion)
+  }
+
+  private predicate isDollarCratePath(RelevantPath p) { p.isDollarCrate() }
+
+  private predicate isInDollarCrateMacroExpansion(RelevantPath p, AstNode expansion) =
+    doublyBoundedFastTC(hasParent/2, isDollarCratePath/1, isDollarCrateSupportedMacroExpansion/1)(p,
+      expansion)
+
+  pragma[nomagic]
+  private predicate isInDollarCrateMacroExpansionFromFile(File macroDefFile, RelevantPath p) {
+    exists(Path macroDefPath, AstNode expansion |
+      isDollarCrateSupportedMacroExpansion(macroDefPath, expansion) and
+      isInDollarCrateMacroExpansion(p, expansion) and
+      macroDefFile = resolvePathCand(macroDefPath).getFile()
+    )
+  }
+
+  /**
+   * Holds if `p` is a `$crate` path, and it may resolve to `crate`.
+   *
+   * The reason why we cannot be sure is that we need to consider all ancestor macro
+   * calls.
+   */
+  pragma[nomagic]
+  predicate resolveDollarCrate(RelevantPath p, CrateItemNode crate) {
+    isInDollarCrateMacroExpansionFromFile(crate.getASourceFile().getFile(), p)
+  }
 }
 
 pragma[nomagic]
@@ -1713,7 +1725,7 @@ private ItemNode resolvePathCand0(RelevantPath path, Namespace ns) {
     else result = res
   )
   or
-  resolveDollarCrate(path, result) and
+  DollarCrateResolution::resolveDollarCrate(path, result) and
   ns = result.getNamespace()
   or
   result = resolvePathCandQualified(_, _, path, ns)
