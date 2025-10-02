@@ -38,6 +38,20 @@ result in the string "../" if only "../" sequences are removed.
 Finally, the simplest (but most restrictive) option is to use an allow list of safe patterns
 and make sure that the user input matches one of these patterns.
 </p>
+
+<p>
+<b>Sanitizer functions from the Go standard library:</b>
+</p>
+<p>
+The Go standard library provides several functions that can help sanitize paths:
+</p>
+<ul>
+<li><code>filepath.Rel(basepath, targpath)</code> - Returns a relative path from basepath to targpath. If the path is not contained within basepath, it returns an error, making it useful for validating that a path stays within expected boundaries.</li>
+<li><code>filepath.Clean(path)</code> - When used with a path that starts with "/" (e.g., <code>filepath.Clean("/" + userPath)</code>), it normalizes the path and can help prevent path traversal by resolving ".." sequences.</li>
+<li><code>filepath.IsLocal(path)</code> - Returns true if the path is local (doesn't start with "/" and doesn't contain ".."), making it useful for validating relative paths.</li>
+<li><code>strings.Contains(path, "..")</code> - Can be used to detect path traversal sequences in user input.</li>
+<li><code>strings.HasPrefix(path, safePrefix)</code> - Can be used to ensure paths start with expected safe prefixes.</li>
+</ul>
 </recommendation>
 
 <example>
@@ -70,6 +84,13 @@ You can do this by resolving the input with respect to that directory, and then 
 that the resulting path is still within it.
 </p>
 <sample src="TaintedPathGood2.go" />
+<p>
+<b>Using Go standard library sanitizers:</b>
+</p>
+<p>
+You can also use Go's built-in path validation functions for additional safety:
+</p>
+<sample src="TaintedPathSanitizers.go" />
 <p>
 Note that <code>/home/user</code> is just an example, you should replace it with the actual
 safe directory in your application. Also, while in this example the path of the safe
