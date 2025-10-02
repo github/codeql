@@ -1584,9 +1584,11 @@ module JCAModel {
   }
 
   class MacOperationCall extends Crypto::MacOperationInstance instanceof MethodCall {
+    Expr output;
+
     MacOperationCall() {
       super.getMethod().getDeclaringType().hasQualifiedName("javax.crypto", "Mac") and
-      exists(Expr output |
+      (
         super.getMethod().hasStringSignature(["doFinal()", "doFinal(byte[])"]) and this = output
         or
         super.getMethod().hasStringSignature("doFinal(byte[], int)") and
