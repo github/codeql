@@ -1,0 +1,15 @@
+name: microsoft/binary-all
+version: 0.0.1
+groups: 
+  - powershell
+  - microsoft-all
+dbscheme: semmlecode.binary.dbscheme
+extractor: binary
+library: true
+upgrades: upgrades
+dependencies:
+  codeql/util: "*"
+  codeql/ssa: "*"
+  codeql/controlflow: "*"
+  codeql/dataflow: "*"
+warnOnImplicitThis: true

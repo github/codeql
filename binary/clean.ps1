@@ -1,0 +1,2 @@
+rm *.obj
+rm *.exe
