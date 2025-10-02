@@ -105,8 +105,8 @@ own body, or they must inherit from another class that overrides ``isSource``:
 
 **Available for**: |classes|, |algebraic datatypes|, |type unions|, |non-member predicates|, |modules|, |aliases|, |signatures|
 
-The ``additional`` annotation can be used on declarations directly inside of modules that implement |module signatures|.
-All declarations in such modules that are not required by a module signature must be annotated with ``additional``.
+The ``additional`` annotation can be used on declarations in explicit modules.
+All declarations that are not required by a module signature in modules that implement |module signatures| must be annotated with ``additional``.
 
 Omitting ``additional`` on such declarations, or using the annotation in any other context, will result in a compiler error.
 Other than that, the annotation has no effect.
