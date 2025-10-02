@@ -12,12 +12,16 @@ import collections
 import re
 from functools import total_ordering
 import sys
+from pathlib import PureWindowsPath
+import os
 
 def get_renamer(filename):
     layout = load(filename)
     def rename(path):
         renamed = layout.artificial_path(path)
         return path if renamed is None else renamed
+    if os.name == "nt":
+        return lambda path: rename(PureWindowsPath(path).as_posix())
     return rename
 
 def load(filename):
@@ -257,7 +261,7 @@ class _Rewrite(object):
             exclude = path
             self._line = line;
             self._original = u'-' + exclude;
-            if not exclude.startswith(u"/"):
+            if os.name != 'nt' and not exclude.startswith(u"/"):
                 exclude = u'/' + exclude
             if exclude.find(u"//") != -1:
                 raise _error(u"Illegal '//' in exclude path", line)
@@ -274,14 +278,14 @@ class _Rewrite(object):
             include = path
             self._line = line;
             self._original = include;
-            if not include.startswith(u"/"):
+            if os.name != 'nt' and not include.startswith(u"/"):
                 include = u'/' + include
             doubleslash = include.find(u"//")
             if doubleslash != include.find(u"//"):
                 raise _error(u"More than one '//' in include path (project-layout)", line)
             if self._verify_stars.match(include):
                 raise _error(u"Illegal use of '**' in include path (project-layout)", line)
-            if not virtual.startswith(u"/"):
+            if os.name != 'nt' and not virtual.startswith(u"/"):
                 virtual = u"/" + virtual
             if virtual.endswith(u"/"):
                 virtual = virtual[0 : -1]

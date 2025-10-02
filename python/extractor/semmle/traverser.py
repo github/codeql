@@ -4,6 +4,7 @@ a sequence of modules to be queued up and processed by the back-end.'''
 
 import re
 import os.path
+import json
 
 from semmle.path_filters import filter_from_pattern
 from semmle.util import Extractable, PY_EXTENSIONS, isdir, islink, listdir
