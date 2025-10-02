@@ -2,11 +2,11 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    public class GeneratedLocation : SourceLocation
+    public class EmptyLocation : SourceLocation
     {
         private readonly File generatedFile;
 
-        private GeneratedLocation(Context cx)
+        private EmptyLocation(Context cx)
             : base(cx, null)
         {
             generatedFile = GeneratedFile.Create(cx);
@@ -26,15 +26,16 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override int GetHashCode() => 98732567;
 
-        public override bool Equals(object? obj) => obj is not null && obj.GetType() == typeof(GeneratedLocation);
+        public override bool Equals(object? obj) => obj is not null && obj.GetType() == typeof(EmptyLocation);
 
-        public static GeneratedLocation Create(Context cx) => GeneratedLocationFactory.Instance.CreateEntity(cx, typeof(GeneratedLocation), null);
+        public static EmptyLocation Create(Context cx)
+            => EmptyLocationFactory.Instance.CreateEntity(cx, typeof(EmptyLocation), null);
 
-        private class GeneratedLocationFactory : CachedEntityFactory<string?, GeneratedLocation>
+        private class EmptyLocationFactory : CachedEntityFactory<string?, EmptyLocation>
         {
-            public static GeneratedLocationFactory Instance { get; } = new GeneratedLocationFactory();
+            public static EmptyLocationFactory Instance { get; } = new EmptyLocationFactory();
 
-            public override GeneratedLocation Create(Context cx, string? init) => new GeneratedLocation(cx);
+            public override EmptyLocation Create(Context cx, string? init) => new EmptyLocation(cx);
         }
     }
 }

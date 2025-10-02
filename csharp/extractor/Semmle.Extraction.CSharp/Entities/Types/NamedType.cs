@@ -83,8 +83,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // Class location
             if (!Symbol.IsGenericType || Symbol.IsReallyUnbound())
             {
-                foreach (var l in Locations)
-                    trapFile.type_location(this, l);
+                WriteLocationsToTrap(trapFile.type_location, this, Locations);
             }
 
             if (Symbol.IsAnonymousType)

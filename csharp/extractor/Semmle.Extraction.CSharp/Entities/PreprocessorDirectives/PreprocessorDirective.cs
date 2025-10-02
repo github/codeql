@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulatePreprocessor(trapFile);
 
             trapFile.preprocessor_directive_active(this, Symbol.IsActive);
-            trapFile.preprocessor_directive_location(this, Context.CreateLocation(ReportingLocation));
+            WriteLocationToTrap(trapFile.preprocessor_directive_location, this, Context.CreateLocation(ReportingLocation));
 
             var compilation = Compilation.Create(Context);
             trapFile.preprocessor_directive_compilation(this, compilation);
