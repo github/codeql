@@ -113,6 +113,7 @@ ql/java/ql/src/Security/CWE/CWE-927/ImplicitPendingIntents.ql
 ql/java/ql/src/Security/CWE/CWE-927/SensitiveCommunication.ql
 ql/java/ql/src/Security/CWE/CWE-927/SensitiveResultReceiver.ql
 ql/java/ql/src/Security/CWE/CWE-940/AndroidIntentRedirection.ql
+ql/java/ql/src/Security/CWE/CWE-1004/SensitiveCookieNotHttpOnly.ql
 ql/java/ql/src/Telemetry/DatabaseQualityDiagnostics.ql
 ql/java/ql/src/Telemetry/ExternalLibraryUsage.ql
 ql/java/ql/src/Telemetry/ExtractorInformation.ql
