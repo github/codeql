@@ -115,7 +115,8 @@ module JCAModel {
 
   bindingset[name]
   predicate key_agreement_names(string name) {
-    name.toUpperCase().matches(["DH", "EDH", "ECDH", "X25519", "X448"].toUpperCase())
+    name.toUpperCase()
+        .matches(["DH", "EDH", "ECDH", "X25519", "X448", "ML-KEM%", "XDH"].toUpperCase())
   }
 
   bindingset[name]
@@ -221,13 +222,16 @@ module JCAModel {
   bindingset[name]
   predicate key_agreement_name_to_type_known(Crypto::TKeyAgreementType type, string name) {
     type = Crypto::DH() and
-    name.toUpperCase() = "DH"
+    name.toUpperCase() in ["DH", "XDH"]
     or
     type = Crypto::EDH() and
     name.toUpperCase() = "EDH"
     or
     type = Crypto::ECDH() and
     name.toUpperCase() in ["ECDH", "X25519", "X448"]
+    or
+    type = Crypto::OtherKeyAgreementType() and
+    name.toUpperCase().matches("ML-KEM%")
   }
 
   /**
@@ -1042,7 +1046,8 @@ module JCAModel {
     override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
       result.(CipherStringLiteralAlgorithmInstance).getConsumer() = this or
       result.(KeyAgreementStringLiteralAlgorithmInstance).getConsumer() = this or
-      result.(EllipticCurveStringLiteralInstance).getConsumer() = this
+      result.(EllipticCurveStringLiteralInstance).getConsumer() = this or
+      result.(SignatureStringLiteralAlgorithmInstance).getConsumer() = this
     }
 
     KeyGeneratorGetInstanceCall getInstantiationCall() { result = instantiationCall }
