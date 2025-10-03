@@ -295,13 +295,10 @@ module LocalFlow {
 class LambdaCallKind = Unit;
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind`. */
-predicate lambdaCreationExpr(Expr creation, LambdaCallKind kind) {
-  (
-    creation instanceof ClosureExpr
-    or
-    creation instanceof Scope::AsyncBlockScope
-  ) and
-  exists(kind)
+predicate lambdaCreationExpr(Expr creation) {
+  creation instanceof ClosureExpr
+  or
+  creation instanceof Scope::AsyncBlockScope
 }
 
 /**
@@ -810,8 +807,15 @@ module RustDataFlow implements InputSig<Location> {
 
   /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
   predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
-    exists(Expr e |
-      e = creation.asExpr().getExpr() and lambdaCreationExpr(e, kind) and e = c.asCfgScope()
+    exists(kind) and
+    exists(Expr e | e = creation.asExpr().getExpr() |
+      lambdaCreationExpr(e) and e = c.asCfgScope()
+      or
+      // A path expression, that resolves to a function, evaluates to a function
+      // pointer. Except if the path occurs directly in a call, then it's just a
+      // call to the function and not a function being passed as data.
+      resolvePath(e.(PathExpr).getPath()) = c.asCfgScope() and
+      not any(CallExpr call).getFunction() = e
     )
   }
 
@@ -931,7 +935,7 @@ module VariableCapture {
     }
 
     class ClosureExpr extends Expr instanceof ExprCfgNode {
-      ClosureExpr() { lambdaCreationExpr(super.getExpr(), _) }
+      ClosureExpr() { lambdaCreationExpr(super.getExpr()) }
 
       predicate hasBody(Callable body) { body = super.getExpr() }
 

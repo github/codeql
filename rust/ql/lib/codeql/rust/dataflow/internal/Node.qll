@@ -454,7 +454,7 @@ newtype TNode =
     or
     lambdaCallExpr(_, _, e)
     or
-    lambdaCreationExpr(e.getExpr(), _)
+    lambdaCreationExpr(e.getExpr())
     or
     // Whenever `&mut e` has a post-update node we also create one for `e`.
     // E.g., for `e` in `f(..., &mut e, ...)` or `*(&mut e) = ...`.
@@ -478,5 +478,5 @@ newtype TNode =
   } or
   TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
   TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
-  TClosureSelfReferenceNode(CfgScope c) { lambdaCreationExpr(c, _) } or
+  TClosureSelfReferenceNode(CfgScope c) { lambdaCreationExpr(c) } or
   TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn)
