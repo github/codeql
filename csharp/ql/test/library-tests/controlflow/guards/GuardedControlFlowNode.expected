@@ -10,39 +10,27 @@
 | Assert.cs:46:27:46:27 | access to local variable s | Assert.cs:45:24:45:32 | ... != ... | Assert.cs:45:24:45:24 | access to local variable s | false |
 | Assert.cs:53:27:53:27 | access to local variable s | Assert.cs:52:24:52:24 | access to local variable s | Assert.cs:52:24:52:24 | access to local variable s | non-null |
 | Assert.cs:53:27:53:27 | access to local variable s | Assert.cs:52:24:52:32 | ... == ... | Assert.cs:52:24:52:24 | access to local variable s | false |
-| Assert.cs:59:36:59:36 | [b (line 56): false] access to parameter b | Assert.cs:58:20:58:20 | access to parameter b | Assert.cs:58:20:58:20 | access to parameter b | false |
-| Assert.cs:59:36:59:36 | [b (line 56): false] access to parameter b | Assert.cs:58:20:58:32 | ... ? ... : ... | Assert.cs:58:20:58:20 | access to parameter b | non-null |
-| Assert.cs:59:36:59:36 | [b (line 56): true] access to parameter b | Assert.cs:58:20:58:20 | access to parameter b | Assert.cs:58:20:58:20 | access to parameter b | false |
-| Assert.cs:59:36:59:36 | [b (line 56): true] access to parameter b | Assert.cs:58:20:58:20 | access to parameter b | Assert.cs:58:20:58:20 | access to parameter b | true |
-| Assert.cs:59:36:59:36 | [b (line 56): true] access to parameter b | Assert.cs:58:20:58:32 | ... ? ... : ... | Assert.cs:58:20:58:20 | access to parameter b | non-null |
+| Assert.cs:59:36:59:36 | access to parameter b | Assert.cs:58:20:58:20 | access to parameter b | Assert.cs:58:20:58:20 | access to parameter b | false |
+| Assert.cs:59:36:59:36 | access to parameter b | Assert.cs:58:20:58:32 | ... ? ... : ... | Assert.cs:58:20:58:20 | access to parameter b | non-null |
 | Assert.cs:60:27:60:27 | access to local variable s | Assert.cs:59:23:59:23 | access to local variable s | Assert.cs:59:23:59:23 | access to local variable s | non-null |
 | Assert.cs:60:27:60:27 | access to local variable s | Assert.cs:59:23:59:31 | ... != ... | Assert.cs:59:23:59:23 | access to local variable s | true |
-| Assert.cs:66:37:66:37 | [b (line 63): false] access to parameter b | Assert.cs:65:20:65:20 | access to parameter b | Assert.cs:65:20:65:20 | access to parameter b | false |
-| Assert.cs:66:37:66:37 | [b (line 63): false] access to parameter b | Assert.cs:65:20:65:32 | ... ? ... : ... | Assert.cs:65:20:65:20 | access to parameter b | non-null |
-| Assert.cs:66:37:66:37 | [b (line 63): true] access to parameter b | Assert.cs:65:20:65:20 | access to parameter b | Assert.cs:65:20:65:20 | access to parameter b | false |
-| Assert.cs:66:37:66:37 | [b (line 63): true] access to parameter b | Assert.cs:65:20:65:20 | access to parameter b | Assert.cs:65:20:65:20 | access to parameter b | true |
-| Assert.cs:66:37:66:37 | [b (line 63): true] access to parameter b | Assert.cs:65:20:65:32 | ... ? ... : ... | Assert.cs:65:20:65:20 | access to parameter b | non-null |
+| Assert.cs:66:37:66:37 | access to parameter b | Assert.cs:65:20:65:20 | access to parameter b | Assert.cs:65:20:65:20 | access to parameter b | false |
+| Assert.cs:66:37:66:37 | access to parameter b | Assert.cs:65:20:65:32 | ... ? ... : ... | Assert.cs:65:20:65:20 | access to parameter b | non-null |
 | Assert.cs:67:27:67:27 | access to local variable s | Assert.cs:66:24:66:24 | access to local variable s | Assert.cs:66:24:66:24 | access to local variable s | non-null |
 | Assert.cs:67:27:67:27 | access to local variable s | Assert.cs:66:24:66:32 | ... == ... | Assert.cs:66:24:66:24 | access to local variable s | false |
-| Assert.cs:73:36:73:36 | [b (line 70): false] access to parameter b | Assert.cs:72:20:72:20 | access to parameter b | Assert.cs:72:20:72:20 | access to parameter b | false |
-| Assert.cs:73:36:73:36 | [b (line 70): false] access to parameter b | Assert.cs:72:20:72:20 | access to parameter b | Assert.cs:72:20:72:20 | access to parameter b | true |
-| Assert.cs:73:36:73:36 | [b (line 70): false] access to parameter b | Assert.cs:72:20:72:32 | ... ? ... : ... | Assert.cs:72:20:72:20 | access to parameter b | null |
-| Assert.cs:73:36:73:36 | [b (line 70): true] access to parameter b | Assert.cs:72:20:72:20 | access to parameter b | Assert.cs:72:20:72:20 | access to parameter b | true |
-| Assert.cs:73:36:73:36 | [b (line 70): true] access to parameter b | Assert.cs:72:20:72:32 | ... ? ... : ... | Assert.cs:72:20:72:20 | access to parameter b | null |
+| Assert.cs:73:36:73:36 | access to parameter b | Assert.cs:72:20:72:20 | access to parameter b | Assert.cs:72:20:72:20 | access to parameter b | true |
+| Assert.cs:73:36:73:36 | access to parameter b | Assert.cs:72:20:72:32 | ... ? ... : ... | Assert.cs:72:20:72:20 | access to parameter b | null |
 | Assert.cs:74:27:74:27 | access to local variable s | Assert.cs:73:23:73:23 | access to local variable s | Assert.cs:73:23:73:23 | access to local variable s | null |
 | Assert.cs:74:27:74:27 | access to local variable s | Assert.cs:73:23:73:31 | ... == ... | Assert.cs:73:23:73:23 | access to local variable s | true |
-| Assert.cs:80:37:80:37 | [b (line 77): false] access to parameter b | Assert.cs:79:20:79:20 | access to parameter b | Assert.cs:79:20:79:20 | access to parameter b | false |
-| Assert.cs:80:37:80:37 | [b (line 77): false] access to parameter b | Assert.cs:79:20:79:20 | access to parameter b | Assert.cs:79:20:79:20 | access to parameter b | true |
-| Assert.cs:80:37:80:37 | [b (line 77): false] access to parameter b | Assert.cs:79:20:79:32 | ... ? ... : ... | Assert.cs:79:20:79:20 | access to parameter b | null |
-| Assert.cs:80:37:80:37 | [b (line 77): true] access to parameter b | Assert.cs:79:20:79:20 | access to parameter b | Assert.cs:79:20:79:20 | access to parameter b | true |
-| Assert.cs:80:37:80:37 | [b (line 77): true] access to parameter b | Assert.cs:79:20:79:32 | ... ? ... : ... | Assert.cs:79:20:79:20 | access to parameter b | null |
+| Assert.cs:80:37:80:37 | access to parameter b | Assert.cs:79:20:79:20 | access to parameter b | Assert.cs:79:20:79:20 | access to parameter b | true |
+| Assert.cs:80:37:80:37 | access to parameter b | Assert.cs:79:20:79:32 | ... ? ... : ... | Assert.cs:79:20:79:20 | access to parameter b | null |
 | Assert.cs:81:27:81:27 | access to local variable s | Assert.cs:80:24:80:24 | access to local variable s | Assert.cs:80:24:80:24 | access to local variable s | null |
 | Assert.cs:81:27:81:27 | access to local variable s | Assert.cs:80:24:80:32 | ... != ... | Assert.cs:80:24:80:24 | access to local variable s | false |
-| Assert.cs:93:33:93:34 | [assertion failure, b1 (line 91): false] access to parameter b2 | Assert.cs:93:29:93:30 | access to parameter b2 | Assert.cs:93:29:93:30 | access to parameter b2 | false |
-| Assert.cs:93:33:93:34 | [assertion failure, b1 (line 91): false] access to parameter b2 | Assert.cs:93:29:93:30 | access to parameter b2 | Assert.cs:93:29:93:30 | access to parameter b2 | true |
-| Assert.cs:93:33:93:34 | [assertion failure, b1 (line 91): true] access to parameter b2 | Assert.cs:93:29:93:30 | access to parameter b2 | Assert.cs:93:29:93:30 | access to parameter b2 | true |
-| Assert.cs:93:33:93:34 | [assertion success, b1 (line 91): true] access to parameter b2 | Assert.cs:93:29:93:30 | access to parameter b2 | Assert.cs:93:29:93:30 | access to parameter b2 | false |
-| Assert.cs:94:16:94:17 | [b1 (line 91): true] access to parameter b1 | Assert.cs:93:25:93:26 | access to parameter b1 | Assert.cs:93:25:93:26 | access to parameter b1 | true |
+| Assert.cs:93:33:93:34 | [assertion failure] access to parameter b2 | Assert.cs:93:29:93:30 | access to parameter b2 | Assert.cs:93:29:93:30 | access to parameter b2 | false |
+| Assert.cs:93:33:93:34 | [assertion failure] access to parameter b2 | Assert.cs:93:29:93:30 | access to parameter b2 | Assert.cs:93:29:93:30 | access to parameter b2 | true |
+| Assert.cs:93:33:93:34 | [assertion failure] access to parameter b2 | Assert.cs:93:29:93:30 | access to parameter b2 | Assert.cs:93:29:93:30 | access to parameter b2 | true |
+| Assert.cs:93:33:93:34 | [assertion success] access to parameter b2 | Assert.cs:93:29:93:30 | access to parameter b2 | Assert.cs:93:29:93:30 | access to parameter b2 | false |
+| Assert.cs:94:16:94:17 | access to parameter b1 | Assert.cs:93:25:93:26 | access to parameter b1 | Assert.cs:93:25:93:26 | access to parameter b1 | true |
 | Assert.cs:94:23:94:24 | access to parameter b2 | Assert.cs:93:29:93:30 | access to parameter b2 | Assert.cs:93:29:93:30 | access to parameter b2 | false |
 | Collections.cs:51:17:51:20 | access to parameter args | Collections.cs:49:13:49:16 | access to parameter args | Collections.cs:49:13:49:16 | access to parameter args | non-empty |
 | Collections.cs:51:17:51:20 | access to parameter args | Collections.cs:49:13:49:27 | ... == ... | Collections.cs:49:13:49:16 | access to parameter args | false |
@@ -203,78 +191,40 @@
 | Guards.cs:287:17:287:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | non-match access to type Action<Object> |
 | Guards.cs:287:17:287:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | non-match null |
 | Guards.cs:287:17:287:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | non-null |
-| Guards.cs:342:27:342:27 | [b (line 339): false] access to parameter b | Guards.cs:341:20:341:20 | access to parameter b | Guards.cs:341:20:341:20 | access to parameter b | false |
-| Guards.cs:342:27:342:27 | [b (line 339): false] access to parameter b | Guards.cs:341:20:341:32 | ... ? ... : ... | Guards.cs:341:20:341:20 | access to parameter b | non-null |
-| Guards.cs:342:27:342:27 | [b (line 339): true] access to parameter b | Guards.cs:341:20:341:20 | access to parameter b | Guards.cs:341:20:341:20 | access to parameter b | false |
-| Guards.cs:342:27:342:27 | [b (line 339): true] access to parameter b | Guards.cs:341:20:341:20 | access to parameter b | Guards.cs:341:20:341:20 | access to parameter b | true |
-| Guards.cs:342:27:342:27 | [b (line 339): true] access to parameter b | Guards.cs:341:20:341:32 | ... ? ... : ... | Guards.cs:341:20:341:20 | access to parameter b | non-null |
+| Guards.cs:342:27:342:27 | access to parameter b | Guards.cs:341:20:341:20 | access to parameter b | Guards.cs:341:20:341:20 | access to parameter b | false |
+| Guards.cs:342:27:342:27 | access to parameter b | Guards.cs:341:20:341:32 | ... ? ... : ... | Guards.cs:341:20:341:20 | access to parameter b | non-null |
 | Guards.cs:343:31:343:31 | access to local variable s | Guards.cs:342:13:342:13 | access to local variable s | Guards.cs:342:13:342:13 | access to local variable s | non-null |
 | Guards.cs:343:31:343:31 | access to local variable s | Guards.cs:342:13:342:21 | ... != ... | Guards.cs:342:13:342:13 | access to local variable s | true |
 | Guards.cs:349:13:349:13 | access to parameter o | Guards.cs:348:13:348:13 | access to parameter o | Guards.cs:348:13:348:13 | access to parameter o | non-null |
 | Guards.cs:349:13:349:13 | access to parameter o | Guards.cs:348:13:348:25 | ... is ... | Guards.cs:348:13:348:13 | access to parameter o | true |
-| Splitting.cs:13:17:13:17 | [b (line 9): true] access to parameter o | Splitting.cs:12:17:12:17 | access to parameter o | Splitting.cs:12:17:12:17 | access to parameter o | non-null |
-| Splitting.cs:13:17:13:17 | [b (line 9): true] access to parameter o | Splitting.cs:12:17:12:25 | ... != ... | Splitting.cs:12:17:12:17 | access to parameter o | true |
-| Splitting.cs:14:13:14:13 | [b (line 9): false] access to parameter b | Splitting.cs:11:13:11:13 | access to parameter b | Splitting.cs:11:13:11:13 | access to parameter b | false |
-| Splitting.cs:14:13:14:13 | [b (line 9): true] access to parameter b | Splitting.cs:11:13:11:13 | access to parameter b | Splitting.cs:11:13:11:13 | access to parameter b | true |
+| Splitting.cs:13:17:13:17 | access to parameter o | Splitting.cs:12:17:12:17 | access to parameter o | Splitting.cs:12:17:12:17 | access to parameter o | non-null |
+| Splitting.cs:13:17:13:17 | access to parameter o | Splitting.cs:12:17:12:25 | ... != ... | Splitting.cs:12:17:12:17 | access to parameter o | true |
 | Splitting.cs:23:24:23:24 | access to parameter o | Splitting.cs:22:17:22:17 | access to parameter o | Splitting.cs:22:17:22:17 | access to parameter o | non-null |
 | Splitting.cs:23:24:23:24 | access to parameter o | Splitting.cs:22:17:22:25 | ... != ... | Splitting.cs:22:17:22:17 | access to parameter o | true |
-| Splitting.cs:24:13:24:13 | [b (line 19): false] access to parameter b | Splitting.cs:21:13:21:13 | access to parameter b | Splitting.cs:21:13:21:13 | access to parameter b | false |
-| Splitting.cs:24:13:24:13 | [b (line 19): true] access to parameter b | Splitting.cs:21:13:21:13 | access to parameter b | Splitting.cs:21:13:21:13 | access to parameter b | true |
-| Splitting.cs:25:13:25:13 | access to parameter o | Splitting.cs:22:17:22:17 | access to parameter o | Splitting.cs:22:17:22:17 | access to parameter o | null |
-| Splitting.cs:25:13:25:13 | access to parameter o | Splitting.cs:22:17:22:25 | ... != ... | Splitting.cs:22:17:22:17 | access to parameter o | false |
-| Splitting.cs:34:13:34:13 | [b (line 29): false] access to parameter b | Splitting.cs:31:13:31:13 | access to parameter b | Splitting.cs:31:13:31:13 | access to parameter b | false |
-| Splitting.cs:34:13:34:13 | [b (line 29): true] access to parameter b | Splitting.cs:31:13:31:13 | access to parameter b | Splitting.cs:31:13:31:13 | access to parameter b | true |
-| Splitting.cs:35:13:35:13 | access to parameter o | Splitting.cs:32:17:32:17 | access to parameter o | Splitting.cs:32:17:32:17 | access to parameter o | non-null |
-| Splitting.cs:35:13:35:13 | access to parameter o | Splitting.cs:32:17:32:25 | ... == ... | Splitting.cs:32:17:32:17 | access to parameter o | false |
-| Splitting.cs:44:17:44:17 | [b (line 39): true] access to parameter o | Splitting.cs:41:13:41:13 | access to parameter o | Splitting.cs:41:13:41:13 | access to parameter o | non-null |
-| Splitting.cs:44:17:44:17 | [b (line 39): true] access to parameter o | Splitting.cs:41:13:41:21 | ... != ... | Splitting.cs:41:13:41:13 | access to parameter o | true |
-| Splitting.cs:45:17:45:17 | [b (line 39): false] access to parameter b | Splitting.cs:43:17:43:17 | access to parameter b | Splitting.cs:43:17:43:17 | access to parameter b | false |
-| Splitting.cs:45:17:45:17 | [b (line 39): true] access to parameter b | Splitting.cs:43:17:43:17 | access to parameter b | Splitting.cs:43:17:43:17 | access to parameter b | true |
+| Splitting.cs:44:17:44:17 | access to parameter o | Splitting.cs:41:13:41:13 | access to parameter o | Splitting.cs:41:13:41:13 | access to parameter o | non-null |
+| Splitting.cs:44:17:44:17 | access to parameter o | Splitting.cs:41:13:41:21 | ... != ... | Splitting.cs:41:13:41:13 | access to parameter o | true |
 | Splitting.cs:46:17:46:17 | access to parameter o | Splitting.cs:41:13:41:13 | access to parameter o | Splitting.cs:41:13:41:13 | access to parameter o | non-null |
 | Splitting.cs:46:17:46:17 | access to parameter o | Splitting.cs:41:13:41:21 | ... != ... | Splitting.cs:41:13:41:13 | access to parameter o | true |
-| Splitting.cs:55:13:55:13 | [b (line 50): false] access to parameter o | Splitting.cs:54:13:54:13 | access to parameter o | Splitting.cs:54:13:54:13 | access to parameter o | non-null |
-| Splitting.cs:55:13:55:13 | [b (line 50): false] access to parameter o | Splitting.cs:54:13:54:21 | ... != ... | Splitting.cs:54:13:54:13 | access to parameter o | true |
-| Splitting.cs:55:13:55:13 | [b (line 50): true] access to parameter o | Splitting.cs:54:13:54:13 | access to parameter o | Splitting.cs:54:13:54:13 | access to parameter o | non-null |
-| Splitting.cs:55:13:55:13 | [b (line 50): true] access to parameter o | Splitting.cs:54:13:54:21 | ... != ... | Splitting.cs:54:13:54:13 | access to parameter o | true |
-| Splitting.cs:56:13:56:13 | [b (line 50): false] access to parameter b | Splitting.cs:52:13:52:13 | access to parameter b | Splitting.cs:52:13:52:13 | access to parameter b | false |
-| Splitting.cs:56:13:56:13 | [b (line 50): true] access to parameter b | Splitting.cs:52:13:52:13 | access to parameter b | Splitting.cs:52:13:52:13 | access to parameter b | true |
+| Splitting.cs:55:13:55:13 | access to parameter o | Splitting.cs:54:13:54:13 | access to parameter o | Splitting.cs:54:13:54:13 | access to parameter o | non-null |
+| Splitting.cs:55:13:55:13 | access to parameter o | Splitting.cs:54:13:54:21 | ... != ... | Splitting.cs:54:13:54:13 | access to parameter o | true |
 | Splitting.cs:66:20:66:20 | access to parameter o | Splitting.cs:65:13:65:13 | access to parameter o | Splitting.cs:65:13:65:13 | access to parameter o | non-null |
 | Splitting.cs:66:20:66:20 | access to parameter o | Splitting.cs:65:13:65:21 | ... != ... | Splitting.cs:65:13:65:13 | access to parameter o | true |
-| Splitting.cs:67:13:67:13 | [b (line 61): false] access to parameter b | Splitting.cs:63:13:63:13 | access to parameter b | Splitting.cs:63:13:63:13 | access to parameter b | false |
-| Splitting.cs:67:13:67:13 | [b (line 61): true] access to parameter b | Splitting.cs:63:13:63:13 | access to parameter b | Splitting.cs:63:13:63:13 | access to parameter b | true |
 | Splitting.cs:68:13:68:13 | access to parameter o | Splitting.cs:65:13:65:13 | access to parameter o | Splitting.cs:65:13:65:13 | access to parameter o | null |
 | Splitting.cs:68:13:68:13 | access to parameter o | Splitting.cs:65:13:65:21 | ... != ... | Splitting.cs:65:13:65:13 | access to parameter o | false |
 | Splitting.cs:69:16:69:16 | access to parameter o | Splitting.cs:65:13:65:13 | access to parameter o | Splitting.cs:65:13:65:13 | access to parameter o | null |
 | Splitting.cs:69:16:69:16 | access to parameter o | Splitting.cs:65:13:65:21 | ... != ... | Splitting.cs:65:13:65:13 | access to parameter o | false |
 | Splitting.cs:78:24:78:24 | access to parameter o | Splitting.cs:76:13:76:13 | access to parameter o | Splitting.cs:76:13:76:13 | access to parameter o | non-null |
 | Splitting.cs:78:24:78:24 | access to parameter o | Splitting.cs:76:13:76:21 | ... != ... | Splitting.cs:76:13:76:13 | access to parameter o | true |
-| Splitting.cs:79:13:79:13 | [b (line 72): false] access to parameter b | Splitting.cs:74:13:74:13 | access to parameter b | Splitting.cs:74:13:74:13 | access to parameter b | false |
-| Splitting.cs:79:13:79:13 | [b (line 72): true] access to parameter b | Splitting.cs:74:13:74:13 | access to parameter b | Splitting.cs:74:13:74:13 | access to parameter b | true |
-| Splitting.cs:88:9:88:9 | [b (line 84): true] access to parameter o | Splitting.cs:87:26:87:26 | access to parameter o | Splitting.cs:87:26:87:26 | access to parameter o | non-null |
-| Splitting.cs:88:9:88:9 | [b (line 84): true] access to parameter o | Splitting.cs:87:26:87:34 | ... != ... | Splitting.cs:87:26:87:26 | access to parameter o | true |
-| Splitting.cs:89:13:89:13 | [b (line 84): false] access to parameter b | Splitting.cs:86:13:86:13 | access to parameter b | Splitting.cs:86:13:86:13 | access to parameter b | false |
-| Splitting.cs:89:13:89:13 | [b (line 84): true] access to parameter b | Splitting.cs:86:13:86:13 | access to parameter b | Splitting.cs:86:13:86:13 | access to parameter b | true |
-| Splitting.cs:90:13:90:13 | access to parameter o | Splitting.cs:87:26:87:26 | access to parameter o | Splitting.cs:87:26:87:26 | access to parameter o | non-null |
-| Splitting.cs:90:13:90:13 | access to parameter o | Splitting.cs:87:26:87:34 | ... != ... | Splitting.cs:87:26:87:26 | access to parameter o | true |
-| Splitting.cs:98:13:98:13 | [b (line 94): false] access to parameter b | Splitting.cs:96:13:96:13 | access to parameter b | Splitting.cs:96:13:96:13 | access to parameter b | false |
-| Splitting.cs:98:13:98:13 | [b (line 94): true] access to parameter b | Splitting.cs:96:13:96:13 | access to parameter b | Splitting.cs:96:13:96:13 | access to parameter b | true |
-| Splitting.cs:99:13:99:13 | access to parameter o | Splitting.cs:97:26:97:26 | access to parameter o | Splitting.cs:97:26:97:26 | access to parameter o | null |
-| Splitting.cs:99:13:99:13 | access to parameter o | Splitting.cs:97:26:97:34 | ... == ... | Splitting.cs:97:26:97:26 | access to parameter o | true |
-| Splitting.cs:107:13:107:13 | [b (line 103): true] access to parameter o | Splitting.cs:105:22:105:22 | access to parameter o | Splitting.cs:105:22:105:22 | access to parameter o | non-null |
-| Splitting.cs:107:13:107:13 | [b (line 103): true] access to parameter o | Splitting.cs:105:22:105:30 | ... != ... | Splitting.cs:105:22:105:22 | access to parameter o | true |
-| Splitting.cs:108:13:108:13 | [b (line 103): false] access to parameter b | Splitting.cs:106:13:106:13 | access to parameter b | Splitting.cs:106:13:106:13 | access to parameter b | false |
-| Splitting.cs:108:13:108:13 | [b (line 103): true] access to parameter b | Splitting.cs:106:13:106:13 | access to parameter b | Splitting.cs:106:13:106:13 | access to parameter b | true |
+| Splitting.cs:107:13:107:13 | access to parameter o | Splitting.cs:105:22:105:22 | access to parameter o | Splitting.cs:105:22:105:22 | access to parameter o | non-null |
+| Splitting.cs:107:13:107:13 | access to parameter o | Splitting.cs:105:22:105:30 | ... != ... | Splitting.cs:105:22:105:22 | access to parameter o | true |
 | Splitting.cs:109:13:109:13 | access to parameter o | Splitting.cs:105:22:105:22 | access to parameter o | Splitting.cs:105:22:105:22 | access to parameter o | non-null |
 | Splitting.cs:109:13:109:13 | access to parameter o | Splitting.cs:105:22:105:30 | ... != ... | Splitting.cs:105:22:105:22 | access to parameter o | true |
-| Splitting.cs:117:9:117:9 | [b (line 112): false] access to parameter o | Splitting.cs:116:22:116:22 | access to parameter o | Splitting.cs:116:22:116:22 | access to parameter o | non-null |
-| Splitting.cs:117:9:117:9 | [b (line 112): false] access to parameter o | Splitting.cs:116:22:116:30 | ... != ... | Splitting.cs:116:22:116:22 | access to parameter o | true |
-| Splitting.cs:117:9:117:9 | [b (line 112): true] access to parameter o | Splitting.cs:116:22:116:22 | access to parameter o | Splitting.cs:116:22:116:22 | access to parameter o | non-null |
-| Splitting.cs:117:9:117:9 | [b (line 112): true] access to parameter o | Splitting.cs:116:22:116:30 | ... != ... | Splitting.cs:116:22:116:22 | access to parameter o | true |
-| Splitting.cs:118:13:118:13 | [b (line 112): false] access to parameter b | Splitting.cs:114:13:114:13 | access to parameter b | Splitting.cs:114:13:114:13 | access to parameter b | false |
-| Splitting.cs:118:13:118:13 | [b (line 112): true] access to parameter b | Splitting.cs:114:13:114:13 | access to parameter b | Splitting.cs:114:13:114:13 | access to parameter b | true |
+| Splitting.cs:117:9:117:9 | access to parameter o | Splitting.cs:116:22:116:22 | access to parameter o | Splitting.cs:116:22:116:22 | access to parameter o | non-null |
+| Splitting.cs:117:9:117:9 | access to parameter o | Splitting.cs:116:22:116:30 | ... != ... | Splitting.cs:116:22:116:22 | access to parameter o | true |
 | Splitting.cs:119:13:119:13 | access to parameter o | Splitting.cs:116:22:116:22 | access to parameter o | Splitting.cs:116:22:116:22 | access to parameter o | non-null |
 | Splitting.cs:119:13:119:13 | access to parameter o | Splitting.cs:116:22:116:30 | ... != ... | Splitting.cs:116:22:116:22 | access to parameter o | true |
 | Splitting.cs:120:16:120:16 | access to parameter o | Splitting.cs:116:22:116:22 | access to parameter o | Splitting.cs:116:22:116:22 | access to parameter o | non-null |
 | Splitting.cs:120:16:120:16 | access to parameter o | Splitting.cs:116:22:116:30 | ... != ... | Splitting.cs:116:22:116:22 | access to parameter o | true |
-| Splitting.cs:131:21:131:21 | [b (line 123): false] access to parameter b | Splitting.cs:131:21:131:21 | access to parameter b | Splitting.cs:131:21:131:21 | access to parameter b | false |
-| Splitting.cs:133:25:133:25 | [b (line 123): false] access to parameter b | Splitting.cs:131:21:131:21 | access to parameter b | Splitting.cs:131:21:131:21 | access to parameter b | false |
+| Splitting.cs:133:25:133:25 | access to parameter b | Splitting.cs:131:21:131:21 | access to parameter b | Splitting.cs:131:21:131:21 | access to parameter b | false |
+| Splitting.cs:133:28:133:28 | access to local variable o | Splitting.cs:129:17:129:17 | access to local variable o | Splitting.cs:129:17:129:17 | access to local variable o | non-null |
+| Splitting.cs:133:28:133:28 | access to local variable o | Splitting.cs:129:17:129:25 | ... != ... | Splitting.cs:129:17:129:17 | access to local variable o | true |

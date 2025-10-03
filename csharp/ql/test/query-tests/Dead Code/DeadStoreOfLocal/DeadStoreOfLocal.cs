@@ -395,7 +395,7 @@ class Initializers
     {
         var s = "";
         if (b)
-            s = "abc"; // $ Alert
+            s = "abc"; // Not reported
         if (!b)
             return s;
         return null;
