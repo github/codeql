@@ -119,7 +119,7 @@ class KnownOpenSslCipherConstantAlgorithmInstance extends OpenSslAlgorithmInstan
     knownOpenSslConstantToCipherFamilyType(this, result)
     or
     not knownOpenSslConstantToCipherFamilyType(this, _) and
-    result = Crypto::KeyOpAlg::TUnknownKeyOperationAlgorithmType()
+    result = Crypto::KeyOpAlg::TOtherKeyOperationAlgorithmType()
   }
 
   override OpenSslAlgorithmValueConsumer getAvc() { result = getterCall }
