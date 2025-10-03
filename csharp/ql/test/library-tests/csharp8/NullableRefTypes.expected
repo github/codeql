@@ -178,8 +178,8 @@ returnTypes
 | NullableRefTypes.cs:51:12:51:15 | Q<MyClass> | object |
 | NullableRefTypes.cs:51:12:51:15 | Q<MyClass> | object! |
 | NullableRefTypes.cs:51:12:51:15 | Q`1 | object! |
-| NullableRefTypes.cs:54:11:54:33 | Generic | Void! |
-| NullableRefTypes.cs:58:11:58:26 | Generic2 | Void! |
+| NullableRefTypes.cs:54:11:54:17 | Generic | Void! |
+| NullableRefTypes.cs:58:11:58:18 | Generic2 | Void! |
 | NullableRefTypes.cs:67:10:67:21 | GenericFn<MyClass> | Void |
 | NullableRefTypes.cs:67:10:67:21 | GenericFn<MyClass> | Void! |
 | NullableRefTypes.cs:67:10:67:21 | GenericFn`1 | Void! |
@@ -271,8 +271,8 @@ expressionTypes
 | NullableRefTypes.cs:40:26:40:30 | ref ... | MyClass |
 | NullableRefTypes.cs:40:30:40:30 | access to local variable b | MyClass? |
 | NullableRefTypes.cs:51:44:51:47 | null | null |
-| NullableRefTypes.cs:54:11:54:33 | call to constructor Object | object |
-| NullableRefTypes.cs:58:11:58:26 | call to constructor Object | object |
+| NullableRefTypes.cs:54:11:54:17 | call to constructor Object | object |
+| NullableRefTypes.cs:58:11:58:18 | call to constructor Object | object |
 | NullableRefTypes.cs:73:18:73:18 | access to local variable x | MyClass! |
 | NullableRefTypes.cs:73:18:73:25 | MyClass x = ... | MyClass! |
 | NullableRefTypes.cs:73:22:73:25 | null | null |
