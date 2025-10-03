@@ -657,10 +657,8 @@ private module PathGraphSigMod {
   }
 }
 
-module DataFlowMakeCore<LocationSig Location, InputSig<Location> Lang> {
+private module DataFlowMakeCore<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
-  private import internal.DataFlowImpl::MakeImpl<Location, Lang>
-  private import internal.DataFlowImplStage1::MakeImplStage1<Location, Lang>
   import Configs<Location, Lang>
 
   /**
@@ -1166,7 +1164,7 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
 }
 
 module DataFlowMakeOverlay<LocationSig Location, InputSig<Location> Lang> {
-  import DataFlowMakeCore<Location, Lang>
+  import DataFlowMake<Location, Lang>
   private import Lang
   private import internal.DataFlowImpl::MakeImpl<Location, Lang>
   private import internal.DataFlowImplStage1::MakeImplStage1<Location, Lang>

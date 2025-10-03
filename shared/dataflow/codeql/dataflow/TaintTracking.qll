@@ -52,7 +52,7 @@ private module TaintFlowMakeCore<
   InputSig<Location, DataFlowLang> TaintTrackingLang>
 {
   import TaintTrackingLang
-  import DF::DataFlowMakeCore<Location, DataFlowLang> as DataFlow
+  import DF::DataFlowMake<Location, DataFlowLang> as DataFlow
   import MakeImpl<Location, DataFlowLang> as DataFlowInternal
   import MakeImplStage1<Location, DataFlowLang> as DataFlowInternalStage1
 
@@ -295,7 +295,7 @@ module TaintFlowMake<
 
     import Stage1::PartialFlow
 
-    private module Flow = DataFlowInternal::OverlayImpl<C, Stage1::Stage1WithState>;
+    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1WithState>;
 
     import Flow
   }
@@ -407,7 +407,7 @@ module TaintFlowMakeOverlay<
 
     import Stage1::PartialFlow
 
-    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1WithState>;
+    private module Flow = DataFlowInternal::OverlayImpl<C, Stage1::Stage1WithState>;
 
     import Flow
   }

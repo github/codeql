@@ -149,17 +149,17 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
        *
        * Shared between sources and sinks.
        */
-      pragma[inline]
       overlay[global]
+      pragma[inline]
       private predicate nonDiffInformedFilter(Node node) {
-        // If we are in base-only global evaluation, do not filter out any sources.
+        // If we are in base-only global evaluation, do not filter out any sources/sinks.
         not isEvaluatingInOverlay()
         or
-        // If the configuration doesn't merge overlays, do not filter out any sources.
+        // If the configuration doesn't merge overlays, do not filter out any sources/sinks.
         not Config::observeOverlayInformedIncrementalMode()
         or
         // If we are in global evaluation with an overlay present, restrict
-        // sources to those visible in the overlay.
+        // sources/sinks to those visible in the overlay.
         isOverlayNode(node)
       }
 
