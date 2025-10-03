@@ -40,18 +40,19 @@ namespace Semmle.Extraction.CSharp.Entities
             get;
         }
 
+        private static void WriteStarId(EscapingTextWriter writer)
+        {
+            writer.Write('*');
+        }
+
+        public sealed override void WriteQuotedId(EscapingTextWriter writer)
+        {
+            WriteStarId(writer);
+        }
+
         public override void WriteId(EscapingTextWriter trapFile)
         {
-            trapFile.Write("loc,");
-            trapFile.WriteSubId(FileEntity);
-            trapFile.Write(',');
-            trapFile.Write(Position.Span.Start.Line + 1);
-            trapFile.Write(',');
-            trapFile.Write(Position.Span.Start.Character + 1);
-            trapFile.Write(',');
-            trapFile.Write(Position.Span.End.Line + 1);
-            trapFile.Write(',');
-            trapFile.Write(Position.Span.End.Character);
+            WriteStarId(trapFile);
         }
 
         private class SourceLocationFactory : CachedEntityFactory<Microsoft.CodeAnalysis.Location, NonGeneratedSourceLocation>
