@@ -236,17 +236,6 @@
 | Properties.cs:113:9:113:22 | SSA call def(this.Props) | Properties.cs:113:9:113:22 | call to method SetProps |
 | Properties.cs:113:9:113:22 | SSA call def(this.Props.Props) | Properties.cs:113:9:113:22 | call to method SetProps |
 | Properties.cs:113:9:113:22 | SSA qualifier def(this.Props.Props.xs) | Properties.cs:113:9:113:22 | call to method SetProps |
-| Splitting.cs:3:18:3:18 | SSA param(b) | Splitting.cs:3:18:3:18 | b |
-| Splitting.cs:7:13:7:19 | SSA def(x) | Splitting.cs:7:13:7:19 | ... = ... |
-| Splitting.cs:10:13:10:19 | SSA def(x) | Splitting.cs:10:13:10:19 | ... = ... |
-| Splitting.cs:13:9:13:21 | SSA phi(x) | Splitting.cs:13:9:13:21 | ...; |
-| Splitting.cs:22:18:22:18 | SSA param(b) | Splitting.cs:22:18:22:18 | b |
-| Splitting.cs:29:13:29:19 | SSA def(x) | Splitting.cs:29:13:29:19 | ... = ... |
-| Splitting.cs:32:9:32:15 | SSA def(x) | Splitting.cs:32:9:32:15 | ... = ... |
-| Splitting.cs:42:18:42:18 | SSA param(b) | Splitting.cs:42:18:42:18 | b |
-| Splitting.cs:46:13:46:19 | SSA def(x) | Splitting.cs:46:13:46:19 | ... = ... |
-| Splitting.cs:49:13:49:19 | SSA def(x) | Splitting.cs:49:13:49:19 | ... = ... |
-| Splitting.cs:52:9:53:22 | SSA phi(x) | Splitting.cs:52:9:53:22 | if (...) ... |
 | Test.cs:5:15:5:20 | SSA param(param1) | Test.cs:5:15:5:20 | param1 |
 | Test.cs:5:67:5:72 | SSA param(param2) | Test.cs:5:67:5:72 | param2 |
 | Test.cs:7:9:7:17 | SSA def(this.field) | Test.cs:7:9:7:17 | ... = ... |
