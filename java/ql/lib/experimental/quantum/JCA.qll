@@ -102,10 +102,15 @@ module JCAModel {
           ].toUpperCase())
   }
 
+  /**
+   * Names that match known signature algorithms.
+   * https://docs.oracle.com/en/java/javase/25/docs/specs/security/standard-names.html
+   */
   bindingset[name]
   predicate signature_names(string name) {
-    name.toUpperCase().splitAt("with".toUpperCase(), 1).matches(["RSA", "ECDSA", "DSA"])
-    // note RSASSA-PSS is RSA with PSS where the digest is set through PSSParameterSpec
+    name.toUpperCase().splitAt("with".toUpperCase(), 1).matches(["RSA%", "ECDSA%", "DSA%"])
+    or
+    name.toUpperCase().matches(["RSASSA-PSS", "ED25519", "ED448", "EDDSA", "ML-DSA%", "HSS/LMS"])
   }
 
   bindingset[name]
@@ -225,18 +230,29 @@ module JCAModel {
     name.toUpperCase() in ["ECDH", "X25519", "X448"]
   }
 
+  /**
+   * Maps a signature algorithm name to its type, if known.
+   * see https://docs.oracle.com/en/java/javase/25/docs/specs/security/standard-names.html
+   */
   bindingset[name]
   predicate signature_name_to_type_known(Crypto::KeyOpAlg::TAlgorithm type, string name) {
-    name.toUpperCase().splitAt("with".toUpperCase(), 1) = "RSA" and
+    name.toUpperCase().splitAt("with".toUpperCase(), 1).matches("RSA%") and
     type = KeyOpAlg::TAsymmetricCipher(KeyOpAlg::RSA())
     or
-    name.toUpperCase().splitAt("with".toUpperCase(), 1) = "ECDSA" and
+    name.toUpperCase().splitAt("with".toUpperCase(), 1).matches("ECDSA%") and
     type = KeyOpAlg::TSignature(KeyOpAlg::ECDSA())
     or
-    name.toUpperCase().splitAt("with".toUpperCase(), 1) = "DSA" and
+    name.toUpperCase().splitAt("with".toUpperCase(), 1).matches("DSA%") and
     type = KeyOpAlg::TSignature(KeyOpAlg::DSA())
     or
     name.toUpperCase().matches("RSASSA-PSS") and type = KeyOpAlg::TAsymmetricCipher(KeyOpAlg::RSA())
+    or
+    name.toUpperCase().matches(["EDDSA", "ED25519", "ED448"]) and
+    type = KeyOpAlg::TSignature(KeyOpAlg::EDDSA())
+    or
+    name.toUpperCase().matches("ML-DSA%") and type = KeyOpAlg::TSignature(KeyOpAlg::DSA())
+    or
+    name.toUpperCase().matches("HSS/LMS") and type = KeyOpAlg::TSignature(KeyOpAlg::HSS_LMS())
   }
 
   bindingset[name]

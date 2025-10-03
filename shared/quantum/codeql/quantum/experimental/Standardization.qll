@@ -49,6 +49,7 @@ module Types {
       DSA() or
       ECDSA() or
       EDDSA() or // e.g., ED25519 or ED448
+      HSS_LMS() or // Leighton-Micali Signature
       OtherSignatureAlgorithmType()
 
     newtype TKemAlgorithmType =
