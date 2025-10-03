@@ -1185,6 +1185,10 @@ module MakeWithSplitting<
 
   final class AnnotatedExitNode = AnnotatedExitNodeImpl;
 
+  final class NormalExitNode extends AnnotatedExitNodeImpl {
+    NormalExitNode() { this = TAnnotatedExitNode(_, true) }
+  }
+
   /** An exit node for a given scope. */
   private class ExitNodeImpl extends NodeImpl, TExitNode {
     private CfgScope scope;

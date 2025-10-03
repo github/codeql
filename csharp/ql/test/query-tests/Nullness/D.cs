@@ -14,7 +14,7 @@ public class D
     public void Caller()
     {
         Callee1(new object());
-        Callee1(null); // $ Source[cs/dereferenced-value-may-be-null]
+        Callee1(null);
         Callee2(new object());
     }
 
@@ -23,7 +23,7 @@ public class D
         param.ToString(); // $ Alert[cs/dereferenced-value-may-be-null]
     }
 
-    public void Callee2(object param) // $ Source[cs/dereferenced-value-may-be-null]
+    public void Callee2(object param)
     {
         if (param != null)
         {
@@ -55,24 +55,24 @@ public class D
         if ((2 > 1 && o4 != null) != false)
             o4.ToString(); // GOOD
 
-        var o5 = (o4 != null) ? "" : null; // $ Source[cs/dereferenced-value-may-be-null]
+        var o5 = (o4 != null) ? "" : null;
         if (o5 != null)
             o4.ToString(); // GOOD
         if (o4 != null)
-            o5.ToString(); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
+            o5.ToString(); // GOOD
 
         var o6 = maybe ? null : "";
         if (!CustomIsNull(o6))
             o6.ToString(); // GOOD
 
-        var o7 = maybe ? null : ""; // $ Source[cs/dereferenced-value-may-be-null]
+        var o7 = maybe ? null : "";
         var ok = o7 != null && 2 > 1;
         if (ok)
             o7.ToString(); // GOOD
         else
             o7.ToString(); // $ Alert[cs/dereferenced-value-may-be-null]
 
-        var o8 = maybe ? null : ""; // $ Source[cs/dereferenced-value-may-be-null]
+        var o8 = maybe ? null : "";
         int track = o8 == null ? 42 : 1 + 1;
         if (track == 2)
             o8.ToString(); // GOOD
@@ -86,7 +86,7 @@ public class D
 
     public void Deref(int i)
     {
-        int[] xs = maybe ? null : new int[2]; // $ Source[cs/dereferenced-value-may-be-null]
+        int[] xs = maybe ? null : new int[2];
         if (i > 1)
             xs[0] = 5; // $ Alert[cs/dereferenced-value-may-be-null]
 
@@ -122,7 +122,7 @@ public class D
             x.ToString(); // GOOD
     }
 
-    public void LengthGuard(int[] a, int[] b) // $ Source[cs/dereferenced-value-may-be-null]
+    public void LengthGuard(int[] a, int[] b)
     {
         int alen = a == null ? 0 : a.Length; // GOOD
         int blen = b == null ? 0 : b.Length; // GOOD
@@ -146,7 +146,7 @@ public class D
         }
     }
 
-    public void MissedGuard(object obj) // $ Source[cs/dereferenced-value-may-be-null]
+    public void MissedGuard(object obj)
     {
         obj.ToString(); // $ Alert[cs/dereferenced-value-may-be-null]
         var x = obj != null ? 1 : 0;
@@ -160,7 +160,7 @@ public class D
 
     public void Exceptions()
     {
-        object obj = null; // $ Source[cs/dereferenced-value-may-be-null]
+        object obj = null;
         try
         {
             obj = MkMaybe();
@@ -237,16 +237,16 @@ public class D
         if (flag)
             o.ToString(); // GOOD
 
-        o = null; // $ Source[cs/dereferenced-value-may-be-null]
+        o = null;
         var other = maybe ? null : "";
         if (other == null)
             o = "";
         if (other != null)
             o.ToString(); // $ Alert[cs/dereferenced-value-may-be-null] (always - but reported as maybe)
         else
-            o.ToString(); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
+            o.ToString(); // GOOD
 
-        var o2 = (num < 0) ? null : ""; // $ Source[cs/dereferenced-value-may-be-null]
+        var o2 = (num < 0) ? null : "";
         if (num < 0)
             o2 = "";
         else
@@ -255,7 +255,7 @@ public class D
 
     public void TrackingVariable(int[] a)
     {
-        object o = null; // $ Source[cs/dereferenced-value-may-be-null]
+        object o = null;
         object other = null;
         if (maybe)
         {
@@ -264,9 +264,9 @@ public class D
         }
 
         if (other is string)
-            o.ToString(); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
+            o.ToString(); // GOOD
 
-        o = null; // $ Source[cs/dereferenced-value-may-be-null]
+        o = null;
         int count = 0;
         var found = false;
         for (var i = 0; i < a.Length; i++)
@@ -280,7 +280,7 @@ public class D
             }
             if (a[i] > 10000)
             {
-                o = null; // $ Source[cs/dereferenced-value-may-be-null]
+                o = null;
                 count = 0;
                 if (2 > i) { }
                 found = false;
@@ -291,17 +291,17 @@ public class D
             o.ToString(); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
 
         if (found)
-            o.ToString(); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
+            o.ToString(); // GOOD
 
-        object prev = null; // $ Source[cs/dereferenced-value-may-be-null]
+        object prev = null;
         for (var i = 0; i < a.Length; ++i)
         {
             if (i != 0)
-                prev.ToString(); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
+                prev.ToString(); // GOOD
             prev = a[i];
         }
 
-        string s = null; // $ Source[cs/dereferenced-value-may-be-null]
+        string s = null;
         {
             var s_null = true;
             foreach (var i in a)
@@ -310,10 +310,10 @@ public class D
                 s = "" + a;
             }
             if (!s_null)
-                s.ToString(); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
+                s.ToString(); // GOOD
         }
 
-        object r = null; // $ Source[cs/dereferenced-value-may-be-null]
+        object r = null;
         var stat = MyStatus.INIT;
         while (stat == MyStatus.INIT && stat != MyStatus.READY)
         {
@@ -321,7 +321,7 @@ public class D
             if (stat == MyStatus.INIT)
                 stat = MyStatus.READY;
         }
-        r.ToString(); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
+        r.ToString(); // GOOD
     }
 
     public enum MyStatus
@@ -348,7 +348,7 @@ public class D
 
     public void LoopCorr(int iters)
     {
-        int[] a = null; // $ Source[cs/dereferenced-value-may-be-null]
+        int[] a = null;
         if (iters > 0)
             a = new int[iters];
 
@@ -357,13 +357,13 @@ public class D
 
         if (iters > 0)
         {
-            string last = null; // $ Source[cs/dereferenced-value-may-be-null]
+            string last = null;
             for (var i = 0; i < iters; i++)
                 last = "abc";
             last.ToString(); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
         }
 
-        int[] b = maybe ? null : new int[iters]; // $ Source[cs/dereferenced-value-may-be-null]
+        int[] b = maybe ? null : new int[iters];
         if (iters > 0 && (b == null || b.Length < iters))
             throw new Exception();
 
@@ -385,7 +385,7 @@ public class D
             ioe.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
     }
 
-    public void LengthGuard2(int[] a, int[] b) // $ Source[cs/dereferenced-value-may-be-null]
+    public void LengthGuard2(int[] a, int[] b)
     {
         int alen = a == null ? 0 : a.Length; // GOOD
         int sum = 0;
@@ -402,13 +402,13 @@ public class D
         i = -3;
     }
 
-    public void CorrConds2(object x, object y) // $ Source[cs/dereferenced-value-may-be-null]
+    public void CorrConds2(object x, object y)
     {
         if ((x != null && y == null) || (x == null && y != null))
             return;
         if (x != null)
-            y.ToString(); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
+            y.ToString(); // GOOD
         if (y != null)
-            x.ToString(); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
+            x.ToString(); // GOOD
     }
 }
