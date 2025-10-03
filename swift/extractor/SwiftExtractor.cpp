@@ -170,7 +170,7 @@ static std::unordered_set<swift::ModuleDecl*> extractDeclarations(
                        bodyEmissionStrategy);
   auto topLevelDecls = getTopLevelDecls(module, primaryFile, lazyDeclaration);
   for (auto decl : topLevelDecls) {
-    if (swift::AvailableAttr::isUnavailable(decl)) {
+    if (decl->isUnavailable() && !llvm::isa<swift::NominalTypeDecl>(decl)) {
       continue;
     }
     visitor.extract(decl);

@@ -10,7 +10,7 @@
 }
 
 func foo(
-    // @Wrapper x: Int // Disabled causes crashes with Swift 6.1
+    // @Wrapper x: Int // Disabled causes crashes with Swift 6.1/6.2
 ) {}
 
 // foo(x: 42)
@@ -18,7 +18,7 @@ func foo(
 
 let closure = {
     (
-        // @Wrapper y: Int // Disabled causes crashes with Swift 6.1
+        // @Wrapper y: Int // Disabled causes crashes with Swift 6.1/6.2
     ) in return
     }
 
