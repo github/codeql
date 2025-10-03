@@ -24,11 +24,12 @@ private predicate discardableLocatable(@file file, @locatable locatable) {
 }
 
 /**
- * Holds if the `file` has a path such that that entities that are both in the base database and
- * located in the file should be discarded.
+ * Holds if the given `path` is for a file in the base database whose entities should be discarded.
  */
-private predicate discardableFile(@file file) {
-  exists(string path | files(file, path) |
+bindingset[path]
+private predicate discardableFile(string path) {
+  isOverlay() and
+  (
     overlayChangedFiles(path)
     or
     // The extractor unconditionally extracts files outside of the source directory (these are
@@ -45,5 +46,7 @@ private predicate discardableFile(@file file) {
  */
 overlay[discard_entity]
 private predicate discardLocatable(@locatable locatable) {
-  exists(@file file | discardableLocatable(file, locatable) and discardableFile(file))
+  exists(@file file, string path | files(file, path) |
+    discardableLocatable(file, locatable) and discardableFile(path)
+  )
 }
