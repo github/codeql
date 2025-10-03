@@ -18,6 +18,8 @@ module JCAModel {
 
   abstract class KeyAgreementAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer { }
 
+  abstract class SignatureAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer { }
+
   // TODO: Verify that the PBEWith% case works correctly
   bindingset[algo]
   predicate cipher_names(string algo) {
@@ -98,6 +100,12 @@ module JCAModel {
             "HMAC%", "AESCMAC", "DESCMAC", "GMAC", "Poly1305", "SipHash", "BLAKE2BMAC",
             "HMACRIPEMD160"
           ].toUpperCase())
+  }
+
+  bindingset[name]
+  predicate signature_names(string name) {
+    name.toUpperCase().splitAt("with".toUpperCase(), 1).matches(["RSA", "ECDSA", "DSA"])
+    // note RSASSA-PSS is RSA with PSS where the digest is set through PSSParameterSpec
   }
 
   bindingset[name]
@@ -215,6 +223,25 @@ module JCAModel {
     or
     type = Crypto::ECDH() and
     name.toUpperCase() in ["ECDH", "X25519", "X448"]
+  }
+
+  bindingset[name]
+  predicate signature_name_to_type_known(Crypto::KeyOpAlg::TAlgorithm type, string name) {
+    name.toUpperCase().splitAt("with".toUpperCase(), 1) = "RSA" and
+    type = KeyOpAlg::TAsymmetricCipher(KeyOpAlg::RSA())
+    or
+    name.toUpperCase().splitAt("with".toUpperCase(), 1) = "ECDSA" and
+    type = KeyOpAlg::TSignature(KeyOpAlg::ECDSA())
+    or
+    name.toUpperCase().splitAt("with".toUpperCase(), 1) = "DSA" and
+    type = KeyOpAlg::TSignature(KeyOpAlg::DSA())
+    or
+    name.toUpperCase().matches("RSASSA-PSS") and type = KeyOpAlg::TAsymmetricCipher(KeyOpAlg::RSA())
+  }
+
+  bindingset[name]
+  Crypto::HashType signature_name_to_hash_type_known(string name, int digestLength) {
+    result = hash_name_to_type_known(name.splitAt("with", 0), digestLength)
   }
 
   /**
@@ -345,7 +372,7 @@ module JCAModel {
     override KeyOpAlg::AlgorithmType getAlgorithmType() {
       if cipher_name_to_type_known(_, super.getAlgorithmName())
       then cipher_name_to_type_known(result, super.getAlgorithmName())
-      else result instanceof KeyOpAlg::TUnknownKeyOperationAlgorithmType
+      else result instanceof KeyOpAlg::TOtherKeyOperationAlgorithmType
     }
 
     override int getKeySizeFixed() {
@@ -1638,6 +1665,196 @@ module JCAModel {
 
     override Crypto::ConsumerInputDataFlowNode getNonceConsumer() { none() }
   }
+
+  /**
+   * Signatures
+   */
+  module SignatureKnownAlgorithmToConsumerConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SignatureStringLiteral }
+
+    predicate isSink(DataFlow::Node sink) {
+      sink = any(SignatureAlgorithmValueConsumer call).getInputNode()
+    }
+  }
+
+  module SignatureKnownAlgorithmToConsumerFlow =
+    TaintTracking::Global<SignatureKnownAlgorithmToConsumerConfig>;
+
+  class SignatureGetInstanceCall extends MethodCall {
+    SignatureGetInstanceCall() {
+      this.getCallee().hasQualifiedName("java.security", "Signature", "getInstance")
+    }
+
+    Expr getAlgorithmArg() { result = this.getArgument(0) }
+  }
+
+  class SignatureGetInstanceAlgorithmValueConsumer extends SignatureAlgorithmValueConsumer instanceof Expr
+  {
+    SignatureGetInstanceAlgorithmValueConsumer() {
+      this = any(SignatureGetInstanceCall c).getAlgorithmArg()
+    }
+
+    override Crypto::ConsumerInputDataFlowNode getInputNode() { result.asExpr() = this }
+
+    override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
+      result.(SignatureStringLiteralAlgorithmInstance).getConsumer() = this
+    }
+  }
+
+  class SignatureStringLiteral extends StringLiteral {
+    SignatureStringLiteral() { signature_names(this.getValue()) }
+  }
+
+  class SignatureStringLiteralAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance instanceof SignatureStringLiteral
+  {
+    SignatureAlgorithmValueConsumer consumer;
+
+    SignatureStringLiteralAlgorithmInstance() {
+      SignatureKnownAlgorithmToConsumerFlow::flow(DataFlow::exprNode(this), consumer.getInputNode())
+    }
+
+    SignatureAlgorithmValueConsumer getConsumer() { result = consumer }
+
+    override string getRawAlgorithmName() { result = super.getValue() }
+
+    override Crypto::KeyOpAlg::AlgorithmType getAlgorithmType() {
+      if signature_name_to_type_known(_, super.getValue())
+      then signature_name_to_type_known(result, super.getValue())
+      else result = Crypto::KeyOpAlg::TOtherKeyOperationAlgorithmType()
+    }
+
+    override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() {
+      // TODO: trace to any key size initializer?
+      none()
+    }
+
+    override int getKeySizeFixed() {
+      // TODO: are there known fixed key sizes to consider?
+      none()
+    }
+
+    override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() { none() }
+
+    override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
+  }
+
+  class SignatureHashAlgorithmInstance extends Crypto::HashAlgorithmInstance instanceof SignatureStringLiteralAlgorithmInstance
+  {
+    Crypto::THashType hashType;
+    int digestLength;
+
+    SignatureHashAlgorithmInstance() {
+      hashType = signature_name_to_hash_type_known(this.(StringLiteral).getValue(), digestLength)
+    }
+
+    override string getRawHashAlgorithmName() { result = this.(StringLiteral).getValue() }
+
+    override Crypto::THashType getHashFamily() { result = hashType }
+
+    override int getFixedDigestLength() { result = digestLength }
+  }
+
+  class SignatureInitCall extends MethodCall {
+    SignatureInitCall() {
+      this.getCallee().hasQualifiedName("java.security", "Signature", ["initSign", "initVerify"])
+    }
+
+    Expr getKeyArg() {
+      result = this.getArgument(0)
+      // TODO: verify can take in a certificate too?
+    }
+  }
+
+  private class SignatureOperationCall extends MethodCall {
+    SignatureOperationCall() {
+      this.getMethod().hasQualifiedName("java.security", "Signature", ["update", "sign", "verify"])
+    }
+
+    predicate isIntermediate() { super.getMethod().getName() = "update" }
+
+    Expr getMsgInput() { result = this.getArgument(0) and this.getMethod().getName() = "update" }
+
+    Expr getSignatureOutput() {
+      // no args, the signature is returned
+      result = this and this.getMethod().getName() = "sign" and not exists(this.getArgument(0))
+      or
+      // with args, the signature is written to the arg
+      result = this.getArgument(0) and this.getMethod().getName() = "sign"
+    }
+
+    Expr getSignatureInput() {
+      result = this.getArgument(0) and this.getMethod().getName() = "verify"
+    }
+
+    Crypto::KeyOperationSubtype getSubtype() {
+      result instanceof Crypto::TSignMode and this.getMethod().getName() = "sign"
+      or
+      result instanceof Crypto::TVerifyMode and this.getMethod().getName() = "verify"
+    }
+  }
+
+  class SignatureOperationinstance extends Crypto::SignatureOperationInstance instanceof SignatureOperationCall
+  {
+    SignatureOperationinstance() {
+      // exclude update (only include sign and verify)
+      not super.isIntermediate()
+    }
+
+    SignatureGetInstanceCall getInstantiationCall() {
+      result = SignatureFlowAnalysisImpl::getInstantiationFromUse(this, _, _)
+    }
+
+    SignatureInitCall getInitCall() {
+      result = SignatureFlowAnalysisImpl::getInitFromUse(this, _, _)
+    }
+
+    override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
+      result.asExpr() = super.getMsgInput() or
+      result.asExpr() =
+        SignatureFlowAnalysisImpl::getAnIntermediateUseFromFinalUse(this, _, _).getMsgInput()
+    }
+
+    override Crypto::ConsumerInputDataFlowNode getKeyConsumer() {
+      result.asExpr() = this.getInitCall().getKeyArg()
+    }
+
+    override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
+      result = this.getInstantiationCall().getAlgorithmArg()
+    }
+
+    override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
+      result.asExpr() = super.getSignatureOutput() or
+      result.asExpr() =
+        SignatureFlowAnalysisImpl::getAnIntermediateUseFromFinalUse(this, _, _).getSignatureOutput()
+    }
+
+    override Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() {
+      // TODO: RSASSA-PSS literal sets hashes differently, through a ParameterSpec
+      result = this.getInstantiationCall().getAlgorithmArg()
+    }
+
+    override predicate hasHashAlgorithmConsumer() {
+      // All jca signature algorithms specify a hash unless explicitly set as "NONEwith..."
+      exists(SignatureStringLiteralAlgorithmInstance i |
+        i.getConsumer() = this.getAnAlgorithmValueConsumer() and
+        not i.getRawAlgorithmName().toUpperCase().matches("NONEwith%".toUpperCase())
+      )
+    }
+
+    override Crypto::KeyOperationSubtype getKeyOperationSubtype() { result = super.getSubtype() }
+
+    override Crypto::ConsumerInputDataFlowNode getNonceConsumer() { none() }
+
+    override Crypto::ConsumerInputDataFlowNode getSignatureConsumer() {
+      result.asExpr() = super.getSignatureInput() or
+      result.asExpr() =
+        SignatureFlowAnalysisImpl::getAnIntermediateUseFromFinalUse(this, _, _).getSignatureInput()
+    }
+  }
+
+  module SignatureFlowAnalysisImpl =
+    GetInstanceInitUseFlowAnalysis<SignatureGetInstanceCall, SignatureInitCall,
+      SignatureOperationCall>;
 
   /*
    * Elliptic Curves (EC)
