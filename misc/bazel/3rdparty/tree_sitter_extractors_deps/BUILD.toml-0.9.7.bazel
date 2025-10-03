@@ -17,7 +17,7 @@ cargo_toml_env_vars(
 )
 
 rust_library(
-    name = "darling_core",
+    name = "toml",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -35,8 +35,11 @@ rust_library(
         ],
     ),
     crate_features = [
-        "strsim",
-        "suggestions",
+        "default",
+        "display",
+        "parse",
+        "serde",
+        "std",
     ],
     crate_root = "src/lib.rs",
     edition = "2021",
@@ -48,7 +51,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=darling_core",
+        "crate-name=toml",
         "manual",
         "noclippy",
         "norustfmt",
@@ -92,13 +95,13 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.20.11",
+    version = "0.9.7",
     deps = [
-        "@vendor_ts__fnv-1.0.7//:fnv",
-        "@vendor_ts__ident_case-1.0.1//:ident_case",
-        "@vendor_ts__proc-macro2-1.0.101//:proc_macro2",
-        "@vendor_ts__quote-1.0.40//:quote",
-        "@vendor_ts__strsim-0.11.1//:strsim",
-        "@vendor_ts__syn-2.0.106//:syn",
+        "@vendor_ts__serde_core-1.0.228//:serde_core",
+        "@vendor_ts__serde_spanned-1.0.2//:serde_spanned",
+        "@vendor_ts__toml_datetime-0.7.2//:toml_datetime",
+        "@vendor_ts__toml_parser-1.0.3//:toml_parser",
+        "@vendor_ts__toml_writer-1.0.3//:toml_writer",
+        "@vendor_ts__winnow-0.7.13//:winnow",
     ],
 )

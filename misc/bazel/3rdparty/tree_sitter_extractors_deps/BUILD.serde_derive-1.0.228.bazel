@@ -7,7 +7,7 @@
 ###############################################################################
 
 load("@rules_rust//cargo:defs.bzl", "cargo_toml_env_vars")
-load("@rules_rust//rust:defs.bzl", "rust_library")
+load("@rules_rust//rust:defs.bzl", "rust_proc_macro")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -16,8 +16,8 @@ cargo_toml_env_vars(
     src = "Cargo.toml",
 )
 
-rust_library(
-    name = "indexmap",
+rust_proc_macro(
+    name = "serde_derive",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -36,8 +36,6 @@ rust_library(
     ),
     crate_features = [
         "default",
-        "serde",
-        "std",
     ],
     crate_root = "src/lib.rs",
     edition = "2021",
@@ -49,7 +47,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=indexmap",
+        "crate-name=serde_derive",
         "manual",
         "noclippy",
         "norustfmt",
@@ -93,10 +91,10 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "2.11.1",
+    version = "1.0.228",
     deps = [
-        "@vendor_ts__equivalent-1.0.2//:equivalent",
-        "@vendor_ts__hashbrown-0.15.5//:hashbrown",
-        "@vendor_ts__serde-1.0.219//:serde",
+        "@vendor_ts__proc-macro2-1.0.101//:proc_macro2",
+        "@vendor_ts__quote-1.0.41//:quote",
+        "@vendor_ts__syn-2.0.106//:syn",
     ],
 )

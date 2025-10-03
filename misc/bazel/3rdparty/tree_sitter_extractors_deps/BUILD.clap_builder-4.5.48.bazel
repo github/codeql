@@ -17,7 +17,7 @@ cargo_toml_env_vars(
 )
 
 rust_library(
-    name = "clap",
+    name = "clap_builder",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -36,8 +36,6 @@ rust_library(
     ),
     crate_features = [
         "color",
-        "default",
-        "derive",
         "error-context",
         "help",
         "std",
@@ -46,9 +44,6 @@ rust_library(
     ],
     crate_root = "src/lib.rs",
     edition = "2021",
-    proc_macro_deps = [
-        "@vendor_ts__clap_derive-4.5.47//:clap_derive",
-    ],
     rustc_env_files = [
         ":cargo_toml_env_vars",
     ],
@@ -57,7 +52,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=clap",
+        "crate-name=clap_builder",
         "manual",
         "noclippy",
         "norustfmt",
@@ -101,8 +96,11 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "4.5.47",
+    version = "4.5.48",
     deps = [
-        "@vendor_ts__clap_builder-4.5.47//:clap_builder",
+        "@vendor_ts__anstream-0.6.20//:anstream",
+        "@vendor_ts__anstyle-1.0.11//:anstyle",
+        "@vendor_ts__clap_lex-0.7.5//:clap_lex",
+        "@vendor_ts__strsim-0.11.1//:strsim",
     ],
 )

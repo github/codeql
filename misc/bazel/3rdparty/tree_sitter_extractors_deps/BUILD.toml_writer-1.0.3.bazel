@@ -17,7 +17,7 @@ cargo_toml_env_vars(
 )
 
 rust_library(
-    name = "synstructure",
+    name = "toml_writer",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -35,11 +35,11 @@ rust_library(
         ],
     ),
     crate_features = [
-        "default",
-        "proc-macro",
+        "alloc",
+        "std",
     ],
     crate_root = "src/lib.rs",
-    edition = "2018",
+    edition = "2021",
     rustc_env_files = [
         ":cargo_toml_env_vars",
     ],
@@ -48,7 +48,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=synstructure",
+        "crate-name=toml_writer",
         "manual",
         "noclippy",
         "norustfmt",
@@ -92,10 +92,5 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.13.2",
-    deps = [
-        "@vendor_ts__proc-macro2-1.0.101//:proc_macro2",
-        "@vendor_ts__quote-1.0.41//:quote",
-        "@vendor_ts__syn-2.0.106//:syn",
-    ],
+    version = "1.0.3",
 )

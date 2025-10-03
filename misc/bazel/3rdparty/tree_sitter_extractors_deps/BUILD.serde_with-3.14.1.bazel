@@ -17,7 +17,7 @@ cargo_toml_env_vars(
 )
 
 rust_library(
-    name = "toml_parser",
+    name = "serde_with",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -36,10 +36,16 @@ rust_library(
     ),
     crate_features = [
         "alloc",
+        "default",
+        "macros",
         "std",
     ],
     crate_root = "src/lib.rs",
     edition = "2021",
+    proc_macro_deps = [
+        "@vendor_ts__serde_derive-1.0.228//:serde_derive",
+        "@vendor_ts__serde_with_macros-3.14.1//:serde_with_macros",
+    ],
     rustc_env_files = [
         ":cargo_toml_env_vars",
     ],
@@ -48,7 +54,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=toml_parser",
+        "crate-name=serde_with",
         "manual",
         "noclippy",
         "norustfmt",
@@ -92,8 +98,8 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "1.0.2",
+    version = "3.14.1",
     deps = [
-        "@vendor_ts__winnow-0.7.13//:winnow",
+        "@vendor_ts__serde-1.0.228//:serde",
     ],
 )
