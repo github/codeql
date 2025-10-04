@@ -889,8 +889,9 @@ private predicate isComplexRootStripped(TypePath path, Type type) {
  * T1, &T1, &mut T1, ..., Tn, &Tn, &mut Tn
  * ```
  *
- * we recursively build up the list, only adding a new candidate receiver type to the list
- * when we can rule out that the method cannot be found for the current candidate:
+ * we recursively compute a set of candidates, only adding a new candidate receiver type
+ * to the set when we can rule out that the method cannot be found for the current
+ * candidate:
  *
  * ```text
  * forall method:
@@ -1214,7 +1215,7 @@ private module MethodResolution {
      * as long as the method cannot be resolved in an earlier candidate type, and possibly
      * applying a borrow at the end.
      *
-     * The string `derefChainBorrow` encodes the sequences of dereferences and whether a
+     * The string `derefChainBorrow` encodes the sequence of dereferences and whether a
      * borrow has been applied.
      *
      * [1]: https://doc.rust-lang.org/reference/expressions/method-call-expr.html#r-expr.method.candidate-receivers
@@ -1302,14 +1303,14 @@ private module MethodResolution {
   private class MethodCallCallExpr extends MethodCall, CallExpr {
     MethodCallCallExpr() {
       exists(getCallExprPathQualifier(this)) and
-      // even if a function cannot be resolved by path resolution, it may still
-      // be possible to resolve a blanket implementation
+      // even if a method cannot be resolved by path resolution, it may still
+      // be possible to resolve a blanket implementation (so not `forex`)
       forall(ItemNode i | i = CallExprImpl::getResolvedFunction(this) | i instanceof Method)
     }
 
     /**
      * Holds if this call has a type qualifier, and we are able to resolve,
-     * using path resolution, the function to a member of `impl`.
+     * using path resolution, the method to a member of `impl`.
      *
      * When this is the case, we still want to check that the type qualifier
      * is an instance of the type being implemented, which is done in
@@ -1557,8 +1558,10 @@ private module MethodResolution {
     ArgIsInstantiationOf<MethodCallCand, ReceiverIsInstantiationOfSelfParamInput>;
 
   /**
-   * A configuration for matching the type qualifier of a function call against
-   * the type being implemented in an `impl` block.
+   * A configuration for matching the type qualifier of a method call
+   * against the type being implemented in an `impl` block. For example,
+   * in `Q::m(x)`, we check that the type of `Q` is an instance of the
+   * type being implemented.
    */
   private module TypeQualifierIsInstantiationOfImplSelfInput implements
     IsInstantiationOfInputSig<MethodCallCallExpr, TypeMentionTypeTree>
@@ -1897,91 +1900,11 @@ private module NonMethodResolution {
 
   private module BlanketTraitIsVisible = TraitIsVisible<blanketCallTraitCandidate/2>;
 
-  private Type getTypeAt(NonMethodCall fc, FunctionTypePosition pos, TypePath path) {
-    result = inferType(fc.getNodeAt(pos), path)
-  }
-
-  pragma[nomagic]
-  private predicate functionCallBlanketCandidate(
-    NonMethodCall fc, NonMethodFunction f, ImplItemNode impl, FunctionTypePosition pos,
-    TypePath blanketPath, TypeParam blanketTypeParam
-  ) {
-    exists(string name, int arity, Trait trait, AssocFunctionType t |
-      fc.hasNameAndArity(name, arity) and
-      exists(getTypeAt(fc, pos, blanketPath)) and
-      functionInfoBlanketRelevantPos(f, name, arity, impl, trait, pos, t, blanketPath,
-        blanketTypeParam) and
-      BlanketTraitIsVisible::traitIsVisible(fc, trait)
-    )
-  }
-
-  private newtype TCallAndPos =
-    MkCallAndPos(NonMethodCall fc, FunctionTypePosition pos) {
-      functionCallBlanketCandidate(fc, _, _, pos, _, _)
-    }
-
-  /** A call tagged with a position. */
-  private class CallAndPos extends MkCallAndPos {
-    NonMethodCall fc;
-    FunctionTypePosition pos;
-
-    CallAndPos() { this = MkCallAndPos(fc, pos) }
-
-    Location getLocation() { result = fc.getLocation() }
-
-    Type getTypeAt(TypePath path) { result = getTypeAt(fc, pos, path) }
-
-    string toString() { result = fc.toString() + " [arg " + pos + "]" }
-  }
-
-  private module ArgSatisfiesBlanketConstraintInput implements
-    BlanketImplementation::SatisfiesBlanketConstraintInputSig<CallAndPos>
-  {
-    pragma[nomagic]
-    predicate hasBlanketCandidate(
-      CallAndPos fcp, ImplItemNode impl, TypePath blanketPath, TypeParam blanketTypeParam
-    ) {
-      exists(NonMethodCall fc, FunctionTypePosition pos |
-        fcp = MkCallAndPos(fc, pos) and
-        functionCallBlanketCandidate(fc, _, impl, pos, blanketPath, blanketTypeParam)
-      )
-    }
-  }
-
-  private module ArgSatisfiesBlanketConstraint =
-    BlanketImplementation::SatisfiesBlanketConstraint<CallAndPos, ArgSatisfiesBlanketConstraintInput>;
-
-  /**
-   * A configuration for matching the type of an argument against the type of
-   * a parameter that mentions a satisfied blanket type parameter.
-   */
-  private module ArgIsInstantiationOfBlanketParamInput implements
-    IsInstantiationOfInputSig<CallAndPos, AssocFunctionType>
-  {
-    pragma[nomagic]
-    predicate potentialInstantiationOf(
-      CallAndPos fcp, TypeAbstraction abs, AssocFunctionType constraint
-    ) {
-      exists(FunctionTypePosition pos |
-        ArgSatisfiesBlanketConstraint::satisfiesBlanketConstraint(fcp, abs) and
-        fcp = MkCallAndPos(_, pos) and
-        functionInfoBlanketRelevantPos(_, _, _, abs, _, pos, constraint, _, _)
-      )
-    }
-
-    predicate relevantTypeMention(AssocFunctionType constraint) {
-      functionInfoBlanketRelevantPos(_, _, _, _, _, _, constraint, _, _)
-    }
-  }
-
-  private module ArgIsInstantiationOfBlanketParam =
-    ArgIsInstantiationOf<CallAndPos, ArgIsInstantiationOfBlanketParamInput>;
-
   /** A non-method call, `f(x)`. */
   final class NonMethodCall extends CallExpr {
     NonMethodCall() {
       // even if a function cannot be resolved by path resolution, it may still
-      // be possible to resolve a blanket implementation
+      // be possible to resolve a blanket implementation (so not `forex`)
       forall(Function f | f = CallExprImpl::getResolvedFunction(this) |
         f instanceof NonMethodFunction
       )
@@ -2009,7 +1932,7 @@ private module NonMethodResolution {
     private NonMethodFunction resolveCallTargetBlanketCand(ImplItemNode impl) {
       exists(string name |
         this.hasNameAndArity(pragma[only_bind_into](name), _) and
-        ArgIsInstantiationOfBlanketParam::argIsInstantiationOf(MkCallAndPos(this, _), impl, _) and
+        ArgIsInstantiationOfBlanketParam::argIsInstantiationOf(MkCallAndBlanketPos(this, _), impl, _) and
         result = impl.getASuccessor(pragma[only_bind_into](name))
       )
     }
@@ -2030,6 +1953,23 @@ private module NonMethodResolution {
       )
       or
       result = this and pos.isReturn()
+    }
+
+    Type getTypeAt(FunctionTypePosition pos, TypePath path) {
+      result = inferType(this.getNodeAt(pos), path)
+    }
+
+    pragma[nomagic]
+    predicate resolveCallTargetBlanketCandidate(
+      ImplItemNode impl, FunctionTypePosition pos, TypePath blanketPath, TypeParam blanketTypeParam
+    ) {
+      exists(string name, int arity, Trait trait, AssocFunctionType t |
+        this.hasNameAndArity(name, arity) and
+        exists(this.getTypeAt(pos, blanketPath)) and
+        functionInfoBlanketRelevantPos(_, name, arity, impl, trait, pos, t, blanketPath,
+          blanketTypeParam) and
+        BlanketTraitIsVisible::traitIsVisible(this, trait)
+      )
     }
 
     pragma[nomagic]
@@ -2060,6 +2000,69 @@ private module NonMethodResolution {
       result = this.resolveCallTargetRec()
     }
   }
+
+  private newtype TCallAndBlanketPos =
+    MkCallAndBlanketPos(NonMethodCall fc, FunctionTypePosition pos) {
+      fc.resolveCallTargetBlanketCandidate(_, pos, _, _)
+    }
+
+  /** A call tagged with a position. */
+  private class CallAndBlanketPos extends MkCallAndBlanketPos {
+    NonMethodCall fc;
+    FunctionTypePosition pos;
+
+    CallAndBlanketPos() { this = MkCallAndBlanketPos(fc, pos) }
+
+    Location getLocation() { result = fc.getLocation() }
+
+    Type getTypeAt(TypePath path) { result = fc.getTypeAt(pos, path) }
+
+    string toString() { result = fc.toString() + " [arg " + pos + "]" }
+  }
+
+  private module ArgSatisfiesBlanketConstraintInput implements
+    BlanketImplementation::SatisfiesBlanketConstraintInputSig<CallAndBlanketPos>
+  {
+    pragma[nomagic]
+    predicate hasBlanketCandidate(
+      CallAndBlanketPos fcp, ImplItemNode impl, TypePath blanketPath, TypeParam blanketTypeParam
+    ) {
+      exists(NonMethodCall fc, FunctionTypePosition pos |
+        fcp = MkCallAndBlanketPos(fc, pos) and
+        fc.resolveCallTargetBlanketCandidate(impl, pos, blanketPath, blanketTypeParam)
+      )
+    }
+  }
+
+  private module ArgSatisfiesBlanketConstraint =
+    BlanketImplementation::SatisfiesBlanketConstraint<CallAndBlanketPos,
+      ArgSatisfiesBlanketConstraintInput>;
+
+  /**
+   * A configuration for matching the type of an argument against the type of
+   * a parameter that mentions a satisfied blanket type parameter.
+   */
+  private module ArgIsInstantiationOfBlanketParamInput implements
+    IsInstantiationOfInputSig<CallAndBlanketPos, AssocFunctionType>
+  {
+    pragma[nomagic]
+    predicate potentialInstantiationOf(
+      CallAndBlanketPos fcp, TypeAbstraction abs, AssocFunctionType constraint
+    ) {
+      exists(FunctionTypePosition pos |
+        ArgSatisfiesBlanketConstraint::satisfiesBlanketConstraint(fcp, abs) and
+        fcp = MkCallAndBlanketPos(_, pos) and
+        functionInfoBlanketRelevantPos(_, _, _, abs, _, pos, constraint, _, _)
+      )
+    }
+
+    predicate relevantTypeMention(AssocFunctionType constraint) {
+      functionInfoBlanketRelevantPos(_, _, _, _, _, _, constraint, _, _)
+    }
+  }
+
+  private module ArgIsInstantiationOfBlanketParam =
+    ArgIsInstantiationOf<CallAndBlanketPos, ArgIsInstantiationOfBlanketParamInput>;
 
   private module NonMethodArgsAreInstantiationsOfInput implements ArgsAreInstantiationsOfInputSig {
     predicate toCheck(

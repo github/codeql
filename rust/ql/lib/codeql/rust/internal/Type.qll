@@ -630,7 +630,7 @@ final class ImplTraitTypeReprAbstraction extends TypeAbstraction, ImplTraitTypeR
  * Holds if `root` is a valid complex [`self` root type][1], with type
  * parameter `tp`.
  *
- * [1]: https://doc.rust-lang.org/stable/reference/items/associated-items.html?highlight=self#r-items.associated.fn.method.self-ty
+ * [1]: https://doc.rust-lang.org/stable/reference/items/associated-items.html#r-items.associated.fn.method.self-ty
  */
 pragma[nomagic]
 predicate complexSelfRoot(Type root, TypeParameter tp) {

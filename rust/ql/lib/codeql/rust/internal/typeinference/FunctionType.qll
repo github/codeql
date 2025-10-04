@@ -394,8 +394,8 @@ module ArgsAreInstantiationsOf<ArgsAreInstantiationsOfInputSig Input> {
     predicate potentialInstantiationOf(
       CallAndPos cp, TypeAbstraction abs, AssocFunctionType constraint
     ) {
-      exists(Input::Call call, FunctionTypePosition pos, int rnk, Function f |
-        potentialInstantiationOf0(cp, call, pos, rnk, f, abs, constraint)
+      exists(Input::Call call, int rnk, Function f |
+        potentialInstantiationOf0(cp, call, _, rnk, f, abs, constraint)
       |
         rnk = 0
         or
