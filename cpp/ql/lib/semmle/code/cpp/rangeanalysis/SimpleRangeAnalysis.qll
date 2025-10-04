@@ -1398,6 +1398,20 @@ predicate nonNanGuardedVariable(Expr guard, VariableAccess v, boolean branch) {
 }
 
 /**
+ * Adjusts a lower bound to its meaning for integral types.
+ *
+ * Examples:
+ * `>= 3.0` becomes `3.0`
+ * ` > 3.0` becomes `4.0`
+ * `>= 3.5` becomes `4.0`
+ * ` > 3.5` becomes `4.0`
+ */
+bindingset[strictness, lb]
+private float adjustLowerBoundIntegral(RelationStrictness strictness, float lb) {
+  if strictness = Nonstrict() and lb.floor() = lb then result = lb else result = safeFloor(lb) + 1
+}
+
+/**
  * If the guard is a comparison of the form `p*v + q <CMP> r`, then this
  * predicate uses the bounds information for `r` to compute a lower bound
  * for `v`.
@@ -1408,13 +1422,25 @@ private predicate lowerBoundFromGuard(Expr guard, VariableAccess v, float lb, bo
   |
     if nonNanGuardedVariable(guard, v, branch)
     then
-      if
-        strictness = Nonstrict() or
-        not getVariableRangeType(v.getTarget()) instanceof IntegralType
-      then lb = childLB
-      else lb = childLB + 1
+      if getVariableRangeType(v.getTarget()) instanceof IntegralType
+      then lb = adjustLowerBoundIntegral(strictness, childLB)
+      else lb = childLB
     else lb = varMinVal(v.getTarget())
   )
+}
+
+/**
+ * Adjusts an upper bound to its meaning for integral types.
+ *
+ * Examples:
+ * `<= 3.0` becomes `3.0`
+ * ` < 3.0` becomes `2.0`
+ * `<= 3.5` becomes `3.0`
+ * ` < 3.5` becomes `3.0`
+ */
+bindingset[strictness, ub]
+private float adjustUpperBoundIntegral(RelationStrictness strictness, float ub) {
+  if strictness = Strict() and ub.floor() = ub then result = ub - 1 else result = safeFloor(ub)
 }
 
 /**
@@ -1428,11 +1454,9 @@ private predicate upperBoundFromGuard(Expr guard, VariableAccess v, float ub, bo
   |
     if nonNanGuardedVariable(guard, v, branch)
     then
-      if
-        strictness = Nonstrict() or
-        not getVariableRangeType(v.getTarget()) instanceof IntegralType
-      then ub = childUB
-      else ub = childUB - 1
+      if getVariableRangeType(v.getTarget()) instanceof IntegralType
+      then ub = adjustUpperBoundIntegral(strictness, childUB)
+      else ub = childUB
     else ub = varMaxVal(v.getTarget())
   )
 }
@@ -1472,7 +1496,7 @@ private predicate boundFromGuard(
  * lower or upper bound for `v`.
  */
 private predicate linearBoundFromGuard(
-  ComparisonOperation guard, VariableAccess v, float p, float q, float boundValue,
+  ComparisonOperation guard, VariableAccess v, float p, float q, float r,
   boolean isLowerBound, // Is this a lower or an upper bound?
   RelationStrictness strictness, boolean branch // Which control-flow branch is this bound valid on?
 ) {
@@ -1487,11 +1511,11 @@ private predicate linearBoundFromGuard(
   |
     isLowerBound = directionIsGreater(dir) and
     strictness = st and
-    getBounds(rhs, boundValue, isLowerBound)
+    getBounds(rhs, r, isLowerBound)
     or
     isLowerBound = directionIsLesser(dir) and
     strictness = Nonstrict() and
-    exprTypeBounds(rhs, boundValue, isLowerBound)
+    exprTypeBounds(rhs, r, isLowerBound)
   )
   or
   // For x == RHS, we create the following bounds:
@@ -1502,7 +1526,7 @@ private predicate linearBoundFromGuard(
   exists(Expr lhs, Expr rhs |
     linearAccess(lhs, v, p, q) and
     eqOpWithSwapAndNegate(guard, lhs, rhs, true, branch) and
-    getBounds(rhs, boundValue, isLowerBound) and
+    getBounds(rhs, r, isLowerBound) and
     strictness = Nonstrict()
   )
   // x != RHS and !x are handled elsewhere
@@ -1858,5 +1882,36 @@ module SimpleRangeAnalysisInternal {
     // The definition might overflow negatively and wrap. If so, the upper
     // bound is `typeUpperBound`.
     defMightOverflowNegatively(def, v) and result = varMaxVal(v)
+  }
+}
+
+/** Provides predicates for debugging the simple range analysis library. */
+private module Debug {
+  Locatable getRelevantLocatable() {
+    exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
+      result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
+      filepath.matches("%/test.c") and
+      startline = [464 .. 472]
+    )
+  }
+
+  float debugGetFullyConvertedLowerBounds(Expr expr) {
+    expr = getRelevantLocatable() and
+    result = getFullyConvertedLowerBounds(expr)
+  }
+
+  float debugGetLowerBoundsImpl(Expr e, string kl) {
+    e = getRelevantLocatable() and
+    result = getLowerBoundsImpl(e) and
+    kl = e.getPrimaryQlClasses()
+  }
+
+  /**
+   * Counts the number of lower bounds for a given expression. This predicate is
+   * useful for identifying performance issues in the range analysis.
+   */
+  predicate nrOfLowerBounds(Expr e, int n) {
+    e = getRelevantLocatable() and
+    n = strictcount(float lb | lb = getLowerBoundsImpl(e) | lb)
   }
 }
