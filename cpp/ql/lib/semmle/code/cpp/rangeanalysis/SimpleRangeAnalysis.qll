@@ -1860,3 +1860,34 @@ module SimpleRangeAnalysisInternal {
     defMightOverflowNegatively(def, v) and result = varMaxVal(v)
   }
 }
+
+/** Provides predicates for debugging the simple range analysis library. */
+private module Debug {
+  Locatable getRelevantLocatable() {
+    exists(string filepath, int startline |
+      result.getLocation().hasLocationInfo(filepath, startline, _, _, _) and
+      filepath.matches("%/test.c") and
+      startline = [464 .. 472]
+    )
+  }
+
+  float debugGetFullyConvertedLowerBounds(Expr expr) {
+    expr = getRelevantLocatable() and
+    result = getFullyConvertedLowerBounds(expr)
+  }
+
+  float debugGetLowerBoundsImpl(Expr e, string kl) {
+    e = getRelevantLocatable() and
+    result = getLowerBoundsImpl(e) and
+    kl = e.getPrimaryQlClasses()
+  }
+
+  /**
+   * Counts the number of lower bounds for a given expression. This predicate is
+   * useful for identifying performance issues in the range analysis.
+   */
+  predicate nrOfLowerBounds(Expr e, int n) {
+    e = getRelevantLocatable() and
+    n = strictcount(float lb | lb = getLowerBoundsImpl(e) | lb)
+  }
+}
