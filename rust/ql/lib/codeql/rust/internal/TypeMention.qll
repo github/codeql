@@ -12,6 +12,7 @@ abstract class TypeMention extends AstNode {
   abstract Type resolveTypeAt(TypePath path);
 
   /** Gets the type that this node resolves to, if any. */
+  pragma[nomagic]
   final Type resolveType() { result = this.resolveTypeAt(TypePath::nil()) }
 }
 
@@ -112,7 +113,8 @@ class NonAliasPathTypeMention extends PathTypeMention {
 
   NonAliasPathTypeMention() {
     resolved = [resolvePath(this), resolvePath(this).(Variant).getEnum().(TypeItemNode)] and
-    not exists(resolved.(TypeAlias).getTypeRepr())
+    not exists(resolved.(TypeAlias).getTypeRepr()) and
+    not this = any(ImplItemNode i).getASelfPath() // handled by `ImplSelfMention`
   }
 
   TypeItemNode getResolved() { result = resolved }
@@ -143,23 +145,6 @@ class NonAliasPathTypeMention extends PathTypeMention {
 
   private TypeMention getPositionalTypeArgument0(int i) {
     result = this.getSegment().getGenericArgList().getTypeArg(i)
-    or
-    // `Self` paths inside `impl` blocks have implicit type arguments that are
-    // the type parameters of the `impl` block. For example, in
-    //
-    // ```rust
-    // impl<T> Foo<T> {
-    //   fn m(self) -> Self {
-    //     self
-    //   }
-    // }
-    // ```
-    //
-    // the `Self` return type is shorthand for `Foo<T>`.
-    exists(ImplItemNode node |
-      this = node.getASelfPath() and
-      result = node.(ImplItemNode).getSelfPath().getSegment().getGenericArgList().getTypeArg(i)
-    )
     or
     // `Option::<i32>::Some` is valid in addition to `Option::Some::<i32>`
     resolvePath(this) instanceof Variant and
@@ -259,6 +244,19 @@ class NonAliasPathTypeMention extends PathTypeMention {
   }
 }
 
+pragma[nomagic]
+private Type resolveImplSelfType(Impl i, TypePath path) {
+  result = i.getSelfTy().(TypeMention).resolveTypeAt(path)
+}
+
+class ImplSelfMention extends PathTypeMention {
+  private ImplItemNode impl;
+
+  ImplSelfMention() { this = impl.getASelfPath() }
+
+  override Type resolveTypeAt(TypePath typePath) { result = resolveImplSelfType(impl, typePath) }
+}
+
 class PathTypeReprMention extends TypeMention, PathTypeRepr {
   private PathTypeMention path;
 
@@ -327,6 +325,76 @@ class SelfTypeParameterMention extends TypeMention instanceof Name {
     typePath.isEmpty() and
     result = TSelfTypeParameter(trait)
   }
+}
+
+/**
+ * Gets the type at `path` of the type being implemented in `i`, when
+ * `i` is an `impl` block, or the synthetic `Self` type parameter when
+ * `i` is a trait.
+ */
+pragma[nomagic]
+Type resolveImplOrTraitType(ImplOrTraitItemNode i, TypePath path) {
+  result = resolveImplSelfType(i, path)
+  or
+  result = TSelfTypeParameter(i) and path.isEmpty()
+}
+
+pragma[nomagic]
+private ImplOrTraitItemNode getSelfParamEnclosingImplOrTrait(SelfParam self) {
+  exists(Function f |
+    f = result.getAnAssocItem() and
+    self = f.getSelfParam()
+  )
+}
+
+/**
+ * An element used to represent the type of a `self` parameter that uses [shorthand
+ * syntax][1], which is sugar for an explicit annotation.
+ *
+ * [1]: https://doc.rust-lang.org/stable/reference/items/associated-items.html#r-associated.fn.method.self-pat-shorthands
+ */
+class ShorthandSelfParameterMention extends TypeMention instanceof SelfParam {
+  private ImplOrTraitItemNode encl;
+
+  ShorthandSelfParameterMention() {
+    not super.hasTypeRepr() and
+    encl = getSelfParamEnclosingImplOrTrait(this) and
+    (
+      encl instanceof Trait
+      or
+      // avoid generating a type mention if the type being implemented cannot be resolved
+      encl.(Impl).getSelfTy() instanceof TypeMention
+    )
+  }
+
+  pragma[nomagic]
+  private Type resolveSelfType(TypePath path) { result = resolveImplOrTraitType(encl, path) }
+
+  pragma[nomagic]
+  private Type inferImplicitSelfType(TypePath path) {
+    if super.isRef()
+    then
+      // `fn f(&self, ...)`
+      path.isEmpty() and
+      result = TRefType()
+      or
+      exists(TypePath suffix |
+        result = this.resolveSelfType(suffix) and
+        path = TypePath::cons(TRefTypeParameter(), suffix)
+      )
+    else
+      // `fn f(self, ...)`
+      result = this.resolveSelfType(path)
+  }
+
+  override Type resolveTypeAt(TypePath typePath) { result = this.inferImplicitSelfType(typePath) }
+}
+
+pragma[nomagic]
+TypeMention getSelfParamTypeMention(SelfParam self) {
+  result = self.(ShorthandSelfParameterMention)
+  or
+  result = self.getTypeRepr()
 }
 
 class DynTraitTypeReprMention extends TypeMention instanceof DynTraitTypeRepr {
