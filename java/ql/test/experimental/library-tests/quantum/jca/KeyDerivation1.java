@@ -26,22 +26,22 @@ import javax.crypto.spec.SecretKeySpec;
  * 1. PBKDF2 Examples: - Parent Classification: Password-Based Key Derivation
  * Function (PBKDF). - SAST: * pbkdf2DerivationBasic: Uses PBKDF2WithHmacSHA256
  * with 10,000 iterations - acceptable if parameters meet current standards. *
- * pbkdf2LowIteration: Uses only 10 iterations – flagged as insecure due to
+ * pbkdf2LowIteration: Uses only 10 iterations, flagged as insecure due to
  * insufficient iteration count. * pbkdf2HighIteration: Uses 1,000,000
- * iterations – secure (though performance may be impacted). * pbkdf2HmacSHA1:
- * Uses PBKDF2WithHmacSHA1 – flagged as weaker compared to SHA-256, though
+ * iterations - secure (though performance may be impacted). * pbkdf2HmacSHA1:
+ * Uses PBKDF2WithHmacSHA1 - flagged as weaker compared to SHA-256, though
  * sometimes seen in legacy systems. * pbkdf2HmacSHA512: Uses
- * PBKDF2WithHmacSHA512 – classified as secure.
+ * PBKDF2WithHmacSHA512 - classified as secure.
  *
  * 2. Scrypt Examples: - Parent Classification: Memory-Hard Key Derivation
- * Function. - SAST: * scryptWeak: Uses weak parameters (n=1024, r=1, p=1) –
+ * Function. - SAST: * scryptWeak: Uses weak parameters (n=1024, r=1, p=1) -
  * flagged as insecure. * scryptStrong: Uses stronger parameters (n=16384, r=8,
- * p=1) – considered secure.
+ * p=1) - considered secure.
  *
  * 3. Argon2 Examples: - Parent Classification: Memory-Hard Key Derivation
  * Function (Argon2id). - SAST: * argon2Derivation: Uses moderate memory and
- * iterations – considered secure. * argon2HighMemory: Uses high memory (128MB)
- * and more iterations – secure, though resource intensive.
+ * iterations - considered secure. * argon2HighMemory: Uses high memory (128MB)
+ * and more iterations - secure, though resource intensive.
  *
  * 4. Insecure Raw Hash Derivation: - Parent Classification: Raw Hash Usage for
  * Key Derivation. - SAST: Using a single SHA-256 hash as a key and then using
