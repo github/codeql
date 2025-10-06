@@ -1,46 +1,39 @@
 package com.example.crypto.artifacts;
+
+import java.security.*;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.GCMParameterSpec;
-import java.security.*;
-import java.util.Base64;
-import java.util.Properties;
-import java.util.Random;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Arrays;
 
 public class Test {
 
-    public static SecretKey generateAESKey()throws Exception  {
+    public static SecretKey generateAESKey() throws Exception {
         KeyGenerator keyGen = KeyGenerator.getInstance("AES");
         keyGen.init(256);
         return keyGen.generateKey();
     }
 
-   
-    private static byte[] getRandomWrapper1()throws Exception  {
+    private static byte[] getRandomWrapper1() throws Exception {
         byte[] val = new byte[16];
         new SecureRandom().nextBytes(val);
         return val;
     }
 
-    private static byte[] getRandomWrapper2A()throws Exception  {
+    private static byte[] getRandomWrapper2A() throws Exception {
         byte[] val;
-        val =  getRandomWrapper1();
+        val = getRandomWrapper1();
         funcA1(val);
         return val;
     }
 
-    private static byte[] getRandomWrapper2b()throws Exception  {
+    private static byte[] getRandomWrapper2b() throws Exception {
         byte[] val;
-        val =  getRandomWrapper1();
+        val = getRandomWrapper1();
         return val;
     }
 
-    private static void funcA1(byte[] iv)throws Exception {
+    private static void funcA1(byte[] iv) throws Exception {
         IvParameterSpec ivSpec = new IvParameterSpec(iv);
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         SecretKey key = generateAESKey();
@@ -48,7 +41,7 @@ public class Test {
         byte[] ciphertext = cipher.doFinal("Simple Test Data".getBytes());
     }
 
-    private static void funcB1()throws Exception {
+    private static void funcB1() throws Exception {
         byte[] iv = getRandomWrapper2A();
         IvParameterSpec ivSpec = new IvParameterSpec(iv);
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -57,7 +50,7 @@ public class Test {
         byte[] ciphertext = cipher.doFinal("Simple Test Data".getBytes());
     }
 
-    private static void funcA2()throws Exception {
+    private static void funcA2() throws Exception {
         byte[] iv = getRandomWrapper2b();
         IvParameterSpec ivSpec = new IvParameterSpec(iv);
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -66,7 +59,7 @@ public class Test {
         byte[] ciphertext = cipher.doFinal("Simple Test Data".getBytes());
     }
 
-    private static void funcB2()throws Exception {
+    private static void funcB2() throws Exception {
         byte[] iv = getRandomWrapper2b();
         IvParameterSpec ivSpec = new IvParameterSpec(iv);
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -74,7 +67,6 @@ public class Test {
         cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec); // GOOD
         byte[] ciphertext = cipher.doFinal("Simple Test Data".getBytes());
     }
-
 
     private static void funcA3() throws Exception {
         byte[] iv = getRandomWrapper2b();
@@ -91,16 +83,12 @@ public class Test {
         byte[] ciphertext2 = cipher2.doFinal("Simple Test Data".getBytes());
     }
 
-
-
-
     public static void main(String[] args) {
-        try{
+        try {
             funcA2();
             funcB1();
             funcB2();
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
