@@ -357,7 +357,6 @@ public class SignatureOperation {
 
         // ============ Edge Cases ============
         signAndVerifyEmptyMessage();
-        signAndVerifyNonAsciiMessage();
         tamperSignatureEdgeCase();
         dynamicSignatureSelectionDemo();
     }
