@@ -249,14 +249,14 @@ module JCAModel {
     name.toUpperCase().splitAt("with".toUpperCase(), 1).matches("DSA%") and
     type = KeyOpAlg::TSignature(KeyOpAlg::DSA())
     or
-    name.toUpperCase().matches("RSASSA-PSS") and type = KeyOpAlg::TAsymmetricCipher(KeyOpAlg::RSA())
+    name.toUpperCase() = "RSASSA-PSS" and type = KeyOpAlg::TAsymmetricCipher(KeyOpAlg::RSA())
     or
     name.toUpperCase().matches(["EDDSA", "ED25519", "ED448"]) and
     type = KeyOpAlg::TSignature(KeyOpAlg::EDDSA())
     or
     name.toUpperCase().matches("ML-DSA%") and type = KeyOpAlg::TSignature(KeyOpAlg::DSA())
     or
-    name.toUpperCase().matches("HSS/LMS") and type = KeyOpAlg::TSignature(KeyOpAlg::HSS_LMS())
+    name.toUpperCase() = "HSS/LMS" and type = KeyOpAlg::TSignature(KeyOpAlg::HSS_LMS())
   }
 
   bindingset[name]
@@ -1814,9 +1814,9 @@ module JCAModel {
     }
   }
 
-  class SignatureOperationinstance extends Crypto::SignatureOperationInstance instanceof SignatureOperationCall
+  class SignatureOperationInstance extends Crypto::SignatureOperationInstance instanceof SignatureOperationCall
   {
-    SignatureOperationinstance() {
+    SignatureOperationInstance() {
       // exclude update (only include sign and verify)
       not super.isIntermediate()
     }
