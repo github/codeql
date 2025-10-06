@@ -23,7 +23,12 @@ member_locations
 | B.cs:3:14:3:14 | B | B.cs:7:25:7:28 | Item | B.cs:7:25:7:28 | B.cs:7:25:7:28 |
 | B.cs:3:14:3:14 | B | B.cs:13:40:13:44 | Event | B.cs:13:40:13:44 | B.cs:13:40:13:44 |
 | B.cs:3:14:3:14 | B | B.cs:19:28:19:35 | ToObject | B.cs:19:28:19:35 | B.cs:19:28:19:35 |
+| Base.cs:1:23:1:29 | Base<Int32> | Base.cs:3:17:3:17 | M | Base.cs:3:17:3:17 | Base.cs:3:17:3:17 |
+| Base.cs:1:23:1:29 | Base<Int32> | Base.cs:5:18:5:26 | InnerBase | Base.cs:5:18:5:26 | Base.cs:5:18:5:26 |
+| Base.cs:1:23:1:29 | Base`1 | Base.cs:3:17:3:17 | M | Base.cs:3:17:3:17 | Base.cs:3:17:3:17 |
+| Base.cs:1:23:1:29 | Base`1 | Base.cs:5:18:5:26 | InnerBase | Base.cs:5:18:5:26 | Base.cs:5:18:5:26 |
 | C.cs:3:7:3:7 | C | C.cs:5:17:5:17 | M | C.cs:5:17:5:17 | C.cs:5:17:5:17 |
+| Sub.cs:1:14:1:16 | Sub | Sub.cs:3:17:3:20 | SubM | Sub.cs:3:17:3:20 | Sub.cs:3:17:3:20 |
 accessor_location
 | A.cs:3:23:3:26 | A<Int32> | A.cs:5:30:5:32 | get_Prop | A.cs:5:30:5:32 | A.cs:5:30:5:32 |
 | A.cs:3:23:3:26 | A<Int32> | A.cs:6:41:6:43 | get_Item | A.cs:6:41:6:43 | A.cs:6:41:6:43 |
@@ -57,8 +62,22 @@ type_location
 | A.cs:3:25:3:25 | T | A.cs:3:25:3:25 | A.cs:3:25:3:25 |
 | A.cs:12:14:12:15 | A2 | A.cs:12:14:12:15 | A.cs:12:14:12:15 |
 | B.cs:3:14:3:14 | B | B.cs:3:14:3:14 | B.cs:3:14:3:14 |
+| Base.cs:1:23:1:29 | Base<Int32> | Base.cs:1:23:1:29 | Base.cs:1:23:1:29 |
+| Base.cs:1:23:1:29 | Base`1 | Base.cs:1:23:1:29 | Base.cs:1:23:1:29 |
+| Base.cs:1:28:1:28 | T | Base.cs:1:28:1:28 | Base.cs:1:28:1:28 |
+| Base.cs:5:18:5:26 | InnerBase | Base.cs:5:18:5:26 | Base.cs:5:18:5:26 |
+| Base.cs:5:18:5:26 | InnerBase | Base.cs:5:18:5:26 | Base.cs:5:18:5:26 |
 | C.cs:3:7:3:7 | C | C.cs:3:7:3:7 | C.cs:3:7:3:7 |
 | Multiple1.cs:1:22:1:29 | Multiple | Multiple1.cs:1:22:1:29 | Multiple1.cs:1:22:1:29 |
 | Multiple1.cs:1:22:1:29 | Multiple | Multiple2.cs:1:22:1:29 | Multiple2.cs:1:22:1:29 |
 | Multiple2.cs:1:22:1:29 | Multiple | Multiple1.cs:1:22:1:29 | Multiple1.cs:1:22:1:29 |
 | Multiple2.cs:1:22:1:29 | Multiple | Multiple2.cs:1:22:1:29 | Multiple2.cs:1:22:1:29 |
+| Sub.cs:1:14:1:16 | Sub | Sub.cs:1:14:1:16 | Sub.cs:1:14:1:16 |
+calltype_location
+| A.cs:12:14:12:15 | call to constructor A | A.cs:3:23:3:26 | A<String> | A.cs:3:23:3:26 | A.cs:3:23:3:26 |
+| A.cs:32:20:32:24 | object creation of type A2 | A.cs:12:14:12:15 | A2 | A.cs:12:14:12:15 | A.cs:12:14:12:15 |
+| B.cs:3:14:3:14 | call to constructor A | A.cs:3:23:3:26 | A<Int32> | A.cs:3:23:3:26 | A.cs:3:23:3:26 |
+| C.cs:7:15:7:21 | object creation of type B | B.cs:3:14:3:14 | B | B.cs:3:14:3:14 | B.cs:3:14:3:14 |
+| C.cs:9:17:9:24 | object creation of type A2 | A.cs:12:14:12:15 | A2 | A.cs:12:14:12:15 | A.cs:12:14:12:15 |
+| Sub.cs:1:14:1:16 | call to constructor Base | Base.cs:1:23:1:29 | Base<Int32> | Base.cs:1:23:1:29 | Base.cs:1:23:1:29 |
+| Sub.cs:6:17:6:31 | object creation of type InnerBase | Base.cs:5:18:5:26 | InnerBase | Base.cs:5:18:5:26 | Base.cs:5:18:5:26 |
