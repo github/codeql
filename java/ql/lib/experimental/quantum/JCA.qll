@@ -108,7 +108,7 @@ module JCAModel {
    */
   bindingset[name]
   predicate signature_names(string name) {
-    name.toUpperCase().splitAt("with".toUpperCase(), 1).matches(["RSA%", "ECDSA%", "DSA%"])
+    name.toUpperCase().splitAt("WITH", 1).matches(["RSA%", "ECDSA%", "DSA%"])
     or
     name.toUpperCase().matches(["RSASSA-PSS", "ED25519", "ED448", "EDDSA", "ML-DSA%", "HSS/LMS"])
   }
