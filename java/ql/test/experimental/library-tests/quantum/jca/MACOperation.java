@@ -21,8 +21,8 @@ import javax.crypto.spec.SecretKeySpec;
  *
  * 1. Secure HMAC-SHA2 (HMAC-SHA256) - a widely accepted MAC. 2. Secure
  * HMAC-SHA3 (HMAC-SHA3-256) - an alternative using the SHA-3 family. 3. Secure
- * Poly1305 MAC - using BouncyCastle’s implementation. 4. Secure GMAC - using
- * AES-GCM’s authentication tag in a dedicated MAC mode. 5. Secure KMAC - using
+ * Poly1305 MAC - using BouncyCastle's implementation. 4. Secure GMAC - using
+ * AES-GCM's authentication tag in a dedicated MAC mode. 5. Secure KMAC - using
  * KMAC128 (from the SHA-3 family).
  *
  * Insecure examples include:
