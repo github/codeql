@@ -1338,7 +1338,9 @@ module API {
         exists(DataFlow::TypeTracker t, StepSummary summary, DataFlow::SourceNode prev |
           prev = trackUseNode(nd, promisified, boundArgs, prop, t) and
           StepSummary::step(prev, res, summary) and
-          result = t.append(summary)
+          result = t.append(summary) and
+          // Block argument-passing into 'this' when it determines the call target
+          not summary = CallReceiverStep()
         )
       }
 
