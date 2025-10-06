@@ -15,7 +15,7 @@ import java.util.Base64;
 
 /**
  * MACOperation demonstrates various Message Authentication Code (MAC)
- * operations and further use of MAC outputs as inputs into higher‐level
+ * operations and further use of MAC outputs as inputs into higher-level
  * cryptosystems.
  *
  * Flows include:

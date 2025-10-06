@@ -236,22 +236,6 @@ public class SignatureOperation {
     }
 
     /**
-     * Demonstrates signing and verifying data containing non-ASCII characters.
-     *
-     * CBOM/SAST Notes:
-     * - Edge Case: Non-ASCII (e.g., Unicode) data should be handled correctly.
-     */
-    public void signAndVerifyNonAsciiMessage() throws Exception {
-        // Use a message with Unicode characters.
-        String nonAscii = "こんにちは世界"; // "Hello World" in Japanese.
-        byte[] message = nonAscii.getBytes("UTF-8");
-        KeyPair kp = generateEd25519KeyPair();
-        byte[] sig = signEd25519(kp.getPrivate(), message);
-        boolean verified = verifyEd25519(kp.getPublic(), message, sig);
-        System.out.println("Non-ASCII message signature verified? " + verified);
-    }
-
-    /**
      * Demonstrates that even a slight tampering with the signature will cause
      * verification to fail.
      *

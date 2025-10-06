@@ -143,7 +143,7 @@ public class SignEncryptCombinations {
      * UNSAFE FLOW: Signs the plaintext and encrypts only the signature.
      *
      * <p>
-     * **Issue:** The plaintext message is not encrypted—only the signature is.
+     * **Issue:** The plaintext message is not encrypted, only the signature is.
      * This exposes the original message to eavesdroppers and negates the purpose of
      * encryption.
      * </p>

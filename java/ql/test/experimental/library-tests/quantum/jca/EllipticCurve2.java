@@ -24,7 +24,7 @@ import java.util.Base64;
  * - Brainpool (e.g., brainpoolP256r1)
  * - CURVE25519 (for X25519 key agreement)
  * - ES (e.g., Ed25519 for signatures)
- * - Other fallback (e.g., secp256r1 for “OtherEllipticCurveType”)
+ * - Other fallback (e.g., secp256r1 for "OtherEllipticCurveType")
  *
  * Best practices:
  * - Use ephemeral keys and a strong RNG.

@@ -28,7 +28,7 @@ import java.util.Properties;
  * 1. PBKDF2 Examples:
  * - Parent Classification: Password-Based Key Derivation Function (PBKDF).
  * - SAST:
- * * pbkdf2DerivationBasic: Uses PBKDF2WithHmacSHA256 with 10,000 iterations –
+ * * pbkdf2DerivationBasic: Uses PBKDF2WithHmacSHA256 with 10,000 iterations -
  * acceptable if parameters meet current standards.
  * * pbkdf2LowIteration: Uses only 10 iterations – flagged as insecure due to
  * insufficient iteration count.

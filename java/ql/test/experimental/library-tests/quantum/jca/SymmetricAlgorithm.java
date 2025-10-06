@@ -81,7 +81,7 @@ public class SymmetricAlgorithm {
      */
     public byte[] aesGcmEncryptUnsafe(SecretKey key, byte[] plaintext) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-        byte[] iv = new byte[12]; // Fixed IV (all zeros by default) – insecure.
+        byte[] iv = new byte[12]; // Fixed IV (all zeros by default) - insecure.
         GCMParameterSpec spec = new GCMParameterSpec(128, iv);
         cipher.init(Cipher.ENCRYPT_MODE, key, spec);
         byte[] ciphertext = cipher.doFinal(plaintext);
