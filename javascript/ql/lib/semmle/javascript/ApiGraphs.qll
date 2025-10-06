@@ -1325,8 +1325,8 @@ module API {
         prev = trackUseNode(nd, promisified, boundArgs, prop, t) and
         StepSummary::step(prev, res, summary) and
         result = t.append(summary) and
-        // Block argument-passing into 'this'
-        not (summary = CallStep() and res instanceof DataFlow::ThisNode)
+        // Block argument-passing into 'this' when it determines the call target
+        not summary = CallReceiverStep()
       )
     }
 
@@ -1384,8 +1384,8 @@ module API {
         next = trackDefNode(nd, t) and
         StepSummary::step(prev, next, summary) and
         result = t.prepend(summary) and
-        // Block argument-passing steps from 'this' back to a receiver
-        not (summary = CallStep() and prev instanceof DataFlow::ThisNode)
+        // Block argument-passing steps from 'this' back to a receiver when it determines the call target
+        not summary = CallReceiverStep()
       )
     }
 
