@@ -1,0 +1,1 @@
+| tst.js:4:17:4:119 | /** use ... rn() */ | use moduleImport("something").getMember("exports").getMember("one") has no outgoing edge labelled getMember("two"); it has no outgoing edges at all. |
