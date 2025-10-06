@@ -3,81 +3,67 @@ package com.example.crypto.algorithms;
 // import org.bouncycastle.crypto.generators.Argon2BytesGenerator;
 // import org.bouncycastle.crypto.params.Argon2Parameters;
 // import org.bouncycastle.jce.provider.BouncyCastleProvider;
-
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Properties;
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.SecureRandom;
-import java.security.Security;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Properties;
 
 /**
  * This class demonstrates multiple key derivation functions (KDFs) including
- * PBKDF2, scrypt, Argon2, raw hash derivation,
- * HKDF, and dynamic algorithm selection.
+ * PBKDF2, scrypt, Argon2, raw hash derivation, HKDF, and dynamic algorithm
+ * selection.
  *
  * SAST/CBOM Classification Notes:
  *
- * 1. PBKDF2 Examples:
- * - Parent Classification: Password-Based Key Derivation Function (PBKDF).
- * - SAST:
- * * pbkdf2DerivationBasic: Uses PBKDF2WithHmacSHA256 with 10,000 iterations -
- * acceptable if parameters meet current standards.
- * * pbkdf2LowIteration: Uses only 10 iterations – flagged as insecure due to
- * insufficient iteration count.
- * * pbkdf2HighIteration: Uses 1,000,000 iterations – secure (though performance
- * may be impacted).
- * * pbkdf2HmacSHA1: Uses PBKDF2WithHmacSHA1 – flagged as weaker compared to
- * SHA-256, though sometimes seen in legacy systems.
- * * pbkdf2HmacSHA512: Uses PBKDF2WithHmacSHA512 – classified as secure.
+ * 1. PBKDF2 Examples: - Parent Classification: Password-Based Key Derivation
+ * Function (PBKDF). - SAST: * pbkdf2DerivationBasic: Uses PBKDF2WithHmacSHA256
+ * with 10,000 iterations - acceptable if parameters meet current standards. *
+ * pbkdf2LowIteration: Uses only 10 iterations – flagged as insecure due to
+ * insufficient iteration count. * pbkdf2HighIteration: Uses 1,000,000
+ * iterations – secure (though performance may be impacted). * pbkdf2HmacSHA1:
+ * Uses PBKDF2WithHmacSHA1 – flagged as weaker compared to SHA-256, though
+ * sometimes seen in legacy systems. * pbkdf2HmacSHA512: Uses
+ * PBKDF2WithHmacSHA512 – classified as secure.
  *
- * 2. Scrypt Examples:
- * - Parent Classification: Memory-Hard Key Derivation Function.
- * - SAST:
- * * scryptWeak: Uses weak parameters (n=1024, r=1, p=1) – flagged as insecure.
- * * scryptStrong: Uses stronger parameters (n=16384, r=8, p=1) – considered
- * secure.
+ * 2. Scrypt Examples: - Parent Classification: Memory-Hard Key Derivation
+ * Function. - SAST: * scryptWeak: Uses weak parameters (n=1024, r=1, p=1) –
+ * flagged as insecure. * scryptStrong: Uses stronger parameters (n=16384, r=8,
+ * p=1) – considered secure.
  *
- * 3. Argon2 Examples:
- * - Parent Classification: Memory-Hard Key Derivation Function (Argon2id).
- * - SAST:
- * * argon2Derivation: Uses moderate memory and iterations – considered secure.
- * * argon2HighMemory: Uses high memory (128MB) and more iterations – secure,
- * though resource intensive.
+ * 3. Argon2 Examples: - Parent Classification: Memory-Hard Key Derivation
+ * Function (Argon2id). - SAST: * argon2Derivation: Uses moderate memory and
+ * iterations – considered secure. * argon2HighMemory: Uses high memory (128MB)
+ * and more iterations – secure, though resource intensive.
  *
- * 4. Insecure Raw Hash Derivation:
- * - Parent Classification: Raw Hash Usage for Key Derivation.
- * - SAST: Using a single SHA-256 hash as a key and then using it with insecure
- * AES/ECB mode is highly discouraged.
+ * 4. Insecure Raw Hash Derivation: - Parent Classification: Raw Hash Usage for
+ * Key Derivation. - SAST: Using a single SHA-256 hash as a key and then using
+ * it with insecure AES/ECB mode is highly discouraged.
  *
- * 5. HKDF Examples:
- * - Parent Classification: Key Derivation Function (HKDF).
- * - SAST: The provided HKDF implementation is simplistic (single-block
- * expansion) and may be flagged.
+ * 5. HKDF Examples: - Parent Classification: Key Derivation Function (HKDF). -
+ * SAST: The provided HKDF implementation is simplistic (single-block expansion)
+ * and may be flagged.
  *
- * 6. Multi-Step Hybrid Derivation:
- * - Parent Classification: Composite KDF (PBKDF2 followed by HKDF).
- * - SAST: Combining two KDFs is acceptable if done carefully; however, custom
- * implementations should be reviewed.
+ * 6. Multi-Step Hybrid Derivation: - Parent Classification: Composite KDF
+ * (PBKDF2 followed by HKDF). - SAST: Combining two KDFs is acceptable if done
+ * carefully; however, custom implementations should be reviewed.
  *
- * 7. Dynamic KDF Selection:
- * - Parent Classification: Dynamic/Configurable Key Derivation.
- * - SAST: Loading KDF parameters from configuration introduces ambiguity and
- * risk if misconfigured.
+ * 7. Dynamic KDF Selection: - Parent Classification: Dynamic/Configurable Key
+ * Derivation. - SAST: Loading KDF parameters from configuration introduces
+ * ambiguity and risk if misconfigured.
  */
 public class KeyDerivation1 {
 
     // static {
     //     Security.addProvider(new BouncyCastleProvider());
     // }
-
     //////////////////////////////////////
     // 1. PBKDF2 EXAMPLES
     //////////////////////////////////////
@@ -100,11 +86,8 @@ public class KeyDerivation1 {
     /**
      * PBKDF2 derivation with a very low iteration count.
      *
-     * SAST/CBOM:
-     * - Parent: PBKDF2.
-     * - Iteration count is only 10, which is far below acceptable security
-     * standards.
-     * - Flagged as insecure.
+     * SAST/CBOM: - Parent: PBKDF2. - Iteration count is only 10, which is far
+     * below acceptable security standards. - Flagged as insecure.
      */
     public void pbkdf2LowIteration(String password) throws Exception {
         byte[] salt = generateSalt(16);
@@ -117,9 +100,8 @@ public class KeyDerivation1 {
     /**
      * PBKDF2 derivation with a high iteration count.
      *
-     * SAST/CBOM:
-     * - Parent: PBKDF2.
-     * - Uses 1,000,000 iterations; this is secure but may impact performance.
+     * SAST/CBOM: - Parent: PBKDF2. - Uses 1,000,000 iterations; this is secure
+     * but may impact performance.
      */
     public void pbkdf2HighIteration(String password) throws Exception {
         byte[] salt = generateSalt(16);
@@ -132,10 +114,8 @@ public class KeyDerivation1 {
     /**
      * PBKDF2 derivation using HmacSHA1.
      *
-     * SAST/CBOM:
-     * - Parent: PBKDF2.
-     * - Uses HMAC-SHA1, which is considered weaker than SHA-256; may be acceptable
-     * only for legacy systems.
+     * SAST/CBOM: - Parent: PBKDF2. - Uses HMAC-SHA1, which is considered weaker
+     * than SHA-256; may be acceptable only for legacy systems.
      */
     public void pbkdf2HmacSHA1(String password) throws Exception {
         byte[] salt = generateSalt(16);
@@ -148,9 +128,8 @@ public class KeyDerivation1 {
     /**
      * PBKDF2 derivation using HmacSHA512.
      *
-     * SAST/CBOM:
-     * - Parent: PBKDF2.
-     * - Uses HMAC-SHA512 with 160,000 iterations; classified as secure.
+     * SAST/CBOM: - Parent: PBKDF2. - Uses HMAC-SHA512 with 160,000 iterations;
+     * classified as secure.
      */
     public void pbkdf2HmacSHA512(String password) throws Exception {
         byte[] salt = generateSalt(16);
@@ -184,9 +163,8 @@ public class KeyDerivation1 {
     /**
      * Scrypt derivation with stronger parameters.
      *
-     * SAST/CBOM:
-     * - Parent: Scrypt.
-     * - Parameters (n=16384, r=8, p=1) provide a secure work factor.
+     * SAST/CBOM: - Parent: Scrypt. - Parameters (n=16384, r=8, p=1) provide a
+     * secure work factor.
      */
     public void scryptStrong(String password) throws Exception {
         byte[] salt = generateSalt(16);
@@ -298,10 +276,9 @@ public class KeyDerivation1 {
      * Multi-step hybrid derivation: first using PBKDF2, then applying HKDF
      * expansion.
      *
-     * SAST/CBOM:
-     * - Parent: Composite KDF.
-     * - Combining PBKDF2 and HKDF is a non-standard approach and may be flagged;
-     * ensure that each step meets security requirements.
+     * SAST/CBOM: - Parent: Composite KDF. - Combining PBKDF2 and HKDF is a
+     * non-standard approach and may be flagged; ensure that each step meets
+     * security requirements.
      */
     public void multiStepHybridDerivation(String password, byte[] sharedSecret) throws Exception {
         byte[] pbkdf2Key = derivePBKDF2Key(password);
@@ -361,10 +338,8 @@ public class KeyDerivation1 {
     /**
      * A simplistic HKDF expansion function using HMAC-SHA256.
      *
-     * SAST/CBOM:
-     * - Parent: HKDF.
-     * - Uses a single-block expansion ("hkdf-expansion") which is non-standard and
-     * may be flagged.
+     * SAST/CBOM: - Parent: HKDF. - Uses a single-block expansion
+     * ("hkdf-expansion") which is non-standard and may be flagged.
      */
     private byte[] hkdfExpand(byte[] ikm, byte[] salt, int length) throws Exception {
         Mac hmac = Mac.getInstance("HmacSHA256");
@@ -382,9 +357,8 @@ public class KeyDerivation1 {
     /**
      * Generates a secure random salt of the specified length.
      *
-     * SAST/CBOM:
-     * - Parent: Secure Random Salt Generation.
-     * - Uses SecureRandom; considered best practice.
+     * SAST/CBOM: - Parent: Secure Random Salt Generation. - Uses SecureRandom;
+     * considered best practice.
      */
     private byte[] generateSalt(int length) {
         byte[] salt = new byte[length];

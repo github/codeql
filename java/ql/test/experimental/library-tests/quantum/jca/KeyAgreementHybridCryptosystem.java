@@ -2,7 +2,10 @@ package com.example.crypto.algorithms;
 
 // import org.bouncycastle.jce.provider.BouncyCastleProvider;
 // import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
-
+import java.security.*;
+import java.security.spec.ECGenParameterSpec;
+import java.util.Arrays;
+import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.KeyAgreement;
 import javax.crypto.KeyGenerator;
@@ -13,35 +16,24 @@ import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.*;
-import java.security.spec.ECGenParameterSpec;
-import java.util.Arrays;
-import java.util.Base64;
 
 /**
  * KeyAgreementHybridCryptosystem demonstrates two hybrid cryptosystems:
  *
- * 1. ECDH + AES-GCM:
- * - Secure Flow: Uses ephemeral ECDH key pairs on secp256r1, applies a simple
- * KDF (SHA-256)
- * to derive a 128-bit AES key, and uses AES-GCM with a random 12-byte nonce.
- * - Insecure Flow: Reuses a static key pair, uses raw shared secret truncation,
- * and employs
- * a fixed (zero) IV.
+ * 1. ECDH + AES-GCM: - Secure Flow: Uses ephemeral ECDH key pairs on secp256r1,
+ * applies a simple KDF (SHA-256) to derive a 128-bit AES key, and uses AES-GCM
+ * with a random 12-byte nonce. - Insecure Flow: Reuses a static key pair, uses
+ * raw shared secret truncation, and employs a fixed (zero) IV.
  *
- * 2. X25519 + ChaCha20-Poly1305:
- * - Secure Flow: Uses ephemeral X25519 key pairs, applies a KDF (SHA-256) to
- * derive a 256-bit key,
- * and uses ChaCha20-Poly1305 with a random nonce.
- * - Insecure Flow: Reuses a static key pair, directly truncates the shared
- * secret without a proper KDF,
- * and uses a fixed nonce.
+ * 2. X25519 + ChaCha20-Poly1305: - Secure Flow: Uses ephemeral X25519 key
+ * pairs, applies a KDF (SHA-256) to derive a 256-bit key, and uses
+ * ChaCha20-Poly1305 with a random nonce. - Insecure Flow: Reuses a static key
+ * pair, directly truncates the shared secret without a proper KDF, and uses a
+ * fixed nonce.
  *
- * SAST/CBOM Notes:
- * - Secure flows use proper ephemeral key generation, a simple KDF, and random
- * nonces.
- * - Insecure flows use static keys, fixed nonces, and raw shared secret
- * truncation.
+ * SAST/CBOM Notes: - Secure flows use proper ephemeral key generation, a simple
+ * KDF, and random nonces. - Insecure flows use static keys, fixed nonces, and
+ * raw shared secret truncation.
  */
 public class KeyAgreementHybridCryptosystem {
 
@@ -49,9 +41,7 @@ public class KeyAgreementHybridCryptosystem {
     //     Security.addProvider(new BouncyCastleProvider());
     //     Security.addProvider(new BouncyCastlePQCProvider());
     // }
-
     // ---------- Helper Methods ----------
-
     /**
      * Generates an ephemeral ECDH key pair on secp256r1.
      */
@@ -103,11 +93,10 @@ public class KeyAgreementHybridCryptosystem {
     // ===============================================
     // 1. ECDH + AES-GCM Flows
     // ===============================================
-
     /**
-     * Secure hybrid encryption using ECDH and AES-GCM.
-     * Uses ephemeral key pairs, applies a simple KDF to derive a 128-bit AES key,
-     * and uses AES-GCM with a random 12-byte nonce.
+     * Secure hybrid encryption using ECDH and AES-GCM. Uses ephemeral key
+     * pairs, applies a simple KDF to derive a 128-bit AES key, and uses AES-GCM
+     * with a random 12-byte nonce.
      */
     public byte[] secureECDH_AESGCMEncryption(byte[] plaintext) throws Exception {
         KeyPair aliceKP = generateECDHKeyPair();
@@ -127,10 +116,9 @@ public class KeyAgreementHybridCryptosystem {
     }
 
     /**
-     * Insecure hybrid encryption using ECDH and AES-GCM.
-     * Reuses a static key pair, uses raw shared secret truncation without a proper
-     * KDF,
-     * and employs a fixed IV (all zeros).
+     * Insecure hybrid encryption using ECDH and AES-GCM. Reuses a static key
+     * pair, uses raw shared secret truncation without a proper KDF, and employs
+     * a fixed IV (all zeros).
      */
     public byte[] insecureECDH_AESGCMEncryption(byte[] plaintext) throws Exception {
         KeyPair staticKP = generateECDHKeyPair();
@@ -150,11 +138,10 @@ public class KeyAgreementHybridCryptosystem {
     // ===============================================
     // 2. X25519 + ChaCha20-Poly1305 Flows
     // ===============================================
-
     /**
-     * Secure hybrid encryption using X25519 and ChaCha20-Poly1305.
-     * Uses ephemeral key pairs, applies a KDF (SHA-256) to derive a 256-bit key,
-     * and uses ChaCha20-Poly1305 with a random 12-byte nonce.
+     * Secure hybrid encryption using X25519 and ChaCha20-Poly1305. Uses
+     * ephemeral key pairs, applies a KDF (SHA-256) to derive a 256-bit key, and
+     * uses ChaCha20-Poly1305 with a random 12-byte nonce.
      */
     public byte[] secureX25519_Chacha20Poly1305Encryption(byte[] plaintext) throws Exception {
         KeyPair aliceKP = generateX25519KeyPair();
@@ -173,10 +160,9 @@ public class KeyAgreementHybridCryptosystem {
     }
 
     /**
-     * Insecure hybrid encryption using X25519 and ChaCha20-Poly1305.
-     * Reuses a static key pair, directly truncates the shared secret without a
-     * proper KDF,
-     * and employs a fixed nonce.
+     * Insecure hybrid encryption using X25519 and ChaCha20-Poly1305. Reuses a
+     * static key pair, directly truncates the shared secret without a proper
+     * KDF, and employs a fixed nonce.
      */
     public byte[] insecureX25519_Chacha20Poly1305Encryption(byte[] plaintext) throws Exception {
         KeyPair staticKP = generateX25519KeyPair();
@@ -195,11 +181,9 @@ public class KeyAgreementHybridCryptosystem {
     // ===============================================
     // 3. Dynamic Hybrid Selection
     // ===============================================
-
     /**
      * Dynamically selects a hybrid encryption flow based on a configuration
-     * property.
-     * If the config is unknown, defaults to an insecure flow.
+     * property. If the config is unknown, defaults to an insecure flow.
      */
     public String dynamicHybridEncryption(String config, byte[] plaintext) throws Exception {
         byte[] result;
@@ -221,11 +205,9 @@ public class KeyAgreementHybridCryptosystem {
     // ===============================================
     // 4. Further Key Derivation from Symmetric Keys
     // ===============================================
-
     /**
      * Derives two keys from a symmetric key using PBKDF2, then uses one key for
-     * AES-GCM encryption
-     * and the other for computing a MAC over the ciphertext.
+     * AES-GCM encryption and the other for computing a MAC over the ciphertext.
      */
     public byte[] furtherUseSymmetricKeyForKeyDerivation(SecretKey key, byte[] plaintext) throws Exception {
         String keyAsString = Base64.getEncoder().encodeToString(key.getEncoded());
@@ -259,7 +241,6 @@ public class KeyAgreementHybridCryptosystem {
     // ===============================================
     // 5. Output/Storage Methods
     // ===============================================
-
     /**
      * Stores the output securely.
      */
@@ -271,7 +252,6 @@ public class KeyAgreementHybridCryptosystem {
     // ===============================================
     // 6. Helper Methods for Key/Nonce Generation
     // ===============================================
-
     /**
      * Generates a secure 256-bit AES key.
      */

@@ -1,7 +1,6 @@
 package com.example.crypto.algorithms;
 
 // import org.bouncycastle.jce.provider.BouncyCastleProvider;
-
 import java.security.*;
 
 import javax.crypto.Cipher;
@@ -19,39 +18,31 @@ import java.util.Base64;
 
 /**
  * SymmetricAlgorithmTest demonstrates various symmetric encryption flows and
- * key derivation
- * scenarios that can be analyzed by SAST tools.
+ * key derivation scenarios that can be analyzed by SAST tools.
  *
- * It includes:
- * 1) AES-GCM encryption with random nonce (secure).
- * 2) AES-GCM encryption with fixed nonce (insecure).
- * 3) AES-CBC encryption with random IV (secure).
- * 4) AES-ECB encryption (insecure).
- * 5) RC4 encryption (insecure).
- * 6) DES and TripleDES encryption (insecure/weak).
- * 7) ChaCha20 encryption (secure, if available).
- * 8) KMAC-based key derivation used to derive a key for AES encryption.
- * 9) Dynamic symmetric encryption selection based on configuration.
+ * It includes: 1) AES-GCM encryption with random nonce (secure). 2) AES-GCM
+ * encryption with fixed nonce (insecure). 3) AES-CBC encryption with random IV
+ * (secure). 4) AES-ECB encryption (insecure). 5) RC4 encryption (insecure). 6)
+ * DES and TripleDES encryption (insecure/weak). 7) ChaCha20 encryption (secure,
+ * if available). 8) KMAC-based key derivation used to derive a key for AES
+ * encryption. 9) Dynamic symmetric encryption selection based on configuration.
  * 10) Further use: deriving two keys from symmetric key material via PBKDF2.
  *
- * SAST/CBOM notes:
- * - Nonce/IV reuse (e.g., fixed nonce) must be flagged.
- * - Insecure algorithms (RC4, DES, TripleDES, AES/ECB) are marked as unsafe.
- * - Dynamic selection may lead to insecure fallback if misconfigured.
+ * SAST/CBOM notes: - Nonce/IV reuse (e.g., fixed nonce) must be flagged. -
+ * Insecure algorithms (RC4, DES, TripleDES, AES/ECB) are marked as unsafe. -
+ * Dynamic selection may lead to insecure fallback if misconfigured.
  */
 public class SymmetricAlgorithm {
 
     // static {
     //     Security.addProvider(new BouncyCastleProvider());
     // }
-
     // ---------- Secure Symmetric Encryption Flows ----------
-
     /**
-     * AES-GCM encryption using a 12-byte random nonce.
-     * SAST: AES-GCM is secure when a unique nonce is used per encryption.
+     * AES-GCM encryption using a 12-byte random nonce. SAST: AES-GCM is secure
+     * when a unique nonce is used per encryption.
      *
-     * @param key       The AES key.
+     * @param key The AES key.
      * @param plaintext The plaintext to encrypt.
      * @return The IV prepended to the ciphertext.
      * @throws Exception if encryption fails.
@@ -70,11 +61,10 @@ public class SymmetricAlgorithm {
     }
 
     /**
-     * AES-GCM encryption using a fixed (constant) nonce.
-     * SAST: Fixed nonce reuse in AES-GCM is insecure as it destroys
-     * confidentiality.
+     * AES-GCM encryption using a fixed (constant) nonce. SAST: Fixed nonce
+     * reuse in AES-GCM is insecure as it destroys confidentiality.
      *
-     * @param key       The AES key.
+     * @param key The AES key.
      * @param plaintext The plaintext to encrypt.
      * @return The fixed IV prepended to the ciphertext.
      * @throws Exception if encryption fails.
@@ -92,10 +82,10 @@ public class SymmetricAlgorithm {
     }
 
     /**
-     * AES-CBC encryption using a random IV.
-     * SAST: AES-CBC is secure if IVs are random and not reused.
+     * AES-CBC encryption using a random IV. SAST: AES-CBC is secure if IVs are
+     * random and not reused.
      *
-     * @param key       The AES key.
+     * @param key The AES key.
      * @param plaintext The plaintext to encrypt.
      * @return The IV prepended to the ciphertext.
      * @throws Exception if encryption fails.
@@ -114,10 +104,10 @@ public class SymmetricAlgorithm {
     }
 
     /**
-     * AES-ECB encryption.
-     * SAST: ECB mode is insecure as it does not use an IV, revealing data patterns.
+     * AES-ECB encryption. SAST: ECB mode is insecure as it does not use an IV,
+     * revealing data patterns.
      *
-     * @param key       The AES key.
+     * @param key The AES key.
      * @param plaintext The plaintext to encrypt.
      * @return The ciphertext.
      * @throws Exception if encryption fails.
@@ -129,12 +119,10 @@ public class SymmetricAlgorithm {
     }
 
     // ---------- Other Symmetric Algorithms ----------
-
     /**
-     * RC4 encryption.
-     * SAST: RC4 is deprecated due to vulnerabilities.
+     * RC4 encryption. SAST: RC4 is deprecated due to vulnerabilities.
      *
-     * @param key       The RC4 key.
+     * @param key The RC4 key.
      * @param plaintext The plaintext to encrypt.
      * @return The ciphertext.
      * @throws Exception if encryption fails.
@@ -146,10 +134,10 @@ public class SymmetricAlgorithm {
     }
 
     /**
-     * DES encryption.
-     * SAST: DES is insecure due to its 56-bit effective key size.
+     * DES encryption. SAST: DES is insecure due to its 56-bit effective key
+     * size.
      *
-     * @param key       The DES key.
+     * @param key The DES key.
      * @param plaintext The plaintext to encrypt.
      * @return The IV prepended to the ciphertext.
      * @throws Exception if encryption fails.
@@ -168,10 +156,10 @@ public class SymmetricAlgorithm {
     }
 
     /**
-     * TripleDES (DESede) encryption.
-     * SAST: TripleDES is weak by modern standards and is deprecated.
+     * TripleDES (DESede) encryption. SAST: TripleDES is weak by modern
+     * standards and is deprecated.
      *
-     * @param key       The TripleDES key.
+     * @param key The TripleDES key.
      * @param plaintext The plaintext to encrypt.
      * @return The IV prepended to the ciphertext.
      * @throws Exception if encryption fails.
@@ -190,10 +178,10 @@ public class SymmetricAlgorithm {
     }
 
     /**
-     * ChaCha20 encryption.
-     * SAST: ChaCha20 is considered secure and is a modern alternative to AES.
+     * ChaCha20 encryption. SAST: ChaCha20 is considered secure and is a modern
+     * alternative to AES.
      *
-     * @param key       The ChaCha20 key.
+     * @param key The ChaCha20 key.
      * @param plaintext The plaintext to encrypt.
      * @return The nonce prepended to the ciphertext.
      * @throws Exception if encryption fails.
@@ -215,10 +203,10 @@ public class SymmetricAlgorithm {
      * KMAC-based flow: Uses KMAC128 to derive key material for AES encryption.
      * SAST: KMAC128 is secure as part of the SHA-3 family when used correctly.
      *
-     * @param key       The KMAC key.
+     * @param key The KMAC key.
      * @param plaintext The plaintext to encrypt.
      * @return The ciphertext (with IV) resulting from encryption with a derived
-     *         key.
+     * key.
      * @throws Exception if encryption fails.
      */
     public byte[] kmacEncryptFlow(SecretKey key, byte[] plaintext) throws Exception {
@@ -240,17 +228,15 @@ public class SymmetricAlgorithm {
     }
 
     // ---------- Dynamic Algorithm Selection ----------
-
     /**
-     * Dynamically selects a symmetric encryption algorithm based on a configuration
-     * property.
-     * If the algorithm is unknown or ambiguous, falls back to an insecure default
-     * (AES/ECB).
+     * Dynamically selects a symmetric encryption algorithm based on a
+     * configuration property. If the algorithm is unknown or ambiguous, falls
+     * back to an insecure default (AES/ECB).
      *
      * SAST: Dynamic selection introduces a known unknown risk.
      *
      * @param algorithm The algorithm name from configuration.
-     * @param key       The symmetric key.
+     * @param key The symmetric key.
      * @param plaintext The plaintext to encrypt.
      * @return The ciphertext.
      * @throws Exception if encryption fails.
@@ -273,10 +259,9 @@ public class SymmetricAlgorithm {
     }
 
     // ---------- Further Use of Symmetric Keys ----------
-
     /**
-     * Derives a key from an input key by simple truncation.
-     * SAST: This approach is ambiguous; a proper KDF should be used.
+     * Derives a key from an input key by simple truncation. SAST: This approach
+     * is ambiguous; a proper KDF should be used.
      *
      * @param key The input symmetric key.
      * @return A derived 128-bit key.
@@ -288,10 +273,10 @@ public class SymmetricAlgorithm {
 
     /**
      * Further use: Derives two separate keys from a symmetric key using PBKDF2,
-     * then uses one key for encryption and one for MACing ciphertext.
-     * SAST: This key-splitting approach is acceptable if PBKDF2 is used securely.
+     * then uses one key for encryption and one for MACing ciphertext. SAST:
+     * This key-splitting approach is acceptable if PBKDF2 is used securely.
      *
-     * @param key       The input key material.
+     * @param key The input key material.
      * @param plaintext The plaintext to encrypt.
      * @return The concatenated ciphertext and its MAC.
      * @throws Exception if key derivation or encryption fails.
@@ -325,8 +310,8 @@ public class SymmetricAlgorithm {
     }
 
     /**
-     * Stores the encrypted output.
-     * SAST: In production, secure storage/transmission is required.
+     * Stores the encrypted output. SAST: In production, secure
+     * storage/transmission is required.
      *
      * @param output The output to store.
      */
@@ -335,10 +320,9 @@ public class SymmetricAlgorithm {
     }
 
     // ---------- Helper Methods ----------
-
     /**
-     * Generates a secure 256-bit AES key.
-     * SAST: Uses a strong RNG for key generation.
+     * Generates a secure 256-bit AES key. SAST: Uses a strong RNG for key
+     * generation.
      *
      * @return A new AES SecretKey.
      * @throws Exception if key generation fails.
@@ -350,8 +334,8 @@ public class SymmetricAlgorithm {
     }
 
     /**
-     * Generates a random salt of the specified length using SecureRandom.
-     * SAST: Salting is essential for secure key derivation.
+     * Generates a random salt of the specified length using SecureRandom. SAST:
+     * Salting is essential for secure key derivation.
      *
      * @param length The salt length.
      * @return A byte array representing the salt.

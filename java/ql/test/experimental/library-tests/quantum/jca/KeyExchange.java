@@ -1,35 +1,30 @@
 package com.example.crypto.algorithms;
 
 // import org.bouncycastle.jce.provider.BouncyCastleProvider;
-
-import javax.crypto.KeyAgreement;
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
 import java.util.Arrays;
 import java.util.Base64;
+import javax.crypto.KeyAgreement;
 
 /**
  * Demonstrates various Key Exchange mechanisms using standard Java and
  * BouncyCastle:
  *
- * 1) Classic DH (Diffie-Hellman) with multiple key sizes:
- * - 512-bit: Insecure/deprecated (flagged as unsafe by SAST).
- * - 2048-bit: Standard secure level.
- * - 4096-bit: High-security (but can be slow).
+ * 1) Classic DH (Diffie-Hellman) with multiple key sizes: - 512-bit:
+ * Insecure/deprecated (flagged as unsafe by SAST). - 2048-bit: Standard secure
+ * level. - 4096-bit: High-security (but can be slow).
  *
- * 2) ECDH (using secp256r1):
- * - Classified as a secure elliptic-curve key exchange.
+ * 2) ECDH (using secp256r1): - Classified as a secure elliptic-curve key
+ * exchange.
  *
- * 3) X25519:
- * - A modern and efficient elliptic-curve key exchange protocol.
+ * 3) X25519: - A modern and efficient elliptic-curve key exchange protocol.
  *
- * 4) X448:
- * - Provides a higher security level for key exchange.
+ * 4) X448: - Provides a higher security level for key exchange.
  *
  * In addition, the class now includes a nuanced insecure example that
- * demonstrates:
- * - Reusing static key pairs instead of generating fresh ephemeral keys.
- * - Using weak parameters (512-bit DH) in a key exchange.
+ * demonstrates: - Reusing static key pairs instead of generating fresh
+ * ephemeral keys. - Using weak parameters (512-bit DH) in a key exchange.
  *
  * The runAllExchanges() method demonstrates generating keys for each algorithm,
  * deriving shared secrets, and comparing safe vs. insecure practices.
@@ -40,7 +35,6 @@ public class KeyExchange {
     //     // Add the BouncyCastle provider to support additional algorithms.
     //     Security.addProvider(new BouncyCastleProvider());
     // }
-
     //////////////////////////////////////////
     // 1. Classic DH (Diffie-Hellman)
     //////////////////////////////////////////
@@ -64,8 +58,7 @@ public class KeyExchange {
      * Generates a deprecated/unsafe Diffie-Hellman key pair using a 512-bit
      * modulus.
      *
-     * CBOM/SAST Classification:
-     * - Parent: Classic Diffie-Hellman Key Exchange.
+     * CBOM/SAST Classification: - Parent: Classic Diffie-Hellman Key Exchange.
      * - 512-bit DH is considered insecure and should be flagged by SAST tools.
      *
      * @return A 512-bit (insecure) DH KeyPair.
@@ -78,10 +71,10 @@ public class KeyExchange {
     }
 
     /**
-     * Generates a high-security Diffie-Hellman key pair using a 4096-bit modulus.
+     * Generates a high-security Diffie-Hellman key pair using a 4096-bit
+     * modulus.
      *
-     * CBOM/SAST Classification:
-     * - Parent: Classic Diffie-Hellman Key Exchange.
+     * CBOM/SAST Classification: - Parent: Classic Diffie-Hellman Key Exchange.
      * - 4096-bit DH offers high security, though it may be slower in practice.
      *
      * @return A 4096-bit DH KeyPair.
@@ -95,12 +88,11 @@ public class KeyExchange {
     /**
      * Derives a shared secret from a DH key pair.
      *
-     * CBOM/SAST Classification:
-     * - Parent: Classic Diffie-Hellman Key Exchange.
+     * CBOM/SAST Classification: - Parent: Classic Diffie-Hellman Key Exchange.
      * - Properly deriving the shared secret is secure if using a safe key size.
      *
      * @param privateKey The private key of one party.
-     * @param publicKey  The public key of the other party.
+     * @param publicKey The public key of the other party.
      * @return The derived shared secret as a byte array.
      */
     public byte[] deriveDHSecret(PrivateKey privateKey, PublicKey publicKey) throws Exception {
@@ -133,12 +125,11 @@ public class KeyExchange {
     /**
      * Derives a shared secret using ECDH.
      *
-     * CBOM/SAST Classification:
-     * - Parent: Elliptic Curve Diffie-Hellman (ECDH).
+     * CBOM/SAST Classification: - Parent: Elliptic Curve Diffie-Hellman (ECDH).
      * - Secure when using appropriate curves and proper randomness.
      *
      * @param privateKey The ECDH private key.
-     * @param publicKey  The corresponding public key.
+     * @param publicKey The corresponding public key.
      * @return The derived ECDH shared secret.
      */
     public byte[] deriveECDHSecret(PrivateKey privateKey, PublicKey publicKey) throws Exception {
@@ -171,12 +162,11 @@ public class KeyExchange {
     /**
      * Derives a shared secret using the X25519 key agreement.
      *
-     * CBOM/SAST Classification:
-     * - Parent: Modern Elliptic-Curve Key Exchange.
-     * - X25519 is highly recommended for its security and efficiency.
+     * CBOM/SAST Classification: - Parent: Modern Elliptic-Curve Key Exchange. -
+     * X25519 is highly recommended for its security and efficiency.
      *
      * @param privateKey The X25519 private key.
-     * @param publicKey  The corresponding public key.
+     * @param publicKey The corresponding public key.
      * @return The derived X25519 shared secret.
      */
     public byte[] deriveX25519Secret(PrivateKey privateKey, PublicKey publicKey) throws Exception {
@@ -209,12 +199,11 @@ public class KeyExchange {
     /**
      * Derives a shared secret using the X448 key agreement.
      *
-     * CBOM/SAST Classification:
-     * - Parent: Modern Elliptic-Curve Key Exchange.
-     * - X448 is considered secure and suitable for high-security applications.
+     * CBOM/SAST Classification: - Parent: Modern Elliptic-Curve Key Exchange. -
+     * X448 is considered secure and suitable for high-security applications.
      *
      * @param privateKey The X448 private key.
-     * @param publicKey  The corresponding public key.
+     * @param publicKey The corresponding public key.
      * @return The derived X448 shared secret.
      */
     public byte[] deriveX448Secret(PrivateKey privateKey, PublicKey publicKey) throws Exception {
@@ -248,8 +237,8 @@ public class KeyExchange {
         KeyPair staticDHKeyPair = generateDHDeprecated();
         // Reusing the same static DH key pair for both parties.
         byte[] staticDHSecret = deriveDHSecret(staticDHKeyPair.getPrivate(), staticDHKeyPair.getPublic());
-        System.out.println("Static DH (512-bit) shared secret (reused): " +
-                Base64.getEncoder().encodeToString(staticDHSecret));
+        System.out.println("Static DH (512-bit) shared secret (reused): "
+                + Base64.getEncoder().encodeToString(staticDHSecret));
         // SAST Note: 512-bit DH is considered insecure and static key reuse prevents
         // forward secrecy.
 
@@ -259,8 +248,8 @@ public class KeyExchange {
         // Using the same key pair for both sides leads to a shared secret that is
         // easily derived.
         byte[] reusedECDHSecret = deriveECDHSecret(reusedECDHKeyPair.getPrivate(), reusedECDHKeyPair.getPublic());
-        System.out.println("Reused ECDH shared secret: " +
-                Base64.getEncoder().encodeToString(reusedECDHSecret));
+        System.out.println("Reused ECDH shared secret: "
+                + Base64.getEncoder().encodeToString(reusedECDHSecret));
         // SAST Note: Proper key exchange requires fresh ephemeral keys for each session
         // to ensure forward secrecy.
     }

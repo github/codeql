@@ -1,12 +1,12 @@
 package com.example.crypto.algorithms;
 
 //import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import java.security.*;
+import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
-import java.security.*;
-import java.util.Base64;
 
 /**
  * This class demonstrates several encryption schemes along with SAST/CBOM

@@ -20,9 +20,9 @@ public class IVArtifact {
     // static {
     //     Security.addProvider(new BouncyCastleProvider()); // Ensure BouncyCastle is available
     // }
-
     /**
-     * Simple Case: Generates a secure IV and encrypts with AES/CBC/PKCS5Padding.
+     * Simple Case: Generates a secure IV and encrypts with
+     * AES/CBC/PKCS5Padding.
      */
     public void simpleIVEncryption() throws Exception {
         SecretKey key = generateAESKey();
@@ -91,13 +91,12 @@ public class IVArtifact {
     // -------------------------------
     // 1. Direct Fixed IV Usage
     // -------------------------------
-
     /**
-     * Encrypts plaintext using AES-GCM with a fixed IV (all zeros).
-     * This is an insecure practice as IV reuse in AES-GCM undermines
-     * confidentiality and integrity.
+     * Encrypts plaintext using AES-GCM with a fixed IV (all zeros). This is an
+     * insecure practice as IV reuse in AES-GCM undermines confidentiality and
+     * integrity.
      *
-     * @param key       The AES key.
+     * @param key The AES key.
      * @param plaintext The plaintext to encrypt.
      * @return The ciphertext.
      * @throws Exception if encryption fails.
@@ -113,7 +112,6 @@ public class IVArtifact {
     // -------------------------------
     // 2. Cached IV Usage
     // -------------------------------
-
     // Cache an IV for reuse in multiple encryptions (insecure)
     private byte[] cachedIV = null;
 
@@ -121,7 +119,7 @@ public class IVArtifact {
      * Encrypts plaintext using AES-GCM with an IV cached from the first call.
      * Reusing the same IV across multiple encryptions is insecure.
      *
-     * @param key       The AES key.
+     * @param key The AES key.
      * @param plaintext The plaintext to encrypt.
      * @return The ciphertext.
      * @throws Exception if encryption fails.
@@ -140,15 +138,13 @@ public class IVArtifact {
     // -------------------------------
     // 3. Indirect IV Reuse via Deterministic Derivation
     // -------------------------------
-
     /**
-     * Encrypts plaintext using AES-GCM with an IV derived deterministically from a
-     * constant.
-     * This method computes a SHA-256 hash of a constant string and uses the first
-     * 12 bytes as the IV.
-     * Such derived IVs are fixed and must not be reused.
+     * Encrypts plaintext using AES-GCM with an IV derived deterministically
+     * from a constant. This method computes a SHA-256 hash of a constant string
+     * and uses the first 12 bytes as the IV. Such derived IVs are fixed and
+     * must not be reused.
      *
-     * @param key       The AES key.
+     * @param key The AES key.
      * @param plaintext The plaintext to encrypt.
      * @return The ciphertext.
      * @throws Exception if encryption fails.
@@ -166,14 +162,12 @@ public class IVArtifact {
     // -------------------------------
     // 4. Reusing a Single IV Across Multiple Messages
     // -------------------------------
-
     /**
-     * Encrypts an array of plaintext messages using AES-GCM with the same IV for
-     * every message.
-     * Reusing an IV across messages is insecure in authenticated encryption
-     * schemes.
+     * Encrypts an array of plaintext messages using AES-GCM with the same IV
+     * for every message. Reusing an IV across messages is insecure in
+     * authenticated encryption schemes.
      *
-     * @param key        The AES key.
+     * @param key The AES key.
      * @param plaintexts An array of plaintext messages.
      * @return An array of ciphertexts.
      * @throws Exception if encryption fails.
@@ -194,8 +188,8 @@ public class IVArtifact {
     /**
      * Encrypts the given plaintext using AES-GCM with the provided key and IV.
      *
-     * @param key       The AES key.
-     * @param ivSpec    The IV specification.
+     * @param key The AES key.
+     * @param ivSpec The IV specification.
      * @param plaintext The plaintext to encrypt.
      * @return The ciphertext (IV is not prepended here for clarity).
      * @throws Exception if encryption fails.
@@ -212,10 +206,10 @@ public class IVArtifact {
      * Example 1: Reuses the same IvParameterSpec object across two encryption
      * calls.
      *
-     * @param key       The AES key.
+     * @param key The AES key.
      * @param plaintext The plaintext to encrypt.
      * @return An array containing two ciphertexts generated with the same
-     *         IvParameterSpec.
+     * IvParameterSpec.
      * @throws Exception if encryption fails.
      */
     public byte[][] encryptUsingSameIvParameterSpec(SecretKey key, byte[] plaintext) throws Exception {
@@ -225,18 +219,17 @@ public class IVArtifact {
         // Encrypt the plaintext twice using the same IvParameterSpec.
         byte[] ciphertext1 = encrypt(key, fixedIvSpec, plaintext);
         byte[] ciphertext2 = encrypt(key, fixedIvSpec, plaintext);
-        return new byte[][] { ciphertext1, ciphertext2 };
+        return new byte[][]{ciphertext1, ciphertext2};
     }
 
     /**
-     * Example 2: Creates two different IvParameterSpec objects that share the same
-     * underlying IV array.
+     * Example 2: Creates two different IvParameterSpec objects that share the
+     * same underlying IV array.
      *
-     * @param key       The AES key.
+     * @param key The AES key.
      * @param plaintext The plaintext to encrypt.
      * @return An array containing two ciphertexts generated with two
-     *         IvParameterSpec objects
-     *         constructed from the same IV array.
+     * IvParameterSpec objects constructed from the same IV array.
      * @throws Exception if encryption fails.
      */
     public byte[][] encryptUsingDifferentIvSpecSameIVArray(SecretKey key, byte[] plaintext) throws Exception {
@@ -248,13 +241,12 @@ public class IVArtifact {
         // Encrypt the plaintext twice.
         byte[] ciphertext1 = encrypt(key, ivSpec1, plaintext);
         byte[] ciphertext2 = encrypt(key, ivSpec2, plaintext);
-        return new byte[][] { ciphertext1, ciphertext2 };
+        return new byte[][]{ciphertext1, ciphertext2};
     }
 
     // -------------------------------
     // Main Method for Demonstration
     // -------------------------------
-
     public static void main(String[] args) {
         try {
             IVArtifact test = new IVArtifact();
@@ -280,7 +272,7 @@ public class IVArtifact {
             System.out.println("Derived IV Encryption: " + Base64.getEncoder().encodeToString(derivedIVCipher));
 
             // Example 4: Reusing the same IV across multiple messages
-            byte[][] messages = { "Message One".getBytes(), "Message Two".getBytes(), "Message Three".getBytes() };
+            byte[][] messages = {"Message One".getBytes(), "Message Two".getBytes(), "Message Three".getBytes()};
             byte[][] multiCiphers = test.encryptMultipleMessagesWithSameIV(key, messages);
             for (int i = 0; i < multiCiphers.length; i++) {
                 System.out.println("Multi-message Encryption " + (i + 1) + ": "

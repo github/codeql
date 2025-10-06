@@ -1,7 +1,6 @@
 package com.example.crypto.algorithms;
 
 //import org.bouncycastle.jce.provider.BouncyCastleProvider;
-
 import java.security.*;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -20,29 +19,23 @@ import java.util.Base64;
  *
  * This file includes:
  *
- * 1. AESWrap Examples:
- * - secureAESWrap(): Uses a randomly generated wrapping key.
- * - insecureAESWrap(): Uses a fixed, hard-coded wrapping key.
+ * 1. AESWrap Examples: - secureAESWrap(): Uses a randomly generated wrapping
+ * key. - insecureAESWrap(): Uses a fixed, hard-coded wrapping key.
  *
- * 2. PBEWith Examples:
- * - insecurePBEExample(): Uses the legacy PBEWithMD5AndDES.
- * - securePBEExample(): Uses PBKDF2WithHmacSHA256.
- * - additionalPBEExample(): Uses PBEWithSHA256And128BitAES-CBC-BC.
- * - additionalPBEExample2(): Uses PBEWithSHA1And128BitAES-CBC-BC.
+ * 2. PBEWith Examples: - insecurePBEExample(): Uses the legacy
+ * PBEWithMD5AndDES. - securePBEExample(): Uses PBKDF2WithHmacSHA256. -
+ * additionalPBEExample(): Uses PBEWithSHA256And128BitAES-CBC-BC. -
+ * additionalPBEExample2(): Uses PBEWithSHA1And128BitAES-CBC-BC.
  *
- * 3. Dynamic PBE Encryption:
- * - dynamicPBEEncryption(): Chooses the PBE transformation based on a
- * configuration string.
+ * 3. Dynamic PBE Encryption: - dynamicPBEEncryption(): Chooses the PBE
+ * transformation based on a configuration string.
  *
- * Best Practices:
- * - Use secure random keys and salts.
- * - Avoid legacy algorithms like PBEWithMD5AndDES.
- * - Prefer modern KDFs (PBKDF2WithHmacSHA256) and secure provider-specific PBE
- * transformations.
+ * Best Practices: - Use secure random keys and salts. - Avoid legacy algorithms
+ * like PBEWithMD5AndDES. - Prefer modern KDFs (PBKDF2WithHmacSHA256) and secure
+ * provider-specific PBE transformations.
  *
- * SAST/CBOM Notes:
- * - Insecure examples (PBEWithMD5AndDES, fixed keys) should be flagged.
- * - Secure examples use random salt, high iteration counts, and strong
+ * SAST/CBOM Notes: - Insecure examples (PBEWithMD5AndDES, fixed keys) should be
+ * flagged. - Secure examples use random salt, high iteration counts, and strong
  * algorithms.
  */
 public class AesWrapAndPBEWith {
@@ -51,14 +44,12 @@ public class AesWrapAndPBEWith {
     //     // Register BouncyCastle as a provider.
     //     Security.addProvider(new BouncyCastleProvider());
     // }
-
     // ===========================
     // 1. AESWrap Examples
     // ===========================
-
     /**
-     * Secure AES key wrapping.
-     * Generates a random 256-bit wrapping key to wrap a target AES key.
+     * Secure AES key wrapping. Generates a random 256-bit wrapping key to wrap
+     * a target AES key.
      *
      * @return The wrapped key (Base64-encoded).
      * @throws Exception if an error occurs.
@@ -79,8 +70,7 @@ public class AesWrapAndPBEWith {
     }
 
     /**
-     * Insecure AES key wrapping.
-     * Uses a fixed (hard-coded) wrapping key.
+     * Insecure AES key wrapping. Uses a fixed (hard-coded) wrapping key.
      *
      * @return The wrapped key (Base64-encoded).
      * @throws Exception if an error occurs.
@@ -104,7 +94,6 @@ public class AesWrapAndPBEWith {
     // ===========================
     // 2. PBEWith Examples
     // ===========================
-
     /**
      * Insecure PBE example using PBEWithMD5AndDES.
      *
@@ -141,7 +130,7 @@ public class AesWrapAndPBEWith {
     /**
      * Additional PBE example using PBEWithSHA256And128BitAES-CBC-BC.
      *
-     * @param password  The input password.
+     * @param password The input password.
      * @param plaintext The plaintext to encrypt.
      * @return The IV concatenated with ciphertext (Base64-encoded).
      * @throws Exception if key derivation or encryption fails.
@@ -165,11 +154,10 @@ public class AesWrapAndPBEWith {
     }
 
     /**
-     * Additional PBE example using PBEWithSHA1And128BitAES-CBC-BC.
-     * This is less preferred than PBKDF2WithHmacSHA256 but demonstrates another
-     * variant.
+     * Additional PBE example using PBEWithSHA1And128BitAES-CBC-BC. This is less
+     * preferred than PBKDF2WithHmacSHA256 but demonstrates another variant.
      *
-     * @param password  The input password.
+     * @param password The input password.
      * @param plaintext The plaintext to encrypt.
      * @return The IV concatenated with ciphertext (Base64-encoded).
      * @throws Exception if key derivation or encryption fails.
@@ -195,18 +183,16 @@ public class AesWrapAndPBEWith {
     // ===========================
     // 3. Dynamic PBE Encryption
     // ===========================
-
     /**
      * Dynamically selects a PBE transformation based on a configuration string.
      *
-     * Acceptable values:
-     * - "PBKDF2": Uses PBKDF2WithHmacSHA256.
-     * - "SHA256AES": Uses PBEWithSHA256And128BitAES-CBC-BC.
-     * - "SHA1AES": Uses PBEWithSHA1And128BitAES-CBC-BC.
-     * - Otherwise, falls back to insecure PBEWithMD5AndDES.
+     * Acceptable values: - "PBKDF2": Uses PBKDF2WithHmacSHA256. - "SHA256AES":
+     * Uses PBEWithSHA256And128BitAES-CBC-BC. - "SHA1AES": Uses
+     * PBEWithSHA1And128BitAES-CBC-BC. - Otherwise, falls back to insecure
+     * PBEWithMD5AndDES.
      *
-     * @param config    The configuration string.
-     * @param password  The input password.
+     * @param config The configuration string.
+     * @param password The input password.
      * @param plaintext The plaintext to encrypt.
      * @return The Base64-encoded encrypted output.
      * @throws Exception if an error occurs.
@@ -227,7 +213,6 @@ public class AesWrapAndPBEWith {
     // ===========================
     // Helper Methods
     // ===========================
-
     /**
      * Concatenates two byte arrays.
      */

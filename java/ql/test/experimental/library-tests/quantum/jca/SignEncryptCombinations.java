@@ -1,15 +1,14 @@
 package com.example.crypto.algorithms;
 
 // import org.bouncycastle.jce.provider.BouncyCastleProvider;
-
+import java.security.*;
+import java.security.spec.ECGenParameterSpec;
+import java.util.Arrays;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
-import java.security.*;
-import java.security.spec.ECGenParameterSpec;
-import java.util.Arrays;
 
 /**
  * This class demonstrates cryptographic flows combining signing, encryption,
@@ -18,26 +17,21 @@ import java.util.Arrays;
  * It intentionally includes both safe and unsafe patterns so that a SAST tool
  * can detect:
  *
- * 1. **Sign then Encrypt (Unsafe)**
- * - Signs the plaintext and encrypts only the signature, leaving the plaintext
- * in cleartext.
- * - *Issue:* The message is exposed, which could lead to replay or modification
- * attacks.
+ * 1. **Sign then Encrypt (Unsafe)** - Signs the plaintext and encrypts only the
+ * signature, leaving the plaintext in cleartext. - *Issue:* The message is
+ * exposed, which could lead to replay or modification attacks.
  *
- * 2. **Encrypt then Sign (Safe with caveats)**
- * - Encrypts the plaintext and then signs the ciphertext.
- * - *Caveat:* The signature is in the clear; metadata (e.g. ciphertext length)
- * may be exposed.
+ * 2. **Encrypt then Sign (Safe with caveats)** - Encrypts the plaintext and
+ * then signs the ciphertext. - *Caveat:* The signature is in the clear;
+ * metadata (e.g. ciphertext length) may be exposed.
  *
- * 3. **MAC then Encrypt (Unsafe)**
- * - Computes a MAC on the plaintext and appends it before encryption.
- * - *Issue:* Operating on plaintext for MAC generation can leak information and
- * is discouraged.
+ * 3. **MAC then Encrypt (Unsafe)** - Computes a MAC on the plaintext and
+ * appends it before encryption. - *Issue:* Operating on plaintext for MAC
+ * generation can leak information and is discouraged.
  *
- * 4. **Encrypt then MAC (Safe)**
- * - Encrypts the plaintext and computes a MAC over the ciphertext.
- * - *Benefit:* Provides a robust authenticated encryption construction when not
- * using an AEAD cipher.
+ * 4. **Encrypt then MAC (Safe)** - Encrypts the plaintext and computes a MAC
+ * over the ciphertext. - *Benefit:* Provides a robust authenticated encryption
+ * construction when not using an AEAD cipher.
  *
  * Note: AES/GCM already provides authentication, so adding an external MAC is
  * redundant.
@@ -49,7 +43,6 @@ public class SignEncryptCombinations {
     // static {
     //     Security.addProvider(new BouncyCastleProvider());
     // }
-
     ///////////////////////////////////////////////
     // Key Generation for ECDSA on secp256r1
     ///////////////////////////////////////////////
@@ -92,8 +85,8 @@ public class SignEncryptCombinations {
     }
 
     /**
-     * Encrypts data using AES-GCM with a 12-byte IV and a 128-bit tag.
-     * Returns the concatenation of IV and ciphertext.
+     * Encrypts data using AES-GCM with a 12-byte IV and a 128-bit tag. Returns
+     * the concatenation of IV and ciphertext.
      */
     public byte[] encryptAESGCM(SecretKey key, byte[] plaintext) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
@@ -176,14 +169,14 @@ public class SignEncryptCombinations {
      *
      * <p>
      * **Benefit:** The plaintext is fully encrypted and remains confidential.
-     * **Caveat:** The signature is transmitted in the clear. Although this does not
-     * compromise
-     * the message, it might reveal metadata (like ciphertext length).
+     * **Caveat:** The signature is transmitted in the clear. Although this does
+     * not compromise the message, it might reveal metadata (like ciphertext
+     * length).
      * </p>
      *
      * @param encryptionKey AES key for encryption.
-     * @param signingKey    ECDSA private key for signing.
-     * @param data          The plaintext message.
+     * @param signingKey ECDSA private key for signing.
+     * @param data The plaintext message.
      * @return The concatenation of the ciphertext and its signature.
      */
     public byte[] encryptThenSign(SecretKey encryptionKey, PrivateKey signingKey, byte[] data) throws Exception {
@@ -200,20 +193,18 @@ public class SignEncryptCombinations {
     }
 
     /**
-     * Extracts and verifies the signature from the combined ciphertext-signature
-     * bundle,
-     * then decrypts the ciphertext.
+     * Extracts and verifies the signature from the combined
+     * ciphertext-signature bundle, then decrypts the ciphertext.
      *
      * <p>
-     * **Issue:** Here we assume a fixed signature length (70 bytes). In production,
-     * the signature length
-     * should be explicitly stored. Hard-coding a length is an unsafe pattern and
-     * may trigger SAST warnings.
+     * **Issue:** Here we assume a fixed signature length (70 bytes). In
+     * production, the signature length should be explicitly stored. Hard-coding
+     * a length is an unsafe pattern and may trigger SAST warnings.
      * </p>
      *
-     * @param verifyingKey  ECDSA public key for signature verification.
+     * @param verifyingKey ECDSA public key for signature verification.
      * @param encryptionKey AES key for decryption.
-     * @param combined      The combined ciphertext and signature.
+     * @param combined The combined ciphertext and signature.
      * @return The decrypted plaintext message.
      */
     public byte[] verifyThenDecrypt(PublicKey verifyingKey, SecretKey encryptionKey, byte[] combined) throws Exception {
@@ -268,8 +259,8 @@ public class SignEncryptCombinations {
     /**
      * Decrypts the combined data and verifies the MAC.
      *
-     * @param macKey     AES key used as the HMAC key.
-     * @param encKey     AES key for decryption.
+     * @param macKey AES key used as the HMAC key.
+     * @param encKey AES key for decryption.
      * @param ciphertext The encrypted bundle containing plaintext and MAC.
      * @return true if the MAC is valid; false otherwise.
      */
@@ -289,14 +280,13 @@ public class SignEncryptCombinations {
      * ciphertext.
      *
      * <p>
-     * **Benefit:** This "encrypt-then-MAC" construction ensures that the ciphertext
-     * is both confidential
-     * and tamper-evident.
+     * **Benefit:** This "encrypt-then-MAC" construction ensures that the
+     * ciphertext is both confidential and tamper-evident.
      * </p>
      *
      * @param encKey AES key for encryption.
      * @param macKey AES key used as the HMAC key.
-     * @param data   The plaintext message.
+     * @param data The plaintext message.
      * @return The concatenation of ciphertext and MAC.
      */
     public byte[] encryptThenMac(SecretKey encKey, SecretKey macKey, byte[] data) throws Exception {
@@ -314,8 +304,8 @@ public class SignEncryptCombinations {
     /**
      * Verifies the MAC and then decrypts the ciphertext.
      *
-     * @param encKey   AES key for decryption.
-     * @param macKey   AES key used as the HMAC key.
+     * @param encKey AES key for decryption.
+     * @param macKey AES key used as the HMAC key.
      * @param combined The combined ciphertext and MAC.
      * @return The decrypted plaintext message.
      */

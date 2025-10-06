@@ -1,33 +1,28 @@
 package com.example.crypto.algorithms;
 
 //import org.bouncycastle.jce.provider.BouncyCastleProvider;
-
-import java.security.*;
+import java.security.SecureRandom;
+import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-import java.security.SecureRandom;
-import java.util.Base64;
 
 /**
  * SymmetricModesTest demonstrates the use of advanced cipher modes for
  * symmetric encryption:
  *
  * 1. AES/KWP/NoPadding: Uses AES Key Wrap with Padding (KWP) to securely wrap
- * (encrypt) a key.
- * - Secure usage: Uses a randomly generated wrapping key.
+ * (encrypt) a key. - Secure usage: Uses a randomly generated wrapping key.
  *
  * 2. AES/OFB8/NoPadding: Uses AES in Output Feedback mode with an 8-bit
- * feedback size.
- * - Secure usage: Uses a random IV for each encryption.
- * - Insecure usage: Using a fixed IV (or nonce) in OFB mode compromises
+ * feedback size. - Secure usage: Uses a random IV for each encryption. -
+ * Insecure usage: Using a fixed IV (or nonce) in OFB mode compromises
  * confidentiality.
  *
  * In production, algorithm parameters (such as mode, padding, and IV
- * generation) should be
- * externalized via configuration files to support crypto agility.
+ * generation) should be externalized via configuration files to support crypto
+ * agility.
  */
 public class SymmetricModesTest {
 
@@ -35,18 +30,15 @@ public class SymmetricModesTest {
     //     // Register BouncyCastle provider for additional cipher modes.
     //     Security.addProvider(new BouncyCastleProvider());
     // }
-
     // ---------------------------
     // AES/KWP/NoPadding Example
     // ---------------------------
-
     /**
      * Securely wraps a target AES key using AES/KWP/NoPadding.
      *
-     * Best Practice:
-     * - The wrapping key must be generated randomly.
-     * - AES/KWP provides key wrapping with padding, suitable for keys whose lengths
-     * are not multiples of the block size.
+     * Best Practice: - The wrapping key must be generated randomly. - AES/KWP
+     * provides key wrapping with padding, suitable for keys whose lengths are
+     * not multiples of the block size.
      *
      * @return The Base64-encoded wrapped key.
      * @throws Exception if an error occurs during key wrapping.
@@ -72,15 +64,13 @@ public class SymmetricModesTest {
     // ---------------------------
     // AES/OFB8/NoPadding Examples
     // ---------------------------
-
     /**
-     * Securely encrypts plaintext using AES in OFB mode with an 8-bit feedback size
-     * (AES/OFB8/NoPadding).
+     * Securely encrypts plaintext using AES in OFB mode with an 8-bit feedback
+     * size (AES/OFB8/NoPadding).
      *
-     * Best Practice:
-     * - Use a fresh, random IV for each encryption operation.
+     * Best Practice: - Use a fresh, random IV for each encryption operation.
      *
-     * @param key       The AES key.
+     * @param key The AES key.
      * @param plaintext The plaintext to encrypt.
      * @return The ciphertext (Base64-encoded) with the IV prepended.
      * @throws Exception if encryption fails.
@@ -100,15 +90,13 @@ public class SymmetricModesTest {
     }
 
     /**
-     * Insecurely encrypts plaintext using AES in OFB mode with an 8-bit feedback
-     * size (AES/OFB8/NoPadding)
-     * by using a fixed IV.
+     * Insecurely encrypts plaintext using AES in OFB mode with an 8-bit
+     * feedback size (AES/OFB8/NoPadding) by using a fixed IV.
      *
-     * Best Practice Violation:
-     * - Using a fixed IV (or nonce) with any encryption mode (including OFB)
-     * compromises the cipher's security.
+     * Best Practice Violation: - Using a fixed IV (or nonce) with any
+     * encryption mode (including OFB) compromises the cipher's security.
      *
-     * @param key       The AES key.
+     * @param key The AES key.
      * @param plaintext The plaintext to encrypt.
      * @return The ciphertext (Base64-encoded) with the fixed IV prepended.
      * @throws Exception if encryption fails.
@@ -129,7 +117,6 @@ public class SymmetricModesTest {
     // ---------------------------
     // Helper Methods
     // ---------------------------
-
     /**
      * Generates a secure 256-bit AES key.
      *

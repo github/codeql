@@ -4,38 +4,35 @@ package com.example.crypto.algorithms;
 // import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
 // import org.bouncycastle.pqc.jcajce.spec.KyberParameterSpec;
 // import org.bouncycastle.util.Strings;
-
+import java.security.*;
+import java.security.spec.ECGenParameterSpec;
+import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.KeyAgreement;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.*;
-import java.security.spec.ECGenParameterSpec;
-import java.util.Base64;
 
 /**
  * Demonstrates various Key Encapsulation Mechanisms (KEMs), including:
  *
- * 1) RSA-KEM (emulated using RSA-OAEP for ephemeral key wrapping)
- * - CBOM/SAST: Classified as a Hybrid Cryptosystem (public-key based key
- * encapsulation).
+ * 1) RSA-KEM (emulated using RSA-OAEP for ephemeral key wrapping) - CBOM/SAST:
+ * Classified as a Hybrid Cryptosystem (public-key based key encapsulation).
  * While RSA-OAEP is secure, using it to emulate KEM (without a standard scheme)
  * may be flagged.
  *
- * 2) ECIES (Elliptic Curve Integrated Encryption Scheme)
- * - CBOM/SAST: Classified as a Hybrid Cryptosystem (KEM+DEM) based on ECDH and
- * AES.
- * Note: Directly using the raw ECDH shared secret as key material is insecure
- * in production.
+ * 2) ECIES (Elliptic Curve Integrated Encryption Scheme) - CBOM/SAST:
+ * Classified as a Hybrid Cryptosystem (KEM+DEM) based on ECDH and AES. Note:
+ * Directly using the raw ECDH shared secret as key material is insecure in
+ * production.
  *
- * 3) Kyber (Post-Quantum KEM using BouncyCastle PQC)
- * - CBOM/SAST: Classified as a Post-Quantum Key Encapsulation mechanism.
- * This is modern and secure when using standardized parameters.
+ * 3) Kyber (Post-Quantum KEM using BouncyCastle PQC) - CBOM/SAST: Classified as
+ * a Post-Quantum Key Encapsulation mechanism. This is modern and secure when
+ * using standardized parameters.
  *
- * 4) Basic ephemeral flows that mimic KEM logic using ephemeral ECDH.
- * - CBOM/SAST: Classified as a simple KEM mimic based on ephemeral ECDH.
+ * 4) Basic ephemeral flows that mimic KEM logic using ephemeral ECDH. -
+ * CBOM/SAST: Classified as a simple KEM mimic based on ephemeral ECDH.
  */
 public class KeyEncapsulation {
 
@@ -44,7 +41,6 @@ public class KeyEncapsulation {
     //     Security.addProvider(new BouncyCastleProvider());
     //     Security.addProvider(new BouncyCastlePQCProvider());
     // }
-
     //////////////////////////////////////
     // 1. RSA-KEM-Like Flow
     //////////////////////////////////////
@@ -86,11 +82,10 @@ public class KeyEncapsulation {
     /**
      * Performs RSA decapsulation by decrypting the wrapped AES key.
      *
-     * SAST/CBOM Classification:
-     * - Parent: Hybrid Cryptosystem (RSA-OAEP based key decapsulation).
-     * - Note: Secure when used with matching RSA key pairs.
+     * SAST/CBOM Classification: - Parent: Hybrid Cryptosystem (RSA-OAEP based
+     * key decapsulation). - Note: Secure when used with matching RSA key pairs.
      *
-     * @param rsaPriv    The RSA private key corresponding to the public key used.
+     * @param rsaPriv The RSA private key corresponding to the public key used.
      * @param wrappedKey The RSA-wrapped ephemeral AES key.
      */
     public void rsaKEMDecapsulation(PrivateKey rsaPriv, byte[] wrappedKey) throws Exception {
@@ -225,7 +220,6 @@ public class KeyEncapsulation {
         // kyberKpg.initialize(KyberParameterSpec.kyber512);
         // KeyPair kyberKP = kyberKpg.generateKeyPair();
         // kyberEncapsulate(kyberKP);
-
         // 4) Ephemeral ECDH Mimic KEM:
         // For demonstration, we use an EC key pair and mimic KEM by deriving a shared
         // secret.

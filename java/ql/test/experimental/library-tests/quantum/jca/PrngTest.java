@@ -10,28 +10,23 @@ import javax.crypto.KeyGenerator;
  * PrngTest demonstrates various approaches for generating random data using
  * PRNG/RNG APIs.
  *
- * It covers:
- * 1) Secure random generation using SecureRandom (default and
- * getInstanceStrong).
- * 2) Insecure random generation using java.util.Random.
- * 3) Flawed PRNG usage by setting a fixed seed.
- * 4) Dynamic PRNG selection based on configuration.
- * 5) Usage of random data as nonces/IVs in symmetric encryption.
+ * It covers: 1) Secure random generation using SecureRandom (default and
+ * getInstanceStrong). 2) Insecure random generation using java.util.Random. 3)
+ * Flawed PRNG usage by setting a fixed seed. 4) Dynamic PRNG selection based on
+ * configuration. 5) Usage of random data as nonces/IVs in symmetric encryption.
  *
- * SAST/CBOM Notes:
- * - SecureRandom (and SecureRandom.getInstanceStrong) are recommended.
- * - java.util.Random is not suitable for cryptographic purposes.
- * - Re-seeding or using a fixed seed with SecureRandom makes it predictable.
- * - IVs and nonces must be unique for each operation; reusing fixed values is
+ * SAST/CBOM Notes: - SecureRandom (and SecureRandom.getInstanceStrong) are
+ * recommended. - java.util.Random is not suitable for cryptographic purposes. -
+ * Re-seeding or using a fixed seed with SecureRandom makes it predictable. -
+ * IVs and nonces must be unique for each operation; reusing fixed values is
  * insecure.
  */
 public class PrngTest {
 
     // ---------- Secure Random Generation ----------
-
     /**
-     * Generates random bytes using the default SecureRandom.
-     * SAST: SecureRandom is recommended for cryptographically secure random data.
+     * Generates random bytes using the default SecureRandom. SAST: SecureRandom
+     * is recommended for cryptographically secure random data.
      *
      * @param numBytes Number of bytes to generate.
      * @return A byte array of random data.
@@ -44,8 +39,8 @@ public class PrngTest {
     }
 
     /**
-     * Generates random bytes using SecureRandom.getInstanceStrong().
-     * SAST: getInstanceStrong() returns a strong RNG (may block in some
+     * Generates random bytes using SecureRandom.getInstanceStrong(). SAST:
+     * getInstanceStrong() returns a strong RNG (may block in some
      * environments).
      *
      * @param numBytes Number of bytes to generate.
@@ -60,11 +55,9 @@ public class PrngTest {
     }
 
     // ---------- Insecure Random Generation ----------
-
     /**
-     * Generates random bytes using java.util.Random.
-     * SAST: java.util.Random is predictable and insecure for cryptographic
-     * purposes.
+     * Generates random bytes using java.util.Random. SAST: java.util.Random is
+     * predictable and insecure for cryptographic purposes.
      *
      * @param numBytes Number of bytes to generate.
      * @return A byte array of random data.
@@ -77,8 +70,8 @@ public class PrngTest {
     }
 
     /**
-     * Generates random bytes using SecureRandom with a fixed seed.
-     * SAST: Fixed seeding makes SecureRandom predictable and insecure.
+     * Generates random bytes using SecureRandom with a fixed seed. SAST: Fixed
+     * seeding makes SecureRandom predictable and insecure.
      *
      * @param numBytes Number of bytes to generate.
      * @return A byte array of predictable random data.
@@ -93,15 +86,14 @@ public class PrngTest {
     }
 
     // ---------- Dynamic PRNG Selection ----------
-
     /**
      * Dynamically selects a PRNG algorithm based on a configuration property.
      * If the algorithm is unknown, falls back to java.util.Random (insecure).
      * SAST: Dynamic selection may introduce risk if an insecure RNG is chosen.
      *
      * @param algorithmName The PRNG algorithm name (e.g. "SHA1PRNG",
-     *                      "NativePRNGNonBlocking", "getInstanceStrong").
-     * @param numBytes      Number of bytes to generate.
+     * "NativePRNGNonBlocking", "getInstanceStrong").
+     * @param numBytes Number of bytes to generate.
      * @return A byte array of random data.
      * @throws NoSuchAlgorithmException if the algorithm is not available.
      */
@@ -128,10 +120,9 @@ public class PrngTest {
 
     // ---------- Usage Examples: Nonce/IV Generation for Symmetric Encryption
     // ----------
-
     /**
-     * Demonstrates secure generation of an IV for AES-GCM encryption.
-     * SAST: A unique, random IV is required for each encryption operation.
+     * Demonstrates secure generation of an IV for AES-GCM encryption. SAST: A
+     * unique, random IV is required for each encryption operation.
      *
      * @return A 12-byte IV.
      */
@@ -140,8 +131,8 @@ public class PrngTest {
     }
 
     /**
-     * Demonstrates insecure use of a fixed IV for AES-GCM encryption.
-     * SAST: Reusing a fixed IV in AES-GCM compromises security.
+     * Demonstrates insecure use of a fixed IV for AES-GCM encryption. SAST:
+     * Reusing a fixed IV in AES-GCM compromises security.
      *
      * @return A fixed 12-byte IV (all zeros).
      */
@@ -150,10 +141,9 @@ public class PrngTest {
     }
 
     // ---------- Example: Using PRNG for Key Generation ----------
-
     /**
-     * Generates a secure 256-bit AES key using SecureRandom.
-     * SAST: Strong key generation is critical for symmetric cryptography.
+     * Generates a secure 256-bit AES key using SecureRandom. SAST: Strong key
+     * generation is critical for symmetric cryptography.
      *
      * @return A new AES SecretKey.
      * @throws Exception if key generation fails.

@@ -1,40 +1,33 @@
 package com.example.crypto.algorithms;
 
 //import org.bouncycastle.jce.provider.BouncyCastleProvider;
-
+import java.security.*;
+import java.security.spec.ECGenParameterSpec;
+import java.util.Arrays;
+import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.KeyAgreement;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.*;
-import java.security.spec.ECGenParameterSpec;
-import java.util.Arrays;
-import java.util.Base64;
 
 /**
  * EllipticCurve2 demonstrates real-world uses of elliptic curve algorithms,
  * including key pair generation, key agreement (ECDH), digital signatures
- * (ECDSA, EdDSA),
- * and a simple simulation of ECIES (using ECDH + AES-GCM).
+ * (ECDSA, EdDSA), and a simple simulation of ECIES (using ECDH + AES-GCM).
  *
- * Curve types shown include:
- * - NIST (e.g., secp256r1)
- * - SEC (e.g., secp256k1)
- * - Brainpool (e.g., brainpoolP256r1)
- * - CURVE25519 (for X25519 key agreement)
- * - ES (e.g., Ed25519 for signatures)
- * - Other fallback (e.g., secp256r1 for "OtherEllipticCurveType")
+ * Curve types shown include: - NIST (e.g., secp256r1) - SEC (e.g., secp256k1) -
+ * Brainpool (e.g., brainpoolP256r1) - CURVE25519 (for X25519 key agreement) -
+ * ES (e.g., Ed25519 for signatures) - Other fallback (e.g., secp256r1 for
+ * "OtherEllipticCurveType")
  *
- * Best practices:
- * - Use ephemeral keys and a strong RNG.
- * - Use proper key agreement (with a KDF if needed) and digital signature
- * schemes.
- * - Avoid static key reuse or using weak curves.
+ * Best practices: - Use ephemeral keys and a strong RNG. - Use proper key
+ * agreement (with a KDF if needed) and digital signature schemes. - Avoid
+ * static key reuse or using weak curves.
  *
- * SAST/CBOM considerations:
- * - Secure implementations use ephemeral keys and modern curves.
- * - Insecure practices (e.g., static keys or reusing keys) must be flagged.
+ * SAST/CBOM considerations: - Secure implementations use ephemeral keys and
+ * modern curves. - Insecure practices (e.g., static keys or reusing keys) must
+ * be flagged.
  */
 public class EllipticCurve2 {
 
@@ -42,11 +35,9 @@ public class EllipticCurve2 {
     //     // Register BouncyCastle provider for additional curves and algorithms.
     //     Security.addProvider(new BouncyCastleProvider());
     // }
-
     // ----------------------------
     // 1. Key Pair Generation Examples
     // ----------------------------
-
     /**
      * Generates a key pair using a NIST curve (secp256r1).
      */
@@ -101,10 +92,9 @@ public class EllipticCurve2 {
     // ----------------------------
     // 2. Key Agreement (ECDH) Examples
     // ----------------------------
-
     /**
-     * Performs ECDH key agreement using two ephemeral NIST key pairs.
-     * Secure Example: Uses ephemeral keys and a strong RNG.
+     * Performs ECDH key agreement using two ephemeral NIST key pairs. Secure
+     * Example: Uses ephemeral keys and a strong RNG.
      *
      * @return The shared secret.
      */
@@ -119,8 +109,8 @@ public class EllipticCurve2 {
     }
 
     /**
-     * Insecure ECDH Example: Uses a static key pair for both parties.
-     * SAST: Reusing the same key pair eliminates forward secrecy and is insecure.
+     * Insecure ECDH Example: Uses a static key pair for both parties. SAST:
+     * Reusing the same key pair eliminates forward secrecy and is insecure.
      *
      * @return The (insecure) shared secret.
      */
@@ -135,10 +125,8 @@ public class EllipticCurve2 {
     // ----------------------------
     // 3. Digital Signature Examples
     // ----------------------------
-
     /**
-     * Generates an ECDSA signature using a NIST key pair.
-     * Secure Example.
+     * Generates an ECDSA signature using a NIST key pair. Secure Example.
      *
      * @param message The message to sign.
      * @return The signature.
@@ -154,9 +142,9 @@ public class EllipticCurve2 {
     /**
      * Verifies an ECDSA signature using the corresponding NIST key pair.
      *
-     * @param message        The original message.
+     * @param message The original message.
      * @param signatureBytes The signature to verify.
-     * @param kp             The key pair used for signing.
+     * @param kp The key pair used for signing.
      * @return True if the signature is valid.
      */
     public boolean verifyECDSASignature(byte[] message, byte[] signatureBytes, KeyPair kp) throws Exception {
@@ -167,8 +155,8 @@ public class EllipticCurve2 {
     }
 
     /**
-     * Generates an Ed25519 signature.
-     * Secure Example: Ed25519 is a modern, high-performance signature scheme.
+     * Generates an Ed25519 signature. Secure Example: Ed25519 is a modern,
+     * high-performance signature scheme.
      *
      * @param message The message to sign.
      * @return The signature.
@@ -184,9 +172,9 @@ public class EllipticCurve2 {
     /**
      * Verifies an Ed25519 signature.
      *
-     * @param message        The original message.
+     * @param message The original message.
      * @param signatureBytes The signature to verify.
-     * @param kp             The key pair used for signing.
+     * @param kp The key pair used for signing.
      * @return True if the signature is valid.
      */
     public boolean verifyEd25519Signature(byte[] message, byte[] signatureBytes, KeyPair kp) throws Exception {
@@ -199,17 +187,14 @@ public class EllipticCurve2 {
     // ----------------------------
     // 4. ECIES-like Encryption (ECDH + AES-GCM)
     // ----------------------------
-
     /**
      * A simple simulation of ECIES using ECDH for key agreement and AES-GCM for
-     * encryption.
-     * Secure Example: Uses ephemeral ECDH key pairs, a KDF to derive a symmetric
-     * key,
-     * and AES-GCM with a random nonce.
+     * encryption. Secure Example: Uses ephemeral ECDH key pairs, a KDF to
+     * derive a symmetric key, and AES-GCM with a random nonce.
      *
      * @param plaintext The plaintext to encrypt.
      * @return The concatenation of the ephemeral public key, IV, and ciphertext
-     *         (Base64-encoded).
+     * (Base64-encoded).
      * @throws Exception if encryption fails.
      */
     public String eciesEncryptionExample(byte[] plaintext) throws Exception {
@@ -248,7 +233,6 @@ public class EllipticCurve2 {
     // ----------------------------
     // 5. Main Method for Demonstration
     // ----------------------------
-
     public static void main(String[] args) {
         try {
             EllipticCurve2 test = new EllipticCurve2();

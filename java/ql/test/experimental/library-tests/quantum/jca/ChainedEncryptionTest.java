@@ -1,24 +1,19 @@
 package com.example.crypto.algorithms;
 
 // import org.bouncycastle.jce.provider.BouncyCastleProvider;
-
 import java.security.*;
-
+import java.util.Arrays;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.IvParameterSpec;
 
-import java.util.Arrays;
-import java.util.Base64;
-
 public class ChainedEncryptionTest {
 
     // static {
     //     Security.addProvider(new BouncyCastleProvider());
     // }
-
     // Encrypts using AES-GCM. Returns IV concatenated with ciphertext.
     public static byte[] encryptAESGCM(SecretKey key, byte[] plaintext) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
@@ -68,10 +63,10 @@ public class ChainedEncryptionTest {
     }
 
     /**
-     * Performs chained encryption and decryption in one function.
-     * First, plaintext is encrypted with AES-GCM (inner layer),
-     * then that ciphertext is encrypted with ChaCha20-Poly1305 (outer layer).
-     * The decryption process reverses these steps.
+     * Performs chained encryption and decryption in one function. First,
+     * plaintext is encrypted with AES-GCM (inner layer), then that ciphertext
+     * is encrypted with ChaCha20-Poly1305 (outer layer). The decryption process
+     * reverses these steps.
      *
      * @param plaintext The input plaintext.
      * @return The decrypted plaintext as a String.

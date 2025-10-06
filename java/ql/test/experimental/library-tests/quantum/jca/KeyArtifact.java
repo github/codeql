@@ -1,19 +1,18 @@
 package com.example.crypto.artifacts;
 
 // import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
+import java.io.FileInputStream;
 import java.security.*;
 import java.security.spec.*;
 import java.util.Properties;
-import java.io.FileInputStream;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 
 public class KeyArtifact {
 
     // static {
     //     Security.addProvider(new BouncyCastleProvider());
     // }
-
     public void generateSymmetricKeys() throws NoSuchAlgorithmException {
         // AES Key Generation (Default Provider)
         KeyGenerator keyGen = KeyGenerator.getInstance("AES");
@@ -76,7 +75,7 @@ public class KeyArtifact {
 
     public void keySelectionFromArray() throws NoSuchAlgorithmException {
         // Selecting Algorithm Dynamically from an Array
-        String[] algorithms = { "RSA", "EC", "Ed25519" };
+        String[] algorithms = {"RSA", "EC", "Ed25519"};
         KeyPair[] keyPairs = new KeyPair[algorithms.length];
 
         for (int i = 0; i < algorithms.length; i++) {

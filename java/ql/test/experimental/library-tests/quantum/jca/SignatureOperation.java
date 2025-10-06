@@ -1,7 +1,6 @@
 package com.example.crypto.algorithms;
 
 // import org.bouncycastle.jce.provider.BouncyCastleProvider;
-
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
 import java.util.Base64;
@@ -10,32 +9,27 @@ import java.util.Properties;
 /**
  * Demonstrates various digital signature operations:
  *
- * 1) RSA-PSS (modern, safer)
- * - CBOM/SAST: Classified as a Modern Digital Signature scheme using RSA-PSS.
- * RSA-PSS with SHA-256 is recommended.
+ * 1) RSA-PSS (modern, safer) - CBOM/SAST: Classified as a Modern Digital
+ * Signature scheme using RSA-PSS. RSA-PSS with SHA-256 is recommended.
  *
- * 2) ECDSA with secp256r1
- * - CBOM/SAST: Classified as an Elliptic Curve Digital Signature Algorithm.
- * Secure when used with a strong curve and proper randomness.
+ * 2) ECDSA with secp256r1 - CBOM/SAST: Classified as an Elliptic Curve Digital
+ * Signature Algorithm. Secure when used with a strong curve and proper
+ * randomness.
  *
- * 3) Ed25519 (RFC 8032)
- * - CBOM/SAST: Classified as a modern, high-performance signature scheme.
+ * 3) Ed25519 (RFC 8032) - CBOM/SAST: Classified as a modern, high-performance
+ * signature scheme.
  *
- * 4) SHA1withRSA (deprecated/unsafe example)
- * - CBOM/SAST: Classified as a legacy digital signature scheme.
- * SHA-1 and 1024-bit RSA are deprecated.
+ * 4) SHA1withRSA (deprecated/unsafe example) - CBOM/SAST: Classified as a
+ * legacy digital signature scheme. SHA-1 and 1024-bit RSA are deprecated.
  *
  * Additional nuanced examples:
  *
- * - Signing and verifying an empty message.
- * - Signing data with non-ASCII characters.
- * - Demonstrating signature tampering and its detection.
- * - A dynamic (runtime-selected) signature algorithm scenario ("known
- * unknown").
+ * - Signing and verifying an empty message. - Signing data with non-ASCII
+ * characters. - Demonstrating signature tampering and its detection. - A
+ * dynamic (runtime-selected) signature algorithm scenario ("known unknown").
  *
- * Requirements:
- * - BouncyCastle for ECDSA, Ed25519, and RSA-PSS (if needed).
- * - Java 11+ for native Ed25519 support or using BC for older versions.
+ * Requirements: - BouncyCastle for ECDSA, Ed25519, and RSA-PSS (if needed). -
+ * Java 11+ for native Ed25519 support or using BC for older versions.
  */
 public class SignatureOperation {
 
@@ -43,7 +37,6 @@ public class SignatureOperation {
     //     // Register the BouncyCastle provider.
     //     Security.addProvider(new BouncyCastleProvider());
     // }
-
     ///////////////////////////////////////
     // 1. RSA-PSS (Recommended)
     ///////////////////////////////////////
@@ -64,8 +57,7 @@ public class SignatureOperation {
     /**
      * Sign data using RSA-PSS with SHA-256.
      *
-     * CBOM/SAST Notes:
-     * - Parent: Modern Digital Signature (RSA-PSS).
+     * CBOM/SAST Notes: - Parent: Modern Digital Signature (RSA-PSS).
      */
     public byte[] signRSAPSS(PrivateKey privateKey, byte[] data) throws Exception {
         Signature signature = Signature.getInstance("SHA256withRSAandMGF1");
@@ -77,8 +69,7 @@ public class SignatureOperation {
     /**
      * Verify data using RSA-PSS with SHA-256.
      *
-     * CBOM/SAST Notes:
-     * - Parent: Modern Digital Signature (RSA-PSS).
+     * CBOM/SAST Notes: - Parent: Modern Digital Signature (RSA-PSS).
      */
     public boolean verifyRSAPSS(PublicKey publicKey, byte[] data, byte[] sigBytes) throws Exception {
         Signature signature = Signature.getInstance("SHA256withRSAandMGF1");
@@ -106,8 +97,7 @@ public class SignatureOperation {
     /**
      * Sign data using ECDSA with SHA-256.
      *
-     * CBOM/SAST Notes:
-     * - Parent: Elliptic Curve Digital Signature.
+     * CBOM/SAST Notes: - Parent: Elliptic Curve Digital Signature.
      */
     public byte[] signECDSA(PrivateKey privateKey, byte[] data) throws Exception {
         Signature signature = Signature.getInstance("SHA256withECDSA", "BC");
@@ -119,8 +109,7 @@ public class SignatureOperation {
     /**
      * Verify data using ECDSA with SHA-256.
      *
-     * CBOM/SAST Notes:
-     * - Parent: Elliptic Curve Digital Signature.
+     * CBOM/SAST Notes: - Parent: Elliptic Curve Digital Signature.
      */
     public boolean verifyECDSA(PublicKey publicKey, byte[] data, byte[] sigBytes) throws Exception {
         Signature signature = Signature.getInstance("SHA256withECDSA", "BC");
@@ -147,8 +136,7 @@ public class SignatureOperation {
     /**
      * Sign data using Ed25519.
      *
-     * CBOM/SAST Notes:
-     * - Parent: Modern Digital Signature (EdDSA).
+     * CBOM/SAST Notes: - Parent: Modern Digital Signature (EdDSA).
      */
     public byte[] signEd25519(PrivateKey privateKey, byte[] data) throws Exception {
         Signature signature = Signature.getInstance("Ed25519", "BC");
@@ -160,8 +148,7 @@ public class SignatureOperation {
     /**
      * Verify data using Ed25519.
      *
-     * CBOM/SAST Notes:
-     * - Parent: Modern Digital Signature (EdDSA).
+     * CBOM/SAST Notes: - Parent: Modern Digital Signature (EdDSA).
      */
     public boolean verifyEd25519(PublicKey publicKey, byte[] data, byte[] sigBytes) throws Exception {
         Signature signature = Signature.getInstance("Ed25519", "BC");
@@ -191,9 +178,8 @@ public class SignatureOperation {
     /**
      * Sign data using SHA1withRSA.
      *
-     * CBOM/SAST Notes:
-     * - Parent: Legacy Digital Signature.
-     * - SHA-1 is deprecated and RSA with 1024 bits is considered weak.
+     * CBOM/SAST Notes: - Parent: Legacy Digital Signature. - SHA-1 is
+     * deprecated and RSA with 1024 bits is considered weak.
      */
     public byte[] signSHA1withRSA(PrivateKey privateKey, byte[] data) throws Exception {
         Signature signature = Signature.getInstance("SHA1withRSA");
@@ -205,9 +191,8 @@ public class SignatureOperation {
     /**
      * Verify data using SHA1withRSA.
      *
-     * CBOM/SAST Notes:
-     * - Parent: Legacy Digital Signature.
-     * - Verification of SHA1withRSA is insecure.
+     * CBOM/SAST Notes: - Parent: Legacy Digital Signature. - Verification of
+     * SHA1withRSA is insecure.
      */
     public boolean verifySHA1withRSA(PublicKey publicKey, byte[] data, byte[] sigBytes) throws Exception {
         Signature signature = Signature.getInstance("SHA1withRSA");
@@ -239,9 +224,8 @@ public class SignatureOperation {
      * Demonstrates that even a slight tampering with the signature will cause
      * verification to fail.
      *
-     * CBOM/SAST Notes:
-     * - Edge Case: Signature integrity is critical. Any change—even a single
-     * byte—should invalidate the signature.
+     * CBOM/SAST Notes: - Edge Case: Signature integrity is critical. Any
+     * change-even a single byte-should invalidate the signature.
      */
     public void tamperSignatureEdgeCase() throws Exception {
         byte[] message = "Important Message".getBytes();
@@ -257,14 +241,13 @@ public class SignatureOperation {
     }
 
     /**
-     * Demonstrates dynamic signature algorithm selection.
-     * This is a "known unknown" scenario where the algorithm is chosen at runtime
-     * based on configuration. If the configuration is compromised or misconfigured,
-     * an insecure algorithm might be selected.
+     * Demonstrates dynamic signature algorithm selection. This is a "known
+     * unknown" scenario where the algorithm is chosen at runtime based on
+     * configuration. If the configuration is compromised or misconfigured, an
+     * insecure algorithm might be selected.
      *
-     * CBOM/SAST Notes:
-     * - Known Unknown: Dynamic configuration introduces ambiguity and risk.
-     * - Ensure that fallback defaults are secure.
+     * CBOM/SAST Notes: - Known Unknown: Dynamic configuration introduces
+     * ambiguity and risk. - Ensure that fallback defaults are secure.
      */
     public void dynamicSignatureSelectionDemo() throws Exception {
         // Simulate loading a configuration.

@@ -2,7 +2,10 @@ package com.example.crypto.algorithms;
 
 // import org.bouncycastle.jce.provider.BouncyCastleProvider;
 // import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
-
+import java.security.*;
+import java.security.spec.ECGenParameterSpec;
+import java.util.Arrays;
+import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.KeyAgreement;
 import javax.crypto.KeyGenerator;
@@ -10,42 +13,31 @@ import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.*;
-import java.security.spec.ECGenParameterSpec;
-import java.util.Arrays;
-import java.util.Base64;
 
 /**
- * AsymmetricEncryptionMacHybridCryptosystem demonstrates hybrid
- * cryptosystems that combine asymmetric encryption with a MAC.
+ * AsymmetricEncryptionMacHybridCryptosystem demonstrates hybrid cryptosystems
+ * that combine asymmetric encryption with a MAC.
  *
- * Flows:
- * 1. RSA-OAEP + HMAC:
- * - Secure Flow: Uses 2048-bit RSA-OAEP (with SHA256andMGF1Padding) to
- * encapsulate a freshly generated AES key;
- * then encrypts using AES-GCM with a random nonce and computes HMAC-SHA256 over
- * the ciphertext.
- * - Insecure Flow: Uses 1024-bit RSA (RSA/ECB/PKCS1Padding), AES-GCM with a
- * fixed IV, and HMAC-SHA1.
+ * Flows: 1. RSA-OAEP + HMAC: - Secure Flow: Uses 2048-bit RSA-OAEP (with
+ * SHA256andMGF1Padding) to encapsulate a freshly generated AES key; then
+ * encrypts using AES-GCM with a random nonce and computes HMAC-SHA256 over the
+ * ciphertext. - Insecure Flow: Uses 1024-bit RSA (RSA/ECB/PKCS1Padding),
+ * AES-GCM with a fixed IV, and HMAC-SHA1.
  *
- * 2. ECIES + HMAC:
- * - Secure Flow: Uses ephemeral ECDH key pairs (secp256r1); derives a shared
- * secret and applies a simple KDF (SHA-256)
- * to derive a 128-bit AES key; then uses AES-GCM with a random nonce and
- * computes HMAC-SHA256.
- * - Insecure Flow: Reuses a static EC key pair, directly truncates the shared
- * secret without a proper KDF,
- * uses a fixed IV, and computes HMAC-SHA1.
+ * 2. ECIES + HMAC: - Secure Flow: Uses ephemeral ECDH key pairs (secp256r1);
+ * derives a shared secret and applies a simple KDF (SHA-256) to derive a
+ * 128-bit AES key; then uses AES-GCM with a random nonce and computes
+ * HMAC-SHA256. - Insecure Flow: Reuses a static EC key pair, directly truncates
+ * the shared secret without a proper KDF, uses a fixed IV, and computes
+ * HMAC-SHA1.
  *
- * 3. Dynamic Hybrid Selection:
- * - Chooses between flows based on a configuration string.
+ * 3. Dynamic Hybrid Selection: - Chooses between flows based on a configuration
+ * string.
  *
- * SAST/CBOM Notes:
- * - Secure flows use proper ephemeral key generation, secure key sizes, KDF
- * usage, and random nonces/IVs.
- * - Insecure flows (static key reuse, fixed nonces, weak key sizes, raw shared
- * secret truncation, and deprecated algorithms)
- * should be flagged.
+ * SAST/CBOM Notes: - Secure flows use proper ephemeral key generation, secure
+ * key sizes, KDF usage, and random nonces/IVs. - Insecure flows (static key
+ * reuse, fixed nonces, weak key sizes, raw shared secret truncation, and
+ * deprecated algorithms) should be flagged.
  */
 public class AsymmetricEncryptionMacHybridCryptosystem {
 
@@ -53,9 +45,9 @@ public class AsymmetricEncryptionMacHybridCryptosystem {
     //     Security.addProvider(new BouncyCastleProvider());
     //     Security.addProvider(new BouncyCastlePQCProvider());
     // }
-
     // ---------- Result Class ----------
     public static class HybridResult {
+
         private final byte[] encapsulatedKey;
         private final byte[] ciphertext;
         private final byte[] mac;
@@ -79,14 +71,13 @@ public class AsymmetricEncryptionMacHybridCryptosystem {
         }
 
         public String toBase64String() {
-            return "EncapsulatedKey: " + Base64.getEncoder().encodeToString(encapsulatedKey) +
-                    "\nCiphertext: " + Base64.getEncoder().encodeToString(ciphertext) +
-                    "\nMAC: " + Base64.getEncoder().encodeToString(mac);
+            return "EncapsulatedKey: " + Base64.getEncoder().encodeToString(encapsulatedKey)
+                    + "\nCiphertext: " + Base64.getEncoder().encodeToString(ciphertext)
+                    + "\nMAC: " + Base64.getEncoder().encodeToString(mac);
         }
     }
 
     // ---------- Helper Methods ----------
-
     /**
      * Generates an ephemeral ECDH key pair on secp256r1.
      */
@@ -107,10 +98,10 @@ public class AsymmetricEncryptionMacHybridCryptosystem {
 
     /**
      * Derives a shared secret using the provided key agreement algorithm.
-     * 
+     *
      * @param privateKey The private key.
-     * @param publicKey  The corresponding public key.
-     * @param algorithm  The key agreement algorithm (e.g., "ECDH" or "X25519").
+     * @param publicKey The corresponding public key.
+     * @param algorithm The key agreement algorithm (e.g., "ECDH" or "X25519").
      * @return The shared secret.
      */
     public byte[] deriveSharedSecret(PrivateKey privateKey, PublicKey publicKey, String algorithm) throws Exception {
@@ -123,8 +114,8 @@ public class AsymmetricEncryptionMacHybridCryptosystem {
     /**
      * A simple KDF that hashes the input with SHA-256 and returns the first
      * numBytes.
-     * 
-     * @param input    The input byte array.
+     *
+     * @param input The input byte array.
      * @param numBytes The desired number of output bytes.
      * @return The derived key material.
      */
@@ -147,7 +138,6 @@ public class AsymmetricEncryptionMacHybridCryptosystem {
     // =====================================================
     // 1. RSA-OAEP + HMAC Hybrid Cryptosystem
     // =====================================================
-
     /**
      * Generates a secure 2048-bit RSA key pair.
      */
@@ -216,7 +206,6 @@ public class AsymmetricEncryptionMacHybridCryptosystem {
     // =====================================================
     // 2. ECIES + HMAC Hybrid Cryptosystem
     // =====================================================
-
     /**
      * Secure hybrid encryption using ECIES (via ECDH) + HMAC-SHA256.
      */
@@ -268,16 +257,15 @@ public class AsymmetricEncryptionMacHybridCryptosystem {
     // =====================================================
     // 3. Dynamic Hybrid Selection
     // =====================================================
-
     /**
      * Dynamically selects a hybrid encryption flow based on configuration.
      * SAST: Dynamic selection introduces risk if insecure defaults are chosen.
      *
-     * @param config    The configuration string ("secureRSA", "insecureRSA",
-     *                  "secureECIES", "insecureECIES").
+     * @param config The configuration string ("secureRSA", "insecureRSA",
+     * "secureECIES", "insecureECIES").
      * @param plaintext The plaintext to encrypt.
      * @return A Base64-encoded string representation of the hybrid encryption
-     *         result.
+     * result.
      * @throws Exception if an error occurs.
      */
     public String dynamicHybridEncryption(String config, byte[] plaintext) throws Exception {
@@ -300,10 +288,8 @@ public class AsymmetricEncryptionMacHybridCryptosystem {
     // =====================================================
     // 4. Helper Methods for HMAC and Symmetric Encryption
     // =====================================================
-
     /**
-     * Secure HMAC using HMAC-SHA256.
-     * SAST: HMAC-SHA256 is secure.
+     * Secure HMAC using HMAC-SHA256. SAST: HMAC-SHA256 is secure.
      */
     public byte[] secureHMACSHA256(String message, byte[] key) throws Exception {
         Mac mac = Mac.getInstance("HmacSHA256", "BC");
@@ -313,8 +299,8 @@ public class AsymmetricEncryptionMacHybridCryptosystem {
     }
 
     /**
-     * Insecure HMAC using HMAC-SHA1.
-     * SAST: HMAC-SHA1 is deprecated and insecure.
+     * Insecure HMAC using HMAC-SHA1. SAST: HMAC-SHA1 is deprecated and
+     * insecure.
      */
     public byte[] insecureHMACSHA1(String message, byte[] key) throws Exception {
         Mac mac = Mac.getInstance("HmacSHA1", "BC");
@@ -326,10 +312,9 @@ public class AsymmetricEncryptionMacHybridCryptosystem {
     // =====================================================
     // 5. Helper Methods for Key/Nonce Generation
     // =====================================================
-
     /**
-     * Generates a secure 256-bit AES key.
-     * SAST: Uses SecureRandom for key generation.
+     * Generates a secure 256-bit AES key. SAST: Uses SecureRandom for key
+     * generation.
      */
     public SecretKey generateAESKey() throws Exception {
         KeyGenerator kg = KeyGenerator.getInstance("AES");

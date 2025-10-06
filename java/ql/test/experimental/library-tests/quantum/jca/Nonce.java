@@ -15,7 +15,6 @@ public class Nonce {
     // static {
     //     Security.addProvider(new BouncyCastleProvider()); // Ensure BouncyCastle is available
     // }
-
     /**
      * Simple Case: Generates a secure nonce and uses it in HMAC.
      */

@@ -1,17 +1,16 @@
 package com.example.crypto.algorithms;
 
 // import org.bouncycastle.jce.provider.BouncyCastleProvider;
-
-import javax.crypto.Cipher;
-import javax.crypto.Mac;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.KeyGenerator;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
 import java.security.*;
 import java.util.Arrays;
 import java.util.Base64;
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.Mac;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 
 /**
  * MACOperation demonstrates various Message Authentication Code (MAC)
@@ -20,47 +19,42 @@ import java.util.Base64;
  *
  * Flows include:
  *
- * 1. Secure HMAC‑SHA2 (HMAC‑SHA256) – a widely accepted MAC.
- * 2. Secure HMAC‑SHA3 (HMAC‑SHA3-256) – an alternative using the SHA‑3 family.
- * 3. Secure Poly1305 MAC – using BouncyCastle’s implementation.
- * 4. Secure GMAC – using AES‑GCM’s authentication tag in a dedicated MAC mode.
- * 5. Secure KMAC – using KMAC128 (from the SHA‑3 family).
+ * 1. Secure HMAC-SHA2 (HMAC-SHA256) – a widely accepted MAC. 2. Secure
+ * HMAC-SHA3 (HMAC-SHA3-256) – an alternative using the SHA-3 family. 3. Secure
+ * Poly1305 MAC – using BouncyCastle’s implementation. 4. Secure GMAC – using
+ * AES-GCM’s authentication tag in a dedicated MAC mode. 5. Secure KMAC – using
+ * KMAC128 (from the SHA-3 family).
  *
  * Insecure examples include:
  *
- * 6. Insecure HMAC‑SHA1 – which is deprecated.
+ * 6. Insecure HMAC-SHA1 – which is deprecated.
  *
  * Further flows:
  *
  * A. processMACOutput: Uses the MAC output directly as key material for AES
- * encryption.
- * (Note: This is acceptable only if the MAC is produced by a secure function.)
+ * encryption. (Note: This is acceptable only if the MAC is produced by a secure
+ * function.)
  *
  * B. alternativeMACFlow: Uses the MAC output as an identifier that is then
  * encrypted.
  *
  * C. furtherUseMACForKeyDerivation: Uses PBKDF2 to split a MAC output into two
- * keys,
- * one for encryption and one for MACing ciphertext.
+ * keys, one for encryption and one for MACing ciphertext.
  *
- * SAST/CBOM Notes:
- * - Secure MAC algorithms (HMAC‑SHA256, HMAC‑SHA3-256, Poly1305, GMAC, KMAC128)
- * are acceptable if used correctly.
- * - HMAC‑SHA1 is flagged as insecure.
- * - Using a raw MAC output directly as key material is ambiguous unless the MAC
- * is produced by a secure KDF.
+ * SAST/CBOM Notes: - Secure MAC algorithms (HMAC-SHA256, HMAC-SHA3-256,
+ * Poly1305, GMAC, KMAC128) are acceptable if used correctly. - HMAC-SHA1 is
+ * flagged as insecure. - Using a raw MAC output directly as key material is
+ * ambiguous unless the MAC is produced by a secure KDF.
  */
 public class MACOperation {
 
     // static {
     //     Security.addProvider(new BouncyCastleProvider());
     // }
-
     // ---------- MAC Operations ----------
-
     /**
-     * Secure MAC using HMAC-SHA256.
-     * SAST: HMAC-SHA256 is widely considered secure.
+     * Secure MAC using HMAC-SHA256. SAST: HMAC-SHA256 is widely considered
+     * secure.
      */
     public byte[] secureHMACSHA256(String message, byte[] key) throws Exception {
         Mac mac = Mac.getInstance("HmacSHA256", "BC");
@@ -70,8 +64,8 @@ public class MACOperation {
     }
 
     /**
-     * Secure MAC using HMAC-SHA3-256.
-     * SAST: HMAC-SHA3 is a modern alternative from the SHA-3 family.
+     * Secure MAC using HMAC-SHA3-256. SAST: HMAC-SHA3 is a modern alternative
+     * from the SHA-3 family.
      */
     public byte[] secureHMACSHA3(String message, byte[] key) throws Exception {
         Mac mac = Mac.getInstance("HmacSHA3-256", "BC");
@@ -81,9 +75,8 @@ public class MACOperation {
     }
 
     /**
-     * Secure MAC using Poly1305.
-     * SAST: Poly1305 is secure when used with a one-time key from a cipher (e.g.
-     * ChaCha20).
+     * Secure MAC using Poly1305. SAST: Poly1305 is secure when used with a
+     * one-time key from a cipher (e.g. ChaCha20).
      */
     public byte[] securePoly1305(String message, byte[] key) throws Exception {
         Mac mac = Mac.getInstance("Poly1305", "BC");
@@ -93,8 +86,8 @@ public class MACOperation {
     }
 
     /**
-     * Secure MAC using GMAC.
-     * SAST: GMAC (the MAC part of AES-GCM) is secure when used correctly.
+     * Secure MAC using GMAC. SAST: GMAC (the MAC part of AES-GCM) is secure
+     * when used correctly.
      */
     public byte[] secureGMAC(String message, byte[] key) throws Exception {
         // For GMAC, we use the GMac algorithm as provided by BC.
@@ -107,8 +100,8 @@ public class MACOperation {
     }
 
     /**
-     * Secure MAC using KMAC128.
-     * SAST: KMAC128 is part of the SHA-3 family and is secure when used properly.
+     * Secure MAC using KMAC128. SAST: KMAC128 is part of the SHA-3 family and
+     * is secure when used properly.
      */
     public byte[] secureKMAC(String message, byte[] key) throws Exception {
         Mac mac = Mac.getInstance("KMAC128", "BC");
@@ -118,8 +111,8 @@ public class MACOperation {
     }
 
     /**
-     * Insecure MAC using HMAC-SHA1.
-     * SAST: HMAC-SHA1 is considered deprecated and weak.
+     * Insecure MAC using HMAC-SHA1. SAST: HMAC-SHA1 is considered deprecated
+     * and weak.
      */
     public byte[] insecureHMACSHA1(String message, byte[] key) throws Exception {
         Mac mac = Mac.getInstance("HmacSHA1", "BC");
@@ -129,12 +122,10 @@ public class MACOperation {
     }
 
     // ---------- Further Use of MAC Outputs ----------
-
     /**
      * Processes the MAC output by using it as key material for AES encryption.
-     * SAST: Using a raw MAC output as key material is acceptable only if the MAC
-     * was
-     * produced by a secure function; otherwise, this is ambiguous.
+     * SAST: Using a raw MAC output as key material is acceptable only if the
+     * MAC was produced by a secure function; otherwise, this is ambiguous.
      *
      * @param macOutput The computed MAC output.
      * @throws Exception if encryption fails.
@@ -149,9 +140,9 @@ public class MACOperation {
     }
 
     /**
-     * Alternative flow: Uses the MAC output as an identifier and then encrypts it.
-     * SAST: Using a MAC as an identifier is common; subsequent encryption must be
-     * secure.
+     * Alternative flow: Uses the MAC output as an identifier and then encrypts
+     * it. SAST: Using a MAC as an identifier is common; subsequent encryption
+     * must be secure.
      *
      * @param macOutput The computed MAC output.
      * @throws Exception if encryption fails.
@@ -163,10 +154,11 @@ public class MACOperation {
 
     /**
      * Further use: Derives two separate keys from the MAC output using PBKDF2,
-     * then uses one key for encryption and one for computing an additional MAC over
-     * the ciphertext.
+     * then uses one key for encryption and one for computing an additional MAC
+     * over the ciphertext.
      *
-     * SAST: This key-splitting technique is acceptable if PBKDF2 is used securely.
+     * SAST: This key-splitting technique is acceptable if PBKDF2 is used
+     * securely.
      *
      * @param macOutput The MAC output to derive keys from.
      * @throws Exception if key derivation or encryption fails.
@@ -202,7 +194,6 @@ public class MACOperation {
     }
 
     // ---------- Output/Storage Methods ----------
-
     /**
      * Simulates secure storage or transmission of an encrypted MAC output.
      * SAST: In production, storage and transmission must be protected.
@@ -215,8 +206,8 @@ public class MACOperation {
     }
 
     /**
-     * Encrypts data using AES-GCM and simulates secure transmission.
-     * SAST: Uses a securely generated AES key.
+     * Encrypts data using AES-GCM and simulates secure transmission. SAST: Uses
+     * a securely generated AES key.
      *
      * @param data The data to encrypt.
      * @throws Exception if encryption fails.
@@ -230,10 +221,9 @@ public class MACOperation {
     }
 
     // ---------- Helper Methods ----------
-
     /**
-     * Generates a secure 256-bit AES key.
-     * SAST: Uses a strong RNG for key generation.
+     * Generates a secure 256-bit AES key. SAST: Uses a strong RNG for key
+     * generation.
      *
      * @return A SecretKey for AES.
      * @throws NoSuchAlgorithmException if AES is unsupported.
@@ -245,8 +235,8 @@ public class MACOperation {
     }
 
     /**
-     * Generates a random salt of the specified length using SecureRandom.
-     * SAST: Salting is essential for secure key derivation.
+     * Generates a random salt of the specified length using SecureRandom. SAST:
+     * Salting is essential for secure key derivation.
      *
      * @param length The salt length.
      * @return A byte array representing the salt.
