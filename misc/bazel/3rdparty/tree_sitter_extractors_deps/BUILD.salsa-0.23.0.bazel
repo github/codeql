@@ -104,7 +104,7 @@ rust_library(
         "@vendor_ts__crossbeam-utils-0.8.21//:crossbeam_utils",
         "@vendor_ts__hashbrown-0.15.5//:hashbrown",
         "@vendor_ts__hashlink-0.10.0//:hashlink",
-        "@vendor_ts__indexmap-2.11.1//:indexmap",
+        "@vendor_ts__indexmap-2.11.4//:indexmap",
         "@vendor_ts__intrusive-collections-0.9.7//:intrusive_collections",
         "@vendor_ts__papaya-0.2.3//:papaya",
         "@vendor_ts__parking_lot-0.12.4//:parking_lot",

@@ -87,13 +87,9 @@ func testHostFieldAssignmentFlow(w http.ResponseWriter, req *http.Request) {
 	targetURL.Host = safeHost // URL is safe if Host is safe
 
 	http.Redirect(w, req, targetURL.String(), http.StatusFound) // $ Alert
-}
 
-func testHostFieldOverwritten(w http.ResponseWriter, req *http.Request) {
-	safeURL := req.URL
-
-	safeURL.Host = "something.else.com" // safeURL is not guaranteed to be safe now that Host is overwritten
-	http.Get(safeURL.String())          // not guaranteed to be safe
+	targetURL.Host = "something.else.com" // targetURL is not guaranteed to be safe now that Host is overwritten
+	http.Get(targetURL.String())
 }
 
 func testFieldAccess(w http.ResponseWriter, req *http.Request) {

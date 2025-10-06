@@ -89,7 +89,7 @@ Type getTypeEmbeddedViaPointer(Type t) {
 from Write w, LocalVariable v, Field f
 where
   // `w` writes `f` on `v`
-  w.writesField(v.getARead(), f, _) and
+  w.writesFieldPreUpdate(v.getARead(), f, _) and
   // but `f` is never read on `v`
   not exists(Read r | r.readsField(v.getARead(), f)) and
   // exclude pointer-typed `v`; there may be reads through an alias

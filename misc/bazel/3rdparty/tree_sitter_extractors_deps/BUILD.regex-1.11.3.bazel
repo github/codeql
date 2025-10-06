@@ -17,7 +17,7 @@ cargo_toml_env_vars(
 )
 
 rust_library(
-    name = "toml_writer",
+    name = "regex",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -35,8 +35,23 @@ rust_library(
         ],
     ),
     crate_features = [
-        "alloc",
+        "default",
+        "perf",
+        "perf-backtrack",
+        "perf-cache",
+        "perf-dfa",
+        "perf-inline",
+        "perf-literal",
+        "perf-onepass",
         "std",
+        "unicode",
+        "unicode-age",
+        "unicode-bool",
+        "unicode-case",
+        "unicode-gencat",
+        "unicode-perl",
+        "unicode-script",
+        "unicode-segment",
     ],
     crate_root = "src/lib.rs",
     edition = "2021",
@@ -48,7 +63,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=toml_writer",
+        "crate-name=regex",
         "manual",
         "noclippy",
         "norustfmt",
@@ -92,5 +107,11 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "1.0.2",
+    version = "1.11.3",
+    deps = [
+        "@vendor_ts__aho-corasick-1.1.3//:aho_corasick",
+        "@vendor_ts__memchr-2.7.5//:memchr",
+        "@vendor_ts__regex-automata-0.4.11//:regex_automata",
+        "@vendor_ts__regex-syntax-0.8.6//:regex_syntax",
+    ],
 )

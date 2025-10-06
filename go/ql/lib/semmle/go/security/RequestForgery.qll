@@ -27,8 +27,8 @@ module RequestForgery {
 
     predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
       // propagate to a URL when its host is assigned to
-      exists(Write w, Field f, SsaWithFields v | f.hasQualifiedName("net/url", "URL", "Host") |
-        w.writesField(v.getAUse(), f, pred) and succ = v.getAUse()
+      exists(Write w, Field f | f.hasQualifiedName("net/url", "URL", "Host") |
+        w.writesField(succ, f, pred)
       )
     }
 
