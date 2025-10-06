@@ -44,7 +44,7 @@ For Ruby extraction:
 
 For Rust extraction:
 
-- `rustup`` and ``cargo`` must be installed.
+- ``rustup`` and ``cargo`` must be installed.
 
 For Java extraction:
 
