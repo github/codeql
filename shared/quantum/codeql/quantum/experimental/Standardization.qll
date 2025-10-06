@@ -16,7 +16,7 @@ module Types {
       TSignature(TSignatureAlgorithmType t) or
       TMac(TMacAlgorithmType t) or
       TKeyEncapsulation(TKemAlgorithmType t) or
-      TUnknownKeyOperationAlgorithmType()
+      TOtherKeyOperationAlgorithmType()
 
     // Parameterized algorithm types
     newtype TSymmetricCipherType =
@@ -49,6 +49,7 @@ module Types {
       DSA() or
       ECDSA() or
       EDDSA() or // e.g., ED25519 or ED448
+      HSS_LMS() or // Leighton-Micali Signature
       OtherSignatureAlgorithmType()
 
     newtype TKemAlgorithmType =
@@ -64,7 +65,7 @@ module Types {
     newtype TCipherStructureType =
       Block() or
       Stream() or
-      UnknownCipherStructureType()
+      OtherCipherStructureType()
 
     class CipherStructureType extends TCipherStructureType {
       string toString() {
@@ -72,7 +73,7 @@ module Types {
         or
         result = "Stream" and this = Stream()
         or
-        result = "Unknown" and this = UnknownCipherStructureType()
+        result = "Unknown" and this = OtherCipherStructureType()
       }
     }
 
@@ -119,7 +120,7 @@ module Types {
       or
       type = OtherSymmetricCipherType() and
       name = "UnknownSymmetricCipher" and
-      s = UnknownCipherStructureType()
+      s = OtherCipherStructureType()
     }
 
     class AlgorithmType extends TAlgorithm {
@@ -157,7 +158,7 @@ module Types {
         this = TMac(OtherMacAlgorithmType()) and result = "UnknownMac"
         or
         // Unknown
-        this = TUnknownKeyOperationAlgorithmType() and result = "Unknown"
+        this = TOtherKeyOperationAlgorithmType() and result = "Unknown"
       }
 
       int getImplicitKeySize() {
