@@ -34,8 +34,7 @@ edges
 | sqlx.rs:52:9:52:20 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() | provenance | MaD:13 |
 | sqlx.rs:52:9:52:20 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() | provenance | MaD:9 |
 | sqlx.rs:52:9:52:20 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() | provenance | MaD:13 |
-| sqlx.rs:52:24:52:30 | res | sqlx.rs:52:32:52:87 | { ... } | provenance |  |
-| sqlx.rs:52:32:52:87 | ...::format(...) | sqlx.rs:52:24:52:30 | res | provenance |  |
+| sqlx.rs:52:32:52:87 | ...::format(...) | sqlx.rs:52:32:52:87 | { ... } | provenance |  |
 | sqlx.rs:52:32:52:87 | ...::must_use(...) | sqlx.rs:52:9:52:20 | safe_query_3 | provenance |  |
 | sqlx.rs:52:32:52:87 | MacroExpr | sqlx.rs:52:32:52:87 | ...::format(...) | provenance | MaD:16 |
 | sqlx.rs:52:32:52:87 | { ... } | sqlx.rs:52:32:52:87 | ...::must_use(...) | provenance | MaD:17 |
@@ -62,8 +61,7 @@ edges
 | sqlx.rs:56:9:56:22 | unsafe_query_4 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() | provenance | MaD:13 |
 | sqlx.rs:56:9:56:22 | unsafe_query_4 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() | provenance | MaD:9 |
 | sqlx.rs:56:9:56:22 | unsafe_query_4 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() | provenance | MaD:13 |
-| sqlx.rs:59:9:59:15 | res | sqlx.rs:59:17:59:72 | { ... } | provenance |  |
-| sqlx.rs:59:17:59:72 | ...::format(...) | sqlx.rs:59:9:59:15 | res | provenance |  |
+| sqlx.rs:59:17:59:72 | ...::format(...) | sqlx.rs:59:17:59:72 | { ... } | provenance |  |
 | sqlx.rs:59:17:59:72 | ...::must_use(...) | sqlx.rs:56:9:56:22 | unsafe_query_4 | provenance |  |
 | sqlx.rs:59:17:59:72 | MacroExpr | sqlx.rs:59:17:59:72 | ...::format(...) | provenance | MaD:16 |
 | sqlx.rs:59:17:59:72 | { ... } | sqlx.rs:59:17:59:72 | ...::must_use(...) | provenance | MaD:17 |
@@ -203,7 +201,6 @@ nodes
 | sqlx.rs:49:25:49:52 | remote_string.parse() [Ok] | semmle.label | remote_string.parse() [Ok] |
 | sqlx.rs:49:25:49:65 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
 | sqlx.rs:52:9:52:20 | safe_query_3 | semmle.label | safe_query_3 |
-| sqlx.rs:52:24:52:30 | res | semmle.label | res |
 | sqlx.rs:52:32:52:87 | ...::format(...) | semmle.label | ...::format(...) |
 | sqlx.rs:52:32:52:87 | ...::must_use(...) | semmle.label | ...::must_use(...) |
 | sqlx.rs:52:32:52:87 | MacroExpr | semmle.label | MacroExpr |
@@ -220,7 +217,6 @@ nodes
 | sqlx.rs:55:83:55:96 | &remote_string [&ref] | semmle.label | &remote_string [&ref] |
 | sqlx.rs:55:84:55:96 | remote_string | semmle.label | remote_string |
 | sqlx.rs:56:9:56:22 | unsafe_query_4 | semmle.label | unsafe_query_4 |
-| sqlx.rs:59:9:59:15 | res | semmle.label | res |
 | sqlx.rs:59:17:59:72 | ...::format(...) | semmle.label | ...::format(...) |
 | sqlx.rs:59:17:59:72 | ...::must_use(...) | semmle.label | ...::must_use(...) |
 | sqlx.rs:59:17:59:72 | MacroExpr | semmle.label | MacroExpr |
