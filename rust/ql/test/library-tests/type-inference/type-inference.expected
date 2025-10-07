@@ -207,46 +207,94 @@ inferType
 | blanket_impl.rs:183:22:183:34 | my_other_flag |  | blanket_impl.rs:160:5:162:5 | MyOtherFlag |
 | blanket_impl.rs:183:22:183:56 | my_other_flag.try_read_flag_twice() |  | {EXTERNAL LOCATION} | Option |
 | blanket_impl.rs:183:22:183:56 | my_other_flag.try_read_flag_twice() | T | {EXTERNAL LOCATION} | bool |
-| blanket_impl.rs:193:21:193:25 | SelfParam |  | file://:0:0:0:0 | & |
-| blanket_impl.rs:193:21:193:25 | SelfParam | &T | blanket_impl.rs:192:5:195:5 | Self [trait Executor] |
-| blanket_impl.rs:194:24:194:28 | SelfParam |  | file://:0:0:0:0 | & |
-| blanket_impl.rs:194:24:194:28 | SelfParam | &T | blanket_impl.rs:192:5:195:5 | Self [trait Executor] |
-| blanket_impl.rs:194:31:194:35 | query |  | blanket_impl.rs:194:21:194:21 | E |
-| blanket_impl.rs:198:21:198:25 | SelfParam |  | file://:0:0:0:0 | & |
-| blanket_impl.rs:198:21:198:25 | SelfParam | &T | blanket_impl.rs:197:10:197:22 | T |
-| blanket_impl.rs:199:22:199:41 | "Executor::execute1\\n" |  | file://:0:0:0:0 | & |
-| blanket_impl.rs:199:22:199:41 | "Executor::execute1\\n" | &T | {EXTERNAL LOCATION} | str |
-| blanket_impl.rs:199:22:199:41 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
-| blanket_impl.rs:199:22:199:41 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
-| blanket_impl.rs:202:24:202:28 | SelfParam |  | file://:0:0:0:0 | & |
-| blanket_impl.rs:202:24:202:28 | SelfParam | &T | blanket_impl.rs:197:10:197:22 | T |
-| blanket_impl.rs:202:31:202:36 | _query |  | blanket_impl.rs:202:21:202:21 | E |
-| blanket_impl.rs:203:22:203:41 | "Executor::execute2\\n" |  | file://:0:0:0:0 | & |
-| blanket_impl.rs:203:22:203:41 | "Executor::execute2\\n" | &T | {EXTERNAL LOCATION} | str |
-| blanket_impl.rs:203:22:203:41 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
-| blanket_impl.rs:203:22:203:41 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
-| blanket_impl.rs:212:13:212:13 | c |  | blanket_impl.rs:207:5:207:29 | MySqlConnection |
-| blanket_impl.rs:212:17:212:34 | MySqlConnection {...} |  | blanket_impl.rs:207:5:207:29 | MySqlConnection |
-| blanket_impl.rs:214:9:214:9 | c |  | blanket_impl.rs:207:5:207:29 | MySqlConnection |
-| blanket_impl.rs:215:35:215:36 | &c |  | file://:0:0:0:0 | & |
-| blanket_impl.rs:215:35:215:36 | &c | &T | blanket_impl.rs:207:5:207:29 | MySqlConnection |
-| blanket_impl.rs:215:36:215:36 | c |  | blanket_impl.rs:207:5:207:29 | MySqlConnection |
-| blanket_impl.rs:217:9:217:9 | c |  | blanket_impl.rs:207:5:207:29 | MySqlConnection |
-| blanket_impl.rs:217:20:217:40 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
-| blanket_impl.rs:217:20:217:40 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
-| blanket_impl.rs:218:9:218:9 | c |  | blanket_impl.rs:207:5:207:29 | MySqlConnection |
-| blanket_impl.rs:218:28:218:48 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
-| blanket_impl.rs:218:28:218:48 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
-| blanket_impl.rs:219:35:219:36 | &c |  | file://:0:0:0:0 | & |
-| blanket_impl.rs:219:35:219:36 | &c | &T | blanket_impl.rs:207:5:207:29 | MySqlConnection |
-| blanket_impl.rs:219:36:219:36 | c |  | blanket_impl.rs:207:5:207:29 | MySqlConnection |
-| blanket_impl.rs:219:39:219:59 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
-| blanket_impl.rs:219:39:219:59 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
-| blanket_impl.rs:220:43:220:44 | &c |  | file://:0:0:0:0 | & |
-| blanket_impl.rs:220:43:220:44 | &c | &T | blanket_impl.rs:207:5:207:29 | MySqlConnection |
-| blanket_impl.rs:220:44:220:44 | c |  | blanket_impl.rs:207:5:207:29 | MySqlConnection |
-| blanket_impl.rs:220:47:220:67 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
-| blanket_impl.rs:220:47:220:67 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
+| blanket_impl.rs:196:15:196:18 | SelfParam |  | blanket_impl.rs:194:5:197:5 | Self [trait MyTrait1] |
+| blanket_impl.rs:201:15:201:18 | SelfParam |  | blanket_impl.rs:199:5:202:5 | Self [trait MyTrait2] |
+| blanket_impl.rs:206:15:206:18 | SelfParam |  | blanket_impl.rs:204:5:207:5 | Self [trait MyTrait3] |
+| blanket_impl.rs:211:15:211:18 | SelfParam |  | blanket_impl.rs:209:5:212:5 | Self [trait MyTrait4a] |
+| blanket_impl.rs:216:15:216:18 | SelfParam |  | blanket_impl.rs:214:5:217:5 | Self [trait MyTrait4b] |
+| blanket_impl.rs:221:15:221:18 | SelfParam |  | blanket_impl.rs:188:5:189:14 | S1 |
+| blanket_impl.rs:226:15:226:18 | SelfParam |  | blanket_impl.rs:188:5:189:14 | S1 |
+| blanket_impl.rs:231:15:231:18 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:231:15:231:18 | SelfParam | &T | blanket_impl.rs:229:10:229:27 | T |
+| blanket_impl.rs:232:13:232:16 | self |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:232:13:232:16 | self | &T | blanket_impl.rs:229:10:229:27 | T |
+| blanket_impl.rs:238:15:238:18 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:238:15:238:18 | SelfParam | &T | file://:0:0:0:0 | & |
+| blanket_impl.rs:238:15:238:18 | SelfParam | &T.&T | blanket_impl.rs:188:5:189:14 | S1 |
+| blanket_impl.rs:239:13:239:16 | self |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:239:13:239:16 | self | &T | file://:0:0:0:0 | & |
+| blanket_impl.rs:239:13:239:16 | self | &T.&T | blanket_impl.rs:188:5:189:14 | S1 |
+| blanket_impl.rs:245:15:245:18 | SelfParam |  | blanket_impl.rs:243:10:243:20 | T |
+| blanket_impl.rs:246:13:246:16 | self |  | blanket_impl.rs:243:10:243:20 | T |
+| blanket_impl.rs:252:15:252:18 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:252:15:252:18 | SelfParam | &T | blanket_impl.rs:250:10:250:10 | T |
+| blanket_impl.rs:256:18:256:19 | S1 |  | blanket_impl.rs:188:5:189:14 | S1 |
+| blanket_impl.rs:257:18:257:22 | (...) |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:257:18:257:22 | (...) | &T | blanket_impl.rs:188:5:189:14 | S1 |
+| blanket_impl.rs:257:19:257:21 | &S1 |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:257:19:257:21 | &S1 | &T | blanket_impl.rs:188:5:189:14 | S1 |
+| blanket_impl.rs:257:20:257:21 | S1 |  | blanket_impl.rs:188:5:189:14 | S1 |
+| blanket_impl.rs:258:18:258:23 | (...) |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:258:18:258:23 | (...) | &T | file://:0:0:0:0 | & |
+| blanket_impl.rs:258:18:258:23 | (...) | &T.&T | blanket_impl.rs:188:5:189:14 | S1 |
+| blanket_impl.rs:258:19:258:22 | &... |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:258:19:258:22 | &... | &T | file://:0:0:0:0 | & |
+| blanket_impl.rs:258:19:258:22 | &... | &T.&T | blanket_impl.rs:188:5:189:14 | S1 |
+| blanket_impl.rs:258:20:258:22 | &S1 |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:258:20:258:22 | &S1 | &T | blanket_impl.rs:188:5:189:14 | S1 |
+| blanket_impl.rs:258:21:258:22 | S1 |  | blanket_impl.rs:188:5:189:14 | S1 |
+| blanket_impl.rs:259:18:259:19 | S1 |  | blanket_impl.rs:188:5:189:14 | S1 |
+| blanket_impl.rs:260:18:260:22 | (...) |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:260:18:260:22 | (...) | &T | blanket_impl.rs:188:5:189:14 | S1 |
+| blanket_impl.rs:260:19:260:21 | &S1 |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:260:19:260:21 | &S1 | &T | blanket_impl.rs:188:5:189:14 | S1 |
+| blanket_impl.rs:260:20:260:21 | S1 |  | blanket_impl.rs:188:5:189:14 | S1 |
+| blanket_impl.rs:261:18:261:19 | S2 |  | blanket_impl.rs:191:5:192:14 | S2 |
+| blanket_impl.rs:262:18:262:22 | (...) |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:262:18:262:22 | (...) | &T | blanket_impl.rs:191:5:192:14 | S2 |
+| blanket_impl.rs:262:19:262:21 | &S2 |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:262:19:262:21 | &S2 | &T | blanket_impl.rs:191:5:192:14 | S2 |
+| blanket_impl.rs:262:20:262:21 | S2 |  | blanket_impl.rs:191:5:192:14 | S2 |
+| blanket_impl.rs:272:21:272:25 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:272:21:272:25 | SelfParam | &T | blanket_impl.rs:271:5:274:5 | Self [trait Executor] |
+| blanket_impl.rs:273:24:273:28 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:273:24:273:28 | SelfParam | &T | blanket_impl.rs:271:5:274:5 | Self [trait Executor] |
+| blanket_impl.rs:273:31:273:35 | query |  | blanket_impl.rs:273:21:273:21 | E |
+| blanket_impl.rs:277:21:277:25 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:277:21:277:25 | SelfParam | &T | blanket_impl.rs:276:10:276:22 | T |
+| blanket_impl.rs:278:22:278:41 | "Executor::execute1\\n" |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:278:22:278:41 | "Executor::execute1\\n" | &T | {EXTERNAL LOCATION} | str |
+| blanket_impl.rs:278:22:278:41 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| blanket_impl.rs:278:22:278:41 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
+| blanket_impl.rs:281:24:281:28 | SelfParam |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:281:24:281:28 | SelfParam | &T | blanket_impl.rs:276:10:276:22 | T |
+| blanket_impl.rs:281:31:281:36 | _query |  | blanket_impl.rs:281:21:281:21 | E |
+| blanket_impl.rs:282:22:282:41 | "Executor::execute2\\n" |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:282:22:282:41 | "Executor::execute2\\n" | &T | {EXTERNAL LOCATION} | str |
+| blanket_impl.rs:282:22:282:41 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| blanket_impl.rs:282:22:282:41 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
+| blanket_impl.rs:291:13:291:13 | c |  | blanket_impl.rs:286:5:286:29 | MySqlConnection |
+| blanket_impl.rs:291:17:291:34 | MySqlConnection {...} |  | blanket_impl.rs:286:5:286:29 | MySqlConnection |
+| blanket_impl.rs:293:9:293:9 | c |  | blanket_impl.rs:286:5:286:29 | MySqlConnection |
+| blanket_impl.rs:294:35:294:36 | &c |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:294:35:294:36 | &c | &T | blanket_impl.rs:286:5:286:29 | MySqlConnection |
+| blanket_impl.rs:294:36:294:36 | c |  | blanket_impl.rs:286:5:286:29 | MySqlConnection |
+| blanket_impl.rs:296:9:296:9 | c |  | blanket_impl.rs:286:5:286:29 | MySqlConnection |
+| blanket_impl.rs:296:20:296:40 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:296:20:296:40 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
+| blanket_impl.rs:297:9:297:9 | c |  | blanket_impl.rs:286:5:286:29 | MySqlConnection |
+| blanket_impl.rs:297:28:297:48 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:297:28:297:48 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
+| blanket_impl.rs:298:35:298:36 | &c |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:298:35:298:36 | &c | &T | blanket_impl.rs:286:5:286:29 | MySqlConnection |
+| blanket_impl.rs:298:36:298:36 | c |  | blanket_impl.rs:286:5:286:29 | MySqlConnection |
+| blanket_impl.rs:298:39:298:59 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:298:39:298:59 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
+| blanket_impl.rs:299:43:299:44 | &c |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:299:43:299:44 | &c | &T | blanket_impl.rs:286:5:286:29 | MySqlConnection |
+| blanket_impl.rs:299:44:299:44 | c |  | blanket_impl.rs:286:5:286:29 | MySqlConnection |
+| blanket_impl.rs:299:47:299:67 | "SELECT * FROM users" |  | file://:0:0:0:0 | & |
+| blanket_impl.rs:299:47:299:67 | "SELECT * FROM users" | &T | {EXTERNAL LOCATION} | str |
 | closure.rs:6:13:6:22 | my_closure |  | {EXTERNAL LOCATION} | dyn FnOnce |
 | closure.rs:6:13:6:22 | my_closure | dyn(Args) | file://:0:0:0:0 | (T_2) |
 | closure.rs:6:13:6:22 | my_closure | dyn(Args).0(2) | {EXTERNAL LOCATION} | bool |

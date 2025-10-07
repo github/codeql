@@ -1,4 +1,6 @@
 multipleCallTargets
+| blanket_impl.rs:257:18:257:27 | ... .m2() |
+| blanket_impl.rs:259:18:259:24 | S1.m4() |
 | dereference.rs:69:15:69:24 | e1.deref() |
 | dereference.rs:182:17:182:26 | ... .foo() |
 | dereference.rs:183:17:183:23 | S.foo() |
