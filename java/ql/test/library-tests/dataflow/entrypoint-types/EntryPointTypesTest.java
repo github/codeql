@@ -41,6 +41,10 @@ public class EntryPointTypesTest {
         public String safeField;
     }
 
+    static class ArrayElemObject {
+        public String field;
+    }
+
     private static void sink(String sink) {}
 
     public static void test(TestObject source) {
@@ -69,5 +73,9 @@ public class EntryPointTypesTest {
         // Ensure that we are not tainting every subclass of Object
         UnrelatedObject unrelated = (UnrelatedObject) subtypeSource.getField8();
         sink(unrelated.safeField); // Safe
+    }
+
+    public static void testArray(ArrayElemObject[] source) {
+        sink(source[0].field); // $hasTaintFlow
     }
 }
