@@ -1,7 +1,4 @@
 | Test.java:11:9:11:23 | int unused |
-| Test.java:13:9:13:46 | Stream<String> mapped |
 | Test.java:18:9:18:24 | int unused |
-| Test.java:20:9:24:11 | Stream<String> filtered |
+| Test.java:21:13:21:28 | int unused |
 | Test.java:29:9:29:24 | int unused |
-| Test.java:30:9:30:32 | String prefix |
-| Test.java:32:9:32:61 | Stream<String> result |
