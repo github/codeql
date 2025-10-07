@@ -1,4 +1,4 @@
-// semmle-extractor-options: --clang --edg --clang_version --edg 190000
+// semmle-extractor-options: --clang --clang_version 190000
 
 typedef unsigned int size_t;
 

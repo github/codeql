@@ -6,11 +6,16 @@
 
 private import python
 private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.internal.DataFlowImplSpecific
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
+private import semmle.python.Files
 private import semmle.python.Frameworks
 private import semmle.python.security.internal.EncryptionKeySizes
 private import codeql.threatmodels.ThreatModels
+private import codeql.concepts.ConceptsShared
+
+private module ConceptsShared = ConceptsMake<Location, PythonDataFlow>;
 
 /**
  * A data flow source, for a specific threat-model.
@@ -181,7 +186,7 @@ module Path {
     }
   }
 
-  /** A data-flow node that checks that a path is safe to access. */
+  /** A data-flow node that checks that a path is safe to access in some way, for example by having a controlled prefix. */
   class SafeAccessCheck extends DataFlow::ExprNode {
     SafeAccessCheck() { this = DataFlow::BarrierGuard<safeAccessCheck/3>::getABarrierNode() }
   }
@@ -192,7 +197,7 @@ module Path {
 
   /** Provides a class for modeling new path safety checks. */
   module SafeAccessCheck {
-    /** A data-flow node that checks that a path is safe to access. */
+    /** A data-flow node that checks that a path is safe to access in some way, for example by having a controlled prefix. */
     abstract class Range extends DataFlow::GuardNode {
       /** Holds if this guard validates `node` upon evaluating to `branch`. */
       abstract predicate checks(ControlFlowNode node, boolean branch);
@@ -859,6 +864,31 @@ class LdapDnEscaping extends Escaping {
  */
 class LdapFilterEscaping extends Escaping {
   LdapFilterEscaping() { super.getKind() = Escaping::getLdapFilterKind() }
+}
+
+/**
+ * A data-flow node that constructs a template in a templating engine.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `TemplateConstruction::Range` instead.
+ */
+class TemplateConstruction extends DataFlow::Node instanceof TemplateConstruction::Range {
+  /** Gets the argument that specifies the template source. */
+  DataFlow::Node getSourceArg() { result = super.getSourceArg() }
+}
+
+/** Provides classes for modeling template construction APIs. */
+module TemplateConstruction {
+  /**
+   * A data-flow node that constructs a template in a templating engine.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `TemplateConstruction` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the template source. */
+    abstract DataFlow::Node getSourceArg();
+  }
 }
 
 /** Provides classes for modeling HTTP-related APIs. */
@@ -1592,7 +1622,7 @@ module Http {
     }
   }
 
-  import semmle.python.internal.ConceptsShared::Http::Client as Client
+  import ConceptsShared::Http::Client as Client
   // TODO: investigate whether we should treat responses to client requests as
   // remote-flow-sources in general.
 }
@@ -1700,5 +1730,5 @@ module Cryptography {
     }
   }
 
-  import semmle.python.internal.ConceptsShared::Cryptography
+  import ConceptsShared::Cryptography
 }

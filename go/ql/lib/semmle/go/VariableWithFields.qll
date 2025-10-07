@@ -183,16 +183,21 @@ class VariableWithFields extends TVariableWithFields {
    */
   string getElement() { this = TVariableElementStep(_, result) }
 
+  /** Gets the location of this variable with fields. */
+  Location getLocation() { result = this.getBaseVariable().getLocation() }
+
   /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this.getBaseVariable().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }

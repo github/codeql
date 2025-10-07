@@ -1,4 +1,4 @@
-  # partial model of the Boost::Asio network library
+# partial model of the Boost::Asio network library
 extensions:
   - addsTo:
       pack: codeql/cpp-all

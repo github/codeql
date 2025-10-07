@@ -7,7 +7,9 @@
  * @problem.severity error
  * @precision very-high
  * @id java/contradictory-type-checks
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  *       logic
  */
 

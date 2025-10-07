@@ -1830,6 +1830,30 @@
     }
   },
   {
+    "type": "index_expression_list",
+    "named": true,
+    "fields": {
+      "element": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          },
+          {
+            "type": "list_splat",
+            "named": true
+          },
+          {
+            "type": "slice",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "interpolation",
     "named": true,
     "fields": {
@@ -3200,11 +3224,15 @@
     "named": true,
     "fields": {
       "subscript": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
           {
             "type": "expression",
+            "named": true
+          },
+          {
+            "type": "index_expression_list",
             "named": true
           },
           {

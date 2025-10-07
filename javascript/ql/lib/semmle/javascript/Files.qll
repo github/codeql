@@ -3,7 +3,6 @@
 import javascript
 private import NodeModuleResolutionImpl
 private import codeql.util.FileSystem
-private import internal.Locations
 
 private module FsInput implements InputSig {
   abstract class ContainerBase extends @container {
@@ -28,6 +27,8 @@ private module FsInput implements InputSig {
 private module Impl = Make<FsInput>;
 
 class Container = Impl::Container;
+
+module Folder = Impl::Folder;
 
 /** A folder. */
 class Folder extends Container, Impl::Folder {
@@ -73,6 +74,19 @@ class Folder extends Container, Impl::Folder {
       )
   }
 
+  /**
+   * Gets an implementation file and/or a typings file from this folder that has the given `stem`.
+   * This could be a single `.ts` file or a pair of `.js` and `.d.ts` files.
+   */
+  File getJavaScriptFileOrTypings(string stem) {
+    exists(File jsFile | jsFile = this.getJavaScriptFile(stem) |
+      result = jsFile
+      or
+      not jsFile.getFileType().isTypeScript() and
+      result = this.getFile(stem + ".d.ts")
+    )
+  }
+
   /** Gets a subfolder contained in this folder. */
   Folder getASubFolder() { result = this.getAChildContainer() }
 }
@@ -84,7 +98,7 @@ class File extends Container, Impl::File {
    *
    * Note that files have special locations starting and ending at line zero, column zero.
    */
-  DbLocation getLocation() { result = getLocatableLocation(this) }
+  Location getLocation() { hasLocation(this, result) }
 
   /** Gets the number of lines in this file. */
   int getNumberOfLines() { result = sum(int loc | numlines(this, loc, _, _) | loc) }

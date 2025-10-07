@@ -253,7 +253,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    */
   override Location getADeclarationLocation() { result = this.getADeclarationEntry().getLocation() }
 
-  /** Holds if this Function is a Template specialization. */
+  /** Holds if this function is a template specialization. */
   predicate isSpecialization() {
     exists(FunctionDeclarationEntry fde |
       fun_decls(unresolveElement(fde), underlyingElement(this), _, _, _) and
@@ -282,9 +282,12 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * definition, if possible.)
    */
   override Location getLocation() {
-    if exists(this.getDefinition())
-    then result = this.getDefinitionLocation()
-    else result = this.getADeclarationLocation()
+    if this instanceof BuiltInFunction
+    then result instanceof UnknownLocation // a dummy location for the built-in function
+    else
+      if exists(this.getDefinition())
+      then result = this.getDefinitionLocation()
+      else result = this.getADeclarationLocation()
   }
 
   /** Gets a child declaration of this function. */
@@ -665,7 +668,7 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
   /** Holds if this declaration is also a definition of its function. */
   override predicate isDefinition() { fun_def(underlyingElement(this)) }
 
-  /** Holds if this declaration is a Template specialization. */
+  /** Holds if this declaration is a template specialization. */
   predicate isSpecialization() { fun_specialized(underlyingElement(this)) }
 
   /**
@@ -715,6 +718,27 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
    * specification.
    */
   predicate isNoExcept() { fun_decl_empty_noexcept(underlyingElement(this)) }
+
+  /**
+   * Gets a requires clause if this declaration is a template with such a clause.
+   */
+  Expr getARequiresClause() { fun_requires(underlyingElement(this), _, unresolveElement(result)) }
+
+  /**
+   * Gets the requires clause that appears after the template argument list if this
+   * declaration is a template with such a clause.
+   */
+  Expr getTemplateRequiresClause() {
+    fun_requires(underlyingElement(this), 1, unresolveElement(result))
+  }
+
+  /**
+   * Gets the requires clause that appears after the declarator if this declaration
+   * is a template with such a clause.
+   */
+  Expr getFunctionRequiresClause() {
+    fun_requires(underlyingElement(this), 2, unresolveElement(result))
+  }
 }
 
 /**
@@ -875,16 +899,8 @@ class FunctionTemplateSpecialization extends Function {
  * A GCC built-in function. For example: `__builtin___memcpy_chk`.
  */
 class BuiltInFunction extends Function {
-  BuiltInFunction() { functions(underlyingElement(this), _, 6) }
-
-  /** Gets a dummy location for the built-in function. */
-  override Location getLocation() {
-    suppressUnusedThis(this) and
-    result instanceof UnknownDefaultLocation
-  }
+  BuiltInFunction() { builtin_functions(underlyingElement(this)) }
 }
-
-private predicate suppressUnusedThis(Function f) { any() }
 
 /**
  * A C++ user-defined literal [N4140 13.5.8].

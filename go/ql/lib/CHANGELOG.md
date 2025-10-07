@@ -1,3 +1,162 @@
+## 4.3.5
+
+No user-facing changes.
+
+## 4.3.4
+
+### Minor Analysis Improvements
+
+* The second argument of the `CreateTemp` function, from the `os` package, is no longer a path-injection sink due to proper sanitization by Go.
+* The query "Uncontrolled data used in path expression" (`go/path-injection`) now detects sanitizing a path by adding `os.PathSeparator` or `\` to the beginning.
+
+## 4.3.3
+
+No user-facing changes.
+
+## 4.3.2
+
+### Minor Analysis Improvements
+
+* Go 1.25 is now supported.
+
+## 4.3.1
+
+No user-facing changes.
+
+## 4.3.0
+
+### Deprecated APIs
+
+* The class `BuiltinType` is now deprecated. Use the new replacement `BuiltinTypeEntity` instead.
+* The class `DeclaredType` is now deprecated. Use the new replacement `DeclaredTypeEntity` instead.
+
+### Minor Analysis Improvements
+
+* Added models for the `Head` function and the `Client.Head` method, from the `net/http` package, to the `Http::ClientRequest` class. This means that they will be recognized as sinks for the query `go/request-forgery` and the experimental query `go/ssrf`.
+* Previously, `DefinedType.getBaseType` gave the underlying type. It now gives the right hand side of the type declaration, as the documentation indicated that it should.
+
+## 4.2.8
+
+No user-facing changes.
+
+## 4.2.7
+
+### Minor Analysis Improvements
+
+* The first argument of `Client.Query` in `cloud.google.com/go/bigquery` is now recognized as a SQL injection sink.
+
+## 4.2.6
+
+No user-facing changes.
+
+## 4.2.5
+
+No user-facing changes.
+
+## 4.2.4
+
+No user-facing changes.
+
+## 4.2.3
+
+### Minor Analysis Improvements
+
+* Local source models for APIs reading from databases have been added for `github.com/gogf/gf/database/gdb` and `github.com/uptrace/bun`.
+
+## 4.2.2
+
+### Minor Analysis Improvements
+
+* We no longer track taint into a `sync.Map` via the key of a key-value pair, since we do not model any way in which keys can be read from a `sync.Map`.
+* `database` source models have been added for v1 and v2 of the `github.com/couchbase/gocb` package.
+* Added `database` source models for the `github.com/Masterminds/squirrel` ORM package.
+
+## 4.2.1
+
+No user-facing changes.
+
+## 4.2.0
+
+### Deprecated APIs
+
+* The member predicate `hasLocationInfo` has been deprecated on the following classes: `BasicBlock`, `Callable`, `Content`, `ContentSet`, `ControlFlow::Node`, `DataFlowCallable`, `DataFlow::Node`, `Entity`, `GVN`, `HtmlTemplate::TemplateStmt`, `IR:WriteTarget`, `SourceSinkInterpretationInput::SourceOrSinkElement`, `SourceSinkInterpretationInput::InterpretNode`, `SsaVariable`, `SsaDefinition`, `SsaWithFields`, `StringOps::ConcatenationElement`, `Type`, and `VariableWithFields`. Use `getLocation()` instead.
+
+### Minor Analysis Improvements
+
+* The location info for the following classes has been changed slightly to match a location that is in the database: `BasicBlock`, `ControlFlow::EntryNode`, `ControlFlow::ExitNode`, `ControlFlow::ConditionGuardNode`, `IR::ImplicitLiteralElementIndexInstruction`, `IR::EvalImplicitTrueInstruction`, `SsaImplicitDefinition`, `SsaPhiNode`.
+* Added `database` source models for the `github.com/rqlite/gorqlite` package.
+* Added `database` source models for database methods from the `go.mongodb.org/mongo-driver/mongo` package.
+
+## 4.1.0
+
+### Deprecated APIs
+
+* The class `NamedType` has been deprecated. Use the new class `DefinedType` instead. This better matches the terminology used in the Go language specification, which was changed in Go 1.9.
+* The member predicate `getNamedType` on `GoMicro::ServiceInterfaceType` has been deprecated. Use the new member predicate `getDefinedType` instead.
+* The member predicate `getNamedType` on `Twirp::ServiceInterfaceType` has been deprecated. Use the new member predicate `getDefinedType` instead.
+
+### Major Analysis Improvements
+
+* Go 1.24 is now supported. This includes the new language feature of generic type aliases.
+
+### Minor Analysis Improvements
+
+* Taint models have been added for the `weak` package, which was added in Go 1.24.
+* Taint models have been added for the interfaces `TextAppender` and `BinaryAppender` in the `encoding` package, which were added in Go 1.24.
+
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `describeBitSize` predicate from `IncorrectIntegerConversionLib.qll`
+
+### Minor Analysis Improvements
+
+* Models-as-data models using "Parameter", "Parameter[n]" or "Parameter[n1..n2]" as the output now work correctly.
+* By implementing `ImplicitFieldReadNode` it is now possible to declare a dataflow node that reads any content (fields, array members, map keys and values). For example, this is appropriate for modelling a serialization method that flattens a potentially deep data structure into a string or byte array.
+* The `Template.Execute[Template]` methods of the `text/template` package now correctly convey taint from any nested fields to their result. This may produce more results from any taint-tracking query when the `text/template` package is in use.
+* Added the [rs cors](https://github.com/rs/cors) library to the CorsMisconfiguration.ql query
+
+## 3.0.2
+
+### Minor Analysis Improvements
+
+* `database` local source models have been added for the Beego ORM package.
+* `database` local source models have been added for the `github.com/jmoiron/sqlx` package.
+* Added `database` source models for database methods from the `gorm.io/gorm` package.
+* `database` local source models have been added for the `database/sql` and `database/sql/driver` packages.
+
+## 3.0.1
+
+### Minor Analysis Improvements
+
+* Added a `commandargs` local source model for the `os.Args` variable.
+
+## 3.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated data flow API that was based on extending a configuration class. See https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries for instructions on migrating your queries to use the new API.
+
+### Minor Analysis Improvements
+
+* A call to a method whose name starts with "Debug", "Error", "Fatal", "Info", "Log", "Output", "Panic", "Print", "Trace", "Warn" or "With" defined on an interface whose name ends in "logger" or "Logger" is now considered a LoggerCall. In particular, it is a sink for `go/clear-text-logging` and `go/log-injection`. This may lead to some more alerts in those queries.
+
+### Bug Fixes
+
+* Fixed a bug which meant that promoted fields and methods were missing when the embedded parent was not promoted due to a name clash.
+
+## 2.1.3
+
+### Minor Analysis Improvements
+
+* The `subtypes` column has been set to true in all models-as-data models except some tests. This means that existing models will apply in some cases where they didn't before, which may lead to more alerts.
+
+### Bug Fixes
+
+* The behaviour of the `subtypes` column in models-as-data now matches other languages more closely.
+* Fixed a bug which meant that some qualified names for promoted methods were not being recognised in some very specific circumstances.
+
 ## 2.1.2
 
 ### Minor Analysis Improvements

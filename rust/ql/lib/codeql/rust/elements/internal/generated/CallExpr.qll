@@ -29,16 +29,16 @@ module Generated {
     override string getAPrimaryQlClass() { result = "CallExpr" }
 
     /**
-     * Gets the expression of this call expression, if it exists.
+     * Gets the function of this call expression, if it exists.
      */
-    Expr getExpr() {
+    Expr getFunction() {
       result =
-        Synth::convertExprFromRaw(Synth::convertCallExprToRaw(this).(Raw::CallExpr).getExpr())
+        Synth::convertExprFromRaw(Synth::convertCallExprToRaw(this).(Raw::CallExpr).getFunction())
     }
 
     /**
-     * Holds if `getExpr()` exists.
+     * Holds if `getFunction()` exists.
      */
-    final predicate hasExpr() { exists(this.getExpr()) }
+    final predicate hasFunction() { exists(this.getFunction()) }
   }
 }

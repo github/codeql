@@ -205,3 +205,25 @@ def foo(x, y)
 end
 
 foo(*int_hash)
+
+class Sup
+    def m(x, *rest, k1:, **kwargs)
+        sink(x) # $ hasValueFlow=81
+        sink(rest[0]) # $ hasValueFlow=82
+        sink(rest[1])
+        sink(rest[2]) # $ hasValueFlow=83
+        sink(k1) # $ hasValueFlow=84
+        sink(kwargs[:k2]) # $ hasValueFlow=85
+        yield taint(86)
+    end
+end
+
+class Sub < Sup
+    def m(x, *rest, k1:, **kwargs)
+        super
+    end
+end
+
+Sub.new.m(taint(81), taint(82), 0, taint(83), k1: taint(84), k2: taint(85)) do |x|
+    sink(x) # $ hasValueFlow=86
+end

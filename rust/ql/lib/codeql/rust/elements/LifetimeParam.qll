@@ -10,9 +10,12 @@ import codeql.rust.elements.Lifetime
 import codeql.rust.elements.TypeBoundList
 
 /**
- * A LifetimeParam. For example:
+ * A lifetime parameter in a generic parameter list.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * fn foo<'a>(x: &'a str) {}
+ * //     ^^
  * ```
  */
 final class LifetimeParam = Impl::LifetimeParam;

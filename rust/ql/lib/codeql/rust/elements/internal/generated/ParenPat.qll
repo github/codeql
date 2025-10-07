@@ -15,9 +15,12 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
  */
 module Generated {
   /**
-   * A ParenPat. For example:
+   * A parenthesized pattern.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let (x) = 1;
+   * //  ^^^
    * ```
    * INTERNAL: Do not reference the `Generated::ParenPat` class directly.
    * Use the subclass `ParenPat`, where the following predicates are available.
@@ -26,7 +29,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "ParenPat" }
 
     /**
-     * Gets the pat of this paren pat, if it exists.
+     * Gets the pattern of this paren pattern, if it exists.
      */
     Pat getPat() {
       result = Synth::convertPatFromRaw(Synth::convertParenPatToRaw(this).(Raw::ParenPat).getPat())

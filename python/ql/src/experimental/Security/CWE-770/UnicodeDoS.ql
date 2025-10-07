@@ -108,6 +108,8 @@ private module UnicodeDoSConfig implements DataFlow::ConfigSig {
           .getACall()
           .getArg(_)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module UnicodeDoSFlow = TaintTracking::Global<UnicodeDoSConfig>;

@@ -746,6 +746,35 @@ class Guard extends Guard_ {
   override Expr getASubExpression() { result = this.getTest() }
 }
 
+/** An annotation, such as the `int` part of `x: int` */
+class Annotation extends Expr {
+  Annotation() {
+    this = any(AnnAssign a).getAnnotation()
+    or
+    exists(Arguments args |
+      this in [
+          args.getAnAnnotation(),
+          args.getAKwAnnotation(),
+          args.getKwargannotation(),
+          args.getVarargannotation()
+        ]
+    )
+    or
+    this = any(FunctionExpr f).getReturns()
+  }
+
+  /** Gets the expression that this annotation annotates. */
+  Expr getAnnotatedExpression() {
+    result = any(AnnAssign a | a.getAnnotation() = this).getTarget()
+    or
+    result = any(Parameter p | p.getAnnotation() = this)
+    or
+    exists(FunctionExpr f, Return r |
+      this = f.getReturns() and r.getScope() = f.getInnerScope() and result = r.getValue()
+    )
+  }
+}
+
 /* Expression Contexts */
 /** A context in which an expression used */
 class ExprContext extends ExprContext_ { }

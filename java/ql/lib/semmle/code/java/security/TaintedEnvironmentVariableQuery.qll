@@ -38,6 +38,10 @@ module ExecTaintedEnvironmentConfig implements DataFlow::ConfigSig {
       ProcessBuilderEnvironmentFlow::flowToExpr(mm.getQualifier())
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
 }
 
 /**

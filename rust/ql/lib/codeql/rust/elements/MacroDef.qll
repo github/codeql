@@ -11,9 +11,13 @@ import codeql.rust.elements.TokenTree
 import codeql.rust.elements.Visibility
 
 /**
- * A MacroDef. For example:
+ * A Rust 2.0 style declarative macro definition.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * pub macro vec_of_two($element:expr) {
+ *     vec![$element, $element]
+ * }
  * ```
  */
 final class MacroDef = Impl::MacroDef;

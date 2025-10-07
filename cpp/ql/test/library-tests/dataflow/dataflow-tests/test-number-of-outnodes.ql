@@ -1,4 +1,4 @@
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import cpp
 
 module AstTest {

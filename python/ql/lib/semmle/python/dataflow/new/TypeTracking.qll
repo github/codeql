@@ -4,7 +4,8 @@
  */
 
 private import internal.TypeTrackingImpl as Impl
-import Impl::Shared::TypeTracking<Impl::TypeTrackingInput>
+private import semmle.python.Files
+import Impl::Shared::TypeTracking<Location, Impl::TypeTrackingInput>
 private import semmle.python.dataflow.new.internal.DataFlowPublic as DataFlowPublic
 
 /**

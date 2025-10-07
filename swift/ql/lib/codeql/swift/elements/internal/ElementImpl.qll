@@ -4,7 +4,7 @@ module Impl {
   class Element extends Generated::Element {
     private predicate resolvesFrom(Element e) { e.getResolveStep() = this }
 
-    override string toString() { result = this.getPrimaryQlClasses() }
+    override string toStringImpl() { result = this.getPrimaryQlClasses() }
 
     Element getFullyUnresolved() {
       not this.resolvesFrom(_) and result = this

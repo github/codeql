@@ -47,6 +47,27 @@ module UnsafeShellCommandConstruction {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * A barrier guard for shell command constructed from library input vulnerabilities.
+   */
+  abstract class BarrierGuard extends DataFlow::Node {
+    /**
+     * Holds if this node acts as a barrier for data flow, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e) { none() }
+
+    /** DEPRECATED. Use `blocksExpr` instead. */
+    deprecated predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+  }
+
+  /** A subclass of `BarrierGuard` that is used for backward compatibility with the old data flow library. */
+  deprecated final private class BarrierGuardLegacy extends TaintTracking::SanitizerGuardNode instanceof BarrierGuard
+  {
+    override predicate sanitizes(boolean outcome, Expr e) {
+      BarrierGuard.super.sanitizes(outcome, e)
+    }
+  }
+
+  /**
    * A parameter of an exported function, seen as a source for shell command constructed from library input.
    */
   class ExternalInputSource extends Source {
@@ -245,7 +266,7 @@ module UnsafeShellCommandConstruction {
   class ReplaceQuotesSanitizer extends Sanitizer, StringReplaceCall {
     ReplaceQuotesSanitizer() {
       this.getAReplacedString() = "'" and
-      this.isGlobal() and
+      this.maybeGlobal() and
       this.getRawReplacement().mayHaveStringValue(["'\\''", ""])
     }
   }
@@ -270,13 +291,13 @@ module UnsafeShellCommandConstruction {
    * A sanitizer that sanitizers paths that exist in the file-system.
    * For example: `x` is sanitized in `fs.existsSync(x)` or `fs.existsSync(x + "/suffix/path")`.
    */
-  class PathExistsSanitizerGuard extends TaintTracking::SanitizerGuardNode, DataFlow::CallNode {
+  class PathExistsSanitizerGuard extends BarrierGuard, DataFlow::CallNode {
     PathExistsSanitizerGuard() {
       this = DataFlow::moduleMember("path", "exist").getACall() or
       this = DataFlow::moduleMember("fs", "existsSync").getACall()
     }
 
-    override predicate sanitizes(boolean outcome, Expr e) {
+    override predicate blocksExpr(boolean outcome, Expr e) {
       outcome = true and
       (
         e = this.getArgument(0).asExpr() or
@@ -289,26 +310,26 @@ module UnsafeShellCommandConstruction {
    * A guard of the form `typeof x === "<T>"`, where `<T>` is  "number", or "boolean",
    * which sanitizes `x` in its "then" branch.
    */
-  class TypeOfSanitizer extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
+  class TypeOfSanitizer extends BarrierGuard, DataFlow::ValueNode {
     Expr x;
     override EqualityTest astNode;
 
     TypeOfSanitizer() { TaintTracking::isTypeofGuard(astNode, x, ["number", "boolean"]) }
 
-    override predicate sanitizes(boolean outcome, Expr e) {
+    override predicate blocksExpr(boolean outcome, Expr e) {
       outcome = astNode.getPolarity() and
       e = x
     }
   }
 
   /** A guard that checks whether `x` is a number. */
-  class NumberGuard extends TaintTracking::SanitizerGuardNode instanceof DataFlow::CallNode {
+  class NumberGuard extends BarrierGuard instanceof DataFlow::CallNode {
     Expr x;
     boolean polarity;
 
     NumberGuard() { TaintTracking::isNumberGuard(this, x, polarity) }
 
-    override predicate sanitizes(boolean outcome, Expr e) { e = x and outcome = polarity }
+    override predicate blocksExpr(boolean outcome, Expr e) { e = x and outcome = polarity }
   }
 
   private import semmle.javascript.dataflow.internal.AccessPaths

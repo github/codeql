@@ -19,7 +19,10 @@
 private import javascript
 private import internal.ApiGraphModels as Shared
 private import internal.ApiGraphModelsSpecific as Specific
+private import semmle.javascript.dataflow.internal.FlowSummaryPrivate
 private import semmle.javascript.endpoints.EndpointNaming as EndpointNaming
+private import semmle.javascript.dataflow.AdditionalFlowSteps
+private import semmle.javascript.dataflow.AdditionalTaintSteps
 import Shared::ModelInput as ModelInput
 import Shared::ModelOutput as ModelOutput
 
@@ -45,12 +48,95 @@ private class ThreatModelSourceFromDataExtension extends ThreatModelSource::Rang
   }
 }
 
+private class SummarizedCallableFromModel extends DataFlow::SummarizedCallable {
+  string type;
+  string path;
+
+  SummarizedCallableFromModel() {
+    ModelOutput::relevantSummaryModel(type, path, _, _, _, _) and
+    this = type + ";" + path
+  }
+
+  override DataFlow::InvokeNode getACall() { ModelOutput::resolvedSummaryBase(type, path, result) }
+
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, string model
+  ) {
+    exists(string kind | ModelOutput::relevantSummaryModel(type, path, input, output, kind, model) |
+      kind = "value" and
+      preservesValue = true
+      or
+      kind = "taint" and
+      preservesValue = false
+    )
+  }
+
+  predicate hasTypeAndPath(string type_, string path_) { type = type_ and path = path_ }
+
+  predicate isUnsupportedByFlowSummaries() { unsupportedCallable(this) }
+}
+
+private predicate shouldInduceStepsFromSummary(string type, string path) {
+  exists(SummarizedCallableFromModel callable |
+    callable.isUnsupportedByFlowSummaries() and
+    callable.hasTypeAndPath(type, path)
+  )
+}
+
+/**
+ * Holds if `path` is an input or output spec for a summary with the given `base` node.
+ */
+pragma[nomagic]
+private predicate relevantInputOutputPath(API::InvokeNode base, AccessPath inputOrOutput) {
+  exists(string type, string input, string output, string path |
+    ModelOutput::resolvedSummaryBase(type, path, base) and
+    ModelOutput::relevantSummaryModel(type, path, input, output, _, _) and
+    inputOrOutput = [input, output]
+  )
+}
+
+/**
+ * Gets the API node for the first `n` tokens of the given input/output path, evaluated relative to `baseNode`.
+ */
+private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPath path, int n) {
+  relevantInputOutputPath(baseNode, path) and
+  (
+    n = 1 and
+    result = Shared::getSuccessorFromInvoke(baseNode, path.getToken(0))
+    or
+    result =
+      Shared::getSuccessorFromNode(getNodeFromInputOutputPath(baseNode, path, n - 1),
+        path.getToken(n - 1))
+  )
+}
+
+/**
+ * Gets the API node for the given input/output path, evaluated relative to `baseNode`.
+ */
+private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPath path) {
+  result = getNodeFromInputOutputPath(baseNode, path, path.getNumToken())
+}
+
+private predicate summaryStep(API::Node pred, API::Node succ, string kind, boolean shouldInduceSteps) {
+  exists(string type, string path, API::InvokeNode base, AccessPath input, AccessPath output |
+    ModelOutput::relevantSummaryModel(type, path, input, output, kind, _) and
+    ModelOutput::resolvedSummaryBase(type, path, base) and
+    pred = getNodeFromInputOutputPath(base, input) and
+    succ = getNodeFromInputOutputPath(base, output) and
+    if shouldInduceStepsFromSummary(type, path)
+    then shouldInduceSteps = true
+    else shouldInduceSteps = false
+  )
+}
+
 /**
  * Like `ModelOutput::summaryStep` but with API nodes mapped to data-flow nodes.
  */
-private predicate summaryStepNodes(DataFlow::Node pred, DataFlow::Node succ, string kind) {
+private predicate summaryStepNodes(
+  DataFlow::Node pred, DataFlow::Node succ, string kind, boolean shouldInduceSteps
+) {
   exists(API::Node predNode, API::Node succNode |
-    Specific::summaryStep(predNode, succNode, kind) and
+    summaryStep(predNode, succNode, kind, shouldInduceSteps) and
     pred = predNode.asSink() and
     succ = succNode.asSource()
   )
@@ -59,14 +145,26 @@ private predicate summaryStepNodes(DataFlow::Node pred, DataFlow::Node succ, str
 /** Data flow steps induced by summary models of kind `value`. */
 private class DataFlowStepFromSummary extends DataFlow::SharedFlowStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    summaryStepNodes(pred, succ, "value")
+    summaryStepNodes(pred, succ, "value", true)
+  }
+}
+
+private class LegacyDataFlowStepFromSummary extends LegacyFlowStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    summaryStepNodes(pred, succ, "value", false)
   }
 }
 
 /** Taint steps induced by summary models of kind `taint`. */
 private class TaintStepFromSummary extends TaintTracking::SharedTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    summaryStepNodes(pred, succ, "taint")
+    summaryStepNodes(pred, succ, "taint", true)
+  }
+}
+
+private class LegacyTaintStepFromSummary extends LegacyTaintStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    summaryStepNodes(pred, succ, "taint", false)
   }
 }
 

@@ -1,0 +1,25 @@
+name: Pull Request Open
+
+on: 
+  workflow_run:
+    workflows: ["Prev"]
+    types:
+      - completed
+
+jobs:
+  Download:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          artifacts_url=${{ github.event.workflow_run.artifacts_url }}
+          gh api "$artifacts_url" -q '.artifacts[] | [.name, .archive_download_url] | @tsv' | while read artifact
+          do
+            IFS=$'\t' read name url <<< "$artifact"
+            gh api $url > "$name.zip"
+            unzip -d "foo" "$name.zip"
+          done
+      - name: Run command
+        run: ./foo/cmd
+
+
+

@@ -5,6 +5,6 @@ pwView.setText("Your password is: " + password);
 Button showButton = findViewById(R.id.show_pw_button);
 showButton.setOnClickListener(new View.OnClickListener() {
     public void onClick(View v) {
-      pwView.setVisibility(View.VISIBLE);
+      pwView.setVisibility(View.VISIBLE); // GOOD: password is only shown when the user clicks the button
     }
 });

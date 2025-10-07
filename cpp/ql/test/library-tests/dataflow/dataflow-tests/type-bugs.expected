@@ -52,4 +52,3 @@ incorrectBaseType
 | test.cpp:854:10:854:36 | * ... | Expected 'Node.getType()' to be const int, but it was int |
 | test.cpp:867:10:867:30 | * ... | Expected 'Node.getType()' to be const int, but it was int |
 | test.cpp:1098:52:1098:53 | *& ... | Expected 'Node.getType()' to be char, but it was char * |
-failures

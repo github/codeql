@@ -16,9 +16,9 @@ import codeql.rust.elements.Name
  */
 module Generated {
   /**
-   * A FormatArgsArg. For example:
+   * A FormatArgsArg. For example the `"world"` in:
    * ```rust
-   * todo!()
+   * format_args!("Hello, {}!", "world")
    * ```
    * INTERNAL: Do not reference the `Generated::FormatArgsArg` class directly.
    * Use the subclass `FormatArgsArg`, where the following predicates are available.

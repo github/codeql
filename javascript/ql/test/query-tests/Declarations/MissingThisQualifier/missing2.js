@@ -1,6 +1,6 @@
 class Audio3D {
   static setAudioStream() {
-    setAudioProperties(); // NOT OK
+    setAudioProperties(); // $ Alert
 
   }
 

@@ -6,9 +6,9 @@
  * @problem.severity warning
  * @precision medium
  * @id java/wrong-object-serialization-signature
- * @tags reliability
- *       maintainability
- *       language-features
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import java

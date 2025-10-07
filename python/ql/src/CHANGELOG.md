@@ -1,3 +1,124 @@
+## 1.6.6
+
+### Minor Analysis Improvements
+
+- The queries that check for unmatchable `$` and `^` in regular expressions did not account correctly for occurrences inside lookahead and lookbehind assertions. These occurrences are now handled correctly, eliminating this source of false positives.
+* The `py/inheritance/signature-mismatch` query has been modernized. It produces more precise results and more descriptive alert messages. 
+* The `py/inheritance/incorrect-overriding-signature` query has been deprecated. Its results have been consolidated into the `py/inheritance/signature-mismatch` query.
+
+## 1.6.5
+
+### Minor Analysis Improvements
+
+* The queries `py/missing-call-to-init`, `py/missing-calls-to-del`, `py/multiple-calls-to-init`, and `py/multiple-calls-to-del` queries have been modernized; no longer relying on outdated libraries, producing more precise results with more descriptive alert messages, and improved documentation.
+
+## 1.6.4
+
+### Minor Analysis Improvements
+
+* The `py/unexpected-raise-in-special-method` query has been modernized. It produces additional results in cases where the exception is 
+only raised conditionally. Its precision has been changed from `very-high` to `high`.
+* The queries `py/incomplete-ordering`, `py/inconsistent-equality`, and `py/equals-hash-mismatch` have been modernized; no longer relying on outdated libraries, improved documentation, and no longer producing alerts for problems specific to Python 2.
+
+## 1.6.3
+
+No user-facing changes.
+
+## 1.6.2
+
+No user-facing changes.
+
+## 1.6.1
+
+No user-facing changes.
+
+## 1.6.0
+
+### Query Metadata Changes
+
+* The tag `quality` has been added to multiple Python quality queries for consistency. They have all been given a tag for one of the two top-level categories `reliability` or `maintainability`, and a tag for a sub-category. See [Query file metadata and alert message style guide](https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md#quality-query-sub-category-tags) for more information about these categories.
+
+### Minor Analysis Improvements
+
+* The `py/iter-returns-non-self` query has been modernized, and no longer alerts for certain cases where an equivalent iterator is returned.
+
+## 1.5.2
+
+### Minor Analysis Improvements
+
+* Added SQL injection models from the `pandas` PyPI package.
+
+## 1.5.1
+
+### Minor Analysis Improvements
+
+* The query `py/hardcoded-credentials` has been removed from all query suites.
+
+## 1.5.0
+
+### Query Metadata Changes
+
+* The tags `security/cwe/cwe-94` and `security/cwe/cwe-95` have been removed from `py/use-of-input` and the tags `external/cwe/cwe-094` and `external/cwe/cwe-095` have been added.
+* The tag `external/cwe/cwe-20` has been removed from `py/count-untrusted-data-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `py/untrusted-data-to-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `py/cookie-injection` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `py/incomplete-url-substring-sanitization` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-94` has been removed from `py/js2py-rce` and the tag `external/cwe/cwe-094` has been added.
+
+## 1.4.8
+
+No user-facing changes.
+
+## 1.4.7
+
+### Minor Analysis Improvements
+
+- The `py/mixed-tuple-returns` query no longer flags instances where the tuple is passed into the function as an argument, as this led to too many false positives.
+
+## 1.4.6
+
+### Minor Analysis Improvements
+
+- The `py/special-method-wrong-signature` has been modernized and rewritten to no longer rely on outdated APIs. Moreover, the query no longer flags cases where a default value is never used, as these alerts were rarely useful.
+
+### Bug Fixes
+
+- The `py/unused-global-variable` now no longer flags variables that are only used in forward references (e.g. the `Foo` in `def bar(x: "Foo"): ...`).
+
+## 1.4.5
+
+No user-facing changes.
+
+## 1.4.4
+
+No user-facing changes.
+
+## 1.4.3
+
+No user-facing changes.
+
+## 1.4.2
+
+No user-facing changes.
+
+## 1.4.1
+
+No user-facing changes.
+
+## 1.4.0
+
+### New Queries
+
+* The Server Side Template Injection query (`py/template-injection`), originally contributed to the experimental query pack by @porcupineyhairs, has been promoted to the main query suite. This query finds instances of templates for a template engine such as Jinja being constructed with user input.
+
+## 1.3.4
+
+No user-facing changes.
+
+## 1.3.3
+
+No user-facing changes.
+
 ## 1.3.2
 
 ### Minor Analysis Improvements

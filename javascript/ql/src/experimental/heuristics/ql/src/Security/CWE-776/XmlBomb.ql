@@ -15,11 +15,11 @@
 
 import javascript
 import semmle.javascript.security.dataflow.XmlBombQuery
-import DataFlow::PathGraph
+import XmlBombFlow::PathGraph
 import semmle.javascript.heuristics.AdditionalSources
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink) and source.getNode() instanceof HeuristicSource
+from XmlBombFlow::PathNode source, XmlBombFlow::PathNode sink
+where XmlBombFlow::flowPath(source, sink) and source.getNode() instanceof HeuristicSource
 select sink.getNode(), source, sink,
   "XML parsing depends on a $@ without guarding against uncontrolled entity expansion.",
   source.getNode(), "user-provided value"

@@ -1,0 +1,4 @@
+{
+    "name": "@example/package-with-main-ext",
+    "main": "./lib/main.js"
+}

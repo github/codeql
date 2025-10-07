@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["phpdocumentor/phpdocumentor", "*", "input.passphrase", "code-injection", "generated"]
+     - ["phpdocumentor/phpdocumentor", "*", "input.secret-key", "code-injection", "generated"]

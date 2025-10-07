@@ -47,6 +47,7 @@ namespace TestVirtualCalls
             f_nonvirtual();       // GOOD
             f_interface();        // GOOD
             ((I)this).f_interface(); // GOOD
+            var x = $"{this}"; // GOOD
 
             // Method access
             Action a;
@@ -69,6 +70,11 @@ namespace TestVirtualCalls
             e_virtual += f_nonvirtual;  // BAD
             e_sealed += f_nonvirtual; // GOOD
             e_nonvirtual += f_nonvirtual; // GOOD
+        }
+
+        public override string ToString()
+        {
+            return "C";
         }
     }
 }

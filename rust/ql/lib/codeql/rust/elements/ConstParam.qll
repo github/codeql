@@ -8,12 +8,15 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.ConstArg
 import codeql.rust.elements.GenericParam
 import codeql.rust.elements.Name
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 
 /**
- * A ConstParam. For example:
+ * A constant parameter in a generic parameter list.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * struct Foo <const N: usize>;
+ * //          ^^^^^^^^^^^^^^
  * ```
  */
 final class ConstParam = Impl::ConstParam;

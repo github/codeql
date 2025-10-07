@@ -4,6 +4,7 @@ buildifier(
     name = "buildifier",
     exclude_patterns = [
         "./.git/*",
+        "./misc/bazel/3rdparty/*_deps/*",
     ],
     lint_mode = "fix",
 )

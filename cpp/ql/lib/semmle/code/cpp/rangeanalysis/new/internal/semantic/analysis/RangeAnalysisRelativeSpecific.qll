@@ -3,12 +3,13 @@
  */
 
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
+private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticLocation
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.FloatDelta
 private import RangeAnalysisImpl
 private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 private import codeql.rangeanalysis.RangeAnalysis
 
-module CppLangImplRelative implements LangSig<Sem, FloatDelta> {
+module CppLangImplRelative implements LangSig<SemLocation, Sem, FloatDelta> {
   /**
    * Ignore the bound on this expression.
    *

@@ -2,11 +2,16 @@
 import codeql.rust.elements
 import TestUtils
 
-from FieldExpr x, int getNumberOfAttrs, string hasExpr, string hasNameRef
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasExpr() then hasExpr = "yes" else hasExpr = "no") and
-  if x.hasNameRef() then hasNameRef = "yes" else hasNameRef = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr, "hasNameRef:", hasNameRef
+query predicate instances(FieldExpr x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getAttr(FieldExpr x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getContainer(FieldExpr x, Expr getContainer) {
+  toBeTested(x) and not x.isUnknown() and getContainer = x.getContainer()
+}
+
+query predicate getIdentifier(FieldExpr x, NameRef getIdentifier) {
+  toBeTested(x) and not x.isUnknown() and getIdentifier = x.getIdentifier()
+}

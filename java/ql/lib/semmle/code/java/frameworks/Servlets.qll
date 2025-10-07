@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with the Java Servlet API.
  */
+overlay[local?]
+module;
 
 import semmle.code.java.Type
 
@@ -312,6 +314,16 @@ class ResponseSetHeaderMethod extends Method {
   ResponseSetHeaderMethod() {
     this.getDeclaringType() instanceof HttpServletResponse and
     this.hasName("setHeader")
+  }
+}
+
+/**
+ * The method `setContentType` declared in `javax.servlet.http.HttpServletResponse`.
+ */
+class ResponseSetContentTypeMethod extends Method {
+  ResponseSetContentTypeMethod() {
+    this.getDeclaringType() instanceof ServletResponse and
+    this.hasName("setContentType")
   }
 }
 

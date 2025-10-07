@@ -1,3 +1,129 @@
+## 5.0.8
+
+No user-facing changes.
+
+## 5.0.7
+
+### Minor Analysis Improvements
+
+* Updated to allow analysis of Swift 6.1.3.
+
+## 5.0.6
+
+No user-facing changes.
+
+## 5.0.5
+
+No user-facing changes.
+
+## 5.0.4
+
+### Minor Analysis Improvements
+
+* The regular expressions in `SensitiveDataHeuristics.qll` have been extended to find more instances of sensitive data such as secrets used in authentication, finance and health information, and device data. The heuristics have also been refined to find fewer false positive matches. This will improve results for queries related to sensitive information.
+
+## 5.0.3
+
+No user-facing changes.
+
+## 5.0.2
+
+No user-facing changes.
+
+## 5.0.1
+
+### Minor Analysis Improvements
+
+* Updated to allow analysis of Swift 6.1.2.
+
+## 5.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `parseContent` predicate from the `ExternalFlow.qll`.
+* Deleted the deprecated `hasLocationInfo` predicate from the `DataFlowPublic.qll`.
+* Deleted the deprecated `SummaryComponent` class from the `FlowSummary.qll`.
+* Deleted the deprecated `SummaryComponentStack` class from the `FlowSummary.qll`.
+* Deleted the deprecated `SummaryComponent` module from the `FlowSummary.qll`.
+* Deleted the deprecated `SummaryComponentStack` module from the `FlowSummary.qll`.
+* Deleted the deprecated `RequiredSummaryComponentStack` class from the `FlowSummary.qll`.
+
+### Minor Analysis Improvements
+
+* Updated to allow analysis of Swift 6.1.1.
+* `TypeValueExpr` experimental AST leaf is now implemented in the control flow library
+
+## 4.3.0
+
+### New Features
+
+* Added AST nodes `UnsafeCastExpr`, `TypeValueExpr`, `IntegerType`, and `BuiltinFixedArrayType` that correspond to new nodes added by Swift 6.1.
+
+## 4.2.0
+
+### Major Analysis Improvements
+
+* Upgraded to allow analysis of Swift 6.1.
+
+### Minor Analysis Improvements
+
+* Added AST nodes `ActorIsolationErasureExpr`, `CurrentContextIsolationExpr`,
+  `ExtractFunctionIsolationExpr` and `UnreachableExpr` that correspond to new nodes
+  added by Swift 6.0.
+
+## 4.1.4
+
+No user-facing changes.
+
+## 4.1.3
+
+No user-facing changes.
+
+## 4.1.2
+
+No user-facing changes.
+
+## 4.1.1
+
+No user-facing changes.
+
+## 4.1.0
+
+### Deprecated APIs
+
+* The predicates `immediatelyControls` and `controls` on the `ConditionBlock`
+  class have been deprecated in favor of the newly added `dominatingEdge`
+  predicate.
+
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `ArrayContent` class from the dataflow library, use `CollectionContent` instead.
+* Deleted the deprecated `getOptionsInput`, `getRegexInput`, and `getStringInput` predicates from the regexp library, use `getAnOptionsInput`, `getRegexInputNode`, and `getStringInputNode` instead.
+
+## 3.1.1
+
+### Minor Analysis Improvements
+
+* The sensitive data library has been improved so that `snake_case` style variable names are recognized more reliably. This may result in more sensitive data being identified, and more results from queries that use the sensitive data library.
+
+## 3.1.0
+
+### Major Analysis Improvements
+
+* Upgraded to allow analysis of Swift 6.0.2.
+
+## 3.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated data flow API that was based on extending a configuration class. See https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries for instructions on migrating your queries to use the new API.
+
+## 2.0.4
+
+No user-facing changes.
+
 ## 2.0.3
 
 No user-facing changes.

@@ -12,7 +12,7 @@ func intraprocedural_with_local_flow() -> Void {
         t2 = 0
         sink(arg: t2)
     }
-    sink(arg: t2) // $ MISSING: flow=6
+    sink(arg: t2) // $ flow=6
 
     t1 = 0;
     while(false) {

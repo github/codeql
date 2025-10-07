@@ -3,23 +3,11 @@ package configurebaseline
 import (
 	"encoding/json"
 	"io/fs"
-	"os"
 	"path"
 	"path/filepath"
 
 	"github.com/github/codeql-go/extractor/util"
 )
-
-func fileExists(path string) bool {
-	stat, err := os.Stat(path)
-	return err == nil && stat.Mode().IsRegular()
-}
-
-// Decides if `dirPath` is a vendor directory by testing whether it is called `vendor`
-// and contains a `modules.txt` file.
-func isGolangVendorDirectory(dirPath string) bool {
-	return filepath.Base(dirPath) == "vendor" && fileExists(filepath.Join(dirPath, "modules.txt"))
-}
 
 type BaselineConfig struct {
 	PathsIgnore []string `json:"paths-ignore"`
@@ -38,7 +26,7 @@ func GetConfigBaselineAsJSON(rootDir string) ([]byte, error) {
 				// it will not be extracted either.
 				return nil
 			}
-			if isGolangVendorDirectory(dirPath) {
+			if util.IsGolangVendorDirectory(dirPath) {
 				// Note that CodeQL expects a forward-slash-separated path, even on Windows.
 				vendorDirs = append(vendorDirs, path.Join(filepath.ToSlash(dirPath), "**"))
 				return filepath.SkipDir

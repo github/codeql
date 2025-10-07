@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.ComponentModel.TypeConverter, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.ComponentModel.TypeConverter, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace ComponentModel
@@ -217,6 +217,7 @@ namespace System
         {
             public void ApplyResources(object value, string objectName) => throw null;
             public virtual void ApplyResources(object value, string objectName, System.Globalization.CultureInfo culture) => throw null;
+            public virtual void ApplyResourcesToRegisteredType(object value, string objectName, System.Globalization.CultureInfo culture) => throw null;
             public ComponentResourceManager() => throw null;
             public ComponentResourceManager(System.Type t) => throw null;
         }
@@ -259,14 +260,18 @@ namespace System
             public virtual string GetClassName() => throw null;
             public virtual string GetComponentName() => throw null;
             public virtual System.ComponentModel.TypeConverter GetConverter() => throw null;
+            public virtual System.ComponentModel.TypeConverter GetConverterFromRegisteredType() => throw null;
             public virtual System.ComponentModel.EventDescriptor GetDefaultEvent() => throw null;
             public virtual System.ComponentModel.PropertyDescriptor GetDefaultProperty() => throw null;
             public virtual object GetEditor(System.Type editorBaseType) => throw null;
             public virtual System.ComponentModel.EventDescriptorCollection GetEvents() => throw null;
             public virtual System.ComponentModel.EventDescriptorCollection GetEvents(System.Attribute[] attributes) => throw null;
+            public virtual System.ComponentModel.EventDescriptorCollection GetEventsFromRegisteredType() => throw null;
             public virtual System.ComponentModel.PropertyDescriptorCollection GetProperties() => throw null;
             public virtual System.ComponentModel.PropertyDescriptorCollection GetProperties(System.Attribute[] attributes) => throw null;
+            public virtual System.ComponentModel.PropertyDescriptorCollection GetPropertiesFromRegisteredType() => throw null;
             public virtual object GetPropertyOwner(System.ComponentModel.PropertyDescriptor pd) => throw null;
+            public virtual bool? RequireRegisteredTypes { get => throw null; }
         }
         [System.AttributeUsage((System.AttributeTargets)4)]
         public sealed class DataObjectAttribute : System.Attribute
@@ -1209,14 +1214,18 @@ namespace System
             string GetClassName();
             string GetComponentName();
             System.ComponentModel.TypeConverter GetConverter();
+            virtual System.ComponentModel.TypeConverter GetConverterFromRegisteredType() => throw null;
             System.ComponentModel.EventDescriptor GetDefaultEvent();
             System.ComponentModel.PropertyDescriptor GetDefaultProperty();
             object GetEditor(System.Type editorBaseType);
             System.ComponentModel.EventDescriptorCollection GetEvents();
             System.ComponentModel.EventDescriptorCollection GetEvents(System.Attribute[] attributes);
+            virtual System.ComponentModel.EventDescriptorCollection GetEventsFromRegisteredType() => throw null;
             System.ComponentModel.PropertyDescriptorCollection GetProperties();
             System.ComponentModel.PropertyDescriptorCollection GetProperties(System.Attribute[] attributes);
+            virtual System.ComponentModel.PropertyDescriptorCollection GetPropertiesFromRegisteredType() => throw null;
             object GetPropertyOwner(System.ComponentModel.PropertyDescriptor pd);
+            virtual bool? RequireRegisteredTypes { get => throw null; }
         }
         public interface IDataErrorInfo
         {
@@ -1660,6 +1669,7 @@ namespace System
             public abstract bool CanResetValue(object component);
             public abstract System.Type ComponentType { get; }
             public virtual System.ComponentModel.TypeConverter Converter { get => throw null; }
+            public virtual System.ComponentModel.TypeConverter ConverterFromRegisteredType { get => throw null; }
             protected object CreateInstance(System.Type type) => throw null;
             protected PropertyDescriptor(System.ComponentModel.MemberDescriptor descr) : base(default(System.ComponentModel.MemberDescriptor)) => throw null;
             protected PropertyDescriptor(System.ComponentModel.MemberDescriptor descr, System.Attribute[] attrs) : base(default(System.ComponentModel.MemberDescriptor)) => throw null;
@@ -1964,6 +1974,7 @@ namespace System
             protected TypeDescriptionProvider(System.ComponentModel.TypeDescriptionProvider parent) => throw null;
             public virtual System.Collections.IDictionary GetCache(object instance) => throw null;
             public virtual System.ComponentModel.ICustomTypeDescriptor GetExtendedTypeDescriptor(object instance) => throw null;
+            public virtual System.ComponentModel.ICustomTypeDescriptor GetExtendedTypeDescriptorFromRegisteredType(object instance) => throw null;
             protected virtual System.ComponentModel.IExtenderProvider[] GetExtenderProviders(object instance) => throw null;
             public virtual string GetFullComponentName(object component) => throw null;
             public System.Type GetReflectionType(object instance) => throw null;
@@ -1973,7 +1984,13 @@ namespace System
             public System.ComponentModel.ICustomTypeDescriptor GetTypeDescriptor(object instance) => throw null;
             public System.ComponentModel.ICustomTypeDescriptor GetTypeDescriptor(System.Type objectType) => throw null;
             public virtual System.ComponentModel.ICustomTypeDescriptor GetTypeDescriptor(System.Type objectType, object instance) => throw null;
+            public System.ComponentModel.ICustomTypeDescriptor GetTypeDescriptorFromRegisteredType(object instance) => throw null;
+            public System.ComponentModel.ICustomTypeDescriptor GetTypeDescriptorFromRegisteredType(System.Type objectType) => throw null;
+            public virtual System.ComponentModel.ICustomTypeDescriptor GetTypeDescriptorFromRegisteredType(System.Type objectType, object instance) => throw null;
+            public virtual bool IsRegisteredType(System.Type type) => throw null;
             public virtual bool IsSupportedType(System.Type type) => throw null;
+            public virtual void RegisterType<T>() => throw null;
+            public virtual bool? RequireRegisteredTypes { get => throw null; }
         }
         public sealed class TypeDescriptor
         {
@@ -2005,6 +2022,8 @@ namespace System
             public static System.ComponentModel.TypeConverter GetConverter(object component) => throw null;
             public static System.ComponentModel.TypeConverter GetConverter(object component, bool noCustomTypeDesc) => throw null;
             public static System.ComponentModel.TypeConverter GetConverter(System.Type type) => throw null;
+            public static System.ComponentModel.TypeConverter GetConverterFromRegisteredType(object component) => throw null;
+            public static System.ComponentModel.TypeConverter GetConverterFromRegisteredType(System.Type type) => throw null;
             public static System.ComponentModel.EventDescriptor GetDefaultEvent(object component) => throw null;
             public static System.ComponentModel.EventDescriptor GetDefaultEvent(object component, bool noCustomTypeDesc) => throw null;
             public static System.ComponentModel.EventDescriptor GetDefaultEvent(System.Type componentType) => throw null;
@@ -2020,6 +2039,7 @@ namespace System
             public static System.ComponentModel.EventDescriptorCollection GetEvents(object component, bool noCustomTypeDesc) => throw null;
             public static System.ComponentModel.EventDescriptorCollection GetEvents(System.Type componentType) => throw null;
             public static System.ComponentModel.EventDescriptorCollection GetEvents(System.Type componentType, System.Attribute[] attributes) => throw null;
+            public static System.ComponentModel.EventDescriptorCollection GetEventsFromRegisteredType(System.Type componentType) => throw null;
             public static string GetFullComponentName(object component) => throw null;
             public static System.ComponentModel.PropertyDescriptorCollection GetProperties(object component) => throw null;
             public static System.ComponentModel.PropertyDescriptorCollection GetProperties(object component, System.Attribute[] attributes) => throw null;
@@ -2027,6 +2047,8 @@ namespace System
             public static System.ComponentModel.PropertyDescriptorCollection GetProperties(object component, bool noCustomTypeDesc) => throw null;
             public static System.ComponentModel.PropertyDescriptorCollection GetProperties(System.Type componentType) => throw null;
             public static System.ComponentModel.PropertyDescriptorCollection GetProperties(System.Type componentType, System.Attribute[] attributes) => throw null;
+            public static System.ComponentModel.PropertyDescriptorCollection GetPropertiesFromRegisteredType(System.Type componentType) => throw null;
+            public static System.ComponentModel.PropertyDescriptorCollection GetPropertiesFromRegisteredType(object component) => throw null;
             public static System.ComponentModel.TypeDescriptionProvider GetProvider(object instance) => throw null;
             public static System.ComponentModel.TypeDescriptionProvider GetProvider(System.Type type) => throw null;
             public static System.Type GetReflectionType(object instance) => throw null;
@@ -2037,6 +2059,7 @@ namespace System
             public static void Refresh(System.Reflection.Module module) => throw null;
             public static void Refresh(System.Type type) => throw null;
             public static event System.ComponentModel.RefreshEventHandler Refreshed;
+            public static void RegisterType<T>() => throw null;
             public static void RemoveAssociation(object primary, object secondary) => throw null;
             public static void RemoveAssociations(object primary) => throw null;
             public static void RemoveProvider(System.ComponentModel.TypeDescriptionProvider provider, object instance) => throw null;
@@ -2172,8 +2195,9 @@ namespace System
     }
     namespace Timers
     {
-        public class ElapsedEventArgs : System.EventArgs
+        public sealed class ElapsedEventArgs : System.EventArgs
         {
+            public ElapsedEventArgs(System.DateTime signalTime) => throw null;
             public System.DateTime SignalTime { get => throw null; }
         }
         public delegate void ElapsedEventHandler(object sender, System.Timers.ElapsedEventArgs e);

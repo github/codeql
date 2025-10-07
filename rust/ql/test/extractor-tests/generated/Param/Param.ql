@@ -2,11 +2,16 @@
 import codeql.rust.elements
 import TestUtils
 
-from Param x, int getNumberOfAttrs, string hasPat, string hasTy
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasPat() then hasPat = "yes" else hasPat = "no") and
-  if x.hasTy() then hasTy = "yes" else hasTy = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasPat:", hasPat, "hasTy:", hasTy
+query predicate instances(Param x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getAttr(Param x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getTypeRepr(Param x, TypeRepr getTypeRepr) {
+  toBeTested(x) and not x.isUnknown() and getTypeRepr = x.getTypeRepr()
+}
+
+query predicate getPat(Param x, Pat getPat) {
+  toBeTested(x) and not x.isUnknown() and getPat = x.getPat()
+}

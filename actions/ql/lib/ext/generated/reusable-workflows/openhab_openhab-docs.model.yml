@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["openhab/openhab-docs/.github/workflows/fetch_external_docs_reusable.yml", "*", "input.doc_base_name", "code-injection", "generated"]
+     - ["openhab/openhab-docs/.github/workflows/fetch_external_docs_reusable.yml", "*", "input.base_file", "code-injection", "generated"]
+     - ["openhab/openhab-docs/.github/workflows/fetch_external_docs_reusable.yml", "*", "input.doc_base_file", "code-injection", "generated"]
+     - ["openhab/openhab-docs/.github/workflows/fetch_external_docs_reusable.yml", "*", "input.base_folder", "code-injection", "generated"]

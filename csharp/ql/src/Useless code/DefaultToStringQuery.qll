@@ -46,6 +46,8 @@ private predicate alwaysInvokesToString(ParameterRead pr) {
  * method from `System.Object` or `System.ValueType`.
  */
 predicate alwaysDefaultToString(ValueOrRefType t) {
+  not t instanceof TupleType and
+  not t instanceof Enum and
   exists(ToStringMethod m | t.hasMethod(m) |
     m.getDeclaringType() instanceof SystemObjectClass or
     m.getDeclaringType() instanceof SystemValueTypeClass
@@ -55,6 +57,11 @@ predicate alwaysDefaultToString(ValueOrRefType t) {
     overriding.getABaseType+() = t
   ) and
   ((t.isAbstract() or t instanceof Interface) implies not t.isEffectivelyPublic())
+  or
+  exists(ValueOrRefType elem |
+    elem = t.(TupleType).getElementType(_) and
+    alwaysDefaultToString(elem)
+  )
 }
 
 class DefaultToStringType extends ValueOrRefType {

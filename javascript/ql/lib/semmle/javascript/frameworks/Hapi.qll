@@ -11,8 +11,8 @@ module Hapi {
    */
   class ServerDefinition extends Http::Servers::StandardServerDefinition, DataFlow::Node {
     ServerDefinition() {
-      // `server = new Hapi.Server()`
-      this = DataFlow::moduleMember("hapi", "Server").getAnInstantiation()
+      // `server = new Hapi.Server()`, `server = Hapi.server()`
+      this = DataFlow::moduleMember(["hapi", "@hapi/hapi"], ["Server", "server"]).getAnInvocation()
       or
       // `server = Glue.compose(manifest, composeOptions)`
       this = DataFlow::moduleMember("@hapi/glue", "compose").getAnInvocation()

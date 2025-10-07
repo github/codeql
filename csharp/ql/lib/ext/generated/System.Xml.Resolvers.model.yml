@@ -8,6 +8,7 @@ extensions:
       - ["System.Xml.Resolvers", "XmlPreloadedResolver", False, "get_PreloadedUris", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Xml.Resolvers", "XmlPreloadedResolver", True, "GetEntity", "(System.Uri,System.String,System.Type)", "", "Argument[0].Property[System.Uri.LocalPath]", "ReturnValue", "taint", "dfc-generated"]
       - ["System.Xml.Resolvers", "XmlPreloadedResolver", True, "GetEntityAsync", "(System.Uri,System.String,System.Type)", "", "Argument[0].Property[System.Uri.LocalPath]", "ReturnValue.Property[System.Threading.Tasks.Task`1.Result]", "taint", "dfc-generated"]
+      - ["System.Xml.Resolvers", "XmlPreloadedResolver", True, "GetEntityAsync", "(System.Uri,System.String,System.Type)", "", "Argument[0]", "ReturnValue.Property[System.Threading.Tasks.Task`1.Result]", "taint", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel

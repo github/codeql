@@ -2,7 +2,9 @@
  * @name Module is imported with 'import' and 'import from'
  * @description A module is imported with the "import" and "import from" statements
  * @kind problem
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
  * @problem.severity recommendation
  * @sub-severity low
  * @precision very-high

@@ -1,7 +1,7 @@
 function f() {
   var result;
   res = computeInterestingResult();
-  return result.value;
+  return result.value; // $ Alert
 }
 
 (function(_window) {

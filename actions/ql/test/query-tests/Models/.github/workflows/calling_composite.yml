@@ -1,0 +1,15 @@
+on: [push]
+
+jobs:
+  hello_world_job:
+    runs-on: ubuntu-latest
+    name: A job to say hello
+    steps:
+      - uses: actions/checkout@v4
+      - id: foo
+        uses: some-org/test-action@v1
+        with:
+          who-to-greet: ${{ github.event.pull_request.head.ref }} 
+      - run: echo ${{ steps.foo.outputs.reflected}}
+      - run: echo ${{ steps.foo.outputs.tainted}}
+

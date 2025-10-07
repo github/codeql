@@ -13,14 +13,13 @@
  */
 
 import java
-import MyBatisCommonLib
-import MyBatisMapperXmlSqlInjectionLib
-import semmle.code.xml.MyBatisMapperXML
+deprecated import MyBatisCommonLib
+deprecated import MyBatisMapperXmlSqlInjectionLib
 import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.security.Sanitizers
-import MyBatisMapperXmlSqlInjectionFlow::PathGraph
+deprecated import MyBatisMapperXmlSqlInjectionFlow::PathGraph
 
-private module MyBatisMapperXmlSqlInjectionConfig implements DataFlow::ConfigSig {
+deprecated private module MyBatisMapperXmlSqlInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof MyBatisMapperMethodCallAnArgument }
@@ -37,24 +36,29 @@ private module MyBatisMapperXmlSqlInjectionConfig implements DataFlow::ConfigSig
   }
 }
 
-private module MyBatisMapperXmlSqlInjectionFlow =
+deprecated private module MyBatisMapperXmlSqlInjectionFlow =
   TaintTracking::Global<MyBatisMapperXmlSqlInjectionConfig>;
 
-from
-  MyBatisMapperXmlSqlInjectionFlow::PathNode source,
-  MyBatisMapperXmlSqlInjectionFlow::PathNode sink, MyBatisMapperXmlElement mmxe, MethodCall ma,
-  string unsafeExpression
-where
-  MyBatisMapperXmlSqlInjectionFlow::flowPath(source, sink) and
-  ma.getAnArgument() = sink.getNode().asExpr() and
-  myBatisMapperXmlElementFromMethod(ma.getMethod(), mmxe) and
-  unsafeExpression = getAMybatisXmlSetValue(mmxe) and
-  (
-    isMybatisXmlOrAnnotationSqlInjection(sink.getNode(), ma, unsafeExpression)
-    or
-    mmxe instanceof MyBatisMapperForeach and
-    isMybatisCollectionTypeSqlInjection(sink.getNode(), ma, unsafeExpression)
-  )
-select sink.getNode(), source, sink,
-  "MyBatis Mapper XML SQL injection might include code from $@ to $@.", source.getNode(),
-  "this user input", mmxe, "this SQL operation"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, MyBatisMapperXmlSqlInjectionFlow::PathNode source,
+  MyBatisMapperXmlSqlInjectionFlow::PathNode sink, string message1, DataFlow::Node sourceNode,
+  string message2, MyBatisMapperXmlElement mmxe, string message3
+) {
+  exists(MethodCall ma, string unsafeExpression |
+    MyBatisMapperXmlSqlInjectionFlow::flowPath(source, sink) and
+    ma.getAnArgument() = sinkNode.asExpr() and
+    myBatisMapperXmlElementFromMethod(ma.getMethod(), mmxe) and
+    unsafeExpression = getAMybatisXmlSetValue(mmxe) and
+    (
+      isMybatisXmlOrAnnotationSqlInjection(sinkNode, ma, unsafeExpression)
+      or
+      mmxe instanceof MyBatisMapperForeach and
+      isMybatisCollectionTypeSqlInjection(sinkNode, ma, unsafeExpression)
+    )
+  ) and
+  sinkNode = sink.getNode() and
+  message1 = "MyBatis Mapper XML SQL injection might include code from $@ to $@." and
+  sourceNode = source.getNode() and
+  message2 = "this user input" and
+  message3 = "this SQL operation"
+}

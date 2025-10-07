@@ -6,6 +6,7 @@ private import codeql.rust.elements.SourceFile
 private import codeql.rust.elements.AstNode
 private import codeql.rust.elements.Comment
 private import codeql.rust.Diagnostics
+private import codeql.rust.elements.internal.ExtractorStep
 
 private module Input implements InputSig {
   abstract class ContainerBase extends @container {
@@ -33,10 +34,14 @@ class Container = Impl::Container;
 
 class Folder = Impl::Folder;
 
+module Folder = Impl::Folder;
+
 /** A file. */
 class File extends Container, Impl::File {
   /** Holds if this file was extracted from ordinary source code. */
-  predicate fromSource() { any() }
+  predicate fromSource() {
+    exists(ExtractorStep s | s.getAction() = "Extract" and s.getFile() = this)
+  }
 
   /**
    * Gets the number of lines containing code in this file. This value
@@ -52,17 +57,27 @@ class File extends Container, Impl::File {
         |
           node.getFile() = this and
           line = [/*loc.getStartLine(), */ loc.getEndLine()] and // ignore start locations for now as we're getting them wrong for things with a comment attached
-          not loc instanceof EmptyLocation
+          not loc instanceof EmptyLocation and
+          line > 0
         )
       )
   }
 }
 
 /**
+ * A source file that was extracted.
+ *
+ * TODO: rename `SourceFile` from the generated AST to give that name to this class.
+ */
+class ExtractedFile extends File {
+  ExtractedFile() { this.fromSource() }
+}
+
+/**
  * A successfully extracted file, that is, a file that was extracted and
  * contains no extraction errors or warnings.
  */
-class SuccessfullyExtractedFile extends File {
+class SuccessfullyExtractedFile extends ExtractedFile {
   SuccessfullyExtractedFile() {
     not exists(Diagnostic d |
       d.getLocation().getFile() = this and

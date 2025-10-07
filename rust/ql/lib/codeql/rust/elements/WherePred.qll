@@ -5,15 +5,20 @@
 
 private import internal.WherePredImpl
 import codeql.rust.elements.AstNode
-import codeql.rust.elements.GenericParamList
+import codeql.rust.elements.ForBinder
 import codeql.rust.elements.Lifetime
 import codeql.rust.elements.TypeBoundList
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 
 /**
- * A WherePred. For example:
+ * A predicate in a where clause.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * fn foo<T, U>(t: T, u: U) where T: Debug, U: Clone {}
+ * //                             ^^^^^^^^  ^^^^^^^^
+ * fn bar<T>(value: T) where for<'a> T: From<&'a str> {}
+ * //                        ^^^^^^^^^^^^^^^^^^^^^^^^
  * ```
  */
 final class WherePred = Impl::WherePred;

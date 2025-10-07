@@ -1,38 +1,33 @@
-// NOT OK
-/\[^(.css$)]/;
+/\[^(.css$)]/; // $ Alert
 
-// OK
+
 /a(b$|c)/;
 
-// OK
+
 /(a|b$)c*/;
 
-// NOT OK
-/a$\nb/;
+/a$\nb/; // $ Alert
 
-// OK
+
 /a$\nb/m;
 
-// NOT OK, but not recognised
-/a$\\nb/m;
+/a$\\nb/m; // $ MISSING: Alert
 
-// NOT OK
-/a$b*c/;
+/a$b*c/; // $ Alert
 
-// OK
+
 /^(^y|^z)(u$|v$)$/;
 
-// OK
+
 /.*x$$$/;
 
-// OK
+
 /x$y*/;
 
-// OK
+
 /x(?!y+$).*y.*/;
 
-// OK
+
 /x(?=[yz]+$).*yz.*/;
 
-// NOT OK
-/(?<=$x)yz/;
+/(?<=$x)yz/; // $ Alert

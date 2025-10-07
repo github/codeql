@@ -94,6 +94,7 @@ class HeuristicUncontrolledFormatStringSink extends UncontrolledFormatStringSink
 private class UncontrolledFormatStringDefaultBarrier extends UncontrolledFormatStringBarrier {
   UncontrolledFormatStringDefaultBarrier() {
     // any numeric type
-    this.asExpr().getType().getUnderlyingType().getABaseType*().getName() = "Numeric"
+    this.asExpr().getType().getUnderlyingType().getABaseType*().getName() =
+      ["Numeric", "SignedInteger", "UnsignedInteger"]
   }
 }

@@ -278,9 +278,14 @@ class CaseStmt extends Case, @case_stmt {
   override PatternExpr getPattern() { result = this.getChild(0) }
 
   override Stmt getBody() {
-    exists(int i |
+    exists(int i, Stmt next |
       this = this.getParent().getChild(i) and
-      result = this.getParent().getChild(i + 1)
+      next = this.getParent().getChild(i + 1)
+    |
+      result = next and
+      not result instanceof CaseStmt
+      or
+      result = next.(CaseStmt).getBody()
     )
   }
 

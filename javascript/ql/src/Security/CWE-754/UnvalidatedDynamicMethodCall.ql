@@ -13,10 +13,12 @@
 
 import javascript
 import semmle.javascript.security.dataflow.UnvalidatedDynamicMethodCallQuery
-import DataFlow::PathGraph
+import DataFlow::DeduplicatePathGraph<UnvalidatedDynamicMethodCallFlow::PathNode, UnvalidatedDynamicMethodCallFlow::PathGraph>
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from PathNode source, PathNode sink
+where
+  UnvalidatedDynamicMethodCallFlow::flowPath(source.getAnOriginalPathNode(),
+    sink.getAnOriginalPathNode())
 select sink.getNode(), source, sink,
   "Invocation of method with $@ name may dispatch to unexpected target and cause an exception.",
   source.getNode(), "user-controlled"

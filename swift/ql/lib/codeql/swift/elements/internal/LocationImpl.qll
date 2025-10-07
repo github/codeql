@@ -21,7 +21,7 @@ module Impl {
     /**
      * Gets a textual representation of this location.
      */
-    override string toString() {
+    override string toStringImpl() {
       exists(string filePath, int startLine, int startColumn, int endLine, int endColumn |
         this.hasLocationInfo(filePath, startLine, startColumn, endLine, endColumn)
       |

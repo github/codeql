@@ -8,7 +8,7 @@ module Impl {
    * ```
    */
   class MagicIdentifierLiteralExpr extends Generated::MagicIdentifierLiteralExpr {
-    override string toString() { result = "#..." }
+    override string toStringImpl() { result = "#..." }
 
     override string getValueString() { none() } // TODO: value not yet extracted
   }

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.Diagnostics.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.Diagnostics.Abstractions, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace Extensions

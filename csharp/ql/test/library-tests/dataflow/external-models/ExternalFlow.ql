@@ -4,7 +4,7 @@
 
 import csharp
 import semmle.code.csharp.dataflow.internal.ExternalFlow
-import TestUtilities.ProvenancePathGraph::ShowProvenance<Taint::PathNode, Taint::PathGraph>
+import utils.test.ProvenancePathGraph::ShowProvenance<Taint::PathNode, Taint::PathGraph>
 import ModelValidation
 
 module TaintConfig implements DataFlow::ConfigSig {

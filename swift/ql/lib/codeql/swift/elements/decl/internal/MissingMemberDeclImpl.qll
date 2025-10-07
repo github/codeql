@@ -6,6 +6,6 @@ module Impl {
    * A placeholder for missing declarations that can arise on object deserialization.
    */
   class MissingMemberDecl extends Generated::MissingMemberDecl {
-    override string toString() { result = this.getName() + " (missing)" }
+    override string toStringImpl() { result = this.getName() + " (missing)" }
   }
 }

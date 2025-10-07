@@ -6,8 +6,9 @@
  * @problem.severity warning
  * @precision high
  * @id cs/empty-block
- * @tags reliability
- *       readability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import csharp

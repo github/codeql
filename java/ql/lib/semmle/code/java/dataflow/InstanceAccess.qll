@@ -2,6 +2,8 @@
  * Provides classes and predicates for reasoning about explicit and implicit
  * instance accesses.
  */
+overlay[local?]
+module;
 
 import java
 
@@ -227,12 +229,14 @@ class InstanceAccessExt extends TInstanceAccessExt {
   /** Gets the control flow node associated with this instance access. */
   ControlFlowNode getCfgNode() {
     exists(ExprParent e | e = this.getAssociatedExprOrStmt() |
-      e instanceof Call and result = e
+      result.asCall() = e
       or
-      e instanceof InstanceAccess and result = e
+      e.(InstanceAccess).getControlFlowNode() = result
       or
       exists(FieldAccess fa | fa = e |
-        if fa instanceof VarRead then fa = result else result.(AssignExpr).getDest() = fa
+        if fa instanceof VarRead
+        then fa.getControlFlowNode() = result
+        else result.asExpr().(AssignExpr).getDest() = fa
       )
     )
   }

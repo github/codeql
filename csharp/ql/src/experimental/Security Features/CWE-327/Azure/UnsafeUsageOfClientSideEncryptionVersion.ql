@@ -68,15 +68,14 @@ predicate isExprAnAccessToSafeClientSideEncryptionVersionValue(Expr e) {
   )
 }
 
-from Expr e, Class c, Assembly asm
-where
-  asm = c.getLocation() and
-  (
+deprecated query predicate problems(Expr e, string message) {
+  exists(Class c, Assembly asm | asm = c.getLocation() |
     exists(Expr e2 |
       isCreatingAzureClientSideEncryptionObject(e, c, e2) and
       not isObjectCreationArgumentSafeAndUsingSafeVersionOfAssembly(e2, asm)
     )
     or
     isCreatingOutdatedAzureClientSideEncryptionObject(e, c)
-  )
-select e, "Unsafe usage of v1 version of Azure Storage client-side encryption."
+  ) and
+  message = "Unsafe usage of v1 version of Azure Storage client-side encryption."
+}

@@ -145,6 +145,10 @@ private module AzureBlobClientConfig implements DataFlow::StateConfigSig {
       node = call.getObject()
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node sink) { none() }
 }
 
 module AzureBlobClientFlow = DataFlow::GlobalWithState<AzureBlobClientConfig>;

@@ -41,13 +41,6 @@ module Fmt {
     Printer() { this.hasQualifiedName("fmt", ["Print", "Printf", "Println"]) }
   }
 
-  /** A call to `Print` or similar. */
-  private class PrintCall extends LoggerCall::Range, DataFlow::CallNode {
-    PrintCall() { this.getTarget() instanceof Printer }
-
-    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
-  }
-
   /** The `Fprint` function or one of its variants. */
   private class Fprinter extends TaintTracking::FunctionModel {
     Fprinter() {

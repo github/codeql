@@ -16,6 +16,7 @@ pub fn create_ast_node_class<'a>(
         )),
         name: "toString",
         overridden: false,
+        is_private: false,
         is_final: false,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
@@ -27,11 +28,13 @@ pub fn create_ast_node_class<'a>(
                 vec![],
             )),
         ),
+        overlay: None,
     };
     let get_location = ql::Predicate {
         name: "getLocation",
         qldoc: Some(String::from("Gets the location of this element.")),
         overridden: false,
+        is_private: false,
         is_final: true,
         return_type: Some(ql::Type::Normal("L::Location")),
         formal_parameters: vec![],
@@ -39,6 +42,7 @@ pub fn create_ast_node_class<'a>(
             node_location_table,
             vec![ql::Expression::Var("this"), ql::Expression::Var("result")],
         ),
+        overlay: None,
     };
     let get_a_field_or_child = create_none_predicate(
         Some(String::from("Gets a field or child node of this node.")),
@@ -50,6 +54,7 @@ pub fn create_ast_node_class<'a>(
         qldoc: Some(String::from("Gets the parent of this element.")),
         name: "getParent",
         overridden: false,
+        is_private: false,
         is_final: true,
         return_type: Some(ql::Type::Normal("AstNode")),
         formal_parameters: vec![],
@@ -61,6 +66,7 @@ pub fn create_ast_node_class<'a>(
                 ql::Expression::Var("_"),
             ],
         ),
+        overlay: None,
     };
     let get_parent_index = ql::Predicate {
         qldoc: Some(String::from(
@@ -68,6 +74,7 @@ pub fn create_ast_node_class<'a>(
         )),
         name: "getParentIndex",
         overridden: false,
+        is_private: false,
         is_final: true,
         return_type: Some(ql::Type::Int),
         formal_parameters: vec![],
@@ -79,6 +86,7 @@ pub fn create_ast_node_class<'a>(
                 ql::Expression::Var("result"),
             ],
         ),
+        overlay: None,
     };
     let get_a_primary_ql_class = ql::Predicate {
         qldoc: Some(String::from(
@@ -86,6 +94,7 @@ pub fn create_ast_node_class<'a>(
         )),
         name: "getAPrimaryQlClass",
         overridden: false,
+        is_private: false,
         is_final: false,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
@@ -93,6 +102,7 @@ pub fn create_ast_node_class<'a>(
             Box::new(ql::Expression::Var("result")),
             Box::new(ql::Expression::String("???")),
         ),
+        overlay: None,
     };
     let get_primary_ql_classes = ql::Predicate {
         qldoc: Some(
@@ -102,6 +112,7 @@ pub fn create_ast_node_class<'a>(
         ),
         name: "getPrimaryQlClasses",
         overridden: false,
+        is_private: false,
         is_final: false,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
@@ -119,6 +130,7 @@ pub fn create_ast_node_class<'a>(
                 second_expr: Some(Box::new(ql::Expression::String(","))),
             }),
         ),
+        overlay: None,
     };
     ql::Class {
         qldoc: Some(String::from("The base class for all AST nodes")),
@@ -144,10 +156,12 @@ pub fn create_token_class<'a>(token_type: &'a str, tokeninfo: &'a str) -> ql::Cl
         qldoc: Some(String::from("Gets the value of this token.")),
         name: "getValue",
         overridden: false,
+        is_private: false,
         is_final: true,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
         body: create_get_field_expr_for_column_storage("result", tokeninfo, 1, tokeninfo_arity),
+        overlay: None,
     };
     let to_string = ql::Predicate {
         qldoc: Some(String::from(
@@ -155,6 +169,7 @@ pub fn create_token_class<'a>(token_type: &'a str, tokeninfo: &'a str) -> ql::Cl
         )),
         name: "toString",
         overridden: true,
+        is_private: false,
         is_final: true,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
@@ -166,6 +181,7 @@ pub fn create_token_class<'a>(token_type: &'a str, tokeninfo: &'a str) -> ql::Cl
                 vec![],
             )),
         ),
+        overlay: None,
     };
     ql::Class {
         qldoc: Some(String::from("A token.")),
@@ -184,7 +200,7 @@ pub fn create_token_class<'a>(token_type: &'a str, tokeninfo: &'a str) -> ql::Cl
 }
 
 // Creates the `ReservedWord` class.
-pub fn create_reserved_word_class(db_name: &str) -> ql::Class {
+pub fn create_reserved_word_class(db_name: &str) -> ql::Class<'_> {
     let class_name = "ReservedWord";
     let get_a_primary_ql_class = create_get_a_primary_ql_class(class_name, true);
     ql::Class {
@@ -210,22 +226,25 @@ fn create_none_predicate<'a>(
         qldoc,
         name,
         overridden,
+        is_private: false,
         is_final: false,
         return_type,
         formal_parameters: Vec::new(),
         body: ql::Expression::Pred("none", vec![]),
+        overlay: None,
     }
 }
 
 /// Creates an overridden `getAPrimaryQlClass` predicate that returns the given
 /// name.
-fn create_get_a_primary_ql_class(class_name: &str, is_final: bool) -> ql::Predicate {
+fn create_get_a_primary_ql_class(class_name: &str, is_final: bool) -> ql::Predicate<'_> {
     ql::Predicate {
         qldoc: Some(String::from(
             "Gets the name of the primary QL class for this element.",
         )),
         name: "getAPrimaryQlClass",
         overridden: true,
+        is_private: false,
         is_final,
         return_type: Some(ql::Type::String),
         formal_parameters: vec![],
@@ -233,6 +252,232 @@ fn create_get_a_primary_ql_class(class_name: &str, is_final: bool) -> ql::Predic
             Box::new(ql::Expression::Var("result")),
             Box::new(ql::Expression::String(class_name)),
         ),
+        overlay: None,
+    }
+}
+
+pub fn create_is_overlay_predicate() -> ql::Predicate<'static> {
+    ql::Predicate {
+        name: "isOverlay",
+        qldoc: Some(String::from("Holds if the database is an overlay.")),
+        overridden: false,
+        is_private: true,
+        is_final: false,
+        return_type: None,
+        overlay: Some(ql::OverlayAnnotation::Local),
+        formal_parameters: vec![],
+        body: ql::Expression::Pred(
+            "databaseMetadata",
+            vec![
+                ql::Expression::String("isOverlay"),
+                ql::Expression::String("true"),
+            ],
+        ),
+    }
+}
+
+pub fn create_get_node_file_predicate<'a>(
+    ast_node_name: &'a str,
+    node_location_table_name: &'a str,
+) -> ql::Predicate<'a> {
+    ql::Predicate {
+        name: "getNodeFile",
+        qldoc: Some(String::from("Gets the file containing the given `node`.")),
+        overridden: false,
+        is_private: true,
+        is_final: false,
+        overlay: None,
+        return_type: Some(ql::Type::At("file")),
+        formal_parameters: vec![ql::FormalParameter {
+            name: "node",
+            param_type: ql::Type::At(ast_node_name),
+        }],
+        body: ql::Expression::Aggregate {
+            name: "exists",
+            vars: vec![ql::FormalParameter {
+                name: "loc",
+                param_type: ql::Type::At("location_default"),
+            }],
+            range: Some(Box::new(ql::Expression::Pred(
+                node_location_table_name,
+                vec![ql::Expression::Var("node"), ql::Expression::Var("loc")],
+            ))),
+            expr: Box::new(ql::Expression::Pred(
+                "locations_default",
+                vec![
+                    ql::Expression::Var("loc"),
+                    ql::Expression::Var("result"),
+                    ql::Expression::Var("_"),
+                    ql::Expression::Var("_"),
+                    ql::Expression::Var("_"),
+                    ql::Expression::Var("_"),
+                ],
+            )),
+            second_expr: None,
+        },
+    }
+}
+
+pub fn create_discardable_ast_node_predicate(ast_node_name: &str) -> ql::Predicate<'_> {
+    ql::Predicate {
+        name: "discardableAstNode",
+        qldoc: Some(String::from(
+            "Holds if `node` is in the `file` and is part of the overlay base database.",
+        )),
+        overridden: false,
+        is_private: true,
+        is_final: false,
+        overlay: None,
+        return_type: None,
+        formal_parameters: vec![
+            ql::FormalParameter {
+                name: "file",
+                param_type: ql::Type::At("file"),
+            },
+            ql::FormalParameter {
+                name: "node",
+                param_type: ql::Type::At(ast_node_name),
+            },
+        ],
+        body: ql::Expression::And(vec![
+            ql::Expression::Negation(Box::new(ql::Expression::Pred("isOverlay", vec![]))),
+            ql::Expression::Equals(
+                Box::new(ql::Expression::Var("file")),
+                Box::new(ql::Expression::Pred(
+                    "getNodeFile",
+                    vec![ql::Expression::Var("node")],
+                )),
+            ),
+        ]),
+    }
+}
+
+pub fn create_discard_ast_node_predicate(ast_node_name: &str) -> ql::Predicate<'_> {
+    ql::Predicate {
+        name: "discardAstNode",
+        qldoc: Some(String::from(
+            "Holds if `node` should be discarded, because it is part of the overlay base \
+            and is in a file that was also extracted as part of the overlay database.",
+        )),
+        overridden: false,
+        is_private: true,
+        is_final: false,
+        overlay: Some(ql::OverlayAnnotation::DiscardEntity),
+        return_type: None,
+        formal_parameters: vec![ql::FormalParameter {
+            name: "node",
+            param_type: ql::Type::At(ast_node_name),
+        }],
+        body: ql::Expression::Aggregate {
+            name: "exists",
+            vars: vec![
+                ql::FormalParameter {
+                    name: "file",
+                    param_type: ql::Type::At("file"),
+                },
+                ql::FormalParameter {
+                    name: "path",
+                    param_type: ql::Type::String,
+                },
+            ],
+            range: Some(Box::new(ql::Expression::Pred(
+                "files",
+                vec![ql::Expression::Var("file"), ql::Expression::Var("path")],
+            ))),
+            expr: Box::new(ql::Expression::And(vec![
+                ql::Expression::Pred(
+                    "discardableAstNode",
+                    vec![ql::Expression::Var("file"), ql::Expression::Var("node")],
+                ),
+                ql::Expression::Pred("overlayChangedFiles", vec![ql::Expression::Var("path")]),
+            ])),
+            second_expr: None,
+        },
+    }
+}
+
+pub fn create_discardable_location_predicate() -> ql::Predicate<'static> {
+    ql::Predicate {
+        name: "discardableLocation",
+        qldoc: Some(String::from(
+            "Holds if `loc` is in the `file` and is part of the overlay base database.",
+        )),
+        overridden: false,
+        is_private: true,
+        is_final: false,
+        overlay: Some(ql::OverlayAnnotation::Local),
+        return_type: None,
+        formal_parameters: vec![
+            ql::FormalParameter {
+                name: "file",
+                param_type: ql::Type::At("file"),
+            },
+            ql::FormalParameter {
+                name: "loc",
+                param_type: ql::Type::At("location_default"),
+            },
+        ],
+        body: ql::Expression::And(vec![
+            ql::Expression::Negation(Box::new(ql::Expression::Pred("isOverlay", vec![]))),
+            ql::Expression::Pred(
+                "locations_default",
+                vec![
+                    ql::Expression::Var("loc"),
+                    ql::Expression::Var("file"),
+                    ql::Expression::Var("_"),
+                    ql::Expression::Var("_"),
+                    ql::Expression::Var("_"),
+                    ql::Expression::Var("_"),
+                ],
+            ),
+        ]),
+    }
+}
+
+/// Creates a discard predicate for `@location_default` entities. This is necessary because the
+/// tree-sitter extractors use `*` IDs for locations, which means that locations don't get shared
+/// between the base and overlay databases.
+pub fn create_discard_location_predicate() -> ql::Predicate<'static> {
+    ql::Predicate {
+        name: "discardLocation",
+        qldoc: Some(String::from(
+            "Holds if `loc` should be discarded, because it is part of the overlay base \
+            and is in a file that was also extracted as part of the overlay database.",
+        )),
+        overridden: false,
+        is_private: true,
+        is_final: false,
+        overlay: Some(ql::OverlayAnnotation::DiscardEntity),
+        return_type: None,
+        formal_parameters: vec![ql::FormalParameter {
+            name: "loc",
+            param_type: ql::Type::At("location_default"),
+        }],
+        body: ql::Expression::Aggregate {
+            name: "exists",
+            vars: vec![
+                ql::FormalParameter {
+                    name: "file",
+                    param_type: ql::Type::At("file"),
+                },
+                ql::FormalParameter {
+                    name: "path",
+                    param_type: ql::Type::String,
+                },
+            ],
+            range: Some(Box::new(ql::Expression::Pred(
+                "files",
+                vec![ql::Expression::Var("file"), ql::Expression::Var("path")],
+            ))),
+            expr: Box::new(ql::Expression::And(vec![
+                ql::Expression::Pred(
+                    "discardableLocation",
+                    vec![ql::Expression::Var("file"), ql::Expression::Var("loc")],
+                ),
+                ql::Expression::Pred("overlayChangedFiles", vec![ql::Expression::Var("path")]),
+            ])),
+            second_expr: None,
+        },
     }
 }
 
@@ -421,7 +666,7 @@ fn create_field_getters<'a>(
         }
     };
     let qldoc = match &field.name {
-        Some(name) => format!("Gets the node corresponding to the field `{}`.", name),
+        Some(name) => format!("Gets the node corresponding to the field `{name}`."),
         None => {
             if formal_parameters.is_empty() {
                 "Gets the child of this node.".to_owned()
@@ -435,18 +680,20 @@ fn create_field_getters<'a>(
             qldoc: Some(qldoc),
             name: &field.getter_name,
             overridden: false,
+            is_private: false,
             is_final: true,
             return_type,
             formal_parameters,
             body,
+            overlay: None,
         },
         optional_expr,
     )
 }
 
 /// Converts the given node types into CodeQL classes wrapping the dbscheme.
-pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel> {
-    let mut classes: Vec<ql::TopLevel> = Vec::new();
+pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
+    let mut classes = Vec::new();
     let mut token_kinds = BTreeSet::new();
     for (type_name, node) in nodes {
         if let node_types::EntryKind::Token { .. } = &node.kind {
@@ -548,10 +795,12 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel> {
                     qldoc: Some(String::from("Gets a field or child node of this node.")),
                     name: "getAFieldOrChild",
                     overridden: true,
+                    is_private: false,
                     is_final: true,
                     return_type: Some(ql::Type::Normal("AstNode")),
                     formal_parameters: vec![],
                     body: ql::Expression::Or(get_child_exprs),
+                    overlay: None,
                 });
 
                 classes.push(ql::TopLevel::Class(main_class));

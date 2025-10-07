@@ -1,5 +1,5 @@
 import cpp
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import semmle.code.cpp.dataflow.new.DataFlow::DataFlow
 
 bindingset[s]

@@ -1,7 +1,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.ExternalFlow
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 
 module OkHttpFlowConfig implements DataFlow::ConfigSig {
   predicate isSource = DefaultFlowConfig::isSource/1;

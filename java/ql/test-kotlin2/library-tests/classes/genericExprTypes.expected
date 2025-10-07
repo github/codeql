@@ -6,23 +6,23 @@
 | generic_anonymous.kt:1:26:1:33 | t | T |
 | generic_anonymous.kt:1:26:1:33 | this | Generic |
 | generic_anonymous.kt:1:26:1:33 | this.t | T |
+| generic_anonymous.kt:3:3:3:15 | T | T |
+| generic_anonymous.kt:3:3:3:15 | new Object(...) { ... } | new Object(...) { ... } |
+| generic_anonymous.kt:3:3:3:15 | this | Generic |
+| generic_anonymous.kt:3:3:3:15 | this.x | new Object(...) { ... } |
 | generic_anonymous.kt:3:3:5:3 | ...=... | new Object(...) { ... } |
 | generic_anonymous.kt:3:3:5:3 | T | T |
-| generic_anonymous.kt:3:3:5:3 | T | T |
 | generic_anonymous.kt:3:3:5:3 | new Object(...) { ... } | new Object(...) { ... } |
-| generic_anonymous.kt:3:3:5:3 | new Object(...) { ... } | new Object(...) { ... } |
-| generic_anonymous.kt:3:3:5:3 | this | Generic |
-| generic_anonymous.kt:3:3:5:3 | this.x | new Object(...) { ... } |
 | generic_anonymous.kt:3:3:5:3 | x | new Object(...) { ... } |
 | generic_anonymous.kt:3:19:5:3 | <Stmt> | new Object(...) { ... } |
 | generic_anonymous.kt:3:19:5:3 | Object | Object |
 | generic_anonymous.kt:3:19:5:3 | new (...) | new Object(...) { ... } |
+| generic_anonymous.kt:4:7:4:16 | T | T |
+| generic_anonymous.kt:4:7:4:16 | this | new Object(...) { ... } |
+| generic_anonymous.kt:4:7:4:16 | this.member | T |
 | generic_anonymous.kt:4:7:4:20 | ...=... | T |
 | generic_anonymous.kt:4:7:4:20 | T | T |
-| generic_anonymous.kt:4:7:4:20 | T | T |
 | generic_anonymous.kt:4:7:4:20 | member | T |
-| generic_anonymous.kt:4:7:4:20 | this | new Object(...) { ... } |
-| generic_anonymous.kt:4:7:4:20 | this.member | T |
 | generic_anonymous.kt:4:20:4:20 | Generic | Generic |
 | generic_anonymous.kt:4:20:4:20 | Generic.this | Generic |
 | generic_anonymous.kt:4:20:4:20 | getT(...) | T |

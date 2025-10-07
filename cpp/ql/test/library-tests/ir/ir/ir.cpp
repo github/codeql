@@ -2717,4 +2717,108 @@ void branch_on_integral_in_cpp(int x1, int x2) {
   if(!x_1_and_2) {}
 }
 
+struct WithBracketOperator {
+  const char& operator[](int pos) const;
+};
+
+char UseBracketOperator(const WithBracketOperator x, int i) {
+  return x[i];
+}
+
+void test_postfix_crement(int *p, int q) {
+  p++;
+  q++;
+  (p++);
+  (q++);
+  (void)(p++);
+  (void)(q++);
+  (void)p++;
+  (void)q++;
+  int *p1 = p++;
+  int q1 = q++;
+  (int*)(p++);
+  (int)(q++);
+  int *p2 = (int*)(p++);
+  int q2 = (int)(q++);
+}
+
+namespace std {
+  enum class _Order : signed char { __less = -1, __equiv = 0, __greater = 1 };
+  class strong_ordering {
+    explicit constexpr strong_ordering(_Order v)  {}
+        
+  public:
+    static const strong_ordering less;
+    static const strong_ordering equal;
+    static const strong_ordering equivalent;
+    static const strong_ordering greater;
+  };
+
+  inline constexpr strong_ordering strong_ordering::less(_Order::__less);
+  inline constexpr strong_ordering strong_ordering::equal(_Order::__equiv);
+  inline constexpr strong_ordering strong_ordering::equivalent(_Order::__equiv);
+  inline constexpr strong_ordering strong_ordering::greater(_Order::__greater);
+}
+
+class ThreeWay {
+  int x;
+public:
+  std::strong_ordering operator<=>(ThreeWay &y) { return this->x <=> y.x; }
+};
+
+void test_three_way(int a, int b, ThreeWay c, ThreeWay d) {
+  auto x = a <=> b;
+  auto y = c <=> d;
+}
+
+void test_allocation_with_initializer() {
+    int* p1 = new int(42);
+    long* p2 = new long(42);
+}
+
+void vla_sizeof_test(int len1, size_t len2, char len3) {
+  char tmp1[len1];
+  size_t x = sizeof(tmp1);
+  int tmp2[len1][len2];
+  size_t y = sizeof(tmp2);
+  size_t z = sizeof(*tmp2);
+  int tmp3[len1][len2][len3];
+  size_t w = sizeof(tmp3);
+  size_t v = sizeof(*tmp3);
+  size_t u = sizeof(**tmp3);
+  size_t t = sizeof(***tmp3);
+}
+
+void vla_sizeof_test2(int len1, size_t len2, char len3) {
+  int tmp1[len1][len2];
+  size_t z = sizeof(tmp1[1]);
+  int tmp2[len1][len2][len3];
+  size_t v = sizeof(tmp2[1]);
+  size_t u = sizeof(tmp2[1][2]);
+  size_t t = sizeof(tmp2[1][2][3]);
+}
+
+size_t vla_sizeof_test3(int len1, size_t len2, char len3, bool b) {
+  typedef long arr[len1][len2];
+  typedef arr arr2;
+  typedef arr2 arr3[len3];
+
+  if (b) {
+    arr3 tmp;
+    return sizeof(tmp[1]);
+  } 
+
+  return 0;
+}
+
+void vla_sizeof_test4(int len1, size_t len2) {
+  int tmp1[len1][len2];
+  size_t z = sizeof(1[tmp1]);
+}
+
+void vla_sizeof_test5(int len1, size_t len2) {
+  int tmp1[len1][len2];
+  size_t z = sizeof((*&tmp1)[1]);
+}
+
 // semmle-extractor-options: -std=c++20 --clang

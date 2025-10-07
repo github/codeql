@@ -16,13 +16,13 @@ module Impl {
    * which in turn can be accessed using the `getSubExpr/0` predicate.
    */
   class DotSyntaxBaseIgnoredExpr extends Generated::DotSyntaxBaseIgnoredExpr {
-    override string toString() {
+    override string toStringImpl() {
       result =
         any(string base |
-            if exists(this.getQualifier().(TypeExpr).getTypeRepr().toString())
-            then base = this.getQualifier().(TypeExpr).getTypeRepr().toString() + "."
+            if exists(this.getQualifier().(TypeExpr).getTypeRepr().toStringImpl())
+            then base = this.getQualifier().(TypeExpr).getTypeRepr().toStringImpl() + "."
             else base = "."
-          ) + this.getMethod()
+          ) + this.getMethod().toStringImpl()
     }
 
     /**

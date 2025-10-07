@@ -12,7 +12,7 @@ app.listen(port, () => {
 });
 
 app.post('/upload', (req, res) => {
-    zipBomb(req.files.zipBombFile.data)
+    zipBomb(req.files.zipBombFile.data) // $ Source
     res.send('Hello World!')
 });
 
@@ -21,7 +21,7 @@ function zipBomb(tarFile) {
     const inputFile = Readable.from(tarFile.data);
     const outputFile = fs.createWriteStream('/tmp/untar');
     inputFile.pipe(
-        tar.x()
+        tar.x() // $ Alert
     ).pipe(outputFile);
 
     // scenario 2
@@ -30,7 +30,7 @@ function zipBomb(tarFile) {
         tar.x({
             strip: 1,
             C: 'some-dir'
-        })
+        }) // $ Alert
     )
     // safe https://github.com/isaacs/node-tar/blob/8c5af15e43a769fd24aa7f1c84d93e54824d19d2/lib/list.js#L90
     fs.createReadStream(tarFile.name).pipe(
@@ -47,7 +47,7 @@ function zipBomb(tarFile) {
     ).pipe(
         tar.x({
             cwd: "dest"
-        })
+        }) // $ Alert
     )
 
     // scenario 4
@@ -55,8 +55,8 @@ function zipBomb(tarFile) {
     // or using fs.writeFile
     // file path is a tmp file name that can get from DB after saving to DB with remote file upload
     // so the input file name will come from a DB source
-    tar.x({ file: tarFile.name })
-    tar.extract({ file: tarFile.name })
+    tar.x({ file: tarFile.name }) // $ Alert
+    tar.extract({ file: tarFile.name }) // $ Alert
     // safe https://github.com/isaacs/node-tar/blob/8c5af15e43a769fd24aa7f1c84d93e54824d19d2/lib/list.js#L90
     tar.x({
         file: tarFile.name,

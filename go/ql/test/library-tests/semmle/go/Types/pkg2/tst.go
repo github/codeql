@@ -12,3 +12,9 @@ type MixedExportedAndNot interface {
 	Exported()
 	notExported()
 }
+
+type NameClash struct {
+	NCField string
+}
+
+func (t NameClash) NCMethod() {}

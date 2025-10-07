@@ -187,6 +187,14 @@ class Variable extends Declaration, @variable {
    *    `for (char c : str) { ... }`
    */
   predicate isCompilerGenerated() { compgenerated(underlyingElement(this)) }
+
+  /** Holds if this variable is a template specialization. */
+  predicate isSpecialization() {
+    exists(VariableDeclarationEntry vde |
+      var_decls(unresolveElement(vde), underlyingElement(this), _, _, _) and
+      vde.isSpecialization()
+    )
+  }
 }
 
 /**
@@ -267,6 +275,14 @@ class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
   override predicate isDefinition() { var_def(underlyingElement(this)) }
 
   override string getASpecifier() { var_decl_specifiers(underlyingElement(this), result) }
+
+  /** Holds if this declaration is a template specialization. */
+  predicate isSpecialization() { var_specialized(underlyingElement(this)) }
+
+  /**
+   * Gets the requires clause if this declaration is a template with such a clause.
+   */
+  Expr getRequiresClause() { var_requires(underlyingElement(this), unresolveElement(result)) }
 }
 
 /**
@@ -594,7 +610,10 @@ class TemplateVariable extends Variable {
   /**
    * Gets an instantiation of this variable template.
    */
-  Variable getAnInstantiation() { result.isConstructedFrom(this) }
+  Variable getAnInstantiation() {
+    result.isConstructedFrom(this) and
+    not result.isSpecialization()
+  }
 }
 
 /**
@@ -622,6 +641,21 @@ class VariableTemplateInstantiation extends Variable {
    * Example: For `int x<int>`, returns `T x`.
    */
   TemplateVariable getTemplate() { result = tv }
+}
+
+/**
+ * An explicit specialization of a C++ variable template.
+ */
+class VariableTemplateSpecialization extends Variable {
+  VariableTemplateSpecialization() { this.isSpecialization() }
+
+  override string getAPrimaryQlClass() { result = "VariableTemplateSpecialization" }
+
+  /**
+   * Gets the primary template for the specialization (the function template
+   * this specializes).
+   */
+  TemplateVariable getPrimaryTemplate() { this.isConstructedFrom(result) }
 }
 
 /**

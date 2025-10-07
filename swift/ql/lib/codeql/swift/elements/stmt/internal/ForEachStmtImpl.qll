@@ -2,7 +2,7 @@ private import codeql.swift.generated.stmt.ForEachStmt
 
 module Impl {
   class ForEachStmt extends Generated::ForEachStmt {
-    override string toString() {
+    override string toStringImpl() {
       if this.hasWhere()
       then result = "for ... in ... where ... { ... }"
       else result = "for ... in ... { ... }"

@@ -85,17 +85,22 @@ class SsaVariable extends TSsaDefinition {
   /** Gets a textual representation of this element. */
   string toString() { result = this.getDefinition().prettyPrintRef() }
 
+  /** Gets the location of this SSA variable. */
+  Location getLocation() { result = this.getDefinition().getLocation() }
+
   /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this.getDefinition().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
@@ -144,16 +149,30 @@ class SsaDefinition extends TSsaDefinition {
   /** Gets a textual representation of this element. */
   string toString() { result = this.prettyPrintDef() }
 
+  /** Gets the source location for this element. */
+  abstract Location getLocation();
+
   /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  abstract predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
-  );
+  ) {
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+
+  /**
+   * Gets the first instruction that the value of this `SsaDefinition` can
+   * reach without passing through any other instructions, but possibly through
+   * phi nodes.
+   */
+  IR::Instruction getAFirstUse() { firstUse(this, result) }
 }
 
 /**
@@ -177,16 +196,14 @@ class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
   override SsaSourceVariable getSourceVariable() { this = TExplicitDef(_, _, result) }
 
   override string prettyPrintRef() {
-    exists(int l, int c | this.hasLocationInfo(_, l, c, _, _) | result = "def@" + l + ":" + c)
+    exists(Location loc | loc = this.getLocation() |
+      result = "def@" + loc.getStartLine() + ":" + loc.getStartColumn()
+    )
   }
 
   override string prettyPrintDef() { result = "definition of " + this.getSourceVariable() }
 
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    this.getInstruction().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
+  override Location getLocation() { result = this.getInstruction().getLocation() }
 }
 
 /** Provides a helper predicate for working with explicit SSA definitions. */
@@ -209,18 +226,12 @@ abstract class SsaImplicitDefinition extends SsaDefinition {
   abstract string getKind();
 
   override string prettyPrintRef() {
-    exists(int l, int c | this.hasLocationInfo(_, l, c, _, _) |
-      result = this.getKind() + "@" + l + ":" + c
+    exists(Location loc | loc = this.getLocation() |
+      result = this.getKind() + "@" + loc.getStartLine() + ":" + loc.getStartColumn()
     )
   }
 
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    endline = startline and
-    endcolumn = startcolumn and
-    this.getBasicBlock().hasLocationInfo(filepath, startline, startcolumn, _, _)
-  }
+  override Location getLocation() { result = this.getBasicBlock().getLocation() }
 }
 
 /**
@@ -243,11 +254,9 @@ class SsaVariableCapture extends SsaImplicitDefinition, TCapture {
 
   override string prettyPrintDef() { result = "capture variable " + this.getSourceVariable() }
 
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
+  override Location getLocation() {
     exists(ReachableBasicBlock bb, int i | this.definesAt(bb, i, _) |
-      bb.getNode(i).hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      result = bb.getNode(i).getLocation()
     )
   }
 }
@@ -293,13 +302,7 @@ class SsaPhiNode extends SsaPseudoDefinition, TPhi {
     result = this.getSourceVariable() + " = phi(" + this.ppInputs() + ")"
   }
 
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    endline = startline and
-    endcolumn = startcolumn and
-    this.getBasicBlock().hasLocationInfo(filepath, startline, startcolumn, _, _)
-  }
+  override Location getLocation() { result = this.getBasicBlock().getLocation() }
 }
 
 /**
@@ -387,17 +390,22 @@ class SsaWithFields extends TSsaWithFields {
     )
   }
 
+  /** Gets the location of this SSA variable with fields. */
+  Location getLocation() { result = this.getBaseVariable().getLocation() }
+
   /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this.getBaseVariable().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
@@ -409,3 +417,12 @@ DataFlow::Node getASimilarReadNode(DataFlow::Node node) {
     result = readFields.similar().getAUse()
   )
 }
+
+/**
+ * Gets an instruction such that  `pred` and `result` form an adjacent
+ * use-use-pair of the same`SsaSourceVariable`, that is, the value read in
+ * `pred` can reach `result` without passing through any other use or any SSA
+ * definition of the variable except for phi nodes and uncertain implicit
+ * updates.
+ */
+IR::Instruction getAnAdjacentUse(IR::Instruction pred) { adjacentUseUse(pred, result) }

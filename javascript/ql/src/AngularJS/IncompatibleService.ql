@@ -5,7 +5,9 @@
  * @problem.severity error
  * @precision high
  * @id js/angular/incompatible-service
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  *       frameworks/angularjs
  */
 

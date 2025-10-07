@@ -37,7 +37,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "IdentPat" }
 
     /**
-     * Gets the `index`th attr of this ident pat (0-based).
+     * Gets the `index`th attr of this ident pattern (0-based).
      */
     Attr getAttr(int index) {
       result =
@@ -45,27 +45,27 @@ module Generated {
     }
 
     /**
-     * Gets any of the attrs of this ident pat.
+     * Gets any of the attrs of this ident pattern.
      */
     final Attr getAnAttr() { result = this.getAttr(_) }
 
     /**
-     * Gets the number of attrs of this ident pat.
+     * Gets the number of attrs of this ident pattern.
      */
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
-     * Holds if this ident pat is mut.
+     * Holds if this ident pattern is mut.
      */
     predicate isMut() { Synth::convertIdentPatToRaw(this).(Raw::IdentPat).isMut() }
 
     /**
-     * Holds if this ident pat is reference.
+     * Holds if this ident pattern is reference.
      */
     predicate isRef() { Synth::convertIdentPatToRaw(this).(Raw::IdentPat).isRef() }
 
     /**
-     * Gets the name of this ident pat, if it exists.
+     * Gets the name of this ident pattern, if it exists.
      */
     Name getName() {
       result =
@@ -78,7 +78,7 @@ module Generated {
     final predicate hasName() { exists(this.getName()) }
 
     /**
-     * Gets the pat of this ident pat, if it exists.
+     * Gets the pattern of this ident pattern, if it exists.
      */
     Pat getPat() {
       result = Synth::convertPatFromRaw(Synth::convertIdentPatToRaw(this).(Raw::IdentPat).getPat())

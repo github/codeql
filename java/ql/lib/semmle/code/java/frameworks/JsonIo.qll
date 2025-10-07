@@ -1,12 +1,12 @@
 /**
  * Provides classes and predicates for working with the Json-io framework.
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.Maps
 import semmle.code.java.dataflow.DataFlow
-deprecated import semmle.code.java.dataflow.DataFlow2
-private import semmle.code.java.dataflow.DataFlow2
 
 /**
  * The class `com.cedarsoftware.util.io.JsonReader`.

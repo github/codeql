@@ -37,7 +37,13 @@ module Config implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     isSink(node) and node.asExpr().getUnspecifiedType() instanceof ArithmeticType
     or
-    node.asInstruction().(StoreInstruction).getResultType() instanceof ArithmeticType
+    node.asCertainDefinition().getUnspecifiedType() instanceof ArithmeticType
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    exists(QueryString query | result = query.getLocation() | query = source.asIndirectExpr())
   }
 }
 

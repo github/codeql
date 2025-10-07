@@ -17,5 +17,4 @@
 | arguments.c | 17 | __CODEQL_TEST__ |
 | arguments.c | 18 | --gcc |
 | arguments.c | 19 | -w |
-| arguments.c | 20 | -Werror |
-| arguments.c | 21 | arguments.c |
+| arguments.c | 20 | arguments.c |

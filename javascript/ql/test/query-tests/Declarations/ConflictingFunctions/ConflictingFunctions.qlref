@@ -1,1 +1,2 @@
-Declarations/ConflictingFunctions.ql
+query: Declarations/ConflictingFunctions.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

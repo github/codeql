@@ -3,6 +3,8 @@ from misc.codegen.lib.schemadefs import *
 include("../shared/tree-sitter-extractor/src/generator/prefix.dbscheme")
 include("prefix.dbscheme")
 
+File = imported("File", "codeql.files.FileSystem")
+
 
 @qltest.skip
 class Element:
@@ -71,11 +73,41 @@ class Callable(AstNode):
     """
     param_list: optional["ParamList"] | child
     attrs: list["Attr"] | child
+    params: list["Param"] | synth
 
 
-class Resolvable(AstNode):
+class Addressable(AstNode):
     """
-    Either a `Path`, or a `MethodCallExpr`.
+    Something that can be addressed by a path.
+
+    TODO: This does not yet include all possible cases.
     """
-    resolved_path: optional[string] | rust.detach | ql.internal
-    resolved_crate_origin: optional[string] | rust.detach | ql.internal
+
+
+class PathAstNode(AstNode):
+    """
+    An AST element wrapping a path (`PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat`).
+    """
+    path: optional["Path"] | child
+
+
+@qltest.skip
+@ql.internal
+class ExtractorStep(Element):
+    action: string
+    file: optional[File]
+    duration_ms: int
+
+
+class Crate(Locatable):
+    name: optional[string]
+    version: optional[string]
+    cfg_options: list[string]
+    named_dependencies: list["NamedCrate"] | ql.internal
+
+
+@qltest.skip
+@ql.internal
+class NamedCrate(Element):
+    name: string
+    crate: "Crate"

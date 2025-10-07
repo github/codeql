@@ -2,7 +2,7 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.QueryInjection
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {

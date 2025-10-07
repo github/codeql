@@ -98,6 +98,8 @@ private class TestSummaries extends SummaryModelCsv {
         ";;false;madCallArg0ReturnToReturnFirst;;;Argument[0].ReturnValue;ReturnValue.Field[first];value",
         ";;false;madCallArg0WithValue;;;Argument[1];Argument[0].Parameter[0];value",
         ";;false;madCallReturnValueIgnoreFunction;;;Argument[1];ReturnValue;value",
+        ";StructWithTypedefInParameter<T>;true;parameter_ref_to_return_ref;(const T &);;Argument[*0];ReturnValue[*];value",
+        ";;false;receive_array;(int[20]);;Argument[*0];ReturnValue;taint"
       ]
   }
 }

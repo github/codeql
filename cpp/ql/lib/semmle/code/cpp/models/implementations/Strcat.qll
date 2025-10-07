@@ -15,7 +15,7 @@ import semmle.code.cpp.models.interfaces.NonThrowing
  * Does not include `strlcat`, which is covered by `StrlcatFunction`
  */
 class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction, SideEffectFunction,
-  NonThrowingFunction
+  NonCppThrowingFunction
 {
   StrcatFunction() {
     this.hasGlobalOrStdOrBslName([

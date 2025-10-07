@@ -8,7 +8,7 @@ private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 import codeql.rust.elements.Attr
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.Visibility
 
 /**
@@ -17,9 +17,12 @@ import codeql.rust.elements.Visibility
  */
 module Generated {
   /**
-   * A TupleField. For example:
+   * A field in a tuple struct or tuple enum variant.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * struct S(i32, String);
+   * //       ^^^  ^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::TupleField` class directly.
    * Use the subclass `TupleField`, where the following predicates are available.
@@ -48,17 +51,19 @@ module Generated {
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
-     * Gets the ty of this tuple field, if it exists.
+     * Gets the type representation of this tuple field, if it exists.
      */
-    TypeRef getTy() {
+    TypeRepr getTypeRepr() {
       result =
-        Synth::convertTypeRefFromRaw(Synth::convertTupleFieldToRaw(this).(Raw::TupleField).getTy())
+        Synth::convertTypeReprFromRaw(Synth::convertTupleFieldToRaw(this)
+              .(Raw::TupleField)
+              .getTypeRepr())
     }
 
     /**
-     * Holds if `getTy()` exists.
+     * Holds if `getTypeRepr()` exists.
      */
-    final predicate hasTy() { exists(this.getTy()) }
+    final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
 
     /**
      * Gets the visibility of this tuple field, if it exists.

@@ -7,34 +7,17 @@
  */
 
 import rust
-import codeql.rust.Diagnostics
 import Stats
 
 from string key, int value
 where
-  key = "Elements extracted" and value = count(Element e | not e instanceof Unextracted)
+  elementStats(key, value)
   or
-  key = "Elements unextracted" and value = count(Unextracted e)
+  extractionStats(key, value)
   or
-  key = "Extraction errors" and value = count(ExtractionError e)
+  inconsistencyStats(key, value)
   or
-  key = "Extraction warnings" and value = count(ExtractionWarning w)
+  typeInferenceInconsistencyStats(key, value)
   or
-  key = "Files extracted - total" and value = count(File f | exists(f.getRelativePath()))
-  or
-  key = "Files extracted - with errors" and
-  value = count(File f | exists(f.getRelativePath()) and not f instanceof SuccessfullyExtractedFile)
-  or
-  key = "Files extracted - without errors" and
-  value = count(SuccessfullyExtractedFile f | exists(f.getRelativePath()))
-  or
-  key = "Lines of code extracted" and value = getLinesOfCode()
-  or
-  key = "Lines of user code extracted" and value = getLinesOfUserCode()
-  or
-  key = "Inconsistencies - AST" and value = getTotalAstInconsistencies()
-  or
-  key = "Inconsistencies - CFG" and value = getTotalCfgInconsistencies()
-  or
-  key = "Inconsistencies - data flow" and value = getTotalDataFlowInconsistencies()
-select key, value
+  taintStats(key, value)
+select key, value order by key

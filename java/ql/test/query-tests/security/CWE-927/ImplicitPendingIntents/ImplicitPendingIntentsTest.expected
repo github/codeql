@@ -1,0 +1,341 @@
+#select
+| ImplicitPendingIntentsTest.java:36:31:36:39 | fwdIntent | ImplicitPendingIntentsTest.java:31:33:31:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:36:31:36:39 | fwdIntent | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:31:33:31:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:38:31:38:39 | fwdIntent | ImplicitPendingIntentsTest.java:31:33:31:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:38:31:38:39 | fwdIntent | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:31:33:31:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:41:31:41:39 | fwdIntent | ImplicitPendingIntentsTest.java:31:33:31:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:41:31:41:39 | fwdIntent | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:31:33:31:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:52:31:52:39 | fwdIntent | ImplicitPendingIntentsTest.java:48:33:48:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:52:31:52:39 | fwdIntent | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:48:33:48:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:60:31:60:39 | fwdIntent | ImplicitPendingIntentsTest.java:56:33:56:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:60:31:60:39 | fwdIntent | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:56:33:56:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:69:31:69:39 | fwdIntent | ImplicitPendingIntentsTest.java:64:33:64:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:69:31:69:39 | fwdIntent | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:64:33:64:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:77:31:77:39 | fwdIntent | ImplicitPendingIntentsTest.java:73:33:73:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:77:31:77:39 | fwdIntent | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:73:33:73:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:85:31:85:39 | fwdIntent | ImplicitPendingIntentsTest.java:81:33:81:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:85:31:85:39 | fwdIntent | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:81:33:81:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:93:31:93:39 | fwdIntent | ImplicitPendingIntentsTest.java:89:33:89:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:93:31:93:39 | fwdIntent | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:89:33:89:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:101:31:101:39 | fwdIntent | ImplicitPendingIntentsTest.java:97:33:97:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:101:31:101:39 | fwdIntent | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:97:33:97:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:170:32:170:40 | fwdIntent | ImplicitPendingIntentsTest.java:166:33:166:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:170:32:170:40 | fwdIntent | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:166:33:166:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:171:32:171:40 | fwdIntent | ImplicitPendingIntentsTest.java:166:33:166:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:171:32:171:40 | fwdIntent | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:166:33:166:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:172:32:172:40 | fwdIntent | ImplicitPendingIntentsTest.java:166:33:166:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:172:32:172:40 | fwdIntent | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:166:33:166:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:173:32:173:40 | fwdIntent | ImplicitPendingIntentsTest.java:166:33:166:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:173:32:173:40 | fwdIntent | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:166:33:166:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:188:65:188:76 | notification | ImplicitPendingIntentsTest.java:181:33:181:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:188:65:188:76 | notification | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:181:33:181:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:189:32:189:43 | notification | ImplicitPendingIntentsTest.java:181:33:181:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:189:32:189:43 | notification | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:181:33:181:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:190:42:190:53 | notification | ImplicitPendingIntentsTest.java:181:33:181:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:190:42:190:53 | notification | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:181:33:181:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:229:32:229:43 | notification | ImplicitPendingIntentsTest.java:222:33:222:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:229:32:229:43 | notification | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:222:33:222:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:230:36:230:47 | notification | ImplicitPendingIntentsTest.java:222:33:222:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:230:36:230:47 | notification | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:222:33:222:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:239:32:239:33 | pi | ImplicitPendingIntentsTest.java:237:33:237:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:239:32:239:33 | pi | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:237:33:237:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:240:42:240:43 | pi | ImplicitPendingIntentsTest.java:237:33:237:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:240:42:240:43 | pi | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:237:33:237:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:241:49:241:50 | pi | ImplicitPendingIntentsTest.java:237:33:237:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:241:49:241:50 | pi | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:237:33:237:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:242:37:242:38 | pi | ImplicitPendingIntentsTest.java:237:33:237:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:242:37:242:38 | pi | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:237:33:237:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:243:54:243:55 | pi | ImplicitPendingIntentsTest.java:237:33:237:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:243:54:243:55 | pi | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:237:33:237:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:244:51:244:52 | pi | ImplicitPendingIntentsTest.java:237:33:237:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:244:51:244:52 | pi | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:237:33:237:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:245:44:245:45 | pi | ImplicitPendingIntentsTest.java:237:33:237:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:245:44:245:45 | pi | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:237:33:237:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:246:41:246:42 | pi | ImplicitPendingIntentsTest.java:237:33:237:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:246:41:246:42 | pi | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:237:33:237:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:258:59:258:60 | pi | ImplicitPendingIntentsTest.java:256:33:256:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:258:59:258:60 | pi | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:256:33:256:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:259:65:259:66 | pi | ImplicitPendingIntentsTest.java:256:33:256:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:259:65:259:66 | pi | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:256:33:256:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:260:69:260:70 | pi | ImplicitPendingIntentsTest.java:256:33:256:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:260:69:260:70 | pi | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:256:33:256:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:261:57:261:58 | pi | ImplicitPendingIntentsTest.java:256:33:256:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:261:57:261:58 | pi | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:256:33:256:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:262:74:262:75 | pi | ImplicitPendingIntentsTest.java:256:33:256:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:262:74:262:75 | pi | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:256:33:256:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:273:26:273:34 | fwdIntent | ImplicitPendingIntentsTest.java:269:33:269:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:273:26:273:34 | fwdIntent | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:269:33:269:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:290:24:290:42 | build(...) | ImplicitPendingIntentsTest.java:284:37:284:48 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:290:24:290:42 | build(...) | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:284:37:284:48 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:317:24:317:42 | build(...) | ImplicitPendingIntentsTest.java:339:33:339:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:317:24:317:42 | build(...) | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:339:33:339:44 | new Intent(...) | An implicit Intent is created |
+| ImplicitPendingIntentsTest.java:326:24:326:25 | pi | ImplicitPendingIntentsTest.java:324:37:324:48 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:326:24:326:25 | pi | $@ and sent to an unspecified third party through a PendingIntent. | ImplicitPendingIntentsTest.java:324:37:324:48 | new Intent(...) | An implicit Intent is created |
+edges
+| ImplicitPendingIntentsTest.java:31:33:31:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:32:66:32:75 | baseIntent : Intent | provenance |  |
+| ImplicitPendingIntentsTest.java:32:32:32:79 | getActivity(...) : PendingIntent | ImplicitPendingIntentsTest.java:34:45:34:46 | pi : PendingIntent | provenance |  |
+| ImplicitPendingIntentsTest.java:32:66:32:75 | baseIntent : Intent | ImplicitPendingIntentsTest.java:32:32:32:79 | getActivity(...) : PendingIntent | provenance | Config |
+| ImplicitPendingIntentsTest.java:34:13:34:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | ImplicitPendingIntentsTest.java:36:31:36:39 | fwdIntent | provenance | Sink:MaD:18 Sink:MaD:18 |
+| ImplicitPendingIntentsTest.java:34:13:34:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | ImplicitPendingIntentsTest.java:38:31:38:39 | fwdIntent | provenance | Sink:MaD:17 Sink:MaD:17 |
+| ImplicitPendingIntentsTest.java:34:13:34:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | ImplicitPendingIntentsTest.java:41:31:41:39 | fwdIntent | provenance | Sink:MaD:18 Sink:MaD:18 |
+| ImplicitPendingIntentsTest.java:34:45:34:46 | pi : PendingIntent | ImplicitPendingIntentsTest.java:34:13:34:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | provenance | MaD:32 |
+| ImplicitPendingIntentsTest.java:48:33:48:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:49:72:49:81 | baseIntent : Intent | provenance |  |
+| ImplicitPendingIntentsTest.java:49:32:49:97 | getActivityAsUser(...) : PendingIntent | ImplicitPendingIntentsTest.java:51:45:51:46 | pi : PendingIntent | provenance |  |
+| ImplicitPendingIntentsTest.java:49:72:49:81 | baseIntent : Intent | ImplicitPendingIntentsTest.java:49:32:49:97 | getActivityAsUser(...) : PendingIntent | provenance | Config |
+| ImplicitPendingIntentsTest.java:51:13:51:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | ImplicitPendingIntentsTest.java:52:31:52:39 | fwdIntent | provenance | Sink:MaD:18 Sink:MaD:18 |
+| ImplicitPendingIntentsTest.java:51:45:51:46 | pi : PendingIntent | ImplicitPendingIntentsTest.java:51:13:51:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | provenance | MaD:32 |
+| ImplicitPendingIntentsTest.java:56:33:56:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:57:82:57:91 | baseIntent : Intent | provenance |  |
+| ImplicitPendingIntentsTest.java:57:32:57:96 | getActivities(...) : PendingIntent | ImplicitPendingIntentsTest.java:59:45:59:46 | pi : PendingIntent | provenance |  |
+| ImplicitPendingIntentsTest.java:57:68:57:92 | new Intent[] : Intent[] [[]] : Intent | ImplicitPendingIntentsTest.java:57:32:57:96 | getActivities(...) : PendingIntent | provenance | Config |
+| ImplicitPendingIntentsTest.java:57:68:57:92 | {...} : Intent[] [[]] : Intent | ImplicitPendingIntentsTest.java:57:68:57:92 | new Intent[] : Intent[] [[]] : Intent | provenance |  |
+| ImplicitPendingIntentsTest.java:57:82:57:91 | baseIntent : Intent | ImplicitPendingIntentsTest.java:57:68:57:92 | {...} : Intent[] [[]] : Intent | provenance |  |
+| ImplicitPendingIntentsTest.java:59:13:59:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | ImplicitPendingIntentsTest.java:60:31:60:39 | fwdIntent | provenance | Sink:MaD:18 Sink:MaD:18 |
+| ImplicitPendingIntentsTest.java:59:45:59:46 | pi : PendingIntent | ImplicitPendingIntentsTest.java:59:13:59:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | provenance | MaD:32 |
+| ImplicitPendingIntentsTest.java:64:33:64:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:65:88:65:97 | baseIntent : Intent | provenance |  |
+| ImplicitPendingIntentsTest.java:65:32:66:34 | getActivitiesAsUser(...) : PendingIntent | ImplicitPendingIntentsTest.java:68:45:68:46 | pi : PendingIntent | provenance |  |
+| ImplicitPendingIntentsTest.java:65:74:65:98 | new Intent[] : Intent[] [[]] : Intent | ImplicitPendingIntentsTest.java:65:32:66:34 | getActivitiesAsUser(...) : PendingIntent | provenance | Config |
+| ImplicitPendingIntentsTest.java:65:74:65:98 | {...} : Intent[] [[]] : Intent | ImplicitPendingIntentsTest.java:65:74:65:98 | new Intent[] : Intent[] [[]] : Intent | provenance |  |
+| ImplicitPendingIntentsTest.java:65:88:65:97 | baseIntent : Intent | ImplicitPendingIntentsTest.java:65:74:65:98 | {...} : Intent[] [[]] : Intent | provenance |  |
+| ImplicitPendingIntentsTest.java:68:13:68:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | ImplicitPendingIntentsTest.java:69:31:69:39 | fwdIntent | provenance | Sink:MaD:18 Sink:MaD:18 |
+| ImplicitPendingIntentsTest.java:68:45:68:46 | pi : PendingIntent | ImplicitPendingIntentsTest.java:68:13:68:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | provenance | MaD:32 |
+| ImplicitPendingIntentsTest.java:73:33:73:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:74:67:74:76 | baseIntent : Intent | provenance |  |
+| ImplicitPendingIntentsTest.java:74:32:74:80 | getBroadcast(...) : PendingIntent | ImplicitPendingIntentsTest.java:76:45:76:46 | pi : PendingIntent | provenance |  |
+| ImplicitPendingIntentsTest.java:74:67:74:76 | baseIntent : Intent | ImplicitPendingIntentsTest.java:74:32:74:80 | getBroadcast(...) : PendingIntent | provenance | Config |
+| ImplicitPendingIntentsTest.java:76:13:76:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | ImplicitPendingIntentsTest.java:77:31:77:39 | fwdIntent | provenance | Sink:MaD:17 Sink:MaD:17 |
+| ImplicitPendingIntentsTest.java:76:45:76:46 | pi : PendingIntent | ImplicitPendingIntentsTest.java:76:13:76:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | provenance | MaD:32 |
+| ImplicitPendingIntentsTest.java:81:33:81:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:82:73:82:82 | baseIntent : Intent | provenance |  |
+| ImplicitPendingIntentsTest.java:82:32:82:92 | getBroadcastAsUser(...) : PendingIntent | ImplicitPendingIntentsTest.java:84:45:84:46 | pi : PendingIntent | provenance |  |
+| ImplicitPendingIntentsTest.java:82:73:82:82 | baseIntent : Intent | ImplicitPendingIntentsTest.java:82:32:82:92 | getBroadcastAsUser(...) : PendingIntent | provenance | Config |
+| ImplicitPendingIntentsTest.java:84:13:84:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | ImplicitPendingIntentsTest.java:85:31:85:39 | fwdIntent | provenance | Sink:MaD:17 Sink:MaD:17 |
+| ImplicitPendingIntentsTest.java:84:45:84:46 | pi : PendingIntent | ImplicitPendingIntentsTest.java:84:13:84:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | provenance | MaD:32 |
+| ImplicitPendingIntentsTest.java:89:33:89:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:90:65:90:74 | baseIntent : Intent | provenance |  |
+| ImplicitPendingIntentsTest.java:90:32:90:78 | getService(...) : PendingIntent | ImplicitPendingIntentsTest.java:92:45:92:46 | pi : PendingIntent | provenance |  |
+| ImplicitPendingIntentsTest.java:90:65:90:74 | baseIntent : Intent | ImplicitPendingIntentsTest.java:90:32:90:78 | getService(...) : PendingIntent | provenance | Config |
+| ImplicitPendingIntentsTest.java:92:13:92:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | ImplicitPendingIntentsTest.java:93:31:93:39 | fwdIntent | provenance | Sink:MaD:18 Sink:MaD:18 |
+| ImplicitPendingIntentsTest.java:92:45:92:46 | pi : PendingIntent | ImplicitPendingIntentsTest.java:92:13:92:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | provenance | MaD:32 |
+| ImplicitPendingIntentsTest.java:97:33:97:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:98:75:98:84 | baseIntent : Intent | provenance |  |
+| ImplicitPendingIntentsTest.java:98:32:98:88 | getForegroundService(...) : PendingIntent | ImplicitPendingIntentsTest.java:100:45:100:46 | pi : PendingIntent | provenance |  |
+| ImplicitPendingIntentsTest.java:98:75:98:84 | baseIntent : Intent | ImplicitPendingIntentsTest.java:98:32:98:88 | getForegroundService(...) : PendingIntent | provenance | Config |
+| ImplicitPendingIntentsTest.java:100:13:100:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | ImplicitPendingIntentsTest.java:101:31:101:39 | fwdIntent | provenance | Sink:MaD:18 Sink:MaD:18 |
+| ImplicitPendingIntentsTest.java:100:45:100:46 | pi : PendingIntent | ImplicitPendingIntentsTest.java:100:13:100:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | provenance | MaD:32 |
+| ImplicitPendingIntentsTest.java:166:33:166:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:167:66:167:75 | baseIntent : Intent | provenance |  |
+| ImplicitPendingIntentsTest.java:167:32:167:79 | getActivity(...) : PendingIntent | ImplicitPendingIntentsTest.java:169:45:169:46 | pi : PendingIntent | provenance |  |
+| ImplicitPendingIntentsTest.java:167:66:167:75 | baseIntent : Intent | ImplicitPendingIntentsTest.java:167:32:167:79 | getActivity(...) : PendingIntent | provenance | Config |
+| ImplicitPendingIntentsTest.java:169:13:169:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | ImplicitPendingIntentsTest.java:170:32:170:40 | fwdIntent | provenance | Sink:MaD:13 Sink:MaD:13 |
+| ImplicitPendingIntentsTest.java:169:13:169:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | ImplicitPendingIntentsTest.java:171:32:171:40 | fwdIntent | provenance | Sink:MaD:14 Sink:MaD:14 |
+| ImplicitPendingIntentsTest.java:169:13:169:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | ImplicitPendingIntentsTest.java:172:32:172:40 | fwdIntent | provenance | Sink:MaD:15 Sink:MaD:15 |
+| ImplicitPendingIntentsTest.java:169:13:169:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | ImplicitPendingIntentsTest.java:173:32:173:40 | fwdIntent | provenance | Sink:MaD:16 Sink:MaD:16 |
+| ImplicitPendingIntentsTest.java:169:45:169:46 | pi : PendingIntent | ImplicitPendingIntentsTest.java:169:13:169:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | provenance | MaD:32 |
+| ImplicitPendingIntentsTest.java:181:33:181:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:182:66:182:75 | baseIntent : Intent | provenance |  |
+| ImplicitPendingIntentsTest.java:182:32:182:79 | getActivity(...) : PendingIntent | ImplicitPendingIntentsTest.java:183:91:183:92 | pi : PendingIntent | provenance |  |
+| ImplicitPendingIntentsTest.java:182:66:182:75 | baseIntent : Intent | ImplicitPendingIntentsTest.java:182:32:182:79 | getActivity(...) : PendingIntent | provenance | Config |
+| ImplicitPendingIntentsTest.java:183:52:183:93 | new Builder(...) : Builder | ImplicitPendingIntentsTest.java:185:61:185:68 | aBuilder : Builder | provenance |  |
+| ImplicitPendingIntentsTest.java:183:91:183:92 | pi : PendingIntent | ImplicitPendingIntentsTest.java:183:52:183:93 | new Builder(...) : Builder | provenance | MaD:27 |
+| ImplicitPendingIntentsTest.java:185:21:185:77 | addAction(...) : Builder | ImplicitPendingIntentsTest.java:186:41:186:48 | nBuilder : Builder | provenance |  |
+| ImplicitPendingIntentsTest.java:185:61:185:68 | aBuilder : Builder | ImplicitPendingIntentsTest.java:185:61:185:76 | build(...) : Action | provenance | MaD:28 |
+| ImplicitPendingIntentsTest.java:185:61:185:76 | build(...) : Action | ImplicitPendingIntentsTest.java:185:21:185:77 | addAction(...) : Builder | provenance | MaD:29+MaD:30 |
+| ImplicitPendingIntentsTest.java:186:41:186:48 | nBuilder : Builder | ImplicitPendingIntentsTest.java:186:41:186:56 | build(...) : Notification | provenance | MaD:31 |
+| ImplicitPendingIntentsTest.java:186:41:186:56 | build(...) : Notification | ImplicitPendingIntentsTest.java:188:65:188:76 | notification | provenance | Sink:MaD:11 |
+| ImplicitPendingIntentsTest.java:186:41:186:56 | build(...) : Notification | ImplicitPendingIntentsTest.java:189:32:189:43 | notification | provenance | Sink:MaD:10 |
+| ImplicitPendingIntentsTest.java:186:41:186:56 | build(...) : Notification | ImplicitPendingIntentsTest.java:190:42:190:53 | notification | provenance | Sink:MaD:12 |
+| ImplicitPendingIntentsTest.java:222:33:222:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:223:66:223:75 | baseIntent : Intent | provenance |  |
+| ImplicitPendingIntentsTest.java:223:32:223:79 | getActivity(...) : PendingIntent | ImplicitPendingIntentsTest.java:224:91:224:92 | pi : PendingIntent | provenance |  |
+| ImplicitPendingIntentsTest.java:223:66:223:75 | baseIntent : Intent | ImplicitPendingIntentsTest.java:223:32:223:79 | getActivity(...) : PendingIntent | provenance | Config |
+| ImplicitPendingIntentsTest.java:224:52:224:93 | new Builder(...) : Builder | ImplicitPendingIntentsTest.java:226:61:226:68 | aBuilder : Builder | provenance |  |
+| ImplicitPendingIntentsTest.java:224:91:224:92 | pi : PendingIntent | ImplicitPendingIntentsTest.java:224:52:224:93 | new Builder(...) : Builder | provenance | MaD:27 |
+| ImplicitPendingIntentsTest.java:226:21:226:77 | addAction(...) : Builder | ImplicitPendingIntentsTest.java:227:41:227:48 | nBuilder : Builder | provenance |  |
+| ImplicitPendingIntentsTest.java:226:61:226:68 | aBuilder : Builder | ImplicitPendingIntentsTest.java:226:61:226:76 | build(...) : Action | provenance | MaD:28 |
+| ImplicitPendingIntentsTest.java:226:61:226:76 | build(...) : Action | ImplicitPendingIntentsTest.java:226:21:226:77 | addAction(...) : Builder | provenance | MaD:29+MaD:30 |
+| ImplicitPendingIntentsTest.java:227:41:227:48 | nBuilder : Builder | ImplicitPendingIntentsTest.java:227:41:227:56 | build(...) : Notification | provenance | MaD:31 |
+| ImplicitPendingIntentsTest.java:227:41:227:56 | build(...) : Notification | ImplicitPendingIntentsTest.java:229:32:229:43 | notification | provenance | Sink:MaD:24 |
+| ImplicitPendingIntentsTest.java:227:41:227:56 | build(...) : Notification | ImplicitPendingIntentsTest.java:230:36:230:47 | notification | provenance | Sink:MaD:23 |
+| ImplicitPendingIntentsTest.java:237:33:237:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:238:66:238:75 | baseIntent : Intent | provenance |  |
+| ImplicitPendingIntentsTest.java:238:32:238:79 | getActivity(...) : PendingIntent | ImplicitPendingIntentsTest.java:239:32:239:33 | pi | provenance | Sink:MaD:2 |
+| ImplicitPendingIntentsTest.java:238:32:238:79 | getActivity(...) : PendingIntent | ImplicitPendingIntentsTest.java:240:42:240:43 | pi | provenance | Sink:MaD:3 |
+| ImplicitPendingIntentsTest.java:238:32:238:79 | getActivity(...) : PendingIntent | ImplicitPendingIntentsTest.java:241:49:241:50 | pi | provenance | Sink:MaD:4 |
+| ImplicitPendingIntentsTest.java:238:32:238:79 | getActivity(...) : PendingIntent | ImplicitPendingIntentsTest.java:242:37:242:38 | pi | provenance | Sink:MaD:5 |
+| ImplicitPendingIntentsTest.java:238:32:238:79 | getActivity(...) : PendingIntent | ImplicitPendingIntentsTest.java:243:54:243:55 | pi | provenance | Sink:MaD:6 |
+| ImplicitPendingIntentsTest.java:238:32:238:79 | getActivity(...) : PendingIntent | ImplicitPendingIntentsTest.java:244:51:244:52 | pi | provenance | Sink:MaD:7 |
+| ImplicitPendingIntentsTest.java:238:32:238:79 | getActivity(...) : PendingIntent | ImplicitPendingIntentsTest.java:245:44:245:45 | pi | provenance | Sink:MaD:8 |
+| ImplicitPendingIntentsTest.java:238:32:238:79 | getActivity(...) : PendingIntent | ImplicitPendingIntentsTest.java:246:41:246:42 | pi | provenance | Sink:MaD:9 |
+| ImplicitPendingIntentsTest.java:238:66:238:75 | baseIntent : Intent | ImplicitPendingIntentsTest.java:238:32:238:79 | getActivity(...) : PendingIntent | provenance | Config |
+| ImplicitPendingIntentsTest.java:256:33:256:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:257:66:257:75 | baseIntent : Intent | provenance |  |
+| ImplicitPendingIntentsTest.java:257:32:257:79 | getActivity(...) : PendingIntent | ImplicitPendingIntentsTest.java:258:59:258:60 | pi | provenance | Sink:MaD:19 |
+| ImplicitPendingIntentsTest.java:257:32:257:79 | getActivity(...) : PendingIntent | ImplicitPendingIntentsTest.java:259:65:259:66 | pi | provenance | Sink:MaD:19 |
+| ImplicitPendingIntentsTest.java:257:32:257:79 | getActivity(...) : PendingIntent | ImplicitPendingIntentsTest.java:260:69:260:70 | pi | provenance | Sink:MaD:20 |
+| ImplicitPendingIntentsTest.java:257:32:257:79 | getActivity(...) : PendingIntent | ImplicitPendingIntentsTest.java:261:57:261:58 | pi | provenance | Sink:MaD:21 |
+| ImplicitPendingIntentsTest.java:257:32:257:79 | getActivity(...) : PendingIntent | ImplicitPendingIntentsTest.java:262:74:262:75 | pi | provenance | Sink:MaD:22 |
+| ImplicitPendingIntentsTest.java:257:66:257:75 | baseIntent : Intent | ImplicitPendingIntentsTest.java:257:32:257:79 | getActivity(...) : PendingIntent | provenance | Config |
+| ImplicitPendingIntentsTest.java:269:33:269:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:270:67:270:76 | baseIntent : Intent | provenance |  |
+| ImplicitPendingIntentsTest.java:270:32:270:80 | getActivity(...) : PendingIntent | ImplicitPendingIntentsTest.java:272:45:272:46 | pi : PendingIntent | provenance |  |
+| ImplicitPendingIntentsTest.java:270:67:270:76 | baseIntent : Intent | ImplicitPendingIntentsTest.java:270:32:270:80 | getActivity(...) : PendingIntent | provenance | Config |
+| ImplicitPendingIntentsTest.java:272:13:272:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | ImplicitPendingIntentsTest.java:273:26:273:34 | fwdIntent | provenance | Sink:MaD:1 Sink:MaD:1 |
+| ImplicitPendingIntentsTest.java:272:45:272:46 | pi : PendingIntent | ImplicitPendingIntentsTest.java:272:13:272:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | provenance | MaD:32 |
+| ImplicitPendingIntentsTest.java:282:22:282:32 | parameter this : TestSliceProvider [mPendingIntent] : PendingIntent | ImplicitPendingIntentsTest.java:314:65:314:78 | this <.field> : TestSliceProvider [mPendingIntent] : PendingIntent | provenance |  |
+| ImplicitPendingIntentsTest.java:284:37:284:48 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:285:79:285:88 | baseIntent : Intent | provenance |  |
+| ImplicitPendingIntentsTest.java:285:36:285:92 | getActivity(...) : PendingIntent | ImplicitPendingIntentsTest.java:286:73:286:74 | pi : PendingIntent | provenance |  |
+| ImplicitPendingIntentsTest.java:285:79:285:88 | baseIntent : Intent | ImplicitPendingIntentsTest.java:285:36:285:92 | getActivity(...) : PendingIntent | provenance | Config |
+| ImplicitPendingIntentsTest.java:286:46:286:92 | createDeeplink(...) : SliceAction [androidx.slice.Slice.action] : Object | ImplicitPendingIntentsTest.java:289:43:289:56 | activityAction : SliceAction [androidx.slice.Slice.action] : Object | provenance |  |
+| ImplicitPendingIntentsTest.java:286:73:286:74 | pi : PendingIntent | ImplicitPendingIntentsTest.java:286:46:286:92 | createDeeplink(...) : SliceAction [androidx.slice.Slice.action] : Object | provenance | MaD:37 |
+| ImplicitPendingIntentsTest.java:288:17:288:27 | listBuilder [post update] : ListBuilder [androidx.slice.Slice.action] : Object | ImplicitPendingIntentsTest.java:290:24:290:34 | listBuilder : ListBuilder [androidx.slice.Slice.action] : Object | provenance |  |
+| ImplicitPendingIntentsTest.java:288:36:289:57 | setPrimaryAction(...) : RowBuilder [androidx.slice.Slice.action] : Object | ImplicitPendingIntentsTest.java:288:17:288:27 | listBuilder [post update] : ListBuilder [androidx.slice.Slice.action] : Object | provenance | MaD:35 |
+| ImplicitPendingIntentsTest.java:289:43:289:56 | activityAction : SliceAction [androidx.slice.Slice.action] : Object | ImplicitPendingIntentsTest.java:288:36:289:57 | setPrimaryAction(...) : RowBuilder [androidx.slice.Slice.action] : Object | provenance | MaD:33+MaD:34 |
+| ImplicitPendingIntentsTest.java:290:24:290:34 | listBuilder : ListBuilder [androidx.slice.Slice.action] : Object | ImplicitPendingIntentsTest.java:290:24:290:42 | build(...) | provenance | MaD:36 Sink:MaD:25 |
+| ImplicitPendingIntentsTest.java:314:38:314:92 | createDeeplink(...) : SliceAction [androidx.slice.Slice.action] : Object | ImplicitPendingIntentsTest.java:316:90:316:95 | action : SliceAction [androidx.slice.Slice.action] : Object | provenance |  |
+| ImplicitPendingIntentsTest.java:314:65:314:78 | mPendingIntent : PendingIntent | ImplicitPendingIntentsTest.java:314:38:314:92 | createDeeplink(...) : SliceAction [androidx.slice.Slice.action] : Object | provenance | MaD:37 |
+| ImplicitPendingIntentsTest.java:314:65:314:78 | this <.field> : TestSliceProvider [mPendingIntent] : PendingIntent | ImplicitPendingIntentsTest.java:314:65:314:78 | mPendingIntent : PendingIntent | provenance |  |
+| ImplicitPendingIntentsTest.java:316:17:316:27 | listBuilder [post update] : ListBuilder [androidx.slice.Slice.action] : Object | ImplicitPendingIntentsTest.java:317:24:317:34 | listBuilder : ListBuilder [androidx.slice.Slice.action] : Object | provenance |  |
+| ImplicitPendingIntentsTest.java:316:36:316:96 | setPrimaryAction(...) : RowBuilder [androidx.slice.Slice.action] : Object | ImplicitPendingIntentsTest.java:316:17:316:27 | listBuilder [post update] : ListBuilder [androidx.slice.Slice.action] : Object | provenance | MaD:35 |
+| ImplicitPendingIntentsTest.java:316:90:316:95 | action : SliceAction [androidx.slice.Slice.action] : Object | ImplicitPendingIntentsTest.java:316:36:316:96 | setPrimaryAction(...) : RowBuilder [androidx.slice.Slice.action] : Object | provenance | MaD:33+MaD:34 |
+| ImplicitPendingIntentsTest.java:317:24:317:34 | listBuilder : ListBuilder [androidx.slice.Slice.action] : Object | ImplicitPendingIntentsTest.java:317:24:317:42 | build(...) | provenance | MaD:36 Sink:MaD:25 |
+| ImplicitPendingIntentsTest.java:324:37:324:48 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:325:79:325:88 | baseIntent : Intent | provenance |  |
+| ImplicitPendingIntentsTest.java:325:36:325:92 | getActivity(...) : PendingIntent | ImplicitPendingIntentsTest.java:326:24:326:25 | pi | provenance | Sink:MaD:26 |
+| ImplicitPendingIntentsTest.java:325:79:325:88 | baseIntent : Intent | ImplicitPendingIntentsTest.java:325:36:325:92 | getActivity(...) : PendingIntent | provenance | Config |
+| ImplicitPendingIntentsTest.java:339:33:339:44 | new Intent(...) : Intent | ImplicitPendingIntentsTest.java:340:73:340:82 | baseIntent : Intent | provenance |  |
+| ImplicitPendingIntentsTest.java:340:13:340:26 | this <.field> [post update] : TestSliceProvider [mPendingIntent] : PendingIntent | ImplicitPendingIntentsTest.java:282:22:282:32 | parameter this : TestSliceProvider [mPendingIntent] : PendingIntent | provenance |  |
+| ImplicitPendingIntentsTest.java:340:30:340:86 | getActivity(...) : PendingIntent | ImplicitPendingIntentsTest.java:340:13:340:26 | this <.field> [post update] : TestSliceProvider [mPendingIntent] : PendingIntent | provenance |  |
+| ImplicitPendingIntentsTest.java:340:73:340:82 | baseIntent : Intent | ImplicitPendingIntentsTest.java:340:30:340:86 | getActivity(...) : PendingIntent | provenance | Config |
+models
+| 1 | Sink: android.app; Activity; true; setResult; (int,Intent); ; Argument[1]; pending-intents; manual |
+| 2 | Sink: android.app; AlarmManager; true; set; (int,long,PendingIntent); ; Argument[2]; pending-intents; manual |
+| 3 | Sink: android.app; AlarmManager; true; setAlarmClock; ; ; Argument[1]; pending-intents; manual |
+| 4 | Sink: android.app; AlarmManager; true; setAndAllowWhileIdle; ; ; Argument[2]; pending-intents; manual |
+| 5 | Sink: android.app; AlarmManager; true; setExact; (int,long,PendingIntent); ; Argument[2]; pending-intents; manual |
+| 6 | Sink: android.app; AlarmManager; true; setExactAndAllowWhileIdle; ; ; Argument[2]; pending-intents; manual |
+| 7 | Sink: android.app; AlarmManager; true; setInexactRepeating; ; ; Argument[3]; pending-intents; manual |
+| 8 | Sink: android.app; AlarmManager; true; setRepeating; ; ; Argument[3]; pending-intents; manual |
+| 9 | Sink: android.app; AlarmManager; true; setWindow; (int,long,long,PendingIntent); ; Argument[3]; pending-intents; manual |
+| 10 | Sink: android.app; NotificationManager; true; notify; (int,Notification); ; Argument[1]; pending-intents; manual |
+| 11 | Sink: android.app; NotificationManager; true; notifyAsPackage; (String,String,int,Notification); ; Argument[3]; pending-intents; manual |
+| 12 | Sink: android.app; NotificationManager; true; notifyAsUser; (String,int,Notification,UserHandle); ; Argument[2]; pending-intents; manual |
+| 13 | Sink: android.app; PendingIntent; false; send; (Context,int,Intent); ; Argument[2]; pending-intents; manual |
+| 14 | Sink: android.app; PendingIntent; false; send; (Context,int,Intent,PendingIntent$OnFinished,Handler); ; Argument[2]; pending-intents; manual |
+| 15 | Sink: android.app; PendingIntent; false; send; (Context,int,Intent,PendingIntent$OnFinished,Handler,String); ; Argument[2]; pending-intents; manual |
+| 16 | Sink: android.app; PendingIntent; false; send; (Context,int,Intent,PendingIntent$OnFinished,Handler,String,Bundle); ; Argument[2]; pending-intents; manual |
+| 17 | Sink: android.content; Context; true; sendBroadcast; ; ; Argument[0]; intent-redirection; manual |
+| 18 | Sink: android.content; Context; true; startActivity; ; ; Argument[0]; intent-redirection; manual |
+| 19 | Sink: androidx.core.app; AlarmManagerCompat; true; setAlarmClock; ; ; Argument[2..3]; pending-intents; manual |
+| 20 | Sink: androidx.core.app; AlarmManagerCompat; true; setAndAllowWhileIdle; ; ; Argument[3]; pending-intents; manual |
+| 21 | Sink: androidx.core.app; AlarmManagerCompat; true; setExact; ; ; Argument[3]; pending-intents; manual |
+| 22 | Sink: androidx.core.app; AlarmManagerCompat; true; setExactAndAllowWhileIdle; ; ; Argument[3]; pending-intents; manual |
+| 23 | Sink: androidx.core.app; NotificationManagerCompat; true; notify; (String,int,Notification); ; Argument[2]; pending-intents; manual |
+| 24 | Sink: androidx.core.app; NotificationManagerCompat; true; notify; (int,Notification); ; Argument[1]; pending-intents; manual |
+| 25 | Sink: androidx.slice; SliceProvider; true; onBindSlice; ; ; ReturnValue; pending-intents; manual |
+| 26 | Sink: androidx.slice; SliceProvider; true; onCreatePermissionRequest; ; ; ReturnValue; pending-intents; manual |
+| 27 | Summary: android.app; Notification$Action$Builder; true; Builder; (int,CharSequence,PendingIntent); ; Argument[2]; Argument[this]; taint; manual |
+| 28 | Summary: android.app; Notification$Action$Builder; true; build; ; ; Argument[this]; ReturnValue; taint; manual |
+| 29 | Summary: android.app; Notification$Builder; true; addAction; (Notification$Action); ; Argument[0]; Argument[this]; taint; manual |
+| 30 | Summary: android.app; Notification$Builder; true; addAction; ; ; Argument[this]; ReturnValue; value; manual |
+| 31 | Summary: android.app; Notification$Builder; true; build; ; ; Argument[this]; ReturnValue; taint; manual |
+| 32 | Summary: android.content; Intent; true; putExtra; ; ; Argument[1]; Argument[this].SyntheticField[android.content.Intent.extras].MapValue; value; manual |
+| 33 | Summary: androidx.slice.builders; ListBuilder$RowBuilder; true; setPrimaryAction; ; ; Argument[0].SyntheticField[androidx.slice.Slice.action]; Argument[this].SyntheticField[androidx.slice.Slice.action]; taint; manual |
+| 34 | Summary: androidx.slice.builders; ListBuilder$RowBuilder; true; setPrimaryAction; ; ; Argument[this]; ReturnValue; value; manual |
+| 35 | Summary: androidx.slice.builders; ListBuilder; true; addRow; ; ; Argument[0].SyntheticField[androidx.slice.Slice.action]; Argument[this].SyntheticField[androidx.slice.Slice.action]; taint; manual |
+| 36 | Summary: androidx.slice.builders; ListBuilder; true; build; ; ; Argument[this].SyntheticField[androidx.slice.Slice.action]; ReturnValue; taint; manual |
+| 37 | Summary: androidx.slice.builders; SliceAction; true; createDeeplink; (PendingIntent,IconCompat,int,CharSequence); ; Argument[0]; ReturnValue.SyntheticField[androidx.slice.Slice.action]; taint; manual |
+nodes
+| ImplicitPendingIntentsTest.java:31:33:31:44 | new Intent(...) : Intent | semmle.label | new Intent(...) : Intent |
+| ImplicitPendingIntentsTest.java:32:32:32:79 | getActivity(...) : PendingIntent | semmle.label | getActivity(...) : PendingIntent |
+| ImplicitPendingIntentsTest.java:32:66:32:75 | baseIntent : Intent | semmle.label | baseIntent : Intent |
+| ImplicitPendingIntentsTest.java:34:13:34:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | semmle.label | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent |
+| ImplicitPendingIntentsTest.java:34:45:34:46 | pi : PendingIntent | semmle.label | pi : PendingIntent |
+| ImplicitPendingIntentsTest.java:36:31:36:39 | fwdIntent | semmle.label | fwdIntent |
+| ImplicitPendingIntentsTest.java:38:31:38:39 | fwdIntent | semmle.label | fwdIntent |
+| ImplicitPendingIntentsTest.java:41:31:41:39 | fwdIntent | semmle.label | fwdIntent |
+| ImplicitPendingIntentsTest.java:48:33:48:44 | new Intent(...) : Intent | semmle.label | new Intent(...) : Intent |
+| ImplicitPendingIntentsTest.java:49:32:49:97 | getActivityAsUser(...) : PendingIntent | semmle.label | getActivityAsUser(...) : PendingIntent |
+| ImplicitPendingIntentsTest.java:49:72:49:81 | baseIntent : Intent | semmle.label | baseIntent : Intent |
+| ImplicitPendingIntentsTest.java:51:13:51:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | semmle.label | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent |
+| ImplicitPendingIntentsTest.java:51:45:51:46 | pi : PendingIntent | semmle.label | pi : PendingIntent |
+| ImplicitPendingIntentsTest.java:52:31:52:39 | fwdIntent | semmle.label | fwdIntent |
+| ImplicitPendingIntentsTest.java:56:33:56:44 | new Intent(...) : Intent | semmle.label | new Intent(...) : Intent |
+| ImplicitPendingIntentsTest.java:57:32:57:96 | getActivities(...) : PendingIntent | semmle.label | getActivities(...) : PendingIntent |
+| ImplicitPendingIntentsTest.java:57:68:57:92 | new Intent[] : Intent[] [[]] : Intent | semmle.label | new Intent[] : Intent[] [[]] : Intent |
+| ImplicitPendingIntentsTest.java:57:68:57:92 | {...} : Intent[] [[]] : Intent | semmle.label | {...} : Intent[] [[]] : Intent |
+| ImplicitPendingIntentsTest.java:57:82:57:91 | baseIntent : Intent | semmle.label | baseIntent : Intent |
+| ImplicitPendingIntentsTest.java:59:13:59:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | semmle.label | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent |
+| ImplicitPendingIntentsTest.java:59:45:59:46 | pi : PendingIntent | semmle.label | pi : PendingIntent |
+| ImplicitPendingIntentsTest.java:60:31:60:39 | fwdIntent | semmle.label | fwdIntent |
+| ImplicitPendingIntentsTest.java:64:33:64:44 | new Intent(...) : Intent | semmle.label | new Intent(...) : Intent |
+| ImplicitPendingIntentsTest.java:65:32:66:34 | getActivitiesAsUser(...) : PendingIntent | semmle.label | getActivitiesAsUser(...) : PendingIntent |
+| ImplicitPendingIntentsTest.java:65:74:65:98 | new Intent[] : Intent[] [[]] : Intent | semmle.label | new Intent[] : Intent[] [[]] : Intent |
+| ImplicitPendingIntentsTest.java:65:74:65:98 | {...} : Intent[] [[]] : Intent | semmle.label | {...} : Intent[] [[]] : Intent |
+| ImplicitPendingIntentsTest.java:65:88:65:97 | baseIntent : Intent | semmle.label | baseIntent : Intent |
+| ImplicitPendingIntentsTest.java:68:13:68:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | semmle.label | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent |
+| ImplicitPendingIntentsTest.java:68:45:68:46 | pi : PendingIntent | semmle.label | pi : PendingIntent |
+| ImplicitPendingIntentsTest.java:69:31:69:39 | fwdIntent | semmle.label | fwdIntent |
+| ImplicitPendingIntentsTest.java:73:33:73:44 | new Intent(...) : Intent | semmle.label | new Intent(...) : Intent |
+| ImplicitPendingIntentsTest.java:74:32:74:80 | getBroadcast(...) : PendingIntent | semmle.label | getBroadcast(...) : PendingIntent |
+| ImplicitPendingIntentsTest.java:74:67:74:76 | baseIntent : Intent | semmle.label | baseIntent : Intent |
+| ImplicitPendingIntentsTest.java:76:13:76:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | semmle.label | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent |
+| ImplicitPendingIntentsTest.java:76:45:76:46 | pi : PendingIntent | semmle.label | pi : PendingIntent |
+| ImplicitPendingIntentsTest.java:77:31:77:39 | fwdIntent | semmle.label | fwdIntent |
+| ImplicitPendingIntentsTest.java:81:33:81:44 | new Intent(...) : Intent | semmle.label | new Intent(...) : Intent |
+| ImplicitPendingIntentsTest.java:82:32:82:92 | getBroadcastAsUser(...) : PendingIntent | semmle.label | getBroadcastAsUser(...) : PendingIntent |
+| ImplicitPendingIntentsTest.java:82:73:82:82 | baseIntent : Intent | semmle.label | baseIntent : Intent |
+| ImplicitPendingIntentsTest.java:84:13:84:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | semmle.label | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent |
+| ImplicitPendingIntentsTest.java:84:45:84:46 | pi : PendingIntent | semmle.label | pi : PendingIntent |
+| ImplicitPendingIntentsTest.java:85:31:85:39 | fwdIntent | semmle.label | fwdIntent |
+| ImplicitPendingIntentsTest.java:89:33:89:44 | new Intent(...) : Intent | semmle.label | new Intent(...) : Intent |
+| ImplicitPendingIntentsTest.java:90:32:90:78 | getService(...) : PendingIntent | semmle.label | getService(...) : PendingIntent |
+| ImplicitPendingIntentsTest.java:90:65:90:74 | baseIntent : Intent | semmle.label | baseIntent : Intent |
+| ImplicitPendingIntentsTest.java:92:13:92:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | semmle.label | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent |
+| ImplicitPendingIntentsTest.java:92:45:92:46 | pi : PendingIntent | semmle.label | pi : PendingIntent |
+| ImplicitPendingIntentsTest.java:93:31:93:39 | fwdIntent | semmle.label | fwdIntent |
+| ImplicitPendingIntentsTest.java:97:33:97:44 | new Intent(...) : Intent | semmle.label | new Intent(...) : Intent |
+| ImplicitPendingIntentsTest.java:98:32:98:88 | getForegroundService(...) : PendingIntent | semmle.label | getForegroundService(...) : PendingIntent |
+| ImplicitPendingIntentsTest.java:98:75:98:84 | baseIntent : Intent | semmle.label | baseIntent : Intent |
+| ImplicitPendingIntentsTest.java:100:13:100:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | semmle.label | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent |
+| ImplicitPendingIntentsTest.java:100:45:100:46 | pi : PendingIntent | semmle.label | pi : PendingIntent |
+| ImplicitPendingIntentsTest.java:101:31:101:39 | fwdIntent | semmle.label | fwdIntent |
+| ImplicitPendingIntentsTest.java:166:33:166:44 | new Intent(...) : Intent | semmle.label | new Intent(...) : Intent |
+| ImplicitPendingIntentsTest.java:167:32:167:79 | getActivity(...) : PendingIntent | semmle.label | getActivity(...) : PendingIntent |
+| ImplicitPendingIntentsTest.java:167:66:167:75 | baseIntent : Intent | semmle.label | baseIntent : Intent |
+| ImplicitPendingIntentsTest.java:169:13:169:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | semmle.label | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent |
+| ImplicitPendingIntentsTest.java:169:45:169:46 | pi : PendingIntent | semmle.label | pi : PendingIntent |
+| ImplicitPendingIntentsTest.java:170:32:170:40 | fwdIntent | semmle.label | fwdIntent |
+| ImplicitPendingIntentsTest.java:171:32:171:40 | fwdIntent | semmle.label | fwdIntent |
+| ImplicitPendingIntentsTest.java:172:32:172:40 | fwdIntent | semmle.label | fwdIntent |
+| ImplicitPendingIntentsTest.java:173:32:173:40 | fwdIntent | semmle.label | fwdIntent |
+| ImplicitPendingIntentsTest.java:181:33:181:44 | new Intent(...) : Intent | semmle.label | new Intent(...) : Intent |
+| ImplicitPendingIntentsTest.java:182:32:182:79 | getActivity(...) : PendingIntent | semmle.label | getActivity(...) : PendingIntent |
+| ImplicitPendingIntentsTest.java:182:66:182:75 | baseIntent : Intent | semmle.label | baseIntent : Intent |
+| ImplicitPendingIntentsTest.java:183:52:183:93 | new Builder(...) : Builder | semmle.label | new Builder(...) : Builder |
+| ImplicitPendingIntentsTest.java:183:91:183:92 | pi : PendingIntent | semmle.label | pi : PendingIntent |
+| ImplicitPendingIntentsTest.java:185:21:185:77 | addAction(...) : Builder | semmle.label | addAction(...) : Builder |
+| ImplicitPendingIntentsTest.java:185:61:185:68 | aBuilder : Builder | semmle.label | aBuilder : Builder |
+| ImplicitPendingIntentsTest.java:185:61:185:76 | build(...) : Action | semmle.label | build(...) : Action |
+| ImplicitPendingIntentsTest.java:186:41:186:48 | nBuilder : Builder | semmle.label | nBuilder : Builder |
+| ImplicitPendingIntentsTest.java:186:41:186:56 | build(...) : Notification | semmle.label | build(...) : Notification |
+| ImplicitPendingIntentsTest.java:188:65:188:76 | notification | semmle.label | notification |
+| ImplicitPendingIntentsTest.java:189:32:189:43 | notification | semmle.label | notification |
+| ImplicitPendingIntentsTest.java:190:42:190:53 | notification | semmle.label | notification |
+| ImplicitPendingIntentsTest.java:222:33:222:44 | new Intent(...) : Intent | semmle.label | new Intent(...) : Intent |
+| ImplicitPendingIntentsTest.java:223:32:223:79 | getActivity(...) : PendingIntent | semmle.label | getActivity(...) : PendingIntent |
+| ImplicitPendingIntentsTest.java:223:66:223:75 | baseIntent : Intent | semmle.label | baseIntent : Intent |
+| ImplicitPendingIntentsTest.java:224:52:224:93 | new Builder(...) : Builder | semmle.label | new Builder(...) : Builder |
+| ImplicitPendingIntentsTest.java:224:91:224:92 | pi : PendingIntent | semmle.label | pi : PendingIntent |
+| ImplicitPendingIntentsTest.java:226:21:226:77 | addAction(...) : Builder | semmle.label | addAction(...) : Builder |
+| ImplicitPendingIntentsTest.java:226:61:226:68 | aBuilder : Builder | semmle.label | aBuilder : Builder |
+| ImplicitPendingIntentsTest.java:226:61:226:76 | build(...) : Action | semmle.label | build(...) : Action |
+| ImplicitPendingIntentsTest.java:227:41:227:48 | nBuilder : Builder | semmle.label | nBuilder : Builder |
+| ImplicitPendingIntentsTest.java:227:41:227:56 | build(...) : Notification | semmle.label | build(...) : Notification |
+| ImplicitPendingIntentsTest.java:229:32:229:43 | notification | semmle.label | notification |
+| ImplicitPendingIntentsTest.java:230:36:230:47 | notification | semmle.label | notification |
+| ImplicitPendingIntentsTest.java:237:33:237:44 | new Intent(...) : Intent | semmle.label | new Intent(...) : Intent |
+| ImplicitPendingIntentsTest.java:238:32:238:79 | getActivity(...) : PendingIntent | semmle.label | getActivity(...) : PendingIntent |
+| ImplicitPendingIntentsTest.java:238:66:238:75 | baseIntent : Intent | semmle.label | baseIntent : Intent |
+| ImplicitPendingIntentsTest.java:239:32:239:33 | pi | semmle.label | pi |
+| ImplicitPendingIntentsTest.java:240:42:240:43 | pi | semmle.label | pi |
+| ImplicitPendingIntentsTest.java:241:49:241:50 | pi | semmle.label | pi |
+| ImplicitPendingIntentsTest.java:242:37:242:38 | pi | semmle.label | pi |
+| ImplicitPendingIntentsTest.java:243:54:243:55 | pi | semmle.label | pi |
+| ImplicitPendingIntentsTest.java:244:51:244:52 | pi | semmle.label | pi |
+| ImplicitPendingIntentsTest.java:245:44:245:45 | pi | semmle.label | pi |
+| ImplicitPendingIntentsTest.java:246:41:246:42 | pi | semmle.label | pi |
+| ImplicitPendingIntentsTest.java:256:33:256:44 | new Intent(...) : Intent | semmle.label | new Intent(...) : Intent |
+| ImplicitPendingIntentsTest.java:257:32:257:79 | getActivity(...) : PendingIntent | semmle.label | getActivity(...) : PendingIntent |
+| ImplicitPendingIntentsTest.java:257:66:257:75 | baseIntent : Intent | semmle.label | baseIntent : Intent |
+| ImplicitPendingIntentsTest.java:258:59:258:60 | pi | semmle.label | pi |
+| ImplicitPendingIntentsTest.java:259:65:259:66 | pi | semmle.label | pi |
+| ImplicitPendingIntentsTest.java:260:69:260:70 | pi | semmle.label | pi |
+| ImplicitPendingIntentsTest.java:261:57:261:58 | pi | semmle.label | pi |
+| ImplicitPendingIntentsTest.java:262:74:262:75 | pi | semmle.label | pi |
+| ImplicitPendingIntentsTest.java:269:33:269:44 | new Intent(...) : Intent | semmle.label | new Intent(...) : Intent |
+| ImplicitPendingIntentsTest.java:270:32:270:80 | getActivity(...) : PendingIntent | semmle.label | getActivity(...) : PendingIntent |
+| ImplicitPendingIntentsTest.java:270:67:270:76 | baseIntent : Intent | semmle.label | baseIntent : Intent |
+| ImplicitPendingIntentsTest.java:272:13:272:21 | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent | semmle.label | fwdIntent [post update] : Intent [android.content.Intent.extras, <map.value>] : PendingIntent |
+| ImplicitPendingIntentsTest.java:272:45:272:46 | pi : PendingIntent | semmle.label | pi : PendingIntent |
+| ImplicitPendingIntentsTest.java:273:26:273:34 | fwdIntent | semmle.label | fwdIntent |
+| ImplicitPendingIntentsTest.java:282:22:282:32 | parameter this : TestSliceProvider [mPendingIntent] : PendingIntent | semmle.label | parameter this : TestSliceProvider [mPendingIntent] : PendingIntent |
+| ImplicitPendingIntentsTest.java:284:37:284:48 | new Intent(...) : Intent | semmle.label | new Intent(...) : Intent |
+| ImplicitPendingIntentsTest.java:285:36:285:92 | getActivity(...) : PendingIntent | semmle.label | getActivity(...) : PendingIntent |
+| ImplicitPendingIntentsTest.java:285:79:285:88 | baseIntent : Intent | semmle.label | baseIntent : Intent |
+| ImplicitPendingIntentsTest.java:286:46:286:92 | createDeeplink(...) : SliceAction [androidx.slice.Slice.action] : Object | semmle.label | createDeeplink(...) : SliceAction [androidx.slice.Slice.action] : Object |
+| ImplicitPendingIntentsTest.java:286:73:286:74 | pi : PendingIntent | semmle.label | pi : PendingIntent |
+| ImplicitPendingIntentsTest.java:288:17:288:27 | listBuilder [post update] : ListBuilder [androidx.slice.Slice.action] : Object | semmle.label | listBuilder [post update] : ListBuilder [androidx.slice.Slice.action] : Object |
+| ImplicitPendingIntentsTest.java:288:36:289:57 | setPrimaryAction(...) : RowBuilder [androidx.slice.Slice.action] : Object | semmle.label | setPrimaryAction(...) : RowBuilder [androidx.slice.Slice.action] : Object |
+| ImplicitPendingIntentsTest.java:289:43:289:56 | activityAction : SliceAction [androidx.slice.Slice.action] : Object | semmle.label | activityAction : SliceAction [androidx.slice.Slice.action] : Object |
+| ImplicitPendingIntentsTest.java:290:24:290:34 | listBuilder : ListBuilder [androidx.slice.Slice.action] : Object | semmle.label | listBuilder : ListBuilder [androidx.slice.Slice.action] : Object |
+| ImplicitPendingIntentsTest.java:290:24:290:42 | build(...) | semmle.label | build(...) |
+| ImplicitPendingIntentsTest.java:314:38:314:92 | createDeeplink(...) : SliceAction [androidx.slice.Slice.action] : Object | semmle.label | createDeeplink(...) : SliceAction [androidx.slice.Slice.action] : Object |
+| ImplicitPendingIntentsTest.java:314:65:314:78 | mPendingIntent : PendingIntent | semmle.label | mPendingIntent : PendingIntent |
+| ImplicitPendingIntentsTest.java:314:65:314:78 | this <.field> : TestSliceProvider [mPendingIntent] : PendingIntent | semmle.label | this <.field> : TestSliceProvider [mPendingIntent] : PendingIntent |
+| ImplicitPendingIntentsTest.java:316:17:316:27 | listBuilder [post update] : ListBuilder [androidx.slice.Slice.action] : Object | semmle.label | listBuilder [post update] : ListBuilder [androidx.slice.Slice.action] : Object |
+| ImplicitPendingIntentsTest.java:316:36:316:96 | setPrimaryAction(...) : RowBuilder [androidx.slice.Slice.action] : Object | semmle.label | setPrimaryAction(...) : RowBuilder [androidx.slice.Slice.action] : Object |
+| ImplicitPendingIntentsTest.java:316:90:316:95 | action : SliceAction [androidx.slice.Slice.action] : Object | semmle.label | action : SliceAction [androidx.slice.Slice.action] : Object |
+| ImplicitPendingIntentsTest.java:317:24:317:34 | listBuilder : ListBuilder [androidx.slice.Slice.action] : Object | semmle.label | listBuilder : ListBuilder [androidx.slice.Slice.action] : Object |
+| ImplicitPendingIntentsTest.java:317:24:317:42 | build(...) | semmle.label | build(...) |
+| ImplicitPendingIntentsTest.java:324:37:324:48 | new Intent(...) : Intent | semmle.label | new Intent(...) : Intent |
+| ImplicitPendingIntentsTest.java:325:36:325:92 | getActivity(...) : PendingIntent | semmle.label | getActivity(...) : PendingIntent |
+| ImplicitPendingIntentsTest.java:325:79:325:88 | baseIntent : Intent | semmle.label | baseIntent : Intent |
+| ImplicitPendingIntentsTest.java:326:24:326:25 | pi | semmle.label | pi |
+| ImplicitPendingIntentsTest.java:339:33:339:44 | new Intent(...) : Intent | semmle.label | new Intent(...) : Intent |
+| ImplicitPendingIntentsTest.java:340:13:340:26 | this <.field> [post update] : TestSliceProvider [mPendingIntent] : PendingIntent | semmle.label | this <.field> [post update] : TestSliceProvider [mPendingIntent] : PendingIntent |
+| ImplicitPendingIntentsTest.java:340:30:340:86 | getActivity(...) : PendingIntent | semmle.label | getActivity(...) : PendingIntent |
+| ImplicitPendingIntentsTest.java:340:73:340:82 | baseIntent : Intent | semmle.label | baseIntent : Intent |
+subpaths

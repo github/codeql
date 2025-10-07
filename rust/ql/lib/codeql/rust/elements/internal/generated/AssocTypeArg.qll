@@ -11,10 +11,10 @@ import codeql.rust.elements.internal.GenericArgImpl::Impl as GenericArgImpl
 import codeql.rust.elements.GenericArgList
 import codeql.rust.elements.NameRef
 import codeql.rust.elements.ParamList
-import codeql.rust.elements.RetType
+import codeql.rust.elements.RetTypeRepr
 import codeql.rust.elements.ReturnTypeSyntax
 import codeql.rust.elements.TypeBoundList
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 
 /**
  * INTERNAL: This module contains the fully generated definition of `AssocTypeArg` and should not
@@ -22,9 +22,17 @@ import codeql.rust.elements.TypeRef
  */
 module Generated {
   /**
-   * A AssocTypeArg. For example:
+   * An associated type argument in a path.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn process_cloneable<T>(iter: T)
+   * where
+   *     T: Iterator<Item: Clone>
+   * //              ^^^^^^^^^^^
+   * {
+   *     // ...
+   * }
    * ```
    * INTERNAL: Do not reference the `Generated::AssocTypeArg` class directly.
    * Use the subclass `AssocTypeArg`, where the following predicates are available.
@@ -63,19 +71,19 @@ module Generated {
     final predicate hasGenericArgList() { exists(this.getGenericArgList()) }
 
     /**
-     * Gets the name reference of this assoc type argument, if it exists.
+     * Gets the identifier of this assoc type argument, if it exists.
      */
-    NameRef getNameRef() {
+    NameRef getIdentifier() {
       result =
         Synth::convertNameRefFromRaw(Synth::convertAssocTypeArgToRaw(this)
               .(Raw::AssocTypeArg)
-              .getNameRef())
+              .getIdentifier())
     }
 
     /**
-     * Holds if `getNameRef()` exists.
+     * Holds if `getIdentifier()` exists.
      */
-    final predicate hasNameRef() { exists(this.getNameRef()) }
+    final predicate hasIdentifier() { exists(this.getIdentifier()) }
 
     /**
      * Gets the parameter list of this assoc type argument, if it exists.
@@ -95,9 +103,9 @@ module Generated {
     /**
      * Gets the ret type of this assoc type argument, if it exists.
      */
-    RetType getRetType() {
+    RetTypeRepr getRetType() {
       result =
-        Synth::convertRetTypeFromRaw(Synth::convertAssocTypeArgToRaw(this)
+        Synth::convertRetTypeReprFromRaw(Synth::convertAssocTypeArgToRaw(this)
               .(Raw::AssocTypeArg)
               .getRetType())
     }
@@ -123,19 +131,19 @@ module Generated {
     final predicate hasReturnTypeSyntax() { exists(this.getReturnTypeSyntax()) }
 
     /**
-     * Gets the ty of this assoc type argument, if it exists.
+     * Gets the type representation of this assoc type argument, if it exists.
      */
-    TypeRef getTy() {
+    TypeRepr getTypeRepr() {
       result =
-        Synth::convertTypeRefFromRaw(Synth::convertAssocTypeArgToRaw(this)
+        Synth::convertTypeReprFromRaw(Synth::convertAssocTypeArgToRaw(this)
               .(Raw::AssocTypeArg)
-              .getTy())
+              .getTypeRepr())
     }
 
     /**
-     * Holds if `getTy()` exists.
+     * Holds if `getTypeRepr()` exists.
      */
-    final predicate hasTy() { exists(this.getTy()) }
+    final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
 
     /**
      * Gets the type bound list of this assoc type argument, if it exists.

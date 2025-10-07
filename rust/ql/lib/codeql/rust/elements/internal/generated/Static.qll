@@ -9,9 +9,8 @@ private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExternItemImpl::Impl as ExternItemImpl
-import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
 import codeql.rust.elements.Name
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.Visibility
 
 /**
@@ -20,14 +19,16 @@ import codeql.rust.elements.Visibility
  */
 module Generated {
   /**
-   * A Static. For example:
+   * A static item declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * static X: i32 = 42;
    * ```
    * INTERNAL: Do not reference the `Generated::Static` class directly.
    * Use the subclass `Static`, where the following predicates are available.
    */
-  class Static extends Synth::TStatic, ExternItemImpl::ExternItem, ItemImpl::Item {
+  class Static extends Synth::TStatic, ExternItemImpl::ExternItem {
     override string getAPrimaryQlClass() { result = "Static" }
 
     /**
@@ -71,6 +72,11 @@ module Generated {
     predicate isStatic() { Synth::convertStaticToRaw(this).(Raw::Static).isStatic() }
 
     /**
+     * Holds if this static is unsafe.
+     */
+    predicate isUnsafe() { Synth::convertStaticToRaw(this).(Raw::Static).isUnsafe() }
+
+    /**
      * Gets the name of this static, if it exists.
      */
     Name getName() {
@@ -83,16 +89,17 @@ module Generated {
     final predicate hasName() { exists(this.getName()) }
 
     /**
-     * Gets the ty of this static, if it exists.
+     * Gets the type representation of this static, if it exists.
      */
-    TypeRef getTy() {
-      result = Synth::convertTypeRefFromRaw(Synth::convertStaticToRaw(this).(Raw::Static).getTy())
+    TypeRepr getTypeRepr() {
+      result =
+        Synth::convertTypeReprFromRaw(Synth::convertStaticToRaw(this).(Raw::Static).getTypeRepr())
     }
 
     /**
-     * Holds if `getTy()` exists.
+     * Holds if `getTypeRepr()` exists.
      */
-    final predicate hasTy() { exists(this.getTy()) }
+    final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
 
     /**
      * Gets the visibility of this static, if it exists.

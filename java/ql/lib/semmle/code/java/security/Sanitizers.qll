@@ -1,4 +1,6 @@
 /** Classes to represent sanitizers commonly used in dataflow and taint tracking configurations. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow
@@ -23,6 +25,7 @@ class SimpleTypeSanitizer extends DataFlow::Node {
     this.getType()
         .(RefType)
         .getASourceSupertype*()
-        .hasQualifiedName("java.time.temporal", "TemporalAccessor")
+        .hasQualifiedName("java.time.temporal", "TemporalAccessor") or
+    this.getType() instanceof EnumType
   }
 }

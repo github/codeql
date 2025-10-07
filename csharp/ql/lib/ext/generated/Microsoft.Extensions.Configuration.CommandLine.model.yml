@@ -2,8 +2,12 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Extensions.Configuration.CommandLine", "CommandLineConfigurationProvider", False, "CommandLineConfigurationProvider", "(System.Collections.Generic.IEnumerable<System.String>,System.Collections.Generic.IDictionary<System.String,System.String>)", "", "Argument[0]", "Argument[this].Property[Microsoft.Extensions.Configuration.CommandLine.CommandLineConfigurationProvider.Args]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["Microsoft.Extensions.Configuration.CommandLine", "CommandLineConfigurationProvider", "CommandLineConfigurationProvider", "(System.Collections.Generic.IEnumerable<System.String>,System.Collections.Generic.IDictionary<System.String,System.String>)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Configuration.CommandLine", "CommandLineConfigurationProvider", "Load", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Configuration.CommandLine", "CommandLineConfigurationSource", "Build", "(Microsoft.Extensions.Configuration.IConfigurationBuilder)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Configuration.CommandLine", "CommandLineConfigurationProvider", "get_Args", "()", "summary", "df-generated"]

@@ -1,4 +1,4 @@
-import TestUtilities.dataflow.FlowTestCommon
+import utils.test.dataflow.FlowTestCommon
 
 module TaintModels {
   class SetMemberFunction extends TaintFunction {
@@ -116,6 +116,11 @@ module IRTest {
       exists(FunctionCall call |
         call.getTarget().getName() = "sink" and
         [sink.asExpr(), sink.asIndirectExpr()] = call.getAnArgument()
+      )
+      or
+      exists(FunctionCall call |
+        call.getTarget().getName() = "indirect_sink" and
+        sink.asIndirectExpr() = call.getAnArgument()
       )
     }
 

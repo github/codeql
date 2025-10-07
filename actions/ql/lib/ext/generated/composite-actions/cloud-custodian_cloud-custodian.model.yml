@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["cloud-custodian/cloud-custodian", "*", "input.poetry-version", "code-injection", "generated"]
+     - ["cloud-custodian/cloud-custodian", "*", "input.bucket-url", "code-injection", "generated"]
+     - ["cloud-custodian/cloud-custodian", "*", "input.docs-dir", "code-injection", "generated"]
+     - ["cloud-custodian/cloud-custodian", "*", "input.name", "code-injection", "generated"]

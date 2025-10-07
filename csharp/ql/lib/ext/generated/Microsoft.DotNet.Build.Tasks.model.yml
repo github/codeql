@@ -8,7 +8,8 @@ extensions:
       - ["Microsoft.DotNet.Build.Tasks", "TpnDocument", False, "ToString", "()", "", "Argument[this].Property[Microsoft.DotNet.Build.Tasks.TpnDocument.Preamble]", "ReturnValue", "taint", "dfc-generated"]
       - ["Microsoft.DotNet.Build.Tasks", "TpnDocument", False, "ToString", "()", "", "Argument[this].Property[Microsoft.DotNet.Build.Tasks.TpnDocument.Sections].Element", "ReturnValue", "taint", "dfc-generated"]
       - ["Microsoft.DotNet.Build.Tasks", "TpnSection", False, "ToString", "()", "", "Argument[this].Property[Microsoft.DotNet.Build.Tasks.TpnSection.Content]", "ReturnValue", "taint", "dfc-generated"]
-      - ["Microsoft.DotNet.Build.Tasks", "TpnSection", False, "ToString", "()", "", "Argument[this].Property[Microsoft.DotNet.Build.Tasks.TpnSection.Header]", "ReturnValue", "taint", "dfc-generated"]
+      - ["Microsoft.DotNet.Build.Tasks", "TpnSection", False, "ToString", "()", "", "Argument[this].Property[Microsoft.DotNet.Build.Tasks.TpnSection.Header].Property[Microsoft.DotNet.Build.Tasks.TpnSectionHeader.Name]", "ReturnValue", "taint", "dfc-generated"]
+      - ["Microsoft.DotNet.Build.Tasks", "TpnSection", False, "ToString", "()", "", "Argument[this].Property[Microsoft.DotNet.Build.Tasks.TpnSection.Header].Property[Microsoft.DotNet.Build.Tasks.TpnSectionHeader.SeparatorLine]", "ReturnValue", "taint", "dfc-generated"]
       - ["Microsoft.DotNet.Build.Tasks", "TpnSectionHeader", False, "ParseAll", "(System.String[])", "", "Argument[0].Element", "ReturnValue.Element.Property[Microsoft.DotNet.Build.Tasks.TpnSectionHeader.Name]", "taint", "dfc-generated"]
       - ["Microsoft.DotNet.Build.Tasks", "TpnSectionHeader", False, "ParseAll", "(System.String[])", "", "Argument[0].Element", "ReturnValue.Element.Property[Microsoft.DotNet.Build.Tasks.TpnSectionHeader.SeparatorLine]", "value", "dfc-generated"]
       - ["Microsoft.DotNet.Build.Tasks", "TpnSectionHeader", False, "ToString", "()", "", "Argument[this].Property[Microsoft.DotNet.Build.Tasks.TpnSectionHeader.Name]", "ReturnValue", "taint", "dfc-generated"]
@@ -19,7 +20,6 @@ extensions:
       extensible: neutralModel
     data:
       - ["Microsoft.DotNet.Build.Tasks", "BuildTask", "Execute", "()", "summary", "df-generated"]
-      - ["Microsoft.DotNet.Build.Tasks", "GenerateChecksums", "Execute", "()", "summary", "df-generated"]
       - ["Microsoft.DotNet.Build.Tasks", "GenerateFileVersionProps", "Execute", "()", "summary", "df-generated"]
       - ["Microsoft.DotNet.Build.Tasks", "GenerateRunScript", "Execute", "()", "summary", "df-generated"]
       - ["Microsoft.DotNet.Build.Tasks", "GenerateTestSharedFrameworkDepsFile", "Execute", "()", "summary", "df-generated"]

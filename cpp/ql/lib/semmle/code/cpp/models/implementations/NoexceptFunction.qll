@@ -6,6 +6,6 @@ import semmle.code.cpp.models.interfaces.NonThrowing
  *
  * Note: The `throw` specifier was deprecated in C++11 and removed in C++17.
  */
-class NoexceptFunction extends NonThrowingFunction {
+class NoexceptFunction extends NonCppThrowingFunction {
   NoexceptFunction() { this.isNoExcept() or this.isNoThrow() }
 }

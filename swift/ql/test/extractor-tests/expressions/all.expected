@@ -6,8 +6,8 @@
 | expressions.swift:6:9:6:9 | hello world | StringLiteralExpr |
 | expressions.swift:7:10:7:10 | "..." | InterpolatedStringLiteralExpr |
 | expressions.swift:7:10:7:10 | OpaqueValueExpr | OpaqueValueExpr |
-| expressions.swift:7:10:7:10 | TapExpr | TapExpr |
 | expressions.swift:7:10:7:10 | hello  | StringLiteralExpr |
+| expressions.swift:7:10:7:21 | TapExpr | TapExpr |
 | expressions.swift:7:11:7:10 | call to appendLiteral(_:) | CallExpr |
 | expressions.swift:7:11:7:11 | $interpolation | DeclRefExpr |
 | expressions.swift:7:11:7:11 | &... | InOutExpr |
@@ -133,7 +133,6 @@
 | expressions.swift:60:1:60:63 | call to withUnsafePointer(to:_:) | CallExpr |
 | expressions.swift:60:23:60:23 | (Int) ... | LoadExpr |
 | expressions.swift:60:23:60:23 | myNumber | DeclRefExpr |
-| expressions.swift:60:33:60:63 | ((UnsafePointer<Int>) throws -> ()) ... | FunctionConversionExpr |
 | expressions.swift:60:33:60:63 | { ... } | ExplicitClosureExpr |
 | expressions.swift:60:35:60:35 | unsafeFunction(pointer:) | DeclRefExpr |
 | expressions.swift:60:35:60:61 | call to unsafeFunction(pointer:) | CallExpr |

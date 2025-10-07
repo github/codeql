@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["rocketchat/rocket.chat/.github/workflows/ci-test-e2e.yml", "*", "input.total-shard", "code-injection", "generated"]

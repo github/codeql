@@ -1,9 +1,12 @@
 semmle-extractor-options: /nostdlib /noconfig
 semmle-extractor-options: --load-sources-from-project:${testdir}/../../../resources/stubs/Newtonsoft.Json/13.0.3/Newtonsoft.Json.csproj
 semmle-extractor-options: --load-sources-from-project:${testdir}/../../../resources/stubs/_frameworks/Microsoft.AspNetCore.App/Microsoft.AspNetCore.App.csproj
-semmle-extractor-options: --load-sources-from-project:${testdir}/../../../resources/stubs/Dapper/2.1.24/Dapper.csproj
-semmle-extractor-options: --load-sources-from-project:${testdir}/../../../resources/stubs/ServiceStack/8.0.0/ServiceStack.csproj
-semmle-extractor-options: --load-sources-from-project:${testdir}/../../../resources/stubs/ServiceStack.OrmLite.SqlServer/8.0.0/ServiceStack.OrmLite.SqlServer.csproj
-semmle-extractor-options: --load-sources-from-project:${testdir}/../../../resources/stubs/EntityFramework/6.4.4/EntityFramework.csproj
+semmle-extractor-options: --load-sources-from-project:${testdir}/../../../resources/stubs/Dapper/2.1.35/Dapper.csproj
+semmle-extractor-options: --load-sources-from-project:${testdir}/../../../resources/stubs/ServiceStack/8.5.2/ServiceStack.csproj
+semmle-extractor-options: --load-sources-from-project:${testdir}/../../../resources/stubs/ServiceStack.OrmLite.SqlServer/8.5.2/ServiceStack.OrmLite.SqlServer.csproj
+semmle-extractor-options: --load-sources-from-project:${testdir}/../../../resources/stubs/EntityFramework/6.5.1/EntityFramework.csproj
+semmle-extractor-options: --load-sources-from-project:${testdir}/../../../resources/stubs/System.Drawing.Common/9.0.1/System.Drawing.Common.csproj
+semmle-extractor-options: --load-sources-from-project:${testdir}/../../../resources/stubs/System.Windows.Extensions/9.0.1/System.Windows.Extensions.csproj
+semmle-extractor-options: --load-sources-from-project:${testdir}/../../../resources/stubs/System.Security.Permissions/9.0.1/System.Security.Permissions.csproj
 semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Web.cs
 semmle-extractor-options: ${testdir}/../../../resources/stubs/EntityFrameworkCore.cs

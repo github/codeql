@@ -1,5 +1,5 @@
 import java
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 
 module TestConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { DefaultFlowConfig::isSource(source) }

@@ -1,1 +1,2 @@
-Security/CWE-640/HostHeaderPoisoningInEmailGeneration.ql
+query: Security/CWE-640/HostHeaderPoisoningInEmailGeneration.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

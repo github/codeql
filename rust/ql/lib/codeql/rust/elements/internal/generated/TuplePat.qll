@@ -27,7 +27,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "TuplePat" }
 
     /**
-     * Gets the `index`th field of this tuple pat (0-based).
+     * Gets the `index`th field of this tuple pattern (0-based).
      */
     Pat getField(int index) {
       result =
@@ -35,12 +35,12 @@ module Generated {
     }
 
     /**
-     * Gets any of the fields of this tuple pat.
+     * Gets any of the fields of this tuple pattern.
      */
     final Pat getAField() { result = this.getField(_) }
 
     /**
-     * Gets the number of fields of this tuple pat.
+     * Gets the number of fields of this tuple pattern.
      */
     final int getNumberOfFields() { result = count(int i | exists(this.getField(i))) }
   }

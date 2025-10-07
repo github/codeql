@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Reflection.Primitives, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Reflection.Primitives, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Reflection
@@ -22,6 +22,7 @@ namespace System
             {
                 public override bool Equals(object obj) => throw null;
                 public bool Equals(System.Reflection.Emit.OpCode obj) => throw null;
+                public int EvaluationStackDelta { get => throw null; }
                 public System.Reflection.Emit.FlowControl FlowControl { get => throw null; }
                 public override int GetHashCode() => throw null;
                 public string Name { get => throw null; }

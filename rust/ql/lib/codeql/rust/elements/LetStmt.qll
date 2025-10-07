@@ -9,7 +9,7 @@ import codeql.rust.elements.Expr
 import codeql.rust.elements.LetElse
 import codeql.rust.elements.Pat
 import codeql.rust.elements.Stmt
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 
 /**
  * A let statement. For example:

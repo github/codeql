@@ -6,7 +6,6 @@ import csharp
 module ControlFlow {
   private import semmle.code.csharp.controlflow.BasicBlocks as BBs
   import semmle.code.csharp.controlflow.internal.SuccessorType
-  private import SuccessorTypes
   private import internal.ControlFlowGraphImpl as Impl
   private import internal.Splitting as Splitting
 
@@ -28,13 +27,6 @@ module ControlFlow {
   class Node extends Impl::Node {
     /** Gets the control flow element that this node corresponds to, if any. */
     final ControlFlowElement getAstNode() { result = super.getAstNode() }
-
-    /**
-     * DEPRECATED: Use `getAstNode` instead.
-     *
-     * Gets the control flow element that this node corresponds to, if any.
-     */
-    deprecated ControlFlowElement getElement() { result = this.getAstNode() }
 
     /** Gets the basic block that this control flow node belongs to. */
     BasicBlock getBasicBlock() { result.getANode() = this }

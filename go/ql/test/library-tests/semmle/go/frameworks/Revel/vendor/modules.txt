@@ -3,7 +3,9 @@
 github.com/go-stack/stack
 # github.com/revel/modules v1.0.0
 ## explicit
-github.com/revel/modules
+github.com/revel/modules/orm/gorp/app/controllers
+github.com/revel/modules/static/app/controllers
 # github.com/revel/revel v1.0.0
 ## explicit
 github.com/revel/revel
+github.com/revel/revel/logger

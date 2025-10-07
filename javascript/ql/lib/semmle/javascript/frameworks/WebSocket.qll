@@ -47,6 +47,20 @@ private predicate areLibrariesCompatible(
   (client = LibraryNames::ws() or client = LibraryNames::websocket())
 }
 
+/** Treats `WebSocket` as an entry point for API graphs. */
+private class WebSocketEntryPoint extends API::EntryPoint {
+  WebSocketEntryPoint() { this = "global.WebSocket" }
+
+  override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("WebSocket") }
+}
+
+/** Treats `SockJS` as an entry point for API graphs. */
+private class SockJSEntryPoint extends API::EntryPoint {
+  SockJSEntryPoint() { this = "global.SockJS" }
+
+  override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("SockJS") }
+}
+
 /**
  * Provides classes that model WebSockets clients.
  */
@@ -56,7 +70,7 @@ module ClientWebSocket {
   /**
    * A class that can be used to instantiate a WebSocket instance.
    */
-  class SocketClass extends DataFlow::SourceNode {
+  deprecated class SocketClass extends DataFlow::SourceNode {
     LibraryName library; // the name of the WebSocket library. Can be one of the libraries defined in `LibraryNames`.
 
     SocketClass() {
@@ -79,12 +93,37 @@ module ClientWebSocket {
   }
 
   /**
+   * A class that can be used to instantiate a WebSocket instance.
+   */
+  class WebSocketClass extends API::Node {
+    LibraryName library; // the name of the WebSocket library. Can be one of the libraries defined in `LibraryNames`.
+
+    WebSocketClass() {
+      this = any(WebSocketEntryPoint e).getANode() and library = websocket()
+      or
+      this = API::moduleImport("ws") and library = ws()
+      or
+      // the sockjs-client library:https://www.npmjs.com/package/sockjs-client
+      library = sockjs() and
+      (
+        this = API::moduleImport("sockjs-client") or
+        this = any(SockJSEntryPoint e).getANode()
+      )
+    }
+
+    /**
+     * Gets the WebSocket library name.
+     */
+    LibraryName getLibrary() { result = library }
+  }
+
+  /**
    * A client WebSocket instance.
    */
-  class ClientSocket extends EventEmitter::Range, DataFlow::NewNode, ClientRequest::Range {
-    SocketClass socketClass;
+  class ClientSocket extends EventEmitter::Range, API::NewNode, ClientRequest::Range {
+    WebSocketClass socketClass;
 
-    ClientSocket() { this = socketClass.getAnInstantiation() }
+    ClientSocket() { this = socketClass.getAnInvocation() }
 
     /**
      * Gets the WebSocket library name.
@@ -115,10 +154,10 @@ module ClientWebSocket {
   /**
    * A message sent from a WebSocket client.
    */
-  class SendNode extends EventDispatch::Range, DataFlow::CallNode {
+  class SendNode extends EventDispatch::Range, API::CallNode {
     override ClientSocket emitter;
 
-    SendNode() { this = emitter.getAMemberCall("send") }
+    SendNode() { this = emitter.getReturn().getMember("send").getACall() }
 
     override string getChannel() { result = channelName() }
 
@@ -145,8 +184,8 @@ module ClientWebSocket {
   private DataFlow::FunctionNode getAMessageHandler(
     ClientWebSocket::ClientSocket emitter, string methodName
   ) {
-    exists(DataFlow::CallNode call |
-      call = emitter.getAMemberCall(methodName) and
+    exists(API::CallNode call |
+      call = emitter.getReturn().getMember(methodName).getACall() and
       call.getArgument(0).mayHaveStringValue("message") and
       result = call.getCallback(1)
     )
@@ -161,7 +200,13 @@ module ClientWebSocket {
     WebSocketReceiveNode() {
       this = getAMessageHandler(emitter, "addEventListener")
       or
-      this = emitter.getAPropertyWrite("onmessage").getRhs()
+      this = emitter.getReturn().getMember("onmessage").getAValueReachingSink()
+      or
+      exists(DataFlow::MethodCallNode bindCall |
+        bindCall = emitter.getReturn().getMember("onmessage").getAValueReachingSink() and
+        bindCall.getMethodName() = "bind" and
+        this = bindCall.getReceiver().getAFunctionValue()
+      )
     }
 
     override DataFlow::Node getReceivedItem(int i) {
@@ -192,7 +237,7 @@ module ServerWebSocket {
   /**
    * Gets a server created by a library named `library`.
    */
-  DataFlow::SourceNode getAServer(LibraryName library) {
+  deprecated DataFlow::SourceNode getAServer(LibraryName library) {
     library = ws() and
     result = DataFlow::moduleImport("ws").getAConstructorInvocation("Server")
     or
@@ -201,10 +246,21 @@ module ServerWebSocket {
   }
 
   /**
+   * Gets a server created by a library named `library`.
+   */
+  API::InvokeNode getAServerInvocation(LibraryName library) {
+    library = ws() and
+    result = API::moduleImport("ws").getMember("Server").getAnInvocation()
+    or
+    library = sockjs() and
+    result = API::moduleImport("sockjs").getMember("createServer").getAnInvocation()
+  }
+
+  /**
    * Gets a `socket.on("connection", (msg, req) => {})` call.
    */
   private DataFlow::CallNode getAConnectionCall(LibraryName library) {
-    result = getAServer(library).getAMemberCall(EventEmitter::on()) and
+    result = getAServerInvocation(library).getReturn().getMember(EventEmitter::on()).getACall() and
     result.getArgument(0).mayHaveStringValue("connection")
   }
 
@@ -324,15 +380,18 @@ module ServerWebSocket {
       result = this.getCallback(1).getParameter(0)
     }
   }
+}
 
-  /**
-   * A data flow node representing data received from a client, viewed as remote user input.
-   */
-  private class ReceivedItemAsRemoteFlow extends RemoteFlowSource {
-    ReceivedItemAsRemoteFlow() { this = any(ReceiveNode rercv).getReceivedItem(_) }
-
-    override string getSourceType() { result = "WebSocket client data" }
-
-    override predicate isUserControlledObject() { any() }
+/**
+ * A data flow node representing data received from a client or server, viewed as remote user input.
+ */
+private class ReceivedItemAsRemoteFlow extends RemoteFlowSource {
+  ReceivedItemAsRemoteFlow() {
+    this = any(ClientWebSocket::ReceiveNode rercv).getReceivedItem(_) or
+    this = any(ServerWebSocket::ReceiveNode rercv).getReceivedItem(_)
   }
+
+  override string getSourceType() { result = "WebSocket transmitted data" }
+
+  override predicate isUserControlledObject() { any() }
 }

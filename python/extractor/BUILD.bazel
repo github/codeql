@@ -1,3 +1,4 @@
+load("@rules_python//python:defs.bzl", "py_binary")
 load("//misc/bazel:pkg.bzl", "codeql_pkg_files", "strip_prefix")
 
 py_binary(

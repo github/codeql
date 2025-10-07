@@ -4,12 +4,12 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Security.Claims", "Claim", False, "Claim", "(System.IO.BinaryReader,System.Security.Claims.ClaimsIdentity)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Security.Claims", "Claim", False, "Claim", "(System.Security.Claims.Claim,System.Security.Claims.ClaimsIdentity)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Security.Claims", "Claim", False, "Claim", "(System.Security.Claims.Claim,System.Security.Claims.ClaimsIdentity)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Security.Claims", "Claim", False, "Claim", "(System.IO.BinaryReader,System.Security.Claims.ClaimsIdentity)", "", "Argument[1]", "Argument[this].SyntheticField[System.Security.Claims.Claim._subject]", "value", "dfc-generated"]
+      - ["System.Security.Claims", "Claim", False, "Claim", "(System.Security.Claims.Claim,System.Security.Claims.ClaimsIdentity)", "", "Argument[1]", "Argument[this].SyntheticField[System.Security.Claims.Claim._subject]", "value", "dfc-generated"]
       - ["System.Security.Claims", "Claim", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Security.Claims", "Claim", False, "get_Issuer", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Security.Claims", "Claim", False, "get_OriginalIssuer", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Security.Claims", "Claim", False, "get_Subject", "()", "", "Argument[this].SyntheticField[System.Security.Claims.Claim._subject]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Security.Claims", "Claim", False, "get_Type", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Security.Claims", "Claim", False, "get_Value", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Security.Claims", "Claim", False, "get_ValueType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

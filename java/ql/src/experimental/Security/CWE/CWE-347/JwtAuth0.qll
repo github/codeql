@@ -1,3 +1,5 @@
+deprecated module;
+
 import java
 
 class PayloadType extends RefType {

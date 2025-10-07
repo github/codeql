@@ -34,8 +34,9 @@ private import semmle.code.csharp.TypeRef
  * `as` expression (`AsExpr`), a cast (`CastExpr`), a `typeof` expression
  * (`TypeofExpr`), a `default` expression (`DefaultValueExpr`), an `await`
  * expression (`AwaitExpr`), a `nameof` expression (`NameOfExpr`), an
- * interpolated string (`InterpolatedStringExpr`), a qualifiable expression
- * (`QualifiableExpr`), or a literal (`Literal`).
+ * interpolated string (`InterpolatedStringExpr`), an interpolated string
+ * insert (`InterpolatedStringInsertExpr`), a qualifiable expression (`QualifiableExpr`),
+ * or a literal (`Literal`).
  */
 class Expr extends ControlFlowElement, @expr {
   override Location getALocation() { expr_location(this, result) }
@@ -82,10 +83,18 @@ class Expr extends ControlFlowElement, @expr {
   Expr stripCasts() { result = this }
 
   /**
+   * DEPRECATED: Use `stripImplicit` instead.
+   *
    * Gets an expression that is the result of stripping (recursively) all
    * implicit casts from this expression, if any.
    */
-  Expr stripImplicitCasts() { result = this }
+  deprecated Expr stripImplicitCasts() { result = this.stripImplicit() }
+
+  /**
+   * Gets an expression that is the result of stripping (recursively) all
+   * implicit casts and implicit ToString calls from this expression, if any.
+   */
+  Expr stripImplicit() { result = this }
 
   /**
    * Gets the explicit parameter name used to pass this expression as an
@@ -714,8 +723,8 @@ class Cast extends Expr {
 
   override Expr stripCasts() { result = this.getExpr().stripCasts() }
 
-  override Expr stripImplicitCasts() {
-    if this.isImplicit() then result = this.getExpr().stripImplicitCasts() else result = this
+  override Expr stripImplicit() {
+    if this.isImplicit() then result = this.getExpr().stripImplicit() else result = this
   }
 }
 
@@ -910,6 +919,40 @@ class NameOfExpr extends Expr, @nameof_expr {
 }
 
 /**
+ * An interpolated string insert, for example `{pi, align:F3}` on line 3 in
+ *
+ * ```csharp
+ * void Pi() {
+ *     float pi = 3.14159f;
+ *     Console.WriteLine($"Hello Pi, {pi,6:F3}");
+ * }
+ * ```
+ */
+class InterpolatedStringInsertExpr extends Expr, @interpolated_string_insert_expr {
+  override string toString() { result = "{...}" }
+
+  override string getAPrimaryQlClass() { result = "InterpolatedStringInsertExpr" }
+
+  /**
+   * Gets the insert expression in this interpolated string insert. For
+   * example, the insert expression in `{pi, align:F3}` is `pi`.
+   */
+  Expr getInsert() { result = this.getChild(0) }
+
+  /**
+   * Gets the alignment expression in this interpolated string insert, if any.
+   * For example, the alignment expression in `{pi, align:F3}` is `align`.
+   */
+  Expr getAlignment() { result = this.getChild(1) }
+
+  /**
+   * Gets the format expression in this interpolated string insert, if any.
+   * For example, the format expression in `{pi, align:F3}` is `F3`.
+   */
+  StringLiteral getFormat() { result = this.getChild(2) }
+}
+
+/**
  * An interpolated string, for example `$"Hello, {name}!"` on line 2 in
  *
  * ```csharp
@@ -924,15 +967,19 @@ class InterpolatedStringExpr extends Expr, @interpolated_string_expr {
   override string getAPrimaryQlClass() { result = "InterpolatedStringExpr" }
 
   /**
+   * Gets the interpolated string insert at index `i` in this interpolated string, if any.
+   * For example, the interpolated string insert at index `i = 1` is `{pi, align:F3}`
+   * in `$"Hello, {pi, align:F3}!"`.
+   */
+  InterpolatedStringInsertExpr getInterpolatedInsert(int i) { result = this.getChild(i) }
+
+  /**
    * Gets the insert at index `i` in this interpolated string, if any. For
    * example, the insert at index `i = 1` is `name` in `$"Hello, {name}!"`.
    * Note that there is no insert at index `i = 0`, but instead a text
    * element (`getText(0)` gets the text).
    */
-  Expr getInsert(int i) {
-    result = this.getChild(i) and
-    not result instanceof StringLiteral
-  }
+  Expr getInsert(int i) { result = this.getInterpolatedInsert(i).getInsert() }
 
   /**
    * Gets the text element at index `i` in this interpolated string, if any.

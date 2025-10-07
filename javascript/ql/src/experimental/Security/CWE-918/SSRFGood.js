@@ -2,7 +2,7 @@ const axios = require('axios');
 const validator = require('validator');
 
 export const handler = async (req, res, next) => {
-  const { target } = req.body;
+  const { target } = req.body;
 
   if (!validator.isAlphanumeric(target)) {
     return next(new Error('Bad request'));

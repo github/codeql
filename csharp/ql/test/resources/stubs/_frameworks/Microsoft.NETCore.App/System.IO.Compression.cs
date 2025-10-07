@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.IO.Compression, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`.
+// Generated from `System.IO.Compression, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`.
 namespace System
 {
     namespace IO
@@ -32,6 +32,7 @@ namespace System
                 public DeflateStream(System.IO.Stream stream, System.IO.Compression.CompressionLevel compressionLevel, bool leaveOpen) => throw null;
                 public DeflateStream(System.IO.Stream stream, System.IO.Compression.CompressionMode mode) => throw null;
                 public DeflateStream(System.IO.Stream stream, System.IO.Compression.CompressionMode mode, bool leaveOpen) => throw null;
+                public DeflateStream(System.IO.Stream stream, System.IO.Compression.ZLibCompressionOptions compressionOptions, bool leaveOpen = default(bool)) => throw null;
                 protected override void Dispose(bool disposing) => throw null;
                 public override System.Threading.Tasks.ValueTask DisposeAsync() => throw null;
                 public override int EndRead(System.IAsyncResult asyncResult) => throw null;
@@ -67,6 +68,7 @@ namespace System
                 public GZipStream(System.IO.Stream stream, System.IO.Compression.CompressionLevel compressionLevel, bool leaveOpen) => throw null;
                 public GZipStream(System.IO.Stream stream, System.IO.Compression.CompressionMode mode) => throw null;
                 public GZipStream(System.IO.Stream stream, System.IO.Compression.CompressionMode mode, bool leaveOpen) => throw null;
+                public GZipStream(System.IO.Stream stream, System.IO.Compression.ZLibCompressionOptions compressionOptions, bool leaveOpen = default(bool)) => throw null;
                 protected override void Dispose(bool disposing) => throw null;
                 public override System.Threading.Tasks.ValueTask DisposeAsync() => throw null;
                 public override int EndRead(System.IAsyncResult asyncResult) => throw null;
@@ -125,6 +127,20 @@ namespace System
                 Create = 1,
                 Update = 2,
             }
+            public sealed class ZLibCompressionOptions
+            {
+                public int CompressionLevel { get => throw null; set { } }
+                public System.IO.Compression.ZLibCompressionStrategy CompressionStrategy { get => throw null; set { } }
+                public ZLibCompressionOptions() => throw null;
+            }
+            public enum ZLibCompressionStrategy
+            {
+                Default = 0,
+                Filtered = 1,
+                HuffmanOnly = 2,
+                RunLengthEncoding = 3,
+                Fixed = 4,
+            }
             public sealed class ZLibStream : System.IO.Stream
             {
                 public System.IO.Stream BaseStream { get => throw null; }
@@ -139,6 +155,7 @@ namespace System
                 public ZLibStream(System.IO.Stream stream, System.IO.Compression.CompressionLevel compressionLevel, bool leaveOpen) => throw null;
                 public ZLibStream(System.IO.Stream stream, System.IO.Compression.CompressionMode mode) => throw null;
                 public ZLibStream(System.IO.Stream stream, System.IO.Compression.CompressionMode mode, bool leaveOpen) => throw null;
+                public ZLibStream(System.IO.Stream stream, System.IO.Compression.ZLibCompressionOptions compressionOptions, bool leaveOpen = default(bool)) => throw null;
                 protected override void Dispose(bool disposing) => throw null;
                 public override System.Threading.Tasks.ValueTask DisposeAsync() => throw null;
                 public override int EndRead(System.IAsyncResult asyncResult) => throw null;

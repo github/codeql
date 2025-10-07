@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["microsoft/pr-metrics/.github/workflows/release-phase-1-internal.yml", "*", "input.patch", "code-injection", "generated"]

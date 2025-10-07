@@ -1,9 +1,7 @@
 import semmle.code.cpp.models.interfaces.Throwing
 
-class WindowsDriverFunction extends ThrowingFunction {
-  WindowsDriverFunction() {
+class WindowsDriverExceptionAnnotation extends AlwaysSehThrowingFunction {
+  WindowsDriverExceptionAnnotation() {
     this.hasGlobalName(["RaiseException", "ExRaiseAccessViolation", "ExRaiseDatatypeMisalignment"])
   }
-
-  final override predicate mayThrowException(boolean unconditional) { unconditional = true }
 }

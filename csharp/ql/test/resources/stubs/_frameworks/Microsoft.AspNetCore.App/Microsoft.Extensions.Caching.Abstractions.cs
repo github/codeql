@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.Caching.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.Caching.Abstractions, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace Extensions
@@ -32,6 +32,13 @@ namespace Microsoft
                     public static System.Threading.Tasks.Task SetStringAsync(this Microsoft.Extensions.Caching.Distributed.IDistributedCache cache, string key, string value, Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions options, System.Threading.CancellationToken token = default(System.Threading.CancellationToken)) => throw null;
                     public static System.Threading.Tasks.Task SetStringAsync(this Microsoft.Extensions.Caching.Distributed.IDistributedCache cache, string key, string value, System.Threading.CancellationToken token = default(System.Threading.CancellationToken)) => throw null;
                 }
+                public interface IBufferDistributedCache : Microsoft.Extensions.Caching.Distributed.IDistributedCache
+                {
+                    void Set(string key, System.Buffers.ReadOnlySequence<byte> value, Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions options);
+                    System.Threading.Tasks.ValueTask SetAsync(string key, System.Buffers.ReadOnlySequence<byte> value, Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions options, System.Threading.CancellationToken token = default(System.Threading.CancellationToken));
+                    bool TryGet(string key, System.Buffers.IBufferWriter<byte> destination);
+                    System.Threading.Tasks.ValueTask<bool> TryGetAsync(string key, System.Buffers.IBufferWriter<byte> destination, System.Threading.CancellationToken token = default(System.Threading.CancellationToken));
+                }
                 public interface IDistributedCache
                 {
                     byte[] Get(string key);
@@ -42,6 +49,49 @@ namespace Microsoft
                     System.Threading.Tasks.Task RemoveAsync(string key, System.Threading.CancellationToken token = default(System.Threading.CancellationToken));
                     void Set(string key, byte[] value, Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions options);
                     System.Threading.Tasks.Task SetAsync(string key, byte[] value, Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions options, System.Threading.CancellationToken token = default(System.Threading.CancellationToken));
+                }
+            }
+            namespace Hybrid
+            {
+                public abstract class HybridCache
+                {
+                    protected HybridCache() => throw null;
+                    public abstract System.Threading.Tasks.ValueTask<T> GetOrCreateAsync<TState, T>(string key, TState state, System.Func<TState, System.Threading.CancellationToken, System.Threading.Tasks.ValueTask<T>> factory, Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions options = default(Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions), System.Collections.Generic.IEnumerable<string> tags = default(System.Collections.Generic.IEnumerable<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+                    public System.Threading.Tasks.ValueTask<T> GetOrCreateAsync<T>(string key, System.Func<System.Threading.CancellationToken, System.Threading.Tasks.ValueTask<T>> factory, Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions options = default(Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions), System.Collections.Generic.IEnumerable<string> tags = default(System.Collections.Generic.IEnumerable<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                    public abstract System.Threading.Tasks.ValueTask RemoveAsync(string key, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+                    public virtual System.Threading.Tasks.ValueTask RemoveAsync(System.Collections.Generic.IEnumerable<string> keys, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                    public virtual System.Threading.Tasks.ValueTask RemoveByTagAsync(System.Collections.Generic.IEnumerable<string> tags, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                    public abstract System.Threading.Tasks.ValueTask RemoveByTagAsync(string tag, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+                    public abstract System.Threading.Tasks.ValueTask SetAsync<T>(string key, T value, Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions options = default(Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions), System.Collections.Generic.IEnumerable<string> tags = default(System.Collections.Generic.IEnumerable<string>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+                }
+                [System.Flags]
+                public enum HybridCacheEntryFlags
+                {
+                    None = 0,
+                    DisableLocalCacheRead = 1,
+                    DisableLocalCacheWrite = 2,
+                    DisableLocalCache = 3,
+                    DisableDistributedCacheRead = 4,
+                    DisableDistributedCacheWrite = 8,
+                    DisableDistributedCache = 12,
+                    DisableUnderlyingData = 16,
+                    DisableCompression = 32,
+                }
+                public sealed class HybridCacheEntryOptions
+                {
+                    public HybridCacheEntryOptions() => throw null;
+                    public System.TimeSpan? Expiration { get => throw null; set { } }
+                    public Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryFlags? Flags { get => throw null; set { } }
+                    public System.TimeSpan? LocalCacheExpiration { get => throw null; set { } }
+                }
+                public interface IHybridCacheSerializer<T>
+                {
+                    T Deserialize(System.Buffers.ReadOnlySequence<byte> source);
+                    void Serialize(T value, System.Buffers.IBufferWriter<byte> target);
+                }
+                public interface IHybridCacheSerializerFactory
+                {
+                    bool TryCreateSerializer<T>(out Microsoft.Extensions.Caching.Hybrid.IHybridCacheSerializer<T> serializer);
                 }
             }
             namespace Memory
@@ -64,7 +114,9 @@ namespace Microsoft
                     public static object Get(this Microsoft.Extensions.Caching.Memory.IMemoryCache cache, object key) => throw null;
                     public static TItem Get<TItem>(this Microsoft.Extensions.Caching.Memory.IMemoryCache cache, object key) => throw null;
                     public static TItem GetOrCreate<TItem>(this Microsoft.Extensions.Caching.Memory.IMemoryCache cache, object key, System.Func<Microsoft.Extensions.Caching.Memory.ICacheEntry, TItem> factory) => throw null;
+                    public static TItem GetOrCreate<TItem>(this Microsoft.Extensions.Caching.Memory.IMemoryCache cache, object key, System.Func<Microsoft.Extensions.Caching.Memory.ICacheEntry, TItem> factory, Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions createOptions) => throw null;
                     public static System.Threading.Tasks.Task<TItem> GetOrCreateAsync<TItem>(this Microsoft.Extensions.Caching.Memory.IMemoryCache cache, object key, System.Func<Microsoft.Extensions.Caching.Memory.ICacheEntry, System.Threading.Tasks.Task<TItem>> factory) => throw null;
+                    public static System.Threading.Tasks.Task<TItem> GetOrCreateAsync<TItem>(this Microsoft.Extensions.Caching.Memory.IMemoryCache cache, object key, System.Func<Microsoft.Extensions.Caching.Memory.ICacheEntry, System.Threading.Tasks.Task<TItem>> factory, Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions createOptions) => throw null;
                     public static TItem Set<TItem>(this Microsoft.Extensions.Caching.Memory.IMemoryCache cache, object key, TItem value) => throw null;
                     public static TItem Set<TItem>(this Microsoft.Extensions.Caching.Memory.IMemoryCache cache, object key, TItem value, Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions options) => throw null;
                     public static TItem Set<TItem>(this Microsoft.Extensions.Caching.Memory.IMemoryCache cache, object key, TItem value, Microsoft.Extensions.Primitives.IChangeToken expirationToken) => throw null;

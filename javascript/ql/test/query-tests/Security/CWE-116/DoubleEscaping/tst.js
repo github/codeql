@@ -1,7 +1,7 @@
 function badEncode(s) {
   return s.replace(/"/g, "&quot;")
           .replace(/'/g, "&apos;")
-          .replace(/&/g, "&amp;");
+          .replace(/&/g, "&amp;"); // $ Alert
 }
 
 function goodEncode(s) {
@@ -17,7 +17,7 @@ function goodDecode(s) {
 }
 
 function badDecode(s) {
-  return s.replace(/&amp;/g, "&")
+  return s.replace(/&amp;/g, "&") // $ Alert
           .replace(/&quot;/g, "\"")
           .replace(/&apos;/g, "'");
 }
@@ -27,7 +27,7 @@ function cleverEncode(code) {
 }
 
 function badDecode2(s) {
-  return s.replace(/&amp;/g, "&")
+  return s.replace(/&amp;/g, "&") // $ Alert
           .replace(/s?ome|thin*g/g, "else")
           .replace(/&apos;/g, "'");
 }
@@ -44,20 +44,20 @@ function goodDecodeInLoop(ss) {
 }
 
 function badDecode3(s) {
-  s = s.replace(/&amp;/g, "&");
+  s = s.replace(/&amp;/g, "&"); // $ Alert
   s = s.replace(/&quot;/g, "\"");
   return s.replace(/&apos;/g, "'");
 }
 
 function badUnescape(s) {
-  return s.replace(/\\\\/g, '\\')
+  return s.replace(/\\\\/g, '\\') // $ Alert
            .replace(/\\'/g, '\'')
            .replace(/\\"/g, '\"');
 }
 
 function badPercentEscape(s) {
   s = s.replace(/&/g, '%26');
-  s = s.replace(/%/g, '%25');
+  s = s.replace(/%/g, '%25'); // $ Alert
   return s;
 }
 
@@ -67,7 +67,7 @@ function badEncode(s) {
   var indirect3 = /&/g;
   return s.replace(indirect1, "&quot;")
           .replace(indirect2, "&apos;")
-          .replace(indirect3, "&amp;");
+          .replace(indirect3, "&amp;"); // $ Alert
 }
 
 function badEncodeWithReplacer(s) {
@@ -76,7 +76,7 @@ function badEncodeWithReplacer(s) {
     "'": "&apos;",
     "&": "&amp;"
   };
-  return s.replace(/["']/g, (c) => repl[c]).replace(/&/g, "&amp;");
+  return s.replace(/["']/g, (c) => repl[c]).replace(/&/g, "&amp;"); // $ Alert
 }
 
 // dubious, but out of scope for this query
@@ -93,4 +93,22 @@ function testWithCapturedVar(x) {
 
 function encodeDecodeEncode(s) {
  return goodEncode(goodDecode(goodEncode(s)));
+}
+
+function badEncode(s) {
+  return s.replace(new RegExp("\"", "g"), "&quot;")
+          .replace(new RegExp("\'", "g"), "&apos;")
+          .replace(new RegExp("&", "g"), "&amp;"); // $ Alert
+}
+
+function goodEncode(s) {
+  return s.replace(new RegExp("\"", ""), "&quot;")
+          .replace(new RegExp("\'", ""), "&apos;")
+          .replace(new RegExp("&", ""), "&amp;");
+}
+
+function goodEncode(s) {
+  return s.replace(new RegExp("\"", unknownFlags()), "&quot;")
+          .replace(new RegExp("\'", unknownFlags()), "&apos;")
+          .replace(new RegExp("&", unknownFlags()), "&amp;");
 }

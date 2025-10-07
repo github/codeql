@@ -13,9 +13,9 @@
 
 import javascript
 import semmle.javascript.security.dataflow.ServerSideUrlRedirectQuery
-import DataFlow::PathGraph
+import ServerSideUrlRedirectFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from ServerSideUrlRedirectFlow::PathNode source, ServerSideUrlRedirectFlow::PathNode sink
+where ServerSideUrlRedirectFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Untrusted URL redirection depends on a $@.", source.getNode(),
   "user-provided value"

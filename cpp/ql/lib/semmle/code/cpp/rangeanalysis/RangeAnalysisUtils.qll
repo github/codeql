@@ -121,11 +121,11 @@ predicate relOpWithSwapAndNegate(
 }
 
 /**
- * Holds if `cmp` is an equality operation (`==` or `!=`) with  fully-converted
+ * Holds if `cmp` is an equality operation (`==` or `!=`) with fully-converted
  * children `lhs` and `rhs`, and `isEQ` is true if `cmp` is an
  * `==` operation and false if it is an `!=` operation.
  *
- * For example, if `rel` is `x == 5` then
+ * For example, if `cmp` is `x == 5` then
  * `eqOpWithSwap(cmp, x, 5, true)` holds.
  */
 private predicate eqOp(EqualityOperation cmp, Expr lhs, Expr rhs, boolean isEQ) {

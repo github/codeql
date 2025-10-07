@@ -7,10 +7,10 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
-import codeql.rust.elements.GenericParamList
+import codeql.rust.elements.ForBinder
 import codeql.rust.elements.Lifetime
 import codeql.rust.elements.TypeBoundList
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 
 /**
  * INTERNAL: This module contains the fully generated definition of `WherePred` and should not
@@ -18,9 +18,14 @@ import codeql.rust.elements.TypeRef
  */
 module Generated {
   /**
-   * A WherePred. For example:
+   * A predicate in a where clause.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<T, U>(t: T, u: U) where T: Debug, U: Clone {}
+   * //                             ^^^^^^^^  ^^^^^^^^
+   * fn bar<T>(value: T) where for<'a> T: From<&'a str> {}
+   * //                        ^^^^^^^^^^^^^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::WherePred` class directly.
    * Use the subclass `WherePred`, where the following predicates are available.
@@ -29,19 +34,19 @@ module Generated {
     override string getAPrimaryQlClass() { result = "WherePred" }
 
     /**
-     * Gets the generic parameter list of this where pred, if it exists.
+     * Gets the for binder of this where pred, if it exists.
      */
-    GenericParamList getGenericParamList() {
+    ForBinder getForBinder() {
       result =
-        Synth::convertGenericParamListFromRaw(Synth::convertWherePredToRaw(this)
+        Synth::convertForBinderFromRaw(Synth::convertWherePredToRaw(this)
               .(Raw::WherePred)
-              .getGenericParamList())
+              .getForBinder())
     }
 
     /**
-     * Holds if `getGenericParamList()` exists.
+     * Holds if `getForBinder()` exists.
      */
-    final predicate hasGenericParamList() { exists(this.getGenericParamList()) }
+    final predicate hasForBinder() { exists(this.getForBinder()) }
 
     /**
      * Gets the lifetime of this where pred, if it exists.
@@ -59,17 +64,19 @@ module Generated {
     final predicate hasLifetime() { exists(this.getLifetime()) }
 
     /**
-     * Gets the ty of this where pred, if it exists.
+     * Gets the type representation of this where pred, if it exists.
      */
-    TypeRef getTy() {
+    TypeRepr getTypeRepr() {
       result =
-        Synth::convertTypeRefFromRaw(Synth::convertWherePredToRaw(this).(Raw::WherePred).getTy())
+        Synth::convertTypeReprFromRaw(Synth::convertWherePredToRaw(this)
+              .(Raw::WherePred)
+              .getTypeRepr())
     }
 
     /**
-     * Holds if `getTy()` exists.
+     * Holds if `getTypeRepr()` exists.
      */
-    final predicate hasTy() { exists(this.getTy()) }
+    final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
 
     /**
      * Gets the type bound list of this where pred, if it exists.

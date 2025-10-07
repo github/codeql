@@ -37,46 +37,47 @@ module Twirp {
 
   /** A type representing a protobuf message. */
   class ProtobufMessageType extends Type {
-    ProtobufMessageType() {
-      this.hasLocationInfo(any(ProtobufGeneratedFile f).getAbsolutePath(), _, _, _, _)
-    }
+    ProtobufMessageType() { this.getLocation().getFile() instanceof ProtobufGeneratedFile }
   }
 
   /** An interface type representing a Twirp service. */
   class ServiceInterfaceType extends InterfaceType {
-    NamedType namedType;
+    DefinedType definedType;
 
     ServiceInterfaceType() {
-      namedType.getUnderlyingType() = this and
-      namedType.hasLocationInfo(any(ServicesGeneratedFile f).getAbsolutePath(), _, _, _, _)
+      definedType.getUnderlyingType() = this and
+      definedType.getLocation().getFile() instanceof ServicesGeneratedFile
     }
 
     /** Gets the name of the interface. */
-    override string getName() { result = namedType.getName() }
+    override string getName() { result = definedType.getName() }
 
-    /** Gets the named type on top of this interface type. */
-    NamedType getNamedType() { result = namedType }
+    /** DEPRECATED: Use `getDefinedType` instead. */
+    deprecated DefinedType getNamedType() { result = this.getDefinedType() }
+
+    /** Gets the defined type on top of this interface type. */
+    DefinedType getDefinedType() { result = definedType }
   }
 
   /** A Twirp client. */
-  class ServiceClientType extends NamedType {
+  class ServiceClientType extends DefinedType {
     ServiceClientType() {
       exists(ServiceInterfaceType i, PointerType p |
         p.implements(i) and
         this = p.getBaseType() and
         this.getName().regexpMatch("(?i)" + i.getName() + "(protobuf|json)client") and
-        this.hasLocationInfo(any(ServicesGeneratedFile f).getAbsolutePath(), _, _, _, _)
+        this.getLocation().getFile() instanceof ServicesGeneratedFile
       )
     }
   }
 
   /** A Twirp server. */
-  class ServiceServerType extends NamedType {
+  class ServiceServerType extends DefinedType {
     ServiceServerType() {
       exists(ServiceInterfaceType i |
         this.implements(i) and
         this.getName().regexpMatch("(?i)" + i.getName() + "server") and
-        this.hasLocationInfo(any(ServicesGeneratedFile f).getAbsolutePath(), _, _, _, _)
+        this.getLocation().getFile() instanceof ServicesGeneratedFile
       )
     }
   }
@@ -87,7 +88,7 @@ module Twirp {
       this.getName().regexpMatch("(?i)new" + any(ServiceClientType c).getName()) and
       this.getParameterType(0) instanceof StringType and
       this.getParameterType(1).getName() = "HTTPClient" and
-      this.hasLocationInfo(any(ServicesGeneratedFile f).getAbsolutePath(), _, _, _, _)
+      this.getLocation().getFile() instanceof ServicesGeneratedFile
     }
   }
 
@@ -99,8 +100,8 @@ module Twirp {
   class ServerConstructor extends Function {
     ServerConstructor() {
       this.getName().regexpMatch("(?i)new" + any(ServiceServerType c).getName()) and
-      this.getParameterType(0) = any(ServiceInterfaceType i).getNamedType() and
-      this.hasLocationInfo(any(ServicesGeneratedFile f).getAbsolutePath(), _, _, _, _)
+      this.getParameterType(0) = any(ServiceInterfaceType i).getDefinedType() and
+      this.getLocation().getFile() instanceof ServicesGeneratedFile
     }
   }
 
@@ -121,7 +122,7 @@ module Twirp {
   bindingset[m]
   pragma[inline_late]
   private predicate implementsServiceType(Method m) {
-    m.implements(any(ServiceInterfaceType i).getNamedType().getMethod(_))
+    m.implements(any(ServiceInterfaceType i).getDefinedType().getMethod(_))
   }
 
   /** A service handler. */

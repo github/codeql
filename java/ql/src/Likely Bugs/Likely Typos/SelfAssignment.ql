@@ -5,13 +5,15 @@
  * @problem.severity error
  * @precision very-high
  * @id java/redundant-assignment
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       logic
  */
 
 import java
 
+pragma[nomagic]
 predicate toCompare(VarAccess left, VarAccess right) {
   exists(AssignExpr assign | assign.getDest() = left and assign.getSource() = right)
   or
@@ -28,9 +30,10 @@ predicate local(RefType enclosingType, VarAccess v) {
   not exists(v.getQualifier()) and enclosingType = v.getEnclosingCallable().getDeclaringType()
 }
 
+pragma[nomagic]
 predicate sameVariable(VarAccess left, VarAccess right) {
   toCompare(left, right) and
-  left.getVariable() = right.getVariable() and
+  pragma[only_bind_out](left.getVariable()) = pragma[only_bind_out](right.getVariable()) and
   (
     exists(Expr q1, Expr q2 |
       q1 = left.getQualifier() and
@@ -38,7 +41,10 @@ predicate sameVariable(VarAccess left, VarAccess right) {
       q2 = right.getQualifier()
     )
     or
-    exists(RefType enclosingType | local(enclosingType, left) and local(enclosingType, right))
+    exists(RefType enclosingType |
+      local(enclosingType, pragma[only_bind_out](left)) and
+      local(enclosingType, pragma[only_bind_out](right))
+    )
   )
 }
 

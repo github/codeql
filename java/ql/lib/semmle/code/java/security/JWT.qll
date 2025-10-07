@@ -1,4 +1,6 @@
 /** Provides classes for working with JSON Web Token (JWT) libraries. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.FlowSinks
@@ -44,9 +46,6 @@ class JwtParserWithInsecureParseSink extends ApiSinkNode {
 
   /** Gets the method access that does the insecure parsing. */
   MethodCall getParseMethodCall() { result = insecureParseMa }
-
-  /** DEPRECATED: Alias for `getParseMethodCall`. */
-  deprecated MethodCall getParseMethodAccess() { result = this.getParseMethodCall() }
 }
 
 /**

@@ -212,7 +212,13 @@ module MissingHttpOnlyConfig implements DataFlow::ConfigSig {
 
 module MissingHttpOnlyFlow = TaintTracking::Global<MissingHttpOnlyConfig>;
 
-from MissingHttpOnlyFlow::PathNode source, MissingHttpOnlyFlow::PathNode sink
-where MissingHttpOnlyFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "$@ doesn't have the HttpOnly flag set.", source.getNode(),
-  "This sensitive cookie"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, MissingHttpOnlyFlow::PathNode source, MissingHttpOnlyFlow::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
+  MissingHttpOnlyFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "$@ doesn't have the HttpOnly flag set." and
+  sourceNode = source.getNode() and
+  message2 = "This sensitive cookie"
+}

@@ -738,21 +738,9 @@ class PythonFunctionValue extends FunctionValue {
     else result = "function " + this.getQualifiedName()
   }
 
-  override int minParameters() {
-    exists(Function f |
-      f = this.getScope() and
-      result = count(f.getAnArg()) - count(f.getDefinition().getArgs().getADefault())
-    )
-  }
+  override int minParameters() { result = this.getScope().getMinPositionalArguments() }
 
-  override int maxParameters() {
-    exists(Function f |
-      f = this.getScope() and
-      if exists(f.getVararg())
-      then result = 2147483647 // INT_MAX
-      else result = count(f.getAnArg())
-    )
-  }
+  override int maxParameters() { result = this.getScope().getMaxPositionalArguments() }
 
   /** Gets a control flow node corresponding to a return statement in this function */
   ControlFlowNode getAReturnedNode() { result = this.getScope().getAReturnValueFlowNode() }

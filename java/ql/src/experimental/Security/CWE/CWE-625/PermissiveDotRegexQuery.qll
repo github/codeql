@@ -1,4 +1,5 @@
 /** Provides classes related to security-centered regular expression matching. */
+deprecated module;
 
 import java
 private import semmle.code.java.dataflow.ExternalFlow
@@ -8,6 +9,7 @@ import semmle.code.java.controlflow.Guards
 import semmle.code.java.security.UrlRedirect
 import Regex
 
+overlay[local?]
 private class ActivateModels extends ActiveExperimentalModels {
   ActivateModels() { this = "permissive-dot-regex-query" }
 }
@@ -94,11 +96,11 @@ private class CompileRegexSink extends DataFlow::ExprNode {
  * A data flow configuration for regular expressions that include permissive dots.
  */
 private module PermissiveDotRegexConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow2::Node src) { src.asExpr() instanceof PermissiveDotStr }
+  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof PermissiveDotStr }
 
-  predicate isSink(DataFlow2::Node sink) { sink instanceof CompileRegexSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof CompileRegexSink }
 
-  predicate isBarrier(DataFlow2::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     exists(
       MethodCall ma, Field f // Pattern.compile(PATTERN, Pattern.DOTALL)
     |

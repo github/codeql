@@ -1,37 +1,193 @@
-use std::io::Write;
 use std::{fs, path::PathBuf};
 
 pub mod codegen;
+mod field_info;
 mod flags;
+
+use crate::codegen::grammar::ast_src::{AstEnumSrc, Cardinality};
+use crate::field_info::{FieldInfo, FieldType};
 use codegen::grammar::ast_src::{AstNodeSrc, AstSrc, Field};
+use itertools::Itertools;
+use serde::Serialize;
 use std::collections::{BTreeMap, BTreeSet};
 use std::env;
 use ungrammar::Grammar;
 
-fn project_root() -> PathBuf {
-    let dir =
-        env::var("CARGO_MANIFEST_DIR").unwrap_or_else(|_| env!("CARGO_MANIFEST_DIR").to_owned());
-    PathBuf::from(dir).parent().unwrap().to_owned()
-}
-
-fn class_name(type_name: &String) -> String {
-    match type_name.as_str() {
+fn class_name(type_name: &str) -> String {
+    match type_name {
         "BinExpr" => "BinaryExpr".to_owned(),
         "ElseBranch" => "Expr".to_owned(),
         "Fn" => "Function".to_owned(),
         "Literal" => "LiteralExpr".to_owned(),
-        "Type" => "TypeRef".to_owned(),
+        "ArrayExpr" => "ArrayExprInternal".to_owned(),
+        "AsmOptions" => "AsmOptionsList".to_owned(),
+        "MacroStmts" => "MacroBlockExpr".to_owned(),
+        _ if type_name.starts_with("Record") => type_name.replacen("Record", "Struct", 1),
+        _ if type_name.ends_with("Type") => format!("{type_name}Repr"),
         _ => type_name.to_owned(),
     }
 }
 
-fn property_name(type_name: &String, field_name: &String) -> String {
-    match (type_name.as_str(), field_name.as_str()) {
-        ("Path", "segment") => "part".to_owned(),
-        (_, "then_branch") => "then".to_owned(),
-        (_, "else_branch") => "else_".to_owned(),
-        _ => field_name.to_owned(),
+fn property_name(type_name: &str, field_name: &str) -> String {
+    let name = match (type_name, field_name) {
+        ("CallExpr", "expr") => "function",
+        ("LetExpr", "expr") => "scrutinee",
+        ("MatchExpr", "expr") => "scrutinee",
+        ("Variant", "expr") => "discriminant",
+        ("FieldExpr", "expr") => "container",
+        ("MacroBlockExpr", "expr") => "tail_expr",
+        (_, "name_ref") => "identifier",
+        (_, "then_branch") => "then",
+        (_, "else_branch") => "else_",
+        ("ArrayTypeRepr", "ty") => "element_type_repr",
+        ("SelfParam", "is_amp") => "is_ref",
+        ("StructField", "expr") => "default",
+        ("UseTree", "is_star") => "is_glob",
+        (_, "ty") => "type_repr",
+        _ if field_name.contains("record") => &field_name.replacen("record", "struct", 1),
+        _ => field_name,
+    };
+    name.to_owned()
+}
+
+fn has_special_emission(type_name: &str) -> bool {
+    matches!(
+        type_name,
+        "Item"
+            | "AssocItem"
+            | "ExternItem"
+            | "Meta"
+            | "MacroCall"
+            | "Fn"
+            | "Struct"
+            | "Enum"
+            | "Union"
+            | "PathSegment"
+            | "Const"
+    )
+}
+
+fn should_enum_be_skipped(name: &str) -> bool {
+    name == "VariantDef" // remove the VariantDef enum, there is no use for it at the moment
+}
+
+fn should_node_be_skipped(name: &str) -> bool {
+    name == "TypeAnchor" // we flatten TypeAnchor into PathSegment in the extractor
+    || name == "MacroStmts" // we workaround a getter bug in the extractor
+}
+
+fn should_node_be_skipped_in_extractor(name: &str) -> bool {
+    name == "Adt" // no fields have `Adt` type, so we don't need extraction for it
+}
+
+fn should_field_be_skipped(node_name: &str, field_name: &str) -> bool {
+    matches!(
+        (node_name, field_name),
+        ("ArrayExpr", "expr") // The ArrayExpr type also has an 'exprs' field
+            | ("PathSegment", "type_anchor")  // we flatten TypeAnchor into PathSegment in the extractor
+            | ("Param", "pat") | ("MacroCall", "token_tree") // handled manually to use `body`
+    )
+}
+
+fn get_additional_fields(node_name: &str) -> Vec<FieldInfo> {
+    match node_name {
+        "Name" | "NameRef" | "Lifetime" => vec![FieldInfo::string("text")],
+        "Abi" => vec![FieldInfo::string("abi_string")],
+        "Literal" => vec![FieldInfo::string("text_value")],
+        "PrefixExpr" => vec![FieldInfo::string("operator_name")],
+        "BinExpr" => vec![
+            FieldInfo::optional("lhs", "Expr"),
+            FieldInfo::optional("rhs", "Expr"),
+            FieldInfo::string("operator_name"),
+        ],
+        "IfExpr" => vec![
+            FieldInfo::optional("then_branch", "BlockExpr"),
+            FieldInfo::optional("else_branch", "ElseBranch"),
+            FieldInfo::optional("condition", "Expr"),
+        ],
+        "RangeExpr" => vec![
+            FieldInfo::optional("start", "Expr"),
+            FieldInfo::optional("end", "Expr"),
+            FieldInfo::string("operator_name"),
+        ],
+        "RangePat" => vec![
+            FieldInfo::optional("start", "Pat"),
+            FieldInfo::optional("end", "Pat"),
+            FieldInfo::string("operator_name"),
+        ],
+        "IndexExpr" => vec![
+            FieldInfo::optional("index", "Expr"),
+            FieldInfo::optional("base", "Expr"),
+        ],
+        "Impl" => vec![
+            FieldInfo::optional("trait_", "Type"),
+            FieldInfo::optional("self_ty", "Type"),
+        ],
+        "ForExpr" => vec![FieldInfo::optional("iterable", "Expr")],
+        "WhileExpr" => vec![FieldInfo::optional("condition", "Expr")],
+        "MatchGuard" => vec![FieldInfo::optional("condition", "Expr")],
+        "MacroDef" => vec![
+            FieldInfo::body("args", "TokenTree"),
+            FieldInfo::body("body", "TokenTree"),
+        ],
+        "MacroCall" => vec![FieldInfo::body("token_tree", "TokenTree")],
+        "FormatArgsExpr" => vec![FieldInfo::list("args", "FormatArgsArg")],
+        "ArgList" => vec![FieldInfo::list("args", "Expr")],
+        "Fn" => vec![FieldInfo::body("body", "BlockExpr")],
+        "Const" => vec![FieldInfo::body("body", "Expr")],
+        "Static" => vec![FieldInfo::body("body", "Expr")],
+        "Param" => vec![FieldInfo::body("pat", "Pat")],
+        "ClosureExpr" => vec![FieldInfo::optional("body", "Expr")],
+        "ArrayExpr" => vec![FieldInfo::predicate("is_semicolon")],
+        "SelfParam" => vec![FieldInfo::predicate("is_amp")],
+        "UseTree" => vec![FieldInfo::predicate("is_star")],
+        _ => vec![],
     }
+}
+
+fn get_trait_fields(trait_name: &str) -> Vec<FieldInfo> {
+    match trait_name {
+        "HasAttrs" => vec![FieldInfo::list("attrs", "Attr")],
+        "HasName" => vec![FieldInfo::optional("name", "Name")],
+        "HasVisibility" => vec![FieldInfo::optional("visibility", "Visibility")],
+        "HasGenericParams" => vec![
+            FieldInfo::optional("generic_param_list", "GenericParamList"),
+            FieldInfo::optional("where_clause", "WhereClause"),
+        ],
+        "HasGenericArgs" => vec![FieldInfo::optional("generic_arg_list", "GenericArgList")],
+        "HasTypeBounds" => vec![FieldInfo::optional("type_bound_list", "TypeBoundList")],
+        "HasModuleItem" => vec![FieldInfo::list("items", "Item")],
+        "HasLoopBody" => vec![
+            FieldInfo::optional("label", "Label"),
+            FieldInfo::optional("loop_body", "BlockExpr"),
+        ],
+        "HasArgList" => vec![FieldInfo::optional("arg_list", "ArgList")],
+        "HasDocComments" => vec![],
+        _ => panic!("Unknown trait {trait_name}"),
+    }
+}
+
+fn should_predicate_be_extracted(name: &str) -> bool {
+    matches!(
+        name,
+        "async"
+            | "auto"
+            | "const"
+            | "default"
+            | "gen"
+            | "move"
+            | "mut"
+            | "raw"
+            | "ref"
+            | "static"
+            | "try"
+            | "unsafe"
+    )
+}
+
+fn project_root() -> PathBuf {
+    let dir = env::var("CARGO_MANIFEST_DIR").unwrap().to_owned();
+    PathBuf::from(dir).parent().unwrap().to_owned()
 }
 
 fn to_lower_snake_case(s: &str) -> String {
@@ -48,533 +204,289 @@ fn to_lower_snake_case(s: &str) -> String {
     buf
 }
 
+#[derive(Serialize)]
+struct SchemaField {
+    name: String,
+    ty: String,
+    child: bool,
+}
+
+#[derive(Serialize)]
+struct SchemaClass {
+    name: String,
+    bases: Vec<String>,
+    fields: Vec<SchemaField>,
+}
+
+#[derive(Serialize, Default)]
+struct Schema {
+    classes: Vec<SchemaClass>,
+}
+
+fn get_bases(name: &str, super_types: &BTreeMap<String, BTreeSet<String>>) -> Vec<String> {
+    super_types
+        .get(name)
+        .map(|tys| tys.iter().map(|t| class_name(t)).collect())
+        .unwrap_or_else(|| vec!["AstNode".to_string()])
+}
+
+fn enum_src_to_schema_class(
+    node: &AstEnumSrc,
+    super_types: &BTreeMap<String, BTreeSet<String>>,
+) -> SchemaClass {
+    SchemaClass {
+        name: class_name(&node.name),
+        bases: get_bases(&node.name, super_types),
+        fields: Vec::new(),
+    }
+}
+
+fn node_src_to_schema_class(
+    node: &AstNodeSrc,
+    super_types: &BTreeMap<String, BTreeSet<String>>,
+) -> SchemaClass {
+    let name = class_name(&node.name);
+    let fields = get_fields(node)
+        .iter()
+        .map(|f| {
+            let (ty, child) = match &f.ty {
+                FieldType::String => ("optional[string]".to_string(), false),
+                FieldType::Predicate => ("predicate".to_string(), false),
+                FieldType::Optional(ty) | FieldType::Body(ty) => {
+                    (format!("optional[\"{}\"]", class_name(ty)), true)
+                }
+                FieldType::List(ty) => (format!("list[\"{}\"]", class_name(ty)), true),
+            };
+            SchemaField {
+                name: property_name(&name, &f.name),
+                ty,
+                child,
+            }
+        })
+        .collect();
+    SchemaClass {
+        name,
+        fields,
+        bases: get_bases(&node.name, super_types),
+    }
+}
+
+fn fix_blank_lines(s: &str) -> String {
+    // mustache is not very good at avoiding blank lines
+    // adopting the workaround from https://github.com/groue/GRMustache/issues/46#issuecomment-19498046
+    s.split("\n")
+        .filter(|line| !line.trim().is_empty())
+        .map(|line| if line == "¶" { "" } else { line })
+        .join("\n")
+        + "\n"
+}
+
 fn write_schema(
     grammar: &AstSrc,
     super_types: BTreeMap<String, BTreeSet<String>>,
-) -> std::io::Result<String> {
-    let mut buf: Vec<u8> = Vec::new();
-    writeln!(
-        buf,
-        "# Generated by `ast-generator`, do not edit by hand.\n"
-    )?;
-    writeln!(buf, "from .prelude import *")?;
-
-    for node in &grammar.enums {
-        let super_classses = if let Some(cls) = super_types.get(&node.name) {
-            let super_classes: Vec<String> = cls.iter().map(class_name).collect();
-            super_classes.join(",")
-        } else {
-            "AstNode".to_owned()
-        };
-        writeln!(
-            buf,
-            "\nclass {}({}):",
-            class_name(&node.name),
-            super_classses
-        )?;
-        writeln!(buf, "   pass")?;
-    }
-    for node in &grammar.nodes {
-        let super_classses = if let Some(cls) = super_types.get(&node.name) {
-            let super_classes: Vec<String> = cls.iter().map(class_name).collect();
-            super_classes.join(",")
-        } else {
-            "AstNode".to_owned()
-        };
-        writeln!(
-            buf,
-            "\nclass {}({}):",
-            class_name(&node.name),
-            super_classses
-        )?;
-        let mut empty = true;
-        for field in get_fields(node) {
-            if field.tp == "SyntaxToken" {
-                continue;
-            }
-
-            empty = false;
-            if field.tp == "predicate" {
-                writeln!(
-                    buf,
-                    "   {}: predicate",
-                    property_name(&node.name, &field.name),
-                )?;
-            } else if field.tp == "string" {
-                writeln!(
-                    buf,
-                    "   {}: optional[string]",
-                    property_name(&node.name, &field.name),
-                )?;
-            } else {
-                let list = field.is_many;
-                let (o, c) = if list {
-                    ("list[", "]")
-                } else {
-                    ("optional[", "]")
-                };
-                writeln!(
-                    buf,
-                    "   {}: {}\"{}\"{} | child",
-                    property_name(&node.name, &field.name),
-                    o,
-                    class_name(&field.tp),
-                    c
-                )?;
-            };
-        }
-        if empty {
-            writeln!(buf, "   pass")?;
-        }
-    }
-    Ok(String::from_utf8_lossy(&buf).to_string())
+    mustache_ctx: &mustache::Context,
+) -> mustache::Result<String> {
+    let mut schema = Schema::default();
+    schema.classes.extend(
+        grammar
+            .enums
+            .iter()
+            .map(|node| enum_src_to_schema_class(node, &super_types)),
+    );
+    schema.classes.extend(
+        grammar
+            .nodes
+            .iter()
+            .map(|node| node_src_to_schema_class(node, &super_types)),
+    );
+    let template = mustache_ctx.compile_path("schema")?;
+    let res = template.render_to_string(&schema)?;
+    Ok(fix_blank_lines(&res))
 }
 
-struct FieldInfo {
-    name: String,
-    tp: String,
-    is_many: bool,
-}
 fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
     let mut result = Vec::new();
-    let predicates = [
-        "async", "auto", "const", "default", "gen", "move", "mut", "raw", "ref", "static", "try",
-        "unsafe",
-    ];
     for field in &node.fields {
         if let Field::Token(name) = field {
-            if predicates.contains(&name.as_str()) {
+            if should_predicate_be_extracted(name) {
                 result.push(FieldInfo {
                     name: format!("is_{name}"),
-                    tp: "predicate".to_string(),
-                    is_many: false,
+                    ty: FieldType::Predicate,
                 });
             }
         }
     }
 
-    match node.name.as_str() {
-        "Name" | "NameRef" | "Lifetime" => {
-            result.push(FieldInfo {
-                name: "text".to_string(),
-                tp: "string".to_string(),
-                is_many: false,
-            });
-        }
-        "Abi" => {
-            result.push(FieldInfo {
-                name: "abi_string".to_string(),
-                tp: "string".to_string(),
-                is_many: false,
-            });
-        }
-        "Literal" => {
-            result.push(FieldInfo {
-                name: "text_value".to_string(),
-                tp: "string".to_string(),
-                is_many: false,
-            });
-        }
-        "PrefixExpr" => {
-            result.push(FieldInfo {
-                name: "operator_name".to_string(),
-                tp: "string".to_string(),
-                is_many: false,
-            });
-        }
-        "BinExpr" => {
-            result.push(FieldInfo {
-                name: "lhs".to_string(),
-                tp: "Expr".to_string(),
-                is_many: false,
-            });
-            result.push(FieldInfo {
-                name: "rhs".to_string(),
-                tp: "Expr".to_string(),
-                is_many: false,
-            });
-            result.push(FieldInfo {
-                name: "operator_name".to_string(),
-                tp: "string".to_string(),
-                is_many: false,
-            });
-        }
-        "IfExpr" => {
-            result.push(FieldInfo {
-                name: "then_branch".to_string(),
-                tp: "BlockExpr".to_string(),
-                is_many: false,
-            });
-            result.push(FieldInfo {
-                name: "else_branch".to_string(),
-                tp: "ElseBranch".to_string(),
-                is_many: false,
-            });
-            result.push(FieldInfo {
-                name: "condition".to_string(),
-                tp: "Expr".to_string(),
-                is_many: false,
-            });
-        }
-        "RangeExpr" => {
-            result.push(FieldInfo {
-                name: "start".to_string(),
-                tp: "Expr".to_string(),
-                is_many: false,
-            });
-            result.push(FieldInfo {
-                name: "end".to_string(),
-                tp: "Expr".to_string(),
-                is_many: false,
-            });
-            result.push(FieldInfo {
-                name: "operator_name".to_string(),
-                tp: "string".to_string(),
-                is_many: false,
-            });
-        }
-        "RangePat" => {
-            result.push(FieldInfo {
-                name: "start".to_string(),
-                tp: "Pat".to_string(),
-                is_many: false,
-            });
-            result.push(FieldInfo {
-                name: "end".to_string(),
-                tp: "Pat".to_string(),
-                is_many: false,
-            });
-            result.push(FieldInfo {
-                name: "operator_name".to_string(),
-                tp: "string".to_string(),
-                is_many: false,
-            });
-        }
-        "IndexExpr" => {
-            result.push(FieldInfo {
-                name: "index".to_string(),
-                tp: "Expr".to_string(),
-                is_many: false,
-            });
-            result.push(FieldInfo {
-                name: "base".to_string(),
-                tp: "Expr".to_string(),
-                is_many: false,
-            });
-        }
-        "Impl" => {
-            result.push(FieldInfo {
-                name: "trait_".to_string(),
-                tp: "Type".to_string(),
-                is_many: false,
-            });
-            result.push(FieldInfo {
-                name: "self_ty".to_string(),
-                tp: "Type".to_string(),
-                is_many: false,
-            });
-        }
-        "ForExpr" => {
-            result.push(FieldInfo {
-                name: "iterable".to_string(),
-                tp: "Expr".to_string(),
-                is_many: false,
-            });
-        }
-        "WhileExpr" => {
-            result.push(FieldInfo {
-                name: "condition".to_string(),
-                tp: "Expr".to_string(),
-                is_many: false,
-            });
-        }
-        "MatchGuard" => {
-            result.push(FieldInfo {
-                name: "condition".to_string(),
-                tp: "Expr".to_string(),
-                is_many: false,
-            });
-        }
-        "MacroDef" => {
-            result.push(FieldInfo {
-                name: "args".to_string(),
-                tp: "TokenTree".to_string(),
-                is_many: false,
-            });
-            result.push(FieldInfo {
-                name: "body".to_string(),
-                tp: "TokenTree".to_string(),
-                is_many: false,
-            });
-        }
-        "FormatArgsExpr" => {
-            result.push(FieldInfo {
-                name: "args".to_string(),
-                tp: "FormatArgsArg".to_string(),
-                is_many: true,
-            });
-        }
-        "ArgList" => {
-            result.push(FieldInfo {
-                name: "args".to_string(),
-                tp: "Expr".to_string(),
-                is_many: true,
-            });
-        }
-        "Fn" => {
-            result.push(FieldInfo {
-                name: "body".to_string(),
-                tp: "BlockExpr".to_string(),
-                is_many: false,
-            });
-        }
-        "Const" => {
-            result.push(FieldInfo {
-                name: "body".to_string(),
-                tp: "Expr".to_string(),
-                is_many: false,
-            });
-        }
-        "Static" => {
-            result.push(FieldInfo {
-                name: "body".to_string(),
-                tp: "Expr".to_string(),
-                is_many: false,
-            });
-        }
-        "ClosureExpr" => {
-            result.push(FieldInfo {
-                name: "body".to_string(),
-                tp: "Expr".to_string(),
-                is_many: false,
-            });
-        }
-        _ => {}
-    }
+    result.extend(get_additional_fields(&node.name));
 
     for field in &node.fields {
-        // The ArrayExpr type also has an 'exprs' field
-        if node.name == "ArrayExpr" && field.method_name() == "expr" {
+        let name = field.method_name();
+        if should_field_be_skipped(&node.name, &name) {
             continue;
         }
-        result.push(FieldInfo {
-            name: field.method_name(),
-            tp: field.ty().to_string(),
-            is_many: field.is_many(),
-        });
+        let ty = match field {
+            Field::Token(_) => continue,
+            Field::Node {
+                ty, cardinality, ..
+            } => match cardinality {
+                Cardinality::Optional => FieldType::Optional(ty.clone()),
+                Cardinality::Many => FieldType::List(ty.clone()),
+            },
+        };
+        result.push(FieldInfo { name, ty });
     }
     for trait_ in &node.traits {
-        match trait_.as_str() {
-            "HasAttrs" => result.push(FieldInfo {
-                name: "attrs".to_owned(),
-                tp: "Attr".to_owned(),
-                is_many: true,
-            }),
-            "HasName" => result.push(FieldInfo {
-                name: "name".to_owned(),
-                tp: "Name".to_owned(),
-                is_many: false,
-            }),
-            "HasVisibility" => result.push(FieldInfo {
-                name: "visibility".to_owned(),
-                tp: "Visibility".to_owned(),
-                is_many: false,
-            }),
-            "HasGenericParams" => {
-                result.push(FieldInfo {
-                    name: "generic_param_list".to_owned(),
-                    tp: "GenericParamList".to_owned(),
-                    is_many: false,
-                });
-                result.push(FieldInfo {
-                    name: "where_clause".to_owned(),
-                    tp: "WhereClause".to_owned(),
-                    is_many: false,
-                })
-            }
-            "HasGenericArgs" => result.push(FieldInfo {
-                name: "generic_arg_list".to_owned(),
-                tp: "GenericArgList".to_owned(),
-                is_many: false,
-            }),
-            "HasTypeBounds" => result.push(FieldInfo {
-                name: "type_bound_list".to_owned(),
-                tp: "TypeBoundList".to_owned(),
-                is_many: false,
-            }),
-            "HasModuleItem" => result.push(FieldInfo {
-                name: "items".to_owned(),
-                tp: "Item".to_owned(),
-                is_many: true,
-            }),
-            "HasLoopBody" => {
-                result.push(FieldInfo {
-                    name: "label".to_owned(),
-                    tp: "Label".to_owned(),
-                    is_many: false,
-                });
-                result.push(FieldInfo {
-                    name: "loop_body".to_owned(),
-                    tp: "BlockExpr".to_owned(),
-                    is_many: false,
-                })
-            }
-            "HasArgList" => result.push(FieldInfo {
-                name: "arg_list".to_owned(),
-                tp: "ArgList".to_owned(),
-                is_many: false,
-            }),
-            "HasDocComments" => {}
-
-            _ => panic!("Unknown trait {}", trait_),
-        };
+        result.extend(get_trait_fields(trait_));
     }
     result.sort_by(|x, y| x.name.cmp(&y.name));
     result
 }
 
-fn write_extractor(grammar: &AstSrc) -> std::io::Result<String> {
-    let mut buf: Vec<u8> = Vec::new();
-    writeln!(
-        buf,
-        "//! Generated by `ast-generator`, do not edit by hand.\n
-#![cfg_attr(any(), rustfmt::skip)]
-
-use super::base::Translator;
-use super::mappings::TextValue;
-use crate::emit_detached;
-use crate::generated;
-use crate::trap::{{Label, TrapId}};
-use ra_ap_syntax::ast::{{
-    HasArgList, HasAttrs, HasGenericArgs, HasGenericParams, HasLoopBody, HasModuleItem, HasName,
-    HasTypeBounds, HasVisibility, RangeItem,
-}};
-use ra_ap_syntax::{{ast, AstNode}};
-
-impl Translator<'_> {{
-    fn emit_else_branch(&mut self, node: ast::ElseBranch) -> Label<generated::Expr> {{
-        match node {{
-            ast::ElseBranch::IfExpr(inner) => self.emit_if_expr(inner).into(),
-            ast::ElseBranch::Block(inner) => self.emit_block_expr(inner).into(),
-        }}
-    }}\n"
-    )?;
-    for node in &grammar.enums {
-        let type_name = &node.name;
-        let class_name = class_name(&node.name);
-
-        writeln!(
-            buf,
-            "    pub(crate) fn emit_{}(&mut self, node: ast::{}) -> Label<generated::{}> {{",
-            to_lower_snake_case(type_name),
-            type_name,
-            class_name
-        )?;
-        writeln!(buf, "        match node {{")?;
-        for variant in &node.variants {
-            writeln!(
-                buf,
-                "            ast::{}::{}(inner) => self.emit_{}(inner).into(),",
-                type_name,
-                variant,
-                to_lower_snake_case(variant)
-            )?;
-        }
-        writeln!(buf, "        }}")?;
-        writeln!(buf, "    }}\n")?;
-    }
-
-    for node in &grammar.nodes {
-        let type_name = &node.name;
-        let class_name = class_name(&node.name);
-
-        writeln!(
-            buf,
-            "    pub(crate) fn emit_{}(&mut self, node: ast::{}) -> Label<generated::{}> {{",
-            to_lower_snake_case(type_name),
-            type_name,
-            class_name
-        )?;
-        for field in get_fields(node) {
-            if &field.tp == "SyntaxToken" {
-                continue;
-            }
-
-            let type_name = &field.tp;
-            let struct_field_name = &field.name;
-            let class_field_name = property_name(&node.name, &field.name);
-            if field.tp == "predicate" {
-                writeln!(
-                    buf,
-                    "        let {} = node.{}_token().is_some();",
-                    class_field_name,
-                    &struct_field_name[3..],
-                )?;
-            } else if field.tp == "string" {
-                writeln!(
-                    buf,
-                    "        let {} = node.try_get_text();",
-                    class_field_name,
-                )?;
-            } else if field.is_many {
-                writeln!(
-                    buf,
-                    "        let {} = node.{}().map(|x| self.emit_{}(x)).collect();",
-                    class_field_name,
-                    struct_field_name,
-                    to_lower_snake_case(type_name)
-                )?;
-            } else {
-                writeln!(
-                    buf,
-                    "        let {} = node.{}().map(|x| self.emit_{}(x));",
-                    class_field_name,
-                    struct_field_name,
-                    to_lower_snake_case(type_name)
-                )?;
-            }
-        }
-        writeln!(
-            buf,
-            "        let label = self.trap.emit(generated::{} {{",
-            class_name
-        )?;
-        writeln!(buf, "            id: TrapId::Star,")?;
-        for field in get_fields(node) {
-            if field.tp == "SyntaxToken" {
-                continue;
-            }
-
-            let class_field_name: String = property_name(&node.name, &field.name);
-            writeln!(buf, "            {},", class_field_name)?;
-        }
-        writeln!(buf, "        }});")?;
-        writeln!(buf, "        self.emit_location(label, &node);")?;
-        writeln!(
-            buf,
-            "        emit_detached!({}, self, node, label);",
-            class_name
-        )?;
-        writeln!(
-            buf,
-            "        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());"
-        )?;
-        writeln!(buf, "        label")?;
-
-        writeln!(buf, "    }}\n")?;
-    }
-    writeln!(buf, "}}")?;
-    Ok(String::from_utf8_lossy(&buf).into_owned())
+#[derive(Serialize)]
+struct EnumVariantInfo {
+    name: String,
+    snake_case_name: String,
+    variant_ast_name: String,
 }
 
-fn main() -> std::io::Result<()> {
-    let grammar: Grammar = fs::read_to_string(project_root().join("ast-generator/rust.ungram"))
-        .unwrap()
-        .parse()
-        .unwrap();
-    let mut grammar = codegen::grammar::lower(&grammar);
+#[derive(Serialize)]
+struct ExtractorEnumInfo {
+    name: String,
+    snake_case_name: String,
+    ast_name: String,
+    variants: Vec<EnumVariantInfo>,
+    has_special_emission: bool,
+}
 
-    grammar.enums.retain(|x| x.name != "Adt");
+#[derive(Serialize, Default)]
+struct ExtractorNodeFieldInfo {
+    name: String,
+    method: String,
+    snake_case_ty: String,
+    string: bool,
+    predicate: bool,
+    optional: bool,
+    list: bool,
+    body: bool,
+}
+
+#[derive(Serialize)]
+struct ExtractorNodeInfo {
+    name: String,
+    snake_case_name: String,
+    ast_name: String,
+    fields: Vec<ExtractorNodeFieldInfo>,
+    has_attrs: bool,
+    has_special_emission: bool,
+}
+
+#[derive(Serialize)]
+struct ExtractorInfo {
+    enums: Vec<ExtractorEnumInfo>,
+    nodes: Vec<ExtractorNodeInfo>,
+}
+
+fn enum_to_extractor_info(node: &AstEnumSrc) -> ExtractorEnumInfo {
+    ExtractorEnumInfo {
+        name: class_name(&node.name),
+        snake_case_name: to_lower_snake_case(&node.name),
+        ast_name: node.name.clone(),
+        variants: node
+            .variants
+            .iter()
+            .map(|v| {
+                let name = class_name(v);
+                let snake_case_name = to_lower_snake_case(v);
+                EnumVariantInfo {
+                    name,
+                    snake_case_name,
+                    variant_ast_name: v.clone(),
+                }
+            })
+            .collect(),
+        has_special_emission: has_special_emission(&node.name),
+    }
+}
+
+fn field_info_to_extractor_info(name: &str, field: &FieldInfo) -> ExtractorNodeFieldInfo {
+    let name = property_name(name, &field.name);
+    match &field.ty {
+        FieldType::String => ExtractorNodeFieldInfo {
+            name,
+            string: true,
+            ..Default::default()
+        },
+        FieldType::Predicate => ExtractorNodeFieldInfo {
+            name,
+            method: format!("{}_token", &field.name[3..]),
+            predicate: true,
+            ..Default::default()
+        },
+        FieldType::Optional(ty) => ExtractorNodeFieldInfo {
+            name,
+            method: field.name.clone(),
+            snake_case_ty: to_lower_snake_case(ty),
+            optional: true,
+            ..Default::default()
+        },
+        FieldType::Body(ty) => ExtractorNodeFieldInfo {
+            name,
+            method: field.name.clone(),
+            snake_case_ty: to_lower_snake_case(ty),
+            body: true,
+            ..Default::default()
+        },
+        FieldType::List(ty) => ExtractorNodeFieldInfo {
+            name,
+            method: field.name.clone(),
+            snake_case_ty: to_lower_snake_case(ty),
+            list: true,
+            ..Default::default()
+        },
+    }
+}
+fn node_to_extractor_info(node: &AstNodeSrc) -> ExtractorNodeInfo {
+    let fields = get_fields(node);
+    let has_attrs = fields.iter().any(|f| f.name == "attrs");
+    let name = class_name(&node.name);
+    let fields = fields
+        .iter()
+        .map(|f| field_info_to_extractor_info(&name, f))
+        .collect();
+    ExtractorNodeInfo {
+        name,
+        snake_case_name: to_lower_snake_case(&node.name),
+        ast_name: node.name.clone(),
+        fields,
+        has_attrs,
+        has_special_emission: has_special_emission(&node.name),
+    }
+}
+
+fn write_extractor(grammar: &AstSrc, mustache_ctx: &mustache::Context) -> mustache::Result<String> {
+    let extractor_info = ExtractorInfo {
+        enums: grammar
+            .enums
+            .iter()
+            .filter(|e| !should_node_be_skipped_in_extractor(&e.name))
+            .map(enum_to_extractor_info)
+            .collect(),
+        nodes: grammar.nodes.iter().map(node_to_extractor_info).collect(),
+    };
+    let template = mustache_ctx.compile_path("extractor")?;
+    let res = template.render_to_string(&extractor_info)?;
+    Ok(fix_blank_lines(&res))
+}
+
+fn main() -> anyhow::Result<()> {
+    let grammar = PathBuf::from("..").join(env::args().nth(1).expect("grammar file path required"));
+    let grammar: Grammar = fs::read_to_string(&grammar)
+        .unwrap_or_else(|_| panic!("Failed to parse grammar file: {}", grammar.display()))
+        .parse()
+        .expect("Failed to parse grammar");
+    let mut grammar = codegen::grammar::lower(&grammar);
+    grammar.enums.retain(|e| !should_enum_be_skipped(&e.name));
+    grammar.nodes.retain(|x| !should_node_be_skipped(&x.name));
 
     let mut super_types: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
     for node in &grammar.enums {
@@ -589,8 +501,13 @@ fn main() -> std::io::Result<()> {
         let super_class_y = super_types.get(&y.name).into_iter().flatten().max();
         super_class_x.cmp(&super_class_y).then(x.name.cmp(&y.name))
     });
-    let schema = write_schema(&grammar, super_types)?;
-    let schema_path = project_root().join("schema/ast.py");
+    let root = project_root();
+    let mustache_ctx = mustache::Context {
+        template_path: root.join("ast-generator").join("templates"),
+        template_extension: "mustache".to_string(),
+    };
+    let schema = write_schema(&grammar, super_types, &mustache_ctx)?;
+    let schema_path = root.join("schema/ast.py");
     codegen::ensure_file_contents(
         crate::flags::CodegenType::Grammar,
         &schema_path,
@@ -598,7 +515,7 @@ fn main() -> std::io::Result<()> {
         false,
     );
 
-    let extractor = write_extractor(&grammar)?;
+    let extractor = write_extractor(&grammar, &mustache_ctx)?;
     let extractor_path = project_root().join("extractor/src/translate/generated.rs");
     codegen::ensure_file_contents(
         crate::flags::CodegenType::Grammar,

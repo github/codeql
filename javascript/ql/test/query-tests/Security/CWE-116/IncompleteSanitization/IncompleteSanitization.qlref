@@ -1,1 +1,2 @@
-Security/CWE-116/IncompleteSanitization.ql
+query: Security/CWE-116/IncompleteSanitization.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,5 +1,10 @@
+legacyDataFlowDifference
 consistencyIssue
 taintFlow
+| guardedRouteHandler.js:6:10:6:28 | req.injectedReqData | guardedRouteHandler.js:6:10:6:28 | req.injectedReqData |
+| guardedRouteHandler.js:10:10:10:28 | res.injectedResData | guardedRouteHandler.js:10:10:10:28 | res.injectedResData |
+| guardedRouteHandler.js:16:10:16:28 | req.injectedReqData | guardedRouteHandler.js:16:10:16:28 | req.injectedReqData |
+| guardedRouteHandler.js:20:10:20:28 | res.injectedResData | guardedRouteHandler.js:20:10:20:28 | res.injectedResData |
 | paramDecorator.ts:6:54:6:54 | x | paramDecorator.ts:7:10:7:10 | x |
 | test.js:5:30:5:37 | source() | test.js:5:8:5:38 | testlib ... urce()) |
 | test.js:6:22:6:29 | source() | test.js:6:8:6:30 | preserv ... urce()) |
@@ -80,6 +85,10 @@ taintFlow
 | test.js:272:6:272:40 | new MyS ... ource() | test.js:272:6:272:40 | new MyS ... ource() |
 | test.js:274:6:274:39 | testlib ... eName() | test.js:274:6:274:39 | testlib ... eName() |
 | test.js:277:8:277:31 | "danger ... .danger | test.js:277:8:277:31 | "danger ... .danger |
+| test.js:284:8:284:16 | source[0] | test.js:284:8:284:16 | source[0] |
+| test.js:285:8:285:19 | source.pop() | test.js:285:8:285:19 | source.pop() |
+| test.js:286:18:286:18 | e | test.js:286:28:286:28 | e |
+| test.js:287:14:287:14 | e | test.js:287:24:287:24 | e |
 isSink
 | test.js:54:18:54:25 | source() | test-sink |
 | test.js:55:22:55:29 | source() | test-sink |

@@ -1,9 +1,17 @@
 // This file contains auto-generated code.
-// Generated from `System.Diagnostics.StackTrace, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Diagnostics.StackTrace, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Diagnostics
     {
+        public sealed class DiagnosticMethodInfo
+        {
+            public static System.Diagnostics.DiagnosticMethodInfo Create(System.Delegate @delegate) => throw null;
+            public static System.Diagnostics.DiagnosticMethodInfo Create(System.Diagnostics.StackFrame frame) => throw null;
+            public string DeclaringAssemblyName { get => throw null; }
+            public string DeclaringTypeName { get => throw null; }
+            public string Name { get => throw null; }
+        }
         public class StackFrame
         {
             public StackFrame() => throw null;

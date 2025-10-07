@@ -1,5 +1,5 @@
 import rust
 
 from Function f
-where exists(f.getLocation().getFile().getRelativePath())
+where f.fromSource()
 select f

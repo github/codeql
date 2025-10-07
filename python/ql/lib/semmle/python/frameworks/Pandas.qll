@@ -151,4 +151,17 @@ private module Pandas {
 
     override DataFlow::Node getCode() { result = this.getParameter(0, "expr").asSink() }
   }
+
+  /**
+   * A Call to `pandas.read_sql` or `pandas.read_sql_query`
+   * which allows for executing raw SQL queries against a database.
+   * See https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html
+   */
+  class ReadSqlCall extends SqlExecution::Range, DataFlow::CallCfgNode {
+    ReadSqlCall() {
+      this = API::moduleImport("pandas").getMember(["read_sql", "read_sql_query"]).getACall()
+    }
+
+    override DataFlow::Node getSql() { result in [this.getArg(0), this.getArgByName("sql")] }
+  }
 }

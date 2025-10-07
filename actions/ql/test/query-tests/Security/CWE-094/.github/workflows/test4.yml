@@ -1,0 +1,27 @@
+name: Test
+on:
+  issue_comment:
+    types: [created, edited]
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub comment context
+        id: github_comment_step
+        run: echo '${{ toJSON(github.event.comment) }}'
+
+      - name: Dump GitHub issue context
+        id: github_issue_step
+        run: echo '${{ toJSON(github.event.issue) }}'
+
+      - name: Dump GitHub issue context
+        id: github_issue_step
+        run: echo '${{ toJSON(github) }}'
+
+      - name: Dump GitHub issue context
+        id: github_issue_step
+        run: echo '${{ toJSON(github.event) }}'

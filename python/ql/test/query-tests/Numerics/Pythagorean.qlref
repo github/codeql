@@ -1,2 +1,2 @@
 query: Numerics/Pythagorean.ql
-postprocess: TestUtilities/InlineExpectationsTestQuery.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

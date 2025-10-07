@@ -1,9 +1,9 @@
 import go
 
-from NamedType nt, InterfaceType it, Type methodType, string id
+from DefinedType dt, InterfaceType it, Type methodType, string id
 where
-  nt.getName() = "MixedExportedAndNot" and
-  it = nt.getUnderlyingType() and
+  dt.getName() = "MixedExportedAndNot" and
+  it = dt.getUnderlyingType() and
   (
     it.hasPrivateMethodWithQualifiedName(_, id, methodType)
     or

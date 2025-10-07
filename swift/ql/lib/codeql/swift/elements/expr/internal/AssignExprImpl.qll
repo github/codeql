@@ -48,7 +48,7 @@ module Impl {
    * ```
    */
   class AssignExpr extends Generated::AssignExpr {
-    override string toString() { result = " ... = ..." }
+    override string toStringImpl() { result = " ... = ..." }
   }
 
   private class AssignExprAssignment extends Assignment instanceof AssignExpr {

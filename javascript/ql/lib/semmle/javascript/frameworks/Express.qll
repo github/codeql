@@ -48,7 +48,7 @@ module Express {
   private predicate isRouter(DataFlow::Node e) {
     isRouter(e, _)
     or
-    e.asExpr().getType().hasUnderlyingType("express", "Router")
+    e.(DataFlow::SourceNode).hasUnderlyingType("express", "Router")
     or
     // created by `webpack-dev-server`
     WebpackDevServer::webpackDevServerApp().flowsTo(e)
@@ -618,9 +618,9 @@ module Express {
         kind = "body" and
         this = ref.getAPropertyRead("body")
         or
-        // `req.path`
+        // `req.path` and `req._parsedUrl`
         kind = "url" and
-        this = ref.getAPropertyRead("path")
+        this = ref.getAPropertyRead(["path", "_parsedUrl"])
       )
     }
 
@@ -779,6 +779,40 @@ module Express {
     ResponseSendArgument() { this = response.ref().getAMethodCall("send").getArgument(0) }
 
     override RouteHandler getRouteHandler() { result = response.getRouteHandler() }
+  }
+
+  /**
+   * A call to `res.json()` or `res.jsonp()`.
+   *
+   * This sets the `content-type` header.
+   */
+  private class ResponseJsonCall extends DataFlow::MethodCallNode, Http::HeaderDefinition {
+    private ResponseSource response;
+
+    ResponseJsonCall() { this = response.ref().getAMethodCall(["json", "jsonp"]) }
+
+    override RouteHandler getRouteHandler() { result = response.getRouteHandler() }
+
+    override string getAHeaderName() { result = "content-type" }
+
+    override predicate defines(string headerName, string headerValue) {
+      // Note: for `jsonp` the actual content-type header will be `text/javascript` or similar, but to avoid
+      // generating a spurious HTML injection sink, we treat it as `application/json` here.
+      headerName = "content-type" and headerValue = "application/json"
+    }
+  }
+
+  /**
+   * An argument passed to the `json` or `jsonp` method of an HTTP response object.
+   */
+  private class ResponseJsonCallArgument extends Http::ResponseSendArgument {
+    ResponseJsonCall call;
+
+    ResponseJsonCallArgument() { this = call.getArgument(0) }
+
+    override RouteHandler getRouteHandler() { result = call.getRouteHandler() }
+
+    override HeaderDefinition getAnAssociatedHeaderDefinition() { result = call }
   }
 
   /**
@@ -957,6 +991,23 @@ module Express {
 
     override predicate isUpwardNavigationRejected(DataFlow::Node argument) {
       argument = this.getAPathArgument()
+    }
+  }
+
+  /** A call to `response.download`, considered as a file system access. */
+  private class ResponseDownloadAsFileSystemAccess extends FileSystemReadAccess,
+    DataFlow::MethodCallNode
+  {
+    ResponseDownloadAsFileSystemAccess() {
+      exists(string name | name = "download" | this.calls(any(ResponseNode res), name))
+    }
+
+    override DataFlow::Node getADataNode() { none() }
+
+    override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
+
+    override DataFlow::Node getRootPathArgument() {
+      result = this.(DataFlow::CallNode).getOptionArgument([1, 2], "root")
     }
   }
 

@@ -10,6 +10,8 @@ import codeql.swift.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.decl.ModuleDecl
 
+private class DeclAlias = Decl;
+
 /**
  * INTERNAL: This module contains the fully generated definition of `Decl` and should not
  * be referenced directly.
@@ -35,14 +37,14 @@ module Generated {
      * on the order of members given by `getMember`. In some cases the order of members may not
      * align with expectations, and could change in future releases.
      */
-    Decl getMember(int index) {
+    DeclAlias getMember(int index) {
       result = Synth::convertDeclFromRaw(Synth::convertDeclToRaw(this).(Raw::Decl).getMember(index))
     }
 
     /**
      * Gets any of the members of this declaration.
      */
-    final Decl getAMember() { result = this.getMember(_) }
+    final DeclAlias getAMember() { result = this.getMember(_) }
 
     /**
      * Gets the number of members of this declaration.

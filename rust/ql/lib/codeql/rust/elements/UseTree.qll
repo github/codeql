@@ -10,9 +10,12 @@ import codeql.rust.elements.Rename
 import codeql.rust.elements.UseTreeList
 
 /**
- * A UseTree. For example:
+ * A `use` tree, that is, the part after the `use` keyword in a `use` statement. For example:
  * ```rust
- * todo!()
+ * use std::collections::HashMap;
+ * use std::collections::*;
+ * use std::collections::HashMap as MyHashMap;
+ * use std::collections::{self, HashMap, HashSet};
  * ```
  */
 final class UseTree = Impl::UseTree;

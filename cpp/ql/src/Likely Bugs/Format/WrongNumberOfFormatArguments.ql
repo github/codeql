@@ -44,7 +44,8 @@ where
   ) and
   // A typical problem is that string literals are concatenated, but if one of the string
   // literals is an undefined macro, then this just leads to a syntax error.
-  not exists(SyntaxError e | e.affects(fl))
+  not exists(SyntaxError e | e.affects(fl)) and
+  not ffc.getArgument(_) instanceof ErrorExpr
 select ffc,
   "Format for " + ffcName + " expects " + expected.toString() + " arguments but given " +
     given.toString()

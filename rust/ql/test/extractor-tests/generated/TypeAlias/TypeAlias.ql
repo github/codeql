@@ -2,28 +2,43 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  TypeAlias x, string hasExtendedCanonicalPath, string hasCrateOrigin, int getNumberOfAttrs,
-  string hasGenericParamList, string isDefault, string hasName, string hasTy,
-  string hasTypeBoundList, string hasVisibility, string hasWhereClause
-where
+query predicate instances(TypeAlias x, string isDefault__label, string isDefault) {
   toBeTested(x) and
   not x.isUnknown() and
-  (
-    if x.hasExtendedCanonicalPath()
-    then hasExtendedCanonicalPath = "yes"
-    else hasExtendedCanonicalPath = "no"
-  ) and
-  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
-  (if x.isDefault() then isDefault = "yes" else isDefault = "no") and
-  (if x.hasName() then hasName = "yes" else hasName = "no") and
-  (if x.hasTy() then hasTy = "yes" else hasTy = "no") and
-  (if x.hasTypeBoundList() then hasTypeBoundList = "yes" else hasTypeBoundList = "no") and
-  (if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no") and
-  if x.hasWhereClause() then hasWhereClause = "yes" else hasWhereClause = "no"
-select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "getNumberOfAttrs:", getNumberOfAttrs, "hasGenericParamList:", hasGenericParamList, "isDefault:",
-  isDefault, "hasName:", hasName, "hasTy:", hasTy, "hasTypeBoundList:", hasTypeBoundList,
-  "hasVisibility:", hasVisibility, "hasWhereClause:", hasWhereClause
+  isDefault__label = "isDefault:" and
+  if x.isDefault() then isDefault = "yes" else isDefault = "no"
+}
+
+query predicate getAttributeMacroExpansion(TypeAlias x, MacroItems getAttributeMacroExpansion) {
+  toBeTested(x) and
+  not x.isUnknown() and
+  getAttributeMacroExpansion = x.getAttributeMacroExpansion()
+}
+
+query predicate getAttr(TypeAlias x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getGenericParamList(TypeAlias x, GenericParamList getGenericParamList) {
+  toBeTested(x) and not x.isUnknown() and getGenericParamList = x.getGenericParamList()
+}
+
+query predicate getName(TypeAlias x, Name getName) {
+  toBeTested(x) and not x.isUnknown() and getName = x.getName()
+}
+
+query predicate getTypeRepr(TypeAlias x, TypeRepr getTypeRepr) {
+  toBeTested(x) and not x.isUnknown() and getTypeRepr = x.getTypeRepr()
+}
+
+query predicate getTypeBoundList(TypeAlias x, TypeBoundList getTypeBoundList) {
+  toBeTested(x) and not x.isUnknown() and getTypeBoundList = x.getTypeBoundList()
+}
+
+query predicate getVisibility(TypeAlias x, Visibility getVisibility) {
+  toBeTested(x) and not x.isUnknown() and getVisibility = x.getVisibility()
+}
+
+query predicate getWhereClause(TypeAlias x, WhereClause getWhereClause) {
+  toBeTested(x) and not x.isUnknown() and getWhereClause = x.getWhereClause()
+}

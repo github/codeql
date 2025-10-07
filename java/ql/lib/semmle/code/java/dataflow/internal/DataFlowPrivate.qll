@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import java
 private import DataFlowUtil
 private import DataFlowImplCommon
@@ -66,28 +69,10 @@ private predicate closureFlowStep(Expr e1, Expr e2) {
   )
 }
 
-private module CaptureInput implements VariableCapture::InputSig<Location> {
+private module CaptureInput implements VariableCapture::InputSig<Location, BasicBlock> {
   private import java as J
 
-  class BasicBlock instanceof J::BasicBlock {
-    string toString() { result = super.toString() }
-
-    ControlFlowNode getNode(int i) { result = super.getNode(i) }
-
-    int length() { result = super.length() }
-
-    Callable getEnclosingCallable() { result = super.getEnclosingCallable() }
-
-    Location getLocation() { result = super.getLocation() }
-  }
-
-  class ControlFlowNode = J::ControlFlowNode;
-
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { bbIDominates(result, bb) }
-
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) {
-    result = bb.(J::BasicBlock).getABBSuccessor()
-  }
+  Callable basicBlockGetEnclosingCallable(BasicBlock bb) { result = bb.getEnclosingCallable() }
 
   //TODO: support capture of `this` in lambdas
   class CapturedVariable instanceof LocalScopeVariable {
@@ -112,7 +97,7 @@ private module CaptureInput implements VariableCapture::InputSig<Location> {
 
     Location getLocation() { result = super.getLocation() }
 
-    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.(J::BasicBlock).getNode(i) }
+    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.(J::BasicBlock).getNode(i).asExpr() }
   }
 
   class VariableWrite extends Expr instanceof VariableUpdate {
@@ -162,7 +147,7 @@ class CapturedVariable = CaptureInput::CapturedVariable;
 
 class CapturedParameter = CaptureInput::CapturedParameter;
 
-module CaptureFlow = VariableCapture::Flow<Location, CaptureInput>;
+module CaptureFlow = VariableCapture::Flow<Location, Cfg, CaptureInput>;
 
 private CaptureFlow::ClosureNode asClosureNode(Node n) {
   result = n.(CaptureNode).getSynthesizedCaptureNode()
@@ -345,6 +330,16 @@ predicate expectsContent(Node n, ContentSet c) {
   FlowSummaryImpl::Private::Steps::summaryExpectsContent(n.(FlowSummaryNode).getSummaryNode(), c)
 }
 
+pragma[nomagic]
+private predicate numericRepresentative(RefType t) {
+  t.(BoxedType).getPrimitiveType().getName() = "double"
+}
+
+pragma[nomagic]
+private predicate booleanRepresentative(RefType t) {
+  t.(BoxedType).getPrimitiveType().getName() = "boolean"
+}
+
 /**
  * Gets a representative (boxed) type for `t` for the purpose of pruning
  * possible flow. A single type is used for all numeric types to account for
@@ -353,10 +348,10 @@ predicate expectsContent(Node n, ContentSet c) {
 RefType getErasedRepr(Type t) {
   exists(Type e | e = t.getErasure() |
     if e instanceof NumericOrCharType
-    then result.(BoxedType).getPrimitiveType().getName() = "double"
+    then numericRepresentative(result)
     else
       if e instanceof BooleanType
-      then result.(BoxedType).getPrimitiveType().getName() = "boolean"
+      then booleanRepresentative(result)
       else result = e
   )
   or
@@ -581,7 +576,11 @@ predicate forceHighPrecision(Content c) {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { n instanceof FlowSummaryNode }
+predicate nodeIsHidden(Node n) {
+  n instanceof FlowSummaryNode
+  or
+  n instanceof SsaNode
+}
 
 class LambdaCallKind = Method; // the "apply" method in the functional interface
 

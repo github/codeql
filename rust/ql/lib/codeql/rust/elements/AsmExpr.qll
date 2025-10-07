@@ -4,14 +4,17 @@
  */
 
 private import internal.AsmExprImpl
+import codeql.rust.elements.AsmPiece
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
+import codeql.rust.elements.Item
 
 /**
  * An inline assembly expression. For example:
  * ```rust
  * unsafe {
- *     builtin # asm(_);
+ *     #[inline(always)]
+ *     builtin # asm("cmp {0}, {1}", in(reg) a, in(reg) b);
  * }
  * ```
  */

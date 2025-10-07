@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.dataflow.FlowSources
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module JmsRemoteSourcesTest implements TestSig {
   string getARelevantTag() { result = "source" }

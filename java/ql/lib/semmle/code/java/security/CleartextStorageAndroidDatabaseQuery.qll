@@ -45,9 +45,6 @@ class LocalDatabaseOpenMethodCall extends Storable, Call {
   }
 }
 
-/** DEPRECATED: Alias for `LocalDatabaseOpenMethodCall`. */
-deprecated class LocalDatabaseOpenMethodAccess = LocalDatabaseOpenMethodCall;
-
 /** A method that is both a database input and a database store. */
 private class LocalDatabaseInputStoreMethod extends Method {
   LocalDatabaseInputStoreMethod() {

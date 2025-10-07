@@ -2,10 +2,22 @@
 import codeql.rust.elements
 import TestUtils
 
-from AsmExpr x, int getNumberOfAttrs, string hasExpr
-where
+query predicate instances(AsmExpr x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getAttributeMacroExpansion(AsmExpr x, MacroItems getAttributeMacroExpansion) {
   toBeTested(x) and
   not x.isUnknown() and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  if x.hasExpr() then hasExpr = "yes" else hasExpr = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr
+  getAttributeMacroExpansion = x.getAttributeMacroExpansion()
+}
+
+query predicate getAsmPiece(AsmExpr x, int index, AsmPiece getAsmPiece) {
+  toBeTested(x) and not x.isUnknown() and getAsmPiece = x.getAsmPiece(index)
+}
+
+query predicate getAttr(AsmExpr x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getTemplate(AsmExpr x, int index, Expr getTemplate) {
+  toBeTested(x) and not x.isUnknown() and getTemplate = x.getTemplate(index)
+}

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["hexlet/project-action", "*", "input.mount-path", "env.PWD", "taint", "manual"]

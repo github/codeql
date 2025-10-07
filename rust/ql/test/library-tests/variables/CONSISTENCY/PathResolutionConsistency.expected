@@ -1,0 +1,3 @@
+multipleCallTargets
+| main.rs:91:19:91:40 | ...::from(...) |
+| main.rs:113:19:113:40 | ...::from(...) |

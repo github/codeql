@@ -1,4 +1,0 @@
-import java
-import semmle.code.java.security.AndroidSensitiveCommunicationQuery
-import TestUtilities.InlineFlowTest
-import TaintFlowTest<SensitiveCommunicationConfig>

@@ -97,7 +97,7 @@
   }
 }
 {
-  "markdownMessage": "Running the Maven plugin `com.github.ferstl:depgraph-maven-plugin:4.0.3:graph` yielded an artifact transfer exception. This means some dependency information will be unavailable, and so some dependencies will be guessed based on Java package names. Consider investigating why this plugin encountered errors retrieving dependencies.",
+  "markdownMessage": "Running the Maven plugin `com.github.ferstl:depgraph-maven-plugin:4.0.3-CodeQL:graph` yielded an artifact transfer exception. This means some dependency information will be unavailable, and so some dependencies will be guessed based on Java package names. Consider investigating why this plugin encountered errors retrieving dependencies.",
   "severity": "note",
   "source": {
     "extractorName": "java",

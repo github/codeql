@@ -53,6 +53,7 @@ extensions:
       - ["std", "deque", True, "insert<InputIt>", "(const_iterator,InputIt,InputIt)", "", "Argument[1].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
       - ["std", "deque", True, "insert<InputIt>", "(const_iterator,InputIt,InputIt)", "", "Argument[1].Element[@]", "ReturnValue.Element[@]", "value", "manual"]
       - ["std", "deque", True, "operator=", "", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["std", "deque", True, "operator=", "", "", "Argument[*0].Element[@]", "ReturnValue[*].Element[@]", "value", "manual"]
       - ["std", "deque", True, "operator[]", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
       - ["std", "deque", True, "push_back", "", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
       - ["std", "deque", True, "push_front", "", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]

@@ -10,6 +10,6 @@ module Impl {
       result = this.getElseExpr()
     }
 
-    override string toString() { result = "... ? ... : ..." }
+    override string toStringImpl() { result = "... ? ... : ..." }
   }
 }

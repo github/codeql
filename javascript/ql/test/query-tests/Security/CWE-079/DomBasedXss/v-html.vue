@@ -1,9 +1,9 @@
 <template>
-    <p v-html="tainted"/>
+    <p v-html="tainted"/> <!-- $ Alert -->
 </template>
 <script>
   export default {
-    data: function() { return { tainted: document.location } }
+    data: function() { return { tainted: document.location } } // $ Source
   }
 </script>
 <style>

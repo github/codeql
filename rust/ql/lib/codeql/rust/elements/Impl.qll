@@ -8,14 +8,18 @@ import codeql.rust.elements.AssocItemList
 import codeql.rust.elements.Attr
 import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.Item
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 
 /**
- * A Impl. For example:
+ * An `impl`` block.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * impl MyTrait for MyType {
+ *     fn foo(&self) {}
+ * }
  * ```
  */
 final class Impl = Impl::Impl;

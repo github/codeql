@@ -1,3 +1,222 @@
+## 5.6.1
+
+No user-facing changes.
+
+## 5.6.0
+
+### Deprecated APIs
+
+* The predicate `getAContructorCall` in the class `SslContextClass` has been deprecated. Use `getAConstructorCall` instead.
+
+### New Features
+
+* Added predicates `getTransitiveNumberOfVlaDimensionStmts`, `getTransitiveVlaDimensionStmt`, and `getParentVlaDecl` to `VlaDeclStmt` for handling `VlaDeclStmt`s whose base type is defined in terms of another `VlaDeclStmt` via a `typedef`.
+
+## 5.5.0
+
+### New Features
+
+* Added a new class `PchFile` representing precompiled header (PCH) files used during project compilation.
+
+### Minor Analysis Improvements
+
+* Added flow summaries for the `Microsoft::WRL::ComPtr` member functions.
+* The new dataflow/taint-tracking library (`semmle.code.cpp.dataflow.new.DataFlow` and `semmle.code.cpp.dataflow.new.TaintTracking`) now resolves virtual function calls more precisely. This results in fewer false positives when running dataflow/taint-tracking queries on C++ projects.
+
+## 5.4.1
+
+### Minor Analysis Improvements
+
+* The guards libraries (`semmle.code.cpp.controlflow.Guards` and `semmle.code.cpp.controlflow.IRGuards`) have been improved to recognize more guards.
+* Improved dataflow through global variables in the new dataflow library (`semmle.code.cpp.dataflow.new.DataFlow` and `semmle.code.cpp.dataflow.new.TaintTracking`). Queries based on these libraries will produce more results on codebases with many global variables.
+* The global value numbering library (`semmle.code.cpp.valuenumbering.GlobalValueNumbering` and `semmle.code.cpp.ir.ValueNumbering`) has been improved so more expressions are assigned the same value number.
+
+## 5.4.0
+
+### New Features
+
+* Exposed various SSA-related classes (`Definition`, `PhiNode`, `ExplicitDefinition`, `DirectExplicitDefinition`, and `IndirectExplicitDefinition`) which were previously only usable inside the internal dataflow directory.
+
+### Minor Analysis Improvements
+
+* The `cpp/overrun-write` query now recognizes more bound checks and thus produces fewer false positives.
+
+## 5.3.0
+
+### Deprecated APIs
+
+* The `UnknownDefaultLocation`, `UnknownExprLocation`, and `UnknownStmtLocation` classes have been deprecated. Use `UnknownLocation` instead.
+
+### New Features
+
+* Added a `isFinalValueOfParameter` predicate to `DataFlow::Node` which holds when a dataflow node represents the final value of an output parameter of a function.
+
+### Minor Analysis Improvements
+
+* The `FunctionWithWrappers` library (`semmle.code.cpp.security.FunctionWithWrappers`) no longer considers calls through function pointers as wrapper functions.
+* The analysis of C/C++ code targeting 64-bit Arm platforms has been improved. This includes support for the Arm-specific builtin functions, support for the `arm_neon.h` header and Neon vector types, and support for the `fp8` scalar type. The `arm_sve.h` header and scalable vectors are only partially supported at this point.
+* Added support for `__fp16 _Complex` and `__bf16 _Complex` types
+* Added `sql-injection` sink models for the Oracle Call Interface (OCI) database library functions `OCIStmtPrepare` and `OCIStmtPrepare2`.
+
+## 5.2.0
+
+### Deprecated APIs
+
+* The `ThrowingFunction` class (`semmle.code.cpp.models.interfaces.Throwing`) has been deprecated. Please use the `AlwaysSehThrowingFunction` class instead.
+
+### New Features
+
+* Added a predicate `getAnAttribute` to `Namespace` to retrieve a namespace attribute.
+* The Microsoft-specific `__leave` statement is now supported.
+* A new class `LeaveStmt` extending `JumpStmt` was added to represent `__leave` statements.
+* Added a predicate `hasParameterList` to `LambdaExpression` to capture whether a lambda has an explicitly specified parameter list.
+
+### Bug Fixes
+
+* `resolveTypedefs` now properly resolves typedefs for `ArrayType`s.
+
+## 5.1.0
+
+### New Features
+
+* Added a predicate `getReferencedMember` to `UsingDeclarationEntry`, which yields a member depending on a type template parameter.
+
+## 5.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `userInputArgument` predicate and its convenience accessor from the `Security.qll`.
+* Deleted the deprecated `userInputReturned` predicate and its convenience accessor from the `Security.qll`.
+* Deleted the deprecated `userInputReturn` predicate from the `Security.qll`.
+* Deleted the deprecated `isUserInput` predicate and its convenience accessor from the `Security.qll`.
+* Deleted the deprecated `userInputArgument` predicate from the `SecurityOptions.qll`.
+* Deleted the deprecated `userInputReturned` predicate from the `SecurityOptions.qll`.
+
+### New Features
+
+* Added local flow source models for `ReadFile`, `ReadFileEx`, `MapViewOfFile`, `MapViewOfFile2`, `MapViewOfFile3`, `MapViewOfFile3FromApp`, `MapViewOfFileEx`, `MapViewOfFileFromApp`, `MapViewOfFileNuma2`, and `NtReadFile`.
+* Added the `pCmdLine` arguments of `WinMain` and `wWinMain` as local flow sources.
+* Added source models for `GetCommandLineA`, `GetCommandLineW`, `GetEnvironmentStringsA`, `GetEnvironmentStringsW`, `GetEnvironmentVariableA`, and `GetEnvironmentVariableW`.
+* Added summary models for `CommandLineToArgvA` and `CommandLineToArgvW`.
+* Added support for `wmain` as part of the ArgvSource model.
+
+### Bug Fixes
+
+* Fixed a problem where `asExpr()` on `DataFlow::Node` would never return `ArrayAggregateLiteral`s.
+* Fixed a problem where `asExpr()` on `DataFlow::Node` would never return `ClassAggregateLiteral`s.
+
+## 4.3.1
+
+### Bug Fixes
+
+* Fixed an infinite loop in `semmle.code.cpp.rangeanalysis.new.RangeAnalysis` when computing ranges in very large and complex function bodies.
+
+## 4.3.0
+
+### New Features
+
+* New classes `TypeofType`, `TypeofExprType`, and `TypeofTypeType` were introduced, which represent the C23 `typeof` and `typeof_unqual` operators. The `TypeofExprType` class represents the variant taking an expression as its argument. The `TypeofTypeType` class represents the variant taking a type as its argument.
+* A new class `IntrinsicTransformedType` was introduced, which represents the type transforming intrinsics supported by clang, gcc, and MSVC.
+* Introduced `hasDesignator()` predicates to distinguish between designated and positional initializations for both struct/union fields and array elements.
+* Added the `isVla()` predicate to the `ArrayType` class. This allows queries to identify variable-length arrays (VLAs).
+
+## 4.2.0
+
+### New Features
+
+* Calling conventions explicitly specified on function declarations (`__cdecl`, `__stdcall`, `__fastcall`, etc.)  are now represented as specifiers of those declarations.
+* A new class `CallingConventionSpecifier` extending the `Specifier` class was introduced, which represents explicitly specified calling conventions.
+
+## 4.1.0
+
+### New Features
+
+* Added `Node.asUncertainDefinition` and `Node.asCertainDefinition` to the `DataFlow::Node` class for querying whether a definition overwrites the entire destination buffer.
+
+## 4.0.3
+
+No user-facing changes.
+
+## 4.0.2
+
+### Minor Analysis Improvements
+
+* Modified the `getBufferSize` predicate in `commons/Buffer.qll` to be more tolerant in some cases involving member variables in a larger struct or class.
+* Fixed an issue where the `getBufferSize` predicate in `commons/Buffer.qll` was returning results for references inside `offsetof` expressions, which are not accesses to a buffer.
+
+## 4.0.1
+
+No user-facing changes.
+
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `getAllocatorCall` predicate from `DeleteOrDeleteArrayExpr`, use `getDeallocatorCall` instead.
+
+### New Features
+
+* A new predicate `getOffsetInClass` was added to the `Field` class, which computes the byte offset of a field relative to a given `Class`.
+* New classes `PreprocessorElifdef` and `PreprocessorElifndef` were introduced, which represents the C23/C++23 `#elifdef` and `#elifndef` preprocessor directives.
+* A new class `TypeLibraryImport` was introduced, which represents the `#import` preprocessor directive as used by the Microsoft Visual C++ for importing type libraries.
+
+## 3.2.0
+
+### New Features
+
+* Add a new predicate `getAnIndirectBarrier` to the parameterized module `InstructionBarrierGuard` in `semmle.code.cpp.dataflow.new.DataFlow` for computing indirect dataflow nodes that are guarded by a given instruction. This predicate is similar to the `getAnIndirectBarrier` predicate on the parameterized module `BarrierGuard`.
+* A new predicate `getDecltype` was added to the `ProxyClass` class, which yields the decltype for the proxy class.
+* Template classes that are of `struct` type are now also instances of the `Struct` class.
+* Template classes that are of `union` type are now also instances of the `Union` class.
+* A new abstract class `ConfigurationTestFile` (`semmle.code.cpp.ConfigurationTestFile.ConfigurationTestFile`) was introduced, which represents files created to test the build configuration. A subclass `CmakeTryCompileFile` of `ConfigurationTestFile` was also introduced, which represents files created by CMake to test the build configuration.
+* New predicates `getARequiresClause`, `getTemplateRequiresClause` and `getFunctionRequiresClause` were added to the `FunctionDeclarationEntry` class, which yield the requires clauses when the entry represents a function template declaration with requires clauses.
+* A new predicate `getRequiresClause` was added to the `TypeDeclarationEntry` class, which yields the requires clause when the entry represents a class template declaration with a requires clause.
+* A new predicate `getRequiresClause` was added to the `VariableDeclarationEntry` class, which yields the requires clause when the entry represents a variable template declaration with a requires clause.
+* A new predicate `getTypeConstraint` was added to the `TypeTemplateParameter` class, which yields the type constraint of the parameter if it exists.
+* A new class `VariableTemplateSpecialization` was introduced, which represents explicit specializations of variable templates.
+* A new predicate `isSpecialization` was added to the `Variable` class, which holds if the variable is a template specialization.
+* A new class `ConceptIdExpr` was introduced, which represents C++20 concept id expressions.
+* A new class `Concept` was introduced, which represents C++20 concepts.
+* The `getTemplateArgumentType` and `getTemplateArgumentValue` predicates of the `Declaration` class now also yield template arguments of concepts.
+* A new class `ConstevalIfStmt` was introduced, which represents the C++23 `if consteval` and `if ! consteval` statements.
+
+### Minor Analysis Improvements
+
+* `DefaultOptions::exits` now holds for C23 functions with the `_Noreturn` or `___Noreturn__` attribute.
+
+## 3.1.0
+
+### Deprecated APIs
+
+* The `TemplateParameter` class, representing C++ type template parameters has been deprecated. Use `TypeTemplateParameter` instead.
+
+### New Features
+
+* New classes `SizeofPackExprOperator` and `SizeofPackTypeOperator` were introduced, which represent the C++ `sizeof...` operator taking expressions and type arguments, respectively.
+* A new class `TemplateTemplateParameterInstantiation` was introduced, which represents instantiations of template template parameters.
+* A new predicate `getAnInstantiation` was added to the `TemplateTemplateParameter` class, which yields instantiations of template template parameters.
+* The `getTemplateArgumentType` and `getTemplateArgumentValue` predicates of the `Declaration` class now also yield template arguments of template template parameters.
+* A new class `NonTypeTemplateParameter` was introduced, which represents C++ non-type template parameters.
+* A new class `TemplateParameterBase` was introduced, which represents C++ non-type template parameters, type template parameters, and template template parameters.
+
+### Minor Analysis Improvements
+
+* The `Guards` library (`semmle.code.cpp.controlflow.Guards`) has been improved to recognize more guard conditions.
+
+## 3.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated data flow API that was based on extending a configuration class. See https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries for instructions on migrating your queries to use the new API.
+
+### Deprecated APIs
+
+* The `NonThrowingFunction` class (`semmle.code.cpp.models.interfaces.NonThrowing.NonThrowingFunction`) has been deprecated. Please use the `NonCppThrowingFunction` class instead.
+
+## 2.1.1
+
+No user-facing changes.
+
 ## 2.1.0
 
 ### New Features

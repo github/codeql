@@ -7,5 +7,3 @@ gradle/wrapper/gradle-wrapper.properties
 src/main/java/com/github/springbootsample/SpringBootSampleApplication.java
 src/main/resources/application.properties
 src/test/java/com/github/springbootsample/SpringBootSampleApplicationTests.java
-test-db/log/ext/javac-1.properties
-test-db/log/ext/javac.properties

@@ -4,8 +4,6 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-deprecated import semmle.code.java.dataflow.DataFlow2
-private import semmle.code.java.dataflow.DataFlow2
 import HardcodedCredentials
 
 /**
@@ -16,6 +14,8 @@ module HardcodedCredentialSourceCallConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) { n.asExpr() instanceof HardcodedExpr }
 
   predicate isSink(DataFlow::Node n) { n.asExpr() instanceof FinalCredentialsSourceSink }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

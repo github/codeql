@@ -2,22 +2,26 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  Module x, string hasExtendedCanonicalPath, string hasCrateOrigin, int getNumberOfAttrs,
-  string hasItemList, string hasName, string hasVisibility
-where
+query predicate instances(Module x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getAttributeMacroExpansion(Module x, MacroItems getAttributeMacroExpansion) {
   toBeTested(x) and
   not x.isUnknown() and
-  (
-    if x.hasExtendedCanonicalPath()
-    then hasExtendedCanonicalPath = "yes"
-    else hasExtendedCanonicalPath = "no"
-  ) and
-  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasItemList() then hasItemList = "yes" else hasItemList = "no") and
-  (if x.hasName() then hasName = "yes" else hasName = "no") and
-  if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
-select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "getNumberOfAttrs:", getNumberOfAttrs, "hasItemList:", hasItemList, "hasName:", hasName,
-  "hasVisibility:", hasVisibility
+  getAttributeMacroExpansion = x.getAttributeMacroExpansion()
+}
+
+query predicate getAttr(Module x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getItemList(Module x, ItemList getItemList) {
+  toBeTested(x) and not x.isUnknown() and getItemList = x.getItemList()
+}
+
+query predicate getName(Module x, Name getName) {
+  toBeTested(x) and not x.isUnknown() and getName = x.getName()
+}
+
+query predicate getVisibility(Module x, Visibility getVisibility) {
+  toBeTested(x) and not x.isUnknown() and getVisibility = x.getVisibility()
+}

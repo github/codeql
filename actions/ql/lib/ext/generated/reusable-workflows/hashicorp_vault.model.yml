@@ -1,0 +1,22 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["hashicorp/vault/.github/workflows/test-run-enos-scenario-matrix.yml", "*", "input.sample-max", "code-injection", "generated"]
+     - ["hashicorp/vault/.github/workflows/test-run-enos-scenario-matrix.yml", "*", "input.sample-name", "code-injection", "generated"]
+     - ["hashicorp/vault/.github/workflows/test-run-enos-scenario-matrix.yml", "*", "input.vault-edition", "code-injection", "generated"]
+     - ["hashicorp/vault/.github/workflows/test-run-enos-scenario-matrix.yml", "*", "input.vault-version", "code-injection", "generated"]
+     - ["hashicorp/vault/.github/workflows/test-run-acc-tests-for-path.yml", "*", "input.name", "code-injection", "generated"]
+     - ["hashicorp/vault/.github/workflows/test-run-acc-tests-for-path.yml", "*", "input.path", "code-injection", "generated"]
+     - ["hashicorp/vault/.github/workflows/test-go.yml", "*", "input.name", "code-injection", "generated"]
+     - ["hashicorp/vault/.github/workflows/test-go.yml", "*", "input.go-arch", "code-injection", "generated"]
+     - ["hashicorp/vault/.github/workflows/test-go.yml", "*", "input.binary-tests", "code-injection", "generated"]
+     - ["hashicorp/vault/.github/workflows/test-go.yml", "*", "input.total-runners", "code-injection", "generated"]
+     - ["hashicorp/vault/.github/workflows/test-enos-scenario-ui.yml", "*", "input.storage_backend", "code-injection", "generated"]
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["hashicorp/vault/.github/workflows/build-artifacts-ce.yml", "*", "input.vault-version-package", "output.testable-packages", "taint", "manual"]
+      - ["hashicorp/vault/.github/workflows/build-artifacts-ce.yml", "*", "input.vault-revision", "output.testable-containers", "taint", "manual"]

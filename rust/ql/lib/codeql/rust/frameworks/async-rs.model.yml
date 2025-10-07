@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      - ["<async_std::net::tcp::stream::TcpStream>::connect", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "remote", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["<_ as async_std::io::read::ReadExt>::read", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["<_ as async_std::io::read::ReadExt>::read", "Argument[self].Reference", "Argument[0].Reference", "taint", "manual"]

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 class ArgumentsTest
 {
@@ -83,6 +84,32 @@ class ArgumentsTest
         f8<double>(0, 1, 2);
         f8<double>(0, new double[] { 1, 2 });
         f8<double>(0, new double[] { 1, 2 });
+    }
+
+    void f9<T>(int o, params List<T> args)
+    {
+        f9(0, args[0], args[1]);
+        f9(0, [args[0], args[1]]);
+        f9(0, args);
+        f9(args: args, o: 0);
+
+        f9<double>(0, 1.1, 2.2);
+        f9<double>(0, [1.1, 2.2]);
+
+        f9<double>(0, 1, 2);
+        f9<double>(0, new List<double> { 1, 2 });
+    }
+
+    void f10(int o, params List<int> args)
+    {
+        f10(0, 1, 2);
+        f10(0, [1, 2]);
+        f10(args: 1, o: 0);
+        f10(0, args);
+        f10(args: args, o: 0);
+        f10(args: [1, 2], o: 0);
+        short s1 = 1, s2 = 2;
+        f10(0, s1, s2);
     }
 }
 

@@ -5,4 +5,4 @@
  * @id rust/diagnostics/ast-consistency
  */
 
-import codeql.rust.AstConsistency
+import codeql.rust.internal.AstConsistency

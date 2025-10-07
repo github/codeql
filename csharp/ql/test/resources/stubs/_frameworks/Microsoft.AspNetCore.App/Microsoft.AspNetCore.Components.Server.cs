@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Components.Server, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Components.Server, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -21,6 +21,7 @@ namespace Microsoft
             public static partial class ServerRazorComponentsEndpointConventionBuilderExtensions
             {
                 public static Microsoft.AspNetCore.Builder.RazorComponentsEndpointConventionBuilder AddInteractiveServerRenderMode(this Microsoft.AspNetCore.Builder.RazorComponentsEndpointConventionBuilder builder) => throw null;
+                public static Microsoft.AspNetCore.Builder.RazorComponentsEndpointConventionBuilder AddInteractiveServerRenderMode(this Microsoft.AspNetCore.Builder.RazorComponentsEndpointConventionBuilder builder, System.Action<Microsoft.AspNetCore.Components.Server.ServerComponentsEndpointOptions> configure) => throw null;
             }
         }
         namespace Components
@@ -96,11 +97,12 @@ namespace Microsoft
                     protected abstract System.TimeSpan RevalidationInterval { get; }
                     protected abstract System.Threading.Tasks.Task<bool> ValidateAuthenticationStateAsync(Microsoft.AspNetCore.Components.Authorization.AuthenticationState authenticationState, System.Threading.CancellationToken cancellationToken);
                 }
-                public class ServerAuthenticationStateProvider : Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider, Microsoft.AspNetCore.Components.Authorization.IHostEnvironmentAuthenticationStateProvider
+                public class ServerComponentsEndpointOptions
                 {
-                    public ServerAuthenticationStateProvider() => throw null;
-                    public override System.Threading.Tasks.Task<Microsoft.AspNetCore.Components.Authorization.AuthenticationState> GetAuthenticationStateAsync() => throw null;
-                    public void SetAuthenticationState(System.Threading.Tasks.Task<Microsoft.AspNetCore.Components.Authorization.AuthenticationState> authenticationStateTask) => throw null;
+                    public System.Func<Microsoft.AspNetCore.Http.HttpContext, Microsoft.AspNetCore.Http.WebSocketAcceptContext, System.Threading.Tasks.Task> ConfigureWebSocketAcceptContext { get => throw null; set { } }
+                    public string ContentSecurityFrameAncestorsPolicy { get => throw null; set { } }
+                    public ServerComponentsEndpointOptions() => throw null;
+                    public bool DisableWebSocketCompression { get => throw null; set { } }
                 }
             }
         }

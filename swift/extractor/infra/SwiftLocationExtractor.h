@@ -1,6 +1,7 @@
 #pragma once
 
 #include <swift/AST/ASTAllocated.h>
+#include <llvm/ADT/DenseMap.h>  // needed (but not included) by the following header
 #include <swift/AST/AvailabilitySpec.h>
 #include <swift/AST/Expr.h>
 #include <swift/AST/SourceFile.h>

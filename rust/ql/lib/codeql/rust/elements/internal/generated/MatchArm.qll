@@ -82,7 +82,7 @@ module Generated {
     final predicate hasGuard() { exists(this.getGuard()) }
 
     /**
-     * Gets the pat of this match arm, if it exists.
+     * Gets the pattern of this match arm, if it exists.
      */
     Pat getPat() {
       result = Synth::convertPatFromRaw(Synth::convertMatchArmToRaw(this).(Raw::MatchArm).getPat())

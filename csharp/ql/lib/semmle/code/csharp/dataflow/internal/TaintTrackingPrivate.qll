@@ -29,7 +29,10 @@ predicate defaultTaintSanitizer(DataFlow::Node node) {
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) { none() }
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
+  exists(node) and
+  c.isElement()
+}
 
 private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityConfiguration {
   LocalTaintExprStepConfiguration() { this = "LocalTaintExprStepConfiguration" }
@@ -64,6 +67,9 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
       scope = e2
       or
       e1 = e2.(InterpolatedStringExpr).getAChild() and
+      scope = e2
+      or
+      e1 = e2.(InterpolatedStringInsertExpr).getInsert() and
       scope = e2
       or
       e2 =

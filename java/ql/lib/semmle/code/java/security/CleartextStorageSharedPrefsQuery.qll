@@ -45,9 +45,6 @@ class SharedPreferencesEditorMethodCall extends Storable, MethodCall {
   }
 }
 
-/** DEPRECATED: Alias for `SharedPreferencesEditorMethodCall`. */
-deprecated class SharedPreferencesEditorMethodAccess = SharedPreferencesEditorMethodCall;
-
 /**
  * Holds if `input` is the second argument of a setter method
  * called on `editor`, which is an instance of `SharedPreferences$Editor`.

@@ -5,7 +5,6 @@
 
 import csharp
 private import semmle.code.csharp.serialization.Deserializers
-private import semmle.code.csharp.dataflow.TaintTracking2
 private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
 private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 
@@ -60,6 +59,10 @@ private module TaintToObjectMethodTrackingConfig implements DataFlow::ConfigSig 
   predicate isSink(DataFlow::Node sink) { sink instanceof InstanceMethodSink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // used in one of the disjuncts in UnsafeDeserializationUntrustedInput.ql
+  }
 }
 
 /**
@@ -78,6 +81,10 @@ private module JsonConvertTrackingConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // used in one of the disjuncts in UnsafeDeserializationUntrustedInput.ql
+  }
 }
 
 /**
@@ -134,6 +141,10 @@ private module TypeNameTrackingConfig implements DataFlow::ConfigSig {
       )
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // Only used as secondary config in UnsafeDeserializationUntrustedInput.ql
+  }
 }
 
 /**
@@ -150,6 +161,10 @@ private module TaintToConstructorOrStaticMethodTrackingConfig implements DataFlo
   predicate isSink(DataFlow::Node sink) { sink instanceof ConstructorOrStaticMethodSink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // used in one of the disjuncts in UnsafeDeserializationUntrustedInput.ql
+  }
 }
 
 /**
@@ -187,6 +202,10 @@ private module TaintToObjectTypeTrackingConfig implements DataFlow::ConfigSig {
       oc.getObjectType() instanceof StrongTypeDeserializer
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // only used as secondary config in UnsafeDeserializationUntrustedInput.ql
+  }
 }
 
 /**
@@ -210,6 +229,10 @@ private module WeakTypeCreationToUsageTrackingConfig implements DataFlow::Config
       mc.getTarget() instanceof UnsafeDeserializer and
       sink.asExpr() = mc.getQualifier()
     )
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // only used as secondary config in UnsafeDeserializationUntrustedInput.ql
   }
 }
 
@@ -851,7 +874,7 @@ private predicate isStrongTypeFsPicklerCall(MethodCall mc, Method m) {
   (
     m instanceof FsPicklerSerializerClassDeserializeMethod or
     m instanceof FsPicklerSerializerClassDeserializeSequenceMethod or
-    m instanceof FsPicklerSerializerClasDeserializeSiftedMethod or
+    m instanceof FsPicklerSerializerClassDeserializeSiftedMethod or
     m instanceof FsPicklerSerializerClassUnPickleMethod or
     m instanceof FsPicklerSerializerClassUnPickleSiftedMethod or
     m instanceof CsPicklerSerializerClassDeserializeMethod or

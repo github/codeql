@@ -15,20 +15,20 @@ import * as webix from "webix";
 var app = express();
 
 app.get('/some/path', function (req, res) {
-    let tainted = req.query.foo;
+    let tainted = req.query.foo; // $ Source[js/code-injection]
 
-    pug.compile(tainted); // NOT OK
-    pug.render(tainted); // NOT OK
-    jade.compile(tainted); // NOT OK
-    jade.render(tainted); // NOT OK
-    dot.template(tainted); // NOT OK
-    ejs.render(tainted); // NOT OK
-    nunjucks.renderString(tainted); // NOT OK
-    lodash.template(tainted); // NOT OK
-    dot.compile(tainted); // NOT OK
-    handlebars.compile(tainted); // NOT OK
-    mustache.render(tainted); // NOT OK
-    Hogan.compile(tainted); // NOT OK
-    Eta.render(tainted); // NOT OK
-    Sqrl.render(tainted); // NOT OK
+    pug.compile(tainted); // $ Alert[js/code-injection]
+    pug.render(tainted); // $ Alert[js/code-injection]
+    jade.compile(tainted); // $ Alert[js/code-injection]
+    jade.render(tainted); // $ Alert[js/code-injection]
+    dot.template(tainted); // $ Alert[js/code-injection]
+    ejs.render(tainted); // $ Alert[js/code-injection]
+    nunjucks.renderString(tainted); // $ Alert[js/code-injection]
+    lodash.template(tainted); // $ Alert[js/code-injection]
+    dot.compile(tainted); // $ Alert[js/code-injection]
+    handlebars.compile(tainted); // $ Alert[js/code-injection]
+    mustache.render(tainted); // $ Alert[js/code-injection]
+    Hogan.compile(tainted); // $ Alert[js/code-injection]
+    Eta.render(tainted); // $ Alert[js/code-injection]
+    Sqrl.render(tainted); // $ Alert[js/code-injection]
 });

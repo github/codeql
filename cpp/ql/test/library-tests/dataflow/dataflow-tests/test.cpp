@@ -1132,3 +1132,124 @@ void test_dispatch_table(int i) {
   int x = source();
   dispatch_table[i](x);
 }
+
+void test_uncertain_array(int n1, int n2) {
+  int data[10];
+  *(data + 1) = source();
+  *data = 0;
+  sink(*(data + 1)); // $ ast=1138:17 ast=1137:7 ir
+}
+
+namespace conflation_regression {
+
+  char* source(int);
+
+  void read_deref_deref(char **l) { // $ ast-def=l ir-def=*l ir-def=**l
+    sink(**l); // Clean. Only *l is tainted
+  }
+
+  void f(char ** p) // $ ast-def=p ir-def=*p ir-def=**p
+  {
+    *p = source(0);
+    read_deref_deref(p);
+  }
+}
+
+int recursion = (sink(recursion), source()); // clean
+
+
+namespace globals_without_explicit_def {
+  int* global_int_ptr;
+
+  void set(int* p) { // $ ast-def=p ir-def=*p
+    *p = source();
+  }
+
+  void test1() {
+    set(global_int_ptr);
+    indirect_sink(global_int_ptr); // $ ir,ast
+  }
+
+  void test2() {
+    set(global_int_ptr);
+    sink(*global_int_ptr); // $ ir MISSING: ast
+  }
+
+  void calls_set() {
+    set(global_int_ptr);
+  }
+
+  void test3() {
+    calls_set();
+    indirect_sink(global_int_ptr); // $ ir MISSING: ast
+  }
+
+  void test4() {
+    calls_set();
+    sink(*global_int_ptr); // $ ir MISSING: ast
+  }
+
+  int** global_int_ptr_ptr;
+
+  void set_indirect(int** p) { // $ ast-def=p ir-def=*p ir-def=**p
+    *p = indirect_source();
+  }
+
+  void test5() {
+    set_indirect(global_int_ptr_ptr);
+    indirect_sink(global_int_ptr_ptr); // $ ir,ast
+    sink(global_int_ptr_ptr); // $ SPURIOUS: ast
+  }
+
+  void test6() {
+    set_indirect(global_int_ptr_ptr);
+    indirect_sink(*global_int_ptr_ptr); // $ ir MISSING: ast
+    sink(*global_int_ptr_ptr);
+    indirect_sink(**global_int_ptr_ptr);
+    sink(**global_int_ptr_ptr); // $ ir
+  }
+
+  void calls_set_indirect() {
+    set_indirect(global_int_ptr_ptr);
+  }
+
+  void test7() {
+    calls_set_indirect();
+    indirect_sink(global_int_ptr_ptr); // $ ir MISSING: ast
+    sink(global_int_ptr_ptr); // $ MISSING: ast
+  }
+
+  void test8() {
+    calls_set_indirect();
+    indirect_sink(*global_int_ptr_ptr); // $ ir MISSING: ast
+    sink(*global_int_ptr_ptr);
+    indirect_sink(**global_int_ptr_ptr);
+    sink(**global_int_ptr_ptr); // $ ir MISSING: ast
+  }
+
+  int global_int_array[10];
+
+  void test9() {
+    set(global_int_array);
+    indirect_sink(global_int_array); // $ ir,ast
+  }
+
+  void test10() {
+    set(global_int_array);
+    sink(*global_int_array); // $ ir,ast
+  }
+
+  void calls_set_array() {
+    set(global_int_array);
+  }
+
+  void test11() {
+    calls_set_array();
+    indirect_sink(global_int_array); // $ ir MISSING: ast
+  }
+
+  void test12() {
+    calls_set_array();
+    sink(*global_int_array); // $ ir MISSING: ast
+  }
+}

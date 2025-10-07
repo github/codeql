@@ -35,10 +35,6 @@ module Stages {
    */
   cached
   module AstStage {
-    private import codeql.rust.controlflow.internal.Splitting
-    private import codeql.rust.controlflow.internal.SuccessorType
-    private import codeql.rust.controlflow.internal.ControlFlowGraphImpl
-
     /**
      * Always holds.
      * Ensures that a predicate is evaluated as part of the AST stage.
@@ -69,8 +65,8 @@ module Stages {
   cached
   module CfgStage {
     private import codeql.rust.controlflow.internal.Splitting
-    private import codeql.rust.controlflow.internal.SuccessorType
     private import codeql.rust.controlflow.internal.ControlFlowGraphImpl
+    private import codeql.rust.controlflow.CfgNodes
 
     /**
      * Always holds.
@@ -90,9 +86,110 @@ module Stages {
       or
       exists(TConditionalCompletionSplitKind())
       or
-      exists(TNormalSuccessor())
-      or
       exists(AstCfgNode n)
+      or
+      exists(CallExprCfgNode n | exists(n.getFunction()))
+    }
+  }
+
+  /**
+   * The path resolution stage.
+   */
+  cached
+  module PathResolutionStage {
+    private import codeql.rust.internal.PathResolution
+
+    /**
+     * Always holds.
+     * Ensures that a predicate is evaluated as part of the path resolution stage.
+     */
+    cached
+    predicate ref() { 1 = 1 }
+
+    /**
+     * DO NOT USE!
+     *
+     * Contains references to each predicate that use the above `ref` predicate.
+     */
+    cached
+    predicate backref() {
+      1 = 1
+      or
+      exists(resolvePath(_))
+      or
+      exists(any(ItemNode i).getASuccessor(_, _, _))
+      or
+      exists(any(ImplOrTraitItemNode i).getASelfPath())
+      or
+      any(TypeParamItemNode i).hasTraitBound()
+    }
+  }
+
+  /**
+   * The type inference stage.
+   */
+  cached
+  module TypeInferenceStage {
+    private import codeql.rust.internal.Type
+    private import codeql.rust.internal.TypeInference
+
+    /**
+     * Always holds.
+     * Ensures that a predicate is evaluated as part of the type inference stage.
+     */
+    cached
+    predicate ref() { 1 = 1 }
+
+    /**
+     * DO NOT USE!
+     *
+     * Contains references to each predicate that use the above `ref` predicate.
+     */
+    cached
+    predicate backref() {
+      1 = 1
+      or
+      exists(Type t)
+      or
+      exists(inferType(_))
+    }
+  }
+
+  /**
+   * The data flow stage.
+   */
+  cached
+  module DataFlowStage {
+    private import codeql.rust.dataflow.internal.DataFlowImpl
+    private import codeql.rust.dataflow.internal.Node
+    private import codeql.rust.dataflow.internal.Content
+    private import codeql.rust.dataflow.internal.TaintTrackingImpl
+
+    /**
+     * Always holds.
+     * Ensures that a predicate is evaluated as part of the data flow stage.
+     */
+    cached
+    predicate ref() { 1 = 1 }
+
+    /**
+     * DO NOT USE!
+     *
+     * Contains references to each predicate that use the above `ref` predicate.
+     */
+    cached
+    predicate backref() {
+      1 = 1
+      or
+      exists(any(Node n).toString())
+      or
+      exists(any(Node n).getLocation())
+      or
+      RustTaintTracking::defaultAdditionalTaintStep(_, _, _)
+      or
+      exists(DataFlowCall call)
+      or
+      exists(Content content)
     }
   }
 }

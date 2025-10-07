@@ -1,26 +1,26 @@
-mod deserialize_vec;
+mod deserialize;
 
 use anyhow::Context;
 use clap::Parser;
 use codeql_extractor::trap;
-use deserialize_vec::deserialize_newline_or_comma_separated;
 use figment::{
+    Figment,
     providers::{Env, Format, Serialized, Yaml},
     value::Value,
-    Figment,
 };
 use itertools::Itertools;
-use log::warn;
-use num_traits::Zero;
 use ra_ap_cfg::{CfgAtom, CfgDiff};
+use ra_ap_ide_db::FxHashMap;
 use ra_ap_intern::Symbol;
-use ra_ap_paths::Utf8PathBuf;
-use ra_ap_project_model::{CargoConfig, CargoFeatures, CfgOverrides, RustLibSource};
+use ra_ap_load_cargo::{LoadCargoConfig, ProcMacroServerChoice};
+use ra_ap_paths::{AbsPath, AbsPathBuf, Utf8PathBuf};
+use ra_ap_project_model::{CargoConfig, CargoFeatures, CfgOverrides, RustLibSource, Sysroot};
 use rust_extractor_macros::extractor_cli_config;
 use serde::{Deserialize, Serialize};
+use std::collections::HashSet;
 use std::fmt::Debug;
 use std::ops::Not;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 #[derive(Debug, PartialEq, Eq, Default, Serialize, Deserialize, Clone, Copy, clap::ValueEnum)]
 #[serde(rename_all = "lowercase")]
@@ -29,6 +29,7 @@ pub enum Compression {
     #[default] // TODO make gzip default
     None,
     Gzip,
+    Zstd,
 }
 
 impl From<Compression> for trap::Compression {
@@ -36,6 +37,7 @@ impl From<Compression> for trap::Compression {
         match val {
             Compression::None => Self::None,
             Compression::Gzip => Self::Gzip,
+            Compression::Zstd => Self::Zstd,
         }
     }
 }
@@ -45,16 +47,30 @@ pub struct Config {
     pub scratch_dir: PathBuf,
     pub trap_dir: PathBuf,
     pub source_archive_dir: PathBuf,
+    pub diagnostic_dir: PathBuf,
     pub cargo_target_dir: Option<PathBuf>,
     pub cargo_target: Option<String>,
     pub cargo_features: Vec<String>,
     pub cargo_cfg_overrides: Vec<String>,
-    pub verbose: u8,
-    pub compression: Compression,
+    pub cargo_extra_env: FxHashMap<String, Option<String>>,
+    pub cargo_extra_args: Vec<String>,
+    pub cargo_all_targets: bool,
+    pub logging_flamegraph: Option<PathBuf>,
+    pub logging_verbosity: Option<String>,
+    pub trap_compression: Compression,
     pub inputs: Vec<PathBuf>,
     pub qltest: bool,
     pub qltest_cargo_check: bool,
     pub qltest_dependencies: Vec<String>,
+    pub qltest_use_nightly: bool,
+    pub sysroot: Option<PathBuf>,
+    pub sysroot_src: Option<PathBuf>,
+    pub rustc_src: Option<PathBuf>,
+    pub build_script_command: Vec<String>,
+    pub extra_includes: Vec<PathBuf>,
+    pub proc_macro_server: Option<PathBuf>,
+    pub extract_dependencies_as_source: bool,
+    pub force_library_mode: bool, // for testing purposes
 }
 
 impl Config {
@@ -63,7 +79,13 @@ impl Config {
             .context("expanding parameter files")?;
         let cli_args = CliConfig::parse_from(args);
         let mut figment = Figment::new()
-            .merge(Env::raw().only(["CODEQL_VERBOSE"].as_slice()))
+            .merge(Env::raw().filter_map(|f| {
+                if f.eq("CODEQL_VERBOSITY") {
+                    Some("LOGGING_VERBOSITY".into())
+                } else {
+                    None
+                }
+            }))
             .merge(Env::prefixed("CODEQL_EXTRACTOR_RUST_"))
             .merge(Env::prefixed("CODEQL_EXTRACTOR_RUST_OPTION_"))
             .merge(Serialized::defaults(cli_args));
@@ -84,38 +106,94 @@ impl Config {
         figment.extract().context("loading configuration")
     }
 
-    pub fn to_cargo_config(&self) -> CargoConfig {
-        let sysroot = Some(RustLibSource::Discover);
+    fn sysroot(&self, dir: &AbsPath) -> Sysroot {
+        let sysroot_input = self.sysroot.as_ref().map(|p| join_path_buf(dir, p));
+        let sysroot_src_input = self.sysroot_src.as_ref().map(|p| join_path_buf(dir, p));
+        match (sysroot_input, sysroot_src_input) {
+            (None, None) => Sysroot::discover(dir, &self.cargo_extra_env),
+            (Some(sysroot), None) => Sysroot::discover_rust_lib_src_dir(sysroot),
+            (None, Some(sysroot_src)) => {
+                Sysroot::discover_with_src_override(dir, &self.cargo_extra_env, sysroot_src)
+            }
+            (Some(sysroot), Some(sysroot_src)) => Sysroot::new(Some(sysroot), Some(sysroot_src)),
+        }
+    }
 
-        let target_dir = self
-            .cargo_target_dir
-            .clone()
-            .unwrap_or_else(|| self.scratch_dir.join("target"));
-        let target_dir = Utf8PathBuf::from_path_buf(target_dir).ok();
+    fn proc_macro_server_choice(&self, dir: &AbsPath) -> ProcMacroServerChoice {
+        match &self.proc_macro_server {
+            Some(path) => match path.to_str() {
+                Some("none") => ProcMacroServerChoice::None,
+                Some("sysroot") => ProcMacroServerChoice::Sysroot,
+                _ => ProcMacroServerChoice::Explicit(join_path_buf(dir, path)),
+            },
+            None => ProcMacroServerChoice::Sysroot,
+        }
+    }
 
-        let features = if self.cargo_features.is_empty() {
-            Default::default()
-        } else if self.cargo_features.contains(&"*".to_string()) {
+    fn cargo_features(&self) -> CargoFeatures {
+        // '*' is to be considered deprecated but still kept in for backward compatibility
+        if self.cargo_features.is_empty() || self.cargo_features.iter().any(|f| f == "*") {
             CargoFeatures::All
         } else {
             CargoFeatures::Selected {
-                features: self.cargo_features.clone(),
-                no_default_features: false,
+                features: self
+                    .cargo_features
+                    .iter()
+                    .filter(|f| *f != "default")
+                    .cloned()
+                    .collect(),
+                no_default_features: !self.cargo_features.iter().any(|f| f == "default"),
             }
-        };
-
-        let target = self.cargo_target.clone();
-
-        let cfg_overrides = to_cfg_overrides(&self.cargo_cfg_overrides);
-
-        CargoConfig {
-            sysroot,
-            target_dir,
-            features,
-            target,
-            cfg_overrides,
-            ..Default::default()
         }
+    }
+
+    pub fn to_cargo_config(&self, dir: &AbsPath) -> (CargoConfig, LoadCargoConfig) {
+        let sysroot = self.sysroot(dir);
+        (
+            CargoConfig {
+                all_targets: self.cargo_all_targets,
+                sysroot_src: sysroot.rust_lib_src_root().map(ToOwned::to_owned),
+                rustc_source: self
+                    .rustc_src
+                    .as_ref()
+                    .map(|p| join_path_buf(dir, p))
+                    .or_else(|| sysroot.discover_rustc_src().map(AbsPathBuf::from))
+                    .map(RustLibSource::Path),
+                sysroot: sysroot
+                    .root()
+                    .map(ToOwned::to_owned)
+                    .map(RustLibSource::Path),
+
+                extra_env: self.cargo_extra_env.clone(),
+                extra_args: self.cargo_extra_args.clone(),
+                extra_includes: self
+                    .extra_includes
+                    .iter()
+                    .map(|p| join_path_buf(dir, p))
+                    .collect(),
+                target_dir: Utf8PathBuf::from_path_buf(
+                    self.cargo_target_dir
+                        .clone()
+                        .unwrap_or_else(|| self.scratch_dir.join("target")),
+                )
+                .ok(),
+                features: self.cargo_features(),
+                target: self.cargo_target.clone(),
+                cfg_overrides: to_cfg_overrides(&self.cargo_cfg_overrides),
+                wrap_rustc_in_build_scripts: false,
+                run_build_script_command: if self.build_script_command.is_empty() {
+                    None
+                } else {
+                    Some(self.build_script_command.clone())
+                },
+                ..Default::default()
+            },
+            LoadCargoConfig {
+                load_out_dirs_from_check: true,
+                with_proc_macro_server: self.proc_macro_server_choice(dir),
+                prefill_caches: false,
+            },
+        )
     }
 }
 
@@ -131,33 +209,32 @@ fn to_cfg_override(spec: &str) -> CfgAtom {
 }
 
 fn to_cfg_overrides(specs: &Vec<String>) -> CfgOverrides {
-    let mut enabled_cfgs = Vec::new();
-    let mut disabled_cfgs = Vec::new();
-    let mut has_test_explicitly_enabled = false;
+    let mut enabled_cfgs = HashSet::new();
+    enabled_cfgs.insert(to_cfg_override("test"));
+    let mut disabled_cfgs = HashSet::new();
     for spec in specs {
-        if spec.starts_with("-") {
-            disabled_cfgs.push(to_cfg_override(&spec[1..]));
+        if let Some(spec) = spec.strip_prefix("-") {
+            let cfg = to_cfg_override(spec);
+            enabled_cfgs.remove(&cfg);
+            disabled_cfgs.insert(cfg);
         } else {
-            enabled_cfgs.push(to_cfg_override(spec));
-            if spec == "test" {
-                has_test_explicitly_enabled = true;
-            }
+            let cfg = to_cfg_override(spec);
+            disabled_cfgs.remove(&cfg);
+            enabled_cfgs.insert(cfg);
         }
     }
-    if !has_test_explicitly_enabled {
-        disabled_cfgs.push(to_cfg_override("test"));
+    let enabled_cfgs = enabled_cfgs.into_iter().collect();
+    let disabled_cfgs = disabled_cfgs.into_iter().collect();
+    let global = CfgDiff::new(enabled_cfgs, disabled_cfgs);
+    CfgOverrides {
+        global,
+        ..Default::default()
     }
-    if let Some(global) = CfgDiff::new(enabled_cfgs, disabled_cfgs) {
-        CfgOverrides {
-            global,
-            ..Default::default()
-        }
-    } else {
-        warn!("non-disjoint cfg overrides, ignoring: {}", specs.join(", "));
-        CfgOverrides {
-            global: CfgDiff::new(Vec::new(), vec![to_cfg_override("test")])
-                .expect("disabling one cfg should always succeed"),
-            ..Default::default()
-        }
-    }
+}
+
+fn join_path_buf(lhs: &AbsPath, rhs: &Path) -> AbsPathBuf {
+    let Ok(path) = Utf8PathBuf::from_path_buf(rhs.into()) else {
+        panic!("non utf8 input: {}", rhs.display())
+    };
+    lhs.join(path)
 }

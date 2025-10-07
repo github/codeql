@@ -4,12 +4,15 @@
  */
 
 private import internal.LifetimeImpl
-import codeql.rust.elements.AstNode
+import codeql.rust.elements.UseBoundGenericArg
 
 /**
- * A Lifetime. For example:
+ * A lifetime annotation.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * fn foo<'a>(x: &'a str) {}
+ * //     ^^      ^^
  * ```
  */
 final class Lifetime = Impl::Lifetime;

@@ -78,7 +78,7 @@ private predicate synchronizedThisAccess(MethodCall ma, Type thisType) {
 
 /**
  * Auxiliary predicate for `unsynchronizedVarAccess`. Holds if
- * there is an enclosing `synchronized` statement on the variable.
+ * there is an enclosing `synchronized` statement on the variable access `x`.
  */
 predicate synchronizedVarAccess(VarAccess x) {
   exists(SynchronizedStmt s, VarAccess y |

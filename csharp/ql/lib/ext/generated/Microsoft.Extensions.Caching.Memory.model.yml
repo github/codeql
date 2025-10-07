@@ -63,5 +63,6 @@ extensions:
       - ["Microsoft.Extensions.Caching.Memory", "MemoryCache", "Remove", "(System.Object)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Caching.Memory", "MemoryCache", "TryGetValue", "(System.Object,System.Object)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Caching.Memory", "MemoryCache", "get_Count", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Memory", "MemoryCache", "get_Keys", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Caching.Memory", "MemoryCacheEntryOptions", "get_ExpirationTokens", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Caching.Memory", "MemoryCacheEntryOptions", "get_PostEvictionCallbacks", "()", "summary", "df-generated"]

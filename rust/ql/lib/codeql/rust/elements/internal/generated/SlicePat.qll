@@ -30,7 +30,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "SlicePat" }
 
     /**
-     * Gets the `index`th pat of this slice pat (0-based).
+     * Gets the `index`th pattern of this slice pattern (0-based).
      */
     Pat getPat(int index) {
       result =
@@ -38,12 +38,12 @@ module Generated {
     }
 
     /**
-     * Gets any of the pats of this slice pat.
+     * Gets any of the patterns of this slice pattern.
      */
     final Pat getAPat() { result = this.getPat(_) }
 
     /**
-     * Gets the number of pats of this slice pat.
+     * Gets the number of patterns of this slice pattern.
      */
     final int getNumberOfPats() { result = count(int i | exists(this.getPat(i))) }
   }

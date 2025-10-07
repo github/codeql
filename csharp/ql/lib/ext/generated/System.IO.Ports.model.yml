@@ -18,6 +18,9 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
+      - ["System.IO.Ports", "SerialDataReceivedEventArgs", "get_EventType", "()", "summary", "df-generated"]
+      - ["System.IO.Ports", "SerialErrorReceivedEventArgs", "get_EventType", "()", "summary", "df-generated"]
+      - ["System.IO.Ports", "SerialPinChangedEventArgs", "get_EventType", "()", "summary", "df-generated"]
       - ["System.IO.Ports", "SerialPort", "Close", "()", "summary", "df-generated"]
       - ["System.IO.Ports", "SerialPort", "DiscardInBuffer", "()", "summary", "df-generated"]
       - ["System.IO.Ports", "SerialPort", "DiscardOutBuffer", "()", "summary", "df-generated"]

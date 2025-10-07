@@ -3,6 +3,8 @@
  * an expression, `b` is a `Bound` (typically zero or the value of an SSA
  * variable), and `v` is an integer in the range `[0 .. m-1]`.
  */
+overlay[local?]
+module;
 
 /*
  * The main recursion has base cases in both `ssaModulus` (for guarded reads) and `exprModulus`
@@ -14,9 +16,9 @@ private import codeql.util.Location
 private import RangeAnalysis
 
 module ModulusAnalysis<
-  LocationSig Location, Semantic Sem, DeltaSig D, BoundSig<Location, Sem, D> Bounds>
+  LocationSig Location, Semantic<Location> Sem, DeltaSig D, BoundSig<Location, Sem, D> Bounds>
 {
-  private import internal.RangeUtils::MakeUtils<Sem, D>
+  private import internal.RangeUtils::MakeUtils<Location, Sem, D>
 
   bindingset[pos, v]
   pragma[inline_late]
@@ -34,7 +36,7 @@ module ModulusAnalysis<
     exists(Sem::Guard guard, boolean testIsTrue |
       hasReadOfVarInlineLate(pos, v) and
       guard = eqFlowCond(v, e, D::fromInt(delta), true, testIsTrue) and
-      guardDirectlyControlsSsaRead(guard, pos, testIsTrue)
+      guardControlsSsaRead(guard, pos, testIsTrue)
     )
   }
 

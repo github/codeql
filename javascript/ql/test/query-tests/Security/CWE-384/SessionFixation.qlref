@@ -1,1 +1,2 @@
-Security/CWE-384/SessionFixation.ql
+query: Security/CWE-384/SessionFixation.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Data.Common, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Data.Common, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Data
@@ -2162,6 +2162,7 @@ namespace System
             Time = 32,
             DateTime2 = 33,
             DateTimeOffset = 34,
+            Json = 35,
         }
         namespace SqlTypes
         {

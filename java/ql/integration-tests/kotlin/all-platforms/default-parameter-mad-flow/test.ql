@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 private import semmle.code.java.dataflow.ExternalFlow
 
 module Config implements DataFlow::ConfigSig {

@@ -97,7 +97,7 @@ module Impl {
      */
     predicate isAttachedMacroSyntax() { this.getMacroSyntax() = 1 }
 
-    override string toString() {
+    override string toStringImpl() {
       result = this.getMacroSyntaxName() + "(" + this.getKindName() + ")"
     }
   }

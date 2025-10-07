@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Statements
 {
@@ -9,7 +10,7 @@ namespace Statements
 
         static void Main()
         {
-            block:
+        block:
             {
                 {
                 }
@@ -166,8 +167,8 @@ namespace Statements
         {
             int i = 0;
             goto check;
-            loop: Console.WriteLine(args[i++]);
-            check: if (i < args.Length) goto loop;
+        loop: Console.WriteLine(args[i++]);
+        check: if (i < args.Length) goto loop;
         }
 
         static int Add(int a, int b)
@@ -272,9 +273,19 @@ namespace Statements
         static void MainLabeled()
         {
             goto Label;
-            Label:
+        Label:
             int x = 23;
             x = 9;
+        }
+
+        private readonly Lock lockObject = new Lock();
+
+        public void LockMethod()
+        {
+            lock (lockObject)
+            {
+                Console.WriteLine("Locked");
+            }
         }
     }
 }

@@ -11,32 +11,31 @@
  */
 
 import javascript
-import DataFlow::PathGraph
 
 /** A taint tracking configuration for unsafe environment injection. */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "envInjection" }
+module EnvValueAndKeyInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink = keyOfEnv() or
     sink = valueOfEnv()
   }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(DataFlow::InvokeNode ikn |
       ikn = DataFlow::globalVarRef("Object").getAMemberInvocation("keys")
     |
-      pred = ikn.getArgument(0) and
+      node1 = ikn.getArgument(0) and
       (
-        succ = ikn.getAChainedMethodCall(["filter", "map"]) or
-        succ = ikn or
-        succ = ikn.getAChainedMethodCall("forEach").getABoundCallbackParameter(0, 0)
+        node2 = ikn.getAChainedMethodCall(["filter", "map"]) or
+        node2 = ikn or
+        node2 = ikn.getAChainedMethodCall("forEach").getABoundCallbackParameter(0, 0)
       )
     )
   }
 }
+
+module EnvValueAndKeyInjectionFlow = TaintTracking::Global<EnvValueAndKeyInjectionConfig>;
 
 DataFlow::Node keyOfEnv() {
   result =
@@ -56,13 +55,15 @@ private predicate readToProcessEnv(DataFlow::Node envKey, DataFlow::Node envValu
   )
 }
 
+import EnvValueAndKeyInjectionFlow::PathGraph
+
 from
-  Configuration cfgForValue, Configuration cfgForKey, DataFlow::PathNode source,
-  DataFlow::PathNode envKey, DataFlow::PathNode envValue
+  EnvValueAndKeyInjectionFlow::PathNode source, EnvValueAndKeyInjectionFlow::PathNode envKey,
+  EnvValueAndKeyInjectionFlow::PathNode envValue
 where
-  cfgForValue.hasFlowPath(source, envKey) and
+  EnvValueAndKeyInjectionFlow::flowPath(source, envKey) and
   envKey.getNode() = keyOfEnv() and
-  cfgForKey.hasFlowPath(source, envValue) and
+  EnvValueAndKeyInjectionFlow::flowPath(source, envValue) and
   envValue.getNode() = valueOfEnv() and
   readToProcessEnv(envKey.getNode(), envValue.getNode())
 select envKey.getNode(), source, envKey, "arbitrary environment variable assignment from this $@.",

@@ -7,16 +7,19 @@ private import internal.PathSegmentImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.GenericArgList
 import codeql.rust.elements.NameRef
-import codeql.rust.elements.ParamList
-import codeql.rust.elements.PathType
-import codeql.rust.elements.RetType
+import codeql.rust.elements.ParenthesizedArgList
+import codeql.rust.elements.PathTypeRepr
+import codeql.rust.elements.RetTypeRepr
 import codeql.rust.elements.ReturnTypeSyntax
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 
 /**
- * A PathSegment. For example:
- * ```rust
- * todo!()
- * ```
+ * A path segment, which is one part of a whole path.
+ * For example:
+ * - `HashMap`
+ * - `HashMap<K, V>`
+ * - `Fn(i32) -> i32`
+ * - `widgets(..)`
+ * - `<T as Iterator>`
  */
 final class PathSegment = Impl::PathSegment;

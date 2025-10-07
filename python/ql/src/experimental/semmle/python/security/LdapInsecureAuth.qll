@@ -101,6 +101,10 @@ private module LdapInsecureAuthConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(LdapBind ldapBind | not ldapBind.useSsl() and sink = ldapBind.getHost())
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node sink) { none() }
 }
 
 /** Global taint-tracking for detecting "LDAP insecure authentications" vulnerabilities. */

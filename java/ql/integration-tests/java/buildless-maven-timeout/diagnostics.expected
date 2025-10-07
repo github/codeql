@@ -83,7 +83,7 @@
   }
 }
 {
-  "markdownMessage": "Running the Maven plugin `com.github.ferstl:depgraph-maven-plugin:4.0.3:graph` failed. This means precise dependency information will be unavailable, and so dependencies will be guessed based on Java package names. Consider investigating why this plugin fails to run.",
+  "markdownMessage": "Running the Maven plugin `com.github.ferstl:depgraph-maven-plugin:4.0.3-CodeQL:graph` failed. This means precise dependency information will be unavailable, and so dependencies will be guessed based on Java package names. Consider investigating why this plugin fails to run.",
   "severity": "note",
   "source": {
     "extractorName": "java",

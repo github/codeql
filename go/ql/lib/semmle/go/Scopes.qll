@@ -144,36 +144,34 @@ class Entity extends @object {
   /** Gets a textual representation of this entity. */
   string toString() { result = this.getName() }
 
-  private predicate hasRealLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    // take the location of the declaration if there is one
-    this.getDeclaration().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
-    any(CaseClause cc | this = cc.getImplicitlyDeclaredVariable())
-        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  /** Gets the location of this entity. */
+  Location getLocation() {
+    result = this.getDeclaration().getLocation()
+    or
+    result = any(CaseClause cc | this = cc.getImplicitlyDeclaredVariable()).getLocation()
   }
 
   /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    // take the location of the declaration if there is one
-    if this.hasRealLocationInfo(_, _, _, _, _)
-    then this.hasRealLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    else (
-      // otherwise fall back on dummy location
-      filepath = "" and
-      startline = 0 and
-      startcolumn = 0 and
-      endline = 0 and
-      endcolumn = 0
-    )
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    or
+    // otherwise fall back on dummy location
+    not exists(this.getLocation()) and
+    filepath = "" and
+    startline = 0 and
+    startcolumn = 0 and
+    endline = 0 and
+    endcolumn = 0
   }
 }
 
@@ -194,20 +192,29 @@ class BuiltinEntity extends Entity, @builtinobject { }
 /** An imported package. */
 class PackageEntity extends Entity, @pkgobject { }
 
-/** A built-in or declared named type. */
+/**
+ * A named type: predeclared types, defined types, type parameters, and type
+ * aliases.
+ */
 class TypeEntity extends Entity, @typeobject { }
 
 /** The parent of a type parameter type, either a declared type or a declared function. */
 class TypeParamParentEntity extends Entity, @typeparamparentobject { }
 
-/** A declared named type. */
-class DeclaredType extends TypeEntity, DeclaredEntity, TypeParamParentEntity, @decltypeobject {
+/** A named type which has a declaration. */
+class DeclaredTypeEntity extends TypeEntity, DeclaredEntity, TypeParamParentEntity, @decltypeobject {
   /** Gets the declaration specifier declaring this type. */
   TypeSpec getSpec() { result.getNameExpr() = this.getDeclaration() }
 }
 
-/** A built-in named type. */
-class BuiltinType extends TypeEntity, BuiltinEntity, @builtintypeobject { }
+/** DEPRECATED: Use `DeclaredTypeEntity` instead. */
+deprecated class DeclaredType = DeclaredTypeEntity;
+
+/** A built-in type. */
+class BuiltinTypeEntity extends TypeEntity, BuiltinEntity, @builtintypeobject { }
+
+/** DEPRECATED: Use `BuiltinTypeEntity` instead. */
+deprecated class BuiltinType = BuiltinTypeEntity;
 
 /** A built-in or declared constant, variable, field, method or function. */
 class ValueEntity extends Entity, @valueobject {
@@ -472,7 +479,7 @@ class Function extends ValueEntity, @functionobject {
   /** Gets a parameter of this function. */
   Parameter getAParameter() { result = this.getParameter(_) }
 
-  /** Gets the `i`th reslt variable of this function. */
+  /** Gets the `i`th result variable of this function. */
   ResultVariable getResult(int i) { result.isResultOf(this.getFuncDecl(), i) }
 
   /** Gets a result variable of this function. */
@@ -522,7 +529,7 @@ class Method extends Function {
   Type getReceiverBaseType() { result = lookThroughPointerType(this.getReceiverType()) }
 
   /** Holds if this method has name `m` and belongs to the method set of type `tp` or `*tp`. */
-  private predicate isIn(NamedType tp, string m) {
+  private predicate isIn(DefinedType tp, string m) {
     this = tp.getMethod(m) or
     this = tp.getPointerType().getMethod(m)
   }
@@ -536,7 +543,7 @@ class Method extends Function {
    * distinguishes between the method sets of `T` and `*T`, while the former does not.
    */
   override predicate hasQualifiedName(string tp, string m) {
-    exists(NamedType t |
+    exists(DefinedType t |
       this.isIn(t, m) and
       tp = t.getQualifiedName()
     )
@@ -552,7 +559,7 @@ class Method extends Function {
    */
   pragma[nomagic]
   predicate hasQualifiedName(string pkg, string tp, string m) {
-    exists(NamedType t |
+    exists(DefinedType t |
       this.isIn(t, m) and
       t.hasQualifiedName(pkg, tp)
     )
@@ -677,16 +684,22 @@ class Callable extends TCallable {
     result = this.asFuncLit().getName()
   }
 
+  /** Gets the location of this callable. */
+  Location getLocation() {
+    result = this.asFunction().getLocation() or result = this.asFuncLit().getLocation()
+  }
+
   /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
    * Holds if this element is at the specified location.
    * The location spans column `sc` of line `sl` to
    * column `ec` of line `el` in file `fp`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
-    this.asFunction().hasLocationInfo(fp, sl, sc, el, ec) or
-    this.asFuncLit().hasLocationInfo(fp, sl, sc, el, ec)
+  deprecated predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
+    this.getLocation().hasLocationInfo(fp, sl, sc, el, ec)
   }
 }
 
@@ -747,64 +760,64 @@ private predicate builtinFunction(
 module Builtin {
   // built-in types
   /** Gets the built-in type `bool`. */
-  BuiltinType bool() { result.getName() = "bool" }
+  BuiltinTypeEntity bool() { result.getName() = "bool" }
 
   /** Gets the built-in type `byte`. */
-  BuiltinType byte() { result.getName() = "byte" }
+  BuiltinTypeEntity byte() { result.getName() = "byte" }
 
   /** Gets the built-in type `complex64`. */
-  BuiltinType complex64() { result.getName() = "complex64" }
+  BuiltinTypeEntity complex64() { result.getName() = "complex64" }
 
   /** Gets the built-in type `complex128`. */
-  BuiltinType complex128() { result.getName() = "complex128" }
+  BuiltinTypeEntity complex128() { result.getName() = "complex128" }
 
   /** Gets the built-in type `error`. */
-  BuiltinType error() { result.getName() = "error" }
+  BuiltinTypeEntity error() { result.getName() = "error" }
 
   /** Gets the built-in type `float32`. */
-  BuiltinType float32() { result.getName() = "float32" }
+  BuiltinTypeEntity float32() { result.getName() = "float32" }
 
   /** Gets the built-in type `float64`. */
-  BuiltinType float64() { result.getName() = "float64" }
+  BuiltinTypeEntity float64() { result.getName() = "float64" }
 
   /** Gets the built-in type `int`. */
-  BuiltinType int_() { result.getName() = "int" }
+  BuiltinTypeEntity int_() { result.getName() = "int" }
 
   /** Gets the built-in type `int8`. */
-  BuiltinType int8() { result.getName() = "int8" }
+  BuiltinTypeEntity int8() { result.getName() = "int8" }
 
   /** Gets the built-in type `int16`. */
-  BuiltinType int16() { result.getName() = "int16" }
+  BuiltinTypeEntity int16() { result.getName() = "int16" }
 
   /** Gets the built-in type `int32`. */
-  BuiltinType int32() { result.getName() = "int32" }
+  BuiltinTypeEntity int32() { result.getName() = "int32" }
 
   /** Gets the built-in type `int64`. */
-  BuiltinType int64() { result.getName() = "int64" }
+  BuiltinTypeEntity int64() { result.getName() = "int64" }
 
   /** Gets the built-in type `rune`. */
-  BuiltinType rune() { result.getName() = "rune" }
+  BuiltinTypeEntity rune() { result.getName() = "rune" }
 
   /** Gets the built-in type `string`. */
-  BuiltinType string_() { result.getName() = "string" }
+  BuiltinTypeEntity string_() { result.getName() = "string" }
 
   /** Gets the built-in type `uint`. */
-  BuiltinType uint() { result.getName() = "uint" }
+  BuiltinTypeEntity uint() { result.getName() = "uint" }
 
   /** Gets the built-in type `uint8`. */
-  BuiltinType uint8() { result.getName() = "uint8" }
+  BuiltinTypeEntity uint8() { result.getName() = "uint8" }
 
   /** Gets the built-in type `uint16`. */
-  BuiltinType uint16() { result.getName() = "uint16" }
+  BuiltinTypeEntity uint16() { result.getName() = "uint16" }
 
   /** Gets the built-in type `uint32`. */
-  BuiltinType uint32() { result.getName() = "uint32" }
+  BuiltinTypeEntity uint32() { result.getName() = "uint32" }
 
   /** Gets the built-in type `uint64`. */
-  BuiltinType uint64() { result.getName() = "uint64" }
+  BuiltinTypeEntity uint64() { result.getName() = "uint64" }
 
   /** Gets the built-in type `uintptr`. */
-  BuiltinType uintptr() { result.getName() = "uintptr" }
+  BuiltinTypeEntity uintptr() { result.getName() = "uintptr" }
 
   // built-in constants
   /** Gets the built-in constant `true`. */

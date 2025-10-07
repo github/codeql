@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["kiali/kiali/.github/workflows/test-images-creator.yml", "*", "input.build_mode", "code-injection", "generated"]
+     - ["kiali/kiali/.github/workflows/test-images-creator.yml", "*", "input.release_branch", "code-injection", "generated"]
+     - ["kiali/kiali/.github/workflows/test-images-creator.yml", "*", "input.images_tag", "code-injection", "generated"]
+     - ["kiali/kiali/.github/workflows/test-images-creator.yml", "*", "input.quay_org", "code-injection", "generated"]
+     - ["kiali/kiali/.github/workflows/integration-tests-frontend.yml", "*", "input.istio_version", "code-injection", "generated"]
+     - ["kiali/kiali/.github/workflows/integration-tests-frontend-tempo.yml", "*", "input.istio_version", "code-injection", "generated"]
+     - ["kiali/kiali/.github/workflows/integration-tests-frontend-multicluster-primary-remote.yml", "*", "input.istio_version", "code-injection", "generated"]
+     - ["kiali/kiali/.github/workflows/integration-tests-frontend-multicluster-multi-primary.yml", "*", "input.istio_version", "code-injection", "generated"]
+     - ["kiali/kiali/.github/workflows/integration-tests-backend.yml", "*", "input.istio_version", "code-injection", "generated"]
+     - ["kiali/kiali/.github/workflows/integration-tests-backend-multicluster-external-controlplane.yml", "*", "input.istio_version", "code-injection", "generated"]
+     - ["kiali/kiali/.github/workflows/build-frontend.yml", "*", "input.target_branch", "code-injection", "generated"]

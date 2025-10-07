@@ -249,3 +249,4 @@ void* test_strndupa(const char* s, size_t size) {
 	char* s2 = strndupa(s, size);
 	return s2; // BAD
 }
+

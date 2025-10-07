@@ -1,6 +1,6 @@
 import go
 import ModelValidation
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import MakeTest<FlowTest>
 
 module Config implements DataFlow::ConfigSig {
@@ -17,8 +17,7 @@ module FlowTest implements TestSig {
   predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "IEmbedI1[t]" and
     exists(DataFlow::Node sink | Flow::flowTo(sink) |
-      sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      sink.getLocation() = location and
       element = sink.toString() and
       value = ""
     )

@@ -165,3 +165,9 @@ void test_format() {
   auto s2 = std::format(string::source());
   sink(s2); // $ ir MISSING: ast
 }
+
+void test(std::format_string s) {
+  int x = source();
+  int y = std::same_signature_as_format_but_different_name(s, x);
+  sink(y); // clean
+}

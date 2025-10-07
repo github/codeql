@@ -8,7 +8,7 @@ private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.Pat
 import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
-import codeql.rust.elements.Path
+import codeql.rust.elements.internal.PathAstNodeImpl::Impl as PathAstNodeImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `TupleStructPat` and should not
@@ -27,11 +27,11 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::TupleStructPat` class directly.
    * Use the subclass `TupleStructPat`, where the following predicates are available.
    */
-  class TupleStructPat extends Synth::TTupleStructPat, PatImpl::Pat {
+  class TupleStructPat extends Synth::TTupleStructPat, PatImpl::Pat, PathAstNodeImpl::PathAstNode {
     override string getAPrimaryQlClass() { result = "TupleStructPat" }
 
     /**
-     * Gets the `index`th field of this tuple struct pat (0-based).
+     * Gets the `index`th field of this tuple struct pattern (0-based).
      */
     Pat getField(int index) {
       result =
@@ -41,28 +41,13 @@ module Generated {
     }
 
     /**
-     * Gets any of the fields of this tuple struct pat.
+     * Gets any of the fields of this tuple struct pattern.
      */
     final Pat getAField() { result = this.getField(_) }
 
     /**
-     * Gets the number of fields of this tuple struct pat.
+     * Gets the number of fields of this tuple struct pattern.
      */
     final int getNumberOfFields() { result = count(int i | exists(this.getField(i))) }
-
-    /**
-     * Gets the path of this tuple struct pat, if it exists.
-     */
-    Path getPath() {
-      result =
-        Synth::convertPathFromRaw(Synth::convertTupleStructPatToRaw(this)
-              .(Raw::TupleStructPat)
-              .getPath())
-    }
-
-    /**
-     * Holds if `getPath()` exists.
-     */
-    final predicate hasPath() { exists(this.getPath()) }
   }
 }

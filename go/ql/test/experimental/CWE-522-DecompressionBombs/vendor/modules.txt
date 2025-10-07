@@ -3,13 +3,20 @@
 github.com/DataDog/zstd
 # github.com/dsnet/compress v0.0.1
 ## explicit
-github.com/dsnet/compress
+github.com/dsnet/compress/bzip2
+github.com/dsnet/compress/flate
 # github.com/golang/snappy v0.0.4
 ## explicit
 github.com/golang/snappy
 # github.com/klauspost/compress v1.16.6
 ## explicit
-github.com/klauspost/compress
+github.com/klauspost/compress/zstd
+github.com/klauspost/compress/snappy
+github.com/klauspost/compress/s2
+github.com/klauspost/compress/zlib
+github.com/klauspost/compress/zip
+github.com/klauspost/compress/flate
+github.com/klauspost/compress/gzip
 # github.com/klauspost/pgzip v1.2.6
 ## explicit
 github.com/klauspost/pgzip

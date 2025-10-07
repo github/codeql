@@ -1,4 +1,5 @@
 /** Provides Android methods relating to web resource response. */
+deprecated module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow
@@ -6,6 +7,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.frameworks.android.WebView
 
+overlay[local?]
 private class ActivateModels extends ActiveExperimentalModels {
   ActivateModels() { this = "android-web-resource-response" }
 }

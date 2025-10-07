@@ -174,6 +174,14 @@ module HashWithoutSaltConfig implements DataFlow::ConfigSig {
 
 module HashWithoutSaltFlow = TaintTracking::Global<HashWithoutSaltConfig>;
 
-from HashWithoutSaltFlow::PathNode source, HashWithoutSaltFlow::PathNode sink
-where HashWithoutSaltFlow::flowPath(source, sink)
-select sink, source, sink, "$@ is hashed without a salt.", source, "The password"
+deprecated query predicate problems(
+  HashWithoutSaltFlow::PathNode sink, HashWithoutSaltFlow::PathNode source,
+  HashWithoutSaltFlow::PathNode sink0, string message1, HashWithoutSaltFlow::PathNode source0,
+  string message2
+) {
+  HashWithoutSaltFlow::flowPath(source, sink) and
+  sink = sink0 and
+  source = source0 and
+  message1 = "$@ is hashed without a salt." and
+  message2 = "The password"
+}

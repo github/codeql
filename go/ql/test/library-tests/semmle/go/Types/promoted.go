@@ -1,6 +1,6 @@
 package main
 
-import "github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1"
+import "codeql-go-types/pkg1"
 
 // IMPORTANT: Make sure that *pkg1.SEmbedP is not referenced.
 

@@ -1,4 +1,6 @@
 /** Provides classes to reason about Android Intent redirect vulnerabilities. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.controlflow.Guards

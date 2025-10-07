@@ -1,6 +1,10 @@
 package main
 
-import "regexp"
+import (
+	"regexp"
+
+	"codeql-go-types/pkg1"
+)
 
 func test(r *regexp.Regexp) {}
 
@@ -9,3 +13,7 @@ func swap(x int, y int) (int, int) {
 }
 
 func main() {}
+
+type EmbedsNameClash struct {
+	pkg1.NameClash
+}

@@ -27,7 +27,7 @@
 | Function | cpp20.cpp:62:8:62:8 | operator= | operator= | extern, inline, is_constexpr, public |
 | Function | cpp20.cpp:62:8:62:8 | operator= | operator= | extern, inline, is_constexpr, public |
 | Function | cpp20.cpp:64:5:64:21 | TestExplicitBool4 | TestExplicitBool4 | explicit, extern, public |
-| Function | file://:0:0:0:0 | TestExplicitBool | TestExplicitBool | explicit, has_trailing_return_type |
+| Function | file://:0:0:0:0 | TestExplicitBool | TestExplicitBool | explicit |
 | Function | file://:0:0:0:0 | operator delete | operator delete | extern |
 | Function | file://:0:0:0:0 | operator new | operator new | extern |
 | Function | specifiers2.c:11:6:11:6 | f | f | c_linkage, extern |
@@ -67,6 +67,8 @@
 | Function | specifiers2pp.cpp:63:19:63:34 | member_constexpr | member_constexpr | const, declared_constexpr, inline, is_constexpr, private |
 | Function | specifiers2pp.cpp:64:19:64:40 | member_const_constexpr | member_const_constexpr | const, declared_constexpr, inline, is_constexpr, private |
 | FunctionDeclarationEntry | cpp20.cpp:11:14:11:24 | declaration of TestExplict | TestExplict | explicit |
+| FunctionDeclarationEntry | cpp20.cpp:23:1:23:1 | declaration of TestExplicitBool | TestExplicitBool | has_trailing_return_type |
+| FunctionDeclarationEntry | cpp20.cpp:24:1:24:16 | definition of TestExplicitBool | TestExplicitBool | has_trailing_return_type |
 | FunctionDeclarationEntry | cpp20.cpp:40:23:40:23 | definition of TestExplicitBool2 | TestExplicitBool2 | explicit |
 | FunctionDeclarationEntry | cpp20.cpp:51:5:51:5 | definition of TestExplicitBool3 | TestExplicitBool3 | explicit |
 | FunctionDeclarationEntry | cpp20.cpp:51:5:51:21 | declaration of TestExplicitBool3 | TestExplicitBool3 | explicit |

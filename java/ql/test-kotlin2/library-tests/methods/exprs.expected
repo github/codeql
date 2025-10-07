@@ -1,15 +1,15 @@
-| clinit.kt:3:1:3:24 | ...=... | AssignExpr |
+| clinit.kt:3:1:3:20 | ...=... | AssignExpr |
+| clinit.kt:3:1:3:20 | <set-?> | VarAccess |
+| clinit.kt:3:1:3:20 | ClinitKt | TypeAccess |
+| clinit.kt:3:1:3:20 | ClinitKt | TypeAccess |
+| clinit.kt:3:1:3:20 | ClinitKt.topLevelInt | VarAccess |
+| clinit.kt:3:1:3:20 | ClinitKt.topLevelInt | VarAccess |
+| clinit.kt:3:1:3:20 | Unit | TypeAccess |
+| clinit.kt:3:1:3:20 | int | TypeAccess |
+| clinit.kt:3:1:3:20 | int | TypeAccess |
 | clinit.kt:3:1:3:24 | ...=... | KtInitializerAssignExpr |
-| clinit.kt:3:1:3:24 | <set-?> | VarAccess |
-| clinit.kt:3:1:3:24 | ClinitKt | TypeAccess |
-| clinit.kt:3:1:3:24 | ClinitKt | TypeAccess |
 | clinit.kt:3:1:3:24 | ClinitKt | TypeAccess |
 | clinit.kt:3:1:3:24 | ClinitKt.topLevelInt | VarAccess |
-| clinit.kt:3:1:3:24 | ClinitKt.topLevelInt | VarAccess |
-| clinit.kt:3:1:3:24 | ClinitKt.topLevelInt | VarAccess |
-| clinit.kt:3:1:3:24 | Unit | TypeAccess |
-| clinit.kt:3:1:3:24 | int | TypeAccess |
-| clinit.kt:3:1:3:24 | int | TypeAccess |
 | clinit.kt:3:1:3:24 | int | TypeAccess |
 | clinit.kt:3:24:3:24 | 0 | IntegerLiteral |
 | dataClass.kt:0:0:0:0 | 0 | IntegerLiteral |
@@ -132,6 +132,7 @@
 | dataClass.kt:1:34:1:46 | this.y | VarAccess |
 | dataClass.kt:1:34:1:46 | y | VarAccess |
 | dataClass.kt:1:34:1:46 | y | VarAccess |
+| delegates.kt:4:5:6:5 | int | TypeAccess |
 | delegates.kt:4:21:6:5 | ...::... | PropertyRefExpr |
 | delegates.kt:4:21:6:5 | ...=... | KtInitializerAssignExpr |
 | delegates.kt:4:21:6:5 | Integer | TypeAccess |
@@ -148,7 +149,6 @@
 | delegates.kt:4:21:6:5 | get(...) | MethodCall |
 | delegates.kt:4:21:6:5 | getLazyProp(...) | MethodCall |
 | delegates.kt:4:21:6:5 | getValue(...) | MethodCall |
-| delegates.kt:4:21:6:5 | int | TypeAccess |
 | delegates.kt:4:21:6:5 | lazy(...) | MethodCall |
 | delegates.kt:4:21:6:5 | lazyProp$delegate | VarAccess |
 | delegates.kt:4:21:6:5 | this | ThisAccess |
@@ -160,6 +160,8 @@
 | delegates.kt:4:26:6:5 | Integer | TypeAccess |
 | delegates.kt:4:26:6:5 | int | TypeAccess |
 | delegates.kt:5:9:5:9 | 5 | IntegerLiteral |
+| delegates.kt:8:5:11:5 | String | TypeAccess |
+| delegates.kt:8:5:11:5 | String | TypeAccess |
 | delegates.kt:8:5:11:5 | Unit | TypeAccess |
 | delegates.kt:8:35:8:43 | INSTANCE | VarAccess |
 | delegates.kt:8:35:11:5 | ...::... | PropertyRefExpr |
@@ -172,8 +174,6 @@
 | delegates.kt:8:35:11:5 | MyClass | TypeAccess |
 | delegates.kt:8:35:11:5 | Object | TypeAccess |
 | delegates.kt:8:35:11:5 | ReadWriteProperty<Object,String> | TypeAccess |
-| delegates.kt:8:35:11:5 | String | TypeAccess |
-| delegates.kt:8:35:11:5 | String | TypeAccess |
 | delegates.kt:8:35:11:5 | String | TypeAccess |
 | delegates.kt:8:35:11:5 | String | TypeAccess |
 | delegates.kt:8:35:11:5 | String | TypeAccess |
@@ -223,11 +223,16 @@
 | delegates.kt:10:23:10:25 | old | VarAccess |
 | delegates.kt:10:26:10:31 | ", now " | StringLiteral |
 | delegates.kt:10:33:10:35 | new | VarAccess |
-| enumClass.kt:1:1:4:1 | EnumClass | TypeAccess |
-| enumClass.kt:1:1:4:1 | EnumClass | TypeAccess |
-| enumClass.kt:1:1:4:1 | EnumClass | TypeAccess |
-| enumClass.kt:1:1:4:1 | EnumClass[] | TypeAccess |
-| enumClass.kt:1:1:4:1 | EnumEntries<EnumClass> | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumClass | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumClass | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumClass | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumClass[] | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumEntries<EnumClass> | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumEntries<EnumWithFunctions> | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumWithFunctions | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumWithFunctions | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumWithFunctions | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumWithFunctions[] | TypeAccess |
 | enumClass.kt:1:1:4:1 | String | TypeAccess |
 | enumClass.kt:1:21:1:32 | 0 | IntegerLiteral |
 | enumClass.kt:1:21:1:32 | Enum<EnumClass> | TypeAccess |
@@ -258,12 +263,7 @@
 | enumClass.kt:3:11:3:11 | 1 | IntegerLiteral |
 | enumClass.kt:6:1:16:1 | 0 | IntegerLiteral |
 | enumClass.kt:6:1:16:1 | Enum<EnumWithFunctions> | TypeAccess |
-| enumClass.kt:6:1:16:1 | EnumEntries<EnumWithFunctions> | TypeAccess |
 | enumClass.kt:6:1:16:1 | EnumWithFunctions | TypeAccess |
-| enumClass.kt:6:1:16:1 | EnumWithFunctions | TypeAccess |
-| enumClass.kt:6:1:16:1 | EnumWithFunctions | TypeAccess |
-| enumClass.kt:6:1:16:1 | EnumWithFunctions | TypeAccess |
-| enumClass.kt:6:1:16:1 | EnumWithFunctions[] | TypeAccess |
 | enumClass.kt:6:1:16:1 | String | TypeAccess |
 | enumClass.kt:6:1:16:1 | new Enum<EnumWithFunctions>(...) | ClassInstanceExpr |
 | enumClass.kt:6:1:16:1 | null | NullLiteral |

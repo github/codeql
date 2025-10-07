@@ -1,9 +1,12 @@
 /**
  * Provides classes and predicates for working with Java statements.
  */
+overlay[local?]
+module;
 
 import Expr
 import metrics.MetricStmt
+private import semmle.code.java.Overlay
 
 /** A common super-class of all statements. */
 class Stmt extends StmtParent, ExprParent, @stmt {
@@ -45,10 +48,10 @@ class Stmt extends StmtParent, ExprParent, @stmt {
   Stmt getAChild() { result.getParent() = this }
 
   /** Gets the basic block in which this statement occurs. */
-  BasicBlock getBasicBlock() { result.getANode() = this }
+  BasicBlock getBasicBlock() { result.getANode().asStmt() = this }
 
   /** Gets the `ControlFlowNode` corresponding to this statement. */
-  ControlFlowNode getControlFlowNode() { result = this }
+  ControlFlowNode getControlFlowNode() { result.asStmt() = this }
 
   /** Cast this statement to a class that provides access to metrics information. */
   MetricStmt getMetrics() { result = this }
@@ -288,7 +291,7 @@ class TryStmt extends Stmt, @trystmt {
   CatchClause getACatchClause() { result.getParent() = this }
 
   /**
-   * Gets the `catch` clause at the specified (zero-based) position
+   * Gets the `catch` clause at the specified (zero-based) position `index`
    * in this `try` statement.
    */
   CatchClause getCatchClause(int index) {
@@ -302,7 +305,7 @@ class TryStmt extends Stmt, @trystmt {
   /** Gets a resource variable declaration, if any. */
   LocalVariableDeclStmt getAResourceDecl() { result.getParent() = this and result.getIndex() <= -3 }
 
-  /** Gets the resource variable declaration at the specified position in this `try` statement. */
+  /** Gets the resource variable declaration at the specified position `index` in this `try` statement. */
   LocalVariableDeclStmt getResourceDecl(int index) {
     result = this.getAResourceDecl() and
     index = -3 - result.getIndex()
@@ -311,7 +314,7 @@ class TryStmt extends Stmt, @trystmt {
   /** Gets a resource expression, if any. */
   VarAccess getAResourceExpr() { result.getParent() = this and result.getIndex() <= -3 }
 
-  /** Gets the resource expression at the specified position in this `try` statement. */
+  /** Gets the resource expression at the specified position `index` in this `try` statement. */
   VarAccess getResourceExpr(int index) {
     result = this.getAResourceExpr() and
     index = -3 - result.getIndex()
@@ -320,7 +323,7 @@ class TryStmt extends Stmt, @trystmt {
   /** Gets a resource in this `try` statement, if any. */
   ExprParent getAResource() { result = this.getAResourceDecl() or result = this.getAResourceExpr() }
 
-  /** Gets the resource at the specified position in this `try` statement. */
+  /** Gets the resource at the specified position `index` in this `try` statement. */
   ExprParent getResource(int index) {
     result = this.getResourceDecl(index) or result = this.getResourceExpr(index)
   }
@@ -985,3 +988,6 @@ class SuperConstructorInvocationStmt extends Stmt, ConstructorCall, @superconstr
 
   override string getAPrimaryQlClass() { result = "SuperConstructorInvocationStmt" }
 }
+
+overlay[local]
+private class DiscardableStmt extends DiscardableLocatable, @stmt { }

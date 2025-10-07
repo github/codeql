@@ -15,9 +15,12 @@ import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
  */
 module Generated {
   /**
-   * A RestPat. For example:
+   * A rest pattern (`..`) in a tuple, slice, or struct pattern.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let (a, .., z) = (1, 2, 3);
+   * //      ^^
    * ```
    * INTERNAL: Do not reference the `Generated::RestPat` class directly.
    * Use the subclass `RestPat`, where the following predicates are available.
@@ -26,7 +29,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "RestPat" }
 
     /**
-     * Gets the `index`th attr of this rest pat (0-based).
+     * Gets the `index`th attr of this rest pattern (0-based).
      */
     Attr getAttr(int index) {
       result =
@@ -34,12 +37,12 @@ module Generated {
     }
 
     /**
-     * Gets any of the attrs of this rest pat.
+     * Gets any of the attrs of this rest pattern.
      */
     final Attr getAnAttr() { result = this.getAttr(_) }
 
     /**
-     * Gets the number of attrs of this rest pat.
+     * Gets the number of attrs of this rest pattern.
      */
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
   }

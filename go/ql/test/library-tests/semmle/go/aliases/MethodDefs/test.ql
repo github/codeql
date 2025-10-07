@@ -11,11 +11,7 @@ class EntityWithDeclInfo extends TEntityWithDeclInfo {
 
   string toString() { result = e.toString() + " (" + nDecls + " declaration sites)" }
 
-  predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    e.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
+  Location getLocation() { result = e.getLocation() }
 }
 
 query predicate distinctDefinedFs(int ct) { ct = count(DeclaredFunction e | e.toString() = "F") }

@@ -7,8 +7,10 @@
  * @problem.severity warning
  * @precision medium
  * @id cs/dispose-not-called-on-throw
- * @tags efficiency
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       error-handling
+ *       performance
  *       external/cwe/cwe-404
  *       external/cwe/cwe-459
  *       external/cwe/cwe-460

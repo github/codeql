@@ -88,6 +88,11 @@ class HostVerificationMethodCall extends MethodCall {
   }
 }
 
-from UriGetHostMethod um, MethodCall uma, HostVerificationMethodCall hma
-where hma.getQualifier() = uma and uma.getMethod() = um
-select hma, "Method has potentially $@.", hma.getArgument(0), "improper URL verification"
+deprecated query predicate problems(
+  HostVerificationMethodCall hma, string message1, Expr arg, string message2
+) {
+  exists(UriGetHostMethod um, MethodCall uma | hma.getQualifier() = uma and uma.getMethod() = um) and
+  message1 = "Method has potentially $@." and
+  arg = hma.getArgument(0) and
+  message2 = "improper URL verification"
+}

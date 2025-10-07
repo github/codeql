@@ -1,5 +1,5 @@
 import java
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 
 module FieldValueConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof DataFlow::FieldValueNode }

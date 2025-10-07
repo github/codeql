@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Net.Http, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Net.Http, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Net
@@ -578,7 +578,9 @@ namespace System
                 protected virtual void Dispose(bool disposing) => throw null;
                 public System.Net.Http.Headers.HttpContentHeaders Headers { get => throw null; }
                 public System.Threading.Tasks.Task LoadIntoBufferAsync() => throw null;
+                public System.Threading.Tasks.Task LoadIntoBufferAsync(System.Threading.CancellationToken cancellationToken) => throw null;
                 public System.Threading.Tasks.Task LoadIntoBufferAsync(long maxBufferSize) => throw null;
+                public System.Threading.Tasks.Task LoadIntoBufferAsync(long maxBufferSize, System.Threading.CancellationToken cancellationToken) => throw null;
                 public System.Threading.Tasks.Task<byte[]> ReadAsByteArrayAsync() => throw null;
                 public System.Threading.Tasks.Task<byte[]> ReadAsByteArrayAsync(System.Threading.CancellationToken cancellationToken) => throw null;
                 public System.IO.Stream ReadAsStream() => throw null;
@@ -596,6 +598,7 @@ namespace System
             {
                 public HttpIOException(System.Net.Http.HttpRequestError httpRequestError, string message = default(string), System.Exception innerException = default(System.Exception)) => throw null;
                 public System.Net.Http.HttpRequestError HttpRequestError { get => throw null; }
+                public override string Message { get => throw null; }
             }
             public enum HttpKeepAlivePingPolicy
             {
@@ -663,10 +666,10 @@ namespace System
             public class HttpRequestException : System.Exception
             {
                 public HttpRequestException() => throw null;
+                public HttpRequestException(System.Net.Http.HttpRequestError httpRequestError, string message = default(string), System.Exception inner = default(System.Exception), System.Net.HttpStatusCode? statusCode = default(System.Net.HttpStatusCode?)) => throw null;
                 public HttpRequestException(string message) => throw null;
                 public HttpRequestException(string message, System.Exception inner) => throw null;
                 public HttpRequestException(string message, System.Exception inner, System.Net.HttpStatusCode? statusCode) => throw null;
-                public HttpRequestException(System.Net.Http.HttpRequestError httpRequestError, string message = default(string), System.Exception inner = default(System.Exception), System.Net.HttpStatusCode? statusCode = default(System.Net.HttpStatusCode?)) => throw null;
                 public System.Net.Http.HttpRequestError HttpRequestError { get => throw null; }
                 public System.Net.HttpStatusCode? StatusCode { get => throw null; }
             }
@@ -689,15 +692,15 @@ namespace System
             }
             public sealed class HttpRequestOptions : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IDictionary<string, object>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IReadOnlyDictionary<string, object>
             {
-                void System.Collections.Generic.IDictionary<string, object>.Add(string key, object value) => throw null;
                 void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>.Add(System.Collections.Generic.KeyValuePair<string, object> item) => throw null;
+                void System.Collections.Generic.IDictionary<string, object>.Add(string key, object value) => throw null;
                 void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>.Clear() => throw null;
                 bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>.Contains(System.Collections.Generic.KeyValuePair<string, object> item) => throw null;
-                bool System.Collections.Generic.IReadOnlyDictionary<string, object>.ContainsKey(string key) => throw null;
                 bool System.Collections.Generic.IDictionary<string, object>.ContainsKey(string key) => throw null;
+                bool System.Collections.Generic.IReadOnlyDictionary<string, object>.ContainsKey(string key) => throw null;
                 void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>.CopyTo(System.Collections.Generic.KeyValuePair<string, object>[] array, int arrayIndex) => throw null;
-                int System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<string, object>>.Count { get => throw null; }
                 int System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>.Count { get => throw null; }
+                int System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<string, object>>.Count { get => throw null; }
                 public HttpRequestOptions() => throw null;
                 System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, object>> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>.GetEnumerator() => throw null;
                 System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
@@ -706,12 +709,12 @@ namespace System
                 object System.Collections.Generic.IReadOnlyDictionary<string, object>.this[string key] { get => throw null; }
                 System.Collections.Generic.ICollection<string> System.Collections.Generic.IDictionary<string, object>.Keys { get => throw null; }
                 System.Collections.Generic.IEnumerable<string> System.Collections.Generic.IReadOnlyDictionary<string, object>.Keys { get => throw null; }
-                bool System.Collections.Generic.IDictionary<string, object>.Remove(string key) => throw null;
                 bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>.Remove(System.Collections.Generic.KeyValuePair<string, object> item) => throw null;
+                bool System.Collections.Generic.IDictionary<string, object>.Remove(string key) => throw null;
                 public void Set<TValue>(System.Net.Http.HttpRequestOptionsKey<TValue> key, TValue value) => throw null;
                 bool System.Collections.Generic.IDictionary<string, object>.TryGetValue(string key, out object value) => throw null;
-                public bool TryGetValue<TValue>(System.Net.Http.HttpRequestOptionsKey<TValue> key, out TValue value) => throw null;
                 bool System.Collections.Generic.IReadOnlyDictionary<string, object>.TryGetValue(string key, out object value) => throw null;
+                public bool TryGetValue<TValue>(System.Net.Http.HttpRequestOptionsKey<TValue> key, out TValue value) => throw null;
                 System.Collections.Generic.ICollection<object> System.Collections.Generic.IDictionary<string, object>.Values { get => throw null; }
                 System.Collections.Generic.IEnumerable<object> System.Collections.Generic.IReadOnlyDictionary<string, object>.Values { get => throw null; }
             }
@@ -818,6 +821,7 @@ namespace System
                 public System.Net.ICredentials DefaultProxyCredentials { get => throw null; set { } }
                 protected override void Dispose(bool disposing) => throw null;
                 public bool EnableMultipleHttp2Connections { get => throw null; set { } }
+                public bool EnableMultipleHttp3Connections { get => throw null; set { } }
                 public System.TimeSpan Expect100ContinueTimeout { get => throw null; set { } }
                 public int InitialHttp2StreamWindowSize { get => throw null; set { } }
                 public static bool IsSupported { get => throw null; }

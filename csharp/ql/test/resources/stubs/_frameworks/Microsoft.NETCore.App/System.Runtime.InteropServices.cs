@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Runtime.InteropServices, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Runtime.InteropServices, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     public sealed class DataMisalignedException : System.SystemException
@@ -156,7 +156,9 @@ namespace System
             {
                 public static System.Span<T> AsSpan<T>(System.Collections.Generic.List<T> list) => throw null;
                 public static TValue GetValueRefOrAddDefault<TKey, TValue>(System.Collections.Generic.Dictionary<TKey, TValue> dictionary, TKey key, out bool exists) => throw null;
+                public static TValue GetValueRefOrAddDefault<TKey, TValue, TAlternateKey>(System.Collections.Generic.Dictionary<TKey, TValue>.AlternateLookup<TAlternateKey> dictionary, TAlternateKey key, out bool exists) => throw null;
                 public static TValue GetValueRefOrNullRef<TKey, TValue>(System.Collections.Generic.Dictionary<TKey, TValue> dictionary, TKey key) => throw null;
+                public static TValue GetValueRefOrNullRef<TKey, TValue, TAlternateKey>(System.Collections.Generic.Dictionary<TKey, TValue>.AlternateLookup<TAlternateKey> dictionary, TAlternateKey key) => throw null;
                 public static void SetCount<T>(System.Collections.Generic.List<T> list, int count) => throw null;
             }
             [System.AttributeUsage((System.AttributeTargets)10624, Inherited = false)]
@@ -1193,7 +1195,7 @@ namespace System
                 public static object PtrToStructure(nint ptr, System.Type structureType) => throw null;
                 public static T PtrToStructure<T>(nint ptr) => throw null;
                 public static void PtrToStructure<T>(nint ptr, T structure) => throw null;
-                public static int QueryInterface(nint pUnk, ref readonly System.Guid iid, out nint ppv) => throw null;
+                public static int QueryInterface(nint pUnk, in System.Guid iid, out nint ppv) => throw null;
                 public static byte ReadByte(nint ptr) => throw null;
                 public static byte ReadByte(nint ptr, int ofs) => throw null;
                 public static byte ReadByte(object ptr, int ofs) => throw null;
@@ -1364,15 +1366,39 @@ namespace System
                     System.Runtime.InteropServices.Marshalling.VirtualMethodTableInfo System.Runtime.InteropServices.Marshalling.IUnmanagedVirtualMethodTableProvider.GetVirtualMethodTableInfoForKey(System.Type type) => throw null;
                     bool System.Runtime.InteropServices.IDynamicInterfaceCastable.IsInterfaceImplemented(System.RuntimeTypeHandle interfaceType, bool throwIfNotImplemented) => throw null;
                 }
-                public static class ExceptionAsDefaultMarshaller<T> where T : struct
+                public struct ComVariant : System.IDisposable
+                {
+                    public T As<T>() => throw null;
+                    public static System.Runtime.InteropServices.Marshalling.ComVariant Create<T>(T value) => throw null;
+                    public static System.Runtime.InteropServices.Marshalling.ComVariant CreateRaw<T>(System.Runtime.InteropServices.VarEnum vt, T rawValue) where T : unmanaged => throw null;
+                    public void Dispose() => throw null;
+                    public T GetRawDataRef<T>() where T : unmanaged => throw null;
+                    public static System.Runtime.InteropServices.Marshalling.ComVariant Null { get => throw null; }
+                    public System.Runtime.InteropServices.VarEnum VarType { get => throw null; }
+                }
+                public static class ComVariantMarshaller
+                {
+                    public static object ConvertToManaged(System.Runtime.InteropServices.Marshalling.ComVariant unmanaged) => throw null;
+                    public static System.Runtime.InteropServices.Marshalling.ComVariant ConvertToUnmanaged(object managed) => throw null;
+                    public static void Free(System.Runtime.InteropServices.Marshalling.ComVariant unmanaged) => throw null;
+                    public struct RefPropagate
+                    {
+                        public void Free() => throw null;
+                        public void FromManaged(object managed) => throw null;
+                        public void FromUnmanaged(System.Runtime.InteropServices.Marshalling.ComVariant unmanaged) => throw null;
+                        public object ToManaged() => throw null;
+                        public System.Runtime.InteropServices.Marshalling.ComVariant ToUnmanaged() => throw null;
+                    }
+                }
+                public static class ExceptionAsDefaultMarshaller<T> where T : unmanaged
                 {
                     public static T ConvertToUnmanaged(System.Exception e) => throw null;
                 }
-                public static class ExceptionAsHResultMarshaller<T> where T : struct
+                public static class ExceptionAsHResultMarshaller<T> where T : unmanaged, System.Numerics.INumber<T>
                 {
                     public static T ConvertToUnmanaged(System.Exception e) => throw null;
                 }
-                public static class ExceptionAsNaNMarshaller<T> where T : struct
+                public static class ExceptionAsNaNMarshaller<T> where T : unmanaged, System.Numerics.IFloatingPointIeee754<T>
                 {
                     public static T ConvertToUnmanaged(System.Exception e) => throw null;
                 }
@@ -1577,6 +1603,8 @@ namespace System
                 static System.Runtime.InteropServices.NFloat System.Numerics.INumber<System.Runtime.InteropServices.NFloat>.Clamp(System.Runtime.InteropServices.NFloat value, System.Runtime.InteropServices.NFloat min, System.Runtime.InteropServices.NFloat max) => throw null;
                 public int CompareTo(object obj) => throw null;
                 public int CompareTo(System.Runtime.InteropServices.NFloat other) => throw null;
+                static TInteger System.Numerics.IFloatingPoint<System.Runtime.InteropServices.NFloat>.ConvertToInteger<TInteger>(System.Runtime.InteropServices.NFloat value) => throw null;
+                static TInteger System.Numerics.IFloatingPoint<System.Runtime.InteropServices.NFloat>.ConvertToIntegerNative<TInteger>(System.Runtime.InteropServices.NFloat value) => throw null;
                 static System.Runtime.InteropServices.NFloat System.Numerics.INumber<System.Runtime.InteropServices.NFloat>.CopySign(System.Runtime.InteropServices.NFloat value, System.Runtime.InteropServices.NFloat sign) => throw null;
                 static System.Runtime.InteropServices.NFloat System.Numerics.ITrigonometricFunctions<System.Runtime.InteropServices.NFloat>.Cos(System.Runtime.InteropServices.NFloat x) => throw null;
                 static System.Runtime.InteropServices.NFloat System.Numerics.IHyperbolicFunctions<System.Runtime.InteropServices.NFloat>.Cosh(System.Runtime.InteropServices.NFloat x) => throw null;
@@ -1645,6 +1673,7 @@ namespace System
                 static System.Runtime.InteropServices.NFloat System.Numerics.INumber<System.Runtime.InteropServices.NFloat>.MinNumber(System.Runtime.InteropServices.NFloat x, System.Runtime.InteropServices.NFloat y) => throw null;
                 static System.Runtime.InteropServices.NFloat System.Numerics.IMinMaxValue<System.Runtime.InteropServices.NFloat>.MinValue { get => throw null; }
                 static System.Runtime.InteropServices.NFloat System.Numerics.IMultiplicativeIdentity<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>.MultiplicativeIdentity { get => throw null; }
+                static System.Runtime.InteropServices.NFloat System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.MultiplyAddEstimate(System.Runtime.InteropServices.NFloat left, System.Runtime.InteropServices.NFloat right, System.Runtime.InteropServices.NFloat addend) => throw null;
                 static System.Runtime.InteropServices.NFloat System.Numerics.IFloatingPointIeee754<System.Runtime.InteropServices.NFloat>.NaN { get => throw null; }
                 static System.Runtime.InteropServices.NFloat System.Numerics.IFloatingPointIeee754<System.Runtime.InteropServices.NFloat>.NegativeInfinity { get => throw null; }
                 static System.Runtime.InteropServices.NFloat System.Numerics.ISignedNumber<System.Runtime.InteropServices.NFloat>.NegativeOne { get => throw null; }
@@ -2070,6 +2099,11 @@ namespace System
             {
                 public VariantWrapper(object obj) => throw null;
                 public object WrappedObject { get => throw null; }
+            }
+            [System.AttributeUsage((System.AttributeTargets)64, Inherited = false)]
+            public sealed class WasmImportLinkageAttribute : System.Attribute
+            {
+                public WasmImportLinkageAttribute() => throw null;
             }
         }
     }

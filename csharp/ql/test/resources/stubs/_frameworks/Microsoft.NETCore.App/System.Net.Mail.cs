@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Net.Mail, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
+// Generated from `System.Net.Mail, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 namespace System
 {
     namespace Net
@@ -301,6 +301,7 @@ namespace System
                 public static class Application
                 {
                     public const string FormUrlEncoded = default;
+                    public const string GZip = default;
                     public const string Json = default;
                     public const string JsonPatch = default;
                     public const string JsonSequence = default;
@@ -342,11 +343,14 @@ namespace System
                 {
                     public const string ByteRanges = default;
                     public const string FormData = default;
+                    public const string Mixed = default;
+                    public const string Related = default;
                 }
                 public static class Text
                 {
                     public const string Css = default;
                     public const string Csv = default;
+                    public const string EventStream = default;
                     public const string Html = default;
                     public const string JavaScript = default;
                     public const string Markdown = default;

@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 
 class XmlPullParser extends Interface {

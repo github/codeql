@@ -2,7 +2,8 @@ private import csharp
 private import semmle.code.csharp.frameworks.system.collections.Generic as GenericCollections
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.frameworks.system.linq.Expressions
-private import CaptureModels::ModelGeneratorInput as ModelGeneratorInput
+private import CaptureModels::ModelGeneratorCommonInput as ModelGeneratorInput
+private import CaptureModels::SummaryModelGeneratorInput as SummaryModelGeneratorInput
 private import CaptureModelsPrinting
 
 /**
@@ -38,7 +39,7 @@ private predicate localTypeParameter(Callable callable, TypeParameter tp) {
  */
 private predicate parameter(Callable callable, string input, TypeParameter tp) {
   exists(Parameter p |
-    input = ModelGeneratorInput::parameterAccess(p) and
+    input = ModelGeneratorInput::parameterApproximateAccess(p) and
     p = callable.getAParameter() and
     (
       // Parameter of type tp
@@ -177,21 +178,19 @@ private predicate output(Callable callable, TypeParameter tp, string output) {
   delegateSink(callable, tp, output)
 }
 
-private module ModelPrintingInput implements ModelPrintingSig {
+private module ModelPrintingInput implements ModelPrintingSummarySig {
   class SummaryApi = TypeBasedFlowTargetApi;
-
-  class SourceOrSinkApi = TypeBasedFlowTargetApi;
 
   string getProvenance() { result = "tb-generated" }
 }
 
-private module Printing = ModelPrinting<ModelPrintingInput>;
+private module Printing = ModelPrintingSummary<ModelPrintingInput>;
 
 /**
  * A class of callables that are relevant generating summaries for based
  * on the Theorems for Free approach.
  */
-class TypeBasedFlowTargetApi extends ModelGeneratorInput::SummaryTargetApi {
+class TypeBasedFlowTargetApi extends SummaryModelGeneratorInput::SummaryTargetApi {
   /**
    * Gets the string representation of all type based summaries for `this`
    * inspired by the Theorems for Free approach.

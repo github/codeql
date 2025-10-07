@@ -6,6 +6,6 @@ module Impl {
    * A wildcard availability spec `*`
    */
   class OtherAvailabilitySpec extends Generated::OtherAvailabilitySpec {
-    override string toString() { result = "*" }
+    override string toStringImpl() { result = "*" }
   }
 }

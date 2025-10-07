@@ -88,7 +88,7 @@ private module Cached {
         nodeFrom.asExpr() = value and
         value = case.getValue() and
         clause = case.getBranch(_) and
-        def = nodeTo.(SsaDefinitionExtNode).getDefinitionExt() and
+        def = nodeTo.(SsaDefinitionNodeImpl).getDefinition() and
         def.getControlFlowNode() = variablesInPattern(clause.getPattern()) and
         not def.(Ssa::WriteDefinition).assigns(value)
       )
@@ -117,14 +117,11 @@ private module Cached {
     // Although flow through collections is modeled precisely using stores/reads, we still
     // allow flow out of a _tainted_ collection. This is needed in order to support taint-
     // tracking configurations where the source is a collection.
-    exists(DataFlow::ContentSet c | readStep(nodeFrom, c, nodeTo) |
-      c.isSingleton(any(DataFlow::Content::ElementContent ec))
-      or
-      c.isKnownOrUnknownElement(_)
-      or
-      c.isAnyElement()
-    ) and
-    model = ""
+    exists(DataFlow::ContentSet c |
+      readStep(nodeFrom, c, nodeTo) and
+      c.isElement() and
+      model = ""
+    )
   }
 
   cached

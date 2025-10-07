@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["launchdarkly/ios-client-sdk", "*", "input.ios-sim", "code-injection", "generated"]

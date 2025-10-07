@@ -1,17 +1,18 @@
 package test
 
 import (
+	"io"
 	"log"
 	"os"
 )
 
 func closeFileDeferred(f *os.File) {
-	defer f.Close() // NOT OK, if `f` is writable
+	defer f.Close() // $ Alert=w Alert=rw
 }
 
 func closeFileDeferredIndirect(f *os.File) {
 	var cont = func() {
-		f.Close() // NOT OK, if `f` is writable
+		f.Close() // $ Alert=w Alert=rw
 	}
 
 	defer cont()
@@ -28,7 +29,7 @@ func closeFileDeferredIndirectReturn(f *os.File) {
 
 func deferredCalls() {
 	// open file for writing
-	if f, err := os.OpenFile("foo.txt", os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666); err != nil {
+	if f, err := os.OpenFile("foo.txt", os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666); err != nil { // $ Source=w
 		closeFileDeferred(f)               // NOT OK
 		closeFileDeferredIndirect(f)       // NOT OK
 		closeFileDeferredIndirectReturn(f) // OK - the error is not discarded at the call to Close (though it is discarded later)
@@ -42,7 +43,7 @@ func deferredCalls() {
 	}
 
 	// open file for reading and writing
-	if f, err := os.OpenFile("foo.txt", os.O_RDWR|os.O_TRUNC|os.O_CREATE, 0666); err != nil {
+	if f, err := os.OpenFile("foo.txt", os.O_RDWR|os.O_TRUNC|os.O_CREATE, 0666); err != nil { // $ Source=rw
 		closeFileDeferred(f)               // NOT OK
 		closeFileDeferredIndirect(f)       // NOT OK
 		closeFileDeferredIndirectReturn(f) // OK - the error is not discarded at the call to Close (though it is discarded later)
@@ -51,9 +52,9 @@ func deferredCalls() {
 
 func notDeferred() {
 	// open file for writing
-	if f, err := os.OpenFile("foo.txt", os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666); err != nil {
+	if f, err := os.OpenFile("foo.txt", os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666); err != nil { // $ Source
 		// the handle is write-only and we don't check if `Close` succeeds
-		f.Close() // NOT OK
+		f.Close() // $ Alert
 	}
 
 	// open file for reading
@@ -63,9 +64,9 @@ func notDeferred() {
 	}
 
 	// open file for reading and writing
-	if f, err := os.OpenFile("foo.txt", os.O_RDWR|os.O_TRUNC|os.O_CREATE, 0666); err != nil {
+	if f, err := os.OpenFile("foo.txt", os.O_RDWR|os.O_TRUNC|os.O_CREATE, 0666); err != nil { // $ Source
 		// the handle is read-write and we don't check if `Close` succeeds
-		f.Close() // NOT OK
+		f.Close() // $ Alert
 	}
 }
 
@@ -105,9 +106,9 @@ func deferredCloseWithSync() {
 
 func deferredCloseWithSyncEarlyReturn(n int) {
 	// open file for writing
-	if f, err := os.OpenFile("foo.txt", os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666); err != nil {
+	if f, err := os.OpenFile("foo.txt", os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666); err != nil { // $ Source
 		// a call to `Close` is deferred
-		defer f.Close() // NOT OK
+		defer f.Close() // $ Alert
 
 		if n > 100 {
 			return
@@ -122,10 +123,36 @@ func deferredCloseWithSyncEarlyReturn(n int) {
 
 func unhandledSync() {
 	// open file for writing
-	if f, err := os.OpenFile("foo.txt", os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666); err != nil {
+	if f, err := os.OpenFile("foo.txt", os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666); err != nil { // $ Source
 		// we have a call to `Sync` which precedes the call to `Close`, but there is no check
 		// to see if `Sync` may have failed
 		f.Sync()
-		f.Close() // NOT OK
+		f.Close() // $ Alert
 	}
+}
+
+func returnedSync() error {
+	// open file for writing
+	f, err := os.OpenFile("foo.txt", os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666)
+	if err != nil {
+		// we have a call to `Sync` which precedes the call to `Close`, but there is no check
+		// to see if `Sync` may have failed
+		return err
+	}
+	defer f.Close()
+	return f.Sync()
+}
+
+func copyFile(destFile string, mode os.FileMode, src io.Reader) error {
+	f, err := os.OpenFile(destFile, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, mode) // $ Source
+	if err != nil {
+		return err
+	}
+	defer f.Close() // $ SPURIOUS: Alert
+
+	_, err = io.Copy(f, src)
+	if err != nil {
+		return err
+	}
+	return f.Sync()
 }

@@ -1,1 +1,1 @@
-//semmle-extractor-options: --javac-args -cp ${testdir}/../../../../stubs/springframework-5.3.8:${testdir}/../../../../stubs/javax-servlet-2.5
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../../../stubs/springframework-5.8.x:${testdir}/../../../../stubs/javax-servlet-2.5

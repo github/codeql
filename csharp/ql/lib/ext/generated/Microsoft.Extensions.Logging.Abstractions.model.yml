@@ -2,9 +2,28 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Extensions.Logging.Abstractions", "LogEntry<TState>", False, "LogEntry", "(Microsoft.Extensions.Logging.LogLevel,System.String,Microsoft.Extensions.Logging.EventId,TState,System.Exception,System.Func<TState,System.Exception,System.String>)", "", "Argument[1]", "Argument[this].Property[Microsoft.Extensions.Logging.Abstractions.LogEntry`1.Category]", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "LogEntry<TState>", False, "LogEntry", "(Microsoft.Extensions.Logging.LogLevel,System.String,Microsoft.Extensions.Logging.EventId,TState,System.Exception,System.Func<TState,System.Exception,System.String>)", "", "Argument[2]", "Argument[this].Property[Microsoft.Extensions.Logging.Abstractions.LogEntry`1.EventId]", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "LogEntry<TState>", False, "LogEntry", "(Microsoft.Extensions.Logging.LogLevel,System.String,Microsoft.Extensions.Logging.EventId,TState,System.Exception,System.Func<TState,System.Exception,System.String>)", "", "Argument[3]", "Argument[this].Property[Microsoft.Extensions.Logging.Abstractions.LogEntry`1.State]", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "LogEntry<TState>", False, "LogEntry", "(Microsoft.Extensions.Logging.LogLevel,System.String,Microsoft.Extensions.Logging.EventId,TState,System.Exception,System.Func<TState,System.Exception,System.String>)", "", "Argument[4]", "Argument[this].Property[Microsoft.Extensions.Logging.Abstractions.LogEntry`1.Exception]", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "LogEntry<TState>", False, "LogEntry", "(Microsoft.Extensions.Logging.LogLevel,System.String,Microsoft.Extensions.Logging.EventId,TState,System.Exception,System.Func<TState,System.Exception,System.String>)", "", "Argument[5]", "Argument[this].Property[Microsoft.Extensions.Logging.Abstractions.LogEntry`1.Formatter]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["Microsoft.Extensions.Logging.Abstractions", "LogEntry<TState>", "LogEntry", "(Microsoft.Extensions.Logging.LogLevel,System.String,Microsoft.Extensions.Logging.EventId,TState,System.Exception,System.Func<TState,System.Exception,System.String>)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "BufferedLogRecord", "get_ActivitySpanId", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "BufferedLogRecord", "get_ActivityTraceId", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "BufferedLogRecord", "get_Attributes", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "BufferedLogRecord", "get_EventId", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "BufferedLogRecord", "get_Exception", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "BufferedLogRecord", "get_FormattedMessage", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "BufferedLogRecord", "get_LogLevel", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "BufferedLogRecord", "get_ManagedThreadId", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "BufferedLogRecord", "get_MessageTemplate", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "BufferedLogRecord", "get_Timestamp", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Abstractions", "IBufferedLogger", "LogRecords", "(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Logging.Abstractions.BufferedLogRecord>)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Abstractions", "LogEntry<TState>", "get_Category", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Abstractions", "LogEntry<TState>", "get_EventId", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Abstractions", "LogEntry<TState>", "get_Exception", "()", "summary", "df-generated"]

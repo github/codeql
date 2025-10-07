@@ -5,7 +5,7 @@ module Impl {
    * A compiler-generated error, warning, note or remark.
    */
   class Diagnostics extends Generated::Diagnostics {
-    override string toString() { result = this.getSeverity() + ": " + this.getText() }
+    override string toStringImpl() { result = this.getSeverity() + ": " + this.getText() }
 
     /**
      * Gets a string representing the severity of this compiler diagnostic.

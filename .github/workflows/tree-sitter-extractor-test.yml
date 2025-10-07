@@ -30,20 +30,20 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Check formatting
-        run: cargo fmt --all -- --check
+        run: cargo fmt -- --check
       - name: Run tests
         run: cargo test --verbose
   fmt:
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Check formatting
         run: cargo fmt --check
   clippy:
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Run clippy
         run: cargo clippy -- --no-deps -D warnings -A clippy::new_without_default -A clippy::too_many_arguments

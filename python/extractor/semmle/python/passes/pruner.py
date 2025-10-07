@@ -203,7 +203,8 @@ class NotBooleanTestVisitor(ASTVisitor):
         self.nodes = set()
 
     def visit_MatchLiteralPattern(self, node):
-        # MatchLiteralPatterns _look_ like boolean tests, but are not.
+        # MatchLiteralPatterns _look_ like boolean tests in that they have both a true ("matched")
+        # and false ("didn't match") successor, but are not.
         # Thus, without this check, we would interpret
         #
         # match x:
@@ -212,8 +213,7 @@ class NotBooleanTestVisitor(ASTVisitor):
         #
         # (and similarly for True) as if it was a boolean test. This would cause the true edge
         # (leading to pass) to be pruned later on.
-        if isinstance(node.literal, ast.Name) and node.literal.id in ('True', 'False'):
-            self.nodes.add(node.literal)
+        self.nodes.add(node.literal)
 
 class NonlocalVisitor(ASTVisitor):
     def __init__(self):

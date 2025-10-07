@@ -10,11 +10,37 @@
 
 import javascript
 import RemotePropertyInjectionCustomizations::RemotePropertyInjection
+private import semmle.javascript.DynamicPropertyAccess
 
 /**
  * A taint-tracking configuration for reasoning about remote property injection.
  */
-class Configuration extends TaintTracking::Configuration {
+module RemotePropertyInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof Sanitizer or
+    node = StringConcatenation::getRoot(any(ConstantString str).flow())
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    node1 = node2.(EnumeratedPropName).getSourceObject()
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+}
+
+/**
+ * Taint-tracking for reasoning about remote property injection.
+ */
+module RemotePropertyInjectionFlow = TaintTracking::Global<RemotePropertyInjectionConfig>;
+
+/**
+ * DEPRECATED. Use the `RemotePropertyInjectionFlow` module instead.
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "RemotePropertyInjection" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }

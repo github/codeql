@@ -1,0 +1,5 @@
+legacyDataFlowDifference
+| generators.js:2:16:2:23 | "source" | generators.js:37:10:37:10 | e | only flow with OLD data flow library |
+| generators.js:2:16:2:23 | "source" | generators.js:46:10:46:10 | e | only flow with NEW data flow library |
+| generators.js:2:16:2:23 | "source" | generators.js:51:10:51:10 | e | only flow with NEW data flow library |
+consistencyIssue

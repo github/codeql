@@ -11,6 +11,6 @@ module Impl {
       )
     }
 
-    override string toString() { result = "case ..." }
+    override string toStringImpl() { result = "case ..." }
   }
 }

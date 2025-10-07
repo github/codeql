@@ -34,6 +34,8 @@ private module EmailXssConfig implements DataFlow::ConfigSig {
       nodeFrom = htmlContentCall.getArg(0)
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Global taint-tracking for detecting "Email XSS" vulnerabilities. */

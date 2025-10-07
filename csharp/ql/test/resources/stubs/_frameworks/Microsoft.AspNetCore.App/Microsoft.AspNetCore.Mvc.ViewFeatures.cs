@@ -1,9 +1,16 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Mvc.ViewFeatures, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Mvc.ViewFeatures, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
     {
+        namespace Builder
+        {
+            public static partial class ControllerActionEndpointConventionBuilderResourceCollectionExtensions
+            {
+                public static Microsoft.AspNetCore.Builder.ControllerActionEndpointConventionBuilder WithStaticAssets(this Microsoft.AspNetCore.Builder.ControllerActionEndpointConventionBuilder builder, string manifestPath = default(string)) => throw null;
+            }
+        }
         namespace Mvc
         {
             [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = false, Inherited = true)]

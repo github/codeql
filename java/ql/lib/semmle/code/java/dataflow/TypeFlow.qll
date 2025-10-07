@@ -7,30 +7,35 @@
  * type has a subtype or if an inferred upper bound passed through at least one
  * explicit or implicit cast that lost type information.
  */
+overlay[local?]
+module;
 
 import java as J
 private import semmle.code.java.dispatch.VirtualDispatch
 private import semmle.code.java.dataflow.internal.BaseSSA
 private import semmle.code.java.controlflow.Guards
 private import codeql.typeflow.TypeFlow
+private import codeql.typeflow.UniversalFlow as UniversalFlow
 
-private module Input implements TypeFlowInput<Location> {
-  private newtype TTypeFlowNode =
+/** Gets `t` if it is a `RefType` or the boxed type if `t` is a primitive type. */
+private RefType boxIfNeeded(J::Type t) {
+  t.(PrimitiveType).getBoxedType() = result or
+  result = t
+}
+
+/** Provides the input types and predicates for instantiation of `UniversalFlow`. */
+module FlowStepsInput implements UniversalFlow::UniversalFlowInput<Location> {
+  private newtype TFlowNode =
     TField(Field f) { not f.getType() instanceof PrimitiveType } or
     TSsa(BaseSsaVariable ssa) { not ssa.getSourceVariable().getType() instanceof PrimitiveType } or
     TExpr(Expr e) or
     TMethod(Method m) { not m.getReturnType() instanceof PrimitiveType }
 
-  /** Gets `t` if it is a `RefType` or the boxed type if `t` is a primitive type. */
-  private RefType boxIfNeeded(J::Type t) {
-    t.(PrimitiveType).getBoxedType() = result or
-    result = t
-  }
-
   /**
    * A `Field`, `BaseSsaVariable`, `Expr`, or `Method`.
    */
-  class TypeFlowNode extends TTypeFlowNode {
+  class FlowNode extends TFlowNode {
+    /** Gets a textual representation of this element. */
     string toString() {
       result = this.asField().toString() or
       result = this.asSsa().toString() or
@@ -38,6 +43,7 @@ private module Input implements TypeFlowInput<Location> {
       result = this.asMethod().toString()
     }
 
+    /** Gets the source location for this element. */
     Location getLocation() {
       result = this.asField().getLocation() or
       result = this.asSsa().getLocation() or
@@ -45,14 +51,19 @@ private module Input implements TypeFlowInput<Location> {
       result = this.asMethod().getLocation()
     }
 
+    /** Gets the field corresponding to this node, if any. */
     Field asField() { this = TField(result) }
 
+    /** Gets the SSA variable corresponding to this node, if any. */
     BaseSsaVariable asSsa() { this = TSsa(result) }
 
+    /** Gets the expression corresponding to this node, if any. */
     Expr asExpr() { this = TExpr(result) }
 
+    /** Gets the method corresponding to this node, if any. */
     Method asMethod() { this = TMethod(result) }
 
+    /** Gets the type of this node. */
     RefType getType() {
       result = this.asField().getType() or
       result = this.asSsa().getSourceVariable().getType() or
@@ -60,8 +71,6 @@ private module Input implements TypeFlowInput<Location> {
       result = this.asMethod().getReturnType()
     }
   }
-
-  class Type = RefType;
 
   private SrcCallable viableCallable_v1(Call c) {
     result = viableImpl_v1(c)
@@ -88,7 +97,7 @@ private module Input implements TypeFlowInput<Location> {
    *
    * For a given `n2`, this predicate must include all possible `n1` that can flow to `n2`.
    */
-  predicate step(TypeFlowNode n1, TypeFlowNode n2) {
+  predicate step(FlowNode n1, FlowNode n2) {
     n2.asExpr().(ChooseExpr).getAResultExpr() = n1.asExpr()
     or
     exists(Field f, Expr e |
@@ -134,7 +143,7 @@ private module Input implements TypeFlowInput<Location> {
   /**
    * Holds if `null` is the only value that flows to `n`.
    */
-  predicate isNullValue(TypeFlowNode n) {
+  predicate isNullValue(FlowNode n) {
     n.asExpr() instanceof NullLiteral
     or
     exists(LocalVariableDeclExpr decl |
@@ -144,11 +153,21 @@ private module Input implements TypeFlowInput<Location> {
     )
   }
 
-  predicate isExcludedFromNullAnalysis(TypeFlowNode n) {
+  predicate isExcludedFromNullAnalysis(FlowNode n) {
     // Fields that are never assigned a non-null value are probably set by
     // reflection and are thus not always null.
     exists(n.asField())
   }
+}
+
+private module Input implements TypeFlowInput<Location> {
+  import FlowStepsInput
+
+  class TypeFlowNode = FlowNode;
+
+  predicate isExcludedFromNullAnalysis = FlowStepsInput::isExcludedFromNullAnalysis/1;
+
+  class Type = RefType;
 
   predicate exactTypeBase(TypeFlowNode n, RefType t) {
     exists(ClassInstanceExpr e |
@@ -235,8 +254,8 @@ private module Input implements TypeFlowInput<Location> {
       downcastSuccessorAux(pragma[only_bind_into](cast), v, t, t1, t2) and
       t1.getASourceSupertype+() = t2 and
       va = v.getAUse() and
-      dominates(cast, va) and
-      dominates(cast.(ControlFlowNode).getANormalSuccessor(), va)
+      dominates(cast.getControlFlowNode(), va.getControlFlowNode()) and
+      dominates(cast.getControlFlowNode().getANormalSuccessor(), va.getControlFlowNode())
     )
   }
 
@@ -304,14 +323,14 @@ private module Input implements TypeFlowInput<Location> {
    */
   private predicate instanceofDisjunct(InstanceOfExpr ioe, BasicBlock bb, BaseSsaVariable v) {
     ioe.getExpr() = v.getAUse() and
-    strictcount(bb.getABBPredecessor()) > 1 and
+    strictcount(bb.getAPredecessor()) > 1 and
     exists(ConditionBlock cb | cb.getCondition() = ioe and cb.getTestSuccessor(true) = bb)
   }
 
   /** Holds if `bb` is disjunctively guarded by multiple `instanceof` tests on `v`. */
   private predicate instanceofDisjunction(BasicBlock bb, BaseSsaVariable v) {
     strictcount(InstanceOfExpr ioe | instanceofDisjunct(ioe, bb, v)) =
-      strictcount(bb.getABBPredecessor())
+      strictcount(bb.getAPredecessor())
   }
 
   /**
@@ -321,7 +340,7 @@ private module Input implements TypeFlowInput<Location> {
   predicate instanceofDisjunctionGuarded(TypeFlowNode n, RefType t) {
     exists(BasicBlock bb, InstanceOfExpr ioe, BaseSsaVariable v, VarAccess va |
       instanceofDisjunction(bb, v) and
-      bb.bbDominates(va.getBasicBlock()) and
+      bb.dominates(va.getBasicBlock()) and
       va = v.getAUse() and
       instanceofDisjunct(ioe, bb, v) and
       t = ioe.getSyntacticCheckedType() and

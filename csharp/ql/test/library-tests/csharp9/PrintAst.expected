@@ -1008,8 +1008,9 @@ Record.cs:
 #   49|           0: [LocalVariableAccess] access to local variable s
 #   50|       2: [ReturnStmt] return ...;
 #   50|         0: [InterpolatedStringExpr] $"..."
-#   50|           0: [MethodCall] call to method ToString
-#   50|             -1: [LocalVariableAccess] access to local variable s
+#   50|           0: [InterpolatedStringInsertExpr] {...}
+#   50|             0: [MethodCall] call to method ToString
+#   50|               -1: [LocalVariableAccess] access to local variable s
 #   50|           1: [StringLiteralUtf16] " is a dog"
 #   54| [RecordClass] R1
 #   54|   12: [NEOperator] !=

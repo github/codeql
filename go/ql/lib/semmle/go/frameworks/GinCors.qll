@@ -21,13 +21,13 @@ module GinCors {
   /**
    * A write to the value of Access-Control-Allow-Credentials header
    */
-  class AllowCredentialsWrite extends DataFlow::ExprNode {
+  class AllowCredentialsWrite extends UniversalAllowCredentialsWrite {
     DataFlow::Node base;
 
     AllowCredentialsWrite() {
       exists(Field f, Write w |
         f.hasQualifiedName(packagePath(), "Config", "AllowCredentials") and
-        w.writesField(base, f, this) and
+        w.writesFieldPreUpdate(base, f, this) and
         this.getType() instanceof BoolType
       )
     }
@@ -35,12 +35,12 @@ module GinCors {
     /**
      * Get config struct holding header values
      */
-    DataFlow::Node getBase() { result = base }
+    override DataFlow::Node getBase() { result = base }
 
     /**
      * Get config variable holding header values
      */
-    GinConfig getConfig() {
+    override GinConfig getConfig() {
       exists(GinConfig gc |
         (
           gc.getV().getBaseVariable().getDefinition().(SsaExplicitDefinition).getRhs() =
@@ -55,13 +55,13 @@ module GinCors {
   /**
    * A write to the value of Access-Control-Allow-Origins header
    */
-  class AllowOriginsWrite extends DataFlow::ExprNode {
+  class AllowOriginsWrite extends UniversalOriginWrite {
     DataFlow::Node base;
 
     AllowOriginsWrite() {
       exists(Field f, Write w |
         f.hasQualifiedName(packagePath(), "Config", "AllowOrigins") and
-        w.writesField(base, f, this) and
+        w.writesFieldPreUpdate(base, f, this) and
         this.asExpr() instanceof SliceLit
       )
     }
@@ -69,12 +69,12 @@ module GinCors {
     /**
      * Get config struct holding header values
      */
-    DataFlow::Node getBase() { result = base }
+    override DataFlow::Node getBase() { result = base }
 
     /**
      * Get config variable holding header values
      */
-    GinConfig getConfig() {
+    override GinConfig getConfig() {
       exists(GinConfig gc |
         (
           gc.getV().getBaseVariable().getDefinition().(SsaExplicitDefinition).getRhs() =
@@ -89,13 +89,13 @@ module GinCors {
   /**
    * A write to the value of Access-Control-Allow-Origins of value "*", overriding AllowOrigins
    */
-  class AllowAllOriginsWrite extends DataFlow::ExprNode {
+  class AllowAllOriginsWrite extends UniversalAllowAllOriginsWrite {
     DataFlow::Node base;
 
     AllowAllOriginsWrite() {
       exists(Field f, Write w |
         f.hasQualifiedName(packagePath(), "Config", "AllowAllOrigins") and
-        w.writesField(base, f, this) and
+        w.writesFieldPreUpdate(base, f, this) and
         this.getType() instanceof BoolType
       )
     }
@@ -103,20 +103,15 @@ module GinCors {
     /**
      * Get config struct holding header values
      */
-    DataFlow::Node getBase() { result = base }
+    override DataFlow::Node getBase() { result = base }
 
     /**
      * Get config variable holding header values
      */
-    GinConfig getConfig() {
-      exists(GinConfig gc |
-        (
-          gc.getV().getBaseVariable().getDefinition().(SsaExplicitDefinition).getRhs() =
-            base.asInstruction() or
-          gc.getV().getAUse() = base
-        ) and
-        result = gc
-      )
+    override GinConfig getConfig() {
+      result.getV().getBaseVariable().getDefinition().(SsaExplicitDefinition).getRhs() =
+        base.asInstruction() or
+      result.getV().getAUse() = base
     }
   }
 
@@ -128,7 +123,7 @@ module GinCors {
 
     GinConfig() {
       this = v.getBaseVariable().getSourceVariable() and
-      exists(Type t | t.hasQualifiedName(packagePath(), "Config") | v.getType() = t)
+      v.getType().hasQualifiedName(packagePath(), "Config")
     }
 
     /**

@@ -18,7 +18,7 @@ module Impl {
    * have type declarations.
    */
   class TypeDecl extends Generated::TypeDecl {
-    override string toString() { result = this.getName() }
+    override string toStringImpl() { result = this.getName() }
 
     /**
      * Gets the `index`th base type of this type declaration (0-based).

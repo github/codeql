@@ -54,30 +54,34 @@ class PossiblyConcurrentCallable extends Callable {
   }
 }
 
+private VarAccess getANonInitializationAccess(Field f) {
+  result = f.getAnAccess() and
+  exists(Callable c | c = result.getEnclosingCallable() |
+    not (
+      c = f.getDeclaringType().getACallable() and
+      (c instanceof Constructor or c instanceof InitializerMethod)
+    )
+  )
+}
+
 /**
  * Holds if all accesses to `v` (outside of initializers) are locked in the same way.
  */
 predicate alwaysLocked(Field f) {
   exists(Variable lock |
-    forex(VarAccess access |
-      access = f.getAnAccess() and not access.getEnclosingCallable() instanceof InitializerMethod
-    |
+    forex(VarAccess access | access = getANonInitializationAccess(f) |
       locallySynchronizedOn(access, _, lock)
     )
   )
   or
   exists(RefType thisType |
-    forex(VarAccess access |
-      access = f.getAnAccess() and not access.getEnclosingCallable() instanceof InitializerMethod
-    |
+    forex(VarAccess access | access = getANonInitializationAccess(f) |
       locallySynchronizedOnThis(access, thisType)
     )
   )
   or
   exists(RefType classType |
-    forex(VarAccess access |
-      access = f.getAnAccess() and not access.getEnclosingCallable() instanceof InitializerMethod
-    |
+    forex(VarAccess access | access = getANonInitializationAccess(f) |
       locallySynchronizedOnClass(access, classType)
     )
   )

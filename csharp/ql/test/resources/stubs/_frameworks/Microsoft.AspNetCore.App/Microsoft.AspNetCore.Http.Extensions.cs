@@ -1,11 +1,24 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Http.Extensions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Http.Extensions, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
     {
+        namespace Builder
+        {
+            public static partial class HttpMetricsEndpointConventionBuilderExtensions
+            {
+                public static TBuilder DisableHttpMetrics<TBuilder>(this TBuilder builder) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
+            }
+        }
         namespace Http
         {
+            [System.AttributeUsage((System.AttributeTargets)68)]
+            public sealed class DisableHttpMetricsAttribute : System.Attribute, Microsoft.AspNetCore.Http.Metadata.IDisableHttpMetricsMetadata
+            {
+                public DisableHttpMetricsAttribute() => throw null;
+                public override string ToString() => throw null;
+            }
             [System.AttributeUsage((System.AttributeTargets)64, Inherited = false, AllowMultiple = false)]
             public sealed class EndpointDescriptionAttribute : System.Attribute, Microsoft.AspNetCore.Http.Metadata.IEndpointDescriptionMetadata
             {

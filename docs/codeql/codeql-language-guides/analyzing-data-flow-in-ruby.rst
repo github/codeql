@@ -74,8 +74,7 @@ For example:
 
 .. code-block:: ruby
 
-     temp = x
-     y = temp + ", " + temp
+     y = "Hello " + x
 
 If ``x`` is a tainted string then ``y`` is also tainted.
 
@@ -226,7 +225,7 @@ However, global data flow is less precise than local data flow, and the analysis
 Using global data flow
 ~~~~~~~~~~~~~~~~~~~~~~
 
-You can use the global data flow library by implementing the signature ``DataFlow::ConfigSig`` and applying the module ``DataFlow::Global<ConfigSig>``:
+We can use the global data flow library by implementing the signature ``DataFlow::ConfigSig`` and applying the module ``DataFlow::Global<ConfigSig>``:
 
 .. code-block:: ql
 
@@ -248,8 +247,8 @@ These predicates are defined in the configuration:
 
 -  ``isSource`` - defines where data may flow from.
 -  ``isSink`` - defines where data may flow to.
--  ``isBarrier`` - optionally, restricts the data flow.
--  ``isAdditionalFlowStep`` - optionally, adds additional flow steps.
+-  ``isBarrier`` - optional, defines where data flow is blocked.
+-  ``isAdditionalFlowStep`` - optional, adds additional flow steps.
 
 The data flow analysis is performed using the predicate ``flow(DataFlow::Node source, DataFlow::Node sink)``:
 

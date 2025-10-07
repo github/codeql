@@ -9,6 +9,7 @@ private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
+import codeql.rust.elements.Format
 import codeql.rust.elements.FormatArgsArg
 
 /**
@@ -19,7 +20,11 @@ module Generated {
   /**
    * A FormatArgsExpr. For example:
    * ```rust
-   * todo!()
+   * format_args!("no args");
+   * format_args!("{} foo {:?}", 1, 2);
+   * format_args!("{b} foo {a:?}", a=1, b=2);
+   * let (x, y) = (1, 42);
+   * format_args!("{x}, {y}");
    * ```
    * INTERNAL: Do not reference the `Generated::FormatArgsExpr` class directly.
    * Use the subclass `FormatArgsExpr`, where the following predicates are available.
@@ -81,5 +86,20 @@ module Generated {
      * Holds if `getTemplate()` exists.
      */
     final predicate hasTemplate() { exists(this.getTemplate()) }
+
+    /**
+     * Gets the `index`th format of this format arguments expression (0-based).
+     */
+    Format getFormat(int index) { none() }
+
+    /**
+     * Gets any of the formats of this format arguments expression.
+     */
+    final Format getAFormat() { result = this.getFormat(_) }
+
+    /**
+     * Gets the number of formats of this format arguments expression.
+     */
+    final int getNumberOfFormats() { result = count(int i | exists(this.getFormat(i))) }
   }
 }

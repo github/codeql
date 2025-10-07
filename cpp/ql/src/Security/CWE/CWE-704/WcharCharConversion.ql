@@ -14,6 +14,7 @@
 
 import cpp
 import semmle.code.cpp.controlflow.Guards
+import semmle.code.cpp.ir.IR
 
 class WideCharPointerType extends PointerType {
   WideCharPointerType() { this.getBaseType() instanceof WideCharType }
@@ -108,7 +109,9 @@ where
   // Avoid cases where the cast is guarded by a check to determine if
   // unicode encoding is enabled in such a way to disallow the dangerous cast
   // at runtime.
-  not isLikelyDynamicallyChecked(e1)
+  not isLikelyDynamicallyChecked(e1) and
+  // Avoid cases in unreachable blocks.
+  any(EnterFunctionInstruction e).getASuccessor+().getAst() = e1
 select e1,
   "Conversion from " + e1.getType().toString() + " to " + e2.getType().toString() +
     ". Use of invalid string can lead to undefined behavior."

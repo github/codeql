@@ -1,5 +1,5 @@
 import go
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import experimental.frameworks.Fiber
 
 module RemoteFlowSourceTest implements TestSig {
@@ -14,8 +14,7 @@ module RemoteFlowSourceTest implements TestSig {
     |
       element = arg.toString() and
       value = "" and
-      arg.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn())
+      arg.getLocation() = location
     )
   }
 }

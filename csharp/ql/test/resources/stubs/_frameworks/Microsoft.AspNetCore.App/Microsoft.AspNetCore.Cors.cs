@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Cors, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Cors, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -52,6 +52,8 @@ namespace Microsoft
                     public static readonly string AccessControlMaxAge;
                     public static readonly string AccessControlRequestHeaders;
                     public static readonly string AccessControlRequestMethod;
+                    public static readonly string AnyHeader;
+                    public static readonly string AnyMethod;
                     public static readonly string AnyOrigin;
                     public static readonly string Origin;
                     public static readonly string PreflightHttpMethod;

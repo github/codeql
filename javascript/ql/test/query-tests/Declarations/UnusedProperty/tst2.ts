@@ -21,7 +21,7 @@ class C {
 }
 
 (function(){
-    var o1: any = { p: 42, q: 42 };
+    var o1: any = { p: 42, q: 42 }; // $ Alert
     o1.q;
     var o2: any = { p: 42, q: 42 };
     var o3: { p: int, q: int } = o2;

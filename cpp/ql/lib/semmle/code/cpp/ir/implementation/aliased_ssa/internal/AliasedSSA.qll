@@ -235,7 +235,7 @@ private newtype TMemoryLocation =
  *
  * Some of these memory locations will be filtered out for performance reasons before being passed to SSA construction.
  */
-abstract private class MemoryLocation0 extends TMemoryLocation {
+abstract class MemoryLocation0 extends TMemoryLocation {
   final string toString() {
     if this.isMayAccess()
     then result = "?" + this.toStringInternal()
@@ -874,7 +874,7 @@ private int numberOfOverlappingUses(MemoryLocation0 def) {
  * Holds if `def` is a busy definition. That is, it has a large number of
  * overlapping uses.
  */
-private predicate isBusyDef(MemoryLocation0 def) { numberOfOverlappingUses(def) > 1024 }
+predicate isBusyDef(MemoryLocation0 def) { numberOfOverlappingUses(def) > 1024 }
 
 /** Holds if `use` is a use that overlaps with a busy definition. */
 private predicate useOverlapWithBusyDef(MemoryLocation0 use) {
@@ -897,6 +897,24 @@ final private class FinalMemoryLocation = MemoryLocation0;
  */
 class MemoryLocation extends FinalMemoryLocation {
   MemoryLocation() { not useOverlapWithBusyDef(this) }
+}
+
+bindingset[fun]
+pragma[inline_late]
+private MemoryLocation getUnknownMemoryLocation(IRFunction fun, boolean isMayAccess) {
+  result = TUnknownMemoryLocation(fun, isMayAccess)
+}
+
+bindingset[fun]
+pragma[inline_late]
+private MemoryLocation getAllAliasedMemory(IRFunction fun, boolean isMayAccess) {
+  result = TAllAliasedMemory(fun, isMayAccess)
+}
+
+bindingset[fun]
+pragma[inline_late]
+private MemoryLocation getAllNonLocalMemory(IRFunction fun, boolean isMayAccess) {
+  result = TAllNonLocalMemory(fun, isMayAccess)
 }
 
 MemoryLocation getResultMemoryLocation(Instruction instr) {
@@ -926,7 +944,7 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
               // And otherwise we assign it a memory location that groups all the relevant memory locations into one.
               result = getGroupedMemoryLocation(var, unbindBool(isMayAccess), false)
           )
-        else result = TUnknownMemoryLocation(instr.getEnclosingIRFunction(), isMayAccess)
+        else result = getUnknownMemoryLocation(instr.getEnclosingIRFunction(), isMayAccess)
       )
       or
       kind instanceof EntireAllocationMemoryAccess and
@@ -935,10 +953,10 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
           unbindBool(isMayAccess))
       or
       kind instanceof EscapedMemoryAccess and
-      result = TAllAliasedMemory(instr.getEnclosingIRFunction(), isMayAccess)
+      result = getAllAliasedMemory(instr.getEnclosingIRFunction(), isMayAccess)
       or
       kind instanceof NonLocalMemoryAccess and
-      result = TAllNonLocalMemory(instr.getEnclosingIRFunction(), isMayAccess)
+      result = getAllNonLocalMemory(instr.getEnclosingIRFunction(), isMayAccess)
     )
   )
 }

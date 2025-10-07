@@ -51,8 +51,19 @@ private module PermissivePermissionsConfig implements DataFlow::ConfigSig {
     source.asExpr().getExpr() instanceof PermissivePermissionsExpr
   }
 
-  predicate isSink(DataFlow::Node sink) {
-    exists(FileSystemPermissionModification mod | mod.getAPermissionNode() = sink)
+  additional predicate sinkDef(DataFlow::Node sink, FileSystemPermissionModification mod) {
+    mod.getAPermissionNode() = sink
+  }
+
+  predicate isSink(DataFlow::Node sink) { sinkDef(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(FileSystemPermissionModification mod |
+      sinkDef(sink, mod) and
+      result = mod.getLocation()
+    )
   }
 }
 
@@ -64,7 +75,8 @@ from
   PermissivePermissionsFlow::PathNode source, PermissivePermissionsFlow::PathNode sink,
   FileSystemPermissionModification mod
 where
-  PermissivePermissionsFlow::flowPath(source, sink) and mod.getAPermissionNode() = sink.getNode()
+  PermissivePermissionsFlow::flowPath(source, sink) and
+  PermissivePermissionsConfig::sinkDef(sink.getNode(), mod)
 select source.getNode(), source, sink,
   "This overly permissive mask used in $@ allows read or write access to others.", mod,
   mod.toString()

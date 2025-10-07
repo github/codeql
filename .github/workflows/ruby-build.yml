@@ -47,7 +47,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install GNU tar
         if: runner.os == 'macOS'
         run: |
@@ -79,7 +79,7 @@ jobs:
           key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-ruby-rust-cargo-${{ hashFiles('ruby/extractor/rust-toolchain.toml', 'ruby/extractor/**/Cargo.lock') }}
       - name: Check formatting
         if: steps.cache-extractor.outputs.cache-hit != 'true'
-        run: cd extractor && cargo fmt --all -- --check
+        run: cd extractor && cargo fmt -- --check
       - name: Build
         if: steps.cache-extractor.outputs.cache-hit != 'true'
         run: cd extractor && cargo build --verbose
@@ -113,7 +113,7 @@ jobs:
     if: github.repository_owner == 'github'
     runs-on: ubuntu-latest-xl
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Fetch CodeQL
         uses: ./.github/actions/fetch-codeql
       - name: Cache compilation cache
@@ -146,7 +146,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build, compile-queries]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/download-artifact@v4
         with:
           name: ruby.dbscheme
@@ -209,7 +209,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     needs: [package]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Fetch CodeQL
         uses: ./.github/actions/fetch-codeql
 

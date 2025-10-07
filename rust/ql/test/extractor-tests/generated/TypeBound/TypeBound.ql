@@ -2,16 +2,29 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  TypeBound x, string hasGenericParamList, string isAsync, string isConst, string hasLifetime,
-  string hasTy
-where
+query predicate instances(
+  TypeBound x, string isAsync__label, string isAsync, string isConst__label, string isConst
+) {
   toBeTested(x) and
   not x.isUnknown() and
-  (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
+  isAsync__label = "isAsync:" and
   (if x.isAsync() then isAsync = "yes" else isAsync = "no") and
-  (if x.isConst() then isConst = "yes" else isConst = "no") and
-  (if x.hasLifetime() then hasLifetime = "yes" else hasLifetime = "no") and
-  if x.hasTy() then hasTy = "yes" else hasTy = "no"
-select x, "hasGenericParamList:", hasGenericParamList, "isAsync:", isAsync, "isConst:", isConst,
-  "hasLifetime:", hasLifetime, "hasTy:", hasTy
+  isConst__label = "isConst:" and
+  if x.isConst() then isConst = "yes" else isConst = "no"
+}
+
+query predicate getForBinder(TypeBound x, ForBinder getForBinder) {
+  toBeTested(x) and not x.isUnknown() and getForBinder = x.getForBinder()
+}
+
+query predicate getLifetime(TypeBound x, Lifetime getLifetime) {
+  toBeTested(x) and not x.isUnknown() and getLifetime = x.getLifetime()
+}
+
+query predicate getTypeRepr(TypeBound x, TypeRepr getTypeRepr) {
+  toBeTested(x) and not x.isUnknown() and getTypeRepr = x.getTypeRepr()
+}
+
+query predicate getUseBoundGenericArgs(TypeBound x, UseBoundGenericArgs getUseBoundGenericArgs) {
+  toBeTested(x) and not x.isUnknown() and getUseBoundGenericArgs = x.getUseBoundGenericArgs()
+}

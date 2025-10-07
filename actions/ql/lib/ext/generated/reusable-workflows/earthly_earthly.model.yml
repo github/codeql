@@ -1,0 +1,22 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["earthly/earthly/.github/workflows/reusable-wait-block-target.yml", "*", "input.BINARY", "code-injection", "generated"]
+     - ["earthly/earthly/.github/workflows/reusable-wait-block-target.yml", "*", "input.SUDO", "code-injection", "generated"]
+     - ["earthly/earthly/.github/workflows/reusable-wait-block-target.yml", "*", "input.TARGET_NAME", "code-injection", "generated"]
+     - ["earthly/earthly/.github/workflows/reusable-wait-block-target.yml", "*", "input.EXTRA_ARGS", "code-injection", "generated"]
+     - ["earthly/earthly/.github/workflows/reusable-wait-block-target.yml", "*", "input.BUILT_EARTHLY_PATH", "code-injection", "generated"]
+     - ["earthly/earthly/.github/workflows/reusable-wait-block-main.yml", "*", "input.BINARY", "code-injection", "generated"]
+     - ["earthly/earthly/.github/workflows/reusable-wait-block-main.yml", "*", "input.SUDO", "code-injection", "generated"]
+     - ["earthly/earthly/.github/workflows/reusable-test.yml", "*", "input.BINARY", "code-injection", "generated"]
+     - ["earthly/earthly/.github/workflows/reusable-test.yml", "*", "input.SUDO", "code-injection", "generated"]
+     - ["earthly/earthly/.github/workflows/reusable-test.yml", "*", "input.EXTRA_ARGS", "code-injection", "generated"]
+     - ["earthly/earthly/.github/workflows/reusable-test.yml", "*", "input.BUILT_EARTHLY_PATH", "code-injection", "generated"]
+     - ["earthly/earthly/.github/workflows/reusable-test.yml", "*", "input.TEST_TARGET", "code-injection", "generated"]
+     - ["earthly/earthly/.github/workflows/reusable-test-local.yml", "*", "input.BINARY", "code-injection", "generated"]
+     - ["earthly/earthly/.github/workflows/reusable-test-local.yml", "*", "input.SUDO", "code-injection", "generated"]
+     - ["earthly/earthly/.github/workflows/reusable-test-local.yml", "*", "input.BINARY_COMPOSE", "code-injection", "generated"]
+     - ["earthly/earthly/.github/workflows/reusable-test-local.yml", "*", "input.RUN_EARTHLY_TEST_ARGS", "code-injection", "generated"]
+     - ["earthly/earthly/.github/workflows/reusable-test-local.yml", "*", "input.BUILT_EARTHLY_PATH", "code-injection", "generated"]

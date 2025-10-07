@@ -1,5 +1,5 @@
 import go
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import experimental.frameworks.CleverGo
 
 module HttpRedirectTest implements TestSig {
@@ -8,8 +8,7 @@ module HttpRedirectTest implements TestSig {
   predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "redirectUrl" and
     exists(Http::Redirect rd |
-      rd.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      rd.getLocation() = location and
       element = rd.getUrl().toString() and
       value = rd.getUrl().toString()
     )

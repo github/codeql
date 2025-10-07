@@ -13,9 +13,11 @@ private import codeql.rust.elements.internal.generated.TraitAlias
  */
 module Impl {
   /**
-   * A TraitAlias. For example:
+   * A trait alias.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * trait Foo = Bar + Baz;
    * ```
    */
   class TraitAlias extends Generated::TraitAlias { }

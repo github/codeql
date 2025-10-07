@@ -14,10 +14,10 @@
 
 import javascript
 import semmle.javascript.security.dataflow.CorsMisconfigurationForCredentialsQuery
-import DataFlow::PathGraph
+import CorsMisconfigurationFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from CorsMisconfigurationFlow::PathNode source, CorsMisconfigurationFlow::PathNode sink
+where CorsMisconfigurationFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "$@ leak vulnerability due to a $@.",
   sink.getNode().(Sink).getCredentialsHeader(), "Credential", source.getNode(),
   "misconfigured CORS header value"

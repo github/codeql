@@ -79,6 +79,10 @@ module CorsBypassConfig implements DataFlow::ConfigSig {
       c.getReturn().asSource() = node2 and n.asSource() = node1
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node sink) { none() }
 }
 
 module CorsFlow = TaintTracking::Global<CorsBypassConfig>;

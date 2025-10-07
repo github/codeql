@@ -27,8 +27,11 @@ private module Input implements TypeFlowInput<Location> {
   }
 
   private predicate hasExactSingleType(Instruction i) {
-    // The address of a variable is always a single object
-    i instanceof VariableAddressInstruction
+    // The address of a variable is always a single object (unless it's an array)
+    exists(VariableAddressInstruction vai |
+      i = vai and
+      not vai.getResultType() instanceof ArrayType
+    )
     or
     // A reference always points to a single object
     i.getResultLanguageType().hasUnspecifiedType(any(ReferenceType rt), false)

@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["microsoft/chat-copilot/.github/workflows/copilot-run-integration-tests.yml", "*", "input.BACKEND_HOST", "code-injection", "generated"]
+     - ["microsoft/chat-copilot/.github/workflows/copilot-deploy-plugins.yml", "*", "input.DEPLOYMENT_NAME", "code-injection", "generated"]
+     - ["microsoft/chat-copilot/.github/workflows/copilot-deploy-plugins.yml", "*", "input.ARTIFACT_NAME", "code-injection", "generated"]
+     - ["microsoft/chat-copilot/.github/workflows/copilot-deploy-memorypipeline.yml", "*", "input.DEPLOYMENT_NAME", "code-injection", "generated"]
+     - ["microsoft/chat-copilot/.github/workflows/copilot-deploy-backend.yml", "*", "input.DEPLOYMENT_NAME", "code-injection", "generated"]
+     - ["microsoft/chat-copilot/.github/workflows/copilot-deploy-backend.yml", "*", "input.ARTIFACT_NAME", "code-injection", "generated"]

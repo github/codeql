@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
@@ -6,17 +6,17 @@ import { DomSanitizer } from '@angular/platform-browser';
     template: "not important"
 })
 export class SinkComponent {
-    sink1: string;
-    sink2: string;
-    sink3: string;
-    sink4: string;
-    sink5: string;
-    sink6: string;
-    sink7: string;
-    sink8: string;
-    sink9: string;
+    @Input() sink1: string;
+    @Input() sink2: string;
+    @Input() sink3: string;
+    @Input() sink4: string;
+    @Input() sink5: string;
+    @Input() sink6: string;
+    @Input() sink7: string;
+    @Input() sink8: string;
+    @Input() sink9: string;
 
-    constructor(private sanitizer: DomSanitizer) {}
+    constructor(private sanitizer: DomSanitizer) { }
 
     foo() {
         this.sanitizer.bypassSecurityTrustHtml(this.sink1);

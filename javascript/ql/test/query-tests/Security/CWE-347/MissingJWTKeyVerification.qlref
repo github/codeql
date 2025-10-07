@@ -1,1 +1,2 @@
-Security/CWE-347/MissingJWTKeyVerification.ql
+query: Security/CWE-347/MissingJWTKeyVerification.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

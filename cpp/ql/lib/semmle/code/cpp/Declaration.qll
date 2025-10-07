@@ -187,7 +187,7 @@ class Declaration extends Locatable, @declaration {
       this instanceof Parameter or
       this instanceof ProxyClass or
       this instanceof LocalVariable or
-      this instanceof TemplateParameter or
+      this instanceof TypeTemplateParameter or
       this.(UserType).isLocal()
     )
   }
@@ -223,8 +223,8 @@ class Declaration extends Locatable, @declaration {
   final Locatable getATemplateArgumentKind() { result = this.getTemplateArgumentKind(_) }
 
   /**
-   * Gets the `i`th template argument used to instantiate this declaration from a
-   * template.
+   * Gets the template argument at index `index` used to instantiate this declaration from a
+   * template, if any.
    *
    * For example:
    *
@@ -235,7 +235,7 @@ class Declaration extends Locatable, @declaration {
    *
    * `Foo<int, 1> bar;`
    *
-   * Will have `getTemplateArgument())` return `int`, and
+   * Will have `getTemplateArgument(0)` return `int`, and
    * `getTemplateArgument(1)` return `1`.
    */
   final Locatable getTemplateArgument(int index) {
@@ -245,9 +245,9 @@ class Declaration extends Locatable, @declaration {
   }
 
   /**
-   * Gets the `i`th template argument value used to instantiate this declaration
-   * from a template. When called on a template, this will return the `i`th template
-   * parameter value if it exists.
+   * Gets the template argument value at index `index` used to instantiate this declaration
+   * from a template. When called on a template, this will return the template
+   * parameter value at index `index` if it exists.
    *
    * For example:
    *
@@ -277,6 +277,10 @@ class Declaration extends Locatable, @declaration {
     function_template_argument(underlyingElement(this), index, unresolveElement(result))
     or
     variable_template_argument(underlyingElement(this), index, unresolveElement(result))
+    or
+    template_template_argument(underlyingElement(this), index, unresolveElement(result))
+    or
+    concept_template_argument(underlyingElement(this), index, unresolveElement(result))
   }
 
   private Expr getTemplateArgumentValue(int index) {
@@ -285,6 +289,10 @@ class Declaration extends Locatable, @declaration {
     function_template_argument_value(underlyingElement(this), index, unresolveElement(result))
     or
     variable_template_argument_value(underlyingElement(this), index, unresolveElement(result))
+    or
+    template_template_argument_value(underlyingElement(this), index, unresolveElement(result))
+    or
+    concept_template_argument_value(underlyingElement(this), index, unresolveElement(result))
   }
 }
 

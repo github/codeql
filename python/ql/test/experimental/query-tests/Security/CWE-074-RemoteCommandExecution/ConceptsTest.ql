@@ -1,7 +1,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.internal.DataFlowDispatch as DataFlowDispatch
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 private import semmle.python.dataflow.new.internal.PrintNode
 import experimental.semmle.python.Concepts
 

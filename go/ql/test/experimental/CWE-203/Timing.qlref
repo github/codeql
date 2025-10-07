@@ -1,2 +1,2 @@
 query: experimental/CWE-203/Timing.ql
-postprocess: TestUtilities/PrettyPrintModels.ql
+postprocess: utils/test/PrettyPrintModels.ql

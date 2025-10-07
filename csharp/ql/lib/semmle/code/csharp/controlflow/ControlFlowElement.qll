@@ -5,7 +5,6 @@ private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.commons.Compilation
 private import ControlFlow
 private import ControlFlow::BasicBlocks
-private import SuccessorTypes
 private import semmle.code.csharp.Caching
 private import internal.ControlFlowGraphImpl as Impl
 
@@ -90,7 +89,7 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
     // all other nodes can use regular CFG dominance
     this instanceof Impl::SplitAstNode and
     cb.getLastNode() = this.getAControlFlowNode() and
-    succ = cb.getASuccessorByType(s)
+    succ = cb.getASuccessor(s)
   }
 
   pragma[noinline]
@@ -225,6 +224,6 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
     this.controlsBlockSplit(controlled, s, cb)
     or
     cb.getLastNode() = this.getAControlFlowNode() and
-    cb.controls(controlled, s)
+    cb.edgeDominates(controlled, s)
   }
 }

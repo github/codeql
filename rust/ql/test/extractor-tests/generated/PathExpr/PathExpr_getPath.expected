@@ -1,4 +1,0 @@
-| gen_path_expr.rs:5:13:5:20 | variable | gen_path_expr.rs:5:13:5:20 | variable |
-| gen_path_expr.rs:6:13:6:20 | foo::bar | gen_path_expr.rs:6:13:6:20 | foo::bar |
-| gen_path_expr.rs:7:13:7:20 | (no string representation) | gen_path_expr.rs:7:13:7:20 | (no string representation) |
-| gen_path_expr.rs:8:13:8:35 | (no string representation) | gen_path_expr.rs:8:13:8:35 | (no string representation) |

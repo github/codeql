@@ -281,6 +281,10 @@ class MethodCall extends Call, QualifiableExpr, LateBindableExpr, @method_invoca
       result = this.getArgument(i - 1)
     else result = this.getArgument(i)
   }
+
+  override Expr stripImplicit() {
+    if this.isImplicit() then result = this.getQualifier().stripImplicit() else result = this
+  }
 }
 
 /**

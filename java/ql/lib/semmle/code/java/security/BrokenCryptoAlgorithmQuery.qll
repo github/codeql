@@ -31,6 +31,12 @@ module InsecureCryptoConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node n) { exists(CryptoAlgoSpec c | n.asExpr() = c.getAlgoSpec()) }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(CryptoAlgoSpec c | sink.asExpr() = c.getAlgoSpec() | result = c.getLocation())
+  }
 }
 
 /**

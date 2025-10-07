@@ -1,8 +1,9 @@
 /**
  * This library offers a view of preprocessor branches (`#if`, `#ifdef`,
- * `#ifndef`, `#elif` and `#else`) as blocks of code between the opening and
- * closing directives, with navigable parent-child relationships to other
- * blocks. The main class is `PreprocessorBlock`.
+ * `#ifndef`, `#elif`, `#elifdef`, `#elifndef`, and `#else`) as blocks of
+ * code between the opening and closing directives, with navigable
+ * parent-child relationships to other blocks. The main class is
+ * `PreprocessorBlock`.
  */
 
 import cpp
@@ -32,10 +33,10 @@ private int getPreprocIndex(PreprocessorBranchDirective directive) {
 
 /**
  * A chunk of code from one preprocessor branch (`#if`, `#ifdef`,
- * `#ifndef`, `#elif` or `#else`) to the directive that closes it
- * (`#elif`, `#else` or `#endif`).  The `getParent()` method
- * allows these blocks to be navigated as a tree, with the root
- * being the entire file.
+ * `#ifndef`, `#elif`, `#elifdef`, `#elifndef`, or `#else`) to the
+ * directive that closes it (`#elif`, `#elifdef`, `#elifndef`, `#else`,
+ * or `#endif`).  The `getParent()` method allows these blocks to be
+ * navigated as a tree, with the root being the entire file.
  */
 class PreprocessorBlock extends @element {
   PreprocessorBlock() {

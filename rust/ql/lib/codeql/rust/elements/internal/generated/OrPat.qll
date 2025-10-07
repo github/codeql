@@ -28,19 +28,19 @@ module Generated {
     override string getAPrimaryQlClass() { result = "OrPat" }
 
     /**
-     * Gets the `index`th pat of this or pat (0-based).
+     * Gets the `index`th pattern of this or pattern (0-based).
      */
     Pat getPat(int index) {
       result = Synth::convertPatFromRaw(Synth::convertOrPatToRaw(this).(Raw::OrPat).getPat(index))
     }
 
     /**
-     * Gets any of the pats of this or pat.
+     * Gets any of the patterns of this or pattern.
      */
     final Pat getAPat() { result = this.getPat(_) }
 
     /**
-     * Gets the number of pats of this or pat.
+     * Gets the number of patterns of this or pattern.
      */
     final int getNumberOfPats() { result = count(int i | exists(this.getPat(i))) }
   }

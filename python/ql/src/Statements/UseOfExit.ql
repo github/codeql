@@ -2,7 +2,9 @@
  * @name Use of exit() or quit()
  * @description exit() or quit() may fail if the interpreter is run with the -S option.
  * @kind problem
- * @tags maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  * @problem.severity warning
  * @sub-severity low
  * @precision very-high

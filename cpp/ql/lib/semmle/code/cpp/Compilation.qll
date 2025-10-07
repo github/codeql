@@ -112,4 +112,7 @@ class Compilation extends @compilation {
    * termination, but crashing due to something like a segfault is not.
    */
   predicate normalTermination() { compilation_finished(this, _, _) }
+
+  /** Holds if this compilation was compiled using the "none" build mode. */
+  predicate buildModeNone() { compilation_build_mode(this, 0) }
 }

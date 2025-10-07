@@ -29,7 +29,7 @@ public class JSONExtractor implements IExtractor {
   private final boolean tolerateParseErrors;
 
   public JSONExtractor(ExtractorConfig config) {
-    this.tolerateParseErrors = config.isTolerateParseErrors();
+    this.tolerateParseErrors = true;
   }
 
   @Override

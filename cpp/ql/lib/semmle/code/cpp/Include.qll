@@ -57,13 +57,24 @@ class IncludeNext extends Include, @ppd_include_next {
 }
 
 /**
- * A `#import` preprocessor directive (used heavily in Objective C, and
- * supported by GCC as an extension in C). For example the following code
- * contains one `Import` directive:
+ * An Objective C  `#import` preprocessor directive (supported by GCC as
+ * an extension in C). For example the following code contains one `Import`
+ * directive:
  * ```
  * #import <header3.h>
  * ```
  */
 class Import extends Include, @ppd_objc_import {
+  override string toString() { result = "#import " + this.getIncludeText() }
+}
+
+/**
+ * A Microsoft `#import` preprocessor directive for importing a type library.
+ * For example the following code contains one `TypeLibraryImport` directive:
+ * ```
+ * #import "library.tlb"
+ * ```
+ */
+class TypeLibraryImport extends Include, @ppd_ms_import {
   override string toString() { result = "#import " + this.getIncludeText() }
 }

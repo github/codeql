@@ -166,3 +166,17 @@ class FuzzySub < FuzzyLib::Foo
     self.fuzzyCall(source("tainted")) # $ hasValueFlow=tainted
   end
 end
+
+class SynthGlobalTest
+  def store
+    @x.someField = source("tainted")
+    @x.saveToDatabase()
+  end
+
+  def read
+    @x = readFromDatabase()
+    sink(@x)
+    sink(@x.someField) # $ hasValueFlow=tainted
+    sink(@x.someOtherField)
+  end
+end

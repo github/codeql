@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["bahmutov/npm-install", "*", "input.install-command", "command-injection", "manual"]

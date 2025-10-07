@@ -1,6 +1,6 @@
 class Bad
 {
-    int Field;
+    int Field; // $ Alert
 
     public Bad(int i)
     {

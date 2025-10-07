@@ -10,6 +10,8 @@ extensions:
     data:
       - ["System.Net.Http", "HttpRequestMessage", False, "HttpRequestMessage", "(System.Net.Http.HttpMethod,System.String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["System.Net.Http", "HttpRequestMessage", False, "HttpRequestMessage", "(System.Net.Http.HttpMethod,System.String)", "", "Argument[1]", "Argument[this]", "taint", "manual"]
+      - ["System.Net.Http", "HttpRequestMessage", False, "HttpRequestMessage", "(System.Net.Http.HttpMethod,System.Uri)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["System.Net.Http", "HttpRequestMessage", False, "HttpRequestMessage", "(System.Net.Http.HttpMethod,System.Uri)", "", "Argument[1]", "Argument[this]", "taint", "manual"]
       - ["System.Net.Http", "HttpRequestOptions", False, "Add", "(System.Collections.Generic.KeyValuePair<System.String,System.Object>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair`2.Key]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Key]", "value", "manual"]
       - ["System.Net.Http", "HttpRequestOptions", False, "Add", "(System.Collections.Generic.KeyValuePair<System.String,System.Object>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair`2.Value]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Value]", "value", "manual"]
       - ["System.Net.Http", "MultipartContent", False, "Add", "(System.Net.Http.HttpContent)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]

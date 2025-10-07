@@ -26,7 +26,7 @@ class Type extends @type {
   /**
    * Gets the qualified name of this type, if any.
    *
-   * Only (defined) named types like `io.Writer` have a qualified name. Basic types like `int`,
+   * Only defined types like `io.Writer` have a qualified name. Basic types like `int`,
    * pointer types like `*io.Writer`, and other composite types do not have a qualified name.
    */
   string getQualifiedName() { result = this.getEntity().getQualifiedName() }
@@ -34,7 +34,7 @@ class Type extends @type {
   /**
    * Holds if this type is declared in a package with path `pkg` and has name `name`.
    *
-   * Only (defined) named types like `io.Writer` have a qualified name. Basic types like `int`,
+   * Only defined types like `io.Writer` have a qualified name. Basic types like `int`,
    * pointer types like `*io.Writer`, and other composite types do not have a qualified name.
    */
   predicate hasQualifiedName(string pkg, string name) {
@@ -50,7 +50,7 @@ class Type extends @type {
    * Gets the method `m` belonging to the method set of this type, if any.
    *
    * Note that this predicate never has a result for struct types. Methods are associated
-   * with the corresponding named type instead.
+   * with the corresponding defined type instead.
    */
   Method getMethod(string m) {
     result.getReceiverType() = this and
@@ -144,19 +144,24 @@ class Type extends @type {
    */
   string toString() { result = this.getName() }
 
+  /** Gets the location of this type. */
+  Location getLocation() { result = this.getEntity().getLocation() }
+
   /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this.getEntity().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     or
-    not exists(this.getEntity()) and
+    not exists(this.getLocation()) and
     filepath = "" and
     startline = 0 and
     startcolumn = 0 and
@@ -446,7 +451,7 @@ class StructType extends @structtype, CompositeType {
       if n = ""
       then (
         isEmbedded = true and
-        name = lookThroughPointerType(tp).(NamedType).getName()
+        name = lookThroughPointerType(tp).(DefinedType).getName()
       ) else (
         isEmbedded = false and
         name = n
@@ -496,14 +501,15 @@ class StructType extends @structtype, CompositeType {
   Field getFieldOfEmbedded(Field embeddedParent, string name, int depth, boolean isEmbedded) {
     // embeddedParent is a field of 'this' at depth 'depth - 1'
     this.hasFieldCand(_, embeddedParent, depth - 1, true) and
-    // embeddedParent's type has the result field
-    exists(StructType embeddedType, Type fieldType |
-      fieldType = embeddedParent.getType().getUnderlyingType() and
-      pragma[only_bind_into](embeddedType) =
-        [fieldType, fieldType.(PointerType).getBaseType().getUnderlyingType()]
-    |
-      result = embeddedType.getOwnField(name, isEmbedded)
-    )
+    // embeddedParent's type has the result field. Note that it is invalid Go
+    // to have an embedded field with a defined type whose underlying type is a
+    // pointer, so we don't have to have
+    // `lookThroughPointerType(embeddedParent.getType().getUnderlyingType())`.
+    result =
+      lookThroughPointerType(embeddedParent.getType())
+          .getUnderlyingType()
+          .(StructType)
+          .getOwnField(name, isEmbedded)
   }
 
   /**
@@ -523,8 +529,12 @@ class StructType extends @structtype, CompositeType {
   private predicate hasFieldCand(string name, Field f, int depth, boolean isEmbedded) {
     f = this.getOwnField(name, isEmbedded) and depth = 0
     or
-    not this.hasOwnField(_, name, _, _) and
-    f = this.getFieldOfEmbedded(_, name, depth, isEmbedded)
+    f = this.getFieldOfEmbedded(_, name, depth, isEmbedded) and
+    // If this is a cyclic field and this is not the first time we see this embedded field
+    // then don't include it as a field candidate to avoid non-termination.
+    not exists(Type t | lookThroughPointerType(t) = lookThroughPointerType(f.getType()) |
+      this.hasOwnField(_, name, t, _)
+    )
   }
 
   private predicate hasMethodCand(string name, Method m, int depth) {
@@ -541,15 +551,7 @@ class StructType extends @structtype, CompositeType {
   predicate hasField(string name, Type tp) {
     exists(int mindepth |
       mindepth = min(int depth | this.hasFieldCand(name, _, depth, _)) and
-      tp = unique(Field f | f = this.getFieldCand(name, mindepth, _)).getType()
-    )
-  }
-
-  private Field getFieldCand(string name, int depth, boolean isEmbedded) {
-    result = this.getOwnField(name, isEmbedded) and depth = 0
-    or
-    exists(Type embedded | this.hasEmbeddedField(embedded, depth - 1) |
-      result = embedded.getUnderlyingType().(StructType).getOwnField(name, isEmbedded)
+      tp = unique(Field f | this.hasFieldCand(name, f, mindepth, _)).getType()
     )
   }
 
@@ -564,9 +566,9 @@ class StructType extends @structtype, CompositeType {
    * The depth of a field `f` declared in this type is zero.
    */
   Field getFieldAtDepth(string name, int depth) {
-    depth = min(int depthCand | exists(this.getFieldCand(name, depthCand, _))) and
-    result = this.getFieldCand(name, depth, _) and
-    strictcount(this.getFieldCand(name, depth, _)) = 1
+    depth = min(int depthCand | this.hasFieldCand(name, _, depthCand, _)) and
+    this.hasFieldCand(name, result, depth, _) and
+    strictcount(Field f | this.hasFieldCand(name, f, depth, _)) = 1
   }
 
   Method getMethodAtDepth(string name, int depth) {
@@ -616,7 +618,7 @@ class PointerType extends @pointertype, CompositeType {
     or
     // promoted methods from embedded types
     exists(StructType s, Type embedded |
-      s = this.getBaseType().(NamedType).getUnderlyingType() and
+      s = this.getBaseType().(DefinedType).getUnderlyingType() and
       s.hasOwnField(_, _, embedded, true) and
       // ensure that `m` can be promoted
       not s.hasOwnField(_, m, _, _) and
@@ -921,7 +923,7 @@ class EmptyInterfaceType extends BasicInterfaceType {
 /**
  * The predeclared `comparable` type.
  */
-class ComparableType extends NamedType {
+class ComparableType extends DefinedType {
   ComparableType() { this.getName() = "comparable" }
 }
 
@@ -1031,10 +1033,20 @@ class SendRecvChanType extends @sendrcvchantype, ChanType {
   override string toString() { result = "send-receive-channel type" }
 }
 
-/** A named type. */
-class NamedType extends @namedtype, CompositeType {
-  /** Gets the type which this type is defined to be. */
-  Type getBaseType() { underlying_type(this, result) }
+/** DEPRECATED: Use `DefinedType` instead. */
+deprecated class NamedType = DefinedType;
+
+/** A defined type. */
+class DefinedType extends @definedtype, CompositeType {
+  /**
+   * Gets the type which this type is defined to be, if available.
+   *
+   * Note that this is only defined for types declared in the project being
+   * analyzed. It will not be defined for types declared in external packages.
+   */
+  Type getBaseType() {
+    result = this.getEntity().(DeclaredTypeEntity).getSpec().getTypeExpr().getType()
+  }
 
   override Method getMethod(string m) {
     result = CompositeType.super.getMethod(m)
@@ -1044,7 +1056,7 @@ class NamedType extends @namedtype, CompositeType {
     or
     // handle promoted methods
     exists(StructType s, Type embedded |
-      s = this.getBaseType() and
+      s = this.getUnderlyingType() and
       s.hasOwnField(_, _, embedded, true) and
       // ensure `m` can be promoted
       not s.hasOwnField(_, m, _, _) and
@@ -1058,7 +1070,7 @@ class NamedType extends @namedtype, CompositeType {
     )
   }
 
-  override Type getUnderlyingType() { result = this.getBaseType().getUnderlyingType() }
+  override Type getUnderlyingType() { underlying_type(this, result) }
 }
 
 /**

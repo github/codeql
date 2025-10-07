@@ -14,7 +14,56 @@ import NosqlInjectionCustomizations::NosqlInjection
 /**
  * A taint-tracking configuration for reasoning about SQL-injection vulnerabilities.
  */
-class Configuration extends TaintTracking::Configuration {
+module NosqlInjectionConfig implements DataFlow::StateConfigSig {
+  import semmle.javascript.security.CommonFlowState
+
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    source instanceof Source and state.isTaint()
+    or
+    source instanceof TaintedObject::Source and state.isTaintedObject()
+  }
+
+  predicate isSink(DataFlow::Node sink, FlowState state) { sink.(Sink).getAFlowState() = state }
+
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
+    node instanceof Sanitizer and state.isTaint()
+    or
+    TaintTracking::defaultSanitizer(node) and state.isTaint()
+    or
+    node = TaintedObject::SanitizerGuard::getABarrierNode(state)
+  }
+
+  predicate isAdditionalFlowStep(
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
+  ) {
+    TaintedObject::isAdditionalFlowStep(node1, state1, node2, state2)
+    or
+    // additional flow step to track taint through NoSQL query objects
+    state1.isTaintedObject() and
+    state2.isTaintedObject() and
+    exists(NoSql::Query query, DataFlow::SourceNode queryObj |
+      queryObj.flowsTo(query) and
+      queryObj.flowsTo(node2) and
+      node1 = queryObj.getAPropertyWrite().getRhs()
+    )
+    or
+    TaintTracking::defaultTaintStep(node1, node2) and
+    state1.isTaint() and
+    state2 = state1
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+}
+
+/**
+ * Taint-tracking for reasoning about SQL-injection vulnerabilities.
+ */
+module NosqlInjectionFlow = DataFlow::GlobalWithState<NosqlInjectionConfig>;
+
+/**
+ * DEPRECATED. Use the `NosqlInjectionFlow` module instead.
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "NosqlInjection" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -37,17 +86,10 @@ class Configuration extends TaintTracking::Configuration {
   }
 
   override predicate isAdditionalFlowStep(
-    DataFlow::Node src, DataFlow::Node trg, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl
+    DataFlow::Node node1, DataFlow::Node node2, DataFlow::FlowLabel state1,
+    DataFlow::FlowLabel state2
   ) {
-    TaintedObject::step(src, trg, inlbl, outlbl)
-    or
-    // additional flow step to track taint through NoSQL query objects
-    inlbl = TaintedObject::label() and
-    outlbl = TaintedObject::label() and
-    exists(NoSql::Query query, DataFlow::SourceNode queryObj |
-      queryObj.flowsTo(query) and
-      queryObj.flowsTo(trg) and
-      src = queryObj.getAPropertyWrite().getRhs()
-    )
+    NosqlInjectionConfig::isAdditionalFlowStep(node1, FlowState::fromFlowLabel(state1), node2,
+      FlowState::fromFlowLabel(state2))
   }
 }

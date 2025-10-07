@@ -8,7 +8,7 @@ import TestFlow::PathGraph
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.internal.FlowSummaryImpl
 import semmle.python.ApiGraphs
-import TestUtilities.dataflow.testTaintConfig
+import utils.test.dataflow.testTaintConfig
 private import TestSummaries
 
 query predicate invalidSpecComponent(SummarizedCallable sc, string s, string c) {

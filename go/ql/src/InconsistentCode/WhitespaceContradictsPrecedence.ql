@@ -1,11 +1,12 @@
 /**
  * @name Whitespace contradicts operator precedence
  * @description Nested expressions where the formatting contradicts the grouping enforced by operator precedence
- *              are difficult to read and may even indicate a bug.
+ *              are difficult to read and may indicate a bug.
  * @kind problem
  * @problem.severity warning
  * @id go/whitespace-contradicts-precedence
- * @tags maintainability
+ * @tags quality
+ *       reliability
  *       correctness
  *       external/cwe/cwe-783
  * @precision very-high
@@ -72,11 +73,14 @@ predicate interestingNesting(BinaryExpr inner, BinaryExpr outer) {
 
 /** Gets the number of whitespace characters around the operator `op` of `be`. */
 int getWhitespaceAroundOperator(BinaryExpr be, string op) {
-  exists(string file, int line, int left, int right |
-    be.getLeftOperand().hasLocationInfo(file, _, _, line, left) and
-    be.getRightOperand().hasLocationInfo(file, line, right, _, _) and
+  exists(Location left, Location right |
+    be.getLeftOperand().getLocation() = left and
+    be.getRightOperand().getLocation() = right and
+    left.getFile() = right.getFile() and
+    left.getStartLine() = right.getStartLine()
+  |
     op = be.getOperator() and
-    result = (right - left - op.length() - 1) / 2
+    result = (right.getStartColumn() - left.getEndColumn() - op.length() - 1) / 2
   )
 }
 

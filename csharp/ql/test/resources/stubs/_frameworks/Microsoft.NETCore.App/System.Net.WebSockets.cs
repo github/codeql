@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Net.WebSockets, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Net.WebSockets, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Net
@@ -75,6 +75,7 @@ namespace System
                 public System.Net.WebSockets.WebSocketDeflateOptions DangerousDeflateOptions { get => throw null; set { } }
                 public bool IsServer { get => throw null; set { } }
                 public System.TimeSpan KeepAliveInterval { get => throw null; set { } }
+                public System.TimeSpan KeepAliveTimeout { get => throw null; set { } }
                 public string SubProtocol { get => throw null; set { } }
             }
             public sealed class WebSocketDeflateOptions

@@ -29,3 +29,4 @@ extensions:
       - ["database-access-result", "all"]
       - ["file-write", "all"]
       - ["reverse-dns", "all"]
+      - ["view-component-input", "all"]

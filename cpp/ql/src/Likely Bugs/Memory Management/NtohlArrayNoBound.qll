@@ -136,11 +136,13 @@ private module NetworkToBufferSizeConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) {
     exists(GuardCondition gc, GVN gvn |
-      gc.getAChild*() = gvn.getAnExpr() and
+      gc.(Expr).getAChild*() = gvn.getAnExpr() and
       globalValueNumber(node.asExpr()) = gvn and
       gc.controls(node.asExpr().getBasicBlock(), _)
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module NetworkToBufferSizeFlow = DataFlow::Global<NetworkToBufferSizeConfig>;

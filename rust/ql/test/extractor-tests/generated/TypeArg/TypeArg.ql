@@ -2,9 +2,8 @@
 import codeql.rust.elements
 import TestUtils
 
-from TypeArg x, string hasTy
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  if x.hasTy() then hasTy = "yes" else hasTy = "no"
-select x, "hasTy:", hasTy
+query predicate instances(TypeArg x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getTypeRepr(TypeArg x, TypeRepr getTypeRepr) {
+  toBeTested(x) and not x.isUnknown() and getTypeRepr = x.getTypeRepr()
+}

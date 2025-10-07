@@ -86,6 +86,10 @@ private module HttpVerbConfig implements DataFlow::ConfigSig {
     exists(ExprNodes::ConditionalExprCfgNode c | c.getCondition() = sink.asExpr()) or
     exists(ExprNodes::CaseExprCfgNode c | c.getValue() = sink.asExpr())
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
 }
 
 private module HttpVerbFlow = TaintTracking::Global<HttpVerbConfig>;

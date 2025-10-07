@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Reflection.Metadata, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Reflection.Metadata, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Reflection
@@ -111,6 +111,19 @@ namespace System
                 public System.Reflection.Metadata.AssemblyFileHandleCollection.Enumerator GetEnumerator() => throw null;
                 System.Collections.Generic.IEnumerator<System.Reflection.Metadata.AssemblyFileHandle> System.Collections.Generic.IEnumerable<System.Reflection.Metadata.AssemblyFileHandle>.GetEnumerator() => throw null;
                 System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
+            }
+            public sealed class AssemblyNameInfo
+            {
+                public AssemblyNameInfo(string name, System.Version version = default(System.Version), string cultureName = default(string), System.Reflection.AssemblyNameFlags flags = default(System.Reflection.AssemblyNameFlags), System.Collections.Immutable.ImmutableArray<byte> publicKeyOrToken = default(System.Collections.Immutable.ImmutableArray<byte>)) => throw null;
+                public string CultureName { get => throw null; }
+                public System.Reflection.AssemblyNameFlags Flags { get => throw null; }
+                public string FullName { get => throw null; }
+                public string Name { get => throw null; }
+                public static System.Reflection.Metadata.AssemblyNameInfo Parse(System.ReadOnlySpan<char> assemblyName) => throw null;
+                public System.Collections.Immutable.ImmutableArray<byte> PublicKeyOrToken { get => throw null; }
+                public System.Reflection.AssemblyName ToAssemblyName() => throw null;
+                public static bool TryParse(System.ReadOnlySpan<char> assemblyName, out System.Reflection.Metadata.AssemblyNameInfo result) => throw null;
+                public System.Version Version { get => throw null; }
             }
             public struct AssemblyReference
             {
@@ -2745,6 +2758,40 @@ namespace System
                 public int PackingSize { get => throw null; }
                 public int Size { get => throw null; }
             }
+            public sealed class TypeName
+            {
+                public System.Reflection.Metadata.AssemblyNameInfo AssemblyName { get => throw null; }
+                public string AssemblyQualifiedName { get => throw null; }
+                public System.Reflection.Metadata.TypeName DeclaringType { get => throw null; }
+                public string FullName { get => throw null; }
+                public int GetArrayRank() => throw null;
+                public System.Reflection.Metadata.TypeName GetElementType() => throw null;
+                public System.Collections.Immutable.ImmutableArray<System.Reflection.Metadata.TypeName> GetGenericArguments() => throw null;
+                public System.Reflection.Metadata.TypeName GetGenericTypeDefinition() => throw null;
+                public int GetNodeCount() => throw null;
+                public bool IsArray { get => throw null; }
+                public bool IsByRef { get => throw null; }
+                public bool IsConstructedGenericType { get => throw null; }
+                public bool IsNested { get => throw null; }
+                public bool IsPointer { get => throw null; }
+                public bool IsSimple { get => throw null; }
+                public bool IsSZArray { get => throw null; }
+                public bool IsVariableBoundArrayType { get => throw null; }
+                public System.Reflection.Metadata.TypeName MakeArrayTypeName(int rank) => throw null;
+                public System.Reflection.Metadata.TypeName MakeByRefTypeName() => throw null;
+                public System.Reflection.Metadata.TypeName MakeGenericTypeName(System.Collections.Immutable.ImmutableArray<System.Reflection.Metadata.TypeName> typeArguments) => throw null;
+                public System.Reflection.Metadata.TypeName MakePointerTypeName() => throw null;
+                public System.Reflection.Metadata.TypeName MakeSZArrayTypeName() => throw null;
+                public string Name { get => throw null; }
+                public static System.Reflection.Metadata.TypeName Parse(System.ReadOnlySpan<char> typeName, System.Reflection.Metadata.TypeNameParseOptions options = default(System.Reflection.Metadata.TypeNameParseOptions)) => throw null;
+                public static bool TryParse(System.ReadOnlySpan<char> typeName, out System.Reflection.Metadata.TypeName result, System.Reflection.Metadata.TypeNameParseOptions options = default(System.Reflection.Metadata.TypeNameParseOptions)) => throw null;
+                public System.Reflection.Metadata.TypeName WithAssemblyName(System.Reflection.Metadata.AssemblyNameInfo assemblyName) => throw null;
+            }
+            public sealed class TypeNameParseOptions
+            {
+                public TypeNameParseOptions() => throw null;
+                public int MaxNodes { get => throw null; set { } }
+            }
             public struct TypeReference
             {
                 public System.Reflection.Metadata.StringHandle Name { get => throw null; }
@@ -2986,11 +3033,14 @@ namespace System
                 MipsFpu16 = 1126,
                 Tricore = 1312,
                 Ebc = 3772,
+                RiscV32 = 20530,
+                RiscV64 = 20580,
+                RiscV128 = 20776,
+                LoongArch32 = 25138,
+                LoongArch64 = 25188,
                 Amd64 = 34404,
                 M32R = 36929,
                 Arm64 = 43620,
-                LoongArch32 = 25138,
-                LoongArch64 = 25188,
             }
             public class ManagedPEBuilder : System.Reflection.PortableExecutable.PEBuilder
             {

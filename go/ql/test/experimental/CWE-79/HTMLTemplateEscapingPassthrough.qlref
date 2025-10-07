@@ -1,2 +1,0 @@
-query: experimental/CWE-79/HTMLTemplateEscapingPassthrough.ql
-postprocess: TestUtilities/PrettyPrintModels.ql

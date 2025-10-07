@@ -1,6 +1,3 @@
-#select
-| ClientSuppliedIpUsedInSecurityCheck.java:17:37:17:38 | ip | ClientSuppliedIpUsedInSecurityCheck.java:43:27:43:62 | getHeader(...) : String | ClientSuppliedIpUsedInSecurityCheck.java:17:37:17:38 | ip | IP address spoofing might include code from $@. | ClientSuppliedIpUsedInSecurityCheck.java:43:27:43:62 | getHeader(...) | this user input |
-| ClientSuppliedIpUsedInSecurityCheck.java:25:33:25:34 | ip | ClientSuppliedIpUsedInSecurityCheck.java:43:27:43:62 | getHeader(...) : String | ClientSuppliedIpUsedInSecurityCheck.java:25:33:25:34 | ip | IP address spoofing might include code from $@. | ClientSuppliedIpUsedInSecurityCheck.java:43:27:43:62 | getHeader(...) | this user input |
 edges
 | ClientSuppliedIpUsedInSecurityCheck.java:16:21:16:33 | getClientIP(...) : String | ClientSuppliedIpUsedInSecurityCheck.java:17:37:17:38 | ip | provenance |  |
 | ClientSuppliedIpUsedInSecurityCheck.java:24:21:24:33 | getClientIP(...) : String | ClientSuppliedIpUsedInSecurityCheck.java:25:33:25:34 | ip | provenance |  |
@@ -21,4 +18,7 @@ nodes
 | ClientSuppliedIpUsedInSecurityCheck.java:47:16:47:23 | xfHeader : String | semmle.label | xfHeader : String |
 | ClientSuppliedIpUsedInSecurityCheck.java:47:16:47:34 | split(...) : String[] | semmle.label | split(...) : String[] |
 | ClientSuppliedIpUsedInSecurityCheck.java:47:16:47:37 | ...[...] : String | semmle.label | ...[...] : String |
+problems
+| ClientSuppliedIpUsedInSecurityCheck.java:17:37:17:38 | ip | ClientSuppliedIpUsedInSecurityCheck.java:43:27:43:62 | getHeader(...) : String | ClientSuppliedIpUsedInSecurityCheck.java:17:37:17:38 | ip | IP address spoofing might include code from $@. | ClientSuppliedIpUsedInSecurityCheck.java:43:27:43:62 | getHeader(...) | this user input |
+| ClientSuppliedIpUsedInSecurityCheck.java:25:33:25:34 | ip | ClientSuppliedIpUsedInSecurityCheck.java:43:27:43:62 | getHeader(...) : String | ClientSuppliedIpUsedInSecurityCheck.java:25:33:25:34 | ip | IP address spoofing might include code from $@. | ClientSuppliedIpUsedInSecurityCheck.java:43:27:43:62 | getHeader(...) | this user input |
 subpaths

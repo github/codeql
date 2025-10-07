@@ -13,7 +13,7 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 private import semmle.python.dataflow.new.internal.PrintNode
 private import semmle.python.Concepts
 

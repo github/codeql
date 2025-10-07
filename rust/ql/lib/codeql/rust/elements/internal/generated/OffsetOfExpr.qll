@@ -9,7 +9,7 @@ private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.Attr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 import codeql.rust.elements.NameRef
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 
 /**
  * INTERNAL: This module contains the fully generated definition of `OffsetOfExpr` and should not
@@ -68,18 +68,18 @@ module Generated {
     final int getNumberOfFields() { result = count(int i | exists(this.getField(i))) }
 
     /**
-     * Gets the ty of this offset of expression, if it exists.
+     * Gets the type representation of this offset of expression, if it exists.
      */
-    TypeRef getTy() {
+    TypeRepr getTypeRepr() {
       result =
-        Synth::convertTypeRefFromRaw(Synth::convertOffsetOfExprToRaw(this)
+        Synth::convertTypeReprFromRaw(Synth::convertOffsetOfExprToRaw(this)
               .(Raw::OffsetOfExpr)
-              .getTy())
+              .getTypeRepr())
     }
 
     /**
-     * Holds if `getTy()` exists.
+     * Holds if `getTypeRepr()` exists.
      */
-    final predicate hasTy() { exists(this.getTy()) }
+    final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
   }
 }

@@ -6,21 +6,21 @@ on:
       ripunzip-version:
         description: "what reference to checktout from google/runzip"
         required: false
-        default: v1.2.1
+        default: v2.0.2
       openssl-version:
         description: "what reference to checkout from openssl/openssl for Linux"
         required: false
-        default: openssl-3.3.0
+        default: openssl-3.5.0
 
 jobs:
   build:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-20.04, macos-13, windows-2019]
+        os: [ubuntu-22.04, macos-13, windows-2022]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           repository: google/ripunzip
           ref: ${{ inputs.ripunzip-version }}
@@ -28,7 +28,7 @@ jobs:
       # see https://github.com/sfackler/rust-openssl/issues/183
       - if: runner.os == 'Linux'
         name: checkout openssl
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: openssl/openssl
           path: openssl

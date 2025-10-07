@@ -100,4 +100,20 @@ public class UnsafeHostnameVerification {
             return true; // BAD, always returns true
         }
     };
+
+    private static class AlwaysTrueVerifier implements HostnameVerifier {
+        @Override
+        public boolean verify(String hostname, SSLSession session) {
+            return true; // BAD, always returns true
+        }
+    }
+
+    /**
+     * Same as testTrustAllHostnameOfAnonymousClass, but with a named class.
+     * This is for testing the diff-informed functionality of the query.
+     */
+    public void testTrustAllHostnameOfNamedClass() {
+        HttpsURLConnection.setDefaultHostnameVerifier(new AlwaysTrueVerifier());
+    }
+
 }

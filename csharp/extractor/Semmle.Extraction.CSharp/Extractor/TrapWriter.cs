@@ -171,7 +171,7 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Close the trap file, and move it to the right place in the trap directory.
         /// If the file exists already, rename it to allow the new file (ending .trap.gz)
-        /// to sit alongside the old file (except if <paramref name="discardDuplicates"/> is true,
+        /// to sit alongside the old file (except if <see cref="discardDuplicates"/> is true,
         /// in which case only the existing file is kept).
         /// </summary>
         public void Dispose()

@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["yt-dlp/yt-dlp/.github/workflows/release.yml", "*", "input.target", "code-injection", "generated"]
+     - ["yt-dlp/yt-dlp/.github/workflows/release.yml", "*", "input.source", "code-injection", "generated"]
+     - ["yt-dlp/yt-dlp/.github/workflows/release.yml", "*", "input.prerelease", "code-injection", "generated"]
+     - ["yt-dlp/yt-dlp/.github/workflows/release.yml", "*", "input.version", "code-injection", "generated"]
+     - ["yt-dlp/yt-dlp/.github/workflows/build.yml", "*", "input.version", "code-injection", "generated"]
+     - ["yt-dlp/yt-dlp/.github/workflows/build.yml", "*", "input.channel", "code-injection", "generated"]

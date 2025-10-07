@@ -9,7 +9,7 @@ fn sink(s: &str) {
 fn sanitize(s: &str) -> &str {
     match s {
         "dangerous" => "",
-        s => s
+        s => s,
     }
 }
 
@@ -25,7 +25,7 @@ fn through_variable() {
 fn with_barrier() {
     let s = source(1);
     let s = sanitize(s);
-    sink(s);
+    sink(s); // $ SPURIOUS: hasValueFlow=1
 }
 
 fn main() {

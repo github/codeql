@@ -13,9 +13,9 @@ private import codeql.rust.elements.internal.generated.FormatArgsArg
  */
 module Impl {
   /**
-   * A FormatArgsArg. For example:
+   * A FormatArgsArg. For example the `"world"` in:
    * ```rust
-   * todo!()
+   * format_args!("Hello, {}!", "world")
    * ```
    */
   class FormatArgsArg extends Generated::FormatArgsArg { }

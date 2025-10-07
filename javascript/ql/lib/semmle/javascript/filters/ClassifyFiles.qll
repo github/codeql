@@ -61,6 +61,8 @@ predicate isTestFile(File f) {
   )
   or
   f.getAbsolutePath().regexpMatch(".*/__(mocks|tests)__/.*")
+  or
+  f.getBaseName().matches("%.test.%")
 }
 
 /**

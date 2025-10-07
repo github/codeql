@@ -7,3 +7,5 @@
 | tst.js:53:10:53:34 | bothOnl ... fects() | the $@ does not return anything, yet the return value is used. | tst.js:48:2:50:5 | functio ... )\\n    } | function onlySideEffects2 |
 | tst.js:76:12:76:46 | [1,2,3] ... n, 3)}) | the $@ does not return anything, yet the return value from the call to filter is used. | tst.js:76:27:76:45 | n => {equals(n, 3)} | callback function |
 | tst.js:80:12:80:50 | filter( ...  3) } ) | the $@ does not return anything, yet the return value from the call to filter is used. | tst.js:80:28:80:48 | x => {  ... x, 3) } | callback function |
+| tst.js:114:12:114:56 | [1,2,3] ...  3); }) | the $@ does not return anything, yet the return value from the call to findLastIndex is used. | tst.js:114:34:114:55 | n => {  ... , 3); } | callback function |
+| tst.js:117:12:117:51 | [1,2,3] ...  3); }) | the $@ does not return anything, yet the return value from the call to findLast is used. | tst.js:117:29:117:50 | n => {  ... , 3); } | callback function |

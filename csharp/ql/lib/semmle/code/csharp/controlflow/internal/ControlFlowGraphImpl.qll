@@ -79,22 +79,13 @@ private module CfgInput implements CfgShared::InputSig<Location> {
     Impl::scopeLast(scope, last, c)
   }
 
-  class SuccessorType = ST::SuccessorType;
+  private class SuccessorType = ST::SuccessorType;
 
   SuccessorType getAMatchingSuccessorType(Completion c) { result = c.getAMatchingSuccessorType() }
 
-  predicate successorTypeIsSimple(SuccessorType t) {
-    t instanceof ST::SuccessorTypes::NormalSuccessor
-  }
+  int idOfAstNode(AstNode node) { result = node.getId() }
 
-  predicate successorTypeIsCondition(SuccessorType t) {
-    t instanceof ST::SuccessorTypes::ConditionalSuccessor
-  }
-
-  predicate isAbnormalExitType(SuccessorType t) {
-    t instanceof ST::SuccessorTypes::ExceptionSuccessor or
-    t instanceof ST::SuccessorTypes::ExitSuccessor
-  }
+  int idOfCfgScope(CfgScope node) { result = idOfAstNode(node) }
 }
 
 private module CfgSplittingInput implements CfgShared::SplittingInputSig<Location, CfgInput> {
@@ -1149,7 +1140,13 @@ module Statements {
       )
       or
       // Flow from last element of `case` statement `i` to first element of statement `i+1`
-      exists(int i | last(super.getStmt(i).(CaseStmt).getBody(), pred, c) |
+      exists(int i, Stmt body |
+        body = super.getStmt(i).(CaseStmt).getBody() and
+        // in case of fall-through cases, make sure to not jump from their shared body back
+        // to one of the fall-through cases
+        not body = super.getStmt(i + 1).(CaseStmt).getBody() and
+        last(body, pred, c)
+      |
         c instanceof NormalCompletion and
         first(super.getStmt(i + 1), succ)
       )

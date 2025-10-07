@@ -1,4 +1,4 @@
-import TestUtilities.dataflow.FlowTestCommon
+import utils.test.dataflow.FlowTestCommon
 import semmle.code.cpp.dataflow.new.DataFlow
 
 module ParamConfig implements DataFlow::ConfigSig {

@@ -1,2 +1,2 @@
 query: Security Features/CWE-090/LDAPInjection.ql
-postprocess: TestUtilities/PrettyPrintModels.ql
+postprocess: utils/test/PrettyPrintModels.ql

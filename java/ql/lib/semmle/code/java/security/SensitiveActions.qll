@@ -10,6 +10,8 @@
  * in a fashion that the user can control. This includes authorization
  * methods such as logins, and sending of data, etc.
  */
+overlay[local?]
+module;
 
 import java
 
@@ -64,9 +66,6 @@ class SensitiveMethodCall extends SensitiveExpr, MethodCall {
     )
   }
 }
-
-/** DEPRECATED: Alias for `SensitiveMethodCall`. */
-deprecated class SensitiveMethodAccess = SensitiveMethodCall;
 
 /** Access to a variable that might contain sensitive data. */
 class SensitiveVarAccess extends SensitiveExpr, VarAccess {

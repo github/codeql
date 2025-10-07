@@ -1,1 +1,2 @@
-Security/CWE-807/ConditionalBypass.ql
+query: Security/CWE-807/ConditionalBypass.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -5,6 +5,7 @@ extensions:
       extensible: summaryModel
     data:
       - ["Microsoft.Extensions.Logging.Console", "ConfigurationConsoleLoggerSettings", False, "ConfigurationConsoleLoggerSettings", "(Microsoft.Extensions.Configuration.IConfiguration)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Console", "ConsoleFormatter", False, "ConsoleFormatter", "(System.String)", "", "Argument[0]", "Argument[this].Property[Microsoft.Extensions.Logging.Console.ConsoleFormatter.Name]", "value", "dfc-generated"]
       - ["Microsoft.Extensions.Logging.Console", "ConsoleFormatter", True, "Write<TState>", "(Microsoft.Extensions.Logging.Abstractions.LogEntry<TState>,Microsoft.Extensions.Logging.IExternalScopeProvider,System.IO.TextWriter)", "", "Argument[0]", "Argument[2]", "taint", "df-generated"]
       - ["Microsoft.Extensions.Logging.Console", "ConsoleLoggerProvider", False, "ConsoleLoggerProvider", "(Microsoft.Extensions.Options.IOptionsMonitor<Microsoft.Extensions.Logging.Console.ConsoleLoggerOptions>,System.Collections.Generic.IEnumerable<Microsoft.Extensions.Logging.Console.ConsoleFormatter>)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["Microsoft.Extensions.Logging.Console", "IConsoleLoggerSettings", True, "Reload", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
@@ -14,7 +15,6 @@ extensions:
     data:
       - ["Microsoft.Extensions.Logging.Console", "ConfigurationConsoleLoggerSettings", "TryGetSwitch", "(System.String,Microsoft.Extensions.Logging.LogLevel)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Console", "ConfigurationConsoleLoggerSettings", "get_IncludeScopes", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Logging.Console", "ConsoleFormatter", "ConsoleFormatter", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Console", "ConsoleFormatter", "get_Name", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Console", "ConsoleLoggerProvider", "ConsoleLoggerProvider", "(Microsoft.Extensions.Options.IOptionsMonitor<Microsoft.Extensions.Logging.Console.ConsoleLoggerOptions>)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Logging.Console", "ConsoleLoggerProvider", "Dispose", "()", "summary", "df-generated"]

@@ -1,7 +1,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
-import TestUtilities.dataflow.RoutingTest
+import utils.test.dataflow.RoutingTest
 
 module Argument1RoutingTest implements RoutingTestSig {
   class Argument = Unit;

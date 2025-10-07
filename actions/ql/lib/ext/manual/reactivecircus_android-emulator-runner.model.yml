@@ -1,0 +1,24 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["reactivecircus/android-emulator-runner", "*", "input.api-level", "command-injection", "manual"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.target", "command-injection", "manual"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.arch", "command-injection", "manual"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.profile", "command-injection", "manual"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.sdcard-path-or-size'", "command-injection", "manual"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.cores", "command-injection", "manual"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.ram-size", "command-injection", "manual"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.heap-size", "command-injection", "manual"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.disk-size", "command-injection", "manual"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.emulator-options", "command-injection", "manual"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.emulator-build", "command-injection", "manual"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.ndk", "command-injection", "manual"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.cmake", "command-injection", "manual"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.ndk", "command-injection", "manual"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.ndk", "command-injection", "manual"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.ndk", "command-injection", "manual"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.ndk", "command-injection", "manual"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.ndk", "command-injection", "manual"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.ndk", "command-injection", "manual"]

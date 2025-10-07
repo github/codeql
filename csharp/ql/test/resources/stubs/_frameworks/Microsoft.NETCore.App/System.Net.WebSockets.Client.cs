@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Net.WebSockets.Client, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Net.WebSockets.Client, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Net
@@ -39,6 +39,7 @@ namespace System
                 public System.Version HttpVersion { get => throw null; set { } }
                 public System.Net.Http.HttpVersionPolicy HttpVersionPolicy { get => throw null; set { } }
                 public System.TimeSpan KeepAliveInterval { get => throw null; set { } }
+                public System.TimeSpan KeepAliveTimeout { get => throw null; set { } }
                 public System.Net.IWebProxy Proxy { get => throw null; set { } }
                 public System.Net.Security.RemoteCertificateValidationCallback RemoteCertificateValidationCallback { get => throw null; set { } }
                 public void SetBuffer(int receiveBufferSize, int sendBufferSize) => throw null;

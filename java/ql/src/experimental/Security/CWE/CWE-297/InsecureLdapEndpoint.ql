@@ -104,8 +104,8 @@ predicate isInsecureSslEndpoint(MethodCall ma) {
   )
 }
 
-from MethodCall ma
-where
+deprecated query predicate problems(MethodCall ma, string message) {
   isInsecureSslEndpoint(ma) and
-  not isTestMethod(ma)
-select ma, "LDAPS configuration allows insecure endpoint identification."
+  not isTestMethod(ma) and
+  message = "LDAPS configuration allows insecure endpoint identification."
+}

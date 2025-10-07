@@ -5,9 +5,9 @@
  * @problem.severity error
  * @precision medium
  * @id cs/invalid-dynamic-call
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
- *       logic
  *       external/cwe/cwe-628
  */
 
@@ -44,11 +44,11 @@ abstract class BadDynamicCall extends DynamicExpr {
       ultimateSsaDef = ssaDef.getAnUltimateDefinition()
     |
       ultimateSsaDef.getADefinition() =
-        any(AssignableDefinition def | source = def.getSource().stripImplicitCasts())
+        any(AssignableDefinition def | source = def.getSource().stripImplicit())
       or
       ultimateSsaDef.getADefinition() =
         any(AssignableDefinitions::ImplicitParameterDefinition p |
-          source = p.getParameter().getAnAssignedValue().stripImplicitCasts()
+          source = p.getParameter().getAnAssignedValue().stripImplicit()
         )
     )
   }

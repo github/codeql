@@ -1,4 +1,6 @@
+| * EmbedsNameClash | 1 |
 | * Foo | 1 |
+| * NameClash | 1 |
 | * P | 1 |
 | * S | 1 |
 | * SEmbedP | 1 |
@@ -19,10 +21,12 @@
 | AExtended | 2 |
 | B | 2 |
 | C | 2 |
+| EmbedsNameClash | 1 |
 | Foo | 1 |
 | GenericInterface | 1 |
 | MixedExportedAndNot | 2 |
 | MyInterface | 17 |
+| NameClash | 1 |
 | S | 1 |
 | SEmbedS | 1 |
 | T | 1 |

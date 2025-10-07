@@ -21,10 +21,9 @@ namespace Semmle.Extraction.CSharp.Entities
             NamedTypeFactory.Instance.CreateEntityFromSymbol(cx, type);
 
         /// <summary>
-        /// Creates a named type entity from a tuple type. Unlike `Create`, this
+        /// Creates a named type entity from a tuple type. Unlike <see cref="Create"/>, this
         /// will create an entity for the underlying `System.ValueTuple` struct.
-        /// For example, `(int, string)` will result in an entity for
-        /// `System.ValueTuple<int, string>`.
+        /// For example, `(int, string)` will result in an entity for `System.ValueTuple&lt;int, string&gt;`.
         /// </summary>
         public static NamedType CreateNamedTypeFromTupleType(Context cx, INamedTypeSymbol type) =>
             UnderlyingTupleTypeFactory.Instance.CreateEntity(cx, (new SymbolEqualityWrapper(type), typeof(TupleType)), type);
@@ -84,8 +83,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // Class location
             if (!Symbol.IsGenericType || Symbol.IsReallyUnbound())
             {
-                foreach (var l in Locations)
-                    trapFile.type_location(this, l);
+                WriteLocationsToTrap(trapFile.type_location, this, Locations);
             }
 
             if (Symbol.IsAnonymousType)
@@ -167,7 +165,9 @@ namespace Semmle.Extraction.CSharp.Entities
         // Create typerefs for constructed error types in case they are fully defined elsewhere.
         // We cannot use `!this.NeedsPopulation` because this would not be stable as it would depend on
         // the assembly that was being extracted at the time.
-        private bool UsesTypeRef => Symbol.TypeKind == TypeKind.Error || SymbolEqualityComparer.Default.Equals(Symbol.OriginalDefinition, Symbol);
+        private bool UsesTypeRef =>
+            Symbol.TypeKind == TypeKind.Error ||
+            SymbolEqualityComparer.Default.Equals(Symbol.OriginalDefinition, Symbol);
 
         public override Type TypeRef => UsesTypeRef ? (Type)NamedTypeRef.Create(Context, Symbol) : this;
     }

@@ -1,7 +1,7 @@
 class C {
-  static get foo() {} // OK
-  static set foo(v) {} // OK
+  static get foo() {}
+  static set foo(v) {}
   
-  get bar() {} // OK
-  set bar(v) {} // OK
+  get bar() {}
+  set bar(v) {}
 }

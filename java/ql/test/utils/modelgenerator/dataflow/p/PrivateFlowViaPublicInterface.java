@@ -28,7 +28,7 @@ public class PrivateFlowViaPublicInterface {
       this.file = file;
     }
 
-    // summary=p;PrivateFlowViaPublicInterface$SPI;true;openStream;();;Argument[this];ReturnValue;taint;df-generated
+    // heuristic-summary=p;PrivateFlowViaPublicInterface$SPI;true;openStream;();;Argument[this];ReturnValue;taint;df-generated
     @Override
     public OutputStream openStream() throws IOException {
       return new FileOutputStream(file);
@@ -50,7 +50,7 @@ public class PrivateFlowViaPublicInterface {
     }
   }
 
-  // summary=p;PrivateFlowViaPublicInterface;true;createAnSPI;(File);;Argument[0];ReturnValue;taint;df-generated
+  // heuristic-summary=p;PrivateFlowViaPublicInterface;true;createAnSPI;(File);;Argument[0];ReturnValue;taint;df-generated
   // contentbased-summary=p;PrivateFlowViaPublicInterface;true;createAnSPI;(File);;Argument[0];ReturnValue.SyntheticField[p.PrivateFlowViaPublicInterface$PrivateImplWithSink.file];value;dfc-generated
   public static SPI createAnSPI(File file) {
     return new PrivateImplWithSink(file);

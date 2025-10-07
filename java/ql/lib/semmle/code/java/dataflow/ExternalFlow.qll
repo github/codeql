@@ -86,6 +86,8 @@
  *    This information is used in a heuristic for dataflow analysis to determine, if a
  *    model or source code should be used for determining flow.
  */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow::DataFlow
@@ -104,9 +106,9 @@ private import codeql.mad.ModelValidation as SharedModelVal
  * Extend this class to include experimental model rows with `this` name
  * in data flow analysis.
  */
-abstract class ActiveExperimentalModels extends string {
+abstract private class ActiveExperimentalModelsInternal extends string {
   bindingset[this]
-  ActiveExperimentalModels() { any() }
+  ActiveExperimentalModelsInternal() { any() }
 
   /**
    * Holds if an experimental source model exists for the given parameters.
@@ -142,6 +144,8 @@ abstract class ActiveExperimentalModels extends string {
   }
 }
 
+deprecated class ActiveExperimentalModels = ActiveExperimentalModelsInternal;
+
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(
   string package, string type, boolean subtypes, string name, string signature, string ext,
@@ -151,7 +155,7 @@ predicate sourceModel(
     Extensions::sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance,
       madId)
     or
-    any(ActiveExperimentalModels q)
+    any(ActiveExperimentalModelsInternal q)
         .sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance, madId)
   )
 }
@@ -165,7 +169,7 @@ predicate sinkModel(
     Extensions::sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance,
       madId)
     or
-    any(ActiveExperimentalModels q)
+    any(ActiveExperimentalModelsInternal q)
         .sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId)
   )
 }
@@ -179,7 +183,7 @@ predicate summaryModel(
     Extensions::summaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
       provenance, madId)
     or
-    any(ActiveExperimentalModels q)
+    any(ActiveExperimentalModelsInternal q)
         .summaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
           provenance, madId)
   )

@@ -30,7 +30,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "RangePat" }
 
     /**
-     * Gets the end of this range pat, if it exists.
+     * Gets the end of this range pattern, if it exists.
      */
     Pat getEnd() {
       result = Synth::convertPatFromRaw(Synth::convertRangePatToRaw(this).(Raw::RangePat).getEnd())
@@ -42,7 +42,7 @@ module Generated {
     final predicate hasEnd() { exists(this.getEnd()) }
 
     /**
-     * Gets the operator name of this range pat, if it exists.
+     * Gets the operator name of this range pattern, if it exists.
      */
     string getOperatorName() {
       result = Synth::convertRangePatToRaw(this).(Raw::RangePat).getOperatorName()
@@ -54,7 +54,7 @@ module Generated {
     final predicate hasOperatorName() { exists(this.getOperatorName()) }
 
     /**
-     * Gets the start of this range pat, if it exists.
+     * Gets the start of this range pattern, if it exists.
      */
     Pat getStart() {
       result =

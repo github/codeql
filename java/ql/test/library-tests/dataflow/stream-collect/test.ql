@@ -1,3 +1,3 @@
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 import DefaultFlowTest
 import TaintFlow::PathGraph

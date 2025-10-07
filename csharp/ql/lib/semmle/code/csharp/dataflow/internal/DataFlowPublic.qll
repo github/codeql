@@ -148,6 +148,16 @@ pragma[inline]
 predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
 
 /**
+ * A module importing the modules that provide non local jump node declarations,
+ * ensuring that they are visible to the taint tracking / data flow library.
+ */
+private module JumpNodes {
+  private import semmle.code.csharp.frameworks.microsoft.aspnetcore.Components
+  private import semmle.code.csharp.frameworks.Razor
+  private import semmle.code.csharp.frameworks.NHibernate
+}
+
+/**
  * A data flow node that jumps between callables. This can be extended in
  * framework code to add additional data flow steps.
  */
@@ -239,6 +249,23 @@ class PropertyContent extends Content, TPropertyContent {
   override Location getLocation() { result = p.getLocation() }
 }
 
+/** A reference to a dynamic property. */
+class DynamicPropertyContent extends Content, TDynamicPropertyContent {
+  private DynamicProperty name;
+
+  DynamicPropertyContent() { this = TDynamicPropertyContent(name) }
+
+  /** Gets an access of this dynamic property. */
+  DynamicMemberAccess getAnAccess() { result = name.getAnAccess() }
+
+  override string toString() { result = "dynamic property " + name }
+
+  override EmptyLocation getLocation() { any() }
+
+  /** Gets the name that is referenced. */
+  string getName() { result = name }
+}
+
 /**
  * A reference to the index of an argument of a delegate call.
  */
@@ -324,6 +351,9 @@ class ContentSet extends TContentSet {
    */
   predicate isProperty(Property p) { this = TPropertyContentSet(p) }
 
+  /** Holds if this content set represents the dynamic property `name`. */
+  predicate isDynamicProperty(string name) { this = TDynamicPropertyContentSet(name) }
+
   /**
    * Holds if this content set represents the `i`th argument of a delegate call.
    */
@@ -348,6 +378,8 @@ class ContentSet extends TContentSet {
     this.isSingleton(result)
     or
     this.isProperty(result.(PropertyContent).getProperty())
+    or
+    this.isDynamicProperty(result.(DynamicPropertyContent).getName())
   }
 
   /** Gets a content that may be read from when reading from this set. */
@@ -362,6 +394,17 @@ class ContentSet extends TContentSet {
       or
       overridesOrImplementsSourceDecl(p1, p2)
     )
+    or
+    exists(FieldOrProperty p |
+      this = p.getContentSet() and
+      result.(DynamicPropertyContent).getName() = p.getName()
+    )
+    or
+    this.isDynamicProperty([
+        result.(DynamicPropertyContent).getName(),
+        result.(PropertyContent).getProperty().getName(),
+        result.(FieldContent).getField().getName()
+      ])
   }
 
   /** Gets a textual representation of this content set. */
@@ -374,6 +417,11 @@ class ContentSet extends TContentSet {
     exists(Property p |
       this.isProperty(p) and
       result = "property " + p.getName()
+    )
+    or
+    exists(string name |
+      this.isDynamicProperty(name) and
+      result = "dynamic property " + name
     )
   }
 
@@ -388,5 +436,8 @@ class ContentSet extends TContentSet {
       this.isProperty(p) and
       result = p.getLocation()
     )
+    or
+    this.isDynamicProperty(_) and
+    result instanceof EmptyLocation
   }
 }

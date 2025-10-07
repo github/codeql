@@ -3,6 +3,10 @@ groups: [codeql, test]
 dependencies:
   codeql/actions-all: ${workspace}
   codeql/actions-queries: ${workspace}
+  # Use the `immutable-actions-list` model pack so that we have some actual data to test against.
+  # We can remove this dependency when we incorporate the data from that model pack back into the
+  # standard library pack.
+  codeql/immutable-actions-list: ${workspace}
 extractor: actions
 tests: .
 warnOnImplicitThis: true

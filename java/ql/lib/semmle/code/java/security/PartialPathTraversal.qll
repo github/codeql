@@ -1,4 +1,6 @@
 /** Provides classes to reason about partial path traversal vulnerabilities. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow
@@ -58,6 +60,3 @@ class PartialPathTraversalMethodCall extends MethodCall {
     not isSafe(this.getArgument(0))
   }
 }
-
-/** DEPRECATED: Alias for `PartialPathTraversalMethodCall`. */
-deprecated class PartialPathTraversalMethodAccess = PartialPathTraversalMethodCall;

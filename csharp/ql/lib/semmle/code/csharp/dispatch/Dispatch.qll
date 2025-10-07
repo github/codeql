@@ -6,6 +6,7 @@
  */
 
 import csharp
+private import semmle.code.csharp.commons.Collections
 private import RuntimeCallable
 
 /** A call. */
@@ -52,7 +53,21 @@ class DispatchCall extends Internal::TDispatchCall {
   }
 
   /** Holds if this call uses reflection. */
-  predicate isReflection() { this instanceof Internal::TDispatchReflectionCall }
+  predicate isReflection() {
+    this instanceof Internal::TDispatchReflectionCall
+    or
+    this instanceof Internal::TDispatchDynamicElementAccess
+    or
+    this instanceof Internal::TDispatchDynamicMemberAccess
+    or
+    this instanceof Internal::TDispatchDynamicMethodCall
+    or
+    this instanceof Internal::TDispatchDynamicOperatorCall
+    or
+    this instanceof Internal::TDispatchDynamicEventAccess
+    or
+    this instanceof Internal::TDispatchDynamicObjectCreation
+  }
 }
 
 /** Internal implementation details. */
@@ -255,6 +270,14 @@ private module Internal {
     hasOverrider(t, c)
   }
 
+  /**
+   * For `base` expressions, the extractor provides the type of the base
+   * class instead of the derived class; this predicate provides the latter.
+   */
+  private Type getBaseAdjustedType(BaseAccess base) {
+    result = base.getEnclosingCallable().getDeclaringType()
+  }
+
   abstract private class DispatchOverridableCall extends DispatchCallImpl {
     pragma[noinline]
     OverridableCallable getAStaticTargetExt() {
@@ -345,7 +368,12 @@ private module Internal {
     private predicate contextArgHasType(DispatchCall ctx, Type t, boolean isExact) {
       exists(Expr arg, int i |
         this.relevantContext(ctx, i) and
-        t = getAPossibleType(arg, isExact)
+        (
+          t = getBaseAdjustedType(arg) and isExact = false
+          or
+          not exists(getBaseAdjustedType(arg)) and
+          t = getAPossibleType(arg, isExact)
+        )
       |
         ctx.getArgument(i) = arg
         or
@@ -710,9 +738,7 @@ private module Internal {
 
       Type getType(boolean isExact) {
         result = this.getType() and
-        if
-          this instanceof ObjectCreation or
-          this instanceof BaseAccess
+        if this instanceof ObjectCreation or this instanceof BaseAccess
         then isExact = true
         else isExact = false
       }
@@ -842,7 +868,7 @@ private module Internal {
     private predicate hasDynamicArg(int i, Type argumentType) {
       exists(Expr argument |
         argument = this.getArgument(i) and
-        argument.stripImplicitCasts().getType() instanceof DynamicType and
+        argument.stripImplicit().getType() instanceof DynamicType and
         argumentType = getAPossibleType(argument, _)
       )
     }
@@ -1123,7 +1149,7 @@ private module Internal {
         if p.isParams()
         then (
           j >= i and
-          paramType = p.getType().(ArrayType).getElementType()
+          paramType = p.getType().(ParamsCollectionType).getElementType()
         ) else (
           i = j and
           paramType = p.getType()

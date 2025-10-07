@@ -47,7 +47,7 @@ abstract class TranslatedFlexibleCondition extends TranslatedCondition, Conditio
 {
   TranslatedFlexibleCondition() { this = TTranslatedFlexibleCondition(expr) }
 
-  final override predicate handlesDestructorsExplicitly() { none() } // TODO: this needs to be revisted when we get unnamed destructors
+  final override predicate handlesDestructorsExplicitly() { none() } // TODO: this needs to be revisited when we get unnamed destructors
 
   final override TranslatedElement getChild(int id) { id = 0 and result = this.getOperand() }
 
@@ -187,7 +187,24 @@ class TranslatedValueCondition extends TranslatedCondition, TTranslatedValueCond
 
   final override predicate handlesDestructorsExplicitly() { none() } // TODO: this needs to be revisted when we get unnamed destructors
 
+  private Type getValueExprType() {
+    result = this.getValueExpr().getExprType().getUnspecifiedType()
+  }
+
+  predicate shouldGenerateCompareNE() { not this.getValueExprType() instanceof BoolType }
+
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    this.shouldGenerateCompareNE() and
+    (
+      tag = ValueConditionCompareTag() and
+      opcode instanceof Opcode::CompareNE and
+      resultType = getBoolType()
+      or
+      tag = ValueConditionConstantTag() and
+      opcode instanceof Opcode::Constant and
+      resultType = getTypeForPRValue(this.getValueExprType())
+    )
+    or
     tag = ValueConditionConditionalBranchTag() and
     opcode instanceof Opcode::ConditionalBranch and
     resultType = getVoidType()
@@ -195,11 +212,24 @@ class TranslatedValueCondition extends TranslatedCondition, TTranslatedValueCond
 
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
     child = this.getValueExpr() and
-    result = this.getInstruction(ValueConditionConditionalBranchTag()) and
-    kind instanceof GotoEdge
+    kind instanceof GotoEdge and
+    if this.shouldGenerateCompareNE()
+    then result = this.getInstruction(ValueConditionConstantTag())
+    else result = this.getInstruction(ValueConditionConditionalBranchTag())
   }
 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    this.shouldGenerateCompareNE() and
+    (
+      tag = ValueConditionConstantTag() and
+      kind instanceof GotoEdge and
+      result = this.getInstruction(ValueConditionCompareTag())
+      or
+      tag = ValueConditionCompareTag() and
+      kind instanceof GotoEdge and
+      result = this.getInstruction(ValueConditionConditionalBranchTag())
+    )
+    or
     tag = ValueConditionConditionalBranchTag() and
     (
       kind instanceof TrueEdge and
@@ -211,9 +241,26 @@ class TranslatedValueCondition extends TranslatedCondition, TTranslatedValueCond
   }
 
   override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    this.shouldGenerateCompareNE() and
+    tag = ValueConditionCompareTag() and
+    (
+      operandTag instanceof LeftOperandTag and
+      result = this.getValueExpr().getResult()
+      or
+      operandTag instanceof RightOperandTag and
+      result = this.getInstruction(ValueConditionConstantTag())
+    )
+    or
     tag = ValueConditionConditionalBranchTag() and
     operandTag instanceof ConditionOperandTag and
-    result = this.getValueExpr().getResult()
+    if this.shouldGenerateCompareNE()
+    then result = this.getInstruction(ValueConditionCompareTag())
+    else result = this.getValueExpr().getResult()
+  }
+
+  override string getInstructionConstantValue(InstructionTag tag) {
+    tag = ValueConditionConstantTag() and
+    result = "0"
   }
 
   private TranslatedExpr getValueExpr() { result = getTranslatedExpr(expr) }

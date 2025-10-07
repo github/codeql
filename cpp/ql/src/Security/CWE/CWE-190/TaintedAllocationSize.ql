@@ -33,8 +33,9 @@ predicate allocSink(HeuristicAllocationExpr alloc, DataFlow::Node sink) {
   )
 }
 
-predicate readsVariable(LoadInstruction load, Variable var) {
-  load.getSourceAddress().(VariableAddressInstruction).getAstVariable() = var
+predicate readsVariable(LoadInstruction load, Variable var, IRBlock bb) {
+  load.getSourceAddress().(VariableAddressInstruction).getAstVariable() = var and
+  bb = load.getBlock()
 }
 
 predicate hasUpperBoundsCheck(Variable var) {
@@ -46,10 +47,18 @@ predicate hasUpperBoundsCheck(Variable var) {
   )
 }
 
-predicate nodeIsBarrierEqualityCandidate(DataFlow::Node node, Operand access, Variable checkedVar) {
-  exists(Instruction instr | instr = node.asOperand().getDef() |
-    readsVariable(instr, checkedVar) and
-    any(IRGuardCondition guard).ensuresEq(access, _, _, instr.getBlock(), true)
+predicate variableEqualityCheckedInBlock(Variable checkedVar, IRBlock bb) {
+  exists(Operand access |
+    readsVariable(access.getDef(), checkedVar, _) and
+    any(IRGuardCondition guard).ensuresEq(access, _, _, bb, true)
+  )
+}
+
+predicate nodeIsBarrierEquality(DataFlow::Node node) {
+  exists(Variable checkedVar, Instruction instr, IRBlock bb |
+    instr = node.asOperand().getDef() and
+    readsVariable(instr, checkedVar, bb) and
+    variableEqualityCheckedInBlock(checkedVar, bb)
   )
 }
 
@@ -72,18 +81,21 @@ module TaintedAllocationSizeConfig implements DataFlow::ConfigSig {
     )
     or
     exists(Variable checkedVar, Instruction instr | instr = node.asOperand().getDef() |
-      readsVariable(instr, checkedVar) and
+      readsVariable(instr, checkedVar, _) and
       hasUpperBoundsCheck(checkedVar)
     )
     or
-    exists(Variable checkedVar, Operand access |
-      readsVariable(access.getDef(), checkedVar) and
-      nodeIsBarrierEqualityCandidate(node, access, checkedVar)
-    )
+    nodeIsBarrierEquality(node)
     or
     // block flow to inside of identified allocation functions (this flow leads
     // to duplicate results)
     any(HeuristicAllocationFunction f).getAParameter() = node.asParameter()
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(Expr alloc | result = alloc.getLocation() | allocSink(alloc, sink))
   }
 }
 

@@ -49,7 +49,8 @@ Type getVariableType(Variable v) {
 }
 
 /**
- * Holds if the database contains a `case` label with the specified minimum and maximum value.
+ * Holds if the database contains a `switchCase` label with the specified minimum `minValue`
+ * and maximum `maxValue` value.
  */
 predicate hasCaseEdge(SwitchCase switchCase, string minValue, string maxValue) {
   minValue = switchCase.getExpr().getFullyConverted().getValue() and

@@ -10,18 +10,18 @@ app.listen(3000, () => {
 });
 
 app.post('/upload', async (req, res) => {
-    const RemoteStream = Readable.from(req.files.ZipFile.data);
+    const RemoteStream = Readable.from(req.files.ZipFile.data); // $ Source
 
     // Unsafe
-    RemoteStream.pipe(unzipper.Extract({ path: 'output/path' }));
+    RemoteStream.pipe(unzipper.Extract({ path: 'output/path' })); // $ Alert
 
     // Unsafe
-    RemoteStream.pipe(unzipper.ParseOne())
+    RemoteStream.pipe(unzipper.ParseOne()) // $ Alert
         .pipe(createWriteStream('firstFile.txt'));
 
     // Safe because of uncompressedSize
     RemoteStream
-        .pipe(unzipper.Parse())
+        .pipe(unzipper.Parse()) // $ Alert
         .on('entry', function (entry) {
             const size = entry.vars.uncompressedSize;
             if (size < 1024 * 1024 * 1024) {
@@ -31,14 +31,14 @@ app.post('/upload', async (req, res) => {
 
     // Unsafe
     RemoteStream
-        .pipe(unzipper.Parse())
+        .pipe(unzipper.Parse()) // $ Alert
         .on('entry', function (entry) {
             const size = entry.vars.uncompressedSize;
             entry.pipe(createWriteStream('output/path'));
         });
 
     // Unsafe
-    const zip = RemoteStream.pipe(unzipper.Parse({ forceStream: true }));
+    const zip = RemoteStream.pipe(unzipper.Parse({ forceStream: true })); // $ Alert
     for await (const entry of zip) {
         const fileName = entry.path;
         if (fileName === "this IS the file I'm looking for") {
@@ -48,7 +48,7 @@ app.post('/upload', async (req, res) => {
         }
     }
     // Safe
-    const zip2 = RemoteStream.pipe(unzipper.Parse({ forceStream: true }));
+    const zip2 = RemoteStream.pipe(unzipper.Parse({ forceStream: true })); // $ Alert
     for await (const entry of zip2) {
         const size = entry.vars.uncompressedSize;
         if (size < 1024 * 1024 * 1024) {
@@ -57,7 +57,7 @@ app.post('/upload', async (req, res) => {
     }
 
     // Safe  because of uncompressedSize
-    RemoteStream.pipe(unzipper.Parse())
+    RemoteStream.pipe(unzipper.Parse()) // $ Alert
         .pipe(stream.Transform({
             objectMode: true,
             transform: function (entry, e, cb) {
@@ -70,7 +70,7 @@ app.post('/upload', async (req, res) => {
         }));
 
     // Unsafe
-    RemoteStream.pipe(unzipper.Parse())
+    RemoteStream.pipe(unzipper.Parse()) // $ Alert
         .pipe(stream.Transform({
             objectMode: true,
             transform: function (entry, e, cb) {

@@ -9,6 +9,8 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.internal.ElementImpl::Impl as ElementImpl
 import codeql.swift.elements.type.Type
 
+private class TypeAlias = Type;
+
 /**
  * INTERNAL: This module contains the fully generated definition of `Type` and should not
  * be referenced directly.
@@ -30,7 +32,7 @@ module Generated {
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    Type getImmediateCanonicalType() {
+    TypeAlias getImmediateCanonicalType() {
       result =
         Synth::convertTypeFromRaw(Synth::convertTypeToRaw(this).(Raw::Type).getCanonicalType())
     }
@@ -44,7 +46,7 @@ module Generated {
      * ```
      * then `[MyInt?]` has the canonical type `Array<Optional<Int>>`.
      */
-    final Type getCanonicalType() {
+    final TypeAlias getCanonicalType() {
       exists(Type immediate |
         immediate = this.getImmediateCanonicalType() and
         if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()

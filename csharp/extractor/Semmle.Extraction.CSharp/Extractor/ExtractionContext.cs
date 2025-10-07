@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using Semmle.Util.Logging;
 using CompilationInfo = (string key, string value);
 
@@ -14,6 +15,8 @@ namespace Semmle.Extraction.CSharp
         public ExtractorMode Mode { get; }
         public string OutputPath { get; }
         public IEnumerable<CompilationInfo> CompilationInfos { get; }
+        public bool IsStandalone => Mode.HasFlag(ExtractorMode.Standalone);
+        public bool IsBinaryLog => Mode.HasFlag(ExtractorMode.BinaryLog);
 
         /// <summary>
         /// Creates a new extractor instance for one compilation unit.
@@ -38,7 +41,7 @@ namespace Semmle.Extraction.CSharp
         // to handle pathological cases.
         private const int maxErrors = 1000;
 
-        private readonly object mutex = new object();
+        private readonly Lock mutex = new();
 
         public void Message(Message msg)
         {

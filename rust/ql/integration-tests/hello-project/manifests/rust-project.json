@@ -1,7 +1,0 @@
-{
-  "crates": [{
-    "root_module": "src/main.rs",
-    "edition": "2021",
-    "deps": []
-  }]
-}

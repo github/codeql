@@ -5,7 +5,7 @@ private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
 private import semmle.code.csharp.frameworks.Test
-private import Telemetry.TestLibrary
+private import semmle.code.csharp.telemetry.TestLibrary
 
 /** Holds if the given callable is not worth supporting. */
 private predicate isUninteresting(Callable c) {

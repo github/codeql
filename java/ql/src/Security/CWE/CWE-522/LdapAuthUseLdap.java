@@ -1,3 +1,4 @@
+// BAD: LDAP authentication is used
 String ldapUrl = "ldap://ad.your-server.com:389";
 Hashtable<String, String> environment = new Hashtable<String, String>();
 environment.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");

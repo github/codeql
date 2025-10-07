@@ -4,17 +4,24 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["System.Threading.RateLimiting", "FixedWindowRateLimiter", False, "FixedWindowRateLimiter", "(System.Threading.RateLimiting.FixedWindowRateLimiterOptions)", "", "Argument[0].Property[System.Threading.RateLimiting.FixedWindowRateLimiterOptions.Window]", "Argument[this].SyntheticField[System.Threading.RateLimiting.FixedWindowRateLimiter._options].Property[System.Threading.RateLimiting.FixedWindowRateLimiterOptions.Window]", "value", "dfc-generated"]
+      - ["System.Threading.RateLimiting", "FixedWindowRateLimiter", False, "get_ReplenishmentPeriod", "()", "", "Argument[this].SyntheticField[System.Threading.RateLimiting.FixedWindowRateLimiter._options].Property[System.Threading.RateLimiting.FixedWindowRateLimiterOptions.Window]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Threading.RateLimiting", "MetadataName<T>", False, "MetadataName", "(System.String)", "", "Argument[0]", "Argument[this].SyntheticField[System.Threading.RateLimiting.MetadataName`1._name]", "value", "dfc-generated"]
       - ["System.Threading.RateLimiting", "MetadataName<T>", False, "ToString", "()", "", "Argument[this].SyntheticField[System.Threading.RateLimiting.MetadataName`1._name]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Threading.RateLimiting", "MetadataName<T>", False, "get_Name", "()", "", "Argument[this].SyntheticField[System.Threading.RateLimiting.MetadataName`1._name]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Threading.RateLimiting", "PartitionedRateLimiter", False, "CreateChained<TResource>", "(System.Threading.RateLimiting.PartitionedRateLimiter<TResource>[])", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
-      - ["System.Threading.RateLimiting", "RateLimitLease", False, "TryGetMetadata<T>", "(System.Threading.RateLimiting.MetadataName<T>,T)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Threading.RateLimiting", "RateLimitLease", False, "TryGetMetadata<T>", "(System.Threading.RateLimiting.MetadataName<T>,T)", "", "Argument[this]", "Argument[1]", "taint", "df-generated"]
       - ["System.Threading.RateLimiting", "RateLimitLease", True, "GetAllMetadata", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Threading.RateLimiting", "RateLimitLease", True, "TryGetMetadata", "(System.String,System.Object)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Threading.RateLimiting", "RateLimitLease", True, "TryGetMetadata", "(System.String,System.Object)", "", "Argument[this]", "Argument[1]", "taint", "df-generated"]
       - ["System.Threading.RateLimiting", "RateLimitLease", True, "get_MetadataNames", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Threading.RateLimiting", "RateLimitPartition<TKey>", False, "RateLimitPartition", "(TKey,System.Func<TKey,System.Threading.RateLimiting.RateLimiter>)", "", "Argument[0]", "Argument[this].Property[System.Threading.RateLimiting.RateLimitPartition`1.PartitionKey]", "value", "dfc-generated"]
+      - ["System.Threading.RateLimiting", "RateLimitPartition<TKey>", False, "RateLimitPartition", "(TKey,System.Func<TKey,System.Threading.RateLimiting.RateLimiter>)", "", "Argument[1]", "Argument[this].Property[System.Threading.RateLimiting.RateLimitPartition`1.Factory]", "value", "dfc-generated"]
       - ["System.Threading.RateLimiting", "RateLimiter", False, "AttemptAcquire", "(System.Int32)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Threading.RateLimiting", "RateLimiter", True, "AttemptAcquireCore", "(System.Int32)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Threading.RateLimiting", "ReplenishingRateLimiter", True, "get_ReplenishmentPeriod", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Threading.RateLimiting", "SlidingWindowRateLimiter", False, "SlidingWindowRateLimiter", "(System.Threading.RateLimiting.SlidingWindowRateLimiterOptions)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Threading.RateLimiting", "TokenBucketRateLimiter", False, "TokenBucketRateLimiter", "(System.Threading.RateLimiting.TokenBucketRateLimiterOptions)", "", "Argument[0].Property[System.Threading.RateLimiting.TokenBucketRateLimiterOptions.ReplenishmentPeriod]", "Argument[this].SyntheticField[System.Threading.RateLimiting.TokenBucketRateLimiter._options].Property[System.Threading.RateLimiting.TokenBucketRateLimiterOptions.ReplenishmentPeriod]", "value", "dfc-generated"]
+      - ["System.Threading.RateLimiting", "TokenBucketRateLimiter", False, "get_ReplenishmentPeriod", "()", "", "Argument[this].SyntheticField[System.Threading.RateLimiting.TokenBucketRateLimiter._options].Property[System.Threading.RateLimiting.TokenBucketRateLimiterOptions.ReplenishmentPeriod]", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -28,7 +35,6 @@ extensions:
       - ["System.Threading.RateLimiting", "FixedWindowRateLimiter", "AcquireAsyncCore", "(System.Int32,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Threading.RateLimiting", "FixedWindowRateLimiter", "Dispose", "(System.Boolean)", "summary", "df-generated"]
       - ["System.Threading.RateLimiting", "FixedWindowRateLimiter", "DisposeAsyncCore", "()", "summary", "df-generated"]
-      - ["System.Threading.RateLimiting", "FixedWindowRateLimiter", "FixedWindowRateLimiter", "(System.Threading.RateLimiting.FixedWindowRateLimiterOptions)", "summary", "df-generated"]
       - ["System.Threading.RateLimiting", "FixedWindowRateLimiter", "GetStatistics", "()", "summary", "df-generated"]
       - ["System.Threading.RateLimiting", "FixedWindowRateLimiter", "TryReplenish", "()", "summary", "df-generated"]
       - ["System.Threading.RateLimiting", "FixedWindowRateLimiter", "get_IdleDuration", "()", "summary", "df-generated"]
@@ -60,7 +66,6 @@ extensions:
       - ["System.Threading.RateLimiting", "RateLimitPartition", "GetNoLimiter<TKey>", "(TKey)", "summary", "df-generated"]
       - ["System.Threading.RateLimiting", "RateLimitPartition", "GetSlidingWindowLimiter<TKey>", "(TKey,System.Func<TKey,System.Threading.RateLimiting.SlidingWindowRateLimiterOptions>)", "summary", "df-generated"]
       - ["System.Threading.RateLimiting", "RateLimitPartition", "GetTokenBucketLimiter<TKey>", "(TKey,System.Func<TKey,System.Threading.RateLimiting.TokenBucketRateLimiterOptions>)", "summary", "df-generated"]
-      - ["System.Threading.RateLimiting", "RateLimitPartition<TKey>", "RateLimitPartition", "(TKey,System.Func<TKey,System.Threading.RateLimiting.RateLimiter>)", "summary", "df-generated"]
       - ["System.Threading.RateLimiting", "RateLimitPartition<TKey>", "get_Factory", "()", "summary", "df-generated"]
       - ["System.Threading.RateLimiting", "RateLimitPartition<TKey>", "get_PartitionKey", "()", "summary", "df-generated"]
       - ["System.Threading.RateLimiting", "RateLimiter", "AcquireAsync", "(System.Int32,System.Threading.CancellationToken)", "summary", "df-generated"]
@@ -76,7 +81,6 @@ extensions:
       - ["System.Threading.RateLimiting", "SlidingWindowRateLimiter", "Dispose", "(System.Boolean)", "summary", "df-generated"]
       - ["System.Threading.RateLimiting", "SlidingWindowRateLimiter", "DisposeAsyncCore", "()", "summary", "df-generated"]
       - ["System.Threading.RateLimiting", "SlidingWindowRateLimiter", "GetStatistics", "()", "summary", "df-generated"]
-      - ["System.Threading.RateLimiting", "SlidingWindowRateLimiter", "SlidingWindowRateLimiter", "(System.Threading.RateLimiting.SlidingWindowRateLimiterOptions)", "summary", "df-generated"]
       - ["System.Threading.RateLimiting", "SlidingWindowRateLimiter", "TryReplenish", "()", "summary", "df-generated"]
       - ["System.Threading.RateLimiting", "SlidingWindowRateLimiter", "get_IdleDuration", "()", "summary", "df-generated"]
       - ["System.Threading.RateLimiting", "SlidingWindowRateLimiter", "get_IsAutoReplenishing", "()", "summary", "df-generated"]
@@ -84,7 +88,6 @@ extensions:
       - ["System.Threading.RateLimiting", "TokenBucketRateLimiter", "Dispose", "(System.Boolean)", "summary", "df-generated"]
       - ["System.Threading.RateLimiting", "TokenBucketRateLimiter", "DisposeAsyncCore", "()", "summary", "df-generated"]
       - ["System.Threading.RateLimiting", "TokenBucketRateLimiter", "GetStatistics", "()", "summary", "df-generated"]
-      - ["System.Threading.RateLimiting", "TokenBucketRateLimiter", "TokenBucketRateLimiter", "(System.Threading.RateLimiting.TokenBucketRateLimiterOptions)", "summary", "df-generated"]
       - ["System.Threading.RateLimiting", "TokenBucketRateLimiter", "TryReplenish", "()", "summary", "df-generated"]
       - ["System.Threading.RateLimiting", "TokenBucketRateLimiter", "get_IdleDuration", "()", "summary", "df-generated"]
       - ["System.Threading.RateLimiting", "TokenBucketRateLimiter", "get_IsAutoReplenishing", "()", "summary", "df-generated"]

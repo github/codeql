@@ -1,11 +1,13 @@
 private import csharp as CS
 private import codeql.mad.modelgenerator.internal.ModelPrinting
-private import semmle.code.csharp.dataflow.internal.ExternalFlow as ExternalFlow
+private import CaptureModels::ModelGeneratorCommonInput as ModelGeneratorInput
 
 private module ModelPrintingLang implements ModelPrintingLangSig {
   class Callable = CS::Callable;
 
-  predicate partialModel = ExternalFlow::partialModel/6;
+  predicate partialModelRow = ModelGeneratorInput::partialModelRow/2;
+
+  predicate partialNeutralModelRow = ModelGeneratorInput::partialNeutralModelRow/2;
 }
 
 import ModelPrintingImpl<ModelPrintingLang>

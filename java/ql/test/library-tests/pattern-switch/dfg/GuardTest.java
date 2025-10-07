@@ -24,7 +24,6 @@ public class GuardTest {
         break;
 
     }
-
   }
 
 }

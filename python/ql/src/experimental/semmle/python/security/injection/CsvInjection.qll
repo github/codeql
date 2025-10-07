@@ -17,6 +17,8 @@ private module CsvInjectionConfig implements DataFlow::ConfigSig {
     node = DataFlow::BarrierGuard<startsWithCheck/3>::getABarrierNode() or
     node instanceof ConstCompareBarrier
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 private predicate startsWithCheck(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {

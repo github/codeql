@@ -1,15 +1,13 @@
 import go
 import semmle.go.security.RequestForgery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module FasthttpTest implements TestSig {
   string getARelevantTag() { result = "SsrfSink" }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(RequestForgery::Sink ssrfSink |
-      ssrfSink
-          .hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-            location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      ssrfSink.getLocation() = location and
       element = ssrfSink.toString() and
       value = ssrfSink.toString() and
       tag = "SsrfSink"

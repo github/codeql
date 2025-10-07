@@ -1,0 +1,4 @@
+| UninitializedLocal.rb:12:3:12:3 | m | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:8:7:8:7 | m | m |
+| UninitializedLocal.rb:34:5:34:5 | b | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:27:9:27:9 | b | b |
+| UninitializedLocal.rb:34:23:34:23 | b | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:27:9:27:9 | b | b |
+| UninitializedLocal.rb:76:5:76:5 | i | Local variable $@ may be used before it is initialized. | UninitializedLocal.rb:73:9:73:9 | i | i |

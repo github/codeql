@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.Collections
@@ -20,6 +23,7 @@ private import semmle.code.java.frameworks.JaxWS
  * Holds if taint can flow from `src` to `sink` in zero or more
  * local (intra-procedural) steps.
  */
+overlay[caller?]
 pragma[inline]
 predicate localTaint(DataFlow::Node src, DataFlow::Node sink) { localTaintStep*(src, sink) }
 
@@ -27,6 +31,7 @@ predicate localTaint(DataFlow::Node src, DataFlow::Node sink) { localTaintStep*(
  * Holds if taint can flow from `src` to `sink` in zero or more
  * local (intra-procedural) steps.
  */
+overlay[caller?]
 pragma[inline]
 predicate localExprTaint(Expr src, Expr sink) {
   localTaint(DataFlow::exprNode(src), DataFlow::exprNode(sink))
@@ -69,6 +74,7 @@ module LocalTaintFlow<nodeSig/1 source, nodeSig/1 sink> {
    * (intra-procedural) steps that are restricted to be part of a path between
    * `source` and `sink`.
    */
+  overlay[caller?]
   pragma[inline]
   predicate hasFlow(DataFlow::Node n1, DataFlow::Node n2) { step*(n1, n2) }
 
@@ -77,6 +83,7 @@ module LocalTaintFlow<nodeSig/1 source, nodeSig/1 sink> {
    * (intra-procedural) steps that are restricted to be part of a path between
    * `source` and `sink`.
    */
+  overlay[caller?]
   pragma[inline]
   predicate hasExprFlow(Expr n1, Expr n2) {
     hasFlow(DataFlow::exprNode(n1), DataFlow::exprNode(n2))
@@ -161,6 +168,7 @@ private module Cached {
    */
   cached
   predicate defaultTaintSanitizer(DataFlow::Node node) {
+    node instanceof DefaultTaintSanitizer or
     // Ignore paths through test code.
     node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass or
     node.asExpr() instanceof ValidatedVariableAccess
@@ -270,21 +278,23 @@ private predicate inputStreamWrapper(Constructor c, int argi) {
 
 /** An object construction that preserves the data flow status of any of its arguments. */
 private predicate constructorStep(Expr tracked, ConstructorCall sink, string model) {
-  exists(int argi | sink.getArgument(argi) = tracked |
+  exists(int argi | sink.getArgument(pragma[only_bind_into](argi)) = tracked |
     // wrappers constructed by extension
     exists(Constructor c, Parameter p, SuperConstructorInvocationStmt sup |
       c = sink.getConstructor() and
-      p = c.getParameter(argi) and
+      p = c.getParameter(pragma[only_bind_into](argi)) and
       sup.getEnclosingCallable() = c and
       constructorStep(p.getAnAccess(), sup, model)
     )
     or
     // a custom InputStream that wraps a tainted data source is tainted
     model = "inputStreamWrapper" and
-    inputStreamWrapper(sink.getConstructor(), argi)
+    inputStreamWrapper(sink.getConstructor(), pragma[only_bind_into](argi))
     or
     model = "TaintPreservingCallable" and
-    sink.getConstructor().(TaintPreservingCallable).returnsTaintFrom(argToParam(sink, argi))
+    sink.getConstructor()
+        .(TaintPreservingCallable)
+        .returnsTaintFrom(argToParam(sink, pragma[only_bind_into](argi)))
   )
 }
 
@@ -483,9 +493,6 @@ class ObjectOutputStreamVar extends LocalVariableDecl {
     result.getQualifier() = this.getAnAccess() and
     result.getMethod().hasName("writeObject")
   }
-
-  /** DEPRECATED: Alias for `getAWriteObjectMethodCall`. */
-  deprecated MethodCall getAWriteObjectMethodAccess() { result = this.getAWriteObjectMethodCall() }
 }
 
 /** Flow through string formatting. */

@@ -6,6 +6,6 @@ module Impl {
    * An availability spec based on platform and version, for example `macOS 12` or `watchOS 14`
    */
   class PlatformVersionAvailabilitySpec extends Generated::PlatformVersionAvailabilitySpec {
-    override string toString() { result = this.getPlatform() + " " + this.getVersion() }
+    override string toStringImpl() { result = this.getPlatform() + " " + this.getVersion() }
   }
 }

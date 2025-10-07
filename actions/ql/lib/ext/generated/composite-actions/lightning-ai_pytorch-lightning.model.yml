@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["lightning-ai/pytorch-lightning", "*", "input.name", "code-injection", "generated"]
+     - ["lightning-ai/pytorch-lightning", "*", "input.pkg-folder", "code-injection", "generated"]
+     - ["lightning-ai/pytorch-lightning", "*", "input.pip-flags", "code-injection", "generated"]
+     - ["lightning-ai/pytorch-lightning", "*", "input.pkg-extra", "code-injection", "generated"]
+     - ["lightning-ai/pytorch-lightning", "*", "input.pkg-name", "code-injection", "generated"]
+     - ["lightning-ai/pytorch-lightning", "*", "input.nb-dirs", "code-injection", "generated"]
+     - ["lightning-ai/pytorch-lightning", "*", "input.wheel-dir", "code-injection", "generated"]
+     - ["lightning-ai/pytorch-lightning", "*", "input.torch-url", "code-injection", "generated"]

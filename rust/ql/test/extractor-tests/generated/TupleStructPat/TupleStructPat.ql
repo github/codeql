@@ -2,10 +2,12 @@
 import codeql.rust.elements
 import TestUtils
 
-from TupleStructPat x, int getNumberOfFields, string hasPath
-where
-  toBeTested(x) and
-  not x.isUnknown() and
-  getNumberOfFields = x.getNumberOfFields() and
-  if x.hasPath() then hasPath = "yes" else hasPath = "no"
-select x, "getNumberOfFields:", getNumberOfFields, "hasPath:", hasPath
+query predicate instances(TupleStructPat x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getPath(TupleStructPat x, Path getPath) {
+  toBeTested(x) and not x.isUnknown() and getPath = x.getPath()
+}
+
+query predicate getField(TupleStructPat x, int index, Pat getField) {
+  toBeTested(x) and not x.isUnknown() and getField = x.getField(index)
+}

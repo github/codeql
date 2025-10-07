@@ -11,6 +11,16 @@ edges
 | test.cpp:203:7:203:10 | pointer to free output argument | test.cpp:209:6:209:9 | data | provenance |  |
 | test.cpp:207:8:207:11 | pointer to free output argument | test.cpp:209:6:209:9 | data | provenance |  |
 | test.cpp:216:9:216:9 | pointer to operator delete output argument | test.cpp:217:6:217:6 | x | provenance |  |
+| test.cpp:243:7:243:7 | *s [post update] [i1, data] | test.cpp:248:6:248:6 | *s [i1, data] | provenance |  |
+| test.cpp:243:7:243:16 | pointer to free output argument | test.cpp:243:10:243:11 | *i1 [post update] [data] | provenance |  |
+| test.cpp:243:10:243:11 | *i1 [post update] [data] | test.cpp:243:7:243:7 | *s [post update] [i1, data] | provenance |  |
+| test.cpp:248:6:248:6 | *s [i1, data] | test.cpp:248:9:248:10 | *i1 [data] | provenance |  |
+| test.cpp:248:9:248:10 | *i1 [data] | test.cpp:248:12:248:15 | data | provenance |  |
+| test.cpp:250:7:250:7 | *s [post update] [*i2, data] | test.cpp:255:6:255:6 | *s [*i2, data] | provenance |  |
+| test.cpp:250:7:250:17 | pointer to free output argument | test.cpp:250:10:250:11 | *i2 [post update] [data] | provenance |  |
+| test.cpp:250:10:250:11 | *i2 [post update] [data] | test.cpp:250:7:250:7 | *s [post update] [*i2, data] | provenance |  |
+| test.cpp:255:6:255:6 | *s [*i2, data] | test.cpp:255:9:255:10 | *i2 [data] | provenance |  |
+| test.cpp:255:9:255:10 | *i2 [data] | test.cpp:255:13:255:16 | data | provenance |  |
 nodes
 | test.cpp:39:7:39:10 | pointer to free output argument | semmle.label | pointer to free output argument |
 | test.cpp:41:6:41:9 | data | semmle.label | data |
@@ -35,6 +45,18 @@ nodes
 | test.cpp:209:6:209:9 | data | semmle.label | data |
 | test.cpp:216:9:216:9 | pointer to operator delete output argument | semmle.label | pointer to operator delete output argument |
 | test.cpp:217:6:217:6 | x | semmle.label | x |
+| test.cpp:243:7:243:7 | *s [post update] [i1, data] | semmle.label | *s [post update] [i1, data] |
+| test.cpp:243:7:243:16 | pointer to free output argument | semmle.label | pointer to free output argument |
+| test.cpp:243:10:243:11 | *i1 [post update] [data] | semmle.label | *i1 [post update] [data] |
+| test.cpp:248:6:248:6 | *s [i1, data] | semmle.label | *s [i1, data] |
+| test.cpp:248:9:248:10 | *i1 [data] | semmle.label | *i1 [data] |
+| test.cpp:248:12:248:15 | data | semmle.label | data |
+| test.cpp:250:7:250:7 | *s [post update] [*i2, data] | semmle.label | *s [post update] [*i2, data] |
+| test.cpp:250:7:250:17 | pointer to free output argument | semmle.label | pointer to free output argument |
+| test.cpp:250:10:250:11 | *i2 [post update] [data] | semmle.label | *i2 [post update] [data] |
+| test.cpp:255:6:255:6 | *s [*i2, data] | semmle.label | *s [*i2, data] |
+| test.cpp:255:9:255:10 | *i2 [data] | semmle.label | *i2 [data] |
+| test.cpp:255:13:255:16 | data | semmle.label | data |
 subpaths
 #select
 | test.cpp:41:6:41:9 | data | test.cpp:39:7:39:10 | pointer to free output argument | test.cpp:41:6:41:9 | data | Memory may have been previously freed by $@. | test.cpp:39:2:39:5 | call to free | call to free |
@@ -49,3 +71,5 @@ subpaths
 | test.cpp:209:6:209:9 | data | test.cpp:203:7:203:10 | pointer to free output argument | test.cpp:209:6:209:9 | data | Memory may have been previously freed by $@. | test.cpp:203:2:203:5 | call to free | call to free |
 | test.cpp:209:6:209:9 | data | test.cpp:207:8:207:11 | pointer to free output argument | test.cpp:209:6:209:9 | data | Memory may have been previously freed by $@. | test.cpp:207:3:207:6 | call to free | call to free |
 | test.cpp:217:6:217:6 | x | test.cpp:216:9:216:9 | pointer to operator delete output argument | test.cpp:217:6:217:6 | x | Memory may have been previously freed by $@. | test.cpp:216:2:216:9 | delete | delete |
+| test.cpp:248:12:248:15 | data | test.cpp:243:7:243:16 | pointer to free output argument | test.cpp:248:12:248:15 | data | Memory may have been previously freed by $@. | test.cpp:243:2:243:5 | call to free | call to free |
+| test.cpp:255:13:255:16 | data | test.cpp:250:7:250:17 | pointer to free output argument | test.cpp:255:13:255:16 | data | Memory may have been previously freed by $@. | test.cpp:250:2:250:5 | call to free | call to free |

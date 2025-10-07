@@ -1,1 +1,2 @@
-Security/CWE-915/PrototypePollutingAssignment.ql
+query: Security/CWE-915/PrototypePollutingAssignment.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

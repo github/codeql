@@ -40,6 +40,7 @@ load(
 )
 load("@rules_kotlin//kotlin:core.bzl", "kt_javac_options", "kt_kotlinc_options")
 load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
+load("@rules_python//python:defs.bzl", "py_binary")
 
 package(default_visibility = ["//java/kotlin-extractor:__subpackages__"])
 
@@ -82,7 +83,7 @@ kt_javac_options(
                 "kotlin.RequiresOptIn",
                 "org.jetbrains.kotlin.ir.symbols.%s" %
                 ("IrSymbolInternals" if version_less(v, "2.0.0") else "UnsafeDuringIrConstructionAPI"),
-            ],
+            ] + ([] if version_less(v, "2.2.20") else ["org.jetbrains.kotlin.DeprecatedForRemovalCompilerApi"]),
             x_suppress_version_warnings = True,
         ),
         # * extractor.name is different for each version, so we need to put it in different output dirs

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.IO.Pipes, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.IO.Pipes, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace Microsoft
 {
     namespace Win32
@@ -58,6 +58,7 @@ namespace System
                 public NamedPipeClientStream(System.IO.Pipes.PipeDirection direction, bool isAsync, bool isConnected, Microsoft.Win32.SafeHandles.SafePipeHandle safePipeHandle) : base(default(System.IO.Pipes.PipeDirection), default(int)) => throw null;
                 public NamedPipeClientStream(string pipeName) : base(default(System.IO.Pipes.PipeDirection), default(int)) => throw null;
                 public NamedPipeClientStream(string serverName, string pipeName) : base(default(System.IO.Pipes.PipeDirection), default(int)) => throw null;
+                public NamedPipeClientStream(string serverName, string pipeName, System.IO.Pipes.PipeAccessRights desiredAccessRights, System.IO.Pipes.PipeOptions options, System.Security.Principal.TokenImpersonationLevel impersonationLevel, System.IO.HandleInheritability inheritability) : base(default(System.IO.Pipes.PipeDirection), default(int)) => throw null;
                 public NamedPipeClientStream(string serverName, string pipeName, System.IO.Pipes.PipeDirection direction) : base(default(System.IO.Pipes.PipeDirection), default(int)) => throw null;
                 public NamedPipeClientStream(string serverName, string pipeName, System.IO.Pipes.PipeDirection direction, System.IO.Pipes.PipeOptions options) : base(default(System.IO.Pipes.PipeDirection), default(int)) => throw null;
                 public NamedPipeClientStream(string serverName, string pipeName, System.IO.Pipes.PipeDirection direction, System.IO.Pipes.PipeOptions options, System.Security.Principal.TokenImpersonationLevel impersonationLevel) : base(default(System.IO.Pipes.PipeDirection), default(int)) => throw null;
@@ -82,6 +83,27 @@ namespace System
                 public void WaitForConnection() => throw null;
                 public System.Threading.Tasks.Task WaitForConnectionAsync() => throw null;
                 public System.Threading.Tasks.Task WaitForConnectionAsync(System.Threading.CancellationToken cancellationToken) => throw null;
+            }
+            [System.Flags]
+            public enum PipeAccessRights
+            {
+                ReadData = 1,
+                WriteData = 2,
+                CreateNewInstance = 4,
+                ReadExtendedAttributes = 8,
+                WriteExtendedAttributes = 16,
+                ReadAttributes = 128,
+                WriteAttributes = 256,
+                Write = 274,
+                Delete = 65536,
+                ReadPermissions = 131072,
+                Read = 131209,
+                ReadWrite = 131483,
+                ChangePermissions = 262144,
+                TakeOwnership = 524288,
+                Synchronize = 1048576,
+                FullControl = 2032031,
+                AccessSystemSecurity = 16777216,
             }
             public enum PipeDirection
             {

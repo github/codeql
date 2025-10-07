@@ -1,5 +1,5 @@
 import java
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import semmle.code.java.security.AndroidCertificatePinningQuery
 
 module Test implements TestSig {

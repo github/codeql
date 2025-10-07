@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.SpringCsrfProtection
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module SpringCsrfProtectionTest implements TestSig {
   string getARelevantTag() { result = "hasSpringCsrfProtectionDisabled" }

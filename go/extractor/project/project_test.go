@@ -39,35 +39,6 @@ func parseModFile(t *testing.T, contents string) *modfile.File {
 	return modFile
 }
 
-func testHasInvalidToolchainVersion(t *testing.T, contents string) bool {
-	return hasInvalidToolchainVersion(parseModFile(t, contents))
-}
-
-func TestHasInvalidToolchainVersion(t *testing.T) {
-	invalid := []string{
-		"go 1.21\n",
-		"go 1.22\n",
-	}
-
-	for _, v := range invalid {
-		if !testHasInvalidToolchainVersion(t, v) {
-			t.Errorf("Expected testHasInvalidToolchainVersion(\"%s\") to be true, but got false", v)
-		}
-	}
-
-	valid := []string{
-		"go 1.20\n",
-		"go 1.21.1\n",
-		"go 1.22\n\ntoolchain go1.22.0\n",
-	}
-
-	for _, v := range valid {
-		if testHasInvalidToolchainVersion(t, v) {
-			t.Errorf("Expected testHasInvalidToolchainVersion(\"%s\") to be false, but got true", v)
-		}
-	}
-}
-
 func parseWorkFile(t *testing.T, contents string) *modfile.WorkFile {
 	workFile, err := modfile.ParseWork("go.work", []byte(contents), nil)
 

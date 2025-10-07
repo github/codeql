@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["getsentry/action-release", "*", "input.working_directory", "code-injection", "generated"]

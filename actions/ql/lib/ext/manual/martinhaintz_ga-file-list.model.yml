@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSourceModel
+    data:
+      # https://github.com/martinhaintz/ga-file-list
+      - ["martinhaintz/ga-file-list", "*", "output.files", "filename", "manual"]
+      - ["martinhaintz/ga-file-list", "*", "output.file_names", "filename", "manual"]

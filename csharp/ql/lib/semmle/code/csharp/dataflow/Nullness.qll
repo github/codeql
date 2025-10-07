@@ -151,9 +151,7 @@ private predicate exprImpliesSsaDef(
  * If the returned element takes the `s` branch, then `def` is guaranteed to be
  * `null` if `nv.isNull()` holds, and non-`null` otherwise.
  */
-private ControlFlowElement getANullCheck(
-  Ssa::Definition def, SuccessorTypes::ConditionalSuccessor s, NullValue nv
-) {
+private ControlFlowElement getANullCheck(Ssa::Definition def, ConditionalSuccessor s, NullValue nv) {
   exists(Expr e, G::AbstractValue v | v.branch(result, s, e) | exprImpliesSsaDef(e, v, def, nv))
 }
 
@@ -294,10 +292,10 @@ private predicate defNullImpliesStep(
       bb2 = phi.getBasicBlock()
     )
   ) and
-  not exists(SuccessorTypes::ConditionalSuccessor s, NullValue nv |
+  not exists(ConditionalSuccessor s, NullValue nv |
     bb1.getLastNode() = getANullCheck(def1, s, nv).getAControlFlowNode()
   |
-    bb2 = bb1.getASuccessorByType(s) and
+    bb2 = bb1.getASuccessor(s) and
     nv.isNonNull()
   )
 }
@@ -526,7 +524,11 @@ class Dereference extends G::DereferenceableExpr {
         not underlyingType instanceof NullableType
       )
     ) else (
-      this = any(QualifiableExpr qe | not qe.isConditional()).getQualifier() and
+      this =
+        any(QualifiableExpr qe |
+          not qe.isConditional() and
+          not qe.(MethodCall).isImplicit()
+        ).getQualifier() and
       not this instanceof ThisAccess and
       not this instanceof BaseAccess and
       not this instanceof TypeAccess
@@ -540,8 +542,13 @@ class Dereference extends G::DereferenceableExpr {
         p.hasExtensionMethodModifier() and
         not emc.isConditional()
       |
-        p.fromSource() // assume all non-source extension methods perform a dereference
-        implies
+        // Assume all non-source extension methods on
+        // (1) nullable types are null-safe
+        // (2) non-nullable types are doing a dereference.
+        p.fromLibrary() and
+        not p.getAnnotatedType().isNullableRefType()
+        or
+        p.fromSource() and
         exists(
           Ssa::ImplicitParameterDefinition def,
           AssignableDefinitions::ImplicitParameterDefinition pdef

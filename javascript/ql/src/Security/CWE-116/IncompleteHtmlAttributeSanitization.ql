@@ -15,9 +15,9 @@
  */
 
 import javascript
-import DataFlow::PathGraph
 import semmle.javascript.security.dataflow.IncompleteHtmlAttributeSanitizationQuery
 import semmle.javascript.security.IncompleteBlacklistSanitizer
+import DataFlow::DeduplicatePathGraph<IncompleteHtmlAttributeSanitizationFlow::PathNode, IncompleteHtmlAttributeSanitizationFlow::PathGraph>
 
 /**
  * Gets a pretty string of the dangerous characters for `sink`.
@@ -31,8 +31,10 @@ string prettyPrintDangerousCharaters(Sink sink) {
     ).regexpReplaceAll(",(?=[^,]+$)", " or")
 }
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from PathNode source, PathNode sink
+where
+  IncompleteHtmlAttributeSanitizationFlow::flowPath(source.getAnOriginalPathNode(),
+    sink.getAnOriginalPathNode())
 select sink.getNode(), source, sink,
   // this message is slightly sub-optimal as we do not have an easy way
   // to get the flow labels that reach the sink, so the message includes

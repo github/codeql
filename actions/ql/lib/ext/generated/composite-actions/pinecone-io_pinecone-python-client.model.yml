@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["pinecone-io/pinecone-python-client", "*", "input.googleapis_common_protos_version", "code-injection", "generated"]
+     - ["pinecone-io/pinecone-python-client", "*", "input.protobuf_version", "code-injection", "generated"]
+     - ["pinecone-io/pinecone-python-client", "*", "input.lz4_version", "code-injection", "generated"]
+     - ["pinecone-io/pinecone-python-client", "*", "input.grpcio_version", "code-injection", "generated"]
+     - ["pinecone-io/pinecone-python-client", "*", "input.pinecone_client_version", "code-injection", "generated"]

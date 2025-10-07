@@ -9,10 +9,11 @@ private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AssocItemImpl::Impl as AssocItemImpl
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
-import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
+import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.Name
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.Visibility
+import codeql.rust.elements.WhereClause
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Const` and should not
@@ -20,14 +21,16 @@ import codeql.rust.elements.Visibility
  */
 module Generated {
   /**
-   * A Const. For example:
+   * A constant item declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * const X: i32 = 42;
    * ```
    * INTERNAL: Do not reference the `Generated::Const` class directly.
    * Use the subclass `Const`, where the following predicates are available.
    */
-  class Const extends Synth::TConst, AssocItemImpl::AssocItem, ItemImpl::Item {
+  class Const extends Synth::TConst, AssocItemImpl::AssocItem {
     override string getAPrimaryQlClass() { result = "Const" }
 
     /**
@@ -60,6 +63,21 @@ module Generated {
     final predicate hasBody() { exists(this.getBody()) }
 
     /**
+     * Gets the generic parameter list of this const, if it exists.
+     */
+    GenericParamList getGenericParamList() {
+      result =
+        Synth::convertGenericParamListFromRaw(Synth::convertConstToRaw(this)
+              .(Raw::Const)
+              .getGenericParamList())
+    }
+
+    /**
+     * Holds if `getGenericParamList()` exists.
+     */
+    final predicate hasGenericParamList() { exists(this.getGenericParamList()) }
+
+    /**
      * Holds if this const is const.
      */
     predicate isConst() { Synth::convertConstToRaw(this).(Raw::Const).isConst() }
@@ -82,16 +100,17 @@ module Generated {
     final predicate hasName() { exists(this.getName()) }
 
     /**
-     * Gets the ty of this const, if it exists.
+     * Gets the type representation of this const, if it exists.
      */
-    TypeRef getTy() {
-      result = Synth::convertTypeRefFromRaw(Synth::convertConstToRaw(this).(Raw::Const).getTy())
+    TypeRepr getTypeRepr() {
+      result =
+        Synth::convertTypeReprFromRaw(Synth::convertConstToRaw(this).(Raw::Const).getTypeRepr())
     }
 
     /**
-     * Holds if `getTy()` exists.
+     * Holds if `getTypeRepr()` exists.
      */
-    final predicate hasTy() { exists(this.getTy()) }
+    final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
 
     /**
      * Gets the visibility of this const, if it exists.
@@ -105,5 +124,30 @@ module Generated {
      * Holds if `getVisibility()` exists.
      */
     final predicate hasVisibility() { exists(this.getVisibility()) }
+
+    /**
+     * Gets the where clause of this const, if it exists.
+     */
+    WhereClause getWhereClause() {
+      result =
+        Synth::convertWhereClauseFromRaw(Synth::convertConstToRaw(this)
+              .(Raw::Const)
+              .getWhereClause())
+    }
+
+    /**
+     * Holds if `getWhereClause()` exists.
+     */
+    final predicate hasWhereClause() { exists(this.getWhereClause()) }
+
+    /**
+     * Holds if this constant has an implementation.
+     *
+     * This is the same as `hasBody` for source code, but for library code (for which we always skip
+     * the body), this will hold when the body was present in the original code.
+     */
+    predicate hasImplementation() {
+      Synth::convertConstToRaw(this).(Raw::Const).hasImplementation()
+    }
   }
 }

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Http.Features, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -80,6 +80,7 @@ namespace Microsoft
                 }
                 public interface IHttpMetricsTagsFeature
                 {
+                    bool MetricsDisabled { get; set; }
                     System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>> Tags { get; }
                 }
                 public interface IHttpRequestBodyDetectionFeature
@@ -387,6 +388,7 @@ namespace Microsoft
                 public bool DangerousEnableCompression { get => throw null; set { } }
                 public bool DisableServerContextTakeover { get => throw null; set { } }
                 public virtual System.TimeSpan? KeepAliveInterval { get => throw null; set { } }
+                public System.TimeSpan? KeepAliveTimeout { get => throw null; set { } }
                 public int ServerMaxWindowBits { get => throw null; set { } }
                 public virtual string SubProtocol { get => throw null; set { } }
             }

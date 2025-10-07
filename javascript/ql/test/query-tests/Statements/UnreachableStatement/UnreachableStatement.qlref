@@ -1,1 +1,2 @@
-Statements/UnreachableStatement.ql
+query: Statements/UnreachableStatement.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

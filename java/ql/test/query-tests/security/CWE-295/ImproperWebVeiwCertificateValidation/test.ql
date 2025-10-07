@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.AndroidWebViewCertificateValidationQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module WebViewTest implements TestSig {
   string getARelevantTag() { result = "hasResult" }

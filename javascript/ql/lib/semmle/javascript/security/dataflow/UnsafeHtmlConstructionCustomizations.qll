@@ -13,6 +13,7 @@ module UnsafeHtmlConstruction {
   private import semmle.javascript.security.dataflow.DomBasedXssCustomizations::DomBasedXss as DomBasedXss
   private import semmle.javascript.security.dataflow.UnsafeJQueryPluginCustomizations::UnsafeJQueryPlugin as UnsafeJQueryPlugin
   private import semmle.javascript.PackageExports as Exports
+  import semmle.javascript.security.CommonFlowState
 
   /**
    * A source for unsafe HTML constructed from library input.
@@ -59,6 +60,41 @@ module UnsafeHtmlConstruction {
      * Gets a string describing the transformation that this sink represents.
      */
     abstract string describe();
+  }
+
+  /**
+   * A barrier guard for unsafe HTML constructed from library input vulnerabilities.
+   */
+  abstract class BarrierGuard extends DataFlow::Node {
+    /**
+     * Holds if this node acts as a barrier for data flow, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e) { none() }
+
+    /**
+     * Holds if this node acts as a barrier for `state`, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e, FlowState state) { none() }
+
+    /** DEPRECATED. Use `blocksExpr` instead. */
+    deprecated predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+
+    /** DEPRECATED. Use `blocksExpr` instead. */
+    deprecated predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      this.blocksExpr(outcome, e, FlowState::fromFlowLabel(label))
+    }
+  }
+
+  /** A subclass of `BarrierGuard` that is used for backward compatibility with the old data flow library. */
+  deprecated final private class BarrierGuardLegacy extends TaintTracking::SanitizerGuardNode instanceof BarrierGuard
+  {
+    override predicate sanitizes(boolean outcome, Expr e) {
+      BarrierGuard.super.sanitizes(outcome, e)
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      BarrierGuard.super.sanitizes(outcome, e, label)
+    }
   }
 
   /**
@@ -176,17 +212,17 @@ module UnsafeHtmlConstruction {
   }
 
   /** A test for the value of `typeof x`, restricting the potential types of `x`. */
-  class TypeTestGuard extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::ValueNode {
+  class TypeTestGuard extends BarrierGuard, DataFlow::ValueNode {
     override EqualityTest astNode;
     Expr operand;
     boolean polarity;
 
     TypeTestGuard() { TaintTracking::isStringTypeGuard(astNode, operand, polarity) }
 
-    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
+    override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
       polarity = outcome and
       e = operand and
-      lbl.isTaint()
+      state.isTaint()
     }
   }
 }

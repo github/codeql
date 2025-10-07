@@ -1,6 +1,8 @@
 /**
  * Provides the module `Ssa` for working with static single assignment (SSA) form.
  */
+overlay[local]
+module;
 
 /**
  * Provides classes for working with static single assignment (SSA) form.
@@ -102,7 +104,7 @@ module Ssa {
      * end
      * ```
      */
-    final VariableReadAccessCfgNode getALastRead() { SsaImpl::lastRead(this, result) }
+    deprecated final VariableReadAccessCfgNode getALastRead() { SsaImpl::lastRead(this, result) }
 
     /**
      * Holds if `read1` and `read2` are adjacent reads of this SSA definition.

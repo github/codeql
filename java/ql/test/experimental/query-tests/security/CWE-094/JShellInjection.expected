@@ -1,7 +1,3 @@
-#select
-| JShellInjection.java:15:15:15:19 | input | JShellInjection.java:12:18:12:45 | getParameter(...) : String | JShellInjection.java:15:15:15:19 | input | JShell injection from $@. | JShellInjection.java:12:18:12:45 | getParameter(...) | this user input |
-| JShellInjection.java:24:31:24:35 | input | JShellInjection.java:20:18:20:45 | getParameter(...) : String | JShellInjection.java:24:31:24:35 | input | JShell injection from $@. | JShellInjection.java:20:18:20:45 | getParameter(...) | this user input |
-| JShellInjection.java:37:16:37:28 | source(...) | JShellInjection.java:29:18:29:45 | getParameter(...) : String | JShellInjection.java:37:16:37:28 | source(...) | JShell injection from $@. | JShellInjection.java:29:18:29:45 | getParameter(...) | this user input |
 edges
 | JShellInjection.java:12:18:12:45 | getParameter(...) : String | JShellInjection.java:15:15:15:19 | input | provenance | Src:MaD:1  |
 | JShellInjection.java:20:18:20:45 | getParameter(...) : String | JShellInjection.java:24:31:24:35 | input | provenance | Src:MaD:1  |
@@ -28,4 +24,8 @@ nodes
 | JShellInjection.java:35:34:35:49 | remaining(...) : String | semmle.label | remaining(...) : String |
 | JShellInjection.java:37:16:37:19 | info : CompletionInfo | semmle.label | info : CompletionInfo |
 | JShellInjection.java:37:16:37:28 | source(...) | semmle.label | source(...) |
+problems
+| JShellInjection.java:15:15:15:19 | input | JShellInjection.java:12:18:12:45 | getParameter(...) : String | JShellInjection.java:15:15:15:19 | input | JShell injection from $@. | JShellInjection.java:12:18:12:45 | getParameter(...) | this user input |
+| JShellInjection.java:24:31:24:35 | input | JShellInjection.java:20:18:20:45 | getParameter(...) : String | JShellInjection.java:24:31:24:35 | input | JShell injection from $@. | JShellInjection.java:20:18:20:45 | getParameter(...) | this user input |
+| JShellInjection.java:37:16:37:28 | source(...) | JShellInjection.java:29:18:29:45 | getParameter(...) : String | JShellInjection.java:37:16:37:28 | source(...) | JShell injection from $@. | JShellInjection.java:29:18:29:45 | getParameter(...) | this user input |
 subpaths

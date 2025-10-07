@@ -52,6 +52,7 @@ extensions:
       - ["std", "list", True, "list", "(const list &)", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
       - ["std", "list", True, "list", "(list &&)", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
       - ["std", "list", True, "operator=", "", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["std", "list", True, "operator=", "", "", "Argument[*0].Element[@]", "ReturnValue[*].Element[@]", "value", "manual"]
       - ["std", "list", True, "push_back", "", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
       - ["std", "list", True, "push_front", "", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
       - ["std", "list", True, "rbegin", "", "", "Argument[-1].Element[@]", "ReturnValue.Element[@]", "value", "manual"]

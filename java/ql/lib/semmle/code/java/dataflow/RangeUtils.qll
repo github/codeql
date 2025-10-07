@@ -1,15 +1,17 @@
 /**
  * Provides utility predicates for range analysis.
  */
+overlay[local?]
+module;
 
 import java
 private import SSA
-private import semmle.code.java.controlflow.internal.GuardsLogic
+private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.Constants
 private import semmle.code.java.dataflow.RangeAnalysis
 private import codeql.rangeanalysis.internal.RangeUtils
 
-private module U = MakeUtils<Sem, IntDelta>;
+private module U = MakeUtils<Location, Sem, IntDelta>;
 
 private predicate backEdge = U::backEdge/3;
 
@@ -18,8 +20,6 @@ predicate ssaRead = U::ssaRead/2;
 predicate ssaUpdateStep = U::ssaUpdateStep/3;
 
 predicate valueFlowStep = U::valueFlowStep/3;
-
-predicate guardDirectlyControlsSsaRead = U::guardDirectlyControlsSsaRead/3;
 
 predicate guardControlsSsaRead = U::guardControlsSsaRead/3;
 

@@ -11,7 +11,7 @@ import codeql.rust.elements.Expr
 import codeql.rust.elements.LetElse
 import codeql.rust.elements.Pat
 import codeql.rust.elements.internal.StmtImpl::Impl as StmtImpl
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 
 /**
  * INTERNAL: This module contains the fully generated definition of `LetStmt` and should not
@@ -81,7 +81,7 @@ module Generated {
     final predicate hasLetElse() { exists(this.getLetElse()) }
 
     /**
-     * Gets the pat of this let statement, if it exists.
+     * Gets the pattern of this let statement, if it exists.
      */
     Pat getPat() {
       result = Synth::convertPatFromRaw(Synth::convertLetStmtToRaw(this).(Raw::LetStmt).getPat())
@@ -93,15 +93,16 @@ module Generated {
     final predicate hasPat() { exists(this.getPat()) }
 
     /**
-     * Gets the ty of this let statement, if it exists.
+     * Gets the type representation of this let statement, if it exists.
      */
-    TypeRef getTy() {
-      result = Synth::convertTypeRefFromRaw(Synth::convertLetStmtToRaw(this).(Raw::LetStmt).getTy())
+    TypeRepr getTypeRepr() {
+      result =
+        Synth::convertTypeReprFromRaw(Synth::convertLetStmtToRaw(this).(Raw::LetStmt).getTypeRepr())
     }
 
     /**
-     * Holds if `getTy()` exists.
+     * Holds if `getTypeRepr()` exists.
      */
-    final predicate hasTy() { exists(this.getTy()) }
+    final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
   }
 }

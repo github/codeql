@@ -6,10 +6,10 @@
 private import internal.CastExprImpl
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 
 /**
- * A cast expression. For example:
+ * A type cast expression. For example:
  * ```rust
  * value as u64;
  * ```

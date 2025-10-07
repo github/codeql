@@ -40,7 +40,7 @@ module CleartextLogging {
    * An argument to a logging mechanism.
    */
   class LoggerSink extends Sink {
-    LoggerSink() { this = any(LoggerCall log).getAMessageComponent() }
+    LoggerSink() { this = any(LoggerCall log).getAValueFormattedMessageComponent() }
   }
 
   /**
@@ -54,6 +54,8 @@ module CleartextLogging {
         name.regexpMatch("(?i).*err(or)?.*")
       |
         this.asExpr().(Ident).getName() = name
+        or
+        this.(DataFlow::SsaNode).getSourceVariable().getName() = name
         or
         this.(DataFlow::FieldReadNode).getFieldName() = name
         or
@@ -143,7 +145,7 @@ module CleartextLogging {
       not this instanceof NonCleartextPassword and
       name.regexpMatch(maybePassword()) and
       (
-        this.asExpr().(Ident).getName() = name
+        this.(DataFlow::SsaNode).getSourceVariable().getName() = name
         or
         exists(DataFlow::FieldReadNode fn |
           fn = this and

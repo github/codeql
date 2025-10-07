@@ -17,8 +17,9 @@ type I2 interface {
 
 // A struct type implementing I1
 type S1 struct {
-	SourceField string
-	SinkField   string
+	SourceField   string
+	SinkField     string
+	UniqueFieldS1 int // this only exists to make this struct type different from other struct types
 }
 
 func (t S1) Source() interface{} {
@@ -33,8 +34,9 @@ func (t S1) Step(val interface{}) interface{} {
 
 // A struct type whose pointer type implements I1
 type P1 struct {
-	SourceField string
-	SinkField   string
+	SourceField   string
+	SinkField     string
+	UniqueFieldP1 int // this only exists to make this struct type different from other struct types
 }
 
 func (t *P1) Source() interface{} {
@@ -48,7 +50,9 @@ func (t *P1) Step(val interface{}) interface{} {
 }
 
 // A struct type implementing I2
-type S2 struct{}
+type S2 struct {
+	UniqueFieldS2 int // this only exists to make this struct type different from other struct types
+}
 
 func (t S2) Source() interface{} {
 	return nil
@@ -80,8 +84,9 @@ func (t *P2) ExtraMethodI2() {}
 // A struct type embedding I1
 type SEmbedI1 struct {
 	I1
-	SourceField string
-	SinkField   string
+	SourceField         string
+	SinkField           string
+	UniqueFieldSEmbedI1 int // this only exists to make this struct type different from other struct types
 }
 
 // A struct type embedding I2
@@ -103,8 +108,9 @@ type IEmbedI2 interface {
 // methods of the embedded field are not promoted.
 type SImplEmbedI1 struct {
 	I1
-	SourceField string
-	SinkField   string
+	SourceField             string
+	SinkField               string
+	UniqueFieldSImplEmbedI1 int // this only exists to make this struct type different from other struct types
 }
 
 func (t SImplEmbedI1) Source() interface{} {
@@ -119,7 +125,10 @@ func (t SImplEmbedI1) Step(val interface{}) interface{} {
 
 // A struct type embedding I2 and separately implementing its methods, so the
 // methods of the embedded field are not promoted.
-type SImplEmbedI2 struct{ I2 }
+type SImplEmbedI2 struct {
+	I2
+	UniqueFieldSImplEmbedI2 int // this only exists to make this struct type different from other struct types
+}
 
 func (t SImplEmbedI2) Source() interface{} {
 	return nil
@@ -137,8 +146,9 @@ func (t SImplEmbedI2) ExtraMethodI2() {}
 // pointer type, so the methods of the embedded field are not promoted.
 type PImplEmbedI1 struct {
 	I1
-	SourceField string
-	SinkField   string
+	SourceField             string
+	SinkField               string
+	UniqueFieldPImplEmbedI1 int // this only exists to make this struct type different from other struct types
 }
 
 func (t *PImplEmbedI1) Source() interface{} {
@@ -195,8 +205,9 @@ type SEmbedPtrP2 struct{ *P2 }
 // fields, so the methods and fields of the embedded field are not promoted.
 type SImplEmbedS1 struct {
 	S1
-	SourceField string
-	SinkField   string
+	SourceField             string
+	SinkField               string
+	UniqueFieldSImplEmbedS1 int // this only exists to make this struct type different from other struct types
 }
 
 func (t *SImplEmbedS1) Source() interface{} {
@@ -211,7 +222,10 @@ func (t *SImplEmbedS1) Step(val interface{}) interface{} {
 
 // A struct type embedding S2 and separately implementing I2's methods, so the
 // methods of the embedded field are not promoted.
-type SImplEmbedS2 struct{ S2 }
+type SImplEmbedS2 struct {
+	S2
+	UniqueFieldSImplEmbedS2 int // this only exists to make this struct type different from other struct types
+}
 
 func (t *SImplEmbedS2) Source() interface{} {
 	return nil
@@ -228,8 +242,9 @@ func (t *SImplEmbedS2) ExtraMethodI2() {}
 // A struct type embedding SEmbedI1
 type SEmbedSEmbedI1 struct {
 	SEmbedI1
-	SourceField string
-	SinkField   string
+	SourceField               string
+	SinkField                 string
+	UniqueFieldSEmbedSEmbedI1 int // this only exists to make this struct type different from other struct types
 }
 
 // A struct type embedding SEmbedS1
@@ -248,4 +263,5 @@ type SEmbedPtrSEmbedPtrS1 struct{ *SEmbedPtrS1 }
 type SEmbedS1AndSEmbedS1 struct {
 	S1
 	SEmbedS1
+	UniqueFieldSEmbedS1AndSEmbedS1 int // this only exists to make this struct type different from other struct types
 }

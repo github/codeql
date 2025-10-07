@@ -1,11 +1,16 @@
 // This file contains auto-generated code.
-// Generated from `System.IO.Compression.Brotli, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`.
+// Generated from `System.IO.Compression.Brotli, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`.
 namespace System
 {
     namespace IO
     {
         namespace Compression
         {
+            public sealed class BrotliCompressionOptions
+            {
+                public BrotliCompressionOptions() => throw null;
+                public int Quality { get => throw null; set { } }
+            }
             public struct BrotliDecoder : System.IDisposable
             {
                 public System.Buffers.OperationStatus Decompress(System.ReadOnlySpan<byte> source, System.Span<byte> destination, out int bytesConsumed, out int bytesWritten) => throw null;
@@ -30,6 +35,7 @@ namespace System
                 public override bool CanRead { get => throw null; }
                 public override bool CanSeek { get => throw null; }
                 public override bool CanWrite { get => throw null; }
+                public BrotliStream(System.IO.Stream stream, System.IO.Compression.BrotliCompressionOptions compressionOptions, bool leaveOpen = default(bool)) => throw null;
                 public BrotliStream(System.IO.Stream stream, System.IO.Compression.CompressionLevel compressionLevel) => throw null;
                 public BrotliStream(System.IO.Stream stream, System.IO.Compression.CompressionLevel compressionLevel, bool leaveOpen) => throw null;
                 public BrotliStream(System.IO.Stream stream, System.IO.Compression.CompressionMode mode) => throw null;

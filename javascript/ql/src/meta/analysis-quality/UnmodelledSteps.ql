@@ -24,8 +24,6 @@ predicate unmodeled(API::Node callee, API::CallNode call, DataFlow::Node pred, D
     or
     DataFlow::SharedFlowStep::step(_, succ)
     or
-    DataFlow::SharedFlowStep::step(_, succ, _, _)
-    or
     DataFlow::SharedFlowStep::loadStep(_, succ, _)
     or
     DataFlow::SharedFlowStep::storeStep(_, succ, _)

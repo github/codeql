@@ -10,3 +10,4 @@ extensions:
       - ["github.com/nonexistent/test", "A", False, "SrcArg", "", "", "Argument[0]", "qltest-arg", "manual"]
       - ["github.com/nonexistent/test", "A", False, "Src3", "", "", "ReturnValue[0]", "qltest", "manual"]
       - ["github.com/nonexistent/test", "A", True, "Src3", "", "", "ReturnValue[1]", "qltest-w-subtypes", "manual"]
+      - ["semmle.go.Packages", "", True, "srcParam", "", "", "Parameter[0]", "qltest", "manual"]

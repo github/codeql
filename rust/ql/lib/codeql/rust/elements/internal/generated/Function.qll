@@ -12,9 +12,8 @@ import codeql.rust.elements.BlockExpr
 import codeql.rust.elements.internal.CallableImpl::Impl as CallableImpl
 import codeql.rust.elements.internal.ExternItemImpl::Impl as ExternItemImpl
 import codeql.rust.elements.GenericParamList
-import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
 import codeql.rust.elements.Name
-import codeql.rust.elements.RetType
+import codeql.rust.elements.RetTypeRepr
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 
@@ -38,7 +37,7 @@ module Generated {
    * Use the subclass `Function`, where the following predicates are available.
    */
   class Function extends Synth::TFunction, AssocItemImpl::AssocItem, ExternItemImpl::ExternItem,
-    ItemImpl::Item, CallableImpl::Callable
+    CallableImpl::Callable
   {
     override string getAPrimaryQlClass() { result = "Function" }
 
@@ -123,9 +122,11 @@ module Generated {
     /**
      * Gets the ret type of this function, if it exists.
      */
-    RetType getRetType() {
+    RetTypeRepr getRetType() {
       result =
-        Synth::convertRetTypeFromRaw(Synth::convertFunctionToRaw(this).(Raw::Function).getRetType())
+        Synth::convertRetTypeReprFromRaw(Synth::convertFunctionToRaw(this)
+              .(Raw::Function)
+              .getRetType())
     }
 
     /**
@@ -162,5 +163,15 @@ module Generated {
      * Holds if `getWhereClause()` exists.
      */
     final predicate hasWhereClause() { exists(this.getWhereClause()) }
+
+    /**
+     * Holds if this function has an implementation.
+     *
+     * This is the same as `hasBody` for source code, but for library code (for which we always skip
+     * the body), this will hold when the body was present in the original code.
+     */
+    predicate hasImplementation() {
+      Synth::convertFunctionToRaw(this).(Raw::Function).hasImplementation()
+    }
   }
 }

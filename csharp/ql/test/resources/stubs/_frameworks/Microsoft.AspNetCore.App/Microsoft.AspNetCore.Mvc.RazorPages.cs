@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Mvc.RazorPages, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Mvc.RazorPages, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -10,6 +10,10 @@ namespace Microsoft
             {
                 public void Add(System.Action<Microsoft.AspNetCore.Builder.EndpointBuilder> convention) => throw null;
                 public void Finally(System.Action<Microsoft.AspNetCore.Builder.EndpointBuilder> finalConvention) => throw null;
+            }
+            public static partial class PageActionEndpointConventionBuilderResourceCollectionExtensions
+            {
+                public static Microsoft.AspNetCore.Builder.PageActionEndpointConventionBuilder WithStaticAssets(this Microsoft.AspNetCore.Builder.PageActionEndpointConventionBuilder builder, string manifestPath = default(string)) => throw null;
             }
             public static partial class RazorPagesEndpointRouteBuilderExtensions
             {

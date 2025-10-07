@@ -9,7 +9,7 @@ app.listen(port, () => {
 });
 
 app.post('/upload', (req, res) => {
-    zipBomb(req.files.zipBombFile.data)
+    zipBomb(req.files.zipBombFile.data) // $ Source
     zipBombSafe(req.files.zipBombFile.data)
     res.send("OK")
 });
@@ -30,7 +30,7 @@ function zipBombSafe(zipFile) {
 }
 
 function zipBomb(zipFile) {
-    jszipp.loadAsync(zipFile.data).then(function (zip) {
+    jszipp.loadAsync(zipFile.data).then(function (zip) { // $ Alert
         zip.files["10GB"].async("uint8array").then(function (u8) {
             console.log(u8);
         });

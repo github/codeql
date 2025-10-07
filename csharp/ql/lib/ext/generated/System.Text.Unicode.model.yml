@@ -7,14 +7,14 @@ extensions:
       - ["System.Text.Unicode", "Utf8+TryWriteInterpolatedStringHandler", False, "TryWriteInterpolatedStringHandler", "(System.Int32,System.Int32,System.Span<System.Byte>,System.Boolean)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
       - ["System.Text.Unicode", "Utf8+TryWriteInterpolatedStringHandler", False, "TryWriteInterpolatedStringHandler", "(System.Int32,System.Int32,System.Span<System.Byte>,System.IFormatProvider,System.Boolean)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
       - ["System.Text.Unicode", "Utf8+TryWriteInterpolatedStringHandler", False, "TryWriteInterpolatedStringHandler", "(System.Int32,System.Int32,System.Span<System.Byte>,System.IFormatProvider,System.Boolean)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Text.Unicode", "Utf8", False, "TryWrite", "(System.Span<System.Byte>,System.IFormatProvider,System.Text.Unicode.Utf8+TryWriteInterpolatedStringHandler,System.Int32)", "", "Argument[2]", "ReturnValue", "value", "dfc-generated"]
-      - ["System.Text.Unicode", "Utf8", False, "TryWrite", "(System.Span<System.Byte>,System.Text.Unicode.Utf8+TryWriteInterpolatedStringHandler,System.Int32)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["System.Text.Unicode", "UnicodeRange", "Create", "(System.Char,System.Char)", "summary", "df-generated"]
       - ["System.Text.Unicode", "UnicodeRange", "UnicodeRange", "(System.Int32,System.Int32)", "summary", "df-generated"]
+      - ["System.Text.Unicode", "UnicodeRange", "get_FirstCodePoint", "()", "summary", "df-generated"]
+      - ["System.Text.Unicode", "UnicodeRange", "get_Length", "()", "summary", "df-generated"]
       - ["System.Text.Unicode", "UnicodeRanges", "get_All", "()", "summary", "df-generated"]
       - ["System.Text.Unicode", "UnicodeRanges", "get_AlphabeticPresentationForms", "()", "summary", "df-generated"]
       - ["System.Text.Unicode", "UnicodeRanges", "get_Arabic", "()", "summary", "df-generated"]
@@ -192,3 +192,5 @@ extensions:
       - ["System.Text.Unicode", "Utf8", "FromUtf16", "(System.ReadOnlySpan<System.Char>,System.Span<System.Byte>,System.Int32,System.Int32,System.Boolean,System.Boolean)", "summary", "df-generated"]
       - ["System.Text.Unicode", "Utf8", "IsValid", "(System.ReadOnlySpan<System.Byte>)", "summary", "df-generated"]
       - ["System.Text.Unicode", "Utf8", "ToUtf16", "(System.ReadOnlySpan<System.Byte>,System.Span<System.Char>,System.Int32,System.Int32,System.Boolean,System.Boolean)", "summary", "df-generated"]
+      - ["System.Text.Unicode", "Utf8", "TryWrite", "(System.Span<System.Byte>,System.IFormatProvider,System.Text.Unicode.Utf8+TryWriteInterpolatedStringHandler,System.Int32)", "summary", "df-generated"]
+      - ["System.Text.Unicode", "Utf8", "TryWrite", "(System.Span<System.Byte>,System.Text.Unicode.Utf8+TryWriteInterpolatedStringHandler,System.Int32)", "summary", "df-generated"]

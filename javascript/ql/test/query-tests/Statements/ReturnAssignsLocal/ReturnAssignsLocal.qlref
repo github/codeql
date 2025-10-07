@@ -1,1 +1,2 @@
-Statements/ReturnAssignsLocal.ql
+query: Statements/ReturnAssignsLocal.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

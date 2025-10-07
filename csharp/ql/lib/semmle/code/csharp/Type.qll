@@ -48,6 +48,13 @@ class Type extends Member, TypeContainer, @type {
 
   /** Holds if this type is a value type, or a type parameter that is a value type. */
   predicate isValueType() { none() }
+
+  /**
+   * Holds if this type is a ref like type.
+   *
+   * Only `ref struct` types are considered ref like types.
+   */
+  predicate isRefLikeType() { none() }
 }
 
 pragma[nomagic]
@@ -131,6 +138,9 @@ class ValueOrRefType extends Type, Attributable, @value_or_ref_type {
   /** Gets an immediate subtype of this type, if any. */
   ValueOrRefType getASubType() { result.getABaseType() = this }
 
+  /** Gets an immediate supertype of this type, if any. */
+  ValueOrRefType getASuperType() { this.getABaseType() = result }
+
   /** Gets a member of this type, if any. */
   Member getAMember() { result.getDeclaringType() = this }
 
@@ -191,7 +201,7 @@ class ValueOrRefType extends Type, Attributable, @value_or_ref_type {
    */
   pragma[inline]
   predicate hasCallable(Callable c) {
-    this.hasMethod(c)
+    this.hasMember(c)
     or
     this.hasMember(c.(Accessor).getDeclaration())
   }
@@ -704,13 +714,34 @@ class Enum extends ValueType, @enum_type {
  * ```
  */
 class Struct extends ValueType, @struct_type {
-  /** Holds if this `struct` has a `ref` modifier. */
-  predicate isRef() { this.hasModifier("ref") }
+  /**
+   * DEPRECATED: Use `instanceof RefStruct` instead.
+   *
+   * Holds if this `struct` has a `ref` modifier.
+   */
+  deprecated predicate isRef() { this.hasModifier("ref") }
 
   /** Holds if this `struct` has a `readonly` modifier. */
   predicate isReadonly() { this.hasModifier("readonly") }
 
   override string getAPrimaryQlClass() { result = "Struct" }
+}
+
+/**
+ * A `ref struct`, for example
+ *
+ * ```csharp
+ * ref struct S {
+ *  ...
+ * }
+ * ```
+ */
+class RefStruct extends Struct {
+  RefStruct() { this.hasModifier("ref") }
+
+  override string getAPrimaryQlClass() { result = "RefStruct" }
+
+  override predicate isRefLikeType() { any() }
 }
 
 /**
@@ -1186,6 +1217,8 @@ class ArglistType extends Type, @arglist_type {
 class UnknownType extends Type, @unknown_type {
   /** Holds if this is the canonical unknown type, and not a type that failed to extract properly. */
   predicate isCanonical() { types(this, _, "<unknown type>") }
+
+  override string getAPrimaryQlClass() { result = "UnknownType" }
 }
 
 /**

@@ -59,6 +59,15 @@ module TaintedPermissionsCheckFlowConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(PermissionsConstruction p).getInput()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(PermissionsConstruction p |
+      sink.asExpr() = p.getInput() and
+      result = p.getLocation()
+    )
+  }
 }
 
 /** Tracks flow from user input to a permissions check. */

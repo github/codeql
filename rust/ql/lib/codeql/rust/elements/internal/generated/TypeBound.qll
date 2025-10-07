@@ -7,9 +7,10 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
-import codeql.rust.elements.GenericParamList
+import codeql.rust.elements.ForBinder
 import codeql.rust.elements.Lifetime
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
+import codeql.rust.elements.UseBoundGenericArgs
 
 /**
  * INTERNAL: This module contains the fully generated definition of `TypeBound` and should not
@@ -17,9 +18,14 @@ import codeql.rust.elements.TypeRef
  */
 module Generated {
   /**
-   * A TypeBound. For example:
+   * A type bound in a trait or generic parameter.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<T: Debug>(t: T) {}
+   * //        ^^^^^
+   * fn bar(value: impl for<'a> From<&'a str>) {}
+   * //                 ^^^^^^^^^^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::TypeBound` class directly.
    * Use the subclass `TypeBound`, where the following predicates are available.
@@ -28,19 +34,19 @@ module Generated {
     override string getAPrimaryQlClass() { result = "TypeBound" }
 
     /**
-     * Gets the generic parameter list of this type bound, if it exists.
+     * Gets the for binder of this type bound, if it exists.
      */
-    GenericParamList getGenericParamList() {
+    ForBinder getForBinder() {
       result =
-        Synth::convertGenericParamListFromRaw(Synth::convertTypeBoundToRaw(this)
+        Synth::convertForBinderFromRaw(Synth::convertTypeBoundToRaw(this)
               .(Raw::TypeBound)
-              .getGenericParamList())
+              .getForBinder())
     }
 
     /**
-     * Holds if `getGenericParamList()` exists.
+     * Holds if `getForBinder()` exists.
      */
-    final predicate hasGenericParamList() { exists(this.getGenericParamList()) }
+    final predicate hasForBinder() { exists(this.getForBinder()) }
 
     /**
      * Holds if this type bound is async.
@@ -68,16 +74,33 @@ module Generated {
     final predicate hasLifetime() { exists(this.getLifetime()) }
 
     /**
-     * Gets the ty of this type bound, if it exists.
+     * Gets the type representation of this type bound, if it exists.
      */
-    TypeRef getTy() {
+    TypeRepr getTypeRepr() {
       result =
-        Synth::convertTypeRefFromRaw(Synth::convertTypeBoundToRaw(this).(Raw::TypeBound).getTy())
+        Synth::convertTypeReprFromRaw(Synth::convertTypeBoundToRaw(this)
+              .(Raw::TypeBound)
+              .getTypeRepr())
     }
 
     /**
-     * Holds if `getTy()` exists.
+     * Holds if `getTypeRepr()` exists.
      */
-    final predicate hasTy() { exists(this.getTy()) }
+    final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
+
+    /**
+     * Gets the use bound generic arguments of this type bound, if it exists.
+     */
+    UseBoundGenericArgs getUseBoundGenericArgs() {
+      result =
+        Synth::convertUseBoundGenericArgsFromRaw(Synth::convertTypeBoundToRaw(this)
+              .(Raw::TypeBound)
+              .getUseBoundGenericArgs())
+    }
+
+    /**
+     * Holds if `getUseBoundGenericArgs()` exists.
+     */
+    final predicate hasUseBoundGenericArgs() { exists(this.getUseBoundGenericArgs()) }
   }
 }

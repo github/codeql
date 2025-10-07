@@ -1,0 +1,136 @@
+name: Poutine Level 0
+on:
+  issues:
+    types: [opened, edited]
+  issue_comment:
+    types: [created, edited]
+  pull_request_target:
+    types: [opened, synchronize]
+    branches:
+      - main
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  fries:
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    if: github.event_name == 'issues'
+    permissions:
+      id-token: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      FLAG_GRAVY_OVERFLOW_L0_FRIES: ${{ secrets.FLAG_GRAVY_OVERFLOW_L0_FRIES }}
+    steps:
+      - uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+        with:
+          egress-policy: audit
+      - uses: rlespinasse/github-slug-action@v4
+        with:
+          short-length: 8
+      - name: Check for profanities in issue body
+        id: check_profanities
+        run: |
+          echo "Checking issue body for profanities..."
+          PROFANITIES_LIST="bad|disguting|horrible"
+          if echo "${{ github.event.issue.body }}" | grep -qiE "$PROFANITIES_LIST"; then
+            echo "Profanity detected in issue body. Please clean up the language."
+            exit 1
+          else
+            echo "No profanities found in issue body."
+            exit 0
+          fi
+
+  cheddar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    if: github.event_name == 'issue_comment'
+    permissions:
+      id-token: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      FLAG_GRAVY_OVERFLOW_L0_CHEDDAR: ${{ secrets.FLAG_GRAVY_OVERFLOW_L0_CHEDDAR }}
+    steps:
+      - uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+        with:
+          egress-policy: audit
+      - name: Mini Chat Bot
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const commentBody = "${{ github.event.comment.body }}";
+            let response;
+            if (commentBody.includes("hello")) {
+              response = "Hello! How can I help you today?";
+            } else if (commentBody.includes("help")) {
+              response = "Sure, what do you need help with?";
+            } else {
+              response = "Sorry, I didn't understand that. Can you try again?";
+            }
+
+            github.rest.issues.createComment({
+              issue_number: context.payload.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: response
+            });
+
+  gravy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    if: github.event_name == 'pull_request_target'
+    permissions:
+      id-token: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      FLAG_GRAVY_OVERFLOW_L0_GRAVY: ${{ secrets.FLAG_GRAVY_OVERFLOW_L0_GRAVY }}
+    steps:
+      - uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+        with:
+          egress-policy: audit
+      - name: Checkout PR code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21
+      - run: |
+          npm install
+          npm run lint
+          npm start
+
+  toppings:
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    if: github.event_name == 'pull_request'
+    permissions:
+      id-token: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      FLAG_GRAVY_OVERFLOW_L0_TOPPINGS: ${{ secrets.FLAG_GRAVY_OVERFLOW_L0_TOPPINGS }}
+    steps:
+      - uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+        with:
+          egress-policy: audit
+      - name: Checkout PR code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21
+      - run: |
+          npm install
+          npm run lint
+

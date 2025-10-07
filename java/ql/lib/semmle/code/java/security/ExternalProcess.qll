@@ -1,4 +1,6 @@
 /** Definitions related to external processes. */
+overlay[local?]
+module;
 
 import semmle.code.java.Member
 private import semmle.code.java.dataflow.DataFlow

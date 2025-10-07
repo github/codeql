@@ -4,7 +4,8 @@ private import codeql.swift.elements.decl.ExtensionDecl
 
 module Impl {
   class Decl extends Generated::Decl {
-    override string toString() { result = super.toString() }
+    // needed to avoid spurious non-monotonicity error
+    override string toStringImpl() { result = super.toStringImpl() }
 
     /**
      * Gets the `NominalTypeDecl` corresponding to this `Decl`, if any. This

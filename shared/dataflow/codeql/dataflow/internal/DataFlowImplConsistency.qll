@@ -2,6 +2,8 @@
  * Provides consistency queries for checking invariants in the language-specific
  * data-flow classes and predicates.
  */
+overlay[local?]
+module;
 
 private import codeql.dataflow.DataFlow as DF
 private import codeql.dataflow.TaintTracking as TT
@@ -13,6 +15,9 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> DataFlowL
 
   /** Holds if `call` should be excluded from the consistency test `uniqueCallEnclosingCallable`. */
   default predicate uniqueCallEnclosingCallableExclude(DataFlowLang::DataFlowCall call) { none() }
+
+  /** Holds if `n` should be excluded from the consistency test `uniqueType`. */
+  default predicate uniqueTypeExclude(DataFlowLang::Node n) { none() }
 
   /** Holds if `n` should be excluded from the consistency test `uniqueNodeLocation`. */
   default predicate uniqueNodeLocationExclude(DataFlowLang::Node n) { none() }
@@ -123,6 +128,7 @@ module MakeConsistency<
       n instanceof RelevantNode and
       c = count(getNodeType(n)) and
       c != 1 and
+      not Input::uniqueTypeExclude(n) and
       msg = "Node should have one type but has " + c + "."
     )
   }
@@ -248,7 +254,10 @@ module MakeConsistency<
 
   query predicate postWithInFlow(PostUpdateNode n, string msg) {
     not clearsContent(n, _) and
-    simpleLocalFlowStep(_, n, _) and
+    exists(Node pred |
+      simpleLocalFlowStep(pred, n, _) and
+      not pred instanceof PostUpdateNode
+    ) and
     not Input::postWithInFlowExclude(n) and
     msg = "PostUpdateNode should not be the target of local flow."
   }
@@ -437,7 +446,7 @@ module MakeConsistency<
     result =
       count(DataFlowCall call, Node receiver | lambdaCallEnclosingCallableMismatch(call, receiver))
     or
-    type = "Speculative step already hasM Model" and
+    type = "Speculative step already has Model" and
     result = count(Node n1, Node n2 | speculativeStepAlreadyHasModel(n1, n2, _))
   }
 }

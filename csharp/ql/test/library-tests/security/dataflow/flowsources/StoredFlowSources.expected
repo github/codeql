@@ -6,6 +6,7 @@
 | data.cs:28:35:28:71 | ... + ... |
 | data.cs:28:51:28:64 | access to local variable customerReader |
 | data.cs:28:51:28:71 | access to indexer |
+| data.cs:28:51:28:71 | call to method ToString |
 | data.cs:30:13:30:26 | access to local variable customerReader |
 | entity.cs:31:29:31:82 | DbRawSqlQuery<Blog> blogs = ... |
 | entity.cs:31:37:31:82 | call to method SqlQuery<Blog> |

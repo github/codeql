@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Net.ServerSentEvents", "SseItem<T>", False, "SseItem", "(T,System.String)", "", "Argument[0]", "Argument[this].Property[System.Net.ServerSentEvents.SseItem`1.Data]", "value", "dfc-generated"]
+      - ["System.Net.ServerSentEvents", "SseItem<T>", False, "SseItem", "(T,System.String)", "", "Argument[1]", "Argument[this].SyntheticField[System.Net.ServerSentEvents.SseItem`1._eventType]", "value", "dfc-generated"]
+      - ["System.Net.ServerSentEvents", "SseItem<T>", False, "get_EventType", "()", "", "Argument[this].SyntheticField[System.Net.ServerSentEvents.SseItem`1._eventType]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Net.ServerSentEvents", "SseParser", False, "Create", "(System.IO.Stream)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Net.ServerSentEvents", "SseParser<T>", False, "Enumerate", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Net.ServerSentEvents", "SseParser<T>", False, "EnumerateAsync", "(System.Threading.CancellationToken)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Net.ServerSentEvents", "SseFormatter", "WriteAsync", "(System.Collections.Generic.IAsyncEnumerable<System.Net.ServerSentEvents.SseItem<System.String>>,System.IO.Stream,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.ServerSentEvents", "SseFormatter", "WriteAsync<T>", "(System.Collections.Generic.IAsyncEnumerable<System.Net.ServerSentEvents.SseItem<T>>,System.IO.Stream,System.Action<System.Net.ServerSentEvents.SseItem<T>,System.Buffers.IBufferWriter<System.Byte>>,System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.ServerSentEvents", "SseItem<T>", "get_Data", "()", "summary", "df-generated"]
+      - ["System.Net.ServerSentEvents", "SseParser", "Create<T>", "(System.IO.Stream,System.Net.ServerSentEvents.SseItemParser<T>)", "summary", "df-generated"]

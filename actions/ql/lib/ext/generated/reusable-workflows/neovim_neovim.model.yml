@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["neovim/neovim/.github/workflows/test_windows.yml", "*", "input.build_flags", "code-injection", "generated"]

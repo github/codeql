@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["microsoft/setup-msbuild", "*", "input.vs-version", "command-injection", "manual"]
+      - ["microsoft/setup-msbuild", "*", "input.vswhere-path", "command-injection", "manual"]

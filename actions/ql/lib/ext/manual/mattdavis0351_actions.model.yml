@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["mattdavis0351/actions", "*", "input.image-name", "output.imageUrl", "taint", "manual"]
+      - ["mattdavis0351/actions", "*", "input.tag", "output.imageUrl", "taint", "manual"]
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["mattdavis0351/actions", "*", "input.repo-token", "command-injection", "manual"]
+      - ["mattdavis0351/actions", "*", "input.dockerfile-location", "command-injection", "manual"]
+      - ["mattdavis0351/actions", "*", "input.image-name", "command-injection", "manual"]
+      - ["mattdavis0351/actions", "*", "input.dockerfile-name", "command-injection", "manual"]
+      - ["mattdavis0351/actions", "*", "input.tag", "command-injection", "manual"]

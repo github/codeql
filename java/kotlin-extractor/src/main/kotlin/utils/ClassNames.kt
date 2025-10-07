@@ -5,7 +5,7 @@ import com.github.codeql.utils.versions.*
 import com.intellij.openapi.vfs.StandardFileSystems
 import com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.kotlin.builtins.jvm.JavaToKotlinClassMap
-import org.jetbrains.kotlin.fir.java.JavaBinarySourceElement
+import org.jetbrains.kotlin.fir.java.VirtualFileBasedSourceElement
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
@@ -89,8 +89,12 @@ fun getIrClassVirtualFile(irClass: IrClass): VirtualFile? {
                 is BinaryJavaClass -> return element.virtualFile
             }
         }
-        is JavaBinarySourceElement -> {
-            return cSource.javaClass.virtualFile
+        is VirtualFileBasedSourceElement -> {
+            if (cSource.virtualFile.name.endsWith(".class")) {
+                // At least lately, despite VirtualFileBasedSourceElement being constructed on a BinaryJavaClass,
+                // this can be a .java source file.
+                return cSource.virtualFile
+            }
         }
         is KotlinJvmBinarySourceElement -> {
             val binaryClass = cSource.binaryClass

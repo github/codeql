@@ -40,7 +40,7 @@ class Namespace extends NameQualifyingElement, @namespace {
   override Location getLocation() {
     if strictcount(this.getADeclarationEntry()) = 1
     then result = this.getADeclarationEntry().getLocation()
-    else result instanceof UnknownDefaultLocation
+    else result instanceof UnknownLocation
   }
 
   /** Gets the simple name of this namespace. */
@@ -99,6 +99,11 @@ class Namespace extends NameQualifyingElement, @namespace {
 
   /** Gets a file which declares (part of) this namespace. */
   File getAFile() { result = this.getADeclarationEntry().getLocation().getFile() }
+
+  /** Gets an attribute of this namespace. */
+  Attribute getAnAttribute() {
+    namespaceattributes(underlyingElement(this), unresolveElement(result))
+  }
 }
 
 /**
@@ -174,7 +179,27 @@ class UsingDeclarationEntry extends UsingEntry {
    */
   Declaration getDeclaration() { usings(underlyingElement(this), unresolveElement(result), _, _) }
 
-  override string toString() { result = "using " + this.getDeclaration().getDescription() }
+  /**
+   * Gets the member that is referenced by this using declaration, where the member depends on a
+   * type template parameter.
+   *
+   * For example:
+   * ```
+   * template <typename T>
+   * class A {
+   *   using T::m;
+   * };
+   * ```
+   * Here, `getReferencedMember()` yields the member `m` of `T`. Observe that,
+   * as `T` is not instantiated, `m` is represented by a `Literal` and not
+   * a `Declaration`.
+   */
+  Literal getReferencedMember() { usings(underlyingElement(this), unresolveElement(result), _, _) }
+
+  override string toString() {
+    result = "using " + this.getDeclaration().getDescription() or
+    result = "using " + this.getReferencedMember()
+  }
 }
 
 /**

@@ -5,14 +5,20 @@
 
 private import internal.TypeBoundImpl
 import codeql.rust.elements.AstNode
-import codeql.rust.elements.GenericParamList
+import codeql.rust.elements.ForBinder
 import codeql.rust.elements.Lifetime
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
+import codeql.rust.elements.UseBoundGenericArgs
 
 /**
- * A TypeBound. For example:
+ * A type bound in a trait or generic parameter.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * fn foo<T: Debug>(t: T) {}
+ * //        ^^^^^
+ * fn bar(value: impl for<'a> From<&'a str>) {}
+ * //                 ^^^^^^^^^^^^^^^^^^^^^
  * ```
  */
 final class TypeBound = Impl::TypeBound;

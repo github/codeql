@@ -1,5 +1,5 @@
 @echo off
 
-type NUL && "%CODEQL_DIST%\codeql.exe" database index-files --working-dir=. --language=rust --include-extension=.rs "%CODEQL_EXTRACTOR_RUST_WIP_DATABASE%"
+type NUL && "%CODEQL_EXTRACTOR_RUST_ROOT%\tools\%CODEQL_PLATFORM%\autobuild"
 
 exit /b %ERRORLEVEL%

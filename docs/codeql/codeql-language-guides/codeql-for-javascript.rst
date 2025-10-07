@@ -18,6 +18,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    abstract-syntax-tree-classes-for-working-with-javascript-and-typescript-programs
    data-flow-cheat-sheet-for-javascript
    customizing-library-models-for-javascript
+   migrating-javascript-dataflow-queries
 
 -  :doc:`Basic query for JavaScript and TypeScript code <basic-query-for-javascript-code>`: Learn to write and run a simple CodeQL query.
 
@@ -37,4 +38,6 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
 -  :doc:`Data flow cheat sheet for JavaScript <data-flow-cheat-sheet-for-javascript>`: This article describes parts of the JavaScript libraries commonly used for variant analysis and in data flow queries.
 
-- :doc:`Customizing library models for JavaScript <customizing-library-models-for-javascript>`: You can model frameworks and libraries that your codebase depends on using data extensions and publish them as CodeQL model packs.
+-  :doc:`Customizing library models for JavaScript <customizing-library-models-for-javascript>`: You can model frameworks and libraries that your codebase depends on using data extensions and publish them as CodeQL model packs.
+
+-  :doc:`Migrating JavaScript dataflow queries <migrating-javascript-dataflow-queries>`: Guide on migrating data flow queries to the new data flow library.

@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["apache/nuttx", "*", "input.haskell", "code-injection", "generated"]
+     - ["apache/nuttx", "*", "input.dotnet", "code-injection", "generated"]
+     - ["apache/nuttx", "*", "input.android", "code-injection", "generated"]

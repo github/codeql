@@ -4,12 +4,17 @@
  */
 
 private import internal.ExternItemImpl
-import codeql.rust.elements.AstNode
+import codeql.rust.elements.Item
 
 /**
- * A ExternItem. For example:
+ * An item inside an extern block.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * extern "C" {
+ *     fn foo();
+ *     static BAR: i32;
+ * }
  * ```
  */
 final class ExternItem = Impl::ExternItem;

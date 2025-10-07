@@ -195,6 +195,12 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TActorIsolationErasureExpr(Raw::ActorIsolationErasureExpr id) {
+      constructActorIsolationErasureExpr(id)
+    } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TAnyHashableErasureExpr(Raw::AnyHashableErasureExpr id) { constructAnyHashableErasureExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -313,6 +319,12 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TCurrentContextIsolationExpr(Raw::CurrentContextIsolationExpr id) {
+      constructCurrentContextIsolationExpr(id)
+    } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TDeclRefExpr(Raw::DeclRefExpr id) { constructDeclRefExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -394,6 +406,12 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TExplicitClosureExpr(Raw::ExplicitClosureExpr id) { constructExplicitClosureExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TExtractFunctionIsolationExpr(Raw::ExtractFunctionIsolationExpr id) {
+      constructExtractFunctionIsolationExpr(id)
+    } or
     /**
      * INTERNAL: Do not use.
      */
@@ -653,6 +671,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TTypeValueExpr(Raw::TypeValueExpr id) { constructTypeValueExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TUnderlyingToOpaqueExpr(Raw::UnderlyingToOpaqueExpr id) { constructUnderlyingToOpaqueExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -660,6 +682,10 @@ module Synth {
     TUnevaluatedInstanceExpr(Raw::UnevaluatedInstanceExpr id) {
       constructUnevaluatedInstanceExpr(id)
     } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TUnreachableExpr(Raw::UnreachableExpr id) { constructUnreachableExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -694,6 +720,10 @@ module Synth {
     TUnresolvedTypeConversionExpr(Raw::UnresolvedTypeConversionExpr id) {
       constructUnresolvedTypeConversionExpr(id)
     } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TUnsafeCastExpr(Raw::UnsafeCastExpr id) { constructUnsafeCastExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -873,6 +903,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TBuiltinFixedArrayType(Raw::BuiltinFixedArrayType id) { constructBuiltinFixedArrayType(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TBuiltinFloatType(Raw::BuiltinFloatType id) { constructBuiltinFloatType(id) } or
     /**
      * INTERNAL: Do not use.
@@ -968,6 +1002,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TInOutType(Raw::InOutType id) { constructInOutType(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TIntegerType(Raw::IntegerType id) { constructIntegerType(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -1230,19 +1268,19 @@ module Synth {
   class TExpr =
     TAnyTryExpr or TAppliedPropertyWrapperExpr or TApplyExpr or TAssignExpr or TBindOptionalExpr or
         TCaptureListExpr or TClosureExpr or TCollectionExpr or TConsumeExpr or TCopyExpr or
-        TDeclRefExpr or TDefaultArgumentExpr or TDiscardAssignmentExpr or
-        TDotSyntaxBaseIgnoredExpr or TDynamicTypeExpr or TEnumIsCaseExpr or TErrorExpr or
-        TExplicitCastExpr or TForceValueExpr or TIdentityExpr or TIfExpr or
-        TImplicitConversionExpr or TInOutExpr or TKeyPathApplicationExpr or TKeyPathDotExpr or
-        TKeyPathExpr or TLazyInitializationExpr or TLiteralExpr or TLookupExpr or
-        TMakeTemporarilyEscapableExpr or TMaterializePackExpr or TObjCSelectorExpr or TOneWayExpr or
-        TOpaqueValueExpr or TOpenExistentialExpr or TOptionalEvaluationExpr or
-        TOtherInitializerRefExpr or TOverloadedDeclRefExpr or TPackElementExpr or
-        TPackExpansionExpr or TPropertyWrapperValuePlaceholderExpr or
+        TCurrentContextIsolationExpr or TDeclRefExpr or TDefaultArgumentExpr or
+        TDiscardAssignmentExpr or TDotSyntaxBaseIgnoredExpr or TDynamicTypeExpr or
+        TEnumIsCaseExpr or TErrorExpr or TExplicitCastExpr or TExtractFunctionIsolationExpr or
+        TForceValueExpr or TIdentityExpr or TIfExpr or TImplicitConversionExpr or TInOutExpr or
+        TKeyPathApplicationExpr or TKeyPathDotExpr or TKeyPathExpr or TLazyInitializationExpr or
+        TLiteralExpr or TLookupExpr or TMakeTemporarilyEscapableExpr or TMaterializePackExpr or
+        TObjCSelectorExpr or TOneWayExpr or TOpaqueValueExpr or TOpenExistentialExpr or
+        TOptionalEvaluationExpr or TOtherInitializerRefExpr or TOverloadedDeclRefExpr or
+        TPackElementExpr or TPackExpansionExpr or TPropertyWrapperValuePlaceholderExpr or
         TRebindSelfInInitializerExpr or TSequenceExpr or TSingleValueStmtExpr or TSuperRefExpr or
-        TTapExpr or TTupleElementExpr or TTupleExpr or TTypeExpr or TUnresolvedDeclRefExpr or
-        TUnresolvedDotExpr or TUnresolvedMemberExpr or TUnresolvedPatternExpr or
-        TUnresolvedSpecializeExpr or TVarargExpansionExpr;
+        TTapExpr or TTupleElementExpr or TTupleExpr or TTypeExpr or TTypeValueExpr or
+        TUnresolvedDeclRefExpr or TUnresolvedDotExpr or TUnresolvedMemberExpr or
+        TUnresolvedPatternExpr or TUnresolvedSpecializeExpr or TVarargExpansionExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -1254,8 +1292,8 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TImplicitConversionExpr =
-    TAbiSafeConversionExpr or TAnyHashableErasureExpr or TArchetypeToSuperExpr or
-        TArrayToPointerExpr or TBridgeFromObjCExpr or TBridgeToObjCExpr or
+    TAbiSafeConversionExpr or TActorIsolationErasureExpr or TAnyHashableErasureExpr or
+        TArchetypeToSuperExpr or TArrayToPointerExpr or TBridgeFromObjCExpr or TBridgeToObjCExpr or
         TClassMetatypeToObjectExpr or TCollectionUpcastConversionExpr or
         TConditionalBridgeFromObjCExpr or TCovariantFunctionConversionExpr or
         TCovariantReturnConversionExpr or TDerivedToBaseExpr or TDestructureTupleExpr or
@@ -1265,7 +1303,8 @@ module Synth {
         TLinearFunctionExpr or TLinearFunctionExtractOriginalExpr or
         TLinearToDifferentiableFunctionExpr or TLoadExpr or TMetatypeConversionExpr or
         TPointerToPointerExpr or TProtocolMetatypeToObjectExpr or TStringToPointerExpr or
-        TUnderlyingToOpaqueExpr or TUnevaluatedInstanceExpr or TUnresolvedTypeConversionExpr;
+        TUnderlyingToOpaqueExpr or TUnevaluatedInstanceExpr or TUnreachableExpr or
+        TUnresolvedTypeConversionExpr or TUnsafeCastExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -1354,8 +1393,8 @@ module Synth {
    */
   class TBuiltinType =
     TAnyBuiltinIntegerType or TBuiltinBridgeObjectType or TBuiltinDefaultActorStorageType or
-        TBuiltinExecutorType or TBuiltinFloatType or TBuiltinJobType or TBuiltinNativeObjectType or
-        TBuiltinRawPointerType or TBuiltinRawUnsafeContinuationType or
+        TBuiltinExecutorType or TBuiltinFixedArrayType or TBuiltinFloatType or TBuiltinJobType or
+        TBuiltinNativeObjectType or TBuiltinRawPointerType or TBuiltinRawUnsafeContinuationType or
         TBuiltinUnsafeValueBufferType or TBuiltinVectorType;
 
   /**
@@ -1399,9 +1438,9 @@ module Synth {
   class TType =
     TAnyFunctionType or TAnyGenericType or TAnyMetatypeType or TBuiltinType or
         TDependentMemberType or TDynamicSelfType or TErrorType or TExistentialType or TInOutType or
-        TLValueType or TModuleType or TPackElementType or TPackExpansionType or TPackType or
-        TParameterizedProtocolType or TProtocolCompositionType or TReferenceStorageType or
-        TSubstitutableType or TSugarType or TTupleType or TUnresolvedType;
+        TIntegerType or TLValueType or TModuleType or TPackElementType or TPackExpansionType or
+        TPackType or TParameterizedProtocolType or TProtocolCompositionType or
+        TReferenceStorageType or TSubstitutableType or TSugarType or TTupleType or TUnresolvedType;
 
   /**
    * INTERNAL: Do not use.
@@ -1700,6 +1739,14 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TActorIsolationErasureExpr`, if possible.
+   */
+  TActorIsolationErasureExpr convertActorIsolationErasureExprFromRaw(Raw::Element e) {
+    result = TActorIsolationErasureExpr(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TAnyHashableErasureExpr`, if possible.
    */
   TAnyHashableErasureExpr convertAnyHashableErasureExprFromRaw(Raw::Element e) {
@@ -1880,6 +1927,14 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TCurrentContextIsolationExpr`, if possible.
+   */
+  TCurrentContextIsolationExpr convertCurrentContextIsolationExprFromRaw(Raw::Element e) {
+    result = TCurrentContextIsolationExpr(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TDeclRefExpr`, if possible.
    */
   TDeclRefExpr convertDeclRefExprFromRaw(Raw::Element e) { result = TDeclRefExpr(e) }
@@ -2016,6 +2071,14 @@ module Synth {
    */
   TExplicitClosureExpr convertExplicitClosureExprFromRaw(Raw::Element e) {
     result = TExplicitClosureExpr(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TExtractFunctionIsolationExpr`, if possible.
+   */
+  TExtractFunctionIsolationExpr convertExtractFunctionIsolationExprFromRaw(Raw::Element e) {
+    result = TExtractFunctionIsolationExpr(e)
   }
 
   /**
@@ -2438,6 +2501,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TTypeValueExpr`, if possible.
+   */
+  TTypeValueExpr convertTypeValueExprFromRaw(Raw::Element e) { result = TTypeValueExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TUnderlyingToOpaqueExpr`, if possible.
    */
   TUnderlyingToOpaqueExpr convertUnderlyingToOpaqueExprFromRaw(Raw::Element e) {
@@ -2451,6 +2520,12 @@ module Synth {
   TUnevaluatedInstanceExpr convertUnevaluatedInstanceExprFromRaw(Raw::Element e) {
     result = TUnevaluatedInstanceExpr(e)
   }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TUnreachableExpr`, if possible.
+   */
+  TUnreachableExpr convertUnreachableExprFromRaw(Raw::Element e) { result = TUnreachableExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -2507,6 +2582,12 @@ module Synth {
   TUnresolvedTypeConversionExpr convertUnresolvedTypeConversionExprFromRaw(Raw::Element e) {
     result = TUnresolvedTypeConversionExpr(e)
   }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TUnsafeCastExpr`, if possible.
+   */
+  TUnsafeCastExpr convertUnsafeCastExprFromRaw(Raw::Element e) { result = TUnsafeCastExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -2786,6 +2867,14 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TBuiltinFixedArrayType`, if possible.
+   */
+  TBuiltinFixedArrayType convertBuiltinFixedArrayTypeFromRaw(Raw::Element e) {
+    result = TBuiltinFixedArrayType(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TBuiltinFloatType`, if possible.
    */
   TBuiltinFloatType convertBuiltinFloatTypeFromRaw(Raw::Element e) { result = TBuiltinFloatType(e) }
@@ -2939,6 +3028,12 @@ module Synth {
    * Converts a raw element to a synthesized `TInOutType`, if possible.
    */
   TInOutType convertInOutTypeFromRaw(Raw::Element e) { result = TInOutType(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TIntegerType`, if possible.
+   */
+  TIntegerType convertIntegerTypeFromRaw(Raw::Element e) { result = TIntegerType(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -3529,6 +3624,8 @@ module Synth {
     or
     result = convertCopyExprFromRaw(e)
     or
+    result = convertCurrentContextIsolationExprFromRaw(e)
+    or
     result = convertDeclRefExprFromRaw(e)
     or
     result = convertDefaultArgumentExprFromRaw(e)
@@ -3544,6 +3641,8 @@ module Synth {
     result = convertErrorExprFromRaw(e)
     or
     result = convertExplicitCastExprFromRaw(e)
+    or
+    result = convertExtractFunctionIsolationExprFromRaw(e)
     or
     result = convertForceValueExprFromRaw(e)
     or
@@ -3607,6 +3706,8 @@ module Synth {
     or
     result = convertTypeExprFromRaw(e)
     or
+    result = convertTypeValueExprFromRaw(e)
+    or
     result = convertUnresolvedDeclRefExprFromRaw(e)
     or
     result = convertUnresolvedDotExprFromRaw(e)
@@ -3642,6 +3743,8 @@ module Synth {
    */
   TImplicitConversionExpr convertImplicitConversionExprFromRaw(Raw::Element e) {
     result = convertAbiSafeConversionExprFromRaw(e)
+    or
+    result = convertActorIsolationErasureExprFromRaw(e)
     or
     result = convertAnyHashableErasureExprFromRaw(e)
     or
@@ -3703,7 +3806,11 @@ module Synth {
     or
     result = convertUnevaluatedInstanceExprFromRaw(e)
     or
+    result = convertUnreachableExprFromRaw(e)
+    or
     result = convertUnresolvedTypeConversionExprFromRaw(e)
+    or
+    result = convertUnsafeCastExprFromRaw(e)
   }
 
   /**
@@ -3927,6 +4034,8 @@ module Synth {
     or
     result = convertBuiltinExecutorTypeFromRaw(e)
     or
+    result = convertBuiltinFixedArrayTypeFromRaw(e)
+    or
     result = convertBuiltinFloatTypeFromRaw(e)
     or
     result = convertBuiltinJobTypeFromRaw(e)
@@ -4042,6 +4151,8 @@ module Synth {
     result = convertExistentialTypeFromRaw(e)
     or
     result = convertInOutTypeFromRaw(e)
+    or
+    result = convertIntegerTypeFromRaw(e)
     or
     result = convertLValueTypeFromRaw(e)
     or
@@ -4372,6 +4483,14 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TActorIsolationErasureExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertActorIsolationErasureExprToRaw(TActorIsolationErasureExpr e) {
+    e = TActorIsolationErasureExpr(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TAnyHashableErasureExpr` to a raw DB element, if possible.
    */
   Raw::Element convertAnyHashableErasureExprToRaw(TAnyHashableErasureExpr e) {
@@ -4552,6 +4671,14 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TCurrentContextIsolationExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertCurrentContextIsolationExprToRaw(TCurrentContextIsolationExpr e) {
+    e = TCurrentContextIsolationExpr(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TDeclRefExpr` to a raw DB element, if possible.
    */
   Raw::Element convertDeclRefExprToRaw(TDeclRefExpr e) { e = TDeclRefExpr(result) }
@@ -4688,6 +4815,14 @@ module Synth {
    */
   Raw::Element convertExplicitClosureExprToRaw(TExplicitClosureExpr e) {
     e = TExplicitClosureExpr(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TExtractFunctionIsolationExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertExtractFunctionIsolationExprToRaw(TExtractFunctionIsolationExpr e) {
+    e = TExtractFunctionIsolationExpr(result)
   }
 
   /**
@@ -5108,6 +5243,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TTypeValueExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertTypeValueExprToRaw(TTypeValueExpr e) { e = TTypeValueExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TUnderlyingToOpaqueExpr` to a raw DB element, if possible.
    */
   Raw::Element convertUnderlyingToOpaqueExprToRaw(TUnderlyingToOpaqueExpr e) {
@@ -5121,6 +5262,12 @@ module Synth {
   Raw::Element convertUnevaluatedInstanceExprToRaw(TUnevaluatedInstanceExpr e) {
     e = TUnevaluatedInstanceExpr(result)
   }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TUnreachableExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertUnreachableExprToRaw(TUnreachableExpr e) { e = TUnreachableExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -5177,6 +5324,12 @@ module Synth {
   Raw::Element convertUnresolvedTypeConversionExprToRaw(TUnresolvedTypeConversionExpr e) {
     e = TUnresolvedTypeConversionExpr(result)
   }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TUnsafeCastExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertUnsafeCastExprToRaw(TUnsafeCastExpr e) { e = TUnsafeCastExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -5456,6 +5609,14 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TBuiltinFixedArrayType` to a raw DB element, if possible.
+   */
+  Raw::Element convertBuiltinFixedArrayTypeToRaw(TBuiltinFixedArrayType e) {
+    e = TBuiltinFixedArrayType(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TBuiltinFloatType` to a raw DB element, if possible.
    */
   Raw::Element convertBuiltinFloatTypeToRaw(TBuiltinFloatType e) { e = TBuiltinFloatType(result) }
@@ -5609,6 +5770,12 @@ module Synth {
    * Converts a synthesized `TInOutType` to a raw DB element, if possible.
    */
   Raw::Element convertInOutTypeToRaw(TInOutType e) { e = TInOutType(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TIntegerType` to a raw DB element, if possible.
+   */
+  Raw::Element convertIntegerTypeToRaw(TIntegerType e) { e = TIntegerType(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -6199,6 +6366,8 @@ module Synth {
     or
     result = convertCopyExprToRaw(e)
     or
+    result = convertCurrentContextIsolationExprToRaw(e)
+    or
     result = convertDeclRefExprToRaw(e)
     or
     result = convertDefaultArgumentExprToRaw(e)
@@ -6214,6 +6383,8 @@ module Synth {
     result = convertErrorExprToRaw(e)
     or
     result = convertExplicitCastExprToRaw(e)
+    or
+    result = convertExtractFunctionIsolationExprToRaw(e)
     or
     result = convertForceValueExprToRaw(e)
     or
@@ -6277,6 +6448,8 @@ module Synth {
     or
     result = convertTypeExprToRaw(e)
     or
+    result = convertTypeValueExprToRaw(e)
+    or
     result = convertUnresolvedDeclRefExprToRaw(e)
     or
     result = convertUnresolvedDotExprToRaw(e)
@@ -6312,6 +6485,8 @@ module Synth {
    */
   Raw::Element convertImplicitConversionExprToRaw(TImplicitConversionExpr e) {
     result = convertAbiSafeConversionExprToRaw(e)
+    or
+    result = convertActorIsolationErasureExprToRaw(e)
     or
     result = convertAnyHashableErasureExprToRaw(e)
     or
@@ -6373,7 +6548,11 @@ module Synth {
     or
     result = convertUnevaluatedInstanceExprToRaw(e)
     or
+    result = convertUnreachableExprToRaw(e)
+    or
     result = convertUnresolvedTypeConversionExprToRaw(e)
+    or
+    result = convertUnsafeCastExprToRaw(e)
   }
 
   /**
@@ -6597,6 +6776,8 @@ module Synth {
     or
     result = convertBuiltinExecutorTypeToRaw(e)
     or
+    result = convertBuiltinFixedArrayTypeToRaw(e)
+    or
     result = convertBuiltinFloatTypeToRaw(e)
     or
     result = convertBuiltinJobTypeToRaw(e)
@@ -6712,6 +6893,8 @@ module Synth {
     result = convertExistentialTypeToRaw(e)
     or
     result = convertInOutTypeToRaw(e)
+    or
+    result = convertIntegerTypeToRaw(e)
     or
     result = convertLValueTypeToRaw(e)
     or

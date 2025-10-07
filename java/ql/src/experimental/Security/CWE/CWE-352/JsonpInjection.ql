@@ -16,11 +16,11 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.deadcode.WebEntryPoints
 import semmle.code.java.security.XSS
-import JsonpInjectionLib
-import RequestResponseFlow::PathGraph
+deprecated import JsonpInjectionLib
+deprecated import RequestResponseFlow::PathGraph
 
 /** Taint-tracking configuration tracing flow from get method request sources to output jsonp data. */
-module RequestResponseFlowConfig implements DataFlow::ConfigSig {
+deprecated module RequestResponseFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source instanceof ActiveThreatModelSource and
     any(RequestGetMethod m).polyCalls*(source.getEnclosingCallable())
@@ -38,11 +38,16 @@ module RequestResponseFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module RequestResponseFlow = TaintTracking::Global<RequestResponseFlowConfig>;
+deprecated module RequestResponseFlow = TaintTracking::Global<RequestResponseFlowConfig>;
 
-from RequestResponseFlow::PathNode source, RequestResponseFlow::PathNode sink
-where
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, RequestResponseFlow::PathNode source, RequestResponseFlow::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
   RequestResponseFlow::flowPath(source, sink) and
-  JsonpInjectionFlow::flowTo(sink.getNode())
-select sink.getNode(), source, sink, "Jsonp response might include code from $@.", source.getNode(),
-  "this user input"
+  JsonpInjectionFlow::flowTo(sink.getNode()) and
+  sinkNode = sink.getNode() and
+  message1 = "Jsonp response might include code from $@." and
+  sourceNode = source.getNode() and
+  message2 = "this user input"
+}

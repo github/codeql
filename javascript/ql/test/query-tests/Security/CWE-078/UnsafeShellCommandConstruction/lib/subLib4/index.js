@@ -3,6 +3,6 @@ const dispatch = {
   POST: require("./subsub"),
 };
 
-module.exports.foo = function (name, type) {
+module.exports.foo = function (name, type) { // $ Source
   dispatch[type](name);
 };

@@ -1,5 +1,5 @@
 import python
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 private import semmle.python.dataflow.new.internal.DataFlowDispatch as TT
 
 /** Holds when `call` is resolved to `callable` using points-to based call-graph. */

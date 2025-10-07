@@ -222,7 +222,10 @@ module ClientRequest {
       method = "request"
       or
       this = axios().getMember(method).getACall() and
-      method = [httpMethodName(), "request"]
+      method = [httpMethodName(), "request", "postForm", "putForm", "patchForm", "getUri"]
+      or
+      this = axios().getMember("create").getReturn().getACall() and
+      method = "request"
     }
 
     private int getOptionsArgIndex() {
@@ -251,8 +254,10 @@ module ClientRequest {
       method = "request" and
       result = this.getOptionArgument(0, "data")
       or
-      method = ["post", "put"] and
+      method = ["post", "put", "patch"] and
       result = [this.getArgument(1), this.getOptionArgument(2, "data")]
+      or
+      method = ["postForm", "putForm", "patchForm"] and result = this.getArgument(1)
       or
       result = this.getOptionArgument([0 .. 2], ["headers", "params"])
     }
@@ -271,6 +276,69 @@ module ClientRequest {
       or
       this.getArgument(this.getOptionsArgIndex()).analyze().getAValue().isIndefinite(_) and
       result = ""
+    }
+
+    override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+      responseType = this.getResponseType() and
+      promise = true and
+      result = this
+      or
+      responseType = this.getResponseType() and
+      promise = false and
+      result = this.getReturn().getPromisedError().getMember("response").asSource()
+    }
+  }
+
+  /**
+   * A model of a `axios` instance request.
+   */
+  class AxiosInstanceRequest extends ClientRequest::Range, API::CallNode {
+    string method;
+    API::CallNode instance;
+
+    // Instances of axios, e.g. `axios.create({ ... })`
+    AxiosInstanceRequest() {
+      instance = axios().getMember(["create", "createInstance"]).getACall() and
+      method = [httpMethodName(), "request", "postForm", "putForm", "patchForm", "getUri"] and
+      this = instance.getReturn().getMember(method).getACall()
+    }
+
+    private int getOptionsArgIndex() {
+      (method = "get" or method = "delete" or method = "head") and
+      result = 0
+      or
+      (method = "post" or method = "put" or method = "patch") and
+      result = 1
+    }
+
+    private DataFlow::Node getOptionArgument(string name) {
+      result = this.getOptionArgument(this.getOptionsArgIndex(), name)
+    }
+
+    override DataFlow::Node getUrl() {
+      result = this.getArgument(0) or
+      result = this.getOptionArgument(urlPropertyName())
+    }
+
+    override DataFlow::Node getHost() { result = instance.getOptionArgument(0, "baseURL") }
+
+    override DataFlow::Node getADataNode() {
+      method = ["post", "put", "patch"] and
+      result = [this.getArgument(1), this.getOptionArgument(2, "data")]
+      or
+      method = ["postForm", "putForm", "patchForm"] and result = this.getArgument(1)
+      or
+      result = this.getOptionArgument([0 .. 2], ["headers", "params"])
+    }
+
+    /** Gets the response type from the options passed in. */
+    string getResponseType() {
+      exists(DataFlow::Node option | option = instance.getOptionArgument(0, "responseType") |
+        option.mayHaveStringValue(result)
+      )
+      or
+      not exists(this.getOptionArgument("responseType")) and
+      result = "json"
     }
 
     override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
@@ -415,19 +483,73 @@ module ClientRequest {
   }
 
   /**
+   * Represents an instance of the `got` HTTP client library.
+   */
+  abstract private class GotInstance extends API::Node {
+    /**
+     * Gets the options object associated with this instance of `got`.
+     */
+    API::Node getOptions() { none() }
+  }
+
+  /**
+   * Represents the root `got` module import.
+   * For example: `const got = require('got')`.
+   */
+  private class RootGotInstance extends GotInstance {
+    RootGotInstance() { this = API::moduleImport("got") }
+  }
+
+  /**
+   * Represents an instance of `got` created by calling the `extend()` method.
+   * It may also be chained with multiple calls to `extend()`.
+   *
+   * For example: `const client = got.extend({ prefixUrl: 'https://example.com' })`.
+   */
+  private class ExtendGotInstance extends GotInstance {
+    private GotInstance base;
+    private API::CallNode extendCall;
+
+    ExtendGotInstance() {
+      extendCall = base.getMember("extend").getACall() and
+      this = extendCall.getReturn()
+    }
+
+    override API::Node getOptions() {
+      result = extendCall.getParameter(0) or result = base.getOptions()
+    }
+  }
+
+  /**
    * A model of a URL request made using the `got` library.
    */
   class GotUrlRequest extends ClientRequest::Range {
+    GotInstance got;
+
     GotUrlRequest() {
-      exists(API::Node callee, API::Node got | this = callee.getACall() |
-        got = [API::moduleImport("got"), API::moduleImport("got").getMember("extend").getReturn()] and
-        callee = [got, got.getMember(["stream", "get", "post", "put", "patch", "head", "delete"])]
+      exists(API::Node callee | this = callee.getACall() |
+        callee =
+          [
+            got,
+            got.getMember(["stream", "get", "post", "put", "patch", "head", "delete", "paginate"])
+          ]
       )
     }
 
     override DataFlow::Node getUrl() {
       result = this.getArgument(0) and
       not exists(this.getOptionArgument(1, "baseUrl"))
+      or
+      // Handle URL from options passed to extend()
+      result = got.getOptions().getMember("url").asSink() and
+      not exists(this.getArgument(0))
+      or
+      // Handle URL from options passed as third argument when first arg is undefined/missing
+      exists(API::InvokeNode optionsCall |
+        optionsCall = API::moduleImport("got").getMember("Options").getAnInvocation() and
+        optionsCall.getReturn().getAValueReachableFromSource() = this.getAnArgument() and
+        result = optionsCall.getParameter(0).getMember("url").asSink()
+      )
     }
 
     override DataFlow::Node getHost() {
@@ -514,16 +636,35 @@ module ClientRequest {
   }
 
   /**
+   * Gets the name of a superagent request method.
+   */
+  private string getSuperagentRequestMethodName() {
+    result = [httpMethodName(), any(Http::RequestMethodName m), "del", "DEL"]
+  }
+
+  /**
    * A model of a URL request made using the `superagent` library.
    */
   class SuperAgentUrlRequest extends ClientRequest::Range {
     DataFlow::Node url;
 
     SuperAgentUrlRequest() {
-      exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
-        moduleName = "superagent" and
-        callee = DataFlow::moduleMember(moduleName, httpMethodName()) and
+      exists(string moduleName | moduleName = "superagent" |
+        // Handle method calls like superagent.get(url)
+        this = API::moduleImport(moduleName).getMember(getSuperagentRequestMethodName()).getACall() and
         url = this.getArgument(0)
+        or
+        // Handle direct calls like superagent('GET', url)
+        this = API::moduleImport(moduleName).getACall() and
+        this.getArgument(0).mayHaveStringValue(getSuperagentRequestMethodName()) and
+        url = this.getArgument(1)
+        or
+        // Handle agent calls like superagent.agent().get(url)
+        exists(DataFlow::SourceNode agent |
+          agent = API::moduleImport(moduleName).getMember("agent").getACall() and
+          this = agent.getAMethodCall(httpMethodName()) and
+          url = this.getArgument(0)
+        )
       )
     }
 
@@ -859,6 +1000,33 @@ module ClientRequest {
 
     override DataFlow::Node getADataNode() {
       result = form.getMember("append").getACall().getParameter(1).asSink()
+    }
+  }
+
+  /**
+   * Threat model source representing HTTP response data.
+   * Marks nodes originating from a client request's response data as tainted.
+   */
+  private class ClientRequestThreatModel extends ThreatModelSource::Range {
+    ClientRequestThreatModel() { this = any(ClientRequest r).getAResponseDataNode() }
+
+    override string getThreatModel() { result = "response" }
+
+    override string getSourceType() { result = "HTTP response data" }
+  }
+
+  /**
+   * An additional taint step that captures taint propagation from the receiver of fetch response methods
+   * (such as "json", "text", "blob", and "arrayBuffer") to the call result.
+   */
+  private class FetchResponseStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() in ["json", "text", "blob", "arrayBuffer"] and
+        node1 = call.getReceiver() and
+        node2 = call and
+        call.getNumArgument() = 0
+      )
     }
   }
 }

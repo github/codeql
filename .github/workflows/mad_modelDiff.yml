@@ -28,12 +28,12 @@ jobs:
         slug: ${{fromJson(github.event.inputs.projects || '["apache/commons-codec", "apache/commons-io", "apache/commons-beanutils", "apache/commons-logging", "apache/commons-fileupload", "apache/commons-lang", "apache/commons-validator", "apache/commons-csv", "apache/dubbo"]' )}}
     steps:
       - name: Clone github/codeql from PR
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         if: github.event.pull_request
         with:
           path: codeql-pr
       - name: Clone github/codeql from main
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: codeql-main
           ref: main
@@ -68,7 +68,7 @@ jobs:
             DATABASE=$2
             cd codeql-$QL_VARIANT
             SHORTNAME=`basename $DATABASE`
-            python java/ql/src/utils/modelgenerator/GenerateFlowModel.py --with-summaries --with-sinks $DATABASE $SHORTNAME/$QL_VARIANT
+            python misc/scripts/models-as-data/generate_mad.py --language java --with-summaries --with-sinks $DATABASE $SHORTNAME/$QL_VARIANT
             mkdir -p $MODELS/$SHORTNAME
             mv java/ql/lib/ext/generated/$SHORTNAME/$QL_VARIANT $MODELS/$SHORTNAME
             cd ..

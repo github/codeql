@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 /**
  * Provides Java-specific definitions for use in sign analysis.
  */
@@ -7,13 +10,12 @@ module Private {
   private import semmle.code.java.dataflow.SSA as Ssa
   private import semmle.code.java.controlflow.Guards as G
   private import SsaReadPositionCommon
-  private import semmle.code.java.controlflow.internal.GuardsLogic as GL
   private import Sign
   import Impl
 
   class ConstantIntegerExpr = RU::ConstantIntegerExpr;
 
-  class Guard = G::Guard;
+  class Guard = G::Guards_v2::Guard;
 
   class SsaVariable = Ssa::SsaVariable;
 
@@ -171,30 +173,16 @@ module Private {
   predicate ssaRead = RU::ssaRead/2;
 
   /**
-   * Holds if `guard` directly controls the position `controlled` with the
-   * value `testIsTrue`.
-   */
-  pragma[nomagic]
-  private predicate guardDirectlyControlsSsaRead(
-    Guard guard, SsaReadPosition controlled, boolean testIsTrue
-  ) {
-    guard.directlyControls(controlled.(SsaReadPositionBlock).getBlock(), testIsTrue)
-    or
-    exists(SsaReadPositionPhiInputEdge controlledEdge | controlledEdge = controlled |
-      guard.directlyControls(controlledEdge.getOrigBlock(), testIsTrue) or
-      guard.hasBranchEdge(controlledEdge.getOrigBlock(), controlledEdge.getPhiBlock(), testIsTrue)
-    )
-  }
-
-  /**
    * Holds if `guard` controls the position `controlled` with the value `testIsTrue`.
    */
   predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
-    guardDirectlyControlsSsaRead(guard, controlled, testIsTrue)
+    guard.controls(controlled.(SsaReadPositionBlock).getBlock(), testIsTrue)
     or
-    exists(Guard guard0, boolean testIsTrue0 |
-      GL::implies_v2(guard0, testIsTrue0, guard, testIsTrue) and
-      guardControlsSsaRead(guard0, controlled, testIsTrue0)
+    exists(SsaReadPositionPhiInputEdge controlledEdge | controlledEdge = controlled |
+      guard.controls(controlledEdge.getOrigBlock(), testIsTrue) or
+      guard
+          .controlsBranchEdge(controlledEdge.getOrigBlock(), controlledEdge.getPhiBlock(),
+            testIsTrue)
     )
   }
 }
@@ -216,7 +204,7 @@ private module Impl {
   /** Gets the character value of expression `e`. */
   string getCharValue(Expr e) { result = e.(CharacterLiteral).getValue() }
 
-  /** Gets the constant `float` value of non-`ConstantIntegerExpr` expressions. */
+  /** Gets the constant `float` value of non-`ConstantIntegerExpr` expression `e`. */
   float getNonIntegerValue(Expr e) {
     result = e.(LongLiteral).getValue().toFloat() or
     result = e.(FloatLiteral).getValue().toFloat() or
@@ -268,12 +256,12 @@ private module Impl {
     exists(EnhancedForStmt for | def = for.getVariable())
   }
 
-  /** Returns the operand of the operation if `def` is a decrement. */
+  /** Returns the operand of the operation if `e` is a decrement. */
   Expr getDecrementOperand(Element e) {
     result = e.(PostDecExpr).getExpr() or result = e.(PreDecExpr).getExpr()
   }
 
-  /** Returns the operand of the operation if `def` is an increment. */
+  /** Returns the operand of the operation if `e` is an increment. */
   Expr getIncrementOperand(Element e) {
     result = e.(PostIncExpr).getExpr() or result = e.(PreIncExpr).getExpr()
   }
@@ -340,7 +328,7 @@ private module Impl {
 
   Field getField(FieldAccess fa) { result = fa.getField() }
 
-  Expr getAnExpression(SsaReadPositionBlock bb) { result = bb.getBlock().getANode() }
+  Expr getAnExpression(SsaReadPositionBlock bb) { result = bb.getBlock().getANode().asExpr() }
 
   Guard getComparisonGuard(ComparisonExpr ce) { result = ce }
 }

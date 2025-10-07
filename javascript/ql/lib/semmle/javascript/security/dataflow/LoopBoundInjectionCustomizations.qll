@@ -8,6 +8,7 @@ import javascript
 
 module LoopBoundInjection {
   import semmle.javascript.security.TaintedObject
+  import semmle.javascript.security.CommonFlowState
 
   /**
    * Holds if an exception will be thrown whenever `e` evaluates to `undefined` or `null`.
@@ -167,6 +168,41 @@ module LoopBoundInjection {
   abstract class Source extends DataFlow::Node { }
 
   /**
+   * A barrier guard for looping on tainted objects with unbounded length.
+   */
+  abstract class BarrierGuard extends DataFlow::Node {
+    /**
+     * Holds if this node acts as a barrier for data flow, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e) { none() }
+
+    /**
+     * Holds if this node acts as a barrier for `state`, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e, FlowState state) { none() }
+
+    /** DEPRECATED. Use `blocksExpr` instead. */
+    deprecated predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+
+    /** DEPRECATED. Use `blocksExpr` instead. */
+    deprecated predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      this.blocksExpr(outcome, e, FlowState::fromFlowLabel(label))
+    }
+  }
+
+  /** A subclass of `BarrierGuard` that is used for backward compatibility with the old data flow library. */
+  deprecated final private class BarrierGuardLegacy extends TaintTracking::SanitizerGuardNode instanceof BarrierGuard
+  {
+    override predicate sanitizes(boolean outcome, Expr e) {
+      BarrierGuard.super.sanitizes(outcome, e)
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      BarrierGuard.super.sanitizes(outcome, e, label)
+    }
+  }
+
+  /**
    * A source of remote user input objects.
    */
   class TaintedObjectSource extends Source instanceof TaintedObject::Source { }
@@ -174,24 +210,22 @@ module LoopBoundInjection {
   /**
    * A sanitizer that blocks taint flow if the array is checked to be an array using an `isArray` function.
    */
-  class IsArraySanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::ValueNode {
+  class IsArraySanitizerGuard extends BarrierGuard, DataFlow::ValueNode {
     override CallExpr astNode;
 
     IsArraySanitizerGuard() { astNode.getCalleeName() = "isArray" }
 
-    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
       true = outcome and
       e = astNode.getAnArgument() and
-      label = TaintedObject::label()
+      state.isTaintedObject()
     }
   }
 
   /**
    * A sanitizer that blocks taint flow if the array is checked to be an array using an `X instanceof Array` check.
    */
-  class InstanceofArraySanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode,
-    DataFlow::ValueNode
-  {
+  class InstanceofArraySanitizerGuard extends BarrierGuard, DataFlow::ValueNode {
     override BinaryExpr astNode;
 
     InstanceofArraySanitizerGuard() {
@@ -199,10 +233,10 @@ module LoopBoundInjection {
       DataFlow::globalVarRef("Array").flowsToExpr(astNode.getRightOperand())
     }
 
-    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
       true = outcome and
       e = astNode.getLeftOperand() and
-      label = TaintedObject::label()
+      state.isTaintedObject()
     }
   }
 
@@ -211,9 +245,7 @@ module LoopBoundInjection {
    *
    * Also implicitly makes sure that only the first DoS-prone loop is selected by the query (as the .length test has outcome=false when exiting the loop).
    */
-  class LengthCheckSanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode,
-    DataFlow::ValueNode
-  {
+  class LengthCheckSanitizerGuard extends BarrierGuard, DataFlow::ValueNode {
     override RelationalComparison astNode;
     DataFlow::PropRead propRead;
 
@@ -222,10 +254,10 @@ module LoopBoundInjection {
       propRead.getPropertyName() = "length"
     }
 
-    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
       false = outcome and
       e = propRead.getBase().asExpr() and
-      label = TaintedObject::label()
+      state.isTaintedObject()
     }
   }
 }

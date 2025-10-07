@@ -63,7 +63,7 @@ private module TarSlipImprovConfig implements DataFlow::ConfigSig {
       // For a call to `file.extractall` without `members` argument, `file` is considered a sink.
       exists(MethodCallNode call, AllTarfileOpens atfo |
         call = atfo.getReturn().getMember("extractall").getACall() and
-        not exists(Node arg | arg = call.getArgByName("members")) and
+        not exists(call.getArgByName("members")) and
         sink = call.getObject()
       )
       or
@@ -109,6 +109,8 @@ private module TarSlipImprovConfig implements DataFlow::ConfigSig {
     nodeFrom = nodeTo.(API::CallNode).getArg(0) and
     nodeFrom = tarfileOpen().getReturn().getAValueReachableFromSource()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Global taint-tracking for detecting more "TarSlip" vulnerabilities. */

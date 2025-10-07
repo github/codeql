@@ -5,5 +5,3 @@
 app/src/main/java/test/App.java
 app/src/test/java/test/AppTest.java
 gradle/wrapper/gradle-wrapper.properties
-test-db/log/ext/javac-1.properties
-test-db/log/ext/javac.properties

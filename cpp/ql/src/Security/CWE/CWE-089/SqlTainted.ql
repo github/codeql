@@ -38,6 +38,9 @@ module SqlTaintedConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) {
     exists(SqlLikeFunction runSql | runSql.outermostWrapperFunctionCall(asSinkExpr(node), _))
+    or
+    // sink defined using models-as-data
+    sinkNode(node, "sql-injection")
   }
 
   predicate isBarrier(DataFlow::Node node) {
@@ -51,18 +54,32 @@ module SqlTaintedConfig implements DataFlow::ConfigSig {
       sql.barrierSqlArgument(input, _)
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(Expr taintedArg | result = taintedArg.getLocation() | taintedArg = asSinkExpr(sink))
+  }
 }
 
 module SqlTainted = TaintTracking::Global<SqlTaintedConfig>;
 
 from
-  SqlLikeFunction runSql, Expr taintedArg, FlowSource taintSource, SqlTainted::PathNode sourceNode,
-  SqlTainted::PathNode sinkNode, string callChain
+  Expr taintedArg, FlowSource taintSource, SqlTainted::PathNode sourceNode,
+  SqlTainted::PathNode sinkNode, string extraText
 where
-  runSql.outermostWrapperFunctionCall(taintedArg, callChain) and
+  (
+    exists(SqlLikeFunction runSql, string callChain |
+      runSql.outermostWrapperFunctionCall(taintedArg, callChain) and
+      extraText = " and then passed to " + callChain
+    )
+    or
+    sinkNode(sinkNode.getNode(), "sql-injection") and
+    extraText = ""
+  ) and
   SqlTainted::flowPath(sourceNode, sinkNode) and
   taintedArg = asSinkExpr(sinkNode.getNode()) and
   taintSource = sourceNode.getNode()
 select taintedArg, sourceNode, sinkNode,
-  "This argument to a SQL query function is derived from $@ and then passed to " + callChain + ".",
-  taintSource, "user input (" + taintSource.getSourceType() + ")"
+  "This argument to a SQL query function is derived from $@" + extraText + ".", taintSource,
+  "user input (" + taintSource.getSourceType() + ")"

@@ -11,7 +11,7 @@ module Impl {
       )
     }
 
-    override string toString() { result = "{ ... }" }
+    override string toStringImpl() { result = "{ ... }" }
 
     override AstNode getImmediateElement(int index) {
       result =

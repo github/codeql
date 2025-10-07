@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CSharp
 
         public static string? GetAdjustedPath(ExtractionContext extractionContext, string sourcePath)
         {
-            if (extractionContext.Mode.HasFlag(ExtractorMode.BinaryLog)
+            if (extractionContext.IsBinaryLog
                 && extractionContext is BinaryLogExtractionContext binaryLogExtractionContext
                 && binaryLogExtractionContext.GetAdjustedPath(sourcePath) is string adjustedPath)
             {

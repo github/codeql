@@ -1,0 +1,61 @@
+name: Approve or Deny Marketplace Action Request
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  parse-issue:
+    runs-on: self-hosted
+    outputs:
+      payload: ${{ steps.issue_body_parser_request.outputs.payload }}
+    steps:
+      - name: Get JSON Data out of Issue Request
+        uses: peter-murray/issue-body-parser-action@v2
+        id: issue_body_parser_request
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          issue_id: ${{ github.event.issue.number }}
+          payload_marker: request
+          fail_on_missing: false
+  approve-or-deny-request:
+    runs-on: self-hosted
+    needs: parse-issue
+    if: needs.parse-issue.outputs.payload != 'NOT_FOUND'
+    steps:
+    - name: Lookup the latest release of ${{ fromJson(needs.parse-issue.outputs.payload).owner }}/${{ fromJson(needs.parse-issue.outputs.payload).repo }}
+      id: get_version
+      env:
+        OWNER: ${{ fromJson(needs.parse-issue.outputs.payload).owner }}
+        REPO: ${{ fromJson(needs.parse-issue.outputs.payload).repo }}
+        REQUEST_VERSION: ${{ fromJson(needs.parse-issue.outputs.payload).version }}
+      run: |
+        if [ $REQUEST_VERSION == 'latest' ]; then
+          echo "Finding latest release of $OWNER/$REPO..."
+          export VERSION=`curl https://api.github.com/repos/$OWNER/$REPO/releases/latest | jq -r .name`
+        else
+          export VERSION=$REQUEST_VERSION
+        fi
+        echo "VERSION: $VERSION"
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+    - name: Check out scripts
+      uses: actions/checkout@v3
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14'
+        check-latest: true
+    - name: Install dependencies
+      run: |
+        cd .github/scripts
+        npm install
+    - name: Approve or deny request
+      uses: actions/github-script@main
+      env:
+        VERSION: ${{ steps.get_version.outputs.version }}
+      with:
+        debug: true
+        script: |
+          const options = { token: '${{ secrets.TOKEN }}', adminOpsOrg: '${{ vars.ADMIN_OPS_ORG }}', actionsApprovedOrg: '${{ vars.ACTIONS_APPROVED_ORG }}', actionsApproverTeam: '${{ vars.ACTIONS_APPROVERS_TEAM }}', baseUrl: '${{ github.api_url }}', version: process.env.VERSION };
+          const payload = ${{ needs.parse-issue.outputs.payload }}
+          await require('./.github/scripts/approve-or-deny-request.js')({github, context, payload, options});

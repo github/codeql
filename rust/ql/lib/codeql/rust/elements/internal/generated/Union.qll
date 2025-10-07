@@ -6,11 +6,11 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.internal.AdtImpl::Impl as AdtImpl
 import codeql.rust.elements.Attr
 import codeql.rust.elements.GenericParamList
-import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
 import codeql.rust.elements.Name
-import codeql.rust.elements.RecordFieldList
+import codeql.rust.elements.StructFieldList
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 
@@ -20,14 +20,16 @@ import codeql.rust.elements.WhereClause
  */
 module Generated {
   /**
-   * A Union. For example:
+   * A union declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * union U { f1: u32, f2: f32 }
    * ```
    * INTERNAL: Do not reference the `Generated::Union` class directly.
    * Use the subclass `Union`, where the following predicates are available.
    */
-  class Union extends Synth::TUnion, ItemImpl::Item {
+  class Union extends Synth::TUnion, AdtImpl::Adt {
     override string getAPrimaryQlClass() { result = "Union" }
 
     /**
@@ -75,19 +77,19 @@ module Generated {
     final predicate hasName() { exists(this.getName()) }
 
     /**
-     * Gets the record field list of this union, if it exists.
+     * Gets the struct field list of this union, if it exists.
      */
-    RecordFieldList getRecordFieldList() {
+    StructFieldList getStructFieldList() {
       result =
-        Synth::convertRecordFieldListFromRaw(Synth::convertUnionToRaw(this)
+        Synth::convertStructFieldListFromRaw(Synth::convertUnionToRaw(this)
               .(Raw::Union)
-              .getRecordFieldList())
+              .getStructFieldList())
     }
 
     /**
-     * Holds if `getRecordFieldList()` exists.
+     * Holds if `getStructFieldList()` exists.
      */
-    final predicate hasRecordFieldList() { exists(this.getRecordFieldList()) }
+    final predicate hasStructFieldList() { exists(this.getStructFieldList()) }
 
     /**
      * Gets the visibility of this union, if it exists.

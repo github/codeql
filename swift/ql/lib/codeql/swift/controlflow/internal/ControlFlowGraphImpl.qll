@@ -1866,6 +1866,28 @@ module Exprs {
     }
   }
 
+  private class ExtractFunctionIsolationTree extends AstStandardPostOrderTree {
+    override ExtractFunctionIsolationExpr ast;
+
+    final override ControlFlowElement getChildNode(int i) {
+      i = 0 and
+      result.asAstNode() = ast.getFunctionExpr().getFullyConverted()
+    }
+  }
+
+  private class CurrentContextIsolationTree extends AstStandardPostOrderTree {
+    override CurrentContextIsolationExpr ast;
+
+    final override ControlFlowElement getChildNode(int i) {
+      i = 0 and
+      result.asAstNode() = ast.getActor().getFullyConverted()
+    }
+  }
+
+  private class TypeValueTree extends AstLeafTree {
+    override TypeValueExpr ast;
+  }
+
   module Conversions {
     class ConversionOrIdentity =
       Synth::TIdentityExpr or Synth::TExplicitCastExpr or Synth::TImplicitConversionExpr or
@@ -1954,18 +1976,6 @@ private module Cached {
     result = n.(FuncDeclElement).getAst() or
     result = n.(KeyPathElement).getAst()
   }
-
-  cached
-  newtype TSuccessorType =
-    TSuccessorSuccessor() or
-    TBooleanSuccessor(boolean b) { b in [false, true] } or
-    TBreakSuccessor() or
-    TContinueSuccessor() or
-    TReturnSuccessor() or
-    TMatchingSuccessor(boolean match) { match in [false, true] } or
-    TFallthroughSuccessor() or
-    TEmptinessSuccessor(boolean isEmpty) { isEmpty in [false, true] } or
-    TExceptionSuccessor()
 }
 
 import Cached

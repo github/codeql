@@ -58,6 +58,16 @@ module InputToArgumentToExecFlowConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     any(CommandInjectionAdditionalTaintStep s).step(n1, n2)
   }
+
+  // The query, as a predicate, is used negated in another query, but that's
+  // only to prevent overlapping results between two queries.
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  // All queries use the argument as the primary location and do not use the
+  // sink as an associated location.
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(Expr argument | argumentToExec(argument, sink) | result = argument.getLocation())
+  }
 }
 
 /**

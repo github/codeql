@@ -1,0 +1,133 @@
+#select
+| MvelInjectionTest.java:24:15:24:26 | read(...) | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) : InputStream | MvelInjectionTest.java:24:15:24:26 | read(...) | MVEL expression depends on a $@. | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) | user-provided value |
+| MvelInjectionTest.java:29:28:29:37 | expression | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) : InputStream | MvelInjectionTest.java:29:28:29:37 | expression | MVEL expression depends on a $@. | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) | user-provided value |
+| MvelInjectionTest.java:35:5:35:13 | statement | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) : InputStream | MvelInjectionTest.java:35:5:35:13 | statement | MVEL expression depends on a $@. | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) | user-provided value |
+| MvelInjectionTest.java:36:5:36:13 | statement | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) : InputStream | MvelInjectionTest.java:36:5:36:13 | statement | MVEL expression depends on a $@. | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) | user-provided value |
+| MvelInjectionTest.java:42:5:42:14 | expression | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) : InputStream | MvelInjectionTest.java:42:5:42:14 | expression | MVEL expression depends on a $@. | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) | user-provided value |
+| MvelInjectionTest.java:48:5:48:14 | expression | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) : InputStream | MvelInjectionTest.java:48:5:48:14 | expression | MVEL expression depends on a $@. | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) | user-provided value |
+| MvelInjectionTest.java:56:5:56:18 | compiledScript | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) : InputStream | MvelInjectionTest.java:56:5:56:18 | compiledScript | MVEL expression depends on a $@. | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) | user-provided value |
+| MvelInjectionTest.java:59:21:59:26 | script | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) : InputStream | MvelInjectionTest.java:59:21:59:26 | script | MVEL expression depends on a $@. | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) | user-provided value |
+| MvelInjectionTest.java:67:5:67:10 | script | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) : InputStream | MvelInjectionTest.java:67:5:67:10 | script | MVEL expression depends on a $@. | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) | user-provided value |
+| MvelInjectionTest.java:71:26:71:37 | read(...) | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) : InputStream | MvelInjectionTest.java:71:26:71:37 | read(...) | MVEL expression depends on a $@. | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) | user-provided value |
+| MvelInjectionTest.java:75:29:75:74 | compileTemplate(...) | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) : InputStream | MvelInjectionTest.java:75:29:75:74 | compileTemplate(...) | MVEL expression depends on a $@. | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) | user-provided value |
+| MvelInjectionTest.java:80:29:80:46 | compile(...) | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) : InputStream | MvelInjectionTest.java:80:29:80:46 | compile(...) | MVEL expression depends on a $@. | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) | user-provided value |
+| MvelInjectionTest.java:86:32:86:41 | expression | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) : InputStream | MvelInjectionTest.java:86:32:86:41 | expression | MVEL expression depends on a $@. | MvelInjectionTest.java:90:27:90:49 | getInputStream(...) | user-provided value |
+edges
+| MvelInjectionTest.java:28:31:28:66 | compileExpression(...) : Serializable | MvelInjectionTest.java:29:28:29:37 | expression | provenance | Sink:MaD:11 |
+| MvelInjectionTest.java:28:54:28:65 | read(...) : String | MvelInjectionTest.java:28:31:28:66 | compileExpression(...) : Serializable | provenance | Config |
+| MvelInjectionTest.java:33:35:33:70 | new ExpressionCompiler(...) : ExpressionCompiler | MvelInjectionTest.java:34:37:34:44 | compiler : ExpressionCompiler | provenance |  |
+| MvelInjectionTest.java:33:58:33:69 | read(...) : String | MvelInjectionTest.java:33:35:33:70 | new ExpressionCompiler(...) : ExpressionCompiler | provenance | Config |
+| MvelInjectionTest.java:34:37:34:44 | compiler : ExpressionCompiler | MvelInjectionTest.java:34:37:34:54 | compile(...) : CompiledExpression | provenance | Config |
+| MvelInjectionTest.java:34:37:34:54 | compile(...) : CompiledExpression | MvelInjectionTest.java:35:5:35:13 | statement | provenance | Sink:MaD:5 |
+| MvelInjectionTest.java:34:37:34:54 | compile(...) : CompiledExpression | MvelInjectionTest.java:36:5:36:13 | statement | provenance | Sink:MaD:2 |
+| MvelInjectionTest.java:40:35:40:70 | new ExpressionCompiler(...) : ExpressionCompiler | MvelInjectionTest.java:41:37:41:44 | compiler : ExpressionCompiler | provenance |  |
+| MvelInjectionTest.java:40:58:40:69 | read(...) : String | MvelInjectionTest.java:40:35:40:70 | new ExpressionCompiler(...) : ExpressionCompiler | provenance | Config |
+| MvelInjectionTest.java:41:37:41:44 | compiler : ExpressionCompiler | MvelInjectionTest.java:41:37:41:54 | compile(...) : CompiledExpression | provenance | Config |
+| MvelInjectionTest.java:41:37:41:54 | compile(...) : CompiledExpression | MvelInjectionTest.java:42:5:42:14 | expression | provenance | Sink:MaD:4 |
+| MvelInjectionTest.java:47:9:47:96 | new CompiledAccExpression(...) : CompiledAccExpression | MvelInjectionTest.java:48:5:48:14 | expression | provenance | Sink:MaD:3 |
+| MvelInjectionTest.java:47:35:47:46 | read(...) : String | MvelInjectionTest.java:47:35:47:60 | toCharArray(...) : char[] | provenance | MaD:16 |
+| MvelInjectionTest.java:47:35:47:60 | toCharArray(...) : char[] | MvelInjectionTest.java:47:9:47:96 | new CompiledAccExpression(...) : CompiledAccExpression | provenance | Config |
+| MvelInjectionTest.java:52:20:52:31 | read(...) : String | MvelInjectionTest.java:55:52:55:56 | input : String | provenance |  |
+| MvelInjectionTest.java:55:37:55:57 | compile(...) : CompiledScript | MvelInjectionTest.java:56:5:56:18 | compiledScript | provenance | Sink:MaD:1 |
+| MvelInjectionTest.java:55:52:55:56 | input : String | MvelInjectionTest.java:55:37:55:57 | compile(...) : CompiledScript | provenance | Config |
+| MvelInjectionTest.java:55:52:55:56 | input : String | MvelInjectionTest.java:58:49:58:53 | input : String | provenance |  |
+| MvelInjectionTest.java:58:27:58:54 | compiledScript(...) : Serializable | MvelInjectionTest.java:59:21:59:26 | script | provenance | Sink:MaD:7 |
+| MvelInjectionTest.java:58:49:58:53 | input : String | MvelInjectionTest.java:58:27:58:54 | compiledScript(...) : Serializable | provenance | Config |
+| MvelInjectionTest.java:64:35:64:70 | new ExpressionCompiler(...) : ExpressionCompiler | MvelInjectionTest.java:65:37:65:44 | compiler : ExpressionCompiler | provenance |  |
+| MvelInjectionTest.java:64:58:64:69 | read(...) : String | MvelInjectionTest.java:64:35:64:70 | new ExpressionCompiler(...) : ExpressionCompiler | provenance | Config |
+| MvelInjectionTest.java:65:37:65:44 | compiler : ExpressionCompiler | MvelInjectionTest.java:65:37:65:54 | compile(...) : CompiledExpression | provenance | Config |
+| MvelInjectionTest.java:65:37:65:54 | compile(...) : CompiledExpression | MvelInjectionTest.java:66:64:66:72 | statement : CompiledExpression | provenance |  |
+| MvelInjectionTest.java:66:33:66:73 | new MvelCompiledScript(...) : MvelCompiledScript | MvelInjectionTest.java:67:5:67:10 | script | provenance | Sink:MaD:6 |
+| MvelInjectionTest.java:66:64:66:72 | statement : CompiledExpression | MvelInjectionTest.java:66:33:66:73 | new MvelCompiledScript(...) : MvelCompiledScript | provenance | Config |
+| MvelInjectionTest.java:75:62:75:73 | read(...) : String | MvelInjectionTest.java:75:29:75:74 | compileTemplate(...) | provenance | Config Sink:MaD:9 |
+| MvelInjectionTest.java:79:33:79:66 | new TemplateCompiler(...) : TemplateCompiler | MvelInjectionTest.java:80:29:80:36 | compiler : TemplateCompiler | provenance |  |
+| MvelInjectionTest.java:79:54:79:65 | read(...) : String | MvelInjectionTest.java:79:33:79:66 | new TemplateCompiler(...) : TemplateCompiler | provenance | Config |
+| MvelInjectionTest.java:80:29:80:36 | compiler : TemplateCompiler | MvelInjectionTest.java:80:29:80:46 | compile(...) | provenance | Config Sink:MaD:9 |
+| MvelInjectionTest.java:84:35:84:70 | new ExpressionCompiler(...) : ExpressionCompiler | MvelInjectionTest.java:85:37:85:44 | compiler : ExpressionCompiler | provenance |  |
+| MvelInjectionTest.java:84:58:84:69 | read(...) : String | MvelInjectionTest.java:84:35:84:70 | new ExpressionCompiler(...) : ExpressionCompiler | provenance | Config |
+| MvelInjectionTest.java:85:37:85:44 | compiler : ExpressionCompiler | MvelInjectionTest.java:85:37:85:54 | compile(...) : CompiledExpression | provenance | Config |
+| MvelInjectionTest.java:85:37:85:54 | compile(...) : CompiledExpression | MvelInjectionTest.java:86:32:86:41 | expression | provenance | Sink:MaD:12 |
+| MvelInjectionTest.java:90:27:90:49 | getInputStream(...) : InputStream | MvelInjectionTest.java:92:15:92:16 | is : InputStream | provenance | Src:MaD:13  |
+| MvelInjectionTest.java:92:15:92:16 | is : InputStream | MvelInjectionTest.java:92:23:92:27 | bytes [post update] : byte[] | provenance | MaD:14 |
+| MvelInjectionTest.java:92:23:92:27 | bytes [post update] : byte[] | MvelInjectionTest.java:93:25:93:29 | bytes : byte[] | provenance |  |
+| MvelInjectionTest.java:93:14:93:36 | new String(...) : String | MvelInjectionTest.java:24:15:24:26 | read(...) | provenance | Sink:MaD:10 |
+| MvelInjectionTest.java:93:14:93:36 | new String(...) : String | MvelInjectionTest.java:28:54:28:65 | read(...) : String | provenance |  |
+| MvelInjectionTest.java:93:14:93:36 | new String(...) : String | MvelInjectionTest.java:33:58:33:69 | read(...) : String | provenance |  |
+| MvelInjectionTest.java:93:14:93:36 | new String(...) : String | MvelInjectionTest.java:40:58:40:69 | read(...) : String | provenance |  |
+| MvelInjectionTest.java:93:14:93:36 | new String(...) : String | MvelInjectionTest.java:47:35:47:46 | read(...) : String | provenance |  |
+| MvelInjectionTest.java:93:14:93:36 | new String(...) : String | MvelInjectionTest.java:52:20:52:31 | read(...) : String | provenance |  |
+| MvelInjectionTest.java:93:14:93:36 | new String(...) : String | MvelInjectionTest.java:64:58:64:69 | read(...) : String | provenance |  |
+| MvelInjectionTest.java:93:14:93:36 | new String(...) : String | MvelInjectionTest.java:71:26:71:37 | read(...) | provenance | Sink:MaD:8 |
+| MvelInjectionTest.java:93:14:93:36 | new String(...) : String | MvelInjectionTest.java:75:62:75:73 | read(...) : String | provenance |  |
+| MvelInjectionTest.java:93:14:93:36 | new String(...) : String | MvelInjectionTest.java:79:54:79:65 | read(...) : String | provenance |  |
+| MvelInjectionTest.java:93:14:93:36 | new String(...) : String | MvelInjectionTest.java:84:58:84:69 | read(...) : String | provenance |  |
+| MvelInjectionTest.java:93:25:93:29 | bytes : byte[] | MvelInjectionTest.java:93:14:93:36 | new String(...) : String | provenance | MaD:15 |
+models
+| 1 | Sink: javax.script; CompiledScript; false; eval; ; ; Argument[this]; mvel-injection; manual |
+| 2 | Sink: org.mvel2.compiler; Accessor; false; getValue; ; ; Argument[this]; mvel-injection; manual |
+| 3 | Sink: org.mvel2.compiler; CompiledAccExpression; false; getValue; ; ; Argument[this]; mvel-injection; manual |
+| 4 | Sink: org.mvel2.compiler; CompiledExpression; false; getDirectValue; ; ; Argument[this]; mvel-injection; manual |
+| 5 | Sink: org.mvel2.compiler; ExecutableStatement; false; getValue; ; ; Argument[this]; mvel-injection; manual |
+| 6 | Sink: org.mvel2.jsr223; MvelCompiledScript; false; eval; ; ; Argument[this]; mvel-injection; manual |
+| 7 | Sink: org.mvel2.jsr223; MvelScriptEngine; false; evaluate; ; ; Argument[0]; mvel-injection; manual |
+| 8 | Sink: org.mvel2.templates; TemplateRuntime; false; eval; ; ; Argument[0]; mvel-injection; manual |
+| 9 | Sink: org.mvel2.templates; TemplateRuntime; false; execute; ; ; Argument[0]; mvel-injection; manual |
+| 10 | Sink: org.mvel2; MVEL; false; eval; ; ; Argument[0]; mvel-injection; manual |
+| 11 | Sink: org.mvel2; MVEL; false; executeExpression; ; ; Argument[0]; mvel-injection; manual |
+| 12 | Sink: org.mvel2; MVELRuntime; false; execute; ; ; Argument[1]; mvel-injection; manual |
+| 13 | Source: java.net; Socket; false; getInputStream; (); ; ReturnValue; remote; manual |
+| 14 | Summary: java.io; InputStream; true; read; (byte[]); ; Argument[this]; Argument[0]; taint; manual |
+| 15 | Summary: java.lang; String; false; String; ; ; Argument[0]; Argument[this]; taint; manual |
+| 16 | Summary: java.lang; String; false; toCharArray; ; ; Argument[this]; ReturnValue; taint; manual |
+nodes
+| MvelInjectionTest.java:24:15:24:26 | read(...) | semmle.label | read(...) |
+| MvelInjectionTest.java:28:31:28:66 | compileExpression(...) : Serializable | semmle.label | compileExpression(...) : Serializable |
+| MvelInjectionTest.java:28:54:28:65 | read(...) : String | semmle.label | read(...) : String |
+| MvelInjectionTest.java:29:28:29:37 | expression | semmle.label | expression |
+| MvelInjectionTest.java:33:35:33:70 | new ExpressionCompiler(...) : ExpressionCompiler | semmle.label | new ExpressionCompiler(...) : ExpressionCompiler |
+| MvelInjectionTest.java:33:58:33:69 | read(...) : String | semmle.label | read(...) : String |
+| MvelInjectionTest.java:34:37:34:44 | compiler : ExpressionCompiler | semmle.label | compiler : ExpressionCompiler |
+| MvelInjectionTest.java:34:37:34:54 | compile(...) : CompiledExpression | semmle.label | compile(...) : CompiledExpression |
+| MvelInjectionTest.java:35:5:35:13 | statement | semmle.label | statement |
+| MvelInjectionTest.java:36:5:36:13 | statement | semmle.label | statement |
+| MvelInjectionTest.java:40:35:40:70 | new ExpressionCompiler(...) : ExpressionCompiler | semmle.label | new ExpressionCompiler(...) : ExpressionCompiler |
+| MvelInjectionTest.java:40:58:40:69 | read(...) : String | semmle.label | read(...) : String |
+| MvelInjectionTest.java:41:37:41:44 | compiler : ExpressionCompiler | semmle.label | compiler : ExpressionCompiler |
+| MvelInjectionTest.java:41:37:41:54 | compile(...) : CompiledExpression | semmle.label | compile(...) : CompiledExpression |
+| MvelInjectionTest.java:42:5:42:14 | expression | semmle.label | expression |
+| MvelInjectionTest.java:47:9:47:96 | new CompiledAccExpression(...) : CompiledAccExpression | semmle.label | new CompiledAccExpression(...) : CompiledAccExpression |
+| MvelInjectionTest.java:47:35:47:46 | read(...) : String | semmle.label | read(...) : String |
+| MvelInjectionTest.java:47:35:47:60 | toCharArray(...) : char[] | semmle.label | toCharArray(...) : char[] |
+| MvelInjectionTest.java:48:5:48:14 | expression | semmle.label | expression |
+| MvelInjectionTest.java:52:20:52:31 | read(...) : String | semmle.label | read(...) : String |
+| MvelInjectionTest.java:55:37:55:57 | compile(...) : CompiledScript | semmle.label | compile(...) : CompiledScript |
+| MvelInjectionTest.java:55:52:55:56 | input : String | semmle.label | input : String |
+| MvelInjectionTest.java:56:5:56:18 | compiledScript | semmle.label | compiledScript |
+| MvelInjectionTest.java:58:27:58:54 | compiledScript(...) : Serializable | semmle.label | compiledScript(...) : Serializable |
+| MvelInjectionTest.java:58:49:58:53 | input : String | semmle.label | input : String |
+| MvelInjectionTest.java:59:21:59:26 | script | semmle.label | script |
+| MvelInjectionTest.java:64:35:64:70 | new ExpressionCompiler(...) : ExpressionCompiler | semmle.label | new ExpressionCompiler(...) : ExpressionCompiler |
+| MvelInjectionTest.java:64:58:64:69 | read(...) : String | semmle.label | read(...) : String |
+| MvelInjectionTest.java:65:37:65:44 | compiler : ExpressionCompiler | semmle.label | compiler : ExpressionCompiler |
+| MvelInjectionTest.java:65:37:65:54 | compile(...) : CompiledExpression | semmle.label | compile(...) : CompiledExpression |
+| MvelInjectionTest.java:66:33:66:73 | new MvelCompiledScript(...) : MvelCompiledScript | semmle.label | new MvelCompiledScript(...) : MvelCompiledScript |
+| MvelInjectionTest.java:66:64:66:72 | statement : CompiledExpression | semmle.label | statement : CompiledExpression |
+| MvelInjectionTest.java:67:5:67:10 | script | semmle.label | script |
+| MvelInjectionTest.java:71:26:71:37 | read(...) | semmle.label | read(...) |
+| MvelInjectionTest.java:75:29:75:74 | compileTemplate(...) | semmle.label | compileTemplate(...) |
+| MvelInjectionTest.java:75:62:75:73 | read(...) : String | semmle.label | read(...) : String |
+| MvelInjectionTest.java:79:33:79:66 | new TemplateCompiler(...) : TemplateCompiler | semmle.label | new TemplateCompiler(...) : TemplateCompiler |
+| MvelInjectionTest.java:79:54:79:65 | read(...) : String | semmle.label | read(...) : String |
+| MvelInjectionTest.java:80:29:80:36 | compiler : TemplateCompiler | semmle.label | compiler : TemplateCompiler |
+| MvelInjectionTest.java:80:29:80:46 | compile(...) | semmle.label | compile(...) |
+| MvelInjectionTest.java:84:35:84:70 | new ExpressionCompiler(...) : ExpressionCompiler | semmle.label | new ExpressionCompiler(...) : ExpressionCompiler |
+| MvelInjectionTest.java:84:58:84:69 | read(...) : String | semmle.label | read(...) : String |
+| MvelInjectionTest.java:85:37:85:44 | compiler : ExpressionCompiler | semmle.label | compiler : ExpressionCompiler |
+| MvelInjectionTest.java:85:37:85:54 | compile(...) : CompiledExpression | semmle.label | compile(...) : CompiledExpression |
+| MvelInjectionTest.java:86:32:86:41 | expression | semmle.label | expression |
+| MvelInjectionTest.java:90:27:90:49 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| MvelInjectionTest.java:92:15:92:16 | is : InputStream | semmle.label | is : InputStream |
+| MvelInjectionTest.java:92:23:92:27 | bytes [post update] : byte[] | semmle.label | bytes [post update] : byte[] |
+| MvelInjectionTest.java:93:14:93:36 | new String(...) : String | semmle.label | new String(...) : String |
+| MvelInjectionTest.java:93:25:93:29 | bytes : byte[] | semmle.label | bytes : byte[] |
+subpaths

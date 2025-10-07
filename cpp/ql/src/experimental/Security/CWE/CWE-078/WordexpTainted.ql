@@ -48,6 +48,10 @@ module WordexpTaintConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
 }
 
 module WordexpTaint = TaintTracking::Global<WordexpTaintConfig>;

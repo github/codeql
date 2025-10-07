@@ -2,22 +2,26 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  ExternCrate x, string hasExtendedCanonicalPath, string hasCrateOrigin, int getNumberOfAttrs,
-  string hasNameRef, string hasRename, string hasVisibility
-where
+query predicate instances(ExternCrate x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getAttributeMacroExpansion(ExternCrate x, MacroItems getAttributeMacroExpansion) {
   toBeTested(x) and
   not x.isUnknown() and
-  (
-    if x.hasExtendedCanonicalPath()
-    then hasExtendedCanonicalPath = "yes"
-    else hasExtendedCanonicalPath = "no"
-  ) and
-  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasNameRef() then hasNameRef = "yes" else hasNameRef = "no") and
-  (if x.hasRename() then hasRename = "yes" else hasRename = "no") and
-  if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
-select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "getNumberOfAttrs:", getNumberOfAttrs, "hasNameRef:", hasNameRef, "hasRename:", hasRename,
-  "hasVisibility:", hasVisibility
+  getAttributeMacroExpansion = x.getAttributeMacroExpansion()
+}
+
+query predicate getAttr(ExternCrate x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getIdentifier(ExternCrate x, NameRef getIdentifier) {
+  toBeTested(x) and not x.isUnknown() and getIdentifier = x.getIdentifier()
+}
+
+query predicate getRename(ExternCrate x, Rename getRename) {
+  toBeTested(x) and not x.isUnknown() and getRename = x.getRename()
+}
+
+query predicate getVisibility(ExternCrate x, Visibility getVisibility) {
+  toBeTested(x) and not x.isUnknown() and getVisibility = x.getVisibility()
+}

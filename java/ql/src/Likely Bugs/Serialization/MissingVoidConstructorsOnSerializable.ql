@@ -7,9 +7,9 @@
  * @problem.severity warning
  * @precision medium
  * @id java/missing-no-arg-constructor-on-serializable
- * @tags reliability
- *       maintainability
- *       language-features
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import java
@@ -23,6 +23,16 @@ where
     c = nonserial.getSourceDeclaration().getAConstructor() and
     c.hasNoParameters() and
     not c.isPrivate()
+  ) and
+  // Assume if an object replaces itself prior to serialization,
+  // then it is unlikely to be directly deserialized.
+  // That means it won't need to comply with default serialization rules,
+  // such as non-serializable super-classes having a no-argument constructor.
+  not exists(Method m |
+    m = serial.getAMethod() and
+    m.hasName("writeReplace") and
+    m.getReturnType() instanceof TypeObject and
+    m.hasNoParameters()
   ) and
   serial.fromSource()
 select serial,

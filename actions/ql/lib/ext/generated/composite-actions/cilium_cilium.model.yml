@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["cilium/cilium", "*", "input.job-name", "code-injection", "generated"]
+     - ["cilium/cilium", "*", "input.lb-acceleration", "code-injection", "generated"]
+     - ["cilium/cilium", "*", "input.mutual-auth", "code-injection", "generated"]

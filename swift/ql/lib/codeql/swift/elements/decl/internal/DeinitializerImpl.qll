@@ -6,6 +6,8 @@ module Impl {
    * A deinitializer of a class.
    */
   class Deinitializer extends Generated::Deinitializer {
-    override string toString() { result = this.getSelfParam().getType() + "." + super.toString() }
+    override string toStringImpl() {
+      result = this.getSelfParam().getType().toStringImpl() + "." + super.toStringImpl()
+    }
   }
 }

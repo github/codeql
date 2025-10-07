@@ -22,8 +22,8 @@ class InsecureIgnoreHostKey extends Function {
 /** An SSH host-key checking function. */
 class HostKeyCallbackFunc extends DataFlow::Node {
   HostKeyCallbackFunc() {
-    exists(NamedType nt | nt.hasQualifiedName(cryptoSshPackage(), "HostKeyCallback") |
-      this.getType().getUnderlyingType() = nt.getUnderlyingType()
+    exists(DefinedType dt | dt.hasQualifiedName(cryptoSshPackage(), "HostKeyCallback") |
+      this.getType().getUnderlyingType() = dt.getUnderlyingType()
     ) and
     // Restrict possible sources to either function definitions or
     // the result of some external function call (e.g. InsecureIgnoreHostKey())
@@ -68,6 +68,8 @@ module Config implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { writeIsSink(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
@@ -96,8 +98,8 @@ predicate hostCheckReachesSink(Flow::PathNode sink) {
         Flow::flowPath(source, otherSink) and
         Config::writeIsSink(sink.getNode(), sinkWrite) and
         Config::writeIsSink(otherSink.getNode(), otherSinkWrite) and
-        sinkWrite.writesField(sinkAccessPath.getAUse(), _, sink.getNode()) and
-        otherSinkWrite.writesField(otherSinkAccessPath.getAUse(), _, otherSink.getNode()) and
+        sinkWrite.writesFieldPreUpdate(sinkAccessPath.getAUse(), _, sink.getNode()) and
+        otherSinkWrite.writesFieldPreUpdate(otherSinkAccessPath.getAUse(), _, otherSink.getNode()) and
         otherSinkAccessPath = sinkAccessPath.similar()
       )
     )

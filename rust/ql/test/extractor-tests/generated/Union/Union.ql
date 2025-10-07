@@ -2,26 +2,38 @@
 import codeql.rust.elements
 import TestUtils
 
-from
-  Union x, string hasExtendedCanonicalPath, string hasCrateOrigin, int getNumberOfAttrs,
-  string hasGenericParamList, string hasName, string hasRecordFieldList, string hasVisibility,
-  string hasWhereClause
-where
+query predicate instances(Union x) { toBeTested(x) and not x.isUnknown() }
+
+query predicate getAttributeMacroExpansion(Union x, MacroItems getAttributeMacroExpansion) {
   toBeTested(x) and
   not x.isUnknown() and
-  (
-    if x.hasExtendedCanonicalPath()
-    then hasExtendedCanonicalPath = "yes"
-    else hasExtendedCanonicalPath = "no"
-  ) and
-  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
-  (if x.hasName() then hasName = "yes" else hasName = "no") and
-  (if x.hasRecordFieldList() then hasRecordFieldList = "yes" else hasRecordFieldList = "no") and
-  (if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no") and
-  if x.hasWhereClause() then hasWhereClause = "yes" else hasWhereClause = "no"
-select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "getNumberOfAttrs:", getNumberOfAttrs, "hasGenericParamList:", hasGenericParamList, "hasName:",
-  hasName, "hasRecordFieldList:", hasRecordFieldList, "hasVisibility:", hasVisibility,
-  "hasWhereClause:", hasWhereClause
+  getAttributeMacroExpansion = x.getAttributeMacroExpansion()
+}
+
+query predicate getDeriveMacroExpansion(Union x, int index, MacroItems getDeriveMacroExpansion) {
+  toBeTested(x) and not x.isUnknown() and getDeriveMacroExpansion = x.getDeriveMacroExpansion(index)
+}
+
+query predicate getAttr(Union x, int index, Attr getAttr) {
+  toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
+}
+
+query predicate getGenericParamList(Union x, GenericParamList getGenericParamList) {
+  toBeTested(x) and not x.isUnknown() and getGenericParamList = x.getGenericParamList()
+}
+
+query predicate getName(Union x, Name getName) {
+  toBeTested(x) and not x.isUnknown() and getName = x.getName()
+}
+
+query predicate getStructFieldList(Union x, StructFieldList getStructFieldList) {
+  toBeTested(x) and not x.isUnknown() and getStructFieldList = x.getStructFieldList()
+}
+
+query predicate getVisibility(Union x, Visibility getVisibility) {
+  toBeTested(x) and not x.isUnknown() and getVisibility = x.getVisibility()
+}
+
+query predicate getWhereClause(Union x, WhereClause getWhereClause) {
+  toBeTested(x) and not x.isUnknown() and getWhereClause = x.getWhereClause()
+}

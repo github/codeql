@@ -6,9 +6,7 @@ private import semmle.code.csharp.commons.StructuralComparison as StructuralComp
 
 pragma[noinline]
 private predicate isConstantCondition0(ControlFlow::Node cfn, boolean b) {
-  exists(
-    cfn.getASuccessorByType(any(ControlFlow::SuccessorTypes::BooleanSuccessor t | t.getValue() = b))
-  ) and
+  exists(cfn.getASuccessorByType(any(ControlFlow::BooleanSuccessor t | t.getValue() = b))) and
   strictcount(ControlFlow::SuccessorType t | exists(cfn.getASuccessorByType(t))) = 1
 }
 
@@ -43,7 +41,7 @@ predicate isConstantComparison(ComparisonOperation co, boolean b) {
 private module ConstantComparisonOperation {
   private import semmle.code.csharp.commons.ComparisonTest
 
-  private SimpleType convertedType(Expr expr) { result = expr.stripImplicitCasts().getType() }
+  private SimpleType convertedType(Expr expr) { result = expr.stripImplicit().getType() }
 
   private int maxValue(Expr expr) {
     if convertedType(expr) instanceof IntegralType and exists(expr.getValue())

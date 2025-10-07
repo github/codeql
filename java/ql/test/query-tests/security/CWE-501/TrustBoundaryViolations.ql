@@ -1,4 +1,0 @@
-import java
-import semmle.code.java.security.TrustBoundaryViolationQuery
-import TestUtilities.InlineFlowTest
-import TaintFlowTest<TrustBoundaryConfig>

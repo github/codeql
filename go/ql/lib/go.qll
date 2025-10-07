@@ -25,15 +25,15 @@ import semmle.go.controlflow.BasicBlocks
 import semmle.go.controlflow.ControlFlowGraph
 import semmle.go.controlflow.IR
 import semmle.go.dataflow.DataFlow
-import semmle.go.dataflow.DataFlow2
 import semmle.go.dataflow.GlobalValueNumbering
 import semmle.go.dataflow.SSA
 import semmle.go.dataflow.TaintTracking
-import semmle.go.dataflow.TaintTracking2
 import semmle.go.frameworks.Afero
 import semmle.go.frameworks.AwsLambda
 import semmle.go.frameworks.Beego
 import semmle.go.frameworks.BeegoOrm
+import semmle.go.frameworks.Bun
+import semmle.go.frameworks.RsCors
 import semmle.go.frameworks.Couchbase
 import semmle.go.frameworks.Echo
 import semmle.go.frameworks.ElazarlGoproxy
@@ -58,6 +58,7 @@ import semmle.go.frameworks.Protobuf
 import semmle.go.frameworks.Revel
 import semmle.go.frameworks.Spew
 import semmle.go.frameworks.SQL
+import semmle.go.frameworks.Squirrel
 import semmle.go.frameworks.Stdlib
 import semmle.go.frameworks.SystemCommandExecutors
 import semmle.go.frameworks.Testing

@@ -3,7 +3,7 @@
  */
 
 import ruby
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 import PathGraph
 import codeql.ruby.frameworks.Sinatra
 import codeql.ruby.Concepts

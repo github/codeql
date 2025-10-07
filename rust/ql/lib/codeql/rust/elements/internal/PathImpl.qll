@@ -15,14 +15,62 @@ module Impl {
   /**
    * A path. For example:
    * ```rust
+   * use some_crate::some_module::some_item;
    * foo::bar;
    * ```
    */
   class Path extends Generated::Path {
-    override string toString() {
-      if this.hasQualifier()
-      then result = this.getQualifier().toString() + "::" + this.getPart().toString()
-      else result = this.getPart().toString()
+    override string toStringImpl() { result = this.toAbbreviatedString() }
+
+    override string toAbbreviatedString() {
+      result = strictconcat(int i | | this.toAbbreviatedStringPart(i) order by i)
     }
+
+    private string toAbbreviatedStringPart(int index) {
+      index = 0 and
+      this.hasQualifier() and
+      result = "...::"
+      or
+      index = 1 and
+      result = this.getSegment().toAbbreviatedString()
+    }
+
+    /**
+     * Gets the text of this path, if it exists.
+     */
+    pragma[nomagic]
+    string getText() { result = this.getSegment().getIdentifier().getText() }
+
+    /**
+     * Gets the full text of this path, including the qualifier.
+     *
+     * Should only be used for debugging purposes.
+     */
+    string toStringDebug() {
+      not this.hasQualifier() and
+      result = this.getText()
+      or
+      result = this.getQualifier().toStringDebug() + "::" + this.getText()
+    }
+  }
+
+  /** A simple identifier path. */
+  class IdentPath extends Path {
+    private string name;
+
+    IdentPath() {
+      not this.hasQualifier() and
+      exists(PathSegment ps |
+        ps = this.getSegment() and
+        not ps.hasGenericArgList() and
+        not ps.hasParenthesizedArgList() and
+        not ps.hasTypeRepr() and
+        not ps.hasReturnTypeSyntax() and
+        name = ps.getIdentifier().getText()
+      )
+    }
+
+    /** Gets the identifier name. */
+    string getName() { result = name }
   }
 }

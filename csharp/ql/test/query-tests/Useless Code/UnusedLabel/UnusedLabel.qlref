@@ -1,2 +1,2 @@
 query: Useless code/UnusedLabel.ql
-postprocess: TestUtilities/InlineExpectationsTestQuery.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

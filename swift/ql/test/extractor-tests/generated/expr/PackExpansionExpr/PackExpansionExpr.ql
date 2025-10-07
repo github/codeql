@@ -2,10 +2,13 @@
 import codeql.swift.elements
 import TestUtils
 
-from PackExpansionExpr x, string hasType, Expr getPatternExpr
-where
+query predicate instances(PackExpansionExpr x, string getPatternExpr__label, Expr getPatternExpr) {
   toBeTested(x) and
   not x.isUnknown() and
-  (if x.hasType() then hasType = "yes" else hasType = "no") and
+  getPatternExpr__label = "getPatternExpr:" and
   getPatternExpr = x.getPatternExpr()
-select x, "hasType:", hasType, "getPatternExpr:", getPatternExpr
+}
+
+query predicate getType(PackExpansionExpr x, Type getType) {
+  toBeTested(x) and not x.isUnknown() and getType = x.getType()
+}

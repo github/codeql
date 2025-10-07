@@ -4,7 +4,8 @@
  * @kind problem
  * @problem.severity warning
  * @id js/superfluous-trailing-arguments
- * @tags maintainability
+ * @tags quality
+ *       reliability
  *       correctness
  *       language-features
  *       external/cwe/cwe-685

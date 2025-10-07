@@ -49,6 +49,15 @@ pub fn generate(
         })],
     )?;
 
+    ql::write(
+        &mut ql_writer,
+        &[
+            ql::TopLevel::Predicate(ql_gen::create_is_overlay_predicate()),
+            ql::TopLevel::Predicate(ql_gen::create_discardable_location_predicate()),
+            ql::TopLevel::Predicate(ql_gen::create_discard_location_predicate()),
+        ],
+    )?;
+
     for language in languages {
         let prefix = node_types::to_snake_case(&language.name);
         let ast_node_name = format!("{}_ast_node", &prefix);
@@ -92,6 +101,18 @@ pub fn generate(
             ql::TopLevel::Class(ql_gen::create_token_class(&token_name, &tokeninfo_name)),
             ql::TopLevel::Class(ql_gen::create_reserved_word_class(&reserved_word_name)),
         ];
+
+        // Overlay discard predicates
+        body.push(ql::TopLevel::Predicate(
+            ql_gen::create_get_node_file_predicate(&ast_node_name, &node_location_table_name),
+        ));
+        body.push(ql::TopLevel::Predicate(
+            ql_gen::create_discardable_ast_node_predicate(&ast_node_name),
+        ));
+        body.push(ql::TopLevel::Predicate(
+            ql_gen::create_discard_ast_node_predicate(&ast_node_name),
+        ));
+
         body.append(&mut ql_gen::convert_nodes(&nodes));
         ql::write(
             &mut ql_writer,
@@ -99,6 +120,7 @@ pub fn generate(
                 qldoc: None,
                 name: &language.name,
                 body,
+                overlay: Some(ql::OverlayAnnotation::Local),
             })],
         )?;
     }
@@ -234,11 +256,11 @@ fn add_field_for_column_storage<'a>(
 /// 1. A vector of dbscheme entries.
 /// 2. A set of names of the members of the `<lang>_ast_node` union.
 /// 3. A map where the keys are the dbscheme names for token kinds, and the
-/// values are their integer representations.
+///    values are their integer representations.
 fn convert_nodes(
     nodes: &node_types::NodeTypeMap,
-) -> (Vec<dbscheme::Entry>, Set<&str>, Map<&str, usize>) {
-    let mut entries: Vec<dbscheme::Entry> = Vec::new();
+) -> (Vec<dbscheme::Entry<'_>>, Set<&str>, Map<&str, usize>) {
+    let mut entries = Vec::new();
     let mut ast_node_members: Set<&str> = Set::new();
     let token_kinds: Map<&str, usize> = nodes
         .iter()

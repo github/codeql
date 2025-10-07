@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
-using Semmle.Util.Logging;
 
 namespace Semmle.Autobuild.Shared
 {
@@ -25,6 +24,26 @@ namespace Semmle.Autobuild.Shared
 
         private readonly Lazy<List<Project<TAutobuildOptions>>> includedProjectsLazy;
         public override IEnumerable<IProjectOrSolution> IncludedProjects => includedProjectsLazy.Value;
+
+        private static bool HasSdkAttribute(XmlElement xml) =>
+            xml.HasAttribute("Sdk");
+
+        private static bool AnyElement(XmlNodeList l, Func<XmlElement, bool> f) =>
+            l.OfType<XmlElement>().Any(f);
+
+        /// <summary>
+        /// According to https://learn.microsoft.com/en-us/visualstudio/msbuild/how-to-use-project-sdk?view=vs-2022#reference-a-project-sdk
+        /// there are three ways to reference a project SDK:
+        ///  1. As an attribute on the &lt;Project/&gt;.
+        ///  2. As a top level element of &lt;Project&gt;.
+        ///  3. As an attribute on an &lt;Import&gt; element.
+        ///
+        /// Returns true, if the Sdk attribute is used, otherwise false.
+        /// </summary>
+        private static bool ReferencesSdk(XmlElement xml) =>
+            HasSdkAttribute(xml) || // Case 1
+            AnyElement(xml.ChildNodes, e => e.Name == "Sdk") || // Case 2
+            AnyElement(xml.GetElementsByTagName("Import"), HasSdkAttribute); // Case 3
 
         public Project(Autobuilder<TAutobuildOptions> builder, string path) : base(builder, path)
         {
@@ -49,7 +68,7 @@ namespace Semmle.Autobuild.Shared
 
             if (root?.Name == "Project")
             {
-                if (root.HasAttribute("Sdk"))
+                if (ReferencesSdk(root))
                 {
                     DotNetProject = true;
                     return;

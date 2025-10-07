@@ -16,7 +16,7 @@ import semmle.code.cpp.models.interfaces.NonThrowing
  * `__builtin___memcpy_chk`.
  */
 private class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffectFunction,
-  AliasFunction, NonThrowingFunction
+  AliasFunction, NonCppThrowingFunction
 {
   MemcpyFunction() {
     // memcpy(dest, src, num)

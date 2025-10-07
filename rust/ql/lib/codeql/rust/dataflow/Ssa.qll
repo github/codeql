@@ -9,6 +9,7 @@ module Ssa {
   private import rust
   private import codeql.rust.controlflow.BasicBlocks
   private import codeql.rust.controlflow.ControlFlowGraph
+  private import codeql.rust.controlflow.CfgNodes
   private import codeql.rust.controlflow.internal.ControlFlowGraphImpl as CfgImpl
   private import internal.SsaImpl as SsaImpl
 
@@ -26,7 +27,7 @@ module Ssa {
     }
 
     /**
-     * Gets a control-flow node that reads the value of this SSA definition.
+     * Gets a control flow node that reads the value of this SSA definition.
      *
      * Example:
      *
@@ -53,7 +54,7 @@ module Ssa {
     final CfgNode getARead() { result = SsaImpl::getARead(this) }
 
     /**
-     * Gets a first control-flow node that reads the value of this SSA definition.
+     * Gets a first control flow node that reads the value of this SSA definition.
      * That is, a read that can be reached from this definition without passing
      * through other reads.
      *
@@ -80,35 +81,6 @@ module Ssa {
      * ```
      */
     final CfgNode getAFirstRead() { SsaImpl::firstRead(this, result) }
-
-    /**
-     * Gets a last control-flow node that reads the value of this SSA definition.
-     * That is, a read that can reach the end of the enclosing CFG scope, or another
-     * SSA definition for the source variable, without passing through any other read.
-     *
-     * Example:
-     *
-     * ```rust
-     * fn phi(b : bool) {              // defines b_0
-     *      let mut x = 1;             // defines x_0
-     *      println!("{}", x);
-     *      println!("{}", x + 1);     // last read of x_0
-     *
-     *      if b {                     // last read of b_0
-     *          x = 2;                 // defines x_1
-     *          println!("{}", x);
-     *          println!("{}", x + 1); // last read of x_1
-     *      } else {
-     *          x = 3;                 // defines x_2
-     *          println!("{}", x);
-     *          println!("{}", x + 1); // last read of x_2
-     *      }
-     *                                 // defines x_3 = phi(x_1, x_2)
-     *      println!("{}", x);         // last read of x_3
-     * }
-     * ```
-     */
-    final CfgNode getALastRead() { SsaImpl::lastRead(this, result) }
 
     /**
      * Holds if `read1` and `read2` are adjacent reads of this SSA definition.
@@ -199,9 +171,20 @@ module Ssa {
     private CfgNode write;
 
     WriteDefinition() {
-      exists(BasicBlock bb, int i, Variable v |
+      exists(BasicBlock bb, int i, Variable v, CfgNode n |
         this.definesAt(v, bb, i) and
-        SsaImpl::variableWriteActual(bb, i, v, write)
+        SsaImpl::variableWriteActual(bb, i, v, n)
+      |
+        write.(VariableAccessCfgNode).getAccess().getVariable() = v and
+        (
+          write = n.(AssignmentExprCfgNode).getAWriteAccess()
+          or
+          write = n.(CompoundAssignmentExprCfgNode).getLhs()
+        )
+        or
+        not n instanceof AssignmentExprCfgNode and
+        not n instanceof CompoundAssignmentExprCfgNode and
+        write = n
       )
     }
 
@@ -209,23 +192,29 @@ module Ssa {
     final CfgNode getWriteAccess() { result = write }
 
     /**
-     * Holds if this SSA definition assigns `value` to the underlying variable.
+     * Holds if this SSA definition assigns `value` to the underlying
+     * variable.
      *
-     * This is either a direct assignment, `x = value`, or an assignment via
-     * simple pattern matching
-     *
-     * ```rb
-     * case value
-     *  in Foo => x then ...
-     *  in y => then ...
-     * end
-     * ```
+     * This is either the value in a direct assignment, `x = value`, or in a
+     * `let` statement, `let x = value`. Note that patterns on the lhs. are
+     * currently not supported.
      */
-    predicate assigns(CfgNode value) {
-      exists(AssignmentExpr ae, BasicBlock bb, int i |
-        this.definesAt(_, bb, i) and
-        ae.getLhs() = bb.getNode(i).getAstNode() and
-        value.getAstNode() = ae.getRhs()
+    predicate assigns(ExprCfgNode value) {
+      exists(AssignmentExprCfgNode ae |
+        ae.getLhs() = write and
+        ae.getRhs() = value
+      )
+      or
+      exists(IdentPatCfgNode pat | pat.getName() = write |
+        exists(LetStmtCfgNode ls |
+          pat = ls.getPat() and
+          ls.getInitializer() = value
+        )
+        or
+        exists(LetExprCfgNode le |
+          pat = le.getPat() and
+          le.getScrutinee() = value
+        )
       )
     }
 
@@ -292,7 +281,7 @@ module Ssa {
         not exists(this.getSplitString()) and
         prefix = ""
       |
-        result = prefix + "phi"
+        result = prefix + SsaImpl::PhiDefinition.super.toString()
       )
     }
 
@@ -336,5 +325,38 @@ module Ssa {
     final override string toString() { result = "<captured entry> " + this.getSourceVariable() }
 
     override Location getLocation() { result = this.getBasicBlock().getLocation() }
+  }
+
+  /**
+   * An SSA definition inserted at a call that may update the value of a captured
+   * variable. For example, in
+   *
+   * ```rust
+   * fn capture_mut() {
+   *   let mut y = 0;
+   *   (0..5).for_each(|x| {
+   *     y += x
+   *   });
+   *   y
+   * }
+   * ```
+   *
+   * a definition for `y` is inserted at the call to `for_each`.
+   */
+  private class CapturedCallDefinition extends Definition, SsaImpl::UncertainWriteDefinition {
+    CapturedCallDefinition() {
+      exists(Variable v, BasicBlock bb, int i |
+        this.definesAt(v, bb, i) and
+        SsaImpl::capturedCallWrite(_, bb, i, v)
+      )
+    }
+
+    /**
+     * Gets the immediately preceding definition. Since this update is uncertain,
+     * the value from the preceding definition might still be valid.
+     */
+    final Definition getPriorDefinition() { result = SsaImpl::uncertainWriteDefinitionInput(this) }
+
+    override string toString() { result = "<captured exit> " + this.getSourceVariable() }
   }
 }

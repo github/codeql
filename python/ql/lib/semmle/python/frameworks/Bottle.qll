@@ -39,7 +39,7 @@ module Bottle {
         ViewCallable() { this = any(BottleRouteSetup rs).getARequestHandler() }
       }
 
-      /** Get methods that reprsent a route in Bottle */
+      /** Get methods that represent a route in Bottle */
       string routeMethods() { result = ["route", "get", "post", "put", "delete", "patch"] }
 
       private class BottleRouteSetup extends Http::Server::RouteSetup::Range, DataFlow::CallCfgNode {
@@ -169,6 +169,18 @@ module Bottle {
         override predicate nameAllowsNewline() { none() }
 
         override predicate valueAllowsNewline() { none() }
+      }
+    }
+
+    /** Provides models for functions that construct templates. */
+    module Templates {
+      /** A call to `bottle.template`or `bottle.SimpleTemplate`. */
+      private class BottleTemplateConstruction extends TemplateConstruction::Range, API::CallNode {
+        BottleTemplateConstruction() {
+          this = API::moduleImport("bottle").getMember(["template", "SimpleTemplate"]).getACall()
+        }
+
+        override DataFlow::Node getSourceArg() { result = this.getArg(0) }
       }
     }
   }

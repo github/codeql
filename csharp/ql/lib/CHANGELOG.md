@@ -1,3 +1,152 @@
+## 5.2.5
+
+No user-facing changes.
+
+## 5.2.4
+
+No user-facing changes.
+
+## 5.2.3
+
+### Minor Analysis Improvements
+
+* A bug has been fixed in the data flow analysis, which means that flow through calls using the `base` qualifier may now be tracked more accurately.
+* Added summary models for `System.Xml.XmlReader`, `System.Xml.XmlTextReader` and `System.Xml.XmlDictionaryReader`.
+* Models-as-data summaries for byte and char arrays and pointers now treat the entire collection as tainted, reflecting their common use as string alternatives.
+* The default taint tracking configuration now allows implicit reads from collections at sinks and in additional flow steps. This increases flow coverage for many taint tracking queries and helps reduce false negatives.
+
+## 5.2.2
+
+No user-facing changes.
+
+## 5.2.1
+
+No user-facing changes.
+
+## 5.2.0
+
+### New Features
+
+* Added a new predicate, `getASuperType()`, to get a direct supertype of this type.
+
+## 5.1.9
+
+No user-facing changes.
+
+## 5.1.8
+
+No user-facing changes.
+
+## 5.1.7
+
+### Minor Analysis Improvements
+
+* The generated Models as Data (MaD) models for .NET 9 Runtime have been updated and are now more precise (due to a recent model generator improvement).
+
+## 5.1.6
+
+No user-facing changes.
+
+## 5.1.5
+
+### Minor Analysis Improvements
+
+* Improved autobuilder logic for detecting whether a project references a SDK (and should be built using `dotnet`).
+
+## 5.1.4
+
+### Minor Analysis Improvements
+
+* The *alignment* and *format* clauses in string interpolation expressions are now extracted. That is, in `$"Hello {name,align:format}"` *name*, *align* and *format* are extracted as children of the string interpolation *insert* `{name,align:format}`.
+* Blazor support can now better recognize when a property being set is specified with a string literal, rather than referenced in a `nameof` expression.
+
+## 5.1.3
+
+### Minor Analysis Improvements
+
+* The models for `System.Uri` have been modified to better model the flow of tainted URIs.
+* Modeled parameter passing between Blazor parent and child components.
+
+## 5.1.2
+
+No user-facing changes.
+
+## 5.1.1
+
+No user-facing changes.
+
+## 5.1.0
+
+### Deprecated APIs
+
+* The predicates `immediatelyControls` and `controls` on the `ConditionBlock`
+  class have been deprecated in favor of the newly added `dominatingEdge`
+  predicate.
+
+### Minor Analysis Improvements
+
+* Full support for C# 13 / .NET 9. All new language features are now supported by the extractor. QL library and data flow support for the new C# 13 language constructs and generated MaD models for the .NET 9 runtime.
+* C# 13: Add generated models for .NET 9.
+* The models for `System.Net.Http.HttpRequestMessage` and `System.UriBuilder` have been modified to better model the flow of tainted URIs.
+* Blazor `[Parameter]` fields bound to a variable from the route specified in the `@page` directive are now modeled as remote flow sources.
+
+## 5.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `getInstanceType` predicate from the `UnboundGenericType` class.
+* Deleted the deprecated `getElement` predicate from the `Node` class in `ControlFlowGraph.qll`, use `getAstNode` instead.
+
+### Minor Analysis Improvements
+
+* C# 13: Added MaD models for some overload implementations using `ReadOnlySpan` parameters (like `String.Format(System.String, System.ReadOnlySpan<System.Object>))`).
+* C# 13: Added support for the overload resolution priority attribute (`OverloadResolutionPriority`). Usages of the attribute and the corresponding priority can be found using the QL class `SystemRuntimeCompilerServicesOverloadResolutionPriorityAttribute`.
+* C# 13: Added support for partial properties and indexers.
+
+## 4.0.2
+
+### Minor Analysis Improvements
+
+* Added extractor support for extracting implicit `ToString` calls in binary `+` expressions and string interpolation expressions.
+* The Razor source generator invocation in `build-mode:none` extraction has been changed to use relative file paths instead of absolute ones.
+* C# 13: Added extractor support and call dispatch logic (data flow) for the (negative) type parameter constraint `allows ref struct`. Added extractor support for the type parameter constraint `notnull`.
+
+## 4.0.1
+
+### Minor Analysis Improvements
+
+* C# 13: Added QL library support for *collection* like type `params` parameters.
+* Added `remote` flow source models for properties of Blazor components annotated with any of the following attributes from `Microsoft.AspNetCore.Components`:
+  - `[SupplyParameterFromForm]`
+  - `[SupplyParameterFromQuery]`
+* Added the constructor and explicit cast operator of `Microsoft.AspNetCore.Components.MarkupString` as an `html-injection` sink. This will help catch cross-site scripting resulting from using `MarkupString`. 
+* Added flow summaries for the `Microsoft.AspNetCore.Mvc.Controller::View` method.
+* The data flow library has been updated to track types in a slightly different way: The type of the tainted data (which may be stored into fields, etc.) is tracked more precisely, while the types of intermediate containers for nested contents is tracked less precisely. This may have a slight effect on false positives for complex flow paths.
+* The C# extractor now supports *basic* extraction of .NET 9 projects. There might be limited support for extraction of code using the new C# 13 language features.
+
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated data flow API that was based on extending a configuration class. See https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries for instructions on migrating your queries to use the new API.
+
+### Minor Analysis Improvements
+
+* Added support for data-flow through member accesses of objects with `dynamic` types.
+* Only extract *public* and *protected* members from reference assemblies. This yields an approximate average speed-up of around 10% for extraction and query execution. Custom MaD rows using `Field`-based summaries may need to be changed to `SyntheticField`-based flows if they reference private fields.
+* Added `Microsoft.AspNetCore.Components.NagivationManager::Uri` as a remote flow source, since this value may contain user-specified values.
+* Added the following URI-parsing methods as summaries, as they may be tainted with user-specified values:
+  - `System.Web.HttpUtility::ParseQueryString`
+  - `Microsoft.AspNetCore.WebUtilities.QueryHelpers::ParseQuery`
+  - `Microsoft.AspNetCore.WebUtilities.QueryHelpers::ParseNullableQuery`
+* Added `js-interop` sinks for the `InvokeAsync` and `InvokeVoidAsync` methods of `Microsoft.JSInterop.IJSRuntime`, which can run arbitrary JavaScript. 
+
+## 3.1.1
+
+### Minor Analysis Improvements
+
+* The Models as Data models for .NET 8 Runtime now include generated models for higher order methods.
+
 ## 3.1.0
 
 ### Major Analysis Improvements

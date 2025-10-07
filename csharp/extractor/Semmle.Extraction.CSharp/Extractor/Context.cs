@@ -152,7 +152,7 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Enqueue the given action to be performed later.
         /// </summary>
-        /// <param name="toRun">The action to run.</param>
+        /// <param name="a">The action to run.</param>
         public void PopulateLater(Action a, bool preserveDuplicationKey = true)
         {
             var key = preserveDuplicationKey ? GetCurrentTagStackKey() : null;
@@ -267,7 +267,7 @@ namespace Semmle.Extraction.CSharp
 
             bool duplicationGuard, deferred;
 
-            if (ExtractionContext.Mode is ExtractorMode.Standalone)
+            if (ExtractionContext.IsStandalone)
             {
                 duplicationGuard = false;
                 deferred = false;
@@ -376,7 +376,7 @@ namespace Semmle.Extraction.CSharp
 
         private void ReportError(InternalError error)
         {
-            if (!ExtractionContext.Mode.HasFlag(ExtractorMode.Standalone))
+            if (!ExtractionContext.IsStandalone)
                 throw error;
 
             ExtractionError(error);
@@ -550,6 +550,10 @@ namespace Semmle.Extraction.CSharp
             !SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition) ||
             scope.InScope(symbol);
 
+        public bool ExtractLocation(ISymbol symbol) =>
+            SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition) &&
+            scope.InScope(symbol);
+
         /// <summary>
         /// Runs the given action <paramref name="a"/>, guarding for trap duplication
         /// based on key <paramref name="key"/>.
@@ -582,14 +586,14 @@ namespace Semmle.Extraction.CSharp
         public Entities.Location CreateLocation()
         {
             return SourceTree is null
-                ? Entities.GeneratedLocation.Create(this)
+                ? Entities.EmptyLocation.Create(this)
                 : CreateLocation(Microsoft.CodeAnalysis.Location.Create(SourceTree, Microsoft.CodeAnalysis.Text.TextSpan.FromBounds(0, 0)));
         }
 
         public Entities.Location CreateLocation(Microsoft.CodeAnalysis.Location? location)
         {
             return (location is null || location.Kind == LocationKind.None)
-                ? Entities.GeneratedLocation.Create(this)
+                ? Entities.EmptyLocation.Create(this)
                 : location.IsInSource
                     ? Entities.NonGeneratedSourceLocation.Create(this, location)
                     : Entities.Assembly.Create(this, location);
@@ -598,7 +602,6 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Register a program entity which can be bound to comments.
         /// </summary>
-        /// <param name="cx">Extractor context.</param>
         /// <param name="entity">Program entity.</param>
         /// <param name="l">Location of the entity.</param>
         public void BindComments(Entity entity, Microsoft.CodeAnalysis.Location? l)

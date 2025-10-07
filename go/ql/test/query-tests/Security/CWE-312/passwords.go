@@ -6,7 +6,7 @@ import (
 )
 
 func myLog(x string) {
-	log.Println(x) // NOT OK
+	log.Println(x) // $ Alert
 }
 
 func redact(kind, value string) string {
@@ -18,37 +18,37 @@ func redact(kind, value string) string {
 
 func test() {
 	name := "user"
-	password := "P@ssw0rd"
+	password := "P@ssw0rd" // $ Source
 	x := "horsebatterystapleincorrect"
 	var o passStruct
 
-	log.Println(password)        // NOT OK
-	log.Println(o.password)      // NOT OK
-	log.Println(getPassword())   // NOT OK
-	log.Println(o.getPassword()) // NOT OK
+	log.Println(password)        // $ Alert
+	log.Println(o.password)      // $ Alert
+	log.Println(getPassword())   // $ Alert
+	log.Println(o.getPassword()) // $ Alert
 
 	myLog(password)
 
-	log.Panic(password) // NOT OK
+	log.Panic(password) // $ Alert
 
-	log.Println(name + ", " + password) // NOT OK
+	log.Println(name + ", " + password) // $ Alert
 
 	obj1 := passStruct{
-		password: x,
+		password: x, // $ Source
 	}
-	log.Println(obj1) // NOT OK
+	log.Println(obj1) // $ Alert
 
 	obj2 := xStruct{
 		x: password,
 	}
-	log.Println(obj2) // NOT OK
+	log.Println(obj2) // $ Alert
 
 	var obj3 xStruct
-	log.Println(obj3) // caught because of the below line
-	obj3.x = password // NOT OK
+	log.Println(obj3)
+	obj3.x = password
 
-	fixed_password := "cowbatterystaplecorrect"
-	log.Println(fixed_password) // Probably OK, but caught
+	fixed_password := "cowbatterystaplecorrect" // $ Source
+	log.Println(fixed_password)                 // $ Alert // Probably OK
 
 	log.Println(IncorrectPasswordError) // OK
 
@@ -65,7 +65,8 @@ func test() {
 	log.Println(actually_secure_password)        // OK
 
 	var user1 cryptedStruct
-	user1.cryptedPassword = x
+	x2 := "perhaps sensitive"
+	user1.cryptedPassword = x2
 	log.Println(user1) // OK
 
 	var user2 passStruct
@@ -83,12 +84,12 @@ func test() {
 	log.Println(password_sha) // OK
 
 	utilityObject := passSetStruct{
-		passwordSet: make(map[string]bool),
+		passwordSet: make(map[string]bool), // $ Source
 	}
-	log.Println(utilityObject) // NOT OK
+	log.Println(utilityObject) // $ Alert
 
 	secret := password
-	log.Printf("pw: %s", secret) // NOT OK
+	log.Printf("pw: %s", secret) // $ Alert
 
 	log.Println("Password is: " + redact("password", password))
 
@@ -98,33 +99,34 @@ func test() {
 	if t.test(y) {
 		f()
 		// ...
-		log.Println("Password is: " + password) // NOT OK
+		log.Println("Password is: " + password) // $ Alert
 		// ...
 	}
 
 	if t.test(y) {
 		if f() {
-			log.Println("Password is: " + password) // NOT OK
+			log.Println("Password is: " + password) // $ Alert
 		}
 	}
 
 	if os.Getenv("APP_ENV") != "production" {
-		log.Println("Password is: " + password) // OK, but still flagged
+		log.Println("Password is: " + password) // $ SPURIOUS: Alert
 	}
 
-	var password1 stringable = stringable{"arstneio"}
-	log.Println(name + ", " + password1.String()) // NOT OK
+	var password1 stringable = stringable{"arstneio"} // $ Source
+	log.Println(name + ", " + password1.String())     // $ Alert
 
+	x3 := "sheepbatterystaplecorrect"
 	config := Config{
-		password: x,
+		password: x3, // $ Source
 		hostname: "tarski",
 		x:        password,
-		y:        getPassword(),
+		y:        getPassword(), // $ Source
 	}
 	log.Println(config.hostname) // OK
-	log.Println(config)          // NOT OK
-	log.Println(config.x)        // NOT OK
-	log.Println(config.y)        // NOT OK
+	log.Println(config)          // $ Alert
+	log.Println(config.x)        // $ Alert
+	log.Println(config.y)        // $ Alert
 
 	obj4 := xStruct{
 		x: "aaaaa",

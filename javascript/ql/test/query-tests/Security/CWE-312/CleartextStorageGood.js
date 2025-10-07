@@ -10,6 +10,6 @@ function encrypt(text){
 var app = express();
 app.get('/remember-password', function (req, res) {
   let pw = req.param("current_password");
-  // GOOD: Encoding the value before setting it.
+  // OK - Encoding the value before setting it.
   res.cookie("password", encrypt(pw));
 });

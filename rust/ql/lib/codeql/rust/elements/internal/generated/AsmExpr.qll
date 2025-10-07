@@ -6,9 +6,11 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.AsmPiece
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
+import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `AsmExpr` and should not
@@ -19,14 +21,35 @@ module Generated {
    * An inline assembly expression. For example:
    * ```rust
    * unsafe {
-   *     builtin # asm(_);
+   *     #[inline(always)]
+   *     builtin # asm("cmp {0}, {1}", in(reg) a, in(reg) b);
    * }
    * ```
    * INTERNAL: Do not reference the `Generated::AsmExpr` class directly.
    * Use the subclass `AsmExpr`, where the following predicates are available.
    */
-  class AsmExpr extends Synth::TAsmExpr, ExprImpl::Expr {
+  class AsmExpr extends Synth::TAsmExpr, ExprImpl::Expr, ItemImpl::Item {
     override string getAPrimaryQlClass() { result = "AsmExpr" }
+
+    /**
+     * Gets the `index`th asm piece of this asm expression (0-based).
+     */
+    AsmPiece getAsmPiece(int index) {
+      result =
+        Synth::convertAsmPieceFromRaw(Synth::convertAsmExprToRaw(this)
+              .(Raw::AsmExpr)
+              .getAsmPiece(index))
+    }
+
+    /**
+     * Gets any of the asm pieces of this asm expression.
+     */
+    final AsmPiece getAnAsmPiece() { result = this.getAsmPiece(_) }
+
+    /**
+     * Gets the number of asm pieces of this asm expression.
+     */
+    final int getNumberOfAsmPieces() { result = count(int i | exists(this.getAsmPiece(i))) }
 
     /**
      * Gets the `index`th attr of this asm expression (0-based).
@@ -47,15 +70,21 @@ module Generated {
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
-     * Gets the expression of this asm expression, if it exists.
+     * Gets the `index`th template of this asm expression (0-based).
      */
-    Expr getExpr() {
-      result = Synth::convertExprFromRaw(Synth::convertAsmExprToRaw(this).(Raw::AsmExpr).getExpr())
+    Expr getTemplate(int index) {
+      result =
+        Synth::convertExprFromRaw(Synth::convertAsmExprToRaw(this).(Raw::AsmExpr).getTemplate(index))
     }
 
     /**
-     * Holds if `getExpr()` exists.
+     * Gets any of the templates of this asm expression.
      */
-    final predicate hasExpr() { exists(this.getExpr()) }
+    final Expr getATemplate() { result = this.getTemplate(_) }
+
+    /**
+     * Gets the number of templates of this asm expression.
+     */
+    final int getNumberOfTemplates() { result = count(int i | exists(this.getTemplate(i))) }
   }
 }

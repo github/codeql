@@ -4,7 +4,7 @@
 
 /**
  * Holds if the value at `(type, path)` should be seen as a flow
- * source of the given `kind`.
+ * source of the given `kind` and `madId` is the data extension row number.
  *
  * The kind `remote` represents a general remote flow source.
  */
@@ -14,13 +14,14 @@ extensible predicate sourceModel(
 
 /**
  * Holds if the value at `(type, path)` should be seen as a sink
- * of the given `kind`.
+ * of the given `kind` and `madId` is the data extension row number.
  */
 extensible predicate sinkModel(string type, string path, string kind, QlBuiltins::ExtensionId madId);
 
 /**
  * Holds if in calls to `(type, path)`, the value referred to by `input`
- * can flow to the value referred to by `output`.
+ * can flow to the value referred to by `output` and `madId` is the data
+ * extension row number.
  *
  * `kind` should be either `value` or `taint`, for value-preserving or taint-preserving steps,
  * respectively.

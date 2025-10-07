@@ -15,9 +15,13 @@ import codeql.rust.elements.Meta
  */
 module Generated {
   /**
-   * A Attr. For example:
+   * An attribute applied to an item.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * #[derive(Debug)]
+   * //^^^^^^^^^^^^^
+   * struct S;
    * ```
    * INTERNAL: Do not reference the `Generated::Attr` class directly.
    * Use the subclass `Attr`, where the following predicates are available.

@@ -1,2 +1,2 @@
 query: queries/security/cwe-022/PathInjection.ql
-postprocess: TestUtilities/InlineExpectationsTestQuery.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

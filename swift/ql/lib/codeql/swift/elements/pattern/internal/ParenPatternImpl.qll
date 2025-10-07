@@ -4,6 +4,6 @@ module Impl {
   class ParenPattern extends Generated::ParenPattern {
     final override Pattern getResolveStep() { result = this.getImmediateSubPattern() }
 
-    override string toString() { result = "(...)" }
+    override string toStringImpl() { result = "(...)" }
   }
 }

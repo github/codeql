@@ -10,22 +10,6 @@ private import codeql.ruby.ApiGraphs
 import UnicodeBypassValidationCustomizations::UnicodeBypassValidation
 
 /**
- * A state signifying that a logical validation has not been performed.
- * DEPRECATED: Use `PreValidationState()`
- */
-deprecated class PreValidation extends DataFlow::FlowState {
-  PreValidation() { this = "PreValidation" }
-}
-
-/**
- * A state signifying that a logical validation has been performed.
- * DEPRECATED: Use `PostValidationState()`
- */
-deprecated class PostValidation extends DataFlow::FlowState {
-  PostValidation() { this = "PostValidation" }
-}
-
-/**
  * A state signifying if a logical validation has been performed or not.
  */
 private newtype ValidationState =
@@ -33,40 +17,6 @@ private newtype ValidationState =
   PreValidationState() or
   // A state signifying that a logical validation has been performed.
   PostValidationState()
-
-/**
- * A taint-tracking configuration for detecting "Unicode transformation mishandling" vulnerabilities.
- *
- * This configuration uses two flow states, `PreValidation` and `PostValidation`,
- * to track the requirement that a logical validation has been performed before the Unicode Transformation.
- * DEPRECATED: Use `UnicodeBypassValidationFlow`
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "UnicodeBypassValidation" }
-
-  private ValidationState convertState(DataFlow::FlowState state) {
-    state instanceof PreValidation and result = PreValidationState()
-    or
-    state instanceof PostValidation and result = PostValidationState()
-  }
-
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
-    UnicodeBypassValidationConfig::isSource(source, this.convertState(state))
-  }
-
-  override predicate isAdditionalTaintStep(
-    DataFlow::Node nodeFrom, DataFlow::FlowState stateFrom, DataFlow::Node nodeTo,
-    DataFlow::FlowState stateTo
-  ) {
-    UnicodeBypassValidationConfig::isAdditionalFlowStep(nodeFrom, this.convertState(stateFrom),
-      nodeTo, this.convertState(stateTo))
-  }
-
-  /* A Unicode Tranformation (Unicode tranformation) is considered a sink when the algorithm used is either NFC or NFKC.  */
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
-    UnicodeBypassValidationConfig::isSink(sink, this.convertState(state))
-  }
-}
 
 /**
  * A taint-tracking configuration for detecting "Unicode transformation mishandling" vulnerabilities.
@@ -208,6 +158,8 @@ private module UnicodeBypassValidationConfig implements DataFlow::StateConfigSig
     ) and
     state = PostValidationState()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

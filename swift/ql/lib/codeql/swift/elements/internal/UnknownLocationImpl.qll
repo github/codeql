@@ -17,6 +17,6 @@ module Impl {
 
     override int getEndColumn() { result = 0 }
 
-    override string toString() { result = "UnknownLocation" }
+    override string toStringImpl() { result = "UnknownLocation" }
   }
 }

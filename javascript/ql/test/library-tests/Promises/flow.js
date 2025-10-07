@@ -51,7 +51,7 @@
 		return Promise.resolve(src);
 	}
 	createPromise(source).then(v => sink(v)); // NOT OK!
-	
+
 	var p8 = new Promise((resolve, reject) => reject(source));
 	var p9 = p8.then(() => {});
 	var p10 = p9.finally(() => {});
@@ -65,31 +65,31 @@
 		await new Promise((resolve, reject) => reject(source));
 	}
 	try {
-		throws();
+		await throws();
 	} catch(e) {
 		sink(e); // NOT OK!
 	}
-	
+
 	function chainedPromise() {
 		return new Promise((resolve, reject) => reject(source)).then(() => {});
 	}
 	chainedPromise().then(() => {}).catch(e => sink(e)); // NOT OK!
-	
+
 	function leaksResolvedPromise(p) {
 		p.then(x => sink(x)); // NOT OK!
 	}
 	leaksResolvedPromise(Promise.resolve(source));
-	
+
 	function leaksRejectedPromise(p) {
 		p.catch(e => sink(e)); // NOT OK!
 	}
 	leaksRejectedPromise(new Promise((resolve, reject) => reject(source)));
-	
+
 	function leaksRejectedAgain(p) {
 		("foo", p).then(() => {}).catch(e => sink(e)); // NOT OK!
 	}
 	leaksRejectedAgain(new Promise((resolve, reject) => reject(source)).then(() => {}));
-	
+
 	async function returnsRejected(p) {
 		try {
 			await p;
@@ -99,48 +99,48 @@
 	}
 	var foo = await returnsRejected(new Promise((resolve, reject) => reject(source)));
 	sink(foo); // NOT OK!
-	
+
 	new Promise((resolve, reject) => reject("BLA")).catch(x => {return source}).then(x => sink(x)); // NOT OK
-	
+
 	new Promise((resolve, reject) => reject("BLA")).finally(x => {throw source}).catch(x => sink(x)); // NOT OK
-	
+
 	var rejected = new Promise((resolve, reject) => reject(source));
-	
+
 	new Promise((resolve, reject) => reject("BLA")).finally(x => rejected).catch(x => sink(x)); // NOT OK
-	
+
 	new Promise((resolve, reject) => reject("BLA")).catch(x => rejected).then(x => sink(x)) // OK
-	
+
 	new Promise((resolve, reject) => reject("BLA")).catch(x => rejected).catch(x => sink(x)) // NOT OK
-	
+
 	var resolved = Promise.resolve(source);
-	
+
 	new Promise((resolve, reject) => reject("BLA")).catch(x => resolved).catch(x => sink(x)) // OK
-	
+
 	new Promise((resolve, reject) => reject("BLA")).catch(x => resolved).then(x => sink(x)) // NOT OK
-	
+
 	Promise.resolve(123).then(x => resolved).catch(x => sink(x)) // OK
-	
+
 	Promise.resolve(123).then(x => resolved).then(x => sink(x)) // NOT OK
-	
+
 	Promise.resolve(123).then(x => rejected).catch(x => sink(x)) // NOT OK
-	
+
 	Promise.resolve(123).then(x => rejected).then(x => sink(x)) // OK
-	
+
 	new Promise((resolve, reject) => resolve(resolved)).then(x => sink(x)); // NOT OK
-	
+
 	Promise.resolve(resolved).then(x => sink(x)); // NOT OK
 })();
 
 
 (async function () {
 	var source = "source";
-  
+
 	async function async() {
 	  return source;
 	}
 	sink(async()); // OK - wrapped in a promise. (NOT OK for taint-tracking configs)
 	sink(await async()); // NOT OK
-  
+
 	async function throwsAsync() {
 	  throw source;
 	}

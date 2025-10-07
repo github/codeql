@@ -130,7 +130,7 @@ class Declaration extends @declaration {
       this instanceof Parameter or
       this instanceof ProxyClass or
       this instanceof LocalVariable or
-      this instanceof TemplateParameter or
+      this instanceof TypeTemplateParameter or
       this.(UserType).isLocal()
     )
   }
@@ -226,12 +226,12 @@ class ProxyClass extends UserType {
   ProxyClass() { usertypes(this, _, 9) }
 }
 
-class TemplateParameter extends UserType {
-  TemplateParameter() { usertypes(this, _, 7) or usertypes(this, _, 8) }
+class TypeTemplateParameter extends UserType {
+  TypeTemplateParameter() { usertypes(this, _, [7, 8]) }
 }
 
 class TemplateClass extends UserType {
-  TemplateClass() { usertypes(this, _, 6) }
+  TemplateClass() { usertypes(this, _, [15, 16, 17]) }
 
   UserType getAnInstantiation() {
     class_instantiation(result, this) and

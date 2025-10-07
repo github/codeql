@@ -6,7 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
+import codeql.rust.elements.internal.UseBoundGenericArgImpl::Impl as UseBoundGenericArgImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `NameRef` and should not
@@ -14,14 +14,17 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
-   * A NameRef. For example:
+   * A reference to a name.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   *   foo();
+   * //^^^
    * ```
    * INTERNAL: Do not reference the `Generated::NameRef` class directly.
    * Use the subclass `NameRef`, where the following predicates are available.
    */
-  class NameRef extends Synth::TNameRef, AstNodeImpl::AstNode {
+  class NameRef extends Synth::TNameRef, UseBoundGenericArgImpl::UseBoundGenericArg {
     override string getAPrimaryQlClass() { result = "NameRef" }
 
     /**

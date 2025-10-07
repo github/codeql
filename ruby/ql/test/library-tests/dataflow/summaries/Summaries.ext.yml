@@ -41,6 +41,8 @@ extensions:
       - ['any', 'Method[withoutElementOneAndTwo]', 'Argument[self].WithoutElement[1].WithoutElement[2].WithElement[any]', 'Argument[self]', 'value']
       - ['any', 'Method[withoutElementOne]', 'Argument[self].WithoutElement[1]', 'Argument[self]', 'value']
       - ['any', 'Method[withoutExactlyElementOne]', 'Argument[self].WithoutElement[1!]', 'Argument[self]', 'value']
+      - ['any', 'Method[saveToDatabase]', 'Argument[self]', 'SyntheticGlobal[db]', 'value']
+      - ['any', 'Method[readFromDatabase]', 'SyntheticGlobal[db]', 'ReturnValue', 'value']
 
   - addsTo:
       pack: codeql/ruby-all

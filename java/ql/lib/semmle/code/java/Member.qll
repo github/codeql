@@ -2,6 +2,8 @@
  * Provides classes and predicates for working with members of Java classes and interfaces,
  * that is, methods, constructors, fields and nested types.
  */
+overlay[local?]
+module;
 
 import Element
 import Type
@@ -9,6 +11,7 @@ import Annotation
 import Exception
 import metrics.MetricField
 private import dispatch.VirtualDispatch
+private import semmle.code.java.Overlay
 
 /**
  * A common abstraction for type member declarations,
@@ -253,7 +256,15 @@ class Callable extends StmtParent, Member, @callable {
   Exception getAnException() { exceptions(result, _, this) }
 
   /** Gets an exception type that occurs in the `throws` clause of this callable. */
-  RefType getAThrownExceptionType() { result = this.getAnException().getType() }
+  RefType getAThrownExceptionType() {
+    result = this.getAnException().getType()
+    or
+    exists(Annotation a |
+      this.getAnAnnotation() = a and
+      a.getType().hasQualifiedName("kotlin.jvm", "Throws") and
+      a.getATypeArrayValue(_) = result
+    )
+  }
 
   /** Gets a call site that references this callable. */
   Call getAReference() { result.getCallee() = this }
@@ -621,7 +632,13 @@ class SrcMethod extends Method {
       then implementsInterfaceMethod(result, this)
       else result.getASourceOverriddenMethod*() = this
     ) and
-    (exists(result.getBody()) or result.hasModifier("native"))
+    (
+      // We allow empty method bodies for the local overlay variant to allow
+      // calls to methods only fully extracted in base.
+      isOverlay() or
+      exists(result.getBody()) or
+      result.hasModifier("native")
+    )
   }
 }
 
@@ -831,6 +848,9 @@ class Field extends Member, ExprParent, @field, Variable {
   override string getAPrimaryQlClass() { result = "Field" }
 }
 
+overlay[local]
+private class DiscardableField extends DiscardableReferableLocatable, @field { }
+
 /** An instance field. */
 class InstanceField extends Field {
   InstanceField() { not this.isStatic() }
@@ -895,3 +915,13 @@ class ExtensionMethod extends Method {
     else result = 0
   }
 }
+
+overlay[local]
+private class DiscardableAnonymousMethod extends DiscardableLocatable, @method {
+  DiscardableAnonymousMethod() {
+    exists(@classorinterface c | methods(this, _, _, _, c, _) and isAnonymClass(c, _))
+  }
+}
+
+overlay[local]
+private class DiscardableMethod extends DiscardableReferableLocatable, @method { }

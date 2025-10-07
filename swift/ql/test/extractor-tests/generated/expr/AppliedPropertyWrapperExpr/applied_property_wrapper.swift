@@ -9,11 +9,17 @@
     init(projectedValue: Bool) {}
 }
 
-func foo(@Wrapper x: Int) {}
+func foo(
+    // @Wrapper x: Int // Disabled causes crashes with Swift 6.1
+) {}
 
-foo(x: 42)
-foo($x: true)
+// foo(x: 42)
+// foo($x: true)
 
-let closure = {(@Wrapper y: Int) in return }
+let closure = {
+    (
+        // @Wrapper y: Int // Disabled causes crashes with Swift 6.1
+    ) in return
+    }
 
-closure(41)
+// closure(41)

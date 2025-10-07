@@ -23,6 +23,8 @@ private module TimingAttackAgainstHeaderValueConfig implements DataFlow::ConfigS
   predicate isSource(DataFlow::Node source) { source instanceof ClientSuppliedSecret }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof CompareSink }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module TimingAttackAgainstHeaderValueFlow =

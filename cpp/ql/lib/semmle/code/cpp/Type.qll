@@ -4,6 +4,7 @@
 
 import semmle.code.cpp.Element
 import semmle.code.cpp.Function
+import semmle.code.cpp.TemplateParameter
 private import semmle.code.cpp.internal.ResolveClass
 
 /**
@@ -91,8 +92,9 @@ class Type extends Locatable, @type {
   /**
    * Gets this type after typedefs have been resolved.
    *
-   * The result of this predicate will be the type itself, except in the case of a TypedefType or a Decltype,
-   * in which case the result will be type which results from (possibly recursively) resolving typedefs.
+   * The result of this predicate will be the type itself, except in the case of a TypedefType, a Decltype,
+   * or a TypeofType, in which case the result will be type which results from (possibly recursively)
+   * resolving typedefs.
    */
   pragma[nomagic]
   Type getUnderlyingType() { result = this }
@@ -288,10 +290,7 @@ class Type extends Locatable, @type {
    */
   Type stripType() { result = this }
 
-  override Location getLocation() {
-    suppressUnusedThis(this) and
-    result instanceof UnknownDefaultLocation
-  }
+  override Location getLocation() { result instanceof UnknownLocation }
 }
 
 /**
@@ -353,7 +352,23 @@ class UnknownType extends BuiltInType {
 private predicate isArithmeticType(@builtintype type, int kind) {
   builtintypes(type, _, kind, _, _, _) and
   kind >= 4 and
-  kind != 34 // Exclude decltype(nullptr)
+  kind != 34 and // Exclude decltype(nullptr)
+  kind != 63 // Exclude __SVCount_t
+}
+
+/**
+ * The Arm scalable vector count type.
+ *
+ * In the following example, `a` is declared using the scalable vector
+ * count type:
+ * ```
+ * svcount_t a;
+ * ```
+ */
+class ScalableVectorCount extends BuiltInType {
+  ScalableVectorCount() { builtintypes(underlyingElement(this), _, 63, _, _, _) }
+
+  override string getAPrimaryQlClass() { result = "ScalableVectorCount" }
 }
 
 /**
@@ -408,10 +423,7 @@ class IntegralOrEnumType extends Type {
     isIntegralType(underlyingElement(this), _)
     or
     // Enum type
-    (
-      usertypes(underlyingElement(this), _, 4) or
-      usertypes(underlyingElement(this), _, 13)
-    )
+    usertypes(underlyingElement(this), _, [4, 13])
   }
 }
 
@@ -843,6 +855,18 @@ private predicate floatingPointTypeMapping(
   or
   // _Complex _Float128
   kind = 61 and base = 2 and domain = TComplexDomain() and realKind = 49 and extended = false
+  or
+  // __mfp8
+  kind = 62 and base = 2 and domain = TRealDomain() and realKind = 62 and extended = false
+  or
+  // _Complex __fp16
+  kind = 64 and base = 2 and domain = TComplexDomain() and realKind = 54 and extended = false
+  or
+  // _Complex __bf16
+  kind = 65 and base = 2 and domain = TComplexDomain() and realKind = 55 and extended = false
+  or
+  // _Complex std::float16_t
+  kind = 66 and base = 2 and domain = TComplexDomain() and realKind = 56 and extended = false
 }
 
 /**
@@ -1085,7 +1109,7 @@ class NullPointerType extends BuiltInType {
 /**
  * A C/C++ derived type.
  *
- * These are pointer and reference types, array and GNU vector types, and `const` and `volatile` types.
+ * These are pointer and reference types, array and vector types, and `const` and `volatile` types.
  * In all cases, the type is formed from a single base type.  For example:
  * ```
  * int *pi;
@@ -1122,18 +1146,20 @@ class DerivedType extends Type, @derivedtype {
  * decltype(a) b;
  * ```
  */
-class Decltype extends Type, @decltype {
+class Decltype extends Type {
+  Decltype() { decltypes(underlyingElement(this), _, 0, _, _) }
+
   override string getAPrimaryQlClass() { result = "Decltype" }
 
   /**
-   * The expression whose type is being obtained by this decltype.
+   * Gets the expression whose type is being obtained by this decltype.
    */
-  Expr getExpr() { decltypes(underlyingElement(this), unresolveElement(result), _, _) }
+  Expr getExpr() { decltypes(underlyingElement(this), unresolveElement(result), _, _, _) }
 
   /**
-   * The type immediately yielded by this decltype.
+   * Gets the type immediately yielded by this decltype.
    */
-  Type getBaseType() { decltypes(underlyingElement(this), _, unresolveElement(result), _) }
+  Type getBaseType() { decltypes(underlyingElement(this), _, _, unresolveElement(result), _) }
 
   /**
    * Whether an extra pair of parentheses around the expression would change the semantics of this decltype.
@@ -1147,7 +1173,7 @@ class Decltype extends Type, @decltype {
    * ```
    * Please consult the C++11 standard for more details.
    */
-  predicate parenthesesWouldChangeMeaning() { decltypes(underlyingElement(this), _, _, true) }
+  predicate parenthesesWouldChangeMeaning() { decltypes(underlyingElement(this), _, _, _, true) }
 
   override Type getUnderlyingType() { result = this.getBaseType().getUnderlyingType() }
 
@@ -1173,6 +1199,215 @@ class Decltype extends Type, @decltype {
 
   override string explain() {
     result = "decltype resulting in {" + this.getBaseType().explain() + "}"
+  }
+
+  override predicate involvesReference() { this.getBaseType().involvesReference() }
+
+  override predicate involvesTemplateParameter() { this.getBaseType().involvesTemplateParameter() }
+
+  override predicate isDeeplyConst() { this.getBaseType().isDeeplyConst() }
+
+  override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConstBelow() }
+
+  override Specifier internal_getAnAdditionalSpecifier() {
+    result = this.getBaseType().getASpecifier()
+  }
+}
+
+/**
+ * An instance of the C23 `typeof` or `typeof_unqual` operator. For example:
+ * ```
+ * int a;
+ * typeof(a) b;
+ * typeof_unqual(const int) b;
+ * ```
+ */
+class TypeofType extends Type {
+  TypeofType() {
+    decltypes(underlyingElement(this), _, 1, _, _) or
+    type_operators(underlyingElement(this), _, 0, _)
+  }
+
+  /**
+   * Gets the type immediately yielded by this typeof.
+   */
+  Type getBaseType() {
+    decltypes(underlyingElement(this), _, _, unresolveElement(result), _)
+    or
+    type_operators(underlyingElement(this), _, _, unresolveElement(result))
+  }
+
+  override Type getUnderlyingType() { result = this.getBaseType().getUnderlyingType() }
+
+  override Type stripTopLevelSpecifiers() { result = this.getBaseType().stripTopLevelSpecifiers() }
+
+  override Type stripType() { result = this.getBaseType().stripType() }
+
+  override Type resolveTypedefs() { result = this.getBaseType().resolveTypedefs() }
+
+  override string toString() { result = "typeof(...)" }
+
+  override string getName() { none() }
+
+  override int getSize() { result = this.getBaseType().getSize() }
+
+  override int getAlignment() { result = this.getBaseType().getAlignment() }
+
+  override int getPointerIndirectionLevel() {
+    result = this.getBaseType().getPointerIndirectionLevel()
+  }
+
+  override string explain() {
+    result = "typeof resulting in {" + this.getBaseType().explain() + "}"
+  }
+
+  override predicate involvesReference() { this.getBaseType().involvesReference() }
+
+  override predicate involvesTemplateParameter() { this.getBaseType().involvesTemplateParameter() }
+
+  override predicate isDeeplyConst() { this.getBaseType().isDeeplyConst() }
+
+  override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConstBelow() }
+
+  override Specifier internal_getAnAdditionalSpecifier() {
+    result = this.getBaseType().getASpecifier()
+  }
+}
+
+/**
+ * An instance of the C23 `typeof` or `typeof_unqual` operator taking an expression
+ * as its argument. For example:
+ * ```
+ * int a;
+ * typeof(a) b;
+ * ```
+ */
+class TypeofExprType extends TypeofType {
+  TypeofExprType() { decltypes(underlyingElement(this), _, 1, _, _) }
+
+  override string getAPrimaryQlClass() { result = "TypeofExprType" }
+
+  /**
+   * Gets the expression whose type is being obtained by this typeof.
+   */
+  Expr getExpr() { decltypes(underlyingElement(this), unresolveElement(result), _, _, _) }
+
+  override Location getLocation() { result = this.getExpr().getLocation() }
+}
+
+/**
+ * A type obtained by C23 `typeof` or `typeof_unqual` operator taking a type as its
+ * argument. For example:
+ * ```
+ * typeof_unqual(const int) b;
+ * ```
+ */
+class TypeofTypeType extends TypeofType {
+  TypeofTypeType() { type_operators(underlyingElement(this), _, 0, _) }
+
+  /**
+   * Gets the expression whose type is being obtained by this typeof.
+   */
+  Type getType() { type_operators(underlyingElement(this), unresolveElement(result), _, _) }
+
+  override string getAPrimaryQlClass() { result = "TypeofTypeType" }
+
+  override string toString() { result = "typeof(...)" }
+}
+
+/**
+ * A type obtained by applying a type transforming intrinsic. For example:
+ * ```
+ * __make_unsigned(int) x;
+ * ```
+ */
+class IntrinsicTransformedType extends Type {
+  int intrinsic;
+
+  IntrinsicTransformedType() {
+    type_operators(underlyingElement(this), _, intrinsic, _) and
+    intrinsic in [1 .. 19]
+  }
+
+  override string getAPrimaryQlClass() { result = "IntrinsicTransformedType" }
+
+  override string toString() { result = this.getIntrinsicName() + "(...)" }
+
+  /**
+   * Gets the type immediately yielded by this transformation.
+   */
+  Type getBaseType() { type_operators(underlyingElement(this), _, _, unresolveElement(result)) }
+
+  /**
+   * Gets the type that is transformed.
+   */
+  Type getType() { type_operators(underlyingElement(this), unresolveElement(result), _, _) }
+
+  /**
+   * Gets the name of the intrinsic used to transform the type.
+   */
+  string getIntrinsicName() {
+    intrinsic = 1 and result = "__underlying_type"
+    or
+    intrinsic = 2 and result = "__bases"
+    or
+    intrinsic = 3 and result = "__direct_bases"
+    or
+    intrinsic = 4 and result = "__add_lvalue_reference"
+    or
+    intrinsic = 5 and result = "__add_pointer"
+    or
+    intrinsic = 6 and result = "__add_rvalue_reference"
+    or
+    intrinsic = 7 and result = "__decay"
+    or
+    intrinsic = 8 and result = "__make_signed"
+    or
+    intrinsic = 9 and result = "__make_unsigned"
+    or
+    intrinsic = 10 and result = "__remove_all_extents"
+    or
+    intrinsic = 11 and result = "__remove_const"
+    or
+    intrinsic = 12 and result = "__remove_cv"
+    or
+    intrinsic = 13 and result = "__remove_cvref"
+    or
+    intrinsic = 14 and result = "__remove_extent"
+    or
+    intrinsic = 15 and result = "__remove_pointer"
+    or
+    intrinsic = 16 and result = "__remove_reference_t"
+    or
+    intrinsic = 17 and result = "__remove_restrict"
+    or
+    intrinsic = 18 and result = "__remove_volatile"
+    or
+    intrinsic = 19 and result = "__remove_reference"
+  }
+
+  override Type getUnderlyingType() { result = this.getBaseType().getUnderlyingType() }
+
+  override Type stripTopLevelSpecifiers() { result = this.getBaseType().stripTopLevelSpecifiers() }
+
+  override Type stripType() { result = this.getBaseType().stripType() }
+
+  override Type resolveTypedefs() { result = this.getBaseType().resolveTypedefs() }
+
+  override string getName() { none() }
+
+  override int getSize() { result = this.getBaseType().getSize() }
+
+  override int getAlignment() { result = this.getBaseType().getAlignment() }
+
+  override int getPointerIndirectionLevel() {
+    result = this.getBaseType().getPointerIndirectionLevel()
+  }
+
+  override string explain() {
+    result =
+      "application of " + this.getIntrinsicName() + " resulting in {" + this.getBaseType().explain()
+        + "}"
   }
 
   override predicate involvesReference() { this.getBaseType().involvesReference() }
@@ -1374,6 +1609,16 @@ class ArrayType extends DerivedType {
   override predicate isDeeplyConst() { this.getBaseType().isDeeplyConst() } // No such thing as a const array type
 
   override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConst() }
+
+  /**
+   * Holds if this array is a variable-length array (VLA).
+   */
+  predicate isVla() { type_is_vla(underlyingElement(this)) }
+
+  override Type resolveTypedefs() {
+    result.(ArrayType).getBaseType() = this.getBaseType().resolveTypedefs() and
+    result.(ArrayType).getArraySize() = this.getArraySize()
+  }
 }
 
 /**
@@ -1424,6 +1669,30 @@ class GNUVectorType extends DerivedType {
     result =
       "GNU " + this.getNumElements() + " element vector of {" + this.getBaseType().explain() + "}"
   }
+
+  override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConst() }
+}
+
+/**
+ * An Arm Scalable vector type.
+ *
+ * In the following example, `a` has a scalable vector type consisting
+ * of 8-bit signed integer elements:
+ * ```
+ * svint8_t a;
+ * ```
+ */
+class ScalableVectorType extends DerivedType {
+  ScalableVectorType() { derivedtypes(underlyingElement(this), _, 11, _) }
+
+  /**
+   * Get the number of tuple elements of this scalable vector type.
+   */
+  int getNumTupleElements() { tupleelements(underlyingElement(this), result) }
+
+  override string getAPrimaryQlClass() { result = "ScalableVectorType" }
+
+  override string explain() { result = "scalable vector of {" + this.getBaseType().explain() + "}" }
 
   override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConst() }
 }
@@ -1665,60 +1934,6 @@ class RoutineType extends Type, @routinetype {
     this.getAParameterType().involvesTemplateParameter()
   }
 }
-
-/**
- * A C++ `typename` (or `class`) template parameter.
- *
- * In the example below, `T` is a template parameter:
- * ```
- * template <class T>
- * class C { };
- * ```
- */
-class TemplateParameter extends UserType {
-  TemplateParameter() {
-    usertypes(underlyingElement(this), _, 7) or usertypes(underlyingElement(this), _, 8)
-  }
-
-  override string getAPrimaryQlClass() { result = "TemplateParameter" }
-
-  override predicate involvesTemplateParameter() { any() }
-}
-
-/**
- * A C++ template template parameter.
- *
- * In the example below, `T` is a template template parameter (although its name
- * may be omitted):
- * ```
- * template <template <typename T> class Container, class Elem>
- * void foo(const Container<Elem> &value) { }
- * ```
- */
-class TemplateTemplateParameter extends TemplateParameter {
-  TemplateTemplateParameter() { usertypes(underlyingElement(this), _, 8) }
-
-  override string getAPrimaryQlClass() { result = "TemplateTemplateParameter" }
-}
-
-/**
- * A type representing the use of the C++11 `auto` keyword.
- * ```
- * auto val = some_typed_expr();
- * ```
- */
-class AutoType extends TemplateParameter {
-  AutoType() { usertypes(underlyingElement(this), "auto", 7) }
-
-  override string getAPrimaryQlClass() { result = "AutoType" }
-
-  override Location getLocation() {
-    suppressUnusedThis(this) and
-    result instanceof UnknownDefaultLocation
-  }
-}
-
-private predicate suppressUnusedThis(Type t) { any() }
 
 /**
  * A source code location referring to a user-defined type.

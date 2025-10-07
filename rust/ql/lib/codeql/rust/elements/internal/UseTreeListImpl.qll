@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.UseTreeList
  */
 module Impl {
   /**
-   * A UseTreeList. For example:
+   * A list of use trees in a use declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * use std::{fs, io};
+   * //       ^^^^^^^^
    * ```
    */
   class UseTreeList extends Generated::UseTreeList { }

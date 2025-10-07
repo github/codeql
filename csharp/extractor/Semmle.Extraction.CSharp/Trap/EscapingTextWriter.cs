@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CSharp
 {
     /// <summary>
     /// A `TextWriter` object that wraps another `TextWriter` object, and which
-    /// HTML escapes the characters `&`, `{`, `}`, `"`, `@`, and `#`, before
+    /// HTML escapes the characters &amp;, {, }, &quot;, @, and #, before
     /// writing to the underlying object.
     /// </summary>
     public sealed class EscapingTextWriter : TextWriter

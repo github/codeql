@@ -52,6 +52,7 @@ import com.semmle.js.ast.IfStatement;
 import com.semmle.js.ast.ImportDeclaration;
 import com.semmle.js.ast.ImportDefaultSpecifier;
 import com.semmle.js.ast.ImportNamespaceSpecifier;
+import com.semmle.js.ast.ImportPhaseModifier;
 import com.semmle.js.ast.ImportSpecifier;
 import com.semmle.js.ast.InvokeExpression;
 import com.semmle.js.ast.LabeledStatement;
@@ -1217,7 +1218,8 @@ public class TypeScriptASTConverter {
   }
 
   private Node convertExportSpecifier(JsonObject node, SourceLocation loc) throws ParseError {
-    Identifier local = convertChild(node, hasChild(node, "propertyName") ? "propertyName" : "name");
+    JsonObject localToken = node.get(hasChild(node, "propertyName") ? "propertyName" : "name").getAsJsonObject();
+    Identifier local = convertNodeAsIdentifier(localToken);
     JsonObject exportedToken = node.get("name").getAsJsonObject();
     Identifier exported = convertNodeAsIdentifier(exportedToken);
 
@@ -1403,7 +1405,7 @@ public class TypeScriptASTConverter {
     Literal src = tryConvertChild(node, "moduleSpecifier", Literal.class);
     Expression attributes = convertChild(node, "attributes");
     List<ImportSpecifier> specifiers = new ArrayList<>();
-    boolean hasTypeKeyword = false;
+    ImportPhaseModifier phaseModifier = ImportPhaseModifier.NONE;
     if (hasChild(node, "importClause")) {
       JsonObject importClause = node.get("importClause").getAsJsonObject();
       if (hasChild(importClause, "name")) {
@@ -1417,10 +1419,22 @@ public class TypeScriptASTConverter {
           specifiers.addAll(convertChildren(namedBindings, "elements"));
         }
       }
-      hasTypeKeyword = importClause.get("isTypeOnly").getAsBoolean();
+      if (hasChild(importClause, "phaseModifier")) {
+        String name = metadata.getSyntaxKindName(importClause.get("phaseModifier").getAsInt());
+        switch (name) {
+          case "DeferKeyword": {
+            phaseModifier = ImportPhaseModifier.DEFER;
+            break;
+          }
+          case "TypeKeyword": {
+            phaseModifier = ImportPhaseModifier.TYPE;
+            break;
+          }
+        }
+      }
     }
     ImportDeclaration importDecl =
-        new ImportDeclaration(loc, specifiers, src, attributes, hasTypeKeyword);
+        new ImportDeclaration(loc, specifiers, src, attributes, phaseModifier);
     attachSymbolInformation(importDecl, node);
     return importDecl;
   }
@@ -1906,7 +1920,7 @@ public class TypeScriptASTConverter {
   }
 
   private ITypeExpression asType(Node node) {
-    return node instanceof ITypeExpression ? (ITypeExpression) node : null;
+    return node instanceof ITypeExpression && ((ITypeExpression)node).isValidTypeExpression() ? (ITypeExpression) node : null;
   }
 
   private List<ITypeExpression> convertChildrenAsTypes(JsonObject node, String child)

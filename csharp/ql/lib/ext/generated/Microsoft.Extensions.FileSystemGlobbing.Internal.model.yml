@@ -5,6 +5,7 @@ extensions:
       extensible: summaryModel
     data:
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "MatcherContext", False, "MatcherContext", "(System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileSystemGlobbing.Internal.IPattern>,System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileSystemGlobbing.Internal.IPattern>,Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase,System.StringComparison)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "PatternTestResult", False, "Success", "(System.String)", "", "Argument[0]", "ReturnValue.Property[Microsoft.Extensions.FileSystemGlobbing.Internal.PatternTestResult.Stem]", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -24,6 +25,5 @@ extensions:
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "IRaggedPattern", "get_Segments", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "IRaggedPattern", "get_StartsWith", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "MatcherContext", "Execute", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "PatternTestResult", "Success", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "PatternTestResult", "get_IsSuccessful", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "PatternTestResult", "get_Stem", "()", "summary", "df-generated"]

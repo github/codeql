@@ -4,7 +4,7 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 9.8
- * @precision medium
+ * @precision low
  * @id py/hardcoded-credentials
  * @tags security
  *       external/cwe/cwe-259
@@ -119,6 +119,8 @@ private module HardcodedCredentialsConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof HardcodedValueSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof CredentialSink }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module HardcodedCredentialsFlow = TaintTracking::Global<HardcodedCredentialsConfig>;

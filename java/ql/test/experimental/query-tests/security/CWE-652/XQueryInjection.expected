@@ -1,14 +1,3 @@
-#select
-| XQueryInjection.java:51:35:51:38 | xqpe | XQueryInjection.java:45:23:45:50 | getParameter(...) : String | XQueryInjection.java:51:35:51:38 | xqpe | XQuery query might include code from $@. | XQueryInjection.java:45:23:45:50 | getParameter(...) | this user input |
-| XQueryInjection.java:65:53:65:57 | query | XQueryInjection.java:59:23:59:50 | getParameter(...) : String | XQueryInjection.java:65:53:65:57 | query | XQuery query might include code from $@. | XQueryInjection.java:59:23:59:50 | getParameter(...) | this user input |
-| XQueryInjection.java:79:35:79:38 | xqpe | XQueryInjection.java:73:32:73:59 | nameStr : String | XQueryInjection.java:79:35:79:38 | xqpe | XQuery query might include code from $@. | XQueryInjection.java:73:32:73:59 | nameStr | this user input |
-| XQueryInjection.java:92:53:92:57 | query | XQueryInjection.java:86:33:86:60 | nameStr : String | XQueryInjection.java:92:53:92:57 | query | XQuery query might include code from $@. | XQueryInjection.java:86:33:86:60 | nameStr | this user input |
-| XQueryInjection.java:104:35:104:38 | xqpe | XQueryInjection.java:100:28:100:51 | getInputStream(...) : ServletInputStream | XQueryInjection.java:104:35:104:38 | xqpe | XQuery query might include code from $@. | XQueryInjection.java:100:28:100:51 | getInputStream(...) | this user input |
-| XQueryInjection.java:116:53:116:56 | name | XQueryInjection.java:112:28:112:51 | getInputStream(...) : ServletInputStream | XQueryInjection.java:116:53:116:56 | name | XQuery query might include code from $@. | XQueryInjection.java:112:28:112:51 | getInputStream(...) | this user input |
-| XQueryInjection.java:129:35:129:38 | xqpe | XQueryInjection.java:124:28:124:51 | getInputStream(...) : ServletInputStream | XQueryInjection.java:129:35:129:38 | xqpe | XQuery query might include code from $@. | XQueryInjection.java:124:28:124:51 | getInputStream(...) | this user input |
-| XQueryInjection.java:142:53:142:54 | br | XQueryInjection.java:137:28:137:51 | getInputStream(...) : ServletInputStream | XQueryInjection.java:142:53:142:54 | br | XQuery query might include code from $@. | XQueryInjection.java:137:28:137:51 | getInputStream(...) | this user input |
-| XQueryInjection.java:155:29:155:32 | name | XQueryInjection.java:150:23:150:50 | getParameter(...) : String | XQueryInjection.java:155:29:155:32 | name | XQuery query might include code from $@. | XQueryInjection.java:150:23:150:50 | getParameter(...) | this user input |
-| XQueryInjection.java:159:29:159:30 | br | XQueryInjection.java:157:26:157:49 | getInputStream(...) : ServletInputStream | XQueryInjection.java:159:29:159:30 | br | XQuery query might include code from $@. | XQueryInjection.java:157:26:157:49 | getInputStream(...) | this user input |
 edges
 | XQueryInjection.java:45:23:45:50 | getParameter(...) : String | XQueryInjection.java:50:60:50:64 | query : String | provenance | Src:MaD:2  |
 | XQueryInjection.java:50:37:50:65 | prepareExpression(...) : XQPreparedExpression | XQueryInjection.java:51:35:51:38 | xqpe | provenance |  |
@@ -80,4 +69,15 @@ nodes
 | XQueryInjection.java:158:48:158:72 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
 | XQueryInjection.java:158:70:158:71 | is : ServletInputStream | semmle.label | is : ServletInputStream |
 | XQueryInjection.java:159:29:159:30 | br | semmle.label | br |
+problems
+| XQueryInjection.java:51:35:51:38 | xqpe | XQueryInjection.java:45:23:45:50 | getParameter(...) : String | XQueryInjection.java:51:35:51:38 | xqpe | XQuery query might include code from $@. | XQueryInjection.java:45:23:45:50 | getParameter(...) | this user input |
+| XQueryInjection.java:65:53:65:57 | query | XQueryInjection.java:59:23:59:50 | getParameter(...) : String | XQueryInjection.java:65:53:65:57 | query | XQuery query might include code from $@. | XQueryInjection.java:59:23:59:50 | getParameter(...) | this user input |
+| XQueryInjection.java:79:35:79:38 | xqpe | XQueryInjection.java:73:32:73:59 | nameStr : String | XQueryInjection.java:79:35:79:38 | xqpe | XQuery query might include code from $@. | XQueryInjection.java:73:32:73:59 | nameStr | this user input |
+| XQueryInjection.java:92:53:92:57 | query | XQueryInjection.java:86:33:86:60 | nameStr : String | XQueryInjection.java:92:53:92:57 | query | XQuery query might include code from $@. | XQueryInjection.java:86:33:86:60 | nameStr | this user input |
+| XQueryInjection.java:104:35:104:38 | xqpe | XQueryInjection.java:100:28:100:51 | getInputStream(...) : ServletInputStream | XQueryInjection.java:104:35:104:38 | xqpe | XQuery query might include code from $@. | XQueryInjection.java:100:28:100:51 | getInputStream(...) | this user input |
+| XQueryInjection.java:116:53:116:56 | name | XQueryInjection.java:112:28:112:51 | getInputStream(...) : ServletInputStream | XQueryInjection.java:116:53:116:56 | name | XQuery query might include code from $@. | XQueryInjection.java:112:28:112:51 | getInputStream(...) | this user input |
+| XQueryInjection.java:129:35:129:38 | xqpe | XQueryInjection.java:124:28:124:51 | getInputStream(...) : ServletInputStream | XQueryInjection.java:129:35:129:38 | xqpe | XQuery query might include code from $@. | XQueryInjection.java:124:28:124:51 | getInputStream(...) | this user input |
+| XQueryInjection.java:142:53:142:54 | br | XQueryInjection.java:137:28:137:51 | getInputStream(...) : ServletInputStream | XQueryInjection.java:142:53:142:54 | br | XQuery query might include code from $@. | XQueryInjection.java:137:28:137:51 | getInputStream(...) | this user input |
+| XQueryInjection.java:155:29:155:32 | name | XQueryInjection.java:150:23:150:50 | getParameter(...) : String | XQueryInjection.java:155:29:155:32 | name | XQuery query might include code from $@. | XQueryInjection.java:150:23:150:50 | getParameter(...) | this user input |
+| XQueryInjection.java:159:29:159:30 | br | XQueryInjection.java:157:26:157:49 | getInputStream(...) : ServletInputStream | XQueryInjection.java:159:29:159:30 | br | XQuery query might include code from $@. | XQueryInjection.java:157:26:157:49 | getInputStream(...) | this user input |
 subpaths

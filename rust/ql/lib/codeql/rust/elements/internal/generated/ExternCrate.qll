@@ -18,9 +18,11 @@ import codeql.rust.elements.Visibility
  */
 module Generated {
   /**
-   * A ExternCrate. For example:
+   * An extern crate declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * extern crate serde;
    * ```
    * INTERNAL: Do not reference the `Generated::ExternCrate` class directly.
    * Use the subclass `ExternCrate`, where the following predicates are available.
@@ -49,19 +51,19 @@ module Generated {
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
-     * Gets the name reference of this extern crate, if it exists.
+     * Gets the identifier of this extern crate, if it exists.
      */
-    NameRef getNameRef() {
+    NameRef getIdentifier() {
       result =
         Synth::convertNameRefFromRaw(Synth::convertExternCrateToRaw(this)
               .(Raw::ExternCrate)
-              .getNameRef())
+              .getIdentifier())
     }
 
     /**
-     * Holds if `getNameRef()` exists.
+     * Holds if `getIdentifier()` exists.
      */
-    final predicate hasNameRef() { exists(this.getNameRef()) }
+    final predicate hasIdentifier() { exists(this.getIdentifier()) }
 
     /**
      * Gets the rename of this extern crate, if it exists.

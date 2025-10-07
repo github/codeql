@@ -1,6 +1,7 @@
 /**
  * @name Unextracted Elements
  * @description List all elements that weren't extracted due to unimplemented features or parse errors.
+ * @kind diagnostic
  * @id rust/diagnostics/unextracted-elements
  */
 

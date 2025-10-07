@@ -9,12 +9,12 @@ namespace Semmle.Extraction.CSharp
     /// Entities are divided into two types: normal entities and cached
     /// entities.
     ///
-    /// Normal entities implement <see cref="FreshEntity"/> directly, and they
+    /// Normal entities implement <see cref="Entities.FreshEntity"/> directly, and they
     /// (may) emit contents to the trap file during object construction.
     ///
-    /// Cached entities implement <see cref="CachedEntity"/>, and they
-    /// emit contents to the trap file when <see cref="CachedEntity.Populate"/>
-    /// is called. Caching prevents <see cref="CachedEntity.Populate"/>
+    /// Cached entities implement <see cref="Entities.CachedEntity"/>, and they
+    /// emit contents to the trap file when <see cref="Entities.CachedEntity.Populate"/>
+    /// is called. Caching prevents <see cref="Entities.CachedEntity.Populate"/>
     /// from being called on entities that have already been emitted.
     /// </summary>
     public interface IEntity

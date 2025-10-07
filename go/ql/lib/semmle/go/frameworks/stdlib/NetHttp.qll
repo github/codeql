@@ -52,7 +52,7 @@ module NetHttp {
 
     MapWrite() {
       this.getType().hasQualifiedName("net/http", "Header") and
-      any(Write write).writesElement(this, index, rhs)
+      any(Write write).writesElementPreUpdate(this, index, rhs)
     }
 
     override DataFlow::Node getName() { result = index }
@@ -122,7 +122,7 @@ module NetHttp {
         |
           lastParamIndex = call.getCall().getCalleeType().getNumParameter() - 1 and
           varArgsSliceArgument = SummaryComponentStack::argument(lastParamIndex) and
-          arrayContentSC = SummaryComponent::content(arrayContent) and
+          arrayContentSC = SummaryComponent::content(arrayContent.asContentSet()) and
           stack = SummaryComponentStack::push(arrayContentSC, varArgsSliceArgument)
         )
       else stack = SummaryComponentStack::argument(n)
@@ -179,12 +179,11 @@ module NetHttp {
   private class RequestCall extends Http::ClientRequest::Range, DataFlow::CallNode {
     RequestCall() {
       exists(string functionName |
-        (
-          this.getTarget().hasQualifiedName("net/http", functionName)
-          or
-          this.getTarget().(Method).hasQualifiedName("net/http", "Client", functionName)
-        ) and
-        (functionName = "Get" or functionName = "Post" or functionName = "PostForm")
+        this.getTarget().hasQualifiedName("net/http", functionName)
+        or
+        this.getTarget().(Method).hasQualifiedName("net/http", "Client", functionName)
+      |
+        functionName = ["Get", "Head", "Post", "PostForm"]
       )
     }
 

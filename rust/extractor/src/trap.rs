@@ -1,15 +1,14 @@
-use crate::config;
-use crate::config::Compression;
+use crate::{config, generated};
 use codeql_extractor::{extractor, file_paths, trap};
-use log::debug;
 use ra_ap_ide_db::line_index::LineCol;
 use std::fmt::Debug;
 use std::hash::Hash;
 use std::marker::PhantomData;
 use std::path::{Path, PathBuf};
+use tracing::debug;
 
 pub use trap::Label as UntypedLabel;
-pub use trap::Writer;
+pub use trap::{Compression, Writer};
 
 pub trait AsTrapKeyPart {
     fn as_key_part(&self) -> String;
@@ -17,7 +16,7 @@ pub trait AsTrapKeyPart {
 
 impl AsTrapKeyPart for UntypedLabel {
     fn as_key_part(&self) -> String {
-        format!("{{{}}}", self)
+        format!("{{{self}}}")
     }
 }
 
@@ -74,7 +73,7 @@ macro_rules! trap_key {
         $(
             key.push_str(&$x.as_key_part());
         )*
-        $crate::TrapId::Key(key)
+        trap::TrapId::Key(key)
     }};
 }
 
@@ -123,14 +122,15 @@ impl<T: TrapClass> From<Label<T>> for trap::Arg {
 }
 
 pub struct TrapFile {
-    path: PathBuf,
+    pub path: PathBuf,
     pub writer: Writer,
     compression: Compression,
 }
 
-#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Default)]
 pub enum DiagnosticSeverity {
     Debug = 10,
+    #[default]
     Info = 20,
     Warning = 30,
     Error = 40,
@@ -138,7 +138,7 @@ pub enum DiagnosticSeverity {
 impl TrapFile {
     pub fn emit_location_label(
         &mut self,
-        file_label: UntypedLabel,
+        file_label: Label<generated::File>,
         start: LineCol,
         end: LineCol,
     ) -> UntypedLabel {
@@ -149,7 +149,7 @@ impl TrapFile {
         extractor::location_label(
             &mut self.writer,
             trap::Location {
-                file_label,
+                file_label: file_label.as_untyped(),
                 start_line,
                 start_column,
                 end_line,
@@ -159,7 +159,7 @@ impl TrapFile {
     }
     pub fn emit_location<E: TrapClass>(
         &mut self,
-        file_label: UntypedLabel,
+        file_label: Label<generated::File>,
         entity_label: Label<E>,
         start: LineCol,
         end: LineCol,
@@ -171,6 +171,26 @@ impl TrapFile {
         );
     }
 
+    pub fn emit_file_only_location<E: TrapClass>(
+        &mut self,
+        file_label: Label<generated::File>,
+        entity_label: Label<E>,
+    ) {
+        let location_label = extractor::location_label(
+            &mut self.writer,
+            trap::Location {
+                file_label: file_label.as_untyped(),
+                start_line: 0,
+                start_column: 0,
+                end_line: 0,
+                end_column: 0,
+            },
+        );
+        self.writer.add_tuple(
+            "locatable_locations",
+            vec![entity_label.into(), location_label.into()],
+        );
+    }
     pub fn emit_diagnostic(
         &mut self,
         severity: DiagnosticSeverity,
@@ -192,8 +212,10 @@ impl TrapFile {
             ],
         );
     }
-    pub fn emit_file(&mut self, absolute_path: &Path) -> trap::Label {
-        extractor::populate_file(&mut self.writer, absolute_path)
+    pub fn emit_file(&mut self, absolute_path: &Path) -> Label<generated::File> {
+        let untyped = extractor::populate_file(&mut self.writer, absolute_path, None);
+        // SAFETY: populate_file emits `@file` typed labels
+        unsafe { Label::from_untyped(untyped) }
     }
 
     pub fn label<T: TrapEntry>(&mut self, id: TrapId<T>) -> Label<T> {
@@ -223,8 +245,7 @@ impl TrapFile {
 
     pub fn commit(&self) -> std::io::Result<()> {
         std::fs::create_dir_all(self.path.parent().unwrap())?;
-        self.writer
-            .write_to_file(&self.path, self.compression.into())
+        self.writer.write_to_file(&self.path, self.compression)
     }
 }
 
@@ -239,12 +260,17 @@ impl TrapFileProvider {
         std::fs::create_dir_all(&trap_dir)?;
         Ok(TrapFileProvider {
             trap_dir,
-            compression: cfg.compression,
+            compression: cfg.trap_compression.into(),
         })
     }
 
-    pub fn create(&self, category: &str, key: &Path) -> TrapFile {
-        let path = file_paths::path_for(&self.trap_dir.join(category), key, "trap");
+    pub fn create(&self, category: &str, key: impl AsRef<Path>) -> TrapFile {
+        let path = file_paths::path_for(
+            &self.trap_dir.join(category),
+            key.as_ref(),
+            self.compression.extension(),
+            None,
+        );
         debug!("creating trap file {}", path.display());
         let mut writer = trap::Writer::new();
         extractor::populate_empty_location(&mut writer);

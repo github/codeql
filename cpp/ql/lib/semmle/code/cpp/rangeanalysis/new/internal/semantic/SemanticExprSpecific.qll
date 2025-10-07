@@ -112,7 +112,14 @@ module SemanticExprConfig {
   }
 
   /** Holds if no range analysis should be performed on the phi edges in `f`. */
-  private predicate excludeFunction(Cpp::Function f) { count(f.getEntryPoint()) > 1 }
+  private predicate excludeFunction(Cpp::Function f) {
+    count(f.getEntryPoint()) > 1
+    or
+    exists(IR::IRFunction irFunction |
+      irFunction.getFunction() = f and
+      irFunction.hasIncompleteSsa()
+    )
+  }
 
   SemType getUnknownExprType(Expr expr) { result = getSemanticType(expr.getResultIRType()) }
 
@@ -252,14 +259,10 @@ module SemanticExprConfig {
   }
 
   predicate guardHasBranchEdge(Guard guard, BasicBlock bb1, BasicBlock bb2, boolean branch) {
-    guard.controlsEdge(bb1, bb2, branch)
+    guard.controlsBranchEdge(bb1, bb2, branch)
   }
 
   Guard comparisonGuard(Expr e) { getSemanticExpr(result) = e }
-
-  predicate implies_v2(Guard g1, boolean b1, Guard g2, boolean b2) {
-    none() // TODO
-  }
 
   /** Gets the expression associated with `instr`. */
   SemExpr getSemanticExpr(IR::Instruction instr) { result = instr }

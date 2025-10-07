@@ -136,6 +136,7 @@ def make_patches_from_log_file(log_file_lines) -> List[Patch]:
             known_start_paths = {
                 # internal CI runs
                 "/home/runner/work/semmle-code/semmle-code/ql/": CODEQL_REPO_DIR,
+                "/Users/runner/work/semmle-code/semmle-code/ql/": CODEQL_REPO_DIR,
                 "/home/runner/work/semmle-code/semmle-code/target/codeql-java-integration-tests/ql/": CODEQL_REPO_DIR,
                 "/home/runner/work/semmle-code/semmle-code/" : SEMMLE_CODE_DIR,
                 # github actions on codeql repo

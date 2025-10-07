@@ -5,3 +5,4 @@ extensions:
       extensible: neutralModel
     data:
       - ["Generators", "EventSourceGenerator", "Initialize", "(Microsoft.CodeAnalysis.IncrementalGeneratorInitializationContext)", "summary", "df-generated"]
+      - ["Generators", "ProductVersionInfoGenerator", "Initialize", "(Microsoft.CodeAnalysis.IncrementalGeneratorInitializationContext)", "summary", "df-generated"]

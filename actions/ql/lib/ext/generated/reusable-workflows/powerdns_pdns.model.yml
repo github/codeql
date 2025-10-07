@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["powerdns/pdns/.github/workflows/build-packages.yml", "*", "input.os", "code-injection", "generated"]
+     - ["powerdns/pdns/.github/workflows/build-packages.yml", "*", "input.product", "code-injection", "generated"]
+     - ["powerdns/pdns/.github/workflows/build-packages.yml", "*", "input.is_release", "code-injection", "generated"]

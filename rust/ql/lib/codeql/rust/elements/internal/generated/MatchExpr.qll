@@ -55,17 +55,17 @@ module Generated {
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
-     * Gets the expression of this match expression, if it exists.
+     * Gets the scrutinee (the expression being matched) of this match expression, if it exists.
      */
-    Expr getExpr() {
+    Expr getScrutinee() {
       result =
-        Synth::convertExprFromRaw(Synth::convertMatchExprToRaw(this).(Raw::MatchExpr).getExpr())
+        Synth::convertExprFromRaw(Synth::convertMatchExprToRaw(this).(Raw::MatchExpr).getScrutinee())
     }
 
     /**
-     * Holds if `getExpr()` exists.
+     * Holds if `getScrutinee()` exists.
      */
-    final predicate hasExpr() { exists(this.getExpr()) }
+    final predicate hasScrutinee() { exists(this.getScrutinee()) }
 
     /**
      * Gets the match arm list of this match expression, if it exists.

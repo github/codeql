@@ -16,6 +16,6 @@ module Impl {
       )
     }
 
-    override string toString() { result = "...[...]" }
+    override string toStringImpl() { result = "...[...]" }
   }
 }

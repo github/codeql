@@ -26,7 +26,7 @@ predicate functionsMissingReturnStmt(Function f, ControlFlowNode blame) {
   exists(Type returnType |
     returnType = f.getUnspecifiedType() and
     not returnType instanceof VoidType and
-    not returnType instanceof TemplateParameter
+    not returnType instanceof TypeTemplateParameter
   ) and
   exists(ReturnStmt s |
     f.getAPredecessor() = s and

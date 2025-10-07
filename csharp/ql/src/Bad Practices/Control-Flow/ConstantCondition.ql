@@ -7,7 +7,8 @@
  * @problem.severity warning
  * @precision very-high
  * @id cs/constant-condition
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       readability
  *       external/cwe/cwe-835
  */
@@ -88,7 +89,7 @@ class ConstantNullnessCondition extends ConstantCondition {
 
   ConstantNullnessCondition() {
     forex(ControlFlow::Node cfn | cfn = this.getAControlFlowNode() |
-      exists(ControlFlow::SuccessorTypes::NullnessSuccessor t, ControlFlow::Node s |
+      exists(ControlFlow::NullnessSuccessor t, ControlFlow::Node s |
         s = cfn.getASuccessorByType(t)
       |
         b = t.getValue() and
@@ -111,7 +112,7 @@ class ConstantMatchingCondition extends ConstantCondition {
 
   ConstantMatchingCondition() {
     forex(ControlFlow::Node cfn | cfn = this.getAControlFlowNode() |
-      exists(ControlFlow::SuccessorTypes::MatchingSuccessor t | exists(cfn.getASuccessorByType(t)) |
+      exists(ControlFlow::MatchingSuccessor t | exists(cfn.getASuccessorByType(t)) |
         b = t.getValue()
       ) and
       strictcount(ControlFlow::SuccessorType t | exists(cfn.getASuccessorByType(t))) = 1
@@ -119,9 +120,14 @@ class ConstantMatchingCondition extends ConstantCondition {
   }
 
   override predicate isWhiteListed() {
-    exists(SwitchExpr se, int i |
-      se.getCase(i).getPattern() = this.(DiscardExpr) and
+    exists(Switch se, Case c, int i |
+      c = se.getCase(i) and
+      c.getPattern() = this.(DiscardExpr)
+    |
       i > 0
+      or
+      i = 0 and
+      exists(Expr cond | c.getCondition() = cond and not isConstantCondition(cond, true))
     )
     or
     this = any(PositionalPatternExpr ppe).getPattern(_)

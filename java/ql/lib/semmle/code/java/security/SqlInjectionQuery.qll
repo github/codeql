@@ -24,6 +24,8 @@ module QueryInjectionFlowConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(AdditionalQueryInjectionTaintStep s).step(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Tracks flow of unvalidated user input that is used in SQL queries. */

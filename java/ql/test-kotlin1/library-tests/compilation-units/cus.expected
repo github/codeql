@@ -2,6 +2,8 @@
 | AbstractList$RandomAccessSpliterator | .../AbstractList$RandomAccessSpliterator.class:0:0:0:0 |
 | ArrayList | .../ArrayList.class:0:0:0:0 |
 | ArrayList$ArrayListSpliterator | .../ArrayList$ArrayListSpliterator.class:0:0:0:0 |
+| CleanerImpl$CleanableList | .../CleanerImpl$CleanableList.class:0:0:0:0 |
+| CleanerImpl$CleanableList$Node | .../CleanerImpl$CleanableList$Node.class:0:0:0:0 |
 | List | .../List.class:0:0:0:0 |
 | ListIterator | .../ListIterator.class:0:0:0:0 |
 | MemorySessionImpl$ResourceList | .../MemorySessionImpl$ResourceList.class:0:0:0:0 |

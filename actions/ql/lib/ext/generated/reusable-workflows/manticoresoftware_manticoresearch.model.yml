@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["manticoresoftware/manticoresearch/.github/workflows/win_test_template.yml", "*", "input.CTEST_END", "code-injection", "generated"]
+     - ["manticoresoftware/manticoresearch/.github/workflows/win_test_template.yml", "*", "input.CTEST_START", "code-injection", "generated"]
+     - ["manticoresoftware/manticoresearch/.github/workflows/test_template.yml", "*", "input.xml_command", "code-injection", "generated"]
+     - ["manticoresoftware/manticoresearch/.github/workflows/test_template.yml", "*", "input.artifact_name", "code-injection", "generated"]
+     - ["manticoresoftware/manticoresearch/.github/workflows/build_template.yml", "*", "input.cmake_command", "code-injection", "generated"]
+     - ["manticoresoftware/manticoresearch/.github/workflows/build_template.yml", "*", "input.artifact_name", "code-injection", "generated"]
+     - ["manticoresoftware/manticoresearch/.github/workflows/build_template.yml", "*", "input.CTEST_CONFIGURATION_TYPE", "code-injection", "generated"]
+     - ["manticoresoftware/manticoresearch/.github/workflows/build_template.yml", "*", "input.arch", "code-injection", "generated"]
+     - ["manticoresoftware/manticoresearch/.github/workflows/build_template.yml", "*", "input.DISTR", "code-injection", "generated"]

@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.Mail
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module InsecureJavaMailTest implements TestSig {
   string getARelevantTag() { result = "hasInsecureJavaMail" }

@@ -28,6 +28,10 @@ module Impl {
    * ```
    */
   class MatchExpr extends Generated::MatchExpr {
+    override string toStringImpl() {
+      result = "match " + this.getScrutinee().toAbbreviatedString() + " { ... }"
+    }
+
     /**
      * Gets the `index`th arm of this match expression.
      */

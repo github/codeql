@@ -23,7 +23,7 @@ predicate isProcessOperationExplanation(DataFlow::Node arg, string processOperat
   exists(int processOperationArg, FunctionCall call |
     isProcessOperationArgument(processOperation, processOperationArg) and
     call.getTarget().getName() = processOperation and
-    call.getArgument(processOperationArg) = [arg.asExpr(), arg.asIndirectExpr()]
+    call.getArgument(processOperationArg) = arg.asIndirectExpr()
   )
 }
 
@@ -37,8 +37,10 @@ module Config implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     isSink(node) and node.asExpr().getUnspecifiedType() instanceof ArithmeticType
     or
-    node.asInstruction().(StoreInstruction).getResultType() instanceof ArithmeticType
+    node.asCertainDefinition().getUnspecifiedType() instanceof ArithmeticType
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module Flow = TaintTracking::Global<Config>;

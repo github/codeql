@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.HardcodedCredentialsSourceCallQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module HardcodedCredentialsSourceCallTest implements TestSig {
   string getARelevantTag() { result = "HardcodedCredentialsSourceCall" }

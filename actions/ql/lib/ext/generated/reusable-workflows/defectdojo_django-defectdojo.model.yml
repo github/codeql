@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["defectdojo/django-defectdojo/.github/workflows/release-x-manual-helm-chart.yml", "*", "input.release_number", "code-injection", "generated"]

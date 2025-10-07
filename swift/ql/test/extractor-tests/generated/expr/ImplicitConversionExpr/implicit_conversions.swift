@@ -12,3 +12,14 @@ func g(_ a: A) {
   a.b = {}
 }
 
+class B {
+  @preconcurrency var a: [any Sendable] = []
+}
+
+extension Array where Element == Any {
+  func h() {}
+}
+
+func i(b: B) {
+  b.a.h()
+}

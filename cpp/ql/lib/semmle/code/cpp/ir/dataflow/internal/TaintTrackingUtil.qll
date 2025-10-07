@@ -5,7 +5,7 @@ private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.models.interfaces.SideEffect
 private import DataFlowUtil
 private import DataFlowPrivate
-private import SsaInternals as Ssa
+private import SsaImpl as Ssa
 private import semmle.code.cpp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.cpp.ir.dataflow.FlowSteps
 
@@ -229,11 +229,11 @@ private module SpeculativeTaintFlow {
       not exists(DataFlowDispatch::viableCallable(call)) and
       src.(DataFlowPrivate::ArgumentNode).argumentOf(call, argpos)
     |
-      not argpos.(DirectPosition).getIndex() = -1 and
+      not argpos.(DirectPosition).getArgumentIndex() = -1 and
       sink.(PostUpdateNode)
           .getPreUpdateNode()
           .(DataFlowPrivate::ArgumentNode)
-          .argumentOf(call, any(DirectPosition qualpos | qualpos.getIndex() = -1))
+          .argumentOf(call, any(DirectPosition qualpos | qualpos.getArgumentIndex() = -1))
       or
       sink.(DataFlowPrivate::OutNode).getCall() = call
     )

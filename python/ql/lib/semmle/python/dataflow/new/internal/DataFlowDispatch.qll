@@ -580,6 +580,11 @@ private module TrackClassInstanceInput implements CallGraphConstruction::Simple:
   class State = Class;
 
   predicate start(Node start, Class cls) {
+    exists(Annotation ann |
+      ann = classTracker(cls).asExpr() and
+      start.asExpr() = ann.getAnnotatedExpression()
+    )
+    or
     resolveClassCall(start.(CallCfgNode).asCfgNode(), cls)
     or
     // result of `super().__new__` as used in a `__new__` method implementation
@@ -851,9 +856,14 @@ Class getNextClassInMroKnownStartingClass(Class cls, Class startingClass) {
   )
 }
 
-private Function findFunctionAccordingToMroKnownStartingClass(
-  Class cls, Class startingClass, string name
-) {
+/**
+ * Gets a potential definition of the function `name` of the class `cls` according to our approximation of
+ * MRO for the class `startingCls` (see `getNextClassInMroKnownStartingClass` for more information).
+ *
+ * Note: this is almost the same as `findFunctionAccordingToMro`, except we know the
+ * `startingClass`, which can give slightly more precise results.
+ */
+Function findFunctionAccordingToMroKnownStartingClass(Class cls, Class startingClass, string name) {
   result = cls.getAMethod() and
   result.getName() = name and
   cls = getADirectSuperclass*(startingClass)
@@ -866,7 +876,7 @@ private Function findFunctionAccordingToMroKnownStartingClass(
 
 /**
  * Gets a potential definition of the function `name` according to our approximation of
- * MRO for the class `cls` (see `getNextClassInMroKnownStartingClass` for more information).
+ * MRO for the class `startingCls` (see `getNextClassInMroKnownStartingClass` for more information).
  *
  * Note: this is almost the same as `findFunctionAccordingToMro`, except we know the
  * `startingClass`, which can give slightly more precise results.

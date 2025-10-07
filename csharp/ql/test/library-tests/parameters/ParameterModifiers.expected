@@ -1,19 +1,21 @@
 parameterModifier
-| ParameterModifiers.cs:5:27:5:28 | p1 | 0 |
-| ParameterModifiers.cs:6:30:6:31 | p2 | 5 |
-| ParameterModifiers.cs:8:31:8:32 | p3 | 2 |
-| ParameterModifiers.cs:13:31:13:32 | p4 | 1 |
-| ParameterModifiers.cs:15:36:15:37 | p5 | 3 |
-| ParameterModifiers.cs:17:40:17:41 | p6 | 6 |
+| ParameterModifiers.cs:6:27:6:28 | p1 | 0 |
+| ParameterModifiers.cs:7:30:7:31 | p2 | 5 |
+| ParameterModifiers.cs:9:31:9:32 | p3 | 2 |
+| ParameterModifiers.cs:14:31:14:32 | p4 | 1 |
+| ParameterModifiers.cs:16:36:16:37 | p5 | 3 |
+| ParameterModifiers.cs:18:40:18:41 | p6 | 6 |
+| ParameterModifiers.cs:20:47:20:48 | p7 | 3 |
 parameterIsValue
-| ParameterModifiers.cs:5:27:5:28 | p1 |
+| ParameterModifiers.cs:6:27:6:28 | p1 |
 parameterIsIn
-| ParameterModifiers.cs:6:30:6:31 | p2 |
+| ParameterModifiers.cs:7:30:7:31 | p2 |
 parameterIsOut
-| ParameterModifiers.cs:8:31:8:32 | p3 |
+| ParameterModifiers.cs:9:31:9:32 | p3 |
 parameterIsRef
-| ParameterModifiers.cs:13:31:13:32 | p4 |
+| ParameterModifiers.cs:14:31:14:32 | p4 |
 parameterIsParams
-| ParameterModifiers.cs:15:36:15:37 | p5 |
+| ParameterModifiers.cs:16:36:16:37 | p5 |
+| ParameterModifiers.cs:20:47:20:48 | p7 |
 parameterIsReadonlyRef
-| ParameterModifiers.cs:17:40:17:41 | p6 |
+| ParameterModifiers.cs:18:40:18:41 | p6 |

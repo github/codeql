@@ -74,3 +74,7 @@
 | tests.cpp:436:6:436:25 | [summary] to write: Argument[1] in madCallArg0WithValue | PostUpdateNode | madCallArg0WithValue | madCallArg0WithValue |
 | tests.cpp:437:5:437:36 | [summary param] 1 in madCallReturnValueIgnoreFunction | ParameterNode | madCallReturnValueIgnoreFunction | madCallReturnValueIgnoreFunction |
 | tests.cpp:437:5:437:36 | [summary] to write: ReturnValue in madCallReturnValueIgnoreFunction | ReturnNode | madCallReturnValueIgnoreFunction | madCallReturnValueIgnoreFunction |
+| tests.cpp:459:5:459:31 | [summary param] *0 in parameter_ref_to_return_ref | ParameterNode | parameter_ref_to_return_ref | parameter_ref_to_return_ref |
+| tests.cpp:459:5:459:31 | [summary] to write: ReturnValue[*] in parameter_ref_to_return_ref | ReturnNode | parameter_ref_to_return_ref | parameter_ref_to_return_ref |
+| tests.cpp:471:5:471:17 | [summary param] *0 in receive_array | ParameterNode | receive_array | receive_array |
+| tests.cpp:471:5:471:17 | [summary] to write: ReturnValue in receive_array | ReturnNode | receive_array | receive_array |

@@ -7,6 +7,7 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.Format
+import codeql.rust.elements.FormatTemplateVariableAccess
 import codeql.rust.elements.internal.LocatableImpl::Impl as LocatableImpl
 
 /**
@@ -33,5 +34,15 @@ module Generated {
      * Gets the parent of this format argument.
      */
     Format getParent() { none() }
+
+    /**
+     * Gets the variable of this format argument, if it exists.
+     */
+    FormatTemplateVariableAccess getVariable() { none() }
+
+    /**
+     * Holds if `getVariable()` exists.
+     */
+    final predicate hasVariable() { exists(this.getVariable()) }
   }
 }

@@ -1,2 +1,2 @@
 query: experimental/Security/CWE/CWE-598/SensitiveGetQuery.ql
-postprocess: TestUtilities/PrettyPrintModels.ql
+postprocess: utils/test/PrettyPrintModels.ql

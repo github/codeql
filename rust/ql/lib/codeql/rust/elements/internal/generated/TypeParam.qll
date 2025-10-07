@@ -10,7 +10,7 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.internal.GenericParamImpl::Impl as GenericParamImpl
 import codeql.rust.elements.Name
 import codeql.rust.elements.TypeBoundList
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 
 /**
  * INTERNAL: This module contains the fully generated definition of `TypeParam` and should not
@@ -18,9 +18,12 @@ import codeql.rust.elements.TypeRef
  */
 module Generated {
   /**
-   * A TypeParam. For example:
+   * A type parameter in a generic parameter list.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<T>(t: T) {}
+   * //     ^
    * ```
    * INTERNAL: Do not reference the `Generated::TypeParam` class directly.
    * Use the subclass `TypeParam`, where the following predicates are available.
@@ -49,9 +52,9 @@ module Generated {
     /**
      * Gets the default type of this type parameter, if it exists.
      */
-    TypeRef getDefaultType() {
+    TypeRepr getDefaultType() {
       result =
-        Synth::convertTypeRefFromRaw(Synth::convertTypeParamToRaw(this)
+        Synth::convertTypeReprFromRaw(Synth::convertTypeParamToRaw(this)
               .(Raw::TypeParam)
               .getDefaultType())
     }
