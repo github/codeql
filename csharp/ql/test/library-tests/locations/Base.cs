@@ -4,3 +4,5 @@ public abstract class Base<T>
 
     public class InnerBase { }
 }
+
+public abstract class Base2<T> { }
