@@ -30,7 +30,7 @@ class Type extends Member, TypeContainer, @type {
   /** Holds if this type is implicitly convertible to `that` type. */
   predicate isImplicitlyConvertibleTo(Type that) { implicitConversion(this, that) }
 
-  override Location getALocation() { type_location(this.getUnboundDeclaration(), result) }
+  override Location getALocation() { type_location(this, result) }
 
   override Type getChild(int n) { none() }
 
@@ -394,6 +394,8 @@ class NestedType extends ValueOrRefType {
   NestedType() { nested_types(this, _, _) }
 
   override ValueOrRefType getDeclaringType() { nested_types(this, result, _) }
+
+  override Location getALocation() { type_location(this.getUnboundDeclaration(), result) }
 }
 
 /**
