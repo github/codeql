@@ -2696,6 +2696,52 @@ pub mod path_buf {
     }
 }
 
+mod if_expr {
+    pub trait MyTrait<T: Sized> {
+        fn m(&self) -> T;
+    }
+
+    #[derive(Default)]
+    struct S<T>(T);
+
+    impl MyTrait<i32> for S<i32> {
+        fn m(&self) -> i32 {
+            self.0 // $ fieldof=S
+        }
+    }
+
+    impl MyTrait<i32> for S<S<i32>> {
+        fn m(&self) -> i32 {
+            self.0 .0 // $ fieldof=S
+        }
+    }
+
+    impl<T: Copy> S<T> {
+        fn m2(&self) -> S<S<T>> {
+            S(S(self.0)) // $ fieldof=S
+        }
+    }
+
+    pub fn f(b: bool) -> Box<dyn MyTrait<i32>> {
+        let x = if b {
+            let y = Default::default(); // $ target=default
+            y // $ type=y:T.i32
+        } else {
+            S(2)
+        };
+
+        // This code exhibits an explosion in type inference when type information is propagated
+        // from an `if` expression to its branches.
+        let x = S(1);
+        if b {
+            let x = x.m2(); // $ target=m2
+            Box::new(x) // $ target=new
+        } else {
+            Box::new(x) // $ target=new
+        }
+    }
+}
+
 mod blanket_impl;
 mod closure;
 mod dereference;
@@ -2733,4 +2779,5 @@ fn main() {
     pattern_matching::test_all_patterns(); // $ target=test_all_patterns
     pattern_matching_experimental::box_patterns(); // $ target=box_patterns
     dyn_type::test(); // $ target=test
+    if_expr::f(true); // $ target=f
 }
