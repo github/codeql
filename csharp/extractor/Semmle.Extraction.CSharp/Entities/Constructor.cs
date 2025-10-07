@@ -222,7 +222,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 if (Symbol.IsImplicitlyDeclared)
                 {
-                    return ContainingType!.ReportingLocation;
+                    var best = Symbol.Locations.Where(l => l.IsInSource).BestOrDefault();
+                    return best ?? ContainingType!.ReportingLocation;
                 }
 
                 return Symbol.ContainingType.Locations.FirstOrDefault();

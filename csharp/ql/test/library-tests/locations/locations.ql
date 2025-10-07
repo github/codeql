@@ -12,3 +12,12 @@ query predicate accessor_location(Type t, Accessor a, SourceLocation l) {
   l = a.getLocation() and
   not l instanceof EmptyLocation
 }
+
+query predicate type_location(Type t, SourceLocation l) {
+  l = t.getLocation() and not l instanceof EmptyLocation
+}
+
+query predicate calltype_location(Call call, Type t, SourceLocation l) {
+  t = call.getType() and
+  l = t.getALocation()
+}
