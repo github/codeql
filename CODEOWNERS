@@ -11,6 +11,7 @@
 /java/ @github/codeql-java
 /javascript/ @github/codeql-javascript
 /python/ @github/codeql-python
+/ql/ @github/codeql-ql-for-ql-reviewers
 /ruby/ @github/codeql-ruby
 /rust/ @github/codeql-rust
 /shared/ @github/codeql-shared-libraries-reviewers
@@ -29,9 +30,6 @@
 /docs/codeql/codeql-for-visual-studio-code/ @github/codeql-vscode-reviewers
 /docs/codeql/ql-language-reference/ @github/codeql-frontend-reviewers
 /docs/query-*-style-guide.md @github/codeql-analysis-reviewers
-
-# QL for QL reviewers
-/ql/ @github/codeql-ql-for-ql-reviewers
 
 # Bazel (excluding BUILD.bazel files)
 MODULE.bazel @github/codeql-ci-reviewers
