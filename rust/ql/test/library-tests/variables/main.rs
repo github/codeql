@@ -1,3 +1,5 @@
+#![feature(let_chains)]
+#![feature(if_let_guard)]
 use std::ops::AddAssign;
 
 fn print_str(s: &str) // s
@@ -23,6 +25,8 @@ fn mutable_variable() {
     let mut x2 = 4; // x2
     print_i64(x2); // $ read_access=x2
     x2 = 5; // $ write_access=x2
+    print_i64(x2); // $ read_access=x2
+    x2 = x2; // $ read_access=x2 $ write_access=x2
     print_i64(x2); // $ read_access=x2
 }
 
@@ -93,13 +97,16 @@ fn let_pattern3() {
 }
 
 fn let_pattern4() {
-    let Some(x5): Option<&str> // x5
-    = Some("x5")
-
+    let x = Some("x5"); // x1
+    let Some(x): Option<&str> // x2
+    = x // $ read_access=x1
     else {
+        let x = // x3
+            x; // $ read_access=x1
+        print_str(x.unwrap()); // $ read_access=x3
         todo!()
     };
-    print_str(x5); // $ read_access=x5
+    print_str(x); // $ read_access=x2
 }
 
 fn let_pattern5() {
@@ -269,6 +276,90 @@ fn match_pattern9() {
     }
 }
 
+#[rustfmt::skip]
+fn match_pattern10() {
+    let x= Some(42); // x1
+    if let Some(x) // x2
+    = x // $ read_access=x1
+    &&
+    x > 0 // $ read_access=x2
+    {    
+        print_i64(x); // $ read_access=x2
+    } else {
+        let x = // x3
+            x; // $ read_access=x1
+        print_i64(x.unwrap()); // $ read_access=x3
+    }
+}
+
+#[rustfmt::skip]
+fn match_pattern11() {
+    let x = Some(42); // x1
+    if let Some(x) // x2
+    = x // $ read_access=x1
+    &&
+    let Some(x) // x3
+    = Some(x) // $ read_access=x2
+    &&
+    x > 0 // $ read_access=x3
+    {    
+        print_i64(x); // $ read_access=x3
+    } else {
+        let x = // x4
+            x; // $ read_access=x1
+        print_i64(x.unwrap()); // $ read_access=x4
+    }
+}
+
+#[rustfmt::skip]
+fn match_pattern12() {
+    let x = Some(42); // x1
+    while let Some(x) // x2
+    = x // $ read_access=x1
+    &&
+    let Some(x) // x3
+    = Some(x) // $ read_access=x2
+    &&
+    x > 0 // $ read_access=x3
+    {    
+        print_i64(x); // $ read_access=x3
+        break;
+    }
+
+    print_i64(x.unwrap()); // $ read_access=x1
+}
+
+#[rustfmt::skip]
+fn match_pattern13() {
+    let x = Some(42); // x1
+    match x { // $ read_access=x1
+        Some(x) // x2
+            if let x // x3
+               = x // $ read_access=x2
+               && x > 0 => (), // $ read_access=x3
+        _ => ()
+    }
+
+    print_i64(x.unwrap()); // $ read_access=x1
+}
+
+#[rustfmt::skip]
+fn match_pattern14() {
+    let x = Ok(42); // x1
+    if let Err(x) // x2
+    = x // $ read_access=x1
+    {
+        print_i64(x); // $ read_access=x2
+    }
+    else if let Ok(x) // x3
+    = x // $ read_access=x1
+    {    
+        print_i64(x); // $ read_access=x3
+    } else {
+        print_i64(x.unwrap()); // $ read_access=x1
+    }
+}
+
 fn param_pattern1(
     a8: &str, // a8
     (
@@ -417,6 +508,7 @@ fn mutate_arg() {
     let y = // y
         mutate_param(&mut x); // $ access=x
     *y = 10; // $ read_access=y
+
     // prints 10, not 4
     print_i64(x); // $ read_access=x
 
@@ -428,6 +520,7 @@ fn mutate_arg() {
         w,      // $ read_access=w
     );
     **w = 11; // $ read_access=w
+
     // prints 11, not 8
     print_i64(z); // $ read_access=z
 }
@@ -442,6 +535,7 @@ fn alias() {
 
 fn capture_immut() {
     let x = 100; // x
+
     // Captures immutable value by immutable reference
     let cap = || {
         print_i64(x); // $ read_access=x
@@ -452,6 +546,7 @@ fn capture_immut() {
 
 fn capture_mut() {
     let mut x = 1; // x
+
     // Captures mutable value by immutable reference
     let closure1 = || {
         print_i64(x); // $ read_access=x
@@ -460,6 +555,7 @@ fn capture_mut() {
     print_i64(x); // $ read_access=x
 
     let mut y = 2; // y
+
     // Captures mutable value by mutable reference
     let mut closure2 = || {
         y = 3; // $ write_access=y
@@ -468,6 +564,7 @@ fn capture_mut() {
     print_i64(y); // $ read_access=y
 
     let mut z = 2; // z
+
     // Captures mutable value by mutable reference and calls mutating method
     let mut closure3 = || {
         z.add_assign(1); // $ read_access=z
@@ -586,6 +683,7 @@ impl MyStruct {
 fn ref_methodcall_receiver() {
     let mut a = MyStruct { val: 1 }; // a
     a.bar(); // $ read_access=a
+
     // prints 3, not 1
     print_i64(a.val); // $ read_access=a
 }
@@ -609,6 +707,7 @@ fn macro_invocation() {
         let_in_macro!(37); // $ read_access=var_in_macro
     print_i64(var_from_macro); // $ read_access=var_from_macro1
     let var_in_macro = 33; // var_in_macro1
+
     // Our analysis does not currently respect the hygiene rules of Rust macros
     // (https://veykril.github.io/tlborm/decl-macros/minutiae/hygiene.html), because
     // all we have access to is the expanded AST
@@ -653,6 +752,11 @@ fn main() {
     match_pattern7();
     match_pattern8();
     match_pattern9();
+    match_pattern10();
+    match_pattern11();
+    match_pattern12();
+    match_pattern13();
+    match_pattern14();
     param_pattern1("a", ("b", "c"));
     param_pattern2(Either::Left(45));
     destruct_assignment();

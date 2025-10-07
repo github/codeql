@@ -12,7 +12,7 @@
 <example>
   <p>In this example, we are incrementing/decrementing the current date by one year when creating a new <code>System.DateTime</code> object. This may work most of the time, but on any given February 29th, the resulting value will be invalid.</p>
   <sample src="UnsafeYearConstructionBad.cs" />
-  <p>To fix this bug, we add/substract years to the current date by calling <code>AddYears</code> method on it.</p>
+  <p>To fix this bug, we add/subtract years to the current date by calling <code>AddYears</code> method on it.</p>
   <sample src="UnsafeYearConstructionGood.cs" />
 </example>
 <references>

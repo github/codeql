@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-6f9LidI9BUve7+TpoL1sh5GKC6sgLSYNImlVnVaiHEE=",
+    "strip_prefix": "rules_dotnet-0.19.2",
+    "url": "https://github.com/bazel-contrib/rules_dotnet/releases/download/v0.19.2/rules_dotnet-v0.19.2.tar.gz",
+    "patches": {
+        "revert_additional_files_in_nuget_archive.patch": "sha256-FzMKXeHVhIBXQRCNFB0EANDszgJc/BBaPgWCzkbW9Ck="
+    },
+    "patch_strip": 1
+}

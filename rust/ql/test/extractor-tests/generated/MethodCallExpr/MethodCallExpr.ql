@@ -16,14 +16,6 @@ query predicate getArg(MethodCallExpr x, int index, Expr getArg) {
   toBeTested(x) and not x.isUnknown() and getArg = x.getArg(index)
 }
 
-query predicate getResolvedPath(MethodCallExpr x, string getResolvedPath) {
-  toBeTested(x) and not x.isUnknown() and getResolvedPath = x.getResolvedPath()
-}
-
-query predicate getResolvedCrateOrigin(MethodCallExpr x, string getResolvedCrateOrigin) {
-  toBeTested(x) and not x.isUnknown() and getResolvedCrateOrigin = x.getResolvedCrateOrigin()
-}
-
 query predicate getGenericArgList(MethodCallExpr x, GenericArgList getGenericArgList) {
   toBeTested(x) and not x.isUnknown() and getGenericArgList = x.getGenericArgList()
 }

@@ -52,7 +52,7 @@ module NetHttp {
 
     MapWrite() {
       this.getType().hasQualifiedName("net/http", "Header") and
-      any(Write write).writesElement(this, index, rhs)
+      any(Write write).writesElementPreUpdate(this, index, rhs)
     }
 
     override DataFlow::Node getName() { result = index }

@@ -28,7 +28,7 @@ private class GorillaSessionOptionsField extends Field {
 private DataFlow::Node getValueForFieldWrite(StructLit sl, string field) {
   exists(Write w, DataFlow::Node base, Field f |
     f.getName() = field and
-    w.writesField(base, f, result) and
+    w.writesFieldPreUpdate(base, f, result) and
     (
       sl = base.asExpr()
       or
@@ -116,6 +116,12 @@ private module BoolToGinSetCookieTrackingConfig implements DataFlow::ConfigSig {
       )
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    any() // Merged with other flows in CookieWithoutHttpOnly.ql
+  }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
 }
 
 /**
@@ -203,10 +209,7 @@ private module GorillaSessionOptionsTrackingConfig implements DataFlow::ConfigSi
   predicate isSink(DataFlow::Node sink) { sink instanceof GorillaSessionSaveSink }
 
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(GorillaSessionOptionsField f, DataFlow::Write w, DataFlow::Node base |
-      w.writesField(base, f, pred) and
-      succ = base
-    )
+    exists(GorillaSessionOptionsField f, DataFlow::Write w | w.writesField(succ, f, pred))
   }
 }
 
@@ -230,10 +233,7 @@ private module BoolToGorillaSessionOptionsTrackingConfig implements DataFlow::Co
       sl = succ.asExpr()
     )
     or
-    exists(GorillaSessionOptionsField f, DataFlow::Write w, DataFlow::Node base |
-      w.writesField(base, f, pred) and
-      succ = base
-    )
+    exists(GorillaSessionOptionsField f, DataFlow::Write w | w.writesField(succ, f, pred))
   }
 }
 

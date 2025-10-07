@@ -14,9 +14,13 @@ private import PaddingAlgorithmInstance
  */
 module KnownOpenSslAlgorithmToAlgorithmValueConsumerConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof KnownOpenSslAlgorithmExpr and
+    (
+      source.asExpr() instanceof KnownOpenSslAlgorithmExpr or
+      source.asIndirectExpr() instanceof KnownOpenSslAlgorithmExpr
+    ) and
     // No need to flow direct operations to AVCs
-    not source.asExpr() instanceof OpenSslDirectAlgorithmOperationCall
+    not source.asExpr() instanceof OpenSslDirectAlgorithmOperationCall and
+    not source.asIndirectExpr() instanceof OpenSslDirectAlgorithmOperationCall
   }
 
   predicate isSink(DataFlow::Node sink) {
@@ -46,10 +50,12 @@ module KnownOpenSslAlgorithmToAlgorithmValueConsumerConfig implements DataFlow::
 }
 
 module KnownOpenSslAlgorithmToAlgorithmValueConsumerFlow =
-  DataFlow::Global<KnownOpenSslAlgorithmToAlgorithmValueConsumerConfig>;
+  TaintTracking::Global<KnownOpenSslAlgorithmToAlgorithmValueConsumerConfig>;
 
 module RsaPaddingAlgorithmToPaddingAlgorithmValueConsumerConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof OpenSslPaddingLiteral }
+  predicate isSource(DataFlow::Node source) {
+    source.asExpr() instanceof OpenSslSpecialPaddingLiteral
+  }
 
   predicate isSink(DataFlow::Node sink) {
     exists(PaddingAlgorithmValueConsumer c | c.getInputNode() = sink)
@@ -61,7 +67,7 @@ module RsaPaddingAlgorithmToPaddingAlgorithmValueConsumerConfig implements DataF
 }
 
 module RsaPaddingAlgorithmToPaddingAlgorithmValueConsumerFlow =
-  DataFlow::Global<RsaPaddingAlgorithmToPaddingAlgorithmValueConsumerConfig>;
+  TaintTracking::Global<RsaPaddingAlgorithmToPaddingAlgorithmValueConsumerConfig>;
 
 class OpenSslAlgorithmAdditionalFlowStep extends AdditionalFlowInputStep {
   OpenSslAlgorithmAdditionalFlowStep() { exists(AlgorithmPassthroughCall c | c.getInNode() = this) }

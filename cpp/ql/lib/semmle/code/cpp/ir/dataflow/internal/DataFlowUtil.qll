@@ -42,11 +42,7 @@ private newtype TIRDataFlowNode =
       [getMinIndirectionsForType(var.getUnspecifiedType()) .. SsaImpl::getMaxIndirectionsForType(var.getUnspecifiedType())]
   } or
   TPostUpdateNodeImpl(Operand operand, int indirectionIndex) {
-    operand = any(FieldAddress fa).getObjectAddressOperand() and
-    indirectionIndex =
-      [0 .. SsaImpl::countIndirectionsForCppType(SsaImpl::getLanguageType(operand))]
-    or
-    SsaImpl::isModifiableByCall(operand, indirectionIndex)
+    isPostUpdateNodeImpl(operand, indirectionIndex)
   } or
   TSsaSynthNode(SsaImpl::SynthNode n) or
   TSsaIteratorNode(IteratorFlow::IteratorFlowNode n) or
@@ -799,7 +795,7 @@ class FinalGlobalValue extends Node, TFinalGlobalValue {
   override DataFlowType getType() {
     exists(int indirectionIndex |
       indirectionIndex = globalUse.getIndirectionIndex() and
-      result = getTypeImpl(globalUse.getUnderlyingType(), indirectionIndex - 1)
+      result = getTypeImpl(globalUse.getUnderlyingType(), indirectionIndex)
     )
   }
 
@@ -2277,8 +2273,10 @@ class ContentSet instanceof Content {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    super.hasLocationInfo(path, sl, sc, el, ec)
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 

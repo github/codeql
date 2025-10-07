@@ -1,18 +1,13 @@
 ql/javascript/ql/src/AlertSuppression.ql
 ql/javascript/ql/src/AngularJS/DeadAngularJSEventListener.ql
 ql/javascript/ql/src/AngularJS/UnusedAngularDependency.ql
-ql/javascript/ql/src/Comments/CommentedOutCode.ql
 ql/javascript/ql/src/Comments/FCommentedOutCode.ql
-ql/javascript/ql/src/Comments/TodoComments.ql
-ql/javascript/ql/src/DOM/Alert.ql
 ql/javascript/ql/src/DOM/AmbiguousIdAttribute.ql
 ql/javascript/ql/src/DOM/ConflictingAttributes.ql
 ql/javascript/ql/src/DOM/TargetBlank.ql
 ql/javascript/ql/src/Declarations/DeadStoreOfGlobal.ql
-ql/javascript/ql/src/Declarations/RedeclaredVariable.ql
 ql/javascript/ql/src/Declarations/TooManyParameters.ql
 ql/javascript/ql/src/Declarations/UnstableCyclicImport.ql
-ql/javascript/ql/src/Declarations/UnusedParameter.ql
 ql/javascript/ql/src/Declarations/UnusedProperty.ql
 ql/javascript/ql/src/Electron/EnablingNodeIntegration.ql
 ql/javascript/ql/src/Expressions/BitwiseSignCheck.ql
@@ -21,10 +16,7 @@ ql/javascript/ql/src/Expressions/MisspelledIdentifier.ql
 ql/javascript/ql/src/JSDoc/BadParamTag.ql
 ql/javascript/ql/src/JSDoc/JSDocForNonExistentParameter.ql
 ql/javascript/ql/src/JSDoc/UndocumentedParameter.ql
-ql/javascript/ql/src/LanguageFeatures/ArgumentsCallerCallee.ql
-ql/javascript/ql/src/LanguageFeatures/DebuggerStatement.ql
 ql/javascript/ql/src/LanguageFeatures/EmptyArrayInit.ql
-ql/javascript/ql/src/LanguageFeatures/Eval.ql
 ql/javascript/ql/src/LanguageFeatures/JumpFromFinally.ql
 ql/javascript/ql/src/LanguageFeatures/SetterIgnoresParameter.ql
 ql/javascript/ql/src/LanguageFeatures/WrongExtensionJSON.ql
@@ -48,8 +40,6 @@ ql/javascript/ql/src/NodeJS/DubiousImport.ql
 ql/javascript/ql/src/NodeJS/UnresolvableImport.ql
 ql/javascript/ql/src/NodeJS/UnusedDependency.ql
 ql/javascript/ql/src/Performance/NonLocalForIn.ql
-ql/javascript/ql/src/Performance/ReassignParameterAndUseArguments.ql
-ql/javascript/ql/src/RegExp/BackspaceEscape.ql
 ql/javascript/ql/src/RegExp/MalformedRegExp.ql
 ql/javascript/ql/src/Security/CWE-020/ExternalAPIsUsedWithUntrustedData.ql
 ql/javascript/ql/src/Security/CWE-020/UntrustedDataToExternalAPI.ql
@@ -59,8 +49,6 @@ ql/javascript/ql/src/Security/CWE-798/HardcodedCredentials.ql
 ql/javascript/ql/src/Security/CWE-807/DifferentKindsComparisonBypass.ql
 ql/javascript/ql/src/Security/trest/test.ql
 ql/javascript/ql/src/Statements/EphemeralLoop.ql
-ql/javascript/ql/src/Statements/ImplicitReturn.ql
-ql/javascript/ql/src/Statements/InconsistentReturn.ql
 ql/javascript/ql/src/Statements/NestedLoopsSameVariable.ql
 ql/javascript/ql/src/Statements/ReturnOutsideFunction.ql
 ql/javascript/ql/src/Summary/TaintSinks.ql
@@ -75,7 +63,6 @@ ql/javascript/ql/src/experimental/Security/CWE-347/decodeJwtWithoutVerificationL
 ql/javascript/ql/src/experimental/Security/CWE-444/InsecureHttpParser.ql
 ql/javascript/ql/src/experimental/Security/CWE-522-DecompressionBombs/DecompressionBombs.ql
 ql/javascript/ql/src/experimental/Security/CWE-918/SSRF.ql
-ql/javascript/ql/src/experimental/Security/CWE-942/CorsPermissiveConfiguration.ql
 ql/javascript/ql/src/experimental/StandardLibrary/MultipleArgumentsToSetConstructor.ql
 ql/javascript/ql/src/experimental/heuristics/ql/src/Security/CWE-020/UntrustedDataToExternalAPI.ql
 ql/javascript/ql/src/experimental/heuristics/ql/src/Security/CWE-078/CommandInjection.ql

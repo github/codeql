@@ -82,6 +82,7 @@ module;
  */
 
 import java
+private import codeql.controlflow.SuccessorType
 private import codeql.util.Boolean
 private import Completion
 private import controlflow.internal.Preconditions
@@ -122,6 +123,28 @@ module ControlFlow {
     Node getANormalSuccessor() {
       result = succ(this, BooleanCompletion(_, _)) or
       result = succ(this, NormalCompletion())
+    }
+
+    /** Gets an immediate successor of this node of a given type, if any. */
+    Node getASuccessor(SuccessorType t) {
+      result = branchSuccessor(this, t.(BooleanSuccessor).getValue())
+      or
+      exists(Completion completion |
+        result = succ(this, completion) and
+        not result = branchSuccessor(this, _)
+      |
+        completion = NormalCompletion() and t instanceof DirectSuccessor
+        or
+        completion = ReturnCompletion() and t instanceof ReturnSuccessor
+        or
+        completion = BreakCompletion(_) and t instanceof BreakSuccessor
+        or
+        completion = YieldCompletion(_) and t instanceof BreakSuccessor
+        or
+        completion = ContinueCompletion(_) and t instanceof ContinueSuccessor
+        or
+        completion = ThrowCompletion(_) and t instanceof ExceptionSuccessor
+      )
     }
 
     /** Gets the basic block that contains this node. */
@@ -347,12 +370,28 @@ private module ControlFlowGraphImpl {
     )
   }
 
+  private predicate methodMayThrow(Method m, ThrowableType t) {
+    exists(AstNode n |
+      t = n.(ThrowStmt).getThrownExceptionType() and
+      not n.(ThrowStmt).getParent() = any(Method m0).getBody()
+      or
+      uncheckedExceptionFromMethod(n, t)
+    |
+      n.getEnclosingStmt().getEnclosingCallable() = m and
+      not exists(TryStmt try |
+        exists(try.getACatchClause()) and try.getBlock() = n.getEnclosingStmt().getEnclosingStmt*()
+      )
+    )
+  }
+
   /**
-   * Bind `t` to an unchecked exception that may occur in a precondition check.
+   * Bind `t` to an unchecked exception that may occur in a precondition check or guard wrapper.
    */
   private predicate uncheckedExceptionFromMethod(MethodCall ma, ThrowableType t) {
-    conditionCheckArgument(ma, _, _) and
+    (methodCallChecksArgument(ma) or methodCallUnconditionallyThrows(ma)) and
     (t instanceof TypeError or t instanceof TypeRuntimeException)
+    or
+    methodMayThrow(ma.getMethod().getSourceDeclaration(), t)
   }
 
   /**
@@ -570,6 +609,7 @@ private module ControlFlowGraphImpl {
    * Gets a `MethodCall` that always throws an exception or calls `exit`.
    */
   private MethodCall nonReturningMethodCall() {
+    methodCallUnconditionallyThrows(result) or
     result.getMethod().getSourceDeclaration() = nonReturningMethod() or
     result = likelyNonReturningMethod().getAnAccess()
   }

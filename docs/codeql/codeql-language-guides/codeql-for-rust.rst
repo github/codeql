@@ -9,8 +9,12 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 .. toctree::
    :hidden:
 
+   basic-query-for-rust-code
    codeql-library-for-rust
    analyzing-data-flow-in-rust
 
+-  :doc:`Basic query for Rust code <basic-query-for-rust-code>`: Learn to write and run a simple CodeQL query.
+
 -  :doc:`CodeQL library for Rust <codeql-library-for-rust>`: When analyzing Rust code, you can make use of the large collection of classes in the CodeQL library for Rust.
+
 -  :doc:`Analyzing data flow in Rust <analyzing-data-flow-in-rust>`: You can use CodeQL to track the flow of data through a Rust program to places where the data is used.

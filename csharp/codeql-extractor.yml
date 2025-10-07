@@ -10,6 +10,8 @@ build_modes:
   - autobuild
   - manual
   - none
+default_queries:
+  - codeql/csharp-queries
 github_api_languages:
   - C#
 scc_languages:

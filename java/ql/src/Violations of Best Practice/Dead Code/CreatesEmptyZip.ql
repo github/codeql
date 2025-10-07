@@ -6,8 +6,9 @@
  * @problem.severity warning
  * @precision medium
  * @id java/empty-zip-file-entry
- * @tags reliability
- *       readability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import java

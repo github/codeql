@@ -50,7 +50,7 @@ New Queries
 Golang
 """"""
 
-*   Query (:code:`go/html-template-escaping-bypass-xss`) has been promoted to the main query suite. This query finds potential cross-site scripting (XSS) vulnerabilities when using the :code:`html/template` package, caused by user input being cast to a type which bypasses the HTML autoescaping. It was originally contributed to the experimental query pack by @gagliardetto in `https://github.com/github/codeql-go/pull/493 <https://github.com/github/codeql-go/pull/493>`_.
+*   Query (:code:`go/html-template-escaping-bypass-xss`) has been promoted to the main query suite. This query finds potential cross-site scripting (XSS) vulnerabilities when using the :code:`html/template` package, caused by user input being cast to a type which bypasses the HTML autoescaping. It was originally contributed to the experimental query pack by @gagliardetto in https://github.com/github/codeql-go/pull/493.
 
 Language Libraries
 ------------------

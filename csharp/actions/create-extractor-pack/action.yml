@@ -7,7 +7,7 @@ runs:
     - name: Setup dotnet
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 9.0.100
+        dotnet-version: 9.0.300
     - name: Build Extractor
       shell: bash
       run: scripts/create-extractor-pack.sh
@@ -17,7 +17,7 @@ runs:
       run: |
         CODEQL_PATH=$(gh codeql version --format=json | jq -r .unpackedLocation)
         # The legacy ASP extractor is not in this repo, so take the one from the nightly build
-        mv "$CODEQL_PATH/csharp/tools/extractor-asp.jar" "${{ github.workspace }}/csharp/extractor-pack/tools"
+        mv "$CODEQL_PATH/csharp/tools/extractor-asp.jar" "$GITHUB_WORKSPACE/csharp/extractor-pack/tools"
         # Safe guard against using the bundled extractor
         rm -rf "$CODEQL_PATH/csharp"
       env:

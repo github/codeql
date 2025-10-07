@@ -21,6 +21,12 @@
 | child_process-test.js:75:29:75:31 | cmd | child_process-test.js:73:25:73:31 | req.url | child_process-test.js:75:29:75:31 | cmd | This command line depends on a $@. | child_process-test.js:73:25:73:31 | req.url | user-provided value |
 | child_process-test.js:83:19:83:36 | req.query.fileName | child_process-test.js:83:19:83:36 | req.query.fileName | child_process-test.js:83:19:83:36 | req.query.fileName | This command line depends on a $@. | child_process-test.js:83:19:83:36 | req.query.fileName | user-provided value |
 | child_process-test.js:94:11:94:35 | "ping " ... ms.host | child_process-test.js:94:21:94:30 | ctx.params | child_process-test.js:94:11:94:35 | "ping " ... ms.host | This command line depends on a $@. | child_process-test.js:94:21:94:30 | ctx.params | user-provided value |
+| command-line-libs.js:14:8:14:18 | options.cmd | command-line-libs.js:9:16:9:23 | req.body | command-line-libs.js:14:8:14:18 | options.cmd | This command line depends on a $@. | command-line-libs.js:9:16:9:23 | req.body | user-provided value |
+| command-line-libs.js:15:8:15:18 | program.cmd | command-line-libs.js:9:16:9:23 | req.body | command-line-libs.js:15:8:15:18 | program.cmd | This command line depends on a $@. | command-line-libs.js:9:16:9:23 | req.body | user-provided value |
+| command-line-libs.js:21:12:21:17 | script | command-line-libs.js:9:16:9:23 | req.body | command-line-libs.js:21:12:21:17 | script | This command line depends on a $@. | command-line-libs.js:9:16:9:23 | req.body | user-provided value |
+| command-line-libs.js:29:10:29:24 | parsed['--cmd'] | command-line-libs.js:27:23:27:30 | req.body | command-line-libs.js:29:10:29:24 | parsed['--cmd'] | This command line depends on a $@. | command-line-libs.js:27:23:27:30 | req.body | user-provided value |
+| command-line-libs.js:37:8:37:18 | options.cmd | command-line-libs.js:35:62:35:69 | req.body | command-line-libs.js:37:8:37:18 | options.cmd | This command line depends on a $@. | command-line-libs.js:35:62:35:69 | req.body | user-provided value |
+| command-line-libs.js:49:8:49:17 | parsed.cmd | command-line-libs.js:42:16:42:23 | req.body | command-line-libs.js:49:8:49:17 | parsed.cmd | This command line depends on a $@. | command-line-libs.js:42:16:42:23 | req.body | user-provided value |
 | exec-sh2.js:10:12:10:57 | cp.spaw ... ptions) | exec-sh2.js:14:25:14:31 | req.url | exec-sh2.js:10:40:10:46 | command | This command line depends on a $@. | exec-sh2.js:14:25:14:31 | req.url | user-provided value |
 | exec-sh.js:15:12:15:61 | cp.spaw ... ptions) | exec-sh.js:19:25:19:31 | req.url | exec-sh.js:15:44:15:50 | command | This command line depends on a $@. | exec-sh.js:19:25:19:31 | req.url | user-provided value |
 | execSeries.js:14:41:14:47 | command | execSeries.js:18:34:18:40 | req.url | execSeries.js:14:41:14:47 | command | This command line depends on a $@. | execSeries.js:18:34:18:40 | req.url | user-provided value |
@@ -76,34 +82,61 @@
 | other.js:28:27:28:29 | cmd | other.js:5:25:5:31 | req.url | other.js:28:27:28:29 | cmd | This command line depends on a $@. | other.js:5:25:5:31 | req.url | user-provided value |
 | other.js:30:33:30:35 | cmd | other.js:5:25:5:31 | req.url | other.js:30:33:30:35 | cmd | This command line depends on a $@. | other.js:5:25:5:31 | req.url | user-provided value |
 | other.js:34:44:34:46 | cmd | other.js:5:25:5:31 | req.url | other.js:34:44:34:46 | cmd | This command line depends on a $@. | other.js:5:25:5:31 | req.url | user-provided value |
+| promisification.js:9:13:9:21 | code.code | promisification.js:15:18:15:25 | req.body | promisification.js:9:13:9:21 | code.code | This command line depends on a $@. | promisification.js:15:18:15:25 | req.body | user-provided value |
+| promisification.js:24:22:24:25 | code | promisification.js:21:18:21:25 | req.body | promisification.js:24:22:24:25 | code | This command line depends on a $@. | promisification.js:21:18:21:25 | req.body | user-provided value |
+| promisification.js:31:24:31:27 | code | promisification.js:30:18:30:25 | req.body | promisification.js:31:24:31:27 | code | This command line depends on a $@. | promisification.js:30:18:30:25 | req.body | user-provided value |
+| promisification.js:40:21:40:24 | code | promisification.js:37:18:37:25 | req.body | promisification.js:40:21:40:24 | code | This command line depends on a $@. | promisification.js:37:18:37:25 | req.body | user-provided value |
+| promisification.js:43:24:43:27 | code | promisification.js:37:18:37:25 | req.body | promisification.js:43:24:43:27 | code | This command line depends on a $@. | promisification.js:37:18:37:25 | req.body | user-provided value |
+| promisification.js:52:21:52:24 | code | promisification.js:49:18:49:25 | req.body | promisification.js:52:21:52:24 | code | This command line depends on a $@. | promisification.js:49:18:49:25 | req.body | user-provided value |
+| promisification.js:55:15:55:18 | code | promisification.js:49:18:49:25 | req.body | promisification.js:55:15:55:18 | code | This command line depends on a $@. | promisification.js:49:18:49:25 | req.body | user-provided value |
+| promisification.js:65:21:65:23 | cmd | promisification.js:61:15:61:22 | req.body | promisification.js:65:21:65:23 | cmd | This command line depends on a $@. | promisification.js:61:15:61:22 | req.body | user-provided value |
+| promisification.js:69:20:69:22 | cmd | promisification.js:61:15:61:22 | req.body | promisification.js:69:20:69:22 | cmd | This command line depends on a $@. | promisification.js:61:15:61:22 | req.body | user-provided value |
+| promisification.js:74:26:74:28 | cmd | promisification.js:61:15:61:22 | req.body | promisification.js:74:26:74:28 | cmd | This command line depends on a $@. | promisification.js:61:15:61:22 | req.body | user-provided value |
+| promisification.js:77:24:77:26 | cmd | promisification.js:61:15:61:22 | req.body | promisification.js:77:24:77:26 | cmd | This command line depends on a $@. | promisification.js:61:15:61:22 | req.body | user-provided value |
+| promisification.js:78:28:78:30 | cmd | promisification.js:61:15:61:22 | req.body | promisification.js:78:28:78:30 | cmd | This command line depends on a $@. | promisification.js:61:15:61:22 | req.body | user-provided value |
+| promisification.js:79:25:79:27 | cmd | promisification.js:61:15:61:22 | req.body | promisification.js:79:25:79:27 | cmd | This command line depends on a $@. | promisification.js:61:15:61:22 | req.body | user-provided value |
+| promisification.js:83:36:83:39 | code | promisification.js:61:15:61:22 | req.body | promisification.js:83:36:83:39 | code | This command line depends on a $@. | promisification.js:61:15:61:22 | req.body | user-provided value |
+| promisification.js:100:23:100:26 | code | promisification.js:99:18:99:25 | req.body | promisification.js:100:23:100:26 | code | This command line depends on a $@. | promisification.js:99:18:99:25 | req.body | user-provided value |
+| promisification.js:101:27:101:30 | code | promisification.js:99:18:99:25 | req.body | promisification.js:101:27:101:30 | code | This command line depends on a $@. | promisification.js:99:18:99:25 | req.body | user-provided value |
+| promisification.js:102:27:102:30 | code | promisification.js:99:18:99:25 | req.body | promisification.js:102:27:102:30 | code | This command line depends on a $@. | promisification.js:99:18:99:25 | req.body | user-provided value |
+| promisification.js:106:24:106:27 | code | promisification.js:99:18:99:25 | req.body | promisification.js:106:24:106:27 | code | This command line depends on a $@. | promisification.js:99:18:99:25 | req.body | user-provided value |
+| promisification.js:109:24:109:27 | code | promisification.js:99:18:99:25 | req.body | promisification.js:109:24:109:27 | code | This command line depends on a $@. | promisification.js:99:18:99:25 | req.body | user-provided value |
+| promisification.js:124:17:124:19 | cmd | promisification.js:114:18:114:25 | req.body | promisification.js:124:17:124:19 | cmd | This command line depends on a $@. | promisification.js:114:18:114:25 | req.body | user-provided value |
+| promisification.js:133:21:133:24 | code | promisification.js:130:18:130:25 | req.body | promisification.js:133:21:133:24 | code | This command line depends on a $@. | promisification.js:130:18:130:25 | req.body | user-provided value |
+| promisification.js:136:15:136:18 | code | promisification.js:130:18:130:25 | req.body | promisification.js:136:15:136:18 | code | This command line depends on a $@. | promisification.js:130:18:130:25 | req.body | user-provided value |
+| promisification.js:144:21:144:24 | code | promisification.js:141:18:141:25 | req.body | promisification.js:144:21:144:24 | code | This command line depends on a $@. | promisification.js:141:18:141:25 | req.body | user-provided value |
+| promisification.js:147:15:147:18 | code | promisification.js:141:18:141:25 | req.body | promisification.js:147:15:147:18 | code | This command line depends on a $@. | promisification.js:141:18:141:25 | req.body | user-provided value |
+| promisification.js:150:24:150:27 | code | promisification.js:141:18:141:25 | req.body | promisification.js:150:24:150:27 | code | This command line depends on a $@. | promisification.js:141:18:141:25 | req.body | user-provided value |
+| promisification.js:151:28:151:31 | code | promisification.js:141:18:141:25 | req.body | promisification.js:151:28:151:31 | code | This command line depends on a $@. | promisification.js:141:18:141:25 | req.body | user-provided value |
+| promisification.js:152:25:152:28 | code | promisification.js:141:18:141:25 | req.body | promisification.js:152:25:152:28 | code | This command line depends on a $@. | promisification.js:141:18:141:25 | req.body | user-provided value |
 | third-party-command-injection.js:6:21:6:27 | command | third-party-command-injection.js:5:20:5:26 | command | third-party-command-injection.js:6:21:6:27 | command | This command line depends on a $@. | third-party-command-injection.js:5:20:5:26 | command | user-provided value |
 edges
-| actions.js:8:9:8:57 | title | actions.js:9:16:9:20 | title | provenance |  |
-| actions.js:8:17:8:57 | github. ... t.title | actions.js:8:9:8:57 | title | provenance |  |
+| actions.js:8:9:8:13 | title | actions.js:9:16:9:20 | title | provenance |  |
+| actions.js:8:17:8:57 | github. ... t.title | actions.js:8:9:8:13 | title | provenance |  |
 | actions.js:9:16:9:20 | title | actions.js:9:8:9:22 | `echo ${title}` | provenance |  |
-| actions.js:18:9:18:63 | head_ref | actions.js:19:22:19:29 | head_ref | provenance |  |
-| actions.js:18:20:18:63 | github. ... ead.ref | actions.js:18:9:18:63 | head_ref | provenance |  |
+| actions.js:18:9:18:16 | head_ref | actions.js:19:22:19:29 | head_ref | provenance |  |
+| actions.js:18:20:18:63 | github. ... ead.ref | actions.js:18:9:18:16 | head_ref | provenance |  |
 | actions.js:19:22:19:29 | head_ref | actions.js:19:14:19:31 | `echo ${head_ref}` | provenance |  |
-| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:17:13:17:15 | cmd | provenance |  |
-| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:18:17:18:19 | cmd | provenance |  |
-| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:19:17:19:19 | cmd | provenance |  |
-| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:20:21:20:23 | cmd | provenance |  |
-| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:21:14:21:16 | cmd | provenance |  |
-| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:22:18:22:20 | cmd | provenance |  |
-| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:23:13:23:15 | cmd | provenance |  |
-| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:25:21:25:23 | cmd | provenance |  |
-| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:39:26:39:28 | cmd | provenance |  |
-| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:43:15:43:17 | cmd | provenance |  |
-| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:48:15:48:17 | cmd | provenance |  |
-| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:48:15:48:17 | cmd | provenance |  |
-| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:53:15:53:17 | cmd | provenance |  |
-| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:56:54:56:56 | cmd | provenance |  |
-| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:56:54:56:56 | cmd | provenance |  |
-| child_process-test.js:6:9:6:49 | cmd | child_process-test.js:57:46:57:48 | cmd | provenance |  |
-| child_process-test.js:6:15:6:38 | url.par ... , true) | child_process-test.js:6:9:6:49 | cmd | provenance |  |
+| child_process-test.js:6:9:6:11 | cmd | child_process-test.js:17:13:17:15 | cmd | provenance |  |
+| child_process-test.js:6:9:6:11 | cmd | child_process-test.js:18:17:18:19 | cmd | provenance |  |
+| child_process-test.js:6:9:6:11 | cmd | child_process-test.js:19:17:19:19 | cmd | provenance |  |
+| child_process-test.js:6:9:6:11 | cmd | child_process-test.js:20:21:20:23 | cmd | provenance |  |
+| child_process-test.js:6:9:6:11 | cmd | child_process-test.js:21:14:21:16 | cmd | provenance |  |
+| child_process-test.js:6:9:6:11 | cmd | child_process-test.js:22:18:22:20 | cmd | provenance |  |
+| child_process-test.js:6:9:6:11 | cmd | child_process-test.js:23:13:23:15 | cmd | provenance |  |
+| child_process-test.js:6:9:6:11 | cmd | child_process-test.js:25:21:25:23 | cmd | provenance |  |
+| child_process-test.js:6:9:6:11 | cmd | child_process-test.js:39:26:39:28 | cmd | provenance |  |
+| child_process-test.js:6:9:6:11 | cmd | child_process-test.js:43:15:43:17 | cmd | provenance |  |
+| child_process-test.js:6:9:6:11 | cmd | child_process-test.js:48:15:48:17 | cmd | provenance |  |
+| child_process-test.js:6:9:6:11 | cmd | child_process-test.js:48:15:48:17 | cmd | provenance |  |
+| child_process-test.js:6:9:6:11 | cmd | child_process-test.js:53:15:53:17 | cmd | provenance |  |
+| child_process-test.js:6:9:6:11 | cmd | child_process-test.js:56:54:56:56 | cmd | provenance |  |
+| child_process-test.js:6:9:6:11 | cmd | child_process-test.js:56:54:56:56 | cmd | provenance |  |
+| child_process-test.js:6:9:6:11 | cmd | child_process-test.js:57:46:57:48 | cmd | provenance |  |
+| child_process-test.js:6:15:6:38 | url.par ... , true) | child_process-test.js:6:9:6:11 | cmd | provenance |  |
 | child_process-test.js:6:15:6:38 | url.par ... , true) | child_process-test.js:6:15:6:49 | url.par ... ry.path | provenance |  |
 | child_process-test.js:6:15:6:38 | url.par ... , true) | child_process-test.js:6:15:6:49 | url.par ... ry.path | provenance |  |
-| child_process-test.js:6:15:6:49 | url.par ... ry.path | child_process-test.js:6:9:6:49 | cmd | provenance |  |
+| child_process-test.js:6:15:6:49 | url.par ... ry.path | child_process-test.js:6:9:6:11 | cmd | provenance |  |
 | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:6:15:6:38 | url.par ... , true) | provenance |  |
 | child_process-test.js:25:21:25:23 | cmd | child_process-test.js:25:13:25:31 | "foo" + cmd + "bar" | provenance |  |
 | child_process-test.js:48:5:48:8 | [post update] args [1] | child_process-test.js:49:15:49:18 | args [1] | provenance |  |
@@ -112,18 +145,47 @@ edges
 | child_process-test.js:56:46:56:57 | ["bar", cmd] [1] | child_process-test.js:56:25:56:58 | ['/C',  ... , cmd]) | provenance |  |
 | child_process-test.js:56:54:56:56 | cmd | child_process-test.js:56:46:56:57 | ["bar", cmd] [1] | provenance |  |
 | child_process-test.js:57:46:57:48 | cmd | child_process-test.js:57:25:57:49 | ['/C',  ... at(cmd) | provenance |  |
-| child_process-test.js:73:9:73:49 | cmd | child_process-test.js:75:29:75:31 | cmd | provenance |  |
-| child_process-test.js:73:15:73:38 | url.par ... , true) | child_process-test.js:73:9:73:49 | cmd | provenance |  |
+| child_process-test.js:73:9:73:11 | cmd | child_process-test.js:75:29:75:31 | cmd | provenance |  |
+| child_process-test.js:73:15:73:38 | url.par ... , true) | child_process-test.js:73:9:73:11 | cmd | provenance |  |
 | child_process-test.js:73:25:73:31 | req.url | child_process-test.js:73:15:73:38 | url.par ... , true) | provenance |  |
 | child_process-test.js:94:21:94:30 | ctx.params | child_process-test.js:94:11:94:35 | "ping " ... ms.host | provenance |  |
+| command-line-libs.js:9:9:9:12 | args | command-line-libs.js:12:17:12:20 | args | provenance |  |
+| command-line-libs.js:9:9:9:12 | args | command-line-libs.js:23:29:23:32 | args | provenance |  |
+| command-line-libs.js:9:16:9:23 | req.body | command-line-libs.js:9:9:9:12 | args | provenance |  |
+| command-line-libs.js:12:17:12:20 | args | command-line-libs.js:13:19:13:32 | program.opts() | provenance |  |
+| command-line-libs.js:12:17:12:20 | args | command-line-libs.js:15:8:15:18 | program.cmd | provenance |  |
+| command-line-libs.js:12:17:12:20 | args | command-line-libs.js:20:14:20:19 | script | provenance |  |
+| command-line-libs.js:13:9:13:15 | options | command-line-libs.js:14:8:14:14 | options | provenance |  |
+| command-line-libs.js:13:19:13:32 | program.opts() | command-line-libs.js:13:9:13:15 | options | provenance |  |
+| command-line-libs.js:14:8:14:14 | options | command-line-libs.js:14:8:14:18 | options.cmd | provenance |  |
+| command-line-libs.js:20:14:20:19 | script | command-line-libs.js:21:12:21:17 | script | provenance |  |
+| command-line-libs.js:23:29:23:32 | args | command-line-libs.js:20:14:20:19 | script | provenance |  |
+| command-line-libs.js:27:11:27:19 | argsArray | command-line-libs.js:28:53:28:61 | argsArray | provenance |  |
+| command-line-libs.js:27:23:27:30 | req.body | command-line-libs.js:27:11:27:19 | argsArray | provenance |  |
+| command-line-libs.js:28:11:28:16 | parsed | command-line-libs.js:29:10:29:15 | parsed | provenance |  |
+| command-line-libs.js:28:20:28:64 | arg({ ' ... rray }) | command-line-libs.js:28:11:28:16 | parsed | provenance |  |
+| command-line-libs.js:28:53:28:61 | argsArray | command-line-libs.js:28:20:28:64 | arg({ ' ... rray }) | provenance |  |
+| command-line-libs.js:29:10:29:15 | parsed | command-line-libs.js:29:10:29:24 | parsed['--cmd'] | provenance |  |
+| command-line-libs.js:35:9:35:15 | options | command-line-libs.js:37:8:37:14 | options | provenance |  |
+| command-line-libs.js:35:19:35:83 | command ... \| [] }) | command-line-libs.js:35:9:35:15 | options | provenance |  |
+| command-line-libs.js:35:62:35:69 | req.body | command-line-libs.js:35:19:35:83 | command ... \| [] }) | provenance |  |
+| command-line-libs.js:37:8:37:14 | options | command-line-libs.js:37:8:37:18 | options.cmd | provenance |  |
+| command-line-libs.js:42:9:42:12 | args | command-line-libs.js:43:24:43:27 | args | provenance |  |
+| command-line-libs.js:42:16:42:23 | req.body | command-line-libs.js:42:9:42:12 | args | provenance |  |
+| command-line-libs.js:43:9:43:14 | parsed | command-line-libs.js:49:8:49:13 | parsed | provenance |  |
+| command-line-libs.js:43:18:43:28 | yargs(args) | command-line-libs.js:43:18:47:4 | yargs(a ... ue\\n  }) | provenance |  |
+| command-line-libs.js:43:18:47:4 | yargs(a ... ue\\n  }) | command-line-libs.js:43:18:47:12 | yargs(a ... parse() | provenance |  |
+| command-line-libs.js:43:18:47:12 | yargs(a ... parse() | command-line-libs.js:43:9:43:14 | parsed | provenance |  |
+| command-line-libs.js:43:24:43:27 | args | command-line-libs.js:43:18:43:28 | yargs(args) | provenance |  |
+| command-line-libs.js:49:8:49:13 | parsed | command-line-libs.js:49:8:49:17 | parsed.cmd | provenance |  |
 | exec-sh2.js:9:17:9:23 | command | exec-sh2.js:10:40:10:46 | command | provenance |  |
-| exec-sh2.js:14:9:14:49 | cmd | exec-sh2.js:15:12:15:14 | cmd | provenance |  |
-| exec-sh2.js:14:15:14:38 | url.par ... , true) | exec-sh2.js:14:9:14:49 | cmd | provenance |  |
+| exec-sh2.js:14:9:14:11 | cmd | exec-sh2.js:15:12:15:14 | cmd | provenance |  |
+| exec-sh2.js:14:15:14:38 | url.par ... , true) | exec-sh2.js:14:9:14:11 | cmd | provenance |  |
 | exec-sh2.js:14:25:14:31 | req.url | exec-sh2.js:14:15:14:38 | url.par ... , true) | provenance |  |
 | exec-sh2.js:15:12:15:14 | cmd | exec-sh2.js:9:17:9:23 | command | provenance |  |
 | exec-sh.js:13:17:13:23 | command | exec-sh.js:15:44:15:50 | command | provenance |  |
-| exec-sh.js:19:9:19:49 | cmd | exec-sh.js:20:12:20:14 | cmd | provenance |  |
-| exec-sh.js:19:15:19:38 | url.par ... , true) | exec-sh.js:19:9:19:49 | cmd | provenance |  |
+| exec-sh.js:19:9:19:11 | cmd | exec-sh.js:20:12:20:14 | cmd | provenance |  |
+| exec-sh.js:19:15:19:38 | url.par ... , true) | exec-sh.js:19:9:19:11 | cmd | provenance |  |
 | exec-sh.js:19:25:19:31 | req.url | exec-sh.js:19:15:19:38 | url.par ... , true) | provenance |  |
 | exec-sh.js:20:12:20:14 | cmd | exec-sh.js:13:17:13:23 | command | provenance |  |
 | execSeries.js:3:20:3:22 | arr [0] | execSeries.js:5:3:10:4 | (functi ... );\\n  }) [arr, 0] | provenance |  |
@@ -134,45 +196,45 @@ edges
 | execSeries.js:13:19:13:26 | commands [0] | execSeries.js:14:13:14:20 | commands [0] | provenance |  |
 | execSeries.js:14:13:14:20 | commands [0] | execSeries.js:3:20:3:22 | arr [0] | provenance |  |
 | execSeries.js:14:24:14:30 | command | execSeries.js:14:41:14:47 | command | provenance |  |
-| execSeries.js:18:7:18:58 | cmd | execSeries.js:19:13:19:15 | cmd | provenance |  |
-| execSeries.js:18:13:18:47 | require ... , true) | execSeries.js:18:7:18:58 | cmd | provenance |  |
+| execSeries.js:18:7:18:9 | cmd | execSeries.js:19:13:19:15 | cmd | provenance |  |
+| execSeries.js:18:13:18:47 | require ... , true) | execSeries.js:18:7:18:9 | cmd | provenance |  |
 | execSeries.js:18:34:18:40 | req.url | execSeries.js:18:13:18:47 | require ... , true) | provenance |  |
 | execSeries.js:19:12:19:16 | [cmd] [0] | execSeries.js:13:19:13:26 | commands [0] | provenance |  |
 | execSeries.js:19:13:19:15 | cmd | execSeries.js:19:12:19:16 | [cmd] [0] | provenance |  |
-| execa.js:6:9:6:54 | cmd | execa.js:11:15:11:17 | cmd | provenance |  |
-| execa.js:6:9:6:54 | cmd | execa.js:13:32:13:34 | cmd | provenance |  |
-| execa.js:6:9:6:54 | cmd | execa.js:14:31:14:33 | cmd | provenance |  |
-| execa.js:6:9:6:54 | cmd | execa.js:17:14:17:16 | cmd | provenance |  |
-| execa.js:6:9:6:54 | cmd | execa.js:19:32:19:34 | cmd | provenance |  |
-| execa.js:6:9:6:54 | cmd | execa.js:20:33:20:35 | cmd | provenance |  |
-| execa.js:6:9:6:54 | cmd | execa.js:23:17:23:19 | cmd | provenance |  |
-| execa.js:6:9:6:54 | cmd | execa.js:24:17:24:19 | cmd | provenance |  |
-| execa.js:6:9:6:54 | cmd | execa.js:25:17:25:19 | cmd | provenance |  |
-| execa.js:6:9:6:54 | cmd | execa.js:27:15:27:17 | cmd | provenance |  |
-| execa.js:6:9:6:54 | cmd | execa.js:28:15:28:17 | cmd | provenance |  |
-| execa.js:6:9:6:54 | cmd | execa.js:30:24:30:26 | cmd | provenance |  |
-| execa.js:6:9:6:54 | cmd | execa.js:31:24:31:26 | cmd | provenance |  |
-| execa.js:6:9:6:54 | cmd | execa.js:33:22:33:24 | cmd | provenance |  |
-| execa.js:6:9:6:54 | cmd | execa.js:34:22:34:24 | cmd | provenance |  |
-| execa.js:6:15:6:38 | url.par ... , true) | execa.js:6:9:6:54 | cmd | provenance |  |
+| execa.js:6:9:6:11 | cmd | execa.js:11:15:11:17 | cmd | provenance |  |
+| execa.js:6:9:6:11 | cmd | execa.js:13:32:13:34 | cmd | provenance |  |
+| execa.js:6:9:6:11 | cmd | execa.js:14:31:14:33 | cmd | provenance |  |
+| execa.js:6:9:6:11 | cmd | execa.js:17:14:17:16 | cmd | provenance |  |
+| execa.js:6:9:6:11 | cmd | execa.js:19:32:19:34 | cmd | provenance |  |
+| execa.js:6:9:6:11 | cmd | execa.js:20:33:20:35 | cmd | provenance |  |
+| execa.js:6:9:6:11 | cmd | execa.js:23:17:23:19 | cmd | provenance |  |
+| execa.js:6:9:6:11 | cmd | execa.js:24:17:24:19 | cmd | provenance |  |
+| execa.js:6:9:6:11 | cmd | execa.js:25:17:25:19 | cmd | provenance |  |
+| execa.js:6:9:6:11 | cmd | execa.js:27:15:27:17 | cmd | provenance |  |
+| execa.js:6:9:6:11 | cmd | execa.js:28:15:28:17 | cmd | provenance |  |
+| execa.js:6:9:6:11 | cmd | execa.js:30:24:30:26 | cmd | provenance |  |
+| execa.js:6:9:6:11 | cmd | execa.js:31:24:31:26 | cmd | provenance |  |
+| execa.js:6:9:6:11 | cmd | execa.js:33:22:33:24 | cmd | provenance |  |
+| execa.js:6:9:6:11 | cmd | execa.js:34:22:34:24 | cmd | provenance |  |
+| execa.js:6:15:6:38 | url.par ... , true) | execa.js:6:9:6:11 | cmd | provenance |  |
 | execa.js:6:25:6:31 | req.url | execa.js:6:15:6:38 | url.par ... , true) | provenance |  |
-| execa.js:7:9:7:53 | arg1 | execa.js:30:30:30:33 | arg1 | provenance |  |
-| execa.js:7:9:7:53 | arg1 | execa.js:31:30:31:33 | arg1 | provenance |  |
-| execa.js:7:9:7:53 | arg1 | execa.js:33:28:33:31 | arg1 | provenance |  |
-| execa.js:7:9:7:53 | arg1 | execa.js:34:28:34:31 | arg1 | provenance |  |
-| execa.js:7:16:7:39 | url.par ... , true) | execa.js:7:9:7:53 | arg1 | provenance |  |
+| execa.js:7:9:7:12 | arg1 | execa.js:30:30:30:33 | arg1 | provenance |  |
+| execa.js:7:9:7:12 | arg1 | execa.js:31:30:31:33 | arg1 | provenance |  |
+| execa.js:7:9:7:12 | arg1 | execa.js:33:28:33:31 | arg1 | provenance |  |
+| execa.js:7:9:7:12 | arg1 | execa.js:34:28:34:31 | arg1 | provenance |  |
+| execa.js:7:16:7:39 | url.par ... , true) | execa.js:7:9:7:12 | arg1 | provenance |  |
 | execa.js:7:26:7:32 | req.url | execa.js:7:16:7:39 | url.par ... , true) | provenance |  |
-| execa.js:8:9:8:53 | arg2 | execa.js:30:37:30:40 | arg2 | provenance |  |
-| execa.js:8:9:8:53 | arg2 | execa.js:31:37:31:40 | arg2 | provenance |  |
-| execa.js:8:9:8:53 | arg2 | execa.js:33:35:33:38 | arg2 | provenance |  |
-| execa.js:8:9:8:53 | arg2 | execa.js:34:35:34:38 | arg2 | provenance |  |
-| execa.js:8:16:8:39 | url.par ... , true) | execa.js:8:9:8:53 | arg2 | provenance |  |
+| execa.js:8:9:8:12 | arg2 | execa.js:30:37:30:40 | arg2 | provenance |  |
+| execa.js:8:9:8:12 | arg2 | execa.js:31:37:31:40 | arg2 | provenance |  |
+| execa.js:8:9:8:12 | arg2 | execa.js:33:35:33:38 | arg2 | provenance |  |
+| execa.js:8:9:8:12 | arg2 | execa.js:34:35:34:38 | arg2 | provenance |  |
+| execa.js:8:16:8:39 | url.par ... , true) | execa.js:8:9:8:12 | arg2 | provenance |  |
 | execa.js:8:26:8:32 | req.url | execa.js:8:16:8:39 | url.par ... , true) | provenance |  |
-| execa.js:9:9:9:53 | arg3 | execa.js:30:44:30:47 | arg3 | provenance |  |
-| execa.js:9:9:9:53 | arg3 | execa.js:31:44:31:47 | arg3 | provenance |  |
-| execa.js:9:9:9:53 | arg3 | execa.js:33:42:33:45 | arg3 | provenance |  |
-| execa.js:9:9:9:53 | arg3 | execa.js:34:42:34:45 | arg3 | provenance |  |
-| execa.js:9:16:9:39 | url.par ... , true) | execa.js:9:9:9:53 | arg3 | provenance |  |
+| execa.js:9:9:9:12 | arg3 | execa.js:30:44:30:47 | arg3 | provenance |  |
+| execa.js:9:9:9:12 | arg3 | execa.js:31:44:31:47 | arg3 | provenance |  |
+| execa.js:9:9:9:12 | arg3 | execa.js:33:42:33:45 | arg3 | provenance |  |
+| execa.js:9:9:9:12 | arg3 | execa.js:34:42:34:45 | arg3 | provenance |  |
+| execa.js:9:16:9:39 | url.par ... , true) | execa.js:9:9:9:12 | arg3 | provenance |  |
 | execa.js:9:26:9:32 | req.url | execa.js:9:16:9:39 | url.par ... , true) | provenance |  |
 | execa.js:30:24:30:26 | cmd | execa.js:30:24:30:47 | cmd + a ...  + arg3 | provenance |  |
 | execa.js:30:30:30:33 | arg1 | execa.js:30:24:30:47 | cmd + a ...  + arg3 | provenance |  |
@@ -204,37 +266,90 @@ edges
 | form-parsers.js:53:21:53:26 | fields | form-parsers.js:53:10:53:31 | "touch  ... ds.name | provenance |  |
 | form-parsers.js:58:30:58:33 | part | form-parsers.js:59:21:59:24 | part | provenance |  |
 | form-parsers.js:59:21:59:24 | part | form-parsers.js:59:10:59:33 | "touch  ... ilename | provenance |  |
-| other.js:5:9:5:49 | cmd | other.js:7:33:7:35 | cmd | provenance |  |
-| other.js:5:9:5:49 | cmd | other.js:8:28:8:30 | cmd | provenance |  |
-| other.js:5:9:5:49 | cmd | other.js:9:32:9:34 | cmd | provenance |  |
-| other.js:5:9:5:49 | cmd | other.js:10:29:10:31 | cmd | provenance |  |
-| other.js:5:9:5:49 | cmd | other.js:11:29:11:31 | cmd | provenance |  |
-| other.js:5:9:5:49 | cmd | other.js:12:27:12:29 | cmd | provenance |  |
-| other.js:5:9:5:49 | cmd | other.js:14:28:14:30 | cmd | provenance |  |
-| other.js:5:9:5:49 | cmd | other.js:15:34:15:36 | cmd | provenance |  |
-| other.js:5:9:5:49 | cmd | other.js:16:21:16:23 | cmd | provenance |  |
-| other.js:5:9:5:49 | cmd | other.js:17:27:17:29 | cmd | provenance |  |
-| other.js:5:9:5:49 | cmd | other.js:18:22:18:24 | cmd | provenance |  |
-| other.js:5:9:5:49 | cmd | other.js:19:36:19:38 | cmd | provenance |  |
-| other.js:5:9:5:49 | cmd | other.js:22:21:22:23 | cmd | provenance |  |
-| other.js:5:9:5:49 | cmd | other.js:23:28:23:30 | cmd | provenance |  |
-| other.js:5:9:5:49 | cmd | other.js:26:34:26:36 | cmd | provenance |  |
-| other.js:5:9:5:49 | cmd | other.js:28:27:28:29 | cmd | provenance |  |
-| other.js:5:9:5:49 | cmd | other.js:30:33:30:35 | cmd | provenance |  |
-| other.js:5:9:5:49 | cmd | other.js:34:44:34:46 | cmd | provenance |  |
-| other.js:5:15:5:38 | url.par ... , true) | other.js:5:9:5:49 | cmd | provenance |  |
+| other.js:5:9:5:11 | cmd | other.js:7:33:7:35 | cmd | provenance |  |
+| other.js:5:9:5:11 | cmd | other.js:8:28:8:30 | cmd | provenance |  |
+| other.js:5:9:5:11 | cmd | other.js:9:32:9:34 | cmd | provenance |  |
+| other.js:5:9:5:11 | cmd | other.js:10:29:10:31 | cmd | provenance |  |
+| other.js:5:9:5:11 | cmd | other.js:11:29:11:31 | cmd | provenance |  |
+| other.js:5:9:5:11 | cmd | other.js:12:27:12:29 | cmd | provenance |  |
+| other.js:5:9:5:11 | cmd | other.js:14:28:14:30 | cmd | provenance |  |
+| other.js:5:9:5:11 | cmd | other.js:15:34:15:36 | cmd | provenance |  |
+| other.js:5:9:5:11 | cmd | other.js:16:21:16:23 | cmd | provenance |  |
+| other.js:5:9:5:11 | cmd | other.js:17:27:17:29 | cmd | provenance |  |
+| other.js:5:9:5:11 | cmd | other.js:18:22:18:24 | cmd | provenance |  |
+| other.js:5:9:5:11 | cmd | other.js:19:36:19:38 | cmd | provenance |  |
+| other.js:5:9:5:11 | cmd | other.js:22:21:22:23 | cmd | provenance |  |
+| other.js:5:9:5:11 | cmd | other.js:23:28:23:30 | cmd | provenance |  |
+| other.js:5:9:5:11 | cmd | other.js:26:34:26:36 | cmd | provenance |  |
+| other.js:5:9:5:11 | cmd | other.js:28:27:28:29 | cmd | provenance |  |
+| other.js:5:9:5:11 | cmd | other.js:30:33:30:35 | cmd | provenance |  |
+| other.js:5:9:5:11 | cmd | other.js:34:44:34:46 | cmd | provenance |  |
+| other.js:5:15:5:38 | url.par ... , true) | other.js:5:9:5:11 | cmd | provenance |  |
 | other.js:5:25:5:31 | req.url | other.js:5:15:5:38 | url.par ... , true) | provenance |  |
+| promisification.js:8:21:8:24 | code | promisification.js:9:13:9:16 | code | provenance |  |
+| promisification.js:9:13:9:16 | code | promisification.js:9:13:9:21 | code.code | provenance |  |
+| promisification.js:15:11:15:14 | code | promisification.js:16:15:16:18 | code | provenance |  |
+| promisification.js:15:18:15:25 | req.body | promisification.js:15:11:15:14 | code | provenance |  |
+| promisification.js:16:15:16:18 | code | promisification.js:8:21:8:24 | code | provenance |  |
+| promisification.js:21:11:21:14 | code | promisification.js:24:22:24:25 | code | provenance |  |
+| promisification.js:21:18:21:25 | req.body | promisification.js:21:11:21:14 | code | provenance |  |
+| promisification.js:30:11:30:14 | code | promisification.js:31:24:31:27 | code | provenance |  |
+| promisification.js:30:18:30:25 | req.body | promisification.js:30:11:30:14 | code | provenance |  |
+| promisification.js:37:11:37:14 | code | promisification.js:40:21:40:24 | code | provenance |  |
+| promisification.js:37:11:37:14 | code | promisification.js:43:24:43:27 | code | provenance |  |
+| promisification.js:37:18:37:25 | req.body | promisification.js:37:11:37:14 | code | provenance |  |
+| promisification.js:49:11:49:14 | code | promisification.js:52:21:52:24 | code | provenance |  |
+| promisification.js:49:11:49:14 | code | promisification.js:55:15:55:18 | code | provenance |  |
+| promisification.js:49:18:49:25 | req.body | promisification.js:49:11:49:14 | code | provenance |  |
+| promisification.js:61:9:61:11 | cmd | promisification.js:65:21:65:23 | cmd | provenance |  |
+| promisification.js:61:9:61:11 | cmd | promisification.js:69:20:69:22 | cmd | provenance |  |
+| promisification.js:61:9:61:11 | cmd | promisification.js:74:26:74:28 | cmd | provenance |  |
+| promisification.js:61:9:61:11 | cmd | promisification.js:77:24:77:26 | cmd | provenance |  |
+| promisification.js:61:9:61:11 | cmd | promisification.js:78:28:78:30 | cmd | provenance |  |
+| promisification.js:61:9:61:11 | cmd | promisification.js:79:25:79:27 | cmd | provenance |  |
+| promisification.js:61:9:61:11 | cmd | promisification.js:89:12:89:14 | cmd | provenance |  |
+| promisification.js:61:15:61:22 | req.body | promisification.js:61:9:61:11 | cmd | provenance |  |
+| promisification.js:81:34:81:37 | code | promisification.js:83:36:83:39 | code | provenance |  |
+| promisification.js:89:12:89:14 | cmd | promisification.js:81:34:81:37 | code | provenance |  |
+| promisification.js:99:11:99:14 | code | promisification.js:100:23:100:26 | code | provenance |  |
+| promisification.js:99:11:99:14 | code | promisification.js:101:27:101:30 | code | provenance |  |
+| promisification.js:99:11:99:14 | code | promisification.js:102:27:102:30 | code | provenance |  |
+| promisification.js:99:11:99:14 | code | promisification.js:106:24:106:27 | code | provenance |  |
+| promisification.js:99:11:99:14 | code | promisification.js:109:24:109:27 | code | provenance |  |
+| promisification.js:99:18:99:25 | req.body | promisification.js:99:11:99:14 | code | provenance |  |
+| promisification.js:114:11:114:14 | code | promisification.js:122:42:122:45 | code | provenance |  |
+| promisification.js:114:18:114:25 | req.body | promisification.js:114:11:114:14 | code | provenance |  |
+| promisification.js:116:32:116:34 | cmd | promisification.js:117:16:119:10 | new Pro ...      }) [PromiseValue] | provenance |  |
+| promisification.js:116:32:116:34 | cmd | promisification.js:118:21:118:23 | cmd | provenance |  |
+| promisification.js:118:13:118:19 | [post update] resolve [resolve-value] | promisification.js:117:29:117:35 | resolve [Return] [resolve-value] | provenance |  |
+| promisification.js:118:21:118:23 | cmd | promisification.js:118:13:118:19 | [post update] resolve [resolve-value] | provenance |  |
+| promisification.js:122:11:122:20 | cmdPromise [PromiseValue] | promisification.js:123:17:123:26 | cmdPromise [PromiseValue] | provenance |  |
+| promisification.js:122:24:122:46 | createE ... e(code) [PromiseValue] | promisification.js:122:11:122:20 | cmdPromise [PromiseValue] | provenance |  |
+| promisification.js:122:42:122:45 | code | promisification.js:116:32:116:34 | cmd | provenance |  |
+| promisification.js:122:42:122:45 | code | promisification.js:122:24:122:46 | createE ... e(code) [PromiseValue] | provenance |  |
+| promisification.js:123:5:123:27 | maybe(n ... romise) [PromiseValue] | promisification.js:123:34:123:36 | cmd | provenance |  |
+| promisification.js:123:17:123:26 | cmdPromise [PromiseValue] | promisification.js:123:5:123:27 | maybe(n ... romise) [PromiseValue] | provenance |  |
+| promisification.js:123:34:123:36 | cmd | promisification.js:124:17:124:19 | cmd | provenance |  |
+| promisification.js:130:11:130:14 | code | promisification.js:133:21:133:24 | code | provenance |  |
+| promisification.js:130:11:130:14 | code | promisification.js:136:15:136:18 | code | provenance |  |
+| promisification.js:130:18:130:25 | req.body | promisification.js:130:11:130:14 | code | provenance |  |
+| promisification.js:141:11:141:14 | code | promisification.js:144:21:144:24 | code | provenance |  |
+| promisification.js:141:11:141:14 | code | promisification.js:147:15:147:18 | code | provenance |  |
+| promisification.js:141:11:141:14 | code | promisification.js:150:24:150:27 | code | provenance |  |
+| promisification.js:141:11:141:14 | code | promisification.js:151:28:151:31 | code | provenance |  |
+| promisification.js:141:11:141:14 | code | promisification.js:152:25:152:28 | code | provenance |  |
+| promisification.js:141:18:141:25 | req.body | promisification.js:141:11:141:14 | code | provenance |  |
 | third-party-command-injection.js:5:20:5:26 | command | third-party-command-injection.js:6:21:6:27 | command | provenance |  |
 nodes
-| actions.js:8:9:8:57 | title | semmle.label | title |
+| actions.js:8:9:8:13 | title | semmle.label | title |
 | actions.js:8:17:8:57 | github. ... t.title | semmle.label | github. ... t.title |
 | actions.js:9:8:9:22 | `echo ${title}` | semmle.label | `echo ${title}` |
 | actions.js:9:16:9:20 | title | semmle.label | title |
-| actions.js:18:9:18:63 | head_ref | semmle.label | head_ref |
+| actions.js:18:9:18:16 | head_ref | semmle.label | head_ref |
 | actions.js:18:20:18:63 | github. ... ead.ref | semmle.label | github. ... ead.ref |
 | actions.js:19:14:19:31 | `echo ${head_ref}` | semmle.label | `echo ${head_ref}` |
 | actions.js:19:22:19:29 | head_ref | semmle.label | head_ref |
-| child_process-test.js:6:9:6:49 | cmd | semmle.label | cmd |
+| child_process-test.js:6:9:6:11 | cmd | semmle.label | cmd |
 | child_process-test.js:6:15:6:38 | url.par ... , true) | semmle.label | url.par ... , true) |
 | child_process-test.js:6:15:6:49 | url.par ... ry.path | semmle.label | url.par ... ry.path |
 | child_process-test.js:6:15:6:49 | url.par ... ry.path | semmle.label | url.par ... ry.path |
@@ -262,22 +377,54 @@ nodes
 | child_process-test.js:57:25:57:49 | ['/C',  ... at(cmd) | semmle.label | ['/C',  ... at(cmd) |
 | child_process-test.js:57:46:57:48 | cmd | semmle.label | cmd |
 | child_process-test.js:66:19:66:22 | args | semmle.label | args |
-| child_process-test.js:73:9:73:49 | cmd | semmle.label | cmd |
+| child_process-test.js:73:9:73:11 | cmd | semmle.label | cmd |
 | child_process-test.js:73:15:73:38 | url.par ... , true) | semmle.label | url.par ... , true) |
 | child_process-test.js:73:25:73:31 | req.url | semmle.label | req.url |
 | child_process-test.js:75:29:75:31 | cmd | semmle.label | cmd |
 | child_process-test.js:83:19:83:36 | req.query.fileName | semmle.label | req.query.fileName |
 | child_process-test.js:94:11:94:35 | "ping " ... ms.host | semmle.label | "ping " ... ms.host |
 | child_process-test.js:94:21:94:30 | ctx.params | semmle.label | ctx.params |
+| command-line-libs.js:9:9:9:12 | args | semmle.label | args |
+| command-line-libs.js:9:16:9:23 | req.body | semmle.label | req.body |
+| command-line-libs.js:12:17:12:20 | args | semmle.label | args |
+| command-line-libs.js:13:9:13:15 | options | semmle.label | options |
+| command-line-libs.js:13:19:13:32 | program.opts() | semmle.label | program.opts() |
+| command-line-libs.js:14:8:14:14 | options | semmle.label | options |
+| command-line-libs.js:14:8:14:18 | options.cmd | semmle.label | options.cmd |
+| command-line-libs.js:15:8:15:18 | program.cmd | semmle.label | program.cmd |
+| command-line-libs.js:20:14:20:19 | script | semmle.label | script |
+| command-line-libs.js:21:12:21:17 | script | semmle.label | script |
+| command-line-libs.js:23:29:23:32 | args | semmle.label | args |
+| command-line-libs.js:27:11:27:19 | argsArray | semmle.label | argsArray |
+| command-line-libs.js:27:23:27:30 | req.body | semmle.label | req.body |
+| command-line-libs.js:28:11:28:16 | parsed | semmle.label | parsed |
+| command-line-libs.js:28:20:28:64 | arg({ ' ... rray }) | semmle.label | arg({ ' ... rray }) |
+| command-line-libs.js:28:53:28:61 | argsArray | semmle.label | argsArray |
+| command-line-libs.js:29:10:29:15 | parsed | semmle.label | parsed |
+| command-line-libs.js:29:10:29:24 | parsed['--cmd'] | semmle.label | parsed['--cmd'] |
+| command-line-libs.js:35:9:35:15 | options | semmle.label | options |
+| command-line-libs.js:35:19:35:83 | command ... \| [] }) | semmle.label | command ... \| [] }) |
+| command-line-libs.js:35:62:35:69 | req.body | semmle.label | req.body |
+| command-line-libs.js:37:8:37:14 | options | semmle.label | options |
+| command-line-libs.js:37:8:37:18 | options.cmd | semmle.label | options.cmd |
+| command-line-libs.js:42:9:42:12 | args | semmle.label | args |
+| command-line-libs.js:42:16:42:23 | req.body | semmle.label | req.body |
+| command-line-libs.js:43:9:43:14 | parsed | semmle.label | parsed |
+| command-line-libs.js:43:18:43:28 | yargs(args) | semmle.label | yargs(args) |
+| command-line-libs.js:43:18:47:4 | yargs(a ... ue\\n  }) | semmle.label | yargs(a ... ue\\n  }) |
+| command-line-libs.js:43:18:47:12 | yargs(a ... parse() | semmle.label | yargs(a ... parse() |
+| command-line-libs.js:43:24:43:27 | args | semmle.label | args |
+| command-line-libs.js:49:8:49:13 | parsed | semmle.label | parsed |
+| command-line-libs.js:49:8:49:17 | parsed.cmd | semmle.label | parsed.cmd |
 | exec-sh2.js:9:17:9:23 | command | semmle.label | command |
 | exec-sh2.js:10:40:10:46 | command | semmle.label | command |
-| exec-sh2.js:14:9:14:49 | cmd | semmle.label | cmd |
+| exec-sh2.js:14:9:14:11 | cmd | semmle.label | cmd |
 | exec-sh2.js:14:15:14:38 | url.par ... , true) | semmle.label | url.par ... , true) |
 | exec-sh2.js:14:25:14:31 | req.url | semmle.label | req.url |
 | exec-sh2.js:15:12:15:14 | cmd | semmle.label | cmd |
 | exec-sh.js:13:17:13:23 | command | semmle.label | command |
 | exec-sh.js:15:44:15:50 | command | semmle.label | command |
-| exec-sh.js:19:9:19:49 | cmd | semmle.label | cmd |
+| exec-sh.js:19:9:19:11 | cmd | semmle.label | cmd |
 | exec-sh.js:19:15:19:38 | url.par ... , true) | semmle.label | url.par ... , true) |
 | exec-sh.js:19:25:19:31 | req.url | semmle.label | req.url |
 | exec-sh.js:20:12:20:14 | cmd | semmle.label | cmd |
@@ -289,21 +436,21 @@ nodes
 | execSeries.js:14:13:14:20 | commands [0] | semmle.label | commands [0] |
 | execSeries.js:14:24:14:30 | command | semmle.label | command |
 | execSeries.js:14:41:14:47 | command | semmle.label | command |
-| execSeries.js:18:7:18:58 | cmd | semmle.label | cmd |
+| execSeries.js:18:7:18:9 | cmd | semmle.label | cmd |
 | execSeries.js:18:13:18:47 | require ... , true) | semmle.label | require ... , true) |
 | execSeries.js:18:34:18:40 | req.url | semmle.label | req.url |
 | execSeries.js:19:12:19:16 | [cmd] [0] | semmle.label | [cmd] [0] |
 | execSeries.js:19:13:19:15 | cmd | semmle.label | cmd |
-| execa.js:6:9:6:54 | cmd | semmle.label | cmd |
+| execa.js:6:9:6:11 | cmd | semmle.label | cmd |
 | execa.js:6:15:6:38 | url.par ... , true) | semmle.label | url.par ... , true) |
 | execa.js:6:25:6:31 | req.url | semmle.label | req.url |
-| execa.js:7:9:7:53 | arg1 | semmle.label | arg1 |
+| execa.js:7:9:7:12 | arg1 | semmle.label | arg1 |
 | execa.js:7:16:7:39 | url.par ... , true) | semmle.label | url.par ... , true) |
 | execa.js:7:26:7:32 | req.url | semmle.label | req.url |
-| execa.js:8:9:8:53 | arg2 | semmle.label | arg2 |
+| execa.js:8:9:8:12 | arg2 | semmle.label | arg2 |
 | execa.js:8:16:8:39 | url.par ... , true) | semmle.label | url.par ... , true) |
 | execa.js:8:26:8:32 | req.url | semmle.label | req.url |
-| execa.js:9:9:9:53 | arg3 | semmle.label | arg3 |
+| execa.js:9:9:9:12 | arg3 | semmle.label | arg3 |
 | execa.js:9:16:9:39 | url.par ... , true) | semmle.label | url.par ... , true) |
 | execa.js:9:26:9:32 | req.url | semmle.label | req.url |
 | execa.js:11:15:11:17 | cmd | semmle.label | cmd |
@@ -358,7 +505,7 @@ nodes
 | form-parsers.js:58:30:58:33 | part | semmle.label | part |
 | form-parsers.js:59:10:59:33 | "touch  ... ilename | semmle.label | "touch  ... ilename |
 | form-parsers.js:59:21:59:24 | part | semmle.label | part |
-| other.js:5:9:5:49 | cmd | semmle.label | cmd |
+| other.js:5:9:5:11 | cmd | semmle.label | cmd |
 | other.js:5:15:5:38 | url.par ... , true) | semmle.label | url.par ... , true) |
 | other.js:5:25:5:31 | req.url | semmle.label | req.url |
 | other.js:7:33:7:35 | cmd | semmle.label | cmd |
@@ -379,6 +526,71 @@ nodes
 | other.js:28:27:28:29 | cmd | semmle.label | cmd |
 | other.js:30:33:30:35 | cmd | semmle.label | cmd |
 | other.js:34:44:34:46 | cmd | semmle.label | cmd |
+| promisification.js:8:21:8:24 | code | semmle.label | code |
+| promisification.js:9:13:9:16 | code | semmle.label | code |
+| promisification.js:9:13:9:21 | code.code | semmle.label | code.code |
+| promisification.js:15:11:15:14 | code | semmle.label | code |
+| promisification.js:15:18:15:25 | req.body | semmle.label | req.body |
+| promisification.js:16:15:16:18 | code | semmle.label | code |
+| promisification.js:21:11:21:14 | code | semmle.label | code |
+| promisification.js:21:18:21:25 | req.body | semmle.label | req.body |
+| promisification.js:24:22:24:25 | code | semmle.label | code |
+| promisification.js:30:11:30:14 | code | semmle.label | code |
+| promisification.js:30:18:30:25 | req.body | semmle.label | req.body |
+| promisification.js:31:24:31:27 | code | semmle.label | code |
+| promisification.js:37:11:37:14 | code | semmle.label | code |
+| promisification.js:37:18:37:25 | req.body | semmle.label | req.body |
+| promisification.js:40:21:40:24 | code | semmle.label | code |
+| promisification.js:43:24:43:27 | code | semmle.label | code |
+| promisification.js:49:11:49:14 | code | semmle.label | code |
+| promisification.js:49:18:49:25 | req.body | semmle.label | req.body |
+| promisification.js:52:21:52:24 | code | semmle.label | code |
+| promisification.js:55:15:55:18 | code | semmle.label | code |
+| promisification.js:61:9:61:11 | cmd | semmle.label | cmd |
+| promisification.js:61:15:61:22 | req.body | semmle.label | req.body |
+| promisification.js:65:21:65:23 | cmd | semmle.label | cmd |
+| promisification.js:69:20:69:22 | cmd | semmle.label | cmd |
+| promisification.js:74:26:74:28 | cmd | semmle.label | cmd |
+| promisification.js:77:24:77:26 | cmd | semmle.label | cmd |
+| promisification.js:78:28:78:30 | cmd | semmle.label | cmd |
+| promisification.js:79:25:79:27 | cmd | semmle.label | cmd |
+| promisification.js:81:34:81:37 | code | semmle.label | code |
+| promisification.js:83:36:83:39 | code | semmle.label | code |
+| promisification.js:89:12:89:14 | cmd | semmle.label | cmd |
+| promisification.js:99:11:99:14 | code | semmle.label | code |
+| promisification.js:99:18:99:25 | req.body | semmle.label | req.body |
+| promisification.js:100:23:100:26 | code | semmle.label | code |
+| promisification.js:101:27:101:30 | code | semmle.label | code |
+| promisification.js:102:27:102:30 | code | semmle.label | code |
+| promisification.js:106:24:106:27 | code | semmle.label | code |
+| promisification.js:109:24:109:27 | code | semmle.label | code |
+| promisification.js:114:11:114:14 | code | semmle.label | code |
+| promisification.js:114:18:114:25 | req.body | semmle.label | req.body |
+| promisification.js:116:32:116:34 | cmd | semmle.label | cmd |
+| promisification.js:117:16:119:10 | new Pro ...      }) [PromiseValue] | semmle.label | new Pro ...      }) [PromiseValue] |
+| promisification.js:117:29:117:35 | resolve [Return] [resolve-value] | semmle.label | resolve [Return] [resolve-value] |
+| promisification.js:118:13:118:19 | [post update] resolve [resolve-value] | semmle.label | [post update] resolve [resolve-value] |
+| promisification.js:118:21:118:23 | cmd | semmle.label | cmd |
+| promisification.js:122:11:122:20 | cmdPromise [PromiseValue] | semmle.label | cmdPromise [PromiseValue] |
+| promisification.js:122:24:122:46 | createE ... e(code) [PromiseValue] | semmle.label | createE ... e(code) [PromiseValue] |
+| promisification.js:122:42:122:45 | code | semmle.label | code |
+| promisification.js:123:5:123:27 | maybe(n ... romise) [PromiseValue] | semmle.label | maybe(n ... romise) [PromiseValue] |
+| promisification.js:123:17:123:26 | cmdPromise [PromiseValue] | semmle.label | cmdPromise [PromiseValue] |
+| promisification.js:123:34:123:36 | cmd | semmle.label | cmd |
+| promisification.js:124:17:124:19 | cmd | semmle.label | cmd |
+| promisification.js:130:11:130:14 | code | semmle.label | code |
+| promisification.js:130:18:130:25 | req.body | semmle.label | req.body |
+| promisification.js:133:21:133:24 | code | semmle.label | code |
+| promisification.js:136:15:136:18 | code | semmle.label | code |
+| promisification.js:141:11:141:14 | code | semmle.label | code |
+| promisification.js:141:18:141:25 | req.body | semmle.label | req.body |
+| promisification.js:144:21:144:24 | code | semmle.label | code |
+| promisification.js:147:15:147:18 | code | semmle.label | code |
+| promisification.js:150:24:150:27 | code | semmle.label | code |
+| promisification.js:151:28:151:31 | code | semmle.label | code |
+| promisification.js:152:25:152:28 | code | semmle.label | code |
 | third-party-command-injection.js:5:20:5:26 | command | semmle.label | command |
 | third-party-command-injection.js:6:21:6:27 | command | semmle.label | command |
 subpaths
+| promisification.js:116:32:116:34 | cmd | promisification.js:118:21:118:23 | cmd | promisification.js:117:29:117:35 | resolve [Return] [resolve-value] | promisification.js:117:16:119:10 | new Pro ...      }) [PromiseValue] |
+| promisification.js:122:42:122:45 | code | promisification.js:116:32:116:34 | cmd | promisification.js:117:16:119:10 | new Pro ...      }) [PromiseValue] | promisification.js:122:24:122:46 | createE ... e(code) [PromiseValue] |

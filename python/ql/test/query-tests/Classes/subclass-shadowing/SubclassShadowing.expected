@@ -1,1 +1,2 @@
-| subclass_shadowing.py:10:5:10:21 | FunctionExpr | Method shadow is shadowed by an $@ in super class 'Base'. | subclass_shadowing.py:6:9:6:23 | AssignStmt | attribute |
+| subclass_shadowing.py:11:5:11:21 | Function shadow | This method is shadowed by $@ in superclass $@. | subclass_shadowing.py:7:9:7:19 | ControlFlowNode for Attribute | attribute shadow | subclass_shadowing.py:4:1:4:11 | Class Base | Base |
+| subclass_shadowing.py:41:5:41:18 | Function foo | This method is shadowed by $@ in superclass $@. (read-only property may cause an error if written to in the superclass) | subclass_shadowing.py:35:9:35:16 | ControlFlowNode for Attribute | attribute foo | subclass_shadowing.py:33:1:33:12 | Class Base3 | Base3 |

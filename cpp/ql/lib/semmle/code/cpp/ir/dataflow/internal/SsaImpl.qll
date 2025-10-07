@@ -143,7 +143,14 @@ private predicate isGlobalUse(
     min(int cand, VariableAddressInstruction vai |
       vai.getEnclosingIRFunction() = f and
       vai.getAstVariable() = v and
-      isDef(_, _, _, vai, cand, indirectionIndex)
+      (
+        isDef(_, _, _, vai, cand, indirectionIndex)
+        or
+        exists(Operand operand |
+          isUse(_, operand, vai, cand, indirectionIndex) and
+          isPostUpdateNodeImpl(operand, indirectionIndex)
+        )
+      )
     |
       cand
     )
@@ -491,7 +498,9 @@ class FinalParameterUse extends UseImpl, TFinalParameterUse {
 
   int getArgumentIndex() { result = p.getIndex() }
 
-  override Node getNode() { finalParameterNodeHasParameterAndIndex(result, p, indirectionIndex) }
+  override FinalParameterNode getNode() {
+    finalParameterNodeHasParameterAndIndex(result, p, indirectionIndex)
+  }
 
   override int getIndirection() { result = indirectionIndex + 1 }
 
@@ -749,9 +758,9 @@ private predicate modeledFlowBarrier(Node n) {
     partialFlowFunc = call.getStaticCallTarget() and
     not partialFlowFunc.isPartialWrite(output)
   |
-    call.getStaticCallTarget().(DataFlow::DataFlowFunction).hasDataFlow(_, output)
+    partialFlowFunc.(DataFlow::DataFlowFunction).hasDataFlow(_, output)
     or
-    call.getStaticCallTarget().(Taint::TaintFunction).hasTaintFlow(_, output)
+    partialFlowFunc.(Taint::TaintFunction).hasTaintFlow(_, output)
   )
   or
   exists(Operand operand, Instruction instr, Node n0, int indirectionIndex |
@@ -884,15 +893,14 @@ private predicate baseSourceVariableIsGlobal(
   )
 }
 
-private module SsaInput implements Ssa::InputSig<Location> {
-  import InputSigCommon
+private module SsaInput implements Ssa::InputSig<Location, IRCfg::BasicBlock> {
   import SourceVariables
 
   /**
    * Holds if the `i`'th write in block `bb` writes to the variable `v`.
    * `certain` is `true` if the write is guaranteed to overwrite the entire variable.
    */
-  predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+  predicate variableWrite(IRCfg::BasicBlock bb, int i, SourceVariable v, boolean certain) {
     DataFlowImplCommon::forceCachingInSameStage() and
     (
       exists(DefImpl def | def.hasIndexInBlock(v, bb, i) |
@@ -910,7 +918,7 @@ private module SsaInput implements Ssa::InputSig<Location> {
    * Holds if the `i`'th read in block `bb` reads to the variable `v`.
    * `certain` is `true` if the read is guaranteed. For C++, this is always the case.
    */
-  predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+  predicate variableRead(IRCfg::BasicBlock bb, int i, SourceVariable v, boolean certain) {
     exists(UseImpl use | use.hasIndexInBlock(bb, i, v) |
       if use.isCertain() then certain = true else certain = false
     )
@@ -958,7 +966,7 @@ class GlobalDef extends Definition {
   GlobalLikeVariable getVariable() { result = impl.getVariable() }
 }
 
-private module SsaImpl = Ssa::Make<Location, SsaInput>;
+private module SsaImpl = Ssa::Make<Location, IRCfg, SsaInput>;
 
 private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationInputSig {
   private import codeql.util.Boolean
@@ -971,7 +979,7 @@ private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationI
       )
     }
 
-    predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { bb.getInstruction(i) = this }
+    predicate hasCfgNode(IRCfg::BasicBlock bb, int i) { bb.getInstruction(i) = this }
   }
 
   Expr getARead(SsaImpl::Definition def) {
@@ -994,30 +1002,28 @@ private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationI
     result instanceof FalseEdge
   }
 
-  class GuardValue = Boolean;
+  class GuardValue = IRGuards::GuardValue;
 
   class Guard instanceof IRGuards::IRGuardCondition {
     string toString() { result = super.toString() }
 
-    predicate hasValueBranchEdge(
-      SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, GuardValue branch
-    ) {
+    predicate hasValueBranchEdge(IRCfg::BasicBlock bb1, IRCfg::BasicBlock bb2, GuardValue branch) {
       exists(EdgeKind kind |
         super.getBlock() = bb1 and
-        kind = getConditionalEdge(branch) and
+        kind = getConditionalEdge(branch.asBooleanValue()) and
         bb1.getSuccessor(kind) = bb2
       )
     }
 
     predicate valueControlsBranchEdge(
-      SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, GuardValue branch
+      IRCfg::BasicBlock bb1, IRCfg::BasicBlock bb2, GuardValue branch
     ) {
       this.hasValueBranchEdge(bb1, bb2, branch)
     }
   }
 
-  predicate guardDirectlyControlsBlock(Guard guard, SsaInput::BasicBlock bb, GuardValue branch) {
-    guard.(IRGuards::IRGuardCondition).controls(bb, branch)
+  predicate guardDirectlyControlsBlock(Guard guard, IRCfg::BasicBlock bb, GuardValue branch) {
+    guard.(IRGuards::IRGuardCondition).valueControls(bb, branch)
   }
 
   predicate keepAllPhiInputBackEdges() { any() }
@@ -1044,25 +1050,35 @@ module BarrierGuardWithIntParam<guardChecksNodeSig/4 guardChecksNode> {
     )
   }
 
-  private predicate guardChecks(
-    DataFlowIntegrationInput::Guard g, SsaImpl::Definition def,
-    DataFlowIntegrationInput::GuardValue branch, int indirectionIndex
+  private predicate guardChecksInstr(
+    IRGuards::Guards_v1::Guard g, IRGuards::GuardsInput::Expr instr, boolean branch,
+    int indirectionIndex
   ) {
-    exists(UseImpl use |
-      guardChecksNode(g, use.getNode(), branch, indirectionIndex) and
-      ssaDefReachesCertainUse(def, use)
+    exists(Node node |
+      nodeHasInstruction(node, instr, indirectionIndex) and
+      guardChecksNode(g, node, branch, indirectionIndex)
     )
+  }
+
+  private predicate guardChecksWithWrappers(
+    DataFlowIntegrationInput::Guard g, SsaImpl::Definition def, IRGuards::GuardValue val,
+    int indirectionIndex
+  ) {
+    IRGuards::Guards_v1::ValidationWrapperWithState<int, guardChecksInstr/4>::guardChecksDef(g, def,
+      val, indirectionIndex)
   }
 
   Node getABarrierNode(int indirectionIndex) {
     // Only get the SynthNodes from the shared implementation, as the ExprNodes cannot
     // be matched on SourceVariable.
     result.(SsaSynthNode).getSynthNode() =
-      DataFlowIntegrationImpl::BarrierGuardDefWithState<int, guardChecks/4>::getABarrierNode(indirectionIndex)
+      DataFlowIntegrationImpl::BarrierGuardDefWithState<int, guardChecksWithWrappers/4>::getABarrierNode(indirectionIndex)
     or
     // Calculate the guarded UseImpls corresponding to ExprNodes directly.
-    exists(DataFlowIntegrationInput::Guard g, boolean branch, Definition def, IRBlock bb |
-      guardChecks(g, def, branch, indirectionIndex) and
+    exists(
+      DataFlowIntegrationInput::Guard g, IRGuards::GuardValue branch, Definition def, IRBlock bb
+    |
+      guardChecksWithWrappers(g, def, branch, indirectionIndex) and
       exists(UseImpl use |
         ssaDefReachesCertainUse(def, use) and
         use.getBlock() = bb and
@@ -1120,7 +1136,15 @@ predicate ssaFlow(Node nodeFrom, Node nodeTo) {
  */
 class PhiNode extends Definition instanceof SsaImpl::PhiNode {
   /** Gets a definition that is an input to this phi node. */
-  final Definition getAnInput() { phiHasInputFromBlock(this, result, _) }
+  final Definition getAnInput() { this.hasInputFromBlock(result, _) }
+
+  /**
+   * Holds if `input` is an input to this phi node along the edge originating
+   * in `bb`.
+   */
+  final predicate hasInputFromBlock(Definition input, IRBlock bb) {
+    phiHasInputFromBlock(this, input, bb)
+  }
 }
 
 /** An static single assignment (SSA) definition. */
@@ -1145,8 +1169,51 @@ class Definition extends SsaImpl::Definition {
     exists(SourceVariable sv, IRBlock bb, int i, UseImpl use |
       ssaDefReachesRead(sv, this, bb, i) and
       use.hasIndexInBlock(bb, i, sv) and
-      result = use.getNode().asOperand()
+      use = TDirectUseImpl(result, 0)
     )
+  }
+
+  /**
+   * Holds if this definition defines the parameter `p` upon entry into the
+   * enclosing function.
+   */
+  pragma[nomagic]
+  predicate isParameterDefinition(Parameter p) {
+    this.getIndirectionIndex() = 0 and
+    getDefImpl(this).getValue().asInstruction().(InitializeParameterInstruction).getParameter() = p
+  }
+
+  /**
+   * Holds if this definition defines the `indirectionIndex`'th indirection of
+   * parameter `p` upon entry into the enclosing function.
+   */
+  pragma[nomagic]
+  predicate isIndirectParameterDefinition(Parameter p, int indirectionIndex) {
+    this.getIndirectionIndex() = indirectionIndex and
+    indirectionIndex > 0 and
+    getDefImpl(this).getValue().asInstruction().(InitializeParameterInstruction).getParameter() = p
+  }
+
+  /**
+   * Holds if this definition defines the implicit `this` parameter upon entry into
+   * the enclosing member function.
+   */
+  pragma[nomagic]
+  predicate isThisDefinition() {
+    this.getIndirectionIndex() = 0 and
+    getDefImpl(this).getValue().asInstruction().(InitializeParameterInstruction).hasIndex(-1)
+  }
+
+  /**
+   * Holds if this definition defines the implicit `*this` parameter (i.e., the
+   * indirection of the `this` parameter) upon entry into the enclosing member
+   * function.
+   */
+  pragma[nomagic]
+  predicate isIndirectThisDefinition(int indirectionIndex) {
+    this.getIndirectionIndex() = indirectionIndex and
+    indirectionIndex > 0 and
+    getDefImpl(this).getValue().asInstruction().(InitializeParameterInstruction).hasIndex(-1)
   }
 
   /**
@@ -1163,10 +1230,11 @@ class Definition extends SsaImpl::Definition {
    * value that was defined by the definition.
    */
   Operand getAnIndirectUse(int indirectionIndex) {
+    indirectionIndex > 0 and
     exists(SourceVariable sv, IRBlock bb, int i, UseImpl use |
       ssaDefReachesRead(sv, this, bb, i) and
       use.hasIndexInBlock(bb, i, sv) and
-      result = use.getNode().asIndirectOperand(indirectionIndex)
+      use = TDirectUseImpl(result, indirectionIndex)
     )
   }
 

@@ -109,7 +109,7 @@ predicate lessThanOrEqual(IRGuardCondition g, Expr e, boolean branch) {
     g.comparesEq(left, _, _, true, branch)
   |
     interestingLessThanOrEqual(left) and
-    left.getDef().getUnconvertedResultExpression() = e
+    left.getDef().getConvertedResultExpression() = e
   )
 }
 
@@ -123,6 +123,12 @@ module Config implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     // Block flow if the node is guarded by any <, <= or = operations.
     node = DataFlow::BarrierGuard<lessThanOrEqual/3>::getABarrierNode()
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(BufferWrite bw | result = bw.getLocation() | isSink(sink, bw, _))
   }
 }
 

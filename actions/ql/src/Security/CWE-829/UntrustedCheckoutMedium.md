@@ -1,6 +1,6 @@
 ## Overview
 
-GitHub workflows can be triggered through various repository events, including incoming pull requests (PRs) or comments on Issues/PRs. A potentially dangerous misuse of the triggers such as `pull_request_target` or `issue_comment` followed by an explicit checkout of untrusted code (Pull Request HEAD) may lead to repository compromise if untrusted code gets executed in a privileged job.
+GitHub workflows can be triggered through various repository events, including incoming pull requests (PRs) or comments on Issues/PRs. A potentially dangerous misuse of the triggers such as `pull_request_target` or `issue_comment` followed by an explicit checkout of untrusted code (Pull Request HEAD) may lead to repository compromise if untrusted code gets executed (e.g., due to a modified build script) in a privileged job.
 
 ## Recommendation
 
@@ -32,7 +32,7 @@ jobs:
 
       - uses: actions/setup-node@v1
       - run: |
-          npm install
+          npm install # scripts in package.json from PR would be executed here
           npm build
 
       - uses: completely/fakeaction@v2

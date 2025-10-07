@@ -38,7 +38,6 @@
 /lib/codeql/rust/elements/CallExprBase.qll linguist-generated
 /lib/codeql/rust/elements/Callable.qll linguist-generated
 /lib/codeql/rust/elements/CastExpr.qll linguist-generated
-/lib/codeql/rust/elements/ClosureBinder.qll linguist-generated
 /lib/codeql/rust/elements/ClosureExpr.qll linguist-generated
 /lib/codeql/rust/elements/Comment.qll linguist-generated
 /lib/codeql/rust/elements/Const.qll linguist-generated
@@ -59,6 +58,7 @@
 /lib/codeql/rust/elements/FieldExpr.qll linguist-generated
 /lib/codeql/rust/elements/FieldList.qll linguist-generated
 /lib/codeql/rust/elements/FnPtrTypeRepr.qll linguist-generated
+/lib/codeql/rust/elements/ForBinder.qll linguist-generated
 /lib/codeql/rust/elements/ForExpr.qll linguist-generated
 /lib/codeql/rust/elements/ForTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/Format.qll linguist-generated
@@ -136,7 +136,6 @@
 /lib/codeql/rust/elements/RefPat.qll linguist-generated
 /lib/codeql/rust/elements/RefTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/Rename.qll linguist-generated
-/lib/codeql/rust/elements/Resolvable.qll linguist-generated
 /lib/codeql/rust/elements/RestPat.qll linguist-generated
 /lib/codeql/rust/elements/RetTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/ReturnExpr.qll linguist-generated
@@ -243,8 +242,6 @@
 /lib/codeql/rust/elements/internal/BreakExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/CallExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/CastExprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/ClosureBinderConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/ClosureBinderImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ClosureExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/CommentConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ConstArgConstructor.qll linguist-generated
@@ -275,6 +272,7 @@
 /lib/codeql/rust/elements/internal/FieldListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/FnPtrTypeReprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/FnPtrTypeReprImpl.qll linguist-generated
+/lib/codeql/rust/elements/internal/ForBinderConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ForExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ForTypeReprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ForTypeReprImpl.qll linguist-generated
@@ -371,7 +369,6 @@
 /lib/codeql/rust/elements/internal/RefTypeReprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/RenameConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/RenameImpl.qll linguist-generated
-/lib/codeql/rust/elements/internal/ResolvableImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/RestPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/RetTypeReprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/RetTypeReprImpl.qll linguist-generated
@@ -390,7 +387,6 @@
 /lib/codeql/rust/elements/internal/StaticImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/StmtImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/StmtListConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/StmtListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/StructConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/StructExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/StructExprFieldConstructor.qll linguist-generated
@@ -424,9 +420,7 @@
 /lib/codeql/rust/elements/internal/TypeArgConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeArgImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeBoundConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/TypeBoundImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeBoundListConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/TypeBoundListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeParamConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeReprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/UnderscoreExprConstructor.qll linguist-generated
@@ -494,7 +488,6 @@
 /lib/codeql/rust/elements/internal/generated/CallExprBase.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Callable.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/CastExpr.qll linguist-generated
-/lib/codeql/rust/elements/internal/generated/ClosureBinder.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ClosureExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Comment.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Const.qll linguist-generated
@@ -516,6 +509,7 @@
 /lib/codeql/rust/elements/internal/generated/FieldExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/FieldList.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/FnPtrTypeRepr.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/ForBinder.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ForExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ForTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Format.qll linguist-generated
@@ -597,7 +591,6 @@
 /lib/codeql/rust/elements/internal/generated/RefPat.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/RefTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Rename.qll linguist-generated
-/lib/codeql/rust/elements/internal/generated/Resolvable.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/RestPat.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/RetTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ReturnExpr.qll linguist-generated
@@ -683,7 +676,6 @@
 /test/extractor-tests/generated/BreakExpr/BreakExpr.ql linguist-generated
 /test/extractor-tests/generated/CallExpr/CallExpr.ql linguist-generated
 /test/extractor-tests/generated/CastExpr/CastExpr.ql linguist-generated
-/test/extractor-tests/generated/ClosureBinder/ClosureBinder.ql linguist-generated
 /test/extractor-tests/generated/ClosureExpr/ClosureExpr.ql linguist-generated
 /test/extractor-tests/generated/Comment/Comment.ql linguist-generated
 /test/extractor-tests/generated/Const/Const.ql linguist-generated
@@ -700,6 +692,7 @@
 /test/extractor-tests/generated/ExternItemList/ExternItemList.ql linguist-generated
 /test/extractor-tests/generated/FieldExpr/FieldExpr.ql linguist-generated
 /test/extractor-tests/generated/FnPtrTypeRepr/FnPtrTypeRepr.ql linguist-generated
+/test/extractor-tests/generated/ForBinder/ForBinder.ql linguist-generated
 /test/extractor-tests/generated/ForExpr/ForExpr.ql linguist-generated
 /test/extractor-tests/generated/ForTypeRepr/ForTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/FormatArgsExpr/Format.ql linguist-generated

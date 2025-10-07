@@ -11,6 +11,11 @@ A list of queries for each suite and language `is available here <https://docs.g
 .. toctree::
    :maxdepth: 1
 
+   codeql-cli-2.23.1
+   codeql-cli-2.23.0
+   codeql-cli-2.22.4
+   codeql-cli-2.22.3
+   codeql-cli-2.22.2
    codeql-cli-2.22.1
    codeql-cli-2.22.0
    codeql-cli-2.21.4

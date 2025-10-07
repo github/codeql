@@ -5,7 +5,7 @@ mod simple_closures {
         // A simple closure without type annotations or invocations.
         let my_closure = |a, b| a && b;
 
-        let x: i64 = 1i64; // $ type=x:i64
+        let x: i64 = 1i64; // $ certainType=x:i64
         let add_one = |n| n + 1i64; // $ target=add
         let _y = add_one(x); // $ type=_y:i64
 
@@ -27,7 +27,7 @@ mod simple_closures {
         // The return type of `id2` is inferred from the type of the call expression.
         let id2 = |b| b;
         let arg = Default::default(); // $ target=default type=arg:bool
-        let _b2: bool = id2(arg); // $ type=_b2:bool
+        let _b2: bool = id2(arg); // $ certainType=_b2:bool
     }
 }
 
@@ -60,7 +60,7 @@ mod fn_once_trait {
         let _r = apply(f, true); // $ target=apply type=_r:i64
 
         let f = |x| x + 1; // $ MISSING: type=x:i64 target=add
-        let _r2 = apply_two(f); // $ target=apply_two type=_r2:i64
+        let _r2 = apply_two(f); // $ target=apply_two certainType=_r2:i64
     }
 }
 

@@ -171,9 +171,20 @@ module Ssa {
     private CfgNode write;
 
     WriteDefinition() {
-      exists(BasicBlock bb, int i, Variable v |
+      exists(BasicBlock bb, int i, Variable v, CfgNode n |
         this.definesAt(v, bb, i) and
-        SsaImpl::variableWriteActual(bb, i, v, write)
+        SsaImpl::variableWriteActual(bb, i, v, n)
+      |
+        write.(VariableAccessCfgNode).getAccess().getVariable() = v and
+        (
+          write = n.(AssignmentExprCfgNode).getAWriteAccess()
+          or
+          write = n.(CompoundAssignmentExprCfgNode).getLhs()
+        )
+        or
+        not n instanceof AssignmentExprCfgNode and
+        not n instanceof CompoundAssignmentExprCfgNode and
+        write = n
       )
     }
 
@@ -194,9 +205,16 @@ module Ssa {
         ae.getRhs() = value
       )
       or
-      exists(LetStmtCfgNode ls |
-        ls.getPat().(IdentPatCfgNode).getName() = write and
-        ls.getInitializer() = value
+      exists(IdentPatCfgNode pat | pat.getName() = write |
+        exists(LetStmtCfgNode ls |
+          pat = ls.getPat() and
+          ls.getInitializer() = value
+        )
+        or
+        exists(LetExprCfgNode le |
+          pat = le.getPat() and
+          le.getScrutinee() = value
+        )
       )
     }
 

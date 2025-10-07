@@ -253,17 +253,18 @@ class SsaImplicitUpdate extends SsaUpdate {
     or
     if this.hasImplicitQualifierUpdate()
     then
-      if exists(this.getANonLocalUpdate())
+      if isNonLocal(this)
       then result = "nonlocal + nonlocal qualifier"
       else result = "nonlocal qualifier"
     else (
-      exists(this.getANonLocalUpdate()) and result = "nonlocal"
+      isNonLocal(this) and result = "nonlocal"
     )
   }
 
   /**
    * Gets a reachable `FieldWrite` that might represent this ssa update, if any.
    */
+  overlay[global]
   FieldWrite getANonLocalUpdate() {
     exists(SsaSourceField f, Callable setter |
       relevantFieldUpdate(setter, f.getField(), result) and
@@ -286,6 +287,11 @@ class SsaImplicitUpdate extends SsaUpdate {
     this.hasImplicitQualifierUpdate()
   }
 }
+
+overlay[global]
+private predicate isNonLocalImpl(SsaImplicitUpdate su) { exists(su.getANonLocalUpdate()) }
+
+private predicate isNonLocal(SsaImplicitUpdate su) = forceLocal(isNonLocalImpl/1)(su)
 
 /**
  * An SSA variable that represents an uncertain implicit update of the value.

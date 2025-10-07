@@ -6,9 +6,15 @@
 #     bazel run @@//misc/bazel/3rdparty:vendor_tree_sitter_extractors
 ###############################################################################
 
+load("@rules_rust//cargo:defs.bzl", "cargo_toml_env_vars")
 load("@rules_rust//rust:defs.bzl", "rust_library")
 
 package(default_visibility = ["//visibility:public"])
+
+cargo_toml_env_vars(
+    name = "cargo_toml_env_vars",
+    src = "Cargo.toml",
+)
 
 rust_library(
     name = "walkdir",
@@ -30,6 +36,9 @@ rust_library(
     ),
     crate_root = "src/lib.rs",
     edition = "2018",
+    rustc_env_files = [
+        ":cargo_toml_env_vars",
+    ],
     rustc_flags = [
         "--cap-lints=allow",
     ],
@@ -84,13 +93,13 @@ rust_library(
         "@vendor_ts__same-file-1.0.6//:same_file",
     ] + select({
         "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [
-            "@vendor_ts__winapi-util-0.1.9//:winapi_util",  # cfg(windows)
+            "@vendor_ts__winapi-util-0.1.11//:winapi_util",  # cfg(windows)
         ],
         "@rules_rust//rust/platform:i686-pc-windows-msvc": [
-            "@vendor_ts__winapi-util-0.1.9//:winapi_util",  # cfg(windows)
+            "@vendor_ts__winapi-util-0.1.11//:winapi_util",  # cfg(windows)
         ],
         "@rules_rust//rust/platform:x86_64-pc-windows-msvc": [
-            "@vendor_ts__winapi-util-0.1.9//:winapi_util",  # cfg(windows)
+            "@vendor_ts__winapi-util-0.1.11//:winapi_util",  # cfg(windows)
         ],
         "//conditions:default": [],
     }),

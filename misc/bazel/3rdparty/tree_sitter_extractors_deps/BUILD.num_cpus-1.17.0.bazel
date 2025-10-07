@@ -6,9 +6,15 @@
 #     bazel run @@//misc/bazel/3rdparty:vendor_tree_sitter_extractors
 ###############################################################################
 
+load("@rules_rust//cargo:defs.bzl", "cargo_toml_env_vars")
 load("@rules_rust//rust:defs.bzl", "rust_library")
 
 package(default_visibility = ["//visibility:public"])
+
+cargo_toml_env_vars(
+    name = "cargo_toml_env_vars",
+    src = "Cargo.toml",
+)
 
 rust_library(
     name = "num_cpus",
@@ -30,6 +36,9 @@ rust_library(
     ),
     crate_root = "src/lib.rs",
     edition = "2015",
+    rustc_env_files = [
+        ":cargo_toml_env_vars",
+    ],
     rustc_flags = [
         "--cap-lints=allow",
     ],
@@ -82,103 +91,103 @@ rust_library(
     version = "1.17.0",
     deps = select({
         "@rules_rust//rust/platform:aarch64-apple-darwin": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:aarch64-apple-ios": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:aarch64-apple-ios-sim": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:aarch64-linux-android": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:aarch64-unknown-fuchsia": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:aarch64-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:aarch64-unknown-nto-qnx710": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:aarch64-unknown-uefi": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:arm-unknown-linux-gnueabi": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:armv7-linux-androideabi": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:armv7-unknown-linux-gnueabi": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:i686-apple-darwin": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:i686-linux-android": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:i686-unknown-freebsd": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:i686-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:riscv32imc-unknown-none-elf": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:riscv64gc-unknown-none-elf": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:thumbv7em-none-eabi": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:thumbv8m.main-none-eabi": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:wasm32-unknown-unknown": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:wasm32-wasip1": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:x86_64-apple-darwin": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:x86_64-apple-ios": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:x86_64-linux-android": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:x86_64-unknown-freebsd": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:x86_64-unknown-fuchsia": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:x86_64-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:x86_64-unknown-none": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [
-            "@vendor_ts__libc-0.2.174//:libc",  # cfg(not(windows))
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(not(windows))
         ],
         "//conditions:default": [],
     }),

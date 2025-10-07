@@ -12,12 +12,15 @@ private import codeql.rust.elements.internal.generated.MacroCall
  */
 module Impl {
   private import rust
+  private import codeql.rust.internal.PathResolution
 
   pragma[nomagic]
   predicate isInMacroExpansion(AstNode root, AstNode n) {
     n = root.(MacroCall).getMacroCallExpansion()
     or
     n = root.(Adt).getDeriveMacroExpansion(_)
+    or
+    n = root.(Item).getAttributeMacroExpansion()
     or
     isInMacroExpansion(root, n.getParentNode())
   }
@@ -42,5 +45,12 @@ module Impl {
       isInMacroExpansion(this, result) and
       this.getTokenTree().getLocation().contains(result.getLocation())
     }
+
+    /**
+     * Gets the macro definition that this macro call resolves to.
+     *
+     * The result is either a `MacroDef` or a `MacroRules`.
+     */
+    Item resolveMacro() { result = resolvePath(this.getPath()) }
   }
 }

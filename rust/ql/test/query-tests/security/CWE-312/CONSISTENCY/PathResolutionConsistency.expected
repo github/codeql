@@ -4,7 +4,65 @@ multipleCallTargets
 | test_logging.rs:88:18:88:34 | password.as_str() |
 | test_logging.rs:229:30:229:71 | ... .as_str() |
 | test_logging.rs:242:16:242:61 | ... .as_bytes() |
-| test_logging.rs:243:5:245:66 | ... .write_all(...) |
 | test_logging.rs:245:20:245:65 | ... .as_bytes() |
 | test_logging.rs:248:15:248:60 | ... .as_bytes() |
 | test_logging.rs:251:15:251:60 | ... .as_bytes() |
+| test_storage.rs:13:10:13:33 | ...::from(...) |
+| test_storage.rs:17:10:17:35 | ...::from(...) |
+| test_storage.rs:21:10:21:35 | ...::from(...) |
+| test_storage.rs:25:10:25:32 | ...::from(...) |
+| test_storage.rs:29:10:29:35 | ...::from(...) |
+| test_storage.rs:36:45:36:57 | text.as_ref() |
+| test_storage.rs:68:25:68:74 | ...::from(...) |
+| test_storage.rs:69:25:69:76 | ...::from(...) |
+| test_storage.rs:70:25:70:82 | ...::from(...) |
+| test_storage.rs:71:25:71:79 | ...::from(...) |
+| test_storage.rs:72:25:72:70 | ...::from(...) |
+| test_storage.rs:73:25:73:67 | ...::from(...) |
+| test_storage.rs:75:25:75:65 | ...::from(...) |
+| test_storage.rs:76:25:76:65 | ...::from(...) |
+| test_storage.rs:77:14:77:24 | s1.as_str() |
+| test_storage.rs:78:25:78:65 | ...::from(...) |
+| test_storage.rs:79:25:79:65 | ...::from(...) |
+| test_storage.rs:80:25:80:70 | ...::from(...) |
+| test_storage.rs:81:25:81:72 | ...::from(...) |
+| test_storage.rs:82:26:82:77 | ...::from(...) |
+| test_storage.rs:85:27:85:48 | select_query1.as_str() |
+| test_storage.rs:86:27:86:48 | select_query2.as_str() |
+| test_storage.rs:87:27:87:48 | insert_query1.as_str() |
+| test_storage.rs:88:27:88:48 | insert_query2.as_str() |
+| test_storage.rs:89:27:89:48 | update_query1.as_str() |
+| test_storage.rs:90:27:90:48 | update_query2.as_str() |
+| test_storage.rs:91:27:91:48 | update_query3.as_str() |
+| test_storage.rs:92:27:92:48 | update_query4.as_str() |
+| test_storage.rs:93:27:93:48 | update_query5.as_str() |
+| test_storage.rs:94:27:94:48 | update_query6.as_str() |
+| test_storage.rs:95:27:95:48 | delete_query1.as_str() |
+| test_storage.rs:96:27:96:48 | delete_query2.as_str() |
+| test_storage.rs:99:25:99:46 | insert_query1.as_str() |
+| test_storage.rs:100:25:100:46 | insert_query2.as_str() |
+| test_storage.rs:101:25:101:47 | prepared_query.as_str() |
+| test_storage.rs:102:25:102:47 | prepared_query.as_str() |
+| test_storage.rs:103:25:103:47 | prepared_query.as_str() |
+| test_storage.rs:104:25:104:47 | prepared_query.as_str() |
+| test_storage.rs:110:27:110:48 | insert_query1.as_str() |
+| test_storage.rs:111:27:111:48 | insert_query2.as_str() |
+| test_storage.rs:114:27:114:48 | insert_query1.as_str() |
+| test_storage.rs:115:27:115:48 | insert_query2.as_str() |
+| test_storage.rs:118:25:118:46 | insert_query1.as_str() |
+| test_storage.rs:119:25:119:46 | insert_query2.as_str() |
+| test_storage.rs:120:25:120:47 | prepared_query.as_str() |
+| test_storage.rs:121:25:121:47 | prepared_query.as_str() |
+| test_storage.rs:124:25:124:46 | insert_query1.as_str() |
+| test_storage.rs:125:25:125:46 | insert_query2.as_str() |
+| test_storage.rs:126:25:126:47 | prepared_query.as_str() |
+| test_storage.rs:127:25:127:47 | prepared_query.as_str() |
+| test_storage.rs:134:27:134:48 | insert_query1.as_str() |
+| test_storage.rs:135:27:135:48 | insert_query2.as_str() |
+| test_storage.rs:138:25:138:46 | insert_query1.as_str() |
+| test_storage.rs:139:25:139:46 | insert_query2.as_str() |
+| test_storage.rs:140:25:140:47 | prepared_query.as_str() |
+| test_storage.rs:141:25:141:47 | prepared_query.as_str() |
+| test_storage.rs:188:29:188:86 | ...::from(...) |
+| test_storage.rs:189:28:189:82 | ...::from(...) |
+| test_storage.rs:190:28:190:81 | ...::from(...) |

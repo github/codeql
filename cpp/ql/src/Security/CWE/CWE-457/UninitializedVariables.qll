@@ -31,27 +31,28 @@ private predicate hasConditionalInitialization(
 class ConditionallyInitializedVariable extends LocalVariable {
   ConditionalInitializationCall call;
   ConditionalInitializationFunction f;
-  VariableAccess initAccess;
   Evidence e;
 
   ConditionallyInitializedVariable() {
     // Find a call that conditionally initializes this variable
-    hasConditionalInitialization(f, call, this, initAccess, e) and
-    // Ignore cases where the variable is assigned prior to the call
-    not reaches(this.getAnAssignedValue(), initAccess) and
-    // Ignore cases where the variable is assigned field-wise prior to the call.
-    not exists(FieldAccess fa |
-      exists(Assignment a |
-        fa = getAFieldAccess(this) and
-        a.getLValue() = fa
+    exists(VariableAccess initAccess |
+      hasConditionalInitialization(f, call, this, initAccess, e) and
+      // Ignore cases where the variable is assigned prior to the call
+      not reaches(this.getAnAssignedValue(), initAccess) and
+      // Ignore cases where the variable is assigned field-wise prior to the call.
+      not exists(FieldAccess fa |
+        exists(Assignment a |
+          fa = getAFieldAccess(this) and
+          a.getLValue() = fa
+        )
+      |
+        reaches(fa, initAccess)
+      ) and
+      // Ignore cases where the variable is assigned by a prior call to an initialization function
+      not exists(Call c |
+        this.getAnAccess() = getAnInitializedArgument(c).(AddressOfExpr).getOperand() and
+        reaches(c, initAccess)
       )
-    |
-      reaches(fa, initAccess)
-    ) and
-    // Ignore cases where the variable is assigned by a prior call to an initialization function
-    not exists(Call c |
-      this.getAnAccess() = getAnInitializedArgument(c).(AddressOfExpr).getOperand() and
-      reaches(c, initAccess)
     ) and
     /*
      * Static local variables with constant initializers do not have the initializer expr as part of

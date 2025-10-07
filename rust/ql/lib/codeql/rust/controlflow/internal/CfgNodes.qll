@@ -7,8 +7,7 @@ private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.internal.CachedStages
 
 private predicate isPostOrder(AstNode n) {
-  n instanceof Expr and
-  not n instanceof LetExpr
+  n instanceof Expr
   or
   n instanceof OrPat
   or
@@ -80,6 +79,12 @@ class MacroCallChildMapping extends ParentAstNode, MacroCall {
 
 class FormatArgsExprChildMapping extends ParentAstNode, CfgImpl::ExprTrees::FormatArgsExprTree {
   override predicate relevantChild(AstNode child) { child = this.getChildNode(_) }
+}
+
+class AssignmentExprChildMapping extends ParentAstNode, AssignmentExpr {
+  override predicate relevantChild(AstNode child) {
+    child.(VariableWriteAccess).getAssignmentExpr() = this
+  }
 }
 
 private class ChildMappingImpl extends ChildMapping {

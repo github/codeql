@@ -157,26 +157,21 @@ private predicate hasEntryDef(TrackedVar v, BasicBlock b) {
 }
 
 /** Holds if `n` might update the locally tracked variable `v`. */
+overlay[global]
 pragma[nomagic]
-private predicate uncertainVariableUpdate(TrackedVar v, ControlFlowNode n, BasicBlock b, int i) {
+private predicate uncertainVariableUpdateImpl(TrackedVar v, ControlFlowNode n, BasicBlock b, int i) {
   exists(Call c | c = n.asCall() | updatesNamedField(c, v, _)) and
   b.getNode(i) = n and
   hasDominanceInformation(b)
   or
-  uncertainVariableUpdate(v.getQualifier(), n, b, i)
+  uncertainVariableUpdateImpl(v.getQualifier(), n, b, i)
 }
 
-private module SsaInput implements SsaImplCommon::InputSig<Location> {
-  private import java as J
+/** Holds if `n` might update the locally tracked variable `v`. */
+predicate uncertainVariableUpdate(TrackedVar v, ControlFlowNode n, BasicBlock b, int i) =
+  forceLocal(uncertainVariableUpdateImpl/4)(v, n, b, i)
 
-  class BasicBlock = J::BasicBlock;
-
-  class ControlFlowNode = J::ControlFlowNode;
-
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result.immediatelyDominates(bb) }
-
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
-
+private module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
   class SourceVariable = SsaSourceVariable;
 
   /**
@@ -218,7 +213,7 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
   }
 }
 
-import SsaImplCommon::Make<Location, SsaInput> as Impl
+import SsaImplCommon::Make<Location, Cfg, SsaInput> as Impl
 
 final class Definition = Impl::Definition;
 
@@ -345,6 +340,7 @@ private module Cached {
    *   Constructor --(intraInstanceCallEdge)-->+ Method(setter of this.f)
    * ```
    */
+  overlay[global]
   private predicate intraInstanceCallEdge(Callable c1, Method m2) {
     exists(MethodCall ma, RefType t1 |
       ma.getCaller() = c1 and
@@ -365,6 +361,7 @@ private module Cached {
     )
   }
 
+  overlay[global]
   private Callable tgt(Call c) {
     result = viableImpl_v2(c)
     or
@@ -374,11 +371,13 @@ private module Cached {
   }
 
   /** Holds if `(c1,c2)` is an edge in the call graph. */
+  overlay[global]
   private predicate callEdge(Callable c1, Callable c2) {
     exists(Call c | c.getCaller() = c1 and c2 = tgt(c))
   }
 
   /** Holds if `(c1,c2)` is an edge in the call graph excluding `intraInstanceCallEdge`. */
+  overlay[global]
   private predicate crossInstanceCallEdge(Callable c1, Callable c2) {
     callEdge(c1, c2) and not intraInstanceCallEdge(c1, c2)
   }
@@ -392,6 +391,7 @@ private module Cached {
     relevantFieldUpdate(_, f.getField(), _)
   }
 
+  overlay[global]
   private predicate source(Call call, TrackedField f, Field field, Callable c, boolean fresh) {
     relevantCall(call, f) and
     field = f.getField() and
@@ -405,9 +405,11 @@ private module Cached {
    * `fresh` indicates whether the instance `this` in `c` has been freshly
    * allocated along the call-chain.
    */
+  overlay[global]
   private newtype TCallableNode =
     MkCallableNode(Callable c, boolean fresh) { source(_, _, _, c, fresh) or edge(_, c, fresh) }
 
+  overlay[global]
   private predicate edge(TCallableNode n, Callable c2, boolean f2) {
     exists(Callable c1, boolean f1 | n = MkCallableNode(c1, f1) |
       intraInstanceCallEdge(c1, c2) and f2 = f1
@@ -417,6 +419,7 @@ private module Cached {
     )
   }
 
+  overlay[global]
   private predicate edge(TCallableNode n1, TCallableNode n2) {
     exists(Callable c2, boolean f2 |
       edge(n1, c2, f2) and
@@ -424,6 +427,7 @@ private module Cached {
     )
   }
 
+  overlay[global]
   pragma[noinline]
   private predicate source(Call call, TrackedField f, Field field, TCallableNode n) {
     exists(Callable c, boolean fresh |
@@ -432,24 +436,28 @@ private module Cached {
     )
   }
 
+  overlay[global]
   private predicate sink(Callable c, Field f, TCallableNode n) {
     setsOwnField(c, f) and n = MkCallableNode(c, false)
     or
     setsOtherField(c, f) and n = MkCallableNode(c, _)
   }
 
+  overlay[global]
   private predicate prunedNode(TCallableNode n) {
     sink(_, _, n)
     or
     exists(TCallableNode mid | edge(n, mid) and prunedNode(mid))
   }
 
+  overlay[global]
   private predicate prunedEdge(TCallableNode n1, TCallableNode n2) {
     prunedNode(n1) and
     prunedNode(n2) and
     edge(n1, n2)
   }
 
+  overlay[global]
   private predicate edgePlus(TCallableNode c1, TCallableNode c2) = fastTC(prunedEdge/2)(c1, c2)
 
   /**
@@ -457,6 +465,7 @@ private module Cached {
    * where `f` and `call` share the same enclosing callable in which a
    * `FieldRead` of `f` is reachable from `call`.
    */
+  overlay[global]
   pragma[noopt]
   private predicate updatesNamedFieldImpl(Call call, TrackedField f, Callable setter) {
     exists(TCallableNode src, TCallableNode sink, Field field |
@@ -467,11 +476,13 @@ private module Cached {
   }
 
   bindingset[call, f]
+  overlay[global]
   pragma[inline_late]
   private predicate updatesNamedField0(Call call, TrackedField f, Callable setter) {
     updatesNamedField(call, f, setter)
   }
 
+  overlay[global]
   cached
   predicate defUpdatesNamedField(SsaImplicitUpdate def, TrackedField f, Callable setter) {
     f = def.getSourceVariable() and
@@ -562,14 +573,20 @@ private module Cached {
 
     cached // nothing is actually cached
     module BarrierGuard<guardChecksSig/3 guardChecks> {
-      private predicate guardChecksAdjTypes(
-        DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e, Guards::GuardValue val
+      private predicate guardChecksAdjTypes(Guards::Guards_v3::Guard g, Expr e, boolean branch) {
+        guardChecks(g, e, branch)
+      }
+
+      private predicate guardChecksWithWrappers(
+        DataFlowIntegrationInput::Guard g, Definition def, Guards::GuardValue val, Unit state
       ) {
-        guardChecks(g, e, val.asBooleanValue())
+        Guards::Guards_v3::ValidationWrapper<guardChecksAdjTypes/3>::guardChecksDef(g, def, val) and
+        exists(state)
       }
 
       private Node getABarrierNodeImpl() {
-        result = DataFlowIntegrationImpl::BarrierGuard<guardChecksAdjTypes/3>::getABarrierNode()
+        result =
+          DataFlowIntegrationImpl::BarrierGuardDefWithState<Unit, guardChecksWithWrappers/4>::getABarrierNode(_)
       }
 
       predicate getABarrierNode = getABarrierNodeImpl/0;

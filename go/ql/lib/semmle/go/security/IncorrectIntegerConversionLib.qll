@@ -290,13 +290,17 @@ private predicate integerTypeBound(IntegerType it, int bitSize, int architecture
  * the type assertion succeeded. If it is not checked then there will be a
  * run-time panic if the type assertion fails, so we can assume it succeeded.
  */
-class TypeAssertionCheck extends DataFlow::ExprNode, FlowStateTransformer {
+class TypeAssertionCheck extends DataFlow::InstructionNode, FlowStateTransformer {
   IntegerType it;
 
   TypeAssertionCheck() {
-    exists(TypeAssertExpr tae |
-      this = DataFlow::exprNode(tae.getExpr()) and
-      it = tae.getTypeExpr().getType().getUnderlyingType()
+    exists(IR::Instruction evalAssert, TypeAssertExpr assert |
+      it = assert.getTypeExpr().getType().getUnderlyingType() and
+      evalAssert = IR::evalExprInstruction(assert)
+    |
+      if exists(IR::extractTupleElement(evalAssert, _))
+      then this.asInstruction() = IR::extractTupleElement(evalAssert, 0)
+      else this.asInstruction() = evalAssert
     )
   }
 
@@ -439,6 +443,12 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
     // Create additional flow steps for `FlowStateTransformer`s
     state2 = node2.(FlowStateTransformer).transform(state1) and
     DataFlow::simpleLocalFlowStep(node1, node2, _)
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getASuccessor().getLocation()
   }
 }
 

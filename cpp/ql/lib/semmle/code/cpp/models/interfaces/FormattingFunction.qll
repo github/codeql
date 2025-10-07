@@ -170,6 +170,16 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
       output.isParameterDeref(this.getOutputParameterIndex(_))
     )
   }
+
+  final override predicate isPartialWrite(FunctionOutput output) {
+    exists(int outputParameterIndex |
+      output.isParameterDeref(outputParameterIndex) and
+      // We require the output to be a stream since that definitely means that
+      // it's a partial write. If it's not a stream then it will most likely
+      // fill the whole buffer.
+      outputParameterIndex = this.getOutputParameterIndex(true)
+    )
+  }
 }
 
 /**

@@ -1976,18 +1976,6 @@ private module Cached {
     result = n.(FuncDeclElement).getAst() or
     result = n.(KeyPathElement).getAst()
   }
-
-  cached
-  newtype TSuccessorType =
-    TSuccessorSuccessor() or
-    TBooleanSuccessor(boolean b) { b in [false, true] } or
-    TBreakSuccessor() or
-    TContinueSuccessor() or
-    TReturnSuccessor() or
-    TMatchingSuccessor(boolean match) { match in [false, true] } or
-    TFallthroughSuccessor() or
-    TEmptinessSuccessor(boolean isEmpty) { isEmpty in [false, true] } or
-    TExceptionSuccessor()
 }
 
 import Cached

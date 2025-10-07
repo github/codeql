@@ -9,22 +9,22 @@ test_getAReferenceTo
 | other_ns.js:4:9:4:10 | NS | NS |
 | other_ns.js:4:9:4:16 | NS \|\| {} | NS |
 | other_ns.js:6:1:6:8 | Conflict | Conflict |
-| test.js:2:7:2:17 | v | foo.bar |
+| test.js:2:7:2:7 | v | foo.bar |
 | test.js:2:11:2:13 | foo | foo |
 | test.js:2:11:2:17 | foo.bar | foo.bar |
 | test.js:3:3:3:3 | v | foo.bar |
 | test.js:3:3:3:7 | v.baz | foo.bar.baz |
 | test.js:4:7:4:24 | { baz, a, b: {c} } | foo.bar |
-| test.js:4:7:4:28 | c | foo.bar.b.c |
 | test.js:4:9:4:11 | baz | foo.bar.baz |
 | test.js:4:14:4:14 | a | foo.bar.a |
 | test.js:4:17:4:22 | b: {c} | foo.bar.b |
 | test.js:4:20:4:22 | {c} | foo.bar.b |
 | test.js:4:21:4:21 | c | foo.bar.b.c |
+| test.js:4:21:4:21 | c | foo.bar.b.c |
 | test.js:4:28:4:28 | v | foo.bar |
 | test.js:5:11:5:11 | c | foo.bar.b.c |
 | test.js:5:11:5:13 | c.d | foo.bar.b.c.d |
-| test.js:7:7:7:16 | w | window |
+| test.js:7:7:7:7 | w | window |
 | test.js:7:11:7:16 | window | window |
 | test.js:8:13:8:18 | window | window |
 | test.js:8:13:8:20 | window.x | x |
@@ -35,11 +35,11 @@ test_getAReferenceTo
 | test.js:10:13:10:13 | w | window |
 | test.js:10:13:10:15 | w.x | x |
 | test.js:10:13:10:17 | w.x.y | x.y |
-| test.js:12:7:12:25 | notUnique | foo.bar |
+| test.js:12:7:12:15 | notUnique | foo.bar |
 | test.js:12:19:12:21 | foo | foo |
 | test.js:12:19:12:25 | foo.bar | foo.bar |
 | test.js:13:7:13:15 | something | something |
-| test.js:14:5:14:23 | notUnique | bar.baz |
+| test.js:14:5:14:13 | notUnique | bar.baz |
 | test.js:14:5:14:23 | notUnique = bar.baz | bar.baz |
 | test.js:14:17:14:19 | bar | bar |
 | test.js:14:17:14:23 | bar.baz | bar.baz |
@@ -56,7 +56,7 @@ test_getAReferenceTo
 | test.js:33:7:33:18 | { bar = {} } | foo |
 | test.js:33:9:33:16 | bar = {} | foo.bar |
 | test.js:33:22:33:24 | foo | foo |
-| test.js:39:3:39:20 | lazyInit | foo.bar |
+| test.js:39:3:39:10 | lazyInit | foo.bar |
 | test.js:39:3:39:20 | lazyInit = foo.bar | foo.bar |
 | test.js:39:14:39:16 | foo | foo |
 | test.js:39:14:39:20 | foo.bar | foo.bar |
@@ -77,7 +77,7 @@ test_getAReferenceTo
 | test.js:68:11:68:34 | Object. ... ar).baz | foo.bar.baz |
 | test.js:68:23:68:25 | foo | foo |
 | test.js:68:23:68:29 | foo.bar | foo.bar |
-| test.js:69:6:69:15 | O | Object |
+| test.js:69:6:69:6 | O | Object |
 | test.js:69:10:69:15 | Object | Object |
 | test.js:70:11:70:11 | O | Object |
 | test.js:70:11:70:16 | O.seal | Object.seal |

@@ -14,7 +14,7 @@ private import codeql.rust.internal.PathResolution
  */
 private class StartswithCall extends Path::SafeAccessCheck::Range, CfgNodes::MethodCallExprCfgNode {
   StartswithCall() {
-    this.getAstNode().(Resolvable).getResolvedPath() = "<crate::path::Path>::starts_with"
+    this.getMethodCallExpr().getStaticTarget().getCanonicalPath() = "<std::path::Path>::starts_with"
   }
 
   override predicate checks(Cfg::CfgNode e, boolean branch) {
@@ -92,6 +92,16 @@ class RangeToStruct extends Struct {
 
   /** Gets the `end` field. */
   StructField getEnd() { result = this.getStructField("end") }
+}
+
+/**
+ * The [`RangeFull` struct][1].
+ *
+ * [1]: https://doc.rust-lang.org/core/ops/struct.RangeFull.html
+ */
+class RangeFullStruct extends Struct {
+  pragma[nomagic]
+  RangeFullStruct() { this.getCanonicalPath() = "core::ops::range::RangeFull" }
 }
 
 /**

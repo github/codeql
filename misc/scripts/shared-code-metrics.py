@@ -159,7 +159,7 @@ class Package(SharedAsset):
 
     def containsDirectory(self, dir):
         return self.path.parent.parts == dir.parts[:len(self.path.parent.parts)]
-        # dir.startsWith(self.path.parent)
+        # dir.startsWith(self.path.parent)
 
     # Constructs a list of transitive depedencies of this package.
     def calculateDependencies(self, packageNameMap):

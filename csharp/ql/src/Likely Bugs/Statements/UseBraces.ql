@@ -6,9 +6,10 @@
  * @problem.severity warning
  * @precision medium
  * @id cs/misleading-indentation
- * @tags changeability
+ * @tags quality
+ *       maintainability
+ *       readability
  *       correctness
- *       logic
  */
 
 import csharp

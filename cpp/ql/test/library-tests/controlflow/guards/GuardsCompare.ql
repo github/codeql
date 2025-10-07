@@ -27,7 +27,7 @@ where
     )
   )
   or
-  exists(AbstractValue value |
+  exists(GuardValue value |
     guard.comparesLt(left, k, true, value) and op = " < "
     or
     guard.comparesLt(left, k, false, value) and op = " >= "
@@ -38,4 +38,4 @@ where
   |
     msg = left + op + k + " when " + guard + " is " + value
   )
-select guard.getLocation().getStartLine(), msg
+select guard, msg

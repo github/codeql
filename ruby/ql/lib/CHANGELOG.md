@@ -1,3 +1,26 @@
+## 5.1.0
+
+### New Features
+
+* Initial modeling for the Ruby Grape framework in `Grape.qll` has been added to detect API endpoints, parameters, and headers within Grape API classes.
+
+## 5.0.4
+
+No user-facing changes.
+
+## 5.0.3
+
+No user-facing changes.
+
+## 5.0.2
+
+### Bug Fixes
+
+* Made the following changes to `NetHttpRequest`
+  * Adds `connectionNode`, like other Ruby HTTP clients
+  * Makes `requestNode` and `connectionNode` public so subclasses can use them
+  * Adds detection of `Net::HTTP.start`, a common way to make HTTP requests in Ruby
+
 ## 5.0.1
 
 ### Minor Analysis Improvements

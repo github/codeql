@@ -4,8 +4,7 @@ import ControlFlow
 query predicate conditionBlock(
   BasicBlocks::ConditionBlock cb, BasicBlock controlled, boolean testIsTrue
 ) {
-  cb.edgeDominates(controlled,
-    any(SuccessorTypes::ConditionalSuccessor s | testIsTrue = s.getValue()))
+  cb.edgeDominates(controlled, any(ConditionalSuccessor s | testIsTrue = s.getValue()))
 }
 
 ControlFlow::Node successor(ControlFlow::Node node, boolean kind) {

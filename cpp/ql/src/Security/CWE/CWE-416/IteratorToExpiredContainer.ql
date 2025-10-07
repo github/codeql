@@ -145,6 +145,18 @@ module Config implements DataFlow::StateConfigSig {
     // ```
     result instanceof DataFlow::FeatureHasSinkCallContext
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(DataFlow::Node mid, FlowState state | result = mid.getLocation() |
+      destroyedToBeginSink(sink) and
+      isSink(sink, state) and
+      state = Config::DestroyedToBegin(mid)
+    )
+  }
 }
 
 module Flow = DataFlow::GlobalWithState<Config>;

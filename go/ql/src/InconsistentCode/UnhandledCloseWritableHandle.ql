@@ -70,8 +70,8 @@ predicate unhandledCall(DataFlow::CallNode call) {
  */
 predicate isWritableFileHandle(DataFlow::Node source, DataFlow::CallNode call) {
   exists(OpenFileFun f, DataFlow::Node flags, QualifiedName flag |
-    // check that the source is a result of the call
-    source = call.getAResult() and
+    // check that the source is the first result of the call
+    source = call.getResult(0) and
     // find a call to the os.OpenFile function
     f.getACall() = call and
     // get the flags expression used for opening the file
@@ -128,6 +128,14 @@ module UnhandledFileCloseConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isWritableFileHandle(source, _) }
 
   predicate isSink(DataFlow::Node sink) { isCloseSink(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    exists(DataFlow::CallNode openCall | result = openCall.getLocation() |
+      isWritableFileHandle(source, openCall)
+    )
+  }
 }
 
 /**

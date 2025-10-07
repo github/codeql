@@ -37,8 +37,8 @@ query predicate getBody(ClosureExpr x, Expr getBody) {
   toBeTested(x) and not x.isUnknown() and getBody = x.getBody()
 }
 
-query predicate getClosureBinder(ClosureExpr x, ClosureBinder getClosureBinder) {
-  toBeTested(x) and not x.isUnknown() and getClosureBinder = x.getClosureBinder()
+query predicate getForBinder(ClosureExpr x, ForBinder getForBinder) {
+  toBeTested(x) and not x.isUnknown() and getForBinder = x.getForBinder()
 }
 
 query predicate getRetType(ClosureExpr x, RetTypeRepr getRetType) {

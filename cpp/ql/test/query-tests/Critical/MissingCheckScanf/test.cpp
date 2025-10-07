@@ -194,7 +194,7 @@ int main()
 
 		if (b >= 1)
 		{
-			use(i); // BAD [NOT DETECTED]: scanf can return EOF (boolifies true)
+			use(i); // BAD: scanf can return EOF (boolifies true)
 		}
 	}
 
@@ -566,7 +566,7 @@ void test_scanf_compared_in_conjunct_right(bool b) {
   int i;
   bool success = b && scanf("%d", &i) == 1;
   if(success) {
-    use(i); // GOOD [FALSE POSITIVE]
+    use(i); // GOOD
   }
 }
 
@@ -574,6 +574,6 @@ void test_scanf_compared_in_conjunct_left(bool b) {
   int i;
   bool success = scanf("%d", &i) == 1 && b;
   if(success) {
-    use(i); // GOOD [FALSE POSITIVE]
+    use(i); // GOOD
   }
 }

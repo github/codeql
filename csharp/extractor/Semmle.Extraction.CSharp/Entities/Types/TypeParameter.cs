@@ -28,7 +28,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             foreach (var l in Symbol.Locations)
             {
-                trapFile.type_location(this, Context.CreateLocation(l));
+                WriteLocationToTrap(trapFile.type_location, this, Context.CreateLocation(l));
             }
 
             if (IsSourceDeclaration)

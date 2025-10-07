@@ -6,9 +6,15 @@
 #     bazel run @@//misc/bazel/3rdparty:vendor_tree_sitter_extractors
 ###############################################################################
 
+load("@rules_rust//cargo:defs.bzl", "cargo_toml_env_vars")
 load("@rules_rust//rust:defs.bzl", "rust_library")
 
 package(default_visibility = ["//visibility:public"])
+
+cargo_toml_env_vars(
+    name = "cargo_toml_env_vars",
+    src = "Cargo.toml",
+)
 
 rust_library(
     name = "argfile",
@@ -33,6 +39,9 @@ rust_library(
     ],
     crate_root = "src/lib.rs",
     edition = "2021",
+    rustc_env_files = [
+        ":cargo_toml_env_vars",
+    ],
     rustc_flags = [
         "--cap-lints=allow",
     ],
@@ -85,6 +94,6 @@ rust_library(
     version = "0.2.1",
     deps = [
         "@vendor_ts__fs-err-2.11.0//:fs_err",
-        "@vendor_ts__os_str_bytes-7.0.0//:os_str_bytes",
+        "@vendor_ts__os_str_bytes-7.1.1//:os_str_bytes",
     ],
 )

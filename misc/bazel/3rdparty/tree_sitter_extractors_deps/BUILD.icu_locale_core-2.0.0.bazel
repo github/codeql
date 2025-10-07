@@ -6,9 +6,15 @@
 #     bazel run @@//misc/bazel/3rdparty:vendor_tree_sitter_extractors
 ###############################################################################
 
+load("@rules_rust//cargo:defs.bzl", "cargo_toml_env_vars")
 load("@rules_rust//rust:defs.bzl", "rust_library")
 
 package(default_visibility = ["//visibility:public"])
+
+cargo_toml_env_vars(
+    name = "cargo_toml_env_vars",
+    src = "Cargo.toml",
+)
 
 rust_library(
     name = "icu_locale_core",
@@ -35,6 +41,9 @@ rust_library(
     edition = "2021",
     proc_macro_deps = [
         "@vendor_ts__displaydoc-0.2.5//:displaydoc",
+    ],
+    rustc_env_files = [
+        ":cargo_toml_env_vars",
     ],
     rustc_flags = [
         "--cap-lints=allow",
@@ -90,6 +99,6 @@ rust_library(
         "@vendor_ts__litemap-0.8.0//:litemap",
         "@vendor_ts__tinystr-0.8.1//:tinystr",
         "@vendor_ts__writeable-0.6.1//:writeable",
-        "@vendor_ts__zerovec-0.11.2//:zerovec",
+        "@vendor_ts__zerovec-0.11.4//:zerovec",
     ],
 )
