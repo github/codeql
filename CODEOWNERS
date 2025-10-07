@@ -1,3 +1,7 @@
+# Catch-all for anything which isn't matched by a line lower down
+* @github/codeql-alert-coverage-eng
+
+# CodeQL language libraries
 /actions/ @github/codeql-dynamic
 /cpp/ @github/codeql-c-analysis
 /csharp/ @github/codeql-csharp
