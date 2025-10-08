@@ -13,6 +13,12 @@
       algorithm means that encrypted or hashed data is less
       secure than it appears to be.
     </p>
+    <p>
+      This query alerts on any use of a weak cryptographic algorithm, that is
+      not a hashing algorithm. Use of broken or weak cryptographic hash
+      functions are handled by the
+      <code>rb/weak-sensitive-data-hashing</code> query.
+    </p>
   </overview>
   <recommendation>
     <p>
