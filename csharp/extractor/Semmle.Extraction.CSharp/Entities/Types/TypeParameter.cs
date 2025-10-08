@@ -28,10 +28,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (Context.ExtractLocation(Symbol))
             {
-                foreach (var l in Symbol.Locations)
-                {
-                    WriteLocationToTrap(trapFile.type_location, this, Context.CreateLocation(l));
-                }
+                var locations = Context.GetLocations(Symbol);
+                WriteLocationsToTrap(trapFile.type_location, this, locations);
             }
 
             if (IsSourceDeclaration)
