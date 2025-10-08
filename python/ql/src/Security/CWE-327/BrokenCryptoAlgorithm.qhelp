@@ -23,11 +23,6 @@
                decrypt sensitive data.
                </li>
                <li>
-               If a weak hashing algorithm is used to protect data integrity, an
-               attacker may be able to craft a malicious input that has the same
-               hash as a benign one.
-               </li>
-               <li>
                If a weak algorithm is used for digital signatures, an attacker may
                be able to forge signatures and impersonate legitimate users.
                </li>
