@@ -11,7 +11,7 @@
 | test.go:77:20:77:25 | buffer | test.go:72:2:72:31 | ... := ...[0] | test.go:77:20:77:25 | buffer | Cross-site scripting vulnerability due to $@. | test.go:72:2:72:31 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:83:16:83:24 | selection of Value | test.go:82:2:82:32 | ... := ...[0] | test.go:83:16:83:24 | selection of Value | Cross-site scripting vulnerability due to $@. | test.go:82:2:82:32 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:89:16:89:31 | selection of Value | test.go:88:13:88:25 | call to Cookies | test.go:89:16:89:31 | selection of Value | Cross-site scripting vulnerability due to $@. | test.go:88:13:88:25 | call to Cookies | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:100:16:100:21 | selection of s | test.go:99:11:99:15 | &... | test.go:100:16:100:21 | selection of s | Cross-site scripting vulnerability due to $@. | test.go:99:11:99:15 | &... | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:100:16:100:21 | selection of s | test.go:99:11:99:15 | &... [postupdate] | test.go:100:16:100:21 | selection of s | Cross-site scripting vulnerability due to $@. | test.go:99:11:99:15 | &... [postupdate] | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:114:16:114:42 | type assertion | test.go:113:21:113:42 | call to Param | test.go:114:16:114:42 | type assertion | Cross-site scripting vulnerability due to $@. | test.go:113:21:113:42 | call to Param | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:125:16:125:20 | param | test.go:124:11:124:32 | call to Param | test.go:125:16:125:20 | param | Cross-site scripting vulnerability due to $@. | test.go:124:11:124:32 | call to Param | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:131:20:131:32 | type conversion | test.go:130:11:130:32 | call to Param | test.go:131:20:131:32 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:130:11:130:32 | call to Param | user-provided value | test.go:0:0:0:0 | test.go |  |
@@ -29,23 +29,23 @@ edges
 | test.go:57:2:57:46 | ... := ...[0] | test.go:58:13:58:22 | fileHeader | provenance | Src:MaD:4  |
 | test.go:58:2:58:29 | ... := ...[0] | test.go:60:2:60:5 | file | provenance |  |
 | test.go:58:13:58:22 | fileHeader | test.go:58:2:58:29 | ... := ...[0] | provenance | MaD:17 |
-| test.go:59:2:59:7 | definition of buffer | test.go:61:20:61:25 | buffer | provenance |  |
-| test.go:60:2:60:5 | file | test.go:59:2:59:7 | definition of buffer | provenance | MaD:15 |
-| test.go:60:2:60:5 | file | test.go:59:2:59:7 | definition of buffer | provenance | MaD:16 |
-| test.go:60:2:60:5 | file | test.go:59:2:59:7 | definition of buffer | provenance | MaD:18 |
+| test.go:60:2:60:5 | file | test.go:60:12:60:17 | buffer [postupdate] | provenance | MaD:15 |
+| test.go:60:2:60:5 | file | test.go:60:12:60:17 | buffer [postupdate] | provenance | MaD:16 |
+| test.go:60:2:60:5 | file | test.go:60:12:60:17 | buffer [postupdate] | provenance | MaD:18 |
+| test.go:60:12:60:17 | buffer [postupdate] | test.go:61:20:61:25 | buffer | provenance |  |
 | test.go:66:2:66:31 | ... := ...[0] | test.go:67:16:67:41 | index expression | provenance | Src:MaD:7  |
 | test.go:72:2:72:31 | ... := ...[0] | test.go:74:13:74:22 | fileHeader | provenance | Src:MaD:7  |
 | test.go:74:2:74:29 | ... := ...[0] | test.go:76:2:76:5 | file | provenance |  |
 | test.go:74:13:74:22 | fileHeader | test.go:74:2:74:29 | ... := ...[0] | provenance | MaD:17 |
-| test.go:75:2:75:7 | definition of buffer | test.go:77:20:77:25 | buffer | provenance |  |
-| test.go:76:2:76:5 | file | test.go:75:2:75:7 | definition of buffer | provenance | MaD:15 |
-| test.go:76:2:76:5 | file | test.go:75:2:75:7 | definition of buffer | provenance | MaD:16 |
-| test.go:76:2:76:5 | file | test.go:75:2:75:7 | definition of buffer | provenance | MaD:18 |
+| test.go:76:2:76:5 | file | test.go:76:12:76:17 | buffer [postupdate] | provenance | MaD:15 |
+| test.go:76:2:76:5 | file | test.go:76:12:76:17 | buffer [postupdate] | provenance | MaD:16 |
+| test.go:76:2:76:5 | file | test.go:76:12:76:17 | buffer [postupdate] | provenance | MaD:18 |
+| test.go:76:12:76:17 | buffer [postupdate] | test.go:77:20:77:25 | buffer | provenance |  |
 | test.go:82:2:82:32 | ... := ...[0] | test.go:83:16:83:24 | selection of Value | provenance | Src:MaD:2  |
 | test.go:88:13:88:25 | call to Cookies | test.go:89:16:89:31 | selection of Value | provenance | Src:MaD:3  |
-| test.go:99:11:99:15 | &... | test.go:100:16:100:21 | selection of s | provenance | Src:MaD:1  |
-| test.go:112:17:112:19 | definition of ctx | test.go:114:16:114:18 | ctx | provenance |  |
-| test.go:113:21:113:42 | call to Param | test.go:112:17:112:19 | definition of ctx | provenance | Src:MaD:8 MaD:14 |
+| test.go:99:11:99:15 | &... [postupdate] | test.go:100:16:100:21 | selection of s | provenance | Src:MaD:1  |
+| test.go:113:2:113:4 | ctx [postupdate] | test.go:114:16:114:18 | ctx | provenance |  |
+| test.go:113:21:113:42 | call to Param | test.go:113:2:113:4 | ctx [postupdate] | provenance | Src:MaD:8 MaD:14 |
 | test.go:114:16:114:18 | ctx | test.go:114:16:114:33 | call to Get | provenance | MaD:13 |
 | test.go:114:16:114:33 | call to Get | test.go:114:16:114:42 | type assertion | provenance |  |
 | test.go:124:11:124:32 | call to Param | test.go:125:16:125:20 | param | provenance | Src:MaD:8  |
@@ -93,24 +93,24 @@ nodes
 | test.go:57:2:57:46 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:58:2:58:29 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:58:13:58:22 | fileHeader | semmle.label | fileHeader |
-| test.go:59:2:59:7 | definition of buffer | semmle.label | definition of buffer |
 | test.go:60:2:60:5 | file | semmle.label | file |
+| test.go:60:12:60:17 | buffer [postupdate] | semmle.label | buffer [postupdate] |
 | test.go:61:20:61:25 | buffer | semmle.label | buffer |
 | test.go:66:2:66:31 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:67:16:67:41 | index expression | semmle.label | index expression |
 | test.go:72:2:72:31 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:74:2:74:29 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:74:13:74:22 | fileHeader | semmle.label | fileHeader |
-| test.go:75:2:75:7 | definition of buffer | semmle.label | definition of buffer |
 | test.go:76:2:76:5 | file | semmle.label | file |
+| test.go:76:12:76:17 | buffer [postupdate] | semmle.label | buffer [postupdate] |
 | test.go:77:20:77:25 | buffer | semmle.label | buffer |
 | test.go:82:2:82:32 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:83:16:83:24 | selection of Value | semmle.label | selection of Value |
 | test.go:88:13:88:25 | call to Cookies | semmle.label | call to Cookies |
 | test.go:89:16:89:31 | selection of Value | semmle.label | selection of Value |
-| test.go:99:11:99:15 | &... | semmle.label | &... |
+| test.go:99:11:99:15 | &... [postupdate] | semmle.label | &... [postupdate] |
 | test.go:100:16:100:21 | selection of s | semmle.label | selection of s |
-| test.go:112:17:112:19 | definition of ctx | semmle.label | definition of ctx |
+| test.go:113:2:113:4 | ctx [postupdate] | semmle.label | ctx [postupdate] |
 | test.go:113:21:113:42 | call to Param | semmle.label | call to Param |
 | test.go:114:16:114:18 | ctx | semmle.label | ctx |
 | test.go:114:16:114:33 | call to Get | semmle.label | call to Get |

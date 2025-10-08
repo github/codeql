@@ -1,0 +1,4 @@
+testFailures
+resolveDollarCrate
+| exe/src/main.rs:8:5:8:14 | $crate | lib/src/lib.rs:0:0:0:0 | Crate(lib@0.1.0) |
+| lib/src/a_module/mod.rs:2:5:2:14 | $crate | lib/src/lib.rs:0:0:0:0 | Crate(lib@0.1.0) |

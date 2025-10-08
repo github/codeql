@@ -5,8 +5,8 @@ import "fmt"
 type s struct{}
 
 func (_ s) String() string {
-	password := "horsebatterystaplecorrect"
-	return password // $ Source
+	password := "horsebatterystaplecorrect" // $ Source
+	return password
 }
 
 func overrideTest(x s, y fmt.Stringer) {

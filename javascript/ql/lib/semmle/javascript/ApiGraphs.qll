@@ -1324,7 +1324,9 @@ module API {
       exists(DataFlow::TypeTracker t, StepSummary summary, DataFlow::SourceNode prev |
         prev = trackUseNode(nd, promisified, boundArgs, prop, t) and
         StepSummary::step(prev, res, summary) and
-        result = t.append(summary)
+        result = t.append(summary) and
+        // Block argument-passing into 'this' when it determines the call target
+        not summary = CallReceiverStep()
       )
     }
 
@@ -1381,7 +1383,9 @@ module API {
       exists(DataFlow::TypeBackTracker t, StepSummary summary, DataFlow::Node next |
         next = trackDefNode(nd, t) and
         StepSummary::step(prev, next, summary) and
-        result = t.prepend(summary)
+        result = t.prepend(summary) and
+        // Block argument-passing steps from 'this' back to a receiver when it determines the call target
+        not summary = CallReceiverStep()
       )
     }
 

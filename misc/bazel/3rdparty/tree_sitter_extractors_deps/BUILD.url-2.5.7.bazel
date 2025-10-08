@@ -98,6 +98,6 @@ rust_library(
         "@vendor_ts__form_urlencoded-1.2.2//:form_urlencoded",
         "@vendor_ts__idna-1.1.0//:idna",
         "@vendor_ts__percent-encoding-2.3.2//:percent_encoding",
-        "@vendor_ts__serde-1.0.219//:serde",
+        "@vendor_ts__serde-1.0.228//:serde",
     ],
 )

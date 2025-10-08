@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp.Entities
             ContainingType!.PopulateGenerics();
 
             trapFile.constructors(this, Symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition);
-            trapFile.constructor_location(this, Location);
+            WriteLocationToTrap(trapFile.constructor_location, this, Location);
 
             if (MakeSynthetic)
             {
@@ -222,7 +222,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 if (Symbol.IsImplicitlyDeclared)
                 {
-                    return ContainingType!.ReportingLocation;
+                    var best = Symbol.Locations.Where(l => l.IsInSource).BestOrDefault();
+                    return best ?? ContainingType!.ReportingLocation;
                 }
 
                 return Symbol.ContainingType.Locations.FirstOrDefault();

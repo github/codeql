@@ -442,7 +442,7 @@ module SourceSinkInterpretationInput implements
       f = e.asFieldEntity()
     |
       c = "" and
-      fw.writesField(base, f, node.asNode()) and
+      fw.writesFieldPreUpdate(base, f, node.asNode()) and
       pragma[only_bind_into](e) = getElementWithQualifier(f, base)
     )
     or
