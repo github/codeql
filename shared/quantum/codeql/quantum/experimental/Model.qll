@@ -825,20 +825,20 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      */
     abstract string getRawEllipticCurveName();
 
-    abstract TEllipticCurveFamilyType getEllipticCurveFamilyType();
+    abstract TEllipticCurveType getEllipticCurveType();
 
     abstract int getKeySize();
 
     /**
      * The 'parsed' curve name, e.g., "P-256" or "secp256r1"
-     * The parsed name is full name of the curve, including the family, key size, and other
+     * The parsed name is full name of the curve, including the type, key size, and other
      * typical parameters found on the name.
      *
      * In many cases this will be equivalent to `getRawEllipticCurveAlgorithmName()`,
      * but not always (e.g., if the curve is specified through a raw NID).
      *
      * In cases like an NID, we want the standardized name so users can quickly
-     * understand what the curve is, while also parsing out the family and key size
+     * understand what the curve is, while also parsing out the type and key size
      * separately.
      */
     string getParsedEllipticCurveName() { result = this.getRawEllipticCurveName() }
@@ -854,7 +854,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the type of this digest algorithm, e.g., "SHA1", "SHA2", "MD5" etc.
      */
-    abstract THashType getHashFamily();
+    abstract THashType getHashType();
 
     /**
      * Gets the isolated name as it appears in source, e.g., "SHA-256" in "SHA-256/PKCS7Padding".
@@ -2293,13 +2293,13 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      *
      * When modeling a new hashing algorithm, use this predicate to specify the type of the algorithm.
      */
-    HashType getHashFamily() { result = instance.asAlg().getHashFamily() }
+    HashType getHashType() { result = instance.asAlg().getHashType() }
 
-    override string getAlgorithmName() { result = this.getHashFamily().toString() }
+    override string getAlgorithmName() { result = this.getHashType().toString() }
 
     int getDigestLength() {
       result = instance.asAlg().getFixedDigestLength() or
-      fixedImplicitDigestLength(instance.asAlg().getHashFamily(), result)
+      fixedImplicitDigestLength(instance.asAlg().getHashType(), result)
     }
 
     final override predicate properties(string key, string value, Location location) {
@@ -2340,9 +2340,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     override string getAlgorithmName() { result = this.getRawAlgorithmName() }
 
-    EllipticCurveFamilyType getEllipticCurveFamilyType() {
-      result = instance.asAlg().getEllipticCurveFamilyType()
-    }
+    EllipticCurveType getEllipticCurveType() { result = instance.asAlg().getEllipticCurveType() }
 
     override predicate properties(string key, string value, Location location) {
       super.properties(key, value, location)

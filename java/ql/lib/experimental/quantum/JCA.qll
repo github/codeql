@@ -426,7 +426,7 @@ module JCAModel {
 
     override string getRawHashAlgorithmName() { result = super.getPadding() }
 
-    override Crypto::THashType getHashFamily() { result = hash_name_to_type_known(hashName, _) }
+    override Crypto::THashType getHashType() { result = hash_name_to_type_known(hashName, _) }
 
     override int getFixedDigestLength() { exists(hash_name_to_type_known(hashName, result)) }
   }
@@ -859,7 +859,7 @@ module JCAModel {
 
     override string getRawHashAlgorithmName() { result = super.getValue() }
 
-    override Crypto::THashType getHashFamily() {
+    override Crypto::THashType getHashType() {
       result = hash_name_to_type_known(this.getRawHashAlgorithmName(), _)
     }
 
@@ -1302,7 +1302,7 @@ module JCAModel {
 
     override string getRawHashAlgorithmName() { result = this.(StringLiteral).getValue() }
 
-    override Crypto::THashType getHashFamily() { result = hash_name_to_type_known(hashName, _) }
+    override Crypto::THashType getHashType() { result = hash_name_to_type_known(hashName, _) }
 
     override int getFixedDigestLength() { exists(hash_name_to_type_known(hashName, result)) }
   }
@@ -1770,7 +1770,7 @@ module JCAModel {
 
     override string getRawHashAlgorithmName() { result = this.(StringLiteral).getValue() }
 
-    override Crypto::THashType getHashFamily() { result = hashType }
+    override Crypto::THashType getHashType() { result = hashType }
 
     override int getFixedDigestLength() { result = digestLength }
   }
@@ -1905,7 +1905,7 @@ module JCAModel {
 
     override string getRawEllipticCurveName() { result = super.getValue() }
 
-    override Crypto::EllipticCurveFamilyType getEllipticCurveFamilyType() {
+    override Crypto::EllipticCurveType getEllipticCurveType() {
       if
         Crypto::ellipticCurveNameToKnownKeySizeAndFamilyMapping(this.getRawEllipticCurveName(), _, _)
       then
