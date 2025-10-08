@@ -1,0 +1,7 @@
+| InsecureIVorNonceSource.java:20:51:20:56 | Nonce | Nonce or IV uses insecure or constant source $@ | InsecureIVorNonceSource.java:14:21:14:81 | Constant | Constant |
+| InsecureIVorNonceSource.java:49:51:49:56 | Nonce | Nonce or IV uses insecure or constant source $@ | InsecureIVorNonceSource.java:42:21:42:21 | Constant | Constant |
+| InsecureIVorNonceSource.java:65:51:65:56 | Nonce | Nonce or IV uses insecure or constant source $@ | InsecureIVorNonceSource.java:57:13:57:62 | Constant | Constant |
+| InsecureIVorNonceSource.java:65:51:65:56 | Nonce | Nonce or IV uses insecure or constant source $@ | InsecureIVorNonceSource.java:58:13:58:63 | Constant | Constant |
+| InsecureIVorNonceSource.java:81:51:81:56 | Nonce | Nonce or IV uses insecure or constant source $@ | InsecureIVorNonceSource.java:73:13:73:73 | Constant | Constant |
+| InsecureIVorNonceSource.java:81:51:81:56 | Nonce | Nonce or IV uses insecure or constant source $@ | InsecureIVorNonceSource.java:74:13:74:74 | Constant | Constant |
+| InsecureIVorNonceSource.java:206:51:206:56 | Nonce | Nonce or IV uses insecure or constant source $@ | InsecureIVorNonceSource.java:194:26:194:30 | RandomNumberGeneration | RandomNumberGeneration |

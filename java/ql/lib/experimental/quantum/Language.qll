@@ -93,14 +93,29 @@ private class GenericRemoteDataSource extends Crypto::GenericRemoteDataSource {
   override string getAdditionalDescription() { result = this.toString() }
 }
 
-private class ConstantDataSource extends Crypto::GenericConstantSourceInstance instanceof Literal {
-  ConstantDataSource() {
+private class ConstantDataSourceLiteral extends Crypto::GenericConstantSourceInstance instanceof Literal
+{
+  ConstantDataSourceLiteral() {
     // TODO: this is an API specific workaround for JCA, as 'EC' is a constant that may be used
     // where typical algorithms are specified, but EC specifically means set up a
     // default curve container, that will later be specified explicitly (or if not a default)
     // curve is used.
     this.getValue() != "EC"
   }
+
+  override DataFlow::Node getOutputNode() { result.asExpr() = this }
+
+  override predicate flowsTo(Crypto::FlowAwareElement other) {
+    // TODO: separate config to avoid blowing up data-flow analysis
+    GenericDataSourceFlow::flow(this.getOutputNode(), other.getInputNode())
+  }
+
+  override string getAdditionalDescription() { result = this.toString() }
+}
+
+private class ConstantDataSourceArrayInitializer extends Crypto::GenericConstantSourceInstance instanceof ArrayInit
+{
+  ConstantDataSourceArrayInitializer() { exists(Literal l | this.getAnInit() = l) }
 
   override DataFlow::Node getOutputNode() { result.asExpr() = this }
 
