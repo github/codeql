@@ -29,7 +29,6 @@
 | jca/AesWrapAndPBEWith.java:109:27:109:54 | KeyDerivation | Output | jca/AesWrapAndPBEWith.java:109:27:109:54 | Key |
 | jca/AesWrapAndPBEWith.java:109:27:109:54 | KeyDerivation | Salt | jca/AesWrapAndPBEWith.java:107:66:107:69 | Salt |
 | jca/AesWrapAndPBEWith.java:123:42:123:63 | Message | Source | jca/AesWrapAndPBEWith.java:200:55:200:69 | Parameter |
-| jca/AesWrapAndPBEWith.java:123:66:123:69 | Salt | Source | jca/AesWrapAndPBEWith.java:122:9:122:42 | RandomNumberGeneration |
 | jca/AesWrapAndPBEWith.java:123:66:123:69 | Salt | Source | jca/AesWrapAndPBEWith.java:122:38:122:41 | RandomNumberGeneration |
 | jca/AesWrapAndPBEWith.java:124:65:124:86 | HMACAlgorithm | H | jca/AesWrapAndPBEWith.java:124:65:124:86 | HashAlgorithm |
 | jca/AesWrapAndPBEWith.java:124:65:124:86 | KeyDerivationAlgorithm | PRF | jca/AesWrapAndPBEWith.java:124:65:124:86 | HMACAlgorithm |
@@ -38,7 +37,6 @@
 | jca/AesWrapAndPBEWith.java:125:27:125:54 | KeyDerivation | Output | jca/AesWrapAndPBEWith.java:125:27:125:54 | Key |
 | jca/AesWrapAndPBEWith.java:125:27:125:54 | KeyDerivation | Salt | jca/AesWrapAndPBEWith.java:123:66:123:69 | Salt |
 | jca/AesWrapAndPBEWith.java:141:42:141:63 | Message | Source | jca/AesWrapAndPBEWith.java:200:55:200:69 | Parameter |
-| jca/AesWrapAndPBEWith.java:141:66:141:69 | Salt | Source | jca/AesWrapAndPBEWith.java:140:9:140:42 | RandomNumberGeneration |
 | jca/AesWrapAndPBEWith.java:141:66:141:69 | Salt | Source | jca/AesWrapAndPBEWith.java:140:38:140:41 | RandomNumberGeneration |
 | jca/AesWrapAndPBEWith.java:143:28:143:55 | KeyDerivation | Algorithm | jca/AesWrapAndPBEWith.java:142:65:142:98 | KeyDerivationAlgorithm |
 | jca/AesWrapAndPBEWith.java:143:28:143:55 | KeyDerivation | Input | jca/AesWrapAndPBEWith.java:141:42:141:63 | Message |
@@ -47,7 +45,6 @@
 | jca/AesWrapAndPBEWith.java:146:44:146:65 | KeyOperationAlgorithm | Mode | jca/AesWrapAndPBEWith.java:146:44:146:65 | ModeOfOperation |
 | jca/AesWrapAndPBEWith.java:146:44:146:65 | KeyOperationAlgorithm | Padding | jca/AesWrapAndPBEWith.java:146:44:146:65 | PaddingAlgorithm |
 | jca/AesWrapAndPBEWith.java:150:42:150:47 | Key | Source | jca/AesWrapAndPBEWith.java:150:42:150:47 | Key |
-| jca/AesWrapAndPBEWith.java:150:50:150:55 | Nonce | Source | jca/AesWrapAndPBEWith.java:148:9:148:40 | RandomNumberGeneration |
 | jca/AesWrapAndPBEWith.java:150:50:150:55 | Nonce | Source | jca/AesWrapAndPBEWith.java:148:38:148:39 | RandomNumberGeneration |
 | jca/AesWrapAndPBEWith.java:151:29:151:64 | EncryptOperation | Algorithm | jca/AesWrapAndPBEWith.java:146:44:146:65 | KeyOperationAlgorithm |
 | jca/AesWrapAndPBEWith.java:151:29:151:64 | EncryptOperation | Input | jca/AesWrapAndPBEWith.java:151:44:151:63 | Message |
@@ -56,7 +53,6 @@
 | jca/AesWrapAndPBEWith.java:151:29:151:64 | EncryptOperation | Output | jca/AesWrapAndPBEWith.java:151:29:151:64 | KeyOperationOutput |
 | jca/AesWrapAndPBEWith.java:151:44:151:63 | Message | Source | jca/AesWrapAndPBEWith.java:200:72:200:87 | Parameter |
 | jca/AesWrapAndPBEWith.java:168:42:168:63 | Message | Source | jca/AesWrapAndPBEWith.java:200:55:200:69 | Parameter |
-| jca/AesWrapAndPBEWith.java:168:66:168:69 | Salt | Source | jca/AesWrapAndPBEWith.java:167:9:167:42 | RandomNumberGeneration |
 | jca/AesWrapAndPBEWith.java:168:66:168:69 | Salt | Source | jca/AesWrapAndPBEWith.java:167:38:167:41 | RandomNumberGeneration |
 | jca/AesWrapAndPBEWith.java:170:28:170:55 | KeyDerivation | Algorithm | jca/AesWrapAndPBEWith.java:169:65:169:96 | KeyDerivationAlgorithm |
 | jca/AesWrapAndPBEWith.java:170:28:170:55 | KeyDerivation | Input | jca/AesWrapAndPBEWith.java:168:42:168:63 | Message |
@@ -65,7 +61,6 @@
 | jca/AesWrapAndPBEWith.java:173:44:173:65 | KeyOperationAlgorithm | Mode | jca/AesWrapAndPBEWith.java:173:44:173:65 | ModeOfOperation |
 | jca/AesWrapAndPBEWith.java:173:44:173:65 | KeyOperationAlgorithm | Padding | jca/AesWrapAndPBEWith.java:173:44:173:65 | PaddingAlgorithm |
 | jca/AesWrapAndPBEWith.java:177:42:177:47 | Key | Source | jca/AesWrapAndPBEWith.java:177:42:177:47 | Key |
-| jca/AesWrapAndPBEWith.java:177:50:177:55 | Nonce | Source | jca/AesWrapAndPBEWith.java:175:9:175:40 | RandomNumberGeneration |
 | jca/AesWrapAndPBEWith.java:177:50:177:55 | Nonce | Source | jca/AesWrapAndPBEWith.java:175:38:175:39 | RandomNumberGeneration |
 | jca/AesWrapAndPBEWith.java:178:29:178:64 | EncryptOperation | Algorithm | jca/AesWrapAndPBEWith.java:173:44:173:65 | KeyOperationAlgorithm |
 | jca/AesWrapAndPBEWith.java:178:29:178:64 | EncryptOperation | Input | jca/AesWrapAndPBEWith.java:178:44:178:63 | Message |
@@ -112,7 +107,6 @@
 | jca/AsymmetricEncryptionMacHybridCryptosystem.java:172:47:172:65 | KeyOperationAlgorithm | Mode | jca/AsymmetricEncryptionMacHybridCryptosystem.java:172:47:172:65 | ModeOfOperation |
 | jca/AsymmetricEncryptionMacHybridCryptosystem.java:172:47:172:65 | KeyOperationAlgorithm | Padding | jca/AsymmetricEncryptionMacHybridCryptosystem.java:172:47:172:65 | PaddingAlgorithm |
 | jca/AsymmetricEncryptionMacHybridCryptosystem.java:173:45:173:50 | Key | Source | jca/AsymmetricEncryptionMacHybridCryptosystem.java:173:45:173:50 | Key |
-| jca/AsymmetricEncryptionMacHybridCryptosystem.java:173:53:173:81 | Nonce | Source | jca/AsymmetricEncryptionMacHybridCryptosystem.java:171:9:171:40 | RandomNumberGeneration |
 | jca/AsymmetricEncryptionMacHybridCryptosystem.java:173:53:173:81 | Nonce | Source | jca/AsymmetricEncryptionMacHybridCryptosystem.java:171:38:171:39 | RandomNumberGeneration |
 | jca/AsymmetricEncryptionMacHybridCryptosystem.java:174:29:174:56 | EncryptOperation | Algorithm | jca/AsymmetricEncryptionMacHybridCryptosystem.java:172:47:172:65 | KeyOperationAlgorithm |
 | jca/AsymmetricEncryptionMacHybridCryptosystem.java:174:29:174:56 | EncryptOperation | Input | jca/AsymmetricEncryptionMacHybridCryptosystem.java:174:47:174:55 | Message |
@@ -142,7 +136,6 @@
 | jca/AsymmetricEncryptionMacHybridCryptosystem.java:221:44:221:62 | KeyOperationAlgorithm | Mode | jca/AsymmetricEncryptionMacHybridCryptosystem.java:221:44:221:62 | ModeOfOperation |
 | jca/AsymmetricEncryptionMacHybridCryptosystem.java:221:44:221:62 | KeyOperationAlgorithm | Padding | jca/AsymmetricEncryptionMacHybridCryptosystem.java:221:44:221:62 | PaddingAlgorithm |
 | jca/AsymmetricEncryptionMacHybridCryptosystem.java:222:42:222:47 | Key | Source | jca/AsymmetricEncryptionMacHybridCryptosystem.java:222:42:222:47 | Key |
-| jca/AsymmetricEncryptionMacHybridCryptosystem.java:222:50:222:78 | Nonce | Source | jca/AsymmetricEncryptionMacHybridCryptosystem.java:220:9:220:40 | RandomNumberGeneration |
 | jca/AsymmetricEncryptionMacHybridCryptosystem.java:222:50:222:78 | Nonce | Source | jca/AsymmetricEncryptionMacHybridCryptosystem.java:220:38:220:39 | RandomNumberGeneration |
 | jca/AsymmetricEncryptionMacHybridCryptosystem.java:223:29:223:53 | EncryptOperation | Algorithm | jca/AsymmetricEncryptionMacHybridCryptosystem.java:221:44:221:62 | KeyOperationAlgorithm |
 | jca/AsymmetricEncryptionMacHybridCryptosystem.java:223:29:223:53 | EncryptOperation | Input | jca/AsymmetricEncryptionMacHybridCryptosystem.java:223:44:223:52 | Message |
@@ -187,7 +180,6 @@
 | jca/ChainedEncryptionTest.java:19:44:19:62 | KeyOperationAlgorithm | Mode | jca/ChainedEncryptionTest.java:19:44:19:62 | ModeOfOperation |
 | jca/ChainedEncryptionTest.java:19:44:19:62 | KeyOperationAlgorithm | Padding | jca/ChainedEncryptionTest.java:19:44:19:62 | PaddingAlgorithm |
 | jca/ChainedEncryptionTest.java:23:42:23:44 | Key | Source | jca/ChainedEncryptionTest.java:119:28:119:47 | Key |
-| jca/ChainedEncryptionTest.java:23:47:23:50 | Nonce | Source | jca/ChainedEncryptionTest.java:21:9:21:40 | RandomNumberGeneration |
 | jca/ChainedEncryptionTest.java:23:47:23:50 | Nonce | Source | jca/ChainedEncryptionTest.java:21:38:21:39 | RandomNumberGeneration |
 | jca/ChainedEncryptionTest.java:24:29:24:53 | EncryptOperation | Algorithm | jca/ChainedEncryptionTest.java:19:44:19:62 | KeyOperationAlgorithm |
 | jca/ChainedEncryptionTest.java:24:29:24:53 | EncryptOperation | Input | jca/ChainedEncryptionTest.java:24:44:24:52 | Message |
@@ -208,7 +200,6 @@
 | jca/ChainedEncryptionTest.java:40:44:40:62 | KeyOperationAlgorithm | Mode | jca/ChainedEncryptionTest.java:40:44:40:62 | KeyOperationAlgorithm |
 | jca/ChainedEncryptionTest.java:40:44:40:62 | KeyOperationAlgorithm | Padding | jca/ChainedEncryptionTest.java:40:44:40:62 | KeyOperationAlgorithm |
 | jca/ChainedEncryptionTest.java:43:42:43:44 | Key | Source | jca/ChainedEncryptionTest.java:124:31:124:53 | Key |
-| jca/ChainedEncryptionTest.java:43:47:43:72 | Nonce | Source | jca/ChainedEncryptionTest.java:42:9:42:43 | RandomNumberGeneration |
 | jca/ChainedEncryptionTest.java:43:47:43:72 | Nonce | Source | jca/ChainedEncryptionTest.java:42:38:42:42 | RandomNumberGeneration |
 | jca/ChainedEncryptionTest.java:44:29:44:53 | EncryptOperation | Algorithm | jca/ChainedEncryptionTest.java:40:44:40:62 | KeyOperationAlgorithm |
 | jca/ChainedEncryptionTest.java:44:29:44:53 | EncryptOperation | Input | jca/ChainedEncryptionTest.java:44:44:44:52 | Message |
@@ -233,7 +224,6 @@
 | jca/ChainedEncryptionTest.java:90:47:90:65 | KeyOperationAlgorithm | Mode | jca/ChainedEncryptionTest.java:90:47:90:65 | ModeOfOperation |
 | jca/ChainedEncryptionTest.java:90:47:90:65 | KeyOperationAlgorithm | Padding | jca/ChainedEncryptionTest.java:90:47:90:65 | PaddingAlgorithm |
 | jca/ChainedEncryptionTest.java:92:45:92:52 | Key | Source | jca/ChainedEncryptionTest.java:81:30:81:49 | Key |
-| jca/ChainedEncryptionTest.java:92:55:92:61 | Nonce | Source | jca/ChainedEncryptionTest.java:89:9:89:43 | RandomNumberGeneration |
 | jca/ChainedEncryptionTest.java:92:55:92:61 | Nonce | Source | jca/ChainedEncryptionTest.java:89:38:89:42 | RandomNumberGeneration |
 | jca/ChainedEncryptionTest.java:93:34:93:62 | EncryptOperation | Algorithm | jca/ChainedEncryptionTest.java:90:47:90:65 | KeyOperationAlgorithm |
 | jca/ChainedEncryptionTest.java:93:34:93:62 | EncryptOperation | Input | jca/ChainedEncryptionTest.java:93:52:93:61 | Message |
@@ -244,7 +234,6 @@
 | jca/ChainedEncryptionTest.java:98:50:98:68 | KeyOperationAlgorithm | Mode | jca/ChainedEncryptionTest.java:98:50:98:68 | KeyOperationAlgorithm |
 | jca/ChainedEncryptionTest.java:98:50:98:68 | KeyOperationAlgorithm | Padding | jca/ChainedEncryptionTest.java:98:50:98:68 | KeyOperationAlgorithm |
 | jca/ChainedEncryptionTest.java:99:48:99:55 | Key | Source | jca/ChainedEncryptionTest.java:85:30:85:52 | Key |
-| jca/ChainedEncryptionTest.java:99:58:99:89 | Nonce | Source | jca/ChainedEncryptionTest.java:97:9:97:49 | RandomNumberGeneration |
 | jca/ChainedEncryptionTest.java:99:58:99:89 | Nonce | Source | jca/ChainedEncryptionTest.java:97:38:97:48 | RandomNumberGeneration |
 | jca/ChainedEncryptionTest.java:100:34:100:70 | EncryptOperation | Algorithm | jca/ChainedEncryptionTest.java:98:50:98:68 | KeyOperationAlgorithm |
 | jca/ChainedEncryptionTest.java:100:34:100:70 | EncryptOperation | Input | jca/ChainedEncryptionTest.java:100:55:100:69 | Message |
@@ -255,7 +244,6 @@
 | jca/ChainedEncryptionTest.java:103:47:103:65 | KeyOperationAlgorithm | Mode | jca/ChainedEncryptionTest.java:103:47:103:65 | KeyOperationAlgorithm |
 | jca/ChainedEncryptionTest.java:103:47:103:65 | KeyOperationAlgorithm | Padding | jca/ChainedEncryptionTest.java:103:47:103:65 | KeyOperationAlgorithm |
 | jca/ChainedEncryptionTest.java:104:45:104:52 | Key | Source | jca/ChainedEncryptionTest.java:104:45:104:52 | Key |
-| jca/ChainedEncryptionTest.java:104:55:104:86 | Nonce | Source | jca/ChainedEncryptionTest.java:97:9:97:49 | RandomNumberGeneration |
 | jca/ChainedEncryptionTest.java:104:55:104:86 | Nonce | Source | jca/ChainedEncryptionTest.java:97:38:97:48 | RandomNumberGeneration |
 | jca/ChainedEncryptionTest.java:105:43:105:76 | DecryptOperation | Algorithm | jca/ChainedEncryptionTest.java:103:47:103:65 | KeyOperationAlgorithm |
 | jca/ChainedEncryptionTest.java:105:43:105:76 | DecryptOperation | Input | jca/ChainedEncryptionTest.java:105:61:105:75 | Message |
@@ -266,7 +254,6 @@
 | jca/ChainedEncryptionTest.java:108:44:108:62 | KeyOperationAlgorithm | Mode | jca/ChainedEncryptionTest.java:108:44:108:62 | ModeOfOperation |
 | jca/ChainedEncryptionTest.java:108:44:108:62 | KeyOperationAlgorithm | Padding | jca/ChainedEncryptionTest.java:108:44:108:62 | PaddingAlgorithm |
 | jca/ChainedEncryptionTest.java:109:42:109:49 | Key | Source | jca/ChainedEncryptionTest.java:109:42:109:49 | Key |
-| jca/ChainedEncryptionTest.java:109:52:109:83 | Nonce | Source | jca/ChainedEncryptionTest.java:89:9:89:43 | RandomNumberGeneration |
 | jca/ChainedEncryptionTest.java:109:52:109:83 | Nonce | Source | jca/ChainedEncryptionTest.java:89:38:89:42 | RandomNumberGeneration |
 | jca/ChainedEncryptionTest.java:110:37:110:76 | DecryptOperation | Algorithm | jca/ChainedEncryptionTest.java:108:44:108:62 | KeyOperationAlgorithm |
 | jca/ChainedEncryptionTest.java:110:37:110:76 | DecryptOperation | Input | jca/ChainedEncryptionTest.java:110:52:110:75 | Message |
@@ -293,7 +280,6 @@
 | jca/Digest.java:75:23:75:62 | HashOperation | Digest | jca/Digest.java:75:23:75:62 | Digest |
 | jca/Digest.java:75:23:75:62 | HashOperation | Message | jca/Digest.java:75:43:75:61 | Message |
 | jca/Digest.java:75:43:75:61 | Message | Source | jca/Digest.java:73:49:73:63 | Parameter |
-| jca/Digest.java:86:23:86:26 | Message | Source | jca/Digest.java:253:9:253:42 | RandomNumberGeneration |
 | jca/Digest.java:86:23:86:26 | Message | Source | jca/Digest.java:253:38:253:41 | RandomNumberGeneration |
 | jca/Digest.java:87:23:87:56 | Digest | Source | jca/Digest.java:87:23:87:56 | Digest |
 | jca/Digest.java:87:23:87:56 | HashOperation | Algorithm | jca/Digest.java:85:58:85:66 | HashAlgorithm |
@@ -302,7 +288,6 @@
 | jca/Digest.java:87:23:87:56 | HashOperation | Message | jca/Digest.java:87:37:87:55 | Message |
 | jca/Digest.java:87:37:87:55 | Message | Source | jca/Digest.java:83:37:83:51 | Parameter |
 | jca/Digest.java:97:42:97:63 | Message | Source | jca/Digest.java:95:37:95:51 | Parameter |
-| jca/Digest.java:97:66:97:69 | Salt | Source | jca/Digest.java:253:9:253:42 | RandomNumberGeneration |
 | jca/Digest.java:97:66:97:69 | Salt | Source | jca/Digest.java:253:38:253:41 | RandomNumberGeneration |
 | jca/Digest.java:98:65:98:86 | HMACAlgorithm | H | jca/Digest.java:98:65:98:86 | HashAlgorithm |
 | jca/Digest.java:98:65:98:86 | KeyDerivationAlgorithm | PRF | jca/Digest.java:98:65:98:86 | HMACAlgorithm |
@@ -336,7 +321,6 @@
 | jca/Digest.java:142:32:142:74 | EncryptOperation | Output | jca/Digest.java:142:32:142:74 | KeyOperationOutput |
 | jca/Digest.java:142:47:142:73 | Message | Source | jca/Digest.java:142:47:142:62 | Constant |
 | jca/Digest.java:176:42:176:71 | Message | Source | jca/Digest.java:171:50:171:62 | Parameter |
-| jca/Digest.java:176:74:176:77 | Salt | Source | jca/Digest.java:253:9:253:42 | RandomNumberGeneration |
 | jca/Digest.java:176:74:176:77 | Salt | Source | jca/Digest.java:253:38:253:41 | RandomNumberGeneration |
 | jca/Digest.java:177:65:177:86 | HMACAlgorithm | H | jca/Digest.java:177:65:177:86 | HashAlgorithm |
 | jca/Digest.java:177:65:177:86 | KeyDerivationAlgorithm | PRF | jca/Digest.java:177:65:177:86 | HMACAlgorithm |
@@ -481,7 +465,6 @@
 | jca/EllipticCurve2.java:219:44:219:62 | KeyOperationAlgorithm | Mode | jca/EllipticCurve2.java:219:44:219:62 | ModeOfOperation |
 | jca/EllipticCurve2.java:219:44:219:62 | KeyOperationAlgorithm | Padding | jca/EllipticCurve2.java:219:44:219:62 | PaddingAlgorithm |
 | jca/EllipticCurve2.java:223:42:223:47 | Key | Source | jca/EllipticCurve2.java:223:42:223:47 | Key |
-| jca/EllipticCurve2.java:223:50:223:53 | Nonce | Source | jca/EllipticCurve2.java:221:9:221:40 | RandomNumberGeneration |
 | jca/EllipticCurve2.java:223:50:223:53 | Nonce | Source | jca/EllipticCurve2.java:221:38:221:39 | RandomNumberGeneration |
 | jca/EllipticCurve2.java:224:29:224:53 | EncryptOperation | Algorithm | jca/EllipticCurve2.java:219:44:219:62 | KeyOperationAlgorithm |
 | jca/EllipticCurve2.java:224:29:224:53 | EncryptOperation | Input | jca/EllipticCurve2.java:224:44:224:52 | Message |
@@ -494,7 +477,6 @@
 | jca/Encryption1.java:63:44:63:62 | KeyOperationAlgorithm | Mode | jca/Encryption1.java:63:44:63:62 | ModeOfOperation |
 | jca/Encryption1.java:63:44:63:62 | KeyOperationAlgorithm | Padding | jca/Encryption1.java:63:44:63:62 | PaddingAlgorithm |
 | jca/Encryption1.java:67:42:67:44 | Key | Source | jca/Encryption1.java:62:25:62:44 | Key |
-| jca/Encryption1.java:67:47:67:53 | Nonce | Source | jca/Encryption1.java:65:9:65:40 | RandomNumberGeneration |
 | jca/Encryption1.java:67:47:67:53 | Nonce | Source | jca/Encryption1.java:65:38:65:39 | RandomNumberGeneration |
 | jca/Encryption1.java:68:32:68:74 | EncryptOperation | Algorithm | jca/Encryption1.java:63:44:63:62 | KeyOperationAlgorithm |
 | jca/Encryption1.java:68:32:68:74 | EncryptOperation | Input | jca/Encryption1.java:68:47:68:73 | Message |
@@ -564,7 +546,6 @@
 | jca/Encryption1.java:171:47:171:65 | KeyOperationAlgorithm | Mode | jca/Encryption1.java:171:47:171:65 | ModeOfOperation |
 | jca/Encryption1.java:171:47:171:65 | KeyOperationAlgorithm | Padding | jca/Encryption1.java:171:47:171:65 | PaddingAlgorithm |
 | jca/Encryption1.java:175:45:175:50 | Key | Source | jca/Encryption1.java:163:28:163:47 | Key |
-| jca/Encryption1.java:175:53:175:59 | Nonce | Source | jca/Encryption1.java:173:9:173:40 | RandomNumberGeneration |
 | jca/Encryption1.java:175:53:175:59 | Nonce | Source | jca/Encryption1.java:173:38:173:39 | RandomNumberGeneration |
 | jca/Encryption1.java:176:32:176:65 | EncryptOperation | Algorithm | jca/Encryption1.java:171:47:171:65 | KeyOperationAlgorithm |
 | jca/Encryption1.java:176:32:176:65 | EncryptOperation | Input | jca/Encryption1.java:176:50:176:64 | Message |
@@ -591,7 +572,6 @@
 | jca/Encryption2.java:105:47:105:65 | KeyOperationAlgorithm | Mode | jca/Encryption2.java:105:47:105:65 | ModeOfOperation |
 | jca/Encryption2.java:105:47:105:65 | KeyOperationAlgorithm | Padding | jca/Encryption2.java:105:47:105:65 | PaddingAlgorithm |
 | jca/Encryption2.java:109:45:109:50 | Key | Source | jca/Encryption2.java:109:45:109:50 | Key |
-| jca/Encryption2.java:109:53:109:59 | Nonce | Source | jca/Encryption2.java:107:9:107:40 | RandomNumberGeneration |
 | jca/Encryption2.java:109:53:109:59 | Nonce | Source | jca/Encryption2.java:107:38:107:39 | RandomNumberGeneration |
 | jca/Encryption2.java:110:32:110:65 | EncryptOperation | Algorithm | jca/Encryption2.java:105:47:105:65 | KeyOperationAlgorithm |
 | jca/Encryption2.java:110:32:110:65 | EncryptOperation | Input | jca/Encryption2.java:110:50:110:64 | Message |
@@ -602,7 +582,6 @@
 | jca/Encryption2.java:145:47:145:65 | KeyOperationAlgorithm | Mode | jca/Encryption2.java:145:47:145:65 | ModeOfOperation |
 | jca/Encryption2.java:145:47:145:65 | KeyOperationAlgorithm | Padding | jca/Encryption2.java:145:47:145:65 | PaddingAlgorithm |
 | jca/Encryption2.java:149:45:149:50 | Key | Source | jca/Encryption2.java:149:45:149:50 | Key |
-| jca/Encryption2.java:149:53:149:59 | Nonce | Source | jca/Encryption2.java:147:9:147:40 | RandomNumberGeneration |
 | jca/Encryption2.java:149:53:149:59 | Nonce | Source | jca/Encryption2.java:147:38:147:39 | RandomNumberGeneration |
 | jca/Encryption2.java:150:32:150:98 | EncryptOperation | Algorithm | jca/Encryption2.java:145:47:145:65 | KeyOperationAlgorithm |
 | jca/Encryption2.java:150:32:150:98 | EncryptOperation | Input | jca/Encryption2.java:150:50:150:97 | Message |
@@ -656,6 +635,7 @@
 | jca/Hash.java:174:23:174:52 | HashOperation | Message | jca/Hash.java:174:37:174:51 | Message |
 | jca/Hash.java:174:37:174:51 | Message | Source | jca/Hash.java:172:43:172:53 | Parameter |
 | jca/Hash.java:195:27:195:57 | Digest | Source | jca/Hash.java:195:27:195:57 | Digest |
+| jca/Hash.java:195:27:195:57 | HashOperation | Algorithm | jca/Hash.java:191:31:192:48 | Constant |
 | jca/Hash.java:195:27:195:57 | HashOperation | Algorithm | jca/Hash.java:191:32:191:38 | HashAlgorithm |
 | jca/Hash.java:195:27:195:57 | HashOperation | Algorithm | jca/Hash.java:191:41:191:49 | HashAlgorithm |
 | jca/Hash.java:195:27:195:57 | HashOperation | Algorithm | jca/Hash.java:191:52:191:60 | HashAlgorithm |
@@ -682,6 +662,7 @@
 | jca/Hash.java:212:102:212:115 | KeyOperationAlgorithm | Mode | jca/Hash.java:212:102:212:115 | KeyOperationAlgorithm |
 | jca/Hash.java:212:102:212:115 | KeyOperationAlgorithm | Padding | jca/Hash.java:212:102:212:115 | KeyOperationAlgorithm |
 | jca/Hash.java:216:22:216:30 | Key | Source | jca/Hash.java:211:57:211:66 | Parameter |
+| jca/Hash.java:217:27:217:55 | MACOperation | Algorithm | jca/Hash.java:212:31:212:116 | Constant |
 | jca/Hash.java:217:27:217:55 | MACOperation | Algorithm | jca/Hash.java:212:32:212:41 | KeyOperationAlgorithm |
 | jca/Hash.java:217:27:217:55 | MACOperation | Algorithm | jca/Hash.java:212:44:212:55 | KeyOperationAlgorithm |
 | jca/Hash.java:217:27:217:55 | MACOperation | Algorithm | jca/Hash.java:212:58:212:69 | KeyOperationAlgorithm |
@@ -696,7 +677,6 @@
 | jca/Hash.java:217:27:217:55 | MACOperation | Output | jca/Hash.java:217:27:217:55 | KeyOperationOutput |
 | jca/Hash.java:217:39:217:54 | Message | Source | jca/Hash.java:211:43:211:54 | Parameter |
 | jca/Hash.java:235:42:235:63 | Message | Source | jca/Hash.java:232:40:232:54 | Parameter |
-| jca/Hash.java:235:66:235:69 | Salt | Source | jca/Hash.java:310:9:310:42 | RandomNumberGeneration |
 | jca/Hash.java:235:66:235:69 | Salt | Source | jca/Hash.java:310:38:310:41 | RandomNumberGeneration |
 | jca/Hash.java:236:65:236:86 | HMACAlgorithm | H | jca/Hash.java:236:65:236:86 | HashAlgorithm |
 | jca/Hash.java:236:65:236:86 | KeyDerivationAlgorithm | PRF | jca/Hash.java:236:65:236:86 | HMACAlgorithm |
@@ -712,6 +692,7 @@
 | jca/Hash.java:252:37:252:69 | Message | Source | jca/Hash.java:252:37:252:58 | Constant |
 | jca/Hash.java:270:27:270:30 | Message | Source | jca/Hash.java:269:27:269:38 | Constant |
 | jca/Hash.java:271:40:271:54 | Digest | Source | jca/Hash.java:271:40:271:54 | Digest |
+| jca/Hash.java:271:40:271:54 | HashOperation | Algorithm | jca/Hash.java:266:31:266:76 | Constant |
 | jca/Hash.java:271:40:271:54 | HashOperation | Algorithm | jca/Hash.java:266:32:266:40 | HashAlgorithm |
 | jca/Hash.java:271:40:271:54 | HashOperation | Algorithm | jca/Hash.java:266:43:266:51 | HashAlgorithm |
 | jca/Hash.java:271:40:271:54 | HashOperation | Algorithm | jca/Hash.java:266:54:266:63 | HashAlgorithm |
@@ -721,7 +702,6 @@
 | jca/IVArtifact.java:30:44:30:65 | KeyOperationAlgorithm | Mode | jca/IVArtifact.java:30:44:30:65 | ModeOfOperation |
 | jca/IVArtifact.java:30:44:30:65 | KeyOperationAlgorithm | Padding | jca/IVArtifact.java:30:44:30:65 | PaddingAlgorithm |
 | jca/IVArtifact.java:31:42:31:44 | Key | Source | jca/IVArtifact.java:76:16:76:35 | Key |
-| jca/IVArtifact.java:31:47:31:52 | Nonce | Source | jca/IVArtifact.java:81:9:81:40 | RandomNumberGeneration |
 | jca/IVArtifact.java:31:47:31:52 | Nonce | Source | jca/IVArtifact.java:81:38:81:39 | RandomNumberGeneration |
 | jca/IVArtifact.java:32:29:32:73 | EncryptOperation | Algorithm | jca/IVArtifact.java:30:44:30:65 | KeyOperationAlgorithm |
 | jca/IVArtifact.java:32:29:32:73 | EncryptOperation | Input | jca/IVArtifact.java:32:44:32:72 | Message |
@@ -730,7 +710,6 @@
 | jca/IVArtifact.java:32:29:32:73 | EncryptOperation | Output | jca/IVArtifact.java:32:29:32:73 | KeyOperationOutput |
 | jca/IVArtifact.java:32:44:32:72 | Message | Source | jca/IVArtifact.java:32:44:32:61 | Constant |
 | jca/IVArtifact.java:38:42:38:44 | Key | Source | jca/IVArtifact.java:76:16:76:35 | Key |
-| jca/IVArtifact.java:38:47:38:52 | Nonce | Source | jca/IVArtifact.java:81:9:81:40 | RandomNumberGeneration |
 | jca/IVArtifact.java:38:47:38:52 | Nonce | Source | jca/IVArtifact.java:81:38:81:39 | RandomNumberGeneration |
 | jca/IVArtifact.java:38:47:38:52 | Nonce | Source | jca/IVArtifact.java:87:32:87:33 | RandomNumberGeneration |
 | jca/IVArtifact.java:39:29:39:53 | EncryptOperation | Algorithm | jca/IVArtifact.java:70:16:70:81 | LocalData |
@@ -758,7 +737,6 @@
 | jca/IVArtifact.java:132:44:132:62 | KeyOperationAlgorithm | Padding | jca/IVArtifact.java:132:44:132:62 | PaddingAlgorithm |
 | jca/IVArtifact.java:134:42:134:44 | Key | Source | jca/IVArtifact.java:255:29:255:44 | Key |
 | jca/IVArtifact.java:134:47:134:50 | Nonce | Source | jca/IVArtifact.java:116:31:116:34 | Constant |
-| jca/IVArtifact.java:134:47:134:50 | Nonce | Source | jca/IVArtifact.java:130:13:130:50 | RandomNumberGeneration |
 | jca/IVArtifact.java:134:47:134:50 | Nonce | Source | jca/IVArtifact.java:130:42:130:49 | RandomNumberGeneration |
 | jca/IVArtifact.java:135:16:135:40 | EncryptOperation | Algorithm | jca/IVArtifact.java:132:44:132:62 | KeyOperationAlgorithm |
 | jca/IVArtifact.java:135:16:135:40 | EncryptOperation | Input | jca/IVArtifact.java:135:31:135:39 | Message |
@@ -784,7 +762,6 @@
 | jca/IVArtifact.java:180:48:180:66 | KeyOperationAlgorithm | Mode | jca/IVArtifact.java:180:48:180:66 | ModeOfOperation |
 | jca/IVArtifact.java:180:48:180:66 | KeyOperationAlgorithm | Padding | jca/IVArtifact.java:180:48:180:66 | PaddingAlgorithm |
 | jca/IVArtifact.java:182:46:182:48 | Key | Source | jca/IVArtifact.java:255:29:255:44 | Key |
-| jca/IVArtifact.java:182:51:182:54 | Nonce | Source | jca/IVArtifact.java:177:9:177:40 | RandomNumberGeneration |
 | jca/IVArtifact.java:182:51:182:54 | Nonce | Source | jca/IVArtifact.java:177:38:177:39 | RandomNumberGeneration |
 | jca/IVArtifact.java:183:30:183:58 | EncryptOperation | Algorithm | jca/IVArtifact.java:180:48:180:66 | KeyOperationAlgorithm |
 | jca/IVArtifact.java:183:30:183:58 | EncryptOperation | Input | jca/IVArtifact.java:183:45:183:57 | Message |
@@ -834,7 +811,6 @@
 | jca/KeyAgreementHybridCryptosystem.java:108:44:108:62 | KeyOperationAlgorithm | Mode | jca/KeyAgreementHybridCryptosystem.java:108:44:108:62 | ModeOfOperation |
 | jca/KeyAgreementHybridCryptosystem.java:108:44:108:62 | KeyOperationAlgorithm | Padding | jca/KeyAgreementHybridCryptosystem.java:108:44:108:62 | PaddingAlgorithm |
 | jca/KeyAgreementHybridCryptosystem.java:112:42:112:47 | Key | Source | jca/KeyAgreementHybridCryptosystem.java:112:42:112:47 | Key |
-| jca/KeyAgreementHybridCryptosystem.java:112:50:112:53 | Nonce | Source | jca/KeyAgreementHybridCryptosystem.java:110:9:110:40 | RandomNumberGeneration |
 | jca/KeyAgreementHybridCryptosystem.java:112:50:112:53 | Nonce | Source | jca/KeyAgreementHybridCryptosystem.java:110:38:110:39 | RandomNumberGeneration |
 | jca/KeyAgreementHybridCryptosystem.java:113:29:113:53 | EncryptOperation | Algorithm | jca/KeyAgreementHybridCryptosystem.java:108:44:108:62 | KeyOperationAlgorithm |
 | jca/KeyAgreementHybridCryptosystem.java:113:29:113:53 | EncryptOperation | Input | jca/KeyAgreementHybridCryptosystem.java:113:44:113:52 | Message |
@@ -860,7 +836,6 @@
 | jca/KeyAgreementHybridCryptosystem.java:153:44:153:62 | KeyOperationAlgorithm | Mode | jca/KeyAgreementHybridCryptosystem.java:153:44:153:62 | KeyOperationAlgorithm |
 | jca/KeyAgreementHybridCryptosystem.java:153:44:153:62 | KeyOperationAlgorithm | Padding | jca/KeyAgreementHybridCryptosystem.java:153:44:153:62 | KeyOperationAlgorithm |
 | jca/KeyAgreementHybridCryptosystem.java:156:42:156:50 | Key | Source | jca/KeyAgreementHybridCryptosystem.java:156:42:156:50 | Key |
-| jca/KeyAgreementHybridCryptosystem.java:156:53:156:78 | Nonce | Source | jca/KeyAgreementHybridCryptosystem.java:155:9:155:43 | RandomNumberGeneration |
 | jca/KeyAgreementHybridCryptosystem.java:156:53:156:78 | Nonce | Source | jca/KeyAgreementHybridCryptosystem.java:155:38:155:42 | RandomNumberGeneration |
 | jca/KeyAgreementHybridCryptosystem.java:157:29:157:53 | EncryptOperation | Algorithm | jca/KeyAgreementHybridCryptosystem.java:153:44:153:62 | KeyOperationAlgorithm |
 | jca/KeyAgreementHybridCryptosystem.java:157:29:157:53 | EncryptOperation | Input | jca/KeyAgreementHybridCryptosystem.java:157:44:157:52 | Message |
@@ -879,7 +854,6 @@
 | jca/KeyAgreementHybridCryptosystem.java:176:29:176:53 | EncryptOperation | Output | jca/KeyAgreementHybridCryptosystem.java:176:29:176:53 | KeyOperationOutput |
 | jca/KeyAgreementHybridCryptosystem.java:176:44:176:52 | Message | Source | jca/KeyAgreementHybridCryptosystem.java:188:58:188:73 | Parameter |
 | jca/KeyAgreementHybridCryptosystem.java:215:42:215:66 | Message | Source | jca/KeyAgreementHybridCryptosystem.java:212:58:212:70 | Parameter |
-| jca/KeyAgreementHybridCryptosystem.java:215:69:215:72 | Salt | Source | jca/KeyAgreementHybridCryptosystem.java:269:9:269:42 | RandomNumberGeneration |
 | jca/KeyAgreementHybridCryptosystem.java:215:69:215:72 | Salt | Source | jca/KeyAgreementHybridCryptosystem.java:269:38:269:41 | RandomNumberGeneration |
 | jca/KeyAgreementHybridCryptosystem.java:216:65:216:86 | HMACAlgorithm | H | jca/KeyAgreementHybridCryptosystem.java:216:65:216:86 | HashAlgorithm |
 | jca/KeyAgreementHybridCryptosystem.java:216:65:216:86 | KeyDerivationAlgorithm | PRF | jca/KeyAgreementHybridCryptosystem.java:216:65:216:86 | HMACAlgorithm |
@@ -890,7 +864,6 @@
 | jca/KeyAgreementHybridCryptosystem.java:223:44:223:62 | KeyOperationAlgorithm | Mode | jca/KeyAgreementHybridCryptosystem.java:223:44:223:62 | ModeOfOperation |
 | jca/KeyAgreementHybridCryptosystem.java:223:44:223:62 | KeyOperationAlgorithm | Padding | jca/KeyAgreementHybridCryptosystem.java:223:44:223:62 | PaddingAlgorithm |
 | jca/KeyAgreementHybridCryptosystem.java:227:42:227:54 | Key | Source | jca/KeyAgreementHybridCryptosystem.java:227:42:227:54 | Key |
-| jca/KeyAgreementHybridCryptosystem.java:227:57:227:63 | Nonce | Source | jca/KeyAgreementHybridCryptosystem.java:225:9:225:40 | RandomNumberGeneration |
 | jca/KeyAgreementHybridCryptosystem.java:227:57:227:63 | Nonce | Source | jca/KeyAgreementHybridCryptosystem.java:225:38:225:39 | RandomNumberGeneration |
 | jca/KeyAgreementHybridCryptosystem.java:228:29:228:53 | EncryptOperation | Algorithm | jca/KeyAgreementHybridCryptosystem.java:223:44:223:62 | KeyOperationAlgorithm |
 | jca/KeyAgreementHybridCryptosystem.java:228:29:228:53 | EncryptOperation | Input | jca/KeyAgreementHybridCryptosystem.java:228:44:228:52 | Message |
@@ -927,13 +900,12 @@
 | jca/KeyArtifact.java:66:32:66:51 | KeyGeneration | Algorithm | jca/KeyArtifact.java:62:28:62:73 | LocalData |
 | jca/KeyArtifact.java:66:32:66:51 | KeyGeneration | Algorithm | jca/KeyArtifact.java:62:68:62:72 | KeyOperationAlgorithm |
 | jca/KeyArtifact.java:66:32:66:51 | KeyGeneration | Output | jca/KeyArtifact.java:66:32:66:51 | Key |
+| jca/KeyArtifact.java:73:16:73:43 | Key | Algorithm | jca/KeyArtifact.java:78:31:78:54 | Constant |
 | jca/KeyArtifact.java:73:16:73:43 | Key | Algorithm | jca/KeyArtifact.java:78:32:78:36 | KeyOperationAlgorithm |
-| jca/KeyArtifact.java:73:16:73:43 | Key | Algorithm | jca/KeyArtifact.java:78:45:78:53 | Constant |
+| jca/KeyArtifact.java:73:16:73:43 | KeyGeneration | Algorithm | jca/KeyArtifact.java:78:31:78:54 | Constant |
 | jca/KeyArtifact.java:73:16:73:43 | KeyGeneration | Algorithm | jca/KeyArtifact.java:78:32:78:36 | KeyOperationAlgorithm |
-| jca/KeyArtifact.java:73:16:73:43 | KeyGeneration | Algorithm | jca/KeyArtifact.java:78:45:78:53 | Constant |
 | jca/KeyArtifact.java:73:16:73:43 | KeyGeneration | Output | jca/KeyArtifact.java:73:16:73:43 | Key |
 | jca/KeyDerivation1.java:80:42:80:63 | Message | Source | jca/KeyDerivation1.java:78:39:78:53 | Parameter |
-| jca/KeyDerivation1.java:80:66:80:69 | Salt | Source | jca/KeyDerivation1.java:365:9:365:42 | RandomNumberGeneration |
 | jca/KeyDerivation1.java:80:66:80:69 | Salt | Source | jca/KeyDerivation1.java:365:38:365:41 | RandomNumberGeneration |
 | jca/KeyDerivation1.java:81:65:81:86 | HMACAlgorithm | H | jca/KeyDerivation1.java:81:65:81:86 | HashAlgorithm |
 | jca/KeyDerivation1.java:81:65:81:86 | KeyDerivationAlgorithm | PRF | jca/KeyDerivation1.java:81:65:81:86 | HMACAlgorithm |
@@ -942,7 +914,6 @@
 | jca/KeyDerivation1.java:82:22:82:49 | KeyDerivation | Output | jca/KeyDerivation1.java:82:22:82:49 | Key |
 | jca/KeyDerivation1.java:82:22:82:49 | KeyDerivation | Salt | jca/KeyDerivation1.java:80:66:80:69 | Salt |
 | jca/KeyDerivation1.java:94:42:94:63 | Message | Source | jca/KeyDerivation1.java:92:36:92:50 | Parameter |
-| jca/KeyDerivation1.java:94:66:94:69 | Salt | Source | jca/KeyDerivation1.java:365:9:365:42 | RandomNumberGeneration |
 | jca/KeyDerivation1.java:94:66:94:69 | Salt | Source | jca/KeyDerivation1.java:365:38:365:41 | RandomNumberGeneration |
 | jca/KeyDerivation1.java:95:65:95:86 | HMACAlgorithm | H | jca/KeyDerivation1.java:95:65:95:86 | HashAlgorithm |
 | jca/KeyDerivation1.java:95:65:95:86 | KeyDerivationAlgorithm | PRF | jca/KeyDerivation1.java:95:65:95:86 | HMACAlgorithm |
@@ -951,7 +922,6 @@
 | jca/KeyDerivation1.java:96:22:96:49 | KeyDerivation | Output | jca/KeyDerivation1.java:96:22:96:49 | Key |
 | jca/KeyDerivation1.java:96:22:96:49 | KeyDerivation | Salt | jca/KeyDerivation1.java:94:66:94:69 | Salt |
 | jca/KeyDerivation1.java:108:42:108:63 | Message | Source | jca/KeyDerivation1.java:106:37:106:51 | Parameter |
-| jca/KeyDerivation1.java:108:66:108:69 | Salt | Source | jca/KeyDerivation1.java:365:9:365:42 | RandomNumberGeneration |
 | jca/KeyDerivation1.java:108:66:108:69 | Salt | Source | jca/KeyDerivation1.java:365:38:365:41 | RandomNumberGeneration |
 | jca/KeyDerivation1.java:109:65:109:86 | HMACAlgorithm | H | jca/KeyDerivation1.java:109:65:109:86 | HashAlgorithm |
 | jca/KeyDerivation1.java:109:65:109:86 | KeyDerivationAlgorithm | PRF | jca/KeyDerivation1.java:109:65:109:86 | HMACAlgorithm |
@@ -960,7 +930,6 @@
 | jca/KeyDerivation1.java:110:22:110:49 | KeyDerivation | Output | jca/KeyDerivation1.java:110:22:110:49 | Key |
 | jca/KeyDerivation1.java:110:22:110:49 | KeyDerivation | Salt | jca/KeyDerivation1.java:108:66:108:69 | Salt |
 | jca/KeyDerivation1.java:122:42:122:63 | Message | Source | jca/KeyDerivation1.java:120:32:120:46 | Parameter |
-| jca/KeyDerivation1.java:122:66:122:69 | Salt | Source | jca/KeyDerivation1.java:365:9:365:42 | RandomNumberGeneration |
 | jca/KeyDerivation1.java:122:66:122:69 | Salt | Source | jca/KeyDerivation1.java:365:38:365:41 | RandomNumberGeneration |
 | jca/KeyDerivation1.java:123:65:123:84 | HMACAlgorithm | H | jca/KeyDerivation1.java:123:65:123:84 | HashAlgorithm |
 | jca/KeyDerivation1.java:123:65:123:84 | KeyDerivationAlgorithm | PRF | jca/KeyDerivation1.java:123:65:123:84 | HMACAlgorithm |
@@ -969,7 +938,6 @@
 | jca/KeyDerivation1.java:124:22:124:49 | KeyDerivation | Output | jca/KeyDerivation1.java:124:22:124:49 | Key |
 | jca/KeyDerivation1.java:124:22:124:49 | KeyDerivation | Salt | jca/KeyDerivation1.java:122:66:122:69 | Salt |
 | jca/KeyDerivation1.java:136:42:136:63 | Message | Source | jca/KeyDerivation1.java:134:34:134:48 | Parameter |
-| jca/KeyDerivation1.java:136:66:136:69 | Salt | Source | jca/KeyDerivation1.java:365:9:365:42 | RandomNumberGeneration |
 | jca/KeyDerivation1.java:136:66:136:69 | Salt | Source | jca/KeyDerivation1.java:365:38:365:41 | RandomNumberGeneration |
 | jca/KeyDerivation1.java:137:65:137:86 | HMACAlgorithm | H | jca/KeyDerivation1.java:137:65:137:86 | HashAlgorithm |
 | jca/KeyDerivation1.java:137:65:137:86 | KeyDerivationAlgorithm | PRF | jca/KeyDerivation1.java:137:65:137:86 | HMACAlgorithm |
@@ -978,14 +946,12 @@
 | jca/KeyDerivation1.java:138:22:138:49 | KeyDerivation | Output | jca/KeyDerivation1.java:138:22:138:49 | Key |
 | jca/KeyDerivation1.java:138:22:138:49 | KeyDerivation | Salt | jca/KeyDerivation1.java:136:66:136:69 | Salt |
 | jca/KeyDerivation1.java:157:42:157:63 | Message | Source | jca/KeyDerivation1.java:154:28:154:42 | Parameter |
-| jca/KeyDerivation1.java:157:66:157:69 | Salt | Source | jca/KeyDerivation1.java:365:9:365:42 | RandomNumberGeneration |
 | jca/KeyDerivation1.java:157:66:157:69 | Salt | Source | jca/KeyDerivation1.java:365:38:365:41 | RandomNumberGeneration |
 | jca/KeyDerivation1.java:159:22:159:49 | KeyDerivation | Algorithm | jca/KeyDerivation1.java:158:65:158:72 | Constant |
 | jca/KeyDerivation1.java:159:22:159:49 | KeyDerivation | Input | jca/KeyDerivation1.java:157:42:157:63 | Message |
 | jca/KeyDerivation1.java:159:22:159:49 | KeyDerivation | Output | jca/KeyDerivation1.java:159:22:159:49 | Key |
 | jca/KeyDerivation1.java:159:22:159:49 | KeyDerivation | Salt | jca/KeyDerivation1.java:157:66:157:69 | Salt |
 | jca/KeyDerivation1.java:172:42:172:63 | Message | Source | jca/KeyDerivation1.java:169:30:169:44 | Parameter |
-| jca/KeyDerivation1.java:172:66:172:69 | Salt | Source | jca/KeyDerivation1.java:365:9:365:42 | RandomNumberGeneration |
 | jca/KeyDerivation1.java:172:66:172:69 | Salt | Source | jca/KeyDerivation1.java:365:38:365:41 | RandomNumberGeneration |
 | jca/KeyDerivation1.java:174:22:174:49 | KeyDerivation | Algorithm | jca/KeyDerivation1.java:173:65:173:72 | Constant |
 | jca/KeyDerivation1.java:174:22:174:49 | KeyDerivation | Input | jca/KeyDerivation1.java:172:42:172:63 | Message |
@@ -1008,7 +974,6 @@
 | jca/KeyDerivation1.java:309:54:309:75 | HMACAlgorithm | H | jca/KeyDerivation1.java:309:54:309:75 | HashAlgorithm |
 | jca/KeyDerivation1.java:309:54:309:75 | KeyDerivationAlgorithm | PRF | jca/KeyDerivation1.java:309:54:309:75 | HMACAlgorithm |
 | jca/KeyDerivation1.java:314:42:314:63 | Message | Source | jca/KeyDerivation1.java:302:37:302:51 | Parameter |
-| jca/KeyDerivation1.java:314:66:314:69 | Salt | Source | jca/KeyDerivation1.java:365:9:365:42 | RandomNumberGeneration |
 | jca/KeyDerivation1.java:314:66:314:69 | Salt | Source | jca/KeyDerivation1.java:365:38:365:41 | RandomNumberGeneration |
 | jca/KeyDerivation1.java:316:26:316:53 | KeyDerivation | Algorithm | jca/KeyDerivation1.java:309:25:309:76 | LocalData |
 | jca/KeyDerivation1.java:316:26:316:53 | KeyDerivation | Algorithm | jca/KeyDerivation1.java:309:54:309:75 | KeyDerivationAlgorithm |
@@ -1016,7 +981,6 @@
 | jca/KeyDerivation1.java:316:26:316:53 | KeyDerivation | Output | jca/KeyDerivation1.java:316:26:316:53 | Key |
 | jca/KeyDerivation1.java:316:26:316:53 | KeyDerivation | Salt | jca/KeyDerivation1.java:314:66:314:69 | Salt |
 | jca/KeyDerivation1.java:333:42:333:63 | Message | Source | jca/KeyDerivation1.java:283:43:283:57 | Parameter |
-| jca/KeyDerivation1.java:333:66:333:69 | Salt | Source | jca/KeyDerivation1.java:365:9:365:42 | RandomNumberGeneration |
 | jca/KeyDerivation1.java:333:66:333:69 | Salt | Source | jca/KeyDerivation1.java:365:38:365:41 | RandomNumberGeneration |
 | jca/KeyDerivation1.java:334:65:334:86 | HMACAlgorithm | H | jca/KeyDerivation1.java:334:65:334:86 | HashAlgorithm |
 | jca/KeyDerivation1.java:334:65:334:86 | KeyDerivationAlgorithm | PRF | jca/KeyDerivation1.java:334:65:334:86 | HMACAlgorithm |
@@ -1062,7 +1026,6 @@
 | jca/KeyEncapsulation.java:73:47:73:65 | KeyOperationAlgorithm | Mode | jca/KeyEncapsulation.java:73:47:73:65 | ModeOfOperation |
 | jca/KeyEncapsulation.java:73:47:73:65 | KeyOperationAlgorithm | Padding | jca/KeyEncapsulation.java:73:47:73:65 | PaddingAlgorithm |
 | jca/KeyEncapsulation.java:77:45:77:50 | Key | Source | jca/KeyEncapsulation.java:62:28:62:47 | Key |
-| jca/KeyEncapsulation.java:77:53:77:59 | Nonce | Source | jca/KeyEncapsulation.java:75:9:75:40 | RandomNumberGeneration |
 | jca/KeyEncapsulation.java:77:53:77:59 | Nonce | Source | jca/KeyEncapsulation.java:75:38:75:39 | RandomNumberGeneration |
 | jca/KeyEncapsulation.java:78:29:78:80 | EncryptOperation | Algorithm | jca/KeyEncapsulation.java:73:47:73:65 | KeyOperationAlgorithm |
 | jca/KeyEncapsulation.java:78:29:78:80 | EncryptOperation | Input | jca/KeyEncapsulation.java:78:47:78:79 | Message |
@@ -1094,7 +1057,6 @@
 | jca/KeyEncapsulation.java:133:47:133:65 | KeyOperationAlgorithm | Mode | jca/KeyEncapsulation.java:133:47:133:65 | ModeOfOperation |
 | jca/KeyEncapsulation.java:133:47:133:65 | KeyOperationAlgorithm | Padding | jca/KeyEncapsulation.java:133:47:133:65 | PaddingAlgorithm |
 | jca/KeyEncapsulation.java:136:45:136:50 | Key | Source | jca/KeyEncapsulation.java:136:45:136:50 | Key |
-| jca/KeyEncapsulation.java:136:53:136:81 | Nonce | Source | jca/KeyEncapsulation.java:135:9:135:40 | RandomNumberGeneration |
 | jca/KeyEncapsulation.java:136:53:136:81 | Nonce | Source | jca/KeyEncapsulation.java:135:38:135:39 | RandomNumberGeneration |
 | jca/KeyEncapsulation.java:137:29:137:73 | EncryptOperation | Algorithm | jca/KeyEncapsulation.java:133:47:133:65 | KeyOperationAlgorithm |
 | jca/KeyEncapsulation.java:137:29:137:73 | EncryptOperation | Input | jca/KeyEncapsulation.java:137:47:137:72 | Message |
@@ -1245,7 +1207,6 @@
 | jca/MACOperation.java:138:32:138:74 | EncryptOperation | Output | jca/MACOperation.java:138:32:138:74 | KeyOperationOutput |
 | jca/MACOperation.java:138:47:138:73 | Message | Source | jca/MACOperation.java:138:47:138:62 | Constant |
 | jca/MACOperation.java:170:42:170:68 | Message | Source | jca/MACOperation.java:166:47:166:62 | Parameter |
-| jca/MACOperation.java:170:71:170:74 | Salt | Source | jca/MACOperation.java:246:9:246:42 | RandomNumberGeneration |
 | jca/MACOperation.java:170:71:170:74 | Salt | Source | jca/MACOperation.java:246:38:246:41 | RandomNumberGeneration |
 | jca/MACOperation.java:171:65:171:86 | HMACAlgorithm | H | jca/MACOperation.java:171:65:171:86 | HashAlgorithm |
 | jca/MACOperation.java:171:65:171:86 | KeyDerivationAlgorithm | PRF | jca/MACOperation.java:171:65:171:86 | HMACAlgorithm |
@@ -1319,7 +1280,6 @@
 | jca/Nonce.java:61:44:61:62 | KeyOperationAlgorithm | Mode | jca/Nonce.java:61:44:61:62 | ModeOfOperation |
 | jca/Nonce.java:61:44:61:62 | KeyOperationAlgorithm | Padding | jca/Nonce.java:61:44:61:62 | PaddingAlgorithm |
 | jca/Nonce.java:62:42:62:44 | Key | Source | jca/Nonce.java:58:37:58:49 | Parameter |
-| jca/Nonce.java:62:47:62:53 | Nonce | Source | jca/Nonce.java:98:9:98:43 | RandomNumberGeneration |
 | jca/Nonce.java:62:47:62:53 | Nonce | Source | jca/Nonce.java:98:38:98:42 | RandomNumberGeneration |
 | jca/Nonce.java:63:29:63:53 | EncryptOperation | Algorithm | jca/Nonce.java:61:44:61:62 | KeyOperationAlgorithm |
 | jca/Nonce.java:63:29:63:53 | EncryptOperation | Input | jca/Nonce.java:63:44:63:52 | Message |
@@ -1369,7 +1329,6 @@
 | jca/SignEncryptCombinations.java:92:44:92:62 | KeyOperationAlgorithm | Mode | jca/SignEncryptCombinations.java:92:44:92:62 | ModeOfOperation |
 | jca/SignEncryptCombinations.java:92:44:92:62 | KeyOperationAlgorithm | Padding | jca/SignEncryptCombinations.java:92:44:92:62 | PaddingAlgorithm |
 | jca/SignEncryptCombinations.java:96:42:96:44 | Key | Source | jca/SignEncryptCombinations.java:84:16:84:31 | Key |
-| jca/SignEncryptCombinations.java:96:47:96:50 | Nonce | Source | jca/SignEncryptCombinations.java:94:9:94:28 | RandomNumberGeneration |
 | jca/SignEncryptCombinations.java:96:47:96:50 | Nonce | Source | jca/SignEncryptCombinations.java:94:26:94:27 | RandomNumberGeneration |
 | jca/SignEncryptCombinations.java:97:29:97:53 | EncryptOperation | Algorithm | jca/SignEncryptCombinations.java:92:44:92:62 | KeyOperationAlgorithm |
 | jca/SignEncryptCombinations.java:97:29:97:53 | EncryptOperation | Input | jca/SignEncryptCombinations.java:97:44:97:52 | Message |
@@ -1540,7 +1499,6 @@
 | jca/SymmetricAlgorithm.java:51:44:51:62 | KeyOperationAlgorithm | Mode | jca/SymmetricAlgorithm.java:51:44:51:62 | ModeOfOperation |
 | jca/SymmetricAlgorithm.java:51:44:51:62 | KeyOperationAlgorithm | Padding | jca/SymmetricAlgorithm.java:51:44:51:62 | PaddingAlgorithm |
 | jca/SymmetricAlgorithm.java:55:42:55:44 | Key | Source | jca/SymmetricAlgorithm.java:244:64:244:76 | Parameter |
-| jca/SymmetricAlgorithm.java:55:47:55:50 | Nonce | Source | jca/SymmetricAlgorithm.java:53:9:53:40 | RandomNumberGeneration |
 | jca/SymmetricAlgorithm.java:55:47:55:50 | Nonce | Source | jca/SymmetricAlgorithm.java:53:38:53:39 | RandomNumberGeneration |
 | jca/SymmetricAlgorithm.java:56:29:56:53 | EncryptOperation | Algorithm | jca/SymmetricAlgorithm.java:51:44:51:62 | KeyOperationAlgorithm |
 | jca/SymmetricAlgorithm.java:56:29:56:53 | EncryptOperation | Input | jca/SymmetricAlgorithm.java:56:44:56:52 | Message |
@@ -1561,7 +1519,6 @@
 | jca/SymmetricAlgorithm.java:94:44:94:65 | KeyOperationAlgorithm | Mode | jca/SymmetricAlgorithm.java:94:44:94:65 | ModeOfOperation |
 | jca/SymmetricAlgorithm.java:94:44:94:65 | KeyOperationAlgorithm | Padding | jca/SymmetricAlgorithm.java:94:44:94:65 | PaddingAlgorithm |
 | jca/SymmetricAlgorithm.java:98:42:98:44 | Key | Source | jca/SymmetricAlgorithm.java:244:64:244:76 | Parameter |
-| jca/SymmetricAlgorithm.java:98:47:98:52 | Nonce | Source | jca/SymmetricAlgorithm.java:96:9:96:40 | RandomNumberGeneration |
 | jca/SymmetricAlgorithm.java:98:47:98:52 | Nonce | Source | jca/SymmetricAlgorithm.java:96:38:96:39 | RandomNumberGeneration |
 | jca/SymmetricAlgorithm.java:99:29:99:53 | EncryptOperation | Algorithm | jca/SymmetricAlgorithm.java:94:44:94:65 | KeyOperationAlgorithm |
 | jca/SymmetricAlgorithm.java:99:29:99:53 | EncryptOperation | Input | jca/SymmetricAlgorithm.java:99:44:99:52 | Message |
@@ -1590,7 +1547,6 @@
 | jca/SymmetricAlgorithm.java:146:44:146:65 | KeyOperationAlgorithm | Mode | jca/SymmetricAlgorithm.java:146:44:146:65 | ModeOfOperation |
 | jca/SymmetricAlgorithm.java:146:44:146:65 | KeyOperationAlgorithm | Padding | jca/SymmetricAlgorithm.java:146:44:146:65 | PaddingAlgorithm |
 | jca/SymmetricAlgorithm.java:150:42:150:44 | Key | Source | jca/SymmetricAlgorithm.java:145:36:145:48 | Parameter |
-| jca/SymmetricAlgorithm.java:150:47:150:52 | Nonce | Source | jca/SymmetricAlgorithm.java:148:9:148:40 | RandomNumberGeneration |
 | jca/SymmetricAlgorithm.java:150:47:150:52 | Nonce | Source | jca/SymmetricAlgorithm.java:148:38:148:39 | RandomNumberGeneration |
 | jca/SymmetricAlgorithm.java:151:29:151:53 | EncryptOperation | Algorithm | jca/SymmetricAlgorithm.java:146:44:146:65 | KeyOperationAlgorithm |
 | jca/SymmetricAlgorithm.java:151:29:151:53 | EncryptOperation | Input | jca/SymmetricAlgorithm.java:151:44:151:52 | Message |
@@ -1601,7 +1557,6 @@
 | jca/SymmetricAlgorithm.java:168:44:168:68 | KeyOperationAlgorithm | Mode | jca/SymmetricAlgorithm.java:168:44:168:68 | ModeOfOperation |
 | jca/SymmetricAlgorithm.java:168:44:168:68 | KeyOperationAlgorithm | Padding | jca/SymmetricAlgorithm.java:168:44:168:68 | PaddingAlgorithm |
 | jca/SymmetricAlgorithm.java:172:42:172:44 | Key | Source | jca/SymmetricAlgorithm.java:167:42:167:54 | Parameter |
-| jca/SymmetricAlgorithm.java:172:47:172:52 | Nonce | Source | jca/SymmetricAlgorithm.java:170:9:170:40 | RandomNumberGeneration |
 | jca/SymmetricAlgorithm.java:172:47:172:52 | Nonce | Source | jca/SymmetricAlgorithm.java:170:38:170:39 | RandomNumberGeneration |
 | jca/SymmetricAlgorithm.java:173:29:173:53 | EncryptOperation | Algorithm | jca/SymmetricAlgorithm.java:168:44:168:68 | KeyOperationAlgorithm |
 | jca/SymmetricAlgorithm.java:173:29:173:53 | EncryptOperation | Input | jca/SymmetricAlgorithm.java:173:44:173:52 | Message |
@@ -1612,7 +1567,6 @@
 | jca/SymmetricAlgorithm.java:190:44:190:53 | KeyOperationAlgorithm | Mode | jca/SymmetricAlgorithm.java:190:44:190:53 | KeyOperationAlgorithm |
 | jca/SymmetricAlgorithm.java:190:44:190:53 | KeyOperationAlgorithm | Padding | jca/SymmetricAlgorithm.java:190:44:190:53 | KeyOperationAlgorithm |
 | jca/SymmetricAlgorithm.java:194:42:194:44 | Key | Source | jca/SymmetricAlgorithm.java:244:64:244:76 | Parameter |
-| jca/SymmetricAlgorithm.java:194:47:194:72 | Nonce | Source | jca/SymmetricAlgorithm.java:192:9:192:43 | RandomNumberGeneration |
 | jca/SymmetricAlgorithm.java:194:47:194:72 | Nonce | Source | jca/SymmetricAlgorithm.java:192:38:192:42 | RandomNumberGeneration |
 | jca/SymmetricAlgorithm.java:195:29:195:53 | EncryptOperation | Algorithm | jca/SymmetricAlgorithm.java:190:44:190:53 | KeyOperationAlgorithm |
 | jca/SymmetricAlgorithm.java:195:29:195:53 | EncryptOperation | Input | jca/SymmetricAlgorithm.java:195:44:195:52 | Message |
@@ -1632,7 +1586,6 @@
 | jca/SymmetricAlgorithm.java:218:44:218:62 | KeyOperationAlgorithm | Mode | jca/SymmetricAlgorithm.java:218:44:218:62 | ModeOfOperation |
 | jca/SymmetricAlgorithm.java:218:44:218:62 | KeyOperationAlgorithm | Padding | jca/SymmetricAlgorithm.java:218:44:218:62 | PaddingAlgorithm |
 | jca/SymmetricAlgorithm.java:222:42:222:51 | Key | Source | jca/SymmetricAlgorithm.java:222:42:222:51 | Key |
-| jca/SymmetricAlgorithm.java:222:54:222:57 | Nonce | Source | jca/SymmetricAlgorithm.java:220:9:220:40 | RandomNumberGeneration |
 | jca/SymmetricAlgorithm.java:222:54:222:57 | Nonce | Source | jca/SymmetricAlgorithm.java:220:38:220:39 | RandomNumberGeneration |
 | jca/SymmetricAlgorithm.java:223:29:223:53 | EncryptOperation | Algorithm | jca/SymmetricAlgorithm.java:218:44:218:62 | KeyOperationAlgorithm |
 | jca/SymmetricAlgorithm.java:223:29:223:53 | EncryptOperation | Input | jca/SymmetricAlgorithm.java:223:44:223:52 | Message |
@@ -1641,7 +1594,6 @@
 | jca/SymmetricAlgorithm.java:223:29:223:53 | EncryptOperation | Output | jca/SymmetricAlgorithm.java:223:29:223:53 | KeyOperationOutput |
 | jca/SymmetricAlgorithm.java:223:44:223:52 | Message | Source | jca/SymmetricAlgorithm.java:223:44:223:52 | Message |
 | jca/SymmetricAlgorithm.java:287:42:287:66 | Message | Source | jca/SymmetricAlgorithm.java:284:58:284:70 | Parameter |
-| jca/SymmetricAlgorithm.java:287:69:287:72 | Salt | Source | jca/SymmetricAlgorithm.java:345:9:345:42 | RandomNumberGeneration |
 | jca/SymmetricAlgorithm.java:287:69:287:72 | Salt | Source | jca/SymmetricAlgorithm.java:345:38:345:41 | RandomNumberGeneration |
 | jca/SymmetricAlgorithm.java:288:65:288:86 | HMACAlgorithm | H | jca/SymmetricAlgorithm.java:288:65:288:86 | HashAlgorithm |
 | jca/SymmetricAlgorithm.java:288:65:288:86 | KeyDerivationAlgorithm | PRF | jca/SymmetricAlgorithm.java:288:65:288:86 | HMACAlgorithm |
@@ -1652,7 +1604,6 @@
 | jca/SymmetricAlgorithm.java:295:44:295:62 | KeyOperationAlgorithm | Mode | jca/SymmetricAlgorithm.java:295:44:295:62 | ModeOfOperation |
 | jca/SymmetricAlgorithm.java:295:44:295:62 | KeyOperationAlgorithm | Padding | jca/SymmetricAlgorithm.java:295:44:295:62 | PaddingAlgorithm |
 | jca/SymmetricAlgorithm.java:298:42:298:47 | Key | Source | jca/SymmetricAlgorithm.java:298:42:298:47 | Key |
-| jca/SymmetricAlgorithm.java:298:50:298:78 | Nonce | Source | jca/SymmetricAlgorithm.java:297:9:297:40 | RandomNumberGeneration |
 | jca/SymmetricAlgorithm.java:298:50:298:78 | Nonce | Source | jca/SymmetricAlgorithm.java:297:38:297:39 | RandomNumberGeneration |
 | jca/SymmetricAlgorithm.java:299:29:299:53 | EncryptOperation | Algorithm | jca/SymmetricAlgorithm.java:295:44:295:62 | KeyOperationAlgorithm |
 | jca/SymmetricAlgorithm.java:299:29:299:53 | EncryptOperation | Input | jca/SymmetricAlgorithm.java:299:44:299:52 | Message |
@@ -1689,7 +1640,6 @@
 | jca/SymmetricModesTest.java:79:44:79:63 | KeyOperationAlgorithm | Mode | jca/SymmetricModesTest.java:79:44:79:63 | ModeOfOperation |
 | jca/SymmetricModesTest.java:79:44:79:63 | KeyOperationAlgorithm | Padding | jca/SymmetricModesTest.java:79:44:79:63 | PaddingAlgorithm |
 | jca/SymmetricModesTest.java:83:42:83:44 | Key | Source | jca/SymmetricModesTest.java:78:43:78:55 | Parameter |
-| jca/SymmetricModesTest.java:83:47:83:52 | Nonce | Source | jca/SymmetricModesTest.java:81:9:81:40 | RandomNumberGeneration |
 | jca/SymmetricModesTest.java:83:47:83:52 | Nonce | Source | jca/SymmetricModesTest.java:81:38:81:39 | RandomNumberGeneration |
 | jca/SymmetricModesTest.java:84:29:84:53 | EncryptOperation | Algorithm | jca/SymmetricModesTest.java:79:44:79:63 | KeyOperationAlgorithm |
 | jca/SymmetricModesTest.java:84:29:84:53 | EncryptOperation | Input | jca/SymmetricModesTest.java:84:44:84:52 | Message |
@@ -1715,7 +1665,6 @@
 | jca/UniversalFlowTest.java:28:29:28:47 | KeyOperationAlgorithm | Mode | jca/UniversalFlowTest.java:28:29:28:47 | ModeOfOperation |
 | jca/UniversalFlowTest.java:28:29:28:47 | KeyOperationAlgorithm | Padding | jca/UniversalFlowTest.java:28:29:28:47 | PaddingAlgorithm |
 | jca/UniversalFlowTest.java:33:42:33:44 | Key | Source | jca/UniversalFlowTest.java:27:25:27:44 | Key |
-| jca/UniversalFlowTest.java:33:47:33:53 | Nonce | Source | jca/UniversalFlowTest.java:31:9:31:40 | RandomNumberGeneration |
 | jca/UniversalFlowTest.java:33:47:33:53 | Nonce | Source | jca/UniversalFlowTest.java:31:38:31:39 | RandomNumberGeneration |
 | jca/UniversalFlowTest.java:34:32:34:74 | EncryptOperation | Algorithm | jca/UniversalFlowTest.java:28:29:28:47 | KeyOperationAlgorithm |
 | jca/UniversalFlowTest.java:34:32:34:74 | EncryptOperation | Input | jca/UniversalFlowTest.java:34:47:34:73 | Message |
