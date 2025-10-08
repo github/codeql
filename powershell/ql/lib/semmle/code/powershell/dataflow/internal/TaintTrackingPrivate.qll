@@ -4,6 +4,7 @@ private import TaintTrackingPublic
 private import semmle.code.powershell.Cfg
 private import semmle.code.powershell.dataflow.DataFlow
 private import FlowSummaryImpl as FlowSummaryImpl
+private import PipelineReturns as PipelineReturns
 
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
@@ -21,6 +22,44 @@ predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) 
   c.isAnyPositional()
 }
 
+private module ExpandableSubExprInput implements PipelineReturns::InputSig {
+  additional predicate isSourceImpl(
+    CfgNodes::ExprNodes::ExpandableSubExprCfgNode expandableSubExpr, CfgNodes::AstCfgNode source
+  ) {
+    source = expandableSubExpr.getSubExpr()
+  }
+
+  predicate isSource(CfgNodes::AstCfgNode source) { isSourceImpl(_, source) }
+}
+
+/**
+ * Holds if `nodeFrom` flows to `nodeTo` via string interpolation.
+ */
+predicate stringInterpolationTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  // flow from $x to "Hello $x"
+  exists(CfgNodes::ExprNodes::ExpandableStringExprCfgNode es |
+    nodeFrom.asExpr() = es.getAnExpr() and
+    nodeTo.asExpr() = es
+  )
+  or
+  // Flow from $x to $($x)
+  exists(
+    CfgNodes::ExprNodes::ExpandableSubExprCfgNode es,
+    CfgNodes::StmtNodes::StmtBlockCfgNode blockStmt
+  |
+    ExpandableSubExprInput::isSourceImpl(es, blockStmt) and
+    nodeFrom.asExpr() = PipelineReturns::Make<ExpandableSubExprInput>::getAReturn(blockStmt) and
+    nodeTo.asExpr() = es
+  )
+}
+
+predicate operationTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  exists(CfgNodes::ExprNodes::OperationCfgNode op |
+    op = nodeTo.asExpr() and
+    op.getAnOperand() = nodeFrom.asExpr()
+  )
+}
+
 cached
 private module Cached {
   private import semmle.code.powershell.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
@@ -36,16 +75,10 @@ private module Cached {
   predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) {
     (
       // Flow from an operand to an operation
-      exists(CfgNodes::ExprNodes::OperationCfgNode op |
-        op = nodeTo.asExpr() and
-        op.getAnOperand() = nodeFrom.asExpr()
-      )
+      operationTaintStep(nodeFrom, nodeTo)
       or
       // Flow through string interpolation
-      exists(CfgNodes::ExprNodes::ExpandableStringExprCfgNode es |
-        nodeFrom.asExpr() = es.getAnExpr() and
-        nodeTo.asExpr() = es
-      )
+      stringInterpolationTaintStep(nodeFrom, nodeTo)
       or
       // Although flow through collections is modeled precisely using stores/reads, we still
       // allow flow out of a _tainted_ collection. This is needed in order to support taint-

@@ -662,7 +662,7 @@ async fn test_async_std_file() -> std::io::Result<()> {
     {
         let mut buffer = [0u8; 100];
         let _bytes = file.read(&mut buffer).await?;
-        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt"
+        sink(&buffer); // $ hasTaintFlow="file.txt"
     }
 
     // --- OpenOptions ---
@@ -671,7 +671,7 @@ async fn test_async_std_file() -> std::io::Result<()> {
         let mut f1 = async_std::fs::OpenOptions::new().open("f1.txt").await?; // $ Alert[rust/summary/taint-sources]
         let mut buffer = [0u8; 1024];
         let _bytes = f1.read(&mut buffer).await?;
-        sink(&buffer); // $ MISSING: hasTaintFlow="f1.txt"
+        sink(&buffer); // $ hasTaintFlow="f1.txt"
     }
 
     Ok(())

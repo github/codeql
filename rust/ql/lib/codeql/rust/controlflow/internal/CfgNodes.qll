@@ -81,6 +81,12 @@ class FormatArgsExprChildMapping extends ParentAstNode, CfgImpl::ExprTrees::Form
   override predicate relevantChild(AstNode child) { child = this.getChildNode(_) }
 }
 
+class AssignmentExprChildMapping extends ParentAstNode, AssignmentExpr {
+  override predicate relevantChild(AstNode child) {
+    child.(VariableWriteAccess).getAssignmentExpr() = this
+  }
+}
+
 private class ChildMappingImpl extends ChildMapping {
   /** Gets a CFG node for `child`, where `child` is a relevant child node of `parent`. */
   private CfgNode getRelevantChildCfgNode(AstNode parent, AstNode child) {

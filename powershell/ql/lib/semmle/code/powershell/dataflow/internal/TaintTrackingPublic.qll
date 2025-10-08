@@ -1,5 +1,5 @@
 private import powershell
-private import TaintTrackingPrivate
+private import TaintTrackingPrivate as Private
 private import semmle.code.powershell.Cfg
 private import semmle.code.powershell.dataflow.DataFlow
 
@@ -19,4 +19,8 @@ predicate localExprTaint(CfgNodes::ExprCfgNode e1, CfgNodes::ExprCfgNode e2) {
   localTaintStep*(DataFlow::exprNode(e1), DataFlow::exprNode(e2))
 }
 
-predicate localTaintStep = localTaintStepCached/2;
+predicate stringInterpolationTaintStep = Private::stringInterpolationTaintStep/2;
+
+predicate operationTaintStep = Private::operationTaintStep/2;
+
+predicate localTaintStep = Private::localTaintStepCached/2;

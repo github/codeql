@@ -965,7 +965,7 @@ module ExprNodes {
 
     override ExpandableSubExpr getExpr() { result = e }
 
-    ExprCfgNode getSubExpr() { e.hasCfgChild(e.getExpr(), this, result) }
+    StmtNodes::StmtBlockCfgNode getSubExpr() { e.hasCfgChild(e.getExpr(), this, result) }
   }
 
   private class UsingExprChildMapping extends ExprChildMapping, UsingExpr {

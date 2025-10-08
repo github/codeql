@@ -69,6 +69,18 @@ fn assignment() {
     sink(i);
     i = source(6);
     sink(i); // $ hasValueFlow=6
+    i = 2;
+    sink(i);
+
+    let mut j = 3;
+    let k = source(7);
+    j = k;
+    sink(j); // $ hasValueFlow=7
+    sink(k); // $ hasValueFlow=7
+
+    let mut l = source(8);
+    l = l;
+    sink(l); // $ hasValueFlow=8
 }
 
 fn block_expression1() -> i64 {

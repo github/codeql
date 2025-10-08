@@ -16,6 +16,36 @@ class ExitCfgNode = CfgImpl::ExitNode;
 
 class AnnotatedExitCfgNode = CfgImpl::AnnotatedExitNode;
 
+/** A variable access. */
+final class VariableAccessCfgNode extends PathExprBaseCfgNode {
+  private VariableAccess a;
+
+  VariableAccessCfgNode() { a = this.getAstNode() }
+
+  /** Gets the underlying `VariableAccess`. */
+  VariableAccess getAccess() { result = a }
+}
+
+/** A variable write. */
+final class VariableWriteAccessCfgNode extends VariableAccessCfgNode {
+  private VariableWriteAccess a;
+
+  VariableWriteAccessCfgNode() { a = this.getAstNode() }
+
+  /** Gets the underlying `VariableWriteAccess`. */
+  VariableWriteAccess getAccess() { result = a }
+}
+
+/** A variable read. */
+final class VariableReadAccessCfgNode extends VariableAccessCfgNode {
+  private VariableReadAccess a;
+
+  VariableReadAccessCfgNode() { a = this.getAstNode() }
+
+  /** Gets the underlying `VariableReadAccess`. */
+  VariableReadAccess getAccess() { result = a }
+}
+
 /**
  * An assignment expression, for example
  *
@@ -24,12 +54,42 @@ class AnnotatedExitCfgNode = CfgImpl::AnnotatedExitNode;
  * ```
  */
 final class AssignmentExprCfgNode extends BinaryExprCfgNode {
-  AssignmentExpr a;
+  AssignmentExprChildMapping a;
 
   AssignmentExprCfgNode() { a = this.getBinaryExpr() }
 
   /** Gets the underlying `AssignmentExpr`. */
   AssignmentExpr getAssignmentExpr() { result = a }
+
+  /**
+   * Gets a write access that occurs in the left-hand side of this assignment expression.
+   */
+  VariableWriteAccessCfgNode getAWriteAccess() {
+    a = result.getAccess().getAssignmentExpr() and
+    any(ChildMapping mapping).hasCfgChild(a, result.getAccess(), this, result)
+  }
+}
+
+/**
+ * A compound assignment expression, for example:
+ * ```rust
+ * x += y;
+ * ```
+ *
+ * Note that compound assignment expressions are syntatic sugar for
+ * trait invocations, i.e., the above actually means
+ *
+ * ```rust
+ * (&mut x).add_assign(y);
+ * ```
+ */
+final class CompoundAssignmentExprCfgNode extends BinaryExprCfgNode {
+  CompoundAssignmentExpr a;
+
+  CompoundAssignmentExprCfgNode() { a = this.getBinaryExpr() }
+
+  /** Gets the underlying `CompoundAssignmentExpr`. */
+  CompoundAssignmentExpr getCompoundAssignmentExpr() { result = a }
 }
 
 /**

@@ -83,6 +83,8 @@
 | E.cs:417:34:417:34 | access to parameter i | E.cs:417:24:417:40 | SSA capture def(i) | E.cs:417:34:417:34 | access to parameter i | Variable $@ may be null at this access because it has a nullable type. | E.cs:415:27:415:27 | i | i | E.cs:415:27:415:27 | i | this |
 | E.cs:423:38:423:38 | access to parameter i | E.cs:423:28:423:44 | SSA capture def(i) | E.cs:423:38:423:38 | access to parameter i | Variable $@ may be null at this access because it has a nullable type. | E.cs:420:27:420:27 | i | i | E.cs:420:27:420:27 | i | this |
 | E.cs:430:39:430:39 | access to parameter i | E.cs:430:29:430:45 | SSA capture def(i) | E.cs:430:39:430:39 | access to parameter i | Variable $@ may be null at this access because it has a nullable type. | E.cs:427:27:427:27 | i | i | E.cs:427:27:427:27 | i | this |
+| E.cs:444:13:444:13 | access to parameter s | E.cs:435:29:435:29 | SSA param(s) | E.cs:444:13:444:13 | access to parameter s | Variable $@ may be null at this access as suggested by $@ null check. | E.cs:435:29:435:29 | s | s | E.cs:437:13:437:21 | ... is ... | this |
+| E.cs:459:13:459:13 | access to parameter s | E.cs:435:29:435:29 | SSA param(s) | E.cs:459:13:459:13 | access to parameter s | Variable $@ may be null at this access as suggested by $@ null check. | E.cs:435:29:435:29 | s | s | E.cs:437:13:437:21 | ... is ... | this |
 | GuardedString.cs:35:31:35:31 | access to local variable s | GuardedString.cs:7:16:7:32 | SSA def(s) | GuardedString.cs:35:31:35:31 | access to local variable s | Variable $@ may be null at this access because of $@ assignment. | GuardedString.cs:7:16:7:16 | s | s | GuardedString.cs:7:16:7:32 | String s = ... | this |
 | NullMaybeBad.cs:7:27:7:27 | access to parameter o | NullMaybeBad.cs:13:17:13:20 | null | NullMaybeBad.cs:7:27:7:27 | access to parameter o | Variable $@ may be null at this access because of $@ null argument. | NullMaybeBad.cs:5:25:5:25 | o | o | NullMaybeBad.cs:13:17:13:20 | null | this |
 | Params.cs:14:17:14:20 | access to parameter args | Params.cs:20:12:20:15 | null | Params.cs:14:17:14:20 | access to parameter args | Variable $@ may be null at this access because of $@ null argument. | Params.cs:12:36:12:39 | args | args | Params.cs:20:12:20:15 | null | this |
@@ -445,7 +447,23 @@ edges
 | E.cs:423:28:423:44 | SSA capture def(i) | E.cs:423:38:423:38 | access to parameter i |
 | E.cs:430:29:430:45 | SSA capture def(i) | E.cs:430:39:430:39 | access to parameter i |
 | E.cs:435:29:435:29 | SSA param(s) | E.cs:437:13:437:21 | [true] ... is ... |
+| E.cs:437:13:437:21 | [true] ... is ... | E.cs:438:9:440:9 | {...} |
 | E.cs:437:13:437:21 | [true] ... is ... | E.cs:439:13:439:13 | access to parameter s |
+| E.cs:438:9:440:9 | {...} | E.cs:442:9:445:9 | if (...) ... |
+| E.cs:442:9:445:9 | if (...) ... | E.cs:442:22:442:29 | [no-match] not ... |
+| E.cs:442:13:442:29 | [true] ... is ... | E.cs:443:9:445:9 | {...} |
+| E.cs:442:13:442:29 | [true] ... is ... | E.cs:444:13:444:13 | access to parameter s |
+| E.cs:442:18:442:29 | [match] not ... | E.cs:442:13:442:29 | [true] ... is ... |
+| E.cs:442:22:442:29 | [no-match] not ... | E.cs:442:18:442:29 | [match] not ... |
+| E.cs:443:9:445:9 | {...} | E.cs:447:9:450:9 | if (...) ... |
+| E.cs:447:9:450:9 | if (...) ... | E.cs:447:18:447:25 | [no-match] not ... |
+| E.cs:447:13:447:25 | [false] ... is ... | E.cs:452:9:455:9 | if (...) ... |
+| E.cs:447:18:447:25 | [no-match] not ... | E.cs:447:13:447:25 | [false] ... is ... |
+| E.cs:452:9:455:9 | if (...) ... | E.cs:452:13:452:23 | [false] ... is ... |
+| E.cs:452:13:452:23 | [false] ... is ... | E.cs:457:9:464:9 | if (...) ... |
+| E.cs:457:9:464:9 | if (...) ... | E.cs:457:18:457:27 | [match] not ... |
+| E.cs:457:13:457:27 | [true] ... is ... | E.cs:459:13:459:13 | access to parameter s |
+| E.cs:457:18:457:27 | [match] not ... | E.cs:457:13:457:27 | [true] ... is ... |
 | F.cs:7:16:7:23 | SSA def(o) | F.cs:8:9:8:9 | access to local variable o |
 | Forwarding.cs:7:16:7:23 | SSA def(s) | Forwarding.cs:9:13:9:30 | [false] !... |
 | Forwarding.cs:9:13:9:30 | [false] !... | Forwarding.cs:14:9:17:9 | if (...) ... |
@@ -894,7 +912,23 @@ nodes
 | E.cs:430:39:430:39 | access to parameter i |
 | E.cs:435:29:435:29 | SSA param(s) |
 | E.cs:437:13:437:21 | [true] ... is ... |
+| E.cs:438:9:440:9 | {...} |
 | E.cs:439:13:439:13 | access to parameter s |
+| E.cs:442:9:445:9 | if (...) ... |
+| E.cs:442:13:442:29 | [true] ... is ... |
+| E.cs:442:18:442:29 | [match] not ... |
+| E.cs:442:22:442:29 | [no-match] not ... |
+| E.cs:443:9:445:9 | {...} |
+| E.cs:444:13:444:13 | access to parameter s |
+| E.cs:447:9:450:9 | if (...) ... |
+| E.cs:447:13:447:25 | [false] ... is ... |
+| E.cs:447:18:447:25 | [no-match] not ... |
+| E.cs:452:9:455:9 | if (...) ... |
+| E.cs:452:13:452:23 | [false] ... is ... |
+| E.cs:457:9:464:9 | if (...) ... |
+| E.cs:457:13:457:27 | [true] ... is ... |
+| E.cs:457:18:457:27 | [match] not ... |
+| E.cs:459:13:459:13 | access to parameter s |
 | F.cs:7:16:7:23 | SSA def(o) |
 | F.cs:8:9:8:9 | access to local variable o |
 | Forwarding.cs:7:16:7:23 | SSA def(s) |

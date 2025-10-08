@@ -5,8 +5,9 @@
  * @kind problem
  * @problem.severity recommendation
  * @id js/call-stack-introspection
- * @tags maintainability
- *       language-features
+ * @tags quality
+ *       reliability
+ *       correctness
  * @precision medium
  */
 

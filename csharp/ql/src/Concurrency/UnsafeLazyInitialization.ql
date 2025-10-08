@@ -6,7 +6,8 @@
  * @problem.severity error
  * @precision medium
  * @id cs/unsafe-double-checked-lock
- * @tags correctness
+ * @tags quality
+ *       reliability
  *       concurrency
  *       external/cwe/cwe-609
  */

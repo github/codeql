@@ -69,11 +69,15 @@ module HardcodedCryptographicValue {
   /**
    * An array initialized from a list of literals, considered as a single flow source. For example:
    * ```
-   * `[0, 0, 0, 0]`
+   * [0, 0, 0, 0]
+   * [0; 10]
    * ```
    */
   private class ArrayListSource extends Source {
-    ArrayListSource() { this.asExpr().getExpr().(ArrayListExpr).getExpr(_) instanceof LiteralExpr }
+    ArrayListSource() {
+      this.asExpr().getExpr().(ArrayListExpr).getExpr(_) instanceof LiteralExpr or
+      this.asExpr().getExpr().(ArrayRepeatExpr).getRepeatOperand() instanceof LiteralExpr
+    }
   }
 
   /**
