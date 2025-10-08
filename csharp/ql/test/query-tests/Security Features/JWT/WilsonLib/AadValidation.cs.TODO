@@ -1,0 +1,17 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Validators;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.Authority = null;
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        // Usual parameters.
+    };
+
+    // This is the line that adds Azure AD signing key issuer validation.
+    options.TokenValidationParameters.EnableAadSigningKeyIssuerValidation();
+});

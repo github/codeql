@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+    <p>By setting <code>TokenValidationParameter.SignatureValidator</code> validation delegate to a callable that never throws an <code>Exception</code>, validation of the token signature is disabled. Disabling safeguards can lead to security compromise of tokens from any issuer.</p>
+</overview>
+
+<recommendation>
+    <p>Improve the logic of the delegate so to throw an <code>SecurityTokenException</code> in failure cases when you want to fail validation.</p>
+</recommendation>
+
+<example>
+    <p>This example delegates <code>SignatureValidator</code> to a callable that always returns a <code>Microsoft.IdentityModel.Tokens.SecurityToken</code>.</p>
+    <sample src="examples/delegated-security-validations-always-permit-signature-bad.cs" />
+    <p>To fix it, use a callable that performs a validation, and fails when appropriate.</p>
+    <sample src="examples/delegated-security-validations-always-permit-signature-good.cs" />
+</example>
+
+<references>
+  <li><a href="https://aka.ms/wilson/tokenvalidation">azure-activedirectory-identitymodel-extensions-for-dotnet ValidatingTokens wiki</a></li>
+</references>
+
+</qhelp>

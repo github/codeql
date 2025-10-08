@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>By setting <code>TokenValidationParameter.IssuerValidator</code> validation delegate to a callable that always return the <code>issuer</code> argument (1st argument), important authentication safeguards are disabled. Disabling safeguards can lead to incorrect validation of tokens from any issuer.</p>
+
+</overview>
+<recommendation>
+<p>Improve the logic of the delegate so not all code paths return <code>issuer</code>, which effectively disables that type of validation; or throw <code>SecurityTokenException</code> in failure cases when you want to fail validation.
+</p>
+</recommendation>
+
+<example>
+<p>This example delegates <code>IssuerValidator</code> to a callable that always returns the <code>issuer</code>.</p>
+<sample src="examples/delegated-security-validations-always-return-issuer-parameter-bad.cs" />
+
+<p>To fix it, use a callable that performs a validation, and fails when appropriate.</p>
+<sample src="examples/delegated-security-validations-always-return-issuer-parameter-good.cs" />
+
+</example>
+
+<references>
+
+  <li><a href="https://aka.ms/wilson/tokenvalidation">azure-activedirectory-identitymodel-extensions-for-dotnet ValidatingTokens wiki</a></li>
+
+</references>
+</qhelp>
