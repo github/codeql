@@ -11,14 +11,15 @@
 
 import experimental.quantum.Language
 
-class WeakRSAAlgorithmNode extends Crypto::KeyOperationAlgorithmNode {
-  WeakRSAAlgorithmNode() {
+class WeakRsaAlgorithmNode extends Crypto::KeyOperationAlgorithmNode {
+  WeakRsaAlgorithmNode() {
     this.getAlgorithmType() = Crypto::KeyOpAlg::TAsymmetricCipher(Crypto::KeyOpAlg::RSA()) and
     this.getKeySizeFixed() < 2048
   }
 }
 
 from Crypto::KeyOperationNode op, string message
-where op.getAKnownAlgorithm() instanceof WeakRSAAlgorithmNode and
-     message = "Weak RSA instance found with key length <2048"
+where
+  op.getAKnownAlgorithm() instanceof WeakRsaAlgorithmNode and
+  message = "Weak RSA instance found with key length <2048"
 select op, message

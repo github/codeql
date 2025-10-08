@@ -1,5 +1,5 @@
 /**
- * @name Weak Asymetric Key Size
+ * @name Weak Asymmetric Key Size
  * @id java/quantum/weak-asymmetric-key-size
  * @description An asymmetric cipher with a short key size is in use
  * @kind problem
@@ -20,5 +20,5 @@ where
   // Can't be an elliptic curve
   not Crypto::isEllipticCurveAlgorithmName(algName)
 select op,
-  "Use of weak asymmetric key size (int bits)" + keySize.toString() + " for algorithm " +
+  "Use of weak asymmetric key size (" + keySize.toString() + " bits) for algorithm " +
     algName.toString() + " at config source $@", configSrc, configSrc.toString()

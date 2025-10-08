@@ -344,7 +344,7 @@ module Types {
   /**
    * Elliptic curve algorithms
    */
-  newtype TEllipticCurveFamilyType =
+  newtype TEllipticCurveType =
     NIST() or
     SEC() or
     NUMS() or
@@ -357,7 +357,7 @@ module Types {
     ES() or
     OtherEllipticCurveType()
 
-  class EllipticCurveFamilyType extends TEllipticCurveFamilyType {
+  class EllipticCurveType extends TEllipticCurveType {
     string toString() {
       this = NIST() and result = "NIST"
       or
@@ -445,7 +445,7 @@ module Types {
    */
   bindingset[rawName]
   predicate ellipticCurveNameToKnownKeySizeAndFamilyMapping(
-    string rawName, int keySize, TEllipticCurveFamilyType curveFamily
+    string rawName, int keySize, TEllipticCurveType curveFamily
   ) {
     exists(string curveName | curveName = rawName.toUpperCase() |
       isSecCurve(curveName, keySize) and curveFamily = SEC()

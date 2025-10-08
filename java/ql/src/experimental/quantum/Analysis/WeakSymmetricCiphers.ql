@@ -1,19 +1,30 @@
 /**
  * @name Weak symmetric ciphers
  * @description Finds uses of cryptographic symmetric cipher algorithms that are unapproved or otherwise weak.
- * @id java/quantum/slices/weak-ciphers
+ * @id java/quantum/weak-ciphers
  * @kind problem
  * @problem.severity error
  * @precision high
  * @tags external/cwe/cwe-327
+ *       quantum
+ *       experimental
  */
 
 import java
 import experimental.quantum.Language
+import Crypto::KeyOpAlg as KeyOpAlg
 
-from Crypto::KeyOperationAlgorithmNode alg, string name, string msg
+from Crypto::KeyOperationAlgorithmNode alg, KeyOpAlg::AlgorithmType algType, string msg
 where
-  name = alg.getAlgorithmName() and
-  name in ["DES", "TripleDES", "DoubleDES", "RC2", "RC4", "IDEA", "Blowfish"] and
-  msg = "Use of unapproved symmetric cipher algorithm or API: " + name + "."
+  algType = alg.getAlgorithmType() and
+  (
+    algType = KeyOpAlg::TSymmetricCipher(KeyOpAlg::DES()) or
+    algType = KeyOpAlg::TSymmetricCipher(KeyOpAlg::TRIPLE_DES()) or
+    algType = KeyOpAlg::TSymmetricCipher(KeyOpAlg::DOUBLE_DES()) or
+    algType = KeyOpAlg::TSymmetricCipher(KeyOpAlg::RC2()) or
+    algType = KeyOpAlg::TSymmetricCipher(KeyOpAlg::RC4()) or
+    algType = KeyOpAlg::TSymmetricCipher(KeyOpAlg::IDEA()) or
+    algType = KeyOpAlg::TSymmetricCipher(KeyOpAlg::BLOWFISH())
+  ) and
+  msg = "Use of unapproved symmetric cipher algorithm or API: " + algType.toString() + "."
 select alg, msg
