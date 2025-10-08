@@ -230,7 +230,7 @@ module ArtifactFlowConfig implements DataFlow::ConfigSig {
 
 module GenericDataSourceFlow = TaintTracking::Global<GenericDataSourceFlowConfig>;
 
-module ArtifactFlow = DataFlow::Global<ArtifactFlowConfig>;
+module ArtifactFlow = TaintTracking::Global<ArtifactFlowConfig>;
 
 // Import library-specific modeling
 import JCA

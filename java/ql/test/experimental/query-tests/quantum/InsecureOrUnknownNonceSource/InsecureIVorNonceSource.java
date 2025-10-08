@@ -11,7 +11,7 @@ public class InsecureIVorNonceSource {
 
     // BAD: AES-GCM with static IV from a byte array
     public byte[] encryptWithStaticIvByteArrayWithInitializer(byte[] key, byte[] plaintext) throws Exception {
-        byte[] iv = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5 }; // $Source
+        byte[] iv = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5 }; 
 
         GCMParameterSpec ivSpec = new GCMParameterSpec(128, iv);
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
@@ -24,20 +24,20 @@ public class InsecureIVorNonceSource {
 
     // BAD: AES-GCM with static IV from zero-initialized byte array
     public byte[] encryptWithZeroStaticIvByteArray(byte[] key, byte[] plaintext) throws Exception {
-        byte[] iv = new byte[16]; // $Source
+        byte[] iv = new byte[16]; 
 
         GCMParameterSpec ivSpec = new GCMParameterSpec(128, iv);
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
 
         Cipher cipher = Cipher.getInstance("AES/GCM/PKCS5PADDING");
-        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec); // $Alert[java/quantum/unknown-iv-or-nonce-initialization]
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec); // $Alert[java/quantum/unknown-iv-or-nonce-source]
         cipher.update(plaintext);
         return cipher.doFinal();
     }
 
     // BAD: AES-CBC with static IV from 1-initialized byte array
     public byte[] encryptWithStaticIvByteArray(byte[] key, byte[] plaintext) throws Exception {
-        byte[] iv = new byte[16]; // $Source
+        byte[] iv = new byte[16]; 
         for (byte i = 0; i < iv.length; i++) {
             iv[i] = 1;
         }
@@ -56,7 +56,7 @@ public class InsecureIVorNonceSource {
         byte[][] staticIvs = new byte[][] {
             { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5 },
             { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 42 }
-        }; // $Source
+        }; 
 
         GCMParameterSpec ivSpec = new GCMParameterSpec(128, staticIvs[1]);
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
@@ -72,7 +72,7 @@ public class InsecureIVorNonceSource {
         byte[][] staticIvs = new byte[][] {
             new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5 },
             new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 42 }
-        }; // $Source
+        }; 
 
         GCMParameterSpec ivSpec = new GCMParameterSpec(128, staticIvs[1]);
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
@@ -86,15 +86,15 @@ public class InsecureIVorNonceSource {
     // BAD: AES-GCM with static IV from a zero-initialized multidimensional byte array
     public byte[] encryptWithOneOfStaticZeroIvs(byte[] key, byte[] plaintext) throws Exception {
         byte[][] ivs = new byte[][] {
-            new byte[8], // $Source
-            new byte[16] // $Source
+            new byte[8], 
+            new byte[16] 
         };
 
         GCMParameterSpec ivSpec = new GCMParameterSpec(128, ivs[1]);
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
 
         Cipher cipher = Cipher.getInstance("AES/GCM/PKCS5PADDING");
-        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec); // $Alert[java/quantum/unknown-iv-or-nonce-initialization]
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec); // $Alert[java/quantum/unknown-iv-or-nonce-source]
         cipher.update(plaintext);
         return cipher.doFinal();
     }
@@ -191,7 +191,7 @@ public class InsecureIVorNonceSource {
     public byte[] generateInsecureRandomBytes(int numBytes) {
         Random random = new Random();
         byte[] bytes = new byte[numBytes];
-        random.nextBytes(bytes); // $Source
+        random.nextBytes(bytes); 
         return bytes;
     }
 
