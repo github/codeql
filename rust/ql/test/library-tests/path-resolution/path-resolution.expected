@@ -459,9 +459,9 @@ resolvePath
 | main.rs:821:5:821:10 | ...::f | main.rs:682:5:695:5 | fn f |
 | main.rs:822:5:822:8 | zelf | main.rs:0:0:0:0 | Crate(main@0.0.1) |
 | main.rs:822:5:822:11 | ...::h | main.rs:56:1:75:1 | fn h |
-| main.rs:823:5:823:13 | z_changed | main.rs:701:1:701:8 | fn z_changed |
+| main.rs:823:5:823:13 | z_changed | main.rs:701:1:701:9 | fn z_changed |
 | main.rs:824:5:824:11 | AStruct | main.rs:703:1:703:17 | struct AStruct |
-| main.rs:824:5:824:22 | ...::z_on_type | main.rs:707:5:707:16 | fn z_on_type |
+| main.rs:824:5:824:22 | ...::z_on_type | main.rs:707:5:707:17 | fn z_on_type |
 | main.rs:825:5:825:11 | AStruct | main.rs:703:1:703:17 | struct AStruct |
 | main.rs:826:5:826:29 | impl_with_attribute_macro | main.rs:771:1:790:1 | mod impl_with_attribute_macro |
 | main.rs:826:5:826:35 | ...::test | main.rs:786:5:789:5 | fn test |
