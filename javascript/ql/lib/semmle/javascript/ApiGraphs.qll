@@ -778,6 +778,17 @@ module API {
       } or
       MkSyntheticCallbackArg(DataFlow::InvokeNode nd)
 
+    private predicate needsDefNode(DataFlow::ClassNode cls) {
+      hasSemantics(cls) and
+      (
+        cls = trackDefNode(_)
+        or
+        cls.getAnInstanceReference() = trackDefNode(_)
+        or
+        needsDefNode(cls.getADirectSubClass())
+      )
+    }
+
     class TDef = MkModuleDef or TNonModuleDef;
 
     class TNonModuleDef = MkModuleExport or MkClassInstance or MkDef or MkSyntheticCallbackArg;
