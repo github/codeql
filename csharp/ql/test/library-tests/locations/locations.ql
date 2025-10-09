@@ -26,3 +26,7 @@ query predicate calltype_location(Call call, Type t, SourceLocation l) {
 query predicate typeparameter_location(TypeParameter tp, SourceLocation l) { tp.getALocation() = l }
 
 query predicate tupletype_location(TupleType tt, SourceLocation l) { tt.getALocation() = l }
+
+query predicate parameter_locations(Callable c, Parameter p, SourceLocation l) {
+  p.getCallable() = c and p.getALocation() = l
+}

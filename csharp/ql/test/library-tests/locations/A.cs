@@ -5,8 +5,8 @@ public abstract class A<T>
     public abstract T Prop { get; }
     public abstract T this[int index] { get; set; }
     public abstract event EventHandler Event;
-    public void Apply(T t) { }
-    public abstract object ToObject(T t);
+    public void Apply(T t1) { }
+    public abstract object ToObject(T t2);
 }
 
 public class A2 : A<string>

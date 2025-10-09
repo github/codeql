@@ -104,3 +104,37 @@ tupletype_location
 | Multiple1.cs:7:19:7:31 | (Int32,String) | Multiple1.cs:7:19:7:31 | Multiple1.cs:7:19:7:31 |
 | Multiple1.cs:7:19:7:31 | (Int32,String) | Multiple2.cs:9:9:9:21 | Multiple2.cs:9:9:9:21 |
 | Multiple1.cs:10:9:10:18 | (Int32,Int32) | Multiple1.cs:10:9:10:18 | Multiple1.cs:10:9:10:18 |
+parameter_locations
+| A.cs:6:41:6:43 | get_Item | A.cs:6:32:6:36 | index | A.cs:6:32:6:36 | A.cs:6:32:6:36 |
+| A.cs:6:41:6:43 | get_Item | A.cs:6:32:6:36 | index | A.cs:6:32:6:36 | A.cs:6:32:6:36 |
+| A.cs:6:41:6:43 | get_Item | A.cs:6:32:6:36 | index | A.cs:6:32:6:36 | A.cs:6:32:6:36 |
+| A.cs:6:46:6:48 | set_Item | A.cs:6:32:6:36 | index | A.cs:6:32:6:36 | A.cs:6:32:6:36 |
+| A.cs:6:46:6:48 | set_Item | A.cs:6:32:6:36 | index | A.cs:6:32:6:36 | A.cs:6:32:6:36 |
+| A.cs:6:46:6:48 | set_Item | A.cs:6:32:6:36 | index | A.cs:6:32:6:36 | A.cs:6:32:6:36 |
+| A.cs:6:46:6:48 | set_Item | A.cs:6:46:6:48 | value | A.cs:6:46:6:48 | A.cs:6:46:6:48 |
+| A.cs:6:46:6:48 | set_Item | A.cs:6:46:6:48 | value | A.cs:6:46:6:48 | A.cs:6:46:6:48 |
+| A.cs:6:46:6:48 | set_Item | A.cs:6:46:6:48 | value | A.cs:6:46:6:48 | A.cs:6:46:6:48 |
+| A.cs:7:40:7:44 | add_Event | A.cs:7:40:7:44 | value | A.cs:7:40:7:44 | A.cs:7:40:7:44 |
+| A.cs:7:40:7:44 | add_Event | A.cs:7:40:7:44 | value | A.cs:7:40:7:44 | A.cs:7:40:7:44 |
+| A.cs:7:40:7:44 | add_Event | A.cs:7:40:7:44 | value | A.cs:7:40:7:44 | A.cs:7:40:7:44 |
+| A.cs:7:40:7:44 | remove_Event | A.cs:7:40:7:44 | value | A.cs:7:40:7:44 | A.cs:7:40:7:44 |
+| A.cs:7:40:7:44 | remove_Event | A.cs:7:40:7:44 | value | A.cs:7:40:7:44 | A.cs:7:40:7:44 |
+| A.cs:7:40:7:44 | remove_Event | A.cs:7:40:7:44 | value | A.cs:7:40:7:44 | A.cs:7:40:7:44 |
+| A.cs:8:17:8:21 | Apply | A.cs:8:25:8:26 | t1 | A.cs:8:25:8:26 | A.cs:8:25:8:26 |
+| A.cs:8:17:8:21 | Apply | A.cs:8:25:8:26 | t1 | A.cs:8:25:8:26 | A.cs:8:25:8:26 |
+| A.cs:8:17:8:21 | Apply | A.cs:8:25:8:26 | t1 | A.cs:8:25:8:26 | A.cs:8:25:8:26 |
+| A.cs:9:28:9:35 | ToObject | A.cs:9:39:9:40 | t2 | A.cs:9:39:9:40 | A.cs:9:39:9:40 |
+| A.cs:9:28:9:35 | ToObject | A.cs:9:39:9:40 | t2 | A.cs:9:39:9:40 | A.cs:9:39:9:40 |
+| A.cs:9:28:9:35 | ToObject | A.cs:9:39:9:40 | t2 | A.cs:9:39:9:40 | A.cs:9:39:9:40 |
+| A.cs:18:9:18:11 | get_Item | A.cs:16:37:16:37 | i | A.cs:16:37:16:37 | A.cs:16:37:16:37 |
+| A.cs:19:9:19:11 | set_Item | A.cs:16:37:16:37 | i | A.cs:16:37:16:37 | A.cs:16:37:16:37 |
+| A.cs:19:9:19:11 | set_Item | A.cs:19:9:19:11 | value | A.cs:19:9:19:11 | A.cs:19:9:19:11 |
+| A.cs:24:9:24:11 | add_Event | A.cs:24:9:24:11 | value | A.cs:24:9:24:11 | A.cs:24:9:24:11 |
+| A.cs:25:9:25:14 | remove_Event | A.cs:25:9:25:14 | value | A.cs:25:9:25:14 | A.cs:25:9:25:14 |
+| A.cs:28:28:28:35 | ToObject | A.cs:28:44:28:44 | t | A.cs:28:44:28:44 | A.cs:28:44:28:44 |
+| B.cs:9:9:9:11 | get_Item | B.cs:7:34:7:34 | i | B.cs:7:34:7:34 | B.cs:7:34:7:34 |
+| B.cs:10:9:10:11 | set_Item | B.cs:7:34:7:34 | i | B.cs:7:34:7:34 | B.cs:7:34:7:34 |
+| B.cs:10:9:10:11 | set_Item | B.cs:10:9:10:11 | value | B.cs:10:9:10:11 | B.cs:10:9:10:11 |
+| B.cs:15:9:15:11 | add_Event | B.cs:15:9:15:11 | value | B.cs:15:9:15:11 | B.cs:15:9:15:11 |
+| B.cs:16:9:16:14 | remove_Event | B.cs:16:9:16:14 | value | B.cs:16:9:16:14 | B.cs:16:9:16:14 |
+| B.cs:19:28:19:35 | ToObject | B.cs:19:41:19:41 | t | B.cs:19:41:19:41 | B.cs:19:41:19:41 |
