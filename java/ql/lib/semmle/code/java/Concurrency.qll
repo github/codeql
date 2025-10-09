@@ -4,39 +4,49 @@ module;
 import java
 import semmle.code.java.frameworks.Mockito
 
+/**
+ * A Java type representing a lock.
+ * We identify a lock type as one that has both `lock` and `unlock` methods.
+ */
 class LockType extends RefType {
   LockType() {
     this.getAMethod().hasName("lock") and
     this.getAMethod().hasName("unlock")
   }
 
+  /** Gets a method that is locking this lock type. */
   Method getLockMethod() {
     result.getDeclaringType() = this and
     result.hasName(["lock", "lockInterruptibly", "tryLock"])
   }
 
+  /** Gets a method that is unlocking this lock type. */
   Method getUnlockMethod() {
     result.getDeclaringType() = this and
     result.hasName("unlock")
   }
 
+  /** Gets an `isHeldByCurrentThread` method of this lock type. */
   Method getIsHeldByCurrentThreadMethod() {
     result.getDeclaringType() = this and
     result.hasName("isHeldByCurrentThread")
   }
 
+  /** Gets a call to a method that is locking this lock type. */
   MethodCall getLockAccess() {
     result.getMethod() = this.getLockMethod() and
     // Not part of a Mockito verification call
     not result instanceof MockitoVerifiedMethodCall
   }
 
+  /** Gets a call to a method that is unlocking this lock type. */
   MethodCall getUnlockAccess() {
     result.getMethod() = this.getUnlockMethod() and
     // Not part of a Mockito verification call
     not result instanceof MockitoVerifiedMethodCall
   }
 
+  /** Gets a call to a method that checks if the lock is held by the current thread. */
   MethodCall getIsHeldByCurrentThreadAccess() {
     result.getMethod() = this.getIsHeldByCurrentThreadMethod() and
     // Not part of a Mockito verification call
@@ -200,9 +210,9 @@ module Monitors {
     exists(Variable localLock, MethodCall lockCall, MethodCall unlockCall |
       represents(lock, localLock) and
       lockCall.getQualifier() = localLock.getAnAccess() and
-      lockCall.getMethod() = lock.getType().(LockType).getLockMethod() and
+      lockCall = lock.getType().(LockType).getLockAccess() and
       unlockCall.getQualifier() = localLock.getAnAccess() and
-      unlockCall.getMethod() = lock.getType().(LockType).getUnlockMethod()
+      unlockCall = lock.getType().(LockType).getUnlockAccess()
     |
       dominates(lockCall.getControlFlowNode(), unlockCall.getControlFlowNode()) and
       dominates(lockCall.getControlFlowNode(), getNodeToBeDominated(e)) and
