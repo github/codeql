@@ -753,9 +753,31 @@ module API {
         or
         any(TypeAnnotation n).hasUnderlyingType(m, _)
       } or
-      MkClassInstance(DataFlow::ClassNode cls) { needsDefNode(cls) } or
-      MkDef(DataFlow::Node nd) { rhs(_, _, nd) } or
-      MkUse(DataFlow::Node nd) { use(_, _, nd) } or
+      MkClassInstance(DataFlow::ClassNode cls) or
+      MkDef(DataFlow::Node nd) {
+        nd = any(DataFlow::PropWrite w).getRhs()
+        or
+        nd = any(DataFlow::FunctionNode fn).getReturnNode()
+        or
+        nd = any(DataFlow::FunctionNode fn).getAReturn()
+        or
+        nd = any(DataFlow::FunctionNode fn).getExceptionalReturn()
+        or
+        nd = any(DataFlow::CallNode c).getReceiver()
+        or
+        nd = any(DataFlow::InvokeNode i).getAnArgument()
+        or
+        nd = any(DataFlow::InvokeNode i).getASpreadArgument()
+        or
+        nd = any(ThrowStmt stmt).getExpr().flow()
+        or
+        nd = any(ExportDeclaration decl).getDirectSourceNode(_)
+        or
+        nd = any(MemberDeclaration m).getInit().flow()
+        or
+        nd = any(ClassDefinition cls | exists(cls.getADecorator())).flow()
+      } or
+      MkUse(DataFlow::Node nd) { nd instanceof DataFlow::SourceNode } or
       /** A use of a TypeScript type. */
       MkTypeUse(string moduleName, string exportName) {
         any(TypeAnnotation n).hasUnderlyingType(moduleName, exportName)
@@ -984,6 +1006,7 @@ module API {
     predicate rhs(TApiNode nd, DataFlow::Node rhs) {
       exists(string m | nd = MkModuleExport(m) | exports(m, rhs))
       or
+      rhs(_, _, rhs) and
       nd = MkDef(rhs)
     }
 
@@ -1246,6 +1269,7 @@ module API {
         ref = cls.(DataFlow::ClassNode).getAPrototypeReference()
       )
       or
+      use(_, _, ref) and
       nd = MkUse(ref)
     }
 
