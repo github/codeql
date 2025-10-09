@@ -1,4 +1,4 @@
-query: experimental/quantum/Analysis/InsecureIVorNonceSource.ql
+query: experimental/quantum/Examples/InsecureIVorNonceSource.ql
 postprocess:
   - utils/test/PrettyPrintModels.ql
   - utils/test/InlineExpectationsTestQuery.ql

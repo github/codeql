@@ -12,13 +12,11 @@
 import java
 import experimental.quantum.Language
 
-from Crypto::KeyOperationAlgorithmNode op, DataFlow::Node configSrc, int keySize, string algName
+from Crypto::KeyOperationAlgorithmNode op, int keySize, string algName
 where
   keySize = op.getKeySizeFixed() and
   keySize < 2048 and
   algName = op.getAlgorithmName() and
   // Can't be an elliptic curve
-  not Crypto::isEllipticCurveAlgorithmName(algName)
-select op,
-  "Use of weak asymmetric key size (" + keySize.toString() + " bits) for algorithm " +
-    algName.toString() + " at config source $@", configSrc, configSrc.toString()
+  op.getAlgorithmType() != Crypto::KeyOpAlg::AlgorithmType::EllipticCurveType()
+select "Use of weak asymmetric key size (" + keySize.toString() + " bits) for algorithm " + algName
