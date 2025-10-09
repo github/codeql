@@ -115,7 +115,7 @@ private class ConstantDataSourceLiteral extends Crypto::GenericConstantSourceIns
 
 private class ConstantDataSourceArrayInitializer extends Crypto::GenericConstantSourceInstance instanceof ArrayInit
 {
-  ConstantDataSourceArrayInitializer() { exists(Literal l | this.getAnInit() = l) }
+  ConstantDataSourceArrayInitializer() { this.getAnInit() instanceof Literal }
 
   override DataFlow::Node getOutputNode() { result.asExpr() = this }
 
