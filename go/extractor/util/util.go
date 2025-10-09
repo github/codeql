@@ -34,6 +34,11 @@ func Getenv(key string, aliases ...string) string {
 	return ""
 }
 
+// Retrieves the path of the scratch directory in the database.
+func ScratchDir() string {
+	return os.Getenv("CODEQL_EXTRACTOR_GO_SCRATCH_DIR")
+}
+
 // FileExists tests whether the file at `filename` exists and is not a directory.
 func FileExists(filename string) bool {
 	info, err := os.Stat(filename)

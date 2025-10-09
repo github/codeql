@@ -190,6 +190,20 @@ func EmitGoFilesFoundButNotProcessed() {
 	)
 }
 
+func EmitGoFilesFoundButNotProcessedForDirectory(wd string) {
+	emitDiagnostic(
+		"go/autobuilder/go-files-found-but-not-processed-for-directory",
+		"Go files were found but not processed for a directory",
+		fmt.Sprintf(
+			"CodeQL was unable to extract any Go files in %s. If this is unexpected, [specify a custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages) that includes one or more `go build` commands to build the `.go` files to be analyzed.",
+			wd,
+		),
+		severityWarning,
+		fullVisibility,
+		noLocation,
+	)
+}
+
 func EmitRelativeImportPaths() {
 	emitDiagnostic(
 		"go/autobuilder/relative-import-paths",
