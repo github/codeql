@@ -103,6 +103,7 @@ module Monitors {
     )
   }
 
+  /** Gets the control flow node that must dominate `e` when `e` is synchronized on a lock. */
   ControlFlowNode getNodeToBeDominated(Expr e) {
     // If `e` is the LHS of an assignment, use the control flow node for the assignment
     exists(Assignment asgn | asgn.getDest() = e | result = asgn.getControlFlowNode())
@@ -153,13 +154,13 @@ module Modification {
 
 /** Holds if the type `t` is thread-safe. */
 predicate isThreadSafeType(Type t) {
-  t.getErasure().getName().matches(["Atomic%", "Concurrent%"])
+  t.(RefType).getSourceDeclaration().getName().matches(["Atomic%", "Concurrent%"])
   or
-  t.getErasure().getName() in ["ThreadLocal"]
+  t.(RefType).getSourceDeclaration().getName() in ["ThreadLocal"]
   or
   // Anything in `java.itul.concurrent` is thread safe.
   // See https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/package-summary.html#MemoryVisibility
-  t.getTypeDescriptor().matches("Ljava/util/concurrent/%;")
+  t.(RefType).getPackage().getName() = "java.util.concurrent"
   or
   t instanceof ClassAnnotatedAsThreadSafe
 }
@@ -170,27 +171,38 @@ predicate isThreadSafeInitializer(Expr e) {
 }
 
 /**
+ * A field that is exposed to potential data races.
+ * We require the field to be in a class that is annotated as `@ThreadSafe`.
+ */
+class ExposedField extends Field {
+  ExposedField() {
+    this.getDeclaringType() instanceof ClassAnnotatedAsThreadSafe and
+    not this.isVolatile() and
+    // field is not a lock
+    not isLockType(this.getType()) and
+    // field is not thread-safe
+    not isThreadSafeType(this.getType()) and
+    not isThreadSafeType(this.getInitializer().getType()) and
+    // the initializer guarantees thread safety
+    not isThreadSafeInitializer(this.getInitializer())
+  }
+}
+
+/**
  * A field access that is exposed to potential data races.
  * We require the field to be in a class that is annotated as `@ThreadSafe`.
  */
 class ExposedFieldAccess extends FieldAccess {
   ExposedFieldAccess() {
-    this.getField() = any(ClassAnnotatedAsThreadSafe c).getAField() and
-    not this.getField().isVolatile() and
-    // field is not a lock
-    not isLockType(this.getField().getType()) and
-    // field is not thread-safe
-    not isThreadSafeType(this.getField().getType()) and
-    not isThreadSafeType(this.getField().getInitializer().getType()) and
-    // the initializer guarantees thread safety
-    not isThreadSafeInitializer(this.getField().getInitializer()) and
+    // access is to an exposed field
+    this.getField() instanceof ExposedField and
     // access is not the initializer of the field
     not this.(VarWrite).getASource() = this.getField().getInitializer() and
     // access not in a constructor
     not this.getEnclosingCallable() = this.getField().getDeclaringType().getAConstructor() and
     // not a field on a local variable
     not this.getQualifier+().(VarAccess).getVariable() instanceof LocalVariableDecl and
-    // not the variable mention in a synchronized statement
+    // not the variable mentioned in a synchronized statement
     not this = any(SynchronizedStmt sync).getExpr()
   }
 }
