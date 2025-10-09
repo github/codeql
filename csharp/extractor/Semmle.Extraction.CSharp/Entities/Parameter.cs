@@ -115,10 +115,9 @@ namespace Semmle.Extraction.CSharp.Entities
             var type = Type.Create(Context, Symbol.Type);
             trapFile.@params(this, Name, type.TypeRef, Ordinal, ParamKind, Parent!, Original);
 
-            foreach (var l in Symbol.Locations)
-            {
-                WriteLocationToTrap(trapFile.param_location, this, Context.CreateLocation(l));
-            }
+            var locations = Context.GetLocations(Symbol);
+
+            WriteLocationsToTrap(trapFile.param_location, this, locations);
 
             if (!Symbol.Locations.Any() &&
                 Symbol.ContainingSymbol is IMethodSymbol ms &&

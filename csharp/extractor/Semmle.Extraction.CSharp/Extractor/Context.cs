@@ -562,9 +562,19 @@ namespace Semmle.Extraction.CSharp
         /// <param name="symbol">The symbol</param>
         /// <returns>List of locations</returns>
         public IEnumerable<Entities.Location> GetLocations(ISymbol symbol) =>
-            symbol.Locations
-                .Where(l => !l.IsInSource || IsLocationInContext(l))
+            GetMsLocations(symbol)
                 .Select(CreateLocation);
+
+        /// <summary>
+        /// Gets the locations of the symbol that are either
+        /// (1) In assemblies.
+        /// (2) In the current context.
+        /// </summary>
+        /// <param name="symbol">The symbol</param>
+        /// <returns>List of locations</returns>
+        public IEnumerable<Location> GetMsLocations(ISymbol symbol) =>
+            symbol.Locations
+                .Where(l => !l.IsInSource || IsLocationInContext(l));
 
         public bool IsLocationInContext(Location location) =>
             location.SourceTree == SourceTree;
