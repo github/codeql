@@ -19,6 +19,7 @@ class NonAESGCMAlgorithmNode extends Crypto::KeyOperationAlgorithmNode {
 }
 
 from Crypto::KeyOperationNode op, Crypto::KeyOperationOutputNode codeNode
-where op.getAKnownAlgorithm() instanceof NonAESGCMAlgorithmNode and
-    codeNode = op.getAnOutputArtifact()
+where
+  op.getAKnownAlgorithm() instanceof NonAESGCMAlgorithmNode and
+  codeNode = op.getAnOutputArtifact()
 select op, "Non-AES-GCM instance."
