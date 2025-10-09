@@ -254,9 +254,9 @@ mod blanket_like_impl {
 
     pub fn test_basic_blanket() {
         let x1 = S1.m1(); // $ target=S1::m1
-        let x2 = (&S1).m2(); // $ target=MyTrait2Ref::m2 $ SPURIOUS: target=MyTrait2RefRefS1::m2
+        let x2 = (&S1).m2(); // $ target=MyTrait2Ref::m2
         let x3 = (&&S1).m2(); // $ target=MyTrait2RefRefS1::m2
-        let x4 = S1.m4(); // $ target=MyTrait4aBlanket::m4 $ SPURIOUS: target=MyTrait4bRef::m4
+        let x4 = S1.m4(); // $ target=MyTrait4aBlanket::m4
         let x5 = (&S1).m4(); // $ target=MyTrait4bRef::m4
         let x6 = S2.m4(); // $ target=MyTrait4bRef::m4
         let x7 = (&S2).m4(); // $ target=MyTrait4bRef::m4

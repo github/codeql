@@ -704,14 +704,23 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       /**
        * Holds if `app` is _not_ a possible instantiation of `constraint`.
+       *
+       * This is a monotonic approximation of `not isInstantiationOf(app, abs, constraint)`;
+       * if, for example, `app` has two different types `t1` and `t2` at the same type path,
+       * and `t1` satisfies `constraint` while `t2` does not, then both `isInstantiationOf`
+       * and `isNotInstantiationOf` will hold.
+       *
+       * Dually, if `app` does not have a type at a required type path, then neither
+       * `isInstantiationOf` nor `isNotInstantiationOf` will hold.
        */
       pragma[nomagic]
       predicate isNotInstantiationOf(App app, TypeAbstraction abs, Constraint constraint) {
         // `app` and `constraint` differ on a concrete type
-        exists(Type t, TypePath path |
+        exists(Type t, Type t2, TypePath path |
           t = resolveTypeAt(app, abs, constraint, path) and
           not t = abs.getATypeParameter() and
-          app.getTypeAt(path) != t
+          app.getTypeAt(path) = t2 and
+          t2 != t
         )
       }
     }
@@ -793,7 +802,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       /**
-       * Holds if its possible for a type with `conditionRoot` at the root to
+       * Holds if it's possible for a type with `conditionRoot` at the root to
        * satisfy a constraint with `constraintRoot` at the root through `abs`,
        * `condition`, and `constraint`.
        */
@@ -997,6 +1006,40 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
       }
 
+      /**
+       * Holds if `tt` does not satisfy `constraint`.
+       */
+      pragma[nomagic]
+      private predicate hasNotConstraintMention(HasTypeTree tt, Type constraint) {
+        exists(Type type | hasTypeConstraint(tt, type, constraint) |
+          (
+            not useUniversalConditions()
+            or
+            exists(countConstraintImplementations(type, constraint))
+            or
+            forall(TypeAbstraction abs, TypeMention condition, TypeMention constraintMention |
+              conditionSatisfiesConstraintTypeAt(abs, condition, constraintMention, _, _) and
+              resolveTypeMentionRoot(condition) = abs.getATypeParameter()
+            |
+              not constraint = resolveTypeMentionRoot(constraintMention)
+            )
+          ) and
+          (
+            countConstraintImplementations(type, constraint) = 0
+            or
+            not rootTypesSatisfaction(type, constraint, _, _, _)
+            or
+            multipleConstraintImplementations(type, constraint) and
+            forex(TypeAbstraction abs, TypeMention condition |
+              rootTypesSatisfaction(type, constraint, abs, condition, _)
+            |
+              IsInstantiationOf<HasTypeTree, TypeMentionTypeTree, IsInstantiationOfInput>::isNotInstantiationOf(tt,
+                abs, condition)
+            )
+          )
+        )
+      }
+
       pragma[nomagic]
       private predicate satisfiesConstraintTypeMention0(
         HasTypeTree tt, Type constraint, TypeAbstraction abs, TypeMention sub, TypePath path, Type t
@@ -1037,6 +1080,26 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         or
         hasTypeConstraint(tt, constraint, constraint) and
         t = tt.getTypeAt(path)
+      }
+
+      /**
+       * Holds if the type tree at `tt` does _not_ satisfy the constraint `constraint`.
+       *
+       * This is a monotonic approximation of `not satisfiesConstraintType(tt, constraint, _, _)`;
+       * if, for example, `tt` has two different types `t1` and `t2`, and `t1` satisfies
+       * `constraint` while `t2` does not, then both `satisfiesConstraintType` and
+       * `satisfiesNotConstraint` will hold.
+       *
+       * Dually, if `tt` does not have a type, then neither `satisfiesConstraintType` nor
+       * `satisfiesNotConstraint` will hold.
+       */
+      pragma[nomagic]
+      predicate satisfiesNotConstraint(HasTypeTree tt, Type constraint) {
+        hasNotConstraintMention(tt, constraint) and
+        exists(Type t |
+          hasTypeConstraint(tt, t, constraint) and
+          t != constraint
+        )
       }
     }
 

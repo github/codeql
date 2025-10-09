@@ -132,4 +132,17 @@ module SatisfiesBlanketConstraint<
       SatisfiesBlanketConstraint::satisfiesConstraintType(ato, TTrait(traitBound), _, _)
     )
   }
+
+  /**
+   * Holds if the argument type `at` does _not_ satisfy the first non-trivial blanket
+   * constraint of `impl`.
+   */
+  pragma[nomagic]
+  predicate satisfiesNotBlanketConstraint(ArgumentType at, ImplItemNode impl) {
+    exists(ArgumentTypeAndBlanketOffset ato, Trait traitBound |
+      ato = MkArgumentTypeAndBlanketOffset(at, _) and
+      SatisfiesBlanketConstraintInput::relevantConstraint(ato, impl, traitBound) and
+      SatisfiesBlanketConstraint::satisfiesNotConstraint(ato, TTrait(traitBound))
+    )
+  }
 }
