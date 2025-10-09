@@ -545,7 +545,7 @@ module API {
       this = Impl::MkClassInstance(result) or
       this = Impl::MkUse(result) or
       this = Impl::MkDef(result) or
-      this = Impl::MkSyntheticCallbackArg(_, _, result)
+      this = Impl::MkSyntheticCallbackArg(result)
     }
 
     /**
@@ -760,9 +760,7 @@ module API {
       MkTypeUse(string moduleName, string exportName) {
         any(TypeAnnotation n).hasUnderlyingType(moduleName, exportName)
       } or
-      MkSyntheticCallbackArg(DataFlow::Node src, int bound, DataFlow::InvokeNode nd) {
-        trackUseNode(src, true, bound, "").flowsTo(nd.getCalleeNode())
-      }
+      MkSyntheticCallbackArg(DataFlow::InvokeNode nd)
 
     private predicate needsDefNode(DataFlow::ClassNode cls) {
       hasSemantics(cls) and
@@ -1110,7 +1108,7 @@ module API {
         )
         or
         exists(DataFlow::InvokeNode call |
-          base = MkSyntheticCallbackArg(_, _, call) and
+          base = MkSyntheticCallbackArg(call) and
           lbl = Label::parameter(1) and
           ref = awaited(call)
         )
@@ -1399,7 +1397,7 @@ module API {
 
     private DataFlow::SourceNode awaited(DataFlow::InvokeNode call, DataFlow::TypeTracker t) {
       t.startInPromise() and
-      exists(MkSyntheticCallbackArg(_, _, call)) and
+      trackUseNode(_, true, _, "").flowsTo(call.getCalleeNode()) and
       result = call
       or
       exists(DataFlow::TypeTracker t2 | result = awaited(call, t2).track(t2, t))
@@ -1494,7 +1492,8 @@ module API {
     DataFlow::InvokeNode getAPromisifiedInvocation(TApiNode callee, int bound, TApiNode succ) {
       exists(DataFlow::SourceNode src |
         Impl::use(callee, src) and
-        succ = Impl::MkSyntheticCallbackArg(src, bound, result)
+        trackUseNode(src, true, bound, "").flowsTo(result.getCalleeNode()) and
+        succ = Impl::MkSyntheticCallbackArg(result)
       )
     }
   }
