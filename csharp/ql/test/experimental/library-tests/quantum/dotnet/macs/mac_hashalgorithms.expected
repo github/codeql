@@ -1,0 +1,10 @@
+| HMACExample.cs:33:31:33:66 | MACOperation | HMACSHA256 | HMAC |
+| HMACExample.cs:40:31:40:64 | MACOperation | HMACSHA1 | HMAC |
+| HMACExample.cs:47:31:47:66 | MACOperation | HMACSHA384 | HMAC |
+| HMACExample.cs:54:31:54:66 | MACOperation | HMACSHA512 | HMAC |
+| HMACExample.cs:68:31:68:65 | MACOperation | KeyedHashAlgorithm | HMAC |
+| HMACExample.cs:81:40:81:77 | MACOperation | HMACSHA256 | HMAC |
+| HMACExample.cs:84:38:84:73 | MACOperation | HMACSHA1 | HMAC |
+| HMACExample.cs:87:40:87:77 | MACOperation | HMACSHA384 | HMAC |
+| HMACExample.cs:90:40:90:77 | MACOperation | HMACSHA512 | HMAC |
+| HMACExample.cs:106:31:106:54 | MACOperation | HMACSHA256 | HMAC |
