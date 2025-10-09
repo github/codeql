@@ -21,6 +21,8 @@ module BoundedFlowSourceConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getLocation()
+    or
     exists(ArrayCreationExpr arrayCreation, CheckableArrayAccess arrayAccess |
       result = [arrayCreation, arrayAccess.getIndexExpr()].getLocation() and
       arrayAccess.canThrowOutOfBoundsDueToEmptyArray(sink.asExpr(), arrayCreation)
