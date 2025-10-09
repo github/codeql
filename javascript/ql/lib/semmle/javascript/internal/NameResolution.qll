@@ -34,6 +34,27 @@ module NameResolution {
       or
       result = this.(JSDocTypeExpr).getLocation()
     }
+
+    DataFlow::Node toDataFlowNodeIn() {
+      result = DataFlow::valueNode(this)
+      or
+      result = DataFlow::valueNode(this.(Variable).getAnAssignedExpr())
+      or
+      result = DataFlow::valueNode(any(ClassDefinition def | this = def.getVariable()))
+      or
+      result = DataFlow::valueNode(any(FunctionDeclStmt def | this = def.getVariable()))
+    }
+
+    DataFlow::Node toDataFlowNodeOut() {
+      result = DataFlow::valueNode(this)
+      or
+      result = DataFlow::valueNode(this.(Variable).getAnAccess())
+      or
+      exists(ImportSpecifier spec |
+        this = spec.getLocal() and
+        result = DataFlow::valueNode(spec)
+      )
+    }
   }
 
   private signature predicate nodeSig(Node node);
@@ -73,12 +94,25 @@ module NameResolution {
    *
    * May also include some type-specific steps in cases where this is harmless when tracking values.
    */
-  private predicate commonStep(Node node1, Node node2) {
+  private predicate commonStep1(Node node1, Node node2) {
     // Import paths are part of the graph and has an incoming edge from the imported module, if found.
     // This ensures we can also use the PathExpr as a source when working with external (unresolved) modules.
     exists(Import imprt |
       node1 = imprt.getImportedModule() and
       node2 = imprt.getImportedPathExpr()
+    )
+    or
+    // Same as above, but for re-export declarations
+    exists(ReExportDeclaration exprt |
+      node1 = exprt.getReExportedModule() and
+      node2 = exprt.getImportedPath()
+    )
+    or
+    // For imports like `require()` that are just expressions evaluating to the imported module.
+    exists(Import imprt |
+      imprt.getImportedModuleNode() = DataFlow::valueNode(imprt) and
+      node1 = imprt.getImportedPathExpr() and
+      node2 = imprt
     )
     or
     exists(ImportNamespaceSpecifier spec |
@@ -173,14 +207,21 @@ module NameResolution {
       node2 = req
     )
     or
-    exists(Closure::ClosureModule mod |
-      node1 = mod.getExportsVariable() and
-      node2 = mod
-    )
-    or
     exists(ImmediatelyInvokedFunctionExpr fun, int i |
       node1 = fun.getArgument(i) and
       node2 = fun.getParameter(i)
+    )
+    or
+    defaultImportInteropStep(node1, node2)
+  }
+
+  pragma[inline]
+  private predicate commonStep(Node node1, Node node2) {
+    commonStep1(node1, node2)
+    or
+    exists(ModuleLike mod |
+      node1 = exportsObjectRhs(mod) and
+      node2 = mod
     )
   }
 
@@ -209,7 +250,8 @@ module NameResolution {
     exists(PropAccess access |
       node1 = access.getBase() and
       name = access.getPropertyName() and
-      node2 = access
+      node2 = access and
+      access instanceof RValue
     )
     or
     exists(ObjectPattern pattern |
@@ -250,6 +292,89 @@ module NameResolution {
     )
   }
 
+  /**
+   * A step that treats imports of form `import foo from "somewhere"` as a namespace import,
+   * to support some non-standard compilers.
+   */
+  private predicate defaultImportInteropStep(Node node1, Node node2) {
+    exists(ImportDefaultSpecifier spec |
+      node1 = spec.getImportDeclaration().getImportedPathExpr() and
+      node2 = spec.getLocal()
+    )
+  }
+
+  pragma[nomagic]
+  private GlobalVarAccess globalAccess(Module mod, string name) {
+    result.getName() = name and
+    result.getTopLevel() = mod and
+    name = ["exports", "module"] // manually restrict size of predicate
+  }
+
+  /** Gets a reference to the CommonJS `module` object within the given module. */
+  private Node moduleObjectRef(Module mod) {
+    result = mod.getScope().getVariable("module").getAnAccess()
+    or
+    result = globalAccess(mod, "module")
+    or
+    commonStep1(moduleObjectRef(mod), result)
+  }
+
+  /** Gets the right-hand side of an assignment to `module.exports` within the given module. */
+  private Node exportsObjectRhs(Module mod) {
+    exists(AssignExpr assign |
+      assign.getLhs().(PropAccess).accesses(moduleObjectRef(mod), "exports") and
+      result = assign.getRhs()
+    )
+    or
+    result = mod.(Closure::ClosureModule).getExportsVariable().getAnAssignedExpr()
+    or
+    exists(ExportDefaultDeclaration exprt |
+      mod instanceof Closure::ClosureModule and
+      exprt.getContainer() = mod and
+      result = exprt.getOperand()
+    )
+    or
+    result = mod.(AmdModule).getDefine().getFactoryFunction().getAReturnedExpr()
+  }
+
+  /** Gets a node that is bulk-exported from the given module. */
+  Node getModuleBulkExport(ModuleLike mod) { result = exportsObjectRhs(mod) }
+
+  /** Gets a node that flows to `module.exports` within the given module. */
+  private Node exportsObjectRhsPred(Module mod) { commonStep1*(result, exportsObjectRhs(mod)) }
+
+  /** Gets a node that is an alias for `module.exports` within the given module. */
+  private Node exportsObjectAlias(Module mod) {
+    result = mod.getScope().getVariable("exports").getAnAccess()
+    or
+    result = globalAccess(mod, "exports")
+    or
+    result.(ThisExpr).getBindingContainer() = mod and
+    mod instanceof NodeModule
+    or
+    readStep(moduleObjectRef(mod), "exports", result)
+    or
+    result = mod.(AmdModule).getDefine().getExportsParameter()
+    or
+    result = exportsObjectRhsPred(mod)
+    or
+    commonStep(exportsObjectAlias(mod), result)
+  }
+
+  /** Holds if `node` is stored into `module.exports.<name>` within the given module. */
+  private predicate storeToExports(Node node, Module mod, string name) {
+    exists(AssignExpr assign |
+      node = assign.getRhs() and
+      assign.getLhs().(PropAccess).accesses(exportsObjectAlias(mod), name)
+    )
+    or
+    exists(Property prop |
+      node = prop.getInit() and
+      name = prop.getName() and
+      prop.getObjectExpr() = exportsObjectAlias(mod)
+    )
+  }
+
   private signature module TypeResolutionInputSig {
     /**
      * Holds if flow is permitted through the given variable.
@@ -257,19 +382,10 @@ module NameResolution {
     predicate isRelevantVariable(LexicalName var);
   }
 
-  /**
-   * A local variable with exactly one definition, not counting implicit initialization.
-   */
-  private class EffectivelyConstantVariable extends LocalVariableLike {
-    EffectivelyConstantVariable() {
-      count(SsaExplicitDefinition ssa | ssa.getSourceVariable() = this) <= 1 // count may be zero if ambient
-    }
-  }
-
   /** Configuration for propagating values and namespaces */
   private module ValueConfig implements TypeResolutionInputSig {
     predicate isRelevantVariable(LexicalName var) {
-      var instanceof EffectivelyConstantVariable
+      var instanceof LocalVariableLike
       or
       // We merge the namespace and value declaration spaces as it seems there is
       // no need to distinguish them in practice.
@@ -328,6 +444,12 @@ module NameResolution {
         S::isRelevantVariable(result)
       )
       or
+      exists(ExportDefaultDeclaration exprt |
+        mod = exprt.getContainer() and
+        name = "default" and
+        result = exprt.getOperand()
+      )
+      or
       exists(ExportNamespaceSpecifier spec |
         result = spec and
         mod = spec.getContainer() and
@@ -349,28 +471,13 @@ module NameResolution {
         result = enum.getMemberByName(name).getIdentifier()
       )
       or
-      storeToVariable(result, name, mod.(Closure::ClosureModule).getExportsVariable())
-      or
       exists(DynamicImportExpr imprt |
         mod = imprt and
         name = "$$promise-content" and
         result = imprt.getImportedPathExpr()
       )
-    }
-
-    /**
-     * Holds if `value` is stored in `target.prop`. Only needs to recognise assignments
-     * that are also recognised by JSDoc tooling such as the Closure compiler.
-     */
-    private predicate storeToVariable(Expr value, string prop, LocalVariableLike target) {
-      exists(AssignExpr assign |
-        // target.name = value
-        assign.getLhs().(PropAccess).accesses(target.getAnAccess(), prop) and
-        value = assign.getRhs()
-      )
       or
-      // target = { name: value }
-      value = target.getAnAssignedExpr().(ObjectExpr).getPropertyByName(prop).getInit()
+      storeToExports(result, mod, name)
     }
 
     /** Steps that only apply for this configuration. */
@@ -386,6 +493,10 @@ module NameResolution {
         node2.(JSDocLocalTypeAccess).getALexicalName() = var
       )
       or
+      resolvedReadStep(node1, node2)
+    }
+
+    predicate resolvedReadStep(Node node1, Node node2) {
       exists(Node base, string name, ModuleLike mod |
         readStep(base, name, node2) and
         base = trackModule(mod) and
@@ -430,7 +541,20 @@ module NameResolution {
   /**
    * Gets a node to which the given module flows.
    */
-  predicate trackModule = ValueFlow::TrackNode<ModuleLike>::track/1;
+  Node trackModule(ModuleLike mod) {
+    result = mod
+    or
+    exists(Node prev |
+      prev = trackModule(mod) and
+      ValueFlow::step(prev, result) and
+      not defaultImportInteropStep(prev, result)
+    )
+    or
+    defaultImportInteropStep(trackModule(mod), result) and
+    not mod.(ES2015Module).hasBothNamedAndDefaultExports()
+    or
+    result = exportsObjectAlias(mod)
+  }
 
   predicate trackClassValue = ValueFlow::TrackNode<ClassDefinition>::track/1;
 

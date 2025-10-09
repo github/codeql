@@ -1,9 +1,5 @@
 import javascript
 
-query predicate module_getAnExportedSymbol(NodeModule m, string symbol) {
-  symbol = m.getAnExportedSymbol()
-}
-
 query predicate module_getAnImport(NodeModule m, Import imp) { imp = m.getAnImport() }
 
 query predicate module_getAnImportedModule(NodeModule m, Module mod) {

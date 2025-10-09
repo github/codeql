@@ -160,28 +160,6 @@ private class AnalyzedRestParameter extends AnalyzedValueNode {
 }
 
 /**
- * Flow analysis for `module` and `exports` parameters of AMD modules.
- */
-private class AnalyzedAmdParameter extends AnalyzedVarDef {
-  AbstractValue implicitInitVal;
-
-  AnalyzedAmdParameter() {
-    exists(AmdModule m, AmdModuleDefinition mdef | mdef = m.getDefine() |
-      this = mdef.getModuleParameter() and
-      implicitInitVal = TAbstractModuleObject(m)
-      or
-      this = mdef.getExportsParameter() and
-      implicitInitVal = TAbstractExportsObject(m)
-    )
-  }
-
-  override AbstractValue getAnAssignedValue() {
-    result = super.getAnAssignedValue() or
-    result = implicitInitVal
-  }
-}
-
-/**
  * An SSA definitions that has been analyzed.
  */
 abstract class AnalyzedSsaDefinition extends SsaDefinition {
@@ -354,10 +332,6 @@ private predicate guaranteedToBeInitialized(LocalVariable v) {
 private predicate nodeBuiltins(Variable var, AbstractValue av) {
   exists(Module m, string name | var = m.getScope().getVariable(name) |
     name = "require" and av = TIndefiniteAbstractValue("heap")
-    or
-    name = "module" and av = TAbstractModuleObject(m)
-    or
-    name = "exports" and av = TAbstractExportsObject(m)
     or
     name = "arguments" and av = TAbstractOtherObject()
     or

@@ -36,7 +36,6 @@ ql/javascript/ql/src/Metrics/FUseOfES6.ql
 ql/javascript/ql/src/Metrics/FunCyclomaticComplexity.ql
 ql/javascript/ql/src/Metrics/FunLinesOfCode.ql
 ql/javascript/ql/src/NodeJS/CyclicImport.ql
-ql/javascript/ql/src/NodeJS/DubiousImport.ql
 ql/javascript/ql/src/NodeJS/UnresolvableImport.ql
 ql/javascript/ql/src/NodeJS/UnusedDependency.ql
 ql/javascript/ql/src/Performance/NonLocalForIn.ql
