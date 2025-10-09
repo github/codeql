@@ -815,8 +815,7 @@ module API {
      * Holds if `rhs` is the right-hand side of a definition of a node that should have an
      * incoming edge from `base` labeled `lbl` in the API graph.
      */
-    cached
-    predicate rhs(TApiNode base, Label::ApiLabel lbl, DataFlow::Node rhs) {
+    private predicate rhs(TApiNode base, Label::ApiLabel lbl, DataFlow::Node rhs) {
       hasSemantics(rhs) and
       (
         base = MkRoot() and
