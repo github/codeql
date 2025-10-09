@@ -14,7 +14,7 @@ import java
 import experimental.quantum.Language
 import Crypto::KeyOpAlg as KeyOpAlg
 
-from Crypto::KeyOperationAlgorithmNode alg, KeyOpAlg::AlgorithmType algType, string msg
+from Crypto::KeyOperationAlgorithmNode alg, KeyOpAlg::AlgorithmType algType
 where
   algType = alg.getAlgorithmType() and
   (
@@ -25,6 +25,5 @@ where
     algType = KeyOpAlg::TSymmetricCipher(KeyOpAlg::RC4()) or
     algType = KeyOpAlg::TSymmetricCipher(KeyOpAlg::IDEA()) or
     algType = KeyOpAlg::TSymmetricCipher(KeyOpAlg::BLOWFISH())
-  ) and
-  msg = "Use of unapproved symmetric cipher algorithm or API: " + algType.toString() + "."
-select alg, msg
+  )
+select alg, "Use of unapproved symmetric cipher algorithm or API: " + algType.toString() + "."
