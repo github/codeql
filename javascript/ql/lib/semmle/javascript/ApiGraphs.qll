@@ -794,8 +794,17 @@ module API {
       hasSemantics(imp)
     }
 
+    private signature module StageInputSig {
+      predicate isAdditionalUseRoot(Node node);
+
+      predicate isAdditionalDefRoot(Node node);
+
+      bindingset[node]
+      predicate inScope(DataFlow::Node node);
+    }
+
     cached
-    private module Stage {
+    private module Stage<StageInputSig S> {
       /**
        * Holds if `rhs` is the right-hand side of a definition of a node that should have an
        * incoming edge from `base` labeled `lbl` in the API graph.
@@ -988,9 +997,11 @@ module API {
        */
       cached
       predicate rhs(TApiNode nd, DataFlow::Node rhs) {
+        (S::inScope(rhs) or S::isAdditionalDefRoot(nd)) and
         exists(string m | nd = MkModuleExport(m) | exports(m, rhs))
         or
         rhs(_, _, rhs) and
+        S::inScope(rhs) and
         nd = MkDef(rhs)
       }
 
@@ -1218,30 +1229,37 @@ module API {
        */
       cached
       predicate use(TApiNode nd, DataFlow::Node ref) {
-        exists(string m, Module mod | nd = MkModuleDef(m) and mod = importableModule(m) |
-          ref = DataFlow::moduleVarNode(mod)
-        )
-        or
-        exists(string m, Module mod | nd = MkModuleExport(m) and mod = importableModule(m) |
-          ref = DataFlow::exportsVarNode(mod)
+        (S::inScope(ref) or S::isAdditionalUseRoot(nd)) and
+        (
+          exists(string m, Module mod | nd = MkModuleDef(m) and mod = importableModule(m) |
+            ref = DataFlow::moduleVarNode(mod)
+          )
           or
-          exists(DataFlow::Node base | use(MkModuleDef(m), base) |
-            ref = trackUseNode(base).getAPropertyRead("exports")
+          exists(string m, Module mod | nd = MkModuleExport(m) and mod = importableModule(m) |
+            ref = DataFlow::exportsVarNode(mod)
+            or
+            exists(DataFlow::Node base | use(MkModuleDef(m), base) |
+              ref = trackUseNode(base).getAPropertyRead("exports")
+            )
+          )
+          or
+          exists(string m |
+            nd = MkModuleImport(m) and
+            ref = DataFlow::moduleImport(m)
+          )
+          or
+          exists(DataFlow::ClassNode cls | nd = MkClassInstance(cls) |
+            ref = cls.getAReceiverNode()
+            or
+            ref = cls.(DataFlow::ClassNode).getAPrototypeReference()
           )
         )
         or
-        exists(string m |
-          nd = MkModuleImport(m) and
-          ref = DataFlow::moduleImport(m)
-        )
-        or
-        exists(DataFlow::ClassNode cls | nd = MkClassInstance(cls) |
-          ref = cls.getAReceiverNode()
-          or
-          ref = cls.(DataFlow::ClassNode).getAPrototypeReference()
-        )
-        or
         use(_, _, ref) and
+        S::inScope(ref) and
+        nd = MkUse(ref)
+        or
+        S::isAdditionalUseRoot(nd) and
         nd = MkUse(ref)
       }
 
@@ -1481,7 +1499,18 @@ module API {
       }
     }
 
-    import Stage
+    private module Stage1Input implements StageInputSig {
+      pragma[inline]
+      predicate isAdditionalUseRoot(Node node) { none() }
+
+      pragma[inline]
+      predicate isAdditionalDefRoot(Node node) { none() }
+
+      bindingset[node]
+      predicate inScope(DataFlow::Node node) { any() }
+    }
+
+    import Stage<Stage1Input>
 
     /**
      * Holds if there is an edge from `pred` to `succ` in the API graph.
