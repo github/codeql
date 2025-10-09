@@ -9,6 +9,7 @@ import semmle.go.dataflow.barrierguardutil.RedirectCheckBarrierGuard
 import semmle.go.dataflow.barrierguardutil.RegexpCheck
 import semmle.go.dataflow.barrierguardutil.UrlCheck
 import semmle.go.dataflow.ExternalFlow
+private import semmle.go.security.Sanitizers
 
 /** Provides classes and predicates for the request forgery query. */
 module RequestForgery {
@@ -114,6 +115,11 @@ module RequestForgery {
    * considered a barrier guard for `url`.
    */
   class UrlCheckAsBarrierGuard extends UrlCheckBarrier, Sanitizer { }
+
+  /**
+   * A simple-typed node, considered a sanitizer for request forgery.
+   */
+  private class DefaultSanitizer extends Sanitizer instanceof SimpleTypeSanitizer { }
 }
 
 /** A sink for request forgery, considered as a sink for safe URL flow. */

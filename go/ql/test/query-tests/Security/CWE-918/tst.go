@@ -49,8 +49,8 @@ func handler2(w http.ResponseWriter, req *http.Request) {
 	http.Get(u.String()) // $ Alert
 
 	// Simple types are considered sanitized.
-	url := fmt.Sprintf("%s/%d", "some-url", intSource()) // $ SPURIOUS: Source
-	http.Get("http://" + url)                            // $ SPURIOUS: Alert
+	url := fmt.Sprintf("%s/%d", "some-url", intSource())
+	http.Get("http://" + url)
 }
 
 func main() {
