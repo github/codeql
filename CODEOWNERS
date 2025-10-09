@@ -1,3 +1,7 @@
+# Catch-all for anything which isn't matched by a line lower down
+* @github/code-scanning-alert-coverage
+
+# CodeQL language libraries
 /actions/ @github/codeql-dynamic
 /cpp/ @github/codeql-c-analysis
 /csharp/ @github/codeql-csharp
@@ -7,8 +11,10 @@
 /java/ @github/codeql-java
 /javascript/ @github/codeql-javascript
 /python/ @github/codeql-python
+/ql/ @github/codeql-ql-for-ql-reviewers
 /ruby/ @github/codeql-ruby
 /rust/ @github/codeql-rust
+/shared/ @github/codeql-shared-libraries-reviewers
 /swift/ @github/codeql-swift
 /misc/codegen/ @github/codeql-swift
 /java/kotlin-extractor/ @github/codeql-kotlin
@@ -24,9 +30,6 @@
 /docs/codeql/codeql-for-visual-studio-code/ @github/codeql-vscode-reviewers
 /docs/codeql/ql-language-reference/ @github/codeql-frontend-reviewers
 /docs/query-*-style-guide.md @github/codeql-analysis-reviewers
-
-# QL for QL reviewers
-/ql/ @github/codeql-ql-for-ql-reviewers
 
 # Bazel (excluding BUILD.bazel files)
 MODULE.bazel @github/codeql-ci-reviewers
