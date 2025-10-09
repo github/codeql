@@ -778,17 +778,6 @@ module API {
       } or
       MkSyntheticCallbackArg(DataFlow::InvokeNode nd)
 
-    private predicate needsDefNode(DataFlow::ClassNode cls) {
-      hasSemantics(cls) and
-      (
-        cls = trackDefNode(_)
-        or
-        cls.getAnInstanceReference() = trackDefNode(_)
-        or
-        needsDefNode(cls.getADirectSubClass())
-      )
-    }
-
     class TDef = MkModuleDef or TNonModuleDef;
 
     class TNonModuleDef = MkModuleExport or MkClassInstance or MkDef or MkSyntheticCallbackArg;
@@ -1235,6 +1224,21 @@ module API {
         )
       }
 
+      private predicate needsDefNode(DataFlow::ClassNode cls) {
+        hasSemantics(cls) and
+        (
+          cls = trackDefNode(_)
+          or
+          cls.getAnInstanceReference() = trackDefNode(_)
+          or
+          needsDefNode(cls.getADirectSubClass())
+          or
+          S::isAdditionalDefRoot(MkClassInstance(cls))
+          or
+          S::isAdditionalUseRoot(MkClassInstance(cls)) // These are also tracked as use-nodes
+        )
+      }
+
       /**
        * Holds if `ref` is a use of node `nd`.
        */
@@ -1258,12 +1262,12 @@ module API {
             nd = MkModuleImport(m) and
             ref = DataFlow::moduleImport(m)
           )
+        )
+        or
+        exists(DataFlow::ClassNode cls | nd = MkClassInstance(cls) and needsDefNode(cls) |
+          ref = cls.getAReceiverNode()
           or
-          exists(DataFlow::ClassNode cls | nd = MkClassInstance(cls) |
-            ref = cls.getAReceiverNode()
-            or
-            ref = cls.(DataFlow::ClassNode).getAPrototypeReference()
-          )
+          ref = cls.(DataFlow::ClassNode).getAPrototypeReference()
         )
         or
         use(_, _, ref) and
