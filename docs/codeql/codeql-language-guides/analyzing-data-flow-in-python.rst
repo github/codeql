@@ -303,6 +303,11 @@ This query shows a data flow configuration that uses all network input as data s
 
 .. code-block:: ql
 
+    /**
+    * @kind path-problem
+    * @problem.severity warning
+    * @id filesystemacess
+    */
     import python
     import semmle.python.dataflow.new.DataFlow
     import semmle.python.dataflow.new.TaintTracking
@@ -319,11 +324,13 @@ This query shows a data flow configuration that uses all network input as data s
       }
     }
 
+    import RemoteToFileFlow::PathGraph
+
     module RemoteToFileFlow = TaintTracking::Global<RemoteToFileConfiguration>;
 
-    from DataFlow::Node input, DataFlow::Node fileAccess
-    where RemoteToFileFlow::flow(input, fileAccess)
-    select fileAccess, "This file access uses data from $@.",
+    from RemoteToFileFlow::PathNode input, RemoteToFileFlow::PathNode fileAccess
+    where RemoteToFileFlow::flowPath(input, fileAccess)
+    select fileAccess.getNode(), input, fileAccess, "This file access uses data from $@.",
       input, "user-controllable input."
 
 This data flow configuration tracks data flow from environment variables to opening files:
