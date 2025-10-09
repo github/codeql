@@ -51,6 +51,8 @@ module ConditionalBypassFlowConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getLocation()
+    or
     exists(MethodCall m, Expr e | result = [m, e].getLocation() |
       conditionControlsMethod(m, e) and
       sink.asExpr() = e
