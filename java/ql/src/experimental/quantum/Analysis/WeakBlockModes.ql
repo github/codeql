@@ -13,19 +13,21 @@ import java
 import experimental.quantum.Language
 
 class WeakAESBlockModeAlgNode extends Crypto::KeyOperationAlgorithmNode {
+  Crypto::ModeOfOperationAlgorithmNode mode;
+
   WeakAESBlockModeAlgNode() {
     this.getAlgorithmType() = Crypto::KeyOpAlg::TSymmetricCipher(Crypto::KeyOpAlg::AES()) and
+    mode = super.getModeOfOperation() and
     (
-      this.getModeOfOperation().getModeType() = Crypto::KeyOpAlg::ECB() or
-      this.getModeOfOperation().getModeType() = Crypto::KeyOpAlg::CFB() or
-      this.getModeOfOperation().getModeType() = Crypto::KeyOpAlg::OFB() or
-      this.getModeOfOperation().getModeType() = Crypto::KeyOpAlg::CTR()
+      mode.getModeType() = Crypto::KeyOpAlg::ECB() or
+      mode.getModeType() = Crypto::KeyOpAlg::CFB() or
+      mode.getModeType() = Crypto::KeyOpAlg::OFB() or
+      mode.getModeType() = Crypto::KeyOpAlg::CTR()
     )
   }
+
+  Crypto::ModeOfOperationAlgorithmNode getMode() { result = mode }
 }
 
-from Crypto::KeyOperationNode op, Crypto::KeyOperationOutputNode codeNode
-where
-  op.getAKnownAlgorithm() instanceof WeakAESBlockModeAlgNode and
-  codeNode = op.getAnOutputArtifact()
-select op, "Weak AES block mode instance."
+from WeakAESBlockModeAlgNode alg
+select alg, "Weak AES block mode instance $@.", alg.getMode(), alg.getMode().toString()

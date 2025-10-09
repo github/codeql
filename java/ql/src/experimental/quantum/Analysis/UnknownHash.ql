@@ -1,0 +1,17 @@
+/**
+ * @name Unknown hashes
+ * @description Finds uses of cryptographic hashing algorithms of unknown type.
+ * @id java/quantum/unknown-hash
+ * @kind problem
+ * @problem.severity error
+ * @precision high
+ * @tags quantum
+ *       experimental
+ */
+
+import java
+import experimental.quantum.Language
+
+from Crypto::HashAlgorithmNode alg
+where not exists(alg.getHashType())
+select alg, "Use of unknown hash algorithm or API."
