@@ -4,7 +4,6 @@ query predicate member_locations(Type t, Member m, SourceLocation l) {
   t = m.getDeclaringType() and
   l = m.getLocation() and
   not l instanceof EmptyLocation and
-  not m instanceof Constructor and
   t.fromSource()
 }
 
