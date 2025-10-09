@@ -1,5 +1,5 @@
 # Catch-all for anything which isn't matched by a line lower down
-* @github/codeql-alert-coverage-eng
+* @github/code-scanning-alert-coverage
 
 # CodeQL language libraries
 /actions/ @github/codeql-dynamic
