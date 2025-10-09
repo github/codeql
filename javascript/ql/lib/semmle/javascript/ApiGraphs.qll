@@ -1043,7 +1043,7 @@ module API {
         // property reads
         exists(DataFlow::SourceNode src, DataFlow::SourceNode pred, string propDesc |
           use(base, src) and
-          pred = trackUseNode(src, Promisification::notPromisified(), 0, propDesc) and
+          pred = trackUseNode(src, false, 0, propDesc) and
           propertyRead(pred, propDesc, lbl, ref) and
           // `module.exports` is special: it is a use of a def-node, not a use-node,
           // so we want to exclude it here
@@ -1253,26 +1253,6 @@ module API {
 
     private import semmle.javascript.dataflow.TypeTracking
 
-    private module Promisification {
-      private newtype TState =
-        /** Default statue; the tracked value has not been through any steps related to promisification. */
-        TNotPromisified() or
-        /** The tracked value is a function that has been through promisification. */
-        TPromisifiedFunction()
-
-      class State extends TState {
-        string toString() {
-          this = TNotPromisified() and result = "not-promisified"
-          or
-          this = TPromisifiedFunction() and result = "promisified-function"
-        }
-      }
-
-      State notPromisified() { result = TNotPromisified() }
-
-      State promisifiedFunction() { result = TPromisifiedFunction() }
-    }
-
     /**
      * Gets a data-flow node to which `nd`, which is a use of an API-graph node, flows.
      *
@@ -1287,20 +1267,19 @@ module API {
      *     and not necessarily the entire object.
      */
     private DataFlow::SourceNode trackUseNode(
-      DataFlow::SourceNode nd, Promisification::State promisified, int boundArgs, string prop,
+      DataFlow::SourceNode nd, boolean promisified, int boundArgs, string prop,
       DataFlow::TypeTracker t
     ) {
       t.start() and
       use(_, nd) and
       result = nd and
-      promisified = Promisification::notPromisified() and
+      promisified = false and
       boundArgs = 0 and
       prop = ""
       or
       exists(Promisify::PromisifyCall promisify |
-        trackUseNode(nd, Promisification::notPromisified(), boundArgs, prop, t.continue())
-            .flowsTo(promisify.getArgument(0)) and
-        promisified = Promisification::promisifiedFunction() and
+        trackUseNode(nd, false, boundArgs, prop, t.continue()).flowsTo(promisify.getArgument(0)) and
+        promisified = true and
         prop = "" and
         result = promisify
       )
@@ -1319,7 +1298,7 @@ module API {
       or
       exists(DataFlow::Node pred, string preprop |
         trackUseNode(nd, promisified, boundArgs, preprop, t.continue()).flowsTo(pred) and
-        promisified = Promisification::notPromisified() and
+        promisified = false and
         boundArgs = 0 and
         SharedTypeTrackingStep::loadStoreStep(pred, result, prop)
       |
@@ -1340,8 +1319,7 @@ module API {
      */
     pragma[noopt]
     private DataFlow::TypeTracker useStep(
-      DataFlow::Node nd, Promisification::State promisified, int boundArgs, string prop,
-      DataFlow::Node res
+      DataFlow::Node nd, boolean promisified, int boundArgs, string prop, DataFlow::Node res
     ) {
       exists(DataFlow::TypeTracker t, StepSummary summary, DataFlow::SourceNode prev |
         prev = trackUseNode(nd, promisified, boundArgs, prop, t) and
@@ -1353,7 +1331,7 @@ module API {
     }
 
     private DataFlow::SourceNode trackUseNode(
-      DataFlow::SourceNode nd, Promisification::State promisified, int boundArgs, string prop
+      DataFlow::SourceNode nd, boolean promisified, int boundArgs, string prop
     ) {
       result = trackUseNode(nd, promisified, boundArgs, prop, DataFlow::TypeTracker::end())
     }
@@ -1363,7 +1341,7 @@ module API {
      */
     cached
     DataFlow::SourceNode trackUseNode(DataFlow::SourceNode nd) {
-      result = trackUseNode(nd, Promisification::notPromisified(), 0, "")
+      result = trackUseNode(nd, false, 0, "")
     }
 
     private DataFlow::SourceNode trackDefNode(DataFlow::Node nd, DataFlow::TypeBackTracker t) {
