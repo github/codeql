@@ -803,7 +803,6 @@ module API {
       predicate inScope(DataFlow::Node node);
     }
 
-    cached
     private module Stage<StageInputSig S> {
       /**
        * Holds if `rhs` is the right-hand side of a definition of a node that should have an
@@ -995,7 +994,6 @@ module API {
       /**
        * Holds if `rhs` is the right-hand side of a definition of node `nd`.
        */
-      cached
       predicate rhs(TApiNode nd, DataFlow::Node rhs) {
         (S::inScope(rhs) or S::isAdditionalDefRoot(nd)) and
         exists(string m | nd = MkModuleExport(m) | exports(m, rhs))
@@ -1242,7 +1240,6 @@ module API {
       /**
        * Holds if `ref` is a use of node `nd`.
        */
-      cached
       predicate use(TApiNode nd, DataFlow::Node ref) {
         (S::inScope(ref) or S::isAdditionalUseRoot(nd)) and
         (
@@ -1364,7 +1361,6 @@ module API {
       /**
        * Gets a node that is inter-procedurally reachable from `nd`, which is a use of some node.
        */
-      cached
       DataFlow::SourceNode trackUseNode(DataFlow::SourceNode nd) {
         result = trackUseNode(nd, false, 0, "")
       }
@@ -1415,7 +1411,6 @@ module API {
       /**
        * Gets a node that inter-procedurally flows into `nd`, which is a definition of some node.
        */
-      cached
       DataFlow::SourceNode trackDefNode(DataFlow::Node nd) {
         result = trackDefNode(nd, DataFlow::TypeBackTracker::end())
       }
@@ -1438,7 +1433,6 @@ module API {
       /**
        * Holds if there is an edge from `pred` to `succ` in the API graph that is labeled with `lbl`.
        */
-      cached
       predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) {
         Stages::ApiStage::ref() and
         exists(string m |
@@ -1504,7 +1498,6 @@ module API {
        * Gets a call to a promisified function represented by `callee` where
        * `bound` arguments have been bound.
        */
-      cached
       DataFlow::InvokeNode getAPromisifiedInvocation(TApiNode callee, int bound, TApiNode succ) {
         exists(DataFlow::SourceNode src |
           use(callee, src) and
@@ -1525,7 +1518,36 @@ module API {
       predicate inScope(DataFlow::Node node) { any() }
     }
 
-    import Stage<Stage1Input>
+    private module Stage1 = Stage<Stage1Input>;
+
+    cached
+    private module Cached {
+      cached
+      predicate rhs(TApiNode nd, DataFlow::Node rhs) { Stage1::rhs(nd, rhs) }
+
+      cached
+      predicate use(TApiNode nd, DataFlow::Node ref) { Stage1::use(nd, ref) }
+
+      cached
+      DataFlow::SourceNode trackUseNode(DataFlow::SourceNode nd) {
+        result = Stage1::trackUseNode(nd)
+      }
+
+      cached
+      DataFlow::SourceNode trackDefNode(DataFlow::Node nd) { result = Stage1::trackDefNode(nd) }
+
+      cached
+      predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) {
+        Stage1::edge(pred, lbl, succ)
+      }
+
+      cached
+      DataFlow::InvokeNode getAPromisifiedInvocation(TApiNode callee, int bound, TApiNode succ) {
+        result = Stage1::getAPromisifiedInvocation(callee, bound, succ)
+      }
+    }
+
+    import Cached
 
     /**
      * Holds if there is an edge from `pred` to `succ` in the API graph.
