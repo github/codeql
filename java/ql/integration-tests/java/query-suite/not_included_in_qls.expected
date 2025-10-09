@@ -190,7 +190,6 @@ ql/java/ql/src/experimental/Security/CWE/CWE-094/ScriptInjection.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-094/SpringImplicitViewManipulation.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-094/SpringViewManipulation.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-1004/InsecureTomcatConfig.ql
-ql/java/ql/src/experimental/Security/CWE/CWE-1004/SensitiveCookieNotHttpOnly.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-200/InsecureWebResourceResponse.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-200/SensitiveAndroidFileLeak.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-208/PossibleTimingAttackAgainstSignature.ql
