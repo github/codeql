@@ -159,9 +159,9 @@ module Modification {
 predicate isThreadSafeType(Type t) {
   t.(RefType).getSourceDeclaration().getName().matches(["Atomic%", "Concurrent%"])
   or
-  t.(RefType).getSourceDeclaration().getName() in ["ThreadLocal"]
+  t.(RefType).getSourceDeclaration().getName() = "ThreadLocal"
   or
-  // Anything in `java.itul.concurrent` is thread safe.
+  // Anything in `java.util.concurrent` is thread safe.
   // See https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/package-summary.html#MemoryVisibility
   t.(RefType).getPackage().getName() = "java.util.concurrent"
   or
@@ -303,7 +303,7 @@ class ClassAnnotatedAsThreadSafe extends Class {
     )
   }
 
-  /** Holds if `a` can be reached by a path from a public method and `e` is the expression in that method that stsarts the path. */
+  /** Holds if `a` can be reached by a path from a public method and `e` is the expression in that method that starts the path. */
   predicate publicAccess(Expr e, ExposedFieldAccess a) {
     exists(Method m | m.isPublic() | this.providesAccess(m, e, a))
   }

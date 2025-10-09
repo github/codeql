@@ -5,14 +5,14 @@ import java.util.concurrent.locks.ReentrantLock;
 @ThreadSafe
 public class Test {
   /**
-   * Escaping field due to public visuability.
+   * Escaping field due to public visibility.
    */
   int publicField;
   
   private int y;
   final int immutableField = 1;
 
-  // As of the below examples with synchronized as well. Except the incorretly placed lock.
+  // As of the below examples with synchronized as well. Except the incorrectly placed lock.
 
   private Lock lock = new ReentrantLock();
 
@@ -53,7 +53,7 @@ public class Test {
   }
 
   /**
-   * Incorretly locks y.
+   * Incorrectly locks y.
    * @param y
    */
   public void setYWrongLock(int y) {

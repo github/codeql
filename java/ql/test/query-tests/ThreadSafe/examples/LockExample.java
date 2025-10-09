@@ -3,7 +3,7 @@
 // If the variable is involved in several different monitors, we get an alert for each monitor that
 // is not correctly used.
 // A single alert can have many related locations, since each conflicting access which is not
-// prpoerly synchronized is a related location.
+// properly synchronized is a related location.
 // This leads to many lines in the .expected file.
 package examples;
 
