@@ -1715,7 +1715,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
          * Provides a graph representation of the data flow in this stage suitable for use in a `path-problem` query.
          */
         additional module Graph {
-          private newtype TPathNode =
+          newtype TPathNode =
             TPathNodeMid(Nd node, Cc cc, SummaryCtx summaryCtx, Typ t, Ap ap, TypOption stored) {
               fwdFlow(node, cc, summaryCtx, t, ap, stored) and
               revFlow(node, _, _, ap)
@@ -2473,41 +2473,84 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           }
         }
 
-        additional predicate stats(
-          boolean fwd, int nodes, int fields, int conscand, int states, int tuples, int calledges,
-          int tfnodes, int tftuples
-        ) {
-          fwd = true and
-          nodes = count(NodeEx node | fwdFlow(any(Nd n | n.getNodeEx() = node), _, _, _, _, _)) and
-          fields = count(Content f0 | fwdConsCand(f0, _)) and
-          conscand = count(Content f0, Ap ap | fwdConsCand(f0, ap)) and
-          states = count(FlowState state | fwdFlow(any(Nd n | n.getState() = state), _, _, _, _, _)) and
-          tuples =
-            count(Nd n, Cc cc, SummaryCtx summaryCtx, Typ t, Ap ap, TypOption stored |
-              fwdFlow(n, cc, summaryCtx, t, ap, stored)
-            ) and
-          calledges =
-            count(Call call, Callable c |
-              FwdTypeFlowInput::dataFlowTakenCallEdgeIn(call, c, _) or
-              FwdTypeFlowInput::dataFlowTakenCallEdgeOut(call, c)
-            ) and
-          FwdTypeFlow::typeFlowStats(tfnodes, tftuples)
-          or
-          fwd = false and
-          nodes = count(NodeEx node | revFlow(any(Nd n | n.getNodeEx() = node), _, _, _)) and
-          fields = count(Content f0 | consCand(f0, _)) and
-          conscand = count(Content f0, Ap ap | consCand(f0, ap)) and
-          states = count(FlowState state | revFlow(any(Nd n | n.getState() = state), _, _, _)) and
-          tuples =
-            count(Nd n, ReturnCtx returnCtx, ApOption retAp, Ap ap |
-              revFlow(n, returnCtx, retAp, ap)
-            ) and
-          calledges =
-            count(Call call, Callable c |
-              RevTypeFlowInput::dataFlowTakenCallEdgeIn(call, c, _) or
-              RevTypeFlowInput::dataFlowTakenCallEdgeOut(call, c)
-            ) and
-          RevTypeFlow::typeFlowStats(tfnodes, tftuples)
+        /** Provides predicates for debugging. */
+        additional module Debug {
+          private import Graph
+
+          predicate stats(
+            boolean fwd, int nodes, int fields, int conscand, int states, int tuples, int calledges,
+            int tfnodes, int tftuples
+          ) {
+            fwd = true and
+            nodes = count(NodeEx node | fwdFlow(any(Nd n | n.getNodeEx() = node), _, _, _, _, _)) and
+            fields = count(Content f0 | fwdConsCand(f0, _)) and
+            conscand = count(Content f0, Ap ap | fwdConsCand(f0, ap)) and
+            states =
+              count(FlowState state | fwdFlow(any(Nd n | n.getState() = state), _, _, _, _, _)) and
+            tuples =
+              count(Nd n, Cc cc, SummaryCtx summaryCtx, Typ t, Ap ap, TypOption stored |
+                fwdFlow(n, cc, summaryCtx, t, ap, stored)
+              ) and
+            calledges =
+              count(Call call, Callable c |
+                FwdTypeFlowInput::dataFlowTakenCallEdgeIn(call, c, _) or
+                FwdTypeFlowInput::dataFlowTakenCallEdgeOut(call, c)
+              ) and
+            FwdTypeFlow::typeFlowStats(tfnodes, tftuples)
+            or
+            fwd = false and
+            nodes = count(NodeEx node | revFlow(any(Nd n | n.getNodeEx() = node), _, _, _)) and
+            fields = count(Content f0 | consCand(f0, _)) and
+            conscand = count(Content f0, Ap ap | consCand(f0, ap)) and
+            states = count(FlowState state | revFlow(any(Nd n | n.getState() = state), _, _, _)) and
+            tuples =
+              count(Nd n, ReturnCtx returnCtx, ApOption retAp, Ap ap |
+                revFlow(n, returnCtx, retAp, ap)
+              ) and
+            calledges =
+              count(Call call, Callable c |
+                RevTypeFlowInput::dataFlowTakenCallEdgeIn(call, c, _) or
+                RevTypeFlowInput::dataFlowTakenCallEdgeOut(call, c)
+              ) and
+            RevTypeFlow::typeFlowStats(tfnodes, tftuples)
+          }
+
+          private int fanOut(PathNodeImpl n) {
+            result = strictcount(n.getASuccessorImpl(_)) and
+            not n.isArbitrarySource()
+          }
+
+          private int fanIn(PathNodeImpl n) {
+            result = strictcount(PathNodeImpl pred | n = pred.getASuccessorImpl(_)) and
+            not n.isArbitrarySink()
+          }
+
+          predicate maxFanOut(PathNodeImpl pred, PathNodeImpl succ, int c) {
+            c = fanOut(pred) and
+            c = max(fanOut(_)) and
+            succ = pred.getASuccessorImpl(_)
+          }
+
+          predicate maxFanIn(PathNodeImpl pred, PathNodeImpl succ, int c) {
+            c = fanIn(succ) and
+            c = max(fanIn(_)) and
+            succ = pred.getASuccessorImpl(_)
+          }
+
+          private int pathNodes(Nd node) {
+            result =
+              strictcount(Cc cc, SummaryCtx summaryCtx, Typ t, Ap ap, TypOption stored |
+                exists(TPathNodeMid(node, cc, summaryCtx, t, ap, stored))
+              )
+          }
+
+          predicate maxPathNodes(
+            Nd node, Cc cc, SummaryCtx summaryCtx, Typ t, Ap ap, TypOption stored, int c
+          ) {
+            exists(TPathNodeMid(node, cc, summaryCtx, t, ap, stored)) and
+            c = pathNodes(node) and
+            c = max(pathNodes(_))
+          }
         }
         /* End: Stage logic. */
       }
@@ -3520,12 +3563,20 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         or
         stage = "2 Fwd" and
         n = 20 and
-        Stage2::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        Stage2::Debug::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes,
+          tftuples)
         or
         stage = "2 Rev" and
         n = 25 and
-        Stage2::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        Stage2::Debug::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes,
+          tftuples)
       }
+
+      predicate stage2maxFanOut = Stage2::Debug::maxFanOut/3;
+
+      predicate stage2maxFanIn = Stage2::Debug::maxFanIn/3;
+
+      predicate stage2maxPathNodes = Stage2::Debug::maxPathNodes/7;
 
       predicate stageStats3(
         int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
@@ -3535,12 +3586,20 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         or
         stage = "3 Fwd" and
         n = 30 and
-        Stage3::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        Stage3::Debug::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes,
+          tftuples)
         or
         stage = "3 Rev" and
         n = 35 and
-        Stage3::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        Stage3::Debug::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes,
+          tftuples)
       }
+
+      predicate stage3maxFanOut = Stage3::Debug::maxFanOut/3;
+
+      predicate stage3maxFanIn = Stage3::Debug::maxFanIn/3;
+
+      predicate stage3maxPathNodes = Stage3::Debug::maxPathNodes/7;
 
       predicate stageStats4(
         int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
@@ -3550,12 +3609,20 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         or
         stage = "4 Fwd" and
         n = 40 and
-        Stage4::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        Stage4::Debug::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes,
+          tftuples)
         or
         stage = "4 Rev" and
         n = 45 and
-        Stage4::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        Stage4::Debug::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes,
+          tftuples)
       }
+
+      predicate stage4maxFanOut = Stage4::Debug::maxFanOut/3;
+
+      predicate stage4maxFanIn = Stage4::Debug::maxFanIn/3;
+
+      predicate stage4maxPathNodes = Stage4::Debug::maxPathNodes/7;
 
       predicate stageStats5(
         int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
@@ -3565,12 +3632,20 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         or
         stage = "5 Fwd" and
         n = 50 and
-        Stage5::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        Stage5::Debug::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes,
+          tftuples)
         or
         stage = "5 Rev" and
         n = 55 and
-        Stage5::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        Stage5::Debug::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes,
+          tftuples)
       }
+
+      predicate stage5maxFanOut = Stage5::Debug::maxFanOut/3;
+
+      predicate stage5maxFanIn = Stage5::Debug::maxFanIn/3;
+
+      predicate stage5maxPathNodes = Stage5::Debug::maxPathNodes/7;
 
       predicate stageStats(
         int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
@@ -3580,12 +3655,20 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         or
         stage = "6 Fwd" and
         n = 60 and
-        Stage6::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        Stage6::Debug::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes,
+          tftuples)
         or
         stage = "6 Rev" and
         n = 65 and
-        Stage6::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        Stage6::Debug::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes,
+          tftuples)
       }
+
+      predicate stage6maxFanOut = Stage6::Debug::maxFanOut/3;
+
+      predicate stage6maxFanIn = Stage6::Debug::maxFanIn/3;
+
+      predicate stage6maxPathNodes = Stage6::Debug::maxPathNodes/7;
     }
   }
 }
