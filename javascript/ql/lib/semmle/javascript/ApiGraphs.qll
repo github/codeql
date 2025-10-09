@@ -1133,14 +1133,6 @@ module API {
         // for fields and accessors, mark the reads as use-nodes
         decoratorPropEdge(base, lbl, ref.(DataFlow::PropRead))
       )
-      or
-      // awaiting the return value from a promisified function
-      exists(DataFlow::SourceNode src, DataFlow::SourceNode pred, string propDesc, int boundArgs |
-        use(base, src) and
-        pred = trackUseNode(src, Promisification::promisifiedReturnValue(boundArgs), 0, propDesc) and
-        awaitedStep(pred, ref) and
-        lbl = Label::parameter(boundArgs)
-      )
     }
 
     /** Holds if `base` is a use-node that flows to the decorator expression of the given decorator. */
@@ -1266,31 +1258,19 @@ module API {
         /** Default statue; the tracked value has not been through any steps related to promisification. */
         TNotPromisified() or
         /** The tracked value is a function that has been through promisification. */
-        TPromisifiedFunction() or
-        /** The tracked value is returned from a call to a promisified function, i.e. it is a promise resolving the value that eventually gets passed to a callback. */
-        TPromisifiedReturnValue(int callbackArgumentIndex) { callbackArgumentIndex = [0 .. 10] }
+        TPromisifiedFunction()
 
       class State extends TState {
         string toString() {
           this = TNotPromisified() and result = "not-promisified"
           or
           this = TPromisifiedFunction() and result = "promisified-function"
-          or
-          exists(int i |
-            this = TPromisifiedReturnValue(i) and result = "promisified-return-value(" + i + ")"
-          )
         }
       }
 
       State notPromisified() { result = TNotPromisified() }
 
       State promisifiedFunction() { result = TPromisifiedFunction() }
-
-      State promisifiedReturnValue(int i) { result = TPromisifiedReturnValue(i) }
-    }
-
-    private predicate awaitedStep(DataFlow::Node node1, DataFlow::Node node2) {
-      StepSummary::smallstep(node1, node2, LoadStep(Promises::valueProp()))
     }
 
     /**
@@ -1323,16 +1303,6 @@ module API {
         promisified = Promisification::promisifiedFunction() and
         prop = "" and
         result = promisify
-      )
-      or
-      exists(DataFlow::CallNode call, int bound |
-        call =
-          trackUseNode(nd, Promisification::promisifiedFunction(), bound, prop, t.continue())
-              .getACall() and
-        promisified = Promisification::promisifiedReturnValue(bound + call.getNumArgument()) and
-        boundArgs = 0 and
-        result = call and
-        prop = ""
       )
       or
       exists(DataFlow::PartialInvokeNode pin, DataFlow::Node pred, int predBoundArgs |
