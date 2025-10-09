@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for detecting conflicting accesses in the sense of the Java Memory Model.
  */
+overlay[local?]
+module;
 
 import java
 import Concurrency
@@ -9,6 +11,7 @@ import Concurrency
  * Holds if `t` is the type of a lock.
  * Currently a crude test of the type name.
  */
+overlay[caller?]
 pragma[inline]
 predicate isLockType(Type t) { t.getName().matches("%Lock%") }
 
@@ -208,6 +211,7 @@ class ExposedFieldAccess extends FieldAccess {
 }
 
 /** Holds if the location of `a` is strictly before the location of `b`. */
+overlay[caller?]
 pragma[inline]
 predicate orderedLocations(Location a, Location b) {
   a.getStartLine() < b.getStartLine()
