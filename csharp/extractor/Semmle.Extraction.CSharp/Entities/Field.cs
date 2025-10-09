@@ -51,7 +51,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             WriteLocationsToTrap(trapFile.field_location, this, Locations);
 
-            if (!IsSourceDeclaration || !Symbol.FromSource())
+            if (!IsSourceDeclaration || !Symbol.FromSource() || Context.OnlyScaffold)
                 return;
 
             Context.BindComments(this, Location.Symbol);
