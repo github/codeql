@@ -11,8 +11,9 @@ import Concurrency
  * Holds if `t` is the type of a lock.
  * Currently a crude test of the type name.
  */
+bindingset[t]
 overlay[caller?]
-pragma[inline]
+pragma[inline_late]
 predicate isLockType(Type t) { t.getName().matches("%Lock%") }
 
 /**
@@ -211,8 +212,9 @@ class ExposedFieldAccess extends FieldAccess {
 }
 
 /** Holds if the location of `a` is strictly before the location of `b`. */
+bindingset[a, b]
 overlay[caller?]
-pragma[inline]
+pragma[inline_late]
 predicate orderedLocations(Location a, Location b) {
   a.getStartLine() < b.getStartLine()
   or
