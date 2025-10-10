@@ -1467,7 +1467,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   class AsymmetricAlgorithmNode extends TKeyCreationCandidateAlgorithm instanceof AlgorithmNode {
     AsymmetricAlgorithmNode() {
       this instanceof EllipticCurveNode or
-      this.(KeyOperationAlgorithmNode).isAsymmetric()
+      this.(KeyOperationAlgorithmNode).isAsymmetric() or
+      this instanceof KeyAgreementAlgorithmNode
     }
 
     string toString() { result = super.toString() }

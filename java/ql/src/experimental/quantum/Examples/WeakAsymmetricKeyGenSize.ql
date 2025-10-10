@@ -17,6 +17,7 @@ where
   key.getCreatingOperation().getAKeySizeSource().asElement().(Literal).getValue().toInt() = keySize and
   alg = key.getAKnownAlgorithm() and // NOTE: if algorithm is not known (doesn't bind) we need a separate query
   not alg instanceof Crypto::EllipticCurveNode and // Elliptic curve sizes are handled separately and are more tied directly to the algorithm
+  alg instanceof Crypto::AsymmetricAlgorithmNode and
   keySize < 2048
 select key, "Use of weak asymmetric key size (" + keySize.toString() + " bits) for algorithm $@",
   alg, alg.getAlgorithmName()
