@@ -765,7 +765,8 @@ module API {
       MkUse(DataFlow::Node nd) { nd instanceof DataFlow::SourceNode } or
       /** A use of a TypeScript type. */
       MkTypeUse(string moduleName, string exportName) {
-        any(TypeAnnotation n).hasUnderlyingType(moduleName, exportName)
+        // any(TypeAnnotation n).hasUnderlyingType(moduleName, exportName)
+        none() // TODO
       } or
       MkSyntheticCallbackArg(DataFlow::InvokeNode nd)
 
