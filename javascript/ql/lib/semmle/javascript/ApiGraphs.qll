@@ -778,14 +778,6 @@ module API {
 
     private predicate hasSemantics(DataFlow::Node nd) { not nd.getTopLevel().isExterns() }
 
-    /** Holds if `imp` is an import of module `m`. */
-    private predicate imports(DataFlow::Node imp, string m) {
-      imp = DataFlow::moduleImport(m) and
-      // path must not start with a dot or a slash
-      m.regexpMatch("[^./].*") and
-      hasSemantics(imp)
-    }
-
     private signature module StageInputSig {
       predicate isAdditionalUseRoot(Node node);
 
