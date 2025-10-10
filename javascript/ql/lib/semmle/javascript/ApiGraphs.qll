@@ -785,6 +785,10 @@ module API {
 
     private predicate hasSemantics(DataFlow::Node nd) { not nd.getTopLevel().isExterns() }
 
+    bindingset[nd]
+    pragma[inline_late]
+    private predicate hasSemanticsLate(DataFlow::Node nd) { hasSemantics(nd) }
+
     private signature module StageInputSig {
       predicate isAdditionalUseRoot(Node node);
 
@@ -1264,8 +1268,12 @@ module API {
         nd = MkUse(ref)
         or
         S::isAdditionalUseRoot(nd) and
-        nd = MkUse(ref)
+        nd = mkUseLate(ref)
       }
+
+      bindingset[node]
+      pragma[inline_late]
+      private TApiNode mkUseLate(DataFlow::Node node) { result = MkUse(node) }
 
       private import semmle.javascript.dataflow.TypeTracking
 
@@ -1552,18 +1560,31 @@ module API {
     }
 
     private module Stage2Input implements StageInputSig {
+      overlay[global]
+      pragma[nomagic]
+      private predicate isInOverlayChangedFile(DataFlow::Node node) {
+        overlayChangedFiles(node.getFile().getAbsolutePath())
+      }
+
       bindingset[node]
       overlay[global]
       pragma[inline_late]
-      private predicate isInOverlayChangedFile(DataFlow::Node node) {
-        overlayChangedFiles(node.getFile().getAbsolutePath())
+      private predicate isInOverlayChangedFileLate(DataFlow::Node node) {
+        isInOverlayChangedFile(node)
+      }
+
+      pragma[nomagic]
+      private predicate stepIntoOverlay(DataFlow::Node node1, DataFlow::Node node2) {
+        StepSummary::step(node1, node2, _) and
+        isInOverlayChangedFile(node2) and
+        not isInOverlayChangedFileLate(node1) and
+        hasSemanticsLate(node1)
       }
 
       pragma[nomagic]
       private predicate shouldTrackIntoOverlay(DataFlow::SourceNode nd) {
         exists(DataFlow::Node overlayNode |
-          StepSummary::step(Stage1Local::trackUseNodeAnyState(nd), overlayNode, _) and
-          isInOverlayChangedFile(overlayNode)
+          stepIntoOverlay(Stage1Local::trackUseNodeAnyState(nd), overlayNode)
         )
       }
 
@@ -1576,10 +1597,17 @@ module API {
       }
 
       pragma[nomagic]
+      private predicate stepOutOfOverlay(DataFlow::Node node1, DataFlow::Node node2) {
+        StepSummary::step(node1, node2, _) and
+        isInOverlayChangedFile(node1) and
+        not isInOverlayChangedFileLate(node2) and
+        hasSemanticsLate(node2)
+      }
+
+      pragma[nomagic]
       private predicate shouldBacktrackIntoOverlay(DataFlow::SourceNode nd) {
         exists(DataFlow::Node overlayNode |
-          StepSummary::step(overlayNode, Stage1Local::trackDefNodeAnyState(nd), _) and
-          isInOverlayChangedFile(overlayNode)
+          stepOutOfOverlay(overlayNode, Stage1Local::trackDefNodeAnyState(nd))
         )
       }
 
