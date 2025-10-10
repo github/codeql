@@ -1537,6 +1537,9 @@ module API {
 
       predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) =
         forceLocal(Stage1::edge/3)(pred, lbl, succ)
+
+      DataFlow::InvokeNode getAPromisifiedInvocation(TApiNode callee, int bound, TApiNode succ) =
+        forceLocal(Stage1::getAPromisifiedInvocation/3)(callee, bound, succ, result)
     }
 
     private module Stage2Input implements StageInputSig {
@@ -1624,7 +1627,9 @@ module API {
 
       cached
       DataFlow::InvokeNode getAPromisifiedInvocation(TApiNode callee, int bound, TApiNode succ) {
-        result = Stage1::getAPromisifiedInvocation(callee, bound, succ)
+        result = Stage1Local::getAPromisifiedInvocation(callee, bound, succ)
+        or
+        result = Stage2::getAPromisifiedInvocation(callee, bound, succ)
       }
     }
 
