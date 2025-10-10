@@ -7,6 +7,7 @@
 | main.rs:18:16:18:16 | T | main.rs:18:10:18:10 | T | path |
 | main.rs:19:23:19:23 | T | main.rs:18:10:18:10 | T | path |
 | main.rs:19:29:19:32 | Self | main.rs:16:5:16:24 | struct S2 | path |
+| main.rs:20:13:20:14 | S2 | main.rs:16:5:16:24 | struct S2 | path |
 | main.rs:20:16:20:16 | x | main.rs:19:20:19:20 | x | local variable |
 | main.rs:29:5:29:11 | println | {EXTERNAL LOCATION} | MacroRules | path |
 | main.rs:29:22:29:26 | value | main.rs:29:50:29:54 | value | format argument |
