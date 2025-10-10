@@ -358,6 +358,54 @@ Exercise 4
    where GetenvToURLFlow::flow(src, sink)
    select src, "This environment variable constructs a URL $@.", sink, "here"
 
+Path Query Example
+~~~~~~~~~~~~~~~~~~
+
+Here is the answer to exercise 4 above, converted into a path query:
+
+.. code-block:: ql
+
+   /**
+    * @kind path-problem
+    * @problem.severity warning
+    * @id getenv-to-url
+    */
+
+   import go
+
+   class GetenvSource extends DataFlow::CallNode {
+     GetenvSource() {
+       exists(Function m | m = this.getTarget() |
+         m.hasQualifiedName("os", "Getenv")
+       )
+     }
+   }
+
+   module GetenvToURLConfig implements DataFlow::ConfigSig {
+     predicate isSource(DataFlow::Node source) {
+       source instanceof GetenvSource
+     }
+
+     predicate isSink(DataFlow::Node sink) {
+       exists(Function urlParse, CallExpr call |
+         (
+           urlParse.hasQualifiedName("url", "Parse") or
+           urlParse.hasQualifiedName("url", "ParseRequestURI")
+         ) and
+         call.getTarget() = urlParse and
+         sink.asExpr() = call.getArgument(0)
+       )
+     }
+   }
+
+   module GetenvToURLFlow = DataFlow::Global<GetenvToURLConfig>;
+
+   import GetenvToURLFlow::PathGraph
+
+   from GetenvToURLFlow::PathNode src, GetenvToURLFlow::PathNode sink
+   where GetenvToURLFlow::flowPath(src, sink)
+   select src.getNode(), src, sink, "This environment variable constructs a URL $@.", sink, "here"
+
 Further reading
 ---------------
 

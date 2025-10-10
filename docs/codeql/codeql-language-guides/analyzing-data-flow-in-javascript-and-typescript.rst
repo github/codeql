@@ -541,6 +541,46 @@ Exercise 4
   where HardCodedTagNameFlow::flow(source, sink)
   select source, sink
 
+Path Query Example
+~~~~~~~~~~~~~~~~~~
+
+Here is the answer to exercise 4 above, converted into a path query:
+
+.. code-block:: ql
+
+  /**
+   * @kind path-problem
+   * @problem.severity warning
+   * @id hard-coded-tag-name
+   */
+
+  import javascript
+
+  class ArrayEntryCallResult extends DataFlow::Node {
+    ArrayEntryCallResult() {
+      exists(DataFlow::CallNode call, string index |
+        this = call.getAPropertyRead(index) and
+        index.regexpMatch("\\d+")
+      )
+    }
+  }
+
+  module HardCodedTagNameConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof ArrayEntryCallResult }
+
+    predicate isSink(DataFlow::Node sink) {
+      sink = DataFlow::globalVarRef("document").getAMethodCall("createElement").getArgument(0)
+    }
+  }
+
+  module HardCodedTagNameFlow = DataFlow::Global<HardCodedTagNameConfig>;
+
+   import HardCodedTagNameFlow::PathGraph
+
+   from HardCodedTagNameFlow::PathNode source, HardCodedTagNameFlow::PathNode sink
+   where HardCodedTagNameFlow::flowPath(source, sink)
+   select sink.getNode(), source, sink, "Hard-coded tag name $@.", source, "here"
+
 Further reading
 ---------------
 

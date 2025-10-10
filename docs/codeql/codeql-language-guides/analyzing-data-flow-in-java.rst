@@ -361,6 +361,52 @@ Exercise 4
    where GetenvToURLFlow::flow(src, sink)
    select src, "This environment variable constructs a URL $@.", sink, "here"
 
+Path Query Example
+~~~~~~~~~~~~~~~~~~
+
+Here is the answer to exercise 4 above, converted into a path query:
+
+.. code-block:: ql
+
+   /**
+    * @kind path-problem
+    * @problem.severity warning
+    * @id getenv-to-url
+    */
+
+   import java
+   import semmle.code.java.dataflow.DataFlow
+
+   class GetenvSource extends DataFlow::ExprNode {
+     GetenvSource() {
+       exists(Method m | m = this.asExpr().(MethodCall).getMethod() |
+         m.hasName("getenv") and
+         m.getDeclaringType() instanceof TypeSystem
+       )
+     }
+   }
+
+   module GetenvToURLConfig implements DataFlow::ConfigSig {
+     predicate isSource(DataFlow::Node source) {
+       source instanceof GetenvSource
+     }
+
+     predicate isSink(DataFlow::Node sink) {
+       exists(Call call |
+         sink.asExpr() = call.getArgument(0) and
+         call.getCallee().(Constructor).getDeclaringType().hasQualifiedName("java.net", "URL")
+       )
+     }
+   }
+
+   module GetenvToURLFlow = DataFlow::Global<GetenvToURLConfig>;
+
+   import GetenvToURLFlow::PathGraph
+
+   from GetenvToURLFlow::PathNode src, GetenvToURLFlow::PathNode sink
+   where GetenvToURLFlow::flowPath(src, sink)
+   select src.getNode(), src, sink, "This environment variable constructs a URL $@.", sink, "here"
+
 Further reading
 ---------------
 

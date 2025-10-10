@@ -537,6 +537,48 @@ This can be adapted from the ``SystemUriFlow`` class:
      }
    }
 
+Path Query Example
+~~~~~~~~~~~~~~~~~~
+
+Here is the answer to exercise 4 above, converted into a path query:
+
+.. code-block:: ql
+
+   /**
+    * @kind path-problem
+    * @problem.severity warning
+    * @id getenv-to-gethostbyname
+    */
+
+   import csharp
+
+   class EnvironmentVariableFlowSource extends DataFlow::ExprNode {
+     EnvironmentVariableFlowSource() {
+       this.getExpr().(MethodCall).getTarget().hasQualifiedName("System.Environment.GetEnvironmentVariable")
+     }
+   }
+
+   module EnvironmentToUriConfig implements DataFlow::ConfigSig {
+     predicate isSource(DataFlow::Node src) {
+       src instanceof EnvironmentVariableFlowSource
+     }
+
+     predicate isSink(DataFlow::Node sink) {
+       exists(Call c | c.getTarget().(Constructor).getDeclaringType().hasQualifiedName("System.Uri")
+       and sink.asExpr()=c.getArgument(0))
+     }
+   }
+
+   module EnvironmentToUriFlow = DataFlow::Global<EnvironmentToUriConfig>;
+
+   import EnvironmentToUriFlow::PathGraph
+
+   from EnvironmentToUriFlow::PathNode src, EnvironmentToUriFlow::PathNode sink
+   where EnvironmentToUriFlow::flowPath(src, sink)
+   select src.getNode(), src, sink, "This environment variable constructs a 'System.Uri' $@.", sink, "here"
+
+For more information, see "`Creating path queries <https://codeql.github.com/docs/writing-codeql-queries/creating-path-queries/>`__".
+
 Further reading
 ---------------
 
