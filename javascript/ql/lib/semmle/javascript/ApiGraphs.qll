@@ -742,10 +742,11 @@ module API {
       MkModuleUse(string m) { exists(MkModuleImport(m)) } or
       MkModuleExport(string m) { isDeclaredPackageName(m) } or
       MkModuleImport(string m) { isImportedPackageName(m) } or
+      MkClassInstance(DataFlow::SourceNode cls) {
+        cls = any(Function f).flow()
         or
-        any(TypeAnnotation n).hasUnderlyingType(m, _)
+        cls = any(ClassDefinition c).flow()
       } or
-      MkClassInstance(DataFlow::ClassNode cls) or
       MkDef(DataFlow::Node nd) {
         nd = any(DataFlow::PropWrite w).getRhs()
         or
