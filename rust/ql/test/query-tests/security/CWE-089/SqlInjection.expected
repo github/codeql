@@ -12,15 +12,17 @@
 | mysql.rs:31:22:31:34 | query_map_opt | mysql.rs:13:33:13:54 | ...::get | mysql.rs:31:22:31:34 | query_map_opt | This query depends on a $@. | mysql.rs:13:33:13:54 | ...::get | user-provided value |
 | mysql.rs:32:34:32:38 | query | mysql.rs:13:33:13:54 | ...::get | mysql.rs:32:34:32:38 | query | This query depends on a $@. | mysql.rs:13:33:13:54 | ...::get | user-provided value |
 | mysql.rs:32:34:32:38 | query | mysql.rs:13:33:13:54 | ...::get | mysql.rs:32:34:32:38 | query | This query depends on a $@. | mysql.rs:13:33:13:54 | ...::get | user-provided value |
-| mysql.rs:50:15:50:24 | query_drop | mysql.rs:13:33:13:54 | ...::get | mysql.rs:50:15:50:24 | query_drop | This query depends on a $@. | mysql.rs:13:33:13:54 | ...::get | user-provided value |
-| mysql.rs:77:33:77:37 | query | mysql.rs:68:33:68:54 | ...::get | mysql.rs:77:33:77:37 | query | This query depends on a $@. | mysql.rs:68:33:68:54 | ...::get | user-provided value |
-| mysql.rs:78:14:78:23 | query_drop | mysql.rs:68:33:68:54 | ...::get | mysql.rs:78:14:78:23 | query_drop | This query depends on a $@. | mysql.rs:68:33:68:54 | ...::get | user-provided value |
-| mysql.rs:79:36:79:46 | query_first | mysql.rs:68:33:68:54 | ...::get | mysql.rs:79:36:79:46 | query_first | This query depends on a $@. | mysql.rs:68:33:68:54 | ...::get | user-provided value |
-| mysql.rs:80:22:80:31 | query_fold | mysql.rs:68:33:68:54 | ...::get | mysql.rs:80:22:80:31 | query_fold | This query depends on a $@. | mysql.rs:68:33:68:54 | ...::get | user-provided value |
-| mysql.rs:81:22:81:31 | query_iter | mysql.rs:68:33:68:54 | ...::get | mysql.rs:81:22:81:31 | query_iter | This query depends on a $@. | mysql.rs:68:33:68:54 | ...::get | user-provided value |
-| mysql.rs:82:22:82:33 | query_stream | mysql.rs:68:33:68:54 | ...::get | mysql.rs:82:22:82:33 | query_stream | This query depends on a $@. | mysql.rs:68:33:68:54 | ...::get | user-provided value |
-| mysql.rs:83:22:83:30 | query_map | mysql.rs:68:33:68:54 | ...::get | mysql.rs:83:22:83:30 | query_map | This query depends on a $@. | mysql.rs:68:33:68:54 | ...::get | user-provided value |
-| mysql.rs:98:15:98:24 | query_drop | mysql.rs:68:33:68:54 | ...::get | mysql.rs:98:15:98:24 | query_drop | This query depends on a $@. | mysql.rs:68:33:68:54 | ...::get | user-provided value |
+| mysql.rs:49:26:49:29 | prep | mysql.rs:13:33:13:54 | ...::get | mysql.rs:49:26:49:29 | prep | This query depends on a $@. | mysql.rs:13:33:13:54 | ...::get | user-provided value |
+| mysql.rs:54:15:54:24 | query_drop | mysql.rs:13:33:13:54 | ...::get | mysql.rs:54:15:54:24 | query_drop | This query depends on a $@. | mysql.rs:13:33:13:54 | ...::get | user-provided value |
+| mysql.rs:81:33:81:37 | query | mysql.rs:72:33:72:54 | ...::get | mysql.rs:81:33:81:37 | query | This query depends on a $@. | mysql.rs:72:33:72:54 | ...::get | user-provided value |
+| mysql.rs:82:14:82:23 | query_drop | mysql.rs:72:33:72:54 | ...::get | mysql.rs:82:14:82:23 | query_drop | This query depends on a $@. | mysql.rs:72:33:72:54 | ...::get | user-provided value |
+| mysql.rs:83:36:83:46 | query_first | mysql.rs:72:33:72:54 | ...::get | mysql.rs:83:36:83:46 | query_first | This query depends on a $@. | mysql.rs:72:33:72:54 | ...::get | user-provided value |
+| mysql.rs:84:22:84:31 | query_fold | mysql.rs:72:33:72:54 | ...::get | mysql.rs:84:22:84:31 | query_fold | This query depends on a $@. | mysql.rs:72:33:72:54 | ...::get | user-provided value |
+| mysql.rs:85:22:85:31 | query_iter | mysql.rs:72:33:72:54 | ...::get | mysql.rs:85:22:85:31 | query_iter | This query depends on a $@. | mysql.rs:72:33:72:54 | ...::get | user-provided value |
+| mysql.rs:86:22:86:33 | query_stream | mysql.rs:72:33:72:54 | ...::get | mysql.rs:86:22:86:33 | query_stream | This query depends on a $@. | mysql.rs:72:33:72:54 | ...::get | user-provided value |
+| mysql.rs:87:22:87:30 | query_map | mysql.rs:72:33:72:54 | ...::get | mysql.rs:87:22:87:30 | query_map | This query depends on a $@. | mysql.rs:72:33:72:54 | ...::get | user-provided value |
+| mysql.rs:101:26:101:29 | prep | mysql.rs:72:33:72:54 | ...::get | mysql.rs:101:26:101:29 | prep | This query depends on a $@. | mysql.rs:72:33:72:54 | ...::get | user-provided value |
+| mysql.rs:106:15:106:24 | query_drop | mysql.rs:72:33:72:54 | ...::get | mysql.rs:106:15:106:24 | query_drop | This query depends on a $@. | mysql.rs:72:33:72:54 | ...::get | user-provided value |
 | sqlx.rs:77:13:77:23 | ...::query | sqlx.rs:48:25:48:46 | ...::get | sqlx.rs:77:13:77:23 | ...::query | This query depends on a $@. | sqlx.rs:48:25:48:46 | ...::get | user-provided value |
 | sqlx.rs:78:13:78:23 | ...::query | sqlx.rs:47:22:47:35 | ...::args | sqlx.rs:78:13:78:23 | ...::query | This query depends on a $@. | sqlx.rs:47:22:47:35 | ...::args | user-provided value |
 | sqlx.rs:80:17:80:27 | ...::query | sqlx.rs:48:25:48:46 | ...::get | sqlx.rs:80:17:80:27 | ...::query | This query depends on a $@. | sqlx.rs:48:25:48:46 | ...::get | user-provided value |
@@ -35,366 +37,384 @@
 | sqlx.rs:188:17:188:27 | ...::query | sqlx.rs:173:25:173:46 | ...::get | sqlx.rs:188:17:188:27 | ...::query | This query depends on a $@. | sqlx.rs:173:25:173:46 | ...::get | user-provided value |
 edges
 | mysql.rs:13:13:13:29 | mut remote_string | mysql.rs:15:86:15:98 | remote_string | provenance |  |
-| mysql.rs:13:33:13:54 | ...::get | mysql.rs:13:33:13:77 | ...::get(...) [Ok] | provenance | Src:MaD:21  |
-| mysql.rs:13:33:13:77 | ...::get(...) [Ok] | mysql.rs:13:33:13:86 | ... .unwrap() | provenance | MaD:28 |
-| mysql.rs:13:33:13:86 | ... .unwrap() | mysql.rs:13:33:13:93 | ... .text() [Ok] | provenance | MaD:32 |
-| mysql.rs:13:33:13:93 | ... .text() [Ok] | mysql.rs:13:33:13:121 | ... .unwrap_or(...) | provenance | MaD:29 |
+| mysql.rs:13:33:13:54 | ...::get | mysql.rs:13:33:13:77 | ...::get(...) [Ok] | provenance | Src:MaD:23  |
+| mysql.rs:13:33:13:77 | ...::get(...) [Ok] | mysql.rs:13:33:13:86 | ... .unwrap() | provenance | MaD:30 |
+| mysql.rs:13:33:13:86 | ... .unwrap() | mysql.rs:13:33:13:93 | ... .text() [Ok] | provenance | MaD:34 |
+| mysql.rs:13:33:13:93 | ... .text() [Ok] | mysql.rs:13:33:13:121 | ... .unwrap_or(...) | provenance | MaD:31 |
 | mysql.rs:13:33:13:121 | ... .unwrap_or(...) | mysql.rs:13:13:13:29 | mut remote_string | provenance |  |
 | mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:22:39:22:50 | unsafe_query | provenance |  |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:22:39:22:59 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:22:39:22:59 | unsafe_query.as_str() | provenance | MaD:26 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:22:39:22:59 | unsafe_query.as_str() | provenance | MaD:30 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:22:39:22:59 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:22:39:22:59 | unsafe_query.as_str() | provenance | MaD:28 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:22:39:22:59 | unsafe_query.as_str() | provenance | MaD:32 |
 | mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:23:65:23:76 | unsafe_query | provenance |  |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:23:65:23:85 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:23:65:23:85 | unsafe_query.as_str() | provenance | MaD:26 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:23:65:23:85 | unsafe_query.as_str() | provenance | MaD:30 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:23:65:23:85 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:23:65:23:85 | unsafe_query.as_str() | provenance | MaD:28 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:23:65:23:85 | unsafe_query.as_str() | provenance | MaD:32 |
 | mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:24:25:24:36 | unsafe_query | provenance |  |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:24:25:24:45 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:24:25:24:45 | unsafe_query.as_str() | provenance | MaD:26 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:24:25:24:45 | unsafe_query.as_str() | provenance | MaD:30 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:24:25:24:45 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:24:25:24:45 | unsafe_query.as_str() | provenance | MaD:28 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:24:25:24:45 | unsafe_query.as_str() | provenance | MaD:32 |
 | mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:25:40:25:51 | unsafe_query | provenance |  |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:25:40:25:60 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:25:40:25:60 | unsafe_query.as_str() | provenance | MaD:26 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:25:40:25:60 | unsafe_query.as_str() | provenance | MaD:30 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:25:40:25:60 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:25:40:25:60 | unsafe_query.as_str() | provenance | MaD:28 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:25:40:25:60 | unsafe_query.as_str() | provenance | MaD:32 |
 | mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:26:65:26:76 | unsafe_query | provenance |  |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:26:65:26:85 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:26:65:26:85 | unsafe_query.as_str() | provenance | MaD:26 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:26:65:26:85 | unsafe_query.as_str() | provenance | MaD:30 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:26:65:26:85 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:26:65:26:85 | unsafe_query.as_str() | provenance | MaD:28 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:26:65:26:85 | unsafe_query.as_str() | provenance | MaD:32 |
 | mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:27:33:27:44 | unsafe_query | provenance |  |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:27:33:27:53 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:27:33:27:53 | unsafe_query.as_str() | provenance | MaD:26 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:27:33:27:53 | unsafe_query.as_str() | provenance | MaD:30 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:27:33:27:53 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:27:33:27:53 | unsafe_query.as_str() | provenance | MaD:28 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:27:33:27:53 | unsafe_query.as_str() | provenance | MaD:32 |
 | mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:28:37:28:48 | unsafe_query | provenance |  |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:28:37:28:57 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:28:37:28:57 | unsafe_query.as_str() | provenance | MaD:26 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:28:37:28:57 | unsafe_query.as_str() | provenance | MaD:30 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:28:37:28:57 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:28:37:28:57 | unsafe_query.as_str() | provenance | MaD:28 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:28:37:28:57 | unsafe_query.as_str() | provenance | MaD:32 |
 | mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:29:33:29:44 | unsafe_query | provenance |  |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:29:33:29:53 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:29:33:29:53 | unsafe_query.as_str() | provenance | MaD:26 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:29:33:29:53 | unsafe_query.as_str() | provenance | MaD:30 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:29:33:29:53 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:29:33:29:53 | unsafe_query.as_str() | provenance | MaD:28 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:29:33:29:53 | unsafe_query.as_str() | provenance | MaD:32 |
 | mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:30:32:30:43 | unsafe_query | provenance |  |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:30:32:30:52 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:30:32:30:52 | unsafe_query.as_str() | provenance | MaD:26 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:30:32:30:52 | unsafe_query.as_str() | provenance | MaD:30 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:30:32:30:52 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:30:32:30:52 | unsafe_query.as_str() | provenance | MaD:28 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:30:32:30:52 | unsafe_query.as_str() | provenance | MaD:32 |
 | mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:31:36:31:47 | unsafe_query | provenance |  |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:31:36:31:56 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:31:36:31:56 | unsafe_query.as_str() | provenance | MaD:26 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:31:36:31:56 | unsafe_query.as_str() | provenance | MaD:30 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:31:36:31:56 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:31:36:31:56 | unsafe_query.as_str() | provenance | MaD:28 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:31:36:31:56 | unsafe_query.as_str() | provenance | MaD:32 |
 | mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:32:40:32:51 | unsafe_query | provenance |  |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:32:40:32:60 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:32:40:32:60 | unsafe_query.as_str() | provenance | MaD:26 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:32:40:32:60 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:50:26:50:37 | unsafe_query | provenance |  |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:50:26:50:46 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:50:26:50:46 | unsafe_query.as_str() | provenance | MaD:26 |
-| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:50:26:50:46 | unsafe_query.as_str() | provenance | MaD:30 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:32:40:32:60 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:32:40:32:60 | unsafe_query.as_str() | provenance | MaD:28 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:32:40:32:60 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:49:31:49:42 | unsafe_query | provenance |  |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:49:31:49:51 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:49:31:49:51 | unsafe_query.as_str() | provenance | MaD:28 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:49:31:49:51 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:54:26:54:37 | unsafe_query | provenance |  |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:54:26:54:46 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:54:26:54:46 | unsafe_query.as_str() | provenance | MaD:28 |
+| mysql.rs:15:13:15:24 | unsafe_query | mysql.rs:54:26:54:46 | unsafe_query.as_str() | provenance | MaD:32 |
 | mysql.rs:15:28:15:98 | ... + ... | mysql.rs:15:13:15:24 | unsafe_query | provenance |  |
-| mysql.rs:15:28:15:98 | ... + ... | mysql.rs:15:28:15:104 | ... + ... | provenance | MaD:25 |
+| mysql.rs:15:28:15:98 | ... + ... | mysql.rs:15:28:15:104 | ... + ... | provenance | MaD:27 |
 | mysql.rs:15:28:15:104 | ... + ... | mysql.rs:15:13:15:24 | unsafe_query | provenance |  |
-| mysql.rs:15:85:15:98 | &remote_string [&ref] | mysql.rs:15:28:15:98 | ... + ... | provenance | MaD:24 |
+| mysql.rs:15:85:15:98 | &remote_string [&ref] | mysql.rs:15:28:15:98 | ... + ... | provenance | MaD:26 |
 | mysql.rs:15:86:15:98 | remote_string | mysql.rs:15:85:15:98 | &remote_string [&ref] | provenance |  |
-| mysql.rs:22:39:22:50 | unsafe_query | mysql.rs:22:39:22:59 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:22:39:22:50 | unsafe_query | mysql.rs:22:39:22:59 | unsafe_query.as_str() [&ref] | provenance | MaD:26 |
-| mysql.rs:22:39:22:50 | unsafe_query | mysql.rs:22:39:22:59 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
+| mysql.rs:22:39:22:50 | unsafe_query | mysql.rs:22:39:22:59 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:22:39:22:50 | unsafe_query | mysql.rs:22:39:22:59 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
+| mysql.rs:22:39:22:50 | unsafe_query | mysql.rs:22:39:22:59 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
 | mysql.rs:22:39:22:59 | unsafe_query.as_str() | mysql.rs:22:33:22:37 | query | provenance | MaD:1 Sink:MaD:1 |
 | mysql.rs:22:39:22:59 | unsafe_query.as_str() | mysql.rs:22:33:22:37 | query | provenance | MaD:1 Sink:MaD:1 |
 | mysql.rs:22:39:22:59 | unsafe_query.as_str() [&ref] | mysql.rs:22:33:22:37 | query | provenance | MaD:1 Sink:MaD:1 |
 | mysql.rs:22:39:22:59 | unsafe_query.as_str() [&ref] | mysql.rs:22:33:22:37 | query | provenance | MaD:1 Sink:MaD:1 |
-| mysql.rs:23:65:23:76 | unsafe_query | mysql.rs:23:65:23:85 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:23:65:23:76 | unsafe_query | mysql.rs:23:65:23:85 | unsafe_query.as_str() [&ref] | provenance | MaD:26 |
-| mysql.rs:23:65:23:76 | unsafe_query | mysql.rs:23:65:23:85 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
+| mysql.rs:23:65:23:76 | unsafe_query | mysql.rs:23:65:23:85 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:23:65:23:76 | unsafe_query | mysql.rs:23:65:23:85 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
+| mysql.rs:23:65:23:76 | unsafe_query | mysql.rs:23:65:23:85 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
 | mysql.rs:23:65:23:85 | unsafe_query.as_str() | mysql.rs:23:55:23:63 | query_opt | provenance | MaD:9 Sink:MaD:9 |
 | mysql.rs:23:65:23:85 | unsafe_query.as_str() [&ref] | mysql.rs:23:55:23:63 | query_opt | provenance | MaD:9 Sink:MaD:9 |
-| mysql.rs:24:25:24:36 | unsafe_query | mysql.rs:24:25:24:45 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:24:25:24:36 | unsafe_query | mysql.rs:24:25:24:45 | unsafe_query.as_str() [&ref] | provenance | MaD:26 |
-| mysql.rs:24:25:24:36 | unsafe_query | mysql.rs:24:25:24:45 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
+| mysql.rs:24:25:24:36 | unsafe_query | mysql.rs:24:25:24:45 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:24:25:24:36 | unsafe_query | mysql.rs:24:25:24:45 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
+| mysql.rs:24:25:24:36 | unsafe_query | mysql.rs:24:25:24:45 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
 | mysql.rs:24:25:24:45 | unsafe_query.as_str() | mysql.rs:24:14:24:23 | query_drop | provenance | MaD:2 Sink:MaD:2 |
 | mysql.rs:24:25:24:45 | unsafe_query.as_str() [&ref] | mysql.rs:24:14:24:23 | query_drop | provenance | MaD:2 Sink:MaD:2 |
-| mysql.rs:25:40:25:51 | unsafe_query | mysql.rs:25:40:25:60 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:25:40:25:51 | unsafe_query | mysql.rs:25:40:25:60 | unsafe_query.as_str() [&ref] | provenance | MaD:26 |
-| mysql.rs:25:40:25:51 | unsafe_query | mysql.rs:25:40:25:60 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
+| mysql.rs:25:40:25:51 | unsafe_query | mysql.rs:25:40:25:60 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:25:40:25:51 | unsafe_query | mysql.rs:25:40:25:60 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
+| mysql.rs:25:40:25:51 | unsafe_query | mysql.rs:25:40:25:60 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
 | mysql.rs:25:40:25:60 | unsafe_query.as_str() | mysql.rs:25:28:25:38 | query_first | provenance | MaD:3 Sink:MaD:3 |
 | mysql.rs:25:40:25:60 | unsafe_query.as_str() [&ref] | mysql.rs:25:28:25:38 | query_first | provenance | MaD:3 Sink:MaD:3 |
-| mysql.rs:26:65:26:76 | unsafe_query | mysql.rs:26:65:26:85 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:26:65:26:76 | unsafe_query | mysql.rs:26:65:26:85 | unsafe_query.as_str() [&ref] | provenance | MaD:26 |
-| mysql.rs:26:65:26:76 | unsafe_query | mysql.rs:26:65:26:85 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
+| mysql.rs:26:65:26:76 | unsafe_query | mysql.rs:26:65:26:85 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:26:65:26:76 | unsafe_query | mysql.rs:26:65:26:85 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
+| mysql.rs:26:65:26:76 | unsafe_query | mysql.rs:26:65:26:85 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
 | mysql.rs:26:65:26:85 | unsafe_query.as_str() | mysql.rs:26:49:26:63 | query_first_opt | provenance | MaD:4 Sink:MaD:4 |
 | mysql.rs:26:65:26:85 | unsafe_query.as_str() [&ref] | mysql.rs:26:49:26:63 | query_first_opt | provenance | MaD:4 Sink:MaD:4 |
-| mysql.rs:27:33:27:44 | unsafe_query | mysql.rs:27:33:27:53 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:27:33:27:44 | unsafe_query | mysql.rs:27:33:27:53 | unsafe_query.as_str() [&ref] | provenance | MaD:26 |
-| mysql.rs:27:33:27:44 | unsafe_query | mysql.rs:27:33:27:53 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
+| mysql.rs:27:33:27:44 | unsafe_query | mysql.rs:27:33:27:53 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:27:33:27:44 | unsafe_query | mysql.rs:27:33:27:53 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
+| mysql.rs:27:33:27:44 | unsafe_query | mysql.rs:27:33:27:53 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
 | mysql.rs:27:33:27:53 | unsafe_query.as_str() | mysql.rs:27:22:27:31 | query_fold | provenance | MaD:5 Sink:MaD:5 |
 | mysql.rs:27:33:27:53 | unsafe_query.as_str() [&ref] | mysql.rs:27:22:27:31 | query_fold | provenance | MaD:5 Sink:MaD:5 |
-| mysql.rs:28:37:28:48 | unsafe_query | mysql.rs:28:37:28:57 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:28:37:28:48 | unsafe_query | mysql.rs:28:37:28:57 | unsafe_query.as_str() [&ref] | provenance | MaD:26 |
-| mysql.rs:28:37:28:48 | unsafe_query | mysql.rs:28:37:28:57 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
+| mysql.rs:28:37:28:48 | unsafe_query | mysql.rs:28:37:28:57 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:28:37:28:48 | unsafe_query | mysql.rs:28:37:28:57 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
+| mysql.rs:28:37:28:48 | unsafe_query | mysql.rs:28:37:28:57 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
 | mysql.rs:28:37:28:57 | unsafe_query.as_str() | mysql.rs:28:22:28:35 | query_fold_opt | provenance | MaD:6 Sink:MaD:6 |
 | mysql.rs:28:37:28:57 | unsafe_query.as_str() [&ref] | mysql.rs:28:22:28:35 | query_fold_opt | provenance | MaD:6 Sink:MaD:6 |
-| mysql.rs:29:33:29:44 | unsafe_query | mysql.rs:29:33:29:53 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:29:33:29:44 | unsafe_query | mysql.rs:29:33:29:53 | unsafe_query.as_str() [&ref] | provenance | MaD:26 |
-| mysql.rs:29:33:29:44 | unsafe_query | mysql.rs:29:33:29:53 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:29:33:29:53 | unsafe_query.as_str() | mysql.rs:29:22:29:31 | query_iter | provenance | MaD:16 Sink:MaD:16 |
-| mysql.rs:29:33:29:53 | unsafe_query.as_str() [&ref] | mysql.rs:29:22:29:31 | query_iter | provenance | MaD:16 Sink:MaD:16 |
-| mysql.rs:30:32:30:43 | unsafe_query | mysql.rs:30:32:30:52 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:30:32:30:43 | unsafe_query | mysql.rs:30:32:30:52 | unsafe_query.as_str() [&ref] | provenance | MaD:26 |
-| mysql.rs:30:32:30:43 | unsafe_query | mysql.rs:30:32:30:52 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
+| mysql.rs:29:33:29:44 | unsafe_query | mysql.rs:29:33:29:53 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:29:33:29:44 | unsafe_query | mysql.rs:29:33:29:53 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
+| mysql.rs:29:33:29:44 | unsafe_query | mysql.rs:29:33:29:53 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:29:33:29:53 | unsafe_query.as_str() | mysql.rs:29:22:29:31 | query_iter | provenance | MaD:17 Sink:MaD:17 |
+| mysql.rs:29:33:29:53 | unsafe_query.as_str() [&ref] | mysql.rs:29:22:29:31 | query_iter | provenance | MaD:17 Sink:MaD:17 |
+| mysql.rs:30:32:30:43 | unsafe_query | mysql.rs:30:32:30:52 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:30:32:30:43 | unsafe_query | mysql.rs:30:32:30:52 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
+| mysql.rs:30:32:30:43 | unsafe_query | mysql.rs:30:32:30:52 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
 | mysql.rs:30:32:30:52 | unsafe_query.as_str() | mysql.rs:30:22:30:30 | query_map | provenance | MaD:7 Sink:MaD:7 |
 | mysql.rs:30:32:30:52 | unsafe_query.as_str() [&ref] | mysql.rs:30:22:30:30 | query_map | provenance | MaD:7 Sink:MaD:7 |
-| mysql.rs:31:36:31:47 | unsafe_query | mysql.rs:31:36:31:56 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:31:36:31:47 | unsafe_query | mysql.rs:31:36:31:56 | unsafe_query.as_str() [&ref] | provenance | MaD:26 |
-| mysql.rs:31:36:31:47 | unsafe_query | mysql.rs:31:36:31:56 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
+| mysql.rs:31:36:31:47 | unsafe_query | mysql.rs:31:36:31:56 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:31:36:31:47 | unsafe_query | mysql.rs:31:36:31:56 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
+| mysql.rs:31:36:31:47 | unsafe_query | mysql.rs:31:36:31:56 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
 | mysql.rs:31:36:31:56 | unsafe_query.as_str() | mysql.rs:31:22:31:34 | query_map_opt | provenance | MaD:8 Sink:MaD:8 |
 | mysql.rs:31:36:31:56 | unsafe_query.as_str() [&ref] | mysql.rs:31:22:31:34 | query_map_opt | provenance | MaD:8 Sink:MaD:8 |
-| mysql.rs:32:40:32:51 | unsafe_query | mysql.rs:32:40:32:60 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:32:40:32:51 | unsafe_query | mysql.rs:32:40:32:60 | unsafe_query.as_str() [&ref] | provenance | MaD:26 |
-| mysql.rs:32:40:32:51 | unsafe_query | mysql.rs:32:40:32:60 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
+| mysql.rs:32:40:32:51 | unsafe_query | mysql.rs:32:40:32:60 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:32:40:32:51 | unsafe_query | mysql.rs:32:40:32:60 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
+| mysql.rs:32:40:32:51 | unsafe_query | mysql.rs:32:40:32:60 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
 | mysql.rs:32:40:32:60 | unsafe_query.as_str() | mysql.rs:32:34:32:38 | query | provenance | MaD:1 Sink:MaD:1 |
 | mysql.rs:32:40:32:60 | unsafe_query.as_str() | mysql.rs:32:34:32:38 | query | provenance | MaD:1 Sink:MaD:1 |
 | mysql.rs:32:40:32:60 | unsafe_query.as_str() [&ref] | mysql.rs:32:34:32:38 | query | provenance | MaD:1 Sink:MaD:1 |
 | mysql.rs:32:40:32:60 | unsafe_query.as_str() [&ref] | mysql.rs:32:34:32:38 | query | provenance | MaD:1 Sink:MaD:1 |
-| mysql.rs:50:26:50:37 | unsafe_query | mysql.rs:50:26:50:46 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:50:26:50:37 | unsafe_query | mysql.rs:50:26:50:46 | unsafe_query.as_str() [&ref] | provenance | MaD:26 |
-| mysql.rs:50:26:50:37 | unsafe_query | mysql.rs:50:26:50:46 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:50:26:50:46 | unsafe_query.as_str() | mysql.rs:50:15:50:24 | query_drop | provenance | MaD:2 Sink:MaD:2 |
-| mysql.rs:50:26:50:46 | unsafe_query.as_str() [&ref] | mysql.rs:50:15:50:24 | query_drop | provenance | MaD:2 Sink:MaD:2 |
-| mysql.rs:68:13:68:29 | mut remote_string | mysql.rs:70:86:70:98 | remote_string | provenance |  |
-| mysql.rs:68:33:68:54 | ...::get | mysql.rs:68:33:68:77 | ...::get(...) [Ok] | provenance | Src:MaD:21  |
-| mysql.rs:68:33:68:77 | ...::get(...) [Ok] | mysql.rs:68:33:68:86 | ... .unwrap() | provenance | MaD:28 |
-| mysql.rs:68:33:68:86 | ... .unwrap() | mysql.rs:68:33:68:93 | ... .text() [Ok] | provenance | MaD:32 |
-| mysql.rs:68:33:68:93 | ... .text() [Ok] | mysql.rs:68:33:68:121 | ... .unwrap_or(...) | provenance | MaD:29 |
-| mysql.rs:68:33:68:121 | ... .unwrap_or(...) | mysql.rs:68:13:68:29 | mut remote_string | provenance |  |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:77:39:77:50 | unsafe_query | provenance |  |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:77:39:77:59 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:77:39:77:59 | unsafe_query.as_str() | provenance | MaD:26 |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:77:39:77:59 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:78:25:78:36 | unsafe_query | provenance |  |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:78:25:78:45 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:78:25:78:45 | unsafe_query.as_str() | provenance | MaD:26 |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:78:25:78:45 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:79:48:79:59 | unsafe_query | provenance |  |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:79:48:79:68 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:79:48:79:68 | unsafe_query.as_str() | provenance | MaD:26 |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:79:48:79:68 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:80:33:80:44 | unsafe_query | provenance |  |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:80:33:80:53 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:80:33:80:53 | unsafe_query.as_str() | provenance | MaD:26 |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:80:33:80:53 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:81:33:81:44 | unsafe_query | provenance |  |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:81:33:81:53 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:81:33:81:53 | unsafe_query.as_str() | provenance | MaD:26 |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:81:33:81:53 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:82:48:82:59 | unsafe_query | provenance |  |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:82:48:82:68 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:82:48:82:68 | unsafe_query.as_str() | provenance | MaD:26 |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:82:48:82:68 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:83:32:83:43 | unsafe_query | provenance |  |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:83:32:83:52 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:83:32:83:52 | unsafe_query.as_str() | provenance | MaD:26 |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:83:32:83:52 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:98:26:98:37 | unsafe_query | provenance |  |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:98:26:98:46 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:98:26:98:46 | unsafe_query.as_str() | provenance | MaD:26 |
-| mysql.rs:70:13:70:24 | unsafe_query | mysql.rs:98:26:98:46 | unsafe_query.as_str() | provenance | MaD:30 |
-| mysql.rs:70:28:70:98 | ... + ... | mysql.rs:70:13:70:24 | unsafe_query | provenance |  |
-| mysql.rs:70:28:70:98 | ... + ... | mysql.rs:70:28:70:104 | ... + ... | provenance | MaD:25 |
-| mysql.rs:70:28:70:104 | ... + ... | mysql.rs:70:13:70:24 | unsafe_query | provenance |  |
-| mysql.rs:70:85:70:98 | &remote_string [&ref] | mysql.rs:70:28:70:98 | ... + ... | provenance | MaD:24 |
-| mysql.rs:70:86:70:98 | remote_string | mysql.rs:70:85:70:98 | &remote_string [&ref] | provenance |  |
-| mysql.rs:77:39:77:50 | unsafe_query | mysql.rs:77:39:77:59 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:77:39:77:50 | unsafe_query | mysql.rs:77:39:77:59 | unsafe_query.as_str() [&ref] | provenance | MaD:26 |
-| mysql.rs:77:39:77:50 | unsafe_query | mysql.rs:77:39:77:59 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:77:39:77:59 | unsafe_query.as_str() | mysql.rs:77:33:77:37 | query | provenance | MaD:10 Sink:MaD:10 |
-| mysql.rs:77:39:77:59 | unsafe_query.as_str() [&ref] | mysql.rs:77:33:77:37 | query | provenance | MaD:10 Sink:MaD:10 |
-| mysql.rs:78:25:78:36 | unsafe_query | mysql.rs:78:25:78:45 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:78:25:78:36 | unsafe_query | mysql.rs:78:25:78:45 | unsafe_query.as_str() [&ref] | provenance | MaD:26 |
-| mysql.rs:78:25:78:36 | unsafe_query | mysql.rs:78:25:78:45 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:78:25:78:45 | unsafe_query.as_str() | mysql.rs:78:14:78:23 | query_drop | provenance | MaD:11 Sink:MaD:11 |
-| mysql.rs:78:25:78:45 | unsafe_query.as_str() [&ref] | mysql.rs:78:14:78:23 | query_drop | provenance | MaD:11 Sink:MaD:11 |
-| mysql.rs:79:48:79:59 | unsafe_query | mysql.rs:79:48:79:68 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:79:48:79:59 | unsafe_query | mysql.rs:79:48:79:68 | unsafe_query.as_str() [&ref] | provenance | MaD:26 |
-| mysql.rs:79:48:79:59 | unsafe_query | mysql.rs:79:48:79:68 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:79:48:79:68 | unsafe_query.as_str() | mysql.rs:79:36:79:46 | query_first | provenance | MaD:12 Sink:MaD:12 |
-| mysql.rs:79:48:79:68 | unsafe_query.as_str() [&ref] | mysql.rs:79:36:79:46 | query_first | provenance | MaD:12 Sink:MaD:12 |
-| mysql.rs:80:33:80:44 | unsafe_query | mysql.rs:80:33:80:53 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:80:33:80:44 | unsafe_query | mysql.rs:80:33:80:53 | unsafe_query.as_str() [&ref] | provenance | MaD:26 |
-| mysql.rs:80:33:80:44 | unsafe_query | mysql.rs:80:33:80:53 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:80:33:80:53 | unsafe_query.as_str() | mysql.rs:80:22:80:31 | query_fold | provenance | MaD:13 Sink:MaD:13 |
-| mysql.rs:80:33:80:53 | unsafe_query.as_str() [&ref] | mysql.rs:80:22:80:31 | query_fold | provenance | MaD:13 Sink:MaD:13 |
-| mysql.rs:81:33:81:44 | unsafe_query | mysql.rs:81:33:81:53 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:81:33:81:44 | unsafe_query | mysql.rs:81:33:81:53 | unsafe_query.as_str() [&ref] | provenance | MaD:26 |
-| mysql.rs:81:33:81:44 | unsafe_query | mysql.rs:81:33:81:53 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:81:33:81:53 | unsafe_query.as_str() | mysql.rs:81:22:81:31 | query_iter | provenance | MaD:17 Sink:MaD:17 |
-| mysql.rs:81:33:81:53 | unsafe_query.as_str() [&ref] | mysql.rs:81:22:81:31 | query_iter | provenance | MaD:17 Sink:MaD:17 |
-| mysql.rs:82:48:82:59 | unsafe_query | mysql.rs:82:48:82:68 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:82:48:82:59 | unsafe_query | mysql.rs:82:48:82:68 | unsafe_query.as_str() [&ref] | provenance | MaD:26 |
-| mysql.rs:82:48:82:59 | unsafe_query | mysql.rs:82:48:82:68 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:82:48:82:68 | unsafe_query.as_str() | mysql.rs:82:22:82:33 | query_stream | provenance | MaD:15 Sink:MaD:15 |
-| mysql.rs:82:48:82:68 | unsafe_query.as_str() [&ref] | mysql.rs:82:22:82:33 | query_stream | provenance | MaD:15 Sink:MaD:15 |
-| mysql.rs:83:32:83:43 | unsafe_query | mysql.rs:83:32:83:52 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:83:32:83:43 | unsafe_query | mysql.rs:83:32:83:52 | unsafe_query.as_str() [&ref] | provenance | MaD:26 |
-| mysql.rs:83:32:83:43 | unsafe_query | mysql.rs:83:32:83:52 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:83:32:83:52 | unsafe_query.as_str() | mysql.rs:83:22:83:30 | query_map | provenance | MaD:14 Sink:MaD:14 |
-| mysql.rs:83:32:83:52 | unsafe_query.as_str() [&ref] | mysql.rs:83:22:83:30 | query_map | provenance | MaD:14 Sink:MaD:14 |
-| mysql.rs:98:26:98:37 | unsafe_query | mysql.rs:98:26:98:46 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:98:26:98:37 | unsafe_query | mysql.rs:98:26:98:46 | unsafe_query.as_str() [&ref] | provenance | MaD:26 |
-| mysql.rs:98:26:98:37 | unsafe_query | mysql.rs:98:26:98:46 | unsafe_query.as_str() [&ref] | provenance | MaD:30 |
-| mysql.rs:98:26:98:46 | unsafe_query.as_str() | mysql.rs:98:15:98:24 | query_drop | provenance | MaD:11 Sink:MaD:11 |
-| mysql.rs:98:26:98:46 | unsafe_query.as_str() [&ref] | mysql.rs:98:15:98:24 | query_drop | provenance | MaD:11 Sink:MaD:11 |
+| mysql.rs:49:31:49:42 | unsafe_query | mysql.rs:49:31:49:51 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:49:31:49:42 | unsafe_query | mysql.rs:49:31:49:51 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
+| mysql.rs:49:31:49:42 | unsafe_query | mysql.rs:49:31:49:51 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:49:31:49:51 | unsafe_query.as_str() | mysql.rs:49:26:49:29 | prep | provenance | MaD:16 Sink:MaD:16 |
+| mysql.rs:49:31:49:51 | unsafe_query.as_str() [&ref] | mysql.rs:49:26:49:29 | prep | provenance | MaD:16 Sink:MaD:16 |
+| mysql.rs:54:26:54:37 | unsafe_query | mysql.rs:54:26:54:46 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:54:26:54:37 | unsafe_query | mysql.rs:54:26:54:46 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
+| mysql.rs:54:26:54:37 | unsafe_query | mysql.rs:54:26:54:46 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:54:26:54:46 | unsafe_query.as_str() | mysql.rs:54:15:54:24 | query_drop | provenance | MaD:2 Sink:MaD:2 |
+| mysql.rs:54:26:54:46 | unsafe_query.as_str() [&ref] | mysql.rs:54:15:54:24 | query_drop | provenance | MaD:2 Sink:MaD:2 |
+| mysql.rs:72:13:72:29 | mut remote_string | mysql.rs:74:86:74:98 | remote_string | provenance |  |
+| mysql.rs:72:33:72:54 | ...::get | mysql.rs:72:33:72:77 | ...::get(...) [Ok] | provenance | Src:MaD:23  |
+| mysql.rs:72:33:72:77 | ...::get(...) [Ok] | mysql.rs:72:33:72:86 | ... .unwrap() | provenance | MaD:30 |
+| mysql.rs:72:33:72:86 | ... .unwrap() | mysql.rs:72:33:72:93 | ... .text() [Ok] | provenance | MaD:34 |
+| mysql.rs:72:33:72:93 | ... .text() [Ok] | mysql.rs:72:33:72:121 | ... .unwrap_or(...) | provenance | MaD:31 |
+| mysql.rs:72:33:72:121 | ... .unwrap_or(...) | mysql.rs:72:13:72:29 | mut remote_string | provenance |  |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:81:39:81:50 | unsafe_query | provenance |  |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:81:39:81:59 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:81:39:81:59 | unsafe_query.as_str() | provenance | MaD:28 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:81:39:81:59 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:82:25:82:36 | unsafe_query | provenance |  |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:82:25:82:45 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:82:25:82:45 | unsafe_query.as_str() | provenance | MaD:28 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:82:25:82:45 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:83:48:83:59 | unsafe_query | provenance |  |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:83:48:83:68 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:83:48:83:68 | unsafe_query.as_str() | provenance | MaD:28 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:83:48:83:68 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:84:33:84:44 | unsafe_query | provenance |  |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:84:33:84:53 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:84:33:84:53 | unsafe_query.as_str() | provenance | MaD:28 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:84:33:84:53 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:85:33:85:44 | unsafe_query | provenance |  |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:85:33:85:53 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:85:33:85:53 | unsafe_query.as_str() | provenance | MaD:28 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:85:33:85:53 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:86:48:86:59 | unsafe_query | provenance |  |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:86:48:86:68 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:86:48:86:68 | unsafe_query.as_str() | provenance | MaD:28 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:86:48:86:68 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:87:32:87:43 | unsafe_query | provenance |  |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:87:32:87:52 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:87:32:87:52 | unsafe_query.as_str() | provenance | MaD:28 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:87:32:87:52 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:101:31:101:42 | unsafe_query | provenance |  |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:101:31:101:51 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:101:31:101:51 | unsafe_query.as_str() | provenance | MaD:28 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:101:31:101:51 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:106:26:106:37 | unsafe_query | provenance |  |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:106:26:106:46 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:106:26:106:46 | unsafe_query.as_str() | provenance | MaD:28 |
+| mysql.rs:74:13:74:24 | unsafe_query | mysql.rs:106:26:106:46 | unsafe_query.as_str() | provenance | MaD:32 |
+| mysql.rs:74:28:74:98 | ... + ... | mysql.rs:74:13:74:24 | unsafe_query | provenance |  |
+| mysql.rs:74:28:74:98 | ... + ... | mysql.rs:74:28:74:104 | ... + ... | provenance | MaD:27 |
+| mysql.rs:74:28:74:104 | ... + ... | mysql.rs:74:13:74:24 | unsafe_query | provenance |  |
+| mysql.rs:74:85:74:98 | &remote_string [&ref] | mysql.rs:74:28:74:98 | ... + ... | provenance | MaD:26 |
+| mysql.rs:74:86:74:98 | remote_string | mysql.rs:74:85:74:98 | &remote_string [&ref] | provenance |  |
+| mysql.rs:81:39:81:50 | unsafe_query | mysql.rs:81:39:81:59 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:81:39:81:50 | unsafe_query | mysql.rs:81:39:81:59 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
+| mysql.rs:81:39:81:50 | unsafe_query | mysql.rs:81:39:81:59 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:81:39:81:59 | unsafe_query.as_str() | mysql.rs:81:33:81:37 | query | provenance | MaD:10 Sink:MaD:10 |
+| mysql.rs:81:39:81:59 | unsafe_query.as_str() [&ref] | mysql.rs:81:33:81:37 | query | provenance | MaD:10 Sink:MaD:10 |
+| mysql.rs:82:25:82:36 | unsafe_query | mysql.rs:82:25:82:45 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:82:25:82:36 | unsafe_query | mysql.rs:82:25:82:45 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
+| mysql.rs:82:25:82:36 | unsafe_query | mysql.rs:82:25:82:45 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:82:25:82:45 | unsafe_query.as_str() | mysql.rs:82:14:82:23 | query_drop | provenance | MaD:11 Sink:MaD:11 |
+| mysql.rs:82:25:82:45 | unsafe_query.as_str() [&ref] | mysql.rs:82:14:82:23 | query_drop | provenance | MaD:11 Sink:MaD:11 |
+| mysql.rs:83:48:83:59 | unsafe_query | mysql.rs:83:48:83:68 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:83:48:83:59 | unsafe_query | mysql.rs:83:48:83:68 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
+| mysql.rs:83:48:83:59 | unsafe_query | mysql.rs:83:48:83:68 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:83:48:83:68 | unsafe_query.as_str() | mysql.rs:83:36:83:46 | query_first | provenance | MaD:12 Sink:MaD:12 |
+| mysql.rs:83:48:83:68 | unsafe_query.as_str() [&ref] | mysql.rs:83:36:83:46 | query_first | provenance | MaD:12 Sink:MaD:12 |
+| mysql.rs:84:33:84:44 | unsafe_query | mysql.rs:84:33:84:53 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:84:33:84:44 | unsafe_query | mysql.rs:84:33:84:53 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
+| mysql.rs:84:33:84:44 | unsafe_query | mysql.rs:84:33:84:53 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:84:33:84:53 | unsafe_query.as_str() | mysql.rs:84:22:84:31 | query_fold | provenance | MaD:13 Sink:MaD:13 |
+| mysql.rs:84:33:84:53 | unsafe_query.as_str() [&ref] | mysql.rs:84:22:84:31 | query_fold | provenance | MaD:13 Sink:MaD:13 |
+| mysql.rs:85:33:85:44 | unsafe_query | mysql.rs:85:33:85:53 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:85:33:85:44 | unsafe_query | mysql.rs:85:33:85:53 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
+| mysql.rs:85:33:85:44 | unsafe_query | mysql.rs:85:33:85:53 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:85:33:85:53 | unsafe_query.as_str() | mysql.rs:85:22:85:31 | query_iter | provenance | MaD:19 Sink:MaD:19 |
+| mysql.rs:85:33:85:53 | unsafe_query.as_str() [&ref] | mysql.rs:85:22:85:31 | query_iter | provenance | MaD:19 Sink:MaD:19 |
+| mysql.rs:86:48:86:59 | unsafe_query | mysql.rs:86:48:86:68 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:86:48:86:59 | unsafe_query | mysql.rs:86:48:86:68 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
+| mysql.rs:86:48:86:59 | unsafe_query | mysql.rs:86:48:86:68 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:86:48:86:68 | unsafe_query.as_str() | mysql.rs:86:22:86:33 | query_stream | provenance | MaD:15 Sink:MaD:15 |
+| mysql.rs:86:48:86:68 | unsafe_query.as_str() [&ref] | mysql.rs:86:22:86:33 | query_stream | provenance | MaD:15 Sink:MaD:15 |
+| mysql.rs:87:32:87:43 | unsafe_query | mysql.rs:87:32:87:52 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:87:32:87:43 | unsafe_query | mysql.rs:87:32:87:52 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
+| mysql.rs:87:32:87:43 | unsafe_query | mysql.rs:87:32:87:52 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:87:32:87:52 | unsafe_query.as_str() | mysql.rs:87:22:87:30 | query_map | provenance | MaD:14 Sink:MaD:14 |
+| mysql.rs:87:32:87:52 | unsafe_query.as_str() [&ref] | mysql.rs:87:22:87:30 | query_map | provenance | MaD:14 Sink:MaD:14 |
+| mysql.rs:101:31:101:42 | unsafe_query | mysql.rs:101:31:101:51 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:101:31:101:42 | unsafe_query | mysql.rs:101:31:101:51 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
+| mysql.rs:101:31:101:42 | unsafe_query | mysql.rs:101:31:101:51 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:101:31:101:51 | unsafe_query.as_str() | mysql.rs:101:26:101:29 | prep | provenance | MaD:18 Sink:MaD:18 |
+| mysql.rs:101:31:101:51 | unsafe_query.as_str() [&ref] | mysql.rs:101:26:101:29 | prep | provenance | MaD:18 Sink:MaD:18 |
+| mysql.rs:106:26:106:37 | unsafe_query | mysql.rs:106:26:106:46 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:106:26:106:37 | unsafe_query | mysql.rs:106:26:106:46 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
+| mysql.rs:106:26:106:37 | unsafe_query | mysql.rs:106:26:106:46 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
+| mysql.rs:106:26:106:46 | unsafe_query.as_str() | mysql.rs:106:15:106:24 | query_drop | provenance | MaD:11 Sink:MaD:11 |
+| mysql.rs:106:26:106:46 | unsafe_query.as_str() [&ref] | mysql.rs:106:15:106:24 | query_drop | provenance | MaD:11 Sink:MaD:11 |
 | sqlx.rs:47:9:47:18 | arg_string | sqlx.rs:53:27:53:36 | arg_string | provenance |  |
-| sqlx.rs:47:22:47:35 | ...::args | sqlx.rs:47:22:47:37 | ...::args(...) [element] | provenance | Src:MaD:22  |
-| sqlx.rs:47:22:47:37 | ...::args(...) [element] | sqlx.rs:47:22:47:44 | ... .nth(...) [Some] | provenance | MaD:23 |
-| sqlx.rs:47:22:47:44 | ... .nth(...) [Some] | sqlx.rs:47:22:47:77 | ... .unwrap_or(...) | provenance | MaD:27 |
+| sqlx.rs:47:22:47:35 | ...::args | sqlx.rs:47:22:47:37 | ...::args(...) [element] | provenance | Src:MaD:24  |
+| sqlx.rs:47:22:47:37 | ...::args(...) [element] | sqlx.rs:47:22:47:44 | ... .nth(...) [Some] | provenance | MaD:25 |
+| sqlx.rs:47:22:47:44 | ... .nth(...) [Some] | sqlx.rs:47:22:47:77 | ... .unwrap_or(...) | provenance | MaD:29 |
 | sqlx.rs:47:22:47:77 | ... .unwrap_or(...) | sqlx.rs:47:9:47:18 | arg_string | provenance |  |
-| sqlx.rs:48:9:48:21 | remote_string | sqlx.rs:49:25:49:52 | remote_string.parse() [Ok] | provenance | MaD:31 |
-| sqlx.rs:48:9:48:21 | remote_string | sqlx.rs:49:25:49:52 | remote_string.parse() [Ok] | provenance | MaD:31 |
+| sqlx.rs:48:9:48:21 | remote_string | sqlx.rs:49:25:49:52 | remote_string.parse() [Ok] | provenance | MaD:33 |
+| sqlx.rs:48:9:48:21 | remote_string | sqlx.rs:49:25:49:52 | remote_string.parse() [Ok] | provenance | MaD:33 |
 | sqlx.rs:48:9:48:21 | remote_string | sqlx.rs:54:27:54:39 | remote_string | provenance |  |
 | sqlx.rs:48:9:48:21 | remote_string | sqlx.rs:55:84:55:96 | remote_string | provenance |  |
 | sqlx.rs:48:9:48:21 | remote_string | sqlx.rs:59:17:59:72 | MacroExpr | provenance |  |
-| sqlx.rs:48:25:48:46 | ...::get | sqlx.rs:48:25:48:69 | ...::get(...) [Ok] | provenance | Src:MaD:21  |
-| sqlx.rs:48:25:48:69 | ...::get(...) [Ok] | sqlx.rs:48:25:48:78 | ... .unwrap() | provenance | MaD:28 |
-| sqlx.rs:48:25:48:78 | ... .unwrap() | sqlx.rs:48:25:48:85 | ... .text() [Ok] | provenance | MaD:32 |
-| sqlx.rs:48:25:48:85 | ... .text() [Ok] | sqlx.rs:48:25:48:118 | ... .unwrap_or(...) | provenance | MaD:29 |
+| sqlx.rs:48:25:48:46 | ...::get | sqlx.rs:48:25:48:69 | ...::get(...) [Ok] | provenance | Src:MaD:23  |
+| sqlx.rs:48:25:48:69 | ...::get(...) [Ok] | sqlx.rs:48:25:48:78 | ... .unwrap() | provenance | MaD:30 |
+| sqlx.rs:48:25:48:78 | ... .unwrap() | sqlx.rs:48:25:48:85 | ... .text() [Ok] | provenance | MaD:34 |
+| sqlx.rs:48:25:48:85 | ... .text() [Ok] | sqlx.rs:48:25:48:118 | ... .unwrap_or(...) | provenance | MaD:31 |
 | sqlx.rs:48:25:48:118 | ... .unwrap_or(...) | sqlx.rs:48:9:48:21 | remote_string | provenance |  |
 | sqlx.rs:49:9:49:21 | remote_number | sqlx.rs:52:32:52:87 | MacroExpr | provenance |  |
-| sqlx.rs:49:25:49:52 | remote_string.parse() [Ok] | sqlx.rs:49:25:49:65 | ... .unwrap_or(...) | provenance | MaD:29 |
+| sqlx.rs:49:25:49:52 | remote_string.parse() [Ok] | sqlx.rs:49:25:49:65 | ... .unwrap_or(...) | provenance | MaD:31 |
 | sqlx.rs:49:25:49:65 | ... .unwrap_or(...) | sqlx.rs:49:9:49:21 | remote_number | provenance |  |
 | sqlx.rs:52:9:52:20 | safe_query_3 | sqlx.rs:77:25:77:36 | safe_query_3 | provenance |  |
-| sqlx.rs:52:9:52:20 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() | provenance | MaD:30 |
-| sqlx.rs:52:9:52:20 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() | provenance | MaD:26 |
-| sqlx.rs:52:9:52:20 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() | provenance | MaD:30 |
+| sqlx.rs:52:9:52:20 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() | provenance | MaD:32 |
+| sqlx.rs:52:9:52:20 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() | provenance | MaD:28 |
+| sqlx.rs:52:9:52:20 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() | provenance | MaD:32 |
 | sqlx.rs:52:32:52:87 | ...::format(...) | sqlx.rs:52:32:52:87 | { ... } | provenance |  |
 | sqlx.rs:52:32:52:87 | ...::must_use(...) | sqlx.rs:52:9:52:20 | safe_query_3 | provenance |  |
-| sqlx.rs:52:32:52:87 | MacroExpr | sqlx.rs:52:32:52:87 | ...::format(...) | provenance | MaD:33 |
-| sqlx.rs:52:32:52:87 | { ... } | sqlx.rs:52:32:52:87 | ...::must_use(...) | provenance | MaD:34 |
-| sqlx.rs:53:9:53:22 | unsafe_query_1 [&ref] | sqlx.rs:78:25:78:47 | unsafe_query_1.as_str() [&ref] | provenance | MaD:30 |
-| sqlx.rs:53:9:53:22 | unsafe_query_1 [&ref] | sqlx.rs:78:25:78:47 | unsafe_query_1.as_str() [&ref] | provenance | MaD:26 |
-| sqlx.rs:53:9:53:22 | unsafe_query_1 [&ref] | sqlx.rs:78:25:78:47 | unsafe_query_1.as_str() [&ref] | provenance | MaD:30 |
+| sqlx.rs:52:32:52:87 | MacroExpr | sqlx.rs:52:32:52:87 | ...::format(...) | provenance | MaD:35 |
+| sqlx.rs:52:32:52:87 | { ... } | sqlx.rs:52:32:52:87 | ...::must_use(...) | provenance | MaD:36 |
+| sqlx.rs:53:9:53:22 | unsafe_query_1 [&ref] | sqlx.rs:78:25:78:47 | unsafe_query_1.as_str() [&ref] | provenance | MaD:32 |
+| sqlx.rs:53:9:53:22 | unsafe_query_1 [&ref] | sqlx.rs:78:25:78:47 | unsafe_query_1.as_str() [&ref] | provenance | MaD:28 |
+| sqlx.rs:53:9:53:22 | unsafe_query_1 [&ref] | sqlx.rs:78:25:78:47 | unsafe_query_1.as_str() [&ref] | provenance | MaD:32 |
 | sqlx.rs:53:26:53:36 | &arg_string [&ref] | sqlx.rs:53:9:53:22 | unsafe_query_1 [&ref] | provenance |  |
 | sqlx.rs:53:27:53:36 | arg_string | sqlx.rs:53:26:53:36 | &arg_string [&ref] | provenance |  |
-| sqlx.rs:54:9:54:22 | unsafe_query_2 [&ref] | sqlx.rs:80:29:80:51 | unsafe_query_2.as_str() [&ref] | provenance | MaD:30 |
-| sqlx.rs:54:9:54:22 | unsafe_query_2 [&ref] | sqlx.rs:80:29:80:51 | unsafe_query_2.as_str() [&ref] | provenance | MaD:26 |
-| sqlx.rs:54:9:54:22 | unsafe_query_2 [&ref] | sqlx.rs:80:29:80:51 | unsafe_query_2.as_str() [&ref] | provenance | MaD:30 |
+| sqlx.rs:54:9:54:22 | unsafe_query_2 [&ref] | sqlx.rs:80:29:80:51 | unsafe_query_2.as_str() [&ref] | provenance | MaD:32 |
+| sqlx.rs:54:9:54:22 | unsafe_query_2 [&ref] | sqlx.rs:80:29:80:51 | unsafe_query_2.as_str() [&ref] | provenance | MaD:28 |
+| sqlx.rs:54:9:54:22 | unsafe_query_2 [&ref] | sqlx.rs:80:29:80:51 | unsafe_query_2.as_str() [&ref] | provenance | MaD:32 |
 | sqlx.rs:54:26:54:39 | &remote_string [&ref] | sqlx.rs:54:9:54:22 | unsafe_query_2 [&ref] | provenance |  |
 | sqlx.rs:54:27:54:39 | remote_string | sqlx.rs:54:26:54:39 | &remote_string [&ref] | provenance |  |
 | sqlx.rs:55:9:55:22 | unsafe_query_3 | sqlx.rs:81:29:81:42 | unsafe_query_3 | provenance |  |
-| sqlx.rs:55:9:55:22 | unsafe_query_3 | sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() | provenance | MaD:30 |
-| sqlx.rs:55:9:55:22 | unsafe_query_3 | sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() | provenance | MaD:26 |
-| sqlx.rs:55:9:55:22 | unsafe_query_3 | sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() | provenance | MaD:30 |
+| sqlx.rs:55:9:55:22 | unsafe_query_3 | sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() | provenance | MaD:32 |
+| sqlx.rs:55:9:55:22 | unsafe_query_3 | sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() | provenance | MaD:28 |
+| sqlx.rs:55:9:55:22 | unsafe_query_3 | sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() | provenance | MaD:32 |
 | sqlx.rs:55:26:55:96 | ... + ... | sqlx.rs:55:9:55:22 | unsafe_query_3 | provenance |  |
-| sqlx.rs:55:26:55:96 | ... + ... | sqlx.rs:55:26:55:102 | ... + ... | provenance | MaD:25 |
+| sqlx.rs:55:26:55:96 | ... + ... | sqlx.rs:55:26:55:102 | ... + ... | provenance | MaD:27 |
 | sqlx.rs:55:26:55:102 | ... + ... | sqlx.rs:55:9:55:22 | unsafe_query_3 | provenance |  |
-| sqlx.rs:55:83:55:96 | &remote_string [&ref] | sqlx.rs:55:26:55:96 | ... + ... | provenance | MaD:24 |
+| sqlx.rs:55:83:55:96 | &remote_string [&ref] | sqlx.rs:55:26:55:96 | ... + ... | provenance | MaD:26 |
 | sqlx.rs:55:84:55:96 | remote_string | sqlx.rs:55:83:55:96 | &remote_string [&ref] | provenance |  |
 | sqlx.rs:56:9:56:22 | unsafe_query_4 | sqlx.rs:82:29:82:42 | unsafe_query_4 | provenance |  |
-| sqlx.rs:56:9:56:22 | unsafe_query_4 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() | provenance | MaD:30 |
-| sqlx.rs:56:9:56:22 | unsafe_query_4 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() | provenance | MaD:26 |
-| sqlx.rs:56:9:56:22 | unsafe_query_4 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() | provenance | MaD:30 |
+| sqlx.rs:56:9:56:22 | unsafe_query_4 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() | provenance | MaD:32 |
+| sqlx.rs:56:9:56:22 | unsafe_query_4 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() | provenance | MaD:28 |
+| sqlx.rs:56:9:56:22 | unsafe_query_4 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() | provenance | MaD:32 |
 | sqlx.rs:59:17:59:72 | ...::format(...) | sqlx.rs:59:17:59:72 | { ... } | provenance |  |
 | sqlx.rs:59:17:59:72 | ...::must_use(...) | sqlx.rs:56:9:56:22 | unsafe_query_4 | provenance |  |
-| sqlx.rs:59:17:59:72 | MacroExpr | sqlx.rs:59:17:59:72 | ...::format(...) | provenance | MaD:33 |
-| sqlx.rs:59:17:59:72 | { ... } | sqlx.rs:59:17:59:72 | ...::must_use(...) | provenance | MaD:34 |
-| sqlx.rs:77:25:77:36 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() [&ref] | provenance | MaD:30 |
-| sqlx.rs:77:25:77:36 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() [&ref] | provenance | MaD:26 |
-| sqlx.rs:77:25:77:36 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() [&ref] | provenance | MaD:30 |
-| sqlx.rs:77:25:77:45 | safe_query_3.as_str() | sqlx.rs:77:13:77:23 | ...::query | provenance | MaD:18 Sink:MaD:18 |
-| sqlx.rs:77:25:77:45 | safe_query_3.as_str() [&ref] | sqlx.rs:77:13:77:23 | ...::query | provenance | MaD:18 Sink:MaD:18 |
-| sqlx.rs:78:25:78:47 | unsafe_query_1.as_str() [&ref] | sqlx.rs:78:13:78:23 | ...::query | provenance | MaD:18 Sink:MaD:18 |
-| sqlx.rs:80:29:80:51 | unsafe_query_2.as_str() [&ref] | sqlx.rs:80:17:80:27 | ...::query | provenance | MaD:18 Sink:MaD:18 |
-| sqlx.rs:81:29:81:42 | unsafe_query_3 | sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() [&ref] | provenance | MaD:30 |
-| sqlx.rs:81:29:81:42 | unsafe_query_3 | sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() [&ref] | provenance | MaD:26 |
-| sqlx.rs:81:29:81:42 | unsafe_query_3 | sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() [&ref] | provenance | MaD:30 |
-| sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() | sqlx.rs:81:17:81:27 | ...::query | provenance | MaD:18 Sink:MaD:18 |
-| sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() [&ref] | sqlx.rs:81:17:81:27 | ...::query | provenance | MaD:18 Sink:MaD:18 |
-| sqlx.rs:82:29:82:42 | unsafe_query_4 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() [&ref] | provenance | MaD:30 |
-| sqlx.rs:82:29:82:42 | unsafe_query_4 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() [&ref] | provenance | MaD:26 |
-| sqlx.rs:82:29:82:42 | unsafe_query_4 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() [&ref] | provenance | MaD:30 |
-| sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() | sqlx.rs:82:17:82:27 | ...::query | provenance | MaD:18 Sink:MaD:18 |
-| sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() [&ref] | sqlx.rs:82:17:82:27 | ...::query | provenance | MaD:18 Sink:MaD:18 |
+| sqlx.rs:59:17:59:72 | MacroExpr | sqlx.rs:59:17:59:72 | ...::format(...) | provenance | MaD:35 |
+| sqlx.rs:59:17:59:72 | { ... } | sqlx.rs:59:17:59:72 | ...::must_use(...) | provenance | MaD:36 |
+| sqlx.rs:77:25:77:36 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() [&ref] | provenance | MaD:32 |
+| sqlx.rs:77:25:77:36 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() [&ref] | provenance | MaD:28 |
+| sqlx.rs:77:25:77:36 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() [&ref] | provenance | MaD:32 |
+| sqlx.rs:77:25:77:45 | safe_query_3.as_str() | sqlx.rs:77:13:77:23 | ...::query | provenance | MaD:20 Sink:MaD:20 |
+| sqlx.rs:77:25:77:45 | safe_query_3.as_str() [&ref] | sqlx.rs:77:13:77:23 | ...::query | provenance | MaD:20 Sink:MaD:20 |
+| sqlx.rs:78:25:78:47 | unsafe_query_1.as_str() [&ref] | sqlx.rs:78:13:78:23 | ...::query | provenance | MaD:20 Sink:MaD:20 |
+| sqlx.rs:80:29:80:51 | unsafe_query_2.as_str() [&ref] | sqlx.rs:80:17:80:27 | ...::query | provenance | MaD:20 Sink:MaD:20 |
+| sqlx.rs:81:29:81:42 | unsafe_query_3 | sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() [&ref] | provenance | MaD:32 |
+| sqlx.rs:81:29:81:42 | unsafe_query_3 | sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() [&ref] | provenance | MaD:28 |
+| sqlx.rs:81:29:81:42 | unsafe_query_3 | sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() [&ref] | provenance | MaD:32 |
+| sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() | sqlx.rs:81:17:81:27 | ...::query | provenance | MaD:20 Sink:MaD:20 |
+| sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() [&ref] | sqlx.rs:81:17:81:27 | ...::query | provenance | MaD:20 Sink:MaD:20 |
+| sqlx.rs:82:29:82:42 | unsafe_query_4 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() [&ref] | provenance | MaD:32 |
+| sqlx.rs:82:29:82:42 | unsafe_query_4 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() [&ref] | provenance | MaD:28 |
+| sqlx.rs:82:29:82:42 | unsafe_query_4 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() [&ref] | provenance | MaD:32 |
+| sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() | sqlx.rs:82:17:82:27 | ...::query | provenance | MaD:20 Sink:MaD:20 |
+| sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() [&ref] | sqlx.rs:82:17:82:27 | ...::query | provenance | MaD:20 Sink:MaD:20 |
 | sqlx.rs:100:9:100:21 | remote_string | sqlx.rs:102:84:102:96 | remote_string | provenance |  |
-| sqlx.rs:100:25:100:46 | ...::get | sqlx.rs:100:25:100:69 | ...::get(...) [Ok] | provenance | Src:MaD:21  |
-| sqlx.rs:100:25:100:69 | ...::get(...) [Ok] | sqlx.rs:100:25:100:78 | ... .unwrap() | provenance | MaD:28 |
-| sqlx.rs:100:25:100:78 | ... .unwrap() | sqlx.rs:100:25:100:85 | ... .text() [Ok] | provenance | MaD:32 |
-| sqlx.rs:100:25:100:85 | ... .text() [Ok] | sqlx.rs:100:25:100:118 | ... .unwrap_or(...) | provenance | MaD:29 |
+| sqlx.rs:100:25:100:46 | ...::get | sqlx.rs:100:25:100:69 | ...::get(...) [Ok] | provenance | Src:MaD:23  |
+| sqlx.rs:100:25:100:69 | ...::get(...) [Ok] | sqlx.rs:100:25:100:78 | ... .unwrap() | provenance | MaD:30 |
+| sqlx.rs:100:25:100:78 | ... .unwrap() | sqlx.rs:100:25:100:85 | ... .text() [Ok] | provenance | MaD:34 |
+| sqlx.rs:100:25:100:85 | ... .text() [Ok] | sqlx.rs:100:25:100:118 | ... .unwrap_or(...) | provenance | MaD:31 |
 | sqlx.rs:100:25:100:118 | ... .unwrap_or(...) | sqlx.rs:100:9:100:21 | remote_string | provenance |  |
 | sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:113:31:113:44 | unsafe_query_1 | provenance |  |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() | provenance | MaD:30 |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() | provenance | MaD:26 |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() | provenance | MaD:30 |
+| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() | provenance | MaD:32 |
+| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() | provenance | MaD:28 |
+| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() | provenance | MaD:32 |
 | sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:120:29:120:42 | unsafe_query_1 | provenance |  |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() | provenance | MaD:30 |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() | provenance | MaD:26 |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() | provenance | MaD:30 |
+| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() | provenance | MaD:32 |
+| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() | provenance | MaD:28 |
+| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() | provenance | MaD:32 |
 | sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:127:29:127:42 | unsafe_query_1 | provenance |  |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() | provenance | MaD:30 |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() | provenance | MaD:26 |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() | provenance | MaD:30 |
+| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() | provenance | MaD:32 |
+| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() | provenance | MaD:28 |
+| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() | provenance | MaD:32 |
 | sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:136:55:136:68 | unsafe_query_1 | provenance |  |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() | provenance | MaD:30 |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() | provenance | MaD:26 |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() | provenance | MaD:30 |
+| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() | provenance | MaD:32 |
+| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() | provenance | MaD:28 |
+| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() | provenance | MaD:32 |
 | sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:145:55:145:68 | unsafe_query_1 | provenance |  |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() | provenance | MaD:30 |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() | provenance | MaD:26 |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() | provenance | MaD:30 |
+| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() | provenance | MaD:32 |
+| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() | provenance | MaD:28 |
+| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() | provenance | MaD:32 |
 | sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:153:29:153:42 | unsafe_query_1 | provenance |  |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() | provenance | MaD:30 |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() | provenance | MaD:26 |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() | provenance | MaD:30 |
+| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() | provenance | MaD:32 |
+| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() | provenance | MaD:28 |
+| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() | provenance | MaD:32 |
 | sqlx.rs:102:26:102:96 | ... + ... | sqlx.rs:102:9:102:22 | unsafe_query_1 | provenance |  |
-| sqlx.rs:102:26:102:96 | ... + ... | sqlx.rs:102:26:102:102 | ... + ... | provenance | MaD:25 |
+| sqlx.rs:102:26:102:96 | ... + ... | sqlx.rs:102:26:102:102 | ... + ... | provenance | MaD:27 |
 | sqlx.rs:102:26:102:102 | ... + ... | sqlx.rs:102:9:102:22 | unsafe_query_1 | provenance |  |
-| sqlx.rs:102:83:102:96 | &remote_string [&ref] | sqlx.rs:102:26:102:96 | ... + ... | provenance | MaD:24 |
+| sqlx.rs:102:83:102:96 | &remote_string [&ref] | sqlx.rs:102:26:102:96 | ... + ... | provenance | MaD:26 |
 | sqlx.rs:102:84:102:96 | remote_string | sqlx.rs:102:83:102:96 | &remote_string [&ref] | provenance |  |
-| sqlx.rs:113:31:113:44 | unsafe_query_1 | sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() [&ref] | provenance | MaD:30 |
-| sqlx.rs:113:31:113:44 | unsafe_query_1 | sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() [&ref] | provenance | MaD:26 |
-| sqlx.rs:113:31:113:44 | unsafe_query_1 | sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() [&ref] | provenance | MaD:30 |
-| sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() | sqlx.rs:113:17:113:29 | ...::raw_sql | provenance | MaD:20 Sink:MaD:20 |
-| sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() [&ref] | sqlx.rs:113:17:113:29 | ...::raw_sql | provenance | MaD:20 Sink:MaD:20 |
-| sqlx.rs:120:29:120:42 | unsafe_query_1 | sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:30 |
-| sqlx.rs:120:29:120:42 | unsafe_query_1 | sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:26 |
-| sqlx.rs:120:29:120:42 | unsafe_query_1 | sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:30 |
-| sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() | sqlx.rs:120:17:120:27 | ...::query | provenance | MaD:18 Sink:MaD:18 |
-| sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() [&ref] | sqlx.rs:120:17:120:27 | ...::query | provenance | MaD:18 Sink:MaD:18 |
-| sqlx.rs:127:29:127:42 | unsafe_query_1 | sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:30 |
-| sqlx.rs:127:29:127:42 | unsafe_query_1 | sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:26 |
-| sqlx.rs:127:29:127:42 | unsafe_query_1 | sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:30 |
-| sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() | sqlx.rs:127:17:127:27 | ...::query | provenance | MaD:18 Sink:MaD:18 |
-| sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() [&ref] | sqlx.rs:127:17:127:27 | ...::query | provenance | MaD:18 Sink:MaD:18 |
-| sqlx.rs:136:55:136:68 | unsafe_query_1 | sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() [&ref] | provenance | MaD:30 |
-| sqlx.rs:136:55:136:68 | unsafe_query_1 | sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() [&ref] | provenance | MaD:26 |
-| sqlx.rs:136:55:136:68 | unsafe_query_1 | sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() [&ref] | provenance | MaD:30 |
-| sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() | sqlx.rs:136:40:136:53 | ...::query_as | provenance | MaD:19 Sink:MaD:19 |
-| sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() [&ref] | sqlx.rs:136:40:136:53 | ...::query_as | provenance | MaD:19 Sink:MaD:19 |
-| sqlx.rs:145:55:145:68 | unsafe_query_1 | sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() [&ref] | provenance | MaD:30 |
-| sqlx.rs:145:55:145:68 | unsafe_query_1 | sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() [&ref] | provenance | MaD:26 |
-| sqlx.rs:145:55:145:68 | unsafe_query_1 | sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() [&ref] | provenance | MaD:30 |
-| sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() | sqlx.rs:145:40:145:53 | ...::query_as | provenance | MaD:19 Sink:MaD:19 |
-| sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() [&ref] | sqlx.rs:145:40:145:53 | ...::query_as | provenance | MaD:19 Sink:MaD:19 |
-| sqlx.rs:153:29:153:42 | unsafe_query_1 | sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:30 |
-| sqlx.rs:153:29:153:42 | unsafe_query_1 | sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:26 |
-| sqlx.rs:153:29:153:42 | unsafe_query_1 | sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:30 |
-| sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() | sqlx.rs:153:17:153:27 | ...::query | provenance | MaD:18 Sink:MaD:18 |
-| sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() [&ref] | sqlx.rs:153:17:153:27 | ...::query | provenance | MaD:18 Sink:MaD:18 |
+| sqlx.rs:113:31:113:44 | unsafe_query_1 | sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() [&ref] | provenance | MaD:32 |
+| sqlx.rs:113:31:113:44 | unsafe_query_1 | sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() [&ref] | provenance | MaD:28 |
+| sqlx.rs:113:31:113:44 | unsafe_query_1 | sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() [&ref] | provenance | MaD:32 |
+| sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() | sqlx.rs:113:17:113:29 | ...::raw_sql | provenance | MaD:22 Sink:MaD:22 |
+| sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() [&ref] | sqlx.rs:113:17:113:29 | ...::raw_sql | provenance | MaD:22 Sink:MaD:22 |
+| sqlx.rs:120:29:120:42 | unsafe_query_1 | sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:32 |
+| sqlx.rs:120:29:120:42 | unsafe_query_1 | sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:28 |
+| sqlx.rs:120:29:120:42 | unsafe_query_1 | sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:32 |
+| sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() | sqlx.rs:120:17:120:27 | ...::query | provenance | MaD:20 Sink:MaD:20 |
+| sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() [&ref] | sqlx.rs:120:17:120:27 | ...::query | provenance | MaD:20 Sink:MaD:20 |
+| sqlx.rs:127:29:127:42 | unsafe_query_1 | sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:32 |
+| sqlx.rs:127:29:127:42 | unsafe_query_1 | sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:28 |
+| sqlx.rs:127:29:127:42 | unsafe_query_1 | sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:32 |
+| sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() | sqlx.rs:127:17:127:27 | ...::query | provenance | MaD:20 Sink:MaD:20 |
+| sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() [&ref] | sqlx.rs:127:17:127:27 | ...::query | provenance | MaD:20 Sink:MaD:20 |
+| sqlx.rs:136:55:136:68 | unsafe_query_1 | sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() [&ref] | provenance | MaD:32 |
+| sqlx.rs:136:55:136:68 | unsafe_query_1 | sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() [&ref] | provenance | MaD:28 |
+| sqlx.rs:136:55:136:68 | unsafe_query_1 | sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() [&ref] | provenance | MaD:32 |
+| sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() | sqlx.rs:136:40:136:53 | ...::query_as | provenance | MaD:21 Sink:MaD:21 |
+| sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() [&ref] | sqlx.rs:136:40:136:53 | ...::query_as | provenance | MaD:21 Sink:MaD:21 |
+| sqlx.rs:145:55:145:68 | unsafe_query_1 | sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() [&ref] | provenance | MaD:32 |
+| sqlx.rs:145:55:145:68 | unsafe_query_1 | sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() [&ref] | provenance | MaD:28 |
+| sqlx.rs:145:55:145:68 | unsafe_query_1 | sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() [&ref] | provenance | MaD:32 |
+| sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() | sqlx.rs:145:40:145:53 | ...::query_as | provenance | MaD:21 Sink:MaD:21 |
+| sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() [&ref] | sqlx.rs:145:40:145:53 | ...::query_as | provenance | MaD:21 Sink:MaD:21 |
+| sqlx.rs:153:29:153:42 | unsafe_query_1 | sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:32 |
+| sqlx.rs:153:29:153:42 | unsafe_query_1 | sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:28 |
+| sqlx.rs:153:29:153:42 | unsafe_query_1 | sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:32 |
+| sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() | sqlx.rs:153:17:153:27 | ...::query | provenance | MaD:20 Sink:MaD:20 |
+| sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() [&ref] | sqlx.rs:153:17:153:27 | ...::query | provenance | MaD:20 Sink:MaD:20 |
 | sqlx.rs:173:9:173:21 | remote_string | sqlx.rs:175:84:175:96 | remote_string | provenance |  |
-| sqlx.rs:173:25:173:46 | ...::get | sqlx.rs:173:25:173:69 | ...::get(...) [Ok] | provenance | Src:MaD:21  |
-| sqlx.rs:173:25:173:69 | ...::get(...) [Ok] | sqlx.rs:173:25:173:78 | ... .unwrap() | provenance | MaD:28 |
-| sqlx.rs:173:25:173:78 | ... .unwrap() | sqlx.rs:173:25:173:85 | ... .text() [Ok] | provenance | MaD:32 |
-| sqlx.rs:173:25:173:85 | ... .text() [Ok] | sqlx.rs:173:25:173:118 | ... .unwrap_or(...) | provenance | MaD:29 |
+| sqlx.rs:173:25:173:46 | ...::get | sqlx.rs:173:25:173:69 | ...::get(...) [Ok] | provenance | Src:MaD:23  |
+| sqlx.rs:173:25:173:69 | ...::get(...) [Ok] | sqlx.rs:173:25:173:78 | ... .unwrap() | provenance | MaD:30 |
+| sqlx.rs:173:25:173:78 | ... .unwrap() | sqlx.rs:173:25:173:85 | ... .text() [Ok] | provenance | MaD:34 |
+| sqlx.rs:173:25:173:85 | ... .text() [Ok] | sqlx.rs:173:25:173:118 | ... .unwrap_or(...) | provenance | MaD:31 |
 | sqlx.rs:173:25:173:118 | ... .unwrap_or(...) | sqlx.rs:173:9:173:21 | remote_string | provenance |  |
 | sqlx.rs:175:9:175:22 | unsafe_query_1 | sqlx.rs:188:29:188:42 | unsafe_query_1 | provenance |  |
-| sqlx.rs:175:9:175:22 | unsafe_query_1 | sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() | provenance | MaD:30 |
-| sqlx.rs:175:9:175:22 | unsafe_query_1 | sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() | provenance | MaD:26 |
-| sqlx.rs:175:9:175:22 | unsafe_query_1 | sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() | provenance | MaD:30 |
+| sqlx.rs:175:9:175:22 | unsafe_query_1 | sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() | provenance | MaD:32 |
+| sqlx.rs:175:9:175:22 | unsafe_query_1 | sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() | provenance | MaD:28 |
+| sqlx.rs:175:9:175:22 | unsafe_query_1 | sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() | provenance | MaD:32 |
 | sqlx.rs:175:26:175:96 | ... + ... | sqlx.rs:175:9:175:22 | unsafe_query_1 | provenance |  |
-| sqlx.rs:175:26:175:96 | ... + ... | sqlx.rs:175:26:175:102 | ... + ... | provenance | MaD:25 |
+| sqlx.rs:175:26:175:96 | ... + ... | sqlx.rs:175:26:175:102 | ... + ... | provenance | MaD:27 |
 | sqlx.rs:175:26:175:102 | ... + ... | sqlx.rs:175:9:175:22 | unsafe_query_1 | provenance |  |
-| sqlx.rs:175:83:175:96 | &remote_string [&ref] | sqlx.rs:175:26:175:96 | ... + ... | provenance | MaD:24 |
+| sqlx.rs:175:83:175:96 | &remote_string [&ref] | sqlx.rs:175:26:175:96 | ... + ... | provenance | MaD:26 |
 | sqlx.rs:175:84:175:96 | remote_string | sqlx.rs:175:83:175:96 | &remote_string [&ref] | provenance |  |
-| sqlx.rs:188:29:188:42 | unsafe_query_1 | sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:30 |
-| sqlx.rs:188:29:188:42 | unsafe_query_1 | sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:26 |
-| sqlx.rs:188:29:188:42 | unsafe_query_1 | sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:30 |
-| sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() | sqlx.rs:188:17:188:27 | ...::query | provenance | MaD:18 Sink:MaD:18 |
-| sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() [&ref] | sqlx.rs:188:17:188:27 | ...::query | provenance | MaD:18 Sink:MaD:18 |
+| sqlx.rs:188:29:188:42 | unsafe_query_1 | sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:32 |
+| sqlx.rs:188:29:188:42 | unsafe_query_1 | sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:28 |
+| sqlx.rs:188:29:188:42 | unsafe_query_1 | sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:32 |
+| sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() | sqlx.rs:188:17:188:27 | ...::query | provenance | MaD:20 Sink:MaD:20 |
+| sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() [&ref] | sqlx.rs:188:17:188:27 | ...::query | provenance | MaD:20 Sink:MaD:20 |
 models
 | 1 | Sink: <_ as mysql::conn::queryable::Queryable>::query; Argument[0]; sql-injection |
 | 2 | Sink: <_ as mysql::conn::queryable::Queryable>::query_drop; Argument[0]; sql-injection |
@@ -411,25 +431,27 @@ models
 | 13 | Sink: <_ as mysql_async::queryable::Queryable>::query_fold; Argument[0]; sql-injection |
 | 14 | Sink: <_ as mysql_async::queryable::Queryable>::query_map; Argument[0]; sql-injection |
 | 15 | Sink: <_ as mysql_async::queryable::Queryable>::query_stream; Argument[0]; sql-injection |
-| 16 | Sink: <mysql::conn::pool::PooledConn as mysql::conn::queryable::Queryable>::query_iter; Argument[0]; sql-injection |
-| 17 | Sink: <mysql_async::conn::Conn as mysql_async::queryable::Queryable>::query_iter; Argument[0]; sql-injection |
-| 18 | Sink: sqlx_core::query::query; Argument[0]; sql-injection |
-| 19 | Sink: sqlx_core::query_as::query_as; Argument[0]; sql-injection |
-| 20 | Sink: sqlx_core::raw_sql::raw_sql; Argument[0]; sql-injection |
-| 21 | Source: reqwest::blocking::get; ReturnValue.Field[core::result::Result::Ok(0)]; remote |
-| 22 | Source: std::env::args; ReturnValue.Element; commandargs |
-| 23 | Summary: <_ as core::iter::traits::iterator::Iterator>::nth; Argument[self].Element; ReturnValue.Field[core::option::Option::Some(0)]; value |
-| 24 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[0].Reference; ReturnValue; taint |
-| 25 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[self]; ReturnValue; value |
-| 26 | Summary: <alloc::string::String>::as_str; Argument[self]; ReturnValue; value |
-| 27 | Summary: <core::option::Option>::unwrap_or; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
-| 28 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
-| 29 | Summary: <core::result::Result>::unwrap_or; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
-| 30 | Summary: <core::str>::as_str; Argument[self]; ReturnValue; value |
-| 31 | Summary: <core::str>::parse; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
-| 32 | Summary: <reqwest::blocking::response::Response>::text; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
-| 33 | Summary: alloc::fmt::format; Argument[0]; ReturnValue; taint |
-| 34 | Summary: core::hint::must_use; Argument[0]; ReturnValue; value |
+| 16 | Sink: <mysql::conn::pool::PooledConn as mysql::conn::queryable::Queryable>::prep; Argument[0]; sql-injection |
+| 17 | Sink: <mysql::conn::pool::PooledConn as mysql::conn::queryable::Queryable>::query_iter; Argument[0]; sql-injection |
+| 18 | Sink: <mysql_async::conn::Conn as mysql_async::queryable::Queryable>::prep; Argument[0]; sql-injection |
+| 19 | Sink: <mysql_async::conn::Conn as mysql_async::queryable::Queryable>::query_iter; Argument[0]; sql-injection |
+| 20 | Sink: sqlx_core::query::query; Argument[0]; sql-injection |
+| 21 | Sink: sqlx_core::query_as::query_as; Argument[0]; sql-injection |
+| 22 | Sink: sqlx_core::raw_sql::raw_sql; Argument[0]; sql-injection |
+| 23 | Source: reqwest::blocking::get; ReturnValue.Field[core::result::Result::Ok(0)]; remote |
+| 24 | Source: std::env::args; ReturnValue.Element; commandargs |
+| 25 | Summary: <_ as core::iter::traits::iterator::Iterator>::nth; Argument[self].Element; ReturnValue.Field[core::option::Option::Some(0)]; value |
+| 26 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[0].Reference; ReturnValue; taint |
+| 27 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[self]; ReturnValue; value |
+| 28 | Summary: <alloc::string::String>::as_str; Argument[self]; ReturnValue; value |
+| 29 | Summary: <core::option::Option>::unwrap_or; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
+| 30 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+| 31 | Summary: <core::result::Result>::unwrap_or; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+| 32 | Summary: <core::str>::as_str; Argument[self]; ReturnValue; value |
+| 33 | Summary: <core::str>::parse; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
+| 34 | Summary: <reqwest::blocking::response::Response>::text; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
+| 35 | Summary: alloc::fmt::format; Argument[0]; ReturnValue; taint |
+| 36 | Summary: core::hint::must_use; Argument[0]; ReturnValue; value |
 nodes
 | mysql.rs:13:13:13:29 | mut remote_string | semmle.label | mut remote_string |
 | mysql.rs:13:33:13:54 | ...::get | semmle.label | ...::get |
@@ -488,53 +510,61 @@ nodes
 | mysql.rs:32:40:32:51 | unsafe_query | semmle.label | unsafe_query |
 | mysql.rs:32:40:32:60 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
 | mysql.rs:32:40:32:60 | unsafe_query.as_str() [&ref] | semmle.label | unsafe_query.as_str() [&ref] |
-| mysql.rs:50:15:50:24 | query_drop | semmle.label | query_drop |
-| mysql.rs:50:26:50:37 | unsafe_query | semmle.label | unsafe_query |
-| mysql.rs:50:26:50:46 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
-| mysql.rs:50:26:50:46 | unsafe_query.as_str() [&ref] | semmle.label | unsafe_query.as_str() [&ref] |
-| mysql.rs:68:13:68:29 | mut remote_string | semmle.label | mut remote_string |
-| mysql.rs:68:33:68:54 | ...::get | semmle.label | ...::get |
-| mysql.rs:68:33:68:77 | ...::get(...) [Ok] | semmle.label | ...::get(...) [Ok] |
-| mysql.rs:68:33:68:86 | ... .unwrap() | semmle.label | ... .unwrap() |
-| mysql.rs:68:33:68:93 | ... .text() [Ok] | semmle.label | ... .text() [Ok] |
-| mysql.rs:68:33:68:121 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
-| mysql.rs:70:13:70:24 | unsafe_query | semmle.label | unsafe_query |
-| mysql.rs:70:28:70:98 | ... + ... | semmle.label | ... + ... |
-| mysql.rs:70:28:70:104 | ... + ... | semmle.label | ... + ... |
-| mysql.rs:70:85:70:98 | &remote_string [&ref] | semmle.label | &remote_string [&ref] |
-| mysql.rs:70:86:70:98 | remote_string | semmle.label | remote_string |
-| mysql.rs:77:33:77:37 | query | semmle.label | query |
-| mysql.rs:77:39:77:50 | unsafe_query | semmle.label | unsafe_query |
-| mysql.rs:77:39:77:59 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
-| mysql.rs:77:39:77:59 | unsafe_query.as_str() [&ref] | semmle.label | unsafe_query.as_str() [&ref] |
-| mysql.rs:78:14:78:23 | query_drop | semmle.label | query_drop |
-| mysql.rs:78:25:78:36 | unsafe_query | semmle.label | unsafe_query |
-| mysql.rs:78:25:78:45 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
-| mysql.rs:78:25:78:45 | unsafe_query.as_str() [&ref] | semmle.label | unsafe_query.as_str() [&ref] |
-| mysql.rs:79:36:79:46 | query_first | semmle.label | query_first |
-| mysql.rs:79:48:79:59 | unsafe_query | semmle.label | unsafe_query |
-| mysql.rs:79:48:79:68 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
-| mysql.rs:79:48:79:68 | unsafe_query.as_str() [&ref] | semmle.label | unsafe_query.as_str() [&ref] |
-| mysql.rs:80:22:80:31 | query_fold | semmle.label | query_fold |
-| mysql.rs:80:33:80:44 | unsafe_query | semmle.label | unsafe_query |
-| mysql.rs:80:33:80:53 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
-| mysql.rs:80:33:80:53 | unsafe_query.as_str() [&ref] | semmle.label | unsafe_query.as_str() [&ref] |
-| mysql.rs:81:22:81:31 | query_iter | semmle.label | query_iter |
-| mysql.rs:81:33:81:44 | unsafe_query | semmle.label | unsafe_query |
-| mysql.rs:81:33:81:53 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
-| mysql.rs:81:33:81:53 | unsafe_query.as_str() [&ref] | semmle.label | unsafe_query.as_str() [&ref] |
-| mysql.rs:82:22:82:33 | query_stream | semmle.label | query_stream |
-| mysql.rs:82:48:82:59 | unsafe_query | semmle.label | unsafe_query |
-| mysql.rs:82:48:82:68 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
-| mysql.rs:82:48:82:68 | unsafe_query.as_str() [&ref] | semmle.label | unsafe_query.as_str() [&ref] |
-| mysql.rs:83:22:83:30 | query_map | semmle.label | query_map |
-| mysql.rs:83:32:83:43 | unsafe_query | semmle.label | unsafe_query |
-| mysql.rs:83:32:83:52 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
-| mysql.rs:83:32:83:52 | unsafe_query.as_str() [&ref] | semmle.label | unsafe_query.as_str() [&ref] |
-| mysql.rs:98:15:98:24 | query_drop | semmle.label | query_drop |
-| mysql.rs:98:26:98:37 | unsafe_query | semmle.label | unsafe_query |
-| mysql.rs:98:26:98:46 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
-| mysql.rs:98:26:98:46 | unsafe_query.as_str() [&ref] | semmle.label | unsafe_query.as_str() [&ref] |
+| mysql.rs:49:26:49:29 | prep | semmle.label | prep |
+| mysql.rs:49:31:49:42 | unsafe_query | semmle.label | unsafe_query |
+| mysql.rs:49:31:49:51 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
+| mysql.rs:49:31:49:51 | unsafe_query.as_str() [&ref] | semmle.label | unsafe_query.as_str() [&ref] |
+| mysql.rs:54:15:54:24 | query_drop | semmle.label | query_drop |
+| mysql.rs:54:26:54:37 | unsafe_query | semmle.label | unsafe_query |
+| mysql.rs:54:26:54:46 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
+| mysql.rs:54:26:54:46 | unsafe_query.as_str() [&ref] | semmle.label | unsafe_query.as_str() [&ref] |
+| mysql.rs:72:13:72:29 | mut remote_string | semmle.label | mut remote_string |
+| mysql.rs:72:33:72:54 | ...::get | semmle.label | ...::get |
+| mysql.rs:72:33:72:77 | ...::get(...) [Ok] | semmle.label | ...::get(...) [Ok] |
+| mysql.rs:72:33:72:86 | ... .unwrap() | semmle.label | ... .unwrap() |
+| mysql.rs:72:33:72:93 | ... .text() [Ok] | semmle.label | ... .text() [Ok] |
+| mysql.rs:72:33:72:121 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
+| mysql.rs:74:13:74:24 | unsafe_query | semmle.label | unsafe_query |
+| mysql.rs:74:28:74:98 | ... + ... | semmle.label | ... + ... |
+| mysql.rs:74:28:74:104 | ... + ... | semmle.label | ... + ... |
+| mysql.rs:74:85:74:98 | &remote_string [&ref] | semmle.label | &remote_string [&ref] |
+| mysql.rs:74:86:74:98 | remote_string | semmle.label | remote_string |
+| mysql.rs:81:33:81:37 | query | semmle.label | query |
+| mysql.rs:81:39:81:50 | unsafe_query | semmle.label | unsafe_query |
+| mysql.rs:81:39:81:59 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
+| mysql.rs:81:39:81:59 | unsafe_query.as_str() [&ref] | semmle.label | unsafe_query.as_str() [&ref] |
+| mysql.rs:82:14:82:23 | query_drop | semmle.label | query_drop |
+| mysql.rs:82:25:82:36 | unsafe_query | semmle.label | unsafe_query |
+| mysql.rs:82:25:82:45 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
+| mysql.rs:82:25:82:45 | unsafe_query.as_str() [&ref] | semmle.label | unsafe_query.as_str() [&ref] |
+| mysql.rs:83:36:83:46 | query_first | semmle.label | query_first |
+| mysql.rs:83:48:83:59 | unsafe_query | semmle.label | unsafe_query |
+| mysql.rs:83:48:83:68 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
+| mysql.rs:83:48:83:68 | unsafe_query.as_str() [&ref] | semmle.label | unsafe_query.as_str() [&ref] |
+| mysql.rs:84:22:84:31 | query_fold | semmle.label | query_fold |
+| mysql.rs:84:33:84:44 | unsafe_query | semmle.label | unsafe_query |
+| mysql.rs:84:33:84:53 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
+| mysql.rs:84:33:84:53 | unsafe_query.as_str() [&ref] | semmle.label | unsafe_query.as_str() [&ref] |
+| mysql.rs:85:22:85:31 | query_iter | semmle.label | query_iter |
+| mysql.rs:85:33:85:44 | unsafe_query | semmle.label | unsafe_query |
+| mysql.rs:85:33:85:53 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
+| mysql.rs:85:33:85:53 | unsafe_query.as_str() [&ref] | semmle.label | unsafe_query.as_str() [&ref] |
+| mysql.rs:86:22:86:33 | query_stream | semmle.label | query_stream |
+| mysql.rs:86:48:86:59 | unsafe_query | semmle.label | unsafe_query |
+| mysql.rs:86:48:86:68 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
+| mysql.rs:86:48:86:68 | unsafe_query.as_str() [&ref] | semmle.label | unsafe_query.as_str() [&ref] |
+| mysql.rs:87:22:87:30 | query_map | semmle.label | query_map |
+| mysql.rs:87:32:87:43 | unsafe_query | semmle.label | unsafe_query |
+| mysql.rs:87:32:87:52 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
+| mysql.rs:87:32:87:52 | unsafe_query.as_str() [&ref] | semmle.label | unsafe_query.as_str() [&ref] |
+| mysql.rs:101:26:101:29 | prep | semmle.label | prep |
+| mysql.rs:101:31:101:42 | unsafe_query | semmle.label | unsafe_query |
+| mysql.rs:101:31:101:51 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
+| mysql.rs:101:31:101:51 | unsafe_query.as_str() [&ref] | semmle.label | unsafe_query.as_str() [&ref] |
+| mysql.rs:106:15:106:24 | query_drop | semmle.label | query_drop |
+| mysql.rs:106:26:106:37 | unsafe_query | semmle.label | unsafe_query |
+| mysql.rs:106:26:106:46 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
+| mysql.rs:106:26:106:46 | unsafe_query.as_str() [&ref] | semmle.label | unsafe_query.as_str() [&ref] |
 | sqlx.rs:47:9:47:18 | arg_string | semmle.label | arg_string |
 | sqlx.rs:47:22:47:35 | ...::args | semmle.label | ...::args |
 | sqlx.rs:47:22:47:37 | ...::args(...) [element] | semmle.label | ...::args(...) [element] |
