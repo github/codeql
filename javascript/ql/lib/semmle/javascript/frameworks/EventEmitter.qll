@@ -97,6 +97,7 @@ module EventRegistration {
   /**
    * A registration of an event handler on an EventEmitter.
    */
+  overlay[global]
   abstract class Range extends DataFlow::Node {
     EventEmitter::Range emitter;
 
@@ -151,6 +152,7 @@ module EventDispatch {
   /**
    * A dispatch of an event on an EventEmitter.
    */
+  overlay[global]
   abstract class Range extends DataFlow::Node {
     EventEmitter::Range emitter;
 
