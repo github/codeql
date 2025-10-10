@@ -764,6 +764,8 @@ module API {
         nd = DataFlow::valueNode(any(ExportDefaultDeclaration decl).getOperand())
         or
         nd = any(ExportNamedDeclaration decl).getOperand().(DeclStmt).getADecl().getInit().flow()
+        or
+        nd = any(ExportNamespaceSpecifier spec | exists(spec.getExportedName())).flow()
       } or
       MkUse(DataFlow::Node nd) { nd instanceof DataFlow::SourceNode } or
       /** A use of a TypeScript type. */
