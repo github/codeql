@@ -784,6 +784,10 @@ module API {
 
     private predicate hasSemantics(DataFlow::Node nd) { not nd.getTopLevel().isExterns() }
 
+    bindingset[nd]
+    pragma[inline_late]
+    private predicate hasSemanticsLate(DataFlow::Node nd) { hasSemantics(nd) }
+
     private signature module StageInputSig {
       /** Holds if `node` should be seen as a use-node root, in addition to module imports (which are the usual roots). */
       predicate isAdditionalUseRoot(Node node);
@@ -1272,8 +1276,12 @@ module API {
         nd = MkUse(ref)
         or
         S::isAdditionalUseRoot(nd) and
-        nd = MkUse(ref)
+        nd = mkUseLate(ref)
       }
+
+      bindingset[node]
+      pragma[inline_late]
+      private TApiNode mkUseLate(DataFlow::Node node) { result = MkUse(node) }
 
       private import semmle.javascript.dataflow.TypeTracking
 
@@ -1365,6 +1373,13 @@ module API {
         result = trackUseNode(nd, false, 0, "")
       }
 
+      /**
+       * Gets a node whose forward tracking reaches `nd` in some state (e.g. possibly inside a content at this point).
+       */
+      DataFlow::SourceNode trackUseNodeAnyState(DataFlow::SourceNode nd) {
+        result = trackUseNode(nd, _, _, _, _)
+      }
+
       private DataFlow::SourceNode trackDefNode(DataFlow::Node nd, DataFlow::TypeBackTracker t) {
         t.start() and
         rhs(_, nd) and
@@ -1414,6 +1429,11 @@ module API {
       DataFlow::SourceNode trackDefNode(DataFlow::Node nd) {
         result = trackDefNode(nd, DataFlow::TypeBackTracker::end())
       }
+
+      /**
+       * Gets a node reached by the backwards tracking of `nd` in some state (e.g. possibly inside a content at this point).
+       */
+      DataFlow::SourceNode trackDefNodeAnyState(DataFlow::Node nd) { result = trackDefNode(nd, _) }
 
       private DataFlow::SourceNode awaited(DataFlow::InvokeNode call, DataFlow::TypeTracker t) {
         t.startInPromise() and
@@ -1514,36 +1534,154 @@ module API {
       pragma[inline]
       predicate isAdditionalDefRoot(Node node) { none() }
 
+      overlay[local]
+      private predicate isOverlay() { databaseMetadata("isOverlay", "true") }
+
       bindingset[node]
-      predicate inScope(DataFlow::Node node) { any() }
+      predicate inScope(DataFlow::Node node) { not isOverlay() and exists(node) }
     }
 
     private module Stage1 = Stage<Stage1Input>;
 
+    overlay[local]
+    private module Stage1Local {
+      predicate use(TApiNode node, DataFlow::Node ref) = forceLocal(Stage1::use/2)(node, ref)
+
+      predicate rhs(TApiNode node, DataFlow::Node def) = forceLocal(Stage1::rhs/2)(node, def)
+
+      DataFlow::SourceNode trackUseNode(DataFlow::SourceNode nd) =
+        forceLocal(Stage1::trackUseNode/1)(nd, result)
+
+      DataFlow::SourceNode trackUseNodeAnyState(DataFlow::SourceNode nd) =
+        forceLocal(Stage1::trackUseNodeAnyState/1)(nd, result)
+
+      DataFlow::SourceNode trackDefNode(DataFlow::SourceNode nd) =
+        forceLocal(Stage1::trackDefNode/1)(nd, result)
+
+      DataFlow::SourceNode trackDefNodeAnyState(DataFlow::Node nd) =
+        forceLocal(Stage1::trackDefNodeAnyState/1)(nd, result)
+
+      predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) =
+        forceLocal(Stage1::edge/3)(pred, lbl, succ)
+
+      DataFlow::InvokeNode getAPromisifiedInvocation(TApiNode callee, int bound, TApiNode succ) =
+        forceLocal(Stage1::getAPromisifiedInvocation/3)(callee, bound, succ, result)
+    }
+
+    private module Stage2Input implements StageInputSig {
+      overlay[global]
+      pragma[nomagic]
+      private predicate isInOverlayChangedFile(DataFlow::Node node) {
+        overlayChangedFiles(node.getFile().getAbsolutePath())
+      }
+
+      bindingset[node]
+      overlay[global]
+      pragma[inline_late]
+      private predicate isInOverlayChangedFileLate(DataFlow::Node node) {
+        isInOverlayChangedFile(node)
+      }
+
+      /** Holds if there is a step `node1 -> node2` from an unchanged file into a changed file. */
+      pragma[nomagic]
+      private predicate stepIntoOverlay(DataFlow::Node node1, DataFlow::Node node2) {
+        StepSummary::step(node1, node2, _) and
+        isInOverlayChangedFile(node2) and
+        not isInOverlayChangedFileLate(node1) and
+        hasSemanticsLate(node1)
+      }
+
+      /** Holds if use-node tracking starting at `nd` can reach a node in the overlay. */
+      pragma[nomagic]
+      private predicate shouldTrackIntoOverlay(DataFlow::SourceNode nd) {
+        exists(DataFlow::Node overlayNode |
+          stepIntoOverlay(Stage1Local::trackUseNodeAnyState(nd), overlayNode)
+        )
+      }
+
+      /** Holds if `node` should be tracked as a use-node in stage 2. */
+      pragma[nomagic]
+      predicate isAdditionalUseRoot(Node node) {
+        exists(DataFlow::Node ref |
+          shouldTrackIntoOverlay(ref) and
+          Stage1Local::use(node, ref)
+        )
+      }
+
+      /** Holds if there is a step `node1 -> node2` from a changed file into an unchanged file. */
+      pragma[nomagic]
+      private predicate stepOutOfOverlay(DataFlow::Node node1, DataFlow::Node node2) {
+        StepSummary::step(node1, node2, _) and
+        isInOverlayChangedFile(node1) and
+        not isInOverlayChangedFileLate(node2) and
+        hasSemanticsLate(node2)
+      }
+
+      /** Holds if def-node tracking starting at `nd` can reach a node in the overlay. */
+      pragma[nomagic]
+      private predicate shouldBacktrackIntoOverlay(DataFlow::SourceNode nd) {
+        exists(DataFlow::Node overlayNode |
+          stepOutOfOverlay(overlayNode, Stage1Local::trackDefNodeAnyState(nd))
+        )
+      }
+
+      /** Holds if `node` should be tracked as a def-node in stage 2. */
+      pragma[nomagic]
+      predicate isAdditionalDefRoot(Node node) {
+        exists(DataFlow::Node def |
+          shouldBacktrackIntoOverlay(def) and
+          Stage1Local::rhs(node, def)
+        )
+      }
+
+      bindingset[node]
+      predicate inScope(DataFlow::Node node) { isInOverlayChangedFile(node) }
+    }
+
+    private module Stage2 = Stage<Stage2Input>;
+
     cached
     private module Cached {
       cached
-      predicate rhs(TApiNode nd, DataFlow::Node rhs) { Stage1::rhs(nd, rhs) }
-
-      cached
-      predicate use(TApiNode nd, DataFlow::Node ref) { Stage1::use(nd, ref) }
-
-      cached
-      DataFlow::SourceNode trackUseNode(DataFlow::SourceNode nd) {
-        result = Stage1::trackUseNode(nd)
+      predicate rhs(TApiNode nd, DataFlow::Node rhs) {
+        Stage1Local::rhs(nd, rhs)
+        or
+        Stage2::rhs(nd, rhs)
       }
 
       cached
-      DataFlow::SourceNode trackDefNode(DataFlow::Node nd) { result = Stage1::trackDefNode(nd) }
+      predicate use(TApiNode nd, DataFlow::Node ref) {
+        Stage1Local::use(nd, ref)
+        or
+        Stage2::use(nd, ref)
+      }
+
+      cached
+      DataFlow::SourceNode trackUseNode(DataFlow::SourceNode nd) {
+        result = Stage1Local::trackUseNode(nd)
+        or
+        result = Stage2::trackUseNode(nd)
+      }
+
+      cached
+      DataFlow::SourceNode trackDefNode(DataFlow::Node nd) {
+        result = Stage1Local::trackDefNode(nd)
+        or
+        result = Stage2::trackDefNode(nd)
+      }
 
       cached
       predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) {
-        Stage1::edge(pred, lbl, succ)
+        Stage1Local::edge(pred, lbl, succ)
+        or
+        Stage2::edge(pred, lbl, succ)
       }
 
       cached
       DataFlow::InvokeNode getAPromisifiedInvocation(TApiNode callee, int bound, TApiNode succ) {
-        result = Stage1::getAPromisifiedInvocation(callee, bound, succ)
+        result = Stage1Local::getAPromisifiedInvocation(callee, bound, succ)
+        or
+        result = Stage2::getAPromisifiedInvocation(callee, bound, succ)
       }
     }
 
