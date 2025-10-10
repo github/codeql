@@ -740,20 +740,9 @@ module API {
       MkRoot() or
       MkModuleDef(string m) { exists(MkModuleExport(m)) } or
       MkModuleUse(string m) { exists(MkModuleImport(m)) } or
-      MkModuleExport(string m) {
-        exists(Module mod | mod = importableModule(m) |
-          // exclude modules that don't actually export anything
-          exports(m, _)
-          or
-          exports(m, _, _)
-          or
-          exists(NodeModule nm | nm = mod |
-            exists(Ssa::implicitInit([nm.getModuleVariable(), nm.getExportsVariable()]))
-          )
-        )
-      } or
       MkModuleImport(string m) {
         imports(_, m)
+      MkModuleExport(string m) { isDeclaredPackageName(m) } or
         or
         any(TypeAnnotation n).hasUnderlyingType(m, _)
       } or
@@ -1964,4 +1953,9 @@ private Module importableModule(string m) {
     not result.isExterns() and
     m = pkg.getPackageName()
   )
+}
+
+overlay[local]
+private predicate isDeclaredPackageName(string m) {
+  m = any(PackageJson pkg).getDeclaredPackageName()
 }
