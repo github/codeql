@@ -362,6 +362,7 @@ module LodashUnderscore {
     }
   }
 
+  overlay[local?]
   private class LodashGroupBy extends DataFlow::SummarizedCallable {
     LodashGroupBy() { this = "_.groupBy" }
 
