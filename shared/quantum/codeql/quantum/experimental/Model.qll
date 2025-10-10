@@ -1497,6 +1497,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
             .getAGenericSourceNode()
     }
 
+    KeyCreationOperationNode getCreatingOperation() {
+      instance.(KeyArtifactOutputInstance).getCreator() = result.asElement()
+    }
+
     KeyCreationCandidateAlgorithmNode getAKnownAlgorithm() {
       result =
         instance
