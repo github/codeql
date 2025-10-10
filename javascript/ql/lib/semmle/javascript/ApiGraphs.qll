@@ -735,6 +735,14 @@ module API {
    */
   cached
   private module Impl {
+    private predicate hasTypeUse(string moduleName, string exportName) {
+      any(TypeAnnotation n).hasUnderlyingType(moduleName, exportName)
+    }
+
+    overlay[local]
+    private predicate hasTypeUseLocal(string moduleName, string exportName) =
+      forceLocal(hasTypeUse/2)(moduleName, exportName)
+
     cached
     newtype TApiNode =
       MkRoot() or
@@ -772,9 +780,7 @@ module API {
       } or
       MkUse(DataFlow::Node nd) { nd instanceof DataFlow::SourceNode } or
       /** A use of a TypeScript type. */
-      MkTypeUse(string moduleName, string exportName) {
-        any(TypeAnnotation n).hasUnderlyingType(moduleName, exportName)
-      } or
+      MkTypeUse(string moduleName, string exportName) { hasTypeUseLocal(moduleName, exportName) } or
       MkSyntheticCallbackArg(DataFlow::InvokeNode nd)
 
     class TDef = MkModuleDef or TNonModuleDef;
