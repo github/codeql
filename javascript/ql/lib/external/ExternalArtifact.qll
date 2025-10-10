@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with external data.
  */
+overlay[local?]
+module;
 
 import semmle.javascript.Locations
 

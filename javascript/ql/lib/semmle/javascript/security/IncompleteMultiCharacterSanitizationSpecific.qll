@@ -1,6 +1,8 @@
 /**
  * Provides language-specific predicates for reasoning about improper multi-character sanitization.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.security.regexp.RegExpTreeView::RegExpTreeView as TreeView

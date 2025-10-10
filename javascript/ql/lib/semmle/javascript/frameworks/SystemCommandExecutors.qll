@@ -2,6 +2,8 @@
  * Provides concrete classes for data-flow nodes that execute an
  * operating system command, for instance by spawning a new process.
  */
+overlay[local?]
+module;
 
 import javascript
 

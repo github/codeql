@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with [Koa](https://koajs.com) applications.
  */
+overlay[local?]
+module;
 
 import javascript
 import semmle.javascript.frameworks.HTTP

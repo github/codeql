@@ -1,6 +1,8 @@
 /**
  * Provides classes for working SemVer (Semantic Versioning).
  */
+overlay[local?]
+module;
 
 import semmle.javascript.dependencies.Dependencies
 

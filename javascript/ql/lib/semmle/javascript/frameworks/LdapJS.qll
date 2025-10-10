@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with [LDAPjs](https://www.npmjs.com/package/ldapjs)
  */
+overlay[local?]
+module;
 
 import javascript
 

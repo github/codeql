@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import javascript as JS
 private import codeql.util.test.InlineExpectationsTest
 

@@ -3,6 +3,8 @@
  * untrusted user input used to construct regular expressions, as well
  * as extension points for adding your own.
  */
+overlay[local?]
+module;
 
 import javascript
 private import codeql.threatmodels.ThreatModels

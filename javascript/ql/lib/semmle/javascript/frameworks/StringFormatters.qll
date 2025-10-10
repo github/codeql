@@ -1,6 +1,8 @@
 /**
  * Provides classes for modeling string formatting libraries.
  */
+overlay[local?]
+module;
 
 import javascript
 

@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with SQL connectors.
  */
+overlay[local?]
+module;
 
 import javascript
 

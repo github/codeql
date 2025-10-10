@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with DOM elements.
  */
+overlay[local?]
+module;
 
 import javascript
 import semmle.javascript.frameworks.Templating

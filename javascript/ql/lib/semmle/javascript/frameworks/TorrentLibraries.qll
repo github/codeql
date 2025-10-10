@@ -1,6 +1,8 @@
 /**
  * Provides classes for modeling Torrent libraries.
  */
+overlay[local?]
+module;
 
 import javascript
 

@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for reasoning about string-manipulating expressions.
  */
+overlay[local?]
+module;
 
 import javascript
 
@@ -387,6 +389,7 @@ module StringOps {
    * ```
    */
   class ConcatenationNode extends DataFlow::Node {
+    overlay[caller?]
     pragma[inline]
     ConcatenationNode() {
       exists(StringConcatenation::getAnOperand(this))
@@ -397,36 +400,42 @@ module StringOps {
     /**
      * Gets the `n`th operand of this string concatenation.
      */
+    overlay[caller?]
     pragma[inline]
     ConcatenationOperand getOperand(int n) { result = StringConcatenation::getOperand(this, n) }
 
     /**
      * Gets an operand of this string concatenation.
      */
+    overlay[caller?]
     pragma[inline]
     ConcatenationOperand getAnOperand() { result = StringConcatenation::getAnOperand(this) }
 
     /**
      * Gets the number of operands of this string concatenation.
      */
+    overlay[caller?]
     pragma[inline]
     int getNumOperand() { result = StringConcatenation::getNumOperand(this) }
 
     /**
      * Gets the first operand of this string concatenation.
      */
+    overlay[caller?]
     pragma[inline]
     ConcatenationOperand getFirstOperand() { result = StringConcatenation::getFirstOperand(this) }
 
     /**
      * Gets the last operand of this string concatenation
      */
+    overlay[caller?]
     pragma[inline]
     ConcatenationOperand getLastOperand() { result = StringConcatenation::getLastOperand(this) }
 
     /**
      * Holds if this only acts as a string coercion, such as `"" + x`.
      */
+    overlay[caller?]
     pragma[inline]
     predicate isCoercion() { StringConcatenation::isCoercion(this) }
 
@@ -435,6 +444,7 @@ module StringOps {
      * it is a concatenation operator that is not itself the immediate operand to
      * another concatenation operator.
      */
+    overlay[caller?]
     pragma[inline]
     predicate isRoot() { StringConcatenation::isRoot(this) }
 
@@ -442,18 +452,21 @@ module StringOps {
      * Holds if this is a leaf in the concatenation tree, that is, it is not
      * itself a concatenation.
      */
+    overlay[caller?]
     pragma[inline]
     predicate isLeaf() { not exists(StringConcatenation::getAnOperand(this)) }
 
     /**
      * Gets the root of the concatenation tree in which this is an operator.
      */
+    overlay[caller?]
     pragma[inline]
     ConcatenationRoot getRoot() { result = StringConcatenation::getRoot(this) }
 
     /**
      * Gets the enclosing concatenation in which this is an operand, if any.
      */
+    overlay[caller?]
     pragma[inline]
     Concatenation getParentConcatenation() { this = StringConcatenation::getAnOperand(result) }
 
@@ -462,6 +475,7 @@ module StringOps {
      *
      * For example, `z` is the last leaf in `x + y + z`.
      */
+    overlay[caller?]
     pragma[inline]
     ConcatenationLeaf getLastLeaf() { result = StringConcatenation::getLastOperand*(this) }
 
@@ -470,6 +484,7 @@ module StringOps {
      *
      * For example, `x` is the first leaf in `x + y + z`.
      */
+    overlay[caller?]
     pragma[inline]
     ConcatenationLeaf getFirstLeaf() { result = StringConcatenation::getFirstOperand*(this) }
 
@@ -479,6 +494,7 @@ module StringOps {
      *
      * For example, `y` is the previous leaf from `z` in `x + y + z`.
      */
+    overlay[caller?]
     pragma[inline]
     ConcatenationLeaf getPreviousLeaf() { adjacentLeaves(result, this) }
 
@@ -488,6 +504,7 @@ module StringOps {
      *
      * For example, `y` is the next leaf from `x` in `x + y + z`.
      */
+    overlay[caller?]
     pragma[inline]
     ConcatenationLeaf getNextLeaf() { adjacentLeaves(this, result) }
   }
@@ -507,6 +524,7 @@ module StringOps {
    * See `ConcatenationNode` for more information.
    */
   class Concatenation extends ConcatenationNode {
+    overlay[caller?]
     pragma[inline]
     Concatenation() { exists(StringConcatenation::getAnOperand(this)) }
   }
@@ -524,6 +542,7 @@ module StringOps {
    * See `ConcatenationNode` for more information.
    */
   class ConcatenationOperand extends ConcatenationNode {
+    overlay[caller?]
     pragma[inline]
     ConcatenationOperand() { this = StringConcatenation::getAnOperand(_) }
   }
@@ -541,12 +560,14 @@ module StringOps {
    * See `ConcatenationNode` for more information.
    */
   class ConcatenationRoot extends Concatenation {
+    overlay[caller?]
     pragma[inline]
     ConcatenationRoot() { this.isRoot() }
 
     /**
      * Gets a leaf in this concatenation tree that this node is the root of.
      */
+    overlay[caller?]
     pragma[inline]
     ConcatenationLeaf getALeaf() { this = StringConcatenation::getRoot(result) }
 
@@ -606,6 +627,7 @@ module StringOps {
    * See `ConcatenationNode` for more information.
    */
   class ConcatenationLeaf extends ConcatenationOperand {
+    overlay[caller?]
     pragma[inline]
     ConcatenationLeaf() { this.isLeaf() }
   }

@@ -6,6 +6,8 @@
  * `TaintedPath::Configuration` is needed, otherwise
  * `TaintedPathCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import javascript
 private import TaintedPathCustomizations

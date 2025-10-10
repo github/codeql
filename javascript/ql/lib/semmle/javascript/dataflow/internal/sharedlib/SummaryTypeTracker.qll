@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import semmle.javascript.Locations
 private import codeql.typetracking.internal.SummaryTypeTracker
 private import semmle.javascript.dataflow.internal.DataFlowPrivate as DataFlowPrivate

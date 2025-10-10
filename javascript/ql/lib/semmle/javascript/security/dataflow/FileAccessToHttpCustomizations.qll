@@ -3,6 +3,8 @@
  * file data in outbound network requests, as well as extension points
  * for adding your own.
  */
+overlay[local?]
+module;
 
 import javascript
 

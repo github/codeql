@@ -3,6 +3,8 @@
  *
  * Will be replaced with standardized inline test expectations in the future.
  */
+overlay[local?]
+module;
 
 import javascript
 

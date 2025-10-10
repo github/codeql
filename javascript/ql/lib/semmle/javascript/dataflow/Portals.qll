@@ -11,6 +11,7 @@
  *
  * The API of this library is not stable yet and may change.
  */
+overlay[local?]
 deprecated module;
 
 import javascript

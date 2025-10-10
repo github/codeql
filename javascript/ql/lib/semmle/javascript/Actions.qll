@@ -4,6 +4,8 @@
  * Libraries for modeling GitHub Actions workflow files written in YAML.
  * See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions.
  */
+overlay[local?]
+module;
 
 import javascript
 

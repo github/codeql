@@ -6,6 +6,8 @@
  * `PrototypePollutingAssignment::Configuration` is needed, otherwise
  * `PrototypePollutingAssignmentCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.DynamicPropertyAccess

@@ -1,6 +1,8 @@
 /**
  * Provides general-purpose utility predicates.
  */
+overlay[local?]
+module;
 
 import javascript
 

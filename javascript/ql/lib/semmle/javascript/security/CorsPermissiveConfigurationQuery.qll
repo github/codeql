@@ -7,6 +7,8 @@
  * otherwise `CorsPermissiveConfigurationCustomizations` should
  * be imported instead.
  */
+overlay[local?]
+module;
 
 import javascript
 import CorsPermissiveConfigurationCustomizations::CorsPermissiveConfiguration

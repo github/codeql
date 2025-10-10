@@ -2,6 +2,8 @@
  * Provides a class for modeling expressions used to supply
  * credentials.
  */
+overlay[local?]
+module;
 
 import javascript
 

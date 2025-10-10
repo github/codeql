@@ -6,6 +6,8 @@
  * `PrototypePollution::Configuration` is needed, otherwise
  * `PrototypePollutionCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import javascript
 import semmle.javascript.security.TaintedObject

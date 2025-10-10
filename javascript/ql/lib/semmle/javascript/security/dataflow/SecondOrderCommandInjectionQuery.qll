@@ -6,6 +6,8 @@
  * `SecondOrderCommandInjection::Configuration` is needed, otherwise
  * `SecondOrderCommandInjectionCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import javascript
 import SecondOrderCommandInjectionCustomizations::SecondOrderCommandInjection

@@ -3,6 +3,8 @@
  * generated code, test code, externs declarations, library code or
  * template code.
  */
+overlay[local?]
+module;
 
 import semmle.javascript.GeneratedCode
 import semmle.javascript.frameworks.Testing
@@ -100,6 +102,7 @@ predicate isTemplateFile(File f) {
  *   - `"library"`: `f` contains library code;
  *   - `"template"`: `f` contains template code.
  */
+overlay[caller?]
 pragma[inline]
 predicate classify(File f, string category) {
   isGeneratedCodeFile(f) and category = "generated"

@@ -3,6 +3,8 @@
  *
  * https://www.npmjs.com/package/shelljs
  */
+overlay[local?]
+module;
 
 import javascript
 

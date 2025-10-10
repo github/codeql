@@ -1,6 +1,8 @@
 /**
  * Contains a class with flow states that are used by multiple queries.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import TaintedUrlSuffixCustomizations

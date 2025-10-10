@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import javascript
 private import semmle.javascript.internal.NameResolution::NameResolution
 private import semmle.javascript.internal.UnderlyingTypes

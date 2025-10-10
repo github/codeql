@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import javascript
 import semmle.javascript.dataflow.FlowSummary
 
