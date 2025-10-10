@@ -34,8 +34,9 @@ module CommandInjectionConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    exists(DataFlow::Node node |
-      isSinkWithHighlight(sink, node) and
+    exists(DataFlow::Node node | isSinkWithHighlight(sink, node) |
+      result = sink.getLocation()
+      or
       result = node.getLocation()
     )
   }
