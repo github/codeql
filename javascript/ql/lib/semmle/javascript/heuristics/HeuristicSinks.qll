@@ -1,6 +1,8 @@
 /**
  * Provides heuristically recognized sinks for security queries.
  */
+overlay[local?]
+module;
 
 import javascript
 private import SyntacticHeuristics

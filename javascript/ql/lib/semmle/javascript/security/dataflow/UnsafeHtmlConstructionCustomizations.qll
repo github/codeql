@@ -3,6 +3,8 @@
  * unsafe HTML constructed from library input, as well as extension points
  * for adding your own.
  */
+overlay[local?]
+module;
 
 import javascript
 

@@ -1,6 +1,8 @@
 /**
  * Provides a model of `cheerio`, a server-side DOM manipulation library with a jQuery-like API.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.security.dataflow.DomBasedXssCustomizations

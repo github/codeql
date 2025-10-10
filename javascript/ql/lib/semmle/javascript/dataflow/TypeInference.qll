@@ -24,6 +24,8 @@
  * the sense that all expressions whole value derives (directly or indirectly) from a property
  * read are marked as indefinite.
  */
+overlay[local?]
+module;
 
 private import javascript
 import AbstractValues

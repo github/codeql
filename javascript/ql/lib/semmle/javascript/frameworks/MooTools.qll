@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with MooTools code.
  */
+overlay[local?]
+module;
 
 import javascript
 

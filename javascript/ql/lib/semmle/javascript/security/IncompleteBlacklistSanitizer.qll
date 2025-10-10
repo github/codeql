@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with incomplete blacklist sanitizers.
  */
+overlay[local?]
+module;
 
 import javascript
 

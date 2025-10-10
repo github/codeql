@@ -3,6 +3,8 @@
  * E.g. [AWS](https://docs.aws.amazon.com/lambda/latest/dg/nodejs-handler.html) or [serverless](https://npmjs.com/package/serverless)
  * In particular a `RemoteFlowSource` is added for AWS, Alibaba, and serverless.
  */
+overlay[local?]
+module;
 
 import javascript
 private import codeql.serverless.ServerLess

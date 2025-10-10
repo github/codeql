@@ -3,6 +3,8 @@
  *
  * Note: This module should not be a permanent part of the standard library imports.
  */
+overlay[local?]
+module;
 
 import javascript
 private import SyntacticHeuristics

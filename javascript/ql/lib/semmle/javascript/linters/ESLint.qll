@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with ESLint directives and configurations.
  */
+overlay[local?]
+module;
 
 import javascript
 

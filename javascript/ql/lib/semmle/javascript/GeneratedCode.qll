@@ -1,6 +1,8 @@
 /**
  * Provides classes for detecting generated code.
  */
+overlay[local?]
+module;
 
 import javascript
 import semmle.javascript.frameworks.Bundling

@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with [Fastify](https://www.fastify.dev/) applications.
  */
+overlay[local?]
+module;
 
 import javascript
 import semmle.javascript.frameworks.HTTP

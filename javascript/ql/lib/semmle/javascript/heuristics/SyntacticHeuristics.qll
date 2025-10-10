@@ -3,6 +3,8 @@
  *
  * INTERNAL: Do not use outside of the `semmle.javascript.heuristics` module.
  */
+overlay[local?]
+module;
 
 import javascript
 

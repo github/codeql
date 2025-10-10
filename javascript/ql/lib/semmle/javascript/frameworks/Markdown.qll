@@ -1,6 +1,8 @@
 /**
  * Provides classes for modeling common markdown parsers and generators.
  */
+overlay[local?]
+module;
 
 import semmle.javascript.Unit
 import javascript

@@ -3,6 +3,8 @@
  *
  * Provides classes implementing type inference for properties.
  */
+overlay[local?]
+module;
 
 private import javascript
 import semmle.javascript.dataflow.AbstractProperties

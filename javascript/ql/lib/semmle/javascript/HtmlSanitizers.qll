@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with HTML sanitizers.
  */
+overlay[local?]
+module;
 
 import javascript
 

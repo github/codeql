@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with [knex](https://knexjs.org).
  */
+overlay[local?]
+module;
 
 private import javascript
 

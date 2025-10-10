@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for reasoning about [Next.js](https://www.npmjs.com/package/next).
  */
+overlay[local?]
+module;
 
 import javascript
 

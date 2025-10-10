@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for reasoning about code using the Firebase API.
  */
+overlay[local?]
+module;
 
 import javascript
 

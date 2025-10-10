@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with Babel, `.babelrc` files and Babel plugins.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.internal.paths.PathMapping

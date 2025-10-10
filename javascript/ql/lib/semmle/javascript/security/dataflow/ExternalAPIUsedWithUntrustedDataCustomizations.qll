@@ -2,6 +2,8 @@
  * Provides sources, sinks and sanitizers for reasoning about flow of
  * untrusted data into an external API.
  */
+overlay[local?]
+module;
 
 import javascript
 

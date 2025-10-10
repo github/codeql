@@ -5,6 +5,8 @@
  * for tracking certain types interprocedurally without computing which source
  * a given value came from.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import internal.FlowSteps
@@ -136,6 +138,7 @@ class TypeTracker extends TTypeTracker {
    * Gets the summary that corresponds to having taken a forwards
    * heap and/or inter-procedural step from `pred` to `succ`.
    */
+  overlay[caller?]
   pragma[inline]
   TypeTracker step(DataFlow::SourceNode pred, DataFlow::SourceNode succ) {
     exists(StepSummary summary |
@@ -168,6 +171,7 @@ class TypeTracker extends TTypeTracker {
    * }
    * ```
    */
+  overlay[caller?]
   pragma[inline]
   TypeTracker smallstep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(StepSummary summary |
@@ -293,6 +297,7 @@ class TypeBackTracker extends TTypeBackTracker {
    * Gets the summary that corresponds to having taken a backwards
    * heap and/or inter-procedural step from `succ` to `pred`.
    */
+  overlay[caller?]
   pragma[inline]
   TypeBackTracker step(DataFlow::SourceNode pred, DataFlow::SourceNode succ) {
     exists(StepSummary summary |
@@ -325,6 +330,7 @@ class TypeBackTracker extends TTypeBackTracker {
    * }
    * ```
    */
+  overlay[caller?]
   pragma[inline]
   TypeBackTracker smallstep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(StepSummary summary |

@@ -6,6 +6,8 @@
  * `ClientSideUrlRedirect::Configuration` is needed, otherwise
  * `ClientSideUrlRedirectCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import javascript
 import UrlConcatenation

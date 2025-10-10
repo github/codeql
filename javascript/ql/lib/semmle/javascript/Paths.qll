@@ -2,6 +2,8 @@
  * Provides classes for working with file system paths and program expressions
  * that denote them.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.dataflow.internal.DataFlowNode

@@ -1,4 +1,6 @@
 /** Provides a class for representing source maps. */
+overlay[local?]
+module;
 
 import javascript
 

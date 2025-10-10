@@ -12,6 +12,7 @@
  * Backward exploration in particular does not scale on non-trivial code bases and hence is of limited
  * usefulness as it stands.
  */
+overlay[local?]
 deprecated module;
 
 import javascript

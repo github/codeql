@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with [Connect](https://github.com/senchalabs/connect) applications.
  */
+overlay[local?]
+module;
 
 import javascript
 import semmle.javascript.frameworks.HTTP

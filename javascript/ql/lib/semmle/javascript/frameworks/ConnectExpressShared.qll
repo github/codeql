@@ -3,6 +3,8 @@
  * [Connect](https://github.com/senchalabs/connect) and
  * [Express](https://expressjs.com) applications.
  */
+overlay[local?]
+module;
 
 import javascript
 
@@ -82,6 +84,7 @@ module ConnectExpressShared {
    *
    * `kind` is one of: "error", "request", "response", "next".
    */
+  overlay[caller?]
   pragma[inline]
   DataFlow::ParameterNode getRouteParameterHandlerParameter(
     DataFlow::FunctionNode routeHandler, string kind
@@ -96,6 +99,7 @@ module ConnectExpressShared {
    *
    * `kind` is one of: "error", "request", "response", "next".
    */
+  overlay[caller?]
   pragma[inline]
   DataFlow::ParameterNode getRouteHandlerParameter(DataFlow::FunctionNode routeHandler, string kind) {
     if routeHandler.getNumParameter() = 4

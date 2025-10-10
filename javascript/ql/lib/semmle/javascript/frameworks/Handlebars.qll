@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with Handlebars code.
  */
+overlay[local?]
+module;
 
 import javascript
 

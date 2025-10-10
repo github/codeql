@@ -6,6 +6,8 @@
  * `LoopBoundInjection::Configuration` is needed, otherwise
  * `LoopBoundInjectionCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import javascript
 import LoopBoundInjectionCustomizations::LoopBoundInjection

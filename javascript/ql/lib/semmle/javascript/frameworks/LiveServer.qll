@@ -1,6 +1,8 @@
 /**
  * Provides classes modeling the [live-server](https://npmjs.com/package/live-server) package.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.frameworks.ConnectExpressShared::ConnectExpressShared as ConnectExpressShared

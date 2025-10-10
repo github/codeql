@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with [Hapi](https://hapijs.com/) servers.
  */
+overlay[local?]
+module;
 
 import javascript
 import semmle.javascript.frameworks.HTTP

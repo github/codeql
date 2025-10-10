@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with JSON schema libraries.
  */
+overlay[local?]
+module;
 
 import javascript
 

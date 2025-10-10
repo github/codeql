@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import semmle.javascript.Locations
 private import DataFlowImplSpecific
 private import codeql.dataflow.DataFlow as SharedDataFlow

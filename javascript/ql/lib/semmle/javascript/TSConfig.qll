@@ -1,6 +1,8 @@
 /**
  * Provides a class for working with `tsconfig.json` files.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.internal.paths.PathMapping

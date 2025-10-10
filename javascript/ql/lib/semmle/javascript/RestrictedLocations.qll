@@ -1,4 +1,6 @@
 /** Provides classes for restricting the locations reported for program elements. */
+overlay[local?]
+module;
 
 import javascript
 

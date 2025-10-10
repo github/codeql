@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with defensive programming patterns.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.dataflow.InferredTypes

@@ -1,6 +1,8 @@
 /**
  * Provides predicates for reasoning about sanitization via the `class-validator` library.
  */
+overlay[local?]
+module;
 
 import javascript
 
