@@ -45,6 +45,11 @@ mod sync_test
         let _ = conn.exec_map(&stmt, (remote_string.as_str(),), |_: i64| -> () {})?;
         let _ = conn.exec_map_opt(&stmt, (remote_string.as_str(),), |_: Result<i64, FromRowError>| -> () {})?;
 
+        // transactions
+        let mut trans = conn.start_transaction(TxOpts::default())?;
+        trans.query_drop(unsafe_query.as_str()); // $ MISSING: sql-sink Alert[rust/sql-injection]=remote11
+        trans.commit()?;
+
         Ok(())
     }
 }
@@ -87,6 +92,11 @@ mod async_test
         let _ = conn.exec_iter(&stmt, (remote_string.as_str(),)).await?;
         let _ = conn.exec_stream::<i64, &Statement, (&str,)>(&stmt, (remote_string.as_str(),)).await?;
         let _ = conn.exec_map(&stmt, (remote_string.as_str(),), |_: i64| -> () {}).await?;
+
+        // transactions
+        let mut trans = conn.start_transaction(TxOpts::default()).await?;
+        trans.query_drop(unsafe_query.as_str()); // $ MISSING: sql-sink Alert[rust/sql-injection]=remote11
+        trans.commit().await?;
 
         Ok(())
     }
