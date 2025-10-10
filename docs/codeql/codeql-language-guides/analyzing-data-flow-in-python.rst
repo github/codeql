@@ -392,7 +392,7 @@ Here is the first example above, converted into a path query:
     select fileAccess.getNode(), input, fileAccess, "This file access uses data from $@.",
       input, "user-controllable input."
 
-For more information, see ":doc:`Creating path queries <creating-path-queries>`".
+For more information, see "`Creating path queries <https://codeql.github.com/docs/writing-codeql-queries/creating-path-queries/>`__".
 
 Further reading
 ---------------
