@@ -1913,6 +1913,8 @@ module API {
           name = DataFlow::PseudoProperties::arrayLikeElement()
           or
           name = any(TypeAccess t).getIdentifier().getName()
+          or
+          name = any(Expr s).getStringValue()
         } or
         MkLabelParameter(int i) {
           i =
