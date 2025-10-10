@@ -1350,6 +1350,13 @@ module API {
         result = trackUseNode(nd, false, 0, "")
       }
 
+      /**
+       * Gets a node whose forward tracking reaches `nd` in some state (e.g. possibly inside a content at this point).
+       */
+      DataFlow::SourceNode trackUseNodeAnyState(DataFlow::SourceNode nd) {
+        result = trackUseNode(nd, _, _, _, _)
+      }
+
       private DataFlow::SourceNode trackDefNode(DataFlow::Node nd, DataFlow::TypeBackTracker t) {
         t.start() and
         rhs(_, nd) and
@@ -1399,6 +1406,11 @@ module API {
       DataFlow::SourceNode trackDefNode(DataFlow::Node nd) {
         result = trackDefNode(nd, DataFlow::TypeBackTracker::end())
       }
+
+      /**
+       * Gets a node reached by the backwards tracking of `nd` in some state (e.g. possibly inside a content at this point).
+       */
+      DataFlow::SourceNode trackDefNodeAnyState(DataFlow::Node nd) { result = trackDefNode(nd, _) }
 
       private DataFlow::SourceNode awaited(DataFlow::InvokeNode call, DataFlow::TypeTracker t) {
         t.startInPromise() and
@@ -1505,25 +1517,109 @@ module API {
 
     private module Stage1 = Stage<Stage1Input>;
 
+    overlay[local]
+    private module Stage1Local {
+      predicate use(TApiNode node, DataFlow::Node ref) = forceLocal(Stage1::use/2)(node, ref)
+
+      predicate rhs(TApiNode node, DataFlow::Node def) = forceLocal(Stage1::rhs/2)(node, def)
+
+      DataFlow::SourceNode trackUseNode(DataFlow::SourceNode nd) =
+        forceLocal(Stage1::trackUseNode/1)(nd, result)
+
+      DataFlow::SourceNode trackUseNodeAnyState(DataFlow::SourceNode nd) =
+        forceLocal(Stage1::trackUseNodeAnyState/1)(nd, result)
+
+      DataFlow::SourceNode trackDefNode(DataFlow::SourceNode nd) =
+        forceLocal(Stage1::trackDefNode/1)(nd, result)
+
+      DataFlow::SourceNode trackDefNodeAnyState(DataFlow::Node nd) =
+        forceLocal(Stage1::trackDefNodeAnyState/1)(nd, result)
+
+      predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) =
+        forceLocal(Stage1::edge/3)(pred, lbl, succ)
+    }
+
+    private module Stage2Input implements StageInputSig {
+      bindingset[node]
+      overlay[global]
+      pragma[inline_late]
+      private predicate isInOverlayChangedFile(DataFlow::Node node) {
+        overlayChangedFiles(node.getFile().getAbsolutePath())
+      }
+
+      pragma[nomagic]
+      private predicate shouldTrackIntoOverlay(DataFlow::SourceNode nd) {
+        exists(DataFlow::Node overlayNode |
+          StepSummary::step(Stage1Local::trackUseNodeAnyState(nd), overlayNode, _) and
+          isInOverlayChangedFile(overlayNode)
+        )
+      }
+
+      pragma[nomagic]
+      predicate isAdditionalUseRoot(Node node) {
+        exists(DataFlow::Node ref |
+          shouldTrackIntoOverlay(ref) and
+          Stage1Local::use(node, ref)
+        )
+      }
+
+      pragma[nomagic]
+      private predicate shouldBacktrackIntoOverlay(DataFlow::SourceNode nd) {
+        exists(DataFlow::Node overlayNode |
+          StepSummary::step(overlayNode, Stage1Local::trackDefNodeAnyState(nd), _) and
+          isInOverlayChangedFile(overlayNode)
+        )
+      }
+
+      pragma[nomagic]
+      predicate isAdditionalDefRoot(Node node) {
+        exists(DataFlow::Node def |
+          shouldBacktrackIntoOverlay(def) and
+          Stage1Local::rhs(node, def)
+        )
+      }
+
+      bindingset[node]
+      predicate inScope(DataFlow::Node node) { isInOverlayChangedFile(node) }
+    }
+
+    private module Stage2 = Stage<Stage2Input>;
+
     cached
     private module Cached {
       cached
-      predicate rhs(TApiNode nd, DataFlow::Node rhs) { Stage1::rhs(nd, rhs) }
-
-      cached
-      predicate use(TApiNode nd, DataFlow::Node ref) { Stage1::use(nd, ref) }
-
-      cached
-      DataFlow::SourceNode trackUseNode(DataFlow::SourceNode nd) {
-        result = Stage1::trackUseNode(nd)
+      predicate rhs(TApiNode nd, DataFlow::Node rhs) {
+        Stage1Local::rhs(nd, rhs)
+        or
+        Stage2::rhs(nd, rhs)
       }
 
       cached
-      DataFlow::SourceNode trackDefNode(DataFlow::Node nd) { result = Stage1::trackDefNode(nd) }
+      predicate use(TApiNode nd, DataFlow::Node ref) {
+        Stage1Local::use(nd, ref)
+        or
+        Stage2::use(nd, ref)
+      }
+
+      cached
+      DataFlow::SourceNode trackUseNode(DataFlow::SourceNode nd) {
+        result = Stage1Local::trackUseNode(nd)
+        or
+        result = Stage2::trackUseNode(nd)
+      }
+
+      cached
+      DataFlow::SourceNode trackDefNode(DataFlow::Node nd) {
+        result = Stage1Local::trackDefNode(nd)
+        or
+        result = Stage2::trackDefNode(nd)
+      }
 
       cached
       predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) {
-        Stage1::edge(pred, lbl, succ)
+        Stage1Local::edge(pred, lbl, succ)
+        or
+        Stage2::edge(pred, lbl, succ)
       }
 
       cached
