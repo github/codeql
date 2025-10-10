@@ -740,9 +740,8 @@ module API {
       MkRoot() or
       MkModuleDef(string m) { exists(MkModuleExport(m)) } or
       MkModuleUse(string m) { exists(MkModuleImport(m)) } or
-      MkModuleImport(string m) {
-        imports(_, m)
       MkModuleExport(string m) { isDeclaredPackageName(m) } or
+      MkModuleImport(string m) { isImportedPackageName(m) } or
         or
         any(TypeAnnotation n).hasUnderlyingType(m, _)
       } or
@@ -1958,4 +1957,10 @@ private Module importableModule(string m) {
 overlay[local]
 private predicate isDeclaredPackageName(string m) {
   m = any(PackageJson pkg).getDeclaredPackageName()
+}
+
+overlay[local]
+private predicate isImportedPackageName(string m) {
+  m = any(Import imprt).getImportedPathString() and
+  m.regexpMatch("[^./].*")
 }
