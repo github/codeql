@@ -18,6 +18,10 @@ import experimental.quantum.Language
 from Crypto::NonceArtifactNode nonce, Crypto::NodeBase src, Crypto::NodeBase op, string msg
 where
   nonce.getSourceNode() = src and
+  // NOTE: null nonces should be handled seaparately, often used for default values prior to initialization
+  // failure to initialize should, in practice, lead to a NullPointerException, which is a separate concern
+  // however there may be APIs where NULL uses a default nonce or action.
+  not src.asElement() instanceof NullLiteral and
   (
     // Case 1: Any constant nonce/iv is bad, regardless of how it is used
     src.asElement() instanceof Crypto::GenericConstantSourceInstance and
