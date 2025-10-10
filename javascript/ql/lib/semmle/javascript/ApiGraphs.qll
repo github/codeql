@@ -1528,8 +1528,11 @@ module API {
       pragma[inline]
       predicate isAdditionalDefRoot(Node node) { none() }
 
+      overlay[local]
+      private predicate isOverlay() { databaseMetadata("isOverlay", "true") }
+
       bindingset[node]
-      predicate inScope(DataFlow::Node node) { any() }
+      predicate inScope(DataFlow::Node node) { not isOverlay() and exists(node) }
     }
 
     private module Stage1 = Stage<Stage1Input>;
