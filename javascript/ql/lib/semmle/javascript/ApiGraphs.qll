@@ -1039,7 +1039,8 @@ module API {
           base = MkRoot() and
           exists(EntryPoint e |
             lbl = Label::entryPoint(e) and
-            ref = e.getASource()
+            ref = e.getASource() and
+            S::inScope(ref)
           )
           or
           // property reads
