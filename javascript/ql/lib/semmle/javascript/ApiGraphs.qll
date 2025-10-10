@@ -676,17 +676,21 @@ module API {
    * Imports and exports are considered entry points by default, but additional entry points may
    * be added by extending this class. Typical examples include global variables.
    */
+  overlay[local]
   abstract class EntryPoint extends string {
     bindingset[this]
     EntryPoint() { any() }
 
     /** Gets a data-flow node where a value enters the current codebase through this entry-point. */
+    overlay[global]
     DataFlow::SourceNode getASource() { none() }
 
     /** Gets a data-flow node where a value leaves the current codebase through this entry-point. */
+    overlay[global]
     DataFlow::Node getASink() { none() }
 
     /** Gets an API-node for this entry point. */
+    overlay[global]
     API::Node getANode() { result = root().getASuccessor(Label::entryPoint(this)) }
   }
 
