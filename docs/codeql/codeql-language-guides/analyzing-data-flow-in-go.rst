@@ -224,7 +224,7 @@ The resulting module has an identical signature to the one obtained from ``DataF
 Flow sources
 ~~~~~~~~~~~~
 
-The data flow library contains some predefined flow sources. The class ``RemoteFlowSource`` (defined in ``semmle.code.java.dataflow.FlowSources``) represents data flow sources that may be controlled by a remote user, which is useful for finding security problems.
+The data flow library contains some predefined flow sources. The class ``RemoteFlowSource`` represents data flow sources that may be controlled by a remote user, which is useful for finding security problems.
 
 Examples
 ~~~~~~~~
@@ -312,7 +312,7 @@ Exercise 3
 
    import go
 
-   class GetenvSource extends CallExpr {
+   class GetenvSource extends DataFlow::CallNode {
      GetenvSource() {
        exists(Function m | m = this.getTarget() |
          m.hasQualifiedName("os", "Getenv")
@@ -327,7 +327,7 @@ Exercise 4
 
    import go
 
-   class GetenvSource extends CallExpr {
+   class GetenvSource extends DataFlow::CallNode {
      GetenvSource() {
        exists(Function m | m = this.getTarget() |
          m.hasQualifiedName("os", "Getenv")
@@ -349,7 +349,6 @@ Exercise 4
          call.getTarget() = urlParse and
          sink.asExpr() = call.getArgument(0)
        )
-     }
      }
    }
 
