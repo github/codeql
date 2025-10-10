@@ -743,6 +743,7 @@ module API {
     private predicate hasTypeUseLocal(string moduleName, string exportName) =
       forceLocal(hasTypeUse/2)(moduleName, exportName)
 
+    overlay[local]
     cached
     newtype TApiNode =
       MkRoot() or
@@ -1623,6 +1624,7 @@ module API {
   class NewNode extends InvokeNode, DataFlow::NewNode { }
 
   /** Provides classes modeling the various edges (labels) in the API graph. */
+  overlay[local]
   module Label {
     /** A label in the API-graph */
     class ApiLabel extends TLabel {
@@ -1661,6 +1663,7 @@ module API {
      * This is to support code patterns where the property name is actually constant,
      * but the property name has been factored into a library.
      */
+    overlay[global]
     private string getAnIndirectPropName(DataFlow::PropRef ref) {
       exists(DataFlow::Node pred |
         FlowSteps::propertyFlowStep(pred, ref.getPropertyNameExpr().flow()) and
@@ -1671,16 +1674,19 @@ module API {
     /**
      * Gets unique result of `getAnIndirectPropName` if there is one.
      */
+    overlay[global]
     private string getIndirectPropName(DataFlow::PropRef ref) {
       result = unique(string s | s = getAnIndirectPropName(ref))
     }
 
+    overlay[global]
     pragma[nomagic]
     private predicate isEnumeratedPropName(DataFlow::Node node) {
       node.getAPredecessor*() instanceof EnumeratedPropName
     }
 
     /** Gets the `member` edge label for the given property reference. */
+    overlay[global]
     ApiLabel memberFromRef(DataFlow::PropRef pr) {
       exists(string pn | pn = pr.getPropertyName() or pn = getIndirectPropName(pr) |
         result = member(pn) and
@@ -1747,9 +1753,17 @@ module API {
         MkLabelInstance() or
         MkLabelContent(DataFlow::Content content) or
         MkLabelMember(string name) {
-          name instanceof PropertyName
+          name instanceof ContentPrivate::PropertyName
           or
-          exists(Impl::MkTypeUse(_, name))
+          name = any(DataFlow::PropRef pr).getPropertyName()
+          or
+          AccessPath::isAssignedInUniqueFile(name)
+          or
+          exists(AccessPath::getAnAssignmentTo(_, name))
+          or
+          name = DataFlow::PseudoProperties::arrayLikeElement()
+          or
+          name = any(TypeAccess t).getIdentifier().getName()
         } or
         MkLabelParameter(int i) {
           i =
