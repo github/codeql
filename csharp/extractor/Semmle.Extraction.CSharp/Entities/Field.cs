@@ -49,7 +49,10 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
             }
 
-            WriteLocationsToTrap(trapFile.field_location, this, Locations);
+            if (Context.ExtractLocation(Symbol))
+            {
+                WriteLocationsToTrap(trapFile.field_location, this, Locations);
+            }
 
             if (!IsSourceDeclaration || !Symbol.FromSource())
                 return;
