@@ -1690,7 +1690,7 @@ module API {
       }
 
       cached
-      predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) {
+      predicate edge(Node pred, Label::ApiLabel lbl, Node succ) {
         Stage1Local::edge(pred, lbl, succ)
         or
         Stage2::edge(pred, lbl, succ)
