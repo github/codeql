@@ -613,12 +613,12 @@ module API {
 
   /** A node corresponding to a definition of an API component. */
   class Definition extends Node, Impl::TDef {
-    override string toString() { result = "def " + this.getPath() }
+    override string toString() { result = "def " + this.getInducingNode().toString() }
   }
 
   /** A node corresponding to the use of an API component. */
   class Use extends Node, Impl::TUse {
-    override string toString() { result = "use " + this.getPath() }
+    override string toString() { result = "use " + this.getInducingNode().toString() }
   }
 
   /** Gets the root node. */
