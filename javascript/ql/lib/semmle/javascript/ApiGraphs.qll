@@ -811,7 +811,7 @@ module API {
        * Holds if `rhs` is the right-hand side of a definition of a node that should have an
        * incoming edge from `base` labeled `lbl` in the API graph.
        */
-      private predicate rhs(TApiNode base, Label::ApiLabel lbl, DataFlow::Node rhs) {
+      predicate rhs(TApiNode base, Label::ApiLabel lbl, DataFlow::Node rhs) {
         hasSemantics(rhs) and
         (
           base = MkRoot() and
@@ -1047,7 +1047,7 @@ module API {
        * Holds if `ref` is a use of a node that should have an incoming edge from `base` labeled
        * `lbl` in the API graph.
        */
-      private predicate use(TApiNode base, Label::ApiLabel lbl, DataFlow::Node ref) {
+      predicate use(TApiNode base, Label::ApiLabel lbl, DataFlow::Node ref) {
         hasSemantics(ref) and
         (
           base = MkRoot() and
@@ -1686,6 +1686,23 @@ module API {
     }
 
     import Cached
+
+    private module Debug {
+      query predicate missingDefNode(DataFlow::Node node) {
+        Stage1::rhs(_, _, node) and
+        not exists(MkDef(node))
+      }
+
+      query predicate missingUseNode(DataFlow::Node node) {
+        Stage1::use(_, _, node) and
+        not exists(MkUse(node))
+      }
+
+      query predicate lostEdge(Node pred, Label::ApiLabel lbl, Node succ) {
+        Stage1::edge(pred, lbl, succ) and
+        not Cached::edge(pred, lbl, succ)
+      }
+    }
 
     /**
      * Holds if there is an edge from `pred` to `succ` in the API graph.
