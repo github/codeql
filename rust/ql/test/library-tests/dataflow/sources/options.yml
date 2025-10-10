@@ -17,3 +17,5 @@ qltest_dependencies:
     - futures-rustls = { version = "0.26.0" }
     - async-std = { version = "1.13.1" }
     - warp = { version = "0.4.2", features = ["server"] }
+    - mysql = { version = "26.0.1" }
+    - mysql_async = { version = "0.36.1" }
