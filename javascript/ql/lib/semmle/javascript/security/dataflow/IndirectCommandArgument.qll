@@ -1,6 +1,8 @@
 /**
  * Provides predicates for reasoning about indirect command arguments.
  */
+overlay[local?]
+module;
 
 import javascript
 

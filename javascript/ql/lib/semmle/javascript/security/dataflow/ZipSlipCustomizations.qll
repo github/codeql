@@ -3,6 +3,8 @@
  * unsafe zip and tar archive extraction, as well as extension points
  * for adding your own.
  */
+overlay[local?]
+module;
 
 import javascript
 

@@ -2,6 +2,8 @@
  * Provides default sources for reasoning about DOM-based
  * cross-site scripting vulnerabilities.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.dataflow.InferredTypes

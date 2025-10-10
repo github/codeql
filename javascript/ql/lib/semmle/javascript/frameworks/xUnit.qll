@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with xUnit.js tests.
  */
+overlay[local?]
+module;
 
 import javascript
 

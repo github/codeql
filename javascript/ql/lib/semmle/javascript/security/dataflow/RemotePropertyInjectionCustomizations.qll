@@ -4,6 +4,8 @@
  * property, into a header or for calling an object's method, as well
  * as extension points for adding your own.
  */
+overlay[local?]
+module;
 
 import javascript
 import semmle.javascript.frameworks.Express

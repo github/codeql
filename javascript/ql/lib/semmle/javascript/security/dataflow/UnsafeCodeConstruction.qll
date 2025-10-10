@@ -6,6 +6,8 @@
  * `UnsafeCodeConstruction::Configuration` is needed, otherwise
  * `UnsafeCodeConstructionCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import javascript
 

@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with XML parser APIs.
  */
+overlay[local?]
+module;
 
 private import javascript as JS
 private import JS::DataFlow as DataFlow

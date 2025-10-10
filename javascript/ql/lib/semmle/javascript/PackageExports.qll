@@ -3,6 +3,8 @@
  *
  * Provides predicates for working with values exported from a package.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.internal.CachedStages

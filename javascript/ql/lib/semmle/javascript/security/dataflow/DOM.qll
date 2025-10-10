@@ -1,6 +1,8 @@
 /**
  * Provides predicates for reasoning about DOM types and methods.
  */
+overlay[local?]
+module;
 
 import javascript
 

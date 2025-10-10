@@ -1,6 +1,8 @@
 /**
  * Contains an extension of `GraphExport` that relies on API graph specific functionality.
  */
+overlay[local?]
+module;
 
 private import ApiGraphModels as Shared
 private import codeql.mad.dynamic.GraphExport

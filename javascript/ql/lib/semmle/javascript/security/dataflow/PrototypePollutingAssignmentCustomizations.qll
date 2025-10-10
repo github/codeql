@@ -2,6 +2,8 @@
  * Provides sources, sinks, and sanitizers for reasoning about assignments
  * that my cause prototype pollution.
  */
+overlay[local?]
+module;
 
 private import javascript
 

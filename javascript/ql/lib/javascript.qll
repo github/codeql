@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with JavaScript programs, as well as JSON, YAML and HTML.
  */
+overlay[local?]
+module;
 
 import Customizations
 import semmle.javascript.Aliases

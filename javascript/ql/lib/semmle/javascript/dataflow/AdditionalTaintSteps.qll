@@ -1,6 +1,8 @@
 /**
  * Note: The contents of this file are exposed with the `TaintTracking::` prefix, via an import in `TaintTracking.qll`.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.internal.CachedStages

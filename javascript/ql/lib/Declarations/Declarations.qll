@@ -2,6 +2,8 @@
  * Provides predicates for finding variable references and declarations
  * in a given function or toplevel.
  */
+overlay[local?]
+module;
 
 import javascript
 

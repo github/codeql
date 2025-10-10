@@ -3,6 +3,8 @@
  * writing user-controlled data to files, as well as extension points
  * for adding your own.
  */
+overlay[local?]
+module;
 
 /**
  * Provides default sources, sinks and sanitizers for reasoning about

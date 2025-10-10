@@ -4,6 +4,8 @@
  * We reuse these predicates in some type-tracking tests that don't wish to bring in the
  * test configuration from `InlineFlowTest`.
  */
+overlay[local?]
+module;
 
 private import javascript
 

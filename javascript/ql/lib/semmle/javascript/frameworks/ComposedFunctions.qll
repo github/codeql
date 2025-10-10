@@ -1,6 +1,8 @@
 /**
  * Provides classes for reasoning about composed functions.
  */
+overlay[local?]
+module;
 
 import javascript
 

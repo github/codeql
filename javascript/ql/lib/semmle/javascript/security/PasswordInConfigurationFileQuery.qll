@@ -1,4 +1,6 @@
 /** Classses and predicates for reasoning about passwords in configuration files. */
+overlay[local?]
+module;
 
 import javascript
 import semmle.javascript.RestrictedLocations

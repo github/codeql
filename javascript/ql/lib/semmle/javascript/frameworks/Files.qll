@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with file system libraries.
  */
+overlay[local?]
+module;
 
 import javascript
 

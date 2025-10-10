@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with [pkgcloud](https://github.com/pkgcloud/pkgcloud) applications.
  */
+overlay[local?]
+module;
 
 import javascript
 

@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with Helmet
  */
+overlay[local?]
+module;
 
 private import javascript
 

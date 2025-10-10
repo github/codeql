@@ -1,6 +1,8 @@
 /**
  * Provides imports and classes needed for `HttpToFileAccessQuery` and `HttpToFileAccessCustomizations`.
  */
+overlay[local?]
+module;
 
 import javascript
 private import HttpToFileAccessCustomizations::HttpToFileAccess

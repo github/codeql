@@ -3,6 +3,8 @@
  * user-controlled objects flowing into a vulnerable `extends` call,
  * as well as extension points for adding your own.
  */
+overlay[local?]
+module;
 
 import javascript
 import semmle.javascript.security.TaintedObject

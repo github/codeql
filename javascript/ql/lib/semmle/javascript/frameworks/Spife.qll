@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with [Spife](https://github.com/npm/spife) applications.
  */
+overlay[local?]
+module;
 
 import javascript
 import semmle.javascript.frameworks.HTTP

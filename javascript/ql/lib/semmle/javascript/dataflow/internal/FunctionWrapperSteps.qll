@@ -1,4 +1,6 @@
 /** Provides predicates for tracking functions through wrapper functions. */
+overlay[local?]
+module;
 
 private import javascript
 private import FlowSteps as FlowSteps

@@ -12,6 +12,8 @@
  * 3. The flow steps from `TaintedObject::isAdditionalFlowStep`.
  * 4. The barriers from `TaintedObject::SanitizerGuard::getABarrierNode(state)`.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.dataflow.InferredTypes

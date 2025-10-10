@@ -3,6 +3,8 @@
  * DoS attacks using objects with unbounded length property,
  * as well as extension points for adding your own.
  */
+overlay[local?]
+module;
 
 import javascript
 

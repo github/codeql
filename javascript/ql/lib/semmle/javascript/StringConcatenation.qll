@@ -1,6 +1,8 @@
 /**
  * Provides predicates for analyzing string concatenations and their operands.
  */
+overlay[local?]
+module;
 
 import javascript
 

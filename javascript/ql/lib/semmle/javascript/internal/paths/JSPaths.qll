@@ -2,6 +2,8 @@
  * Provides predicates for use in `Folder::ResolveSig` in order to resolve
  * paths using JavaScript semantics.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.TSConfig

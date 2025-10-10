@@ -2,6 +2,8 @@
  * Provides default sinks for reasoning about storage of sensitive information
  * in build artifact, as well as extension points for adding your own.
  */
+overlay[local?]
+module;
 
 import javascript
 

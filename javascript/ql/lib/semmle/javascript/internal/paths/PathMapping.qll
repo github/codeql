@@ -1,6 +1,8 @@
 /**
  * Provides an extensible mechanism for modeling path mappings.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.TSConfig

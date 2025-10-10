@@ -3,6 +3,8 @@
  *
  * This version considers all barrier guards to be relevant.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.dataflow.internal.AccessPaths

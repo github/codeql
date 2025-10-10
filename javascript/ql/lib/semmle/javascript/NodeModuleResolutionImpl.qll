@@ -3,6 +3,8 @@
  *
  * Provides predicates for modeling Node.js module resolution.
  */
+overlay[local?]
+module;
 
 import javascript
 

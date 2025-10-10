@@ -6,6 +6,8 @@
  * `UnsafeDynamicMethodAccess::Configuration` is needed, otherwise
  * `UnsafeDynamicMethodAccessCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import javascript
 import PropertyInjectionShared

@@ -2,6 +2,8 @@
  * Provides a taint tracking configuration for reasoning about DoS attacks
  * due to inefficient handling of user-controlled objects.
  */
+overlay[local?]
+module;
 
 import javascript
 import semmle.javascript.security.TaintedObject

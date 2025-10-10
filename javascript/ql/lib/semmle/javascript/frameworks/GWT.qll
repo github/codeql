@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with GWT-generated code.
  */
+overlay[local?]
+module;
 
 import javascript
 

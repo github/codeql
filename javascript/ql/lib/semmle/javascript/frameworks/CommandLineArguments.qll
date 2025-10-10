@@ -1,4 +1,6 @@
 /** Provides modeling for parsed command line arguments. */
+overlay[local?]
+module;
 
 import javascript
 

@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with Angular (also known as Angular 2.x) applications.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.security.dataflow.DomBasedXssCustomizations

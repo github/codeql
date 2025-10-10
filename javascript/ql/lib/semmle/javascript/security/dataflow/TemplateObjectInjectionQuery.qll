@@ -6,6 +6,8 @@
  * `TemplateObjectInjection::Configuration` is needed, otherwise
  * `TemplateObjectInjectionCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import javascript
 import TemplateObjectInjectionCustomizations::TemplateObjectInjection
