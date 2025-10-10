@@ -1,6 +1,8 @@
 /**
  * Provides predicates for associating qualified names with data flow nodes.
  */
+overlay[local]
+module;
 
 import javascript
 private import semmle.javascript.dataflow.InferredTypes
@@ -657,7 +659,7 @@ module AccessPath {
      */
     cached
     predicate hasDominatingWrite(DataFlow::PropRead read) {
-      Stages::TypeTracking::ref() and
+      Stages::DataFlowStage::ref() and
       // within the same basic block.
       exists(ReachableBasicBlock bb, Root root, string path, int ranking |
         read.asExpr() = rankedAccessPath(bb, root, path, ranking, AccessPathRead()) and

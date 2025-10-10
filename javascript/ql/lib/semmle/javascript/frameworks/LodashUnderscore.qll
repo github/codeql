@@ -9,6 +9,7 @@ module LodashUnderscore {
   /**
    * A data flow node that accesses a given member of `lodash` or `underscore`.
    */
+  overlay[local]
   abstract class Member extends DataFlow::SourceNode {
     /** Gets the name of the accessed member. */
     abstract string getName();
@@ -17,6 +18,7 @@ module LodashUnderscore {
   /**
    * An import of `lodash` or `underscore` accessing a given member of that package.
    */
+  overlay[local]
   private class DefaultMember extends Member {
     string name;
 
@@ -39,12 +41,14 @@ module LodashUnderscore {
    * In addition to normal imports, this supports per-method imports such as `require("lodash.map")` and `require("lodash/map")`.
    * In addition, the global variable `_` is assumed to refer to `lodash` or `underscore`.
    */
+  overlay[local]
   DataFlow::SourceNode member(string name) { result.(Member).getName() = name }
 
   /**
    * Holds if `name` is the name of a member exported from the `lodash` package
    * which has a corresponding `lodash.xxx` NPM package.
    */
+  overlay[local]
   private predicate isLodashMember(string name) {
     // Can be generated using Object.keys(require('lodash'))
     name =
