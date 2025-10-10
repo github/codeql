@@ -32,6 +32,7 @@ private module Console {
   /**
    * An API entrypoint for the global `console` variable.
    */
+  overlay[local?]
   private class ConsoleGlobalEntry extends API::EntryPoint {
     ConsoleGlobalEntry() { this = "ConsoleGlobalEntry" }
 
