@@ -767,6 +767,8 @@ module API {
         or
         nd = any(DataFlow::InvokeNode i).getASpreadArgument()
         or
+        nd = any(DataFlow::CallNode c).getReceiver()
+        or
         nd = DataFlow::valueNode(any(ExportNamedDeclaration decl).getOperand())
         or
         nd = DataFlow::valueNode(any(ExportDefaultDeclaration decl).getOperand())
