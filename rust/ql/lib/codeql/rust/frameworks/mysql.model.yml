@@ -1,0 +1,17 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["<_ as mysql::conn::queryable::Queryable>::query", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_opt", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_drop", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_first", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_first_opt", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_fold", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_fold_opt", "Argument[0]", "sql-injection", "manual"]
+      - ["<mysql::conn::pool::PooledConn as mysql::conn::queryable::Queryable>::query_iter", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_map", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_map_opt", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query", "Argument[0]", "sql-injection", "manual"]
+      - ["<mysql::conn::pool::PooledConn as mysql::conn::queryable::Queryable>::prep", "Argument[0]", "sql-injection", "manual"]
