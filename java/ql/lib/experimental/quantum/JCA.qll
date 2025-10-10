@@ -110,7 +110,8 @@ module JCAModel {
   predicate signature_names(string name) {
     name.toUpperCase().splitAt("WITH", 1).matches(["RSA%", "ECDSA%", "DSA%"])
     or
-    name.toUpperCase().matches(["RSASSA-PSS", "ED25519", "ED448", "EDDSA", "ML-DSA%", "HSS/LMS"])
+    name.toUpperCase()
+        .matches(["RSASSA-PSS", "ED25519", "ED448", "EDDSA", "ML-DSA%", "HSS/LMS", "DSA"])
   }
 
   bindingset[name]
@@ -257,6 +258,8 @@ module JCAModel {
     name.toUpperCase().matches("ML-DSA%") and type = KeyOpAlg::TSignature(KeyOpAlg::DSA())
     or
     name.toUpperCase() = "HSS/LMS" and type = KeyOpAlg::TSignature(KeyOpAlg::HSS_LMS())
+    or
+    name.toUpperCase() = "DSA" and type = KeyOpAlg::TSignature(KeyOpAlg::DSA())
   }
 
   bindingset[name]
@@ -1019,7 +1022,8 @@ module JCAModel {
   }
 
   class KeyGenerationAlgorithmValueConsumer extends CipherAlgorithmValueConsumer,
-    KeyAgreementAlgorithmValueConsumer, EllipticCurveAlgorithmValueConsumer instanceof Expr
+    KeyAgreementAlgorithmValueConsumer, EllipticCurveAlgorithmValueConsumer,
+    SignatureAlgorithmValueConsumer instanceof Expr
   {
     KeyGeneratorGetInstanceCall instantiationCall;
 
