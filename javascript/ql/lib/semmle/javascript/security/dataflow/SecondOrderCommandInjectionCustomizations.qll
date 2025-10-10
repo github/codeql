@@ -129,6 +129,7 @@ module SecondOrderCommandInjection {
   /**
    * A sink that invokes a command described by the `VulnerableCommand` class.
    */
+  overlay[global]
   abstract class VulnerableCommandSink extends Sink {
     VulnerableCommand cmd;
 

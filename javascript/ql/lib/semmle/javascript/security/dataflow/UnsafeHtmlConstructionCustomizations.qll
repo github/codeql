@@ -101,6 +101,7 @@ module UnsafeHtmlConstruction {
    * A sink for `js/html-constructed-from-input` that constructs some HTML where
    * that HTML is later used in `xssSink`.
    */
+  overlay[global]
   abstract class XssSink extends Sink {
     DomBasedXss::Sink xssSink;
 
