@@ -1635,6 +1635,13 @@ module API {
 
     import Cached
 
+    private module Debug {
+      query predicate lostEdge(Node pred, Label::ApiLabel lbl, Node succ) {
+        Stage1::edge(pred, lbl, succ) and
+        not Cached::edge(pred, lbl, succ)
+      }
+    }
+
     /**
      * Holds if there is an edge from `pred` to `succ` in the API graph.
      */
