@@ -83,6 +83,34 @@ public class Test {
         byte[] ciphertext2 = cipher2.doFinal("Simple Test Data".getBytes());
     }
 
+    public void falsePositive1() throws Exception {
+        byte[] iv = null;
+        new SecureRandom().nextBytes(iv);
+        IvParameterSpec ivSpec = new IvParameterSpec(iv);
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        SecretKey key = generateAESKey();
+        if (iv != null) {
+            cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec); // GOOD
+            byte[] ciphertext = cipher.doFinal("Simple Test Data".getBytes());
+        } else if(iv.length > 0) {
+            cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec); // GOOD
+            byte[] ciphertext = cipher.doFinal("Simple Test Data".getBytes());
+        }
+    }
+
+    public void falsePositive2() throws Exception {
+        byte[] iv = null;
+        new SecureRandom().nextBytes(iv);
+        IvParameterSpec ivSpec = new IvParameterSpec(iv);
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        SecretKey key = generateAESKey();
+        cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec); // GOOD
+        byte[] ciphertext = cipher.doFinal("Simple Test Data".getBytes());
+
+        cipher.init(Cipher.DECRYPT_MODE, key, ivSpec); // GOOD
+        byte[] decryptedData = cipher.doFinal(ciphertext);
+    }
+
     public static void main(String[] args) {
         try {
             funcA2();
