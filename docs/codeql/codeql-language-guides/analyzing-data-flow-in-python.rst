@@ -306,7 +306,7 @@ This query shows a data flow configuration that uses all network input as data s
     /**
     * @kind path-problem
     * @problem.severity warning
-    * @id filesystemacess
+    * @id filesystemaccess
     */
     import python
     import semmle.python.dataflow.new.DataFlow
