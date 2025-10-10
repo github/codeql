@@ -754,15 +754,13 @@ module API {
         or
         nd = any(DataFlow::FunctionNode fn).getAReturn()
         or
-        nd = any(Module m).getAnExportedValue(_)
-        or
-        nd = any(Module m).getABulkExportedNode()
-        or
         nd = any(DataFlow::InvokeNode i).getAnArgument()
         or
         nd = any(DataFlow::InvokeNode i).getASpreadArgument()
         or
-        nd = any(EntryPoint e).getASink()
+        nd = DataFlow::valueNode(any(ExportNamedDeclaration decl).getOperand())
+        or
+        nd = DataFlow::valueNode(any(ExportDefaultDeclaration decl).getOperand())
       } or
       MkUse(DataFlow::Node nd) { nd instanceof DataFlow::SourceNode } or
       /** A use of a TypeScript type. */
