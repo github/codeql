@@ -102,7 +102,6 @@ module DataFlow {
      * Holds if this data flow node accesses the global variable `g`, either directly
      * or through the `window` object.
      */
-    overlay[global]
     predicate accessesGlobal(string g) { globalVarRef(g).flowsTo(this) }
 
     /** Holds if this node may evaluate to the string `s`, possibly through local data flow. */
