@@ -32,7 +32,6 @@ def test_construction():
         list(tainted_tuple), # $ tainted
         list(tainted_set), # $ tainted
         list(tainted_dict.values()), # $ tainted
-        list(tainted_dict.items()), # $ tainted
 
         tuple(tainted_list), # $ tainted
         set(tainted_list), # $ tainted
@@ -44,7 +43,8 @@ def test_construction():
     )
 
     ensure_not_tainted(
-        dict(k = tainted_string)["k1"]
+        dict(k = tainted_string)["k1"],
+        list(tainted_dict.items()),
     )
 
 
