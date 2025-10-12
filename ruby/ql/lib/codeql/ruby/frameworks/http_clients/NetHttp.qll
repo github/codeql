@@ -70,7 +70,15 @@ class NetHttpRequest extends Http::Client::Request::Range instanceof DataFlow::C
   override DataFlow::Node getAUrlPart() {
     result = request.getArgument(0)
     or
-    // Net::HTTP.new(...).get(...)
+    result = this.getAUrlPartHelper()
+  }
+
+  /**
+   * Helper predicate for `getAUrlPart`.
+   *
+   * This handles `Net::HTTP.new(...).get(...)` etc.
+   */
+  private DataFlow::Node getAUrlPartHelper() {
     exists(API::Node new |
       new = API::getTopLevelMember("Net").getMember("HTTP").getInstance() and
       requestNode = new.getReturn(_)
