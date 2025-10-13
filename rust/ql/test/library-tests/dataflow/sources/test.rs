@@ -902,30 +902,30 @@ mod test_mysql {
         let mut rows : Vec<mysql::Row> = conn.query("SELECT id, name, age FROM person")?; // $ Alert[rust/summary/taint-sources]
         let mut row = &mut rows[0];
 
-        let v1 : i64 = row.get(0).unwrap(); // $ MISSING: Alert[rust/summary/taint-sources]
-        sink(v1); // $ MISSING: hasTaintFlow
+        let v1 : i64 = row.get(0).unwrap(); // $ Alert[rust/summary/taint-sources]
+        sink(v1); // $ hasTaintFlow=0
 
-        let v2 : i64 = row.get_opt(0).unwrap().unwrap(); // $ MISSING: Alert[rust/summary/taint-sources]
-        sink(v2); // $ MISSING: hasTaintFlow
+        let v2 : i64 = row.get_opt(0).unwrap().unwrap(); // $ Alert[rust/summary/taint-sources]
+        sink(v2); // $ hasTaintFlow=0
 
-        let v3 : i64 = row.take(0).unwrap(); // $ MISSING: Alert[rust/summary/taint-sources]
-        sink(v3); // $ MISSING: hasTaintFlow
+        let v3 : i64 = row.take(0).unwrap(); // $ Alert[rust/summary/taint-sources]
+        sink(v3); // $ hasTaintFlow=0
 
-        let v4 : i64 = row.take_opt(0).unwrap().unwrap(); // $ MISSING: Alert[rust/summary/taint-sources]
-        sink(v4); // $ MISSING: hasTaintFlow
+        let v4 : i64 = row.take_opt(0).unwrap().unwrap(); // $ Alert[rust/summary/taint-sources]
+        sink(v4); // $ hasTaintFlow=0
 
-        let value5 = row.as_ref(0).unwrap(); // $ MISSING: Alert[rust/summary/taint-sources]
+        let value5 = row.as_ref(0).unwrap(); // $ Alert[rust/summary/taint-sources]
         if let mysql::Value::Int(v) = value5 {
-            sink(v); // $ MISSING: hasTaintFlow
+            sink(v); // $ MISSING: hasTaintFlow=0
         } else if let mysql::Value::Bytes(v) = value5 {
-            sink(v); // $ MISSING: hasTaintFlow
+            sink(v); // $ MISSING: hasTaintFlow=0
         }
 
         let v6: i64 = conn.query_first("SELECT id FROM person")?.unwrap(); // $ Alert[rust/summary/taint-sources]
         sink(v6); // $ hasTaintFlow
 
         let mut t1 = conn.exec_iter("SELECT id FROM person", (1, 2, 3))?; // $ Alert[rust/summary/taint-sources]
-        sink(t1.nth(0).unwrap().unwrap().get::<i64, usize>(0).unwrap()); // $ MISSING: hasTaintFlow
+        sink(t1.nth(0).unwrap().unwrap().get::<i64, usize>(1).unwrap()); // $ Alert[rust/summary/taint-sources] hasTaintFlow=1
         for row in t1 {
             for v in row {
                 sink(v); // $ hasTaintFlow
@@ -989,23 +989,23 @@ mod test_mysql_async {
         let mut rows : Vec<mysql::Row> = conn.query("SELECT id, name, age FROM person").await?; // $ Alert[rust/summary/taint-sources]
         let mut row = &mut rows[0];
 
-        let v1 : i64 = row.get(0).unwrap(); // $ MISSING: Alert[rust/summary/taint-sources]
-        sink(v1); // $ MISSING: hasTaintFlow
+        let v1 : i64 = row.get(0).unwrap(); // $ Alert[rust/summary/taint-sources]
+        sink(v1); // $ hasTaintFlow=0
 
-        let v2 : i64 = row.get_opt(0).unwrap().unwrap(); // $ MISSING: Alert[rust/summary/taint-sources]
-        sink(v2); // $ MISSING: hasTaintFlow
+        let v2 : i64 = row.get_opt(0).unwrap().unwrap(); // $ Alert[rust/summary/taint-sources]
+        sink(v2); // $ hasTaintFlow=0
 
-        let v3 : i64 = row.take(0).unwrap(); // $ MISSING: Alert[rust/summary/taint-sources]
-        sink(v3); // $ MISSING: hasTaintFlow
+        let v3 : i64 = row.take(0).unwrap(); // $ Alert[rust/summary/taint-sources]
+        sink(v3); // $ hasTaintFlow=0
 
-        let v4 : i64 = row.take_opt(0).unwrap().unwrap(); // $ MISSING: Alert[rust/summary/taint-sources]
-        sink(v4); // $ MISSING: hasTaintFlow
+        let v4 : i64 = row.take_opt(0).unwrap().unwrap(); // $ Alert[rust/summary/taint-sources]
+        sink(v4); // $ hasTaintFlow=0
 
-        let value5 = row.as_ref(0).unwrap(); // $ MISSING: Alert[rust/summary/taint-sources]
+        let value5 = row.as_ref(0).unwrap(); // $ Alert[rust/summary/taint-sources]
         if let mysql::Value::Int(v) = value5 {
-            sink(v); // $ MISSING: hasTaintFlow
+            sink(v); // $ MISSING: hasTaintFlow=0
         } else if let mysql::Value::Bytes(v) = value5 {
-            sink(v); // $ MISSING: hasTaintFlow
+            sink(v); // $ MISSING: hasTaintFlow=0
         }
 
         let v6: i64 = conn.query_first("SELECT id FROM person").await?.unwrap(); // $ Alert[rust/summary/taint-sources]
