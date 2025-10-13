@@ -110,8 +110,8 @@ mod actix_test {
     ) -> String {
         let (a, b) = path.into_inner();
 
-        sink(a); // $ MISSING: hasTaintFlow
-        sink(b); // $ MISSING: hasTaintFlow
+        sink(a); // $ hasTaintFlow=my_actix_handler_2
+        sink(b); // $ hasTaintFlow=my_actix_handler_2
 
         "".to_string()
     }
