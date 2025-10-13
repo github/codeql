@@ -1,1 +1,3 @@
-a
+| InsufficientAsymmetricKeySize.java:6:9:6:37 | Key | Use of weak asymmetric key size (1024 bits) for algorithm $@ | InsufficientAsymmetricKeySize.java:4:69:4:73 | KeyOperationAlgorithm | RSA |
+| InsufficientAsymmetricKeySize.java:10:9:10:37 | Key | Use of weak asymmetric key size (1024 bits) for algorithm $@ | InsufficientAsymmetricKeySize.java:8:69:8:73 | KeyOperationAlgorithm | DSA |
+| InsufficientAsymmetricKeySize.java:14:9:14:37 | Key | Use of weak asymmetric key size (1024 bits) for algorithm $@ | InsufficientAsymmetricKeySize.java:12:69:12:72 | KeyAgreementAlgorithm | DH |
