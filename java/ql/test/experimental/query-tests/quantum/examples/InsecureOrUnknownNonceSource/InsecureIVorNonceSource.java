@@ -11,7 +11,7 @@ public class InsecureIVorNonceSource {
 
     // BAD: AES-GCM with static IV from a byte array
     public byte[] encryptWithStaticIvByteArrayWithInitializer(byte[] key, byte[] plaintext) throws Exception {
-        byte[] iv = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5 }; 
+        byte[] iv = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5 }; // $Source
 
         GCMParameterSpec ivSpec = new GCMParameterSpec(128, iv);
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
@@ -54,8 +54,8 @@ public class InsecureIVorNonceSource {
     // BAD: AES-GCM with static IV from a multidimensional byte array
     public byte[] encryptWithOneOfStaticIvs01(byte[] key, byte[] plaintext) throws Exception {
         byte[][] staticIvs = new byte[][] {
-            { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5 },
-            { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 42 }
+            { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5 }, // $Source
+            { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 42 } // $Source
         }; 
 
         GCMParameterSpec ivSpec = new GCMParameterSpec(128, staticIvs[1]);
@@ -70,8 +70,8 @@ public class InsecureIVorNonceSource {
     // BAD: AES-GCM with static IV from a multidimensional byte array
     public byte[] encryptWithOneOfStaticIvs02(byte[] key, byte[] plaintext) throws Exception {
         byte[][] staticIvs = new byte[][] {
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5 },
-            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 42 }
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5 }, // $Source
+            new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 42 } // $Source
         }; 
 
         GCMParameterSpec ivSpec = new GCMParameterSpec(128, staticIvs[1]);
@@ -191,7 +191,7 @@ public class InsecureIVorNonceSource {
     public byte[] generateInsecureRandomBytes(int numBytes) {
         Random random = new Random();
         byte[] bytes = new byte[numBytes];
-        random.nextBytes(bytes); 
+        random.nextBytes(bytes); // $Source
         return bytes;
     }
 

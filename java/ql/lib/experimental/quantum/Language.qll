@@ -93,20 +93,6 @@ private class GenericRemoteDataSource extends Crypto::GenericRemoteDataSource {
   override string getAdditionalDescription() { result = this.toString() }
 }
 
-// /**
-//  * A property access value (constant from a file)
-//  */
-// class PropertyConstant extends  Crypto::GenericConstantSourceInstance instanceof Literal{
-//   PropertyConstant() {
-//     value = this.getPropertyValue() and
-//     // Since properties pairs are not included in the java/weak-cryptographic-algorithm,
-//     // the check for values from properties files can be less strict than `InsecureAlgoLiteral`.
-//     not value.regexpMatch(getSecureAlgorithmRegex())
-//   }
-//   override string getStringValue() { result = value }
-// }
-import semmle.code.java.dataflow.RangeUtils
-// TODO: import all frameworks?
 import semmle.code.java.frameworks.Properties
 private import semmle.code.configfiles.ConfigFiles
 

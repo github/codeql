@@ -6,7 +6,7 @@
  *              is any static nonce, or any known insecure source for a nonce/iv if
  *              the value is used for an encryption operation (decryption operations are ignored
  *              as the nonce/iv would be provided alongside the ciphertext).
- * @kind problem
+ * @kind path-problem
  * @problem.severity error
  * @precision high
  * @tags quantum
@@ -15,7 +15,42 @@
 
 import experimental.quantum.Language
 
-from Crypto::NonceArtifactNode nonce, Crypto::NodeBase src, Crypto::NodeBase op, string msg
+module NonceSrcFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    source = any(Crypto::GenericSourceInstance i).getOutputNode() or
+    source = any(Crypto::ArtifactInstance artifact).getOutputNode()
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(Crypto::NonceArtifactNode nonce | sink.asExpr() = nonce.asElement())
+  }
+
+  predicate isBarrierOut(DataFlow::Node node) {
+    node = any(Crypto::FlowAwareElement element).getInputNode()
+  }
+
+  predicate isBarrierIn(DataFlow::Node node) {
+    node = any(Crypto::FlowAwareElement element).getOutputNode()
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    node1.(AdditionalFlowInputStep).getOutput() = node2
+    or
+    exists(MethodCall m |
+      m.getMethod().hasQualifiedName("java.lang", "String", "getBytes") and
+      node1.asExpr() = m.getQualifier() and
+      node2.asExpr() = m
+    )
+  }
+}
+
+module NonceSrcFlow = TaintTracking::Global<NonceSrcFlowConfig>;
+
+import NonceSrcFlow::PathGraph
+
+from
+  Crypto::NonceArtifactNode nonce, Crypto::NodeBase src, Crypto::NodeBase op, string msg,
+  NonceSrcFlow::PathNode srcNode, NonceSrcFlow::PathNode sinkNode
 where
   nonce.getSourceNode() = src and
   // NOTE: null nonces should be handled seaparately, often used for default values prior to initialization
@@ -25,7 +60,7 @@ where
   (
     // Case 1: Any constant nonce/iv is bad, regardless of how it is used
     src.asElement() instanceof Crypto::GenericConstantSourceInstance and
-    op = nonce and // binding op by not using it
+    op = nonce and // binding op but not using it
     msg = "Nonce or IV uses constant source $@"
     or
     // Case 2: The nonce has a non-random source and there is no known operation for the nonce
@@ -47,5 +82,8 @@ where
       op.(Crypto::CipherOperationNode).getKeyOperationSubtype() instanceof Crypto::TWrapMode
     ) and
     msg = "Nonce or IV uses insecure source $@ at encryption operation $@"
-  )
-select nonce, msg, src, src.toString(), op, op.toString()
+  ) and
+  srcNode.getNode().asExpr() = src.asElement() and
+  sinkNode.getNode().asExpr() = nonce.asElement() and
+  NonceSrcFlow::flowPath(srcNode, sinkNode)
+select sinkNode, srcNode, sinkNode, msg, src, src.toString(), op, op.toString()
