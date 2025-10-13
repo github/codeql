@@ -899,7 +899,7 @@ mod test_mysql {
         let mut pool = mysql::Pool::new("")?;
         let mut conn = pool.get_conn()?;
 
-        let mut rows : Vec<mysql::Row> = conn.query("SELECT id, name, age FROM person")?;
+        let mut rows : Vec<mysql::Row> = conn.query("SELECT id, name, age FROM person")?; // $ Alert[rust/summary/taint-sources]
         let mut row = &mut rows[0];
 
         let v1 : i64 = row.get(0).unwrap(); // $ MISSING: Alert[rust/summary/taint-sources]
@@ -921,40 +921,40 @@ mod test_mysql {
             sink(v); // $ MISSING: hasTaintFlow
         }
 
-        let v6: i64 = conn.query_first("SELECT id FROM person")?.unwrap(); // $ MISSING: Alert[rust/summary/taint-sources]
-        sink(v6); // $ MISSING: hasTaintFlow
+        let v6: i64 = conn.query_first("SELECT id FROM person")?.unwrap(); // $ Alert[rust/summary/taint-sources]
+        sink(v6); // $ hasTaintFlow
 
-        let mut t1 = conn.exec_iter("SELECT id FROM person", (1, 2, 3))?; // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut t1 = conn.exec_iter("SELECT id FROM person", (1, 2, 3))?; // $ Alert[rust/summary/taint-sources]
         sink(t1.nth(0).unwrap().unwrap().get::<i64, usize>(0).unwrap()); // $ MISSING: hasTaintFlow
         for row in t1 {
             for v in row {
-                sink(v); // $ MISSING: hasTaintFlow
+                sink(v); // $ hasTaintFlow
             }
         }
 
-        let _ = conn.query_map(
+        let _ = conn.query_map( // $ Alert[rust/summary/taint-sources]
             "SELECT id FROM person",
-            |values: i64| -> () { // $ MISSING: Alert[rust/summary/taint-sources]
-                sink(values); // $ MISSING: hasTaintFlow
+            |values: i64| -> () {
+                sink(values); // $ hasTaintFlow
             }
         )?;
 
-        let _ = conn.query_map(
+        let _ = conn.query_map( // $ Alert[rust/summary/taint-sources]
             "SELECT id, name, age FROM person",
-            |values: (i64, String, i32)| -> () { // $ MISSING: Alert[rust/summary/taint-sources]
+            |values: (i64, String, i32)| -> () {
                 sink(values.0); // $ MISSING: hasTaintFlow
                 sink(values.1); // $ MISSING: hasTaintFlow
                 sink(values.2); // $ MISSING: hasTaintFlow
             }
         )?;
 
-        let total = conn.query_fold("SELECT id FROM person", 0, |acc: i64, row: i64| { // $ MISSING: Alert[rust/summary/taint-sources]
-            sink(row); // $ MISSING: hasTaintFlow
+        let total = conn.query_fold("SELECT id FROM person", 0, |acc: i64, row: i64| { // $ Alert[rust/summary/taint-sources]
+            sink(row); // $ hasTaintFlow
             acc + row
         })?;
-        sink(total); // $ MISSING: hasTaintFlow
+        sink(total); // $ hasTaintFlow
 
-        let _ = conn.query_fold("SELECT id, name, age FROM person", 0, |acc: i64, row: (i64, String, i32)| { // $ MISSING: Alert[rust/summary/taint-sources]
+        let _ = conn.query_fold("SELECT id, name, age FROM person", 0, |acc: i64, row: (i64, String, i32)| { // $ Alert[rust/summary/taint-sources]
             let id: i64 = row.0;
             let name: String = row.1;
             let age: i32 = row.2;
@@ -986,7 +986,7 @@ mod test_mysql_async {
         let mut pool = mysql_async::Pool::new("");
         let mut conn = pool.get_conn().await?;
 
-        let mut rows : Vec<mysql::Row> = conn.query("SELECT id, name, age FROM person").await?;
+        let mut rows : Vec<mysql::Row> = conn.query("SELECT id, name, age FROM person").await?; // $ Alert[rust/summary/taint-sources]
         let mut row = &mut rows[0];
 
         let v1 : i64 = row.get(0).unwrap(); // $ MISSING: Alert[rust/summary/taint-sources]
@@ -1008,10 +1008,10 @@ mod test_mysql_async {
             sink(v); // $ MISSING: hasTaintFlow
         }
 
-        let v6: i64 = conn.query_first("SELECT id FROM person").await?.unwrap(); // $ MISSING: Alert[rust/summary/taint-sources]
+        let v6: i64 = conn.query_first("SELECT id FROM person").await?.unwrap(); // $ Alert[rust/summary/taint-sources]
         sink(v6); // $ MISSING: hasTaintFlow
 
-        let mut t1 = conn.exec_iter("SELECT id FROM person", (1, 2, 3)).await?; // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut t1 = conn.exec_iter("SELECT id FROM person", (1, 2, 3)).await?; // $ Alert[rust/summary/taint-sources]
         for mut row in t1.stream::<(i64, String, i32)>().await? {
             while let v = row.next().await {
                 let v = v.unwrap();
@@ -1019,29 +1019,29 @@ mod test_mysql_async {
             }
         }
 
-        let _ = conn.query_map(
+        let _ = conn.query_map( // $ Alert[rust/summary/taint-sources]
             "SELECT id FROM person",
-            |values: i64| -> () { // $ MISSING: Alert[rust/summary/taint-sources]
-                sink(values); // $ MISSING: hasTaintFlow
+            |values: i64| -> () {
+                sink(values); // $ hasTaintFlow
             }
         ).await?;
 
-        let _ = conn.query_map(
+        let _ = conn.query_map( // $ Alert[rust/summary/taint-sources]
             "SELECT id, name, age FROM person",
-            |values: (i64, String, i32)| -> () { // $ MISSING: Alert[rust/summary/taint-sources]
+            |values: (i64, String, i32)| -> () {
                 sink(values.0); // $ MISSING: hasTaintFlow
                 sink(values.1); // $ MISSING: hasTaintFlow
                 sink(values.2); // $ MISSING: hasTaintFlow
             }
         ).await?;
 
-        let total = conn.query_fold("SELECT id FROM person", 0, |acc: i64, row: i64| { // $ MISSING: Alert[rust/summary/taint-sources]
-            sink(row); // $ MISSING: hasTaintFlow
+        let total = conn.query_fold("SELECT id FROM person", 0, |acc: i64, row: i64| { // $ Alert[rust/summary/taint-sources]
+            sink(row); // $ hasTaintFlow
             acc + row
         }).await?;
-        sink(total); // $ MISSING: hasTaintFlow
+        sink(total); // $ hasTaintFlow
 
-        let _ = conn.query_fold("SELECT id, name, age FROM person", 0, |acc: i64, row: (i64, String, i32)| { // $ MISSING: Alert[rust/summary/taint-sources]
+        let _ = conn.query_fold("SELECT id, name, age FROM person", 0, |acc: i64, row: (i64, String, i32)| { // $ Alert[rust/summary/taint-sources]
             let id: i64 = row.0;
             let name: String = row.1;
             let age: i32 = row.2;
