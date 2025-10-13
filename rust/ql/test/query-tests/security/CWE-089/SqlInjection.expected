@@ -1,6 +1,5 @@
 #select
 | mysql.rs:22:33:22:37 | query | mysql.rs:13:33:13:54 | ...::get | mysql.rs:22:33:22:37 | query | This query depends on a $@. | mysql.rs:13:33:13:54 | ...::get | user-provided value |
-| mysql.rs:22:33:22:37 | query | mysql.rs:13:33:13:54 | ...::get | mysql.rs:22:33:22:37 | query | This query depends on a $@. | mysql.rs:13:33:13:54 | ...::get | user-provided value |
 | mysql.rs:23:55:23:63 | query_opt | mysql.rs:13:33:13:54 | ...::get | mysql.rs:23:55:23:63 | query_opt | This query depends on a $@. | mysql.rs:13:33:13:54 | ...::get | user-provided value |
 | mysql.rs:24:14:24:23 | query_drop | mysql.rs:13:33:13:54 | ...::get | mysql.rs:24:14:24:23 | query_drop | This query depends on a $@. | mysql.rs:13:33:13:54 | ...::get | user-provided value |
 | mysql.rs:25:28:25:38 | query_first | mysql.rs:13:33:13:54 | ...::get | mysql.rs:25:28:25:38 | query_first | This query depends on a $@. | mysql.rs:13:33:13:54 | ...::get | user-provided value |
@@ -10,7 +9,6 @@
 | mysql.rs:29:22:29:31 | query_iter | mysql.rs:13:33:13:54 | ...::get | mysql.rs:29:22:29:31 | query_iter | This query depends on a $@. | mysql.rs:13:33:13:54 | ...::get | user-provided value |
 | mysql.rs:30:22:30:30 | query_map | mysql.rs:13:33:13:54 | ...::get | mysql.rs:30:22:30:30 | query_map | This query depends on a $@. | mysql.rs:13:33:13:54 | ...::get | user-provided value |
 | mysql.rs:31:22:31:34 | query_map_opt | mysql.rs:13:33:13:54 | ...::get | mysql.rs:31:22:31:34 | query_map_opt | This query depends on a $@. | mysql.rs:13:33:13:54 | ...::get | user-provided value |
-| mysql.rs:32:34:32:38 | query | mysql.rs:13:33:13:54 | ...::get | mysql.rs:32:34:32:38 | query | This query depends on a $@. | mysql.rs:13:33:13:54 | ...::get | user-provided value |
 | mysql.rs:32:34:32:38 | query | mysql.rs:13:33:13:54 | ...::get | mysql.rs:32:34:32:38 | query | This query depends on a $@. | mysql.rs:13:33:13:54 | ...::get | user-provided value |
 | mysql.rs:49:26:49:29 | prep | mysql.rs:13:33:13:54 | ...::get | mysql.rs:49:26:49:29 | prep | This query depends on a $@. | mysql.rs:13:33:13:54 | ...::get | user-provided value |
 | mysql.rs:54:15:54:24 | query_drop | mysql.rs:13:33:13:54 | ...::get | mysql.rs:54:15:54:24 | query_drop | This query depends on a $@. | mysql.rs:13:33:13:54 | ...::get | user-provided value |
@@ -103,8 +101,6 @@ edges
 | mysql.rs:22:39:22:50 | unsafe_query | mysql.rs:22:39:22:59 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
 | mysql.rs:22:39:22:50 | unsafe_query | mysql.rs:22:39:22:59 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
 | mysql.rs:22:39:22:59 | unsafe_query.as_str() | mysql.rs:22:33:22:37 | query | provenance | MaD:1 Sink:MaD:1 |
-| mysql.rs:22:39:22:59 | unsafe_query.as_str() | mysql.rs:22:33:22:37 | query | provenance | MaD:1 Sink:MaD:1 |
-| mysql.rs:22:39:22:59 | unsafe_query.as_str() [&ref] | mysql.rs:22:33:22:37 | query | provenance | MaD:1 Sink:MaD:1 |
 | mysql.rs:22:39:22:59 | unsafe_query.as_str() [&ref] | mysql.rs:22:33:22:37 | query | provenance | MaD:1 Sink:MaD:1 |
 | mysql.rs:23:65:23:76 | unsafe_query | mysql.rs:23:65:23:85 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
 | mysql.rs:23:65:23:76 | unsafe_query | mysql.rs:23:65:23:85 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
@@ -155,8 +151,6 @@ edges
 | mysql.rs:32:40:32:51 | unsafe_query | mysql.rs:32:40:32:60 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
 | mysql.rs:32:40:32:51 | unsafe_query | mysql.rs:32:40:32:60 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
 | mysql.rs:32:40:32:60 | unsafe_query.as_str() | mysql.rs:32:34:32:38 | query | provenance | MaD:1 Sink:MaD:1 |
-| mysql.rs:32:40:32:60 | unsafe_query.as_str() | mysql.rs:32:34:32:38 | query | provenance | MaD:1 Sink:MaD:1 |
-| mysql.rs:32:40:32:60 | unsafe_query.as_str() [&ref] | mysql.rs:32:34:32:38 | query | provenance | MaD:1 Sink:MaD:1 |
 | mysql.rs:32:40:32:60 | unsafe_query.as_str() [&ref] | mysql.rs:32:34:32:38 | query | provenance | MaD:1 Sink:MaD:1 |
 | mysql.rs:49:31:49:42 | unsafe_query | mysql.rs:49:31:49:51 | unsafe_query.as_str() [&ref] | provenance | MaD:32 |
 | mysql.rs:49:31:49:42 | unsafe_query | mysql.rs:49:31:49:51 | unsafe_query.as_str() [&ref] | provenance | MaD:28 |
@@ -465,7 +459,6 @@ nodes
 | mysql.rs:15:85:15:98 | &remote_string [&ref] | semmle.label | &remote_string [&ref] |
 | mysql.rs:15:86:15:98 | remote_string | semmle.label | remote_string |
 | mysql.rs:22:33:22:37 | query | semmle.label | query |
-| mysql.rs:22:33:22:37 | query | semmle.label | query |
 | mysql.rs:22:39:22:50 | unsafe_query | semmle.label | unsafe_query |
 | mysql.rs:22:39:22:59 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
 | mysql.rs:22:39:22:59 | unsafe_query.as_str() [&ref] | semmle.label | unsafe_query.as_str() [&ref] |
@@ -505,7 +498,6 @@ nodes
 | mysql.rs:31:36:31:47 | unsafe_query | semmle.label | unsafe_query |
 | mysql.rs:31:36:31:56 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
 | mysql.rs:31:36:31:56 | unsafe_query.as_str() [&ref] | semmle.label | unsafe_query.as_str() [&ref] |
-| mysql.rs:32:34:32:38 | query | semmle.label | query |
 | mysql.rs:32:34:32:38 | query | semmle.label | query |
 | mysql.rs:32:40:32:51 | unsafe_query | semmle.label | unsafe_query |
 | mysql.rs:32:40:32:60 | unsafe_query.as_str() | semmle.label | unsafe_query.as_str() |
