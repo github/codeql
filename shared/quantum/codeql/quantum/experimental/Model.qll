@@ -1712,6 +1712,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
 
     override string getAlgorithmName() { result = this.getRawAlgorithmName() } // TODO: standardize?
+
+    KeyAgreementType getKeyAgreementType() { result = instance.asAlg().getKeyAgreementType() }
   }
 
   class KeyGenerationOperationNode extends KeyCreationOperationNode {

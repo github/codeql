@@ -59,10 +59,12 @@ where
   // Also note the algorithm may also be re-specified at a use of the key
   alg = keygen.getAKnownAlgorithm() and
   not alg instanceof Crypto::EllipticCurveNode and // Elliptic curve sizes are handled separately and are more tied directly to the algorithm
+  not alg.(Crypto::KeyAgreementAlgorithmNode).getKeyAgreementType() = Crypto::ECDH() and // ECDH key sizes should be handled with elliptic curves
   alg instanceof Crypto::AsymmetricAlgorithmNode and
   keySize < 2048 and
   srcNode.getNode().asExpr() = keygen.getAKeySizeSource().asElement() and
-  sinkNode.getNode() = keygen.getKeySizeConsumer().getConsumer().getInputNode()
+  sinkNode.getNode() = keygen.getKeySizeConsumer().getConsumer().getInputNode() and
+  KeySizeFlow::flowPath(srcNode, sinkNode)
 select sinkNode, srcNode, sinkNode,
   "Use of weak asymmetric key size (" + keySize.toString() + " bits) for algorithm $@", alg,
   alg.getAlgorithmName()
