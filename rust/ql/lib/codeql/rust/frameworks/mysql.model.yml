@@ -13,5 +13,4 @@ extensions:
       - ["<mysql::conn::pool::PooledConn as mysql::conn::queryable::Queryable>::query_iter", "Argument[0]", "sql-injection", "manual"]
       - ["<_ as mysql::conn::queryable::Queryable>::query_map", "Argument[0]", "sql-injection", "manual"]
       - ["<_ as mysql::conn::queryable::Queryable>::query_map_opt", "Argument[0]", "sql-injection", "manual"]
-      - ["<_ as mysql::conn::queryable::Queryable>::query", "Argument[0]", "sql-injection", "manual"]
       - ["<mysql::conn::pool::PooledConn as mysql::conn::queryable::Queryable>::prep", "Argument[0]", "sql-injection", "manual"]
