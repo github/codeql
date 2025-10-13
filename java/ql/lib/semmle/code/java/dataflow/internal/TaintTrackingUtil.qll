@@ -655,6 +655,8 @@ private SrcRefType entrypointType() {
   )
   or
   result = entrypointType().getAField().getType().(RefType).getSourceDeclaration()
+  or
+  result = entrypointType().(Array).getElementType().(RefType).getSourceDeclaration()
 }
 
 private predicate entrypointFieldStep(DataFlow::Node src, DataFlow::Node sink) {

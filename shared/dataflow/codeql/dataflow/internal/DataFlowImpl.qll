@@ -143,6 +143,15 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
      */
     predicate observeDiffInformedIncrementalMode();
 
+    /**
+     * Holds if sources and sinks should be filtered to only include those that
+     * may lead to a flow path with either a source or a sink in the overlay database.
+     * This only has an effect when running
+     * in overlay-informed incremental mode. This should be used in conjunction
+     * with the `OverlayImpl` implementation to merge the base results back in.
+     */
+    predicate observeOverlayInformedIncrementalMode();
+
     Location getASelectedSourceLocation(Node source);
 
     Location getASelectedSinkLocation(Node sink);
@@ -169,6 +178,56 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     ) {
       none()
     }
+  }
+
+  /**
+   * Constructs a data flow computation given a full input configuration, and
+   * an initial stage 1 pruning with merging of overlay and base results.
+   */
+  module OverlayImpl<FullStateConfigSig Config, Stage1Output<Config::FlowState> Stage1> {
+    private module Flow = Impl<Config, Stage1>;
+
+    import Flow
+
+    /**
+     * Holds if data can flow from `source` to `sink`.
+     *
+     * This is a local predicate that only has results local to the overlay/base database.
+     */
+    private predicate flowLocal(Node source, Node sink) = forceLocal(Flow::flow/2)(source, sink)
+
+    /**
+     * Holds if data can flow from `source` to `sink`.
+     */
+    predicate flow(Node source, Node sink) {
+      Flow::flow(source, sink)
+      or
+      // If we are overlay informed (i.e. we are not diff-informed), we
+      // merge in the local results which includes the base database results.
+      flowLocal(source, sink) and Config::observeOverlayInformedIncrementalMode()
+    }
+
+    /**
+     * Holds if data can flow from some source to `sink`.
+     * This is a local predicate that only has results local to the overlay/base database.
+     */
+    predicate flowToLocal(Node sink) = forceLocal(Flow::flowTo/1)(sink)
+
+    /**
+     * Holds if data can flow from some source to `sink`.
+     */
+    predicate flowTo(Node sink) {
+      Flow::flowTo(sink)
+      or
+      // If we are overlay informed (i.e. we are not diff-informed), we
+      // merge in the local results which includes the base database results.
+      flowToLocal(sink) and Config::observeOverlayInformedIncrementalMode()
+    }
+
+    /**
+     * Holds if data can flow from some source to `sink`.
+     */
+    predicate flowToExpr(Lang::DataFlowExpr sink) { flowTo(exprNode(sink)) }
   }
 
   /**

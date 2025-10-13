@@ -40,6 +40,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.expr_parent_top_level(this, info.Child, info.Parent);
             else
                 trapFile.expr_parent(this, info.Child, info.Parent);
+
             trapFile.expr_location(this, Location);
 
             if (Type.HasValue && !Type.Value.HasObliviousNullability())

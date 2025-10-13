@@ -89,3 +89,7 @@ Partial.cs:
 #   42|         0: [Parameter] index
 #   45|         1: [Parameter] value
 #   45|       4: [BlockStmt] {...}
+PartialMultipleFiles1.cs:
+#    1| [Class] PartialMultipleFiles
+PartialMultipleFiles2.cs:
+#    1| [Class] PartialMultipleFiles

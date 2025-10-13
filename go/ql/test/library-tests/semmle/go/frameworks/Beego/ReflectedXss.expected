@@ -1,7 +1,7 @@
 #select
-| test.go:35:13:35:30 | type conversion | test.go:33:6:33:10 | definition of bound | test.go:35:13:35:30 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:33:6:33:10 | definition of bound | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:36:13:36:27 | type conversion | test.go:33:6:33:10 | definition of bound | test.go:36:13:36:27 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:33:6:33:10 | definition of bound | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:37:13:37:29 | type conversion | test.go:33:6:33:10 | definition of bound | test.go:37:13:37:29 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:33:6:33:10 | definition of bound | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:35:13:35:30 | type conversion | test.go:34:13:34:17 | bound [postupdate] | test.go:35:13:35:30 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:34:13:34:17 | bound [postupdate] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:36:13:36:27 | type conversion | test.go:34:13:34:17 | bound [postupdate] | test.go:36:13:36:27 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:34:13:34:17 | bound [postupdate] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:37:13:37:29 | type conversion | test.go:34:13:34:17 | bound [postupdate] | test.go:37:13:37:29 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:34:13:34:17 | bound [postupdate] | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:42:13:42:43 | type conversion | test.go:42:20:42:42 | call to Cookie | test.go:42:13:42:43 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:42:20:42:42 | call to Cookie | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:47:13:47:52 | type conversion | test.go:47:20:47:31 | call to Data | test.go:47:13:47:52 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:47:20:47:31 | call to Data | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:52:13:52:53 | type conversion | test.go:52:20:52:43 | call to GetData | test.go:52:13:52:53 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:52:20:52:43 | call to GetData | user-provided value | test.go:0:0:0:0 | test.go |  |
@@ -30,7 +30,7 @@
 | test.go:232:14:232:22 | type conversion | test.go:231:7:231:28 | call to GetString | test.go:232:14:232:22 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:231:7:231:28 | call to GetString | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:235:14:235:26 | type conversion | test.go:234:8:234:35 | call to GetStrings | test.go:235:14:235:26 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:234:8:234:35 | call to GetStrings | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:238:14:238:27 | type conversion | test.go:237:9:237:17 | call to Input | test.go:238:14:238:27 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:237:9:237:17 | call to Input | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:242:14:242:30 | type conversion | test.go:240:6:240:8 | definition of str | test.go:242:14:242:30 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:240:6:240:8 | definition of str | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:242:14:242:30 | type conversion | test.go:241:14:241:16 | str [postupdate] | test.go:242:14:242:30 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:241:14:241:16 | str [postupdate] | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:249:21:249:29 | untrusted | test.go:246:15:246:36 | call to GetString | test.go:249:21:249:29 | untrusted | Cross-site scripting vulnerability due to $@. | test.go:246:15:246:36 | call to GetString | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:259:16:259:45 | type conversion | test.go:259:23:259:44 | call to GetCookie | test.go:259:16:259:45 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:259:23:259:44 | call to GetCookie | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:264:16:264:37 | call to GetCookie | test.go:264:16:264:37 | call to GetCookie | test.go:264:16:264:37 | call to GetCookie | Cross-site scripting vulnerability due to $@. | test.go:264:16:264:37 | call to GetCookie | user-provided value | test.go:0:0:0:0 | test.go |  |
@@ -53,9 +53,9 @@
 | test.go:311:21:311:48 | type assertion | test.go:309:15:309:36 | call to GetString | test.go:311:21:311:48 | type assertion | Cross-site scripting vulnerability due to $@. | test.go:309:15:309:36 | call to GetString | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:312:21:312:52 | type assertion | test.go:309:15:309:36 | call to GetString | test.go:312:21:312:52 | type assertion | Cross-site scripting vulnerability due to $@. | test.go:309:15:309:36 | call to GetString | user-provided value | test.go:0:0:0:0 | test.go |  |
 edges
-| test.go:33:6:33:10 | definition of bound | test.go:35:13:35:30 | type conversion | provenance | Src:MaD:1  |
-| test.go:33:6:33:10 | definition of bound | test.go:36:13:36:27 | type conversion | provenance | Src:MaD:1  |
-| test.go:33:6:33:10 | definition of bound | test.go:37:13:37:29 | type conversion | provenance | Src:MaD:1  |
+| test.go:34:13:34:17 | bound [postupdate] | test.go:35:13:35:30 | type conversion | provenance | Src:MaD:1  |
+| test.go:34:13:34:17 | bound [postupdate] | test.go:36:13:36:27 | type conversion | provenance | Src:MaD:1  |
+| test.go:34:13:34:17 | bound [postupdate] | test.go:37:13:37:29 | type conversion | provenance | Src:MaD:1  |
 | test.go:42:20:42:42 | call to Cookie | test.go:42:13:42:43 | type conversion | provenance | Src:MaD:2  |
 | test.go:47:20:47:31 | call to Data | test.go:47:13:47:52 | type conversion | provenance | Src:MaD:3  |
 | test.go:52:20:52:43 | call to GetData | test.go:52:13:52:53 | type conversion | provenance | Src:MaD:4  |
@@ -87,8 +87,8 @@ edges
 | test.go:204:36:204:53 | type assertion | test.go:204:21:204:54 | call to Str2html | provenance | MaD:39 |
 | test.go:205:21:205:58 | call to Substr | test.go:205:14:205:59 | type conversion | provenance |  |
 | test.go:205:34:205:51 | type assertion | test.go:205:21:205:58 | call to Substr | provenance | MaD:40 |
-| test.go:207:6:207:6 | definition of s | test.go:209:14:209:28 | type conversion | provenance |  |
-| test.go:208:18:208:33 | selection of Form | test.go:207:6:207:6 | definition of s | provenance | Src:MaD:21 MaD:38 |
+| test.go:208:18:208:33 | selection of Form | test.go:208:36:208:36 | s [postupdate] | provenance | Src:MaD:21 MaD:38 |
+| test.go:208:36:208:36 | s [postupdate] | test.go:209:14:209:28 | type conversion | provenance |  |
 | test.go:223:2:223:34 | ... := ...[0] | test.go:225:31:225:31 | f | provenance | Src:MaD:15  |
 | test.go:223:2:223:34 | ... := ...[1] | test.go:224:14:224:32 | type conversion | provenance | Src:MaD:15  |
 | test.go:225:2:225:32 | ... := ...[0] | test.go:226:14:226:20 | content | provenance |  |
@@ -97,7 +97,7 @@ edges
 | test.go:231:7:231:28 | call to GetString | test.go:232:14:232:22 | type conversion | provenance | Src:MaD:17  |
 | test.go:234:8:234:35 | call to GetStrings | test.go:235:14:235:26 | type conversion | provenance | Src:MaD:18  |
 | test.go:237:9:237:17 | call to Input | test.go:238:14:238:27 | type conversion | provenance | Src:MaD:19  |
-| test.go:240:6:240:8 | definition of str | test.go:242:14:242:30 | type conversion | provenance | Src:MaD:20  |
+| test.go:241:14:241:16 | str [postupdate] | test.go:242:14:242:30 | type conversion | provenance | Src:MaD:20  |
 | test.go:246:15:246:36 | call to GetString | test.go:249:21:249:29 | untrusted | provenance | Src:MaD:17  |
 | test.go:259:23:259:44 | call to GetCookie | test.go:259:16:259:45 | type conversion | provenance | Src:MaD:14  |
 | test.go:270:62:270:83 | call to GetCookie | test.go:270:55:270:84 | type conversion | provenance | Src:MaD:14  |
@@ -116,8 +116,8 @@ edges
 | test.go:275:2:275:40 | ... := ...[0] | test.go:301:39:301:50 | genericFiles | provenance | Src:MaD:16  |
 | test.go:275:2:275:40 | ... := ...[0] | test.go:302:40:302:51 | genericFiles | provenance | Src:MaD:16  |
 | test.go:275:2:275:40 | ... := ...[0] | test.go:303:39:303:50 | genericFiles | provenance | Src:MaD:16  |
-| test.go:276:2:276:13 | definition of genericFiles [array] | test.go:297:51:297:62 | genericFiles [array] | provenance |  |
-| test.go:278:21:278:28 | index expression | test.go:276:2:276:13 | definition of genericFiles [array] | provenance |  |
+| test.go:278:3:278:14 | genericFiles [postupdate] [array] | test.go:297:51:297:62 | genericFiles [array] | provenance |  |
+| test.go:278:21:278:28 | index expression | test.go:278:3:278:14 | genericFiles [postupdate] [array] | provenance |  |
 | test.go:283:44:283:60 | selection of Filename | test.go:283:21:283:61 | call to GetDisplayString | provenance | FunctionModel |
 | test.go:284:21:284:53 | call to SliceChunk | test.go:284:21:284:92 | selection of Filename | provenance |  |
 | test.go:284:38:284:49 | genericFiles | test.go:284:21:284:53 | call to SliceChunk | provenance | MaD:22 |
@@ -146,10 +146,10 @@ edges
 | test.go:302:40:302:51 | genericFiles | test.go:302:21:302:52 | call to SliceShuffle | provenance | MaD:30 |
 | test.go:303:21:303:51 | call to SliceUnique | test.go:303:21:303:87 | selection of Filename | provenance |  |
 | test.go:303:39:303:50 | genericFiles | test.go:303:21:303:51 | call to SliceUnique | provenance | MaD:31 |
-| test.go:308:2:308:5 | definition of bMap | test.go:311:21:311:24 | bMap | provenance |  |
-| test.go:308:2:308:5 | definition of bMap | test.go:312:21:312:24 | bMap | provenance |  |
 | test.go:309:15:309:36 | call to GetString | test.go:310:22:310:30 | untrusted | provenance | Src:MaD:17  |
-| test.go:310:22:310:30 | untrusted | test.go:308:2:308:5 | definition of bMap | provenance | MaD:34 |
+| test.go:310:2:310:5 | bMap [postupdate] | test.go:311:21:311:24 | bMap | provenance |  |
+| test.go:310:2:310:5 | bMap [postupdate] | test.go:312:21:312:24 | bMap | provenance |  |
+| test.go:310:22:310:30 | untrusted | test.go:310:2:310:5 | bMap [postupdate] | provenance | MaD:34 |
 | test.go:311:21:311:24 | bMap | test.go:311:21:311:39 | call to Get | provenance | MaD:32 |
 | test.go:311:21:311:39 | call to Get | test.go:311:21:311:48 | type assertion | provenance |  |
 | test.go:312:21:312:24 | bMap | test.go:312:21:312:32 | call to Items | provenance | MaD:33 |
@@ -197,7 +197,7 @@ models
 | 40 | Summary: group:beego; ; false; Substr; ; ; Argument[0]; ReturnValue; taint; manual |
 | 41 | Summary: io/ioutil; ; false; ReadAll; ; ; Argument[0]; ReturnValue[0]; taint; manual |
 nodes
-| test.go:33:6:33:10 | definition of bound | semmle.label | definition of bound |
+| test.go:34:13:34:17 | bound [postupdate] | semmle.label | bound [postupdate] |
 | test.go:35:13:35:30 | type conversion | semmle.label | type conversion |
 | test.go:36:13:36:27 | type conversion | semmle.label | type conversion |
 | test.go:37:13:37:29 | type conversion | semmle.label | type conversion |
@@ -249,8 +249,8 @@ nodes
 | test.go:205:14:205:59 | type conversion | semmle.label | type conversion |
 | test.go:205:21:205:58 | call to Substr | semmle.label | call to Substr |
 | test.go:205:34:205:51 | type assertion | semmle.label | type assertion |
-| test.go:207:6:207:6 | definition of s | semmle.label | definition of s |
 | test.go:208:18:208:33 | selection of Form | semmle.label | selection of Form |
+| test.go:208:36:208:36 | s [postupdate] | semmle.label | s [postupdate] |
 | test.go:209:14:209:28 | type conversion | semmle.label | type conversion |
 | test.go:223:2:223:34 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:223:2:223:34 | ... := ...[1] | semmle.label | ... := ...[1] |
@@ -266,7 +266,7 @@ nodes
 | test.go:235:14:235:26 | type conversion | semmle.label | type conversion |
 | test.go:237:9:237:17 | call to Input | semmle.label | call to Input |
 | test.go:238:14:238:27 | type conversion | semmle.label | type conversion |
-| test.go:240:6:240:8 | definition of str | semmle.label | definition of str |
+| test.go:241:14:241:16 | str [postupdate] | semmle.label | str [postupdate] |
 | test.go:242:14:242:30 | type conversion | semmle.label | type conversion |
 | test.go:246:15:246:36 | call to GetString | semmle.label | call to GetString |
 | test.go:249:21:249:29 | untrusted | semmle.label | untrusted |
@@ -277,7 +277,7 @@ nodes
 | test.go:270:55:270:84 | type conversion | semmle.label | type conversion |
 | test.go:270:62:270:83 | call to GetCookie | semmle.label | call to GetCookie |
 | test.go:275:2:275:40 | ... := ...[0] | semmle.label | ... := ...[0] |
-| test.go:276:2:276:13 | definition of genericFiles [array] | semmle.label | definition of genericFiles [array] |
+| test.go:278:3:278:14 | genericFiles [postupdate] [array] | semmle.label | genericFiles [postupdate] [array] |
 | test.go:278:21:278:28 | index expression | semmle.label | index expression |
 | test.go:283:21:283:61 | call to GetDisplayString | semmle.label | call to GetDisplayString |
 | test.go:283:44:283:60 | selection of Filename | semmle.label | selection of Filename |
@@ -321,8 +321,8 @@ nodes
 | test.go:303:21:303:51 | call to SliceUnique | semmle.label | call to SliceUnique |
 | test.go:303:21:303:87 | selection of Filename | semmle.label | selection of Filename |
 | test.go:303:39:303:50 | genericFiles | semmle.label | genericFiles |
-| test.go:308:2:308:5 | definition of bMap | semmle.label | definition of bMap |
 | test.go:309:15:309:36 | call to GetString | semmle.label | call to GetString |
+| test.go:310:2:310:5 | bMap [postupdate] | semmle.label | bMap [postupdate] |
 | test.go:310:22:310:30 | untrusted | semmle.label | untrusted |
 | test.go:311:21:311:24 | bMap | semmle.label | bMap |
 | test.go:311:21:311:39 | call to Get | semmle.label | call to Get |

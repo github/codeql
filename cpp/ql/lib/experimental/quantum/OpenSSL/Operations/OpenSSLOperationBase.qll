@@ -1,6 +1,6 @@
 private import experimental.quantum.Language
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
-import semmle.code.cpp.dataflow.new.DataFlow
+import semmle.code.cpp.dataflow.new.TaintTracking
 // Importing these intializers here to ensure the are part of any model that is
 // using OpenSslOperationBase. This further ensures that initializers are tied to opeartions
 // even if only importing the operation by itself.
@@ -58,7 +58,11 @@ newtype TIOType =
   // For OSSL_PARAM and OSSL_LIB_CTX use of OsslParamIO and OsslLibContextIO
   ContextIO() or
   DigestIO() or
+  // For OAEP and MGF1 hashes, there is a special IO type for these hashes
+  // it is recommended to set the most explicit type known, not both
   HashAlgorithmIO() or
+  HashAlgorithmOaepIO() or
+  HashAlgorithmMgf1IO() or
   IVorNonceIO() or
   KeyIO() or
   KeyOperationSubtypeIO() or
@@ -71,11 +75,13 @@ newtype TIOType =
   PaddingAlgorithmIO() or
   // Plaintext also includes a message for digest, signature, verification, and mac generation
   PlaintextIO() or
+  PlaintextSizeIO() or
   PrimaryAlgorithmIO() or
   RandomSourceIO() or
   SaltLengthIO() or
   SeedIO() or
-  SignatureIO()
+  SignatureIO() or
+  SignatureSizeIO()
 
 private string ioTypeToString(TIOType t) {
   t = CiphertextIO() and result = "CiphertextIO"
@@ -104,6 +110,8 @@ private string ioTypeToString(TIOType t) {
   or
   t = PlaintextIO() and result = "PlaintextIO"
   or
+  t = PlaintextSizeIO() and result = "PlaintextSizeIO"
+  or
   t = PrimaryAlgorithmIO() and result = "PrimaryAlgorithmIO"
   or
   t = RandomSourceIO() and result = "RandomSourceIO"
@@ -113,6 +121,8 @@ private string ioTypeToString(TIOType t) {
   t = SeedIO() and result = "SeedIO"
   or
   t = SignatureIO() and result = "SignatureIO"
+  or
+  t = SignatureSizeIO() and result = "SignatureSizeIO"
 }
 
 class IOType extends TIOType {
@@ -123,13 +133,13 @@ class IOType extends TIOType {
   }
 }
 
-//TODO: add more initializers as needed
 /**
  * The type of step in an `OperationStep`.
  * - `ContextCreationStep`: the creation of a context from an algorithm or key.
  *                       for example `EVP_MD_CTX_create(EVP_sha256())` or `EVP_PKEY_CTX_new(pkey, NULL)`
- * - `InitializerStep`: the initialization of an operation through some sort of shared/accumulated context
- *                       for example `EVP_DigestInit_ex(ctx, EVP_sha256(), NULL)`
+ * - `InitializerStep`: the initialization of an operation or state through some sort of shared/accumulated context
+ *                       for example `EVP_DigestInit_ex(ctx, EVP_sha256(), NULL)`, may also be used for pass through
+ *                       configuration, for example `EVP_PKEY_get1_RSA(key)` where a pkey is input into an RSA key return.
  * - `UpdateStep`: any operation that has and update/final paradigm, the update represents an intermediate step in an operation,
  *                       such as `EVP_DigestUpdate(ctx, data, len)`
  * - `FinalStep`: an ultimate operation step. This may be an explicit 'final' in an update/final paradigm, but not necessarily.
@@ -189,7 +199,7 @@ abstract class OperationStep extends Call {
    */
   predicate flowsToOperationStep(OperationStep sink) {
     sink = this or
-    OperationStepFlow::flow(this.getAnOutput(), sink.getAnInput())
+    OperationStepCtxFlow::flow(this.getAnOutput(), [sink.getAnInput(), sink.getAnOutput()])
   }
 
   /**
@@ -198,7 +208,7 @@ abstract class OperationStep extends Call {
    */
   predicate flowsFromOperationStep(OperationStep source) {
     source = this or
-    OperationStepFlow::flow(source.getAnOutput(), this.getAnInput())
+    OperationStepCtxFlow::flow(source.getAnOutput(), [this.getAnInput(), this.getAnOutput()])
   }
 
   /**
@@ -220,10 +230,13 @@ abstract class OperationStep extends Call {
     result.setsValue(type) and
     (
       // Do not consider a 'reset' to occur on updates
+      // but only for resets that are part of the same update/finalize
+      // progression (e.g., an update for an unrelated finalize is ignored)
       result.getStepType() = UpdateStep()
       or
       not exists(OperationStep reset |
         result != reset and
+        result != this and
         reset.setsValue(type) and
         reset.flowsToOperationStep(this) and
         result.flowsToOperationStep(reset)
@@ -245,8 +258,11 @@ abstract class OperationStep extends Call {
 
   /**
    * Gets an AVC for the primary algorithm for this operation.
-   * A primary algorithm is an AVC that flows to a ctx input directly or
-   * an AVC that flows to a primary algorithm input directly.
+   * A primary algorithm is an AVC that either:
+   * 0) `this` is an AVC (consider direct algorithm consumers like RSA_sign (algorithm is implicit) or EVP_PKEY_new_mac_key (NID is first arg) )
+   * 1) flows to a ctx input directly or
+   * 2) flows to a primary algorithm input directly or
+   * 3) flows to a key input directly (algorithm held in a key will be considered primary)
    * See `AvcContextCreationStep` for details about resetting scenarios.
    * Gets the first OperationStep an AVC flows to. If a context input,
    * the AVC is considered primary.
@@ -254,19 +270,24 @@ abstract class OperationStep extends Call {
    * operation step (dominating operation step, see `getDominatingInitializersToStep`).
    */
   Crypto::AlgorithmValueConsumer getPrimaryAlgorithmValueConsumer() {
-    exists(DataFlow::Node src, DataFlow::Node sink, IOType t, OperationStep avcSucc |
-      (t = PrimaryAlgorithmIO() or t = ContextIO()) and
-      avcSucc.flowsToOperationStep(this) and
-      src.asExpr() = result and
-      sink = avcSucc.getInput(t) and
+    this instanceof Crypto::AlgorithmValueConsumer and result = this
+    or
+    exists(
+      DataFlow::Node src, DataFlow::Node sink, IOType srcIntype, OperationStep avcConsumingPred
+    |
+      (srcIntype = ContextIO() or srcIntype = PrimaryAlgorithmIO() or srcIntype = KeyIO()) and
+      avcConsumingPred.flowsToOperationStep(this) and
+      src.asIndirectExpr() = result and
+      sink = avcConsumingPred.getInput(srcIntype) and
       AvcToOperationStepFlow::flow(src, sink) and
       (
-        // Case 1: the avcSucc step is a dominating initialization step
-        t = PrimaryAlgorithmIO() and
-        avcSucc = this.getDominatingInitializersToStep(PrimaryAlgorithmIO())
+        // Case 1: the avcConsumingPred step is a dominating primary algorithm initialization step
+        // or dominating key initialization step
+        (srcIntype = PrimaryAlgorithmIO() or srcIntype = KeyIO()) and
+        avcConsumingPred = this.getDominatingInitializersToStep(srcIntype)
         or
-        // Case 2: the succ is a context input (any avcSucc is valid)
-        t = ContextIO()
+        // Case 2: the pred is a context input
+        srcIntype = ContextIO()
       )
     )
   }
@@ -277,9 +298,11 @@ abstract class OperationStep extends Call {
    * TODO: generalize to use this for `getPrimaryAlgorithmValueConsumer`
    */
   Crypto::AlgorithmValueConsumer getAlgorithmValueConsumerForInput(IOType type) {
+    result = this and this.setsValue(type)
+    or
     exists(DataFlow::Node src, DataFlow::Node sink |
       AvcToOperationStepFlow::flow(src, sink) and
-      src.asExpr() = result and
+      src.asIndirectExpr() = result and
       sink = this.getInput(type)
     )
   }
@@ -357,7 +380,7 @@ private class CtxCopyOutArgCall extends CtxPassThroughCall {
 
   CtxCopyOutArgCall() {
     this.getTarget().getName().toLowerCase().matches("%copy%") and
-    n1.asExpr() = this.getAnArgument() and
+    n1.asIndirectExpr() = this.getAnArgument() and
     n1.getType() instanceof CtxType and
     n2.asDefiningArgument() = this.getAnArgument() and
     n2.getType() instanceof CtxType and
@@ -378,16 +401,18 @@ private class CtxCopyReturnCall extends CtxPassThroughCall, CtxPointerExpr {
 
   CtxCopyReturnCall() {
     this.getTarget().getName().toLowerCase().matches("%dup%") and
-    n1.asExpr() = this.getAnArgument() and
+    n1.asIndirectExpr() = this.getAnArgument() and
     n1.getType() instanceof CtxType
   }
 
   override DataFlow::Node getNode1() { result = n1 }
 
-  override DataFlow::Node getNode2() { result.asExpr() = this }
+  override DataFlow::Node getNode2() { result.asIndirectExpr() = this }
 }
 
-// TODO: is this still needed?
+// TODO: is this still needed? It appears to be (tests fail without it) but
+// I don't know why as EVP_PKEY_paramgen is an operation step and we pass through
+// operation steps already.
 /**
  * A call to `EVP_PKEY_paramgen` acts as a kind of pass through.
  * It's output pkey is eventually used in a new operation generating
@@ -401,34 +426,10 @@ private class CtxParamGenCall extends CtxPassThroughCall {
 
   CtxParamGenCall() {
     this.getTarget().getName() = "EVP_PKEY_paramgen" and
-    n1.asExpr() = this.getArgument(0) and
-    (
-      n2.asExpr() = this.getArgument(1)
-      or
-      n2.asDefiningArgument() = this.getArgument(1)
-    )
-  }
-
-  override DataFlow::Node getNode1() { result = n1 }
-
-  override DataFlow::Node getNode2() { result = n2 }
-}
-
-//TODO: I am not sure CallArgToCtxRet is needed anymore
-/**
- * If the current node is an argument to a function
- * that returns a pointer type, immediately flow through.
- * NOTE: this passthrough is required if we allow
- * intermediate steps to go into variables that are not a CTX type.
- * See for example `CtxParamGenCall`.
- */
-private class CallArgToCtxRet extends CtxPassThroughCall, CtxPointerExpr {
-  DataFlow::Node n1;
-  DataFlow::Node n2;
-
-  CallArgToCtxRet() {
-    this.getAnArgument() = n1.asExpr() and
-    n2.asExpr() = this
+    //Arg 0 is *ctx
+    n1.asIndirectExpr() = this.getArgument(0) and
+    //Arg 1 is **pkey
+    n2.asDefiningArgument() = this.getArgument(1)
   }
 
   override DataFlow::Node getNode1() { result = n1 }
@@ -439,7 +440,7 @@ private class CallArgToCtxRet extends CtxPassThroughCall, CtxPointerExpr {
 /**
  * A flow configuration from any non-final `OperationStep` to any other `OperationStep`.
  */
-module OperationStepFlowConfig implements DataFlow::ConfigSig {
+module OperationStepCtxFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     exists(OperationStep s |
       s.getAnOutput() = source or
@@ -455,22 +456,39 @@ module OperationStepFlowConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) {
-    exists(CtxClearCall c | c.getAnArgument() = node.asExpr())
+    exists(CtxClearCall c | c.getAnArgument() = [node.asExpr(), node.asIndirectExpr()])
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    node1.(AdditionalFlowInputStep).getOutput() = node2
+    or
     exists(CtxPassThroughCall c | c.getNode1() = node1 and c.getNode2() = node2)
     or
-    // Flow out through all outputs from an operation step if more than one output
-    // is defined.
-    exists(OperationStep s | s.getAnInput() = node1 and s.getAnOutput() = node2)
+    // Flow only through context and key inputs and outputs
+    // keys and context generally hold unifying context that link multiple steps
+    // Flow only out of finalize operations through key outputs, otherwise stop at final operations
+    exists(OperationStep s, IOType inType, IOType outType |
+      (s.getStepType() = FinalStep() implies outType = KeyIO()) and
+      (
+        inType = ContextIO()
+        or
+        inType = KeyIO()
+      ) and
+      (
+        outType = ContextIO()
+        or
+        outType = KeyIO()
+      ) and
+      s.getInput(inType) = node1 and
+      s.getOutput(outType) = node2
+    )
     // TODO: consideration for additional alises defined as follows:
     // if an output from an operation step itself flows from the output of another operation step
     // then the source of that flow's outputs (all of them) are potential aliases
   }
 }
 
-module OperationStepFlow = DataFlow::Global<OperationStepFlowConfig>;
+module OperationStepCtxFlow = TaintTracking::Global<OperationStepCtxFlowConfig>;
 
 /**
  * A flow from AVC to the first `OperationStep` the AVC reaches as an input.
@@ -483,7 +501,7 @@ module AvcToOperationStepFlowConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { exists(OperationStep s | s.getAnInput() = sink) }
 
   predicate isBarrier(DataFlow::Node node) {
-    exists(CtxClearCall c | c.getAnArgument() = node.asExpr())
+    exists(CtxClearCall c | c.getAnArgument() = [node.asExpr(), node.asIndirectExpr()])
   }
 
   /**
@@ -496,7 +514,7 @@ module AvcToOperationStepFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module AvcToOperationStepFlow = DataFlow::Global<AvcToOperationStepFlowConfig>;
+module AvcToOperationStepFlow = TaintTracking::Global<AvcToOperationStepFlowConfig>;
 
 module EncValToInitEncArgConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr().getValue().toInt() in [0, 1] }
@@ -506,7 +524,7 @@ module EncValToInitEncArgConfig implements DataFlow::ConfigSig {
   }
 }
 
-module EncValToInitEncArgFlow = DataFlow::Global<EncValToInitEncArgConfig>;
+module EncValToInitEncArgFlow = TaintTracking::Global<EncValToInitEncArgConfig>;
 
 private Crypto::KeyOperationSubtype intToCipherOperationSubtype(int i) {
   i = 0 and

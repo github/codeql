@@ -1,3 +1,7 @@
+## 5.2.5
+
+No user-facing changes.
+
 ## 5.2.4
 
 No user-facing changes.

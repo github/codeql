@@ -193,7 +193,7 @@ information on cartesian products, see ":ref:`Troubleshooting query performance
 <troubleshooting-query-performance>`".
 
 It is possible to enable warnings about implicit this receivers for `CodeQL packs
-<https://docs.github.com/en/code-security/codeql-cli/codeql-cli-reference/about-codeql-packs#warnonimplicitthis>`__
+<https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/publishing-and-using-codeql-packs#warnonimplicitthis>`__
 through the ``warnOnImplicitThis`` property.
 
 .. _parenthesized-formulas:
