@@ -1580,6 +1580,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       result = instance.getKeySizeConsumer().getConsumer().getAKnownSourceNode()
     }
 
+    ConsumerInputDataFlowNode getKeySizeConsumer() { result = instance.getKeySizeConsumer() }
+
     /**
      * Gets the key artifact produced by this operation.
      */
@@ -1753,11 +1755,19 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
 
     GenericSourceNode getIterationCount() {
-      result.asElement() = kdfInstance.getIterationCountConsumer().getConsumer().getAGenericSource()
+      result.asElement() = this.getIterationCountConsumer().getConsumer().getAGenericSource()
     }
 
     GenericSourceNode getOutputKeySize() {
-      result.asElement() = kdfInstance.getOutputKeySizeConsumer().getConsumer().getAGenericSource()
+      result.asElement() = this.getOutputKeySizeConsumer().getConsumer().getAGenericSource()
+    }
+
+    ConsumerInputDataFlowNode getIterationCountConsumer() {
+      result = kdfInstance.getIterationCountConsumer()
+    }
+
+    ConsumerInputDataFlowNode getOutputKeySizeConsumer() {
+      result = kdfInstance.getOutputKeySizeConsumer()
     }
 
     override predicate isCandidateAlgorithmNode(AlgorithmNode node) {
