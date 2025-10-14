@@ -1,10 +1,11 @@
 /**
  * @name Sensitive cookies without the HttpOnly response header set
- * @description Sensitive cookies without the 'HttpOnly' flag set leaves session cookies vulnerable to
+ * @description A sensitive cookie without the 'HttpOnly' flag set may be vulnerable to
  *              an XSS attack.
  * @kind path-problem
  * @problem.severity warning
- * @precision medium
+ * @precision high
+ * @security-severity 5.0
  * @id java/sensitive-cookie-not-httponly
  * @tags security
  *       external/cwe/cwe-1004
@@ -101,8 +102,9 @@ predicate removesCookie(MethodCall ma) {
 }
 
 /**
- * A taint configuration tracking flow of a method that sets the `HttpOnly` flag,
- * or one that removes a cookie, to a `ServletResponse.addCookie` call.
+ * A taint configuration tracking the flow of a cookie that has had the
+ * `HttpOnly` flag set, or has been removed, to a `ServletResponse.addCookie`
+ * call.
  */
 module SetHttpOnlyOrRemovesCookieToAddCookieConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
@@ -120,8 +122,8 @@ module SetHttpOnlyOrRemovesCookieToAddCookieFlow =
   TaintTracking::Global<SetHttpOnlyOrRemovesCookieToAddCookieConfig>;
 
 /**
- * A cookie that is added to an HTTP response and which doesn't have `httpOnly` set, used as a sink
- * in `MissingHttpOnlyConfiguration`.
+ * A cookie that is added to an HTTP response and which doesn't have `HttpOnly` set, used as a sink
+ * in `MissingHttpOnlyConfig`.
  */
 class CookieResponseWithoutHttpOnlySink extends DataFlow::ExprNode {
   CookieResponseWithoutHttpOnlySink() {
@@ -157,9 +159,11 @@ predicate setsHttpOnlyInNewCookie(ClassInstanceExpr cie) {
 
 /**
  * A taint configuration tracking flow from a sensitive cookie without the `HttpOnly` flag
- * set to its HTTP response.
+ * set to an HTTP response.
+ *
  * Tracks string literals containing sensitive names (`SensitiveCookieNameExpr`), to an `addCookie` call (as a `Cookie` object)
  * or an `addHeader` call (as a string) (`CookieResponseWithoutHttpOnlySink`).
+ *
  * Passes through `Cookie` constructors and `toString` calls.
  */
 module MissingHttpOnlyConfig implements DataFlow::ConfigSig {
@@ -169,7 +173,7 @@ module MissingHttpOnlyConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) {
     // JAX-RS's `new NewCookie("session-access-key", accessKey, "/", null, null, 0, true, true)` and similar
-    // Cookie constructors, but barriers to considering the flow of the sensitive name, as httponly flag is set.
+    // Cookie constructors that set the `HttpOnly` flag are considered barriers to the flow of sensitive names.
     setsHttpOnlyInNewCookie(node.asExpr())
   }
 

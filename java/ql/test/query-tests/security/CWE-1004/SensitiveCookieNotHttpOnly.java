@@ -16,7 +16,7 @@ class SensitiveCookieNotHttpOnly {
         jwtCookie.setPath("/");
         jwtCookie.setMaxAge(3600*24*7);
         jwtCookie.setHttpOnly(true);
-        response.addCookie(jwtCookie); 
+        response.addCookie(jwtCookie);
     }
 
     // BAD - Tests adding a sensitive cookie without the `HttpOnly` flag set.
@@ -29,7 +29,7 @@ class SensitiveCookieNotHttpOnly {
         jwtCookie.setMaxAge(3600*24*7);
         userIdCookie.setMaxAge(3600*24*7);
         response.addCookie(jwtCookie); // $Alert
-        response.addCookie(userIdCookie); 
+        response.addCookie(userIdCookie);
     }
 
     // GOOD - Tests set a sensitive cookie header with the `HttpOnly` flag set.
