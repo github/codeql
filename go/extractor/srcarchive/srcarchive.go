@@ -12,16 +12,11 @@ import (
 var pathTransformer *ProjectLayout
 
 func init() {
-	pt := os.Getenv("SEMMLE_PATH_TRANSFORMER")
-	if pt != "" {
-		ptf, err := os.Open(pt)
-		if err != nil {
-			log.Fatalf("Unable to open path transformer %s: %s.\n", pt, err.Error())
-		}
-		pathTransformer, err = LoadProjectLayout(ptf)
-		if err != nil {
-			log.Fatalf("Unable to initialize path transformer: %s.\n", err.Error())
-		}
+	pt, err := LoadProjectLayoutFromEnv()
+	if err == nil {
+		pathTransformer = pt
+	} else {
+		log.Fatalf("Unable to load path transformer: %s.\n", err.Error())
 	}
 }
 
@@ -69,7 +64,7 @@ func srcArchive() (string, error) {
 	return srcArchive, nil
 }
 
-// TransformPath applies the transformations specified by `SEMMLE_PATH_TRANSFORMER` (if any) to the
+// TransformPath applies the transformations specified by `CODEQL_PATH_TRANSFORMER` (if any) to the
 // given path
 func TransformPath(path string) string {
 	if pathTransformer != nil {
