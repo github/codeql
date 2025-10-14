@@ -40,8 +40,6 @@ module ConstantPasswordConfig implements DataFlow::ConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
-
-  Location getASelectedSourceLocation(DataFlow::Node sink) { none() }
 }
 
 module ConstantPasswordFlow = TaintTracking::Global<ConstantPasswordConfig>;
