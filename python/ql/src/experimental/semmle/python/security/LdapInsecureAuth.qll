@@ -103,8 +103,6 @@ private module LdapInsecureAuthConfig implements DataFlow::ConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
-
-  Location getASelectedSourceLocation(DataFlow::Node sink) { none() }
 }
 
 /** Global taint-tracking for detecting "LDAP insecure authentications" vulnerabilities. */
