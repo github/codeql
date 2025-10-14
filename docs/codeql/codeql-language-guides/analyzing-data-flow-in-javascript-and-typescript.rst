@@ -581,6 +581,8 @@ Here is the answer to exercise 4 above, converted into a path query:
    where HardCodedTagNameFlow::flowPath(source, sink)
    select sink.getNode(), source, sink, "Hard-coded tag name $@.", source, "here"
 
+For more information, see "`Creating path queries <https://codeql.github.com/docs/writing-codeql-queries/creating-path-queries/>`__".
+
 Further reading
 ---------------
 

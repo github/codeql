@@ -406,6 +406,8 @@ Here is the answer to exercise 4 above, converted into a path query:
    where GetenvToURLFlow::flowPath(src, sink)
    select src.getNode(), src, sink, "This environment variable constructs a URL $@.", sink, "here"
 
+For more information, see "`Creating path queries <https://codeql.github.com/docs/writing-codeql-queries/creating-path-queries/>`__".
+
 Further reading
 ---------------
 
