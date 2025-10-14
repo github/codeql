@@ -6,7 +6,7 @@
 
 ### New Features
 
-* The C/C++ "build-mode: none" support is now General Availability (GA).
+* The C/C++ `build-mode: none` support is now General Availability (GA).
 
 ## 5.6.1
 
