@@ -466,8 +466,10 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * `observeDiffInformedIncrementalMode`). By default, this is the location
      * of the source itself, but this predicate should include any locations
      * that are reported as the primary-location of the query or as an
-     * additional location ("$@" interpolation). For a query that doesn't
-     * report the source at all, this predicate can be `none()`.
+     * additional location ("$@" interpolation). Queries with `@kind path-problem`
+     * that override this predicate should also return the location of the source
+     * itself. For a query that doesn't report the source at all, this predicate
+     * should be `none()`.
      */
     default Location getASelectedSourceLocation(Node source) { result = source.getLocation() }
 
@@ -477,8 +479,10 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * `observeDiffInformedIncrementalMode`). By default, this is the location
      * of the sink itself, but this predicate should include any locations
      * that are reported as the primary-location of the query or as an
-     * additional location ("$@" interpolation). For a query that doesn't
-     * report the sink at all, this predicate can be `none()`.
+     * additional location ("$@" interpolation). Queries with `@kind path-problem`
+     * that override this predicate should also return the location of the sink
+     * itself. For a query that doesn't report the sink at all, this predicate
+     * should be `none()`.
      */
     default Location getASelectedSinkLocation(Node sink) { result = sink.getLocation() }
   }
@@ -615,8 +619,10 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * `observeDiffInformedIncrementalMode`). By default, this is the location
      * of the source itself, but this predicate should include any locations
      * that are reported as the primary-location of the query or as an
-     * additional location ("$@" interpolation). For a query that doesn't
-     * report the source at all, this predicate can be `none()`.
+     * additional location ("$@" interpolation). Queries with `@kind path-problem`
+     * that override this predicate should also return the location of the source
+     * itself. For a query that doesn't report the source at all, this predicate
+     * should be `none()`.
      */
     default Location getASelectedSourceLocation(Node source) { result = source.getLocation() }
 
@@ -626,8 +632,10 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * `observeDiffInformedIncrementalMode`). By default, this is the location
      * of the sink itself, but this predicate should include any locations
      * that are reported as the primary-location of the query or as an
-     * additional location ("$@" interpolation). For a query that doesn't
-     * report the sink at all, this predicate can be `none()`.
+     * additional location ("$@" interpolation). Queries with `@kind path-problem`
+     * that override this predicate should also return the location of the sink
+     * itself. For a query that doesn't report the sink at all, this predicate
+     * should be `none()`.
      */
     default Location getASelectedSinkLocation(Node sink) { result = sink.getLocation() }
   }
