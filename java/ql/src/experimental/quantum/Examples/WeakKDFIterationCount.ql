@@ -4,7 +4,6 @@
  * @id java/quantum/weak-kdf-iteration-count
  * @kind path-problem
  * @problem.severity error
- * @precision high
  * @tags quantum
  *       experimental
  */
