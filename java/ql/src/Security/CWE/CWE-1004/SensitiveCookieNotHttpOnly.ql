@@ -1,13 +1,13 @@
 /**
  * @name Sensitive cookies without the HttpOnly response header set
- * @description Sensitive cookies without the 'HttpOnly' flag set leaves session cookies vulnerable to
+ * @description A sensitive cookie without the 'HttpOnly' flag set may be vulnerable to
  *              an XSS attack.
  * @kind path-problem
  * @problem.severity warning
- * @precision medium
+ * @precision high
+ * @security-severity 5.0
  * @id java/sensitive-cookie-not-httponly
  * @tags security
- *       experimental
  *       external/cwe/cwe-1004
  */
 
@@ -15,16 +15,15 @@
  * Sketch of the structure of this query: we track cookie names that appear to be sensitive
  * (e.g. `session` or `token`) to a `ServletResponse.addHeader(...)` or `.addCookie(...)`
  * method that does not set the `httpOnly` flag. Subsidiary configurations
- * `MatchesHttpOnlyConfiguration` and `SetHttpOnlyInCookieConfiguration` are used to establish
+ * `MatchesHttpOnlyToRawHeaderConfig` and `SetHttpOnlyInCookieConfig` are used to establish
  * when the `httpOnly` flag is likely to have been set, before configuration
- * `MissingHttpOnlyConfiguration` establishes that a non-`httpOnly` cookie has a sensitive-seeming name.
+ * `MissingHttpOnlyConfig` establishes that a non-`httpOnly` cookie has a sensitive-seeming name.
  */
 
 import java
 import semmle.code.java.dataflow.FlowSteps
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.dataflow.TaintTracking
-import MissingHttpOnlyFlow::PathGraph
 
 /** Gets a regular expression for matching common names of sensitive cookies. */
 string getSensitiveCookieNameRegex() { result = "(?i).*(auth|session|token|key|credential).*" }
@@ -50,8 +49,8 @@ class SensitiveCookieNameExpr extends Expr {
 }
 
 /** A method call that sets a `Set-Cookie` header. */
-class SetCookieMethodCall extends MethodCall {
-  SetCookieMethodCall() {
+class SetCookieRawHeaderMethodCall extends MethodCall {
+  SetCookieRawHeaderMethodCall() {
     (
       this.getMethod() instanceof ResponseAddHeaderMethod or
       this.getMethod() instanceof ResponseSetHeaderMethod
@@ -62,19 +61,19 @@ class SetCookieMethodCall extends MethodCall {
 
 /**
  * A taint configuration tracking flow from the text `httponly` to argument 1 of
- * `SetCookieMethodCall`.
+ * `SetCookieRawHeaderMethodCall`.
  */
-module MatchesHttpOnlyConfig implements DataFlow::ConfigSig {
+module MatchesHttpOnlyToRawHeaderConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source.asExpr().(CompileTimeConstantExpr).getStringValue().toLowerCase().matches("%httponly%")
   }
 
   predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(SetCookieMethodCall ma).getArgument(1)
+    sink.asExpr() = any(SetCookieRawHeaderMethodCall ma).getArgument(1)
   }
 }
 
-module MatchesHttpOnlyFlow = TaintTracking::Global<MatchesHttpOnlyConfig>;
+module MatchesHttpOnlyToRawHeaderFlow = TaintTracking::Global<MatchesHttpOnlyToRawHeaderConfig>;
 
 /** A class descended from `javax.servlet.http.Cookie`. */
 class CookieClass extends RefType {
@@ -103,29 +102,11 @@ predicate removesCookie(MethodCall ma) {
 }
 
 /**
- * Holds if the MethodCall `ma` is a test method call indicated by:
- *    a) in a test directory such as `src/test/java`
- *    b) in a test package whose name has the word `test`
- *    c) in a test class whose name has the word `test`
- *    d) in a test class implementing a test framework such as JUnit or TestNG
+ * A taint configuration tracking the flow of a cookie that has had the
+ * `HttpOnly` flag set, or has been removed, to a `ServletResponse.addCookie`
+ * call.
  */
-predicate isTestMethod(MethodCall ma) {
-  exists(Method m |
-    m = ma.getEnclosingCallable() and
-    (
-      m.getDeclaringType().getName().toLowerCase().matches("%test%") or // Simple check to exclude test classes to reduce FPs
-      m.getDeclaringType().getPackage().getName().toLowerCase().matches("%test%") or // Simple check to exclude classes in test packages to reduce FPs
-      exists(m.getLocation().getFile().getAbsolutePath().indexOf("/src/test/java")) or //  Match test directory structure of build tools like maven
-      m instanceof TestMethod // Test method of a test case implementing a test framework such as JUnit or TestNG
-    )
-  )
-}
-
-/**
- * A taint configuration tracking flow of a method that sets the `HttpOnly` flag,
- * or one that removes a cookie, to a `ServletResponse.addCookie` call.
- */
-module SetHttpOnlyOrRemovesCookieConfig implements DataFlow::ConfigSig {
+module SetHttpOnlyOrRemovesCookieToAddCookieConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source.asExpr() =
       any(MethodCall ma | setsCookieHttpOnly(ma) or removesCookie(ma)).getQualifier()
@@ -137,25 +118,25 @@ module SetHttpOnlyOrRemovesCookieConfig implements DataFlow::ConfigSig {
   }
 }
 
-module SetHttpOnlyOrRemovesCookieFlow = TaintTracking::Global<SetHttpOnlyOrRemovesCookieConfig>;
+module SetHttpOnlyOrRemovesCookieToAddCookieFlow =
+  TaintTracking::Global<SetHttpOnlyOrRemovesCookieToAddCookieConfig>;
 
 /**
- * A cookie that is added to an HTTP response and which doesn't have `httpOnly` set, used as a sink
- * in `MissingHttpOnlyConfiguration`.
+ * A cookie that is added to an HTTP response and which doesn't have `HttpOnly` set, used as a sink
+ * in `MissingHttpOnlyConfig`.
  */
-class CookieResponseSink extends DataFlow::ExprNode {
-  CookieResponseSink() {
+class CookieResponseWithoutHttpOnlySink extends DataFlow::ExprNode {
+  CookieResponseWithoutHttpOnlySink() {
     exists(MethodCall ma |
       (
         ma.getMethod() instanceof ResponseAddCookieMethod and
         this.getExpr() = ma.getArgument(0) and
-        not SetHttpOnlyOrRemovesCookieFlow::flowTo(this)
+        not SetHttpOnlyOrRemovesCookieToAddCookieFlow::flowTo(this)
         or
-        ma instanceof SetCookieMethodCall and
+        ma instanceof SetCookieRawHeaderMethodCall and
         this.getExpr() = ma.getArgument(1) and
-        not MatchesHttpOnlyFlow::flowTo(this) // response.addHeader("Set-Cookie", "token=" +authId + ";HttpOnly;Secure")
-      ) and
-      not isTestMethod(ma) // Test class or method
+        not MatchesHttpOnlyToRawHeaderFlow::flowTo(this) // response.addHeader("Set-Cookie", "token=" +authId + ";HttpOnly;Secure")
+      )
     )
   }
 }
@@ -178,15 +159,21 @@ predicate setsHttpOnlyInNewCookie(ClassInstanceExpr cie) {
 
 /**
  * A taint configuration tracking flow from a sensitive cookie without the `HttpOnly` flag
- * set to its HTTP response.
+ * set to an HTTP response.
+ *
+ * Tracks string literals containing sensitive names (`SensitiveCookieNameExpr`), to an `addCookie` call (as a `Cookie` object)
+ * or an `addHeader` call (as a string) (`CookieResponseWithoutHttpOnlySink`).
+ *
+ * Passes through `Cookie` constructors and `toString` calls.
  */
 module MissingHttpOnlyConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr() instanceof SensitiveCookieNameExpr }
 
-  predicate isSink(DataFlow::Node sink) { sink instanceof CookieResponseSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof CookieResponseWithoutHttpOnlySink }
 
   predicate isBarrier(DataFlow::Node node) {
     // JAX-RS's `new NewCookie("session-access-key", accessKey, "/", null, null, 0, true, true)` and similar
+    // Cookie constructors that set the `HttpOnly` flag are considered barriers to the flow of sensitive names.
     setsHttpOnlyInNewCookie(node.asExpr())
   }
 
@@ -212,13 +199,8 @@ module MissingHttpOnlyConfig implements DataFlow::ConfigSig {
 
 module MissingHttpOnlyFlow = TaintTracking::Global<MissingHttpOnlyConfig>;
 
-deprecated query predicate problems(
-  DataFlow::Node sinkNode, MissingHttpOnlyFlow::PathNode source, MissingHttpOnlyFlow::PathNode sink,
-  string message1, DataFlow::Node sourceNode, string message2
-) {
-  MissingHttpOnlyFlow::flowPath(source, sink) and
-  sinkNode = sink.getNode() and
-  message1 = "$@ doesn't have the HttpOnly flag set." and
-  sourceNode = source.getNode() and
-  message2 = "This sensitive cookie"
-}
+import MissingHttpOnlyFlow::PathGraph
+
+from MissingHttpOnlyFlow::PathNode source, MissingHttpOnlyFlow::PathNode sink
+where MissingHttpOnlyFlow::flowPath(source, sink)
+select sink, source, sink, "$@ doesn't have the HttpOnly flag set.", source, "This sensitive cookie"
