@@ -30,9 +30,9 @@ module CallTargetStats implements StatsSig {
 }
 
 module MacroCallTargetStats implements StatsSig {
-  int getNumberOfOk() { result = count(MacroCall c | c.hasMacroCallExpansion()) }
+  int getNumberOfOk() { result = count(MacroCall c | c.fromSource() and c.hasMacroCallExpansion()) }
 
-  additional predicate isNotOkCall(MacroCall c) { not c.hasMacroCallExpansion() }
+  additional predicate isNotOkCall(MacroCall c) { c.fromSource() and not c.hasMacroCallExpansion() }
 
   int getNumberOfNotOk() { result = count(MacroCall c | isNotOkCall(c)) }
 
