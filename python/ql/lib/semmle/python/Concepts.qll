@@ -12,6 +12,7 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Files
 private import semmle.python.Frameworks
 private import semmle.python.security.internal.EncryptionKeySizes
+private import semmle.python.dataflow.new.SensitiveDataSources
 private import codeql.threatmodels.ThreatModels
 private import codeql.concepts.ConceptsShared
 
@@ -1289,6 +1290,18 @@ module Http {
        * Gets the argument, if any, specifying the cookie value.
        */
       DataFlow::Node getValueArg() { result = super.getValueArg() }
+
+      /** Holds if the name of this cookie indicates it may contain sensitive information. */
+      predicate isSensitive() {
+        exists(DataFlow::Node name |
+          name = [this.getNameArg(), this.getHeaderArg()] and
+          (
+            DataFlow::localFlow(any(SensitiveDataSource src), name)
+            or
+            name = sensitiveLookupStringConst(_)
+          )
+        )
+      }
 
       /**
        * Holds if the `Secure` flag of the cookie is known to have a value of `b`.

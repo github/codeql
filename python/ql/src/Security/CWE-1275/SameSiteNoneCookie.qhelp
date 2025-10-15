@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Cookies with the <code>SameSite</code> attribute set to <code>'None'</code> will be sent with cross-origin requests. 
+This can sometimes allow for Cross-Site Request Forgery (CSRF) attacks, in which a third-party site could perform actions on behalf of a user, if the cookie is used for authentication.</p>
+</overview>
+
+<recommendation>
+<p>Set the <code>samesite</code> to <code>Lax</code> or <code>Strict</code>, or add <code>; SameSite=Lax;</code>, or
+<code>; SameSite=Strict;</code> to the cookie's raw header value. The default value in most cases is <code>Lax</code>.</p>
+</recommendation>
+
+<example>
+<p>In the following examples, the cases marked GOOD show secure cookie attributes being set; whereas in the case marked BAD they are not set.</p>
+<sample src="examples/InsecureCookie.py" />
+</example>
+
+<references>
+<li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">Set-Cookie</a>.</li>
+<li>OWASP: <a href="https://owasp.org/www-community/SameSite">SameSite</a>.</li>
+</references>
+
+</qhelp>
