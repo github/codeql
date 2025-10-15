@@ -33,6 +33,7 @@ private class StaticByteArrayCreation extends ArrayCreationExpr {
 }
 
 /** An expression that updates `array`. */
+overlay[local?]
 private class ArrayUpdate extends Expr {
   Expr array;
 

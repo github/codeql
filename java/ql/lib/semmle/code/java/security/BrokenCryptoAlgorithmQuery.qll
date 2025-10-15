@@ -12,6 +12,7 @@ private class ShortStringLiteral extends StringLiteral {
 /**
  * A string literal that may refer to a broken or risky cryptographic algorithm.
  */
+overlay[local?]
 class BrokenAlgoLiteral extends ShortStringLiteral {
   BrokenAlgoLiteral() {
     this.getValue().regexpMatch(getInsecureAlgorithmRegex()) and
