@@ -93,6 +93,18 @@ private float wideningUpperBounds(ArithmeticType t) {
   result = 1.0 / 0.0 // +Inf
 }
 
+/** Gets the widened lower bound for a given type and lower bound. */
+bindingset[type, lb]
+float widenLowerBound(Type type, float lb) {
+  result = max(float widenLB | widenLB = wideningLowerBounds(type) and widenLB <= lb | widenLB)
+}
+
+/** Gets the widened upper bound for a given type and upper bound. */
+bindingset[type, ub]
+float widenUpperBound(Type type, float ub) {
+  result = min(float widenUB | widenUB = wideningUpperBounds(type) and widenUB >= ub | widenUB)
+}
+
 /**
  * Gets the value of the expression `e`, if it is a constant.
  * This predicate also handles the case of constant variables initialized in different
@@ -656,12 +668,7 @@ private float getTruncatedLowerBounds(Expr expr) {
     then
       // Apply widening where we might get a combinatorial explosion.
       if isRecursiveBinary(expr)
-      then
-        result =
-          max(float widenLB |
-            widenLB = wideningLowerBounds(expr.getUnspecifiedType()) and
-            not widenLB > newLB
-          )
+      then result = widenLowerBound(expr.getUnspecifiedType(), newLB)
       else result = newLB
     else result = exprMinVal(expr)
   ) and
@@ -715,12 +722,7 @@ private float getTruncatedUpperBounds(Expr expr) {
         then
           // Apply widening where we might get a combinatorial explosion.
           if isRecursiveBinary(expr)
-          then
-            result =
-              min(float widenUB |
-                widenUB = wideningUpperBounds(expr.getUnspecifiedType()) and
-                not widenUB < newUB
-              )
+          then result = widenUpperBound(expr.getUnspecifiedType(), newUB)
           else result = newUB
         else result = exprMaxVal(expr)
       )
@@ -1815,13 +1817,7 @@ module SimpleRangeAnalysisInternal {
         // The new lower bound is from a recursive source, so we round
         // down to one of a limited set of values to prevent the
         // recursion from exploding.
-        result =
-          max(float widenLB |
-            widenLB = wideningLowerBounds(getVariableRangeType(v)) and
-            not widenLB > truncatedLB
-          |
-            widenLB
-          )
+        result = widenLowerBound(getVariableRangeType(v), truncatedLB)
       else result = truncatedLB
     )
     or
@@ -1845,13 +1841,7 @@ module SimpleRangeAnalysisInternal {
         // The new upper bound is from a recursive source, so we round
         // up to one of a fixed set of values to prevent the recursion
         // from exploding.
-        result =
-          min(float widenUB |
-            widenUB = wideningUpperBounds(getVariableRangeType(v)) and
-            not widenUB < truncatedUB
-          |
-            widenUB
-          )
+        result = widenUpperBound(getVariableRangeType(v), truncatedUB)
       else result = truncatedUB
     )
     or
