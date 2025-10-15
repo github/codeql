@@ -48,6 +48,7 @@ class NodeInStmtContainer extends Locatable, @node_in_stmt_container {
   /**
    * Gets the function or toplevel to which this node belongs.
    */
+  overlay[caller]
   pragma[inline]
   final StmtContainer getContainer() { result = getStmtContainer(this) }
 }

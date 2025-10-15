@@ -197,6 +197,7 @@ module Public {
    */
   class ContentSet extends TContentSet {
     /** Gets a content that may be stored into when storing into this set. */
+    overlay[caller?]
     pragma[inline]
     Content getAStoreContent() {
       result = this.asSingleton()

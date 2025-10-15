@@ -174,6 +174,7 @@ class AstNode extends @ast_node, NodeInStmtContainer {
    * The TypeScript compiler emits no code for ambient declarations, but they
    * can affect name resolution and type checking at compile-time.
    */
+  overlay[caller?]
   pragma[inline]
   predicate isAmbient() {
     this.isAmbientInternal()

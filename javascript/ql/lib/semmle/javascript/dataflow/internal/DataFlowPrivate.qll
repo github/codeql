@@ -762,6 +762,7 @@ class ContentApprox extends TContentApprox {
   }
 }
 
+overlay[global]
 pragma[inline]
 ContentApprox getContentApprox(Content c) {
   c instanceof MkPropertyContent and result = TApproxPropertyContent()

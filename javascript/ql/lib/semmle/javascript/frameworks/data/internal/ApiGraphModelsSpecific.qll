@@ -195,6 +195,7 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathTokenBase token) {
 }
 
 bindingset[node]
+overlay[caller?]
 pragma[inline_late]
 private API::Node getAGuardedRouteHandlerApprox(API::Node node) {
   // For now just get any routing node with the same root (i.e. the same web app), as
@@ -235,6 +236,7 @@ private predicate blockFuzzyCall(DataFlow::CallNode call) {
   isCommonBuiltinMethodName(call.getCalleeName())
 }
 
+overlay[caller?]
 pragma[inline]
 API::Node getAFuzzySuccessor(API::Node node) {
   result = node.getAMember() and
