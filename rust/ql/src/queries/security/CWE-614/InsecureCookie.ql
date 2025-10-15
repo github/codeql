@@ -74,7 +74,9 @@ module PartitionedCookieConfig implements DataFlow::ConfigSig {
     node instanceof Barrier
   }
 
-  predicate observeDiffInformedIncrementalMode() { any() }
+  predicate observeDiffInformedIncrementalMode() {
+    none() // only used negatively
+  }
 }
 
 module InsecureCookieFlow = TaintTracking::Global<InsecureCookieConfig>;
