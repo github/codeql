@@ -7,7 +7,6 @@
  *              These cases are ignored.
  * @kind problem
  * @problem.severity error
- * @precision high
  * @tags quantum
  *       experimental
  */

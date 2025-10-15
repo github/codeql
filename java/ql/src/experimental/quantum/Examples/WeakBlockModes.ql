@@ -4,7 +4,6 @@
  * @description An AES cipher is in use with an insecure block mode
  * @kind problem
  * @problem.severity error
- * @precision high
  * @tags quantum
  *       experimental
  */

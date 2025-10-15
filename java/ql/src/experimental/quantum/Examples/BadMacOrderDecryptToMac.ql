@@ -4,7 +4,6 @@
  * @id java/quantum/bad-mac-order-decrypt-to-mac
  * @kind path-problem
  * @problem.severity error
- * @precision high
  * @tags quantum
  *       experimental
  */

@@ -4,7 +4,6 @@
  * @id java/quantum/reused-nonce
  * @kind path-problem
  * @problem.severity error
- * @precision high
  * @tags quantum
  *       experimental
  */

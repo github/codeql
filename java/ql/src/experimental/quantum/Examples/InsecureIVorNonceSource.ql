@@ -8,7 +8,6 @@
  *              as the nonce/iv would be provided alongside the ciphertext).
  * @kind path-problem
  * @problem.severity error
- * @precision high
  * @tags quantum
  *       experimental
  */

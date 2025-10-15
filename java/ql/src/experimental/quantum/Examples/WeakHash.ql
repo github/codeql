@@ -4,7 +4,6 @@
  * @id java/quantum/weak-hash
  * @kind problem
  * @problem.severity error
- * @precision high
  * @tags external/cwe/cwe-327
  *       quantum
  *       experimental

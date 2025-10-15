@@ -4,7 +4,6 @@
  * @description RSA with a key length <2048 found
  * @kind problem
  * @problem.severity error
- * @precision high
  * @tags quantum
  *       experimental
  */

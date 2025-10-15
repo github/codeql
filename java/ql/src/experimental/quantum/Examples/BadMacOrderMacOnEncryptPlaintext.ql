@@ -4,7 +4,6 @@
  * @id java/quantum/bad-mac-order-encrypt-plaintext-also-in-mac
  * @kind problem
  * @problem.severity error
- * @precision high
  * @tags quantum
  *       experimental
  */

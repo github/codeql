@@ -4,7 +4,6 @@
  * @id java/quantum/unknown-hash
  * @kind problem
  * @problem.severity error
- * @precision high
  * @tags quantum
  *       experimental
  */

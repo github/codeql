@@ -4,7 +4,6 @@
  * @description An asymmetric key of known size is less than 2048 bits for any non-elliptic curve key operation.
  * @kind path-problem
  * @problem.severity error
- * @precision high
  * @tags quantum
  *       experimental
  */
