@@ -58,7 +58,9 @@ module SqlTaintedConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    exists(Expr taintedArg | result = taintedArg.getLocation() | taintedArg = asSinkExpr(sink))
+    exists(Expr taintedArg | result = [taintedArg.getLocation(), sink.getLocation()] |
+      taintedArg = asSinkExpr(sink)
+    )
   }
 }
 
