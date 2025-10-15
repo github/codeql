@@ -44,7 +44,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // Configure the proxy settings, if applicable.
             if (this.proxy != null)
             {
-                logger.LogInfo($"Setting up Dependabot proxy at {this.proxy.Address}");
+                logger.LogDebug($"Configuring environment variables for the Dependabot proxy at {this.proxy.Address}");
 
                 startInfo.EnvironmentVariables["HTTP_PROXY"] = this.proxy.Address;
                 startInfo.EnvironmentVariables["HTTPS_PROXY"] = this.proxy.Address;
@@ -57,11 +57,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private bool RunCommandAux(string args, string? workingDirectory, out IList<string> output, bool silent)
         {
             var dirLog = string.IsNullOrWhiteSpace(workingDirectory) ? "" : $" in {workingDirectory}";
-            logger.LogInfo($"Running '{Exec} {args}'{dirLog}");
             var pi = MakeDotnetStartInfo(args, workingDirectory);
             var threadId = Environment.CurrentManagedThreadId;
             void onOut(string s) => logger.Log(silent ? Severity.Debug : Severity.Info, s, threadId);
             void onError(string s) => logger.LogError(s, threadId);
+            logger.LogInfo($"Running '{Exec} {args}'{dirLog}");
             var exitCode = pi.ReadOutput(out output, onOut, onError);
             if (exitCode != 0)
             {
