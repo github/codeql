@@ -221,13 +221,13 @@ module JCAModel {
   bindingset[name]
   predicate key_agreement_name_to_type_known(Crypto::TKeyAgreementType type, string name) {
     type = Crypto::DH() and
-    name.toUpperCase() in ["DH", "XDH"]
+    name.toUpperCase() in ["DH"]
     or
     type = Crypto::EDH() and
     name.toUpperCase() = "EDH"
     or
     type = Crypto::ECDH() and
-    name.toUpperCase() in ["ECDH", "X25519", "X448"]
+    name.toUpperCase() in ["ECDH", "X25519", "X448", "XDH"]
     or
     type = Crypto::OtherKeyAgreementType() and
     name.toUpperCase().matches("ML-KEM%")
