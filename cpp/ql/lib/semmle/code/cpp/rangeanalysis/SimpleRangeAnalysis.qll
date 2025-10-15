@@ -518,6 +518,297 @@ private predicate isRecursiveExpr(Expr e) {
 }
 
 /**
+ * Provides predicates that estimate the number of bounds that the range
+ * analysis might produce.
+ */
+private module BoundsEstimate {
+  /**
+   * Gets the limit beyond which we enable widening. I.e., if the estimated
+   * number of bounds exceeds this limit, we enable widening such that the limit
+   * will not be reached.
+   */
+  float getBoundsLimit() {
+    // This limit is arbitrary, but low enough that it prevents timeouts on
+    // specific observed customer databases (and the in the tests).
+    result = 2.0.pow(40)
+  }
+
+  /** Gets the maximum number of bounds possible when widening is used. */
+  private int getNrOfWideningBounds() {
+    result =
+      max(ArithmeticType t | | count(wideningLowerBounds(t)).maximum(count(wideningUpperBounds(t))))
+  }
+
+  /**
+   * Holds if `boundFromGuard(guard, v, _, branch)` holds, but without
+   * relying on range analysis (which would cause non-monotonic recursion
+   * elsewhere).
+   */
+  private predicate hasBoundFromGuard(Expr guard, VariableAccess v, boolean branch) {
+    exists(Expr lhs | linearAccess(lhs, v, _, _) |
+      relOpWithSwapAndNegate(guard, lhs, _, _, _, branch)
+      or
+      eqOpWithSwapAndNegate(guard, lhs, _, true, branch)
+      or
+      eqZeroWithNegate(guard, lhs, true, branch)
+    )
+  }
+
+  /** Holds if `def` and `v` is a guard phi node with a bound from a guard. */
+  predicate isGuardPhiWithBound(RangeSsaDefinition def, StackVariable v, VariableAccess access) {
+    exists(Expr guard, boolean branch |
+      def.isGuardPhi(v, access, guard, branch) and
+      hasBoundFromGuard(guard, access, branch)
+    )
+  }
+
+  /** Gets the number of bounds for `def` and `v` as guard phi node. */
+  language[monotonicAggregates]
+  private float nrOfBoundsPhiGuard(RangeSsaDefinition def, StackVariable v) {
+    // If there's different `access`es, then they refer to the same variable
+    // with the same lower bounds. Hence adding these guards make no sense (the
+    // implementation will take the union but they'll be removed by
+    // deduplication). Hence we use `max` as an approximation.
+    result =
+      max(VariableAccess access | isGuardPhiWithBound(def, v, access) | nrOfBoundsExpr(access))
+    or
+    def.isPhiNode(v) and
+    not isGuardPhiWithBound(def, v, _) and
+    result = 0
+  }
+
+  /** Gets the number of bounds for `def` and `v` as normal phi node. */
+  language[monotonicAggregates]
+  private float nrOfBoundsPhiNormal(RangeSsaDefinition def, StackVariable v) {
+    // The implementation
+    result =
+      strictsum(RangeSsaDefinition inputDef |
+        inputDef = def.getAPhiInput(v)
+      |
+        nrOfBoundsDef(inputDef, v)
+      )
+    or
+    def.isPhiNode(v) and
+    not exists(def.getAPhiInput(v)) and
+    result = 0
+  }
+
+  /** Gets the number of bounds for `def` and `v` as an NE phi node. */
+  private float nrOfBoundsNEPhi(RangeSsaDefinition def, StackVariable v) {
+    exists(VariableAccess access | isNEPhi(v, def, access, _) and result = nrOfBoundsExpr(access))
+    or
+    def.isPhiNode(v) and
+    not isNEPhi(v, def, _, _) and
+    result = 0
+  }
+
+  /** Gets the number of bounds for `def` and `v` as an unsupported guard phi node. */
+  private float nrOfBoundsUnsupportedGuardPhi(RangeSsaDefinition def, StackVariable v) {
+    exists(VariableAccess access |
+      isUnsupportedGuardPhi(v, def, access) and
+      result = nrOfBoundsExpr(access)
+    )
+    or
+    def.isPhiNode(v) and
+    not isUnsupportedGuardPhi(v, def, _) and
+    result = 0
+  }
+
+  private float nrOfBoundsPhi(RangeSsaDefinition def, StackVariable v) {
+    // The cases for phi nodes are not mutually exclusive. For instance a phi
+    // node can be both a guard phi node and a normal phi node. To handle this
+    // we sum the contributions from the different cases.
+    result =
+      nrOfBoundsPhiGuard(def, v) + nrOfBoundsPhiNormal(def, v) + nrOfBoundsNEPhi(def, v) +
+        nrOfBoundsUnsupportedGuardPhi(def, v) and
+    result != 0
+  }
+
+  /** Gets the estimated number of bounds for `def` and `v`. */
+  float nrOfBoundsDef(RangeSsaDefinition def, StackVariable v) {
+    // Recursive definitions are already widened, so we simply estimate them as
+    // having the number of widening bounds available. This is crucial as it
+    // ensures that we don't follow recursive cycles when calculating the
+    // estimate. Had that not been the case the estimate itself would be at risk
+    // of causing performance issues and being non-functional.
+    if isRecursiveDef(def, v)
+    then result = getNrOfWideningBounds()
+    else (
+      // Definitions with a defining value
+      exists(Expr defExpr | assignmentDef(def, v, defExpr) and result = nrOfBoundsExpr(defExpr))
+      or
+      // Assignment operations with a defining value
+      exists(AssignOperation assignOp |
+        def = assignOp and
+        assignOp.getLValue() = v.getAnAccess() and
+        result = nrOfBoundsExpr(assignOp)
+      )
+      or
+      // Phi nodes
+      result = nrOfBoundsPhi(def, v)
+      or
+      unanalyzableDefBounds(def, v, _, _) and result = 1
+    )
+  }
+
+  /**
+   * Gets a naive estimate of the number of bounds for `e`.
+   *
+   * The estimate is like an abstract interpretation of the range analysis,
+   * where the abstract value is the number of bounds. For instance,
+   * `nrOfBoundsExpr(12) = 1` and `nrOfBoundsExpr(x + y) = nrOfBoundsExpr(x) *
+   * nrOfBoundsExpr(y)`.
+   *
+   * The estimated number of bounds will usually be greater than the actual
+   * number of bounds, as the estimate can not detect cases where bounds are cut
+   * down when tracked precisely. For instance, in
+   * ```c
+   * int x = 1;
+   * if (cond) { x = 1; }
+   * int y = x + x;
+   * ```
+   * the actual number of bounds for `y` is 1. However, the estimate will be 4
+   * as the conditional assignment to `x` gives two bounds for `x` on the last
+   * line and the addition gives 2 * 2 bounds. There are two sources of anncuracies:
+   *
+   * 1. Without tracking the lower bounds we can't see that `x` is assigned a
+   * value that is equal to its lower bound.
+   * 2. Had the conditional assignment been `x = 2` then the estimate of two
+   * bounds for `x` would have been correct. However, the estimate of 4 for `y`
+   * would still be incorrect. Summing the actual bounds `{1,2}` with itself
+   * gives `{2,3,4}` which is only three bounds. Again, we can't realise this
+   * without tracking the bounds.
+   *
+   * Since these inaccuracies compound the estimated number of bounds can often
+   * be _much_ greater than the actual number of bounds. Do note though that the
+   * estimate is not _guaranteed_ to be an upper bound. In some cases the
+   * approximations might underestimate the number of bounds.
+   *
+   * This predicate is functional. This is crucial as:
+   *
+   * - It ensures that the computing the estimate itself is fast.
+   * - Our use of monotonic aggregates assumes functionality.
+   *
+   * Any non-functional case should be considered a bug.
+   */
+  float nrOfBoundsExpr(Expr e) {
+    // Similarly to what we do for definitions, we do not attempt to measure the
+    // number of bounds for recursive expressions.
+    if isRecursiveExpr(e)
+    then result = getNrOfWideningBounds()
+    else
+      if analyzableExpr(e)
+      then
+        // The cases here are an abstraction of and mirrors the cases inside
+        // `getLowerBoundsImpl`/`getUpperBoundsImpl`.
+        result = 1 and exists(getValue(e).toFloat())
+        or
+        exists(Expr operand | result = nrOfBoundsExpr(operand) |
+          effectivelyMultipliesByPositive(e, operand, _)
+          or
+          effectivelyMultipliesByNegative(e, operand, _)
+        )
+        or
+        exists(ConditionalExpr condExpr |
+          e = condExpr and
+          result = nrOfBoundsExpr(condExpr.getThen()) * nrOfBoundsExpr(condExpr.getElse())
+        )
+        or
+        exists(BinaryArithmeticOperation binop |
+          e = binop and
+          result = nrOfBoundsExpr(binop.getLeftOperand()) * nrOfBoundsExpr(binop.getRightOperand())
+        |
+          e instanceof MaxExpr or
+          e instanceof MinExpr or
+          e instanceof AddExpr or
+          e instanceof SubExpr or
+          e instanceof UnsignedMulExpr
+        )
+        or
+        exists(AssignExpr assign | e = assign and result = nrOfBoundsExpr(assign.getRValue()))
+        or
+        exists(AssignArithmeticOperation assignOp |
+          e = assignOp and
+          result = nrOfBoundsExpr(assignOp.getLValue()) * nrOfBoundsExpr(assignOp.getRValue())
+        |
+          e instanceof AssignAddExpr or
+          e instanceof AssignSubExpr or
+          e instanceof UnsignedAssignMulExpr
+        )
+        or
+        // Handles `AssignMulByPositiveConstantExpr` and `AssignMulByNegativeConstantExpr`
+        exists(AssignMulByConstantExpr mulExpr |
+          e = mulExpr and
+          result = nrOfBoundsExpr(mulExpr.getLValue())
+        )
+        or
+        // Handles the prefix and postfix increment and decrement operators.
+        exists(CrementOperation crementOp |
+          e = crementOp and result = nrOfBoundsExpr(crementOp.getOperand())
+        )
+        or
+        exists(RemExpr remExpr | e = remExpr | result = nrOfBoundsExpr(remExpr.getLeftOperand()))
+        or
+        exists(Conversion convExpr |
+          e = convExpr and
+          if convExpr.getUnspecifiedType() instanceof BoolType
+          then result = 1
+          else result = nrOfBoundsExpr(convExpr.getExpr())
+        )
+        or
+        exists(RangeSsaDefinition def, StackVariable v |
+          e = def.getAUse(v) and
+          result = nrOfBoundsDef(def, v) and
+          // Avoid returning two numbers when `e` is a use with a constant value.
+          not exists(getValue(e).toFloat())
+        )
+        or
+        e instanceof UnsignedBitwiseAndExpr and
+        result = 1
+        or
+        exists(RShiftExpr rsExpr |
+          e = rsExpr and
+          exists(getValue(rsExpr.getRightOperand().getFullyConverted()).toInt()) and
+          result = nrOfBoundsExpr(rsExpr.getLeftOperand())
+        )
+      else (
+        exists(exprMinVal(e)) and result = 1
+      )
+  }
+}
+
+/**
+ * Holds if `v` is a variable for which widening should be used, as otherwise a
+ * very large number of bounds might be generated during the range analysis for
+ * `v`.
+ */
+private predicate varHasTooManyBounds(StackVariable v) {
+  exists(RangeSsaDefinition def |
+    def.getAVariable() = v and
+    BoundsEstimate::nrOfBoundsDef(def, v) > BoundsEstimate::getBoundsLimit()
+  )
+}
+
+/**
+ * Holds if `e` is an expression for which widening should be used, as otherwise
+ * a very large number of bounds might be generated during the range analysis
+ * for `e`.
+ */
+private predicate exprHasTooManyBounds(Expr e) {
+  BoundsEstimate::nrOfBoundsExpr(e) > BoundsEstimate::getBoundsLimit()
+  or
+  // A subexpressions of an expression with too many bounds may itself not have
+  // to many bounds. For instance, `x + y` can have too many bounds without `x`
+  // having as well. But in these cases, still want to consider `e` as having
+  // too many bounds since:
+  // - The overall result is widened anyway, so widening `e` as well is unlikely
+  //   to cause further precision loss.
+  // - The number of bounds could be very large but still below the arbitrary
+  //   limit. Hence widening `e` can improve performance.
+  exists(Expr pe | exprHasTooManyBounds(pe) and e.getParent() = pe)
+}
+
+/**
  * Holds if `binop` is a binary operation that's likely to be assigned a
  * quadratic (or more) number of candidate bounds during the analysis. This can
  * happen when two conditions are satisfied:
@@ -667,7 +958,7 @@ private float getTruncatedLowerBounds(Expr expr) {
     if exprMinVal(expr) <= newLB and newLB <= exprMaxVal(expr)
     then
       // Apply widening where we might get a combinatorial explosion.
-      if isRecursiveBinary(expr)
+      if isRecursiveBinary(expr) or exprHasTooManyBounds(expr)
       then result = widenLowerBound(expr.getUnspecifiedType(), newLB)
       else result = newLB
     else result = exprMinVal(expr)
@@ -721,7 +1012,7 @@ private float getTruncatedUpperBounds(Expr expr) {
         if exprMinVal(expr) <= newUB and newUB <= exprMaxVal(expr)
         then
           // Apply widening where we might get a combinatorial explosion.
-          if isRecursiveBinary(expr)
+          if isRecursiveBinary(expr) or exprHasTooManyBounds(expr)
           then result = widenUpperBound(expr.getUnspecifiedType(), newUB)
           else result = newUB
         else result = exprMaxVal(expr)
@@ -1812,7 +2103,7 @@ module SimpleRangeAnalysisInternal {
     |
       // Widening: check whether the new lower bound is from a source which
       // depends recursively on the current definition.
-      if isRecursiveDef(def, v)
+      if isRecursiveDef(def, v) or varHasTooManyBounds(v)
       then
         // The new lower bound is from a recursive source, so we round
         // down to one of a limited set of values to prevent the
@@ -1836,7 +2127,7 @@ module SimpleRangeAnalysisInternal {
     |
       // Widening: check whether the new upper bound is from a source which
       // depends recursively on the current definition.
-      if isRecursiveDef(def, v)
+      if isRecursiveDef(def, v) or varHasTooManyBounds(v)
       then
         // The new upper bound is from a recursive source, so we round
         // up to one of a fixed set of values to prevent the recursion
