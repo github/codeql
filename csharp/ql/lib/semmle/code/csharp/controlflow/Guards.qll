@@ -2278,8 +2278,7 @@ module Internal {
      *
      * This predicate relies on the control flow graph.
      */
-    cached
-    predicate impliesStep(Guard g1, AbstractValue v1, Guard g2, AbstractValue v2) {
+    private predicate impliesStep(Guard g1, AbstractValue v1, Guard g2, AbstractValue v2) {
       preImpliesStep(g1, v1, g2, v2)
       or
       forex(ControlFlow::Node cfn1 | cfn1 = g1.getAControlFlowNode() |
