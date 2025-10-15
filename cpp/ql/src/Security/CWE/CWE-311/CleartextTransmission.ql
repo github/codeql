@@ -249,7 +249,9 @@ module FromSensitiveConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    exists(NetworkSendRecv networkSendRecv | result = networkSendRecv.getLocation() |
+    exists(NetworkSendRecv networkSendRecv |
+      result = [networkSendRecv.getLocation(), sink.getLocation()]
+    |
       isSinkSendRecv(sink, networkSendRecv)
     )
   }
