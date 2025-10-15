@@ -96,6 +96,7 @@ module SsaDataflowInput implements DataFlowIntegrationInputSig {
     }
   }
 
+  overlay[caller?]
   pragma[inline]
   predicate guardDirectlyControlsBlock(Guard guard, js::Cfg::BasicBlock bb, GuardValue branch) {
     exists(js::ConditionGuardNode g |

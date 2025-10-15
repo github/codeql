@@ -1436,6 +1436,7 @@ module DataFlow {
   /**
    * Gets the data flow node corresponding to `e`.
    */
+  overlay[caller?]
   pragma[inline]
   ExprNode exprNode(Expr e) { result = valueNode(e) }
 
