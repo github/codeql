@@ -1993,9 +1993,20 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     string nodeName;
 
     CipherOperationNode() {
-      this.getKeyOperationSubtype() = TEncryptMode() and nodeName = "EncryptOperation"
-      or
-      this.getKeyOperationSubtype() = TDecryptMode() and nodeName = "DecryptOperation"
+      (
+        if
+          this.getKeyOperationSubtype() = TEncryptMode() and
+          this.getKeyOperationSubtype() = TDecryptMode()
+        then nodeName = "CipherOperation"
+        else (
+          if this.getKeyOperationSubtype() = TEncryptMode()
+          then nodeName = "EncryptOperation"
+          else (
+            this.getKeyOperationSubtype() = TDecryptMode() and
+            nodeName = "DecryptOperation"
+          )
+        )
+      )
     }
 
     override string getInternalType() { result = nodeName }
@@ -2005,9 +2016,20 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     string nodeName;
 
     KeyEncapsulationOperationNode() {
-      this.getKeyOperationSubtype() = TWrapMode() and nodeName = "WrapOperation"
-      or
-      this.getKeyOperationSubtype() = TUnwrapMode() and nodeName = "UnwrapOperation"
+      (
+        if
+          this.getKeyOperationSubtype() = TWrapMode() and
+          this.getKeyOperationSubtype() = TUnwrapMode()
+        then nodeName = "KeyEncapsulationOperation"
+        else (
+          if this.getKeyOperationSubtype() = TWrapMode()
+          then nodeName = "WrapOperation"
+          else (
+            this.getKeyOperationSubtype() = TUnwrapMode() and
+            nodeName = "UnwrapOperation"
+          )
+        )
+      )
     }
 
     override string getInternalType() { result = nodeName }
