@@ -193,7 +193,9 @@ private module EnvironmentVariableAccessSynth {
       )
     }
 
-    private predicate envVarAccess(Raw::Ast parent, ChildIndex i, Child child, Raw::VarAccess va, string var) {
+    private predicate envVarAccess(
+      Raw::Ast parent, ChildIndex i, Child child, Raw::VarAccess va, string var
+    ) {
       va = parent.getChild(toRawChildIndex(i)) and
       Raw::isEnvVariableAccess(va, var) and
       child = SynthChild(VarAccessSynthKind(TVariableSynth(_, EnvVar(var))))
