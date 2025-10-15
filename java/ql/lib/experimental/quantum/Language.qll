@@ -55,7 +55,18 @@ final class DefaultRemoteFlowSource = RemoteFlowSource;
 
 private class GenericUnreferencedParameterSource extends Crypto::GenericUnreferencedParameterSource {
   GenericUnreferencedParameterSource() {
-    exists(Parameter p | this = p and not exists(p.getAnArgument()))
+    exists(Parameter p |
+      this = p and
+      (
+        not exists(p.getAnArgument())
+        or
+        // If all calls to a function occur in a test file, ignore those calls
+        // and consider the parameter to the function a potential source as well.
+        forall(Call testCall | testCall.getCallee() = p.getCallable() |
+          testCall.getFile().getBaseName().toUpperCase().matches("%TEST%")
+        )
+      )
+    )
   }
 
   override predicate flowsTo(Crypto::FlowAwareElement other) {
