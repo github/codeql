@@ -1493,6 +1493,7 @@ private predicate stringifiedNode(Node node) {
 }
 
 /** Gets the post-update node for which `node` is the corresponding pre-update node. */
+pragma[nomagic]
 private Node getPostUpdateForStore(Node base) {
   exists(Expr expr |
     base = TValueNode(expr) and
@@ -1515,6 +1516,7 @@ private Node getPostUpdateForStore(Node base) {
 }
 
 /** Gets node to target with a store to the given `base` object.. */
+overlay[caller]
 pragma[inline]
 private Node getStoreTarget(DataFlow::Node base) {
   result = getPostUpdateForStore(base)
