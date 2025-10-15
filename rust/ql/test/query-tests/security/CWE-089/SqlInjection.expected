@@ -31,16 +31,12 @@ edges
 | sqlx.rs:49:25:49:52 | remote_string.parse() [Ok] | sqlx.rs:49:25:49:65 | ... .unwrap_or(...) | provenance | MaD:12 |
 | sqlx.rs:49:25:49:65 | ... .unwrap_or(...) | sqlx.rs:49:9:49:21 | remote_number | provenance |  |
 | sqlx.rs:52:9:52:20 | safe_query_3 | sqlx.rs:77:25:77:36 | safe_query_3 | provenance |  |
-| sqlx.rs:52:9:52:20 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() | provenance | MaD:13 |
 | sqlx.rs:52:9:52:20 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() | provenance | MaD:9 |
-| sqlx.rs:52:9:52:20 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() | provenance | MaD:13 |
 | sqlx.rs:52:32:52:87 | ...::format(...) | sqlx.rs:52:32:52:87 | { ... } | provenance |  |
 | sqlx.rs:52:32:52:87 | ...::must_use(...) | sqlx.rs:52:9:52:20 | safe_query_3 | provenance |  |
 | sqlx.rs:52:32:52:87 | MacroExpr | sqlx.rs:52:32:52:87 | ...::format(...) | provenance | MaD:16 |
 | sqlx.rs:52:32:52:87 | { ... } | sqlx.rs:52:32:52:87 | ...::must_use(...) | provenance | MaD:17 |
-| sqlx.rs:53:9:53:22 | unsafe_query_1 [&ref] | sqlx.rs:78:25:78:47 | unsafe_query_1.as_str() [&ref] | provenance | MaD:13 |
 | sqlx.rs:53:9:53:22 | unsafe_query_1 [&ref] | sqlx.rs:78:25:78:47 | unsafe_query_1.as_str() [&ref] | provenance | MaD:9 |
-| sqlx.rs:53:9:53:22 | unsafe_query_1 [&ref] | sqlx.rs:78:25:78:47 | unsafe_query_1.as_str() [&ref] | provenance | MaD:13 |
 | sqlx.rs:53:26:53:36 | &arg_string [&ref] | sqlx.rs:53:9:53:22 | unsafe_query_1 [&ref] | provenance |  |
 | sqlx.rs:53:27:53:36 | arg_string | sqlx.rs:53:26:53:36 | &arg_string [&ref] | provenance |  |
 | sqlx.rs:54:9:54:22 | unsafe_query_2 [&ref] | sqlx.rs:80:29:80:51 | unsafe_query_2.as_str() [&ref] | provenance | MaD:13 |
@@ -49,37 +45,27 @@ edges
 | sqlx.rs:54:26:54:39 | &remote_string [&ref] | sqlx.rs:54:9:54:22 | unsafe_query_2 [&ref] | provenance |  |
 | sqlx.rs:54:27:54:39 | remote_string | sqlx.rs:54:26:54:39 | &remote_string [&ref] | provenance |  |
 | sqlx.rs:55:9:55:22 | unsafe_query_3 | sqlx.rs:81:29:81:42 | unsafe_query_3 | provenance |  |
-| sqlx.rs:55:9:55:22 | unsafe_query_3 | sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() | provenance | MaD:13 |
 | sqlx.rs:55:9:55:22 | unsafe_query_3 | sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() | provenance | MaD:9 |
-| sqlx.rs:55:9:55:22 | unsafe_query_3 | sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() | provenance | MaD:13 |
 | sqlx.rs:55:26:55:96 | ... + ... | sqlx.rs:55:9:55:22 | unsafe_query_3 | provenance |  |
 | sqlx.rs:55:26:55:96 | ... + ... | sqlx.rs:55:26:55:102 | ... + ... | provenance | MaD:8 |
 | sqlx.rs:55:26:55:102 | ... + ... | sqlx.rs:55:9:55:22 | unsafe_query_3 | provenance |  |
 | sqlx.rs:55:83:55:96 | &remote_string [&ref] | sqlx.rs:55:26:55:96 | ... + ... | provenance | MaD:7 |
 | sqlx.rs:55:84:55:96 | remote_string | sqlx.rs:55:83:55:96 | &remote_string [&ref] | provenance |  |
 | sqlx.rs:56:9:56:22 | unsafe_query_4 | sqlx.rs:82:29:82:42 | unsafe_query_4 | provenance |  |
-| sqlx.rs:56:9:56:22 | unsafe_query_4 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() | provenance | MaD:13 |
 | sqlx.rs:56:9:56:22 | unsafe_query_4 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() | provenance | MaD:9 |
-| sqlx.rs:56:9:56:22 | unsafe_query_4 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() | provenance | MaD:13 |
 | sqlx.rs:59:17:59:72 | ...::format(...) | sqlx.rs:59:17:59:72 | { ... } | provenance |  |
 | sqlx.rs:59:17:59:72 | ...::must_use(...) | sqlx.rs:56:9:56:22 | unsafe_query_4 | provenance |  |
 | sqlx.rs:59:17:59:72 | MacroExpr | sqlx.rs:59:17:59:72 | ...::format(...) | provenance | MaD:16 |
 | sqlx.rs:59:17:59:72 | { ... } | sqlx.rs:59:17:59:72 | ...::must_use(...) | provenance | MaD:17 |
-| sqlx.rs:77:25:77:36 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() [&ref] | provenance | MaD:13 |
 | sqlx.rs:77:25:77:36 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() [&ref] | provenance | MaD:9 |
-| sqlx.rs:77:25:77:36 | safe_query_3 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() [&ref] | provenance | MaD:13 |
 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() | sqlx.rs:77:13:77:23 | ...::query | provenance | MaD:1 Sink:MaD:1 |
 | sqlx.rs:77:25:77:45 | safe_query_3.as_str() [&ref] | sqlx.rs:77:13:77:23 | ...::query | provenance | MaD:1 Sink:MaD:1 |
 | sqlx.rs:78:25:78:47 | unsafe_query_1.as_str() [&ref] | sqlx.rs:78:13:78:23 | ...::query | provenance | MaD:1 Sink:MaD:1 |
 | sqlx.rs:80:29:80:51 | unsafe_query_2.as_str() [&ref] | sqlx.rs:80:17:80:27 | ...::query | provenance | MaD:1 Sink:MaD:1 |
-| sqlx.rs:81:29:81:42 | unsafe_query_3 | sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() [&ref] | provenance | MaD:13 |
 | sqlx.rs:81:29:81:42 | unsafe_query_3 | sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() [&ref] | provenance | MaD:9 |
-| sqlx.rs:81:29:81:42 | unsafe_query_3 | sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() [&ref] | provenance | MaD:13 |
 | sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() | sqlx.rs:81:17:81:27 | ...::query | provenance | MaD:1 Sink:MaD:1 |
 | sqlx.rs:81:29:81:51 | unsafe_query_3.as_str() [&ref] | sqlx.rs:81:17:81:27 | ...::query | provenance | MaD:1 Sink:MaD:1 |
-| sqlx.rs:82:29:82:42 | unsafe_query_4 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() [&ref] | provenance | MaD:13 |
 | sqlx.rs:82:29:82:42 | unsafe_query_4 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() [&ref] | provenance | MaD:9 |
-| sqlx.rs:82:29:82:42 | unsafe_query_4 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() [&ref] | provenance | MaD:13 |
 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() | sqlx.rs:82:17:82:27 | ...::query | provenance | MaD:1 Sink:MaD:1 |
 | sqlx.rs:82:29:82:51 | unsafe_query_4.as_str() [&ref] | sqlx.rs:82:17:82:27 | ...::query | provenance | MaD:1 Sink:MaD:1 |
 | sqlx.rs:100:9:100:21 | remote_string | sqlx.rs:102:84:102:96 | remote_string | provenance |  |
@@ -89,62 +75,38 @@ edges
 | sqlx.rs:100:25:100:85 | ... .text() [Ok] | sqlx.rs:100:25:100:118 | ... .unwrap_or(...) | provenance | MaD:12 |
 | sqlx.rs:100:25:100:118 | ... .unwrap_or(...) | sqlx.rs:100:9:100:21 | remote_string | provenance |  |
 | sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:113:31:113:44 | unsafe_query_1 | provenance |  |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() | provenance | MaD:13 |
 | sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() | provenance | MaD:9 |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() | provenance | MaD:13 |
 | sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:120:29:120:42 | unsafe_query_1 | provenance |  |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() | provenance | MaD:13 |
 | sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() | provenance | MaD:9 |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() | provenance | MaD:13 |
 | sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:127:29:127:42 | unsafe_query_1 | provenance |  |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() | provenance | MaD:13 |
 | sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() | provenance | MaD:9 |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() | provenance | MaD:13 |
 | sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:136:55:136:68 | unsafe_query_1 | provenance |  |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() | provenance | MaD:13 |
 | sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() | provenance | MaD:9 |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() | provenance | MaD:13 |
 | sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:145:55:145:68 | unsafe_query_1 | provenance |  |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() | provenance | MaD:13 |
 | sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() | provenance | MaD:9 |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() | provenance | MaD:13 |
 | sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:153:29:153:42 | unsafe_query_1 | provenance |  |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() | provenance | MaD:13 |
 | sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() | provenance | MaD:9 |
-| sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() | provenance | MaD:13 |
 | sqlx.rs:102:26:102:96 | ... + ... | sqlx.rs:102:9:102:22 | unsafe_query_1 | provenance |  |
 | sqlx.rs:102:26:102:96 | ... + ... | sqlx.rs:102:26:102:102 | ... + ... | provenance | MaD:8 |
 | sqlx.rs:102:26:102:102 | ... + ... | sqlx.rs:102:9:102:22 | unsafe_query_1 | provenance |  |
 | sqlx.rs:102:83:102:96 | &remote_string [&ref] | sqlx.rs:102:26:102:96 | ... + ... | provenance | MaD:7 |
 | sqlx.rs:102:84:102:96 | remote_string | sqlx.rs:102:83:102:96 | &remote_string [&ref] | provenance |  |
-| sqlx.rs:113:31:113:44 | unsafe_query_1 | sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() [&ref] | provenance | MaD:13 |
 | sqlx.rs:113:31:113:44 | unsafe_query_1 | sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() [&ref] | provenance | MaD:9 |
-| sqlx.rs:113:31:113:44 | unsafe_query_1 | sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() [&ref] | provenance | MaD:13 |
 | sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() | sqlx.rs:113:17:113:29 | ...::raw_sql | provenance | MaD:3 Sink:MaD:3 |
 | sqlx.rs:113:31:113:53 | unsafe_query_1.as_str() [&ref] | sqlx.rs:113:17:113:29 | ...::raw_sql | provenance | MaD:3 Sink:MaD:3 |
-| sqlx.rs:120:29:120:42 | unsafe_query_1 | sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:13 |
 | sqlx.rs:120:29:120:42 | unsafe_query_1 | sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:9 |
-| sqlx.rs:120:29:120:42 | unsafe_query_1 | sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:13 |
 | sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() | sqlx.rs:120:17:120:27 | ...::query | provenance | MaD:1 Sink:MaD:1 |
 | sqlx.rs:120:29:120:51 | unsafe_query_1.as_str() [&ref] | sqlx.rs:120:17:120:27 | ...::query | provenance | MaD:1 Sink:MaD:1 |
-| sqlx.rs:127:29:127:42 | unsafe_query_1 | sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:13 |
 | sqlx.rs:127:29:127:42 | unsafe_query_1 | sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:9 |
-| sqlx.rs:127:29:127:42 | unsafe_query_1 | sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:13 |
 | sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() | sqlx.rs:127:17:127:27 | ...::query | provenance | MaD:1 Sink:MaD:1 |
 | sqlx.rs:127:29:127:51 | unsafe_query_1.as_str() [&ref] | sqlx.rs:127:17:127:27 | ...::query | provenance | MaD:1 Sink:MaD:1 |
-| sqlx.rs:136:55:136:68 | unsafe_query_1 | sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() [&ref] | provenance | MaD:13 |
 | sqlx.rs:136:55:136:68 | unsafe_query_1 | sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() [&ref] | provenance | MaD:9 |
-| sqlx.rs:136:55:136:68 | unsafe_query_1 | sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() [&ref] | provenance | MaD:13 |
 | sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() | sqlx.rs:136:40:136:53 | ...::query_as | provenance | MaD:2 Sink:MaD:2 |
 | sqlx.rs:136:55:136:77 | unsafe_query_1.as_str() [&ref] | sqlx.rs:136:40:136:53 | ...::query_as | provenance | MaD:2 Sink:MaD:2 |
-| sqlx.rs:145:55:145:68 | unsafe_query_1 | sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() [&ref] | provenance | MaD:13 |
 | sqlx.rs:145:55:145:68 | unsafe_query_1 | sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() [&ref] | provenance | MaD:9 |
-| sqlx.rs:145:55:145:68 | unsafe_query_1 | sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() [&ref] | provenance | MaD:13 |
 | sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() | sqlx.rs:145:40:145:53 | ...::query_as | provenance | MaD:2 Sink:MaD:2 |
 | sqlx.rs:145:55:145:77 | unsafe_query_1.as_str() [&ref] | sqlx.rs:145:40:145:53 | ...::query_as | provenance | MaD:2 Sink:MaD:2 |
-| sqlx.rs:153:29:153:42 | unsafe_query_1 | sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:13 |
 | sqlx.rs:153:29:153:42 | unsafe_query_1 | sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:9 |
-| sqlx.rs:153:29:153:42 | unsafe_query_1 | sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:13 |
 | sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() | sqlx.rs:153:17:153:27 | ...::query | provenance | MaD:1 Sink:MaD:1 |
 | sqlx.rs:153:29:153:51 | unsafe_query_1.as_str() [&ref] | sqlx.rs:153:17:153:27 | ...::query | provenance | MaD:1 Sink:MaD:1 |
 | sqlx.rs:173:9:173:21 | remote_string | sqlx.rs:175:84:175:96 | remote_string | provenance |  |
@@ -154,17 +116,13 @@ edges
 | sqlx.rs:173:25:173:85 | ... .text() [Ok] | sqlx.rs:173:25:173:118 | ... .unwrap_or(...) | provenance | MaD:12 |
 | sqlx.rs:173:25:173:118 | ... .unwrap_or(...) | sqlx.rs:173:9:173:21 | remote_string | provenance |  |
 | sqlx.rs:175:9:175:22 | unsafe_query_1 | sqlx.rs:188:29:188:42 | unsafe_query_1 | provenance |  |
-| sqlx.rs:175:9:175:22 | unsafe_query_1 | sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() | provenance | MaD:13 |
 | sqlx.rs:175:9:175:22 | unsafe_query_1 | sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() | provenance | MaD:9 |
-| sqlx.rs:175:9:175:22 | unsafe_query_1 | sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() | provenance | MaD:13 |
 | sqlx.rs:175:26:175:96 | ... + ... | sqlx.rs:175:9:175:22 | unsafe_query_1 | provenance |  |
 | sqlx.rs:175:26:175:96 | ... + ... | sqlx.rs:175:26:175:102 | ... + ... | provenance | MaD:8 |
 | sqlx.rs:175:26:175:102 | ... + ... | sqlx.rs:175:9:175:22 | unsafe_query_1 | provenance |  |
 | sqlx.rs:175:83:175:96 | &remote_string [&ref] | sqlx.rs:175:26:175:96 | ... + ... | provenance | MaD:7 |
 | sqlx.rs:175:84:175:96 | remote_string | sqlx.rs:175:83:175:96 | &remote_string [&ref] | provenance |  |
-| sqlx.rs:188:29:188:42 | unsafe_query_1 | sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:13 |
 | sqlx.rs:188:29:188:42 | unsafe_query_1 | sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:9 |
-| sqlx.rs:188:29:188:42 | unsafe_query_1 | sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() [&ref] | provenance | MaD:13 |
 | sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() | sqlx.rs:188:17:188:27 | ...::query | provenance | MaD:1 Sink:MaD:1 |
 | sqlx.rs:188:29:188:51 | unsafe_query_1.as_str() [&ref] | sqlx.rs:188:17:188:27 | ...::query | provenance | MaD:1 Sink:MaD:1 |
 models
