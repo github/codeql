@@ -112,7 +112,7 @@ mod async_test
 
 fn main() {
     println!("test_mysql...");
-    match (sync_test::test_mysql("")) {
+    match sync_test::test_mysql("") {
         Ok(_) => println!("  successful!"),
         Err(e) => println!("  error: {}", e),
     }
