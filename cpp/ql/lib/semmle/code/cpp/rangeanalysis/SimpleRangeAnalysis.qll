@@ -2140,4 +2140,7 @@ module SimpleRangeAnalysisInternal {
     // bound is `typeUpperBound`.
     defMightOverflowNegatively(def, v) and result = varMaxVal(v)
   }
+
+  /** Gets the estimate of the number of bounds for `e`. */
+  float estimateNrOfBounds(Expr e) { result = BoundsEstimate::nrOfBoundsExpr(e) }
 }
