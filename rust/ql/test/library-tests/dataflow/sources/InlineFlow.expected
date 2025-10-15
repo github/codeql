@@ -40,7 +40,7 @@ models
 | 39 | Summary: <_ as async_std::io::read::ReadExt>::read; Argument[self]; Argument[0].Reference; taint |
 | 40 | Summary: <_ as core::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
 | 41 | Summary: <_ as core::iter::traits::iterator::Iterator>::collect; Argument[self].Element; ReturnValue.Element; value |
-| 42 | Summary: <_ as core::iter::traits::iterator::Iterator>::next; Argument[self].Element; ReturnValue.Field[core::option::Option::Some(0)].Field[core::result::Result::Ok(0)]; taint |
+| 42 | Summary: <_ as core::iter::traits::iterator::Iterator>::next; Argument[self].Element; ReturnValue.Field[core::option::Option::Some(0)].Field[core::result::Result::Ok(0)]; value |
 | 43 | Summary: <_ as core::iter::traits::iterator::Iterator>::nth; Argument[self].Element; ReturnValue.Field[core::option::Option::Some(0)]; value |
 | 44 | Summary: <_ as futures_io::if_std::AsyncBufRead>::poll_fill_buf; Argument[self].Reference; ReturnValue.Field[core::task::poll::Poll::Ready(0)].Field[core::result::Result::Ok(0)]; taint |
 | 45 | Summary: <_ as futures_util::io::AsyncBufReadExt>::fill_buf; Argument[self]; ReturnValue.Future.Field[core::result::Result::Ok(0)]; taint |
