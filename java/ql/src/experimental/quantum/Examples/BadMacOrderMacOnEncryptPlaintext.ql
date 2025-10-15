@@ -16,7 +16,13 @@ import experimental.quantum.Language
 // might not be known.
 // TODO: can we approximate a message source better?
 module CommonDataFlowNodeConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { exists(source.asParameter()) }
+  predicate isSource(DataFlow::Node source) {
+    exists(source.asParameter())
+    or
+    exists(Crypto::GenericSourceNode other |
+      other.asElement() = CryptoInput::dfn_to_element(source)
+    )
+  }
 
   predicate isSink(DataFlow::Node sink) {
     sink = any(Crypto::FlowAwareElement other).getInputNode()
@@ -41,7 +47,7 @@ module CommonDataFlowNodeConfig implements DataFlow::ConfigSig {
   }
 }
 
-module CommonDataFlowNodeFlow = DataFlow::Global<CommonDataFlowNodeConfig>;
+module CommonDataFlowNodeFlow = TaintTracking::Global<CommonDataFlowNodeConfig>;
 
 from DataFlow::Node src, DataFlow::Node sink1, DataFlow::Node sink2
 where

@@ -23,4 +23,4 @@ where
     macOp.getAnInputArtifact().asElement() = sink.getNode().asExpr()
   )
 select sink, src, sink,
-  "MAC order potentially wrong: observed decrypt output to MAC implying the MAC is on plaintext, and not a cipher."
+  "MAC order potentially wrong: observed a potential decrypt operation output to MAC implying the MAC is on plaintext, and not a cipher."
