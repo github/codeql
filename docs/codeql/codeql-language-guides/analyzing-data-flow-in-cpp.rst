@@ -411,6 +411,48 @@ Exercise 4
      GetenvToGethostbynameFlow::flow(source, sink)
    select getenv, fc
 
+Path Query Example
+~~~~~~~~~~~~~~~~~~
+
+Here is the answer to exercise 4 above, converted into a path query:
+
+.. code-block:: ql
+
+   /**
+    * @kind path-problem
+    * @problem.severity warning
+    * @id getenv-to-gethostbyname
+    */
+
+   import cpp
+   import semmle.code.cpp.dataflow.new.DataFlow
+
+   class GetenvSource extends DataFlow::Node {
+     GetenvSource() { this.asIndirectExpr(1).(FunctionCall).getTarget().hasGlobalName("getenv") }
+   }
+
+   module GetenvToGethostbynameConfiguration implements DataFlow::ConfigSig {
+     predicate isSource(DataFlow::Node source) { source instanceof GetenvSource }
+
+     predicate isSink(DataFlow::Node sink) {
+       exists(FunctionCall fc |
+         sink.asIndirectExpr(1) = fc.getArgument(0) and
+         fc.getTarget().hasName("gethostbyname")
+       )
+     }
+   }
+
+   module GetenvToGethostbynameFlow = DataFlow::Global<GetenvToGethostbynameConfiguration>;
+
+   import GetenvToGethostbynameFlow::PathGraph
+
+   from GetenvToGethostbynameFlow::PathNode source, GetenvToGethostbynameFlow::PathNode sink
+   where GetenvToGethostbynameFlow::flowPath(source, sink)
+   select sink.getNode(), source, sink, "This file access uses data from $@.",
+     source, "user-controllable input."
+
+For more information, see "`Creating path queries <https://codeql.github.com/docs/writing-codeql-queries/creating-path-queries/>`__".
+
 Further reading
 ---------------
 
