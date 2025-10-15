@@ -62,14 +62,14 @@ function RegisterExtractorPack(id)
     -- resource-dir in this case by skipping over the -Xcc that follows it and stripping off the
     -- clang suffix from the path.
     function find_original_resource_dir(compilerPath, args)
-        local resource_dir_index = indexOf(args, '-resource-dir')
-        if resource_dir_index then
-            if args[resource_dir_index + 1] and args[resource_dir_index + 1] ~= '-Xcc' then
-                return args[resource_dir_index + 1]
-            elseif args[resource_dir_index + 2] then
-                local clang_index = string.find(args[resource_dir_index + 2], "/clang$")
+        local found = indexOf(args, '-resource-dir')
+        if found and args[found + 1] then
+            if args[found - 1] ~= '-Xcc' then
+                return args[found + 1]
+            elseif args[found + 1] == '-Xcc' and args[found + 2] then
+                local clang_index = string.find(args[found + 2], "/clang$")
                 if clang_index and clang_index - 1 > 0 then
-                    return string.sub(args[resource_dir_index + 2], 1, clang_index - 1)
+                    return string.sub(args[found + 2], 1, clang_index - 1)
                 end
             end
         end
