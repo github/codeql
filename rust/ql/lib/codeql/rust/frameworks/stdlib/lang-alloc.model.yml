@@ -38,6 +38,7 @@ extensions:
       - ["<core::str>::parse", "Argument[self]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["<core::str>::trim", "Argument[self]", "ReturnValue.Reference", "taint", "manual"]
       - ["<_ as core::ops::arith::Add>::add", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::ops::arith::Add>::add", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["<_ as core::ops::arith::Add>::add", "Argument[0].Reference", "ReturnValue", "taint", "manual"]
       # Vec
       - ["alloc::vec::from_elem", "Argument[0]", "ReturnValue.Element", "value", "manual"]
