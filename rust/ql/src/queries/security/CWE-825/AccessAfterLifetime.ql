@@ -32,7 +32,9 @@ module AccessAfterLifetimeConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSourceLocation(DataFlow::Node source) {
-    exists(Variable target, DataFlow::Node sink | result = target.getLocation() |
+    exists(Variable target, DataFlow::Node sink |
+      result = [target.getLocation(), source.getLocation()]
+    |
       isSink(sink) and
       narrowDereferenceAfterLifetime(source, sink, target)
     )
