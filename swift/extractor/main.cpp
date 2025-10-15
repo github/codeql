@@ -53,7 +53,7 @@ static void processFrontendOptions(codeql::SwiftExtractorState& state,
     swift::PrimarySpecificPaths psp{};
     if (std::filesystem::path output = input.getPrimarySpecificPaths().OutputFilename;
         !output.empty()) {
-      if (output.extension() == ".swiftmodule") {
+      if (output.extension() == ".swiftmodule" || output.extension() == ".pcm") {
         psp.OutputFilename = codeql::redirect(output);
       } else {
         psp.OutputFilename = "/dev/null";
