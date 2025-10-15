@@ -536,4 +536,71 @@ module Cryptography {
   class BlockMode = SC::BlockMode;
 
   class CryptographicAlgorithm = SC::CryptographicAlgorithm;
+
+  /** A data flow node that initializes a hash algorithm. */
+  abstract class HashAlgorithmInit extends DataFlow::Node {
+    /** Gets the hash algorithm being initialized. */
+    abstract HashingAlgorithm getAlgorithm();
+  }
+
+  /** A data flow node that is an application of a hash algorithm. */
+  abstract class HashOperation extends CryptographicOperation::Range {
+    override BlockMode getBlockMode() { none() }
+  }
+
+  /** A data flow node that initializes an encryption algorithm. */
+  abstract class EncryptionAlgorithmInit extends DataFlow::Node {
+    /** Gets the encryption algorithm being initialized. */
+    abstract EncryptionAlgorithm getAlgorithm();
+  }
+
+  /**
+   * A data flow node that initializes a block cipher mode of operation, and
+   * may also propagate taint for encryption algorithms.
+   */
+  abstract class BlockModeInit extends DataFlow::CallNode {
+    /** Gets the block cipher mode of operation being initialized. */
+    abstract BlockMode getMode();
+
+    /** Gets a step propagating the encryption algorithm through this call. */
+    abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
+  }
+
+  /**
+   * A data flow node that is an application of an encryption algorithm, where
+   * the encryption algorithm and the block cipher mode of operation (if there
+   * is one) have been initialized separately.
+   */
+  abstract class EncryptionOperation extends CryptographicOperation::Range {
+    DataFlow::Node encryptionFlowTarget;
+    DataFlow::Node inputNode;
+
+    override DataFlow::Node getInitialization() {
+      EncryptionFlow::flow(result, encryptionFlowTarget)
+    }
+
+    override EncryptionAlgorithm getAlgorithm() {
+      result = this.getInitialization().(EncryptionAlgorithmInit).getAlgorithm()
+    }
+
+    override DataFlow::Node getAnInput() { result = inputNode }
+
+    override BlockMode getBlockMode() {
+      result = this.getInitialization().(BlockModeInit).getMode()
+    }
+  }
+
+  /**
+   * An `EncryptionOperation` which is a method call where the encryption
+   * algorithm and block cipher mode of operation (if there is one) flow to the
+   * receiver and the input is an argument.
+   */
+  abstract class EncryptionMethodCall extends EncryptionOperation instanceof DataFlow::CallNode {
+    int inputArg;
+
+    EncryptionMethodCall() {
+      encryptionFlowTarget = super.getReceiver() and
+      inputNode = super.getArgument(inputArg)
+    }
+  }
 }

@@ -1,17 +1,83 @@
 #select
-| Crypto.go:21:25:21:27 | buf | Crypto.go:18:9:18:16 | password | Crypto.go:21:25:21:27 | buf | $@ is used in a weak cryptographic algorithm. | Crypto.go:18:9:18:16 | password | Sensitive data |
-| Crypto.go:24:10:24:12 | buf | Crypto.go:18:9:18:16 | password | Crypto.go:24:10:24:12 | buf | $@ is used in a weak cryptographic algorithm. | Crypto.go:18:9:18:16 | password | Sensitive data |
-| Crypto.go:27:16:27:18 | buf | Crypto.go:18:9:18:16 | password | Crypto.go:27:16:27:18 | buf | $@ is used in a weak cryptographic algorithm. | Crypto.go:18:9:18:16 | password | Sensitive data |
-| Crypto.go:30:11:30:13 | buf | Crypto.go:18:9:18:16 | password | Crypto.go:30:11:30:13 | buf | $@ is used in a weak cryptographic algorithm. | Crypto.go:18:9:18:16 | password | Sensitive data |
+| Crypto.go:36:21:36:28 | password | Crypto.go:36:21:36:28 | password | Crypto.go:36:21:36:28 | password | $@ is used in a weak cryptographic algorithm. | Crypto.go:36:21:36:28 | password | Sensitive data |
+| Crypto.go:41:22:41:29 | password | Crypto.go:41:22:41:29 | password | Crypto.go:41:22:41:29 | password | $@ is used in a weak cryptographic algorithm. | Crypto.go:41:22:41:29 | password | Sensitive data |
+| Crypto.go:46:22:46:29 | password | Crypto.go:46:22:46:29 | password | Crypto.go:46:22:46:29 | password | $@ is used in a weak cryptographic algorithm. | Crypto.go:46:22:46:29 | password | Sensitive data |
+| Crypto.go:51:22:51:29 | password | Crypto.go:51:22:51:29 | password | Crypto.go:51:22:51:29 | password | $@ is used in a weak cryptographic algorithm. | Crypto.go:51:22:51:29 | password | Sensitive data |
+| Crypto.go:56:22:56:29 | password | Crypto.go:56:22:56:29 | password | Crypto.go:56:22:56:29 | password | $@ is used in a weak cryptographic algorithm. | Crypto.go:56:22:56:29 | password | Sensitive data |
+| Crypto.go:61:32:61:39 | password | Crypto.go:61:32:61:39 | password | Crypto.go:61:32:61:39 | password | $@ is used in a weak cryptographic algorithm. | Crypto.go:61:32:61:39 | password | Sensitive data |
+| Crypto.go:66:30:66:37 | password | Crypto.go:66:30:66:37 | password | Crypto.go:66:30:66:37 | password | $@ is used in a weak cryptographic algorithm. | Crypto.go:66:30:66:37 | password | Sensitive data |
+| Crypto.go:68:59:68:83 | call to NewReader | Crypto.go:68:75:68:82 | password | Crypto.go:68:59:68:83 | call to NewReader | $@ is used in a weak cryptographic algorithm. | Crypto.go:68:75:68:82 | password | Sensitive data |
+| Crypto.go:72:10:72:24 | ctrStreamWriter [postupdate] | Crypto.go:72:43:72:50 | password | Crypto.go:72:10:72:24 | ctrStreamWriter [postupdate] | $@ is used in a weak cryptographic algorithm. | Crypto.go:72:43:72:50 | password | Sensitive data |
+| Crypto.go:78:30:78:37 | password | Crypto.go:78:30:78:37 | password | Crypto.go:78:30:78:37 | password | $@ is used in a weak cryptographic algorithm. | Crypto.go:78:30:78:37 | password | Sensitive data |
+| Crypto.go:83:30:83:37 | password | Crypto.go:83:30:83:37 | password | Crypto.go:83:30:83:37 | password | $@ is used in a weak cryptographic algorithm. | Crypto.go:83:30:83:37 | password | Sensitive data |
+| Crypto.go:91:21:91:33 | call to getPassword | Crypto.go:91:21:91:33 | call to getPassword | Crypto.go:91:21:91:33 | call to getPassword | $@ is used in a weak cryptographic algorithm. | Crypto.go:91:21:91:33 | call to getPassword | Sensitive data |
+| Crypto.go:96:22:96:34 | call to getPassword | Crypto.go:96:22:96:34 | call to getPassword | Crypto.go:96:22:96:34 | call to getPassword | $@ is used in a weak cryptographic algorithm. | Crypto.go:96:22:96:34 | call to getPassword | Sensitive data |
+| Crypto.go:101:22:101:34 | call to getPassword | Crypto.go:101:22:101:34 | call to getPassword | Crypto.go:101:22:101:34 | call to getPassword | $@ is used in a weak cryptographic algorithm. | Crypto.go:101:22:101:34 | call to getPassword | Sensitive data |
+| Crypto.go:106:22:106:29 | password | Crypto.go:106:22:106:29 | password | Crypto.go:106:22:106:29 | password | $@ is used in a weak cryptographic algorithm. | Crypto.go:106:22:106:29 | password | Sensitive data |
+| Crypto.go:111:22:111:29 | password | Crypto.go:111:22:111:29 | password | Crypto.go:111:22:111:29 | password | $@ is used in a weak cryptographic algorithm. | Crypto.go:111:22:111:29 | password | Sensitive data |
+| Crypto.go:116:32:116:44 | call to getPassword | Crypto.go:116:32:116:44 | call to getPassword | Crypto.go:116:32:116:44 | call to getPassword | $@ is used in a weak cryptographic algorithm. | Crypto.go:116:32:116:44 | call to getPassword | Sensitive data |
+| Crypto.go:121:30:121:42 | call to getPassword | Crypto.go:121:30:121:42 | call to getPassword | Crypto.go:121:30:121:42 | call to getPassword | $@ is used in a weak cryptographic algorithm. | Crypto.go:121:30:121:42 | call to getPassword | Sensitive data |
+| Crypto.go:123:59:123:88 | call to NewReader | Crypto.go:123:75:123:87 | call to getPassword | Crypto.go:123:59:123:88 | call to NewReader | $@ is used in a weak cryptographic algorithm. | Crypto.go:123:75:123:87 | call to getPassword | Sensitive data |
+| Crypto.go:127:10:127:24 | ctrStreamWriter [postupdate] | Crypto.go:127:43:127:55 | call to getPassword | Crypto.go:127:10:127:24 | ctrStreamWriter [postupdate] | $@ is used in a weak cryptographic algorithm. | Crypto.go:127:43:127:55 | call to getPassword | Sensitive data |
+| Crypto.go:133:30:133:37 | password | Crypto.go:133:30:133:37 | password | Crypto.go:133:30:133:37 | password | $@ is used in a weak cryptographic algorithm. | Crypto.go:133:30:133:37 | password | Sensitive data |
+| Crypto.go:138:30:138:37 | password | Crypto.go:138:30:138:37 | password | Crypto.go:138:30:138:37 | password | $@ is used in a weak cryptographic algorithm. | Crypto.go:138:30:138:37 | password | Sensitive data |
+| Crypto.go:198:22:198:34 | call to getPassword | Crypto.go:198:22:198:34 | call to getPassword | Crypto.go:198:22:198:34 | call to getPassword | $@ is used in a weak cryptographic algorithm. | Crypto.go:198:22:198:34 | call to getPassword | Sensitive data |
+| Crypto.go:205:8:205:10 | buf | Crypto.go:202:9:202:16 | password | Crypto.go:205:8:205:10 | buf | $@ is used in a weak cryptographic algorithm. | Crypto.go:202:9:202:16 | password | Sensitive data |
+| Crypto.go:206:10:206:12 | buf | Crypto.go:202:9:202:16 | password | Crypto.go:206:10:206:12 | buf | $@ is used in a weak cryptographic algorithm. | Crypto.go:202:9:202:16 | password | Sensitive data |
+| Crypto.go:207:20:207:33 | passwordString | Crypto.go:207:20:207:33 | passwordString | Crypto.go:207:20:207:33 | passwordString | $@ is used in a weak cryptographic algorithm. | Crypto.go:207:20:207:33 | passwordString | Sensitive data |
+| Crypto.go:208:10:208:12 | buf | Crypto.go:202:9:202:16 | password | Crypto.go:208:10:208:12 | buf | $@ is used in a weak cryptographic algorithm. | Crypto.go:202:9:202:16 | password | Sensitive data |
+| Crypto.go:210:17:210:19 | buf | Crypto.go:202:9:202:16 | password | Crypto.go:210:17:210:19 | buf | $@ is used in a weak cryptographic algorithm. | Crypto.go:202:9:202:16 | password | Sensitive data |
+| Crypto.go:211:11:211:13 | buf | Crypto.go:202:9:202:16 | password | Crypto.go:211:11:211:13 | buf | $@ is used in a weak cryptographic algorithm. | Crypto.go:202:9:202:16 | password | Sensitive data |
 edges
-| Crypto.go:18:9:18:16 | password | Crypto.go:21:25:21:27 | buf | provenance |  |
-| Crypto.go:18:9:18:16 | password | Crypto.go:24:10:24:12 | buf | provenance |  |
-| Crypto.go:18:9:18:16 | password | Crypto.go:27:16:27:18 | buf | provenance |  |
-| Crypto.go:18:9:18:16 | password | Crypto.go:30:11:30:13 | buf | provenance |  |
+| Crypto.go:68:75:68:82 | password | Crypto.go:68:59:68:83 | call to NewReader | provenance | MaD:1 |
+| Crypto.go:72:27:72:51 | call to NewReader | Crypto.go:72:10:72:24 | ctrStreamWriter [postupdate] | provenance | MaD:2 |
+| Crypto.go:72:43:72:50 | password | Crypto.go:72:27:72:51 | call to NewReader | provenance | MaD:1 |
+| Crypto.go:123:75:123:87 | call to getPassword | Crypto.go:123:59:123:88 | call to NewReader | provenance | MaD:1 |
+| Crypto.go:127:27:127:56 | call to NewReader | Crypto.go:127:10:127:24 | ctrStreamWriter [postupdate] | provenance | MaD:2 |
+| Crypto.go:127:43:127:55 | call to getPassword | Crypto.go:127:27:127:56 | call to NewReader | provenance | MaD:1 |
+| Crypto.go:202:9:202:16 | password | Crypto.go:205:8:205:10 | buf | provenance |  |
+| Crypto.go:202:9:202:16 | password | Crypto.go:206:10:206:12 | buf | provenance |  |
+| Crypto.go:202:9:202:16 | password | Crypto.go:208:10:208:12 | buf | provenance |  |
+| Crypto.go:202:9:202:16 | password | Crypto.go:210:17:210:19 | buf | provenance |  |
+| Crypto.go:202:9:202:16 | password | Crypto.go:211:11:211:13 | buf | provenance |  |
+models
+| 1 | Summary: bytes; ; false; NewReader; ; ; Argument[0]; ReturnValue; taint; manual |
+| 2 | Summary: io; ; false; Copy; ; ; Argument[1]; Argument[0]; taint; manual |
 nodes
-| Crypto.go:18:9:18:16 | password | semmle.label | password |
-| Crypto.go:21:25:21:27 | buf | semmle.label | buf |
-| Crypto.go:24:10:24:12 | buf | semmle.label | buf |
-| Crypto.go:27:16:27:18 | buf | semmle.label | buf |
-| Crypto.go:30:11:30:13 | buf | semmle.label | buf |
+| Crypto.go:36:21:36:28 | password | semmle.label | password |
+| Crypto.go:41:22:41:29 | password | semmle.label | password |
+| Crypto.go:46:22:46:29 | password | semmle.label | password |
+| Crypto.go:51:22:51:29 | password | semmle.label | password |
+| Crypto.go:56:22:56:29 | password | semmle.label | password |
+| Crypto.go:61:32:61:39 | password | semmle.label | password |
+| Crypto.go:66:30:66:37 | password | semmle.label | password |
+| Crypto.go:68:59:68:83 | call to NewReader | semmle.label | call to NewReader |
+| Crypto.go:68:75:68:82 | password | semmle.label | password |
+| Crypto.go:72:10:72:24 | ctrStreamWriter [postupdate] | semmle.label | ctrStreamWriter [postupdate] |
+| Crypto.go:72:27:72:51 | call to NewReader | semmle.label | call to NewReader |
+| Crypto.go:72:43:72:50 | password | semmle.label | password |
+| Crypto.go:78:30:78:37 | password | semmle.label | password |
+| Crypto.go:83:30:83:37 | password | semmle.label | password |
+| Crypto.go:91:21:91:33 | call to getPassword | semmle.label | call to getPassword |
+| Crypto.go:96:22:96:34 | call to getPassword | semmle.label | call to getPassword |
+| Crypto.go:101:22:101:34 | call to getPassword | semmle.label | call to getPassword |
+| Crypto.go:106:22:106:29 | password | semmle.label | password |
+| Crypto.go:111:22:111:29 | password | semmle.label | password |
+| Crypto.go:116:32:116:44 | call to getPassword | semmle.label | call to getPassword |
+| Crypto.go:121:30:121:42 | call to getPassword | semmle.label | call to getPassword |
+| Crypto.go:123:59:123:88 | call to NewReader | semmle.label | call to NewReader |
+| Crypto.go:123:75:123:87 | call to getPassword | semmle.label | call to getPassword |
+| Crypto.go:127:10:127:24 | ctrStreamWriter [postupdate] | semmle.label | ctrStreamWriter [postupdate] |
+| Crypto.go:127:27:127:56 | call to NewReader | semmle.label | call to NewReader |
+| Crypto.go:127:43:127:55 | call to getPassword | semmle.label | call to getPassword |
+| Crypto.go:133:30:133:37 | password | semmle.label | password |
+| Crypto.go:138:30:138:37 | password | semmle.label | password |
+| Crypto.go:198:22:198:34 | call to getPassword | semmle.label | call to getPassword |
+| Crypto.go:202:9:202:16 | password | semmle.label | password |
+| Crypto.go:205:8:205:10 | buf | semmle.label | buf |
+| Crypto.go:206:10:206:12 | buf | semmle.label | buf |
+| Crypto.go:207:20:207:33 | passwordString | semmle.label | passwordString |
+| Crypto.go:208:10:208:12 | buf | semmle.label | buf |
+| Crypto.go:210:17:210:19 | buf | semmle.label | buf |
+| Crypto.go:211:11:211:13 | buf | semmle.label | buf |
 subpaths
