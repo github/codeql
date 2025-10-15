@@ -4,8 +4,7 @@
  * @kind problem
  * @problem.severity recommendation
  * @id js/syntax-error
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  *       language-features
  * @precision very-high
