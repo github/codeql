@@ -133,7 +133,7 @@ module JCAModel {
     exists(string name | name = nameRaw.toUpperCase() |
       name in ["SHA-1", "SHA1"] and result instanceof Crypto::SHA1 and digestLength = 160
       or
-      name in ["SHA-256", "SHA-384", "SHA-512", "SHA256", "SHA384", "SHA512"] and
+      name in ["SHA-256", "SHA-224", "SHA-384", "SHA-512", "SHA224", "SHA256", "SHA384", "SHA512"] and
       result instanceof Crypto::SHA2 and
       digestLength = name.replaceAll("-", "").splitAt("SHA", 1).toInt()
       or
@@ -1628,7 +1628,7 @@ module JCAModel {
     }
   }
 
-  class MacOperationCall extends Crypto::MacOperationInstance instanceof MethodCall {
+  class MacOperationCall extends MethodCall {
     Expr output;
 
     MacOperationCall() {
@@ -1638,30 +1638,52 @@ module JCAModel {
         or
         super.getMethod().hasStringSignature("doFinal(byte[], int)") and
         this.getArgument(0) = output
+        or
+        super.getMethod().hasStringSignature("update(byte[])") and this = output
       )
+    }
+
+    predicate isIntermediate() { super.getMethod().getName() = "update" }
+
+    Expr getOutput() { result = output }
+
+    Expr getInput() {
+      super.getMethod().hasStringSignature(["doFinal(byte[])"]) and result = this.getArgument(0)
+      or
+      super.getMethod().hasStringSignature("update(byte[])") and result = this.getArgument(0)
+    }
+  }
+
+  module MacFlowAnalysisImpl =
+    GetInstanceInitUseFlowAnalysis<MacGetInstanceCall, MacInitCall, MacOperationCall>;
+
+  class MacOperationInstance extends Crypto::MacOperationInstance instanceof MacOperationCall {
+    MacOperationInstance() { not super.isIntermediate() }
+
+    MacGetInstanceCall getInstantiationCall() {
+      result = MacFlowAnalysisImpl::getInstantiationFromUse(this, _, _)
+    }
+
+    MacInitCall getInitCall() { result = MacFlowAnalysisImpl::getInitFromUse(this, _, _) }
+
+    override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
+      result.asExpr() = super.getInput() or
+      result.asExpr() = MacFlowAnalysisImpl::getAnIntermediateUseFromFinalUse(this, _, _).getInput()
     }
 
     override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
-      exists(MacGetInstanceCall instantiation |
-        instantiation.getOperation() = this and result = instantiation.getAlgorithmArg()
-      )
+      result = this.getInstantiationCall().getAlgorithmArg()
     }
 
     override Crypto::ConsumerInputDataFlowNode getKeyConsumer() {
-      exists(MacGetInstanceCall instantiation, MacInitCall initCall |
-        instantiation.getOperation() = this and
-        initCall.getOperation() = this and
-        instantiation.getInitCall() = initCall and
-        result.asExpr() = initCall.getKeyArg()
-      )
+      result.asExpr() = this.getInitCall().getKeyArg()
     }
 
-    override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
-      result.asExpr() = super.getArgument(0) and
-      super.getMethod().getParameterType(0).hasName("byte[]")
+    override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
+      result.asExpr() = super.getOutput() or
+      result.asExpr() =
+        MacFlowAnalysisImpl::getAnIntermediateUseFromFinalUse(this, _, _).getOutput()
     }
-
-    override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() { result.asExpr() = output }
 
     override Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() { none() }
 
@@ -1773,7 +1795,7 @@ module JCAModel {
     }
   }
 
-  private class SignatureOperationCall extends MethodCall {
+  class SignatureOperationCall extends MethodCall {
     SignatureOperationCall() {
       this.getMethod().hasQualifiedName("java.security", "Signature", ["update", "sign", "verify"])
     }

@@ -348,7 +348,7 @@
 | jca/EllipticCurve1.java:105:66:105:76 | Constant |
 | jca/EllipticCurve1.java:106:16:106:36 | Key |
 | jca/EllipticCurve1.java:106:16:106:36 | KeyGeneration |
-| jca/EllipticCurve1.java:114:61:114:69 | Constant |
+| jca/EllipticCurve1.java:114:61:114:69 | KeyOperationAlgorithm |
 | jca/EllipticCurve1.java:115:16:115:36 | Key |
 | jca/EllipticCurve1.java:115:16:115:36 | KeyGeneration |
 | jca/EllipticCurve2.java:46:47:46:57 | EllipticCurve |
@@ -363,7 +363,7 @@
 | jca/EllipticCurve2.java:72:61:72:68 | KeyAgreementAlgorithm |
 | jca/EllipticCurve2.java:73:16:73:36 | Key |
 | jca/EllipticCurve2.java:73:16:73:36 | KeyGeneration |
-| jca/EllipticCurve2.java:80:61:80:69 | Constant |
+| jca/EllipticCurve2.java:80:61:80:69 | KeyOperationAlgorithm |
 | jca/EllipticCurve2.java:81:16:81:36 | Key |
 | jca/EllipticCurve2.java:81:16:81:36 | KeyGeneration |
 | jca/EllipticCurve2.java:105:52:105:57 | KeyAgreementAlgorithm |
@@ -582,7 +582,6 @@
 | jca/Hash.java:191:85:191:94 | HashAlgorithm |
 | jca/Hash.java:191:97:191:106 | HashAlgorithm |
 | jca/Hash.java:192:13:192:25 | HashAlgorithm |
-| jca/Hash.java:192:28:192:40 | HashAlgorithm |
 | jca/Hash.java:192:43:192:47 | HashAlgorithm |
 | jca/Hash.java:195:27:195:57 | Digest |
 | jca/Hash.java:195:27:195:57 | HashOperation |
@@ -623,6 +622,7 @@
 | jca/Hash.java:270:27:270:30 | Message |
 | jca/Hash.java:271:40:271:54 | Digest |
 | jca/Hash.java:271:40:271:54 | HashOperation |
+| jca/Hash.java:294:16:294:66 | Constant |
 | jca/Hash.java:294:16:294:66 | LocalData |
 | jca/Hash.java:294:57:294:65 | HashAlgorithm |
 | jca/Hash.java:310:38:310:41 | RandomNumberGeneration |
@@ -641,6 +641,7 @@
 | jca/IVArtifact.java:39:29:39:53 | KeyOperationOutput |
 | jca/IVArtifact.java:39:44:39:52 | Message |
 | jca/IVArtifact.java:49:27:49:42 | Constant |
+| jca/IVArtifact.java:70:16:70:81 | Constant |
 | jca/IVArtifact.java:70:16:70:81 | LocalData |
 | jca/IVArtifact.java:70:59:70:80 | KeyOperationAlgorithm |
 | jca/IVArtifact.java:70:59:70:80 | ModeOfOperation |
@@ -814,6 +815,7 @@
 | jca/KeyArtifact.java:41:31:41:33 | Constant |
 | jca/KeyArtifact.java:42:26:42:53 | Key |
 | jca/KeyArtifact.java:42:26:42:53 | KeyGeneration |
+| jca/KeyArtifact.java:62:28:62:73 | Constant |
 | jca/KeyArtifact.java:62:28:62:73 | LocalData |
 | jca/KeyArtifact.java:62:68:62:72 | KeyOperationAlgorithm |
 | jca/KeyArtifact.java:65:21:65:23 | Constant |
@@ -824,6 +826,7 @@
 | jca/KeyArtifact.java:73:16:73:43 | KeyGeneration |
 | jca/KeyArtifact.java:78:31:78:54 | Constant |
 | jca/KeyArtifact.java:78:32:78:36 | KeyOperationAlgorithm |
+| jca/KeyArtifact.java:78:45:78:53 | KeyOperationAlgorithm |
 | jca/KeyDerivation1.java:78:39:78:53 | Parameter |
 | jca/KeyDerivation1.java:80:42:80:63 | Message |
 | jca/KeyDerivation1.java:80:66:80:69 | Salt |
@@ -907,11 +910,14 @@
 | jca/KeyDerivation1.java:283:43:283:57 | Parameter |
 | jca/KeyDerivation1.java:283:60:283:78 | Parameter |
 | jca/KeyDerivation1.java:302:37:302:51 | Parameter |
+| jca/KeyDerivation1.java:309:25:309:76 | Constant |
 | jca/KeyDerivation1.java:309:25:309:76 | LocalData |
 | jca/KeyDerivation1.java:309:54:309:75 | HMACAlgorithm |
 | jca/KeyDerivation1.java:309:54:309:75 | HashAlgorithm |
 | jca/KeyDerivation1.java:309:54:309:75 | KeyDerivationAlgorithm |
+| jca/KeyDerivation1.java:310:43:310:86 | Constant |
 | jca/KeyDerivation1.java:310:43:310:86 | LocalData |
+| jca/KeyDerivation1.java:311:40:311:78 | Constant |
 | jca/KeyDerivation1.java:311:40:311:78 | LocalData |
 | jca/KeyDerivation1.java:314:42:314:63 | Message |
 | jca/KeyDerivation1.java:314:66:314:69 | Salt |
@@ -1136,12 +1142,15 @@
 | jca/MACOperation.java:246:38:246:41 | RandomNumberGeneration |
 | jca/Nonce.java:24:35:24:46 | KeyOperationAlgorithm |
 | jca/Nonce.java:25:18:25:20 | Key |
+| jca/Nonce.java:26:20:26:24 | Message |
 | jca/Nonce.java:27:28:27:69 | KeyOperationOutput |
 | jca/Nonce.java:27:28:27:69 | MACOperation |
 | jca/Nonce.java:27:40:27:57 | Constant |
 | jca/Nonce.java:27:40:27:68 | Message |
+| jca/Nonce.java:35:24:35:41 | Constant |
 | jca/Nonce.java:37:35:37:46 | KeyOperationAlgorithm |
 | jca/Nonce.java:38:18:38:20 | Key |
+| jca/Nonce.java:39:20:39:24 | Message |
 | jca/Nonce.java:40:28:40:67 | KeyOperationOutput |
 | jca/Nonce.java:40:28:40:67 | MACOperation |
 | jca/Nonce.java:40:40:40:55 | Constant |
@@ -1168,6 +1177,7 @@
 | jca/Nonce.java:63:44:63:52 | Message |
 | jca/Nonce.java:70:53:70:64 | KeyOperationAlgorithm |
 | jca/Nonce.java:78:18:78:20 | Key |
+| jca/Nonce.java:79:20:79:24 | Message |
 | jca/Nonce.java:80:28:80:67 | KeyOperationOutput |
 | jca/Nonce.java:80:28:80:67 | MACOperation |
 | jca/Nonce.java:80:40:80:55 | Constant |
@@ -1176,6 +1186,7 @@
 | jca/Nonce.java:93:16:93:35 | Key |
 | jca/Nonce.java:93:16:93:35 | KeyGeneration |
 | jca/Nonce.java:98:38:98:42 | RandomNumberGeneration |
+| jca/Nonce.java:104:32:104:36 | RandomNumberGeneration |
 | jca/Nonce.java:112:16:112:33 | Constant |
 | jca/PrngTest.java:152:56:152:60 | KeyOperationAlgorithm |
 | jca/PrngTest.java:153:21:153:23 | Constant |
@@ -1254,7 +1265,7 @@
 | jca/SignatureOperation.java:117:26:117:29 | Message |
 | jca/SignatureOperation.java:118:16:118:41 | VerifyOperation |
 | jca/SignatureOperation.java:118:33:118:40 | SignatureInput |
-| jca/SignatureOperation.java:132:61:132:69 | Constant |
+| jca/SignatureOperation.java:132:61:132:69 | KeyOperationAlgorithm |
 | jca/SignatureOperation.java:133:16:133:36 | Key |
 | jca/SignatureOperation.java:133:16:133:36 | KeyGeneration |
 | jca/SignatureOperation.java:142:53:142:61 | KeyOperationAlgorithm |

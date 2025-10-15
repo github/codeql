@@ -387,7 +387,8 @@
 | jca/EllipticCurve1.java:95:16:95:36 | Key | KeyType | Asymmetric | jca/EllipticCurve1.java:95:16:95:36 | jca/EllipticCurve1.java:95:16:95:36 |
 | jca/EllipticCurve1.java:105:66:105:76 | Constant | Description | "sm2p256v1" | jca/EllipticCurve1.java:105:66:105:76 | jca/EllipticCurve1.java:105:66:105:76 |
 | jca/EllipticCurve1.java:106:16:106:36 | Key | KeyType | Asymmetric | jca/EllipticCurve1.java:106:16:106:36 | jca/EllipticCurve1.java:106:16:106:36 |
-| jca/EllipticCurve1.java:114:61:114:69 | Constant | Description | "Ed25519" | jca/EllipticCurve1.java:114:61:114:69 | jca/EllipticCurve1.java:114:61:114:69 |
+| jca/EllipticCurve1.java:114:61:114:69 | KeyOperationAlgorithm | Name | EDSA | jca/EllipticCurve1.java:114:61:114:69 | jca/EllipticCurve1.java:114:61:114:69 |
+| jca/EllipticCurve1.java:114:61:114:69 | KeyOperationAlgorithm | RawName | Ed25519 | jca/EllipticCurve1.java:114:61:114:69 | jca/EllipticCurve1.java:114:61:114:69 |
 | jca/EllipticCurve1.java:115:16:115:36 | Key | KeyType | Asymmetric | jca/EllipticCurve1.java:115:16:115:36 | jca/EllipticCurve1.java:115:16:115:36 |
 | jca/EllipticCurve2.java:46:47:46:57 | EllipticCurve | KeySize | 256 | jca/EllipticCurve2.java:46:47:46:57 | jca/EllipticCurve2.java:46:47:46:57 |
 | jca/EllipticCurve2.java:46:47:46:57 | EllipticCurve | Name | secp256r1 | jca/EllipticCurve2.java:46:47:46:57 | jca/EllipticCurve2.java:46:47:46:57 |
@@ -407,7 +408,8 @@
 | jca/EllipticCurve2.java:72:61:72:68 | KeyAgreementAlgorithm | Name | X25519 | jca/EllipticCurve2.java:72:61:72:68 | jca/EllipticCurve2.java:72:61:72:68 |
 | jca/EllipticCurve2.java:72:61:72:68 | KeyAgreementAlgorithm | RawName | X25519 | jca/EllipticCurve2.java:72:61:72:68 | jca/EllipticCurve2.java:72:61:72:68 |
 | jca/EllipticCurve2.java:73:16:73:36 | Key | KeyType | Asymmetric | jca/EllipticCurve2.java:73:16:73:36 | jca/EllipticCurve2.java:73:16:73:36 |
-| jca/EllipticCurve2.java:80:61:80:69 | Constant | Description | "Ed25519" | jca/EllipticCurve2.java:80:61:80:69 | jca/EllipticCurve2.java:80:61:80:69 |
+| jca/EllipticCurve2.java:80:61:80:69 | KeyOperationAlgorithm | Name | EDSA | jca/EllipticCurve2.java:80:61:80:69 | jca/EllipticCurve2.java:80:61:80:69 |
+| jca/EllipticCurve2.java:80:61:80:69 | KeyOperationAlgorithm | RawName | Ed25519 | jca/EllipticCurve2.java:80:61:80:69 | jca/EllipticCurve2.java:80:61:80:69 |
 | jca/EllipticCurve2.java:81:16:81:36 | Key | KeyType | Asymmetric | jca/EllipticCurve2.java:81:16:81:36 | jca/EllipticCurve2.java:81:16:81:36 |
 | jca/EllipticCurve2.java:105:52:105:57 | KeyAgreementAlgorithm | Name | ECDH | jca/EllipticCurve2.java:105:52:105:57 | jca/EllipticCurve2.java:105:52:105:57 |
 | jca/EllipticCurve2.java:105:52:105:57 | KeyAgreementAlgorithm | RawName | ECDH | jca/EllipticCurve2.java:105:52:105:57 | jca/EllipticCurve2.java:105:52:105:57 |
@@ -641,7 +643,8 @@
 | jca/Hash.java:191:32:191:38 | HashAlgorithm | DigestSize | 160 | jca/Hash.java:191:32:191:38 | jca/Hash.java:191:32:191:38 |
 | jca/Hash.java:191:32:191:38 | HashAlgorithm | Name | SHA1 | jca/Hash.java:191:32:191:38 | jca/Hash.java:191:32:191:38 |
 | jca/Hash.java:191:32:191:38 | HashAlgorithm | RawName | SHA-1 | jca/Hash.java:191:32:191:38 | jca/Hash.java:191:32:191:38 |
-| jca/Hash.java:191:41:191:49 | HashAlgorithm | DigestSize | <unknown> | file://:0:0:0:0 | file://:0:0:0:0 |
+| jca/Hash.java:191:41:191:49 | HashAlgorithm | DigestSize | 224 | jca/Hash.java:191:41:191:49 | jca/Hash.java:191:41:191:49 |
+| jca/Hash.java:191:41:191:49 | HashAlgorithm | Name | SHA2 | jca/Hash.java:191:41:191:49 | jca/Hash.java:191:41:191:49 |
 | jca/Hash.java:191:41:191:49 | HashAlgorithm | RawName | SHA-224 | jca/Hash.java:191:41:191:49 | jca/Hash.java:191:41:191:49 |
 | jca/Hash.java:191:52:191:60 | HashAlgorithm | DigestSize | 256 | jca/Hash.java:191:52:191:60 | jca/Hash.java:191:52:191:60 |
 | jca/Hash.java:191:52:191:60 | HashAlgorithm | Name | SHA2 | jca/Hash.java:191:52:191:60 | jca/Hash.java:191:52:191:60 |
@@ -658,10 +661,9 @@
 | jca/Hash.java:191:97:191:106 | HashAlgorithm | DigestSize | 512 | jca/Hash.java:191:97:191:106 | jca/Hash.java:191:97:191:106 |
 | jca/Hash.java:191:97:191:106 | HashAlgorithm | Name | SHA3 | jca/Hash.java:191:97:191:106 | jca/Hash.java:191:97:191:106 |
 | jca/Hash.java:191:97:191:106 | HashAlgorithm | RawName | SHA3-512 | jca/Hash.java:191:97:191:106 | jca/Hash.java:191:97:191:106 |
-| jca/Hash.java:192:13:192:25 | HashAlgorithm | DigestSize | <unknown> | file://:0:0:0:0 | file://:0:0:0:0 |
+| jca/Hash.java:192:13:192:25 | HashAlgorithm | DigestSize | 512 | jca/Hash.java:192:13:192:25 | jca/Hash.java:192:13:192:25 |
+| jca/Hash.java:192:13:192:25 | HashAlgorithm | Name | BLAKE2B | jca/Hash.java:192:13:192:25 | jca/Hash.java:192:13:192:25 |
 | jca/Hash.java:192:13:192:25 | HashAlgorithm | RawName | BLAKE2B-512 | jca/Hash.java:192:13:192:25 | jca/Hash.java:192:13:192:25 |
-| jca/Hash.java:192:28:192:40 | HashAlgorithm | DigestSize | <unknown> | file://:0:0:0:0 | file://:0:0:0:0 |
-| jca/Hash.java:192:28:192:40 | HashAlgorithm | RawName | BLAKE2S-256 | jca/Hash.java:192:28:192:40 | jca/Hash.java:192:28:192:40 |
 | jca/Hash.java:192:43:192:47 | HashAlgorithm | DigestSize | 128 | jca/Hash.java:192:43:192:47 | jca/Hash.java:192:43:192:47 |
 | jca/Hash.java:192:43:192:47 | HashAlgorithm | Name | MD5 | jca/Hash.java:192:43:192:47 | jca/Hash.java:192:43:192:47 |
 | jca/Hash.java:192:43:192:47 | HashAlgorithm | RawName | MD5 | jca/Hash.java:192:43:192:47 | jca/Hash.java:192:43:192:47 |
@@ -710,6 +712,7 @@
 | jca/Hash.java:266:66:266:75 | HashAlgorithm | Name | SHA3 | jca/Hash.java:266:66:266:75 | jca/Hash.java:266:66:266:75 |
 | jca/Hash.java:266:66:266:75 | HashAlgorithm | RawName | SHA3-512 | jca/Hash.java:266:66:266:75 | jca/Hash.java:266:66:266:75 |
 | jca/Hash.java:269:27:269:38 | Constant | Description | "fixed-seed" | jca/Hash.java:269:27:269:38 | jca/Hash.java:269:27:269:38 |
+| jca/Hash.java:294:16:294:66 | Constant | Description | getProperty(...) | jca/Hash.java:294:16:294:66 | jca/Hash.java:294:16:294:66 |
 | jca/Hash.java:294:16:294:66 | LocalData | Description | getProperty(...) | jca/Hash.java:294:16:294:66 | jca/Hash.java:294:16:294:66 |
 | jca/Hash.java:294:57:294:65 | HashAlgorithm | DigestSize | 256 | jca/Hash.java:294:57:294:65 | jca/Hash.java:294:57:294:65 |
 | jca/Hash.java:294:57:294:65 | HashAlgorithm | Name | SHA2 | jca/Hash.java:294:57:294:65 | jca/Hash.java:294:57:294:65 |
@@ -728,6 +731,7 @@
 | jca/IVArtifact.java:38:42:38:44 | Key | KeyType | Unknown | jca/IVArtifact.java:38:42:38:44 | jca/IVArtifact.java:38:42:38:44 |
 | jca/IVArtifact.java:39:29:39:53 | EncryptOperation | KeyOperationSubtype | Encrypt | jca/IVArtifact.java:39:29:39:53 | jca/IVArtifact.java:39:29:39:53 |
 | jca/IVArtifact.java:49:27:49:42 | Constant | Description | "Sensitive Data" | jca/IVArtifact.java:49:27:49:42 | jca/IVArtifact.java:49:27:49:42 |
+| jca/IVArtifact.java:70:16:70:81 | Constant | Description | getProperty(...) | jca/IVArtifact.java:70:16:70:81 | jca/IVArtifact.java:70:16:70:81 |
 | jca/IVArtifact.java:70:16:70:81 | LocalData | Description | getProperty(...) | jca/IVArtifact.java:70:16:70:81 | jca/IVArtifact.java:70:16:70:81 |
 | jca/IVArtifact.java:70:59:70:80 | KeyOperationAlgorithm | Name | AES | jca/IVArtifact.java:70:59:70:80 | jca/IVArtifact.java:70:59:70:80 |
 | jca/IVArtifact.java:70:59:70:80 | KeyOperationAlgorithm | RawName | AES/CBC/PKCS5Padding | jca/IVArtifact.java:70:59:70:80 | jca/IVArtifact.java:70:59:70:80 |
@@ -923,6 +927,7 @@
 | jca/KeyArtifact.java:37:29:37:56 | Key | KeyType | Asymmetric | jca/KeyArtifact.java:37:29:37:56 | jca/KeyArtifact.java:37:29:37:56 |
 | jca/KeyArtifact.java:41:31:41:33 | Constant | Description | 256 | jca/KeyArtifact.java:41:31:41:33 | jca/KeyArtifact.java:41:31:41:33 |
 | jca/KeyArtifact.java:42:26:42:53 | Key | KeyType | Asymmetric | jca/KeyArtifact.java:42:26:42:53 | jca/KeyArtifact.java:42:26:42:53 |
+| jca/KeyArtifact.java:62:28:62:73 | Constant | Description | getProperty(...) | jca/KeyArtifact.java:62:28:62:73 | jca/KeyArtifact.java:62:28:62:73 |
 | jca/KeyArtifact.java:62:28:62:73 | LocalData | Description | getProperty(...) | jca/KeyArtifact.java:62:28:62:73 | jca/KeyArtifact.java:62:28:62:73 |
 | jca/KeyArtifact.java:62:68:62:72 | KeyOperationAlgorithm | KeySize | Constant:256 | jca/KeyArtifact.java:65:21:65:23 | jca/KeyArtifact.java:65:21:65:23 |
 | jca/KeyArtifact.java:62:68:62:72 | KeyOperationAlgorithm | Name | AES | jca/KeyArtifact.java:62:68:62:72 | jca/KeyArtifact.java:62:68:62:72 |
@@ -936,6 +941,8 @@
 | jca/KeyArtifact.java:78:32:78:36 | KeyOperationAlgorithm | KeySize | Constant:2048 | jca/KeyArtifact.java:72:31:72:34 | jca/KeyArtifact.java:72:31:72:34 |
 | jca/KeyArtifact.java:78:32:78:36 | KeyOperationAlgorithm | Name | RSA | jca/KeyArtifact.java:78:32:78:36 | jca/KeyArtifact.java:78:32:78:36 |
 | jca/KeyArtifact.java:78:32:78:36 | KeyOperationAlgorithm | RawName | RSA | jca/KeyArtifact.java:78:32:78:36 | jca/KeyArtifact.java:78:32:78:36 |
+| jca/KeyArtifact.java:78:45:78:53 | KeyOperationAlgorithm | Name | EDSA | jca/KeyArtifact.java:78:45:78:53 | jca/KeyArtifact.java:78:45:78:53 |
+| jca/KeyArtifact.java:78:45:78:53 | KeyOperationAlgorithm | RawName | Ed25519 | jca/KeyArtifact.java:78:45:78:53 | jca/KeyArtifact.java:78:45:78:53 |
 | jca/KeyDerivation1.java:78:39:78:53 | Parameter | Description | password | jca/KeyDerivation1.java:78:39:78:53 | jca/KeyDerivation1.java:78:39:78:53 |
 | jca/KeyDerivation1.java:80:72:80:76 | Constant | Description | 10000 | jca/KeyDerivation1.java:80:72:80:76 | jca/KeyDerivation1.java:80:72:80:76 |
 | jca/KeyDerivation1.java:80:79:80:81 | Constant | Description | 256 | jca/KeyDerivation1.java:80:79:80:81 | jca/KeyDerivation1.java:80:79:80:81 |
@@ -1033,6 +1040,7 @@
 | jca/KeyDerivation1.java:283:43:283:57 | Parameter | Description | password | jca/KeyDerivation1.java:283:43:283:57 | jca/KeyDerivation1.java:283:43:283:57 |
 | jca/KeyDerivation1.java:283:60:283:78 | Parameter | Description | sharedSecret | jca/KeyDerivation1.java:283:60:283:78 | jca/KeyDerivation1.java:283:60:283:78 |
 | jca/KeyDerivation1.java:302:37:302:51 | Parameter | Description | password | jca/KeyDerivation1.java:302:37:302:51 | jca/KeyDerivation1.java:302:37:302:51 |
+| jca/KeyDerivation1.java:309:25:309:76 | Constant | Description | getProperty(...) | jca/KeyDerivation1.java:309:25:309:76 | jca/KeyDerivation1.java:309:25:309:76 |
 | jca/KeyDerivation1.java:309:25:309:76 | LocalData | Description | getProperty(...) | jca/KeyDerivation1.java:309:25:309:76 | jca/KeyDerivation1.java:309:25:309:76 |
 | jca/KeyDerivation1.java:309:54:309:75 | HMACAlgorithm | Name | HMAC | jca/KeyDerivation1.java:309:54:309:75 | jca/KeyDerivation1.java:309:54:309:75 |
 | jca/KeyDerivation1.java:309:54:309:75 | HMACAlgorithm | RawName | PBKDF2WithHmacSHA256 | jca/KeyDerivation1.java:309:54:309:75 | jca/KeyDerivation1.java:309:54:309:75 |
@@ -1041,10 +1049,14 @@
 | jca/KeyDerivation1.java:309:54:309:75 | HashAlgorithm | RawName | PBKDF2WithHmacSHA256 | jca/KeyDerivation1.java:309:54:309:75 | jca/KeyDerivation1.java:309:54:309:75 |
 | jca/KeyDerivation1.java:309:54:309:75 | KeyDerivationAlgorithm | Name | PBKDF2WithHmacSHA256 | jca/KeyDerivation1.java:309:54:309:75 | jca/KeyDerivation1.java:309:54:309:75 |
 | jca/KeyDerivation1.java:309:54:309:75 | KeyDerivationAlgorithm | RawName | PBKDF2WithHmacSHA256 | jca/KeyDerivation1.java:309:54:309:75 | jca/KeyDerivation1.java:309:54:309:75 |
+| jca/KeyDerivation1.java:310:43:310:86 | Constant | Description | getProperty(...) | jca/KeyDerivation1.java:310:43:310:86 | jca/KeyDerivation1.java:310:43:310:86 |
 | jca/KeyDerivation1.java:310:43:310:86 | LocalData | Description | getProperty(...) | jca/KeyDerivation1.java:310:43:310:86 | jca/KeyDerivation1.java:310:43:310:86 |
+| jca/KeyDerivation1.java:311:40:311:78 | Constant | Description | getProperty(...) | jca/KeyDerivation1.java:311:40:311:78 | jca/KeyDerivation1.java:311:40:311:78 |
 | jca/KeyDerivation1.java:311:40:311:78 | LocalData | Description | getProperty(...) | jca/KeyDerivation1.java:311:40:311:78 | jca/KeyDerivation1.java:311:40:311:78 |
 | jca/KeyDerivation1.java:316:26:316:53 | Key | KeyType | Symmetric | jca/KeyDerivation1.java:316:26:316:53 | jca/KeyDerivation1.java:316:26:316:53 |
+| jca/KeyDerivation1.java:316:26:316:53 | KeyDerivation | Iterations | Constant:getProperty(...) | jca/KeyDerivation1.java:310:43:310:86 | jca/KeyDerivation1.java:310:43:310:86 |
 | jca/KeyDerivation1.java:316:26:316:53 | KeyDerivation | Iterations | LocalData:getProperty(...) | jca/KeyDerivation1.java:310:43:310:86 | jca/KeyDerivation1.java:310:43:310:86 |
+| jca/KeyDerivation1.java:316:26:316:53 | KeyDerivation | KeySize | Constant:getProperty(...) | jca/KeyDerivation1.java:311:40:311:78 | jca/KeyDerivation1.java:311:40:311:78 |
 | jca/KeyDerivation1.java:316:26:316:53 | KeyDerivation | KeySize | LocalData:getProperty(...) | jca/KeyDerivation1.java:311:40:311:78 | jca/KeyDerivation1.java:311:40:311:78 |
 | jca/KeyDerivation1.java:333:72:333:76 | Constant | Description | 10000 | jca/KeyDerivation1.java:333:72:333:76 | jca/KeyDerivation1.java:333:72:333:76 |
 | jca/KeyDerivation1.java:333:79:333:81 | Constant | Description | 256 | jca/KeyDerivation1.java:333:79:333:81 | jca/KeyDerivation1.java:333:79:333:81 |
@@ -1283,6 +1295,7 @@
 | jca/Nonce.java:25:18:25:20 | Key | KeyType | Unknown | jca/Nonce.java:25:18:25:20 | jca/Nonce.java:25:18:25:20 |
 | jca/Nonce.java:27:28:27:69 | MACOperation | KeyOperationSubtype | Mac | jca/Nonce.java:27:28:27:69 | jca/Nonce.java:27:28:27:69 |
 | jca/Nonce.java:27:40:27:57 | Constant | Description | "Simple Test Data" | jca/Nonce.java:27:40:27:57 | jca/Nonce.java:27:40:27:57 |
+| jca/Nonce.java:35:24:35:41 | Constant | Description | "BADNONCEBADNONCE" | jca/Nonce.java:35:24:35:41 | jca/Nonce.java:35:24:35:41 |
 | jca/Nonce.java:37:35:37:46 | KeyOperationAlgorithm | Name | HMAC | jca/Nonce.java:37:35:37:46 | jca/Nonce.java:37:35:37:46 |
 | jca/Nonce.java:37:35:37:46 | KeyOperationAlgorithm | RawName | HmacSHA256 | jca/Nonce.java:37:35:37:46 | jca/Nonce.java:37:35:37:46 |
 | jca/Nonce.java:38:18:38:20 | Key | KeyType | Unknown | jca/Nonce.java:38:18:38:20 | jca/Nonce.java:38:18:38:20 |
@@ -1318,6 +1331,7 @@
 | jca/Nonce.java:92:56:92:67 | Constant | Description | "HmacSHA256" | jca/Nonce.java:92:56:92:67 | jca/Nonce.java:92:56:92:67 |
 | jca/Nonce.java:93:16:93:35 | Key | KeyType | Symmetric | jca/Nonce.java:93:16:93:35 | jca/Nonce.java:93:16:93:35 |
 | jca/Nonce.java:98:38:98:42 | RandomNumberGeneration | Description | java.security.SecureRandom | jca/Nonce.java:98:38:98:42 | jca/Nonce.java:98:38:98:42 |
+| jca/Nonce.java:104:32:104:36 | RandomNumberGeneration | Description | java.util.Random | jca/Nonce.java:104:32:104:36 | jca/Nonce.java:104:32:104:36 |
 | jca/Nonce.java:112:16:112:33 | Constant | Description | "BADNONCEBADNONCE" | jca/Nonce.java:112:16:112:33 | jca/Nonce.java:112:16:112:33 |
 | jca/PrngTest.java:152:56:152:60 | KeyOperationAlgorithm | KeySize | Constant:256 | jca/PrngTest.java:153:21:153:23 | jca/PrngTest.java:153:21:153:23 |
 | jca/PrngTest.java:152:56:152:60 | KeyOperationAlgorithm | Name | AES | jca/PrngTest.java:152:56:152:60 | jca/PrngTest.java:152:56:152:60 |
@@ -1412,7 +1426,8 @@
 | jca/SignatureOperation.java:115:53:115:69 | KeyOperationAlgorithm | RawName | SHA256withECDSA | jca/SignatureOperation.java:115:53:115:69 | jca/SignatureOperation.java:115:53:115:69 |
 | jca/SignatureOperation.java:116:30:116:38 | Key | KeyType | Unknown | jca/SignatureOperation.java:116:30:116:38 | jca/SignatureOperation.java:116:30:116:38 |
 | jca/SignatureOperation.java:118:16:118:41 | VerifyOperation | KeyOperationSubtype | Verify | jca/SignatureOperation.java:118:16:118:41 | jca/SignatureOperation.java:118:16:118:41 |
-| jca/SignatureOperation.java:132:61:132:69 | Constant | Description | "Ed25519" | jca/SignatureOperation.java:132:61:132:69 | jca/SignatureOperation.java:132:61:132:69 |
+| jca/SignatureOperation.java:132:61:132:69 | KeyOperationAlgorithm | Name | EDSA | jca/SignatureOperation.java:132:61:132:69 | jca/SignatureOperation.java:132:61:132:69 |
+| jca/SignatureOperation.java:132:61:132:69 | KeyOperationAlgorithm | RawName | Ed25519 | jca/SignatureOperation.java:132:61:132:69 | jca/SignatureOperation.java:132:61:132:69 |
 | jca/SignatureOperation.java:133:16:133:36 | Key | KeyType | Asymmetric | jca/SignatureOperation.java:133:16:133:36 | jca/SignatureOperation.java:133:16:133:36 |
 | jca/SignatureOperation.java:142:53:142:61 | KeyOperationAlgorithm | Name | EDSA | jca/SignatureOperation.java:142:53:142:61 | jca/SignatureOperation.java:142:53:142:61 |
 | jca/SignatureOperation.java:142:53:142:61 | KeyOperationAlgorithm | RawName | Ed25519 | jca/SignatureOperation.java:142:53:142:61 | jca/SignatureOperation.java:142:53:142:61 |
