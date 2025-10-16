@@ -124,6 +124,7 @@ module UncontrolledArithConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSourceLocation(DataFlow::Node source) {
+    isSource(source) and
     result = [getExpr(source).getLocation(), source.getLocation()]
   }
 }

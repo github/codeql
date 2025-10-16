@@ -31,11 +31,9 @@ module ShellCommandInjectionFromEnvironmentConfig implements DataFlow::ConfigSig
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    result = sink.getLocation()
-    or
     exists(DataFlow::Node node |
       isSinkWithHighlight(sink, node) and
-      result = node.getLocation()
+      result = [node.getLocation(), sink.getLocation()]
     )
   }
 }

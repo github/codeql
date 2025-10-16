@@ -54,7 +54,11 @@ module CleartextStorageDatabaseConfig implements DataFlow::ConfigSig {
   Location getASelectedSinkLocation(DataFlow::Node sink) {
     result = sink.(CleartextStorageDatabaseSink).getLocation()
     or
-    result = sink.(DataFlow::PostUpdateNode).getPreUpdateNode().getLocation()
+    result =
+      sink.(CleartextStorageDatabaseSink)
+          .(DataFlow::PostUpdateNode)
+          .getPreUpdateNode()
+          .getLocation()
   }
 }
 

@@ -18,10 +18,11 @@ module ImproperValidationOfArrayConstructionConfig implements DataFlow::ConfigSi
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    result = sink.getLocation()
-    or
     exists(ArrayCreationExpr arrayCreation, CheckableArrayAccess arrayAccess |
-      result = [arrayCreation, arrayAccess.getIndexExpr()].getLocation() and
+      result = [arrayCreation, arrayAccess.getIndexExpr()].getLocation()
+      or
+      result = sink.getLocation()
+    |
       arrayAccess.canThrowOutOfBoundsDueToEmptyArray(sink.asExpr(), arrayCreation)
     )
   }
