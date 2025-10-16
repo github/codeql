@@ -12,6 +12,7 @@ module TypeResolution {
    * We track through underlying types as an approximate way to handle calls to a type
    * that is a union/intersection involving functions.
    */
+  pragma[nomagic]
   Node trackUnderlyingFunctionType(Function fun) {
     result = fun
     or
@@ -139,6 +140,28 @@ module TypeResolution {
     )
   }
 
+  /**
+   * `ContentSet.getAReadContent` restricted to the content sets and contents relevant for type resolution.
+   */
+  pragma[nomagic]
+  private DataFlow::Content getAReadContentRestricted(DataFlow::ContentSet cs) {
+    valueReadStep(_, cs, _) and
+    result = cs.getAReadContent() and
+    typeMember(_, result, _)
+  }
+
+  /**
+   * `valueReadStep` where the `ContentSet` has been mapped to the set of relevant read-contents.
+   */
+  pragma[nomagic]
+  private predicate valueReadStepOnContent(Node object, DataFlow::Content content, Node member) {
+    exists(DataFlow::ContentSet contents |
+      valueReadStep(object, contents, member) and
+      content = getAReadContentRestricted(contents)
+    )
+  }
+
+  pragma[nomagic]
   predicate callTarget(InvokeExpr call, Function target) {
     exists(ClassDefinition cls |
       valueHasType(call.(NewExpr).getCallee(), trackClassValue(cls)) and
@@ -198,6 +221,7 @@ module TypeResolution {
     )
   }
 
+  pragma[nomagic]
   predicate contextualType(Node value, Node type) {
     exists(LocalVariableLike v |
       type = v.getADeclaration().getTypeAnnotation() and
@@ -239,6 +263,7 @@ module TypeResolution {
   /**
    * Holds if `value` has the given `type`.
    */
+  cached
   predicate valueHasType(Node value, Node type) {
     value.(BindingPattern).getTypeAnnotation() = type
     or
@@ -293,11 +318,18 @@ module TypeResolution {
     or
     exists(Node mid | valueHasType(mid, type) | ValueFlow::step(mid, value))
     or
-    exists(Node mid, Node midType, DataFlow::ContentSet contents, Node host |
-      valueReadStep(mid, contents, value) and
+    exists(DataFlow::Content content, Node host |
+      typeMemberHostRead(host, content, value) and
+      typeMember(host, content, type)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate typeMemberHostRead(Node host, DataFlow::Content content, Node target) {
+    exists(Node mid, Node midType |
+      valueReadStepOnContent(mid, content, target) and
       valueHasType(mid, midType) and
-      typeMemberHostReaches(host, midType) and
-      typeMember(host, contents.getAReadContent(), type)
+      typeMemberHostReaches(host, midType)
     )
   }
 
@@ -309,6 +341,7 @@ module TypeResolution {
    * - a union type has the property if all its members have the property
    */
   module TrackMustProp<nodeSig/1 directlyHasProperty> {
+    pragma[nomagic]
     predicate hasProperty(Node node) {
       directlyHasProperty(node)
       or
@@ -341,6 +374,7 @@ module TypeResolution {
   }
 
   module ValueHasProperty<nodeSig/1 typeHasProperty> {
+    pragma[nomagic]
     predicate valueHasProperty(Node value) {
       exists(Node type |
         valueHasType(value, type) and
@@ -405,6 +439,7 @@ module TypeResolution {
   /**
    * Holds if `type` contains `string` or `any`, possibly wrapped in a promise.
    */
+  pragma[nomagic]
   predicate hasUnderlyingStringOrAnyType(Node type) {
     type.(TypeAnnotation).isStringy()
     or
