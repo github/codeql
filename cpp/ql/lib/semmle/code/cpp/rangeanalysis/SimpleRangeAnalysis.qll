@@ -565,6 +565,30 @@ private module BoundsEstimate {
   /** Gets the number of bounds for `def` and `v` as guard phi node. */
   language[monotonicAggregates]
   private float nrOfBoundsPhiGuard(RangeSsaDefinition def, StackVariable v) {
+    // If we have
+    //
+    //   if (x < c) { e1 }
+    //   e2
+    //
+    // then `e2` is both a guard phi node (guarded by `x < c`) and a normal
+    // phi node (control is merged after the `if` statement).
+    //
+    // Assume `x` has `n` bounds. Then `n` bounds are propagated to the guard
+    // phi node `{ e1 }` and, since `{ e1 }` is input to `e2` as a normal phi
+    // node, `n` bounds are propagated to `e2`. If we also propagate the `n`
+    // bounds to `e2` as a guard phi node, then we square the number of
+    // bounds.
+    //
+    // However in practice `x < c` is going to cut down the number of bounds:
+    // The tracked bounds can't flow to both branches as that would require
+    // them to simultaneously be greater and smaller than `c`. To approximate
+    // this better, the contribution from a guard phi node that is also a
+    // normal phi node is 1.
+    exists(def.getAPhiInput(v)) and
+    isGuardPhiWithBound(def, v, _) and
+    result = 1
+    or
+    not exists(def.getAPhiInput(v)) and
     // If there's different `access`es, then they refer to the same variable
     // with the same lower bounds. Hence adding these guards make no sense (the
     // implementation will take the union but they'll be removed by
