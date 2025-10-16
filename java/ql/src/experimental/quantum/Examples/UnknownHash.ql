@@ -12,5 +12,8 @@ import java
 import experimental.quantum.Language
 
 from Crypto::HashAlgorithmNode alg
-where not exists(alg.getHashType())
-select alg, "Use of unknown hash algorithm or API."
+where
+  not exists(alg.getHashType())
+  or
+  alg.getHashType() = Crypto::OtherHashType()
+select alg, "Use of unknown hash algorithm."
