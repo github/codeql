@@ -1,6 +1,8 @@
 /**
  * Contains flow steps to model flow through `for..of` loops.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.dataflow.internal.DataFlowNode

@@ -1,6 +1,8 @@
 /**
  * Provides predicates for associating qualified names with data flow nodes.
  */
+overlay[local]
+module;
 
 import javascript
 private import semmle.javascript.dataflow.InferredTypes
@@ -354,6 +356,7 @@ module AccessPath {
      * Gets a variable that is relevant for the computations in the `GetLaterAccess` module.
      * This predicate restricts as much as it can, but without depending on `getAVariableRef`.
      */
+    overlay[caller]
     pragma[inline]
     private SsaVariable getARelevantVariableSimple() {
       // The variable might be used where `getLaterBaseAccess()` is called.
@@ -405,6 +408,7 @@ module AccessPath {
    * }
    * ```
    */
+  overlay[caller]
   pragma[inline]
   DataFlow::Node getAReferenceTo(Root root, string path) {
     path = fromReference(result, root) and
@@ -428,6 +432,7 @@ module AccessPath {
    * })(NS = NS || {});
    * ```
    */
+  overlay[caller]
   pragma[inline]
   DataFlow::Node getAReferenceTo(string path) {
     path = fromReference(result, DataFlow::globalAccessPathRootPseudoNode())
@@ -449,6 +454,7 @@ module AccessPath {
    * }
    * ```
    */
+  overlay[caller]
   pragma[inline]
   DataFlow::Node getAnAssignmentTo(Root root, string path) {
     path = fromRhs(result, root) and
@@ -470,6 +476,7 @@ module AccessPath {
    *  })(foo = foo || {});
    * ```
    */
+  overlay[caller]
   pragma[inline]
   DataFlow::Node getAnAssignmentTo(string path) {
     path = fromRhs(result, DataFlow::globalAccessPathRootPseudoNode())
@@ -480,6 +487,7 @@ module AccessPath {
    *
    * See `getAReferenceTo` and `getAnAssignmentTo` for more details.
    */
+  overlay[caller]
   pragma[inline]
   DataFlow::Node getAReferenceOrAssignmentTo(string path) {
     result = getAReferenceTo(path)
@@ -492,6 +500,7 @@ module AccessPath {
    *
    * See `getAReferenceTo` and `getAnAssignmentTo` for more details.
    */
+  overlay[caller]
   pragma[inline]
   DataFlow::Node getAReferenceOrAssignmentTo(Root root, string path) {
     result = getAReferenceTo(root, path)
@@ -502,6 +511,7 @@ module AccessPath {
   /**
    * Holds if there is a step from `pred` to `succ` through an assignment to an access path.
    */
+  overlay[caller]
   pragma[inline]
   predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(string name, Root root |
@@ -519,6 +529,7 @@ module AccessPath {
   /**
    * Gets a `SourceNode` that refers to the same value or access path as the given node.
    */
+  overlay[caller]
   pragma[inline]
   DataFlow::SourceNode getAnAliasedSourceNode(DataFlow::Node node) {
     exists(DataFlow::SourceNode root, string accessPath |
@@ -657,7 +668,7 @@ module AccessPath {
      */
     cached
     predicate hasDominatingWrite(DataFlow::PropRead read) {
-      Stages::TypeTracking::ref() and
+      Stages::DataFlowStage::ref() and
       // within the same basic block.
       exists(ReachableBasicBlock bb, Root root, string path, int ranking |
         read.asExpr() = rankedAccessPath(bb, root, path, ranking, AccessPathRead()) and
