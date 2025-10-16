@@ -185,7 +185,7 @@ class ClassAnnotatedAsThreadSafe extends Class {
     Monitors::locallyMonitors(e, monitor)
     or
     // recursive case
-    exists(MethodCall c, Expr e0, Method m0 | this.has_onelocked_access(f, e0, m0, write, monitor) |
+    exists(MethodCall c, Method m0 | this.has_onelocked_access(f, _, m0, write, monitor) |
       m = c.getEnclosingCallable() and
       not m0.isPublic() and
       c.getCallee().getSourceDeclaration() = m0 and
@@ -223,8 +223,8 @@ class ClassAnnotatedAsThreadSafe extends Class {
     not this.has_unlocked_public_access(f, _, _, _)
     or
     // recursive case
-    exists(MethodCall c, Expr e0, Method m0, Monitors::Monitor monitor0 |
-      this.has_onepluslocked_access(f, e0, m0, write, monitor0) and
+    exists(MethodCall c, Method m0, Monitors::Monitor monitor0 |
+      this.has_onepluslocked_access(f, _, m0, write, monitor0) and
       m = c.getEnclosingCallable() and
       not m0.isPublic() and
       c.getCallee().getSourceDeclaration() = m0 and
@@ -258,7 +258,7 @@ class ClassAnnotatedAsThreadSafe extends Class {
     not Monitors::locallyMonitors(e, monitor)
     or
     // recursive case
-    exists(MethodCall c, Expr e0, Method m0 | this.escapes_monitor(f, e0, m0, write, monitor) |
+    exists(MethodCall c, Method m0 | this.escapes_monitor(f, _, m0, write, monitor) |
       m = c.getEnclosingCallable() and
       not m0.isPublic() and
       c.getCallee().getSourceDeclaration() = m0 and
