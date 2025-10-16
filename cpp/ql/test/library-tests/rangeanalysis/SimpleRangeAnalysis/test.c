@@ -413,6 +413,18 @@ double test_ternary_nested_of_literals(double m, double n, double o, double p, d
   return output;
 }
 
+int repeated_if_statements(unsigned int rhs) {
+  // Test how many bounds we estimate for `if` statements without `else`
+  // branches where the following node is both a normal phi node and a guard phi
+  // node.
+  if (rhs < 12) { rhs << 1; }
+  if (rhs < 13) { rhs << 1; }
+  if (rhs < 14) { rhs << 1; }
+  if (rhs < 15) { rhs << 1; }
+  if (rhs < 16) { rhs << 1; }
+  return rhs; // rhs has 6 bounds
+}
+
 unsigned int conditional_nested_guards(unsigned int ip) {
   // This tests a combinatorial explosion that can happen from a large number of
   // nested linear guards.
