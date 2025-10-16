@@ -58,9 +58,9 @@ private class GenericUnreferencedParameterSource extends Crypto::GenericUnrefere
     exists(Parameter p |
       this = p and
       not exists(p.getAnArgument())
-      // TODO: this is test code which causes regression in unit tests, but will
-      // find sources where ordinarily a source might be missing
       // or
+      // // TODO: this is test code which causes regression in unit tests, but will
+      // // find sources where ordinarily a source might be missing
       // // If all calls to a function occur in a test file, ignore those calls
       // // and consider the parameter to the function a potential source as well.
       // forall(Call testCall | testCall.getCallee() = p.getCallable() |
