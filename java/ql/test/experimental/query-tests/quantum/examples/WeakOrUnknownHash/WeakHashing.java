@@ -30,8 +30,9 @@ public class WeakHashing {
 
         props2.load(new FileInputStream("unobserved-file.properties"));
 
-        // BAD: "hashalg1" is not visible in the file loaded for props2
-        MessageDigest bad6 = MessageDigest.getInstance(props2.getProperty("hashAlg1", "SHA-256")); // $Alert[java/quantum/weak-hash]
+        // BAD: "hashAlg2" is not visible in the file loaded for props2, should be an unknown 
+        // FALSE NEGATIVE for unknown hash
+        MessageDigest bad6 = MessageDigest.getInstance(props2.getProperty("hashAlg2", "SHA-256")); // $Alert[java/quantum/unknown-hash]
 
         // GOOD: Using a strong hashing algorithm
         MessageDigest ok = MessageDigest.getInstance(props.getProperty("hashAlg2"));

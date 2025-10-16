@@ -1,9 +1,4 @@
-#select
 | WeakHashing.java:15:55:15:83 | HashAlgorithm | Use of unapproved hash algorithm or API: MD5. |
 | WeakHashing.java:18:56:18:95 | HashAlgorithm | Use of unapproved hash algorithm or API: MD5. |
 | WeakHashing.java:21:86:21:90 | HashAlgorithm | Use of unapproved hash algorithm or API: MD5. |
 | WeakHashing.java:24:56:24:62 | HashAlgorithm | Use of unapproved hash algorithm or API: SHA1. |
-| WeakHashing.java:34:56:34:96 | HashAlgorithm | Use of unapproved hash algorithm or API: MD5. |
-testFailures
-| WeakHashing.java:27:125:27:133 | // $Alert | Missing result: Alert |
-| WeakHashing.java:40:111:40:119 | // $Alert | Missing result: Alert |
