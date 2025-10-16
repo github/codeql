@@ -71,6 +71,25 @@ class File extends Container, Impl::File {
  */
 class ExtractedFile extends File {
   ExtractedFile() { this.fromSource() }
+
+  private Diagnostic getNoSemanticsDiagnostic() {
+    result.getTag() = "semantics" and result.getLocation().getFile() = this
+  }
+
+  /**
+   * Holds if we have semantical information about this file, which means
+   * we should be able to
+   * * expand any macros
+   * * skip any blocks that are conditionally compiled out
+   */
+  predicate hasSemantics() { not exists(Diagnostic d | d = this.getNoSemanticsDiagnostic()) }
+
+  /**
+   * Holds if we know this file was skipped by conditional compilation.
+   * This is not the same as `not this.hasSemantics()`, as a file
+   * might not have semantics because of some error.
+   */
+  predicate isSkippedByCompilation() { this.getNoSemanticsDiagnostic().getSeverityText() = "Info" }
 }
 
 /**
