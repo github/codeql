@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["<_ as mysql_async::queryable::Queryable>::query", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql_async::queryable::Queryable>::query_drop", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql_async::queryable::Queryable>::query_first", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql_async::queryable::Queryable>::query_fold", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql_async::queryable::Queryable>::query_stream", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql_async::queryable::Queryable>::query_map", "Argument[0]", "sql-injection", "manual"]
+      - ["<mysql_async::conn::Conn as mysql_async::queryable::Queryable>::query_iter", "Argument[0]", "sql-injection", "manual"]
+      - ["<mysql_async::conn::Conn as mysql_async::queryable::Queryable>::prep", "Argument[0]", "sql-injection", "manual"]
