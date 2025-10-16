@@ -36,7 +36,11 @@ module CleartextStoragePreferencesConfig implements DataFlow::ConfigSig {
   Location getASelectedSinkLocation(DataFlow::Node sink) {
     result = sink.(CleartextStoragePreferencesSink).getLocation()
     or
-    result = sink.(DataFlow::PostUpdateNode).getPreUpdateNode().getLocation()
+    result =
+      sink.(CleartextStoragePreferencesSink)
+          .(DataFlow::PostUpdateNode)
+          .getPreUpdateNode()
+          .getLocation()
   }
 }
 

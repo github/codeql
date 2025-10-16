@@ -313,7 +313,7 @@ private module UnsafeDeserializationConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    result = sink.getLocation()
+    result = sink.(UnsafeDeserializationSink).getLocation()
     or
     result = sink.(UnsafeDeserializationSink).getMethodCall().getLocation()
   }

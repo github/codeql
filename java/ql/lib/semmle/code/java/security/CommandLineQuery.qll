@@ -66,9 +66,11 @@ module InputToArgumentToExecFlowConfig implements DataFlow::ConfigSig {
   // ExecTainted.ql queries use the argument as the primary location;
   // ExecUnescaped.ql does not (used to prevent overlapping results).
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    result = sink.getLocation()
-    or
-    exists(Expr argument | argumentToExec(argument, sink) | result = argument.getLocation())
+    exists(Expr argument | argumentToExec(argument, sink) |
+      result = argument.getLocation()
+      or
+      result = sink.getLocation()
+    )
   }
 }
 
