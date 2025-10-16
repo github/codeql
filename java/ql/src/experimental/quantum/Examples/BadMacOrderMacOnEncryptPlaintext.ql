@@ -28,6 +28,15 @@ module CommonDataFlowNodeConfig implements DataFlow::ConfigSig {
     sink = any(Crypto::FlowAwareElement other).getInputNode()
   }
 
+  // Don't go in to a known out node, this will prevent the plaintext
+  // from tracing out of cipher operations for example, we just want to trace
+  // the plaintext to uses.
+  // NOTE: we are not using a barrier out on input nodes, because
+  // that would remove 'use-use' flows, which we need
+  predicate isBarrierIn(DataFlow::Node node) {
+    node = any(Crypto::FlowAwareElement element).getOutputNode()
+  }
+
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     node1.(AdditionalFlowInputStep).getOutput() = node2
     or
@@ -43,6 +52,7 @@ module CommonDataFlowNodeFlow = TaintTracking::Global<CommonDataFlowNodeConfig>;
 
 from DataFlow::Node src, DataFlow::Node sink1, DataFlow::Node sink2
 where
+  not src.asExpr() instanceof NullLiteral and
   CommonDataFlowNodeFlow::flow(src, sink1) and
   CommonDataFlowNodeFlow::flow(src, sink2) and
   exists(Crypto::CipherOperationNode cipherOp |
