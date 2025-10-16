@@ -15,14 +15,14 @@ public class LockExample {
   private Lock lock1 = new ReentrantLock();
   private Lock lock2 = new ReentrantLock();
 
-  private int length = 0;
-  private int notRelatedToOther = 10;
-  private int[] content  = new int[10];
+  private int length = 0; // $ Alert
+  private int notRelatedToOther = 10; // $ Alert
+  private int[] content  = new int[10]; // $ Alert
 
   public void add(int value) {
     lock1.lock();
-    length++; // $ Alert
-    content[length] = value; // $ Alert
+    length++;
+    content[length] = value;
     lock1.unlock();
   }
 
@@ -35,18 +35,18 @@ public class LockExample {
 
   public void notTheSameLockAsAdd() { // use locks, but different ones
     lock2.lock();
-    length--; // $ Alert
-    content[length] = 0; // $ Alert
+    length--;
+    content[length] = 0;
     lock2.unlock();
   }
 
   public void noLock() { // no locks
-    length--;
-    content[length] = 0;
+    length--; // $ Alert
+    content[length] = 0; // $ Alert
   }
 
   public void fieldUpdatedOutsideOfLock() { // adjusts length without lock
-    length--;
+    length--; // $ Alert
 
     lock1.lock();
     content[length] = 0;
@@ -59,30 +59,30 @@ public class LockExample {
   }
 
   public void onlyLocked() { // never unlocked, only locked
-    length--;
+    length--; // $ Alert
 
     lock1.lock();
-    content[length] = 0;
+    content[length] = 0; // $ Alert
   }
 
   public void onlyUnlocked() { // never locked, only unlocked
-    length--;
+    length--; // $ Alert
 
-    content[length] = 0;
+    content[length] = 0; // $ Alert
     lock1.unlock();
   }
 
   public void notSameLock() {
-    length--;
+    length--; // $ Alert
 
     lock2.lock();// Not the same lock
-    content[length] = 0;
+    content[length] = 0; // $ Alert
     lock1.unlock();
   }
 
   public void updateCount() {
     lock2.lock();
-    notRelatedToOther++; // $ Alert
+    notRelatedToOther++;
     lock2.unlock();
   }
 
@@ -91,7 +91,7 @@ public class LockExample {
     notRelatedToOther++;
     lock2.unlock();
     lock1.lock();
-    notRelatedToOther++; // $ Alert
+    notRelatedToOther++;
     lock1.unlock();
   }
 
@@ -109,19 +109,19 @@ public class LockExample {
     notRelatedToOther++;
     lock2.unlock();
     lock1.lock();
-    notRelatedToOther++;
+    notRelatedToOther++; // $ Alert
   }
 
   public void updateCountTwiceUnLock() {
     lock2.lock();
     notRelatedToOther++;
     lock2.unlock();
-    notRelatedToOther++;
+    notRelatedToOther++; // $ Alert
     lock1.unlock();
   }
 
   public void synchronizedNonRelatedOutside() {
-    notRelatedToOther++;
+    notRelatedToOther++; // $ Alert
 
     synchronized(this) {
       length++;
@@ -142,7 +142,7 @@ public class LockExample {
       length++;
     }
 
-    notRelatedToOther = 1;
+    notRelatedToOther = 1; // $ Alert
   }
 
   public void synchronizedNonRelatedOutside4() {
@@ -150,7 +150,7 @@ public class LockExample {
       length++;
     }
 
-    notRelatedToOther = 1;
+    notRelatedToOther = 1; // $ Alert
   }
 
 }

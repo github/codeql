@@ -40,7 +40,7 @@ public class Test {
    */
   public void setYCorrect(int y) {
     lock.lock();
-    this.y = y; // $ Alert
+    this.y = y;
     lock.unlock();
   }
 
@@ -49,7 +49,7 @@ public class Test {
    * @param y
    */
   private void setYPrivate(int y) {
-    this.y = y;
+    this.y = y; // $ Alert
   }
 
   /**
@@ -57,7 +57,7 @@ public class Test {
    * @param y
    */
   public void setYWrongLock(int y) {
-    this.y = y;
+    this.y = y; // $ Alert
     lock.lock();
     lock.unlock();
   }
@@ -71,6 +71,6 @@ public class Test {
   }
 
   public void testMethod() {
-    this.y = y + 2;
+    this.y = y + 2; // $ Alert
   }
 }

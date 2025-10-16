@@ -44,7 +44,11 @@ predicate isThreadSafeType(Type t) {
 
 /** Holds if the expression `e` is a thread-safe initializer. */
 predicate isThreadSafeInitializer(Expr e) {
-  e.(Call).getCallee().getQualifiedName().matches("java.util.Collections.synchronized%")
+  e.(Call)
+      .getCallee()
+      .getSourceDeclaration()
+      .getQualifiedName()
+      .matches("java.util.Collections.synchronized%")
 }
 
 /**
@@ -84,17 +88,6 @@ class ExposedFieldAccess extends FieldAccess {
   }
 }
 
-/** Holds if the location of `a` is strictly before the location of `b`. */
-bindingset[a, b]
-overlay[caller?]
-pragma[inline_late]
-predicate orderedLocations(Location a, Location b) {
-  a.getStartLine() < b.getStartLine()
-  or
-  a.getStartLine() = b.getStartLine() and
-  a.getStartColumn() < b.getStartColumn()
-}
-
 /**
  * A class annotated as `@ThreadSafe`.
  * Provides predicates to check for concurrency issues.
@@ -102,213 +95,192 @@ predicate orderedLocations(Location a, Location b) {
 class ClassAnnotatedAsThreadSafe extends Class {
   ClassAnnotatedAsThreadSafe() { this.getAnAnnotation().getType().getName() = "ThreadSafe" }
 
-  /** Holds if `a` and `b` are conflicting accesses to the same field and not monitored by the same monitor. */
-  predicate unsynchronised(ExposedFieldAccess a, ExposedFieldAccess b) {
-    this.conflicting(a, b) and
-    this.publicAccess(_, a) and
-    this.publicAccess(_, b) and
-    not exists(Monitors::Monitor m |
-      this.monitors(a, m) and
-      this.monitors(b, m)
-    )
-  }
-
-  /** Holds if `a` is the earliest write to its field that is unsynchronized with `b`. */
-  predicate unsynchronised_normalized(ExposedFieldAccess a, ExposedFieldAccess b) {
-    this.unsynchronised(a, b) and
-    // Eliminate double reporting by making `a` the earliest write to this field
-    // that is unsynchronized with `b`.
-    not exists(ExposedFieldAccess earlier_a |
-      earlier_a.getField() = a.getField() and
-      orderedLocations(earlier_a.getLocation(), a.getLocation())
-    |
-      this.unsynchronised(earlier_a, b)
-    )
-  }
-
+  // We wish to find conflicting accesses that are reachable from public methods
+  // and to know which monitors protect them.
+  //
+  // It is very easy and natural to write a predicate for conflicting accesses,
+  // but that would be binary, and hence not suited for reachability analysis.
+  //
+  // It is also easy to state that all accesses to a field are protected by a single monitor,
+  // but that would require a forall, which is not suited for recursion.
+  // (The recursion occurs for example as you traverse the access path and keep requiring that all tails are protected.)
+  //
+  // We therefore use a dual solution:
+  // - We write a unary recursive predicate for accesses that are not protected by any monitor.
+  //   Any such write access, reachable from a public method, is conflicting with itself.
+  //   And any such read will be conflicting with any publicly reachable write access (locked or not).
+  //
+  // - We project the above predicate down to fields, so we can find fields with unprotected accesses.
+  // - From this we can derive a unary recursive predicate for fields whose accesses are protected by exactly one monitor.
+  //   The predicate tracks the monitor.
+  //   If such a field has two accesses protected by different monitors, we have a concurrency issue.
+  //   This can be determined by simple counting at the end of the recursion.
+  //   Technically, we only have a concurrency issue if there is a write access,
+  //   but if you are locking your reads with different locks, you likely made a typo.
+  //
+  // - From the above, we can derive a unary recursive predicate for fields whose accesses are protected by at least one monitor.
+  //   This predicate tracks all the monitors that protect accesses to the field.
+  //   This is combined with a predicate that checks if any access escapes a given monitor.
+  //   If all the monitors that protect accesses to a field are escaped by at least one access,
+  //   we have a concurrency issue.
+  //   This can be determined by a single forall at the end of the recursion.
+  //
+  // With this formulation we avoid binary predicates and foralls in recursion.
+  //
+  // Cases where a field access is not protected by any monitor
   /**
-   * Holds if `a` and `b` are unsynchronized and both publicly accessible
-   * as witnessed by `witness_a` and `witness_b`.
+   * Holds if the field access `a` to the field `f` is not protected by any monitor, and it can be reached via the expression `e` in the method `m`.
+   * We maintain the invariant that `m = e.getEnclosingCallable()`.
    */
-  predicate witness(ExposedFieldAccess a, Expr witness_a, ExposedFieldAccess b, Expr witness_b) {
-    this.unsynchronised_normalized(a, b) and
-    this.publicAccess(witness_a, a) and
-    this.publicAccess(witness_b, b) and
-    // avoid double reporting
-    not exists(Expr better_witness_a | this.publicAccess(better_witness_a, a) |
-      orderedLocations(better_witness_a.getLocation(), witness_a.getLocation())
-    ) and
-    not exists(Expr better_witness_b | this.publicAccess(better_witness_b, b) |
-      orderedLocations(better_witness_b.getLocation(), witness_b.getLocation())
-    )
-  }
-
-  /**
-   * Actions `a` and `b` are conflicting iff
-   * they are field access operations on the same field and
-   * at least one of them is a write.
-   */
-  predicate conflicting(ExposedFieldAccess a, ExposedFieldAccess b) {
-    // We allow a = b, since they could be executed on different threads
-    // We are looking for two operations:
-    // - on the same non-volatile field
-    a.getField() = b.getField() and
-    // - on this class
-    a.getField() = this.getAField() and
-    // - where at least one is a write
-    //   wlog we assume that is `a`
-    //   We use a slightly more inclusive definition than simply `a.isVarWrite()`
-    Modification::isModifying(a) and
-    // Avoid reporting both `(a, b)` and `(b, a)` by choosing the tuple
-    // where `a` appears before `b` in the source code.
+  predicate unlocked_access(ExposedField f, Expr e, Method m, ExposedFieldAccess a, boolean write) {
+    m.getDeclaringType() = this and
     (
-      (
-        Modification::isModifying(b) and
-        a != b
-      )
-      implies
-      orderedLocations(a.getLocation(), b.getLocation())
-    )
-  }
-
-  /** Holds if `a` can be reached by a path from a public method, and all such paths are monitored by `monitor`. */
-  predicate monitors(ExposedFieldAccess a, Monitors::Monitor monitor) {
-    forex(Method m | this.providesAccess(m, _, a) and m.isPublic() |
-      this.monitorsVia(m, a, monitor)
-    )
-  }
-
-  /** Holds if `a` can be reached by a path from a public method and `e` is the expression in that method that starts the path. */
-  predicate publicAccess(Expr e, ExposedFieldAccess a) {
-    exists(Method m | m.isPublic() | this.providesAccess(m, e, a))
-  }
-
-  /**
-   * Holds if a call to method `m` can cause an access of `a` and `e` is the expression inside `m` that leads to that access.
-   * `e` will either be `a` itself or a method call that leads to `a`.
-   */
-  predicate providesAccess(Method m, Expr e, ExposedFieldAccess a) {
-    m = this.getAMethod() and
-    (
-      a.getEnclosingCallable() = m and
-      e = a
+      // base case
+      f.getDeclaringType() = this and
+      m = e.getEnclosingCallable() and
+      a.getField() = f and
+      a = e and
+      (if Modification::isModifying(a) then write = true else write = false)
       or
-      exists(MethodCall c | c.getEnclosingCallable() = m |
-        this.providesAccess(c.getCallee(), _, a) and
-        e = c
+      // recursive case
+      exists(MethodCall c, Expr e0, Method m0 | this.unlocked_access(f, e0, m0, a, write) |
+        m = c.getEnclosingCallable() and
+        not m0.isPublic() and
+        c.getCallee().getSourceDeclaration() = m0 and
+        c = e and
+        not Monitors::locallyMonitors(e0, _)
       )
     )
   }
 
-  // NOTE:
-  // In order to deal with loops in the call graph, we compute the strongly connected components (SCCs).
-  // We only wish to do this for the methods that can lead to exposed field accesses.
-  // Given a field access `a`, we can consider a "call graph of interest", a sub graph of the call graph
-  // that only contains methods that lead to an access of `a`. We call this "the call graph induced by `a`".
-  // We can then compute the SCCs of this graph, yielding the SCC graph induced by `a`.
+  /** Holds if the class has an unlocked access to the field `f` via the expression `e` in the method `m`. */
+  predicate has_unlocked_access(ExposedField f, Expr e, Method m, boolean write) {
+    this.unlocked_access(f, e, m, _, write)
+  }
+
+  /** Holds if the field access `a` to the field `f` is not protected by any monitor, and it can be reached via the expression `e` in the public method `m`. */
+  predicate unlocked_public_access(
+    ExposedField f, Expr e, Method m, ExposedFieldAccess a, boolean write
+  ) {
+    this.unlocked_access(f, e, m, a, write) and
+    m.isPublic() and
+    not Monitors::locallyMonitors(e, _)
+  }
+
+  /** Holds if the class has an unlocked access to the field `f` via the expression `e` in the public method `m`. */
+  predicate has_unlocked_public_access(ExposedField f, Expr e, Method m, boolean write) {
+    this.unlocked_public_access(f, e, m, _, write)
+  }
+
+  // Cases where all accesses to a field are protected by exactly one monitor
   //
   /**
-   * Holds if a call to method `m` can cause an access of `a` by `m` calling `callee`.
-   * This is an edge in the call graph induced by `a`.
+   * Holds if the class has an access, locked by exactly one monitor, to the field `f` via the expression `e` in the method `m`.
    */
-  predicate accessVia(Method m, ExposedFieldAccess a, Method callee) {
-    exists(MethodCall c | this.providesAccess(m, c, a) | callee = c.getCallee())
-  }
-
-  /** Holds if `m` can reach `reached` by a path in the call graph induced by `a`. */
-  predicate accessReach(Method m, ExposedFieldAccess a, Method reached) {
-    m = this.getAMethod() and
-    reached = this.getAMethod() and
-    this.providesAccess(m, _, a) and
-    this.providesAccess(reached, _, a) and
-    (
-      this.accessVia(m, a, reached)
-      or
-      exists(Method mid | this.accessReach(m, a, mid) | this.accessVia(mid, a, reached))
-    )
-  }
-
-  /**
-   * Holds if `rep` is a representative of the SCC containing `m` in the call graph induced by `a`.
-   * This only assigns representatives to methods involved in loops.
-   * To get a representative of any method, use `repScc`.
-   */
-  predicate repInLoopScc(Method rep, ExposedFieldAccess a, Method m) {
-    // `rep` and `m` are in the same SCC
-    this.accessReach(rep, a, m) and
-    this.accessReach(m, a, rep) and
-    // `rep` is the representative of the SCC
-    // that is, the earliest in the source code
-    forall(Method alt_rep |
-      rep != alt_rep and
-      this.accessReach(alt_rep, a, m) and
-      this.accessReach(m, a, alt_rep)
-    |
-      rep.getLocation().getStartLine() < alt_rep.getLocation().getStartLine()
-    )
-  }
-
-  /** Holds if `rep` is a representative of the SCC containing `m` in the call graph induced by `a`. */
-  predicate repScc(Method rep, ExposedFieldAccess a, Method m) {
-    this.repInLoopScc(rep, a, m)
+  predicate has_onelocked_access(
+    ExposedField f, Expr e, Method m, boolean write, Monitors::Monitor monitor
+  ) {
+    //base
+    this.has_unlocked_access(f, e, m, write) and
+    Monitors::locallyMonitors(e, monitor)
     or
-    // If `m` is in the call graph induced by `a` and did not get a representative from `repInLoopScc`,
-    // it is represented by itself.
-    m = this.getAMethod() and
-    this.providesAccess(m, _, a) and
-    not this.repInLoopScc(_, a, m) and
-    rep = m
+    // recursive case
+    exists(MethodCall c, Expr e0, Method m0 | this.has_onelocked_access(f, e0, m0, write, monitor) |
+      m = c.getEnclosingCallable() and
+      not m0.isPublic() and
+      c.getCallee().getSourceDeclaration() = m0 and
+      c = e and
+      // consider allowing idempotent monitors
+      not Monitors::locallyMonitors(e, _) and
+      m.getDeclaringType() = this
+    )
   }
 
-  /**
-   * Holds if `c` is a call from the SCC represented by `callerRep` to the (different) SCC represented by `calleeRep`.
-   * This is an edge in the SCC graph induced by `a`.
-   */
-  predicate callEdgeScc(Method callerRep, ExposedFieldAccess a, MethodCall c, Method calleeRep) {
-    callerRep != calleeRep and
-    exists(Method caller, Method callee |
-      this.repScc(callerRep, a, caller) and
-      this.repScc(calleeRep, a, callee)
+  /** Holds if the class has an access, locked by exactly one monitor, to the field `f` via the expression `e` in the public method `m`. */
+  predicate has_onelocked_public_access(
+    ExposedField f, Expr e, Method m, boolean write, Monitors::Monitor monitor
+  ) {
+    this.has_onelocked_access(f, e, m, write, monitor) and
+    m.isPublic() and
+    not this.has_unlocked_public_access(f, e, m, write)
+  }
+
+  /** Holds if the field `f` has more than one access, all locked by a single monitor, but different monitors are used. */
+  predicate single_monitor_mismatch(ExposedField f) {
+    2 <=
+      strictcount(Monitors::Monitor monitor | this.has_onelocked_public_access(f, _, _, _, monitor))
+  }
+
+  // Cases where all accesses to a field are protected by at least one monitor
+  //
+  /** Holds if the class has an access, locked by at least one monitor, to the field `f` via the expression `e` in the method `m`. */
+  predicate has_onepluslocked_access(
+    ExposedField f, Expr e, Method m, boolean write, Monitors::Monitor monitor
+  ) {
+    //base
+    this.has_onelocked_access(f, e, m, write, monitor) and
+    not this.single_monitor_mismatch(f) and
+    not this.has_unlocked_public_access(f, _, _, _)
+    or
+    // recursive case
+    exists(MethodCall c, Expr e0, Method m0, Monitors::Monitor monitor0 |
+      this.has_onepluslocked_access(f, e0, m0, write, monitor0) and
+      m = c.getEnclosingCallable() and
+      not m0.isPublic() and
+      c.getCallee().getSourceDeclaration() = m0 and
+      c = e and
+      m.getDeclaringType() = this
     |
-      this.accessVia(caller, a, callee) and
-      c.getEnclosingCallable() = caller and
-      c.getCallee() = callee
-    )
-  }
-
-  /**
-   * Holds if the SCC represented by `rep` can cause an access to `a` and `e` is the expression that leads to that access.
-   * `e` will either be `a` itself or a method call that leads to `a` via a different SCC.
-   */
-  predicate providesAccessScc(Method rep, Expr e, ExposedFieldAccess a) {
-    rep = this.getAMethod() and
-    exists(Method m | this.repScc(rep, a, m) |
-      a.getEnclosingCallable() = m and
-      e = a
+      monitor = monitor0
       or
-      exists(MethodCall c | this.callEdgeScc(rep, a, c, _) | e = c)
+      Monitors::locallyMonitors(e, monitor)
     )
   }
 
-  /** Holds if all paths from `rep` to `a` are monitored by `monitor`. */
-  predicate monitorsViaScc(Method rep, ExposedFieldAccess a, Monitors::Monitor monitor) {
-    rep = this.getAMethod() and
-    this.providesAccessScc(rep, _, a) and
-    // If we are in an SCC that can access `a`, the access must be monitored locally
-    (this.repScc(rep, a, a.getEnclosingCallable()) implies Monitors::locallyMonitors(a, monitor)) and
-    // Any call towards `a` must either be monitored or guarantee that the access is monitored
-    forall(MethodCall c, Method calleeRep | this.callEdgeScc(rep, a, c, calleeRep) |
-      Monitors::locallyMonitors(c, monitor)
-      or
-      this.monitorsViaScc(calleeRep, a, monitor)
+  /** Holds if the class has a write access to the field `f` that can be reached via a public method. */
+  predicate has_public_write_access(ExposedField f) {
+    this.has_unlocked_public_access(f, _, _, true)
+    or
+    this.has_onelocked_public_access(f, _, _, true, _)
+    or
+    exists(Method m | m.getDeclaringType() = this and m.isPublic() |
+      this.has_onepluslocked_access(f, _, m, true, _)
     )
   }
 
-  /** Holds if all paths from `m` to `a` are monitored by `monitor`. */
-  predicate monitorsVia(Method m, ExposedFieldAccess a, Monitors::Monitor monitor) {
-    exists(Method rep |
-      this.repScc(rep, a, m) and
-      this.monitorsViaScc(rep, a, monitor)
+  /** Holds if the class has an access, not protected by the monitor `m`, to the field `f` via the expression `e` in the method `m`. */
+  predicate escapes_monitor(
+    ExposedField f, Expr e, Method m, boolean write, Monitors::Monitor monitor
+  ) {
+    //base
+    this.has_onepluslocked_access(f, _, _, _, monitor) and
+    this.has_unlocked_access(f, e, m, write) and
+    not Monitors::locallyMonitors(e, monitor)
+    or
+    // recursive case
+    exists(MethodCall c, Expr e0, Method m0 | this.escapes_monitor(f, e0, m0, write, monitor) |
+      m = c.getEnclosingCallable() and
+      not m0.isPublic() and
+      c.getCallee().getSourceDeclaration() = m0 and
+      c = e and
+      // consider allowing idempotent monitors
+      not Monitors::locallyMonitors(e, monitor) and
+      m.getDeclaringType() = this
+    )
+  }
+
+  /** Holds if the class has an access, not protected by the monitor `m`, to the field `f` via the expression `e` in the public method `m`. */
+  predicate escapes_monitor_public(
+    ExposedField f, Expr e, Method m, boolean write, Monitors::Monitor monitor
+  ) {
+    this.escapes_monitor(f, e, m, write, monitor) and
+    m.isPublic()
+  }
+
+  /** Holds if no monitor protects all accesses to the field `f`. */
+  predicate not_fully_monitored(ExposedField f) {
+    forex(Monitors::Monitor monitor | this.has_onepluslocked_access(f, _, _, _, monitor) |
+      this.escapes_monitor_public(f, _, _, _, monitor)
     )
   }
 }

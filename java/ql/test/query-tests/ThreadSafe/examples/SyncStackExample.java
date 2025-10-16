@@ -29,11 +29,11 @@ class FaultySyncStackExample<T> {
 
   public void push(T item) {
     lock.lock();
-    stc.push(item); // $ Alert
+    stc.push(item);
     lock.unlock();
   }
 
   public void pop() {
-    stc.pop();
+    stc.pop(); // $ Alert
   }
 }

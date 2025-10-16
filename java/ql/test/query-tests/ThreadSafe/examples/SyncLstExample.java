@@ -37,11 +37,11 @@ class FaultySyncLstExample<T> {
 
   public void add(T item) {
     lock.lock();
-    lst.add(item); // $ Alert
+    lst.add(item);
     lock.unlock();
   }
 
   public void remove(int i) {
-    lst.remove(i);
+    lst.remove(i); // $ Alert
   }
 }

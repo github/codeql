@@ -12,7 +12,7 @@ public class FlawedSemaphore {
 
   public void acquire() {
     try {
-      while (state == capacity) {
+      while (state == capacity) { // $ Alert
         this.wait();
       }
       state++; // $ Alert

@@ -7,11 +7,11 @@ import java.util.concurrent.locks.ReentrantLock;
 public class SynchronizedAndLock {
     private Lock lock = new ReentrantLock();
 
-    private int length = 0;
+    private int length = 0; // $ Alert
 
     public void add(int value) {
         lock.lock();
-        length++; // $ Alert
+        length++;
         lock.unlock();
     }
 

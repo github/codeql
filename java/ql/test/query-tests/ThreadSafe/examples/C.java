@@ -12,25 +12,25 @@ public class C {
 
     public void m() {
         this.y = 0; // $ Alert
-        this.y += 1;
-        this.y = this.y - 1;
+        this.y += 1; // $ Alert
+        this.y = this.y - 1; // $ Alert
     }
 
     public void n4() {
-        this.y = 0;
-        this.y += 1;
-        this.y = this.y - 1;
+        this.y = 0; // $ Alert
+        this.y += 1; // $ Alert
+        this.y = this.y - 1; // $ Alert
     }
 
     public void setY(int y) {
-        this.y = y;
+        this.y = y; // $ Alert
     }
 
     public void test() {
-        if (y == 0) {
+        if (y == 0) { // $ Alert
             lock.lock();
         }
-        y = 0;
+        y = 0; // $ Alert
         lock.unlock();
     }
 

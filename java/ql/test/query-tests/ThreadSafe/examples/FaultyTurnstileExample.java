@@ -10,12 +10,12 @@ class FaultyTurnstileExample {
 
   public void inc() {
     lock.lock();
-    count++; // $ Alert
+    count++; // $ MISSING: Alert
     lock.unlock();
   }
 
   public void dec() {
-    count--;
+    count--; // $ Alert
   }
 }
 
@@ -23,11 +23,11 @@ class FaultyTurnstileExample {
 class FaultyTurnstileExample2 {
   private Lock lock1 = new ReentrantLock();
   private Lock lock2 = new ReentrantLock();
-  private int count = 0;
+  private int count = 0; // $ Alert
 
   public void inc() {
     lock1.lock();
-    count++; // $ Alert 
+    count++;
     lock1.unlock();
   }
 

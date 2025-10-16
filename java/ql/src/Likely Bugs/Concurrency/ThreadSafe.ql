@@ -14,13 +14,43 @@
 import java
 import semmle.code.java.ConflictingAccess
 
+predicate unmonitored_access(
+  ClassAnnotatedAsThreadSafe cls, ExposedFieldAccess a, Expr entry, string msg, string entry_desc
+) {
+  exists(ExposedField f |
+    cls.unlocked_public_access(f, entry, _, a, true)
+    or
+    cls.unlocked_public_access(f, entry, _, a, false) and
+    cls.has_public_write_access(f)
+  ) and
+  msg =
+    "This field access (publicly accessible via $@) is not protected by any monitor, but the class is annotated as @ThreadSafe." and
+  entry_desc = "this expression"
+}
+
+predicate not_fully_monitored_field(
+  ClassAnnotatedAsThreadSafe cls, ExposedField f, string msg, string cls_name
+) {
+  (
+    // Technically there has to be a write access for a conflict to exist.
+    // But if you are locking your reads with different locks, you likely made a typo,
+    // so in this case we alert without requiring `cls.has_public_write_access(f)`
+    cls.single_monitor_mismatch(f)
+    or
+    cls.not_fully_monitored(f) and
+    cls.has_public_write_access(f)
+  ) and
+  msg =
+    "The field $@ is not properly synchronized in that no single monitor covers all accesses, but the class $@ is annotated as @ThreadSafe." and
+  cls_name = cls.getName()
+}
+
 from
-  ClassAnnotatedAsThreadSafe cls, FieldAccess modifyingAccess, Expr witness_modifyingAccess,
-  FieldAccess conflictingAccess, Expr witness_conflictingAccess
+  ClassAnnotatedAsThreadSafe cls, Top alert_element, Top alert_context, string alert_msg,
+  string context_desc
 where
-  cls.witness(modifyingAccess, witness_modifyingAccess, conflictingAccess, witness_conflictingAccess)
-select modifyingAccess,
-  "This modifying field access (publicly accessible via $@) is conflicting with $@ (publicly accessible via $@) because they are not synchronized with the same monitor.",
-  witness_modifyingAccess, "this expression", conflictingAccess, "this field access",
-  witness_conflictingAccess, "this expression"
-// select c, a.getField()
+  unmonitored_access(cls, alert_element, alert_context, alert_msg, context_desc)
+  or
+  not_fully_monitored_field(cls, alert_element, alert_msg, context_desc) and
+  alert_context = cls
+select alert_element, alert_msg, alert_context, context_desc
