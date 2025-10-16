@@ -986,7 +986,7 @@ mod test_mysql_async {
         let mut pool = mysql_async::Pool::new("");
         let mut conn = pool.get_conn().await?;
 
-        let mut rows : Vec<mysql::Row> = conn.query("SELECT id, name, age FROM person").await?; // $ Alert[rust/summary/taint-sources]
+        let mut rows : Vec<mysql_async::Row> = conn.query("SELECT id, name, age FROM person").await?; // $ Alert[rust/summary/taint-sources]
         let mut row = &mut rows[0];
 
         let v1 : i64 = row.get(0).unwrap(); // $ Alert[rust/summary/taint-sources]
@@ -1002,9 +1002,9 @@ mod test_mysql_async {
         sink(v4); // $ hasTaintFlow=0
 
         let value5 = row.as_ref(0).unwrap(); // $ Alert[rust/summary/taint-sources]
-        if let mysql::Value::Int(v) = value5 {
+        if let mysql_async::Value::Int(v) = value5 {
             sink(v); // $ MISSING: hasTaintFlow=0
-        } else if let mysql::Value::Bytes(v) = value5 {
+        } else if let mysql_async::Value::Bytes(v) = value5 {
             sink(v); // $ MISSING: hasTaintFlow=0
         }
 

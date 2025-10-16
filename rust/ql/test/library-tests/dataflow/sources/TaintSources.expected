@@ -100,7 +100,7 @@
 | test.rs:942:22:942:30 | query_map | Flow source 'DatabaseSource' of type database (DEFAULT). |
 | test.rs:951:26:951:35 | query_fold | Flow source 'DatabaseSource' of type database (DEFAULT). |
 | test.rs:957:22:957:31 | query_fold | Flow source 'DatabaseSource' of type database (DEFAULT). |
-| test.rs:989:47:989:51 | query | Flow source 'DatabaseSource' of type database (DEFAULT). |
+| test.rs:989:53:989:57 | query | Flow source 'DatabaseSource' of type database (DEFAULT). |
 | test.rs:992:28:992:30 | get | Flow source 'DatabaseSource' of type database (DEFAULT). |
 | test.rs:995:28:995:34 | get_opt | Flow source 'DatabaseSource' of type database (DEFAULT). |
 | test.rs:998:28:998:31 | take | Flow source 'DatabaseSource' of type database (DEFAULT). |
