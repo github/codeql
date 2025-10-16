@@ -1652,8 +1652,18 @@ private string getConstantString(Expr e) {
  * Holds if `add` is a string-concatenation where all the transitive leafs have a constant string value.
  */
 private predicate hasAllConstantLeafs(AddExpr add) {
-  forex(Expr leaf | leaf = getAnAddOperand*(add) and not exists(getAnAddOperand(leaf)) |
-    exists(getConstantString(leaf))
+  exists(getConstantString(add.getLeftOperand())) and
+  exists(getConstantString(add.getRightOperand()))
+  or
+  (
+    hasAllConstantLeafs(add.getLeftOperand().getUnderlyingValue()) and
+    hasAllConstantLeafs(add.getRightOperand().getUnderlyingValue())
+    or
+    hasAllConstantLeafs(add.getLeftOperand()) and
+    exists(getConstantString(add.getRightOperand()))
+    or
+    hasAllConstantLeafs(add.getRightOperand()) and
+    exists(getConstantString(add.getLeftOperand()))
   )
 }
 
