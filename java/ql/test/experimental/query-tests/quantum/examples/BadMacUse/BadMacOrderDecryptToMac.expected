@@ -1,0 +1,11 @@
+#select
+| BadMacUse.java:60:42:60:50 | plaintext | BadMacUse.java:54:28:54:53 | doFinal(...) : byte[] | BadMacUse.java:60:42:60:50 | plaintext | MAC order potentially wrong: observed a potential decrypt operation output to MAC implying the MAC is on plaintext, and not a cipher. |
+edges
+| BadMacUse.java:30:29:30:53 | doFinal(...) : byte[] | BadMacUse.java:35:42:35:51 | ciphertext | provenance |  |
+| BadMacUse.java:54:28:54:53 | doFinal(...) : byte[] | BadMacUse.java:60:42:60:50 | plaintext | provenance |  |
+nodes
+| BadMacUse.java:30:29:30:53 | doFinal(...) : byte[] | semmle.label | doFinal(...) : byte[] |
+| BadMacUse.java:35:42:35:51 | ciphertext | semmle.label | ciphertext |
+| BadMacUse.java:54:28:54:53 | doFinal(...) : byte[] | semmle.label | doFinal(...) : byte[] |
+| BadMacUse.java:60:42:60:50 | plaintext | semmle.label | plaintext |
+subpaths
