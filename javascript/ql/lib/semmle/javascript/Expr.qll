@@ -1648,13 +1648,19 @@ private string getConstantString(Expr e) {
   result = e.(TemplateElement).getValue()
 }
 
+pragma[nomagic]
+private predicate hasConstantStringValue(Expr e) {
+  exists(getConstantString(e))
+  or
+  hasAllConstantLeafs(e.getUnderlyingValue())
+}
+
 /**
  * Holds if `add` is a string-concatenation where all the transitive leafs have a constant string value.
  */
 private predicate hasAllConstantLeafs(AddExpr add) {
-  forex(Expr leaf | leaf = getAnAddOperand*(add) and not exists(getAnAddOperand(leaf)) |
-    exists(getConstantString(leaf))
-  )
+  hasConstantStringValue(add.getLeftOperand()) and
+  hasConstantStringValue(add.getRightOperand())
 }
 
 /**
