@@ -82,7 +82,7 @@ class ExtractedFile extends File {
    * * expand any macros
    * * skip any blocks that are conditionally compiled out
    */
-  predicate hasSemantics() { not exists(Diagnostic d | d = this.getNoSemanticsDiagnostic()) }
+  predicate hasSemantics() { not exists(this.getNoSemanticsDiagnostic()) }
 
   /**
    * Holds if we know this file was skipped by conditional compilation.
