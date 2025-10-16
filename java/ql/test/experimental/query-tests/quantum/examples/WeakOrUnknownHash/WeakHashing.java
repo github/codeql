@@ -12,22 +12,32 @@ public class WeakHashing {
         props.load(new FileInputStream("example.properties"));
 
         // BAD: Using a weak hashing algorithm even with a secure default
-        MessageDigest bad = MessageDigest.getInstance(props.getProperty("hashAlg1"));
+        MessageDigest bad = MessageDigest.getInstance(props.getProperty("hashAlg1")); // $Alert[java/quantum/weak-hash]
 
         // BAD: Using a weak hashing algorithm even with a secure default
-        MessageDigest bad2 = MessageDigest.getInstance(props.getProperty("hashAlg1", "SHA-256"));
+        MessageDigest bad2 = MessageDigest.getInstance(props.getProperty("hashAlg1", "SHA-256")); // $Alert[java/quantum/weak-hash]
 
         // BAD: Using a strong hashing algorithm but with a weak default
-        MessageDigest bad3 = MessageDigest.getInstance(props.getProperty("hashAlg2", "MD5"));
+        MessageDigest bad3 = MessageDigest.getInstance(props.getProperty("hashAlg2", "MD5")); // $Alert[java/quantum/weak-hash]
+
+        // BAD: Using a weak hash
+        MessageDigest bad4 = MessageDigest.getInstance("SHA-1"); // $Alert[java/quantum/weak-hash]
 
         // BAD: Property does not exist and default (used value) is unknown
-        MessageDigest bad4 = MessageDigest.getInstance(props.getProperty("non-existent_property", "non-existent_default"));
+        MessageDigest bad5 = MessageDigest.getInstance(props.getProperty("non-existent_property", "non-existent_default")); // $Alert[java/quantum/unknown-hash]
+
+        java.util.Properties props2 = new java.util.Properties();
+
+        props2.load(new FileInputStream("unobserved-file.properties"));
+
+        // BAD: "hashalg1" is not visible in the file loaded for props2
+        MessageDigest bad6 = MessageDigest.getInstance(props2.getProperty("hashAlg1", "SHA-256")); // $Alert[java/quantum/weak-hash]
 
         // GOOD: Using a strong hashing algorithm
         MessageDigest ok = MessageDigest.getInstance(props.getProperty("hashAlg2"));
 
         // BAD?: Property does not exist (considered unknown) and but default is secure
-        MessageDigest ok2 = MessageDigest.getInstance(props.getProperty("non-existent-property", "SHA-256"));
+        MessageDigest ok2 = MessageDigest.getInstance(props.getProperty("non-existent-property", "SHA-256")); // $Alert[java/quantum/unknown-hash]
 
         // GOOD: Using a strong hashing algorithm
         MessageDigest ok3 = MessageDigest.getInstance("SHA3-512");
@@ -35,10 +45,5 @@ public class WeakHashing {
          // GOOD: Using a strong hashing algorithm
         MessageDigest ok4 = MessageDigest.getInstance("SHA384");
 
-        props.load(new FileInputStream("unobserved-file.properties"));
-
-        // BAD: "hashalg1" is not visible since the file isn't known, this is an 'unknown' hash
-        // False positive/negative
-        MessageDigest bad5 = MessageDigest.getInstance(props.getProperty("hashAlg1", "SHA-256"));
     }
 }
