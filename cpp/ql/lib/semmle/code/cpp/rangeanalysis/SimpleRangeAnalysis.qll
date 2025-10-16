@@ -2168,3 +2168,56 @@ module SimpleRangeAnalysisInternal {
   /** Gets the estimate of the number of bounds for `e`. */
   float estimateNrOfBounds(Expr e) { result = BoundsEstimate::nrOfBoundsExpr(e) }
 }
+
+/** Provides predicates for debugging the simple range analysis library. */
+private module Debug {
+  Locatable getRelevantLocatable() {
+    exists(string filepath, int startline |
+      result.getLocation().hasLocationInfo(filepath, startline, _, _, _) and
+      filepath.matches("%/test.c") and
+      startline = [621 .. 639]
+    )
+  }
+
+  float debugGetLowerBoundsImpl(Expr e) {
+    e = getRelevantLocatable() and
+    result = getLowerBoundsImpl(e)
+  }
+
+  float debugGetUpperBoundsImpl(Expr e) {
+    e = getRelevantLocatable() and
+    result = getUpperBoundsImpl(e)
+  }
+
+  /**
+   * Counts the number of lower bounds for a given expression. This predicate is
+   * useful for identifying performance issues in the range analysis.
+   */
+  predicate countGetLowerBoundsImpl(Expr e, int n) {
+    e = getRelevantLocatable() and
+    n = strictcount(float lb | lb = getLowerBoundsImpl(e) | lb)
+  }
+
+  float debugNrOfBounds(Expr e) {
+    e = getRelevantLocatable() and
+    result = BoundsEstimate::nrOfBoundsExpr(e)
+  }
+
+  /**
+   * Finds any expressions for which `nrOfBounds` is not functional. The result
+   * should be empty, so this predicate is useful to debug non-functional cases.
+   */
+  int nonFunctionalNrOfBounds(Expr e) {
+    strictcount(BoundsEstimate::nrOfBoundsExpr(e)) > 1 and
+    result = BoundsEstimate::nrOfBoundsExpr(e)
+  }
+
+  /**
+   * Holds if `e` is an expression that has a lower bound, but where
+   * `nrOfBounds` does not compute an estimate.
+   */
+  predicate missingNrOfBounds(Expr e, float n) {
+    n = lowerBound(e) and
+    not exists(BoundsEstimate::nrOfBoundsExpr(e))
+  }
+}
