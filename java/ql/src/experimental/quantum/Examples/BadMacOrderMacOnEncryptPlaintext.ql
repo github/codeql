@@ -28,14 +28,6 @@ module CommonDataFlowNodeConfig implements DataFlow::ConfigSig {
     sink = any(Crypto::FlowAwareElement other).getInputNode()
   }
 
-  predicate isBarrierOut(DataFlow::Node node) {
-    node = any(Crypto::FlowAwareElement element).getInputNode()
-  }
-
-  predicate isBarrierIn(DataFlow::Node node) {
-    node = any(Crypto::FlowAwareElement element).getOutputNode()
-  }
-
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     node1.(AdditionalFlowInputStep).getOutput() = node2
     or
