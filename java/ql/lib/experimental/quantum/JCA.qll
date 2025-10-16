@@ -697,6 +697,8 @@ module JCAModel {
     abstract DataFlow::Node getInputNode();
   }
 
+  // TODO: for all parametert specs, I think they can be set through the constructor
+  // and through setter methods
   class IvParameterSpecInstance extends NonceParameterInstantiation {
     IvParameterSpecInstance() {
       super.getConstructedType().hasQualifiedName("javax.crypto.spec", "IvParameterSpec")
