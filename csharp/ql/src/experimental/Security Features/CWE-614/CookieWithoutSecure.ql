@@ -30,16 +30,22 @@ predicate cookieAppendSecureByDefault() {
   OnAppendCookieSecureTracking::flowTo(_)
 }
 
-predicate insecureCookieOptionsCreation(Expr sink) {
+predicate secureFalseOrNotSet(ObjectCreation oc) {
+  exists(Assignment a |
+    getAValueForProp(oc, a, "Secure") = a.getRValue() and
+    a.getRValue().getValue() = "false"
+  )
+  or
+  not isPropertySet(oc, "Secure")
+}
+
+predicate insecureCookieOptionsCreation(ObjectCreation oc) {
   // `Secure` property in `CookieOptions` passed to IResponseCookies.Append(...) wasn't set
-  exists(ObjectCreation oc |
-    oc = sink and
-    oc.getType() instanceof MicrosoftAspNetCoreHttpCookieOptions and
-    not isPropertySet(oc, "Secure") and
-    exists(DataFlow::Node creation |
-      CookieOptionsTracking::flow(creation, _) and
-      creation.asExpr() = oc
-    )
+  oc.getType() instanceof MicrosoftAspNetCoreHttpCookieOptions and
+  secureFalseOrNotSet(oc) and
+  exists(DataFlow::Node creation |
+    CookieOptionsTracking::flow(creation, _) and
+    creation.asExpr() = oc
   )
 }
 
@@ -81,25 +87,24 @@ predicate insecureCookieCall(Call c) {
   insecureCookieCreationFromConfig(c)
 }
 
-predicate insecureCookieCreationAssignment(Assignment a, Expr val) {
-  exists(ObjectCreation oc |
-    getAValueForProp(oc, a, "Secure") = val and
-    val.getValue() = "false" and
-    (
-      oc.getType() instanceof SystemWebHttpCookie
-      or
-      oc.getType() instanceof MicrosoftAspNetCoreHttpCookieOptions and
-      // there is no callback `OnAppendCookie` that sets `Secure` to true
-      not OnAppendCookieSecureTracking::flowTo(_) and
-      // the cookie option is passed to `Append`
-      exists(DataFlow::Node creation |
-        CookieOptionsTracking::flow(creation, _) and
-        creation.asExpr() = oc
-      )
-    )
-  )
-}
-
+// predicate insecureCookieCreationAssignment(Assignment a, Expr val) {
+//   exists(ObjectCreation oc |
+//     getAValueForProp(oc, a, "Secure") = val and
+//     val.getValue() = "false" and
+//     (
+//       oc.getType() instanceof SystemWebHttpCookie
+//       or
+//       oc.getType() instanceof MicrosoftAspNetCoreHttpCookieOptions and
+//       // there is no callback `OnAppendCookie` that sets `Secure` to true
+//       not OnAppendCookieSecureTracking::flowTo(_) and
+//       // the cookie option is passed to `Append`
+//       exists(DataFlow::Node creation |
+//         CookieOptionsTracking::flow(creation, _) and
+//         creation.asExpr() = oc
+//       )
+//     )
+//   )
+// }
 predicate insecureSecurePolicyAssignment(Assignment a, Expr val) {
   exists(PropertyWrite pw |
     (
@@ -120,10 +125,6 @@ where
   or
   exists(Assignment a |
     secureSink = a.getRValue() and
-    (
-      insecureCookieCreationAssignment(a, _)
-      or
-      insecureSecurePolicyAssignment(a, _)
-    )
+    insecureSecurePolicyAssignment(a, _)
   )
 select secureSink, "Cookie attribute 'Secure' is not set to true."
