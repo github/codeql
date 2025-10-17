@@ -1,0 +1,15 @@
+#select
+| Test.java:12:59:12:63 | KeyOperationAlgorithm | Use of unapproved symmetric cipher algorithm or API: DES. |
+| Test.java:14:47:14:51 | KeyOperationAlgorithm | Use of unapproved symmetric cipher algorithm or API: DES. |
+| Test.java:40:59:40:63 | KeyOperationAlgorithm | Use of unapproved symmetric cipher algorithm or API: RC4. |
+| Test.java:42:47:42:51 | KeyOperationAlgorithm | Use of unapproved symmetric cipher algorithm or API: RC4. |
+testFailures
+| Test.java:19:73:19:82 | // $Alert | Missing result: Alert |
+| Test.java:21:61:21:70 | // $Alert | Missing result: Alert |
+| Test.java:26:77:26:86 | // $Alert | Missing result: Alert |
+| Test.java:28:65:28:74 | // $Alert | Missing result: Alert |
+| Test.java:35:55:35:64 | // $Alert | Missing result: Alert |
+| Test.java:47:69:47:78 | // $Alert | Missing result: Alert |
+| Test.java:49:57:49:66 | // $Alert | Missing result: Alert |
+| Test.java:54:77:54:86 | // $Alert | Missing result: Alert |
+| Test.java:56:65:56:74 | // $Alert | Missing result: Alert |
