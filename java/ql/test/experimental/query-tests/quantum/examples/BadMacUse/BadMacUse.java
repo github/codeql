@@ -64,7 +64,7 @@ class BadMacUse {
         }
     }
 
-    public void BadMacOnPlaintext(byte[] encryptionKeyBytes, byte[] macKeyBytes, byte[] plaintext) throws Exception {// $Alert[java/quantum/bad-mac-order-encrypt-plaintext-also-in-mac]
+    public void BadMacOnPlaintext(byte[] encryptionKeyBytes, byte[] macKeyBytes, byte[] plaintext) throws Exception {// $Source
         // Create keys directly from provided byte arrays
         SecretKey encryptionKey = new SecretKeySpec(encryptionKeyBytes, "AES");
         SecretKey macKey = new SecretKeySpec(macKeyBytes, "HmacSHA256");
@@ -77,7 +77,7 @@ class BadMacUse {
         // Encrypt the plaintext
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
         cipher.init(Cipher.ENCRYPT_MODE, encryptionKey, new SecureRandom());
-        byte[] ciphertext = cipher.doFinal(plaintext);
+        byte[] ciphertext = cipher.doFinal(plaintext); // $Alert[java/quantum/bad-mac-order-encrypt-plaintext-also-in-mac]
 
         // Concatenate ciphertext and MAC
         byte[] output = new byte[ciphertext.length + computedMac.length];
