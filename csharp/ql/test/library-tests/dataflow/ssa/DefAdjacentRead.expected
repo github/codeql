@@ -119,13 +119,6 @@
 | Properties.cs:74:23:74:23 | a | Properties.cs:74:23:74:54 | Action a = ... | Properties.cs:77:9:77:9 | access to local variable a |
 | Properties.cs:75:23:75:23 | b | Properties.cs:75:23:75:35 | Action b = ... | Properties.cs:80:9:80:9 | access to local variable b |
 | Properties.cs:106:37:106:37 | p | Properties.cs:106:37:106:37 | p | Properties.cs:106:42:106:42 | access to parameter p |
-| Splitting.cs:3:18:3:18 | b | Splitting.cs:3:18:3:18 | b | Splitting.cs:6:13:6:13 | access to parameter b |
-| Splitting.cs:5:13:5:13 | x | Splitting.cs:10:13:10:19 | ... = ... | Splitting.cs:11:13:11:13 | access to local variable x |
-| Splitting.cs:22:18:22:18 | b | Splitting.cs:22:18:22:18 | b | Splitting.cs:25:13:25:13 | access to parameter b |
-| Splitting.cs:24:13:24:13 | x | Splitting.cs:29:13:29:19 | ... = ... | Splitting.cs:30:13:30:13 | access to local variable x |
-| Splitting.cs:24:13:24:13 | x | Splitting.cs:32:9:32:15 | ... = ... | Splitting.cs:33:9:33:9 | access to local variable x |
-| Splitting.cs:42:18:42:18 | b | Splitting.cs:42:18:42:18 | b | Splitting.cs:45:13:45:13 | access to parameter b |
-| Splitting.cs:44:13:44:13 | x | Splitting.cs:49:13:49:19 | ... = ... | Splitting.cs:50:13:50:13 | access to local variable x |
 | Test.cs:3:9:3:13 | field | Test.cs:57:9:57:17 | ... = ... | Test.cs:58:13:58:17 | access to field field |
 | Test.cs:5:15:5:20 | param1 | Test.cs:5:15:5:20 | param1 | Test.cs:11:13:11:18 | access to parameter param1 |
 | Test.cs:5:67:5:72 | param2 | Test.cs:5:67:5:72 | param2 | Test.cs:39:27:39:32 | access to parameter param2 |
