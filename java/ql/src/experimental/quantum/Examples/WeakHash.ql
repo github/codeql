@@ -1,7 +1,7 @@
 /**
  * @name Weak hashes
  * @description Finds uses of cryptographic hashing algorithms that are unapproved or otherwise weak.
- * @id java/quantum/weak-hash
+ * @id java/quantum/examples/weak-hash
  * @kind problem
  * @problem.severity error
  * @tags external/cwe/cwe-327

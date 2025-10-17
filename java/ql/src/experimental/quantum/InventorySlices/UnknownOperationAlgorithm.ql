@@ -1,7 +1,7 @@
 /**
  * @name Operations with unknown algorithm
  * @description Outputs operations where the algorithm applied is unknown
- * @id java/quantum/slices/operation-with-unknown-algorithm
+ * @id java/quantum/examples/slices/operation-with-unknown-algorithm
  * @kind problem
  * @severity info
  * @tags quantum

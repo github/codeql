@@ -29,7 +29,7 @@ public class Test {
     public void pbkdf2LowIteration(String password) throws Exception {
         byte[] salt = generateSalt(16);
         int iterationCount = 10; // $Source
-        PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterationCount, 256); // $Alert[java/quantum/weak-kdf-iteration-count]
+        PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterationCount, 256); // $Alert[java/quantum/examples/weak-kdf-iteration-count]
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
         byte[] key = factory.generateSecret(spec).getEncoded();
     }
@@ -42,7 +42,7 @@ public class Test {
      */
     public void pbkdf2LowIteration(String password, int iterationCount) throws Exception { // $Source
         byte[] salt = generateSalt(16);
-        PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterationCount, 256); // $Alert[java/quantum/unknown-kdf-iteration-count]
+        PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterationCount, 256); // $Alert[java/quantum/examples/unknown-kdf-iteration-count]
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
         byte[] key = factory.generateSecret(spec).getEncoded();
     }

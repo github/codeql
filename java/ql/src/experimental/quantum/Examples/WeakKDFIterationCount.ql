@@ -1,7 +1,7 @@
 /**
  * @name Weak known key derivation function iteration count
  * @description Detects key derivation operations with a known weak iteration count.
- * @id java/quantum/weak-kdf-iteration-count
+ * @id java/quantum/examples/weak-kdf-iteration-count
  * @kind path-problem
  * @problem.severity error
  * @tags quantum

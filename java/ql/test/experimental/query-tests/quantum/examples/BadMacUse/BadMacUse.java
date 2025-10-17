@@ -57,7 +57,7 @@ class BadMacUse {
         SecretKey macKey = new SecretKeySpec(macKeyBytes, "HmacSHA256");
         Mac mac = Mac.getInstance("HmacSHA256");
         mac.init(macKey);
-        byte[] computedMac = mac.doFinal(plaintext); // $Alert[java/quantum/bad-mac-order-decrypt-to-mac]
+        byte[] computedMac = mac.doFinal(plaintext); // $Alert[java/quantum/examples/bad-mac-order-decrypt-to-mac]
 
         if (!MessageDigest.isEqual(receivedMac, computedMac)) {
             throw new SecurityException("MAC verification failed");
@@ -77,7 +77,7 @@ class BadMacUse {
         // Encrypt the plaintext
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
         cipher.init(Cipher.ENCRYPT_MODE, encryptionKey, new SecureRandom());
-        byte[] ciphertext = cipher.doFinal(plaintext); // $Alert[java/quantum/bad-mac-order-encrypt-plaintext-also-in-mac]
+        byte[] ciphertext = cipher.doFinal(plaintext); // $Alert[java/quantum/examples/bad-mac-order-encrypt-plaintext-also-in-mac]
 
         // Concatenate ciphertext and MAC
         byte[] output = new byte[ciphertext.length + computedMac.length];

@@ -17,7 +17,7 @@ public class InsecureIVorNonceSource {
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
 
         Cipher cipher = Cipher.getInstance("AES/GCM/PKCS5PADDING");
-        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec); // $Alert[java/quantum/insecure-iv-or-nonce]
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec); // $Alert[java/quantum/examples/insecure-iv-or-nonce]
         cipher.update(plaintext);
         return cipher.doFinal();
     }
@@ -30,7 +30,7 @@ public class InsecureIVorNonceSource {
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
 
         Cipher cipher = Cipher.getInstance("AES/GCM/PKCS5PADDING");
-        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec); // $Alert[java/quantum/unknown-iv-or-nonce-source]
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec); // $Alert[java/quantum/examples/unknown-iv-or-nonce-source]
         cipher.update(plaintext);
         return cipher.doFinal();
     }
@@ -46,7 +46,7 @@ public class InsecureIVorNonceSource {
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
 
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec); // $Alert[java/quantum/insecure-iv-or-nonce]
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec); // $Alert[java/quantum/examples/insecure-iv-or-nonce]
         cipher.update(plaintext);
         return cipher.doFinal();
     }
@@ -62,7 +62,7 @@ public class InsecureIVorNonceSource {
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
 
         Cipher cipher = Cipher.getInstance("AES/GCM/PKCS5PADDING");
-        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec); // $Alert[java/quantum/insecure-iv-or-nonce]
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec); // $Alert[java/quantum/examples/insecure-iv-or-nonce]
         cipher.update(plaintext);
         return cipher.doFinal();
     }
@@ -78,7 +78,7 @@ public class InsecureIVorNonceSource {
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
 
         Cipher cipher = Cipher.getInstance("AES/GCM/PKCS5PADDING");
-        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec); // $Alert[java/quantum/insecure-iv-or-nonce]
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec); // $Alert[java/quantum/examples/insecure-iv-or-nonce]
         cipher.update(plaintext);
         return cipher.doFinal();
     }
@@ -94,7 +94,7 @@ public class InsecureIVorNonceSource {
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
 
         Cipher cipher = Cipher.getInstance("AES/GCM/PKCS5PADDING");
-        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec); // $Alert[java/quantum/unknown-iv-or-nonce-source]
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec); // $Alert[java/quantum/examples/unknown-iv-or-nonce-source]
         cipher.update(plaintext);
         return cipher.doFinal();
     }
@@ -203,7 +203,7 @@ public class InsecureIVorNonceSource {
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
 
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);  // $Alert[java/quantum/insecure-iv-or-nonce]]
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);  // $Alert[java/quantum/examples/insecure-iv-or-nonce]]
         cipher.update(plaintext);
         return cipher.doFinal();
     }

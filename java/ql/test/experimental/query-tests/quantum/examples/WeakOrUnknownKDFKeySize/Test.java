@@ -21,7 +21,7 @@ public class Test {
         byte[] salt = generateSalt(16);
         int iterationCount = 100_000;
         int keySize = 64; // $Source
-        PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterationCount, keySize); // $Alert[java/quantum/weak-kdf-key-size]
+        PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterationCount, keySize); // $Alert[java/quantum/examples/weak-kdf-key-size]
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
         byte[] key = factory.generateSecret(spec).getEncoded();
     }

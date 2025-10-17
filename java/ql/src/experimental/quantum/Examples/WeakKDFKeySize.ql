@@ -1,7 +1,7 @@
 /**
  * @name Weak known key derivation function output length
  * @description Detects key derivation operations with a known weak output length
- * @id java/quantum/weak-kdf-key-size
+ * @id java/quantum/examples/weak-kdf-key-size
  * @kind path-problem
  * @problem.severity error
  * @tags quantum

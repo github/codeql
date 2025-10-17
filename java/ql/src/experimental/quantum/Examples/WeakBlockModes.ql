@@ -1,6 +1,6 @@
 /**
  * @name Weak AES Block mode
- * @id java/quantum/weak-block-modes
+ * @id java/quantum/examples/weak-block-modes
  * @description An AES cipher is in use with an insecure block mode
  * @kind problem
  * @problem.severity error
