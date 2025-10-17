@@ -53,6 +53,14 @@ function RegisterExtractorPack(id)
         strip_unsupported_arg(args, '-stack-check', 0)
         strip_unsupported_arg(args, '-experimental-skip-non-inlinable-function-bodies-without-types', 0)
         strip_unsupported_clang_arg(args, '-ivfsstatcache', 1)
+        strip_unsupported_clang_arg(args, '-fstack-check', 1)
+        strip_unsupported_clang_arg(args, '-fno-odr-hash-protocols', 1)
+        strip_unsupported_clang_arg(args, '-clang-vendor-feature=+disableNonDependentMemberExprInCurrentInstantiation', 1)
+        strip_unsupported_clang_arg(args, '-clang-vendor-feature=+enableAggressiveVLAFolding', 1)
+        strip_unsupported_clang_arg(args, '-clang-vendor-feature=+revert09abecef7bbf', 1)
+        strip_unsupported_clang_arg(args, '-clang-vendor-feature=+thisNoAlignAttr', 1)
+        strip_unsupported_clang_arg(args, '-clang-vendor-feature=+thisNoNullAttr', 1)
+        strip_unsupported_clang_arg(args, '-clang-vendor-feature=+disableAtImportPrivateFrameworkInImplementationError', 1)
     end
 
     -- xcodebuild does not always specify the -resource-dir in which case the compiler falls back

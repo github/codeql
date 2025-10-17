@@ -75,7 +75,7 @@ auto& fileInterceptorInstance() {
 
 bool mayBeRedirected(const char* path, int flags = O_RDONLY) {
   return (!fileInterceptorInstance().expired() && (flags & O_ACCMODE) == O_RDONLY &&
-          endsWith(path, ".swiftmodule"));
+          (endsWith(path, ".swiftmodule") || endsWith(path, ".pcm")));
 }
 
 std::optional<std::string> hashFile(const fs::path& path) {

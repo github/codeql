@@ -29,12 +29,15 @@ module Generated {
      *
      * INTERNAL: Do not use.
      *
-     * This is 3 for properties, 4 for array and dictionary subscripts, 5 for optional forcing
-     * (`!`), 6 for optional chaining (`?`), 7 for implicit optional wrapping, 8 for `self`,
-     * and 9 for tuple element indexing.
+     * TODO: Swift 6.2 update with UnresolvedApply and Apply
+     * TODO: Swift 6.2 make sure to adjust in dbscheme upgrade/downgrade
      *
-     * The following values should not appear: 0 for invalid components, 1 for unresolved
-     * properties, 2 for unresolved subscripts, 10 for #keyPath dictionary keys, and 11 for
+     * This is 5 for properties, 6 for array and dictionary subscripts, 7 for optional forcing
+     * (`!`), 8 for optional chaining (`?`), 9 for implicit optional wrapping, 10 for `self`,
+     * and 11 for tuple element indexing.
+     *
+     * The following values should not appear: 0 for invalid components, 2 for unresolved
+     * properties, 3 for unresolved subscripts, 12 for #keyPath dictionary keys, and 13 for
      * implicit IDE code completion data.
      */
     int getKind() {

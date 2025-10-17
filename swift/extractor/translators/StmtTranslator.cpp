@@ -36,23 +36,15 @@ void StmtTranslator::translateAndEmit(const swift::PoundAvailableInfo& availabil
 }
 
 void StmtTranslator::translateAndEmit(const swift::AvailabilitySpec& spec) {
-  if (llvm::isa<swift::PlatformVersionConstraintAvailabilitySpec>(spec)) {
-    translateAndEmit(llvm::cast<swift::PlatformVersionConstraintAvailabilitySpec>(spec));
-  } else if (llvm::isa<swift::OtherPlatformAvailabilitySpec>(spec)) {
-    translateAndEmit(llvm::cast<swift::OtherPlatformAvailabilitySpec>(spec));
-  }
-}
-
-void StmtTranslator::translateAndEmit(
-    const swift::PlatformVersionConstraintAvailabilitySpec& spec) {
   auto entry = dispatcher.createEntry(spec);
-  entry.platform = swift::platformString(spec.getPlatform()).str();
-  entry.version = spec.getVersion().getAsString();
+  entry.is_wildcard = spec.isWildcard();
+  if (!spec.isWildcard()) {
+    auto domain = spec.getDomainOrIdentifier().getAsDomain();
+    entry.platform =
+        swift::platformString(domain ? domain->getPlatformKind() : swift::PlatformKind::none).str();
+    entry.version = spec.getRawVersion().getAsString();
+  }
   dispatcher.emit(entry);
-}
-
-void StmtTranslator::translateAndEmit(const swift::OtherPlatformAvailabilitySpec& spec) {
-  dispatcher.emit(dispatcher.createEntry(spec));
 }
 
 codeql::BraceStmt StmtTranslator::translateBraceStmt(const swift::BraceStmt& stmt) {
