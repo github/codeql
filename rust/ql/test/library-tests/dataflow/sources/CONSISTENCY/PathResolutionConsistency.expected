@@ -4,8 +4,8 @@ multipleCallTargets
 | test.rs:229:22:229:72 | ... .read_to_string(...) |
 | test.rs:664:22:664:43 | file.read(...) |
 | test.rs:673:22:673:41 | f1.read(...) |
-| test.rs:894:50:894:66 | ...::from(...) |
-| test.rs:894:50:894:66 | ...::from(...) |
+| test.rs:1096:50:1096:66 | ...::from(...) |
+| test.rs:1096:50:1096:66 | ...::from(...) |
 | test_futures_io.rs:45:27:45:84 | ...::read(...) |
 | test_futures_io.rs:49:27:49:51 | reader.read(...) |
 | test_futures_io.rs:83:22:83:39 | reader2.fill_buf() |
@@ -26,3 +26,6 @@ multipleCallTargets
 | web_frameworks.rs:102:14:102:25 | a.as_bytes() |
 | web_frameworks.rs:158:14:158:23 | a.as_str() |
 | web_frameworks.rs:159:14:159:25 | a.as_bytes() |
+multiplePathResolutions
+| test.rs:897:28:897:65 | Result::<...> |
+| test.rs:984:40:984:49 | Result::<...> |
