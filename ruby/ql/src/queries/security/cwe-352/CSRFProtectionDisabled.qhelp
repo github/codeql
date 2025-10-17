@@ -58,6 +58,11 @@
       for example if parts of the session are memoized. Calling
       <code>protect_from_forgery with: :exception</code> can help to avoid this
       by raising an exception on an invalid CSRF token instead.
+      Note this remains true even in Rails version 5 and later: these versions
+      automatically run <code>protect_from_forgery with: :exception</code>
+      by default, but manually calling <code>protect_from_forgery</code> with
+      no <code>with</code> argument will still downgrade protection to provide an
+      empty session rather than raise an exception.
     </p>
 
   </example>
