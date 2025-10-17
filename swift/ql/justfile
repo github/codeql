@@ -1,0 +1,6 @@
+import "../../lib.just"
+
+[no-cd]
+format *ARGS=".": (_format_ql ARGS)
+
+consistency_queries := source_dir() / "consistency-queries"
