@@ -76,7 +76,9 @@ module Config implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    exists(Expr condition | result = condition.getLocation() | isSink(sink, condition))
+    exists(Expr condition | result = [condition.getLocation(), sink.getLocation()] |
+      isSink(sink, condition)
+    )
   }
 }
 

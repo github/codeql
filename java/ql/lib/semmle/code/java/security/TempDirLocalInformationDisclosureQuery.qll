@@ -147,8 +147,6 @@ module TempDirSystemGetPropertyToCreateConfig implements DataFlow::ConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
-
-  Location getASelectedSinkLocation(DataFlow::Node sink) { none() }
 }
 
 /**

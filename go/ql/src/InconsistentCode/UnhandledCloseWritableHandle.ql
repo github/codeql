@@ -132,7 +132,7 @@ module UnhandledFileCloseConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSourceLocation(DataFlow::Node source) {
-    exists(DataFlow::CallNode openCall | result = openCall.getLocation() |
+    exists(DataFlow::CallNode openCall | result = [openCall.getLocation(), source.getLocation()] |
       isWritableFileHandle(source, openCall)
     )
   }

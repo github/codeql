@@ -155,7 +155,7 @@ module ExecTaintConfig implements DataFlow::StateConfigSig {
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
     exists(DataFlow::Node concatResult, Expr command, ExecState state |
-      result = [concatResult.getLocation(), command.getLocation()] and
+      result = [concatResult.getLocation(), command.getLocation(), sink.getLocation()] and
       isSink(sink, state) and
       isSinkImpl(sink, command, _) and
       concatResult = state.getOutgoingNode()
