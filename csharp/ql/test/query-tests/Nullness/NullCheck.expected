@@ -33,6 +33,8 @@
 | C.cs:45:22:45:30 | ... != ... | C.cs:45:22:45:22 | access to local variable s |
 | C.cs:56:23:56:24 | access to local variable o2 | C.cs:56:23:56:24 | access to local variable o2 |
 | C.cs:71:26:71:27 | access to local variable o3 | C.cs:71:26:71:27 | access to local variable o3 |
+| C.cs:78:13:78:24 | call to method IsNotNull | C.cs:78:23:78:23 | access to local variable o |
+| C.cs:81:14:81:22 | call to method IsNull | C.cs:81:21:81:21 | access to local variable o |
 | C.cs:113:22:113:36 | ... == ... | C.cs:113:22:113:28 | access to local variable colours |
 | C.cs:113:22:113:36 | ... == ... | C.cs:113:33:113:36 | null |
 | C.cs:120:13:120:28 | ... == ... | C.cs:120:13:120:20 | access to local variable children |
