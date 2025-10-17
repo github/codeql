@@ -56,7 +56,7 @@ fn string_from() {
 fn string_to_string() {
     let s1 = source_slice(22);
     let s2 = s1.to_string();
-    sink(s2); // $ MISSING: hasTaintFlow=22
+    sink(s2); // $ hasTaintFlow=22
 }
 
 fn as_str() {
