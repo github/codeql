@@ -523,7 +523,7 @@ private predicate isRecursiveExpr(Expr e) {
  */
 private module BoundsEstimate {
   /**
-   * Gets the limit beyond which we enable widening. I.e., if the estimated
+   * Gets the limit beyond which we enable widening. That is, if the estimated
    * number of bounds exceeds this limit, we enable widening such that the limit
    * will not be reached.
    */
@@ -738,7 +738,7 @@ private module BoundsEstimate {
           result = nrOfBoundsExpr(condExpr.getThen()) * nrOfBoundsExpr(condExpr.getElse())
         )
         or
-        exists(BinaryArithmeticOperation binop |
+        exists(BinaryOperation binop |
           e = binop and
           result = nrOfBoundsExpr(binop.getLeftOperand()) * nrOfBoundsExpr(binop.getRightOperand())
         |
@@ -746,7 +746,8 @@ private module BoundsEstimate {
           e instanceof MinExpr or
           e instanceof AddExpr or
           e instanceof SubExpr or
-          e instanceof UnsignedMulExpr
+          e instanceof UnsignedMulExpr or
+          e instanceof UnsignedBitwiseAndExpr
         )
         or
         exists(AssignExpr assign | e = assign and result = nrOfBoundsExpr(assign.getRValue()))
@@ -771,7 +772,7 @@ private module BoundsEstimate {
           e = crementOp and result = nrOfBoundsExpr(crementOp.getOperand())
         )
         or
-        exists(RemExpr remExpr | e = remExpr | result = nrOfBoundsExpr(remExpr.getLeftOperand()))
+        exists(RemExpr remExpr | e = remExpr | result = nrOfBoundsExpr(remExpr.getRightOperand()))
         or
         exists(Conversion convExpr |
           e = convExpr and
@@ -786,9 +787,6 @@ private module BoundsEstimate {
           // Avoid returning two numbers when `e` is a use with a constant value.
           not exists(getValue(e).toFloat())
         )
-        or
-        e instanceof UnsignedBitwiseAndExpr and
-        result = 1
         or
         exists(RShiftExpr rsExpr |
           e = rsExpr and
