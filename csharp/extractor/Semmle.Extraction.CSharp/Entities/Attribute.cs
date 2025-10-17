@@ -59,11 +59,11 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             var type = Type.Create(Context, Symbol.AttributeClass);
             trapFile.attributes(this, kind, type.TypeRef, entity);
-            trapFile.attribute_location(this, Location);
+            WriteLocationToTrap(trapFile.attribute_location, this, Location);
 
             if (attributeSyntax is not null)
             {
-                trapFile.attribute_location(this, Assembly.CreateOutputAssembly(Context));
+                WriteLocationToTrap(trapFile.attribute_location, this, Assembly.CreateOutputAssembly(Context));
 
                 TypeMention.Create(Context, attributeSyntax.Name, this, type);
             }

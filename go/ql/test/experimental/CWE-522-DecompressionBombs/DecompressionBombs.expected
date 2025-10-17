@@ -68,9 +68,9 @@ edges
 | test.go:91:15:91:26 | selection of Body | test.go:555:19:555:22 | definition of file | provenance | Src:MaD:1  |
 | test.go:93:5:93:16 | selection of Body | test.go:580:9:580:12 | definition of file | provenance | Src:MaD:1  |
 | test.go:128:20:128:27 | definition of filename | test.go:130:33:130:40 | filename | provenance |  |
-| test.go:128:20:128:27 | definition of filename | test.go:143:51:143:58 | filename | provenance |  |
 | test.go:130:2:130:41 | ... := ...[0] | test.go:132:12:132:12 | f | provenance |  |
 | test.go:130:33:130:40 | filename | test.go:130:2:130:41 | ... := ...[0] | provenance | Config |
+| test.go:130:33:130:40 | filename | test.go:143:51:143:58 | filename | provenance |  |
 | test.go:132:3:132:19 | ... := ...[0] | test.go:134:37:134:38 | rc | provenance |  |
 | test.go:132:12:132:12 | f | test.go:132:3:132:19 | ... := ...[0] | provenance | MaD:4 |
 | test.go:143:2:143:59 | ... := ...[0] | test.go:145:12:145:12 | f | provenance |  |

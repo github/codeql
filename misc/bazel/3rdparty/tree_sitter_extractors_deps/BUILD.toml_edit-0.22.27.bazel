@@ -95,8 +95,8 @@ rust_library(
     }),
     version = "0.22.27",
     deps = [
-        "@vendor_ts__indexmap-2.11.1//:indexmap",
-        "@vendor_ts__serde-1.0.219//:serde",
+        "@vendor_ts__indexmap-2.11.4//:indexmap",
+        "@vendor_ts__serde-1.0.228//:serde",
         "@vendor_ts__serde_spanned-0.6.9//:serde_spanned",
         "@vendor_ts__toml_datetime-0.6.11//:toml_datetime",
         "@vendor_ts__toml_write-0.1.2//:toml_write",

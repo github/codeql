@@ -55,6 +55,8 @@ module CleartextLogging {
       |
         this.asExpr().(Ident).getName() = name
         or
+        this.(DataFlow::SsaNode).getSourceVariable().getName() = name
+        or
         this.(DataFlow::FieldReadNode).getFieldName() = name
         or
         this.(DataFlow::CallNode).getCalleeName() = name
@@ -143,7 +145,7 @@ module CleartextLogging {
       not this instanceof NonCleartextPassword and
       name.regexpMatch(maybePassword()) and
       (
-        this.asExpr().(Ident).getName() = name
+        this.(DataFlow::SsaNode).getSourceVariable().getName() = name
         or
         exists(DataFlow::FieldReadNode fn |
           fn = this and

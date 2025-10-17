@@ -1,0 +1,122 @@
+#select
+| SafeUrlFlow.go:11:24:11:50 | ...+... | SafeUrlFlow.go:10:14:10:21 | selection of Host | SafeUrlFlow.go:11:24:11:50 | ...+... | A safe URL flows here from $@. | SafeUrlFlow.go:10:14:10:21 | selection of Host | here |
+| SafeUrlFlow.go:14:29:14:44 | call to String | SafeUrlFlow.go:13:13:13:19 | selection of URL | SafeUrlFlow.go:14:29:14:44 | call to String | A safe URL flows here from $@. | SafeUrlFlow.go:13:13:13:19 | selection of URL | here |
+| SafeUrlFlow.go:18:11:18:28 | call to String | SafeUrlFlow.go:10:14:10:21 | selection of Host | SafeUrlFlow.go:18:11:18:28 | call to String | A safe URL flows here from $@. | SafeUrlFlow.go:10:14:10:21 | selection of Host | here |
+| SafeUrlFlow.go:45:24:45:61 | ...+... | SafeUrlFlow.go:37:13:37:19 | selection of URL | SafeUrlFlow.go:45:24:45:61 | ...+... | A safe URL flows here from $@. | SafeUrlFlow.go:37:13:37:19 | selection of URL | here |
+| SafeUrlFlow.go:46:29:46:55 | ...+... | SafeUrlFlow.go:37:13:37:19 | selection of URL | SafeUrlFlow.go:46:29:46:55 | ...+... | A safe URL flows here from $@. | SafeUrlFlow.go:37:13:37:19 | selection of URL | here |
+| SafeUrlFlow.go:47:11:47:42 | ...+... | SafeUrlFlow.go:37:13:37:19 | selection of URL | SafeUrlFlow.go:47:11:47:42 | ...+... | A safe URL flows here from $@. | SafeUrlFlow.go:37:13:37:19 | selection of URL | here |
+| SafeUrlFlow.go:57:11:57:26 | call to String | SafeUrlFlow.go:54:13:54:19 | selection of URL | SafeUrlFlow.go:57:11:57:26 | call to String | A safe URL flows here from $@. | SafeUrlFlow.go:54:13:54:19 | selection of URL | here |
+| SafeUrlFlow.go:58:12:58:27 | call to String | SafeUrlFlow.go:54:13:54:19 | selection of URL | SafeUrlFlow.go:58:12:58:27 | call to String | A safe URL flows here from $@. | SafeUrlFlow.go:54:13:54:19 | selection of URL | here |
+| SafeUrlFlow.go:59:16:59:31 | call to String | SafeUrlFlow.go:54:13:54:19 | selection of URL | SafeUrlFlow.go:59:16:59:31 | call to String | A safe URL flows here from $@. | SafeUrlFlow.go:54:13:54:19 | selection of URL | here |
+| SafeUrlFlow.go:60:12:60:27 | call to String | SafeUrlFlow.go:54:13:54:19 | selection of URL | SafeUrlFlow.go:60:12:60:27 | call to String | A safe URL flows here from $@. | SafeUrlFlow.go:54:13:54:19 | selection of URL | here |
+| SafeUrlFlow.go:64:13:64:28 | call to String | SafeUrlFlow.go:54:13:54:19 | selection of URL | SafeUrlFlow.go:64:13:64:28 | call to String | A safe URL flows here from $@. | SafeUrlFlow.go:54:13:54:19 | selection of URL | here |
+| SafeUrlFlow.go:65:14:65:29 | call to String | SafeUrlFlow.go:54:13:54:19 | selection of URL | SafeUrlFlow.go:65:14:65:29 | call to String | A safe URL flows here from $@. | SafeUrlFlow.go:54:13:54:19 | selection of URL | here |
+| SafeUrlFlow.go:66:18:66:33 | call to String | SafeUrlFlow.go:54:13:54:19 | selection of URL | SafeUrlFlow.go:66:18:66:33 | call to String | A safe URL flows here from $@. | SafeUrlFlow.go:54:13:54:19 | selection of URL | here |
+| SafeUrlFlow.go:67:14:67:29 | call to String | SafeUrlFlow.go:54:13:54:19 | selection of URL | SafeUrlFlow.go:67:14:67:29 | call to String | A safe URL flows here from $@. | SafeUrlFlow.go:54:13:54:19 | selection of URL | here |
+| SafeUrlFlow.go:70:39:70:54 | call to String | SafeUrlFlow.go:54:13:54:19 | selection of URL | SafeUrlFlow.go:70:39:70:54 | call to String | A safe URL flows here from $@. | SafeUrlFlow.go:54:13:54:19 | selection of URL | here |
+| SafeUrlFlow.go:74:70:74:85 | call to String | SafeUrlFlow.go:54:13:54:19 | selection of URL | SafeUrlFlow.go:74:70:74:85 | call to String | A safe URL flows here from $@. | SafeUrlFlow.go:54:13:54:19 | selection of URL | here |
+| SafeUrlFlow.go:78:40:78:55 | call to String | SafeUrlFlow.go:54:13:54:19 | selection of URL | SafeUrlFlow.go:78:40:78:55 | call to String | A safe URL flows here from $@. | SafeUrlFlow.go:54:13:54:19 | selection of URL | here |
+| SafeUrlFlow.go:89:24:89:41 | call to String | SafeUrlFlow.go:84:14:84:21 | selection of Host | SafeUrlFlow.go:89:24:89:41 | call to String | A safe URL flows here from $@. | SafeUrlFlow.go:84:14:84:21 | selection of Host | here |
+| SafeUrlFlow.go:105:11:105:23 | reconstructed | SafeUrlFlow.go:96:13:96:19 | selection of URL | SafeUrlFlow.go:105:11:105:23 | reconstructed | A safe URL flows here from $@. | SafeUrlFlow.go:96:13:96:19 | selection of URL | here |
+| SafeUrlFlow.go:108:24:108:50 | ...+... | SafeUrlFlow.go:96:13:96:19 | selection of URL | SafeUrlFlow.go:108:24:108:50 | ...+... | A safe URL flows here from $@. | SafeUrlFlow.go:96:13:96:19 | selection of URL | here |
+| SafeUrlFlow.go:109:29:109:58 | ...+... | SafeUrlFlow.go:96:13:96:19 | selection of URL | SafeUrlFlow.go:109:29:109:58 | ...+... | A safe URL flows here from $@. | SafeUrlFlow.go:96:13:96:19 | selection of URL | here |
+| SafeUrlFlow.go:110:12:110:42 | ...+... | SafeUrlFlow.go:96:13:96:19 | selection of URL | SafeUrlFlow.go:110:12:110:42 | ...+... | A safe URL flows here from $@. | SafeUrlFlow.go:96:13:96:19 | selection of URL | here |
+| SafeUrlFlow.go:111:12:111:25 | safeOpaquePart | SafeUrlFlow.go:96:13:96:19 | selection of URL | SafeUrlFlow.go:111:12:111:25 | safeOpaquePart | A safe URL flows here from $@. | SafeUrlFlow.go:96:13:96:19 | selection of URL | here |
+edges
+| SafeUrlFlow.go:10:14:10:21 | selection of Host | SafeUrlFlow.go:11:24:11:50 | ...+... | provenance | Sink:MaD:1 |
+| SafeUrlFlow.go:10:14:10:21 | selection of Host | SafeUrlFlow.go:17:19:17:26 | safeHost | provenance |  |
+| SafeUrlFlow.go:13:13:13:19 | selection of URL | SafeUrlFlow.go:14:29:14:35 | safeURL | provenance | Src:MaD:2  |
+| SafeUrlFlow.go:14:29:14:35 | safeURL | SafeUrlFlow.go:14:29:14:44 | call to String | provenance | MaD:3 |
+| SafeUrlFlow.go:17:2:17:10 | targetURL [postupdate] | SafeUrlFlow.go:18:11:18:19 | targetURL | provenance |  |
+| SafeUrlFlow.go:17:19:17:26 | safeHost | SafeUrlFlow.go:17:2:17:10 | targetURL [postupdate] | provenance | Config |
+| SafeUrlFlow.go:18:11:18:19 | targetURL | SafeUrlFlow.go:18:11:18:28 | call to String | provenance | MaD:3 |
+| SafeUrlFlow.go:37:13:37:19 | selection of URL | SafeUrlFlow.go:45:24:45:61 | ...+... | provenance | Src:MaD:2 Sink:MaD:1 |
+| SafeUrlFlow.go:37:13:37:19 | selection of URL | SafeUrlFlow.go:46:29:46:55 | ...+... | provenance | Src:MaD:2  |
+| SafeUrlFlow.go:37:13:37:19 | selection of URL | SafeUrlFlow.go:47:11:47:42 | ...+... | provenance | Src:MaD:2  |
+| SafeUrlFlow.go:54:13:54:19 | selection of URL | SafeUrlFlow.go:57:11:57:17 | safeURL | provenance | Src:MaD:2  |
+| SafeUrlFlow.go:54:13:54:19 | selection of URL | SafeUrlFlow.go:58:12:58:18 | safeURL | provenance | Src:MaD:2  |
+| SafeUrlFlow.go:54:13:54:19 | selection of URL | SafeUrlFlow.go:59:16:59:22 | safeURL | provenance | Src:MaD:2  |
+| SafeUrlFlow.go:54:13:54:19 | selection of URL | SafeUrlFlow.go:60:12:60:18 | safeURL | provenance | Src:MaD:2  |
+| SafeUrlFlow.go:54:13:54:19 | selection of URL | SafeUrlFlow.go:64:13:64:19 | safeURL | provenance | Src:MaD:2  |
+| SafeUrlFlow.go:54:13:54:19 | selection of URL | SafeUrlFlow.go:65:14:65:20 | safeURL | provenance | Src:MaD:2  |
+| SafeUrlFlow.go:54:13:54:19 | selection of URL | SafeUrlFlow.go:66:18:66:24 | safeURL | provenance | Src:MaD:2  |
+| SafeUrlFlow.go:54:13:54:19 | selection of URL | SafeUrlFlow.go:67:14:67:20 | safeURL | provenance | Src:MaD:2  |
+| SafeUrlFlow.go:54:13:54:19 | selection of URL | SafeUrlFlow.go:70:39:70:45 | safeURL | provenance | Src:MaD:2  |
+| SafeUrlFlow.go:54:13:54:19 | selection of URL | SafeUrlFlow.go:74:70:74:76 | safeURL | provenance | Src:MaD:2  |
+| SafeUrlFlow.go:54:13:54:19 | selection of URL | SafeUrlFlow.go:78:40:78:46 | safeURL | provenance | Src:MaD:2  |
+| SafeUrlFlow.go:57:11:57:17 | safeURL | SafeUrlFlow.go:57:11:57:26 | call to String | provenance | MaD:3 |
+| SafeUrlFlow.go:58:12:58:18 | safeURL | SafeUrlFlow.go:58:12:58:27 | call to String | provenance | MaD:3 |
+| SafeUrlFlow.go:59:16:59:22 | safeURL | SafeUrlFlow.go:59:16:59:31 | call to String | provenance | MaD:3 |
+| SafeUrlFlow.go:60:12:60:18 | safeURL | SafeUrlFlow.go:60:12:60:27 | call to String | provenance | MaD:3 |
+| SafeUrlFlow.go:64:13:64:19 | safeURL | SafeUrlFlow.go:64:13:64:28 | call to String | provenance | MaD:3 |
+| SafeUrlFlow.go:65:14:65:20 | safeURL | SafeUrlFlow.go:65:14:65:29 | call to String | provenance | MaD:3 |
+| SafeUrlFlow.go:66:18:66:24 | safeURL | SafeUrlFlow.go:66:18:66:33 | call to String | provenance | MaD:3 |
+| SafeUrlFlow.go:67:14:67:20 | safeURL | SafeUrlFlow.go:67:14:67:29 | call to String | provenance | MaD:3 |
+| SafeUrlFlow.go:70:39:70:45 | safeURL | SafeUrlFlow.go:70:39:70:54 | call to String | provenance | MaD:3 |
+| SafeUrlFlow.go:74:70:74:76 | safeURL | SafeUrlFlow.go:74:70:74:85 | call to String | provenance | MaD:3 |
+| SafeUrlFlow.go:78:40:78:46 | safeURL | SafeUrlFlow.go:78:40:78:55 | call to String | provenance | MaD:3 |
+| SafeUrlFlow.go:84:14:84:21 | selection of Host | SafeUrlFlow.go:87:19:87:26 | safeHost | provenance |  |
+| SafeUrlFlow.go:87:2:87:10 | implicit dereference [postupdate] | SafeUrlFlow.go:87:2:87:10 | targetURL [postupdate] | provenance |  |
+| SafeUrlFlow.go:87:2:87:10 | targetURL [postupdate] | SafeUrlFlow.go:89:24:89:32 | targetURL | provenance |  |
+| SafeUrlFlow.go:87:19:87:26 | safeHost | SafeUrlFlow.go:87:2:87:10 | implicit dereference [postupdate] | provenance | Config |
+| SafeUrlFlow.go:87:19:87:26 | safeHost | SafeUrlFlow.go:87:2:87:10 | targetURL [postupdate] | provenance | Config |
+| SafeUrlFlow.go:89:24:89:32 | targetURL | SafeUrlFlow.go:89:24:89:41 | call to String | provenance | MaD:3 Sink:MaD:1 |
+| SafeUrlFlow.go:96:13:96:19 | selection of URL | SafeUrlFlow.go:105:11:105:23 | reconstructed | provenance | Src:MaD:2  |
+| SafeUrlFlow.go:96:13:96:19 | selection of URL | SafeUrlFlow.go:108:24:108:50 | ...+... | provenance | Src:MaD:2 Sink:MaD:1 |
+| SafeUrlFlow.go:96:13:96:19 | selection of URL | SafeUrlFlow.go:109:29:109:58 | ...+... | provenance | Src:MaD:2  |
+| SafeUrlFlow.go:96:13:96:19 | selection of URL | SafeUrlFlow.go:110:12:110:42 | ...+... | provenance | Src:MaD:2  |
+| SafeUrlFlow.go:96:13:96:19 | selection of URL | SafeUrlFlow.go:111:12:111:25 | safeOpaquePart | provenance | Src:MaD:2  |
+models
+| 1 | Sink: net/http; ; false; Redirect; ; ; Argument[2]; url-redirection[0]; manual |
+| 2 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
+| 3 | Summary: fmt; Stringer; true; String; ; ; Argument[receiver]; ReturnValue; taint; manual |
+nodes
+| SafeUrlFlow.go:10:14:10:21 | selection of Host | semmle.label | selection of Host |
+| SafeUrlFlow.go:11:24:11:50 | ...+... | semmle.label | ...+... |
+| SafeUrlFlow.go:13:13:13:19 | selection of URL | semmle.label | selection of URL |
+| SafeUrlFlow.go:14:29:14:35 | safeURL | semmle.label | safeURL |
+| SafeUrlFlow.go:14:29:14:44 | call to String | semmle.label | call to String |
+| SafeUrlFlow.go:17:2:17:10 | targetURL [postupdate] | semmle.label | targetURL [postupdate] |
+| SafeUrlFlow.go:17:19:17:26 | safeHost | semmle.label | safeHost |
+| SafeUrlFlow.go:18:11:18:19 | targetURL | semmle.label | targetURL |
+| SafeUrlFlow.go:18:11:18:28 | call to String | semmle.label | call to String |
+| SafeUrlFlow.go:37:13:37:19 | selection of URL | semmle.label | selection of URL |
+| SafeUrlFlow.go:45:24:45:61 | ...+... | semmle.label | ...+... |
+| SafeUrlFlow.go:46:29:46:55 | ...+... | semmle.label | ...+... |
+| SafeUrlFlow.go:47:11:47:42 | ...+... | semmle.label | ...+... |
+| SafeUrlFlow.go:54:13:54:19 | selection of URL | semmle.label | selection of URL |
+| SafeUrlFlow.go:57:11:57:17 | safeURL | semmle.label | safeURL |
+| SafeUrlFlow.go:57:11:57:26 | call to String | semmle.label | call to String |
+| SafeUrlFlow.go:58:12:58:18 | safeURL | semmle.label | safeURL |
+| SafeUrlFlow.go:58:12:58:27 | call to String | semmle.label | call to String |
+| SafeUrlFlow.go:59:16:59:22 | safeURL | semmle.label | safeURL |
+| SafeUrlFlow.go:59:16:59:31 | call to String | semmle.label | call to String |
+| SafeUrlFlow.go:60:12:60:18 | safeURL | semmle.label | safeURL |
+| SafeUrlFlow.go:60:12:60:27 | call to String | semmle.label | call to String |
+| SafeUrlFlow.go:64:13:64:19 | safeURL | semmle.label | safeURL |
+| SafeUrlFlow.go:64:13:64:28 | call to String | semmle.label | call to String |
+| SafeUrlFlow.go:65:14:65:20 | safeURL | semmle.label | safeURL |
+| SafeUrlFlow.go:65:14:65:29 | call to String | semmle.label | call to String |
+| SafeUrlFlow.go:66:18:66:24 | safeURL | semmle.label | safeURL |
+| SafeUrlFlow.go:66:18:66:33 | call to String | semmle.label | call to String |
+| SafeUrlFlow.go:67:14:67:20 | safeURL | semmle.label | safeURL |
+| SafeUrlFlow.go:67:14:67:29 | call to String | semmle.label | call to String |
+| SafeUrlFlow.go:70:39:70:45 | safeURL | semmle.label | safeURL |
+| SafeUrlFlow.go:70:39:70:54 | call to String | semmle.label | call to String |
+| SafeUrlFlow.go:74:70:74:76 | safeURL | semmle.label | safeURL |
+| SafeUrlFlow.go:74:70:74:85 | call to String | semmle.label | call to String |
+| SafeUrlFlow.go:78:40:78:46 | safeURL | semmle.label | safeURL |
+| SafeUrlFlow.go:78:40:78:55 | call to String | semmle.label | call to String |
+| SafeUrlFlow.go:84:14:84:21 | selection of Host | semmle.label | selection of Host |
+| SafeUrlFlow.go:87:2:87:10 | implicit dereference [postupdate] | semmle.label | implicit dereference [postupdate] |
+| SafeUrlFlow.go:87:2:87:10 | targetURL [postupdate] | semmle.label | targetURL [postupdate] |
+| SafeUrlFlow.go:87:19:87:26 | safeHost | semmle.label | safeHost |
+| SafeUrlFlow.go:89:24:89:32 | targetURL | semmle.label | targetURL |
+| SafeUrlFlow.go:89:24:89:41 | call to String | semmle.label | call to String |
+| SafeUrlFlow.go:96:13:96:19 | selection of URL | semmle.label | selection of URL |
+| SafeUrlFlow.go:105:11:105:23 | reconstructed | semmle.label | reconstructed |
+| SafeUrlFlow.go:108:24:108:50 | ...+... | semmle.label | ...+... |
+| SafeUrlFlow.go:109:29:109:58 | ...+... | semmle.label | ...+... |
+| SafeUrlFlow.go:110:12:110:42 | ...+... | semmle.label | ...+... |
+| SafeUrlFlow.go:111:12:111:25 | safeOpaquePart | semmle.label | safeOpaquePart |
+subpaths

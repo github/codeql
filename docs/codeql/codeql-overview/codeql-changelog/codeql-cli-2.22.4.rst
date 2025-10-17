@@ -9,7 +9,7 @@ CodeQL 2.22.4 (2025-08-21)
    :local:
    :backlinks: none
 
-This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/code-scanning/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
+This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/application-security/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
 
 Security Coverage
 -----------------
@@ -32,11 +32,6 @@ C/C++
 
 *   The :code:`cpp/short-global-name` query will no longer give alerts for instantiations of template variables, only for the template itself.
 *   Fixed a false positive in :code:`cpp/overflow-buffer` when the type of the destination buffer is a reference to a class/struct type.
-
-Golang
-""""""
-
-*   Go 1.25 is now supported.
 
 JavaScript/TypeScript
 """""""""""""""""""""
@@ -83,6 +78,11 @@ C/C++
 *   The guards libraries (:code:`semmle.code.cpp.controlflow.Guards` and :code:`semmle.code.cpp.controlflow.IRGuards`) have been improved to recognize more guards.
 *   Improved dataflow through global variables in the new dataflow library (:code:`semmle.code.cpp.dataflow.new.DataFlow` and :code:`semmle.code.cpp.dataflow.new.TaintTracking`). Queries based on these libraries will produce more results on codebases with many global variables.
 *   The global value numbering library (:code:`semmle.code.cpp.valuenumbering.GlobalValueNumbering` and :code:`semmle.code.cpp.ir.ValueNumbering`) has been improved so more expressions are assigned the same value number.
+
+Golang
+""""""
+
+*   Go 1.25 is now supported.
 
 Java/Kotlin
 """""""""""

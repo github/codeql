@@ -43,6 +43,7 @@ private module Cached {
     newtype TStepSummary =
       LevelStep() or
       CallStep() or
+      CallReceiverStep() or
       ReturnStep() or
       StoreStep(PropertyName prop) or
       LoadStep(PropertyName prop) or
@@ -101,6 +102,15 @@ private module Cached {
     )
   }
 
+  pragma[nomagic]
+  private predicate isReceiverForMethodDispatch(DataFlow::Node node) {
+    exists(DataFlow::SourceNode base, DataFlow::CallNode invoke |
+      node = invoke.getReceiver() and
+      base = node.getALocalSource() and
+      invoke.getCalleeNode() = base.getAPropertyRead()
+    )
+  }
+
   /**
    * INTERNAL: Use `TypeBackTracker.smallstep()` instead.
    */
@@ -116,7 +126,11 @@ private module Cached {
     or
     // Flow into function
     callStep(pred, succ) and
-    summary = CallStep()
+    (
+      if isReceiverForMethodDispatch(pred)
+      then summary = CallReceiverStep()
+      else summary = CallStep()
+    )
     or
     // Flow out of function
     returnStep(pred, succ) and
@@ -250,6 +264,8 @@ class StepSummary extends TStepSummary {
     this instanceof LevelStep and result = "level"
     or
     this instanceof CallStep and result = "call"
+    or
+    this instanceof CallReceiverStep and result = "call-receiver"
     or
     this instanceof ReturnStep and result = "return"
     or

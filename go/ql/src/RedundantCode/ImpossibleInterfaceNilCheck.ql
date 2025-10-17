@@ -35,7 +35,9 @@ predicate flowsToInterfaceNilCheck(DataFlow::Node nd) {
  */
 predicate nonNilWrapper(DataFlow::Node nd) {
   flowsToInterfaceNilCheck(nd) and
-  forex(DataFlow::Node pred | pred = nd.getAPredecessor() |
+  forex(DataFlow::Node pred |
+    pred = nd.getAPredecessor() and not pred instanceof DataFlow::PostUpdateNode
+  |
     exists(Type predtp | predtp = pred.getType().getUnderlyingType() |
       not predtp instanceof InterfaceType and
       not predtp instanceof NilLiteralType and

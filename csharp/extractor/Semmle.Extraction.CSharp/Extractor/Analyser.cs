@@ -238,6 +238,9 @@ namespace Semmle.Extraction.CSharp
 
                 compilationEntity = Entities.Compilation.Create(cx);
 
+                // Ensure that the empty location is always created.
+                Entities.EmptyLocation.Create(cx);
+
                 ExtractionContext.CompilationInfos.ForEach(ci => trapWriter.Writer.compilation_info(compilationEntity, ci.key, ci.value));
 
                 ReportProgressTaskDone(currentTaskId, assemblyPath, trapWriter.TrapFile, stopwatch.Elapsed, AnalysisAction.Extracted);

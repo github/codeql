@@ -87,6 +87,7 @@ class ElementBase extends @element {
  */
 class Element extends ElementBase {
   /** Gets the primary file where this element occurs. */
+  pragma[nomagic]
   File getFile() { result = this.getLocation().getFile() }
 
   /**

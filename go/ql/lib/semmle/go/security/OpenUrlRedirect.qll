@@ -33,8 +33,8 @@ module OpenUrlRedirect {
       any(AdditionalStep s).hasTaintStep(pred, succ)
       or
       // propagate to a URL when its host is assigned to
-      exists(Write w, Field f, SsaWithFields v | f.hasQualifiedName("net/url", "URL", "Host") |
-        w.writesField(v.getAUse(), f, pred) and succ = v.getAUse()
+      exists(Write w, Field f | f.hasQualifiedName("net/url", "URL", "Host") |
+        w.writesField(succ, f, pred)
       )
       or
       // propagate out of most URL fields, but not `ForceQuery` and `Scheme`
@@ -48,8 +48,10 @@ module OpenUrlRedirect {
 
     predicate isBarrierOut(DataFlow::Node node) {
       // block propagation of this unsafe value when its host is overwritten
-      exists(Write w, Field f | f.hasQualifiedName("net/url", "URL", "Host") |
-        w.writesField(node.getASuccessor(), f, _)
+      exists(Write w, Field f, DataFlow::Node base |
+        f.hasQualifiedName("net/url", "URL", "Host") and
+        w.writesField(base, f, _) and
+        base.(DataFlow::PostUpdateNode).getPreUpdateNode() = node
       )
       or
       hostnameSanitizingPrefixEdge(node, _)

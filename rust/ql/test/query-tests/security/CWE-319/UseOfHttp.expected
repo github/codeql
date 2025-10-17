@@ -13,8 +13,7 @@ edges
 | main.rs:23:9:23:16 | base_url | main.rs:25:28:25:53 | MacroExpr | provenance |  |
 | main.rs:23:20:23:39 | "http://example.com" | main.rs:23:9:23:16 | base_url | provenance |  |
 | main.rs:25:9:25:16 | full_url | main.rs:26:45:26:52 | full_url | provenance |  |
-| main.rs:25:20:25:26 | res | main.rs:25:28:25:53 | { ... } | provenance |  |
-| main.rs:25:28:25:53 | ...::format(...) | main.rs:25:20:25:26 | res | provenance |  |
+| main.rs:25:28:25:53 | ...::format(...) | main.rs:25:28:25:53 | { ... } | provenance |  |
 | main.rs:25:28:25:53 | ...::must_use(...) | main.rs:25:9:25:16 | full_url | provenance |  |
 | main.rs:25:28:25:53 | MacroExpr | main.rs:25:28:25:53 | ...::format(...) | provenance | MaD:2 |
 | main.rs:25:28:25:53 | { ... } | main.rs:25:28:25:53 | ...::must_use(...) | provenance | MaD:3 |
@@ -23,8 +22,7 @@ edges
 | main.rs:34:9:34:16 | protocol | main.rs:36:32:36:53 | MacroExpr | provenance |  |
 | main.rs:34:20:34:28 | "http://" | main.rs:34:9:34:16 | protocol | provenance |  |
 | main.rs:36:9:36:20 | insecure_url | main.rs:37:54:37:65 | insecure_url | provenance |  |
-| main.rs:36:24:36:30 | res | main.rs:36:32:36:53 | { ... } | provenance |  |
-| main.rs:36:32:36:53 | ...::format(...) | main.rs:36:24:36:30 | res | provenance |  |
+| main.rs:36:32:36:53 | ...::format(...) | main.rs:36:32:36:53 | { ... } | provenance |  |
 | main.rs:36:32:36:53 | ...::must_use(...) | main.rs:36:9:36:20 | insecure_url | provenance |  |
 | main.rs:36:32:36:53 | MacroExpr | main.rs:36:32:36:53 | ...::format(...) | provenance | MaD:2 |
 | main.rs:36:32:36:53 | { ... } | main.rs:36:32:36:53 | ...::must_use(...) | provenance | MaD:3 |
@@ -48,7 +46,6 @@ nodes
 | main.rs:23:9:23:16 | base_url | semmle.label | base_url |
 | main.rs:23:20:23:39 | "http://example.com" | semmle.label | "http://example.com" |
 | main.rs:25:9:25:16 | full_url | semmle.label | full_url |
-| main.rs:25:20:25:26 | res | semmle.label | res |
 | main.rs:25:28:25:53 | ...::format(...) | semmle.label | ...::format(...) |
 | main.rs:25:28:25:53 | ...::must_use(...) | semmle.label | ...::must_use(...) |
 | main.rs:25:28:25:53 | MacroExpr | semmle.label | MacroExpr |
@@ -59,7 +56,6 @@ nodes
 | main.rs:34:9:34:16 | protocol | semmle.label | protocol |
 | main.rs:34:20:34:28 | "http://" | semmle.label | "http://" |
 | main.rs:36:9:36:20 | insecure_url | semmle.label | insecure_url |
-| main.rs:36:24:36:30 | res | semmle.label | res |
 | main.rs:36:32:36:53 | ...::format(...) | semmle.label | ...::format(...) |
 | main.rs:36:32:36:53 | ...::must_use(...) | semmle.label | ...::must_use(...) |
 | main.rs:36:32:36:53 | MacroExpr | semmle.label | MacroExpr |
