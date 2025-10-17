@@ -30,13 +30,16 @@ predicate hasWebConfigXFrameOptions(WebConfigXml webConfig) {
   //   </httpProtocol>
   // </system.webServer>
   // ```
-  webConfig
-      .getARootElement()
-      .getAChild("system.webServer")
-      .getAChild("httpProtocol")
-      .getAChild("customHeaders")
-      .getAChild("add")
-      .getAttributeValue("name") = "X-Frame-Options"
+  // This can also be in a `location`
+  exists(XmlElement root |
+    root = webConfig.getARootElement() and
+    [root, root.getAChild("location")]
+        .getAChild("system.webServer")
+        .getAChild("httpProtocol")
+        .getAChild("customHeaders")
+        .getAChild("add")
+        .getAttributeValue("name") = "X-Frame-Options"
+  )
 }
 
 /**
