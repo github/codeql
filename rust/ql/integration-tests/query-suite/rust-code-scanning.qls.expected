@@ -16,7 +16,7 @@ ql/rust/ql/src/queries/security/CWE-312/CleartextLogging.ql
 ql/rust/ql/src/queries/security/CWE-312/CleartextStorageDatabase.ql
 ql/rust/ql/src/queries/security/CWE-319/UseOfHttp.ql
 ql/rust/ql/src/queries/security/CWE-327/BrokenCryptoAlgorithm.ql
-ql/rust/ql/src/queries/security/CWE-328/WeakSensitiveDataHashing.ql
+ql/rust/ql/src/queries/security/CWE-327/WeakSensitiveDataHashing.ql
 ql/rust/ql/src/queries/security/CWE-614/InsecureCookie.ql
 ql/rust/ql/src/queries/security/CWE-770/UncontrolledAllocationSize.ql
 ql/rust/ql/src/queries/security/CWE-798/HardcodedCryptographicValue.ql
