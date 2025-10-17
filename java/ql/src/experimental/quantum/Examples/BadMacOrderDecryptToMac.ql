@@ -1,7 +1,7 @@
 /**
  * @name Bad MAC order: decrypt to mac
  * @description MAC should be on a cipher, not a raw message
- * @id java/quantum/bad-mac-order-decrypt-to-mac
+ * @id java/quantum/examples/bad-mac-order-decrypt-to-mac
  * @kind path-problem
  * @problem.severity error
  * @tags quantum

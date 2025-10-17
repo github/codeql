@@ -1,6 +1,6 @@
 /**
  * @name Weak Asymmetric Key Size
- * @id java/quantum/weak-asymmetric-key-gen-size
+ * @id java/quantum/examples/weak-asymmetric-key-gen-size
  * @description An asymmetric key of known size is less than 2048 bits for any non-elliptic curve key operation.
  * @kind path-problem
  * @problem.severity error

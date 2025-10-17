@@ -1,6 +1,6 @@
 /**
  * @name Cipher not AES-GCM mode
- * @id java/quantum/non-aes-gcm
+ * @id java/quantum/examples/non-aes-gcm
  * @description An AES cipher is in use without GCM
  * @kind problem
  * @problem.severity error

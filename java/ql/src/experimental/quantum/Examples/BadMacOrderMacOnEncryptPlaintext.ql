@@ -1,7 +1,7 @@
 /**
  * @name Bad MAC order: Mac and Encryption share the same plaintext
  * @description MAC should be on a cipher, not a raw message
- * @id java/quantum/bad-mac-order-encrypt-plaintext-also-in-mac
+ * @id java/quantum/examples/bad-mac-order-encrypt-plaintext-also-in-mac
  * @kind path-problem
  * @problem.severity error
  * @tags quantum

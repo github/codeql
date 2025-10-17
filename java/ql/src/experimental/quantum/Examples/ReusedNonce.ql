@@ -1,7 +1,7 @@
 /**
  * @name Reuse of cryptographic nonce
  * @description Reuse of nonce in cryptographic operations can lead to vulnerabilities.
- * @id java/quantum/reused-nonce
+ * @id java/quantum/examples/reused-nonce
  * @kind path-problem
  * @problem.severity error
  * @tags quantum

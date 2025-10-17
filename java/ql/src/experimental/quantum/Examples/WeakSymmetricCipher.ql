@@ -26,6 +26,7 @@ where
     algType = KeyOpAlg::TSymmetricCipher(KeyOpAlg::RC2()) or
     algType = KeyOpAlg::TSymmetricCipher(KeyOpAlg::RC4()) or
     algType = KeyOpAlg::TSymmetricCipher(KeyOpAlg::IDEA()) or
-    algType = KeyOpAlg::TSymmetricCipher(KeyOpAlg::BLOWFISH())
+    algType = KeyOpAlg::TSymmetricCipher(KeyOpAlg::BLOWFISH()) or
+    algType = KeyOpAlg::TSymmetricCipher(KeyOpAlg::SKIPJACK())
   )
 select alg, "Use of unapproved symmetric cipher algorithm or API: " + algType.toString() + "."

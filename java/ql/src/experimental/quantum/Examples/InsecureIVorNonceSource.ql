@@ -1,6 +1,6 @@
 /**
  * @name Insecure nonce/iv (static value or weak random source)
- * @id java/quantum/insecure-iv-or-nonce
+ * @id java/quantum/examples/insecure-iv-or-nonce
  * @description A nonce/iv is generated from a source that is not secure. This can lead to
  *              vulnerabilities such as replay attacks or key recovery. Insecure generation
  *              is any static nonce, or any known insecure source for a nonce/iv if

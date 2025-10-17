@@ -1,6 +1,6 @@
 /**
  * @name Unknown nonce/iv source
- * @id java/quantum/unknown-iv-or-nonce-source
+ * @id java/quantum/examples/unknown-iv-or-nonce-source
  * @description A nonce/iv is generated from a source that is not secure. Failure to initialize
  *              an IV or nonce properly can lead to vulnerabilities such as replay attacks or key recovery.
  *              IV may be unknown at a decryption operation (IV would be provided alongside the ciphertext).

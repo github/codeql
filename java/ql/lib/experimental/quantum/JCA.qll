@@ -230,7 +230,7 @@ module JCAModel {
   bindingset[name]
   predicate key_agreement_name_to_type_known(Crypto::TKeyAgreementType type, string name) {
     type = Crypto::DH() and
-    name.toUpperCase() in ["DH"]
+    name.toUpperCase() = "DH"
     or
     type = Crypto::EDH() and
     name.toUpperCase() = "EDH"
@@ -1659,7 +1659,7 @@ module JCAModel {
     Expr getOutput() { result = output }
 
     Expr getInput() {
-      super.getMethod().hasStringSignature(["doFinal(byte[])"]) and result = this.getArgument(0)
+      super.getMethod().hasStringSignature("doFinal(byte[])") and result = this.getArgument(0)
       or
       super.getMethod().hasStringSignature("update(byte[])") and result = this.getArgument(0)
     }

@@ -1,7 +1,7 @@
 /**
  * @name Unknown hashes
  * @description Finds uses of cryptographic hashing algorithms of unknown type.
- * @id java/quantum/unknown-hash
+ * @id java/quantum/examples/unknown-hash
  * @kind problem
  * @problem.severity error
  * @tags quantum

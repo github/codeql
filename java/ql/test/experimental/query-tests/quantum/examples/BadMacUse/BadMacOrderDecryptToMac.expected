@@ -9,3 +9,5 @@ nodes
 | BadMacUse.java:54:28:54:53 | doFinal(...) : byte[] | semmle.label | doFinal(...) : byte[] |
 | BadMacUse.java:60:42:60:50 | plaintext | semmle.label | plaintext |
 subpaths
+testFailures
+| BadMacUse.java:67:118:67:128 | // $Source | Missing result: Source |

@@ -30,7 +30,7 @@ public class Test {
         byte[] blowfishEncrypted = blowfishCipher.doFinal(data);
 
         // BAD: RC2 (unsafe)
-        KeyGenerator rc2KeyGen = KeyGenerator.getInstance("RC2");
+        KeyGenerator rc2KeyGen = KeyGenerator.getInstance("RC2"); // $Alert
         SecretKey rc2Key = rc2KeyGen.generateKey();
         Cipher rc2Cipher = Cipher.getInstance("RC2"); // $Alert
         rc2Cipher.init(Cipher.ENCRYPT_MODE, rc2Key);

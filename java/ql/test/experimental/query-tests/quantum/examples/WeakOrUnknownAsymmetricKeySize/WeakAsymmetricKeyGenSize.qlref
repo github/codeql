@@ -1,1 +1,4 @@
-experimental/quantum/Examples/WeakAsymmetricKeyGenSize.ql
+query: experimental/quantum/Examples/WeakAsymmetricKeyGenSize.ql
+postprocess:
+  - utils/test/PrettyPrintModels.ql
+  - utils/test/InlineExpectationsTestQuery.ql
