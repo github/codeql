@@ -30,11 +30,15 @@ predicate cookieAppendSecureByDefault() {
   OnAppendCookieSecureTracking::flowTo(_)
 }
 
-predicate secureFalseOrNotSet(ObjectCreation oc) {
+predicate secureFalse(ObjectCreation oc) {
   exists(Assignment a |
     getAValueForProp(oc, a, "Secure") = a.getRValue() and
     a.getRValue().getValue() = "false"
   )
+}
+
+predicate secureFalseOrNotSet(ObjectCreation oc) {
+  secureFalse(oc)
   or
   not isPropertySet(oc, "Secure")
 }
@@ -58,12 +62,13 @@ predicate insecureCookieAppend(Expr sink) {
   )
 }
 
-predicate insecureCookieCreationFromConfig(Expr sink) {
-  // `Secure` property in `System.Web.HttpCookie` wasn't set, so a default value from config is used
-  exists(ObjectCreation oc |
-    oc = sink and
-    oc.getType() instanceof SystemWebHttpCookie and
-    not isPropertySet(oc, "Secure") and
+predicate insecureCookieCreation(ObjectCreation oc) {
+  oc.getType() instanceof SystemWebHttpCookie and
+  (
+    secureFalse(oc)
+    or
+    // `Secure` property in `System.Web.HttpCookie` wasn't set, so a default value from config is used
+    isPropertySet(oc, "Secure") and
     // the default in config is not set to `true`
     // the `exists` below covers the `cs/web/requiressl-not-set`
     not exists(XmlElement element |
@@ -84,27 +89,9 @@ predicate insecureCookieCall(Call c) {
     insecureCookieAppend(c)
   )
   or
-  insecureCookieCreationFromConfig(c)
+  insecureCookieCreation(c)
 }
 
-// predicate insecureCookieCreationAssignment(Assignment a, Expr val) {
-//   exists(ObjectCreation oc |
-//     getAValueForProp(oc, a, "Secure") = val and
-//     val.getValue() = "false" and
-//     (
-//       oc.getType() instanceof SystemWebHttpCookie
-//       or
-//       oc.getType() instanceof MicrosoftAspNetCoreHttpCookieOptions and
-//       // there is no callback `OnAppendCookie` that sets `Secure` to true
-//       not OnAppendCookieSecureTracking::flowTo(_) and
-//       // the cookie option is passed to `Append`
-//       exists(DataFlow::Node creation |
-//         CookieOptionsTracking::flow(creation, _) and
-//         creation.asExpr() = oc
-//       )
-//     )
-//   )
-// }
 predicate insecureSecurePolicyAssignment(Assignment a, Expr val) {
   exists(PropertyWrite pw |
     (
