@@ -26,7 +26,8 @@ module JCAModel {
     algo.toUpperCase()
         .matches([
             "AES", "AESWrap", "AESWrapPad", "ARCFOUR", "Blowfish", "ChaCha20", "ChaCha20-Poly1305",
-            "DES", "DESede", "DESedeWrap", "ECIES", "PBEWith%", "RC2", "RC4", "RC5", "RSA"
+            "DES", "DESede", "DESedeWrap", "ECIES", "PBEWith%", "RC2", "RC4", "RC5", "RSA",
+            "Skipjack", "Idea"
           ].toUpperCase())
   }
 
@@ -190,7 +191,8 @@ module JCAModel {
       upper.matches("AES%") and
       type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::AES())
       or
-      upper = "DES" and
+      // NOTE: there is DES and DESede
+      upper.matches("DES%") and
       type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::DES())
       or
       upper = "TRIPLEDES" and
@@ -205,6 +207,9 @@ module JCAModel {
       upper = "CHACHA20" and
       type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::CHACHA20())
       or
+      upper = "RC2" and
+      type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::RC2())
+      or
       upper = "RC4" and
       type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::RC4())
       or
@@ -213,6 +218,12 @@ module JCAModel {
       or
       upper = "RSA" and
       type = KeyOpAlg::TAsymmetricCipher(KeyOpAlg::RSA())
+      or
+      upper = "SKIPJACK" and
+      type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::SKIPJACK())
+      or
+      upper = "BLOWFISH" and
+      type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::BLOWFISH())
     )
   }
 

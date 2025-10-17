@@ -39,6 +39,7 @@ module Types {
       RC5() or
       SEED() or
       SM4() or
+      SKIPJACK() or
       OtherSymmetricCipherType()
 
     newtype TAsymmetricCipherType =
@@ -117,6 +118,8 @@ module Types {
       type = SEED() and name = "SEED" and s = Block()
       or
       type = SM4() and name = "SM4" and s = Block()
+      or
+      type = SKIPJACK() and name = "Skipjack" and s = Block()
       or
       type = OtherSymmetricCipherType() and
       name = "UnknownSymmetricCipher" and

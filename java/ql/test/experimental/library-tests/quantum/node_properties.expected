@@ -1546,8 +1546,10 @@
 | jca/SymmetricAlgorithm.java:151:29:151:53 | EncryptOperation | KeyOperationSubtype | Encrypt | jca/SymmetricAlgorithm.java:151:29:151:53 | jca/SymmetricAlgorithm.java:151:29:151:53 |
 | jca/SymmetricAlgorithm.java:167:42:167:54 | Parameter | Description | key | jca/SymmetricAlgorithm.java:167:42:167:54 | jca/SymmetricAlgorithm.java:167:42:167:54 |
 | jca/SymmetricAlgorithm.java:167:57:167:72 | Parameter | Description | plaintext | jca/SymmetricAlgorithm.java:167:57:167:72 | jca/SymmetricAlgorithm.java:167:57:167:72 |
-| jca/SymmetricAlgorithm.java:168:44:168:68 | KeyOperationAlgorithm | Name | Unknown | jca/SymmetricAlgorithm.java:168:44:168:68 | jca/SymmetricAlgorithm.java:168:44:168:68 |
+| jca/SymmetricAlgorithm.java:168:44:168:68 | KeyOperationAlgorithm | KeySize | 56 | jca/SymmetricAlgorithm.java:168:44:168:68 | jca/SymmetricAlgorithm.java:168:44:168:68 |
+| jca/SymmetricAlgorithm.java:168:44:168:68 | KeyOperationAlgorithm | Name | DES | jca/SymmetricAlgorithm.java:168:44:168:68 | jca/SymmetricAlgorithm.java:168:44:168:68 |
 | jca/SymmetricAlgorithm.java:168:44:168:68 | KeyOperationAlgorithm | RawName | DESede/CBC/PKCS5Padding | jca/SymmetricAlgorithm.java:168:44:168:68 | jca/SymmetricAlgorithm.java:168:44:168:68 |
+| jca/SymmetricAlgorithm.java:168:44:168:68 | KeyOperationAlgorithm | Structure | Block | jca/SymmetricAlgorithm.java:168:44:168:68 | jca/SymmetricAlgorithm.java:168:44:168:68 |
 | jca/SymmetricAlgorithm.java:168:44:168:68 | ModeOfOperation | Name | CBC | jca/SymmetricAlgorithm.java:168:44:168:68 | jca/SymmetricAlgorithm.java:168:44:168:68 |
 | jca/SymmetricAlgorithm.java:168:44:168:68 | ModeOfOperation | RawName | CBC | jca/SymmetricAlgorithm.java:168:44:168:68 | jca/SymmetricAlgorithm.java:168:44:168:68 |
 | jca/SymmetricAlgorithm.java:168:44:168:68 | PaddingAlgorithm | Name | PKCS7 | jca/SymmetricAlgorithm.java:168:44:168:68 | jca/SymmetricAlgorithm.java:168:44:168:68 |
