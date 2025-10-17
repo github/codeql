@@ -30,16 +30,6 @@ module JCAModel {
           ].toUpperCase())
   }
 
-  // TODO: Verify that the CFB% case works correctly
-  bindingset[mode]
-  predicate cipher_modes(string mode) {
-    mode.toUpperCase()
-        .matches([
-            "NONE", "CBC", "CCM", "CFB", "CFB%", "CTR", "CTS", "ECB", "GCM", "KW", "KWP", "OFB",
-            "OFB%", "PCBC"
-          ].toUpperCase())
-  }
-
   // TODO: Verify that the OAEPWith% case works correctly
   bindingset[padding]
   predicate cipher_padding(string padding) {
@@ -184,6 +174,14 @@ module JCAModel {
     type = KeyOpAlg::SIV() and name = "SIV"
     or
     type = KeyOpAlg::OCB() and name = "OCB"
+    or
+    type = KeyOpAlg::CFB() and name = "CFB"
+    or
+    type = KeyOpAlg::OFB() and name = "OFB"
+    or
+    type = KeyOpAlg::PCBC() and name = "PCBC"
+    or
+    type = KeyOpAlg::KWP() and name = "KWP"
   }
 
   bindingset[name]

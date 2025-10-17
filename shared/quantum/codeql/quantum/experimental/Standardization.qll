@@ -214,7 +214,9 @@ module Types {
       CCM() or // Used in lightweight cryptography (IoT, WPA2)
       SIV() or // Misuse-resistant encryption, used in secure storage
       OCB() or // Efficient AEAD mode
+      KWP() or
       OFB() or
+      PCBC() or
       OtherMode()
 
     class ModeOfOperationType extends TModeOfOperationType {
