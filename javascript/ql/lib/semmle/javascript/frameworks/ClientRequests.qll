@@ -204,11 +204,36 @@ module ClientRequest {
     override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("axios") }
   }
 
+  /** An API entry-point for the `axios` library inside a function */
+  private class AxiosInFunction extends API::EntryPoint {
+    AxiosInFunction() { this = "axios" }
+
+    override DataFlow::SourceNode getASource() { 
+      // Handle direct parameter naming: function(axios){}
+      exists(Function f, Parameter p |
+        p.getName() = "axios" and
+        result = DataFlow::parameterNode(p)
+      )
+      or
+      // Handle destructured parameters: function({axios}){}
+      exists(DataFlow::ParameterNode param, DataFlow::SourceNode prop |
+        prop = param.getAPropertyRead("axios") and
+        result = prop
+      )
+    }
+  }
   /** Gets a reference to the `axios` library. */
   private API::Node axios() {
     result = API::moduleImport("axios")
     or
     result = API::root().getASuccessor(API::Label::entryPoint(any(AxiosGlobalEntryPoint entry)))
+    or 
+    result = API::root().getASuccessor(API::Label::entryPoint(any(AxiosInFunction entry)))
+  }
+
+  /** Recursively gets the `create` method of an axios instance. */
+  private API::Node axiosWithCreate() {
+    result = [axios(), axios().getMember("create").getReturn()]
   }
 
   /**
@@ -218,14 +243,11 @@ module ClientRequest {
     string method;
 
     AxiosUrlRequest() {
-      this = axios().getACall() and
+      this = axiosWithCreate().getACall() and
       method = "request"
       or
-      this = axios().getMember(method).getACall() and
+      this = axiosWithCreate().getMember(method).getACall() and
       method = [httpMethodName(), "request", "postForm", "putForm", "patchForm", "getUri"]
-      or
-      this = axios().getMember("create").getReturn().getACall() and
-      method = "request"
     }
 
     private int getOptionsArgIndex() {
