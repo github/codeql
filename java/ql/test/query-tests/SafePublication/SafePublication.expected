@@ -1,0 +1,7 @@
+| SafePublication.java:5:9:5:9 | z | The class $@ is marked as thread-safe, but this field is not safely published. | SafePublication.java:2:14:2:28 | SafePublication | SafePublication |
+| SafePublication.java:6:9:6:9 | w | The class $@ is marked as thread-safe, but this field is not safely published. | SafePublication.java:2:14:2:28 | SafePublication | SafePublication |
+| SafePublication.java:7:9:7:9 | u | The class $@ is marked as thread-safe, but this field is not safely published. | SafePublication.java:2:14:2:28 | SafePublication | SafePublication |
+| SafePublication.java:11:10:11:10 | d | The class $@ is marked as thread-safe, but this field is not safely published. | SafePublication.java:2:14:2:28 | SafePublication | SafePublication |
+| SafePublication.java:12:10:12:10 | e | The class $@ is marked as thread-safe, but this field is not safely published. | SafePublication.java:2:14:2:28 | SafePublication | SafePublication |
+| SafePublication.java:14:11:14:13 | arr | The class $@ is marked as thread-safe, but this field is not safely published. | SafePublication.java:2:14:2:28 | SafePublication | SafePublication |
+| SafePublication.java:17:10:17:11 | cc | The class $@ is marked as thread-safe, but this field is not safely published. | SafePublication.java:2:14:2:28 | SafePublication | SafePublication |
