@@ -39,6 +39,7 @@ module Types {
       RC5() or
       SEED() or
       SM4() or
+      SKIPJACK() or
       OtherSymmetricCipherType()
 
     newtype TAsymmetricCipherType =
@@ -117,6 +118,8 @@ module Types {
       type = SEED() and name = "SEED" and s = Block()
       or
       type = SM4() and name = "SM4" and s = Block()
+      or
+      type = SKIPJACK() and name = "Skipjack" and s = Block()
       or
       type = OtherSymmetricCipherType() and
       name = "UnknownSymmetricCipher" and
@@ -214,7 +217,9 @@ module Types {
       CCM() or // Used in lightweight cryptography (IoT, WPA2)
       SIV() or // Misuse-resistant encryption, used in secure storage
       OCB() or // Efficient AEAD mode
+      KWP() or
       OFB() or
+      PCBC() or
       OtherMode()
 
     class ModeOfOperationType extends TModeOfOperationType {
@@ -344,7 +349,7 @@ module Types {
   /**
    * Elliptic curve algorithms
    */
-  newtype TEllipticCurveFamilyType =
+  newtype TEllipticCurveType =
     NIST() or
     SEC() or
     NUMS() or
@@ -357,7 +362,7 @@ module Types {
     ES() or
     OtherEllipticCurveType()
 
-  class EllipticCurveFamilyType extends TEllipticCurveFamilyType {
+  class EllipticCurveType extends TEllipticCurveType {
     string toString() {
       this = NIST() and result = "NIST"
       or
@@ -445,7 +450,7 @@ module Types {
    */
   bindingset[rawName]
   predicate ellipticCurveNameToKnownKeySizeAndFamilyMapping(
-    string rawName, int keySize, TEllipticCurveFamilyType curveFamily
+    string rawName, int keySize, TEllipticCurveType curveFamily
   ) {
     exists(string curveName | curveName = rawName.toUpperCase() |
       isSecCurve(curveName, keySize) and curveFamily = SEC()
