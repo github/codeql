@@ -26,7 +26,10 @@ namespace Semmle.Extraction.CSharp.Entities
                 returnType.TypeRef,
                 (UserOperator)OriginalDefinition);
 
-            WriteLocationsToTrap(trapFile.operator_location, this, Locations);
+            if (Context.ExtractLocation(Symbol))
+            {
+                WriteLocationsToTrap(trapFile.operator_location, this, Locations);
+            }
 
             if (IsSourceDeclaration)
             {

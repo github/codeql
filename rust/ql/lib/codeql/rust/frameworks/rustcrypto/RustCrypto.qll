@@ -26,7 +26,7 @@ class StreamCipherInit extends Cryptography::CryptographicOperation::Range {
     // `cipher::KeyIvInit::new`, `cipher::KeyIvInit::new_from_slices`, `rc2::Rc2::new_with_eff_key_len` or similar.
     exists(CallExprBase ce, string rawAlgorithmName |
       ce = this.asExpr().getExpr() and
-      ce.getStaticTarget().getName().getText() =
+      ce.getStaticTarget().(Function).getName().getText() =
         ["new", "new_from_slice", "new_with_eff_key_len", "new_from_slices"] and
       // extract the algorithm name from the type of `ce` or its receiver.
       exists(Type t, TypePath tp |
