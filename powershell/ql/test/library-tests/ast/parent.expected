@@ -451,3 +451,19 @@
 | Strings/String.ps1:6:10:8:0 | '@\nkl | Strings/String.ps1:6:10:8:0 | Call to kl\n'@\n |
 | Strings/String.ps1:6:10:8:0 | Call to kl\n'@\n | Strings/String.ps1:6:10:8:0 | [Stmt] Call to kl\n'@\n |
 | Strings/String.ps1:6:10:8:0 | [Stmt] Call to kl\n'@\n | Strings/String.ps1:1:1:8:0 | {...} |
+| Variables/test.ps1:1:1:1:2 | x | Variables/test.ps1:1:1:1:7 | ...=... |
+| Variables/test.ps1:1:1:1:2 | x | Variables/test.ps1:1:1:5:2 | {...} |
+| Variables/test.ps1:1:1:1:7 | ...=... | Variables/test.ps1:1:1:5:2 | {...} |
+| Variables/test.ps1:1:1:5:2 | {...} | Variables/test.ps1:1:1:5:2 | toplevel function for test.ps1 |
+| Variables/test.ps1:1:1:5:2 | {...} | Variables/test.ps1:1:1:5:2 | {...} |
+| Variables/test.ps1:1:6:1:7 | 42 | Variables/test.ps1:1:1:1:7 | ...=... |
+| Variables/test.ps1:2:1:2:2 | [Stmt] x | Variables/test.ps1:1:1:5:2 | {...} |
+| Variables/test.ps1:2:1:2:2 | x | Variables/test.ps1:2:1:2:2 | [Stmt] x |
+| Variables/test.ps1:4:1:4:5 | int | Variables/test.ps1:4:1:4:7 | [...]... |
+| Variables/test.ps1:4:1:4:7 | [...]... | Variables/test.ps1:4:1:4:12 | ...=... |
+| Variables/test.ps1:4:1:4:12 | ...=... | Variables/test.ps1:1:1:5:2 | {...} |
+| Variables/test.ps1:4:6:4:7 | y | Variables/test.ps1:1:1:5:2 | {...} |
+| Variables/test.ps1:4:6:4:7 | y | Variables/test.ps1:4:1:4:7 | [...]... |
+| Variables/test.ps1:4:11:4:12 | 42 | Variables/test.ps1:4:1:4:12 | ...=... |
+| Variables/test.ps1:5:1:5:2 | [Stmt] y | Variables/test.ps1:1:1:5:2 | {...} |
+| Variables/test.ps1:5:1:5:2 | y | Variables/test.ps1:5:1:5:2 | [Stmt] y |
