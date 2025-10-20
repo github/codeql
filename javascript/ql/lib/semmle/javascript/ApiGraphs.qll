@@ -1285,11 +1285,12 @@ module API {
      *   - `prop`: if non-empty, the flow is only guaranteed to preserve the value of this property,
      *     and not necessarily the entire object.
      */
+    pragma[noopt]
     private RawSourceNode trackUseNode(
       RawSourceNode nd, boolean promisified, int boundArgs, string prop, DataFlow::TypeTracker t
     ) {
-      t.start() and
       use(_, nd) and
+      t.start() and
       result = nd and
       promisified = false and
       boundArgs = 0 and
@@ -1299,8 +1300,7 @@ module API {
         prev = trackUseNode(nd, prevPromisified, prevBoundArgs, prevProp, t)
       |
         promisificationBigStep(prev, result) and
-        prevPromisified = false and
-        prevProp = "" and
+        validPromisificationState(prevPromisified, prevProp) and
         promisified = prevPromisified and
         boundArgs = prevBoundArgs and
         prop = prevProp
@@ -1313,8 +1313,7 @@ module API {
         )
         or
         loadStoreBigStep(prev, result, prop) and
-        prevPromisified = false and
-        prevBoundArgs = 0 and
+        validLoadStoreBigState(prevPromisified, prevBoundArgs) and
         promisified = prevPromisified and
         boundArgs = prevBoundArgs and
         prevProp = [prop, ""]
@@ -1323,10 +1322,21 @@ module API {
       or
       exists(DataFlow::SourceNode mid |
         mid = trackUseNode(nd, promisified, boundArgs, prop, t) and
-        AdditionalUseStep::step(pragma[only_bind_out](mid), result)
+        AdditionalUseStep::step(mid, result)
       )
       or
       t = useStep(nd, promisified, boundArgs, prop, result)
+    }
+
+    pragma[nomagic]
+    private predicate validPromisificationState(boolean promisified, string prop) {
+      promisified = false and
+      prop = ""
+    }
+
+    pragma[nomagic]
+    private predicate validLoadStoreBigState(boolean promisified, int boundArgs) {
+      promisified = false and boundArgs = 0
     }
 
     pragma[nomagic]
