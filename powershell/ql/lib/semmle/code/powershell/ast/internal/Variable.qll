@@ -140,10 +140,22 @@ module Private {
   predicate explicitAssignment(Raw::Ast dest, Raw::Ast assignment) {
     assignment.(Raw::AssignStmt).getLeftHandSide() = dest
     or
+    exists(Raw::ConvertExpr convert |
+      convert.getExpr() = dest and
+      explicitAssignment(convert, assignment)
+    )
+    or
     any(Synthesis s).explicitAssignment(dest, _, assignment)
   }
 
-  predicate implicitAssignment(Raw::Ast n) { any(Synthesis s).implicitAssignment(n, _) }
+  predicate implicitAssignment(Raw::Ast n) {
+    any(Synthesis s).implicitAssignment(n, _)
+    or
+    exists(Raw::ConvertExpr convert |
+      convert.getExpr() = n and
+      implicitAssignment(convert)
+    )
+  }
 }
 
 private import Private

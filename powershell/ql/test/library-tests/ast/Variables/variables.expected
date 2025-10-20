@@ -1,0 +1,2 @@
+| test.ps1:1:1:1:2 | x | test.ps1:2:1:2:2 | x |
+| test.ps1:4:6:4:7 | y | test.ps1:5:1:5:2 | y |

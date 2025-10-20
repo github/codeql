@@ -79,8 +79,7 @@ module SqlInjection {
     override string getSinkType() { result = "call to Invoke-Sqlcmd" }
 
     override predicate allowImplicitRead(DataFlow::ContentSet cs) {
-      cs.getAStoreContent().(DataFlow::Content::KnownKeyContent).getIndex().asString().toLowerCase() =
-        query()
+      cs.getAStoreContent().(DataFlow::Content::KnownKeyContent).getIndex().stringMatches(query())
     }
   }
 
