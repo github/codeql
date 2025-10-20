@@ -1295,13 +1295,27 @@ module API {
       boundArgs = 0 and
       prop = ""
       or
-      promisificationBigStep(trackUseNode(nd, false, boundArgs, prop, t.continue()), result) and
-      promisified = true and
-      prop = ""
-      or
-      exists(DataFlow::SourceNode pred, int predBoundArgs |
-        pred = trackUseNode(nd, promisified, predBoundArgs, prop, t.continue()) and
-        partialInvocationBigStep(pred, result, boundArgs - predBoundArgs)
+      exists(
+        RawSourceNode prev, boolean prevPromisified, int prevBoundArgs, string prevProp,
+        DataFlow::TypeTracker prevT
+      |
+        prev = trackUseNode(nd, prevPromisified, prevBoundArgs, prevProp, prevT)
+      |
+        promisificationBigStep(prev, result) and
+        prevPromisified = false and
+        prevProp = "" and
+        promisified = prevPromisified and
+        boundArgs = prevBoundArgs and
+        prop = prevProp and
+        t = prevT.continue()
+        or
+        exists(int b |
+          partialInvocationBigStep(prev, result, b) and
+          boundArgs = prevBoundArgs + b and
+          promisified = prevPromisified and
+          prop = prevProp and
+          t = prevT.continue()
+        )
       )
       or
       exists(DataFlow::SourceNode mid |
