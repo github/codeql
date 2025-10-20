@@ -1254,6 +1254,25 @@ module API {
     private import semmle.javascript.dataflow.TypeTracking
 
     /**
+     * A version of `DataFlow::SourceNode` without a charpred, to avoid redundant type checks that the
+     * optimizer is not yet able to remove. Should only be used in cases where we know only `SourceNode` values
+     * will appear.
+     */
+    private class RawSourceNode extends DataFlow::Node {
+      predicate flowsTo(DataFlow::Node node) { this.(DataFlow::SourceNode).flowsTo(node) }
+
+      predicate flowsToExpr(Expr expr) { this.(DataFlow::SourceNode).flowsToExpr(expr) }
+
+      DataFlow::PropRead getAPropertyRead(string prop) {
+        result = this.(DataFlow::SourceNode).getAPropertyRead(prop)
+      }
+
+      DataFlow::PropWrite getAPropertyWrite() {
+        result = this.(DataFlow::SourceNode).getAPropertyWrite()
+      }
+    }
+
+    /**
      * Gets a data-flow node to which `nd`, which is a use of an API-graph node, flows.
      *
      * The flow from `nd` to that node may be inter-procedural, and is further described by three
@@ -1266,9 +1285,8 @@ module API {
      *   - `prop`: if non-empty, the flow is only guaranteed to preserve the value of this property,
      *     and not necessarily the entire object.
      */
-    private DataFlow::SourceNode trackUseNode(
-      DataFlow::SourceNode nd, boolean promisified, int boundArgs, string prop,
-      DataFlow::TypeTracker t
+    private RawSourceNode trackUseNode(
+      RawSourceNode nd, boolean promisified, int boundArgs, string prop, DataFlow::TypeTracker t
     ) {
       t.start() and
       use(_, nd) and
@@ -1347,8 +1365,8 @@ module API {
       )
     }
 
-    private DataFlow::SourceNode trackUseNode(
-      DataFlow::SourceNode nd, boolean promisified, int boundArgs, string prop
+    private RawSourceNode trackUseNode(
+      RawSourceNode nd, boolean promisified, int boundArgs, string prop
     ) {
       result = trackUseNode(nd, promisified, boundArgs, prop, DataFlow::TypeTracker::end())
     }
@@ -1357,9 +1375,7 @@ module API {
      * Gets a node that is inter-procedurally reachable from `nd`, which is a use of some node.
      */
     cached
-    DataFlow::SourceNode trackUseNode(DataFlow::SourceNode nd) {
-      result = trackUseNode(nd, false, 0, "")
-    }
+    RawSourceNode trackUseNode(RawSourceNode nd) { result = trackUseNode(nd, false, 0, "") }
 
     private DataFlow::SourceNode trackDefNode(DataFlow::Node nd, DataFlow::TypeBackTracker t) {
       t.start() and
