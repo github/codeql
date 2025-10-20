@@ -20,6 +20,8 @@ module JCAModel {
 
   abstract class SignatureAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer { }
 
+  abstract class MacAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer { }
+
   // TODO: Verify that the PBEWith% case works correctly
   bindingset[algo]
   predicate cipher_names(string algo) {
@@ -85,7 +87,7 @@ module JCAModel {
     name.toUpperCase()
         .matches([
             "HMAC%", "AESCMAC", "DESCMAC", "GMAC", "Poly1305", "SipHash", "BLAKE2BMAC",
-            "HMACRIPEMD160"
+            "HMACRIPEMD160", "%CMAC"
           ].toUpperCase())
   }
 
@@ -127,6 +129,10 @@ module JCAModel {
       name in ["SHA-256", "SHA-224", "SHA-384", "SHA-512", "SHA224", "SHA256", "SHA384", "SHA512"] and
       result instanceof Crypto::SHA2 and
       digestLength = name.replaceAll("-", "").splitAt("SHA", 1).toInt()
+      or
+      name in ["SHA-512/224", "SHA-512/256", "SHA512/224", "SHA512/256"] and
+      result instanceof Crypto::SHA2 and
+      digestLength = name.replaceAll("-", "").splitAt("SHA-512/", 1).toInt()
       or
       name in ["SHA3-224", "SHA3-256", "SHA3-384", "SHA3-512", "SHA3256", "SHA3384", "SHA3512"] and
       result instanceof Crypto::SHA3 and
@@ -1580,7 +1586,7 @@ module JCAModel {
       if super.getValue().toUpperCase().matches("HMAC%")
       then result = KeyOpAlg::TMac(KeyOpAlg::HMAC())
       else
-        if super.getValue().toUpperCase().matches("CMAC%")
+        if super.getValue().toUpperCase().matches("%CMAC%")
         then result = KeyOpAlg::TMac(KeyOpAlg::CMAC())
         else result = KeyOpAlg::TMac(KeyOpAlg::OtherMacAlgorithmType())
     }
@@ -1598,6 +1604,54 @@ module JCAModel {
     override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() { none() }
 
     override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
+  }
+
+  class KnownHmacAlgorithmInstance extends Crypto::HmacAlgorithmInstance instanceof KnownMacAlgorithm
+  {
+    override Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() {
+      result = this.(KnownMacAlgorithm).getConsumer()
+    }
+
+    override int getKeySizeFixed() {
+      // already defined by parent key operation algorithm, but extending an instance
+      // still requires we override this method
+      result = super.getKeySizeFixed()
+    }
+
+    override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() {
+      // already defined by parent key operation algorithm, but extending an instance
+      // still requires we override this method
+      result = super.getKeySizeConsumer()
+    }
+
+    override string getRawAlgorithmName() {
+      // already defined by parent key operation algorithm, but extending an instance
+      // still requires we override this method
+      result = super.getRawAlgorithmName()
+    }
+
+    override Crypto::KeyOpAlg::AlgorithmType getAlgorithmType() {
+      result = KeyOpAlg::TMac(KeyOpAlg::HMAC())
+    }
+  }
+
+  class KnownMacHashAlgorithm extends Crypto::HashAlgorithmInstance instanceof KnownMacAlgorithm,
+    JavaConstant
+  {
+    Crypto::THashType hashType;
+    int digestLength;
+
+    KnownMacHashAlgorithm() {
+      super.getValue().toUpperCase().matches("HMAC%") and
+      hashType =
+        hash_name_to_type_known(super.getValue().toUpperCase().splitAt("HMAC", 1), digestLength)
+    }
+
+    override string getRawHashAlgorithmName() { result = super.getValue() }
+
+    override Crypto::THashType getHashType() { result = hashType }
+
+    override int getFixedDigestLength() { result = digestLength }
   }
 
   class MacGetInstanceCall extends MethodCall {
@@ -1629,7 +1683,9 @@ module JCAModel {
     }
   }
 
-  class MacGetInstanceAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer {
+  class MacGetInstanceAlgorithmValueConsumer extends MacAlgorithmValueConsumer,
+    HashAlgorithmValueConsumer
+  {
     MacGetInstanceAlgorithmValueConsumer() { this = any(MacGetInstanceCall c).getAlgorithmArg() }
 
     override Crypto::ConsumerInputDataFlowNode getInputNode() { result.asExpr() = this }
@@ -1696,9 +1752,18 @@ module JCAModel {
         MacFlowAnalysisImpl::getAnIntermediateUseFromFinalUse(this, _, _).getOutput()
     }
 
-    override Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() { none() }
+    override Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() {
+      result = this.getInstantiationCall().getAlgorithmArg()
+    }
 
-    override predicate hasHashAlgorithmConsumer() { none() }
+    override predicate hasHashAlgorithmConsumer() {
+      // TODO: do we consider that these operations have no hash and that it is only associated to the mac algorithm node?
+      // in JCA that seems to be correct, but would removing the hash consumer here break things generally?
+      this.getHashAlgorithmValueConsumer()
+          .getAKnownAlgorithmSource()
+          .(Crypto::KeyOperationAlgorithmInstance)
+          .getAlgorithmType() = KeyOpAlg::TMac(KeyOpAlg::HMAC())
+    }
 
     override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
       result instanceof Crypto::TMacMode
