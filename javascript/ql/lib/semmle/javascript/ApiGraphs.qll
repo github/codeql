@@ -1320,7 +1320,7 @@ module API {
       ) and
       t.end() // 't' must be a valid ending point for the above cases (i.e. not inside a content)
       or
-      exists(DataFlow::SourceNode mid |
+      exists(RawSourceNode mid |
         mid = trackUseNode(nd, promisified, boundArgs, prop, t) and
         AdditionalUseStep::step(mid, result)
       )
