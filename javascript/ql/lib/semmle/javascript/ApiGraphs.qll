@@ -1277,18 +1277,13 @@ module API {
       boundArgs = 0 and
       prop = ""
       or
-      exists(Promisify::PromisifyCall promisify |
-        trackUseNode(nd, false, boundArgs, prop, t.continue()).flowsTo(promisify.getArgument(0)) and
-        promisified = true and
-        prop = "" and
-        result = promisify
-      )
+      promisificationBigStep(trackUseNode(nd, false, boundArgs, prop, t.continue()), result) and
+      promisified = true and
+      prop = ""
       or
-      exists(DataFlow::PartialInvokeNode pin, DataFlow::Node pred, int predBoundArgs |
-        trackUseNode(nd, promisified, predBoundArgs, prop, t.continue()).flowsTo(pred) and
-        prop = "" and
-        result = pin.getBoundFunction(pred, boundArgs - predBoundArgs) and
-        boundArgs in [0 .. 10]
+      exists(DataFlow::SourceNode pred, int predBoundArgs |
+        pred = trackUseNode(nd, promisified, predBoundArgs, prop, t.continue()) and
+        partialInvocationBigStep(pred, result, boundArgs - predBoundArgs)
       )
       or
       exists(DataFlow::SourceNode mid |
@@ -1296,11 +1291,11 @@ module API {
         AdditionalUseStep::step(pragma[only_bind_out](mid), result)
       )
       or
-      exists(DataFlow::Node pred, string preprop |
-        trackUseNode(nd, promisified, boundArgs, preprop, t.continue()).flowsTo(pred) and
+      exists(DataFlow::SourceNode pred, string preprop |
+        pred = trackUseNode(nd, promisified, boundArgs, preprop, t.continue()) and
+        loadStoreBigStep(pred, result, prop) and
         promisified = false and
-        boundArgs = 0 and
-        SharedTypeTrackingStep::loadStoreStep(pred, result, prop)
+        boundArgs = 0
       |
         prop = preprop
         or
@@ -1308,6 +1303,28 @@ module API {
       )
       or
       t = useStep(nd, promisified, boundArgs, prop, result)
+    }
+
+    pragma[nomagic]
+    private predicate promisificationBigStep(DataFlow::SourceNode node1, DataFlow::SourceNode node2) {
+      exists(Promisify::PromisifyCall promisify |
+        node1 = promisify.getArgument(0).getALocalSource() and
+        node2 = promisify
+      )
+    }
+
+    pragma[nomagic]
+    private predicate partialInvocationBigStep(
+      DataFlow::SourceNode node1, DataFlow::SourceNode node2, int boundArgs
+    ) {
+      node2 = any(DataFlow::PartialInvokeNode pin).getBoundFunction(node1.getALocalUse(), boundArgs)
+    }
+
+    pragma[nomagic]
+    private predicate loadStoreBigStep(
+      DataFlow::SourceNode node1, DataFlow::SourceNode node2, string prop
+    ) {
+      SharedTypeTrackingStep::loadStoreStep(node1.getALocalUse(), node2, prop)
     }
 
     /**
