@@ -1016,7 +1016,7 @@ overlay[global]
 pragma[inline]
 private predicate isUsedAsNumber(DataFlow::LocalSourceNode value) {
   any(Comparison compare)
-      .hasOperands(value.getALocalUse().asExpr(), any(Expr e | e.analyze().getAType() = TTNumber()))
+      .hasOperands(value.getALocalUse().asExpr(), any(Expr e | canBeNumber(e.analyze())))
   or
   value.flowsToExpr(any(ArithmeticExpr e).getAnOperand())
   or
@@ -1031,6 +1031,16 @@ private predicate isUsedAsNumber(DataFlow::LocalSourceNode value) {
   )
 }
 
+bindingset[node]
+overlay[global]
+pragma[inline_late]
+private predicate canBeString(DataFlow::AnalyzedNode node) { node.getAType() = TTString() }
+
+bindingset[node]
+overlay[global]
+pragma[inline_late]
+private predicate canBeNumber(DataFlow::AnalyzedNode node) { node.getAType() = TTNumber() }
+
 /**
  * Holds if `source` may be interpreted as a regular expression.
  */
@@ -1038,14 +1048,14 @@ overlay[global]
 cached
 predicate isInterpretedAsRegExp(DataFlow::Node source) {
   Stages::Taint::ref() and
-  source.analyze().getAType() = TTString() and
+  canBeString(source) and
   (
     // The first argument to an invocation of `RegExp` (with or without `new`).
     source = DataFlow::globalVarRef("RegExp").getAnInvocation().getArgument(0)
     or
     // The argument of a call that coerces the argument to a regular expression.
     exists(DataFlow::MethodCallNode mce, string methodName |
-      mce.getReceiver().analyze().getAType() = TTString() and
+      canBeString(mce.getReceiver()) and
       mce.getMethodName() = methodName and
       not exists(Function func | func = mce.getACallee() |
         not isNativeStringMethod(func, methodName)

@@ -477,6 +477,8 @@ module AST {
     DataFlow::AnalyzedNode analyze() { result = DataFlow::valueNode(this).analyze() }
 
     /** Gets the data flow node associated with this program element. */
+    overlay[caller]
+    pragma[inline]
     DataFlow::ValueNode flow() { result = DataFlow::valueNode(this) }
 
     /**
