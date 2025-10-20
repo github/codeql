@@ -1,12 +1,12 @@
 /**
- * Provides classes and predicates for detecting insecure cookies.
+ * Definitions for detecting insecure and non-httponly cookies.
  */
 
 import csharp
 import semmle.code.csharp.frameworks.microsoft.AspNetCore
 
 /**
- * Holds if the expression is a variable with a sensitive name.
+ * Holds if the expression is a sensitive string literal or a variable with a sensitive name.
  */
 predicate isCookieWithSensitiveName(Expr cookieExpr) {
   exists(DataFlow::Node sink |
@@ -16,7 +16,7 @@ predicate isCookieWithSensitiveName(Expr cookieExpr) {
 }
 
 /**
- * Configuration for tracking if a variable with a sensitive name is used as an argument.
+ * Configuration for tracking if a sensitive string literal or a variable with a sensitive name is used as an argument.
  */
 private module AuthCookieNameConfig implements DataFlow::ConfigSig {
   private predicate isAuthVariable(Expr expr) {
@@ -118,13 +118,13 @@ private signature string propertyName();
 
 /**
  * Configuration for tracking if a callback used in `OnAppendCookie` sets a cookie property to `true`.
+ *
+ * ` getPropertyName` specifies the cookie property name to track.
  */
 private module OnAppendCookieTrackingConfig<propertyName/0 getPropertyName> implements
   DataFlow::ConfigSig
 {
-  /**
-   * Specifies the cookie property name to track.
-   */
+  /** Source is the parameter of a callback passed to `OnAppendCookie` */
   predicate isSource(DataFlow::Node source) {
     exists(PropertyWrite pw, Assignment delegateAssign, Callable c |
       pw.getProperty().getName() = "OnAppendCookie" and
@@ -145,6 +145,7 @@ private module OnAppendCookieTrackingConfig<propertyName/0 getPropertyName> impl
     )
   }
 
+  /** Sink is a property write that sets the given property to `true`. */
   predicate isSink(DataFlow::Node sink) {
     exists(PropertyWrite pw, Assignment a |
       pw.getProperty().getDeclaringType() instanceof MicrosoftAspNetCoreHttpCookieOptions and
@@ -177,7 +178,7 @@ private module OnAppendCookieSecureTrackingConfig =
   OnAppendCookieTrackingConfig<getPropertyNameSecure/0>;
 
 /**
- * Tracks if a callback used in `OnAppendCookie` sets `Secure` to `true`.
+ * Tracks if a callback used in `OnAppendCookie` sets `Secure` to `true`, and thus cookies appended to responses are secure by default.
  */
 module OnAppendCookieSecureTracking = DataFlow::Global<OnAppendCookieSecureTrackingConfig>;
 
@@ -190,6 +191,6 @@ private module OnAppendCookieHttpOnlyTrackingConfig =
   OnAppendCookieTrackingConfig<getPropertyNameHttpOnly/0>;
 
 /**
- * Tracks if a callback used in `OnAppendCookie` sets `HttpOnly` to `true`.
+ * Tracks if a callback used in `OnAppendCookie` sets `HttpOnly` to `true`, and thus cookies appended to responses are httponly by default.
  */
 module OnAppendCookieHttpOnlyTracking = DataFlow::Global<OnAppendCookieHttpOnlyTrackingConfig>;

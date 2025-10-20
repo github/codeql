@@ -1,10 +1,10 @@
 /**
- * @name 'Secure' attribute is not set to true
- * @description Omitting the 'Secure' attribute allows data to be transmitted insecurely
- *              using HTTP. Always set 'Secure' to 'true' to ensure that HTTPS
- *              is used at all times.
+ * @name Cookie 'Secure' attribute is not set to true
+ * @description Cookies without the `Secure` flag may be sent in cleartext.
+ *              This makes them vulnerable to be intercepted by an attacker.
  * @kind problem
  * @problem.severity error
+ * @security-severity 5.0
  * @precision high
  * @id cs/web/cookie-secure-not-set
  * @tags security
@@ -61,15 +61,14 @@ predicate insecureCookieAppend(Expr sink) {
   )
 }
 
-predicate insecureCookieCreation(ObjectCreation oc) {
+predicate insecureSystemWebCookieCreation(ObjectCreation oc) {
   oc.getType() instanceof SystemWebHttpCookie and
   (
     secureFalse(oc)
     or
     // `Secure` property in `System.Web.HttpCookie` wasn't set, so a default value from config is used
-    isPropertySet(oc, "Secure") and
+    not isPropertySet(oc, "Secure") and
     // the default in config is not set to `true`
-    // the `exists` below covers the `cs/web/requiressl-not-set`
     not exists(XmlElement element |
       element instanceof FormsElement and
       element.(FormsElement).isRequireSsl()
@@ -88,7 +87,7 @@ predicate insecureCookieCall(Call c) {
     insecureCookieAppend(c)
   )
   or
-  insecureCookieCreation(c)
+  insecureSystemWebCookieCreation(c)
 }
 
 predicate insecureSecurePolicyAssignment(Assignment a, Expr val) {
@@ -105,12 +104,14 @@ predicate insecureSecurePolicyAssignment(Assignment a, Expr val) {
   )
 }
 
-from Expr secureSink
+from Expr secureSink, string msg
 where
-  insecureCookieCall(secureSink)
+  insecureCookieCall(secureSink) and
+  msg = "Cookie attribute 'Secure' is not set to true."
   or
   exists(Assignment a |
     secureSink = a.getRValue() and
     insecureSecurePolicyAssignment(a, _)
-  )
-select secureSink, "Cookie attribute 'Secure' is not set to true."
+  ) and
+  msg = "Cookie security policy sets cookies as insecure by default."
+select secureSink, msg

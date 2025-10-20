@@ -1,15 +1,13 @@
 /**
- * @name 'HttpOnly' attribute is not set to true
- * @description Omitting the 'HttpOnly' attribute for security sensitive data allows
- *              malicious JavaScript to steal it in case of XSS vulnerability. Always set
- *              'HttpOnly' to 'true' to authentication related cookie to make it
- *              not accessible by JavaScript.
+ * @name Cookie 'HttpOnly' attribute is not set to true
+ * @description Sensitive cookies without the `HttpOnly` property set are accessible by client-side scripts such as JavaScript.
+ *              This makes them more vulnerable to being stolen by an XSS attack.
  * @kind problem
  * @problem.severity warning
+ * @security-severity 5.0
  * @precision high
  * @id cs/web/cookie-httponly-not-set
  * @tags security
- *       experimental
  *       external/cwe/cwe-1004
  */
 
@@ -51,7 +49,7 @@ predicate nonHttpOnlyCookieOptionsCreation(ObjectCreation oc, MethodCall append)
   )
 }
 
-predicate nonHttpOnlySensitiveCookieCreation(ObjectCreation oc) {
+predicate nonHttpOnlySystemWebSensitiveCookieCreation(ObjectCreation oc) {
   oc.getType() instanceof SystemWebHttpCookie and
   isCookieWithSensitiveName(oc.getArgument(0)) and
   (
@@ -88,7 +86,7 @@ predicate nonHttpOnlyCookieCall(Call c) {
       )
     )
     or
-    nonHttpOnlySensitiveCookieCreation(c)
+    nonHttpOnlySystemWebSensitiveCookieCreation(c)
   )
 }
 
