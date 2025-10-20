@@ -1325,7 +1325,18 @@ module API {
         AdditionalUseStep::step(mid, result)
       )
       or
-      t = useStep(nd, promisified, boundArgs, prop, result)
+      exists(RawSourceNode prev, DataFlow::TypeTracker prevT |
+        prev = trackUseNode(nd, promisified, boundArgs, prop, prevT)
+      |
+        exists(StepSummary summary |
+          restrictedBigStep(prev, result, summary) and
+          t = prevT.append(summary)
+        )
+        or
+        t.hasCall() = false and
+        returnBigStep(prev, result) and
+        t = prevT
+      )
     }
 
     pragma[nomagic]
@@ -1361,24 +1372,21 @@ module API {
       SharedTypeTrackingStep::loadStoreStep(node1.getALocalUse(), node2, prop)
     }
 
-    /**
-     * Holds if `nd`, which is a use of an API-graph node, flows in zero or more potentially
-     * inter-procedural steps to some intermediate node, and then from that intermediate node to
-     * `res` in one step. The entire flow is described by the resulting `TypeTracker`.
-     *
-     * This predicate exists solely to enforce a better join order in `trackUseNode` above.
-     */
-    pragma[noopt]
-    private DataFlow::TypeTracker useStep(
-      DataFlow::Node nd, boolean promisified, int boundArgs, string prop, DataFlow::Node res
-    ) {
-      exists(DataFlow::TypeTracker t, StepSummary summary, DataFlow::SourceNode prev |
-        prev = trackUseNode(nd, promisified, boundArgs, prop, t) and
-        StepSummary::step(prev, res, summary) and
-        result = t.append(summary) and
+    pragma[nomagic]
+    private predicate restrictedBigStep(DataFlow::Node node1, DataFlow::Node node2, StepSummary step) {
+      StepSummary::step(node1, node2, step) and
+      not (
         // Block argument-passing into 'this' when it determines the call target
-        not summary = CallReceiverStep()
+        step = CallReceiverStep()
+        or
+        // Special-case return to avoid large fan-out
+        step = ReturnStep()
       )
+    }
+
+    pragma[nomagic]
+    private predicate returnBigStep(DataFlow::SourceNode node1, DataFlow::Node node2) {
+      StepSummary::step(node1, node2, ReturnStep())
     }
 
     private RawSourceNode trackUseNode(
