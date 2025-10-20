@@ -1,8 +1,8 @@
 /**
  * Provides logic for identifying functions that are overloaded based on their
- * argument types. While Rust does not allow for overloading inside a single
+ * non-`self` parameter types. While Rust does not allow for overloading inside a single
  * `impl` block, it is still possible for a trait to have multiple implementations
- * that differ only in the types of non-`self` arguments.
+ * that differ only in the types of non-`self` parameters.
  */
 
 private import rust
@@ -75,11 +75,11 @@ private predicate implHasSibling(Impl impl, Trait trait) { implSiblings(trait, i
 bindingset[trait]
 pragma[inline_late]
 predicate traitTypeParameterOccurrence(
-  TraitItemNode trait, Function f, string functionName, FunctionTypePosition pos, TypePath path,
+  TraitItemNode trait, Function f, string functionName, FunctionPosition pos, TypePath path,
   TypeParameter tp
 ) {
   f = trait.getASuccessor(functionName) and
-  assocFunctionTypeAtPath(f, trait, pos, path, tp) and
+  assocFunctionTypeAt(f, trait, pos, path, tp) and
   tp = trait.(TraitTypeAbstraction).getATypeParameter()
 }
 
@@ -90,7 +90,7 @@ predicate traitTypeParameterOccurrence(
  */
 pragma[nomagic]
 predicate functionResolutionDependsOnArgument(
-  ImplItemNode impl, Function f, FunctionTypePosition pos, TypePath path, Type type
+  ImplItemNode impl, Function f, FunctionPosition pos, TypePath path, Type type
 ) {
   /*
    * As seen in the example below, when an implementation has a sibling for a
@@ -120,7 +120,7 @@ predicate functionResolutionDependsOnArgument(
   exists(TraitItemNode trait, string functionName |
     implHasSibling(impl, trait) and
     traitTypeParameterOccurrence(trait, _, functionName, pos, path, _) and
-    assocFunctionTypeAtPath(f, impl, pos, path, type) and
+    assocFunctionTypeAt(f, impl, pos, path, type) and
     f = impl.getASuccessor(functionName) and
     not pos.isReturn()
   )

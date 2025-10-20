@@ -5,37 +5,37 @@ private import codeql.rust.internal.Type
 private import codeql.rust.internal.TypeMention
 private import codeql.rust.elements.Call
 
-private newtype TFunctionTypePosition =
-  TArgumentFunctionTypePosition(ArgumentPosition pos) or
-  TReturnFunctionTypePosition()
+private newtype TFunctionPosition =
+  TArgumentFunctionPosition(ArgumentPosition pos) or
+  TReturnFunctionPosition()
 
 /**
  * A position of a type related to a function.
  *
  * Either `self`, `return`, or a positional parameter index.
  */
-class FunctionTypePosition extends TFunctionTypePosition {
+class FunctionPosition extends TFunctionPosition {
   predicate isSelf() { this.asArgumentPosition().isSelf() }
 
-  int asPositional() { result = this.asArgumentPosition().asPosition() }
+  int asPosition() { result = this.asArgumentPosition().asPosition() }
 
-  predicate isPositional() { exists(this.asPositional()) }
+  predicate isPosition() { exists(this.asPosition()) }
 
-  ArgumentPosition asArgumentPosition() { this = TArgumentFunctionTypePosition(result) }
+  ArgumentPosition asArgumentPosition() { this = TArgumentFunctionPosition(result) }
 
-  predicate isReturn() { this = TReturnFunctionTypePosition() }
+  predicate isReturn() { this = TReturnFunctionPosition() }
 
   /** Gets the corresponding position when `f` is invoked via a function call. */
   bindingset[f]
-  FunctionTypePosition getFunctionCallAdjusted(Function f) {
+  FunctionPosition getFunctionCallAdjusted(Function f) {
     this.isReturn() and
     result = this
     or
     if f.hasSelfParam()
     then
-      this.isSelf() and result.asPositional() = 0
+      this.isSelf() and result.asPosition() = 0
       or
-      result.asPositional() = this.asPositional() + 1
+      result.asPosition() = this.asPosition() + 1
     else result = this
   }
 
@@ -43,7 +43,7 @@ class FunctionTypePosition extends TFunctionTypePosition {
     this.isSelf() and
     result = getSelfParamTypeMention(f.getSelfParam())
     or
-    result = f.getParam(this.asPositional()).getTypeRepr()
+    result = f.getParam(this.asPosition()).getTypeRepr()
     or
     this.isReturn() and
     result = f.getRetType().getTypeRepr()
@@ -59,10 +59,10 @@ class FunctionTypePosition extends TFunctionTypePosition {
 
 /**
  * A helper module for implementing `Matching(WithEnvironment)InputSig` with
- * `DeclarationPosition = AccessPosition = FunctionTypePosition`.
+ * `DeclarationPosition = AccessPosition = FunctionPosition`.
  */
-module FunctionTypePositionMatchingInput {
-  class DeclarationPosition = FunctionTypePosition;
+module FunctionPositionMatchingInput {
+  class DeclarationPosition = FunctionPosition;
 
   class AccessPosition = DeclarationPosition;
 
@@ -72,12 +72,12 @@ module FunctionTypePositionMatchingInput {
 }
 
 private newtype TAssocFunctionType =
-  MkAssocFunctionType(Function f, FunctionTypePosition pos, ImplOrTraitItemNode i) {
+  MkAssocFunctionType(Function f, FunctionPosition pos, ImplOrTraitItemNode i) {
     f = i.getAnAssocItem() and
     exists(pos.getTypeMention(f))
   } or
   MkInheritedAssocFunctionType(
-    Function f, FunctionTypePosition pos, TypeMention parentMention, ImplOrTraitItemNode parent,
+    Function f, FunctionPosition pos, TypeMention parentMention, ImplOrTraitItemNode parent,
     ImplOrTraitItemNode i
   ) {
     exists(AssocFunctionType inherited |
@@ -127,12 +127,12 @@ private newtype TAssocFunctionType =
  * `self5` | `impl T2 for X` | `X`
  */
 class AssocFunctionType extends TAssocFunctionType {
-  private predicate isFunctionType(Function f, FunctionTypePosition pos, ImplOrTraitItemNode i) {
+  private predicate isFunctionType(Function f, FunctionPosition pos, ImplOrTraitItemNode i) {
     this = MkAssocFunctionType(f, pos, i)
   }
 
   private predicate isInheritedFunctionType(
-    Function f, FunctionTypePosition pos, TypeMention parentMention, ImplOrTraitItemNode parent,
+    Function f, FunctionPosition pos, TypeMention parentMention, ImplOrTraitItemNode parent,
     ImplOrTraitItemNode i
   ) {
     this = MkInheritedAssocFunctionType(f, pos, parentMention, parent, i)
@@ -142,7 +142,7 @@ class AssocFunctionType extends TAssocFunctionType {
    * Holds if this function type applies to the function `f` at position `pos`,
    * when viewed as a member of the `impl` or trait item `i`.
    */
-  predicate appliesTo(Function f, FunctionTypePosition pos, ImplOrTraitItemNode i) {
+  predicate appliesTo(Function f, FunctionPosition pos, ImplOrTraitItemNode i) {
     this.isFunctionType(f, pos, i)
     or
     this.isInheritedFunctionType(f, pos, _, _, i)
@@ -151,13 +151,13 @@ class AssocFunctionType extends TAssocFunctionType {
   /** Gets the type at the given path. */
   pragma[nomagic]
   Type getDeclaredTypeAt(TypePath path) {
-    exists(Function f, FunctionTypePosition pos |
+    exists(Function f, FunctionPosition pos |
       this.isFunctionType(f, pos, _) and
       result = pos.getTypeMention(f).resolveTypeAt(path)
     )
     or
     exists(
-      Function f, FunctionTypePosition pos, TypeMention parentMention, ImplOrTraitItemNode parent,
+      Function f, FunctionPosition pos, TypeMention parentMention, ImplOrTraitItemNode parent,
       AssocFunctionType parentType, ImplOrTraitItemNode i
     |
       this.isInheritedFunctionType(f, pos, parentMention, parent, i) and
@@ -171,7 +171,7 @@ class AssocFunctionType extends TAssocFunctionType {
         result = resolveImplOrTraitType(i, suffix)
         or
         exists(TypeParameter tp |
-          parentType.hasTypeParameterAt(prefix, tp) and
+          tp = parentType.getTypeParameterAt(prefix) and
           result = parentMention.resolveTypeAt(TypePath::singleton(tp).appendInverse(suffix))
         )
       )
@@ -179,19 +179,17 @@ class AssocFunctionType extends TAssocFunctionType {
   }
 
   pragma[nomagic]
-  private predicate hasTypeParameterAt(TypePath path, TypeParameter tp) {
-    this.getDeclaredTypeAt(path) = tp
-  }
+  private TypeParameter getTypeParameterAt(TypePath path) { result = this.getDeclaredTypeAt(path) }
 
   pragma[nomagic]
   private predicate hasSelfTypeParameterAt(TypePath path) {
-    this.hasTypeParameterAt(path, TSelfTypeParameter(_))
+    this.getTypeParameterAt(path) = TSelfTypeParameter(_)
   }
 
   /**
    * Gets the type at the given path.
    *
-   * For functions belonging to a `trait`, we use the type of the trait itself instead
+   * For functions belonging to a trait, we use the type of the trait itself instead
    * of the implicit `Self` type parameter, as otherwise any type will match.
    *
    * Calls should use `substituteLookupTraits` to map receiver types to the relevant
@@ -206,26 +204,16 @@ class AssocFunctionType extends TAssocFunctionType {
     )
   }
 
-  private AstNode getReportingNode() {
-    exists(Function f, FunctionTypePosition pos | this.appliesTo(f, pos, _) |
-      pos.isSelf() and
-      exists(SelfParam self | self = f.getSelfParam() |
-        result = self.getTypeRepr()
-        or
-        not self.hasTypeRepr() and
-        result = self
-      )
-      or
-      result = f.getParam(pos.asPositional()).getTypeRepr()
-      or
-      pos.isReturn() and
-      result = f.getRetType().getTypeRepr()
+  private TypeMention getTypeMention() {
+    exists(Function f, FunctionPosition pos |
+      this.appliesTo(f, pos, _) and
+      result = pos.getTypeMention(f)
     )
   }
 
-  string toString() { result = this.getReportingNode().toString() }
+  string toString() { result = this.getTypeMention().toString() }
 
-  Location getLocation() { result = this.getReportingNode().getLocation() }
+  Location getLocation() { result = this.getTypeMention().getLocation() }
 }
 
 /**
@@ -233,8 +221,8 @@ class AssocFunctionType extends TAssocFunctionType {
  * `i` is `type`.
  */
 pragma[nomagic]
-predicate assocFunctionTypeAtPath(
-  Function f, ImplOrTraitItemNode i, FunctionTypePosition pos, TypePath path, Type type
+predicate assocFunctionTypeAt(
+  Function f, ImplOrTraitItemNode i, FunctionPosition pos, TypePath path, Type type
 ) {
   exists(AssocFunctionType aft |
     aft.appliesTo(f, pos, i) and
@@ -313,7 +301,7 @@ signature module ArgsAreInstantiationsOfInputSig {
    * Holds if types need to be matched against the type `t` at position `pos` of
    * `f` inside `i`.
    */
-  predicate toCheck(ImplOrTraitItemNode i, Function f, FunctionTypePosition pos, AssocFunctionType t);
+  predicate toCheck(ImplOrTraitItemNode i, Function f, FunctionPosition pos, AssocFunctionType t);
 
   /** A call whose argument types are to be checked. */
   class Call {
@@ -321,7 +309,7 @@ signature module ArgsAreInstantiationsOfInputSig {
 
     Location getLocation();
 
-    Type getArgType(FunctionTypePosition pos, TypePath path);
+    Type getArgType(FunctionPosition pos, TypePath path);
 
     predicate hasTargetCand(ImplOrTraitItemNode i, Function f);
   }
@@ -334,15 +322,13 @@ signature module ArgsAreInstantiationsOfInputSig {
  */
 module ArgsAreInstantiationsOf<ArgsAreInstantiationsOfInputSig Input> {
   pragma[nomagic]
-  private predicate toCheckRanked(
-    ImplOrTraitItemNode i, Function f, FunctionTypePosition pos, int rnk
-  ) {
+  private predicate toCheckRanked(ImplOrTraitItemNode i, Function f, FunctionPosition pos, int rnk) {
     Input::toCheck(i, f, pos, _) and
     pos =
-      rank[rnk + 1](FunctionTypePosition pos0, int j |
+      rank[rnk + 1](FunctionPosition pos0, int j |
         Input::toCheck(i, f, pos0, _) and
         (
-          j = pos0.asPositional()
+          j = pos0.asPosition()
           or
           pos0.isSelf() and j = -1
           or
@@ -354,18 +340,18 @@ module ArgsAreInstantiationsOf<ArgsAreInstantiationsOfInputSig Input> {
   }
 
   private newtype TCallAndPos =
-    MkCallAndPos(Input::Call call, FunctionTypePosition pos) { exists(call.getArgType(pos, _)) }
+    MkCallAndPos(Input::Call call, FunctionPosition pos) { exists(call.getArgType(pos, _)) }
 
   /** A call tagged with a position. */
   private class CallAndPos extends MkCallAndPos {
     Input::Call call;
-    FunctionTypePosition pos;
+    FunctionPosition pos;
 
     CallAndPos() { this = MkCallAndPos(call, pos) }
 
     Input::Call getCall() { result = call }
 
-    FunctionTypePosition getPos() { result = pos }
+    FunctionPosition getPos() { result = pos }
 
     Location getLocation() { result = call.getLocation() }
 
@@ -379,7 +365,7 @@ module ArgsAreInstantiationsOf<ArgsAreInstantiationsOfInputSig Input> {
   {
     pragma[nomagic]
     private predicate potentialInstantiationOf0(
-      CallAndPos cp, Input::Call call, FunctionTypePosition pos, int rnk, Function f,
+      CallAndPos cp, Input::Call call, FunctionPosition pos, int rnk, Function f,
       TypeAbstraction abs, AssocFunctionType constraint
     ) {
       cp = MkCallAndPos(call, pos) and
@@ -413,7 +399,7 @@ module ArgsAreInstantiationsOf<ArgsAreInstantiationsOfInputSig Input> {
   private predicate argsAreInstantiationsOfFromIndex(
     Input::Call call, ImplOrTraitItemNode i, Function f, int rnk
   ) {
-    exists(FunctionTypePosition pos |
+    exists(FunctionPosition pos |
       ArgIsInstantiationOfFromIndex::argIsInstantiationOf(MkCallAndPos(call, pos), i, _) and
       call.hasTargetCand(i, f) and
       toCheckRanked(i, f, pos, rnk)

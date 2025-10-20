@@ -1118,6 +1118,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          * For example, if this access is the method call `M(42)`, then the inferred
          * type at argument position `0` is `int`.
          */
+        bindingset[e]
         Type getInferredType(AccessEnvironment e, AccessPosition apos, TypePath path);
 
         /** Gets the declaration that this access targets in environment `e`. */

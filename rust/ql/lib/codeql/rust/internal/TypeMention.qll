@@ -9,6 +9,7 @@ private import TypeInference
 /** An AST node that may mention a type. */
 abstract class TypeMention extends AstNode {
   /** Gets the type at `path` that this mention resolves to, if any. */
+  pragma[nomagic]
   abstract Type resolveTypeAt(TypePath path);
 
   /** Gets the type that this node resolves to, if any. */
@@ -93,7 +94,6 @@ class AliasPathTypeMention extends PathTypeMention {
    * Holds if this path resolved to a type alias with a rhs. that has the
    * resulting type at `typePath`.
    */
-  pragma[nomagic]
   override Type resolveTypeAt(TypePath typePath) {
     result = rhs.resolveTypeAt(typePath) and
     not result = pathGetTypeParameter(resolved, _)
@@ -245,7 +245,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
 }
 
 pragma[nomagic]
-private Type resolveImplSelfType(Impl i, TypePath path) {
+private Type resolveImplSelfTypeAt(Impl i, TypePath path) {
   result = i.getSelfTy().(TypeMention).resolveTypeAt(path)
 }
 
@@ -254,7 +254,7 @@ class ImplSelfMention extends PathTypeMention {
 
   ImplSelfMention() { this = impl.getASelfPath() }
 
-  override Type resolveTypeAt(TypePath typePath) { result = resolveImplSelfType(impl, typePath) }
+  override Type resolveTypeAt(TypePath typePath) { result = resolveImplSelfTypeAt(impl, typePath) }
 }
 
 class PathTypeReprMention extends TypeMention, PathTypeRepr {
@@ -334,17 +334,14 @@ class SelfTypeParameterMention extends TypeMention instanceof Name {
  */
 pragma[nomagic]
 Type resolveImplOrTraitType(ImplOrTraitItemNode i, TypePath path) {
-  result = resolveImplSelfType(i, path)
+  result = resolveImplSelfTypeAt(i, path)
   or
   result = TSelfTypeParameter(i) and path.isEmpty()
 }
 
 pragma[nomagic]
 private ImplOrTraitItemNode getSelfParamEnclosingImplOrTrait(SelfParam self) {
-  exists(Function f |
-    f = result.getAnAssocItem() and
-    self = f.getSelfParam()
-  )
+  self = result.getAnAssocItem().(Function).getSelfParam()
 }
 
 /**
@@ -360,34 +357,30 @@ class ShorthandSelfParameterMention extends TypeMention instanceof SelfParam {
     not super.hasTypeRepr() and
     encl = getSelfParamEnclosingImplOrTrait(this) and
     (
-      encl instanceof Trait
+      not encl instanceof Impl
       or
-      // avoid generating a type mention if the type being implemented cannot be resolved
+      // avoid generating a type mention if the type being implemented does not have a type mention
       encl.(Impl).getSelfTy() instanceof TypeMention
     )
   }
 
-  pragma[nomagic]
   private Type resolveSelfType(TypePath path) { result = resolveImplOrTraitType(encl, path) }
 
-  pragma[nomagic]
-  private Type inferImplicitSelfType(TypePath path) {
+  override Type resolveTypeAt(TypePath typePath) {
     if super.isRef()
     then
       // `fn f(&self, ...)`
-      path.isEmpty() and
+      typePath.isEmpty() and
       result = TRefType()
       or
       exists(TypePath suffix |
         result = this.resolveSelfType(suffix) and
-        path = TypePath::cons(TRefTypeParameter(), suffix)
+        typePath = TypePath::cons(TRefTypeParameter(), suffix)
       )
     else
       // `fn f(self, ...)`
-      result = this.resolveSelfType(path)
+      result = this.resolveSelfType(typePath)
   }
-
-  override Type resolveTypeAt(TypePath typePath) { result = this.inferImplicitSelfType(typePath) }
 }
 
 pragma[nomagic]

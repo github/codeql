@@ -627,6 +627,23 @@ final class ImplTraitTypeReprAbstraction extends TypeAbstraction, ImplTraitTypeR
 }
 
 /**
+ * Holds if `t` is a valid complex [`self` root type][1].
+ *
+ * [1]: https://doc.rust-lang.org/stable/reference/items/associated-items.html#r-items.associated.fn.method.self-ty
+ */
+pragma[nomagic]
+predicate validSelfType(Type t) {
+  t instanceof RefType
+  or
+  exists(Struct s | t = TStruct(s) |
+    s instanceof BoxStruct or
+    s instanceof RcStruct or
+    s instanceof ArcStruct or
+    s instanceof PinStruct
+  )
+}
+
+/**
  * Holds if `root` is a valid complex [`self` root type][1], with type
  * parameter `tp`.
  *
@@ -634,18 +651,6 @@ final class ImplTraitTypeReprAbstraction extends TypeAbstraction, ImplTraitTypeR
  */
 pragma[nomagic]
 predicate complexSelfRoot(Type root, TypeParameter tp) {
-  tp = root.(RefType).getPositionalTypeParameter(_)
-  or
-  exists(Struct s |
-    root = TStruct(s) and
-    tp = root.getPositionalTypeParameter(0)
-  |
-    s instanceof BoxStruct
-    or
-    s instanceof RcStruct
-    or
-    s instanceof ArcStruct
-    or
-    s instanceof PinStruct
-  )
+  validSelfType(root) and
+  tp = root.getPositionalTypeParameter(0)
 }
