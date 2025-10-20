@@ -45,7 +45,7 @@ module LazyCache {
     pragma[noopt]
     override DataFlow::Node getImportedModuleNode() {
       this instanceof LazyCacheImport and
-      result = this.flow()
+      result = DataFlow::valueNode(this)
       or
       exists(LazyCacheVariable variable, Expr base, PropAccess access, string localName |
         // To avoid recursion, this should not depend on `SourceNode`.
@@ -54,7 +54,7 @@ module LazyCache {
         access.getBase() = base and
         localName = this.getLocalAlias() and
         access.getPropertyName() = localName and
-        result = access.flow()
+        result = DataFlow::valueNode(access)
       )
     }
   }

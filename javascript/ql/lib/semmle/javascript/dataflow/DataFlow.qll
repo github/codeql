@@ -1431,6 +1431,7 @@ module DataFlow {
    * This predicate is only defined for expressions, properties, and for statements that declare
    * a function, a class, or a TypeScript namespace or enum.
    */
+  pragma[nomagic]
   ValueNode valueNode(AstNode nd) { result.getAstNode() = nd }
 
   /**
