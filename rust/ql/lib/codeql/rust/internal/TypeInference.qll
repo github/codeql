@@ -2505,9 +2505,9 @@ private module Cached {
     )
   }
 
-  /** Gets a function that `call` resolves to, if any. */
+  /** Gets an item (function or tuple struct/variant) that `call` resolves to, if any. */
   cached
-  Function resolveCallTarget(Call call) {
+  Addressable resolveCallTarget(Call call) {
     result = resolveMethodCallTarget(call)
     or
     result = resolveFunctionCallTarget(call)

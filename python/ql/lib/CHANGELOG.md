@@ -1,3 +1,9 @@
+## 4.0.17
+
+### Bug Fixes
+
+* The Python extractor no longer crashes with an `ImportError` when run using Python 3.14.
+
 ## 4.0.16
 
 ### Minor Analysis Improvements

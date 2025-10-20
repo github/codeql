@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"net/url"
 )
@@ -46,8 +47,16 @@ func handler2(w http.ResponseWriter, req *http.Request) {
 	u, _ := url.Parse("http://example.com/relative-path")
 	u.Host = tainted2
 	http.Get(u.String()) // $ Alert
+
+	// Simple types are considered sanitized.
+	url := fmt.Sprintf("%s/%d", "some-url", intSource())
+	http.Get("http://" + url)
 }
 
 func main() {
 
+}
+
+func intSource() int64 {
+	return 0
 }

@@ -1,3 +1,9 @@
+## 0.1.18
+
+### New Queries
+
+* Added a new query, `rust/insecure-cookie`, to detect cookies created without the 'Secure' attribute.
+
 ## 0.1.17
 
 ### New Queries

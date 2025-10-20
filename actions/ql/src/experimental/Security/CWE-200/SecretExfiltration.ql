@@ -19,5 +19,5 @@ import SecretExfiltrationFlow::PathGraph
 from SecretExfiltrationFlow::PathNode source, SecretExfiltrationFlow::PathNode sink
 where SecretExfiltrationFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
-  "Potential secret exfiltration in $@, which may be be leaked to an attacker-controlled resource.",
+  "Potential secret exfiltration in $@, which may be leaked to an attacker-controlled resource.",
   sink, sink.getNode().asExpr().(Expression).getRawExpression()
