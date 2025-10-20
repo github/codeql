@@ -17,6 +17,13 @@ predicate isDecryptToMacFlow(ArtifactFlow::PathNode src, ArtifactFlow::PathNode 
   )
 }
 
+predicate isDecryptToMacNode(Crypto::ArtifactNode node) {
+  exists(ArtifactFlow::PathNode src, ArtifactFlow::PathNode sink |
+    isDecryptToMacFlow(src, sink) and
+    node.asElement() = src.getNode().asExpr()
+  )
+}
+
 /**
  * Holds when the src node is used as plaintext input to both
  * an encryption operation and a mac operation, via the
