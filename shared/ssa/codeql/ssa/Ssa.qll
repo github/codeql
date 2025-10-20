@@ -201,12 +201,40 @@ signature module SsaSig<
    * An SSA phi definition, that is, a pseudo definition for a variable at a
    * point in the flow graph where otherwise two or more definitions for the
    * variable would be visible.
+   *
+   * For example, in
+   * ```rb
+   * if b
+   *   x = 0
+   * else
+   *   x = 1
+   * end
+   * puts x
+   * ```
+   * a phi definition for `x` is inserted just before the call `puts x`.
    */
   class SsaPhiDefinition extends SsaDefinition {
-    /** Holds if `inp` is an input to the phi definition along the edge originating in `bb`. */
+    /** Holds if `inp` is an input to this phi definition along the edge originating in `bb`. */
     predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb);
 
-    /** Gets an input of this phi definition. */
+    /**
+     * Gets an input of this phi definition.
+     *
+     * Example:
+     *
+     * ```rb
+     * def m b
+     *   i = 0        # defines i_0
+     *   if b
+     *     i = 1      # defines i_1
+     *   else
+     *     i = 2      # defines i_2
+     *   end
+     *                # defines i_3 = phi(i_1, i_2); inputs are i_1 and i_2
+     *   puts i
+     * end
+     * ```
+     */
     SsaDefinition getAnInput();
   }
 }
@@ -1516,7 +1544,7 @@ module Make<
        */
       Expr getValue();
 
-      /** Holds if this write is an initialization of a parameter. */
+      /** Holds if this write is an initialization of parameter `p`. */
       predicate isParameterInit(Parameter p);
 
       /** Gets a textual representation of this write. */
@@ -1588,6 +1616,19 @@ module Make<
       predicate uncertainWriteDefinitionInputCached(UncertainWriteDefinition def, Definition inp) {
         uncertainWriteDefinitionInput(def, inp)
       }
+
+      cached
+      predicate explicitWrite(WriteDefinition def, VariableWrite write) {
+        exists(BasicBlock bb, int i, SourceVariable v |
+          def.definesAt(v, bb, i) and
+          explicitWrite(write, bb, i, v)
+        )
+      }
+
+      cached
+      predicate parameterInit(WriteDefinition def, Parameter p) {
+        exists(VariableWrite write | explicitWrite(def, write) and write.isParameterInit(p))
+      }
     }
 
     additional predicate ssaDefReachesUncertainRead = Cached::ssaDefReachesUncertainRead/4;
@@ -1658,13 +1699,6 @@ module Make<
      */
     class SsaWriteDefinition extends SsaDefinition instanceof WriteDefinition { }
 
-    private predicate explicitWrite(WriteDefinition def, VariableWrite write) {
-      exists(BasicBlock bb, int i, SourceVariable v |
-        def.definesAt(v, bb, i) and
-        explicitWrite(write, bb, i, v)
-      )
-    }
-
     /**
      * An SSA definition that corresponds to an explicit variable update or
      * declaration.
@@ -1686,10 +1720,6 @@ module Make<
        * equivalent to `getDefinition().getValue()`.
        */
       Expr getValue() { result = this.getDefinition().getValue() }
-    }
-
-    private predicate parameterInit(WriteDefinition def, Parameter p) {
-      exists(VariableWrite write | explicitWrite(def, write) and write.isParameterInit(p))
     }
 
     /**
@@ -1743,14 +1773,42 @@ module Make<
      * An SSA phi definition, that is, a pseudo definition for a variable at a
      * point in the flow graph where otherwise two or more definitions for the
      * variable would be visible.
+     *
+     * For example, in
+     * ```rb
+     * if b
+     *   x = 0
+     * else
+     *   x = 1
+     * end
+     * puts x
+     * ```
+     * a phi definition for `x` is inserted just before the call `puts x`.
      */
     class SsaPhiDefinition extends SsaDefinition {
-      /** Holds if `inp` is an input to the phi definition along the edge originating in `bb`. */
+      /** Holds if `inp` is an input to this phi definition along the edge originating in `bb`. */
       predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb) {
         phiHasInputFromBlockCached(this, inp, bb)
       }
 
-      /** Gets an input of this phi definition. */
+      /**
+       * Gets an input of this phi definition.
+       *
+       * Example:
+       *
+       * ```rb
+       * def m b
+       *   i = 0        # defines i_0
+       *   if b
+       *     i = 1      # defines i_1
+       *   else
+       *     i = 2      # defines i_2
+       *   end
+       *                # defines i_3 = phi(i_1, i_2); inputs are i_1 and i_2
+       *   puts i
+       * end
+       * ```
+       */
       SsaDefinition getAnInput() { this.hasInputFromBlock(result, _) }
     }
   }
