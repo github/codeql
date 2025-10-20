@@ -1295,43 +1295,35 @@ module API {
       boundArgs = 0 and
       prop = ""
       or
-      exists(
-        RawSourceNode prev, boolean prevPromisified, int prevBoundArgs, string prevProp,
-        DataFlow::TypeTracker prevT
-      |
-        prev = trackUseNode(nd, prevPromisified, prevBoundArgs, prevProp, prevT)
+      exists(RawSourceNode prev, boolean prevPromisified, int prevBoundArgs, string prevProp |
+        prev = trackUseNode(nd, prevPromisified, prevBoundArgs, prevProp, t)
       |
         promisificationBigStep(prev, result) and
         prevPromisified = false and
         prevProp = "" and
         promisified = prevPromisified and
         boundArgs = prevBoundArgs and
-        prop = prevProp and
-        t = prevT.continue()
+        prop = prevProp
         or
         exists(int b |
           partialInvocationBigStep(prev, result, b) and
           boundArgs = prevBoundArgs + b and
           promisified = prevPromisified and
-          prop = prevProp and
-          t = prevT.continue()
+          prop = prevProp
         )
-      )
+        or
+        loadStoreBigStep(prev, result, prop) and
+        prevPromisified = false and
+        prevBoundArgs = 0 and
+        promisified = prevPromisified and
+        boundArgs = prevBoundArgs and
+        prevProp = [prop, ""]
+      ) and
+      t.end() // 't' must be a valid ending point for the above cases (i.e. not inside a content)
       or
       exists(DataFlow::SourceNode mid |
         mid = trackUseNode(nd, promisified, boundArgs, prop, t) and
         AdditionalUseStep::step(pragma[only_bind_out](mid), result)
-      )
-      or
-      exists(DataFlow::SourceNode pred, string preprop |
-        pred = trackUseNode(nd, promisified, boundArgs, preprop, t.continue()) and
-        loadStoreBigStep(pred, result, prop) and
-        promisified = false and
-        boundArgs = 0
-      |
-        prop = preprop
-        or
-        preprop = ""
       )
       or
       t = useStep(nd, promisified, boundArgs, prop, result)
