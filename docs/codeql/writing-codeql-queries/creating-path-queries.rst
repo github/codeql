@@ -33,6 +33,7 @@ For more language-specific information on analyzing data flow, see:
 - ":ref:`Analyzing data flow in JavaScript/TypeScript <analyzing-data-flow-in-javascript-and-typescript>`"
 - ":ref:`Analyzing data flow in Python <analyzing-data-flow-in-python>`"
 - ":ref:`Analyzing data flow in Ruby <analyzing-data-flow-in-ruby>`"
+- ":ref:`Analyzing data flow in Rust <analyzing-data-flow-in-rust>`"
 - ":ref:`Analyzing data flow in Swift <analyzing-data-flow-in-swift>`"
 
 Path query examples
@@ -59,7 +60,7 @@ You should use the following template:
      */
 
     import <language>
-    // For some languages (Java/C++/Python/Swift) you need to explicitly import the data flow library, such as
+    // For some languages (Java/C++/Python/Rust/Swift) you need to explicitly import the data flow library, such as
     // import semmle.code.java.dataflow.DataFlow or import codeql.swift.dataflow.DataFlow
     ...
 
@@ -124,7 +125,7 @@ Declaring sources and sinks
 You must provide information about the ``source`` and ``sink`` in your path query. These are objects that correspond to the nodes of the paths that you are exploring.
 The name and the type of the ``source`` and the ``sink`` must be declared in the ``from`` statement of the query, and the types must be compatible with the nodes of the graph computed by the ``edges`` predicate.
 
-If you are querying C/C++, C#, Go, Java/Kotlin, JavaScript/TypeScript, Python, or Ruby code (and you have used ``import MyFlow::PathGraph`` in your query), the definitions of the ``source`` and ``sink`` are accessed via the module resulting from the application of the ``Global<..>`` module in the data flow library. You should declare both of these objects in the ``from`` statement.
+If you are querying C/C++, C#, Go, Java/Kotlin, JavaScript/TypeScript, Python, Ruby, or Rust code (and you have used ``import MyFlow::PathGraph`` in your query), the definitions of the ``source`` and ``sink`` are accessed via the module resulting from the application of the ``Global<..>`` module in the data flow library. You should declare both of these objects in the ``from`` statement.
 For example:
 
 .. code-block:: ql
@@ -145,7 +146,7 @@ The configuration module must be defined to include definitions of sources and s
 - ``isSource()`` defines where data may flow from.
 - ``isSink()`` defines where data may flow to.
 
-For more information on using the configuration class in your analysis see the sections on global data flow in ":ref:`Analyzing data flow in C/C++ <analyzing-data-flow-in-cpp>`," ":ref:`Analyzing data flow in C# <analyzing-data-flow-in-csharp>`," and ":ref:`Analyzing data flow in Python <analyzing-data-flow-in-python>`."
+For more information on using the configuration class in your analysis see the sections on global data flow in ":ref:`Analyzing data flow in C/C++ <analyzing-data-flow-in-cpp>`," ":ref:`Analyzing data flow in C# <analyzing-data-flow-in-csharp>`," ":ref:`Analyzing data flow in Python <analyzing-data-flow-in-python>`," and ":ref:`Analyzing data flow in Rust <analyzing-data-flow-in-rust>`."
 
 You can also create a configuration for different frameworks and environments by extending the ``Configuration`` class. For more information, see ":ref:`Types <defining-a-class>`" in the QL language reference.
 

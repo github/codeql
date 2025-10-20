@@ -103,7 +103,7 @@ rust_library(
     version = "0.0.301",
     deps = [
         "@vendor_ts__dashmap-6.1.0//:dashmap",
-        "@vendor_ts__indexmap-2.11.1//:indexmap",
+        "@vendor_ts__indexmap-2.11.4//:indexmap",
         "@vendor_ts__la-arena-0.3.1//:la_arena",
         "@vendor_ts__ra_ap_cfg-0.0.301//:ra_ap_cfg",
         "@vendor_ts__ra_ap_intern-0.0.301//:ra_ap_intern",

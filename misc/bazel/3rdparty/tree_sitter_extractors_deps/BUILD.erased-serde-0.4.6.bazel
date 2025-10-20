@@ -93,7 +93,7 @@ rust_library(
     }),
     version = "0.4.6",
     deps = [
-        "@vendor_ts__serde-1.0.219//:serde",
+        "@vendor_ts__serde-1.0.228//:serde",
         "@vendor_ts__typeid-1.0.3//:typeid",
     ],
 )

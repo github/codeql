@@ -29,7 +29,10 @@ namespace Semmle.Extraction.CSharp.Entities
             ContainingType!.PopulateGenerics();
 
             trapFile.constructors(this, Symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition);
-            trapFile.constructor_location(this, Location);
+            if (Context.ExtractLocation(Symbol) && (!IsDefault || IsBestSourceLocation))
+            {
+                WriteLocationToTrap(trapFile.constructor_location, this, Location);
+            }
 
             if (MakeSynthetic)
             {
@@ -168,7 +171,15 @@ namespace Semmle.Extraction.CSharp.Entities
             Symbol.ContainingType.IsSourceDeclaration() &&
             !Symbol.ContainingType.IsAnonymousType;
 
-        private bool MakeSynthetic => IsPrimary || IsDefault;
+        /// <summary>
+        /// Returns true if we consider the reporting location of this constructor entity the best
+        /// location of the constructor.
+        /// For partial classes with default constructors, Roslyn consider each partial class declaration
+        /// as the possible location for the implicit default constructor.
+        /// </summary>
+        private bool IsBestSourceLocation => ReportingLocation is not null && Context.IsLocationInContext(ReportingLocation);
+
+        private bool MakeSynthetic => IsPrimary || (IsDefault && IsBestSourceLocation);
 
         [return: NotNullIfNotNull(nameof(constructor))]
         public static new Constructor? Create(Context cx, IMethodSymbol? constructor)
@@ -222,7 +233,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 if (Symbol.IsImplicitlyDeclared)
                 {
-                    return ContainingType!.ReportingLocation;
+                    var best = Symbol.Locations.Where(l => l.IsInSource).BestOrDefault();
+                    return best ?? ContainingType!.ReportingLocation;
                 }
 
                 return Symbol.ContainingType.Locations.FirstOrDefault();

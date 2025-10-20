@@ -82,6 +82,21 @@ module AlertFilteringImpl<LocationSig Location> {
     )
   }
 
+  /** Holds if diff information is available in this evaluation. */
+  predicate diffInformationAvailable() {
+    restrictAlertsTo(_, _, _) or restrictAlertsToExactLocation(_, _, _, _, _)
+  }
+
+  /**
+   * Holds if diff information is available, and `filePath` is in the diff
+   * range.
+   */
+  predicate fileIsInDiff(string filePath) {
+    restrictAlertsTo(filePath, _, _)
+    or
+    restrictAlertsToExactLocation(filePath, _, _, _, _)
+  }
+
   /**
    * Holds if the given location is a match for one of the active filtering
    * predicates in this module, or if all filtering predicates are inactive
@@ -92,8 +107,17 @@ module AlertFilteringImpl<LocationSig Location> {
    */
   bindingset[location]
   predicate filterByLocation(Location location) {
-    not restrictAlertsTo(_, _, _) and not restrictAlertsToExactLocation(_, _, _, _, _)
+    not diffInformationAvailable()
     or
+    locationIsInDiff(location)
+  }
+
+  /**
+   * Like `filterByLocation`, except that if there is no diff range, this
+   * predicate never holds.
+   */
+  bindingset[location]
+  predicate locationIsInDiff(Location location) {
     exists(string filePath |
       restrictAlertsToEntireFile(filePath) and
       location.hasLocationInfo(filePath, _, _, _, _)

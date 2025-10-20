@@ -38,5 +38,8 @@ module Impl {
     override string toStringImpl() {
       result = strictconcat(int i | | this.toStringPart(i) order by i)
     }
+
+    /** Gets the static target of this method call, if any. */
+    final Function getStaticTarget() { result = super.getStaticTarget() }
   }
 }

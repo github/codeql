@@ -113,7 +113,7 @@ rust_library(
         "@vendor_ts__cov-mark-2.1.0//:cov_mark",
         "@vendor_ts__either-1.15.0//:either",
         "@vendor_ts__ena-0.14.3//:ena",
-        "@vendor_ts__indexmap-2.11.1//:indexmap",
+        "@vendor_ts__indexmap-2.11.4//:indexmap",
         "@vendor_ts__itertools-0.14.0//:itertools",
         "@vendor_ts__la-arena-0.3.1//:la_arena",
         "@vendor_ts__oorandom-11.1.5//:oorandom",

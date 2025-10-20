@@ -550,6 +550,25 @@ namespace Semmle.Extraction.CSharp
             !SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition) ||
             scope.InScope(symbol);
 
+        public bool ExtractLocation(ISymbol symbol) =>
+            SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition) &&
+            scope.InScope(symbol);
+
+        /// <summary>
+        /// Gets the locations of the symbol that are either
+        /// (1) In assemblies.
+        /// (2) In the current context.
+        /// </summary>
+        /// <param name="symbol">The symbol</param>
+        /// <returns>List of locations</returns>
+        public IEnumerable<Entities.Location> GetLocations(ISymbol symbol) =>
+            symbol.Locations
+                .Where(l => !l.IsInSource || IsLocationInContext(l))
+                .Select(CreateLocation);
+
+        public bool IsLocationInContext(Location location) =>
+            location.SourceTree == SourceTree;
+
         /// <summary>
         /// Runs the given action <paramref name="a"/>, guarding for trap duplication
         /// based on key <paramref name="key"/>.
@@ -582,14 +601,14 @@ namespace Semmle.Extraction.CSharp
         public Entities.Location CreateLocation()
         {
             return SourceTree is null
-                ? Entities.GeneratedLocation.Create(this)
+                ? Entities.EmptyLocation.Create(this)
                 : CreateLocation(Microsoft.CodeAnalysis.Location.Create(SourceTree, Microsoft.CodeAnalysis.Text.TextSpan.FromBounds(0, 0)));
         }
 
         public Entities.Location CreateLocation(Microsoft.CodeAnalysis.Location? location)
         {
             return (location is null || location.Kind == LocationKind.None)
-                ? Entities.GeneratedLocation.Create(this)
+                ? Entities.EmptyLocation.Create(this)
                 : location.IsInSource
                     ? Entities.NonGeneratedSourceLocation.Create(this, location)
                     : Entities.Assembly.Create(this, location);

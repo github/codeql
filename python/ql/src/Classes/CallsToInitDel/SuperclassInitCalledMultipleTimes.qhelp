@@ -16,7 +16,7 @@ that it could be called multiple times. For example, it may set attributes to a 
 values setting those attributes in a subclass.
 </p>
 
-<p>There are a number of ways that an <code>__init__</code> method may be be called more than once.</p>
+<p>There are a number of ways that an <code>__init__</code> method may be called more than once.</p>
 <ul>
     <li>There may be more than one explicit call to the method in the hierarchy of <code>__init__</code> methods.</li>
     <li>In situations involving multiple inheritance, an initialization method may call the initializers of each of its base types,

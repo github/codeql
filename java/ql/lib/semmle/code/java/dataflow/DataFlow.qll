@@ -10,6 +10,6 @@ import java
 module DataFlow {
   private import semmle.code.java.dataflow.internal.DataFlowImplSpecific
   private import codeql.dataflow.DataFlow
-  import DataFlowMake<Location, JavaDataFlow>
+  import DataFlowMakeOverlay<Location, JavaDataFlow>
   import Public
 }

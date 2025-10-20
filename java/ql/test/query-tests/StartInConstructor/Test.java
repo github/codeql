@@ -30,4 +30,18 @@ public class Test {
 		}
 		
 	}
+
+	public static class AllPrivateConstructors {
+		Thread myThread;
+
+		private AllPrivateConstructors() {
+			myThread = new Thread("myThread");
+			// OK - class cannot be extended outside this file, and is not in fact extended
+			myThread.start();
+		}
+
+		public static AllPrivateConstructors create() {
+			return new AllPrivateConstructors();
+		}
+	}
 }

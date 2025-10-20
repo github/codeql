@@ -19,8 +19,8 @@ module Impl {
    * A function or method call expression. See `CallExpr` and `MethodCallExpr` for further details.
    */
   class CallExprBase extends Generated::CallExprBase {
-    /** Gets the static target of this call, if any. */
-    final Function getStaticTarget() { result = TypeInference::resolveCallTarget(this) }
+    /** Gets the static target (function or tuple struct/variant) of this call, if any. */
+    final Addressable getStaticTarget() { result = TypeInference::resolveCallTarget(this) }
 
     override Expr getArg(int index) { result = this.getArgList().getArg(index) }
   }
