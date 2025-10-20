@@ -11,16 +11,9 @@
 import java
 import experimental.quantum.Language
 import ArtifactFlow::PathGraph
+import BadMacOrder
 
 from ArtifactFlow::PathNode src, ArtifactFlow::PathNode sink
-where
-  ArtifactFlow::flowPath(src, sink) and
-  exists(Crypto::CipherOperationNode cipherOp |
-    cipherOp.getKeyOperationSubtype() = Crypto::TDecryptMode() and
-    cipherOp.getAnOutputArtifact().asElement() = src.getNode().asExpr()
-  ) and
-  exists(Crypto::MacOperationNode macOp |
-    macOp.getAnInputArtifact().asElement() = sink.getNode().asExpr()
-  )
+where isDecryptToMacFlow(src, sink)
 select sink, src, sink,
   "MAC order potentially wrong: observed a potential decrypt operation output to MAC implying the MAC is on plaintext, and not a cipher."
