@@ -30,7 +30,7 @@ module CryptoInput implements InputSig<Language::Location> {
   class UnknownLocation = UnknownDefaultLocation;
 
   string locationToFileBaseNameAndLineNumberString(Location location) {
-    result = location.getFile().getBaseName() + ":" + location.getStartLine()
+    result = location.toString()
   }
 
   LocatableElement dfn_to_element(DataFlow::Node node) {
