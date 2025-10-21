@@ -15,19 +15,19 @@ class LockType extends RefType {
   }
 
   /** Gets a method that is locking this lock type. */
-  Method getLockMethod() {
+  private Method getLockMethod() {
     result.getDeclaringType() = this and
     result.hasName(["lock", "lockInterruptibly", "tryLock"])
   }
 
   /** Gets a method that is unlocking this lock type. */
-  Method getUnlockMethod() {
+  private Method getUnlockMethod() {
     result.getDeclaringType() = this and
     result.hasName("unlock")
   }
 
   /** Gets an `isHeldByCurrentThread` method of this lock type. */
-  Method getIsHeldByCurrentThreadMethod() {
+  private Method getIsHeldByCurrentThreadMethod() {
     result.getDeclaringType() = this and
     result.hasName("isHeldByCurrentThread")
   }

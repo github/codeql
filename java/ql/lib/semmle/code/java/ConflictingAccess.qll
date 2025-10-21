@@ -43,7 +43,7 @@ predicate isThreadSafeType(Type t) {
 }
 
 /** Holds if the expression `e` is a thread-safe initializer. */
-predicate isThreadSafeInitializer(Expr e) {
+private predicate isThreadSafeInitializer(Expr e) {
   exists(string name |
     e.(Call).getCallee().getSourceDeclaration().hasQualifiedName("java.util", "Collections", name)
   |
@@ -132,7 +132,9 @@ class ClassAnnotatedAsThreadSafe extends Class {
    * Holds if the field access `a` to the field `f` is not protected by any monitor, and it can be reached via the expression `e` in the method `m`.
    * We maintain the invariant that `m = e.getEnclosingCallable()`.
    */
-  predicate unlockedAccess(ExposedField f, Expr e, Method m, ExposedFieldAccess a, boolean write) {
+  private predicate unlockedAccess(
+    ExposedField f, Expr e, Method m, ExposedFieldAccess a, boolean write
+  ) {
     m.getDeclaringType() = this and
     (
       // base case
@@ -154,7 +156,7 @@ class ClassAnnotatedAsThreadSafe extends Class {
   }
 
   /** Holds if the class has an unlocked access to the field `f` via the expression `e` in the method `m`. */
-  predicate hasUnlockedAccess(ExposedField f, Expr e, Method m, boolean write) {
+  private predicate hasUnlockedAccess(ExposedField f, Expr e, Method m, boolean write) {
     this.unlockedAccess(f, e, m, _, write)
   }
 
@@ -168,7 +170,7 @@ class ClassAnnotatedAsThreadSafe extends Class {
   }
 
   /** Holds if the class has an unlocked access to the field `f` via the expression `e` in the public method `m`. */
-  predicate hasUnlockedPublicAccess(ExposedField f, Expr e, Method m, boolean write) {
+  private predicate hasUnlockedPublicAccess(ExposedField f, Expr e, Method m, boolean write) {
     this.unlockedPublicAccess(f, e, m, _, write)
   }
 
@@ -177,7 +179,7 @@ class ClassAnnotatedAsThreadSafe extends Class {
   /**
    * Holds if the class has an access, locked by exactly one monitor, to the field `f` via the expression `e` in the method `m`.
    */
-  predicate hasOnelockedAccess(
+  private predicate hasOnelockedAccess(
     ExposedField f, Expr e, Method m, boolean write, Monitors::Monitor monitor
   ) {
     //base
@@ -197,7 +199,7 @@ class ClassAnnotatedAsThreadSafe extends Class {
   }
 
   /** Holds if the class has an access, locked by exactly one monitor, to the field `f` via the expression `e` in the public method `m`. */
-  predicate hasOnelockedPublicAccess(
+  private predicate hasOnelockedPublicAccess(
     ExposedField f, Expr e, Method m, boolean write, Monitors::Monitor monitor
   ) {
     this.hasOnelockedAccess(f, e, m, write, monitor) and
@@ -213,7 +215,7 @@ class ClassAnnotatedAsThreadSafe extends Class {
   // Cases where all accesses to a field are protected by at least one monitor
   //
   /** Holds if the class has an access, locked by at least one monitor, to the field `f` via the expression `e` in the method `m`. */
-  predicate hasOnepluslockedAccess(
+  private predicate hasOnepluslockedAccess(
     ExposedField f, Expr e, Method m, boolean write, Monitors::Monitor monitor
   ) {
     //base
@@ -248,7 +250,7 @@ class ClassAnnotatedAsThreadSafe extends Class {
   }
 
   /** Holds if the class has an access, not protected by the monitor `m`, to the field `f` via the expression `e` in the method `m`. */
-  predicate escapesMonitor(
+  private predicate escapesMonitor(
     ExposedField f, Expr e, Method m, boolean write, Monitors::Monitor monitor
   ) {
     //base
@@ -268,7 +270,7 @@ class ClassAnnotatedAsThreadSafe extends Class {
   }
 
   /** Holds if the class has an access, not protected by the monitor `m`, to the field `f` via the expression `e` in the public method `m`. */
-  predicate escapesMonitorPublic(
+  private predicate escapesMonitorPublic(
     ExposedField f, Expr e, Method m, boolean write, Monitors::Monitor monitor
   ) {
     this.escapesMonitor(f, e, m, write, monitor) and
