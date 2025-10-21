@@ -67,5 +67,14 @@ namespace Semmle.Util
         {
             return Environment.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_OVERLAY_CHANGES");
         }
+
+        /// <summary>
+        /// If the environment variable is set, the extractor is being called to extract a base database.
+        /// Its value will be a path, and the extractor must create either a file or directory at that location.
+        /// </summary>
+        public static string? GetBaseMetaDataOutPath()
+        {
+            return Environment.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_OVERLAY_BASE_METADATA_OUT");
+        }
     }
 }
