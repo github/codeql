@@ -1,23 +1,5 @@
 ---
-applyTo: >
-  actions/ql/lib/change-notes/*.md,
-  cpp/ql/lib/change-notes/*.md,
-  csharp/ql/lib/change-notes/*.md,
-  go/ql/lib/change-notes/*.md,
-  java/ql/lib/change-notes/*.md,
-  javascript/ql/lib/change-notes/*.md,
-  python/ql/lib/change-notes/*.md,
-  ruby/ql/lib/change-notes/*.md,
-  rust/ql/lib/change-notes/*.md,
-  shared/mad/change-notes/*.md,
-  shared/quantum/change-notes/*.md,
-  shared/regex/change-notes/*.md,
-  shared/ssa/change-notes/*.md,
-  shared/typos/change-notes/*.md,
-  shared/util/change-notes/*.md,
-  shared/xml/change-notes/*.md,
-  shared/yaml/change-notes/*.md,
-  swift/ql/lib/change-notes/*.md
+applyTo: "*/ql/lib/change-notes/*.md,shared/*/change-notes/*.md"
 ---
 
 # Validation guide for library-pack change notes

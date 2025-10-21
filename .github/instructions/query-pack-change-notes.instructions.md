@@ -1,16 +1,5 @@
 ---
-applyTo: >
-  actions/ql/src/change-notes/*.md,
-  cpp/ql/src/change-notes/*.md,
-  csharp/ql/src/change-notes/*.md,
-  go/ql/src/change-notes/*.md,
-  java/ql/src/change-notes/*.md,
-  javascript/ql/src/change-notes/*.md,
-  python/ql/src/change-notes/*.md,
-  ql/ql/src/change-notes/*.md,
-  ruby/ql/src/change-notes/*.md,
-  rust/ql/src/change-notes/*.md,
-  swift/ql/src/change-notes/*.md
+applyTo: "*/ql/src/change-notes/*.md"
 ---
 
 # Validation guide for query-pack change notes
