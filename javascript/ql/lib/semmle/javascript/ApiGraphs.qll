@@ -1309,7 +1309,7 @@ module API {
       |
         promisificationBigStep(prev, result) and
         validPromisificationState(prevPromisified, prevProp) and
-        promisified = prevPromisified and
+        promisified = true and
         boundArgs = prevBoundArgs and
         prop = prevProp
         or
