@@ -169,7 +169,7 @@ private module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock>
     certain = true
     or
     hasEntryDef(v, bb) and
-    i = 0 and
+    i = -1 and
     certain = true
   }
 
@@ -232,7 +232,7 @@ private module Cached {
     exists(BaseSsaSourceVariable v, BasicBlock bb, int i |
       def.definesAt(v, bb, i) and
       hasEntryDef(v, bb) and
-      i = 0
+      i = -1
     )
   }
 
