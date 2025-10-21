@@ -231,10 +231,10 @@ The following global taint-tracking query finds places where a string literal is
     where ConstantPasswordFlow::flow(sourceNode, sinkNode)
     select sinkNode, "The value $@ is used as a constant password.", sourceNode, sourceNode.toString()
 
-Path Query Example
+Path query example
 ~~~~~~~~~~~~~~~~~~
 
-Here is the first example above, converted into a path query:
+Here is the taint-tracking example above, converted into a path query:
 
 .. code-block:: ql
 

@@ -456,7 +456,7 @@ Exercise 3: Write a class which represents flow sources from the array elements 
 Hint: array indices are properties with numeric names; you can use regular expression matching to check this. (`Answer <#exercise-3>`__)
 
 Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flow paths from array elements of the result of a call to the ``tagName`` argument to the
-``createElement`` function. (`Answer <#exercise-4>`__)
+``createElement`` function. (`Answer <#exercise-4>`__ `Answer as a path query <#path-query-example>`__)
 
 Answers
 -------
@@ -541,7 +541,7 @@ Exercise 4
   where HardCodedTagNameFlow::flow(source, sink)
   select source, sink
 
-Path Query Example
+Path query example
 ~~~~~~~~~~~~~~~~~~
 
 Here is the answer to exercise 4 above, converted into a path query:

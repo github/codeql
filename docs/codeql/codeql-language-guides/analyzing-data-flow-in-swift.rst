@@ -278,10 +278,10 @@ The following global taint-tracking query finds places where a value from a remo
    where SqlInjectionFlow::flow(sourceNode, sinkNode)
    select sinkNode, "This query depends on a $@.", sourceNode, "user-provided value"
 
-Path Query Example
+Path query example
 ~~~~~~~~~~~~~~~~~~
 
-Here is the first example above, converted into a path query:
+Here is the string literal example above, converted into a path query:
 
 .. code-block:: ql
 

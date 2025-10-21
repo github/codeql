@@ -262,7 +262,7 @@ Exercise 2: Write a query that finds all hard-coded strings used to create a ``j
 
 Exercise 3: Write a class that represents flow sources from ``java.lang.System.getenv(..)``. (`Answer <#exercise-3>`__)
 
-Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flow paths from ``getenv`` to ``java.net.URL``. (`Answer <#exercise-4>`__)
+Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flow paths from ``getenv`` to ``java.net.URL``. (`Answer <#exercise-4>`__ `Answer as a path query <#path-query-example>`__)
 
 Answers
 -------
@@ -361,7 +361,7 @@ Exercise 4
    where GetenvToURLFlow::flow(src, sink)
    select src, "This environment variable constructs a URL $@.", sink, "here"
 
-Path Query Example
+Path query example
 ~~~~~~~~~~~~~~~~~~
 
 Here is the answer to exercise 4 above, converted into a path query:

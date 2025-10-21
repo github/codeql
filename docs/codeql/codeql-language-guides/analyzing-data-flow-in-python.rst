@@ -354,10 +354,10 @@ This data flow configuration tracks data flow from environment variables to open
     select fileOpen, "This call to 'os.open' uses data from $@.",
       environment, "call to 'os.getenv'"
 
-Path Query Example
+Path query example
 ~~~~~~~~~~~~~~~~~~
 
-Here is the first example above, converted into a path query:
+Here is the network input example above, converted into a path query:
 
 .. code-block:: ql
 
@@ -397,7 +397,7 @@ For more information, see "`Creating path queries <https://codeql.github.com/doc
 Further reading
 ---------------
 
-- `Creating path queries  <https://codeql.github.com/docs/writing-codeql-queries/creating-path-queries/>`__ in the GitHub documentation.
+- `Creating path queries  <https://codeql.github.com/docs/writing-codeql-queries/creating-path-queries/>`__.
 
 
 .. include:: ../reusables/python-further-reading.rst

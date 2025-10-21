@@ -287,7 +287,7 @@ Exercise 2: Find all hard-coded strings passed to ``System.Uri``, using global d
 
 Exercise 3: Define a class that represents flow sources from ``System.Environment.GetEnvironmentVariable``. (`Answer <#exercise-3>`__)
 
-Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flow paths from ``System.Environment.GetEnvironmentVariable`` to ``System.Uri``. (`Answer <#exercise-4>`__)
+Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flow paths from ``System.Environment.GetEnvironmentVariable`` to ``System.Uri``. (`Answer <#exercise-4>`__ `Answer as a path query <#path-query-example>`__)
 
 Extending library data flow
 ---------------------------
@@ -537,7 +537,7 @@ This can be adapted from the ``SystemUriFlow`` class:
      }
    }
 
-Path Query Example
+Path query example
 ~~~~~~~~~~~~~~~~~~
 
 Here is the answer to exercise 4 above, converted into a path query:

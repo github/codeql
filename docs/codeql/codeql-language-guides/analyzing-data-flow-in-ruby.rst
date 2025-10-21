@@ -372,10 +372,10 @@ The following global data-flow query finds calls to ``File.open`` where the file
     select fileOpen, "This call to 'File.open' uses data from $@.", environment,
       "an environment variable"
 
-Path Query Example
+Path query example
 ~~~~~~~~~~~~~~~~~~
 
-Here is the first example above, converted into a path query:
+Here is the taint-tracking example above, converted into a path query:
 
 .. code-block:: ql
 
