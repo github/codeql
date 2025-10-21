@@ -16,12 +16,12 @@ import csharp
 import semmle.code.asp.WebConfig
 import semmle.code.csharp.frameworks.system.Web
 
-XmlElement getAWebServerConfig(WebConfigXml webConfig) {
+XmlElement getAWebConfigRoot(WebConfigXml webConfig) {
   result = webConfig.getARootElement()
   or
   result = webConfig.getARootElement().getAChild("location") and
   (
-    not exists(result.getAttributeValue("path")) // equivalent to path="."
+    not result.hasAttribute("path") // equivalent to path="."
     or
     result.getAttributeValue("path") = ["", "."]
   )
@@ -42,7 +42,7 @@ predicate hasWebConfigXFrameOptions(WebConfigXml webConfig) {
   // </system.webServer>
   // ```
   // This can also be in a `location`
-  getAWebServerConfig(webConfig)
+  getAWebConfigRoot(webConfig)
       .getAChild("system.webServer")
       .getAChild("httpProtocol")
       .getAChild("customHeaders")
