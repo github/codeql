@@ -336,6 +336,8 @@ and the CodeQL library pack ``codeql/rust-all`` (`changelog <https://github.com/
    `log <https://crates.io/crates/log>`__, Logging library
    `md5 <https://crates.io/crates/md5>`__, Utility library
    `memchr <https://crates.io/crates/memchr>`__, Utility library
+   `mysql <https://crates.io/crates/mysql>`__, Database
+   `mysql_async <https://crates.io/crates/mysql_async>`__, Database
    `once_cell <https://crates.io/crates/once_cell>`__, Utility library
    `poem <https://crates.io/crates/poem>`__, Web framework
    `postgres <https://crates.io/crates/postgres>`__, Database
