@@ -1107,14 +1107,14 @@ private module MethodResolution {
      * Same as `getACandidateReceiverTypeAt`, but without borrows.
      */
     pragma[nomagic]
-    private Type getACandidateReceiverTypeAtNoBorrow(TypePath path, string derefChain) {
+    private Type getACandidateReceiverTypeAtNoBorrow(string derefChain, TypePath path) {
       result = this.getReceiverTypeAt(path) and
       derefChain = ""
       or
       this.supportsAutoDerefAndBorrow() and
       exists(TypePath path0, Type t0, string derefChain0 |
         this.hasNoCompatibleTargetBorrow(derefChain0) and
-        t0 = this.getACandidateReceiverTypeAtNoBorrow(path0, derefChain0)
+        t0 = this.getACandidateReceiverTypeAtNoBorrow(derefChain0, path0)
       |
         path0.isCons(TRefTypeParameter(), path) and
         result = t0 and
@@ -1149,21 +1149,21 @@ private module MethodResolution {
      */
     pragma[nomagic]
     Type getACandidateReceiverTypeAtSubstituteLookupTraits(
-      TypePath path, string derefChain, boolean borrow
+      string derefChain, boolean borrow, TypePath path
     ) {
-      result = substituteLookupTraits(this.getACandidateReceiverTypeAt(path, derefChain, borrow))
+      result = substituteLookupTraits(this.getACandidateReceiverTypeAt(derefChain, borrow, path))
     }
 
     pragma[nomagic]
-    private Type getComplexStrippedType(TypePath strippedTypePath, string derefChain, boolean borrow) {
+    private Type getComplexStrippedType(string derefChain, boolean borrow, TypePath strippedTypePath) {
       result =
-        this.getACandidateReceiverTypeAtSubstituteLookupTraits(strippedTypePath, derefChain, borrow) and
+        this.getACandidateReceiverTypeAtSubstituteLookupTraits(derefChain, borrow, strippedTypePath) and
       isComplexRootStripped(strippedTypePath, result)
     }
 
     bindingset[strippedTypePath, strippedType, derefChain, borrow]
     private predicate hasNoCompatibleTargetCheck(
-      TypePath strippedTypePath, Type strippedType, string derefChain, boolean borrow
+      string derefChain, boolean borrow, TypePath strippedTypePath, Type strippedType
     ) {
       // todo: also check that all blanket implementation candidates are incompatible
       forall(ImplOrTraitItemNode i |
@@ -1190,8 +1190,8 @@ private module MethodResolution {
       ) and
       exists(TypePath strippedTypePath, Type strippedType |
         not derefChain.matches("%.ref") and // no need to try a borrow if the last thing we did was a deref
-        strippedType = this.getComplexStrippedType(strippedTypePath, derefChain, false) and
-        this.hasNoCompatibleTargetCheck(strippedTypePath, strippedType, derefChain, false)
+        strippedType = this.getComplexStrippedType(derefChain, false, strippedTypePath) and
+        this.hasNoCompatibleTargetCheck(derefChain, false, strippedTypePath, strippedType)
       )
     }
 
@@ -1203,8 +1203,8 @@ private module MethodResolution {
     predicate hasNoCompatibleTargetBorrow(string derefChain) {
       exists(TypePath strippedTypePath, Type strippedType |
         this.hasNoCompatibleTargetNoBorrow(derefChain) and
-        strippedType = this.getComplexStrippedType(strippedTypePath, derefChain, true) and
-        this.hasNoCompatibleTargetCheck(strippedTypePath, strippedType, derefChain, true)
+        strippedType = this.getComplexStrippedType(derefChain, true, strippedTypePath) and
+        this.hasNoCompatibleTargetCheck(derefChain, true, strippedTypePath, strippedType)
       )
     }
 
@@ -1221,8 +1221,8 @@ private module MethodResolution {
      * [1]: https://doc.rust-lang.org/reference/expressions/method-call-expr.html#r-expr.method.candidate-receivers
      */
     pragma[nomagic]
-    Type getACandidateReceiverTypeAt(TypePath path, string derefChain, boolean borrow) {
-      result = this.getACandidateReceiverTypeAtNoBorrow(path, derefChain) and
+    Type getACandidateReceiverTypeAt(string derefChain, boolean borrow, TypePath path) {
+      result = this.getACandidateReceiverTypeAtNoBorrow(derefChain, path) and
       borrow = false
       or
       this.supportsAutoDerefAndBorrow() and
@@ -1233,7 +1233,7 @@ private module MethodResolution {
         result = TRefType()
         or
         exists(TypePath suffix |
-          result = this.getACandidateReceiverTypeAtNoBorrow(suffix, derefChain) and
+          result = this.getACandidateReceiverTypeAtNoBorrow(derefChain, suffix) and
           path = TypePath::cons(TRefTypeParameter(), suffix)
         )
       )
@@ -1381,7 +1381,7 @@ private module MethodResolution {
 
   private newtype TMethodCallCand =
     MkMethodCallCand(MethodCall mc, string derefChain, boolean borrow) {
-      exists(mc.getACandidateReceiverTypeAt(_, derefChain, borrow))
+      exists(mc.getACandidateReceiverTypeAt(derefChain, borrow, _))
     }
 
   /** A method call tagged with a candidate receiver type. */
@@ -1395,7 +1395,7 @@ private module MethodResolution {
     MethodCall getMethodCall() { result = mc_ }
 
     Type getTypeAt(TypePath path) {
-      result = mc_.getACandidateReceiverTypeAtSubstituteLookupTraits(path, derefChain, borrow)
+      result = mc_.getACandidateReceiverTypeAtSubstituteLookupTraits(derefChain, borrow, path)
     }
 
     pragma[nomagic]
@@ -1418,7 +1418,7 @@ private module MethodResolution {
     }
 
     /**
-     * Holds if the inherent method inside `i` with matching name and arity can be
+     * Holds if the inherent method inside `impl` with matching name and arity can be
      * ruled out as a candidate for this call.
      */
     pragma[nomagic]
@@ -1471,10 +1471,7 @@ private module MethodResolution {
     Method resolveCallTarget() {
       exists(ImplOrTraitItemNode i |
         result = this.resolveCallTargetCand(i) and
-        not exists(FunctionPosition pos |
-          FunctionOverloading::functionResolutionDependsOnArgument(i, _, pos, _, _) and
-          pos.isPosition()
-        )
+        not FunctionOverloading::functionResolutionDependsOnArgument(i, _, _, _, _)
       )
       or
       MethodArgsAreInstantiationsOf::argsAreInstantiationsOf(this, _, result)
@@ -1627,7 +1624,6 @@ private module MethodResolution {
   private module MethodArgsAreInstantiationsOfInput implements ArgsAreInstantiationsOfInputSig {
     predicate toCheck(ImplOrTraitItemNode i, Function f, FunctionPosition pos, AssocFunctionType t) {
       exists(TypePath path, Type t0 |
-        pos.isPosition() and
         FunctionOverloading::functionResolutionDependsOnArgument(i, f, pos, path, t0) and
         t.appliesTo(f, pos, i) and
         // for now, we do not handle ambiguous targets when one of the types it iself
@@ -1746,7 +1742,7 @@ private module MethodCallMatchingInput implements MatchingWithEnvironmentInputSi
 
     pragma[nomagic]
     private Type getInferredSelfType(string derefChain, boolean borrow, TypePath path) {
-      result = this.getACandidateReceiverTypeAt(path, derefChain, borrow)
+      result = this.getACandidateReceiverTypeAt(derefChain, borrow, path)
     }
 
     pragma[nomagic]
@@ -1850,14 +1846,14 @@ private module NonMethodResolution {
   /**
    * Holds if the associated function `implFunction` at `impl` implements
    * `traitFunction`, which belongs to `trait`, and resolving the function
-   * `implFunction` requires inspecting the type of applied _arguments_ at
-   * position `pos` in order to determine whether it is the correct resolution.
+   * `implFunction` requires inspecting the type at position `pos` in order
+   * to determine whether it is the correct resolution.
    *
    * `type` is the type at `pos` of `implFunction` which mathces a type parameter of
    * `traitFunction` at `pos`.
    */
   pragma[nomagic]
-  private predicate traitFunctionDependsOnArgument(
+  private predicate traitFunctionDependsOnPos(
     TraitItemNode trait, NonMethodFunction traitFunction, FunctionPosition pos, Type type,
     ImplItemNode impl, NonMethodFunction implFunction
   ) {
@@ -1866,16 +1862,17 @@ private module NonMethodResolution {
       implFunction.implements(traitFunction) and
       FunctionOverloading::traitTypeParameterOccurrence(trait, traitFunction, _, pos, path, _)
     |
-      not pos.isReturn()
-      or
-      // We only check that the context of the call provides relevant type information
-      // when no argument can
-      not exists(FunctionPosition pos0 |
-        FunctionOverloading::traitTypeParameterOccurrence(trait, traitFunction, _, pos0, _, _) or
-        FunctionOverloading::functionResolutionDependsOnArgument(impl, implFunction, pos0, _, _)
-      |
-        not pos0.isReturn()
-      )
+      if pos.isReturn()
+      then
+        // We only check that the context of the call provides relevant type information
+        // when no argument can
+        not exists(FunctionPosition pos0 |
+          FunctionOverloading::traitTypeParameterOccurrence(trait, traitFunction, _, pos0, _, _) and
+          not pos0.isReturn()
+          or
+          FunctionOverloading::functionResolutionDependsOnArgument(impl, implFunction, pos0, _, _)
+        )
+      else any()
     )
   }
 
@@ -1886,14 +1883,15 @@ private module NonMethodResolution {
   ) {
     functionInfoBlanket(f, name, arity, impl, trait, pos, t, blanketPath, blanketTypeParam) and
     (
-      not pos.isReturn()
-      or
-      // We only check that the context of the call provides relevant type information
-      // when no argument can
-      not exists(FunctionPosition pos0 |
-        functionInfoBlanket(f, name, arity, impl, trait, pos0, _, _, _) and
-        not pos0.isReturn()
-      )
+      if pos.isReturn()
+      then
+        // We only check that the context of the call provides relevant type information
+        // when no argument can
+        not exists(FunctionPosition pos0 |
+          functionInfoBlanket(f, name, arity, impl, trait, pos0, _, _, _) and
+          not pos0.isReturn()
+        )
+      else any()
     )
   }
 
@@ -2084,7 +2082,7 @@ private module NonMethodResolution {
         |
           FunctionOverloading::functionResolutionDependsOnArgument(i, f, pos, _, t0)
           or
-          traitFunctionDependsOnArgument(_, _, pos, t0, i, f)
+          traitFunctionDependsOnPos(_, _, pos, t0, i, f)
         )
         or
         // match against the trait function itself
@@ -2105,7 +2103,7 @@ private module NonMethodResolution {
         or
         exists(TraitItemNode trait, NonMethodFunction resolved, ImplItemNode i1, Function f1 |
           this.hasTraitResolved(trait, resolved) and
-          traitFunctionDependsOnArgument(trait, resolved, _, _, i1, f1)
+          traitFunctionDependsOnPos(trait, resolved, _, _, i1, f1)
         |
           f = f1 and
           i = i1

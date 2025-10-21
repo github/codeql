@@ -122,6 +122,6 @@ predicate functionResolutionDependsOnArgument(
     traitTypeParameterOccurrence(trait, _, functionName, pos, path, _) and
     assocFunctionTypeAt(f, impl, pos, path, type) and
     f = impl.getASuccessor(functionName) and
-    not pos.isReturn()
+    pos.isPosition()
   )
 }
