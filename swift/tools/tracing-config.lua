@@ -53,6 +53,12 @@ function RegisterExtractorPack(id)
         strip_unsupported_arg(args, '-stack-check', 0)
         strip_unsupported_arg(args, '-experimental-skip-non-inlinable-function-bodies-without-types', 0)
         strip_unsupported_clang_arg(args, '-ivfsstatcache', 1)
+        -- The four args below are removed to workaround version mismatches due to recent versions
+        -- of Xcode defaulting to explicit modules:
+        strip_unsupported_arg(args, '-disable-implicit-swift-modules', 0)
+        strip_unsupported_clang_arg(args, '-fno-implicit-modules', 0)
+        strip_unsupported_clang_arg(args, '-fno-implicit-module-maps', 0)
+        strip_unsupported_arg(args, '-explicit-swift-module-map-file', 1)
     end
 
     -- xcodebuild does not always specify the -resource-dir in which case the compiler falls back
