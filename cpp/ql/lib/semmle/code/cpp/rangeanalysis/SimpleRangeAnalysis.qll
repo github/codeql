@@ -533,10 +533,9 @@ private module BoundsEstimate {
     result = 2.0.pow(40)
   }
 
-  /** Gets the maximum number of bounds possible when widening is used. */
-  private int getNrOfWideningBounds() {
-    result =
-      max(ArithmeticType t | | count(wideningLowerBounds(t)).maximum(count(wideningUpperBounds(t))))
+  /** Gets the maximum number of bounds possible for `t` when widening is used. */
+  private int getNrOfWideningBounds(ArithmeticType t) {
+    result = strictcount(wideningLowerBounds(t)).maximum(strictcount(wideningUpperBounds(t)))
   }
 
   /**
@@ -554,7 +553,7 @@ private module BoundsEstimate {
     )
   }
 
-  /** Holds if `def` and `v` is a guard phi node with a bound from a guard. */
+  /** Holds if `def` is a guard phi node for `v` with a bound from a guard. */
   predicate isGuardPhiWithBound(RangeSsaDefinition def, StackVariable v, VariableAccess access) {
     exists(Expr guard, boolean branch |
       def.isGuardPhi(v, access, guard, branch) and
@@ -562,7 +561,10 @@ private module BoundsEstimate {
     )
   }
 
-  /** Gets the number of bounds for `def` and `v` as guard phi node. */
+  /**
+   * Gets the number of bounds for `def` when `def` is a guard phi node for the
+   * variable `v`.
+   */
   language[monotonicAggregates]
   private float nrOfBoundsPhiGuard(RangeSsaDefinition def, StackVariable v) {
     // If we have
@@ -601,10 +603,12 @@ private module BoundsEstimate {
     result = 0
   }
 
-  /** Gets the number of bounds for `def` and `v` as normal phi node. */
+  /**
+   * Gets the number of bounds for `def` when `def` is a normal phi node for the
+   * variable `v`.
+   */
   language[monotonicAggregates]
   private float nrOfBoundsPhiNormal(RangeSsaDefinition def, StackVariable v) {
-    // The implementation
     result =
       strictsum(RangeSsaDefinition inputDef |
         inputDef = def.getAPhiInput(v)
@@ -617,7 +621,10 @@ private module BoundsEstimate {
     result = 0
   }
 
-  /** Gets the number of bounds for `def` and `v` as an NE phi node. */
+  /**
+   * Gets the number of bounds for `def` when `def` is an NE phi node for the
+   * variable `v`.
+   */
   private float nrOfBoundsNEPhi(RangeSsaDefinition def, StackVariable v) {
     exists(VariableAccess access | isNEPhi(v, def, access, _) and result = nrOfBoundsExpr(access))
     or
@@ -626,7 +633,10 @@ private module BoundsEstimate {
     result = 0
   }
 
-  /** Gets the number of bounds for `def` and `v` as an unsupported guard phi node. */
+  /**
+   * Gets the number of bounds for `def` when `def` is an unsupported guard phi
+   * node for the variable `v`.
+   */
   private float nrOfBoundsUnsupportedGuardPhi(RangeSsaDefinition def, StackVariable v) {
     exists(VariableAccess access |
       isUnsupportedGuardPhi(v, def, access) and
@@ -644,8 +654,7 @@ private module BoundsEstimate {
     // we sum the contributions from the different cases.
     result =
       nrOfBoundsPhiGuard(def, v) + nrOfBoundsPhiNormal(def, v) + nrOfBoundsNEPhi(def, v) +
-        nrOfBoundsUnsupportedGuardPhi(def, v) and
-    result != 0
+        nrOfBoundsUnsupportedGuardPhi(def, v)
   }
 
   /** Gets the estimated number of bounds for `def` and `v`. */
@@ -656,7 +665,7 @@ private module BoundsEstimate {
     // estimate. Had that not been the case the estimate itself would be at risk
     // of causing performance issues and being non-functional.
     if isRecursiveDef(def, v)
-    then result = getNrOfWideningBounds()
+    then result = getNrOfWideningBounds(getVariableRangeType(v))
     else (
       // Definitions with a defining value
       exists(Expr defExpr | assignmentDef(def, v, defExpr) and result = nrOfBoundsExpr(defExpr))
@@ -719,7 +728,7 @@ private module BoundsEstimate {
     // Similarly to what we do for definitions, we do not attempt to measure the
     // number of bounds for recursive expressions.
     if isRecursiveExpr(e)
-    then result = getNrOfWideningBounds()
+    then result = getNrOfWideningBounds(e.getUnspecifiedType())
     else
       if analyzableExpr(e)
       then
