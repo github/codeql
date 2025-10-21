@@ -1041,7 +1041,7 @@ module API {
         )
         or
         // property reads
-        exists(DataFlow::SourceNode src, DataFlow::SourceNode pred, string propDesc |
+        exists(RawSourceNode src, RawSourceNode pred, string propDesc |
           use(base, src) and
           pred = trackUseNode(src, false, 0, propDesc) and
           propertyRead(pred, propDesc, lbl, ref) and
@@ -1050,9 +1050,7 @@ module API {
           (base instanceof TNonModuleDef or base instanceof TUse)
         )
         or
-        exists(DataFlow::SourceNode src, DataFlow::SourceNode pred |
-          use(base, src) and pred = trackUseNode(src)
-        |
+        exists(RawSourceNode src, RawSourceNode pred | use(base, src) and pred = trackUseNode(src) |
           lbl = Label::instance() and
           ref = pred.getAnInstantiation()
           or
@@ -1263,12 +1261,22 @@ module API {
 
       predicate flowsToExpr(Expr expr) { this.(DataFlow::SourceNode).flowsToExpr(expr) }
 
+      DataFlow::Node getALocalUse() { result = this.(DataFlow::SourceNode).getALocalUse() }
+
       DataFlow::PropRead getAPropertyRead(string prop) {
         result = this.(DataFlow::SourceNode).getAPropertyRead(prop)
       }
 
       DataFlow::PropWrite getAPropertyWrite() {
         result = this.(DataFlow::SourceNode).getAPropertyWrite()
+      }
+
+      DataFlow::InvokeNode getAnInvocation() {
+        result = this.(DataFlow::SourceNode).getAnInvocation()
+      }
+
+      DataFlow::NewNode getAnInstantiation() {
+        result = this.(DataFlow::SourceNode).getAnInstantiation()
       }
     }
 
