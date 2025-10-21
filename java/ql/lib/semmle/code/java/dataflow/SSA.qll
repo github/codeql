@@ -148,12 +148,10 @@ class SsaVariable extends Definition {
   /** Gets the `ControlFlowNode` at which this SSA variable is defined. */
   pragma[nomagic]
   ControlFlowNode getCfgNode() {
-    exists(BasicBlock bb, int i, int j |
+    exists(BasicBlock bb, int i |
       this.definesAt(_, bb, i) and
-      // untracked definitions are inserted just before reads
-      (if this instanceof UntrackedDef then j = i + 1 else j = i) and
       // phi nodes are inserted at position `-1`
-      result = bb.getNode(0.maximum(j))
+      result = bb.getNode(0.maximum(i))
     )
   }
 
@@ -246,8 +244,6 @@ class SsaImplicitUpdate extends SsaUpdate {
   }
 
   private string getKind() {
-    this instanceof UntrackedDef and result = "untracked"
-    or
     this.hasExplicitQualifierUpdate() and
     result = "explicit qualifier"
     or
@@ -280,8 +276,6 @@ class SsaImplicitUpdate extends SsaUpdate {
    * of its qualifiers is volatile.
    */
   predicate assignsUnknownValue() {
-    this instanceof UntrackedDef
-    or
     this.hasExplicitQualifierUpdate()
     or
     this.hasImplicitQualifierUpdate()

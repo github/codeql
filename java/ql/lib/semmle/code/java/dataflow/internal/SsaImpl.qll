@@ -82,13 +82,6 @@ private module TrackedVariablesImpl {
 
 private import TrackedVariablesImpl
 
-private predicate untrackedFieldWrite(BasicBlock bb, int i, SsaSourceVariable v) {
-  v =
-    any(SsaSourceField nf |
-      bb.getNode(i + 1) = nf.getAnAccess().(FieldRead).getControlFlowNode() and not trackField(nf)
-    )
-}
-
 /** Gets the definition point of a nested class in the parent scope. */
 private ControlFlowNode parentDef(NestedClass nc) {
   nc.(AnonymousClass).getClassInstanceExpr().getControlFlowNode() = result or
@@ -184,9 +177,6 @@ private module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock>
     certainVariableUpdate(v, _, bb, i) and
     certain = true
     or
-    untrackedFieldWrite(bb, i, v) and
-    certain = true
-    or
     hasEntryDef(v, bb) and
     i = -1 and
     certain = true
@@ -204,7 +194,10 @@ private module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock>
     hasDominanceInformation(bb) and
     (
       exists(VarRead use |
-        v.getAnAccess() = use and bb.getNode(i) = use.getControlFlowNode() and certain = true
+        v instanceof TrackedVar and
+        v.getAnAccess() = use and
+        bb.getNode(i) = use.getControlFlowNode() and
+        certain = true
       )
       or
       variableCapture(v, _, bb, i) and
@@ -222,16 +215,6 @@ final class WriteDefinition = Impl::WriteDefinition;
 final class UncertainWriteDefinition = Impl::UncertainWriteDefinition;
 
 final class PhiNode = Impl::PhiNode;
-
-class UntrackedDef extends Definition {
-  private VarRead read;
-
-  UntrackedDef() { ssaUntrackedDef(this, read) }
-
-  string toString() { result = read.toString() }
-
-  Location getLocation() { result = read.getLocation() }
-}
 
 cached
 private module Cached {
@@ -253,15 +236,6 @@ private module Cached {
       def.definesAt(v, bb, i) and
       certainVariableUpdate(v, upd.getControlFlowNode(), bb, i) and
       getDestVar(upd) = def.getSourceVariable()
-    )
-  }
-
-  cached
-  predicate ssaUntrackedDef(Definition def, VarRead read) {
-    exists(SsaSourceVariable v, BasicBlock bb, int i |
-      def.definesAt(v, bb, i) and
-      untrackedFieldWrite(bb, i, v) and
-      read.getControlFlowNode() = bb.getNode(i + 1)
     )
   }
 
