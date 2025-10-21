@@ -613,6 +613,25 @@ private class UseStateStep extends PreCallGraphStep {
 }
 
 /**
+ * Step through a `useRef` call.
+ *
+ * It returns a pair of the initial state, and an object with a single property (current) potentially containing an input value.
+ *
+ * For example:
+ * ```js
+ * const inputRef1 = useRef(initialValue);
+ * ```
+ */
+private class UseRefStep extends PreCallGraphStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::CallNode call | call = react().getAMemberCall("useRef") |
+      pred = call.getArgument(0) and // initial state
+      succ = call.getAPropertyRead("current")
+    )
+  }
+}
+
+/**
  * A step through a React context object.
  *
  * For example:
