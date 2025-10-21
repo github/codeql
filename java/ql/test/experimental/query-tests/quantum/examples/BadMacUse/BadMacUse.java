@@ -1,14 +1,11 @@
+
 import java.security.*;
 import java.util.Arrays;
-import java.util.Base64;
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-
 
 class BadMacUse {
 
@@ -17,7 +14,7 @@ class BadMacUse {
         new SecureRandom().nextBytes(salt);
         return salt;
     }
-   
+
     public void CipherThenMac(byte[] encryptionKeyBytes, byte[] macKeyBytes) throws Exception {
         // Create keys directly from provided byte arrays
         SecretKey encryptionKey = new SecretKeySpec(encryptionKeyBytes, "AES");
@@ -39,7 +36,6 @@ class BadMacUse {
         System.arraycopy(ciphertext, 0, output, 0, ciphertext.length);
         System.arraycopy(computedMac, 0, output, ciphertext.length, computedMac.length);
     }
-
 
     public void BadDecryptThenMacOnPlaintextVerify(byte[] encryptionKeyBytes, byte[] macKeyBytes, byte[] input) throws Exception {
         // Split input into ciphertext and MAC
@@ -83,5 +79,54 @@ class BadMacUse {
         byte[] output = new byte[ciphertext.length + computedMac.length];
         System.arraycopy(ciphertext, 0, output, 0, ciphertext.length);
         System.arraycopy(computedMac, 0, output, ciphertext.length, computedMac.length);
+    }
+
+    public byte[] cipherOperationWrapper(byte[] bytes, byte[] encryptionKeyBytes, byte[] iv, int mode)
+            throws Exception {
+
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        SecretKeySpec secretKeySpec = new SecretKeySpec(encryptionKeyBytes, "AES");
+
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
+        cipher.init(mode, secretKeySpec, ivParameterSpec);
+        return cipher.doFinal(bytes);
+    }
+
+    /**
+     * A use of the cipher operation wrapper for decryption to throw off the
+     * analysis
+     */
+    public byte[] decryptUsingWrapper(byte[] ciphertext, byte[] encryptionKeyBytes, byte[] iv) throws Exception {
+        return cipherOperationWrapper(ciphertext, encryptionKeyBytes, iv, Cipher.DECRYPT_MODE);
+    }
+
+    /**
+     * A use of the cipher operation wrapper for encryption to throw off the
+     * analysis
+     */
+    public byte[] encryptUsingWrapper(byte[] plaintext, byte[] encryptionKeyBytes, byte[] iv) throws Exception {
+        return cipherOperationWrapper(plaintext, encryptionKeyBytes, iv, Cipher.ENCRYPT_MODE);
+    }
+
+    /**
+     * Encrypt then mac using the wrapper function
+     */
+    public byte[] falsePositiveDecryptToMac(byte[] encryptionKeyBytes, byte[] macKeyBytes, byte[] plaintext) throws Exception {
+        // Encrypt the plaintext
+        byte[] iv = new byte[16];
+        new SecureRandom().nextBytes(iv);
+        byte[] ciphertext = cipherOperationWrapper(plaintext, encryptionKeyBytes, iv, Cipher.ENCRYPT_MODE);
+
+        // Compute HMAC over the ciphertext using the MAC key
+        SecretKey macKey = new SecretKeySpec(macKeyBytes, "HmacSHA256");
+        Mac mac = Mac.getInstance("HmacSHA256");
+        mac.init(macKey);
+        byte[] computedMac = mac.doFinal(ciphertext); // False Positive
+
+        // Concatenate ciphertext and MAC
+        byte[] output = new byte[ciphertext.length + computedMac.length];
+        System.arraycopy(ciphertext, 0, output, 0, ciphertext.length);
+        System.arraycopy(computedMac, 0, output, ciphertext.length, computedMac.length);
+        return output;
     }
 }
