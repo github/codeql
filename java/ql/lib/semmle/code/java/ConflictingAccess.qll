@@ -44,11 +44,11 @@ predicate isThreadSafeType(Type t) {
 
 /** Holds if the expression `e` is a thread-safe initializer. */
 predicate isThreadSafeInitializer(Expr e) {
-  e.(Call)
-      .getCallee()
-      .getSourceDeclaration()
-      .getQualifiedName()
-      .matches("java.util.Collections.synchronized%")
+  exists(string name |
+    e.(Call).getCallee().getSourceDeclaration().hasQualifiedName("java.util", "Collections", name)
+  |
+    name.matches("synchronized%")
+  )
 }
 
 /**
@@ -132,7 +132,7 @@ class ClassAnnotatedAsThreadSafe extends Class {
    * Holds if the field access `a` to the field `f` is not protected by any monitor, and it can be reached via the expression `e` in the method `m`.
    * We maintain the invariant that `m = e.getEnclosingCallable()`.
    */
-  predicate unlocked_access(ExposedField f, Expr e, Method m, ExposedFieldAccess a, boolean write) {
+  predicate unlockedAccess(ExposedField f, Expr e, Method m, ExposedFieldAccess a, boolean write) {
     m.getDeclaringType() = this and
     (
       // base case
@@ -143,7 +143,7 @@ class ClassAnnotatedAsThreadSafe extends Class {
       (if Modification::isModifying(a) then write = true else write = false)
       or
       // recursive case
-      exists(MethodCall c, Expr e0, Method m0 | this.unlocked_access(f, e0, m0, a, write) |
+      exists(MethodCall c, Expr e0, Method m0 | this.unlockedAccess(f, e0, m0, a, write) |
         m = c.getEnclosingCallable() and
         not m0.isPublic() and
         c.getCallee().getSourceDeclaration() = m0 and
@@ -154,22 +154,22 @@ class ClassAnnotatedAsThreadSafe extends Class {
   }
 
   /** Holds if the class has an unlocked access to the field `f` via the expression `e` in the method `m`. */
-  predicate has_unlocked_access(ExposedField f, Expr e, Method m, boolean write) {
-    this.unlocked_access(f, e, m, _, write)
+  predicate hasUnlockedAccess(ExposedField f, Expr e, Method m, boolean write) {
+    this.unlockedAccess(f, e, m, _, write)
   }
 
   /** Holds if the field access `a` to the field `f` is not protected by any monitor, and it can be reached via the expression `e` in the public method `m`. */
-  predicate unlocked_public_access(
+  predicate unlockedPublicAccess(
     ExposedField f, Expr e, Method m, ExposedFieldAccess a, boolean write
   ) {
-    this.unlocked_access(f, e, m, a, write) and
+    this.unlockedAccess(f, e, m, a, write) and
     m.isPublic() and
     not Monitors::locallyMonitors(e, _)
   }
 
   /** Holds if the class has an unlocked access to the field `f` via the expression `e` in the public method `m`. */
-  predicate has_unlocked_public_access(ExposedField f, Expr e, Method m, boolean write) {
-    this.unlocked_public_access(f, e, m, _, write)
+  predicate hasUnlockedPublicAccess(ExposedField f, Expr e, Method m, boolean write) {
+    this.unlockedPublicAccess(f, e, m, _, write)
   }
 
   // Cases where all accesses to a field are protected by exactly one monitor
@@ -177,15 +177,15 @@ class ClassAnnotatedAsThreadSafe extends Class {
   /**
    * Holds if the class has an access, locked by exactly one monitor, to the field `f` via the expression `e` in the method `m`.
    */
-  predicate has_onelocked_access(
+  predicate hasOnelockedAccess(
     ExposedField f, Expr e, Method m, boolean write, Monitors::Monitor monitor
   ) {
     //base
-    this.has_unlocked_access(f, e, m, write) and
+    this.hasUnlockedAccess(f, e, m, write) and
     Monitors::locallyMonitors(e, monitor)
     or
     // recursive case
-    exists(MethodCall c, Method m0 | this.has_onelocked_access(f, _, m0, write, monitor) |
+    exists(MethodCall c, Method m0 | this.hasOnelockedAccess(f, _, m0, write, monitor) |
       m = c.getEnclosingCallable() and
       not m0.isPublic() and
       c.getCallee().getSourceDeclaration() = m0 and
@@ -197,34 +197,33 @@ class ClassAnnotatedAsThreadSafe extends Class {
   }
 
   /** Holds if the class has an access, locked by exactly one monitor, to the field `f` via the expression `e` in the public method `m`. */
-  predicate has_onelocked_public_access(
+  predicate hasOnelockedPublicAccess(
     ExposedField f, Expr e, Method m, boolean write, Monitors::Monitor monitor
   ) {
-    this.has_onelocked_access(f, e, m, write, monitor) and
+    this.hasOnelockedAccess(f, e, m, write, monitor) and
     m.isPublic() and
-    not this.has_unlocked_public_access(f, e, m, write)
+    not this.hasUnlockedPublicAccess(f, e, m, write)
   }
 
   /** Holds if the field `f` has more than one access, all locked by a single monitor, but different monitors are used. */
-  predicate single_monitor_mismatch(ExposedField f) {
-    2 <=
-      strictcount(Monitors::Monitor monitor | this.has_onelocked_public_access(f, _, _, _, monitor))
+  predicate singleMonitorMismatch(ExposedField f) {
+    2 <= strictcount(Monitors::Monitor monitor | this.hasOnelockedPublicAccess(f, _, _, _, monitor))
   }
 
   // Cases where all accesses to a field are protected by at least one monitor
   //
   /** Holds if the class has an access, locked by at least one monitor, to the field `f` via the expression `e` in the method `m`. */
-  predicate has_onepluslocked_access(
+  predicate hasOnepluslockedAccess(
     ExposedField f, Expr e, Method m, boolean write, Monitors::Monitor monitor
   ) {
     //base
-    this.has_onelocked_access(f, e, m, write, monitor) and
-    not this.single_monitor_mismatch(f) and
-    not this.has_unlocked_public_access(f, _, _, _)
+    this.hasOnelockedAccess(f, e, m, write, monitor) and
+    not this.singleMonitorMismatch(f) and
+    not this.hasUnlockedPublicAccess(f, _, _, _)
     or
     // recursive case
     exists(MethodCall c, Method m0, Monitors::Monitor monitor0 |
-      this.has_onepluslocked_access(f, _, m0, write, monitor0) and
+      this.hasOnepluslockedAccess(f, _, m0, write, monitor0) and
       m = c.getEnclosingCallable() and
       not m0.isPublic() and
       c.getCallee().getSourceDeclaration() = m0 and
@@ -238,27 +237,27 @@ class ClassAnnotatedAsThreadSafe extends Class {
   }
 
   /** Holds if the class has a write access to the field `f` that can be reached via a public method. */
-  predicate has_public_write_access(ExposedField f) {
-    this.has_unlocked_public_access(f, _, _, true)
+  predicate hasPublicWriteAccess(ExposedField f) {
+    this.hasUnlockedPublicAccess(f, _, _, true)
     or
-    this.has_onelocked_public_access(f, _, _, true, _)
+    this.hasOnelockedPublicAccess(f, _, _, true, _)
     or
     exists(Method m | m.getDeclaringType() = this and m.isPublic() |
-      this.has_onepluslocked_access(f, _, m, true, _)
+      this.hasOnepluslockedAccess(f, _, m, true, _)
     )
   }
 
   /** Holds if the class has an access, not protected by the monitor `m`, to the field `f` via the expression `e` in the method `m`. */
-  predicate escapes_monitor(
+  predicate escapesMonitor(
     ExposedField f, Expr e, Method m, boolean write, Monitors::Monitor monitor
   ) {
     //base
-    this.has_onepluslocked_access(f, _, _, _, monitor) and
-    this.has_unlocked_access(f, e, m, write) and
+    this.hasOnepluslockedAccess(f, _, _, _, monitor) and
+    this.hasUnlockedAccess(f, e, m, write) and
     not Monitors::locallyMonitors(e, monitor)
     or
     // recursive case
-    exists(MethodCall c, Method m0 | this.escapes_monitor(f, _, m0, write, monitor) |
+    exists(MethodCall c, Method m0 | this.escapesMonitor(f, _, m0, write, monitor) |
       m = c.getEnclosingCallable() and
       not m0.isPublic() and
       c.getCallee().getSourceDeclaration() = m0 and
@@ -269,17 +268,17 @@ class ClassAnnotatedAsThreadSafe extends Class {
   }
 
   /** Holds if the class has an access, not protected by the monitor `m`, to the field `f` via the expression `e` in the public method `m`. */
-  predicate escapes_monitor_public(
+  predicate escapesMonitorPublic(
     ExposedField f, Expr e, Method m, boolean write, Monitors::Monitor monitor
   ) {
-    this.escapes_monitor(f, e, m, write, monitor) and
+    this.escapesMonitor(f, e, m, write, monitor) and
     m.isPublic()
   }
 
   /** Holds if no monitor protects all accesses to the field `f`. */
-  predicate not_fully_monitored(ExposedField f) {
-    forex(Monitors::Monitor monitor | this.has_onepluslocked_access(f, _, _, _, monitor) |
-      this.escapes_monitor_public(f, _, _, _, monitor)
+  predicate notFullyMonitored(ExposedField f) {
+    forex(Monitors::Monitor monitor | this.hasOnepluslockedAccess(f, _, _, _, monitor) |
+      this.escapesMonitorPublic(f, _, _, _, monitor)
     )
   }
 }
