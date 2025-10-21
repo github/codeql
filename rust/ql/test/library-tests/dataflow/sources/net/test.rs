@@ -397,12 +397,12 @@ mod futures_rustls {
             // using the `AsyncReadExt::read` extension method (higher-level)
             let mut buffer1 = [0u8; 64];
             let bytes_read1 = futures::io::AsyncReadExt::read(&mut reader, &mut buffer1).await?; // we cannot resolve the `read` call, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
-            sink(&buffer1[..bytes_read1]); // $ hasTaintFlow=url
+            sink(&buffer1[..bytes_read1]); // $ MISSING: hasTaintFlow=url
 
             let mut buffer2 = [0u8; 64];
             let bytes_read2 = reader.read(&mut buffer2).await?; // we cannot resolve the `read` call, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
 
-            sink(&buffer2[..bytes_read2]); // $ hasTaintFlow=url
+            sink(&buffer2[..bytes_read2]); // $ MISSING: hasTaintFlow=url
         }
 
         let mut reader2 = futures::io::BufReader::new(reader);
