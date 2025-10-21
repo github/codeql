@@ -1555,17 +1555,6 @@ module Make<
     }
 
     predicate explicitWrite(VariableWrite w, BasicBlock bb, int i, SourceVariable v);
-
-    /**
-     * Holds if `closureVar` is a local variable inside a closure that captures
-     * `captured`, which is the same variable in its declaring scope. The
-     * capture occurs at index `i` in basic block `bb`, and
-     * `variableRead(bb, i, captured, false)` must hold in order to include a
-     * pseudo-read of the captured variable at the point of capture.
-     */
-    predicate variableCapture(
-      SourceVariable captured, SourceVariable closureVar, BasicBlock bb, int i
-    );
   }
 
   module MakeSsa<SsaInputSig SsaInput> implements
@@ -1591,15 +1580,6 @@ module Make<
       predicate ssaDefReachesUncertainRead(SourceVariable v, Definition def, BasicBlock bb, int i) {
         ssaDefReachesRead(v, def, bb, i) and
         variableRead(bb, i, v, false)
-      }
-
-      /** Holds if `init` is a closure variable that captures the value of `capturedvar`. */
-      cached
-      predicate captures(SsaImplicitEntryDefinition init, Definition capturedvar) {
-        exists(BasicBlock bb, int i |
-          ssaDefReachesRead(_, capturedvar, bb, i) and
-          variableCapture(capturedvar.getSourceVariable(), init.getSourceVariable(), bb, i)
-        )
       }
 
       cached
@@ -1665,8 +1645,7 @@ module Make<
        */
       private SsaDefinition getAPhiInputOrPriorDefinition() {
         result = this.(SsaPhiDefinition).getAnInput() or
-        result = this.(SsaUncertainWrite).getPriorDefinition() or
-        this.(SsaImplicitEntryDefinition).captures(result)
+        result = this.(SsaUncertainWrite).getPriorDefinition()
       }
 
       /**
@@ -1755,9 +1734,6 @@ module Make<
      */
     class SsaImplicitEntryDefinition extends SsaImplicitWrite {
       SsaImplicitEntryDefinition() { this.definesAt(_, any(EntryBasicBlock bb), -1) }
-
-      /** Holds if this is a closure definition that captures the value of `capturedvar`. */
-      predicate captures(SsaDefinition capturedvar) { captures(this, capturedvar) }
     }
 
     /** An SSA definition that represents an uncertain variable update. */
