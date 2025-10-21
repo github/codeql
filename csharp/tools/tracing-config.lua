@@ -226,6 +226,11 @@ function RegisterExtractorPack(id)
             prepend = { '--compiler', '"${compiler}"' },
             order = ORDER_BEFORE
         }),
+        CreatePatternMatcher({ '^csc$' }, MatchCompilerName,
+            extractor, {
+            prepend = { '--compiler', '${compiler}' },
+            order = ORDER_BEFORE
+        }),
         MsBuildMatcher,
         function(compilerName, compilerPath, compilerArguments, _languageId)
             -- handle cases like `dotnet exec csc.dll <args>` and `mono(-sgen64) csc.exe <args>`
