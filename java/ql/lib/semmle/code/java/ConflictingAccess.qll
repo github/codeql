@@ -263,7 +263,6 @@ class ClassAnnotatedAsThreadSafe extends Class {
       not m0.isPublic() and
       c.getCallee().getSourceDeclaration() = m0 and
       c = e and
-      // consider allowing idempotent monitors
       not Monitors::locallyMonitors(e, monitor) and
       m.getDeclaringType() = this
     )

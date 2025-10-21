@@ -41,7 +41,7 @@ predicate not_fully_monitored_field(
     cls.has_public_write_access(f)
   ) and
   msg =
-    "The field $@ is not properly synchronized in that no single monitor covers all accesses, but the class $@ is annotated as @ThreadSafe." and
+    "This field is not properly synchronized in that no single monitor covers all accesses, but the class $@ is annotated as @ThreadSafe." and
   cls_name = cls.getName()
 }
 
