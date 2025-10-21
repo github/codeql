@@ -1,8 +1,11 @@
-#![allow(deprecated)]
-
 fn sink<T>(_: T) { }
 
 // --- tests ---
+
+use std::io::{Read, Write, BufRead};
+use tokio::io::{AsyncReadExt, AsyncWriteExt};
+use http_body_util::BodyExt;
+use std::net::ToSocketAddrs;
 
 async fn test_reqwest() -> Result<(), reqwest::Error> {
     let remote_string1 = reqwest::blocking::get("example.com")?.text()?; // $ Alert[rust/summary/taint-sources]
@@ -31,9 +34,6 @@ async fn test_reqwest() -> Result<(), reqwest::Error> {
 
     Ok(())
 }
-
-use std::io::Write;
-use http_body_util::BodyExt;
 
 async fn test_hyper_http(case: i64) -> Result<(), Box<dyn std::error::Error>> {
     // using http + hyper libs to fetch a web page
@@ -146,8 +146,6 @@ async fn test_hyper_http(case: i64) -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-use std::net::ToSocketAddrs;
-
 async fn test_std_tcpstream(case: i64) -> std::io::Result<()> {
     // using std::net to fetch a web page
     let address = "example.com:80";
@@ -216,8 +214,6 @@ async fn test_std_tcpstream(case: i64) -> std::io::Result<()> {
 
     Ok(())
 }
-
-use tokio::io::AsyncWriteExt;
 
 async fn test_tokio_tcpstream(case: i64) -> std::io::Result<()> {
     // using tokio::io to fetch a web page
