@@ -362,6 +362,12 @@ module Make<
     v.asConstantValue() = c.asConstantValue()
   }
 
+  private predicate trivialHasValue(Expr e, GuardValue v) {
+    constantHasValue(e, v)
+    or
+    e instanceof NonNullExpr and v.isNonNullValue()
+  }
+
   private predicate exceptionBranchPoint(BasicBlock bb1, BasicBlock normalSucc, BasicBlock excSucc) {
     exists(SuccessorType norm, ExceptionSuccessor exc |
       bb1.getASuccessor(norm) = normalSucc and
@@ -815,7 +821,7 @@ module Make<
           v2.isNonNullValue()
         )
       ) and
-      not exprHasValue(g2, v2) // disregard trivial guard
+      not trivialHasValue(g2, v2) // disregard trivial guard
     }
 
     bindingset[g1, v1]
@@ -838,7 +844,7 @@ module Make<
         // g1 === ... ? e : g2
         g2 = getBranchExpr(cond, branch.booleanNot()) and
         v2 = v1 and
-        not exprHasValue(g2, v2) // disregard trivial guard
+        not trivialHasValue(g2, v2) // disregard trivial guard
       )
     }
 
@@ -847,7 +853,7 @@ module Make<
     private predicate impliesStepSsaGuard(SsaDefinition def1, GuardValue v1, Guard g2, GuardValue v2) {
       def1.(SsaExplicitWrite).getValue() = g2 and
       v1 = v2 and
-      not exprHasValue(g2, v2) // disregard trivial guard
+      not trivialHasValue(g2, v2) // disregard trivial guard
       or
       exists(Expr e, GuardValue ev |
         guardDeterminesPhiInput(g2, v2.getDualValue(), def1, e) and
@@ -1097,7 +1103,7 @@ module Make<
           call.getMethod() = wrapperGuard(ppos, v1, v2) and
           call.getArgument(apos) = g2 and
           parameterMatch(pragma[only_bind_out](ppos), pragma[only_bind_out](apos)) and
-          not exprHasValue(g2, v2) // disregard trivial guard
+          not trivialHasValue(g2, v2) // disregard trivial guard
         )
       }
     }
