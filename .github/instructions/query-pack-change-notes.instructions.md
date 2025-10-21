@@ -4,7 +4,7 @@ applyTo: "*/ql/src/change-notes/*.md"
 
 # Validation guide for query-pack change notes
 
-When performing a code review, ensure that the Markdown change-notes in the pull request meet the following standards:
+When reviewing change notes in a pull request, ensure that they meet the following standards. Suggest changes if necessary.
 
 ## File name
 The file name must match this pattern: `YYYY-MM-DD-description.md`
