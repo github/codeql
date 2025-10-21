@@ -75,7 +75,7 @@ namespace Semmle.Extraction.CSharp
                 }
 
                 // If csc is specified as compiler name, then attempt to read the version information from csc.dll
-                var compilerBinaryName = SpecifiedCompiler.EndsWith("csc") ? $"{SpecifiedCompiler}.dll" : SpecifiedCompiler;
+                var compilerBinaryName = Path.GetFileName(SpecifiedCompiler) == "csc" ? $"{SpecifiedCompiler}.dll" : SpecifiedCompiler;
                 var versionInfo = FileVersionInfo.GetVersionInfo(compilerBinaryName);
                 if (!knownCompilerNames.TryGetValue(versionInfo.OriginalFilename ?? string.Empty, out var vendor))
                 {
