@@ -211,14 +211,6 @@ private module Cached {
   }
 
   cached
-  predicate firstUse(Impl::Definition def, VarRead use) {
-    exists(BasicBlock bb, int i |
-      Impl::firstUse(def, bb, i, _) and
-      use.getControlFlowNode() = bb.getNode(i)
-    )
-  }
-
-  cached
   predicate ssaUpdate(Impl::Definition def, VariableUpdate upd) {
     exists(BaseSsaSourceVariable v, BasicBlock bb, int i |
       def.definesAt(v, bb, i) and
@@ -296,16 +288,6 @@ class BaseSsaVariable extends Impl::Definition {
 
   /** Gets an access of this SSA variable. */
   VarRead getAUse() { result = getAUse(this) }
-
-  /**
-   * Gets an access of the SSA source variable underlying this SSA variable
-   * that can be reached from this SSA variable without passing through any
-   * other uses, but potentially through phi nodes.
-   *
-   * Subsequent uses can be found by following the steps defined by
-   * `baseSsaAdjacentUseUse`.
-   */
-  VarRead getAFirstUse() { firstUse(this, result) }
 
   /** Holds if this SSA variable is live at the end of `b`. */
   predicate isLiveAtEndOfBlock(BasicBlock b) { ssaDefReachesEndOfBlock(b, this) }
