@@ -231,7 +231,7 @@ ql/java/ql/src/experimental/Security/CWE/CWE-939/IncorrectURLVerification.ql
 ql/java/ql/src/experimental/quantum/Examples/BadMacOrderDecryptToMac.ql
 ql/java/ql/src/experimental/quantum/Examples/BadMacOrderMacOnEncryptPlaintext.ql
 ql/java/ql/src/experimental/quantum/Examples/BrokenCrypto.ql
-ql/java/ql/src/experimental/quantum/Examples/InsecInseInsecureIVorNonceSource.ql
+ql/java/ql/src/experimental/quantum/Examples/InsecureIVorNonceSource.ql
 ql/java/ql/src/experimental/quantum/Examples/NonAESGCMCipher.ql
 ql/java/ql/src/experimental/quantum/Examples/TestAESGCMNonce.ql
 ql/java/ql/src/experimental/quantum/Examples/TestCipher.ql
