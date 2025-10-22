@@ -562,8 +562,6 @@ nodes
 | test.rs:501:19:501:24 | buffer | semmle.label | buffer |
 subpaths
 testFailures
-| test.rs:400:18:400:40 | &... | Fixed missing result: hasTaintFlow=url |
-| test.rs:405:18:405:40 | &... | Fixed missing result: hasTaintFlow=url |
 #select
 | test.rs:12:10:12:23 | remote_string1 | test.rs:11:26:11:47 | ...::get | test.rs:12:10:12:23 | remote_string1 | $@ | test.rs:11:26:11:47 | ...::get | ...::get |
 | test.rs:15:10:15:23 | remote_string2 | test.rs:14:26:14:47 | ...::get | test.rs:15:10:15:23 | remote_string2 | $@ | test.rs:14:26:14:47 | ...::get | ...::get |
