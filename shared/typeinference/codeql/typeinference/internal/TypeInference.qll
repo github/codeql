@@ -511,33 +511,35 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     /** Provides the input to `IsInstantiationOf`. */
     signature module IsInstantiationOfInputSig<HasTypeTreeSig App, HasTypeTreeSig Constraint> {
       /**
-       * Holds if `abs` is a type abstraction, `tm` occurs in the scope of
+       * Holds if `abs` is a type abstraction, `constraint` occurs in the scope of
        * `abs`, and `app` is potentially an application/instantiation of `abs`.
        *
        * For example:
        * ```rust
        * impl<A> Foo<A, A> {
        * //  ^^^ `abs`
-       * //      ^^^^^^^^^ `tm`
+       * //      ^^^^^^^^^ `constraint`
        *   fn bar(self) { ... }
        * }
        * // ...
        *    foo.bar();
        * // ^^^ `app`
        * ```
-       * Here `abs` introduces the type parameter `A` and `tm` occurs in the
-       * scope of `abs` (i.e., `A` is bound in `tm` by `abs`). On the last line,
+       * Here `abs` introduces the type parameter `A` and `constraint` occurs in the
+       * scope of `abs` (i.e., `A` is bound in `constraint` by `abs`). On the last line,
        * accessing the `bar` method of `foo` potentially instantiates the `impl`
        * block with a type argument for `A`.
        */
-      predicate potentialInstantiationOf(App app, TypeAbstraction abs, Constraint tm);
+      predicate potentialInstantiationOf(App app, TypeAbstraction abs, Constraint constraint);
 
       /**
        * Holds if `constraint` might occur as the third argument of
        * `potentialInstantiationOf`. Defaults to simply projecting the third
        * argument of `potentialInstantiationOf`.
        */
-      default predicate relevantTypeMention(Constraint tm) { potentialInstantiationOf(_, _, tm) }
+      default predicate relevantConstraint(Constraint constraint) {
+        potentialInstantiationOf(_, _, constraint)
+      }
     }
 
     /**
@@ -550,38 +552,48 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     {
       private import Input
 
-      /** Gets the `i`th path in `tm` per some arbitrary order. */
+      /** Gets the `i`th path in `constraint` per some arbitrary order. */
       pragma[nomagic]
-      private TypePath getNthPath(Constraint tm, int i) {
+      private TypePath getNthPath(Constraint constraint, int i) {
         result =
-          rank[i + 1](TypePath path | exists(tm.getTypeAt(path)) and relevantTypeMention(tm) | path)
+          rank[i + 1](TypePath path |
+            exists(constraint.getTypeAt(path)) and relevantConstraint(constraint)
+          |
+            path
+          )
+      }
+
+      pragma[nomagic]
+      private Type resolveTypeAt(App app, TypeAbstraction abs, Constraint constraint, TypePath path) {
+        potentialInstantiationOf(app, abs, constraint) and
+        result = constraint.getTypeAt(path)
       }
 
       pragma[nomagic]
       private Type resolveNthTypeAt(
-        App app, TypeAbstraction abs, Constraint tm, int i, TypePath path
+        App app, TypeAbstraction abs, Constraint constraint, int i, TypePath path
       ) {
-        potentialInstantiationOf(app, abs, tm) and
-        path = getNthPath(tm, i) and
-        result = tm.getTypeAt(path)
+        path = getNthPath(constraint, i) and
+        result = resolveTypeAt(app, abs, constraint, path)
       }
 
       pragma[nomagic]
       private predicate satisfiesConcreteTypesFromIndex(
-        App app, TypeAbstraction abs, Constraint tm, int i
+        App app, TypeAbstraction abs, Constraint constraint, int i
       ) {
         exists(Type t, TypePath path |
-          t = resolveNthTypeAt(app, abs, tm, i, path) and
+          t = resolveNthTypeAt(app, abs, constraint, i, path) and
           if t = abs.getATypeParameter() then any() else app.getTypeAt(path) = t
         ) and
         // Recurse unless we are at the first path
-        if i = 0 then any() else satisfiesConcreteTypesFromIndex(app, abs, tm, i - 1)
+        if i = 0 then any() else satisfiesConcreteTypesFromIndex(app, abs, constraint, i - 1)
       }
 
-      /** Holds if all the concrete types in `tm` also occur in `app`. */
+      /** Holds if all the concrete types in `constraint` also occur in `app`. */
       pragma[nomagic]
-      private predicate satisfiesConcreteTypes(App app, TypeAbstraction abs, Constraint tm) {
-        satisfiesConcreteTypesFromIndex(app, abs, tm, max(int i | exists(getNthPath(tm, i))))
+      private predicate satisfiesConcreteTypes(App app, TypeAbstraction abs, Constraint constraint) {
+        satisfiesConcreteTypesFromIndex(app, abs, constraint,
+          max(int i | exists(getNthPath(constraint, i))))
       }
 
       private TypeParameter getNthTypeParameter(TypeAbstraction abs, int i) {
@@ -594,70 +606,74 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       /**
-       * Gets the path to the `i`th occurrence of `tp` within `tm` per some
+       * Gets the path to the `i`th occurrence of `tp` within `constraint` per some
        * arbitrary order, if any.
        */
       pragma[nomagic]
-      private TypePath getNthTypeParameterPath(Constraint tm, TypeParameter tp, int i) {
+      private TypePath getNthTypeParameterPath(Constraint constraint, TypeParameter tp, int i) {
         result =
-          rank[i + 1](TypePath path | tp = tm.getTypeAt(path) and relevantTypeMention(tm) | path)
+          rank[i + 1](TypePath path |
+            tp = constraint.getTypeAt(path) and relevantConstraint(constraint)
+          |
+            path
+          )
       }
 
       pragma[nomagic]
       private predicate typeParametersEqualFromIndexBase(
-        App app, TypeAbstraction abs, Constraint tm, TypeParameter tp, TypePath path
+        App app, TypeAbstraction abs, Constraint constraint, TypeParameter tp, TypePath path
       ) {
-        path = getNthTypeParameterPath(tm, tp, 0) and
-        satisfiesConcreteTypes(app, abs, tm) and
+        path = getNthTypeParameterPath(constraint, tp, 0) and
+        satisfiesConcreteTypes(app, abs, constraint) and
         // no need to compute this predicate if there is only one path
-        exists(getNthTypeParameterPath(tm, tp, 1))
+        exists(getNthTypeParameterPath(constraint, tp, 1))
       }
 
       pragma[nomagic]
       private predicate typeParametersEqualFromIndex(
-        App app, TypeAbstraction abs, Constraint tm, TypeParameter tp, Type t, int i
+        App app, TypeAbstraction abs, Constraint constraint, TypeParameter tp, Type t, int i
       ) {
         exists(TypePath path |
           t = app.getTypeAt(path) and
           if i = 0
-          then typeParametersEqualFromIndexBase(app, abs, tm, tp, path)
+          then typeParametersEqualFromIndexBase(app, abs, constraint, tp, path)
           else (
-            typeParametersEqualFromIndex(app, abs, tm, tp, t, i - 1) and
-            path = getNthTypeParameterPath(tm, tp, i)
+            typeParametersEqualFromIndex(app, abs, constraint, tp, t, i - 1) and
+            path = getNthTypeParameterPath(constraint, tp, i)
           )
         )
       }
 
       private predicate typeParametersEqual(
-        App app, TypeAbstraction abs, Constraint tm, TypeParameter tp
+        App app, TypeAbstraction abs, Constraint constraint, TypeParameter tp
       ) {
-        satisfiesConcreteTypes(app, abs, tm) and
+        satisfiesConcreteTypes(app, abs, constraint) and
         tp = getNthTypeParameter(abs, _) and
         (
-          not exists(getNthTypeParameterPath(tm, tp, _))
+          not exists(getNthTypeParameterPath(constraint, tp, _))
           or
-          exists(int n | n = max(int i | exists(getNthTypeParameterPath(tm, tp, i))) |
+          exists(int n | n = max(int i | exists(getNthTypeParameterPath(constraint, tp, i))) |
             // If the largest index is 0, then there are no equalities to check as
             // the type parameter only occurs once.
-            if n = 0 then any() else typeParametersEqualFromIndex(app, abs, tm, tp, _, n)
+            if n = 0 then any() else typeParametersEqualFromIndex(app, abs, constraint, tp, _, n)
           )
         )
       }
 
       private predicate typeParametersHaveEqualInstantiationFromIndex(
-        App app, TypeAbstraction abs, Constraint tm, int i
+        App app, TypeAbstraction abs, Constraint constraint, int i
       ) {
         exists(TypeParameter tp | tp = getNthTypeParameter(abs, i) |
-          typeParametersEqual(app, abs, tm, tp) and
+          typeParametersEqual(app, abs, constraint, tp) and
           if i = 0
           then any()
-          else typeParametersHaveEqualInstantiationFromIndex(app, abs, tm, i - 1)
+          else typeParametersHaveEqualInstantiationFromIndex(app, abs, constraint, i - 1)
         )
       }
 
       /**
-       * Holds if `app` is a possible instantiation of `tm`. That is, by making
-       * appropriate substitutions for the free type parameters in `tm` given by
+       * Holds if `app` is a possible instantiation of `constraint`. That is, by making
+       * appropriate substitutions for the free type parameters in `constraint` given by
        * `abs`, it is possible to obtain `app`.
        *
        * For instance, if `A` and `B` are free type parameters we have:
@@ -668,10 +684,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * - `Pair<int, string>` is _not_ an instantiation of `Pair<string, string>`
        */
       pragma[nomagic]
-      predicate isInstantiationOf(App app, TypeAbstraction abs, Constraint tm) {
+      predicate isInstantiationOf(App app, TypeAbstraction abs, Constraint constraint) {
         // We only need to check equality if the concrete types are satisfied.
-        satisfiesConcreteTypes(app, abs, tm) and
-        // Check if all the places where the same type parameter occurs in `tm`
+        satisfiesConcreteTypes(app, abs, constraint) and
+        // Check if all the places where the same type parameter occurs in `constraint`
         // are equal in `app`.
         //
         // TODO: As of now this only checks equality at the root of the types
@@ -681,29 +697,21 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           not exists(getNthTypeParameter(abs, _))
           or
           exists(int n | n = max(int i | exists(getNthTypeParameter(abs, i))) |
-            typeParametersHaveEqualInstantiationFromIndex(app, abs, tm, n)
+            typeParametersHaveEqualInstantiationFromIndex(app, abs, constraint, n)
           )
         )
       }
 
       /**
-       * Holds if `app` is _not_ a possible instantiation of `tm`.
+       * Holds if `app` is _not_ a possible instantiation of `constraint`.
        */
       pragma[nomagic]
-      predicate isNotInstantiationOf(App app, TypeAbstraction abs, Constraint tm) {
-        // `app` and `tm` differ on a concrete type
+      predicate isNotInstantiationOf(App app, TypeAbstraction abs, Constraint constraint) {
+        // `app` and `constraint` differ on a concrete type
         exists(Type t, TypePath path |
-          t = resolveNthTypeAt(app, abs, tm, _, path) and
+          t = resolveTypeAt(app, abs, constraint, path) and
           not t = abs.getATypeParameter() and
-          not path.isEmpty() and
           app.getTypeAt(path) != t
-        )
-        or
-        // `app` uses inconsistent type parameter instantiations
-        exists(TypeParameter tp |
-          potentialInstantiationOf(app, abs, tm) and
-          app.getTypeAt(getNthTypeParameterPath(tm, tp, _)) !=
-            app.getTypeAt(getNthTypeParameterPath(tm, tp, _))
         )
       }
     }
@@ -956,7 +964,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           )
         }
 
-        predicate relevantTypeMention(TypeMentionTypeTree constraint) {
+        predicate relevantConstraint(TypeMentionTypeTree constraint) {
           rootTypesSatisfaction(_, _, _, constraint, _)
         }
       }
@@ -1121,29 +1129,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       bindingset[apos]
       bindingset[dpos]
       predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos);
-
-      /**
-       * Holds if matching an inferred type `t` at `path` inside an access at `apos`
-       * against the declaration `target` means that the type should be adjusted to
-       * `tAdj` at `pathAdj`.
-       *
-       * For example, in
-       *
-       * ```csharp
-       * void M(int? i) {}
-       * M(42);
-       * ```
-       *
-       * the inferred type of `42` is `int`, but it should be adjusted to `int?`
-       * when matching against `M`.
-       */
-      bindingset[apos, target, path, t]
-      default predicate adjustAccessType(
-        AccessPosition apos, Declaration target, TypePath path, Type t, TypePath pathAdj, Type tAdj
-      ) {
-        pathAdj = path and
-        tAdj = t
-      }
     }
 
     /**
@@ -1154,22 +1139,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
      */
     module MatchingWithEnvironment<MatchingWithEnvironmentInputSig Input> {
       private import Input
-
-      /**
-       * Holds if `a` targets `target` in environment `e` and the type for `apos` at `path`
-       * in `a` is `t` after adjustment by `target`.
-       */
-      pragma[nomagic]
-      private predicate adjustedAccessType(
-        Access a, AccessEnvironment e, AccessPosition apos, Declaration target, TypePath path,
-        Type t
-      ) {
-        target = a.getTarget(e) and
-        exists(TypePath path0, Type t0 |
-          t0 = a.getInferredType(e, apos, path0) and
-          adjustAccessType(apos, target, path0, t0, path, t)
-        )
-      }
 
       /**
        * Gets the type of the type argument at `path` in `a` that corresponds to
@@ -1189,6 +1158,16 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
       }
 
+      pragma[nomagic]
+      private predicate directTypeMatch0(
+        Access a, AccessEnvironment e, Declaration target, DeclarationPosition dpos,
+        TypePath pathToTypeParam, TypeParameter tp
+      ) {
+        not exists(getTypeArgument(a, target, tp, _)) and
+        tp = target.getDeclaredType(dpos, pathToTypeParam) and
+        target = a.getTarget(e)
+      }
+
       /**
        * Holds if the type `t` at `path` of `a` in environment `e` matches the type
        * parameter `tp` of `target`.
@@ -1197,11 +1176,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private predicate directTypeMatch(
         Access a, AccessEnvironment e, Declaration target, TypePath path, Type t, TypeParameter tp
       ) {
-        not exists(getTypeArgument(a, target, tp, _)) and
         exists(AccessPosition apos, DeclarationPosition dpos, TypePath pathToTypeParam |
-          tp = target.getDeclaredType(dpos, pathToTypeParam) and
+          directTypeMatch0(a, e, target, dpos, pathToTypeParam, tp) and
           accessDeclarationPositionMatch(apos, dpos) and
-          adjustedAccessType(a, e, apos, target, pathToTypeParam.appendInverse(path), t)
+          t = a.getInferredType(e, apos, pathToTypeParam.appendInverse(path))
         )
       }
 
@@ -1214,7 +1192,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           Access a, AccessEnvironment e, AccessPosition apos, Type base
         ) {
           exists(Declaration target, DeclarationPosition dpos |
-            adjustedAccessType(a, e, apos, target, _, _) and
+            target = a.getTarget(e) and
             accessDeclarationPositionMatch(apos, dpos) and
             declarationBaseType(target, dpos, base, _, _)
           )
@@ -1291,10 +1269,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         }
 
         private newtype TRelevantAccess =
-          MkRelevantAccess(
-            Access a, AccessEnvironment e, Declaration target, AccessPosition apos, TypePath path
-          ) {
-            relevantAccessConstraint(a, e, target, apos, path, _)
+          MkRelevantAccess(Access a, AccessEnvironment e, AccessPosition apos, TypePath path) {
+            relevantAccessConstraint(a, e, _, apos, path, _)
           }
 
         /**
@@ -1304,18 +1280,19 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         private class RelevantAccess extends MkRelevantAccess {
           Access a;
           AccessEnvironment e;
-          Declaration target;
           AccessPosition apos;
           TypePath path;
 
-          RelevantAccess() { this = MkRelevantAccess(a, e, target, apos, path) }
+          RelevantAccess() { this = MkRelevantAccess(a, e, apos, path) }
 
           Type getTypeAt(TypePath suffix) {
-            adjustedAccessType(a, e, apos, target, path.appendInverse(suffix), result)
+            result = a.getInferredType(e, apos, path.appendInverse(suffix))
           }
 
-          /** Holds if this relevant access should satisfy `constraint`. */
-          Type getConstraint() { relevantAccessConstraint(a, e, target, apos, path, result) }
+          /** Gets the constraint that this relevant access should satisfy. */
+          Type getConstraint(Declaration target) {
+            relevantAccessConstraint(a, e, target, apos, path, result)
+          }
 
           string toString() {
             result = a.toString() + ", " + apos.toString() + ", " + path.toString()
@@ -1328,7 +1305,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           SatisfiesConstraintInputSig<RelevantAccess>
         {
           predicate relevantConstraint(RelevantAccess at, Type constraint) {
-            constraint = at.getConstraint()
+            constraint = at.getConstraint(_)
           }
         }
 
@@ -1336,8 +1313,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           Access a, AccessEnvironment e, Declaration target, AccessPosition apos, TypePath prefix,
           Type constraint, TypePath path, Type t
         ) {
-          SatisfiesConstraint<RelevantAccess, SatisfiesConstraintInput>::satisfiesConstraintType(MkRelevantAccess(a,
-              e, target, apos, prefix), constraint, path, t)
+          exists(RelevantAccess ra |
+            ra = MkRelevantAccess(a, e, apos, prefix) and
+            SatisfiesConstraint<RelevantAccess, SatisfiesConstraintInput>::satisfiesConstraintType(ra,
+              constraint, path, t) and
+            constraint = ra.getConstraint(target)
+          )
         }
       }
 
@@ -1628,29 +1609,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       bindingset[apos]
       bindingset[dpos]
       predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos);
-
-      /**
-       * Holds if matching an inferred type `t` at `path` inside an access at `apos`
-       * against the declaration `target` means that the type should be adjusted to
-       * `tAdj` at `pathAdj`.
-       *
-       * For example, in
-       *
-       * ```csharp
-       * void M(int? i) {}
-       * M(42);
-       * ```
-       *
-       * the inferred type of `42` is `int`, but it should be adjusted to `int?`
-       * when matching against `M`.
-       */
-      bindingset[apos, target, path, t]
-      default predicate adjustAccessType(
-        AccessPosition apos, Declaration target, TypePath path, Type t, TypePath pathAdj, Type tAdj
-      ) {
-        pathAdj = path and
-        tAdj = t
-      }
     }
 
     /**
@@ -1663,8 +1621,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private module Inp implements MatchingWithEnvironmentInputSig {
         private import codeql.util.Unit
         import Input
-
-        predicate adjustAccessType = Input::adjustAccessType/6;
 
         class AccessEnvironment = Unit;
 
