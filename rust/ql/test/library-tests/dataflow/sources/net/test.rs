@@ -298,7 +298,7 @@ async fn test_tokio_tcpstream(case: i64) -> std::io::Result<()> {
 }
 
 async fn test_std_to_tokio_tcpstream() -> std::io::Result<()> {
-    // using tokio::io to fetch a web page
+    // using std::net and tokio::net together to fetch a web page
     let address = "example.com:80";
 
     // create the connection
