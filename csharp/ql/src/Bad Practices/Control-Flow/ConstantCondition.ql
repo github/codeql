@@ -31,6 +31,10 @@ module ConstCondInput implements ConstCond::InputSig<ControlFlow::BasicBlock> {
     Guards::Guards::ssaControlsBranchEdge(def, bb1, bb2, v)
   }
 
+  predicate ssaControls(SsaDefinition def, BasicBlock bb, GuardValue v) {
+    Guards::Guards::ssaControls(def, bb, v)
+  }
+
   import Guards::Guards::InternalUtil
 }
 

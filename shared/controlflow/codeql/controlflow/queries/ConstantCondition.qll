@@ -55,6 +55,12 @@ signature module InputSig<TypSig BasicBlock> {
    */
   predicate ssaControlsBranchEdge(SsaDefinition def, BasicBlock bb1, BasicBlock bb2, GuardValue v);
 
+  /**
+   * Holds if `def` evaluating to `v` controls the basic block `bb`.
+   * That is, execution of `bb` implies that `def` evaluated to `v`.
+   */
+  predicate ssaControls(SsaDefinition def, BasicBlock bb, GuardValue v);
+
   bindingset[gv1, gv2]
   predicate disjointValues(GuardValue gv1, GuardValue gv2);
 }
@@ -70,23 +76,35 @@ module Make<LocationSig Location, BB::CfgSig<Location> Cfg, InputSig<Cfg::BasicB
     ssaControlsBranchEdge(def, bb1, bb2, v)
   }
 
-  query predicate problems(Guard g, string msg, Guard reason, string reasonMsg) {
-    exists(
-      BasicBlock bb, GuardValue gv, GuardValue dual, SsaDefinition def, GuardValue v1,
-      GuardValue v2, BasicBlock bb1, BasicBlock bb2
-    |
+  /** Holds if `g` cannot have value `gv` in `bb` due to `def` controlling `bb` with value `v2`. */
+  pragma[nomagic]
+  private predicate impossibleValue(
+    Guard g, GuardValue gv, SsaDefinition def, BasicBlock bb, GuardValue v2
+  ) {
+    exists(GuardValue dual, GuardValue v1 |
       // If `g` in `bb` evaluates to `gv` then `def` has value `v1`,
       ssaControlsGuardEdge(def, v1, g, bb, _, gv) and
       dual = gv.getDualValue() and
       not gv.isThrowsException() and
       not dual.isThrowsException() and
-      // but `def` controls `bb` with value `v2` via the guard `reason` taking the branch `bb1` to `bb2`,
+      // but `def` controls `bb` with value `v2` via some guard,
+      ssaControls(def, bb, v2) and
+      // and `v1` and `v2` are disjoint so `g` cannot be `gv`.
+      disjointValues(v1, v2)
+    )
+  }
+
+  query predicate problems(Guard g, string msg, Guard reason, string reasonMsg) {
+    exists(
+      BasicBlock bb, GuardValue gv, SsaDefinition def, GuardValue v2, BasicBlock bb1, BasicBlock bb2
+    |
+      // `g` cannot have value `gv` in `bb` due to `def` controlling `bb` with value `v2`,
+      impossibleValue(g, gv, def, bb, v2) and
+      // and this is because of `reason` taking the branch `bb1` to `bb2`,
       ssaControlsGuardEdge(def, v2, reason, bb1, bb2, _) and
       dominatingEdge(bb1, bb2) and
       bb2.dominates(bb) and
-      // and `v1` and `v2` are disjoint so `g` cannot be `gv`.
-      disjointValues(v1, v2) and
-      msg = "Condition is always " + dual + " because of $@." and
+      msg = "Condition is always " + gv.getDualValue() + " because of $@." and
       reasonMsg = reason.toString()
     )
   }

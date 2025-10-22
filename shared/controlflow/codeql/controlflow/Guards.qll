@@ -975,6 +975,7 @@ module Make<
      * Holds if `def` evaluating to `v` controls the basic block `bb`.
      * That is, execution of `bb` implies that `def` evaluated to `v`.
      */
+    pragma[nomagic]
     predicate ssaControls(SsaDefinition def, BasicBlock bb, GuardValue v) {
       exists(BasicBlock guard, BasicBlock succ |
         ssaControlsBranchEdge(def, guard, succ, v) and
