@@ -804,6 +804,16 @@ private class ReactRouterLocationSource extends DOM::LocationSource::Range {
   }
 }
 
+private class UseRefDomValueSource extends DOM::DomValueSource::Range {
+  UseRefDomValueSource() {
+    exists(DataFlow::PropRead current, UseRefStep step, string prop | current = this |
+      step.step(_, current) and
+      current.mayHavePropertyName(prop) and
+      prop = "current"
+    )
+  }
+}
+
 /**
  * Gets a reference to a function which, if called with a React component, returns wrapped
  * version of that component, which we model as a direct reference to the underlying component.
