@@ -59,6 +59,7 @@ class AbstractValue extends TAbstractValue {
    * Gets the Boolean value some concrete value represented by this
    * abstract value coerces to.
    */
+  pragma[nomagic]
   abstract boolean getBooleanValue();
 
   /**
