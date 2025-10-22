@@ -1,0 +1,17 @@
+multipleCallTargets
+| test.rs:59:62:59:77 | ...::from(...) |
+| test.rs:66:58:66:73 | ...::from(...) |
+| test.rs:399:31:399:88 | ...::read(...) |
+| test.rs:403:31:403:55 | reader.read(...) |
+| test.rs:437:26:437:43 | reader2.fill_buf() |
+| test.rs:457:31:457:89 | ...::read(...) |
+| test.rs:461:31:461:56 | reader2.read(...) |
+| test.rs:479:26:479:43 | reader2.fill_buf() |
+| test.rs:486:31:486:66 | reader2.read_until(...) |
+| test.rs:493:31:493:58 | reader2.read_line(...) |
+| test.rs:500:31:500:62 | reader2.read_to_end(...) |
+| test.rs:506:36:506:50 | reader2.lines() |
+| test.rs:507:18:507:36 | lines_stream.next() |
+| test.rs:508:36:508:54 | lines_stream.next() |
+| test.rs:519:50:519:66 | ...::from(...) |
+| test.rs:519:50:519:66 | ...::from(...) |

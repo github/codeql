@@ -1,0 +1,9 @@
+multipleCallTargets
+| test.rs:13:14:13:23 | a.as_str() |
+| test.rs:13:14:13:23 | a.as_str() |
+| test.rs:14:14:14:25 | a.as_bytes() |
+| test.rs:14:14:14:25 | a.as_bytes() |
+| test.rs:101:14:101:23 | a.as_str() |
+| test.rs:102:14:102:25 | a.as_bytes() |
+| test.rs:158:14:158:23 | a.as_str() |
+| test.rs:159:14:159:25 | a.as_bytes() |

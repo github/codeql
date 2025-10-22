@@ -1,0 +1,3 @@
+multipleCallTargets
+| test.rs:266:22:266:43 | file.read(...) |
+| test.rs:275:22:275:41 | f1.read(...) |
