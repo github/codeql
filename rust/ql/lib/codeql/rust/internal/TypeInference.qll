@@ -1066,7 +1066,7 @@ private module MethodResolution {
   }
 
   /**
-   * A method call.
+   * A (potential) method call.
    *
    * This is either:
    *
@@ -1079,6 +1079,9 @@ private module MethodResolution {
    *    for `Add::add(x, y)`.
    *
    * Note that only in case 1 and 2 is auto-dereferencing and borrowing allowed.
+   *
+   * Note also that only case 4 is a _potential_ method call; in all other cases, we are
+   * guaranteed that the target is a method.
    *
    * [1]: https://doc.rust-lang.org/std/ops/trait.Index.html
    */
@@ -1137,10 +1140,6 @@ private module MethodResolution {
     private predicate hasIncompatibleTarget(ImplOrTraitItemNode i, string derefChain, boolean borrow) {
       ReceiverIsInstantiationOfSelfParam::argIsNotInstantiationOf(MkMethodCallCand(this, derefChain,
           borrow), i, _)
-      or
-      TypeQualifierIsInstantiationOfImplSelf::isNotInstantiationOf(this, i, _) and
-      derefChain = "" and
-      borrow = false
     }
 
     /**
@@ -1168,8 +1167,6 @@ private module MethodResolution {
       // todo: also check that all blanket implementation candidates are incompatible
       forall(ImplOrTraitItemNode i |
         methodCallNonBlanketCandidate(this, _, i, _, strippedTypePath, strippedType)
-        or
-        this.(MethodCallCallExpr).hasTypeQualifiedCandidate(i)
       |
         this.hasIncompatibleTarget(i, derefChain, borrow)
       )
@@ -1312,7 +1309,7 @@ private module MethodResolution {
      *
      * When this is the case, we still want to check that the type qualifier
      * is an instance of the type being implemented, which is done in
-     * `MethodCallCallExprIsInstantiationOfInput`.
+     * `TypeQualifierIsInstantiationOfImplSelfInput`.
      */
     pragma[nomagic]
     predicate hasTypeQualifiedCandidate(ImplItemNode impl) {
@@ -1333,7 +1330,7 @@ private module MethodResolution {
       result = this.getArgList().getArg(pos.asPosition() + 1)
     }
 
-    // needed for `MethodCallCallExprIsInstantiationOfInput`
+    // needed for `TypeQualifierIsInstantiationOfImplSelfInput`
     Type getTypeAt(TypePath path) {
       result = substituteLookupTraits(getCallExprTypeQualifier(this, path))
     }
@@ -1558,8 +1555,8 @@ private module MethodResolution {
   /**
    * A configuration for matching the type qualifier of a method call
    * against the type being implemented in an `impl` block. For example,
-   * in `Q::m(x)`, we check that the type of `Q` is an instance of the
-   * type being implemented.
+   * in `Foo::<Bar>::m(x)`, we check that the type `Foo<Bar>` is an
+   * instance of the type being implemented.
    */
   private module TypeQualifierIsInstantiationOfImplSelfInput implements
     IsInstantiationOfInputSig<MethodCallCallExpr, TypeMentionTypeTree>
@@ -1909,7 +1906,7 @@ private module NonMethodResolution {
 
   private module BlanketTraitIsVisible = TraitIsVisible<blanketCallTraitCandidate/2>;
 
-  /** A non-method call, `f(x)`. */
+  /** A (potential) non-method call, `f(x)`. */
   final class NonMethodCall extends CallExpr {
     NonMethodCall() {
       // even if a function cannot be resolved by path resolution, it may still
