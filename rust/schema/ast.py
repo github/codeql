@@ -164,7 +164,7 @@ class CastExpr(Expr, ):
 
 class ClosureExpr(Expr, ):
     attrs: list["Attr"] | child
-    body: optional["Expr"] | child
+    closure_body: optional["Expr"] | child
     for_binder: optional["ForBinder"] | child
     is_async: predicate
     is_const: predicate
@@ -241,7 +241,7 @@ class FieldExpr(Expr, ):
 class Function(AssocItem, ExternItem, Item, ):
     abi: optional["Abi"] | child
     attrs: list["Attr"] | child
-    body: optional["BlockExpr"] | child
+    function_body: optional["BlockExpr"] | child
     generic_param_list: optional["GenericParamList"] | child
     is_async: predicate
     is_const: predicate
