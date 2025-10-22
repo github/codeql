@@ -1381,7 +1381,7 @@ private module MethodResolution {
       exists(mc.getACandidateReceiverTypeAt(derefChain, borrow, _))
     }
 
-  /** A method call tagged with a candidate receiver type. */
+  /** A method call with a dereference chain and a potential borrow. */
   private class MethodCallCand extends MkMethodCallCand {
     MethodCall mc_;
     string derefChain;

@@ -77,7 +77,7 @@ private newtype TAssocFunctionType =
     exists(pos.getTypeMention(f))
   } or
   MkInheritedAssocFunctionType(
-    Function f, FunctionPosition pos, TypeMention parentMention, ImplOrTraitItemNode parent,
+    Function f, FunctionPosition pos, TypeMention parentMention, TraitItemNode parent,
     ImplOrTraitItemNode i
   ) {
     exists(AssocFunctionType inherited |
@@ -132,7 +132,7 @@ class AssocFunctionType extends TAssocFunctionType {
   }
 
   private predicate isInheritedFunctionType(
-    Function f, FunctionPosition pos, TypeMention parentMention, ImplOrTraitItemNode parent,
+    Function f, FunctionPosition pos, TypeMention parentMention, TraitItemNode parent,
     ImplOrTraitItemNode i
   ) {
     this = MkInheritedAssocFunctionType(f, pos, parentMention, parent, i)
@@ -157,7 +157,7 @@ class AssocFunctionType extends TAssocFunctionType {
     )
     or
     exists(
-      Function f, FunctionPosition pos, TypeMention parentMention, ImplOrTraitItemNode parent,
+      Function f, FunctionPosition pos, TypeMention parentMention, TraitItemNode parent,
       AssocFunctionType parentType, ImplOrTraitItemNode i
     |
       this.isInheritedFunctionType(f, pos, parentMention, parent, i) and
