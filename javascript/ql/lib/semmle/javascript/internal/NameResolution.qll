@@ -73,6 +73,7 @@ module NameResolution {
    *
    * May also include some type-specific steps in cases where this is harmless when tracking values.
    */
+  pragma[nomagic]
   private predicate commonStep(Node node1, Node node2) {
     // Import paths are part of the graph and has an incoming edge from the imported module, if found.
     // This ensures we can also use the PathExpr as a source when working with external (unresolved) modules.
@@ -187,6 +188,7 @@ module NameResolution {
   /**
    * Holds if there is a read from `node1` to `node2` that accesses the member `name`.
    */
+  pragma[nomagic]
   predicate readStep(Node node1, string name, Node node2) {
     exists(QualifiedTypeAccess access |
       node1 = access.getQualifier() and
@@ -321,6 +323,7 @@ module NameResolution {
     /**
      * Gets the exported member of `mod` named `name`.
      */
+    pragma[nomagic]
     Node getModuleExport(ModuleLike mod, string name) {
       exists(ExportDeclaration exprt |
         mod = exprt.getContainer() and
@@ -362,6 +365,7 @@ module NameResolution {
      * Holds if `value` is stored in `target.prop`. Only needs to recognise assignments
      * that are also recognised by JSDoc tooling such as the Closure compiler.
      */
+    pragma[nomagic]
     private predicate storeToVariable(Expr value, string prop, LocalVariableLike target) {
       exists(AssignExpr assign |
         // target.name = value
@@ -374,6 +378,7 @@ module NameResolution {
     }
 
     /** Steps that only apply for this configuration. */
+    pragma[nomagic]
     private predicate specificStep(Node node1, Node node2) {
       exists(LexicalName var | S::isRelevantVariable(var) |
         node1.(LexicalDecl).getALexicalName() = var and
@@ -406,6 +411,7 @@ module NameResolution {
     /** Helps track flow from a particular set of source nodes. */
     module Track<nodeSig/1 isSource> {
       /** Gets the set of nodes reachable from `source`. */
+      pragma[nomagic]
       Node track(Node source) {
         isSource(source) and
         result = source
@@ -419,6 +425,7 @@ module NameResolution {
     /** Helps track flow from a particular set of source nodes. */
     module TrackNode<AstNodeSig Source> {
       /** Gets the set of nodes reachable from `source`. */
+      pragma[nomagic]
       Node track(Source source) {
         result = source
         or
@@ -482,6 +489,7 @@ module NameResolution {
    *
    * Unlike `trackModule`, this is intended to track uses of external packages.
    */
+  pragma[nomagic]
   predicate nodeRefersToModule(Node node, string mod, string qualifiedName) {
     exists(Expr path |
       path = any(Import imprt).getImportedPathExpr() or
