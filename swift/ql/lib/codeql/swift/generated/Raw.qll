@@ -227,7 +227,6 @@ module Raw {
      * INTERNAL: Do not use.
      *
      * TODO: Swift 6.2 update with UnresolvedApply and Apply
-     * TODO: Swift 6.2 make sure to adjust in dbscheme upgrade/downgrade
      *
      * This is 5 for properties, 6 for array and dictionary subscripts, 7 for optional forcing
      * (`!`), 8 for optional chaining (`?`), 9 for implicit optional wrapping, 10 for `self`,
