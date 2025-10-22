@@ -1,10 +1,9 @@
 /**
  * @name Unknown key derivation function iteration count
  * @description Detects key derivation operations with an unknown iteration count.
- * @id java/quantum/unknown-kdf-iteration-count
+ * @id java/quantum/examples/unknown-kdf-iteration-count
  * @kind problem
- * @precision medium
- * @severity warning
+ * @problem.severity error
  * @tags quantum
  *       experimental
  */

@@ -1,0 +1,14 @@
+#select
+| BadMacUse.java:76:44:76:52 | plaintext | BadMacUse.java:63:82:63:97 | plaintext : byte[] | BadMacUse.java:76:44:76:52 | plaintext | Incorrect MAC usage: Encryption plaintext also used for MAC. Flow shows plaintext to final use through intermediate mac or encryption operation here $@ | BadMacUse.java:71:42:71:50 | plaintext | plaintext |
+edges
+| BadMacUse.java:63:82:63:97 | plaintext : byte[] | BadMacUse.java:71:42:71:50 | plaintext : byte[] | provenance |  |
+| BadMacUse.java:71:42:71:50 | plaintext : byte[] | BadMacUse.java:71:42:71:50 | plaintext : byte[] | provenance | Config |
+| BadMacUse.java:71:42:71:50 | plaintext : byte[] | BadMacUse.java:76:44:76:52 | plaintext | provenance |  |
+nodes
+| BadMacUse.java:63:82:63:97 | plaintext : byte[] | semmle.label | plaintext : byte[] |
+| BadMacUse.java:71:42:71:50 | plaintext : byte[] | semmle.label | plaintext : byte[] |
+| BadMacUse.java:71:42:71:50 | plaintext : byte[] | semmle.label | plaintext : byte[] |
+| BadMacUse.java:76:44:76:52 | plaintext | semmle.label | plaintext |
+subpaths
+testFailures
+| BadMacUse.java:50:56:50:65 | // $Source | Missing result: Source |
