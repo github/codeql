@@ -6,6 +6,7 @@
 
 import rust
 import codeql.util.ReportStats
+import codeql.rust.internal.TypeInference as TypeInference
 
 module CallTargetStats implements StatsSig {
   int getNumberOfOk() { result = count(CallExprBase c | exists(c.getStaticTarget())) }
@@ -41,6 +42,20 @@ module MacroCallTargetStats implements StatsSig {
   string getNotOkText() { result = "macro calls with missing call target" }
 }
 
+private predicate hasGoodType(Expr e) { exists(TypeInference::inferType(e, _)) }
+
+module ExprTypeStats implements StatsSig {
+  int getNumberOfOk() { result = count(Expr e | e.fromSource() and hasGoodType(e)) }
+
+  int getNumberOfNotOk() { result = count(Expr e | e.fromSource() and not hasGoodType(e)) }
+
+  string getOkText() { result = "expressions with known type" }
+
+  string getNotOkText() { result = "expressions with unknown type" }
+}
+
 module CallTargetStatsReport = ReportStats<CallTargetStats>;
 
 module MacroCallTargetStatsReport = ReportStats<MacroCallTargetStats>;
+
+module ExprTypeStatsReport = ReportStats<ExprTypeStats>;
