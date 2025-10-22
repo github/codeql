@@ -1,5 +1,5 @@
 private import codeql.util.Void
-private import binary
+private import semmle.code.binary.ast.ir.IR
 private import DataFlowImpl
 
 abstract class Content extends TContent {

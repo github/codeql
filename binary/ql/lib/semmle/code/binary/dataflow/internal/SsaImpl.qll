@@ -1,132 +1,27 @@
-private import binary
+private import semmle.code.binary.ast.ir.IR
 private import codeql.ssa.Ssa as SsaImplCommon
-private import semmle.code.binary.controlflow.BasicBlock
 
-pragma[nomagic]
-private predicate isClear(Instruction instr) {
-  exists(Register r, XorInstruction xor |
-    instr = xor and
-    pragma[only_bind_out](xor.getOperand(0).(RegisterOperand).getRegister()) = r and
-    pragma[only_bind_out](xor.getOperand(1).(RegisterOperand).getRegister()) = r
-  )
+private predicate variableReadCertain(BasicBlock bb, int i, Operand va, Variable v) {
+  bb.getNode(i).asOperand() = va and
+  va = v.getAnAccess()
 }
 
 module SsaInput implements SsaImplCommon::InputSig<Location, BinaryCfg::BasicBlock> {
-  private newtype TSourceVariable =
-    TRegisterSourceVariable(Register reg, Function f) {
-      exists(Instruction instr |
-        instr.getAnOperand() = reg.getAnAccess().getDirectUse() and
-        not isClear(instr) and
-        instr.getEnclosingFunction() = f
-      )
-    } or
-    TMemorySourceVariable(Register reg, int offset, Function f) {
-      exists(MemoryOperand mem |
-        mem.getEnclosingFunction() = f and
-        // This instruction does not actually load anything. It's often used in a prologue
-        not mem.getUse() instanceof LeaInstruction and
-        mem.getBaseRegister().getTarget() = reg and
-        mem.getDisplacementValue() = offset
-      |
-        reg instanceof RspRegister
-        or
-        reg instanceof RbpRegister
-      )
-    }
-
-  class SourceVariable extends TSourceVariable {
-    string toString() {
-      exists(Register reg, int offset |
-        this.asParameter(reg, offset, _)
-        or
-        this.asLocalStackVariable(reg, offset, _)
-      |
-        result = reg.toString() + "+" + offset.toString()
-      )
-      or
-      exists(Register reg | this.asLocalRegisterVariable(reg, _) and result = reg.toString())
-    }
-
-    predicate asParameter(Register reg, int offset, Function f) {
-      this = TMemorySourceVariable(reg, offset, f) and
-      offset > 0
-    }
-
-    predicate asLocalStackVariable(Register reg, int offset, Function f) {
-      this = TMemorySourceVariable(reg, offset, f) and
-      offset < 0
-    }
-
-    predicate asLocalRegisterVariable(Register reg, Function f) {
-      this = TRegisterSourceVariable(reg, f)
-    }
-
-    Location getLocation() { result instanceof EmptyLocation }
-  }
-
-  bindingset[instr]
-  pragma[inline_late]
-  private Function getInstructionEnclosingFunctionLate(Instruction instr) {
-    result.getABasicBlock() = instr.getBasicBlock()
-  }
-
-  pragma[nomagic]
-  private RegisterAccess getARegisterAccessInFunction(Register r, Function f) {
-    result.getEnclosingFunction() = f and
-    result.getTarget() = r
-  }
-
-  bindingset[r, f]
-  pragma[inline_late]
-  private predicate asLocalRegisterVariableLate(SourceVariable v, Register r, Function f) {
-    v.asLocalRegisterVariable(r, f)
-  }
+  class SourceVariable = Variable;
 
   predicate variableWrite(BinaryCfg::BasicBlock bb, int i, SourceVariable v, boolean certain) {
-    certain = true and
-    exists(Instruction instr, Function f |
-      instr = bb.getInstruction(i) and
-      getInstructionEnclosingFunctionLate(instr) = f
-    |
-      exists(Register r |
-        asLocalRegisterVariableLate(v, r, f) and
-        instr.(MovInstruction).getOperand(0) = getARegisterAccessInFunction(r, f).getDirectUse()
-        or
-        exists(int offset, MemoryOperand mem |
-          v.asLocalStackVariable(r, offset, f) and
-          instr.(MovInstruction).getOperand(0) = mem and
-          mem.getBaseRegister() = getARegisterAccessInFunction(r, f) and
-          mem.getDisplacementValue() = offset
-        )
-      )
-    )
-  }
-
-  additional predicate variableRead(
-    BinaryCfg::BasicBlock bb, int i, SourceVariable v, Operand op, boolean certain
-  ) {
-    certain = true and
-    exists(Instruction instr, Function f |
-      instr = bb.getInstruction(i) and
-      getInstructionEnclosingFunctionLate(instr) = f and
-      op = instr.(MovInstruction).getOperand(1)
-    |
-      exists(Register r |
-        asLocalRegisterVariableLate(v, r, f) and
-        op = getARegisterAccessInFunction(r, f).getDirectUse()
-        or
-        exists(int offset, MemoryOperand mem |
-          v.asLocalStackVariable(r, offset, f) and
-          op = mem and
-          mem.getBaseRegister() = getARegisterAccessInFunction(r, f) and
-          mem.getDisplacementValue() = offset
-        )
-      )
-    )
+    v = bb.getNode(i).asInstruction().getResultVariable() and
+    certain = true
+    // or
+    // certain = true and
+    // bb.isFunctionEntryBasicBlock() and
+    // i = -1 and
+    // // TODO: Generalize beyond rsp
+    // v.(RegisterVariable).getRegister().toString() = "rsp"
   }
 
   predicate variableRead(BinaryCfg::BasicBlock bb, int i, SourceVariable v, boolean certain) {
-    variableRead(bb, i, v, _, certain)
+    variableReadCertain(bb, i, _, v) and certain = true
   }
 }
 
@@ -136,23 +31,31 @@ class Definition = Impl::Definition;
 
 class WriteDefinition = Impl::WriteDefinition;
 
+class UncertainWriteDefinition = Impl::UncertainWriteDefinition;
+
 class PhiDefinition = Impl::PhiNode;
 
 cached
 private module Cached {
   cached
-  Instruction getARead(Definition def) {
-    exists(SsaInput::SourceVariable v, BasicBlock bb, int i |
+  predicate variableWriteActual(BasicBlock bb, int i, Variable v, Instruction write) {
+    SsaInput::variableWrite(bb, i, v, true) and
+    bb.getNode(i).asInstruction() = write
+  }
+
+  cached
+  Operand getARead(Definition def) {
+    exists(Variable v, BasicBlock bb, int i |
       Impl::ssaDefReachesRead(v, def, bb, i) and
-      SsaInput::variableRead(bb, i, v, true) and
-      result = bb.getInstruction(i)
+      variableReadCertain(bb, i, result, v)
     )
   }
 
-  // cached
-  // Definition phiHasInputFromBlock(PhiDefinition phi, BasicBlock bb) {
-  //   Impl::phiHasInputFromBlock(phi, result, bb)
-  // }
+  cached
+  Definition phiHasInputFromBlock(PhiDefinition phi, BasicBlock bb) {
+    Impl::phiHasInputFromBlock(phi, result, bb)
+  }
+
   cached
   module DataFlowIntegration {
     import DataFlowIntegrationImpl
@@ -168,39 +71,81 @@ private module Cached {
     predicate localMustFlowStep(SsaInput::SourceVariable v, Node nodeFrom, Node nodeTo) {
       DataFlowIntegrationImpl::localMustFlowStep(v, nodeFrom, nodeTo)
     }
+
+    signature predicate guardChecksSig(ControlFlowNode g, ControlFlowNode e, boolean branch);
+
+    cached // nothing is actually cached
+    module BarrierGuard<guardChecksSig/3 guardChecks> {
+      private predicate guardChecksAdjTypes(
+        DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e,
+        DataFlowIntegrationInput::GuardValue branch
+      ) {
+        guardChecks(g, e, branch)
+      }
+
+      private Node getABarrierNodeImpl() {
+        result = DataFlowIntegrationImpl::BarrierGuard<guardChecksAdjTypes/3>::getABarrierNode()
+      }
+
+      predicate getABarrierNode = getABarrierNodeImpl/0;
+    }
   }
 }
 
 import Cached
+private import semmle.code.binary.dataflow.Ssa
 
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
-  private import DataFlowImpl as DataFlowImpl
-  private import codeql.util.Void
+  private import codeql.util.Boolean
 
-  class Expr extends Instruction {
-    predicate hasCfgNode(BinaryCfg::BasicBlock bb, int i) { this = bb.getInstruction(i) }
+  class Expr extends ControlFlowNode {
+    predicate hasCfgNode(BinaryCfg::BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 
-  Expr getARead(Definition def) { result = Cached::getARead(def) }
+  Expr getARead(Definition def) { result.asOperand() = Cached::getARead(def) }
 
-  class GuardValue = Void;
+  predicate ssaDefHasSource(WriteDefinition def) { none() }
 
-  class Guard extends Instruction {
+  predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) { none() }
+
+  predicate includeWriteDefsInFlowStep() { any() }
+
+  class GuardValue = Boolean;
+
+  class Guard extends ControlFlowNode {
+    /**
+     * Holds if the evaluation of this guard to `branch` corresponds to the edge
+     * from `bb1` to `bb2`.
+     */
     predicate hasValueBranchEdge(
-      BinaryCfg::BasicBlock bb1, BinaryCfg::BasicBlock bb2, GuardValue val
+      BinaryCfg::BasicBlock bb1, BinaryCfg::BasicBlock bb2, GuardValue branch
     ) {
-      none()
+      exists(ConditionalSuccessor s |
+        this = bb1.getANode() and
+        bb2 = bb1.getASuccessor(s) and
+        s.getValue() = branch
+      )
     }
 
+    /**
+     * Holds if this guard evaluating to `branch` controls the control-flow
+     * branch edge from `bb1` to `bb2`. That is, following the edge from
+     * `bb1` to `bb2` implies that this guard evaluated to `branch`.
+     */
     predicate valueControlsBranchEdge(
-      BinaryCfg::BasicBlock bb1, BinaryCfg::BasicBlock bb2, GuardValue val
+      BinaryCfg::BasicBlock bb1, BinaryCfg::BasicBlock bb2, GuardValue branch
     ) {
-      none()
+      this.hasValueBranchEdge(bb1, bb2, branch)
     }
   }
 
-  predicate guardDirectlyControlsBlock(Guard guard, BinaryCfg::BasicBlock bb, GuardValue val) {
-    none()
+  /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
+  predicate guardDirectlyControlsBlock(Guard guard, BinaryCfg::BasicBlock bb, GuardValue branch) {
+    exists(ConditionBasicBlock conditionBlock, ConditionalSuccessor s |
+      guard = conditionBlock.getLastNode() and
+      s.getValue() = branch and
+      conditionBlock.edgeDominates(bb, s)
+    )
   }
 }
 

@@ -1939,8 +1939,11 @@ instruction(
   unique int id: @instruction,
   int a : int ref,
   int b : int ref,
-  int machine_mode : int ref,
-  int mnemonic : int ref,
+  int mnemonic : int ref
+);
+
+instruction_length(
+  unique int instr: @instruction ref,
   int length : int ref
 );
 
@@ -2074,4 +2077,19 @@ text_section(
 
 rdata_section(
   unique int id: @rdata_section
+);
+
+export_table(
+  unique int id: @export_table,
+  string name: string ref,
+  int ordinal_base: int ref
+);
+
+#keyset[export_table, ordinal]
+export_table_entry(
+  unique int id: @export_table_entry,
+  int export_table: @export_table ref,
+  int ordinal: int ref,
+  string name: string ref,
+  int address: int ref
 );

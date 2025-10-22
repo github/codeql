@@ -7,6 +7,58 @@ signature module InstructionInputSig {
     string toString();
   }
 
+  class BaseOperand extends @operand {
+    string toString();
+  }
+
+  class BaseRegister {
+    string toString();
+  }
+
+  class BaseRipRegister extends BaseRegister;
+
+  class BaseRspRegister extends BaseRegister;
+
+  class BaseRbpRegister extends BaseRegister;
+
+  class BaseRegisterAccess {
+    string toString();
+
+    BaseRegister getTarget();
+  }
+
+  class BaseUnusedOperand extends BaseOperand;
+
+  class BaseRegisterOperand extends BaseOperand {
+    BaseRegisterAccess getAccess();
+  }
+
+  class BaseMemoryOperand extends BaseOperand {
+    predicate hasDisplacement();
+
+    BaseRegisterAccess getSegmentRegister();
+
+    BaseRegisterAccess getBaseRegister();
+
+    BaseRegisterAccess getIndexRegister();
+
+    int getScaleFactor();
+
+    int getDisplacementValue();
+  }
+
+  class BasePointerOperand extends BaseOperand;
+
+  class BaseImmediateOperand extends BaseOperand {
+    int getValue();
+
+    predicate isSigned();
+
+    predicate isAddress();
+
+    predicate isRelative();
+  }
+
   default BaseInstruction getCallTarget(BaseInstruction call) { none() }
 
   default BaseInstruction getJumpTarget(BaseInstruction jump) { none() }
@@ -20,7 +72,7 @@ module MakeInstructions<InstructionInputSig InstructionInput> {
   class Instruction extends FinalBase {
     QlBuiltins::BigInt getIndex() {
       exists(int a, int b |
-        instruction(this, a, b, _, _, _) and
+        instruction(this, a, b, _) and
         result = a.toBigInt() * "4294967297".toBigInt() + b.toBigInt()
       )
     }
@@ -29,14 +81,68 @@ module MakeInstructions<InstructionInputSig InstructionInput> {
       result = any(Sections::TextSection s).getVirtualAddress().toBigInt() + this.getIndex()
     }
 
-    int getLength() { instruction(this, _, _, _, _, result) }
+    int getLength() { instruction_length(this, result) }
 
     Location getLocation() { result instanceof EmptyLocation }
 
     Instruction getASuccessor() {
       result.getIndex() = this.getIndex() + this.getLength().toBigInt()
     }
+
+    Operand getAnOperand() { result = this.getOperand(_) }
+
+    Operand getOperand(int index) { operand(result, this, index, _) }
   }
+
+  final private class FinalBaseOperand = BaseOperand;
+
+  final class Operand extends FinalBaseOperand {
+    Instruction getUse() { this = result.getAnOperand() }
+
+    int getIndex() { this = this.getUse().getOperand(result) }
+  }
+
+  final private class FinalRegister = BaseRegister;
+
+  class Register extends FinalRegister { }
+
+  final private class FinalRipRegister = BaseRipRegister;
+
+  class RipRegister extends FinalRipRegister { }
+
+  final private class FinalRspRegister = BaseRspRegister;
+
+  class RspRegister extends FinalRspRegister { }
+
+  final private class FinalRbpRegister = BaseRbpRegister;
+
+  class RbpRegister extends FinalRbpRegister { }
+
+  final private class FinalRegisterAccess = BaseRegisterAccess;
+
+  class RegisterAccess extends FinalRegisterAccess { }
+
+  final private class FinalImmediateOperand = BaseImmediateOperand;
+
+  final class ImmediateOperand extends Operand, FinalImmediateOperand { }
+
+  final private class FinalUnusedOperand = BaseUnusedOperand;
+
+  final class UnusedOperand extends Operand, FinalUnusedOperand { }
+
+  final private class FinalBaseRegisterOperand = BaseRegisterOperand;
+
+  final class RegisterOperand extends Operand, FinalBaseRegisterOperand {
+    BaseRegister getRegister() { result = this.getAccess().getTarget() }
+  }
+
+  final private class FinalBaseMemoryOperand = BaseMemoryOperand;
+
+  final class MemoryOperand extends Operand, FinalBaseMemoryOperand { }
+
+  final private class FinalBasePointerOperand = BasePointerOperand;
+
+  final class PointerOperand extends Operand, FinalBasePointerOperand { }
 
   class Aaa extends Instruction, @aaa { }
 
@@ -3835,6 +3941,75 @@ module MakeInstructions<InstructionInputSig InstructionInput> {
 private module InstructionInput0 implements InstructionInputSig {
   class BaseInstruction extends @instruction {
     string toString() { instruction_string(this, result) }
+  }
+
+  class BaseOperand extends @operand {
+    string toString() { operand_string(this, result) }
+  }
+
+  class BaseRegister extends @register {
+    string toString() { register(this, result) }
+  }
+
+  class BaseRipRegister extends BaseRegister {
+    BaseRipRegister() { register(this, "rip") } // TODO: Or eip?
+  }
+
+  class BaseRspRegister extends BaseRegister {
+    BaseRspRegister() { register(this, "rsp") } // TODO: Or esp?
+  }
+
+  class BaseRbpRegister extends BaseRegister {
+    BaseRbpRegister() { register(this, "rbp") } // TODO: Or ebp?
+  }
+
+  class BaseRegisterAccess extends @register_access {
+    BaseRegister getTarget() { register_access(this, result) }
+
+    string toString() { result = this.getTarget().toString() }
+  }
+
+  class BaseUnusedOperand extends Operand {
+    BaseUnusedOperand() { operand_unused(this) }
+  }
+
+  class BaseRegisterOperand extends Operand {
+    BaseRegisterOperand() { operand_reg(this, _) }
+
+    BaseRegisterAccess getAccess() { operand_reg(this, result) }
+    // Register getRegister() { result = this.getAccess().getTarget() }
+  }
+
+  class BaseMemoryOperand extends Operand {
+    BaseMemoryOperand() { operand_mem(this) }
+
+    predicate hasDisplacement() { operand_mem_displacement(this, _) }
+
+    BaseRegisterAccess getSegmentRegister() { operand_mem_segment_register(this, result) }
+
+    BaseRegisterAccess getBaseRegister() { operand_mem_base_register(this, result) }
+
+    BaseRegisterAccess getIndexRegister() { operand_mem_index_register(this, result) }
+
+    int getScaleFactor() { operand_mem_scale_factor(this, result) }
+
+    int getDisplacementValue() { operand_mem_displacement(this, result) }
+  }
+
+  class BasePointerOperand extends Operand {
+    BasePointerOperand() { operand_ptr(this, _, _) }
+  }
+
+  class BaseImmediateOperand extends Operand {
+    BaseImmediateOperand() { operand_imm(this, _, _, _) }
+
+    int getValue() { operand_imm(this, result, _, _) }
+
+    predicate isSigned() { operand_imm_is_signed(this) }
+
+    predicate isAddress() { operand_imm_is_address(this) }
+
+    predicate isRelative() { operand_imm_is_relative(this) }
   }
 }
 

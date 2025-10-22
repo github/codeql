@@ -1,23 +1,21 @@
-private import semmle.code.binary.ast.instructions as RawInstruction
-private import semmle.code.binary.ast.operand as RawOperand
+private import semmle.code.binary.ast.instructions as Raw
 private import TranslatedElement
-private import Opcode as Opcode
-private import SimpleBinaryInstruction
-private import InstructionTag
-private import semmle.code.binary.ast.registers as Registers
+private import semmle.code.binary.ast.ir.internal.Opcode as Opcode
+private import semmle.code.binary.ast.ir.internal.InstructionTag
 private import Instruction
 private import Variable
+private import TranslatedFunction
 private import codeql.util.Option
 private import TranslatedOperand
 private import codeql.controlflow.SuccessorType
 private import codeql.util.Either
 
 abstract class TranslatedInstruction extends TranslatedElement {
-  RawInstruction::Instruction instr;
+  Raw::Instruction instr;
 
-  final override RawInstruction::Element getRawElement() { result = instr }
+  final override Raw::Element getRawElement() { result = instr }
 
-  predicate isOperandLoaded(RawOperand::MemoryOperand op) { op = instr.getAnOperand() }
+  predicate isOperandLoaded(Raw::MemoryOperand op) { op = instr.getAnOperand() }
 
   abstract Instruction getEntry();
 
@@ -31,7 +29,7 @@ abstract class TranslatedInstruction extends TranslatedElement {
  * generating a Store instruction.
  */
 abstract class WritingInstruction extends TranslatedInstruction {
-  abstract RawOperand::Operand getDestinationOperand();
+  abstract Raw::Operand getDestinationOperand();
 
   abstract Instruction getResultInstruction();
 
@@ -40,7 +38,7 @@ abstract class WritingInstruction extends TranslatedInstruction {
   final override predicate producesResult() { any() }
 
   private predicate shouldGenerateStore() {
-    this.getDestinationOperand() instanceof RawOperand::MemoryOperand
+    this.getDestinationOperand() instanceof Raw::MemoryOperand
   }
 
   private TranslatedMemoryOperand getTranslatedDestinationOperand() {
@@ -50,7 +48,7 @@ abstract class WritingInstruction extends TranslatedInstruction {
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, Option<Variable>::Option v) {
     tag = WriteTag() and
     this.shouldGenerateStore() and
-    opcode = Opcode::Store() and
+    opcode instanceof Opcode::Store and
     v.isNone()
   }
 
@@ -58,10 +56,10 @@ abstract class WritingInstruction extends TranslatedInstruction {
     tag = WriteTag() and
     this.shouldGenerateStore() and
     (
-      operandTag = StoreSourceTag() and
+      operandTag = StoreValueTag() and
       result = this.getResultInstruction().getResultVariable()
       or
-      operandTag = StoreDestTag() and
+      operandTag = StoreAddressTag() and
       result = this.getTranslatedDestinationOperand().getAddressVariable()
     )
   }
@@ -92,130 +90,119 @@ abstract class WritingInstruction extends TranslatedInstruction {
     then result = this.getInstruction(WriteTag())
     else result = getTranslatedInstruction(instr.getASuccessor()).getEntry()
   }
-
-  override predicate hasIndex(InstructionTag tag, QlBuiltins::BigInt index0, int index1, int index2) {
-    tag = WriteTag() and
-    (
-      this.getInstruction(this.getLast().asLeft()).hasInternalOrder(index0, index1 - 1, index2)
-      or
-      this.getLast().asRight().hasIndex(_, index0, index1 - 1, index2)
-    )
-  }
 }
 
-predicate isSimpleBinaryInstruction(
-  RawInstruction::Instruction instr, Opcode opcode, RawOperand::Operand r
-) {
-  instr instanceof RawInstruction::Sub and opcode = Opcode::Sub() and r = instr.getOperand(0)
+predicate isSimpleBinaryInstruction(Raw::Instruction instr, Opcode opcode, Raw::Operand r) {
+  instr instanceof Raw::Sub and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Sbb and opcode = Opcode::Sub() and r = instr.getOperand(0) // TODO: Not semantically correct
+  instr instanceof Raw::Sbb and opcode instanceof Opcode::Sub and r = instr.getOperand(0) // TODO: Not semantically correct
   or
-  instr instanceof RawInstruction::Subpd and opcode = Opcode::Sub() and r = instr.getOperand(0)
+  instr instanceof Raw::Subpd and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Subsd and opcode = Opcode::Sub() and r = instr.getOperand(0)
+  instr instanceof Raw::Subsd and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Subss and opcode = Opcode::Sub() and r = instr.getOperand(0)
+  instr instanceof Raw::Subss and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Psubb and opcode = Opcode::Sub() and r = instr.getOperand(0)
+  instr instanceof Raw::Psubb and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Psubw and opcode = Opcode::Sub() and r = instr.getOperand(0)
+  instr instanceof Raw::Psubw and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Psubd and opcode = Opcode::Sub() and r = instr.getOperand(0)
+  instr instanceof Raw::Psubd and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Psubq and opcode = Opcode::Sub() and r = instr.getOperand(0)
+  instr instanceof Raw::Psubq and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Add and opcode = Opcode::Add() and r = instr.getOperand(0)
+  instr instanceof Raw::Add and opcode instanceof Opcode::Add and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Paddb and opcode = Opcode::Add() and r = instr.getOperand(0)
+  instr instanceof Raw::Paddb and opcode instanceof Opcode::Add and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Paddw and opcode = Opcode::Add() and r = instr.getOperand(0)
+  instr instanceof Raw::Paddw and opcode instanceof Opcode::Add and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Paddd and opcode = Opcode::Add() and r = instr.getOperand(0)
+  instr instanceof Raw::Paddd and opcode instanceof Opcode::Add and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Paddq and opcode = Opcode::Add() and r = instr.getOperand(0)
+  instr instanceof Raw::Paddq and opcode instanceof Opcode::Add and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Addpd and opcode = Opcode::Add() and r = instr.getOperand(0)
+  instr instanceof Raw::Addpd and opcode instanceof Opcode::Add and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Addsd and opcode = Opcode::Add() and r = instr.getOperand(0)
+  instr instanceof Raw::Addsd and opcode instanceof Opcode::Add and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Addss and opcode = Opcode::Add() and r = instr.getOperand(0)
+  instr instanceof Raw::Addss and opcode instanceof Opcode::Add and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Adc and opcode = Opcode::Add() and r = instr.getOperand(0) // TODO: Not semantically correct
+  instr instanceof Raw::Adc and opcode instanceof Opcode::Add and r = instr.getOperand(0) // TODO: Not semantically correct
   or
-  instr instanceof RawInstruction::Adox and opcode = Opcode::Add() and r = instr.getOperand(0) // TODO: Not semantically correct
+  instr instanceof Raw::Adox and opcode instanceof Opcode::Add and r = instr.getOperand(0) // TODO: Not semantically correct
   or
-  instr instanceof RawInstruction::Imul and opcode = Opcode::Mul() and r = instr.getOperand(0)
+  instr instanceof Raw::Imul and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Imulzu and opcode = Opcode::Mul() and r = instr.getOperand(0) // TODO: Not semantically correct
+  instr instanceof Raw::Imulzu and opcode instanceof Opcode::Mul and r = instr.getOperand(0) // TODO: Not semantically correct
   or
-  instr instanceof RawInstruction::Mulpd and opcode = Opcode::Mul() and r = instr.getOperand(0)
+  instr instanceof Raw::Mulpd and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Mulps and opcode = Opcode::Mul() and r = instr.getOperand(0)
+  instr instanceof Raw::Mulps and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Mulsd and opcode = Opcode::Mul() and r = instr.getOperand(0)
+  instr instanceof Raw::Mulsd and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Mulss and opcode = Opcode::Mul() and r = instr.getOperand(0)
+  instr instanceof Raw::Mulss and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Pmullw and opcode = Opcode::Mul() and r = instr.getOperand(0)
+  instr instanceof Raw::Pmullw and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Pmulld and opcode = Opcode::Mul() and r = instr.getOperand(0)
+  instr instanceof Raw::Pmulld and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Pmulhw and opcode = Opcode::Mul() and r = instr.getOperand(0) // TODO: Not semantically correct
+  instr instanceof Raw::Pmulhw and opcode instanceof Opcode::Mul and r = instr.getOperand(0) // TODO: Not semantically correct
   or
-  instr instanceof RawInstruction::Pmulhuw and opcode = Opcode::Mul() and r = instr.getOperand(0) // TODO: Not semantically correct
+  instr instanceof Raw::Pmulhuw and opcode instanceof Opcode::Mul and r = instr.getOperand(0) // TODO: Not semantically correct
   or
-  instr instanceof RawInstruction::Pmuludq and opcode = Opcode::Mul() and r = instr.getOperand(0)
+  instr instanceof Raw::Pmuludq and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Pmuldq and opcode = Opcode::Mul() and r = instr.getOperand(0)
+  instr instanceof Raw::Pmuldq and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Divpd and opcode = Opcode::Div() and r = instr.getOperand(0)
+  instr instanceof Raw::Divpd and opcode instanceof Opcode::Div and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Divps and opcode = Opcode::Div() and r = instr.getOperand(0)
+  instr instanceof Raw::Divps and opcode instanceof Opcode::Div and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Divsd and opcode = Opcode::Div() and r = instr.getOperand(0)
+  instr instanceof Raw::Divsd and opcode instanceof Opcode::Div and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Divss and opcode = Opcode::Div() and r = instr.getOperand(0)
+  instr instanceof Raw::Divss and opcode instanceof Opcode::Div and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::And and opcode = Opcode::And() and r = instr.getOperand(0)
+  instr instanceof Raw::And and opcode instanceof Opcode::And and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Pand and opcode = Opcode::And() and r = instr.getOperand(0)
+  instr instanceof Raw::Pand and opcode instanceof Opcode::And and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Andpd and opcode = Opcode::And() and r = instr.getOperand(0)
+  instr instanceof Raw::Andpd and opcode instanceof Opcode::And and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Andps and opcode = Opcode::And() and r = instr.getOperand(0)
+  instr instanceof Raw::Andps and opcode instanceof Opcode::And and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Or and opcode = Opcode::Or() and r = instr.getOperand(0)
+  instr instanceof Raw::Or and opcode instanceof Opcode::Or and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Por and opcode = Opcode::Or() and r = instr.getOperand(0)
+  instr instanceof Raw::Por and opcode instanceof Opcode::Or and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Orpd and opcode = Opcode::Or() and r = instr.getOperand(0)
+  instr instanceof Raw::Orpd and opcode instanceof Opcode::Or and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Orps and opcode = Opcode::Or() and r = instr.getOperand(0)
+  instr instanceof Raw::Orps and opcode instanceof Opcode::Or and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Xor and opcode = Opcode::Xor() and r = instr.getOperand(0)
+  instr instanceof Raw::Xor and opcode instanceof Opcode::Xor and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Pxor and opcode = Opcode::Xor() and r = instr.getOperand(0)
+  instr instanceof Raw::Pxor and opcode instanceof Opcode::Xor and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Xorpd and opcode = Opcode::Xor() and r = instr.getOperand(0)
+  instr instanceof Raw::Xorpd and opcode instanceof Opcode::Xor and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Xorps and opcode = Opcode::Xor() and r = instr.getOperand(0)
+  instr instanceof Raw::Xorps and opcode instanceof Opcode::Xor and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Shl and opcode = Opcode::Shl() and r = instr.getOperand(0)
+  instr instanceof Raw::Shl and opcode instanceof Opcode::Shl and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Shr and opcode = Opcode::Shr() and r = instr.getOperand(0)
+  instr instanceof Raw::Shr and opcode instanceof Opcode::Shr and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Sar and opcode = Opcode::Sar() and r = instr.getOperand(0)
+  instr instanceof Raw::Sar and opcode instanceof Opcode::Sar and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Rol and opcode = Opcode::Rol() and r = instr.getOperand(0)
+  instr instanceof Raw::Rol and opcode instanceof Opcode::Rol and r = instr.getOperand(0)
   or
-  instr instanceof RawInstruction::Ror and opcode = Opcode::Ror() and r = instr.getOperand(0)
+  instr instanceof Raw::Ror and opcode instanceof Opcode::Ror and r = instr.getOperand(0)
 }
 
 class TranslatedSimpleBinaryInstruction extends WritingInstruction,
   TTranslatedSimpleBinaryInstruction
 {
   Opcode opcode;
-  RawOperand::Operand dest;
+  Raw::Operand dest;
 
   TranslatedSimpleBinaryInstruction() {
     this = TTranslatedSimpleBinaryInstruction(instr) and
@@ -228,7 +215,7 @@ class TranslatedSimpleBinaryInstruction extends WritingInstruction,
 
   override Instruction getResultInstruction() { result = this.getInstruction(SingleTag()) }
 
-  final override RawOperand::Operand getDestinationOperand() { result = dest }
+  final override Raw::Operand getDestinationOperand() { result = dest }
 
   final override predicate hasInstruction(
     Opcode opcode_, InstructionTag tag, Option<Variable>::Option v
@@ -282,21 +269,10 @@ class TranslatedSimpleBinaryInstruction extends WritingInstruction,
   private TranslatedOperand getLeftOperand() { result = getTranslatedOperand(instr.getOperand(0)) }
 
   private TranslatedOperand getRightOperand() { result = getTranslatedOperand(instr.getOperand(1)) }
-
-  final override predicate hasIndex(
-    InstructionTag tag, QlBuiltins::BigInt index0, int index1, int index2
-  ) {
-    super.hasIndex(tag, index0, index1, index2)
-    or
-    tag = SingleTag() and
-    index0 = instr.getIndex() and
-    index1 = 0 and
-    index2 = 0
-  }
 }
 
 class TranslatedCall extends TranslatedInstruction, TTranslatedCall {
-  override RawInstruction::Call instr;
+  override Raw::Call instr;
 
   TranslatedCall() { this = TTranslatedCall(instr) }
 
@@ -304,7 +280,7 @@ class TranslatedCall extends TranslatedInstruction, TTranslatedCall {
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
   ) {
     tag = SingleTag() and
-    opcode = Opcode::Call() and
+    opcode instanceof Opcode::Call and
     v.isNone() // We dont know this yet
   }
 
@@ -339,20 +315,16 @@ class TranslatedCall extends TranslatedInstruction, TTranslatedCall {
     )
   }
 
-  override Variable getResultVariable() { none() } // TODO: We don't know where this is yet
+  override Variable getResultVariable() { none() } // TODO: We don't know where this is yet. Probably rax for x86
 
-  final override predicate hasIndex(
-    InstructionTag tag, QlBuiltins::BigInt index0, int index1, int index2
-  ) {
+  override TranslatedFunction getStaticCallTarget(InstructionTag tag) {
     tag = SingleTag() and
-    index0 = instr.getIndex() and
-    index1 = 0 and
-    index2 = 0
+    result = TTranslatedFunction(instr.getTarget())
   }
 }
 
 class TranslatedJmp extends TranslatedInstruction, TTranslatedJmp {
-  override RawInstruction::Jmp instr;
+  override Raw::Jmp instr;
 
   TranslatedJmp() { this = TTranslatedJmp(instr) }
 
@@ -360,7 +332,7 @@ class TranslatedJmp extends TranslatedInstruction, TTranslatedJmp {
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
   ) {
     tag = SingleTag() and
-    opcode = Opcode::Jump() and
+    opcode instanceof Opcode::Jump and
     v.isNone() // A jump has no result
   }
 
@@ -396,23 +368,12 @@ class TranslatedJmp extends TranslatedInstruction, TTranslatedJmp {
   }
 
   override Variable getResultVariable() { none() }
-
-  final override predicate hasIndex(
-    InstructionTag tag, QlBuiltins::BigInt index0, int index1, int index2
-  ) {
-    tag = SingleTag() and
-    index0 = instr.getIndex() and
-    index1 = 0 and
-    index2 = 0
-  }
 }
 
 abstract class TranslatedCopy extends TranslatedInstruction {
-  private predicate shouldGenerateStore() {
-    instr.getOperand(0) instanceof RawOperand::MemoryOperand
-  }
+  private predicate shouldGenerateStore() { instr.getOperand(0) instanceof Raw::MemoryOperand }
 
-  override predicate isOperandLoaded(RawOperand::MemoryOperand op) { op = instr.getOperand(1) }
+  override predicate isOperandLoaded(Raw::MemoryOperand op) { op = instr.getOperand(1) }
 
   final override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
@@ -420,10 +381,10 @@ abstract class TranslatedCopy extends TranslatedInstruction {
     tag = SingleTag() and
     if this.shouldGenerateStore()
     then
-      opcode = Opcode::Store() and
+      opcode instanceof Opcode::Store and
       v.isNone()
     else (
-      opcode = Opcode::Copy() and
+      opcode instanceof Opcode::Copy and
       v.asSome() = this.getTranslatedDestOperand().getResultVariable()
     )
   }
@@ -434,10 +395,10 @@ abstract class TranslatedCopy extends TranslatedInstruction {
     tag = SingleTag() and
     if this.shouldGenerateStore()
     then (
-      operandTag = StoreSourceTag() and
+      operandTag = StoreValueTag() and
       result = this.getTranslatedSourceOperand().getResultVariable()
       or
-      operandTag = StoreDestTag() and
+      operandTag = StoreAddressTag() and
       result = this.getTranslatedDestOperand().getResultVariable()
     ) else (
       operandTag = UnaryTag() and
@@ -491,56 +452,81 @@ abstract class TranslatedCopy extends TranslatedInstruction {
   override Variable getResultVariable() {
     result = this.getTranslatedDestOperand().getResultVariable()
   }
-
-  final override predicate hasIndex(
-    InstructionTag tag, QlBuiltins::BigInt index0, int index1, int index2
-  ) {
-    tag = SingleTag() and
-    index0 = instr.getIndex() and
-    index1 = 0 and
-    index2 = 0
-  }
 }
 
 class TranslatedMov extends TranslatedCopy, TTranslatedMov {
-  override RawInstruction::Mov instr;
+  override Raw::Mov instr;
 
   TranslatedMov() { this = TTranslatedMov(instr) }
 }
 
 class TranslatedMovsd extends TranslatedCopy, TTranslatedMovsd {
-  override RawInstruction::Movsd instr;
+  override Raw::Movsd instr;
 
   TranslatedMovsd() { this = TTranslatedMovsd(instr) }
 }
 
+class TranslatedMovq extends TranslatedCopy, TTranslatedMovq {
+  override Raw::Movq instr;
+
+  TranslatedMovq() { this = TTranslatedMovq(instr) }
+}
+
+class TranslatedMovss extends TranslatedCopy, TTranslatedMovss {
+  override Raw::Movss instr;
+
+  TranslatedMovss() { this = TTranslatedMovss(instr) }
+}
+
 class TranslatedMovzx extends TranslatedCopy, TTranslatedMovzx {
   // TODO: This should also perform a zero-extension
-  override RawInstruction::Movzx instr;
+  override Raw::Movzx instr;
 
   TranslatedMovzx() { this = TTranslatedMovzx(instr) }
 }
 
 class TranslatedMovsxd extends TranslatedCopy, TTranslatedMovsxd {
   // TODO: What does this one do?
-  override RawInstruction::Movsxd instr;
+  override Raw::Movsxd instr;
 
   TranslatedMovsxd() { this = TTranslatedMovsxd(instr) }
 }
 
 class TranslatedMovsx extends TranslatedCopy, TTranslatedMovsx {
   // TODO: What does this one do?
-  override RawInstruction::Movsx instr;
+  override Raw::Movsx instr;
 
   TranslatedMovsx() { this = TTranslatedMovsx(instr) }
 }
 
-private Variable getEspVariable() {
-  result = getTranslatedVariableReal(any(Registers::RspRegister r))
+class TranslatedMovaps extends TranslatedCopy, TTranslatedMovaps {
+  override Raw::Movaps instr;
+
+  TranslatedMovaps() { this = TTranslatedMovaps(instr) }
 }
 
+class TranslatedMovups extends TranslatedCopy, TTranslatedMovups {
+  override Raw::Movups instr;
+
+  TranslatedMovups() { this = TTranslatedMovups(instr) }
+}
+
+class TranslatedMovdqu extends TranslatedCopy, TTranslatedMovdqu {
+  override Raw::Movdqu instr;
+
+  TranslatedMovdqu() { this = TTranslatedMovdqu(instr) }
+}
+
+class TranslatedMovdqa extends TranslatedCopy, TTranslatedMovdqa {
+  override Raw::Movdqa instr;
+
+  TranslatedMovdqa() { this = TTranslatedMovdqa(instr) }
+}
+
+private Variable getEspVariable() { result = getTranslatedVariableReal(any(Raw::RspRegister r)) }
+
 class TranslatedPush extends TranslatedInstruction, TTranslatedPush {
-  override RawInstruction::Push instr;
+  override Raw::Push instr;
 
   TranslatedPush() { this = TTranslatedPush(instr) }
 
@@ -551,17 +537,17 @@ class TranslatedPush extends TranslatedInstruction, TTranslatedPush {
   ) {
     // x = 8
     tag = PushSubConstTag() and
-    opcode = Opcode::Const() and
+    opcode instanceof Opcode::Const and
     v.asSome() = this.getVariable(PushConstVarTag())
     or
     // esp = esp - x
     tag = PushSubTag() and
-    opcode = Opcode::Sub() and
+    opcode instanceof Opcode::Sub and
     v.asSome() = getEspVariable()
     or
     // store [esp], y
     tag = PushStoreTag() and
-    opcode = Opcode::Store() and
+    opcode instanceof Opcode::Store and
     v.isNone()
   }
 
@@ -584,10 +570,10 @@ class TranslatedPush extends TranslatedInstruction, TTranslatedPush {
     or
     tag = PushStoreTag() and
     (
-      operandTag = StoreSourceTag() and
+      operandTag = StoreValueTag() and
       result = this.getTranslatedOperand().getResultVariable()
       or
-      operandTag = StoreDestTag() and
+      operandTag = StoreAddressTag() and
       result = getEspVariable()
     )
   }
@@ -626,27 +612,10 @@ class TranslatedPush extends TranslatedInstruction, TTranslatedPush {
   override Variable getResultVariable() {
     none() // TODO: We don't know where this is yet. Will need to be fixed by a later analysis
   }
-
-  final override predicate hasIndex(
-    InstructionTag tag, QlBuiltins::BigInt index0, int index1, int index2
-  ) {
-    index0 = instr.getIndex() and
-    (
-      tag = PushSubConstTag() and
-      index1 = 0
-      or
-      tag = PushSubTag() and
-      index1 = 1
-      or
-      tag = PushStoreTag() and
-      index1 = 2
-    ) and
-    index2 = 0
-  }
 }
 
 class TranslatedTest extends TranslatedInstruction, TTranslatedTest {
-  override RawInstruction::Test instr;
+  override Raw::Test instr;
 
   TranslatedTest() { this = TTranslatedTest(instr) }
 
@@ -662,15 +631,15 @@ class TranslatedTest extends TranslatedInstruction, TTranslatedTest {
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
   ) {
     tag = TestAndTag() and
-    opcode = Opcode::And() and
+    opcode instanceof Opcode::And and
     v.asSome() = this.getVariable(TestVarTag())
     or
     tag = TestZeroTag() and
-    opcode = Opcode::Const() and
+    opcode instanceof Opcode::Const and
     v.asSome() = this.getVariable(ZeroVarTag())
     or
     tag = TestCmpTag() and
-    opcode = Opcode::Cmp() and
+    opcode instanceof Opcode::Sub and
     v.asSome() = getTranslatedVariableSynth(CmpRegisterTag())
   }
 
@@ -749,76 +718,58 @@ class TranslatedTest extends TranslatedInstruction, TTranslatedTest {
   }
 
   override Variable getResultVariable() { result = getTranslatedVariableSynth(CmpRegisterTag()) }
-
-  final override predicate hasIndex(
-    InstructionTag tag, QlBuiltins::BigInt index0, int index1, int index2
-  ) {
-    index0 = instr.getIndex() and
-    (
-      tag = TestAndTag() and
-      index1 = 0
-      or
-      tag = TestZeroTag() and
-      index1 = 1
-      or
-      tag = TestCmpTag() and
-      index1 = 2
-    ) and
-    index2 = 0
-  }
 }
 
-// TODO: This does not handle setting flags via sub. Like:
-// #-----|     sub ecx, 0x01
-// #-----|     jz +0x3E
 class TranslatedConditionalJump extends TranslatedInstruction, TTranslatedConditionalJump {
-  override RawInstruction::ConditionalJumpInstruction instr;
+  override Raw::ConditionalJumpInstruction instr;
 
   TranslatedConditionalJump() { this = TTranslatedConditionalJump(instr) }
 
   final override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
   ) {
-    opcode = Opcode::CJump() and
+    opcode instanceof Opcode::CJump and
     tag = SingleTag() and
     v.isNone() // A jump has no result
   }
 
-  override predicate hasJumpCondition(InstructionTag tag, Opcode::Condition kind) {
+  override predicate hasJumpCondition(InstructionTag tag, Opcode::ConditionKind kind) {
     tag = SingleTag() and
     (
-      instr instanceof RawInstruction::Jb and kind = Opcode::LT()
+      instr instanceof Raw::Jb and kind = Opcode::LT()
       or
-      instr instanceof RawInstruction::Jbe and kind = Opcode::LE()
+      instr instanceof Raw::Jbe and kind = Opcode::LE()
       or
-      instr instanceof RawInstruction::Jz and kind = Opcode::EQ()
+      instr instanceof Raw::Jz and kind = Opcode::EQ()
       or
-      instr instanceof RawInstruction::Jnz and kind = Opcode::NE()
+      instr instanceof Raw::Jnz and kind = Opcode::NE()
       or
-      instr instanceof RawInstruction::Jnb and kind = Opcode::GE()
+      instr instanceof Raw::Jnb and kind = Opcode::GE()
       or
-      instr instanceof RawInstruction::Jnbe and kind = Opcode::GT()
+      instr instanceof Raw::Jnbe and kind = Opcode::GT()
       or
-      instr instanceof RawInstruction::Jnl and kind = Opcode::GE()
+      instr instanceof Raw::Jnl and kind = Opcode::GE()
       or
-      instr instanceof RawInstruction::Jnle and kind = Opcode::GT()
+      instr instanceof Raw::Jnle and kind = Opcode::GT()
       or
-      instr instanceof RawInstruction::Jl and kind = Opcode::LT()
+      instr instanceof Raw::Jl and kind = Opcode::LT()
       or
-      instr instanceof RawInstruction::Jle and kind = Opcode::LE()
+      instr instanceof Raw::Jle and kind = Opcode::LE()
       or
-      instr instanceof RawInstruction::Js and kind = Opcode::LT() // TODO: Not semantically correct
+      instr instanceof Raw::Js and kind = Opcode::LT() // TODO: Not semantically correct
       or
-      instr instanceof RawInstruction::Jns and kind = Opcode::GE() // TODO: Not semantically correct
+      instr instanceof Raw::Jns and kind = Opcode::GE() // TODO: Not semantically correct
     )
   }
+
+  override predicate hasSynthVariable(SynthRegisterTag tag) { tag = CmpRegisterTag() }
 
   override predicate producesResult() { any() }
 
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = SingleTag() and
     (
-      operandTag = JumpTargetTag() and
+      operandTag = CondJumpTargetTag() and
       result = this.getTranslatedOperand().getResultVariable()
       or
       operandTag = CondTag() and
@@ -855,26 +806,17 @@ class TranslatedConditionalJump extends TranslatedInstruction, TTranslatedCondit
   }
 
   override Variable getResultVariable() { none() }
-
-  final override predicate hasIndex(
-    InstructionTag tag, QlBuiltins::BigInt index0, int index1, int index2
-  ) {
-    tag = SingleTag() and
-    index0 = instr.getIndex() and
-    index1 = 0 and
-    index2 = 0
-  }
 }
 
 class TranslatedCmp extends TranslatedInstruction, TTranslatedCmp {
-  override RawInstruction::Cmp instr;
+  override Raw::Cmp instr;
 
   TranslatedCmp() { this = TTranslatedCmp(instr) }
 
   final override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
   ) {
-    opcode = Opcode::Cmp() and
+    opcode instanceof Opcode::Sub and
     tag = SingleTag() and
     v.asSome() = getTranslatedVariableSynth(CmpRegisterTag())
   }
@@ -932,19 +874,10 @@ class TranslatedCmp extends TranslatedInstruction, TTranslatedCmp {
   }
 
   override Variable getResultVariable() { result = getTranslatedVariableSynth(CmpRegisterTag()) }
-
-  final override predicate hasIndex(
-    InstructionTag tag, QlBuiltins::BigInt index0, int index1, int index2
-  ) {
-    tag = SingleTag() and
-    index0 = instr.getIndex() and
-    index1 = 0 and
-    index2 = 0
-  }
 }
 
 class TranslatedLea extends TranslatedInstruction, TTranslatedLea {
-  override RawInstruction::Lea instr;
+  override Raw::Lea instr;
 
   TranslatedLea() { this = TTranslatedLea(instr) }
 
@@ -952,13 +885,13 @@ class TranslatedLea extends TranslatedInstruction, TTranslatedLea {
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
   ) {
     tag = SingleTag() and
-    opcode = Opcode::Copy() and
+    opcode instanceof Opcode::Copy and
     v.asSome() = this.getTranslatedDestOperand().getResultVariable()
   }
 
   override predicate producesResult() { any() }
 
-  override predicate isOperandLoaded(RawOperand::MemoryOperand op) { none() }
+  override predicate isOperandLoaded(Raw::MemoryOperand op) { none() }
 
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = SingleTag() and
@@ -1009,20 +942,11 @@ class TranslatedLea extends TranslatedInstruction, TTranslatedLea {
     result = this.getTranslatedDestOperand().getResultVariable()
   }
 
-  final override predicate hasIndex(
-    InstructionTag tag, QlBuiltins::BigInt index0, int index1, int index2
-  ) {
-    tag = SingleTag() and
-    index0 = instr.getIndex() and
-    index1 = 0 and
-    index2 = 0
-  }
-
   override string toString() { result = TranslatedInstruction.super.toString() }
 }
 
 class TranslatedPop extends TranslatedInstruction, TTranslatedPop {
-  override RawInstruction::Pop instr;
+  override Raw::Pop instr;
 
   TranslatedPop() { this = TTranslatedPop(instr) }
 
@@ -1032,17 +956,17 @@ class TranslatedPop extends TranslatedInstruction, TTranslatedPop {
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
   ) {
     tag = PopLoadTag() and
-    opcode = Opcode::Load() and
+    opcode instanceof Opcode::Load and
     v.asSome() = this.getTranslatedOperand().getResultVariable()
     or
     // x = 8
     tag = PopAddConstTag() and
-    opcode = Opcode::Const() and
+    opcode instanceof Opcode::Const and
     v.asSome() = this.getVariable(PopConstVarTag())
     or
     // esp = esp + x
     tag = PopAddTag() and
-    opcode = Opcode::Add() and
+    opcode instanceof Opcode::Add and
     v.asSome() = getEspVariable()
   }
 
@@ -1100,34 +1024,17 @@ class TranslatedPop extends TranslatedInstruction, TTranslatedPop {
   }
 
   override Variable getResultVariable() { result = this.getTranslatedOperand().getResultVariable() }
-
-  final override predicate hasIndex(
-    InstructionTag tag, QlBuiltins::BigInt index0, int index1, int index2
-  ) {
-    index0 = instr.getIndex() and
-    (
-      tag = PopLoadTag() and
-      index1 = 0
-      or
-      tag = PopAddConstTag() and
-      index1 = 1
-      or
-      tag = PopAddTag() and
-      index1 = 2
-    ) and
-    index2 = 0
-  }
 }
 
 class TranslatedRet extends TranslatedInstruction, TTranslatedRet {
-  override RawInstruction::Ret instr;
+  override Raw::Ret instr;
 
   TranslatedRet() { this = TTranslatedRet(instr) }
 
   final override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
   ) {
-    opcode = Opcode::Ret() and
+    opcode instanceof Opcode::Ret and
     tag = SingleTag() and
     v.isNone()
   }
@@ -1143,15 +1050,6 @@ class TranslatedRet extends TranslatedInstruction, TTranslatedRet {
   override Instruction getEntry() { result = this.getInstruction(SingleTag()) }
 
   override Variable getResultVariable() { none() }
-
-  final override predicate hasIndex(
-    InstructionTag tag, QlBuiltins::BigInt index0, int index1, int index2
-  ) {
-    tag = SingleTag() and
-    index0 = instr.getIndex() and
-    index1 = 0 and
-    index2 = 0
-  }
 }
 
 abstract class TranslatedDecOrInc extends WritingInstruction {
@@ -1163,7 +1061,7 @@ abstract class TranslatedDecOrInc extends WritingInstruction {
     super.hasInstruction(opcode, tag, v)
     or
     tag = DecOrIncConstTag() and
-    opcode = Opcode::Const() and
+    opcode instanceof Opcode::Const and
     v.asSome() = this.getVariable(DecOrIncConstVarTag())
     or
     tag = DecOrIncOpTag() and
@@ -1176,9 +1074,7 @@ abstract class TranslatedDecOrInc extends WritingInstruction {
     result = 1
   }
 
-  override predicate hasTempVariable(VariableTag tag) {
-    tag = DecOrIncConstVarTag()
-  }
+  override predicate hasTempVariable(VariableTag tag) { tag = DecOrIncConstVarTag() }
 
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     result = super.getVariableOperand(tag, operandTag)
@@ -1228,43 +1124,27 @@ abstract class TranslatedDecOrInc extends WritingInstruction {
     result.asLeft() = DecOrIncOpTag()
   }
 
-  final override RawOperand::Operand getDestinationOperand() { result = instr.getOperand(0) }
-
-  final override predicate hasIndex(
-    InstructionTag tag, QlBuiltins::BigInt index0, int index1, int index2
-  ) {
-    super.hasIndex(tag, index0, index1, index2)
-    or
-    index0 = instr.getIndex() and
-    (
-      tag = DecOrIncConstTag() and
-      index1 = 0
-      or
-      tag = DecOrIncOpTag() and
-      index1 = 1
-    ) and
-    index2 = 0
-  }
+  final override Raw::Operand getDestinationOperand() { result = instr.getOperand(0) }
 }
 
 class TranslatedDec extends TranslatedDecOrInc, TTranslatedDec {
-  override RawInstruction::Dec instr;
+  override Raw::Dec instr;
 
   TranslatedDec() { this = TTranslatedDec(instr) }
 
-  override Opcode getOpcode() { result = Opcode::Sub() }
+  override Opcode getOpcode() { result instanceof Opcode::Sub }
 }
 
 class TranslatedInc extends TranslatedDecOrInc, TTranslatedInc {
-  override RawInstruction::Inc instr;
+  override Raw::Inc instr;
 
   TranslatedInc() { this = TTranslatedInc(instr) }
 
-  override Opcode getOpcode() { result = Opcode::Add() }
+  override Opcode getOpcode() { result instanceof Opcode::Add }
 }
 
 class TranslatedNop extends TranslatedInstruction, TTranslatedNop {
-  override RawInstruction::Nop instr;
+  override Raw::Nop instr;
 
   TranslatedNop() { this = TTranslatedNop(instr) }
 
@@ -1272,7 +1152,7 @@ class TranslatedNop extends TranslatedInstruction, TTranslatedNop {
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
   ) {
     tag = SingleTag() and
-    opcode = Opcode::Nop() and
+    opcode instanceof Opcode::Nop and
     v.isNone()
   }
 
@@ -1291,36 +1171,27 @@ class TranslatedNop extends TranslatedInstruction, TTranslatedNop {
   override Instruction getEntry() { result = this.getInstruction(SingleTag()) }
 
   override Variable getResultVariable() { none() }
-
-  final override predicate hasIndex(
-    InstructionTag tag, QlBuiltins::BigInt index0, int index1, int index2
-  ) {
-    tag = SingleTag() and
-    index0 = instr.getIndex() and
-    index1 = 0 and
-    index2 = 0
-  }
 }
 
 abstract class TranslatedBtBase extends TranslatedInstruction {
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, Option<Variable>::Option v) {
-    opcode = Opcode::Shl() and
+    opcode instanceof Opcode::Shl and
     tag = BtShiftTag() and
     v.asSome() = this.getVariable(BtVarTag())
     or
-    opcode = Opcode::And() and
+    opcode instanceof Opcode::And and
     tag = BtAndTag() and
     v.asSome() = this.getVariable(BtVarTag())
     or
-    opcode = Opcode::Const() and
+    opcode instanceof Opcode::Const and
     tag = BtOneTag() and
     v.asSome() = this.getVariable(BtOneVarTag())
     or
-    opcode = Opcode::Cmp() and
+    opcode instanceof Opcode::Sub and
     tag = BtCmpTag() and
     v.asSome() = getTranslatedVariableSynth(CmpRegisterTag())
     or
-    opcode = Opcode::Const() and
+    opcode instanceof Opcode::Const and
     tag = BtZeroTag() and
     v.asSome() = this.getVariable(BtZeroVarTag())
   }
@@ -1429,34 +1300,13 @@ abstract class TranslatedBtBase extends TranslatedInstruction {
     )
   }
 
-  override predicate hasIndex(InstructionTag tag, QlBuiltins::BigInt index0, int index1, int index2) {
-    index0 = instr.getIndex() and
-    index2 = 0 and
-    (
-      tag = BtShiftTag() and
-      index1 = 0
-      or
-      tag = BtOneTag() and
-      index1 = 1
-      or
-      tag = BtAndTag() and
-      index1 = 2
-      or
-      tag = BtZeroTag() and
-      index1 = 3
-      or
-      tag = BtCmpTag() and
-      index1 = 4
-    )
-  }
-
   final override Variable getResultVariable() {
     result = getTranslatedVariableSynth(CmpRegisterTag())
   }
 }
 
 class TranslatedBt extends TranslatedBtBase, TTranslatedBt {
-  override RawInstruction::Bt instr;
+  override Raw::Bt instr;
 
   TranslatedBt() { this = TTranslatedBt(instr) }
 
@@ -1472,7 +1322,7 @@ class TranslatedBt extends TranslatedBtBase, TTranslatedBt {
 }
 
 class TranslatedBtr extends TranslatedBtBase, TTranslatedBtr {
-  override RawInstruction::Btr instr;
+  override Raw::Btr instr;
 
   TranslatedBtr() { this = TTranslatedBtr(instr) }
 
@@ -1496,19 +1346,19 @@ class TranslatedBtr extends TranslatedBtBase, TTranslatedBtr {
     super.hasInstruction(opcode, tag, v)
     or
     tag = BtrOneTag() and
-    opcode = Opcode::Const() and
+    opcode instanceof Opcode::Const and
     v.asSome() = this.getVariable(BtrOneVarTag())
     or
     tag = BtrShiftTag() and
-    opcode = Opcode::Shl() and
+    opcode instanceof Opcode::Shl and
     v.asSome() = this.getVariable(BtrVarTag())
     or
     tag = BtrNotTag() and
-    opcode = Opcode::Not() and
+    opcode instanceof Opcode::Not and
     v.asSome() = this.getVariable(BtrVarTag())
     or
     tag = BtrAndTag() and
-    opcode = Opcode::And() and
+    opcode instanceof Opcode::And and
     v.asSome() = this.getVariable(BtrVarTag())
   }
 
@@ -1565,27 +1415,72 @@ class TranslatedBtr extends TranslatedBtBase, TTranslatedBtr {
     result = getTranslatedInstruction(instr.getASuccessor()).getEntry()
   }
 
-  override predicate hasIndex(InstructionTag tag, QlBuiltins::BigInt index0, int index1, int index2) {
-    super.hasIndex(tag, index0, index1, index2)
+  override Instruction getSuccessorAfterCmp() { result = this.getInstruction(BtrOneTag()) }
+}
+
+class TranslatedNeg extends WritingInstruction, TTranslatedNeg {
+  override Raw::Neg instr;
+
+  TranslatedNeg() { this = TTranslatedNeg(instr) }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    opcode instanceof Opcode::Const and
+    tag = NegConstZeroTag() and
+    v.asSome() = this.getVariable(NegConstZeroVarTag())
     or
-    index2 = 0 and
-    exists(int maxIndex1 |
-      maxIndex1 = max(int i | super.hasIndex(_, index0, i, _)) and
-      index0 = instr.getIndex()
-    |
-      tag = BtrOneTag() and
-      index1 = maxIndex1 + 1
+    opcode instanceof Opcode::Sub and
+    tag = NegSubTag() and
+    v.asSome() = this.getTranslatedOperand().getResultVariable()
+  }
+
+  override int getConstantValue(InstructionTag tag) {
+    tag = NegConstZeroTag() and
+    result = 0
+  }
+
+  override predicate hasTempVariable(VariableTag tag) { tag = NegConstZeroVarTag() }
+
+  TranslatedOperand getTranslatedOperand() { result = getTranslatedOperand(instr.getOperand(0)) }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = NegSubTag() and
+    (
+      operandTag = LeftTag() and
+      result = this.getInstruction(NegConstZeroTag()).getResultVariable()
       or
-      tag = BtrShiftTag() and
-      index1 = maxIndex1 + 2
-      or
-      tag = BtrNotTag() and
-      index1 = maxIndex1 + 3
-      or
-      tag = BtrAndTag() and
-      index1 = maxIndex1 + 4
+      operandTag = RightTag() and
+      result = this.getTranslatedOperand().getResultVariable()
     )
   }
 
-  override Instruction getSuccessorAfterCmp() { result = this.getInstruction(BtrOneTag()) }
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) {
+    child = this.getTranslatedOperand() and
+    succType instanceof DirectSuccessor and
+    result = this.getInstruction(NegConstZeroTag())
+  }
+
+  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = NegConstZeroTag() and
+    succType instanceof DirectSuccessor and
+    result = this.getInstruction(NegSubTag())
+  }
+
+  override Instruction getEntry() {
+    exists(Option<Instruction>::Option op | op = this.getTranslatedOperand().getEntry() |
+      result = op.asSome()
+      or
+      op.isNone() and
+      result = this.getInstruction(NegConstZeroTag())
+    )
+  }
+
+  override Instruction getResultInstruction() { result = this.getInstruction(NegSubTag()) }
+
+  final override Either<InstructionTag, TranslatedElement>::Either getLast() {
+    result.asLeft() = NegSubTag()
+  }
+
+  final override Raw::Operand getDestinationOperand() { result = instr.getOperand(0) }
 }

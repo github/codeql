@@ -55,3 +55,32 @@ class TextSection extends Section {
 class RDataSection extends Section {
   RDataSection() { rdata_section(this) }
 }
+
+class ExportTable extends @export_table {
+  string getName() { export_table(this, result, _) }
+
+  string toString() { result = this.getName() }
+
+  int getOrdinalBase() { export_table(this, _, result) }
+
+  /**
+   * Gets the `i`'th entry in this export table.
+   * Note that the list may not be dense.
+   */
+  ExportTableEntry getEntry(int i) {
+    result.getExportTable() = this and
+    result.getOrdinal() - this.getOrdinalBase() = i
+  }
+}
+
+class ExportTableEntry extends @export_table_entry {
+  string getName() { export_table_entry(this, _, _, result, _) }
+
+  int getOrdinal() { export_table_entry(this, _, result, _, _) }
+
+  ExportTable getExportTable() { export_table_entry(this, result, _, _, _) }
+
+  string toString() { result = this.getName() }
+
+  int getAddress() { export_table_entry(this, _, _, _, result) }
+}

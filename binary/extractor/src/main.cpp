@@ -291,6 +291,8 @@ public:
     }
 };
 
+Label cache[ZYDIS_REGISTER_MAX_VALUE];
+
 template <typename Container, typename Callback>
 auto register_access(TrapWriter &writer, Container &entries, ZydisRegister reg, Callback callback)
 {
@@ -298,7 +300,6 @@ auto register_access(TrapWriter &writer, Container &entries, ZydisRegister reg, 
     {
         return;
     }
-    static Label cache[ZYDIS_REGISTER_MAX_VALUE];
     auto id = writer.fresh_id();
 
     if (!cache[reg])
@@ -335,7 +336,6 @@ Label instruction(TrapWriter &writer, Container &entries, size_t offset, const Z
 {
     auto id = writer.fresh_id();
 
-    auto machineMode = instr.machine_mode;
     auto mnemonic = instr.mnemonic;
     auto length = instr.length;
 
@@ -346,9 +346,15 @@ Label instruction(TrapWriter &writer, Container &entries, size_t offset, const Z
                                 Entry::Arg::FromLabel(id),
                                 Entry::Arg::FromInt(a),
                                 Entry::Arg::FromInt(b),
-                                Entry::Arg::FromInt(machineMode),
-                                Entry::Arg::FromLabel(mnemonic),
-                                Entry::Arg::FromInt(length)));
+                                Entry::Arg::FromLabel(mnemonic))
+    );
+
+    entries.push_back(
+        Entry::fromGenericTuple("instruction_length",
+                                Entry::Arg::FromLabel(id),
+                                Entry::Arg::FromInt(length))
+    );
+
     entries.push_back(
         Entry::fromGenericTuple("instruction_string",
                                 Entry::Arg::FromLabel(id),
@@ -622,6 +628,44 @@ Label extract_optional_header(TrapWriter &writer, const LIEF::PE::OptionalHeader
     return id;
 }
 
+Label extract_export_entry(TrapWriter &writer, const LIEF::PE::ExportEntry &entry, Label export_table_id)
+{
+    auto id = writer.fresh_id();
+
+    
+
+    return id;
+}
+
+Label extract_exports(TrapWriter &writer, const LIEF::PE::Export &export_table)
+{
+    auto id = writer.fresh_id();
+
+    auto name = export_table.name();
+    writer.add(Entry::fromGenericTuple("export_table",
+        Entry::Arg::FromLabel(id),
+        Entry::Arg::FromString(name),
+        Entry::Arg::FromInt(export_table.ordinal_base())
+    ));
+
+    auto entries = export_table.entries();
+    for (const auto& entry : entries) {
+        auto entry_id = writer.fresh_id();
+        auto ordinal = entry.ordinal();
+        auto demangled_name = entry.demangled_name();
+        auto address = entry.address();
+        writer.add(Entry::fromGenericTuple("export_table_entry",
+            Entry::Arg::FromLabel(entry_id),
+            Entry::Arg::FromLabel(id),
+            Entry::Arg::FromInt(ordinal),
+            Entry::Arg::FromString(demangled_name),
+            Entry::Arg::FromInt(address)
+        ));
+    }
+
+    return id;
+}
+
 void extract_file(std::string file_path)
 {
     TrapWriter writer;
@@ -644,6 +688,11 @@ void extract_file(std::string file_path)
         extract_rdata_section(writer, rdata_section);
     }
     extract_optional_header(writer, optional_header);
+
+    const LIEF::PE::Export* export_table = binary->get_export();
+    if(export_table) {
+        extract_exports(writer, *export_table);
+    }
 
     std::filesystem::path trap_dir(getenv("CODEQL_EXTRACTOR_BINARY_TRAP_DIR"));
     boost::replace_all(file_path, ":", "_");

@@ -34,7 +34,7 @@ function init-lief {
 }
 
 function init-zydis {
-  git clone https://github.com/zyantific/zydis.git
+  git clone https://github.com/zyantific/zydis.git --recursive
   cd zydis
   cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreaded" .
   nmake

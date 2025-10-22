@@ -1,6 +1,6 @@
 private import codeql.dataflow.DataFlow
 private import codeql.dataflow.internal.DataFlowImpl
-private import binary
+private import semmle.code.binary.ast.ir.IR
 private import SsaImpl as SsaImpl
 private import DataFlowImpl
 
@@ -11,7 +11,9 @@ class NodePublic extends TNode {
   cached
   abstract string toString();
 
-  final Instruction asExpr() { this = TExprNode(result) }
+  final Instruction asInstruction() { this = TInstructionNode(result) }
+
+  final Operand asOperand() { this = TOperandNode(result) }
 }
 
 abstract class Node extends NodePublic {
@@ -20,10 +22,10 @@ abstract class Node extends NodePublic {
   abstract Function getFunction();
 }
 
-class ExprNode extends Node, TExprNode {
+class InstructionNode extends Node, TInstructionNode {
   Instruction instr;
 
-  ExprNode() { this = TExprNode(instr) }
+  InstructionNode() { this = TInstructionNode(instr) }
 
   final Instruction getInstruction() { result = instr }
 
@@ -32,6 +34,37 @@ class ExprNode extends Node, TExprNode {
   final override Location getLocation() { result = instr.getLocation() }
 
   final override string toString() { result = instr.toString() }
+}
+
+class OperandNode extends Node, TOperandNode {
+  Operand op;
+
+  OperandNode() { this = TOperandNode(op) }
+
+  final Operand getOperand() { result = op }
+
+  final override Function getFunction() { result = op.getEnclosingFunction() }
+
+  final override Location getLocation() { result = op.getLocation() }
+
+  final override string toString() { result = op.toString() }
+}
+
+class SsaNode extends Node, TSsaNode {
+  SsaImpl::DataFlowIntegration::SsaNode node;
+
+  SsaNode() { this = TSsaNode(node) }
+
+  override Function getFunction() { result = node.getBasicBlock().getEnclosingFunction() }
+
+  /** Gets the definition this node corresponds to, if any. */
+  SsaImpl::Definition asDefinition() {
+    result = node.(SsaImpl::DataFlowIntegration::SsaDefinitionNode).getDefinition()
+  }
+
+  override Location getLocation() { result = node.getLocation() }
+
+  override string toString() { result = "[SSA] " + node.toString() }
 }
 
 abstract class ParameterNode extends Node {
@@ -59,11 +92,12 @@ abstract class PostUpdateNode extends PostUpdateNodePublic, Node {
   override string toString() { result = "[post] " + this.getPreUpdateNode().toString() }
 }
 
-final class CastNode extends ExprNode {
+final class CastNode extends InstructionNode {
   CastNode() { none() }
 }
 
 cached
 newtype TNode =
-  TExprNode(Instruction instr) or
+  TInstructionNode(Instruction instr) or
+  TOperandNode(Operand op) or
   TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node)

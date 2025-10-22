@@ -2,8 +2,7 @@
  * @kind graph
  */
 
-import binary
-private import semmle.code.binary.controlflow.BasicBlock
+import IR
 
 newtype TPrintableNode =
   TPrintableFunction(Function f) or
@@ -78,7 +77,7 @@ private class PrintableFunction extends PrintableNode, TPrintableFunction {
   override int getOrder() {
     this =
       rank[result + 1](PrintableFunction orderedFunc, int isEntryPoint |
-        if orderedFunc.getFunction() instanceof ProgramEntryFunction
+        if orderedFunc.getFunction().isProgramEntryPoint()
         then isEntryPoint = 0
         else isEntryPoint = 1
       |
@@ -91,15 +90,28 @@ private class PrintableFunction extends PrintableNode, TPrintableFunction {
   Function getFunction() { result = func }
 }
 
+private predicate isFunctionEntryBlock(BasicBlock bb) { bb.isFunctionEntryBasicBlock() }
+
+private predicate basicBlockSuccessor(BasicBlock bb1, BasicBlock bb2) { bb2 = bb1.getASuccessor() }
+
+private int distanceFromEntry(BasicBlock entry, BasicBlock bb) =
+  shortestDistances(isFunctionEntryBlock/1, basicBlockSuccessor/2)(entry, bb, result)
+
+/** Gets a best-effort ordering of basic blocks within a function. */
 pragma[nomagic]
 private int getBlockOrderingInFunction(Function f, BasicBlock bb) {
   bb =
-    rank[result + 1](BasicBlock bb2, QlBuiltins::BigInt index, int isEntryPoint |
+    rank[result + 1](BasicBlock bb2, string s, int d |
       bb2.getEnclosingFunction() = f and
-      index = bb2.getFirstInstruction().getIndex() and
-      if bb2 instanceof FunctionEntryBasicBlock then isEntryPoint = 0 else isEntryPoint = 1
+      d = distanceFromEntry(f.getEntryBlock(), bb2) and
+      s =
+        strictconcat(int i, string instr |
+          instr = bb2.getNode(i).asInstruction().toString()
+        |
+          instr order by i
+        )
     |
-      bb2 order by isEntryPoint, index
+      bb2 order by d, s
     )
 }
 
@@ -151,21 +163,11 @@ private class PrintableInstruction extends PrintableNode, TPrintableInstruction 
 
   override Location getLocation() { result = instr.getLocation() }
 
-  override string getLabel() {
-    exists(string extra |
-      if exists(getAdditionalDumpText(instr))
-      then extra = " ; " + getAdditionalDumpText(instr)
-      else extra = ""
-    |
-      result = instr.toString() + extra
-    )
-  }
+  override string getLabel() { result = instr.toString() }
 
-  override int getOrder() { instr = instr.getBasicBlock().getInstruction(result) }
+  override int getOrder() { instr = instr.getBasicBlock().getNode(result).asInstruction() }
 
-  final override PrintableIRBlock getParent() {
-    result.getBlock() = instr.getBasicBlock()
-  }
+  final override PrintableIRBlock getParent() { result.getBlock() = instr.getBasicBlock() }
 
   override string getProperty(string key) { result = PrintableNode.super.getProperty(key) }
 }
@@ -175,15 +177,6 @@ private class PrintableInstruction extends PrintableNode, TPrintableInstruction 
  */
 query predicate nodes(PrintableNode node, string key, string value) {
   value = node.getProperty(key)
-}
-
-private int getSuccessorIndex(BasicBlock pred, BasicBlock succ) {
-  succ =
-    rank[result + 1](BasicBlock aSucc |
-      aSucc = pred.getASuccessor()
-    |
-      aSucc order by aSucc.getFirstInstruction().getIndex()
-    )
 }
 
 /**
@@ -197,10 +190,7 @@ query predicate edges(PrintableIRBlock pred, PrintableIRBlock succ, string key, 
     predBlock.getASuccessor() = succBlock
   |
     key = "semmle.label" and
-    if predBlock.getBackEdgeSuccessor() = succBlock then value = "(back edge)" else value = ""
-    or
-    key = "semmle.order" and
-    value = getSuccessorIndex(predBlock, succBlock).toString()
+    value = ""
   )
 }
 

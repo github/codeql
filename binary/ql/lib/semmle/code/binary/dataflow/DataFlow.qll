@@ -16,7 +16,7 @@ private import internal.Content as Content
 module DataFlow {
   final class Node = Node::NodePublic;
 
-  final class ExprNode = Node::ExprNode;
+  final class ExprNode = Node::InstructionNode;
 
   /**
    * The value of a parameter at function entry, viewed as a node in a data

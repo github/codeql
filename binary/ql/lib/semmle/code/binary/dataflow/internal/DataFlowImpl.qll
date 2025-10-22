@@ -1,7 +1,7 @@
 private import codeql.util.Void
 private import codeql.util.Unit
 private import codeql.util.Boolean
-private import binary
+private import semmle.code.binary.ast.ir.IR
 private import SsaImpl as SsaImpl
 private import codeql.dataflow.DataFlow
 private import codeql.dataflow.internal.DataFlowImpl
@@ -16,7 +16,7 @@ final class DataFlowCallable extends TDataFlowCallable {
   /**
    * Gets the underlying CFG scope, if any.
    */
-  Function asFunction() { this = TFunction(result) }
+  Function asFunction() { this = TDataFlowFunction(result) }
 
   /** Gets a textual representation of this callable. */
   string toString() { result = this.asFunction().toString() }
@@ -59,7 +59,12 @@ module SsaFlow {
   SsaFlow::Node asNode(Node n) {
     n = TSsaNode(result)
     or
-    result.(SsaFlow::ExprNode).getExpr() = n.asExpr()
+    result.(SsaFlow::ExprNode).getExpr().asOperand() = n.asOperand()
+    or
+    exists(BasicBlock bb, int i |
+      result.(SsaFlow::SsaDefinitionNode).getDefinition().definesAt(_, bb, i) and
+      n.asInstruction() = bb.getNode(i).asInstruction()
+    )
   }
 
   predicate localFlowStep(
@@ -70,7 +75,19 @@ module SsaFlow {
 }
 
 module LocalFlow {
-  predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) { none() }
+  predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
+    nodeTo.asInstruction().(CopyInstruction).getOperand() = nodeFrom.asOperand()
+    or
+    exists(StoreInstruction store |
+      nodeFrom.asOperand() = store.getValueOperand() and
+      nodeTo.asOperand() = store.getAddressOperand()
+    )
+    or
+    exists(LoadInstruction load |
+      nodeFrom.asOperand() = load.getOperand() and
+      nodeTo.asInstruction() = load
+    )
+  }
 }
 
 class LambdaCallKind = Unit;
@@ -95,7 +112,6 @@ private module Aliases {
 
 module BinaryDataFlow implements InputSig<Location> {
   private import Aliases
-  private import binary
   private import semmle.code.binary.dataflow.DataFlow
   private import Node as Node
 
@@ -140,7 +156,7 @@ module BinaryDataFlow implements InputSig<Location> {
   class DataFlowExpr = Instruction;
 
   /** Gets the node corresponding to `e`. */
-  Node exprNode(DataFlowExpr e) { result.asExpr() = e }
+  Node exprNode(DataFlowExpr e) { result.asInstruction() = e }
 
   final class DataFlowCall = DataFlowCallAlias;
 
@@ -224,18 +240,13 @@ private module Cached {
   newtype TDataFlowCall = TCall(CallInstruction c)
 
   cached
-  newtype TDataFlowCallable = TFunction(Function scope)
+  newtype TDataFlowCallable = TDataFlowFunction(Function scope)
 
   cached
   predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) {
-    exists(Function f |
-      nodeFrom.getEnclosingCallable().asFunction() = f and
-      (
-        LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
-        or
-        SsaFlow::localFlowStep(_, nodeFrom, nodeTo, _)
-      )
-    )
+    LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
+    or
+    SsaFlow::localFlowStep(_, nodeFrom, nodeTo, _)
   }
 
   cached

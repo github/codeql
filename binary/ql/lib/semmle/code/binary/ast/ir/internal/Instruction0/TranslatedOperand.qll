@@ -1,9 +1,8 @@
-private import semmle.code.binary.ast.instructions as RawInstruction
-private import semmle.code.binary.ast.operand as RawOperand
+private import semmle.code.binary.ast.instructions as Raw
 private import TranslatedElement
 private import codeql.util.Option
-private import Opcode as Opcode
-private import InstructionTag
+private import semmle.code.binary.ast.ir.internal.Opcode as Opcode
+private import semmle.code.binary.ast.ir.internal.InstructionTag
 private import TranslatedInstruction
 private import Instruction
 private import Operand
@@ -11,20 +10,9 @@ private import codeql.controlflow.SuccessorType
 private import Variable
 
 abstract class TranslatedOperand extends TranslatedElement {
-  RawOperand::Operand op;
+  Raw::Operand op;
 
-  override RawInstruction::Element getRawElement() { result = op }
-
-  override predicate hasIndex(InstructionTag tag, QlBuiltins::BigInt index0, int index1, int index2) {
-    this.hasIndex(tag, index2) and
-    exists(RawInstruction::Instruction instr |
-      instr = this.getUse().getRawElement() and
-      instr.getIndex() = index0 and
-      instr.getOperand(index1) = op
-    )
-  }
-
-  abstract predicate hasIndex(InstructionTag tag, int index);
+  override Raw::Element getRawElement() { result = op }
 
   TranslatedInstruction getUse() { result = getTranslatedInstruction(op.getUse()) }
 
@@ -37,13 +25,13 @@ abstract class TranslatedOperand extends TranslatedElement {
   final override string toString() { result = "Translation of " + op }
 }
 
-TranslatedOperand getTranslatedOperand(RawOperand::Operand op) {
+TranslatedOperand getTranslatedOperand(Raw::Operand op) {
   result.getRawElement() = op and
   result.producesResult()
 }
 
 class TranslatedRegisterOperand extends TranslatedOperand, TTranslatedRegisterOperand {
-  override RawOperand::RegisterOperand op;
+  override Raw::RegisterOperand op;
 
   TranslatedRegisterOperand() { this = TTranslatedRegisterOperand(op) }
 
@@ -54,8 +42,6 @@ class TranslatedRegisterOperand extends TranslatedOperand, TTranslatedRegisterOp
   override Variable getResultVariable() { result = getTranslatedVariableReal(op.getRegister()) }
 
   override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
-
-  override predicate hasIndex(InstructionTag tag, int index) { none() }
 
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) { none() }
 
@@ -73,7 +59,7 @@ class TranslatedRegisterOperand extends TranslatedOperand, TTranslatedRegisterOp
  * ```
  */
 class TranslatedImmediateOperand extends TranslatedOperand, TTranslatedImmediateOperand {
-  override RawOperand::ImmediateOperand op;
+  override Raw::ImmediateOperand op;
 
   TranslatedImmediateOperand() { this = TTranslatedImmediateOperand(op) }
 
@@ -91,11 +77,6 @@ class TranslatedImmediateOperand extends TranslatedOperand, TTranslatedImmediate
 
   override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
 
-  override predicate hasIndex(InstructionTag tag, int index) {
-    tag = ImmediateOperandConstTag() and
-    index = 0
-  }
-
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) { none() }
 
   override int getConstantValue(InstructionTag tag) {
@@ -104,7 +85,7 @@ class TranslatedImmediateOperand extends TranslatedOperand, TTranslatedImmediate
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, Option<Variable>::Option v) {
-    opcode = Opcode::Const() and
+    opcode instanceof Opcode::Const and
     tag = ImmediateOperandConstTag() and
     v.asSome() = this.getVariable(ImmediateOperandVarTag())
   }
@@ -115,7 +96,7 @@ class TranslatedImmediateOperand extends TranslatedOperand, TTranslatedImmediate
 }
 
 class TranslatedMemoryOperand extends TranslatedOperand, TTranslatedMemoryOperand {
-  override RawOperand::MemoryOperand op;
+  override Raw::MemoryOperand op;
 
   TranslatedMemoryOperand() { this = TTranslatedMemoryOperand(op) }
 
@@ -300,146 +281,6 @@ class TranslatedMemoryOperand extends TranslatedOperand, TTranslatedMemoryOperan
     or
     this.case11Applies() and
     result = this.getInstruction(MemoryOperandConstDisplacementTag()).getResultVariable()
-  }
-
-  override predicate hasIndex(InstructionTag tag, int index) {
-    this.case1Applies() and
-    (
-      tag = MemoryOperandConstFactorTag() and
-      index = 0
-      or
-      tag = MemoryOperandMulTag() and
-      index = 1
-      or
-      tag = MemoryOperandAdd1Tag() and
-      index = 2
-      or
-      tag = MemoryOperandAdd2Tag() and
-      index = 3
-      or
-      this.isLoaded() and
-      tag = MemoryOperandLoadTag() and
-      index = 4
-    )
-    or
-    this.case2Applies() and
-    (
-      tag = MemoryOperandConstFactorTag() and
-      index = 0
-      or
-      tag = MemoryOperandMulTag() and
-      index = 1
-      or
-      tag = MemoryOperandAdd1Tag() and
-      index = 2
-      or
-      this.isLoaded() and
-      tag = MemoryOperandLoadTag() and
-      index = 3
-    )
-    or
-    this.case3Applies() and
-    (
-      tag = MemoryOperandConstDisplacementTag() and
-      index = 0
-      or
-      tag = MemoryOperandAdd1Tag() and
-      index = 1
-      or
-      tag = MemoryOperandAdd2Tag() and
-      index = 2
-      or
-      this.isLoaded() and
-      tag = MemoryOperandLoadTag() and
-      index = 3
-    )
-    or
-    this.case4Applies() and
-    (
-      tag = MemoryOperandAdd1Tag() and
-      index = 0
-      or
-      this.isLoaded() and
-      tag = MemoryOperandLoadTag() and
-      index = 1
-    )
-    or
-    this.case5Applies() and
-    (
-      tag = MemoryOperandConstDisplacementTag() and
-      index = 0
-      or
-      tag = MemoryOperandAdd1Tag() and
-      index = 1
-      or
-      this.isLoaded() and
-      tag = MemoryOperandLoadTag() and
-      index = 2
-    )
-    or
-    this.case6Applies() and
-    (
-      this.isLoaded() and
-      tag = MemoryOperandLoadTag() and
-      index = 0
-    )
-    or
-    this.case7Applies() and
-    (
-      tag = MemoryOperandConstFactorTag() and
-      index = 0
-      or
-      tag = MemoryOperandMulTag() and
-      index = 1
-      or
-      tag = MemoryOperandAdd1Tag() and
-      index = 2
-      or
-      this.isLoaded() and
-      tag = MemoryOperandLoadTag() and
-      index = 3
-    )
-    or
-    this.case8Applies() and
-    (
-      tag = MemoryOperandConstFactorTag() and
-      index = 0
-      or
-      tag = MemoryOperandMulTag() and
-      index = 1
-      or
-      this.isLoaded() and
-      tag = MemoryOperandLoadTag() and
-      index = 2
-    )
-    or
-    this.case9Applies() and
-    (
-      tag = MemoryOperandConstDisplacementTag() and
-      index = 0
-      or
-      tag = MemoryOperandAdd1Tag() and
-      index = 1
-      or
-      this.isLoaded() and
-      tag = MemoryOperandLoadTag() and
-      index = 2
-    )
-    or
-    this.case10Applies() and
-    this.isLoaded() and
-    tag = MemoryOperandLoadTag() and
-    index = 0
-    or
-    this.case11Applies() and
-    (
-      tag = MemoryOperandConstDisplacementTag() and
-      index = 0
-      or
-      this.isLoaded() and
-      tag = MemoryOperandLoadTag() and
-      index = 1
-    )
   }
 
   private predicate hasScaleFactor() { op.getScaleFactor() != 1 }
@@ -916,65 +757,65 @@ class TranslatedMemoryOperand extends TranslatedOperand, TTranslatedMemoryOperan
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, Option<Variable>::Option v) {
     this.case1Applies() and
     (
-      opcode = Opcode::Const() and
+      opcode instanceof Opcode::Const and
       tag = MemoryOperandConstFactorTag() and
       v.asSome() = this.getVariable(MemoryOperandConstFactorVarTag())
       or
-      opcode = Opcode::Mul() and
+      opcode instanceof Opcode::Mul and
       tag = MemoryOperandMulTag() and
       v.asSome() = this.getVariable(MemoryOperandMulVarTag())
       or
-      opcode = Opcode::Add() and
+      opcode instanceof Opcode::Add and
       tag = MemoryOperandAdd1Tag() and
       v.asSome() = this.getVariable(MemoryOperandAdd1VarTag())
       or
-      opcode = Opcode::Add() and
+      opcode instanceof Opcode::Add and
       tag = MemoryOperandAdd2Tag() and
       v.asSome() = this.getVariable(MemoryOperandAdd2VarTag())
     )
     or
     this.case2Applies() and
     (
-      opcode = Opcode::Const() and
+      opcode instanceof Opcode::Const and
       tag = MemoryOperandConstFactorTag() and
       v.asSome() = this.getVariable(MemoryOperandConstFactorVarTag())
       or
-      opcode = Opcode::Mul() and
+      opcode instanceof Opcode::Mul and
       tag = MemoryOperandMulTag() and
       v.asSome() = this.getVariable(MemoryOperandMulVarTag())
       or
-      opcode = Opcode::Add() and
+      opcode instanceof Opcode::Add and
       tag = MemoryOperandAdd1Tag() and
       v.asSome() = this.getVariable(MemoryOperandAdd1VarTag())
     )
     or
     this.case3Applies() and
     (
-      opcode = Opcode::Const() and
+      opcode instanceof Opcode::Const and
       tag = MemoryOperandConstDisplacementTag() and
       v.asSome() = this.getVariable(MemoryOperandConstDisplacementVarTag())
       or
-      opcode = Opcode::Add() and
+      opcode instanceof Opcode::Add and
       tag = MemoryOperandAdd1Tag() and
       v.asSome() = this.getVariable(MemoryOperandAdd1VarTag())
       or
-      opcode = Opcode::Add() and
+      opcode instanceof Opcode::Add and
       tag = MemoryOperandAdd2Tag() and
       v.asSome() = this.getVariable(MemoryOperandAdd2VarTag())
     )
     or
     this.case4Applies() and
-    opcode = Opcode::Add() and
+    opcode instanceof Opcode::Add and
     tag = MemoryOperandAdd1Tag() and
     v.asSome() = this.getVariable(MemoryOperandAdd1VarTag())
     or
     this.case5Applies() and
     (
-      opcode = Opcode::Const() and
+      opcode instanceof Opcode::Const and
       tag = MemoryOperandConstDisplacementTag() and
       v.asSome() = this.getVariable(MemoryOperandConstDisplacementVarTag())
       or
-      opcode = Opcode::Add() and
+      opcode instanceof Opcode::Add and
       tag = MemoryOperandAdd1Tag() and
       v.asSome() = this.getVariable(MemoryOperandAdd1VarTag())
     )
@@ -984,37 +825,37 @@ class TranslatedMemoryOperand extends TranslatedOperand, TTranslatedMemoryOperan
     or
     this.case7Applies() and
     (
-      opcode = Opcode::Const() and
+      opcode instanceof Opcode::Const and
       tag = MemoryOperandConstFactorTag() and
       v.asSome() = this.getVariable(MemoryOperandConstFactorVarTag())
       or
-      opcode = Opcode::Mul() and
+      opcode instanceof Opcode::Mul and
       tag = MemoryOperandMulTag() and
       v.asSome() = this.getVariable(MemoryOperandMulVarTag())
       or
-      opcode = Opcode::Add() and
+      opcode instanceof Opcode::Add and
       tag = MemoryOperandAdd1Tag() and
       v.asSome() = this.getVariable(MemoryOperandAdd1VarTag())
     )
     or
     this.case8Applies() and
     (
-      opcode = Opcode::Const() and
+      opcode instanceof Opcode::Const and
       tag = MemoryOperandConstFactorTag() and
       v.asSome() = this.getVariable(MemoryOperandConstFactorVarTag())
       or
-      opcode = Opcode::Mul() and
+      opcode instanceof Opcode::Mul and
       tag = MemoryOperandMulTag() and
       v.asSome() = this.getVariable(MemoryOperandMulVarTag())
     )
     or
     this.case9Applies() and
     (
-      opcode = Opcode::Const() and
+      opcode instanceof Opcode::Const and
       tag = MemoryOperandConstDisplacementTag() and
       v.asSome() = this.getVariable(MemoryOperandConstDisplacementVarTag())
       or
-      opcode = Opcode::Add() and
+      opcode instanceof Opcode::Add and
       tag = MemoryOperandAdd1Tag() and
       v.asSome() = this.getVariable(MemoryOperandAdd1VarTag())
     )
@@ -1023,12 +864,12 @@ class TranslatedMemoryOperand extends TranslatedOperand, TTranslatedMemoryOperan
     none()
     or
     this.case11Applies() and
-    opcode = Opcode::Const() and
+    opcode instanceof Opcode::Const and
     tag = MemoryOperandConstDisplacementTag() and
     v.asSome() = this.getVariable(MemoryOperandConstDisplacementVarTag())
     or
     this.isLoaded() and
-    opcode = Opcode::Load() and
+    opcode instanceof Opcode::Load and
     tag = MemoryOperandLoadTag() and
     v.asSome() = this.getVariable(MemoryOperandLoadVarTag())
   }
