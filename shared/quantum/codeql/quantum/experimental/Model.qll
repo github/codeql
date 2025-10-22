@@ -2393,6 +2393,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       key = "ParsedName" and
       value = instance.asAlg().getParsedEllipticCurveName() and
       location = this.getLocation()
+      or
+      key = "CurveType" and
+      value = this.getEllipticCurveType().toString() and
+      location = this.getLocation()
     }
   }
 }

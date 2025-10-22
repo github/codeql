@@ -82,6 +82,7 @@
 | jca/AesWrapAndPBEWith.java:178:29:178:64 | EncryptOperation | KeyOperationSubtype | Encrypt | jca/AesWrapAndPBEWith.java:178:29:178:64 | jca/AesWrapAndPBEWith.java:178:29:178:64 |
 | jca/AesWrapAndPBEWith.java:200:55:200:69 | Parameter | Description | password | jca/AesWrapAndPBEWith.java:200:55:200:69 | jca/AesWrapAndPBEWith.java:200:55:200:69 |
 | jca/AesWrapAndPBEWith.java:200:72:200:87 | Parameter | Description | plaintext | jca/AesWrapAndPBEWith.java:200:72:200:87 | jca/AesWrapAndPBEWith.java:200:72:200:87 |
+| jca/AsymmetricEncryptionMacHybridCryptosystem.java:86:47:86:57 | EllipticCurve | CurveType | SEC | jca/AsymmetricEncryptionMacHybridCryptosystem.java:86:47:86:57 | jca/AsymmetricEncryptionMacHybridCryptosystem.java:86:47:86:57 |
 | jca/AsymmetricEncryptionMacHybridCryptosystem.java:86:47:86:57 | EllipticCurve | KeySize | 256 | jca/AsymmetricEncryptionMacHybridCryptosystem.java:86:47:86:57 | jca/AsymmetricEncryptionMacHybridCryptosystem.java:86:47:86:57 |
 | jca/AsymmetricEncryptionMacHybridCryptosystem.java:86:47:86:57 | EllipticCurve | Name | secp256r1 | jca/AsymmetricEncryptionMacHybridCryptosystem.java:86:47:86:57 | jca/AsymmetricEncryptionMacHybridCryptosystem.java:86:47:86:57 |
 | jca/AsymmetricEncryptionMacHybridCryptosystem.java:86:47:86:57 | EllipticCurve | ParsedName | secp256r1 | jca/AsymmetricEncryptionMacHybridCryptosystem.java:86:47:86:57 | jca/AsymmetricEncryptionMacHybridCryptosystem.java:86:47:86:57 |
@@ -371,16 +372,19 @@
 | jca/Digest.java:240:21:240:23 | Constant | Description | 256 | jca/Digest.java:240:21:240:23 | jca/Digest.java:240:21:240:23 |
 | jca/Digest.java:241:16:241:35 | Key | KeyType | Symmetric | jca/Digest.java:241:16:241:35 | jca/Digest.java:241:16:241:35 |
 | jca/Digest.java:253:38:253:41 | RandomNumberGeneration | Description | java.security.SecureRandom | jca/Digest.java:253:38:253:41 | jca/Digest.java:253:38:253:41 |
+| jca/EllipticCurve1.java:46:66:46:76 | EllipticCurve | CurveType | SEC | jca/EllipticCurve1.java:46:66:46:76 | jca/EllipticCurve1.java:46:66:46:76 |
 | jca/EllipticCurve1.java:46:66:46:76 | EllipticCurve | KeySize | 256 | jca/EllipticCurve1.java:46:66:46:76 | jca/EllipticCurve1.java:46:66:46:76 |
 | jca/EllipticCurve1.java:46:66:46:76 | EllipticCurve | Name | secp256r1 | jca/EllipticCurve1.java:46:66:46:76 | jca/EllipticCurve1.java:46:66:46:76 |
 | jca/EllipticCurve1.java:46:66:46:76 | EllipticCurve | ParsedName | secp256r1 | jca/EllipticCurve1.java:46:66:46:76 | jca/EllipticCurve1.java:46:66:46:76 |
 | jca/EllipticCurve1.java:46:66:46:76 | EllipticCurve | RawName | secp256r1 | jca/EllipticCurve1.java:46:66:46:76 | jca/EllipticCurve1.java:46:66:46:76 |
 | jca/EllipticCurve1.java:47:16:47:36 | Key | KeyType | Asymmetric | jca/EllipticCurve1.java:47:16:47:36 | jca/EllipticCurve1.java:47:16:47:36 |
+| jca/EllipticCurve1.java:56:66:56:76 | EllipticCurve | CurveType | SEC | jca/EllipticCurve1.java:56:66:56:76 | jca/EllipticCurve1.java:56:66:56:76 |
 | jca/EllipticCurve1.java:56:66:56:76 | EllipticCurve | KeySize | 256 | jca/EllipticCurve1.java:56:66:56:76 | jca/EllipticCurve1.java:56:66:56:76 |
 | jca/EllipticCurve1.java:56:66:56:76 | EllipticCurve | Name | secp256k1 | jca/EllipticCurve1.java:56:66:56:76 | jca/EllipticCurve1.java:56:66:56:76 |
 | jca/EllipticCurve1.java:56:66:56:76 | EllipticCurve | ParsedName | secp256k1 | jca/EllipticCurve1.java:56:66:56:76 | jca/EllipticCurve1.java:56:66:56:76 |
 | jca/EllipticCurve1.java:56:66:56:76 | EllipticCurve | RawName | secp256k1 | jca/EllipticCurve1.java:56:66:56:76 | jca/EllipticCurve1.java:56:66:56:76 |
 | jca/EllipticCurve1.java:57:16:57:36 | Key | KeyType | Asymmetric | jca/EllipticCurve1.java:57:16:57:36 | jca/EllipticCurve1.java:57:16:57:36 |
+| jca/EllipticCurve1.java:66:66:66:82 | EllipticCurve | CurveType | BRAINPOOL | jca/EllipticCurve1.java:66:66:66:82 | jca/EllipticCurve1.java:66:66:66:82 |
 | jca/EllipticCurve1.java:66:66:66:82 | EllipticCurve | KeySize | 256 | jca/EllipticCurve1.java:66:66:66:82 | jca/EllipticCurve1.java:66:66:66:82 |
 | jca/EllipticCurve1.java:66:66:66:82 | EllipticCurve | Name | brainpoolP256r1 | jca/EllipticCurve1.java:66:66:66:82 | jca/EllipticCurve1.java:66:66:66:82 |
 | jca/EllipticCurve1.java:66:66:66:82 | EllipticCurve | ParsedName | brainpoolP256r1 | jca/EllipticCurve1.java:66:66:66:82 | jca/EllipticCurve1.java:66:66:66:82 |
@@ -392,6 +396,7 @@
 | jca/EllipticCurve1.java:83:61:83:66 | KeyAgreementAlgorithm | Name | X448 | jca/EllipticCurve1.java:83:61:83:66 | jca/EllipticCurve1.java:83:61:83:66 |
 | jca/EllipticCurve1.java:83:61:83:66 | KeyAgreementAlgorithm | RawName | X448 | jca/EllipticCurve1.java:83:61:83:66 | jca/EllipticCurve1.java:83:61:83:66 |
 | jca/EllipticCurve1.java:84:16:84:36 | Key | KeyType | Asymmetric | jca/EllipticCurve1.java:84:16:84:36 | jca/EllipticCurve1.java:84:16:84:36 |
+| jca/EllipticCurve1.java:94:66:94:76 | EllipticCurve | CurveType | SEC | jca/EllipticCurve1.java:94:66:94:76 | jca/EllipticCurve1.java:94:66:94:76 |
 | jca/EllipticCurve1.java:94:66:94:76 | EllipticCurve | KeySize | 163 | jca/EllipticCurve1.java:94:66:94:76 | jca/EllipticCurve1.java:94:66:94:76 |
 | jca/EllipticCurve1.java:94:66:94:76 | EllipticCurve | Name | sect163r2 | jca/EllipticCurve1.java:94:66:94:76 | jca/EllipticCurve1.java:94:66:94:76 |
 | jca/EllipticCurve1.java:94:66:94:76 | EllipticCurve | ParsedName | sect163r2 | jca/EllipticCurve1.java:94:66:94:76 | jca/EllipticCurve1.java:94:66:94:76 |
@@ -402,16 +407,19 @@
 | jca/EllipticCurve1.java:114:61:114:69 | KeyOperationAlgorithm | Name | EDSA | jca/EllipticCurve1.java:114:61:114:69 | jca/EllipticCurve1.java:114:61:114:69 |
 | jca/EllipticCurve1.java:114:61:114:69 | KeyOperationAlgorithm | RawName | Ed25519 | jca/EllipticCurve1.java:114:61:114:69 | jca/EllipticCurve1.java:114:61:114:69 |
 | jca/EllipticCurve1.java:115:16:115:36 | Key | KeyType | Asymmetric | jca/EllipticCurve1.java:115:16:115:36 | jca/EllipticCurve1.java:115:16:115:36 |
+| jca/EllipticCurve2.java:46:47:46:57 | EllipticCurve | CurveType | SEC | jca/EllipticCurve2.java:46:47:46:57 | jca/EllipticCurve2.java:46:47:46:57 |
 | jca/EllipticCurve2.java:46:47:46:57 | EllipticCurve | KeySize | 256 | jca/EllipticCurve2.java:46:47:46:57 | jca/EllipticCurve2.java:46:47:46:57 |
 | jca/EllipticCurve2.java:46:47:46:57 | EllipticCurve | Name | secp256r1 | jca/EllipticCurve2.java:46:47:46:57 | jca/EllipticCurve2.java:46:47:46:57 |
 | jca/EllipticCurve2.java:46:47:46:57 | EllipticCurve | ParsedName | secp256r1 | jca/EllipticCurve2.java:46:47:46:57 | jca/EllipticCurve2.java:46:47:46:57 |
 | jca/EllipticCurve2.java:46:47:46:57 | EllipticCurve | RawName | secp256r1 | jca/EllipticCurve2.java:46:47:46:57 | jca/EllipticCurve2.java:46:47:46:57 |
 | jca/EllipticCurve2.java:47:16:47:36 | Key | KeyType | Asymmetric | jca/EllipticCurve2.java:47:16:47:36 | jca/EllipticCurve2.java:47:16:47:36 |
+| jca/EllipticCurve2.java:55:47:55:57 | EllipticCurve | CurveType | SEC | jca/EllipticCurve2.java:55:47:55:57 | jca/EllipticCurve2.java:55:47:55:57 |
 | jca/EllipticCurve2.java:55:47:55:57 | EllipticCurve | KeySize | 256 | jca/EllipticCurve2.java:55:47:55:57 | jca/EllipticCurve2.java:55:47:55:57 |
 | jca/EllipticCurve2.java:55:47:55:57 | EllipticCurve | Name | secp256k1 | jca/EllipticCurve2.java:55:47:55:57 | jca/EllipticCurve2.java:55:47:55:57 |
 | jca/EllipticCurve2.java:55:47:55:57 | EllipticCurve | ParsedName | secp256k1 | jca/EllipticCurve2.java:55:47:55:57 | jca/EllipticCurve2.java:55:47:55:57 |
 | jca/EllipticCurve2.java:55:47:55:57 | EllipticCurve | RawName | secp256k1 | jca/EllipticCurve2.java:55:47:55:57 | jca/EllipticCurve2.java:55:47:55:57 |
 | jca/EllipticCurve2.java:56:16:56:36 | Key | KeyType | Asymmetric | jca/EllipticCurve2.java:56:16:56:36 | jca/EllipticCurve2.java:56:16:56:36 |
+| jca/EllipticCurve2.java:64:47:64:63 | EllipticCurve | CurveType | BRAINPOOL | jca/EllipticCurve2.java:64:47:64:63 | jca/EllipticCurve2.java:64:47:64:63 |
 | jca/EllipticCurve2.java:64:47:64:63 | EllipticCurve | KeySize | 256 | jca/EllipticCurve2.java:64:47:64:63 | jca/EllipticCurve2.java:64:47:64:63 |
 | jca/EllipticCurve2.java:64:47:64:63 | EllipticCurve | Name | brainpoolP256r1 | jca/EllipticCurve2.java:64:47:64:63 | jca/EllipticCurve2.java:64:47:64:63 |
 | jca/EllipticCurve2.java:64:47:64:63 | EllipticCurve | ParsedName | brainpoolP256r1 | jca/EllipticCurve2.java:64:47:64:63 | jca/EllipticCurve2.java:64:47:64:63 |
@@ -578,6 +586,7 @@
 | jca/Encryption1.java:173:38:173:39 | RandomNumberGeneration | Description | java.security.SecureRandom | jca/Encryption1.java:173:38:173:39 | jca/Encryption1.java:173:38:173:39 |
 | jca/Encryption1.java:175:45:175:50 | Key | KeyType | Unknown | jca/Encryption1.java:175:45:175:50 | jca/Encryption1.java:175:45:175:50 |
 | jca/Encryption1.java:176:32:176:65 | EncryptOperation | KeyOperationSubtype | Encrypt | jca/Encryption1.java:176:32:176:65 | jca/Encryption1.java:176:32:176:65 |
+| jca/Encryption2.java:55:60:55:70 | EllipticCurve | CurveType | SEC | jca/Encryption2.java:55:60:55:70 | jca/Encryption2.java:55:60:55:70 |
 | jca/Encryption2.java:55:60:55:70 | EllipticCurve | KeySize | 256 | jca/Encryption2.java:55:60:55:70 | jca/Encryption2.java:55:60:55:70 |
 | jca/Encryption2.java:55:60:55:70 | EllipticCurve | Name | secp256r1 | jca/Encryption2.java:55:60:55:70 | jca/Encryption2.java:55:60:55:70 |
 | jca/Encryption2.java:55:60:55:70 | EllipticCurve | ParsedName | secp256r1 | jca/Encryption2.java:55:60:55:70 | jca/Encryption2.java:55:60:55:70 |
@@ -847,6 +856,7 @@
 | jca/IVArtifact.java:275:34:275:46 | Constant | Description | "Message One" | jca/IVArtifact.java:275:34:275:46 | jca/IVArtifact.java:275:34:275:46 |
 | jca/IVArtifact.java:275:60:275:72 | Constant | Description | "Message Two" | jca/IVArtifact.java:275:60:275:72 | jca/IVArtifact.java:275:60:275:72 |
 | jca/IVArtifact.java:275:86:275:100 | Constant | Description | "Message Three" | jca/IVArtifact.java:275:86:275:100 | jca/IVArtifact.java:275:86:275:100 |
+| jca/KeyAgreementHybridCryptosystem.java:50:47:50:57 | EllipticCurve | CurveType | SEC | jca/KeyAgreementHybridCryptosystem.java:50:47:50:57 | jca/KeyAgreementHybridCryptosystem.java:50:47:50:57 |
 | jca/KeyAgreementHybridCryptosystem.java:50:47:50:57 | EllipticCurve | KeySize | 256 | jca/KeyAgreementHybridCryptosystem.java:50:47:50:57 | jca/KeyAgreementHybridCryptosystem.java:50:47:50:57 |
 | jca/KeyAgreementHybridCryptosystem.java:50:47:50:57 | EllipticCurve | Name | secp256r1 | jca/KeyAgreementHybridCryptosystem.java:50:47:50:57 | jca/KeyAgreementHybridCryptosystem.java:50:47:50:57 |
 | jca/KeyAgreementHybridCryptosystem.java:50:47:50:57 | EllipticCurve | ParsedName | secp256r1 | jca/KeyAgreementHybridCryptosystem.java:50:47:50:57 | jca/KeyAgreementHybridCryptosystem.java:50:47:50:57 |
@@ -1158,6 +1168,7 @@
 | jca/KeyEncapsulation.java:92:47:92:85 | PaddingAlgorithm | RawName | OAEPWithSHA-256AndMGF1Padding | jca/KeyEncapsulation.java:92:47:92:85 | jca/KeyEncapsulation.java:92:47:92:85 |
 | jca/KeyEncapsulation.java:93:45:93:51 | Key | KeyType | Unknown | jca/KeyEncapsulation.java:93:45:93:51 | jca/KeyEncapsulation.java:93:45:93:51 |
 | jca/KeyEncapsulation.java:94:30:94:58 | DecryptOperation | KeyOperationSubtype | Decrypt | jca/KeyEncapsulation.java:94:30:94:58 | jca/KeyEncapsulation.java:94:30:94:58 |
+| jca/KeyEncapsulation.java:117:47:117:57 | EllipticCurve | CurveType | SEC | jca/KeyEncapsulation.java:117:47:117:57 | jca/KeyEncapsulation.java:117:47:117:57 |
 | jca/KeyEncapsulation.java:117:47:117:57 | EllipticCurve | KeySize | 256 | jca/KeyEncapsulation.java:117:47:117:57 | jca/KeyEncapsulation.java:117:47:117:57 |
 | jca/KeyEncapsulation.java:117:47:117:57 | EllipticCurve | Name | secp256r1 | jca/KeyEncapsulation.java:117:47:117:57 | jca/KeyEncapsulation.java:117:47:117:57 |
 | jca/KeyEncapsulation.java:117:47:117:57 | EllipticCurve | ParsedName | secp256r1 | jca/KeyEncapsulation.java:117:47:117:57 | jca/KeyEncapsulation.java:117:47:117:57 |
@@ -1178,6 +1189,7 @@
 | jca/KeyEncapsulation.java:136:45:136:50 | Key | KeyType | Unknown | jca/KeyEncapsulation.java:136:45:136:50 | jca/KeyEncapsulation.java:136:45:136:50 |
 | jca/KeyEncapsulation.java:137:29:137:73 | EncryptOperation | KeyOperationSubtype | Encrypt | jca/KeyEncapsulation.java:137:29:137:73 | jca/KeyEncapsulation.java:137:29:137:73 |
 | jca/KeyEncapsulation.java:137:47:137:61 | Constant | Description | "ECIES message" | jca/KeyEncapsulation.java:137:47:137:61 | jca/KeyEncapsulation.java:137:47:137:61 |
+| jca/KeyEncapsulation.java:186:47:186:57 | EllipticCurve | CurveType | SEC | jca/KeyEncapsulation.java:186:47:186:57 | jca/KeyEncapsulation.java:186:47:186:57 |
 | jca/KeyEncapsulation.java:186:47:186:57 | EllipticCurve | KeySize | 256 | jca/KeyEncapsulation.java:186:47:186:57 | jca/KeyEncapsulation.java:186:47:186:57 |
 | jca/KeyEncapsulation.java:186:47:186:57 | EllipticCurve | Name | secp256r1 | jca/KeyEncapsulation.java:186:47:186:57 | jca/KeyEncapsulation.java:186:47:186:57 |
 | jca/KeyEncapsulation.java:186:47:186:57 | EllipticCurve | ParsedName | secp256r1 | jca/KeyEncapsulation.java:186:47:186:57 | jca/KeyEncapsulation.java:186:47:186:57 |
@@ -1192,6 +1204,7 @@
 | jca/KeyEncapsulation.java:207:64:207:68 | KeyOperationAlgorithm | RawName | RSA | jca/KeyEncapsulation.java:207:64:207:68 | jca/KeyEncapsulation.java:207:64:207:68 |
 | jca/KeyEncapsulation.java:208:27:208:30 | Constant | Description | 2048 | jca/KeyEncapsulation.java:208:27:208:30 | jca/KeyEncapsulation.java:208:27:208:30 |
 | jca/KeyEncapsulation.java:209:25:209:48 | Key | KeyType | Asymmetric | jca/KeyEncapsulation.java:209:25:209:48 | jca/KeyEncapsulation.java:209:25:209:48 |
+| jca/KeyEncapsulation.java:214:49:214:59 | EllipticCurve | CurveType | SEC | jca/KeyEncapsulation.java:214:49:214:59 | jca/KeyEncapsulation.java:214:49:214:59 |
 | jca/KeyEncapsulation.java:214:49:214:59 | EllipticCurve | KeySize | 256 | jca/KeyEncapsulation.java:214:49:214:59 | jca/KeyEncapsulation.java:214:49:214:59 |
 | jca/KeyEncapsulation.java:214:49:214:59 | EllipticCurve | Name | secp256r1 | jca/KeyEncapsulation.java:214:49:214:59 | jca/KeyEncapsulation.java:214:49:214:59 |
 | jca/KeyEncapsulation.java:214:49:214:59 | EllipticCurve | ParsedName | secp256r1 | jca/KeyEncapsulation.java:214:49:214:59 | jca/KeyEncapsulation.java:214:49:214:59 |
@@ -1214,6 +1227,7 @@
 | jca/KeyExchange.java:99:52:99:55 | KeyAgreementAlgorithm | RawName | DH | jca/KeyExchange.java:99:52:99:55 | jca/KeyExchange.java:99:52:99:55 |
 | jca/KeyExchange.java:100:17:100:26 | Key | KeyType | Unknown | jca/KeyExchange.java:100:17:100:26 | jca/KeyExchange.java:100:17:100:26 |
 | jca/KeyExchange.java:101:20:101:28 | Key | KeyType | Unknown | jca/KeyExchange.java:101:20:101:28 | jca/KeyExchange.java:101:20:101:28 |
+| jca/KeyExchange.java:121:49:121:59 | EllipticCurve | CurveType | SEC | jca/KeyExchange.java:121:49:121:59 | jca/KeyExchange.java:121:49:121:59 |
 | jca/KeyExchange.java:121:49:121:59 | EllipticCurve | KeySize | 256 | jca/KeyExchange.java:121:49:121:59 | jca/KeyExchange.java:121:49:121:59 |
 | jca/KeyExchange.java:121:49:121:59 | EllipticCurve | Name | secp256r1 | jca/KeyExchange.java:121:49:121:59 | jca/KeyExchange.java:121:49:121:59 |
 | jca/KeyExchange.java:121:49:121:59 | EllipticCurve | ParsedName | secp256r1 | jca/KeyExchange.java:121:49:121:59 | jca/KeyExchange.java:121:49:121:59 |
@@ -1399,6 +1413,7 @@
 | jca/PrngTest.java:152:56:152:60 | KeyOperationAlgorithm | Structure | Block | jca/PrngTest.java:152:56:152:60 | jca/PrngTest.java:152:56:152:60 |
 | jca/PrngTest.java:153:21:153:23 | Constant | Description | 256 | jca/PrngTest.java:153:21:153:23 | jca/PrngTest.java:153:21:153:23 |
 | jca/PrngTest.java:154:16:154:35 | Key | KeyType | Symmetric | jca/PrngTest.java:154:16:154:35 | jca/PrngTest.java:154:16:154:35 |
+| jca/SignEncryptCombinations.java:52:49:52:59 | EllipticCurve | CurveType | SEC | jca/SignEncryptCombinations.java:52:49:52:59 | jca/SignEncryptCombinations.java:52:49:52:59 |
 | jca/SignEncryptCombinations.java:52:49:52:59 | EllipticCurve | KeySize | 256 | jca/SignEncryptCombinations.java:52:49:52:59 | jca/SignEncryptCombinations.java:52:49:52:59 |
 | jca/SignEncryptCombinations.java:52:49:52:59 | EllipticCurve | Name | secp256r1 | jca/SignEncryptCombinations.java:52:49:52:59 | jca/SignEncryptCombinations.java:52:49:52:59 |
 | jca/SignEncryptCombinations.java:52:49:52:59 | EllipticCurve | ParsedName | secp256r1 | jca/SignEncryptCombinations.java:52:49:52:59 | jca/SignEncryptCombinations.java:52:49:52:59 |
@@ -1470,6 +1485,7 @@
 | jca/SignatureOperation.java:75:53:75:74 | KeyOperationAlgorithm | RawName | SHA256withRSAandMGF1 | jca/SignatureOperation.java:75:53:75:74 | jca/SignatureOperation.java:75:53:75:74 |
 | jca/SignatureOperation.java:76:30:76:38 | Key | KeyType | Unknown | jca/SignatureOperation.java:76:30:76:38 | jca/SignatureOperation.java:76:30:76:38 |
 | jca/SignatureOperation.java:78:16:78:41 | VerifyOperation | KeyOperationSubtype | Verify | jca/SignatureOperation.java:78:16:78:41 | jca/SignatureOperation.java:78:16:78:41 |
+| jca/SignatureOperation.java:93:49:93:59 | EllipticCurve | CurveType | SEC | jca/SignatureOperation.java:93:49:93:59 | jca/SignatureOperation.java:93:49:93:59 |
 | jca/SignatureOperation.java:93:49:93:59 | EllipticCurve | KeySize | 256 | jca/SignatureOperation.java:93:49:93:59 | jca/SignatureOperation.java:93:49:93:59 |
 | jca/SignatureOperation.java:93:49:93:59 | EllipticCurve | Name | secp256r1 | jca/SignatureOperation.java:93:49:93:59 | jca/SignatureOperation.java:93:49:93:59 |
 | jca/SignatureOperation.java:93:49:93:59 | EllipticCurve | ParsedName | secp256r1 | jca/SignatureOperation.java:93:49:93:59 | jca/SignatureOperation.java:93:49:93:59 |

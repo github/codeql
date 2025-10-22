@@ -17,5 +17,5 @@ from
   PlaintextUseAsMacAndCipherInputFlow::PathNode sink, InterimArg arg
 where isPlaintextInEncryptionAndMac(src, sink, arg)
 select sink, src, sink,
-  "Source is used as plaintext to MAC and encryption operation. Indicates possible misuse of MAC. Path shows plaintext to final use through intermediate mac or encryption operation here $@",
+  "Incorrect MAC usage: Encryption plaintext also used for MAC. Flow shows plaintext to final use through intermediate mac or encryption operation here $@",
   arg.asExpr(), arg.asExpr().toString()

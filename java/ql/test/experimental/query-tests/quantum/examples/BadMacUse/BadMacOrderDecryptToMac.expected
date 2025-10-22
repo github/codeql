@@ -1,6 +1,6 @@
 #select
-| BadMacUse.java:56:42:56:50 | plaintext | BadMacUse.java:50:28:50:53 | doFinal(...) : byte[] | BadMacUse.java:56:42:56:50 | plaintext | MAC order potentially wrong: observed a potential decrypt operation output to MAC implying the MAC is on plaintext, and not a cipher. |
-| BadMacUse.java:124:42:124:51 | ciphertext | BadMacUse.java:92:16:92:36 | doFinal(...) : byte[] | BadMacUse.java:124:42:124:51 | ciphertext | MAC order potentially wrong: observed a potential decrypt operation output to MAC implying the MAC is on plaintext, and not a cipher. |
+| BadMacUse.java:56:42:56:50 | plaintext | BadMacUse.java:50:28:50:53 | doFinal(...) : byte[] | BadMacUse.java:56:42:56:50 | plaintext | Incorrect decryption and MAC order: decryption output plaintext flows to MAC message input. |
+| BadMacUse.java:124:42:124:51 | ciphertext | BadMacUse.java:92:16:92:36 | doFinal(...) : byte[] | BadMacUse.java:124:42:124:51 | ciphertext | Incorrect decryption and MAC order: decryption output plaintext flows to MAC message input. |
 edges
 | BadMacUse.java:27:29:27:53 | doFinal(...) : byte[] | BadMacUse.java:32:42:32:51 | ciphertext | provenance |  |
 | BadMacUse.java:50:28:50:53 | doFinal(...) : byte[] | BadMacUse.java:56:42:56:50 | plaintext | provenance |  |

@@ -15,4 +15,4 @@ import BadMacOrder
 from ArtifactFlow::PathNode src, ArtifactFlow::PathNode sink
 where isDecryptToMacFlow(src, sink)
 select sink, src, sink,
-  "MAC order potentially wrong: observed a potential decrypt operation output to MAC implying the MAC is on plaintext, and not a cipher."
+  "Incorrect decryption and MAC order: decryption output plaintext flows to MAC message input."

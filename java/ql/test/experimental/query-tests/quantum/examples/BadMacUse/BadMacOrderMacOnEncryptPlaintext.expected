@@ -1,14 +1,14 @@
 #select
-| BadMacUse.java:80:44:80:52 | plaintext | BadMacUse.java:67:82:67:97 | plaintext : byte[] | BadMacUse.java:80:44:80:52 | plaintext | Source is used as plaintext to MAC and encryption operation. Indicates possible misuse of MAC. Path shows plaintext to final use through intermediate mac or encryption operation here $@ | BadMacUse.java:75:42:75:50 | plaintext | plaintext |
+| BadMacUse.java:76:44:76:52 | plaintext | BadMacUse.java:63:82:63:97 | plaintext : byte[] | BadMacUse.java:76:44:76:52 | plaintext | Incorrect MAC usage: Encryption plaintext also used for MAC. Flow shows plaintext to final use through intermediate mac or encryption operation here $@ | BadMacUse.java:71:42:71:50 | plaintext | plaintext |
 edges
-| BadMacUse.java:67:82:67:97 | plaintext : byte[] | BadMacUse.java:75:42:75:50 | plaintext : byte[] | provenance |  |
-| BadMacUse.java:75:42:75:50 | plaintext : byte[] | BadMacUse.java:75:42:75:50 | plaintext : byte[] | provenance | Config |
-| BadMacUse.java:75:42:75:50 | plaintext : byte[] | BadMacUse.java:80:44:80:52 | plaintext | provenance |  |
+| BadMacUse.java:63:82:63:97 | plaintext : byte[] | BadMacUse.java:71:42:71:50 | plaintext : byte[] | provenance |  |
+| BadMacUse.java:71:42:71:50 | plaintext : byte[] | BadMacUse.java:71:42:71:50 | plaintext : byte[] | provenance | Config |
+| BadMacUse.java:71:42:71:50 | plaintext : byte[] | BadMacUse.java:76:44:76:52 | plaintext | provenance |  |
 nodes
-| BadMacUse.java:67:82:67:97 | plaintext : byte[] | semmle.label | plaintext : byte[] |
-| BadMacUse.java:75:42:75:50 | plaintext : byte[] | semmle.label | plaintext : byte[] |
-| BadMacUse.java:75:42:75:50 | plaintext : byte[] | semmle.label | plaintext : byte[] |
-| BadMacUse.java:80:44:80:52 | plaintext | semmle.label | plaintext |
+| BadMacUse.java:63:82:63:97 | plaintext : byte[] | semmle.label | plaintext : byte[] |
+| BadMacUse.java:71:42:71:50 | plaintext : byte[] | semmle.label | plaintext : byte[] |
+| BadMacUse.java:71:42:71:50 | plaintext : byte[] | semmle.label | plaintext : byte[] |
+| BadMacUse.java:76:44:76:52 | plaintext | semmle.label | plaintext |
 subpaths
 testFailures
-| BadMacUse.java:54:56:54:66 | // $Source | Missing result: Source |
+| BadMacUse.java:50:56:50:66 | // $Source | Missing result: Source |
