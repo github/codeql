@@ -11,4 +11,4 @@ nodes
 | BadMacUse.java:76:44:76:52 | plaintext | semmle.label | plaintext |
 subpaths
 testFailures
-| BadMacUse.java:50:56:50:66 | // $Source | Missing result: Source |
+| BadMacUse.java:50:56:50:65 | // $Source | Missing result: Source |

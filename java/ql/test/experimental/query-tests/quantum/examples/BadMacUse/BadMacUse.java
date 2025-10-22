@@ -122,7 +122,7 @@ class BadMacUse {
         Mac mac = Mac.getInstance("HmacSHA256");
         mac.init(macKey);
         byte[] computedMac = mac.doFinal(ciphertext); // False Positive
-        
+
         // Concatenate ciphertext and MAC
         byte[] output = new byte[ciphertext.length + computedMac.length];
         System.arraycopy(ciphertext, 0, output, 0, ciphertext.length);
