@@ -806,10 +806,9 @@ private class ReactRouterLocationSource extends DOM::LocationSource::Range {
 
 private class UseRefDomValueSource extends DOM::DomValueSource::Range {
   UseRefDomValueSource() {
-    exists(DataFlow::PropRead current, UseRefStep step, string prop | current = this |
+    exists(DataFlow::PropRead current, UseRefStep step | current = this |
       step.step(_, current) and
-      current.mayHavePropertyName(prop) and
-      prop = "current"
+      current.mayHavePropertyName("current")
     )
   }
 }
