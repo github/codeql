@@ -221,12 +221,7 @@ function RegisterExtractorPack(id)
     }
     local posixMatchers = {
         DotnetMatcherBuild,
-        CreatePatternMatcher({ '^mcs%.exe$', '^csc%.exe$' }, MatchCompilerName,
-            extractor, {
-            prepend = { '--compiler', '"${compiler}"' },
-            order = ORDER_BEFORE
-        }),
-        CreatePatternMatcher({ '^csc$' }, MatchCompilerName,
+        CreatePatternMatcher({ '^mcs%.exe$', '^csc%.exe$', '^csc$' }, MatchCompilerName,
             extractor, {
             prepend = { '--compiler', '${compiler}' },
             order = ORDER_BEFORE
