@@ -1526,9 +1526,9 @@ closure_exprs(
 );
 
 #keyset[id]
-closure_expr_closure_bodies(
+closure_expr_bodies(
   int id: @closure_expr ref,
-  int closure_body: @expr ref
+  int body: @expr ref
 );
 
 #keyset[id]
@@ -3308,9 +3308,9 @@ function_abis(
 );
 
 #keyset[id]
-function_function_bodies(
+function_bodies(
   int id: @function ref,
-  int function_body: @block_expr ref
+  int body: @block_expr ref
 );
 
 #keyset[id]
