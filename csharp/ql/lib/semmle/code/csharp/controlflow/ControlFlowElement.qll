@@ -40,6 +40,7 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
    */
   Nodes::ElementNode getAControlFlowNode() { result.getAstNode() = this }
 
+  /** Gets the control flow node for this element. */
   ControlFlow::Node getControlFlowNode() { result.getAstNode() = this }
 
   /** Gets the basic block in which this element occurs. */
