@@ -251,6 +251,7 @@ module ControlFlow {
       }
     }
 
+    /** A control flow node indicating normal termination of a callable. */
     class NormalExitNode extends AnnotatedExitNode instanceof Impl::NormalExitNode { }
 
     /** A node for a callable exit point. */

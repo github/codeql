@@ -118,7 +118,7 @@ private predicate nonNullDef(Ssa::ExplicitDefinition def) {
 }
 
 /**
- * Holds if the `node` is a dereference `d` of SSA definition `def`.
+ * Holds if `node` is a dereference `d` of SSA definition `def`.
  */
 private predicate dereferenceAt(ControlFlow::Node node, Ssa::Definition def, Dereference d) {
   d = def.getAReadAtNode(node)

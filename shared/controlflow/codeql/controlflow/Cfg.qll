@@ -1185,6 +1185,7 @@ module MakeWithSplitting<
 
   final class AnnotatedExitNode = AnnotatedExitNodeImpl;
 
+  /** A control flow node indicating normal termination of a callable. */
   final class NormalExitNode extends AnnotatedExitNodeImpl {
     NormalExitNode() { this = TAnnotatedExitNode(_, true) }
   }
