@@ -229,7 +229,8 @@ module ArgIsInstantiationOf<
   private class ArgSubst extends ArgFinal {
     Type getTypeAt(TypePath path) {
       result = substituteLookupTraits(super.getTypeAt(path)) and
-      not result = TNeverType()
+      not result = TNeverType() and
+      not result = TContextType()
     }
   }
 
