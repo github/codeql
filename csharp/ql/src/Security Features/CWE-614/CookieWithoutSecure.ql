@@ -104,14 +104,12 @@ predicate insecureSecurePolicyAssignment(Assignment a, Expr val) {
   )
 }
 
-from Expr secureSink, string msg
+from Expr secureSink
 where
-  insecureCookieCall(secureSink) and
-  msg = "Cookie attribute 'Secure' is not set to true."
+  insecureCookieCall(secureSink)
   or
   exists(Assignment a |
     secureSink = a.getRValue() and
     insecureSecurePolicyAssignment(a, _)
-  ) and
-  msg = "Cookie security policy sets cookies as insecure by default."
-select secureSink, msg
+  )
+select secureSink, "Cookie attribute 'Secure' is not set to true."
